@@ -1,5 +1,7 @@
 var NAVTREEINDEX21 =
 {
+"scope_8h_source.html":[6,0,3,0,13],
+"scopes_8cpp.html":[6,0,3,2,6],
 "scopes_8cpp_source.html":[6,0,3,2,6],
 "scopes_8h.html":[6,0,3,2,7],
 "scopes_8h_source.html":[6,0,3,2,7],
@@ -247,7 +249,5 @@ var NAVTREEINDEX21 =
 "structthorin_1_1ll_1_1BB.html#ad9d352a7b6f32ea9a5ca5a1397bf9eec":[3,0,0,11,0,2],
 "structthorin_1_1passCmp.html":[3,0,0,79],
 "structthorin_1_1passCmp.html":[5,0,0,75],
-"structthorin_1_1passCmp.html#a5d4d336e65dfa0af7533fe3679fb85b7":[5,0,0,75,0],
-"structthorin_1_1passCmp.html#a5d4d336e65dfa0af7533fe3679fb85b7":[3,0,0,79,0],
-"structthorin_1_1utf8_1_1Lexer_1_1Ahead.html":[5,0,0,13,0,0]
+"structthorin_1_1passCmp.html#a5d4d336e65dfa0af7533fe3679fb85b7":[5,0,0,75,0]
 };

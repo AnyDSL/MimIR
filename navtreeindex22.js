@@ -1,5 +1,7 @@
 var NAVTREEINDEX22 =
 {
+"structthorin_1_1passCmp.html#a5d4d336e65dfa0af7533fe3679fb85b7":[3,0,0,79,0],
+"structthorin_1_1utf8_1_1Lexer_1_1Ahead.html":[5,0,0,13,0,0],
 "structthorin_1_1utf8_1_1Lexer_1_1Ahead.html":[3,0,0,17,0,0],
 "structthorin_1_1utf8_1_1Lexer_1_1Ahead.html#a439449a21b4cd10ceb84c0ba151fa8ab":[3,0,0,17,0,0,2],
 "structthorin_1_1utf8_1_1Lexer_1_1Ahead.html#a439449a21b4cd10ceb84c0ba151fa8ab":[5,0,0,13,0,0,2],
