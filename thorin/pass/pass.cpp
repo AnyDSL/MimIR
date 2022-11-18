@@ -53,9 +53,7 @@ void PassMan::run() {
         curr_state().stack.push(nom);
     }
 
-    for (auto&& pass : passes_) {
-        pass->prepare();
-    }
+    for (auto&& pass : passes_) { pass->prepare(); }
 
     while (!curr_state().stack.empty()) {
         push_state();

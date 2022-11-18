@@ -64,7 +64,10 @@ World::~World() {
     for (auto def : move_.defs) def->~Def();
 }
 
-Checker& World::checker() { assert(&move_.checker->world() == this); return *move_.checker; }
+Checker& World::checker() {
+    assert(&move_.checker->world() == this);
+    return *move_.checker;
+}
 
 const Type* World::type(const Def* level, const Def* dbg) {
     if (err()) {
@@ -108,7 +111,7 @@ const Def* World::call(const Axiom* axiom, const Def* arg, const Def* dbg) {
         case 1: return app(axiom, arg, dbg);
         case 2: {
             auto infer = nom_infer_entity();
-            auto a = app(app(axiom, infer, dbg), arg, dbg);
+            auto a     = app(app(axiom, infer, dbg), arg, dbg);
             if (auto r = refer(infer); r && !r->isa<Infer>()) return app(app(axiom, r, dbg), arg, dbg);
             return a;
         }

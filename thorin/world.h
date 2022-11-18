@@ -186,8 +186,8 @@ public:
 
     /// Either a value `?:?:.Type ?` or a type `?:.Type ?:.Type ?`.
     Infer* nom_infer_entity(const Def* dbg = {}) {
-        auto t = type_infer_univ();
-        auto res =  nom_infer(nom_infer(t), dbg);
+        auto t   = type_infer_univ();
+        auto res = nom_infer(nom_infer(t), dbg);
         assert(this == &res->world());
         return res;
     }
@@ -468,8 +468,8 @@ public:
     void write() const;                 ///< Same above but file name defaults to World::name.
     ///@}
 
-
     void sane() { assert(&checker().world() == this); }
+
 private:
     /// @name put into sea of nodes
     ///@{
