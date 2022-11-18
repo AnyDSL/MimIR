@@ -168,7 +168,7 @@ const Def* Pack::restructure() {
 
 World& Def::world() const {
     if (isa<Univ>()) return *world_;
-    if (auto type = isa<Type>()) return type->level()->world();
+    if (auto type = isa<Type>()) return type->level()->type()->world();
     return type()->world(); // TODO unroll
 }
 
