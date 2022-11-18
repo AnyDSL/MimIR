@@ -8,6 +8,7 @@
 #include <absl/container/btree_set.h>
 
 #include "thorin/axiom.h"
+#include "thorin/check.h"
 #include "thorin/config.h"
 #include "thorin/debug.h"
 #include "thorin/error.h"
@@ -101,7 +102,10 @@ public:
     const Flags& flags() const { return state_.pod.flags; }
     Flags& flags() { return state_.pod.flags; }
 
-    Checker& checker() { return *move_.checker; }
+    Checker& checker() {
+        assert(&move_.checker->world() == this);
+        return *move_.checker;
+    }
     ErrorHandler* err() { return move_.err.get(); }
     ///@}
 
@@ -618,6 +622,7 @@ private:
             swap(m1.checker,   m2.checker);
             swap(m1.err,       m2.err);
             // clang-format on
+            Checker::swap(*m1.checker, *m2.checker);
         }
     } move_;
 
