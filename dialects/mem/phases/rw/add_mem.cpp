@@ -86,15 +86,15 @@ const Def* AddMem::rewrite_pi(const Pi* pi) {
         return op;
     };
 
-    auto dom     = pi->dom();
-    auto new_dom = DefArray{dom->num_projs(), [&](size_t i) { return rewrite_op(dom->proj(i)); }};
+    auto dom = pi->dom();
+    DefArray new_dom;
     if (pi->num_doms() > 0 && match<mem::M>(pi->dom(0_s)))
         new_dom = dom->projs();
     else if (dom->isa<Sigma>() || dom->isa<Arr>() || dom->isa<Pack>()) { // what about packs / arrays..?
         new_dom = DefArray{dom->num_projs() + 1,
                            [&](size_t i) { return i == 0 ? mem::type_mem(world()) : rewrite_op(dom->proj(i - 1)); }};
     } else {
-        new_dom = {mem::type_mem(world()), dom};
+        new_dom = {mem::type_mem(world()), rewrite_op(dom)};
     }
     return world().pi(new_dom, pi->codom(), pi->dbg());
 }
@@ -110,7 +110,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
         return nullptr;
     };
 
-    world().DLOG("rewriting {} in {}", def, place);
+    world().DLOG("rewriting {} : {} in {}", def, def->type(), place);
 
     if (auto nom_lam = def->isa_nom<Lam>(); nom_lam && !nom_lam->is_set()) return def;
     if (auto it = mem_rewritten_.find(def); it != mem_rewritten_.end()) {
@@ -119,6 +119,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
             world().DLOG("already known mem {} in {}", def, curr_lam);
             return follow_mem(val2mem_, mem_var(curr_lam));
         }
+        world().DLOG("rewritten def: {} : {} in {}", tmp, tmp->type(), curr_lam);
         return tmp;
     }
     if (match<mem::M>(def->type())) { world().DLOG("new mem {} in {}", def, curr_lam); }
@@ -152,7 +153,10 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
 
         auto pi = nom->type()->as<Pi>();
 
-        auto new_nom = nom->stub(world(), rewrite_pi(pi), nom->dbg());
+        auto new_ty  = rewrite_pi(pi);
+        auto new_nom = nom->stub(world(), new_ty, nom->dbg());
+        world().DLOG("old nom: {} : {}", nom, pi);
+        world().DLOG("new lam {} : {}", new_nom, new_ty);
 
         for (size_t i = 0; i < nom->num_vars(); ++i)
             mem_rewritten_[nom->var(i)] = new_nom->var(i + 1, nom->var(i)->dbg());
