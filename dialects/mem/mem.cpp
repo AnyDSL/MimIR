@@ -33,7 +33,7 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                     man.add<mem::CopyProp>(br, ee);
                 });
                 builder.extend_codegen_prep_phase([](PassMan& man) {
-                    man.add<mem::AddMemWrapper>();
+                    // man.add<mem::AddMemWrapper>();
                     man.add<mem::RememElim>();
                     man.add<mem::Alloc2Malloc>();
                 });
