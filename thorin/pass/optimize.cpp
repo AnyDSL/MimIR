@@ -1,5 +1,7 @@
 #include "thorin/pass/optimize.h"
 
+#include "thorin/dialects.h"
+
 #include "thorin/pass/fp/beta_red.h"
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/pass/fp/eta_red.h"
@@ -40,7 +42,13 @@ namespace thorin {
 ///   * + Custom (default priority 100)
 
 /// See optimize.h for magic numbers
-void optimize(World& world, PipelineBuilder& builder) {
+void optimize(World& world, Passes& passes, PipelineBuilder& builder) {
+    if (auto compilation = world.lookup("_compile")) {
+        std::cout << "compilation using: " << compilation << std::endl;
+
+        return;
+    }
+
     builder.extend_opt_phase(0, [](thorin::PassMan& man) { man.add<Scalerize>(); });
     builder.extend_opt_phase(1, [](thorin::PassMan& man) { man.add<EtaRed>(); });
     builder.extend_opt_phase(2, [](thorin::PassMan& man) { man.add<TailRecElim>(); });

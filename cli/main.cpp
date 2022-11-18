@@ -103,11 +103,13 @@ int main(int argc, char** argv) {
         std::vector<Dialect> dialects;
         thorin::Backends backends;
         thorin::Normalizers normalizers;
+        thorin::Passes passes;
         if (!dialect_plugins.empty()) {
             for (const auto& dialect : dialect_plugins) {
                 dialects.push_back(Dialect::load(dialect, dialect_paths));
                 dialects.back().register_backends(backends);
                 dialects.back().register_normalizers(normalizers);
+                dialects.back().register_passes(passes);
             }
         }
 
@@ -130,13 +132,13 @@ int main(int argc, char** argv) {
         if (os[H]) parser.bootstrap(*os[H]);
 
         PipelineBuilder builder;
-        for (const auto& dialect : dialects) { dialect.register_passes(builder); }
+        for (const auto& dialect : dialects) { dialect.add_passes(builder); }
 
         // clang-format off
         switch (opt) {
             case 0:                             break;
             case 1: Phase::run<Cleanup>(world); break;
-            case 2: optimize(world, builder);   break;
+            case 2: optimize(world, passes, builder);   break;
             default: errln("error: illegal optimization level '{}'", opt);
         }
         // clang-format on

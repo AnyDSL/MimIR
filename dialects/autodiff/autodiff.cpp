@@ -35,5 +35,5 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                     man.add<thorin::autodiff::AutoDiffExternalCleanup>();
                 });
             },
-            nullptr, [](Normalizers& normalizers) { autodiff::register_normalizers(normalizers); }};
+            nullptr, nullptr, [](Normalizers& normalizers) { autodiff::register_normalizers(normalizers); }};
 }
