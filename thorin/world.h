@@ -102,7 +102,10 @@ public:
     const Flags& flags() const { return state_.pod.flags; }
     Flags& flags() { return state_.pod.flags; }
 
-    Checker& checker() { assert(&move_.checker->world() == this); return *move_.checker; }
+    Checker& checker() {
+        assert(&move_.checker->world() == this);
+        return *move_.checker;
+    }
     ErrorHandler* err() { return move_.err.get(); }
     ///@}
 
