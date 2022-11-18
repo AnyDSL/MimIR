@@ -21,15 +21,6 @@
 
 using namespace thorin;
 
-
-class AddMemWrapper : public RWPass<AddMemWrapper, Lam> {
-public:
-    AddMemWrapper(PassMan& man)
-        : RWPass(man, "add_mem") {}
-
-    void prepare() override { mem::AddMem(world()).run(); }
-};
-
 extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
     return {"mem",
             [](PipelineBuilder& builder) {
@@ -41,7 +32,7 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                     man.add<mem::CopyProp>(br, ee);
                 });
                 builder.extend_codegen_prep_phase([](PassMan& man) {
-                    man.add<AddMemWrapper>();
+                    man.add<mem::AddMemWrapper>();
                     man.add<mem::RememElim>();
                     man.add<mem::Alloc2Malloc>();
                 });
