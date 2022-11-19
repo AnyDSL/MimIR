@@ -1,8 +1,8 @@
 var autodiff_2autogen_8h =
 [
     [ "THORIN_autodiff_NORMALIZER_IMPL", "autodiff_2autogen_8h.html#ab540efb299fd71903b57a8a2549fe24d", null ],
-    [ "AD", "autodiff_2autogen_8h.html#ae4a2884a429ac996dc3a0d42e0077985", null ],
     [ "ad", "autodiff_2autogen_8h.html#aa01669317ac5a2c1679e4dd25678a051", null ],
+    [ "AD", "autodiff_2autogen_8h.html#ae4a2884a429ac996dc3a0d42e0077985", null ],
     [ "add", "autodiff_2autogen_8h.html#a401c1924abe6294a7a98d2318c21289c", null ],
     [ "sum", "autodiff_2autogen_8h.html#aca240fd39eb8b23acfd9fc5691cb2d2e", null ],
     [ "Tangent", "autodiff_2autogen_8h.html#aca9eca4cf9202fc273ba83555948911a", null ],
