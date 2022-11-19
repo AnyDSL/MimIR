@@ -1,6 +1,5 @@
 // RUN: %thorin %s -o -
 
-.ax %phase.Pipeline: *;
 .ax %phase.Phase: *;
 
 .ax %phase.phase1: .Bool         -> %phase.Phase;
