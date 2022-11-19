@@ -7,7 +7,12 @@ namespace thorin {
 Axiom::Axiom(NormalizeFn normalizer, const Def* type, dialect_t dialect, tag_t tag, sub_t sub, const Def* dbg)
     : Def(Node, type, Defs{}, dialect | (flags_t(tag) << 8_u64) | flags_t(sub), dbg) {
     u16 curry = 0;
+    NomSet done;
     while (auto pi = type->isa<Pi>()) {
+        if (auto nom = pi->isa_nom()) {
+            if (auto [_, ins] = done.emplace(nom); !ins) break;
+        }
+
         ++curry;
         type = pi->codom();
     }
