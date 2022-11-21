@@ -61,16 +61,6 @@ static const Def* rewrite_apped_nom_lam_in_tuple(const Def* def,
     return app->rebuild(w, app->type(), {callee, arg}, app->dbg());
 }
 
-static const Def* follow_mem(const Def2Def& val2mem, const Def* mem) {
-    auto it = val2mem.find(mem);
-    while (it != val2mem.end()) {
-        mem = it->second;
-        mem->world().DLOG("Followed mem {}", mem);
-        it = val2mem.find(mem);
-    }
-    return mem;
-}
-
 void AddMem::start() {
     auto externals = world().externals();
     for (const auto& [_, nom] : externals) {
@@ -146,55 +136,32 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
             sched_.emplace_back(*bound_scope);
         }
 
-        if (auto pi = nom->type()->as<Pi>(); pi->num_doms() > 0 && match<mem::M>(pi->dom(0_s))) { // already has a mem
-            auto new_nom = nom;
-            if (auto new_pi = rewrite_pi(pi); new_pi != pi) { new_nom = nom->stub(world(), new_pi, nom->dbg()); }
+        auto pi      = nom->type()->as<Pi>();
+        auto new_nom = nom;
+        if (auto new_pi = rewrite_pi(pi); new_pi != pi) { new_nom = nom->stub(world(), new_pi, nom->dbg()); }
 
-            if (nom->num_vars() != 0) mem_rewritten_[nom->var()] = new_nom->var(nom->var()->dbg());
-            for (size_t i = 0; i < nom->num_vars() && nom->num_vars() > 1; ++i)
-                mem_rewritten_[nom->var(i)] = new_nom->var(i, nom->var(i)->dbg());
-
-            mem_rewritten_[nom]               = new_nom;
-            val2mem_[new_nom]                 = new_nom->var(0_s);
-            val2mem_[nom]                     = new_nom->var(0_s);
-            mem_rewritten_[new_nom->var(0_s)] = new_nom->var(0_s);
-            for (size_t i = 0, n = new_nom->num_ops(); i < n; ++i) {
-                if (auto op = nom->op(i)) static_cast<Def*>(new_nom)->set(i, add_mem_to_lams(nom, op));
-            }
-
-            if (nom != new_nom && nom->is_external()) {
-                nom->make_internal();
-                new_nom->make_external();
-            }
-            return new_nom;
-        }
-
-        auto pi = nom->type()->as<Pi>();
-
-        auto new_ty  = rewrite_pi(pi);
-        auto new_nom = nom->stub(world(), new_ty, nom->dbg());
-        world().DLOG("old nom: {} : {}", nom, pi);
-        world().DLOG("new lam {} : {}", new_nom, new_ty);
-
+        auto var_offset = new_nom->num_doms() - nom->num_doms(); // have we added a mem var?
         if (nom->num_vars() != 0) mem_rewritten_[nom->var()] = new_nom->var(nom->var()->dbg());
-        for (size_t i = 0; i < nom->num_vars(); ++i)
-            mem_rewritten_[nom->var(i)] = new_nom->var(i + 1, nom->var(i)->dbg());
+        for (size_t i = 0; i < nom->num_vars() && new_nom->num_vars() > 1; ++i)
+            mem_rewritten_[nom->var(i)] = new_nom->var(i + var_offset, nom->var(i)->dbg());
 
         mem_rewritten_[new_nom]           = new_nom;
         mem_rewritten_[nom]               = new_nom;
         val2mem_[new_nom]                 = new_nom->var(0_s);
         val2mem_[nom]                     = new_nom->var(0_s);
         mem_rewritten_[new_nom->var(0_s)] = new_nom->var(0_s);
-
-        new_nom->set(add_mem_to_lams(place, nom->filter()), add_mem_to_lams(place, nom->body()));
+        for (size_t i = 0, n = new_nom->num_ops(); i < n; ++i) {
+            if (auto op = nom->op(i)) static_cast<Def*>(new_nom)->set(i, add_mem_to_lams(nom, op));
+        }
 
         if (nom != new_nom && nom->is_external()) {
             nom->make_internal();
             new_nom->make_external();
         }
-
         return new_nom;
     };
+
+    // rewrite top-level lams
     if (auto nom = def->isa_nom<Lam>()) { return rewrite_lam(nom); }
     assert(!def->isa_nom());
 
@@ -203,14 +170,6 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
         if (offset == 0) {
             // depth-first, follow the mems
             add_mem_to_lams(place, arg->proj(0));
-        }
-        if (arg->isa<Tuple>() || arg->isa<Arr>() || arg->isa<Pack>()) {
-            DefArray new_args{arg->num_projs() + offset};
-            for (int i = new_args.size() - 1; i >= 0; i--) {
-                new_args[i] =
-                    i == 0 ? add_mem_to_lams(place, mem_for_lam(place)) : add_mem_to_lams(place, arg->proj(i - offset));
-            }
-            return arg->world().tuple(new_args, arg->dbg());
         }
 
         DefArray new_args{arg->type()->num_projs() + offset};
@@ -234,46 +193,23 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
                    world(), app->type(), {add_mem_to_lams(place, app->callee()), rewrite_arg(app->arg())}, app->dbg());
     }
 
-    // call-site of an axiom
+    // call-site of an axiom (assuming mems are only in the final app..)
     if (auto app = def->isa<App>(); app && app->axiom()) {
         auto arg = app->arg();
-        if (arg->isa<Tuple>() || arg->isa<Arr>() || arg->isa<Pack>()) {
-            DefArray new_args(arg->num_projs());
-            for (int i = new_args.size() - 1; i >= 0; i--) {
-                // replace memory operand with followed mem
-                if (match<mem::M>(arg->proj(i)->type())) {
-                    // depth-first, follow the mems
-                    add_mem_to_lams(place, arg->proj(i));
-                    new_args[i] = add_mem_to_lams(place, mem_for_lam(place));
-                } else {
-                    new_args[i] = add_mem_to_lams(place, arg->proj(i));
-                }
-            }
-            auto rewritten = mem_rewritten_[def] =
-                app->rebuild(world(), app->type(),
-                             {add_mem_to_lams(place, app->callee()), world().tuple(new_args, arg->dbg())}, app->dbg());
-            if (match<mem::M>(rewritten->type())) val2mem_[place] = rewritten;
-            if (rewritten->num_projs() > 0 && match<mem::M>(rewritten->proj(0)->type())) {
-                mem_rewritten_[rewritten->proj(0)] = rewritten->proj(0);
-                val2mem_[place]                    = rewritten->proj(0);
-            }
-            return rewritten;
-        }
-
-        DefArray new_args{arg->type()->num_projs() != 0};
-        if (new_args.size() > 0) {
+        DefArray new_args(arg->num_projs());
+        for (int i = new_args.size() - 1; i >= 0; i--) {
             // replace memory operand with followed mem
-            if (match<mem::M>(arg->type())) {
+            if (match<mem::M>(arg->proj(i)->type())) {
                 // depth-first, follow the mems
-                add_mem_to_lams(place, arg);
-                new_args[0] = add_mem_to_lams(place, mem_for_lam(place));
+                add_mem_to_lams(place, arg->proj(i));
+                new_args[i] = add_mem_to_lams(place, mem_for_lam(place));
             } else {
-                new_args[0] = add_mem_to_lams(place, arg);
+                new_args[i] = add_mem_to_lams(place, arg->proj(i));
             }
         }
         auto rewritten = mem_rewritten_[def] =
             app->rebuild(world(), app->type(),
-                         {add_mem_to_lams(place, app->callee()), arg->world().tuple(new_args, arg->dbg())}, app->dbg());
+                         {add_mem_to_lams(place, app->callee()), world().tuple(new_args, arg->dbg())}, app->dbg());
         if (match<mem::M>(rewritten->type())) val2mem_[place] = rewritten;
         if (rewritten->num_projs() > 0 && match<mem::M>(rewritten->proj(0)->type())) {
             mem_rewritten_[rewritten->proj(0)] = rewritten->proj(0);
@@ -292,9 +228,8 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
                      }};
 
     auto tmp = mem_rewritten_[def] = def->rebuild(world(), def->type(), new_ops, def->dbg());
-    if (match<mem::M>(tmp->type()))
-        val2mem_[place] = tmp;
-    else if (tmp->num_projs() > 0 && match<mem::M>(tmp->proj(0)->type())) {
+    if (match<mem::M>(tmp->type())) val2mem_[place] = tmp;
+    if (tmp->num_projs() > 0 && match<mem::M>(tmp->proj(0)->type())) {
         mem_rewritten_[tmp->proj(0)] = tmp->proj(0);
         val2mem_[place]              = tmp->proj(0);
     }
