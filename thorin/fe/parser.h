@@ -88,10 +88,10 @@ private:
     const Def* parse_tuple();
     const Def* parse_type();
     const Def* parse_pi();
-    const Def* parse_lam();
     const Def* parse_lit();
     const Def* parse_var();
     const Def* parse_insert();
+    Lam* parse_lam(bool decl = false);
     ///@}
 
     /// @name ptrns
@@ -108,7 +108,6 @@ private:
     void parse_ax();
     void parse_let();
     void parse_nom();
-    void parse_nom_fun();
     /// If @p sym is **not** empty, this is an inline definition of @p sym,
     /// otherwise it's a standalone definition.
     void parse_def(Sym sym = {});

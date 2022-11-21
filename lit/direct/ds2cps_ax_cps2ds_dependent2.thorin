@@ -9,7 +9,7 @@
 .let I32 = .Idx _32;
 
 .lam f [n:.Nat, w:.Nat] -> .Cn[.Idx n, .Cn[.Idx n]] = {
-    .cn f_cont [a:(.Idx n), return: .Cn (.Idx n)] = {
+    .con f_cont [a:(.Idx n), return: .Cn (.Idx n)] = {
         .let b = %core.conv.u2u _32 n (42:(.Idx _32));
         .let c = %core.wrap.add n w (a,b);
         return c
@@ -21,7 +21,7 @@
     I32
 };
 
-.cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return : .Cn [%mem.M, I32]] = {
+.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return : .Cn [%mem.M, I32]] = {
     .let n = _32;
     .let c = %direct.cps2ds_dep (I32,U) (f (n, 0)) (5:(.Idx n));
     return (mem, c)

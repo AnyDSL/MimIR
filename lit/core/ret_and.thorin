@@ -7,11 +7,11 @@
 .import core;
 .import mem;
 
-.cn atoi [%mem.M, %mem.Ptr («⊤:.Nat; .Idx 256», 0), .Cn [%mem.M, .Idx 4294967296]];
+.con atoi [%mem.M, %mem.Ptr («⊤:.Nat; .Idx 256», 0), .Cn [%mem.M, .Idx 4294967296]];
 
-.cn .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), return : .Cn [%mem.M, .Idx 4294967296]] = {
-    .cn atoi_cont_a [mem : %mem.M, a : .Idx 4294967296] = {
-        .cn atoi_cont_b [mem : %mem.M, b : .Idx 4294967296] = {
+.con .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), return : .Cn [%mem.M, .Idx 4294967296]] = {
+    .con atoi_cont_a [mem : %mem.M, a : .Idx 4294967296] = {
+        .con atoi_cont_b [mem : %mem.M, b : .Idx 4294967296] = {
                 return (mem, %core.bit2.and_ (4294967296) (a, b))
         };
 

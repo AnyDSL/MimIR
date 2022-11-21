@@ -7,7 +7,7 @@
 .let _32 = 4294967296;
 .let I32 = .Idx _32;
 
-.cn g ![
+.con g ![
     n:.Nat,
     i:.Idx n,
     t:<< n; [I32,I32]>>,
@@ -17,7 +17,7 @@
 };
 
 
-.cn .extern f [return:.Cn[I32]] = {
+.con .extern f [return:.Cn[I32]] = {
     g (
         1,
         (0:(.Idx 1)),

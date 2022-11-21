@@ -14,10 +14,13 @@ public:
     /// @name curry depth and normalizer
     ///@{
     NormalizeFn normalizer() const { return normalizer_; }
+
+    /// Currying depth.
+    /// I.e. the number of arrows (`->`) in this Axiom's Def::type.
     u16 curry() const { return curry_; }
 
     /// Yields currying depth of @p def untill we finally hit an Axiom.
-    /// `{nullptr, u16(-1)}` indicates that no Axiom is present.
+    /// @returns `{nullptr, u16(-1)}` if no Axiom is present.
     static std::tuple<const Axiom*, u16> get(const Def* def);
     ///@}
 
