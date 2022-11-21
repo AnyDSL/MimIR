@@ -1,8 +1,8 @@
+#include "dialects/compiler/compiler.h"
+
 #include <thorin/config.h>
 #include <thorin/dialects.h>
 #include <thorin/pass/pass.h>
-
-#include "dialects/compiler/compiler.h"
 
 using namespace thorin;
 

@@ -6,11 +6,14 @@
 ///
 /// ## Types
 ///
-/// ### %compiler.pass
+/// TODO
 ///
-.ax %compiler.pass: *; 
+.ax %compiler.Phase: *; 
+.Pi PiPeline: *, %phase.Phase = PiPeline;
 ///
-/// ## Operations
+/// ## Expressions
 ///
 /// TODO
+///
+.ax %phase.pipe: PiPeline;
 /// 

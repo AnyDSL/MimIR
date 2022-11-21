@@ -231,17 +231,21 @@ TEST(RestrictedDependentTypes, join_singleton) {
 TEST(RestrictedDependentTypes, ll) {
     World w;
     Normalizers normalizers;
+    Passes passes;
 
     auto mem_d = Dialect::load("mem", {});
     mem_d.register_normalizers(normalizers);
+    mem_d.register_passes(passes);
     fe::Parser::import_module(w, "mem", {}, &normalizers);
 
     auto core_d = Dialect::load("core", {});
     core_d.register_normalizers(normalizers);
+    core_d.register_passes(passes);
     fe::Parser::import_module(w, "core", {}, &normalizers);
 
     auto math_d = Dialect::load("math", {});
     math_d.register_normalizers(normalizers);
+    math_d.register_passes(passes);
     fe::Parser::import_module(w, "math", {}, &normalizers);
 
     auto mem_t  = mem::type_mem(w);
@@ -283,8 +287,8 @@ TEST(RestrictedDependentTypes, ll) {
     }
 
     PipelineBuilder builder;
-    mem_d.register_passes(builder);
-    optimize(w, builder);
+    mem_d.add_passes(builder);
+    optimize(w, passes, builder);
 
     Backends backends;
     core_d.register_backends(backends);
