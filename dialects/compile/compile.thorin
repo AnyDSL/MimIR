@@ -1,0 +1,19 @@
+/// # The compile dialect {#compile}
+///
+/// [TOC]
+///
+/// TODO
+///
+/// ## Types
+///
+/// TODO
+///
+.ax %compile.Phase: *; 
+.Pi PiPeline: *, %compile.Phase = PiPeline;
+///
+/// ## Expressions
+///
+/// TODO
+///
+.ax %compile.pipe: PiPeline;
+/// 

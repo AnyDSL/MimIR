@@ -1,4 +1,4 @@
-#include "dialects/compiler/compiler.h"
+#include "dialects/compile/compile.h"
 
 #include <thorin/config.h>
 #include <thorin/dialects.h>
@@ -7,5 +7,5 @@
 using namespace thorin;
 
 extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
-    return {"compiler", nullptr, nullptr, nullptr, nullptr};
+    return {"compile", nullptr, nullptr, nullptr, nullptr};
 }

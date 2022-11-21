@@ -37,20 +37,6 @@ add_thorin_dialect(autodiff
     INSTALL
 )
 
-add_thorin_dialect(core
-    SOURCES
-        core/core.cpp
-        core/core.h
-        core/normalizers.cpp
-        core/be/ll/ll.cpp
-        core/be/ll/ll.h
-    DEPENDS
-        math
-        mem
-        clos
-    INSTALL
-)
-
 add_thorin_dialect(clos
     SOURCES
         clos/clos.cpp
@@ -74,6 +60,27 @@ add_thorin_dialect(clos
         affine
     HEADER_DEPENDS
         core
+    INSTALL
+)
+
+add_thorin_dialect(compile
+    SOURCES
+        compile/compile.cpp
+        compile/compile.h
+    INSTALL
+)
+
+add_thorin_dialect(core
+    SOURCES
+        core/core.cpp
+        core/core.h
+        core/normalizers.cpp
+        core/be/ll/ll.cpp
+        core/be/ll/ll.h
+    DEPENDS
+        math
+        mem
+        clos
     INSTALL
 )
 
