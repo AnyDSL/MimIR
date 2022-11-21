@@ -41,11 +41,53 @@ namespace thorin {
 /// * 300: RetWrap (Priority 50)
 ///   * + Custom (default priority 100)
 
+/// Helper function to cope with the fact that normalizers take all arguments and not only its axiom arguments.
+std::pair<const Def*, std::vector<const Def*>> collect_args(const Def* def) {
+    std::vector<const Def*> args;
+    if (auto app = def->isa<App>()) {
+        auto callee               = app->callee();
+        auto arg                  = app->arg();
+        auto [inner_callee, args] = collect_args(callee);
+        args.push_back(arg);
+        return {inner_callee, args};
+    } else {
+        return {def, args};
+    }
+}
+
 /// See optimize.h for magic numbers
 void optimize(World& world, Passes& passes, PipelineBuilder& builder) {
     if (auto compilation = world.lookup("_compile")) {
-        std::cout << "compilation using: " << compilation << std::endl;
+        world.DLOG("compilation using {} : {}", compilation, compilation->type());
+        compilation->make_internal();
 
+        // We can not directly access compile axioms here.
+        // But the compile dialect has not the necessary communication pipeline.
+        // One idea would be that the register pass phase in the compile dialect builds the pipeline.
+        // But we do not have access to the necessary information there.
+
+        PipelineBuilder pipe_builder;
+
+        // TODO: generalize this hardcoded special case
+        auto pipeline     = compilation->as<Lam>()->body();
+        auto [ax, phases] = collect_args(pipeline);
+        // TODO: handle passes not only phases
+        for (auto phase : phases) {
+            world.DLOG("phase: {}", phase);
+            auto [phase_def, phase_args] = collect_args(phase);
+            if (auto phase_ax = phase_def->isa<Axiom>()) {
+                auto flag = phase_ax->flags();
+                world.DLOG("flag: {}", flag);
+                if (passes.contains(flag)) {
+                    auto phase_fun = passes[flag];
+                    phase_fun(world, pipe_builder, phase);
+                }
+            }
+        }
+        Pipeline pipe(world);
+        pipe_builder.buildPipeline(pipe);
+
+        pipe.run();
         return;
     }
 

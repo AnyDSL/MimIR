@@ -67,6 +67,8 @@ add_thorin_dialect(compile
     SOURCES
         compile/compile.cpp
         compile/compile.h
+        compile/passes/debug_print.cpp
+        compile/passes/debug_print.h
     INSTALL
 )
 

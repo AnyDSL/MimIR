@@ -9,11 +9,15 @@
 /// TODO
 ///
 .ax %compile.Phase: *; 
-.Pi PiPeline: *, %compile.Phase = PiPeline;
+.Pi Pipeline: *, %compile.Phase = Pipeline;
 ///
 /// ## Expressions
 ///
 /// TODO
 ///
-.ax %compile.pipe: PiPeline;
+.ax %compile.pipe: Pipeline;
 /// 
+///
+/// ## Compilation Passes and Phases
+///
+.ax %compile.debug_phase: .Nat -> %compile.Phase;

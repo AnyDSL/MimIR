@@ -16,7 +16,7 @@ class PipelineBuilder;
 class Def;
 // `axiom ↦ (pipeline part) × (axiom application) → ()`
 // The function should inspect application to construct the pass/phase and add it to the pipeline.
-using Passes = absl::flat_hash_map<flags_t, std::function<void(PipelineBuilder&, const Def*)>>;
+using Passes = absl::flat_hash_map<flags_t, std::function<void(World&,PipelineBuilder&, const Def*)>>;
 
 void optimize(World&, Passes&, PipelineBuilder&);
 
