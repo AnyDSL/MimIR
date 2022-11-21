@@ -8,8 +8,10 @@
 ///
 /// TODO
 ///
+.ax %compile.Pass: *; 
 .ax %compile.Phase: *; 
 .Pi Pipeline: *, %compile.Phase = Pipeline;
+.Pi PassPhase: *, %compile.Pass = PassPhase;
 ///
 /// ## Expressions
 ///
@@ -21,3 +23,5 @@
 /// ## Compilation Passes and Phases
 ///
 .ax %compile.debug_phase: .Nat -> %compile.Phase;
+.ax %compile.pass_phase: PassPhase;
+.ax %compile.pass_of_phase: PassPhase -> %compile.Phase;

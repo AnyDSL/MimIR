@@ -41,6 +41,7 @@ namespace thorin {
 /// * 300: RetWrap (Priority 50)
 ///   * + Custom (default priority 100)
 
+// TODO: move
 /// Helper function to cope with the fact that normalizers take all arguments and not only its axiom arguments.
 std::pair<const Def*, std::vector<const Def*>> collect_args(const Def* def) {
     std::vector<const Def*> args;

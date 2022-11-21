@@ -32,6 +32,8 @@ class PipelineBuilder {
 public:
     explicit PipelineBuilder() {}
 
+    int last_phase();
+
     void append_phase_end(PhaseBuilder, int priority = Pass_Default_Priority);
     void append_pass_in_end(std::function<void(PassMan&)>, int priority = Pass_Default_Priority);
     void append_pass_after_end(std::function<void(PassMan&)>, int priority = Pass_Default_Priority);

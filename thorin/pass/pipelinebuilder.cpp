@@ -22,23 +22,21 @@
 
 namespace thorin {
 
-void PipelineBuilder::append_phase_end(PhaseBuilder phase, int priority) {
+int PipelineBuilder::last_phase() {
     auto phase_ids    = phases();
     auto max_phase_id = std::max_element(phase_ids.begin(), phase_ids.end());
     auto max_phase    = max_phase_id == phase_ids.end() ? 0 : *max_phase_id;
-    append_phase(max_phase + 1, phase, priority);
+    return max_phase;
+}
+
+void PipelineBuilder::append_phase_end(PhaseBuilder phase, int priority) {
+    append_phase(last_phase() + 1, phase, priority);
 }
 void PipelineBuilder::append_pass_in_end(std::function<void(PassMan&)> pass, int priority) {
-    auto phase_ids    = phases();
-    auto max_phase_id = std::max_element(phase_ids.begin(), phase_ids.end());
-    auto max_phase    = max_phase_id == phase_ids.end() ? 0 : *max_phase_id;
-    extend_opt_phase(max_phase, pass, priority);
+    extend_opt_phase(last_phase(), pass, priority);
 }
 void PipelineBuilder::append_pass_after_end(std::function<void(PassMan&)> pass, int priority) {
-    auto phase_ids    = phases();
-    auto max_phase_id = std::max_element(phase_ids.begin(), phase_ids.end());
-    auto max_phase    = max_phase_id == phase_ids.end() ? 0 : *max_phase_id;
-    extend_opt_phase(max_phase + 1, pass, priority);
+    extend_opt_phase(last_phase() + 1, pass, priority);
 }
 
 void PipelineBuilder::extend_opt_phase(std::function<void(PassMan&)>&& extension) {

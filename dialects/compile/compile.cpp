@@ -8,6 +8,20 @@
 
 using namespace thorin;
 
+// TODO: move
+std::pair<const Def*, std::vector<const Def*>> collect_args(const Def* def) {
+    std::vector<const Def*> args;
+    if (auto app = def->isa<App>()) {
+        auto callee               = app->callee();
+        auto arg                  = app->arg();
+        auto [inner_callee, args] = collect_args(callee);
+        args.push_back(arg);
+        return {inner_callee, args};
+    } else {
+        return {def, args};
+    }
+}
+
 extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
     // clang-format off
     return {"compile", 
@@ -27,8 +41,19 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                             // man.add<thorin::compile::DebugPrint>(1);
                         }
                     );
-                }
-            ;
+                } ;
+
+            auto pass_phase_flag = flags_t(Axiom::Base<thorin::compile::pass_of_phase>);
+            passes[pass_phase_flag] = 
+                [](World& world, PipelineBuilder& builder, const Def* app) {
+                    // auto [ax, pass_phase] = collect_args(app);
+                    auto [ax,passes] = collect_args(app->as<App>()->arg());
+                    auto last_phase = builder.last_phase();
+
+                    // TODO: get passes from axioms (another passes array?)
+                    // TODO: maybe everything one level lower (phase -> passman), pass -> ? (something that allows composing it here)
+                } ;
+
         }, 
         nullptr,
         nullptr
