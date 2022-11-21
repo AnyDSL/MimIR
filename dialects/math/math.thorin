@@ -111,7 +111,7 @@
 /// | `%%math.rt.sq` | square root | \f$\sqrt{x}\f$     |
 /// | `%%math.rt.cb` | cube root   |\f$\sqrt[3]{x}\f$   |
 ///
-.ax %math.rt(sq,cb): Π [p: .Nat, e: .Nat] -> .Nat -> [%math.F (p, e), %math.F (p, e)] -> %math.F (p, e), normalize_rt;
+.ax %math.rt(sq,cb): Π [p: .Nat, e: .Nat] -> .Nat -> %math.F (p, e) -> %math.F (p, e), normalize_rt;
 ///
 /// ### %math.exp
 ///
