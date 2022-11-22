@@ -29,4 +29,4 @@
 /// 
 /// Loweres the %affine.For operation to recursive function calls.
 /// 
-%ax %affine.lower_for_pass: %compile.Pass;
+.ax %affine.lower_for_pass: %compile.Pass;

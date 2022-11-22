@@ -35,5 +35,20 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                     man.add<mem::Alloc2Malloc>();
                 });
             },
-            nullptr, nullptr, [](Normalizers& normalizers) { mem::register_normalizers(normalizers); }};
+            [](Passes& passes) {
+                register_pass_with_arg<mem::ssa_pass, mem::SSAConstr, EtaExp>(passes);
+                register_pass<mem::remem_elim_pass, mem::RememElim>(passes);
+                register_pass<mem::Alloc2Malloc, mem::Alloc2Malloc>(passes);
+
+                // TODO: generalize register_pass_with_arg
+                passes[flags_t(Axiom::Base<mem::copy_prop_pass>)] = [&](World&, PipelineBuilder& builder,
+                                                                        const Def* app) {
+                    auto [br, ee] = app->as<App>()->args<2>();
+                    // TODO: let get_pass do the casts
+                    auto br_pass = (BetaRed*)builder.get_pass_instance(br);
+                    auto ee_pass = (EtaExp*)builder.get_pass_instance(ee);
+                    builder.add_pass<mem::CopyProp>(app, br_pass, ee_pass);
+                };
+            },
+            nullptr, [](Normalizers& normalizers) { mem::register_normalizers(normalizers); }};
 }
