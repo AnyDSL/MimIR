@@ -5,8 +5,6 @@
 
 #include "dialects/autodiff/analysis/analysis.h"
 #include "dialects/autodiff/analysis/analysis_factory.h"
-#include "dialects/autodiff/autodiff.h"
-#include "dialects/autodiff/builder.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
@@ -169,12 +167,9 @@ DefSet CacheOptimizer::optimize(DefSet defs) {
         no_deps.insert(def);
     }
 
+    return no_deps;
+
     /*
-        DefSet loads;
-        for( auto def : defs ){
-            depends_on_loads(def, no_deps, loads);
-        }
-    */
 
     canonicalize(no_deps);
 
@@ -189,7 +184,6 @@ DefSet CacheOptimizer::optimize(DefSet defs) {
         }
     }
 
-    // return no_deps;
 
     DefSet result;
     for (DefSet& group : groups) {
@@ -204,7 +198,7 @@ DefSet CacheOptimizer::optimize(DefSet defs) {
         result.insert(best->cached_defs.begin(), best->cached_defs.end());
     }
 
-    return result;
+    return result;*/
 }
 
 } // namespace thorin::autodiff

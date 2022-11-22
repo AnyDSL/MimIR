@@ -21,7 +21,6 @@ public:
     void run();
 
     PtrAnalysis& ptr_analysis;
-    DefSet found_;
     DefSet overwritten;
 
     std::vector<Lam*> lams;

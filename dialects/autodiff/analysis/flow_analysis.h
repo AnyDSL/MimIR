@@ -55,8 +55,6 @@ public:
 
     bool is_const(const Def* def);
 
-    // bool add(const Def* next);
-
     bool meet(const Def* present, const Def* next);
 
     bool meet_projs(const Def* present, const Def* next);

@@ -126,27 +126,15 @@ bool FlowAnalysis::visit(const Def* def) {
         } else if (auto bitcast = match<core::bitcast>(app)) {
             return meet(bitcast, bitcast->arg());
         }
-
-        const Def* exit = nullptr;
-        if (auto for_affine = match<affine::For>(app)) {
-            exit = for_affine->arg(5);
-        } else {
-            // return add_projs(app->callee(), arg);
-        }
     }
 
     return true;
 }
 
 void FlowAnalysis::run(Lam* diffee) {
-    // Scope scope(diffee);
-    // auto ret_var = diffee->ret_var();
-    // flow_set.insert(ret_var);
-    // flow_set.insert(diffee->var());
     for (auto var : diffee->vars()) {
         auto& lattice = get_lattice(var);
         lattice.set_flow();
-        // flow_set.insert(var);
     }
 
     auto& utils = factory().utils();
@@ -162,33 +150,6 @@ void FlowAnalysis::run(Lam* diffee) {
     for (auto& [def, lattice] : lattices) {
         if (lattice->is_flow()) { flow_set.insert(def); }
     }
-    /*
-        DefSet state[2];
-        state[0]          = scope.bound();
-        bool dirty        = true;
-        int current_state = 0;
-        while (dirty) {
-            dirty                = false;
-            int next_state       = 1 - current_state;
-            DefSet& current_defs = state[current_state];
-            for (auto def : current_defs) {
-                bool finished = visit(def);
-
-                if (finished) {
-                    dirty = true;
-                } else {
-                    state[next_state].insert(def);
-                }
-            }
-
-            state[current_state].clear();
-            current_state = next_state;
-        }*/
-
-    /*for (auto [prev, next] : reasoning_list) {
-        prev->dump(1);
-        next->dump(1);
-    }*/
 }
 
 } // namespace thorin::autodiff

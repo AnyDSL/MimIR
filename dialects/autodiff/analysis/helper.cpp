@@ -203,8 +203,6 @@ const Pi* pullback_type(const Def* in, const Def* out, bool flat) {
     return pb_ty;
 }
 
-const Pi* forward_to_backward(const Pi* forward_pi) { return pullback_type(forward_pi->ret_dom(), forward_pi->arg()); }
-
 // A,R => A'->R' * (R* -> A*)
 const Pi* autodiff_type_fun(const Def* arg, const Def* ret, bool flat) {
     auto& w = arg->world();
@@ -298,39 +296,9 @@ const Def* autodiff_type_fun(const Def* ty, bool flat) {
 } // namespace thorin::autodiff
 
 namespace thorin {
-
-const Def* continuation_codom(const Def* E) {
-    auto pi = E->as<Pi>();
-    assert(pi != NULL);
-    return pi->dom(1)->as<Pi>()->dom();
-}
-
 bool is_continuation_type(const Def* E) {
     if (auto pi = E->isa<Pi>()) { return pi->codom()->isa<Bot>(); }
     return false;
-}
-
-bool is_continuation(const Def* e) { return is_continuation_type(e->type()); }
-
-bool is_returning_continuation(const Def* e) {
-    auto E = e->type();
-    if (auto pi = E->isa<Pi>()) {
-        // R world.DLOG("codom is {}", pi->codom());
-        // R world.DLOG("codom kind is {}", pi->codom()->node_name());
-        //  duck-typing applies here
-        //  use short-circuit evaluation to reuse previous results
-        return is_continuation_type(pi) &&       // continuation
-               pi->num_doms() == 2 &&            // args, return
-               is_continuation_type(pi->dom(1)); // return type
-    }
-    return false;
-}
-
-const Def* continuation_dom(const Def* E) {
-    auto pi = E->as<Pi>();
-    assert(pi != NULL);
-    if (pi->num_doms() == 0) { return pi->dom(); }
-    return pi->dom(0);
 }
 
 } // namespace thorin

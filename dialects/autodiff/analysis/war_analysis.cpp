@@ -5,9 +5,6 @@
 
 #include "dialects/autodiff/analysis/analysis.h"
 #include "dialects/autodiff/analysis/analysis_factory.h"
-#include "dialects/autodiff/autodiff.h"
-#include "dialects/autodiff/builder.h"
-#include "dialects/math/math.h"
 #include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
 
@@ -20,22 +17,6 @@ WarAnalysis::WarAnalysis(AnalysisFactory& factory)
 }
 
 void WarAnalysis::run() {
-    /*
-    auto& dfa = factory().dfa();
-
-    for( auto node : cfa.post_order() ){
-        if(auto lam = node->def()->isa_nom<Lam>()){
-            for( auto dfa_node : dfa.post_order(lam) ){
-                auto op = dfa_node->def();
-                if( match<mem::load>(op) ){
-                    op->dump();
-                }else if( match<mem::store>(op) ){
-                    op->dump();
-                }
-            }
-        }
-    }*/
-
     stores    = &src_stores_;
     auto& cfa = factory().cfa();
     for (auto cfa_node : cfa.post_order()) {

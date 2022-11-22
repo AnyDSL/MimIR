@@ -21,7 +21,6 @@ class CacheAnalysis : public Analysis {
 public:
     AliasAnalysis& alias;
     DefSet requirements;
-    DefSet requirements_filtered;
     DefSet targets_;
     DefSet loads_;
     LamMap<DefSet> lam2loads_;
@@ -36,8 +35,6 @@ public:
     DefSet& requires_loading(Lam* lam);
     void require(const Def* def);
     void visit(const Def* def);
-    void filter(const Def* def);
-    void filter();
     void run();
 };
 

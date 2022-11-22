@@ -82,15 +82,6 @@ const Def* AutoDiffEval::augment_lam(Lam* lam) {
 
     augmented[lam->var()] = new_var;
     augmented[lam]        = aug_lam;
-    // add_inverted(lam->var(), new_var);
-
-    /*
-        for (size_t i = 0; i < lam->num_vars(); i++) {
-            auto proj = lam->var(i);
-            if (match<math::F>(proj->type())) {
-                preserve(proj, aug_lam->var(i));
-            }
-        }*/
 
     push_scope(lam);
     auto aug_body = augment(lam->body());
@@ -137,7 +128,6 @@ const Def* AutoDiffEval::augment_app(const App* app) {
 
     if (auto extract = is_branch(aug_callee)) { add_inverted(callee->as<Extract>()->index(), extract->index()); }
 
-    callee->dump(); //_418632
     if (auto callee_lam = callee->isa_nom<Lam>()) {
         size_t needs_context = count_caller(callee_lam) > 1;
         if (needs_context) {
@@ -263,9 +253,6 @@ const Def* AutoDiffEval::augment_slot(const App* slot) {
     auto ptr = slot->proj(1);
 
     if (isa_flow_def(ptr)) {
-        // auto gradient_ptr = op_slot(type, w.dbg("gradient_" + slot->name()));
-        // op_store(gradient_ptr, zero(type));
-        // gradient_pointers[ptr] = gradient_ptr;
         auto gradient_ptr      = create_init_slot_frame("gradient_" + slot->name(), type, true);
         gradient_pointers[ptr] = gradient_ptr;
     }
@@ -286,9 +273,6 @@ const Def* AutoDiffEval::augment_alloc(const App* alloc) {
     auto ptr           = alloc->proj(1);
 
     if (isa_flow_def(ptr)) {
-        // auto gradient_ptr      = create_init_slot_frame("gradient_" + alloc->name(), aug_type, true);
-        // gradient_pointers[ptr] = gradient_ptr;
-
         auto gradient_ptr = op_alloc(aug_type, w.dbg("gradient_" + alloc->name()));
         op_store(gradient_ptr, zero(aug_type));
         gradient_pointers[ptr] = gradient_ptr;
@@ -309,13 +293,9 @@ const Def* AutoDiffEval::augment_bitcast(const App* bitcast) {
     return dst;
 }
 
-const Def* for_size(/*const Def*& mem,*/ const Def* start, const Def* end, const Def* inc) {
+const Def* for_size(const Def* start, const Def* end, const Def* inc) { // TODO: support inc larger than 1
     auto& w   = start->world();
     auto size = core::op(core::wrap::sub, core::Mode::none, end, start);
-    // auto inc_minus_one = core::op(core::wrap::sub, core::Mode::none, inc, one(w));
-    // auto size          = core::op(core::wrap::add, core::Mode::none, span, inc_minus_one);
-    //  auto [mem2, size]  = core::op(core::div::udiv, mem, span_ext, inc)->projs<2>();
-    //  mem                = mem2;
     return size;
 }
 
@@ -1089,13 +1069,10 @@ const Def* AutoDiffEval::augment_for(const App* for_app) {
     return affine::op_for(w, zero(w), size, one(w), aug_acc->projs(), aug_body, aug_exit);
 }
 
-/// rewrite the given definition
-///
 const Def* AutoDiffEval::augment_(const Def* def) {
     auto& w = world();
 
     w.DLOG("Augment def {} : {}", def, def->type());
-
     if (auto for_app = match<affine::For>(def)) { return augment_for(for_app); }
 
     if (auto lea = match<mem::lea>(def)) { return augment_lea(lea->as<App>()); }
@@ -1241,30 +1218,20 @@ const Def* AutoDiffEval::invert_lit(const Lit* lit) {}
 const Def* AutoDiffEval::invert_tuple(const Tuple* tuple) { return tuple; }
 const Def* AutoDiffEval::invert_pack(const Pack* pack) { return pack; }
 const Def* AutoDiffEval::invert_lea(const App* lea) {}
-
+const Def* AutoDiffEval::invert_store(const App* store) {}
+const Def* AutoDiffEval::invert_malloc(const App* malloc) {}
+const Def* AutoDiffEval::invert_alloc(const App* alloc) {}
+const Def* AutoDiffEval::invert_bitcast(const App* bitcast) {}
 const Def* AutoDiffEval::invert_load(const App* load) { assert(false); }
-
-void debug(const Def* def, const std::string& str) {
-    std::stringstream ss;
-    ss << def;
-    if (ss.str() == str.c_str()) { def->dump(); }
-}
 
 const Def* AutoDiffEval::op_load_mem(const Def* ptr, const Def* dbg) {
     check_mem();
-    auto load = mem::op_load(current_mem, ptr, dbg);
-    debug(load, "_421916");
+    auto load   = mem::op_load(current_mem, ptr, dbg);
     current_mem = load->proj(0);
     return load;
 }
 
 const Def* AutoDiffEval::op_load(const Def* ptr, const Def* dbg) { return op_load_mem(ptr, dbg)->proj(1); }
-
-const Def* AutoDiffEval::op_memset(const Def* ptr, const Def* dbg) {
-    check_mem();
-    current_mem = mem::op_memset(current_mem, ptr, dbg);
-    return current_mem;
-}
 
 const Def* AutoDiffEval::op_store(const Def* ptr, const Def* value, const Def* dbg) {
     check_mem();
@@ -1297,13 +1264,5 @@ const Def* AutoDiffEval::op_alloc_mem(const Def* type, const Def* dbg) {
 }
 
 const Def* AutoDiffEval::op_alloc(const Def* type, const Def* dbg) { return op_alloc_mem(type, dbg)->proj(1); }
-
-const Def* AutoDiffEval::invert_store(const App* store) {}
-
-const Def* AutoDiffEval::invert_malloc(const App* malloc) {}
-
-const Def* AutoDiffEval::invert_alloc(const App* alloc) {}
-
-const Def* AutoDiffEval::invert_bitcast(const App* bitcast) {}
 
 } // namespace thorin::autodiff

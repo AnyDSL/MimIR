@@ -35,7 +35,6 @@ add_thorin_dialect(autodiff
         autodiff/analysis/affine_dfa.cpp
         autodiff/analysis/analysis.cpp
         autodiff/analysis/utils.cpp
-        autodiff/analysis/analysis_factory.cpp
         autodiff/analysis/cache_optimizer.cpp
         autodiff/normalizers.cpp
         affine/passes/lower_for.cpp

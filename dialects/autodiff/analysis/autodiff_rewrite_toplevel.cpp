@@ -1,15 +1,6 @@
 #include "thorin/analyses/deptree.h"
-#include "thorin/analyses/domtree.h"
 
-#include "dialects/affine/affine.h"
-#include "dialects/affine/autogen.h"
-#include "dialects/autodiff/analysis/alias_analysis.h"
-#include "dialects/autodiff/analysis/cache_analysis.h"
-#include "dialects/autodiff/analysis/cache_optimizer.h"
-#include "dialects/autodiff/analysis/flow_analysis.h"
 #include "dialects/autodiff/analysis/helper.h"
-#include "dialects/autodiff/analysis/war_analysis.h"
-#include "dialects/autodiff/autodiff.h"
 #include "dialects/autodiff/builder.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
 #include "dialects/autodiff/passes/propify.h"
@@ -102,23 +93,10 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     assert(diffee);
 
     propify = std::make_unique<Propify>(diffee);
-    // propify.allow<mem::M>();
     propify->forbid<mem::Ptr>();
     propify->filter([](const Def* def) { return !is_idx(def->type()); });
-    /*propify.filter([](const Def* def) {
-        if(auto idx_width = is_idx(def->type())){
-            return i
-        }
-    });*/
     diffee  = propify->build();
     factory = std::make_unique<AnalysisFactory>(diffee);
-
-    factory->cache();
-    factory->flow();
-    factory->ptr();
-    factory->war();
-    // factory->live().end_of_live(nullptr);
-
     build_branch_table(diffee);
 
     auto diff_ty = autodiff_type_fun_pi(diffee->type());
