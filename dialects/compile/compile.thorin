@@ -6,21 +6,41 @@
 ///
 /// ## Types
 ///
-/// TODO
+/// ### %compile.Pass
+/// ### %compile.Phase
+/// 
+/// Types for compilation passes and phases.
 ///
 .ax %compile.Pass: *; 
 .ax %compile.Phase: *; 
+///
+/// ### %compile.Pipeline
+/// ### %compile.PassPhase
+/// 
+/// Types for functions that accept an arbitrary number of phases and passes respectively.
+/// 
 .Pi Pipeline: *, %compile.Phase = Pipeline;
 .Pi PassPhase: %compile.Phase, %compile.Pass = PassPhase;
 ///
 /// ## Expressions
 ///
-/// TODO
+/// ### %compile.pipe
+/// 
+/// Given n phases, returns the representation of a pipeline.
 ///
 .ax %compile.pipe: Pipeline;
 /// 
 ///
 /// ## Compilation Passes and Phases
 ///
+/// ### %compile.debug_phase
+/// 
+/// Given a log level, returns a phase that prints the externals (for log level >= 2).
+///
 .ax %compile.debug_phase: .Nat -> %compile.Phase;
+///
+/// ### %compile.pass_phase
+/// 
+/// Given n passes, returns a phase that applies them in order.
+///
 .ax %compile.pass_phase: PassPhase;

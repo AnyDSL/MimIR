@@ -50,9 +50,6 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                     auto [ax,pass_list] = collect_args(app->as<App>()->arg());
                     auto last_phase = builder.last_phase();
 
-                    // TODO: get passes from axioms (another passes array?)
-                    // TODO: maybe everything one level lower (phase -> passman), pass -> ? (something that allows composing it here)
-
                     // Concept: We create a convention that passes register in the pipeline using append_**in**_last.
                     // This pass then calls the registered passes in the order they were registered in the last phase.
 
@@ -62,12 +59,12 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                     for (auto pass : pass_list) {
                         auto [pass_def, pass_args] = collect_args(pass);
                         if (auto pass_ax = pass_def->isa<Axiom>()) {
-                        auto flag = pass_ax->flags();
-                        world.DLOG("pass: {}", pass);
-                        if (passes.contains(flag)) {
-                            auto pass_fun = passes[flag];
-                            pass_fun(world, builder, pass);
-                        }
+                            auto flag = pass_ax->flags();
+                            world.DLOG("pass: {}", pass);
+                            if (passes.contains(flag)) {
+                                auto pass_fun = passes[flag];
+                                pass_fun(world, builder, pass);
+                            }
                         }
                     }
                 } ;
@@ -75,6 +72,6 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
         }, 
         nullptr,
         // clang-format on
-        };
+    };
     // clang-format on
 }
