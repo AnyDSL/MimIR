@@ -56,47 +56,32 @@ std::pair<const Def*, std::vector<const Def*>> collect_args(const Def* def) {
     }
 }
 
-void addPhases(DefVec& phases, World& world, Passes& passes, PipelineBuilder& builder) {
-    for (auto phase : phases) {
-        // world.DLOG("phase: {}", phase);
-        auto [phase_def, phase_args] = collect_args(phase);
-        world.DLOG("phase: {}", phase_def);
-        // world.DLOG("  args: {,}", phase_args);
-        if (auto phase_ax = phase_def->isa<Axiom>()) {
-            auto flag = phase_ax->flags();
-            // world.DLOG("axiom flag: {}", flag);
-            if (passes.contains(flag)) {
-                // world.DLOG("found registered phase");
-                auto phase_fun = passes[flag];
-                phase_fun(world, builder, phase);
-            } else {
-                world.WLOG("phase '{}' not found", phase_ax->name());
-            }
-        } else {
-            world.WLOG("phase '{}' is not an axiom", phase_def);
-        }
-    }
-}
-
 /// See optimize.h for magic numbers
 void optimize(World& world, Passes& passes, PipelineBuilder& builder) {
     if (auto compilation = world.lookup("_compile")) {
+        // We found a compilation directive in the file and use it to build the compilation pipeline.
+        // The general idea is that passes and phases are exposed as axioms.
+        // Each pass/phase axiom is associated with a handler function operating on the PipelineBuilder in the passes
+        // map. This registering is analogous to the normalizers (`code -> code`) but only operated using side effects
+        // that change the pipeline.
         world.DLOG("compilation using {} : {}", compilation, compilation->type());
         compilation->make_internal();
 
         // We can not directly access compile axioms here.
         // But the compile dialect has not the necessary communication pipeline.
-        // One idea would be that the register pass phase in the compile dialect builds the pipeline.
-        // But we do not have access to the necessary information there.
+        // Therefore, we register the handlers and let the compile dialect call them.
 
         PipelineBuilder pipe_builder;
         // TODO: remove indirections of pipeline builder. Just add passes and phases directly to the pipeline.
 
-        // TODO: generalize this hardcoded special case
         auto pipeline     = compilation->as<Lam>()->body();
         auto [ax, phases] = collect_args(pipeline);
-        // TODO: handle passes not only phases
-        addPhases(phases, world, passes, pipe_builder);
+
+        // handle pipeline like all other pass axioms
+        auto pipeline_axiom = ax->as<Axiom>();
+        auto pipeline_flags = pipeline_axiom->flags();
+        assert(passes.contains(pipeline_flags));
+        passes[pipeline_flags](world, pipe_builder, pipeline);
 
         Pipeline pipe(world);
         world.DLOG("Building pipeline");

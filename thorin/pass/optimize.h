@@ -19,7 +19,6 @@ using DefVec = std::vector<const Def*>;
 // The function should inspect application to construct the pass/phase and add it to the pipeline.
 using Passes = absl::flat_hash_map<flags_t, std::function<void(World&, PipelineBuilder&, const Def*)>>;
 
-void addPhases(DefVec& phases, World& world, Passes& passes, PipelineBuilder& builder);
 void optimize(World&, Passes&, PipelineBuilder&);
 
 // template<class A, class P>

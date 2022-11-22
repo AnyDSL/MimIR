@@ -14,6 +14,7 @@
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
 
+#include "dialects/compile/autogen.h"
 #include "dialects/compile/passes/debug_print.h"
 
 using namespace thorin;
@@ -29,6 +30,24 @@ std::pair<const Def*, std::vector<const Def*>> collect_args(const Def* def) {
         return {inner_callee, args};
     } else {
         return {def, args};
+    }
+}
+
+void addPhases(DefVec& phases, World& world, Passes& passes, PipelineBuilder& builder) {
+    for (auto phase : phases) {
+        auto [phase_def, phase_args] = collect_args(phase);
+        world.DLOG("phase: {}", phase_def);
+        if (auto phase_ax = phase_def->isa<Axiom>()) {
+            auto flag = phase_ax->flags();
+            if (passes.contains(flag)) {
+                auto phase_fun = passes[flag];
+                phase_fun(world, builder, phase);
+            } else {
+                world.WLOG("phase '{}' not found", phase_ax->name());
+            }
+        } else {
+            world.WLOG("phase '{}' is not an axiom", phase_def);
+        }
     }
 }
 
@@ -98,6 +117,12 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                         for (auto phase : phase_array) { phase_list.push_back(phase); }
                         addPhases(phase_list, world, passes, builder);
                     };
+
+                passes[flags_t(Axiom::Base<thorin::compile::pipe>)] = [&](World& world, PipelineBuilder& builder,
+                                                                          const Def* app) {
+                    auto [ax, phases] = collect_args(app);
+                    addPhases(phases, world, passes, builder);
+                };
 
                 register_pass<compile::partial_eval_pass, PartialEval>(passes);
                 register_pass<compile::beta_red_pass, BetaRed>(passes);
