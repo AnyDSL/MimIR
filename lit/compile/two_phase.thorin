@@ -19,6 +19,7 @@
 .lam .extern _compile [] -> Pipeline = {
     %compile.pipe
         (%compile.passes_to_phase 1 %compile.ret_wrap_pass)
+        (%compile.passes_to_phase 1 %compile.ret_wrap_pass)
 };
 
 // CHECK-DAG: .con return
