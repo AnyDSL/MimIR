@@ -1,4 +1,4 @@
-#include "dialects/autodiff/passes/propify.h"
+#include "dialects/autodiff/passes/def_inliner.h"
 
 #include "thorin/analyses/schedule.h"
 
@@ -10,14 +10,14 @@
 
 namespace thorin::autodiff {
 
-DefVec Propify::get_extra(Lam* lam) {
+DefVec DefInliner::get_extra(Lam* lam) {
     DefVec result;
     if (lam) { result = extras_sorted[lam]; }
 
     return result;
 }
 
-DefVec Propify::get_extra_ty(Lam* lam) {
+DefVec DefInliner::get_extra_ty(Lam* lam) {
     DefVec extra = get_extra(lam);
     DefVec result;
 
@@ -26,7 +26,7 @@ DefVec Propify::get_extra_ty(Lam* lam) {
     return result;
 }
 
-void Propify::map_free_to_var(Lam* parent, Lam* old_lam, Lam* new_lam) {
+void DefInliner::map_free_to_var(Lam* parent, Lam* old_lam, Lam* new_lam) {
     auto extra = get_extra(parent);
     auto dom   = old_lam->type()->as<Pi>()->dom();
     if (dom->num_projs() == 0 && extra.size() == 1) {
@@ -154,7 +154,7 @@ const Def* reshape(const Def* src_arg, const Def* dst_type) {
     return reshape(mem, dst_type, projs);
 }
 
-Lam* Propify::build(Lam* parent, Lam* lam) {
+Lam* DefInliner::build(Lam* parent, Lam* lam) {
     if (auto new_lam = has(lam)) return new_lam->as_nom<Lam>();
 
     auto extra_ty   = get_extra_ty(parent);
@@ -212,7 +212,7 @@ void mem_first_sort(DefVec& vec) {
     });
 }
 
-bool Propify::validate(const Def* def) {
+bool DefInliner::validate(const Def* def) {
     for (auto filter : filters) {
         if (!filter(def)) return false;
     }
@@ -220,7 +220,7 @@ bool Propify::validate(const Def* def) {
     return true;
 }
 
-void Propify::add_extra(Lam* dst_lam, const Def* def) {
+void DefInliner::add_extra(Lam* dst_lam, const Def* def) {
     if (!validate(def)) { return; }
 
     auto src_lam = def2nom[def];
@@ -235,7 +235,7 @@ void Propify::add_extra(Lam* dst_lam, const Def* def) {
     }
 }
 
-void Propify::meet(const Def* src, const Def* dst) {
+void DefInliner::meet(const Def* src, const Def* dst) {
     if (!src || !dst) return;
     auto& src_extra        = extras[src];
     auto& propagated_extra = extras_fwd[dst];
@@ -248,7 +248,7 @@ void Propify::meet(const Def* src, const Def* dst) {
     if (before != after) { todo_ = true; }
 }
 
-void Propify::propagate(const CFNode* node) {
+void DefInliner::propagate(const CFNode* node) {
     auto lam  = node->nom()->as_nom<Lam>();
     auto body = lam->body()->as<App>();
 
@@ -300,7 +300,7 @@ void Propify::propagate(const CFNode* node) {
     }
 }
 
-Lam* Propify::find_lam(const Def* def) {
+Lam* DefInliner::find_lam(const Def* def) {
     if (auto extract = def->isa<Extract>()) {
         return find_lam(extract->tuple());
     } else {
@@ -308,7 +308,7 @@ Lam* Propify::find_lam(const Def* def) {
     }
 }
 
-Lam* Propify::build() {
+Lam* DefInliner::build() {
     for (auto bound : scope.bound()) {
         bound->dump(1);
         if (!bound->isa<Lit>() && !bound->type()->isa<Pi>()) {
@@ -353,7 +353,7 @@ const Def* PropifyPass::rewrite(const Def* def) {
     if (auto ad_app = match<ad>(def); ad_app && !visited_.contains(ad_app)) {
         auto diffee = ad_app->arg()->as_nom<Lam>();
 
-        Propify propify(diffee);
+        DefInliner propify(diffee);
         def = op_autodiff(propify.build());
         visited_.insert(def);
     }

@@ -10,7 +10,7 @@
 #include "dialects/autodiff/analysis/analysis_factory.h"
 #include "dialects/autodiff/analysis/cache_analysis.h"
 #include "dialects/autodiff/analysis/flow_analysis.h"
-#include "dialects/autodiff/passes/propify.h"
+#include "dialects/autodiff/passes/def_inliner.h"
 #include "dialects/autodiff/utils/helper.h"
 #include "dialects/mem/mem.h"
 
@@ -170,13 +170,6 @@ public:
     }
 
     void check_mem() { assert(current_mem != nullptr); }
-    /*
-        void init_mem(const Def* mem) {
-            assert(current_mem == nullptr);
-            current_mem = mem;
-        }
-
-        void init_mem(Lam* lam) { init_mem(mem::mem_var(lam)); }*/
 
     void push_mem(Lam* lam) { push_mem(mem::mem_var(lam)); }
 
@@ -193,13 +186,6 @@ public:
         current_mem = top_mem;
         return last_mem;
     }
-    /*
-        const Def* end_mem() {
-            check_mem();
-            auto mem    = current_mem;
-            current_mem = nullptr;
-            return mem;
-        }*/
 
     void build_branch_table(Lam* lam) {
         Scope scope(lam);
@@ -233,8 +219,6 @@ public:
 
     const Def* branch_id(const Def* def) { return world().lit_int(8, branch_id_lit(def)); }
 
-    const Def* new2old(const Def* new_def) { return propify->new2old(new_def); }
-
     friend LoopFrame;
 
 private:
@@ -242,18 +226,12 @@ private:
     Def2Def augmented;
     Def2Def inverted;
     DefSet visited_prop;
-    DefSet visited_scan;
-    DefSet markings;
 
-    std::unique_ptr<Propify> propify;
-
-    bool init_branch_table_ = false;
     DefMap<size_t> branch_table;
     DefMap<size_t> caller_count;
     Def2Def gradient_pointers;
 
     Def2Def lam2branch;
-    Def2Def branch_loads_;
 
     Def2Def cache_map;
     DefMap<Lam*> lam2inv;

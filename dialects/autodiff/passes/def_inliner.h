@@ -127,9 +127,9 @@ private:
 
 using filter_t = std::function<bool(const Def*)>;
 
-class Propify {
+class DefInliner {
 public:
-    Propify(Lam* lam)
+    DefInliner(Lam* lam)
         : lam_(lam)
         , w_(lam->world())
         , scope(lam)

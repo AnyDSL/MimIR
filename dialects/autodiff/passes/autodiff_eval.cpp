@@ -6,11 +6,8 @@
 #include <thorin/analyses/deptree.h>
 #include <thorin/lam.h>
 
-#include "dialects/affine/affine.h"
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/autodiff/utils/helper.h"
-#include "dialects/core/core.h"
-#include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {
 
@@ -56,10 +53,6 @@ const Def* AutoDiffEval::derive(const Def* def) {
 
 const Def* AutoDiffEval::rewrite(const Def* def) {
     if (auto ad_app = match<ad>(def)) {
-        // callee = autodiff T
-        // arg = function of type T
-        //   (or operator)
-        // auto callee = ad_app->callee();
         auto arg = ad_app->arg();
         world().DLOG("found a autodiff::autodiff of {}", arg);
 

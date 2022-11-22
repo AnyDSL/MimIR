@@ -1,7 +1,7 @@
 #include "thorin/analyses/deptree.h"
 
 #include "dialects/autodiff/passes/autodiff_eval.h"
-#include "dialects/autodiff/passes/propify.h"
+#include "dialects/autodiff/passes/def_inliner.h"
 #include "dialects/autodiff/utils/builder.h"
 #include "dialects/autodiff/utils/helper.h"
 #include "dialects/math/math.h"
@@ -92,10 +92,10 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     auto diffee = def->isa_nom<Lam>();
     assert(diffee);
 
-    propify = std::make_unique<Propify>(diffee);
-    propify->forbid<mem::Ptr>();
-    propify->filter([](const Def* def) { return !is_idx(def->type()); });
-    diffee  = propify->build();
+    DefInliner inliner(diffee);
+    inliner.forbid<mem::Ptr>();
+    inliner.filter([](const Def* def) { return !is_idx(def->type()); });
+    diffee  = inliner.build();
     factory = std::make_unique<AnalysisFactory>(diffee);
     build_branch_table(diffee);
 
