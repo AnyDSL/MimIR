@@ -16,6 +16,7 @@ public:
 private:
     const Def* add_mem_to_lams(Lam*, const Def*);
     const Def* rewrite_pi(const Pi*);
+    const Def* mem_for_lam(Lam*) const;
 
     Scheduler& sched() { return sched_.back(); }
 
@@ -30,10 +31,7 @@ public:
     AddMemWrapper(PassMan& man)
         : RWPass(man, "add_mem") {}
 
-    void prepare() override {
-        world().DLOG("prepare add_mem");
-        mem::AddMem(world()).run();
-    }
+    void prepare() override { mem::AddMem(world()).run(); }
 };
 
 } // namespace thorin::mem
