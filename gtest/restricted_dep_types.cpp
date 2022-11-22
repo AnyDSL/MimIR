@@ -233,6 +233,11 @@ TEST(RestrictedDependentTypes, ll) {
     Normalizers normalizers;
     Passes passes;
 
+    auto compile_d = Dialect::load("compile", {});
+    compile_d.register_normalizers(normalizers);
+    compile_d.register_passes(passes);
+    fe::Parser::import_module(w, "compile", {}, &normalizers);
+
     auto mem_d = Dialect::load("mem", {});
     mem_d.register_normalizers(normalizers);
     mem_d.register_passes(passes);
