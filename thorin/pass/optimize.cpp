@@ -58,15 +58,22 @@ std::pair<const Def*, std::vector<const Def*>> collect_args(const Def* def) {
 
 void addPhases(DefVec& phases, World& world, Passes& passes, PipelineBuilder& builder) {
     for (auto phase : phases) {
-        world.DLOG("phase: {}", phase);
+        // world.DLOG("phase: {}", phase);
         auto [phase_def, phase_args] = collect_args(phase);
+        world.DLOG("phase: {}", phase_def);
+        // world.DLOG("  args: {,}", phase_args);
         if (auto phase_ax = phase_def->isa<Axiom>()) {
             auto flag = phase_ax->flags();
-            world.DLOG("flag: {}", flag);
+            // world.DLOG("axiom flag: {}", flag);
             if (passes.contains(flag)) {
+                // world.DLOG("found registered phase");
                 auto phase_fun = passes[flag];
                 phase_fun(world, builder, phase);
+            }else{
+                world.WLOG("phase '{}' not found", phase_ax->name());
             }
+        }else {
+            world.WLOG("phase '{}' is not an axiom", phase_def);
         }
     }
 }

@@ -20,18 +20,27 @@
 using namespace thorin;
 
 template<class A, class P>
-inline void register_pass(Passes& passes) {
-    passes[flags_t(Axiom::Base<A>)] = [&](World&, PipelineBuilder& builder, const Def* app) {
-        builder.add_pass<P>(app);
+void register_pass(Passes& passes) {
+    passes[flags_t(Axiom::Base<A>)] = [&](World& w, PipelineBuilder& builder, const Def* app) {
+        w.DLOG("registering pass: {}", app);
+        // builder.add_pass<P>(app);
+        builder.append_pass_in_end([&](PassMan& man) {
+            auto p = man.add<P>();
+            builder.remember_pass_instance(p, app);
+        });
     };
 }
 
 template<class A, class P, class Q>
-inline void register_pass_with_arg(Passes& passes) {
-    passes[flags_t(Axiom::Base<A>)] = [&](World&, PipelineBuilder& builder, const Def* app) {
+void register_pass_with_arg(Passes& passes) {
+    passes[flags_t(Axiom::Base<A>)] = [&](World& w, PipelineBuilder& builder, const Def* app) {
+        w.DLOG("registering pass: {}", app);
         auto pass_arg = (Q*)builder.get_pass_instance(app->as<App>()->arg());
-        builder.add_pass<P>(app, pass_arg);
-        // builder.append_pass_in_end([&](PassMan& man) { pass_instances[app] = man.add<P>(pass_arg); });
+        // builder.add_pass<P>(app, pass_arg);
+        builder.append_pass_in_end([&](PassMan& man) {
+            auto p = man.add<P>(pass_arg);
+            builder.remember_pass_instance(p, app);
+        });
     };
 }
 

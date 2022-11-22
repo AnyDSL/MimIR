@@ -45,6 +45,7 @@
 /// Given n passes, returns a phase that applies them in order.
 ///
 .ax %compile.pass_phase: PassPhase;
+.ax %compile.passes_to_phase: Π [n:.Nat] -> «n; %compile.Pass» -> %compile.Phase;
 ///
 /// ### %compile.combined_phase
 /// 

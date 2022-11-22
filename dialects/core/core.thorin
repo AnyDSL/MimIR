@@ -241,13 +241,13 @@
     // TODO: it needs to be possible to add a pass twice and keep the instances separate (bind in pipeline/manager?)
     .let eta_red = %core.eta_red_pass;
     .let eta_exp = %core.eta_exp_pass eta_red;
-    %compile.pass_phase
-        %core.partial_eval_pass
-        %core.beta_red_pass
-        eta_red
-        eta_exp
-        (%core.scalerize_pass eta_exp)
-        (%core.tail_rec_elim_pass eta_red)
+    %compile.passes_to_phase 6 
+        (%core.partial_eval_pass,
+        %core.beta_red_pass,
+        eta_red,
+        eta_exp,
+        (%core.scalerize_pass eta_exp),
+        (%core.tail_rec_elim_pass eta_red))
 };
         
 
