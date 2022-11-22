@@ -20,6 +20,8 @@ namespace thorin::autodiff {
 
 struct CacheState {
     std::queue<const Def*> queue;
+    size_t memory_estimate;
+    size_t loop_factor;
     DefSet cached_defs;
     DefSet computed_defs;
 

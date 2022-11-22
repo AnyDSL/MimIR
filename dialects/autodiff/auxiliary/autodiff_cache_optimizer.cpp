@@ -31,7 +31,7 @@ void CacheOptimizer::explore(std::shared_ptr<CacheState>& last, const Def* remov
                 if (needs_cache(def) && !depends_on_cache(def, next_state->cached_defs)) {
                     auto result = next_state->cached_defs.insert(def);
 
-                    if (result.second && !requires_cache(def)) { next_state->queue.push(def); }
+                    if (result.second) { next_state->queue.push(def); }
                 }
             }
         }
@@ -79,7 +79,11 @@ void CacheOptimizer::canonicalize(DefSet defs) {
 void CacheOptimizer::find(AffineDFNode* node, DefSet& visited) {
     auto def = alias.get(node->def());
 
-    if (!is_flow_op(def)) return;
+    if (match<mem::store>(def) || def->isa<Var>() || def->isa<Lit>()) return;
+    if (!is_flow_op(def)) {
+        def->dump();
+        return;
+    }
     if (!visited.insert(def).second) return;
     if (!is_load_val(def)) {
         for (auto succ : node->preds()) { find(succ, visited); }
@@ -95,19 +99,7 @@ void CacheOptimizer::search(std::shared_ptr<CacheState> current) {
     for (; queue.size() > 0;) {
         auto def = queue.front();
         queue.pop();
-        if (auto app = match<math::arith>(def)) {
-            explore(current, def, app->arg());
-        } else if (auto app = match<core::wrap>(def)) {
-            explore(current, def, app->arg());
-        } else if (auto app = match<math::conv>(def)) {
-            explore(current, def, app->arg());
-        } else if (auto app = match<core::conv>(def)) {
-            explore(current, def, app->arg());
-        } else if (auto app = match<math::exp>(def)) {
-            explore(current, def, app->arg());
-        } else if (auto app = match<math::gamma>(def)) {
-            explore(current, def, app->arg());
-        }
+        if (auto app = def->isa<App>(); app && mem::mem_def(def) == nullptr) { explore(current, def, app->arg()); }
     }
 }
 
@@ -174,14 +166,6 @@ DefSet CacheOptimizer::optimize(DefSet defs) {
     DefSet no_deps;
     for (auto def : required_caches) {
         if (depends_on_cache(def, required_caches)) { continue; }
-
-        /*if (auto app = def->isa<App>()) {
-            auto arg = app->arg();
-            if (arg->num_projs() == 1 && depends_on_cache(arg, required_caches)){
-                continue;
-            }
-        }*/
-
         no_deps.insert(def);
     }
 
@@ -191,20 +175,21 @@ DefSet CacheOptimizer::optimize(DefSet defs) {
             depends_on_loads(def, no_deps, loads);
         }
     */
-    return no_deps;
 
-    /*canonicalize(filtered2);
+    canonicalize(no_deps);
 
-    auto size = groups.size();
+    auto size   = groups.size();
     size_t test = 0;
 
     for (DefSet& group : groups) {
         auto size2 = group.size();
-        for( auto def : group ){
+        for (auto def : group) {
             def->dump(1);
             def->dump(1);
         }
     }
+
+    // return no_deps;
 
     DefSet result;
     for (DefSet& group : groups) {
@@ -212,16 +197,14 @@ DefSet CacheOptimizer::optimize(DefSet defs) {
         for (auto def : group) {
             if (needs_cache(def)) {
                 best->cached_defs.insert(def);
-
-                if (!requires_cache(def)) { best->queue.push(def); }
+                best->queue.push(def);
             }
         }
         search(best);
-
         result.insert(best->cached_defs.begin(), best->cached_defs.end());
     }
 
-    return result;*/
+    return result;
 }
 
 } // namespace thorin::autodiff
