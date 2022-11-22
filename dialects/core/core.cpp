@@ -5,37 +5,12 @@
 
 #include "thorin/dialects.h"
 
-#include "thorin/pass/fp/beta_red.h"
-#include "thorin/pass/fp/eta_exp.h"
-#include "thorin/pass/fp/eta_red.h"
-#include "thorin/pass/fp/tail_rec_elim.h"
-#include "thorin/pass/pipelinebuilder.h"
-#include "thorin/pass/rw/lam_spec.h"
-#include "thorin/pass/rw/partial_eval.h"
-#include "thorin/pass/rw/ret_wrap.h"
-#include "thorin/pass/rw/scalarize.h"
-
 #include "dialects/core/be/ll/ll.h"
 
 using namespace thorin;
 
 extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
-    return {"core", nullptr,
-            [](Passes& passes) {
-                register_pass<core::partial_eval_pass, PartialEval>(passes);
-                register_pass<core::beta_red_pass, BetaRed>(passes);
-                register_pass<core::eta_red_pass, EtaRed>(passes);
-
-                register_pass<core::scalerize_no_arg_pass, Scalerize>(passes);
-                register_pass<core::tail_rec_elim_no_arg_pass, TailRecElim>(passes);
-                register_pass<core::lam_spec_pass, LamSpec>(passes);
-                register_pass<core::ret_wrap_pass, RetWrap>(passes);
-
-                register_pass_with_arg<core::eta_exp_pass, EtaExp, EtaRed>(passes);
-                register_pass_with_arg<core::scalerize_pass, Scalerize, EtaExp>(passes);
-                register_pass_with_arg<core::tail_rec_elim_pass, TailRecElim, EtaRed>(passes);
-            },
-            [](Backends& backends) { backends["ll"] = &ll::emit; },
+    return {"core", nullptr, nullptr, [](Backends& backends) { backends["ll"] = &ll::emit; },
             [](Normalizers& normalizers) { core::register_normalizers(normalizers); }};
 }
 

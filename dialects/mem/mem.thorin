@@ -5,7 +5,6 @@
 /// ## Dependencies
 ///
 .import compile;
-.import core;
 ///
 /// ## Types
 ///
@@ -91,9 +90,9 @@
 /// ### Phases
 /// 
 .let mem_opt_phase = {
-    .let beta_red = %core.beta_red_pass;
-    .let eta_red  = %core.eta_red_pass;
-    .let eta_exp  = %core.eta_exp_pass eta_red;
+    .let beta_red = %compile.beta_red_pass;
+    .let eta_red  = %compile.eta_red_pass;
+    .let eta_exp  = %compile.eta_exp_pass eta_red;
     %compile.passes_to_phase (⊤:.Nat)
     (
         beta_red,

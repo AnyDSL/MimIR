@@ -4,6 +4,16 @@
 #include <thorin/dialects.h>
 #include <thorin/pass/pass.h>
 
+#include "thorin/pass/fp/beta_red.h"
+#include "thorin/pass/fp/eta_exp.h"
+#include "thorin/pass/fp/eta_red.h"
+#include "thorin/pass/fp/tail_rec_elim.h"
+#include "thorin/pass/pipelinebuilder.h"
+#include "thorin/pass/rw/lam_spec.h"
+#include "thorin/pass/rw/partial_eval.h"
+#include "thorin/pass/rw/ret_wrap.h"
+#include "thorin/pass/rw/scalarize.h"
+
 #include "dialects/compile/passes/debug_print.h"
 
 using namespace thorin;
@@ -88,6 +98,19 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                         for (auto phase : phase_array) { phase_list.push_back(phase); }
                         addPhases(phase_list, world, passes, builder);
                     };
+
+                register_pass<compile::partial_eval_pass, PartialEval>(passes);
+                register_pass<compile::beta_red_pass, BetaRed>(passes);
+                register_pass<compile::eta_red_pass, EtaRed>(passes);
+
+                register_pass<compile::scalerize_no_arg_pass, Scalerize>(passes);
+                register_pass<compile::tail_rec_elim_no_arg_pass, TailRecElim>(passes);
+                register_pass<compile::lam_spec_pass, LamSpec>(passes);
+                register_pass<compile::ret_wrap_pass, RetWrap>(passes);
+
+                register_pass_with_arg<compile::eta_exp_pass, EtaExp, EtaRed>(passes);
+                register_pass_with_arg<compile::scalerize_pass, Scalerize, EtaExp>(passes);
+                register_pass_with_arg<compile::tail_rec_elim_pass, TailRecElim, EtaRed>(passes);
             },
             nullptr, [](Normalizers& normalizers) { compile::register_normalizers(normalizers); }};
 }
