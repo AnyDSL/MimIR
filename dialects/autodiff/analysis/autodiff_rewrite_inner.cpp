@@ -5,10 +5,10 @@
 #include "thorin/util/assert.h"
 
 #include "dialects/affine/affine.h"
-#include "dialects/autodiff/analysis/helper.h"
 #include "dialects/autodiff/autogen.h"
-#include "dialects/autodiff/builder.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
+#include "dialects/autodiff/utils/builder.h"
+#include "dialects/autodiff/utils/helper.h"
 #include "dialects/core/core.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/autogen.h"

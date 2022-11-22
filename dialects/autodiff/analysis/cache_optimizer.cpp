@@ -132,22 +132,6 @@ bool CacheOptimizer::depends_on_cache(const Def* def, DefSet& set, bool init) {
 
     return false;
 }
-/*
-void CacheOptimizer::depends_on_loads(const Def* def, DefSet& set, DefSet& loads) {
-    def = alias.get(def);
-
-    if (set.contains(def)){
-        return;
-    }else if(is_load_val(def)){
-        loads.insert(def);
-    }else if (auto app = def->isa<App>()) {
-        depends_on_loads(app->arg(), set, loads);
-    } else if (auto tuple = def->isa<Tuple>()) {
-        for (auto op : tuple->ops()) {
-            depends_on_loads(op, set, loads);
-        }
-    }
-}*/
 
 DefSet CacheOptimizer::optimize(DefSet defs) {
     DefSet required_caches;

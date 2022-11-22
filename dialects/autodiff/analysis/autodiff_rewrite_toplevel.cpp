@@ -1,9 +1,9 @@
 #include "thorin/analyses/deptree.h"
 
-#include "dialects/autodiff/analysis/helper.h"
-#include "dialects/autodiff/builder.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
 #include "dialects/autodiff/passes/propify.h"
+#include "dialects/autodiff/utils/builder.h"
+#include "dialects/autodiff/utils/helper.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"

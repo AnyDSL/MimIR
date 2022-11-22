@@ -1,7 +1,7 @@
 #include "thorin/def.h"
 
 #include "dialects/autodiff/analysis/analysis_factory.h"
-#include "dialects/autodiff/analysis/helper.h"
+#include "dialects/autodiff/utils/helper.h"
 #include "dialects/mem/autogen.h"
 
 namespace thorin::autodiff {

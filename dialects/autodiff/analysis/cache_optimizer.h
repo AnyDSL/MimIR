@@ -64,16 +64,6 @@ public:
     Utils& utils;
     AliasAnalysis& alias;
     std::vector<DefSet> groups;
-    // DefSet targets_;
-    // DefSet loads_;
-    /*
-        DefSet& targets(){
-            return loads_;
-        }
-
-        DefSet& loads(){
-            return loads_;
-        }*/
 
     CacheOptimizer(AnalysisFactory& factory);
     void explore(std::shared_ptr<CacheState>& last, const Def* removed, const Def* parts);
@@ -85,7 +75,6 @@ public:
     bool requires_cache(const Def* def);
     bool needs_cache(const Def* def);
     bool depends_on_cache(const Def* def, DefSet& set, bool init = true);
-    // void depends_on_loads(const Def* def, DefSet& set, DefSet& loads);
     DefSet optimize(DefSet defs);
 };
 

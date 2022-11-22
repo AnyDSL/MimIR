@@ -3,17 +3,12 @@
 #include "thorin/analyses/schedule.h"
 
 #include "dialects/affine/affine.h"
-#include "dialects/autodiff/analysis/helper.h"
 #include "dialects/autodiff/autodiff.h"
+#include "dialects/autodiff/utils/helper.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {
-
-static bool is_return(const Def* callee) {
-    auto extract = callee->isa<Extract>();
-    return extract && extract->tuple()->isa<Var>();
-}
 
 DefVec Propify::get_extra(Lam* lam) {
     DefVec result;

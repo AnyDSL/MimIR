@@ -3,8 +3,8 @@
 #include "thorin/axiom.h"
 #include "thorin/world.h"
 
-#include "dialects/autodiff/analysis/helper.h"
 #include "dialects/autodiff/autodiff.h"
+#include "dialects/autodiff/utils/helper.h"
 #include "dialects/core/core.h"
 #include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"

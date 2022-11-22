@@ -6,7 +6,7 @@
 #include "dialects/autodiff/analysis/analysis.h"
 #include "dialects/autodiff/analysis/analysis_factory.h"
 #include "dialects/autodiff/autodiff.h"
-#include "dialects/autodiff/builder.h"
+#include "dialects/autodiff/utils/builder.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"

@@ -10,8 +10,8 @@
 #include "dialects/autodiff/analysis/analysis_factory.h"
 #include "dialects/autodiff/analysis/cache_analysis.h"
 #include "dialects/autodiff/analysis/flow_analysis.h"
-#include "dialects/autodiff/analysis/helper.h"
 #include "dialects/autodiff/passes/propify.h"
+#include "dialects/autodiff/utils/helper.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {

@@ -4,7 +4,7 @@
 #include "thorin/lam.h"
 #include "thorin/world.h"
 
-#include "dialects/autodiff/builder.h"
+#include "dialects/autodiff/utils/builder.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin {

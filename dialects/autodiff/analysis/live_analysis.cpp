@@ -5,7 +5,7 @@
 #include "dialects/autodiff/analysis/affine_cfa.h"
 #include "dialects/autodiff/analysis/analysis.h"
 #include "dialects/autodiff/analysis/analysis_factory.h"
-#include "dialects/autodiff/analysis/helper.h"
+#include "dialects/autodiff/utils/helper.h"
 
 namespace thorin::autodiff {
 

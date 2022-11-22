@@ -7,7 +7,7 @@
 
 #include "dialects/affine/affine.h"
 #include "dialects/autodiff/analysis/analysis.h"
-#include "dialects/autodiff/analysis/union.h"
+#include "dialects/autodiff/utils/union.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/mem.h"
 
