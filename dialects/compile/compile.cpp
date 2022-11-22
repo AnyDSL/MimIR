@@ -42,13 +42,12 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
             auto pass_phase_flag    = flags_t(Axiom::Base<thorin::compile::pass_phase>);
             passes[pass_phase_flag] = [&](World& world, PipelineBuilder& builder, const Def* app) {
                 auto [ax, pass_list] = collect_args(app->as<App>()->arg());
-                auto last_phase      = builder.last_phase();
 
                 // Concept: We create a convention that passes register in the pipeline using append_**in**_last.
                 // This pass then calls the registered passes in the order they were registered in the last phase.
 
                 // We create a new dummy phase in which the passes should be inserted.
-                builder.append_phase_end([](Pipeline& pipe) {});
+                builder.append_phase_end([](Pipeline&) {});
 
                 for (auto pass : pass_list) {
                     auto [pass_def, pass_args] = collect_args(pass);
@@ -69,6 +68,7 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                 addPhases(phase_list, world, passes, builder);
             };
         },
+        nullptr,
         nullptr,
     };
 }
