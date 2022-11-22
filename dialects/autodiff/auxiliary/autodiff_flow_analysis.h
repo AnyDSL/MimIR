@@ -6,140 +6,64 @@
 #include <thorin/lam.h>
 
 #include "dialects/affine/affine.h"
+#include "dialects/autodiff/auxiliary/analysis.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {
 
-class FlowAnalysis {
-public:
-    FlowAnalysis(Lam* lam) { run(lam); }
+class AliasAnalysis;
+class FlowAnalysis : public Analysis {
+    struct Lattice {
+        enum Type { Bot, Flow };
 
+        Lattice(const Def* def)
+            : type_(Type::Bot)
+            , def_(def) {}
+
+        Type type_;
+        const Def* def_;
+
+        Type type() { return type_; }
+
+        bool set_flow() {
+            if (type_ == Bot) {
+                type_ = Flow;
+                return true;
+            }
+
+            return false;
+        }
+
+        bool is_flow() { return type_ = Flow; }
+    };
+
+    bool todo_;
     DefSet flow_set;
+    DefMap<std::unique_ptr<Lattice>> lattices;
+    AliasAnalysis& alias_;
 
-    DefSet& flow_defs() { return flow_set; }
+public:
+    FlowAnalysis(AnalysisFactory& factory);
+    FlowAnalysis(FlowAnalysis& other) = delete;
 
-    bool isa_flow_def(const Def* def) { return flow_set.contains(def); }
+    Lattice& get_lattice(const Def* def);
 
-    bool is_const(const Def* def) {
-        if (def->isa<Lit>()) {
-            return true;
-        } else if (auto app = def->isa<App>()) {
-            return is_const(app->arg());
-        } else if (auto tuple = def->isa<Tuple>()) {
-            for (auto op : tuple->ops()) {
-                if (!is_const(op)) { return false; }
-            }
+    DefSet& flow_defs();
 
-            return true;
-        } else if (auto pack = def->isa<Pack>()) {
-            return is_const(pack->body());
-        }
+    bool isa_flow_def(const Def* def);
 
-        return false;
-    }
+    bool is_const(const Def* def);
 
-    bool add(const Def* next) {
-        assert(!is_const(next));
-        flow_set.insert(next);
-    }
+    // bool add(const Def* next);
 
-    bool add(const Def* present, const Def* next) {
-        if (flow_set.contains(present)) {
-            add(next);
-            return true;
-        } else {
-            return false;
-        }
-    }
+    bool meet(const Def* present, const Def* next);
 
-    bool add_projs(const Def* present, const Def* next) {
-        if (flow_set.contains(present)) {
-            for (auto proj : next->projs()) add(proj);
-            return true;
-        } else {
-            return false;
-        }
-    }
+    bool meet_projs(const Def* present, const Def* next);
 
-    bool visit(const Def* def) {
-        if (auto tuple = def->isa<Tuple>()) {
-            return add_projs(tuple, tuple);
-        } else if (auto pack = def->isa<Pack>()) {
-            return add(pack, pack->body());
-        } else if (auto app = def->isa<App>()) {
-            auto arg = app->arg();
+    bool visit(const Def* def);
 
-            if (match<math::arith>(app) || match<math::extrema>(app) || match<math::exp>(app) ||
-                match<math::gamma>(app)) {
-                return add(app, arg);
-            } else if (auto lea = match<mem::lea>(app)) {
-                auto arr = arg->proj(0);
-                auto idx = arg->proj(1);
-
-                return add(lea, arr) || add(arr, lea);
-            } else if (auto store = match<mem::store>(app)) {
-                auto ptr = arg->proj(1);
-                auto val = arg->proj(2);
-
-                return add(ptr, val);
-            } else if (auto load = match<mem::load>(app)) {
-                auto val = load->proj(1);
-                auto ptr = arg->proj(1);
-                return add(val, ptr);
-            } else if (auto bitcast = match<core::bitcast>(app)) {
-                return add(bitcast, bitcast->arg());
-            }
-
-            const Def* exit = nullptr;
-            if (auto for_affine = match<affine::For>(app)) {
-                exit = for_affine->arg(5);
-            } else {
-                exit = app->callee();
-                return add_projs(exit, arg);
-            }
-        }
-
-        return true;
-    }
-
-    void run(Lam* diffee) {
-        Scope scope(diffee);
-        auto ret_var = diffee->ret_var();
-
-        flow_set.insert(ret_var);
-        flow_set.insert(diffee->var());
-        if (diffee->num_vars() > 1) {
-            for (auto var : diffee->vars()) { flow_set.insert(var); }
-        }
-
-        DefSet state[2];
-        state[0]          = scope.bound();
-        bool dirty        = true;
-        int current_state = 0;
-        while (dirty) {
-            dirty                = false;
-            int next_state       = 1 - current_state;
-            DefSet& current_defs = state[current_state];
-            for (auto def : current_defs) {
-                bool finished = visit(def);
-
-                if (finished) {
-                    dirty = true;
-                } else {
-                    state[next_state].insert(def);
-                }
-            }
-
-            state[current_state].clear();
-            current_state = next_state;
-        }
-
-        /*for (auto [prev, next] : reasoning_list) {
-            prev->dump(1);
-            next->dump(1);
-        }*/
-    }
+    void run(Lam* diffee);
 };
 
 } // namespace thorin::autodiff

@@ -3,6 +3,7 @@
 #include "thorin/def.h"
 #include "thorin/tuple.h"
 
+#include "dialects/affine/affine.h"
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/autodiff/builder.h"
 #include "dialects/math/math.h"
@@ -10,6 +11,117 @@
 #include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {
+
+const Def* arg(const App* app) {
+    if (match<affine::For>(app)) {
+        return app->arg(3);
+    } else {
+        return app->arg();
+    }
+}
+
+const Var* is_var(const Def* def) {
+    if (auto extract = def->isa<Extract>()) { return is_var(extract->tuple()); }
+
+    return def->isa<Var>();
+}
+
+const Def* unextract(const Def* mem) {
+    if (auto extract = mem->isa<Extract>()) {
+        return unextract(extract->tuple());
+    } else {
+        return mem;
+    }
+}
+
+const App* is_load_val(const Def* def) {
+    if (auto extr = def->isa<Extract>()) {
+        auto tuple = extr->tuple();
+        if (auto load = match<mem::load>(tuple)) { return load; }
+    }
+
+    return nullptr;
+}
+
+void for_each_lam(const Def* def, std::function<void(Lam*)> f) {
+    if (auto app = def->isa<App>()) {
+        if (match<affine::For>(app)) {
+            for_each_lam(app->arg(4), f);
+            for_each_lam(app->arg(5), f);
+        } else {
+            for_each_lam(app->callee(), f);
+        }
+    } else if (auto callee_lam = def->isa_nom<Lam>()) {
+        f(callee_lam);
+    } else if (auto branches = is_branch(def)) {
+        for (auto branch : branches->tuple()->ops()) { for_each_lam(branch, f); }
+    }
+}
+
+const Def* is_idx(const Def* ty) {
+    if (auto app = ty->isa<App>()) {
+        if (auto idx = app->callee()->isa<Idx>()) { return app->arg(); }
+    }
+    return nullptr;
+}
+
+const Def* zero(const Def* ty) {
+    auto& w = ty->world();
+    if (auto s = math::isa_f(ty)) { return math::lit_f(w, *s, 0.0); }
+    if (is_idx(ty)) { return w.lit(ty, 0); }
+    if (auto arr = ty->isa<Arr>()) { return w.pack(arr->shape(), zero(arr->body())); }
+    if (auto ptr = match<mem::Ptr>(ty)) { return core::op_bitcast(ty, zero(w)); }
+    if (match<mem::M>(ty)) return w.bot(ty);
+    assert(false);
+}
+
+const Def* one(const Def* ty) {
+    auto& w = ty->world();
+    if (auto s = math::isa_f(ty)) { return math::lit_f(w, *s, 1.0); }
+    if (is_idx(ty)) { return w.lit(ty, 1.0); }
+    if (auto arr = ty->isa<Arr>()) { return w.pack(arr->shape(), one(arr->body())); }
+    assert(false);
+}
+const Def* zero(World& w) { return w.lit_int(32, 0); }
+const Def* one(World& w) { return w.lit_int(32, 1); }
+
+const Def* default_def(const Def* ty) {
+    auto& w = ty->world();
+    if (match<mem::Ptr>(ty) || match<mem::M>(ty) || ty->isa<Pi>()) return w.bot(ty);
+    if (ty->isa<Sigma>()) {
+        DefArray arr(ty->projs(), [](const Def* proj) { return default_def(proj); });
+        return w.tuple(arr);
+    } else if (auto pack = ty->isa<Arr>()) {
+        return w.pack(pack->shape(), default_def(pack->body()));
+    }
+    return zero(ty);
+}
+
+const Def* one_hot_other_default(const Def* pattern, const Def* def, size_t position) {
+    auto& w = def->world();
+    DefArray vec(pattern->num_projs(), [&](size_t index) {
+        auto proj = pattern->proj(index);
+        if (position == index) {
+            return def;
+        } else {
+            return default_def(proj->type());
+        }
+    });
+
+    return w.tuple(vec);
+}
+
+const Extract* is_branch(const Def* callee) {
+    if (auto extract = callee->isa<Extract>()) {
+        if (auto tuple = extract->tuple()->isa<Tuple>()) {
+            auto ops = tuple->ops();
+            if (std::all_of(ops.begin(), ops.end(), [](const Def* def) { return def->type()->isa<Pi>(); })) {
+                return extract;
+            }
+        }
+    }
+    return nullptr;
+}
 
 void flatten_deep(const Def* def, DefVec& ops) {
     if (def->num_projs() > 1) {

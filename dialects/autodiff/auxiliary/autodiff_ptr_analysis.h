@@ -6,6 +6,7 @@
 #include <thorin/lam.h>
 
 #include "dialects/affine/affine.h"
+#include "dialects/autodiff/auxiliary/analysis.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/mem.h"
 
@@ -36,42 +37,21 @@ UnionNode<T>* find(UnionNode<T>* node) {
     return node->parent;
 }
 
-class PtrAnalysis {
+class AnalysisFactory;
+class PtrAnalysis : public Analysis {
 public:
     std::unordered_map<const Def*, std::unique_ptr<UnionNode<const Def*>>> ptr_union;
 
-    PtrAnalysis(Lam* lam) { run(lam); }
+    PtrAnalysis(AnalysisFactory& factory);
 
     const Def* representative(const Def* def) {
         auto node = ptr_node(def);
         return find(node)->value;
     }
 
-    UnionNode<const Def*>* ptr_node(const Def* def) {
-        auto i = ptr_union.find(def);
-        if (i == ptr_union.end()) {
-            auto p = ptr_union.emplace(def, std::make_unique<UnionNode<const Def*>>(def));
-            assert_unused(p.second);
-            i = p.first;
-        }
-        return &*i->second;
-    }
+    UnionNode<const Def*>* ptr_node(const Def* def);
 
-    void run(Lam* lam) {
-        Scope scope(lam);
-        for (auto def : scope.bound()) {
-            if (auto lea = match<mem::lea>(def)) {
-                auto arg = lea->arg();
-                auto arr = arg->proj(0);
-                auto idx = arg->proj(1);
-
-                unify(ptr_node(arr), ptr_node(lea));
-            } else if (auto bitcast = match<core::bitcast>(def)) {
-                auto ptr = bitcast->arg();
-                unify(ptr_node(bitcast), ptr_node(ptr));
-            }
-        }
-    }
+    void run();
 };
 
 } // namespace thorin::autodiff

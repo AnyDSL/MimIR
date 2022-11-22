@@ -4,27 +4,32 @@
 
 namespace thorin::mem {
 
-const Def* MemOptimize::optimize_load(const Def* mem, const Def* ptr) {
+static const Def* unextract(const Def* mem) {
     if (auto extract = mem->isa<Extract>()) {
-        auto tuple = extract->tuple();
+        return unextract(extract->tuple());
+    } else {
+        return mem;
+    }
+}
 
-        if (auto load = match<mem::load>(tuple)) {
-            auto [mem, other_ptr] = load->args<2>();
+const Def* MemOptimize::optimize_load(const Def* mem, const Def* ptr) {
+    auto op = unextract(mem);
 
-            if (other_ptr == ptr) {
-                return load->proj(1);
-            } else {
-                return optimize_load(mem, ptr);
-            }
-        } else if (auto store = match<mem::store>(tuple)) {
-            auto [mem, other_ptr, val] = store->args<3>();
+    if (auto load = match<mem::load>(op)) {
+        auto [mem, other_ptr] = load->args<2>();
 
-            if (other_ptr == ptr) { return val; }
-        } else if (auto app = tuple->isa<App>()) {
-            auto prev_mem = mem::mem_def(app->arg());
-            force<mem::M>(prev_mem->type());
-            return optimize_load(prev_mem, ptr);
+        if (other_ptr == ptr) {
+            return load->proj(1);
+        } else {
+            return optimize_load(mem, ptr);
         }
+    } else if (auto store = match<mem::store>(op)) {
+        auto [mem, other_ptr, val] = store->args<3>();
+        if (other_ptr == ptr) { return val; }
+    } else if (auto app = op->isa<App>()) {
+        auto prev_mem = mem::mem_def(app->arg());
+        force<mem::M>(prev_mem->type());
+        return optimize_load(prev_mem, ptr);
     }
 
     return nullptr;

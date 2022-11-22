@@ -8,7 +8,7 @@
 #include "dialects/affine/passes/lower_for.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
 #include "dialects/autodiff/passes/autodiff_reduce.h"
-#include "dialects/autodiff/passes/autodiff_reduce_free.h"
+#include "dialects/autodiff/passes/propify.h"
 #include "dialects/mem/passes/rw/reshape.h"
 
 using namespace thorin;
@@ -26,9 +26,10 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
             [](thorin::PipelineBuilder& builder) {
                 builder.extend_opt_phase(107,
                                          [](thorin::PassMan& man) { man.add<thorin::autodiff::AutodiffReduce>(); });
-                builder.extend_opt_phase(108,
-                                         [](thorin::PassMan& man) { man.add<thorin::autodiff::AutodiffReduceFree>(); });
+                // builder.extend_opt_phase(108, [](thorin::PassMan& man) {
+                // man.add<thorin::autodiff::AutodiffReduceFree>(); });
                 builder.extend_opt_phase(109, [](thorin::PassMan& man) { man.add<thorin::autodiff::AutoDiffEval>(); });
+
                 builder.add_opt(133);
             },
             nullptr, [](Normalizers& normalizers) { autodiff::register_normalizers(normalizers); }};

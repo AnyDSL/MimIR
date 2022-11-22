@@ -164,6 +164,20 @@ inline const Def* replace_mem(const Def* mem, const Def* arg) {
     return arg;
 }
 
+static bool has_mem_ty(const Def* def) {
+    if (auto sigma = def->isa<Sigma>()) {
+        for (auto op : sigma->ops()) {
+            if (has_mem_ty(op)) { return true; }
+        }
+    } else if (auto pi = def->isa<Pi>()) {
+        return has_mem_ty(pi->dom());
+    } else if (match<mem::M>(def)) {
+        return true;
+    }
+
+    return false;
+}
+
 static const Def* strip_mem_ty(const Def* def) {
     auto& world = def->world();
 

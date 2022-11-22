@@ -216,7 +216,7 @@ const Def* normalize_arith(const Def* type, const Def* c, const Def* arg, const 
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto m      = isa_lit(callee->decurry()->arg());
+    auto m      = isa_lit(callee->arg());
     auto w      = isa_f(a->type());
 
     if (auto result = fold<arith, id>(world, type, a, b, dbg)) return result;

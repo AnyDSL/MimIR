@@ -7,10 +7,11 @@
 #include <thorin/pass/pass.h>
 
 #include "dialects/affine/affine.h"
-#include "dialects/autodiff/auxiliary/analyses_collection.h"
+#include "dialects/autodiff/auxiliary/analysis_factory.h"
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/autodiff/auxiliary/autodiff_cache_analysis.h"
 #include "dialects/autodiff/auxiliary/autodiff_flow_analysis.h"
+#include "dialects/autodiff/passes/propify.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {
@@ -41,8 +42,12 @@ struct LoopFrame {
     DefSet allocated_memory;
     DefSet free_def;
     Def2Def gradient;
+    DefMap<DefSet> cache2target;
     const Def* for_def = nullptr;
 
+    void add_cache(const Def* cache, const Def* target) { cache2target[cache].insert(target); }
+
+    DefMap<DefSet>& caches() { return cache2target; }
     const Def*& index() { return data().index; }
     const Def*& cache_index() { return data().cache_index; }
 
@@ -97,7 +102,7 @@ public:
 
     const Def* invert_var(const Var*);
     Lam* invert_lam(Lam*);
-    Lam* invert_lam(Node* call, const Def* ret_var);
+    Lam* invert_lam(AffineCFNode* node, const Def* ret_var);
     const Def* invert_extract(const Extract*);
     const Def* invert_app(const App*);
     const Def* invert_lit(const Lit*);
@@ -112,7 +117,6 @@ public:
     const Def* invert_for(const App*);
 
     const Def* rewrite_rebuild(Rewriter& rewriter, const Def* def);
-    std::tuple<Lam*, Lam*> invert_for_body(const App* for_app);
 
     void attach_gradient(const Def* dst, const Def* grad);
 
@@ -143,9 +147,8 @@ public:
     void check_grad_arr(const Def* def);
 
     Lam* create_block(const std::string& name);
-    Lam* create_ret(const Lam* lam);
     Lam* create_lam(const Def* cn, const std::string& name);
-    Lam* create_end(const std::string& name);
+    Lam* push_lam(const Def* cn, const std::string& name);
 
     Lam* free_memory();
 
@@ -154,11 +157,11 @@ public:
     void assign_gradients(Lam* diffee, Lam* diff);
     const Def* input_mapping(Lam* forward);
 
-    void preserve(const Def* value);
+    void preserve(const Def* target, const Def* value);
 
     const Def* get_gradient(const Def* def);
-    const Def* get_gradient(const Def* def, const Def* default_zero_ty);
-    void prop(Scope& scope, const Def* def);
+    const Def* get_gradient_or_default(const Def* def);
+    void prop(const Def* def);
 
     const Def* upper_bound_size(const Def* size, bool lower = false);
 
@@ -185,7 +188,8 @@ public:
 
     const Def* pop_mem() {
         auto last_mem = current_mem;
-        auto top_mem  = mem_stack.top();
+        assert(current_mem);
+        auto top_mem = mem_stack.top();
         mem_stack.pop();
         current_mem = top_mem;
         return last_mem;
@@ -198,21 +202,39 @@ public:
             return mem;
         }*/
 
+    void build_branch_table(Lam* lam) {
+        Scope scope(lam);
+        auto& cfg = scope.f_cfg();
+        for (auto node : cfg.reverse_post_order()) {
+            size_t index = 0;
+            for (auto pred : cfg.preds(node)) { branch_table[pred->nom()] = index++; }
+            caller_count[node->nom()] = index;
+        }
+    }
+
     void push_scope(Lam* lam) { scope_stack.push(lam); }
 
     void pop_scope() { scope_stack.pop(); }
 
     Lam* current_scope() { return scope_stack.top(); }
 
-    bool requires_caching(const Def* def) { return analyses->cache().requires_caching(def); }
+    const Def* alias(const Def* def) { return factory->alias().get(def); }
 
-    bool isa_flow_def(const Def* def) { return analyses->flow().isa_flow_def(def); }
+    bool requires_caching(const Def* def) { return factory->cache().requires_caching(def); }
+    DefSet& requires_loading(Lam* lam) { return factory->cache().requires_loading(lam); }
 
-    size_t count_caller(const Def* def) { return analyses->dep().count_caller(def); }
+    bool isa_flow_def(const Def* def) { return factory->flow().isa_flow_def(def); }
 
-    size_t branch_id_lit(const Def* def) { return analyses->dep().branch_index(def); }
+    size_t count_caller(const Def* def) { return caller_count[def]; }
+
+    size_t branch_id_lit(const Def* def) {
+        assert(branch_table.contains(def));
+        return branch_table[def];
+    }
 
     const Def* branch_id(const Def* def) { return world().lit_int(8, branch_id_lit(def)); }
+
+    const Def* new2old(const Def* new_def) { return propify->new2old(new_def); }
 
     friend LoopFrame;
 
@@ -224,9 +246,15 @@ private:
     DefSet visited_scan;
     DefSet markings;
 
+    std::unique_ptr<Propify> propify;
+
+    bool init_branch_table_ = false;
+    DefMap<size_t> branch_table;
+    DefMap<size_t> caller_count;
     Def2Def gradient_pointers;
 
     Def2Def lam2branch;
+    Def2Def branch_loads_;
 
     Def2Def cache_map;
     DefMap<Lam*> lam2inv;
@@ -244,7 +272,7 @@ private:
     std::stack<const Def*> mem_stack;
     std::stack<Lam*> scope_stack;
 
-    std::unique_ptr<AnalysesCollection> analyses;
+    std::unique_ptr<AnalysisFactory> factory;
 };
 
 } // namespace thorin::autodiff

@@ -108,7 +108,6 @@ const Def* Reshape::convert_ty(const Def* ty) {
 void lam_vars(const Def* def, std::function<void(const Def*)> collector) {
     if (def->num_projs() > 1) {
         for (auto proj : def->projs()) { lam_vars(proj, collector); }
-
         return;
     }
 
@@ -168,7 +167,6 @@ const Def* Reshape::reshape(const Def* mem, const Def* ty, DefQueue& vars) {
     vars.pop_front();
 
     return wrap(next, ty);
-    ;
 }
 
 const Def* fill_extract_mem(const Def* def, DefQueue& vars) {

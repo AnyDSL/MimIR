@@ -39,8 +39,8 @@ const Def* AutodiffReduce::wrap(const Def* def) {
 }
 
 const Def* AutodiffReduce::reduce(const Def* def, const Def* ret) {
-    assert(def != ret);
-    if (def == ret) { return def; }
+    // assert(def != ret);
+    if (def == ret) { return wrap(def); }
 
     auto lam = def->as_nom<Lam>();
 
@@ -51,7 +51,7 @@ const Def* AutodiffReduce::reduce(const Def* def, const Def* ret) {
             auto arg = app->arg();
             if (match<affine::For>(app)) {
                 arg = arg->refine(4, reduce(app->arg(4)->as_nom<Lam>()));
-                arg = arg->refine(5, reduce(app->arg(5), ret));
+                arg = arg->refine(5, build_wrapper(reduce(app->arg(5), ret)));
                 lam->set_body(w.app(app->callee(), arg));
                 break;
             } else {
@@ -64,13 +64,8 @@ const Def* AutodiffReduce::reduce(const Def* def, const Def* ret) {
                 if (callee->is_set()) {
                     auto arg = app->arg();
                     if (auto extract = callee->isa<Extract>()) {
-                        DefArray new_branches(extract->tuple()->ops(), [&](const Def* def) {
-                            if (def == ret) {
-                                return wrap(def);
-                            } else {
-                                return reduce(def, ret); // TODO: needs wraping
-                            }
-                        });
+                        DefArray new_branches(extract->tuple()->ops(),
+                                              [&](const Def* def) { return build_wrapper(reduce(def, ret)); });
                         auto new_callee = w.extract(w.tuple(new_branches), extract->index());
                         lam->set_body(w.app(new_callee, arg));
                         break;
