@@ -96,6 +96,8 @@ std::vector<int> PipelineBuilder::phases() {
         keys.push_back(iter->first);
     }
     std::ranges::stable_sort(keys);
+    // erase duplicates to avoid duplicating phases
+    keys.erase(std::unique(keys.begin(), keys.end()), keys.end());
     return keys;
 }
 
@@ -110,7 +112,10 @@ std::unique_ptr<PassMan> PipelineBuilder::opt_phase(int i, World& world) {
 }
 
 void PipelineBuilder::buildPipeline(Pipeline& pipeline) {
-    for (auto i : phases()) { buildPipelinePart(i, pipeline); }
+    for (auto i : phases()) {
+        // std::cout << "Building phase " << i << std::endl;
+        buildPipelinePart(i, pipeline);
+    }
 }
 void PipelineBuilder::buildPipelinePart(int i, Pipeline& pipeline) {
     // if (pass_extensions_.contains(i)) {

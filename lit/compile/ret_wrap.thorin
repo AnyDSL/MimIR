@@ -18,8 +18,7 @@
 
 .lam .extern _compile [] -> Pipeline = {
     %compile.pipe
-        optimization_phase
+        (%compile.passes_to_phase 1 %core.ret_wrap_pass)
 };
 
 // CHECK-DAG: .con return
-// CHECK-DAG: return{{.*}}42

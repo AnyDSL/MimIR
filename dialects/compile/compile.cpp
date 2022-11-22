@@ -81,6 +81,5 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                         addPasses(world, builder, passes, pass_list);
                     };
             },
-            // nullptr, [](Normalizers& normalizers) { compile::register_normalizers(normalizers); }};
-            nullptr, nullptr};
+            nullptr, [](Normalizers& normalizers) { compile::register_normalizers(normalizers); }};
 }

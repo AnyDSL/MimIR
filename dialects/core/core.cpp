@@ -22,9 +22,11 @@ using namespace thorin;
 template<class A, class P>
 void register_pass(Passes& passes) {
     passes[flags_t(Axiom::Base<A>)] = [&](World& w, PipelineBuilder& builder, const Def* app) {
-        w.DLOG("registering pass: {}", app);
+        // w.DLOG("registering pass: {}", app);
         // builder.add_pass<P>(app);
         builder.append_pass_in_end([&](PassMan& man) {
+            // w.DLOG("add pass: {}", app);
+            // w.DLOG("add pass");
             auto p = man.add<P>();
             builder.remember_pass_instance(p, app);
         });
@@ -34,7 +36,7 @@ void register_pass(Passes& passes) {
 template<class A, class P, class Q>
 void register_pass_with_arg(Passes& passes) {
     passes[flags_t(Axiom::Base<A>)] = [&](World& w, PipelineBuilder& builder, const Def* app) {
-        w.DLOG("registering pass: {}", app);
+        // w.DLOG("registering pass: {}", app);
         auto pass_arg = (Q*)builder.get_pass_instance(app->as<App>()->arg());
         // builder.add_pass<P>(app, pass_arg);
         builder.append_pass_in_end([&](PassMan& man) {
@@ -52,6 +54,11 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                 register_pass<core::partial_eval_pass, PartialEval>(passes);
                 register_pass<core::beta_red_pass, BetaRed>(passes);
                 register_pass<core::eta_red_pass, EtaRed>(passes);
+
+                register_pass<core::scalerize_no_arg_pass, Scalerize>(passes);
+                register_pass<core::tail_rec_elim_no_arg_pass, TailRecElim>(passes);
+                register_pass<core::lam_spec_pass, LamSpec>(passes);
+                register_pass<core::ret_wrap_pass, RetWrap>(passes);
 
                 register_pass_with_arg<core::eta_exp_pass, EtaExp, EtaRed>(passes);
                 register_pass_with_arg<core::scalerize_pass, Scalerize, EtaExp>(passes);

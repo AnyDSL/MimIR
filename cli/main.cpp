@@ -98,7 +98,7 @@ int main(int argc, char** argv) {
         }
 
         // we always need core and mem, as long as we are not in bootstrap mode..
-        if (!os[H]) dialect_plugins.insert(dialect_plugins.end(), {"core", "mem"});
+        if (!os[H]) dialect_plugins.insert(dialect_plugins.end(), {"core", "mem", "compile"});
 
         std::vector<Dialect> dialects;
         thorin::Backends backends;

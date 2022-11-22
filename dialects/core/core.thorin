@@ -229,19 +229,22 @@
 .ax %core.eta_exp_pass: %compile.Pass -> %compile.Pass;
 /// Scalerize expects an instance of eta expansion as argument.
 .ax %core.scalerize_pass: %compile.Pass -> %compile.Pass;
+.ax %core.scalerize_no_arg_pass: %compile.Pass;
 /// Tail recursion elimination expects an instance of eta reduction as argument.
 .ax %core.tail_rec_elim_pass: %compile.Pass -> %compile.Pass;
+.ax %core.tail_rec_elim_no_arg_pass: %compile.Pass;
+.ax %core.lam_spec_pass: %compile.Pass;
+.ax %core.ret_wrap_pass: %compile.Pass;
 ///
 /// ### Phases
 /// 
-// TODO: the let does not unify PassPhase with Phase
 // TODO: allow functions by inlining them first
 .let optimization_phase = {
-// .lam optimization_phase [] -> %compile.Phase = {
     // TODO: it needs to be possible to add a pass twice and keep the instances separate (bind in pipeline/manager?)
     .let eta_red = %core.eta_red_pass;
     .let eta_exp = %core.eta_exp_pass eta_red;
-    %compile.passes_to_phase 6 
+    // TODO: use pass_phase
+    %compile.passes_to_phase (⊤:.Nat)
         (%core.partial_eval_pass,
         %core.beta_red_pass,
         eta_red,
@@ -250,6 +253,15 @@
         (%core.tail_rec_elim_pass eta_red))
 };
         
+.let default_pipeline = {
+    %compile.pipe
+        (%compile.passes_to_phase 1 %core.scalerize_no_arg_pass)
+        (%compile.passes_to_phase 1 %core.eta_red_pass)
+        (%compile.passes_to_phase 1 %core.tail_rec_elim_no_arg_pass)
+        optimization_phase
+        (%compile.passes_to_phase 1 %core.lam_spec_pass)
+        (%compile.passes_to_phase 1 %core.ret_wrap_pass)
+};
 
 
 

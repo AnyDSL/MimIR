@@ -69,10 +69,10 @@ void addPhases(DefVec& phases, World& world, Passes& passes, PipelineBuilder& bu
                 // world.DLOG("found registered phase");
                 auto phase_fun = passes[flag];
                 phase_fun(world, builder, phase);
-            }else{
+            } else {
                 world.WLOG("phase '{}' not found", phase_ax->name());
             }
-        }else {
+        } else {
             world.WLOG("phase '{}' is not an axiom", phase_def);
         }
     }
@@ -90,6 +90,7 @@ void optimize(World& world, Passes& passes, PipelineBuilder& builder) {
         // But we do not have access to the necessary information there.
 
         PipelineBuilder pipe_builder;
+        // TODO: remove indirections of pipeline builder. Just add passes and phases directly to the pipeline.
 
         // TODO: generalize this hardcoded special case
         auto pipeline     = compilation->as<Lam>()->body();
@@ -98,6 +99,7 @@ void optimize(World& world, Passes& passes, PipelineBuilder& builder) {
         addPhases(phases, world, passes, pipe_builder);
 
         Pipeline pipe(world);
+        world.DLOG("Building pipeline");
         pipe_builder.buildPipeline(pipe);
 
         pipe.run();
