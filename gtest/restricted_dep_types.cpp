@@ -19,6 +19,7 @@
 #include "thorin/pass/pipelinebuilder.h"
 #include "thorin/util/sys.h"
 
+#include "dialects/compile/compile.h"
 #include "dialects/core/core.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/mem.h"
@@ -31,6 +32,10 @@ TEST(RestrictedDependentTypes, join_singleton) {
     auto test_on_world = [](auto test) {
         World w;
         Normalizers normalizers;
+
+        auto compile_d = Dialect::load("compile", {});
+        compile_d.register_normalizers(normalizers);
+        fe::Parser::import_module(w, "compile", {}, &normalizers);
 
         auto mem_d = Dialect::load("mem", {});
         mem_d.register_normalizers(normalizers);
