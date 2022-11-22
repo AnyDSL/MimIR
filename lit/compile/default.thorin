@@ -20,4 +20,5 @@
     default_pipeline
 };
 
+// CHECK-DAG: .con return
 // CHECK-DAG: return{{.*}}42

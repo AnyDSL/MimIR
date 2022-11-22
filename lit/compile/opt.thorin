@@ -21,5 +21,4 @@
         optimization_phase
 };
 
-// CHECK-DAG: .con return
 // CHECK-DAG: return{{.*}}42
