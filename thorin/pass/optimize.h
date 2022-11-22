@@ -22,4 +22,9 @@ using Passes = absl::flat_hash_map<flags_t, std::function<void(World&, PipelineB
 void addPhases(DefVec& phases, World& world, Passes& passes, PipelineBuilder& builder);
 void optimize(World&, Passes&, PipelineBuilder&);
 
+// template<class A, class P>
+// void register_pass(Passes& passes);
+// template<class A, class P, class Q>
+// void register_pass_with_arg(Passes& passes);
+
 } // namespace thorin

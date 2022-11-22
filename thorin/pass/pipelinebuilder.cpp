@@ -25,14 +25,6 @@ namespace thorin {
 void PipelineBuilder::remember_pass_instance(Pass* p, const Def* def) { pass_instances_[def] = p; }
 Pass* PipelineBuilder::get_pass_instance(const Def* def) { return pass_instances_[def]; }
 
-template<class P, class... Args>
-void PipelineBuilder::add_pass(const Def* def, Args&&... args) {
-    append_pass_in_end([&](PassMan& man) {
-        auto pass = man.add<P>(std::forward<Args>(args)...);
-        remember_pass_instance(pass, def);
-    });
-}
-
 int PipelineBuilder::last_phase() {
     auto phase_ids    = phases();
     auto max_phase_id = std::max_element(phase_ids.begin(), phase_ids.end());

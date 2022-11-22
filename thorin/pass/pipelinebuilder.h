@@ -36,8 +36,16 @@ public:
     int last_phase();
 
     // Adds a pass and remembers it associated with the given def.
+    // template<class P, class... Args>
+    // void add_pass(const Def*, Args&&...);
     template<class P, class... Args>
-    void add_pass(const Def*, Args&&...);
+    void add_pass(const Def* def, Args&&... args) {
+        append_pass_in_end([&](PassMan& man) {
+            auto pass = man.add<P>(std::forward<Args>(args)...);
+            remember_pass_instance(pass, def);
+        });
+    }
+
     void remember_pass_instance(Pass* p, const Def*);
     Pass* get_pass_instance(const Def*);
     void append_phase_end(PhaseBuilder, int priority = Pass_Default_Priority);
@@ -64,5 +72,21 @@ private:
     std::map<int, PhaseList> phase_extensions_;
     PassInstanceMap pass_instances_;
 };
+
+// TODO: move somewhere better (for now here due to template restrictions)
+template<class A, class P>
+void register_pass(Passes& passes) {
+    passes[flags_t(Axiom::Base<A>)] = [&](World&, PipelineBuilder& builder, const Def* app) {
+        builder.add_pass<P>(app);
+    };
+}
+
+template<class A, class P, class Q>
+void register_pass_with_arg(Passes& passes) {
+    passes[flags_t(Axiom::Base<A>)] = [&](World&, PipelineBuilder& builder, const Def* app) {
+        auto pass_arg = (Q*)builder.get_pass_instance(app->as<App>()->arg());
+        builder.add_pass<P>(app, pass_arg);
+    };
+}
 
 } // namespace thorin
