@@ -5,23 +5,21 @@
 
 namespace thorin::mem {
 
-class AddMem : public RWPhase {
+class AddMem : public ScopePhase {
 public:
     AddMem(World& world)
-        : RWPhase(world, "add_mem") {}
+        : ScopePhase(world, "add_mem", true) {
+        dirty_ = true;
+    }
 
-    void start() override;
-    const Def* rewrite(const Def*) override;
+    void visit(const Scope&) override;
 
 private:
     const Def* add_mem_to_lams(Lam*, const Def*);
     const Def* rewrite_pi(const Pi*);
     const Def* mem_for_lam(Lam*) const;
 
-    Scheduler& sched() { return sched_.back(); }
-
-    std::vector<Scheduler> sched_;
-    Lam* curr_external_;
+    Scheduler sched_;
     Def2Def val2mem_;
     Def2Def mem_rewritten_;
 };

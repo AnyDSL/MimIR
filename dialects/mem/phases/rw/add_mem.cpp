@@ -61,19 +61,15 @@ static const Def* rewrite_apped_nom_lam_in_tuple(const Def* def,
     return app->rebuild(w, app->type(), {callee, arg}, app->dbg());
 }
 
-void AddMem::start() {
-    auto externals = world().externals();
-    for (const auto& [_, nom] : externals) {
-        Scope scope{nom};
-        sched_.push_back(Scheduler{scope});
-        curr_external_ = nom->as_nom<Lam>();
-        rewrite(nom)->as_nom()->make_external();
-        sched_.pop_back();
+void AddMem::visit(const Scope& scope) {
+    if (auto entry = scope.entry()->isa_nom<Lam>()) {
+        scope.free_noms(); // cache this.
+        sched_ = Scheduler{scope};
+        add_mem_to_lams(entry, entry);
     }
 }
 
 const Def* AddMem::mem_for_lam(Lam* lam) const {
-    // todo: what about not yet rewritten lams?
     if (auto it = mem_rewritten_.find(lam); it != mem_rewritten_.end()) lam = it->second->as_nom<Lam>();
     if (auto it = val2mem_.find(lam); it != val2mem_.end()) return it->second;
     auto mem = mem::mem_var(lam);
@@ -101,7 +97,7 @@ const Def* AddMem::rewrite_pi(const Pi* pi) {
 }
 
 const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
-    auto place = static_cast<Lam*>(sched().smart(def));
+    auto place = static_cast<Lam*>(sched_.smart(def));
 
     world().DLOG("rewriting {} : {} in {}", def, def->type(), place);
 
@@ -112,33 +108,36 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
             world().DLOG("already known mem {} in {}", def, curr_lam);
             return mem_for_lam(curr_lam);
         }
-        world().DLOG("rewritten def: {} : {} in {}", tmp, tmp->type(), curr_lam);
-        return tmp;
+        if (curr_lam != def) {
+            world().DLOG("rewritten def: {} : {} in {}", tmp, tmp->type(), curr_lam);
+            return tmp;
+        }
     }
     if (match<mem::M>(def->type())) { world().DLOG("new mem {} in {}", def, curr_lam); }
 
     auto rewrite_lam = [&](Lam* nom) -> const Def* {
-        if (auto it = mem_rewritten_.find(nom); it != mem_rewritten_.end()) // already rewritten
-            if (auto pi = it->second->type()->as<Pi>(); pi->num_doms() > 0 && match<mem::M>(pi->dom(0_s)))
+        auto pi      = nom->type()->as<Pi>();
+        auto new_nom = nom;
+
+        if (auto it = mem_rewritten_.find(nom); it != mem_rewritten_.end()) {
+            if (curr_lam == nom) // i.e. we've stubbed this, but now we rewrite it
+                new_nom = it->second->as_nom<Lam>();
+            else if (auto pi = it->second->type()->as<Pi>(); pi->num_doms() > 0 && match<mem::M>(pi->dom(0_s)))
                 return it->second;
+        }
 
         world().DLOG("rewrite nom lam {}", nom);
 
-        bool is_bound = sched().scope().bound(nom) || nom == curr_lam;
-        auto deleter  = [this, is_bound](Scope* scp) {
-            if (!is_bound) sched_.pop_back();
-            delete scp;
-        };
-        std::unique_ptr<Scope, decltype(deleter)> bound_scope{nullptr, deleter};
+        bool is_bound = sched_.scope().bound(nom) || nom == curr_lam;
+
+        if (new_nom == nom) // if not stubbed yet
+            if (auto new_pi = rewrite_pi(pi); new_pi != pi) { new_nom = nom->stub(world(), new_pi, nom->dbg()); }
+
         if (!is_bound) {
             world().DLOG("free lam {}", nom);
-            bound_scope.reset(new Scope{nom});
-            sched_.emplace_back(*bound_scope);
+            mem_rewritten_[nom] = new_nom;
+            return new_nom;
         }
-
-        auto pi      = nom->type()->as<Pi>();
-        auto new_nom = nom;
-        if (auto new_pi = rewrite_pi(pi); new_pi != pi) { new_nom = nom->stub(world(), new_pi, nom->dbg()); }
 
         auto var_offset = new_nom->num_doms() - nom->num_doms(); // have we added a mem var?
         if (nom->num_vars() != 0) mem_rewritten_[nom->var()] = new_nom->var(nom->var()->dbg());
@@ -235,7 +234,5 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
     }
     return tmp;
 }
-
-const Def* AddMem::rewrite(const Def* def) { return add_mem_to_lams(curr_external_, def); }
 
 } // namespace thorin::mem
