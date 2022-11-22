@@ -5,12 +5,52 @@
 
 #include "thorin/dialects.h"
 
+#include "thorin/pass/fp/beta_red.h"
+#include "thorin/pass/fp/eta_exp.h"
+#include "thorin/pass/fp/eta_red.h"
+#include "thorin/pass/fp/tail_rec_elim.h"
+#include "thorin/pass/pipelinebuilder.h"
+#include "thorin/pass/rw/lam_spec.h"
+#include "thorin/pass/rw/partial_eval.h"
+#include "thorin/pass/rw/ret_wrap.h"
+#include "thorin/pass/rw/scalarize.h"
+
 #include "dialects/core/be/ll/ll.h"
 
 using namespace thorin;
 
+using PassInstanceMap = absl::flat_hash_map<const Def*, Pass*>;
+
+template<class A, class P>
+inline void register_pass(Passes& passes, PassInstanceMap& pass_instances) {
+    passes[flags_t(Axiom::Base<A>)] = [&](World&, PipelineBuilder& builder, const Def* app) {
+        builder.append_pass_in_end([&](PassMan& man) { pass_instances[app] = man.add<P>(); });
+    };
+}
+
+template<class A, class P, class Q>
+inline void register_pass_with_arg(Passes& passes, PassInstanceMap& pass_instances) {
+    passes[flags_t(Axiom::Base<A>)] = [&](World&, PipelineBuilder& builder, const Def* app) {
+        auto pass_arg = (Q*)pass_instances[app->as<App>()->arg()];
+        builder.append_pass_in_end([&](PassMan& man) { pass_instances[app] = man.add<P>(pass_arg); });
+    };
+}
+
 extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
-    return {"core", nullptr, nullptr, [](Backends& backends) { backends["ll"] = &ll::emit; },
+    return {"core", nullptr,
+            [](Passes& passes) {
+                // TODO: check if this dies
+                PassInstanceMap pass_instances;
+
+                register_pass<core::partial_eval_pass, PartialEval>(passes, pass_instances);
+                register_pass<core::beta_red_pass, BetaRed>(passes, pass_instances);
+                register_pass<core::eta_red_pass, EtaRed>(passes, pass_instances);
+
+                register_pass_with_arg<core::eta_exp_pass, EtaExp, EtaRed>(passes, pass_instances);
+                register_pass_with_arg<core::scalerize_pass, Scalerize, EtaExp>(passes, pass_instances);
+                register_pass_with_arg<core::tail_rec_elim_pass, TailRecElim, EtaRed>(passes, pass_instances);
+            },
+            [](Backends& backends) { backends["ll"] = &ll::emit; },
             [](Normalizers& normalizers) { core::register_normalizers(normalizers); }};
 }
 

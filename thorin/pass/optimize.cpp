@@ -56,6 +56,21 @@ std::pair<const Def*, std::vector<const Def*>> collect_args(const Def* def) {
     }
 }
 
+void addPhases(DefVec& phases, World& world, Passes& passes, PipelineBuilder& builder) {
+    for (auto phase : phases) {
+        world.DLOG("phase: {}", phase);
+        auto [phase_def, phase_args] = collect_args(phase);
+        if (auto phase_ax = phase_def->isa<Axiom>()) {
+            auto flag = phase_ax->flags();
+            world.DLOG("flag: {}", flag);
+            if (passes.contains(flag)) {
+                auto phase_fun = passes[flag];
+                phase_fun(world, builder, phase);
+            }
+        }
+    }
+}
+
 /// See optimize.h for magic numbers
 void optimize(World& world, Passes& passes, PipelineBuilder& builder) {
     if (auto compilation = world.lookup("_compile")) {
@@ -73,18 +88,8 @@ void optimize(World& world, Passes& passes, PipelineBuilder& builder) {
         auto pipeline     = compilation->as<Lam>()->body();
         auto [ax, phases] = collect_args(pipeline);
         // TODO: handle passes not only phases
-        for (auto phase : phases) {
-            world.DLOG("phase: {}", phase);
-            auto [phase_def, phase_args] = collect_args(phase);
-            if (auto phase_ax = phase_def->isa<Axiom>()) {
-                auto flag = phase_ax->flags();
-                world.DLOG("flag: {}", flag);
-                if (passes.contains(flag)) {
-                    auto phase_fun = passes[flag];
-                    phase_fun(world, pipe_builder, phase);
-                }
-            }
-        }
+        addPhases(phases, world, passes, pipe_builder);
+
         Pipeline pipe(world);
         pipe_builder.buildPipeline(pipe);
 

@@ -21,6 +21,7 @@
 /// 
 .Pi Pipeline: *, %compile.Phase = Pipeline;
 .Pi PassPhase: %compile.Phase, %compile.Pass = PassPhase;
+.Pi CombinedPhase: %compile.Phase, %compile.Phase = CombinedPhase;
 ///
 /// ## Expressions
 ///
@@ -44,3 +45,9 @@
 /// Given n passes, returns a phase that applies them in order.
 ///
 .ax %compile.pass_phase: PassPhase;
+///
+/// ### %compile.combined_phase
+/// 
+/// Given n phases, returns a phase that applies them in order.
+///
+.ax %compile.combined_phase: CombinedPhase;
