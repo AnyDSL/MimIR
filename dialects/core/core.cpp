@@ -19,12 +19,9 @@
 
 using namespace thorin;
 
-
 extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
     return {"core", nullptr,
             [](Passes& passes) {
-                // TODO: check if this dies
-
                 register_pass<core::partial_eval_pass, PartialEval>(passes);
                 register_pass<core::beta_red_pass, BetaRed>(passes);
                 register_pass<core::eta_red_pass, EtaRed>(passes);

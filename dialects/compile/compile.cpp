@@ -80,6 +80,14 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                         for (auto pass : pass_array) { pass_list.push_back(pass); }
                         addPasses(world, builder, passes, pass_list);
                     };
+
+                passes[flags_t(Axiom::Base<thorin::compile::phases_to_phase>)] =
+                    [&](World& world, PipelineBuilder& builder, const Def* app) {
+                        auto phase_array = app->as<App>()->arg()->projs();
+                        DefVec phase_list;
+                        for (auto phase : phase_array) { phase_list.push_back(phase); }
+                        addPhases(phase_list, world, passes, builder);
+                    };
             },
             nullptr, [](Normalizers& normalizers) { compile::register_normalizers(normalizers); }};
 }

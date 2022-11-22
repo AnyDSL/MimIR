@@ -51,3 +51,4 @@
 /// Given n phases, returns a phase that applies them in order.
 ///
 .ax %compile.combined_phase: CombinedPhase;
+.ax %compile.phases_to_phase: Π [n:.Nat] -> «n; %compile.Phase» -> %compile.Phase;

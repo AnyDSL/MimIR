@@ -5,7 +5,8 @@
 /// ## Dependencies
 ///
 .import mem;
-/// For derivatives:
+.import compile;
+/// For derivatives, phases:
 .import core;
 ///
 ///
@@ -42,6 +43,34 @@
 .ax %autodiff.add: Π [T:*] -> [T,T] -> T, normalize_add;
 .ax %autodiff.sum: Π [n:.Nat,T:*] -> «n; T» -> T, normalize_sum;
 ///
+/// ## Compilation Passes and Phases
+/// 
+/// ### Passes
+/// 
+.ax %autodiff.ad_eval_pass: %compile.Pass;
+.ax %autodiff.ad_zero_pass: %compile.Pass;
+.ax %autodiff.ad_zero_cleanup_pass: %compile.Pass;
+.ax %autodiff.ad_ext_cleanup_pass: %compile.Pass;
+/// 
+/// ### Phases
+/// 
+.let ad_cleanup_phase = {
+    %compile.phases_to_phase (⊤:.Nat)
+        (
+            (%compile.passes_to_phase 1 %autodiff.ad_zero_cleanup_pass),
+            (%compile.passes_to_phase 1 %autodiff.ad_ext_cleanup_pass)
+        )
+};
+.let ad_phase = {
+    %compile.phases_to_phase (⊤:.Nat)
+        (
+            optimization_phase,
+            (%compile.passes_to_phase 1 %autodiff.ad_eval_pass),
+            (%compile.passes_to_phase 1 %autodiff.ad_zero_pass),
+            ad_cleanup_phase
+        )
+};
+/// 
 /// ## Registered translations
 /// 
 /// In this section, we define translations for axioms of other dialects.
