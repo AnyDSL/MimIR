@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <string>
 
 #include "thorin/tuple.h"
@@ -6,20 +5,16 @@
 #include "thorin/util/assert.h"
 
 #include "dialects/affine/affine.h"
-#include "dialects/autodiff/autodiff.h"
+#include "dialects/autodiff/analysis/helper.h"
 #include "dialects/autodiff/autogen.h"
-#include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/autodiff/builder.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
 #include "dialects/core/core.h"
-#include "dialects/direct/direct.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {
-
-#define f_arg_ty continuation_dom(f->type())
 
 Lam* AutoDiffEval::create_block(const std::string& name) {
     auto& w  = world();

@@ -3,8 +3,8 @@
 #include "thorin/analyses/schedule.h"
 
 #include "dialects/affine/affine.h"
+#include "dialects/autodiff/analysis/helper.h"
 #include "dialects/autodiff/autodiff.h"
-#include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/mem.h"
 

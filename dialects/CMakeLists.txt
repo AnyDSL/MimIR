@@ -21,22 +21,22 @@ add_thorin_dialect(autodiff
         autodiff/passes/propify.h
         autodiff/passes/autodiff_eval.cpp
         autodiff/passes/autodiff_eval.h
-        autodiff/auxiliary/autodiff_aux.cpp
-        autodiff/auxiliary/autodiff_aux.h
-        autodiff/auxiliary/autodiff_rewrite_inner.cpp
-        autodiff/auxiliary/autodiff_rewrite_toplevel.cpp
-        autodiff/auxiliary/autodiff_ptr_analysis.cpp
-        autodiff/auxiliary/autodiff_war_analysis.cpp
-        autodiff/auxiliary/autodiff_flow_analysis.cpp
-        autodiff/auxiliary/autodiff_cache_analysis.cpp
-        autodiff/auxiliary/autodiff_alias_analysis.cpp
-        autodiff/auxiliary/live_analysis.cpp
-        autodiff/auxiliary/affine_cfa.cpp
-        autodiff/auxiliary/affine_dfa.cpp
-        autodiff/auxiliary/analysis.cpp
-        autodiff/auxiliary/utils.cpp
-        autodiff/auxiliary/analysis_factory.cpp
-        autodiff/auxiliary/autodiff_cache_optimizer.cpp
+        autodiff/analysis/helper.cpp
+        autodiff/analysis/helper.h
+        autodiff/analysis/autodiff_rewrite_inner.cpp
+        autodiff/analysis/autodiff_rewrite_toplevel.cpp
+        autodiff/analysis/ptr_analysis.cpp
+        autodiff/analysis/war_analysis.cpp
+        autodiff/analysis/flow_analysis.cpp
+        autodiff/analysis/cache_analysis.cpp
+        autodiff/analysis/alias_analysis.cpp
+        autodiff/analysis/live_analysis.cpp
+        autodiff/analysis/affine_cfa.cpp
+        autodiff/analysis/affine_dfa.cpp
+        autodiff/analysis/analysis.cpp
+        autodiff/analysis/utils.cpp
+        autodiff/analysis/analysis_factory.cpp
+        autodiff/analysis/cache_optimizer.cpp
         autodiff/normalizers.cpp
         affine/passes/lower_for.cpp
         mem/passes/rw/reshape.cpp

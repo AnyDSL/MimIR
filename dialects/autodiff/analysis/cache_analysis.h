@@ -6,9 +6,9 @@
 #include <thorin/lam.h>
 
 #include "dialects/affine/affine.h"
-#include "dialects/autodiff/auxiliary/analysis.h"
-#include "dialects/autodiff/auxiliary/autodiff_alias_analysis.h"
-#include "dialects/autodiff/auxiliary/autodiff_aux.h"
+#include "dialects/autodiff/analysis/alias_analysis.h"
+#include "dialects/autodiff/analysis/analysis.h"
+#include "dialects/autodiff/analysis/helper.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/mem.h"
 

@@ -7,10 +7,10 @@
 #include <thorin/pass/pass.h>
 
 #include "dialects/affine/affine.h"
-#include "dialects/autodiff/auxiliary/analysis_factory.h"
-#include "dialects/autodiff/auxiliary/autodiff_aux.h"
-#include "dialects/autodiff/auxiliary/autodiff_cache_analysis.h"
-#include "dialects/autodiff/auxiliary/autodiff_flow_analysis.h"
+#include "dialects/autodiff/analysis/analysis_factory.h"
+#include "dialects/autodiff/analysis/cache_analysis.h"
+#include "dialects/autodiff/analysis/flow_analysis.h"
+#include "dialects/autodiff/analysis/helper.h"
 #include "dialects/autodiff/passes/propify.h"
 #include "dialects/mem/mem.h"
 

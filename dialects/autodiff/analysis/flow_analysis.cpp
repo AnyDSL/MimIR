@@ -1,13 +1,13 @@
-#include "dialects/autodiff/auxiliary/autodiff_flow_analysis.h"
+#include "dialects/autodiff/analysis/flow_analysis.h"
 
 #include "thorin/def.h"
 #include "thorin/tuple.h"
 
+#include "dialects/autodiff/analysis/alias_analysis.h"
+#include "dialects/autodiff/analysis/analysis.h"
+#include "dialects/autodiff/analysis/analysis_factory.h"
+#include "dialects/autodiff/analysis/cache_analysis.h"
 #include "dialects/autodiff/autodiff.h"
-#include "dialects/autodiff/auxiliary/analysis.h"
-#include "dialects/autodiff/auxiliary/analysis_factory.h"
-#include "dialects/autodiff/auxiliary/autodiff_alias_analysis.h"
-#include "dialects/autodiff/auxiliary/autodiff_cache_analysis.h"
 #include "dialects/autodiff/builder.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/autogen.h"

@@ -6,14 +6,14 @@
 #include <thorin/lam.h>
 
 #include "dialects/affine/affine.h"
-#include "dialects/autodiff/auxiliary/affine_cfa.h"
-#include "dialects/autodiff/auxiliary/affine_dfa.h"
-#include "dialects/autodiff/auxiliary/autodiff_alias_analysis.h"
-#include "dialects/autodiff/auxiliary/autodiff_cache_analysis.h"
-#include "dialects/autodiff/auxiliary/autodiff_flow_analysis.h"
-#include "dialects/autodiff/auxiliary/autodiff_ptr_analysis.h"
-#include "dialects/autodiff/auxiliary/autodiff_war_analysis.h"
-#include "dialects/autodiff/auxiliary/utils.h"
+#include "dialects/autodiff/analysis/affine_cfa.h"
+#include "dialects/autodiff/analysis/affine_dfa.h"
+#include "dialects/autodiff/analysis/alias_analysis.h"
+#include "dialects/autodiff/analysis/cache_analysis.h"
+#include "dialects/autodiff/analysis/flow_analysis.h"
+#include "dialects/autodiff/analysis/ptr_analysis.h"
+#include "dialects/autodiff/analysis/utils.h"
+#include "dialects/autodiff/analysis/war_analysis.h"
 #include "dialects/mem/mem.h"
 #include "live_analysis.h"
 
