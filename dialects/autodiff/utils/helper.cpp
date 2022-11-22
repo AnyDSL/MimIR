@@ -145,33 +145,7 @@ const Def* flatten_deep(const Def* def) {
     }
 }
 
-Lam* callee_isa_var(const Def* def) {
-    if (auto proj = def->isa<Extract>()) {
-        if (auto var = proj->tuple()->isa<Var>(); var && var->nom()->isa<Lam>()) { return var->nom()->as<Lam>(); }
-    }
-    return nullptr;
-}
-
-// R P => P'
-// R TODO: function => extend
-// R const Def* augment_type_fun(const Def* ty) { return ty; }
-//  P => P*
-//  TODO: nothing? function => R? Mem => R?
-//  TODO: rename to op_tangent_type
 const Def* tangent_type_fun(const Def* ty) { return ty; }
-
-const Def* tangent_arg_type_fun(const Def* in, const Def* out) {
-    auto& w = in->world();
-    Builder b(w);
-    b.add(in->projs());
-
-    size_t i = 1;
-    for (auto proj : out->projs()) {
-        if (match<mem::Ptr>(proj)) { b.insert(i++, proj); }
-    }
-
-    return b.sigma();
-}
 
 const Def* mask(const Def* target, size_t i, const Def* def) {
     auto& w    = target->world();
@@ -185,22 +159,6 @@ const Def* mask_last(const Def* target, const Def* def) { return mask(target, ta
 const Def* merge_flat(const Def* left, const Def* right) {
     auto& w = left->world();
     return flatten_deep(w.tuple({left, right}));
-}
-
-/// computes pb type E* -> A*
-/// in - type of the expression (return type for a function)
-/// out - type of the argument (point of orientation resp. derivative - argument type for partial pullbacks)
-const Pi* pullback_type(const Def* in, const Def* out, bool flat) {
-    auto& world   = in->world();
-    auto tang_arg = tangent_arg_type_fun(in, out);
-    auto tang_ret = tangent_type_fun(out);
-
-    auto dom = world.sigma({tang_arg, world.cn(tang_ret)});
-
-    if (flat) { dom = flatten_deep(dom); }
-
-    auto pb_ty = world.cn(dom);
-    return pb_ty;
 }
 
 // A,R => A'->R' * (R* -> A*)
@@ -231,7 +189,7 @@ const Pi* autodiff_type_fun(const Def* arg, const Def* ret, bool flat) {
 const Pi* autodiff_type_fun_pi(const Pi* pi, bool flat) {
     auto& world = pi->world();
     if (!is_continuation_type(pi)) {
-        // TODO: dependency
+        // TODO: not sure if correct
         auto arg = pi->dom();
         auto ret = pi->codom();
         if (ret->isa<Pi>()) {
@@ -256,13 +214,9 @@ const Pi* autodiff_type_fun_pi(const Pi* pi, bool flat) {
     return result;
 }
 
-// P->Q => P'->Q' * (Q* -> P*)
 const Def* autodiff_type_fun(const Def* ty, bool flat) {
     auto& world = ty->world();
-    // TODO: handle DS (operators)
     if (auto pi = ty->isa<Pi>()) { return autodiff_type_fun_pi(pi, flat); }
-    // TODO: what is this object? (only numbers are printed)
-    // possible abstract type from autodiff axiom
     world.DLOG("AutoDiff on type: {}", ty);
 
     if (auto mem = match<mem::M>(ty)) { return mem; }

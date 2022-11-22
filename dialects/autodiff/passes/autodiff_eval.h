@@ -91,7 +91,6 @@ public:
     const Def* augment_load(const App*);
     const Def* augment_store(const App*);
     const Def* augment_slot(const App*);
-    const Def* augment_malloc(const App*);
     const Def* augment_alloc(const App*);
     const Def* augment_bitcast(const App*);
     const Def* augment_for(const App*);
@@ -100,9 +99,10 @@ public:
     const Def* invert(const Def* def);
     const Def* invert_(const Def* def);
 
-    const Def* invert_var(const Var*);
     Lam* invert_lam(Lam*);
     Lam* invert_lam(AffineCFNode* node, const Def* ret_var);
+
+    const Def* invert_var(const Var*);
     const Def* invert_extract(const Extract*);
     const Def* invert_app(const App*);
     const Def* invert_lit(const Lit*);
@@ -150,8 +150,6 @@ public:
     Lam* push_lam(const Def* cn, const std::string& name);
 
     Lam* free_memory();
-
-    const Def* fetch_gradients(Lam* backward);
 
     void assign_gradients(Lam* diffee, Lam* diff);
     const Def* input_mapping(Lam* forward);

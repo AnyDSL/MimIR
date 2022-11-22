@@ -9,7 +9,6 @@ namespace thorin::autodiff {
 AffineDFA::AffineDFA(AnalysisFactory& factory)
     : Analysis(factory) {
     run();
-    // run(factory.lam());
 }
 
 void AffineDFA::run() {

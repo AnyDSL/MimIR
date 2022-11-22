@@ -141,18 +141,15 @@ public:
     DefVec get_extra_ty(Lam* lam);
     Lam* build(Lam* parent, Lam* lam);
     void map_free_to_var(Lam* parent, Lam* old_lam, Lam* new_lam);
-    void collect(DefSet& extra, const Def* def);
     void add_extra(Lam* dst_lam, const Def* def);
 
     const Def* rew(const Def* old_def) { return r_.rewrite(old_def); }
-    const Def* new2old(const Def* new_def) { return r_.new2old(new_def); }
     void map(const Def* old_def, const Def* new_def) { r_.map(old_def, new_def); }
     void map_global(const Def* old_def, const Def* new_def) { r_.map_global(old_def, new_def); }
     const Def* has(const Def* old_def) { return r_.has(old_def); }
     Lam* find_lam(const Def* def);
     void meet(const Def* src, const Def* dst);
     void propagate(const CFNode* node);
-    const F_CFG& cgf() { return scope.f_cfg(); }
 
     bool validate(const Def* def);
 
@@ -180,10 +177,8 @@ public:
     DefMap<DefSet> extras;
     DefMap<DefSet> extras_fwd;
     DefMap<DefVec> extras_sorted;
-    DefMap<Lam> def2src;
 
     InferRewriter r_;
-    const Def* new_return;
     World& w_;
     Lam* lam_;
     bool todo_;

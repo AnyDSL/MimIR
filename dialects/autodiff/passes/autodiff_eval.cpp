@@ -55,7 +55,6 @@ const Def* AutoDiffEval::rewrite(const Def* def) {
     if (auto ad_app = match<ad>(def)) {
         auto arg = ad_app->arg();
         world().DLOG("found a autodiff::autodiff of {}", arg);
-
         assert(arg->isa<Lam>());
 
         {

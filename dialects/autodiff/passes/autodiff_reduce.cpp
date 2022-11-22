@@ -39,7 +39,6 @@ const Def* AutodiffReduce::wrap(const Def* def) {
 }
 
 const Def* AutodiffReduce::reduce(const Def* def, const Def* ret) {
-    // assert(def != ret);
     if (def == ret) { return wrap(def); }
 
     auto lam = def->as_nom<Lam>();

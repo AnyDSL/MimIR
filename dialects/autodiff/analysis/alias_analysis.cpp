@@ -78,7 +78,7 @@ void AliasAnalysis::meet_projs(const Def* def, const Def* ref) {
 void AliasAnalysis::meet_app(const Def* callee, const Def* arg) {
     if (auto callee_lam = callee->isa_nom<Lam>()) {
         meet_projs(arg, callee_lam->var());
-    } else if (auto extract = is_branch(callee)) { // returning
+    } else if (auto extract = is_branch(callee)) {
         for (auto branch : extract->tuple()->ops()) { meet_app(branch, arg); }
     } else {
         callee->dump();

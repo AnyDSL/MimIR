@@ -73,25 +73,16 @@ public:
     std::vector<AffineDFNode*>& post_order(Lam* lam) { return post_order_map_[lam]; }
 
 private:
-    bool link(AffineDFNode* left, AffineDFNode* right) {
-        auto size_before = left->succs_.size();
-
+    void link(AffineDFNode* left, AffineDFNode* right) {
         left->succs_.insert(right);
         right->preds_.insert(left);
-
-        return size_before != left->succs_.size();
     }
 
     void run();
 
     void run(Lam* lam) {
         auto app = lam->body()->as<App>();
-        if (auto loop = match<affine::For>(app)) {
-            arg = loop->arg(3);
-        } else {
-            arg = app->arg();
-        }
-
+        arg = thorin::autodiff::arg(app);
         run(arg);
 
         auto var_node = node(lam->var());
