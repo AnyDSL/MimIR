@@ -29,6 +29,9 @@ const Def* AutoDiffEval::augment(const Def* def) {
         augmented[def] = augment;
 
         if (requires_caching(def)) { preserve(def, augment); }
+
+        // be sure to cache extracts
+        for (auto proj : def->projs()) { this->augment(proj); }
     }
     assert(augment);
     return augment;

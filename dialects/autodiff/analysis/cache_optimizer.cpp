@@ -180,8 +180,6 @@ DefSet CacheOptimizer::optimize(DefSet defs) {
         no_deps.insert(def);
     }
 
-    // return no_deps;
-
     canonicalize(no_deps);
 
     DefSet result;
