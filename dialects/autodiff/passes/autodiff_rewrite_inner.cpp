@@ -213,7 +213,7 @@ void AutoDiffEval::preserve(const Def* target, const Def* value) {
 
         auto loop_size_nat      = core::op_bitcast(w.type_nat(), loop_size);
         auto arr_ty             = w.arr(loop_size_nat, ty);
-        auto alloc_cache_ptr    = create_init_alloc_frame("cache_" + value->name(), arr_ty, true);
+        auto alloc_cache_ptr    = create_init_alloc_frame("cache_" + value->name(), arr_ty, false);
         auto unsized_arr_ptr_ty = mem::type_ptr(w.arr(w.top(w.type_nat()), value->type()));
         cache_ptr               = core::op_bitcast(unsized_arr_ptr_ty, alloc_cache_ptr, alloc_cache_ptr->dbg());
         store_lea               = mem::op_lea(cache_ptr, cache_index, w.dbg("lea_cache"));
