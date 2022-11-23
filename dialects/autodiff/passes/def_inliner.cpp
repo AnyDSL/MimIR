@@ -304,7 +304,7 @@ Lam* DefInliner::find_lam(const Def* def) {
     if (auto extract = def->isa<Extract>()) {
         return find_lam(extract->tuple());
     } else {
-        return scheduler.early(def)->as_nom<Lam>();
+        return scheduler.smart(def)->as_nom<Lam>();
     }
 }
 
@@ -312,7 +312,7 @@ Lam* DefInliner::build() {
     for (auto bound : scope.bound()) {
         bound->dump(1);
         if (!bound->isa<Lit>() && !bound->type()->isa<Pi>()) {
-            auto lam = scheduler.early(bound);
+            auto lam = scheduler.smart(bound);
             nom2defs[lam].insert(bound);
             def2nom[bound] = find_lam(bound);
             lams.insert(lam);
