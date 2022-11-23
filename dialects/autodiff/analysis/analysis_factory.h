@@ -10,7 +10,7 @@
 #include "dialects/autodiff/analysis/affine_dfa.h"
 #include "dialects/autodiff/analysis/alias_analysis.h"
 #include "dialects/autodiff/analysis/cache_analysis.h"
-#include "dialects/autodiff/analysis/flow_analysis.h"
+#include "dialects/autodiff/analysis/gradient_analysis.h"
 #include "dialects/autodiff/analysis/ptr_analysis.h"
 #include "dialects/autodiff/analysis/utils.h"
 #include "dialects/autodiff/analysis/war_analysis.h"
@@ -22,7 +22,7 @@ namespace thorin::autodiff {
 class AnalysisFactory {
     Lam* lam_;
     Scope scope_;
-    std::unique_ptr<FlowAnalysis> flow_;
+    std::unique_ptr<GradientAnalysis> gradient_;
     std::unique_ptr<CacheAnalysis> cache_;
     std::unique_ptr<AliasAnalysis> alias_;
     std::unique_ptr<Utils> utils_;
@@ -44,7 +44,7 @@ public:
         return *(ptr ? ptr : ptr = std::make_unique<T>(*this));
     }
 
-    FlowAnalysis& flow() { return lazy_init(flow_); }
+    GradientAnalysis& gradient() { return lazy_init(gradient_); }
 
     CacheAnalysis& cache() { return lazy_init(cache_); }
 

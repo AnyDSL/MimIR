@@ -1,4 +1,4 @@
-#include "dialects/autodiff/analysis/flow_analysis.h"
+#include "dialects/autodiff/analysis/gradient_analysis.h"
 
 #include "thorin/def.h"
 #include "thorin/tuple.h"
@@ -15,23 +15,23 @@
 
 namespace thorin::autodiff {
 
-FlowAnalysis::FlowAnalysis(AnalysisFactory& factory)
+GradientAnalysis::GradientAnalysis(AnalysisFactory& factory)
     : Analysis(factory)
     , alias_(factory.alias()) {
     run(factory.lam());
 }
 
-FlowAnalysis::Lattice& FlowAnalysis::get_lattice(const Def* def) {
+GradientAnalysis::Lattice& GradientAnalysis::get_lattice(const Def* def) {
     auto it = lattices.find(def);
     if (it == lattices.end()) { it = lattices.emplace(def, std::make_unique<Lattice>(def)).first; }
     return *it->second;
 }
 
-DefSet& FlowAnalysis::flow_defs() { return flow_set; }
+DefSet& GradientAnalysis::defs() { return gradient_set; }
 
-bool FlowAnalysis::isa_flow_def(const Def* def) { return flow_set.contains(def); }
+bool GradientAnalysis::has_gradient(const Def* def) { return gradient_set.contains(def); }
 
-bool FlowAnalysis::is_const(const Def* def) {
+bool GradientAnalysis::is_const(const Def* def) {
     if (def->isa<Lit>()) {
         return true;
     } else if (auto app = def->isa<App>()) {
@@ -49,13 +49,7 @@ bool FlowAnalysis::is_const(const Def* def) {
     return false;
 }
 
-/*
-bool FlowAnalysis::add(const Def* next) {
-    // assert(!is_const(next));
-    flow_set.insert(next);
-}*/
-
-bool FlowAnalysis::meet(const Def* present, const Def* next) {
+bool GradientAnalysis::meet(const Def* present, const Def* next) {
     auto alias_node = alias_.alias_node(present);
     auto& alias_set = alias_node.alias_set();
 
@@ -63,20 +57,20 @@ bool FlowAnalysis::meet(const Def* present, const Def* next) {
     if (alias_set.empty()) {
         auto lattice = get_lattice(present);
 
-        if (lattice.is_flow()) { todo_ |= next_lattice.set_flow(); }
+        if (lattice.has_gradient()) { todo_ |= next_lattice.set_gradient(); }
     } else {
         for (auto node : alias_set) {
             auto lattice = get_lattice(node->def());
 
-            if (lattice.is_flow()) {
-                todo_ |= next_lattice.set_flow();
+            if (lattice.has_gradient()) {
+                todo_ |= next_lattice.set_gradient();
                 break;
             }
         }
     }
 }
 
-bool FlowAnalysis::meet_projs(const Def* present, const Def* next) {
+bool GradientAnalysis::meet_projs(const Def* present, const Def* next) {
     auto alias_node = alias_.alias_node(present);
     auto& alias_set = alias_node.alias_set();
 
@@ -84,22 +78,22 @@ bool FlowAnalysis::meet_projs(const Def* present, const Def* next) {
     if (alias_set.empty()) {
         auto lattice = get_lattice(present);
 
-        if (lattice.is_flow()) {
-            for (auto proj : next->projs()) { todo_ |= next_lattice.set_flow(); }
+        if (lattice.has_gradient()) {
+            for (auto proj : next->projs()) { todo_ |= next_lattice.set_gradient(); }
         }
     } else {
         for (auto node : alias_set) {
             auto lattice = get_lattice(node->def());
 
-            if (lattice.is_flow()) {
-                for (auto proj : next->projs()) { todo_ |= next_lattice.set_flow(); }
+            if (lattice.has_gradient()) {
+                for (auto proj : next->projs()) { todo_ |= next_lattice.set_gradient(); }
                 break;
             }
         }
     }
 }
 
-bool FlowAnalysis::visit(const Def* def) {
+bool GradientAnalysis::visit(const Def* def) {
     if (auto tuple = def->isa<Tuple>()) {
         return meet_projs(tuple, tuple);
     } else if (auto pack = def->isa<Pack>()) {
@@ -131,10 +125,10 @@ bool FlowAnalysis::visit(const Def* def) {
     return true;
 }
 
-void FlowAnalysis::run(Lam* diffee) {
+void GradientAnalysis::run(Lam* diffee) {
     for (auto var : diffee->vars()) {
         auto& lattice = get_lattice(var);
-        lattice.set_flow();
+        lattice.set_gradient();
     }
 
     auto& utils = factory().utils();
@@ -148,7 +142,7 @@ void FlowAnalysis::run(Lam* diffee) {
     }
 
     for (auto& [def, lattice] : lattices) {
-        if (lattice->is_flow()) { flow_set.insert(def); }
+        if (lattice->has_gradient()) { gradient_set.insert(def); }
     }
 }
 

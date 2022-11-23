@@ -252,7 +252,7 @@ const Def* AutoDiffEval::augment_slot(const App* slot) {
 
     auto ptr = slot->proj(1);
 
-    if (isa_flow_def(ptr)) {
+    if (has_gradient(ptr)) {
         auto gradient_ptr      = create_init_slot_frame("gradient_" + slot->name(), type, true);
         gradient_pointers[ptr] = gradient_ptr;
     }
@@ -272,7 +272,7 @@ const Def* AutoDiffEval::augment_alloc(const App* alloc) {
     auto aug_alloc_mem = op_alloc_mem(aug_type, alloc->dbg());
     auto ptr           = alloc->proj(1);
 
-    if (isa_flow_def(ptr)) {
+    if (has_gradient(ptr)) {
         auto gradient_ptr = op_alloc(aug_type, w.dbg("gradient_" + alloc->name()));
         op_store(gradient_ptr, zero(aug_type));
         gradient_pointers[ptr] = gradient_ptr;

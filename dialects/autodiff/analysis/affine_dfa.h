@@ -6,7 +6,7 @@
 #include <thorin/lam.h>
 
 #include "dialects/affine/affine.h"
-#include "dialects/autodiff/analysis/flow_analysis.h"
+#include "dialects/autodiff/analysis/gradient_analysis.h"
 #include "dialects/autodiff/utils/helper.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/mem.h"
@@ -82,7 +82,7 @@ private:
 
     void run(Lam* lam) {
         auto app = lam->body()->as<App>();
-        arg = thorin::autodiff::arg(app);
+        arg      = thorin::autodiff::arg(app);
         run(arg);
 
         auto var_node = node(lam->var());

@@ -9,7 +9,7 @@
 #include "dialects/affine/affine.h"
 #include "dialects/autodiff/analysis/analysis_factory.h"
 #include "dialects/autodiff/analysis/cache_analysis.h"
-#include "dialects/autodiff/analysis/flow_analysis.h"
+#include "dialects/autodiff/analysis/gradient_analysis.h"
 #include "dialects/autodiff/passes/def_inliner.h"
 #include "dialects/autodiff/utils/helper.h"
 #include "dialects/mem/mem.h"
@@ -206,7 +206,7 @@ public:
     bool requires_caching(const Def* def) { return factory->cache().requires_caching(def); }
     DefSet& requires_loading(Lam* lam) { return factory->cache().requires_loading(lam); }
 
-    bool isa_flow_def(const Def* def) { return factory->flow().isa_flow_def(def); }
+    bool has_gradient(const Def* def) { return factory->gradient().has_gradient(def); }
 
     size_t count_caller(const Def* def) { return caller_count[def]; }
 

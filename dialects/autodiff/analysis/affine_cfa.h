@@ -6,7 +6,7 @@
 #include <thorin/lam.h>
 
 #include "dialects/affine/affine.h"
-#include "dialects/autodiff/analysis/flow_analysis.h"
+#include "dialects/autodiff/analysis/gradient_analysis.h"
 #include "dialects/autodiff/utils/helper.h"
 #include "dialects/mem/mem.h"
 

@@ -13,9 +13,9 @@
 namespace thorin::autodiff {
 
 class AliasAnalysis;
-class FlowAnalysis : public Analysis {
+class GradientAnalysis : public Analysis {
     struct Lattice {
-        enum Type { Bot, Flow };
+        enum Type { Bot, Has_Gradient };
 
         Lattice(const Def* def)
             : type_(Type::Bot)
@@ -24,34 +24,32 @@ class FlowAnalysis : public Analysis {
         Type type_;
         const Def* def_;
 
-        Type type() { return type_; }
-
-        bool set_flow() {
+        bool set_gradient() {
             if (type_ == Bot) {
-                type_ = Flow;
+                type_ = Has_Gradient;
                 return true;
             }
 
             return false;
         }
 
-        bool is_flow() { return type_ = Flow; }
+        bool has_gradient() { return type_ = Has_Gradient; }
     };
 
     bool todo_;
-    DefSet flow_set;
+    DefSet gradient_set;
     DefMap<std::unique_ptr<Lattice>> lattices;
     AliasAnalysis& alias_;
 
 public:
-    FlowAnalysis(AnalysisFactory& factory);
-    FlowAnalysis(FlowAnalysis& other) = delete;
+    GradientAnalysis(AnalysisFactory& factory);
+    GradientAnalysis(GradientAnalysis& other) = delete;
 
     Lattice& get_lattice(const Def* def);
 
-    DefSet& flow_defs();
+    DefSet& defs();
 
-    bool isa_flow_def(const Def* def);
+    bool has_gradient(const Def* def);
 
     bool is_const(const Def* def);
 

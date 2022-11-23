@@ -23,7 +23,7 @@ add_thorin_dialect(autodiff
         autodiff/passes/autodiff_rewrite_toplevel.cpp
         autodiff/analysis/ptr_analysis.cpp
         autodiff/analysis/war_analysis.cpp
-        autodiff/analysis/flow_analysis.cpp
+        autodiff/analysis/gradient_analysis.cpp
         autodiff/analysis/cache_analysis.cpp
         autodiff/analysis/alias_analysis.cpp
         autodiff/analysis/live_analysis.cpp

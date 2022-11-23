@@ -21,12 +21,12 @@ CacheAnalysis::CacheAnalysis(AnalysisFactory& factory)
 }
 
 void CacheAnalysis::run() {
-    auto& utils = factory().utils();
-    auto& flow  = factory().flow();
-    auto& war   = factory().war();
-    auto& live  = factory().live();
+    auto& utils    = factory().utils();
+    auto& gradient = factory().gradient();
+    auto& war      = factory().war();
+    auto& live     = factory().live();
 
-    for (auto def : flow.flow_defs()) { visit(def); }
+    for (auto def : gradient.defs()) { visit(def); }
 
     CacheOptimizer cache_optimizer(factory());
     targets_ = cache_optimizer.optimize(requirements);
