@@ -15,7 +15,8 @@ typedef std::pair<int, PassBuilder> PrioPassBuilder;
 typedef std::pair<int, PhaseBuilder> PrioPhaseBuilder;
 typedef std::vector<PrioPassBuilder> PassList;
 typedef std::vector<PrioPhaseBuilder> PhaseList;
-using PassInstanceMap = absl::flat_hash_map<const Def*, Pass*>;
+// using PassInstanceMap = absl::flat_hash_map<const Def*, Pass*>;
+using PassInstanceMap = std::map<const Def*, Pass*>;
 
 struct passCmp {
     constexpr bool operator()(PrioPassBuilder const& a, PrioPassBuilder const& b) const noexcept {
@@ -41,7 +42,7 @@ public:
     template<class P, class... Args>
     void add_pass(const Def* def, Args&&... args) {
         append_pass_in_end([&](PassMan& man) {
-            auto pass = man.add<P>(std::forward<Args>(args)...);
+            auto pass = (Pass*)man.add<P>(std::forward<Args>(args)...);
             remember_pass_instance(pass, def);
         });
     }
@@ -84,7 +85,7 @@ void register_pass(Passes& passes) {
 template<class A, class P, class Q>
 void register_pass_with_arg(Passes& passes) {
     passes[flags_t(Axiom::Base<A>)] = [&](World&, PipelineBuilder& builder, const Def* app) {
-        auto pass_arg = (Q*)builder.get_pass_instance(app->as<App>()->arg());
+        auto pass_arg = (Q*)(builder.get_pass_instance(app->as<App>()->arg()));
         builder.add_pass<P>(app, pass_arg);
     };
 }

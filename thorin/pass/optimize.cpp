@@ -41,21 +41,6 @@ namespace thorin {
 /// * 300: RetWrap (Priority 50)
 ///   * + Custom (default priority 100)
 
-// TODO: move
-/// Helper function to cope with the fact that normalizers take all arguments and not only its axiom arguments.
-std::pair<const Def*, std::vector<const Def*>> collect_args(const Def* def) {
-    std::vector<const Def*> args;
-    if (auto app = def->isa<App>()) {
-        auto callee               = app->callee();
-        auto arg                  = app->arg();
-        auto [inner_callee, args] = collect_args(callee);
-        args.push_back(arg);
-        return {inner_callee, args};
-    } else {
-        return {def, args};
-    }
-}
-
 /// See optimize.h for magic numbers
 void optimize(World& world, Passes& passes, PipelineBuilder& builder) {
     if (auto compilation = world.lookup("_compile")) {
