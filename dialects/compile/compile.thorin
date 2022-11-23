@@ -78,10 +78,8 @@
 /// 
 // TODO: allow functions by inlining them first
 .let optimization_phase = {
-    // TODO: it needs to be possible to add a pass twice and keep the instances separate (bind in pipeline/manager?)
     .let eta_red = %compile.eta_red_pass;
     .let eta_exp = %compile.eta_exp_pass eta_red;
-    // TODO: use pass_phase
     %compile.pass_phase (%compile.pass_list
         %compile.partial_eval_pass
         %compile.beta_red_pass

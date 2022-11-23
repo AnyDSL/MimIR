@@ -14,9 +14,9 @@
 
 .lam .extern _compile [] -> Pipeline = {
     %compile.pipe
-        (%compile.debug_phase 1)
+        // (%compile.debug_phase 1)
         (%compile.debug_phase 2)
-        (%compile.debug_phase 3)
+        // (%compile.debug_phase 3)
 };
 
 // CHECK-DAG: return{{.*}}42

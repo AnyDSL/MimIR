@@ -70,9 +70,10 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                     int level = (int)(app->as<App>()->arg(0)->as<Lit>()->get<u64>());
                     world.DLOG("  Level: {}", level);
                     // TODO: add a debug pass to the pipeline
-                    builder.append_pass_after_end([&](PassMan& man) {
+                    builder.append_pass_after_end([=](PassMan& man) {
                         man.add<thorin::compile::DebugPrint>(level);
-                        // man.add<thorin::compile::DebugPrint>(1);
+                        // man.add<thorin::compile::DebugPrint>(level);
+                        // man.add<thorin::compile::DebugPrint>(42);
                     });
                 };
 
