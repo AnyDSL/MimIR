@@ -20,8 +20,8 @@
 /// Types for functions that accept an arbitrary number of phases and passes respectively.
 /// 
 .Pi Pipeline: *, %compile.Phase = Pipeline;
-.Pi PassPhase: %compile.Phase, %compile.Pass = PassPhase;
-.Pi CombinedPhase: %compile.Phase, %compile.Phase = CombinedPhase;
+.Pi PassPhase: *, %compile.Pass = PassPhase;
+.Pi CombinedPhase: *, %compile.Phase = CombinedPhase;
 ///
 /// ## Expressions
 ///
@@ -43,14 +43,16 @@
 /// 
 /// Given n passes, returns a phase that applies them in order.
 ///
-.ax %compile.pass_phase: PassPhase, normalize_pass_phase;
+.ax %compile.pass_list: PassPhase;
+.ax %compile.pass_phase: PassPhase -> %compile.Phase, normalize_pass_phase;
 .ax %compile.passes_to_phase: Π [n:.Nat] -> «n; %compile.Pass» -> %compile.Phase;
 ///
 /// ### %compile.combined_phase
 /// 
 /// Given n phases, returns a phase that applies them in order.
 ///
-.ax %compile.combined_phase: CombinedPhase;
+.ax %compile.phase_list: CombinedPhase;
+.ax %compile.combined_phase: CombinedPhase -> %compile.Phase, normalize_combined_phase;
 .ax %compile.phases_to_phase: Π [n:.Nat] -> «n; %compile.Phase» -> %compile.Phase;
 ///
 /// ### Passes
