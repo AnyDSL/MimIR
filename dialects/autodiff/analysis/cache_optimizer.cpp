@@ -5,8 +5,9 @@
 
 #include "dialects/autodiff/analysis/analysis.h"
 #include "dialects/autodiff/analysis/analysis_factory.h"
+#include "dialects/autodiff/utils/union.h"
+#include "dialects/core/core.h"
 #include "dialects/math/math.h"
-#include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {
@@ -14,82 +15,119 @@ namespace thorin::autodiff {
 CacheOptimizer::CacheOptimizer(AnalysisFactory& factory)
     : Analysis(factory)
     , war(factory.war())
+    , cfa(factory.cfa())
     , dfa(factory.dfa())
     , utils(factory.utils())
     , alias(factory.alias())
     , best(nullptr) {}
 
+size_t CacheOptimizer::get_depth(const Def* op) {
+    Lam* lam  = utils.lam_of_op(op);
+    auto node = cfa.node(lam);
+    return node->depth();
+}
+
+size_t CacheOptimizer::memory_estimate(const Def* ty) {
+    auto before_memory = core::op(core::trait::size, ty);
+
+    if (auto lit = isa_lit(before_memory)) { return *lit; }
+
+    return 8;
+}
+
 void CacheOptimizer::explore(std::shared_ptr<CacheState>& last, const Def* removed, const Def* parts) {
     auto next_state = std::make_shared<CacheState>(*last);
+
+    next_state->memory -= memory_estimate(removed->type());
+    size_t depth = get_depth(removed);
+
+    auto test = next_state->depths.size();
+    next_state->remove_depth(depth);
 
     next_state->cached_defs.erase(removed);
     if (next_state->computed_defs.insert(removed).second) {
         for (auto def : parts->projs()) {
+            def = alias.get(def);
             if (!next_state->computed_defs.contains(def)) {
                 if (needs_cache(def) && !depends_on_cache(def, next_state->cached_defs)) {
                     auto result = next_state->cached_defs.insert(def);
 
-                    if (result.second) { next_state->queue.push(def); }
+                    if (result.second) {
+                        size_t depth = get_depth(def);
+                        next_state->add_depth(depth);
+                        next_state->memory += memory_estimate(def->type());
+                        next_state->queue.push(def);
+                    }
                 }
             }
         }
     }
 
     if (explored.insert(next_state).second) {
-        if (!best->is_better_than(next_state)) {
-            std::cout << next_state->cached_defs.size() << std::endl;
-            best = next_state;
-        }
+        if (next_state->is_better_than(best)) { best = next_state; }
 
         search(next_state);
     }
 }
 
-void CacheOptimizer::find(const Def* def) {
+class Canonicalize {
+public:
+    Canonicalize(AnalysisFactory& factory)
+        : alias(factory.alias()) {}
+    AliasAnalysis& alias;
     DefSet visited;
-    auto node = dfa.node(def);
-    find(node, visited);
-}
+    std::unordered_map<const Def*, std::unique_ptr<DefUnionNode>> unions;
 
-bool CacheOptimizer::is_flow_op(const Def* def) {
-    return match<math::arith>(def) || match<core::wrap>(def) || match<math::conv>(def) || match<core::conv>(def) ||
-           match<math::exp>(def) || match<math::gamma>(def) || def->isa<Tuple>() || def->isa<Pack>() ||
-           def->isa<Extract>() || match<mem::load>(def);
-}
+    UnionNode<const Def*>* get(const Def* def) {
+        auto i = unions.find(def);
+        if (i == unions.end()) {
+            auto p = unions.emplace(def, std::make_unique<DefUnionNode>(def));
+            assert_unused(p.second);
+            i = p.first;
+        }
+        return &*i->second;
+    }
 
-void CacheOptimizer::canonicalize(DefSet defs) {
-    while (defs.size() > 0) {
-        const Def* def = *defs.begin();
-        DefSet visited;
-        auto node = dfa.node(def);
-        find(node, visited);
+    void groups(std::vector<DefVec>& result) {
+        std::unordered_map<DefUnionNode*, DefVec> map;
 
-        DefSet& canonical_group = groups.emplace_back();
-        for (auto visited_def : visited) {
-            if (defs.contains(visited_def)) {
-                defs.erase(visited_def);
-                canonical_group.insert(visited_def);
+        for (auto& [def, node] : unions) {
+            if (visited.contains(def)) {
+                auto repr = find(node.get());
+                map[repr].push_back(def);
             }
         }
-    }
-}
 
-void CacheOptimizer::find(AffineDFNode* node, DefSet& visited) {
-    auto def = alias.get(node->def());
-
-    if (match<mem::store>(def) || def->isa<Var>() || def->isa<Lit>()) return;
-    if (!is_flow_op(def)) {
-        def->dump();
-        return;
-    }
-    if (!visited.insert(def).second) return;
-    if (!is_load_val(def)) {
-        for (auto succ : node->preds()) { find(succ, visited); }
-    } else if (!war.is_overwritten(def)) {
-        return;
+        result.clear();
+        for (auto& [node, defs] : map) { result.push_back(std::move(defs)); }
     }
 
-    for (auto prev : node->succs()) { find(prev, visited); }
+    void run(const Def* def) {
+        def = alias.get(def);
+        visited.insert(def);
+        propagate(def, get(def));
+    }
+
+    void propagate(const Def* def, DefUnionNode* node) {
+        def = alias.get(def);
+        unify(node, get(def));
+        if (is_load_val(def)) return;
+        if (auto app = def->isa<App>()) {
+            propagate(app->arg(), node);
+        } else if (def->num_projs() > 1) {
+            for (auto proj : def->projs()) { propagate(proj, node); }
+        } else {
+            def->dump();
+        }
+    }
+};
+
+void CacheOptimizer::canonicalize(DefSet& defs) {
+    Canonicalize can(factory());
+
+    for (auto def : defs) { can.run(def); }
+
+    can.groups(groups);
 }
 
 void CacheOptimizer::search(std::shared_ptr<CacheState> current) {
@@ -99,12 +137,6 @@ void CacheOptimizer::search(std::shared_ptr<CacheState> current) {
         queue.pop();
         if (auto app = def->isa<App>(); app && mem::mem_def(def) == nullptr) { explore(current, def, app->arg()); }
     }
-}
-
-bool CacheOptimizer::requires_cache(const Def* def) {
-    if (is_load_val(def) && war.is_overwritten(def)) { return true; }
-
-    return false;
 }
 
 bool CacheOptimizer::needs_cache(const Def* def) {
@@ -128,6 +160,8 @@ bool CacheOptimizer::depends_on_cache(const Def* def, DefSet& set, bool init) {
         }
 
         return true;
+    } else if (auto pack = def->isa<Pack>()) {
+        return depends_on_cache(pack->body(), set, false);
     }
 
     return false;
@@ -137,12 +171,7 @@ DefSet CacheOptimizer::optimize(DefSet defs) {
     DefSet required_caches;
     for (auto def : defs) {
         auto target = alias.get(def);
-        if (needs_cache(target)) {
-            required_caches.insert(target);
-        } else {
-            def->dump(1);
-            def->dump(1);
-        }
+        if (needs_cache(target)) { required_caches.insert(target); }
     }
 
     DefSet no_deps;
@@ -151,38 +180,30 @@ DefSet CacheOptimizer::optimize(DefSet defs) {
         no_deps.insert(def);
     }
 
-    return no_deps;
-
-    /*
+    // return no_deps;
 
     canonicalize(no_deps);
 
-    auto size   = groups.size();
-    size_t test = 0;
-
-    for (DefSet& group : groups) {
-        auto size2 = group.size();
-        for (auto def : group) {
-            def->dump(1);
-            def->dump(1);
-        }
-    }
-
-
     DefSet result;
-    for (DefSet& group : groups) {
+    for (auto& group : groups) {
+        explored.clear();
         best = std::make_shared<CacheState>();
         for (auto def : group) {
-            if (needs_cache(def)) {
-                best->cached_defs.insert(def);
-                best->queue.push(def);
-            }
+            def->dump(1);
+            best->memory += memory_estimate(def->type());
+
+            size_t depth = get_depth(def);
+            best->add_depth(depth);
+
+            best->cached_defs.insert(def);
+            best->queue.push(def);
         }
+
         search(best);
         result.insert(best->cached_defs.begin(), best->cached_defs.end());
     }
 
-    return result;*/
+    return result;
 }
 
 } // namespace thorin::autodiff

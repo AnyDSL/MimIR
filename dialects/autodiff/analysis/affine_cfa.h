@@ -17,15 +17,18 @@ struct AffineCFNode;
 using AffineCFNodes = std::unordered_set<AffineCFNode*>;
 
 struct AffineCFNode {
-    AffineCFNode(const Def* def)
-        : def_(def) {}
+    AffineCFNode(const Def* def, size_t depth)
+        : def_(def)
+        , depth_(depth) {}
 
     const Def* def_;
     AffineCFNodes preds_;
     AffineCFNodes succs_;
     bool visited_ = false;
+    size_t depth_;
 
     const Def* def() { return def_; }
+    size_t depth() { return depth_; }
 
     AffineCFNodes& preds() { return preds_; }
     AffineCFNodes& succs() { return succs_; }
@@ -47,6 +50,7 @@ public:
     DefSet visited_;
     std::vector<AffineCFNode*> post_order_;
     bool post_order_init_ = false;
+    size_t nesting_depth  = 0;
 
     AffineCFA(AnalysisFactory& factory);
     AffineCFA(AffineCFA& other) = delete;
@@ -62,7 +66,7 @@ public:
         auto it = nodes_.find(def);
         if (it == nodes_.end()) {
             if (!init) return nullptr;
-            it = nodes_.emplace(def, std::make_unique<AffineCFNode>(def)).first;
+            it = nodes_.emplace(def, std::make_unique<AffineCFNode>(def, nesting_depth)).first;
         }
         return it->second.get();
     }
@@ -93,7 +97,9 @@ private:
         if (auto loop = match<affine::For>(app)) {
             auto body = loop->arg(4)->as_nom<Lam>();
             auto exit = loop->arg(5);
+            nesting_depth++;
             run_call(lam, body);
+            nesting_depth--;
             run_call(lam, exit);
             run_call(body->ret_var(), exit);
         } else {

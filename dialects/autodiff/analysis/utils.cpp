@@ -36,6 +36,17 @@ bool Utils::is_root_var(const Def* def) {
     return false;
 }
 
+Lam* Utils::lam_of_op(const Def* op) {
+    op = unextract(op);
+    if (auto var = op->isa<Var>()) {
+        return var->nom()->as_nom<Lam>();
+    } else {
+        auto app = op->isa<App>();
+        assert(app);
+        return lam_of_op(app->arg(0));
+    }
+}
+
 DefSet& Utils::depends_on_loads(const Def* def) {
     if (auto it = load_deps_.find(def); it != load_deps_.end()) { return *it->second; }
 

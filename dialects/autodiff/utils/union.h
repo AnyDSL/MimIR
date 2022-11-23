@@ -37,4 +37,6 @@ UnionNode<T>* find(UnionNode<T>* node) {
     return node->parent;
 }
 
+using DefUnionNode = UnionNode<const Def*>;
+
 } // namespace thorin::autodiff

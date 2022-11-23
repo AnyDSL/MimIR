@@ -5,6 +5,7 @@
 #include <thorin/def.h>
 #include <thorin/lam.h>
 
+#include "affine_cfa.h"
 #include "affine_dfa.h"
 #include "dialects/affine/affine.h"
 #include "dialects/autodiff/analysis/affine_dfa.h"
@@ -20,17 +21,56 @@ namespace thorin::autodiff {
 
 struct CacheState {
     std::queue<const Def*> queue;
-    size_t memory_estimate;
-    size_t loop_factor;
+    long memory;
+    std::vector<size_t> depths;
     DefSet cached_defs;
     DefSet computed_defs;
 
     bool is_better_than(std::shared_ptr<CacheState>& other) {
         auto this_caches  = cached_defs.size();
         auto other_caches = other->cached_defs.size();
+        auto cmp          = compare_depth(other);
+
+        if (cmp == 1) return true;
+        if (cmp == -1) return false;
+
         if (this_caches < other_caches) return true;
         if (this_caches > other_caches) return false;
+        if (memory < other->memory) return true;
+        if (memory > other->memory) return false;
         return computed_defs.size() <= other->computed_defs.size();
+    }
+
+    void add_depth(size_t depth) {
+        depths.resize(depth + 1);
+        depths[depth]++;
+    }
+
+    void remove_depth(size_t depth) { depths[depth]--; }
+
+    int compare_depth(std::shared_ptr<CacheState>& other) {
+        auto left_size  = depths.size();
+        auto right_size = other->depths.size();
+        auto max        = std::max(left_size, right_size);
+        for (size_t i = 0; i < max; i++) {
+            if (i < left_size && i < right_size) {
+                auto left  = depths[i];
+                auto right = other->depths[i];
+                if (left < right) {
+                    return 1;
+                } else if (left > right) {
+                    return -1;
+                }
+            } else if (i < left_size) {
+                auto left = depths[i];
+                if (left > 0) { return -1; }
+            } else {
+                auto right = other->depths[i];
+                if (right > 0) { return 1; }
+            }
+        }
+
+        return 0;
     }
 };
 
@@ -60,19 +100,18 @@ public:
     absl::flat_hash_set<std::shared_ptr<CacheState>, CacheStateHash, CacheStateEq> explored;
     std::shared_ptr<CacheState> best;
     AffineDFA& dfa;
+    AffineCFA& cfa;
     WarAnalysis& war;
     Utils& utils;
     AliasAnalysis& alias;
-    std::vector<DefSet> groups;
+    std::vector<DefVec> groups;
 
     CacheOptimizer(AnalysisFactory& factory);
+    size_t get_depth(const Def* op);
+    size_t memory_estimate(const Def* ty);
     void explore(std::shared_ptr<CacheState>& last, const Def* removed, const Def* parts);
-    void find(const Def* def);
-    bool is_flow_op(const Def* def);
-    void canonicalize(DefSet defs);
-    void find(AffineDFNode* node, DefSet& visited);
+    void canonicalize(DefSet& defs);
     void search(std::shared_ptr<CacheState> current);
-    bool requires_cache(const Def* def);
     bool needs_cache(const Def* def);
     bool depends_on_cache(const Def* def, DefSet& set, bool init = true);
     DefSet optimize(DefSet defs);

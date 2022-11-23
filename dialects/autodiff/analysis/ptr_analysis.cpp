@@ -18,12 +18,12 @@ PtrAnalysis::PtrAnalysis(AnalysisFactory& factory)
     run();
 }
 
-UnionNode<const Def*>* PtrAnalysis::ptr_node(const Def* def) {
+DefUnionNode* PtrAnalysis::ptr_node(const Def* def) {
     def = factory().alias().get(def);
 
     auto i = ptr_union.find(def);
     if (i == ptr_union.end()) {
-        auto p = ptr_union.emplace(def, std::make_unique<UnionNode<const Def*>>(def));
+        auto p = ptr_union.emplace(def, std::make_unique<DefUnionNode>(def));
         assert_unused(p.second);
         i = p.first;
     }

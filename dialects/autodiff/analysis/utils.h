@@ -44,6 +44,8 @@ public:
     bool is_root_var(const Def* def);
 
     DefSet& depends_on_loads(const Def* lam);
+
+    Lam* lam_of_op(const Def* op);
 };
 
 } // namespace thorin::autodiff

@@ -16,7 +16,7 @@ namespace thorin::autodiff {
 class AnalysisFactory;
 class PtrAnalysis : public Analysis {
 public:
-    std::unordered_map<const Def*, std::unique_ptr<UnionNode<const Def*>>> ptr_union;
+    std::unordered_map<const Def*, std::unique_ptr<DefUnionNode>> ptr_union;
 
     PtrAnalysis(AnalysisFactory& factory);
 
@@ -25,7 +25,7 @@ public:
         return find(node)->value;
     }
 
-    UnionNode<const Def*>* ptr_node(const Def* def);
+    DefUnionNode* ptr_node(const Def* def);
 
     void run();
 };
