@@ -46,6 +46,7 @@
 .ax %compile.pass_list: PassPhase;
 .ax %compile.pass_phase: PassPhase -> %compile.Phase, normalize_pass_phase;
 .ax %compile.passes_to_phase: Π [n:.Nat] -> «n; %compile.Pass» -> %compile.Phase;
+.ax %compile.single_pass_phase: %compile.Pass -> %compile.Phase, normalize_single_pass_phase;
 ///
 /// ### %compile.combined_phase
 /// 
@@ -81,21 +82,22 @@
     .let eta_red = %compile.eta_red_pass;
     .let eta_exp = %compile.eta_exp_pass eta_red;
     // TODO: use pass_phase
-    %compile.passes_to_phase (⊤:.Nat)
-        (%compile.partial_eval_pass,
-        %compile.beta_red_pass,
-        eta_red,
-        eta_exp,
-        (%compile.scalerize_pass eta_exp),
-        (%compile.tail_rec_elim_pass eta_red))
+    %compile.pass_phase (%compile.pass_list
+        %compile.partial_eval_pass
+        %compile.beta_red_pass
+        eta_red
+        eta_exp
+        (%compile.scalerize_pass eta_exp)
+        (%compile.tail_rec_elim_pass eta_red)
+    )
 };
         
 .let default_pipeline = {
     %compile.pipe
-        (%compile.passes_to_phase 1 %compile.scalerize_no_arg_pass)
-        (%compile.passes_to_phase 1 %compile.eta_red_pass)
-        (%compile.passes_to_phase 1 %compile.tail_rec_elim_no_arg_pass)
+        (%compile.single_pass_phase %compile.scalerize_no_arg_pass)
+        (%compile.single_pass_phase %compile.eta_red_pass)
+        (%compile.single_pass_phase %compile.tail_rec_elim_no_arg_pass)
         optimization_phase
-        (%compile.passes_to_phase 1 %compile.lam_spec_pass)
-        (%compile.passes_to_phase 1 %compile.ret_wrap_pass)
+        (%compile.single_pass_phase %compile.lam_spec_pass)
+        (%compile.single_pass_phase %compile.ret_wrap_pass)
 };
