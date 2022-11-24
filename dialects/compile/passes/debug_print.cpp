@@ -8,11 +8,7 @@
 namespace thorin::compile {
 
 void DebugPrint::enter() {
-    // if (level >= 2) {
-    world().DLOG("L{}: enter {}", level, curr_nom());
-    // }
+    if (level >= 2) { world().DLOG("L{}: enter {}", level, curr_nom()); }
 }
-
-// const Def* DebugPrint::rewrite(const Def* def) {}
 
 } // namespace thorin::compile

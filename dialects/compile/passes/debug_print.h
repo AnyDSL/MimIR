@@ -12,7 +12,6 @@ public:
         , level(level_) {}
 
     void enter() override;
-    // const Def* rewrite(const Def*) override;
 
 private:
     int level;

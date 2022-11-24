@@ -5,8 +5,6 @@
 
 #include "thorin/dialects.h"
 
-// #include "thorin/pass/pipelinebuilder.h"
-
 #include "dialects/affine/passes/lower_for.h"
 
 using namespace thorin;

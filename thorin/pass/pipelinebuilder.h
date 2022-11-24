@@ -37,12 +37,9 @@ public:
     int last_phase();
 
     // Adds a pass and remembers it associated with the given def.
-    // template<class P, class... Args>
-    // void add_pass(const Def*, Args&&...);
     template<class P, class... Args>
     void add_pass(const Def* def, Args&&... args) {
         append_pass_in_end([&, def, ... args = std::forward<Args>(args)](PassMan& man) {
-            // auto pass = (Pass*)man.add<P>(std::forward<Args>(args)...);
             auto pass = (Pass*)man.add<P>(args...);
             remember_pass_instance(pass, def);
         });
@@ -75,7 +72,6 @@ private:
     PassInstanceMap pass_instances_;
 };
 
-// TODO: move somewhere better (for now here due to template restrictions)
 template<class A, class P, class... CArgs>
 void register_pass(Passes& passes, CArgs&&... args) {
     passes[flags_t(Axiom::Base<A>)] = [... args = std::forward<CArgs>(args)](World&, PipelineBuilder& builder,

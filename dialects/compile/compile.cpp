@@ -19,7 +19,7 @@
 
 using namespace thorin;
 
-void addPhases(DefVec& phases, World& world, Passes& passes, PipelineBuilder& builder) {
+void add_phases(DefVec& phases, World& world, Passes& passes, PipelineBuilder& builder) {
     for (auto phase : phases) {
         auto [phase_def, phase_args] = collect_args(phase);
         world.DLOG("phase: {}", phase_def);
@@ -37,7 +37,7 @@ void addPhases(DefVec& phases, World& world, Passes& passes, PipelineBuilder& bu
     }
 }
 
-void addPasses(World& world, PipelineBuilder& builder, Passes& passes, DefVec& pass_list) {
+void add_passes(World& world, PipelineBuilder& builder, Passes& passes, DefVec& pass_list) {
     // Concept: We create a convention that passes register in the pipeline using append_**in**_last.
     // This pass then calls the registered passes in the order they were registered in the last phase.
 
@@ -69,32 +69,15 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                     world.DLOG("Generate debug_phase: {}", app);
                     int level = (int)(app->as<App>()->arg(0)->as<Lit>()->get<u64>());
                     world.DLOG("  Level: {}", level);
-                    // TODO: add a debug pass to the pipeline
-                    builder.append_pass_after_end([=](PassMan& man) {
-                        man.add<thorin::compile::DebugPrint>(level);
-                        // man.add<thorin::compile::DebugPrint>(level);
-                        // man.add<thorin::compile::DebugPrint>(42);
-                    });
+                    builder.append_pass_after_end([=](PassMan& man) { man.add<thorin::compile::DebugPrint>(level); });
                 };
-
-                // auto pass_phase_flag    = flags_t(Axiom::Base<thorin::compile::pass_phase>);
-                // passes[pass_phase_flag] = [&](World& world, PipelineBuilder& builder, const Def* app) {
-                //     auto [ax, pass_list] = collect_args(app->as<App>()->arg());
-                //     addPasses(world, builder, passes, pass_list);
-                // };
-
-                // auto combined_phase_flag    = flags_t(Axiom::Base<thorin::compile::combined_phase>);
-                // passes[combined_phase_flag] = [&](World& world, PipelineBuilder& builder, const Def* app) {
-                //     auto [ax, phase_list] = collect_args(app->as<App>()->arg());
-                //     addPhases(phase_list, world, passes, builder);
-                // };
 
                 passes[flags_t(Axiom::Base<thorin::compile::passes_to_phase>)] =
                     [&](World& world, PipelineBuilder& builder, const Def* app) {
                         auto pass_array = app->as<App>()->arg()->projs();
                         DefVec pass_list;
                         for (auto pass : pass_array) { pass_list.push_back(pass); }
-                        addPasses(world, builder, passes, pass_list);
+                        add_passes(world, builder, passes, pass_list);
                     };
 
                 passes[flags_t(Axiom::Base<thorin::compile::phases_to_phase>)] =
@@ -102,13 +85,13 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                         auto phase_array = app->as<App>()->arg()->projs();
                         DefVec phase_list;
                         for (auto phase : phase_array) { phase_list.push_back(phase); }
-                        addPhases(phase_list, world, passes, builder);
+                        add_phases(phase_list, world, passes, builder);
                     };
 
                 passes[flags_t(Axiom::Base<thorin::compile::pipe>)] = [&](World& world, PipelineBuilder& builder,
                                                                           const Def* app) {
                     auto [ax, phases] = collect_args(app);
-                    addPhases(phases, world, passes, builder);
+                    add_phases(phases, world, passes, builder);
                 };
                 passes[flags_t(Axiom::Base<thorin::compile::nullptr_pass>)] = [&](World&, PipelineBuilder& builder,
                                                                                   const Def* def) {

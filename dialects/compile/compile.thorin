@@ -2,7 +2,9 @@
 ///
 /// [TOC]
 ///
-/// TODO
+/// This dialect handles the optimization part of the compilation of Thorin programs.
+/// Dialects can register passes and phases using the axioms from this dialect.
+/// The program then can invoke the optimization pipeline by defining a function `_compile: [] -> Pipeline`.
 ///
 /// ## Types
 ///
@@ -64,7 +66,7 @@
 ///
 /// ### Passes
 /// 
-/// TODO
+/// Basic passes that are defined in the core of Thorin.
 ///
 .ax %compile.partial_eval_pass: %compile.Pass;
 .ax %compile.beta_red_pass: %compile.Pass;

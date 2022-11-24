@@ -104,15 +104,9 @@ std::unique_ptr<PassMan> PipelineBuilder::opt_phase(int i, World& world) {
 }
 
 void PipelineBuilder::buildPipeline(Pipeline& pipeline) {
-    for (auto i : phases()) {
-        // std::cout << "Building phase " << i << std::endl;
-        buildPipelinePart(i, pipeline);
-    }
+    for (auto i : phases()) { buildPipelinePart(i, pipeline); }
 }
 void PipelineBuilder::buildPipelinePart(int i, Pipeline& pipeline) {
-    // if (pass_extensions_.contains(i)) {
-    //     pipeline.add_passes(opt_phase(i, pipeline.world()));
-    // }
     if (pass_extensions_.contains(i)) { pipeline.add<PassManPhase>(opt_phase(i, pipeline.world())); }
 
     if (phase_extensions_.contains(i)) {
