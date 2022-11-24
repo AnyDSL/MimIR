@@ -75,7 +75,10 @@ void LiveAnalysis::build_end_of_live() {
         for (auto def : result) { load2lams[def].insert(lam); }
     }
 
-    for (auto& [load, lams] : load2lams) { (*end_of_live_)[load] = find_join_lam(exit, lams); }
+    for (auto& [load, lams] : load2lams) {
+        DefMap<Lam*> visited;
+        (*end_of_live_)[load] = find_join_lam(exit, lams, visited);
+    }
 }
 
 Lam* LiveAnalysis::end_of_live(const Def* load) {
