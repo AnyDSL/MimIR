@@ -77,23 +77,26 @@ const Def* AddMem::mem_for_lam(Lam* lam) const {
     return mem;
 }
 
+const Def* AddMem::rewrite_type(const Def* type) {
+    if (auto pi = type->isa<Pi>()) return rewrite_pi(pi);
+
+    if (auto it = mem_rewritten_.find(type); it != mem_rewritten_.end()) return it->second;
+
+    DefArray new_ops{type->num_ops(), [&](size_t i) { return rewrite_type(type->op(i)); }};
+    return mem_rewritten_[type] = type->rebuild(world(), type->type(), new_ops, type->dbg());
+}
+
 const Def* AddMem::rewrite_pi(const Pi* pi) {
-    auto rewrite_op = [this](const Def* op) -> const Def* {
-        if (auto pi_arg = op->isa<Pi>()) return rewrite_pi(pi_arg);
-        return op;
-    };
+    if (auto it = mem_rewritten_.find(pi); it != mem_rewritten_.end()) return it->second;
 
     auto dom = pi->dom();
-    DefArray new_dom{dom->num_projs(), [&](size_t i) { return rewrite_op(dom->proj(i)); }};
+    DefArray new_dom{dom->num_projs(), [&](size_t i) { return rewrite_type(dom->proj(i)); }};
     if (pi->num_doms() == 0 || !match<mem::M>(pi->dom(0_s))) {
-        if (dom->isa<Sigma>() || dom->isa<Arr>() || dom->isa<Pack>())
-            new_dom = DefArray{dom->num_projs() + 1,
-                               [&](size_t i) { return i == 0 ? mem::type_mem(world()) : rewrite_op(new_dom[i - 1]); }};
-        else
-            new_dom = DefArray{dom->num_projs() + 1,
-                               [&](size_t i) { return i == 0 ? mem::type_mem(world()) : rewrite_op(new_dom[i - 1]); }};
+        new_dom =
+            DefArray{dom->num_projs() + 1, [&](size_t i) { return i == 0 ? mem::type_mem(world()) : new_dom[i - 1]; }};
     }
-    return world().pi(new_dom, pi->codom(), pi->dbg());
+
+    return mem_rewritten_[pi] = world().pi(new_dom, pi->codom(), pi->dbg());
 }
 
 const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
@@ -102,6 +105,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
     world().DLOG("rewriting {} : {} in {}", def, def->type(), place);
 
     if (auto nom_lam = def->isa_nom<Lam>(); nom_lam && !nom_lam->is_set()) return def;
+    if (auto ax = def->isa<Axiom>()) return ax;
     if (auto it = mem_rewritten_.find(def); it != mem_rewritten_.end()) {
         auto tmp = it->second;
         if (match<mem::M>(def->type())) {
@@ -164,6 +168,8 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
     if (auto nom = def->isa_nom<Lam>()) { return rewrite_lam(nom); }
     assert(!def->isa_nom());
 
+    if (auto pi = def->isa<Pi>()) return rewrite_pi(pi);
+
     auto rewrite_arg = [&](const Def* arg) -> const Def* {
         size_t offset = (arg->type()->num_projs() > 0 && match<mem::M>(arg->type()->proj(0))) ? 0 : 1;
         if (offset == 0) {
@@ -193,7 +199,8 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
     }
 
     // call-site of an axiom (assuming mems are only in the final app..)
-    if (auto app = def->isa<App>(); app && app->axiom()) {
+    // assume all "negative" curry depths are fully applied axioms, so we do not want to rewrite those here..
+    if (auto app = def->isa<App>(); app && app->axiom() && app->curry() ^ 0x8000) {
         auto arg = app->arg();
         DefArray new_args(arg->num_projs());
         for (int i = new_args.size() - 1; i >= 0; i--) {
@@ -217,6 +224,21 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
         return rewritten;
     }
 
+    // all other apps: when rewriting the callee adds a mem to the doms, add a mem to the arg as well..
+    if (auto app = def->isa<App>()) {
+        auto new_callee = add_mem_to_lams(place, app->callee());
+        auto new_arg    = add_mem_to_lams(place, app->arg());
+        if (app->callee()->type()->as<Pi>()->num_doms() + 1 == new_callee->type()->as<Pi>()->num_doms())
+            new_arg = rewrite_arg(app->arg());
+        auto rewritten = mem_rewritten_[def] = app->rebuild(world(), app->type(), {new_callee, new_arg}, app->dbg());
+        if (match<mem::M>(rewritten->type())) val2mem_[place] = rewritten;
+        if (rewritten->num_projs() > 0 && match<mem::M>(rewritten->proj(0)->type())) {
+            mem_rewritten_[rewritten->proj(0)] = rewritten->proj(0);
+            val2mem_[place]                    = rewritten->proj(0);
+        }
+        return rewritten;
+    }
+
     DefArray new_ops{def->ops(), [&](const Def* op) {
                          if (match<mem::M>(op->type())) {
                              // depth-first, follow the mems
@@ -226,7 +248,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
                          return add_mem_to_lams(place, op);
                      }};
 
-    auto tmp = mem_rewritten_[def] = def->rebuild(world(), def->type(), new_ops, def->dbg());
+    auto tmp = mem_rewritten_[def] = def->rebuild(world(), rewrite_type(def->type()), new_ops, def->dbg());
     if (match<mem::M>(tmp->type())) val2mem_[place] = tmp;
     if (tmp->num_projs() > 0 && match<mem::M>(tmp->proj(0)->type())) {
         mem_rewritten_[tmp->proj(0)] = tmp->proj(0);
