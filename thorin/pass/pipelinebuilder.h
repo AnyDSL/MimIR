@@ -76,10 +76,11 @@ private:
 };
 
 // TODO: move somewhere better (for now here due to template restrictions)
-template<class A, class P>
-void register_pass(Passes& passes) {
-    passes[flags_t(Axiom::Base<A>)] = [](World&, PipelineBuilder& builder, const Def* app) {
-        builder.add_pass<P>(app);
+template<class A, class P, class... CArgs>
+void register_pass(Passes& passes, CArgs&&... args) {
+    passes[flags_t(Axiom::Base<A>)] = [... args = std::forward<CArgs>(args)](World&, PipelineBuilder& builder,
+                                                                             const Def* app) {
+        builder.add_pass<P>(app, args...);
     };
 }
 

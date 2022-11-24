@@ -7,6 +7,10 @@
 /// 2. Wrap DS functions to CPS functions using an axiom.
 /// 3. Convert CPS functions to DS functions using an axiom.
 ///
+/// ## Dependencies
+///
+.import compile;
+///
 /// ## Operations
 ///
 /// ### %direct.ds2cps
@@ -20,3 +24,20 @@
 /// 
 .ax %direct.cps2ds: Π [T: *, U: *] -> (.Cn [T, .Cn U]) -> (T -> U), normalize_cps2ds;
 .ax %direct.cps2ds_dep: Π [T: *, U: T -> *] -> (.Cn [t:T, .Cn ((U t))]) -> (Π [t:T] -> ((U t)));
+///
+/// ## Compilation Passes and Phases
+/// 
+/// ### Passes
+/// 
+.ax %direct.ds2cps_pass: %compile.Pass;
+.ax %direct.cps2ds_pass: %compile.Pass;
+/// 
+/// ### Phases
+/// 
+.let direct_phases = {
+  %compile.combined_phase (%compile.phase_list
+    (%compile.single_pass_phase %direct.ds2cps_pass)
+    (%compile.single_pass_phase %direct.cps2ds_pass)
+    optimization_phase
+  )
+};

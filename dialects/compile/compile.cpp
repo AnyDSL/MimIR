@@ -53,10 +53,10 @@ void addPasses(World& world, PipelineBuilder& builder, Passes& passes, DefVec& p
                 auto pass_fun = passes[flag];
                 pass_fun(world, builder, pass);
             } else {
-                world.WLOG("pass '{}' not found", pass_ax->name());
+                world.ELOG("pass '{}' not found", pass_ax->name());
             }
         } else {
-            world.WLOG("pass '{}' is not an axiom", pass_def);
+            world.ELOG("pass '{}' is not an axiom", pass_def);
         }
     }
 }
@@ -77,17 +77,17 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                     });
                 };
 
-                auto pass_phase_flag    = flags_t(Axiom::Base<thorin::compile::pass_phase>);
-                passes[pass_phase_flag] = [&](World& world, PipelineBuilder& builder, const Def* app) {
-                    auto [ax, pass_list] = collect_args(app->as<App>()->arg());
-                    addPasses(world, builder, passes, pass_list);
-                };
+                // auto pass_phase_flag    = flags_t(Axiom::Base<thorin::compile::pass_phase>);
+                // passes[pass_phase_flag] = [&](World& world, PipelineBuilder& builder, const Def* app) {
+                //     auto [ax, pass_list] = collect_args(app->as<App>()->arg());
+                //     addPasses(world, builder, passes, pass_list);
+                // };
 
-                auto combined_phase_flag    = flags_t(Axiom::Base<thorin::compile::combined_phase>);
-                passes[combined_phase_flag] = [&](World& world, PipelineBuilder& builder, const Def* app) {
-                    auto [ax, phase_list] = collect_args(app->as<App>()->arg());
-                    addPhases(phase_list, world, passes, builder);
-                };
+                // auto combined_phase_flag    = flags_t(Axiom::Base<thorin::compile::combined_phase>);
+                // passes[combined_phase_flag] = [&](World& world, PipelineBuilder& builder, const Def* app) {
+                //     auto [ax, phase_list] = collect_args(app->as<App>()->arg());
+                //     addPhases(phase_list, world, passes, builder);
+                // };
 
                 passes[flags_t(Axiom::Base<thorin::compile::passes_to_phase>)] =
                     [&](World& world, PipelineBuilder& builder, const Def* app) {
@@ -110,13 +110,15 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                     auto [ax, phases] = collect_args(app);
                     addPhases(phases, world, passes, builder);
                 };
+                passes[flags_t(Axiom::Base<thorin::compile::nullptr_pass>)] = [&](World&, PipelineBuilder& builder,
+                                                                                  const Def* def) {
+                    builder.remember_pass_instance(nullptr, def);
+                };
 
                 register_pass<compile::partial_eval_pass, PartialEval>(passes);
                 register_pass<compile::beta_red_pass, BetaRed>(passes);
                 register_pass<compile::eta_red_pass, EtaRed>(passes);
 
-                register_pass<compile::scalerize_no_arg_pass, Scalerize>(passes);
-                register_pass<compile::tail_rec_elim_no_arg_pass, TailRecElim>(passes);
                 register_pass<compile::lam_spec_pass, LamSpec>(passes);
                 register_pass<compile::ret_wrap_pass, RetWrap>(passes);
 
