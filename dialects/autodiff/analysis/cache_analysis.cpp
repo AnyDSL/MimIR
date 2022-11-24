@@ -31,8 +31,6 @@ void CacheAnalysis::run() {
     CacheOptimizer cache_optimizer(factory());
     targets_ = cache_optimizer.optimize(requirements);
 
-    for (auto target : targets_) { target->dump(); }
-
     for (auto requirement : requirements) { depends_on_loads(requirement, targets_, loads_); }
 
     for (auto load : loads_) {

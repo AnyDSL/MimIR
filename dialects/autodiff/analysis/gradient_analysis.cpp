@@ -89,7 +89,6 @@ void GradientAnalysis::visit(const Def* def) {
             auto ptr = arg->proj(1);
             meet(ptr, val);
         } else if (auto bitcast = match<core::bitcast>(app)) {
-            bitcast->dump();
             auto ptr = bitcast->arg();
             meet(ptr, bitcast);
             meet(bitcast, ptr);

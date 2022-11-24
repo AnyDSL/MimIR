@@ -67,7 +67,6 @@ DefSet& Utils::depends_on_loads(const Def* def) {
 
         for (auto bound : factory().dfa().post_order(lam)) {
             DefSet& other_deps = depends_on_loads(bound->def());
-            if (!other_deps.empty()) { bound->def()->dump(); }
             deps.insert(other_deps.begin(), other_deps.end());
         }
     } else if (match<mem::load>(def)) {

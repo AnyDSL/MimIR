@@ -56,6 +56,11 @@ Lam* find_join_lam(AffineCFNode* node, LamSet& lams, DefMap<Lam*>& visited) {
     return result;
 }
 
+Lam* find_join_lam(AffineCFNode* node, LamSet& lams) {
+    DefMap<Lam*> visited;
+    find_join_lam(node, lams, visited);
+}
+
 void LiveAnalysis::build_end_of_live() {
     end_of_live_ = std::make_unique<DefMap<Lam*>>();
     auto& utils  = factory().utils();
@@ -70,11 +75,7 @@ void LiveAnalysis::build_end_of_live() {
         for (auto def : result) { load2lams[def].insert(lam); }
     }
 
-    for (auto& [load, lams] : load2lams) {
-        DefMap<Lam*> visited;
-        auto result           = find_join_lam(exit, lams, visited);
-        (*end_of_live_)[load] = result;
-    }
+    for (auto& [load, lams] : load2lams) { (*end_of_live_)[load] = find_join_lam(exit, lams); }
 }
 
 Lam* LiveAnalysis::end_of_live(const Def* load) {
@@ -84,7 +85,6 @@ Lam* LiveAnalysis::end_of_live(const Def* load) {
 
 DefMap<Lam*>& LiveAnalysis::end_of_live() {
     if (end_of_live_ == nullptr) { build_end_of_live(); }
-
     return *end_of_live_;
 }
 
