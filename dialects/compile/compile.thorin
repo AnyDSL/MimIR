@@ -111,3 +111,7 @@
         (%compile.single_pass_phase %compile.lam_spec_pass)
         (%compile.single_pass_phase %compile.ret_wrap_pass)
 };
+
+.lam .extern _default_compile [] -> Pipeline = {
+    default_pipeline
+};
