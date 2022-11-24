@@ -13,58 +13,38 @@ namespace thorin::autodiff {
 
 class AliasAnalysis;
 
-
 struct GradientLattice {
     enum Type { Bot = 0, Required = 1, Has = 2, Top = 3 };
 
     GradientLattice(const Def* def)
-            : type_(Type::Bot)
-            , def_(def) {}
+        : type_(Type::Bot)
+        , def_(def) {}
 
     GradientLattice(GradientLattice& other) = delete;
 
-    Type type(){
-        return type_;
-    }
+    Type type() { return type_; }
 
     bool set(Type type);
-/*
-    bool set_gradient() {
-        if (type_ == Bot) {
-            type_ = Has;
-            return true;
-        }
 
-        return false;
-    }
-
-    bool has_gradient() { return type_ |= Has; }
-
-    bool has_gradient() { return type_ = Has; }*/
 private:
     Type type_;
     const Def* def_;
 };
 
-
-inline GradientLattice::Type operator|( GradientLattice::Type a,  GradientLattice::Type b) {
+inline GradientLattice::Type operator|(GradientLattice::Type a, GradientLattice::Type b) {
     return static_cast<GradientLattice::Type>(static_cast<int>(a) | static_cast<int>(b));
 }
-inline GradientLattice::Type operator&( GradientLattice::Type a,  GradientLattice::Type b) {
+inline GradientLattice::Type operator&(GradientLattice::Type a, GradientLattice::Type b) {
     return static_cast<GradientLattice::Type>(static_cast<int>(a) & static_cast<int>(b));
 }
 
 class AffineCFNode;
 class GradientAnalysis : public Analysis {
-
 public:
-
 private:
-
     bool todo_;
     DefSet gradient_set;
     DefMap<std::unique_ptr<GradientLattice>> lattices;
-    AliasAnalysis& alias_;
 
 public:
     GradientAnalysis(AnalysisFactory& factory);
@@ -87,6 +67,5 @@ public:
 
     void run(Lam* diffee);
 };
-
 
 } // namespace thorin::autodiff

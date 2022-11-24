@@ -28,7 +28,7 @@ Lam* lam_of_op(const Def* mem) {
     }
 }
 
-Lam* find_last_use(AffineCFNode* node, LamSet& lams, DefMap<Lam*>& visited) {
+Lam* find_join_lam(AffineCFNode* node, LamSet& lams, DefMap<Lam*>& visited) {
     auto caller = node->def();
     if (auto it = visited.find(caller); it != visited.end()) return it->second;
     bool has_erased = false;
@@ -39,7 +39,7 @@ Lam* find_last_use(AffineCFNode* node, LamSet& lams, DefMap<Lam*>& visited) {
     Lam* pred_lam = nullptr;
     size_t size   = 0;
     for (auto pred : node->preds()) {
-        auto pred_lam_tmp = find_last_use(pred, lams, visited);
+        auto pred_lam_tmp = find_join_lam(pred, lams, visited);
         if (pred_lam_tmp && pred_lam_tmp != pred_lam) {
             pred_lam = pred_lam_tmp;
             size++;
@@ -72,7 +72,7 @@ void LiveAnalysis::build_end_of_live() {
 
     for (auto& [load, lams] : load2lams) {
         DefMap<Lam*> visited;
-        auto result = find_last_use(exit, lams, visited);
+        auto result           = find_join_lam(exit, lams, visited);
         (*end_of_live_)[load] = result;
     }
 }

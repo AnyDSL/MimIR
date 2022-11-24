@@ -40,6 +40,7 @@ public:
     }
 
     bool is_loop_body_var(const Var* var);
+    bool is_loop_body(const Def* def);
     bool is_loop_index(const Def* def);
 
     bool is_root_var(const Def* def);

@@ -22,23 +22,18 @@ CacheAnalysis::CacheAnalysis(AnalysisFactory& factory)
 }
 
 void CacheAnalysis::run() {
-    auto& utils    = factory().utils();
-    auto& gradient = factory().gradient();
-    auto& war      = factory().war();
-    auto& live     = factory().live();
+    auto& utils = factory().utils();
+    auto& war   = factory().war();
+    auto& live  = factory().live();
 
     for (auto def : gradient.defs()) { visit(def); }
 
     CacheOptimizer cache_optimizer(factory());
     targets_ = cache_optimizer.optimize(requirements);
 
-    for( auto target : targets_ ){
-        target->dump();
-    }
+    for (auto target : targets_) { target->dump(); }
 
-    for (auto requirement : requirements) { 
-        depends_on_loads(requirement, targets_, loads_); 
-    }
+    for (auto requirement : requirements) { depends_on_loads(requirement, targets_, loads_); }
 
     for (auto load : loads_) {
         Lam* lam = live.end_of_live(load);
@@ -66,25 +61,19 @@ bool CacheAnalysis::requires_caching(const Def* def) { return targets_.contains(
 
 void CacheAnalysis::require(const Def* def) {
     def = alias.get(def);
-    if (!gradient.has_gradient(def)) { return; }
-
+    if (!gradient.has_gradient(def)) return;
     requirements.insert(def);
 }
 
 void CacheAnalysis::visit(const Def* def) {
     if (auto rop = match<math::arith>(def)) {
-        if (rop.id() == math::arith::mul) {
-            require(rop->arg(0));
-            require(rop->arg(1));
-        } else if (rop.id() == math::arith::div) {
+        if (rop.id() == math::arith::mul || rop.id() == math::arith::div) {
             require(rop->arg(0));
             require(rop->arg(1));
         }
     } else if (auto extrema = match<math::extrema>(def)) {
-        if (extrema.id() == math::extrema::maximum || extrema.id() == math::extrema::minimum) {
-            require(extrema->arg(0));
-            require(extrema->arg(1));
-        }
+        require(extrema->arg(0));
+        require(extrema->arg(1));
     }
 
     if (auto exp = match<math::exp>(def)) {
@@ -97,10 +86,8 @@ void CacheAnalysis::visit(const Def* def) {
 
     if (auto rt = match<math::rt>(def)) { require(rt); }
     if (auto tri = match<math::tri>(def)) { require(tri->arg()); }
-
+    if (auto gamma = match<math::gamma>(def)) { require(gamma->arg()); }
     if (auto lea = match<mem::lea>(def)) { requirements.insert(alias.get(lea->arg(1))); }
-
-    if (auto gamma = match<math::gamma>(def)) { require(gamma->arg(0)); }
 }
 
 } // namespace thorin::autodiff
