@@ -16,7 +16,8 @@ namespace thorin::autodiff {
 
 CacheAnalysis::CacheAnalysis(AnalysisFactory& factory)
     : Analysis(factory)
-    , alias(factory.alias()) {
+    , alias(factory.alias())
+    , gradient(factory.gradient()) {
     run();
 }
 
@@ -31,7 +32,13 @@ void CacheAnalysis::run() {
     CacheOptimizer cache_optimizer(factory());
     targets_ = cache_optimizer.optimize(requirements);
 
-    for (auto requirement : requirements) { depends_on_loads(requirement, targets_, loads_); }
+    for( auto target : targets_ ){
+        target->dump();
+    }
+
+    for (auto requirement : requirements) { 
+        depends_on_loads(requirement, targets_, loads_); 
+    }
 
     for (auto load : loads_) {
         Lam* lam = live.end_of_live(load);
@@ -59,6 +66,8 @@ bool CacheAnalysis::requires_caching(const Def* def) { return targets_.contains(
 
 void CacheAnalysis::require(const Def* def) {
     def = alias.get(def);
+    if (!gradient.has_gradient(def)) { return; }
+
     requirements.insert(def);
 }
 
@@ -89,7 +98,7 @@ void CacheAnalysis::visit(const Def* def) {
     if (auto rt = match<math::rt>(def)) { require(rt); }
     if (auto tri = match<math::tri>(def)) { require(tri->arg()); }
 
-    if (auto lea = match<mem::lea>(def)) { require(lea->arg(1)); }
+    if (auto lea = match<mem::lea>(def)) { requirements.insert(alias.get(lea->arg(1))); }
 
     if (auto gamma = match<math::gamma>(def)) { require(gamma->arg(0)); }
 }

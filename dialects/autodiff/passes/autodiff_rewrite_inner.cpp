@@ -134,7 +134,6 @@ const Def* AutoDiffEval::augment_app(const App* app) {
             auto caller      = current_scope();
             const Def* index = branch_id(caller);
             aug_arg          = merge_tuple(aug_arg, {index});
-            aug_arg->dump();
         }
     }
 
@@ -323,8 +322,6 @@ const Def* sum(const Def* left, const Def* right) {
     if (is_idx(left->type()) && is_idx(right->type())) {
         auto test1 = Idx::size(left->type());
         auto test2 = Idx::size(right->type());
-        test1->dump();
-        test2->dump();
         auto left_idx = is_idx(left->type());
         assert(*isa_lit(left_idx));
         return core::op(core::wrap::add, core::Mode::none, left, right);
@@ -344,18 +341,7 @@ const Def* AutoDiffEval::resolve(const Def* def) {
     auto test = alias(def);
     if (test && test != def) {
         auto result = resolve(test);
-
-        def->dump();
-        test->dump();
-        std::cout << "    ";
-        result->dump();
-
         return result;
-    }
-
-    if (def->isa<Var>()) {
-        def->dump(1);
-        def->dump(1);
     }
 
     if (match<mem::M>(def->type())) { return current_mem; }
@@ -437,8 +423,6 @@ void AutoDiffEval::attach_gradient(const Def* dst, const Def* new_gradient) {
 const Def* AutoDiffEval::get_gradient(const Def* def) {
     auto gradient = current_loop->gradient[def];
     if (gradient) {
-        gradient->type()->dump();
-        def->type()->dump();
         assert(gradient->type() == def->type());
     }
     return gradient;
@@ -735,20 +719,33 @@ void AutoDiffEval::prop(const Def* def) {
         } else if (rop.id() == math::arith::sub) {
             right_grad = math::op_rminus(math::Mode::fast, gradient);
         } else if (rop.id() == math::arith::mul) {
-            auto left_value = resolve(left);
-            right_grad      = math::op(math::arith::mul, math::Mode::fast, gradient, left_value);
+            if(has_gradient(right)){
+                auto left_value = resolve(left);
+                right_grad      = math::op(math::arith::mul, math::Mode::fast, gradient, left_value);
+            }
 
-            auto right_value = resolve(right);
-            left_grad        = math::op(math::arith::mul, math::Mode::fast, gradient, right_value);
+            if(has_gradient(left)){
+                auto right_value = resolve(right);
+                left_grad        = math::op(math::arith::mul, math::Mode::fast, gradient, right_value);
+            }
         } else if (rop.id() == math::arith::div) {
-            auto left_value  = resolve(left);
-            auto right_value = resolve(right);
-            left_grad        = math::op(math::arith::div, math::Mode::fast, gradient, right_value);
+            const Def* right_value = nullptr;
 
-            right_grad  = math::op_rminus(math::Mode::fast, gradient);
-            right_grad  = math::op(math::arith::mul, math::Mode::fast, right_grad, left_value);
-            right_value = math::op(math::arith::mul, math::Mode::fast, right_value, right_value);
-            right_grad  = math::op(math::arith::div, math::Mode::fast, right_grad, right_value);
+            if(has_gradient(left)){
+                right_value     = resolve(right);
+                left_grad        = math::op(math::arith::div, math::Mode::fast, gradient, right_value);
+            }
+
+            if(has_gradient(left)){
+                if(right_value == nullptr){
+                    right_value = resolve(right);
+                }
+                auto left_value  = resolve(left);
+                right_grad  = math::op_rminus(math::Mode::fast, gradient);
+                right_grad  = math::op(math::arith::mul, math::Mode::fast, right_grad, left_value);
+                right_value = math::op(math::arith::mul, math::Mode::fast, right_value, right_value);
+                right_grad  = math::op(math::arith::div, math::Mode::fast, right_grad, right_value);
+            }
         }
 
         attach_gradient(rop->arg(), w.tuple({left_grad, right_grad}));
@@ -1053,12 +1050,12 @@ const Def* AutoDiffEval::augment_for(const App* for_app) {
     auto size = for_size(aug_start, aug_end, aug_inc);
 
     auto body_lam = body->as_nom<Lam>();
-
+/*
     Scope scope(body_lam);
     for (const Def* free_def : scope.free_defs()) {
         auto free_ty = free_def->type();
         if (is_idx(free_ty) || match<math::F>(free_ty)) { augment(free_def); }
-    }
+    }*/
     push_loop_frame(for_app, size);
     auto aug_body = augment_for_body(body, aug_start, aug_inc);
     pop_loop_frame();

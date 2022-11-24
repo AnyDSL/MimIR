@@ -81,7 +81,6 @@ void AliasAnalysis::meet_app(const Def* callee, const Def* arg) {
     } else if (auto extract = is_branch(callee)) {
         for (auto branch : extract->tuple()->ops()) { meet_app(branch, arg); }
     } else {
-        callee->dump();
     }
 }
 } // namespace thorin::autodiff

@@ -260,7 +260,7 @@ const Def* normalize_arith(const Def* type, const Def* c, const Def* arg, const 
 
         if (a == b) {
             switch (id) {
-                case arith::add: return math::op(arith::mul, lit_f(world, *w, 2.0), a, dbg); // a + a -> 2 * a
+                case arith::add: return math::op(arith::mul, *m, lit_f(world, *w, 2.0), a, dbg); // a + a -> 2 * a
                 case arith::sub: return lit_f(world, *w, 0.0);                             // a - a -> 0
                 case arith::mul: break;
                 case arith::div: return lit_f(world, *w, 1.0);                             // a / a -> 1

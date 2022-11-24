@@ -8,6 +8,7 @@
 #include "dialects/affine/affine.h"
 #include "dialects/autodiff/analysis/alias_analysis.h"
 #include "dialects/autodiff/analysis/analysis.h"
+#include "dialects/autodiff/analysis/gradient_analysis.h"
 #include "dialects/autodiff/utils/helper.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/mem.h"
@@ -20,6 +21,7 @@ class AliasAnalysis;
 class CacheAnalysis : public Analysis {
 public:
     AliasAnalysis& alias;
+    GradientAnalysis& gradient;
     DefSet requirements;
     DefSet targets_;
     DefSet loads_;

@@ -310,7 +310,6 @@ Lam* DefInliner::find_lam(const Def* def) {
 
 Lam* DefInliner::build() {
     for (auto bound : scope.bound()) {
-        bound->dump(1);
         if (!bound->isa<Lit>() && !bound->type()->isa<Pi>()) {
             auto lam = scheduler.smart(bound);
             nom2defs[lam].insert(bound);
@@ -336,12 +335,6 @@ Lam* DefInliner::build() {
     for (auto [lam, set] : extras_fwd) {
         DefVec extra(set.begin(), set.end());
         mem_first_sort(extra);
-
-        auto test = w_.tuple(extra);
-
-        lam->dump();
-        test->dump();
-
         extras_sorted.emplace(lam, extra);
     }
 

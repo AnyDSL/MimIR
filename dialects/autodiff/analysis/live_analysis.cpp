@@ -73,8 +73,6 @@ void LiveAnalysis::build_end_of_live() {
     for (auto& [load, lams] : load2lams) {
         DefMap<Lam*> visited;
         auto result = find_last_use(exit, lams, visited);
-        load->dump(1);
-        result->dump();
         (*end_of_live_)[load] = result;
     }
 }

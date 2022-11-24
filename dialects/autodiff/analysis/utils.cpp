@@ -11,11 +11,27 @@ Utils::Utils(AnalysisFactory& factory)
     find_lams(factory.lam());
 }
 
+bool Utils::is_loop_body_var(const Var* var) {
+    if(!var) return false;
+    auto& alias = factory().alias();
+    bool result = false;
+    auto loop_body = var->nom();
+    auto& cfa      = factory().cfa();
+    auto cfa_node  = cfa.node(loop_body);
+
+    if (auto for_app_def = cfa_node->pred_or_null()) {
+        if (auto for_app_lam = for_app_def->def()->isa_nom<Lam>()) {
+            if (auto for_app = match<affine::For>(for_app_lam->body())) { return for_app->arg(4) == loop_body; }
+        }
+    }
+    return false;
+}
+
 bool Utils::is_loop_index(const Def* def) {
     if (auto it = loop_indices_.find(def); it != loop_indices_.end()) return it->second;
     auto& alias = factory().alias();
-    bool result = false;
-    if (auto index_var = is_var(alias.get(def))) {
+    bool result = is_loop_body_var(is_var(alias.get(def)));
+    /*if (auto index_var = is_var(alias.get(def))) {
         auto loop_body = index_var->nom();
         auto& cfa      = factory().cfa();
         auto cfa_node  = cfa.node(loop_body);
@@ -25,7 +41,7 @@ bool Utils::is_loop_index(const Def* def) {
                 if (auto for_app = match<affine::For>(for_app_lam->body())) { result = for_app->arg(4) == loop_body; }
             }
         }
-    }
+    }*/
     loop_indices_[def] = result;
     return result;
 }

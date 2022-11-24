@@ -7,45 +7,70 @@
 
 #include "dialects/affine/affine.h"
 #include "dialects/autodiff/analysis/analysis.h"
-#include "dialects/math/math.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {
 
 class AliasAnalysis;
-class GradientAnalysis : public Analysis {
-    struct Lattice {
-        enum Type { Bot, Has_Gradient };
 
-        Lattice(const Def* def)
+
+struct GradientLattice {
+    enum Type { Bot = 0, Required = 1, Has = 2, Top = 3 };
+
+    GradientLattice(const Def* def)
             : type_(Type::Bot)
             , def_(def) {}
 
-        Type type_;
-        const Def* def_;
+    GradientLattice(GradientLattice& other) = delete;
 
-        bool set_gradient() {
-            if (type_ == Bot) {
-                type_ = Has_Gradient;
-                return true;
-            }
+    Type type(){
+        return type_;
+    }
 
-            return false;
+    bool set(Type type);
+/*
+    bool set_gradient() {
+        if (type_ == Bot) {
+            type_ = Has;
+            return true;
         }
 
-        bool has_gradient() { return type_ = Has_Gradient; }
-    };
+        return false;
+    }
+
+    bool has_gradient() { return type_ |= Has; }
+
+    bool has_gradient() { return type_ = Has; }*/
+private:
+    Type type_;
+    const Def* def_;
+};
+
+
+inline GradientLattice::Type operator|( GradientLattice::Type a,  GradientLattice::Type b) {
+    return static_cast<GradientLattice::Type>(static_cast<int>(a) | static_cast<int>(b));
+}
+inline GradientLattice::Type operator&( GradientLattice::Type a,  GradientLattice::Type b) {
+    return static_cast<GradientLattice::Type>(static_cast<int>(a) & static_cast<int>(b));
+}
+
+class AffineCFNode;
+class GradientAnalysis : public Analysis {
+
+public:
+
+private:
 
     bool todo_;
     DefSet gradient_set;
-    DefMap<std::unique_ptr<Lattice>> lattices;
+    DefMap<std::unique_ptr<GradientLattice>> lattices;
     AliasAnalysis& alias_;
 
 public:
     GradientAnalysis(AnalysisFactory& factory);
     GradientAnalysis(GradientAnalysis& other) = delete;
 
-    Lattice& get_lattice(const Def* def);
+    GradientLattice& get_lattice(const Def* def);
 
     DefSet& defs();
 
@@ -53,13 +78,15 @@ public:
 
     bool is_const(const Def* def);
 
-    bool meet(const Def* present, const Def* next);
+    void meet_app(const Def* arg, AffineCFNode* node);
+    void meet(GradientLattice& present, GradientLattice& next);
+    void meet(const Def* present, const Def* next);
+    void meet_projs(const Def* present, const Def* next);
 
-    bool meet_projs(const Def* present, const Def* next);
-
-    bool visit(const Def* def);
+    void visit(const Def* def);
 
     void run(Lam* diffee);
 };
+
 
 } // namespace thorin::autodiff

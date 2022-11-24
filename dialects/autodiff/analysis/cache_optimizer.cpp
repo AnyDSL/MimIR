@@ -117,7 +117,6 @@ public:
         } else if (def->num_projs() > 1) {
             for (auto proj : def->projs()) { propagate(proj, node); }
         } else {
-            def->dump();
         }
     }
 };
@@ -187,7 +186,6 @@ DefSet CacheOptimizer::optimize(DefSet defs) {
         explored.clear();
         best = std::make_shared<CacheState>();
         for (auto def : group) {
-            def->dump(1);
             best->memory += memory_estimate(def->type());
 
             size_t depth = get_depth(def);
