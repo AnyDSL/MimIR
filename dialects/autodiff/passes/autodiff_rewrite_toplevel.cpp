@@ -86,6 +86,21 @@ void validate(Lam* lam) {
     return validate(lam, vars);
 }
 
+void AutoDiffEval::init_loop_frame() {
+    root    = std::make_shared<LoopFrame>(*this);
+    auto& w = world();
+    LoopData data;
+
+    auto index_ty    = w.type_int(64);
+    root->size       = one(index_ty);
+    root->local_size = one(index_ty);
+    data.index       = zero(index_ty);
+    data.cache_index = zero(index_ty);
+    root->forward    = data;
+    root->backward   = data;
+    current_loop     = root;
+}
+
 const Def* AutoDiffEval::derive_(const Def* def) {
     auto& w = world();
 
@@ -97,6 +112,8 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     inliner.filter([](const Def* def) { return !is_idx(def->type()); });
     diffee  = inliner.build();
     factory = std::make_unique<AnalysisFactory>(diffee);
+
+    init_loop_frame();
     build_branch_table(diffee);
 
     auto diff_ty = autodiff_type_fun_pi(diffee->type());

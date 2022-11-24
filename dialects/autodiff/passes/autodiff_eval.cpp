@@ -60,19 +60,8 @@ const Def* AutoDiffEval::rewrite(const Def* def) {
         world().DLOG("found a autodiff::autodiff of {}", arg);
         assert(arg->isa<Lam>());
 
-        {
-            root    = std::make_shared<LoopFrame>(*this);
-            auto& w = world();
-            LoopData data;
-
-            auto index_ty    = w.type_int(64);
-            root->size       = one(index_ty);
-            root->local_size = one(index_ty);
-            data.index       = zero(index_ty);
-            data.cache_index = zero(index_ty);
-            root->forward    = data;
-            root->backward   = data;
-            current_loop     = root;
+        for (auto use : ad_app->uses()) {
+            if (auto app = use->isa<App>()) { app->arg()->dump(1); }
         }
 
         def = derive(arg);
