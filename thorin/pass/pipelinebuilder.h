@@ -9,12 +9,12 @@
 
 namespace thorin {
 
-typedef std::function<void(PassMan&)> PassBuilder;
-typedef std::function<void(Pipeline&)> PhaseBuilder;
-typedef std::pair<int, PassBuilder> PrioPassBuilder;
-typedef std::pair<int, PhaseBuilder> PrioPhaseBuilder;
-typedef std::vector<PrioPassBuilder> PassList;
-typedef std::vector<PrioPhaseBuilder> PhaseList;
+using PassBuilder      = std::function<void(PassMan&)>;
+using PhaseBuilder     = std::function<void(Pipeline&)>;
+using PrioPassBuilder  = std::pair<int, PassBuilder>;
+using PrioPhaseBuilder = std::pair<int, PhaseBuilder>;
+using PassList         = std::vector<PrioPassBuilder>;
+using PhaseList        = std::vector<PrioPhaseBuilder>;
 // using PassInstanceMap = absl::flat_hash_map<const Def*, Pass*>;
 using PassInstanceMap = std::map<const Def*, Pass*>;
 
