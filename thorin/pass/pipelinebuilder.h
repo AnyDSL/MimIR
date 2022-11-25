@@ -15,8 +15,7 @@ using PrioPassBuilder  = std::pair<int, PassBuilder>;
 using PrioPhaseBuilder = std::pair<int, PhaseBuilder>;
 using PassList         = std::vector<PrioPassBuilder>;
 using PhaseList        = std::vector<PrioPhaseBuilder>;
-// using PassInstanceMap = absl::flat_hash_map<const Def*, Pass*>;
-using PassInstanceMap = std::map<const Def*, Pass*>;
+using PassInstanceMap  = absl::btree_map<const Def*, Pass*, GIDLt<const Def*>>;
 
 struct passCmp {
     constexpr bool operator()(PrioPassBuilder const& a, PrioPassBuilder const& b) const noexcept {
