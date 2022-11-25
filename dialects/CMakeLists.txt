@@ -6,6 +6,7 @@ add_thorin_dialect(affine
         affine/passes/lower_for.h
     DEPENDS
         mem
+        core
     INSTALL
 )
 
@@ -83,7 +84,6 @@ add_thorin_dialect(core
     DEPENDS
         math
         mem
-        clos
     INSTALL
 )
 
