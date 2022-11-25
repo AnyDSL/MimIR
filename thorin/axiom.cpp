@@ -20,7 +20,7 @@ Axiom::Axiom(NormalizeFn normalizer,
 
 std::pair<u8, u8> Axiom::infer_curry_and_trip(const Def* type) {
     u8 curry = 0;
-    u8 trip = 0;
+    u8 trip  = 0;
     NomSet done;
     while (auto pi = type->isa<Pi>()) {
         if (auto nom = pi->isa_nom()) {

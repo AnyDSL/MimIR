@@ -609,8 +609,7 @@ void Parser::parse_ax() {
 
     if (accept(Tok::Tag::T_comma)) {
         auto c = expect(Tok::Tag::L_u, "curry counter for axiom");
-        if (c.u() > curry)
-            err(c.loc(), "curry counter cannot be greater than {}", curry);
+        if (c.u() > curry) err(c.loc(), "curry counter cannot be greater than {}", curry);
         curry = c.u();
     }
 
