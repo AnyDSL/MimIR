@@ -93,7 +93,7 @@ const Def* Var      ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) co
 const Def* Vel      ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.vel(t, o[0], dbg); }
 
 const Def* Axiom    ::rebuild(World& w, const Def* t, Defs  , const Def* dbg) const {
-    auto res = w.axiom(normalizer(), t, dialect(), tag(), sub(), dbg);
+    auto res = w.axiom(normalizer(), curry(), trip(), t, dialect(), tag(), sub(), dbg);
     assert(&w != &world() || gid() == res->gid());
     return res;
 }

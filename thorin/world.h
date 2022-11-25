@@ -189,12 +189,13 @@ public:
 
     /// @name Axiom
     ///@{
-    const Axiom* axiom(Def::NormalizeFn n, const Def* type, dialect_t d, tag_t t, sub_t s, const Def* dbg = {}) {
-        auto ax                          = unify<Axiom>(0, n, type, d, t, s, dbg);
+    const Axiom*
+    axiom(Def::NormalizeFn n, u8 curry, u8 trip, const Def* type, dialect_t d, tag_t t, sub_t s, const Def* dbg = {}) {
+        auto ax                          = unify<Axiom>(0, n, curry, trip, type, d, t, s, dbg);
         return move_.axioms[ax->flags()] = ax;
     }
     const Axiom* axiom(const Def* type, dialect_t d, tag_t t, sub_t s, const Def* dbg = {}) {
-        return axiom(nullptr, type, d, t, s, dbg);
+        return axiom(nullptr, 0, 0, type, d, t, s, dbg);
     }
 
     /// Builds a fresh Axiom with descending Axiom::sub.
@@ -202,7 +203,7 @@ public:
     /// It uses the dialect Axiom::Global_Dialect and starts with `0` for Axiom::sub and counts up from there.
     /// The Axiom::tag is set to `0` and the Axiom::normalizer to `nullptr`.
     const Axiom* axiom(const Def* type, const Def* dbg = {}) {
-        return axiom(nullptr, type, Axiom::Global_Dialect, 0, state_.pod.curr_sub++, dbg);
+        return axiom(nullptr, 0, 0, type, Axiom::Global_Dialect, 0, state_.pod.curr_sub++, dbg);
     }
 
     /// Get Axiom from a dialect.
@@ -251,12 +252,12 @@ public:
 
     /// @name App
     ///@{
+    template<bool Normalize = true>
     const Def* app(const Def* callee, const Def* arg, const Def* dbg = {});
-    const Def* app(const Def* callee, Defs args, const Def* dbg = {}) { return app(callee, tuple(args), dbg); }
-    /// Same as World::app but does *not* apply NormalizeFn.
-    const Def* raw_app(const Def* callee, const Def* arg, const Def* dbg = {});
-    /// Same as World::app but does *not* apply NormalizeFn.
-    const Def* raw_app(const Def* callee, Defs args, const Def* dbg = {}) { return raw_app(callee, tuple(args), dbg); }
+    template<bool Normalize = true>
+    const Def* app(const Def* callee, Defs args, const Def* dbg = {}) {
+        return app<Normalize>(callee, tuple(args), dbg);
+    }
     ///@}
 
     /// @name Sigma

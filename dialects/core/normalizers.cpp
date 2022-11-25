@@ -190,7 +190,7 @@ const Def* normalize_nop(const Def* type, const Def* callee, const Def* arg, con
         }
     }
 
-    return world.raw_app(callee, arg, dbg);
+    return world.app<false>(callee, arg, dbg);
 }
 
 template<ncmp id>
@@ -219,7 +219,7 @@ const Def* normalize_ncmp(const Def* type, const Def* callee, const Def* arg, co
         }
     }
 
-    return world.raw_app(callee, arg, dbg);
+    return world.app<false>(callee, arg, dbg);
 }
 
 template<icmp id>
@@ -236,7 +236,7 @@ const Def* normalize_icmp(const Def* type, const Def* c, const Def* arg, const D
         if (id == icmp::ne) return world.lit_ff();
     }
 
-    return world.raw_app(callee, {a, b}, dbg);
+    return world.app<false>(callee, {a, b}, dbg);
 }
 
 template<bit1 id>
@@ -255,7 +255,7 @@ const Def* normalize_bit1(const Def* type, const Def* c, const Def* a, const Def
 
     if (l) return world.lit_idx_mod(*s, ~*l);
 
-    return world.raw_app(callee, a, dbg);
+    return world.app<false>(callee, a, dbg);
 }
 
 template<class Id>
@@ -358,7 +358,7 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
 
     if (auto res = reassociate<bit2>(id, world, callee, a, b, dbg)) return res;
 
-    return world.raw_app(callee, {a, b}, dbg);
+    return world.app<false>(callee, {a, b}, dbg);
 }
 
 template<shr id>
@@ -391,7 +391,7 @@ const Def* normalize_shr(const Def* type, const Def* c, const Def* arg, const De
         if (ls && lb->get() > *ls) return world.bot(type, dbg);
     }
 
-    return world.raw_app(callee, {a, b}, dbg);
+    return world.app<false>(callee, {a, b}, dbg);
 }
 
 template<wrap id>
@@ -454,7 +454,7 @@ const Def* normalize_wrap(const Def* type, const Def* c, const Def* arg, const D
 
     if (auto res = reassociate<wrap>(id, world, callee, a, b, dbg)) return res;
 
-    return world.raw_app(callee, {a, b}, dbg);
+    return world.app<false>(callee, {a, b}, dbg);
 }
 
 template<div id>
@@ -493,7 +493,7 @@ const Def* normalize_div(const Def* type, const Def* c, const Def* arg, const De
         }
     }
 
-    return world.raw_app(callee, {mem, a, b}, dbg);
+    return world.app<false>(callee, {mem, a, b}, dbg);
 }
 
 template<conv id>
@@ -534,7 +534,7 @@ const Def* normalize_conv(const Def* dst_ty, const Def* c, const Def* x, const D
         // clang-format on
     }
 
-    return world.raw_app(callee, x, dbg);
+    return world.app<false>(callee, x, dbg);
 }
 
 const Def* normalize_bitcast(const Def* dst_t, const Def* callee, const Def* src, const Def* dbg) {
@@ -551,7 +551,7 @@ const Def* normalize_bitcast(const Def* dst_t, const Def* callee, const Def* src
         if (Idx::size(dst_t)) return world.lit(dst_t, lit->get(), dbg);
     }
 
-    return world.raw_app(callee, src, dbg);
+    return world.app<false>(callee, src, dbg);
 }
 
 // TODO I guess we can do that with C++20 <bit>
@@ -609,7 +609,7 @@ const Def* normalize_trait(const Def*, const Def* callee, const Def* type, const
     }
 
 out:
-    return world.raw_app(callee, type, dbg);
+    return world.app<false>(callee, type, dbg);
 }
 
 const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
@@ -650,7 +650,7 @@ const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const De
         }
     }
 
-    return w.raw_app(callee, arg, dbg);
+    return w.app<false>(callee, arg, dbg);
 }
 
 template<pe id>
@@ -662,7 +662,7 @@ const Def* normalize_pe(const Def* type, const Def* callee, const Def* arg, cons
         if (arg->dep_const()) return world.lit_tt();
     }
 
-    return world.raw_app(callee, arg, dbg);
+    return world.app<false>(callee, arg, dbg);
 }
 
 THORIN_core_NORMALIZER_IMPL

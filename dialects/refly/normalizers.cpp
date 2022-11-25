@@ -18,7 +18,7 @@ template<dbg id>
 const Def* normalize_dbg(const Def*, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = arg->world();
     debug_print(arg);
-    return id == dbg::perm ? world.raw_app(callee, arg, dbg) : arg;
+    return id == dbg::perm ? world.app<false>(callee, arg, dbg) : arg;
 }
 
 const Def* normalize_reify(const Def*, const Def*, const Def* arg, const Def* dbg) { return do_reify(arg, dbg); }
@@ -33,7 +33,7 @@ const Def* normalize_refine(const Def*, const Def* callee, const Def* arg, const
         return do_reify(def->refine(*l, do_reflect(x)), dbg);
     }
 
-    return world.raw_app(callee, arg, dbg);
+    return world.app<false>(callee, arg, dbg);
 }
 
 const Def* normalize_gid(const Def*, const Def*, const Def* arg, const Def*) {

@@ -74,6 +74,7 @@ const Type* World::type(const Def* level, const Def* dbg) {
     return unify<Type>(1, level, dbg)->as<Type>();
 }
 
+template<bool Normalize>
 const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
     auto pi = callee->type()->isa<Pi>();
 
@@ -83,23 +84,18 @@ const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
         if (!checker().assignable(pi->dom(), arg, dbg)) err()->ill_typed_app(callee, arg, dbg);
     }
 
-    auto type           = pi->reduce(arg).back();
-    auto [axiom, curry] = Axiom::get(callee);
-    if (axiom && curry == 1) {
-        if (auto normalize = axiom->normalizer()) return normalize(type, callee, arg, dbg);
+    auto type                 = pi->reduce(arg).back();
+    auto [axiom, curry, trip] = Axiom::get(callee);
+    if (axiom) {
+        if (auto normalize = axiom->normalizer(); Normalize && normalize && curry == 1)
+            return normalize(type, callee, arg, dbg);
+        curry = curry == 0 ? trip : curry - 1;
     }
 
     if (auto lam = callee->isa<Lam>(); lam && lam->is_set() && lam->codom()->sort() > Sort::Type)
         return lam->reduce(arg).back();
 
-    return unify<App>(2, axiom, curry - 1, type, callee, arg, dbg);
-}
-
-const Def* World::raw_app(const Def* callee, const Def* arg, const Def* dbg) {
-    auto pi             = callee->type()->as<Pi>();
-    auto type           = pi->reduce(arg).back();
-    auto [axiom, curry] = Axiom::get(callee);
-    return unify<App>(2, axiom, curry - 1, type, callee, arg, dbg);
+    return unify<App>(2, axiom, curry, trip, type, callee, arg, dbg);
 }
 
 const Def* World::sigma(Defs ops, const Def* dbg) {
@@ -434,6 +430,8 @@ const Def* World::gid2def(u32 gid) {
  * instantiate templates
  */
 
+template const Def* World::app<true>(const Def*, const Def*, const Def*);
+template const Def* World::app<false>(const Def*, const Def*, const Def*);
 template const Def* World::ext<true>(const Def*, const Def*);
 template const Def* World::ext<false>(const Def*, const Def*);
 template const Def* World::bound<true>(Defs, const Def*);

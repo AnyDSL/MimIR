@@ -126,10 +126,11 @@ using Lam2Lam = LamMap<Lam*>;
 
 class App : public Def {
 private:
-    App(const Axiom* axiom, u16 curry, const Def* type, const Def* callee, const Def* arg, const Def* dbg)
+    App(const Axiom* axiom, u8 curry, u8 trip, const Def* type, const Def* callee, const Def* arg, const Def* dbg)
         : Def(Node, type, {callee, arg}, 0, dbg) {
         axiom_ = axiom;
         curry_ = curry;
+        trip_  = trip;
     }
 
 public:
@@ -142,10 +143,11 @@ public:
     THORIN_PROJ(arg, const)
     ///@}
 
-    /// @name get axiom and current currying depth
+    /// @name get axiom, current curry counter and trip count
     ///@{
     const Axiom* axiom() const { return axiom_; }
-    u16 curry() const { return curry_; }
+    u8 curry() const { return curry_; }
+    u8 trip() const { return trip_; }
     ///@}
 
     /// @name virtual methods

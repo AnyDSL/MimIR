@@ -276,7 +276,7 @@ const Def* normalize_arith(const Def* type, const Def* c, const Def* arg, const 
 
     if (auto res = reassociate<arith>(id, world, callee, a, b, dbg)) return res;
 
-    return world.raw_app(callee, {a, b}, dbg);
+    return world.app<false>(callee, {a, b}, dbg);
 }
 
 template<extrema id>
@@ -297,49 +297,49 @@ const Def* normalize_extrema(const Def* type, const Def* c, const Def* arg, cons
         }
     }
 
-    return world.raw_app(c, arg, dbg);
+    return world.app<false>(c, arg, dbg);
 }
 
 template<tri id>
 const Def* normalize_tri(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     if (auto lit = fold<tri, id>(world, type, arg, dbg)) return lit;
-    return world.raw_app(c, arg, dbg);
+    return world.app<false>(c, arg, dbg);
 }
 
 const Def* normalize_pow(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     auto [a, b] = arg->projs<2>();
     if (auto lit = fold<pow, /*dummy*/ pow(0)>(world, type, a, b, dbg)) return lit;
-    return world.raw_app(c, arg, dbg);
+    return world.app<false>(c, arg, dbg);
 }
 
 template<rt id>
 const Def* normalize_rt(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     if (auto lit = fold<rt, id>(world, type, arg, dbg)) return lit;
-    return world.raw_app(c, arg, dbg);
+    return world.app<false>(c, arg, dbg);
 }
 
 template<exp id>
 const Def* normalize_exp(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     if (auto lit = fold<exp, id>(world, type, arg, dbg)) return lit;
-    return world.raw_app(c, arg, dbg);
+    return world.app<false>(c, arg, dbg);
 }
 
 template<er id>
 const Def* normalize_er(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     if (auto lit = fold<er, id>(world, type, arg, dbg)) return lit;
-    return world.raw_app(c, arg, dbg);
+    return world.app<false>(c, arg, dbg);
 }
 
 template<gamma id>
 const Def* normalize_gamma(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     if (auto lit = fold<gamma, id>(world, type, arg, dbg)) return lit;
-    return world.raw_app(c, arg, dbg);
+    return world.app<false>(c, arg, dbg);
 }
 
 template<cmp id>
@@ -352,7 +352,7 @@ const Def* normalize_cmp(const Def* type, const Def* c, const Def* arg, const De
     if (id == cmp::f) return world.lit_ff();
     if (id == cmp::t) return world.lit_tt();
 
-    return world.raw_app(callee, {a, b}, dbg);
+    return world.app<false>(callee, {a, b}, dbg);
 }
 
 template<class Id, Id id, nat_t sw, nat_t dw>
@@ -408,7 +408,7 @@ const Def* normalize_conv(const Def* dst_ty, const Def* c, const Def* x, const D
         }
     }
 out:
-    return world.raw_app(callee, x, dbg);
+    return world.app<false>(callee, x, dbg);
 }
 
 // TODO I guess we can do that with C++20 <bit>
