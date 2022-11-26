@@ -147,20 +147,20 @@ TEST(Axiom, curry) {
         EXPECT_EQ(trip, 1);
 
         auto ax = w.axiom(normalize_test_curry, curry, trip, rec, w.dbg("test_1_1"));
-        auto a = w.app(w.app(w.app(ax, n[0]), n[1]), n[2]);
+        auto a  = w.app(w.app(w.app(ax, n[0]), n[1]), n[2]);
 
         std::ostringstream os;
         a->stream(os, 0);
         EXPECT_EQ(os.str(), "%test_1_1 42 42 42\n");
     }
     {
-        auto pi = w.pi(nat, w.pi(nat, w.pi(nat, w.pi(nat, nat))));
+        auto pi            = w.pi(nat, w.pi(nat, w.pi(nat, w.pi(nat, nat))));
         auto [curry, trip] = Axiom::infer_curry_and_trip(pi);
         EXPECT_EQ(curry, 4);
         EXPECT_EQ(trip, 0);
 
         auto ax = w.axiom(normalize_test_curry, 3, 0, pi, w.dbg("test_3_0"));
-        auto a = w.app(w.app(w.app(w.app(ax, n[0]), n[1]), n[2]), n[3]);
+        auto a  = w.app(w.app(w.app(w.app(ax, n[0]), n[1]), n[2]), n[3]);
 
         std::ostringstream os;
         a->stream(os, 0);
