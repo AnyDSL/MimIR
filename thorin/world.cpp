@@ -433,8 +433,10 @@ const Def* World::gid2def(u32 gid) {
  * instantiate templates
  */
 
+#ifndef DOXYGEN // doxygen doesn't like these two lines ...
 template const Def* World::app<true>(const Def*, const Def*, const Def*);
 template const Def* World::app<false>(const Def*, const Def*, const Def*);
+#endif
 template const Def* World::ext<true>(const Def*, const Def*);
 template const Def* World::ext<false>(const Def*, const Def*);
 template const Def* World::bound<true>(Defs, const Def*);
