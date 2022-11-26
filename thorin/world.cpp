@@ -87,9 +87,12 @@ const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
     auto type                 = pi->reduce(arg).back();
     auto [axiom, curry, trip] = Axiom::get(callee);
     if (axiom) {
-        if (auto normalize = axiom->normalizer(); Normalize && normalize && curry == 1)
-            return normalize(type, callee, arg, dbg);
-        curry = curry == 0 ? trip : curry - 1;
+        if (curry == 1) {
+            if (auto normalize = axiom->normalizer(); Normalize && normalize) return normalize(type, callee, arg, dbg);
+            curry = trip;
+        } else {
+            --curry;
+        }
     }
 
     if (auto lam = callee->isa<Lam>(); lam && lam->is_set() && lam->codom()->sort() > Sort::Type)

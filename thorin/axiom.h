@@ -18,7 +18,7 @@ public:
     /// The Axiom::normalizer() will be triggered when Axiom::curry() becomes `0`.
     /// These are also the spots that you can match/force (@sa Match).
     /// After that, the counter will be set to Axiom::trip().
-    /// Let's say an Axiom has this type:
+    /// E.g., let's say an Axiom has this type:
     /// ```
     /// A -> B -> C -> D -> E
     ///           ^         |

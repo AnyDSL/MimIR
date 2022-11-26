@@ -202,9 +202,10 @@ public:
     /// This is useful during testing to come up with some entitiy of a specific type.
     /// It uses the dialect Axiom::Global_Dialect and starts with `0` for Axiom::sub and counts up from there.
     /// The Axiom::tag is set to `0` and the Axiom::normalizer to `nullptr`.
-    const Axiom* axiom(const Def* type, const Def* dbg = {}) {
-        return axiom(nullptr, 0, 0, type, Axiom::Global_Dialect, 0, state_.pod.curr_sub++, dbg);
+    const Axiom* axiom(Def::NormalizeFn n, u8 curry, u8 trip, const Def* type, const Def* dbg = {}) {
+        return axiom(n, curry, trip, type, Axiom::Global_Dialect, 0, state_.pod.curr_sub++, dbg);
     }
+    const Axiom* axiom(const Def* type, const Def* dbg = {}) { return axiom(nullptr, 0, 0, type, dbg); } ///< See above.
 
     /// Get Axiom from a dialect.
     /// Use this to get an Axiom via Axiom::id.
