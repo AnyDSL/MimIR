@@ -27,6 +27,8 @@ Both tokens are identified as `⊥`.
 | `=` `,` `;` `.` `#` `:` `%` |                                             | further tokens            |
 | `<eof>`                     |                                             | marks the end of the file |
 
+In addition you can use `⟨`, `⟩`, `⟪`, and `⟫` as an alternative for `‹`, `›`, `«`, and `»`.
+
 #### Keywords
 
 In addition the following keywords are *terminals*:
