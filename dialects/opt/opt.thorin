@@ -41,6 +41,23 @@
 ///
 /// ### Pipelines
 /// 
-.lam .extern _default_compile [] -> Pipeline = {
-    (default_core_pipeline, default_core_pipeline)#(%opt.is_loaded %opt.core_dialect)
-};
+// .lam .extern _default_compile [] -> Pipeline = {
+//     // (default_core_pipeline, default_core_pipeline)#(%opt.is_loaded %opt.core_dialect)
+//     .let nullptr = %compile.nullptr_pass;
+//     .let nullphase = %compile.single_pass_phase nullptr;
+//     %compile.pipe
+//         nullphase
+//         (%compile.single_pass_phase (%compile.scalerize_pass nullptr))
+//         (%compile.single_pass_phase %compile.eta_red_pass)
+//         (%compile.single_pass_phase (%compile.tail_rec_elim_pass nullptr))
+//         // Test
+//         (%opt.dialect_phase %opt.demo_dialect 
+//             nullphase 
+//             nullphase
+//         )
+//         // Optimization loop
+//         optimization_phase
+//         (%compile.single_pass_phase %compile.lam_spec_pass)
+//         // CodeGenPrep
+//         (%compile.single_pass_phase %compile.ret_wrap_pass)
+// };

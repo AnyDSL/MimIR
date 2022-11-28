@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <string>
 #include <vector>
 
 #include "thorin/pass/optimize.h"
@@ -68,6 +69,7 @@ public:
 private:
     std::map<int, PassList> pass_extensions_;
     std::map<int, PhaseList> phase_extensions_;
+    std::set<std::string> registered_dialects_;
     PassInstanceMap pass_instances_;
 };
 

@@ -21,24 +21,8 @@
 
 using namespace thorin;
 
-void handle_optimization_part(const Def* part, World& world, Passes& passes, PipelineBuilder& builder) {
-    auto [phase_def, phase_args] = collect_args(part);
-    world.DLOG("pass/phase: {}", phase_def);
-    if (auto phase_ax = phase_def->isa<Axiom>()) {
-        auto flag = phase_ax->flags();
-        if (passes.contains(flag)) {
-            auto phase_fun = passes[flag];
-            phase_fun(world, builder, part);
-        } else {
-            world.WLOG("pass/phase '{}' not found", phase_ax->name());
-        }
-    } else {
-        world.WLOG("pass/phase '{}' is not an axiom", phase_def);
-    }
-}
-
 void add_phases(DefVec& phases, World& world, Passes& passes, PipelineBuilder& builder) {
-    for (auto phase : phases) { handle_optimization_part(phase, world, passes, builder); }
+    for (auto phase : phases) { compile::handle_optimization_part(phase, world, passes, builder); }
 }
 
 void add_passes(World& world, PipelineBuilder& builder, Passes& passes, DefVec& pass_list) {
@@ -48,7 +32,7 @@ void add_passes(World& world, PipelineBuilder& builder, Passes& passes, DefVec& 
     // We create a new dummy phase in which the passes should be inserted.
     builder.append_phase_end([](Pipeline&) {});
 
-    for (auto pass : pass_list) { handle_optimization_part(pass, world, passes, builder); }
+    for (auto pass : pass_list) { compile::handle_optimization_part(pass, world, passes, builder); }
 }
 
 extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
