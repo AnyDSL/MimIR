@@ -3,8 +3,8 @@ var namespacethorin_1_1refly =
     [ "RemoveDbgPerm", "classthorin_1_1refly_1_1RemoveDbgPerm.html", "classthorin_1_1refly_1_1RemoveDbgPerm" ],
     [ "Code", "namespacethorin_1_1refly.html#a3f05eabc5ee2f65901758d5f61d7beaa", null ],
     [ "dbg", "namespacethorin_1_1refly.html#ac062d21f6636a7927391d6c70c40ce70", [
-      [ "tmp", "namespacethorin_1_1refly.html#ac062d21f6636a7927391d6c70c40ce70afa816edb83e95bf0c8da580bdfd491ef", null ],
-      [ "perm", "namespacethorin_1_1refly.html#ac062d21f6636a7927391d6c70c40ce70aca659200663cf654dc4410ed494451ee", null ]
+      [ "tmp", "namespacethorin_1_1refly.html#ac062d21f6636a7927391d6c70c40ce70a16ca9cd5187dcd8ed6e91cb703f5c183", null ],
+      [ "perm", "namespacethorin_1_1refly.html#ac062d21f6636a7927391d6c70c40ce70a3bc27f49064aa42217947ff8aa1b273c", null ]
     ] ],
     [ "gid", "namespacethorin_1_1refly.html#ab1ac37f5bc566fdbf0493a720d3791df", null ],
     [ "refine", "namespacethorin_1_1refly.html#a2d98aa6b6e4f6092e4fcd6e329611518", null ],

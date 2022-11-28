@@ -12,11 +12,11 @@ var namespacethorin_1_1clos =
     [ "LowerTypedClosWrapper", "classthorin_1_1clos_1_1LowerTypedClosWrapper.html", "classthorin_1_1clos_1_1LowerTypedClosWrapper" ],
     [ "alloc_jmpbuf", "namespacethorin_1_1clos.html#a0aabdb9a4da6e16afb462b4ce783fec8", null ],
     [ "attr", "namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117a", [
-      [ "ret", "namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aa2cb9df9898e55fd0ad829dc202ddbd1c", null ],
-      [ "freeBB", "namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aafe63353cdfb591c479c9e6076beccb55", null ],
-      [ "fstclassBB", "namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aae948e5de0a4b5744fd5517f9453e380e", null ],
-      [ "esc", "namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aa3f0e951cdec5a39685cb08fa6edc6094", null ],
-      [ "bot", "namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aafabcaa97871555b68aa095335975e613", null ]
+      [ "ret", "namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aa2348b9af292e8373483f8ff836d5aac2", null ],
+      [ "freeBB", "namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aa41c68aab2d3953208b97078072629aca", null ],
+      [ "fstclassBB", "namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aaa9bc4a35eab517f46c7ef38e0f52d880", null ],
+      [ "esc", "namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aae72e01c6fef7ed23073407bbe451993c", null ],
+      [ "bot", "namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aa62cbfe7c9edd7c5f14f4a83cd32a3bcd", null ]
     ] ],
     [ "longjmp", "namespacethorin_1_1clos.html#a6de5a72a27162097768c57a865741a3e", null ],
     [ "setjmp", "namespacethorin_1_1clos.html#a553c0b470a1ee42cdae9d1fd3006dec8", null ],

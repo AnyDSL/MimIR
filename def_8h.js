@@ -27,7 +27,7 @@ var def_8h =
     [ "DefMap", "def_8h.html#ad6fd3e5738182c43950e6e22607a7cd6", null ],
     [ "Defs", "def_8h.html#ab6c106c44c8584cd4bdb99b75b915c38", null ],
     [ "DefSet", "def_8h.html#a7fddaff34d4e4927bc748c28b49eef46", null ],
-    [ "DefVec", "def_8h.html#a79fff1449ba1eaecead8f607520f8574", null ],
+    [ "DefVec", "def_8h.html#adb4caa7954ebd98c4e84d9769d03a489", null ],
     [ "level_t", "def_8h.html#ae2b9a3abaa277c7852b0f465240b0dd7", null ],
     [ "Nom2Nom", "def_8h.html#a847863dc99817523db80a5e862acbb8e", null ],
     [ "NomMap", "def_8h.html#a1f4495ac5ca4bee6965b07d96c22253b", null ],
@@ -45,6 +45,7 @@ var def_8h =
     ] ],
     [ "as", "def_8h.html#a77128b6187ea06fcc6b07e5e34efcc3d", null ],
     [ "as_lit", "def_8h.html#a4784a7ada8e2badb49500623824d79e5", null ],
+    [ "collect_args", "def_8h.html#a957335953a7051820ba1edc227999812", null ],
     [ "isa", "def_8h.html#a4ee21e07e5bfcf99d87cf5b3effb1ba1", null ],
     [ "isa_lit", "def_8h.html#a196c8dd3968fd28a00dc082c191feee6", null ]
 ];

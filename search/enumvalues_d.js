@@ -1,13 +1,13 @@
 var searchData=
 [
-  ['na_0',['na',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a6ec66e124fb93c190e9207b0b82f542a',1,'thorin::core']]],
-  ['nand_1',['nand',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978ac657344463ff1b32bf1ad9bbdb3ef20b',1,'thorin::core']]],
+  ['na_0',['na',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a0d6439e8ffcc8e7795423b7ea7610b55',1,'thorin::core']]],
+  ['nand_1',['nand',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a1ce87c5aa5d9dd874faa83546f8bb9f9',1,'thorin::core']]],
   ['nat_2',['Nat',['../namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba1b3ad193ab60d8bfe3aa5f31beef9355',1,'thorin::Node']]],
-  ['nb_3',['nb',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a9c59153d22d9f7cc021b17b425cc31c5',1,'thorin::core']]],
-  ['nciff_4',['nciff',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978aeffa8ffb6de709887fb7ed786629cbfa',1,'thorin::core']]],
-  ['ne_5',['ne',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6ad4f917633649a3c47c7ab917fa990146',1,'thorin::core::ne()'],['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ead4f917633649a3c47c7ab917fa990146',1,'thorin::core::ne()'],['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fad4f917633649a3c47c7ab917fa990146',1,'thorin::math::ne()']]],
-  ['neg_6',['neg',['../namespacethorin_1_1core.html#a60b6d2484fb68ef9ce568db15502e349af24c2c15b9d03797c6874986a8d19516',1,'thorin::core']]],
-  ['niff_7',['niff',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a9f55314dfb4d78a2ccc362618a05a9c4',1,'thorin::core']]],
+  ['nb_3',['nb',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a13223f01039b9b9d6c0ab0646a6fc49d',1,'thorin::core']]],
+  ['nciff_4',['nciff',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a62672b0c20974c44eccd928ce11ae8eb',1,'thorin::core']]],
+  ['ne_5',['ne',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2023fd5d4e7d81d38b7539ac2e697d34',1,'thorin::core::ne()'],['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa33514849b83fe7dc41d216f2282ce2bd',1,'thorin::math::ne()']]],
+  ['neg_6',['neg',['../namespacethorin_1_1core.html#a60b6d2484fb68ef9ce568db15502e349a416ad0b3ec8b1647918fe60ae4a91a7d',1,'thorin::core']]],
+  ['niff_7',['niff',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a8b0f4861006f3cf89f86fbd004d85811',1,'thorin::core']]],
   ['nil_8',['Nil',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a4da8b7eb2c3f2007cf8238334401ef51',1,'thorin::fe::Tok']]],
   ['ninf_9',['ninf',['../namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caab4443a092df50028ff5c3e11d58d1135',1,'thorin::math']]],
   ['nnan_10',['nnan',['../namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa49780db85e66f388ddbd75410248db52',1,'thorin::math']]],
@@ -15,9 +15,9 @@ var searchData=
   ['non_5fcallee_5f1_12',['Non_Callee_1',['../classthorin_1_1EtaExp.html#a156b61a8e9d0843a3e598adb259c7abda0bd37ac73008a3cf79032139aece82cf',1,'thorin::EtaExp']]],
   ['none_13',['None',['../structthorin_1_1Dep.html#a21b17259c01a71c07132faf0ba6d7c79a6bdfe0ce95e68b1979206130668e0e90',1,'thorin::Dep']]],
   ['none_14',['none',['../namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493a53712cc893c52d29f88f66ea099a10c9',1,'thorin::core::none()'],['../namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caafb72985afb637442c3428edbfcab42cf',1,'thorin::math::none()']]],
-  ['nor_15',['nor',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a57c7d11cd49333e3f722204c63016da9',1,'thorin::core']]],
+  ['nor_15',['nor',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978ab0abbcb5b3415de46aff30e977a1010f',1,'thorin::core']]],
   ['nsw_16',['nsw',['../namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493aecf1322b1dbfad3fb96bdd08d25ad086',1,'thorin::core']]],
   ['nsz_17',['nsz',['../namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa451eb19da340803f2a8b2407a9a0af05',1,'thorin::math']]],
   ['nuw_18',['nuw',['../namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493a6402074467372da6601927f3cf6023e7',1,'thorin::core']]],
-  ['nxor_19',['nxor',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a4091386482235077ea5a3357d7b5c62b',1,'thorin::core']]]
+  ['nxor_19',['nxor',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a9989c0fe0d3c40b4184f53f612ce350d',1,'thorin::core']]]
 ];

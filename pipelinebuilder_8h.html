@@ -113,7 +113,8 @@ $(document).ready(function(){initNavTree('pipelinebuilder_8h.html',''); initResi
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">pipelinebuilder.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -121,16 +122,17 @@ $(document).ready(function(){initNavTree('pipelinebuilder_8h.html',''); initResi
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &quot;<a class="el" href="optimize_8h_source.html">thorin/pass/optimize.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="pass_8h_source.html">thorin/pass/pass.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="phase_8h_source.html">thorin/phase/phase.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for pipelinebuilder.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="pipelinebuilder_8h__incl.svg" width="2174" height="726"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="pipelinebuilder_8h__incl.svg" width="2236" height="799"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="pipelinebuilder_8h__dep__incl.svg" width="4194" height="564"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="pipelinebuilder_8h__dep__incl.svg" width="4534" height="476"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -139,6 +141,8 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1passCmp.html">thorin::passCmp</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1phaseCmp.html">thorin::phaseCmp</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html">thorin::PipelineBuilder</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -151,12 +155,29 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:aba2ab99605e8ef055f372dbb7705a76c"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; void(PassMan &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#aba2ab99605e8ef055f372dbb7705a76c">thorin::PassBuilder</a></td></tr>
-<tr class="separator:aba2ab99605e8ef055f372dbb7705a76c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b70f081c1cf30ced183906476cc33de"><td class="memItemLeft" align="right" valign="top">typedef std::pair&lt; int, PassBuilder &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a3b70f081c1cf30ced183906476cc33de">thorin::PrioPassBuilder</a></td></tr>
-<tr class="separator:a3b70f081c1cf30ced183906476cc33de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78ba7d91fee9a7b774e5484755f5fd16"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; PrioPassBuilder &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a78ba7d91fee9a7b774e5484755f5fd16">thorin::PassList</a></td></tr>
-<tr class="separator:a78ba7d91fee9a7b774e5484755f5fd16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c01e073816ae185151d892d3421e4d8"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a0c01e073816ae185151d892d3421e4d8">thorin::PassBuilder</a> = std::function&lt; void(PassMan &amp;)&gt;</td></tr>
+<tr class="separator:a0c01e073816ae185151d892d3421e4d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e4119acb8ea6f0c027361ce9aa75217"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a1e4119acb8ea6f0c027361ce9aa75217">thorin::PhaseBuilder</a> = std::function&lt; void(Pipeline &amp;)&gt;</td></tr>
+<tr class="separator:a1e4119acb8ea6f0c027361ce9aa75217"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01eb62bb5a930e40892a009da1b855ec"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a01eb62bb5a930e40892a009da1b855ec">thorin::PrioPassBuilder</a> = std::pair&lt; int, PassBuilder &gt;</td></tr>
+<tr class="separator:a01eb62bb5a930e40892a009da1b855ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c0929848f142ab9e30d853df0c4205f"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a4c0929848f142ab9e30d853df0c4205f">thorin::PrioPhaseBuilder</a> = std::pair&lt; int, PhaseBuilder &gt;</td></tr>
+<tr class="separator:a4c0929848f142ab9e30d853df0c4205f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c40b52d9215b8036ba6ea71b4cc1a9e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a3c40b52d9215b8036ba6ea71b4cc1a9e">thorin::PassList</a> = std::vector&lt; PrioPassBuilder &gt;</td></tr>
+<tr class="separator:a3c40b52d9215b8036ba6ea71b4cc1a9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53ea4fd5540777361d950cc7d1cd2cfa"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a53ea4fd5540777361d950cc7d1cd2cfa">thorin::PhaseList</a> = std::vector&lt; PrioPhaseBuilder &gt;</td></tr>
+<tr class="separator:a53ea4fd5540777361d950cc7d1cd2cfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cbfdf030eb2da4e01a4061e5c7fd082"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a1cbfdf030eb2da4e01a4061e5c7fd082">thorin::PassInstanceMap</a> = absl::btree_map&lt; const Def *, Pass *, GIDLt&lt; const Def * &gt; &gt;</td></tr>
+<tr class="separator:a1cbfdf030eb2da4e01a4061e5c7fd082"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a4af8566c40f049204989f6fcb8a1cba4"><td class="memTemplParams" colspan="2">template&lt;class A , class P , class... CArgs&gt; </td></tr>
+<tr class="memitem:a4af8566c40f049204989f6fcb8a1cba4"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a4af8566c40f049204989f6fcb8a1cba4">thorin::register_pass</a> (Passes &amp;passes, CArgs &amp;&amp;... args)</td></tr>
+<tr class="separator:a4af8566c40f049204989f6fcb8a1cba4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39f3964760b6df40869a6e6fc4cfd418"><td class="memTemplParams" colspan="2">template&lt;class A , class P , class Q &gt; </td></tr>
+<tr class="memitem:a39f3964760b6df40869a6e6fc4cfd418"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a39f3964760b6df40869a6e6fc4cfd418">thorin::register_pass_with_arg</a> (Passes &amp;passes)</td></tr>
+<tr class="separator:a39f3964760b6df40869a6e6fc4cfd418"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -112,15 +112,24 @@ $(document).ready(function(){initNavTree('optimize_8h.html',''); initResizable()
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">optimize.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><div class="dynheader">
+<div class="textblock"><code>#include &quot;<a class="el" href="types_8h_source.html">thorin/util/types.h</a>&quot;</code><br />
+<code>#include &quot;absl/container/flat_hash_map.h&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for optimize.h:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="optimize_8h__incl.svg" width="563" height="198"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+</div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="optimize_8h__dep__incl.svg" width="4083" height="564"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="optimize_8h__dep__incl.svg" width="3898" height="550"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -132,11 +141,16 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespacethorin"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper functions of general interest. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a334ff18080cd42969f863f22ec82694c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a334ff18080cd42969f863f22ec82694c">thorin::Passes</a> = absl::flat_hash_map&lt; flags_t, std::function&lt; void(World &amp;, PipelineBuilder &amp;, const Def *)&gt; &gt;</td></tr>
+<tr class="separator:a334ff18080cd42969f863f22ec82694c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aafbe7c65f3fb4df3b05a04b70cebe149"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#aafbe7c65f3fb4df3b05a04b70cebe149">thorin::optimize</a> (World &amp;world, PipelineBuilder &amp;builder)</td></tr>
-<tr class="memdesc:aafbe7c65f3fb4df3b05a04b70cebe149"><td class="mdescLeft">&#160;</td><td class="mdescRight">The optimizations proceed in a pipeline ordered by priorities.  <a href="namespacethorin.html#aafbe7c65f3fb4df3b05a04b70cebe149">More...</a><br /></td></tr>
-<tr class="separator:aafbe7c65f3fb4df3b05a04b70cebe149"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42ee184a92551411db4bdcb441391afd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a42ee184a92551411db4bdcb441391afd">thorin::optimize</a> (World &amp;world, Passes &amp;passes, PipelineBuilder &amp;builder)</td></tr>
+<tr class="memdesc:a42ee184a92551411db4bdcb441391afd"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="optimize_8h.html">optimize.h</a> for magic numbers.  <a href="namespacethorin.html#a42ee184a92551411db4bdcb441391afd">More...</a><br /></td></tr>
+<tr class="separator:a42ee184a92551411db4bdcb441391afd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>

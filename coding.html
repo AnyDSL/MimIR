@@ -171,7 +171,7 @@ Dumping</h2>
 </div><!-- fragment --><p> In particular, note the different output levels of <a class="el" href="classthorin_1_1Def.html#adeb490fdb674323acba48da1ffb28787">thorin::Def::dump</a>. What is more, you can adjust the output behavior directly from within GDB by modifying <a class="el" href="classthorin_1_1World.html#a4f4d5b45be0693a73705bc0de2fc8f62" title="Retrive compile Flags.">thorin::World::flags</a> or <a class="el" href="classthorin_1_1World.html#ab0fd127c2bf81aaf93b0ac4ca2746f0e">thorin::World::log</a>: </p><div class="fragment"><div class="line">(gdb) call world.flags().dump_gid = 1</div>
 <div class="line">(gdb) call world.flags().dump_recursive = 1</div>
 <div class="line">(gdb) call world.log().level = 4</div>
-</div><!-- fragment --><p> Another useful feature is to retrieve a <code>Def*</code> from a <a class="el" href="classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb">thorin::Def::gid</a> via <a class="el" href="classthorin_1_1World.html#a63364ab75f62f39bf5041710e10701c0">thorin::World::gid2def</a>: </p><div class="fragment"><div class="line">(gdb) p world.gid2def(123);</div>
+</div><!-- fragment --><p> Another useful feature is to retrieve a <code>Def*</code> from a <a class="el" href="classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb">thorin::Def::gid</a> via thorin::World::gid2def: </p><div class="fragment"><div class="line">(gdb) p world.gid2def(123);</div>
 <div class="line">$1 = ...</div>
 <div class="line">(gdb) $1-&gt;dump();</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md4"></a>

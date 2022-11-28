@@ -10,7 +10,6 @@ var structthorin_1_1World_1_1State =
     [ "State", "structthorin_1_1World_1_1State.html#a77ba724f87e9b5fcafbe62e36f909273", null ],
     [ "State", "structthorin_1_1World_1_1State.html#ad5fe1cd9b5cf13284a2c859cd54c191f", null ],
     [ "swap", "structthorin_1_1World_1_1State.html#abd5bc5c40d9cd0ad896ed53c569911cf", null ],
-    [ "breakpoints", "structthorin_1_1World_1_1State.html#af1643faff9d340bec873f4d6d8d4b50a", null ],
     [ "imported_dialects", "structthorin_1_1World_1_1State.html#ab4dd2110ba1ecf253f943bf7466a0a6b", null ],
     [ "name", "structthorin_1_1World_1_1State.html#a7fbf8218b82d63b1e67a2abdf164f3ab", null ],
     [ "pod", "structthorin_1_1World_1_1State.html#a8be30c4cfa20cb0cf4f34ec7dd69c193", null ]
