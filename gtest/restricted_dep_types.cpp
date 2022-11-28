@@ -296,9 +296,9 @@ TEST(RestrictedDependentTypes, ll) {
         main->app(false, exp_lam, {main->var(0_s), i32_t, R, core::op_bitcast(app_exp, main->var(1)), main->var(3)});
     }
 
-    PipelineBuilder builder;
-    mem_d.add_passes(builder);
-    optimize(w, passes, builder);
+    // PipelineBuilder builder;
+    // mem_d.add_passes(builder);
+    optimize(w, passes);
 
     Backends backends;
     core_d.register_backends(backends);

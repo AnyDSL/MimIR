@@ -1,0 +1,38 @@
+/// # The opt dialect {#opt}
+///
+/// [TOC]
+///
+/// Manages the default compilation pipeline of Thorin programs using dialects.
+///
+/// ## Dependencies
+///
+.import compile;
+.import core;
+.import mem;
+///
+/// ## Types
+/// 
+/// ### %opt.Dialect
+///
+.ax %opt.Dialect: *;
+///
+/// ## Operations
+///
+/// ### registered dialects
+/// 
+.ax %opt.core_dialect: %opt.Dialect;
+.ax %opt.mem_dialect: %opt.Dialect;
+/// 
+/// ### %opt.is_loaded
+/// 
+/// Indicates whether a dialect is loaded.
+/// The normalizer will statically evaluate this expression to a constant boolean.
+/// TODO: find correct point (not at parsing but before compilation)
+/// 
+.ax %opt.is_loaded: %opt.Dialect -> .Bool, normalize_is_loaded;
+///
+/// ## Compilation passes, phases, and pipelines
+///
+.lam .extern _default_compile [] -> Pipeline = {
+    default_core_pipeline
+};

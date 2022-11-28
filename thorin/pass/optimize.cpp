@@ -16,7 +16,7 @@
 namespace thorin {
 
 /// See optimize.h for magic numbers
-void optimize(World& world, Passes& passes, PipelineBuilder& builder) {
+void optimize(World& world, Passes& passes) {
     auto compilation_functions = {"_compile", "_default_compile"};
     const Def* compilation     = nullptr;
     for (auto compilation_function : compilation_functions) {

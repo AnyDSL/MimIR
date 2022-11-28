@@ -102,7 +102,7 @@
 /// 
 /// ### Pipelines
 /// 
-.let default_pipeline = {
+.let default_core_pipeline = {
     .let nullptr = %compile.nullptr_pass;
     %compile.pipe
         (%compile.single_pass_phase nullptr)
@@ -112,8 +112,4 @@
         optimization_phase
         (%compile.single_pass_phase %compile.lam_spec_pass)
         (%compile.single_pass_phase %compile.ret_wrap_pass)
-};
-
-.lam .extern _default_compile [] -> Pipeline = {
-    default_pipeline
 };

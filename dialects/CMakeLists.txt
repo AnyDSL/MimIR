@@ -135,6 +135,18 @@ add_thorin_dialect(mem
     INSTALL
 )
 
+add_thorin_dialect(opt
+    SOURCES
+        opt/opt.cpp
+        opt/opt.h
+        opt/normalizers.cpp
+    DEPENDS
+        compile
+        mem
+        core
+    INSTALL
+)
+
 add_thorin_dialect(refly
     SOURCES
         refly/refly.h
