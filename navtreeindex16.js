@@ -226,8 +226,6 @@ var NAVTREEINDEX16 =
 "math_2autogen_8h.html#a6a92f5cda9b378cf5d3a52d38803d49d":[6,0,0,1,0,7,0,18],
 "math_2autogen_8h.html#a6dd8e88f4b0e547ae80c76780070119a":[6,0,0,1,0,7,0,4],
 "math_2autogen_8h.html#a6dd8e88f4b0e547ae80c76780070119aa086bc53f36970b37e40ffc9d36fc30dc":[6,0,0,1,0,7,0,4,1],
-"math_2autogen_8h.html#a6dd8e88f4b0e547ae80c76780070119aa90f68af5cf3a2df678258becc2d3f714":[6,0,0,1,0,7,0,2,1],
-"math_2autogen_8h.html#a6dd8e88f4b0e547ae80c76780070119aa90f68af5cf3a2df678258becc2d3f714":[6,0,0,1,0,7,0,4,0],
 "math_2autogen_8h.html#a6f08b5162403b9a8180f9f5fbc029887":[6,0,0,1,0,7,0,31],
 "math_2autogen_8h.html#a72fcc8d2a411f11fb8b74fc768be6321":[6,0,0,1,0,7,0,50],
 "math_2autogen_8h.html#a774a066119a3684958cf3d8565ff52a8":[6,0,0,1,0,7,0,6],
@@ -243,11 +241,13 @@ var NAVTREEINDEX16 =
 "math_2autogen_8h.html#a7e1bafab431d930aec3b73b5477619c0":[6,0,0,1,0,7,0,55],
 "math_2autogen_8h.html#a7fcc44d42fc59c7b5924c2d789c0fee6":[6,0,0,1,0,7,0,40],
 "math_2autogen_8h.html#a89cb7767a778d4204e26860588096530":[6,0,0,1,0,7,0,8],
-"math_2autogen_8h.html#a89cb7767a778d4204e26860588096530a015078298390da60594549c03f211240":[6,0,0,1,0,7,0,8,0],
 "math_2autogen_8h.html#a89cb7767a778d4204e26860588096530a015078298390da60594549c03f211240":[6,0,0,1,0,7,0,2,31],
+"math_2autogen_8h.html#a89cb7767a778d4204e26860588096530a015078298390da60594549c03f211240":[6,0,0,1,0,7,0,8,0],
 "math_2autogen_8h.html#a89cb7767a778d4204e26860588096530ab56bd84b4325cae0ff953569daeeecd6":[6,0,0,1,0,7,0,2,5],
 "math_2autogen_8h.html#a89cb7767a778d4204e26860588096530ab56bd84b4325cae0ff953569daeeecd6":[6,0,0,1,0,7,0,8,1],
 "math_2autogen_8h.html#a95b868c038b09e9046322aeecf4f07d9":[6,0,0,1,0,7,0,57],
 "math_2autogen_8h.html#a96c9b2c031f6849bde82ade5f0967014":[6,0,0,1,0,7,0,53],
-"math_2autogen_8h.html#a974e641acfc1e991c463275750708cec":[6,0,0,1,0,7,0,29]
+"math_2autogen_8h.html#a974e641acfc1e991c463275750708cec":[6,0,0,1,0,7,0,29],
+"math_2autogen_8h.html#a9a1c724ef1580877df966fa19b149115":[6,0,0,1,0,7,0,49],
+"math_2autogen_8h.html#a9dcd63c8ff0e514ef5d45f52082e9444":[6,0,0,1,0,7,0,7]
 };
