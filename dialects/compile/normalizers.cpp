@@ -23,7 +23,8 @@ const Def* normalize_pass_phase(const Def* type, const Def* callee, const Def* a
     assert(f_ax->flags() == flags_t(Axiom::Base<pass_list>));
     auto n = pass_list_defs.size();
 
-    return world.raw_app(type, world.raw_app(type, world.ax<passes_to_phase>(), world.lit_nat(n)), world.tuple(pass_list_defs));
+    return world.raw_app(type, world.raw_app(type, world.ax<passes_to_phase>(), world.lit_nat(n)),
+                         world.tuple(pass_list_defs));
 }
 
 /// `combined_phase (phase_list phase1 ... phasen)` -> `phases_to_phase n (phase1, ..., phasen)`
@@ -34,7 +35,8 @@ const Def* normalize_combined_phase(const Def* type, const Def* callee, const De
     assert(ax->flags() == flags_t(Axiom::Base<phase_list>));
     auto n = phase_list_defs.size();
 
-    return world.raw_app(type, world.raw_app(type, world.ax<phases_to_phase>(), world.lit_nat(n)), world.tuple(phase_list_defs));
+    return world.raw_app(type, world.raw_app(type, world.ax<phases_to_phase>(), world.lit_nat(n)),
+                         world.tuple(phase_list_defs));
 }
 
 /// `single_pass_phase pass` -> `passes_to_phase 1 pass`
