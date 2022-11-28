@@ -82,7 +82,7 @@ const F_CFG& CFA::f_cfg() const { return lazy_init(this, f_cfg_); }
 const B_CFG& CFA::b_cfg() const { return lazy_init(this, b_cfg_); }
 
 void CFA::link_to_exit() {
-    typedef thorin::GIDSet<const CFNode*> CFNodeSet;
+    using CFNodeSet = thorin::GIDSet<const CFNode*>;
 
     CFNodeSet reachable;
     std::queue<const CFNode*> queue;
