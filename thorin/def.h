@@ -680,4 +680,8 @@ hash_t UseHash::operator()(Use use) const { return hash_combine(hash_begin(u16(u
 
 //------------------------------------------------------------------------------
 
+// TODO: move
+/// Helper function to cope with the fact that normalizers take all arguments and not only its axiom arguments.
+std::pair<const Def*, std::vector<const Def*>> collect_args(const Def* def);
+
 } // namespace thorin
