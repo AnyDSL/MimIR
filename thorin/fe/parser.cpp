@@ -428,20 +428,24 @@ const Def* Parser::parse_lit() {
  * ptrns
  */
 
-std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt, Tok::Prec p /*= Tok::Prec::Bot*/) {
+std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt, Tok::Prec prec /*= Tok::Prec::Bot*/) {
     auto track = tracker();
     auto sym   = anonymous_sym();
+    bool p     = delim_l == Tok::Tag::D_paren_l;
+    bool b     = delim_l == Tok::Tag::D_brckt_l;
+    assert(p ^ b);
+
     // p ->    (p, ..., p)
     // p ->    [b, ..., b]      b ->    [b, ..., b]
-    // p -> s::(p, ..., p)      b -> s::(e)
+    // p -> s::(p, ..., p)
     // p -> s::[b, ..., b]      b -> s::[b, ..., b]
     // p -> s: e                b -> s: e
     // p -> s                   b ->    e
-    if (ahead().isa(Tok::Tag::D_brckt_l)) {
-        // p ->    [b, ..., b]      b ->    [b, ..., b]
-        return parse_tuple_ptrn(track, sym);
-    } else if (delim_l == Tok::Tag::D_paren_l && ahead().isa(Tok::Tag::D_paren_l)) {
+    if (p && ahead().isa(Tok::Tag::D_paren_l)) {
         // p ->    (p, ..., p)
+        return parse_tuple_ptrn(track, sym);
+    } else if (ahead().isa(Tok::Tag::D_brckt_l)) {
+        // p ->    [b, ..., b]      b ->    [b, ..., b]
         return parse_tuple_ptrn(track, sym);
     } else if (ahead(0).isa(Tok::Tag::M_id)) {
         // p -> s::(p, ..., p)
@@ -451,7 +455,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
         if (ahead(1).isa(Tok::Tag::T_colon_colon)) {
             sym = eat(Tok::Tag::M_id).sym();
             eat(Tok::Tag::T_colon_colon);
-            if (delim_l == Tok::Tag::D_brckt_l && ahead().isa(Tok::Tag::D_paren_l))
+            if (b && ahead().isa(Tok::Tag::D_paren_l))
                 err(ahead().loc(), "switching from []-style patterns to ()-style patterns is not allowed");
             // b -> s::(p, ..., p)
             // b -> s::[b, ..., b]      b -> s::[b, ..., b]
@@ -460,23 +464,23 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
             // p -> s: e                b -> s: e
             sym = eat(Tok::Tag::M_id).sym();
             eat(Tok::Tag::T_colon);
-            auto type = parse_expr(ctxt, p);
+            auto type = parse_expr(ctxt, prec);
             return std::make_unique<IdPtrn>(track.loc(), sym, type);
         } else {
-            if (delim_l == Tok::Tag::D_brckt_l) {
-                // b ->    e    where e == id
-                auto type = parse_expr(ctxt, p);
-                return std::make_unique<IdPtrn>(track.loc(), sym, type);
-            } else {
+            // p -> s                   b ->    e    where e == id
+            if (p) {
                 // p -> s
                 sym = eat(Tok::Tag::M_id).sym();
                 return std::make_unique<IdPtrn>(track.loc(), sym, nullptr);
+            } else {
+                // b ->    e    where e == id
+                auto type = parse_expr(ctxt, prec);
+                return std::make_unique<IdPtrn>(track.loc(), sym, type);
             }
         }
-    } else if (delim_l == Tok::Tag::D_brckt_l) {
-        // b ->   (e)
-        // b ->    e    where e != id
-        auto type = parse_expr(ctxt, p);
+    } else if (b) {
+        // b ->  e    where e != id
+        auto type = parse_expr(ctxt, prec);
         return std::make_unique<IdPtrn>(track.loc(), sym, type);
     } else if (!ctxt.empty()) {
         // p -> ↯
@@ -488,6 +492,10 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
 
 std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, Sym sym) {
     auto delim_l = ahead().tag();
+    bool p       = delim_l == Tok::Tag::D_paren_l;
+    bool b       = delim_l == Tok::Tag::D_brckt_l;
+    assert(p ^ b);
+
     std::deque<std::unique_ptr<Ptrn>> ptrns;
     std::vector<const Def*> fields;
     std::vector<Infer*> infers;
@@ -501,7 +509,7 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, Sym sym) {
         auto ptrn = parse_ptrn(delim_l, "element of a tuple pattern");
         auto type = ptrn->type(world());
 
-        if (delim_l == Tok::Tag::D_brckt_l) {
+        if (b) {
             // If we are able to parse more stuff, we got an expression instead of just a binder.
             if (auto expr = parse_infix_expr(track, type); expr != type) {
                 ptrn = std::make_unique<IdPtrn>(track.loc(), anonymous_sym(), expr);
