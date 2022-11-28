@@ -9,6 +9,7 @@
 .import compile;
 .import core;
 .import mem;
+.import demo;
 ///
 /// ## Types
 /// 
@@ -22,6 +23,7 @@
 /// 
 .ax %opt.core_dialect: %opt.Dialect;
 .ax %opt.mem_dialect: %opt.Dialect;
+.ax %opt.demo_dialect: %opt.Dialect;
 /// 
 /// ### %opt.is_loaded
 /// 
@@ -33,6 +35,12 @@
 ///
 /// ## Compilation passes, phases, and pipelines
 ///
+/// ### Phases
+/// 
+.ax %opt.dialect_phase: %opt.Dialect -> %compile.Phase -> %compile.Phase -> %compile.Phase;
+///
+/// ### Pipelines
+/// 
 .lam .extern _default_compile [] -> Pipeline = {
-    default_core_pipeline
+    (default_core_pipeline, default_core_pipeline)#(%opt.is_loaded %opt.core_dialect)
 };
