@@ -39,7 +39,7 @@ const Def* normalize_cps2ds(const Def* type, const Def* callee, const Def* arg, 
     for (size_t i = 2; i < curry_args.size(); ++i) r = world.app(r, curry_args[i]);
     return r;
 
-    return world.app<false>(callee, arg, dbg);
+    return world.raw_app(type, callee, arg, dbg);
 }
 
 THORIN_direct_NORMALIZER_IMPL

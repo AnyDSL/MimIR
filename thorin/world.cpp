@@ -74,7 +74,6 @@ const Type* World::type(const Def* level, const Def* dbg) {
     return unify<Type>(1, level, dbg)->as<Type>();
 }
 
-template<bool Normalize>
 const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
     auto pi = callee->type()->isa<Pi>();
 
@@ -84,7 +83,15 @@ const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
         if (!checker().assignable(pi->dom(), arg, dbg)) err()->ill_typed_app(callee, arg, dbg);
     }
 
-    auto type                 = pi->reduce(arg).back();
+    if (auto lam = callee->isa<Lam>(); lam && lam->is_set() && lam->codom()->sort() > Sort::Type)
+        return lam->reduce(arg).back();
+
+    auto type = pi->reduce(arg).back();
+    return raw_app<true>(type, callee, arg, dbg);
+}
+
+template<bool Normalize>
+const Def* World::raw_app(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto [axiom, curry, trip] = Axiom::get(callee);
     if (axiom) {
         if (curry == 1) {
@@ -94,9 +101,6 @@ const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
             --curry;
         }
     }
-
-    if (auto lam = callee->isa<Lam>(); lam && lam->is_set() && lam->codom()->sort() > Sort::Type)
-        return lam->reduce(arg).back();
 
     return unify<App>(2, axiom, curry, trip, type, callee, arg, dbg);
 }
@@ -433,9 +437,9 @@ const Def* World::gid2def(u32 gid) {
  * instantiate templates
  */
 
-#ifndef DOXYGEN // doxygen doesn't like these two lines ...
-template const Def* World::app<true>(const Def*, const Def*, const Def*);
-template const Def* World::app<false>(const Def*, const Def*, const Def*);
+#ifndef DOXYGEN // Doxygen doesn't like this
+template const Def* World::raw_app<true>(const Def*, const Def*, const Def*, const Def*);
+template const Def* World::raw_app<false>(const Def*, const Def*, const Def*, const Def*);
 #endif
 template const Def* World::ext<true>(const Def*, const Def*);
 template const Def* World::ext<false>(const Def*, const Def*);

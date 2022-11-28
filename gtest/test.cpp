@@ -106,9 +106,9 @@ TEST(trait, idx) {
     EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0000'0000_n))), 8);
 }
 
-const Def* normalize_test_curry(const Def*, const Def* callee, const Def* arg, const Def* dbg) {
+const Def* normalize_test_curry(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& w = arg->world();
-    return w.app<false>(callee, w.lit_nat(42), dbg);
+    return w.raw_app(type, callee, w.lit_nat(42), dbg);
 }
 
 TEST(Axiom, curry) {
