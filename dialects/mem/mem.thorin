@@ -83,7 +83,7 @@
 /// The SSA expects the eta expansion as argument
 .ax %mem.ssa_pass: %compile.Pass -> %compile.Pass;
 /// Copy propagation expects beta reduction and etra expansion.
-.ax %mem.copy_prop_pass: [%compile.Pass,%compile.Pass, .Idx 2] -> %compile.Pass;
+.ax %mem.copy_prop_pass: [%compile.Pass,%compile.Pass, .Bool] -> %compile.Pass;
 .ax %mem.remem_elim_pass: %compile.Pass;
 .ax %mem.alloc2malloc_pass: %compile.Pass;
 /// 
