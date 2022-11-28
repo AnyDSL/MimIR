@@ -240,22 +240,18 @@ TEST(RestrictedDependentTypes, ll) {
 
     auto compile_d = Dialect::load("compile", {});
     compile_d.register_normalizers(normalizers);
-    // compile_d.register_passes(passes);
     fe::Parser::import_module(w, "compile", {}, &normalizers);
 
     auto mem_d = Dialect::load("mem", {});
     mem_d.register_normalizers(normalizers);
-    // mem_d.register_passes(passes);
     fe::Parser::import_module(w, "mem", {}, &normalizers);
 
     auto core_d = Dialect::load("core", {});
     core_d.register_normalizers(normalizers);
-    // core_d.register_passes(passes);
     fe::Parser::import_module(w, "core", {}, &normalizers);
 
     auto math_d = Dialect::load("math", {});
     math_d.register_normalizers(normalizers);
-    // math_d.register_passes(passes);
     fe::Parser::import_module(w, "math", {}, &normalizers);
 
     auto mem_t  = mem::type_mem(w);
