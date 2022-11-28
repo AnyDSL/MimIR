@@ -131,11 +131,16 @@ TEST(Axiom, curry) {
         EXPECT_EQ(trip, 3);
 
         auto ax = w.axiom(normalize_test_curry, curry, trip, pi, w.dbg("test_5_3"));
-        auto a1 = w.app(w.app(w.app(w.app(w.app(w.app(ax, n[0]), n[1]), n[2]), n[3]), n[4]), n[5]);
-        auto a2 = w.app(w.app(w.app(w.app(w.app(a1, n[6]), n[7]), n[8]), n[9]), n[10]);
+        auto a1 = w.app(w.app(w.app(w.app(w.app(ax, n[0]), n[1]), n[2]), n[3]), n[4]);
+        auto a2 = w.app(w.app(w.app(a1, n[5]), n[6]), n[7]);
+        auto a3 = w.app(w.app(w.app(a2, n[8]), n[9]), n[10]);
+
+        EXPECT_EQ(a1->as<App>()->curry(), 0);
+        EXPECT_EQ(a2->as<App>()->curry(), 0);
+        EXPECT_EQ(a3->as<App>()->curry(), 0);
 
         std::ostringstream os;
-        a2->stream(os, 0);
+        a3->stream(os, 0);
         EXPECT_EQ(os.str(), "%test_5_3 0 1 2 3 42 5 6 42 8 9 42\n");
     }
     {
@@ -147,10 +152,16 @@ TEST(Axiom, curry) {
         EXPECT_EQ(trip, 1);
 
         auto ax = w.axiom(normalize_test_curry, curry, trip, rec, w.dbg("test_1_1"));
-        auto a  = w.app(w.app(w.app(ax, n[0]), n[1]), n[2]);
+        auto a1 = w.app(ax, n[0]);
+        auto a2 = w.app(a1, n[1]);
+        auto a3 = w.app(a2, n[2]);
+
+        EXPECT_EQ(a1->as<App>()->curry(), 0);
+        EXPECT_EQ(a2->as<App>()->curry(), 0);
+        EXPECT_EQ(a3->as<App>()->curry(), 0);
 
         std::ostringstream os;
-        a->stream(os, 0);
+        a3->stream(os, 0);
         EXPECT_EQ(os.str(), "%test_1_1 42 42 42\n");
     }
     {
@@ -160,10 +171,14 @@ TEST(Axiom, curry) {
         EXPECT_EQ(trip, 0);
 
         auto ax = w.axiom(normalize_test_curry, 3, 0, pi, w.dbg("test_3_0"));
-        auto a  = w.app(w.app(w.app(w.app(ax, n[0]), n[1]), n[2]), n[3]);
+        auto a1 = w.app(w.app(w.app(ax, n[0]), n[1]), n[2]);
+        auto a2 = w.app(a1, n[3]);
+
+        EXPECT_EQ(a1->as<App>()->curry(), 0);
+        EXPECT_EQ(a2->as<App>()->curry(), Axiom::Trip_End);
 
         std::ostringstream os;
-        a->stream(os, 0);
+        a2->stream(os, 0);
         EXPECT_EQ(os.str(), "%test_3_0 0 1 42 3\n");
     }
 }

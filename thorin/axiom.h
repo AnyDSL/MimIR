@@ -39,6 +39,7 @@ public:
     static std::tuple<const Axiom*, u8, u8> get(const Def* def);
 
     static std::pair<u8, u8> infer_curry_and_trip(const Def* type);
+    static constexpr u8 Trip_End = u8(-1);
     ///@}
 
     /// @name Axiom name

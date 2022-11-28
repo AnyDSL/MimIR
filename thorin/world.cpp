@@ -94,12 +94,11 @@ template<bool Normalize>
 const Def* World::raw_app(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto [axiom, curry, trip] = Axiom::get(callee);
     if (axiom) {
-        if (curry == 1) {
-            if (auto normalize = axiom->normalizer(); Normalize && normalize) return normalize(type, callee, arg, dbg);
-            curry = trip;
-        } else {
-            --curry;
-        }
+        curry = curry == 0 ? trip : curry;
+        curry = curry == Axiom::Trip_End ? curry : curry - 1;
+
+        if (auto normalize = axiom->normalizer(); Normalize && normalize && curry == 0)
+            return normalize(type, callee, arg, dbg);
     }
 
     return unify<App>(2, axiom, curry, trip, type, callee, arg, dbg);
