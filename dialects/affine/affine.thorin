@@ -22,3 +22,11 @@
     .Cn [start: .Idx m, stop: .Idx m, step: .Idx m, init: «i: n; Ts#i»,
         body: .Cn [iter: .Idx m, acc: «i: n; Ts#i», yield: .Cn [«i: n; Ts#i»]], 
         exit: .Cn [«i: n; Ts#i»]];
+///
+/// ## Compilation Passes and Phases
+///
+/// ### %affine.lower_for_pass
+/// 
+/// Loweres the %affine.For operation to recursive function calls.
+/// 
+.ax %affine.lower_for_pass: %compile.Pass;
