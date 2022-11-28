@@ -61,6 +61,8 @@ var annotated_dup =
         [ "Res", "classthorin_1_1math_1_1Res.html", "classthorin_1_1math_1_1Res" ]
       ] ],
       [ "mem", "namespacethorin_1_1mem.html", [
+        [ "AddMem", "classthorin_1_1mem_1_1AddMem.html", "classthorin_1_1mem_1_1AddMem" ],
+        [ "AddMemWrapper", "classthorin_1_1mem_1_1AddMemWrapper.html", "classthorin_1_1mem_1_1AddMemWrapper" ],
         [ "Alloc2Malloc", "classthorin_1_1mem_1_1Alloc2Malloc.html", "classthorin_1_1mem_1_1Alloc2Malloc" ],
         [ "CopyProp", "classthorin_1_1mem_1_1CopyProp.html", "classthorin_1_1mem_1_1CopyProp" ],
         [ "RememElim", "classthorin_1_1mem_1_1RememElim.html", "classthorin_1_1mem_1_1RememElim" ],

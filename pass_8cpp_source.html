@@ -161,13 +161,13 @@ $(document).ready(function(){initNavTree('pass_8cpp_source.html',''); initResiza
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp;&amp; pass : passes_) <a class="code hl_function" href="classthorin_1_1PassMan.html#a845ba5d9f4f2e78fca3efd25f73fc454">world</a>().ILOG(<span class="stringliteral">&quot; + {}&quot;</span>, pass-&gt;name());</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <a class="code hl_function" href="classthorin_1_1PassMan.html#a845ba5d9f4f2e78fca3efd25f73fc454">world</a>().<a class="code hl_function" href="classthorin_1_1World.html#ab940eae7b3cb63ee0c84dda2ad64a195">debug_dump</a>();</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keyword">auto</span> externals = std::vector(<a class="code hl_function" href="classthorin_1_1PassMan.html#a845ba5d9f4f2e78fca3efd25f73fc454">world</a>().externals().begin(), <a class="code hl_function" href="classthorin_1_1PassMan.html#a845ba5d9f4f2e78fca3efd25f73fc454">world</a>().externals().end());</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [_, nom] : externals) {</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        analyzed(nom);</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        curr_state().stack.push(nom);</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    }</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp;&amp; pass : passes_) pass-&gt;prepare();</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp;&amp; pass : passes_) pass-&gt;prepare();</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keyword">auto</span> externals = std::vector(<a class="code hl_function" href="classthorin_1_1PassMan.html#a845ba5d9f4f2e78fca3efd25f73fc454">world</a>().externals().begin(), <a class="code hl_function" href="classthorin_1_1PassMan.html#a845ba5d9f4f2e78fca3efd25f73fc454">world</a>().externals().end());</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [_, nom] : externals) {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        analyzed(nom);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        curr_state().stack.push(nom);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    }</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keywordflow">while</span> (!curr_state().stack.empty()) {</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        push_state();</div>

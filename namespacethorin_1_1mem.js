@@ -1,6 +1,8 @@
 var namespacethorin_1_1mem =
 [
     [ "AddrSpace", "namespacethorin_1_1mem_1_1AddrSpace.html", null ],
+    [ "AddMem", "classthorin_1_1mem_1_1AddMem.html", "classthorin_1_1mem_1_1AddMem" ],
+    [ "AddMemWrapper", "classthorin_1_1mem_1_1AddMemWrapper.html", "classthorin_1_1mem_1_1AddMemWrapper" ],
     [ "Alloc2Malloc", "classthorin_1_1mem_1_1Alloc2Malloc.html", "classthorin_1_1mem_1_1Alloc2Malloc" ],
     [ "CopyProp", "classthorin_1_1mem_1_1CopyProp.html", "classthorin_1_1mem_1_1CopyProp" ],
     [ "RememElim", "classthorin_1_1mem_1_1RememElim.html", "classthorin_1_1mem_1_1RememElim" ],
@@ -24,6 +26,7 @@ var namespacethorin_1_1mem =
     [ "cn_mem_ret", "namespacethorin_1_1mem.html#a0c7645945c1ea0b9eb35024eb9cddc3e", null ],
     [ "fn_mem", "namespacethorin_1_1mem.html#a607d5ccb22e83abf4baec38192120eca", null ],
     [ "get_sloxy_type", "namespacethorin_1_1mem.html#a0b87ca7c95e3fc724d2c7272e0435dac", null ],
+    [ "isa_apped_nom_lam_in_tuple", "namespacethorin_1_1mem.html#ac09f3d0155bca3a5efa4ac4ab4623300", null ],
     [ "mem_var", "namespacethorin_1_1mem.html#a28c51f5179e5caf76f81cdb7c0ed6382", null ],
     [ "normalize_lea", "namespacethorin_1_1mem.html#a1a7566d5229fac3c94f20b7d1ac8d19e", null ],
     [ "normalize_load", "namespacethorin_1_1mem.html#a94bd5a1774a71fa1a79047d69451774f", null ],
@@ -42,6 +45,8 @@ var namespacethorin_1_1mem =
     [ "op_store", "namespacethorin_1_1mem.html#ad351b1abb5ca49930631c3c847b1a3eb", null ],
     [ "pi_mem", "namespacethorin_1_1mem.html#a09a41d5002120a0ef1000c5ff8f07ec5", null ],
     [ "register_normalizers", "namespacethorin_1_1mem.html#a18ce435a82c6dd1841de54648994d037", null ],
+    [ "rewrite_apped_nom_lam_in_tuple", "namespacethorin_1_1mem.html#aa1b0d6dd9718731de0d878046b5b28e9", null ],
+    [ "rewrite_nom_lam_in_tuple", "namespacethorin_1_1mem.html#aa1f4026afa2f4f13b3d025e1be907995", null ],
     [ "split_phixy", "namespacethorin_1_1mem.html#aad66148a6a1aae3329173e9a23b6045e", null ],
     [ "tuple_of_types", "namespacethorin_1_1mem.html#a5ba946d602d601a2616e78c113f3221c", null ],
     [ "type_mem", "namespacethorin_1_1mem.html#a0246ffea30f87b7af8ef581b9aafbdb0", null ],

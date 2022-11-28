@@ -143,6 +143,9 @@ var hierarchy =
       [ "thorin::RWPass< DS2CPS, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::direct::DS2CPS", "classthorin_1_1direct_1_1DS2CPS.html", null ]
       ] ],
+      [ "thorin::RWPass< AddMemWrapper, Lam >", "classthorin_1_1RWPass.html", [
+        [ "thorin::mem::AddMemWrapper", "classthorin_1_1mem_1_1AddMemWrapper.html", null ]
+      ] ],
       [ "thorin::RWPass< Alloc2Malloc, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::mem::Alloc2Malloc", "classthorin_1_1mem_1_1Alloc2Malloc.html", null ]
       ] ],
@@ -195,7 +198,8 @@ var hierarchy =
           [ "thorin::dot::Emitter", "classthorin_1_1dot_1_1Emitter.html", null ],
           [ "thorin::ll::Emitter", "classthorin_1_1ll_1_1Emitter.html", null ]
         ] ],
-        [ "thorin::Emitter< Value, Type, BB, Child >", "classthorin_1_1Emitter.html", null ]
+        [ "thorin::Emitter< Value, Type, BB, Child >", "classthorin_1_1Emitter.html", null ],
+        [ "thorin::mem::AddMem", "classthorin_1_1mem_1_1AddMem.html", null ]
       ] ],
       [ "thorin::clos::ClosConv", "classthorin_1_1clos_1_1ClosConv.html", null ],
       [ "thorin::clos::LowerTypedClos", "classthorin_1_1clos_1_1LowerTypedClos.html", null ]
