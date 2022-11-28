@@ -506,21 +506,36 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, Sym sym) {
         auto track = tracker();
         if (!ptrns.empty()) ptrns.back()->bind(scopes_, infers.back());
 
-        auto ptrn = parse_ptrn(delim_l, "element of a tuple pattern");
-        auto type = ptrn->type(world());
+        if (p && ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::M_id)) {
+            std::vector<Sym> syms;
+            while (auto tok = accept(Tok::Tag::M_id)) syms.emplace_back(tok->sym());
 
-        if (b) {
-            // If we are able to parse more stuff, we got an expression instead of just a binder.
-            if (auto expr = parse_infix_expr(track, type); expr != type) {
-                ptrn = std::make_unique<IdPtrn>(track.loc(), anonymous_sym(), expr);
-                type = ptrn->type(world());
+            expect(Tok::Tag::T_colon, "type ascription of an identifer group within a tuple pattern");
+            auto type = parse_expr("type of an identifier group within a tuple pattern");
+
+            for (auto sym : syms) {
+                infers.emplace_back(world().nom_infer(type, sym));
+                fields.emplace_back(sym.str());
+                ops.emplace_back(type);
+                ptrns.emplace_back(std::make_unique<IdPtrn>(sym.loc(), sym, type));
             }
-        }
+        } else {
+            auto ptrn = parse_ptrn(delim_l, "element of a tuple pattern");
+            auto type = ptrn->type(world());
 
-        infers.emplace_back(world().nom_infer(type, ptrn->sym()));
-        fields.emplace_back(ptrn->sym().str());
-        ops.emplace_back(type);
-        ptrns.emplace_back(std::move(ptrn));
+            if (b) {
+                // If we are able to parse more stuff, we got an expression instead of just a binder.
+                if (auto expr = parse_infix_expr(track, type); expr != type) {
+                    ptrn = std::make_unique<IdPtrn>(track.loc(), anonymous_sym(), expr);
+                    type = ptrn->type(world());
+                }
+            }
+
+            infers.emplace_back(world().nom_infer(type, ptrn->sym()));
+            fields.emplace_back(ptrn->sym().str());
+            ops.emplace_back(type);
+            ptrns.emplace_back(std::move(ptrn));
+        }
     });
     scopes_.pop();
 
