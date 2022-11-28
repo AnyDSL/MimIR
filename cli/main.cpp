@@ -130,18 +130,16 @@ int main(int argc, char** argv) {
         fe::Parser parser(world, input, ifs, dialect_paths, &normalizers, os[Md]);
         parser.parse_module();
 
-        if (os[H]) parser.bootstrap(*os[H]);
-
-        PipelineBuilder builder;
-        for (const auto& dialect : dialects) { dialect.add_passes(builder); }
-
-        if (os[H]) opt = std::min(opt, 1);
+        if (os[H]) {
+            parser.bootstrap(*os[H]);
+            opt = std::min(opt, 1);
+        }
 
         // clang-format off
         switch (opt) {
             case 0:                             break;
             case 1: Phase::run<Cleanup>(world); break;
-            case 2: optimize(world, passes, builder);   break;
+            case 2: optimize(world, passes);   break;
             default: errln("error: illegal optimization level '{}'", opt);
         }
         // clang-format on
