@@ -156,7 +156,9 @@ The following tables comprise all production rules:
 | Nonterminal | Right-Hand Side               | Comment                  |
 |-------------|-------------------------------|--------------------------|
 | p           | Sym t                         | identifier pattern       |
-| p           | s `(` p `,` ... `,` p `)` t   | tuple pattern            |
+| p           | s `(` g `,` ... `,` g `)` t   | tuple pattern            |
+| g           | p                             | group pattern            |
+| g           | s+ `:` e                      | group pattern            |
 | p           | s `[` b `,` ... `,` b `]` t   | sigma pattern            |
 | b           | s e<sub>type</sub>            | identifier binder        |
 | b           | s `[` b `,` ... `,` b `]` t   | sigma binder             |
