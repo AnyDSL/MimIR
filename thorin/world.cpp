@@ -199,8 +199,8 @@ const Def* World::extract(Refer d, Refer index, Refer dbg) {
         return tuple(ops, dbg);
     }
 
-    auto size = Idx::size(index->type());
-    auto type = d->unfold_type();
+    Refer size = Idx::size(index->type());
+    Refer type = d->unfold_type();
 
     // nom sigmas can be 1-tuples
     if (auto l = isa_lit(size); l && *l == 1 && !d->type()->isa_nom<Sigma>()) return d;

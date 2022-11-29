@@ -76,18 +76,6 @@ inline const Def* op_lea_unsafe(const Def* ptr, u64 i, const Def* dbg = {}) {
     return op_lea_unsafe(ptr, w.lit_idx(i), dbg);
 }
 
-inline const Def* op_load(const Def* mem, const Def* ptr, const Def* dbg = {}) {
-    World& w    = mem->world();
-    auto [T, a] = force<Ptr>(ptr->type())->args<2>();
-    return w.app(w.app(w.ax<load>(), {T, a}), {mem, ptr}, dbg);
-}
-
-inline const Def* op_store(const Def* mem, const Def* ptr, const Def* val, const Def* dbg = {}) {
-    World& w    = mem->world();
-    auto [T, a] = force<Ptr>(ptr->type())->args<2>();
-    return w.app(w.app(w.ax<store>(), {T, a}), {mem, ptr, val}, dbg);
-}
-
 inline const Def* op_remem(const Def* mem, const Def* dbg = {}) {
     World& w = mem->world();
     return w.app(w.ax<remem>(), mem, dbg);
@@ -117,13 +105,6 @@ inline const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const
 
 const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg = {});
 const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg = {});
-
-inline const Def* op_free(const Def* mem, const Def* ptr, const Def* dbg = {}) {
-    World& w     = mem->world();
-    auto ptr_ty  = force<Ptr>(ptr->type())->as<App>();
-    auto pointee = ptr_ty->arg(0);
-    return w.app(w.app(w.ax<free>(), {pointee, w.lit_nat_0()}), {mem, ptr}, dbg);
-}
 
 inline const Def* mem_var(Lam* lam, const Def* dbg = nullptr) {
     return match<M>(lam->var(0_s)->type()) ? lam->var(0, dbg) : nullptr;
