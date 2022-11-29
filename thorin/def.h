@@ -48,6 +48,25 @@ using DefArray = Array<const Def*>;
 
 //------------------------------------------------------------------------------
 
+/// Retrieves Infer::arg from @p def
+const Def* refer(const Def* def);
+
+/// Helper class to retrieve Infer::arg if present.
+class Refer {
+public:
+    Refer() = default;
+    Refer(const Def* def)
+        : def_(def) {}
+
+    const Def* operator*() const { return refer(def_); }
+    const Def* operator->() const { return refer(def_); }
+    operator const Def*() const { return refer(def_); }
+    explicit operator bool() const { return def_; }
+
+private:
+    const Def* def_ = nullptr;
+};
+
 template<class T = u64>
 std::optional<T> isa_lit(const Def*);
 template<class T = u64>

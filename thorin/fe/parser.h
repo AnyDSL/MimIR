@@ -55,7 +55,7 @@ private:
             , pos_(pos) {}
 
         Loc loc() const { return {parser_.prev_.file, pos_, parser_.prev_.finis}; }
-        operator const Def*() const { return parser_.world().dbg({"", loc()}); }
+        const Def* dbg() const { return parser_.world().dbg({"", loc()}); }
         const Def* meta(const Def* m) const { return parser_.world().dbg({"", loc(), m}); }
         const Def* named(Sym sym) const { return parser_.world().dbg(sym, loc()); }
         const Def* named(const std::string& str) const { return parser_.world().dbg({str, loc()}); }
@@ -125,7 +125,7 @@ private:
 
     /// Factory method to build a Parser::Tracker.
     Tracker tracker() { return Tracker(*this, ahead().loc().begin); }
-    const Def* dbg(Tracker t) { return world().dbg((Loc)t); }
+    const Def* dbg(Tracker t) { return world().dbg(t.loc()); }
     ///@}
 
     /// @name get next Tok

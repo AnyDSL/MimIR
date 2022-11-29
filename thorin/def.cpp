@@ -14,6 +14,21 @@ namespace thorin {
 // Just assuming looking through the uses is faster if uses().size() is small.
 static constexpr int Search_In_Uses_Threshold = 8;
 
+const Def* refer(const Def* def) {
+    if (!def) return nullptr;
+
+    // find inferred Def through chain of Infers
+    while (auto infer = def->isa<Infer>()) {
+        if (auto op = infer->op())
+            def = op;
+        else
+            break;
+    }
+
+    // TODO union-find-like path compression
+    return def;
+}
+
 /*
  * constructors
  */

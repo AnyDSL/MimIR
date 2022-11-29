@@ -42,7 +42,7 @@ const Pi* pullback_type(const Def* E, const Def* A) {
     auto& world   = E->world();
     auto tang_arg = tangent_type_fun(A);
     auto tang_ret = tangent_type_fun(E);
-    auto pb_ty    = world.cn({tang_ret, world.cn({tang_arg})});
+    auto pb_ty    = world.cn({tang_ret, world.cn(tang_arg)});
     return pb_ty;
 }
 

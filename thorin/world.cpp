@@ -64,7 +64,7 @@ World::~World() {
     for (auto def : move_.defs) def->~Def();
 }
 
-const Type* World::type(const Def* level, const Def* dbg) {
+const Type* World::type(Refer level, Refer dbg) {
     if (err()) {
         if (!level->type()->isa<Univ>()) {
             err()->err(level->loc(), "argument `{}` to `.Type` must be of type `.Univ` but is of type `{}`", level,
@@ -74,7 +74,7 @@ const Type* World::type(const Def* level, const Def* dbg) {
     return unify<Type>(1, level, dbg)->as<Type>();
 }
 
-const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
+const Def* World::app(Refer callee, Refer arg, Refer dbg) {
     auto pi = callee->type()->isa<Pi>();
 
     if (err()) {
@@ -95,14 +95,14 @@ const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
     return unify<App>(2, axiom, curry - 1, type, callee, arg, dbg);
 }
 
-const Def* World::raw_app(const Def* callee, const Def* arg, const Def* dbg) {
+const Def* World::raw_app(Refer callee, Refer arg, Refer dbg) {
     auto pi             = callee->type()->as<Pi>();
     auto type           = pi->reduce(arg).back();
     auto [axiom, curry] = Axiom::get(callee);
     return unify<App>(2, axiom, curry - 1, type, callee, arg, dbg);
 }
 
-const Def* World::sigma(Defs ops, const Def* dbg) {
+const Def* World::sigma(Defs ops, Refer dbg) {
     auto n = ops.size();
     if (n == 0) return sigma();
     if (n == 1) return ops[0];
@@ -117,7 +117,7 @@ static const Def* infer_sigma(World& world, Defs ops) {
     return world.sigma(elems);
 }
 
-const Def* World::tuple(Defs ops, const Def* dbg) {
+const Def* World::tuple(Defs ops, Refer dbg) {
     if (ops.size() == 1) return ops[0];
 
     auto sigma = infer_sigma(*this, ops);
@@ -127,7 +127,7 @@ const Def* World::tuple(Defs ops, const Def* dbg) {
     return t;
 }
 
-const Def* World::tuple(const Def* type, Defs ops, const Def* dbg) {
+const Def* World::tuple(Refer type, Defs ops, Refer dbg) {
     if (err()) {
         // TODO type-check type vs inferred type
     }
@@ -164,13 +164,13 @@ const Def* World::tuple(const Def* type, Defs ops, const Def* dbg) {
     return unify<Tuple>(ops.size(), type, ops, dbg);
 }
 
-const Def* World::tuple_str(std::string_view s, const Def* dbg) {
+const Def* World::tuple_str(std::string_view s, Refer dbg) {
     DefVec ops;
     for (auto c : s) ops.emplace_back(lit_nat(c));
     return tuple(ops, dbg);
 }
 
-const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
+const Def* World::extract(Refer d, Refer index, Refer dbg) {
     if (index->isa<Tuple>()) {
         auto n = index->num_ops();
         DefArray idx(n, [&](size_t i) { return index->op(i); });
@@ -225,7 +225,7 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
     return unify<Extract>(2, elem_t, d, index, dbg);
 }
 
-const Def* World::insert(const Def* d, const Def* index, const Def* val, const Def* dbg) {
+const Def* World::insert(Refer d, Refer index, Refer val, Refer dbg) {
     auto type = d->unfold_type();
     auto size = Idx::size(index->type());
 
@@ -254,16 +254,16 @@ const Def* World::insert(const Def* d, const Def* index, const Def* val, const D
     return unify<Insert>(3, d, index, val, dbg);
 }
 
-bool is_shape(const Def* s) {
+bool is_shape(Refer s) {
     if (s->isa<Nat>()) return true;
     if (auto arr = s->isa<Arr>()) return arr->body()->isa<Nat>();
     if (auto sig = s->isa_structural<Sigma>())
-        return std::ranges::all_of(sig->ops(), [](const Def* op) { return op->isa<Nat>(); });
+        return std::ranges::all_of(sig->ops(), [](Refer op) { return op->isa<Nat>(); });
 
     return false;
 }
 
-const Def* World::arr(const Def* shape, const Def* body, const Def* dbg) {
+const Def* World::arr(Refer shape, Refer body, Refer dbg) {
     if (err()) {
         if (!is_shape(shape->type())) err()->expected_shape(shape, dbg);
     }
@@ -292,7 +292,7 @@ const Def* World::arr(const Def* shape, const Def* body, const Def* dbg) {
     return unify<Arr>(2, body->unfold_type(), shape, body, dbg);
 }
 
-const Def* World::pack(const Def* shape, const Def* body, const Def* dbg) {
+const Def* World::pack(Refer shape, Refer body, Refer dbg) {
     if (err()) {
         if (!is_shape(shape->type())) err()->expected_shape(shape, dbg);
     }
@@ -314,17 +314,17 @@ const Def* World::pack(const Def* shape, const Def* body, const Def* dbg) {
     return unify<Pack>(1, type, body, dbg);
 }
 
-const Def* World::arr(Defs shape, const Def* body, const Def* dbg) {
+const Def* World::arr(Defs shape, Refer body, Refer dbg) {
     if (shape.empty()) return body;
     return arr(shape.skip_back(), arr(shape.back(), body, dbg), dbg);
 }
 
-const Def* World::pack(Defs shape, const Def* body, const Def* dbg) {
+const Def* World::pack(Defs shape, Refer body, Refer dbg) {
     if (shape.empty()) return body;
     return pack(shape.skip_back(), pack(shape.back(), body, dbg), dbg);
 }
 
-const Lit* World::lit(const Def* type, u64 val, const Def* dbg) {
+const Lit* World::lit(Refer type, u64 val, Refer dbg) {
     if (auto size = Idx::size(type)) {
         if (err()) {
             if (auto s = isa_lit(size)) {
@@ -343,7 +343,7 @@ const Lit* World::lit(const Def* type, u64 val, const Def* dbg) {
  */
 
 template<bool up>
-const Def* World::ext(const Def* type, const Def* dbg) {
+const Def* World::ext(Refer type, Refer dbg) {
     if (auto arr = type->isa<Arr>()) return pack(arr->shape(), ext<up>(arr->body()), dbg);
     if (auto sigma = type->isa<Sigma>())
         return tuple(sigma, DefArray(sigma->num_ops(), [&](size_t i) { return ext<up>(sigma->op(i), dbg); }), dbg);
@@ -351,16 +351,16 @@ const Def* World::ext(const Def* type, const Def* dbg) {
 }
 
 template<bool up>
-const Def* World::bound(Defs ops, const Def* dbg) {
+const Def* World::bound(Defs ops, Refer dbg) {
     auto kind = infer_type_level(*this, ops);
 
     // has ext<up> value?
-    if (std::ranges::any_of(ops, [&](const Def* op) { return up ? bool(op->isa<Top>()) : bool(op->isa<Bot>()); }))
+    if (std::ranges::any_of(ops, [&](Refer op) { return up ? bool(op->isa<Top>()) : bool(op->isa<Bot>()); }))
         return ext<up>(kind);
 
     // ignore: ext<!up>
     DefArray cpy(ops);
-    auto [_, end] = std::ranges::copy_if(ops, cpy.begin(), [&](const Def* op) { return !op->isa<Ext>(); });
+    auto [_, end] = std::ranges::copy_if(ops, cpy.begin(), [&](Refer op) { return !op->isa<Ext>(); });
 
     // sort and remove duplicates
     std::sort(cpy.begin(), end, GIDLt<const Def*>());
@@ -375,7 +375,7 @@ const Def* World::bound(Defs ops, const Def* dbg) {
     return unify<TBound<up>>(cpy.size(), kind, cpy, dbg);
 }
 
-const Def* World::ac(const Def* type, Defs ops, const Def* dbg) {
+const Def* World::ac(Refer type, Defs ops, Refer dbg) {
     if (type->isa<Meet>()) {
         DefArray types(ops.size(), [&](size_t i) { return ops[i]->type(); });
         return unify<Ac>(ops.size(), meet(types), ops, dbg);
@@ -385,16 +385,16 @@ const Def* World::ac(const Def* type, Defs ops, const Def* dbg) {
     return ops[0];
 }
 
-const Def* World::ac(Defs ops, const Def* dbg /*= {}*/) { return ac(infer_type_level(*this, ops), ops, dbg); }
+const Def* World::ac(Defs ops, Refer dbg /*= {}*/) { return ac(infer_type_level(*this, ops), ops, dbg); }
 
-const Def* World::vel(const Def* type, const Def* value, const Def* dbg) {
+const Def* World::vel(Refer type, Refer value, Refer dbg) {
     if (type->isa<Join>()) return unify<Vel>(1, type, value, dbg);
     return value;
 }
 
-const Def* World::pick(const Def* type, const Def* value, const Def* dbg) { return unify<Pick>(1, type, value, dbg); }
+const Def* World::pick(Refer type, Refer value, Refer dbg) { return unify<Pick>(1, type, value, dbg); }
 
-const Def* World::test(const Def* value, const Def* probe, const Def* match, const Def* clash, const Def* dbg) {
+const Def* World::test(Refer value, Refer probe, Refer match, Refer clash, Refer dbg) {
     auto m_pi = match->type()->isa<Pi>();
     auto c_pi = clash->type()->isa<Pi>();
 
@@ -410,7 +410,7 @@ const Def* World::test(const Def* value, const Def* probe, const Def* match, con
     return unify<Test>(4, pi(c_pi->dom(), codom), value, probe, match, clash, dbg);
 }
 
-const Def* World::singleton(const Def* inner_type, const Def* dbg) {
+const Def* World::singleton(Refer inner_type, Refer dbg) {
     return unify<Singleton>(1, this->type<1>(), inner_type, dbg);
 }
 
@@ -434,9 +434,9 @@ const Def* World::gid2def(u32 gid) {
  * instantiate templates
  */
 
-template const Def* World::ext<true>(const Def*, const Def*);
-template const Def* World::ext<false>(const Def*, const Def*);
-template const Def* World::bound<true>(Defs, const Def*);
-template const Def* World::bound<false>(Defs, const Def*);
+template const Def* World::ext<true>(Refer, Refer);
+template const Def* World::ext<false>(Refer, Refer);
+template const Def* World::bound<true>(Defs, Refer);
+template const Def* World::bound<false>(Defs, Refer);
 
 } // namespace thorin
