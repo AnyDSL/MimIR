@@ -74,8 +74,8 @@
 /// | or_    |  x |  x |  x |  o | or                           |
 /// | t      |  x |  x |  x |  x | always true                  |
 ///
-.ax %core.bit2( f,      nor,    nciff,  na,     niff,   nb,   xor_, nand,
-                and_,  nxor,    b,      iff,    a,      ciff, or_,  t):
+.ax %core.bit2( f,      nor, nciff, nfst, niff, nsnd, xor_, nand,
+                and_,  nxor,   snd,  iff,  fst, ciff,  or_,    t):
     Π s: .Nat -> [.Idx s, .Idx s] -> .Idx s , normalize_bit2;
 ///
 /// ### %core.shr

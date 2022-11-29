@@ -102,6 +102,24 @@ const Def* World::raw_app(Refer callee, Refer arg, Refer dbg) {
     return unify<App>(2, axiom, curry - 1, type, callee, arg, dbg);
 }
 
+const Def* World::call(const Axiom* axiom, Refer arg, Refer dbg) {
+    switch (axiom->curry()) {
+        case 1: return app(axiom, arg, dbg);
+        case 2: {
+            auto infer = nom_infer_entity();
+            auto a     = app(app(axiom, infer, dbg), arg, dbg);
+            if (auto r = refer(infer); r && !r->isa<Infer>()) return app(app(axiom, r, dbg), arg, dbg);
+            return a;
+        }
+        default: assert(false && "TODO");
+    }
+#if 0
+    const Def* callee = axiom;
+    for (size_t i = 1, e = axiom->curry(); i < e; ++i) callee = app(callee, nom_infer_entity(), dbg);
+    return app(callee, arg, dbg);
+#endif
+}
+
 const Def* World::sigma(Defs ops, Refer dbg) {
     auto n = ops.size();
     if (n == 0) return sigma();

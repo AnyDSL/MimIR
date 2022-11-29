@@ -167,6 +167,7 @@ public:
     ///@{
     const Univ* univ() { return data_.univ_; }
     const Type* type(Refer level, Refer dbg = {});
+    const Type* type_infer_univ(Refer dbg = {}) { return type(nom_infer_univ(dbg), dbg); }
     template<level_t level = 0>
     const Type* type(Refer dbg = {}) {
         if constexpr (level == 0)
@@ -180,11 +181,19 @@ public:
     const Proxy* proxy(Refer type, Defs ops, u32 index, u32 tag, Refer dbg = {}) {
         return unify<Proxy>(ops.size(), type, ops, index, tag, dbg);
     }
+
     Infer* nom_infer(Refer type, Refer dbg = {}) { return insert<Infer>(1, type, dbg); }
     Infer* nom_infer(Refer type, Sym sym) { return insert<Infer>(1, type, dbg(sym)); }
     Infer* nom_infer_univ(Refer dbg = {}) { return nom_infer(univ(), dbg); }
     Infer* nom_infer_type(Refer dbg = {}) { return nom_infer(type_infer_univ(dbg), dbg); }
-    const Type* type_infer_univ(Refer dbg = {}) { return type(nom_infer_univ(dbg), dbg); }
+
+    /// Either a value `?:?:.Type ?` or a type `?:.Type ?:.Type ?`.
+    Infer* nom_infer_entity(Refer dbg = {}) {
+        auto t   = type_infer_univ();
+        auto res = nom_infer(nom_infer(t), dbg);
+        assert(this == &res->world());
+        return res;
+    }
     ///@}
 
     /// @name Axiom
@@ -253,6 +262,18 @@ public:
     const Def* raw_app(Refer callee, Refer arg, Refer dbg = {});
     /// Same as World::app but does *not* apply NormalizeFn.
     const Def* raw_app(Refer callee, Defs args, Refer dbg = {}) { return raw_app(callee, tuple(args), dbg); }
+    ///@}
+
+    /// @name call - App with type inference
+    ///@{
+    /// Infers the args of a curried Axiom.
+    const Def* call(const Axiom* axiom, Refer arg, Refer dbg = {});
+    // clang-format off
+    template<class Id> const Def* call(Id id, Refer arg, Refer dbg = {}) { return call(ax(id),   arg, dbg); }
+    template<class Id> const Def* call(       Refer arg, Refer dbg = {}) { return call(ax<Id>(), arg, dbg); }
+    template<class Id> const Def* call(Id id, Defs args, Refer dbg = {}) { return call(id, tuple(args), dbg); }
+    template<class Id> const Def* call(       Defs args, Refer dbg = {}) { return call<Id>(tuple(args), dbg); }
+    // clang-format on
     ///@}
 
     /// @name Sigma
