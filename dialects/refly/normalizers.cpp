@@ -43,10 +43,11 @@ const Def* normalize_gid(const Def*, const Def*, const Def* arg, const Def*) {
 const Def* normalize_rapp(const Def*, const Def* callee, const Def* a, const Def* dbg) {
     auto& world           = a->world();
     auto [rule, code_arg] = a->projs<2>();
+    // rule->dump(10);
 
     if (auto r = rule->isa_nom<Rule>()) {
         auto arg = do_reflect(code_arg);
-        // TODO
+        rule->dump(1);
     }
 
     return world.raw_app(callee, a, dbg);

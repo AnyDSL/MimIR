@@ -1,0 +1,21 @@
+// RUN: %thorin %s
+
+.import refly;
+
+.lam id T:* -> T -> T = 
+    .lm x: T -> T = x;
+
+.lam rule !(T:*) -> .Rule = .rule x: T = id T x => x;
+
+//.let rule = .rule (T: *, x: T, y: T) = id T x => x + y;
+
+/*.ax %rule.compile: .Rule -> [%refly.Code -> %refly.Code | Err];*/
+
+// .lam x: %refly.Code -> %refly.Code | Err =
+//     match x
+//         (App (App id T) y) => y
+//         _ => Err
+
+.let id5 = id .Nat 5;
+.let _ = %refly.rapp (rule .Nat, (%refly.reify .Nat id5));
+/*.let _ = %refly.rapp (rule, (%refly.reify .Nat id5));*/
