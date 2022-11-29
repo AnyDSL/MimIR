@@ -147,7 +147,7 @@ Namespaces</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:a48da5e6acc28b0cfe9f3402f29ae9a1c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c">CODE</a>(i)&#160;&#160;&#160;    case i: res = fold&lt;Id, id, i&gt;(la-&gt;get(), lb-&gt;get(), nsw, nuw); break;</td></tr>
 <tr class="separator:a48da5e6acc28b0cfe9f3402f29ae9a1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeaded74fae54146d0f196f3f31367c89"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>(S,  D)&#160;&#160;&#160;        else if (S == sw &amp;&amp; D == dw) return world.lit(d_ty, w2s&lt;D&gt;(<a class="el" href="namespacethorin.html#a35ef19aa33b6c70ef2aca7bf23009527">thorin::bitcast</a>&lt;w2s&lt;S&gt;&gt;(*l)), dbg);</td></tr>
+<tr class="memitem:aeaded74fae54146d0f196f3f31367c89"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>(S,  D)&#160;&#160;&#160;        else if (S == sw &amp;&amp; D == dw) return world.lit(d_t, w2s&lt;D&gt;(<a class="el" href="namespacethorin.html#a35ef19aa33b6c70ef2aca7bf23009527">thorin::bitcast</a>&lt;w2s&lt;S&gt;&gt;(*l)), dbg);</td></tr>
 <tr class="separator:aeaded74fae54146d0f196f3f31367c89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -193,9 +193,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a080b2b8489209840d2529047a4d7404c"><td class="memTemplParams" colspan="2">template&lt;div id&gt; </td></tr>
 <tr class="memitem:a080b2b8489209840d2529047a4d7404c"><td class="memTemplItemLeft" align="right" valign="top">const Def *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a080b2b8489209840d2529047a4d7404c">thorin::core::normalize_div</a> (const Def *type, const Def *c, const Def *arg, const Def *dbg)</td></tr>
 <tr class="separator:a080b2b8489209840d2529047a4d7404c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abad584c6ebc6fdcdd2aa5a040f04d229"><td class="memTemplParams" colspan="2">template&lt;conv id&gt; </td></tr>
-<tr class="memitem:abad584c6ebc6fdcdd2aa5a040f04d229"><td class="memTemplItemLeft" align="right" valign="top">const Def *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#abad584c6ebc6fdcdd2aa5a040f04d229">thorin::core::normalize_conv</a> (const Def *dst_ty, const Def *c, const Def *x, const Def *dbg)</td></tr>
-<tr class="separator:abad584c6ebc6fdcdd2aa5a040f04d229"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0d743e658a5e0a196ee76490b326645"><td class="memTemplParams" colspan="2">template&lt;conv id&gt; </td></tr>
+<tr class="memitem:aa0d743e658a5e0a196ee76490b326645"><td class="memTemplItemLeft" align="right" valign="top">const Def *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#aa0d743e658a5e0a196ee76490b326645">thorin::core::normalize_conv</a> (const Def *dst_t, const Def *c, const Def *x, const Def *dbg)</td></tr>
+<tr class="separator:aa0d743e658a5e0a196ee76490b326645"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd0e350aad128d712e8628f602adae31"><td class="memItemLeft" align="right" valign="top">const Def *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#acd0e350aad128d712e8628f602adae31">thorin::core::normalize_bitcast</a> (const Def *dst_t, const Def *callee, const Def *src, const Def *dbg)</td></tr>
 <tr class="separator:acd0e350aad128d712e8628f602adae31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a166904dfa7742d726f66138de3f2af4f"><td class="memItemLeft" align="right" valign="top">u64&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a166904dfa7742d726f66138de3f2af4f">thorin::core::pad</a> (u64 offset, u64 align)</td></tr>
@@ -249,7 +249,7 @@ Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;        else if (S == sw &amp;&amp; D == dw) return world.lit(d_ty, w2s&lt;D&gt;(<a class="el" href="namespacethorin.html#a35ef19aa33b6c70ef2aca7bf23009527">thorin::bitcast</a>&lt;w2s&lt;S&gt;&gt;(*l)), dbg);</td>
+          <td></td><td>&#160;&#160;&#160;        else if (S == sw &amp;&amp; D == dw) return world.lit(d_t, w2s&lt;D&gt;(<a class="el" href="namespacethorin.html#a35ef19aa33b6c70ef2aca7bf23009527">thorin::bitcast</a>&lt;w2s&lt;S&gt;&gt;(*l)), dbg);</td>
         </tr>
       </table>
 </div><div class="memdoc">

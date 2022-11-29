@@ -89,7 +89,7 @@ var classthorin_1_1Def =
     [ "operator<<", "classthorin_1_1Def.html#af5ab59c94b596ba87afd4298618665aa", null ],
     [ "swap", "classthorin_1_1Def.html#ac16087b25da85305adb283de20b2342d", null ],
     [ "World", "classthorin_1_1Def.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],
-    [ "curry_", "classthorin_1_1Def.html#a7cb5e9ae59ac1650ad99dc710f18e999", null ],
+    [ "curry_", "classthorin_1_1Def.html#a25c07a3d0f997a3c5ea1b3642149e56b", null ],
     [ "dbg_", "classthorin_1_1Def.html#addf021956daa61ab3035dd3a75751215", null ],
     [ "dep_", "classthorin_1_1Def.html#a531bae40dbbd05fe36e2654d66b5906c", null ],
     [ "flags_", "classthorin_1_1Def.html#a41700d37c67115465173f14331d9bb92", null ],
@@ -99,6 +99,7 @@ var classthorin_1_1Def =
     [ "nom_", "classthorin_1_1Def.html#a8dbf3d598ca965f8b5227f55eeffd37e", null ],
     [ "num_ops_", "classthorin_1_1Def.html#aca8c4b92e68fac58f8c2812cdff26442", null ],
     [ "pading_", "classthorin_1_1Def.html#a92926bb427154c103b0d61db8ceb0d2a", null ],
+    [ "trip_", "classthorin_1_1Def.html#acd8ae8810314b2c77903a10ffdfcd385", null ],
     [ "type_", "classthorin_1_1Def.html#aad84fe7b85030681f216dffc81fc20d2", null ],
     [ "uses_", "classthorin_1_1Def.html#abefc385c0d60ba85c5e649598d20fe05", null ]
 ];

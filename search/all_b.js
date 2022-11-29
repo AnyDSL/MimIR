@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['l_0',['l',['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fab56bd84b4325cae0ff953569daeeecd6',1,'thorin::math::l()'],['../namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628afb255a4afa664b7d505609cd9f04e49c',1,'thorin::core::l()']]],
+  ['l_0',['l',['../namespacethorin_1_1math.html#a89cb7767a778d4204e26860588096530ab56bd84b4325cae0ff953569daeeecd6',1,'thorin::math::l()'],['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eafb255a4afa664b7d505609cd9f04e49c',1,'thorin::core::l()']]],
   ['l_5fr_1',['L_r',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79aff4732a008160f463364cd4285d4bc9f',1,'thorin::fe::Tok']]],
   ['l_5fs_2',['L_s',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a210614a1117e89a255b9d0b39516b604',1,'thorin::fe::Tok']]],
   ['l_5fu_3',['L_u',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a7e6dfe77ddaaa4a0c994660de2d38ead',1,'thorin::fe::Tok']]],
@@ -31,8 +31,8 @@ var searchData=
   ['lea_28',['lea',['../namespacethorin_1_1mem.html#ad2d2b99586c12a6da32e2aec650a018a',1,'thorin::mem']]],
   ['leaf_29',['Leaf',['../classthorin_1_1LoopTreeBuilder.html#ac690cf3a399ddce6920cc5cc7449a5d3',1,'thorin::LoopTreeBuilder::Leaf()'],['../classthorin_1_1LoopTree_1_1Leaf.html',1,'thorin::LoopTree&lt; forward &gt;::Leaf']]],
   ['least_5fcommon_5fancestor_30',['least_common_ancestor',['../classthorin_1_1DomTreeBase.html#a8d66dda27fbfe5be9a90a5f65df791a7',1,'thorin::DomTreeBase']]],
-  ['level_31',['level',['../classthorin_1_1Type.html#a1a0b11f4a53c4e501669c5bfa1531d76',1,'thorin::Type::level()'],['../structthorin_1_1Log.html#a63ea2999521567a43b28f00081cd1e82',1,'thorin::Log::level()']]],
-  ['level_32',['Level',['../structthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1a',1,'thorin::Log']]],
+  ['level_31',['Level',['../structthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1a',1,'thorin::Log']]],
+  ['level_32',['level',['../classthorin_1_1Type.html#a1a0b11f4a53c4e501669c5bfa1531d76',1,'thorin::Type::level()'],['../structthorin_1_1Log.html#a63ea2999521567a43b28f00081cd1e82',1,'thorin::Log::level()']]],
   ['level2acro_33',['level2acro',['../structthorin_1_1Log.html#a5ee67d670442fd8476290292f0f4a738',1,'thorin::Log']]],
   ['level2color_34',['level2color',['../structthorin_1_1Log.html#aa0b95355e12aa74f6bb27a0079fcfca2',1,'thorin::Log']]],
   ['level_5ft_35',['level_t',['../namespacethorin.html#ae2b9a3abaa277c7852b0f465240b0dd7',1,'thorin']]],
