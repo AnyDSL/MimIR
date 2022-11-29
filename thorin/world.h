@@ -225,9 +225,7 @@ public:
 
     /// @name Pi
     ///@{
-    const Pi* pi(Refer dom, Refer codom, Refer dbg = {}) {
-        return unify<Pi>(2, codom->unfold_type(), dom, codom, dbg);
-    }
+    const Pi* pi(Refer dom, Refer codom, Refer dbg = {}) { return unify<Pi>(2, codom->unfold_type(), dom, codom, dbg); }
     const Pi* pi(Defs dom, Refer codom, Refer dbg = {}) { return pi(sigma(dom), codom, dbg); }
     Pi* nom_pi(Refer type, Refer dbg = {}) { return insert<Pi>(2, type, dbg); }
     ///@}
@@ -242,9 +240,7 @@ public:
     /// @name Lam
     ///@{
     Lam* nom_lam(const Pi* cn, Refer dbg = {}) { return insert<Lam>(2, cn, dbg); }
-    const Lam* lam(const Pi* pi, Refer filter, Refer body, Refer dbg) {
-        return unify<Lam>(2, pi, filter, body, dbg);
-    }
+    const Lam* lam(const Pi* pi, Refer filter, Refer body, Refer dbg) { return unify<Lam>(2, pi, filter, body, dbg); }
     const Lam* lam(const Pi* pi, Refer body, Refer dbg) { return lam(pi, lit_tt(), body, dbg); }
     Lam* exit() { return data_.exit_; } ///< Used as a dummy exit node within Scope.
     ///@}
@@ -317,21 +313,15 @@ public:
 
     /// Builds `(f, t)cond`.
     /// **Note** that select expects @p t as first argument and @p f as second one.
-    const Def* select(Refer t, Refer f, Refer cond, Refer dbg = {}) {
-        return extract(tuple({f, t}), cond, dbg);
-    }
+    const Def* select(Refer t, Refer f, Refer cond, Refer dbg = {}) { return extract(tuple({f, t}), cond, dbg); }
     ///@}
 
     /// @name Insert
     /// @sa core::insert_unsafe
     ///@{
     const Def* insert(Refer d, Refer i, Refer val, Refer dbg = {});
-    const Def* insert(Refer d, u64 a, u64 i, Refer val, Refer dbg = {}) {
-        return insert(d, lit_idx(a, i), val, dbg);
-    }
-    const Def* insert(Refer d, u64 i, Refer val, Refer dbg = {}) {
-        return insert(d, as_lit(d->arity()), i, val, dbg);
-    }
+    const Def* insert(Refer d, u64 a, u64 i, Refer val, Refer dbg = {}) { return insert(d, lit_idx(a, i), val, dbg); }
+    const Def* insert(Refer d, u64 i, Refer val, Refer dbg = {}) { return insert(d, as_lit(d->arity()), i, val, dbg); }
     ///@}
 
     /// @name Lit
@@ -356,9 +346,7 @@ public:
 
     /// Constructs a Lit @p of type Idx of size $2^width$.
     /// `val = 64` will be automatically converted to size `0` - the encoding for $2^64$.
-    const Lit* lit_int(nat_t width, u64 val, Refer dbg = {}) {
-        return lit_idx(Idx::bitwidth2size(width), val, dbg);
-    }
+    const Lit* lit_int(nat_t width, u64 val, Refer dbg = {}) { return lit_idx(Idx::bitwidth2size(width), val, dbg); }
 
     /// Constructs a Lit of type Idx of size @p mod.
     /// The value @p val will be adjusted modulo @p mod.
