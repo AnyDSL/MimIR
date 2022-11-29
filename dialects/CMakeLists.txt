@@ -47,7 +47,6 @@ add_thorin_dialect(core
     DEPENDS
         math
         mem
-        clos
     INSTALL
 )
 
