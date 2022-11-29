@@ -47,7 +47,7 @@ void PassMan::run() {
     world().debug_dump();
 
     for (auto&& pass : passes_) pass->prepare();
-    
+
     auto externals = std::vector(world().externals().begin(), world().externals().end());
     for (const auto& [_, nom] : externals) {
         analyzed(nom);
