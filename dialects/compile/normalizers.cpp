@@ -8,16 +8,7 @@ const Def* normalize_pass_phase(const Def* type, const Def* callee, const Def* a
     auto& world = type->world();
 
     auto [ax, _] = collect_args(arg);
-    if (ax->flags() != flags_t(Axiom::Base<pass_list>)) {
-        // return world.raw_app(type, callee, arg, dbg);
-        // TODO: remove when normalizers are fixed
-        if (ax->flags() == flags_t(Axiom::Base<combine_pass_list>)) {
-            auto arg_cpl = arg->as<App>();
-            arg = normalize_combine_pass_list(arg_cpl->type(), arg_cpl->callee(), arg_cpl->arg(), arg_cpl->dbg());
-        } else {
-            world.ELOG("pass_phase expects a pass_list as argument but got {}", arg);
-        }
-    }
+    assert(ax->flags() == flags_t(Axiom::Base<pass_list>) && "pass_phase expected a pass_list (after normalization)");
 
     auto [f_ax, pass_list_defs] = collect_args(arg);
     assert(f_ax->flags() == flags_t(Axiom::Base<pass_list>));
