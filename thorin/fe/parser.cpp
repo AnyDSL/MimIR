@@ -698,6 +698,7 @@ Lam* Parser::parse_lam(bool decl) {
     std::deque<Pi*> pis;
     do {
         const Def* filter = world().lit_bool(accept(Tok::Tag::T_bang).has_value());
+        bool implicit     = accept(Tok::Tag::T_dot).has_value();
         auto dom_p        = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda", prec);
         auto dom_t        = dom_p->type(world());
         auto pi           = world().nom_pi(world().type_infer_univ())->set_dom(dom_t);
