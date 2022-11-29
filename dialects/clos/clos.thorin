@@ -5,6 +5,7 @@
 /// ## Dependencies
 ///
 .import mem;
+.import compile;
 ///
 /// ## Operations related to longjmp
 ///
@@ -23,3 +24,53 @@
 ///     * `esc`: lambda that escapes its parent scope
 ///     * `bot`: no special use
 .ax %clos.attr(ret, freeBB, fstclassBB, esc, bot): Π T: * -> T -> T, normalize_clos;
+///
+/// ## Compilation Passes and Phases
+/// 
+/// ### Passes
+/// 
+.ax %clos.clos_conv_prep_pass: %compile.Pass;
+.ax %clos.clos_conv_pass: %compile.Pass;
+.ax %clos.branch_clos_pass: %compile.Pass;
+.ax %clos.lower_typed_clos_prep_pass: %compile.Pass;
+.ax %clos.clos2sjlj_pass: %compile.Pass;
+.ax %clos.lower_typed_clos_pass: %compile.Pass;
+/// 
+/// ### Phases
+/// 
+.let clos_opt1_phase = {
+  .let eta_red = %compile.eta_red_pass;
+  .let eta_exp = %compile.eta_exp_pass eta_red;
+  %compile.pass_phase (%compile.pass_list
+      eta_red
+      eta_exp
+      (%compile.scalerize_pass eta_exp)
+  )
+};
+.let clos_opt2_phase = {
+  .let nullptr = %compile.nullptr_pass;
+  %compile.pass_phase (%compile.pass_list
+      nullptr
+      (%compile.scalerize_pass nullptr)
+      %clos.branch_clos_pass
+      (%mem.copy_prop_pass (nullptr, nullptr, 1:(.Idx 2)))
+      %clos.lower_typed_clos_prep_pass
+      %clos.clos2sjlj_pass
+  )
+};
+.let clos_phases = {
+  .let nullptr = %compile.nullptr_pass;
+    %compile.combined_phase 
+        (%compile.phase_list
+            (%compile.single_pass_phase nullptr)
+            optimization_phase
+            (%compile.single_pass_phase (%mem.reshape_pass %mem.reshape_flat))
+            (%compile.single_pass_phase %mem.add_mem_pass)
+            (%compile.single_pass_phase %clos.clos_conv_prep_pass)
+            (%compile.single_pass_phase (%compile.eta_exp_pass nullptr))
+            (%compile.single_pass_phase %clos.clos_conv_pass)
+            clos_opt1_phase
+            clos_opt2_phase
+            (%compile.single_pass_phase %clos.lower_typed_clos_pass)
+        )
+};
