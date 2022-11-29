@@ -87,10 +87,14 @@ const Def* Reshape::rewrite_def_(const Def* def) {
 }
 
 Lam* Reshape::reshape_lam(Lam* def) {
+    auto& w = def->world();
+    if (!def->is_set()) {
+        w.DLOG("reshape_lam: {} is not a set", def);
+        return def;
+    }
     auto pi_ty  = def->type();
     auto new_ty = reshape_type(pi_ty)->as<Pi>();
 
-    auto& w       = def->world();
     Lam* new_lam  = w.nom_lam(new_ty, w.dbg(def->name() + "_reshaped"));
     old2new_[def] = new_lam;
 
