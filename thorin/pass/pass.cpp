@@ -67,30 +67,7 @@ void PassMan::run() {
         }
 
         curr_nom_->world().DLOG("curr_nom: {} : {}", curr_nom_, curr_nom_->type());
-        for (size_t i = 0, e = curr_nom_->num_ops(); i != e; ++i) {
-            auto op = curr_nom_->op(i);
-            curr_nom_->world().DLOG("op {} is {} : {} [{}]", i, op, op->type(), op->node_name());
-        }
-
-        // if(curr_nom_ )
-
-        for (size_t i = 0, e = curr_nom_->num_ops(); i != e; ++i) {
-            //     // for (int e = curr_nom_->num_ops(), i = e - 1; i >= 0; i--) {
-            //     curr_nom_->world().DLOG("looking at op {} is {} : {}", i, curr_nom_->op(i),
-            //     curr_nom_->op(i)->type());
-            curr_nom_->set(i, rewrite(curr_nom_->op(i)));
-            //     curr_nom_->world().DLOG("curr_nom after {}: {} : {}", i, curr_nom_, curr_nom_->type());
-        }
-        // curr_nom_->world().DLOG("curr_nom afterward: {} : {}", curr_nom_, curr_nom_->type());
-
-        // auto new_type = curr_nom_->type() ? rewrite(curr_nom_->type()) : nullptr;
-        // auto new_dbg  = curr_nom_->dbg() ? rewrite(curr_nom_->dbg()) : nullptr;
-
-        // DefArray new_ops(curr_nom_->num_ops(), [&](size_t i) { return rewrite(curr_nom_->op(i)); });
-        // auto new_def = curr_nom_->rebuild(world(), new_type, new_ops, new_dbg);
-        // curr_nom_    = new_def->as_nom();
-
-        // curr_nom_->set()
+        for (size_t i = 0, e = curr_nom_->num_ops(); i != e; ++i) { curr_nom_->set(i, rewrite(curr_nom_->op(i))); }
 
         world().VLOG("=== analyze ===");
         proxy_    = false;

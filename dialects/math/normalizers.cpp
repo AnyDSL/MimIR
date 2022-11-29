@@ -219,14 +219,15 @@ const Def* normalize_arith(const Def* type, const Def* c, const Def* arg, const 
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto m      = isa_lit(callee->arg());
+    auto mode   = callee->arg();
+    auto lm     = isa_lit(mode);
     auto w      = isa_f(a->type());
 
     if (auto result = fold<arith, id>(world, type, a, b, dbg)) return result;
 
     // clang-format off
     // TODO check mode properly
-    if (m && *m == Mode::fast) {
+    if (lm && *lm == Mode::fast) {
         if (auto la = a->isa<Lit>()) {
             if (la == lit_f(world, *w, 0.0)) {
                 switch (id) {
@@ -263,10 +264,10 @@ const Def* normalize_arith(const Def* type, const Def* c, const Def* arg, const 
 
         if (a == b) {
             switch (id) {
-                case arith::add: return math::op(arith::mul, lit_f(world, *w, 2.0), a, dbg); // a + a -> 2 * a
-                case arith::sub: return lit_f(world, *w, 0.0);                             // a - a -> 0
+                case arith::add: return math::op(arith::mul, mode, lit_f(world, *w, 2.0), a, dbg); // a + a -> 2 * a
+                case arith::sub: return lit_f(world, *w, 0.0);                                     // a - a -> 0
                 case arith::mul: break;
-                case arith::div: return lit_f(world, *w, 1.0);                             // a / a -> 1
+                case arith::div: return lit_f(world, *w, 1.0);                                     // a / a -> 1
                 case arith::rem: break;
             }
         }

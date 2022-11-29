@@ -51,8 +51,12 @@ Tok Lexer::lex() {
         if (accept( '}')) return tok(Tok::Tag::D_brace_r);
         if (accept(U'«')) return tok(Tok::Tag::D_quote_l);
         if (accept(U'»')) return tok(Tok::Tag::D_quote_r);
+        if (accept(U'⟪')) return tok(Tok::Tag::D_quote_l);
+        if (accept(U'⟫')) return tok(Tok::Tag::D_quote_r);
         if (accept(U'‹')) return tok(Tok::Tag::D_angle_l);
         if (accept(U'›')) return tok(Tok::Tag::D_angle_r);
+        if (accept(U'⟨')) return tok(Tok::Tag::D_angle_l);
+        if (accept(U'⟩')) return tok(Tok::Tag::D_angle_r);
         if (accept( '<')) {
             if (accept( '<')) return tok(Tok::Tag::D_quote_l);
             return tok(Tok::Tag::D_angle_l);

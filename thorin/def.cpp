@@ -465,4 +465,17 @@ template TBound<true >* TBound<true >::stub(World&, const Def*, const Def*);
 
 // clang-format on
 
+std::pair<const Def*, std::vector<const Def*>> collect_args(const Def* def) {
+    std::vector<const Def*> args;
+    if (auto app = def->isa<App>()) {
+        auto callee               = app->callee();
+        auto arg                  = app->arg();
+        auto [inner_callee, args] = collect_args(callee);
+        args.push_back(arg);
+        return {inner_callee, args};
+    } else {
+        return {def, args};
+    }
+}
+
 } // namespace thorin

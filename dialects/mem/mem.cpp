@@ -42,5 +42,22 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                 // after AD, before closure conv
                 // builder.extend_opt_phase(139, [](PassMan& man) { man.add<mem::Reshape>(mem::Reshape::Flat); });
             },
+            [](Passes& passes) {
+                register_pass_with_arg<mem::ssa_pass, mem::SSAConstr, EtaExp>(passes);
+                register_pass<mem::remem_elim_pass, mem::RememElim>(passes);
+                register_pass<mem::Alloc2Malloc, mem::Alloc2Malloc>(passes);
+
+                // TODO: generalize register_pass_with_arg
+                passes[flags_t(Axiom::Base<mem::copy_prop_pass>)] = [&](World& world, PipelineBuilder& builder,
+                                                                        const Def* app) {
+                    auto [br, ee, bb] = app->as<App>()->args<3>();
+                    // TODO: let get_pass do the casts
+                    auto br_pass = (BetaRed*)builder.get_pass_instance(br);
+                    auto ee_pass = (EtaExp*)builder.get_pass_instance(ee);
+                    auto bb_only = bb->as<Lit>()->get<u64>();
+                    world.DLOG("registering copy_prop with br = {}, ee = {}, bb_only = {}", br, ee, bb_only);
+                    builder.add_pass<mem::CopyProp>(app, br_pass, ee_pass, bb_only);
+                };
+            },
             nullptr, [](Normalizers& normalizers) { mem::register_normalizers(normalizers); }};
 }

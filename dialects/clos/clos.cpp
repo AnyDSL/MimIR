@@ -173,5 +173,5 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
 
                 // builder.add_opt(base++);
             },
-            nullptr, [](Normalizers& normalizers) { clos::register_normalizers(normalizers); }};
+            nullptr, nullptr, [](Normalizers& normalizers) { clos::register_normalizers(normalizers); }};
 }
