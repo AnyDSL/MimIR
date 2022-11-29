@@ -3,8 +3,8 @@
 
 .import core;
 
-.cn .extern add0 [i :.Idx 256, return : .Cn .Idx 256] = {
-    return (%core.wrap.add (0, 256) (i, 0:(.Idx 256)))
+.con .extern add0 [i :.Idx 256, return : .Cn .Idx 256] = {
+    return (%core.wrap.add 256 0 (i, 0:(.Idx 256)))
 };
 
 // CHECK-DAG: add0 _{{[0-9_]+}}::[i_[[valId:[0-9_]+]]: .Idx 256, return_[[retId:[0-9_]+]]: .Cn .Idx 256]
@@ -13,8 +13,8 @@
 // CHECK-DAG: return_[[etaId]] _[[etaVar:[0-9_]+]]: .Idx 256
 // CHECK-DAG: return_[[retId]] _[[etaVar]]
 
-.cn .extern add_lit [return : .Cn .Idx 256] = {
-    return (%core.wrap.add (0, 256) (6 : (.Idx 256), 0:(.Idx 256)))
+.con .extern add_lit [return : .Cn .Idx 256] = {
+    return (%core.wrap.add 256 0 (6 : (.Idx 256), 0:(.Idx 256)))
 };
 
 // CHECK-DAG: add_lit _[[retId:[0-9_]+]]: .Cn .Idx 256

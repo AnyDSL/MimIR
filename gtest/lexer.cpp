@@ -31,7 +31,7 @@ TEST(Lexer, Toks) {
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_dot));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::K_lam));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::K_Pi));
-    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_lam));
+    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_lm));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_Pi));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::M_eof));
 }
@@ -97,7 +97,7 @@ TEST_P(Real, sign) {
     World w;
 
     // clang-format off
-    auto check = [&w](std::string s, r64 r) {
+    auto check = [&w](std::string s, f64 r) {
         const auto sign = GetParam();
         switch (sign) {
             case 0: break;
@@ -111,7 +111,7 @@ TEST_P(Real, sign) {
 
         auto tag = lexer.lex();
         EXPECT_TRUE(tag.isa(Tok::Tag::L_r));
-        EXPECT_EQ(std::bit_cast<r64>(tag.u()), sign == 2 ? -r : r);
+        EXPECT_EQ(std::bit_cast<f64>(tag.u()), sign == 2 ? -r : r);
     };
 
     check(  "2e+3",   2e+3); check(  "2E3",   2E3);

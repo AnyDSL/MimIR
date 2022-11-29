@@ -24,7 +24,8 @@ struct DialectInfo {
     const char* plugin_name;
 
     /// Callback for registering the dialects' callbacks for the pipeline extension points.
-    void (*register_passes)(PipelineBuilder& builder);
+    void (*add_passes)(PipelineBuilder& builder);
+    void (*register_passes)(Passes& passes);
 
     /// Callback for registering the mapping from backend names to emission functions in the given \a backends map.
     void (*register_backends)(Backends& backends);
@@ -49,7 +50,7 @@ public:
     /// Otherwise, "name", "libthorin_name.so" (Linux, Mac), "thorin_name.dll" (Win)
     /// are searched for in the search paths:
     /// 1. \a search_paths, 2. env var \em THORIN_DIALECT_PATH, 3. "/path/to/executable"
-    static Dialect load(const std::string& name, ArrayRef<std::string> search_paths);
+    static Dialect load(const std::string& name, Span<std::string> search_paths);
 
     /// Name of the dialect.
     std::string name() const { return info_.plugin_name; }
@@ -58,8 +59,11 @@ public:
     void* handle() { return handle_.get(); }
 
     /// Registers callbacks in the \a builder that extend the exposed PassMan's.
-    void register_passes(PipelineBuilder& builder) const {
-        if (info_.register_passes) info_.register_passes(builder);
+    void add_passes(PipelineBuilder& builder) const {
+        if (info_.add_passes) info_.add_passes(builder);
+    }
+    void register_passes(Passes& passes) const {
+        if (info_.register_passes) info_.register_passes(passes);
     }
 
     /// Registers the mapping from backend names to emission functions in the given \a backends map.
@@ -80,6 +84,6 @@ private:
     std::unique_ptr<void, void (*)(void*)> handle_;
 };
 
-std::vector<std::filesystem::path> get_plugin_search_paths(ArrayRef<std::string> user_paths);
+std::vector<std::filesystem::path> get_plugin_search_paths(Span<std::string> user_paths);
 
 } // namespace thorin

@@ -15,17 +15,17 @@ static const Def* do_reify(const Def* def, const Def* dbg = {}) {
 static const Def* do_reflect(const Def* def) { return reinterpret_cast<const Def*>(def->as<Lit>()->get()); }
 
 template<dbg id>
-const Def* normalize_dbg(const Def*, const Def* callee, const Def* arg, const Def* dbg) {
+const Def* normalize_dbg(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = arg->world();
     debug_print(arg);
-    return id == dbg::perm ? world.raw_app(callee, arg, dbg) : arg;
+    return id == dbg::perm ? world.raw_app(type, callee, arg, dbg) : arg;
 }
 
 const Def* normalize_reify(const Def*, const Def*, const Def* arg, const Def* dbg) { return do_reify(arg, dbg); }
 
 const Def* normalize_reflect(const Def*, const Def*, const Def* arg, const Def*) { return do_reflect(arg); }
 
-const Def* normalize_refine(const Def*, const Def* callee, const Def* arg, const Def* dbg) {
+const Def* normalize_refine(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world       = arg->world();
     auto [code, i, x] = arg->projs<3>();
     if (auto l = isa_lit(i)) {
@@ -33,7 +33,7 @@ const Def* normalize_refine(const Def*, const Def* callee, const Def* arg, const
         return do_reify(def->refine(*l, do_reflect(x)), dbg);
     }
 
-    return world.raw_app(callee, arg, dbg);
+    return world.raw_app(type, callee, arg, dbg);
 }
 
 const Def* normalize_gid(const Def*, const Def*, const Def* arg, const Def*) {

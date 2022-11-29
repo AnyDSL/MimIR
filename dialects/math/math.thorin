@@ -1,0 +1,195 @@
+/// # The math Dialect {#math}
+///
+/// Introduces a type constructor `%%math.F` for viarious [IEEE-754](https://en.wikipedia.org/wiki/IEEE_754) floating-point formats and a set of operations to calculate with instances of these types.
+/// All operations with the exception of `%%math.conv` expect a `.Nat` just in front of its actual argument.
+/// Here you can fine adjust via thorin::math::Mode how strictly you want to obey floating-point transformations.
+///
+/// [TOC]
+///
+/// ## Types
+///
+/// ### %math.F
+///
+/// A floating-point type with `p` many bits as precision and `e` many bits as exponent.
+/// The sign bit is neither included in `p` nor in `e`.
+/// Thus, the total number of bits occupied by a value of this type is `p + e + 1`.
+/// Common types are:
+/// ```
+/// .let F16     = %math.F (10,  5);
+/// .let F32     = %math.F (23,  8);
+/// .let F64     = %math.F (52, 11);
+/// .let BF16    = %math.F ( 7,  8);
+/// .let NVTF32  = %math.F (10,  8); // actually 19 bits; aligns to 32 bit
+/// .let AMDFP24 = %math.F (16,  7);
+/// .let PXR24   = %math.F (15,  8);
+/// ```
+.ax %math.F: [p: .Nat, e: .Nat] -> *;
+///
+/// ## Numerical Operations
+///
+/// ### %math.arith
+///
+/// Arithmetic operations.
+.ax %math.arith(add, sub, mul, div, rem):
+    Π [p: .Nat, e: .Nat] -> .Nat -> [%math.F (p, e), %math.F (p, e)] -> %math.F (p, e), normalize_arith;
+///
+/// ### %math.extrema
+///
+/// Minimum and Maximum.
+///     * `m`in or `M`ax
+///     * `i`: 
+///         Follows the behavior of libm’s fmin/fmax.
+///     
+///         If either operand is a NaN, returns the other non-NaN operand.
+///         Returns NaN only if both operands are NaN.
+///         The returned NaN is always quiet.
+///         If the operands compare equal, returns a value that compares equal to both operands.
+///         This means that `fmin(+/-0.0, +/-0.0)` could return either `-0.0` or `0.0`.
+///     * `I`:
+///         Follows the semantics of `minNum`/`maxNum` specified in the draft of IEEE 754-2018.
+///         
+///         If either operand is a NaN, returns NaN.
+///         Otherwise returns the lesser of the two arguments. 
+///         `-0.0` is considered to be less than `+0.0` for this intrinsic. 
+///
+/// | Subtag | Alias        | N | M |
+/// |--------|--------------|---|---|
+/// | `im`   | `fmin`       | o | o |
+/// | `iM`   | `fmax`       | o | x |
+/// | `Im`   | `ieee754min` | x | o |
+/// | `IM`   | `ieee754max` | x | x |
+///
+.ax %math.extrema(im = fmin,       iM = fmax,
+                  Im = ieee754min, IM = ieee754max): 
+    Π [p: .Nat, e: .Nat] -> .Nat -> [%math.F (p, e), %math.F (p, e)] -> %math.F (p, e), normalize_extrema;
+///
+/// ### %math.tri
+///
+/// [Trigonometric](https://en.wikipedia.org/wiki/Trigonometric_functions) and [hypberbolic](https://en.wikipedia.org/wiki/Hyperbolic_functions) functions.
+///
+/// * `FF`: sine, cosine, tangent, *unused*
+/// * `H`yperbolic counterpart
+/// * `A`rcus/`A`rea counterpart (inverse)
+///
+/// | Subtag | Alias        | A | H | R | FF | Meaning                   | Semantics               |
+/// |--------|--------------|---|---|---|----|---------------------------|-------------------------|
+/// | `ahff` |  `sin`       | o | o | o | oo | sine                      | \f$\sin x\f$            |
+/// | `ahfF` |  `cos`       | o | o | o | xo | cosine                    | \f$\cos x\f$            |
+/// | `ahFf` |  `tan`       | o | o | o | ox | tangent                   | \f$\tan x\f$            |
+/// | `ahFF` |              | o | o | o | xx | *unused*                  | -                       |
+/// | `aHff` |  `sinh`, `h` | o | x | o | oo | hyperbolic sine           | \f$\sinh x\f$           |
+/// | `aHfF` |  `cosh`      | o | x | o | xo | hyperbolic cosine         | \f$\cosh x\f$           |
+/// | `aHFf` |  `tanh`      | o | x | o | ox | hyperbolic tangent        | \f$\tanh x\f$           |
+/// | `aHFF` |              | o | x | o | xx | *unused*                  | -                       |
+/// | `Ahff` | `asin` , `a` | x | o | o | oo | arcus sine                | \f$\textrm{asin}\,x\f$  |
+/// | `AhfF` | `acos`       | x | o | o | xo | arcus cosine              | \f$\textrm{acos}\,x\f$  |
+/// | `AhFf` | `atan`       | x | o | o | ox | arcus tangent             | \f$\textrm{atan}\,x\f$  |
+/// | `AhFF` |              | x | o | o | xx | arcus *unused*            | -                       |
+/// | `AHff` | `asinh`      | x | x | o | oo | area hyperbolic sine      | \f$\textrm{asinh}\,x\f$ |
+/// | `AHfF` | `acosh`      | x | x | o | xo | area hyperbolic cosine    | \f$\textrm{acosh}\,x\f$ |
+/// | `AHFf` | `atanh`      | x | x | o | ox | area hyperbolic tangent   | \f$\textrm{atanh}\,x\f$ |
+/// | `AHFF` |              | x | x | o | xx | *unused*                  | -                       |
+///
+.ax %math.tri(ahff =  sin     , ahfF =  cos , ahFf =  tan , ahFF,
+              aHff =  sinh = h, aHfF =  cosh, aHFf =  tanh, aHFF,
+              Ahff = asin  = a, AhfF = acos , AhFf = atan , AhFF,
+              AHff = asinh    , AHfF = acosh, AHFf = atanh, AHFF):
+    Π [p: .Nat, e: .Nat] -> .Nat -> %math.F (p, e) -> %math.F (p, e), normalize_tri;
+///
+/// ### %math.pow
+///
+/// Power function: \f$x^y\f$
+///
+.ax %math.pow: Π [p: .Nat, e: .Nat] -> .Nat -> [%math.F (p, e), %math.F (p, e)] -> %math.F (p, e), normalize_pow;
+///
+/// ### %math.rt
+///
+/// [Square](https://en.wikipedia.org/wiki/Square_root) and [cube root](https://en.wikipedia.org/wiki/Cube_root):
+///
+/// | Name           | Meaning     | Semantics          |
+/// |----------------|-------------|--------------------|
+/// | `%%math.rt.sq` | square root | \f$\sqrt{x}\f$     |
+/// | `%%math.rt.cb` | cube root   |\f$\sqrt[3]{x}\f$   |
+///
+.ax %math.rt(sq,cb): Π [p: .Nat, e: .Nat] -> .Nat -> %math.F (p, e) -> %math.F (p, e), normalize_rt;
+///
+/// ### %math.exp
+///
+/// [Exponential function](https://en.wikipedia.org/wiki/Exponential_function) and [logarithm](https://en.wikipedia.org/wiki/Logarithm):
+///     * `L`ogarithm
+///     * `B`ase 2 or natural
+///
+/// | Subtag | Alias       | B | L | Meaning                 | Semantics      |
+/// |--------|-------------|---|---|-------------------------|----------------|
+/// | `bl`   | `exp`       | o | o | natural exponential     | \f$e^x\f$      |
+/// | `bL`   | `log`       | o | x | natural logarithm       | \f$\ln x\f$    |
+/// | `Bl`   | `exp2`, `b` | x | o | exponential with base 2 | \f$2^x\f$      |
+/// | `BL`   | `log2`      | x | x | logarithm with base 2   | \f$\log_2 x\f$ |
+///
+.ax %math.exp(bl = exp, bL = log, Bl = exp2 = b, BL = log2):
+    Π [p: .Nat, e: .Nat] -> .Nat -> %math.F (p, e) -> %math.F (p, e), normalize_exp;
+///
+/// ### %math.er
+///
+/// [Error](https://en.wikipedia.org/wiki/Error_function) and [complementary error function](https://en.wikipedia.org/wiki/Error_function#Complementary_error_function).
+///
+/// | Name           | Meaning                      | Semantics                                                                |
+/// |----------------|------------------------------|--------------------------------------------------------------------------|
+/// | `%%math.er.f`  | error function               | \f$\frac{2}{\sqrt\pi}\int_0^x e^{-t^2}\,dt\f$                            |
+/// | `%%math.er.fc` | complementary error funciton | \f$\frac{2}{\sqrt\pi}\int_x^\infty e^{-t^2}\,dt = 1 - \textrm{erf}(x)\f$ |
+///
+.ax %math.er(f, fc): Π [p: .Nat, e: .Nat] -> .Nat -> %math.F (p, e) -> %math.F (p, e), normalize_er;
+///
+/// ### %math.gamma
+///
+/// [Gamma function](https://en.wikipedia.org/wiki/Gamma_function) and its natural [logarithm](https://en.wikipedia.org/wiki/Gamma_function#The_log-gamma_function).
+/// 
+/// | Name               | Meaning                             | Semantics                                                        |
+/// |--------------------|-------------------------------------|------------------------------------------------------------------|
+/// | ``%%math.gamma.t`` | gamma funciton                      | \f$\Gamma(x) = \int_0^\infty t^{x-1} e^{-t}\,dt\f$               |
+/// | ``%%math.gamma.l`` | natural logarithm of gamma funciton | \f$\ln \mid \int_0^\infty t^{x-1} e^{-t}\,dt \mid\f$ |
+///
+.ax %math.gamma(t, l): Π [p: .Nat, e: .Nat] -> .Nat -> %math.F (p, e) -> %math.F (p, e), normalize_gamma;
+///
+/// ## Other Operations
+///
+/// ### %math.cmp
+///
+/// Floating point comparison is made of 4 disjoint relations:
+///     * `U`nordered (yields true if either operand is a QNAN)
+///     * `G`reater
+///     * `L`ess
+///     * `E`qual
+///
+/// | Subtag | Alias | U | G | L | E | Meaning                      |
+/// |--------|-------|---|---|---|---|------------------------------|
+/// | `ugle` |   `f` | o | o | o | o | always false                 |
+/// | `uglE` |   `e` | o | o | o | x | ordered and equal            |
+/// | `ugLe` |   `l` | o | o | x | o | ordered and less             |
+/// | `ugLE` |  `le` | o | o | x | x | ordered and less or equal    |
+/// | `uGle` |   `g` | o | x | o | o | ordered and greater          |
+/// | `uGlE` |  `ge` | o | x | o | x | ordered and greater or equal |
+/// | `uGLe` |  `ne` | o | x | x | o | ordered and not equal        |
+/// | `uGLE` |   `o` | o | x | x | x | ordered (no NaNs)            |
+/// | `Ugle` |   `u` | x | o | o | o | unordered (either NaNs)      |
+/// | `UglE` |  `ue` | x | o | o | x | unordered or equal           |
+/// | `UgLe` |  `ul` | x | o | x | o | unordered or less            |
+/// | `UgLE` | `ule` | x | o | x | x | unordered or less or equal   |
+/// | `UGle` |  `ug` | x | x | o | o | unordered or greater         |
+/// | `UGlE` | `uge` | x | x | o | x | unordered or greater or equa |
+/// | `UGLe` | `une` | x | x | x | o | unordered or not equal       |
+/// | `UGLE` |   `t` | x | x | x | x | always true                  |
+///
+.ax %math.cmp(ugle =   f, uglE =   e, ugLe =   l, ugLE =  le,
+              uGle =   g, uGlE =  ge, uGLe =  ne, uGLE =   o,
+              Ugle =   u, UglE =  ue, UgLe =  ul, UgLE = ule,
+              UGle =  ug, UGlE = uge, UGLe = une, UGLE =   t):
+    Π [p: .Nat, e: .Nat] -> .Nat -> [%math.F (p, e), %math.F (p, e)] -> .Bool, normalize_cmp;
+///
+/// ### %math.conv
+///
+/// Conversion between floating point and index types - both signed and unsigned - of different sizes.
+///
+.ax %math.conv(s2f, u2f): Π s: .Nat              -> Π [p: .Nat, e: .Nat]   -> .Idx s           -> %math.F (p, e),   normalize_conv;
+.ax %math.conv(f2s, f2u): Π [p: .Nat, e: .Nat]   -> Π s: .Nat              -> %math.F (p, e)   -> .Idx s,           normalize_conv;
+.ax %math.conv(f2f):      Π [sp: .Nat, se: .Nat] -> Π [dp: .Nat, de: .Nat] -> %math.F (sp, se) -> %math.F (dp, de), normalize_conv;

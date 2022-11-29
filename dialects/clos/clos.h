@@ -18,21 +18,19 @@ inline const Def* op_longjmp(const Def* mem, const Def* buf, const Def* id, cons
     World& w = mem->world();
     return w.app(w.ax<longjmp>(), {mem, buf, id}, dbg);
 }
-inline const Def* op(clos o, const Def* def, const Def* dbg = {}) {
+inline const Def* op(attr o, const Def* def, const Def* dbg = {}) {
     World& w = def->world();
     return w.app(w.app(w.ax(o), def->type()), def, dbg);
 }
 
 /// @name closures
-/// @{
+///@{
 
 /// Wrapper around a Def that can be used to match closures (see isa_clos_lit).
 class ClosLit {
 public:
-    using Clos = thorin::clos::clos;
-
     /// @name Getters
-    /// @{
+    ///@{
     const Sigma* type() {
         assert(def_);
         return def_->type()->isa<Sigma>();
@@ -59,19 +57,19 @@ public:
     }
 
     /// @name Properties
-    /// @{
+    ///@{
     bool is_returning() { return fnc_type()->is_returning(); }
     bool is_basicblock() { return fnc_type()->is_basicblock(); }
-    Clos get() { return clos_; } ///< Clos annotation. These should appear in front of the code-part.
-    /// @}
+    attr get() { return attr_; } ///< Clos annotation. These should appear in front of the code-part.
+    ///@}
 
 private:
-    ClosLit(const Tuple* def, Clos clos = Clos::bot)
+    ClosLit(const Tuple* def, attr a = attr::bot)
         : def_(def)
-        , clos_(clos){};
+        , attr_(a) {}
 
     const Tuple* def_;
-    const Clos clos_;
+    const attr attr_;
 
     friend ClosLit isa_clos_lit(const Def*, bool);
 };
@@ -98,8 +96,6 @@ inline const Def* apply_closure(const Def* closure, Defs args) {
     return clos_apply(closure, w.tuple(args));
 }
 
-/// @}
-
 // TODO: rename this
 /// Checks is def is the variable of a nom of type N.
 template<class N>
@@ -110,9 +106,10 @@ std::tuple<const Extract*, N*> ca_isa_var(const Def* def) {
     }
     return {nullptr, nullptr};
 }
+///@}
 
 /// @name closure types
-/// @{
+///@{
 
 /// Returns @p def if @p def is a closure and @c nullptr otherwise
 const Sigma* isa_clos_type(const Def* def);
@@ -124,16 +121,23 @@ Sigma* clos_type(const Pi* pi);
 /// (if @p new_env_type != @c nullptr)
 const Pi* clos_type_to_pi(const Def* ct, const Def* new_env_type = nullptr);
 
-/// @}
-
-std::tuple<Lam*, const Def*, const Def*> clos_lam_stub(const Def* env_type, const Def* dom, const Def* dbg = {});
+///@}
 
 /// @name closure environments
-/// @p tup_or_sig should generally be a  Tuple, Sigma or Var.
-/// @{
+/// @p tup_or_sig should generally be a Tuple, Sigma or Var.
+///@{
 
 /// Describes where the environment is placed in the argument list.
-const size_t Clos_Env_Param = 1_u64;
+static constexpr size_t Clos_Env_Param = 1_u64;
+
+// Adjust the index of an argument to account for the env param
+inline size_t shift_env(size_t i) { return (i < Clos_Env_Param) ? i : i - 1_u64; }
+
+// Same but skip the env param
+inline size_t skip_env(size_t i) { return (i < Clos_Env_Param) ? i : i + 1_u64; }
+
+// TODO what does this do exactly?
+const Def* ctype(World& w, Defs doms, const Def* env_type = nullptr);
 
 const Def* clos_insert_env(size_t i, const Def* env, std::function<const Def*(size_t)> f);
 inline const Def* clos_insert_env(size_t i, const Def* env, const Def* a) {
@@ -159,6 +163,6 @@ inline const Def* clos_remove_env(const Def* tup_or_sig) {
 inline const Def* clos_sub_env(const Def* tup_or_sig, const Def* new_env) {
     return tup_or_sig->refine(Clos_Env_Param, new_env);
 }
-/// @}
+///@}
 
 } // namespace thorin::clos

@@ -8,6 +8,7 @@
 #include "thorin/phase/phase.h"
 
 #include "dialects/clos/clos.h"
+#include "dialects/mem/autogen.h"
 
 namespace thorin::clos {
 
@@ -42,6 +43,11 @@ private:
         Nodes preds;
         Nodes succs;
         unsigned pass_id; //
+
+        auto add_fvs(const Def* def) {
+            assert(!match<mem::M>(def->type()));
+            return fvs.emplace(def);
+        }
     };
     /// @}
 
@@ -69,8 +75,8 @@ private:
 
 /// Performs *typed closure conversion*.
 /// This is based on the [Simply Typed Closure Conversion](https://dl.acm.org/doi/abs/10.1145/237721.237791).
-/// Closures are represented using dependent pairs `[env_type:*, cn[env_type, Args..], env_type]`.
-/// In general only *continuations* are converted (i.e Lam%s that have type `cn[...]`).
+/// Closures are represented using tuples: `[Env: *, .Cn [Env, Args..], Env]`.
+/// In general only *continuations* are converted.
 /// Different kind of Lam%s may be rewritten differently:
 /// - *returning continuations* ("functions"), *join-points* and *branches* are fully closure converted.
 /// - *return continuations* are not closure converted.
@@ -93,15 +99,15 @@ public:
 private:
     /// @name closure stubs
     /// @{
-    struct ClosureStub {
+    struct Stub {
         Lam* old_fn;
         size_t num_fvs;
         const Def* env;
         Lam* fn;
     };
 
-    ClosureStub make_stub(const DefSet& fvs, Lam* lam, Def2Def& subst);
-    ClosureStub make_stub(Lam* lam, Def2Def& subst);
+    Stub make_stub(const DefSet& fvs, Lam* lam, Def2Def& subst);
+    Stub make_stub(Lam* lam, Def2Def& subst);
     /// @}
 
     /// @name Recursively rewrite Def%s.
@@ -109,12 +115,12 @@ private:
     void rewrite_body(Lam* lam, Def2Def& subst);
     const Def* rewrite(const Def* old_def, Def2Def& subst);
     Def* rewrite_nom(Def* nom, const Def* new_type, const Def* new_dbg, Def2Def& subst);
-    const Pi* rewrite_cont_type(const Pi*, Def2Def& subst);
-    const Def* closure_type(const Pi* pi, Def2Def& subst, const Def* ent_type = nullptr);
+    const Pi* rewrite_type_cn(const Pi*, Def2Def& subst);
+    const Def* type_clos(const Pi* pi, Def2Def& subst, const Def* ent_type = nullptr);
     /// @}
 
     FreeDefAna fva_;
-    DefMap<ClosureStub> closures_;
+    DefMap<Stub> closures_;
 
     // Noms that must be re rewritten uniformly across the whole module:
     // Currently, this includes globals and closure types (for typechecking to go through).

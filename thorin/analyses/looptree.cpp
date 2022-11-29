@@ -91,7 +91,7 @@ private:
         return counter;
     }
 
-    void recurse(Head* parent, ArrayRef<const CFNode*> heads, int depth);
+    void recurse(Head* parent, Span<const CFNode*> heads, int depth);
     int walk_scc(const CFNode* cur, Head* parent, int depth, int scc_counter);
 
 private:
@@ -114,7 +114,7 @@ void LoopTreeBuilder<forward>::build() {
 }
 
 template<bool forward>
-void LoopTreeBuilder<forward>::recurse(Head* parent, ArrayRef<const CFNode*> heads, int depth) {
+void LoopTreeBuilder<forward>::recurse(Head* parent, Span<const CFNode*> heads, int depth) {
     size_t curr_new_child = 0;
     for (const auto& head : heads) {
         set_.clear();
@@ -192,9 +192,8 @@ int LoopTreeBuilder<forward>::walk_scc(const CFNode* cur, Head* parent, int dept
 //------------------------------------------------------------------------------
 
 template<bool forward>
-LoopTree<forward>::Base::Base(Node node, Head* parent, int depth, const std::vector<const CFNode*>& cf_nodes)
-    : node_(node)
-    , parent_(parent)
+LoopTree<forward>::Base::Base(Head* parent, int depth, const std::vector<const CFNode*>& cf_nodes)
+    : parent_(parent)
     , cf_nodes_(cf_nodes)
     , depth_(depth) {
     if (parent_) parent_->children_.emplace_back(this);
@@ -219,8 +218,8 @@ LoopTree<forward>::LoopTree(const CFG<forward>& cfg)
 
 template class LoopTree<true>;
 template class LoopTree<false>;
-template std::ostream& operator<<<true>(std::ostream&, const typename LoopTree<true>::Base*);
-template std::ostream& operator<<<false>(std::ostream&, const typename LoopTree<false>::Base*);
+template std::ostream& operator<< <true>(std::ostream&, const typename LoopTree<true>::Base*);
+template std::ostream& operator<< <false>(std::ostream&, const typename LoopTree<false>::Base*);
 
 //------------------------------------------------------------------------------
 

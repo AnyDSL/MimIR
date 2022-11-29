@@ -1,5 +1,5 @@
 // RUN: rm -f %t.ll %t.thorin ; \
-// RUN: %thorin --output-thorin - %s > %t.thorin && %thorin %t.thorin --output-ll %t.ll -o - | FileCheck %s
+// RUN: %thorin -o - %s > %t.thorin && %thorin %t.thorin --output-ll %t.ll -o - | FileCheck %s
 // RUN: clang %t.ll -o %t -Wno-override-module
 // RUN: %t ; test $? -eq 1
 // RUN: %t 1 2 3 ; test $? -eq 4
@@ -7,14 +7,14 @@
 
 .import mem;
 
-.cn .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return : .Cn [%mem.M, .Idx 4294967296]] = {
-    .cn single_arg_parse_test mem: %mem.M = {
+.con .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return : .Cn [%mem.M, .Idx 4294967296]] = {
+    .con single_arg_parse_test mem: %mem.M = {
             return (mem, argc)
     };
     single_arg_parse_test mem
 };
 
-// CHECK-DAG: .cn .extern main _{{[0-9_]+}}::[mem_[[memId:[_0-9]*]]: %mem.M, argc_[[argcId:[0-9_]+]]: .Idx 4294967296, %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return_[[returnId:[_0-9]+]]: .Cn [%mem.M, .Idx 4294967296]] = {
+// CHECK-DAG: .con .extern main _{{[0-9_]+}}::[mem_[[memId:[_0-9]*]]: %mem.M, argc_[[argcId:[0-9_]+]]: .Idx 4294967296, %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return_[[returnId:[_0-9]+]]: .Cn [%mem.M, .Idx 4294967296]] = {
 // CHECK-DAG: return_[[returnEtaId:[0-9_]+]] (mem_[[memId]], argc_[[argcId]])
 
 // CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, .Idx 4294967296] = {

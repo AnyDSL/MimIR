@@ -36,7 +36,7 @@ static std::vector<std::filesystem::path> get_plugin_name_variants(std::string_v
 
 namespace thorin {
 
-std::vector<std::filesystem::path> get_plugin_search_paths(ArrayRef<std::string> user_paths) {
+std::vector<std::filesystem::path> get_plugin_search_paths(Span<std::string> user_paths) {
     std::vector<std::filesystem::path> paths{user_paths.begin(), user_paths.end()};
 
     add_paths_from_env(paths);
@@ -71,7 +71,7 @@ Dialect::Dialect(const std::string& plugin_path, std::unique_ptr<void, decltype(
     info_ = get_info();
 }
 
-Dialect Dialect::load(const std::string& name, ArrayRef<std::string> search_paths) {
+Dialect Dialect::load(const std::string& name, Span<std::string> search_paths) {
     std::unique_ptr<void, decltype(&dl::close)> handle{nullptr, dl::close};
     std::string plugin_path = name;
     if (auto path = std::filesystem::path{name}; path.is_absolute() && std::filesystem::is_regular_file(path))
@@ -85,8 +85,10 @@ Dialect Dialect::load(const std::string& name, ArrayRef<std::string> search_path
                 plugin_path    = full_path.string();
 
                 std::error_code ignore;
-                if (bool reg_file = std::filesystem::is_regular_file(full_path, ignore); reg_file && !ignore)
-                    if (handle.reset(dl::open(full_path.string())); handle) break;
+                if (bool reg_file = std::filesystem::is_regular_file(full_path, ignore); reg_file && !ignore) {
+                    auto path_str = full_path.string();
+                    if (handle.reset(dl::open(path_str)); handle) break;
+                }
             }
             if (handle) break;
         }

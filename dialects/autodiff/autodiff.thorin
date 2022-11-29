@@ -5,29 +5,27 @@
 /// ## Dependencies
 ///
 .import mem;
+.import compile;
 /// For derivatives:
 .import core;
 ///
 ///
 /// ## Types
 ///
-.ax %autodiff.tangent_type: * -> *, normalize_tangent_type;
+.ax %autodiff.Tangent: * -> *, normalize_Tangent;
 ///
 /// ## Operations
 ///
-/// ### %autodiff.autodiff
+/// ### %autodiff.ad
 /// 
 /// This axiom operates on functions and types.
 ///
 /// For function types the augmented type is computed: `(T -> U) => (T -> U × (U -> T))`
-.ax %autodiff.autodiff_type: * -> *, 
-    normalize_autodiff_type;
+.ax %autodiff.AD: * -> *, normalize_AD;
 /// On closed terms (functions, operators, ho arguments, registered axioms, etc.) the augmented term is returned.
 /// The augmented term `f'` returns the result together with the pullback.
 /// `autodiff f = f' = λ args. (f args, f*)` 
-.ax %autodiff.autodiff: Π [T: *] -> T -> 
-    %autodiff.autodiff_type T, 
-    normalize_autodiff;
+.ax %autodiff.ad: Π [T: *] -> T -> %autodiff.AD T, normalize_ad;
 ///
 /// ### %autodiff.zero
 /// 
@@ -45,6 +43,34 @@
 .ax %autodiff.add: Π [T:*] -> [T,T] -> T, normalize_add;
 .ax %autodiff.sum: Π [n:.Nat,T:*] -> «n; T» -> T, normalize_sum;
 ///
+/// ## Compilation Passes and Phases
+/// 
+/// ### Passes
+/// 
+.ax %autodiff.ad_eval_pass: %compile.Pass;
+.ax %autodiff.ad_zero_pass: %compile.Pass;
+.ax %autodiff.ad_zero_cleanup_pass: %compile.Pass;
+.ax %autodiff.ad_ext_cleanup_pass: %compile.Pass;
+/// 
+/// ### Phases
+/// 
+.let ad_cleanup_phase = {
+    %compile.phases_to_phase (⊤:.Nat)
+        (
+            (%compile.passes_to_phase 1 %autodiff.ad_zero_cleanup_pass),
+            (%compile.passes_to_phase 1 %autodiff.ad_ext_cleanup_pass)
+        )
+};
+.let ad_phase = {
+    %compile.phases_to_phase (⊤:.Nat)
+        (
+            optimization_phase,
+            (%compile.passes_to_phase 1 %autodiff.ad_eval_pass),
+            (%compile.passes_to_phase 1 %autodiff.ad_zero_pass),
+            ad_cleanup_phase
+        )
+};
+/// 
 /// ## Registered translations
 /// 
 /// In this section, we define translations for axioms of other dialects.
@@ -85,62 +111,34 @@
 /// 
 /// The comparison pullback exists formally but is not used.
 /// 
-.lam .extern internal_diff_core_icmp_xYgLE 
-    ![w: .Nat] ->
-    (.Cn[[.Idx w, .Idx w], .Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]])
-    = { 
-        .cn inner_cmp 
-        ![[a: .Idx w, b: .Idx w], ret:.Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]]
-        = { 
-            .let result = %core.icmp.sle (w) (a,b);
-            .cn cmp_pb ![s: .Idx 2, pb_ret:.Cn[.Idx w, .Idx w]]
-            = { 
-                .let z = 0:(.Idx w);
-                pb_ret (z, z)
-            };
-            ret (result,cmp_pb)
-        };
-        inner_cmp
+.lam .extern internal_diff_core_icmp_xYgLE![w: .Nat] ->(.Cn[[.Idx w, .Idx w], .Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]]) =
+    .cn![[a: .Idx w, b: .Idx w], ret:.Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]] = { 
+        .let result = %core.icmp.sle (w) (a,b);
+        ret (result, .cn ![s: .Idx 2, pb_ret:.Cn[.Idx w, .Idx w]] = { .let z = 0:(.Idx w); pb_ret (z, z) })
     };
 ///
 /// ### %core.wrap.add
 /// 
 /// s ↦ (s, s)
 ///
-.lam .extern internal_diff_core_wrap_add
-    ![m:.Nat, w:.Nat] -> 
-    (.Cn[[.Idx w, .Idx w], .Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]])
-    = { 
-    .cn inner_add_deriv_cps
-        ![[a:.Idx w, b:.Idx w], ret:.Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]]
-        = { 
-        .let result = %core.wrap.add (m,w) (a,b);
-        .cn add_pb ![s:(.Idx w), pb_ret:(.Cn [.Idx w, .Idx w])] = { 
-            pb_ret (s,s)
+.lam .extern internal_diff_core_wrap_add!s:.Nat -> .Nat -> (.Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]]) = 
+    .lm m: .Nat -> (.Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]]) =
+        .cn !((a b:.Idx s), ret:.Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]) = {
+            .let result = %core.wrap.add s m (a,b);
+            ret (result, .cn ![i:(.Idx s), pb_ret:(.Cn [.Idx s, .Idx s])] = pb_ret (i,i))
         };
-        ret (result,add_pb)
-    };
-    inner_add_deriv_cps
-};
 ///
 /// ### %core.wrap.mul
 ///
 /// s ↦ (s*b, s*a)
 /// 
-.lam .extern internal_diff_core_wrap_mul
-    ![m:.Nat, w:.Nat] -> 
-    (.Cn[[.Idx w, .Idx w], .Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]])
-    = { 
-    .cn inner_mul_deriv_cps
-        ![[a:.Idx w, b:.Idx w], ret:.Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]]@(.tt)
-        = { 
-        .let result = %core.wrap.mul (m,w) (a,b);
-        .cn mul_pb ![s:(.Idx w), pb_ret:(.Cn [.Idx w, .Idx w])]@(.tt) = { 
-            .let lhs = %core.wrap.mul (m,w) (s,b);
-            .let rhs = %core.wrap.mul (m,w) (s,a);
-            pb_ret (lhs, rhs)
+.lam .extern internal_diff_core_wrap_mul!s:.Nat -> .Nat -> (.Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]]) = 
+    .lm m: .Nat -> (.Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]]) =
+        .cn !((a b:.Idx s), ret:.Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]) = { 
+            .let result = %core.wrap.mul s m (a,b);
+            ret (result, .cn ![i:(.Idx s), pb_ret:(.Cn [.Idx s, .Idx s])] = { 
+                .let lhs = %core.wrap.mul s m (i,b);
+                .let rhs = %core.wrap.mul s m (i,a);
+                pb_ret (lhs, rhs)
+            })
         };
-        ret (result,mul_pb)
-    };
-    inner_mul_deriv_cps
-};

@@ -84,23 +84,25 @@ const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
         if (!checker().assignable(pi->dom(), arg, dbg)) err()->ill_typed_app(callee, arg, dbg);
     }
 
-    auto type           = pi->reduce(arg).back();
-    auto [axiom, curry] = Axiom::get(callee);
-    if (axiom && curry == 1) {
-        if (auto normalize = axiom->normalizer()) return normalize(type, callee, arg, dbg);
-    }
-
-    if (auto lam = callee->isa<Lam>(); lam && !lam->is_unfinished() && lam->codom()->sort() > Sort::Type)
+    if (auto lam = callee->isa<Lam>(); lam && lam->is_set() && lam->codom()->sort() > Sort::Type)
         return lam->reduce(arg).back();
 
-    return unify<App>(2, axiom, curry - 1, type, callee, arg, dbg);
+    auto type = pi->reduce(arg).back();
+    return raw_app<true>(type, callee, arg, dbg);
 }
 
-const Def* World::raw_app(const Def* callee, const Def* arg, const Def* dbg) {
-    auto pi             = callee->type()->as<Pi>();
-    auto type           = pi->reduce(arg).back();
-    auto [axiom, curry] = Axiom::get(callee);
-    return unify<App>(2, axiom, curry - 1, type, callee, arg, dbg);
+template<bool Normalize>
+const Def* World::raw_app(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+    auto [axiom, curry, trip] = Axiom::get(callee);
+    if (axiom) {
+        curry = curry == 0 ? trip : curry;
+        curry = curry == Axiom::Trip_End ? curry : curry - 1;
+
+        if (auto normalize = axiom->normalizer(); Normalize && normalize && curry == 0)
+            return normalize(type, callee, arg, dbg);
+    }
+
+    return unify<App>(2, axiom, curry, trip, type, callee, arg, dbg);
 }
 
 const Def* World::sigma(Defs ops, const Def* dbg) {
@@ -184,13 +186,14 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
 
     auto size = Idx::size(index->type());
     auto type = d->unfold_type();
-    if (err()) {
-        if (!checker().equiv(type->arity(), size, dbg)) err()->index_out_of_range(type->arity(), index, dbg);
-    }
 
     // nom sigmas can be 1-tuples
     if (auto l = isa_lit(size); l && *l == 1 && !d->type()->isa_nom<Sigma>()) return d;
     if (auto pack = d->isa_structural<Pack>()) return pack->body();
+
+    if (err()) {
+        if (!checker().equiv(type->arity(), size, dbg)) err()->index_out_of_range(type->arity(), index, dbg);
+    }
 
     // extract(insert(x, index, val), index) -> val
     if (auto insert = d->isa<Insert>()) {
@@ -324,17 +327,18 @@ const Def* World::pack(Defs shape, const Def* body, const Def* dbg) {
     return pack(shape.skip_back(), pack(shape.back(), body, dbg), dbg);
 }
 
-const Lit* World::lit_idx(const Def* type, u64 i, const Def* dbg) {
-    auto l    = lit(type, i, dbg);
-    auto size = Idx::size(type);
-
-    if (err()) {
-        if (auto a = isa_lit(size)) {
-            if (*a != 0 && i >= *a) err()->index_out_of_range(size, l, dbg);
+const Lit* World::lit(const Def* type, u64 val, const Def* dbg) {
+    if (auto size = Idx::size(type)) {
+        if (err()) {
+            if (auto s = isa_lit(size)) {
+                if (*s != 0 && val >= *s) err()->index_out_of_range(size, val, dbg);
+            } else if (val != 0) { // 0 of any size is allowed
+                err()->err(dbg->loc(), "cannot create literal '{}' of '.Idx {}' as size is unknown", val, size);
+            }
         }
     }
 
-    return l;
+    return unify<Lit>(0, type, val, dbg);
 }
 
 /*
@@ -359,7 +363,7 @@ const Def* World::bound(Defs ops, const Def* dbg) {
 
     // ignore: ext<!up>
     DefArray cpy(ops);
-    auto [_, end] = std::ranges::copy_if(ops, cpy.begin(), [&](const Def* op) { return !isa_ext(op); });
+    auto [_, end] = std::ranges::copy_if(ops, cpy.begin(), [&](const Def* op) { return !op->isa<Ext>(); });
 
     // sort and remove duplicates
     std::sort(cpy.begin(), end, GIDLt<const Def*>());
@@ -433,6 +437,10 @@ const Def* World::gid2def(u32 gid) {
  * instantiate templates
  */
 
+#ifndef DOXYGEN // Doxygen doesn't like this
+template const Def* World::raw_app<true>(const Def*, const Def*, const Def*, const Def*);
+template const Def* World::raw_app<false>(const Def*, const Def*, const Def*, const Def*);
+#endif
 template const Def* World::ext<true>(const Def*, const Def*);
 template const Def* World::ext<false>(const Def*, const Def*);
 template const Def* World::bound<true>(Defs, const Def*);

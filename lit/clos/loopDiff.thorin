@@ -1,0 +1,247 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -d clos %s --output-ll %t.ll -o - 
+
+.import mem;
+.import core;
+.import direct;
+
+.let i32 = .Idx 4294967296;
+.let i8 = .Idx 256;
+
+.con printInteger [mem: %mem.M, val: i32, return : .Cn [%mem.M]];
+.con printNL [mem: %mem.M, return : .Cn [%mem.M]];
+
+.let size = 100:.Nat;
+
+.con printArr [mem: %mem.M, arr : %mem.Ptr (<<size; i32>>, 0:.Nat), return : .Cn [%mem.M]] = {
+    .let arr_size = ⊤:.Nat;
+
+    .con loop_body [mem: %mem.M, i : i32, continue : .Cn %mem.M] = {
+        .let lea = %mem.lea (arr_size, <arr_size; i32>, 0) (arr, i);
+        .let (load_mem, val) = %mem.load (i32, 0) (mem, lea);
+        printInteger(load_mem, val, continue)
+    };
+
+    .con loop_head [mem: %mem.M, i : i32] = {
+        .con yield [mem: %mem.M] = {
+            loop_head( mem, %core.wrap.add 4294967296 0 (i, 1:i32) )
+        };
+
+        .con enter [mem: %mem.M] = {
+            loop_body ( mem, i, yield )
+        };
+
+        .con exit [mem: %mem.M] = {
+            printNL (mem, return)
+        };
+
+        .let condition = %core.icmp.ul 4294967296 (i, %core.bitcast (i32, .Nat) size);
+        .let target = (exit, enter)#condition;
+        target ( mem )
+    };
+
+    loop_head ( mem, 0:i32 )
+};
+
+.con init [mem: %mem.M, arr : %mem.Ptr (<<size; i32>>, 0:.Nat), offset : i32, return : .Cn [%mem.M]] = {
+    .let arr_size = ⊤:.Nat;
+
+    .con loop_body [mem: %mem.M, i : i32, continue : .Cn %mem.M] = {
+        .let lea = %mem.lea (arr_size, <arr_size; i32>, 0) (arr, i);
+        .let add = %core.wrap.add 4294967296 0 (offset, i);
+        .let store_mem = %mem.store (i32, 0) (mem, lea, add);
+        continue(store_mem)
+    };
+
+    .con loop_head [mem: %mem.M, i : i32] = {
+        .con yield [mem: %mem.M] = {
+            loop_head( mem, %core.wrap.add 4294967296 0 (i, 1:i32) )
+        };
+
+        .con enter [mem: %mem.M] = {
+            loop_body ( mem, i, yield )
+        };
+
+        .let condition = %core.icmp.ul 4294967296 (i, %core.bitcast (i32, .Nat) size);
+        .let target = (return, enter)#condition;
+        target ( mem )
+    };
+
+    loop_head ( mem, 0:i32 )
+};
+
+
+.con const [mem: %mem.M, arr : %mem.Ptr (<<size; i32>>, 0:.Nat), constValue : i32, return : .Cn [%mem.M]] = {
+    .let arr_size = ⊤:.Nat;
+
+    .con loop_body [mem: %mem.M, i : i32, continue : .Cn %mem.M] = {
+        .let lea = %mem.lea (arr_size, <arr_size; i32>, 0) (arr, i);
+
+        .let store_mem = %mem.store (i32, 0) (mem, lea, constValue);
+        continue(store_mem)
+    };
+
+    .con loop_head [mem: %mem.M, i : i32] = {
+        .con yield [mem: %mem.M] = {
+            loop_head( mem, %core.wrap.add 4294967296 0 (i, 1:i32) )
+        };
+
+        .con enter [mem: %mem.M] = {
+            loop_body ( mem, i, yield )
+        };
+
+        .let condition = %core.icmp.ul 4294967296 (i, %core.bitcast (i32, .Nat) size);
+        .let target = (return, enter)#condition;
+        target ( mem )
+    };
+
+    loop_head ( mem, 0:i32 )
+};
+
+
+.con outer [mem: %mem.M, x : i32, return : .Cn [%mem.M]] = {
+
+    .let arr_size = ⊤:.Nat;
+
+    .let (alloc_mem_a, a_arr) = %mem.alloc (<<size; i32>>, 0) (mem);
+    .let (alloc_mem_b, b_arr) = %mem.alloc (<<size; i32>>, 0) (alloc_mem_a);
+    .let (alloc_mem_c, c_arr) = %mem.alloc (<<size; i32>>, 0) (alloc_mem_b);
+
+    .let (alloc_mem_ad, ad_arr) = %mem.alloc (<<size; i32>>, 0) (alloc_mem_c);
+    .let (alloc_mem_bd, bd_arr) = %mem.alloc (<<size; i32>>, 0) (alloc_mem_ad);
+    .let (alloc_mem_cd, cd_arr) = %mem.alloc (<<size; i32>>, 0) (alloc_mem_bd);
+
+    .con end [mem: %mem.M, return : .Cn [%mem.M]] = {
+        return (mem)
+    };
+
+    .let pb_type = .Cn [%mem.M, .Cn [%mem.M]];
+    .let (alloc_pb_mem, pb_ptr) = %mem.malloc (pb_type, 0) (alloc_mem_cd, 32);
+
+    .let pb_arr = %core.bitcast (
+       %mem.Ptr («⊤:.Nat; pb_type», 0),
+       %mem.Ptr (pb_type, 0)) pb_ptr;
+
+    .let lea_pb = %mem.lea (⊤:.Nat, <⊤:.Nat; pb_type>, 0) (pb_arr, 0:i32);
+    .let mem_assign_pb_anchor = %mem.store (pb_type, 0) (alloc_pb_mem, lea_pb, end);
+
+    .let finish_mem = mem_assign_pb_anchor;
+
+    .con loop_body [mem: %mem.M, i : i32, return : .Cn %mem.M] = {
+        .let a_lea = %mem.lea (arr_size, <arr_size; i32>, 0) (a_arr, i);
+        .let b_lea = %mem.lea (arr_size, <arr_size; i32>, 0) (b_arr, i);
+        .let c_lea = %mem.lea (arr_size, <arr_size; i32>, 0) (c_arr, i);
+
+        .let (a_load_mem, a_val) = %mem.load (i32, 0) (mem, a_lea);
+        .let (b_load_mem, b_val) = %mem.load (i32, 0) (a_load_mem, b_lea);
+
+        .let prod = %core.wrap.mul 4294967296 0 (a_val, b_val);
+
+        .let c_store_mem = %mem.store (i32, 0) (b_load_mem, c_lea, prod);
+
+        .let (load_pb_mem, last_pb) = %mem.load (pb_type, 0) (c_store_mem, lea_pb);
+
+        .con pb [mem: %mem.M, end: .Cn [%mem.M]] = {
+            .let ad_lea = %mem.lea (arr_size, <arr_size; i32>, 0) (ad_arr, i);
+            .let bd_lea = %mem.lea (arr_size, <arr_size; i32>, 0) (bd_arr, i);
+            .let cd_lea = %mem.lea (arr_size, <arr_size; i32>, 0) (cd_arr, i);
+
+            .let (cd_load_mem, cd_val) = %mem.load (i32, 0) (mem, cd_lea);
+            .let cd_store_mem = %mem.store (i32, 0) (cd_load_mem, cd_lea, 0:i32);
+
+            .let (ad_load_mem, ad_val) = %mem.load (i32, 0) (cd_store_mem, ad_lea);
+            .let cd_b_mul = %core.wrap.mul 4294967296 0 (cd_val, b_val);
+            .let ad_b_add = %core.wrap.add 4294967296 0 (ad_val, cd_b_mul);
+            .let ad_store_mem = %mem.store (i32, 0) (ad_load_mem, ad_lea, ad_b_add);
+
+            .let (bd_load_mem, bd_val) = %mem.load (i32, 0) (ad_store_mem, bd_lea);
+            .let cd_a_mul = %core.wrap.mul 4294967296 0 (cd_val, a_val);
+            .let bd_a_add = %core.wrap.add 4294967296 0 (bd_val, cd_a_mul);
+            .let bd_store_mem = %mem.store (i32, 0) (bd_load_mem, bd_lea, bd_a_add);
+
+            last_pb (bd_store_mem, end)
+        };
+
+        .let store_pb_mem = %mem.store (pb_type, 0) (load_pb_mem, lea_pb, pb);
+
+        return(store_pb_mem)
+    };
+
+
+    .con print_c [mem: %mem.M] = {
+        printArr(mem, c_arr, return)
+    };
+
+    .con print_b [mem: %mem.M] = {
+        printArr(mem, b_arr, print_c)
+    };
+
+    .con print_a [mem: %mem.M] = {
+        printArr(mem, a_arr, print_b)
+    };
+
+    .con print_cd [mem: %mem.M] = {
+        printArr(mem, cd_arr, print_a)
+    };
+
+     .con print_bd [mem: %mem.M] = {
+        printArr(mem, bd_arr, print_cd)
+    };
+
+    .con print_ad [mem: %mem.M] = {
+        printArr(mem, ad_arr, print_bd)
+    };
+
+    .con loop_head [mem: %mem.M, i : i32] = {
+        .con exit [mem: %mem.M] = {
+            .let (backward_pass_mem, backward_pass) = %mem.load (pb_type, 0) (mem, lea_pb);
+            backward_pass (backward_pass_mem, print_ad)
+        };
+
+        .con yield [mem: %mem.M] = {
+            loop_head( mem, %core.wrap.add 4294967296 0 (i, 1:i32) )
+        };
+
+        .con enter [mem: %mem.M] = {
+            loop_body ( mem, i, yield )
+        };
+
+        .let condition = %core.icmp.ul 4294967296 (i, %core.bitcast (i32, .Nat) size);
+        .let target = (exit, enter)#condition;
+        target ( mem )
+    };
+
+    .con init_a [mem: %mem.M] = {
+        .con init_b [mem: %mem.M] = {
+            .con init_c [mem: %mem.M] = {
+                .con init_ad [mem: %mem.M] = {
+                    .con init_bd [mem: %mem.M] = {
+                        .con init_cd [mem: %mem.M] = {
+                            loop_head ( mem, 0:i32 )
+                        };
+
+                        const(mem, cd_arr, 1:i32, init_cd)
+                    };
+
+                    const(mem, bd_arr,  0:i32, init_bd)
+                };
+
+                const(mem, ad_arr,  0:i32, init_ad)
+            };
+
+            const(mem, c_arr, 0:i32, init_c)
+        };
+
+        init(mem, b_arr, 1:i32, init_b)
+    };
+
+    init(finish_mem, a_arr, 0:i32, init_a)
+};
+
+.con .extern main [mem: %mem.M, argc: i32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, i32]] = {
+    .con callback (mem: %mem.M) = {
+        return (mem, 1:i32)
+    };
+
+    outer(mem, 1:i32, callback)
+};

@@ -129,7 +129,7 @@ const Def* zero_def(const Def* T) {
         return zero_arr;
     } else if (Idx::size(T)) {
         // TODO: real
-        auto zero = world.lit_idx(T, 0, world.dbg("zero"));
+        auto zero = world.lit(T, 0, world.dbg("zero"));
         world.DLOG("zero_def for int is {}", zero);
         return zero;
     } else if (auto sig = T->isa<Sigma>()) {
@@ -146,7 +146,7 @@ const Def* zero_def(const Def* T) {
 const Def* op_sum(const Def* T, DefArray defs) {
     // TODO: assert all are of type T
     auto& world = T->world();
-    return world.raw_app(world.raw_app(world.ax<sum>(), {world.lit_nat(defs.size()), T}), world.tuple(defs));
+    return world.app(world.app(world.ax<sum>(), {world.lit_nat(defs.size()), T}), world.tuple(defs));
 }
 
 } // namespace thorin::autodiff

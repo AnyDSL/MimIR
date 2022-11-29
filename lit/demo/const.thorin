@@ -1,7 +1,5 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d demo %s --output-ll %t.ll --output-thorin - | FileCheck %s
-
-// ./build/bin/thorin -d demo lit/demo/const.thorin --output-thorin - -VVVV
+// RUN: %thorin -d demo %s --output-ll %t.ll -o - | FileCheck %s
 
 .import mem;
 .import demo;
@@ -9,14 +7,14 @@
 .let _32 = 4294967296;
 .let I32 = .Idx _32;
 
-.cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
-    .cn ret_cont r::[I32] = return (mem, r);
+.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
+    .con ret_cont r::[I32] = return (mem, r);
 
     .let c = %demo.constIdx _32;
     ret_cont c
 };
 
-// CHECK-DAG: .cn .extern main _{{[0-9_]+}}::[mem_[[memId:[_0-9]*]]: %mem.M, .Idx 4294967296, %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, .Idx 4294967296]] = {
+// CHECK-DAG: .con .extern main _{{[0-9_]+}}::[mem_[[memId:[_0-9]*]]: %mem.M, .Idx 4294967296, %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, .Idx 4294967296]] = {
 // CHECK-DAG: return_[[returnEtaId:[_0-9]*]] (mem_[[memId]], 42:(.Idx 4294967296))
 
 // CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, .Idx 4294967296] = {

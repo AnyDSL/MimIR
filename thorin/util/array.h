@@ -20,14 +20,12 @@ class Array;
 //------------------------------------------------------------------------------
 
 /// A container-like wrapper for an array.
-/// The array may either stem from a C array, a `std::vector`, a `std::initializer_list`, an Array or another ArrayRef.
-/// ArrayRef does **not** own the data and, thus, does not destroy any data.
-/// Likewise, you must be carefull to not destroy data an ArrayRef is pointing to.
-/// Thorin makes use of ArrayRef%s in many places.
-/// Note that you can often construct an ArrayRef inline with an initializer_list: `foo(arg1, {elem1, elem2, elem3},
-/// arg3)`. Useful operations are ArrayRef::skip_front and ArrayRef::skip_back to create other ArrayRef%s.
+/// The array may either stem from a C array, a `std::vector`, a `std::initializer_list`, an Array or another Span.
+/// Span does **not** own the data and, thus, does not destroy any data.
+/// Likewise, you must be carefull to not destroy data a Span is pointing to.
+/// Note that you can often construct a Span inline with an initializer_list: `foo(arg1, {elem1, elem2, elem3}, arg3)`.
 template<class T>
-class ArrayRef {
+class Span {
 public:
     using value_type             = T;
     using const_iterator         = const T*;
@@ -35,38 +33,38 @@ public:
 
     /// @name constructor, destructor & assignment
     ///@{
-    ArrayRef()
+    Span()
         : size_(0)
         , ptr_(nullptr) {}
-    ArrayRef(size_t size, const T* ptr)
+    Span(size_t size, const T* ptr)
         : size_(size)
         , ptr_(ptr) {}
     template<size_t N>
-    ArrayRef(const T (&ptr)[N])
+    Span(const T (&ptr)[N])
         : size_(N)
         , ptr_(ptr) {}
-    ArrayRef(const ArrayRef<T>& ref)
+    Span(const Span<T>& ref)
         : size_(ref.size_)
         , ptr_(ref.ptr_) {}
-    ArrayRef(const Array<T>& array)
+    Span(const Array<T>& array)
         : size_(array.size())
         , ptr_(array.begin()) {}
     template<size_t N>
-    ArrayRef(const std::array<T, N>& array)
+    Span(const std::array<T, N>& array)
         : size_(N)
         , ptr_(array.data()) {}
-    ArrayRef(std::initializer_list<T> list)
+    Span(std::initializer_list<T> list)
         : size_(std::ranges::distance(list))
         , ptr_(std::begin(list)) {}
-    ArrayRef(const std::vector<T>& vector)
+    Span(const std::vector<T>& vector)
         : size_(vector.size())
         , ptr_(vector.data()) {}
-    ArrayRef(ArrayRef&& array)
-        : ArrayRef() {
+    Span(Span&& array)
+        : Span() {
         swap(*this, array);
     }
 
-    ArrayRef& operator=(ArrayRef other) {
+    Span& operator=(Span other) {
         swap(*this, other);
         return *this;
     }
@@ -111,17 +109,16 @@ public:
 
     /// @name slice
     ///@{
-    ArrayRef<T> skip_front(size_t num = 1) const { return ArrayRef<T>(size() - num, ptr_ + num); }
-    ArrayRef<T> skip_back(size_t num = 1) const { return ArrayRef<T>(size() - num, ptr_); }
-    ArrayRef<T> get_front(size_t num = 1) const {
+    Span<T> skip_front(size_t num = 1) const { return Span<T>(size() - num, ptr_ + num); }
+    Span<T> skip_back(size_t num = 1) const { return Span<T>(size() - num, ptr_); }
+    Span<T> first(size_t num = 1) const {
         assert(num <= size());
-        return ArrayRef<T>(num, ptr_);
+        return Span<T>(num, ptr_);
     }
-    ArrayRef<T> get_back(size_t num = 1) const {
+    Span<T> last(size_t num = 1) const {
         assert(num <= size());
-        return ArrayRef<T>(num, ptr_ + size() - num);
+        return Span<T>(num, ptr_ + size() - num);
     }
-    Array<T> cut(ArrayRef<size_t> indices, size_t reserve = 0) const;
     ///@}
 
     /// @name relational operators
@@ -136,7 +133,7 @@ public:
     }
     ///@}
 
-    friend void swap(ArrayRef<T>& a1, ArrayRef<T>& a2) {
+    friend void swap(Span<T>& a1, Span<T>& a2) {
         using std::swap;
         swap(a1.size_, a2.size_);
         swap(a1.ptr_, a2.ptr_);
@@ -260,7 +257,7 @@ public:
         : storage_(size) {
         std::ranges::fill(*this, val);
     }
-    Array(ArrayRef<T> ref)
+    Array(Span<T> ref)
         : storage_(ref.size()) {
         std::ranges::copy(ref, begin());
     }
@@ -287,7 +284,7 @@ public:
         : storage_(size) {
         for (size_t i = 0; i != size; ++i) (*this)[i] = f(i);
     }
-    Array(ArrayRef<T> ref, std::function<T(T)> f)
+    Array(Span<T> ref, std::function<T(T)> f)
         : storage_(ref.size()) {
         for (size_t i = 0, e = ref.size(); i != e; ++i) (*this)[i] = f(ref[i]);
     }
@@ -352,24 +349,21 @@ public:
 
     /// @name slice
     ///@{
-    ArrayRef<T> skip_front(size_t num = 1) const { return ArrayRef<T>(size() - num, data() + num); }
-    ArrayRef<T> skip_back(size_t num = 1) const { return ArrayRef<T>(size() - num, data()); }
-    ArrayRef<T> get_front(size_t num = 1) const {
+    Span<T> skip_front(size_t num = 1) const { return Span<T>(size() - num, data() + num); }
+    Span<T> skip_back(size_t num = 1) const { return Span<T>(size() - num, data()); }
+    Span<T> first(size_t num = 1) const {
         assert(num <= size());
-        return ArrayRef<T>(num, data());
+        return Span<T>(num, data());
     }
-    ArrayRef<T> get_back(size_t num = 1) const {
+    Span<T> last(size_t num = 1) const {
         assert(num <= size());
-        return ArrayRef<T>(num, data() + size() - num);
-    }
-    Array<T> cut(ArrayRef<size_t> indices, size_t reserve = 0) const {
-        return ArrayRef<T>(*this).cut(indices, reserve);
+        return Span<T>(num, data() + size() - num);
     }
     ///@}
 
     /// @name convert
     ///@{
-    ArrayRef<T> ref() const { return ArrayRef<T>(size(), data()); }
+    Span<T> ref() const { return Span<T>(size(), data()); }
     template<size_t N>
     std::array<T, N> to_array() const {
         return ref().template to_array<N>();
@@ -378,8 +372,8 @@ public:
 
     /// @name relational operators
     ///@{
-    bool operator==(const Array other) const { return ArrayRef<T>(*this) == ArrayRef<T>(other); }
-    bool operator!=(const Array other) const { return ArrayRef<T>(*this) != ArrayRef<T>(other); }
+    bool operator==(const Array other) const { return Span<T>(*this) == Span<T>(other); }
+    bool operator!=(const Array other) const { return Span<T>(*this) != Span<T>(other); }
     ///@}
 
     friend void swap(Array& a, Array& b) { swap(a.storage_, b.storage_); }
@@ -387,24 +381,6 @@ public:
 private:
     ArrayStorage<T, std::is_trivial<T>::value ? 5 : 0> storage_;
 };
-
-template<class T>
-Array<T> ArrayRef<T>::cut(ArrayRef<size_t> indices, size_t reserve) const {
-    size_t num_old = size();
-    size_t num_idx = indices.size();
-    size_t num_res = num_old - num_idx;
-
-    Array<T> result(num_res + reserve);
-
-    for (size_t o = 0, i = 0, r = 0; o < num_old; ++o) {
-        if (i < num_idx && indices[i] == o)
-            ++i;
-        else
-            result[r++] = (*this)[o];
-    }
-
-    return result;
-}
 
 template<class T, class U>
 auto concat(const T& a, const U& b) -> Array<typename T::value_type> {
@@ -414,7 +390,7 @@ auto concat(const T& a, const U& b) -> Array<typename T::value_type> {
 }
 
 template<class T>
-auto concat(const T& val, ArrayRef<T> a) -> Array<T> {
+auto concat(const T& val, Span<T> a) -> Array<T> {
     Array<T> result(a.size() + 1);
     std::ranges::copy(a, result.begin() + 1);
     result.front() = val;
@@ -422,7 +398,7 @@ auto concat(const T& val, ArrayRef<T> a) -> Array<T> {
 }
 
 template<class T>
-auto concat(ArrayRef<T> a, const T& val) -> Array<T> {
+auto concat(Span<T> a, const T& val) -> Array<T> {
     Array<T> result(a.size() + 1);
     std::ranges::copy(a, result.begin());
     result.back() = val;

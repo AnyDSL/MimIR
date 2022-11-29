@@ -1,0 +1,24 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin %s --output-ll %t.ll
+// RUN: clang++ %t.ll -o %t -Wno-override-module
+// RUN: %t foo bar; test $? -eq 64
+
+.import math;
+.import mem;
+.import core;
+
+.let _32 = 4294967296;
+.let I32 = .Idx _32;
+.let f32 = (23,  8);
+.let f64 = (52, 11);
+.let F32 = %math.F f32;
+.let F64 = %math.F f64;
+
+.con .extern main [mem: %mem.M, argc: I32, argv: %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return: .Cn [%mem.M, I32]] = {
+    .let s = %math.conv.u2f _32 f32 argc;
+    .let x = %math.exp.log2 f32 0 (%math.exp.exp f32 0 s);
+    .let y = %math.exp.log f32 0 (%math.exp.exp2 f32 0 s);
+    .let z = %math.arith.add f32 0 (x, y);
+    .let r = %math.conv.f2u f64 _32 (%math.arith.mul f64 0 (%math.conv.f2f f32 f64 z, 10.0:F64));
+    return (mem, r)
+};

@@ -46,6 +46,8 @@ void PassMan::run() {
     for (auto&& pass : passes_) world().ILOG(" + {}", pass->name());
     world().debug_dump();
 
+    for (auto&& pass : passes_) pass->prepare();
+    
     auto externals = std::vector(world().externals().begin(), world().externals().end());
     for (const auto& [_, nom] : externals) {
         analyzed(nom);
@@ -57,13 +59,14 @@ void PassMan::run() {
         curr_nom_ = pop(curr_state().stack);
         world().VLOG("=== state {}: {} ===", states_.size() - 1, curr_nom_);
 
-        if (curr_nom_->is_unset()) continue;
+        if (!curr_nom_->is_set()) continue;
 
         for (auto&& pass : passes_) {
             if (pass->inspect()) pass->enter();
         }
 
-        for (size_t i = 0, e = curr_nom_->num_ops(); i != e; ++i) curr_nom_->set(i, rewrite(curr_nom_->op(i)));
+        curr_nom_->world().DLOG("curr_nom: {} : {}", curr_nom_, curr_nom_->type());
+        for (size_t i = 0, e = curr_nom_->num_ops(); i != e; ++i) { curr_nom_->set(i, rewrite(curr_nom_->op(i))); }
 
         world().VLOG("=== analyze ===");
         proxy_    = false;

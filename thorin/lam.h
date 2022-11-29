@@ -20,8 +20,8 @@ public:
     /// @name ops
     ///@{
     const Def* dom() const { return op(0); }
-    const Def* codom() const { return op(1); }
     THORIN_PROJ(dom, const)
+    const Def* codom() const { return op(1); }
     THORIN_PROJ(codom, const)
     bool is_cn() const;
     bool is_basicblock() const { return is_cn() && !ret_pi(); }
@@ -29,7 +29,7 @@ public:
     const Pi* ret_pi(const Def* dbg = {}) const;
     ///@}
 
-    /// @name setters for *nom*inal Pi.
+    /// @name setters
     ///@{
     Pi* set_dom(const Def* dom) { return Def::set(0, dom)->as<Pi>(); }
     Pi* set_dom(Defs doms);
@@ -49,30 +49,23 @@ public:
 };
 
 class Lam : public Def {
-public:
-    /// calling convention
-    enum class CC : u8 {
-        C,      ///< C calling convention.
-        Device, ///< Device calling convention. These are special functions only available on a particular device.
-    };
-
 private:
     Lam(const Pi* pi, const Def* filter, const Def* body, const Def* dbg)
         : Def(Node, pi, {filter, body}, 0, dbg) {}
-    Lam(const Pi* pi, CC cc, const Def* dbg)
-        : Def(Node, pi, 2, u64(cc), dbg) {}
+    Lam(const Pi* pi, const Def* dbg)
+        : Def(Node, pi, 2, 0, dbg) {}
 
 public:
     /// @name type
     ///@{
     const Pi* type() const { return Def::type()->as<Pi>(); }
+    const Def* dom() const { return type()->dom(); }
+    THORIN_PROJ(dom, const)
+    const Def* codom() const { return type()->codom(); }
+    THORIN_PROJ(codom, const)
     bool is_basicblock() const { return type()->is_basicblock(); }
     bool is_returning() const { return type()->is_returning(); }
-    const Def* dom() const { return type()->dom(); }
-    const Def* codom() const { return type()->codom(); }
     const Pi* ret_pi() const { return type()->ret_pi(); }
-    THORIN_PROJ(dom, const)
-    THORIN_PROJ(codom, const)
     ///@}
 
     /// @name ops
@@ -86,7 +79,7 @@ public:
     const Def* ret_var(const Def* dbg = {});
     ///@}
 
-    /// @name Setters for nominal Lam.
+    /// @name setters
     ///@{
     /// Lam::Filter is a `std::variant<bool, const Def*>` that lets you set the Lam::filter() like this:
     /// ```cpp
@@ -122,12 +115,6 @@ public:
     Lam* stub(World&, const Def*, const Def*) override;
     ///@}
 
-    /// @name get/set flags - CC
-    ///@{
-    CC cc() const { return CC(flags()); }
-    void set_cc(CC cc) { flags_ = u64(cc); }
-    ///@}
-
     static constexpr auto Node = Node::Lam;
     friend class World;
 };
@@ -139,10 +126,11 @@ using Lam2Lam = LamMap<Lam*>;
 
 class App : public Def {
 private:
-    App(const Axiom* axiom, u16 curry, const Def* type, const Def* callee, const Def* arg, const Def* dbg)
+    App(const Axiom* axiom, u8 curry, u8 trip, const Def* type, const Def* callee, const Def* arg, const Def* dbg)
         : Def(Node, type, {callee, arg}, 0, dbg) {
         axiom_ = axiom;
         curry_ = curry;
+        trip_  = trip;
     }
 
 public:
@@ -155,10 +143,11 @@ public:
     THORIN_PROJ(arg, const)
     ///@}
 
-    /// @name get axiom and current currying depth
+    /// @name get axiom, current curry counter and trip count
     ///@{
     const Axiom* axiom() const { return axiom_; }
-    u16 curry() const { return curry_; }
+    u8 curry() const { return curry_; }
+    u8 trip() const { return trip_; }
     ///@}
 
     /// @name virtual methods
@@ -172,7 +161,7 @@ public:
 
 /// These are Lam%s that are neither `nullptr`, nor Lam::is_external, nor Lam::is_unset.
 inline Lam* isa_workable(Lam* lam) {
-    if (!lam || lam->is_external() || lam->is_unset()) return nullptr;
+    if (!lam || lam->is_external() || !lam->is_set()) return nullptr;
     return lam;
 }
 

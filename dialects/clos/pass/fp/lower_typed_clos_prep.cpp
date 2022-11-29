@@ -2,6 +2,7 @@
 
 #include "thorin/util/bitset.h"
 
+#include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::clos {
@@ -28,8 +29,8 @@ static void split(DefSet& out, const Def* def, bool as_callee) {
         if (var->type()->isa<Pi>() || interesting_type(var)) out.insert(var);
     } else if (auto c = isa_clos_lit(def, false)) {
         split(out, c.fnc(), as_callee);
-    } else if (auto q = match<clos>(def)) {
-        split(out, q->arg(), as_callee);
+    } else if (auto a = match<attr>(def)) {
+        split(out, a->arg(), as_callee);
     } else if (auto proj = def->isa<Extract>()) {
         split(out, proj->tuple(), as_callee);
     } else if (auto pack = def->isa<Pack>()) {
@@ -64,8 +65,8 @@ undo_t LowerTypedClosPrep::set_esc(const Def* def) {
 const Def* LowerTypedClosPrep::rewrite(const Def* def) {
     if (auto closure = isa_clos_lit(def, false)) {
         auto fnc = closure.fnc();
-        if (!match<clos>(fnc)) {
-            auto new_fnc = op(esc_.contains(fnc) ? clos::esc : clos::bot, fnc);
+        if (!match<attr>(fnc)) {
+            auto new_fnc = op(esc_.contains(fnc) ? attr::esc : attr::bot, fnc);
             return clos_pack(closure.env(), new_fnc, closure->type());
         }
     }

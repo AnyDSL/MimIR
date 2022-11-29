@@ -7,47 +7,44 @@
 namespace thorin {
 
 const Def* Rewriter::rewrite(const Def* old_def) {
-    if (auto i = old2new.find(old_def); i != old2new.end()) return i->second;
-
-    if (auto [pre, recurse] = pre_rewrite(old_def); pre) {
-        auto new_def        = recurse ? rewrite(pre) : pre;
-        return old2new[pre] = new_def;
-    }
-
-    auto new_type = old_def->type() ? rewrite(old_def->type()) : nullptr;
-    auto new_dbg  = old_def->dbg() ? rewrite(old_def->dbg()) : nullptr;
+    if (!old_def) return nullptr;
+    if (old_def->isa<Univ>()) return world().univ();
+    if (auto i = old2new_.find(old_def); i != old2new_.end()) return i->second;
 
     if (auto infer = old_def->isa_nom<Infer>()) {
-        if (auto op = infer->op()) return op;
+        if (auto op = infer->op()) return rewrite(op);
     }
 
-    if (auto old_nom = old_def->isa_nom()) {
-        auto new_nom     = old_nom->stub(new_world, new_type, new_dbg);
-        old2new[old_nom] = new_nom;
+    if (auto old_nom = old_def->isa_nom()) return rewrite_nom(old_nom);
 
-        for (size_t i = 0, e = old_nom->num_ops(); i != e; ++i) {
-            if (auto old_op = old_nom->op(i)) new_nom->set(i, rewrite(old_op));
-        }
+    auto new_def = rewrite_structural(old_def);
+    return map(old_def, new_def);
+}
 
-        if (auto new_def = new_nom->restructure()) return old2new[old_nom] = new_def;
-
-        return new_nom;
-    }
-
+const Def* Rewriter::rewrite_structural(const Def* old_def) {
+    auto new_type = rewrite(old_def->type());
+    auto new_dbg  = rewrite(old_def->dbg());
     DefArray new_ops(old_def->num_ops(), [&](auto i) { return rewrite(old_def->op(i)); });
-    auto new_def = old_def->rebuild(new_world, new_type, new_ops, new_dbg);
+    return old_def->rebuild(world(), new_type, new_ops, new_dbg);
+}
 
-    if (auto [post, recurse] = post_rewrite(new_def); post) {
-        auto new_def         = recurse ? rewrite(post) : post;
-        return old2new[post] = new_def;
+const Def* Rewriter::rewrite_nom(Def* old_nom) {
+    auto new_type = rewrite(old_nom->type());
+    auto new_dbg  = rewrite(old_nom->dbg());
+    auto new_nom  = old_nom->stub(world(), new_type, new_dbg);
+    map(old_nom, new_nom);
+
+    for (size_t i = 0, e = old_nom->num_ops(); i != e; ++i) {
+        if (auto old_op = old_nom->op(i)) new_nom->set(i, rewrite(old_op));
     }
 
-    return old2new[old_def] = new_def;
+    if (auto new_def = new_nom->restructure()) return map(old_nom, new_def);
+    return new_nom;
 }
 
 const Def* rewrite(const Def* def, const Def* old_def, const Def* new_def, const Scope& scope) {
     ScopeRewriter rewriter(def->world(), scope);
-    rewriter.old2new[old_def] = new_def;
+    rewriter.map(old_def, new_def);
     return rewriter.rewrite(def);
 }
 
@@ -62,7 +59,7 @@ const Def* rewrite(Def* nom, const Def* arg, size_t i) {
 
 DefArray rewrite(Def* nom, const Def* arg, const Scope& scope) {
     ScopeRewriter rewriter(nom->world(), scope);
-    rewriter.old2new[nom->var()] = arg;
+    rewriter.map(nom->var(), arg);
     return DefArray(nom->num_ops(), [&](size_t i) { return rewriter.rewrite(nom->op(i)); });
 }
 

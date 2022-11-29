@@ -8,11 +8,18 @@
 ///
 /// ## Operations related to longjmp
 ///
-.let BufPtr = .Idx 8;
+.let BufPtr = %mem.Ptr ((.Idx 256), 0:.Nat);
 .ax %clos.alloc_jmpbuf: [[], %mem.M] -> [%mem.M, BufPtr];
-.ax %clos.setjmp: [%mem.M, BufPtr] -> [%mem.M, BufPtr, .Idx 4294967296];
+.ax %clos.setjmp: [%mem.M, BufPtr] -> [%mem.M, .Idx 4294967296];
 .ax %clos.longjmp: .Cn [%mem.M, BufPtr, .Idx 4294967296];
 ///
-/// ## Closure Annotations
+/// ## Closure Attribute
 ///
-.ax %clos.clos(ret, freeBB, fstclassBB, esc, bot): Π T: * -> T -> T, normalize_clos;
+/// Used internally to classify the use of differen Lambdas.
+/// thorin::clos::ClosConvPrep places these attributes:
+///     * `ret`: returning lambda
+///     * `freeBB`: ordinary basic block (see thorin::Lam::is_basicblock())
+///     * `fstclassBB`: basic block that is passed around
+///     * `esc`: lambda that escapes its parent scope
+///     * `bot`: no special use
+.ax %clos.attr(ret, freeBB, fstclassBB, esc, bot): Π T: * -> T -> T, normalize_clos;

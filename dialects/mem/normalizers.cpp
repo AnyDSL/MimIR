@@ -12,7 +12,7 @@ const Def* normalize_lea(const Def* type, const Def* callee, const Def* arg, con
     if (auto a = isa_lit(pointee->arity()); a && *a == 1) return ptr;
     // TODO
 
-    return world.raw_app(callee, {ptr, index}, dbg);
+    return world.raw_app(type, callee, {ptr, index}, dbg);
 }
 
 const Def* normalize_load(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
@@ -26,14 +26,14 @@ const Def* normalize_load(const Def* type, const Def* callee, const Def* arg, co
     if (auto sigma = pointee->isa<Sigma>(); sigma && sigma->num_ops() == 0)
         return world.tuple({mem, world.tuple(sigma->type(), {}, dbg)});
 
-    return world.raw_app(callee, {mem, ptr}, dbg);
+    return world.raw_app(type, callee, {mem, ptr}, dbg);
 }
 
 const Def* normalize_remem(const Def* type, const Def* callee, const Def* mem, const Def* dbg) {
     auto& world = type->world();
 
     // if (auto m = match<remem>(mem)) mem = m;
-    return world.raw_app(callee, mem, dbg);
+    return world.raw_app(type, callee, mem, dbg);
 }
 
 const Def* normalize_store(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
@@ -46,7 +46,7 @@ const Def* normalize_store(const Def* type, const Def* callee, const Def* arg, c
         if (std::ranges::all_of(tuple->ops(), [](const Def* op) { return op->isa<Bot>(); })) return mem;
     }
 
-    return world.raw_app(callee, {mem, ptr, val}, dbg);
+    return world.raw_app(type, callee, {mem, ptr, val}, dbg);
 }
 
 THORIN_mem_NORMALIZER_IMPL

@@ -8,6 +8,7 @@
 #include <absl/container/btree_set.h>
 
 #include "thorin/axiom.h"
+#include "thorin/check.h"
 #include "thorin/config.h"
 #include "thorin/debug.h"
 #include "thorin/error.h"
@@ -102,7 +103,10 @@ public:
     const Flags& flags() const { return state_.pod.flags; }
     Flags& flags() { return state_.pod.flags; }
 
-    Checker& checker() { return *move_.checker; }
+    Checker& checker() {
+        assert(&move_.checker->world() == this);
+        return *move_.checker;
+    }
     ErrorHandler* err() { return move_.err.get(); }
     ///@}
 
@@ -158,7 +162,7 @@ public:
     }
     ///@}
 
-    /// @name Universe, Type, Var, Proxy, Infer
+    /// @name Univ, Type, Var, Proxy, Infer
     ///@{
     const Univ* univ() { return data_.univ_; }
     const Type* type(const Def* level, const Def* dbg = {});
@@ -184,21 +188,23 @@ public:
 
     /// @name Axiom
     ///@{
-    const Axiom* axiom(Def::NormalizeFn n, const Def* type, dialect_t d, tag_t t, sub_t s, const Def* dbg = {}) {
-        auto ax                          = unify<Axiom>(0, n, type, d, t, s, dbg);
+    const Axiom*
+    axiom(Def::NormalizeFn n, u8 curry, u8 trip, const Def* type, dialect_t d, tag_t t, sub_t s, const Def* dbg = {}) {
+        auto ax                          = unify<Axiom>(0, n, curry, trip, type, d, t, s, dbg);
         return move_.axioms[ax->flags()] = ax;
     }
     const Axiom* axiom(const Def* type, dialect_t d, tag_t t, sub_t s, const Def* dbg = {}) {
-        return axiom(nullptr, type, d, t, s, dbg);
+        return axiom(nullptr, 0, 0, type, d, t, s, dbg);
     }
 
     /// Builds a fresh Axiom with descending Axiom::sub.
     /// This is useful during testing to come up with some entitiy of a specific type.
     /// It uses the dialect Axiom::Global_Dialect and starts with `0` for Axiom::sub and counts up from there.
     /// The Axiom::tag is set to `0` and the Axiom::normalizer to `nullptr`.
-    const Axiom* axiom(const Def* type, const Def* dbg = {}) {
-        return axiom(nullptr, type, Axiom::Global_Dialect, 0, state_.pod.curr_sub++, dbg);
+    const Axiom* axiom(Def::NormalizeFn n, u8 curry, u8 trip, const Def* type, const Def* dbg = {}) {
+        return axiom(n, curry, trip, type, Axiom::Global_Dialect, 0, state_.pod.curr_sub++, dbg);
     }
+    const Axiom* axiom(const Def* type, const Def* dbg = {}) { return axiom(nullptr, 0, 0, type, dbg); } ///< See above.
 
     /// Get Axiom from a dialect.
     /// Use this to get an Axiom via Axiom::id.
@@ -206,7 +212,7 @@ public:
     const Axiom* ax(Id id) const {
         u64 flags = static_cast<u64>(id);
         if (auto i = move_.axioms.find(flags); i != move_.axioms.end()) return i->second;
-        thorin::err("Axiom with ID '{}' not found in world", flags);
+        thorin::err("Axiom with ID '{}' not found; demangled dialect name is '{}'", flags, Axiom::demangle(flags));
     }
 
     /// Get Axiom from a dialect.
@@ -227,20 +233,16 @@ public:
     Pi* nom_pi(const Def* type, const Def* dbg = {}) { return insert<Pi>(2, type, dbg); }
     ///@}
 
-    /// @name Pi: continuation type (cn), i.e., Pi type with codom Bottom
+    /// @name Cn (Pi with codom Bot)
     ///@{
     const Pi* cn() { return cn(sigma()); }
     const Pi* cn(const Def* dom, const Def* dbg = {}) { return pi(dom, type_bot(), dbg); }
     const Pi* cn(Defs doms, const Def* dbg = {}) { return cn(sigma(doms), dbg); }
     ///@}
 
-    /// @name Lam%bda
+    /// @name Lam
     ///@{
-    Lam* nom_lam(const Pi* cn, Lam::CC cc = Lam::CC::C, const Def* dbg = {}) {
-        auto lam = insert<Lam>(2, cn, cc, dbg);
-        return lam;
-    }
-    Lam* nom_lam(const Pi* cn, const Def* dbg = {}) { return nom_lam(cn, Lam::CC::C, dbg); }
+    Lam* nom_lam(const Pi* cn, const Def* dbg = {}) { return insert<Lam>(2, cn, dbg); }
     const Lam* lam(const Pi* pi, const Def* filter, const Def* body, const Def* dbg) {
         return unify<Lam>(2, pi, filter, body, dbg);
     }
@@ -252,10 +254,12 @@ public:
     ///@{
     const Def* app(const Def* callee, const Def* arg, const Def* dbg = {});
     const Def* app(const Def* callee, Defs args, const Def* dbg = {}) { return app(callee, tuple(args), dbg); }
-    /// Same as World::app but does *not* apply NormalizeFn.
-    const Def* raw_app(const Def* callee, const Def* arg, const Def* dbg = {});
-    /// Same as World::app but does *not* apply NormalizeFn.
-    const Def* raw_app(const Def* callee, Defs args, const Def* dbg = {}) { return raw_app(callee, tuple(args), dbg); }
+    template<bool Normalize = false>
+    const Def* raw_app(const Def* type, const Def* callee, const Def* arg, const Def* dbg = {});
+    template<bool Normalize = false>
+    const Def* raw_app(const Def* type, const Def* callee, Defs args, const Def* dbg = {}) {
+        return raw_app<Normalize>(type, callee, tuple(args), dbg);
+    }
     ///@}
 
     /// @name Sigma
@@ -280,7 +284,7 @@ public:
     const Def* arr(const Def* shape, const Def* body, const Def* dbg = {});
     const Def* arr(Defs shape, const Def* body, const Def* dbg = {});
     const Def* arr(u64 n, const Def* body, const Def* dbg = {}) { return arr(lit_nat(n), body, dbg); }
-    const Def* arr(ArrayRef<u64> shape, const Def* body, const Def* dbg = {}) {
+    const Def* arr(Span<u64> shape, const Def* body, const Def* dbg = {}) {
         return arr(DefArray(shape.size(), [&](size_t i) { return lit_nat(shape[i], dbg); }), body, dbg);
     }
     const Def* arr_unsafe(const Def* body, const Def* dbg = {}) { return arr(top_nat(), body, dbg); }
@@ -302,7 +306,7 @@ public:
     const Def* pack(const Def* arity, const Def* body, const Def* dbg = {});
     const Def* pack(Defs shape, const Def* body, const Def* dbg = {});
     const Def* pack(u64 n, const Def* body, const Def* dbg = {}) { return pack(lit_nat(n), body, dbg); }
-    const Def* pack(ArrayRef<u64> shape, const Def* body, const Def* dbg = {}) {
+    const Def* pack(Span<u64> shape, const Def* body, const Def* dbg = {}) {
         return pack(DefArray(shape.size(), [&](auto i) { return lit_nat(shape[i], dbg); }), body, dbg);
     }
     ///@}
@@ -335,7 +339,7 @@ public:
 
     /// @name Lit
     ///@{
-    const Lit* lit(const Def* type, u64 val, const Def* dbg = {}) { return unify<Lit>(0, type, val, dbg); }
+    const Lit* lit(const Def* type, u64 val, const Def* dbg = {});
     const Lit* lit_univ(u64 level, const Def* dbg = {}) { return lit(univ(), level, dbg); }
     const Lit* lit_univ_0() { return data_.lit_univ_0_; }
     const Lit* lit_univ_1() { return data_.lit_univ_1_; }
@@ -343,27 +347,27 @@ public:
     const Lit* lit_nat_0() { return data_.lit_nat_0_; }
     const Lit* lit_nat_1() { return data_.lit_nat_1_; }
     const Lit* lit_nat_max() { return data_.lit_nat_max_; }
-    const Lit* lit_idx(const Def* type, u64 val, const Def* dbg = {});
-
     /// Constructs a Lit of type Idx of size @p size.
     /// @note `size = 0` means `2^64`.
-    const Lit* lit_idx(nat_t size, u64 val, const Def* dbg = {}) { return lit_idx(type_idx(size), val, dbg); }
+    const Lit* lit_idx(nat_t size, u64 val, const Def* dbg = {}) { return lit(type_idx(size), val, dbg); }
 
     template<class I>
     const Lit* lit_idx(I val, const Def* dbg = {}) {
         static_assert(std::is_integral<I>());
-        return lit_idx(type_idx(bitwidth2size(sizeof(I) * 8)), val, dbg);
+        return lit_idx(Idx::bitwidth2size(sizeof(I) * 8), val, dbg);
     }
 
     /// Constructs a Lit @p of type Idx of size $2^width$.
     /// `val = 64` will be automatically converted to size `0` - the encoding for $2^64$.
-    const Lit* lit_int(nat_t width, u64 val, const Def* dbg = {}) { return lit_idx(type_int(width), val, dbg); }
+    const Lit* lit_int(nat_t width, u64 val, const Def* dbg = {}) {
+        return lit_idx(Idx::bitwidth2size(width), val, dbg);
+    }
 
     /// Constructs a Lit of type Idx of size @p mod.
     /// The value @p val will be adjusted modulo @p mod.
     /// @note `mod == 0` is the special case for $2^64$ and no modulo will be performed on @p val.
     const Lit* lit_idx_mod(nat_t mod, u64 val, const Def* dbg = {}) {
-        return lit_idx(type_idx(mod), mod == 0 ? val : (val % mod), dbg);
+        return lit_idx(mod, mod == 0 ? val : (val % mod), dbg);
     }
 
     const Lit* lit_bool(bool val) { return data_.lit_bool_[size_t(val)]; }
@@ -424,7 +428,7 @@ public:
 
     /// Constructs a type Idx of size $2^width$.
     /// `width = 64` will be automatically converted to size `0` - the encoding for $2^64$.
-    const Def* type_int(nat_t width) { return type_idx(lit_nat(bitwidth2size(width))); }
+    const Def* type_int(nat_t width) { return type_idx(lit_nat(Idx::bitwidth2size(width))); }
     const Def* type_bool() { return data_.type_bool_; }
     ///@}
 
@@ -630,6 +634,7 @@ private:
             swap(m1.checker,   m2.checker);
             swap(m1.err,       m2.err);
             // clang-format on
+            Checker::swap(*m1.checker, *m2.checker);
         }
     } move_;
 

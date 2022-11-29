@@ -119,7 +119,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
             // Optimize empty env
             env = w.bot(env_type());
         } else if (!mode) {
-            auto mem_ptr = (c.get() == clos::esc) ? mem::op_alloc(env->type(), lcm_) : mem::op_slot(env->type(), lcm_);
+            auto mem_ptr = (c.get() == attr::esc) ? mem::op_alloc(env->type(), lcm_) : mem::op_slot(env->type(), lcm_);
             auto mem     = w.extract(mem_ptr, 0_u64);
             auto env_ptr = mem_ptr->proj(1_u64, w.dbg(fn->name() + "_env"));
             lcm_         = mem::op_store(mem, env_ptr, env);
@@ -140,6 +140,8 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
         if (!def->isa_nom<Global>() && Checker(w).equiv(nom, new_nom, nullptr)) return map(nom, nom);
         if (auto restruct = new_nom->restructure()) return map(nom, restruct);
         return new_nom;
+    } else if (def->isa<Axiom>()) {
+        return def;
     } else {
         auto new_ops = Array<const Def*>(def->num_ops(), [&](auto i) { return rewrite(def->op(i)); });
 
