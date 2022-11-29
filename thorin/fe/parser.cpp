@@ -605,16 +605,26 @@ void Parser::parse_ax() {
         return nullptr;
     };
 
+    auto [curry, trip] = Axiom::infer_curry_and_trip(type);
+
+    if (accept(Tok::Tag::T_comma)) {
+        auto c = expect(Tok::Tag::L_u, "curry counter for axiom");
+        if (c.u() > curry) err(c.loc(), "curry counter cannot be greater than {}", curry);
+        curry = c.u();
+    }
+
+    if (accept(Tok::Tag::T_comma)) trip = expect(Tok::Tag::L_u, "trip count for axiom").u();
+
     dialect_t d = *Axiom::mangle(dialect);
     tag_t t     = info.tag_id;
     sub_t s     = info.subs.size();
     if (new_subs.empty()) {
-        auto axiom = world().axiom(normalizer(d, t, 0), type, d, t, 0, track.named(ax.sym()));
+        auto axiom = world().axiom(normalizer(d, t, 0), curry, trip, type, d, t, 0, track.named(ax.sym()));
         scopes_.bind(ax.sym(), axiom);
     } else {
         for (const auto& sub : new_subs) {
             auto dbg   = track.named(ax_str + "."s + sub.front());
-            auto axiom = world().axiom(normalizer(d, t, s), type, d, t, s, dbg);
+            auto axiom = world().axiom(normalizer(d, t, s), curry, trip, type, d, t, s, dbg);
             for (auto& alias : sub) {
                 Sym name(world().tuple_str(ax_str + "."s + alias), prev_.def(world()));
                 scopes_.bind(name, axiom);
