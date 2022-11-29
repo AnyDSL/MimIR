@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['ad_0',['AD',['../namespacethorin_1_1autodiff.html#ae4a2884a429ac996dc3a0d42e0077985',1,'thorin::autodiff']]],
-  ['ad_1',['ad',['../namespacethorin_1_1autodiff.html#aa01669317ac5a2c1679e4dd25678a051',1,'thorin::autodiff']]],
+  ['ad_0',['ad',['../namespacethorin_1_1autodiff.html#aa01669317ac5a2c1679e4dd25678a051',1,'thorin::autodiff']]],
+  ['ad_1',['AD',['../namespacethorin_1_1autodiff.html#ae4a2884a429ac996dc3a0d42e0077985',1,'thorin::autodiff']]],
   ['ad_5feval_5fpass_2',['ad_eval_pass',['../namespacethorin_1_1autodiff.html#a70e498c2379dc6134a75385b61561590',1,'thorin::autodiff']]],
   ['ad_5fext_5fcleanup_5fpass_3',['ad_ext_cleanup_pass',['../namespacethorin_1_1autodiff.html#a31ed274d65f6ce6f65f91d9cff047e37',1,'thorin::autodiff']]],
   ['ad_5fzero_5fcleanup_5fpass_4',['ad_zero_cleanup_pass',['../namespacethorin_1_1autodiff.html#a26d7f2c0898e592b451903ecc52fb1d8',1,'thorin::autodiff']]],
