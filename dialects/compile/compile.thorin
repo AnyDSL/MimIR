@@ -82,6 +82,7 @@
 .ax %compile.ret_wrap_pass: %compile.Pass;
 /// has to be registered in the pipeline
 .ax %compile.nullptr_pass: %compile.Pass;
+.ax %compile.internal_cleanup_pass: %compile.Pass;
 ///
 /// ### Phases
 /// 

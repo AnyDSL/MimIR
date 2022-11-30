@@ -71,6 +71,8 @@ add_thorin_dialect(compile
         compile/normalizers.cpp
         compile/passes/debug_print.cpp
         compile/passes/debug_print.h
+        compile/passes/internal_cleanup.cpp
+        compile/passes/internal_cleanup.h
     INSTALL
 )
 

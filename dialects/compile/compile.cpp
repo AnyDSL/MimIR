@@ -18,6 +18,7 @@
 
 #include "dialects/compile/autogen.h"
 #include "dialects/compile/passes/debug_print.h"
+#include "dialects/compile/passes/internal_cleanup.h"
 
 using namespace thorin;
 
@@ -78,6 +79,7 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
 
                 register_pass<compile::lam_spec_pass, LamSpec>(passes);
                 register_pass<compile::ret_wrap_pass, RetWrap>(passes);
+                register_pass<compile::internal_cleanup_pass, compile::InternalCleanup>(passes);
 
                 register_pass_with_arg<compile::eta_exp_pass, EtaExp, EtaRed>(passes);
                 register_pass_with_arg<compile::scalerize_pass, Scalerize, EtaExp>(passes);
