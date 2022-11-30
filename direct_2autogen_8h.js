@@ -1,10 +1,10 @@
 var direct_2autogen_8h =
 [
-    [ "thorin::Axiom::Match< direct::cps2ds_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01direct_1_1cps2ds__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#ab3c64fae75caa5fcf51355220e048a93", null ]
-    ] ],
     [ "thorin::Axiom::Match< direct::ds2cps_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01direct_1_1ds2cps__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#aec83f9272377e5ded68b9020a6fe5b18", null ]
+    ] ],
+    [ "thorin::Axiom::Match< direct::cps2ds_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01direct_1_1cps2ds__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#ab3c64fae75caa5fcf51355220e048a93", null ]
     ] ],
     [ "THORIN_direct_NORMALIZER_IMPL", "direct_2autogen_8h.html#aec7fea367abcc1c061d9fd335c1fc498", null ],
     [ "cps2ds", "direct_2autogen_8h.html#a697c05faf3136b21532651cc276f2794", null ],

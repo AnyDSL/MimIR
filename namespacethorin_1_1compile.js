@@ -22,10 +22,10 @@ var namespacethorin_1_1compile =
     [ "scalerize_pass", "namespacethorin_1_1compile.html#a4b9517ee17f15e9abcbbc56c43649135", null ],
     [ "single_pass_phase", "namespacethorin_1_1compile.html#a89bed055f9b4723254ff9abd8ee2a9f6", null ],
     [ "tail_rec_elim_pass", "namespacethorin_1_1compile.html#aae2eb0cf8bf7d68762b817c05719f516", null ],
-    [ "normalize_combine_pass_list", "namespacethorin_1_1compile.html#ad888523c25cc18a56234c92e7c1c807b", null ],
-    [ "normalize_combined_phase", "namespacethorin_1_1compile.html#a3f5ed70926c1c04bf600ee2bf7608c03", null ],
-    [ "normalize_pass_phase", "namespacethorin_1_1compile.html#a35506c6ac76dd089a44e3ee61486a6a0", null ],
-    [ "normalize_single_pass_phase", "namespacethorin_1_1compile.html#a72b4cce5f5474eab0810bd2e6cac34a7", null ],
+    [ "normalize_combine_pass_list", "namespacethorin_1_1compile.html#a82065651d9585006938e144227093f2d", null ],
+    [ "normalize_combined_phase", "namespacethorin_1_1compile.html#a8bfcde43d108e5308afe04dcae7c031b", null ],
+    [ "normalize_pass_phase", "namespacethorin_1_1compile.html#a3dea2ea5f0ae2bb71286258cc7fc06ef", null ],
+    [ "normalize_single_pass_phase", "namespacethorin_1_1compile.html#a9db2079530758539894236a68e578de1", null ],
     [ "register_normalizers", "namespacethorin_1_1compile.html#a0ba02745cf075dadf81dd8e781c1e45b", null ],
     [ "Dialect_Id", "namespacethorin_1_1compile.html#a6675ca36b24a77c6cf91397f6eaf820b", null ]
 ];

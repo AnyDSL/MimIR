@@ -1,7 +1,7 @@
 var compile_2normalizers_8cpp =
 [
-    [ "normalize_combine_pass_list", "compile_2normalizers_8cpp.html#ad888523c25cc18a56234c92e7c1c807b", null ],
-    [ "normalize_combined_phase", "compile_2normalizers_8cpp.html#a3f5ed70926c1c04bf600ee2bf7608c03", null ],
-    [ "normalize_pass_phase", "compile_2normalizers_8cpp.html#a35506c6ac76dd089a44e3ee61486a6a0", null ],
-    [ "normalize_single_pass_phase", "compile_2normalizers_8cpp.html#a72b4cce5f5474eab0810bd2e6cac34a7", null ]
+    [ "normalize_combine_pass_list", "compile_2normalizers_8cpp.html#a82065651d9585006938e144227093f2d", null ],
+    [ "normalize_combined_phase", "compile_2normalizers_8cpp.html#a8bfcde43d108e5308afe04dcae7c031b", null ],
+    [ "normalize_pass_phase", "compile_2normalizers_8cpp.html#a3dea2ea5f0ae2bb71286258cc7fc06ef", null ],
+    [ "normalize_single_pass_phase", "compile_2normalizers_8cpp.html#a9db2079530758539894236a68e578de1", null ]
 ];
