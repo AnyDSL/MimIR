@@ -40,7 +40,6 @@ void optimize(World& world, Passes& passes, std::vector<Dialect>& dialects) {
     PipelineBuilder pipe_builder;
     // TODO: remove indirections of pipeline builder. Just add passes and phases directly to the pipeline.
 
-    // register dialects
     for (auto& dialect : dialects) { pipe_builder.register_dialect(dialect); }
 
     auto pipeline     = compilation->as<Lam>()->body();
