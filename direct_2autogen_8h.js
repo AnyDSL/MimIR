@@ -11,7 +11,7 @@ var direct_2autogen_8h =
     [ "cps2ds_dep", "direct_2autogen_8h.html#a1efc4793431921a101ffe359ce204139", null ],
     [ "cps2ds_pass", "direct_2autogen_8h.html#a337c53d1909c5f4a253fa6b6104b2277", null ],
     [ "ds2cps_pass", "direct_2autogen_8h.html#a8cc0c014f61d83c03a0b057803b46a71", null ],
-    [ "normalize_cps2ds", "direct_2autogen_8h.html#affd68ef5f8b4252d9572f65b054648c9", null ],
+    [ "normalize_cps2ds", "direct_2autogen_8h.html#a69d82b856e191a18209f4af3e59d275c", null ],
     [ "register_normalizers", "direct_2autogen_8h.html#acc07303a8181af1620758514f7c1329f", null ],
     [ "Dialect_Id", "direct_2autogen_8h.html#a24e96b8b210db4064ed13a6ff78c675b", null ]
 ];

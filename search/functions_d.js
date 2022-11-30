@@ -38,7 +38,7 @@ var searchData=
   ['normalize_5fcombined_5fphase_35',['normalize_combined_phase',['../namespacethorin_1_1compile.html#a8bfcde43d108e5308afe04dcae7c031b',1,'thorin::compile']]],
   ['normalize_5fconst_36',['normalize_const',['../namespacethorin_1_1demo.html#a1b5145b413efb1f1a54613d91d87db27',1,'thorin::demo']]],
   ['normalize_5fconv_37',['normalize_conv',['../namespacethorin_1_1math.html#a2e7646b9daac2a06a5c5b778164ecc25',1,'thorin::math::normalize_conv()'],['../namespacethorin_1_1core.html#aa0d743e658a5e0a196ee76490b326645',1,'thorin::core::normalize_conv()']]],
-  ['normalize_5fcps2ds_38',['normalize_cps2ds',['../namespacethorin_1_1direct.html#affd68ef5f8b4252d9572f65b054648c9',1,'thorin::direct']]],
+  ['normalize_5fcps2ds_38',['normalize_cps2ds',['../namespacethorin_1_1direct.html#a69d82b856e191a18209f4af3e59d275c',1,'thorin::direct']]],
   ['normalize_5fdbg_39',['normalize_dbg',['../namespacethorin_1_1refly.html#a6505dac8d7b837bcb4b880cb802b5a7f',1,'thorin::refly']]],
   ['normalize_5fdiv_40',['normalize_div',['../namespacethorin_1_1core.html#a080b2b8489209840d2529047a4d7404c',1,'thorin::core']]],
   ['normalize_5fer_41',['normalize_er',['../namespacethorin_1_1math.html#ada0429fe3a9f33c00bbe151a05483567',1,'thorin::math']]],
