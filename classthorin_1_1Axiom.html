@@ -948,12 +948,12 @@ Friends</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">normalization</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p >For a curried <a class="el" href="classthorin_1_1App.html">App</a> of an <a class="el" href="classthorin_1_1Axiom.html">Axiom</a>, you only want to trigger normalization at specific spots.</p>
-<p >For this reason, Thorin maintains a <a class="el" href="classthorin_1_1Def.html#a25c07a3d0f997a3c5ea1b3642149e56b">Def::curry_</a> counter that each <a class="el" href="classthorin_1_1App.html">App</a> decrements. The <a class="el" href="classthorin_1_1Axiom.html#a05d2e899a18e55005f71c1803da89ae3">Axiom::normalizer()</a> will be triggered when <a class="el" href="classthorin_1_1Axiom.html#a3702d9483f034b85ff45ccafbed0d968">Axiom::curry()</a> becomes <code>0</code>. These are also the spots that you can match/force (</p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match" title="Type of Match::def_.">Match</a>). After that, the counter will be <a class="el" href="classthorin_1_1Def.html#af401dbc2a8092cdc438507614174f792">set</a> to <a class="el" href="classthorin_1_1Axiom.html#a07298bd006415b3da9654785d46842f9">Axiom::trip()</a>. E.g., let's say an <a class="el" href="classthorin_1_1Axiom.html">Axiom</a> has this <a class="el" href="classthorin_1_1Def.html#aa7ad6f240ca55e9056230ce136c67c90" title="Yields the raw type of this Def; maybe nullptr.">type</a>: <div class="fragment"><div class="line">A -&gt; B -&gt; C -&gt; D -&gt; E</div>
+<p >For this reason, Thorin maintains a <a class="el" href="classthorin_1_1Def.html#a25c07a3d0f997a3c5ea1b3642149e56b">Def::curry_</a> counter that each <a class="el" href="classthorin_1_1App.html">App</a> decrements. The <a class="el" href="classthorin_1_1Axiom.html#a05d2e899a18e55005f71c1803da89ae3">Axiom::normalizer()</a> will be triggered when <a class="el" href="classthorin_1_1Axiom.html#a3702d9483f034b85ff45ccafbed0d968">Axiom::curry()</a> becomes <code>0</code>. These are also the spots that you can <a class="el" href="namespacethorin.html#ad24aec250c7e5c9160c1d1b38e788065">thorin::match</a>/thorin<a class="el" href="namespacethorin.html#a26d5e95b9100626e61154373ab908bd5">force</a>/Match. After that, the counter will be set to <a class="el" href="classthorin_1_1Axiom.html#a07298bd006415b3da9654785d46842f9">Axiom::trip()</a>. E.g., let's say an <a class="el" href="classthorin_1_1Axiom.html">Axiom</a> has this type: </p><div class="fragment"><div class="line">A -&gt; B -&gt; C -&gt; D -&gt; E</div>
 <div class="line">          ^         |</div>
 <div class="line">          |         |</div>
 <div class="line">          +---------+</div>
-</div><!-- fragment --> Using an initial value <a class="el" href="namespacethorin.html#a77128b6187ea06fcc6b07e5e34efcc3d">as</a> <code>5</code> for <a class="el" href="classthorin_1_1Axiom.html#a3702d9483f034b85ff45ccafbed0d968">Axiom::curry</a> and <code>3</code> <a class="el" href="namespacethorin.html#a77128b6187ea06fcc6b07e5e34efcc3d">as</a> <a class="el" href="classthorin_1_1Axiom.html#a07298bd006415b3da9654785d46842f9">Axiom::trip</a> has the effect that here <div class="fragment"><div class="line">x a b c1 d1 e1 c2 d2 e2 c3 d3 e3</div>
-</div><!-- fragment --> the <a class="el" href="classthorin_1_1Axiom.html#a05d2e899a18e55005f71c1803da89ae3">Axiom::normalizer</a> will be triggered after <a class="el" href="classthorin_1_1App.html">App</a>'ing <code>e1</code>, <code>e2</code>, and <code>e3</code>. </dd></dl>
+</div><!-- fragment --><p> Using an initial value as <code>5</code> for <a class="el" href="classthorin_1_1Axiom.html#a3702d9483f034b85ff45ccafbed0d968">Axiom::curry</a> and <code>3</code> as <a class="el" href="classthorin_1_1Axiom.html#a07298bd006415b3da9654785d46842f9">Axiom::trip</a> has the effect that here </p><div class="fragment"><div class="line">x a b c1 d1 e1 c2 d2 e2 c3 d3 e3</div>
+</div><!-- fragment --><p> the <a class="el" href="classthorin_1_1Axiom.html#a05d2e899a18e55005f71c1803da89ae3">Axiom::normalizer</a> will be triggered after <a class="el" href="classthorin_1_1App.html">App</a>'ing <code>e1</code>, <code>e2</code>, and <code>e3</code>. </p>
 </td></tr>
 <tr class="memitem:a2309a17fdc0233fae32e713576bbc7bb"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacethorin.html#ad56e33ae995f3dc833c281c3945c335d">u8</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Axiom.html#a2309a17fdc0233fae32e713576bbc7bb">Trip_End</a> = <a class="el" href="namespacethorin.html#ad56e33ae995f3dc833c281c3945c335d">u8</a>(-1)</td></tr>
 <tr class="separator:a2309a17fdc0233fae32e713576bbc7bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1212,7 +1212,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00226">226</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00224">224</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1237,7 +1237,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00220">220</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00221">221</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1262,7 +1262,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00227">227</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00220">220</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1287,7 +1287,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00222">222</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00226">226</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1312,7 +1312,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00221">221</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00227">227</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1337,7 +1337,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00223">223</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00222">222</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1362,7 +1362,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00225">225</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00223">223</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1387,7 +1387,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00224">224</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00225">225</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1412,7 +1412,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="direct_2autogen_8h_source.html#l00059">59</a> of file <a class="el" href="direct_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="direct_2autogen_8h_source.html#l00058">58</a> of file <a class="el" href="direct_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1437,7 +1437,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="direct_2autogen_8h_source.html#l00058">58</a> of file <a class="el" href="direct_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="direct_2autogen_8h_source.html#l00059">59</a> of file <a class="el" href="direct_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1462,7 +1462,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="mem_2autogen_8h_source.html#l00168">168</a> of file <a class="el" href="mem_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2autogen_8h_source.html#l00166">166</a> of file <a class="el" href="mem_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1487,7 +1487,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="mem_2autogen_8h_source.html#l00166">166</a> of file <a class="el" href="mem_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2autogen_8h_source.html#l00168">168</a> of file <a class="el" href="mem_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
