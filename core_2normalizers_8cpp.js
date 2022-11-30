@@ -11,7 +11,7 @@ var core_2normalizers_8cpp =
     [ "normalize_bit2", "core_2normalizers_8cpp.html#a1ab1c16fd0afc0203da7b84522fd8f32", null ],
     [ "normalize_bitcast", "core_2normalizers_8cpp.html#acd0e350aad128d712e8628f602adae31", null ],
     [ "normalize_conv", "core_2normalizers_8cpp.html#aa0d743e658a5e0a196ee76490b326645", null ],
-    [ "normalize_div", "core_2normalizers_8cpp.html#a080b2b8489209840d2529047a4d7404c", null ],
+    [ "normalize_div", "core_2normalizers_8cpp.html#aa561bc7d977b7bd8a54940ff9c0a92e9", null ],
     [ "normalize_icmp", "core_2normalizers_8cpp.html#accc185c1a4e10a22e2a8b619f87b8754", null ],
     [ "normalize_ncmp", "core_2normalizers_8cpp.html#ac0fa3e90fc141397ca743c47518a3c53", null ],
     [ "normalize_nop", "core_2normalizers_8cpp.html#addcb11650497c24e35e978d54128602b", null ],
