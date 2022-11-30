@@ -5,11 +5,8 @@
 namespace thorin::direct {
 
 /// `cps2ds` is directly converted to `op_cps2ds_dep f` in its normalizer.
-const Def* normalize_cps2ds(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
-    auto& world = type->world();
-    auto fun    = arg;
-    auto r      = op_cps2ds_dep(fun);
-    return r;
+const Def* normalize_cps2ds(const Def*, const Def*, const Def* fun, const Def* dbg) {
+    return op_cps2ds_dep(fun, dbg);
 }
 
 THORIN_direct_NORMALIZER_IMPL
