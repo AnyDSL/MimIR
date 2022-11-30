@@ -458,11 +458,11 @@ const Def* normalize_wrap(const Def* type, const Def* c, const Def* arg, const D
 }
 
 template<div id>
-const Def* normalize_div(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
-    auto& world      = type->world();
+const Def* normalize_div(const Def* full_type, const Def* c, const Def* arg, const Def* dbg) {
+    auto& world      = full_type->world();
     auto callee      = c->as<App>();
     auto [mem, a, b] = arg->projs<3>();
-    type             = type->as<Sigma>()->op(1); // peel off actual type
+    auto [_, type]   = full_type->projs<2>(); // peel off actual type
     auto make_res    = [&, mem = mem](const Def* res) { return world.tuple({mem, res}, dbg); };
 
     if (auto result = fold<div, id>(world, type, a, b, dbg)) return make_res(result);
@@ -493,7 +493,7 @@ const Def* normalize_div(const Def* type, const Def* c, const Def* arg, const De
         }
     }
 
-    return world.raw_app(type, callee, {mem, a, b}, dbg);
+    return world.raw_app(full_type, callee, {mem, a, b}, dbg);
 }
 
 template<conv id>
