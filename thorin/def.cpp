@@ -425,7 +425,7 @@ const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
  * Idx
  */
 
-const Def* Idx::size(const Def* def) {
+const Def* Idx::size(Refer def) {
     if (auto app = def->isa<App>()) {
         if (app->callee()->isa<Idx>()) return app->arg();
     }

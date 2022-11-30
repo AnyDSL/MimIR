@@ -600,7 +600,7 @@ public:
     ///@}
 
     /// Checks if @p def isa `.Idx s` and returns s or `nullptr` otherwise.
-    static const Def* size(const Def* def);
+    static const Def* size(Refer def);
 
     /// @name convert between Idx::size and bitwidth and vice versa
     ///@{

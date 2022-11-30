@@ -44,7 +44,7 @@ inline const Def* mode(World& w, VMode m) {
     return w.lit_nat(std::get<Mode>(m));
 }
 
-inline const Def* finfer(const Def* def) { return force<F>(def->type())->arg(); }
+inline const Def* finfer(Refer def) { return force<F>(def->type())->arg(); }
 
 /// @name fn - these guys yield the final function to be invoked for the various operations
 ///@{
