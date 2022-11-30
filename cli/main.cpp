@@ -132,7 +132,7 @@ int main(int argc, char** argv) {
         if (os[H]) parser.bootstrap(*os[H]);
 
         PipelineBuilder builder;
-        for (const auto& dialect : dialects) { dialect.add_passes(builder); }
+        for (const auto& dialect : dialects) dialect.add_passes(builder);
 
         if (os[H]) opt = std::min(opt, 1);
 

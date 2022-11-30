@@ -4,21 +4,48 @@ using namespace std::literals;
 
 namespace thorin {
 
-Axiom::Axiom(NormalizeFn normalizer, const Def* type, dialect_t dialect, tag_t tag, sub_t sub, const Def* dbg)
+Axiom::Axiom(NormalizeFn normalizer,
+             u8 curry,
+             u8 trip,
+             const Def* type,
+             dialect_t dialect,
+             tag_t tag,
+             sub_t sub,
+             const Def* dbg)
     : Def(Node, type, Defs{}, dialect | (flags_t(tag) << 8_u64) | flags_t(sub), dbg) {
-    u16 curry = 0;
+    normalizer_ = normalizer;
+    curry_      = curry;
+    trip_       = trip;
+}
+
+std::pair<u8, u8> Axiom::infer_curry_and_trip(const Def* type) {
+    u8 curry = 0;
+    u8 trip  = 0;
     NomSet done;
     while (auto pi = type->isa<Pi>()) {
         if (auto nom = pi->isa_nom()) {
-            if (auto [_, ins] = done.emplace(nom); !ins) break;
+            if (auto [_, ins] = done.emplace(nom); !ins) {
+                // infer trip
+                auto curr = pi;
+                do {
+                    ++trip;
+                    curr = curr->codom()->as<Pi>();
+                } while (curr != nom);
+                break;
+            }
         }
 
         ++curry;
         type = pi->codom();
     }
 
-    normalizer_ = normalizer;
-    curry_      = curry;
+    return {curry, trip};
+}
+
+std::tuple<const Axiom*, u8, u8> Axiom::get(const Def* def) {
+    if (auto axiom = def->isa<Axiom>()) return {axiom, axiom->curry(), axiom->trip()};
+    if (auto app = def->isa<App>()) return {app->axiom(), app->curry(), app->trip()};
+    return {nullptr, 0, 0};
 }
 
 std::optional<dialect_t> Axiom::mangle(std::string_view s) {
@@ -101,12 +128,6 @@ std::optional<std::array<std::string_view, 3>> Axiom::split(std::string_view s) 
     return {
         {dialect, tag, ""sv}
     };
-}
-
-std::tuple<const Axiom*, u16> Axiom::get(const Def* def) {
-    if (auto axiom = def->isa<Axiom>()) return {axiom, axiom->curry()};
-    if (auto app = def->isa<App>()) return {app->axiom(), app->curry()};
-    return {nullptr, u16(-1)};
 }
 
 } // namespace thorin
