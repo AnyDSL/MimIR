@@ -112,6 +112,11 @@
         (%compile.single_pass_phase %compile.eta_red_pass)
         (%compile.single_pass_phase (%compile.tail_rec_elim_pass nullptr))
         optimization_phase
+        (%compile.single_pass_phase %compile.internal_cleanup_pass)
         (%compile.single_pass_phase %compile.lam_spec_pass)
         (%compile.single_pass_phase %compile.ret_wrap_pass)
 };
+.lam .extern _fallback_compile [] -> Pipeline = {
+    default_core_pipeline
+};
+
