@@ -92,7 +92,9 @@
           direct_phases
         ))
         (%compile.single_pass_phase %compile.internal_cleanup_pass)
-        // TODO: clos
+        (dialect_cond_phase (%opt.clos_dialect,
+          clos_phases
+        ))
         (%compile.single_pass_phase %compile.lam_spec_pass)
         (dialect_cond_phase (%opt.autodiff_dialect,
           ad_cleanup_phase
@@ -106,10 +108,9 @@
             // mem
             %compile.pass_list
               %mem.remem_elim_pass
-              %mem.alloc2malloc_pass
-            // TODO: refly
-            // %compile.pass_list
-              // (dialect_cond_pass (%opt.refly_dialect, %affine.lower_for_pass)),
+              %mem.alloc2malloc_pass,
+            %compile.pass_list
+              (dialect_cond_pass (%opt.refly_dialect, %refly.remove_dbg_perm_pass)),
           ))
         )
 };
