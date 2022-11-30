@@ -9,7 +9,12 @@
 .import compile;
 .import core;
 .import mem;
-.import demo;
+/// supported dialects with passes
+.import affine;
+.import autodiff;
+.import clos;
+.import direct;
+.import refly;
 ///
 /// ## Types
 /// 
@@ -21,9 +26,16 @@
 ///
 /// ### registered dialects
 /// 
-.ax %opt.core_dialect: %opt.Dialect;
-.ax %opt.mem_dialect: %opt.Dialect;
-.ax %opt.demo_dialect: %opt.Dialect;
+/// We expect the name in the tag before the `_` to be the name of the dialect (as given in `DialectInfo.plugin_name`).
+/// 
+.ax %opt.core_dialect    : %opt.Dialect;
+.ax %opt.mem_dialect     : %opt.Dialect;
+.ax %opt.demo_dialect    : %opt.Dialect;
+.ax %opt.affine_dialect  : %opt.Dialect;
+.ax %opt.autodiff_dialect: %opt.Dialect;
+.ax %opt.clos_dialect    : %opt.Dialect;
+.ax %opt.direct_dialect  : %opt.Dialect;
+.ax %opt.refly_dialect   : %opt.Dialect;
 /// 
 /// ### %opt.is_loaded
 /// 
@@ -37,27 +49,126 @@
 ///
 /// ### Phases
 /// 
-.ax %opt.dialect_phase: %opt.Dialect -> %compile.Phase -> %compile.Phase -> %compile.Phase;
+.let empty_pass = %compile.nullptr_pass;
+.let empty_phase = %compile.passes_to_phase 0 ();
+.ax %opt.dialect_select: Π [T:*] -> %opt.Dialect -> T -> T -> T;
+.let dialect_phase = %opt.dialect_select %compile.Phase;
+.let dialect_pass = %opt.dialect_select %compile.Pass;
+.lam dialect_cond_phase ![dialect: %opt.Dialect,phase: %compile.Phase] -> %compile.Phase = {
+  dialect_phase dialect phase empty_phase
+};
+.lam dialect_cond_pass ![dialect: %opt.Dialect,pass: %compile.Pass] -> %compile.Pass = {
+  dialect_pass dialect pass empty_pass
+};
 ///
 /// ### Pipelines
 /// 
-// .lam .extern _default_compile [] -> Pipeline = {
-//     // (default_core_pipeline, default_core_pipeline)#(%opt.is_loaded %opt.core_dialect)
-//     .let nullptr = %compile.nullptr_pass;
-//     .let nullphase = %compile.single_pass_phase nullptr;
-//     %compile.pipe
-//         nullphase
-//         (%compile.single_pass_phase (%compile.scalerize_pass nullptr))
-//         (%compile.single_pass_phase %compile.eta_red_pass)
-//         (%compile.single_pass_phase (%compile.tail_rec_elim_pass nullptr))
-//         // Test
-//         (%opt.dialect_phase %opt.demo_dialect 
-//             nullphase 
-//             nullphase
-//         )
-//         // Optimization loop
-//         optimization_phase
-//         (%compile.single_pass_phase %compile.lam_spec_pass)
-//         // CodeGenPrep
-//         (%compile.single_pass_phase %compile.ret_wrap_pass)
-// };
+.lam .extern _default_compile [] -> Pipeline = {
+    .let nullptr = %compile.nullptr_pass;
+    .let nullphase = %compile.single_pass_phase nullptr;
+    %compile.pipe
+        nullphase
+        (%compile.single_pass_phase (%compile.scalerize_pass nullptr))
+        (%compile.single_pass_phase %compile.eta_red_pass)
+        (%compile.single_pass_phase (%compile.tail_rec_elim_pass nullptr))
+        // optimize
+        (%compile.pass_phase 
+          (%compile.combine_pass_list (⊤:.Nat)
+          (
+            optimization_pass_list,
+            %compile.pass_list
+              (dialect_cond_pass (%opt.affine_dialect, %affine.lower_for_pass)),
+            mem_opt_pass_list
+          ))
+        )
+        (dialect_cond_phase (%opt.autodiff_dialect,
+          %compile.combined_phase (%compile.phase_list
+            (%compile.single_pass_phase %autodiff.ad_eval_pass)
+            optimization_phase
+            (%compile.single_pass_phase %autodiff.ad_zero_pass)
+          )
+        ))
+        (dialect_cond_phase (%opt.direct_dialect,
+          direct_phases
+        ))
+        // TODO: clos
+        (%compile.single_pass_phase %compile.lam_spec_pass)
+        (dialect_cond_phase (%opt.autodiff_dialect,
+          ad_cleanup_phase
+        ))
+        // CodeGenPrep
+        (%compile.pass_phase 
+          (%compile.combine_pass_list (⊤:.Nat)
+          (
+            %compile.pass_list
+              %compile.ret_wrap_pass,
+            // mem
+            %compile.pass_list
+              %mem.remem_elim_pass
+              %mem.alloc2malloc_pass
+            // TODO: refly
+            // %compile.pass_list
+              // (dialect_cond_pass (%opt.refly_dialect, %affine.lower_for_pass)),
+          ))
+        )
+};
+
+
+/// Old Pipeline:
+/// 
+/// 1 Scalerize
+/// 2 EtaRed
+/// 3 TailRecElim
+/// 
+/// 100 
+///   Opt
+///   Affine
+///     LowerFor
+///   Mem
+///    BetaRed
+///    EtaRed
+///    EtaExp er
+///    SSA ee
+///    CopyProp br ee false
+/// 
+/// AD
+///   105 ADEval
+///   110 OPT
+///   111 ADZero
+/// 
+/// Direct
+///   115 DS2CPS
+///   116 CPS2DS
+///   120 OPT
+/// 
+/// Clos
+///   121 ClosConvPrep nullptr
+///   ++  EtaExp nullptr
+///   ++  ClosConvWrapper
+///   ++  
+///     EtaRed true
+///     EtaExp er
+///     Scalerize ee
+///   ++ 
+///     Scalerize nullptr
+///     BranchElim
+///     CopyProp nullptr nullptr true
+///     LowerTypedClosPrep
+///     Clos2SJLJ
+///   ++  LowerTypedClosWrapper
+/// 
+/// 200 LamSpec (controversial)
+/// 
+/// AD
+///  299 
+///    ADZeroCleanup
+///    ADExternalCleanup
+/// 
+/// 300 CodeGenProp 
+///   RetWrap
+///   Mem
+///     RememElim
+///     Alloc2Malloc
+///   Refly
+///     RemoveDbgPerm
+///   

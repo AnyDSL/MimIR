@@ -144,7 +144,6 @@ add_thorin_dialect(opt
         compile
         mem
         core
-        demo
     INSTALL
 )
 

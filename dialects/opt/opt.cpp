@@ -14,12 +14,12 @@ using namespace thorin;
 extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
     return {"opt", nullptr,
             [](Passes& passes) {
-                passes[flags_t(Axiom::Base<opt::dialect_phase>)] = [&](World& world, PipelineBuilder& builder,
-                                                                       const Def* app) {
+                passes[flags_t(Axiom::Base<opt::dialect_select>)] = [&](World& world, PipelineBuilder& builder,
+                                                                        const Def* app) {
                     auto [ax, args]    = collect_args(app);
-                    auto dialect_axiom = args[0]->as<Axiom>();
-                    auto then_phase    = args[1];
-                    auto else_phase    = args[2];
+                    auto dialect_axiom = args[1]->as<Axiom>();
+                    auto then_phase    = args[2];
+                    auto else_phase    = args[3];
                     world.DLOG("dialect_phase for: {}", dialect_axiom->name());
 
                     // name has the form %opt.tag where tag = [dialect]_dialect

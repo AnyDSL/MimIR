@@ -20,13 +20,13 @@
 // CHECK-DAG: .con return
 // CHECK-DAG: return{{.*}}42
 
-.lam .extern _compile [] -> Pipeline = {
-    .let nullptr = %compile.nullptr_pass;
-    .let nullphase = %compile.single_pass_phase nullptr;
-    %compile.pipe
-        nullphase
-        (%opt.dialect_phase %opt.demo_dialect 
-            nullphase 
-            nullphase
-        )
-};
+// .lam .extern _compile [] -> Pipeline = {
+//     .let nullptr = %compile.nullptr_pass;
+//     .let nullphase = %compile.single_pass_phase nullptr;
+//     %compile.pipe
+//         nullphase
+//         (%opt.dialect_phase %opt.demo_dialect 
+//             nullphase 
+//             nullphase
+//         )
+// };

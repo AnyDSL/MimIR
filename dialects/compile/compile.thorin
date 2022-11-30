@@ -53,6 +53,7 @@
 /// `combine_pass_list K (pass_list pass11 ... pass1N) ... (pass_list passK1 ... passKM) = pass_list pass11 ... p1N ... passK1 ... passKM`
 .ax %compile.combine_pass_list: Π [n:.Nat] -> «n; PassList» -> PassList, normalize_combine_pass_list;
 /// `single_pass_phase pass = passes_to_phase 1 pass`
+// TODO: as let instead of axiom
 .ax %compile.single_pass_phase: %compile.Pass -> %compile.Phase, normalize_single_pass_phase;
 ///
 /// ### %compile.combined_phase
