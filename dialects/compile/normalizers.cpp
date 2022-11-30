@@ -32,7 +32,7 @@ const Def* normalize_combined_phase(const Def* type, const Def*, const Def* arg,
 
 /// `single_pass_phase pass` -> `passes_to_phase 1 pass`
 const Def* normalize_single_pass_phase(const Def* type, const Def*, const Def* arg, const Def* dbg) {
-    auto& world = type->world();
+    auto& world     = type->world();
     auto pass2phase = world.raw_app(type, world.ax<passes_to_phase>(), world.lit_nat_1());
     return world.raw_app(type, pass2phase, arg, dbg);
 }
