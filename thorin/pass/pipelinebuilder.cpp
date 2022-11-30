@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "thorin/def.h"
+#include "thorin/dialects.h"
 #include "thorin/lattice.h"
 
 #include "thorin/pass/fp/beta_red.h"
@@ -113,6 +114,15 @@ void PipelineBuilder::buildPipelinePart(int i, Pipeline& pipeline) {
         std::stable_sort(phase_extensions_[i].begin(), phase_extensions_[i].end(), phaseCmp());
         for (const auto& ext : phase_extensions_[i]) { ext.second(pipeline); }
     }
+}
+
+void PipelineBuilder::register_dialect(Dialect& dialect) { dialects_.push_back(&dialect); }
+
+bool PipelineBuilder::is_registered_dialect(std::string name) {
+    for (auto& dialect : dialects_) {
+        if (dialect->name() == name) { return true; }
+    }
+    return false;
 }
 
 } // namespace thorin

@@ -298,7 +298,8 @@ TEST(RestrictedDependentTypes, ll) {
 
     // PipelineBuilder builder;
     // mem_d.add_passes(builder);
-    optimize(w, passes);
+    std::vector<Dialect> dialects;
+    optimize(w, passes, dialects);
 
     Backends backends;
     core_d.register_backends(backends);

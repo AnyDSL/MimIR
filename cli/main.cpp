@@ -139,7 +139,7 @@ int main(int argc, char** argv) {
         switch (opt) {
             case 0:                             break;
             case 1: Phase::run<Cleanup>(world); break;
-            case 2: optimize(world, passes);   break;
+            case 2: optimize(world, passes, dialects);   break;
             default: errln("error: illegal optimization level '{}'", opt);
         }
         // clang-format on

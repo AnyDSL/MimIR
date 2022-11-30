@@ -17,6 +17,7 @@ inline void handle_optimization_part(const Def* part, World& world, Passes& pass
             phase_fun(world, builder, part);
         } else {
             world.WLOG("pass/phase '{}' not found", phase_ax->name());
+            assert(passes.contains(flag) && "pass/phase not found");
         }
     } else {
         world.WLOG("pass/phase '{}' is not an axiom", phase_def);

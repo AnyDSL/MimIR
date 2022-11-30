@@ -66,10 +66,14 @@ public:
     std::vector<int> passes();
     std::vector<int> phases();
 
+    void register_dialect(Dialect& d);
+    bool is_registered_dialect(std::string name);
+
 private:
     std::map<int, PassList> pass_extensions_;
     std::map<int, PhaseList> phase_extensions_;
     std::set<std::string> registered_dialects_;
+    std::vector<Dialect*> dialects_;
     PassInstanceMap pass_instances_;
 };
 

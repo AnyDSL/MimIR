@@ -14,11 +14,12 @@ static constexpr int Codegen_Prep_Phase     = 300;
 class World;
 class PipelineBuilder;
 class Def;
+class Dialect;
 using DefVec = std::vector<const Def*>;
 // `axiom ↦ (pipeline part) × (axiom application) → ()`
 // The function should inspect application to construct the pass/phase and add it to the pipeline.
 using Passes = absl::flat_hash_map<flags_t, std::function<void(World&, PipelineBuilder&, const Def*)>>;
 
-void optimize(World&, Passes&);
+void optimize(World&, Passes&, std::vector<Dialect>&);
 
 } // namespace thorin

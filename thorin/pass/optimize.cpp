@@ -16,7 +16,7 @@
 namespace thorin {
 
 /// See optimize.h for magic numbers
-void optimize(World& world, Passes& passes) {
+void optimize(World& world, Passes& passes, std::vector<Dialect>& dialects) {
     auto compilation_functions = {"_compile", "_default_compile"};
     const Def* compilation     = nullptr;
     for (auto compilation_function : compilation_functions) {
@@ -39,6 +39,9 @@ void optimize(World& world, Passes& passes) {
 
     PipelineBuilder pipe_builder;
     // TODO: remove indirections of pipeline builder. Just add passes and phases directly to the pipeline.
+
+    // register dialects
+    for (auto& dialect : dialects) { pipe_builder.register_dialect(dialect); }
 
     auto pipeline     = compilation->as<Lam>()->body();
     auto [ax, phases] = collect_args(pipeline);
