@@ -37,7 +37,7 @@ void add_passes(World& world, PipelineBuilder& builder, Passes& passes, DefVec& 
 }
 
 extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
-    return {"compile", nullptr,
+    return {"compile",
             [](Passes& passes) {
                 auto debug_phase_flag    = flags_t(Axiom::Base<thorin::compile::debug_phase>);
                 passes[debug_phase_flag] = [](World& world, PipelineBuilder& builder, const Def* app) {

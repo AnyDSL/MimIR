@@ -24,7 +24,6 @@ struct DialectInfo {
     const char* plugin_name;
 
     /// Callback for registering the dialects' callbacks for the pipeline extension points.
-    void (*add_passes)(PipelineBuilder& builder);
     void (*register_passes)(Passes& passes);
 
     /// Callback for registering the mapping from backend names to emission functions in the given \a backends map.
@@ -59,9 +58,6 @@ public:
     void* handle() { return handle_.get(); }
 
     /// Registers callbacks in the \a builder that extend the exposed PassMan's.
-    void add_passes(PipelineBuilder& builder) const {
-        if (info_.add_passes) info_.add_passes(builder);
-    }
     void register_passes(Passes& passes) const {
         if (info_.register_passes) info_.register_passes(passes);
     }

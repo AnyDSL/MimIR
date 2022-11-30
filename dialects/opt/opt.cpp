@@ -12,7 +12,7 @@
 using namespace thorin;
 
 extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
-    return {"opt", nullptr,
+    return {"opt",
             [](Passes& passes) {
                 passes[flags_t(Axiom::Base<opt::dialect_select>)] = [&](World& world, PipelineBuilder& builder,
                                                                         const Def* app) {
