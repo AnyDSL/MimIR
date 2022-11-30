@@ -83,23 +83,25 @@ const Def* World::app(Refer callee, Refer arg, Refer dbg) {
         if (!checker().assignable(pi->dom(), arg, dbg)) err()->ill_typed_app(callee, arg, dbg);
     }
 
-    auto type           = pi->reduce(arg).back();
-    auto [axiom, curry] = Axiom::get(callee);
-    if (axiom && curry == 1) {
-        if (auto normalize = axiom->normalizer()) return normalize(type, callee, arg, dbg);
-    }
-
     if (auto lam = callee->isa<Lam>(); lam && lam->is_set() && lam->codom()->sort() > Sort::Type)
         return lam->reduce(arg).back();
 
-    return unify<App>(2, axiom, curry - 1, type, callee, arg, dbg);
+    auto type = pi->reduce(arg).back();
+    return raw_app<true>(type, callee, arg, dbg);
 }
 
-const Def* World::raw_app(Refer callee, Refer arg, Refer dbg) {
-    auto pi             = callee->type()->as<Pi>();
-    auto type           = pi->reduce(arg).back();
-    auto [axiom, curry] = Axiom::get(callee);
-    return unify<App>(2, axiom, curry - 1, type, callee, arg, dbg);
+template<bool Normalize>
+const Def* World::raw_app(Refer type, Refer callee, Refer arg, Refer dbg) {
+    auto [axiom, curry, trip] = Axiom::get(callee);
+    if (axiom) {
+        curry = curry == 0 ? trip : curry;
+        curry = curry == Axiom::Trip_End ? curry : curry - 1;
+
+        if (auto normalize = axiom->normalizer(); Normalize && normalize && curry == 0)
+            return normalize(type, callee, arg, dbg);
+    }
+
+    return unify<App>(2, axiom, curry, trip, type, callee, arg, dbg);
 }
 
 const Def* World::call(const Axiom* axiom, Refer arg, Refer dbg) {
@@ -452,6 +454,10 @@ const Def* World::gid2def(u32 gid) {
  * instantiate templates
  */
 
+#ifndef DOXYGEN // Doxygen doesn't like this
+template const Def* World::raw_app<true>(Refer, Refer, Refer, Refer);
+template const Def* World::raw_app<false>(Refer, Refer, Refer, Refer);
+#endif
 template const Def* World::ext<true>(Refer, Refer);
 template const Def* World::ext<false>(Refer, Refer);
 template const Def* World::bound<true>(Defs, Refer);

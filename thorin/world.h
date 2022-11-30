@@ -198,21 +198,23 @@ public:
 
     /// @name Axiom
     ///@{
-    const Axiom* axiom(Def::NormalizeFn n, Refer type, dialect_t d, tag_t t, sub_t s, Refer dbg = {}) {
-        auto ax                          = unify<Axiom>(0, n, type, d, t, s, dbg);
+    const Axiom*
+    axiom(Def::NormalizeFn n, u8 curry, u8 trip, Refer type, dialect_t d, tag_t t, sub_t s, Refer dbg = {}) {
+        auto ax                          = unify<Axiom>(0, n, curry, trip, type, d, t, s, dbg);
         return move_.axioms[ax->flags()] = ax;
     }
     const Axiom* axiom(Refer type, dialect_t d, tag_t t, sub_t s, Refer dbg = {}) {
-        return axiom(nullptr, type, d, t, s, dbg);
+        return axiom(nullptr, 0, 0, type, d, t, s, dbg);
     }
 
     /// Builds a fresh Axiom with descending Axiom::sub.
     /// This is useful during testing to come up with some entitiy of a specific type.
     /// It uses the dialect Axiom::Global_Dialect and starts with `0` for Axiom::sub and counts up from there.
     /// The Axiom::tag is set to `0` and the Axiom::normalizer to `nullptr`.
-    const Axiom* axiom(Refer type, Refer dbg = {}) {
-        return axiom(nullptr, type, Axiom::Global_Dialect, 0, state_.pod.curr_sub++, dbg);
+    const Axiom* axiom(Def::NormalizeFn n, u8 curry, u8 trip, Refer type, Refer dbg = {}) {
+        return axiom(n, curry, trip, type, Axiom::Global_Dialect, 0, state_.pod.curr_sub++, dbg);
     }
+    const Axiom* axiom(Refer type, Refer dbg = {}) { return axiom(nullptr, 0, 0, type, dbg); } ///< See above.
 
     /// Get Axiom from a dialect.
     /// Use this to get an Axiom via Axiom::id.
@@ -258,10 +260,12 @@ public:
     ///@{
     const Def* app(Refer callee, Refer arg, Refer dbg = {});
     const Def* app(Refer callee, Defs args, Refer dbg = {}) { return app(callee, tuple(args), dbg); }
-    /// Same as World::app but does *not* apply NormalizeFn.
-    const Def* raw_app(Refer callee, Refer arg, Refer dbg = {});
-    /// Same as World::app but does *not* apply NormalizeFn.
-    const Def* raw_app(Refer callee, Defs args, Refer dbg = {}) { return raw_app(callee, tuple(args), dbg); }
+    template<bool Normalize = false>
+    const Def* raw_app(Refer type, Refer callee, Refer arg, Refer dbg = {});
+    template<bool Normalize = false>
+    const Def* raw_app(Refer type, Refer callee, Defs args, Refer dbg = {}) {
+        return raw_app<Normalize>(type, callee, tuple(args), dbg);
+    }
     ///@}
 
     /// @name call - App with type inference
