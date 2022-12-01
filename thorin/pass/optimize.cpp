@@ -1,5 +1,7 @@
 #include "thorin/pass/optimize.h"
 
+#include <vector>
+
 #include "thorin/dialects.h"
 
 #include "thorin/pass/fp/beta_red.h"
@@ -25,6 +27,18 @@ void optimize(World& world, Passes& passes, std::vector<Dialect>& dialects) {
             compilation_->make_internal();
         }
     }
+    // make all functions `[] -> Pipeline` internal
+    std::vector<Def*> make_internal;
+    for (auto ext : world.externals()) {
+        auto def = ext.second;
+        if (auto lam = def->isa<Lam>(); lam && lam->num_doms() == 0) {
+            if (lam->codom()->name() == "Pipeline") {
+                if (!compilation) { compilation = lam; }
+                make_internal.push_back(def);
+            }
+        }
+    }
+    for (auto def : make_internal) { def->make_internal(); }
     assert(compilation && "no compilation function found");
 
     // We found a compilation directive in the file and use it to build the compilation pipeline.
