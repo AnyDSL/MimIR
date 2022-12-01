@@ -18,6 +18,7 @@
 #include "dialects/mem/passes/fp/ssa_constr.h"
 #include "dialects/mem/passes/rw/alloc2malloc.h"
 #include "dialects/mem/passes/rw/remem_elim.h"
+#include "dialects/mem/phases/rw/add_mem.h"
 
 using namespace thorin;
 

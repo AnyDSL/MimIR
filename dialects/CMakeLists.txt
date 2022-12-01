@@ -130,6 +130,8 @@ add_thorin_dialect(mem
         mem/passes/rw/alloc2malloc.h
         mem/passes/rw/remem_elim.cpp
         mem/passes/rw/remem_elim.h
+        mem/phases/rw/add_mem.cpp
+        mem/phases/rw/add_mem.h
     DEPENDS
         compile
     HEADER_DEPENDS

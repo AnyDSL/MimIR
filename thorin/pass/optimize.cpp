@@ -17,7 +17,7 @@ namespace thorin {
 
 /// See optimize.h for magic numbers
 void optimize(World& world, Passes& passes, std::vector<Dialect>& dialects) {
-    auto compilation_functions = {"_compile", "_default_compile", "_fallback_compile"};
+    auto compilation_functions = {"_compile", "_default_compile", "_core_compile", "_fallback_compile"};
     const Def* compilation     = nullptr;
     for (auto compilation_function : compilation_functions) {
         if (auto compilation_ = world.lookup(compilation_function)) {
@@ -26,6 +26,7 @@ void optimize(World& world, Passes& passes, std::vector<Dialect>& dialects) {
         }
     }
     assert(compilation && "no compilation function found");
+
     // We found a compilation directive in the file and use it to build the compilation pipeline.
     // The general idea is that passes and phases are exposed as axioms.
     // Each pass/phase axiom is associated with a handler function operating on the PipelineBuilder in the
@@ -39,7 +40,6 @@ void optimize(World& world, Passes& passes, std::vector<Dialect>& dialects) {
 
     PipelineBuilder pipe_builder;
     // TODO: remove indirections of pipeline builder. Just add passes and phases directly to the pipeline.
-
     for (auto& dialect : dialects) { pipe_builder.register_dialect(dialect); }
 
     auto pipeline     = compilation->as<Lam>()->body();

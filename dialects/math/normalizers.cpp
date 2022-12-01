@@ -219,14 +219,15 @@ const Def* normalize_arith(const Def* type, const Def* c, const Def* arg, const 
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto m      = isa_lit(callee->arg());
+    auto mode   = callee->arg();
+    auto lm     = isa_lit(mode);
     auto w      = isa_f(a->type());
 
     if (auto result = fold<arith, id>(world, type, a, b, dbg)) return result;
 
     // clang-format off
     // TODO check mode properly
-    if (m && *m == Mode::fast) {
+    if (lm && *lm == Mode::fast) {
         if (auto la = a->isa<Lit>()) {
             if (la == lit_f(world, *w, 0.0)) {
                 switch (id) {
@@ -263,10 +264,10 @@ const Def* normalize_arith(const Def* type, const Def* c, const Def* arg, const 
 
         if (a == b) {
             switch (id) {
-                case arith::add: return math::op(arith::mul, lit_f(world, *w, 2.0), a, dbg); // a + a -> 2 * a
-                case arith::sub: return lit_f(world, *w, 0.0);                             // a - a -> 0
+                case arith::add: return math::op(arith::mul, mode, lit_f(world, *w, 2.0), a, dbg); // a + a -> 2 * a
+                case arith::sub: return lit_f(world, *w, 0.0);                                     // a - a -> 0
                 case arith::mul: break;
-                case arith::div: return lit_f(world, *w, 1.0);                             // a / a -> 1
+                case arith::div: return lit_f(world, *w, 1.0);                                     // a / a -> 1
                 case arith::rem: break;
             }
         }
@@ -275,7 +276,7 @@ const Def* normalize_arith(const Def* type, const Def* c, const Def* arg, const 
 
     if (auto res = reassociate<arith>(id, world, callee, a, b, dbg)) return res;
 
-    return world.raw_app(callee, {a, b}, dbg);
+    return world.raw_app(type, callee, {a, b}, dbg);
 }
 
 template<extrema id>
@@ -296,49 +297,49 @@ const Def* normalize_extrema(const Def* type, const Def* c, const Def* arg, cons
         }
     }
 
-    return world.raw_app(c, arg, dbg);
+    return world.raw_app(type, c, arg, dbg);
 }
 
 template<tri id>
 const Def* normalize_tri(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     if (auto lit = fold<tri, id>(world, type, arg, dbg)) return lit;
-    return world.raw_app(c, arg, dbg);
+    return world.raw_app(type, c, arg, dbg);
 }
 
 const Def* normalize_pow(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     auto [a, b] = arg->projs<2>();
     if (auto lit = fold<pow, /*dummy*/ pow(0)>(world, type, a, b, dbg)) return lit;
-    return world.raw_app(c, arg, dbg);
+    return world.raw_app(type, c, arg, dbg);
 }
 
 template<rt id>
 const Def* normalize_rt(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     if (auto lit = fold<rt, id>(world, type, arg, dbg)) return lit;
-    return world.raw_app(c, arg, dbg);
+    return world.raw_app(type, c, arg, dbg);
 }
 
 template<exp id>
 const Def* normalize_exp(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     if (auto lit = fold<exp, id>(world, type, arg, dbg)) return lit;
-    return world.raw_app(c, arg, dbg);
+    return world.raw_app(type, c, arg, dbg);
 }
 
 template<er id>
 const Def* normalize_er(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     if (auto lit = fold<er, id>(world, type, arg, dbg)) return lit;
-    return world.raw_app(c, arg, dbg);
+    return world.raw_app(type, c, arg, dbg);
 }
 
 template<gamma id>
 const Def* normalize_gamma(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     if (auto lit = fold<gamma, id>(world, type, arg, dbg)) return lit;
-    return world.raw_app(c, arg, dbg);
+    return world.raw_app(type, c, arg, dbg);
 }
 
 template<cmp id>
@@ -351,7 +352,7 @@ const Def* normalize_cmp(const Def* type, const Def* c, const Def* arg, const De
     if (id == cmp::f) return world.lit_ff();
     if (id == cmp::t) return world.lit_tt();
 
-    return world.raw_app(callee, {a, b}, dbg);
+    return world.raw_app(type, callee, {a, b}, dbg);
 }
 
 template<class Id, Id id, nat_t sw, nat_t dw>
@@ -362,26 +363,26 @@ Res fold(u64 a) {
 }
 
 template<conv id>
-const Def* normalize_conv(const Def* dst_ty, const Def* c, const Def* x, const Def* dbg) {
-    auto& world = dst_ty->world();
+const Def* normalize_conv(const Def* dst_t, const Def* c, const Def* x, const Def* dbg) {
+    auto& world = dst_t->world();
     auto callee = c->as<App>();
-    auto s_ty   = x->type()->as<App>();
-    auto d_ty   = dst_ty->as<App>();
-    auto s      = s_ty->arg();
-    auto d      = d_ty->arg();
+    auto s_t    = x->type()->as<App>();
+    auto d_t    = dst_t->as<App>();
+    auto s      = s_t->arg();
+    auto d      = d_t->arg();
     auto ls     = isa_lit(s);
     auto ld     = isa_lit(d);
 
-    if (s_ty == d_ty) return x;
-    if (x->isa<Bot>()) return world.bot(d_ty, dbg);
+    if (s_t == d_t) return x;
+    if (x->isa<Bot>()) return world.bot(d_t, dbg);
 
     if (auto l = isa_lit(x); l && ls && ld) {
         constexpr bool sf     = id == conv::f2f || id == conv::f2s || id == conv::f2u;
         constexpr bool df     = id == conv::f2f || id == conv::s2f || id == conv::u2f;
         constexpr nat_t min_s = sf ? 16 : 1;
         constexpr nat_t min_d = df ? 16 : 1;
-        auto sw               = sf ? isa_f(s_ty) : Idx::size2bitwidth(*ls);
-        auto dw               = df ? isa_f(d_ty) : Idx::size2bitwidth(*ld);
+        auto sw               = sf ? isa_f(s_t) : Idx::size2bitwidth(*ls);
+        auto dw               = df ? isa_f(d_t) : Idx::size2bitwidth(*ld);
 
         if (sw && dw) {
             Res res;
@@ -402,12 +403,11 @@ const Def* normalize_conv(const Def* dst_ty, const Def* c, const Def* x, const D
 
             else unreachable();
             // clang-format on
-
-            return world.lit(d_ty, *res, dbg);
+            return world.lit(d_t, *res, dbg);
         }
     }
 out:
-    return world.raw_app(callee, x, dbg);
+    return world.raw_app(dst_t, callee, x, dbg);
 }
 
 // TODO I guess we can do that with C++20 <bit>

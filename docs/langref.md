@@ -27,6 +27,8 @@ Both tokens are identified as `⊥`.
 | `=` `,` `;` `.` `#` `:` `%` |                                             | further tokens            |
 | `<eof>`                     |                                             | marks the end of the file |
 
+In addition you can use `⟨`, `⟩`, `⟪`, and `⟫` as an alternative for `‹`, `›`, `«`, and `»`.
+
 #### Keywords
 
 In addition the following keywords are *terminals*:
@@ -154,7 +156,9 @@ The following tables comprise all production rules:
 | Nonterminal | Right-Hand Side               | Comment                  |
 |-------------|-------------------------------|--------------------------|
 | p           | Sym t                         | identifier pattern       |
-| p           | s `(` p `,` ... `,` p `)` t   | tuple pattern            |
+| p           | s `(` g `,` ... `,` g `)` t   | tuple pattern            |
+| g           | p                             | group pattern            |
+| g           | s+ `:` e                      | group pattern            |
 | p           | s `[` b `,` ... `,` b `]` t   | sigma pattern            |
 | b           | s e<sub>type</sub>            | identifier binder        |
 | b           | s `[` b `,` ... `,` b `]` t   | sigma binder             |
