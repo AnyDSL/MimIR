@@ -1,11 +1,5 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d matrix -e thorin %s -e ll -o %t | FileCheck %s
-// RUN: clang %t.ll -o %t -Wno-override-module
-// RUN: %t ; test $? -eq 5
-// RUN: %t 1 2 3 ; test $? -eq 5
-// RUN: %t a b c d e f ; test $? -eq 5
-
-// ./build/bin/thorin -d matrix ./lit/matrix/mapReduce.thorin --output-thorin -
+// RUN: %thorin -d matrix -o - %s  | FileCheck %s
 
 .import core;
 .import mem;
@@ -15,16 +9,16 @@
 .let I32 = .Idx _32;
 // .let MT = (2, (2,4), I32);
 
-.cn .extern fun [[mem:%mem.M, acc:I32, [a:I32, b:I32]], ret:.Cn[%mem.M,I32]] = {
-    .let v = %core.wrap.add (0, _32) (a,b);
+.con .extern fun [[mem:%mem.M, acc:I32, [a:I32, b:I32]], ret:.Cn[%mem.M,I32]] = {
+    .let v = %core.wrap.add _32 0 (a,b);
 
     // reduce op = addition
-    .let new_acc = %core.wrap.add (0:.Nat, _32) (acc,v);
+    .let new_acc = %core.wrap.add _32 0 (acc,v);
 
     ret (mem, new_acc)
 };
 
-.cn .extern f [mem : %mem.M, 
+.con .extern f [mem : %mem.M, 
     [k:.Nat, l:.Nat],
     M:%matrix.Mat (2,(k,l),I32),
     return: .Cn[%mem.M, %matrix.Mat (2,(k,l),I32)]] = {
@@ -63,11 +57,4 @@
     return (mem2, MT)
 };
 
-// .lam .extern cont: .Cn [mem : %mem.M, m : (%matrix.Mat MT), return : .Cn [%mem.M, I32]] = {
-//     .ff,
-//     .let m2 = %matrix.map (2,(2,4),I32,I32) (m,f);
-//     .let idx = (1:(.Idx 2),3:(.Idx 4));
-//     .let d = %matrix.read MT (m2, idx);
-//     return (mem, d)
-// };
-
+// CHECK-NOT: %matrix.

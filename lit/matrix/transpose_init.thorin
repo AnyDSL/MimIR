@@ -1,0 +1,80 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -d matrix -o - %s | FileCheck %s
+
+
+.import core;
+.import mem;
+.import matrix;
+
+.let _32 = 4294967296;
+.let I32 = .Idx _32;
+// .let MT = (2, (2,4), I32);
+
+
+.lam ex_internal_mapRed_matrix_transpose
+    ![[k: .Nat, l: .Nat], T:*] ->
+    (.Cn[
+        [%mem.M,%matrix.Mat (2,(k, l),T)],
+        .Cn[%mem.M,%matrix.Mat (2,(l, k),T)]
+    ]) 
+    = {
+    .con transpose_comb [[mem:%mem.M, acc:T, [a:T]], ret:.Cn[%mem.M,T]] = {
+        // TODO: or use generalized addition function
+        // ignore acc
+        .let new_acc = a;
+        ret (mem, new_acc)
+    };
+    .con inner_matrix_transpose
+        ![
+            [
+                mem:%mem.M,
+                M:%matrix.Mat (2,(k, l),T), 
+            ],
+            ret: .Cn[%mem.M,%matrix.Mat (2,(l, k),T)]
+        ]
+    = {
+        // TODO: use generalized zero
+        .let zero = (⊥:T);
+        ret (
+            %matrix.mapReduce
+                (2, (l, k), T, 
+                    1,
+                    2,
+                    T,
+                    (k,l)
+                )
+                (
+                    mem,
+                    zero,
+                    transpose_comb,
+                    (
+                        ((1,0), M)
+                    )
+                )
+        )
+    };
+    inner_matrix_transpose
+};
+
+
+
+
+.con .extern f [mem : %mem.M, 
+    [k:.Nat, l:.Nat],
+    // M:%matrix.Mat (2,(k,m),I32),
+    // N:%matrix.Mat (2,(m,l),I32),
+    // return: .Cn[%mem.M, %matrix.Mat (2,(k,l),I32)]] = {
+    return: .Cn[%mem.M]] = {
+
+    .let (mem2, M) = %matrix.constMat (2,(k,l),I32) (mem, 42:I32);
+    // .let (mem3, N) = %matrix.constMat (2,(m,l),I32) (mem2, 44:I32);
+
+    .con cont [mem: %mem.M, N: %matrix.Mat (2,(l, k),I32)] = {
+        return mem
+    };
+
+    ex_internal_mapRed_matrix_transpose ((k,l),I32) ((mem, M),cont)
+
+};
+
+// CHECK-NOT: %matrix.

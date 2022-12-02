@@ -1,9 +1,5 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d matrix -e thorin %s -e ll -o %t | FileCheck %s
-// RUN: clang %t.ll -o %t -Wno-override-module
-// RUN: %t ; test $? -eq 5
-// RUN: %t 1 2 3 ; test $? -eq 5
-// RUN: %t a b c d e f ; test $? -eq 5
+// RUN: %thorin -d matrix -o - %s | FileCheck %s
 
 .import core;
 .import mem;
@@ -13,48 +9,21 @@
 .let MT = (2, (2,4), I32);
 .let MT2 = (2, (4,2), I32);
 
-.lam .extern cont: .Cn [mem : %mem.M, m : (%matrix.Mat MT), return : .Cn [%mem.M, I32]] = {
-    .ff,
-    .let m2 = %matrix.transpose ((2,4), I32) m;
+.con .extern cont [mem : %mem.M, m : (%matrix.Mat MT), return : .Cn [%mem.M, I32]] = {
+    .let (mem2,m2) = %matrix.transpose ((2,4), I32) (mem,m);
     .let idx2 = (3:(.Idx 4),1:(.Idx 2));
-    .let d = %matrix.read MT2 (m2, idx2);
+    .let (mem3,d) = %matrix.read MT2 (mem2,m2, idx2);
 
     // .let idx = (1:(.Idx 2),3:(.Idx 4));
     // .let d = %matrix.read MT (m, idx);
-    return (mem, d)
+    return (mem3, d)
 };
 
 
-.lam .extern main: .Cn [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, .Idx 4294967296]] = {
-    .ff, // this is the filter
+.con .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, .Idx 4294967296]] = {
     .let c = 5:I32;
-    .let m = %matrix.constMat MT c;
-    cont (mem, m, return)
+    .let (mem2,m) = %matrix.constMat MT (mem,c);
+    cont (mem2, m, return)
 };
 
-// CHECK-DAG: main: .Cn [%mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((.Idx 256), 0:.Nat), 0:.Nat), .Cn [%mem.M, (.Idx 4294967296)]], @(_[[memId:[0-9]*]], _[[argcId:[0-9]*]], _{{[0-9]*}}, _[[returnId:[0-9]*]]) = {
-// CHECK-DAG: _[[appId:[0-9]*]]: ⊥:★ = _[[returnEtaId:[0-9]*]] (_[[memId]], 5:(.Idx 4294967296));
-// CHECK-DAG: _[[appId]]
-
-// CHECK-DAG: _[[returnEtaId]]: .Cn [%mem.M, (.Idx 4294967296)], @(_{{[0-9]*}}, _{{[0-9]*}}) = {
-// CHECK-DAG: _[[retAppId:[0-9]*]]: ⊥:★ = _[[returnId]] @_[[returnEtaId]];
-// CHECK-DAG: _[[retAppId]]
-
-/*
-.import matrix;
-.import mem;
-.import core;
-
-
-.lam .extern main: .Cn [%mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((.Idx 256), 0:.Nat), 0:.Nat), .Cn [%mem.M, (.Idx 4294967296)]], @(_176473, _176505, _176510, _176465) = {
-    0:(.Idx 2),
-
-    .lam _176460: .Cn [%mem.M, (.Idx 4294967296)], @(_176525, _176530) = {
-        0:(.Idx 2),
-        .let _176467: ⊥:★ = _176465 @_176460;
-        _176467
-    };
-    .let _176483: ⊥:★ = _176460 (_176473, 5:(.Idx 4294967296));
-    _176483
-};
-*/
+// CHECK-NOT: %matrix.

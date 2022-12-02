@@ -13,10 +13,11 @@
 #include "dialects/clos/pass/rw/branch_clos_elim.h"
 #include "dialects/clos/pass/rw/clos2sjlj.h"
 #include "dialects/clos/pass/rw/clos_conv_prep.h"
-#include "dialects/clos/phase/clos_conv.h"
-#include "dialects/clos/phase/lower_typed_clos.h"
+#include "dialects/clos/pass/rw/phase_wrapper.h"
 #include "dialects/mem/mem.h"
 #include "dialects/mem/passes/fp/copy_prop.h"
+#include "dialects/mem/passes/rw/reshape.h"
+#include "dialects/refly/passes/debug_dump.h"
 
 namespace thorin::clos {
 
@@ -131,26 +132,6 @@ const Def* ctype(World& w, Defs doms, const Def* env_type) {
                          [&](auto i) { return clos_insert_env(i, env_type, [&](auto j) { return doms[j]; }); }));
 }
 
-/*
- * Pass Wrappers
- */
-
-class ClosConvWrapper : public RWPass<ClosConvWrapper, Lam> {
-public:
-    ClosConvWrapper(PassMan& man)
-        : RWPass(man, "clos_conv") {}
-
-    void prepare() override { ClosConv(world()).run(); }
-};
-
-class LowerTypedClosWrapper : public RWPass<LowerTypedClosWrapper, Lam> {
-public:
-    LowerTypedClosWrapper(PassMan& man)
-        : RWPass(man, "lower_typed_clos") {}
-
-    void prepare() override { LowerTypedClos(world()).run(); }
-};
-
 } // namespace thorin::clos
 
 using namespace thorin;
@@ -158,11 +139,19 @@ using namespace thorin;
 extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
     return {"clos",
             [](PipelineBuilder& builder) {
-                int base = 121;
+                int base = 140;
                 // closure_conv
+
+                builder.add_opt(base++);
+
+                builder.extend_opt_phase(base++, [](PassMan& man) { man.add<DebugDump>(); });
+                builder.extend_opt_phase(base++, [](PassMan& man) { man.add<mem::Reshape>(mem::Reshape::Flat); });
+                builder.extend_opt_phase(base++, [](PassMan& man) { man.add<DebugDump>(); });
+
                 builder.extend_opt_phase(base++, [](PassMan& man) { man.add<clos::ClosConvPrep>(nullptr); });
                 builder.extend_opt_phase(base++, [](PassMan& man) { man.add<EtaExp>(nullptr); });
-                builder.extend_opt_phase(base++, [](PassMan& man) { man.add<clos::ClosConvWrapper>(); });
+                builder.extend_opt_phase(base++, [](PassMan& man) { man.add<ClosConvWrapper>(); });
+
                 builder.extend_opt_phase(base++, [](PassMan& man) {
                     auto er = man.add<EtaRed>(true);
                     auto ee = man.add<EtaExp>(er);
@@ -177,7 +166,9 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                     man.add<clos::Clos2SJLJ>();
                 });
 
-                builder.extend_opt_phase(base++, [](PassMan& man) { man.add<clos::LowerTypedClosWrapper>(); });
+                builder.extend_opt_phase(base++, [](PassMan& man) { man.add<LowerTypedClosWrapper>(); });
+
+                // builder.add_opt(base++);
             },
             nullptr, nullptr, [](Normalizers& normalizers) { clos::register_normalizers(normalizers); }};
 }

@@ -1,6 +1,5 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d matrix -e thorin %s -e ll -o %t | FileCheck %s
-// RUN: clang %t.ll -o %t -Wno-override-module
+// RUN: %thorin -d matrix -o - %s | FileCheck %s
 
 .import core;
 .import mem;
@@ -9,7 +8,7 @@
 .let _32 = 4294967296;
 .let I32 = .Idx _32;
 
-.cn .extern f [mem : %mem.M, 
+.con .extern f [mem : %mem.M, 
     [k:.Nat, l:.Nat],
     return: .Cn[%mem.M]] = {
 
@@ -17,3 +16,5 @@
 
     return mem2
 };
+
+// CHECK-NOT: %matrix.

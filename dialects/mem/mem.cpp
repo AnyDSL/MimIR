@@ -17,6 +17,7 @@
 #include "dialects/mem/passes/fp/ssa_constr.h"
 #include "dialects/mem/passes/rw/alloc2malloc.h"
 #include "dialects/mem/passes/rw/remem_elim.h"
+#include "dialects/mem/passes/rw/reshape.h"
 #include "dialects/mem/phases/rw/add_mem.h"
 
 using namespace thorin;
@@ -35,6 +36,11 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                     man.add<mem::RememElim>();
                     man.add<mem::Alloc2Malloc>();
                 });
+                // builder.extend_opt_phase(104, [](PassMan& man) { man.add<mem::Reshape>(mem::Reshape::Arg); });
+                // builder.append_phase(130, [](Pipeline& pipeline) { pipeline.add<mem::AddMem>(); });
+
+                // after AD, before closure conv
+                // builder.extend_opt_phase(139, [](PassMan& man) { man.add<mem::Reshape>(mem::Reshape::Flat); });
             },
             [](Passes& passes) {
                 register_pass_with_arg<mem::ssa_pass, mem::SSAConstr, EtaExp>(passes);

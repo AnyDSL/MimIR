@@ -31,6 +31,11 @@ const Def* normalize_read(const Def* type, const Def* callee, const Def* arg, co
             auto [cmem, v] = mcm->arg()->projs<2>();
             return world.tuple({mem, v});
         }
+        // else if (auto mcm = match<transpose>(ccall)) {
+        //     auto [i, j] = index->projs<2>();
+        //     return world.raw_app(callee,
+        //         world.tuple({mem, mcm->arg(), world.tuple({j, i})}), dbg);
+        // }
     }
 
     // auto mcm = match<constMat>(mat);

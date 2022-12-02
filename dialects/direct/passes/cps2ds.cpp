@@ -27,7 +27,8 @@ void CPS2DS::rewrite_lam(Lam* lam) {
 
 const Def* CPS2DS::rewrite_body(const Def* def) {
     if (auto i = rewritten_.find(def); i != rewritten_.end()) return i->second;
-    rewritten_[def] = rewrite_body_(def);
+    auto def_       = rewrite_body_(def);
+    rewritten_[def] = def_;
     return rewritten_[def];
 }
 
@@ -117,8 +118,8 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
             }
         }
 
-        auto new_calle = rewrite_body(app->callee());
-        return world.app(new_calle, new_arg);
+        auto new_callee = rewrite_body(app->callee());
+        return world.app(new_callee, new_arg);
     }
     // TODO: are ops rewrites + app calle/arg rewrites all possible combinations?
     // TODO: check if lam is necessary or if var is enough
@@ -130,7 +131,11 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
     DefArray new_ops{def->ops(), [&](const Def* op) { return rewrite_body(op); }};
     if (def->isa<Tuple>()) return world.tuple(new_ops, def->dbg());
 
-    return def->rebuild(world, def->type(), new_ops, def->dbg());
+    // auto new_dbg = rewrite_body(def->dbg());
+    // auto new_type = rewrite_body(def->type());
+    auto new_dbg = def->dbg();
+
+    return def->rebuild(world, def->type(), new_ops, new_dbg);
 }
 
 } // namespace thorin::direct
