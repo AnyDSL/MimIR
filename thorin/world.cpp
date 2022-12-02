@@ -109,9 +109,10 @@ const Def* World::call(const Axiom* axiom, Refer arg, Refer dbg) {
         case 1: return app(axiom, arg, dbg);
         case 2: {
             auto infer = nom_infer_entity();
-            auto a     = app(app(axiom, infer, dbg), arg, dbg);
+            auto a     = app(axiom, infer, dbg);
+            checker().assignable(a->type()->as<Pi>()->dom(), arg, dbg);
             if (auto r = refer(infer); r && !r->isa<Infer>()) return app(app(axiom, r, dbg), arg, dbg);
-            return a;
+            return app(a, arg, dbg);
         }
         default: assert(false && "TODO");
     }
