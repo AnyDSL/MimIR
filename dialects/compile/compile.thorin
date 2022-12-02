@@ -1,0 +1,119 @@
+/// # The compile dialect {#compile}
+///
+/// [TOC]
+///
+/// This dialect handles the optimization part of the compilation of Thorin programs.
+/// Dialects can register passes and phases using the axioms from this dialect.
+/// The program then can invoke the optimization pipeline by defining a function `_compile: [] -> Pipeline`.
+///
+/// ## Types
+///
+/// ### %compile.Pass
+/// ### %compile.Phase
+/// 
+/// Types for compilation passes and phases.
+///
+.ax %compile.Pass: *; 
+.ax %compile.Phase: *; 
+///
+/// ### %compile.Pipeline
+/// ### %compile.PassList
+/// 
+/// Types for functions that accept an arbitrary number of phases and passes respectively.
+/// 
+.Pi Pipeline: *, %compile.Phase = Pipeline;
+.Pi PassList: *, %compile.Pass = PassList;
+.Pi CombinedPhase: *, %compile.Phase = CombinedPhase;
+///
+/// ## Expressions
+///
+/// ### %compile.pipe
+/// 
+/// Given n phases, returns the representation of a pipeline.
+///
+.ax %compile.pipe: Pipeline;
+///
+/// ## Compilation Passes and Phases
+///
+/// ### %compile.debug_phase
+/// 
+/// Given a log level, returns a phase that prints the externals (for log level >= 2).
+///
+.ax %compile.debug_phase: .Nat -> %compile.Phase;
+///
+/// ### %compile.pass_phase
+/// 
+/// Given n passes, returns a phase that applies them in order.
+///
+/// TODO: combine two pass_list
+.ax %compile.pass_list: PassList;
+/// `pass_phase (pass_list pass1 ... passN) = passes_to_phase N (pass1, ..., passN)`
+.ax %compile.pass_phase: PassList -> %compile.Phase, normalize_pass_phase;
+.ax %compile.passes_to_phase: Π [n:.Nat] -> «n; %compile.Pass» -> %compile.Phase;
+/// `combine_pass_list K (pass_list pass11 ... pass1N) ... (pass_list passK1 ... passKM) = pass_list pass11 ... p1N ... passK1 ... passKM`
+.ax %compile.combine_pass_list: Π [n:.Nat] -> «n; PassList» -> PassList, normalize_combine_pass_list;
+/// `single_pass_phase pass = passes_to_phase 1 pass`
+.ax %compile.single_pass_phase: %compile.Pass -> %compile.Phase, normalize_single_pass_phase;
+///
+/// ### %compile.combined_phase
+/// 
+/// Given n phases, returns a phase that applies them in order.
+///
+.ax %compile.phase_list: CombinedPhase;
+/// `combined_phase (phase_list phase1 ... phaseN) = phases_to_phase N (phase1, ..., phaseN)`
+.ax %compile.combined_phase: CombinedPhase -> %compile.Phase, normalize_combined_phase;
+.ax %compile.phases_to_phase: Π [n:.Nat] -> «n; %compile.Phase» -> %compile.Phase;
+///
+/// ### Passes
+/// 
+/// Basic passes that are defined in the core of Thorin.
+///
+.ax %compile.partial_eval_pass: %compile.Pass;
+.ax %compile.beta_red_pass: %compile.Pass;
+.ax %compile.eta_red_pass: %compile.Pass;
+/// Eta expansion expects an instance of eta reduction as argument.
+.ax %compile.eta_exp_pass: %compile.Pass -> %compile.Pass;
+/// Scalerize expects an instance of eta expansion as argument.
+.ax %compile.scalerize_pass: %compile.Pass -> %compile.Pass;
+/// Tail recursion elimination expects an instance of eta reduction as argument.
+.ax %compile.tail_rec_elim_pass: %compile.Pass -> %compile.Pass;
+.ax %compile.lam_spec_pass: %compile.Pass;
+.ax %compile.ret_wrap_pass: %compile.Pass;
+/// has to be registered in the pipeline
+.ax %compile.nullptr_pass: %compile.Pass;
+///
+/// ### Phases
+/// 
+// TODO: allow functions by inlining them first
+.let optimization_pass_list = {
+    .let eta_red = %compile.eta_red_pass;
+    .let eta_exp = %compile.eta_exp_pass eta_red;
+    %compile.pass_list
+        %compile.partial_eval_pass
+        %compile.beta_red_pass
+        eta_red
+        eta_exp
+        (%compile.scalerize_pass eta_exp)
+        (%compile.tail_rec_elim_pass eta_red)
+};
+.let optimization_phase = {
+    %compile.pass_phase optimization_pass_list
+};
+/// 
+/// ### Pipelines
+/// 
+.let default_pipeline = {
+    .let nullptr = %compile.nullptr_pass;
+    %compile.pipe
+        (%compile.single_pass_phase nullptr)
+        (%compile.single_pass_phase (%compile.scalerize_pass nullptr))
+        (%compile.single_pass_phase %compile.eta_red_pass)
+        (%compile.single_pass_phase (%compile.tail_rec_elim_pass nullptr))
+        optimization_phase
+        (%compile.single_pass_phase %compile.lam_spec_pass)
+        (%compile.single_pass_phase %compile.ret_wrap_pass)
+};
+
+// .lam .extern _default_compile [] -> Pipeline = {
+//     default_pipeline
+// };

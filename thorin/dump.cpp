@@ -163,7 +163,7 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         return print(os, "‹{}; {}›", pack->shape(), pack->body());
     } else if (auto proxy = u->isa<Proxy>()) {
         return print(os, ".proxy#{}#{} {, }", proxy->pass(), proxy->tag(), proxy->ops());
-    } else if (auto bound = isa_bound(*u)) {
+    } else if (auto bound = u->isa<Bound>()) {
         auto op = bound->isa<Join>() ? "∪" : "∩";
         if (auto nom = u->isa_nom()) print(os, "{}{}: {}", op, nom->unique_name(), nom->type());
         return print(os, "{}({, })", op, bound->ops());
@@ -257,7 +257,7 @@ void Dumper::dump(Lam* lam) {
     auto ptrn = [&](auto&) { dump_ptrn(lam->var(), lam->type()->dom()); };
 
     if (lam->type()->is_cn()) {
-        tab.println(os, ".cn {}{} {} = {{", external(lam), id(lam), ptrn);
+        tab.println(os, ".con {}{} {} = {{", external(lam), id(lam), ptrn);
     } else {
         tab.println(os, ".lam {}{} {} → {} = {{", external(lam), id(lam), ptrn, lam->type()->codom());
     }

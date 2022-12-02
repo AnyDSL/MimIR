@@ -1,0 +1,17 @@
+// RUN: %thorin %s -o -
+
+.ax %phase.Phase: *;
+
+.ax %phase.phase1: .Bool         -> %phase.Phase;
+.ax %phase.phase2: []            -> %phase.Phase;
+.ax %phase.phase3: [.Nat, .Bool] -> %phase.Phase;
+
+.Pi PiPeline: *, %phase.Phase = PiPeline; // got the pun? XD 
+// anyway, we probably want to have a nicer way to specify recursive function types ...
+
+.ax %phase.pipe: PiPeline;
+
+.let pipeline = %phase.pipe 
+    (%phase.phase1 .tt)
+    (%phase.phase2 ())
+    (%phase.phase3 (23, .tt));

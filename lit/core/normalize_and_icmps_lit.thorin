@@ -3,9 +3,9 @@
 
 .import core;
 
-.cn .extern and_lit [return : .Cn .Idx 2] = {
+.con .extern and_lit [return : .Cn .Idx 2] = {
     return
-    (%core.bit2._and 2
+    (%core.bit2.and_ 2
         (%core.icmp.uge 2
             (.tt, .ff),
          %core.icmp.ug 2

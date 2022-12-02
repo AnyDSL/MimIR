@@ -19,7 +19,9 @@
 #include "thorin/pass/pipelinebuilder.h"
 #include "thorin/util/sys.h"
 
+#include "dialects/compile/compile.h"
 #include "dialects/core/core.h"
+#include "dialects/math/math.h"
 #include "dialects/mem/mem.h"
 
 using namespace thorin;
@@ -29,8 +31,12 @@ using namespace thorin;
 TEST(RestrictedDependentTypes, join_singleton) {
     auto test_on_world = [](auto test) {
         World w;
-
         Normalizers normalizers;
+
+        auto compile_d = Dialect::load("compile", {});
+        compile_d.register_normalizers(normalizers);
+        fe::Parser::import_module(w, "compile", {}, &normalizers);
+
         auto mem_d = Dialect::load("mem", {});
         mem_d.register_normalizers(normalizers);
         fe::Parser::import_module(w, "mem", {}, &normalizers);
@@ -38,6 +44,10 @@ TEST(RestrictedDependentTypes, join_singleton) {
         auto core_d = Dialect::load("core", {});
         core_d.register_normalizers(normalizers);
         fe::Parser::import_module(w, "core", {}, &normalizers);
+
+        auto math_d = Dialect::load("math", {});
+        math_d.register_normalizers(normalizers);
+        fe::Parser::import_module(w, "math", {}, &normalizers);
 
         auto i32_t = w.type_int(32);
         auto i64_t = w.type_int(64);
@@ -88,10 +98,10 @@ TEST(RestrictedDependentTypes, join_singleton) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
                 {
                     EXPECT_THROW( // float
-                        w.app(exp_lam, {core::type_real(w, 32), R,
-                                        core::op_bitcast(w.app(Exp, {w.vel(DT, core::type_real(w, 32)), w.vel(RW, R)}),
+                        w.app(exp_lam, {math::type_f32(w), R,
+                                        core::op_bitcast(w.app(Exp, {w.vel(DT, math::type_f32(w)), w.vel(RW, R)}),
                                                          w.lit(i32_t, 1000)),
-                                        w.nom_lam(w.cn(core::type_real(w, 32)), nullptr)}),
+                                        w.nom_lam(w.cn(math::type_f32(w)), nullptr)}),
                         std::logic_error);
                 },
                 "std::logic_error");
@@ -100,10 +110,10 @@ TEST(RestrictedDependentTypes, join_singleton) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
                 {
                     EXPECT_THROW( // float
-                        w.app(exp_lam, {core::type_real(w, 32), W,
-                                        core::op_bitcast(w.app(Exp, {w.vel(DT, core::type_real(w, 32)), w.vel(RW, W)}),
+                        w.app(exp_lam, {math::type_f32(w), W,
+                                        core::op_bitcast(w.app(Exp, {w.vel(DT, math::type_f32(w)), w.vel(RW, W)}),
                                                          w.lit(i32_t, 1000)),
-                                        w.nom_lam(w.cn(core::type_real(w, 32)), nullptr)}),
+                                        w.nom_lam(w.cn(math::type_f32(w)), nullptr)}),
                         std::logic_error);
                 },
                 "std::logic_error");
@@ -173,10 +183,10 @@ TEST(RestrictedDependentTypes, join_singleton) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
                 {
                     EXPECT_THROW( // float type error
-                        w.app(exp_lam, {core::type_real(w, 32),
-                                        core::op_bitcast(w.app(Exp, {w.vel(DT, core::type_real(w, 32)), w.vel(RW, R)}),
+                        w.app(exp_lam, {math::type_f32(w),
+                                        core::op_bitcast(w.app(Exp, {w.vel(DT, math::type_f32(w)), w.vel(RW, R)}),
                                                          w.lit(i32_t, 1000)),
-                                        w.nom_lam(w.cn(core::type_real(w, 32)), nullptr)}),
+                                        w.nom_lam(w.cn(math::type_f32(w)), nullptr)}),
                         std::logic_error);
                 },
                 "std::logic_error");
@@ -196,10 +206,10 @@ TEST(RestrictedDependentTypes, join_singleton) {
             });
         cases.emplace_back([](World& w, auto, auto W, auto Exp, auto exp_lam, auto DT, auto RW, auto, auto) {
             EXPECT_ANY_THROW( // float + W type error (note, the float is not yet what triggers the issue..)
-                w.app(exp_lam, {core::type_real(w, 32),
-                                core::op_bitcast(w.app(Exp, {w.vel(DT, core::type_real(w, 32)), w.vel(RW, W)}),
-                                                 w.lit(core::type_real(w, 32), 1000)),
-                                w.nom_lam(w.cn(core::type_real(w, 32)), nullptr)}));
+                w.app(exp_lam, {math::type_f32(w),
+                                core::op_bitcast(w.app(Exp, {w.vel(DT, math::type_f32(w)), w.vel(RW, W)}),
+                                                 w.lit(math::type_f32(w), 1000)),
+                                w.nom_lam(w.cn(math::type_f32(w)), nullptr)}));
         });
 
         for (auto&& test : cases) {
@@ -225,8 +235,13 @@ TEST(RestrictedDependentTypes, join_singleton) {
 
 TEST(RestrictedDependentTypes, ll) {
     World w;
-
     Normalizers normalizers;
+    Passes passes;
+
+    auto compile_d = Dialect::load("compile", {});
+    compile_d.register_normalizers(normalizers);
+    fe::Parser::import_module(w, "compile", {}, &normalizers);
+
     auto mem_d = Dialect::load("mem", {});
     mem_d.register_normalizers(normalizers);
     fe::Parser::import_module(w, "mem", {}, &normalizers);
@@ -234,6 +249,10 @@ TEST(RestrictedDependentTypes, ll) {
     auto core_d = Dialect::load("core", {});
     core_d.register_normalizers(normalizers);
     fe::Parser::import_module(w, "core", {}, &normalizers);
+
+    auto math_d = Dialect::load("math", {});
+    math_d.register_normalizers(normalizers);
+    fe::Parser::import_module(w, "math", {}, &normalizers);
 
     auto mem_t  = mem::type_mem(w);
     auto i32_t  = w.type_int(32);
@@ -249,7 +268,7 @@ TEST(RestrictedDependentTypes, ll) {
 
     auto RW = w.join({w.singleton(R), w.singleton(W)}, w.dbg("RW"));
 
-    auto DT     = w.join({w.singleton(i32_t), w.singleton(core::type_real(w, 32))}, w.dbg("DT"));
+    auto DT     = w.join({w.singleton(i32_t), w.singleton(math::type_f32(w))}, w.dbg("DT"));
     auto exp_pi = w.nom_pi(w.type())->set_dom({DT, RW});
     exp_pi->set_codom(w.type());
 
@@ -274,8 +293,8 @@ TEST(RestrictedDependentTypes, ll) {
     }
 
     PipelineBuilder builder;
-    mem_d.register_passes(builder);
-    optimize(w, builder);
+    mem_d.add_passes(builder);
+    optimize(w, passes, builder);
 
     Backends backends;
     core_d.register_backends(backends);

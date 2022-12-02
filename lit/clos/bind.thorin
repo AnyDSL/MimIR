@@ -10,26 +10,26 @@
 .let i8 = .Idx 256;
 .let pb_type = .Cn [%mem.M, .Cn [%mem.M]];
 
-.cn println_i32 [mem: %mem.M, val: i32, return : .Cn [%mem.M]];
+.con println_i32 [mem: %mem.M, val: i32, return : .Cn [%mem.M]];
 
 .let size = 100:.Nat;
 
-.cn recursive [mem: %mem.M, i : i32, last_pullback: pb_type, return: .Cn [%mem.M]] = {
-    .cn exit [mem: %mem.M] = {
+.con recursive [mem: %mem.M, i : i32, last_pullback: pb_type, return: .Cn [%mem.M]] = {
+    .con exit [mem: %mem.M] = {
         last_pullback ( mem, return )
     };
 
-    .cn loop_body [mem: %mem.M] = {
-        .cn pb [mem: %mem.M, return: .Cn [%mem.M]] = {
-            .cn next [mem: %mem.M] = {
+    .con loop_body [mem: %mem.M] = {
+        .con pb [mem: %mem.M, return: .Cn [%mem.M]] = {
+            .con next [mem: %mem.M] = {
                 last_pullback (mem, return)
             };
 
             println_i32( mem, i , next )
         };
 
-        .cn next [mem: %mem.M] = {
-            recursive( mem, %core.wrap.add (0, 4294967296) (i, 1:i32), pb, return )
+        .con next [mem: %mem.M] = {
+            recursive( mem, %core.wrap.add 4294967296 0 (i, 1:i32), pb, return )
         };
 
         println_i32( mem, i , next )
@@ -40,16 +40,16 @@
     target ( mem )
 };
 
-.cn outer [mem: %mem.M, x : i32, return : .Cn [%mem.M]] = {
-    .cn end [mem: %mem.M, return : .Cn [%mem.M]] = {
+.con outer [mem: %mem.M, x : i32, return : .Cn [%mem.M]] = {
+    .con end [mem: %mem.M, return : .Cn [%mem.M]] = {
         return (mem)
     };
 
     recursive ( mem, 0:i32, end, return )
 };
 
-.cn .extern main [mem: %mem.M, argc: i32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, i32]] = {
-    .cn callback (mem: %mem.M) = {
+.con .extern main [mem: %mem.M, argc: i32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, i32]] = {
+    .con callback (mem: %mem.M) = {
         return (mem, 0:i32)
     };
 

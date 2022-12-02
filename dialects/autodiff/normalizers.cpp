@@ -13,14 +13,14 @@ namespace thorin::autodiff {
 /// TODO: Maybe we want to handle trivial lookup replacements here.
 const Def* normalize_ad(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-    return world.raw_app(callee, arg, dbg);
+    return world.raw_app(type, callee, arg, dbg);
 }
 
 const Def* normalize_AD(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     auto ad_ty  = autodiff_type_fun(arg);
     if (ad_ty) return ad_ty;
-    return world.raw_app(callee, arg, dbg);
+    return world.raw_app(type, callee, arg, dbg);
 }
 
 const Def* normalize_Tangent(const Def*, const Def*, const Def* arg, const Def*) { return tangent_type_fun(arg); }
@@ -30,7 +30,7 @@ const Def* normalize_Tangent(const Def*, const Def*, const Def* arg, const Def*)
 /// A high-level addition with zero can be shortened directly.
 const Def* normalize_zero(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-    return world.raw_app(callee, arg, dbg);
+    return world.raw_app(type, callee, arg, dbg);
 }
 
 /// Currently resolved the full addition.
@@ -77,8 +77,7 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
         world.DLOG("add int");
         auto width = as_lit(world.iinfer(a));
         world.DLOG("width {}", width);
-        auto int_add =
-            world.app(world.app(world.ax(core::wrap::add), {world.lit_nat_0(), world.lit_nat(width)}), {a, b});
+        auto int_add = core::op(core::wrap::add, 0_n, a, b);
         world.DLOG("int add {} : {}", int_add, world.iinfer(int_add));
         return int_add;
     } else if (T->isa<App>()) {
@@ -86,7 +85,7 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
     }
     // TODO: mem stays here (only resolved after direct simplification)
 
-    return world.raw_app(callee, arg, dbg);
+    return world.raw_app(type, callee, arg, dbg);
 }
 
 const Def* normalize_sum(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
@@ -106,7 +105,7 @@ const Def* normalize_sum(const Def* type, const Def* callee, const Def* arg, con
     }
     assert(0);
 
-    return world.raw_app(callee, arg, dbg);
+    return world.raw_app(type, callee, arg, dbg);
 }
 
 THORIN_autodiff_NORMALIZER_IMPL

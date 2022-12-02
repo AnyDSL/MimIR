@@ -29,7 +29,7 @@ void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue&
     if (is_toplevel(fd)) return;
     if (auto [var, lam] = ca_isa_var<Lam>(fd); var && lam) {
         if (var != lam->ret_var()) { node->add_fvs(fd); }
-    } else if (auto q = match(clos::freeBB, fd)) {
+    } else if (auto q = match(attr::freeBB, fd)) {
         node->add_fvs(q);
     } else if (auto pred = fd->isa_nom()) {
         if (pred != node->nom) {
@@ -177,10 +177,10 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         auto closure                  = clos_pack(env, new_lam, clos_ty);
         world().DLOG("RW: pack {} ~> {} : {}", lam, closure, clos_ty);
         return map(closure);
-    } else if (auto q = match<clos>(def)) {
-        switch (q.id()) {
-            case clos::ret:
-                if (auto ret_lam = q->arg()->isa_nom<Lam>()) {
+    } else if (auto a = match<attr>(def)) {
+        switch (a.id()) {
+            case attr::ret:
+                if (auto ret_lam = a->arg()->isa_nom<Lam>()) {
                     // assert(ret_lam && ret_lam->is_basicblock());
                     //  Note: This should be cont_lam's only occurance after η-expansion, so its okay to
                     //  put into the local subst only
@@ -195,10 +195,10 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
                     return new_lam;
                 }
                 break;
-            case clos::fstclassBB:
-            case clos::freeBB: {
+            case attr::fstclassBB:
+            case attr::freeBB: {
                 // Note: Same thing about η-conversion applies here
-                auto bb_lam = q->arg()->isa_nom<Lam>();
+                auto bb_lam = a->arg()->isa_nom<Lam>();
                 assert(bb_lam && bb_lam->is_basicblock());
                 auto [_, __, ___, new_lam] = make_stub({}, bb_lam, subst);
                 subst[bb_lam]              = clos_pack(w.tuple(), new_lam, rewrite(bb_lam->type(), subst));

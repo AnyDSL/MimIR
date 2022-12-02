@@ -18,7 +18,7 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                 builder.extend_codegen_prep_phase([](PassMan& man) { man.add<thorin::refly::RemoveDbgPerm>(); });
                 builder.extend_codegen_prep_phase([](PassMan& man) { man.add<thorin::refly::InternalCleanup>(); });
             },
-            nullptr, [](Normalizers& normalizers) { refly::register_normalizers(normalizers); }};
+            nullptr, nullptr, [](Normalizers& normalizers) { refly::register_normalizers(normalizers); }};
 }
 
 // TODO: check (and fix) for windows

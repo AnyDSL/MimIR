@@ -1,72 +1,21 @@
-#include <type_traits>
-
 #include "dialects/core/core.h"
+#include "dialects/math/math.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::core {
 
-template<class T>
-static T get(u64 u) {
-    return thorin::bitcast<T>(u);
-}
-
-// clang-format off
-template<class Id> constexpr bool is_int      () { return true;  }
-template<>         constexpr bool is_int<rop >() { return false; }
-template<>         constexpr bool is_int<rcmp>() { return false; }
-// clang-format on
-
-/// Use like this:
-/// `a op b = tab[a][b]`
-constexpr std::array<std::array<u64, 2>, 2> make_truth_table(bit2 id) {
-    return {
-        {{sub_t(id) & sub_t(0b0001) ? u64(-1) : 0, sub_t(id) & sub_t(0b0100) ? u64(-1) : 0},
-         {sub_t(id) & sub_t(0b0010) ? u64(-1) : 0, sub_t(id) & sub_t(0b1000) ? u64(-1) : 0}}
-    };
-}
-
-/*
- * is_commutative & is_associative
- */
-
-// clang-format off
-template<class Id> constexpr bool is_commutative(Id) { return false; }
-constexpr bool is_commutative(nop    ) { return true; }
-constexpr bool is_commutative(wrap id) { return id == wrap::add || id == wrap::mul; }
-constexpr bool is_commutative(rop  id) { return id == rop ::add || id == rop ::mul; }
-constexpr bool is_commutative(ncmp id) { return id == ncmp::  e || id == ncmp:: ne; }
-constexpr bool is_commutative(icmp id) { return id == icmp::  e || id == icmp:: ne; }
-constexpr bool is_commutative(rcmp id) { return id == rcmp::  e || id == rcmp:: ne; }
-// clang-format off
-
-constexpr bool is_commutative(bit2  id) {
-    auto tab = make_truth_table(id);
-    return tab[0][1] == tab[1][0];
-}
-
+// TODO move to normalize.h
+/// Swap Lit to left - or smaller gid, if no lit present.
 template<class Id>
-constexpr bool is_associative(Id id) { return is_commutative(id); }
-
-constexpr bool is_associative(bit2 id) {
-    switch (id) {
-        case bit2::t:
-        case bit2::_xor:
-        case bit2::_and:
-        case bit2::nxor:
-        case bit2::a:
-        case bit2::b:
-        case bit2::_or:
-        case bit2::f: return true;
-        default: return false;
+static void commute(Id id, const Def*& a, const Def*& b) {
+    if (is_commutative(id)) {
+        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>())) std::swap(a, b);
     }
 }
 
 /*
  * Fold
  */
-
-// This code assumes two-complement arithmetic for unsigned operations.
-// This is *implementation-defined* but *NOT* *undefined behavior*.
 
 class Res {
 public:
@@ -84,52 +33,95 @@ private:
     std::optional<u64> data_;
 };
 
-template<class T, T, nat_t>
-struct Fold {};
+// clang-format off
+// See https://stackoverflow.com/a/64354296 for static_assert trick below.
+template<class Id, Id id, nat_t w>
+Res fold(u64 a, u64 b, [[maybe_unused]] bool nsw, [[maybe_unused]] bool nuw) {
+    using ST = w2s<w>;
+    using UT = w2u<w>;
+    auto s = thorin::bitcast<ST>(a), t = thorin::bitcast<ST>(b);
+    auto u = thorin::bitcast<UT>(a), v = thorin::bitcast<UT>(b);
 
-template<class Id>
-static void commute(Id id, const Def*& a, const Def*& b) {
-    if (is_commutative(id)) {
-        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>()))
-            std::swap(a, b); // swap lit to left, or smaller gid to left if no lit present
+    if constexpr (std::is_same_v<Id, wrap>) {
+        if constexpr (id == wrap::add) {
+            auto res = u + v;
+            if (nuw && res < u) return {};
+            // TODO nsw
+            return res;
+        } else if constexpr (id == wrap::sub) {
+            auto res = u - v;
+            //  TODO nsw
+            return res;
+        } else if constexpr (id == wrap::mul) {
+            if constexpr (std::is_same_v<UT, bool>)
+                return UT(u & v);
+            else
+                return UT(u * v);
+        } else if constexpr (id == wrap::shl) {
+            if (b >= w) return {};
+            decltype(u) res;
+            if constexpr (std::is_same_v<UT, bool>)
+                res = bool(u64(u) << u64(v));
+            else
+                res = u << v;
+            if (nuw && res < u) return {};
+            if (nsw && get_sign(u) != get_sign(res)) return {};
+            return res;
+        } else {
+            []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
+        }
+    } else if constexpr (std::is_same_v<Id, shr>) {
+        if (b >= w) return {};
+        if constexpr (false) {}
+        else if constexpr (id == shr::a) return s >> t;
+        else if constexpr (id == shr::l) return u >> v;
+        else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
+    } else if constexpr (std::is_same_v<Id, div>) {
+        if (b == 0) return {};
+        if constexpr (false) {}
+        else if constexpr (id == div::sdiv) return s / t;
+        else if constexpr (id == div::udiv) return u / v;
+        else if constexpr (id == div::srem) return s % t;
+        else if constexpr (id == div::urem) return u % v;
+        else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
+    } else if constexpr (std::is_same_v<Id, icmp>) {
+        bool res = false;
+        auto pm  = !(u >> UT(w - 1)) &&  (v >> UT(w - 1));
+        auto mp  =  (u >> UT(w - 1)) && !(v >> UT(w - 1));
+        res |= ((id & icmp::Xygle) != icmp::f) && pm;
+        res |= ((id & icmp::xYgle) != icmp::f) && mp;
+        res |= ((id & icmp::xyGle) != icmp::f) && u > v && !mp;
+        res |= ((id & icmp::xygLe) != icmp::f) && u < v && !pm;
+        res |= ((id & icmp::xyglE) != icmp::f) && u == v;
+        return res;
+    } else {
+        []<bool flag = false>() { static_assert(flag, "missing tag"); }();
     }
 }
+// clang-format on
 
 /// @attention Note that @p a and @p b are passed by reference as fold also commutes if possible. @sa commute().
-template<class Id, Id id, bool isa_wrap = std::is_same_v<Id, wrap>>
-static const Def* fold(World& world, const Def* type, const App* callee, const Def*& a, const Def*& b, const Def* dbg) {
-    static constexpr int min_w = std::is_same_v<Id, rop> || std::is_same_v<Id, rcmp> ? 16 : 1;
+template<class Id, Id id>
+static const Def*
+fold(World& world, const Def* type, const Def*& a, const Def*& b, const Def* dbg, const Def* mode = {}) {
     auto la = a->isa<Lit>(), lb = b->isa<Lit>();
 
     if (a->isa<Bot>() || b->isa<Bot>()) return world.bot(type, dbg);
 
     if (la && lb) {
-        nat_t width;
-        [[maybe_unused]] bool nsw = false, nuw = false;
+        auto size  = as_lit(Idx::size(a->type()));
+        auto width = Idx::size2bitwidth(size);
+        bool nsw = false, nuw = false;
         if constexpr (std::is_same_v<Id, wrap>) {
-            auto [mode, w] = callee->args<2>(as_lit<nat_t>);
-            nsw            = mode & WMode::nsw;
-            nuw            = mode & WMode::nuw;
-            width          = w;
-        } else if (auto size = Idx::size(a->type())) {
-            width = as_lit(size);
-        } else {
-            width = as_lit(force<Real>(a->type())->arg());
+            auto m = as_lit(mode);
+            nsw    = m & Mode::nsw;
+            nuw    = m & Mode::nuw;
         }
-
-        if (is_int<Id>()) width = *size2bitwidth(width);
 
         Res res;
         switch (width) {
-#define CODE(i)                                                             \
-    case i:                                                                 \
-        if constexpr (i >= min_w) {                                         \
-            if constexpr (isa_wrap)                                         \
-                res = Fold<Id, id, i>::run(la->get(), lb->get(), nsw, nuw); \
-            else                                                            \
-                res = Fold<Id, id, i>::run(la->get(), lb->get());           \
-        }                                                                   \
-        break;
+#define CODE(i) \
+    case i: res = fold<Id, id, i>(la->get(), lb->get(), nsw, nuw); break;
             THORIN_1_8_16_32_64(CODE)
 #undef CODE
             default: unreachable();
@@ -139,143 +131,6 @@ static const Def* fold(World& world, const Def* type, const App* callee, const D
     }
 
     commute(id, a, b);
-    return nullptr;
-}
-
-template<nat_t w>
-struct Fold<wrap, wrap::add, w> {
-    static Res run(u64 a, u64 b, bool /*nsw*/, bool nuw) {
-        auto x = get<w2u<w>>(a), y = get<w2u<w>>(b);
-        decltype(x) res = x + y;
-        if (nuw && res < x) return {};
-        // TODO nsw
-        return res;
-    }
-};
-
-template<nat_t w>
-struct Fold<wrap, wrap::sub, w> {
-    static Res run(u64 a, u64 b, bool /*nsw*/, bool /*nuw*/) {
-        using UT = w2u<w>;
-        auto x = get<UT>(a), y = get<UT>(b);
-        decltype(x) res = x - y;
-        // if (nuw && y && x > std::numeric_limits<UT>::max() / y) return {};
-        //  TODO nsw
-        return res;
-    }
-};
-
-template<nat_t w>
-struct Fold<wrap, wrap::mul, w> {
-    static Res run(u64 a, u64 b, bool /*nsw*/, bool /*nuw*/) {
-        using UT = w2u<w>;
-        auto x = get<UT>(a), y = get<UT>(b);
-        if constexpr (std::is_same_v<UT, bool>)
-            return UT(x & y);
-        else
-            return UT(x * y);
-        // TODO nsw/nuw
-    }
-};
-
-template<nat_t w>
-struct Fold<wrap, wrap::shl, w> {
-    static Res run(u64 a, u64 b, bool nsw, bool nuw) {
-        using T = w2u<w>;
-        auto x = get<T>(a), y = get<T>(b);
-        if (u64(y) >= w) return {};
-        decltype(x) res;
-        if constexpr (std::is_same_v<T, bool>)
-            res = bool(u64(x) << u64(y));
-        else
-            res = x << y;
-        if (nuw && res < x) return {};
-        if (nsw && get_sign(x) != get_sign(res)) return {};
-        return res;
-    }
-};
-
-// clang-format off
-template<nat_t w> struct Fold<div, div::sdiv, w> { static Res run(u64 a, u64 b) { using T = w2s<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) / r); } };
-template<nat_t w> struct Fold<div, div::udiv, w> { static Res run(u64 a, u64 b) { using T = w2u<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) / r); } };
-template<nat_t w> struct Fold<div, div::srem, w> { static Res run(u64 a, u64 b) { using T = w2s<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) % r); } };
-template<nat_t w> struct Fold<div, div::urem, w> { static Res run(u64 a, u64 b) { using T = w2u<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) % r); } };
-
-template<nat_t w> struct Fold<shr, shr::a   , w> { static Res run(u64 a, u64 b) { using T = w2s<w>; if (b > w) return {}; return T(get<T>(a) >> get<T>(b)); } };
-template<nat_t w> struct Fold<shr, shr::l   , w> { static Res run(u64 a, u64 b) { using T = w2u<w>; if (b > w) return {}; return T(get<T>(a) >> get<T>(b)); } };
-
-template<nat_t w> struct Fold<rop, rop:: add, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(get<T>(a) + get<T>(b)); } };
-template<nat_t w> struct Fold<rop, rop:: sub, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(get<T>(a) - get<T>(b)); } };
-template<nat_t w> struct Fold<rop, rop:: mul, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(get<T>(a) * get<T>(b)); } };
-template<nat_t w> struct Fold<rop, rop:: div, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(get<T>(a) / get<T>(b)); } };
-template<nat_t w> struct Fold<rop, rop:: rem, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(rem(get<T>(a), get<T>(b))); } };
-// clang-format on
-
-template<icmp cmp, nat_t w>
-struct Fold<icmp, cmp, w> {
-    inline static Res run(u64 a, u64 b) {
-        using T = w2u<w>;
-        auto x = get<T>(a), y = get<T>(b);
-        bool result = false;
-        auto pm     = !(x >> T(w - 1)) && (y >> T(w - 1));
-        auto mp     = (x >> T(w - 1)) && !(y >> T(w - 1));
-        result |= ((cmp & icmp::Xygle) != icmp::f) && pm;
-        result |= ((cmp & icmp::xYgle) != icmp::f) && mp;
-        result |= ((cmp & icmp::xyGle) != icmp::f) && x > y && !mp;
-        result |= ((cmp & icmp::xygLe) != icmp::f) && x < y && !pm;
-        result |= ((cmp & icmp::xyglE) != icmp::f) && x == y;
-        return result;
-    }
-};
-
-template<rcmp cmp, nat_t w>
-struct Fold<rcmp, cmp, w> {
-    inline static Res run(u64 a, u64 b) {
-        using T = w2r<w>;
-        auto x = get<T>(a), y = get<T>(b);
-        bool result = false;
-        result |= ((cmp & rcmp::u) != rcmp::f) && std::isunordered(x, y);
-        result |= ((cmp & rcmp::g) != rcmp::f) && x > y;
-        result |= ((cmp & rcmp::l) != rcmp::f) && x < y;
-        result |= ((cmp & rcmp::e) != rcmp::f) && x == y;
-        return result;
-    }
-};
-
-// clang-format off
-template<conv id, nat_t, nat_t> struct FoldConv {};
-template<nat_t dw, nat_t sw> struct FoldConv<conv::s2s, dw, sw> { static Res run(u64 src) { return w2s<dw>(get<w2s<sw>>(src)); } };
-template<nat_t dw, nat_t sw> struct FoldConv<conv::u2u, dw, sw> { static Res run(u64 src) { return w2u<dw>(get<w2u<sw>>(src)); } };
-template<nat_t dw, nat_t sw> struct FoldConv<conv::s2r, dw, sw> { static Res run(u64 src) { return w2r<dw>(get<w2s<sw>>(src)); } };
-template<nat_t dw, nat_t sw> struct FoldConv<conv::u2r, dw, sw> { static Res run(u64 src) { return w2r<dw>(get<w2u<sw>>(src)); } };
-template<nat_t dw, nat_t sw> struct FoldConv<conv::r2s, dw, sw> { static Res run(u64 src) { return w2s<dw>(get<w2r<sw>>(src)); } };
-template<nat_t dw, nat_t sw> struct FoldConv<conv::r2u, dw, sw> { static Res run(u64 src) { return w2u<dw>(get<w2r<sw>>(src)); } };
-template<nat_t dw, nat_t sw> struct FoldConv<conv::r2r, dw, sw> { static Res run(u64 src) { return w2r<dw>(get<w2r<sw>>(src)); } };
-// clang-format on
-
-template<class Id>
-static const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, const Def* a, const Def* b, const Def* dbg) {
-    static_assert(sizeof(sub_t) == 1, "if this ever changes, please adjust the logic below");
-    static constexpr size_t num_bits = std::bit_width(Axiom::Num<Id> - 1_u64);
-
-    auto a_cmp = match<Id>(a);
-    auto b_cmp = match<Id>(b);
-
-    if (a_cmp && b_cmp && a_cmp->args() == b_cmp->args()) {
-        // push sub bits of a_cmp and b_cmp through truth table
-        sub_t res   = 0;
-        sub_t a_sub = a_cmp.sub();
-        sub_t b_sub = b_cmp.sub();
-        for (size_t i = 0; i != num_bits; ++i, res >>= 1, a_sub >>= 1, b_sub >>= 1)
-            res |= tab[a_sub & 1][b_sub & 1] << 7_u8;
-        res >>= (7_u8 - u8(num_bits));
-
-        if constexpr (std::is_same_v<Id, rcmp>)
-            return op(rcmp(res), /*rmode*/ a_cmp->decurry()->arg(0), a_cmp->arg(0), a_cmp->arg(1), dbg);
-        else
-            return op(icmp(Axiom::Base<icmp> | res), a_cmp->arg(0), a_cmp->arg(1), dbg);
-    }
-
     return nullptr;
 }
 
@@ -305,24 +160,9 @@ reassociate(Id id, World& /*world*/, [[maybe_unused]] const App* ab, const Def* 
 
     std::function<const Def*(const Def*, const Def*)> make_op;
 
-    if constexpr (std::is_same_v<Id, rop>) {
-        // build rmode for all new ops by using the least upper bound of all involved apps
-        nat_t rmode     = RMode::bot;
-        auto check_mode = [&](const App* app) {
-            auto app_m = isa_lit(app->arg(0));
-            if (!app_m || !(*app_m & RMode::reassoc)) return false;
-            rmode &= *app_m; // least upper bound
-            return true;
-        };
-
-        if (!check_mode(ab)) return nullptr;
-        if (lx && !check_mode(xy->decurry())) return nullptr;
-        if (lz && !check_mode(zw->decurry())) return nullptr;
-
-        make_op = [&](const Def* a, const Def* b) { return op(id, rmode, a, b, dbg); };
-    } else if constexpr (std::is_same_v<Id, wrap>) {
+    if constexpr (std::is_same_v<Id, wrap>) {
         // if we reassociate Wraps, we have to forget about nsw/nuw
-        make_op = [&](const Def* a, const Def* b) { return op(id, WMode::none, a, b, dbg); };
+        make_op = [&](const Def* a, const Def* b) { return op(id, Mode::none, a, b, dbg); };
     } else {
         make_op = [&](const Def* a, const Def* b) { return op(id, a, b, dbg); };
     }
@@ -350,7 +190,7 @@ const Def* normalize_nop(const Def* type, const Def* callee, const Def* arg, con
         }
     }
 
-    return world.raw_app(callee, arg, dbg);
+    return world.raw_app(type, callee, arg, dbg);
 }
 
 template<ncmp id>
@@ -379,70 +219,7 @@ const Def* normalize_ncmp(const Def* type, const Def* callee, const Def* arg, co
         }
     }
 
-    return world.raw_app(callee, arg, dbg);
-}
-
-template<rop id>
-const Def* normalize_rop(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
-    auto& world = type->world();
-    auto callee = c->as<App>();
-    auto [a, b] = arg->projs<2>();
-    auto [m, w] = callee->args<2>(isa_lit<nat_t>); // mode and width
-
-    if (auto result = fold<rop, id>(world, type, callee, a, b, dbg)) return result;
-
-    // clang-format off
-    // TODO check rmode properly
-    if (m && *m == RMode::fast) {
-        if (auto la = a->isa<Lit>()) {
-            if (la == lit_real(world, *w, 0.0)) {
-                switch (id) {
-                    case rop::add: return b;    // 0 + b -> b
-                    case rop::sub: break;
-                    case rop::mul: return la;   // 0 * b -> 0
-                    case rop::div: return la;   // 0 / b -> 0
-                    case rop::rem: return la;   // 0 % b -> 0
-                }
-            }
-
-            if (la == lit_real(world, *w, 1.0)) {
-                switch (id) {
-                    case rop::add: break;
-                    case rop::sub: break;
-                    case rop::mul: return b;    // 1 * b -> b
-                    case rop::div: break;
-                    case rop::rem: break;
-                }
-            }
-        }
-
-        if (auto lb = b->isa<Lit>()) {
-            if (lb == lit_real(world, *w, 0.0)) {
-                switch (id) {
-                    case rop::sub: return a;    // a - 0 -> a
-                    case rop::div: break;
-                    case rop::rem: break;
-                    default: unreachable();
-                    // add, mul are commutative, the literal has been normalized to the left
-                }
-            }
-        }
-
-        if (a == b) {
-            switch (id) {
-                case rop::add: return core::op(rop::mul, lit_real(world, *w, 2.0), a, dbg); // a + a -> 2 * a
-                case rop::sub: return lit_real(world, *w, 0.0);                             // a - a -> 0
-                case rop::mul: break;
-                case rop::div: return lit_real(world, *w, 1.0);                             // a / a -> 1
-                case rop::rem: break;
-            }
-        }
-    }
-    // clang-format on
-
-    if (auto res = reassociate<rop>(id, world, callee, a, b, dbg)) return res;
-
-    return world.raw_app(callee, {a, b}, dbg);
+    return world.raw_app(type, callee, arg, dbg);
 }
 
 template<icmp id>
@@ -451,7 +228,7 @@ const Def* normalize_icmp(const Def* type, const Def* c, const Def* arg, const D
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
 
-    if (auto result = fold<icmp, id>(world, type, callee, a, b, dbg)) return result;
+    if (auto result = fold<icmp, id>(world, type, a, b, dbg)) return result;
     if (id == icmp::f) return world.lit_ff();
     if (id == icmp::t) return world.lit_tt();
     if (a == b) {
@@ -459,20 +236,7 @@ const Def* normalize_icmp(const Def* type, const Def* c, const Def* arg, const D
         if (id == icmp::ne) return world.lit_ff();
     }
 
-    return world.raw_app(callee, {a, b}, dbg);
-}
-
-template<rcmp id>
-const Def* normalize_rcmp(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
-    auto& world = type->world();
-    auto callee = c->as<App>();
-    auto [a, b] = arg->projs<2>();
-
-    if (auto result = fold<rcmp, id>(world, type, callee, a, b, dbg)) return result;
-    if (id == rcmp::f) return world.lit_ff();
-    if (id == rcmp::t) return world.lit_tt();
-
-    return world.raw_app(callee, {a, b}, dbg);
+    return world.raw_app(type, callee, {a, b}, dbg);
 }
 
 template<bit1 id>
@@ -491,7 +255,33 @@ const Def* normalize_bit1(const Def* type, const Def* c, const Def* a, const Def
 
     if (l) return world.lit_idx_mod(*s, ~*l);
 
-    return world.raw_app(callee, a, dbg);
+    return world.raw_app(type, callee, a, dbg);
+}
+
+template<class Id>
+static const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, const Def* a, const Def* b, const Def* dbg) {
+    static_assert(sizeof(sub_t) == 1, "if this ever changes, please adjust the logic below");
+    static constexpr size_t num_bits = std::bit_width(Axiom::Num<Id> - 1_u64);
+
+    auto a_cmp = match<Id>(a);
+    auto b_cmp = match<Id>(b);
+
+    if (a_cmp && b_cmp && a_cmp->arg() == b_cmp->arg()) {
+        // push sub bits of a_cmp and b_cmp through truth table
+        sub_t res   = 0;
+        sub_t a_sub = a_cmp.sub();
+        sub_t b_sub = b_cmp.sub();
+        for (size_t i = 0; i != num_bits; ++i, res >>= 1, a_sub >>= 1, b_sub >>= 1)
+            res |= tab[a_sub & 1][b_sub & 1] << 7_u8;
+        res >>= (7_u8 - u8(num_bits));
+
+        if constexpr (std::is_same_v<Id, math::cmp>)
+            return op(math::cmp(res), /*rmode*/ a_cmp->decurry()->arg(0), a_cmp->arg(0), a_cmp->arg(1), dbg);
+        else
+            return op(icmp(Axiom::Base<icmp> | res), a_cmp->arg(0), a_cmp->arg(1), dbg);
+    }
+
+    return nullptr;
 }
 
 template<bit2 id>
@@ -499,13 +289,13 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto w      = isa_lit(callee->arg());
+    auto s      = isa_lit(callee->arg());
 
     commute(id, a, b);
 
     auto tab = make_truth_table(id);
     if (auto res = merge_cmps<icmp>(tab, a, b, dbg)) return res;
-    if (auto res = merge_cmps<rcmp>(tab, a, b, dbg)) return res;
+    if (auto res = merge_cmps<math::cmp>(tab, a, b, dbg)) return res;
 
     auto la = isa_lit(a);
     auto lb = isa_lit(b);
@@ -513,7 +303,7 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
     // clang-format off
     switch (id) {
         case bit2::    f: return world.lit(type,        0);
-        case bit2::    t: if (w) return world.lit(type, *w-1_u64); break;
+        case bit2::    t: if (s) return world.lit(type, *s-1_u64); break;
         case bit2::    a: return a;
         case bit2::    b: return b;
         case bit2::   na: return op_negate(a, dbg);
@@ -525,23 +315,23 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
 
     if (la && lb) {
         switch (id) {
-            case bit2::_and: return world.lit_idx    (*w,   *la &  *lb);
-            case bit2:: _or: return world.lit_idx    (*w,   *la |  *lb);
-            case bit2::_xor: return world.lit_idx    (*w,   *la ^  *lb);
-            case bit2::nand: return world.lit_idx_mod(*w, ~(*la &  *lb));
-            case bit2:: nor: return world.lit_idx_mod(*w, ~(*la |  *lb));
-            case bit2::nxor: return world.lit_idx_mod(*w, ~(*la ^  *lb));
-            case bit2:: iff: return world.lit_idx_mod(*w, ~ *la |  *lb);
-            case bit2::niff: return world.lit_idx    (*w,   *la & ~*lb);
+            case bit2::and_: return world.lit_idx    (*s,   *la &  *lb);
+            case bit2:: or_: return world.lit_idx    (*s,   *la |  *lb);
+            case bit2::xor_: return world.lit_idx    (*s,   *la ^  *lb);
+            case bit2::nand: return world.lit_idx_mod(*s, ~(*la &  *lb));
+            case bit2:: nor: return world.lit_idx_mod(*s, ~(*la |  *lb));
+            case bit2::nxor: return world.lit_idx_mod(*s, ~(*la ^  *lb));
+            case bit2:: iff: return world.lit_idx_mod(*s, ~ *la |  *lb);
+            case bit2::niff: return world.lit_idx    (*s,   *la & ~*lb);
             default: unreachable();
         }
     }
 
     auto unary = [&](bool x, bool y, const Def* a) -> const Def* {
         if (!x && !y) return world.lit(type, 0);
-        if ( x &&  y) return w ? world.lit(type, *w-1_u64) : nullptr;
+        if ( x &&  y) return s ? world.lit(type, *s-1_u64) : nullptr;
         if (!x &&  y) return a;
-        if ( x && !y && id != bit2::_xor) return op_negate(a, dbg);
+        if ( x && !y && id != bit2::xor_) return op_negate(a, dbg);
         return nullptr;
     };
     // clang-format on
@@ -553,22 +343,22 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
     if (la) {
         if (*la == 0) {
             if (auto res = unary(tab[0][0], tab[0][1], b)) return res;
-        } else if (*la == *w - 1_u64) {
+        } else if (*la == *s - 1_u64) {
             if (auto res = unary(tab[1][0], tab[1][1], b)) return res;
         }
     }
 
     if (lb) {
         if (*lb == 0) {
-            if (auto res = unary(tab[0][0], tab[1][0], b)) return res;
-        } else if (*lb == *w - 1_u64) {
-            if (auto res = unary(tab[0][1], tab[1][1], b)) return res;
+            if (auto res = unary(tab[0][0], tab[1][0], a)) return res;
+        } else if (*lb == *s - 1_u64) {
+            if (auto res = unary(tab[0][1], tab[1][1], a)) return res;
         }
     }
 
     if (auto res = reassociate<bit2>(id, world, callee, a, b, dbg)) return res;
 
-    return world.raw_app(callee, {a, b}, dbg);
+    return world.raw_app(type, callee, {a, b}, dbg);
 }
 
 template<shr id>
@@ -576,9 +366,10 @@ const Def* normalize_shr(const Def* type, const Def* c, const Def* arg, const De
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto w      = isa_lit(callee->arg());
+    auto s      = Idx::size(arg->type());
+    auto ls     = isa_lit(s);
 
-    if (auto result = fold<shr, id>(world, type, callee, a, b, dbg)) return result;
+    if (auto result = fold<shr, id>(world, type, a, b, dbg)) return result;
 
     if (auto la = a->isa<Lit>()) {
         if (la == world.lit(type, 0)) {
@@ -597,10 +388,10 @@ const Def* normalize_shr(const Def* type, const Def* c, const Def* arg, const De
             }
         }
 
-        if (lb->get() > *w) return world.bot(type, dbg);
+        if (ls && lb->get() > *ls) return world.bot(type, dbg);
     }
 
-    return world.raw_app(callee, {a, b}, dbg);
+    return world.raw_app(type, callee, {a, b}, dbg);
 }
 
 template<wrap id>
@@ -608,9 +399,11 @@ const Def* normalize_wrap(const Def* type, const Def* c, const Def* arg, const D
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto [m, w] = callee->args<2>(isa_lit<nat_t>); // mode and width
+    auto mode   = callee->arg();
+    auto s      = Idx::size(a->type());
+    auto ls     = isa_lit(s);
 
-    if (auto result = fold<wrap, id, true>(world, type, callee, a, b, dbg)) return result;
+    if (auto result = fold<wrap, id>(world, type, a, b, dbg, mode)) return result;
 
     // clang-format off
     if (auto la = a->isa<Lit>()) {
@@ -644,15 +437,15 @@ const Def* normalize_wrap(const Def* type, const Def* c, const Def* arg, const D
         }
 
         if (id == wrap::sub)
-            return op(wrap::add, *m, a, world.lit_idx_mod(*w, ~lb->get() + 1_u64)); // a - lb -> a + (~lb + 1)
-        else if (id == wrap::shl && lb->get() > *w)
+            return op(wrap::add, mode, a, world.lit_idx_mod(*ls, ~lb->get() + 1_u64)); // a - lb -> a + (~lb + 1)
+        else if (id == wrap::shl && ls && lb->get() > *ls)
             return world.bot(type, dbg);
     }
 
     if (a == b) {
         switch (id) {
-            case wrap::add: return op(wrap::mul, *m, world.lit(type, 2), a, dbg); // a + a -> 2 * a
-            case wrap::sub: return world.lit(type, 0);                            // a - a -> 0
+            case wrap::add: return op(wrap::mul, mode, world.lit(type, 2), a, dbg); // a + a -> 2 * a
+            case wrap::sub: return world.lit(type, 0);                              // a - a -> 0
             case wrap::mul: break;
             case wrap::shl: break;
         }
@@ -661,18 +454,18 @@ const Def* normalize_wrap(const Def* type, const Def* c, const Def* arg, const D
 
     if (auto res = reassociate<wrap>(id, world, callee, a, b, dbg)) return res;
 
-    return world.raw_app(callee, {a, b}, dbg);
+    return world.raw_app(type, callee, {a, b}, dbg);
 }
 
 template<div id>
-const Def* normalize_div(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
-    auto& world      = type->world();
+const Def* normalize_div(const Def* full_type, const Def* c, const Def* arg, const Def* dbg) {
+    auto& world      = full_type->world();
     auto callee      = c->as<App>();
     auto [mem, a, b] = arg->projs<3>();
-    type             = type->as<Sigma>()->op(1); // peel off actual type
+    auto [_, type]   = full_type->projs<2>(); // peel off actual type
     auto make_res    = [&, mem = mem](const Def* res) { return world.tuple({mem, res}, dbg); };
 
-    if (auto result = fold<div, id>(world, type, callee, a, b, dbg)) return make_res(result);
+    if (auto result = fold<div, id>(world, type, a, b, dbg)) return make_res(result);
 
     if (auto la = a->isa<Lit>()) {
         if (la == world.lit(type, 0)) return make_res(la); // 0 / b -> 0 and 0 % b -> 0
@@ -700,82 +493,65 @@ const Def* normalize_div(const Def* type, const Def* c, const Def* arg, const De
         }
     }
 
-    return world.raw_app(callee, {mem, a, b}, dbg);
-}
-
-// clang-format off
-#define TABLE(m) m( 1,  1) m( 1,  8) m( 1, 16) m( 1, 32) m( 1, 64) \
-                 m( 8,  1) m( 8,  8) m( 8, 16) m( 8, 32) m( 8, 64) \
-                 m(16,  1) m(16,  8) m(16, 16) m(16, 32) m(16, 64) \
-                 m(32,  1) m(32,  8) m(32, 16) m(32, 32) m(32, 64) \
-                 m(64,  1) m(64,  8) m(64, 16) m(64, 32) m(64, 64)
-// clang-format on
-
-template<nat_t min_sw, nat_t min_dw, conv id>
-static const Def* fold_conv(const Def* dst_type, const App* callee, const Def* src, const Def* dbg) {
-    auto& world = dst_type->world();
-    if (src->isa<Bot>()) return world.bot(dst_type, dbg);
-
-    auto [lit_dw, lit_sw] = callee->args<2>(isa_lit<nat_t>);
-    auto lit_src          = src->isa<Lit>();
-    if (lit_src && lit_dw && lit_sw) {
-        if (id == conv::u2u) {
-            if (*lit_dw == 0) return world.lit(dst_type, as_lit(lit_src));
-            return world.lit(dst_type, as_lit(lit_src) % *lit_dw);
-        }
-
-        if (Idx::size(src->type())) *lit_sw = *size2bitwidth(*lit_sw);
-        if (Idx::size(dst_type)) *lit_dw = *size2bitwidth(*lit_dw);
-
-        Res res;
-#define CODE(sw, dw)                                                                                 \
-    else if (*lit_dw == dw && *lit_sw == sw) {                                                       \
-        if constexpr (dw >= min_dw && sw >= min_sw) res = FoldConv<id, dw, sw>::run(lit_src->get()); \
-    }
-        if (false) {}
-        TABLE(CODE)
-#undef CODE
-        if (res) return world.lit(dst_type, *res, dbg);
-        return world.bot(dst_type, dbg);
-    }
-
-    return nullptr;
+    return world.raw_app(full_type, callee, {mem, a, b}, dbg);
 }
 
 template<conv id>
-const Def* normalize_conv(const Def* dst_type, const Def* c, const Def* src, const Def* dbg) {
-    auto& world = dst_type->world();
+const Def* normalize_conv(const Def* dst_t, const Def* c, const Def* x, const Def* dbg) {
+    auto& world = dst_t->world();
     auto callee = c->as<App>();
+    auto s_t    = x->type()->as<App>();
+    auto d_t    = dst_t->as<App>();
+    auto s      = s_t->arg();
+    auto d      = d_t->arg();
+    auto ls     = isa_lit(s);
+    auto ld     = isa_lit(d);
 
-    static constexpr auto min_sw = id == conv::r2s || id == conv::r2u || id == conv::r2r ? 16 : 1;
-    static constexpr auto min_dw = id == conv::s2r || id == conv::u2r || id == conv::r2r ? 16 : 1;
-    if (auto result = fold_conv<min_sw, min_dw, id>(dst_type, callee, src, dbg)) return result;
-
-    auto [dw, sw] = callee->args<2>(isa_lit<nat_t>);
-    if (sw == dw && dst_type == src->type()) return src;
-
+    if (s_t == d_t) return x;
+    if (x->isa<Bot>()) return world.bot(d_t, dbg);
     if constexpr (id == conv::s2s) {
-        if (sw && dw && *sw < *dw) return core::op(conv::u2u, dst_type, src, dbg);
+        if (ls && ld && *ld < *ls) return op(conv::u2u, d_t, x, dbg); // just truncate - we don't care for signedness
     }
 
-    return world.raw_app(callee, src, dbg);
+    if (auto l = isa_lit(x); l && ls && ld) {
+        if constexpr (id == conv::u2u) {
+            if (*ld == 0) return world.lit(d_t, *l); // I64
+            return world.lit(d_t, *l % *ld);
+        }
+
+        auto sw = Idx::size2bitwidth(*ls);
+        auto dw = Idx::size2bitwidth(*ld);
+
+        // clang-format off
+        if (false) {}
+#define M(S, D) \
+        else if (S == sw && D == dw) return world.lit(d_t, w2s<D>(thorin::bitcast<w2s<S>>(*l)), dbg);
+        M( 1,  8) M( 1, 16) M( 1, 32) M( 1, 64)
+                  M( 8, 16) M( 8, 32) M( 8, 64)
+                            M(16, 32) M(16, 64)
+                                      M(32, 64)
+        else assert(false && "TODO: conversion between different Idx sizes");
+        // clang-format on
+    }
+
+    return world.raw_app(dst_t, callee, x, dbg);
 }
 
-const Def* normalize_bitcast(const Def* dst_type, const Def* callee, const Def* src, const Def* dbg) {
-    auto& world = dst_type->world();
+const Def* normalize_bitcast(const Def* dst_t, const Def* callee, const Def* src, const Def* dbg) {
+    auto& world = dst_t->world();
 
-    if (src->isa<Bot>()) return world.bot(dst_type);
-    if (src->type() == dst_type) return src;
+    if (src->isa<Bot>()) return world.bot(dst_t);
+    if (src->type() == dst_t) return src;
 
     if (auto other = match<bitcast>(src))
-        return other->arg()->type() == dst_type ? other->arg() : op_bitcast(dst_type, other->arg(), dbg);
+        return other->arg()->type() == dst_t ? other->arg() : op_bitcast(dst_t, other->arg(), dbg);
 
     if (auto lit = src->isa<Lit>()) {
-        if (dst_type->isa<Nat>()) return world.lit(dst_type, lit->get(), dbg);
-        if (Idx::size(dst_type)) return world.lit(dst_type, lit->get(), dbg);
+        if (dst_t->isa<Nat>()) return world.lit(dst_t, lit->get(), dbg);
+        if (Idx::size(dst_t)) return world.lit(dst_t, lit->get(), dbg);
     }
 
-    return world.raw_app(callee, src, dbg);
+    return world.raw_app(dst_t, callee, src, dbg);
 }
 
 // TODO I guess we can do that with C++20 <bit>
@@ -797,22 +573,13 @@ const Def* normalize_trait(const Def*, const Def* callee, const Def* type, const
     } else if (type->isa<Pi>()) {
         return world.lit_nat(8); // Gets lowered to function ptr
     } else if (auto size = Idx::size(type)) {
-        if (size->isa<Top>()) return world.lit_nat(8);
-        if (auto w = isa_lit(size)) {
-            if (*w == 0) return world.lit_nat(8);
-            if (*w <= 0x0000'0000'0000'0100_u64) return world.lit_nat(1);
-            if (*w <= 0x0000'0000'0001'0000_u64) return world.lit_nat(2);
-            if (*w <= 0x0000'0001'0000'0000_u64) return world.lit_nat(4);
-            return world.lit_nat(8);
-        }
-    } else if (auto real = match<Real>(type)) {
-        if (auto w = isa_lit(real->arg())) {
-            switch (*w) {
-                case 16: return world.lit_nat(2);
-                case 32: return world.lit_nat(4);
-                case 64: return world.lit_nat(8);
-                default: unreachable();
-            }
+        if (auto w = Idx::size2bitwidth(size)) return world.lit_nat(std::max(1_n, std::bit_ceil(*w) / 8_n));
+    } else if (auto w = math::isa_f(type)) {
+        switch (*w) {
+            case 16: return world.lit_nat(2);
+            case 32: return world.lit_nat(4);
+            case 64: return world.lit_nat(8);
+            default: unreachable();
         }
     } else if (type->isa<Sigma>() || type->isa<Meet>()) {
         u64 offset = 0;
@@ -834,21 +601,15 @@ const Def* normalize_trait(const Def*, const Def* callee, const Def* type, const
             case trait::size: return world.lit_nat(size);
         }
     } else if (auto arr = type->isa_structural<Arr>()) {
-        auto align = core::op(trait::align, arr->body());
+        auto align = op(trait::align, arr->body());
         if constexpr (id == trait::align) return align;
-
-        if (auto b = isa_lit(core::op(trait::size, arr->body()))) {
-            auto i64_t = world.type_int(64);
-            auto s     = op_bitcast(i64_t, arr->shape());
-            auto mul   = core::op(wrap::mul, WMode::nsw | WMode::nuw, world.lit_idx(0, *b), s);
-            return op_bitcast(world.type_nat(), mul);
-        }
+        if (auto b = op(trait::size, arr->body())->isa<Lit>()) return core::op(core::nop::mul, arr->shape(), b);
     } else if (auto join = type->isa<Join>()) {
         if (auto sigma = convert(join)) return core::op(id, sigma, dbg);
     }
 
 out:
-    return world.raw_app(callee, type, dbg);
+    return world.raw_app(type, callee, type, dbg);
 }
 
 const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
@@ -870,7 +631,7 @@ const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const De
     if (auto l_in = isa_lit(n_i)) {
         auto args = arg->projs(*l_in);
 
-        if (lr && std::ranges::all_of(args, [](auto arg) { return is_tuple_or_pack(arg); })) {
+        if (lr && std::ranges::all_of(args, [](const Def* arg) { return arg->isa<Tuple, Pack>(); })) {
             auto shapes = s->projs(*lr);
             auto s_n    = isa_lit(shapes.front());
 
@@ -889,7 +650,7 @@ const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const De
         }
     }
 
-    return w.raw_app(callee, arg, dbg);
+    return w.raw_app(type, callee, arg, dbg);
 }
 
 template<pe id>
@@ -901,7 +662,7 @@ const Def* normalize_pe(const Def* type, const Def* callee, const Def* arg, cons
         if (arg->dep_const()) return world.lit_tt();
     }
 
-    return world.raw_app(callee, arg, dbg);
+    return world.raw_app(type, callee, arg, dbg);
 }
 
 THORIN_core_NORMALIZER_IMPL

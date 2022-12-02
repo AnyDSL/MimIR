@@ -198,14 +198,14 @@ const Def* AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
     // TODO: special case for const width (special tuple)
 
     // <i:n, cps2ds body_pb (s#i)>
-    app_pb->set(world.raw_app(direct::op_cps2ds_dep(body_pb), world.extract(pb->var((nat_t)0), app_pb->var())));
+    app_pb->set(world.app(direct::op_cps2ds_dep(body_pb), world.extract(pb->var((nat_t)0), app_pb->var())));
 
     world.DLOG("app pb of pack: {} : {}", app_pb, app_pb->type());
 
-    auto sumup = world.raw_app(world.ax<sum>(), {aug_shape, f_arg_ty_diff});
+    auto sumup = world.app(world.ax<sum>(), {aug_shape, f_arg_ty_diff});
     world.DLOG("sumup: {} : {}", sumup, sumup->type());
 
-    pb->app(true, pb->var(1), world.raw_app(sumup, app_pb));
+    pb->app(true, pb->var(1), world.app(sumup, app_pb));
 
     partial_pullback[aug_pack] = pb;
 
