@@ -99,8 +99,6 @@ Tok Lexer::lex() {
         }
 
         if (accept('.')) {
-            if (ahead() == '(' || ahead() == '[') return tok(Tok::Tag::T_dot);
-
             if (lex_id()) {
                 if (auto i = keywords_.find(str_); i != keywords_.end()) { return tok(i->second); }
                 err({loc_.file, ahead().pos}, "unknown keyword '{}'", str_);
