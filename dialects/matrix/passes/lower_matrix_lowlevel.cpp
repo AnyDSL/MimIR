@@ -71,6 +71,7 @@ const Def* arrTyOfMatrixTy(const Def* Mat) {
 
 const Def* LowerMatrixLowLevel::rewrite_structural(const Def* def) {
     auto& world = def->world();
+    return Rewriter::rewrite_structural(def); // continue recursive rewriting with everything else
 
     assert(!match<matrix::mapReduce>(def) && "mapReduce should have been lowered to for loops by now");
     assert(!match<matrix::shape>(def) && "high level operations should have been lowered to for loops by now");
