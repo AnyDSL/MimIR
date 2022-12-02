@@ -16,14 +16,15 @@
 // clang-format off
 #define DECL                \
          Tok::Tag::K_ax:    \
-    case Tok::Tag::K_cn:    \
-    case Tok::Tag::K_let:   \
-    case Tok::Tag::K_Sigma: \
     case Tok::Tag::K_Arr:   \
-    case Tok::Tag::K_pack:  \
     case Tok::Tag::K_Pi:    \
+    case Tok::Tag::K_Sigma: \
+    case Tok::Tag::K_con:   \
+    case Tok::Tag::K_def:   \
+    case Tok::Tag::K_fun:   \
     case Tok::Tag::K_lam:   \
-    case Tok::Tag::K_def
+    case Tok::Tag::K_let:   \
+    case Tok::Tag::K_pack:
 // clang-format on
 
 using namespace std::string_literals;
@@ -246,8 +247,10 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::K_ff:      lex(); return world().lit_ff();
         case Tok::Tag::K_tt:      lex(); return world().lit_tt();
         case Tok::Tag::T_Pi:      return parse_pi();
-        case Tok::Tag::T_lam:     return parse_lam();
         case Tok::Tag::T_at:      return parse_var();
+        case Tok::Tag::K_cn:
+        case Tok::Tag::K_fn:
+        case Tok::Tag::T_lm:      return parse_lam();
         case Tok::Tag::T_star:    lex(); return world().type();
         case Tok::Tag::T_box:     lex(); return world().type<1>();
         case Tok::Tag::T_bot:
@@ -391,18 +394,6 @@ const Def* Parser::parse_pi() {
     return pi;
 }
 
-const Def* Parser::parse_lam() {
-#if 0
-    auto track = tracker();
-    eat(Tok::Tag::T_lam);
-    auto var = parse_sym("variable of a lambda abstraction");
-    expect(Tok::Tag::T_semicolon, "lambda abstraction");
-    auto type = parse_expr("type of a lambda abstraction");
-#endif
-
-    return nullptr;
-}
-
 const Def* Parser::parse_lit() {
     auto track  = tracker();
     auto lit    = lex();
@@ -437,20 +428,24 @@ const Def* Parser::parse_lit() {
  * ptrns
  */
 
-std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt, Tok::Prec p /*= Tok::Prec::Bot*/) {
+std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt, Tok::Prec prec /*= Tok::Prec::Bot*/) {
     auto track = tracker();
     auto sym   = anonymous_sym();
+    bool p     = delim_l == Tok::Tag::D_paren_l;
+    bool b     = delim_l == Tok::Tag::D_brckt_l;
+    assert(p ^ b);
+
     // p ->    (p, ..., p)
     // p ->    [b, ..., b]      b ->    [b, ..., b]
-    // p -> s::(p, ..., p)      b -> s::(e)
+    // p -> s::(p, ..., p)
     // p -> s::[b, ..., b]      b -> s::[b, ..., b]
     // p -> s: e                b -> s: e
     // p -> s                   b ->    e
-    if (ahead().isa(Tok::Tag::D_brckt_l)) {
-        // p ->    [b, ..., b]      b ->    [b, ..., b]
-        return parse_tuple_ptrn(track, sym);
-    } else if (delim_l == Tok::Tag::D_paren_l && ahead().isa(Tok::Tag::D_paren_l)) {
+    if (p && ahead().isa(Tok::Tag::D_paren_l)) {
         // p ->    (p, ..., p)
+        return parse_tuple_ptrn(track, sym);
+    } else if (ahead().isa(Tok::Tag::D_brckt_l)) {
+        // p ->    [b, ..., b]      b ->    [b, ..., b]
         return parse_tuple_ptrn(track, sym);
     } else if (ahead(0).isa(Tok::Tag::M_id)) {
         // p -> s::(p, ..., p)
@@ -460,7 +455,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
         if (ahead(1).isa(Tok::Tag::T_colon_colon)) {
             sym = eat(Tok::Tag::M_id).sym();
             eat(Tok::Tag::T_colon_colon);
-            if (delim_l == Tok::Tag::D_brckt_l && ahead().isa(Tok::Tag::D_paren_l))
+            if (b && ahead().isa(Tok::Tag::D_paren_l))
                 err(ahead().loc(), "switching from []-style patterns to ()-style patterns is not allowed");
             // b -> s::(p, ..., p)
             // b -> s::[b, ..., b]      b -> s::[b, ..., b]
@@ -469,23 +464,23 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
             // p -> s: e                b -> s: e
             sym = eat(Tok::Tag::M_id).sym();
             eat(Tok::Tag::T_colon);
-            auto type = parse_expr(ctxt, p);
+            auto type = parse_expr(ctxt, prec);
             return std::make_unique<IdPtrn>(track.loc(), sym, type);
         } else {
-            if (delim_l == Tok::Tag::D_brckt_l) {
-                // b ->    e    where e == id
-                auto type = parse_expr(ctxt, p);
-                return std::make_unique<IdPtrn>(track.loc(), sym, type);
-            } else {
+            // p -> s                   b ->    e    where e == id
+            if (p) {
                 // p -> s
                 sym = eat(Tok::Tag::M_id).sym();
                 return std::make_unique<IdPtrn>(track.loc(), sym, nullptr);
+            } else {
+                // b ->    e    where e == id
+                auto type = parse_expr(ctxt, prec);
+                return std::make_unique<IdPtrn>(track.loc(), sym, type);
             }
         }
-    } else if (delim_l == Tok::Tag::D_brckt_l) {
-        // b ->   (e)
-        // b ->    e    where e != id
-        auto type = parse_expr(ctxt, p);
+    } else if (b) {
+        // b ->  e    where e != id
+        auto type = parse_expr(ctxt, prec);
         return std::make_unique<IdPtrn>(track.loc(), sym, type);
     } else if (!ctxt.empty()) {
         // p -> ↯
@@ -497,6 +492,10 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
 
 std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, Sym sym) {
     auto delim_l = ahead().tag();
+    bool p       = delim_l == Tok::Tag::D_paren_l;
+    bool b       = delim_l == Tok::Tag::D_brckt_l;
+    assert(p ^ b);
+
     std::deque<std::unique_ptr<Ptrn>> ptrns;
     std::vector<const Def*> fields;
     std::vector<Infer*> infers;
@@ -507,21 +506,36 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, Sym sym) {
         auto track = tracker();
         if (!ptrns.empty()) ptrns.back()->bind(scopes_, infers.back());
 
-        auto ptrn = parse_ptrn(delim_l, "element of a tuple pattern");
-        auto type = ptrn->type(world());
+        if (p && ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::M_id)) {
+            std::vector<Sym> syms;
+            while (auto tok = accept(Tok::Tag::M_id)) syms.emplace_back(tok->sym());
 
-        if (delim_l == Tok::Tag::D_brckt_l) {
-            // If we are able to parse more stuff, we got an expression instead of just a binder.
-            if (auto expr = parse_infix_expr(track, type); expr != type) {
-                ptrn = std::make_unique<IdPtrn>(track.loc(), anonymous_sym(), expr);
-                type = ptrn->type(world());
+            expect(Tok::Tag::T_colon, "type ascription of an identifer group within a tuple pattern");
+            auto type = parse_expr("type of an identifier group within a tuple pattern");
+
+            for (auto sym : syms) {
+                infers.emplace_back(world().nom_infer(type, sym));
+                fields.emplace_back(sym.str());
+                ops.emplace_back(type);
+                ptrns.emplace_back(std::make_unique<IdPtrn>(sym.loc(), sym, type));
             }
-        }
+        } else {
+            auto ptrn = parse_ptrn(delim_l, "element of a tuple pattern");
+            auto type = ptrn->type(world());
 
-        infers.emplace_back(world().nom_infer(type, ptrn->sym()));
-        fields.emplace_back(ptrn->sym().str());
-        ops.emplace_back(type);
-        ptrns.emplace_back(std::move(ptrn));
+            if (b) {
+                // If we are able to parse more stuff, we got an expression instead of just a binder.
+                if (auto expr = parse_infix_expr(track, type); expr != type) {
+                    ptrn = std::make_unique<IdPtrn>(track.loc(), anonymous_sym(), expr);
+                    type = ptrn->type(world());
+                }
+            }
+
+            infers.emplace_back(world().nom_infer(type, ptrn->sym()));
+            fields.emplace_back(ptrn->sym().str());
+            ops.emplace_back(type);
+            ptrns.emplace_back(std::move(ptrn));
+        }
     });
     scopes_.pop();
 
@@ -544,8 +558,9 @@ const Def* Parser::parse_decls(std::string_view ctxt) {
             case Tok::Tag::K_Arr:
             case Tok::Tag::K_pack:
             case Tok::Tag::K_Pi:        parse_nom();     break;
-            case Tok::Tag::K_cn:
-            case Tok::Tag::K_lam:       parse_nom_fun(); break;
+            case Tok::Tag::K_con:
+            case Tok::Tag::K_fun:
+            case Tok::Tag::K_lam:       parse_lam(true); break;
             case Tok::Tag::K_def:       parse_def();     break;
             default:                    return ctxt.empty() ? nullptr : parse_expr(ctxt);
         }
@@ -613,16 +628,26 @@ void Parser::parse_ax() {
         return nullptr;
     };
 
+    auto [curry, trip] = Axiom::infer_curry_and_trip(type);
+
+    if (accept(Tok::Tag::T_comma)) {
+        auto c = expect(Tok::Tag::L_u, "curry counter for axiom");
+        if (c.u() > curry) err(c.loc(), "curry counter cannot be greater than {}", curry);
+        curry = c.u();
+    }
+
+    if (accept(Tok::Tag::T_comma)) trip = expect(Tok::Tag::L_u, "trip count for axiom").u();
+
     dialect_t d = *Axiom::mangle(dialect);
     tag_t t     = info.tag_id;
     sub_t s     = info.subs.size();
     if (new_subs.empty()) {
-        auto axiom = world().axiom(normalizer(d, t, 0), type, d, t, 0, track.named(ax.sym()));
+        auto axiom = world().axiom(normalizer(d, t, 0), curry, trip, type, d, t, 0, track.named(ax.sym()));
         scopes_.bind(ax.sym(), axiom);
     } else {
         for (const auto& sub : new_subs) {
             auto dbg   = track.named(ax_str + "."s + sub.front());
-            auto axiom = world().axiom(normalizer(d, t, s), type, d, t, s, dbg);
+            auto axiom = world().axiom(normalizer(d, t, s), curry, trip, type, d, t, s, dbg);
             for (auto& alias : sub) {
                 Sym name(world().tuple_str(ax_str + "."s + alias), prev_.def(world()));
                 scopes_.bind(name, axiom);
@@ -688,14 +713,14 @@ void Parser::parse_nom() {
     scopes_.pop();
 }
 
-void Parser::parse_nom_fun() {
+Lam* Parser::parse_lam(bool decl) {
+    // TODO .fn/.fun
     auto track    = tracker();
     auto tok      = lex();
-    bool is_cn    = tok.isa(Tok::Tag::K_cn);
+    bool is_cn    = tok.isa(Tok::Tag::K_cn) || tok.isa(Tok::Tag::K_con);
     auto prec     = is_cn ? Tok::Prec::Bot : Tok::Prec::Pi;
     bool external = accept(Tok::Tag::K_extern).has_value();
-    auto sym      = parse_sym("nominal lambda");
-    assert(is_cn || tok.isa(Tok::Tag::K_lam));
+    Sym sym       = decl ? parse_sym("nominal lambda") : anonymous_sym();
 
     auto outer = scopes_.curr();
     scopes_.push();            // pi scope
@@ -761,12 +786,15 @@ void Parser::parse_nom_fun() {
         auto body = parse_decls("body of a lambda");
         last_lam->set_body(body);
     } else {
+        if (!decl) err(prev_, "body of a lambda expression is mandatory");
         // TODO error message if filter is non .ff
         last_lam->unset(0);
     }
-    expect(Tok::Tag::T_semicolon, "end of lambda");
+
+    if (decl) expect(Tok::Tag::T_semicolon, "end of lambda");
 
     scopes_.pop(); // lam scope
+    return first_lam;
 }
 
 void Parser::parse_def(Sym sym /*= {}*/) {

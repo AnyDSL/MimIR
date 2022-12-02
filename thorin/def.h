@@ -405,7 +405,8 @@ protected:
     unsigned nom_    : 1;
     unsigned dep_    : 4;
     unsigned pading_ : 3;
-    u16 curry_;
+    u8 curry_;
+    u8 trip_;
     hash_t hash_;
     u32 gid_;
     u32 num_ops_;
@@ -679,5 +680,9 @@ public:
 hash_t UseHash::operator()(Use use) const { return hash_combine(hash_begin(u16(use.index())), hash_t(use->gid())); }
 
 //------------------------------------------------------------------------------
+
+// TODO: move
+/// Helper function to cope with the fact that normalizers take all arguments and not only its axiom arguments.
+std::pair<const Def*, std::vector<const Def*>> collect_args(const Def* def);
 
 } // namespace thorin

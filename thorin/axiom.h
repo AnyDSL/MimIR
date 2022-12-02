@@ -8,17 +8,38 @@ namespace thorin {
 
 class Axiom : public Def {
 private:
-    Axiom(NormalizeFn normalizer, const Def* type, dialect_t dialect, tag_t tag, sub_t sub, const Def* dbg);
+    Axiom(NormalizeFn, u8 curry, u8 trip, const Def* type, dialect_t, tag_t, sub_t, const Def* dbg);
 
 public:
-    /// @name curry depth and normalizer
+    /// @name normalization
     ///@{
+    /// For a curried App of an Axiom, you only want to trigger normalization at specific spots.
+    /// For this reason, Thorin maintains a Def::curry_ counter that each App decrements.
+    /// The Axiom::normalizer() will be triggered when Axiom::curry() becomes `0`.
+    /// These are also the spots that you can thorin::match/thorin::force/Match.
+    /// After that, the counter will be set to Axiom::trip().
+    /// E.g., let's say an Axiom has this type:
+    /// ```
+    /// A -> B -> C -> D -> E
+    ///           ^         |
+    ///           |         |
+    ///           +---------+
+    /// ```
+    /// Using an initial value as `5` for Axiom::curry and `3` as Axiom::trip has the effect that here
+    /// ```
+    /// x a b c1 d1 e1 c2 d2 e2 c3 d3 e3
+    /// ```
+    /// the Axiom::normalizer will be triggered after App'ing `e1`, `e2`, and `e3`.
     NormalizeFn normalizer() const { return normalizer_; }
-    u16 curry() const { return curry_; }
+    u8 curry() const { return curry_; }
+    u8 trip() const { return trip_; }
 
-    /// Yields currying depth of @p def untill we finally hit an Axiom.
-    /// `{nullptr, u16(-1)}` indicates that no Axiom is present.
-    static std::tuple<const Axiom*, u16> get(const Def* def);
+    /// Yields currying counter of @p def.
+    /// @returns `{nullptr, 0, 0}` if no Axiom is present.
+    static std::tuple<const Axiom*, u8, u8> get(const Def* def);
+
+    static std::pair<u8, u8> infer_curry_and_trip(const Def* type);
+    static constexpr u8 Trip_End = u8(-1);
     ///@}
 
     /// @name Axiom name
@@ -147,9 +168,9 @@ private:
 ///@{
 template<class Id, bool DynCast = true>
 auto match(const Def* def) {
-    using D             = typename Axiom::Match<Id>::type;
-    auto [axiom, curry] = Axiom::get(def);
-    bool cond           = axiom && curry == 0 && axiom->base() == Axiom::Base<Id>;
+    using D                = typename Axiom::Match<Id>::type;
+    auto [axiom, curry, _] = Axiom::get(def);
+    bool cond              = axiom && curry == 0 && axiom->base() == Axiom::Base<Id>;
 
     if constexpr (DynCast) return cond ? Match<Id, D>(axiom, def->as<D>()) : Match<Id, D>();
     assert(cond && "assumed to be correct axiom");
@@ -158,9 +179,9 @@ auto match(const Def* def) {
 
 template<class Id, bool DynCast = true>
 auto match(Id id, const Def* def) {
-    using D             = typename Axiom::Match<Id>::type;
-    auto [axiom, curry] = Axiom::get(def);
-    bool cond           = axiom && curry == 0 && axiom->flags() == (flags_t)id;
+    using D                = typename Axiom::Match<Id>::type;
+    auto [axiom, curry, _] = Axiom::get(def);
+    bool cond              = axiom && curry == 0 && axiom->flags() == (flags_t)id;
 
     if constexpr (DynCast) return cond ? Match<Id, D>(axiom, def->as<D>()) : Match<Id, D>();
     assert(cond && "assumed to be correct axiom");

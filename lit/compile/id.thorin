@@ -1,0 +1,22 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin %s --output-ll %t.ll -o - | FileCheck %s
+
+.import mem;
+.import compile;
+
+.let _32 = 4294967296;
+.let I32 = .Idx _32;
+
+
+.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return : .Cn [%mem.M, I32]] = {
+    return (mem, 42:I32)
+};
+
+.lam .extern _compile [] -> Pipeline = {
+    %compile.pipe
+        // (%compile.debug_phase 1)
+        (%compile.debug_phase 2)
+        // (%compile.debug_phase 3)
+};
+
+// CHECK-DAG: return{{.*}}42

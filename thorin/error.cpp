@@ -8,12 +8,12 @@ namespace thorin {
 
 void ErrorHandler::expected_shape(const Def* def, const Def* dbg) {
     Debug d(dbg ? dbg : def->dbg());
-    err(d.loc, "exptected shape but got '{}' of type '{}'", def, def->type());
+    err(d.loc, "expected shape but got '{}' of type '{}'", def, def->type());
 }
 
 void ErrorHandler::expected_type(const Def* def, const Def* dbg) {
     Debug d(dbg ? dbg : def->dbg());
-    err(d.loc, "exptected type but got '{}' which is a term", def);
+    err(d.loc, "expected type but got '{}' which is a term", def);
 }
 
 void ErrorHandler::index_out_of_range(const Def* arity, const Def* index, const Def* dbg) {

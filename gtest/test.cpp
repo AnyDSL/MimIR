@@ -105,3 +105,80 @@ TEST(trait, idx) {
     EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0xFFFF'FFFF'FFFF'FFFF_n))), 8);
     EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0000'0000_n))), 8);
 }
+
+const Def* normalize_test_curry(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+    auto& w = arg->world();
+    return w.raw_app(type, callee, w.lit_nat(42), dbg);
+}
+
+TEST(Axiom, curry) {
+    World w;
+
+    DefArray n(11, [&w](size_t i) { return w.lit_nat(i); });
+    auto nat = w.type_nat();
+
+    {
+        // N -> N -> N -> N -> N
+        //           ^         |
+        //           |         |
+        //           +---------+
+        auto rec = w.nom_pi(w.type())->set_dom(nat);
+        rec->set_codom(w.pi(nat, w.pi(nat, rec)));
+        auto pi = w.pi(nat, w.pi(nat, rec));
+
+        auto [curry, trip] = Axiom::infer_curry_and_trip(pi);
+        EXPECT_EQ(curry, 5);
+        EXPECT_EQ(trip, 3);
+
+        auto ax = w.axiom(normalize_test_curry, curry, trip, pi, w.dbg("test_5_3"));
+        auto a1 = w.app(w.app(w.app(w.app(w.app(ax, n[0]), n[1]), n[2]), n[3]), n[4]);
+        auto a2 = w.app(w.app(w.app(a1, n[5]), n[6]), n[7]);
+        auto a3 = w.app(w.app(w.app(a2, n[8]), n[9]), n[10]);
+
+        EXPECT_EQ(a1->as<App>()->curry(), 0);
+        EXPECT_EQ(a2->as<App>()->curry(), 0);
+        EXPECT_EQ(a3->as<App>()->curry(), 0);
+
+        std::ostringstream os;
+        a3->stream(os, 0);
+        EXPECT_EQ(os.str(), "%test_5_3 0 1 2 3 42 5 6 42 8 9 42\n");
+    }
+    {
+        auto rec = w.nom_pi(w.type())->set_dom(nat);
+        rec->set_codom(rec);
+
+        auto [curry, trip] = Axiom::infer_curry_and_trip(rec);
+        EXPECT_EQ(curry, 1);
+        EXPECT_EQ(trip, 1);
+
+        auto ax = w.axiom(normalize_test_curry, curry, trip, rec, w.dbg("test_1_1"));
+        auto a1 = w.app(ax, n[0]);
+        auto a2 = w.app(a1, n[1]);
+        auto a3 = w.app(a2, n[2]);
+
+        EXPECT_EQ(a1->as<App>()->curry(), 0);
+        EXPECT_EQ(a2->as<App>()->curry(), 0);
+        EXPECT_EQ(a3->as<App>()->curry(), 0);
+
+        std::ostringstream os;
+        a3->stream(os, 0);
+        EXPECT_EQ(os.str(), "%test_1_1 42 42 42\n");
+    }
+    {
+        auto pi            = w.pi(nat, w.pi(nat, w.pi(nat, w.pi(nat, nat))));
+        auto [curry, trip] = Axiom::infer_curry_and_trip(pi);
+        EXPECT_EQ(curry, 4);
+        EXPECT_EQ(trip, 0);
+
+        auto ax = w.axiom(normalize_test_curry, 3, 0, pi, w.dbg("test_3_0"));
+        auto a1 = w.app(w.app(w.app(ax, n[0]), n[1]), n[2]);
+        auto a2 = w.app(a1, n[3]);
+
+        EXPECT_EQ(a1->as<App>()->curry(), 0);
+        EXPECT_EQ(a2->as<App>()->curry(), Axiom::Trip_End);
+
+        std::ostringstream os;
+        a2->stream(os, 0);
+        EXPECT_EQ(os.str(), "%test_3_0 0 1 42 3\n");
+    }
+}
