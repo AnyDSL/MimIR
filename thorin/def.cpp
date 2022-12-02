@@ -26,6 +26,22 @@ const Def* refer(const Def* def) {
     }
 
     // TODO union-find-like path compression
+
+    if (auto tuple = def->isa<Tuple>()) {
+        size_t n     = tuple->num_ops();
+        bool update  = false;
+        auto new_ops = DefArray(n, [tuple, &update](size_t i) {
+            auto r = refer(tuple->op(i));
+            update |= r != tuple->op(i);
+            return r;
+        });
+
+        if (update) {
+            World& w = tuple->world();
+            return tuple->rebuild(w, tuple->type(), new_ops, tuple->dbg());
+        }
+    }
+
     return def;
 }
 
