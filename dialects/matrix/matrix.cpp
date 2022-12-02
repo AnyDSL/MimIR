@@ -24,5 +24,5 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                 builder.extend_opt_phase(base + 2,
                                          [](thorin::PassMan& man) { man.add<thorin::matrix::LowerMatrixLowLevel>(); });
             },
-            nullptr, [](Normalizers& normalizers) { matrix::register_normalizers(normalizers); }};
+            nullptr, nullptr, [](Normalizers& normalizers) { matrix::register_normalizers(normalizers); }};
 }

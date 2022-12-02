@@ -6,6 +6,7 @@
 ///
 .import mem;
 .import core;
+.import math;
 // needed to access cps2ds
 .import direct;
 .import affine;
@@ -235,13 +236,13 @@
 // .ax %matrix.map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat (n,S,T), f: .Cn [%mem.M, T, .Cn [%mem.M, P] ] ] -> %matrix.Mat (n,S,P), normalize_map;
 // .ax %matrix.parallel_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat n S T, f: .Cn [T, .Cn [P] ] ] -> %matrix.Mat n S P, normalize_parallel_map;
 // .ax %matrix.meta_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat n S T, f: T -> P ] -> %matrix.Mat n S P, normalize_meta_map;
-.ax %matrix.prod:  Π [m: .Nat, k: .Nat, l: .Nat, w: .Nat] -> 
-    [%mem.M,%matrix.Mat (2,(m, k),%core.Real w), %matrix.Mat (2,(k, l),%core.Real w)] -> [%mem.M,%matrix.Mat (2,(m, l),%core.Real w)], normalize_prod;
+.ax %matrix.prod:  Π [m: .Nat, k: .Nat, l: .Nat, [p: .Nat, e:.Nat]] -> 
+    [%mem.M,%matrix.Mat (2,(m, k),%math.F (p,e)), %matrix.Mat (2,(k, l),%math.F (p,e))] -> [%mem.M,%matrix.Mat (2,(m, l),%math.F (p,e))], normalize_prod;
 .ax %matrix.transpose: Π [[k:.Nat, l:.Nat], T: *] -> 
     [%mem.M,%matrix.Mat (2,(k,l),T)] -> [%mem.M,%matrix.Mat (2,(l,k),T)], normalize_transpose;
 
 // .ax %matrix.sum: Π [n: .Nat, S: «n; .Nat», T: *] -> [%mem.M,%matrix.Mat (n,S,T)] -> [%mem.M,T];
-.ax %matrix.sum: Π [n: .Nat, S: «n; .Nat», w:.Nat] -> [%mem.M,%matrix.Mat (n,S,%core.Real w)] -> [%mem.M,%core.Real w];
+.ax %matrix.sum: Π [n: .Nat, S: «n; .Nat», [p:.Nat,e:.Nat]] -> [%mem.M,%matrix.Mat (n,S,%math.F (p,e))] -> [%mem.M,%math.F (p,e)];
 
 
 // TODO: handle reduction case
