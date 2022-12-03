@@ -12,7 +12,7 @@
 ///
 /// Standard arithmetic operations on `.Nat`s.
 ///
-.ax %core.nop(add, mul): Π [.Nat, .Nat] -> .Nat, normalize_nop;
+.ax %core.nop(add, mul): [.Nat, .Nat] -> .Nat, normalize_nop;
 ///
 /// ### %core.ncmp
 ///

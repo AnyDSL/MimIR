@@ -74,6 +74,45 @@ const Type* World::type(Refer level, Refer dbg) {
     return unify<Type>(1, level, dbg)->as<Type>();
 }
 
+const Def* World::uinc(Refer op, level_t offset, Refer dbg) {
+    if (err()) {
+        if (!op->type()->isa<Univ>())
+            err()->err(op->loc(), "operand '{}' of a universe increment must be of type `.Univ` but is of type `{}`",
+                       op, op->type());
+    }
+
+    if (auto l = isa_lit(op)) return lit_univ(*l, dbg);
+    return unify<UInc>(1, op, offset, dbg);
+}
+
+template<Sort sort>
+const Def* World::umax(Defs ops, Refer dbg) {
+    level_t lvl = 0;
+    for (auto op : ops) {
+        // clang-format off
+        switch (sort) {
+            case Sort::Term:  op = op->type()->unfold_type()->as<Type>()->level(); break;
+            case Sort::Type:  op =         op->unfold_type()->as<Type>()->level(); break;
+            case Sort::Kind:  op =                        op->as<Type>()->level(); break;
+            case Sort::Univ:  op =                                             op; break;
+            default: unreachable();
+        }
+        // clang-format on
+
+        if (err() && !op->type()->isa<Univ>())
+            err()->err(op->loc(), "operand '{}' of a universe max must be of type '.Univ' but is of type '{}'", op,
+                       op->type());
+
+        if (auto l = isa_lit(op))
+            lvl = std::max(lvl, *l);
+        else
+            lvl = level_t(-1);
+    }
+
+    auto ldef = lvl == level_t(-1) ? (const Def*)unify<UMax>(ops.size(), *this, ops, dbg) : lit_univ(lvl, dbg);
+    return sort == Sort::Univ ? ldef : type(ldef, dbg);
+}
+
 const Def* World::app(Refer callee, Refer arg, Refer dbg) {
     auto pi = callee->type()->isa<Pi>();
 
@@ -128,7 +167,7 @@ const Def* World::sigma(Defs ops, Refer dbg) {
     if (n == 0) return sigma();
     if (n == 1) return ops[0];
     if (auto uni = checker().is_uniform(ops, dbg)) return arr(n, uni, dbg);
-    return unify<Sigma>(ops.size(), infer_type_level(*this, ops), ops, dbg);
+    return unify<Sigma>(ops.size(), umax<Sort::Type>(ops, dbg), ops, dbg);
 }
 
 static const Def* infer_sigma(World& world, Defs ops) {
@@ -373,7 +412,7 @@ const Def* World::ext(Refer type, Refer dbg) {
 
 template<bool up>
 const Def* World::bound(Defs ops, Refer dbg) {
-    auto kind = infer_type_level(*this, ops);
+    auto kind = umax<Sort::Type>(ops, dbg);
 
     // has ext<up> value?
     if (std::ranges::any_of(ops, [&](Refer op) { return up ? bool(op->isa<Top>()) : bool(op->isa<Bot>()); }))
@@ -406,7 +445,7 @@ const Def* World::ac(Refer type, Defs ops, Refer dbg) {
     return ops[0];
 }
 
-const Def* World::ac(Defs ops, Refer dbg /*= {}*/) { return ac(infer_type_level(*this, ops), ops, dbg); }
+const Def* World::ac(Defs ops, Refer dbg /*= {}*/) { return ac(umax<Sort::Term>(ops, dbg), ops, dbg); }
 
 const Def* World::vel(Refer type, Refer value, Refer dbg) {
     if (type->isa<Join>()) return unify<Vel>(1, type, value, dbg);
@@ -459,6 +498,10 @@ const Def* World::gid2def(u32 gid) {
 template const Def* World::raw_app<true>(Refer, Refer, Refer, Refer);
 template const Def* World::raw_app<false>(Refer, Refer, Refer, Refer);
 #endif
+template const Def* World::umax<Sort::Term>(Defs, Refer);
+template const Def* World::umax<Sort::Type>(Defs, Refer);
+template const Def* World::umax<Sort::Kind>(Defs, Refer);
+template const Def* World::umax<Sort::Univ>(Defs, Refer);
 template const Def* World::ext<true>(Refer, Refer);
 template const Def* World::ext<false>(Refer, Refer);
 template const Def* World::bound<true>(Defs, Refer);

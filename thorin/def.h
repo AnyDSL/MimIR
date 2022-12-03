@@ -13,7 +13,7 @@
 
 // clang-format off
 #define THORIN_NODE(m)                                                        \
-    m(Type, type)       m(Univ, univ)                                         \
+    m(Type, type)       m(Univ, univ)   m(UMax, umax)       m(UInc, uinc)     \
     m(Pi, pi)           m(Lam, lam)     m(App, app)                           \
     m(Sigma, sigma)     m(Tuple, tuple) m(Extract, extract) m(Insert, insert) \
     m(Arr, arr)         m(Pack, pack)                                         \
@@ -33,7 +33,7 @@ namespace thorin {
 
 namespace Node {
 #define CODE(node, name) node,
-enum : node_t { THORIN_NODE(CODE) Max };
+enum : node_t { THORIN_NODE(CODE) };
 #undef CODE
 } // namespace Node
 
@@ -107,7 +107,7 @@ struct UseEq {
 using Uses = absl::flat_hash_set<Use, UseHash, UseEq>;
 
 // TODO remove or fix this
-enum class Sort { Term, Type, Kind, Space, Univ };
+enum class Sort { Term, Type, Kind, Space, Univ, Level };
 
 //------------------------------------------------------------------------------
 
@@ -387,7 +387,7 @@ public:
 
     /// @name virtual methods
     ///@{
-    virtual bool check() { return true; }
+    virtual void check() {}
     virtual size_t first_dependend_op() { return 0; }
     virtual const Def* rebuild(World&, const Def*, Defs, const Def*) const { unreachable(); }
     /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
@@ -521,7 +521,42 @@ public:
     friend class World;
 };
 
+class UMax : public Def {
+private:
+    UMax(World&, Defs ops, const Def* dbg);
+
+public:
+    /// @name virtual methods
+    ///@{
+    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    ///@}
+
+    static constexpr auto Node = Node::UMax;
+    friend class World;
+};
+
 using level_t = u64;
+
+class UInc : public Def {
+private:
+    UInc(const Def* op, level_t offset, const Def* dbg)
+        : Def(Node, op->type()->as<Univ>(), {op}, offset, dbg) {}
+
+public:
+    /// @name ops
+    ///@{
+    const Def* op() const { return Def::op(0); }
+    level_t offset() const { return flags(); }
+    ///@}
+
+    /// @name virtual methods
+    ///@{
+    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    ///@}
+
+    static constexpr auto Node = Node::UInc;
+    friend class World;
+};
 
 class Type : public Def {
 private:

@@ -113,6 +113,7 @@ public:
     ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     Lam* stub(World&, const Def*, const Def*) override;
+    void check() override;
     ///@}
 
     static constexpr auto Node = Node::Lam;

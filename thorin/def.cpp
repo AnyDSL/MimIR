@@ -95,6 +95,9 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags, const Def*
 Nat::Nat(World& world)
     : Def(Node, world.type(), Defs{}, 0, nullptr) {}
 
+UMax::UMax(World& world, Defs ops, const Def* dbg)
+    : Def(Node, world.univ(), ops, 0, dbg) {}
+
 // clang-format off
 
 /*
@@ -119,6 +122,8 @@ const Def* Singleton::rebuild(World& w, const Def*  , Defs o, const Def* dbg) co
 const Def* Type     ::rebuild(World& w, const Def*  , Defs o, const Def*    ) const { return w.type(o[0]); }
 const Def* Test     ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.test(o[0], o[1], o[2], o[3], dbg); }
 const Def* Tuple    ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.tuple(t, o, dbg); }
+const Def* UInc     ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.uinc(o[0], offset(), dbg); }
+const Def* UMax     ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.umax(o, dbg); }
 const Def* Univ     ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.univ(); }
 const Def* Var      ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.var(t, o[0]->as_nom(), dbg); }
 const Def* Vel      ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.vel(t, o[0], dbg); }
@@ -190,7 +195,7 @@ World& Def::world() const {
 
 const Def* Def::unfold_type() const {
     if (!type_) {
-        if (auto t = isa<Type>()) return world().type(world().lit_univ(as_lit(t->level()) + 1)); // TODO non-lit level
+        if (auto t = isa<Type>()) return world().type(world().uinc(t->level()));
         assert(isa<Univ>());
         return nullptr;
     }
@@ -329,6 +334,7 @@ Def* Def::set(size_t i, const Def* def) {
         const auto& p = def->uses_.emplace(this, i);
         assert_unused(p.second);
 
+        // TODO check that others are set
         if (i == num_ops() - 1) check();
     }
     return this;

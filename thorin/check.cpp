@@ -5,21 +5,6 @@
 
 namespace thorin {
 
-const Def* infer_type_level(World& world, Defs defs) {
-    // TODO deal with non-lit levels
-    level_t level = 0;
-    for (auto def : defs) {
-        if (auto type = def->isa<Type>()) {
-            level = std::max(level, as_lit(type->level()) + 1);
-        } else if (auto type = def->type()->isa<Type>()) {
-            level = std::max(level, as_lit(type->level()));
-        } else {
-            err(def->loc(), "'{}' used as a type but is in fact a term", def);
-        }
-    }
-    return world.type(world.lit_univ(level));
-}
-
 bool Checker::equiv(Refer d1, Refer d2, Refer dbg, bool opt) {
     if (d1 == d2) return true;
     if (!d1 || !d2) return false;
@@ -151,6 +136,35 @@ const Def* Checker::is_uniform(Defs defs, Refer dbg) {
     auto first = defs.front();
     auto ops   = defs.skip_front();
     return std::ranges::all_of(ops, [&](auto op) { return equiv(first, op, dbg, false); }) ? first : nullptr;
+}
+
+/*
+ * Def::check
+ */
+
+void Arr::check() {
+    auto t = body()->unfold_type();
+    if (auto infer = type()->isa_nom<Infer>()) {
+        assert(infer->op() == nullptr);
+        infer->set(t);
+        set_type(t);
+    }
+}
+
+void Sigma::check() {
+    // TODO
+}
+
+void Lam::check() {
+    auto& w = world();
+    if (w.err()) {
+        if (!w.checker().equiv(filter()->type(), w.type_bool(), filter()->dbg()))
+            w.err()->err(filter()->loc(), "filter of lambda is of type '{}' but must be of type '.Bool'",
+                         filter()->type());
+        if (false /*TODO*/ && !w.checker().equiv(body()->type(), codom(), body()->dbg()))
+            w.err()->err(body()->loc(), "body of lambda is of type '{}' but its codomain is of type '{}'",
+                         body()->type(), codom());
+    }
 }
 
 } // namespace thorin

@@ -772,7 +772,7 @@ Lam* Parser::parse_lam(bool decl) {
 
     auto codom = is_cn                     ? world().type_bot()
                : accept(Tok::Tag::T_arrow) ? parse_expr("return type of a lambda", Tok::Prec::Arrow)
-                                           : world().type_infer_univ();
+                                           : world().nom_infer_type();
     pis.back()->set_codom(codom);
 
     for (auto& pi : pis | std::ranges::views::reverse) {

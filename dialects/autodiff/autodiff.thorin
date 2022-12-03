@@ -111,7 +111,7 @@
 /// 
 /// The comparison pullback exists formally but is not used.
 /// 
-.lam .extern internal_diff_core_icmp_xYgLE![w: .Nat] ->(.Cn[[.Idx w, .Idx w], .Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]]) =
+.lam .extern internal_diff_core_icmp_xYgLE![w: .Nat] -> .Cn[[.Idx w, .Idx w], .Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]]  =
     .cn![[a: .Idx w, b: .Idx w], ret:.Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]] = { 
         .let result = %core.icmp.sle (w) (a,b);
         ret (result, .cn ![s: .Idx 2, pb_ret:.Cn[.Idx w, .Idx w]] = { .let z = 0:(.Idx w); pb_ret (z, z) })
@@ -121,7 +121,7 @@
 /// 
 /// s ↦ (s, s)
 ///
-.lam .extern internal_diff_core_wrap_add!s:.Nat -> .Nat -> (.Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]]) = 
+.lam .extern internal_diff_core_wrap_add!s:.Nat -> .Nat -> .Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]] = 
     .lm m: .Nat -> (.Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]]) =
         .cn !((a b:.Idx s), ret:.Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]) = {
             .let result = %core.wrap.add s m (a,b);
@@ -132,7 +132,7 @@
 ///
 /// s ↦ (s*b, s*a)
 /// 
-.lam .extern internal_diff_core_wrap_mul!s:.Nat -> .Nat -> (.Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]]) = 
+.lam .extern internal_diff_core_wrap_mul!s:.Nat -> .Nat -> .Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]] = 
     .lm m: .Nat -> (.Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]]) =
         .cn !((a b:.Idx s), ret:.Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]) = { 
             .let result = %core.wrap.mul s m (a,b);
