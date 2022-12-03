@@ -168,7 +168,7 @@ public:
     const Univ* univ() { return data_.univ_; }
     const Def* uinc(Refer op, level_t offset = 1, Refer dbg = {});
     template<Sort = Sort::Univ>
-    const Def* umax(Defs, Refer dbg = {});
+    const Def* umax(DefArray, Refer dbg = {});
     const Type* type(Refer level, Refer dbg = {});
     const Type* type_infer_univ(Refer dbg = {}) { return type(nom_infer_univ(dbg), dbg); }
     template<level_t level = 0>

@@ -86,7 +86,7 @@ const Def* World::uinc(Refer op, level_t offset, Refer dbg) {
 }
 
 template<Sort sort>
-const Def* World::umax(Defs ops, Refer dbg) {
+const Def* World::umax(DefArray ops, Refer dbg) {
     level_t lvl = 0;
     for (auto op : ops) {
         // clang-format off
@@ -110,6 +110,7 @@ const Def* World::umax(Defs ops, Refer dbg) {
     }
 
     auto ldef = lvl == level_t(-1) ? (const Def*)unify<UMax>(ops.size(), *this, ops, dbg) : lit_univ(lvl, dbg);
+    std::ranges::sort(ops, [](auto op1, auto op2) { return op1->gid() < op2->gid(); });
     return sort == Sort::Univ ? ldef : type(ldef, dbg);
 }
 
@@ -498,10 +499,10 @@ const Def* World::gid2def(u32 gid) {
 template const Def* World::raw_app<true>(Refer, Refer, Refer, Refer);
 template const Def* World::raw_app<false>(Refer, Refer, Refer, Refer);
 #endif
-template const Def* World::umax<Sort::Term>(Defs, Refer);
-template const Def* World::umax<Sort::Type>(Defs, Refer);
-template const Def* World::umax<Sort::Kind>(Defs, Refer);
-template const Def* World::umax<Sort::Univ>(Defs, Refer);
+template const Def* World::umax<Sort::Term>(DefArray, Refer);
+template const Def* World::umax<Sort::Type>(DefArray, Refer);
+template const Def* World::umax<Sort::Kind>(DefArray, Refer);
+template const Def* World::umax<Sort::Univ>(DefArray, Refer);
 template const Def* World::ext<true>(Refer, Refer);
 template const Def* World::ext<false>(Refer, Refer);
 template const Def* World::bound<true>(Defs, Refer);
