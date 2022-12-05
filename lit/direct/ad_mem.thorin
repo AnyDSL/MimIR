@@ -82,24 +82,17 @@
     .let pullback_load_692016: [%mem.M, .Cn [.Idx 4294967296, .Cn [%mem.M, .Idx 4294967296]]] = %mem.load (.Cn [.Idx 4294967296, .Cn [%mem.M, .Idx 4294967296]], 0) (aug_load_691882#0:(.Idx 2), pullback_lea_691249);
     .con comp_tup_pb__690636 _691889::[_691891: .Idx 4294967296, _691894: .Cn [%mem.M, .Idx 4294967296]] @(1:(.Idx 2)) = {
         .con comp_tup_pb__cont_691892 _691940::[_691941: .Idx 4294967296, _692020: .Idx 4294967296] @(1:(.Idx 2)) = {
-            // .let _691942: [%mem.M, .Idx 4294967296] = %direct.cps2ds_dep (.Idx 4294967296, Uf_691899) zero_pb_691934 _691941;
-            //                                        ^
             .let _691942: [%mem.M, .Idx 4294967296] = (⊤:%mem.M, 42:(.Idx 4294967296));
-            // .let _692021: [%mem.M, .Idx 4294967296] = %direct.cps2ds_dep (.Idx 4294967296, Uf_691949) pullback_load_692016#1:(.Idx 2) _692020;
-            //                                        ^
             .let _692021: [%mem.M, .Idx 4294967296] = (⊤:%mem.M, 42:(.Idx 4294967296));
             .let _692028: .Idx 4294967296 = %core.wrap.add 4294967296 0 (_691942#1:(.Idx 2), _692021#1:(.Idx 2));
             _691894 (⊤:%mem.M, _692028)
         };
-        // comp_tup_pb__cont_691892 (42:(.Idx 4294967296), 42:(.Idx 4294967296))
         .let _691886: [.Idx 4294967296, .Cn [.Idx 4294967296, .Cn «2; .Idx 4294967296»]] = %direct.cps2ds_dep («2; .Idx 4294967296», Uf_690659) eta_inner_mul_deriv_cps_690710 (100:(.Idx 4294967296), aug_load_691882#1:(.Idx 2));
         //                                                                                  ^
         _691886#1:(.Idx 2) (_691891, comp_tup_pb__cont_691892)
     };
-    // .let _692035: [%mem.M, .Idx 4294967296] = (⊤:%mem.M,42:(.Idx 4294967296));
     .let _692035: [%mem.M, .Idx 4294967296] = %direct.cps2ds_dep (.Idx 4294967296, Uf_690595) comp_tup_pb__690636 1:(.Idx 4294967296);
     //                                        ^
-    // .let _692095: [%mem.M, .Idx 4294967296] = (pullback_load_692016#0:(.Idx 2), 43:(.Idx 4294967296));
     .let _692095: [%mem.M, .Idx 4294967296] = %direct.cps2ds_dep (%mem.M, Uf_692052) zero_pb_692087 pullback_load_692016#0:(.Idx 2);
     //                                        ^
     .let _692102: .Idx 4294967296 = %core.wrap.add 4294967296 0 (_692035#1:(.Idx 2), _692095#1:(.Idx 2));
