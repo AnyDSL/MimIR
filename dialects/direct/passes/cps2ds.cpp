@@ -162,6 +162,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
         }
 
         auto new_callee = rewrite_body(app->callee());
+        // auto new_callee = app->callee();
         return world.app(new_callee, new_arg);
     }
     // TODO: are ops rewrites + app calle/arg rewrites all possible combinations?
