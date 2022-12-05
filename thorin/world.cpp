@@ -77,7 +77,7 @@ const Type* World::type(const Def* level, const Def* dbg) {
 const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
     auto pi = callee->type()->isa<Pi>();
 
-    // (A -> B, A -> B)#i  =>  A -> B
+    // (a, b)#i arg     where a = A -> B; b = A -> B
     if (auto extract = callee->type()->isa<Extract>()) {
         if (auto tuple = extract->tuple()->isa<Tuple>()) {
             if (auto uni = checker().is_uniform(tuple->ops(), dbg)) pi = uni->isa<Pi>();
