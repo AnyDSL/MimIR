@@ -41,7 +41,7 @@ struct Loc {
     Loc anew_begin() const { return {file, begin, begin}; }
     Loc anew_finis() const { return {file, finis, finis}; }
     const Def* def(World&) const;
-    explicit operator bool() const { return (bool) begin; }
+    explicit operator bool() const { return (bool)begin; }
 
     std::string file;
     Pos begin = {uint32_t(-1), uint32_t(-1)};

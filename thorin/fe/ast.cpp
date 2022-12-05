@@ -9,6 +9,8 @@
 
 namespace thorin::fe {
 
+const Def* Ptrn::dbg() { return type_->world().dbg(Debug(sym(), loc())); }
+
 /*
  * bind
  */
