@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Clone recursively
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -45,7 +45,7 @@ jobs:
           cmake -B ${{github.workspace}}/build -G Ninja -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DTHORIN_BUILD_TESTING=ON -DPython3_ROOT_DIR=%PYTHON_PATH%
 
       - name: Install LLVM and Clang
-        uses: KyleMayes/install-llvm-action@v1.5.3
+        uses: KyleMayes/install-llvm-action@v1.6.0
         with:
           version: "14.0.0"
 
