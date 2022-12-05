@@ -25,9 +25,6 @@ jobs:
           ccache_options: max_size=500M
           override_cache_key: mac-latest-ccache-${{matrix.build-type}}
 
-      - name: Configure
-        run: CC=gcc-11 CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DTHORIN_BUILD_TESTING=ON -DPython3_ROOT_DIR=$(dirname $(which python3))
-
       - name: Cache LLVM and Clang
         id: cache-llvm
         uses: actions/cache@v3
@@ -68,6 +65,9 @@ jobs:
           echo "CPPFLAGS=-I$LLVM_PATH/include" >> $GITHUB_ENV
           echo "CC=$LLVM_PATH/bin/clang" >> $GITHUB_ENV
           echo "CXX=$LLVM_PATH/bin/clang++" >> $GITHUB_ENV
+
+      - name: Configure
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DTHORIN_BUILD_TESTING=ON -DPython3_ROOT_DIR=$(dirname $(which python3))
 
       - name: Build
         run: cmake --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target thorin-gtest thorin thorin_affine
