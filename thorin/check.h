@@ -8,6 +8,7 @@ namespace thorin {
 
 const Def* infer_type_level(World&, Defs);
 
+/// Keeps track of α-equivalence.
 class Checker {
 public:
     Checker(World& world)
@@ -15,14 +16,14 @@ public:
 
     World& world() const { return *world_; }
 
-    /// Are @p d1 and @p d2 alpha-equivalent?
+    /// Are @p d1 and @p d2 α-equivalent?
     bool equiv(const Def* d1, const Def* d2, const Def* dbg);
 
     /// Can @p value be assigned to sth of @p type?
     /// @note This is different from `equiv(type, value->type(), dbg)` since @p type may be dependent.
     bool assignable(const Def* type, const Def* value, const Def* dbg);
 
-    /// Yields `defs.front()`, if all @p defs are alpha-equiv%alent and `nullptr` otherwise.
+    /// Yields `defs.front()`, if all @p defs are α-equiv%alent and `nullptr` otherwise.
     const Def* is_uniform(Defs defs, const Def* dbg);
 
     static void swap(Checker& c1, Checker& c2) { std::swap(c1.world_, c2.world_); }
