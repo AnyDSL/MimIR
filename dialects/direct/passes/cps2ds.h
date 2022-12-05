@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include <thorin/def.h>
 #include <thorin/pass/pass.h>
 
@@ -19,6 +21,7 @@ private:
     // Def2Def rewritten_lams;
     Def2Def rewritten_;
     DefSet rewritten_lams;
+    std::vector<Lam*> lam_stack;
     Lam* curr_lam_ = nullptr;
 
     void rewrite_lam(Lam* lam);

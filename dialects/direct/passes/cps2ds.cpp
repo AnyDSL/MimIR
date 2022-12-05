@@ -27,25 +27,39 @@ void CPS2DS::rewrite_lam(Lam* lam) {
     if (rewritten_lams.contains(lam)) return;
     rewritten_lams.insert(lam);
 
+    if (lam->codom()->isa<Type>()) {
+        world().DLOG("skipped type {}", lam);
+        return;
+    }
+
+    lam->world().DLOG("rewrite_lam: {}", lam->name());
+
+    lam_stack.push_back(curr_lam_);
     curr_lam_ = lam;
 
     auto result = rewrite_body(curr_lam_->body());
     // curr_lam_ might be different at this point (newly introduced continuation).
     auto& w = curr_lam_->world();
-    w.DLOG("Result of rewrite {}: {} in {}", lam, result, curr_lam_);
+    w.DLOG("Result of rewrite {} in {}", lam, curr_lam_);
     curr_lam_->set_body(result);
+
+    curr_lam_ = lam_stack.back();
+    lam_stack.pop_back();
 }
 
 const Def* CPS2DS::rewrite_body(const Def* def) {
     if (auto i = rewritten_.find(def); i != rewritten_.end()) return i->second;
     auto new_def    = rewrite_body_(def);
     rewritten_[def] = new_def;
+    // if (new_def != def) { world().DLOG("Rewrote {} to {}", def, new_def); }
+    // assert(new_def == def);
     return rewritten_[def];
 }
 
 const Def* CPS2DS::rewrite_body_(const Def* def) {
     auto& world = def->world();
     if (auto app = def->isa<App>()) {
+        // if (auto app = def->isa<App>(); app && false) {
         auto callee = app->callee();
         auto args   = app->arg();
         // world.DLOG("rewrite callee {} : {}", callee, callee->type());
@@ -154,25 +168,38 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
             }
         }
 
-        auto new_calle = rewrite_body(app->callee());
-        return world.app(new_calle, new_arg);
+        // TODO: rewrite lam
+        auto new_callee = rewrite_body(app->callee());
+        // auto new_callee = callee;
+        world.DLOG("rewrite callee {} : {} [{}]", callee, callee->type(), callee->node_name());
+        world.DLOG("rewritten callee {} : {} [{}]", new_callee, new_callee->type(), new_callee->node_name());
+        return world.app(new_callee, new_arg);
     }
     // TODO: are ops rewrites + app calle/arg rewrites all possible combinations?
     // TODO: check if lam is necessary or if var is enough
 
-    // if (auto lam = def->isa_nom<Lam>()) {
-    //     rewrite_lam(lam);
-    //     return lam;
-    // }
+    if (auto lam = def->isa_nom<Lam>()) {
+        // TODO: rewrite lam
+        // world.DLOG("rewrite standalone lam {} : {}", lam, lam->type());
+        rewrite_lam(lam);
+        return lam;
+    }
 
     // We need this case to not descend into infinite chains through function
     if (auto var = def->isa<Var>()) { return var; }
 
+    if (auto tuple = def->isa<Tuple>()) {
+        // return world.tuple(new_ops, def->dbg());
+        DefArray elements(tuple->ops(), [&](const Def* op) { return rewrite_body(op); });
+        return world.tuple(elements, tuple->dbg());
+    }
+
     // if (auto old_nom = def->isa_nom()) { return old_nom; }
     DefArray new_ops{def->ops(), [&](const Def* op) { return rewrite_body(op); }};
-    if (def->isa<Tuple>()) return world.tuple(new_ops, def->dbg());
 
     return def->rebuild(world, def->type(), new_ops, def->dbg());
+    // return def;
+    // return def->rebuild(world, def->type(), def->ops(), def->dbg());
 }
 
 } // namespace thorin::direct
