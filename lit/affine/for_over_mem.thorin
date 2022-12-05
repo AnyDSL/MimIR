@@ -8,25 +8,26 @@
 .import mem;
 .import core;
 
-.let i32 = .Idx 4294967296;
+.let _32 = 4294967296;
+.let I32 = .Idx _32;
 
-.cn .extern main [mem : %mem.M, argc : i32, argv : %mem.Ptr (%mem.Ptr (i32, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, i32]] = {
+.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (I32, 0), 0), return : .Cn [%mem.M, I32]] = {
     // .let arr_size = 16;
     .let arr_size = ⊤:.Nat;
-    .let (alloc_mem, ptr) = %mem.alloc (<<%core.bitcast (.Nat, i32) argc; i32>>, 0) (mem);
-    .cn for_exit acc :: [mem : %mem.M, i32, i32] = {
-        .let lea = %mem.lea (arr_size, <arr_size; i32>, 0) (ptr, %core.conv.u2u (arr_size, 4294967296) (%core.wrap.sub (0, 4294967296) (argc, 4:i32)));
-        .let (load_mem, val) = %mem.load (i32, 0) (mem, lea);
+    .let (alloc_mem, ptr) = %mem.alloc (<<%core.bitcast (.Nat, I32) argc; I32>>, 0) (mem);
+    .con for_exit acc :: [mem : %mem.M, I32, I32] = {
+        .let lea = %mem.lea (arr_size, <arr_size; I32>, 0) (ptr, %core.conv.u2u _32 arr_size (%core.wrap.sub _32 0 (argc, 4:I32)));
+        .let (load_mem, val) = %mem.load (I32, 0) (mem, lea);
         return (load_mem, val)
     };
-    .cn for_body [i : i32, [mem : %mem.M, acc_a : i32, acc_b : i32], continue : .Cn [%mem.M, i32, i32]] = {
-        .let a : i32 = %core.wrap.add (0:.Nat, 4294967296:.Nat) (i, acc_a);
-        .let b : i32 = %core.wrap.sub (0:.Nat, 4294967296:.Nat) (i, acc_b);
-        .let lea = %mem.lea (arr_size, <arr_size; i32>, 0) (ptr, %core.conv.u2u (arr_size, 4294967296) i);
-        .let store_mem = %mem.store (i32, 0) (mem, lea, a);
+    .con for_body [i : I32, [mem : %mem.M, acc_a : I32, acc_b : I32], continue : .Cn [%mem.M, I32, I32]] = {
+        .let a : I32 = %core.wrap.add _32 0 (i, acc_a);
+        .let b : I32 = %core.wrap.sub _32 0 (i, acc_b);
+        .let lea = %mem.lea (arr_size, <arr_size; I32>, 0) (ptr, %core.conv.u2u _32 arr_size i);
+        .let store_mem = %mem.store (I32, 0) (mem, lea, a);
         continue (store_mem, a, b)
     };
-    %affine.For (4294967296, 3, (%mem.M, i32, i32)) (0:(i32), argc, 1:(i32), (alloc_mem, 0:(i32), 0:(i32)), for_body, for_exit)
+    %affine.For (_32, 3, (%mem.M, I32, I32)) (0:(I32), argc, 1:(I32), (alloc_mem, 0:(I32), 0:(I32)), for_body, for_exit)
 };
 
 // CHECK-NOT: affine.For

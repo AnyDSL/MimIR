@@ -85,8 +85,10 @@ Dialect Dialect::load(const std::string& name, Span<std::string> search_paths) {
                 plugin_path    = full_path.string();
 
                 std::error_code ignore;
-                if (bool reg_file = std::filesystem::is_regular_file(full_path, ignore); reg_file && !ignore)
-                    if (handle.reset(dl::open(full_path.string())); handle) break;
+                if (bool reg_file = std::filesystem::is_regular_file(full_path, ignore); reg_file && !ignore) {
+                    auto path_str = full_path.string();
+                    if (handle.reset(dl::open(path_str)); handle) break;
+                }
             }
             if (handle) break;
         }

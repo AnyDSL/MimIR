@@ -22,7 +22,7 @@ const Def* infer_type_level(World& world, Defs defs) {
 
 bool Checker::equiv(const Def* d1, const Def* d2, const Def* dbg /*= {}*/) {
     if (d1 == d2) return true;
-    if (!d1 || !d2 || d1->is_unfinished() || d2->is_unfinished()) return false;
+    if (!d1 || !d2 || !d1->is_set() || !d2->is_set()) return false;
 
     // normalize: always put smaller gid to the left
     if (d1->gid() > d2->gid()) std::swap(d1, d2);
@@ -49,7 +49,7 @@ bool Checker::equiv_internal(const Def* d1, const Def* d2, const Def* dbg) {
         if (auto n2 = d2->isa_nom()) vars_.emplace_back(n1, n2);
     }
 
-    if (is_sigma_or_arr(d1)) {
+    if (d1->isa<Sigma, Arr>()) {
         if (!equiv(d1->arity(), d2->arity(), dbg)) return false;
 
         if (auto a = isa_lit(d1->arity())) {

@@ -47,59 +47,26 @@ protected:
     bool dirty_;
 };
 
-class RWPhase;
-
-class PhaseRewriter : public Rewriter {
-public:
-    PhaseRewriter(RWPhase& phase, World& old_world, World& new_world)
-        : Rewriter(old_world, new_world)
-        , phase(phase) {}
-
-    std::pair<const Def*, bool> pre_rewrite(const Def*) override;
-    std::pair<const Def*, bool> post_rewrite(const Def*) override;
-
-    RWPhase& phase;
-};
-
-/// Visits the current Phase::world and constructs a new World Phase::new_world along the way.
+/// Visits the current Phase::world and constructs a new RWPhase::world along the way.
 /// It recursively **rewrites** all World::externals().
-class RWPhase : public Phase {
+/// @note You can override Rewriter::rewrite, Rewriter::rewrite_structural, and Rewriter::rewrite_nom.
+class RWPhase : public Phase, public Rewriter {
 public:
     RWPhase(World& world, std::string_view name)
-        : Phase(world, name, false)
-        , new_world_(world.state())
-        , rewriter_(*this, world, new_world_) {}
+        : Phase(world, name, true)
+        , Rewriter(world) {}
 
+    World& world() { return Phase::world(); }
     void start() override;
-
-    /// @name getters
-    ///@{
-    const World& old_world() { return world(); }
-    World& new_world() { return new_world_; }
-    Def2Def& old2new() { return rewriter_.old2new; }
-    ///@}
-
-    /// @name rewrite
-    ///@{
-
-    /// See thorin::Rewriter::rewrite.
-    const Def* rewrite(const Def* old_def) { return rewriter_.rewrite(old_def); }
-    /// See thorin::Rewriter::pre_rewrite.
-    virtual std::pair<const Def*, bool> pre_rewrite(const Def*) { return {nullptr, false}; }
-    /// See thorin::Rewriter::post_rewrite.
-    virtual std::pair<const Def*, bool> post_rewrite(const Def*) { return {nullptr, false}; }
-    ///@}
-
-protected:
-    World new_world_;
-    PhaseRewriter rewriter_;
 };
 
 /// Removes unreachable and dead code by rebuilding the whole World into a new one and `swap`ping afterwards.
-class Cleanup : public RWPhase {
+class Cleanup : public Phase {
 public:
     Cleanup(World& world)
-        : RWPhase(world, "cleanup") {}
+        : Phase(world, "cleanup", false) {}
+
+    void start() override;
 };
 
 /// Like a RWPhase but starts with a fixed-point loop of FPPhase::analyze beforehand.

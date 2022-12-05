@@ -26,19 +26,15 @@ public:
     /// Thus, the forest is pooled into a tree.
     class Base : public RuntimeCast<Base> {
     public:
-        enum class Node { Head, Leaf };
-
-        Base(Node node, Head* parent, int depth, const std::vector<const CFNode*>&);
+        Base(Head* parent, int depth, const std::vector<const CFNode*>&);
         virtual ~Base() = default;
 
-        Node node() const { return node_; }
         int depth() const { return depth_; }
         const Head* parent() const { return parent_; }
         Span<const CFNode*> cf_nodes() const { return cf_nodes_; }
         size_t num_cf_nodes() const { return cf_nodes().size(); }
 
     protected:
-        Node node_;
         Head* parent_;
         std::vector<const CFNode*> cf_nodes_;
         int depth_;
@@ -48,15 +44,13 @@ public:
     class Head : public Base {
     private:
         Head(Head* parent, int depth, const std::vector<const CFNode*>& cf_nodes)
-            : Base(Node, parent, depth, cf_nodes) {}
+            : Base(parent, depth, cf_nodes) {}
 
     public:
         Span<std::unique_ptr<Base>> children() const { return children_; }
         const Base* child(size_t i) const { return children_[i].get(); }
         size_t num_children() const { return children().size(); }
         bool is_root() const { return Base::parent_ == 0; }
-
-        static constexpr auto Node = Base::Node::Head;
 
     private:
         std::vector<std::unique_ptr<Base>> children_;
@@ -69,7 +63,7 @@ public:
     class Leaf : public Base {
     private:
         Leaf(size_t index, Head* parent, int depth, const std::vector<const CFNode*>& cf_nodes)
-            : Base(Node, parent, depth, cf_nodes)
+            : Base(parent, depth, cf_nodes)
             , index_(index) {
             assert(Leaf::num_cf_nodes() == 1);
         }
@@ -78,8 +72,6 @@ public:
         const CFNode* cf_node() const { return Leaf::cf_nodes().front(); }
         /// Index of a DFS of LoopTree::Leaf%s.
         size_t index() const { return index_; }
-
-        static constexpr auto Node = Base::Node::Leaf;
 
     private:
         size_t index_;

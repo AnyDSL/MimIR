@@ -22,7 +22,11 @@ void Bootstrapper::emit(std::ostream& h) {
 
     // clang-format off
     for (const auto& [key, ax] : axioms) {
+        tab.print(h, "#ifdef DOXYGEN // see https://github.com/doxygen/doxygen/issues/9668\n");
+        tab.print(h, "enum {} : flags_t {{\n", ax.tag);
+        tab.print(h, "#else\n");
         tab.print(h, "enum class {} : flags_t {{\n", ax.tag);
+        tab.print(h, "#endif\n");
         ++tab;
         flags_t ax_id = dialect_id | (ax.tag_id << 8u);
 
@@ -46,11 +50,13 @@ void Bootstrapper::emit(std::ostream& h) {
         --tab;
         tab.print(h, "}};\n\n");
 
-        tab.print(h, "inline bool operator==({} lhs, flags_t rhs) {{ return static_cast<flags_t>(lhs) == rhs; }}\n", ax.tag);
-        tab.print(h, "inline flags_t operator&({} lhs, flags_t rhs) {{ return static_cast<flags_t>(lhs) & rhs; }}\n", ax.tag);
-        tab.print(h, "inline flags_t operator&({} lhs, {} rhs) {{ return static_cast<flags_t>(lhs) & static_cast<flags_t>(rhs); }}\n", ax.tag, ax.tag);
-        tab.print(h, "inline flags_t operator|({} lhs, flags_t rhs) {{ return static_cast<flags_t>(lhs) | rhs; }}\n", ax.tag);
-        tab.print(h, "inline flags_t operator|({} lhs, {} rhs) {{ return static_cast<flags_t>(lhs) | static_cast<flags_t>(rhs); }}\n\n", ax.tag, ax.tag);
+        if (!ax.subs.empty()) {
+            tab.print(h, "inline bool operator==({} lhs, flags_t rhs) {{ return static_cast<flags_t>(lhs) == rhs; }}\n", ax.tag);
+            tab.print(h, "inline flags_t operator&({} lhs, flags_t rhs) {{ return static_cast<flags_t>(lhs) & rhs; }}\n", ax.tag);
+            tab.print(h, "inline flags_t operator&({} lhs, {} rhs) {{ return static_cast<flags_t>(lhs) & static_cast<flags_t>(rhs); }}\n", ax.tag, ax.tag);
+            tab.print(h, "inline flags_t operator|({} lhs, flags_t rhs) {{ return static_cast<flags_t>(lhs) | rhs; }}\n", ax.tag);
+            tab.print(h, "inline flags_t operator|({} lhs, {} rhs) {{ return static_cast<flags_t>(lhs) | static_cast<flags_t>(rhs); }}\n\n", ax.tag, ax.tag);
+        }
 
         print(outer_namespace.emplace_back(), "template<> constexpr size_t Axiom::Num<{}::{}> = {};\n", dialect_, ax.tag, ax.subs.size());
 

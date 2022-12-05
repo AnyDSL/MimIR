@@ -12,9 +12,9 @@ const Def* infer_type_level(World&, Defs);
 class Checker {
 public:
     Checker(World& world)
-        : world_(world) {}
+        : world_(&world) {}
 
-    World& world() const { return world_; }
+    World& world() const { return *world_; }
 
     /// Are @p d1 and @p d2 α-equivalent?
     bool equiv(const Def* d1, const Def* d2, const Def* dbg);
@@ -26,6 +26,8 @@ public:
     /// Yields `defs.front()`, if all @p defs are α-equiv%alent and `nullptr` otherwise.
     const Def* is_uniform(Defs defs, const Def* dbg);
 
+    static void swap(Checker& c1, Checker& c2) { std::swap(c1.world_, c2.world_); }
+
 private:
     bool equiv_internal(const Def*, const Def*, const Def*);
 
@@ -35,7 +37,7 @@ private:
         Equiv,
     };
 
-    World& world_;
+    World* world_;
     DefDefMap<Equiv> equiv_;
     std::deque<std::pair<Def*, Def*>> vars_;
 };

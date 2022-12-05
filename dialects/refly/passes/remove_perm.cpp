@@ -1,9 +1,5 @@
 #include "dialects/refly/passes/remove_perm.h"
 
-#include <iostream>
-
-#include <thorin/lam.h>
-
 #include "dialects/refly/refly.h"
 
 namespace thorin::refly {
