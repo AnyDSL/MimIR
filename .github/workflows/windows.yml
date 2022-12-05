@@ -21,7 +21,7 @@ jobs:
 
       - name: Install LIT
         shell: cmd
-        run: python -m pip install lit
+        run: python -m pip install lit psutil
         
       - name: Install FileCheck
         uses: i3h/download-release-asset@v1
