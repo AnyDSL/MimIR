@@ -719,31 +719,28 @@ Lam* Parser::parse_lam(bool decl) {
     auto tok      = lex();
     bool is_cn    = tok.isa(Tok::Tag::K_cn) || tok.isa(Tok::Tag::K_con);
     auto prec     = is_cn ? Tok::Prec::Bot : Tok::Prec::Pi;
-    bool external = accept(Tok::Tag::K_extern).has_value();
+    bool external = decl && accept(Tok::Tag::K_extern).has_value();
     Sym sym       = decl ? parse_sym("nominal lambda") : anonymous_sym();
 
     auto outer = scopes_.curr();
-    scopes_.push();            // pi scope
-    Scopes::Scope other_scope; // lam scope
+    scopes_.push();
 
-    Lam* last_lam  = nullptr;
-    Lam* first_lam = nullptr;
-    std::deque<Pi*> pis;
+    std::deque<std::pair<Pi*, Lam*>> funs;
+    Lam* first = nullptr;
     do {
         const Def* filter = world().lit_bool(accept(Tok::Tag::T_bang).has_value());
         bool implicit     = accept(Tok::Tag::T_dot).has_value();
         auto dom_p        = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda", prec);
         auto dom_t        = dom_p->type(world());
         auto pi           = world().nom_pi(world().type_infer_univ())->set_dom(dom_t);
-        auto var_dbg      = world().dbg(dom_p->sym());
-        auto pi_var       = pi->var(var_dbg);
+        auto lam          = world().nom_lam(pi, first == nullptr ? track.named(sym) : nullptr);
+        auto lam_var      = lam->var(dom_p->dbg());
 
-        dom_p->bind(scopes_, pi_var);
-        scopes_.swap(other_scope); // swap to lam scope
+        if (first == nullptr) {
+            first = lam;
+            if (external) first->make_external();
+        }
 
-        auto lam     = world().nom_lam(pi, last_lam ? nullptr : track.named(sym));
-        auto lam_var = lam->var(var_dbg);
-        if (!first_lam) first_lam = lam;
         dom_p->bind(scopes_, lam_var);
 
         if (accept(Tok::Tag::T_at)) {
@@ -756,46 +753,47 @@ Lam* Parser::parse_lam(bool decl) {
             }
         }
         lam->set_filter(filter);
-        scopes_.swap(other_scope); // swap to pi scope
 
-        if (!pis.empty()) {
-            pis.back()->set_codom(pi);
-            last_lam->set_body(lam);
-        } else if (external) {
-            lam->make_external();
-        }
-
-        last_lam = lam;
-        pis.emplace_back(pi);
+        funs.emplace_back(std::pair(pi, lam));
     } while (!ahead().isa(Tok::Tag::T_arrow) && !ahead().isa(Tok::Tag::T_assign) &&
              !ahead().isa(Tok::Tag::T_semicolon));
 
     auto codom = is_cn                     ? world().type_bot()
                : accept(Tok::Tag::T_arrow) ? parse_expr("return type of a lambda", Tok::Prec::Arrow)
                                            : world().nom_infer_type();
-    pis.back()->set_codom(codom);
+    for (auto [pi, lam] : funs | std::ranges::views::reverse) {
+        // First, connect old codom to lam. Otherwise, scope will not find it.
+        pi->set_codom(codom);
+        Scope scope(lam);
+        ScopeRewriter rw(world(), scope);
+        rw.map(lam->var(), pi->var(lam->var()->dbg()));
 
-    for (auto& pi : pis | std::ranges::views::reverse) {
+        // Now update.
+        codom = rw.rewrite(codom);
+        pi->set_codom(codom);
         pi->set_type(codom->unfold_type());
+
         codom = pi;
     }
 
-    scopes_.bind(outer, sym, first_lam);
+    scopes_.bind(outer, sym, first);
 
-    scopes_.swap(other_scope); // swap to lam scope
-    if (accept(Tok::Tag::T_assign)) {
-        auto body = parse_decls("body of a lambda");
-        last_lam->set_body(body);
-    } else {
+    auto body = accept(Tok::Tag::T_assign) ? parse_decls("body of a lambda") : nullptr;
+    if (!body) {
         if (!decl) err(prev_, "body of a lambda expression is mandatory");
         // TODO error message if filter is non .ff
-        last_lam->unset(0);
+        funs.back().second->unset(0);
+    }
+
+    for (auto [_, lam] : funs | std::ranges::views::reverse) {
+        lam->set_body(body);
+        body = lam;
     }
 
     if (decl) expect(Tok::Tag::T_semicolon, "end of lambda");
 
-    scopes_.pop(); // lam scope
-    return first_lam;
+    scopes_.pop();
+    return first;
 }
 
 void Parser::parse_def(Sym sym /*= {}*/) {

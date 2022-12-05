@@ -86,7 +86,6 @@ bool Checker::equiv_internal(Refer d1, Refer d2, Refer dbg, bool opt) {
         for (auto [n1, n2] : vars_) {
             if (var->nom() == n1) return d2->as<Var>()->nom() == n2;
         }
-
         // TODO what if Var is free?
         return false;
     }
