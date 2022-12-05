@@ -68,6 +68,9 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
                         world.DLOG("rewrite cps axiom {} : {}", ty_app, ty_app->type());
                         // TODO: rewrite function?
                         auto cps_fun = fun_app->arg();
+                        cps_fun      = rewrite_body(cps_fun);
+                        // if (!cps_fun->isa_nom<Lam>()) { world.DLOG("cps_fun {} is not a lambda", cps_fun); }
+                        // rewrite_lam(cps_fun->as_nom<Lam>());
                         world.DLOG("function: {} : {}", cps_fun, cps_fun->type());
 
                         // ```
@@ -174,7 +177,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
     }
 
     // We need this case to not descend into infinite chains through function
-    if (auto var = def->isa<Var>()) { return var; }
+    // if (auto var = def->isa<Var>()) { return var; }
 
     if (auto tuple = def->isa<Tuple>()) {
         DefArray elements(tuple->ops(), [&](const Def* op) { return rewrite_body(op); });
