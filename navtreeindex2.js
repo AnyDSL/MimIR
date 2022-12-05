@@ -79,10 +79,10 @@ var NAVTREEINDEX2 =
 "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350":[3,0,0,25,136],
 "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350":[3,0,0,25,135],
 "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350":[3,0,0,25,134],
-"classthorin_1_1Axiom.html#a7b4bcdf992c21ae83363f25df05b1d25":[3,0,0,25,207],
 "classthorin_1_1Axiom.html#a7b4bcdf992c21ae83363f25df05b1d25":[5,0,0,21,207],
+"classthorin_1_1Axiom.html#a7b4bcdf992c21ae83363f25df05b1d25":[3,0,0,25,207],
 "classthorin_1_1Axiom.html#a862de53aa535aa101e327833e9eecd6f":[5,0,0,21,12,0],
-"classthorin_1_1Axiom.html#a862de53aa535aa101e327833e9eecd6f":[6,0,0,1,0,3,0,4,0],
+"classthorin_1_1Axiom.html#a862de53aa535aa101e327833e9eecd6f":[6,0,0,1,0,3,0,3,0],
 "classthorin_1_1Axiom.html#a862de53aa535aa101e327833e9eecd6f":[3,0,0,25,12,0],
 "classthorin_1_1Axiom.html#a90bea664417af17801b73ee688147b7d":[5,0,0,21,0,0],
 "classthorin_1_1Axiom.html#a90bea664417af17801b73ee688147b7d":[6,0,3,7,1,0],
@@ -225,6 +225,7 @@ var NAVTREEINDEX2 =
 "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39":[3,0,0,25,36],
 "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39":[3,0,0,25,37],
 "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39":[3,0,0,25,61],
+"classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39":[3,0,0,25,106],
 "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39":[3,0,0,25,51],
 "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39":[3,0,0,25,52],
 "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39":[3,0,0,25,53],
@@ -246,8 +247,7 @@ var NAVTREEINDEX2 =
 "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39":[3,0,0,25,69],
 "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39":[3,0,0,25,70],
 "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39":[3,0,0,25,71],
-"classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39":[3,0,0,25,106],
-"classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39":[3,0,0,25,98],
-"classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39":[3,0,0,25,43],
-"classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39":[3,0,0,25,99]
+"classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39":[3,0,0,25,105],
+"classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39":[3,0,0,25,41],
+"classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39":[3,0,0,25,42]
 };
