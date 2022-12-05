@@ -54,7 +54,7 @@ jobs:
           
       - name: Install LIT
         run: |
-          python3 -m pip install lit
+          python3 -m pip install lit psutil
           ln -s ${{github.workspace}}/bin/FileCheck-x86_64-mac ${{github.workspace}}/bin/FileCheck
           chmod +x ${{github.workspace}}/bin/FileCheck
 
