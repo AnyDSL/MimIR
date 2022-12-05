@@ -55,11 +55,12 @@ const Def* CPS2DS::rewrite_body(const Def* def) {
 const Def* CPS2DS::rewrite_body_(const Def* def) {
     auto& world = def->world();
     if (auto app = def->isa<App>()) {
-        auto callee  = app->callee();
-        auto args    = app->arg();
-        auto new_arg = rewrite_body(app->arg());
+        auto callee     = app->callee();
+        auto args       = app->arg();
+        auto new_callee = rewrite_body(callee);
+        auto new_arg    = rewrite_body(app->arg());
 
-        if (auto fun_app = callee->isa<App>()) {
+        if (auto fun_app = new_callee->isa<App>()) {
             if (auto ty_app = fun_app->callee()->isa<App>(); ty_app) {
                 if (auto axiom = ty_app->callee()->isa<Axiom>()) {
                     if (axiom->flags() == ((flags_t)Axiom::Base<cps2ds_dep>)) {
@@ -164,7 +165,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
             }
         }
 
-        auto new_callee = rewrite_body(app->callee());
+        // auto new_callee = rewrite_body(app->callee());
         // auto new_callee = app->callee();
         return world.app(new_callee, new_arg);
     }
