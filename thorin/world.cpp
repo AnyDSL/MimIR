@@ -88,7 +88,7 @@ const Def* World::uinc(Refer op, level_t offset, Refer dbg) {
 template<Sort sort>
 const Def* World::umax(DefArray ops, Refer dbg) {
     level_t lvl = 0;
-    for (auto op : ops) {
+    for (auto& op : ops) {
         // clang-format off
         switch (sort) {
             case Sort::Term:  op = op->type()->unfold_type()->as<Type>()->level(); break;
