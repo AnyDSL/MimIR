@@ -16,8 +16,9 @@ public:
     void enter() override;
 
 private:
-    Def2Def rewritten_lams;
+    // Def2Def rewritten_lams;
     Def2Def rewritten_;
+    DefSet rewritten_lams;
     Lam* curr_lam_ = nullptr;
 
     void rewrite_lam(Lam* lam);

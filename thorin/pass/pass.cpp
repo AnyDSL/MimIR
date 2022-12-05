@@ -47,7 +47,7 @@ void PassMan::run() {
     world().debug_dump();
 
     for (auto&& pass : passes_) pass->prepare();
-    
+
     auto externals = std::vector(world().externals().begin(), world().externals().end());
     for (const auto& [_, nom] : externals) {
         analyzed(nom);
@@ -65,7 +65,7 @@ void PassMan::run() {
             if (pass->inspect()) pass->enter();
         }
 
-        curr_nom_->world().DLOG("curr_nom: {} : {}", curr_nom_, curr_nom_->type());
+        // curr_nom_->world().DLOG("curr_nom: {} : {}", curr_nom_, curr_nom_->type());
         for (size_t i = 0, e = curr_nom_->num_ops(); i != e; ++i) { curr_nom_->set(i, rewrite(curr_nom_->op(i))); }
 
         world().VLOG("=== analyze ===");
