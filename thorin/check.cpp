@@ -55,8 +55,12 @@ bool Checker::equiv(Refer d1, Refer d2, Refer dbg, bool opt) {
         }
     }
 
-    bool res                  = equiv_internal(d1, d2, dbg, opt);
-    equiv_[std::pair(d1, d2)] = res ? Equiv::Equiv : Equiv::Distinct;
+    bool res = equiv_internal(d1, d2, dbg, opt);
+    auto i = equiv_.find(std::pair(d1, d2));
+    if (opt)
+        i->second = res ? Equiv::Equiv : Equiv::Distinct;
+    else
+        equiv_.erase(i);
     return res;
 }
 
