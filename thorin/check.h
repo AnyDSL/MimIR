@@ -13,7 +13,7 @@ public:
 
     World& world() const { return *world_; }
 
-    /// Are @p d1 and @p d2 alpha-equivalent?
+    /// Are @p d1 and @p d2 α-equivalent?
     /// If both @p d1 and @p d2 are Def::unset Infer%s, @p opt%imisitc indicates the return value.
     /// Usually, you want to be **opt**imisitic; Checker::is_uniform, however, is pessimistic.
     bool equiv(Refer d1, Refer d2, Refer dbg, bool opt = true);
@@ -22,7 +22,7 @@ public:
     /// @note This is different from `equiv(type, value->type(), dbg)` since @p type may be dependent.
     bool assignable(Refer type, Refer value, Refer dbg);
 
-    /// Yields `defs.front()`, if all @p defs are alpha-equiv%alent and `nullptr` otherwise.
+    /// Yields `defs.front()`, if all @p defs are α-equiv%alent and `nullptr` otherwise.
     const Def* is_uniform(Defs defs, Refer dbg);
 
     static void swap(Checker& c1, Checker& c2) { std::swap(c1.world_, c2.world_); }

@@ -117,6 +117,13 @@ const Def* World::umax(DefArray ops, Refer dbg) {
 const Def* World::app(Refer callee, Refer arg, Refer dbg) {
     auto pi = callee->type()->isa<Pi>();
 
+    // (a, b)#i arg     where a = A -> B; b = A -> B
+    if (auto extract = callee->type()->isa<Extract>()) {
+        if (auto tuple = extract->tuple()->isa<Tuple>()) {
+            if (auto uni = checker().is_uniform(tuple->ops(), dbg)) pi = uni->isa<Pi>();
+        }
+    }
+
     if (err()) {
         if (!pi)
             err()->err(dbg->loc(), "called expression '{}' : '{}' is not of function type", callee, callee->type());
@@ -167,7 +174,8 @@ const Def* World::sigma(Defs ops, Refer dbg) {
     auto n = ops.size();
     if (n == 0) return sigma();
     if (n == 1) return ops[0];
-    if (auto uni = checker().is_uniform(ops, dbg)) return arr(n, uni, dbg);
+    auto front = ops.front();
+    if (std::ranges::all_of(ops.skip_front(), [front](auto op) { return front == op; })) return arr(n, front, dbg);
     return unify<Sigma>(ops.size(), umax<Sort::Type>(ops, dbg), ops, dbg);
 }
 
@@ -197,7 +205,8 @@ const Def* World::tuple(Refer type, Defs ops, Refer dbg) {
     if (!type->isa_nom<Sigma>()) {
         if (n == 0) return tuple();
         if (n == 1) return ops[0];
-        if (auto uni = checker().is_uniform(ops, dbg)) return pack(n, uni, dbg);
+        auto front = ops.front();
+        if (std::ranges::all_of(ops.skip_front(), [front](auto op) { return front == op; })) return pack(n, front, dbg);
     }
 
     if (n != 0) {
