@@ -55,12 +55,9 @@ bool Checker::equiv(Refer d1, Refer d2, Refer dbg, bool opt) {
         }
     }
 
-    bool res = equiv_internal(d1, d2, dbg, opt);
-    auto i = equiv_.find(std::pair(d1, d2));
-    if (opt)
-        i->second = res ? Equiv::Equiv : Equiv::Distinct;
-    else
-        equiv_.erase(i);
+    // TODO cope with opt
+    bool res                  = equiv_internal(d1, d2, dbg, opt);
+    equiv_[std::pair(d1, d2)] = res ? Equiv::Equiv : Equiv::Distinct;
     return res;
 }
 
@@ -89,7 +86,9 @@ bool Checker::equiv_internal(Refer d1, Refer d2, Refer dbg, bool opt) {
         for (auto [n1, n2] : vars_) {
             if (var->nom() == n1) return d2->as<Var>()->nom() == n2;
         }
-        return opt; // Var is free
+
+        // TODO what if Var is free?
+        return false;
     }
 
     return std::ranges::equal(d1->ops(), d2->ops(), [&](auto op1, auto op2) { return equiv(op1, op2, dbg, opt); });
@@ -160,6 +159,7 @@ void Sigma::check() {
 
 void Lam::check() {
     auto& w = world();
+    return; // TODO
     if (w.err()) {
         if (!w.checker().equiv(filter()->type(), w.type_bool(), filter()->dbg()))
             w.err()->err(filter()->loc(), "filter of lambda is of type '{}' but must be of type '.Bool'",
