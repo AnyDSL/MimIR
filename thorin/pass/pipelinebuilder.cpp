@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "thorin/def.h"
+#include "thorin/dialects.h"
 #include "thorin/lattice.h"
 
 #include "thorin/pass/fp/beta_red.h"
@@ -32,46 +33,20 @@ int PipelineBuilder::last_phase() {
     return max_phase;
 }
 
-void PipelineBuilder::append_phase_end(PhaseBuilder phase, int priority) {
-    append_phase(last_phase() + 1, phase, priority);
-}
-void PipelineBuilder::append_pass_in_end(PassBuilder pass, int priority) {
-    extend_opt_phase(last_phase(), pass, priority);
-}
-void PipelineBuilder::append_pass_after_end(PassBuilder pass, int priority) {
-    extend_opt_phase(last_phase() + 1, pass, priority);
-}
+void PipelineBuilder::append_phase_end(PhaseBuilder phase) { append_phase(last_phase() + 1, phase); }
+void PipelineBuilder::append_pass_in_end(PassBuilder pass) { extend_opt_phase(last_phase(), pass); }
+void PipelineBuilder::append_pass_after_end(PassBuilder pass) { extend_opt_phase(last_phase() + 1, pass); }
 
-void PipelineBuilder::extend_opt_phase(PassBuilder&& extension) { extend_opt_phase(Opt_Phase, extension); }
-
-void PipelineBuilder::extend_codegen_prep_phase(PassBuilder&& extension) {
-    extend_opt_phase(Codegen_Prep_Phase, extension);
-}
-
-void PipelineBuilder::append_phase(int i, PhaseBuilder extension, int priority) {
+void PipelineBuilder::append_phase(int i, PhaseBuilder extension) {
     if (!phase_extensions_.contains(i)) { phase_extensions_[i] = PhaseList(); }
-    phase_extensions_[i].push_back({priority, extension});
+    phase_extensions_[i].push_back(extension);
 }
 
-void PipelineBuilder::extend_opt_phase(int i, PassBuilder extension, int priority) {
+void PipelineBuilder::extend_opt_phase(int i, PassBuilder extension) {
     // adds extension to the i-th optimization phase
     // if the ith phase does not exist, it is created
     if (!pass_extensions_.contains(i)) { pass_extensions_[i] = std::vector<PrioPassBuilder>(); }
-    pass_extensions_[i].push_back({priority, extension});
-}
-
-void PipelineBuilder::add_opt(int i) {
-    extend_opt_phase(
-        i,
-        [](thorin::PassMan& man) {
-            man.add<PartialEval>();
-            man.add<BetaRed>();
-            auto er = man.add<EtaRed>();
-            auto ee = man.add<EtaExp>(er);
-            man.add<Scalerize>(ee);
-            man.add<TailRecElim>(er);
-        },
-        Pass_Internal_Priority); // elevated priority
+    pass_extensions_[i].push_back(extension);
 }
 
 std::vector<int> PipelineBuilder::passes() {
@@ -96,9 +71,7 @@ std::vector<int> PipelineBuilder::phases() {
 std::unique_ptr<PassMan> PipelineBuilder::opt_phase(int i, World& world) {
     auto man = std::make_unique<PassMan>(world);
 
-    std::stable_sort(pass_extensions_[i].begin(), pass_extensions_[i].end(), passCmp());
-
-    for (const auto& ext : pass_extensions_[i]) { ext.second(*man); }
+    for (const auto& ext : pass_extensions_[i]) { ext(*man); }
 
     return man;
 }
@@ -110,9 +83,17 @@ void PipelineBuilder::buildPipelinePart(int i, Pipeline& pipeline) {
     if (pass_extensions_.contains(i)) { pipeline.add<PassManPhase>(opt_phase(i, pipeline.world())); }
 
     if (phase_extensions_.contains(i)) {
-        std::stable_sort(phase_extensions_[i].begin(), phase_extensions_[i].end(), phaseCmp());
-        for (const auto& ext : phase_extensions_[i]) { ext.second(pipeline); }
+        for (const auto& ext : phase_extensions_[i]) { ext(pipeline); }
     }
+}
+
+void PipelineBuilder::register_dialect(Dialect& dialect) { dialects_.push_back(&dialect); }
+
+bool PipelineBuilder::is_registered_dialect(std::string name) {
+    for (auto& dialect : dialects_) {
+        if (dialect->name() == name) { return true; }
+    }
+    return false;
 }
 
 } // namespace thorin

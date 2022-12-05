@@ -13,6 +13,7 @@
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
 
+#include "dialects/mem/autogen.h"
 #include "dialects/mem/passes/fp/copy_prop.h"
 #include "dialects/mem/passes/fp/ssa_constr.h"
 #include "dialects/mem/passes/rw/alloc2malloc.h"
@@ -24,28 +25,10 @@ using namespace thorin;
 
 extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
     return {"mem",
-            [](PipelineBuilder& builder) {
-                builder.extend_opt_phase([](PassMan& man) {
-                    auto br = man.add<BetaRed>();
-                    auto er = man.add<EtaRed>();
-                    auto ee = man.add<EtaExp>(er);
-                    man.add<mem::SSAConstr>(ee);
-                    man.add<mem::CopyProp>(br, ee);
-                });
-                builder.extend_codegen_prep_phase([](PassMan& man) {
-                    man.add<mem::RememElim>();
-                    man.add<mem::Alloc2Malloc>();
-                });
-                // builder.extend_opt_phase(104, [](PassMan& man) { man.add<mem::Reshape>(mem::Reshape::Arg); });
-                // builder.append_phase(130, [](Pipeline& pipeline) { pipeline.add<mem::AddMem>(); });
-
-                // after AD, before closure conv
-                // builder.extend_opt_phase(139, [](PassMan& man) { man.add<mem::Reshape>(mem::Reshape::Flat); });
-            },
             [](Passes& passes) {
                 register_pass_with_arg<mem::ssa_pass, mem::SSAConstr, EtaExp>(passes);
                 register_pass<mem::remem_elim_pass, mem::RememElim>(passes);
-                register_pass<mem::Alloc2Malloc, mem::Alloc2Malloc>(passes);
+                register_pass<mem::alloc2malloc_pass, mem::Alloc2Malloc>(passes);
 
                 // TODO: generalize register_pass_with_arg
                 passes[flags_t(Axiom::Base<mem::copy_prop_pass>)] = [&](World& world, PipelineBuilder& builder,

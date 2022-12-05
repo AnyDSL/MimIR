@@ -4,6 +4,8 @@
 #include <thorin/dialects.h>
 #include <thorin/pass/pass.h>
 
+#include "thorin/error.h"
+
 #include "thorin/pass/fp/beta_red.h"
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/pass/fp/eta_red.h"
@@ -16,25 +18,12 @@
 
 #include "dialects/compile/autogen.h"
 #include "dialects/compile/passes/debug_print.h"
+#include "dialects/compile/passes/internal_cleanup.h"
 
 using namespace thorin;
 
 void add_phases(DefVec& phases, World& world, Passes& passes, PipelineBuilder& builder) {
-    for (auto phase : phases) {
-        auto [phase_def, phase_args] = collect_args(phase);
-        world.DLOG("phase: {}", phase_def);
-        if (auto phase_ax = phase_def->isa<Axiom>()) {
-            auto flag = phase_ax->flags();
-            if (passes.contains(flag)) {
-                auto phase_fun = passes[flag];
-                phase_fun(world, builder, phase);
-            } else {
-                world.WLOG("phase '{}' not found", phase_ax->name());
-            }
-        } else {
-            world.WLOG("phase '{}' is not an axiom", phase_def);
-        }
-    }
+    for (auto phase : phases) { compile::handle_optimization_part(phase, world, passes, builder); }
 }
 
 void add_passes(World& world, PipelineBuilder& builder, Passes& passes, DefVec& pass_list) {
@@ -44,25 +33,11 @@ void add_passes(World& world, PipelineBuilder& builder, Passes& passes, DefVec& 
     // We create a new dummy phase in which the passes should be inserted.
     builder.append_phase_end([](Pipeline&) {});
 
-    for (auto pass : pass_list) {
-        auto [pass_def, pass_args] = collect_args(pass);
-        world.DLOG("pass: {}", pass_def);
-        if (auto pass_ax = pass_def->isa<Axiom>()) {
-            auto flag = pass_ax->flags();
-            if (passes.contains(flag)) {
-                auto pass_fun = passes[flag];
-                pass_fun(world, builder, pass);
-            } else {
-                world.ELOG("pass '{}' not found", pass_ax->name());
-            }
-        } else {
-            world.ELOG("pass '{}' is not an axiom", pass_def);
-        }
-    }
+    for (auto pass : pass_list) { compile::handle_optimization_part(pass, world, passes, builder); }
 }
 
 extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
-    return {"compile", nullptr,
+    return {"compile",
             [](Passes& passes) {
                 auto debug_phase_flag    = flags_t(Axiom::Base<thorin::compile::debug_phase>);
                 passes[debug_phase_flag] = [](World& world, PipelineBuilder& builder, const Def* app) {
@@ -104,6 +79,7 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
 
                 register_pass<compile::lam_spec_pass, LamSpec>(passes);
                 register_pass<compile::ret_wrap_pass, RetWrap>(passes);
+                register_pass<compile::internal_cleanup_pass, compile::InternalCleanup>(passes);
 
                 register_pass_with_arg<compile::eta_exp_pass, EtaExp, EtaRed>(passes);
                 register_pass_with_arg<compile::scalerize_pass, Scalerize, EtaExp>(passes);

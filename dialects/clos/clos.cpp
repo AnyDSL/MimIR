@@ -139,40 +139,6 @@ using namespace thorin;
 
 extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
     return {"clos",
-            [](PipelineBuilder& builder) {
-                int base = 140;
-                // closure_conv
-
-                builder.add_opt(base++);
-
-                builder.extend_opt_phase(base++, [](PassMan& man) { man.add<DebugDump>(); });
-                builder.extend_opt_phase(base++, [](PassMan& man) { man.add<mem::Reshape>(mem::Reshape::Flat); });
-                // or codegen prep phase
-                builder.extend_opt_phase(base++, [](PassMan& man) { man.add<mem::AddMemWrapper>(); });
-                builder.extend_opt_phase(base++, [](PassMan& man) { man.add<DebugDump>(); });
-
-                builder.extend_opt_phase(base++, [](PassMan& man) { man.add<clos::ClosConvPrep>(nullptr); });
-                builder.extend_opt_phase(base++, [](PassMan& man) { man.add<EtaExp>(nullptr); });
-                builder.extend_opt_phase(base++, [](PassMan& man) { man.add<ClosConvWrapper>(); });
-
-                builder.extend_opt_phase(base++, [](PassMan& man) {
-                    auto er = man.add<EtaRed>(true);
-                    auto ee = man.add<EtaExp>(er);
-                    man.add<Scalerize>(ee);
-                });
-                // lower_closures
-                builder.extend_opt_phase(base++, [](PassMan& man) {
-                    man.add<Scalerize>(nullptr);
-                    man.add<clos::BranchClosElim>();
-                    man.add<mem::CopyProp>(nullptr, nullptr, true);
-                    man.add<clos::LowerTypedClosPrep>();
-                    man.add<clos::Clos2SJLJ>();
-                });
-
-                builder.extend_opt_phase(base++, [](PassMan& man) { man.add<LowerTypedClosWrapper>(); });
-
-                // builder.add_opt(base++);
-            },
             [](Passes& passes) {
                 register_pass<clos::clos_conv_prep_pass, clos::ClosConvPrep>(passes, nullptr);
                 register_pass<clos::clos_conv_pass, ClosConvWrapper>(passes);
@@ -180,6 +146,13 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                 register_pass<clos::lower_typed_clos_prep_pass, clos::LowerTypedClosPrep>(passes);
                 register_pass<clos::clos2sjlj_pass, clos::Clos2SJLJ>(passes);
                 register_pass<clos::lower_typed_clos_pass, LowerTypedClosWrapper>(passes);
+                // TODO:; remove after ho_codegen merge
+                passes[flags_t(Axiom::Base<clos::eta_red_bool_pass>)] = [&](World& world, PipelineBuilder& builder,
+                                                                            const Def* app) {
+                    auto bb      = app->as<App>()->arg();
+                    auto bb_only = bb->as<Lit>()->get<u64>();
+                    builder.add_pass<EtaRed>(app, bb_only);
+                };
             },
             nullptr, [](Normalizers& normalizers) { clos::register_normalizers(normalizers); }};
 }

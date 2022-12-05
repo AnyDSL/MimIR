@@ -108,7 +108,7 @@
         eta_red
         eta_exp
         (%mem.ssa_pass eta_exp)
-        (%mem.copy_prop_pass (beta_red, eta_exp, (0:(.Idx 2))))
+        (%mem.copy_prop_pass (beta_red, eta_exp, (0:.Bool)))
 };
 .let mem_opt_phase = {
     %compile.pass_phase mem_opt_pass_list
