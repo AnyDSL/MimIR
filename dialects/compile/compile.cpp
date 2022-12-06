@@ -31,9 +31,10 @@ void add_passes(World& world, PipelineBuilder& builder, Passes& passes, DefVec& 
     // This pass then calls the registered passes in the order they were registered in the last phase.
 
     // We create a new dummy phase in which the passes should be inserted.
-    builder.append_phase_end([](Pipeline&) {});
-
+    // builder.append_phase_end([](Pipeline&) {});
+    builder.begin_pass_phase();
     for (auto pass : pass_list) { compile::handle_optimization_part(pass, world, passes, builder); }
+    builder.end_pass_phase();
 }
 
 extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
@@ -44,7 +45,7 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                     world.DLOG("Generate debug_phase: {}", app);
                     int level = (int)(app->as<App>()->arg(0)->as<Lit>()->get<u64>());
                     world.DLOG("  Level: {}", level);
-                    builder.append_pass_after_end([=](PassMan& man) { man.add<thorin::compile::DebugPrint>(level); });
+                    builder.add_phase<compile::DebugPrint>(level);
                 };
 
                 passes[flags_t(Axiom::Base<thorin::compile::passes_to_phase>)] =

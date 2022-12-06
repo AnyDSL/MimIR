@@ -52,7 +52,7 @@ void optimize(World& world, Passes& passes, std::vector<Dialect>& dialects) {
     // But the compile dialect has not the necessary communication pipeline.
     // Therefore, we register the handlers and let the compile dialect call them.
 
-    PipelineBuilder pipe_builder;
+    PipelineBuilder pipe_builder(world);
     // TODO: remove indirections of pipeline builder. Just add passes and phases directly to the pipeline.
     for (auto& dialect : dialects) { pipe_builder.register_dialect(dialect); }
 
@@ -63,13 +63,12 @@ void optimize(World& world, Passes& passes, std::vector<Dialect>& dialects) {
     auto pipeline_axiom = ax->as<Axiom>();
     auto pipeline_flags = pipeline_axiom->flags();
     assert(passes.contains(pipeline_flags));
+    world.DLOG("Building pipeline");
     passes[pipeline_flags](world, pipe_builder, pipeline);
 
-    Pipeline pipe(world);
-    world.DLOG("Building pipeline");
-    pipe_builder.buildPipeline(pipe);
+    world.DLOG("Executing pipeline");
+    pipe_builder.run_pipeline();
 
-    pipe.run();
     return;
 }
 
