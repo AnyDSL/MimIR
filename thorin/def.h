@@ -62,6 +62,7 @@ public:
     const Def* operator->() const { return refer(def_); }
     operator const Def*() const { return refer(def_); }
     explicit operator bool() const { return def_; }
+    friend std::ostream& operator<<(std::ostream&, Refer);
 
 private:
     const Def* def_ = nullptr;

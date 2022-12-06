@@ -60,13 +60,26 @@ Lam* Lam::test(Filter filter,
 }
 
 /*
- * Pi
+ * implicits
  */
 
-// TODO remove
-Lam* get_var_lam(const Def* def) {
-    if (auto extract = def->isa<Extract>()) return extract->tuple()->as<Var>()->nom()->as<Lam>();
-    return def->as<Var>()->nom()->as<Lam>();
+const Def* implicits2meta(World& world, const std::vector<bool>& implicits) {
+    const Def* meta = world.bot(world.type_bool());
+    for (auto b : implicits | std::ranges::views::reverse)
+        meta = world.tuple({world.lit_bool(b), meta});
+    return meta;
+}
+
+std::optional<std::pair<bool, const Def*>> peel_implicit(const Def* def) {
+    if (def) {
+        if (auto tuple = def->isa<Tuple>(); tuple && tuple->num_ops() == 2) {
+            if (auto b = isa_lit<bool>(tuple->op(0))) {
+                outln("{} - {}", *b, tuple->op(1));
+                return {{*b, tuple->op(1)}};
+            }
+        }
+    }
+    return {};
 }
 
 } // namespace thorin

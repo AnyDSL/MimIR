@@ -172,4 +172,15 @@ inline std::pair<const App*, Lam*> isa_apped_nom_lam(const Def* def) {
     return {nullptr, nullptr};
 }
 
+/// @name Helper for implicits
+///@{
+
+/// Converts C++ vector `{true, false, false}` to nested Thorin pairs `(.tt, (.ff, (.ff, ⊥)))`.
+const Def* implicits2meta(World&, const std::vector<bool>&);
+
+/// Returns `{b, x}` from Thorin pair `(b, x)` or `std::nullopt` if @p def doesn't fit the bill.
+std::optional<std::pair<bool, const Def*>> peel_implicit(const Def* def);
+
+///@}
+
 } // namespace thorin
