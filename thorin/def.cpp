@@ -93,9 +93,9 @@ const Def* Var      ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) co
 const Def* Vel      ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.vel(t, o[0], dbg); }
 
 const Def* Axiom    ::rebuild(World& w, const Def* t, Defs  , const Def* dbg) const {
-    auto res = w.axiom(normalizer(), curry(), trip(), t, dialect(), tag(), sub(), dbg);
-    assert(&w != &world() || gid() == res->gid());
-    return res;
+    if (&w != &world()) return w.axiom(normalizer(), curry(), trip(), t, dialect(), tag(), sub(), dbg);
+    assert(w.checker().equiv(t, type(), dbg));
+    return this;
 }
 
 template<bool up> const Def* TExt  <up>::rebuild(World& w, const Def* t, Defs  , const Def* dbg) const { return w.ext  <up>(t,    dbg); }
@@ -137,13 +137,19 @@ const Sigma* Sigma::restructure() {
 
 const Def* Arr::restructure() {
     auto& w = world();
-    if (auto n = isa_lit(shape())) return w.sigma(DefArray(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
+    if (auto n = isa_lit(shape())) {
+        if (is_free(this, body())) return w.sigma(DefArray(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
+        return w.arr(shape(), body());
+    }
     return nullptr;
 }
 
 const Def* Pack::restructure() {
     auto& w = world();
-    if (auto n = isa_lit(shape())) return w.tuple(DefArray(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
+    if (auto n = isa_lit(shape())) {
+        if (is_free(this, body())) return w.tuple(DefArray(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
+        return w.pack(shape(), body());
+    }
     return nullptr;
 }
 
