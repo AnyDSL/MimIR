@@ -45,8 +45,6 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                     world.DLOG("Generate debug_phase: {}", app);
                     int level = (int)(app->as<App>()->arg(0)->as<Lit>()->get<u64>());
                     world.DLOG("  Level: {}", level);
-                    // builder.append_pass_after_end([=](PassMan& man) { man.add<thorin::compile::DebugPrint>(level);
-                    // });
                     builder.add_phase<compile::DebugPrint>(level);
                 };
 

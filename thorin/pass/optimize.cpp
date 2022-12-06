@@ -63,15 +63,12 @@ void optimize(World& world, Passes& passes, std::vector<Dialect>& dialects) {
     auto pipeline_axiom = ax->as<Axiom>();
     auto pipeline_flags = pipeline_axiom->flags();
     assert(passes.contains(pipeline_flags));
+    world.DLOG("Building pipeline");
     passes[pipeline_flags](world, pipe_builder, pipeline);
 
-    // Pipeline pipe(world);
-    world.DLOG("Building pipeline");
-    // pipe_builder.buildPipeline(pipe);
-    // Pipeline pipe = pipe_builder.get_pipeline();
+    world.DLOG("Executing pipeline");
     pipe_builder.run_pipeline();
 
-    // pipe.run();
     return;
 }
 
