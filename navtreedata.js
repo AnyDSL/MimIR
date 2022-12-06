@@ -110,11 +110,11 @@ var NAVTREEINDEX =
 "math_2autogen_8h.html#a57be56a9ff18e5026bb27caff8f82257",
 "namespacemembers_eval_f.html",
 "namespacethorin.html#acf49208b60df987a099eb7169d5f9b1a",
-"namespacethorin_1_1core.html#a6a16f8ef1aeb3181c60569fd14bdee90",
+"namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a2cd637f8af229640a38fe0daff901035",
 "namespacethorin_1_1math.html#a2588a9658dc4724f7688a0dd9742a0c9",
 "namespacethorin_1_1refly.html#a6505dac8d7b837bcb4b880cb802b5a7f",
 "structthorin_1_1GIDEq.html#afa3215ce39aebfeac74893073da0266d",
-"tuple_8h.html#a3c8f47ae3611992a68b885cfe1b513c8"
+"tuple_8cpp.html#ae982c58cbbf8f50804167dc3697e78cd"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

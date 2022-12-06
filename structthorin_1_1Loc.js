@@ -7,6 +7,7 @@ var structthorin_1_1Loc =
     [ "anew_begin", "structthorin_1_1Loc.html#a53f3ba6335bc0aea1c63c0baaa7627d8", null ],
     [ "anew_finis", "structthorin_1_1Loc.html#a55a1720eb092d5a84b590472ccb9e18b", null ],
     [ "def", "structthorin_1_1Loc.html#a77e6f2b826dd50f2c135b693c6e97c99", null ],
+    [ "operator bool", "structthorin_1_1Loc.html#a7825cf77a7c14204047cdd17076dba69", null ],
     [ "begin", "structthorin_1_1Loc.html#ad1fdf23d819fbbc0d01d0bcf3a728284", null ],
     [ "file", "structthorin_1_1Loc.html#a6ef660df5af4231418b1ab49aab1f092", null ],
     [ "finis", "structthorin_1_1Loc.html#a4e9c5322ad9d09bd66f51752d1c29c97", null ]
