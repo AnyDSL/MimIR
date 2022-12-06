@@ -71,7 +71,6 @@ const Def* arrTyOfMatrixTy(const Def* Mat) {
 
 const Def* LowerMatrixLowLevel::rewrite_structural(const Def* def) {
     auto& world = def->world();
-    return Rewriter::rewrite_structural(def); // continue recursive rewriting with everything else
 
     assert(!match<matrix::mapReduce>(def) && "mapReduce should have been lowered to for loops by now");
     assert(!match<matrix::shape>(def) && "high level operations should have been lowered to for loops by now");
@@ -91,13 +90,18 @@ const Def* LowerMatrixLowLevel::rewrite_structural(const Def* def) {
 
         return ptr_ty;
     } else if (auto init_ax = match<matrix::init>(def)) {
-        auto [_, S, T, mem]  = init_ax->args<4>();
-        S                    = rewrite(S);
-        T                    = rewrite(T);
-        mem                  = rewrite(mem);
+        world.DLOG("init {} : {}", def, def->type());
+        auto [_, S, T, mem] = init_ax->args<4>();
+        world.DLOG("  S T mem {} {} {}", S, T, mem);
+        S   = rewrite(S);
+        T   = rewrite(T);
+        mem = rewrite(mem);
+        world.DLOG("  S T mem {} {} {}", S, T, mem);
         auto arr_ty          = arrTyOfMatrixTy(S, T);
         auto [mem2, ptr_mat] = mem::op_alloc(arr_ty, mem)->projs<2>();
-        return world.tuple({mem2, ptr_mat});
+        auto res             = world.tuple({mem2, ptr_mat});
+        world.DLOG("  res {} : {}", res, res->type());
+        return res;
     } else if (auto read_ax = match<matrix::read>(def)) {
         auto [mem, mat, idx] = read_ax->args<3>();
         world.DLOG("read_ax: {}", read_ax);
@@ -156,6 +160,9 @@ const Def* LowerMatrixLowLevel::rewrite_structural(const Def* def) {
 
         return world.tuple({mem3, ptr_mat});
     }
+
+    // ignore unapplied axioms to avoid spurious type replacements
+    if (auto ax = def->isa<Axiom>()) { return def; }
 
     return Rewriter::rewrite_structural(def); // continue recursive rewriting with everything else
 }

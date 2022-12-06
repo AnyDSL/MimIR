@@ -94,6 +94,10 @@ const Def* Vel      ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) co
 
 const Def* Axiom    ::rebuild(World& w, const Def* t, Defs  , const Def* dbg) const {
     if (&w != &world()) return w.axiom(normalizer(), curry(), trip(), t, dialect(), tag(), sub(), dbg);
+    if(!w.checker().equiv(t, type(), dbg)) {
+        w.ELOG("Axiom type mismatch: \n  {} \n  {}", t, type());
+        w.ELOG("Axiom name {}", name());
+    }
     assert(w.checker().equiv(t, type(), dbg));
     return this;
 }
