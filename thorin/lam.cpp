@@ -73,10 +73,7 @@ const Def* implicits2meta(World& world, const std::vector<bool>& implicits) {
 std::optional<std::pair<bool, const Def*>> peel_implicit(const Def* def) {
     if (def) {
         if (auto tuple = def->isa<Tuple>(); tuple && tuple->num_ops() == 2) {
-            if (auto b = isa_lit<bool>(tuple->op(0))) {
-                outln("{} - {}", *b, tuple->op(1));
-                return {{*b, tuple->op(1)}};
-            }
+            if (auto b = isa_lit<bool>(tuple->op(0))) return {std::pair(*b, tuple->op(1))};
         }
     }
     return {};
