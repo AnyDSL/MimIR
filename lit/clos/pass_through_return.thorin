@@ -23,11 +23,11 @@
     .let (alloc_pb_mem, pb_ptr) = %mem.malloc (pb_type, 0) (mem, 100);
     .let pb_arr = %core.bitcast ( %mem.Ptr («⊤:.Nat; pb_type», 0), %mem.Ptr (pb_type, 0)) pb_ptr;
     .let lea_pb = %mem.lea (⊤:.Nat, <⊤:.Nat; pb_type>, 0) (pb_arr, 0:i32);
-    .let store_pb = %mem.store (pb_type, 0) (alloc_pb_mem, lea_pb, end);
+    .let store_pb = %mem.store (alloc_pb_mem, lea_pb, end);
 
     .con loop_head [mem: %mem.M, i : i32] = {
         .con exit [mem: %mem.M] = {
-            .let (backward_pass_mem, backward_pass) = %mem.load (pb_type, 0) (mem, lea_pb); // <- begin backward pass
+            .let (backward_pass_mem, backward_pass) = %mem.load (mem, lea_pb); // <- begin backward pass
             backward_pass (backward_pass_mem, callback)
         };
 
@@ -36,7 +36,7 @@
         };
 
         .con body [mem: %mem.M] = {
-            .let (load_pb_mem, last_pb) = %mem.load (pb_type, 0) (mem, lea_pb);
+            .let (load_pb_mem, last_pb) = %mem.load (mem, lea_pb);
             .con pb [mem: %mem.M, end: .Cn [%mem.M]] = {
                 .con inner_yield [mem: %mem.M] = {
                     last_pb( mem, end )
@@ -46,7 +46,7 @@
                 //last_pb (mem, end)  // << call previous backward pass block
             };
 
-            .let store_pb_mem = %mem.store (pb_type, 0) (load_pb_mem, lea_pb, pb); // << stack backward pass block
+            .let store_pb_mem = %mem.store (load_pb_mem, lea_pb, pb); // << stack backward pass block
 
             printInteger(store_pb_mem, i, yield)
         };
