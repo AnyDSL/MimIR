@@ -25,8 +25,11 @@ const Def* Reshape::rewrite_def(const Def* def) {
 bool should_flatten(const Def* T) {
     // handle [] cases
     if (T->isa<Sigma>()) return true;
-    // also handle normalized tuple-arrays ((a:I32,b:I32) : <<2;I32>>)
-    if (auto lit = T->arity()->isa<Lit>()) { return lit->get<u64>() > 1; }
+    // TODO: handle better than with magic number
+    //  (do we want to flatten any array with more than 2 elements)
+    //  (2 elements are needed for conditionals)
+    // TODO: e.g. lea explicitely does not want to flatten
+    if (auto lit = T->arity()->isa<Lit>(); lit && lit->get<u64>() <= 2) { return lit->get<u64>() > 1; }
     return false;
 }
 
