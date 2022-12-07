@@ -380,7 +380,7 @@ const Def* Parser::parse_pi(Implicits* implicits) {
     scopes_.push();
 
     Pi* first = nullptr;
-    Pi* prev = nullptr;
+    Pi* prev  = nullptr;
     do {
         auto dot = accept(Tok::Tag::T_dot);
         if (implicits)

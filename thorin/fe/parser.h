@@ -58,7 +58,9 @@ private:
         const Def* dbg(const Def* meta = {}) const { return parser_.world().dbg({"", loc(), meta}); }
         const Def* meta(const Def* m) const { return parser_.world().dbg({"", loc(), m}); }
         const Def* named(Sym sym) const { return parser_.world().dbg(sym, loc()); }
-        const Def* named(const std::string& str, const Def* meta = {}) const { return parser_.world().dbg({str, loc(), meta}); }
+        const Def* named(const std::string& str, const Def* meta = {}) const {
+            return parser_.world().dbg({str, loc(), meta});
+        }
 
     private:
         Parser& parser_;

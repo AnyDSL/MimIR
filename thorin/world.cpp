@@ -471,8 +471,7 @@ const Def* World::singleton(Refer inner_type, Refer dbg) {
 
 const Def* World::implicits2meta(const Implicits& implicits) {
     const Def* meta = bot(type_bool());
-    for (auto b : implicits | std::ranges::views::reverse)
-        meta = tuple({lit_bool(b), meta});
+    for (auto b : implicits | std::ranges::views::reverse) meta = tuple({lit_bool(b), meta});
     return meta;
 }
 
@@ -494,15 +493,15 @@ const Def* World::iapp(Refer callee, Refer arg, Debug debug) {
 
         if (dot) {
             auto infer = nom_infer_entity(dbg(debug));
-            auto d = dbg(mdebug);
-            auto a = app(callee, infer, d);
-            callee = a;
+            auto d     = dbg(mdebug);
+            auto a     = app(callee, infer, d);
+            callee     = a;
         } else {
             // resolve Infers now if possible before normalizers are run
             if (auto app = callee->isa<App>(); app && app->curry() == 1) {
                 checker().assignable(callee->type()->as<Pi>()->dom(), arg, callee->dbg());
                 auto apps = decurry(app);
-                callee = apps.front()->callee();
+                callee    = apps.front()->callee();
                 for (auto app : apps) callee = this->app(callee, refer(app->arg()), app->dbg());
             }
             break;
