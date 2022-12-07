@@ -6,9 +6,7 @@
 ///
 /// ## Dependencies
 ///
-.import compile;
-.import core;
-.import mem;
+.import core; // includes mem, compile (and avoids clashing re-import)
 /// supported dialects with passes
 .import affine;
 .import autodiff;

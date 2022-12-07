@@ -1,3 +1,6 @@
+# must be registered before `add_thorin_dialect` calls
+add_custom_target(thorin_all_dialects)
+
 add_thorin_dialect(affine
     SOURCES
         affine/affine.cpp

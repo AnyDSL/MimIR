@@ -15,20 +15,20 @@ jobs:
 
     steps:
       - name: Clone recursively
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
       - name: Cache LLVM and Clang
         id: cache-llvm
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ./llvm
           key: llvm-14.0.0-ubuntu
           
       - name: Install LLVM and Clang
-        uses: KyleMayes/install-llvm-action@v1.5.2
+        uses: KyleMayes/install-llvm-action@v1.6.0
         with:
           version: "14.0.0"
           cached: ${{ steps.cache-llvm.outputs.cache-hit }}
@@ -49,7 +49,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install g++-11 valgrind
           export CXX=g++-11
-          sudo python -m pip install lit
+          sudo python -m pip install lit psutil
           sudo ln -s ${{github.workspace}}/bin/FileCheck-x86_64-ubuntu /usr/bin/FileCheck
           sudo chmod +x /usr/bin/FileCheck
 
@@ -69,7 +69,7 @@ jobs:
         run: CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DTHORIN_BUILD_TESTING=ON -DTHORIN_LIT_WITH_VALGRIND=ON
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target thorin-gtest thorin thorin_affine
+        run: cmake --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target thorin-gtest thorin thorin_all_dialects
 
       - name: Run lit test suite
         working-directory: ${{github.workspace}}/build

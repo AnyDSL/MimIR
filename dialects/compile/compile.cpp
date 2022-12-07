@@ -4,8 +4,6 @@
 #include <thorin/dialects.h>
 #include <thorin/pass/pass.h>
 
-#include "thorin/error.h"
-
 #include "thorin/pass/fp/beta_red.h"
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/pass/fp/eta_red.h"

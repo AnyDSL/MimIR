@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Clone recursively
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -30,14 +30,14 @@ jobs:
 
       - name: Cache LLVM and Clang
         id: cache-llvm
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ./llvm
           key: llvm-14.0.0-mac
 
       - name: Install LLVM and Clang
-        uses: KyleMayes/install-llvm-action@v1.5.2
+        uses: KyleMayes/install-llvm-action@v1.6.0
         with:
           version: "14.0.0"
           cached: ${{ steps.cache-llvm.outputs.cache-hit }}
@@ -54,7 +54,7 @@ jobs:
           
       - name: Install LIT
         run: |
-          python3 -m pip install lit
+          python3 -m pip install lit psutil
           ln -s ${{github.workspace}}/bin/FileCheck-x86_64-mac ${{github.workspace}}/bin/FileCheck
           chmod +x ${{github.workspace}}/bin/FileCheck
 
@@ -70,7 +70,7 @@ jobs:
           echo "CXX=$LLVM_PATH/bin/clang++" >> $GITHUB_ENV
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target thorin-gtest thorin thorin_affine
+        run: cmake --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target thorin-gtest thorin thorin_all_dialects
 
       - name: Run lit test suite
         working-directory: ${{github.workspace}}/build
