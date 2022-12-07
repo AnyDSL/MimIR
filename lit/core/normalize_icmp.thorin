@@ -3,13 +3,8 @@
 
 .import core;
 
-.con .extern icmp_lit [return : .Cn .Idx 2] = {
-    return
-    (%core.icmp.e 2
-        (%core.icmp.uge 2
-            (.tt, .ff),
-         %core.icmp.ug 2
-            (.tt, .ff)))
+.con .extern icmp_lit [return : .Cn .Bool] = {
+    return (%core.icmp.e (%core.icmp.uge (.tt, .ff), %core.icmp.ug (.tt, .ff)))
 };
 
 // CHECK-DAG: icmp_lit _[[retId:[0-9_]+]]: .Cn .Idx 2 = {

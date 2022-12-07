@@ -35,7 +35,7 @@
             printNL (mem, return)
         };
 
-        .let condition = %core.icmp.ul 4294967296 (i, %core.bitcast (i32, .Nat) size);
+        .let condition = %core.icmp.ul (i, %core.bitcast (i32, .Nat) size);
         .let target = (exit, enter)#condition;
         target ( mem )
     };
@@ -62,7 +62,7 @@
             loop_body ( mem, i, yield )
         };
 
-        .let condition = %core.icmp.ul 4294967296 (i, %core.bitcast (i32, .Nat) size);
+        .let condition = %core.icmp.ul (i, %core.bitcast (i32, .Nat) size);
         .let target = (return, enter)#condition;
         target ( mem )
     };
@@ -90,7 +90,7 @@
             loop_body ( mem, i, yield )
         };
 
-        .let condition = %core.icmp.ul 4294967296 (i, %core.bitcast (i32, .Nat) size);
+        .let condition = %core.icmp.ul (i, %core.bitcast (i32, .Nat) size);
         .let target = (return, enter)#condition;
         target ( mem )
     };
@@ -206,7 +206,7 @@
             loop_body ( mem, i, yield )
         };
 
-        .let condition = %core.icmp.ul 4294967296 (i, %core.bitcast (i32, .Nat) size);
+        .let condition = %core.icmp.ul (i, %core.bitcast (i32, .Nat) size);
         .let target = (exit, enter)#condition;
         target ( mem )
     };

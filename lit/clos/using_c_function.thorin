@@ -46,7 +46,7 @@
                 printInteger(store_pb_mem, i, yield)
             };
 
-            .let condition = %core.icmp.ul 4294967296 (i, 19:i32);
+            .let condition = %core.icmp.ul (i, 19:i32);
             .let target = (exit, body)#condition;
             target ( mem )
         };

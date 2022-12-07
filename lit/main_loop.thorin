@@ -9,7 +9,7 @@
 
 .con .extern main(mem: %mem.M, argc: .Idx 4294967296, argv: %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return: .Cn [%mem.M, .Idx 4294967296]) = {
     .con loop(mem: %mem.M, i: .Idx 4294967296, acc: .Idx 4294967296) = {
-        .let cond: (.Idx 2) = %core.icmp.ul 4294967296 (i, argc);
+        .let cond: (.Idx 2) = %core.icmp.ul (i, argc);
         .con body m: %mem.M = {
             .let inc  = %core.wrap.add 0 (1:(.Idx 4294967296), i);
             .let acci = %core.wrap.add 0 (i, acc);

@@ -54,7 +54,7 @@ dialects/clos/phase/clos_conv.cpp:195: RW: pack tup_pb_745946_346616 ~> ([], tup
     .con aug_pow_then_745900 [.Cn [[], .Cn «2; .Idx 4294967296»]] @(0:(.Idx 2)) = {
         _745736 (1:(.Idx 4294967296), zero_pb_745910)
     };
-    .let _745944: .Idx 2 = %core.icmp.xyglE 4294967296 (0:(.Idx 4294967296), _745724);
+    .let _745944: .Idx 2 = %core.icmp.xyglE (0:(.Idx 4294967296), _745724);
     (aug_pow_else_745690, aug_pow_then_745900)#_745944 tup_pb_745946
 };
 .con tup_pb_746125 _746127::[tup_s_746133::[_746135: .Idx 4294967296, .Cn .Idx 4294967296], _746129: .Cn «2; .Idx 4294967296»] @(1:(.Idx 2)) = {

@@ -32,7 +32,7 @@
         .let b_1 = %core.wrap.sub 0 (b,1:I32);
         f ((a,b_1),pow_cont)
     };
-    .let cmp = %core.icmp.e _32 (b,0:I32);
+    .let cmp = %core.icmp.e (b,0:I32);
     ((pow_else, pow_then)#cmp) ()
 };
 

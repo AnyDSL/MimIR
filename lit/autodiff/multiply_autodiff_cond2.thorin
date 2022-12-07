@@ -16,7 +16,7 @@
         .let b = %core.wrap.mul 0:.Nat (3:I32, a);
         ret b
     };
-    .let cmp = %core.icmp.sle 4294967296 (a,5:I32);
+    .let cmp = %core.icmp.sle (a,5:I32);
     ((twice,thrice)#cmp) ()
 };
 

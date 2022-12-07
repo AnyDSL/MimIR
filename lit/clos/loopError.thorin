@@ -21,7 +21,7 @@
             printInteger( mem, i, yield )
         };
 
-        .let condition = %core.icmp.ul 4294967296 (i, 42:i32);
+        .let condition = %core.icmp.ul (i, 42:i32);
         .let target = (return, print)#condition;
         target ( mem )
     };

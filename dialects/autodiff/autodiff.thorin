@@ -112,7 +112,7 @@
 /// The comparison pullback exists formally but is not used.
 /// 
 .con .extern internal_diff_core_icmp_xYgLE !.(s: .Nat)!(ab::(a b: .Idx s), ret: .Cn[.Idx 2, .Cn[.Idx 2, .Cn«2; .Idx s»]]) =
-    ret (%core.icmp.sle s ab, .cn ![.Idx 2, pb_ret: .Cn«2; .Idx s»] = pb_ret ‹2; 0:(.Idx s)›);
+    ret (%core.icmp.sle ab, .cn ![.Idx 2, pb_ret: .Cn«2; .Idx s»] = pb_ret ‹2; 0:(.Idx s)›);
 ///
 /// ### %core.wrap.add
 /// 

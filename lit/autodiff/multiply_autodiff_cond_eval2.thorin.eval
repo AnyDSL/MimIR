@@ -104,7 +104,7 @@
         .con ret_636172 _636176: [(.Idx 2), .Cn [(.Idx 2), .Cn «2:.Nat; .Idx __636125»]] = {
             ret_636175 _636176
         };
-        .let _636204: (.Idx 2) = %core.icmp.xYgLE __636125 __636193;
+        .let _636204: (.Idx 2) = %core.icmp.xYgLE __636193;
         ret_636172 (_636204, cmp_pb_636214)
     };
     inner_cmp_636166

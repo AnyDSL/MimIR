@@ -45,7 +45,7 @@ thorin: /dialects/clos/phase/clos_conv.cpp:64: const thorin::Def* thorin::clos::
             exit(store_pb_mem) // <######--- if statt while
         };
 
-        .let condition = %core.icmp.ul 4294967296 (i, 19:i32);
+        .let condition = %core.icmp.ul (i, 19:i32);
         .let target = (exit, body)#condition;
         target ( mem )
     };
