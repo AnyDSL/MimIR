@@ -68,12 +68,12 @@ private:
     Sym parse_sym(std::string_view ctxt = {});
     Sym anonymous_sym() { return {world().lit_nat('_'), nullptr}; }
     void parse_import();
-    const Def* parse_type_ascr(std::string_view ctxt, std::vector<bool>* implicits);
+    const Def* parse_type_ascr(std::string_view ctxt, Implicits*);
 
     /// @name exprs
     ///@{
-    const Def* parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot, std::vector<bool>* implicits = {});
-    const Def* parse_primary_expr(std::string_view ctxt, std::vector<bool>* implicits = {});
+    const Def* parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot, Implicits* = {});
+    const Def* parse_primary_expr(std::string_view ctxt, Implicits* = {});
     const Def* parse_infix_expr(Tracker, const Def* lhs, Tok::Prec = Tok::Prec::Bot);
     const Def* parse_extract(Tracker, const Def*, Tok::Prec);
     ///@}
@@ -87,7 +87,7 @@ private:
     const Def* parse_sigma();
     const Def* parse_tuple();
     const Def* parse_type();
-    const Def* parse_pi(std::vector<bool>* implicits);
+    const Def* parse_pi(Implicits*);
     const Def* parse_lit();
     const Def* parse_var();
     const Def* parse_insert();

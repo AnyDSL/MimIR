@@ -111,19 +111,19 @@
 /// 
 /// The comparison pullback exists formally but is not used.
 /// 
-.con .extern internal_diff_core_icmp_xYgLE !.(s: .Nat)!((a b: .Idx s), ret: .Cn[.Idx 2, .Cn[.Idx 2, .Cn«2; .Idx s»]]) =
-    ret (%core.icmp.sle s (a, b), .cn ![.Idx 2, pb_ret: .Cn«2; .Idx s»] = pb_ret ‹2; 0:(.Idx s)›);
+.con .extern internal_diff_core_icmp_xYgLE !.(s: .Nat)!(ab::(a b: .Idx s), ret: .Cn[.Idx 2, .Cn[.Idx 2, .Cn«2; .Idx s»]]) =
+    ret (%core.icmp.sle s ab, .cn ![.Idx 2, pb_ret: .Cn«2; .Idx s»] = pb_ret ‹2; 0:(.Idx s)›);
 ///
 /// ### %core.wrap.add
 /// 
 /// s ↦ (s, s)
 ///
-.con .extern internal_diff_core_wrap_add !.(s: .Nat)!(m: .Nat)!((a b: .Idx s), ret: .Cn[.Idx s, .Cn[.Idx s, .Cn«2; .Idx s»]]) = 
-    ret (%core.wrap.add s m (a, b), .cn !(i: .Idx s, pb_ret: .Cn«2; .Idx s») = pb_ret ‹2; i›);
+.con .extern internal_diff_core_wrap_add !.(s: .Nat)!(m: .Nat)!(ab::(a b: .Idx s), ret: .Cn[.Idx s, .Cn[.Idx s, .Cn«2; .Idx s»]]) =
+    ret (%core.wrap.add m ab, .cn !(i: .Idx s, pb_ret: .Cn«2; .Idx s») = pb_ret ‹2; i›);
 ///
 /// ### %core.wrap.mul
 ///
 /// s ↦ (s*b, s*a)
 /// 
-.con .extern internal_diff_core_wrap_mul !.(s: .Nat)!(m: .Nat)!((a b: .Idx s), ret: .Cn[.Idx s, .Cn[.Idx s, .Cn«2; .Idx s»]]) = 
-    ret (%core.wrap.mul s m (a,b), .cn !(i: .Idx s, pb_ret: .Cn«2; .Idx s») = pb_ret (%core.wrap.mul s m (i, b), %core.wrap.mul s m (i, a)));
+.con .extern internal_diff_core_wrap_mul !.(s: .Nat)!(m: .Nat)!(ab::(a b: .Idx s), ret: .Cn[.Idx s, .Cn[.Idx s, .Cn«2; .Idx s»]]) =
+    ret (%core.wrap.mul m ab, .cn !(i: .Idx s, pb_ret: .Cn«2; .Idx s») = pb_ret (%core.wrap.mul m (i, b), %core.wrap.mul m (i, a)));

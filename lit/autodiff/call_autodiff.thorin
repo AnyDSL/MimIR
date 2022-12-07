@@ -8,12 +8,12 @@
 .let I32 = .Idx 4294967296;
 
 .con g [b:I32, ret: .Cn [I32]] = {
-    .let c = %core.wrap.mul 4294967296 0 (3:I32, b);
+    .let c = %core.wrap.mul 0 (3:I32, b);
     ret c
 };
 
 .con f [a:I32, ret: .Cn [I32]] = {
-    .let b = %core.wrap.mul 4294967296 0 (2:I32, a);
+    .let b = %core.wrap.mul 0 (2:I32, a);
     // ret b
     g (b, ret)
 };
@@ -22,8 +22,8 @@
 
     .con ret_cont [r:I32,pb:.Cn[I32,.Cn[I32]]] = {
         .con pb_ret_cont [pr:I32] = {
-            .let c = %core.wrap.mul 4294967296 0 (100:I32, r);
-            .let d = %core.wrap.add 4294967296 0 (c, pr);
+            .let c = %core.wrap.mul 0 (100:I32, r);
+            .let d = %core.wrap.add 0 (c, pr);
             return (mem, d)
         };
         // return (mem, r)

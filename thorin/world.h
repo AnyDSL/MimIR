@@ -271,18 +271,6 @@ public:
     }
     ///@}
 
-    /// @name call - App with type inference
-    ///@{
-    /// Infers the args of a curried Axiom.
-    const Def* call(const Axiom* axiom, Refer arg, Refer dbg = {});
-    // clang-format off
-    template<class Id> const Def* call(Id id, Refer arg, Refer dbg = {}) { return call(ax(id),   arg, dbg); }
-    template<class Id> const Def* call(       Refer arg, Refer dbg = {}) { return call(ax<Id>(), arg, dbg); }
-    template<class Id> const Def* call(Id id, Defs args, Refer dbg = {}) { return call(id, tuple(args), dbg); }
-    template<class Id> const Def* call(       Defs args, Refer dbg = {}) { return call<Id>(tuple(args), dbg); }
-    // clang-format on
-    ///@}
-
     /// @name Sigma
     ///@{
     Sigma* nom_sigma(Refer type, size_t size, Refer dbg = {}) { return insert<Sigma>(size, type, size, dbg); }
@@ -435,6 +423,25 @@ public:
     /// `width = 64` will be automatically converted to size `0` - the encoding for $2^64$.
     const Def* type_int(nat_t width) { return type_idx(lit_nat(Idx::bitwidth2size(width))); }
     const Def* type_bool() { return data_.type_bool_; }
+    ///@}
+
+    /// @name cope with implicit arguments
+    ///@{
+    const Def* iapp(Refer callee, Refer arg, Debug);
+    /// Converts C++ vector `{true, false, false}` to nested Thorin nested pairs `(.tt, (.ff, (.ff, ⊥)))`.
+    const Def* implicits2meta(const Implicits&);
+    ///@}
+
+    /// @name call - App with type inference
+    ///@{
+    /// Infers the args of a curried Axiom.
+    const Def* call(const Axiom* axiom, Refer arg, Refer dbg = {});
+    // clang-format off
+    template<class Id> const Def* call(Id id, Refer arg, Refer dbg = {}) { return call(ax(id),   arg, dbg); }
+    template<class Id> const Def* call(       Refer arg, Refer dbg = {}) { return call(ax<Id>(), arg, dbg); }
+    template<class Id> const Def* call(Id id, Defs args, Refer dbg = {}) { return call(id, tuple(args), dbg); }
+    template<class Id> const Def* call(       Defs args, Refer dbg = {}) { return call<Id>(tuple(args), dbg); }
+    // clang-format on
     ///@}
 
     /// @name helpers

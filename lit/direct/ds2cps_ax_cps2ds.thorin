@@ -8,7 +8,7 @@
 .let I32 = .Idx 4294967296;
 
 .con f [a:I32, return: .Cn I32] = {
-    .let b = %core.wrap.add 4294967296 0 (2:I32, a);
+    .let b = %core.wrap.add 0 (2:I32, a);
     return b
 };
 

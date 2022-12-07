@@ -23,7 +23,7 @@
 
     .con loop_head [mem: %mem.M, i : i32] = {
         .con yield [mem: %mem.M] = {
-            loop_head( mem, %core.wrap.add 4294967296 0 (i, 1:i32) )
+            loop_head( mem, %core.wrap.add 0 (i, 1:i32) )
         };
 
         .con enter [mem: %mem.M] = {
@@ -74,7 +74,7 @@
         .let (a_load_mem, a_val) = %mem.load (i32, 0) (mem, a_lea);
         .let (b_load_mem, b_val) = %mem.load (i32, 0) (a_load_mem, a_lea);
 
-        .let prod = %core.wrap.mul 4294967296 0 (a_val, b_val);
+        .let prod = %core.wrap.mul 0 (a_val, b_val);
 
         .let c_store_mem = %mem.store (i32, 0) (b_load_mem, c_lea, prod);
 
@@ -87,11 +87,11 @@
             .let cd_store_mem = %mem.store (i32, 0) (cd_load_mem, cd_lea, 0:i32);
 
             .let (ad_load_mem, ad_val) = %mem.load (i32, 0) (cd_store_mem, ad_lea);
-            .let ad_b_add = %core.wrap.add 4294967296 0 (ad_val, b_val);
+            .let ad_b_add = %core.wrap.add 0 (ad_val, b_val);
             .let ad_store_mem = %mem.store (i32, 0) (ad_load_mem, ad_lea, ad_b_add);
 
             .let (bd_load_mem, bd_val) = %mem.load (i32, 0) (ad_store_mem, bd_lea);
-            .let bd_a_add = %core.wrap.add 4294967296 0 (bd_val, a_val);
+            .let bd_a_add = %core.wrap.add 0 (bd_val, a_val);
             .let bd_store_mem = %mem.store (i32, 0) (bd_load_mem, bd_lea, bd_a_add);
             return (bd_store_mem)
         };
@@ -108,7 +108,7 @@
         };
 
         .con yield [mem: %mem.M] = {
-            loop_head( mem, %core.wrap.add 4294967296 0 (i, 1:i32) )
+            loop_head( mem, %core.wrap.add 0 (i, 1:i32) )
         };
 
         .con enter [mem: %mem.M] = {

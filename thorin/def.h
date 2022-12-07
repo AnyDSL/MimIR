@@ -43,8 +43,9 @@ class Var;
 class Def;
 class World;
 
-using Defs     = Span<const Def*>;
-using DefArray = Array<const Def*>;
+using Implicits = std::vector<bool>;
+using Defs      = Span<const Def*>;
+using DefArray  = Array<const Def*>;
 
 //------------------------------------------------------------------------------
 

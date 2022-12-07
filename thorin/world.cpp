@@ -151,25 +151,6 @@ const Def* World::raw_app(Refer type, Refer callee, Refer arg, Refer dbg) {
     return unify<App>(2, axiom, curry, trip, type, callee, arg, dbg);
 }
 
-const Def* World::call(const Axiom* axiom, Refer arg, Refer dbg) {
-    switch (axiom->curry()) {
-        case 1: return app(axiom, arg, dbg);
-        case 2: {
-            auto infer = nom_infer_entity();
-            auto a     = app(axiom, infer, dbg);
-            checker().assignable(a->type()->as<Pi>()->dom(), arg, dbg);
-            if (auto r = refer(infer); r && !r->isa<Infer>()) return app(app(axiom, r, dbg), arg, dbg);
-            return app(a, arg, dbg);
-        }
-        default: assert(false && "TODO");
-    }
-#if 0
-    const Def* callee = axiom;
-    for (size_t i = 1, e = axiom->curry(); i < e; ++i) callee = app(callee, nom_infer_entity(), dbg);
-    return app(callee, arg, dbg);
-#endif
-}
-
 const Def* World::sigma(Defs ops, Refer dbg) {
     auto n = ops.size();
     if (n == 0) return sigma();
@@ -482,6 +463,72 @@ const Def* World::test(Refer value, Refer probe, Refer match, Refer clash, Refer
 
 const Def* World::singleton(Refer inner_type, Refer dbg) {
     return unify<Singleton>(1, this->type<1>(), inner_type, dbg);
+}
+
+/*
+ * implicits
+ */
+
+const Def* World::implicits2meta(const Implicits& implicits) {
+    const Def* meta = bot(type_bool());
+    for (auto b : implicits | std::ranges::views::reverse)
+        meta = tuple({lit_bool(b), meta});
+    return meta;
+}
+
+/// Returns `{b, x}` from Thorin pair `(b, x)` or `std::nullopt` if @p def doesn't fit the bill.
+static std::optional<std::pair<bool, const Def*>> peel(const Def* def) {
+    if (def) {
+        if (auto tuple = def->isa<Tuple>(); tuple && tuple->num_ops() == 2) {
+            if (auto b = isa_lit<bool>(tuple->op(0))) return {std::pair(*b, tuple->op(1))};
+        }
+    }
+    return {};
+}
+
+const Def* World::iapp(Refer callee, Refer arg, Debug debug) {
+    Debug mdebug = debug;
+    while (auto implicit = peel(callee->meta())) {
+        bool dot;
+        std::tie(dot, mdebug.meta) = *implicit;
+
+        if (dot) {
+            auto infer = nom_infer_entity(dbg(debug));
+            auto d = dbg(mdebug);
+            auto a = app(callee, infer, d);
+            callee = a;
+        } else {
+            // resolve Infers now if possible before normalizers are run
+            if (auto app = callee->isa<App>(); app && app->curry() == 1) {
+                checker().assignable(callee->type()->as<Pi>()->dom(), arg, callee->dbg());
+                auto apps = decurry(app);
+                callee = apps.front()->callee();
+                for (auto app : apps) callee = this->app(callee, refer(app->arg()), app->dbg());
+            }
+            break;
+        }
+    }
+
+    return app(callee, arg, dbg(mdebug));
+}
+
+const Def* World::call(const Axiom* axiom, Refer arg, Refer dbg) {
+    switch (axiom->curry()) {
+        case 1: return app(axiom, arg, dbg);
+        case 2: {
+            auto infer = nom_infer_entity();
+            auto a     = app(axiom, infer, dbg);
+            checker().assignable(a->type()->as<Pi>()->dom(), arg, dbg);
+            if (auto r = refer(infer); r && !r->isa<Infer>()) return app(app(axiom, r, dbg), arg, dbg);
+            return app(a, arg, dbg);
+        }
+        default: assert(false && "TODO");
+    }
+#if 0
+    const Def* callee = axiom;
+    for (size_t i = 1, e = axiom->curry(); i < e; ++i) callee = app(callee, nom_infer_entity(), dbg);
+    return app(callee, arg, dbg);
+#endif
 }
 
 /*

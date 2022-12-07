@@ -30,7 +30,7 @@
             };
 
             .con yield [mem: %mem.M] = {
-                loop_head( mem, %core.wrap.add 4294967296 0 (i, 1:i32) )
+                loop_head( mem, %core.wrap.add 0 (i, 1:i32) )
             };
 
             .con body [mem: %mem.M] = {

@@ -59,24 +59,13 @@ Lam* Lam::test(Filter filter,
     return app(filter, world().test(value, index, match, clash), mem, dbg);
 }
 
-/*
- * implicits
- */
-
-const Def* implicits2meta(World& world, const std::vector<bool>& implicits) {
-    const Def* meta = world.bot(world.type_bool());
-    for (auto b : implicits | std::ranges::views::reverse)
-        meta = world.tuple({world.lit_bool(b), meta});
-    return meta;
-}
-
-std::optional<std::pair<bool, const Def*>> peel_implicit(const Def* def) {
-    if (def) {
-        if (auto tuple = def->isa<Tuple>(); tuple && tuple->num_ops() == 2) {
-            if (auto b = isa_lit<bool>(tuple->op(0))) return {std::pair(*b, tuple->op(1))};
-        }
+std::deque<const App*> decurry(const Def* def) {
+    std::deque<const App*> apps;
+    while (auto app = def->isa<App>()) {
+        apps.emplace_front(app);
+        def = app->callee();
     }
-    return {};
+    return apps;
 }
 
 } // namespace thorin
