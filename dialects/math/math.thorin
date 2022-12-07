@@ -149,7 +149,7 @@
 /// | ``%%math.gamma.t`` | gamma funciton                      | \f$\Gamma(x) = \int_0^\infty t^{x-1} e^{-t}\,dt\f$               |
 /// | ``%%math.gamma.l`` | natural logarithm of gamma funciton | \f$\ln \mid \int_0^\infty t^{x-1} e^{-t}\,dt \mid\f$ |
 ///
-.ax %math.gamma(t, l): Π [pe: «2; .Nat»][.Nat][%math.F pe] -> %math.F pe, normalize_gamma;
+.ax %math.gamma(t, l): Π.[pe: «2; .Nat»][.Nat][%math.F pe] -> %math.F pe, normalize_gamma;
 ///
 /// ## Other Operations
 ///
@@ -184,7 +184,7 @@
               uGle =   g, uGlE =  ge, uGLe =  ne, uGLE =   o,
               Ugle =   u, UglE =  ue, UgLe =  ul, UgLE = ule,
               UGle =  ug, UGlE = uge, UGLe = une, UGLE =   t):
-    Π [pe: «2; .Nat»][.Nat][«2; %math.F pe»] -> .Bool, normalize_cmp;
+    Π.[pe: «2; .Nat»][.Nat][«2; %math.F pe»] -> .Bool, normalize_cmp;
 ///
 /// ### %math.conv
 ///

@@ -97,8 +97,8 @@ bool Checker::assignable(Refer type, Refer val, Refer dbg /*= {}*/) {
     auto val_ty = refer(val->type());
     if (type == val_ty) return true;
 
+    auto infer = val->isa_nom<Infer>();
     if (auto sigma = type->isa<Sigma>()) {
-        auto infer = val->isa_nom<Infer>();
         if (!infer && !equiv(type->arity(), val_ty->arity(), dbg)) return false;
 
         size_t a = sigma->num_ops();
@@ -116,9 +116,15 @@ bool Checker::assignable(Refer type, Refer val, Refer dbg /*= {}*/) {
 
         return true;
     } else if (auto arr = type->isa<Arr>()) {
-        if (!equiv(type->arity(), val_ty->arity(), dbg)) return false;
+        if (!infer && !equiv(type->arity(), val_ty->arity(), dbg)) return false;
 
         if (auto a = isa_lit(arr->arity())) {
+            if (infer && !infer->is_set()) {
+                Array<const Def*> infer_ops(*a, [&](size_t) { return world().nom_infer(arr->body(), dbg); });
+                infer->set(world().tuple(infer_ops, dbg));
+                if (auto t = infer->type()->isa_nom<Infer>(); t && !t->is_set()) t->set(arr);
+            }
+
             for (size_t i = 0; i != *a; ++i) {
                 if (!assignable(arr->proj(*a, i), val->proj(*a, i, dbg), dbg)) return false;
             }
