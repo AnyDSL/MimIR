@@ -20,7 +20,7 @@
 using namespace thorin;
 using namespace std::literals;
 
-enum Backends { Dot, H, LL, Md, Thorin, Num_Backends };
+enum Backends { Dot, H, LL, CustBE, Custom, Md, Thorin, Num_Backends };
 
 int main(int argc, char** argv) {
     try {
@@ -48,6 +48,8 @@ int main(int argc, char** argv) {
             | lyra::opt(dialect_paths,  "path"   )["-D"]["--dialect-path"      ]("Path to search dialects in.")
             | lyra::opt(inc_verbose              )["-V"]["--verbose"           ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
             | lyra::opt(opt,            "level"  )["-O"]["--optimize"          ]("Optimization level (default: 2).")
+            | lyra::opt(output[CustBE ], "dialect")      ["--backend"           ]("Sets the backend to use.")
+            | lyra::opt(output[Custom ], "file"   )      ["--output"            ]("Output file for the custom backend.")
             | lyra::opt(output[Dot   ], "file"   )      ["--output-dot"        ]("Emits the Thorin program as a graph using Graphviz' DOT language.")
             | lyra::opt(output[H     ], "file"   )      ["--output-h"          ]("Emits a header file to be used to interface with a dialect in C++.")
             | lyra::opt(output[LL    ], "file"   )      ["--output-ll"         ]("Compiles the Thorin program to LLVM.")
@@ -88,6 +90,7 @@ int main(int argc, char** argv) {
         std::array<std::ostream*, Num_Backends> os;
         os.fill(nullptr);
         for (size_t be = 0; be != Num_Backends; ++be) {
+            if (be == CustBE) continue;
             if (output[be].empty()) continue;
             if (output[be] == "-") {
                 os[be] = &std::cout;
@@ -149,10 +152,19 @@ int main(int argc, char** argv) {
         if (os[Dot]) dot::emit(world, *os[Dot]);
 
         if (os[LL]) {
-            if (auto it = backends.find("ll"); it != backends.end()) {
-                it->second(world, *os[LL]);
+            os[Custom]     = os[LL];
+            output[CustBE] = "ll";
+        }
+
+        if (os[Custom]) {
+            auto backendId = output[CustBE];
+            if (auto it = backends.find(backendId); it != backends.end()) {
+                auto backend = it->second;
+                // auto backendExtensions = extensions["ll"];
+                backend(world, *os[Custom]);
+                //, extensions.contains(backendId) ? (extensions[backendId]) : Extensions{});
             } else
-                errln("error: 'll' emitter not loaded. Try loading 'mem' dialect.");
+                errln("error: '{}' emitter not loaded.", backendId);
         }
     } catch (const std::exception& e) {
         errln("{}", e.what());
