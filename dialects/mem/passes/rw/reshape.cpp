@@ -24,10 +24,7 @@ const Def* Reshape::rewrite_def(const Def* def) {
 bool should_flatten(const Def* T) {
     // handle [] cases
     if (T->isa<Sigma>()) return true;
-<<<<<<< HEAD
     // also handle normalized tuple-arrays ((a:I32,b:I32) : <<2;I32>>)
-=======
->>>>>>> 299da4031934a93bce3e8d6dbc3e099256a40e0c
     // TODO: handle better than with magic number
     //  (do we want to flatten any array with more than 2 elements)
     //  (2 elements are needed for conditionals)
