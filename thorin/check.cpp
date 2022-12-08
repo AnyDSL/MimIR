@@ -176,7 +176,6 @@ bool Checker::assignable(Refer type, Refer val, Refer dbg /*= {}*/) {
         if (!infer && !equiv(type->arity(), val_ty->arity(), dbg)) return false;
 
         if (auto a = isa_lit(arr->arity())) {
-
             if (infer) infer->inflate(arr, *a, arr->body());
 
             for (size_t i = 0; i != *a; ++i) {
