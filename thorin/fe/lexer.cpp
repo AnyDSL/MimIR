@@ -109,7 +109,7 @@ Tok Lexer::lex() {
                 // Split non-keyword into T_dot and M_id; M_id goes into non_key_ for next lex().
                 assert(!non_key_.has_value());
                 auto id_loc = loc_;
-                ++id_loc.begin.col ;
+                ++id_loc.begin.col;
                 non_key_.emplace(id_loc, Tok::Tag::M_id, world_.sym(str_.substr(1), loc()));
                 return {loc().anew_begin(), Tok::Tag::T_dot};
             }
