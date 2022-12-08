@@ -17,7 +17,7 @@
 };
 
 
-.con .extern main [mem: %mem.M, argc: I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, I32]] = {
+.con .extern main [mem: %mem.M, argc: I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), return : .Cn [%mem.M, I32]] = {
 
     .con h [mem: %mem.M, x : I32, return : .Cn [%mem.M, I32]] = {
         return (mem, %core.wrap.add 0 (x, argc))
@@ -33,8 +33,8 @@
     .let (alloc_pb_mem, pb_ptr) = %mem.malloc Tas (mem, 32);
 
     .let pb_arr = %core.bitcast (
-       %mem.Ptr («⊤:.Nat; .Cn [%mem.M, (.Idx 4294967296), .Cn [%mem.M, (.Idx 4294967296)]]», 0:.Nat),
-       %mem.Ptr (.Cn [%mem.M, (.Idx 4294967296), .Cn [%mem.M, (.Idx 4294967296)]], 0:.Nat)) pb_ptr;
+       %mem.Ptr («⊤:.Nat; .Cn [%mem.M, (.Idx 4294967296), .Cn [%mem.M, (.Idx 4294967296)]]», 0),
+       %mem.Ptr (.Cn [%mem.M, (.Idx 4294967296), .Cn [%mem.M, (.Idx 4294967296)]], 0)) pb_ptr;
 
     .let (alloc_mem, a_arr) = %mem.alloc (<<%core.bitcast (.Nat, I32) 4:I32; I32>>, 0) (alloc_pb_mem);
 
