@@ -14,37 +14,6 @@ namespace thorin {
 // Just assuming looking through the uses is faster if uses().size() is small.
 static constexpr int Search_In_Uses_Threshold = 8;
 
-const Def* refer(const Def* def) {
-    if (!def) return nullptr;
-
-    // find inferred Def through chain of Infers
-    while (auto infer = def->isa<Infer>()) {
-        if (auto op = infer->op())
-            def = op;
-        else
-            break;
-    }
-
-    // TODO union-find-like path compression
-
-    if (auto tuple = def->isa<Tuple>()) {
-        size_t n     = tuple->num_ops();
-        bool update  = false;
-        auto new_ops = DefArray(n, [tuple, &update](size_t i) {
-            auto r = refer(tuple->op(i));
-            update |= r != tuple->op(i);
-            return r;
-        });
-
-        if (update) {
-            World& w = tuple->world();
-            return tuple->rebuild(w, tuple->type(), new_ops, tuple->dbg());
-        }
-    }
-
-    return def;
-}
-
 /*
  * constructors
  */

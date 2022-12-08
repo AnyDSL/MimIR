@@ -5,6 +5,67 @@
 
 namespace thorin {
 
+/*
+ * Infer
+ */
+
+const Def* refer(const Def* def) {
+    if (!def) return nullptr;
+
+    // find inferred Def through chain of Infers
+    while (auto infer = def->isa<Infer>()) {
+        if (auto op = infer->op())
+            def = op;
+        else
+            break;
+    }
+
+    // TODO union-find-like path compression
+
+    if (auto tuple = def->isa<Tuple>()) {
+        size_t n     = tuple->num_ops();
+        bool update  = false;
+        auto new_ops = DefArray(n, [tuple, &update](size_t i) {
+            auto r = refer(tuple->op(i));
+            update |= r != tuple->op(i);
+            return r;
+        });
+
+        if (update) {
+            World& w = tuple->world();
+            return tuple->rebuild(w, tuple->type(), new_ops, tuple->dbg());
+        }
+    }
+
+    return def;
+}
+
+const Def* Infer::inflate(Refer ty, Defs elems_t) {
+    auto& w = world();
+    if (!is_set()) {
+        DefArray infer_ops(elems_t.size(), [&](size_t i) { return w.nom_infer(elems_t[i], dbg()); });
+        set(w.tuple(infer_ops, dbg()));
+        if (auto t = type()->isa_nom<Infer>(); t && !t->is_set() && ty) t->set(ty);
+    }
+
+    return op();
+}
+
+const Def* Infer::inflate(Refer ty, u64 n, Refer elem_t) {
+    auto& w = world();
+    if (!is_set()) {
+        DefArray infer_ops(n, [&](size_t) { return w.nom_infer(elem_t, dbg()); });
+        set(w.tuple(infer_ops, dbg()));
+        if (auto t = type()->isa_nom<Infer>(); t && !t->is_set() && ty) t->set(ty);
+    }
+
+    return op();
+}
+
+/*
+ * Checker
+ */
+
 bool Checker::equiv(Refer d1, Refer d2, Refer dbg, bool opt) {
     if (d1 == d2) return true;
     if (!d1 || !d2) return false;
@@ -104,11 +165,7 @@ bool Checker::assignable(Refer type, Refer val, Refer dbg /*= {}*/) {
         size_t a = sigma->num_ops();
         auto red = sigma->reduce(val);
 
-        if (infer && !infer->is_set()) {
-            Array<const Def*> infer_ops(a, [&](size_t i) { return world().nom_infer(red[i], dbg); });
-            infer->set(world().tuple(infer_ops, dbg));
-            if (auto t = infer->type()->isa_nom<Infer>(); t && !t->is_set()) t->set(sigma);
-        }
+        if (infer) infer->inflate(sigma, red);
 
         for (size_t i = 0; i != a; ++i) {
             if (!assignable(red[i], val->proj(a, i, dbg), dbg)) return false;
@@ -119,11 +176,8 @@ bool Checker::assignable(Refer type, Refer val, Refer dbg /*= {}*/) {
         if (!infer && !equiv(type->arity(), val_ty->arity(), dbg)) return false;
 
         if (auto a = isa_lit(arr->arity())) {
-            if (infer && !infer->is_set()) {
-                Array<const Def*> infer_ops(*a, [&](size_t) { return world().nom_infer(arr->body(), dbg); });
-                infer->set(world().tuple(infer_ops, dbg));
-                if (auto t = infer->type()->isa_nom<Infer>(); t && !t->is_set()) t->set(arr);
-            }
+
+            if (infer) infer->inflate(arr, *a, arr->body());
 
             for (size_t i = 0; i != *a; ++i) {
                 if (!assignable(arr->proj(*a, i), val->proj(*a, i, dbg), dbg)) return false;
