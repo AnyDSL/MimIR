@@ -20,9 +20,9 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 option(BUILD_SHARED_LIBS "Build shared libraries." ON)
-option(THORIN_BUILD_DOCS "If ON, Thorin will build the documentation (requires Doxygen)." OFF) 
-option(THORIN_BUILD_TESTING "If ON, Thorin will build all of Thorin's own tests." OFF) 
-option(THORIN_LIT_WITH_VALGRIND "If ON, the Thorin CLI in the lit tests will be run under valgrind." OFF) 
+option(THORIN_BUILD_DOCS "If ON, Thorin will build the documentation (requires Doxygen)." OFF)
+option(THORIN_BUILD_TESTING "If ON, Thorin will build all of Thorin's own tests." OFF)
+option(THORIN_LIT_WITH_VALGRIND "If ON, the Thorin CLI in the lit tests will be run under valgrind." OFF)
 
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}; shared libs: ${BUILD_SHARED_LIBS}")
 
@@ -35,6 +35,10 @@ endif()
 if(WIN32)
     option(THORIN_COLOR_TERM "Use colored output (doesn't work in Windows terminal)" FALSE)
     add_compile_definitions(NOMINMAX) # prevents windows.h defining min/max macros
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        # see https://developercommunity.visualstudio.com/t/linker-hangs/877370
+        add_compile_options(-d2SSAOptimizer-)
+    endif()
 else()
     option(THORIN_COLOR_TERM "Use colored output (doesn't work in Windows terminal)" TRUE)
     add_compile_options(-Wall -Wextra)
