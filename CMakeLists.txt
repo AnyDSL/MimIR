@@ -35,10 +35,6 @@ endif()
 if(WIN32)
     option(THORIN_COLOR_TERM "Use colored output (doesn't work in Windows terminal)" FALSE)
     add_compile_definitions(NOMINMAX) # prevents windows.h defining min/max macros
-    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-        # see https://developercommunity.visualstudio.com/t/linker-hangs/877370
-        add_link_options("/d2:-SSAOptimizer-")
-    endif()
 else()
     option(THORIN_COLOR_TERM "Use colored output (doesn't work in Windows terminal)" TRUE)
     add_compile_options(-Wall -Wextra)
