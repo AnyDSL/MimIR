@@ -7,6 +7,7 @@
 #include <ranges>
 
 #include "thorin/def.h"
+#include "thorin/tuple.h"
 
 #include "thorin/analyses/cfg.h"
 #include "thorin/be/emitter.h"
@@ -104,9 +105,18 @@ std::string Emitter::emit_bb(BB&, const Def* def) {
     } else if (auto app = def->isa<App>()) {
         emit_unsafe(app->callee());
         print(ostream_, " ");
-        // emit(app->arg());
+        emit(app->arg());
 
         // print(ostream_, "\n");
+    } else if (auto ext = def->isa<Extract>()) {
+        auto tuple = ext->tuple();
+        if (tuple->type()->isa<Arr>()) {
+            // TODO: emit or use let binding
+            // emit_unsafe(tuple);
+            // print(ostream_, ".{}", ext->index());
+        } else {
+            // TODO:
+        }
     } else {
         // print(ostream_, "{}", def->unique_name());
         for (auto op : def->ops()) {
@@ -123,14 +133,15 @@ void Emitter::emit_var(const Var* def) {
     // assert(def->isa<Var>());
 
     // (arg1, arg2, arg3)
-    print(ostream_, "(");
-    auto num = def->num_projs();
-    for (nat_t i = 0; i < num; i++) {
-        auto op = def->proj(num, i);
-        print(ostream_, "{}", op->unique_name());
-        if (i < num - 1) print(ostream_, ", ");
-    }
-    print(ostream_, ")");
+    print(ostream_, "{}", def->unique_name());
+    // print(ostream_, "(");
+    // auto num = def->num_projs();
+    // for (nat_t i = 0; i < num; i++) {
+    //     auto op = def->proj(num, i);
+    //     print(ostream_, "{}", op->unique_name());
+    //     if (i < num - 1) print(ostream_, ", ");
+    // }
+    // print(ostream_, ")");
 }
 
 // toplevel function
