@@ -5,11 +5,9 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type (default Debug)" FORCE)
 endif()
 
+set(CMAKE_CXX_STANDARD 20)
 if(MSVC)
-    set(CMAKE_CXX_STANDARD 23) # /std:c++latest - unlocks non-stable c++20 features
     add_compile_options(/utf-8 /wd4146 /wd4245)
-else()
-    set(CMAKE_CXX_STANDARD 20) # -std=c++20 for everyone else
 endif()
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

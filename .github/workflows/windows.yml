@@ -8,10 +8,10 @@ on:
 jobs:
   build-and-test:
     name: Build and test ${{matrix.build-type}} mode
-    runs-on: windows-2022
+    runs-on: windows-latest
     strategy:
       matrix:
-        build-type: [Release] # Debug disabled: link.exe hangs :(
+        build-type: [Debug, Release]
 
     steps:
       - name: Clone recursively
