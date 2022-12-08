@@ -30,6 +30,11 @@ Lexer::Lexer(World& world, std::string_view filename, std::istream& istream, std
 
 Tok Lexer::lex() {
     while (true) {
+        if (auto non_key = non_key_) {
+            non_key_.reset();
+            return *non_key;
+        }
+
         loc_.begin = ahead().pos;
         str_.clear();
 
@@ -100,9 +105,13 @@ Tok Lexer::lex() {
 
         if (accept('.')) {
             if (lex_id()) {
-                if (auto i = keywords_.find(str_); i != keywords_.end()) { return tok(i->second); }
-                err({loc_.file, ahead().pos}, "unknown keyword '{}'", str_);
-                continue;
+                if (auto i = keywords_.find(str_); i != keywords_.end()) return tok(i->second);
+                // Split non-keyword into T_dot and M_id; M_id goes into non_key_ for next lex().
+                assert(!non_key_.has_value());
+                auto id_loc = loc_;
+                ++id_loc.begin.col ;
+                non_key_.emplace(id_loc, Tok::Tag::M_id, world_.sym(str_.substr(1), loc()));
+                return {loc().anew_begin(), Tok::Tag::T_dot};
             }
 
             if (accept_if(isdigit)) {

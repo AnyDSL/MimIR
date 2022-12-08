@@ -58,6 +58,7 @@ private:
     std::ostream* md_;
     bool out_ = true;
     absl::flat_hash_map<std::string, Tok::Tag> keywords_;
+    std::optional<Tok> non_key_;
 };
 
 } // namespace fe
