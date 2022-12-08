@@ -110,6 +110,19 @@ add_thorin_dialect(direct
     INSTALL
 )
 
+add_thorin_dialect(haskell
+    SOURCES
+        haskell/haskell.cpp
+        haskell/haskell.h
+        haskell/be/haskell_emit.h
+        haskell/be/haskell_emit.cpp
+    DEPENDS
+        core
+        math
+        mem
+    INSTALL
+)
+
 add_thorin_dialect(math
     SOURCES
         math/math.cpp
