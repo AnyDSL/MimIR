@@ -20,7 +20,7 @@ var core_2autogen_8h =
       [ "nxor", "core_2autogen_8h.html#a70895f76bd16fdb3db2c75dd1fd38978a9989c0fe0d3c40b4184f53f612ce350d", null ],
       [ "b", "core_2autogen_8h.html#a70895f76bd16fdb3db2c75dd1fd38978acae4977ec0f9b75b8b665538afffd5b5", null ],
       [ "iff", "core_2autogen_8h.html#a70895f76bd16fdb3db2c75dd1fd38978a8dc34183d1c8dc9c4b787b78f09d33b9", null ],
-      [ "a", "core_2autogen_8h.html#ae493f33140e983cf79dc6b66a1637628a4acc16fd772962c473e31c7b4b09b7bf", null ],
+      [ "a", "core_2autogen_8h.html#a70895f76bd16fdb3db2c75dd1fd38978a4acc16fd772962c473e31c7b4b09b7bf", null ],
       [ "ciff", "core_2autogen_8h.html#a70895f76bd16fdb3db2c75dd1fd38978a88fe0bfe999c6d15e93053a5abaa2647", null ],
       [ "or_", "core_2autogen_8h.html#a70895f76bd16fdb3db2c75dd1fd38978abfd7ad9ece5000d003f6c156c3b8f9cc", null ],
       [ "t", "core_2autogen_8h.html#a60b6d2484fb68ef9ce568db15502e349a2cd637f8af229640a38fe0daff901035", null ]
@@ -101,8 +101,8 @@ var core_2autogen_8h =
       [ "t", "core_2autogen_8h.html#a60b6d2484fb68ef9ce568db15502e349a2cd637f8af229640a38fe0daff901035", null ]
     ] ],
     [ "nop", "core_2autogen_8h.html#a7367a6650ab2feeba43426b8e1853bf7", [
-      [ "add", "core_2autogen_8h.html#ab1f42e21a4de8bd328e18b8006b9f74fa2417b496d526d2ad5b184798d2938924", null ],
-      [ "mul", "core_2autogen_8h.html#ab1f42e21a4de8bd328e18b8006b9f74fa91608a3e04d4c29b574a36a550594d56", null ]
+      [ "add", "core_2autogen_8h.html#a7367a6650ab2feeba43426b8e1853bf7a2417b496d526d2ad5b184798d2938924", null ],
+      [ "mul", "core_2autogen_8h.html#a7367a6650ab2feeba43426b8e1853bf7a91608a3e04d4c29b574a36a550594d56", null ]
     ] ],
     [ "pe", "core_2autogen_8h.html#a9b3426ae9489ca2217b83a20c38d254a", [
       [ "hlt", "core_2autogen_8h.html#a9b3426ae9489ca2217b83a20c38d254aa3d4e5f853ce392452ab1815f961ea93a", null ],
@@ -110,7 +110,7 @@ var core_2autogen_8h =
       [ "known", "core_2autogen_8h.html#a9b3426ae9489ca2217b83a20c38d254aa16b4c02b986c1c384ebffc8cb89c57a6", null ]
     ] ],
     [ "shr", "core_2autogen_8h.html#ae493f33140e983cf79dc6b66a1637628", [
-      [ "a", "core_2autogen_8h.html#ae493f33140e983cf79dc6b66a1637628a4acc16fd772962c473e31c7b4b09b7bf", null ],
+      [ "a", "core_2autogen_8h.html#a70895f76bd16fdb3db2c75dd1fd38978a4acc16fd772962c473e31c7b4b09b7bf", null ],
       [ "l", "core_2autogen_8h.html#ae493f33140e983cf79dc6b66a1637628afb255a4afa664b7d505609cd9f04e49c", null ]
     ] ],
     [ "trait", "core_2autogen_8h.html#aa0072b0cc07c0996ceb3516d925c5fbf", [
@@ -118,9 +118,9 @@ var core_2autogen_8h =
       [ "align", "core_2autogen_8h.html#aa0072b0cc07c0996ceb3516d925c5fbfa62ac19ce1cbaf53f8d88ce15a29f03a8", null ]
     ] ],
     [ "wrap", "core_2autogen_8h.html#ab1f42e21a4de8bd328e18b8006b9f74f", [
-      [ "add", "core_2autogen_8h.html#ab1f42e21a4de8bd328e18b8006b9f74fa2417b496d526d2ad5b184798d2938924", null ],
+      [ "add", "core_2autogen_8h.html#a7367a6650ab2feeba43426b8e1853bf7a2417b496d526d2ad5b184798d2938924", null ],
       [ "sub", "core_2autogen_8h.html#ab1f42e21a4de8bd328e18b8006b9f74fa641220906872c172d2238e5a2f54600f", null ],
-      [ "mul", "core_2autogen_8h.html#ab1f42e21a4de8bd328e18b8006b9f74fa91608a3e04d4c29b574a36a550594d56", null ],
+      [ "mul", "core_2autogen_8h.html#a7367a6650ab2feeba43426b8e1853bf7a91608a3e04d4c29b574a36a550594d56", null ],
       [ "shl", "core_2autogen_8h.html#ab1f42e21a4de8bd328e18b8006b9f74fa7f0dec3b27b1d6ad0b7cbf34b0ae37da", null ]
     ] ],
     [ "zip", "core_2autogen_8h.html#a4786eb5f5c5a7edca2c2bc332c0dfa4a", null ],
