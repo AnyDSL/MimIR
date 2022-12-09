@@ -91,6 +91,7 @@ void Emitter::emit_epilogue(Lam* lam) {
 // body of functions
 std::string Emitter::emit_bb(BB&, const Def* def) {
     // if (auto lam = def->isa<Lam>()) return lam->name();
+    // TODO: cache expressions in let binding
     if (auto lam = def->isa<Lam>()) print(ostream_, "{}", lam->name());
 
     // print(ostream_, "Emit {} {}\n", def->node_name(), def->unique_name());
@@ -111,13 +112,26 @@ std::string Emitter::emit_bb(BB&, const Def* def) {
     } else if (auto ext = def->isa<Extract>()) {
         auto tuple = ext->tuple();
         if (tuple->type()->isa<Arr>()) {
-            // TODO: emit or use let binding
-            // emit_unsafe(tuple);
+            emit(tuple);
+            print(ostream_, "!!");
+            emit(ext->index());
             // print(ostream_, ".{}", ext->index());
         } else {
             // TODO:
         }
+    } else if (auto tuple = def->isa<Tuple>()) {
+        if (tuple->type()->isa<Arr>()) {
+            print(ostream_, "[");
+            for (auto i = 0; i < tuple->num_ops(); i++) {
+                if (i > 0) print(ostream_, ", ");
+                emit(tuple->op(i));
+            }
+            print(ostream_, "]");
+        } else {
+            // TODO:
+        }
     } else {
+        // TODO:
         // print(ostream_, "{}", def->unique_name());
         for (auto op : def->ops()) {
             // emit_unsafe(op);
