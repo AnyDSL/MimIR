@@ -61,6 +61,7 @@ static const Def* rewrite_apped_nom_lam_in_tuple(const Def* def,
     return app->rebuild(w, app->type(), {callee, arg}, app->dbg());
 }
 
+// Entry point of the phase.
 void AddMem::visit(const Scope& scope) {
     if (auto entry = scope.entry()->isa_nom<Lam>()) {
         scope.free_noms(); // cache this.
@@ -71,13 +72,15 @@ void AddMem::visit(const Scope& scope) {
 
 const Def* AddMem::mem_for_lam(Lam* lam) const {
     if (auto it = mem_rewritten_.find(lam); it != mem_rewritten_.end()) {
-        lam->world().DLOG("found mem for {} in mem_rewritten_ : {}", lam, it->second);
+        // We created a new lambda. Therefore, we want to lookup the mem for the new lambda.
         lam = it->second->as_nom<Lam>();
     }
     if (auto it = val2mem_.find(lam); it != val2mem_.end()) {
         lam->world().DLOG("found mem for {} in val2mem_ : {}", lam, it->second);
+        // We found a (overwritten) memory in the lambda.
         return it->second;
     }
+    // As a fallback, we lookup the memory in vars of the lambda.
     auto mem = mem::mem_var(lam);
     assert(mem && "nom must have mem!");
     return mem;
