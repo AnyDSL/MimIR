@@ -9,7 +9,7 @@ var searchData=
   ['nb_6',['nb',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a13223f01039b9b9d6c0ab0646a6fc49d',1,'thorin::core']]],
   ['nciff_7',['nciff',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a62672b0c20974c44eccd928ce11ae8eb',1,'thorin::core']]],
   ['ncmp_8',['ncmp',['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47e',1,'thorin::core']]],
-  ['ne_9',['ne',['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa33514849b83fe7dc41d216f2282ce2bd',1,'thorin::math::ne()'],['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2023fd5d4e7d81d38b7539ac2e697d34',1,'thorin::core::ne()']]],
+  ['ne_9',['ne',['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa33514849b83fe7dc41d216f2282ce2bd',1,'thorin::math::ne()'],['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea2023fd5d4e7d81d38b7539ac2e697d34',1,'thorin::core::ne()']]],
   ['neg_10',['neg',['../namespacethorin_1_1core.html#a60b6d2484fb68ef9ce568db15502e349a416ad0b3ec8b1647918fe60ae4a91a7d',1,'thorin::core']]],
   ['new2old_11',['new2old',['../classthorin_1_1EtaExp.html#a89a0e4f570f590e713eb6cf484b2c983',1,'thorin::EtaExp::new2old(Lam *new_lam, Lam *old_lam)'],['../classthorin_1_1EtaExp.html#ac2fe363e7302200b737fd85676c94da2',1,'thorin::EtaExp::new2old(Lam *new_lam)']]],
   ['next_12',['next',['../structthorin_1_1World_1_1Arena_1_1Zone.html#a40aad751f4665fe34aa2a493e02c5355',1,'thorin::World::Arena::Zone::next()'],['../classthorin_1_1IndexSet.html#a6f998927823164840c08109f8b7a3a9c',1,'thorin::IndexSet::next()'],['../classthorin_1_1utf8_1_1Lexer.html#ad29428b48f635a4f5d0f29b91d9c0c3f',1,'thorin::utf8::Lexer::next()']]],
