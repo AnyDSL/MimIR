@@ -40,6 +40,7 @@ var menudata={children:[
 {text:"direct",url:"direct.html"},
 {text:"math",url:"math.html"},
 {text:"mem",url:"mem.html"},
+{text:"opt",url:"opt.html"},
 {text:"refly",url:"refly.html"}]},
 {text:"Namespaces",url:"namespaces.html",children:[
 {text:"Namespace List",url:"namespaces.html"},

@@ -130,10 +130,11 @@ $(document).ready(function(){initNavTree('compile_8cpp.html',''); initResizable(
 <code>#include &quot;<a class="el" href="scalarize_8h_source.html">thorin/pass/rw/scalarize.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="compile_2autogen_8h_source.html">dialects/compile/autogen.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="debug__print_8h_source.html">dialects/compile/passes/debug_print.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="internal__cleanup_8h_source.html">dialects/compile/passes/internal_cleanup.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for compile.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="compile_8cpp__incl.svg" width="3111" height="1004"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="compile_8cpp__incl.svg" width="2822" height="1004"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -187,11 +188,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compile_8cpp_source.html#l00040">40</a> of file <a class="el" href="compile_8cpp_source.html">compile.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_8cpp_source.html#l00027">27</a> of file <a class="el" href="compile_8cpp_source.html">compile.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pipelinebuilder_8cpp_source.html#l00035">thorin::PipelineBuilder::append_phase_end()</a>, <a class="el" href="def_8cpp_source.html#l00455">thorin::collect_args()</a>, and <a class="el" href="world_8h_source.html#l00102">thorin::World::flags()</a>.</p>
+<p class="reference">References <a class="el" href="pipelinebuilder_8cpp_source.html#l00030">thorin::PipelineBuilder::begin_pass_phase()</a>, <a class="el" href="pipelinebuilder_8cpp_source.html#l00031">thorin::PipelineBuilder::end_pass_phase()</a>, and <a class="el" href="compile_8h_source.html#l00010">thorin::compile::handle_optimization_part()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compile_8cpp_source.html#l00064">thorin_get_dialect_info()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compile_8cpp_source.html#l00038">thorin_get_dialect_info()</a>.</p>
 
 </div>
 </div>
@@ -233,11 +234,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compile_8cpp_source.html#l00022">22</a> of file <a class="el" href="compile_8cpp_source.html">compile.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_8cpp_source.html#l00023">23</a> of file <a class="el" href="compile_8cpp_source.html">compile.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp_source.html#l00455">thorin::collect_args()</a>, and <a class="el" href="world_8h_source.html#l00102">thorin::World::flags()</a>.</p>
+<p class="reference">References <a class="el" href="compile_8h_source.html#l00010">thorin::compile::handle_optimization_part()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="compile_8cpp_source.html#l00064">thorin_get_dialect_info()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compile_8cpp_source.html#l00038">thorin_get_dialect_info()</a>.</p>
 
 </div>
 </div>
@@ -256,9 +257,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="compile_8cpp_source.html#l00064">64</a> of file <a class="el" href="compile_8cpp_source.html">compile.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_8cpp_source.html#l00038">38</a> of file <a class="el" href="compile_8cpp_source.html">compile.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00127">thorin::PassMan::add()</a>, <a class="el" href="compile_8cpp_source.html#l00040">add_passes()</a>, <a class="el" href="compile_8cpp_source.html#l00022">add_phases()</a>, <a class="el" href="lam_8h_source.html#l00142">thorin::App::arg()</a>, <a class="el" href="cast_8h_source.html#l00039">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="def_8cpp_source.html#l00455">thorin::collect_args()</a>, <a class="el" href="def_8h_source.html#l00271">thorin::Def::projs()</a>, and <a class="el" href="namespacethorin_1_1compile.html#a0ba02745cf075dadf81dd8e781c1e45b">thorin::compile::register_normalizers()</a>.</p>
+<p class="reference">References <a class="el" href="compile_8cpp_source.html#l00027">add_passes()</a>, <a class="el" href="compile_8cpp_source.html#l00023">add_phases()</a>, <a class="el" href="lam_8h_source.html#l00142">thorin::App::arg()</a>, <a class="el" href="cast_8h_source.html#l00039">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="def_8cpp_source.html#l00455">thorin::collect_args()</a>, <a class="el" href="def_8h_source.html#l00271">thorin::Def::projs()</a>, and <a class="el" href="namespacethorin_1_1compile.html#a0ba02745cf075dadf81dd8e781c1e45b">thorin::compile::register_normalizers()</a>.</p>
 
 </div>
 </div>

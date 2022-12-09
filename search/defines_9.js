@@ -14,10 +14,11 @@ var searchData=
   ['thorin_5fmath_5fnormalizer_5fimpl_11',['THORIN_math_NORMALIZER_IMPL',['../math_2autogen_8h.html#a57be56a9ff18e5026bb27caff8f82257',1,'autogen.h']]],
   ['thorin_5fmem_5fnormalizer_5fimpl_12',['THORIN_mem_NORMALIZER_IMPL',['../mem_2autogen_8h.html#aad05e4016c65ad57be606950cefa7140',1,'autogen.h']]],
   ['thorin_5fnode_13',['THORIN_NODE',['../def_8h.html#ad441fba8cfece95e5b9a6bfb4e2c65f1',1,'def.h']]],
-  ['thorin_5fprec_14',['THORIN_PREC',['../tok_8h.html#ac29f384be3c6b33c3b9beded2bd1df1c',1,'tok.h']]],
-  ['thorin_5fproj_15',['THORIN_PROJ',['../def_8h.html#adf5d1a62a53cfba7b0dcd4caac0090ab',1,'def.h']]],
-  ['thorin_5frefly_5fnormalizer_5fimpl_16',['THORIN_refly_NORMALIZER_IMPL',['../refly_2autogen_8h.html#abd362ca8bc57725552b7356e62d844f8',1,'autogen.h']]],
-  ['thorin_5fsubst_17',['THORIN_SUBST',['../tok_8h.html#a3d2da954389db5acfc86380a482ee87d',1,'tok.h']]],
-  ['thorin_5ftok_18',['THORIN_TOK',['../tok_8h.html#acf85c215badfba27aee55c9cd3af719a',1,'tok.h']]],
-  ['thorin_5fwhich_19',['THORIN_WHICH',['../sys_8h.html#a8c190e94eb07b7ca90ecd8e07bf04ff8',1,'sys.h']]]
+  ['thorin_5fopt_5fnormalizer_5fimpl_14',['THORIN_opt_NORMALIZER_IMPL',['../opt_2autogen_8h.html#aa2633fed7fcd17fbdf0d0caeadd9a859',1,'autogen.h']]],
+  ['thorin_5fprec_15',['THORIN_PREC',['../tok_8h.html#ac29f384be3c6b33c3b9beded2bd1df1c',1,'tok.h']]],
+  ['thorin_5fproj_16',['THORIN_PROJ',['../def_8h.html#adf5d1a62a53cfba7b0dcd4caac0090ab',1,'def.h']]],
+  ['thorin_5frefly_5fnormalizer_5fimpl_17',['THORIN_refly_NORMALIZER_IMPL',['../refly_2autogen_8h.html#abd362ca8bc57725552b7356e62d844f8',1,'autogen.h']]],
+  ['thorin_5fsubst_18',['THORIN_SUBST',['../tok_8h.html#a3d2da954389db5acfc86380a482ee87d',1,'tok.h']]],
+  ['thorin_5ftok_19',['THORIN_TOK',['../tok_8h.html#acf85c215badfba27aee55c9cd3af719a',1,'tok.h']]],
+  ['thorin_5fwhich_20',['THORIN_WHICH',['../sys_8h.html#a8c190e94eb07b7ca90ecd8e07bf04ff8',1,'sys.h']]]
 ];

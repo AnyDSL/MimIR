@@ -9,5 +9,6 @@ var searchData=
   ['the_20direct_20style_20dialect_6',['The direct style dialect',['../direct.html',1,'']]],
   ['the_20math_20dialect_7',['The math Dialect',['../math.html',1,'']]],
   ['the_20mem_20dialect_8',['The mem Dialect',['../mem.html',1,'']]],
-  ['the_20refly_20dialect_9',['The refly dialect',['../refly.html',1,'']]]
+  ['the_20opt_20dialect_9',['The opt dialect',['../opt.html',1,'']]],
+  ['the_20refly_20dialect_10',['The refly dialect',['../refly.html',1,'']]]
 ];

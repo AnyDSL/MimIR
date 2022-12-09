@@ -121,52 +121,35 @@ $(document).ready(function(){initNavTree('classthorin_1_1PipelineBuilder.html','
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae4b70b112a95b02b8ef387e9969a9b52"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#ae4b70b112a95b02b8ef387e9969a9b52">PipelineBuilder</a> ()</td></tr>
-<tr class="separator:ae4b70b112a95b02b8ef387e9969a9b52"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad870b74f8c8b9c1e8629cc72fe2b4d68"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#ad870b74f8c8b9c1e8629cc72fe2b4d68">last_phase</a> ()</td></tr>
-<tr class="separator:ad870b74f8c8b9c1e8629cc72fe2b4d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bb3cd2ac05c2840a059f367f707ceaa"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#a4bb3cd2ac05c2840a059f367f707ceaa">PipelineBuilder</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;world)</td></tr>
+<tr class="separator:a4bb3cd2ac05c2840a059f367f707ceaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14747e807e83b7032f1116e5f8e3274f"><td class="memTemplParams" colspan="2">template&lt;class P , class... Args&gt; </td></tr>
 <tr class="memitem:a14747e807e83b7032f1116e5f8e3274f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#a14747e807e83b7032f1116e5f8e3274f">add_pass</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *def, Args &amp;&amp;... args)</td></tr>
 <tr class="separator:a14747e807e83b7032f1116e5f8e3274f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc3543a2a68bc8530ca51fede9a06103"><td class="memTemplParams" colspan="2">template&lt;class P , class... Args&gt; </td></tr>
+<tr class="memitem:acc3543a2a68bc8530ca51fede9a06103"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#acc3543a2a68bc8530ca51fede9a06103">add_phase</a> (Args &amp;&amp;... args)</td></tr>
+<tr class="separator:acc3543a2a68bc8530ca51fede9a06103"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d9d9f2ceba7e011f52694ab13bfbca7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#a8d9d9f2ceba7e011f52694ab13bfbca7">begin_pass_phase</a> ()</td></tr>
+<tr class="separator:a8d9d9f2ceba7e011f52694ab13bfbca7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f048bac1341a966e39219d53a03f56b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#a9f048bac1341a966e39219d53a03f56b">end_pass_phase</a> ()</td></tr>
+<tr class="separator:a9f048bac1341a966e39219d53a03f56b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4fa61a546ceafda0db5ccb6441e0a053"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#a4fa61a546ceafda0db5ccb6441e0a053">remember_pass_instance</a> (<a class="el" href="classthorin_1_1Pass.html">Pass</a> *p, const <a class="el" href="classthorin_1_1Def.html">Def</a> *)</td></tr>
 <tr class="separator:a4fa61a546ceafda0db5ccb6441e0a053"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a664333368d8b15a994c6eabf9ad6b098"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Pass.html">Pass</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#a664333368d8b15a994c6eabf9ad6b098">get_pass_instance</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *)</td></tr>
 <tr class="separator:a664333368d8b15a994c6eabf9ad6b098"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c03b18bccef510a3f3a6b5a6214aefb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#a2c03b18bccef510a3f3a6b5a6214aefb">append_phase_end</a> (<a class="el" href="namespacethorin.html#a1e4119acb8ea6f0c027361ce9aa75217">PhaseBuilder</a>, int priority=<a class="el" href="namespacethorin.html#a059124239118c15303c151cd962c4810">Pass_Default_Priority</a>)</td></tr>
-<tr class="separator:a2c03b18bccef510a3f3a6b5a6214aefb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aede93a60e9a486a52ba3528081cec1d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#aede93a60e9a486a52ba3528081cec1d4">append_pass_in_end</a> (<a class="el" href="namespacethorin.html#a0c01e073816ae185151d892d3421e4d8">PassBuilder</a>, int priority=<a class="el" href="namespacethorin.html#a059124239118c15303c151cd962c4810">Pass_Default_Priority</a>)</td></tr>
-<tr class="separator:aede93a60e9a486a52ba3528081cec1d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a394c4f49b1a83f2eb11592b7cafcf7af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#a394c4f49b1a83f2eb11592b7cafcf7af">append_pass_after_end</a> (<a class="el" href="namespacethorin.html#a0c01e073816ae185151d892d3421e4d8">PassBuilder</a>, int priority=<a class="el" href="namespacethorin.html#a059124239118c15303c151cd962c4810">Pass_Default_Priority</a>)</td></tr>
-<tr class="separator:a394c4f49b1a83f2eb11592b7cafcf7af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad44bf37be580beccbc6e86197c182197"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#ad44bf37be580beccbc6e86197c182197">append_phase</a> (int i, <a class="el" href="namespacethorin.html#a1e4119acb8ea6f0c027361ce9aa75217">PhaseBuilder</a>, int priority=<a class="el" href="namespacethorin.html#a059124239118c15303c151cd962c4810">Pass_Default_Priority</a>)</td></tr>
-<tr class="separator:ad44bf37be580beccbc6e86197c182197"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a593ea0dd435f5e4c95e81d32f83d23"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#a1a593ea0dd435f5e4c95e81d32f83d23">extend_opt_phase</a> (int i, <a class="el" href="namespacethorin.html#a0c01e073816ae185151d892d3421e4d8">PassBuilder</a>, int priority=<a class="el" href="namespacethorin.html#a059124239118c15303c151cd962c4810">Pass_Default_Priority</a>)</td></tr>
-<tr class="separator:a1a593ea0dd435f5e4c95e81d32f83d23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94386723ad34a9ccb230ac0a755fa6c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#a94386723ad34a9ccb230ac0a755fa6c8">extend_opt_phase</a> (<a class="el" href="namespacethorin.html#a0c01e073816ae185151d892d3421e4d8">PassBuilder</a> &amp;&amp;)</td></tr>
-<tr class="separator:a94386723ad34a9ccb230ac0a755fa6c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa50746c3b1136c07f9bc5d0ade57fe23"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#aa50746c3b1136c07f9bc5d0ade57fe23">add_opt</a> (int i)</td></tr>
-<tr class="separator:aa50746c3b1136c07f9bc5d0ade57fe23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a55af8b2d3c1560dd17d8d49c1e53c092"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#a55af8b2d3c1560dd17d8d49c1e53c092">extend_codegen_prep_phase</a> (<a class="el" href="namespacethorin.html#a0c01e073816ae185151d892d3421e4d8">PassBuilder</a> &amp;&amp;)</td></tr>
-<tr class="separator:a55af8b2d3c1560dd17d8d49c1e53c092"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a871d13e2ba4debc49b7600cde2995403"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#a871d13e2ba4debc49b7600cde2995403">opt_phase</a> (int i, <a class="el" href="classthorin_1_1World.html">World</a> &amp;world)</td></tr>
-<tr class="separator:a871d13e2ba4debc49b7600cde2995403"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab419a73fa86a819d6d06ac8cf18dd5a3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#ab419a73fa86a819d6d06ac8cf18dd5a3">buildPipeline</a> (<a class="el" href="classthorin_1_1Pipeline.html">Pipeline</a> &amp;pipeline)</td></tr>
-<tr class="separator:ab419a73fa86a819d6d06ac8cf18dd5a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc781351f63a0a16b66a7344c1b0f80c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#acc781351f63a0a16b66a7344c1b0f80c">buildPipelinePart</a> (int i, <a class="el" href="classthorin_1_1Pipeline.html">Pipeline</a> &amp;pipeline)</td></tr>
-<tr class="separator:acc781351f63a0a16b66a7344c1b0f80c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2a657d421b1731700f4ef39789f82b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#ad2a657d421b1731700f4ef39789f82b1">add_opt</a> (<a class="el" href="classthorin_1_1PassMan.html">PassMan</a> man)</td></tr>
-<tr class="separator:ad2a657d421b1731700f4ef39789f82b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78942e71d6508734035d576974bf0e14"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#a78942e71d6508734035d576974bf0e14">passes</a> ()</td></tr>
-<tr class="separator:a78942e71d6508734035d576974bf0e14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5fa4eccbd7ef0710b38b73a7ff281ca0"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#a5fa4eccbd7ef0710b38b73a7ff281ca0">phases</a> ()</td></tr>
-<tr class="separator:a5fa4eccbd7ef0710b38b73a7ff281ca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed52fcfb2e96d6261b380d1a1ab21787"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#aed52fcfb2e96d6261b380d1a1ab21787">register_dialect</a> (<a class="el" href="classthorin_1_1Dialect.html">Dialect</a> &amp;d)</td></tr>
+<tr class="separator:aed52fcfb2e96d6261b380d1a1ab21787"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe0afcdb59c53df1bfeeaf74eca6c08f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#abe0afcdb59c53df1bfeeaf74eca6c08f">is_registered_dialect</a> (std::string name)</td></tr>
+<tr class="separator:abe0afcdb59c53df1bfeeaf74eca6c08f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe4cd59b3cee2e8d1f58d61ad5c5a88e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#afe4cd59b3cee2e8d1f58d61ad5c5a88e">run_pipeline</a> ()</td></tr>
+<tr class="separator:afe4cd59b3cee2e8d1f58d61ad5c5a88e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8h_source.html#l00032">32</a> of file <a class="el" href="pipelinebuilder_8h_source.html">pipelinebuilder.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8h_source.html#l00013">13</a> of file <a class="el" href="pipelinebuilder_8h_source.html">pipelinebuilder.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ae4b70b112a95b02b8ef387e9969a9b52" name="ae4b70b112a95b02b8ef387e9969a9b52"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae4b70b112a95b02b8ef387e9969a9b52">&#9670;&#160;</a></span>PipelineBuilder()</h2>
+<a id="a4bb3cd2ac05c2840a059f367f707ceaa" name="a4bb3cd2ac05c2840a059f367f707ceaa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4bb3cd2ac05c2840a059f367f707ceaa">&#9670;&#160;</a></span>PipelineBuilder()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -177,64 +160,23 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">thorin::PipelineBuilder::PipelineBuilder </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td>
+          <td class="paramname"><em>world</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8h_source.html#l00034">34</a> of file <a class="el" href="pipelinebuilder_8h_source.html">pipelinebuilder.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8h_source.html#l00015">15</a> of file <a class="el" href="pipelinebuilder_8h_source.html">pipelinebuilder.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa50746c3b1136c07f9bc5d0ade57fe23" name="aa50746c3b1136c07f9bc5d0ade57fe23"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa50746c3b1136c07f9bc5d0ade57fe23">&#9670;&#160;</a></span>add_opt() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void thorin::PipelineBuilder::add_opt </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>i</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8cpp_source.html#l00063">63</a> of file <a class="el" href="pipelinebuilder_8cpp_source.html">pipelinebuilder.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00127">thorin::PassMan::add()</a>, <a class="el" href="pipelinebuilder_8cpp_source.html#l00056">extend_opt_phase()</a>, and <a class="el" href="optimize_8h_source.html#l00009">thorin::Pass_Internal_Priority</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="optimize_8cpp_source.html#l00019">thorin::optimize()</a>.</p>
-
-</div>
-</div>
-<a id="ad2a657d421b1731700f4ef39789f82b1" name="ad2a657d421b1731700f4ef39789f82b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad2a657d421b1731700f4ef39789f82b1">&#9670;&#160;</a></span>add_opt() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void thorin::PipelineBuilder::add_opt </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classthorin_1_1PassMan.html">PassMan</a>&#160;</td>
-          <td class="paramname"><em>man</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a14747e807e83b7032f1116e5f8e3274f" name="a14747e807e83b7032f1116e5f8e3274f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a14747e807e83b7032f1116e5f8e3274f">&#9670;&#160;</a></span>add_pass()</h2>
 
@@ -271,287 +213,81 @@ template&lt;class P , class... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8h_source.html#l00040">40</a> of file <a class="el" href="pipelinebuilder_8h_source.html">pipelinebuilder.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8h_source.html#l00021">21</a> of file <a class="el" href="pipelinebuilder_8h_source.html">pipelinebuilder.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00127">thorin::PassMan::add()</a>, <a class="el" href="pipelinebuilder_8cpp_source.html#l00038">append_pass_in_end()</a>, and <a class="el" href="pipelinebuilder_8cpp_source.html#l00025">remember_pass_instance()</a>.</p>
+<p class="reference">References <a class="el" href="pipelinebuilder_8cpp_source.html#l00024">remember_pass_instance()</a>.</p>
 
 </div>
 </div>
-<a id="a394c4f49b1a83f2eb11592b7cafcf7af" name="a394c4f49b1a83f2eb11592b7cafcf7af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a394c4f49b1a83f2eb11592b7cafcf7af">&#9670;&#160;</a></span>append_pass_after_end()</h2>
+<a id="acc3543a2a68bc8530ca51fede9a06103" name="acc3543a2a68bc8530ca51fede9a06103"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc3543a2a68bc8530ca51fede9a06103">&#9670;&#160;</a></span>add_phase()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class P , class... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void thorin::PipelineBuilder::add_phase </td>
+          <td>(</td>
+          <td class="paramtype">Args &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8h_source.html#l00026">26</a> of file <a class="el" href="pipelinebuilder_8h_source.html">pipelinebuilder.h</a>.</p>
+
+</div>
+</div>
+<a id="a8d9d9f2ceba7e011f52694ab13bfbca7" name="a8d9d9f2ceba7e011f52694ab13bfbca7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d9d9f2ceba7e011f52694ab13bfbca7">&#9670;&#160;</a></span>begin_pass_phase()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void thorin::PipelineBuilder::append_pass_after_end </td>
+          <td class="memname">void thorin::PipelineBuilder::begin_pass_phase </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacethorin.html#a0c01e073816ae185151d892d3421e4d8">PassBuilder</a>&#160;</td>
-          <td class="paramname"><em>pass</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>priority</em> = <code><a class="el" href="namespacethorin.html#a059124239118c15303c151cd962c4810">Pass_Default_Priority</a></code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8cpp_source.html#l00041">41</a> of file <a class="el" href="pipelinebuilder_8cpp_source.html">pipelinebuilder.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8cpp_source.html#l00030">30</a> of file <a class="el" href="pipelinebuilder_8cpp_source.html">pipelinebuilder.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pipelinebuilder_8cpp_source.html#l00056">extend_opt_phase()</a>, and <a class="el" href="pipelinebuilder_8cpp_source.html#l00028">last_phase()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compile_8cpp_source.html#l00027">add_passes()</a>.</p>
 
 </div>
 </div>
-<a id="aede93a60e9a486a52ba3528081cec1d4" name="aede93a60e9a486a52ba3528081cec1d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aede93a60e9a486a52ba3528081cec1d4">&#9670;&#160;</a></span>append_pass_in_end()</h2>
+<a id="a9f048bac1341a966e39219d53a03f56b" name="a9f048bac1341a966e39219d53a03f56b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f048bac1341a966e39219d53a03f56b">&#9670;&#160;</a></span>end_pass_phase()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void thorin::PipelineBuilder::append_pass_in_end </td>
+          <td class="memname">void thorin::PipelineBuilder::end_pass_phase </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacethorin.html#a0c01e073816ae185151d892d3421e4d8">PassBuilder</a>&#160;</td>
-          <td class="paramname"><em>pass</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>priority</em> = <code><a class="el" href="namespacethorin.html#a059124239118c15303c151cd962c4810">Pass_Default_Priority</a></code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8cpp_source.html#l00038">38</a> of file <a class="el" href="pipelinebuilder_8cpp_source.html">pipelinebuilder.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="pipelinebuilder_8cpp_source.html#l00056">extend_opt_phase()</a>, and <a class="el" href="pipelinebuilder_8cpp_source.html#l00028">last_phase()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="pipelinebuilder_8h_source.html#l00040">add_pass()</a>.</p>
-
-</div>
-</div>
-<a id="ad44bf37be580beccbc6e86197c182197" name="ad44bf37be580beccbc6e86197c182197"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad44bf37be580beccbc6e86197c182197">&#9670;&#160;</a></span>append_phase()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void thorin::PipelineBuilder::append_phase </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>i</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacethorin.html#a1e4119acb8ea6f0c027361ce9aa75217">PhaseBuilder</a>&#160;</td>
-          <td class="paramname"><em>extension</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>priority</em> = <code><a class="el" href="namespacethorin.html#a059124239118c15303c151cd962c4810">Pass_Default_Priority</a></code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8cpp_source.html#l00051">51</a> of file <a class="el" href="pipelinebuilder_8cpp_source.html">pipelinebuilder.cpp</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="pipelinebuilder_8cpp_source.html#l00035">append_phase_end()</a>.</p>
-
-</div>
-</div>
-<a id="a2c03b18bccef510a3f3a6b5a6214aefb" name="a2c03b18bccef510a3f3a6b5a6214aefb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c03b18bccef510a3f3a6b5a6214aefb">&#9670;&#160;</a></span>append_phase_end()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void thorin::PipelineBuilder::append_phase_end </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacethorin.html#a1e4119acb8ea6f0c027361ce9aa75217">PhaseBuilder</a>&#160;</td>
-          <td class="paramname"><em>phase</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>priority</em> = <code><a class="el" href="namespacethorin.html#a059124239118c15303c151cd962c4810">Pass_Default_Priority</a></code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8cpp_source.html#l00035">35</a> of file <a class="el" href="pipelinebuilder_8cpp_source.html">pipelinebuilder.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="pipelinebuilder_8cpp_source.html#l00051">append_phase()</a>, and <a class="el" href="pipelinebuilder_8cpp_source.html#l00028">last_phase()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="compile_8cpp_source.html#l00040">add_passes()</a>.</p>
-
-</div>
-</div>
-<a id="ab419a73fa86a819d6d06ac8cf18dd5a3" name="ab419a73fa86a819d6d06ac8cf18dd5a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab419a73fa86a819d6d06ac8cf18dd5a3">&#9670;&#160;</a></span>buildPipeline()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void thorin::PipelineBuilder::buildPipeline </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classthorin_1_1Pipeline.html">Pipeline</a> &amp;&#160;</td>
-          <td class="paramname"><em>pipeline</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8cpp_source.html#l00106">106</a> of file <a class="el" href="pipelinebuilder_8cpp_source.html">pipelinebuilder.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8cpp_source.html#l00031">31</a> of file <a class="el" href="pipelinebuilder_8cpp_source.html">pipelinebuilder.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pipelinebuilder_8cpp_source.html#l00109">buildPipelinePart()</a>, and <a class="el" href="pipelinebuilder_8cpp_source.html#l00084">phases()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="optimize_8cpp_source.html#l00019">thorin::optimize()</a>.</p>
-
-</div>
-</div>
-<a id="acc781351f63a0a16b66a7344c1b0f80c" name="acc781351f63a0a16b66a7344c1b0f80c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc781351f63a0a16b66a7344c1b0f80c">&#9670;&#160;</a></span>buildPipelinePart()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void thorin::PipelineBuilder::buildPipelinePart </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>i</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classthorin_1_1Pipeline.html">Pipeline</a> &amp;&#160;</td>
-          <td class="paramname"><em>pipeline</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8cpp_source.html#l00109">109</a> of file <a class="el" href="pipelinebuilder_8cpp_source.html">pipelinebuilder.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="phase_8h_source.html#l00129">thorin::Pipeline::add()</a>, <a class="el" href="pipelinebuilder_8cpp_source.html#l00096">opt_phase()</a>, and <a class="el" href="phase_8h_source.html#l00025">thorin::Phase::world()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="pipelinebuilder_8cpp_source.html#l00106">buildPipeline()</a>.</p>
-
-</div>
-</div>
-<a id="a55af8b2d3c1560dd17d8d49c1e53c092" name="a55af8b2d3c1560dd17d8d49c1e53c092"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a55af8b2d3c1560dd17d8d49c1e53c092">&#9670;&#160;</a></span>extend_codegen_prep_phase()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void thorin::PipelineBuilder::extend_codegen_prep_phase </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacethorin.html#a0c01e073816ae185151d892d3421e4d8">PassBuilder</a> &amp;&amp;&#160;</td>
-          <td class="paramname"><em>extension</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8cpp_source.html#l00047">47</a> of file <a class="el" href="pipelinebuilder_8cpp_source.html">pipelinebuilder.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="optimize_8h_source.html#l00012">thorin::Codegen_Prep_Phase</a>, and <a class="el" href="pipelinebuilder_8cpp_source.html#l00056">extend_opt_phase()</a>.</p>
-
-</div>
-</div>
-<a id="a1a593ea0dd435f5e4c95e81d32f83d23" name="a1a593ea0dd435f5e4c95e81d32f83d23"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1a593ea0dd435f5e4c95e81d32f83d23">&#9670;&#160;</a></span>extend_opt_phase() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void thorin::PipelineBuilder::extend_opt_phase </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>i</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacethorin.html#a0c01e073816ae185151d892d3421e4d8">PassBuilder</a>&#160;</td>
-          <td class="paramname"><em>extension</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>priority</em> = <code><a class="el" href="namespacethorin.html#a059124239118c15303c151cd962c4810">Pass_Default_Priority</a></code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8cpp_source.html#l00056">56</a> of file <a class="el" href="pipelinebuilder_8cpp_source.html">pipelinebuilder.cpp</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="pipelinebuilder_8cpp_source.html#l00063">add_opt()</a>, <a class="el" href="pipelinebuilder_8cpp_source.html#l00041">append_pass_after_end()</a>, <a class="el" href="pipelinebuilder_8cpp_source.html#l00038">append_pass_in_end()</a>, <a class="el" href="pipelinebuilder_8cpp_source.html#l00047">extend_codegen_prep_phase()</a>, <a class="el" href="pipelinebuilder_8cpp_source.html#l00045">extend_opt_phase()</a>, and <a class="el" href="optimize_8cpp_source.html#l00019">thorin::optimize()</a>.</p>
-
-</div>
-</div>
-<a id="a94386723ad34a9ccb230ac0a755fa6c8" name="a94386723ad34a9ccb230ac0a755fa6c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a94386723ad34a9ccb230ac0a755fa6c8">&#9670;&#160;</a></span>extend_opt_phase() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void thorin::PipelineBuilder::extend_opt_phase </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacethorin.html#a0c01e073816ae185151d892d3421e4d8">PassBuilder</a> &amp;&amp;&#160;</td>
-          <td class="paramname"><em>extension</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8cpp_source.html#l00045">45</a> of file <a class="el" href="pipelinebuilder_8cpp_source.html">pipelinebuilder.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="pipelinebuilder_8cpp_source.html#l00056">extend_opt_phase()</a>, and <a class="el" href="optimize_8h_source.html#l00011">thorin::Opt_Phase</a>.</p>
+<p class="reference">Referenced by <a class="el" href="compile_8cpp_source.html#l00027">add_passes()</a>.</p>
 
 </div>
 </div>
@@ -571,102 +307,49 @@ template&lt;class P , class... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8cpp_source.html#l00026">26</a> of file <a class="el" href="pipelinebuilder_8cpp_source.html">pipelinebuilder.cpp</a>.</p>
-
-</div>
-</div>
-<a id="ad870b74f8c8b9c1e8629cc72fe2b4d68" name="ad870b74f8c8b9c1e8629cc72fe2b4d68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad870b74f8c8b9c1e8629cc72fe2b4d68">&#9670;&#160;</a></span>last_phase()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int thorin::PipelineBuilder::last_phase </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
 <p class="definition">Definition at line <a class="el" href="pipelinebuilder_8cpp_source.html#l00028">28</a> of file <a class="el" href="pipelinebuilder_8cpp_source.html">pipelinebuilder.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pipelinebuilder_8cpp_source.html#l00084">phases()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="pipelinebuilder_8cpp_source.html#l00041">append_pass_after_end()</a>, <a class="el" href="pipelinebuilder_8cpp_source.html#l00038">append_pass_in_end()</a>, and <a class="el" href="pipelinebuilder_8cpp_source.html#l00035">append_phase_end()</a>.</p>
-
 </div>
 </div>
-<a id="a871d13e2ba4debc49b7600cde2995403" name="a871d13e2ba4debc49b7600cde2995403"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a871d13e2ba4debc49b7600cde2995403">&#9670;&#160;</a></span>opt_phase()</h2>
+<a id="abe0afcdb59c53df1bfeeaf74eca6c08f" name="abe0afcdb59c53df1bfeeaf74eca6c08f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe0afcdb59c53df1bfeeaf74eca6c08f">&#9670;&#160;</a></span>is_registered_dialect()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::unique_ptr&lt; <a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &gt; thorin::PipelineBuilder::opt_phase </td>
+          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> thorin::PipelineBuilder::is_registered_dialect </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>i</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td>
-          <td class="paramname"><em>world</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8cpp_source.html#l00096">96</a> of file <a class="el" href="pipelinebuilder_8cpp_source.html">pipelinebuilder.cpp</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="pipelinebuilder_8cpp_source.html#l00109">buildPipelinePart()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8cpp_source.html#l00038">38</a> of file <a class="el" href="pipelinebuilder_8cpp_source.html">pipelinebuilder.cpp</a>.</p>
 
 </div>
 </div>
-<a id="a78942e71d6508734035d576974bf0e14" name="a78942e71d6508734035d576974bf0e14"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78942e71d6508734035d576974bf0e14">&#9670;&#160;</a></span>passes()</h2>
+<a id="aed52fcfb2e96d6261b380d1a1ab21787" name="aed52fcfb2e96d6261b380d1a1ab21787"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed52fcfb2e96d6261b380d1a1ab21787">&#9670;&#160;</a></span>register_dialect()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; int &gt; thorin::PipelineBuilder::passes </td>
+          <td class="memname">void thorin::PipelineBuilder::register_dialect </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1Dialect.html">Dialect</a> &amp;&#160;</td>
+          <td class="paramname"><em>d</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8cpp_source.html#l00077">77</a> of file <a class="el" href="pipelinebuilder_8cpp_source.html">pipelinebuilder.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8cpp_source.html#l00037">37</a> of file <a class="el" href="pipelinebuilder_8cpp_source.html">pipelinebuilder.cpp</a>.</p>
 
-</div>
-</div>
-<a id="a5fa4eccbd7ef0710b38b73a7ff281ca0" name="a5fa4eccbd7ef0710b38b73a7ff281ca0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5fa4eccbd7ef0710b38b73a7ff281ca0">&#9670;&#160;</a></span>phases()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt; int &gt; thorin::PipelineBuilder::phases </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8cpp_source.html#l00084">84</a> of file <a class="el" href="pipelinebuilder_8cpp_source.html">pipelinebuilder.cpp</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="pipelinebuilder_8cpp_source.html#l00106">buildPipeline()</a>, and <a class="el" href="pipelinebuilder_8cpp_source.html#l00028">last_phase()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="optimize_8cpp_source.html#l00021">thorin::optimize()</a>.</p>
 
 </div>
 </div>
@@ -696,9 +379,32 @@ template&lt;class P , class... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8cpp_source.html#l00025">25</a> of file <a class="el" href="pipelinebuilder_8cpp_source.html">pipelinebuilder.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8cpp_source.html#l00024">24</a> of file <a class="el" href="pipelinebuilder_8cpp_source.html">pipelinebuilder.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pipelinebuilder_8h_source.html#l00040">add_pass()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00153">thorin::Def::gid()</a>, and <a class="el" href="def_8cpp_source.html#l00160">thorin::Def::world()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="pipelinebuilder_8h_source.html#l00021">add_pass()</a>.</p>
+
+</div>
+</div>
+<a id="afe4cd59b3cee2e8d1f58d61ad5c5a88e" name="afe4cd59b3cee2e8d1f58d61ad5c5a88e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe4cd59b3cee2e8d1f58d61ad5c5a88e">&#9670;&#160;</a></span>run_pipeline()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void thorin::PipelineBuilder::run_pipeline </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="pipelinebuilder_8cpp_source.html#l00045">45</a> of file <a class="el" href="pipelinebuilder_8cpp_source.html">pipelinebuilder.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="optimize_8cpp_source.html#l00021">thorin::optimize()</a>.</p>
 
 </div>
 </div>

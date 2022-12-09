@@ -9,5 +9,6 @@ var dir_dc7f769b3d5332bd9f89fd345831c3ed =
     [ "direct", "dir_b377f326e5c4fac904997f328f2dc43f.html", "dir_b377f326e5c4fac904997f328f2dc43f" ],
     [ "math", "dir_be37e818456258541afadcec32fcb3b4.html", "dir_be37e818456258541afadcec32fcb3b4" ],
     [ "mem", "dir_f4f507027349df35d55005177e6b6800.html", "dir_f4f507027349df35d55005177e6b6800" ],
+    [ "opt", "dir_b3b1e4a5112c3f9c81c669cfbdc18911.html", "dir_b3b1e4a5112c3f9c81c669cfbdc18911" ],
     [ "refly", "dir_6f55f125f3d97d2fd2dc99187db03e52.html", "dir_6f55f125f3d97d2fd2dc99187db03e52" ]
 ];

@@ -117,12 +117,17 @@ $(document).ready(function(){initNavTree('clos.html',''); initResizable(); });
 <ul><li class="level1"><a href="#autotoc_md65">Dependencies</a></li>
 <li class="level1"><a href="#autotoc_md66">Operations related to longjmp</a></li>
 <li class="level1"><a href="#autotoc_md67">Closure Attribute</a></li>
+<li class="level1"><a href="#autotoc_md68">Compilation Passes and Phases</a><ul><li class="level2"><a href="#autotoc_md69">Passes</a></li>
+<li class="level2"><a href="#autotoc_md70">Phases</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md_build_docs_dialects_clos"></a></p>
 <h1><a class="anchor" id="autotoc_md65"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">.import mem;</div>
+<div class="line">.import compile;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md66"></a>
 Operations related to longjmp</h1>
 <div class="fragment"><div class="line">.let BufPtr = %mem.Ptr ((.Idx 256), 0:.Nat);</div>
@@ -137,9 +142,58 @@ Closure Attribute</h1>
 <li><code>fstclassBB</code>: basic block that is passed around</li>
 <li><code>esc</code>: lambda that escapes its parent scope</li>
 <li><code>bot</code>: no special use <div class="fragment"><div class="line">.ax %clos.attr(ret, freeBB, fstclassBB, esc, bot): Π T: * -&gt; T -&gt; T, normalize_clos;</div>
-</div><!-- fragment --> </li>
+</div><!-- fragment --></li>
 </ul>
-</div></div><!-- contents -->
+<h1><a class="anchor" id="autotoc_md68"></a>
+Compilation Passes and Phases</h1>
+<h2><a class="anchor" id="autotoc_md69"></a>
+Passes</h2>
+<div class="fragment"><div class="line">.ax %clos.clos_conv_prep_pass: %compile.Pass;</div>
+<div class="line">.ax %clos.clos_conv_pass: %compile.Pass;</div>
+<div class="line">.ax %clos.branch_clos_pass: %compile.Pass;</div>
+<div class="line">.ax %clos.lower_typed_clos_prep_pass: %compile.Pass;</div>
+<div class="line">.ax %clos.clos2sjlj_pass: %compile.Pass;</div>
+<div class="line">.ax %clos.lower_typed_clos_pass: %compile.Pass;</div>
+<div class="line">.ax %clos.eta_red_bool_pass: .Bool -&gt; %compile.Pass;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md70"></a>
+Phases</h2>
+<div class="fragment"><div class="line">.let clos_opt1_phase = {</div>
+<div class="line">  .let eta_red = (%clos.eta_red_bool_pass (1:.Bool) ); </div>
+<div class="line">  .let eta_exp = %compile.eta_exp_pass eta_red;</div>
+<div class="line">  %compile.pass_phase (%compile.pass_list</div>
+<div class="line">      eta_red</div>
+<div class="line">      eta_exp</div>
+<div class="line">      (%compile.scalerize_pass eta_exp)</div>
+<div class="line">  )</div>
+<div class="line">};</div>
+<div class="line">.let clos_opt2_phase = {</div>
+<div class="line">  .let nullptr = %compile.nullptr_pass;</div>
+<div class="line">  %compile.pass_phase (%compile.pass_list</div>
+<div class="line">      nullptr</div>
+<div class="line">      (%compile.scalerize_pass nullptr)</div>
+<div class="line">      %clos.branch_clos_pass</div>
+<div class="line">      (%mem.copy_prop_pass (nullptr, nullptr, 1:(.Idx 2)))</div>
+<div class="line">      %clos.lower_typed_clos_prep_pass</div>
+<div class="line">      %clos.clos2sjlj_pass</div>
+<div class="line">  )</div>
+<div class="line">};</div>
+<div class="line">.let clos_phases = {</div>
+<div class="line">  .let nullptr = %compile.nullptr_pass;</div>
+<div class="line">    %compile.combined_phase </div>
+<div class="line">        (%compile.phase_list</div>
+<div class="line">            (%compile.single_pass_phase nullptr)</div>
+<div class="line">            // optimization_phase</div>
+<div class="line">            // (%compile.single_pass_phase (%mem.reshape_pass %mem.reshape_flat))</div>
+<div class="line">            // (%compile.single_pass_phase %mem.add_mem_pass)</div>
+<div class="line">            (%compile.single_pass_phase %clos.clos_conv_prep_pass)</div>
+<div class="line">            (%compile.single_pass_phase (%compile.eta_exp_pass nullptr))</div>
+<div class="line">            (%compile.single_pass_phase %clos.clos_conv_pass)</div>
+<div class="line">            clos_opt1_phase</div>
+<div class="line">            clos_opt2_phase</div>
+<div class="line">            (%compile.single_pass_phase %clos.lower_typed_clos_pass)</div>
+<div class="line">        )</div>
+<div class="line">};</div>
+</div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->

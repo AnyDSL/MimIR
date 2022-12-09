@@ -10,6 +10,7 @@ var namespacethorin_1_1refly =
     [ "refine", "namespacethorin_1_1refly.html#a2d98aa6b6e4f6092e4fcd6e329611518", null ],
     [ "reflect", "namespacethorin_1_1refly.html#a95226b5a00778394709d73b0d0b113ae", null ],
     [ "reify", "namespacethorin_1_1refly.html#ab126eca8fb6114846260a8c356d1488d", null ],
+    [ "remove_dbg_perm_pass", "namespacethorin_1_1refly.html#abb25ddaaece56242a704ba11b92cd6db", null ],
     [ "debug_print", "namespacethorin_1_1refly.html#a30122fc088057538572d8631a0df6d2b", null ],
     [ "do_reflect", "namespacethorin_1_1refly.html#a651050df666c363dc64e58b7232d98ea", null ],
     [ "do_reify", "namespacethorin_1_1refly.html#adfade3a7a14a96ccdc7c38ce55ebc972", null ],

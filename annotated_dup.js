@@ -23,7 +23,8 @@ var annotated_dup =
         [ "LowerTypedClosWrapper", "classthorin_1_1clos_1_1LowerTypedClosWrapper.html", "classthorin_1_1clos_1_1LowerTypedClosWrapper" ]
       ] ],
       [ "compile", "namespacethorin_1_1compile.html", [
-        [ "DebugPrint", "classthorin_1_1compile_1_1DebugPrint.html", "classthorin_1_1compile_1_1DebugPrint" ]
+        [ "DebugPrint", "classthorin_1_1compile_1_1DebugPrint.html", "classthorin_1_1compile_1_1DebugPrint" ],
+        [ "InternalCleanup", "classthorin_1_1compile_1_1InternalCleanup.html", "classthorin_1_1compile_1_1InternalCleanup" ]
       ] ],
       [ "core", "namespacethorin_1_1core.html", [
         [ "Res", "classthorin_1_1core_1_1Res.html", "classthorin_1_1core_1_1Res" ]
@@ -135,13 +136,11 @@ var annotated_dup =
       [ "Pack", "classthorin_1_1Pack.html", "classthorin_1_1Pack" ],
       [ "PartialEval", "classthorin_1_1PartialEval.html", "classthorin_1_1PartialEval" ],
       [ "Pass", "classthorin_1_1Pass.html", "classthorin_1_1Pass" ],
-      [ "passCmp", "structthorin_1_1passCmp.html", "structthorin_1_1passCmp" ],
       [ "PassMan", "classthorin_1_1PassMan.html", "classthorin_1_1PassMan" ],
       [ "PassManPhase", "classthorin_1_1PassManPhase.html", "classthorin_1_1PassManPhase" ],
       [ "PassPhase", "classthorin_1_1PassPhase.html", "classthorin_1_1PassPhase" ],
       [ "PassTag", "namespacethorin.html#structthorin_1_1PassTag", null ],
       [ "Phase", "classthorin_1_1Phase.html", "classthorin_1_1Phase" ],
-      [ "phaseCmp", "structthorin_1_1phaseCmp.html", "structthorin_1_1phaseCmp" ],
       [ "Pi", "classthorin_1_1Pi.html", "classthorin_1_1Pi" ],
       [ "Pick", "classthorin_1_1Pick.html", "classthorin_1_1Pick" ],
       [ "Pipeline", "classthorin_1_1Pipeline.html", "classthorin_1_1Pipeline" ],

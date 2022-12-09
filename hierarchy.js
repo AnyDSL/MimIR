@@ -71,8 +71,15 @@ var hierarchy =
     [ "thorin::Axiom::Match< autodiff::ad_ext_cleanup_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01autodiff_1_1ad__ext__cleanup__pass_01_4", null ],
     [ "thorin::Axiom::Match< autodiff::ad_zero_cleanup_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01autodiff_1_1ad__zero__cleanup__pass_01_4", null ],
     [ "thorin::Axiom::Match< autodiff::ad_zero_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01autodiff_1_1ad__zero__pass_01_4", null ],
+    [ "thorin::Axiom::Match< clos::branch_clos_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01clos_1_1branch__clos__pass_01_4", null ],
+    [ "thorin::Axiom::Match< clos::clos2sjlj_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01clos_1_1clos2sjlj__pass_01_4", null ],
+    [ "thorin::Axiom::Match< clos::clos_conv_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01clos_1_1clos__conv__pass_01_4", null ],
+    [ "thorin::Axiom::Match< clos::clos_conv_prep_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01clos_1_1clos__conv__prep__pass_01_4", null ],
+    [ "thorin::Axiom::Match< clos::lower_typed_clos_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01clos_1_1lower__typed__clos__pass_01_4", null ],
+    [ "thorin::Axiom::Match< clos::lower_typed_clos_prep_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01clos_1_1lower__typed__clos__prep__pass_01_4", null ],
     [ "thorin::Axiom::Match< compile::beta_red_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1beta__red__pass_01_4", null ],
     [ "thorin::Axiom::Match< compile::eta_red_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1eta__red__pass_01_4", null ],
+    [ "thorin::Axiom::Match< compile::internal_cleanup_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1internal__cleanup__pass_01_4", null ],
     [ "thorin::Axiom::Match< compile::lam_spec_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1lam__spec__pass_01_4", null ],
     [ "thorin::Axiom::Match< compile::nullptr_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1nullptr__pass_01_4", null ],
     [ "thorin::Axiom::Match< compile::partial_eval_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1partial__eval__pass_01_4", null ],
@@ -84,7 +91,17 @@ var hierarchy =
     [ "thorin::Axiom::Match< mem::alloc2malloc_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1alloc2malloc__pass_01_4", null ],
     [ "thorin::Axiom::Match< mem::M >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1M_01_4", null ],
     [ "thorin::Axiom::Match< mem::remem_elim_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1remem__elim__pass_01_4", null ],
+    [ "thorin::Axiom::Match< opt::affine_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1affine__dialect_01_4", null ],
+    [ "thorin::Axiom::Match< opt::autodiff_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1autodiff__dialect_01_4", null ],
+    [ "thorin::Axiom::Match< opt::clos_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1clos__dialect_01_4", null ],
+    [ "thorin::Axiom::Match< opt::core_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1core__dialect_01_4", null ],
+    [ "thorin::Axiom::Match< opt::demo_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1demo__dialect_01_4", null ],
+    [ "thorin::Axiom::Match< opt::Dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1Dialect_01_4", null ],
+    [ "thorin::Axiom::Match< opt::direct_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1direct__dialect_01_4", null ],
+    [ "thorin::Axiom::Match< opt::mem_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1mem__dialect_01_4", null ],
+    [ "thorin::Axiom::Match< opt::refly_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1refly__dialect_01_4", null ],
     [ "thorin::Axiom::Match< refly::Code >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01refly_1_1Code_01_4", null ],
+    [ "thorin::Axiom::Match< refly::remove_dbg_perm_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01refly_1_1remove__dbg__perm__pass_01_4", null ],
     [ "thorin::fe::Parser", "classthorin_1_1fe_1_1Parser.html", null ],
     [ "thorin::Pass", "classthorin_1_1Pass.html", [
       [ "thorin::RWPass< BetaRed, Def >", "classthorin_1_1RWPass.html", null ],
@@ -137,6 +154,9 @@ var hierarchy =
       [ "thorin::RWPass< DebugPrint, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::compile::DebugPrint", "classthorin_1_1compile_1_1DebugPrint.html", null ]
       ] ],
+      [ "thorin::RWPass< InternalCleanup, Lam >", "classthorin_1_1RWPass.html", [
+        [ "thorin::compile::InternalCleanup", "classthorin_1_1compile_1_1InternalCleanup.html", null ]
+      ] ],
       [ "thorin::RWPass< CPS2DS, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::direct::CPS2DS", "classthorin_1_1direct_1_1CPS2DS.html", null ]
       ] ],
@@ -182,7 +202,6 @@ var hierarchy =
         [ "thorin::FPPass< P, N >", "classthorin_1_1FPPass.html", null ]
       ] ]
     ] ],
-    [ "thorin::passCmp", "structthorin_1_1passCmp.html", null ],
     [ "thorin::PassMan", "classthorin_1_1PassMan.html", null ],
     [ "thorin::PassTag", "namespacethorin.html#structthorin_1_1PassTag", null ],
     [ "thorin::Phase", "classthorin_1_1Phase.html", [
@@ -204,7 +223,6 @@ var hierarchy =
       [ "thorin::clos::ClosConv", "classthorin_1_1clos_1_1ClosConv.html", null ],
       [ "thorin::clos::LowerTypedClos", "classthorin_1_1clos_1_1LowerTypedClos.html", null ]
     ] ],
-    [ "thorin::phaseCmp", "structthorin_1_1phaseCmp.html", null ],
     [ "thorin::PipelineBuilder", "classthorin_1_1PipelineBuilder.html", null ],
     [ "thorin::World::State::POD", "structthorin_1_1World_1_1State.html#structthorin_1_1World_1_1State_1_1POD", null ],
     [ "thorin::Pos", "structthorin_1_1Pos.html", null ],

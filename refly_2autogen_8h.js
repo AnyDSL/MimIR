@@ -1,5 +1,8 @@
 var refly_2autogen_8h =
 [
+    [ "thorin::Axiom::Match< refly::remove_dbg_perm_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01refly_1_1remove__dbg__perm__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a861184151afcba49825206bd193901f1", null ]
+    ] ],
     [ "thorin::Axiom::Match< refly::Code >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01refly_1_1Code_01_4", [
       [ "type", "classthorin_1_1Axiom.html#ad1470de2ff689e04a5173754a332dd3c", null ]
     ] ],
@@ -13,6 +16,7 @@ var refly_2autogen_8h =
     [ "refine", "refly_2autogen_8h.html#a2d98aa6b6e4f6092e4fcd6e329611518", null ],
     [ "reflect", "refly_2autogen_8h.html#a95226b5a00778394709d73b0d0b113ae", null ],
     [ "reify", "refly_2autogen_8h.html#ab126eca8fb6114846260a8c356d1488d", null ],
+    [ "remove_dbg_perm_pass", "refly_2autogen_8h.html#abb25ddaaece56242a704ba11b92cd6db", null ],
     [ "normalize_dbg", "refly_2autogen_8h.html#a6505dac8d7b837bcb4b880cb802b5a7f", null ],
     [ "normalize_gid", "refly_2autogen_8h.html#ac3810123d87bbdcb09c083de4eaeeee4", null ],
     [ "normalize_refine", "refly_2autogen_8h.html#a5227d037e8cda2342ab16b7a015183e3", null ],
