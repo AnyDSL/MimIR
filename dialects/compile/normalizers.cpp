@@ -9,7 +9,7 @@ const Def* normalize_pass_phase(const Def* type, const Def*, const Def* arg, con
 
     auto [ax, _] = collect_args(arg);
     if (ax->flags() != flags_t(Axiom::Base<pass_list>)) {
-        // return world.raw_app(callee, arg, dbg);
+        // return world.raw_app(type, callee, arg, dbg);
         // TODO: remove when normalizers are fixed
         if (ax->flags() == flags_t(Axiom::Base<combine_pass_list>)) {
             auto arg_cpl = arg->as<App>();
