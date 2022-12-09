@@ -76,8 +76,6 @@ add_thorin_dialect(compile
         compile/passes/debug_print.h
         compile/passes/internal_cleanup.cpp
         compile/passes/internal_cleanup.h
-    HEADER_DEPENDS
-        core
     INSTALL
 )
 
