@@ -13,10 +13,8 @@ using PassInstanceMap = absl::btree_map<const Def*, Pass*, GIDLt<const Def*>>;
 class PipelineBuilder {
 public:
     PipelineBuilder(World& world)
-        : world_(world) {
-        pipe = std::make_unique<Pipeline>(world);
-        man  = nullptr;
-    }
+        : pipe(std::make_unique<Pipeline>(world))
+        , world_(world) {}
 
     // Adds a pass and remembers it associated with the given def.
     template<class P, class... Args>
