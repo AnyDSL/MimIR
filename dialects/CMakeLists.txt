@@ -74,6 +74,8 @@ add_thorin_dialect(compile
         compile/normalizers.cpp
         compile/passes/debug_print.cpp
         compile/passes/debug_print.h
+        compile/passes/internal_cleanup.cpp
+        compile/passes/internal_cleanup.h
     INSTALL
 )
 
@@ -95,6 +97,8 @@ add_thorin_dialect(demo
         demo/demo.cpp
         demo/demo.h
         demo/normalizers.cpp
+    DEPENDS
+        compile
     INSTALL
 )
 
@@ -107,6 +111,8 @@ add_thorin_dialect(direct
         direct/passes/cps2ds.cpp
         direct/passes/cps2ds.h
         direct/normalizers.cpp
+    DEPENDS
+        compile
     INSTALL
 )
 
@@ -140,6 +146,18 @@ add_thorin_dialect(mem
     INSTALL
 )
 
+add_thorin_dialect(opt
+    SOURCES
+        opt/opt.cpp
+        opt/opt.h
+        opt/normalizers.cpp
+    DEPENDS
+        compile
+        mem
+        core
+    INSTALL
+)
+
 add_thorin_dialect(refly
     SOURCES
         refly/refly.h
@@ -147,5 +165,7 @@ add_thorin_dialect(refly
         refly/passes/remove_perm.h
         refly/passes/remove_perm.cpp
         refly/normalizers.cpp
+    DEPENDS
+        compile
     INSTALL
 )
