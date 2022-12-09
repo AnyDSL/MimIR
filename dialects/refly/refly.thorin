@@ -4,6 +4,10 @@
 ///
 /// [TOC]
 ///
+/// ## Dependencies
+///
+.import compile;
+///
 /// ## Types
 ///
 .ax %refly.Code: *;
@@ -42,3 +46,9 @@
 ///
 /// Sets the `i`th operand of the reified Code `e` to `x`.
 .ax %refly.refine: [e: %refly.Code, i: .Nat, x: %refly.Code] -> %refly.Code, normalize_refine;
+///
+/// ## Compilation Passes and Phases
+/// 
+/// ### Passes
+/// 
+.ax %refly.remove_dbg_perm_pass: %compile.Pass;

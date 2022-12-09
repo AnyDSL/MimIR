@@ -4,6 +4,7 @@
 .import mem;
 .import core;
 .import compile;
+.import opt;
 
 .let _32 = 4294967296;
 .let I32 = .Idx _32;
@@ -16,10 +17,5 @@
     f (mem, 42:I32, return)
 };
 
-.lam .extern _compile [] -> Pipeline = {
-    %compile.pipe
-        (%compile.single_pass_phase %compile.internal_cleanup_pass)
-        (%compile.passes_to_phase 1 %compile.ret_wrap_pass)
-};
-
 // CHECK-DAG: .con return
+// CHECK-DAG: return{{.*}}42

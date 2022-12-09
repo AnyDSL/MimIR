@@ -8,6 +8,6 @@
 using namespace thorin;
 
 extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
-    return {"math", nullptr, nullptr, [](Backends&) {},
+    return {"math", nullptr, [](Backends&) {},
             [](Normalizers& normalizers) { math::register_normalizers(normalizers); }};
 }
