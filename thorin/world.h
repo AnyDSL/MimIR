@@ -239,7 +239,9 @@ public:
 
     /// @name Pi
     ///@{
-    const Pi* pi(Refer dom, Refer codom, Refer dbg = {}) { return unify<Pi>(2, codom->unfold_type(), dom, codom, dbg); }
+    const Pi* pi(Refer dom, Refer codom, Refer dbg = {}) {
+        return unify<Pi>(2, Pi::infer(dom, codom), dom, codom, dbg);
+    }
     const Pi* pi(Defs dom, Refer codom, Refer dbg = {}) { return pi(sigma(dom), codom, dbg); }
     Pi* nom_pi(Refer type, Refer dbg = {}) { return insert<Pi>(2, type, dbg); }
     ///@}

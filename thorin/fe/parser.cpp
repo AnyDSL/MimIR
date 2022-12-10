@@ -380,7 +380,7 @@ const Def* Parser::parse_pi(Implicits* implicits) {
     scopes_.push();
 
     Pi* first = nullptr;
-    Pi* prev  = nullptr;
+    std::deque<Pi*> pis;
     do {
         auto dot = accept(Tok::Tag::T_dot);
         if (implicits)
@@ -389,22 +389,23 @@ const Def* Parser::parse_pi(Implicits* implicits) {
             err(dot->loc(), "implicit not allowed in this context");
 
         auto dom = parse_ptrn(Tok::Tag::D_brckt_l, "domain of a dependent function type", Tok::Prec::App);
-        auto pi  = world().nom_pi(world().nom_infer_univ(), dom->dbg(world()))->set_dom(dom->type(world()));
+        auto pi  = world().nom_pi(world().type_infer_univ(), dom->dbg(world()))->set_dom(dom->type(world()));
         auto var = pi->var(world().dbg(dom->sym()));
         first    = first ? first : pi;
 
         dom->bind(scopes_, var);
-        if (prev) prev->set_codom(pi);
-
-        prev = pi;
+        pis.emplace_back(pi);
     } while (!ahead().isa(Tok::Tag::T_arrow));
 
     expect(Tok::Tag::T_arrow, "dependent function type");
     auto codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
-    prev->set_codom(codom);
-    prev->set_type(codom->unfold_type()); // TODO needed?
-    first->set_dbg(track.dbg());
 
+    for (auto pi : pis | std::ranges::views::reverse) {
+        pi->set_codom(codom);
+        codom = pi;
+    }
+
+    first->set_dbg(track.dbg());
     scopes_.pop();
     return first;
 }
@@ -799,7 +800,6 @@ Lam* Parser::parse_lam(bool decl) {
         // Now update.
         codom = rw.rewrite(codom);
         pi->set_codom(codom);
-        pi->set_type(codom->unfold_type());
 
         codom = pi;
     }

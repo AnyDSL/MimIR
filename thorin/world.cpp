@@ -98,10 +98,12 @@ const Def* World::umax(DefArray ops, Refer dbg) {
             default: unreachable();
         }
         // clang-format on
+        op = refer(op);
 
-        if (err() && !op->type()->isa<Univ>())
+        if (err() && !op->type()->isa<Univ>()) {
             err()->err(op->loc(), "operand '{}' of a universe max must be of type '.Univ' but is of type '{}'", op,
                        op->type());
+        }
 
         if (auto l = isa_lit(op))
             lvl = std::max(lvl, *l);

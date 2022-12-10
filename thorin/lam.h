@@ -36,12 +36,15 @@ public:
     Pi* set_codom(const Def* codom) { return Def::set(1, codom)->as<Pi>(); }
     ///@}
 
+    static const Def* infer(const Def* dom, const Def* codom);
+
     /// @name virtual methods
     ///@{
     size_t first_dependend_op() { return 1; }
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     Pi* stub(World&, const Def*, const Def*) override;
     const Pi* restructure() override;
+    void check() override;
     ///@}
 
     static constexpr auto Node = Node::Pi;

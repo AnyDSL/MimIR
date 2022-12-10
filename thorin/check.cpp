@@ -199,7 +199,16 @@ const Def* Checker::is_uniform(Defs defs, Refer dbg) {
 }
 
 /*
- * Def::check
+ * infer
+ */
+
+const Def* Pi::infer(const Def* dom, const Def* codom) {
+    auto& w = dom->world();
+    return w.umax<Sort::Kind>({dom->unfold_type(), codom->unfold_type()});
+}
+
+/*
+ * check
  */
 
 void Arr::check() {
@@ -226,6 +235,19 @@ void Lam::check() {
             w.err()->err(body()->loc(), "body of lambda is of type '{}' but its codomain is of type '{}'",
                          body()->type(), codom());
     }
+}
+
+void Pi::check() {
+    auto& w = world();
+    auto t = infer(dom(), codom());
+    if (w.err()) {
+        if (!w.checker().equiv(t, type(), type()->dbg()))
+            w.err()->err(type()->loc(), "declared sort '{}' of function type does not match inferred one '{}'", type(),
+                         t);
+    }
+
+    auto level = type()->as<Type>()->level();
+    if (auto r = refer(level); r && r != level) set_type(w.type(r));
 }
 
 } // namespace thorin
