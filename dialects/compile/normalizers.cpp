@@ -4,12 +4,12 @@
 namespace thorin::compile {
 
 // `pass_phase (pass_list pass1 ... passn)` -> `passes_to_phase n (pass1, ..., passn)`
-const Def* normalize_pass_phase(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+const Def* normalize_pass_phase(const Def* type, const Def*, const Def* arg, const Def* dbg) {
     auto& world = type->world();
 
     auto [ax, _] = collect_args(arg);
     if (ax->flags() != flags_t(Axiom::Base<pass_list>)) {
-        // return world.raw_app(callee, arg, dbg);
+        // return world.raw_app(type, callee, arg, dbg);
         // TODO: remove when normalizers are fixed
         if (ax->flags() == flags_t(Axiom::Base<combine_pass_list>)) {
             auto arg_cpl = arg->as<App>();
@@ -23,29 +23,29 @@ const Def* normalize_pass_phase(const Def* type, const Def* callee, const Def* a
     assert(f_ax->flags() == flags_t(Axiom::Base<pass_list>));
     auto n = pass_list_defs.size();
 
-    return world.app(world.app(world.ax<passes_to_phase>(), world.lit_nat(n)), world.tuple(pass_list_defs));
+    return world.app(world.app(world.ax<passes_to_phase>(), world.lit_nat(n), dbg), pass_list_defs, dbg);
 }
 
 /// `combined_phase (phase_list phase1 ... phasen)` -> `phases_to_phase n (phase1, ..., phasen)`
-const Def* normalize_combined_phase(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+const Def* normalize_combined_phase(const Def* type, const Def*, const Def* arg, const Def* dbg) {
     auto& world = type->world();
 
     auto [ax, phase_list_defs] = collect_args(arg);
     assert(ax->flags() == flags_t(Axiom::Base<phase_list>));
     auto n = phase_list_defs.size();
 
-    return world.app(world.app(world.ax<phases_to_phase>(), world.lit_nat(n)), world.tuple(phase_list_defs));
+    return world.app(world.app(world.ax<phases_to_phase>(), world.lit_nat(n), dbg), phase_list_defs, dbg);
 }
 
 /// `single_pass_phase pass` -> `passes_to_phase 1 pass`
-const Def* normalize_single_pass_phase(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+const Def* normalize_single_pass_phase(const Def* type, const Def*, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-    return world.app(world.app(world.ax<passes_to_phase>(), world.lit_nat_1()), arg);
+    return world.app(world.app(world.ax<passes_to_phase>(), world.lit_nat_1(), dbg), arg, dbg);
 }
 
 /// `combine_pass_list K (pass_list pass11 ... pass1N) ... (pass_list passK1 ... passKM) = pass_list pass11 ... p1N ...
 /// passK1 ... passKM`
-const Def* normalize_combine_pass_list(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+const Def* normalize_combine_pass_list(const Def* type, const Def*, const Def* arg, const Def* dbg) {
     auto& world     = type->world();
     auto pass_lists = arg->projs();
     DefVec passes;
@@ -56,7 +56,7 @@ const Def* normalize_combine_pass_list(const Def* type, const Def* callee, const
         passes.insert(passes.end(), pass_list_defs.begin(), pass_list_defs.end());
     }
     const Def* app_list = world.ax<pass_list>();
-    for (auto pass : passes) { app_list = world.app(app_list, pass); }
+    for (auto pass : passes) app_list = world.app(app_list, pass, dbg);
     return app_list;
 }
 
