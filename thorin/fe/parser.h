@@ -76,7 +76,7 @@ private:
     ///@{
     const Def* parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot, Implicits* = {});
     const Def* parse_primary_expr(std::string_view ctxt, Implicits* = {});
-    const Def* parse_infix_expr(Tracker, const Def* lhs, Tok::Prec = Tok::Prec::Bot);
+    const Def* parse_infix_expr(Tracker, const Def* lhs, Tok::Prec = Tok::Prec::Bot, Implicits* = {});
     const Def* parse_extract(Tracker, const Def*, Tok::Prec);
     ///@}
 

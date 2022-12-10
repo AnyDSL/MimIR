@@ -89,16 +89,17 @@ template<Sort sort>
 const Def* World::umax(DefArray ops, Refer dbg) {
     level_t lvl = 0;
     for (auto& op : ops) {
+        Refer r = op;
         // clang-format off
         switch (sort) {
-            case Sort::Term:  op = op->type()->unfold_type()->as<Type>()->level(); break;
-            case Sort::Type:  op =         op->unfold_type()->as<Type>()->level(); break;
-            case Sort::Kind:  op =                        op->as<Type>()->level(); break;
-            case Sort::Univ:  op =                                             op; break;
+            case Sort::Term:  r = r->type()->unfold_type()->as<Type>()->level(); break;
+            case Sort::Type:  r =         r->unfold_type()->as<Type>()->level(); break;
+            case Sort::Kind:  r =                        r->as<Type>()->level(); break;
+            case Sort::Univ:  r =                                             r; break;
             default: unreachable();
         }
         // clang-format on
-        op = refer(op);
+        op = r;
 
         if (err() && !op->type()->isa<Univ>()) {
             err()->err(op->loc(), "operand '{}' of a universe max must be of type '.Univ' but is of type '{}'", op,

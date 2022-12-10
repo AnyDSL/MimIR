@@ -159,10 +159,10 @@ const Def* Parser::parse_type_ascr(std::string_view ctxt, Implicits* implicits) 
 const Def* Parser::parse_expr(std::string_view ctxt, Tok::Prec p, Implicits* implicits) {
     auto track = tracker();
     auto lhs   = parse_primary_expr(ctxt, implicits);
-    return parse_infix_expr(track, lhs, p);
+    return parse_infix_expr(track, lhs, p, implicits);
 }
 
-const Def* Parser::parse_infix_expr(Tracker track, const Def* lhs, Tok::Prec p /*= Tok::Prec::Bot*/) {
+const Def* Parser::parse_infix_expr(Tracker track, const Def* lhs, Tok::Prec p, Implicits* implicits) {
     while (true) {
         // If operator in ahead has less left precedence: reduce (break).
         if (ahead().isa(Tok::Tag::T_extract)) {
@@ -171,10 +171,11 @@ const Def* Parser::parse_infix_expr(Tracker track, const Def* lhs, Tok::Prec p /
             else
                 break;
         } else if (ahead().isa(Tok::Tag::T_arrow)) {
+            if (implicits) implicits->emplace_back(false);
             auto [l, r] = Tok::prec(Tok::Prec::Arrow);
             if (l < p) break;
             lex();
-            auto rhs = parse_expr("right-hand side of an function type", r);
+            auto rhs = parse_expr("right-hand side of an function type", r, implicits);
             lhs      = world().pi(lhs, rhs, track.dbg());
         } else {
             auto [l, r] = Tok::prec(Tok::Prec::App);
@@ -398,7 +399,7 @@ const Def* Parser::parse_pi(Implicits* implicits) {
     } while (!ahead().isa(Tok::Tag::T_arrow));
 
     expect(Tok::Tag::T_arrow, "dependent function type");
-    auto codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
+    auto codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow, implicits);
 
     for (auto pi : pis | std::ranges::views::reverse) {
         pi->set_codom(codom);
