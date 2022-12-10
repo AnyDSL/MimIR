@@ -3,7 +3,6 @@
 #include <fstream>
 #include <ranges>
 
-#include "thorin/error.h"
 #include "thorin/world.h"
 
 #include "thorin/fe/parser.h"

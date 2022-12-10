@@ -1,5 +1,7 @@
 #include "thorin/util/dl.h"
 
+#include "thorin/util/print.h"
+
 #include <cstdlib>
 
 #include <sstream>
@@ -26,14 +28,6 @@ std::string_view extension() {
 #else
     return ".so";
 #endif
-}
-
-template<class... Args>
-[[noreturn]] void err(const char* fmt, Args&&... args) {
-    std::ostringstream oss;
-    print(oss, "error: ");
-    print(oss, fmt, std::forward<Args&&>(args)...);
-    throw Error(oss.str());
 }
 
 void* open(const std::string& file) {

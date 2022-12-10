@@ -11,7 +11,6 @@
 #include "thorin/check.h"
 #include "thorin/config.h"
 #include "thorin/debug.h"
-#include "thorin/error.h"
 #include "thorin/flags.h"
 #include "thorin/lattice.h"
 #include "thorin/tuple.h"
@@ -22,7 +21,6 @@
 namespace thorin {
 
 class Checker;
-class ErrorHandler;
 class Scope;
 
 /// The World represents the whole program and manages creation of Thorin nodes (Def%s).
@@ -106,7 +104,6 @@ public:
         assert(&move_.checker->world() == this);
         return *move_.checker;
     }
-    ErrorHandler* err() { return move_.err.get(); }
     ///@}
 
     ///@}
@@ -225,7 +222,7 @@ public:
     const Axiom* ax(Id id) const {
         u64 flags = static_cast<u64>(id);
         if (auto i = move_.axioms.find(flags); i != move_.axioms.end()) return i->second;
-        thorin::err("Axiom with ID '{}' not found; demangled dialect name is '{}'", flags, Axiom::demangle(flags));
+        err("Axiom with ID '{}' not found; demangled dialect name is '{}'", flags, Axiom::demangle(flags));
     }
 
     /// Get Axiom from a dialect.
@@ -635,7 +632,6 @@ private:
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
         DefDefMap<DefArray> cache;
         std::unique_ptr<Checker> checker;
-        std::unique_ptr<ErrorHandler> err;
 
         friend void swap(Move& m1, Move& m2) {
             using std::swap;
@@ -645,7 +641,6 @@ private:
             swap(m1.defs,      m2.defs);
             swap(m1.cache,     m2.cache);
             swap(m1.checker,   m2.checker);
-            swap(m1.err,       m2.err);
             // clang-format on
             Checker::swap(*m1.checker, *m2.checker);
         }

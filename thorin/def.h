@@ -454,6 +454,17 @@ const T* as([[maybe_unused]] flags_t f, const Def* def) {
     return def;
 }
 
+template<class T = std::logic_error, class... Args>
+[[noreturn]] void err(const Def* def, const char* fmt, Args&&... args) {
+    err(def->loc(), fmt, std::forward<Args&&>(args)...);
+}
+
+template<class T = std::logic_error, class... Args>
+[[noreturn]] void err(const Def* dbg, const char* fmt, const Def* def, Args&&... args) {
+    Debug d(dbg ? dbg : def->dbg());
+    err(d.loc, fmt, def, std::forward<Args&&>(args)...);
+}
+
 //------------------------------------------------------------------------------
 
 template<class To>

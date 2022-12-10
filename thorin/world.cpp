@@ -13,7 +13,6 @@
 
 #include "thorin/check.h"
 #include "thorin/def.h"
-#include "thorin/error.h"
 #include "thorin/rewrite.h"
 
 #include "thorin/analyses/scope.h"
@@ -31,8 +30,7 @@ bool World::Arena::Lock::guard_ = false;
 #endif
 
 World::Move::Move(World& world)
-    : checker(std::make_unique<Checker>(world))
-    , err(std::make_unique<ErrorHandler>()) {}
+    : checker(std::make_unique<Checker>(world)) {}
 
 World::World(const State& state)
     : state_(state)
@@ -65,21 +63,15 @@ World::~World() {
 }
 
 const Type* World::type(Refer level, Refer dbg) {
-    if (err()) {
-        if (!level->type()->isa<Univ>()) {
-            err()->err(level->loc(), "argument `{}` to `.Type` must be of type `.Univ` but is of type `{}`", level,
-                       level->type());
-        }
-    }
+    if (!level->type()->isa<Univ>())
+        err(dbg, "argument `{}` to `.Type` must be of type `.Univ` but is of type `{}`", level, level->type());
+
     return unify<Type>(1, level, dbg)->as<Type>();
 }
 
 const Def* World::uinc(Refer op, level_t offset, Refer dbg) {
-    if (err()) {
-        if (!op->type()->isa<Univ>())
-            err()->err(op->loc(), "operand '{}' of a universe increment must be of type `.Univ` but is of type `{}`",
-                       op, op->type());
-    }
+    if (!op->type()->isa<Univ>())
+        err(dbg, "operand '{}' of a universe increment must be of type `.Univ` but is of type `{}`", op, op->type());
 
     if (auto l = isa_lit(op)) return lit_univ(*l, dbg);
     return unify<UInc>(1, op, offset, dbg);
@@ -96,14 +88,11 @@ const Def* World::umax(DefArray ops, Refer dbg) {
             if (auto type = r->isa<Type>())
                 r = type->level();
             else
-                err()->err(r->loc(), "operand '{}' must be a .Type of some level", r);
+                err(dbg, "operand '{}' must be a .Type of some level", r);
         }
 
-        if (err()) {
-            if (!r->type()->isa<Univ>())
-                err()->err(r->loc(), "operand '{}' of a universe max must be of type '.Univ' but is of type '{}'", r,
-                           r->type());
-        }
+        if (!r->type()->isa<Univ>())
+            err(dbg, "operand '{}' of a universe max must be of type '.Univ' but is of type '{}'", r, r->type());
 
         op = r;
 
@@ -128,11 +117,9 @@ const Def* World::app(Refer callee, Refer arg, Refer dbg) {
         }
     }
 
-    if (err()) {
-        if (!pi)
-            err()->err(dbg->loc(), "called expression '{}' : '{}' is not of function type", callee, callee->type());
-        if (!checker().assignable(pi->dom(), arg, dbg)) err()->ill_typed_app(callee, arg, dbg);
-    }
+    if (!pi) err(dbg, "called expression '{}' : '{}' is not of function type", callee, callee->type());
+    if (!checker().assignable(pi->dom(), arg, dbg))
+        err(dbg, "cannot pass argument '{}' of type '{}' to '{}' of domain '{}'", arg, arg->type(), callee, pi->dom());
 
     if (auto lam = callee->isa<Lam>(); lam && lam->is_set() && lam->codom()->sort() > Sort::Type)
         return lam->reduce(arg).back();
@@ -176,15 +163,14 @@ const Def* World::tuple(Defs ops, Refer dbg) {
 
     auto sigma = infer_sigma(*this, ops);
     auto t     = tuple(sigma, ops, dbg);
-    if (err() && !checker().assignable(sigma, t, dbg)) { assert(false && "TODO: error msg"); }
+    if (!checker().assignable(sigma, t, dbg))
+        err(dbg, "cannot assign tuple '{}' of type '{}' to incompatible tuple type '{}'", t, t->type(), sigma);
 
     return t;
 }
 
 const Def* World::tuple(Refer type, Defs ops, Refer dbg) {
-    if (err()) {
-        // TODO type-check type vs inferred type
-    }
+    // TODO type-check type vs inferred type
 
     auto n = ops.size();
     if (!type->isa_nom<Sigma>()) {
@@ -243,9 +229,8 @@ const Def* World::extract(Refer d, Refer index, Refer dbg) {
     if (auto l = isa_lit(size); l && *l == 1 && !d->type()->isa_nom<Sigma>()) return d;
     if (auto pack = d->isa_structural<Pack>()) return pack->body();
 
-    if (err()) {
-        if (!checker().equiv(type->arity(), size, dbg)) err()->index_out_of_range(type->arity(), index, dbg);
-    }
+    if (!checker().equiv(type->arity(), size, dbg))
+        err(dbg, "index '{}' does not fit within arity '{}'", type->arity(), index);
 
     // extract(insert(x, index, val), index) -> val
     if (auto insert = d->isa<Insert>()) {
@@ -284,7 +269,8 @@ const Def* World::insert(Refer d, Refer index, Refer val, Refer dbg) {
     auto type = d->unfold_type();
     auto size = Idx::size(index->type());
 
-    if (err() && !checker().equiv(type->arity(), size, dbg)) err()->index_out_of_range(type->arity(), index, dbg);
+    if (!checker().equiv(type->arity(), size, dbg))
+        err(dbg, "index '{}' does not fit within arity '{}'", type->arity(), index);
 
     if (auto l = isa_lit(size); l && *l == 1)
         return tuple(d, {val}, dbg); // d could be nom - that's why the tuple ctor is needed
@@ -318,10 +304,9 @@ bool is_shape(Refer s) {
     return false;
 }
 
+// TODO merge this code with pack
 const Def* World::arr(Refer shape, Refer body, Refer dbg) {
-    if (err()) {
-        if (!is_shape(shape->type())) err()->expected_shape(shape, dbg);
-    }
+    if (!is_shape(shape->type())) err(dbg, "expected shape but got '{}' of type '{}'", shape, shape->type());
 
     if (auto a = isa_lit<u64>(shape)) {
         if (*a == 0) return sigma();
@@ -348,9 +333,7 @@ const Def* World::arr(Refer shape, Refer body, Refer dbg) {
 }
 
 const Def* World::pack(Refer shape, Refer body, Refer dbg) {
-    if (err()) {
-        if (!is_shape(shape->type())) err()->expected_shape(shape, dbg);
-    }
+    if (!is_shape(shape->type())) err(dbg, "expected shape but got '{}' of type '{}'", shape, shape->type());
 
     if (auto a = isa_lit<u64>(shape)) {
         if (*a == 0) return tuple();
@@ -381,12 +364,10 @@ const Def* World::pack(Defs shape, Refer body, Refer dbg) {
 
 const Lit* World::lit(Refer type, u64 val, Refer dbg) {
     if (auto size = Idx::size(type)) {
-        if (err()) {
-            if (auto s = isa_lit(size)) {
-                if (*s != 0 && val >= *s) err()->index_out_of_range(size, val, dbg);
-            } else if (val != 0) { // 0 of any size is allowed
-                err()->err(dbg->loc(), "cannot create literal '{}' of '.Idx {}' as size is unknown", val, size);
-            }
+        if (auto s = isa_lit(size)) {
+            if (*s != 0 && val >= *s) err(dbg, "index '{}' does not fit within arity '{}'", size, val);
+        } else if (val != 0) { // 0 of any size is allowed
+            err(dbg, "cannot create literal '{}' of '.Idx {}' as size is unknown", val, size);
         }
     }
 
@@ -453,13 +434,11 @@ const Def* World::test(Refer value, Refer probe, Refer match, Refer clash, Refer
     auto m_pi = match->type()->isa<Pi>();
     auto c_pi = clash->type()->isa<Pi>();
 
-    if (err()) {
-        // TODO proper error msg
-        assert(m_pi && c_pi);
-        auto a = isa_lit(m_pi->dom()->arity());
-        assert_unused(a && *a == 2);
-        assert(checker().equiv(m_pi->dom(2, 0_s), c_pi->dom(), nullptr));
-    }
+    // TODO proper error msg
+    assert(m_pi && c_pi);
+    auto a = isa_lit(m_pi->dom()->arity());
+    assert_unused(a && *a == 2);
+    assert(checker().equiv(m_pi->dom(2, 0_s), c_pi->dom(), nullptr));
 
     auto codom = join({m_pi->codom(), c_pi->codom()});
     return unify<Test>(4, pi(c_pi->dom(), codom), value, probe, match, clash, dbg);

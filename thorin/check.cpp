@@ -1,6 +1,5 @@
 #include "thorin/check.h"
 
-#include "thorin/error.h"
 #include "thorin/world.h"
 
 namespace thorin {
@@ -222,10 +221,8 @@ void Arr::check() {
     auto& w = world();
     auto t  = body()->unfold_type();
 
-    if (w.err()) {
-        if (!w.checker().equiv(t, type(), type()->dbg()))
-            w.err()->err(type()->loc(), "declared sort '{}' of array does not match inferred one '{}'", type(), t);
-    }
+    if (!w.checker().equiv(t, type(), type()->dbg()))
+        err(dbg(), "declared sort '{}' of array does not match inferred one '{}'", type(), t);
 }
 
 void Sigma::check() {
@@ -235,24 +232,20 @@ void Sigma::check() {
 void Lam::check() {
     auto& w = world();
     return; // TODO
-    if (w.err()) {
-        if (!w.checker().equiv(filter()->type(), w.type_bool(), filter()->dbg()))
-            w.err()->err(filter()->loc(), "filter of lambda is of type '{}' but must be of type '.Bool'",
-                         filter()->type());
-        if (!w.checker().equiv(body()->type(), codom(), body()->dbg()))
-            w.err()->err(body()->loc(), "body of lambda is of type '{}' but its codomain is of type '{}'",
-                         body()->type(), codom());
-    }
+    if (!w.checker().equiv(filter()->type(), w.type_bool(), filter()->dbg()))
+        err(filter()->dbg(), "filter '{}' of lambda is of type '{}' but must be of type '.Bool'", filter(),
+            filter()->type());
+    if (!w.checker().equiv(body()->type(), codom(), body()->dbg()))
+        err(body()->dbg(), "body '{}' of lambda is of type '{}' but its codomain is of type '{}'", body(), body()->type(),
+            codom());
 }
 
 void Pi::check() {
     auto& w = world();
     auto t  = infer(dom(), codom());
-    if (w.err()) {
-        if (!w.checker().equiv(t, type(), type()->dbg()))
-            w.err()->err(type()->loc(), "declared sort '{}' of function type does not match inferred one '{}'", type(),
-                         t);
-    }
+
+    if (!w.checker().equiv(t, type(), type()->dbg()))
+        err(dbg(), "declared sort '{}' of function type does not match inferred one '{}'", type(), t);
 }
 
 } // namespace thorin

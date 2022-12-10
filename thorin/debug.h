@@ -5,6 +5,8 @@
 #include <absl/container/flat_hash_map.h>
 #include <absl/container/flat_hash_set.h>
 
+#include "thorin/util/print.h"
+
 namespace thorin {
 
 class Def;
@@ -49,6 +51,14 @@ struct Loc {
     ///< It's called `finis` because it refers to the **last** character within this Loc%ation.
     /// In the STL the word `end` refers to the position of something that is one element **past** the end.
 };
+
+template<class T = std::logic_error, class... Args>
+[[noreturn]] void err(Loc loc, const char* fmt, Args&&... args) {
+    std::ostringstream oss;
+    print(oss, "{}: error: ", loc);
+    print(oss, fmt, std::forward<Args&&>(args)...);
+    throw T(oss.str());
+}
 
 class Sym {
 public:

@@ -142,6 +142,13 @@ template<class... Args> std::ostream& outln(const char* fmt, Args&&... args) { r
 template<class... Args> std::ostream& errln(const char* fmt, Args&&... args) { return errf(fmt, std::forward<Args&&>(args)...) << std::endl; }
 // clang-format on
 
+template<class T = std::logic_error, class... Args>
+[[noreturn]] void err(const char* fmt, Args&&... args) {
+    std::ostringstream oss;
+    print(oss << "error: ", fmt, std::forward<Args&&>(args)...);
+    throw T(oss.str());
+}
+
 /// Keeps track of indentation level.
 class Tab {
 public:
