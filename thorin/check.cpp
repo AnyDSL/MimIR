@@ -220,12 +220,11 @@ const Def* Pi::infer(const Def* dom, const Def* codom) {
 
 void Arr::check() {
     auto& w = world();
-    auto t = body()->unfold_type();
+    auto t  = body()->unfold_type();
 
     if (w.err()) {
         if (!w.checker().equiv(t, type(), type()->dbg()))
-            w.err()->err(type()->loc(), "declared sort '{}' of array does not match inferred one '{}'", type(),
-                         t);
+            w.err()->err(type()->loc(), "declared sort '{}' of array does not match inferred one '{}'", type(), t);
     }
 }
 
