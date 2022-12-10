@@ -236,8 +236,8 @@ void Lam::check() {
         err(filter()->dbg(), "filter '{}' of lambda is of type '{}' but must be of type '.Bool'", filter(),
             filter()->type());
     if (!w.checker().equiv(body()->type(), codom(), body()->dbg()))
-        err(body()->dbg(), "body '{}' of lambda is of type '{}' but its codomain is of type '{}'", body(), body()->type(),
-            codom());
+        err(body()->dbg(), "body '{}' of lambda is of type '{}' but its codomain is of type '{}'", body(),
+            body()->type(), codom());
 }
 
 void Pi::check() {

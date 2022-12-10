@@ -1,10 +1,10 @@
 #include "thorin/util/dl.h"
 
-#include "thorin/util/print.h"
-
 #include <cstdlib>
 
 #include <sstream>
+
+#include "thorin/util/print.h"
 
 #ifdef _WIN32
 #    include <windows.h>
