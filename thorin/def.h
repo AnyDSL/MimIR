@@ -455,8 +455,8 @@ const T* as([[maybe_unused]] flags_t f, const Def* def) {
 }
 
 template<class T = std::logic_error, class... Args>
-[[noreturn]] void err(const Def* def, const char* fmt, Args&&... args) {
-    err(def->loc(), fmt, std::forward<Args&&>(args)...);
+[[noreturn]] void err(const Def* dbg, const char* fmt, Args&&... args) {
+    err(Debug(dbg).loc, fmt, std::forward<Args&&>(args)...);
 }
 
 template<class T = std::logic_error, class... Args>
