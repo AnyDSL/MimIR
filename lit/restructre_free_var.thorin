@@ -15,8 +15,8 @@
     // main arguments
     [
         zero: T,                    // initial value
-        add: [T,T]->T,              // reduction operation
-        mul: TI->T,                 // inner combination
+        add: [T, T]->T,             // reduction operation
+        mul: «i: m; TI#i» ->T,                 // inner combination
         // out_index not needed => always ij (0 ... n) for n dimensions
         input:
             «x:m; 

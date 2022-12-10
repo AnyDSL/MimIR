@@ -90,21 +90,22 @@ const Def* World::umax(DefArray ops, Refer dbg) {
     level_t lvl = 0;
     for (auto& op : ops) {
         Refer r = op;
-        // clang-format off
-        switch (sort) {
-            case Sort::Term:  r = r->type()->unfold_type()->as<Type>()->level(); break;
-            case Sort::Type:  r =         r->unfold_type()->as<Type>()->level(); break;
-            case Sort::Kind:  r =                        r->as<Type>()->level(); break;
-            case Sort::Univ:  r =                                             r; break;
-            default: unreachable();
+        if (sort == Sort::Term) r = r->unfold_type();
+        if (sort <= Sort::Type) r = r->unfold_type();
+        if (sort <= Sort::Kind) {
+            if (auto type = r->isa<Type>())
+                r = type->level();
+            else
+                err()->err(r->loc(), "operand '{}' must be a .Type of some level", r);
         }
-        // clang-format on
-        op = r;
 
-        if (err() && !op->type()->isa<Univ>()) {
-            err()->err(op->loc(), "operand '{}' of a universe max must be of type '.Univ' but is of type '{}'", op,
-                       op->type());
+        if (err()) {
+            if (!r->type()->isa<Univ>())
+                err()->err(r->loc(), "operand '{}' of a universe max must be of type '.Univ' but is of type '{}'", r,
+                           r->type());
         }
+
+        op = r;
 
         if (auto l = isa_lit(op))
             lvl = std::max(lvl, *l);
