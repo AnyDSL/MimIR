@@ -310,7 +310,10 @@ Def* Def::set(size_t i, const Def* def) {
         assert_unused(p.second);
 
         // TODO check that others are set
-        if (i == num_ops() - 1) check();
+        if (i == num_ops() - 1) {
+            check();
+            update();
+        }
     }
     return this;
 }

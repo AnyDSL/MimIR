@@ -220,6 +220,7 @@ public:
     }
     Def* set_type(const Def*);
     void unset_type();
+    void update() { if (auto r = refer(type()); r && r != type()) set_type(r); } ///< Resolves Infer%s.
 
     /// Yields `true` if empty or the last op is set.
     bool is_set() const;

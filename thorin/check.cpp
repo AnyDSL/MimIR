@@ -37,6 +37,13 @@ const Def* refer(const Def* def) {
         }
     }
 
+    if (auto type = def->isa<Type>()) {
+        if (auto r = refer(type->level()); r && r != type->level()) {
+            World& w = type->world();
+            return w.type(r, type->dbg());
+        }
+    }
+
     return def;
 }
 
@@ -212,11 +219,13 @@ const Def* Pi::infer(const Def* dom, const Def* codom) {
  */
 
 void Arr::check() {
+    auto& w = world();
     auto t = body()->unfold_type();
-    if (auto infer = type()->isa_nom<Infer>()) {
-        assert(infer->op() == nullptr);
-        infer->set(t);
-        set_type(t);
+
+    if (w.err()) {
+        if (!w.checker().equiv(t, type(), type()->dbg()))
+            w.err()->err(type()->loc(), "declared sort '{}' of array does not match inferred one '{}'", type(),
+                         t);
     }
 }
 
@@ -239,15 +248,12 @@ void Lam::check() {
 
 void Pi::check() {
     auto& w = world();
-    auto t = infer(dom(), codom());
+    auto t  = infer(dom(), codom());
     if (w.err()) {
         if (!w.checker().equiv(t, type(), type()->dbg()))
             w.err()->err(type()->loc(), "declared sort '{}' of function type does not match inferred one '{}'", type(),
                          t);
     }
-
-    auto level = type()->as<Type>()->level();
-    if (auto r = refer(level); r && r != level) set_type(w.type(r));
 }
 
 } // namespace thorin

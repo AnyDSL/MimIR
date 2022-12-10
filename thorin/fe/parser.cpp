@@ -314,7 +314,7 @@ const Def* Parser::parse_arr() {
     expect(Tok::Tag::D_quote_r, "closing delimiter of an array");
     scopes_.pop();
 
-    if (arr) return arr->set_body(body)->set_type(body->unfold_type());
+    if (arr) return arr->set_body(body);
     return world().arr(shape, body, track.dbg());
 }
 
