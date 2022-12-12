@@ -159,7 +159,7 @@ std::ostream& operator<<(std::ostream& os, Inline2 u) {
     } else if (auto axiom = u->isa<Axiom>()) {
         const auto& name = axiom->name();
         // if (name.find("mem.M") != std::string::npos) return print(os, "()");
-        if (name == "%mem.M") return print(os, "()");
+        if (name == "%mem.M") return print(os, "unit");
         return print(os, "{}{}", name[0] == '%' ? "" : "%", name);
     } else if (auto lit = u->isa<Lit>()) {
         if (lit->type()->isa<Nat>()) return print(os, "{}", lit->get());
@@ -182,7 +182,7 @@ std::ostream& operator<<(std::ostream& os, Inline2 u) {
             // TODO: just give error?
             return print(os, "Π {}: {} → {}", nom->var(), pi->dom(), pi->codom());
         // return print(os, "Π {} → {}", pi->dom(), pi->codom());
-        return print(os, "{} -> {}", Inline2(pi->dom()), Inline2(pi->codom()));
+        return print(os, "({} -> {})", Inline2(pi->dom()), Inline2(pi->codom()));
     } else if (auto lam = u->isa<Lam>()) {
         // return print(os, "{}, {}", lam->filter(), lam->body());
         return print(os, "{}", lam->body());
@@ -200,7 +200,7 @@ std::ostream& operator<<(std::ostream& os, Inline2 u) {
                          }));
         }
         // return print(os, "({, })", sigma->ops());
-        return print(os, "({, })", Elem(sigma->ops(), [&](auto op) { print(os, "{}", Inline2(op)); }));
+        return print(os, "({ * })", Elem(sigma->ops(), [&](auto op) { print(os, "{}", Inline2(op)); }));
         // return print(os, "({, })", Elem(sigma->ops(), [&](auto op) { print(os, "A"); }));
     } else if (auto tuple = u->isa<Tuple>()) {
         if (tuple->type()->isa<Arr>()) {
