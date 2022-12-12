@@ -26,6 +26,16 @@
 
 using namespace std::string_literals;
 
+/*
+
+TODO:
+* mutual recursion
+* operations
+* in after toplevel
+* use let-ins instead of repetition
+
+*/
+
 namespace thorin::haskell {
 
 /*
@@ -164,18 +174,19 @@ std::ostream& operator<<(std::ostream& os, Inline2 u) {
     } else if (auto lit = u->isa<Lit>()) {
         if (lit->type()->isa<Nat>()) return print(os, "{}", lit->get());
         if (lit->type()->isa<App>())
-            return print(os, "{}:({})", lit->get(), Inline2(lit->type())); // HACK prec magic is broken
+            return print(os, "({}:{})", lit->get(), Inline2(lit->type())); // HACK prec magic is broken
         return print(os, "{}:{}", lit->get(), Inline2(lit->type()));
     } else if (auto ex = u->isa<Extract>()) {
         if (ex->tuple()->isa<Var>() && ex->index()->isa<Lit>()) return print(os, "{}", ex->unique_name());
         if (ex->tuple()->type()->isa<Arr>()) {
-            return print(os, "List.nth {} {}", ex->tuple(), ex->index());
+            return print(os, "List.nth {} {}", Inline2(ex->tuple()), Inline2(ex->index()));
         } else {
             // TODO: extract from tuple (const index)
             return print(os, "{}#{}", ex->tuple(), ex->index());
         }
     } else if (auto var = u->isa<Var>()) {
         return print(os, "{}", var->unique_name());
+        // return print(os, "{}", var);
     } else if (auto pi = u->isa<Pi>()) {
         // if (pi->is_cn()) return print(os, "{} -> ()", Inline2(pi->dom()));
         if (auto nom = pi->isa_nom<Pi>(); nom && nom->var())
@@ -185,7 +196,9 @@ std::ostream& operator<<(std::ostream& os, Inline2 u) {
         return print(os, "({} -> {})", Inline2(pi->dom()), Inline2(pi->codom()));
     } else if (auto lam = u->isa<Lam>()) {
         // return print(os, "{}, {}", lam->filter(), lam->body());
-        return print(os, "{}", lam->body());
+        // return print(os, "{}", lam->body());
+        // TODO: lam vs lam->body() vs Inline(...) vs name vs unique_name
+        return print(os, "{}", lam);
         // } else if (auto app = u->isa<App>()) {
     } else if (auto sigma = u->isa<Sigma>()) {
         if (auto nom = sigma->isa_nom<Sigma>(); nom && nom->var()) {
@@ -200,16 +213,20 @@ std::ostream& operator<<(std::ostream& os, Inline2 u) {
                          }));
         }
         // return print(os, "({, })", sigma->ops());
+        // TODO: add extra parens?
+        // return print(os, "({ * })", Elem(sigma->ops(), [&](auto op) { print(os, "({})", Inline2(op)); }));
         return print(os, "({ * })", Elem(sigma->ops(), [&](auto op) { print(os, "{}", Inline2(op)); }));
         // return print(os, "({, })", Elem(sigma->ops(), [&](auto op) { print(os, "A"); }));
     } else if (auto tuple = u->isa<Tuple>()) {
+        // tuple->world().DLOG("tuple: {}", tuple->type());
         if (tuple->type()->isa<Arr>()) {
-            print(os, "[{, }]", tuple->ops());
+            print(os, "[{; }]", Elem(tuple->ops(), [&](auto op) { print(os, "{}", Inline2(op)); }));
             return os;
             // TODO: nom
             // return tuple->type()->isa_nom() ? print(os, ":{}", tuple->type()) : os;
         } else {
-            print(os, "({, })", tuple->ops());
+            // print(os, "({, })", tuple->ops());
+            print(os, "({, })", Elem(tuple->ops(), [&](auto op) { print(os, "{}", Inline2(op)); }));
             return os;
             // return tuple->type()->isa_nom() ? print(os, ":{}", tuple->type()) : os;
         }
