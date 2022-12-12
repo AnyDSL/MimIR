@@ -606,7 +606,8 @@ const Def* normalize_trait(const Def*, const Def* callee, const Def* type, const
     } else if (auto arr = type->isa_structural<Arr>()) {
         auto align = op(trait::align, arr->body());
         if constexpr (id == trait::align) return align;
-        if (auto b = op(trait::size, arr->body())->isa<Lit>()) return world.dcall(dbg, core::nop::mul, {arr->shape(), b});
+        if (auto b = op(trait::size, arr->body())->isa<Lit>())
+            return world.dcall(dbg, core::nop::mul, {arr->shape(), b});
     } else if (auto join = type->isa<Join>()) {
         if (auto sigma = convert(join)) return core::op(id, sigma, dbg);
     }

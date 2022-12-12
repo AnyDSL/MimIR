@@ -437,10 +437,14 @@ public:
 
     /// Infers the args of a curried Axiom.
     template<class T>
-    const Def* dcall(Refer dbg, Refer callee, T arg) { return iapp(callee, arg, dbg); }
+    const Def* dcall(Refer dbg, Refer callee, T arg) {
+        return iapp(callee, arg, dbg);
+    }
 
     template<class T, class... Args>
-    const Def* dcall(Refer dbg, Refer callee, T arg, Args&& ...) { return dcall(dbg, dcall(dbg, callee, arg), arg); }
+    const Def* dcall(Refer dbg, Refer callee, T arg, Args&&...) {
+        return dcall(dbg, dcall(dbg, callee, arg), arg);
+    }
 
     // clang-format off
     template<class Id> const Def* dcall(Refer dbg, Id id, Refer arg) { return iapp(ax(id), arg,   Debug(dbg)); }
