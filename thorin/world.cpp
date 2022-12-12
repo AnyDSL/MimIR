@@ -494,25 +494,6 @@ const Def* World::iapp(Refer callee, Refer arg, Debug debug) {
     return app(callee, arg, dbg(mdebug));
 }
 
-const Def* World::call(const Axiom* axiom, Refer arg, Refer dbg) {
-    switch (axiom->curry()) {
-        case 1: return app(axiom, arg, dbg);
-        case 2: {
-            auto infer = nom_infer_entity();
-            auto a     = app(axiom, infer, dbg);
-            checker().assignable(a->type()->as<Pi>()->dom(), arg, dbg);
-            if (auto r = refer(infer); r && !r->isa<Infer>()) return app(app(axiom, r, dbg), arg, dbg);
-            return app(a, arg, dbg);
-        }
-        default: assert(false && "TODO");
-    }
-#if 0
-    const Def* callee = axiom;
-    for (size_t i = 1, e = axiom->curry(); i < e; ++i) callee = app(callee, nom_infer_entity(), dbg);
-    return app(callee, arg, dbg);
-#endif
-}
-
 /*
  * debugging
  */

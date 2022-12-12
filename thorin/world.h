@@ -426,20 +426,35 @@ public:
 
     /// @name cope with implicit arguments
     ///@{
-    const Def* iapp(Refer callee, Refer arg, Debug);
+
+    /// Places Infer arguments as demanded by @p debug.meta and then apps @p arg.
+    const Def* iapp(Refer callee, Refer arg, Debug debug);
+    const Def* iapp(Refer callee, Defs args, Debug debug) { return iapp(callee, tuple(args), debug); }
+    const Def* iapp(Refer callee, nat_t arg, Debug debug) { return iapp(callee, lit_nat(arg), debug); }
+
     /// Converts C++ vector `{true, false, false}` to nested Thorin nested pairs `(.tt, (.ff, (.ff, ⊥)))`.
     const Def* implicits2meta(const Implicits&);
-    ///@}
 
-    /// @name call - App with type inference
-    ///@{
     /// Infers the args of a curried Axiom.
-    const Def* call(const Axiom* axiom, Refer arg, Refer dbg = {});
+    template<class T>
+    const Def* dcall(Refer dbg, Refer callee, T arg) { return iapp(callee, arg, dbg); }
+
+    template<class T, class... Args>
+    const Def* dcall(Refer dbg, Refer callee, T arg, Args&& ...) { return dcall(dbg, dcall(dbg, callee, arg), arg); }
+
     // clang-format off
-    template<class Id> const Def* call(Id id, Refer arg, Refer dbg = {}) { return call(ax(id),   arg, dbg); }
-    template<class Id> const Def* call(       Refer arg, Refer dbg = {}) { return call(ax<Id>(), arg, dbg); }
-    template<class Id> const Def* call(Id id, Defs args, Refer dbg = {}) { return call(id, tuple(args), dbg); }
-    template<class Id> const Def* call(       Defs args, Refer dbg = {}) { return call<Id>(tuple(args), dbg); }
+    template<class Id> const Def* dcall(Refer dbg, Id id, Refer arg) { return iapp(ax(id), arg,   Debug(dbg)); }
+    template<class Id> const Def* dcall(Refer dbg, Id id, Defs  arg) { return iapp(ax(id), arg,   Debug(dbg)); }
+    template<class Id> const Def* dcall(Refer dbg, Id id, nat_t arg) { return iapp(ax(id), arg,   Debug(dbg)); }
+    template<class Id> const Def* dcall(Refer dbg,        Refer arg) { return iapp(ax<Id>(), arg, Debug(dbg)); }
+    template<class Id> const Def* dcall(Refer dbg,        Defs  arg) { return iapp(ax<Id>(), arg, Debug(dbg)); }
+    template<class Id> const Def* dcall(Refer dbg,        nat_t arg) { return iapp(ax<Id>(), arg, Debug(dbg)); }
+    template<class Id, class T, class... Args> const Def* dcall(Refer dbg, Id id, Refer arg, Args&& ...) { return dcall(dbg, ax(id),   arg, std::forward<Args&&>...); }
+    template<class Id, class T, class... Args> const Def* dcall(Refer dbg, Id id, Defs  arg, Args&& ...) { return dcall(dbg, ax(id),   arg, std::forward<Args&&>...); }
+    template<class Id, class T, class... Args> const Def* dcall(Refer dbg, Id id, nat_t arg, Args&& ...) { return dcall(dbg, ax(id),   arg, std::forward<Args&&>...); }
+    template<class Id, class T, class... Args> const Def* dcall(Refer dbg,        Refer arg, Args&& ...) { return dcall(dbg, ax<Id>(), arg, std::forward<Args&&>...); }
+    template<class Id, class T, class... Args> const Def* dcall(Refer dbg,        Defs  arg, Args&& ...) { return dcall(dbg, ax<Id>(), arg, std::forward<Args&&>...); }
+    template<class Id, class T, class... Args> const Def* dcall(Refer dbg,        nat_t arg, Args&& ...) { return dcall(dbg, ax<Id>(), arg, std::forward<Args&&>...); }
     // clang-format on
     ///@}
 

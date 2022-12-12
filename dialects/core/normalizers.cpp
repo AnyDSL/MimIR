@@ -164,7 +164,7 @@ reassociate(Id id, World& world, [[maybe_unused]] const App* ab, const Def* a, c
         // if we reassociate Wraps, we have to forget about nsw/nuw
         make_op = [&](const Def* a, const Def* b) { return op(id, Mode::none, a, b, dbg); };
     } else {
-        make_op = [&](const Def* a, const Def* b) { return world.call(id, {a, b}, dbg); };
+        make_op = [&](const Def* a, const Def* b) { return world.dcall(dbg, id, {a, b}); };
     }
 
     if (la && lz) return make_op(make_op(la, lz), w);             // (1)
@@ -280,7 +280,7 @@ static const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, const Def* a
         if constexpr (std::is_same_v<Id, math::cmp>)
             return op(math::cmp(res), /*rmode*/ a_cmp->decurry()->arg(0), a_cmp->arg(0), a_cmp->arg(1), dbg);
         else
-            return world.call(icmp(Axiom::Base<icmp> | res), {a_cmp->arg(0), a_cmp->arg(1)}, dbg);
+            return world.dcall(dbg, icmp(Axiom::Base<icmp> | res), {a_cmp->arg(0), a_cmp->arg(1)});
     }
 
     return nullptr;
@@ -308,10 +308,10 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
         case bit2::    t: if (ls) return world.lit(type, *ls-1_u64); break;
         case bit2::  fst: return a;
         case bit2::  snd: return b;
-        case bit2:: nfst: return world.call(bit1::neg, a, dbg);
-        case bit2:: nsnd: return world.call(bit1::neg, b, dbg);
-        case bit2:: ciff: return world.call(bit2:: iff, {b, a}, dbg);
-        case bit2::nciff: return world.call(bit2::niff, {b, a}, dbg);
+        case bit2:: nfst: return world.dcall(dbg, bit1::neg, a);
+        case bit2:: nsnd: return world.dcall(dbg, bit1::neg, b);
+        case bit2:: ciff: return world.dcall(dbg, bit2:: iff, {b, a});
+        case bit2::nciff: return world.dcall(dbg, bit2::niff, {b, a});
         default:         break;
     }
 
@@ -334,7 +334,7 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
         if (!x && !y) return world.lit(type, 0);
         if ( x &&  y) return ls ? world.lit(type, *ls-1_u64) : nullptr;
         if (!x &&  y) return a;
-        if ( x && !y && id != bit2::xor_) return world.call(bit1::neg, a, dbg);
+        if ( x && !y && id != bit2::xor_) return world.dcall(dbg, bit1::neg, a);
         return nullptr;
     };
     // clang-format on
@@ -606,7 +606,7 @@ const Def* normalize_trait(const Def*, const Def* callee, const Def* type, const
     } else if (auto arr = type->isa_structural<Arr>()) {
         auto align = op(trait::align, arr->body());
         if constexpr (id == trait::align) return align;
-        if (auto b = op(trait::size, arr->body())->isa<Lit>()) return world.call(core::nop::mul, {arr->shape(), b});
+        if (auto b = op(trait::size, arr->body())->isa<Lit>()) return world.dcall(dbg, core::nop::mul, {arr->shape(), b});
     } else if (auto join = type->isa<Join>()) {
         if (auto sigma = convert(join)) return core::op(id, sigma, dbg);
     }

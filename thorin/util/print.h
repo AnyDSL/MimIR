@@ -135,19 +135,19 @@ std::string fmt(const char* s, Args&&... args) {
     return os.str();
 }
 
-// clang-format off
-template<class... Args> std::ostream& outf (const char* fmt, Args&&... args) { return print(std::cout, fmt, std::forward<Args&&>(args)...); }
-template<class... Args> std::ostream& errf (const char* fmt, Args&&... args) { return print(std::cerr, fmt, std::forward<Args&&>(args)...); }
-template<class... Args> std::ostream& outln(const char* fmt, Args&&... args) { return outf(fmt, std::forward<Args&&>(args)...) << std::endl; }
-template<class... Args> std::ostream& errln(const char* fmt, Args&&... args) { return errf(fmt, std::forward<Args&&>(args)...) << std::endl; }
-// clang-format on
-
 template<class T = std::logic_error, class... Args>
 [[noreturn]] void err(const char* fmt, Args&&... args) {
     std::ostringstream oss;
     print(oss << "error: ", fmt, std::forward<Args&&>(args)...);
     throw T(oss.str());
 }
+
+// clang-format off
+template<class... Args> std::ostream& outf (const char* fmt, Args&&... args) { return print(std::cout, fmt, std::forward<Args&&>(args)...); }
+template<class... Args> std::ostream& errf (const char* fmt, Args&&... args) { return print(std::cerr, fmt, std::forward<Args&&>(args)...); }
+template<class... Args> std::ostream& outln(const char* fmt, Args&&... args) { return outf(fmt, std::forward<Args&&>(args)...) << std::endl; }
+template<class... Args> std::ostream& errln(const char* fmt, Args&&... args) { return errf(fmt, std::forward<Args&&>(args)...) << std::endl; }
+// clang-format on
 
 /// Keeps track of indentation level.
 class Tab {
