@@ -435,30 +435,11 @@ public:
     /// Converts C++ vector `{true, false, false}` to nested Thorin nested pairs `(.tt, (.ff, (.ff, ⊥)))`.
     const Def* implicits2meta(const Implicits&);
 
-    /// Infers the args of a curried Axiom.
-    template<class T>
-    const Def* dcall(Refer dbg, Refer callee, T arg) {
-        return iapp(callee, arg, dbg);
-    }
-
-    template<class T, class... Args>
-    const Def* dcall(Refer dbg, Refer callee, T arg, Args&&...) {
-        return dcall(dbg, dcall(dbg, callee, arg), arg);
-    }
-
     // clang-format off
-    template<class Id> const Def* dcall(Refer dbg, Id id, Refer arg) { return iapp(ax(id), arg,   Debug(dbg)); }
-    template<class Id> const Def* dcall(Refer dbg, Id id, Defs  arg) { return iapp(ax(id), arg,   Debug(dbg)); }
-    template<class Id> const Def* dcall(Refer dbg, Id id, nat_t arg) { return iapp(ax(id), arg,   Debug(dbg)); }
-    template<class Id> const Def* dcall(Refer dbg,        Refer arg) { return iapp(ax<Id>(), arg, Debug(dbg)); }
-    template<class Id> const Def* dcall(Refer dbg,        Defs  arg) { return iapp(ax<Id>(), arg, Debug(dbg)); }
-    template<class Id> const Def* dcall(Refer dbg,        nat_t arg) { return iapp(ax<Id>(), arg, Debug(dbg)); }
-    template<class Id, class T, class... Args> const Def* dcall(Refer dbg, Id id, Refer arg, Args&& ...) { return dcall(dbg, ax(id),   arg, std::forward<Args&&>...); }
-    template<class Id, class T, class... Args> const Def* dcall(Refer dbg, Id id, Defs  arg, Args&& ...) { return dcall(dbg, ax(id),   arg, std::forward<Args&&>...); }
-    template<class Id, class T, class... Args> const Def* dcall(Refer dbg, Id id, nat_t arg, Args&& ...) { return dcall(dbg, ax(id),   arg, std::forward<Args&&>...); }
-    template<class Id, class T, class... Args> const Def* dcall(Refer dbg,        Refer arg, Args&& ...) { return dcall(dbg, ax<Id>(), arg, std::forward<Args&&>...); }
-    template<class Id, class T, class... Args> const Def* dcall(Refer dbg,        Defs  arg, Args&& ...) { return dcall(dbg, ax<Id>(), arg, std::forward<Args&&>...); }
-    template<class Id, class T, class... Args> const Def* dcall(Refer dbg,        nat_t arg, Args&& ...) { return dcall(dbg, ax<Id>(), arg, std::forward<Args&&>...); }
+    template<class Id, class... Args> const Def* dcall(Refer dbg, Id id, Args&&... args) { return dcall_(dbg, ax(id),   std::forward<Args>(args)...); }
+    template<class Id, class... Args> const Def* dcall(Refer dbg,        Args&&... args) { return dcall_(dbg, ax<Id>(), std::forward<Args>(args)...); }
+    template<class T, class... Args> const Def* dcall_(Refer dbg, Refer callee, T arg, Args&&... args) { return dcall_(dbg, iapp(callee, arg, Debug(dbg)), std::forward<Args>(args)...); }
+    template<class T> const Def* dcall_(Refer dbg, Refer callee, T arg) { return iapp(callee, arg, Debug(dbg)); }
     // clang-format on
     ///@}
 

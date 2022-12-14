@@ -164,7 +164,7 @@ reassociate(Id id, World& world, [[maybe_unused]] const App* ab, const Def* a, c
         // if we reassociate Wraps, we have to forget about nsw/nuw
         make_op = [&](const Def* a, const Def* b) { return op(id, Mode::none, a, b, dbg); };
     } else {
-        make_op = [&](const Def* a, const Def* b) { return world.dcall(dbg, id, {a, b}); };
+        make_op = [&](const Def* a, const Def* b) { return world.dcall(dbg, id, Defs({a, b})); };
     }
 
     if (la && lz) return make_op(make_op(la, lz), w);             // (1)
@@ -278,9 +278,10 @@ static const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, const Def* a
         res >>= (7_u8 - u8(num_bits));
 
         if constexpr (std::is_same_v<Id, math::cmp>)
-            return op(math::cmp(res), /*rmode*/ a_cmp->decurry()->arg(0), a_cmp->arg(0), a_cmp->arg(1), dbg);
+            return world.dcall(dbg, math::cmp(res), /*rmode*/ a_cmp->decurry()->arg(0),
+                               Defs({a_cmp->arg(0), a_cmp->arg(1)}));
         else
-            return world.dcall(dbg, icmp(Axiom::Base<icmp> | res), {a_cmp->arg(0), a_cmp->arg(1)});
+            return world.dcall(dbg, icmp(Axiom::Base<icmp> | res), Defs({a_cmp->arg(0), a_cmp->arg(1)}));
     }
 
     return nullptr;
@@ -310,8 +311,8 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
         case bit2::  snd: return b;
         case bit2:: nfst: return world.dcall(dbg, bit1::neg, a);
         case bit2:: nsnd: return world.dcall(dbg, bit1::neg, b);
-        case bit2:: ciff: return world.dcall(dbg, bit2:: iff, {b, a});
-        case bit2::nciff: return world.dcall(dbg, bit2::niff, {b, a});
+        case bit2:: ciff: return world.dcall(dbg, bit2:: iff, Defs({b, a}));
+        case bit2::nciff: return world.dcall(dbg, bit2::niff, Defs({b, a}));
         default:         break;
     }
 
@@ -607,7 +608,7 @@ const Def* normalize_trait(const Def*, const Def* callee, const Def* type, const
         auto align = op(trait::align, arr->body());
         if constexpr (id == trait::align) return align;
         if (auto b = op(trait::size, arr->body())->isa<Lit>())
-            return world.dcall(dbg, core::nop::mul, {arr->shape(), b});
+            return world.dcall(dbg, core::nop::mul, Defs({arr->shape(), b}));
     } else if (auto join = type->isa<Join>()) {
         if (auto sigma = convert(join)) return core::op(id, sigma, dbg);
     }

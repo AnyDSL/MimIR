@@ -87,9 +87,9 @@ Lam* Clos2SJLJ::get_throw(const Def* dom) {
         auto [m0, env, var]    = split(tlam->var());
         auto [jbuf, rbuf, tag] = env->projs<3>();
         auto [m1, r]           = mem::op_alloc(var->type(), m0)->projs<2>();
-        auto m2                = w.dcall<mem::store>({}, {m1, r, var});
+        auto m2                = w.dcall<mem::store>({}, Defs({m1, r, var}));
         rbuf                   = core::op_bitcast(mem::type_ptr(mem::type_ptr(var->type())), rbuf);
-        auto m3                = w.dcall<mem::store>({}, {m2, rbuf, r});
+        auto m3                = w.dcall<mem::store>({}, Defs({m2, rbuf, r}));
         tlam->set(false, op_longjmp(m3, jbuf, tag));
         ignore_.emplace(tlam);
     }
@@ -105,9 +105,9 @@ Lam* Clos2SJLJ::get_lpad(Lam* lam, const Def* rb) {
         auto pi                 = w.cn(w.sigma({mem::type_mem(w), env_type}));
         lpad                    = w.nom_lam(pi, w.dbg("lpad"));
         auto [m, env, __]       = split(lpad->var());
-        auto [m1, arg_ptr]      = w.dcall<mem::load>({}, {m, rb})->projs<2>();
+        auto [m1, arg_ptr]      = w.dcall<mem::load>({}, Defs({m, rb}))->projs<2>();
         arg_ptr                 = core::op_bitcast(mem::type_ptr(dom), arg_ptr);
-        auto [m2, args]         = w.dcall<mem::load>({}, {m1, arg_ptr})->projs<2>();
+        auto [m2, args]         = w.dcall<mem::load>({}, Defs({m1, arg_ptr}))->projs<2>();
         auto full_args          = (lam->num_doms() == 3) ? rebuild(m2, env, {args}) : rebuild(m2, env, args->ops());
         lpad->app(false, lam, full_args);
         ignore_.emplace(lpad);

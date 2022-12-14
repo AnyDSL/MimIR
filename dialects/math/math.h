@@ -44,97 +44,8 @@ inline const Def* mode(World& w, VMode m) {
     return w.lit_nat(std::get<Mode>(m));
 }
 
-inline const Def* finfer(Refer def) { return force<F>(def->type())->arg(); }
-
 /// @name fn - these guys yield the final function to be invoked for the various operations
 ///@{
-inline const Def* fn(arith o, const Def* pe, VMode m, const Def* dbg = {}) {
-    World& w = pe->world();
-    return w.app(w.app(w.ax(o), pe, dbg), mode(w, m), dbg);
-}
-inline const Def* fn(extrema o, const Def* pe, VMode m, const Def* dbg = {}) {
-    World& w = pe->world();
-    return w.app(w.app(w.ax(o), pe, dbg), mode(w, m), dbg);
-}
-inline const Def* fn(pow o, const Def* pe, VMode m, const Def* dbg = {}) {
-    World& w = pe->world();
-    return w.app(w.app(w.ax(o), pe, dbg), mode(w, m), dbg);
-}
-inline const Def* fn(rt o, const Def* pe, VMode m, const Def* dbg = {}) {
-    World& w = pe->world();
-    return w.app(w.app(w.ax(o), pe, dbg), mode(w, m), dbg);
-}
-inline const Def* fn(tri o, const Def* pe, VMode m, const Def* dbg = {}) {
-    World& w = pe->world();
-    return w.app(w.app(w.ax(o), pe, dbg), mode(w, m), dbg);
-}
-inline const Def* fn(exp o, const Def* pe, VMode m, const Def* dbg = {}) {
-    World& w = pe->world();
-    return w.app(w.app(w.ax(o), pe, dbg), mode(w, m), dbg);
-}
-inline const Def* fn(er o, const Def* pe, VMode m, const Def* dbg = {}) {
-    World& w = pe->world();
-    return w.app(w.app(w.ax(o), pe, dbg), mode(w, m), dbg);
-}
-inline const Def* fn(gamma o, const Def* pe, VMode m, const Def* dbg = {}) {
-    World& w = pe->world();
-    return w.app(w.app(w.ax(o), pe, dbg), mode(w, m), dbg);
-}
-inline const Def* fn(cmp o, const Def* pe, VMode m, const Def* dbg = {}) {
-    World& w = pe->world();
-    return w.app(w.app(w.ax(o), pe, dbg), mode(w, m), dbg);
-}
-inline const Def* fn(conv o, const Def* src_s, const Def* dst_s, const Def* dbg = {}) {
-    World& w = src_s->world();
-    return w.app(w.app(w.ax(o), src_s), dst_s, dbg);
-}
-///@}
-
-/// @name op - these guys build the final function application for the various operations
-///@{
-inline const Def* op(arith o, VMode m, const Def* a, const Def* b, const Def* dbg = {}) {
-    World& w = a->world();
-    return w.app(fn(o, finfer(a), m), {a, b}, dbg);
-}
-inline const Def* op(extrema o, VMode m, const Def* a, const Def* b, const Def* dbg = {}) {
-    World& w = a->world();
-    return w.app(fn(o, finfer(a), m), {a, b}, dbg);
-}
-inline const Def* op(pow o, VMode m, const Def* a, const Def* b, const Def* dbg = {}) {
-    World& w = a->world();
-    return w.app(fn(o, finfer(a), m), {a, b}, dbg);
-}
-inline const Def* op(rt o, VMode m, const Def* a, const Def* dbg = {}) {
-    World& w = a->world();
-    return w.app(fn(o, finfer(a), m), a, dbg);
-}
-inline const Def* op(tri o, VMode m, const Def* a, const Def* dbg = {}) {
-    World& w = a->world();
-    return w.app(fn(o, finfer(a), m), a, dbg);
-}
-inline const Def* op(exp o, VMode m, const Def* a, const Def* dbg = {}) {
-    World& w = a->world();
-    return w.app(fn(o, finfer(a), m), a, dbg);
-}
-inline const Def* op(er o, VMode m, const Def* a, const Def* dbg = {}) {
-    World& w = a->world();
-    return w.app(fn(o, finfer(a), m), a, dbg);
-}
-inline const Def* op(gamma o, VMode m, const Def* a, const Def* dbg = {}) {
-    World& w = a->world();
-    return w.app(fn(o, finfer(a), m), a, dbg);
-}
-inline const Def* op(cmp o, VMode m, const Def* a, const Def* b, const Def* dbg = {}) {
-    World& w = a->world();
-    return w.app(fn(o, finfer(a), m), {a, b}, dbg);
-}
-inline const Def* op(conv o, const Def* dst_t, const Def* src, const Def* dbg = {}) {
-    World& w = dst_t->world();
-    auto d   = dst_t->as<App>()->arg();
-    auto s   = src->type()->as<App>()->arg();
-    return w.app(fn(o, s, d), src, dbg);
-}
-
 template<nat_t P, nat_t E>
 inline auto match_f(const Def* def) {
     if (auto f_ty = match<F>(def)) {
@@ -203,7 +114,7 @@ inline const Lit* lit_f(World& w, nat_t width, f64 val, const Def* dbg = {}) {
 inline const Def* op_rminus(VMode m, const Def* a, const Def* dbg = {}) {
     World& w = a->world();
     auto s   = isa_f(a->type());
-    return op(arith::sub, m, lit_f(w, *s, -0.0), a, dbg);
+    return w.dcall(dbg, arith::sub, mode(w, m), Defs({lit_f(w, *s, -0.0), a}));
 }
 ///@}
 

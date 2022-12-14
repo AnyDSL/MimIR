@@ -45,7 +45,7 @@ const Def* LowerFor::rewrite(const Def* def) {
             auto if_else    = w.nom_lam(if_else_cn, nullptr);
             if_else->app(false, brk, acc);
 
-            auto cmp = w.dcall({}, core::icmp::ul, {iter, end});
+            auto cmp = w.dcall({}, core::icmp::ul, Defs({iter, end}));
             for_lam->branch(false, cmp, new_body, if_else, w.tuple());
         }
 
