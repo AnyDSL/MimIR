@@ -9,7 +9,7 @@
 .let I32 = .Idx _32;
 // .let MT = (2, (2,4), I32);
 
-.con .extern fun [[mem:%mem.M, acc:I32, [a:I32, b:I32]], ret:.Cn[%mem.M,I32]] = {
+.con inner_fun [[mem:%mem.M, acc:I32, [a:I32, b:I32]], ret:.Cn[%mem.M,I32]] = {
     .let v = %core.wrap.mul _32 0 (a,b);
 
     // reduce op = addition
@@ -24,6 +24,7 @@
     N:%matrix.Mat (2,(m,l),I32),
     return: .Cn[%mem.M, %matrix.Mat (2,(k,l),I32)]] = {
 
+    // .let (mem2, MN) = %matrix.constMat (2,(k,l),I32) (mem, 0:I32);
     .let (mem2,MN) = %matrix.mapReduce
         (
             2, (k,l), I32,
@@ -35,7 +36,7 @@
         (
             mem,
             0:I32,
-            fun,
+            inner_fun,
             (
                 ((0,2),M),
                 ((2,1),N)
