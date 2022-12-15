@@ -44,7 +44,7 @@ const Def* normalize_read(const Def* type, const Def* callee, const Def* arg, co
     //     return world.tuple({mem, v});
     // }
 
-    return world.raw_app(callee, arg, dbg);
+    return world.raw_app(type, callee, arg, dbg);
 }
 
 /// Normalizer for write operations
@@ -56,7 +56,7 @@ const Def* normalize_insert(const Def* type, const Def* callee, const Def* arg, 
     // same as read
     // TODO:
 
-    return world.raw_app(callee, arg, dbg);
+    return world.raw_app(type, callee, arg, dbg);
 }
 
 /// Normalizer for transpose operations
@@ -115,7 +115,7 @@ const Def* normalize_mapReduce(const Def* type, const Def* callee, const Def* ar
 
     //     // TODO: now that mapReduce returns a mem needs to check if extract from mapReduce
 
-    return world.raw_app(callee, arg, dbg);
+    return world.raw_app(type, callee, arg, dbg);
 
     //     // auto [mem, zero, add, mul, input] = arg->projs<5>();
     //     // // auto [dims, sizes, body_type] = match<Mat, false>(mat->type())->args<3>();
@@ -204,12 +204,12 @@ const Def* normalize_mapReduce(const Def* type, const Def* callee, const Def* ar
 
 const Def* normalize_prod(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-    return world.raw_app(callee, arg, dbg);
+    return world.raw_app(type, callee, arg, dbg);
 }
 
 const Def* normalize_transpose(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-    return world.raw_app(callee, arg, dbg);
+    return world.raw_app(type, callee, arg, dbg);
 }
 
 THORIN_matrix_NORMALIZER_IMPL
