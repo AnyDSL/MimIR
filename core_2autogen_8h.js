@@ -2,13 +2,13 @@ var core_2autogen_8h =
 [
     [ "THORIN_core_NORMALIZER_IMPL", "core_2autogen_8h.html#afb1c5c36cfbd3bc254045525cd3dc75b", null ],
     [ "bit1", "core_2autogen_8h.html#a60b6d2484fb68ef9ce568db15502e349", [
-      [ "f", "core_2autogen_8h.html#a70895f76bd16fdb3db2c75dd1fd38978aa6d4ae7d990ff7dbfef99471f1bd5622", null ],
+      [ "f", "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6aa6d4ae7d990ff7dbfef99471f1bd5622", null ],
       [ "neg", "core_2autogen_8h.html#a60b6d2484fb68ef9ce568db15502e349a416ad0b3ec8b1647918fe60ae4a91a7d", null ],
       [ "id", "core_2autogen_8h.html#a60b6d2484fb68ef9ce568db15502e349aac8161ee4ef433b6815b2d835a0f6d64", null ],
-      [ "t", "core_2autogen_8h.html#a70895f76bd16fdb3db2c75dd1fd38978a2cd637f8af229640a38fe0daff901035", null ]
+      [ "t", "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6a2cd637f8af229640a38fe0daff901035", null ]
     ] ],
     [ "bit2", "core_2autogen_8h.html#a70895f76bd16fdb3db2c75dd1fd38978", [
-      [ "f", "core_2autogen_8h.html#a70895f76bd16fdb3db2c75dd1fd38978aa6d4ae7d990ff7dbfef99471f1bd5622", null ],
+      [ "f", "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6aa6d4ae7d990ff7dbfef99471f1bd5622", null ],
       [ "nor", "core_2autogen_8h.html#a70895f76bd16fdb3db2c75dd1fd38978ab0abbcb5b3415de46aff30e977a1010f", null ],
       [ "nciff", "core_2autogen_8h.html#a70895f76bd16fdb3db2c75dd1fd38978a62672b0c20974c44eccd928ce11ae8eb", null ],
       [ "na", "core_2autogen_8h.html#a70895f76bd16fdb3db2c75dd1fd38978a0d6439e8ffcc8e7795423b7ea7610b55", null ],
@@ -23,7 +23,7 @@ var core_2autogen_8h =
       [ "a", "core_2autogen_8h.html#ae493f33140e983cf79dc6b66a1637628a4acc16fd772962c473e31c7b4b09b7bf", null ],
       [ "ciff", "core_2autogen_8h.html#a70895f76bd16fdb3db2c75dd1fd38978a88fe0bfe999c6d15e93053a5abaa2647", null ],
       [ "or_", "core_2autogen_8h.html#a70895f76bd16fdb3db2c75dd1fd38978abfd7ad9ece5000d003f6c156c3b8f9cc", null ],
-      [ "t", "core_2autogen_8h.html#a70895f76bd16fdb3db2c75dd1fd38978a2cd637f8af229640a38fe0daff901035", null ]
+      [ "t", "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6a2cd637f8af229640a38fe0daff901035", null ]
     ] ],
     [ "bitcast", "core_2autogen_8h.html#acf483c3cca736fbc9da7818308229c4d", null ],
     [ "conv", "core_2autogen_8h.html#a016fae77d6f5857b429ceb5b433c4937", [
@@ -38,7 +38,7 @@ var core_2autogen_8h =
     ] ],
     [ "icmp", "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6", [
       [ "xygle", "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6aba077e40c621337d35d1021bd9eb62de", null ],
-      [ "f", "core_2autogen_8h.html#a70895f76bd16fdb3db2c75dd1fd38978aa6d4ae7d990ff7dbfef99471f1bd5622", null ],
+      [ "f", "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6aa6d4ae7d990ff7dbfef99471f1bd5622", null ],
       [ "xyglE", "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6ab719a14ba4d6370e2e77d8cb014c22dd", null ],
       [ "e", "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6a2617461720290be8740985537e6e1bfd", null ],
       [ "xygLe", "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6aa2552bdde6430d37115ed0aeab972b7e", null ],
@@ -80,11 +80,11 @@ var core_2autogen_8h =
       [ "XYGLe", "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6a4826676e20bc20a94a833c095867c571", null ],
       [ "ne", "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6a2023fd5d4e7d81d38b7539ac2e697d34", null ],
       [ "XYGLE", "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6a8a869d0d1e0551d63fbaa835a8c5ca6b", null ],
-      [ "t", "core_2autogen_8h.html#a70895f76bd16fdb3db2c75dd1fd38978a2cd637f8af229640a38fe0daff901035", null ]
+      [ "t", "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6a2cd637f8af229640a38fe0daff901035", null ]
     ] ],
     [ "ncmp", "core_2autogen_8h.html#a7551e53258352c571450549b0f99c47e", [
       [ "gle", "core_2autogen_8h.html#a7551e53258352c571450549b0f99c47eab66873505577b501426d6678ce07095e", null ],
-      [ "f", "core_2autogen_8h.html#a70895f76bd16fdb3db2c75dd1fd38978aa6d4ae7d990ff7dbfef99471f1bd5622", null ],
+      [ "f", "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6aa6d4ae7d990ff7dbfef99471f1bd5622", null ],
       [ "glE", "core_2autogen_8h.html#a7551e53258352c571450549b0f99c47eaba9d3f7f019cb6d5f3165917d62aeace", null ],
       [ "e", "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6a2617461720290be8740985537e6e1bfd", null ],
       [ "gLe", "core_2autogen_8h.html#a7551e53258352c571450549b0f99c47eab94b516e2c692fc7b3b4f68d34fae6a1", null ],
@@ -98,7 +98,7 @@ var core_2autogen_8h =
       [ "GLe", "core_2autogen_8h.html#a7551e53258352c571450549b0f99c47ea0094426ffc4e5fdd9a1eaaec3d4f9f98", null ],
       [ "ne", "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6a2023fd5d4e7d81d38b7539ac2e697d34", null ],
       [ "GLE", "core_2autogen_8h.html#a7551e53258352c571450549b0f99c47ea506c59f072d80632dbed0f77b33042c2", null ],
-      [ "t", "core_2autogen_8h.html#a70895f76bd16fdb3db2c75dd1fd38978a2cd637f8af229640a38fe0daff901035", null ]
+      [ "t", "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6a2cd637f8af229640a38fe0daff901035", null ]
     ] ],
     [ "nop", "core_2autogen_8h.html#a7367a6650ab2feeba43426b8e1853bf7", [
       [ "add", "core_2autogen_8h.html#ab1f42e21a4de8bd328e18b8006b9f74fa2417b496d526d2ad5b184798d2938924", null ],
@@ -134,7 +134,7 @@ var core_2autogen_8h =
     [ "normalize_nop", "core_2autogen_8h.html#addcb11650497c24e35e978d54128602b", null ],
     [ "normalize_pe", "core_2autogen_8h.html#a9bc1a3442ba7ac5ca8c557c0afeaa321", null ],
     [ "normalize_shr", "core_2autogen_8h.html#a3a1b7ea1e0c793bd5c8bba896d6c8d91", null ],
-    [ "normalize_trait", "core_2autogen_8h.html#ac0d1f9418484a71cb21980018a1cbeb4", null ],
+    [ "normalize_trait", "core_2autogen_8h.html#a8441924598088461b63c0a14b1482b0d", null ],
     [ "normalize_wrap", "core_2autogen_8h.html#aa2a8519281f2f3630acf8bc6b6b61108", null ],
     [ "normalize_zip", "core_2autogen_8h.html#a28ecd1e51dc5e323cfaac6071b7f8dec", null ],
     [ "operator&", "core_2autogen_8h.html#ab16135ad662e533836fa1cf77f4e7dd7", null ],

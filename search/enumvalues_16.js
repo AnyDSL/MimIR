@@ -4,9 +4,9 @@ var searchData=
   ['xygle_1',['xYgle',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a494578dca0c2b405ae62d09623320d2f',1,'thorin::core']]],
   ['xygle_2',['xYGLE',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aa6c3b542819c43c9a9d2ef3b61d72f2a',1,'thorin::core']]],
   ['xygle_3',['xygle',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aba077e40c621337d35d1021bd9eb62de',1,'thorin::core']]],
-  ['xygle_4',['xygLe',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aa2552bdde6430d37115ed0aeab972b7e',1,'thorin::core']]],
-  ['xygle_5',['xygLE',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a5a8b45733df67dbe71fcdb55deb38dc8',1,'thorin::core']]],
-  ['xygle_6',['xyGle',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a48cdb9073adc02d3e15f01b6d633d244',1,'thorin::core']]],
+  ['xygle_4',['xygLE',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a5a8b45733df67dbe71fcdb55deb38dc8',1,'thorin::core']]],
+  ['xygle_5',['xyGle',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a48cdb9073adc02d3e15f01b6d633d244',1,'thorin::core']]],
+  ['xygle_6',['xyGlE',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a3c55cc7d62963ed423db694d6f8326b3',1,'thorin::core']]],
   ['xygle_7',['xyGLe',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a5c2828fe3a71c80efb430189a6889953',1,'thorin::core']]],
   ['xygle_8',['xyGLE',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a0e0274799ae2b1c52039215ebb13ffc2',1,'thorin::core']]],
   ['xygle_9',['XygLe',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a4a89e7ddc01aabf1ca5965f974f4e033',1,'thorin::core']]],
@@ -32,5 +32,5 @@ var searchData=
   ['xygle_29',['XYGLe',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a4826676e20bc20a94a833c095867c571',1,'thorin::core']]],
   ['xygle_30',['XYGLE',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a8a869d0d1e0551d63fbaa835a8c5ca6b',1,'thorin::core']]],
   ['xygle_31',['xyglE',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6ab719a14ba4d6370e2e77d8cb014c22dd',1,'thorin::core']]],
-  ['xygle_32',['xyGlE',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a3c55cc7d62963ed423db694d6f8326b3',1,'thorin::core']]]
+  ['xygle_32',['xygLe',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aa2552bdde6430d37115ed0aeab972b7e',1,'thorin::core']]]
 ];

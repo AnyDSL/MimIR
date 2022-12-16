@@ -17,7 +17,7 @@ var core_2normalizers_8cpp =
     [ "normalize_nop", "core_2normalizers_8cpp.html#addcb11650497c24e35e978d54128602b", null ],
     [ "normalize_pe", "core_2normalizers_8cpp.html#a9bc1a3442ba7ac5ca8c557c0afeaa321", null ],
     [ "normalize_shr", "core_2normalizers_8cpp.html#a3a1b7ea1e0c793bd5c8bba896d6c8d91", null ],
-    [ "normalize_trait", "core_2normalizers_8cpp.html#ac0d1f9418484a71cb21980018a1cbeb4", null ],
+    [ "normalize_trait", "core_2normalizers_8cpp.html#a8441924598088461b63c0a14b1482b0d", null ],
     [ "normalize_wrap", "core_2normalizers_8cpp.html#aa2a8519281f2f3630acf8bc6b6b61108", null ],
     [ "normalize_zip", "core_2normalizers_8cpp.html#a28ecd1e51dc5e323cfaac6071b7f8dec", null ],
     [ "pad", "core_2normalizers_8cpp.html#a166904dfa7742d726f66138de3f2af4f", null ],
