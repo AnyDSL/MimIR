@@ -10,7 +10,12 @@ void Phase::run() {
 
 void RWPhase::start() {
     for (const auto& [_, ax] : world().axioms()) rewrite(ax);
-    for (const auto& [_, nom] : world().externals()) rewrite(nom)->as_nom()->make_external();
+
+    auto externals = world().externals();
+    for (const auto& [_, nom] : externals) {
+        nom->make_internal();
+        rewrite(nom)->as_nom()->make_external();
+    }
 }
 
 void FPPhase::start() {
