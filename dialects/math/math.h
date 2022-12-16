@@ -44,7 +44,6 @@ inline const Def* mode(World& w, VMode m) {
     return w.lit_nat(std::get<Mode>(m));
 }
 
-/// @name fn - these guys yield the final function to be invoked for the various operations
 ///@{
 template<nat_t P, nat_t E>
 inline auto match_f(const Def* def) {
