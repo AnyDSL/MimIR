@@ -1,5 +1,7 @@
 #include "thorin/phase/phase.h"
 
+#include <vector>
+
 namespace thorin {
 
 void Phase::run() {
@@ -10,7 +12,17 @@ void Phase::run() {
 
 void RWPhase::start() {
     for (const auto& [_, ax] : world().axioms()) rewrite(ax);
-    for (const auto& [_, nom] : world().externals()) rewrite(nom)->as_nom()->make_external();
+    std::vector<Def*> new_internals;
+    std::vector<Def*> new_externals;
+    for (const auto& [_, nom] : world().externals()) {
+        auto rewritten = rewrite(nom);
+        new_externals.push_back(rewritten->as_nom());
+        new_internals.push_back(nom);
+    }
+    for (auto nom : new_internals) world().make_internal(nom);
+    for (auto nom : new_externals) world().make_external(nom);
+    // world().debug_dump();
+    // assert(0);
 }
 
 void FPPhase::start() {
