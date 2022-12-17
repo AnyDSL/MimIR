@@ -34,10 +34,10 @@
             Tests
         </td>
         <td class="markdownTableBodyNone">
-            <a href="https://github.com/AnyDSL/thorin2/actions/workflows/linux.yml"><img src="https://img.shields.io/github/workflow/status/anydsl/thorin2/linux?logo=linux&label=linux&logoColor=white" alt="Linux"></a>
-            <a href="https://github.com/AnyDSL/thorin2/actions/workflows/windows.yml"><img src="https://img.shields.io/github/workflow/status/anydsl/thorin2/windows?logo=windows&label=windows" alt="Windows"></a>
-            <a href="https://github.com/AnyDSL/thorin2/actions/workflows/macos.yml"><img src="https://img.shields.io/github/workflow/status/anydsl/thorin2/macos?logo=apple&label=macos" alt="MacOS"></a>
-            <a href="https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml"><img src="https://img.shields.io/github/workflow/status/anydsl/thorin2/doxygen?logo=github&label=doxygen" alt="Doxygen"></a>
+            <a href="https://github.com/AnyDSL/thorin2/actions/workflows/linux.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/thorin2/linux.yml?logo=linux&label=linux&logoColor=white&branch=master" alt="Linux"></a>
+            <a href="https://github.com/AnyDSL/thorin2/actions/workflows/windows.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/thorin2/windows.yml?logo=windows&label=windows&branch=master" alt="Windows"></a>
+            <a href="https://github.com/AnyDSL/thorin2/actions/workflows/macos.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/thorin2/macos.yml?logo=apple&label=macos&branch=master" alt="MacOS"></a>
+            <a href="https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/thorin2/doxygen.yml?logo=github&label=doxygen&branch=master" alt="Doxygen"></a>
         </td>
     </tr>
 </table>
