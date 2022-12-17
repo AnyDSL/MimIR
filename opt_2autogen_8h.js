@@ -1,13 +1,22 @@
 var opt_2autogen_8h =
 [
-    [ "thorin::Axiom::Match< opt::demo_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1demo__dialect_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a4076afd8faf54f1f41fbd3d5c5d54c41", null ]
+    [ "thorin::Axiom::Match< opt::core_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1core__dialect_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#add62d37f0cfad64d83c26b602288e50b", null ]
     ] ],
     [ "thorin::Axiom::Match< opt::clos_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1clos__dialect_01_4", [
       [ "type", "classthorin_1_1Axiom.html#a8ccb495e17b4115c6fe2707b5209fea0", null ]
     ] ],
+    [ "thorin::Axiom::Match< opt::autodiff_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1autodiff__dialect_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a307ae72f8f35cd89f95673cbfcb90e73", null ]
+    ] ],
+    [ "thorin::Axiom::Match< opt::refly_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1refly__dialect_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a673da53ec8715c341ff86c5a3e7be419", null ]
+    ] ],
     [ "thorin::Axiom::Match< opt::Dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1Dialect_01_4", [
       [ "type", "classthorin_1_1Axiom.html#a97bbb02238440b20872499e5aec8e410", null ]
+    ] ],
+    [ "thorin::Axiom::Match< opt::affine_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1affine__dialect_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a4503c9d76ec82deda704d4dc88682080", null ]
     ] ],
     [ "thorin::Axiom::Match< opt::mem_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1mem__dialect_01_4", [
       [ "type", "classthorin_1_1Axiom.html#a50aa08a8612a70ca34cb01ffed8c5fb4", null ]
@@ -15,17 +24,8 @@ var opt_2autogen_8h =
     [ "thorin::Axiom::Match< opt::direct_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1direct__dialect_01_4", [
       [ "type", "classthorin_1_1Axiom.html#a5721b4b97f217534283306e5d0c89fc7", null ]
     ] ],
-    [ "thorin::Axiom::Match< opt::affine_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1affine__dialect_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a4503c9d76ec82deda704d4dc88682080", null ]
-    ] ],
-    [ "thorin::Axiom::Match< opt::refly_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1refly__dialect_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a673da53ec8715c341ff86c5a3e7be419", null ]
-    ] ],
-    [ "thorin::Axiom::Match< opt::core_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1core__dialect_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#add62d37f0cfad64d83c26b602288e50b", null ]
-    ] ],
-    [ "thorin::Axiom::Match< opt::autodiff_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1autodiff__dialect_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a307ae72f8f35cd89f95673cbfcb90e73", null ]
+    [ "thorin::Axiom::Match< opt::demo_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1demo__dialect_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a4076afd8faf54f1f41fbd3d5c5d54c41", null ]
     ] ],
     [ "THORIN_opt_NORMALIZER_IMPL", "opt_2autogen_8h.html#aa2633fed7fcd17fbdf0d0caeadd9a859", null ],
     [ "affine_dialect", "opt_2autogen_8h.html#a9e02b7b5a0f29ec4a6ce3ca5ef0a7667", null ],
