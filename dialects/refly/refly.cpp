@@ -13,12 +13,8 @@ using namespace thorin;
 /// registers passes in the different optimization phases
 /// as well as normalizers for the axioms
 extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
-    return {"refly",
-            [](thorin::PipelineBuilder& builder) {
-                builder.extend_codegen_prep_phase([](PassMan& man) { man.add<thorin::refly::RemoveDbgPerm>(); });
-                builder.extend_codegen_prep_phase([](PassMan& man) { man.add<thorin::refly::InternalCleanup>(); });
-            },
-            nullptr, nullptr, [](Normalizers& normalizers) { refly::register_normalizers(normalizers); }};
+    return {"refly", [](Passes& passes) { register_pass<refly::remove_dbg_perm_pass, refly::RemoveDbgPerm>(passes); },
+            nullptr, [](Normalizers& normalizers) { refly::register_normalizers(normalizers); }};
 }
 
 // TODO: check (and fix) for windows

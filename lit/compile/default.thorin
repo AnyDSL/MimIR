@@ -17,7 +17,7 @@
 };
 
 .lam .extern _compile [] -> Pipeline = {
-    default_pipeline
+    default_core_pipeline
 };
 
 // CHECK-DAG: .con return

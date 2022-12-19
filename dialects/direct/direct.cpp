@@ -19,11 +19,6 @@ using namespace thorin;
 
 extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
     return {"direct",
-            [](thorin::PipelineBuilder& builder) {
-                builder.extend_opt_phase(115, [](thorin::PassMan& man) { man.add<direct::DS2CPS>(); });
-                builder.extend_opt_phase(116, [](thorin::PassMan& man) { man.add<direct::CPS2DS>(); });
-                builder.add_opt(120);
-            },
             [](Passes& passes) {
                 register_pass<direct::ds2cps_pass, direct::DS2CPS>(passes);
                 register_pass<direct::cps2ds_pass, direct::CPS2DS>(passes);
