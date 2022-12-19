@@ -367,50 +367,50 @@
 // /// 
 // // TODO: check code for 1-matrix edge case
 // // TODO: would this automatically be handled by read(transpose) ?
-// .lam .extern internal_mapRed_matrix_transpose
-//     ![[k: .Nat, l: .Nat], T:*] ->
-//     (.Cn[
-//         [%mem.M,%matrix.Mat (2,(k, l),T)],
-//         .Cn[%mem.M,%matrix.Mat (2,(l, k),T)]
-//     ]) 
-//     = {
-//     .con transpose_comb [[mem:%mem.M, acc:T, [a:T]], ret:.Cn[%mem.M,T]] = {
-//         // TODO: or use generalized addition function
-//         // ignore acc
-//         .let new_acc = a;
-//         ret (mem, new_acc)
-//     };
-//     .con inner_matrix_transpose
-//         ![
-//             [
-//                 mem:%mem.M,
-//                 M:%matrix.Mat (2,(k, l),T), 
-//             ],
-//             ret: .Cn[%mem.M,%matrix.Mat (2,(l, k),T)]
-//         ]
-//     = {
-//         // TODO: use generalized zero
-//         .let zero = (⊥:T);
-//         ret (
-//             %matrix.mapReduce
-//                 (2, (l, k), T, 
-//                     1,
-//                     2,
-//                     T,
-//                     (k,l)
-//                 )
-//                 (
-//                     mem,
-//                     zero,
-//                     transpose_comb,
-//                     (
-//                         ((1,0), M)
-//                     )
-//                 )
-//         )
-//     };
-//     inner_matrix_transpose
-// };
+.lam .extern internal_mapRed_matrix_transpose
+    ![[k: .Nat, l: .Nat], T:*] ->
+    (.Cn[
+        [%mem.M,%matrix.Mat (2,(k, l),T)],
+        .Cn[%mem.M,%matrix.Mat (2,(l, k),T)]
+    ]) 
+    = {
+    .con transpose_comb [[mem:%mem.M, acc:T, [a:T]], ret:.Cn[%mem.M,T]] = {
+        // TODO: or use generalized addition function
+        // ignore acc
+        .let new_acc = a;
+        ret (mem, new_acc)
+    };
+    .con inner_matrix_transpose
+        ![
+            [
+                mem:%mem.M,
+                M:%matrix.Mat (2,(k, l),T), 
+            ],
+            ret: .Cn[%mem.M,%matrix.Mat (2,(l, k),T)]
+        ]
+    = {
+        // TODO: use generalized zero
+        .let zero = (⊥:T);
+        ret (
+            %matrix.mapReduce
+                (2, (l, k), T, 
+                    1,
+                    2,
+                    T,
+                    (k,l)
+                )
+                (
+                    mem,
+                    zero,
+                    transpose_comb,
+                    (
+                        ((1,0), M)
+                    )
+                )
+        )
+    };
+    inner_matrix_transpose
+};
 // /// 
 // /// ### sum
 // /// 
