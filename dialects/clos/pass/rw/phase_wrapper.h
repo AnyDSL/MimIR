@@ -8,7 +8,7 @@
 #include "dialects/clos/phase/clos_conv.h"
 #include "dialects/clos/phase/lower_typed_clos.h"
 
-namespace thorin {
+namespace thorin::clos {
 
 class ClosConvWrapper : public RWPass<ClosConvWrapper, Lam> {
 public:

@@ -16,20 +16,18 @@ using namespace thorin;
 
 extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
     return {"matrix",
-            [](PipelineBuilder& builder) {
-                // Ordering in a phase is non-deterministic
-                auto base = 150;
-                builder.extend_opt_phase(
-                    base + 0, [](thorin::PassMan& man) { man.add<thorin::matrix::LowerMatrixHighLevelMapRed>(); });
-                builder.extend_opt_phase(
-                    base + 1, [](thorin::PassMan& man) { man.add<thorin::matrix::LowerMatrixMediumLevel>(); });
-                builder.append_phase(
-                    base + 2, [](thorin::Pipeline& pipeline) { pipeline.add<thorin::matrix::LowerMatrixLowLevel>(); });
-                builder.append_phase(
-                    base + 3, [](thorin::Pipeline& pipeline) { pipeline.add<thorin::refly::InternalCleanup>(); });
-                // builder.extend_opt_phase(base + 2,
-                //                          [](thorin::PassMan& man) { man.add<thorin::matrix::LowerMatrixLowLevel>();
-                //                          });
+            [](Passes& passes) {
+                register_pass<matrix::lower_matrix_high_level_map_reduce, thorin::matrix::LowerMatrixHighLevelMapRed>(passes);
+                register_pass<matrix::lower_matrix_medium_level, thorin::matrix::LowerMatrixMediumLevel>(passes);
+                register_phase<matrix::lower_matrix_low_level, thorin::matrix::LowerMatrixLowLevel>(passes);
+
+                //     base + 0, [](thorin::PassMan& man) { man.add<thorin::matrix::LowerMatrixHighLevelMapRed>(); });
+                // builder.extend_opt_phase(
+                //     base + 1, [](thorin::PassMan& man) { man.add<thorin::matrix::LowerMatrixMediumLevel>(); });
+                // builder.append_phase(
+                //     base + 2, [](thorin::Pipeline& pipeline) { pipeline.add<thorin::matrix::LowerMatrixLowLevel>(); });
+                // builder.append_phase(
+                //     base + 3, [](thorin::Pipeline& pipeline) { pipeline.add<thorin::refly::InternalCleanup>(); });
             },
-            nullptr, nullptr, [](Normalizers& normalizers) { matrix::register_normalizers(normalizers); }};
+            nullptr, [](Normalizers& normalizers) { matrix::register_normalizers(normalizers); }};
 }

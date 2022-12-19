@@ -193,5 +193,6 @@ add_thorin_dialect(matrix
         affine
         core
         mem
+        compile
     INSTALL
 )
