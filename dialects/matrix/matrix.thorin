@@ -313,55 +313,55 @@
 // /// 
 // /// ### product
 // /// 
-// .lam .extern internal_mapRed_matrix_prod 
-//     ![m: .Nat, k: .Nat, l: .Nat, w: .Nat] ->
-//     (.Cn[
-//         [%mem.M,%matrix.Mat (2,(m, k),%core.Real w), %matrix.Mat (2,(k, l),%core.Real w)],
-//         .Cn[%mem.M,%matrix.Mat (2,(m, l),%core.Real w)]
-//     ]) 
-//     = {
-//     .let R = %core.Real w;
+.lam .extern internal_mapRed_matrix_prod 
+    ![m: .Nat, k: .Nat, l: .Nat, [p: .Nat, e:.Nat]] ->
+    (.Cn[
+        [%mem.M,%matrix.Mat (2,(m, k),%math.F (p,e)), %matrix.Mat (2,(k, l),%math.F (p,e))],
+        .Cn[%mem.M,%matrix.Mat (2,(m, l),%math.F (p,e))]
+    ]) 
+    = {
+    .let R = %math.F (p,e);
 
-//     .cn prod_comb [[mem:%mem.M, acc:R, [a:R, b:R]], ret:.Cn[%mem.M,R]] = {
-//         .let v = %core.rop.mul (0, w) (a,b);
+    .con prod_comb [[mem:%mem.M, acc:R, [a:R, b:R]], ret:.Cn[%mem.M,R]] = {
+        .let v = %math.arith.mul (p,e) 0 (a,b);
 
-//         // reduce op = addition
-//         .let new_acc = %core.rop.add (0, w) (acc,v);
-//         ret (mem, new_acc)
-//     };
-//     .cn inner_matrix_prod 
-//         ![
-//             [
-//                 mem:%mem.M,
-//                 M:%matrix.Mat (2,(m, k),R), 
-//                 N: %matrix.Mat (2,(k, l),R)
-//             ],
-//             ret: .Cn[%mem.M,%matrix.Mat (2,(m, l),R)]
-//         ]
-//     = {
-//         .let zero_64 = 0.0:(%core.Real 64);
-//         .let zero_real = %core.conv.r2r (w, 64) zero_64;
-//         ret (
-//             %matrix.mapReduce
-//                 (2, (m, l), R, 
-//                     2,
-//                     (2, 2),
-//                     (R,R),
-//                     ((m,k),(k,l))
-//                 )
-//                 (
-//                     mem,
-//                     zero_real,
-//                     prod_comb,
-//                     (
-//                         ((0,2), M),
-//                         ((2,1), N)
-//                     )
-//                 )
-//         )
-//     };
-//     inner_matrix_prod
-// };
+        // reduce op = addition
+        .let new_acc = %math.arith.add (p,e) 0 (acc,v);
+        ret (mem, new_acc)
+    };
+    .con inner_matrix_prod 
+        ![
+            [
+                mem:%mem.M,
+                M:%matrix.Mat (2,(m, k),R), 
+                N: %matrix.Mat (2,(k, l),R)
+            ],
+            ret: .Cn[%mem.M,%matrix.Mat (2,(m, l),R)]
+        ]
+    = {
+        .let zero_64 = 0.0:(%math.F (52,11));
+        .let zero_real = %math.conv.f2f (52,11) (p,e) zero_64;
+        ret (
+            %matrix.mapReduce
+                (2, (m, l), R, 
+                    2,
+                    (2, 2),
+                    (R,R),
+                    ((m,k),(k,l))
+                )
+                (
+                    mem,
+                    zero_real,
+                    prod_comb,
+                    (
+                        ((0,2), M),
+                        ((2,1), N)
+                    )
+                )
+        )
+    };
+    inner_matrix_prod
+};
 // /// 
 // /// ### transpose
 // /// 
@@ -415,62 +415,62 @@
 // /// ### sum
 // /// 
 // // TODO: test 0d matrix (edge cases in code)
-// .lam .extern internal_mapRed_matrix_sum
-//     ![n: .Nat, S: «n; .Nat», w:.Nat] ->
-//     (.Cn[
-//         [%mem.M,%matrix.Mat (n,S,%core.Real w)],
-//         .Cn[%mem.M,%core.Real w]
-//     ]) 
-//     = {
-//     .let R = %core.Real w;
-//     .cn sum_comb [[mem:%mem.M, acc:R, [a:R]], ret:.Cn[%mem.M,R]] = {
-//         .let new_acc = %core.rop.add (0, w) (acc,a);
-//         ret (mem, new_acc)
-//     };
-//     .cn inner_matrix_sum
-//         ![
-//             [
-//                 mem:%mem.M,
-//                 M:%matrix.Mat (n,S,R), 
-//             ],
-//             ret: .Cn[%mem.M,R]
-//         ]
-//     = {
-//         // TODO: use generalized zero
-//         .let zero_64 = 0.0:(%core.Real 64);
-//         .let zero_real = %core.conv.r2r (w, 64) zero_64;
-//         // should be normalized to lit tuple
-//         // TODO: test normalization
-//         .let idxs =
-//             <i:n;
-//             %core.nop.add (1,
-//                 %core.bitcast (.Nat, .Idx n) i
-//             )
-//             >;
-//         .let (mem2,res) = %matrix.mapReduce
-//                 (1, (1), R, 
-//                     1,
-//                     n,
-//                     R,
-//                     S
-//                 )
-//                 (
-//                     mem,
-//                     zero_real,
-//                     sum_comb,
-//                     (
-//                         (idxs, M)
-//                     )
-//                 );
-//         ret (mem2,
-//             %core.bitcast (
-//                 R,
-//                 %matrix.Mat (1,1,R)
-//             ) res
-//         )
-//     };
-//     inner_matrix_sum
-// };
+.lam .extern internal_mapRed_matrix_sum
+    ![n: .Nat, S: «n; .Nat», [p:.Nat,e:.Nat]] ->
+    (.Cn[
+        [%mem.M,%matrix.Mat (n,S,%math.F (p,e))],
+        .Cn[%mem.M,%math.F (p,e)]
+    ]) 
+    = {
+    .let R = %math.F (p,e);
+    .con sum_comb [[mem:%mem.M, acc:R, [a:R]], ret:.Cn[%mem.M,R]] = {
+        .let new_acc = %math.arith.add (p,e) 0 (acc,a);
+        ret (mem, new_acc)
+    };
+    .con inner_matrix_sum
+        ![
+            [
+                mem:%mem.M,
+                M:%matrix.Mat (n,S,R), 
+            ],
+            ret: .Cn[%mem.M,R]
+        ]
+    = {
+        // TODO: use generalized zero
+        .let zero_64 = 0.0:(%math.F (52,11));
+        .let zero_real = %math.conv.f2f (52,11) (p,e) zero_64;
+        // should be normalized to lit tuple
+        // TODO: test normalization
+        .let idxs =
+            <i:n;
+            %core.nop.add (1,
+                %core.bitcast (.Nat, .Idx n) i
+            )
+            >;
+        .let (mem2,res) = %matrix.mapReduce
+                (1, (1), R, 
+                    1,
+                    n,
+                    R,
+                    S
+                )
+                (
+                    mem,
+                    zero_real,
+                    sum_comb,
+                    (
+                        (idxs, M)
+                    )
+                );
+        ret (mem2,
+            %core.bitcast (
+                R,
+                %matrix.Mat (1,1,R)
+            ) res
+        )
+    };
+    inner_matrix_sum
+};
 
 
 
@@ -493,6 +493,8 @@
             %matrix.lower_matrix_high_level_map_reduce
             %matrix.lower_matrix_medium_level
         )),
+        // TODO: only in map_red namespace
+        %compile.single_pass_phase %compile.internal_cleanup_pass,
         %matrix.lower_matrix_low_level
         //   %compile.internal_cleanup_pass
     )

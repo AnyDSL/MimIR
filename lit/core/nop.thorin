@@ -7,5 +7,4 @@
     return (%core.nop.add (b,a))
 };
 
-// TODO: check dag text
-
+// CHECK-DAG: %core.nop.add ([[arg:[0-9_]+]]#1:(.Idx 2), [[arg]]#0:(.Idx 2))
