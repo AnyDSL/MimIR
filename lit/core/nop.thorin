@@ -3,7 +3,7 @@
 
 .import core;
 
-.cn .extern f [[a:.Nat, b:.Nat], return : .Cn .Nat] = {
+.con .extern f [[a:.Nat, b:.Nat], return : .Cn .Nat] = {
     return (%core.nop.add (b,a))
 };
 

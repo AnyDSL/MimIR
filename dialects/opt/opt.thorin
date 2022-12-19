@@ -12,6 +12,7 @@
 .import autodiff;
 .import clos;
 .import direct;
+.import matrix;
 .import refly;
 ///
 /// ## Types
@@ -34,6 +35,7 @@
 .ax %opt.clos_dialect    : %opt.Dialect;
 .ax %opt.direct_dialect  : %opt.Dialect;
 .ax %opt.refly_dialect   : %opt.Dialect;
+.ax %opt.matrix_dialect   : %opt.Dialect;
 /// 
 /// ### %opt.is_loaded
 /// 
@@ -88,6 +90,9 @@
         ))
         (dialect_cond_phase (%opt.direct_dialect,
           direct_phases
+        ))
+        (dialect_cond_phase (%opt.matrix_dialect,
+          matrix_lower_phase
         ))
         (%compile.single_pass_phase %compile.internal_cleanup_pass)
         (dialect_cond_phase (%opt.clos_dialect,

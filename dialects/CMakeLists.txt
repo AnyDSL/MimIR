@@ -124,6 +124,28 @@ add_thorin_dialect(math
     INSTALL
 )
 
+add_thorin_dialect(matrix
+    SOURCES
+        matrix/matrix.cpp
+        matrix/matrix.h
+        matrix/normalizers.cpp
+        matrix/passes/lower_matrix_highlevel.cpp
+        matrix/passes/lower_matrix_highlevel.h
+        matrix/passes/lower_matrix_mediumlevel.cpp
+        matrix/passes/lower_matrix_mediumlevel.h
+        matrix/passes/lower_matrix_lowlevel.cpp
+        matrix/passes/lower_matrix_lowlevel.h
+        refly/passes/remove_internal.cpp
+    DEPENDS
+        refly
+        direct
+        affine
+        core
+        mem
+        compile
+    INSTALL
+)
+
 add_thorin_dialect(mem
     SOURCES
         mem/mem.cpp
@@ -171,28 +193,6 @@ add_thorin_dialect(refly
         refly/passes/debug_dump.h
         refly/normalizers.cpp
     DEPENDS
-        compile
-    INSTALL
-)
-
-add_thorin_dialect(matrix
-    SOURCES
-        matrix/matrix.cpp
-        matrix/matrix.h
-        matrix/normalizers.cpp
-        matrix/passes/lower_matrix_highlevel.cpp
-        matrix/passes/lower_matrix_highlevel.h
-        matrix/passes/lower_matrix_mediumlevel.cpp
-        matrix/passes/lower_matrix_mediumlevel.h
-        matrix/passes/lower_matrix_lowlevel.cpp
-        matrix/passes/lower_matrix_lowlevel.h
-        refly/passes/remove_internal.cpp
-    DEPENDS
-        refly
-        direct
-        affine
-        core
-        mem
         compile
     INSTALL
 )
