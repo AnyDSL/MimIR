@@ -9,6 +9,19 @@ namespace thorin::mem {
 using DefQueue = std::deque<const Def*>;
 
 static int i = 0;
+
+/// The general idea of this pass/phase is to change the shape of signatures of functions.
+/// Example: `Cn[ [mem,  A, B], C  , ret]`
+/// Arg    : `Cn[ [mem, [A, B , C]], ret]` (general `Cn[ [mem, args], ret]`)
+/// Flat   : `Cn[  mem,  A, B , C  , ret]` (general `Cn[mem, ...args, ret]`)
+/// For convenience, we want Arg-style for optimizations.
+/// The invariant is that every closed function has at most one "real" argument and a return-continuation.
+/// If memory is present, the argument is a pair of memory and the remaining arguments.
+/// However, flat style is required for code generation. Especially in the closure conversion.
+///
+/// The concept is to rewrite all signatures of functions with consistent reassociation of arguments.
+/// This change is propagated to (nested) applications.
+// TODO: use RWPhase instead
 class Reshape : public RWPass<Reshape, Lam> {
 public:
     enum Mode { Flat, Arg };
@@ -17,26 +30,32 @@ public:
         : RWPass(man, "reshape")
         , mode_(mode) {}
 
+    /// Fall-through to `rewrite_def` which falls through to `rewrite_lam`.
     void enter() override;
 
 private:
-    /// Recursively rewrites a Def.
-    const Def* rewrite(const Def* def);
-    const Def* rewrite_convert(const Def* def);
+    /// Memoized version of `rewrite_def_`
+    const Def* rewrite_def(const Def* def);
+    /// Replace lambas with reshaped versions, shape application arguments, and replace vars and already rewritten
+    /// lambdas.
+    const Def* rewrite_def_(const Def* def);
+    /// Create a new lambda with the reshaped signature and rewrite its body.
+    /// The old var is associated with a reshaped version of the new var in `old2new_`.
+    Lam* reshape_lam(Lam* def);
 
-    const Def* convert(const Def* def);
-    const Def* convert_ty(const Def* ty);
-    const Def* flatten_ty(const Def* ty);
-    const Def* flatten_ty_convert(const Def* ty);
-    void aggregate_sigma(const Def* ty, DefQueue& ops);
-    const Def* wrap(const Def* def, const Def* target_ty);
-    const Def* reshape(const Def* mem, const Def* ty, DefQueue& vars);
-    const Def* reshape(const Def* arg, const Pi* target_pi);
+    /// Reshapes a type into its flat or arg representation.
+    const Def* reshape_type(const Def* T);
+    /// Reshapes a def into its flat or arg representation.
+    const Def* reshape(const Def* def);
+    // This generalized version of reshape transforms def to match the shape of target.
+    const Def* reshape(const Def* def, const Def* target);
+    /// Reconstructs the target type by taking defs out of the queue.
+    const Def* reshape(std::vector<const Def*>& def, const Def* target, const Def* mem);
 
+    /// Keeps track of the replacements.
     Def2Def old2new_;
-    std::stack<Lam*> worklist_;
+    /// The mode to rewrite all lambas to. Either flat or arg.
     Mode mode_;
-    Def2Def old2flatten_;
 };
 
 } // namespace thorin::mem
