@@ -261,7 +261,7 @@ const Def* Reshape::reshape(std::vector<const Def*>& defs, const Def* T, const D
         }
         // For inner function types, we override the type
         if (!def->type()->isa<Pi>()) {
-            if (world.checker().equiv(def->type(), T, {})) {
+            if (!world.checker().equiv(def->type(), T, {})) {
                 world.ELOG("reconstruct T {} from def {}", T, def->type());
             }
             assert(world.checker().equiv(def->type(), T, {}) && "Reshape: argument type mismatch");
