@@ -46,6 +46,7 @@ void CPS2DS::rewrite_lam(Lam* lam) {
 }
 
 const Def* CPS2DS::rewrite_body(const Def* def) {
+    if (!def) return nullptr;
     if (auto i = rewritten_.find(def); i != rewritten_.end()) return i->second;
     auto new_def    = rewrite_body_(def);
     rewritten_[def] = new_def;
@@ -191,6 +192,15 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
     // auto new_dbg = rewrite_body(def->dbg());
     // auto new_type = rewrite_body(def->type());
     auto new_dbg = def->dbg();
+
+    world.DLOG("def {} : {} [{}]", def, def->type(), def->node_name());
+
+    // TODO: where does this come from?
+    // example: ./build/bin/thorin -d matrix -d affine -d direct lit/matrix/read_transpose.thorin -o - -VVVV
+    if (def->isa<Infer>()) {
+        world.WLOG("infer node {} : {} [{}]", def, def->type(), def->node_name());
+        return def;
+    }
 
     return def->rebuild(world, def->type(), new_ops, new_dbg);
 }
