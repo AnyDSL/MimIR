@@ -334,7 +334,7 @@ std::ostream& operator<<(std::ostream& os, const Def* def) {
     return os << id(def);
 }
 
-std::ostream& operator<<(std::ostream& os, Refer refer) { return os << *refer; }
+std::ostream& operator<<(std::ostream& os, Ref ref) { return os << *ref; }
 
 std::ostream& Def::stream(std::ostream& os, int max) const {
     auto freezer = World::Freezer(world());

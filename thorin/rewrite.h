@@ -18,7 +18,7 @@ public:
     /// @name recursively rewrite old Defs
     ///@{
     const Def* map(const Def* old_def, const Def* new_def) { return old2new_[old_def] = new_def; }
-    virtual const Def* rewrite(Refer);
+    virtual const Def* rewrite(Ref);
     virtual const Def* rewrite_structural(const Def*);
     virtual const Def* rewrite_nom(Def*);
     ///@}
@@ -36,7 +36,7 @@ public:
 
     const Scope& scope() const { return scope_; }
 
-    const Def* rewrite(Refer old_def) override {
+    const Def* rewrite(Ref old_def) override {
         if (!old_def || !scope().bound(old_def)) return old_def;
         return Rewriter::rewrite(old_def);
     }

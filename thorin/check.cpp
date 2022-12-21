@@ -46,7 +46,7 @@ const Def* refer(const Def* def) {
     return def;
 }
 
-const Def* Infer::inflate(Refer ty, Defs elems_t) {
+const Def* Infer::inflate(Ref ty, Defs elems_t) {
     auto& w = world();
     if (!is_set()) {
         DefArray infer_ops(elems_t.size(), [&](size_t i) { return w.nom_infer(elems_t[i], dbg()); });
@@ -57,7 +57,7 @@ const Def* Infer::inflate(Refer ty, Defs elems_t) {
     return op();
 }
 
-const Def* Infer::inflate(Refer ty, u64 n, Refer elem_t) {
+const Def* Infer::inflate(Ref ty, u64 n, Ref elem_t) {
     auto& w = world();
     if (!is_set()) {
         DefArray infer_ops(n, [&](size_t) { return w.nom_infer(elem_t, dbg()); });
@@ -72,7 +72,7 @@ const Def* Infer::inflate(Refer ty, u64 n, Refer elem_t) {
  * Checker
  */
 
-bool Checker::equiv(Refer d1, Refer d2, Refer dbg, bool opt) {
+bool Checker::equiv(Ref d1, Ref d2, Ref dbg, bool opt) {
     if (d1 == d2) return true;
     if (!d1 || !d2) return false;
 
@@ -128,7 +128,7 @@ bool Checker::equiv(Refer d1, Refer d2, Refer dbg, bool opt) {
     return res;
 }
 
-bool Checker::equiv_internal(Refer d1, Refer d2, Refer dbg, bool opt) {
+bool Checker::equiv_internal(Ref d1, Ref d2, Ref dbg, bool opt) {
     if (!equiv(d1->type(), d2->type(), dbg, opt)) return false;
     if (d1->isa<Top>() || d2->isa<Top>()) return equiv(d1->type(), d2->type(), dbg, opt);
 
@@ -160,7 +160,7 @@ bool Checker::equiv_internal(Refer d1, Refer d2, Refer dbg, bool opt) {
     return std::ranges::equal(d1->ops(), d2->ops(), [&](auto op1, auto op2) { return equiv(op1, op2, dbg, opt); });
 }
 
-bool Checker::assignable(Refer type, Refer val, Refer dbg /*= {}*/) {
+bool Checker::assignable(Ref type, Ref val, Ref dbg /*= {}*/) {
     auto val_ty = refer(val->type());
     if (type == val_ty) return true;
 
@@ -197,7 +197,7 @@ bool Checker::assignable(Refer type, Refer val, Refer dbg /*= {}*/) {
     return equiv(type, val_ty, dbg);
 }
 
-const Def* Checker::is_uniform(Defs defs, Refer dbg) {
+const Def* Checker::is_uniform(Defs defs, Ref dbg) {
     assert(!defs.empty());
     auto first = defs.front();
     auto ops   = defs.skip_front();

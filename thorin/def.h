@@ -53,17 +53,17 @@ using DefArray  = Array<const Def*>;
 const Def* refer(const Def* def);
 
 /// Helper class to retrieve Infer::arg if present.
-class Refer {
+class Ref {
 public:
-    Refer() = default;
-    Refer(const Def* def)
+    Ref() = default;
+    Ref(const Def* def)
         : def_(def) {}
 
     const Def* operator*() const { return refer(def_); }
     const Def* operator->() const { return refer(def_); }
     operator const Def*() const { return refer(def_); }
     explicit operator bool() const { return def_; }
-    friend std::ostream& operator<<(std::ostream&, Refer);
+    friend std::ostream& operator<<(std::ostream&, Ref);
 
 private:
     const Def* def_ = nullptr;
@@ -651,7 +651,7 @@ public:
     ///@}
 
     /// Checks if @p def isa `.Idx s` and returns s or `nullptr` otherwise.
-    static const Def* size(Refer def);
+    static const Def* size(Ref def);
 
     /// @name convert between Idx::size and bitwidth and vice versa
     ///@{

@@ -62,14 +62,14 @@ World::~World() {
     for (auto def : move_.defs) def->~Def();
 }
 
-const Type* World::type(Refer level, Refer dbg) {
+const Type* World::type(Ref level, Ref dbg) {
     if (!level->type()->isa<Univ>())
         err(dbg, "argument `{}` to `.Type` must be of type `.Univ` but is of type `{}`", level, level->type());
 
     return unify<Type>(1, level, dbg)->as<Type>();
 }
 
-const Def* World::uinc(Refer op, level_t offset, Refer dbg) {
+const Def* World::uinc(Ref op, level_t offset, Ref dbg) {
     if (!op->type()->isa<Univ>())
         err(dbg, "operand '{}' of a universe increment must be of type `.Univ` but is of type `{}`", op, op->type());
 
@@ -78,10 +78,10 @@ const Def* World::uinc(Refer op, level_t offset, Refer dbg) {
 }
 
 template<Sort sort>
-const Def* World::umax(DefArray ops, Refer dbg) {
+const Def* World::umax(DefArray ops, Ref dbg) {
     level_t lvl = 0;
     for (auto& op : ops) {
-        Refer r = op;
+        Ref r = op;
         if (sort == Sort::Term) r = r->unfold_type();
         if (sort <= Sort::Type) r = r->unfold_type();
         if (sort <= Sort::Kind) {
@@ -107,7 +107,7 @@ const Def* World::umax(DefArray ops, Refer dbg) {
     return sort == Sort::Univ ? ldef : type(ldef, dbg);
 }
 
-const Def* World::app(Refer callee, Refer arg, Refer dbg) {
+const Def* World::app(Ref callee, Ref arg, Ref dbg) {
     auto pi = callee->type()->isa<Pi>();
 
     // (a, b)#i arg     where a = A -> B; b = A -> B
@@ -129,7 +129,7 @@ const Def* World::app(Refer callee, Refer arg, Refer dbg) {
 }
 
 template<bool Normalize>
-const Def* World::raw_app(Refer type, Refer callee, Refer arg, Refer dbg) {
+const Def* World::raw_app(Ref type, Ref callee, Ref arg, Ref dbg) {
     auto [axiom, curry, trip] = Axiom::get(callee);
     if (axiom) {
         curry = curry == 0 ? trip : curry;
@@ -142,7 +142,7 @@ const Def* World::raw_app(Refer type, Refer callee, Refer arg, Refer dbg) {
     return unify<App>(2, axiom, curry, trip, type, callee, arg, dbg);
 }
 
-const Def* World::sigma(Defs ops, Refer dbg) {
+const Def* World::sigma(Defs ops, Ref dbg) {
     auto n = ops.size();
     if (n == 0) return sigma();
     if (n == 1) return ops[0];
@@ -158,7 +158,7 @@ static const Def* infer_sigma(World& world, Defs ops) {
     return world.sigma(elems);
 }
 
-const Def* World::tuple(Defs ops, Refer dbg) {
+const Def* World::tuple(Defs ops, Ref dbg) {
     if (ops.size() == 1) return ops[0];
 
     auto sigma = infer_sigma(*this, ops);
@@ -169,7 +169,7 @@ const Def* World::tuple(Defs ops, Refer dbg) {
     return t;
 }
 
-const Def* World::tuple(Refer type, Defs ops, Refer dbg) {
+const Def* World::tuple(Ref type, Defs ops, Ref dbg) {
     // TODO type-check type vs inferred type
 
     auto n = ops.size();
@@ -205,13 +205,13 @@ const Def* World::tuple(Refer type, Defs ops, Refer dbg) {
     return unify<Tuple>(ops.size(), type, ops, dbg);
 }
 
-const Def* World::tuple_str(std::string_view s, Refer dbg) {
+const Def* World::tuple_str(std::string_view s, Ref dbg) {
     DefVec ops;
     for (auto c : s) ops.emplace_back(lit_nat(c));
     return tuple(ops, dbg);
 }
 
-const Def* World::extract(Refer d, Refer index, Refer dbg) {
+const Def* World::extract(Ref d, Ref index, Ref dbg) {
     if (index->isa<Tuple>()) {
         auto n = index->num_ops();
         DefArray idx(n, [&](size_t i) { return index->op(i); });
@@ -222,8 +222,8 @@ const Def* World::extract(Refer d, Refer index, Refer dbg) {
         return tuple(ops, dbg);
     }
 
-    Refer size = Idx::size(index->type());
-    Refer type = d->unfold_type();
+    Ref size = Idx::size(index->type());
+    Ref type = d->unfold_type();
 
     // nom sigmas can be 1-tuples
     if (auto l = isa_lit(size); l && *l == 1 && !d->type()->isa_nom<Sigma>()) return d;
@@ -265,7 +265,7 @@ const Def* World::extract(Refer d, Refer index, Refer dbg) {
     return unify<Extract>(2, elem_t, d, index, dbg);
 }
 
-const Def* World::insert(Refer d, Refer index, Refer val, Refer dbg) {
+const Def* World::insert(Ref d, Ref index, Ref val, Ref dbg) {
     auto type = d->unfold_type();
     auto size = Idx::size(index->type());
 
@@ -295,17 +295,17 @@ const Def* World::insert(Refer d, Refer index, Refer val, Refer dbg) {
     return unify<Insert>(3, d, index, val, dbg);
 }
 
-bool is_shape(Refer s) {
+bool is_shape(Ref s) {
     if (s->isa<Nat>()) return true;
     if (auto arr = s->isa<Arr>()) return arr->body()->isa<Nat>();
     if (auto sig = s->isa_structural<Sigma>())
-        return std::ranges::all_of(sig->ops(), [](Refer op) { return op->isa<Nat>(); });
+        return std::ranges::all_of(sig->ops(), [](Ref op) { return op->isa<Nat>(); });
 
     return false;
 }
 
 // TODO merge this code with pack
-const Def* World::arr(Refer shape, Refer body, Refer dbg) {
+const Def* World::arr(Ref shape, Ref body, Ref dbg) {
     if (!is_shape(shape->type())) err(dbg, "expected shape but got '{}' of type '{}'", shape, shape->type());
 
     if (auto a = isa_lit<u64>(shape)) {
@@ -332,7 +332,7 @@ const Def* World::arr(Refer shape, Refer body, Refer dbg) {
     return unify<Arr>(2, body->unfold_type(), shape, body, dbg);
 }
 
-const Def* World::pack(Refer shape, Refer body, Refer dbg) {
+const Def* World::pack(Ref shape, Ref body, Ref dbg) {
     if (!is_shape(shape->type())) err(dbg, "expected shape but got '{}' of type '{}'", shape, shape->type());
 
     if (auto a = isa_lit<u64>(shape)) {
@@ -352,17 +352,17 @@ const Def* World::pack(Refer shape, Refer body, Refer dbg) {
     return unify<Pack>(1, type, body, dbg);
 }
 
-const Def* World::arr(Defs shape, Refer body, Refer dbg) {
+const Def* World::arr(Defs shape, Ref body, Ref dbg) {
     if (shape.empty()) return body;
     return arr(shape.skip_back(), arr(shape.back(), body, dbg), dbg);
 }
 
-const Def* World::pack(Defs shape, Refer body, Refer dbg) {
+const Def* World::pack(Defs shape, Ref body, Ref dbg) {
     if (shape.empty()) return body;
     return pack(shape.skip_back(), pack(shape.back(), body, dbg), dbg);
 }
 
-const Lit* World::lit(Refer type, u64 val, Refer dbg) {
+const Lit* World::lit(Ref type, u64 val, Ref dbg) {
     if (auto size = Idx::size(type)) {
         if (auto s = isa_lit(size)) {
             if (*s != 0 && val >= *s) err(dbg, "index '{}' does not fit within arity '{}'", size, val);
@@ -379,7 +379,7 @@ const Lit* World::lit(Refer type, u64 val, Refer dbg) {
  */
 
 template<bool up>
-const Def* World::ext(Refer type, Refer dbg) {
+const Def* World::ext(Ref type, Ref dbg) {
     if (auto arr = type->isa<Arr>()) return pack(arr->shape(), ext<up>(arr->body()), dbg);
     if (auto sigma = type->isa<Sigma>())
         return tuple(sigma, DefArray(sigma->num_ops(), [&](size_t i) { return ext<up>(sigma->op(i), dbg); }), dbg);
@@ -387,16 +387,16 @@ const Def* World::ext(Refer type, Refer dbg) {
 }
 
 template<bool up>
-const Def* World::bound(Defs ops, Refer dbg) {
+const Def* World::bound(Defs ops, Ref dbg) {
     auto kind = umax<Sort::Type>(ops, dbg);
 
     // has ext<up> value?
-    if (std::ranges::any_of(ops, [&](Refer op) { return up ? bool(op->isa<Top>()) : bool(op->isa<Bot>()); }))
+    if (std::ranges::any_of(ops, [&](Ref op) { return up ? bool(op->isa<Top>()) : bool(op->isa<Bot>()); }))
         return ext<up>(kind);
 
     // ignore: ext<!up>
     DefArray cpy(ops);
-    auto [_, end] = std::ranges::copy_if(ops, cpy.begin(), [&](Refer op) { return !op->isa<Ext>(); });
+    auto [_, end] = std::ranges::copy_if(ops, cpy.begin(), [&](Ref op) { return !op->isa<Ext>(); });
 
     // sort and remove duplicates
     std::sort(cpy.begin(), end, GIDLt<const Def*>());
@@ -411,7 +411,7 @@ const Def* World::bound(Defs ops, Refer dbg) {
     return unify<TBound<up>>(cpy.size(), kind, cpy, dbg);
 }
 
-const Def* World::ac(Refer type, Defs ops, Refer dbg) {
+const Def* World::ac(Ref type, Defs ops, Ref dbg) {
     if (type->isa<Meet>()) {
         DefArray types(ops.size(), [&](size_t i) { return ops[i]->type(); });
         return unify<Ac>(ops.size(), meet(types), ops, dbg);
@@ -421,16 +421,16 @@ const Def* World::ac(Refer type, Defs ops, Refer dbg) {
     return ops[0];
 }
 
-const Def* World::ac(Defs ops, Refer dbg /*= {}*/) { return ac(umax<Sort::Term>(ops, dbg), ops, dbg); }
+const Def* World::ac(Defs ops, Ref dbg /*= {}*/) { return ac(umax<Sort::Term>(ops, dbg), ops, dbg); }
 
-const Def* World::vel(Refer type, Refer value, Refer dbg) {
+const Def* World::vel(Ref type, Ref value, Ref dbg) {
     if (type->isa<Join>()) return unify<Vel>(1, type, value, dbg);
     return value;
 }
 
-const Def* World::pick(Refer type, Refer value, Refer dbg) { return unify<Pick>(1, type, value, dbg); }
+const Def* World::pick(Ref type, Ref value, Ref dbg) { return unify<Pick>(1, type, value, dbg); }
 
-const Def* World::test(Refer value, Refer probe, Refer match, Refer clash, Refer dbg) {
+const Def* World::test(Ref value, Ref probe, Ref match, Ref clash, Ref dbg) {
     auto m_pi = match->type()->isa<Pi>();
     auto c_pi = clash->type()->isa<Pi>();
 
@@ -444,9 +444,7 @@ const Def* World::test(Refer value, Refer probe, Refer match, Refer clash, Refer
     return unify<Test>(4, pi(c_pi->dom(), codom), value, probe, match, clash, dbg);
 }
 
-const Def* World::singleton(Refer inner_type, Refer dbg) {
-    return unify<Singleton>(1, this->type<1>(), inner_type, dbg);
-}
+const Def* World::singleton(Ref inner_type, Ref dbg) { return unify<Singleton>(1, this->type<1>(), inner_type, dbg); }
 
 /*
  * implicits
@@ -468,7 +466,7 @@ static std::optional<std::pair<bool, const Def*>> peel(const Def* def) {
     return {};
 }
 
-const Def* World::iapp(Refer callee, Refer arg, Debug debug) {
+const Def* World::iapp(Ref callee, Ref arg, Debug debug) {
     Debug mdebug = debug;
     while (auto implicit = peel(callee->meta())) {
         bool dot;
@@ -515,16 +513,16 @@ const Def* World::gid2def(u32 gid) {
  */
 
 #ifndef DOXYGEN // Doxygen doesn't like this
-template const Def* World::raw_app<true>(Refer, Refer, Refer, Refer);
-template const Def* World::raw_app<false>(Refer, Refer, Refer, Refer);
+template const Def* World::raw_app<true>(Ref, Ref, Ref, Ref);
+template const Def* World::raw_app<false>(Ref, Ref, Ref, Ref);
 #endif
-template const Def* World::umax<Sort::Term>(DefArray, Refer);
-template const Def* World::umax<Sort::Type>(DefArray, Refer);
-template const Def* World::umax<Sort::Kind>(DefArray, Refer);
-template const Def* World::umax<Sort::Univ>(DefArray, Refer);
-template const Def* World::ext<true>(Refer, Refer);
-template const Def* World::ext<false>(Refer, Refer);
-template const Def* World::bound<true>(Defs, Refer);
-template const Def* World::bound<false>(Defs, Refer);
+template const Def* World::umax<Sort::Term>(DefArray, Ref);
+template const Def* World::umax<Sort::Type>(DefArray, Ref);
+template const Def* World::umax<Sort::Kind>(DefArray, Ref);
+template const Def* World::umax<Sort::Univ>(DefArray, Ref);
+template const Def* World::ext<true>(Ref, Ref);
+template const Def* World::ext<false>(Ref, Ref);
+template const Def* World::bound<true>(Defs, Ref);
+template const Def* World::bound<false>(Defs, Ref);
 
 } // namespace thorin

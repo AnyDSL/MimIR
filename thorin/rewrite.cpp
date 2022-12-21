@@ -6,7 +6,7 @@
 
 namespace thorin {
 
-const Def* Rewriter::rewrite(Refer old_def) {
+const Def* Rewriter::rewrite(Ref old_def) {
     if (!old_def) return nullptr;
     if (old_def->isa<Univ>()) return world().univ();
     if (auto i = old2new_.find(old_def); i != old2new_.end()) return i->second;

@@ -153,7 +153,7 @@ public:
         // assert((ins || (def == i->second)) && "two different externals registered with the same name");
     }
     void make_internal(Def* def) { move_.externals.erase(def->name()); }
-    bool is_external(Refer def) { return move_.externals.contains(def->name()); }
+    bool is_external(Ref def) { return move_.externals.contains(def->name()); }
     Def* lookup(const std::string& name) {
         auto i = move_.externals.find(name);
         return i != move_.externals.end() ? i->second : nullptr;
@@ -163,13 +163,13 @@ public:
     /// @name Univ, Type, Var, Proxy, Infer
     ///@{
     const Univ* univ() { return data_.univ_; }
-    const Def* uinc(Refer op, level_t offset = 1, Refer dbg = {});
+    const Def* uinc(Ref op, level_t offset = 1, Ref dbg = {});
     template<Sort = Sort::Univ>
-    const Def* umax(DefArray, Refer dbg = {});
-    const Type* type(Refer level, Refer dbg = {});
-    const Type* type_infer_univ(Refer dbg = {}) { return type(nom_infer_univ(dbg), dbg); }
+    const Def* umax(DefArray, Ref dbg = {});
+    const Type* type(Ref level, Ref dbg = {});
+    const Type* type_infer_univ(Ref dbg = {}) { return type(nom_infer_univ(dbg), dbg); }
     template<level_t level = 0>
-    const Type* type(Refer dbg = {}) {
+    const Type* type(Ref dbg = {}) {
         if constexpr (level == 0)
             return data_.type_0_;
         else if constexpr (level == 1)
@@ -177,18 +177,18 @@ public:
         else
             return type(lit_univ(level), dbg);
     }
-    const Var* var(Refer type, Def* nom, Refer dbg = {}) { return unify<Var>(1, type, nom, dbg); }
-    const Proxy* proxy(Refer type, Defs ops, u32 index, u32 tag, Refer dbg = {}) {
+    const Var* var(Ref type, Def* nom, Ref dbg = {}) { return unify<Var>(1, type, nom, dbg); }
+    const Proxy* proxy(Ref type, Defs ops, u32 index, u32 tag, Ref dbg = {}) {
         return unify<Proxy>(ops.size(), type, ops, index, tag, dbg);
     }
 
-    Infer* nom_infer(Refer type, Refer dbg = {}) { return insert<Infer>(1, type, dbg); }
-    Infer* nom_infer(Refer type, Sym sym) { return insert<Infer>(1, type, dbg(sym)); }
-    Infer* nom_infer_univ(Refer dbg = {}) { return nom_infer(univ(), dbg); }
-    Infer* nom_infer_type(Refer dbg = {}) { return nom_infer(type_infer_univ(dbg), dbg); }
+    Infer* nom_infer(Ref type, Ref dbg = {}) { return insert<Infer>(1, type, dbg); }
+    Infer* nom_infer(Ref type, Sym sym) { return insert<Infer>(1, type, dbg(sym)); }
+    Infer* nom_infer_univ(Ref dbg = {}) { return nom_infer(univ(), dbg); }
+    Infer* nom_infer_type(Ref dbg = {}) { return nom_infer(type_infer_univ(dbg), dbg); }
 
     /// Either a value `?:?:.Type ?` or a type `?:.Type ?:.Type ?`.
-    Infer* nom_infer_entity(Refer dbg = {}) {
+    Infer* nom_infer_entity(Ref dbg = {}) {
         auto t   = type_infer_univ();
         auto res = nom_infer(nom_infer(t), dbg);
         assert(this == &res->world());
@@ -198,12 +198,11 @@ public:
 
     /// @name Axiom
     ///@{
-    const Axiom*
-    axiom(Def::NormalizeFn n, u8 curry, u8 trip, Refer type, dialect_t d, tag_t t, sub_t s, Refer dbg = {}) {
+    const Axiom* axiom(Def::NormalizeFn n, u8 curry, u8 trip, Ref type, dialect_t d, tag_t t, sub_t s, Ref dbg = {}) {
         auto ax                          = unify<Axiom>(0, n, curry, trip, type, d, t, s, dbg);
         return move_.axioms[ax->flags()] = ax;
     }
-    const Axiom* axiom(Refer type, dialect_t d, tag_t t, sub_t s, Refer dbg = {}) {
+    const Axiom* axiom(Ref type, dialect_t d, tag_t t, sub_t s, Ref dbg = {}) {
         return axiom(nullptr, 0, 0, type, d, t, s, dbg);
     }
 
@@ -211,10 +210,10 @@ public:
     /// This is useful during testing to come up with some entitiy of a specific type.
     /// It uses the dialect Axiom::Global_Dialect and starts with `0` for Axiom::sub and counts up from there.
     /// The Axiom::tag is set to `0` and the Axiom::normalizer to `nullptr`.
-    const Axiom* axiom(Def::NormalizeFn n, u8 curry, u8 trip, Refer type, Refer dbg = {}) {
+    const Axiom* axiom(Def::NormalizeFn n, u8 curry, u8 trip, Ref type, Ref dbg = {}) {
         return axiom(n, curry, trip, type, Axiom::Global_Dialect, 0, state_.pod.curr_sub++, dbg);
     }
-    const Axiom* axiom(Refer type, Refer dbg = {}) { return axiom(nullptr, 0, 0, type, dbg); } ///< See above.
+    const Axiom* axiom(Ref type, Ref dbg = {}) { return axiom(nullptr, 0, 0, type, dbg); } ///< See above.
 
     /// Get Axiom from a dialect.
     /// Use this to get an Axiom via Axiom::id.
@@ -236,85 +235,83 @@ public:
 
     /// @name Pi
     ///@{
-    const Pi* pi(Refer dom, Refer codom, Refer dbg = {}) {
-        return unify<Pi>(2, Pi::infer(dom, codom), dom, codom, dbg);
-    }
-    const Pi* pi(Defs dom, Refer codom, Refer dbg = {}) { return pi(sigma(dom), codom, dbg); }
-    Pi* nom_pi(Refer type, Refer dbg = {}) { return insert<Pi>(2, type, dbg); }
+    const Pi* pi(Ref dom, Ref codom, Ref dbg = {}) { return unify<Pi>(2, Pi::infer(dom, codom), dom, codom, dbg); }
+    const Pi* pi(Defs dom, Ref codom, Ref dbg = {}) { return pi(sigma(dom), codom, dbg); }
+    Pi* nom_pi(Ref type, Ref dbg = {}) { return insert<Pi>(2, type, dbg); }
     ///@}
 
     /// @name Cn (Pi with codom Bot)
     ///@{
     const Pi* cn() { return cn(sigma()); }
-    const Pi* cn(Refer dom, Refer dbg = {}) { return pi(dom, type_bot(), dbg); }
-    const Pi* cn(Defs doms, Refer dbg = {}) { return cn(sigma(doms), dbg); }
+    const Pi* cn(Ref dom, Ref dbg = {}) { return pi(dom, type_bot(), dbg); }
+    const Pi* cn(Defs doms, Ref dbg = {}) { return cn(sigma(doms), dbg); }
     ///@}
 
     /// @name Lam
     ///@{
-    Lam* nom_lam(const Pi* cn, Refer dbg = {}) { return insert<Lam>(2, cn, dbg); }
-    const Lam* lam(const Pi* pi, Refer filter, Refer body, Refer dbg) { return unify<Lam>(2, pi, filter, body, dbg); }
-    const Lam* lam(const Pi* pi, Refer body, Refer dbg) { return lam(pi, lit_tt(), body, dbg); }
+    Lam* nom_lam(const Pi* cn, Ref dbg = {}) { return insert<Lam>(2, cn, dbg); }
+    const Lam* lam(const Pi* pi, Ref filter, Ref body, Ref dbg) { return unify<Lam>(2, pi, filter, body, dbg); }
+    const Lam* lam(const Pi* pi, Ref body, Ref dbg) { return lam(pi, lit_tt(), body, dbg); }
     Lam* exit() { return data_.exit_; } ///< Used as a dummy exit node within Scope.
     ///@}
 
     /// @name App
     ///@{
-    const Def* app(Refer callee, Refer arg, Refer dbg = {});
-    const Def* app(Refer callee, Defs args, Refer dbg = {}) { return app(callee, tuple(args), dbg); }
+    const Def* app(Ref callee, Ref arg, Ref dbg = {});
+    const Def* app(Ref callee, Defs args, Ref dbg = {}) { return app(callee, tuple(args), dbg); }
     template<bool Normalize = false>
-    const Def* raw_app(Refer type, Refer callee, Refer arg, Refer dbg = {});
+    const Def* raw_app(Ref type, Ref callee, Ref arg, Ref dbg = {});
     template<bool Normalize = false>
-    const Def* raw_app(Refer type, Refer callee, Defs args, Refer dbg = {}) {
+    const Def* raw_app(Ref type, Ref callee, Defs args, Ref dbg = {}) {
         return raw_app<Normalize>(type, callee, tuple(args), dbg);
     }
     ///@}
 
     /// @name Sigma
     ///@{
-    Sigma* nom_sigma(Refer type, size_t size, Refer dbg = {}) { return insert<Sigma>(size, type, size, dbg); }
+    Sigma* nom_sigma(Ref type, size_t size, Ref dbg = {}) { return insert<Sigma>(size, type, size, dbg); }
     /// A *nom*inal Sigma of type @p level.
     template<level_t level = 0>
-    Sigma* nom_sigma(size_t size, Refer dbg = {}) {
+    Sigma* nom_sigma(size_t size, Ref dbg = {}) {
         return nom_sigma(type<level>(), size, dbg);
     }
-    const Def* sigma(Defs ops, Refer dbg = {});
+    const Def* sigma(Defs ops, Ref dbg = {});
     const Sigma* sigma() { return data_.sigma_; } ///< The unit type within Type 0.
     ///@}
 
     /// @name Arr
     ///@{
-    Arr* nom_arr(Refer type, Refer dbg = {}) { return insert<Arr>(2, type, dbg); }
+    Arr* nom_arr(Ref type, Ref dbg = {}) { return insert<Arr>(2, type, dbg); }
     template<level_t level = 0>
-    Arr* nom_arr(Refer dbg = {}) {
+    Arr* nom_arr(Ref dbg = {}) {
         return nom_arr(type<level>(), dbg);
     }
-    const Def* arr(Refer shape, Refer body, Refer dbg = {});
-    const Def* arr(Defs shape, Refer body, Refer dbg = {});
-    const Def* arr(u64 n, Refer body, Refer dbg = {}) { return arr(lit_nat(n), body, dbg); }
-    const Def* arr(Span<u64> shape, Refer body, Refer dbg = {}) {
+    const Def* arr(Ref shape, Ref body, Ref dbg = {});
+    const Def* arr(Defs shape, Ref body, Ref dbg = {});
+    const Def* arr(u64 n, Ref body, Ref dbg = {}) { return arr(lit_nat(n), body, dbg); }
+    const Def* arr(Span<u64> shape, Ref body, Ref dbg = {}) {
         return arr(DefArray(shape.size(), [&](size_t i) { return lit_nat(shape[i], dbg); }), body, dbg);
     }
-    const Def* arr_unsafe(Refer body, Refer dbg = {}) { return arr(top_nat(), body, dbg); }
+    const Def* arr_unsafe(Ref body, Ref dbg = {}) { return arr(top_nat(), body, dbg); }
     ///@}
 
     /// @name Tuple
     ///@{
-    const Def* tuple(Defs ops, Refer dbg = {});
+    const Def* tuple(Defs ops, Ref dbg = {});
     /// Ascribes @p type to this tuple - needed for dependently typed and nominal Sigma%s.
-    const Def* tuple(Refer type, Defs ops, Refer dbg = {});
-    const Def* tuple_str(std::string_view s, Refer dbg = {});
+    const Def* tuple(Ref type, Defs ops, Ref dbg = {});
+    const Def* tuple_str(std::string_view s, Ref dbg = {});
     Sym sym(std::string_view s, Loc loc) { return {tuple_str(s, dbg(loc)), loc.def(*this)}; }
     const Tuple* tuple() { return data_.tuple_; } ///< the unit value of type `[]`
     ///@}
 
     /// @name Pack
     ///@{
-    Pack* nom_pack(Refer type, Refer dbg = {}) { return insert<Pack>(1, type, dbg); }
-    const Def* pack(Refer arity, Refer body, Refer dbg = {});
-    const Def* pack(Defs shape, Refer body, Refer dbg = {});
-    const Def* pack(u64 n, Refer body, Refer dbg = {}) { return pack(lit_nat(n), body, dbg); }
-    const Def* pack(Span<u64> shape, Refer body, Refer dbg = {}) {
+    Pack* nom_pack(Ref type, Ref dbg = {}) { return insert<Pack>(1, type, dbg); }
+    const Def* pack(Ref arity, Ref body, Ref dbg = {});
+    const Def* pack(Defs shape, Ref body, Ref dbg = {});
+    const Def* pack(u64 n, Ref body, Ref dbg = {}) { return pack(lit_nat(n), body, dbg); }
+    const Def* pack(Span<u64> shape, Ref body, Ref dbg = {}) {
         return pack(DefArray(shape.size(), [&](auto i) { return lit_nat(shape[i], dbg); }), body, dbg);
     }
     ///@}
@@ -322,53 +319,51 @@ public:
     /// @name Extract
     /// @sa core::extract_unsafe
     ///@{
-    const Def* extract(Refer d, Refer i, Refer dbg = {});
-    const Def* extract(Refer d, u64 a, u64 i, Refer dbg = {}) { return extract(d, lit_idx(a, i), dbg); }
-    const Def* extract(Refer d, u64 i, Refer dbg = {}) { return extract(d, as_lit(d->arity()), i, dbg); }
+    const Def* extract(Ref d, Ref i, Ref dbg = {});
+    const Def* extract(Ref d, u64 a, u64 i, Ref dbg = {}) { return extract(d, lit_idx(a, i), dbg); }
+    const Def* extract(Ref d, u64 i, Ref dbg = {}) { return extract(d, as_lit(d->arity()), i, dbg); }
 
     /// Builds `(f, t)cond`.
     /// **Note** that select expects @p t as first argument and @p f as second one.
-    const Def* select(Refer t, Refer f, Refer cond, Refer dbg = {}) { return extract(tuple({f, t}), cond, dbg); }
+    const Def* select(Ref t, Ref f, Ref cond, Ref dbg = {}) { return extract(tuple({f, t}), cond, dbg); }
     ///@}
 
     /// @name Insert
     /// @sa core::insert_unsafe
     ///@{
-    const Def* insert(Refer d, Refer i, Refer val, Refer dbg = {});
-    const Def* insert(Refer d, u64 a, u64 i, Refer val, Refer dbg = {}) { return insert(d, lit_idx(a, i), val, dbg); }
-    const Def* insert(Refer d, u64 i, Refer val, Refer dbg = {}) { return insert(d, as_lit(d->arity()), i, val, dbg); }
+    const Def* insert(Ref d, Ref i, Ref val, Ref dbg = {});
+    const Def* insert(Ref d, u64 a, u64 i, Ref val, Ref dbg = {}) { return insert(d, lit_idx(a, i), val, dbg); }
+    const Def* insert(Ref d, u64 i, Ref val, Ref dbg = {}) { return insert(d, as_lit(d->arity()), i, val, dbg); }
     ///@}
 
     /// @name Lit
     ///@{
-    const Lit* lit(Refer type, u64 val, Refer dbg = {});
-    const Lit* lit_univ(u64 level, Refer dbg = {}) { return lit(univ(), level, dbg); }
+    const Lit* lit(Ref type, u64 val, Ref dbg = {});
+    const Lit* lit_univ(u64 level, Ref dbg = {}) { return lit(univ(), level, dbg); }
     const Lit* lit_univ_0() { return data_.lit_univ_0_; }
     const Lit* lit_univ_1() { return data_.lit_univ_1_; }
-    const Lit* lit_nat(nat_t a, Refer dbg = {}) { return lit(type_nat(), a, dbg); }
+    const Lit* lit_nat(nat_t a, Ref dbg = {}) { return lit(type_nat(), a, dbg); }
     const Lit* lit_nat_0() { return data_.lit_nat_0_; }
     const Lit* lit_nat_1() { return data_.lit_nat_1_; }
     const Lit* lit_nat_max() { return data_.lit_nat_max_; }
     /// Constructs a Lit of type Idx of size @p size.
     /// @note `size = 0` means `2^64`.
-    const Lit* lit_idx(nat_t size, u64 val, Refer dbg = {}) { return lit(type_idx(size), val, dbg); }
+    const Lit* lit_idx(nat_t size, u64 val, Ref dbg = {}) { return lit(type_idx(size), val, dbg); }
 
     template<class I>
-    const Lit* lit_idx(I val, Refer dbg = {}) {
+    const Lit* lit_idx(I val, Ref dbg = {}) {
         static_assert(std::is_integral<I>());
         return lit_idx(Idx::bitwidth2size(sizeof(I) * 8), val, dbg);
     }
 
     /// Constructs a Lit @p of type Idx of size $2^width$.
     /// `val = 64` will be automatically converted to size `0` - the encoding for $2^64$.
-    const Lit* lit_int(nat_t width, u64 val, Refer dbg = {}) { return lit_idx(Idx::bitwidth2size(width), val, dbg); }
+    const Lit* lit_int(nat_t width, u64 val, Ref dbg = {}) { return lit_idx(Idx::bitwidth2size(width), val, dbg); }
 
     /// Constructs a Lit of type Idx of size @p mod.
     /// The value @p val will be adjusted modulo @p mod.
     /// @note `mod == 0` is the special case for $2^64$ and no modulo will be performed on @p val.
-    const Lit* lit_idx_mod(nat_t mod, u64 val, Refer dbg = {}) {
-        return lit_idx(mod, mod == 0 ? val : (val % mod), dbg);
-    }
+    const Lit* lit_idx_mod(nat_t mod, u64 val, Ref dbg = {}) { return lit_idx(mod, mod == 0 ? val : (val % mod), dbg); }
 
     const Lit* lit_bool(bool val) { return data_.lit_bool_[size_t(val)]; }
     const Lit* lit_ff() { return data_.lit_bool_[0]; }
@@ -379,33 +374,33 @@ public:
     /// @name lattice
     ///@{
     template<bool up>
-    const Def* ext(Refer type, Refer dbg = {});
-    const Def* bot(Refer type, Refer dbg = {}) { return ext<false>(type, dbg); }
-    const Def* top(Refer type, Refer dbg = {}) { return ext<true>(type, dbg); }
+    const Def* ext(Ref type, Ref dbg = {});
+    const Def* bot(Ref type, Ref dbg = {}) { return ext<false>(type, dbg); }
+    const Def* top(Ref type, Ref dbg = {}) { return ext<true>(type, dbg); }
     const Def* type_bot() { return data_.type_bot_; }
     const Def* top_nat() { return data_.top_nat_; }
-    template<bool up> TBound<up>* nom_bound(Refer type, size_t size, Refer dbg = {}) { return insert<TBound<up>>(size, type, size, dbg); }
+    template<bool up> TBound<up>* nom_bound(Ref type, size_t size, Ref dbg = {}) { return insert<TBound<up>>(size, type, size, dbg); }
     /// A *nom*inal Bound of Type @p l%evel.
-    template<bool up, level_t l = 0> TBound<up>* nom_bound(size_t size, Refer dbg = {}) { return nom_bound<up>(type<l>(), size, dbg); }
-    template<bool up> const Def* bound(Defs ops, Refer dbg = {});
-    Join* nom_join(Refer type, size_t size, Refer dbg = {}) { return nom_bound<true>(type, size, dbg); }
-    Meet* nom_meet(Refer type, size_t size, Refer dbg = {}) { return nom_bound<false>(type, size, dbg); }
-    template<level_t l = 0> Join* nom_join(size_t size, Refer dbg = {}) { return nom_join(type<l>(), size, dbg); }
-    template<level_t l = 0> Meet* nom_meet(size_t size, Refer dbg = {}) { return nom_meet(type<l>(), size, dbg); }
-    const Def* join(Defs ops, Refer dbg = {}) { return bound<true>(ops, dbg); }
-    const Def* meet(Defs ops, Refer dbg = {}) { return bound<false>(ops, dbg); }
-    const Def* ac(Refer type, Defs ops, Refer dbg = {});
+    template<bool up, level_t l = 0> TBound<up>* nom_bound(size_t size, Ref dbg = {}) { return nom_bound<up>(type<l>(), size, dbg); }
+    template<bool up> const Def* bound(Defs ops, Ref dbg = {});
+    Join* nom_join(Ref type, size_t size, Ref dbg = {}) { return nom_bound<true>(type, size, dbg); }
+    Meet* nom_meet(Ref type, size_t size, Ref dbg = {}) { return nom_bound<false>(type, size, dbg); }
+    template<level_t l = 0> Join* nom_join(size_t size, Ref dbg = {}) { return nom_join(type<l>(), size, dbg); }
+    template<level_t l = 0> Meet* nom_meet(size_t size, Ref dbg = {}) { return nom_meet(type<l>(), size, dbg); }
+    const Def* join(Defs ops, Ref dbg = {}) { return bound<true>(ops, dbg); }
+    const Def* meet(Defs ops, Ref dbg = {}) { return bound<false>(ops, dbg); }
+    const Def* ac(Ref type, Defs ops, Ref dbg = {});
     /// Infers the type using a *structural* Meet.
-    const Def* ac(Defs ops, Refer dbg = {});
-    const Def* vel(Refer type, Refer value, Refer dbg = {});
-    const Def* pick(Refer type, Refer value, Refer dbg = {});
-    const Def* test(Refer value, Refer probe, Refer match, Refer clash, Refer dbg = {});
-    const Def* singleton(Refer inner_type, Refer dbg = {});
+    const Def* ac(Defs ops, Ref dbg = {});
+    const Def* vel(Ref type, Ref value, Ref dbg = {});
+    const Def* pick(Ref type, Ref value, Ref dbg = {});
+    const Def* test(Ref value, Ref probe, Ref match, Ref clash, Ref dbg = {});
+    const Def* singleton(Ref inner_type, Ref dbg = {});
     ///@}
 
     /// @name globals -- depdrecated; will be removed
     ///@{
-    Global* global(Refer type, bool is_mutable = true, Refer dbg = {}) { return insert<Global>(1, type, is_mutable, dbg); }
+    Global* global(Ref type, bool is_mutable = true, Ref dbg = {}) { return insert<Global>(1, type, is_mutable, dbg); }
     ///@}
     // clang-format on
 
@@ -414,7 +409,7 @@ public:
     const Nat* type_nat() { return data_.type_nat_; }
     const Idx* type_idx() { return data_.type_idx_; }
     /// @note `size = 0` means `2^64`.
-    const Def* type_idx(Refer size, Refer dbg = {}) { return app(type_idx(), size, dbg); }
+    const Def* type_idx(Ref size, Ref dbg = {}) { return app(type_idx(), size, dbg); }
     /// @note `size = 0` means `2^64`.
     const Def* type_idx(nat_t size) { return type_idx(lit_nat(size)); }
 
@@ -428,18 +423,18 @@ public:
     ///@{
 
     /// Places Infer arguments as demanded by @p debug.meta and then apps @p arg.
-    const Def* iapp(Refer callee, Refer arg, Debug debug);
-    const Def* iapp(Refer callee, Defs args, Debug debug) { return iapp(callee, tuple(args), debug); }
-    const Def* iapp(Refer callee, nat_t arg, Debug debug) { return iapp(callee, lit_nat(arg), debug); }
+    const Def* iapp(Ref callee, Ref arg, Debug debug);
+    const Def* iapp(Ref callee, Defs args, Debug debug) { return iapp(callee, tuple(args), debug); }
+    const Def* iapp(Ref callee, nat_t arg, Debug debug) { return iapp(callee, lit_nat(arg), debug); }
 
     /// Converts C++ vector `{true, false, false}` to nested Thorin nested pairs `(.tt, (.ff, (.ff, ⊥)))`.
     const Def* implicits2meta(const Implicits&);
 
     // clang-format off
-    template<class Id, class... Args> const Def* dcall(Refer dbg, Id id, Args&&... args) { return dcall_(dbg, ax(id),   std::forward<Args>(args)...); }
-    template<class Id, class... Args> const Def* dcall(Refer dbg,        Args&&... args) { return dcall_(dbg, ax<Id>(), std::forward<Args>(args)...); }
-    template<class T, class... Args> const Def* dcall_(Refer dbg, Refer callee, T arg, Args&&... args) { return dcall_(dbg, iapp(callee, arg, Debug(dbg)), std::forward<Args>(args)...); }
-    template<class T> const Def* dcall_(Refer dbg, Refer callee, T arg) { return iapp(callee, arg, Debug(dbg)); }
+    template<class Id, class... Args> const Def* dcall(Ref dbg, Id id, Args&&... args) { return dcall_(dbg, ax(id),   std::forward<Args>(args)...); }
+    template<class Id, class... Args> const Def* dcall(Ref dbg,        Args&&... args) { return dcall_(dbg, ax<Id>(), std::forward<Args>(args)...); }
+    template<class T, class... Args> const Def* dcall_(Ref dbg, Ref callee, T arg, Args&&... args) { return dcall_(dbg, iapp(callee, arg, Debug(dbg)), std::forward<Args>(args)...); }
+    template<class T> const Def* dcall_(Ref dbg, Ref callee, T arg) { return iapp(callee, arg, Debug(dbg)); }
     // clang-format on
     ///@}
 
@@ -455,7 +450,7 @@ public:
         meta     = meta ? meta : bot(type_bot());
         return tuple({sym.str(), loc, meta});
     }
-    const Def* iinfer(Refer def) { return Idx::size(def->type()); }
+    const Def* iinfer(Ref def) { return Idx::size(def->type()); }
     ///@}
 
     /// @name dumping/logging
