@@ -23,7 +23,7 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags, const 
     , flags_(flags)
     , node_(unsigned(node))
     , nom_(false)
-    , dep_(unsigned(node == Node::Axiom   ? Dep::Axiom
+    , dep_(unsigned(  node == Node::Axiom ? Dep::Axiom
                     : node == Node::Infer ? Dep::Infer
                     : node == Node::Proxy ? Dep::Proxy
                     : node == Node::Var   ? Dep::Var

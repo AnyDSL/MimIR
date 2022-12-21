@@ -8,7 +8,7 @@ namespace thorin {
 
 /// This node is a hole in the IR that is inferred by its context later on.
 /// It is modelled as a *nom*inal Def.
-/// If inference was successful,
+/// If inference was successful, it's Infer::op will be set to the inferred Def.
 class Infer : public Def {
 private:
     Infer(const Def* type, const Def* dbg)
@@ -21,12 +21,25 @@ public:
     Infer* set(const Def* op) { return Def::set(0, op)->as<Infer>(); }
     ///@}
 
+    /// @name inflate
+    ///@{
+    /// If we figure out that an Infer is a Tuple/Sigma, we create a new Tuple/Sigma where each element is an Infer.
     const Def* inflate(Ref type, Defs elems_t);
     const Def* inflate(Ref type, u64 n, Ref elem_t);
+    ///@}
 
     /// @name virtual methods
     ///@{
     Infer* stub(World&, const Def*, const Def*) override;
+    ///@}
+
+    /// @name union-find
+    ///@{
+    /// [Union-Find](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) to unify Infer nodes.
+    /// Def::flags is used to keep track of rank for
+    /// [Union by rank](https://en.wikipedia.org/wiki/Disjoint-set_data_structure#Union_by_rank).
+    static const Def* find(const Def*);
+    static const Def* unite(Ref, Ref);
     ///@}
 
     static constexpr auto Node = Node::Infer;

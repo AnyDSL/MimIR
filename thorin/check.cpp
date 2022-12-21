@@ -8,33 +8,50 @@ namespace thorin {
  * Infer
  */
 
-const Def* refer(const Def* def) {
-    if (!def) return nullptr;
+const Def* refer(const Def* def) { return def ? Infer::find(def) : nullptr; }
 
-    // find inferred Def through chain of Infers
-    while (auto infer = def->isa<Infer>()) {
-        if (auto op = infer->op())
-            def = op;
-        else
-            break;
+const Def* Infer::find(const Def* def) {
+    // find root
+    auto res = def;
+    for (auto infer = res->isa_nom<Infer>(); infer && infer->op(); infer = res->isa_nom<Infer>()) res = infer->op();
+
+    // path compression: set all Infers along the chain to res
+    for (auto infer = def->isa_nom<Infer>(); infer && infer->op(); infer = def->isa_nom<Infer>()) {
+        def = infer->op();
+        infer->set(res);
     }
 
-    // TODO union-find-like path compression
+    assert((!res->isa<Infer>() || res != res->op(0)) && "an Infer shouldn't point to itself");
 
-    if (def->isa_structural() && (def->dep() & Dep::Infer)) {
-        auto new_type = refer(def->type());
-        bool update   = new_type != def->type();
+    // If we have an Infer as operand, try to get rid of it now.
+    // TODO why does this not work?
+    //if (res->isa_structural() && res->has_dep(Dep::Infer)) {
+    if (res->isa<Tuple>() || res->isa<Type>()) {
+        auto new_type = refer(res->type());
+        bool update   = new_type != res->type();
 
-        auto new_ops = DefArray(def->num_ops(), [def, &update](size_t i) {
-            auto r = refer(def->op(i));
-            update |= r != def->op(i);
+        auto new_ops = DefArray(res->num_ops(), [res, &update](size_t i) {
+            auto r = refer(res->op(i));
+            update |= r != res->op(i);
             return r;
         });
 
-        if (update) return def->rebuild(def->world(), new_type, new_ops, def->dbg());
+        if (update) return res->rebuild(res->world(), new_type, new_ops, res->dbg());
     }
 
-    return def;
+    return res;
+}
+
+const Def* Infer::unite(Ref r1, Ref r2) {
+    auto d1 = *r1;
+    auto d2 = *r2;
+
+    if (d1 == d2) return d1;
+    auto i1 = d1->isa_nom<Infer>();
+    auto i2 = d2->isa_nom<Infer>();
+
+    //if (d1->flags() < d2->flags())
+    return nullptr;
 }
 
 const Def* Infer::inflate(Ref ty, Defs elems_t) {
