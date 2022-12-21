@@ -25,7 +25,7 @@ const Def* Infer::find(const Def* def) {
 
     // If we have an Infer as operand, try to get rid of it now.
     // TODO why does this not work?
-    //if (res->isa_structural() && res->has_dep(Dep::Infer)) {
+    // if (res->isa_structural() && res->has_dep(Dep::Infer)) {
     if (res->isa<Tuple>() || res->isa<Type>()) {
         auto new_type = refer(res->type());
         bool update   = new_type != res->type();
@@ -50,7 +50,7 @@ const Def* Infer::unite(Ref r1, Ref r2) {
     auto i1 = d1->isa_nom<Infer>();
     auto i2 = d2->isa_nom<Infer>();
 
-    //if (d1->flags() < d2->flags())
+    // if (d1->flags() < d2->flags())
     return nullptr;
 }
 
