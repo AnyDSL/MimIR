@@ -23,10 +23,11 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags, const 
     , flags_(flags)
     , node_(unsigned(node))
     , nom_(false)
-    , dep_(node == Node::Axiom   ? Dep::Axiom
-           : node == Node::Proxy ? Dep::Proxy
-           : node == Node::Var   ? Dep::Var
-                                 : Dep::None)
+    , dep_(unsigned(node == Node::Axiom   ? Dep::Axiom
+                    : node == Node::Infer ? Dep::Infer
+                    : node == Node::Proxy ? Dep::Proxy
+                    : node == Node::Var   ? Dep::Var
+                                          : Dep::None))
     , num_ops_(ops.size())
     , dbg_(dbg)
     , type_(type) {
@@ -51,7 +52,7 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags, const Def*
     : flags_(flags)
     , node_(node)
     , nom_(true)
-    , dep_(Dep::Nom)
+    , dep_(Dep::Nom | (node == Node::Infer ? Dep::Infer : Dep::None))
     , num_ops_(num_ops)
     , dbg_(dbg)
     , type_(type) {
@@ -280,7 +281,7 @@ void Def::set_debug_name(std::string_view n) const {
 #endif
 
 void Def::finalize() {
-    assert(!dbg() || dbg()->dep_none());
+    assert(!dbg() || !dbg()->dep());
 
     for (size_t i = 0, e = num_ops(); i != e; ++i) {
         dep_ |= op(i)->dep();

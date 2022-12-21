@@ -113,15 +113,21 @@ enum class Sort { Term, Type, Kind, Space, Univ, Level };
 
 //------------------------------------------------------------------------------
 
-struct Dep {
-    enum : unsigned {
-        None  = 0,
-        Axiom = 1 << 0,
-        Proxy = 1 << 1,
-        Nom   = 1 << 2,
-        Var   = 1 << 3,
-    };
+enum class Dep : unsigned {
+    None  = 0,
+    Axiom = 1 << 0,
+    Infer = 1 << 1,
+    Nom   = 1 << 2,
+    Proxy = 1 << 3,
+    Var   = 1 << 4,
 };
+
+inline unsigned operator&(Dep d1, Dep d2) { return unsigned(d1) & unsigned(d2); }
+inline unsigned operator|(Dep d1, Dep d2) { return unsigned(d1) | unsigned(d2); }
+inline unsigned operator&(unsigned d1, Dep d2) { return d1 & unsigned(d2); }
+inline unsigned operator|(unsigned d1, Dep d2) { return d1 | unsigned(d2); }
+inline unsigned operator&(Dep d1, unsigned d2) { return unsigned(d1) & d2; }
+inline unsigned operator|(Dep d1, unsigned d2) { return unsigned(d1) | d2; }
 
 /// Use as mixin to wrap all kind of Def::proj and Def::projs variants.
 #define THORIN_PROJ(NAME, CONST)                                                                                   \
@@ -258,9 +264,9 @@ public:
     ///@{
     /// @see Dep.
     unsigned dep() const { return dep_; }
-    bool dep_none() const { return dep() == Dep::None; }
-    bool dep_const() const { return !(dep() & (Dep::Nom | Dep::Var)); }
-    bool dep_proxy() const { return dep_ & Dep::Proxy; }
+    bool has_dep(Dep d) const { return has_dep(unsigned(d)); }
+    bool has_dep(unsigned u) const { return dep() & u; }
+    bool dep_const() const { return !has_dep(Dep::Nom | Dep::Var); }
     ///@}
 
     /// @name proj
@@ -427,8 +433,8 @@ protected:
     flags_t flags_;
     uint8_t node_;
     unsigned nom_    : 1;
-    unsigned dep_    : 4;
-    unsigned pading_ : 3;
+    unsigned dep_    : 5;
+    unsigned pading_ : 2;
     u8 curry_;
     u8 trip_;
     hash_t hash_;
