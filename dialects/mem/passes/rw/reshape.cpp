@@ -32,7 +32,6 @@ bool should_flatten(const Def* T) {
     // TODO: e.g. lea explicitely does not want to flatten
 
     // TODO: annotate with test cases that need these special cases
-
     // Problem with 2 Arr -> flatten
     // lea (2, <<2;I32>>, ...) -> lea (2, I32, I32, ...)
     if (auto lit = T->arity()->isa<Lit>(); lit && lit->get<u64>() <= 2) {

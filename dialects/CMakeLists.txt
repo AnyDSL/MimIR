@@ -136,7 +136,7 @@ add_thorin_dialect(matrix
         matrix/passes/lower_matrix_mediumlevel.h
         matrix/passes/lower_matrix_lowlevel.cpp
         matrix/passes/lower_matrix_lowlevel.h
-        refly/passes/remove_internal.cpp
+        compile/passes/internal_cleanup.cpp
     DEPENDS
         refly
         direct
@@ -189,8 +189,6 @@ add_thorin_dialect(refly
         refly/refly.cpp
         refly/passes/remove_perm.h
         refly/passes/remove_perm.cpp
-        refly/passes/remove_internal.h
-        refly/passes/remove_internal.cpp
         refly/passes/debug_dump.h
         refly/normalizers.cpp
     DEPENDS

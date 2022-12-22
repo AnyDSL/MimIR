@@ -483,6 +483,7 @@
 .ax %matrix.lower_matrix_high_level_map_reduce: %compile.Pass;
 .ax %matrix.lower_matrix_medium_level: %compile.Pass;
 .ax %matrix.lower_matrix_low_level: %compile.Phase;
+.ax %matrix.internal_map_reduce_cleanup: %compile.Pass;
 /// 
 /// ### Phases
 /// 
@@ -494,7 +495,7 @@
             %matrix.lower_matrix_medium_level
         )),
         // TODO: only in map_red namespace
-        %compile.single_pass_phase %compile.internal_cleanup_pass,
+        %compile.single_pass_phase %matrix.internal_map_reduce_cleanup,
         %matrix.lower_matrix_low_level
         //   %compile.internal_cleanup_pass
     )

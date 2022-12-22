@@ -4,7 +4,6 @@
 #include <thorin/dialects.h>
 #include <thorin/pass/pass.h>
 
-#include "dialects/refly/passes/remove_internal.h"
 #include "dialects/refly/passes/remove_perm.h"
 
 using namespace thorin;

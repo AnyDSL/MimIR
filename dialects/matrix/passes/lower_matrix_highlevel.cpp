@@ -32,7 +32,7 @@ std::optional<const Def*> internal_function_of_axiom(const Axiom* axiom, const D
     std::string name = axiom->name();
     findAndReplaceAll(name, ".", "_");
     findAndReplaceAll(name, "%", "");
-    name = "internal_mapRed_" + name;
+    name = INTERNAL_PREFIX + name;
 
     auto replacement = world.lookup(name);
     if (replacement) {
