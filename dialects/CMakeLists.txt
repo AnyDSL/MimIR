@@ -117,6 +117,7 @@ add_thorin_dialect(haskell
         haskell/be/haskell_emit.h
         haskell/be/haskell_emit.cpp
     DEPENDS
+        compile
         core
         math
         mem

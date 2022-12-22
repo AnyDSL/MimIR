@@ -6,3 +6,10 @@
 ///
 /// ## Dependencies
 ///
+.import compile;
+///
+/// ## Compilation Passes and Phases
+/// 
+/// ### Phases
+/// 
+.ax %haskell.ocaml_phase: %compile.Phase;

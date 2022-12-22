@@ -10,5 +10,9 @@
 using namespace thorin;
 
 extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
-    return {"haskell", nullptr, nullptr, [](Backends& backends) { backends["hs"] = &haskell::emit; }, nullptr};
+    return {"haskell", nullptr,
+            [](Passes& passes) {
+                // register_phase<haskell::ocaml_phase, haskell::OCamlEmitter>(passes);
+            },
+            [](Backends& backends) { backends["hs"] = &haskell::emit; }, nullptr};
 }
