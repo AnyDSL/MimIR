@@ -20,8 +20,10 @@
 #include "thorin/util/print.h"
 #include "thorin/util/sys.h"
 
+#include "dialects/core/autogen.h"
 #include "dialects/core/core.h"
 #include "dialects/math/math.h"
+#include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
 
 using namespace std::string_literals;
@@ -37,6 +39,10 @@ TODO:
 */
 
 namespace thorin::haskell {
+
+const char* PREFACE = R"(
+let bool2bit x = if x then 1 else 0
+)";
 
 /*
  * helper
@@ -131,15 +137,68 @@ std::ostream& operator<<(std::ostream& os, Inline2 u) {
     // return print(os, "Int");
     if (u.dump_gid_ == 2 || (u.dump_gid_ == 1 && !u->isa<Var>() && u->num_ops() != 0)) print(os, "/*{}*/", u->gid());
 
+    if (auto ptr = match<mem::Ptr>(*u)) {
+        auto type = ptr->arg(0);
+        return print(os, "({} ref)", Inline2(type));
+    }
+    if (auto mem = match<mem::M>(*u)) { return print(os, "unit"); }
+    if (auto arith = match<core::nop>(*u)) {
+        auto [a, b] = arith->args<2>();
+        const char* op;
+        switch (arith.id()) {
+            case core::nop::add: op = "+"; break;
+            case core::nop::mul: op = "*"; break;
+        }
+        return print(os, "({} {} {})", Inline2(a), op, Inline2(b));
+    }
+    if (auto arith = match<core::wrap>(*u)) {
+        auto [a, b] = arith->args<2>();
+        // or use op+-* for others
+        if (arith.id() == core::wrap::shl) { return print(os, "(Int.shift_left {} {})", Inline2(a), Inline2(b)); }
+        const char* op;
+        switch (arith.id()) {
+            case core::wrap::add: op = "+"; break;
+            case core::wrap::sub: op = "-"; break;
+            case core::wrap::mul: op = "*"; break;
+            case core::wrap::shl: unreachable();
+        }
+        return print(os, "({} {} {})", Inline2(a), op, Inline2(b));
+    }
+    if (auto icmp = match<core::icmp>(*u)) {
+        auto [a, b] = icmp->args<2>();
+        // or use op+-* for others
+        const char* op;
+        // TODO: signed unsigned difference
+        switch (icmp.id()) {
+            case core::icmp::e: op = "="; break;
+            case core::icmp::sl: op = "<"; break;
+            case core::icmp::sle: op = "<="; break;
+            case core::icmp::ug: op = ">"; break;
+            case core::icmp::uge: op = ">="; break;
+            case core::icmp::ul: op = "<"; break;
+            case core::icmp::ule: op = "<="; break;
+            case core::icmp::sg: op = ">"; break;
+            case core::icmp::sge: op = ">="; break;
+            case core::icmp::ne: op = "!="; break;
+            case core::icmp::f:
+            case core::icmp::t: unreachable();
+            default: assert(false && "unhandled icmp");
+        }
+        return print(os, "(bool2bit ({} {} {}))", Inline2(a), op, Inline2(b));
+    }
+
+    // div -> /
+    // cmp -> bool2bit (...)
+
     if (auto app = u->isa<App>()) {
         auto callee = app->callee();
         if (callee->isa<Idx>()) { return print(os, "int"); }
-        if (auto axiom = callee->isa<Axiom>()) {
-            if (axiom->name() == "%mem.Ptr") {
-                auto type = app->arg()->proj(2, 0_s);
-                return print(os, "({} ref)", Inline2(type));
-            }
-        }
+        // if (auto axiom = callee->isa<Axiom>()) {
+        //     if (axiom->name() == "%mem.Ptr") {
+        //         auto type = app->arg()->proj(2, 0_s);
+        //         return print(os, "({} ref)", Inline2(type));
+        //     }
+        // }
 
         // if (app->type()->isa<Type>()) { return print(os, "({} {})", Inline2(app->arg()), Inline2(app->callee())); }
 
@@ -169,7 +228,7 @@ std::ostream& operator<<(std::ostream& os, Inline2 u) {
     } else if (auto axiom = u->isa<Axiom>()) {
         const auto& name = axiom->name();
         // if (name.find("mem.M") != std::string::npos) return print(os, "()");
-        if (name == "%mem.M") return print(os, "unit");
+        // if (name == "%mem.M") return print(os, "unit");
         return print(os, "{}{}", name[0] == '%' ? "" : "%", name);
     } else if (auto lit = u->isa<Lit>()) {
         if (lit->type()->isa<Nat>()) return print(os, "{}", lit->get());
@@ -215,6 +274,7 @@ std::ostream& operator<<(std::ostream& os, Inline2 u) {
         // return print(os, "({, })", sigma->ops());
         // TODO: add extra parens?
         // return print(os, "({ * })", Elem(sigma->ops(), [&](auto op) { print(os, "({})", Inline2(op)); }));
+        if (sigma->num_ops() == 0) return print(os, "unit");
         return print(os, "({ * })", Elem(sigma->ops(), [&](auto op) { print(os, "{}", Inline2(op)); }));
         // return print(os, "({, })", Elem(sigma->ops(), [&](auto op) { print(os, "A"); }));
     } else if (auto tuple = u->isa<Tuple>()) {
@@ -236,12 +296,16 @@ std::ostream& operator<<(std::ostream& os, Inline2 u) {
             return print(os, "«{}: {}; {}»", nom->var(), nom->shape(), nom->body());
         // return print(os, "«{}; {}»", arr->shape(), arr->body());
         // return print(os, "[ {} ]", arr->body());
-        return print(os, "({} list)", arr->body());
+        return print(os, "({} list)", Inline2(arr->body()));
     } else if (auto pack = u->isa<Pack>()) {
         // TODO: generate list
         if (auto nom = pack->isa_nom<Pack>(); nom && nom->var())
-            return print(os, "‹{}: {}; {}›", nom->var(), nom->shape(), nom->body());
-        return print(os, "‹{}; {}›", pack->shape(), pack->body());
+            return print(os, "(List.init {} (fun {} -> {}))", Inline2(nom->shape()), Inline2(nom->var()),
+                         Inline2(nom->body()));
+        // return print(os, "‹{}: {}; {}›", Inline2(nom->var()), Inline2(nom->shape()), Inline2(nom->body()));
+        // return print(os, "‹{}; {}›", Inline2(pack->shape()), Inline2(pack->body()));
+        return print(os, "(List.init {} (fun _ -> {}))", Inline2(pack->shape()), Inline2(pack->body()));
+
     } else if (auto proxy = u->isa<Proxy>()) {
         // TODO:
         // return print(os, ".proxy#{}#{} {, }", proxy->pass(), proxy->tag(), proxy->ops());
@@ -367,8 +431,8 @@ void Dumper::dump(Lam* lam) {
     --tab;
     // tab.print(os, "}};\n");
 
-    // TODO: not for toplevel
-    tab.print(os, "in\n");
+    // TODO: not for toplevel in a more semantic manner
+    if (tab.indent() > 0) tab.print(os, "in\n");
 }
 
 void Dumper::dump_let(const Def* def) {
@@ -383,6 +447,9 @@ void Dumper::dump_ptrn(const Def* def, const Def* type, bool toplevel) {
         os << "_";
     } else {
         auto projs = def->projs();
+        // if (projs.size() == 0) {
+        //     print(os, "unit");
+        // } else
         if ((projs.size() == 1 || std::ranges::all_of(projs, [](auto def) { return !def; }))) {
             // print(os, "({}: {})", def->unique_name(), type);
             // print(os, "({}: {})", def->unique_name(), Inline2(type));
@@ -396,7 +463,9 @@ void Dumper::dump_ptrn(const Def* def, const Def* type, bool toplevel) {
             size_t i = 0;
             // print(os, "{}::[{, }]", def->unique_name(),
             //       Elem(projs, [&](auto proj) { dump_ptrn(proj, type->proj(i++)); }));
-            print(os, "((({, }) as {}): {})", Elem(projs, [&](auto proj) { dump_ptrn(proj, type->proj(i++), false); }),
+            const char* pattern = "((({, }) as {}): {})";
+            if (def->type()->isa<Arr>()) pattern = "(([{; }] as {}): {})";
+            print(os, pattern, Elem(projs, [&](auto proj) { dump_ptrn(proj, type->proj(i++), false); }),
                   def->unique_name(), Inline2(type));
         }
     }
@@ -437,6 +506,7 @@ void emit(World& w, std::ostream& os) {
     auto dumper = Dumper(os, &dep);
 
     // for (const auto& import : w.imported()) print(os, ".import {};\n", import);
+    os << PREFACE << "\n";
     dumper.recurse(dep.root());
     // }
 
