@@ -1,0 +1,4 @@
+// RUN: rm -f %t.ll ; \
+// RUN: FILE=%s;%thorin -d matrix -d affine -d direct -d clos -o - ${FILE%_run.thorin}.thorin --output-ll %t.ll
+// RUN: clang %t.ll -o %t -Wno-override-module
+// RUN: %t ; test $? -eq 5
