@@ -7,10 +7,14 @@ namespace thorin::compile {
 
 class InternalCleanup : public RWPass<InternalCleanup, Lam> {
 public:
-    InternalCleanup(PassMan& man)
-        : RWPass(man, "internal_cleanup") {}
+    InternalCleanup(PassMan& man, const char* prefix = "internal_")
+        : RWPass(man, "internal_cleanup")
+        , prefix_(prefix) {}
 
     void enter() override;
+
+private:
+    const char* prefix_;
 };
 
 } // namespace thorin::compile
