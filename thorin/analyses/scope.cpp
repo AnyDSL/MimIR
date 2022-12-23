@@ -91,8 +91,9 @@ const F_CFG& Scope::f_cfg() const { return cfa().f_cfg(); }
 const B_CFG& Scope::b_cfg() const { return cfa().b_cfg(); }
 
 bool is_free(Def* nom, const Def* def) {
-    // optimize common cases
     if (auto var = nom->var()) {
+        // optimize common cases first
+        if (def->num_ops() == 0) return false;
         if (var == def) return true;
         for (auto v : var->nom()->vars())
             if (var == v) return true;
@@ -101,7 +102,7 @@ bool is_free(Def* nom, const Def* def) {
         return scope.bound(def);
     }
 
-    return true;
+    return false;
 }
 
 } // namespace thorin

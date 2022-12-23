@@ -22,6 +22,7 @@ struct Pos {
 
     uint64_t rowcol() const { return (uint64_t(row) << uint64_t(32)) | uint64_t(col); }
     const Def* def(World&) const;
+    explicit operator bool() const { return row != uint32_t(-1); }
 
     uint32_t row = -1;
     uint32_t col = -1;
@@ -40,6 +41,7 @@ struct Loc {
     Loc anew_begin() const { return {file, begin, begin}; }
     Loc anew_finis() const { return {file, finis, finis}; }
     const Def* def(World&) const;
+    explicit operator bool() const { return (bool) begin; }
 
     std::string file;
     Pos begin = {uint32_t(-1), uint32_t(-1)};

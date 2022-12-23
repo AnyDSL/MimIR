@@ -3,7 +3,6 @@
 #include <thorin/lam.h>
 
 #include "dialects/compile/compile.h"
-#include "dialects/mem/mem.h"
 
 namespace thorin::compile {
 

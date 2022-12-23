@@ -243,17 +243,18 @@ template<bit1 id>
 const Def* normalize_bit1(const Def* type, const Def* c, const Def* a, const Def* dbg) {
     auto& world = type->world();
     auto callee = c->as<App>();
-    auto s      = isa_lit(callee->arg());
     auto l      = isa_lit(a);
 
-    switch (id) {
-        case bit1::f: return world.lit_idx(*s, 0);
-        case bit1::t: return world.lit_idx(*s, *s - 1_u64);
-        case bit1::id: return a;
-        default: break;
-    }
+    if (auto ls = isa_lit(callee->arg())) {
+        switch (id) {
+            case bit1::f: return world.lit_idx(*ls, 0);
+            case bit1::t: return world.lit_idx(*ls, *ls - 1_u64);
+            case bit1::id: return a;
+            default: break;
+        }
 
-    if (l) return world.lit_idx_mod(*s, ~*l);
+        if (l) return world.lit_idx_mod(*ls, ~*l);
+    }
 
     return world.raw_app(type, callee, a, dbg);
 }
@@ -289,7 +290,7 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto s      = isa_lit(callee->arg());
+    auto ls     = isa_lit(callee->arg());
 
     commute(id, a, b);
 
@@ -303,7 +304,7 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
     // clang-format off
     switch (id) {
         case bit2::    f: return world.lit(type,        0);
-        case bit2::    t: if (s) return world.lit(type, *s-1_u64); break;
+        case bit2::    t: if (ls) return world.lit(type, *ls-1_u64); break;
         case bit2::    a: return a;
         case bit2::    b: return b;
         case bit2::   na: return op_negate(a, dbg);
@@ -313,23 +314,24 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
         default:         break;
     }
 
-    if (la && lb) {
+    if (la && lb && ls) {
         switch (id) {
-            case bit2::and_: return world.lit_idx    (*s,   *la &  *lb);
-            case bit2:: or_: return world.lit_idx    (*s,   *la |  *lb);
-            case bit2::xor_: return world.lit_idx    (*s,   *la ^  *lb);
-            case bit2::nand: return world.lit_idx_mod(*s, ~(*la &  *lb));
-            case bit2:: nor: return world.lit_idx_mod(*s, ~(*la |  *lb));
-            case bit2::nxor: return world.lit_idx_mod(*s, ~(*la ^  *lb));
-            case bit2:: iff: return world.lit_idx_mod(*s, ~ *la |  *lb);
-            case bit2::niff: return world.lit_idx    (*s,   *la & ~*lb);
+            case bit2::and_: return world.lit_idx    (*ls,   *la &  *lb);
+            case bit2:: or_: return world.lit_idx    (*ls,   *la |  *lb);
+            case bit2::xor_: return world.lit_idx    (*ls,   *la ^  *lb);
+            case bit2::nand: return world.lit_idx_mod(*ls, ~(*la &  *lb));
+            case bit2:: nor: return world.lit_idx_mod(*ls, ~(*la |  *lb));
+            case bit2::nxor: return world.lit_idx_mod(*ls, ~(*la ^  *lb));
+            case bit2:: iff: return world.lit_idx_mod(*ls, ~ *la |  *lb);
+            case bit2::niff: return world.lit_idx    (*ls,   *la & ~*lb);
             default: unreachable();
         }
     }
 
+    // TODO rewrite using bit2
     auto unary = [&](bool x, bool y, const Def* a) -> const Def* {
         if (!x && !y) return world.lit(type, 0);
-        if ( x &&  y) return s ? world.lit(type, *s-1_u64) : nullptr;
+        if ( x &&  y) return ls ? world.lit(type, *ls-1_u64) : nullptr;
         if (!x &&  y) return a;
         if ( x && !y && id != bit2::xor_) return op_negate(a, dbg);
         return nullptr;
@@ -343,7 +345,7 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
     if (la) {
         if (*la == 0) {
             if (auto res = unary(tab[0][0], tab[0][1], b)) return res;
-        } else if (*la == *s - 1_u64) {
+        } else if (ls && *la == *ls - 1_u64) {
             if (auto res = unary(tab[1][0], tab[1][1], b)) return res;
         }
     }
@@ -351,7 +353,7 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
     if (lb) {
         if (*lb == 0) {
             if (auto res = unary(tab[0][0], tab[1][0], a)) return res;
-        } else if (*lb == *s - 1_u64) {
+        } else if (ls && *lb == *ls - 1_u64) {
             if (auto res = unary(tab[0][1], tab[1][1], a)) return res;
         }
     }
@@ -566,7 +568,7 @@ inline u64 pad(u64 offset, u64 align) {
 // and every occurance of these types in a later phase
 // TODO Pi and others
 template<trait id>
-const Def* normalize_trait(const Def*, const Def* callee, const Def* type, const Def* dbg) {
+const Def* normalize_trait(const Def* nat, const Def* callee, const Def* type, const Def* dbg) {
     auto& world = type->world();
     if (auto ptr = match<mem::Ptr>(type)) {
         return world.lit_nat(8);
@@ -609,7 +611,7 @@ const Def* normalize_trait(const Def*, const Def* callee, const Def* type, const
     }
 
 out:
-    return world.raw_app(type, callee, type, dbg);
+    return world.raw_app(nat, callee, type, dbg);
 }
 
 const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const Def* dbg) {

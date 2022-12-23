@@ -1,10 +1,5 @@
 #include "thorin/pass/pipelinebuilder.h"
 
-// #include <compare>
-
-// #include <memory>
-// #include <vector>
-
 #include "thorin/def.h"
 #include "thorin/dialects.h"
 #include "thorin/lattice.h"

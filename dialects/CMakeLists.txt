@@ -1,3 +1,6 @@
+# must be registered before `add_thorin_dialect` calls
+add_custom_target(thorin_all_dialects)
+
 add_thorin_dialect(affine
     SOURCES
         affine/affine.cpp
@@ -97,6 +100,8 @@ add_thorin_dialect(demo
         demo/demo.cpp
         demo/demo.h
         demo/normalizers.cpp
+    DEPENDS
+        compile
     INSTALL
 )
 
@@ -109,6 +114,8 @@ add_thorin_dialect(direct
         direct/passes/cps2ds.cpp
         direct/passes/cps2ds.h
         direct/normalizers.cpp
+    DEPENDS
+        compile
     INSTALL
 )
 
@@ -164,5 +171,7 @@ add_thorin_dialect(refly
         refly/passes/remove_perm.cpp
         refly/passes/debug_dump.h
         refly/normalizers.cpp
+    DEPENDS
+        compile
     INSTALL
 )

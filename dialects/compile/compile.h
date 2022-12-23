@@ -26,7 +26,7 @@ inline void handle_optimization_part(const Def* part, World& world, Passes& pass
             world.WLOG("pass/phase '{}' not found", phase_ax->name());
             assert(passes.contains(flag) && "pass/phase not found");
         }
-    } else if (auto lam = phase_def->isa<Lam>()) {
+    } else if (phase_def->isa<Lam>()) {
         assert(0 && "curried lambas are not supported");
     } else {
         world.WLOG("pass/phase '{}' is not an axiom", phase_def);
