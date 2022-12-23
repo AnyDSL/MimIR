@@ -193,17 +193,9 @@ std::string Emitter::convert(const Def* type) {
 }
 
 std::string Emitter::convert_ret_pi(const Pi* pi) {
-    switch (pi->num_doms()) {
-        case 0: return "void";
-        case 1:
-            if (match<mem::M>(pi->dom())) return "void";
-            return convert(pi->dom());
-        case 2:
-            if (match<mem::M>(pi->dom(0))) return convert(pi->dom(1));
-            if (match<mem::M>(pi->dom(1))) return convert(pi->dom(0));
-            [[fallthrough]];
-        default: return convert(pi->dom());
-    }
+    auto dom = mem::strip_mem_ty(pi->dom());
+    if (dom == world().sigma()) { return "void"; }
+    return convert(dom);
 }
 
 /*
@@ -318,7 +310,27 @@ void Emitter::emit_epilogue(Lam* lam) {
             }
         }
     } else if (auto ex = app->callee()->isa<Extract>(); ex && app->callee_type()->is_basicblock()) {
-        emit_unsafe(app->arg());
+        // A call to an extract like constructed for conditionals (else,then)#cond (args)
+        // TODO: we can not rely on the structure of the extract (it might be a nested extract)
+        for (auto callee_def : ex->tuple()->projs()) {
+            // dissect the tuple of lambdas
+            auto callee = callee_def->isa_nom<Lam>();
+            assert(callee);
+            // each callees type should agree with the argument type (should be checked by type checking).
+            // Especially, the number of vars should be the number of arguments.
+            // TODO: does not hold for complex arguments that are not tuples.
+            assert(callee->num_vars() == app->num_args());
+            for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
+                // emits the arguments one by one (TODO: handle together like before)
+                if (auto arg = emit_unsafe(app->arg(i)); !arg.empty()) {
+                    auto phi = callee->var(i);
+                    assert(!match<mem::M>(phi->type()));
+                    lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
+                    locals_[phi] = id(phi);
+                }
+            }
+        }
+
         auto c = emit(ex->index());
         if (ex->tuple()->num_projs() == 2) {
             auto [f, t] = ex->tuple()->projs<2>([this](auto def) { return emit(def); });
@@ -453,12 +465,14 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         std::string prev = "undef";
         auto t           = convert(tuple->type());
-        for (size_t i = 0, n = tuple->num_projs(); i != n; ++i) {
-            auto e = tuple->proj(n, i);
-            if (auto v_elem = emit_unsafe(e); !v_elem.empty()) {
-                auto t_elem = convert(e->type());
-                auto namei  = name + "." + std::to_string(i);
-                prev        = bb.assign(namei, "insertvalue {} {}, {} {}, {}", t, prev, t_elem, v_elem, i);
+        for (size_t src = 0, dst = 0, n = tuple->num_projs(); src != n; ++src) {
+            auto e = tuple->proj(n, src);
+            if (auto elem = emit_unsafe(e); !elem.empty()) {
+                auto elem_t = convert(e->type());
+                // TODO: check dst vs src
+                auto namei = name + "." + std::to_string(dst);
+                prev       = bb.assign(namei, "insertvalue {} {}, {} {}, {}", t, prev, elem_t, elem, dst);
+                dst++;
             }
         }
         return prev;
@@ -741,10 +755,19 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         declare("i8* @malloc(i64)");
 
         emit_unsafe(malloc->arg(0));
-        auto v_size = emit(malloc->arg(1));
-        auto t_ptr  = convert(force<mem::Ptr>(def->proj(1)->type()));
-        bb.assign(name + ".i8", "call i8* @malloc(i64 {})", v_size);
-        return bb.assign(name, "bitcast i8* {} to {}", name + ".i8", t_ptr);
+        auto size  = emit(malloc->arg(1));
+        auto ptr_t = convert(force<mem::Ptr>(def->proj(1)->type()));
+        bb.assign(name + ".i8", "call i8* @malloc(i64 {})", size);
+        return bb.assign(name, "bitcast i8* {} to {}", name + ".i8", ptr_t);
+    } else if (auto free = match<mem::free>(def)) {
+        declare("void @free(i8*)");
+        emit_unsafe(free->arg(0));
+        auto ptr   = emit(free->arg(1));
+        auto ptr_t = convert(force<mem::Ptr>(free->arg(1)->type()));
+
+        bb.assign(name + ".i8", "bitcast {} {} to i8*", ptr_t, ptr);
+        bb.tail("call void @free(i8* {})", name + ".i8");
+        return {};
     } else if (auto mslot = match<mem::mslot>(def)) {
         emit_unsafe(mslot->arg(0));
         // TODO array with size
@@ -795,6 +818,26 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t      = convert(arith->type());
         auto mode   = as_lit(arith->decurry()->arg());
 
+        // #    if 0
+        //         // TODO this was von closure-conv branch which I need to double-check
+        //         if (tuple->isa<Var>()) {
+        //             // computing the index may crash, so we bail out
+        //             assert(match<mem::M>(extract->type()) && "only mem-var should not be mapped");
+        //             return {};
+        //         }
+        // #    endif
+
+        //         auto ll_tup = emit_unsafe(tuple);
+
+        //         // this exact location is important: after emitting the tuple -> ordering of mem ops
+        //         // before emitting the index, as it might be a weird value for mem vars.
+        //         if (match<mem::M>(extract->type())) return {};
+
+        //         auto ll_idx = emit_unsafe(index);
+
+        //         if (tuple->num_projs() == 2) {
+        //             if (match<mem::M>(tuple->proj(2, 0_s)->type())) return ll_tup;
+        //             if (match<mem::M>(tuple->proj(2, 1_s)->type())) return ll_tup;
         switch (arith.id()) {
             case math::arith::add: op = "fadd"; break;
             case math::arith::sub: op = "fsub"; break;
@@ -949,6 +992,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         return bb.assign(name, "{} {} {} to {}", op, t_src, v_src, t_dst);
     }
+    auto& world = def->world();
+    world.DLOG("unhandled def: {} : {}", def, def->type());
+    def->dump();
 
     unreachable(); // not yet implemented
 }

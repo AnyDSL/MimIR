@@ -13,10 +13,12 @@
 #include "dialects/clos/pass/rw/branch_clos_elim.h"
 #include "dialects/clos/pass/rw/clos2sjlj.h"
 #include "dialects/clos/pass/rw/clos_conv_prep.h"
-#include "dialects/clos/phase/clos_conv.h"
-#include "dialects/clos/phase/lower_typed_clos.h"
+#include "dialects/clos/pass/rw/phase_wrapper.h"
 #include "dialects/mem/mem.h"
 #include "dialects/mem/passes/fp/copy_prop.h"
+#include "dialects/mem/passes/rw/reshape.h"
+#include "dialects/mem/phases/rw/add_mem.h"
+#include "dialects/refly/passes/debug_dump.h"
 
 namespace thorin::clos {
 
@@ -131,53 +133,26 @@ const Def* ctype(World& w, Defs doms, const Def* env_type) {
                          [&](auto i) { return clos_insert_env(i, env_type, [&](auto j) { return doms[j]; }); }));
 }
 
-/*
- * Pass Wrappers
- */
-
-class ClosConvWrapper : public RWPass<ClosConvWrapper, Lam> {
-public:
-    ClosConvWrapper(PassMan& man)
-        : RWPass(man, "clos_conv") {}
-
-    void prepare() override { ClosConv(world()).run(); }
-};
-
-class LowerTypedClosWrapper : public RWPass<LowerTypedClosWrapper, Lam> {
-public:
-    LowerTypedClosWrapper(PassMan& man)
-        : RWPass(man, "lower_typed_clos") {}
-
-    void prepare() override { LowerTypedClos(world()).run(); }
-};
-
 } // namespace thorin::clos
 
 using namespace thorin;
 
 extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
     return {"clos",
-            [](PipelineBuilder& builder) {
-                int base = 121;
-                // closure_conv
-                builder.extend_opt_phase(base++, [](PassMan& man) { man.add<clos::ClosConvPrep>(nullptr); });
-                builder.extend_opt_phase(base++, [](PassMan& man) { man.add<EtaExp>(nullptr); });
-                builder.extend_opt_phase(base++, [](PassMan& man) { man.add<clos::ClosConvWrapper>(); });
-                builder.extend_opt_phase(base++, [](PassMan& man) {
-                    auto er = man.add<EtaRed>(true);
-                    auto ee = man.add<EtaExp>(er);
-                    man.add<Scalerize>(ee);
-                });
-                // lower_closures
-                builder.extend_opt_phase(base++, [](PassMan& man) {
-                    man.add<Scalerize>(nullptr);
-                    man.add<clos::BranchClosElim>();
-                    man.add<mem::CopyProp>(nullptr, nullptr, true);
-                    man.add<clos::LowerTypedClosPrep>();
-                    man.add<clos::Clos2SJLJ>();
-                });
-
-                builder.extend_opt_phase(base++, [](PassMan& man) { man.add<clos::LowerTypedClosWrapper>(); });
+            [](Passes& passes) {
+                register_pass<clos::clos_conv_prep_pass, clos::ClosConvPrep>(passes, nullptr);
+                register_pass<clos::clos_conv_pass, ClosConvWrapper>(passes);
+                register_pass<clos::branch_clos_pass, clos::BranchClosElim>(passes);
+                register_pass<clos::lower_typed_clos_prep_pass, clos::LowerTypedClosPrep>(passes);
+                register_pass<clos::clos2sjlj_pass, clos::Clos2SJLJ>(passes);
+                register_pass<clos::lower_typed_clos_pass, LowerTypedClosWrapper>(passes);
+                // TODO:; remove after ho_codegen merge
+                passes[flags_t(Axiom::Base<clos::eta_red_bool_pass>)] = [&](World& world, PipelineBuilder& builder,
+                                                                            const Def* app) {
+                    auto bb      = app->as<App>()->arg();
+                    auto bb_only = bb->as<Lit>()->get<u64>();
+                    builder.add_pass<EtaRed>(app, bb_only);
+                };
             },
-            nullptr, nullptr, [](Normalizers& normalizers) { clos::register_normalizers(normalizers); }};
+            nullptr, [](Normalizers& normalizers) { clos::register_normalizers(normalizers); }};
 }

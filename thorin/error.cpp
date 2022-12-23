@@ -28,8 +28,8 @@ void ErrorHandler::index_out_of_range(const Def* arity, nat_t index, const Def* 
 
 void ErrorHandler::ill_typed_app(const Def* callee, const Def* arg, const Def* dbg) {
     Debug d(dbg ? dbg : arg->dbg());
-    err(d.loc, "cannot pass argument '{}' of type '{}' to '{}' of domain '{}'", arg, arg->type(), callee,
-        callee->type()->as<Pi>()->dom());
+    err(d.loc, "cannot pass argument \n  '{}' of type \n  '{}' to \n  '{}' of domain \n  '{}'", arg, arg->type(),
+        callee, callee->type()->as<Pi>()->dom());
 }
 
 } // namespace thorin

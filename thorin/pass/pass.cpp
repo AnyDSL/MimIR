@@ -47,7 +47,7 @@ void PassMan::run() {
     world().debug_dump();
 
     for (auto&& pass : passes_) pass->prepare();
-    
+
     auto externals = std::vector(world().externals().begin(), world().externals().end());
     for (const auto& [_, nom] : externals) {
         analyzed(nom);
@@ -55,6 +55,7 @@ void PassMan::run() {
     }
 
     while (!curr_state().stack.empty()) {
+        for (auto&& pass : passes_) world().ILOG(" + {}", pass->name());
         push_state();
         curr_nom_ = pop(curr_state().stack);
         world().VLOG("=== state {}: {} ===", states_.size() - 1, curr_nom_);

@@ -1,5 +1,6 @@
 #include <fstream>
 #include <sstream>
+#include <vector>
 
 #include <gtest/gtest-param-test.h>
 #include <gtest/gtest-spi.h>
@@ -235,24 +236,28 @@ TEST(RestrictedDependentTypes, join_singleton) {
 
 TEST(RestrictedDependentTypes, ll) {
     World w;
+
+    std::vector<std::string> dialect_plugins = {
+        "compile",
+        "mem",
+        "core",
+        "math",
+    };
+    std::vector<std::string> dialect_paths = {};
+
+    std::vector<Dialect> dialects;
+    thorin::Backends backends;
     Normalizers normalizers;
     Passes passes;
 
-    auto compile_d = Dialect::load("compile", {});
-    compile_d.register_normalizers(normalizers);
-    fe::Parser::import_module(w, "compile", {}, &normalizers);
+    for (const auto& dialect : dialect_plugins) {
+        dialects.push_back(Dialect::load(dialect, dialect_paths));
+        dialects.back().register_backends(backends);
+        dialects.back().register_normalizers(normalizers);
+        dialects.back().register_passes(passes);
+    }
 
-    auto mem_d = Dialect::load("mem", {});
-    mem_d.register_normalizers(normalizers);
-    fe::Parser::import_module(w, "mem", {}, &normalizers);
-
-    auto core_d = Dialect::load("core", {});
-    core_d.register_normalizers(normalizers);
-    fe::Parser::import_module(w, "core", {}, &normalizers);
-
-    auto math_d = Dialect::load("math", {});
-    math_d.register_normalizers(normalizers);
-    fe::Parser::import_module(w, "math", {}, &normalizers);
+    for (const auto& dialect : dialects) fe::Parser::import_module(w, dialect.name(), dialect_paths, &normalizers);
 
     auto mem_t  = mem::type_mem(w);
     auto i32_t  = w.type_int(32);
@@ -292,11 +297,7 @@ TEST(RestrictedDependentTypes, ll) {
         main->app(false, exp_lam, {main->var(0_s), i32_t, R, core::op_bitcast(app_exp, main->var(1)), main->var(3)});
     }
 
-    PipelineBuilder builder;
-    mem_d.add_passes(builder);
-    optimize(w, passes, builder);
+    optimize(w, passes, dialects);
 
-    Backends backends;
-    core_d.register_backends(backends);
     backends["ll"](w, std::cout);
 }

@@ -1,0 +1,84 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin %s --output-ll %t.ll -o -
+
+// TODO: add filecheck
+
+.import core;
+.import mem;
+
+.let _32 = 4294967296;
+.let I32 = .Idx _32;
+.let Tas = (I32, 0);
+
+// We want the functions to be extern.
+// Functions with argstyle might stay until code gen and can not be inlined in general.
+// Therefore, we need to handle them explicitely.
+// As such functions prevent code gen, we want to ignore the extern flag.
+
+.con .extern f1 [mem: %mem.M, a: I32, ret: .Cn [%mem.M, I32]] = {
+    ret (mem,a)
+};
+
+.con .extern f2 [[mem: %mem.M, a: I32], ret: .Cn [%mem.M, I32]] = {
+    ret (mem,a)
+};
+
+.con .extern g1 [mem: %mem.M, a: I32, b:I32, ret: .Cn [%mem.M, I32]] = {
+    .let c = %core.wrap.add _32 0 (a,b);
+    ret (mem,c)
+};
+
+.con .extern g2 [[mem: %mem.M, a: I32, b:I32], ret: .Cn [%mem.M, I32]] = {
+    .let c = %core.wrap.add _32 0 (a,b);
+    ret (mem,c)
+};
+
+.con .extern g3 [[mem: %mem.M, [a: I32, b:I32]], ret: .Cn [%mem.M, I32]] = {
+    .let c = %core.wrap.add _32 0 (a,b);
+    ret (mem,c)
+};
+
+.con .extern g4 [mem: %mem.M, [a: I32, b:I32], ret: .Cn [%mem.M, I32]] = {
+    .let c = %core.wrap.add _32 0 (a,b);
+    ret (mem,c)
+};
+
+.con .extern h1 [mem: %mem.M, a: I32, x:%mem.Ptr (I32, 0), ret: .Cn [%mem.M, I32]] = {
+    ret (mem,a)
+};
+
+.con .extern h2 [mem: %mem.M, [a: I32, x:%mem.Ptr (I32, 0)], ret: .Cn [%mem.M, I32]] = {
+    ret (mem,a)
+};
+
+.con .extern h3 [[mem: %mem.M, a: I32, x:%mem.Ptr (I32, 0)], ret: .Cn [%mem.M, I32]] = {
+    ret (mem,a)
+};
+
+.con .extern h4 [[mem: %mem.M, [a: I32, x:%mem.Ptr (I32, 0)]], ret: .Cn [%mem.M, I32]] = {
+    ret (mem,a)
+};
+
+.con .extern e1 [mem: %mem.M, a: I32, [], ret: .Cn [%mem.M, I32]] = {
+    ret (mem,a)
+};
+
+.con .extern e2 [mem: %mem.M, [a: I32, []], ret: .Cn [%mem.M, I32]] = {
+    ret (mem,a)
+};
+
+.con .extern e3 [[mem: %mem.M, [a: I32, []]], ret: .Cn [%mem.M, I32]] = {
+    ret (mem,a)
+};
+
+.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
+    
+    .let (mem2,p) = %mem.alloc Tas mem;
+    // .let mem3 = %mem.store Tas (mem2, p, argc);
+
+    // .con .extern cont_f1 [mem:%mem.M, v:I32] = {
+    //     f1 ()
+    // };
+    return (mem2, argc)
+
+};

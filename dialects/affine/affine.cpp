@@ -10,9 +10,6 @@
 using namespace thorin;
 
 extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
-    return {"affine",
-            [](thorin::PipelineBuilder& builder) {
-                builder.extend_opt_phase([](thorin::PassMan& man) { man.add<thorin::affine::LowerFor>(); });
-            },
-            [](Passes& passes) { register_pass<affine::lower_for_pass, affine::LowerFor>(passes); }, nullptr, nullptr};
+    return {"affine", [](Passes& passes) { register_pass<affine::lower_for_pass, affine::LowerFor>(passes); }, nullptr,
+            nullptr};
 }

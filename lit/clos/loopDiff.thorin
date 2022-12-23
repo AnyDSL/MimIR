@@ -3,19 +3,21 @@
 
 .import mem;
 .import core;
-.import direct;
 
 .let i32 = .Idx 4294967296;
 .let i8 = .Idx 256;
+.let void_ptr = %mem.Ptr («⊤:.Nat; []», 0);
 
 .con printInteger [mem: %mem.M, val: i32, return : .Cn [%mem.M]];
 .con printNL [mem: %mem.M, return : .Cn [%mem.M]];
+.con time [mem: %mem.M, return : .Cn [%mem.M, void_ptr]];
+.con print_time_diff [mem: %mem.M, t1: void_ptr, t2: void_ptr, return : .Cn [%mem.M]];
 
 .let size = 100:.Nat;
+// .let size = 100000:.Nat;
+.let arr_size = ⊤:.Nat;
 
 .con printArr [mem: %mem.M, arr : %mem.Ptr (<<size; i32>>, 0:.Nat), return : .Cn [%mem.M]] = {
-    .let arr_size = ⊤:.Nat;
-
     .con loop_body [mem: %mem.M, i : i32, continue : .Cn %mem.M] = {
         .let lea = %mem.lea (arr_size, <arr_size; i32>, 0) (arr, i);
         .let (load_mem, val) = %mem.load (i32, 0) (mem, lea);
@@ -44,8 +46,6 @@
 };
 
 .con init [mem: %mem.M, arr : %mem.Ptr (<<size; i32>>, 0:.Nat), offset : i32, return : .Cn [%mem.M]] = {
-    .let arr_size = ⊤:.Nat;
-
     .con loop_body [mem: %mem.M, i : i32, continue : .Cn %mem.M] = {
         .let lea = %mem.lea (arr_size, <arr_size; i32>, 0) (arr, i);
         .let add = %core.wrap.add 4294967296 0 (offset, i);
@@ -72,7 +72,6 @@
 
 
 .con const [mem: %mem.M, arr : %mem.Ptr (<<size; i32>>, 0:.Nat), constValue : i32, return : .Cn [%mem.M]] = {
-    .let arr_size = ⊤:.Nat;
 
     .con loop_body [mem: %mem.M, i : i32, continue : .Cn %mem.M] = {
         .let lea = %mem.lea (arr_size, <arr_size; i32>, 0) (arr, i);
@@ -101,8 +100,6 @@
 
 .con outer [mem: %mem.M, x : i32, return : .Cn [%mem.M]] = {
 
-    .let arr_size = ⊤:.Nat;
-
     .let (alloc_mem_a, a_arr) = %mem.alloc (<<size; i32>>, 0) (mem);
     .let (alloc_mem_b, b_arr) = %mem.alloc (<<size; i32>>, 0) (alloc_mem_a);
     .let (alloc_mem_c, c_arr) = %mem.alloc (<<size; i32>>, 0) (alloc_mem_b);
@@ -116,7 +113,7 @@
     };
 
     .let pb_type = .Cn [%mem.M, .Cn [%mem.M]];
-    .let (alloc_pb_mem, pb_ptr) = %mem.malloc (pb_type, 0) (alloc_mem_cd, 32);
+    .let (alloc_pb_mem, pb_ptr) = %mem.malloc (pb_type, 0) (alloc_mem_cd, 32); // besser slot
 
     .let pb_arr = %core.bitcast (
        %mem.Ptr («⊤:.Nat; pb_type», 0),
@@ -192,23 +189,39 @@
         printArr(mem, ad_arr, print_bd)
     };
 
-    .con loop_head [mem: %mem.M, i : i32] = {
-        .con exit [mem: %mem.M] = {
-            .let (backward_pass_mem, backward_pass) = %mem.load (pb_type, 0) (mem, lea_pb);
-            backward_pass (backward_pass_mem, print_ad)
+
+    .con time_start_cont [mem:%mem.M, start_time:void_ptr] = {
+        .con timer [mem:%mem.M] = {
+            .con time_end_cont [mem:%mem.M, end_time:void_ptr] = {
+                print_time_diff (mem, start_time, end_time, print_ad)
+            };
+            time (mem, time_end_cont)
+            // print_ad(mem)
         };
 
-        .con yield [mem: %mem.M] = {
-            loop_head( mem, %core.wrap.add 4294967296 0 (i, 1:i32) )
+        .con loop_head [mem: %mem.M, i : i32] = {
+            .con exit [mem: %mem.M] = {
+                .let (backward_pass_mem, backward_pass) = %mem.load (pb_type, 0) (mem, lea_pb);
+                backward_pass (backward_pass_mem, timer)
+            };
+
+            .con yield [mem: %mem.M] = {
+                // loop_head( mem, %core.wrap.add (0, 4294967296) (i, 1:i32) )
+                loop_head( mem, %core.wrap.add 4294967296 0 (i, 1:i32) )
+            };
+
+            .con enter [mem: %mem.M] = {
+                loop_body ( mem, i, yield )
+            };
+
+            .let condition = %core.icmp.ul 4294967296 (i, %core.bitcast (i32, .Nat) size);
+            .let target = (exit, enter)#condition;
+            target ( mem )
+        // .con yield [mem: %mem.M] = {
+        //     loop_head( mem, %core.wrap.add 4294967296 0 (i, 1:i32) )
         };
 
-        .con enter [mem: %mem.M] = {
-            loop_body ( mem, i, yield )
-        };
-
-        .let condition = %core.icmp.ul 4294967296 (i, %core.bitcast (i32, .Nat) size);
-        .let target = (exit, enter)#condition;
-        target ( mem )
+        loop_head ( mem, 0:i32 )
     };
 
     .con init_a [mem: %mem.M] = {
@@ -217,7 +230,7 @@
                 .con init_ad [mem: %mem.M] = {
                     .con init_bd [mem: %mem.M] = {
                         .con init_cd [mem: %mem.M] = {
-                            loop_head ( mem, 0:i32 )
+                            time (mem, time_start_cont)
                         };
 
                         const(mem, cd_arr, 1:i32, init_cd)

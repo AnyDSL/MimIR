@@ -53,6 +53,7 @@
 /// `combine_pass_list K (pass_list pass11 ... pass1N) ... (pass_list passK1 ... passKM) = pass_list pass11 ... p1N ... passK1 ... passKM`
 .ax %compile.combine_pass_list: Π [n:.Nat] -> «n; PassList» -> PassList, normalize_combine_pass_list;
 /// `single_pass_phase pass = passes_to_phase 1 pass`
+// TODO: as let instead of axiom
 .ax %compile.single_pass_phase: %compile.Pass -> %compile.Phase, normalize_single_pass_phase;
 ///
 /// ### %compile.combined_phase
@@ -81,6 +82,7 @@
 .ax %compile.ret_wrap_pass: %compile.Pass;
 /// has to be registered in the pipeline
 .ax %compile.nullptr_pass: %compile.Pass;
+.ax %compile.internal_cleanup_pass: %compile.Pass;
 ///
 /// ### Phases
 /// 
@@ -102,7 +104,7 @@
 /// 
 /// ### Pipelines
 /// 
-.let default_pipeline = {
+.let default_core_pipeline = {
     .let nullptr = %compile.nullptr_pass;
     %compile.pipe
         (%compile.single_pass_phase nullptr)
@@ -110,10 +112,11 @@
         (%compile.single_pass_phase %compile.eta_red_pass)
         (%compile.single_pass_phase (%compile.tail_rec_elim_pass nullptr))
         optimization_phase
+        (%compile.single_pass_phase %compile.internal_cleanup_pass)
         (%compile.single_pass_phase %compile.lam_spec_pass)
         (%compile.single_pass_phase %compile.ret_wrap_pass)
 };
+.lam .extern _fallback_compile [] -> Pipeline = {
+    default_core_pipeline
+};
 
-// .lam .extern _default_compile [] -> Pipeline = {
-//     default_pipeline
-// };
