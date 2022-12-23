@@ -61,7 +61,7 @@ void register_pass(Passes& passes, CArgs&&... args) {
 template<class A, class P, class... CArgs>
 void register_phase(Passes& passes, CArgs&&... args) {
     passes[flags_t(Axiom::Base<A>)] = [... args = std::forward<CArgs>(args)](World&, PipelineBuilder& builder,
-                                                                             const Def* app) {
+                                                                             const Def*) {
         builder.add_phase<P>(args...);
     };
 }

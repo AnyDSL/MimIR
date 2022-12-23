@@ -14,10 +14,20 @@ void emit(World&, std::ostream&);
 
 class OCamlEmitter : public Phase {
 public:
-    OCamlEmitter(World& world)
-        : Phase(world, "ocaml_emitter", false) {}
+// OCamlEmitter(World& world, std::ostream& os)
+OCamlEmitter(World& world)
+        : Phase(world, "ocaml_emitter", false)
+        , os_(std::move(std::cout))
+        {
+            // os_ = std::cout;
+         }
 
-    void start() override { emit(world(), std::cout); }
+    void start() override { emit(world(), os_); }
+
+private:
+
+    std::ostream&& os_;
+
 };
 
 } // namespace haskell
