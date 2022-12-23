@@ -14,7 +14,7 @@ using namespace thorin;
 extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
     return {"opt",
             [](Passes& passes) {
-                passes[flags_t(Axiom::Base<opt::dialect_select>)] = [&](World& world, PipelineBuilder& builder,
+                passes[flags_t(Axiom::Base<compile::dialect_select>)] = [&](World& world, PipelineBuilder& builder,
                                                                         const Def* app) {
                     auto [ax, args]    = collect_args(app);
                     auto dialect_axiom = args[1]->as<Axiom>();
@@ -40,5 +40,5 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                     }
                 };
             },
-            nullptr, [](Normalizers& normalizers) { opt::register_normalizers(normalizers); }};
+            nullptr, nullptr};
 }
