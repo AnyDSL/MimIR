@@ -73,7 +73,7 @@
         (%compile.single_pass_phase (%compile.tail_rec_elim_pass nullptr))
         // optimize
         (%compile.pass_phase 
-          (%compile.combine_pass_list (⊤:.Nat)
+          (%compile.combine_pass_list (3:.Nat)
           (
             optimization_pass_list,
             %compile.pass_list
@@ -101,7 +101,7 @@
         ))
         // CodeGenPrep
         (%compile.pass_phase 
-          (%compile.combine_pass_list (⊤:.Nat)
+          (%compile.combine_pass_list (3:.Nat)
           (
             %compile.pass_list
               %compile.ret_wrap_pass,
