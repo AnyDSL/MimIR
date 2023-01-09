@@ -141,6 +141,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
                 return it->second;
         }
 
+        if (!nom->is_set()) return nom;
         world().DLOG("rewrite nom lam {}", nom);
 
         bool is_bound = sched_.scope().bound(nom) || nom == curr_lam;
