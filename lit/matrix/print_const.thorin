@@ -1,0 +1,34 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -d matrix -d affine -d direct -d clos -o - --output-ll %t.ll %s 
+// RUN: clang %S/lib.c %t.ll -o %t -Wno-override-module
+// RUN: %t 2 3 | FileCheck %s
+
+.import core;
+.import mem;
+.import matrix;
+
+.let I32 = .Idx 4294967296;
+.let MT = (2, (2,4), I32);
+
+.con print_int_matrix [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (⊤:.Nat,⊤:.Nat), I32), return : .Cn [%mem.M]];
+
+.con print_int_matrix_wrap [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (k,l), I32), return : .Cn [%mem.M]] = {
+    .let m2 = %core.bitcast  (%matrix.Mat (2,(⊤:.Nat,⊤:.Nat),I32),%matrix.Mat (2,(k,l),I32)) m;
+    print_int_matrix(mem, k, l, m2, return)
+};
+
+
+
+.con .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, .Idx 4294967296]] = {
+    .con return_cont [mem:%mem.M] = return (mem, 0:I32);
+
+    .let c = argc;
+    .let (mem2,m) = %matrix.constMat MT (mem,c);
+
+    // return_cont mem2
+    // print_int_matrix (mem2, 2, 4, m, return_cont)
+    print_int_matrix_wrap (mem2, 2, 4, m, return_cont)
+};
+
+// CHECK: 3, 3, 3, 3,
+// CHECK: 3, 3, 3, 3,
