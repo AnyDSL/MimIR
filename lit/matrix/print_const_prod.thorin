@@ -1,5 +1,5 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d matrix -d affine -d direct -d clos -o - --output-ll %t.ll %s 
+// RUN: %thorin -d matrix -d affine -d direct -d clos -d math -o - --output-ll %t.ll %s 
 // RUN: clang %S/lib.c %t.ll -o %t -Wno-override-module
 // RUN: %t 2 3 | FileCheck %s
 
@@ -33,29 +33,14 @@
 .con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
     .con return_cont [mem:%mem.M] = return (mem, 0:I32);
 
-    // .let c = argc;
-    // .let d = %core.wrap.add _32 0 (argc, 2:I32);
-    // .let (mem2,m1) = %matrix.constMat MT1 (mem,c);
-    // // .let (mem2,m1) = %matrix.constMat MT1 (mem,7:I32);
-    // // .let mem3 = mem2;
-    // .let (mem3,m2) = %matrix.constMat MT2 (mem2,d);
     .let c = 3.0:F64;
     .let d = 5.0:F64;
     .let (mem2,m1) = %matrix.constMat MT1 (mem,c);
     .let (mem3,m2) = %matrix.constMat MT2 (mem2,d);
-    // .let mem3 = mem2;
-
-    // return_cont mem2
-    // print_int_matrix (mem2, 2, 4, m, return_cont)
-    // print_int_matrix_wrap (mem3, 2, 4, m1, return_cont)
-    // print_int_matrix_wrap (mem3, 4, 3, m2, return_cont)
-    // print_double_matrix_wrap (mem3, 2, 4, m1, return_cont)
-    // print_double_matrix_wrap (mem3, 4, 3, m2, return_cont)
-    // f (mem3, m1, m2, return_cont)
 
     .let (mem4, mP) = %matrix.prod (2,4,3, _f64) (mem3, m1, m2);
     print_double_matrix_wrap (mem4, 2, 3, mP, return_cont)
 };
 
-// CHECK: 3, 3, 3, 3,
-// CHECK: 3, 3, 3, 3,
+// CHECK: 60.00, 60.00, 60.00, 
+// CHECK: 60.00, 60.00, 60.00, 
