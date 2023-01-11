@@ -1,0 +1,9 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin %s -o - | FileCheck %s
+
+.import core;
+
+.con .extern f [i :.Idx 256, return : .Cn .Idx 256] = {
+    .let s = "hello world";
+    return (42:(.Idx 256))
+};

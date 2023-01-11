@@ -1,3 +1,9 @@
+// ./build/bin/thorin -d matrix lit/matrix/print_const_dyn_mat.thorin  -d affine -d direct -d clos -o - -VVVV --output-ll T.ll
+
+
+// TODO: allocation error due to dynamic size,
+// add_mem error (bitcast gets (mem, mat) as argument at some point)
+
 .import core;
 .import mem;
 .import matrix;
@@ -8,10 +14,12 @@
 .let String = %mem.Ptr («⊤:.Nat; .Idx 256», 0);
 
 .con atoi [%mem.M, String, .Cn [%mem.M, I32]];
-.con print_int_matrix [%mem.M, 
-    k:.Nat, l:.Nat, 
-    %matrix.Mat (2,(k,l),I32),
-    .Cn [%mem.M]];
+.con print_int_matrix [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (⊤:.Nat,⊤:.Nat), I32), return : .Cn [%mem.M]];
+
+.con print_int_matrix_wrap [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (k,l), I32), return : .Cn [%mem.M]] = {
+    .let m2 = %core.bitcast  (%matrix.Mat (2,(⊤:.Nat,⊤:.Nat),I32),%matrix.Mat (2,(k,l),I32)) m;
+    print_int_matrix(mem, k, l, m2, return)
+};
 
 .con .extern f [mem : %mem.M, 
     [k:.Nat, l:.Nat],
@@ -20,7 +28,7 @@
     .let (mem2, M) = %matrix.constMat (2,(k,l),I32) (mem, 3:I32);
     // .let (mem2, N) = %matrix.constMat (2,(k,l),I32) (mem, 5:I32);
 
-    print_int_matrix (mem2, k, l, M, return)
+    print_int_matrix_wrap (mem2, k, l, M, return)
     // return mem2
 };
 
