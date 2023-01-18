@@ -38,7 +38,7 @@ void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue&
             pnode->succs.push_back(node);
             init_node |= inserted;
         }
-    } else if (fd->has_dep(Dep::Var) && !fd->isa<Tuple>()) {
+    } else if (fd->dep() == Dep::Var && !fd->isa<Tuple>()) {
         // Note: Var's can still have Def::Top, if their type is a nom!
         // So the first case is *not* redundant
         node->add_fvs(fd);

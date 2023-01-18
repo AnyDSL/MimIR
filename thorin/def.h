@@ -128,6 +128,10 @@ inline unsigned operator&(unsigned d1, Dep d2) { return d1 & unsigned(d2); }
 inline unsigned operator|(unsigned d1, Dep d2) { return d1 | unsigned(d2); }
 inline unsigned operator&(Dep d1, unsigned d2) { return unsigned(d1) & d2; }
 inline unsigned operator|(Dep d1, unsigned d2) { return unsigned(d1) | d2; }
+inline unsigned operator==(unsigned d1, Dep d2) { return d1 == unsigned(d2); }
+inline unsigned operator!=(unsigned d1, Dep d2) { return d1 != unsigned(d2); }
+inline unsigned operator==(Dep d1, unsigned d2) { return unsigned(d1) == d2; }
+inline unsigned operator!=(Dep d1, unsigned d2) { return unsigned(d1) != d2; }
 
 /// Use as mixin to wrap all kind of Def::proj and Def::projs variants.
 #define THORIN_PROJ(NAME, CONST)                                                                                   \
