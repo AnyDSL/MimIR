@@ -43,8 +43,8 @@ const Def* Infer::find(const Def* def) {
 }
 
 const Def* Infer::unite(Ref r1, Ref r2) {
-    auto d1 = *r1;
-    auto d2 = *r2;
+    auto d1 = *r1; // find
+    auto d2 = *r2; // find
 
     if (d1 == d2) return d1;
     auto i1 = d1->isa_nom<Infer>();
@@ -80,7 +80,7 @@ const Def* Infer::inflate(Ref ty, u64 n, Ref elem_t) {
  * Checker
  */
 
-bool Checker::equiv(Ref d1, Ref d2, Ref dbg, bool opt) {
+bool Checker::equiv(Ref d1, Ref d2, Ref dbg) {
     if (d1 == d2) return true;
     if (!d1 || !d2) return false;
 
@@ -90,7 +90,7 @@ bool Checker::equiv(Ref d1, Ref d2, Ref dbg, bool opt) {
     if ((!i1 && !d1->is_set()) || (!i2 && !d2->is_set())) return false;
 
     if (i1 && i2) {
-        if (i1->is_set() && i2->is_set()) return equiv(i1->op(), i2->op(), dbg, opt);
+        if (i1->is_set() && i2->is_set()) return equiv(i1->op(), i2->op(), dbg);
         if (i1->is_set() && !i2->is_set()) {
             i2->set(i1->op());
             return true;
@@ -99,7 +99,7 @@ bool Checker::equiv(Ref d1, Ref d2, Ref dbg, bool opt) {
             i1->set(i2->op());
             return true;
         }
-        return opt;
+        return true;
     } else if (!i1 && i2) {
         std::swap(d1, d2);
     } else if (i1 && !i2) {
@@ -112,12 +112,8 @@ bool Checker::equiv(Ref d1, Ref d2, Ref dbg, bool opt) {
         if (infer->is_set()) {
             d1 = infer->op();
         } else {
-            if (opt) {
-                infer->set(d2);
-                return true;
-            } else {
-                return false;
-            }
+            infer->set(d2);
+            return true;
         }
     }
 
@@ -130,26 +126,25 @@ bool Checker::equiv(Ref d1, Ref d2, Ref dbg, bool opt) {
         }
     }
 
-    // TODO cope with opt
-    bool res                  = equiv_internal(d1, d2, dbg, opt);
+    bool res                  = equiv_internal(d1, d2, dbg);
     equiv_[std::pair(d1, d2)] = res ? Equiv::Equiv : Equiv::Distinct;
     return res;
 }
 
-bool Checker::equiv_internal(Ref d1, Ref d2, Ref dbg, bool opt) {
-    if (!equiv(d1->type(), d2->type(), dbg, opt)) return false;
-    if (d1->isa<Top>() || d2->isa<Top>()) return equiv(d1->type(), d2->type(), dbg, opt);
+bool Checker::equiv_internal(Ref d1, Ref d2, Ref dbg) {
+    if (!equiv(d1->type(), d2->type(), dbg)) return false;
+    if (d1->isa<Top>() || d2->isa<Top>()) return equiv(d1->type(), d2->type(), dbg);
 
     if (auto n1 = d1->isa_nom()) {
         if (auto n2 = d2->isa_nom()) vars_.emplace_back(n1, n2);
     }
 
     if (d1->isa<Sigma, Arr>()) {
-        if (!equiv(d1->arity(), d2->arity(), dbg, opt)) return false;
+        if (!equiv(d1->arity(), d2->arity(), dbg)) return false;
 
         if (auto a = isa_lit(d1->arity())) {
             for (size_t i = 0; i != a; ++i) {
-                if (!equiv(d1->proj(*a, i), d2->proj(*a, i), dbg, opt)) return false;
+                if (!equiv(d1->proj(*a, i), d2->proj(*a, i), dbg)) return false;
             }
             return true;
         }
@@ -165,7 +160,7 @@ bool Checker::equiv_internal(Ref d1, Ref d2, Ref dbg, bool opt) {
         return false;
     }
 
-    return std::ranges::equal(d1->ops(), d2->ops(), [&](auto op1, auto op2) { return equiv(op1, op2, dbg, opt); });
+    return std::ranges::equal(d1->ops(), d2->ops(), [&](auto op1, auto op2) { return equiv(op1, op2, dbg); });
 }
 
 bool Checker::assignable(Ref type, Ref val, Ref dbg /*= {}*/) {
@@ -209,7 +204,7 @@ const Def* Checker::is_uniform(Defs defs, Ref dbg) {
     assert(!defs.empty());
     auto first = defs.front();
     auto ops   = defs.skip_front();
-    return std::ranges::all_of(ops, [&](auto op) { return equiv(first, op, dbg, false); }) ? first : nullptr;
+    return std::ranges::all_of(ops, [&](auto op) { return equiv(first, op, dbg); }) ? first : nullptr;
 }
 
 /*

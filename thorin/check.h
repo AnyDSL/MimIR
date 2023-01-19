@@ -54,9 +54,7 @@ public:
     World& world() const { return *world_; }
 
     /// Are @p d1 and @p d2 α-equivalent?
-    /// If both @p d1 and @p d2 are Def::unset Infer%s, @p opt%imisitc indicates the return value.
-    /// Usually, you want to be **opt**imisitic; Checker::is_uniform, however, is pessimistic.
-    bool equiv(Ref d1, Ref d2, Ref dbg, bool opt = true);
+    bool equiv(Ref d1, Ref d2, Ref dbg);
 
     /// Can @p value be assigned to sth of @p type?
     /// @note This is different from `equiv(type, value->type(), dbg)` since @p type may be dependent.
@@ -68,7 +66,7 @@ public:
     static void swap(Checker& c1, Checker& c2) { std::swap(c1.world_, c2.world_); }
 
 private:
-    bool equiv_internal(Ref, Ref, Ref, bool);
+    bool equiv_internal(Ref, Ref, Ref);
 
     enum class Equiv {
         Distinct,
