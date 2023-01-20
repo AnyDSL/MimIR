@@ -10,7 +10,7 @@
 
 .lam f [n:.Nat, w:.Nat] -> .Cn[.Idx n, .Cn[.Idx n]] = {
     .con f_cont [a:(.Idx n), return: .Cn (.Idx n)] = {
-        .let b = %core.conv.u2u n (42:(.Idx _32));
+        .let b = %core.conv.u n (42:(.Idx _32));
         .let c = %core.wrap.add w (a,b);
         return c
     };
