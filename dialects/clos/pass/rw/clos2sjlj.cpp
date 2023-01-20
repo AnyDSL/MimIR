@@ -157,7 +157,7 @@ void Clos2SJLJ::enter() {
     auto m0 = body->arg(0);
     assert(m0->type() == mem::type_mem(w));
     auto [m1, tag] = op_setjmp(m0, cur_jbuf_)->projs<2>();
-    tag            = op(core::conv::s2s, w.type_idx(branches.size()), tag);
+    tag            = w.call(core::conv::s, branches.size(), tag);
     auto branch    = w.extract(w.tuple(branches), tag);
     curr_nom()->set_body(clos_apply(branch, m1));
 }

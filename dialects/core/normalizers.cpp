@@ -513,12 +513,12 @@ const Def* normalize_conv(const Def* dst_t, const Def* c, const Def* x, const De
 
     if (s_t == d_t) return x;
     if (x->isa<Bot>()) return world.bot(d_t, dbg);
-    if constexpr (id == conv::s2s) {
-        if (ls && ld && *ld < *ls) return op(conv::u2u, d_t, x, dbg); // just truncate - we don't care for signedness
+    if constexpr (id == conv::s) {
+        if (ls && ld && *ld < *ls) return world.dcall(dbg, conv::u, d, x); // just truncate - we don't care for signedness
     }
 
     if (auto l = isa_lit(x); l && ls && ld) {
-        if constexpr (id == conv::u2u) {
+        if constexpr (id == conv::u) {
             if (*ld == 0) return world.lit(d_t, *l); // I64
             return world.lit(d_t, *l % *ld);
         }
