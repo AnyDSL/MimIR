@@ -570,7 +570,7 @@ inline u64 pad(u64 offset, u64 align) {
 // and every occurance of these types in a later phase
 // TODO Pi and others
 template<trait id>
-const Def* normalize_trait(const Def*, const Def* callee, const Def* type, const Def* dbg) {
+const Def* normalize_trait(const Def* nat, const Def* callee, const Def* type, const Def* dbg) {
     auto& world = type->world();
     if (auto ptr = match<mem::Ptr>(type)) {
         return world.lit_nat(8);
@@ -614,7 +614,7 @@ const Def* normalize_trait(const Def*, const Def* callee, const Def* type, const
     }
 
 out:
-    return world.raw_app(type, callee, type, dbg);
+    return world.raw_app(nat, callee, type, dbg);
 }
 
 const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
