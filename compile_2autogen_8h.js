@@ -1,31 +1,31 @@
 var compile_2autogen_8h =
 [
-    [ "thorin::Axiom::Match< compile::beta_red_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1beta__red__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a4999ea47cb4217d74e23da5d7d85e859", null ]
-    ] ],
-    [ "thorin::Axiom::Match< compile::ret_wrap_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1ret__wrap__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#abeaa38565a71c239a18ba5af648f5d26", null ]
-    ] ],
-    [ "thorin::Axiom::Match< compile::Pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1Pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#ac5add5e6a2001bbdc8e0e72bcd140550", null ]
-    ] ],
-    [ "thorin::Axiom::Match< compile::eta_red_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1eta__red__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#acf9f4cd3413f82765cccbb4743be7981", null ]
-    ] ],
-    [ "thorin::Axiom::Match< compile::internal_cleanup_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1internal__cleanup__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a28596b833e6491553d741e4f4a6ea212", null ]
-    ] ],
-    [ "thorin::Axiom::Match< compile::lam_spec_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1lam__spec__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a53c6c93695a175aedbe44e5c801f19e4", null ]
-    ] ],
     [ "thorin::Axiom::Match< compile::nullptr_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1nullptr__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#a0414b85bcde776072958b43a3e667c4f", null ]
+    ] ],
+    [ "thorin::Axiom::Match< compile::partial_eval_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1partial__eval__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a253f444b07e313a2d62569d2c9a38147", null ]
     ] ],
     [ "thorin::Axiom::Match< compile::Phase >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1Phase_01_4", [
       [ "type", "classthorin_1_1Axiom.html#a862de53aa535aa101e327833e9eecd6f", null ]
     ] ],
-    [ "thorin::Axiom::Match< compile::partial_eval_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1partial__eval__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a253f444b07e313a2d62569d2c9a38147", null ]
+    [ "thorin::Axiom::Match< compile::eta_red_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1eta__red__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#acf9f4cd3413f82765cccbb4743be7981", null ]
+    ] ],
+    [ "thorin::Axiom::Match< compile::beta_red_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1beta__red__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a4999ea47cb4217d74e23da5d7d85e859", null ]
+    ] ],
+    [ "thorin::Axiom::Match< compile::lam_spec_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1lam__spec__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a53c6c93695a175aedbe44e5c801f19e4", null ]
+    ] ],
+    [ "thorin::Axiom::Match< compile::Pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1Pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#ac5add5e6a2001bbdc8e0e72bcd140550", null ]
+    ] ],
+    [ "thorin::Axiom::Match< compile::ret_wrap_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1ret__wrap__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#abeaa38565a71c239a18ba5af648f5d26", null ]
+    ] ],
+    [ "thorin::Axiom::Match< compile::internal_cleanup_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1internal__cleanup__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a28596b833e6491553d741e4f4a6ea212", null ]
     ] ],
     [ "THORIN_compile_NORMALIZER_IMPL", "compile_2autogen_8h.html#a60a6c0a2c35f3aff109d80851e24fddc", null ],
     [ "beta_red_pass", "compile_2autogen_8h.html#aa2464c44f0ac39d0deda999a0706419b", null ],
