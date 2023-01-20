@@ -56,7 +56,7 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
     const Def* env =
         new_lam->var(Clos_Env_Param, (mode != No_Env) ? w.dbg("closure_env") : lam->var(Clos_Env_Param)->dbg());
     if (mode == Box) {
-        auto env_mem = w.dcall<mem::load>({}, Defs({lcm, env}));
+        auto env_mem = w.call<mem::load>(Defs({lcm, env}));
         lcm          = w.extract(env_mem, 0_u64, w.dbg("mem"));
         env          = w.extract(env_mem, 1_u64, w.dbg("closure_env"));
     } else if (mode == Unbox) {
@@ -121,7 +121,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
             auto mem_ptr = (c.get() == attr::esc) ? mem::op_alloc(env->type(), lcm_) : mem::op_slot(env->type(), lcm_);
             auto mem     = w.extract(mem_ptr, 0_u64);
             auto env_ptr = mem_ptr->proj(1_u64, w.dbg(fn->name() + "_env"));
-            lcm_         = w.dcall<mem::store>({}, Defs({mem, env_ptr, env}));
+            lcm_         = w.call<mem::store>(Defs({mem, env_ptr, env}));
             map(lvm_, lcm_);
             env = env_ptr;
         }

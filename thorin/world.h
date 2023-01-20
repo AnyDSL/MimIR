@@ -431,6 +431,8 @@ public:
     const Def* implicits2meta(const Implicits&);
 
     // clang-format off
+    template<class Id, class... Args> const Def* call(Id id, Args&&... args) { return dcall_({}, ax(id),   std::forward<Args>(args)...); }
+    template<class Id, class... Args> const Def* call(       Args&&... args) { return dcall_({}, ax<Id>(), std::forward<Args>(args)...); }
     template<class Id, class... Args> const Def* dcall(Ref dbg, Id id, Args&&... args) { return dcall_(dbg, ax(id),   std::forward<Args>(args)...); }
     template<class Id, class... Args> const Def* dcall(Ref dbg,        Args&&... args) { return dcall_(dbg, ax<Id>(), std::forward<Args>(args)...); }
     template<class T, class... Args> const Def* dcall_(Ref dbg, Ref callee, T arg, Args&&... args) { return dcall_(dbg, iapp(callee, arg, Debug(dbg)), std::forward<Args>(args)...); }
