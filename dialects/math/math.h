@@ -113,7 +113,7 @@ inline const Lit* lit_f(World& w, nat_t width, f64 val, const Def* dbg = {}) {
 inline const Def* op_rminus(VMode m, const Def* a, const Def* dbg = {}) {
     World& w = a->world();
     auto s   = isa_f(a->type());
-    return w.dcall(dbg, arith::sub, mode(w, m), Defs({lit_f(w, *s, -0.0), a}));
+    return w.dcall(dbg, arith::sub, mode(w, m), Defs{lit_f(w, *s, -0.0), a});
 }
 ///@}
 

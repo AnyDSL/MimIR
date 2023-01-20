@@ -23,10 +23,6 @@ inline const Def* mode(World& w, VMode m) {
 
 /// @name fn - these guys yield the final function to be invoked for the various operations
 ///@{
-inline const Def* fn(wrap o, const Def* s, VMode m, const Def* dbg = {}) {
-    World& w = s->world();
-    return w.app(w.app(w.ax(o), s), mode(w, m), dbg);
-}
 inline const Def* fn(conv o, const Def* src_s, const Def* dst_s, const Def* dbg = {}) {
     World& w = src_s->world();
     return w.app(w.app(w.ax(o), src_s, dbg), dst_s, dbg);
@@ -39,10 +35,6 @@ inline const Def* fn_bitcast(const Def* dst_t, const Def* src_t, const Def* dbg 
 
 /// @name op - these guys build the final function application for the various operations
 ///@{
-inline const Def* op(wrap o, VMode m, const Def* a, const Def* b, const Def* dbg = {}) {
-    World& w = a->world();
-    return w.app(fn(o, w.iinfer(a), m), {a, b}, dbg);
-}
 inline const Def* op(conv o, const Def* dst_t, const Def* src, const Def* dbg = {}) {
     World& w = dst_t->world();
     auto d   = Idx::size(dst_t);
@@ -92,7 +84,7 @@ inline const Def* insert_unsafe(const Def* d, u64 i, const Def* val, const Def* 
 inline const Def* op_wminus(VMode m, const Def* a, const Def* dbg = {}) {
     World& w = a->world();
     auto s   = as_lit(w.iinfer(a));
-    return op(wrap::sub, m, w.lit_idx(s, 0), a, dbg);
+    return w.dcall(dbg, wrap::sub, mode(w, m), Defs{w.lit_idx(s, 0), a});
 }
 ///@}
 

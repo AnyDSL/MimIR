@@ -204,7 +204,7 @@ reassociate(Id id, World& world, [[maybe_unused]] const App* ab, const Def* a, c
     if (lx && !check_mode(xy->decurry())) return nullptr;
     if (lz && !check_mode(zw->decurry())) return nullptr;
 
-    make_op = [&](const Def* a, const Def* b) { return world.dcall(dbg, id, mode, Defs({a, b})); };
+    make_op = [&](const Def* a, const Def* b) { return world.dcall(dbg, id, mode, Defs{a, b}); };
 
     if (la && lz) return make_op(make_op(la, lz), w);             // (1)
     if (lx && lz) return make_op(make_op(lx, lz), make_op(y, w)); // (2)
@@ -264,7 +264,7 @@ const Def* normalize_arith(const Def* type, const Def* c, const Def* arg, const 
 
         if (a == b) {
             switch (id) {
-                case arith::add: return world.dcall(dbg, arith::mul, mode, Defs({lit_f(world, *w, 2.0), a})); // a + a -> 2 * a
+                case arith::add: return world.dcall(dbg, arith::mul, mode, Defs{lit_f(world, *w, 2.0), a}); // a + a -> 2 * a
                 case arith::sub: return lit_f(world, *w, 0.0);                                     // a - a -> 0
                 case arith::mul: break;
                 case arith::div: return lit_f(world, *w, 1.0);                                     // a / a -> 1
@@ -291,8 +291,8 @@ const Def* normalize_extrema(const Def* type, const Def* c, const Def* arg, cons
 
     if (lm && *lm & (Mode::nnan | Mode::nsz)) { // if ignore NaNs and signed zero, then *imum -> *num
         switch (id) {
-            case extrema::ieee754min: return world.dcall(dbg, extrema::fmin, m, Defs({a, b}));
-            case extrema::ieee754max: return world.dcall(dbg, extrema::fmax, m, Defs({a, b}));
+            case extrema::ieee754min: return world.dcall(dbg, extrema::fmin, m, Defs{a, b});
+            case extrema::ieee754max: return world.dcall(dbg, extrema::fmax, m, Defs{a, b});
             default: break;
         }
     }
