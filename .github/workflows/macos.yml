@@ -8,7 +8,7 @@ on:
 jobs:
   build-and-test:
     name: Build and test ${{matrix.build-type}} mode
-    runs-on: macos-latest
+    runs-on: macos-11
     strategy:
       matrix:
         build-type: [Debug, Release]
