@@ -40,6 +40,10 @@ public:
     /// [Union by rank](https://en.wikipedia.org/wiki/Disjoint-set_data_structure#Union_by_rank).
     static const Def* find(const Def*);
     static const Def* unite(Ref, Ref);
+
+private:
+    flags_t rank() const { return flags(); }
+    flags_t& rank() { return flags_; }
     ///@}
 
     static constexpr auto Node = Node::Infer;

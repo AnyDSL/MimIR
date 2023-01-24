@@ -50,8 +50,28 @@ const Def* Infer::unite(Ref r1, Ref r2) {
     auto i1 = d1->isa_nom<Infer>();
     auto i2 = d2->isa_nom<Infer>();
 
-    // if (d1->flags() < d2->flags())
-    return nullptr;
+    if (i1 && i2) {
+        // make sure i1 is heavier or equal
+        if (i1->rank() < i2->rank()) std::swap(i1, i2);
+
+        // make i1 new root
+        i2->set(i1);
+        if (i1->rank() == i2->rank()) ++i1->rank();
+
+        return i1;
+    }
+
+    if (i1) {
+        i1->set(d2);
+        return d2;
+    }
+
+    if (i2) {
+        i2->set(d1);
+        return d1;
+    }
+
+    return nullptr; // cannot unite
 }
 
 const Def* Infer::inflate(Ref ty, Defs elems_t) {
