@@ -53,6 +53,7 @@ const Def* Infer::inflate(Ref ty, Defs elems_t) {
     return op();
 }
 
+// TODO try to merge with above
 const Def* Infer::inflate(Ref ty, u64 n, Ref elem_t) {
     auto& w = world();
     if (!is_set()) {
