@@ -42,38 +42,6 @@ const Def* Infer::find(const Def* def) {
     return res;
 }
 
-const Def* Infer::unite(Ref r1, Ref r2) {
-    auto d1 = *r1; // find
-    auto d2 = *r2; // find
-
-    if (d1 == d2) return d1;
-    auto i1 = d1->isa_nom<Infer>();
-    auto i2 = d2->isa_nom<Infer>();
-
-    if (i1 && i2) {
-        // make sure i1 is heavier or equal
-        if (i1->rank() < i2->rank()) std::swap(i1, i2);
-
-        // make i1 new root
-        i2->set(i1);
-        if (i1->rank() == i2->rank()) ++i1->rank();
-
-        return i1;
-    }
-
-    if (i1) {
-        i1->set(d2);
-        return d2;
-    }
-
-    if (i2) {
-        i2->set(d1);
-        return d1;
-    }
-
-    return nullptr; // cannot unite
-}
-
 const Def* Infer::inflate(Ref ty, Defs elems_t) {
     auto& w = world();
     if (!is_set()) {
@@ -100,41 +68,32 @@ const Def* Infer::inflate(Ref ty, u64 n, Ref elem_t) {
  * Checker
  */
 
-bool Checker::equiv(Ref d1, Ref d2, Ref dbg) {
+bool Checker::equiv(Ref r1, Ref r2, Ref dbg) {
+    auto d1 = *r1; // find
+    auto d2 = *r2; // find
+
     if (d1 == d2) return true;
     if (!d1 || !d2) return false;
 
-    // normalize: Infer to the left; smaller gid to the left (with this priority)
     auto i1 = d1->isa_nom<Infer>();
     auto i2 = d2->isa_nom<Infer>();
+
     if ((!i1 && !d1->is_set()) || (!i2 && !d2->is_set())) return false;
 
     if (i1 && i2) {
-        if (i1->is_set() && i2->is_set()) return equiv(i1->op(), i2->op(), dbg);
-        if (i1->is_set() && !i2->is_set()) {
-            i2->set(i1->op());
-            return true;
-        }
-        if (!i1->is_set() && i2->is_set()) {
-            i1->set(i2->op());
-            return true;
-        }
+        // union by rank
+        if (i1->rank() < i2->rank()) std::swap(i1, i2); // make sure i1 is heavier or equal
+        i2->set(i1);                                    // make i1 new root
+        if (i1->rank() == i2->rank()) ++i1->rank();
         return true;
-    } else if (!i1 && i2) {
-        std::swap(d1, d2);
-    } else if (i1 && !i2) {
-        // do nothing
+    } else if (i1) {
+        i1->set(d2);
+        return true;
+    } else if (i2) {
+        i2->set(d1);
+        return true;
     } else if (!i1 && !i2) {
-        if (d1->gid() > d2->gid()) std::swap(d1, d2);
-    }
-
-    if (auto infer = d1->isa_nom<Infer>()) {
-        if (infer->is_set()) {
-            d1 = infer->op();
-        } else {
-            infer->set(d2);
-            return true;
-        }
+        if (d1->gid() > d2->gid()) std::swap(d1, d2); // normalize
     }
 
     if (auto [it, ins] = equiv_.emplace(std::pair(d1, d2), Equiv::Unknown); !ins) {
