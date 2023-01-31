@@ -470,7 +470,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
         return parse_tuple_ptrn(track, false, sym);
     }
 
-    auto apos = accept(Tok::Tag::T_apos);
+    auto apos   = accept(Tok::Tag::T_apos);
     bool rebind = apos.has_value();
 
     if (ahead(0).isa(Tok::Tag::M_id)) {
