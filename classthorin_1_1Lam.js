@@ -5,6 +5,7 @@ var classthorin_1_1Lam =
     [ "app", "classthorin_1_1Lam.html#ab792ab7354b4e71ec38804b8f2c1a99b", null ],
     [ "body", "classthorin_1_1Lam.html#ad4c385e97860a76d0c239f9733df8c9d", null ],
     [ "branch", "classthorin_1_1Lam.html#af8197709cf87785a99f637979af5d3ae", null ],
+    [ "check", "classthorin_1_1Lam.html#add7dba9df1cf541e1b6b93e3f6ba479f", null ],
     [ "codom", "classthorin_1_1Lam.html#a6bc5bc4cd6161c40fca0f5c351882f9c", null ],
     [ "dom", "classthorin_1_1Lam.html#a85e2783dfbb6d1cedf596b0d8dab6d38", null ],
     [ "filter", "classthorin_1_1Lam.html#a5dd1b643b9a52c1925c795894713e2f7", null ],

@@ -137,8 +137,8 @@ Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">recursively rewrite old Defs</div></td></tr>
 <tr class="memitem:af4673508fde7194f0ba16c03c48424f0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#af4673508fde7194f0ba16c03c48424f0">map</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *old_def, const <a class="el" href="classthorin_1_1Def.html">Def</a> *new_def)</td></tr>
 <tr class="separator:af4673508fde7194f0ba16c03c48424f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0672e94954b54a638f67081796a8a58"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#ab0672e94954b54a638f67081796a8a58">rewrite</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *)</td></tr>
-<tr class="separator:ab0672e94954b54a638f67081796a8a58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad20fa8b6456d3e390dcc14aae200333b"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#ad20fa8b6456d3e390dcc14aae200333b">rewrite</a> (<a class="el" href="classthorin_1_1Ref.html">Ref</a>)</td></tr>
+<tr class="separator:ad20fa8b6456d3e390dcc14aae200333b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c380b720f711a5f0ec667e6b647275a"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#a7c380b720f711a5f0ec667e6b647275a">rewrite_structural</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *)</td></tr>
 <tr class="separator:a7c380b720f711a5f0ec667e6b647275a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc61a59833679a2c40d9a7dbfdfa4c02"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#abc61a59833679a2c40d9a7dbfdfa4c02">rewrite_nom</a> (<a class="el" href="classthorin_1_1Def.html">Def</a> *)</td></tr>
@@ -215,12 +215,12 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00020">20</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00045">thorin::rewrite()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00031">rewrite_nom()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00040">thorin::rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00026">rewrite_nom()</a>.</p>
 
 </div>
 </div>
-<a id="ab0672e94954b54a638f67081796a8a58" name="ab0672e94954b54a638f67081796a8a58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab0672e94954b54a638f67081796a8a58">&#9670;&#160;</a></span>rewrite()</h2>
+<a id="ad20fa8b6456d3e390dcc14aae200333b" name="ad20fa8b6456d3e390dcc14aae200333b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad20fa8b6456d3e390dcc14aae200333b">&#9670;&#160;</a></span>rewrite()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -231,7 +231,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">const <a class="el" href="classthorin_1_1Def.html">Def</a> * thorin::Rewriter::rewrite </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td>
           <td class="paramname"><em>old_def</em></td><td>)</td>
           <td></td>
         </tr>
@@ -243,13 +243,13 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classthorin_1_1ScopeRewriter.html#a96f69bb6602da6f899e8e6f54b65c6d6">thorin::ScopeRewriter</a>.</p>
+<p>Reimplemented in <a class="el" href="classthorin_1_1ScopeRewriter.html#a561b96840c605621ab51b87e809a781c">thorin::ScopeRewriter</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00009">9</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="cast_8h_source.html#l00044">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00333">thorin::Def::isa_nom()</a>, <a class="el" href="rewrite_8h_source.html#l00020">map()</a>, <a class="el" href="def_8h_source.html#l00180">thorin::Def::op()</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00031">rewrite_nom()</a>, <a class="el" href="rewrite_8cpp_source.html#l00024">rewrite_structural()</a>, <a class="el" href="world_8h_source.html#l00168">thorin::World::univ()</a>, and <a class="el" href="rewrite_8h_source.html#l00016">world()</a>.</p>
+<p class="reference">References <a class="el" href="cast_8h_source.html#l00044">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00367">thorin::Def::isa_nom()</a>, <a class="el" href="rewrite_8h_source.html#l00020">map()</a>, <a class="el" href="rewrite_8cpp_source.html#l00026">rewrite_nom()</a>, <a class="el" href="rewrite_8cpp_source.html#l00019">rewrite_structural()</a>, <a class="el" href="world_8h_source.html#l00165">thorin::World::univ()</a>, and <a class="el" href="rewrite_8h_source.html#l00016">world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, <a class="el" href="rewrite_8h_source.html#l00039">thorin::ScopeRewriter::rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00031">rewrite_nom()</a>, <a class="el" href="rewrite_8cpp_source.html#l00024">rewrite_structural()</a>, <a class="el" href="phase_8cpp_source.html#l00011">thorin::RWPhase::start()</a>, and <a class="el" href="phase_8cpp_source.html#l00030">thorin::Cleanup::start()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="rewrite_8h_source.html#l00039">thorin::ScopeRewriter::rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00026">rewrite_nom()</a>, <a class="el" href="rewrite_8cpp_source.html#l00019">rewrite_structural()</a>, <a class="el" href="phase_8cpp_source.html#l00011">thorin::RWPhase::start()</a>, and <a class="el" href="phase_8cpp_source.html#l00030">thorin::Cleanup::start()</a>.</p>
 
 </div>
 </div>
@@ -277,9 +277,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00031">31</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00026">26</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00309">thorin::Def::dbg()</a>, <a class="el" href="rewrite_8h_source.html#l00020">map()</a>, <a class="el" href="def_8h_source.html#l00181">thorin::Def::num_ops()</a>, <a class="el" href="def_8h_source.html#l00180">thorin::Def::op()</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, <a class="el" href="def_8h_source.html#l00376">thorin::Def::stub()</a>, <a class="el" href="def_8h_source.html#l00163">thorin::Def::type()</a>, and <a class="el" href="rewrite_8h_source.html#l00016">world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00343">thorin::Def::dbg()</a>, <a class="el" href="def_8cpp_source.html#l00345">thorin::Def::is_set()</a>, <a class="el" href="rewrite_8h_source.html#l00020">map()</a>, <a class="el" href="def_8h_source.html#l00212">thorin::Def::num_ops()</a>, <a class="el" href="def_8h_source.html#l00211">thorin::Def::op()</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, <a class="el" href="def_8h_source.html#l00410">thorin::Def::stub()</a>, <a class="el" href="def_8h_source.html#l00194">thorin::Def::type()</a>, and <a class="el" href="rewrite_8h_source.html#l00016">world()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>.</p>
 
@@ -309,9 +309,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00024">24</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00019">19</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00309">thorin::Def::dbg()</a>, <a class="el" href="def_8h_source.html#l00181">thorin::Def::num_ops()</a>, <a class="el" href="def_8h_source.html#l00373">thorin::Def::rebuild()</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, <a class="el" href="def_8h_source.html#l00163">thorin::Def::type()</a>, and <a class="el" href="rewrite_8h_source.html#l00016">world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00343">thorin::Def::dbg()</a>, <a class="el" href="def_8h_source.html#l00212">thorin::Def::num_ops()</a>, <a class="el" href="def_8h_source.html#l00407">thorin::Def::rebuild()</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, <a class="el" href="def_8h_source.html#l00194">thorin::Def::type()</a>, and <a class="el" href="rewrite_8h_source.html#l00016">world()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>.</p>
 
@@ -342,7 +342,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00016">16</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00031">rewrite_nom()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00024">rewrite_structural()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00026">rewrite_nom()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00019">rewrite_structural()</a>.</p>
 
 </div>
 </div>

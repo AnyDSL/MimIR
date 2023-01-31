@@ -1,4 +1,4 @@
 var lam_8cpp =
 [
-    [ "get_var_lam", "lam_8cpp.html#afa219845413436ebd217a971fb700df5", null ]
+    [ "decurry", "lam_8cpp.html#adc13c6dc794ec069c13ab03e305a6ee4", null ]
 ];

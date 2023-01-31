@@ -121,7 +121,6 @@ $(document).ready(function(){initNavTree('world_8cpp.html',''); initResizable();
 <code>#include &lt;unistd.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="check_8h_source.html">thorin/check.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="def_8h_source.html">thorin/def.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="error_8h_source.html">thorin/error.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="rewrite_8h_source.html">thorin/rewrite.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="scope_8h_source.html">thorin/analyses/scope.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="array_8h_source.html">thorin/util/array.h</a>&quot;</code><br />
@@ -129,7 +128,7 @@ $(document).ready(function(){initNavTree('world_8cpp.html',''); initResizable();
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for world.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="world_8cpp__incl.svg" width="2548" height="726"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="world_8cpp__incl.svg" width="2311" height="726"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -145,8 +144,19 @@ Namespaces</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:ab00a9a6925103ec81b0aa99c38c00f48"><td class="memItemLeft" align="right" valign="top">static const Def *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ab00a9a6925103ec81b0aa99c38c00f48">thorin::infer_sigma</a> (World &amp;world, Defs ops)</td></tr>
 <tr class="separator:ab00a9a6925103ec81b0aa99c38c00f48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4e8096218f5bbe9c8076b54793b1342"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ab4e8096218f5bbe9c8076b54793b1342">thorin::is_shape</a> (const Def *s)</td></tr>
-<tr class="separator:ab4e8096218f5bbe9c8076b54793b1342"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae21951bd88b566dda737502cb1340f29"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ae21951bd88b566dda737502cb1340f29">thorin::is_shape</a> (Ref s)</td></tr>
+<tr class="separator:ae21951bd88b566dda737502cb1340f29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acafdfed5090a9b51ab842d96ec6580f5"><td class="memItemLeft" align="right" valign="top">static std::optional&lt; std::pair&lt; <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>, const Def * &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#acafdfed5090a9b51ab842d96ec6580f5">thorin::peel</a> (const Def *def)</td></tr>
+<tr class="memdesc:acafdfed5090a9b51ab842d96ec6580f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>{b, x}</code> from Thorin pair <code>(b, x)</code> or <code>std::nullopt</code> if <code>def</code> doesn't fit the bill.  <a href="namespacethorin.html#acafdfed5090a9b51ab842d96ec6580f5">More...</a><br /></td></tr>
+<tr class="separator:acafdfed5090a9b51ab842d96ec6580f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad58d3257628152cac25aaa90fd1ece38"><td class="memItemLeft" align="right" valign="top">template const Def *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ad58d3257628152cac25aaa90fd1ece38">thorin::World::umax&lt; Sort::Term &gt;</a> (DefArray, Ref)</td></tr>
+<tr class="separator:ad58d3257628152cac25aaa90fd1ece38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a462e63e5ca0a248d645b7c30938f4d65"><td class="memItemLeft" align="right" valign="top">template const Def *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a462e63e5ca0a248d645b7c30938f4d65">thorin::World::umax&lt; Sort::Type &gt;</a> (DefArray, Ref)</td></tr>
+<tr class="separator:a462e63e5ca0a248d645b7c30938f4d65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd905f5e2586e2bd677aa6dd8ff7bc03"><td class="memItemLeft" align="right" valign="top">template const Def *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#acd905f5e2586e2bd677aa6dd8ff7bc03">thorin::World::umax&lt; Sort::Kind &gt;</a> (DefArray, Ref)</td></tr>
+<tr class="separator:acd905f5e2586e2bd677aa6dd8ff7bc03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c20baf7ffbd78e22c9f4d059961ab72"><td class="memItemLeft" align="right" valign="top">template const Def *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a1c20baf7ffbd78e22c9f4d059961ab72">thorin::World::umax&lt; Sort::Univ &gt;</a> (DefArray, Ref)</td></tr>
+<tr class="separator:a1c20baf7ffbd78e22c9f4d059961ab72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

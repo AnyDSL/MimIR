@@ -138,6 +138,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4e3d701fad386e2a9186eea9fa34bcb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0604638f1596c235838ac7aa16c71f39"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1fe_1_1Ptrn.html#a0604638f1596c235838ac7aa16c71f39">type</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;) const =0</td></tr>
 <tr class="separator:a0604638f1596c235838ac7aa16c71f39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29ef23eead98d496fb92bad30e3daf31"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1fe_1_1Ptrn.html#a29ef23eead98d496fb92bad30e3daf31">dbg</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;)</td></tr>
+<tr class="separator:a29ef23eead98d496fb92bad30e3daf31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classthorin_1_1fe_1_1AST"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classthorin_1_1fe_1_1AST')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classthorin_1_1fe_1_1AST.html">thorin::fe::AST</a></td></tr>
 <tr class="memitem:a71e94e97392b6610b72a1ca8dfc2e7d4 inherit pub_methods_classthorin_1_1fe_1_1AST"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1fe_1_1AST.html#a71e94e97392b6610b72a1ca8dfc2e7d4">AST</a> (<a class="el" href="structthorin_1_1Loc.html">Loc</a> <a class="el" href="classthorin_1_1fe_1_1AST.html#aa21d4d8a54478d28d5fbb2fbcc06618c">loc</a>)</td></tr>
 <tr class="separator:a71e94e97392b6610b72a1ca8dfc2e7d4 inherit pub_methods_classthorin_1_1fe_1_1AST"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -238,7 +240,29 @@ Protected Attributes</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classthorin_1_1fe_1_1IdPtrn.html#a5bb80e239d5981c728871a7cb51931fe">thorin::fe::IdPtrn</a>, and <a class="el" href="classthorin_1_1fe_1_1TuplePtrn.html#ad0b7f5b764997dab142c21beca50a8fd">thorin::fe::TuplePtrn</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00018">thorin::fe::TuplePtrn::bind()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00020">thorin::fe::TuplePtrn::bind()</a>.</p>
+
+</div>
+</div>
+<a id="a29ef23eead98d496fb92bad30e3daf31" name="a29ef23eead98d496fb92bad30e3daf31"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29ef23eead98d496fb92bad30e3daf31">&#9670;&#160;</a></span>dbg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classthorin_1_1Def.html">Def</a> * thorin::fe::Ptrn::dbg </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td>
+          <td class="paramname"><em>world</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ast_8cpp_source.html#l00012">12</a> of file <a class="el" href="ast_8cpp_source.html">ast.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="world_8h_source.html#l00445">thorin::World::dbg()</a>, <a class="el" href="ast_8h_source.html#l00023">thorin::fe::AST::loc()</a>, and <a class="el" href="ast_8h_source.html#l00040">sym()</a>.</p>
 
 </div>
 </div>
@@ -267,7 +291,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00041">41</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
-<p class="reference">References <a class="el" href="debug_8cpp_source.html#l00052">thorin::Sym::is_anonymous()</a>, and <a class="el" href="ast_8h_source.html#l00046">sym_</a>.</p>
+<p class="reference">References <a class="el" href="debug_8cpp_source.html#l00052">thorin::Sym::is_anonymous()</a>, and <a class="el" href="ast_8h_source.html#l00047">sym_</a>.</p>
 
 </div>
 </div>
@@ -296,9 +320,9 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00040">40</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
-<p class="reference">References <a class="el" href="ast_8h_source.html#l00046">sym_</a>.</p>
+<p class="reference">References <a class="el" href="ast_8h_source.html#l00047">sym_</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00018">thorin::fe::TuplePtrn::bind()</a>, and <a class="el" href="ast_8cpp_source.html#l00033">thorin::fe::TuplePtrn::type()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00020">thorin::fe::TuplePtrn::bind()</a>, <a class="el" href="ast_8cpp_source.html#l00012">dbg()</a>, and <a class="el" href="ast_8cpp_source.html#l00035">thorin::fe::TuplePtrn::type()</a>.</p>
 
 </div>
 </div>
@@ -328,7 +352,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classthorin_1_1fe_1_1IdPtrn.html#a1c6c32c789a1b02844c2b79e77e69214">thorin::fe::IdPtrn</a>, and <a class="el" href="classthorin_1_1fe_1_1TuplePtrn.html#a8b9b0eeff51b8c5b17da97411e7a40c7">thorin::fe::TuplePtrn</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00033">thorin::fe::TuplePtrn::type()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00035">thorin::fe::TuplePtrn::type()</a>.</p>
 
 </div>
 </div>
@@ -353,9 +377,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00046">46</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00047">47</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00016">thorin::fe::IdPtrn::bind()</a>, <a class="el" href="ast_8cpp_source.html#l00018">thorin::fe::TuplePtrn::bind()</a>, <a class="el" href="ast_8h_source.html#l00041">is_anonymous()</a>, and <a class="el" href="ast_8h_source.html#l00040">sym()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00018">thorin::fe::IdPtrn::bind()</a>, <a class="el" href="ast_8cpp_source.html#l00020">thorin::fe::TuplePtrn::bind()</a>, <a class="el" href="ast_8h_source.html#l00041">is_anonymous()</a>, and <a class="el" href="ast_8h_source.html#l00040">sym()</a>.</p>
 
 </div>
 </div>
@@ -379,14 +403,15 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00047">47</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00048">48</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00028">thorin::fe::IdPtrn::type()</a>, and <a class="el" href="ast_8cpp_source.html#l00033">thorin::fe::TuplePtrn::type()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00030">thorin::fe::IdPtrn::type()</a>, and <a class="el" href="ast_8cpp_source.html#l00035">thorin::fe::TuplePtrn::type()</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>thorin/fe/<a class="el" href="ast_8h_source.html">ast.h</a></li>
+<li>thorin/fe/<a class="el" href="ast_8cpp_source.html">ast.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

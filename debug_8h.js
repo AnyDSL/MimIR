@@ -7,6 +7,7 @@ var debug_8h =
     [ "thorin::SymHash", "structthorin_1_1SymHash.html", "structthorin_1_1SymHash" ],
     [ "SymMap", "debug_8h.html#a3368507549c1c606d305c18939d17943", null ],
     [ "SymSet", "debug_8h.html#ae26bd525ba720c363612327d2d927c72", null ],
+    [ "err", "debug_8h.html#a76230671e563449407228fa716175097", null ],
     [ "operator<<", "debug_8h.html#a8d63c0df0c916ee9469f630edccd6984", null ],
     [ "operator<<", "debug_8h.html#a49109a7ac6192579b86068a0ed22206e", null ],
     [ "operator<<", "debug_8h.html#a4941c3b3c1510b2577c5c063df622ea8", null ],

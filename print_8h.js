@@ -4,6 +4,7 @@ var print_8h =
     [ "thorin::Tab", "classthorin_1_1Tab.html", "classthorin_1_1Tab" ],
     [ "thorin::detail::Elemable", "conceptthorin_1_1detail_1_1Elemable.html", null ],
     [ "assertf", "print_8h.html#a7bc6143638d489bb640260462bf07777", null ],
+    [ "err", "print_8h.html#aac934f1d1e901ba18050dd1302d65507", null ],
     [ "errf", "print_8h.html#af538a45dc8c0c242b9a51f2ea1e6afea", null ],
     [ "errln", "print_8h.html#a01d195c52d754394a58dec37e2913430", null ],
     [ "fmt", "print_8h.html#ac2a988f71a64a048c61d5a2238269ea8", null ],

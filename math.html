@@ -145,13 +145,13 @@ Types</h1>
 <div class="line">.let NVTF32  = %math.F (10,  8); // actually 19 bits; aligns to 32 bit</div>
 <div class="line">.let AMDFP24 = %math.F (16,  7);</div>
 <div class="line">.let PXR24   = %math.F (15,  8);</div>
-</div><!-- fragment --> <div class="fragment"><div class="line">.ax %math.F: [p: .Nat, e: .Nat] -&gt; *;</div>
+</div><!-- fragment --> <div class="fragment"><div class="line">.ax %math.F: «2; .Nat» -&gt; *;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md114"></a>
 Numerical Operations</h1>
 <h2><a class="anchor" id="autotoc_md115"></a>
 %math.arith</h2>
 <p >Arithmetic operations. </p><div class="fragment"><div class="line">.ax %math.arith(add, sub, mul, div, rem):</div>
-<div class="line">    Π [p: .Nat, e: .Nat] -&gt; .Nat -&gt; [%math.F (p, e), %math.F (p, e)] -&gt; %math.F (p, e), normalize_arith;</div>
+<div class="line">    Π.[pe: «2; .Nat»][.Nat][«2; %math.F pe»] -&gt; %math.F pe, normalize_arith;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md116"></a>
 %math.extrema</h2>
 <p >Minimum and Maximum.</p><ul>
@@ -177,7 +177,7 @@ Numerical Operations</h1>
 </table>
 <div class="fragment"><div class="line">.ax %math.extrema(im = fmin,       iM = fmax,</div>
 <div class="line">                  Im = ieee754min, IM = ieee754max): </div>
-<div class="line">    Π [p: .Nat, e: .Nat] -&gt; .Nat -&gt; [%math.F (p, e), %math.F (p, e)] -&gt; %math.F (p, e), normalize_extrema;</div>
+<div class="line">    Π.[pe: «2; .Nat»][.Nat][«2; %math.F pe»] -&gt; %math.F pe, normalize_extrema;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md117"></a>
 %math.tri</h2>
 <p ><a href="https://en.wikipedia.org/wiki/Trigonometric_functions">Trigonometric</a> and <a href="https://en.wikipedia.org/wiki/Hyperbolic_functions">hypberbolic</a> functions.</p>
@@ -226,11 +226,11 @@ Numerical Operations</h1>
 <div class="line">              aHff =  sinh = h, aHfF =  cosh, aHFf =  tanh, aHFF,</div>
 <div class="line">              Ahff = asin  = a, AhfF = acos , AhFf = atan , AhFF,</div>
 <div class="line">              AHff = asinh    , AHfF = acosh, AHFf = atanh, AHFF):</div>
-<div class="line">    Π [p: .Nat, e: .Nat] -&gt; .Nat -&gt; %math.F (p, e) -&gt; %math.F (p, e), normalize_tri;</div>
+<div class="line">    Π.[pe: «2; .Nat»][.Nat][%math.F pe] -&gt; %math.F pe, normalize_tri;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md118"></a>
 %math.pow</h2>
 <p >Power function: <picture><source srcset="form_12_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$x^y$" src="form_12.png" width="14" height="9"/></picture></p>
-<div class="fragment"><div class="line">.ax %math.pow: Π [p: .Nat, e: .Nat] -&gt; .Nat -&gt; [%math.F (p, e), %math.F (p, e)] -&gt; %math.F (p, e), normalize_pow;</div>
+<div class="fragment"><div class="line">.ax %math.pow: Π.[pe: «2; .Nat»][.Nat][«2; %math.F pe»] -&gt; %math.F pe, normalize_pow;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md119"></a>
 %math.rt</h2>
 <p ><a href="https://en.wikipedia.org/wiki/Square_root">Square</a> and <a href="https://en.wikipedia.org/wiki/Cube_root">cube root</a>:</p>
@@ -242,7 +242,7 @@ Numerical Operations</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>%math.rt.cb</code>   </td><td class="markdownTableBodyNone">cube root   </td><td class="markdownTableBodyNone"><picture><source srcset="form_14_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$\sqrt[3]{x}$" src="form_14.png" width="19" height="14"/></picture>   </td></tr>
 </table>
-<div class="fragment"><div class="line">.ax %math.rt(sq,cb): Π [p: .Nat, e: .Nat] -&gt; .Nat -&gt; %math.F (p, e) -&gt; %math.F (p, e), normalize_rt;</div>
+<div class="fragment"><div class="line">.ax %math.rt(sq, cb): Π.[pe: «2; .Nat»][.Nat][%math.F pe] -&gt; %math.F pe, normalize_rt;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md120"></a>
 %math.exp</h2>
 <p ><a href="https://en.wikipedia.org/wiki/Exponential_function">Exponential function</a> and <a href="https://en.wikipedia.org/wiki/Logarithm">logarithm</a>:</p><ul>
@@ -262,7 +262,7 @@ Numerical Operations</h1>
 <td class="markdownTableBodyNone"><code>BL</code>   </td><td class="markdownTableBodyNone"><code>log2</code>   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">logarithm with base 2   </td><td class="markdownTableBodyNone"><picture><source srcset="form_18_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$\log_2 x$" src="form_18.png" width="33" height="14"/></picture>   </td></tr>
 </table>
 <div class="fragment"><div class="line">.ax %math.exp(bl = exp, bL = log, Bl = exp2 = b, BL = log2):</div>
-<div class="line">    Π [p: .Nat, e: .Nat] -&gt; .Nat -&gt; %math.F (p, e) -&gt; %math.F (p, e), normalize_exp;</div>
+<div class="line">    Π.[pe: «2; .Nat»][.Nat][%math.F pe] -&gt; %math.F pe, normalize_exp;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md121"></a>
 %math.er</h2>
 <p ><a href="https://en.wikipedia.org/wiki/Error_function">Error</a> and <a href="https://en.wikipedia.org/wiki/Error_function#Complementary_error_function">complementary error function</a>.</p>
@@ -274,7 +274,7 @@ Numerical Operations</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>%math.er.fc</code>   </td><td class="markdownTableBodyNone">complementary error funciton   </td><td class="markdownTableBodyNone"><picture><source srcset="form_20_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$\frac{2}{\sqrt\pi}\int_x^\infty e^{-t^2}\,dt = 1 - \textrm{erf}(x)$" src="form_20.png" width="144" height="21"/></picture>   </td></tr>
 </table>
-<div class="fragment"><div class="line">.ax %math.er(f, fc): Π [p: .Nat, e: .Nat] -&gt; .Nat -&gt; %math.F (p, e) -&gt; %math.F (p, e), normalize_er;</div>
+<div class="fragment"><div class="line">.ax %math.er(f, fc): Π.[pe: «2; .Nat»][.Nat][%math.F pe] -&gt; %math.F pe, normalize_er;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md122"></a>
 %math.gamma</h2>
 <p ><a href="https://en.wikipedia.org/wiki/Gamma_function">Gamma function</a> and its natural <a href="https://en.wikipedia.org/wiki/Gamma_function#The_log-gamma_function">logarithm</a>.</p>
@@ -286,7 +286,7 @@ Numerical Operations</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>%math.gamma.l</code>   </td><td class="markdownTableBodyNone">natural logarithm of gamma funciton   </td><td class="markdownTableBodyNone"><picture><source srcset="form_22_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$\ln \mid \int_0^\infty t^{x-1} e^{-t}\,dt \mid$" src="form_22.png" width="104" height="16"/></picture>   </td></tr>
 </table>
-<div class="fragment"><div class="line">.ax %math.gamma(t, l): Π [p: .Nat, e: .Nat] -&gt; .Nat -&gt; %math.F (p, e) -&gt; %math.F (p, e), normalize_gamma;</div>
+<div class="fragment"><div class="line">.ax %math.gamma(t, l): Π.[pe: «2; .Nat»][.Nat][%math.F pe] -&gt; %math.F pe, normalize_gamma;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md123"></a>
 Other Operations</h1>
 <h2><a class="anchor" id="autotoc_md124"></a>
@@ -337,13 +337,13 @@ Other Operations</h1>
 <div class="line">              uGle =   g, uGlE =  ge, uGLe =  ne, uGLE =   o,</div>
 <div class="line">              Ugle =   u, UglE =  ue, UgLe =  ul, UgLE = ule,</div>
 <div class="line">              UGle =  ug, UGlE = uge, UGLe = une, UGLE =   t):</div>
-<div class="line">    Π [p: .Nat, e: .Nat] -&gt; .Nat -&gt; [%math.F (p, e), %math.F (p, e)] -&gt; .Bool, normalize_cmp;</div>
+<div class="line">    Π.[pe: «2; .Nat»][.Nat][«2; %math.F pe»] -&gt; .Bool, normalize_cmp;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md125"></a>
 %math.conv</h2>
 <p >Conversion between floating point and index types - both signed and unsigned - of different sizes.</p>
-<div class="fragment"><div class="line">.ax %math.conv(s2f, u2f): Π s: .Nat              -&gt; Π [p: .Nat, e: .Nat]   -&gt; .Idx s           -&gt; %math.F (p, e),   normalize_conv;</div>
-<div class="line">.ax %math.conv(f2s, f2u): Π [p: .Nat, e: .Nat]   -&gt; Π s: .Nat              -&gt; %math.F (p, e)   -&gt; .Idx s,           normalize_conv;</div>
-<div class="line">.ax %math.conv(f2f):      Π [sp: .Nat, se: .Nat] -&gt; Π [dp: .Nat, de: .Nat] -&gt; %math.F (sp, se) -&gt; %math.F (dp, de), normalize_conv;</div>
+<div class="fragment"><div class="line">.ax %math.conv(s2f, u2f): Π.[ ss:     .Nat ][dpe: «2; .Nat»][   .Idx  ss] -&gt; %math.F dpe, normalize_conv;</div>
+<div class="line">.ax %math.conv(f2s, f2u): Π.[spe: «2; .Nat»][ ds:     .Nat ][%math.F spe] -&gt;    .Idx  ds, normalize_conv;</div>
+<div class="line">.ax %math.conv(f2f):      Π.[spe: «2; .Nat»][dpe: «2; .Nat»][%math.F spe] -&gt; %math.F dpe, normalize_conv;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

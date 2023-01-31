@@ -90,6 +90,7 @@ var menudata={children:[
 {text:"t",url:"namespacemembers_func_t.html#index_t"},
 {text:"u",url:"namespacemembers_func_u.html#index_u"},
 {text:"v",url:"namespacemembers_func_v.html#index_v"},
+{text:"w",url:"namespacemembers_func_w.html#index_w"},
 {text:"z",url:"namespacemembers_func_z.html#index_z"}]},
 {text:"Variables",url:"namespacemembers_vars.html"},
 {text:"Typedefs",url:"namespacemembers_type.html",children:[
@@ -99,6 +100,7 @@ var menudata={children:[
 {text:"f",url:"namespacemembers_type.html#index_f"},
 {text:"g",url:"namespacemembers_type.html#index_g"},
 {text:"h",url:"namespacemembers_type.html#index_h"},
+{text:"i",url:"namespacemembers_type.html#index_i"},
 {text:"j",url:"namespacemembers_type.html#index_j"},
 {text:"l",url:"namespacemembers_type.html#index_l"},
 {text:"m",url:"namespacemembers_type.html#index_m"},

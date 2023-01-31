@@ -9,5 +9,6 @@ var dump_8cpp =
     [ "id", "dump_8cpp.html#ad96bfe437b4653d610aaaaa36251bdac", null ],
     [ "isa_decl", "dump_8cpp.html#a83dd1a97c4b17f7188a981d3036cb717", null ],
     [ "operator<<", "dump_8cpp.html#a2a31cdc1f3cb66759ad44e6052b4b575", null ],
-    [ "operator<<", "dump_8cpp.html#a37177bcd10ede404acf9dcb977ad431c", null ]
+    [ "operator<<", "dump_8cpp.html#a37177bcd10ede404acf9dcb977ad431c", null ],
+    [ "operator<<", "dump_8cpp.html#a239ed5aa2272001a8854bd7a2bd6931e", null ]
 ];

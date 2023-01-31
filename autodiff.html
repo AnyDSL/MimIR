@@ -199,33 +199,18 @@ Registered translations</h1>
 <h2><a class="anchor" id="autotoc_md62"></a>
 %core.icmp.xYgLE (eq)</h2>
 <p >The comparison pullback exists formally but is not used.</p>
-<div class="fragment"><div class="line">.lam .extern internal_diff_core_icmp_xYgLE![w: .Nat] -&gt;(.Cn[[.Idx w, .Idx w], .Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]]) =</div>
-<div class="line">    .cn![[a: .Idx w, b: .Idx w], ret:.Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]] = { </div>
-<div class="line">        .let result = %core.icmp.sle (w) (a,b);</div>
-<div class="line">        ret (result, .cn ![s: .Idx 2, pb_ret:.Cn[.Idx w, .Idx w]] = { .let z = 0:(.Idx w); pb_ret (z, z) })</div>
-<div class="line">    };</div>
+<div class="fragment"><div class="line">.con .extern internal_diff_core_icmp_xYgLE !.(s: .Nat)!(ab::(a b: .Idx s), ret: .Cn[.Idx 2, .Cn[.Idx 2, .Cn«2; .Idx s»]]) =</div>
+<div class="line">    ret (%core.icmp.sle ab, .cn ![.Idx 2, pb_ret: .Cn«2; .Idx s»] = pb_ret ‹2; 0:(.Idx s)›);</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md63"></a>
 %core.wrap.add</h2>
 <p >s ↦ (s, s)</p>
-<div class="fragment"><div class="line">.lam .extern internal_diff_core_wrap_add!s:.Nat -&gt; .Nat -&gt; (.Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]]) = </div>
-<div class="line">    .lm m: .Nat -&gt; (.Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]]) =</div>
-<div class="line">        .cn !((a b:.Idx s), ret:.Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]) = {</div>
-<div class="line">            .let result = %core.wrap.add s m (a,b);</div>
-<div class="line">            ret (result, .cn ![i:(.Idx s), pb_ret:(.Cn [.Idx s, .Idx s])] = pb_ret (i,i))</div>
-<div class="line">        };</div>
+<div class="fragment"><div class="line">.con .extern internal_diff_core_wrap_add !.(s: .Nat)!(m: .Nat)!(ab::(a b: .Idx s), ret: .Cn[.Idx s, .Cn[.Idx s, .Cn«2; .Idx s»]]) =</div>
+<div class="line">    ret (%core.wrap.add m ab, .cn !(i: .Idx s, pb_ret: .Cn«2; .Idx s») = pb_ret ‹2; i›);</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md64"></a>
 %core.wrap.mul</h2>
 <p >s ↦ (s*b, s*a)</p>
-<div class="fragment"><div class="line">.lam .extern internal_diff_core_wrap_mul!s:.Nat -&gt; .Nat -&gt; (.Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]]) = </div>
-<div class="line">    .lm m: .Nat -&gt; (.Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]]) =</div>
-<div class="line">        .cn !((a b:.Idx s), ret:.Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]) = { </div>
-<div class="line">            .let result = %core.wrap.mul s m (a,b);</div>
-<div class="line">            ret (result, .cn ![i:(.Idx s), pb_ret:(.Cn [.Idx s, .Idx s])] = { </div>
-<div class="line">                .let lhs = %core.wrap.mul s m (i,b);</div>
-<div class="line">                .let rhs = %core.wrap.mul s m (i,a);</div>
-<div class="line">                pb_ret (lhs, rhs)</div>
-<div class="line">            })</div>
-<div class="line">        };</div>
+<div class="fragment"><div class="line">.con .extern internal_diff_core_wrap_mul !.(s: .Nat)!(m: .Nat)!(ab::(a b: .Idx s), ret: .Cn[.Idx s, .Cn[.Idx s, .Cn«2; .Idx s»]]) =</div>
+<div class="line">    ret (%core.wrap.mul m ab, .cn !(i: .Idx s, pb_ret: .Cn«2; .Idx s») = pb_ret (%core.wrap.mul m (i, b), %core.wrap.mul m (i, a)));</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

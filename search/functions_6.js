@@ -6,7 +6,6 @@ var searchData=
   ['get_5fplugin_5fsearch_5fpaths_3',['get_plugin_search_paths',['../namespacethorin.html#a04083cd8dc5a9157c0cf98860b65c921',1,'thorin']]],
   ['get_5fsign_4',['get_sign',['../namespacethorin.html#ac76b51109303662a47f30fa874337254',1,'thorin']]],
   ['get_5fsloxy_5ftype_5',['get_sloxy_type',['../namespacethorin_1_1mem.html#a0b87ca7c95e3fc724d2c7272e0435dac',1,'thorin::mem']]],
-  ['get_5fvar_5flam_6',['get_var_lam',['../namespacethorin.html#afa219845413436ebd217a971fb700df5',1,'thorin']]],
-  ['gid_7',['gid',['../classthorin_1_1CFNode.html#ad1b21de5e0cadae309a8343cf43376e6',1,'thorin::CFNode::gid()'],['../classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb',1,'thorin::Def::gid()']]],
-  ['global_8',['global',['../classthorin_1_1World.html#a76965a47c1b49afec2aa3978ac9bc86b',1,'thorin::World']]]
+  ['gid_6',['gid',['../classthorin_1_1CFNode.html#ad1b21de5e0cadae309a8343cf43376e6',1,'thorin::CFNode::gid()'],['../classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb',1,'thorin::Def::gid()']]],
+  ['global_7',['global',['../classthorin_1_1World.html#a6dec3ffa17d4b5b243e25516f68f0cc7',1,'thorin::World']]]
 ];
