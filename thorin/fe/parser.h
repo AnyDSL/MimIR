@@ -55,10 +55,12 @@ private:
             , pos_(pos) {}
 
         Loc loc() const { return {parser_.prev_.file, pos_, parser_.prev_.finis}; }
-        operator const Def*() const { return parser_.world().dbg({"", loc()}); }
+        const Def* dbg(const Def* meta = {}) const { return parser_.world().dbg({"", loc(), meta}); }
         const Def* meta(const Def* m) const { return parser_.world().dbg({"", loc(), m}); }
         const Def* named(Sym sym) const { return parser_.world().dbg(sym, loc()); }
-        const Def* named(const std::string& str) const { return parser_.world().dbg({str, loc()}); }
+        const Def* named(const std::string& str, const Def* meta = {}) const {
+            return parser_.world().dbg({str, loc(), meta});
+        }
 
     private:
         Parser& parser_;
@@ -68,13 +70,13 @@ private:
     Sym parse_sym(std::string_view ctxt = {});
     Sym anonymous_sym() { return {world().lit_nat('_'), nullptr}; }
     void parse_import();
-    const Def* parse_type_ascr(std::string_view ctxt = {});
+    const Def* parse_type_ascr(std::string_view ctxt, Implicits*);
 
     /// @name exprs
     ///@{
-    const Def* parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
-    const Def* parse_primary_expr(std::string_view ctxt);
-    const Def* parse_infix_expr(Tracker, const Def* lhs, Tok::Prec = Tok::Prec::Bot);
+    const Def* parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot, Implicits* = {});
+    const Def* parse_primary_expr(std::string_view ctxt, Implicits* = {});
+    const Def* parse_infix_expr(Tracker, const Def* lhs, Tok::Prec = Tok::Prec::Bot, Implicits* = {});
     const Def* parse_extract(Tracker, const Def*, Tok::Prec);
     ///@}
 
@@ -87,7 +89,7 @@ private:
     const Def* parse_sigma();
     const Def* parse_tuple();
     const Def* parse_type();
-    const Def* parse_pi();
+    const Def* parse_pi(Implicits*);
     const Def* parse_lit();
     const Def* parse_var();
     const Def* parse_insert();
@@ -125,7 +127,7 @@ private:
 
     /// Factory method to build a Parser::Tracker.
     Tracker tracker() { return Tracker(*this, ahead().loc().begin); }
-    const Def* dbg(Tracker t) { return world().dbg((Loc)t); }
+    const Def* dbg(Tracker t) { return world().dbg(t.loc()); }
     ///@}
 
     /// @name get next Tok

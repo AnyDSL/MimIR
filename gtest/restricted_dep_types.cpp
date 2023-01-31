@@ -8,7 +8,6 @@
 
 #include "thorin/def.h"
 #include "thorin/dialects.h"
-#include "thorin/error.h"
 #include "thorin/world.h"
 
 #include "thorin/fe/parser.h"
@@ -59,7 +58,7 @@ TEST(RestrictedDependentTypes, join_singleton) {
         auto RW = w.join({w.singleton(R), w.singleton(W)}, w.dbg("RW"));
         auto DT = w.join({w.singleton(i32_t), w.singleton(i64_t)}, w.dbg("DT"));
 
-        auto exp_pi = w.nom_pi(w.type())->set_dom({DT, RW});
+        auto exp_pi = w.nom_pi(w.type<1>())->set_dom({DT, RW});
         exp_pi->set_codom(w.type());
         auto Exp = w.axiom(exp_pi, w.dbg("exp"));
 
@@ -274,7 +273,7 @@ TEST(RestrictedDependentTypes, ll) {
     auto RW = w.join({w.singleton(R), w.singleton(W)}, w.dbg("RW"));
 
     auto DT     = w.join({w.singleton(i32_t), w.singleton(math::type_f32(w))}, w.dbg("DT"));
-    auto exp_pi = w.nom_pi(w.type())->set_dom({DT, RW});
+    auto exp_pi = w.nom_pi(w.type<1>())->set_dom({DT, RW});
     exp_pi->set_codom(w.type());
 
     auto Exp = w.axiom(exp_pi, w.dbg("exp"));

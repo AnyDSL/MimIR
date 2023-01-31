@@ -27,12 +27,12 @@
 /// ### %mem.load
 ///
 /// Loads from a pointer of type `%%mem.Ptr (T, as)` the pointed value of type `T`.
-.ax %mem.load:  Π [T: *, as: .Nat] -> [%mem.M, %mem.Ptr(T, as)] -> [%mem.M, T], normalize_load;
+.ax %mem.load:  Π.Tas::[T: *, .Nat][%mem.M, %mem.Ptr Tas] -> [%mem.M, T], normalize_load;
 ///
 /// ### %mem.store
 ///
 /// Stores a value of type `T` to the location pointed to by a pointer of type `%%mem.Ptr (T, as)`,
-.ax %mem.store: Π [T: *, as: .Nat] -> [%mem.M, %mem.Ptr(T, as), T] -> %mem.M, normalize_store;
+.ax %mem.store: Π.Tas::[T: *, .Nat][%mem.M, %mem.Ptr Tas, T] -> %mem.M, normalize_store;
 ///
 /// ### %mem.remem
 ///
@@ -42,31 +42,31 @@
 /// ### %mem.alloc
 ///
 /// Allocates memory of type `T` in address space `as`.
-.ax %mem.alloc: Π [T: *, as: .Nat] -> %mem.M -> [%mem.M, %mem.Ptr(T, as)];
+.ax %mem.alloc: Π Tas::[*, .Nat][%mem.M] -> [%mem.M, %mem.Ptr Tas];
 ///
 /// ### %mem.slot
 ///
 /// Reserves a memory slot for type `T` in address space `as`.
 /// `id` has to be provided a unique id.
-.ax %mem.slot: Π [T: *, as: .Nat] -> [%mem.M, id: .Nat] -> [%mem.M, %mem.Ptr(T, as)];
+.ax %mem.slot: Π Tas::[*, .Nat][%mem.M, id: .Nat] -> [%mem.M, %mem.Ptr Tas];
 ///
 /// ### %mem.malloc
 ///
 /// Allocates memory of type `T` in address space `as`.
 /// The difference to %mem.alloc is that the `size` is automatically inferred.
-.ax %mem.malloc: Π [T: *, as: .Nat] -> [%mem.M, .Nat] -> [%mem.M, %mem.Ptr(T, as)];
+.ax %mem.malloc: Π Tas::[*, .Nat][%mem.M, .Nat] -> [%mem.M, %mem.Ptr Tas];
 ///
 /// ### %mem.free
 ///
 /// Frees memory of type `T` in address space `as`.
-.ax %mem.free: Π [T: *, as: .Nat] -> [%mem.M, %mem.Ptr(T, as)] -> %mem.M;
+.ax %mem.free: Π.Tas::[*, .Nat][%mem.M, %mem.Ptr Tas] -> %mem.M;
 ///
 /// ### %mem.mslot
 ///
 /// Reserves a memory slot for type `T` in address space `as`.
 /// The reserved slot will be `size` bytes large.
 /// `id` has to be provided an unique id.
-.ax %mem.mslot: Π [T: *, as: .Nat] -> [%mem.M, size: .Nat, id: .Nat] -> [%mem.M, %mem.Ptr(T, as)];
+.ax %mem.mslot: Π Tas::[*, .Nat][%mem.M, size: .Nat, id: .Nat] -> [%mem.M, %mem.Ptr Tas];
 ///
 /// ## Operations without Side Effects
 ///
@@ -74,7 +74,7 @@
 ///
 /// Load effective address. 
 /// Performs address computation by offsetting the passed pointer with index `i`.
-.ax %mem.lea: Π [n: .Nat, Ts: «n; *», as: .Nat] -> Π [%mem.Ptr(«j: n; Ts#j», as), i: .Idx n] -> %mem.Ptr(Ts#i, as), normalize_lea;
+.ax %mem.lea: Π [n: .Nat, Ts: «n; *», as: .Nat][%mem.Ptr(«j: n; Ts#j», as), i: .Idx n] -> %mem.Ptr(Ts#i, as), normalize_lea;
 ///
 /// ## Compilation Passes and Phases
 /// 
@@ -98,7 +98,7 @@
         eta_red
         eta_exp
         (%mem.ssa_pass eta_exp)
-        (%mem.copy_prop_pass (beta_red, eta_exp, (0:.Bool)))
+        (%mem.copy_prop_pass (beta_red, eta_exp, 0:.Bool))
 };
 .let mem_opt_phase = {
     %compile.pass_phase mem_opt_pass_list

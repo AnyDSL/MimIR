@@ -96,25 +96,6 @@ std::string tuple2str(const Def* def) {
 }
 
 /*
- * check
- */
-
-bool Arr::check() {
-    auto t = body()->unfold_type();
-    if (auto infer = type()->isa_nom<Infer>()) {
-        assert(infer->op() == nullptr);
-        infer->set(t);
-        set_type(t);
-    }
-    return true;
-}
-
-bool Sigma::check() {
-    // TODO
-    return true;
-}
-
-/*
  * reduce
  */
 

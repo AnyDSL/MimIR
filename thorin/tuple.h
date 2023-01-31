@@ -22,7 +22,7 @@ public:
 
     /// @name virtual methods
     ///@{
-    bool check() override;
+    void check() override;
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     Sigma* stub(World&, const Def*, const Def*) override;
     const Sigma* restructure() override;
@@ -70,11 +70,11 @@ public:
 
     /// @name virtual methods
     ///@{
-    bool check() override;
     size_t first_dependend_op() override { return 1; }
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     Arr* stub(World&, const Def*, const Def*) override;
     const Def* restructure() override;
+    void check() override;
     ///@}
 
     static constexpr auto Node = Node::Arr;

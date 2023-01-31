@@ -687,8 +687,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         if (w_src == w_dst) return v_src;
 
         switch (conv.id()) {
-            case core::conv::s2s: op = w_src < w_dst ? "sext" : "trunc"; break;
-            case core::conv::u2u: op = w_src < w_dst ? "zext" : "trunc"; break;
+            case core::conv::s: op = w_src < w_dst ? "sext" : "trunc"; break;
+            case core::conv::u: op = w_src < w_dst ? "zext" : "trunc"; break;
         }
 
         return bb.assign(name, "{} {} {} to {}", op, t_src, v_src, t_dst);

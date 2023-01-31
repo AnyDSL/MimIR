@@ -108,8 +108,11 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
     if (u.dump_gid_ == 2 || (u.dump_gid_ == 1 && !u->isa<Var>() && u->num_ops() != 0)) print(os, "/*{}*/", u->gid());
 
     if (auto type = u->isa<Type>()) {
-        auto level = as_lit(type->level()); // TODO other levels
-        return print(os, level == 0 ? "★" : "□");
+        if (auto level = isa_lit(type->level())) {
+            if (level == 0) return print(os, "★");
+            if (level == 1) return print(os, "□");
+        }
+        return print(os, "(.Type {})", type->level());
     } else if (u->isa<Nat>()) {
         return print(os, ".Nat");
     } else if (u->isa<Idx>()) {
@@ -330,6 +333,8 @@ std::ostream& operator<<(std::ostream& os, const Def* def) {
     if (Inline(def)) return os << Inline(def);
     return os << id(def);
 }
+
+std::ostream& operator<<(std::ostream& os, Ref ref) { return os << *ref; }
 
 std::ostream& Def::stream(std::ostream& os, int max) const {
     auto freezer = World::Freezer(world());

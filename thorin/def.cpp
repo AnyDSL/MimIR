@@ -23,10 +23,11 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags, const 
     , flags_(flags)
     , node_(unsigned(node))
     , nom_(false)
-    , dep_(node == Node::Axiom   ? Dep::Axiom
-           : node == Node::Proxy ? Dep::Proxy
-           : node == Node::Var   ? Dep::Var
-                                 : Dep::None)
+    , dep_(unsigned(node == Node::Axiom   ? Dep::Axiom
+                    : node == Node::Infer ? Dep::Infer
+                    : node == Node::Proxy ? Dep::Proxy
+                    : node == Node::Var   ? Dep::Var
+                                          : Dep::None))
     , num_ops_(ops.size())
     , dbg_(dbg)
     , type_(type) {
@@ -51,7 +52,7 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags, const Def*
     : flags_(flags)
     , node_(node)
     , nom_(true)
-    , dep_(Dep::Nom)
+    , dep_(Dep::Nom | (node == Node::Infer ? Dep::Infer : Dep::None))
     , num_ops_(num_ops)
     , dbg_(dbg)
     , type_(type) {
@@ -63,6 +64,9 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags, const Def*
 
 Nat::Nat(World& world)
     : Def(Node, world.type(), Defs{}, 0, nullptr) {}
+
+UMax::UMax(World& world, Defs ops, const Def* dbg)
+    : Def(Node, world.univ(), ops, 0, dbg) {}
 
 // clang-format off
 
@@ -88,6 +92,8 @@ const Def* Singleton::rebuild(World& w, const Def*  , Defs o, const Def* dbg) co
 const Def* Type     ::rebuild(World& w, const Def*  , Defs o, const Def*    ) const { return w.type(o[0]); }
 const Def* Test     ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.test(o[0], o[1], o[2], o[3], dbg); }
 const Def* Tuple    ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.tuple(t, o, dbg); }
+const Def* UInc     ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.uinc(o[0], offset(), dbg); }
+const Def* UMax     ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.umax(o, dbg); }
 const Def* Univ     ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.univ(); }
 const Def* Var      ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.var(t, o[0]->as_nom(), dbg); }
 const Def* Vel      ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.vel(t, o[0], dbg); }
@@ -165,7 +171,7 @@ World& Def::world() const {
 
 const Def* Def::unfold_type() const {
     if (!type_) {
-        if (auto t = isa<Type>()) return world().type(world().lit_univ(as_lit(t->level()) + 1)); // TODO non-lit level
+        if (auto t = isa<Type>()) return world().type(world().uinc(t->level()));
         assert(isa<Univ>());
         return nullptr;
     }
@@ -275,7 +281,7 @@ void Def::set_debug_name(std::string_view n) const {
 #endif
 
 void Def::finalize() {
-    assert(!dbg() || dbg()->dep_none());
+    assert(!dbg() || !dbg()->dep());
 
     for (size_t i = 0, e = num_ops(); i != e; ++i) {
         dep_ |= op(i)->dep();
@@ -304,7 +310,11 @@ Def* Def::set(size_t i, const Def* def) {
         const auto& p = def->uses_.emplace(this, i);
         assert_unused(p.second);
 
-        if (i == num_ops() - 1) check();
+        // TODO check that others are set
+        if (i == num_ops() - 1) {
+            check();
+            update();
+        }
     }
     return this;
 }
@@ -416,7 +426,7 @@ const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
  * Idx
  */
 
-const Def* Idx::size(const Def* def) {
+const Def* Idx::size(Ref def) {
     if (auto app = def->isa<App>()) {
         if (app->callee()->isa<Idx>()) return app->arg();
     }

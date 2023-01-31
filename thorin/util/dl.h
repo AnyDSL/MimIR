@@ -4,8 +4,6 @@
 #include <optional>
 #include <string>
 
-#include "thorin/error.h"
-
 namespace thorin::dl {
 
 class Error : public std::runtime_error {

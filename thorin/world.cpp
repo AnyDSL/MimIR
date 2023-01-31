@@ -13,7 +13,6 @@
 
 #include "thorin/check.h"
 #include "thorin/def.h"
-#include "thorin/error.h"
 #include "thorin/rewrite.h"
 
 #include "thorin/analyses/scope.h"
@@ -31,8 +30,7 @@ bool World::Arena::Lock::guard_ = false;
 #endif
 
 World::Move::Move(World& world)
-    : checker(std::make_unique<Checker>(world))
-    , err(std::make_unique<ErrorHandler>()) {}
+    : checker(std::make_unique<Checker>(world)) {}
 
 World::World(const State& state)
     : state_(state)
@@ -64,17 +62,52 @@ World::~World() {
     for (auto def : move_.defs) def->~Def();
 }
 
-const Type* World::type(const Def* level, const Def* dbg) {
-    if (err()) {
-        if (!level->type()->isa<Univ>()) {
-            err()->err(level->loc(), "argument `{}` to `.Type` must be of type `.Univ` but is of type `{}`", level,
-                       level->type());
-        }
-    }
+const Type* World::type(Ref level, Ref dbg) {
+    if (!level->type()->isa<Univ>())
+        err(dbg, "argument `{}` to `.Type` must be of type `.Univ` but is of type `{}`", level, level->type());
+
     return unify<Type>(1, level, dbg)->as<Type>();
 }
 
-const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
+const Def* World::uinc(Ref op, level_t offset, Ref dbg) {
+    if (!op->type()->isa<Univ>())
+        err(dbg, "operand '{}' of a universe increment must be of type `.Univ` but is of type `{}`", op, op->type());
+
+    if (auto l = isa_lit(op)) return lit_univ(*l, dbg);
+    return unify<UInc>(1, op, offset, dbg);
+}
+
+template<Sort sort>
+const Def* World::umax(DefArray ops, Ref dbg) {
+    level_t lvl = 0;
+    for (auto& op : ops) {
+        Ref r = op;
+        if (sort == Sort::Term) r = r->unfold_type();
+        if (sort <= Sort::Type) r = r->unfold_type();
+        if (sort <= Sort::Kind) {
+            if (auto type = r->isa<Type>())
+                r = type->level();
+            else
+                err(dbg, "operand '{}' must be a .Type of some level", r);
+        }
+
+        if (!r->type()->isa<Univ>())
+            err(dbg, "operand '{}' of a universe max must be of type '.Univ' but is of type '{}'", r, r->type());
+
+        op = r;
+
+        if (auto l = isa_lit(op))
+            lvl = std::max(lvl, *l);
+        else
+            lvl = level_t(-1);
+    }
+
+    auto ldef = lvl == level_t(-1) ? (const Def*)unify<UMax>(ops.size(), *this, ops, dbg) : lit_univ(lvl, dbg);
+    std::ranges::sort(ops, [](auto op1, auto op2) { return op1->gid() < op2->gid(); });
+    return sort == Sort::Univ ? ldef : type(ldef, dbg);
+}
+
+const Def* World::app(Ref callee, Ref arg, Ref dbg) {
     auto pi = callee->type()->isa<Pi>();
 
     // (a, b)#i arg     where a = A -> B; b = A -> B
@@ -84,11 +117,9 @@ const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
         }
     }
 
-    if (err()) {
-        if (!pi)
-            err()->err(dbg->loc(), "called expression '{}' : '{}' is not of function type", callee, callee->type());
-        if (!checker().assignable(pi->dom(), arg, dbg)) err()->ill_typed_app(callee, arg, dbg);
-    }
+    if (!pi) err(dbg, "called expression '{}' : '{}' is not of function type", callee, callee->type());
+    if (!checker().assignable(pi->dom(), arg, dbg))
+        err(dbg, "cannot pass argument '{}' of type '{}' to '{}' of domain '{}'", arg, arg->type(), callee, pi->dom());
 
     if (auto lam = callee->isa<Lam>(); lam && lam->is_set() && lam->codom()->sort() > Sort::Type)
         return lam->reduce(arg).back();
@@ -98,7 +129,7 @@ const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
 }
 
 template<bool Normalize>
-const Def* World::raw_app(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+const Def* World::raw_app(Ref type, Ref callee, Ref arg, Ref dbg) {
     auto [axiom, curry, trip] = Axiom::get(callee);
     if (axiom) {
         curry = curry == 0 ? trip : curry;
@@ -111,13 +142,13 @@ const Def* World::raw_app(const Def* type, const Def* callee, const Def* arg, co
     return unify<App>(2, axiom, curry, trip, type, callee, arg, dbg);
 }
 
-const Def* World::sigma(Defs ops, const Def* dbg) {
+const Def* World::sigma(Defs ops, Ref dbg) {
     auto n = ops.size();
     if (n == 0) return sigma();
     if (n == 1) return ops[0];
     auto front = ops.front();
     if (std::ranges::all_of(ops.skip_front(), [front](auto op) { return front == op; })) return arr(n, front, dbg);
-    return unify<Sigma>(ops.size(), infer_type_level(*this, ops), ops, dbg);
+    return unify<Sigma>(ops.size(), umax<Sort::Type>(ops, dbg), ops, dbg);
 }
 
 static const Def* infer_sigma(World& world, Defs ops) {
@@ -127,20 +158,19 @@ static const Def* infer_sigma(World& world, Defs ops) {
     return world.sigma(elems);
 }
 
-const Def* World::tuple(Defs ops, const Def* dbg) {
+const Def* World::tuple(Defs ops, Ref dbg) {
     if (ops.size() == 1) return ops[0];
 
     auto sigma = infer_sigma(*this, ops);
     auto t     = tuple(sigma, ops, dbg);
-    if (err() && !checker().assignable(sigma, t, dbg)) { assert(false && "TODO: error msg"); }
+    if (!checker().assignable(sigma, t, dbg))
+        err(dbg, "cannot assign tuple '{}' of type '{}' to incompatible tuple type '{}'", t, t->type(), sigma);
 
     return t;
 }
 
-const Def* World::tuple(const Def* type, Defs ops, const Def* dbg) {
-    if (err()) {
-        // TODO type-check type vs inferred type
-    }
+const Def* World::tuple(Ref type, Defs ops, Ref dbg) {
+    // TODO type-check type vs inferred type
 
     auto n = ops.size();
     if (!type->isa_nom<Sigma>()) {
@@ -175,13 +205,13 @@ const Def* World::tuple(const Def* type, Defs ops, const Def* dbg) {
     return unify<Tuple>(ops.size(), type, ops, dbg);
 }
 
-const Def* World::tuple_str(std::string_view s, const Def* dbg) {
+const Def* World::tuple_str(std::string_view s, Ref dbg) {
     DefVec ops;
     for (auto c : s) ops.emplace_back(lit_nat(c));
     return tuple(ops, dbg);
 }
 
-const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
+const Def* World::extract(Ref d, Ref index, Ref dbg) {
     if (index->isa<Tuple>()) {
         auto n = index->num_ops();
         DefArray idx(n, [&](size_t i) { return index->op(i); });
@@ -192,16 +222,15 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
         return tuple(ops, dbg);
     }
 
-    auto size = Idx::size(index->type());
-    auto type = d->unfold_type();
+    Ref size = Idx::size(index->type());
+    Ref type = d->unfold_type();
 
     // nom sigmas can be 1-tuples
     if (auto l = isa_lit(size); l && *l == 1 && !d->type()->isa_nom<Sigma>()) return d;
     if (auto pack = d->isa_structural<Pack>()) return pack->body();
 
-    if (err()) {
-        if (!checker().equiv(type->arity(), size, dbg)) err()->index_out_of_range(type->arity(), index, dbg);
-    }
+    if (!checker().equiv(type->arity(), size, dbg))
+        err(dbg, "index '{}' does not fit within arity '{}'", type->arity(), index);
 
     // extract(insert(x, index, val), index) -> val
     if (auto insert = d->isa<Insert>()) {
@@ -236,11 +265,12 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
     return unify<Extract>(2, elem_t, d, index, dbg);
 }
 
-const Def* World::insert(const Def* d, const Def* index, const Def* val, const Def* dbg) {
+const Def* World::insert(Ref d, Ref index, Ref val, Ref dbg) {
     auto type = d->unfold_type();
     auto size = Idx::size(index->type());
 
-    if (err() && !checker().equiv(type->arity(), size, dbg)) err()->index_out_of_range(type->arity(), index, dbg);
+    if (!checker().equiv(type->arity(), size, dbg))
+        err(dbg, "index '{}' does not fit within arity '{}'", type->arity(), index);
 
     if (auto l = isa_lit(size); l && *l == 1)
         return tuple(d, {val}, dbg); // d could be nom - that's why the tuple ctor is needed
@@ -265,19 +295,18 @@ const Def* World::insert(const Def* d, const Def* index, const Def* val, const D
     return unify<Insert>(3, d, index, val, dbg);
 }
 
-bool is_shape(const Def* s) {
+bool is_shape(Ref s) {
     if (s->isa<Nat>()) return true;
     if (auto arr = s->isa<Arr>()) return arr->body()->isa<Nat>();
     if (auto sig = s->isa_structural<Sigma>())
-        return std::ranges::all_of(sig->ops(), [](const Def* op) { return op->isa<Nat>(); });
+        return std::ranges::all_of(sig->ops(), [](Ref op) { return op->isa<Nat>(); });
 
     return false;
 }
 
-const Def* World::arr(const Def* shape, const Def* body, const Def* dbg) {
-    if (err()) {
-        if (!is_shape(shape->type())) err()->expected_shape(shape, dbg);
-    }
+// TODO merge this code with pack
+const Def* World::arr(Ref shape, Ref body, Ref dbg) {
+    if (!is_shape(shape->type())) err(dbg, "expected shape but got '{}' of type '{}'", shape, shape->type());
 
     if (auto a = isa_lit<u64>(shape)) {
         if (*a == 0) return sigma();
@@ -303,10 +332,8 @@ const Def* World::arr(const Def* shape, const Def* body, const Def* dbg) {
     return unify<Arr>(2, body->unfold_type(), shape, body, dbg);
 }
 
-const Def* World::pack(const Def* shape, const Def* body, const Def* dbg) {
-    if (err()) {
-        if (!is_shape(shape->type())) err()->expected_shape(shape, dbg);
-    }
+const Def* World::pack(Ref shape, Ref body, Ref dbg) {
+    if (!is_shape(shape->type())) err(dbg, "expected shape but got '{}' of type '{}'", shape, shape->type());
 
     if (auto a = isa_lit<u64>(shape)) {
         if (*a == 0) return tuple();
@@ -325,24 +352,22 @@ const Def* World::pack(const Def* shape, const Def* body, const Def* dbg) {
     return unify<Pack>(1, type, body, dbg);
 }
 
-const Def* World::arr(Defs shape, const Def* body, const Def* dbg) {
+const Def* World::arr(Defs shape, Ref body, Ref dbg) {
     if (shape.empty()) return body;
     return arr(shape.skip_back(), arr(shape.back(), body, dbg), dbg);
 }
 
-const Def* World::pack(Defs shape, const Def* body, const Def* dbg) {
+const Def* World::pack(Defs shape, Ref body, Ref dbg) {
     if (shape.empty()) return body;
     return pack(shape.skip_back(), pack(shape.back(), body, dbg), dbg);
 }
 
-const Lit* World::lit(const Def* type, u64 val, const Def* dbg) {
+const Lit* World::lit(Ref type, u64 val, Ref dbg) {
     if (auto size = Idx::size(type)) {
-        if (err()) {
-            if (auto s = isa_lit(size)) {
-                if (*s != 0 && val >= *s) err()->index_out_of_range(size, val, dbg);
-            } else if (val != 0) { // 0 of any size is allowed
-                err()->err(dbg->loc(), "cannot create literal '{}' of '.Idx {}' as size is unknown", val, size);
-            }
+        if (auto s = isa_lit(size)) {
+            if (*s != 0 && val >= *s) err(dbg, "index '{}' does not fit within arity '{}'", size, val);
+        } else if (val != 0) { // 0 of any size is allowed
+            err(dbg, "cannot create literal '{}' of '.Idx {}' as size is unknown", val, size);
         }
     }
 
@@ -354,7 +379,7 @@ const Lit* World::lit(const Def* type, u64 val, const Def* dbg) {
  */
 
 template<bool up>
-const Def* World::ext(const Def* type, const Def* dbg) {
+const Def* World::ext(Ref type, Ref dbg) {
     if (auto arr = type->isa<Arr>()) return pack(arr->shape(), ext<up>(arr->body()), dbg);
     if (auto sigma = type->isa<Sigma>())
         return tuple(sigma, DefArray(sigma->num_ops(), [&](size_t i) { return ext<up>(sigma->op(i), dbg); }), dbg);
@@ -362,16 +387,16 @@ const Def* World::ext(const Def* type, const Def* dbg) {
 }
 
 template<bool up>
-const Def* World::bound(Defs ops, const Def* dbg) {
-    auto kind = infer_type_level(*this, ops);
+const Def* World::bound(Defs ops, Ref dbg) {
+    auto kind = umax<Sort::Type>(ops, dbg);
 
     // has ext<up> value?
-    if (std::ranges::any_of(ops, [&](const Def* op) { return up ? bool(op->isa<Top>()) : bool(op->isa<Bot>()); }))
+    if (std::ranges::any_of(ops, [&](Ref op) { return up ? bool(op->isa<Top>()) : bool(op->isa<Bot>()); }))
         return ext<up>(kind);
 
     // ignore: ext<!up>
     DefArray cpy(ops);
-    auto [_, end] = std::ranges::copy_if(ops, cpy.begin(), [&](const Def* op) { return !op->isa<Ext>(); });
+    auto [_, end] = std::ranges::copy_if(ops, cpy.begin(), [&](Ref op) { return !op->isa<Ext>(); });
 
     // sort and remove duplicates
     std::sort(cpy.begin(), end, GIDLt<const Def*>());
@@ -386,7 +411,7 @@ const Def* World::bound(Defs ops, const Def* dbg) {
     return unify<TBound<up>>(cpy.size(), kind, cpy, dbg);
 }
 
-const Def* World::ac(const Def* type, Defs ops, const Def* dbg) {
+const Def* World::ac(Ref type, Defs ops, Ref dbg) {
     if (type->isa<Meet>()) {
         DefArray types(ops.size(), [&](size_t i) { return ops[i]->type(); });
         return unify<Ac>(ops.size(), meet(types), ops, dbg);
@@ -396,33 +421,75 @@ const Def* World::ac(const Def* type, Defs ops, const Def* dbg) {
     return ops[0];
 }
 
-const Def* World::ac(Defs ops, const Def* dbg /*= {}*/) { return ac(infer_type_level(*this, ops), ops, dbg); }
+const Def* World::ac(Defs ops, Ref dbg /*= {}*/) { return ac(umax<Sort::Term>(ops, dbg), ops, dbg); }
 
-const Def* World::vel(const Def* type, const Def* value, const Def* dbg) {
+const Def* World::vel(Ref type, Ref value, Ref dbg) {
     if (type->isa<Join>()) return unify<Vel>(1, type, value, dbg);
     return value;
 }
 
-const Def* World::pick(const Def* type, const Def* value, const Def* dbg) { return unify<Pick>(1, type, value, dbg); }
+const Def* World::pick(Ref type, Ref value, Ref dbg) { return unify<Pick>(1, type, value, dbg); }
 
-const Def* World::test(const Def* value, const Def* probe, const Def* match, const Def* clash, const Def* dbg) {
+const Def* World::test(Ref value, Ref probe, Ref match, Ref clash, Ref dbg) {
     auto m_pi = match->type()->isa<Pi>();
     auto c_pi = clash->type()->isa<Pi>();
 
-    if (err()) {
-        // TODO proper error msg
-        assert(m_pi && c_pi);
-        auto a = isa_lit(m_pi->dom()->arity());
-        assert_unused(a && *a == 2);
-        assert(checker().equiv(m_pi->dom(2, 0_s), c_pi->dom(), nullptr));
-    }
+    // TODO proper error msg
+    assert(m_pi && c_pi);
+    auto a = isa_lit(m_pi->dom()->arity());
+    assert_unused(a && *a == 2);
+    assert(checker().equiv(m_pi->dom(2, 0_s), c_pi->dom(), nullptr));
 
     auto codom = join({m_pi->codom(), c_pi->codom()});
     return unify<Test>(4, pi(c_pi->dom(), codom), value, probe, match, clash, dbg);
 }
 
-const Def* World::singleton(const Def* inner_type, const Def* dbg) {
-    return unify<Singleton>(1, this->type<1>(), inner_type, dbg);
+const Def* World::singleton(Ref inner_type, Ref dbg) { return unify<Singleton>(1, this->type<1>(), inner_type, dbg); }
+
+/*
+ * implicits
+ */
+
+const Def* World::implicits2meta(const Implicits& implicits) {
+    const Def* meta = bot(type_bool());
+    for (auto b : implicits | std::ranges::views::reverse) meta = tuple({lit_bool(b), meta});
+    return meta;
+}
+
+/// Returns `{b, x}` from Thorin pair `(b, x)` or `std::nullopt` if @p def doesn't fit the bill.
+static std::optional<std::pair<bool, const Def*>> peel(const Def* def) {
+    if (def) {
+        if (auto tuple = def->isa<Tuple>(); tuple && tuple->num_ops() == 2) {
+            if (auto b = isa_lit<bool>(tuple->op(0))) return {std::pair(*b, tuple->op(1))};
+        }
+    }
+    return {};
+}
+
+const Def* World::iapp(Ref callee, Ref arg, Debug debug) {
+    Debug mdebug = debug;
+    while (auto implicit = peel(callee->meta())) {
+        bool dot;
+        std::tie(dot, mdebug.meta) = *implicit;
+
+        if (dot) {
+            auto infer = nom_infer_entity(dbg(debug));
+            auto d     = dbg(mdebug);
+            auto a     = app(callee, infer, d);
+            callee     = a;
+        } else {
+            // resolve Infers now if possible before normalizers are run
+            if (auto app = callee->isa<App>(); app && app->curry() == 1) {
+                checker().assignable(callee->type()->as<Pi>()->dom(), arg, callee->dbg());
+                auto apps = decurry(app);
+                callee    = apps.front()->callee();
+                for (auto app : apps) callee = this->app(callee, refer(app->arg()), app->dbg());
+            }
+            break;
+        }
+    }
+
+    return app(callee, arg, dbg(mdebug));
 }
 
 /*
@@ -446,12 +513,16 @@ const Def* World::gid2def(u32 gid) {
  */
 
 #ifndef DOXYGEN // Doxygen doesn't like this
-template const Def* World::raw_app<true>(const Def*, const Def*, const Def*, const Def*);
-template const Def* World::raw_app<false>(const Def*, const Def*, const Def*, const Def*);
+template const Def* World::raw_app<true>(Ref, Ref, Ref, Ref);
+template const Def* World::raw_app<false>(Ref, Ref, Ref, Ref);
 #endif
-template const Def* World::ext<true>(const Def*, const Def*);
-template const Def* World::ext<false>(const Def*, const Def*);
-template const Def* World::bound<true>(Defs, const Def*);
-template const Def* World::bound<false>(Defs, const Def*);
+template const Def* World::umax<Sort::Term>(DefArray, Ref);
+template const Def* World::umax<Sort::Type>(DefArray, Ref);
+template const Def* World::umax<Sort::Kind>(DefArray, Ref);
+template const Def* World::umax<Sort::Univ>(DefArray, Ref);
+template const Def* World::ext<true>(Ref, Ref);
+template const Def* World::ext<false>(Ref, Ref);
+template const Def* World::bound<true>(Defs, Ref);
+template const Def* World::bound<false>(Defs, Ref);
 
 } // namespace thorin

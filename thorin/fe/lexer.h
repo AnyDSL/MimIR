@@ -3,7 +3,6 @@
 #include <absl/container/flat_hash_map.h>
 
 #include "thorin/debug.h"
-#include "thorin/error.h"
 
 #include "thorin/fe/tok.h"
 #include "thorin/util/utf8.h"
@@ -58,6 +57,7 @@ private:
     std::ostream* md_;
     bool out_ = true;
     absl::flat_hash_map<std::string, Tok::Tag> keywords_;
+    std::optional<Tok> cache_;
 };
 
 } // namespace fe

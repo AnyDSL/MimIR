@@ -25,18 +25,18 @@
     .con pow_then [] = ret (1:I32);
 
     .con pow_cont [v:I32] = {
-        .let m = %core.wrap.mul _32 0 (a,v);
+        .let m = %core.wrap.mul 0 (a,v);
         ret m
     };
     .con pow_else [] = {
-        .let b_1 = %core.wrap.sub _32 0 (b,1:I32);
+        .let b_1 = %core.wrap.sub 0 (b,1:I32);
         f ((a,b_1),pow_cont)
     };
-    .let cmp = %core.icmp.e _32 (b,0:I32);
+    .let cmp = %core.icmp.e (b,0:I32);
     ((pow_else, pow_then)#cmp) ()
 };
 
-.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
+.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return : .Cn [%mem.M, I32]] = {
     .con ret_cont r::[I32] = return (mem, r);
 
     .let c = (42:I32, 2:I32);

@@ -16,15 +16,15 @@
     .let arr_size = ⊤:.Nat;
     .let (alloc_mem, ptr) = %mem.alloc (<<%core.bitcast (.Nat, I32) argc; I32>>, 0) (mem);
     .con for_exit acc :: [mem : %mem.M, I32, I32] = {
-        .let lea = %mem.lea (arr_size, <arr_size; I32>, 0) (ptr, %core.conv.u2u _32 arr_size (%core.wrap.sub _32 0 (argc, 4:I32)));
-        .let (load_mem, val) = %mem.load (I32, 0) (mem, lea);
+        .let lea = %mem.lea (arr_size, <arr_size; I32>, 0) (ptr, %core.conv.u arr_size (%core.wrap.sub 0 (argc, 4:I32)));
+        .let (load_mem, val) = %mem.load (mem, lea);
         return (load_mem, val)
     };
     .con for_body [i : I32, [mem : %mem.M, acc_a : I32, acc_b : I32], continue : .Cn [%mem.M, I32, I32]] = {
-        .let a : I32 = %core.wrap.add _32 0 (i, acc_a);
-        .let b : I32 = %core.wrap.sub _32 0 (i, acc_b);
-        .let lea = %mem.lea (arr_size, <arr_size; I32>, 0) (ptr, %core.conv.u2u _32 arr_size i);
-        .let store_mem = %mem.store (I32, 0) (mem, lea, a);
+        .let a : I32 = %core.wrap.add 0 (i, acc_a);
+        .let b : I32 = %core.wrap.sub 0 (i, acc_b);
+        .let lea = %mem.lea (arr_size, <arr_size; I32>, 0) (ptr, %core.conv.u arr_size i);
+        .let store_mem = %mem.store (mem, lea, a);
         continue (store_mem, a, b)
     };
     %affine.For (_32, 3, (%mem.M, I32, I32)) (0:(I32), argc, 1:(I32), (alloc_mem, 0:(I32), 0:(I32)), for_body, for_exit)

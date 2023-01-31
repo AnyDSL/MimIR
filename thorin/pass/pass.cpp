@@ -47,7 +47,7 @@ void PassMan::run() {
     world().debug_dump();
 
     for (auto&& pass : passes_) pass->prepare();
-    
+
     auto externals = std::vector(world().externals().begin(), world().externals().end());
     for (const auto& [_, nom] : externals) {
         analyzed(nom);
@@ -90,7 +90,7 @@ void PassMan::run() {
 }
 
 const Def* PassMan::rewrite(const Def* old_def) {
-    if (old_def->dep_none()) return old_def;
+    if (!old_def->dep()) return old_def;
 
     if (auto nom = old_def->isa_nom()) {
         curr_state().nom2visit.emplace(nom, curr_undo());
@@ -132,7 +132,7 @@ const Def* PassMan::rewrite(const Def* old_def) {
 undo_t PassMan::analyze(const Def* def) {
     undo_t undo = No_Undo;
 
-    if (def->dep_none() || analyzed(def)) {
+    if (!def->dep() || analyzed(def)) {
         // do nothing
     } else if (auto nom = def->isa_nom()) {
         curr_state().stack.push(nom);

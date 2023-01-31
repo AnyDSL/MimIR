@@ -25,27 +25,27 @@
     .con pow_then [] = ret (1:I32);
 
     .con pow_cont [v:I32] = {
-        .let m = %core.wrap.mul 42949672960 (a,v);
+        .let m = %core.wrap.mul (a,v);
         ret m
     };
     .con pow_else [] = {
-        .let b_1 = %core.wrap.sub 42949672960 (b,1:I32);
+        .let b_1 = %core.wrap.sub (b,1:I32);
         f ((a,b_1),pow_cont)
     };
-    // .let cmp = %core.icmp.sle 4294967296 (b,0:I32);
-    .let cmp = %core.icmp.e 4294967296 (b,0:I32);
+    // .let cmp = %core.icmp.sle (b,0:I32);
+    .let cmp = %core.icmp.e (b,0:I32);
     ((pow_else, pow_then)#cmp) ()
 };
 
-.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
+.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return : .Cn [%mem.M, I32]] = {
 
     .con ret_cont [r:I32,pb:.Cn[I32,.Cn[I32,I32]]] = {
         .con pb_ret_cont [pr_a:I32,pr_b:I32] = {
-            .let sr = %core.wrap.mul 4294967296:.Nat 0:.Nat (10000:I32, r);
-            .let sa = %core.wrap.mul 4294967296:.Nat 0:.Nat (100:I32, pr_a);
+            .let sr = %core.wrap.mul 0 (10000:I32, r);
+            .let sa = %core.wrap.mul 0 (100:I32, pr_a);
             .let sb = pr_b;
-            .let sp = %core.wrap.add 4294967296:.Nat 0:.Nat (sa, sb);
-            .let o  = %core.wrap.add 4294967296:.Nat 0:.Nat (sr, sp);
+            .let sp = %core.wrap.add 0 (sa, sb);
+            .let o  = %core.wrap.add 0 (sr, sp);
             return (mem, o)
         };
         pb((1:I32),pb_ret_cont)
@@ -65,12 +65,12 @@
 };
 
 
-    // .let b = %Wrap_mul (0:.Nat, 4294967296:.Nat) (3:I32, a);
+    // .let b = %Wrap_mul (0, 4294967296) (3:I32, a);
 
     // .let c = f (42:I32);
     // return (mem, c)
 
-// CHECK-DAG: .con .extern main _{{[0-9_]+}}::[mem_[[memId:[_0-9]*]]: %mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((.Idx 256), 0:.Nat), 0:.Nat), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, (.Idx 4294967296)]] = {
+// CHECK-DAG: .con .extern main _{{[0-9_]+}}::[mem_[[memId:[_0-9]*]]: %mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((.Idx 256), 0), 0), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, (.Idx 4294967296)]] = {
 // CHECK-DAG: _[[appId:[_0-9]*]]: ⊥:★ = return_[[returnEtaId:[_0-9]*]] (mem_[[memId]], 42:(.Idx 4294967296));
 // CHECK-DAG: _[[appId]]
 

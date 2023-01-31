@@ -14,7 +14,7 @@
     };
 
     .con for_body [i : .Idx 4294967296, acc : .Idx 4294967296, continue : .Cn [.Idx 4294967296]] = {
-        continue (%core.wrap.add 4294967296 0 (i, acc))
+        continue (%core.wrap.add 0 (i, acc))
     };
     %affine.For (4294967296, 1, (.Idx 4294967296)) (0:(.Idx 4294967296), argc, 1:(.Idx 4294967296), (0:(.Idx 4294967296)), for_body, for_exit)
 };

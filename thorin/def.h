@@ -13,7 +13,7 @@
 
 // clang-format off
 #define THORIN_NODE(m)                                                        \
-    m(Type, type)       m(Univ, univ)                                         \
+    m(Type, type)       m(Univ, univ)   m(UMax, umax)       m(UInc, uinc)     \
     m(Pi, pi)           m(Lam, lam)     m(App, app)                           \
     m(Sigma, sigma)     m(Tuple, tuple) m(Extract, extract) m(Insert, insert) \
     m(Arr, arr)         m(Pack, pack)                                         \
@@ -33,7 +33,7 @@ namespace thorin {
 
 namespace Node {
 #define CODE(node, name) node,
-enum : node_t { THORIN_NODE(CODE) Max };
+enum : node_t { THORIN_NODE(CODE) };
 #undef CODE
 } // namespace Node
 
@@ -43,10 +43,31 @@ class Var;
 class Def;
 class World;
 
-using Defs     = Span<const Def*>;
-using DefArray = Array<const Def*>;
+using Implicits = std::vector<bool>;
+using Defs      = Span<const Def*>;
+using DefArray  = Array<const Def*>;
 
 //------------------------------------------------------------------------------
+
+/// Retrieves Infer::arg from @p def
+const Def* refer(const Def* def);
+
+/// Helper class to retrieve Infer::arg if present.
+class Ref {
+public:
+    Ref() = default;
+    Ref(const Def* def)
+        : def_(def) {}
+
+    const Def* operator*() const { return refer(def_); }
+    const Def* operator->() const { return refer(def_); }
+    operator const Def*() const { return refer(def_); }
+    explicit operator bool() const { return def_; }
+    friend std::ostream& operator<<(std::ostream&, Ref);
+
+private:
+    const Def* def_ = nullptr;
+};
 
 template<class T = u64>
 std::optional<T> isa_lit(const Def*);
@@ -88,19 +109,29 @@ struct UseEq {
 using Uses = absl::flat_hash_set<Use, UseHash, UseEq>;
 
 // TODO remove or fix this
-enum class Sort { Term, Type, Kind, Space, Univ };
+enum class Sort { Term, Type, Kind, Space, Univ, Level };
 
 //------------------------------------------------------------------------------
 
-struct Dep {
-    enum : unsigned {
-        None  = 0,
-        Axiom = 1 << 0,
-        Proxy = 1 << 1,
-        Nom   = 1 << 2,
-        Var   = 1 << 3,
-    };
+enum class Dep : unsigned {
+    None  = 0,
+    Axiom = 1 << 0,
+    Infer = 1 << 1,
+    Nom   = 1 << 2,
+    Proxy = 1 << 3,
+    Var   = 1 << 4,
 };
+
+inline unsigned operator&(Dep d1, Dep d2) { return unsigned(d1) & unsigned(d2); }
+inline unsigned operator|(Dep d1, Dep d2) { return unsigned(d1) | unsigned(d2); }
+inline unsigned operator&(unsigned d1, Dep d2) { return d1 & unsigned(d2); }
+inline unsigned operator|(unsigned d1, Dep d2) { return d1 | unsigned(d2); }
+inline unsigned operator&(Dep d1, unsigned d2) { return unsigned(d1) & d2; }
+inline unsigned operator|(Dep d1, unsigned d2) { return unsigned(d1) | d2; }
+inline unsigned operator==(unsigned d1, Dep d2) { return d1 == unsigned(d2); }
+inline unsigned operator!=(unsigned d1, Dep d2) { return d1 != unsigned(d2); }
+inline unsigned operator==(Dep d1, unsigned d2) { return unsigned(d1) == d2; }
+inline unsigned operator!=(Dep d1, unsigned d2) { return unsigned(d1) != d2; }
 
 /// Use as mixin to wrap all kind of Def::proj and Def::projs variants.
 #define THORIN_PROJ(NAME, CONST)                                                                                   \
@@ -199,6 +230,9 @@ public:
     }
     Def* set_type(const Def*);
     void unset_type();
+    void update() {
+        if (auto r = refer(type()); r && r != type()) set_type(r);
+    } ///< Resolves Infer%s.
 
     /// Yields `true` if empty or the last op is set.
     bool is_set() const;
@@ -234,9 +268,9 @@ public:
     ///@{
     /// @see Dep.
     unsigned dep() const { return dep_; }
-    bool dep_none() const { return dep() == Dep::None; }
-    bool dep_const() const { return !(dep() & (Dep::Nom | Dep::Var)); }
-    bool dep_proxy() const { return dep_ & Dep::Proxy; }
+    bool has_dep(Dep d) const { return has_dep(unsigned(d)); }
+    bool has_dep(unsigned u) const { return dep() & u; }
+    bool dep_const() const { return !has_dep(Dep::Nom | Dep::Var); }
     ///@}
 
     /// @name proj
@@ -368,7 +402,7 @@ public:
 
     /// @name virtual methods
     ///@{
-    virtual bool check() { return true; }
+    virtual void check() {}
     virtual size_t first_dependend_op() { return 0; }
     virtual const Def* rebuild(World&, const Def*, Defs, const Def*) const { unreachable(); }
     /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
@@ -403,8 +437,8 @@ protected:
     flags_t flags_;
     uint8_t node_;
     unsigned nom_    : 1;
-    unsigned dep_    : 4;
-    unsigned pading_ : 3;
+    unsigned dep_    : 5;
+    unsigned pading_ : 2;
     u8 curry_;
     u8 trip_;
     hash_t hash_;
@@ -428,6 +462,17 @@ template<class T>
 const T* as([[maybe_unused]] flags_t f, const Def* def) {
     assert(isa<T>(f, def));
     return def;
+}
+
+template<class T = std::logic_error, class... Args>
+[[noreturn]] void err(const Def* dbg, const char* fmt, Args&&... args) {
+    err(Debug(dbg).loc, fmt, std::forward<Args&&>(args)...);
+}
+
+template<class T = std::logic_error, class... Args>
+[[noreturn]] void err(const Def* dbg, const char* fmt, const Def* def, Args&&... args) {
+    Debug d(dbg ? dbg : def->dbg());
+    err(d.loc, fmt, def, std::forward<Args&&>(args)...);
 }
 
 //------------------------------------------------------------------------------
@@ -502,7 +547,42 @@ public:
     friend class World;
 };
 
+class UMax : public Def {
+private:
+    UMax(World&, Defs ops, const Def* dbg);
+
+public:
+    /// @name virtual methods
+    ///@{
+    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    ///@}
+
+    static constexpr auto Node = Node::UMax;
+    friend class World;
+};
+
 using level_t = u64;
+
+class UInc : public Def {
+private:
+    UInc(const Def* op, level_t offset, const Def* dbg)
+        : Def(Node, op->type()->as<Univ>(), {op}, offset, dbg) {}
+
+public:
+    /// @name ops
+    ///@{
+    const Def* op() const { return Def::op(0); }
+    level_t offset() const { return flags(); }
+    ///@}
+
+    /// @name virtual methods
+    ///@{
+    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    ///@}
+
+    static constexpr auto Node = Node::UInc;
+    friend class World;
+};
 
 class Type : public Def {
 private:
@@ -581,7 +661,7 @@ public:
     ///@}
 
     /// Checks if @p def isa `.Idx s` and returns s or `nullptr` otherwise.
-    static const Def* size(const Def* def);
+    static const Def* size(Ref def);
 
     /// @name convert between Idx::size and bitwidth and vice versa
     ///@{
@@ -614,30 +694,6 @@ public:
     ///@}
 
     static constexpr auto Node = Node::Proxy;
-    friend class World;
-};
-
-/// This node is a hole in the IR that is inferred by its context later on.
-/// It is modelled as a *nom*inal Def.
-/// If inference was successful,
-class Infer : public Def {
-private:
-    Infer(const Def* type, const Def* dbg)
-        : Def(Node, type, 1, 0, dbg) {}
-
-public:
-    /// @name op
-    ///@{
-    const Def* op() const { return Def::op(0); }
-    Infer* set(const Def* op) { return Def::set(0, op)->as<Infer>(); }
-    ///@}
-
-    /// @name virtual methods
-    ///@{
-    Infer* stub(World&, const Def*, const Def*) override;
-    ///@}
-
-    static constexpr auto Node = Node::Infer;
     friend class World;
 };
 

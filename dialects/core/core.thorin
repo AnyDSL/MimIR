@@ -12,7 +12,7 @@
 ///
 /// Standard arithmetic operations on `.Nat`s.
 ///
-.ax %core.nop(add, mul): Π [.Nat, .Nat] -> .Nat, normalize_nop;
+.ax %core.nop(add, mul): «2; .Nat» -> .Nat, normalize_nop;
 ///
 /// ### %core.ncmp
 ///
@@ -34,7 +34,7 @@
 ///
 .ax %core.ncmp(gle = f, glE =  e, gLe =  l, gLE = le,
                Gle = g, GlE = ge, GLe = ne, GLE =  t): 
-    [.Nat, .Nat] -> .Bool, normalize_ncmp;
+    «2; .Nat» -> .Bool, normalize_ncmp;
 ///
 /// ## Integer Operations
 ///
@@ -49,7 +49,7 @@
 /// | id     | x | o | identity                     |
 /// | t      | x | x | always true                  |
 ///
-.ax %core.bit1(f, neg, id, t): Π s: .Nat -> .Idx s -> .Idx s, normalize_bit1;
+.ax %core.bit1(f, neg, id, t): Π.[s: .Nat][.Idx s] -> .Idx s, normalize_bit1;
 ///
 /// ### %core.bit2
 ///
@@ -74,9 +74,9 @@
 /// | or_    |  x |  x |  x |  o | or                           |
 /// | t      |  x |  x |  x |  x | always true                  |
 ///
-.ax %core.bit2( f,      nor,    nciff,  na,     niff,   nb,   xor_, nand,
-                and_,  nxor,    b,      iff,    a,      ciff, or_,  t):
-    Π s: .Nat -> [.Idx s, .Idx s] -> .Idx s , normalize_bit2;
+.ax %core.bit2( f,      nor, nciff, nfst, niff, nsnd, xor_, nand,
+                and_,  nxor,   snd,  iff,  fst, ciff,  or_,    t):
+    Π.[s: .Nat][«2; .Idx s»] -> .Idx s , normalize_bit2;
 ///
 /// ### %core.shr
 ///
@@ -84,15 +84,14 @@
 ///     * [`a`rithmetic shift right](https://en.wikipedia.org/wiki/Arithmetic_shift)
 ///     * [`l`ogical shift right](https://en.wikipedia.org/wiki/Logical_shift)
 ///
-.ax %core.shr(a, l): Π s: .Nat -> [.Idx s, .Idx s] -> .Idx s, normalize_shr;
+.ax %core.shr(a, l): Π.[s: .Nat][«2; .Idx s»] -> .Idx s, normalize_shr;
 ///
 /// ### %core.wrap
 ///
 /// Integer operations that may overflow.
 /// You can specify the desired behavior in the case of an overflow with the curried argument just in front of the actual argument by providing a thorin::core::Mode as `.Nat`.
 ///
-.ax %core.wrap(add, sub, mul, shl):
-    Π s: .Nat -> .Nat -> [.Idx s, .Idx s] -> .Idx s, normalize_wrap;
+.ax %core.wrap(add, sub, mul, shl): Π.[s: .Nat][.Nat][«2; .Idx s»] -> .Idx s, normalize_wrap;
 ///
 /// ### %core.div
 ///
@@ -102,7 +101,7 @@
 /// For this reason, these axioms expect a `%%mem.M`.
 ///
 .ax %core.div(sdiv, udiv, srem, urem):
-    Π s: .Nat -> [%mem.M, .Idx s, .Idx s] -> [%mem.M, .Idx s], normalize_div;
+    Π.[s: .Nat][%mem.M, .Idx s, .Idx s] -> [%mem.M, .Idx s], normalize_div;
 ///
 /// ### %core.icmp
 ///
@@ -175,7 +174,7 @@
                XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,
                XYgle,      XYglE,       XYgLe,      XYgLE,
                XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):
-    Π s: .Nat -> [.Idx s, .Idx s] -> .Bool , normalize_icmp;
+    Π.[s: .Nat][«2; .Idx s»] -> .Bool , normalize_icmp;
 ///
 /// ## Conversions
 ///
@@ -183,14 +182,14 @@
 ///
 /// Conversion between index types - both signed and unsigned - of different sizes.
 ///
-.ax %core.conv(s2s, u2u): Π ss: .Nat -> Π ds: .Nat -> .Idx ss -> .Idx ds, normalize_conv;
+.ax %core.conv(s, u): Π.[ss: .Nat][ds: .Nat][.Idx ss] -> .Idx ds, normalize_conv;
 ///
 /// ### %core.bitcast
 ///
 /// Bitcast to reinterpret a value as another type.
 /// Can be used for pointer / integer conversions as well as integer / nat conversions.
 ///
-.ax %core.bitcast: Π [D: *, S: *] -> S -> D, normalize_bitcast;
+.ax %core.bitcast: Π [D: *, S: *][S] -> D, normalize_bitcast;
 ///
 /// ## Other Operations
 ///
@@ -204,13 +203,13 @@
 ///
 /// Steers the partial evaluator.
 ///
-.ax %core.pe(hlt, run): Π T: * -> T -> T, normalize_pe;
-.ax %core.pe(known): Π T: * -> T -> .Bool, normalize_pe;
+.ax %core.pe(hlt, run): Π [T: *][T] -> T, normalize_pe;
+.ax %core.pe(known): Π [T: *][T] -> .Bool, normalize_pe;
 ///
 /// ### %core.zip
 ///
 /// For now, not a better place for this and will be moved elsewhere.
 ///
 .ax %core.zip: Π [r: .Nat, s: «r; .Nat»]
-    -> Π [n_i: .Nat, Is: «n_i; *», n_o: .Nat, Os: «n_o; *», f: «i: n_i; Is#i»
-    -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»», normalize_zip;
+                 [n_i: .Nat, Is: «n_i; *», n_o: .Nat, Os: «n_o; *», f: «i: n_i; Is#i» -> «o: n_o; Os#o»]
+                 [«i: n_i; «s; Is#i»»] -> «o: n_o; «s; Os#o»», normalize_zip;
