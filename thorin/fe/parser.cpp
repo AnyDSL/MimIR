@@ -451,7 +451,6 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
     bool p     = delim_l == Tok::Tag::D_paren_l;
     bool b     = delim_l == Tok::Tag::D_brckt_l;
     assert((p ^ b) && "left delimiter must either be '(' or '['");
-
     // p ->    (p, ..., p)
     // p ->    [b, ..., b]      b ->    [b, ..., b]
     // p ->  s::(p, ..., p)
@@ -461,7 +460,8 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
     // p -> 's::(p, ..., p)
     // p -> 's::[b, ..., b]     b -> 's::[b, ..., b]
     // p -> 's: e               b -> 's: e
-    // p -> 's                  b ->
+    // p -> 's
+
     if (p && ahead().isa(Tok::Tag::D_paren_l)) {
         // p ->    (p, ..., p)
         return parse_tuple_ptrn(track, false, sym);
@@ -474,28 +474,37 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
     bool rebind = apos.has_value();
 
     if (ahead(0).isa(Tok::Tag::M_id)) {
-        // p -> s::(p, ..., p)
-        // p -> s::[b, ..., b]      b -> s::[b, ..., b]
-        // p -> s: e                b -> s: e
-        // p -> s                   b ->    e    where e == id
+        // p ->  s::(p, ..., p)
+        // p ->  s::[b, ..., b]     b ->  s::[b, ..., b]
+        // p ->  s: e               b ->  s: e
+        // p ->  s                  b ->    e    where e == id
+        // p -> 's::(p, ..., p)
+        // p -> 's::[b, ..., b]     b -> 's::[b, ..., b]
+        // p -> 's: e               b -> 's: e
+        // p -> 's
         if (ahead(1).isa(Tok::Tag::T_colon_colon)) {
             sym = eat(Tok::Tag::M_id).sym();
             eat(Tok::Tag::T_colon_colon);
             if (b && ahead().isa(Tok::Tag::D_paren_l))
                 err(ahead().loc(), "switching from []-style patterns to ()-style patterns is not allowed");
-            // b -> s::(p, ..., p)
-            // b -> s::[b, ..., b]      b -> s::[b, ..., b]
+            // b ->  s::(p, ..., p)
+            // b ->  s::[b, ..., b]     b ->  s::[b, ..., b]
+            // b -> 's::(p, ..., p)
+            // b -> 's::[b, ..., b]     b -> 's::[b, ..., b]
             return parse_tuple_ptrn(track, rebind, sym);
         } else if (ahead(1).isa(Tok::Tag::T_colon)) {
-            // p -> s: e                b -> s: e
+            // p ->  s: e               b ->  s: e
+            // p -> 's: e               b -> 's: e
             sym = eat(Tok::Tag::M_id).sym();
             eat(Tok::Tag::T_colon);
             auto type = parse_expr(ctxt, prec);
             return std::make_unique<IdPtrn>(track.loc(), rebind, sym, type);
         } else {
-            // p -> s                   b ->    e    where e == id
+            // p ->  s                  b ->    e    where e == id
+            // p -> 's
             if (p) {
-                // p -> s
+                // p ->  s
+                // p -> 's
                 sym = eat(Tok::Tag::M_id).sym();
                 return std::make_unique<IdPtrn>(track.loc(), rebind, sym, nullptr);
             } else {
