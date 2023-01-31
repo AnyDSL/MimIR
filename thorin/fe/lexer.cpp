@@ -71,6 +71,7 @@ Tok Lexer::lex() {
             return tok(Tok::Tag::D_angle_r);
         }
         // further tokens
+        if (accept('\'')) return tok(Tok::Tag::T_apos);
         if (accept(U'→')) return tok(Tok::Tag::T_arrow);
         if (accept( '@')) return tok(Tok::Tag::T_at);
         if (accept( '=')) return tok(Tok::Tag::T_assign);

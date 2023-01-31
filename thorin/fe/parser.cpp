@@ -356,7 +356,7 @@ const Def* Parser::parse_block() {
 
 const Def* Parser::parse_sigma() {
     auto track = tracker();
-    auto bndr  = parse_tuple_ptrn(track, anonymous_sym());
+    auto bndr  = parse_tuple_ptrn(track, false, anonymous_sym());
     return bndr->type(world());
 }
 
@@ -450,21 +450,30 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
     auto sym   = anonymous_sym();
     bool p     = delim_l == Tok::Tag::D_paren_l;
     bool b     = delim_l == Tok::Tag::D_brckt_l;
-    assert(p ^ b);
+    assert((p ^ b) && "left delimiter must either be '(' or '['");
 
     // p ->    (p, ..., p)
     // p ->    [b, ..., b]      b ->    [b, ..., b]
-    // p -> s::(p, ..., p)
-    // p -> s::[b, ..., b]      b -> s::[b, ..., b]
-    // p -> s: e                b -> s: e
-    // p -> s                   b ->    e
+    // p ->  s::(p, ..., p)
+    // p ->  s::[b, ..., b]     b ->  s::[b, ..., b]
+    // p ->  s: e               b ->  s: e
+    // p ->  s                  b ->    e
+    // p -> 's::(p, ..., p)
+    // p -> 's::[b, ..., b]     b -> 's::[b, ..., b]
+    // p -> 's: e               b -> 's: e
+    // p -> 's                  b ->
     if (p && ahead().isa(Tok::Tag::D_paren_l)) {
         // p ->    (p, ..., p)
-        return parse_tuple_ptrn(track, sym);
+        return parse_tuple_ptrn(track, false, sym);
     } else if (ahead().isa(Tok::Tag::D_brckt_l)) {
         // p ->    [b, ..., b]      b ->    [b, ..., b]
-        return parse_tuple_ptrn(track, sym);
-    } else if (ahead(0).isa(Tok::Tag::M_id)) {
+        return parse_tuple_ptrn(track, false, sym);
+    }
+
+    auto apos = accept(Tok::Tag::T_apos);
+    bool rebind = apos.has_value();
+
+    if (ahead(0).isa(Tok::Tag::M_id)) {
         // p -> s::(p, ..., p)
         // p -> s::[b, ..., b]      b -> s::[b, ..., b]
         // p -> s: e                b -> s: e
@@ -476,29 +485,30 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
                 err(ahead().loc(), "switching from []-style patterns to ()-style patterns is not allowed");
             // b -> s::(p, ..., p)
             // b -> s::[b, ..., b]      b -> s::[b, ..., b]
-            return parse_tuple_ptrn(track, sym);
+            return parse_tuple_ptrn(track, rebind, sym);
         } else if (ahead(1).isa(Tok::Tag::T_colon)) {
             // p -> s: e                b -> s: e
             sym = eat(Tok::Tag::M_id).sym();
             eat(Tok::Tag::T_colon);
             auto type = parse_expr(ctxt, prec);
-            return std::make_unique<IdPtrn>(track.loc(), sym, type);
+            return std::make_unique<IdPtrn>(track.loc(), rebind, sym, type);
         } else {
             // p -> s                   b ->    e    where e == id
             if (p) {
                 // p -> s
                 sym = eat(Tok::Tag::M_id).sym();
-                return std::make_unique<IdPtrn>(track.loc(), sym, nullptr);
+                return std::make_unique<IdPtrn>(track.loc(), rebind, sym, nullptr);
             } else {
                 // b ->    e    where e == id
                 auto type = parse_expr(ctxt, prec);
-                return std::make_unique<IdPtrn>(track.loc(), sym, type);
+                return std::make_unique<IdPtrn>(track.loc(), rebind, sym, type);
             }
         }
     } else if (b) {
         // b ->  e    where e != id
+        if (apos) err(apos->loc(), "you can only prefix identifiers with apostrophe for rebinding");
         auto type = parse_expr(ctxt, prec);
-        return std::make_unique<IdPtrn>(track.loc(), sym, type);
+        return std::make_unique<IdPtrn>(track.loc(), rebind, sym, type);
     } else if (!ctxt.empty()) {
         // p -> ↯
         syntax_err("pattern", ctxt);
@@ -507,7 +517,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
     return nullptr;
 }
 
-std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, Sym sym) {
+std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, Sym sym) {
     auto delim_l = ahead().tag();
     bool p       = delim_l == Tok::Tag::D_paren_l;
     bool b       = delim_l == Tok::Tag::D_brckt_l;
@@ -527,14 +537,14 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, Sym sym) {
             std::vector<Sym> syms;
             while (auto tok = accept(Tok::Tag::M_id)) syms.emplace_back(tok->sym());
 
-            expect(Tok::Tag::T_colon, "type ascription of an identifer group within a tuple pattern");
+            expect(Tok::Tag::T_colon, "type ascription of an identifier group within a tuple pattern");
             auto type = parse_expr("type of an identifier group within a tuple pattern");
 
             for (auto sym : syms) {
                 infers.emplace_back(world().nom_infer(type, sym));
                 fields.emplace_back(sym.str());
                 ops.emplace_back(type);
-                ptrns.emplace_back(std::make_unique<IdPtrn>(sym.loc(), sym, type));
+                ptrns.emplace_back(std::make_unique<IdPtrn>(sym.loc(), false, sym, type));
             }
         } else {
             auto ptrn = parse_ptrn(delim_l, "element of a tuple pattern");
@@ -543,7 +553,7 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, Sym sym) {
             if (b) {
                 // If we are able to parse more stuff, we got an expression instead of just a binder.
                 if (auto expr = parse_infix_expr(track, type); expr != type) {
-                    ptrn = std::make_unique<IdPtrn>(track.loc(), anonymous_sym(), expr);
+                    ptrn = std::make_unique<IdPtrn>(track.loc(), false, anonymous_sym(), expr);
                     type = ptrn->type(world());
                 }
             }
@@ -557,7 +567,7 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, Sym sym) {
     scopes_.pop();
 
     // TODO parse type
-    return std::make_unique<TuplePtrn>(track.loc(), sym, std::move(ptrns), nullptr, std::move(infers));
+    return std::make_unique<TuplePtrn>(track.loc(), rebind, sym, std::move(ptrns), nullptr, std::move(infers));
 }
 
 /*
