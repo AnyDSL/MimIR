@@ -15,11 +15,11 @@ const Def* Ptrn::dbg(World& world) { return world.dbg(Debug(sym(), loc())); }
  * bind
  */
 
-void IdPtrn::bind(Scopes& scopes, const Def* def) const { scopes.bind(sym_, def); }
+void IdPtrn::bind(Scopes& scopes, const Def* def) const { scopes.bind(sym_, def, rebind()); }
 
 void TuplePtrn::bind(Scopes& scopes, const Def* def) const {
     World& w = def->world();
-    scopes.bind(sym_, def);
+    scopes.bind(sym_, def, rebind());
     for (size_t i = 0, e = num_ptrns(); i != e; ++i) ptrn(i)->bind(scopes, def->proj(e, i, w.dbg(ptrn(i)->sym())));
 }
 

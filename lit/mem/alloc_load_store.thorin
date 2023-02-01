@@ -9,11 +9,11 @@
 
 .let I32 = .Idx 4294967296;
 .con .extern main(mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), return: .Cn [%mem.M, I32]) = {
-    .let allocd = %mem.alloc (I32, 0) mem;
-    .let store = %mem.store (allocd#0:(.Idx 2), allocd#1:(.Idx 2), argc);
-    .let load = %mem.load (store, allocd#1:(.Idx 2));
-    .let free = %mem.free (load#0:(.Idx 2), allocd#1:(.Idx 2));
-    return (free, load#1:(.Idx 2))
+    .let ('mem, ptr) = %mem.alloc (I32, 0) mem;
+    .let 'mem        = %mem.store (mem, ptr, argc);
+    .let ('mem, val) = %mem.load (mem, ptr);
+    .let 'mem        = %mem.free (mem, ptr);
+    return (mem, val)
 };
 
 // CHECK-DAG: .con .extern main _{{[0-9_]+}}::[mem_[[mainMemId:[_0-9]*]]: %mem.M, argc_[[argcId:[0-9_]+]]: .Idx 4294967296, %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, .Idx 4294967296]] = {
