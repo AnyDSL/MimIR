@@ -133,9 +133,13 @@ private:
 using LPrec = LRPrec2<true>;
 using RPrec = LRPrec2<false>;
 
+DefSet let_emitted;
+
 std::ostream& operator<<(std::ostream& os, Inline2 u) {
     // return print(os, "Int");
     if (u.dump_gid_ == 2 || (u.dump_gid_ == 1 && !u->isa<Var>() && u->num_ops() != 0)) print(os, "/*{}*/", u->gid());
+
+    if (let_emitted.contains(u.def_)) { return print(os, "{}", u->unique_name()); }
 
     if (auto ptr = match<mem::Ptr>(*u)) {
         auto type = ptr->arg(0);
@@ -217,13 +221,13 @@ std::ostream& operator<<(std::ostream& os, Inline2 u) {
         // return print(os, "Int");
     } else if (auto bot = u->isa<Bot>()) {
         // return print(os, "<⊥:{}>", bot->type());
-        // TODO: handle other types
-        if (bot->type()->isa<Type>()) return print(os, "unit");
+        // if (bot->type()->isa<Type>()) return print(os, "unit");
+        if (bot->type()->isa<Type>()) return print(os, "'a");
         return print(os, "()");
     } else if (auto top = u->isa<Top>()) {
-        // TODO: handle other types
         // return print(os, "<⊤:{}>", top->type());
-        if (top->type()->isa<Type>()) return print(os, "unit");
+        // if (top->type()->isa<Type>()) return print(os, "unit");
+        if (top->type()->isa<Type>()) return print(os, "'a");
         return print(os, "()");
     } else if (auto axiom = u->isa<Axiom>()) {
         const auto& name = axiom->name();
@@ -231,9 +235,12 @@ std::ostream& operator<<(std::ostream& os, Inline2 u) {
         // if (name == "%mem.M") return print(os, "unit");
         return print(os, "{}{}", name[0] == '%' ? "" : "%", name);
     } else if (auto lit = u->isa<Lit>()) {
+        long value = lit->get();
         if (lit->type()->isa<Nat>()) return print(os, "{}", lit->get());
+        if (value == 4294967295) { value = -1; }
+        // TODO: 4294967295 => -1 / add modulo at operations (probably better)
         if (lit->type()->isa<App>())
-            return print(os, "({}:{})", lit->get(), Inline2(lit->type())); // HACK prec magic is broken
+            return print(os, "({}:{})", value, Inline2(lit->type())); // HACK prec magic is broken
         return print(os, "{}:{}", lit->get(), Inline2(lit->type()));
     } else if (auto ex = u->isa<Extract>()) {
         if (ex->tuple()->isa<Var>() && ex->index()->isa<Lit>()) return print(os, "{}", ex->unique_name());
@@ -439,6 +446,7 @@ void Dumper::dump_let(const Def* def) {
     // TODO: type vs Inline type
     tab.print(os, "let {}: {} = {} in\n", def->unique_name(), Inline2(def->type()), Inline2(def, 0));
     // tab.print(os, "let {}: {} = {} in\n", def->unique_name(), def->type(), Inline2(def, 0));
+    let_emitted.insert(def);
 }
 
 void Dumper::dump_ptrn(const Def* def, const Def* type, bool toplevel) {
