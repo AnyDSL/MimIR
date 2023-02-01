@@ -31,13 +31,13 @@
         };
 
         .con next [mem: %mem.M] = {
-            recursive( mem, %core.wrap.add _32 0 (i, 1:I32), pb, return )
+            recursive( mem, %core.wrap.add 0 (i, 1:I32), pb, return )
         };
 
         printIntegerNL( mem, i , next )
     };
 
-    .let condition = %core.icmp.ul 4294967296 (i, %core.bitcast (I32, .Nat) size);
+    .let condition = %core.icmp.ul (i, %core.bitcast (I32, .Nat) size);
     .let target = (exit, loop_body)#condition;
     target ( mem )
 };

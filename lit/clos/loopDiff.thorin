@@ -102,6 +102,7 @@
 
 
 .con outer [mem: %mem.M, x : i32, return : .Cn [%mem.M]] = {
+    .let arr_size = ⊤:.Nat;
 
     .let (alloc_mem_a, a_arr) = %mem.alloc (<<size; i32>>, 0) (mem);
     .let (alloc_mem_b, b_arr) = %mem.alloc (<<size; i32>>, 0) (alloc_mem_a);
@@ -204,7 +205,7 @@
 
         .con loop_head [mem: %mem.M, i : i32] = {
             .con exit [mem: %mem.M] = {
-                .let (backward_pass_mem, backward_pass) = %mem.load (pb_type, 0) (mem, lea_pb);
+                .let (backward_pass_mem, backward_pass) = %mem.load (mem, lea_pb);
                 backward_pass (backward_pass_mem, timer)
             };
 

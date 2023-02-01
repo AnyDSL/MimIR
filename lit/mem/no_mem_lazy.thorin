@@ -7,7 +7,7 @@
 .let I32 = .Idx 4294967296;
 
 .con f [a:I32, ret: .Cn [I32]] = {
-    .let b = %core.wrap.mul 4294967296:.Nat 0:.Nat (a, a);
+    .let b = %core.wrap.mul 0 (a, a);
     ret b
 };
 

@@ -20,22 +20,22 @@
 };
 
 .con g1 [mem: %mem.M, a: I32, b:I32, ret: .Cn [%mem.M, I32]] = {
-    .let c = %core.wrap.add _32 0 (a,b);
+    .let c = %core.wrap.add 0 (a,b);
     ret (mem,c)
 };
 
 .con g2 [[mem: %mem.M, a: I32, b:I32], ret: .Cn [%mem.M, I32]] = {
-    .let c = %core.wrap.add _32 0 (a,b);
+    .let c = %core.wrap.add 0 (a,b);
     ret (mem,c)
 };
 
 .con g3 [[mem: %mem.M, [a: I32, b:I32]], ret: .Cn [%mem.M, I32]] = {
-    .let c = %core.wrap.add _32 0 (a,b);
+    .let c = %core.wrap.add 0 (a,b);
     ret (mem,c)
 };
 
 .con g4 [mem: %mem.M, [a: I32, b:I32], ret: .Cn [%mem.M, I32]] = {
-    .let c = %core.wrap.add _32 0 (a,b);
+    .let c = %core.wrap.add 0 (a,b);
     ret (mem,c)
 };
 
