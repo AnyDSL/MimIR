@@ -3,7 +3,6 @@
 #include <fstream>
 #include <ranges>
 
-#include "thorin/error.h"
 #include "thorin/world.h"
 
 #include "thorin/fe/parser.h"
@@ -32,7 +31,7 @@ TEST(Zip, fold) {
     auto c = w.tuple({w.tuple({w.lit_idx( 6), w.lit_idx( 8), w.lit_idx(10)}),
                       w.tuple({w.lit_idx(12), w.lit_idx(14), w.lit_idx(16)})});
 
-    auto f = core::fn(core::wrap::add, w.lit_nat(Idx::bitwidth2size(32)), 0_n);
+    auto f = w.app(w.app(w.ax(core::wrap::add), w.lit_nat(Idx::bitwidth2size(32))), w.lit_nat_0());
     auto i32_t = w.type_int(32);
     auto res = w.app(w.app(w.app(w.ax<core::zip>(), {/*r*/w.lit_nat(2), /*s*/w.tuple({w.lit_nat(2), w.lit_nat(3)})}),
                                              {/*n_i*/ w.lit_nat(2), /*Is*/w.pack(2, i32_t), /*n_o*/w.lit_nat(1), /*Os*/i32_t, f}),

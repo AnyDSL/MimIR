@@ -4,7 +4,6 @@
 #include <sstream>
 
 #include "thorin/axiom.h"
-#include "thorin/error.h"
 
 namespace thorin::h {
 

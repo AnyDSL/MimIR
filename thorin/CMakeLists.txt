@@ -10,8 +10,6 @@ add_library(libthorin
     dialects.cpp
     dialects.h
     dump.cpp
-    error.cpp
-    error.h
     flags.h
     lam.cpp
     lam.h

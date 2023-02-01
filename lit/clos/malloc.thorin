@@ -9,7 +9,7 @@
 .let I32 = .Idx 4294967296;
 
 .con f [mem: %mem.M, x : I32, return : .Cn [%mem.M, I32]] = {
-    return (mem, %core.wrap.add 4294967296 0 (x, 42:I32))
+    return (mem, %core.wrap.add 0 (x, 42:I32))
 };
 
 .con g [mem: %mem.M, x : I32, return : .Cn [%mem.M, I32]] = {
@@ -17,10 +17,10 @@
 };
 
 
-.con .extern main [mem: %mem.M, argc: I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, I32]] = {
+.con .extern main [mem: %mem.M, argc: I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), return : .Cn [%mem.M, I32]] = {
 
     .con h [mem: %mem.M, x : I32, return : .Cn [%mem.M, I32]] = {
-        return (mem, %core.wrap.add 4294967296 0 (x, argc))
+        return (mem, %core.wrap.add 0 (x, argc))
     };
 
     .let pb_type = .Cn [%mem.M, I32, .Cn [%mem.M, I32]];
@@ -33,27 +33,27 @@
     .let (alloc_pb_mem, pb_ptr) = %mem.malloc Tas (mem, 32);
 
     .let pb_arr = %core.bitcast (
-       %mem.Ptr («⊤:.Nat; .Cn [%mem.M, (.Idx 4294967296), .Cn [%mem.M, (.Idx 4294967296)]]», 0:.Nat),
-       %mem.Ptr (.Cn [%mem.M, (.Idx 4294967296), .Cn [%mem.M, (.Idx 4294967296)]], 0:.Nat)) pb_ptr;
+       %mem.Ptr («⊤:.Nat; .Cn [%mem.M, (.Idx 4294967296), .Cn [%mem.M, (.Idx 4294967296)]]», 0),
+       %mem.Ptr (.Cn [%mem.M, (.Idx 4294967296), .Cn [%mem.M, (.Idx 4294967296)]], 0)) pb_ptr;
 
     .let (alloc_mem, a_arr) = %mem.alloc (<<%core.bitcast (.Nat, I32) 4:I32; I32>>, 0) (alloc_pb_mem);
 
     .let lea_0 = %mem.lea (arr_size, <arr_size; pb_type>, 0) (pb_arr, 0:I32);
-    .let mem2 = %mem.store Tas (alloc_mem, lea_0, f);
+    .let mem2 = %mem.store (alloc_mem, lea_0, f);
     .let lea_1 = %mem.lea (arr_size, <arr_size; pb_type>, 0) (pb_arr, 1:I32);
-    .let mem3 = %mem.store Tas (mem2, lea_1, g);
+    .let mem3 = %mem.store (mem2, lea_1, g);
     .let lea_2 = %mem.lea (arr_size, <arr_size; pb_type>, 0) (pb_arr, 2:I32);
-    .let mem4 = %mem.store Tas (mem3, lea_2, h);
+    .let mem4 = %mem.store (mem3, lea_2, h);
 
     .let lea = %mem.lea (arr_size, <arr_size; I32>, 0) (a_arr, 0:I32);
 
-    .let mem5 = %mem.store real_arr_type (mem4, lea, 10:I32);
+    .let mem5 = %mem.store (mem4, lea, 10:I32);
 
     .let fn_lea = %mem.lea (arr_size, <arr_size; pb_type>, 0) (pb_arr, 2:I32);
-    .let load = %mem.load Tas (mem5, fn_lea);
+    .let load = %mem.load (mem5, fn_lea);
 
     .let load_mem = load#0:(.Idx 2);
-    .let load2 = %mem.load real_arr_type (load_mem, lea);
+    .let load2 = %mem.load (load_mem, lea);
 
     .let func = load#1:(.Idx 2);
 

@@ -11,7 +11,7 @@ jobs:
     runs-on: windows-2022
     strategy:
       matrix:
-        build-type: [Debug, Release]
+        build-type: [Release] # Debug disabled: link.exe hangs :(
 
     steps:
       - name: Clone recursively
@@ -70,4 +70,3 @@ jobs:
           call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
           set PATH=${{github.workspace}}/bin;%PATH%
           ctest --verbose -C ${{matrix.build-type}} --output-on-failure
- 

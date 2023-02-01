@@ -28,7 +28,7 @@ const Def* CopyProp::rewrite(const Def* def) {
         switch (lattice[i]) {
             case Lattice::Dead: break;
             case Lattice::Prop:
-                if (app->arg(i)->dep_proxy()) {
+                if (app->arg(i)->has_dep(Dep::Proxy)) {
                     world().DLOG("found proxy within app: {}@{} - wait till proxy is gone", var_lam, app);
                     return app;
                 } else if (args[i] == nullptr) {

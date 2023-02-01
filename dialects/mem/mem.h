@@ -66,26 +66,13 @@ inline const Def* op_lea(const Def* ptr, const Def* index, const Def* dbg = {}) 
 }
 
 inline const Def* op_lea_unsafe(const Def* ptr, const Def* i, const Def* dbg = {}) {
-    World& w      = ptr->world();
-    auto safe_int = w.type_idx(force<Ptr>(ptr->type())->arg(0)->arity());
-    return op_lea(ptr, core::op(core::conv::u2u, safe_int, i), dbg);
+    World& w = ptr->world();
+    return op_lea(ptr, w.call(core::conv::u, force<Ptr>(ptr->type())->arg(0)->arity(), i), dbg);
 }
 
 inline const Def* op_lea_unsafe(const Def* ptr, u64 i, const Def* dbg = {}) {
     World& w = ptr->world();
     return op_lea_unsafe(ptr, w.lit_idx(i), dbg);
-}
-
-inline const Def* op_load(const Def* mem, const Def* ptr, const Def* dbg = {}) {
-    World& w    = mem->world();
-    auto [T, a] = force<Ptr>(ptr->type())->args<2>();
-    return w.app(w.app(w.ax<load>(), {T, a}), {mem, ptr}, dbg);
-}
-
-inline const Def* op_store(const Def* mem, const Def* ptr, const Def* val, const Def* dbg = {}) {
-    World& w    = mem->world();
-    auto [T, a] = force<Ptr>(ptr->type())->args<2>();
-    return w.app(w.app(w.ax<store>(), {T, a}), {mem, ptr, val}, dbg);
 }
 
 inline const Def* op_remem(const Def* mem, const Def* dbg = {}) {
@@ -105,28 +92,20 @@ inline const Def* op_slot(const Def* type, const Def* mem, const Def* dbg = {}) 
 
 inline const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg) {
     World& w  = type->world();
-    auto size = core::op(core::trait::size, type);
+    auto size = w.dcall(dbg, core::trait::size, type);
     return w.app(w.app(w.ax<malloc>(), {type, w.lit_nat_0()}), {mem, size}, dbg);
 }
 
 inline const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg) {
     World& w  = type->world();
-    auto size = core::op(core::trait::size, type);
+    auto size = w.dcall(dbg, core::trait::size, type);
     return w.app(w.app(w.ax<mslot>(), {type, w.lit_nat_0()}), {mem, size, id}, dbg);
 }
 
 const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg = {});
 const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg = {});
 
-inline const Def* op_free(const Def* mem, const Def* ptr, const Def* dbg = {}) {
-    World& w     = mem->world();
-    auto ptr_ty  = force<Ptr>(ptr->type())->as<App>();
-    auto pointee = ptr_ty->arg(0);
-    return w.app(w.app(w.ax<free>(), {pointee, w.lit_nat_0()}), {mem, ptr}, dbg);
-}
-
-/// Returns the (first) element of type mem::M from the given tuple.
-static const Def* mem_def(const Def* def, const Def* dbg = {}) {
+inline const Def* mem_def(const Def* def, const Def* dbg = nullptr) {
     if (match<mem::M>(def->type())) { return def; }
 
     if (def->num_projs() > 1) {

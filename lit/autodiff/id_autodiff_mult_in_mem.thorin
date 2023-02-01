@@ -12,15 +12,15 @@
     ret (mem,x)
 };
 
-.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
+.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return : .Cn [%mem.M, I32]] = {
 
     .con ret_cont [[rmem:%mem.M,r:I32],pb:.Cn[[%mem.M,I32],.Cn[%mem.M,[I32,I32]]]] = {
         .con pb_ret_cont [pb_mem:%mem.M,[pr_a:I32,pr_b:I32]] = {
-            .let sr = %core.wrap.mul 4294967296:.Nat 0:.Nat (10000:I32, r);
-            .let sa = %core.wrap.mul 4294967296:.Nat 0:.Nat (100:I32, pr_a);
+            .let sr = %core.wrap.mul 0 (10000:I32, r);
+            .let sa = %core.wrap.mul 0 (100:I32, pr_a);
             .let sb = pr_b;
-            .let sp = %core.wrap.add 4294967296:.Nat 0:.Nat (sa, sb);
-            .let o  = %core.wrap.add 4294967296:.Nat 0:.Nat (sr, sp);
+            .let sp = %core.wrap.add 0 (sa, sb);
+            .let o  = %core.wrap.add 0 (sr, sp);
             return (pb_mem, o)
         };
         pb((rmem,1:I32),pb_ret_cont)

@@ -4,6 +4,8 @@
 
 #include <sstream>
 
+#include "thorin/util/print.h"
+
 #ifdef _WIN32
 #    include <windows.h>
 #else
@@ -26,14 +28,6 @@ std::string_view extension() {
 #else
     return ".so";
 #endif
-}
-
-template<class... Args>
-[[noreturn]] void err(const char* fmt, Args&&... args) {
-    std::ostringstream oss;
-    print(oss, "error: ");
-    print(oss, fmt, std::forward<Args&&>(args)...);
-    throw Error(oss.str());
 }
 
 void* open(const std::string& file) {

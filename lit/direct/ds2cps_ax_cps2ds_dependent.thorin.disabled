@@ -16,7 +16,7 @@
     .Idx n
 };
 
-.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
+.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return : .Cn [%mem.M, I32]] = {
     .let f_cast = f;
     .let g = %direct.cps2ds_dep (.Nat,U) f_cast;
     .let n = 4294967296;

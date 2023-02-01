@@ -23,7 +23,7 @@
 /// .let AMDFP24 = %math.F (16,  7);
 /// .let PXR24   = %math.F (15,  8);
 /// ```
-.ax %math.F: [p: .Nat, e: .Nat] -> *;
+.ax %math.F: «2; .Nat» -> *;
 ///
 /// ## Numerical Operations
 ///
@@ -31,7 +31,7 @@
 ///
 /// Arithmetic operations.
 .ax %math.arith(add, sub, mul, div, rem):
-    Π [p: .Nat, e: .Nat] -> .Nat -> [%math.F (p, e), %math.F (p, e)] -> %math.F (p, e), normalize_arith;
+    Π.[pe: «2; .Nat»][.Nat][«2; %math.F pe»] -> %math.F pe, normalize_arith;
 ///
 /// ### %math.extrema
 ///
@@ -61,7 +61,7 @@
 ///
 .ax %math.extrema(im = fmin,       iM = fmax,
                   Im = ieee754min, IM = ieee754max): 
-    Π [p: .Nat, e: .Nat] -> .Nat -> [%math.F (p, e), %math.F (p, e)] -> %math.F (p, e), normalize_extrema;
+    Π.[pe: «2; .Nat»][.Nat][«2; %math.F pe»] -> %math.F pe, normalize_extrema;
 ///
 /// ### %math.tri
 ///
@@ -94,13 +94,13 @@
               aHff =  sinh = h, aHfF =  cosh, aHFf =  tanh, aHFF,
               Ahff = asin  = a, AhfF = acos , AhFf = atan , AhFF,
               AHff = asinh    , AHfF = acosh, AHFf = atanh, AHFF):
-    Π [p: .Nat, e: .Nat] -> .Nat -> %math.F (p, e) -> %math.F (p, e), normalize_tri;
+    Π.[pe: «2; .Nat»][.Nat][%math.F pe] -> %math.F pe, normalize_tri;
 ///
 /// ### %math.pow
 ///
 /// Power function: \f$x^y\f$
 ///
-.ax %math.pow: Π [p: .Nat, e: .Nat] -> .Nat -> [%math.F (p, e), %math.F (p, e)] -> %math.F (p, e), normalize_pow;
+.ax %math.pow: Π.[pe: «2; .Nat»][.Nat][«2; %math.F pe»] -> %math.F pe, normalize_pow;
 ///
 /// ### %math.rt
 ///
@@ -111,7 +111,7 @@
 /// | `%%math.rt.sq` | square root | \f$\sqrt{x}\f$     |
 /// | `%%math.rt.cb` | cube root   |\f$\sqrt[3]{x}\f$   |
 ///
-.ax %math.rt(sq,cb): Π [p: .Nat, e: .Nat] -> .Nat -> %math.F (p, e) -> %math.F (p, e), normalize_rt;
+.ax %math.rt(sq, cb): Π.[pe: «2; .Nat»][.Nat][%math.F pe] -> %math.F pe, normalize_rt;
 ///
 /// ### %math.exp
 ///
@@ -127,7 +127,7 @@
 /// | `BL`   | `log2`      | x | x | logarithm with base 2   | \f$\log_2 x\f$ |
 ///
 .ax %math.exp(bl = exp, bL = log, Bl = exp2 = b, BL = log2):
-    Π [p: .Nat, e: .Nat] -> .Nat -> %math.F (p, e) -> %math.F (p, e), normalize_exp;
+    Π.[pe: «2; .Nat»][.Nat][%math.F pe] -> %math.F pe, normalize_exp;
 ///
 /// ### %math.er
 ///
@@ -138,7 +138,7 @@
 /// | `%%math.er.f`  | error function               | \f$\frac{2}{\sqrt\pi}\int_0^x e^{-t^2}\,dt\f$                            |
 /// | `%%math.er.fc` | complementary error funciton | \f$\frac{2}{\sqrt\pi}\int_x^\infty e^{-t^2}\,dt = 1 - \textrm{erf}(x)\f$ |
 ///
-.ax %math.er(f, fc): Π [p: .Nat, e: .Nat] -> .Nat -> %math.F (p, e) -> %math.F (p, e), normalize_er;
+.ax %math.er(f, fc): Π.[pe: «2; .Nat»][.Nat][%math.F pe] -> %math.F pe, normalize_er;
 ///
 /// ### %math.gamma
 ///
@@ -149,7 +149,7 @@
 /// | ``%%math.gamma.t`` | gamma funciton                      | \f$\Gamma(x) = \int_0^\infty t^{x-1} e^{-t}\,dt\f$               |
 /// | ``%%math.gamma.l`` | natural logarithm of gamma funciton | \f$\ln \mid \int_0^\infty t^{x-1} e^{-t}\,dt \mid\f$ |
 ///
-.ax %math.gamma(t, l): Π [p: .Nat, e: .Nat] -> .Nat -> %math.F (p, e) -> %math.F (p, e), normalize_gamma;
+.ax %math.gamma(t, l): Π.[pe: «2; .Nat»][.Nat][%math.F pe] -> %math.F pe, normalize_gamma;
 ///
 /// ## Other Operations
 ///
@@ -184,12 +184,12 @@
               uGle =   g, uGlE =  ge, uGLe =  ne, uGLE =   o,
               Ugle =   u, UglE =  ue, UgLe =  ul, UgLE = ule,
               UGle =  ug, UGlE = uge, UGLe = une, UGLE =   t):
-    Π [p: .Nat, e: .Nat] -> .Nat -> [%math.F (p, e), %math.F (p, e)] -> .Bool, normalize_cmp;
+    Π.[pe: «2; .Nat»][.Nat][«2; %math.F pe»] -> .Bool, normalize_cmp;
 ///
 /// ### %math.conv
 ///
 /// Conversion between floating point and index types - both signed and unsigned - of different sizes.
 ///
-.ax %math.conv(s2f, u2f): Π s: .Nat              -> Π [p: .Nat, e: .Nat]   -> .Idx s           -> %math.F (p, e),   normalize_conv;
-.ax %math.conv(f2s, f2u): Π [p: .Nat, e: .Nat]   -> Π s: .Nat              -> %math.F (p, e)   -> .Idx s,           normalize_conv;
-.ax %math.conv(f2f):      Π [sp: .Nat, se: .Nat] -> Π [dp: .Nat, de: .Nat] -> %math.F (sp, se) -> %math.F (dp, de), normalize_conv;
+.ax %math.conv(s2f, u2f): Π.[ ss:     .Nat ][dpe: «2; .Nat»][   .Idx  ss] -> %math.F dpe, normalize_conv;
+.ax %math.conv(f2s, f2u): Π.[spe: «2; .Nat»][ ds:     .Nat ][%math.F spe] ->    .Idx  ds, normalize_conv;
+.ax %math.conv(f2f):      Π.[spe: «2; .Nat»][dpe: «2; .Nat»][%math.F spe] -> %math.F dpe, normalize_conv;

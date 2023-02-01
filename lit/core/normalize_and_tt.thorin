@@ -4,7 +4,7 @@
 .import core;
 
 .con .extern and_tt [i :.Idx 2, return : .Cn .Idx 2] = {
-    return (%core.bit2.and_ 2 (i, .tt))
+    return (%core.bit2.and_ (i, .tt))
 };
 
 // CHECK-DAG: and_tt _{{[0-9_]+}}::[i_[[valId_tt:[0-9_]+]]: .Idx 2, return_[[retId_tt:[0-9_]+]]: .Cn .Idx 2] {{(@.*)?}}= {

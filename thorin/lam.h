@@ -36,12 +36,15 @@ public:
     Pi* set_codom(const Def* codom) { return Def::set(1, codom)->as<Pi>(); }
     ///@}
 
+    static const Def* infer(const Def* dom, const Def* codom);
+
     /// @name virtual methods
     ///@{
     size_t first_dependend_op() { return 1; }
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     Pi* stub(World&, const Def*, const Def*) override;
     const Pi* restructure() override;
+    void check() override;
     ///@}
 
     static constexpr auto Node = Node::Pi;
@@ -113,6 +116,7 @@ public:
     ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     Lam* stub(World&, const Def*, const Def*) override;
+    void check() override;
     ///@}
 
     static constexpr auto Node = Node::Lam;
@@ -170,5 +174,8 @@ inline std::pair<const App*, Lam*> isa_apped_nom_lam(const Def* def) {
     if (auto app = def->isa<App>()) return {app, app->callee()->isa_nom<Lam>()};
     return {nullptr, nullptr};
 }
+
+/// Yields curried App%s in a flat `std::deque<const App*>`.
+std::deque<const App*> decurry(const Def*);
 
 } // namespace thorin
