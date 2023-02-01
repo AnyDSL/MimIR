@@ -750,6 +750,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, {} {}", t_pointee, t_ptr, v_ptr, t_i, v_i);
     } else if (match<core::trait>(def)) {
+        // trait should be lowered before codegen.
         unreachable();
     } else if (auto malloc = match<mem::malloc>(def)) {
         declare("i8* @malloc(i64)");
