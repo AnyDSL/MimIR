@@ -48,6 +48,7 @@ var classthorin_1_1fe_1_1Tok =
       [ "D_quote_l", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a5be9fecd8fb8ece5f3217942ae9f6c4a", null ],
       [ "D_quote_r", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79add7e7307bb61b436ebfaff2f7f0e0e29", null ],
       [ "T_Pi", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a91556ff35639f7053345736967eadb93", null ],
+      [ "T_apos", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79aa0ba84168cd06de10a453c2e72a2a403", null ],
       [ "T_arrow", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a2ab208dbb70e7df673fbabe32bb142eb", null ],
       [ "T_assign", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a5cde09f8e1c778aeb1790bb89e72982b", null ],
       [ "T_at", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79aeaceb769432bd45ba1afd43aeafcc8e4", null ],

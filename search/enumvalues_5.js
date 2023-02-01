@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['f_0',['f',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978aa6d4ae7d990ff7dbfef99471f1bd5622',1,'thorin::core::f()'],['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa90f68af5cf3a2df678258becc2d3f714',1,'thorin::math::f()']]],
+  ['f_0',['f',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aa6d4ae7d990ff7dbfef99471f1bd5622',1,'thorin::core::f()'],['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa90f68af5cf3a2df678258becc2d3f714',1,'thorin::math::f()']]],
   ['f2f_1',['f2f',['../namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2da7b39587020327361b25edf8fdae94209',1,'thorin::math']]],
   ['f2s_2',['f2s',['../namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2da64cc4f23df17159f168885fa9dcb812c',1,'thorin::math']]],
   ['f2u_3',['f2u',['../namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2da8c1b96a13f7c1435ca95fb36566ed661',1,'thorin::math']]],

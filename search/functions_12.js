@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['tab_0',['tab',['../classthorin_1_1Tab.html#ac89b5f96935cc8a6eed9ebd32cbf594a',1,'thorin::Tab']]],
-  ['tab_1',['Tab',['../classthorin_1_1Tab.html#a90e3e6f9586f056b9ad97c0dfc97b35f',1,'thorin::Tab']]],
+  ['tab_0',['Tab',['../classthorin_1_1Tab.html#a90e3e6f9586f056b9ad97c0dfc97b35f',1,'thorin::Tab']]],
+  ['tab_1',['tab',['../classthorin_1_1Tab.html#ac89b5f96935cc8a6eed9ebd32cbf594a',1,'thorin::Tab']]],
   ['tag_2',['tag',['../classthorin_1_1Axiom.html#a52fbe82684065787e1a12f483a93e534',1,'thorin::Axiom::tag()'],['../classthorin_1_1Match.html#aae7ddefa2552123253175c154fe1840c',1,'thorin::Match::tag()'],['../classthorin_1_1Proxy.html#a33449d4206d2c4ecd374b12afe4e2959',1,'thorin::Proxy::tag()'],['../classthorin_1_1fe_1_1Tok.html#abf873630723f154cb493c524b01e9976',1,'thorin::fe::Tok::tag() const']]],
   ['tag2str_3',['tag2str',['../classthorin_1_1fe_1_1Tok.html#a258aa41adeecb6f25f1bbadad0108be9',1,'thorin::fe::Tok']]],
   ['tail_4',['tail',['../structthorin_1_1ll_1_1BB.html#a68f2d2cbdaea0a815c52b4533c59e03a',1,'thorin::ll::BB::tail()'],['../structthorin_1_1ll_1_1BB.html#a3b03c198eb00e5b6e231295e732f1720',1,'thorin::ll::BB::tail(const char *s, Args &amp;&amp;... args)']]],
@@ -22,7 +22,7 @@ var searchData=
   ['tuple2str_19',['tuple2str',['../namespacethorin.html#aea00f96e150831aba073fce80ce0080a',1,'thorin']]],
   ['tuple_5fof_5ftypes_20',['tuple_of_types',['../namespacethorin_1_1mem.html#a5ba946d602d601a2616e78c113f3221c',1,'thorin::mem']]],
   ['tuple_5fstr_21',['tuple_str',['../classthorin_1_1World.html#aff13c4e0619c57dbb851b507336c72bb',1,'thorin::World']]],
-  ['tupleptrn_22',['TuplePtrn',['../classthorin_1_1fe_1_1TuplePtrn.html#a3e220a30f19aab1d342d659f3d025c31',1,'thorin::fe::TuplePtrn']]],
+  ['tupleptrn_22',['TuplePtrn',['../classthorin_1_1fe_1_1TuplePtrn.html#aa69edf87148b761a80360deaaeb3110d',1,'thorin::fe::TuplePtrn']]],
   ['type_23',['type',['../classthorin_1_1fe_1_1IdPtrn.html#a1c6c32c789a1b02844c2b79e77e69214',1,'thorin::fe::IdPtrn::type()'],['../classthorin_1_1clos_1_1ClosLit.html#af7e2a1c6580ec964c6cf2294b28ef621',1,'thorin::clos::ClosLit::type()'],['../classthorin_1_1Def.html#aa7ad6f240ca55e9056230ce136c67c90',1,'thorin::Def::type()'],['../classthorin_1_1Global.html#a932f09d196b336321a500d64e339a8fe',1,'thorin::Global::type()'],['../classthorin_1_1fe_1_1Ptrn.html#a0604638f1596c235838ac7aa16c71f39',1,'thorin::fe::Ptrn::type()'],['../classthorin_1_1fe_1_1TuplePtrn.html#a8b9b0eeff51b8c5b17da97411e7a40c7',1,'thorin::fe::TuplePtrn::type()'],['../classthorin_1_1Lam.html#aac0491db119a7b3886a28a7736ed6fae',1,'thorin::Lam::type()'],['../classthorin_1_1Pack.html#ad97f1e85a8941f1ee1b8cb270e33cc0f',1,'thorin::Pack::type()'],['../classthorin_1_1World.html#a0b6886adb47930a2b7ef48c1c22757e5',1,'thorin::World::type(Ref level, Ref dbg={})'],['../classthorin_1_1World.html#afb5258ade202f26bed645653b4811eb9',1,'thorin::World::type(Ref dbg={})']]],
   ['type_5fbool_24',['type_bool',['../classthorin_1_1World.html#a31f02a0a963a97d03583516502478fb9',1,'thorin::World']]],
   ['type_5fbot_25',['type_bot',['../classthorin_1_1World.html#a926c7580adcd23ec87ef68956b283921',1,'thorin::World']]],
