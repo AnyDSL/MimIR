@@ -47,8 +47,7 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
     auto new_lam  = lam->stub(w, new_type, w.dbg(lam->name()));
     w.DLOG("stub {} ~> {}", lam, new_lam);
     new_lam->set_debug_name(lam->name());
-    new_lam->set_body(lam->body());
-    new_lam->set_filter(lam->filter());
+    new_lam->set(lam->filter(), lam->body());
     if (lam->is_external()) {
         lam->make_internal();
         new_lam->make_external();
@@ -57,7 +56,7 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
     const Def* env =
         new_lam->var(Clos_Env_Param, (mode != No_Env) ? w.dbg("closure_env") : lam->var(Clos_Env_Param)->dbg());
     if (mode == Box) {
-        auto env_mem = mem::op_load(lcm, env);
+        auto env_mem = w.call<mem::load>(Defs{lcm, env});
         lcm          = w.extract(env_mem, 0_u64, w.dbg("mem"));
         env          = w.extract(env_mem, 1_u64, w.dbg("closure_env"));
     } else if (mode == Unbox) {
@@ -122,7 +121,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
             auto mem_ptr = (c.get() == attr::esc) ? mem::op_alloc(env->type(), lcm_) : mem::op_slot(env->type(), lcm_);
             auto mem     = w.extract(mem_ptr, 0_u64);
             auto env_ptr = mem_ptr->proj(1_u64, w.dbg(fn->name() + "_env"));
-            lcm_         = mem::op_store(mem, env_ptr, env);
+            lcm_         = w.call<mem::store>(Defs{mem, env_ptr, env});
             map(lvm_, lcm_);
             env = env_ptr;
         }

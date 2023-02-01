@@ -16,8 +16,8 @@ public:
     void pop();
     Scope* curr() { return &scopes_.back(); }
     const Def* find(Sym) const;
-    void bind(Scope*, Sym sym, const Def*);
-    void bind(Sym sym, const Def* def) { bind(&scopes_.back(), sym, def); }
+    void bind(Scope*, Sym sym, const Def*, bool rebind = false);
+    void bind(Sym sym, const Def* def, bool rebind = false) { bind(&scopes_.back(), sym, def, rebind); }
     void merge(Scopes&);
     void swap(Scope& other) { std::swap(scopes_.back(), other); }
 

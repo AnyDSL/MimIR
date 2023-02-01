@@ -30,6 +30,11 @@ Lexer::Lexer(World& world, std::string_view filename, std::istream& istream, std
 
 Tok Lexer::lex() {
     while (true) {
+        if (auto cache = cache_) {
+            cache_.reset();
+            return *cache;
+        }
+
         loc_.begin = ahead().pos;
         str_.clear();
 
@@ -66,7 +71,7 @@ Tok Lexer::lex() {
             return tok(Tok::Tag::D_angle_r);
         }
         // further tokens
-        if (accept(U'λ')) return tok(Tok::Tag::T_lm);
+        if (accept('\'')) return tok(Tok::Tag::T_apos);
         if (accept(U'→')) return tok(Tok::Tag::T_arrow);
         if (accept( '@')) return tok(Tok::Tag::T_at);
         if (accept( '=')) return tok(Tok::Tag::T_assign);
@@ -76,6 +81,7 @@ Tok Lexer::lex() {
         if (accept(U'□')) return tok(Tok::Tag::T_box);
         if (accept( ',')) return tok(Tok::Tag::T_comma);
         if (accept( '#')) return tok(Tok::Tag::T_extract);
+        if (accept(U'λ')) return tok(Tok::Tag::T_lm);
         if (accept(U'Π')) return tok(Tok::Tag::T_Pi);
         if (accept( ';')) return tok(Tok::Tag::T_semicolon);
         if (accept(U'★')) return tok(Tok::Tag::T_star);
@@ -100,9 +106,13 @@ Tok Lexer::lex() {
 
         if (accept('.')) {
             if (lex_id()) {
-                if (auto i = keywords_.find(str_); i != keywords_.end()) { return tok(i->second); }
-                err({loc_.file, ahead().pos}, "unknown keyword '{}'", str_);
-                continue;
+                if (auto i = keywords_.find(str_); i != keywords_.end()) return tok(i->second);
+                // Split non-keyword into T_dot and M_id; M_id goes into cache_ for next lex().
+                assert(!cache_.has_value());
+                auto id_loc = loc();
+                ++id_loc.begin.col;
+                cache_.emplace(id_loc, Tok::Tag::M_id, world_.sym(str_.substr(1), id_loc));
+                return {loc().anew_begin(), Tok::Tag::T_dot};
             }
 
             if (accept_if(isdigit)) {

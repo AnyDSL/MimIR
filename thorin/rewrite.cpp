@@ -6,15 +6,10 @@
 
 namespace thorin {
 
-const Def* Rewriter::rewrite(const Def* old_def) {
+const Def* Rewriter::rewrite(Ref old_def) {
     if (!old_def) return nullptr;
     if (old_def->isa<Univ>()) return world().univ();
     if (auto i = old2new_.find(old_def); i != old2new_.end()) return i->second;
-
-    if (auto infer = old_def->isa_nom<Infer>()) {
-        if (auto op = infer->op()) return rewrite(op);
-    }
-
     if (auto old_nom = old_def->isa_nom()) return rewrite_nom(old_nom);
 
     auto new_def = rewrite_structural(old_def);
@@ -34,11 +29,11 @@ const Def* Rewriter::rewrite_nom(Def* old_nom) {
     auto new_nom  = old_nom->stub(world(), new_type, new_dbg);
     map(old_nom, new_nom);
 
-    for (size_t i = 0, e = old_nom->num_ops(); i != e; ++i) {
-        if (auto old_op = old_nom->op(i)) new_nom->set(i, rewrite(old_op));
+    if (old_nom->is_set()) {
+        for (size_t i = 0, e = old_nom->num_ops(); i != e; ++i) new_nom->set(i, rewrite(old_nom->op(i)));
+        if (auto new_def = new_nom->restructure()) return map(old_nom, new_def);
     }
 
-    if (auto new_def = new_nom->restructure()) return map(old_nom, new_def);
     return new_nom;
 }
 

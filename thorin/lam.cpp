@@ -59,14 +59,13 @@ Lam* Lam::test(Filter filter,
     return app(filter, world().test(value, index, match, clash), mem, dbg);
 }
 
-/*
- * Pi
- */
-
-// TODO remove
-Lam* get_var_lam(const Def* def) {
-    if (auto extract = def->isa<Extract>()) return extract->tuple()->as<Var>()->nom()->as<Lam>();
-    return def->as<Var>()->nom()->as<Lam>();
+std::deque<const App*> decurry(const Def* def) {
+    std::deque<const App*> apps;
+    while (auto app = def->isa<App>()) {
+        apps.emplace_front(app);
+        def = app->callee();
+    }
+    return apps;
 }
 
 } // namespace thorin

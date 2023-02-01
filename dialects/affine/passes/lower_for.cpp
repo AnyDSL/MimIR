@@ -29,7 +29,7 @@ const Def* LowerFor::rewrite(const Def* def) {
             auto [iter, end, step, acc] = for_lam->vars<4>({w.dbg("begin"), w.dbg("end"), w.dbg("step"), w.dbg("acc")});
             auto yield_acc              = yield_lam->var();
 
-            auto add = core::op(core::wrap::add, w.lit_nat_0(), iter, step);
+            auto add = w.call(core::wrap::add, 0_n, Defs{iter, step});
             yield_lam->app(false, for_lam, {add, end, step, yield_acc});
         }
         { // construct for
@@ -45,7 +45,7 @@ const Def* LowerFor::rewrite(const Def* def) {
             auto if_else    = w.nom_lam(if_else_cn, nullptr);
             if_else->app(false, brk, if_else->var());
 
-            auto cmp = core::op(core::icmp::ul, iter, end);
+            auto cmp = w.call(core::icmp::ul, Defs{iter, end});
             for_lam->branch(false, cmp, new_body, if_else, acc);
         }
 

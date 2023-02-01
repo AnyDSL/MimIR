@@ -15,14 +15,15 @@ endif()
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 option(BUILD_SHARED_LIBS "Build shared libraries." ON)
-option(THORIN_BUILD_DOCS "If ON, Thorin will build the documentation (requires Doxygen)." OFF) 
-option(THORIN_BUILD_TESTING "If ON, Thorin will build all of Thorin's own tests." OFF) 
-option(THORIN_LIT_WITH_VALGRIND "If ON, the Thorin CLI in the lit tests will be run under valgrind." OFF) 
+option(THORIN_BUILD_DOCS "If ON, Thorin will build the documentation (requires Doxygen)." OFF)
+option(THORIN_BUILD_TESTING "If ON, Thorin will build all of Thorin's own tests." OFF)
+option(THORIN_LIT_WITH_VALGRIND "If ON, the Thorin CLI in the lit tests will be run under valgrind." OFF)
 
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}; shared libs: ${BUILD_SHARED_LIBS}")
 

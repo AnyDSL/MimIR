@@ -23,30 +23,6 @@ inline const Def* mode(World& w, VMode m) {
 
 /// @name fn - these guys yield the final function to be invoked for the various operations
 ///@{
-inline const Def* fn(bit2 o, const Def* s, const Def* dbg = {}) {
-    World& w = s->world();
-    return w.app(w.ax(o), s, dbg);
-}
-inline const Def* fn(icmp o, const Def* s, const Def* dbg = {}) {
-    World& w = s->world();
-    return w.app(w.ax(o), s, dbg);
-}
-inline const Def* fn(shr o, const Def* s, const Def* dbg = {}) {
-    World& w = s->world();
-    return w.app(w.ax(o), s, dbg);
-}
-inline const Def* fn(wrap o, const Def* s, VMode m, const Def* dbg = {}) {
-    World& w = s->world();
-    return w.app(w.app(w.ax(o), s), mode(w, m), dbg);
-}
-inline const Def* fn(div o, const Def* s, const Def* dbg = {}) {
-    World& w = s->world();
-    return w.app(w.ax(o), s, dbg);
-}
-inline const Def* fn(conv o, const Def* src_s, const Def* dst_s, const Def* dbg = {}) {
-    World& w = src_s->world();
-    return w.app(w.app(w.ax(o), src_s, dbg), dst_s, dbg);
-}
 inline const Def* fn_bitcast(const Def* dst_t, const Def* src_t, const Def* dbg = {}) {
     World& w = dst_t->world();
     return w.app(w.ax<bitcast>(), {dst_t, src_t}, dbg);
@@ -55,36 +31,6 @@ inline const Def* fn_bitcast(const Def* dst_t, const Def* src_t, const Def* dbg 
 
 /// @name op - these guys build the final function application for the various operations
 ///@{
-inline const Def* op(nop o, const Def* a, const Def* b, const Def* dbg = {}) {
-    World& w = a->world();
-    return w.app(w.ax(o), {a, b}, dbg);
-}
-inline const Def* op(bit2 o, const Def* a, const Def* b, const Def* dbg = {}) {
-    World& w = a->world();
-    return w.app(fn(o, w.iinfer(a)), {a, b}, dbg);
-}
-inline const Def* op(icmp o, const Def* a, const Def* b, const Def* dbg = {}) {
-    World& w = a->world();
-    return w.app(fn(o, w.iinfer(a)), {a, b}, dbg);
-}
-inline const Def* op(shr o, const Def* a, const Def* b, const Def* dbg = {}) {
-    World& w = a->world();
-    return w.app(fn(o, w.iinfer(a)), {a, b}, dbg);
-}
-inline const Def* op(wrap o, VMode m, const Def* a, const Def* b, const Def* dbg = {}) {
-    World& w = a->world();
-    return w.app(fn(o, w.iinfer(a), m), {a, b}, dbg);
-}
-inline const Def* op(div o, const Def* mem, const Def* a, const Def* b, const Def* dbg = {}) {
-    World& w = mem->world();
-    return w.app(fn(o, w.iinfer(a)), {mem, a, b}, dbg);
-}
-inline const Def* op(conv o, const Def* dst_t, const Def* src, const Def* dbg = {}) {
-    World& w = dst_t->world();
-    auto d   = Idx::size(dst_t);
-    auto s   = Idx::size(src->type());
-    return w.app(fn(o, s, d), src, dbg);
-}
 inline const Def* op(trait o, const Def* type, const Def* dbg = {}) {
     World& w = type->world();
     return w.app(w.ax(o), type, dbg);
@@ -103,7 +49,7 @@ inline const Def* op(pe o, const Def* def, const Def* dbg = {}) {
 ///@{
 inline const Def* extract_unsafe(const Def* d, const Def* i, const Def* dbg = {}) {
     World& w = d->world();
-    return w.extract(d, op(conv::u2u, w.type_idx(as_lit(d->unfold_type()->arity())), i, dbg), dbg);
+    return w.extract(d, w.call(conv::u, d->unfold_type()->arity(), i), dbg);
 }
 inline const Def* extract_unsafe(const Def* d, u64 i, const Def* dbg = {}) {
     World& w = d->world();
@@ -115,7 +61,7 @@ inline const Def* extract_unsafe(const Def* d, u64 i, const Def* dbg = {}) {
 ///@{
 inline const Def* insert_unsafe(const Def* d, const Def* i, const Def* val, const Def* dbg = {}) {
     World& w = d->world();
-    return w.insert(d, op(conv::u2u, w.type_idx(as_lit(d->unfold_type()->arity())), i), val, dbg);
+    return w.insert(d, w.call(conv::u, d->unfold_type()->arity(), i), val, dbg);
 }
 inline const Def* insert_unsafe(const Def* d, u64 i, const Def* val, const Def* dbg = {}) {
     World& w = d->world();
@@ -125,15 +71,10 @@ inline const Def* insert_unsafe(const Def* d, u64 i, const Def* val, const Def* 
 
 /// @name wrappers for unary operations
 ///@{
-inline const Def* op_negate(const Def* a, const Def* dbg = {}) {
-    World& w = a->world();
-    auto s   = as_lit(w.iinfer(a));
-    return op(bit2::xor_, w.lit_idx(s, s - 1_u64), a, dbg);
-}
 inline const Def* op_wminus(VMode m, const Def* a, const Def* dbg = {}) {
     World& w = a->world();
     auto s   = as_lit(w.iinfer(a));
-    return op(wrap::sub, m, w.lit_idx(s, 0), a, dbg);
+    return w.dcall(dbg, wrap::sub, mode(w, m), Defs{w.lit_idx(s, 0), a});
 }
 ///@}
 
@@ -175,8 +116,8 @@ constexpr bool is_associative(core::bit2 id) {
         case core::bit2::xor_:
         case core::bit2::and_:
         case core::bit2::nxor:
-        case core::bit2::a:
-        case core::bit2::b:
+        case core::bit2::fst:
+        case core::bit2::snd:
         case core::bit2::or_:
         case core::bit2::f: return true;
         default: return false;

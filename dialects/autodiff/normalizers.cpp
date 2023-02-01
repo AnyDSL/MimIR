@@ -77,7 +77,7 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
         world.DLOG("add int");
         auto width = as_lit(world.iinfer(a));
         world.DLOG("width {}", width);
-        auto int_add = core::op(core::wrap::add, 0_n, a, b);
+        auto int_add = world.call(core::wrap::add, 0_n, Defs{a, b});
         world.DLOG("int add {} : {}", int_add, world.iinfer(int_add));
         return int_add;
     } else if (T->isa<App>()) {

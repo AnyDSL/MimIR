@@ -9,15 +9,17 @@
 
 namespace thorin::fe {
 
+const Def* Ptrn::dbg(World& world) { return world.dbg(Debug(sym(), loc())); }
+
 /*
  * bind
  */
 
-void IdPtrn::bind(Scopes& scopes, const Def* def) const { scopes.bind(sym_, def); }
+void IdPtrn::bind(Scopes& scopes, const Def* def) const { scopes.bind(sym_, def, rebind()); }
 
 void TuplePtrn::bind(Scopes& scopes, const Def* def) const {
     World& w = def->world();
-    scopes.bind(sym_, def);
+    scopes.bind(sym_, def, rebind());
     for (size_t i = 0, e = num_ptrns(); i != e; ++i) ptrn(i)->bind(scopes, def->proj(e, i, w.dbg(ptrn(i)->sym())));
 }
 
@@ -42,7 +44,7 @@ const Def* TuplePtrn::type(World& world) const {
     assert(ptrns().size() > 0);
 
     auto fields = Array<const Def*>(n, [&](size_t i) { return ptrn(i)->sym().str(); });
-    auto type   = infer_type_level(world, ops);
+    auto type   = world.umax<Sort::Type>(ops);
     auto meta   = world.tuple(fields);
     auto debug  = Debug(sym(), loc(), meta);
     auto sigma  = world.nom_sigma(type, n, world.dbg(debug));
