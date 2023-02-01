@@ -323,10 +323,10 @@
     .let R = %math.F (p,e);
 
     .con prod_comb [[mem:%mem.M, acc:R, [a:R, b:R]], ret:.Cn[%mem.M,R]] = {
-        .let v = %math.arith.mul (p,e) 0 (a,b);
+        .let v = %math.arith.mul 0 (a,b);
 
         // reduce op = addition
-        .let new_acc = %math.arith.add (p,e) 0 (acc,v);
+        .let new_acc = %math.arith.add 0 (acc,v);
         ret (mem, new_acc)
     };
     .con inner_matrix_prod 
@@ -340,7 +340,7 @@
         ]
     = {
         .let zero_64 = 0.0:(%math.F (52,11));
-        .let zero_real = %math.conv.f2f (52,11) (p,e) zero_64;
+        .let zero_real = %math.conv.f2f (p,e) zero_64;
         ret (
             %matrix.mapReduce
                 (2, (m, l), R, 
@@ -424,7 +424,7 @@
     = {
     .let R = %math.F (p,e);
     .con sum_comb [[mem:%mem.M, acc:R, [a:R]], ret:.Cn[%mem.M,R]] = {
-        .let new_acc = %math.arith.add (p,e) 0 (acc,a);
+        .let new_acc = %math.arith.add 0 (acc,a);
         ret (mem, new_acc)
     };
     .con inner_matrix_sum
@@ -438,7 +438,7 @@
     = {
         // TODO: use generalized zero
         .let zero_64 = 0.0:(%math.F (52,11));
-        .let zero_real = %math.conv.f2f (52,11) (p,e) zero_64;
+        .let zero_real = %math.conv.f2f (p,e) zero_64;
         // should be normalized to lit tuple
         // TODO: test normalization
         .let idxs =
