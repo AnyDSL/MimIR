@@ -8,7 +8,7 @@
 #endif
 // #include <setjmp.h>
 
-#define SILENT 1
+// #define SILENT 1
 
 #ifdef SILENT
 // less intrusive than redefining printf
