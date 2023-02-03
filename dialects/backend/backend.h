@@ -2,4 +2,4 @@
 
 #include <thorin/world.h>
 
-#include "dialects/haskell/autogen.h"
+#include "dialects/backend/autogen.h"

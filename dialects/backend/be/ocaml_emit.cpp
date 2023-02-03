@@ -1,4 +1,4 @@
-#include "dialects/haskell/be/haskell_emit.h"
+#include "dialects/backend/be/ocaml_emit.h"
 
 #include <deque>
 #include <fstream>
@@ -39,7 +39,7 @@ TODO:
 
 */
 
-namespace thorin::haskell {
+namespace thorin::backend::ocaml {
 
 const char* PREFACE = R"(
 let bool2bit x = if x then 1 else 0
@@ -48,6 +48,13 @@ let bool2bit x = if x then 1 else 0
 let unpack m = match m with
     | Some x -> x
     | None -> failwith "expected Some, got None"
+let get_0_of_2 (x, _) = x (* fst *)
+let get_1_of_2 (_, x) = x (* snd *)
+let get_0_of_3 (x, _, _) = x
+let get_1_of_3 (_, x, _) = x
+let get_2_of_3 (_, _, x) = x
+[@@@warning "-partial-match"]
+
 )";
 
 /*
@@ -61,8 +68,12 @@ static Def* isa_decl(const Def* def) {
     return nullptr;
 }
 
+absl::flat_hash_map<const Def*, std::string> names;
 static std::string id(const Def* def) {
     if (def->is_external() || (!def->is_set() && def->isa<Lam>())) return def->name();
+
+    if (auto name = names.find(def); name != names.end()) return name->second;
+
     return def->unique_name();
 }
 
@@ -112,6 +123,8 @@ private:
     const int dump_gid_;
 };
 
+static std::string id(Inline2 u) { return id(*u); }
+
 // TODO prec is currently broken
 template<bool L>
 struct LRPrec2 {
@@ -140,13 +153,14 @@ using LPrec = LRPrec2<true>;
 using RPrec = LRPrec2<false>;
 
 DefSet let_emitted;
-absl::flat_hash_map<const Def*, std::string> names;
+
+// TODO: [@warning "-partial-match"]
 
 std::ostream& operator<<(std::ostream& os, Inline2 u) {
     // return print(os, "Int");
     if (u.dump_gid_ == 2 || (u.dump_gid_ == 1 && !u->isa<Var>() && u->num_ops() != 0)) print(os, "/*{}*/", u->gid());
 
-    if (let_emitted.contains(u.def_)) { return print(os, "{}", u->unique_name()); }
+    if (let_emitted.contains(u.def_)) { return print(os, "{}", id(u)); }
 
     // Ptr -> Ref + Option for uninitialized
     // Arr -> List (need persistent)
@@ -254,15 +268,18 @@ std::ostream& operator<<(std::ostream& os, Inline2 u) {
             return print(os, "({}:{})", value, Inline2(lit->type())); // HACK prec magic is broken
         return print(os, "{}:{}", lit->get(), Inline2(lit->type()));
     } else if (auto ex = u->isa<Extract>()) {
-        if (ex->tuple()->isa<Var>() && ex->index()->isa<Lit>()) return print(os, "{}", ex->unique_name());
+        if (ex->tuple()->isa<Var>() && ex->index()->isa<Lit>()) return print(os, "{}", id(ex));
         if (ex->tuple()->type()->isa<Arr>()) {
             return print(os, "List.nth {} {}", Inline2(ex->tuple()), Inline2(ex->index()));
         } else {
             // TODO: extract from tuple (const index)
-            return print(os, "{}#{}", ex->tuple(), ex->index());
+            // return print(os, "{}#{}", ex->tuple(), ex->index());
+            auto extract_fun = "get_" + std::to_string(ex->index()->as<Lit>()->get()) + "_of_" +
+                               std::to_string(ex->tuple()->num_ops());
+            return print(os, "({} {})", extract_fun, Inline2(ex->tuple()));
         }
     } else if (auto var = u->isa<Var>()) {
-        return print(os, "{}", var->unique_name());
+        return print(os, "{}", id(var));
         // return print(os, "{}", var);
     } else if (auto pi = u->isa<Pi>()) {
         // if (pi->is_cn()) return print(os, "{} -> ()", Inline2(pi->dom()));
@@ -404,12 +421,12 @@ void Dumper::dump(Def* nom) {
         if (auto e = nom->num_vars(); e != 1) {
             print(os, "{, }", Elem(nom->vars(), [&](auto def) {
                       if (def)
-                          os << def->unique_name();
+                          os << id(def);
                       else
                           os << "<TODO>";
                   }));
         } else {
-            print(os, ", @{}", nom->var()->unique_name());
+            print(os, ", @{}", id(nom->var()));
         }
     }
     tab.println(os, " = {{");
@@ -457,7 +474,7 @@ void Dumper::dump(Lam* lam) {
 
 void Dumper::dump_let(const Def* def) {
     // TODO: type vs Inline type
-    tab.print(os, "let {}: {} = {} in\n", def->unique_name(), Inline2(def->type()), Inline2(def, 0));
+    tab.print(os, "let {}: {} = {} in\n", id(def), Inline2(def->type()), Inline2(def, 0));
     // tab.print(os, "let {}: {} = {} in\n", def->unique_name(), def->type(), Inline2(def, 0));
     let_emitted.insert(def);
 }
@@ -476,9 +493,9 @@ void Dumper::dump_ptrn(const Def* def, const Def* type, bool toplevel) {
             // print(os, "({}: {})", def->unique_name(), Inline2(type));
             // print(os, "A");
             if (toplevel) {
-                print(os, "({} : {})", def->unique_name(), Inline2(type));
+                print(os, "({} : {})", id(def), Inline2(type));
             } else {
-                print(os, "{}", def->unique_name());
+                print(os, "{}", id(def));
             }
         } else {
             size_t i = 0;
@@ -486,8 +503,8 @@ void Dumper::dump_ptrn(const Def* def, const Def* type, bool toplevel) {
             //       Elem(projs, [&](auto proj) { dump_ptrn(proj, type->proj(i++)); }));
             const char* pattern = "((({, }) as {}): {})";
             if (def->type()->isa<Arr>()) pattern = "(([{; }] as {}): {})";
-            print(os, pattern, Elem(projs, [&](auto proj) { dump_ptrn(proj, type->proj(i++), false); }),
-                  def->unique_name(), Inline2(type));
+            print(os, pattern, Elem(projs, [&](auto proj) { dump_ptrn(proj, type->proj(i++), false); }), id(def),
+                  Inline2(type));
         }
     }
 }
@@ -534,4 +551,4 @@ void emit(World& w, std::ostream& os) {
     // assertf(old_gid == curr_gid(), "new nodes created during dump. old_gid: {}; curr_gid: {}", old_gid, curr_gid());
 }
 
-} // namespace thorin::haskell
+} // namespace thorin::backend::ocaml

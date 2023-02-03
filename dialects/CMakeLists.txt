@@ -115,12 +115,14 @@ add_thorin_dialect(direct
     INSTALL
 )
 
-add_thorin_dialect(haskell
+add_thorin_dialect(backend
     SOURCES
-        haskell/haskell.cpp
-        haskell/haskell.h
-        haskell/be/haskell_emit.h
-        haskell/be/haskell_emit.cpp
+        backend/backend.cpp
+        backend/backend.h
+        backend/be/ocaml_emit.h
+        backend/be/ocaml_emit.cpp
+        backend/be/haskell_emit.h
+        backend/be/haskell_emit.cpp
     DEPENDS
         compile
         core
