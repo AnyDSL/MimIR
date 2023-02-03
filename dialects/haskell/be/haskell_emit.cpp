@@ -20,6 +20,7 @@
 #include "thorin/util/print.h"
 #include "thorin/util/sys.h"
 
+#include "absl/container/flat_hash_map.h"
 #include "dialects/core/autogen.h"
 #include "dialects/core/core.h"
 #include "dialects/math/math.h"
@@ -42,6 +43,11 @@ namespace thorin::haskell {
 
 const char* PREFACE = R"(
 let bool2bit x = if x then 1 else 0
+(* handle uninitialized values *)
+(* let rec magic () : 'a = magic () *)
+let unpack m = match m with
+    | Some x -> x
+    | None -> failwith "expected Some, got None"
 )";
 
 /*
@@ -134,6 +140,7 @@ using LPrec = LRPrec2<true>;
 using RPrec = LRPrec2<false>;
 
 DefSet let_emitted;
+absl::flat_hash_map<const Def*, std::string> names;
 
 std::ostream& operator<<(std::ostream& os, Inline2 u) {
     // return print(os, "Int");
@@ -141,11 +148,15 @@ std::ostream& operator<<(std::ostream& os, Inline2 u) {
 
     if (let_emitted.contains(u.def_)) { return print(os, "{}", u->unique_name()); }
 
+    // Ptr -> Ref + Option for uninitialized
+    // Arr -> List (need persistent)
     if (auto ptr = match<mem::Ptr>(*u)) {
         auto type = ptr->arg(0);
-        return print(os, "({} ref)", Inline2(type));
+        return print(os, "({} option ref)", Inline2(type));
     }
     if (auto mem = match<mem::M>(*u)) { return print(os, "unit"); }
+    // TODO: ptr(arr) -> array (but how to handle lea)
+
     if (auto arith = match<core::nop>(*u)) {
         auto [a, b] = arith->args<2>();
         const char* op;
@@ -419,7 +430,9 @@ void Dumper::dump(Lam* lam) {
     // } else {
 
     // TODO: handle mutual recursion
-    tab.println(os, "{}let rec {} {} = ", external(lam), id(lam), ptrn); //, lam->type()->codom());
+    auto name = id(lam);
+    if (name == "main") name = "thorin_main";
+    tab.println(os, "{}let rec {} {} = ", external(lam), name, ptrn); //, lam->type()->codom());
     // }
 
     ++tab;
