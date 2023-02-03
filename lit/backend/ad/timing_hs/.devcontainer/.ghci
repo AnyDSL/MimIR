@@ -1,0 +1,34 @@
+:set prompt "\ESC[94m\STX  \ESC[m\STX"
+:set prompt-cont "\ESC[1;32mλ| \ESC[m"
+:set +t
+:set +m
+:set +s
+
+:set editor emacs
+
+:set -Wall
+:set -ferror-spans
+:set -freverse-errors
+:set -fprint-expanded-synonyms
+:set -fprint-explicit-foralls
+:set -fprint-explicit-kinds
+:set -ignore-package pretty-simple -package pretty-simple
+-- :set -fobject-code
+
+:seti -XFlexibleContexts
+:seti -XFlexibleInstances
+:seti -XOverloadedStrings
+:seti -XGADTSyntax
+:seti -XGeneralizedNewtypeDeriving
+:seti -XInstanceSigs
+:seti -XLambdaCase
+:seti -XPartialTypeSignatures
+:seti -XScopedTypeVariables
+:seti -XPolyKinds
+:seti -XDataKinds
+:seti -XTypeApplications
+:seti -XTypeApplications
+
+:def hlint const . return $ ":! hlint \"src\""
+:def hoogle \s -> return $ ":! hoogle --count=15 \"" ++ s ++ "\""
+:def package \ m -> return $ ":! ghc-pkg --simple-output find-module " ++ m

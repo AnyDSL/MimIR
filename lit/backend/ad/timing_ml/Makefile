@@ -3,14 +3,6 @@ all: compile run cleanup
 FILES=preopt.ml opt.ml test.ml
 
 
-# %.cmo: %.ml
-# 	${COMPILER} -c $<
-
-# test.out:
-# 	${COMPILER} -o $@ preopt.cmo opt.cmo test.ml
-
-# compile: preopt.cmo opt.cmo test.out
-
 test.out:
 	ocamlc -o test.out ${FILES}
 test_opt.out:

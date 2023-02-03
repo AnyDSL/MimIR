@@ -1,5 +1,7 @@
 // RUN: rm -f %t.hs ; \
-// RUN: %thorin -d haskell %s --backend hs --output - 
+// RUN: %thorin -d backend %s --backend ml --output - 
+// RUN: ocaml %s_test.ml
+// RUN: rm -f %s.ml  
 
 .import core;
 .import mem;

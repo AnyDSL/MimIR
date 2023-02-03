@@ -1,4 +1,4 @@
-// RUN: %thorin -d haskell %s --backend hs --output %s.ml  
+// RUN: %thorin -d backend %s --backend ml --output %s.ml  
 // RUN: ocaml %s_test.ml
 // RUN: rm -f %s.ml  
 
