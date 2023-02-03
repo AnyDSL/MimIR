@@ -93,9 +93,10 @@ bool Checker::equiv(Ref r1, Ref r2, Ref dbg) {
     } else if (i2) {
         i2->set(d1);
         return true;
-    } else if (!i1 && !i2) {
-        if (d1->gid() > d2->gid()) std::swap(d1, d2); // normalize
     }
+
+    assert(!i1 && !i2);
+    if (d1->gid() > d2->gid()) std::swap(d1, d2); // normalize
 
     if (auto [it, ins] = equiv_.emplace(std::pair(d1, d2), Equiv::Unknown); !ins) {
         switch (it->second) {
