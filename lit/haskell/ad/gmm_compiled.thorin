@@ -1,0 +1,643 @@
+
+
+// f64
+// f64
+// f64
+.cn .extern const _232551::[mem_232557: %mem.M, size_232600: .Idx 4294967296, a_232637: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), value_232681: %math.F (52, 11), return_232726: .Cn %mem.M] = {
+    %affine.For (4294967296, 1, %mem.M) (0:(.Idx 4294967296), size_232600, 1:(.Idx 4294967296), mem_232557, lambda_233145, break_232768)
+};
+.cn .extern gmm _233234::[mem_233240: %mem.M, d_233277: .Idx 4294967296, k_233314: .Idx 4294967296, n_233351: .Idx 4294967296, wishartM_233398: .Idx 4294967296, wishartGamma_233449: %math.F (52, 11), alphas_233494: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), means_233538: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), icf_233580: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), x_233617: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), return_233662: .Cn [%mem.M, %math.F (52, 11)]] = {
+    .let _234601: .Idx 0 = %core.conv.u2u 4294967296 0 k_233314;
+    .let _234608: .Nat = %core.bitcast (.Nat, .Idx 0) _234601;
+    .let _234758: .Idx 0 = %core.conv.u2u 4294967296 0 d_233277;
+    .let _234765: .Nat = %core.bitcast (.Nat, .Idx 0) _234758;
+    .let _234423: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (d_233277, k_233314);
+    .let _234430: .Idx 0 = %core.conv.u2u 4294967296 0 _234423;
+    .let _234438: .Nat = %core.bitcast (.Nat, .Idx 0) _234430;
+    .let _234512: [%mem.M, %mem.Ptr (<<_234438; %math.F (52, 11)>>, 0)] = %mem.alloc (<<_234438; %math.F (52, 11)>>, 0) mem_233240;
+    .let _234682: [%mem.M, %mem.Ptr (<<_234608; %math.F (52, 11)>>, 0)] = %mem.alloc (<<_234608; %math.F (52, 11)>>, 0) _234512#0:(.Idx 2);
+    .let _234839: [%mem.M, %mem.Ptr (<<_234765; %math.F (52, 11)>>, 0)] = %mem.alloc (<<_234765; %math.F (52, 11)>>, 0) _234682#0:(.Idx 2);
+    .let _234991: [%mem.M, %mem.Ptr (<<_234765; %math.F (52, 11)>>, 0)] = %mem.alloc (<<_234765; %math.F (52, 11)>>, 0) _234839#0:(.Idx 2);
+    .let _235143: [%mem.M, %mem.Ptr (<<_234608; %math.F (52, 11)>>, 0)] = %mem.alloc (<<_234608; %math.F (52, 11)>>, 0) _234991#0:(.Idx 2);
+    .let _234710: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0) = %core.bitcast <2; %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0)> _234682#1:(.Idx 2);
+    .let _234541: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0) = %core.bitcast <2; %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0)> _234512#1:(.Idx 2);
+    preprocess_qs_216266 (_235143#0:(.Idx 2), d_233277, k_233314, icf_233580, _234710, _234541, preprocess_qs_cont_235348)
+};
+.cn .extern main _247506::[mem_247512: %mem.M, argc_247555: .Idx 4294967296, argv_247598: %mem.Ptr (<<.top:.Nat; %mem.Ptr (<<.top:.Nat; .Idx 256>>, 0)>>, 0), return_247643: .Cn [%mem.M, .Idx 4294967296]] = {
+    .let _247869: .Idx 2 = %core.icmp.xYgLe 4294967296 (argc_247555, 2:(.Idx 4294967296));
+    (if_else_247729, if_then_247688)#_247869 mem_247512
+};
+.cn .extern print _231851::[mem_231857: %mem.M, size_231900: .Idx 4294967296, a_231937: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), return_231982: .Cn %mem.M] = {
+    %affine.For (4294967296, 1, %mem.M) (0:(.Idx 4294967296), size_231900, 1:(.Idx 4294967296), mem_231857, lambda_232462, break_232024)
+};
+.cn lambda_233145 _233146::[_233152: .Idx 4294967296, _233157: %mem.M, _233162: .Cn %mem.M] = {
+    lambda_232860 (_233157, _233152, _233162)
+};
+.cn break_232768 _232786: %mem.M = {
+    return_232726 _232786
+};
+.cn preprocess_qs_216266 _216934::[mem_216940: %mem.M, d_216977: .Idx 4294967296, k_217014: .Idx 4294967296, icf_217056: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), sum_qs_217101: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), Qdiags_217146: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), return_217191: .Cn %mem.M] = {
+    %affine.For (4294967296, 1, %mem.M) (0:(.Idx 4294967296), k_217014, 1:(.Idx 4294967296), mem_216940, lambda_219026, break_217432)
+};
+.cn preprocess_qs_cont_235348 _235366: %mem.M = {
+    .let slse_235460: [%mem.M, %mem.Ptr (%math.F (52, 11), 0)] = %mem.slot (%math.F (52, 11), 0) (_235366, 235449);
+    .let _235517: %mem.M = %mem.store (%math.F (52, 11), 0) (slse_235460#0:(.Idx 2), slse_235460#1:(.Idx 2), 0:(%math.F (52, 11)));
+    %affine.For (4294967296, 1, %mem.M) (0:(.Idx 4294967296), n_233351, 1:(.Idx 4294967296), _235517, lambda_237921, break_235556)
+};
+.cn if_else_247729 _248891: %mem.M = {
+    .let _248960: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat 1:(.Idx 4294967296);
+    .let _249016: %mem.Ptr (%mem.Ptr (<<.top:.Nat; .Idx 256>>, 0), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %mem.Ptr (<<.top:.Nat; .Idx 256>>, 0)>, 0) (argv_247598, _248960);
+    .let _249072: [%mem.M, %mem.Ptr (<<.top:.Nat; .Idx 256>>, 0)] = %mem.load (%mem.Ptr (<<.top:.Nat; .Idx 256>>, 0), 0) (_248891, _249016);
+    initBenchmark_216858 (_249072#0:(.Idx 2), _249072#1:(.Idx 2), initBenchmark_cont_249136)
+};
+.cn if_then_247688 _247905: %mem.M = {
+    .let _248777: %mem.Ptr (<<.top:.Nat; .Idx 256>>, 0) = %core.bitcast <2; %mem.Ptr (<<.top:.Nat; .Idx 256>>, 0)> .global ((78:(.Idx 256), 111:(.Idx 256), 32:(.Idx 256), 66:(.Idx 256), 101:(.Idx 256), 110:(.Idx 256), 99:(.Idx 256), 104:(.Idx 256), 109:(.Idx 256), 97:(.Idx 256), 114:(.Idx 256), 107:(.Idx 256), 32:(.Idx 256), 115:(.Idx 256), 112:(.Idx 256), 101:(.Idx 256), 99:(.Idx 256), 105:(.Idx 256), 102:(.Idx 256), 105:(.Idx 256), 101:(.Idx 256), 100:(.Idx 256), 0:(.Idx 256)));
+    printString (_247905, _248777, printString_cont_248828)
+};
+.cn lambda_232462 _232463::[_232469: .Idx 4294967296, _232474: %mem.M, _232479: .Cn %mem.M] = {
+    lambda_232116 (_232474, _232469, _232479)
+};
+.cn break_232024 _232042: %mem.M = {
+    return_231982 _232042
+};
+.cn lambda_232860 _232878::[mem_232884: %mem.M, i_232921: .Idx 4294967296, continue_232968: .Cn %mem.M] = {
+    .let _233036: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat i_232921;
+    .let _233061: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (a_232637, _233036);
+    .let _233107: %mem.M = %mem.store (%math.F (52, 11), 0) (mem_232884, _233061, value_232681);
+    continue_232968 _233107
+};
+.cn lambda_219026 _219027::[_219033: .Idx 4294967296, _219038: %mem.M, _219043: .Cn %mem.M] = {
+    lambda_217524 (_219038, _219033, _219043)
+};
+.cn break_217432 _217450: %mem.M = {
+    return_217191 _217450
+};
+.cn lambda_237921 _237922::[_237928: .Idx 4294967296, _237933: %mem.M, _237938: .Cn %mem.M] = {
+    lambda_235648 (_237933, _237928, _237938)
+};
+.cn break_235556 _235574: %mem.M = {
+    logsumexp_216523 (_235574, k_233314, alphas_233494, logsumexp_cont_238013)
+};
+.cn initBenchmark_216858 _241008::[mem_241014: %mem.M, file_241057: %mem.Ptr (<<.top:.Nat; .Idx 256>>, 0), return_241102: .Cn %mem.M] = {
+    .let d_241180: [%mem.M, %mem.Ptr (.Idx 4294967296, 0)] = %mem.slot (.Idx 4294967296, 0) (mem_241014, 241169);
+    .let _241237: %mem.M = %mem.store (.Idx 4294967296, 0) (d_241180#0:(.Idx 2), d_241180#1:(.Idx 2), 2:(.Idx 4294967296));
+    .let k_241312: [%mem.M, %mem.Ptr (.Idx 4294967296, 0)] = %mem.slot (.Idx 4294967296, 0) (_241237, 241301);
+    .let _241369: %mem.M = %mem.store (.Idx 4294967296, 0) (k_241312#0:(.Idx 2), k_241312#1:(.Idx 2), 5:(.Idx 4294967296));
+    .let n_241444: [%mem.M, %mem.Ptr (.Idx 4294967296, 0)] = %mem.slot (.Idx 4294967296, 0) (_241369, 241433);
+    .let _241501: %mem.M = %mem.store (.Idx 4294967296, 0) (n_241444#0:(.Idx 2), n_241444#1:(.Idx 2), 1000:(.Idx 4294967296));
+    read_gmm_size (_241501, file_241057, d_241180#1:(.Idx 2), k_241312#1:(.Idx 2), n_241444#1:(.Idx 2), read_gmm_size_cont_241554)
+};
+.cn initBenchmark_cont_249136 _249154: %mem.M = {
+    if_join_247774 (_249154, ())
+};
+.cn printString [%mem.M, %mem.Ptr (<<.top:.Nat; .Idx 256>>, 0), .Cn %mem.M] = {
+     <unset>
+};
+.cn printString_cont_248828 _248846: %mem.M = {
+    if_join_247774 (_248846, ())
+};
+.cn lambda_232116 _232134::[mem_232140: %mem.M, i_232177: .Idx 4294967296, continue_232224: .Cn %mem.M] = {
+    .let _232262: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat i_232177;
+    .let _232287: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (a_231937, _232262);
+    .let _232334: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (mem_232140, _232287);
+    printDouble (_232334#0:(.Idx 2), _232334#1:(.Idx 2), printDouble_cont_232397)
+};
+.cn lambda_217524 _217542::[mem_217548: %mem.M, ik_217590: .Idx 4294967296, continue_217637: .Cn %mem.M] = {
+    .let _217713: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat ik_217590;
+    .let _217769: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (sum_qs_217101, _217713);
+    .let _217858: %mem.M = %mem.store (%math.F (52, 11), 0) (mem_217548, _217769, 0:(%math.F (52, 11)));
+    %affine.For (4294967296, 1, %mem.M) (0:(.Idx 4294967296), d_216977, 1:(.Idx 4294967296), _217858, lambda_218912, break_217897)
+};
+.cn lambda_235648 _235666::[mem_235672: %mem.M, ix_235713: .Idx 4294967296, continue_235760: .Cn %mem.M] = {
+    %affine.For (4294967296, 1, %mem.M) (0:(.Idx 4294967296), k_233314, 1:(.Idx 4294967296), mem_235672, lambda_237570, break_235943)
+};
+.cn logsumexp_216523 _226128::[mem_226134: %mem.M, n_226171: .Idx 4294967296, x_226208: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), return_226253: .Cn [%mem.M, %math.F (52, 11)]] = {
+    arr_max_216480 (mem_226134, n_226171, x_226208, arr_max_cont_226306)
+};
+.cn logsumexp_cont_238013 _238031::[mem_238037: %mem.M, logsumexp_238048: %math.F (52, 11)] = {
+    .let _238186: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (mem_238037, slse_235460#1:(.Idx 2));
+    log_wishart_prior_216634 (_238186#0:(.Idx 2), d_233277, k_233314, wishartM_233398, wishartGamma_233449, _234710, _234541, icf_233580, log_wishart_prior_cont_238430)
+};
+.cn read_gmm_size [%mem.M, %mem.Ptr (<<.top:.Nat; .Idx 256>>, 0), %mem.Ptr (.Idx 4294967296, 0), %mem.Ptr (.Idx 4294967296, 0), %mem.Ptr (.Idx 4294967296, 0), .Cn %mem.M] = {
+     <unset>
+};
+.cn read_gmm_size_cont_241554 _241572: %mem.M = {
+    .let wishartM_241666: [%mem.M, %mem.Ptr (.Idx 4294967296, 0)] = %mem.slot (.Idx 4294967296, 0) (_241572, 241655);
+    .let _241723: %mem.M = %mem.store (.Idx 4294967296, 0) (wishartM_241666#0:(.Idx 2), wishartM_241666#1:(.Idx 2), 0:(.Idx 4294967296));
+    .let wishartGamma_241816: [%mem.M, %mem.Ptr (%math.F (52, 11), 0)] = %mem.slot (%math.F (52, 11), 0) (_241723, 241805);
+    .let _241873: %mem.M = %mem.store (%math.F (52, 11), 0) (wishartGamma_241816#0:(.Idx 2), wishartGamma_241816#1:(.Idx 2), 4607182418800017408:(%math.F (52, 11)));
+    .let _241920: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (_241873, k_241312#1:(.Idx 2));
+    .let _242008: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (_241920#0:(.Idx 2), d_241180#1:(.Idx 2));
+    .let _242066: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (_242008#0:(.Idx 2), k_241312#1:(.Idx 2));
+    .let _242166: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (_242066#0:(.Idx 2), k_241312#1:(.Idx 2));
+    .let _242284: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (_242166#0:(.Idx 2), d_241180#1:(.Idx 2));
+    .let _242372: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (_242284#0:(.Idx 2), d_241180#1:(.Idx 2));
+    .let _242430: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (1:(.Idx 4294967296), _242372#1:(.Idx 2));
+    .let _242442: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (_242284#1:(.Idx 2), _242430);
+    .let _242488: [%mem.M, .Idx 4294967296] = %core.div.sdiv 4294967296 (_242372#0:(.Idx 2), _242442, 2:(.Idx 4294967296));
+    .let _242513: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (_242166#1:(.Idx 2), _242488#1:(.Idx 2));
+    .let _242089: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (_242008#1:(.Idx 2), _242066#1:(.Idx 2));
+    .let _242743: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (_241920#1:(.Idx 2), _242089);
+    .let _242755: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (_242513, _242743);
+    .let _243388: .Idx 0 = %core.conv.u2u 4294967296 0 _242755;
+    .let _243395: .Nat = %core.bitcast (.Nat, .Idx 0) _243388;
+    .let _242590: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (_242488#0:(.Idx 2), d_241180#1:(.Idx 2));
+    .let _242648: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (_242590#0:(.Idx 2), n_241444#1:(.Idx 2));
+    .let _242671: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (_242590#1:(.Idx 2), _242648#1:(.Idx 2));
+    .let _243231: .Idx 0 = %core.conv.u2u 4294967296 0 _242671;
+    .let _243238: .Nat = %core.bitcast (.Nat, .Idx 0) _243231;
+    .let _243074: .Idx 0 = %core.conv.u2u 4294967296 0 _242513;
+    .let _243081: .Nat = %core.bitcast (.Nat, .Idx 0) _243074;
+    .let _242917: .Idx 0 = %core.conv.u2u 4294967296 0 _242089;
+    .let _242924: .Nat = %core.bitcast (.Nat, .Idx 0) _242917;
+    .let _242760: .Idx 0 = %core.conv.u2u 4294967296 0 _241920#1:(.Idx 2);
+    .let _242767: .Nat = %core.bitcast (.Nat, .Idx 0) _242760;
+    .let _242841: [%mem.M, %mem.Ptr (<<_242767; %math.F (52, 11)>>, 0)] = %mem.alloc (<<_242767; %math.F (52, 11)>>, 0) _242648#0:(.Idx 2);
+    .let _242998: [%mem.M, %mem.Ptr (<<_242924; %math.F (52, 11)>>, 0)] = %mem.alloc (<<_242924; %math.F (52, 11)>>, 0) _242841#0:(.Idx 2);
+    .let _243155: [%mem.M, %mem.Ptr (<<_243081; %math.F (52, 11)>>, 0)] = %mem.alloc (<<_243081; %math.F (52, 11)>>, 0) _242998#0:(.Idx 2);
+    .let _243312: [%mem.M, %mem.Ptr (<<_243238; %math.F (52, 11)>>, 0)] = %mem.alloc (<<_243238; %math.F (52, 11)>>, 0) _243155#0:(.Idx 2);
+    .let _243469: [%mem.M, %mem.Ptr (<<_243395; %math.F (52, 11)>>, 0)] = %mem.alloc (<<_243395; %math.F (52, 11)>>, 0) _243312#0:(.Idx 2);
+    .let _242869: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0) = %core.bitcast <2; %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0)> _242841#1:(.Idx 2);
+    .let _243026: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0) = %core.bitcast <2; %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0)> _242998#1:(.Idx 2);
+    .let _243183: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0) = %core.bitcast <2; %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0)> _243155#1:(.Idx 2);
+    .let _243340: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0) = %core.bitcast <2; %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0)> _243312#1:(.Idx 2);
+    read_gmm (_243469#0:(.Idx 2), file_241057, d_241180#1:(.Idx 2), k_241312#1:(.Idx 2), n_241444#1:(.Idx 2), wishartM_241666#1:(.Idx 2), wishartGamma_241816#1:(.Idx 2), _242869, _243026, _243183, _243340, read_gmm_cont_243942)
+};
+.cn if_join_247774 _247792::[mem_247798: %mem.M, _249205: []] = {
+    return_247643 (mem_247798, 0:(.Idx 4294967296))
+};
+.cn printDouble [%mem.M, %math.F (52, 11), .Cn %mem.M] = {
+     <unset>
+};
+.cn printDouble_cont_232397 _232415: %mem.M = {
+    continue_232224 _232415
+};
+.cn lambda_218912 _218913::[_218919: .Idx 4294967296, _218924: %mem.M, _218929: .Cn %mem.M] = {
+    lambda_217989 (_218924, _218919, _218929)
+};
+.cn break_217897 _217915: %mem.M = {
+    continue_217637 _217915
+};
+.cn lambda_237570 _237571::[_237577: .Idx 4294967296, _237582: %mem.M, _237587: .Cn %mem.M] = {
+    lambda_236035 (_237582, _237577, _237587)
+};
+.cn break_235943 _235961: %mem.M = {
+    .let _235171: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0) = %core.bitcast <2; %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0)> _235143#1:(.Idx 2);
+    logsumexp_216523 (_235961, k_233314, _235171, logsumexp_cont_237733)
+};
+.cn arr_max_216480 _224753::[mem_224759: %mem.M, n_224796: .Idx 4294967296, x_224833: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), return_224878: .Cn [%mem.M, %math.F (52, 11)]] = {
+    .let _224949: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat 0:(.Idx 4294967296);
+    .let _224974: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (x_224833, _224949);
+    .let _225021: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (mem_224759, _224974);
+    .let m_225074: [%mem.M, %mem.Ptr (%math.F (52, 11), 0)] = %mem.slot (%math.F (52, 11), 0) (_225021#0:(.Idx 2), 225063);
+    .let _225131: %mem.M = %mem.store (%math.F (52, 11), 0) (m_225074#0:(.Idx 2), m_225074#1:(.Idx 2), _225021#1:(.Idx 2));
+    %affine.For (4294967296, 1, %mem.M) (1:(.Idx 4294967296), n_224796, 1:(.Idx 4294967296), _225131, lambda_225978, break_225170)
+};
+.cn arr_max_cont_226306 _226324::[mem_226330: %mem.M, arr_max_226341: %math.F (52, 11)] = {
+    .let semx_226427: [%mem.M, %mem.Ptr (%math.F (52, 11), 0)] = %mem.slot (%math.F (52, 11), 0) (mem_226330, 226416);
+    .let _226484: %mem.M = %mem.store (%math.F (52, 11), 0) (semx_226427#0:(.Idx 2), semx_226427#1:(.Idx 2), 0:(%math.F (52, 11)));
+    %affine.For (4294967296, 1, %mem.M) (0:(.Idx 4294967296), n_226171, 1:(.Idx 4294967296), _226484, lambda_227100, break_226523)
+};
+.cn log_wishart_prior_216634 _228685::[mem_228691: %mem.M, p_228728: .Idx 4294967296, k_228765: .Idx 4294967296, wishartM_228812: .Idx 4294967296, wishartGamma_228863: %math.F (52, 11), sum_qs_228908: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), Qdiags_228953: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), icf_228995: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), return_229040: .Cn [%mem.M, %math.F (52, 11)]] = {
+    .let _229205: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (p_228728, wishartM_228812);
+    .let _229252: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (1:(.Idx 4294967296), _229205);
+    .let _229566: %math.F (52, 11) = %math.conv.s2f 4294967296 (52, 11) _229252;
+    .let _229948: %math.F (52, 11) = %math.arith.mul (52, 11) 0 (4602678819172646912:(%math.F (52, 11)), _229566);
+    log_gamma_distrib_216579 (mem_228691, _229948, p_228728, log_gamma_distrib_cont_230009)
+};
+.cn log_wishart_prior_cont_238430 _238448::[mem_238454: %mem.M, log_wishart_prior_238465: %math.F (52, 11)] = {
+    .let _238562: %mem.M = %mem.free (<<.top:.Nat; %math.F (52, 11)>>, 0) (mem_238454, _234541);
+    .let _238643: %mem.M = %mem.free (<<.top:.Nat; %math.F (52, 11)>>, 0) (_238562, _234710);
+    .let _234867: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0) = %core.bitcast <2; %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0)> _234839#1:(.Idx 2);
+    .let _238724: %mem.M = %mem.free (<<.top:.Nat; %math.F (52, 11)>>, 0) (_238643, _234867);
+    .let _235019: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0) = %core.bitcast <2; %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0)> _234991#1:(.Idx 2);
+    .let _238805: %mem.M = %mem.free (<<.top:.Nat; %math.F (52, 11)>>, 0) (_238724, _235019);
+    .let _238886: %mem.M = %mem.free (<<.top:.Nat; %math.F (52, 11)>>, 0) (_238805, _235171);
+    .let _233965: %math.F (52, 11) = %math.conv.s2f 4294967296 (52, 11) n_233351;
+    .let _233982: %math.F (52, 11) = %math.arith.sub (52, 11) 0 (9223372036854775808:(%math.F (52, 11)), _233965);
+    .let _234015: %math.F (52, 11) = %math.conv.s2f 4294967296 (52, 11) d_233277;
+    .let _234025: %math.F (52, 11) = %math.arith.mul (52, 11) 0 (_233982, _234015);
+    .let _234072: %math.F (52, 11) = %math.arith.mul (52, 11) 0 (4602678819172646912:(%math.F (52, 11)), _234025);
+    .let _234190: %math.F (52, 11) = %math.arith.mul (52, 11) 0 (4610955881644081117:(%math.F (52, 11)), _234072);
+    .let _238207: %math.F (52, 11) = %math.arith.add (52, 11) 0 (_234190, _238186#1:(.Idx 2));
+    .let _238280: %math.F (52, 11) = %math.arith.mul (52, 11) 0 (_233965, logsumexp_238048);
+    .let _238290: %math.F (52, 11) = %math.arith.sub (52, 11) 0 (_238207, _238280);
+    .let _238476: %math.F (52, 11) = %math.arith.add (52, 11) 0 (_238290, log_wishart_prior_238465);
+    return_233662 (_238886, _238476)
+};
+.cn read_gmm [%mem.M, %mem.Ptr (<<.top:.Nat; .Idx 256>>, 0), %mem.Ptr (.Idx 4294967296, 0), %mem.Ptr (.Idx 4294967296, 0), %mem.Ptr (.Idx 4294967296, 0), %mem.Ptr (.Idx 4294967296, 0), %mem.Ptr (%math.F (52, 11), 0), %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), .Cn %mem.M] = {
+     <unset>
+};
+.cn read_gmm_cont_243942 _243960: %mem.M = {
+    .let time_sum_244195: [%mem.M, %mem.Ptr (.Idx 0, 0)] = %mem.slot (.Idx 0, 0) (_243960, 244179);
+    .let _244258: %mem.M = %mem.store (.Idx 0, 0) (time_sum_244195#0:(.Idx 2), time_sum_244195#1:(.Idx 2), 0:(.Idx 0));
+    .let count_244340: [%mem.M, %mem.Ptr (.Idx 4294967296, 0)] = %mem.slot (.Idx 4294967296, 0) (_244258, 244329);
+    .let _244397: %mem.M = %mem.store (.Idx 4294967296, 0) (count_244340#0:(.Idx 2), count_244340#1:(.Idx 2), 0:(.Idx 4294967296));
+    .let min_runtime_244562: [%mem.M, %mem.Ptr (.Idx 0, 0)] = %mem.slot (.Idx 0, 0) (_244397, 244551);
+    .let _244619: %mem.M = %mem.store (.Idx 0, 0) (min_runtime_244562#0:(.Idx 2), min_runtime_244562#1:(.Idx 2), 4294967295:(.Idx 0));
+    while_head_244664 _244619
+};
+.cn lambda_217989 _218007::[mem_218013: %mem.M, id_218054: .Idx 4294967296, continue_218101: .Cn %mem.M] = {
+    .let _217336: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (1:(.Idx 4294967296), d_216977);
+    .let _217348: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (d_216977, _217336);
+    .let _217393: .Idx 4294967296 = %core.shr.a 4294967296 (_217348, 1:(.Idx 4294967296));
+    .let _218206: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (_217393, ik_217590);
+    .let _218218: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (id_218054, _218206);
+    .let _218223: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat _218218;
+    .let _218248: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (icf_217056, _218223);
+    .let _218304: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (mem_218013, _218248);
+    .let _218542: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (_218304#0:(.Idx 2), _217769);
+    .let _218569: %math.F (52, 11) = %math.arith.add (52, 11) 0 (_218304#1:(.Idx 2), _218542#1:(.Idx 2));
+    .let _218615: %mem.M = %mem.store (%math.F (52, 11), 0) (_218542#0:(.Idx 2), _217769, _218569);
+    .let _218749: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (d_216977, ik_217590);
+    .let _218761: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (id_218054, _218749);
+    .let _218766: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat _218761;
+    .let _218791: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (Qdiags_217146, _218766);
+    .let _218828: %math.F (52, 11) = %math.exp.bl (52, 11) 127 _218304#1:(.Idx 2);
+    .let _218874: %mem.M = %mem.store (%math.F (52, 11), 0) (_218615, _218791, _218828);
+    continue_218101 _218874
+};
+.cn lambda_236035 _236053::[mem_236059: %mem.M, ik_236100: .Idx 4294967296, continue_236147: .Cn %mem.M] = {
+    .let _235837: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (d_233277, ix_235713);
+    .let _235842: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat _235837;
+    .let _235867: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (x_233617, _235842);
+    .let _235904: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0) = %core.bitcast (%mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), %mem.Ptr (%math.F (52, 11), 0)) _235867;
+    .let _236222: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (d_233277, ik_236100);
+    .let _236227: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat _236222;
+    .let _236391: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (means_233538, _236227);
+    .let _236428: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0) = %core.bitcast (%mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), %mem.Ptr (%math.F (52, 11), 0)) _236391;
+    subtract_216312 (mem_236059, d_233277, _235904, _236428, _234867, subtract_cont_236697)
+};
+.cn logsumexp_cont_237733 _237751::[mem_237757: %mem.M, logsumexp_237768: %math.F (52, 11)] = {
+    .let _237816: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (mem_237757, slse_235460#1:(.Idx 2));
+    .let _237837: %math.F (52, 11) = %math.arith.add (52, 11) 0 (logsumexp_237768, _237816#1:(.Idx 2));
+    .let _237883: %mem.M = %mem.store (%math.F (52, 11), 0) (_237816#0:(.Idx 2), slse_235460#1:(.Idx 2), _237837);
+    continue_235760 _237883
+};
+.cn lambda_225978 _225979::[_225985: .Idx 4294967296, _225990: %mem.M, _225995: .Cn %mem.M] = {
+    lambda_225262 (_225990, _225985, _225995)
+};
+.cn break_225170 _225188: %mem.M = {
+    .let _226065: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (_225188, m_225074#1:(.Idx 2));
+    return_224878 _226065
+};
+.cn lambda_227100 _227101::[_227107: .Idx 4294967296, _227112: %mem.M, _227117: .Cn %mem.M] = {
+    lambda_226615 (_227112, _227107, _227117)
+};
+.cn break_226523 _226541: %mem.M = {
+    .let _227247: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (_226541, semx_226427#1:(.Idx 2));
+    .let _227262: %math.F (52, 11) = %math.exp.bL (52, 11) 127 _227247#1:(.Idx 2);
+    .let _227272: %math.F (52, 11) = %math.arith.add (52, 11) 0 (arr_max_226341, _227262);
+    return_226253 (_227247#0:(.Idx 2), _227272)
+};
+.cn log_gamma_distrib_216579 _227325::[mem_227331: %mem.M, a_227368: %math.F (52, 11), p_227405: .Idx 4294967296, return_227450: .Cn [%mem.M, %math.F (52, 11)]] = {
+    .let out_227867: [%mem.M, %mem.Ptr (%math.F (52, 11), 0)] = %mem.slot (%math.F (52, 11), 0) (mem_227331, 227856);
+    .let _227706: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (4294967295:(.Idx 4294967296), p_227405);
+    .let _227718: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (p_227405, _227706);
+    .let _227766: %math.F (52, 11) = %math.conv.s2f 4294967296 (52, 11) _227718;
+    .let _227776: %math.F (52, 11) = %math.arith.mul (52, 11) 0 (4598175219545276416:(%math.F (52, 11)), _227766);
+    .let _227820: %math.F (52, 11) = %math.arith.mul (52, 11) 0 (4607834224259998438:(%math.F (52, 11)), _227776);
+    .let _227924: %mem.M = %mem.store (%math.F (52, 11), 0) (out_227867#0:(.Idx 2), out_227867#1:(.Idx 2), _227820);
+    %affine.For (4294967296, 1, %mem.M) (0:(.Idx 4294967296), p_227405, 1:(.Idx 4294967296), _227924, lambda_228535, break_227963)
+};
+.cn log_gamma_distrib_cont_230009 _230027::[mem_230033: %mem.M, log_gamma_distrib_230044: %math.F (52, 11)] = {
+    .let out_230139: [%mem.M, %mem.Ptr (%math.F (52, 11), 0)] = %mem.slot (%math.F (52, 11), 0) (mem_230033, 230128);
+    .let _230196: %mem.M = %mem.store (%math.F (52, 11), 0) (out_230139#0:(.Idx 2), out_230139#1:(.Idx 2), 0:(%math.F (52, 11)));
+    %affine.For (4294967296, 1, %mem.M) (0:(.Idx 4294967296), k_228765, 1:(.Idx 4294967296), _230196, lambda_231587, break_230235)
+};
+.cn while_head_244664 _244682: %mem.M = {
+    .let _245048: [%mem.M, .Idx 0] = %mem.load (.Idx 0, 0) (_244682, time_sum_244195#1:(.Idx 2));
+    .let _245139: .Idx 2 = %core.icmp.xYgLe 0 (_245048#1:(.Idx 2), 10000:(.Idx 0));
+    (while_exit_244772, and_t_244962)#_245139 _245048#0:(.Idx 2)
+};
+.cn subtract_216312 _219115::[mem_219121: %mem.M, d_219158: .Idx 4294967296, x_219195: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), y_219232: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), out_219274: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), return_219319: .Cn %mem.M] = {
+    %affine.For (4294967296, 1, %mem.M) (0:(.Idx 4294967296), d_219158, 1:(.Idx 4294967296), mem_219121, lambda_220018, break_219361)
+};
+.cn subtract_cont_236697 _236715: %mem.M = {
+    .let _236252: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (_234541, _236227);
+    .let _236289: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0) = %core.bitcast (%mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), %mem.Ptr (%math.F (52, 11), 0)) _236252;
+    .let _234327: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (1:(.Idx 4294967296), d_233277);
+    .let _234339: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (d_233277, _234327);
+    .let _234381: .Idx 4294967296 = %core.shr.a 4294967296 (_234339, 1:(.Idx 4294967296));
+    .let _236530: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (_234381, ik_236100);
+    .let _236542: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (d_233277, _236530);
+    .let _236547: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat _236542;
+    .let _236572: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (icf_233580, _236547);
+    .let _236609: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0) = %core.bitcast (%mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), %mem.Ptr (%math.F (52, 11), 0)) _236572;
+    Qtimesx_216358 (_236715, d_233277, _236289, _236609, _234867, _235019, Qtimesx_cont_236851)
+};
+.cn lambda_225262 _225280::[mem_225286: %mem.M, i_225323: .Idx 4294967296, continue_225370: .Cn %mem.M] = {
+    .let _225408: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat i_225323;
+    .let _225433: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (x_224833, _225408);
+    .let _225480: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (mem_225286, _225433);
+    .let _225722: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (_225480#0:(.Idx 2), m_225074#1:(.Idx 2));
+    .let _225748: .Idx 2 = %math.cmp.ugLe (52, 11) 0 (_225722#1:(.Idx 2), _225480#1:(.Idx 2));
+    (if_else_225574, if_then_225533)#_225748 _225722#0:(.Idx 2)
+};
+.cn lambda_226615 _226633::[mem_226639: %mem.M, i_226676: .Idx 4294967296, continue_226723: .Cn %mem.M] = {
+    .let _226851: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat i_226676;
+    .let _226876: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (x_226208, _226851);
+    .let _226923: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (mem_226639, _226876);
+    .let _226995: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (_226923#0:(.Idx 2), semx_226427#1:(.Idx 2));
+    .let _226944: %math.F (52, 11) = %math.arith.sub (52, 11) 0 (_226923#1:(.Idx 2), arr_max_226341);
+    .let _226948: %math.F (52, 11) = %math.exp.bl (52, 11) 127 _226944;
+    .let _227016: %math.F (52, 11) = %math.arith.add (52, 11) 0 (_226948, _226995#1:(.Idx 2));
+    .let _227062: %mem.M = %mem.store (%math.F (52, 11), 0) (_226995#0:(.Idx 2), semx_226427#1:(.Idx 2), _227016);
+    continue_226723 _227062
+};
+.cn lambda_228535 _228536::[_228542: .Idx 4294967296, _228547: %mem.M, _228552: .Cn %mem.M] = {
+    lambda_228055 (_228547, _228542, _228552)
+};
+.cn break_227963 _227981: %mem.M = {
+    .let _228622: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (_227981, out_227867#1:(.Idx 2));
+    return_227450 _228622
+};
+.cn lambda_231587 _231588::[_231594: .Idx 4294967296, _231599: %mem.M, _231604: .Cn %mem.M] = {
+    lambda_230327 (_231599, _231594, _231604)
+};
+.cn break_230235 _230253: %mem.M = {
+    .let _231704: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (_230253, out_230139#1:(.Idx 2));
+    .let _229599: %math.F (52, 11) = %math.conv.s2f 4294967296 (52, 11) p_228728;
+    .let _229609: %math.F (52, 11) = %math.arith.mul (52, 11) 0 (_229566, _229599);
+    .let _229673: %math.F (52, 11) = %math.exp.bL (52, 11) 127 wishartGamma_228863;
+    .let _229828: %math.F (52, 11) = %math.arith.sub (52, 11) 0 (_229673, 4599914934686071279:(%math.F (52, 11)));
+    .let _229838: %math.F (52, 11) = %math.arith.mul (52, 11) 0 (_229609, _229828);
+    .let _230055: %math.F (52, 11) = %math.arith.sub (52, 11) 0 (_229838, log_gamma_distrib_230044);
+    .let _231778: %math.F (52, 11) = %math.conv.s2f 4294967296 (52, 11) k_228765;
+    .let _231788: %math.F (52, 11) = %math.arith.mul (52, 11) 0 (_230055, _231778);
+    .let _231798: %math.F (52, 11) = %math.arith.sub (52, 11) 0 (_231704#1:(.Idx 2), _231788);
+    return_229040 (_231704#0:(.Idx 2), _231798)
+};
+.cn while_exit_244772 _247178: %mem.M = {
+    break_244872 _247178
+};
+.cn and_t_244962 _245175: %mem.M = {
+    .let _245291: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (_245175, count_244340#1:(.Idx 2));
+    .let _245314: .Idx 2 = %core.icmp.xYgLe 4294967296 (_245291#1:(.Idx 2), 10:(.Idx 4294967296));
+    (or_f_245214, while_body_244728)#_245314 _245291#0:(.Idx 2)
+};
+.cn lambda_220018 _220019::[_220025: .Idx 4294967296, _220030: %mem.M, _220035: .Cn %mem.M] = {
+    lambda_219453 (_220030, _220025, _220035)
+};
+.cn break_219361 _219379: %mem.M = {
+    return_219319 _219379
+};
+.cn Qtimesx_216358 _220107::[mem_220113: %mem.M, d_220150: .Idx 4294967296, Qdiag_220194: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), ltri_220237: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), x_220274: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), out_220316: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), return_220361: .Cn %mem.M] = {
+    %affine.For (4294967296, 1, %mem.M) (0:(.Idx 4294967296), d_220150, 1:(.Idx 4294967296), mem_220113, lambda_221060, break_220403)
+};
+.cn Qtimesx_cont_236851 _236869: %mem.M = {
+    .let _236943: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat ik_236100;
+    .let _237088: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (alphas_233494, _236943);
+    .let _237135: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (_236869, _237088);
+    .let _237206: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (_234710, _236943);
+    .let _237253: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (_237135#0:(.Idx 2), _237206);
+    sqnorm_216402 (_237253#0:(.Idx 2), d_233277, _235019, sqnorm_cont_237430)
+};
+.cn if_else_225574 _225897: %mem.M = {
+    if_join_225621 (_225897, ())
+};
+.cn if_then_225533 _225784: %mem.M = {
+    .let _225861: %mem.M = %mem.store (%math.F (52, 11), 0) (_225784, m_225074#1:(.Idx 2), _225480#1:(.Idx 2));
+    if_join_225621 (_225861, ())
+};
+.cn lambda_228055 _228073::[mem_228079: %mem.M, j_228116: .Idx 4294967296, continue_228163: .Cn %mem.M] = {
+    .let _228430: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (mem_228079, out_227867#1:(.Idx 2));
+    .let _228356: %math.F (52, 11) = %math.conv.s2f 4294967296 (52, 11) j_228116;
+    .let _228366: %math.F (52, 11) = %math.arith.mul (52, 11) 0 (4602678819172646912:(%math.F (52, 11)), _228356);
+    .let _228376: %math.F (52, 11) = %math.arith.sub (52, 11) 0 (a_227368, _228366);
+    .let _228383: %math.F (52, 11) = %math.gamma.l (52, 11) 127 _228376;
+    .let _228451: %math.F (52, 11) = %math.arith.add (52, 11) 0 (_228383, _228430#1:(.Idx 2));
+    .let _228497: %mem.M = %mem.store (%math.F (52, 11), 0) (_228430#0:(.Idx 2), out_227867#1:(.Idx 2), _228451);
+    continue_228163 _228497
+};
+.cn lambda_230327 _230345::[mem_230351: %mem.M, ik_230392: .Idx 4294967296, continue_230439: .Cn %mem.M] = {
+    .let _230516: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (p_228728, ik_230392);
+    .let _230521: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat _230516;
+    .let _230546: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (Qdiags_228953, _230521);
+    .let _230584: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0) = %core.bitcast (%mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), %mem.Ptr (%math.F (52, 11), 0)) _230546;
+    sqnorm_216402 (mem_230351, p_228728, _230584, sqnorm_cont_230844)
+};
+.cn break_244872 _244890: %mem.M = {
+    .let _247258: [%mem.M, .Idx 0] = %mem.load (.Idx 0, 0) (_244890, min_runtime_244562#1:(.Idx 2));
+    printLong (_247258#0:(.Idx 2), _247258#1:(.Idx 2), printLong_cont_247318)
+};
+.cn or_f_245214 _245350: %mem.M = {
+    .let _245428: [%mem.M, .Idx 0] = %mem.load (.Idx 0, 0) (_245350, time_sum_244195#1:(.Idx 2));
+    .let _245447: .Idx 2 = %core.icmp.xYgLe 0 (_245428#1:(.Idx 2), 500:(.Idx 0));
+    (while_exit_244772, while_body_244728)#_245447 _245428#0:(.Idx 2)
+};
+.cn while_body_244728 _245483: %mem.M = {
+    .let _245531: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (_245483, d_241180#1:(.Idx 2));
+    .let _245589: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (_245531#0:(.Idx 2), k_241312#1:(.Idx 2));
+    .let _245647: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (_245589#0:(.Idx 2), n_241444#1:(.Idx 2));
+    .let _245705: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (_245647#0:(.Idx 2), wishartM_241666#1:(.Idx 2));
+    .let _245763: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (_245705#0:(.Idx 2), wishartGamma_241816#1:(.Idx 2));
+    .let _243497: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0) = %core.bitcast <2; %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0)> _243469#1:(.Idx 2);
+    .let _243575: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat _241920#1:(.Idx 2);
+    .let _243600: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (_243497, _243575);
+    .let _243637: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0) = %core.bitcast (%mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), %mem.Ptr (%math.F (52, 11), 0)) _243600;
+    .let _243672: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat _242089;
+    .let _243697: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (_243637, _243672);
+    .let _243734: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0) = %core.bitcast (%mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), %mem.Ptr (%math.F (52, 11), 0)) _243697;
+    runBenchmark_216811 (_245763#0:(.Idx 2), _245531#1:(.Idx 2), _245589#1:(.Idx 2), _245647#1:(.Idx 2), _245705#1:(.Idx 2), _245763#1:(.Idx 2), _242869, _243497, _243026, _243637, _243183, _243734, _243340, runBenchmark_cont_246029)
+};
+.cn lambda_219453 _219471::[mem_219477: %mem.M, id_219518: .Idx 4294967296, continue_219565: .Cn %mem.M] = {
+    .let _219633: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat id_219518;
+    .let _219748: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (x_219195, _219633);
+    .let _219795: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (mem_219477, _219748);
+    .let _219866: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (y_219232, _219633);
+    .let _219913: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (_219795#0:(.Idx 2), _219866);
+    .let _219658: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (out_219274, _219633);
+    .let _219934: %math.F (52, 11) = %math.arith.sub (52, 11) 0 (_219795#1:(.Idx 2), _219913#1:(.Idx 2));
+    .let _219980: %mem.M = %mem.store (%math.F (52, 11), 0) (_219913#0:(.Idx 2), _219658, _219934);
+    continue_219565 _219980
+};
+.cn lambda_221060 _221061::[_221067: .Idx 4294967296, _221072: %mem.M, _221077: .Cn %mem.M] = {
+    lambda_220495 (_221072, _221067, _221077)
+};
+.cn break_220403 _220421: %mem.M = {
+    .let Lparamsidx_221192: [%mem.M, %mem.Ptr (.Idx 4294967296, 0)] = %mem.slot (.Idx 4294967296, 0) (_220421, 221176);
+    .let _221255: %mem.M = %mem.store (.Idx 4294967296, 0) (Lparamsidx_221192#0:(.Idx 2), Lparamsidx_221192#1:(.Idx 2), 0:(.Idx 4294967296));
+    %affine.For (4294967296, 1, %mem.M) (0:(.Idx 4294967296), d_220150, 1:(.Idx 4294967296), _221255, lambda_222687, break_221294)
+};
+.cn sqnorm_216402 _222776::[mem_222782: %mem.M, d_222819: .Idx 4294967296, v_222856: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), return_222901: .Cn [%mem.M, %math.F (52, 11)]] = {
+    .let sum_222993: [%mem.M, %mem.Ptr (%math.F (52, 11), 0)] = %mem.slot (%math.F (52, 11), 0) (mem_222782, 222977);
+    .let _223050: %mem.M = %mem.store (%math.F (52, 11), 0) (sum_222993#0:(.Idx 2), sum_222993#1:(.Idx 2), 0:(%math.F (52, 11)));
+    %affine.For (4294967296, 1, %mem.M) (0:(.Idx 4294967296), d_222819, 1:(.Idx 4294967296), _223050, lambda_223642, break_223089)
+};
+.cn sqnorm_cont_237430 _237448::[mem_237454: %mem.M, sqnorm_237465: %math.F (52, 11)] = {
+    .let _236968: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (_235171, _236943);
+    .let _237274: %math.F (52, 11) = %math.arith.add (52, 11) 0 (_237135#1:(.Idx 2), _237253#1:(.Idx 2));
+    .let _237476: %math.F (52, 11) = %math.arith.mul (52, 11) 0 (4602678819172646912:(%math.F (52, 11)), sqnorm_237465);
+    .let _237486: %math.F (52, 11) = %math.arith.sub (52, 11) 0 (_237274, _237476);
+    .let _237532: %mem.M = %mem.store (%math.F (52, 11), 0) (mem_237454, _236968, _237486);
+    continue_236147 _237532
+};
+.cn if_join_225621 _225639::[mem_225645: %mem.M, _225940: []] = {
+    continue_225370 mem_225645
+};
+.cn sqnorm_cont_230844 _230862::[mem_230868: %mem.M, sqnorm_230879: %math.F (52, 11)] = {
+    .let _229389: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (1:(.Idx 4294967296), p_228728);
+    .let _229401: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (p_228728, _229389);
+    .let _229443: .Idx 4294967296 = %core.shr.a 4294967296 (_229401, 1:(.Idx 4294967296));
+    .let _230922: .Idx 4294967296 = %core.wrap.sub (1, 4294967296) (_229443, p_228728);
+    .let _230686: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (_229443, ik_230392);
+    .let _230698: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (p_228728, _230686);
+    .let _230703: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat _230698;
+    .let _230728: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (icf_228995, _230703);
+    .let _230765: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0) = %core.bitcast (%mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), %mem.Ptr (%math.F (52, 11), 0)) _230728;
+    sqnorm_216402 (mem_230868, _230922, _230765, sqnorm_cont_230971)
+};
+.cn printLong [%mem.M, .Idx 0, .Cn %mem.M] = {
+     <unset>
+};
+.cn printLong_cont_247318 _247336: %mem.M = {
+    print (_247336, _242755, _243497, print_cont_247430)
+};
+.cn runBenchmark_216811 _238939::[mem_238945: %mem.M, d_238982: .Idx 4294967296, k_239019: .Idx 4294967296, n_239056: .Idx 4294967296, wishartM_239103: .Idx 4294967296, wishartGamma_239154: %math.F (52, 11), alphas_239199: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), alphas_d_239246: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), means_239290: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), means_d_239336: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), icf_239378: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), icf_d_239422: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), x_239459: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), return_239504: .Cn [%mem.M, .Idx 0]] = {
+    .let _239856: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (1:(.Idx 4294967296), d_238982);
+    .let _239868: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (d_238982, _239856);
+    .let _239922: [%mem.M, .Idx 4294967296] = %core.div.sdiv 4294967296 (mem_238945, _239868, 2:(.Idx 4294967296));
+    const (_239922#0:(.Idx 2), k_239019, alphas_d_239246, 0:(%math.F (52, 11)), const_cont_240071)
+};
+.cn runBenchmark_cont_246029 _246047::[mem_246053: %mem.M, runBenchmark_246064: .Idx 0] = {
+    .let _246332: [%mem.M, .Idx 0] = %mem.load (.Idx 0, 0) (mem_246053, min_runtime_244562#1:(.Idx 2));
+    .let _246461: .Idx 2 = %core.icmp.xyglE 0 (4294967295:(.Idx 0), _246332#1:(.Idx 2));
+    (or_f_246255, if_then_246107)#_246461 _246332#0:(.Idx 2)
+};
+.cn lambda_220495 _220513::[mem_220519: %mem.M, id_220560: .Idx 4294967296, continue_220607: .Cn %mem.M] = {
+    .let _220675: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat id_220560;
+    .let _220790: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (Qdiag_220194, _220675);
+    .let _220837: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (mem_220519, _220790);
+    .let _220908: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (x_220274, _220675);
+    .let _220955: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (_220837#0:(.Idx 2), _220908);
+    .let _220700: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (out_220316, _220675);
+    .let _220976: %math.F (52, 11) = %math.arith.mul (52, 11) 0 (_220837#1:(.Idx 2), _220955#1:(.Idx 2));
+    .let _221022: %mem.M = %mem.store (%math.F (52, 11), 0) (_220955#0:(.Idx 2), _220700, _220976);
+    continue_220607 _221022
+};
+.cn lambda_222687 _222688::[_222694: .Idx 4294967296, _222699: %mem.M, _222704: .Cn %mem.M] = {
+    lambda_221386 (_222699, _222694, _222704)
+};
+.cn break_221294 _221312: %mem.M = {
+    return_220361 _221312
+};
+.cn lambda_223642 _223643::[_223649: .Idx 4294967296, _223654: %mem.M, _223659: .Cn %mem.M] = {
+    lambda_223181 (_223654, _223649, _223659)
+};
+.cn break_223089 _223107: %mem.M = {
+    .let _223729: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (_223107, sum_222993#1:(.Idx 2));
+    return_222901 _223729
+};
+.cn sqnorm_cont_230971 _230989::[mem_230995: %mem.M, sqnorm_231006: %math.F (52, 11)] = {
+    .let _231332: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat ik_230392;
+    .let _231357: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (sum_qs_228908, _231332);
+    .let _231404: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (mem_230995, _231357);
+    .let _231482: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (_231404#0:(.Idx 2), out_230139#1:(.Idx 2));
+    .let _231017: %math.F (52, 11) = %math.arith.add (52, 11) 0 (sqnorm_230879, sqnorm_231006);
+    .let _231214: %math.F (52, 11) = %math.arith.mul (52, 11) 0 (4602678819172646912:(%math.F (52, 11)), wishartGamma_228863);
+    .let _231224: %math.F (52, 11) = %math.arith.mul (52, 11) 0 (wishartGamma_228863, _231214);
+    .let _231234: %math.F (52, 11) = %math.arith.mul (52, 11) 0 (_231017, _231224);
+    .let _231297: %math.F (52, 11) = %math.conv.s2f 4294967296 (52, 11) wishartM_228812;
+    .let _231425: %math.F (52, 11) = %math.arith.mul (52, 11) 0 (_231297, _231404#1:(.Idx 2));
+    .let _231435: %math.F (52, 11) = %math.arith.sub (52, 11) 0 (_231234, _231425);
+    .let _231503: %math.F (52, 11) = %math.arith.add (52, 11) 0 (_231435, _231482#1:(.Idx 2));
+    .let _231549: %mem.M = %mem.store (%math.F (52, 11), 0) (_231482#0:(.Idx 2), out_230139#1:(.Idx 2), _231503);
+    continue_230439 _231549
+};
+.cn print_cont_247430 _247448: %mem.M = {
+    return_241102 _247448
+};
+.cn const_cont_240071 _240089: %mem.M = {
+    .let _239689: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (d_238982, k_239019);
+    const (_240089, _239689, means_d_239336, 0:(%math.F (52, 11)), const_cont_240180)
+};
+.cn or_f_246255 _246497: %mem.M = {
+    .let _246575: [%mem.M, .Idx 0] = %mem.load (.Idx 0, 0) (_246497, min_runtime_244562#1:(.Idx 2));
+    .let _246594: .Idx 2 = %core.icmp.xYgLe 0 (runBenchmark_246064, _246575#1:(.Idx 2));
+    (if_else_246148, if_then_246107)#_246594 _246575#0:(.Idx 2)
+};
+.cn if_then_246107 _246630: %mem.M = {
+    .let _246707: %mem.M = %mem.store (.Idx 0, 0) (_246630, min_runtime_244562#1:(.Idx 2), runBenchmark_246064);
+    if_join_246193 (_246707, ())
+};
+.cn lambda_221386 _221404::[mem_221410: %mem.M, i_221447: .Idx 4294967296, continue_221494: .Cn %mem.M] = {
+    .let _221750: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (1:(.Idx 4294967296), i_221447);
+    .let _221532: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat i_221447;
+    .let _221557: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (x_220274, _221532);
+    .let _221604: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (mem_221410, _221557);
+    %affine.For (4294967296, 1, %mem.M) (_221750, d_220150, 1:(.Idx 4294967296), _221604#0:(.Idx 2), lambda_222609, break_221654)
+};
+.cn lambda_223181 _223199::[mem_223205: %mem.M, i_223242: .Idx 4294967296, continue_223289: .Cn %mem.M] = {
+    .let _223327: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat i_223242;
+    .let _223352: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (v_222856, _223327);
+    .let _223399: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (mem_223205, _223352);
+    .let _223537: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (_223399#0:(.Idx 2), sum_222993#1:(.Idx 2));
+    .let _223490: %math.F (52, 11) = %math.arith.mul (52, 11) 0 <2; _223399#1:(.Idx 2)>;
+    .let _223558: %math.F (52, 11) = %math.arith.add (52, 11) 0 (_223490, _223537#1:(.Idx 2));
+    .let _223604: %mem.M = %mem.store (%math.F (52, 11), 0) (_223537#0:(.Idx 2), sum_222993#1:(.Idx 2), _223558);
+    continue_223289 _223604
+};
+.cn const_cont_240180 _240198: %mem.M = {
+    .let _239947: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (k_239019, _239922#1:(.Idx 2));
+    const (_240198, _239947, icf_d_239422, 0:(%math.F (52, 11)), const_cont_240289)
+};
+.cn if_else_246148 _246743: %mem.M = {
+    if_join_246193 (_246743, ())
+};
+.cn if_join_246193 _246211::[mem_246217: %mem.M, _246786: []] = {
+    .let _246863: [%mem.M, .Idx 0] = %mem.load (.Idx 0, 0) (mem_246217, time_sum_244195#1:(.Idx 2));
+    .let _246889: .Idx 0 = %core.wrap.add (1, 0) (runBenchmark_246064, _246863#1:(.Idx 2));
+    .let _246935: %mem.M = %mem.store (.Idx 0, 0) (_246863#0:(.Idx 2), time_sum_244195#1:(.Idx 2), _246889);
+    .let _246982: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (_246935, count_244340#1:(.Idx 2));
+    .let _247068: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (1:(.Idx 4294967296), _246982#1:(.Idx 2));
+    .let _247114: %mem.M = %mem.store (.Idx 4294967296, 0) (_246982#0:(.Idx 2), count_244340#1:(.Idx 2), _247068);
+    continue_244814 _247114
+};
+.cn lambda_222609 _222610::[_222616: .Idx 4294967296, _222621: %mem.M, _222626: .Cn %mem.M] = {
+    lambda_221790 (_222621, _222616, _222626)
+};
+.cn break_221654 _221672: %mem.M = {
+    continue_221494 _221672
+};
+.cn const_cont_240289 _240307: %mem.M = {
+    begin (_240307, begin_cont_240441)
+};
+.cn continue_244814 _244832: %mem.M = {
+    while_head_244664 _244832
+};
+.cn lambda_221790 _221808::[mem_221814: %mem.M, j_221851: .Idx 4294967296, continue_221898: .Cn %mem.M] = {
+    .let _222107: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (mem_221814, Lparamsidx_221192#1:(.Idx 2));
+    .let _222123: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat _222107#1:(.Idx 2);
+    .let _222148: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (ltri_220237, _222123);
+    .let _222195: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (_222107#0:(.Idx 2), _222148);
+    .let _221966: .Idx .top:.Nat = %core.conv.u2u 4294967296 .top:.Nat j_221851;
+    .let _221991: %mem.Ptr (%math.F (52, 11), 0) = %mem.lea (.top:.Nat, <.top:.Nat; %math.F (52, 11)>, 0) (out_220316, _221966);
+    .let _222325: [%mem.M, %math.F (52, 11)] = %mem.load (%math.F (52, 11), 0) (_222195#0:(.Idx 2), _221991);
+    .let _222218: %math.F (52, 11) = %math.arith.mul (52, 11) 0 (_221604#1:(.Idx 2), _222195#1:(.Idx 2));
+    .let _222346: %math.F (52, 11) = %math.arith.add (52, 11) 0 (_222218, _222325#1:(.Idx 2));
+    .let _222392: %mem.M = %mem.store (%math.F (52, 11), 0) (_222325#0:(.Idx 2), _221991, _222346);
+    .let _222439: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (_222392, Lparamsidx_221192#1:(.Idx 2));
+    .let _222525: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (1:(.Idx 4294967296), _222439#1:(.Idx 2));
+    .let _222571: %mem.M = %mem.store (.Idx 4294967296, 0) (_222439#0:(.Idx 2), Lparamsidx_221192#1:(.Idx 2), _222525);
+    continue_221898 _222571
+};
+.cn begin [%mem.M, .Cn %mem.M] = {
+     <unset>
+};
+.cn begin_cont_240441 _240459: %mem.M = {
+    .let _240539: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0) = %core.bitcast (%mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), .Idx 4294967296) 0:(.Idx 4294967296);
+    %autodiff.ad .Cn [%mem.M, .Idx 4294967296, .Idx 4294967296, .Idx 4294967296, .Idx 4294967296, %math.F (52, 11), %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), .Cn [%mem.M, %math.F (52, 11)]] gmm (_240459, d_238982, k_239019, n_239056, wishartM_239103, wishartGamma_239154, alphas_239199, alphas_d_239246, means_239290, means_d_239336, icf_239378, icf_d_239422, x_239459, _240539, _cont_240585)
+};
+.cn _cont_240585 _240603::[mem_240609: %mem.M, _240622: %math.F (52, 11), _240628: .Cn [%mem.M, %math.F (52, 11), .Cn [%mem.M, .Idx 4294967296, .Idx 4294967296, .Idx 4294967296, .Idx 4294967296, %math.F (52, 11), %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0)]]] = {
+    _240628 (mem_240609, 4607182418800017408:(%math.F (52, 11)), _cont_240781)
+};
+.cn _cont_240781 _240799::[mem_240805: %mem.M, _240818: .Idx 4294967296, _240824: .Idx 4294967296, _240830: .Idx 4294967296, _240836: .Idx 4294967296, _240842: %math.F (52, 11), _240848: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), _240854: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), _240860: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0), _240866: %mem.Ptr (<<.top:.Nat; %math.F (52, 11)>>, 0)] = {
+    eval (mem_240805, eval_cont_240920)
+};
+.cn eval [%mem.M, .Cn [%mem.M, .Idx 0]] = {
+     <unset>
+};
+.cn eval_cont_240920 _240938::[mem_240944: %mem.M, eval_240955: .Idx 0] = {
+    return_239504 _240938
+};
