@@ -1,0 +1,202 @@
+
+.import core;
+.import autodiff;
+.import mem;
+
+.let _32 = 4294967296;
+.let I32 = .Idx _32;
+
+.con .extern pow [[a:I32, b:I32], ret: .Cn [I32]] = {
+    .con pow_then [] = ret (1:I32);
+
+    .con pow_cont [v:I32] = {
+        .let m = %core.wrap.mul _32 0 (a,v);
+        ret m
+    };
+    .con pow_else [] = {
+        .let b_1 = %core.wrap.sub _32 0 (b,1:I32);
+        pow ((a,b_1),pow_cont)
+    };
+    
+    .let cmp = %core.icmp.e _32 (b,0:I32);
+    ((pow_else, pow_then)#cmp) ()
+};
+
+.con .extern pow_full_pe [[a:I32, b:I32], ret: .Cn [I32, [I32, I32]]] = {
+    pow ((a,b), .cn [r:I32] = {
+        .let b_1 = %core.wrap.sub _32 0 (b,1:I32);
+        pow ((a,b_1), .cn [r2:I32] = {
+            .let da = %core.wrap.mul _32 0 (a,r2);
+            ret (r, (da, 0:I32))
+        })
+    })
+};
+
+
+
+.con zero_pb ![I32, ret: .Cn [I32, I32]] = {
+    ret (0:I32, 0:I32)
+};
+
+.con fst_pb ![s:I32, ret: .Cn [I32, I32]] = {
+    ret (s, 0:I32)
+};
+
+.con snd_pb ![s:I32, ret: .Cn [I32, I32]] = {
+    ret (0:I32, s)
+};
+
+.con pair_sum ![
+    [[a:I32, b:I32],
+    [c:I32, d:I32]],
+    ret: .Cn [I32, I32]
+] = {
+    .let s1 = %core.wrap.add _32 0 (a,c);
+    .let s2 = %core.wrap.add _32 0 (b,d);
+    ret (s1, s2)
+};
+
+.con app_pb ![
+    f : .Cn [[I32, I32], .Cn [I32, .Cn [I32, .Cn[I32, I32]]]],
+    [a:[I32, I32], a_pb: .Cn[[I32, I32], .Cn [I32, I32]]],
+    ret: .Cn [I32, .Cn [I32, .Cn [I32, I32]]]
+] = {
+    f (a, .cn ![r:I32, r_pb: .Cn [I32, .Cn [I32, I32]]] = {
+        .con pb ![s:I32, pb_ret: .Cn [I32,I32]] = {
+            r_pb (s, .cn ![d:[I32,I32]] = {
+                a_pb (d, pb_ret)
+            })
+        };
+        ret (r, pb)
+    })
+};
+
+.con tup_pb ![
+    [a:I32, a_pb: .Cn [I32, .Cn [I32, I32]]],
+    [b:I32, b_pb: .Cn [I32, .Cn [I32, I32]]],
+    ret: .Cn [[I32, I32], .Cn [[I32,I32], .Cn [I32, I32]]]
+] = {
+    ret ((a,b),.cn ![[s1:I32,s2:I32], pb_ret: .Cn [I32, I32]] = {
+        a_pb (s1, .cn ![d1:[I32,I32]] = {
+            b_pb (s2, .cn ![d2:[I32,I32]] = {
+                pair_sum ((d1,d2), pb_ret)
+            })
+        })
+    })
+};
+
+.con mul_diff ![
+    [a:I32, b:I32],
+    ret: .Cn [I32, .Cn [I32, .Cn [I32, I32]]]
+] = {
+    .let m = %core.wrap.mul _32 0 (a,b);
+    ret (m, .cn ![s:I32, pb_ret:.Cn[I32,I32]] = {
+        .let da = %core.wrap.mul _32 0 (b,s);
+        .let db = %core.wrap.mul _32 0 (a,s);
+        pb_ret (da, db)
+    })
+};
+
+.con sub_diff ![
+    [a:I32, b:I32],
+    ret: .Cn [I32, .Cn [I32, .Cn [I32, I32]]]
+] = {
+    .let m = %core.wrap.sub _32 0 (a,b);
+    ret (m, .cn ![s:I32, pb_ret:.Cn[I32,I32]] = {
+        .let da = s;
+        .let db = %core.wrap.sub _32 0 (0:I32,s);
+        pb_ret (da, db)
+    })
+};
+
+.con const_diff ![
+    c:I32,
+    ret: .Cn [I32, .Cn [I32, .Cn [I32, I32]]]
+] = {
+    ret (c, zero_pb )
+};
+
+.con pow_thorin_r [[a:I32, b:I32], ret: .Cn [I32, .Cn [I32, .Cn [I32, I32]]]] = {
+    .con pow_then ![] = const_diff (1:I32, ret);
+
+    .con pow_cont ![r:I32, pb:.Cn[I32, .Cn[I32, I32]]] = {
+        .let m = %core.wrap.mul _32 0 (a,r);
+        ret (m, .cn ![s:I32, pb_ret:.Cn[I32,I32]] = {
+            pb (s, .cn![da:I32, db:I32] = {
+                .let da = %core.wrap.mul _32 0 (a,da);
+                .let ra = %core.wrap.add _32 0 (r,da);
+                pb_ret (ra, 0:I32)
+            })
+            // .let da = %core.wrap.mul _32 0 (a,s);
+            // .let db = %core.wrap.mul _32 0 (r,s);
+            // pb_ret (da, db)
+        })
+    };
+    .con pow_else ![] = {
+        .let a_d = (a, fst_pb);
+        .let b_d = (b, snd_pb);
+
+        const_diff (1:I32, .cn ![one_d: [I32, .Cn[I32, .Cn[I32,I32]]]] = {
+            tup_pb (b_d, one_d, .cn ![bo_d:[[I32,I32], .Cn[[I32,I32],.Cn[I32,I32]]]] = {
+                app_pb(sub_diff, bo_d, .cn ![r1_d: [I32, .Cn[I32, .Cn[I32,I32]]]] = {
+                    tup_pb (a_d, r1_d, .cn ![t1_d: [[I32,I32], .Cn[[I32,I32],.Cn[I32,I32]]]] = {
+                        app_pb (pow_thorin_r, t1_d, .cn ![r2_d: [I32, .Cn[I32, .Cn[I32,I32]]]] = {
+                            tup_pb (a_d, r2_d, .cn ![t2_d: [[I32,I32], .Cn[[I32,I32],.Cn[I32,I32]]]] = {
+                                app_pb (mul_diff, t2_d, pow_cont)
+                            })
+                        })
+                    })
+                })
+            })
+        })
+    };
+    
+    .let cmp = %core.icmp.e _32 (b,0:I32);
+    ((pow_else, pow_then)#cmp) ()
+};
+
+
+
+.con pow_pe_r [[a:I32, b:I32], ret: .Cn [I32, .Cn [I32, .Cn [I32, I32]]]] = {
+    // const_diff (1:I32, ret)
+    .con pow_then [] = const_diff (1:I32, ret);
+
+    .con pow_cont [r:I32, pb:.Cn[I32, .Cn[I32, I32]]] = {
+        .let m = %core.wrap.mul _32 0 (a,r);
+        ret (m, .cn [s:I32, pb_ret:.Cn[I32,I32]] = {
+            pb (s, .cn[da:I32, db:I32] = {
+                .let da = %core.wrap.mul _32 0 (a,da);
+                .let ra = %core.wrap.add _32 0 (r,da);
+                pb_ret (ra, 0:I32)
+            })
+            // .let da = %core.wrap.mul _32 0 (a,s);
+            // .let db = %core.wrap.mul _32 0 (r,s);
+            // pb_ret (da, db)
+        })
+    };
+    .con pow_else [] = {
+        .let b_1 = %core.wrap.sub _32 0 (b,1:I32);
+        pow_pe_r ((a,b_1),pow_cont)
+    };
+    
+    .let cmp = %core.icmp.e _32 (b,0:I32);
+    ((pow_else, pow_then)#cmp) ()
+};
+
+// .con .extern pow_pe [[a:I32, b:I32], ret: .Cn [I32, [I32, I32]]] = {
+.con .extern pow_pe [[a:I32, b:I32], ret: .Cn [I32, I32, I32]] = {
+    pow_pe_r ((a,b), .cn [r:I32, pb:.Cn[I32, .Cn[I32, I32]]] = {
+        pb (1:I32, .cn [da:I32, db:I32] = {
+            // ret (r, (da, db))
+            ret (r, da, db)
+        })
+    })
+};
+
+.con .extern pow_thorin [[a:I32, b:I32], ret: .Cn [I32, I32, I32]] = {
+    pow_thorin_r ((a,b), .cn [r:I32, pb:.Cn[I32, .Cn[I32, I32]]] = {
+        pb (1:I32, .cn [da:I32, db:I32] = {
+            ret (r, da, db)
+        })
+    })
+};
