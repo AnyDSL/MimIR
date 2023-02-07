@@ -21,8 +21,8 @@ fn pow_pe_r(a: i32, b: i32) -> (i32, Box<dyn Fn(i32) -> (i32, i32)>) {
         (
             a * r,
             Box::new(move |s| {
-                let (da, db) = r_pb(s);
-                (r + a * da, 0)
+                let (da, db) = r_pb(s * a);
+                (s * r + da, db)
             }),
         )
     }
@@ -32,6 +32,8 @@ fn pow_pe(a: i32, b: i32) -> (i32, (i32, i32)) {
     let (r, r_pb) = pow_pe_r(a, b);
     (r, r_pb(1))
 }
+
+// start
 
 fn zero_pb(s: i32) -> (i32, i32) {
     (0, 0)
@@ -88,7 +90,10 @@ fn pow_rs_r((a, b): (i32, i32)) -> (i32, Box<dyn Fn(i32) -> (i32, i32)>) {
         // const_diff(1)
     }
 }
+// end
+
 fn pow_rs(a: i32, b: i32) -> (i32, (i32, i32)) {
+    // (0, (0, 0))
     let (r, r_pb) = pow_rs_r((a, b));
     (r, r_pb(1))
 }

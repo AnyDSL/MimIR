@@ -13,7 +13,11 @@ let auto_tests =
 let test tests s f =
   (* let r = time ~name:s (fun _ -> List.iter (fun t -> ignore (f t)) tests) () in *)
   let r = time ~name:s (fun _ -> List.map f tests) () in
-  ignore r
+  (* ignore r *)
+  let _,oc = Filename.open_temp_file "tmp" "txt" in
+  List.iter (fun (r,(da,db)) -> Printf.fprintf oc "%d %d %d\n" r da db) r;
+  close_out oc;
+  ()
 
 let[@warning "-partial-match"] wrap f (a,b) = 
   let (r,[da;db]) = f ([a;b], Fun.id) in (r,(da,db))
@@ -87,8 +91,10 @@ let rec pow_ml_pe_r (a,b) =
     (
       a*r,
       fun s -> 
-        let (da,db) = pb s in
-        (r+a*da,0)
+        (* let (da,db) = pb s in
+        (r+a*da,0) *)
+        let (da,db) = pb (s*a) in
+        (s*r+da,db)
     )
 
 let pow_ml arg = 

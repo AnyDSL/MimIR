@@ -103,8 +103,10 @@ pow_pe_r (a, b) =
   (
     a * r,
     \s ->
-      let (da, db) = r_pb s in
-      (r+a*da, 0)
+      -- let (da, db) = r_pb s in
+      -- (r+a*da, 0)
+      let (da, db) = r_pb (s*a) in
+      (s*r+da, db)
   )
 
 pow_pe :: (Int, Int) -> (Int, (Int, Int))

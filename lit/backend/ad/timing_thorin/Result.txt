@@ -2,3 +2,27 @@ Running test.out
 real    0.139260 
 Running test_O3.out
 real    0.134650 
+
+Running test.out
+real    0.134111 
+Running test_O3.out
+real    0.135552 
+
+
+
+Simulated Pre Opt (
+  only const, tup, app => inlining (no inner cont)
+)
+
+Running test.out
+     Opt: real  0.136726 
+  Manual: real  0.343095 
+      PE: real  0.136663 
+ Full PE: real  0.018098 
+C Full PE: real 0.022386 
+Running test_O3.out
+     Opt: real  0.143705 
+  Manual: real  0.267097 
+      PE: real  0.133919 
+ Full PE: real  0.001315 
+C Full PE: real 0.000000 
