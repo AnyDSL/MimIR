@@ -7,6 +7,7 @@
 
 #include "dialects/backend/be/haskell_emit.h"
 #include "dialects/backend/be/ocaml_emit.h"
+#include "dialects/backend/be/rust_emit.h"
 
 using namespace thorin;
 
@@ -18,6 +19,7 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
             [](Backends& backends) {
                 backends["ml"] = &backend::ocaml::emit;
                 backends["hs"] = &backend::haskell::emit;
+                backends["rs"] = &backend::rust::emit;
             },
             nullptr};
 }

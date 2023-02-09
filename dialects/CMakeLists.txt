@@ -123,6 +123,8 @@ add_thorin_dialect(backend
         backend/be/ocaml_emit.cpp
         backend/be/haskell_emit.h
         backend/be/haskell_emit.cpp
+        backend/be/rust_emit.h
+        backend/be/rust_emit.cpp
     DEPENDS
         compile
         core
