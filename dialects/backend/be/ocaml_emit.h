@@ -16,12 +16,9 @@ void emit(World&, std::ostream&);
 
 class OCamlEmitter : public Phase {
 public:
-    // OCamlEmitter(World& world, std::ostream& os)
     OCamlEmitter(World& world)
         : Phase(world, "ocaml_emitter", false)
-        , os_(std::move(std::cout)) {
-        // os_ = std::cout;
-    }
+        , os_(std::move(std::cout)) {}
 
     void start() override { ocaml::emit(world(), os_); }
 

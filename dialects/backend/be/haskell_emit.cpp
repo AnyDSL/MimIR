@@ -34,8 +34,6 @@ using namespace std::string_literals;
 TODO:
 * mutual recursion
 * operations
-* in after toplevel
-* use let-ins instead of repetition
 
 */
 
@@ -150,8 +148,6 @@ using RPrec = LRPrec2<false>;
 
 DefSet let_emitted;
 
-// TODO: [@warning "-partial-match"]
-
 std::ostream& operator<<(std::ostream& os, Inline2 u) {
     if (u.dump_gid_ == 2 || (u.dump_gid_ == 1 && !u->isa<Var>() && u->num_ops() != 0)) print(os, "/*{}*/", u->gid());
 
@@ -177,7 +173,6 @@ std::ostream& operator<<(std::ostream& os, Inline2 u) {
     }
     if (auto arith = match<core::wrap>(*u)) {
         auto [a, b] = arith->args<2>();
-        // or use op+-* for others
         if (arith.id() == core::wrap::shl) { return print(os, "(Int.shift_left {} {})", Inline2(a), Inline2(b)); }
         const char* op;
         switch (arith.id()) {
@@ -190,7 +185,6 @@ std::ostream& operator<<(std::ostream& os, Inline2 u) {
     }
     if (auto icmp = match<core::icmp>(*u)) {
         auto [a, b] = icmp->args<2>();
-        // or use op+-* for others
         const char* op;
         // TODO: signed unsigned difference
         switch (icmp.id()) {
@@ -211,24 +205,10 @@ std::ostream& operator<<(std::ostream& os, Inline2 u) {
         return print(os, "(bool2bit ({} {} {}))", Inline2(a), op, Inline2(b));
     }
 
-    // div -> /
-    // cmp -> bool2bit (...)
-
     if (auto app = u->isa<App>()) {
         auto callee = app->callee();
         if (callee->isa<Idx>()) { return print(os, "Int"); }
-        // if (auto axiom = callee->isa<Axiom>()) {
-        //     if (axiom->name() == "%mem.Ptr") {
-        //         auto type = app->arg()->proj(2, 0_s);
-        //         return print(os, "({} ref)", Inline2(type));
-        //     }
-        // }
-
-        // if (app->type()->isa<Type>()) { return print(os, "({} {})", Inline2(app->arg()), Inline2(app->callee())); }
-
         return print(os, "({} {})", Inline2(app->callee()), Inline2(app->arg()));
-        // return print(os, "{} {}", LPrec(app->callee(), app), RPrec(app, app->arg()));
-        // return print(os, "app");
     }
 
     if (auto type = u->isa<Type>()) {
@@ -239,19 +219,13 @@ std::ostream& operator<<(std::ostream& os, Inline2 u) {
     } else if (u->isa<Idx>()) {
         assert(false && "unapplied idx");
     } else if (auto bot = u->isa<Bot>()) {
-        // return print(os, "<⊥:{}>", bot->type());
-        // if (bot->type()->isa<Type>()) return print(os, "unit");
         if (bot->type()->isa<Type>()) return print(os, "a");
         return print(os, "magic");
     } else if (auto top = u->isa<Top>()) {
-        // return print(os, "<⊤:{}>", top->type());
-        // if (top->type()->isa<Type>()) return print(os, "unit");
         if (top->type()->isa<Type>()) return print(os, "a");
         return print(os, "()");
     } else if (auto axiom = u->isa<Axiom>()) {
         const auto& name = axiom->name();
-        // if (name.find("mem.M") != std::string::npos) return print(os, "()");
-        // if (name == "%mem.M") return print(os, "unit");
         return print(os, "{}{}", name[0] == '%' ? "" : "%", name);
     } else if (auto lit = u->isa<Lit>()) {
         long value = lit->get();
@@ -266,89 +240,52 @@ std::ostream& operator<<(std::ostream& os, Inline2 u) {
         if (ex->tuple()->type()->isa<Arr>()) {
             return print(os, "({} !! {})", Inline2(ex->tuple()), Inline2(ex->index()));
         } else {
-            // TODO: extract from tuple (const index)
-            // return print(os, "{}#{}", ex->tuple(), ex->index());
             auto extract_fun = "get_" + std::to_string(ex->index()->as<Lit>()->get()) + "_of_" +
                                std::to_string(ex->tuple()->num_ops());
             return print(os, "({} {})", extract_fun, Inline2(ex->tuple()));
         }
     } else if (auto var = u->isa<Var>()) {
         return print(os, "{}", id(var));
-        // return print(os, "{}", var);
     } else if (auto pi = u->isa<Pi>()) {
-        // if (pi->is_cn()) return print(os, "{} -> ()", Inline2(pi->dom()));
-        if (auto nom = pi->isa_nom<Pi>(); nom && nom->var())
-            // TODO: just give error?
-            // return print(os, "Π {}: {} → {}", nom->var(), pi->dom(), pi->codom());
-            assert(false && "nom pi");
-        // return print(os, "Π {} → {}", pi->dom(), pi->codom());
+        if (auto nom = pi->isa_nom<Pi>(); nom && nom->var()) assert(false && "nom pi");
         return print(os, "({} -> {})", Inline2(pi->dom()), Inline2(pi->codom()));
     } else if (auto lam = u->isa<Lam>()) {
-        // return print(os, "{}, {}", lam->filter(), lam->body());
-        // return print(os, "{}", lam->body());
-        // TODO: lam vs lam->body() vs Inline(...) vs name vs unique_name
         return print(os, "{}", lam);
-        // } else if (auto app = u->isa<App>()) {
     } else if (auto sigma = u->isa<Sigma>()) {
         if (auto nom = sigma->isa_nom<Sigma>(); nom && nom->var()) {
-            // TODO:
             size_t i = 0;
             return print(os, "({, })", Elem(sigma->ops(), [&](auto op) {
                              if (auto v = nom->var(i++))
                                  print(os, "{}:: {}", v, Inline2(op));
                              else
                                  print(os, "_:: {}", Inline2(op));
-                             //  os << op;
                          }));
         }
-        // return print(os, "({, })", sigma->ops());
-        // TODO: add extra parens?
-        // return print(os, "({ * })", Elem(sigma->ops(), [&](auto op) { print(os, "({})", Inline2(op)); }));
         if (sigma->num_ops() == 0) return print(os, "unit");
         return print(os, "({ , })", Elem(sigma->ops(), [&](auto op) { print(os, "{}", Inline2(op)); }));
-        // return print(os, "({, })", Elem(sigma->ops(), [&](auto op) { print(os, "A"); }));
     } else if (auto tuple = u->isa<Tuple>()) {
-        // tuple->world().DLOG("tuple: {}", tuple->type());
         if (tuple->type()->isa<Arr>()) {
             print(os, "[{, }]", Elem(tuple->ops(), [&](auto op) { print(os, "{}", Inline2(op)); }));
             return os;
-            // TODO: nom
-            // return tuple->type()->isa_nom() ? print(os, ":{}", tuple->type()) : os;
         } else {
-            // print(os, "({, })", tuple->ops());
             print(os, "({, })", Elem(tuple->ops(), [&](auto op) { print(os, "{}", Inline2(op)); }));
             return os;
-            // return tuple->type()->isa_nom() ? print(os, ":{}", tuple->type()) : os;
         }
     } else if (auto arr = u->isa<Arr>()) {
-        if (auto nom = arr->isa_nom<Arr>(); nom && nom->var())
-            // TODO: impossible
-            assert(false && "nom arr");
+        if (auto nom = arr->isa_nom<Arr>(); nom && nom->var()) assert(false && "nom arr");
         return print(os, "[{}]", Inline2(arr->body()));
     } else if (auto pack = u->isa<Pack>()) {
-        // TODO: generate list
         if (auto nom = pack->isa_nom<Pack>(); nom && nom->var())
             return print(os, "[{} | {} <- [1..{}]]", Inline2(nom->body()), Inline2(nom->var()), Inline2(nom->shape()));
-        // return print(os, "(List.init {} (fun {} -> {}))", Inline2(nom->shape()), Inline2(nom->var()),
-        //              Inline2(nom->body()));
-        // return print(os, "(take {} (repeat {}))", Inline2(pack->shape()), Inline2(pack->body()));
         return print(os, "(replicate {} {})", Inline2(pack->shape()), Inline2(pack->body()));
 
     } else if (auto proxy = u->isa<Proxy>()) {
-        // TODO:
-        // return print(os, ".proxy#{}#{} {, }", proxy->pass(), proxy->tag(), proxy->ops());
         assert(0);
     } else if (auto bound = u->isa<Bound>()) {
-        // TODO:
         assert(0);
-        // auto op = bound->isa<Join>() ? "∪" : "∩";
-        // if (auto nom = u->isa_nom()) print(os, "{}{}: {}", op, nom->unique_name(), nom->type());
-        // return print(os, "{}({, })", op, bound->ops());
     }
 
-    // if (u->node_name().find("mem.M") != std::string::npos) { return print(os, "()"); }
-
-    // other
+    // TODO: other
     if (u->flags() == 0) return print(os, ".{} ({, })", u->node_name(), u->ops());
     return print(os, ".{}#{} ({, })", u->node_name(), u->flags(), u->ops());
 }
@@ -434,19 +371,13 @@ void Dumper::dump(Def* nom) {
 }
 
 void Dumper::dump(Lam* lam) {
-    // TODO filter
     auto ptrn = [&](auto&) { dump_ptrn(lam->var(), lam->type()->dom()); };
-
-    // if (lam->type()->is_cn()) {
-    //     tab.println(os, "let {}{} {} = {{", external(lam), id(lam), ptrn);
-    // } else {
 
     // TODO: handle mutual recursion
     auto name = id(lam);
     if (name == "main") name = "thorin_main";
     auto prefix = tab.indent() > 0 ? "let " : "";
-    tab.println(os, "{}{}{} {} = ", external(lam), prefix, name, ptrn); //, lam->type()->codom());
-    // }
+    tab.println(os, "{}{}{} {} = ", external(lam), prefix, name, ptrn);
 
     ++tab;
     ++tab;
@@ -454,51 +385,35 @@ void Dumper::dump(Lam* lam) {
         if (dep) recurse(dep->nom2node(lam));
         recurse(lam->filter());
         recurse(lam->body(), true);
-        // TODO:
-        // if (lam->body()->isa_nom())
-        //     tab.print(os, "{}\n", lam->body());
-        // else
         tab.print(os, "{}\n", Inline2(lam->body()));
     } else {
         tab.print(os, " <unset>\n");
     }
     --tab;
     --tab;
-    // tab.print(os, "}};\n");
 
     // TODO: not for toplevel in a more semantic manner
     if (tab.indent() > 0) tab.print(os, "in\n");
 }
 
 void Dumper::dump_let(const Def* def) {
-    // TODO: type vs Inline type
     tab.print(os, "let {} :: {} = {} in\n", id(def), Inline2(def->type()), Inline2(def, 0));
-    // tab.print(os, "let {}: {} = {} in\n", def->unique_name(), def->type(), Inline2(def, 0));
     let_emitted.insert(def);
 }
 
 void Dumper::dump_ptrn(const Def* def, const Def* type, bool toplevel) {
     if (!def) {
-        // os << type;
         os << "_";
     } else {
         auto projs = def->projs();
-        // if (projs.size() == 0) {
-        //     print(os, "unit");
-        // } else
         if ((projs.size() == 1 || std::ranges::all_of(projs, [](auto def) { return !def; }))) {
-            // print(os, "({}: {})", def->unique_name(), type);
-            // print(os, "({}: {})", def->unique_name(), Inline2(type));
-            // print(os, "A");
             if (toplevel) {
                 print(os, "({} :: {})", id(def), Inline2(type));
             } else {
                 print(os, "{}", id(def));
             }
         } else {
-            size_t i = 0;
-            // print(os, "{}::[{, }]", def->unique_name(),
-            //       Elem(projs, [&](auto proj) { dump_ptrn(proj, type->proj(i++)); }));
+            size_t i            = 0;
             const char* pattern = "(({}@({, })):: {})";
             if (def->type()->isa<Arr>()) pattern = "(({}@[{, }]):: {})";
             print(os, pattern, id(def), Elem(projs, [&](auto proj) { dump_ptrn(proj, type->proj(i++), false); }),
@@ -531,22 +446,11 @@ void Dumper::recurse(const Def* def, bool first /*= false*/) {
 
 void emit(World& w, std::ostream& os) {
     auto freezer = World::Freezer(w);
-    auto old_gid = w.curr_gid();
+    auto dep     = DepTree(w);
+    auto dumper  = Dumper(os, &dep);
 
-    // if (w.flags().dump_recursive) {
-    //     auto dumper = Dumper(os);
-    //     for (const auto& [_, nom] : externals()) dumper.noms.push(nom);
-    //     while (!dumper.noms.empty()) dumper.dump(dumper.noms.pop());
-    // } else {
-    auto dep    = DepTree(w);
-    auto dumper = Dumper(os, &dep);
-
-    // for (const auto& import : w.imported()) print(os, ".import {};\n", import);
     os << PREFACE << "\n";
     dumper.recurse(dep.root());
-    // }
-
-    // assertf(old_gid == curr_gid(), "new nodes created during dump. old_gid: {}; curr_gid: {}", old_gid, curr_gid());
 }
 
 } // namespace thorin::backend::haskell
