@@ -44,7 +44,7 @@ fn fst_pb(s: i32) -> (i32, i32) {
 fn snd_pb(s: i32) -> (i32, i32) {
     (0, s)
 }
-fn pair_sum((a, b): (i32, i32), (c, d): (i32, i32)) -> (i32, i32) {
+fn pair_sum((p @ (a, b)): (i32, i32), (c, d): (i32, i32)) -> (i32, i32) {
     (a + c, b + d)
 }
 fn app_pb(
@@ -105,21 +105,21 @@ fn main() {
 
     let start = std::time::Instant::now();
     for (a, b) in tests.iter() {
-        let (r, (da, db)) = std::hint::black_box(pow_rs(*a, *b));
+        let (_r, (_da, _db)) = std::hint::black_box(pow_rs(*a, *b));
     }
     let time = start.elapsed().as_secs_f64();
     println!("{:10}: {}s", "Rust", time);
 
     let start = std::time::Instant::now();
     for (a, b) in tests.iter() {
-        let (r, (da, db)) = std::hint::black_box(pow_pe(*a, *b));
+        let (_r, (_da, _db)) = std::hint::black_box(pow_pe(*a, *b));
     }
     let time = start.elapsed().as_secs_f64();
     println!("{:10}: {}s", "PE", time);
 
     let start = std::time::Instant::now();
     for (a, b) in tests.iter() {
-        let (r, (da, db)) = std::hint::black_box(pow_full_pe(*a, *b));
+        let (_r, (_da, _db)) = std::hint::black_box(pow_full_pe(*a, *b));
     }
     let time = start.elapsed().as_secs_f64();
     println!("{:10}: {}s", "Full PE", time);
