@@ -17,7 +17,8 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                 register_phase<backend::ocaml_phase, backend::OCamlEmitter>(passes); //, std::cout);
             },
             [](Backends& backends) {
-                backends["ml"] = &backend::ocaml::emit;
+                // backends["ml"] = &backend::ocaml::emit;
+                backends["ml"] = &backend::ocaml::emit2;
                 backends["hs"] = &backend::haskell::emit;
                 backends["rs"] = &backend::rust::emit;
             },

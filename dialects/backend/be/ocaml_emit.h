@@ -12,7 +12,8 @@ namespace backend {
 
 namespace ocaml {
 void emit(World&, std::ostream&);
-}
+void emit2(World&, std::ostream&);
+} // namespace ocaml
 
 class OCamlEmitter : public Phase {
 public:

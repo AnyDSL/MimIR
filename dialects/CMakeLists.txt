@@ -121,6 +121,7 @@ add_thorin_dialect(backend
         backend/backend.h
         backend/be/ocaml_emit.h
         backend/be/ocaml_emit.cpp
+        backend/be/ocaml_emitter.cpp
         backend/be/haskell_emit.h
         backend/be/haskell_emit.cpp
         backend/be/rust_emit.h
