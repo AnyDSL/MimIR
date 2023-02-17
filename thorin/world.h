@@ -630,6 +630,7 @@ private:
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
         DefDefMap<DefArray> cache;
         std::unique_ptr<Checker> checker;
+        StrPool str_pool_;
 
         friend void swap(Move& m1, Move& m2) {
             using std::swap;
@@ -639,6 +640,7 @@ private:
             swap(m1.defs,      m2.defs);
             swap(m1.cache,     m2.cache);
             swap(m1.checker,   m2.checker);
+            swap(m1.str_pool_, m2.str_pool_);
             // clang-format on
             Checker::swap(*m1.checker, *m2.checker);
         }
