@@ -392,10 +392,20 @@ Other Operations</h1>
 <div class="line">.ax %core.pe(known): Π [T: *][T] -&gt; .Bool, normalize_pe;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md102"></a>
 %core.zip</h2>
-<p >For now, not a better place for this and will be moved elsewhere.</p>
+<p ><a href="https://en.wikipedia.org/wiki/Zipping_(computer_science)">Zips</a> several tensors.</p>
+<p ><b>Warning</b>: For now, not a better place for this and will be moved elsewhere. What is more, the signature will likely change int the future:</p><ul>
+<li><code>r</code>: rank of the tensors to zip</li>
+<li><code>s</code>: shape of the tensors to zip</li>
+<li><code>n_i</code>: number if inputs</li>
+<li><code>n_o</code>: number if outputs</li>
+<li><code>Is</code>: tuple with <code>n_i</code> many elements that describe the element types of the inputs</li>
+<li><code>Os</code>: tuple with <code>n_o</code> many elements that describe the element types of the outputs</li>
+<li><code>f</code>: zipping function that expects an <code>n_i</code>-tuple whose elements correspond to <code>Is</code> and yields an <code>n_o</code>-tuple whose element types correspond to <code>Os</code></li>
+<li><code>is</code>: the actual input tensors</li>
+</ul>
 <div class="fragment"><div class="line">.ax %core.zip: Π [r: .Nat, s: «r; .Nat»]</div>
 <div class="line">                 [n_i: .Nat, Is: «n_i; *», n_o: .Nat, Os: «n_o; *», f: «i: n_i; Is#i» -&gt; «o: n_o; Os#o»]</div>
-<div class="line">                 [«i: n_i; «s; Is#i»»] -&gt; «o: n_o; «s; Os#o»», normalize_zip;</div>
+<div class="line">                 [is: «i: n_i; «s; Is#i»»] -&gt; «o: n_o; «s; Os#o»», normalize_zip;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
