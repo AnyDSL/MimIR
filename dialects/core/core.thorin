@@ -211,7 +211,7 @@
 /// [Zips](https://en.wikipedia.org/wiki/Zipping_(computer_science)) several tensors.
 ///
 /// **Warning**: For now, not a better place for this and will be moved elsewhere.
-/// What is more, the signature will likely change int the future:
+/// What is more, the signature will likely change in the future:
 /// * `r`: rank of the tensors to zip
 /// * `s`: shape of the tensors to zip
 /// * `n_i`: number if inputs
