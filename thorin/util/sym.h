@@ -30,9 +30,19 @@ private:
 
 class Pool {
 public:
+<<<<<<< HEAD:thorin/util/sym.h
     Pool()            = default;
     Pool(const Pool&) = delete;
     Pool(Pool&& other)
+||||||| parent of 999af4685 (clang-format):thorin/util/str_pool.h
+    StrPool() = default;
+    StrPool(const StrPool&) = delete;
+    StrPool(StrPool&& other)
+=======
+    StrPool()               = default;
+    StrPool(const StrPool&) = delete;
+    StrPool(StrPool&& other)
+>>>>>>> 999af4685 (clang-format):thorin/util/str_pool.h
         : pool_(std::move(other.pool_)) {}
 
     Sym_ sym(std::string_view s) { return &*pool_.emplace(s).first; }
