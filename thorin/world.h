@@ -17,6 +17,7 @@
 
 #include "thorin/util/hash.h"
 #include "thorin/util/log.h"
+#include "thorin/util/str_pool.h"
 
 namespace thorin {
 
