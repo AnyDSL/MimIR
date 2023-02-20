@@ -21,11 +21,7 @@ void Bootstrapper::emit(std::ostream& h) {
 
     // clang-format off
     for (const auto& [key, ax] : axioms) {
-        tab.print(h, "#ifdef DOXYGEN // see https://github.com/doxygen/doxygen/issues/9668\n");
-        tab.print(h, "enum {} : flags_t {{\n", ax.tag);
-        tab.print(h, "#else\n");
         tab.print(h, "enum class {} : flags_t {{\n", ax.tag);
-        tab.print(h, "#endif\n");
         ++tab;
         flags_t ax_id = dialect_id | (ax.tag_id << 8u);
 
