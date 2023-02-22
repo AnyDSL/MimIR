@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+
 #include <absl/container/node_hash_set.h>
 
 namespace thorin {
@@ -29,7 +30,7 @@ private:
 
 class Syms {
 public:
-    Syms() = default;
+    Syms()            = default;
     Syms(const Syms&) = delete;
     Syms(Syms&& other)
         : pool_(std::move(other.pool_)) {}
@@ -47,4 +48,4 @@ private:
     absl::node_hash_set<std::string> pool_;
 };
 
-}
+} // namespace thorin
