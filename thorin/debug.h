@@ -24,10 +24,10 @@ struct Pos {
 
     uint64_t rowcol() const { return (uint64_t(row) << uint64_t(32)) | uint64_t(col); }
     const Def* def(World&) const;
-    explicit operator bool() const { return row != uint32_t(-1); }
+    explicit operator bool() const { return row; }
 
-    uint32_t row = -1;
-    uint32_t col = -1;
+    uint32_t row = 0;
+    uint32_t col = 0;
 };
 
 struct Loc {
@@ -46,8 +46,8 @@ struct Loc {
     explicit operator bool() const { return (bool)begin; }
 
     std::string file;
-    Pos begin = {uint32_t(-1), uint32_t(-1)};
-    Pos finis = {uint32_t(-1), uint32_t(-1)};
+    Pos begin = {uint32_t(0), uint32_t(0)};
+    Pos finis = {uint32_t(0), uint32_t(0)};
     ///< It's called `finis` because it refers to the **last** character within this Loc%ation.
     /// In the STL the word `end` refers to the position of something that is one element **past** the end.
 };
