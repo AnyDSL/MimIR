@@ -28,18 +28,18 @@ private:
     }
 };
 
-class Syms {
+class Pool {
 public:
-    Syms()            = default;
-    Syms(const Syms&) = delete;
-    Syms(Syms&& other)
+    Pool()            = default;
+    Pool(const Pool&) = delete;
+    Pool(Pool&& other)
         : pool_(std::move(other.pool_)) {}
 
     Sym_ sym(std::string_view s) { return &*pool_.emplace(s).first; }
     Sym_ sym(const char* s) { return &*pool_.emplace(s).first; }
     Sym_ sym(std::string&& s) { return &*pool_.emplace(std::move(s)).first; }
 
-    friend void swap(Syms& p1, Syms& p2) {
+    friend void swap(Pool& p1, Pool& p2) {
         using std::swap;
         swap(p1.pool_, p2.pool_);
     }

@@ -88,9 +88,9 @@ add_library(libthorin
     util/log.h
     util/print.cpp
     util/print.h
+    util/sym.h
     util/sys.cpp
     util/sys.h
-    util/str_pool.h
     util/types.h
     util/utf8.cpp
     util/utf8.h
