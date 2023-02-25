@@ -1,11 +1,15 @@
 #pragma once
 
-#include "thorin/debug.h"
-
 #include "thorin/util/assert.h"
+#include "thorin/util/loc.h"
+#include "thorin/util/sym.h"
 #include "thorin/util/types.h"
 
-namespace thorin::fe {
+namespace thorin {
+
+class Def;
+
+namespace fe {
 
 // clang-format off
 #define THORIN_KEY(m)                  \
@@ -181,4 +185,5 @@ private:
     };
 };
 
-} // namespace thorin::fe
+} // namespace fe
+} // namespace thorin

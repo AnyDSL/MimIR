@@ -2,16 +2,14 @@
 
 #include <absl/container/flat_hash_map.h>
 
-#include "thorin/debug.h"
-
 #include "thorin/fe/tok.h"
 #include "thorin/util/utf8.h"
 
 namespace thorin {
-
 class World;
+}
 
-namespace fe {
+namespace thorin::fe {
 
 class Lexer : public utf8::Lexer<3> {
     using Super = utf8::Lexer<3>;
@@ -60,5 +58,4 @@ private:
     std::optional<Tok> cache_;
 };
 
-} // namespace fe
 } // namespace thorin

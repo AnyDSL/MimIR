@@ -11,8 +11,8 @@ namespace thorin {
 /// If inference was successful, it's Infer::op will be set to the inferred Def.
 class Infer : public Def {
 private:
-    Infer(const Def* type, const Def* dbg)
-        : Def(Node, type, 1, 0, dbg) {}
+    Infer(const Def* type)
+        : Def(Node, type, 1, 0) {}
 
 public:
     /// @name op
@@ -30,7 +30,7 @@ public:
 
     /// @name virtual methods
     ///@{
-    Infer* stub(World&, const Def*, const Def*) override;
+    Infer* stub_(World&, const Def*) override;
     ///@}
 
     /// @name union-find
@@ -58,19 +58,19 @@ public:
     World& world() const { return *world_; }
 
     /// Are @p d1 and @p d2 α-equivalent?
-    bool equiv(Ref d1, Ref d2, Ref dbg);
+    bool equiv(Ref d1, Ref d2);
 
     /// Can @p value be assigned to sth of @p type?
-    /// @note This is different from `equiv(type, value->type(), dbg)` since @p type may be dependent.
-    bool assignable(Ref type, Ref value, Ref dbg);
+    /// @note This is different from `equiv(type, value->type())` since @p type may be dependent.
+    bool assignable(Ref type, Ref value);
 
     /// Yields `defs.front()`, if all @p defs are α-equiv%alent and `nullptr` otherwise.
-    const Def* is_uniform(Defs defs, Ref dbg);
+    const Def* is_uniform(Defs defs);
 
     static void swap(Checker& c1, Checker& c2) { std::swap(c1.world_, c2.world_); }
 
 private:
-    bool equiv_internal(Ref, Ref, Ref);
+    bool equiv_internal(Ref, Ref);
 
     enum class Equiv {
         Distinct,

@@ -25,13 +25,13 @@ namespace thorin {
 
 static Def* isa_decl(const Def* def) {
     if (auto nom = def->isa_nom()) {
-        if (nom->is_external() || nom->isa<Lam>() || (!nom->name().empty() && nom->name() != "_"s)) return nom;
+        if (nom->is_external() || nom->isa<Lam>() || (nom->name && !nom->name->empty() && !nom->name.is_anonymous())) return nom;
     }
     return nullptr;
 }
 
 static std::string id(const Def* def) {
-    if (def->is_external() || (!def->is_set() && def->isa<Lam>())) return def->name();
+    if (def->is_external() || (!def->is_set() && def->isa<Lam>())) return def->name;
     return def->unique_name();
 }
 

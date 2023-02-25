@@ -34,8 +34,7 @@ const Def* flatten(const Def* def) {
     if (!should_flatten(def)) return def;
     DefVec ops;
     flatten(ops, def);
-    return def->sort() == Sort::Term ? def->world().tuple(def->type(), ops, def->dbg())
-                                     : def->world().sigma(ops, def->dbg());
+    return def->sort() == Sort::Term ? def->world().tuple(def->type(), ops) : def->world().sigma(ops);
 }
 
 static const Def* unflatten(Defs defs, const Def* type, size_t& j, bool flatten_noms) {

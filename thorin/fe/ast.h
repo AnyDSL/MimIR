@@ -9,6 +9,7 @@ namespace thorin {
 
 class Infer;
 class Sigma;
+class World;
 
 namespace fe {
 
@@ -32,7 +33,7 @@ private:
 
 class Ptrn : public AST {
 public:
-    Ptrn(Loc loc, bool rebind, Sym sym, const Def* type)
+    Ptrn(Loc loc, Sym sym, bool rebind, const Def* type)
         : AST(loc)
         , rebind_(rebind)
         , sym_(sym)
@@ -48,6 +49,7 @@ public:
 protected:
     bool rebind_;
     Sym sym_;
+    Loc loc_;
     mutable const Def* type_;
 };
 
@@ -55,8 +57,8 @@ using Ptrns = std::deque<std::unique_ptr<Ptrn>>;
 
 class IdPtrn : public Ptrn {
 public:
-    IdPtrn(Loc loc, bool rebind, Sym sym, const Def* type)
-        : Ptrn(loc, rebind, sym, type) {}
+    IdPtrn(Loc loc, Sym sym, bool rebind, const Def* type)
+        : Ptrn(loc, sym, rebind, type) {}
 
     void bind(Scopes&, const Def*) const override;
     const Def* type(World&) const override;
@@ -64,8 +66,8 @@ public:
 
 class TuplePtrn : public Ptrn {
 public:
-    TuplePtrn(Loc loc, bool rebind, Sym sym, Ptrns&& ptrns, const Def* type, std::vector<Infer*>&& infers)
-        : Ptrn(loc, rebind, sym, type)
+    TuplePtrn(Loc loc, Sym sym, bool rebind, Ptrns&& ptrns, const Def* type, std::vector<Infer*>&& infers)
+        : Ptrn(loc, sym, rebind, type)
         , ptrns_(std::move(ptrns))
         , infers_(std::move(infers)) {}
 

@@ -1,8 +1,6 @@
 #pragma once
 
-#include "thorin/debug.h"
-
-#include "thorin/util/print.h"
+#include "thorin/util/loc.h"
 
 namespace thorin {
 
@@ -30,14 +28,14 @@ struct Log {
 };
 
 // clang-format off
-#define ELOG(...) log().log(thorin::Log::Level::Error,   thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
-#define WLOG(...) log().log(thorin::Log::Level::Warn,    thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
-#define ILOG(...) log().log(thorin::Log::Level::Info,    thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
-#define VLOG(...) log().log(thorin::Log::Level::Verbose, thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
+#define ELOG(...) log(thorin::Log::Level::Error,   __FILE__, __LINE__, __VA_ARGS__)
+#define WLOG(...) log(thorin::Log::Level::Warn,    __FILE__, __LINE__, __VA_ARGS__)
+#define ILOG(...) log(thorin::Log::Level::Info,    __FILE__, __LINE__, __VA_ARGS__)
+#define VLOG(...) log(thorin::Log::Level::Verbose, __FILE__, __LINE__, __VA_ARGS__)
 #ifndef NDEBUG
-#define DLOG(...) log().log(thorin::Log::Level::Debug,   thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
+#define DLOG(...) log(thorin::Log::Level::Debug,   __FILE__, __LINE__, __VA_ARGS__)
 #else
-#define DLOG(...) log().log()
+#define DLOG(...) log()
 #endif
 // clang-format on
 

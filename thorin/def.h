@@ -3,12 +3,11 @@
 #include <optional>
 #include <vector>
 
-#include "thorin/debug.h"
-
 #include "thorin/util/array.h"
 #include "thorin/util/cast.h"
 #include "thorin/util/container.h"
 #include "thorin/util/hash.h"
+#include "thorin/util/loc.h"
 #include "thorin/util/print.h"
 
 // clang-format off
@@ -136,33 +135,33 @@ inline unsigned operator!=(Dep d1, unsigned d2) { return unsigned(d1) != d2; }
 /// Use as mixin to wrap all kind of Def::proj and Def::projs variants.
 #define THORIN_PROJ(NAME, CONST)                                                                                   \
     nat_t num_##NAME##s() CONST { return ((const Def*)NAME())->num_projs(); }                                      \
-    const Def* NAME(nat_t a, nat_t i, const Def* dbg = {}) CONST { return ((const Def*)NAME())->proj(a, i, dbg); } \
-    const Def* NAME(nat_t i, const Def* dbg = {}) CONST { return ((const Def*)NAME())->proj(i, dbg); }             \
+    const Def* NAME(nat_t a, nat_t i) CONST { return ((const Def*)NAME())->proj(a, i); } \
+    const Def* NAME(nat_t i) CONST { return ((const Def*)NAME())->proj(i); }             \
     template<nat_t A = -1_s, class F>                                                                              \
-    auto NAME##s(F f, Defs dbgs = {}) CONST {                                                                      \
-        return ((const Def*)NAME())->projs<A, F>(f, dbgs);                                                         \
+    auto NAME##s(F f) CONST {                                                                      \
+        return ((const Def*)NAME())->projs<A, F>(f);                                                         \
     }                                                                                                              \
     template<nat_t A = -1_s>                                                                                       \
-    auto NAME##s(Defs dbgs = {}) CONST {                                                                           \
-        return ((const Def*)NAME())->projs<A>(dbgs);                                                               \
+    auto NAME##s() CONST {                                                                           \
+        return ((const Def*)NAME())->projs<A>();                                                               \
     }                                                                                                              \
     template<class F>                                                                                              \
-    auto NAME##s(nat_t a, F f, Defs dbgs = {}) CONST {                                                             \
-        return ((const Def*)NAME())->projs<F>(a, f, dbgs);                                                         \
+    auto NAME##s(nat_t a, F f) CONST {                                                             \
+        return ((const Def*)NAME())->projs<F>(a, f);                                                                \
     }                                                                                                              \
-    auto NAME##s(nat_t a, Defs dbgs = {}) CONST { return ((const Def*)NAME())->projs(a, dbgs); }
+    auto NAME##s(nat_t a) CONST { return ((const Def*)NAME())->projs(a); }
 
 /// Base class for all Def%s.
 /// The data layout (see World::alloc and Def::partial_ops) looks like this:
 /// ```
-/// Def| dbg |type | op(0) ... op(num_ops-1) |
-///    |--------------partial_ops------------|
-///                |-------extended_ops------|
+/// Def| meta |type | op(0) ... op(num_ops-1) |
+///    |---------------partial_ops------------|
+///                 |-------extended_ops------|
 /// ```
 /// @attention This means that any subclass of Def **must not** introduce additional members.
 class Def : public RuntimeCast<Def> {
 public:
-    using NormalizeFn = const Def* (*)(const Def*, const Def*, const Def*, const Def*);
+    using NormalizeFn = const Def* (*)(Ref, Ref, Ref);
 
 private:
     Def& operator=(const Def&) = delete;
@@ -170,10 +169,10 @@ private:
 
 protected:
     /// Constructor for a structural Def.
-    Def(World*, node_t, const Def* type, Defs ops, flags_t flags, const Def* dbg);
-    Def(node_t n, const Def* type, Defs ops, flags_t flags, const Def* dbg);
+    Def(World*, node_t, const Def* type, Defs ops, flags_t flags);
+    Def(node_t n, const Def* type, Defs ops, flags_t flags);
     /// Constructor for a *nom*inal Def.
-    Def(node_t, const Def* type, size_t num_ops, flags_t flags, const Def* dbg);
+    Def(node_t, const Def* type, size_t num_ops, flags_t flags);
     virtual ~Def() = default;
 
 public:
@@ -242,7 +241,7 @@ public:
 
     /// @name extended_ops
     ///@{
-    /// Includes Def::dbg (if not `nullptr`), Def::type() (if not `nullptr`),
+    /// Includes Def::meta (if not `nullptr`), Def::type() (if not `nullptr`),
     /// and then the other Def::ops() (if Def::is_set) in this order.
     Defs extended_ops() const;
     const Def* extended_op(size_t i) const { return extended_ops()[i]; }
@@ -251,7 +250,7 @@ public:
 
     /// @name partial_ops
     ///@{
-    /// Includes Def::dbg, Def::type, and Def::ops (in this order).
+    /// Includes Def::meta, Def::type, and Def::ops (in this order).
     /// Also works with partially set Def%s and doesn't assert.
     /// Unset operands are `nullptr`.
     Defs partial_ops() const { return Defs(num_ops_ + 2, ops_ptr() - 2); }
@@ -286,10 +285,10 @@ public:
     }
     /// Similar to World::extract while assuming an arity of @p a but also works on Sigma%s, and Arr%ays.
     /// If `this` is a Sort::Term (see Def::sort), Def::proj resorts to World::extract.
-    const Def* proj(nat_t a, nat_t i, const Def* dbg = {}) const;
+    const Def* proj(nat_t a, nat_t i) const;
 
     /// Same as above but takes Def::num_projs as arity.
-    const Def* proj(nat_t i, const Def* dbg = {}) const { return proj(num_projs(), i, dbg); }
+    const Def* proj(nat_t i) const { return proj(num_projs(), i); }
 
     /// Splits this Def via Def::proj%ections into an Arr%ay (if `A == -1_s`) or `std::array` (otherwise).
     /// Applies @p f to each element.
@@ -304,31 +303,31 @@ public:
     /// Array<const Lit*> lits = def->projs(n, as_lit<nat_t>);// same as above but applies as_lit<nat_t> to each element
     /// ```
     template<nat_t A = -1_s, class F>
-    auto projs(F f, Defs dbgs = {}) const {
+    auto projs(F f) const {
         using R = std::decay_t<decltype(f(this))>;
         if constexpr (A == -1_s) {
-            return projs(num_projs(), f, dbgs);
+            return projs(num_projs(), f);
         } else {
             assert(A == as_lit(arity()));
             std::array<R, A> array;
-            for (nat_t i = 0; i != A; ++i) array[i] = f(proj(A, i, dbgs.empty() ? nullptr : dbgs[i]));
+            for (nat_t i = 0; i != A; ++i) array[i] = f(proj(A, i));
             return array;
         }
     }
 
     template<class F>
-    auto projs(nat_t a, F f, Defs dbgs = {}) const {
+    auto projs(nat_t a, F f) const {
         using R = std::decay_t<decltype(f(this))>;
-        return Array<R>(a, [&](nat_t i) { return f(proj(a, i, dbgs.empty() ? nullptr : dbgs[i])); });
+        return Array<R>(a, [&](nat_t i) { return f(proj(a, i)); });
     }
 
     template<nat_t A = -1_s>
-    auto projs(Defs dbgs = {}) const {
-        return projs<A>([](const Def* def) { return def; }, dbgs);
+    auto projs() const {
+        return projs<A>([](const Def* def) { return def; });
     }
-    auto projs(nat_t a, Defs dbgs = {}) const {
+    auto projs(nat_t a) const {
         return projs(
-            a, [](const Def* def) { return def; }, dbgs);
+            a, [](const Def* def) { return def; });
     }
     ///@}
 
@@ -340,21 +339,18 @@ public:
     void make_internal();
     ///@}
 
-    /// @name debug
+    /// @name name, location & meta
     ///@{
-    const Def* dbg() const { return dbg_; } ///< Returns debug information as Def.
-    Debug debug() const { return dbg_; }    ///< Returns the debug information as Debug.
-    std::string name() const { return debug().name; }
-    Loc loc() const { return debug().loc; }
-    const Def* meta() const { return debug().meta; }
-    void set_dbg(const Def* dbg) const { dbg_ = dbg; }
-    /// Set Def::name in Debug build only; does nothing in Release build.
-#ifndef NDEBUG
-    void set_debug_name(std::string_view) const;
-#else
-    void set_debug_name(std::string_view) const {}
-#endif
     std::string unique_name() const; ///< name + "_" + Def::gid
+    /// Set Def::name in Debug build only; does nothing in Release build.
+    // clang-format off
+    const Def* set(Loc l, Sym n) const { loc = l; name = n; return this; }
+    const Def* set(Loc l)        const { loc = l;           return this; }
+    const Def* set(Sym n)        const {          name = n; return this; }
+    Def* set(Loc l, Sym n) { loc = l; name = n; return this; }
+    Def* set(Sym n       ) {          name = n; return this; }
+    Def* set(Loc l       ) { loc  = l;          return this; }
+    // clang-format on
     ///@}
 
     /// @name casts
@@ -388,7 +384,7 @@ public:
     /// @name var
     ///@{
     /// Retrieve Var for *nominals*.
-    const Var* var(const Def* dbg = {});
+    const Var* var();
     THORIN_PROJ(var, )
     ///@}
 
@@ -402,14 +398,17 @@ public:
     const Def* reduce_rec() const;
     ///@}
 
+    const Def* rebuild(World& w, const Def* type, Defs ops) const { return rebuild_(w, type, ops)->set(loc, name); }
+    Def* stub(World& w, const Def* type) { return stub_(w, type)->set(loc, name); }
+
     /// @name virtual methods
     ///@{
     virtual void check() {}
     virtual size_t first_dependend_op() { return 0; }
-    virtual const Def* rebuild(World&, const Def*, Defs, const Def*) const { unreachable(); }
+    virtual const Def* rebuild_(World&, const Def*, Defs) const { unreachable(); }
     /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
     const Def* refine(size_t i, const Def* new_op) const;
-    virtual Def* stub(World&, const Def*, const Def*) { unreachable(); }
+    virtual Def* stub_(World&, const Def*) { unreachable(); }
     virtual const Def* restructure() { return nullptr; }
     ///@}
 
@@ -447,7 +446,13 @@ protected:
     u32 gid_;
     u32 num_ops_;
     mutable Uses uses_;
-    mutable const Def* dbg_;
+
+public:
+    mutable Loc loc;
+    mutable Sym name;
+    mutable const Def* meta;
+
+private:
     const Def* type_;
 
     friend class World;
@@ -467,14 +472,8 @@ const T* as([[maybe_unused]] flags_t f, const Def* def) {
 }
 
 template<class T = std::logic_error, class... Args>
-[[noreturn]] void err(const Def* dbg, const char* fmt, Args&&... args) {
-    err(Debug(dbg).loc, fmt, std::forward<Args&&>(args)...);
-}
-
-template<class T = std::logic_error, class... Args>
-[[noreturn]] void err(const Def* dbg, const char* fmt, const Def* def, Args&&... args) {
-    Debug d(dbg ? dbg : def->dbg());
-    err(d.loc, fmt, def, std::forward<Args&&>(args)...);
+[[noreturn]] void err(const Def* def, const char* fmt, Args&&... args) {
+    err(def->loc, fmt, std::forward<Args&&>(args)...);
 }
 
 //------------------------------------------------------------------------------
@@ -512,8 +511,8 @@ using Nom2Nom = NomMap<Def*>;
 
 class Var : public Def {
 private:
-    Var(const Def* type, Def* nom, const Def* dbg)
-        : Def(Node, type, Defs{nom}, 0, dbg) {}
+    Var(const Def* type, Def* nom)
+        : Def(Node, type, Defs{nom}, 0) {}
 
 public:
     /// @name ops
@@ -522,7 +521,7 @@ public:
     ///@}
     /// @name virtual methods
     ///@{
-    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
     ///@}
 
     static constexpr auto Node = Node::Var;
@@ -537,12 +536,12 @@ using Var2Var = VarMap<const Var*>;
 class Univ : public Def {
 private:
     Univ(World& world)
-        : Def(&world, Node, nullptr, Defs{}, 0, nullptr) {}
+        : Def(&world, Node, nullptr, Defs{}, 0) {}
 
 public:
     /// @name virtual methods
     ///@{
-    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
     ///@}
 
     static constexpr auto Node = Node::Univ;
@@ -551,12 +550,12 @@ public:
 
 class UMax : public Def {
 private:
-    UMax(World&, Defs ops, const Def* dbg);
+    UMax(World&, Defs ops);
 
 public:
     /// @name virtual methods
     ///@{
-    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
     ///@}
 
     static constexpr auto Node = Node::UMax;
@@ -567,8 +566,8 @@ using level_t = u64;
 
 class UInc : public Def {
 private:
-    UInc(const Def* op, level_t offset, const Def* dbg)
-        : Def(Node, op->type()->as<Univ>(), {op}, offset, dbg) {}
+    UInc(const Def* op, level_t offset)
+        : Def(Node, op->type()->as<Univ>(), {op}, offset) {}
 
 public:
     /// @name ops
@@ -579,7 +578,7 @@ public:
 
     /// @name virtual methods
     ///@{
-    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
     ///@}
 
     static constexpr auto Node = Node::UInc;
@@ -588,15 +587,15 @@ public:
 
 class Type : public Def {
 private:
-    Type(const Def* level, const Def* dbg)
-        : Def(Node, nullptr, {level}, 0, dbg) {}
+    Type(const Def* level)
+        : Def(Node, nullptr, {level}, 0) {}
 
 public:
     const Def* level() const { return op(0); }
 
     /// @name virtual methods
     ///@{
-    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
     ///@}
 
     static constexpr auto Node = Node::Type;
@@ -605,8 +604,8 @@ public:
 
 class Lit : public Def {
 private:
-    Lit(const Def* type, flags_t val, const Def* dbg)
-        : Def(Node, type, Defs{}, val, dbg) {}
+    Lit(const Def* type, flags_t val)
+        : Def(Node, type, Defs{}, val) {}
 
 public:
     template<class T = flags_t>
@@ -617,7 +616,7 @@ public:
 
     /// @name virtual methods
     ///@{
-    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
     ///@}
 
     static constexpr auto Node = Node::Lit;
@@ -643,7 +642,7 @@ private:
 public:
     /// @name virtual methods
     ///@{
-    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
     ///@}
 
     static constexpr auto Node = Node::Nat;
@@ -654,12 +653,12 @@ public:
 class Idx : public Def {
 private:
     Idx(const Def* type)
-        : Def(Node, type, Defs{}, 0, nullptr) {}
+        : Def(Node, type, Defs{}, 0) {}
 
 public:
     /// @name virtual methods
     ///@{
-    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
     ///@}
 
     /// Checks if @p def isa `.Idx s` and returns s or `nullptr` otherwise.
@@ -680,8 +679,8 @@ public:
 
 class Proxy : public Def {
 private:
-    Proxy(const Def* type, Defs ops, u32 pass, u32 tag, const Def* dbg)
-        : Def(Node, type, ops, (u64(pass) << 32_u64) | u64(tag), dbg) {}
+    Proxy(const Def* type, Defs ops, u32 pass, u32 tag)
+        : Def(Node, type, ops, (u64(pass) << 32_u64) | u64(tag)) {}
 
 public:
     /// @name misc getters
@@ -692,7 +691,7 @@ public:
 
     /// @name virtual methods
     ///@{
-    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
     ///@}
 
     static constexpr auto Node = Node::Proxy;
@@ -704,8 +703,8 @@ public:
 /// @attention WILL BE REMOVED.
 class Global : public Def {
 private:
-    Global(const Def* type, bool is_mutable, const Def* dbg)
-        : Def(Node, type, 1, is_mutable, dbg) {}
+    Global(const Def* type, bool is_mutable)
+        : Def(Node, type, 1, is_mutable) {}
 
 public:
     /// @name ops
@@ -728,7 +727,7 @@ public:
 
     /// @name virtual methods
     ///@{
-    Global* stub(World&, const Def*, const Def*) override;
+    Global* stub_(World&, const Def*) override;
     ///@}
 
     static constexpr auto Node = Node::Global;

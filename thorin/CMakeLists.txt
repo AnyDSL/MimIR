@@ -3,8 +3,6 @@ add_library(libthorin
     axiom.h
     check.cpp
     check.h
-    debug.cpp
-    debug.h
     def.cpp
     def.h
     dialects.cpp
@@ -84,6 +82,8 @@ add_library(libthorin
     util/hash.h
     util/indexmap.h
     util/indexset.h
+    util/loc.cpp
+    util/loc.h
     util/log.cpp
     util/log.h
     util/print.cpp

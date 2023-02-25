@@ -100,7 +100,7 @@ Tok Lexer::lex() {
         // clang-format on
 
         if (accept('%')) {
-            if (lex_id()) return {loc(), Tok::Tag::M_ax, world_.sym(str_, loc())};
+            if (lex_id()) return {loc(), Tok::Tag::M_ax, world_.sym(str_)};
             err(loc_, "invalid axiom name '{}'", str_);
         }
 
@@ -111,7 +111,7 @@ Tok Lexer::lex() {
                 assert(!cache_.has_value());
                 auto id_loc = loc();
                 ++id_loc.begin.col;
-                cache_.emplace(id_loc, Tok::Tag::M_id, world_.sym(str_.substr(1), id_loc));
+                cache_.emplace(id_loc, Tok::Tag::M_id, world_.sym(str_.substr(1)));
                 return {loc().anew_begin(), Tok::Tag::T_dot};
             }
 
@@ -124,7 +124,7 @@ Tok Lexer::lex() {
             return tok(Tok::Tag::T_dot);
         }
 
-        if (lex_id()) return {loc(), Tok::Tag::M_id, world_.sym(str_, loc())};
+        if (lex_id()) return {loc(), Tok::Tag::M_id, world_.sym(str_)};
 
         if (isdigit(ahead()) || issign(ahead())) {
             if (auto lit = parse_lit()) return *lit;

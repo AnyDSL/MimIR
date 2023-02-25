@@ -8,7 +8,7 @@ namespace thorin {
 
 class Axiom : public Def {
 private:
-    Axiom(NormalizeFn, u8 curry, u8 trip, const Def* type, dialect_t, tag_t, sub_t, const Def* dbg);
+    Axiom(NormalizeFn, u8 curry, u8 trip, const Def* type, dialect_t, tag_t, sub_t);
 
 public:
     /// @name normalization
@@ -68,7 +68,7 @@ public:
 
     /// @name virtual methods
     ///@{
-    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
     ///@}
 
     /// @name Mangling Dialect Name

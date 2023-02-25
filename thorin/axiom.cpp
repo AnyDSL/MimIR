@@ -10,9 +10,8 @@ Axiom::Axiom(NormalizeFn normalizer,
              const Def* type,
              dialect_t dialect,
              tag_t tag,
-             sub_t sub,
-             const Def* dbg)
-    : Def(Node, type, Defs{}, dialect | (flags_t(tag) << 8_u64) | flags_t(sub), dbg) {
+             sub_t sub)
+    : Def(Node, type, Defs{}, dialect | (flags_t(tag) << 8_u64) | flags_t(sub)) {
     normalizer_ = normalizer;
     curry_      = curry;
     trip_       = trip;

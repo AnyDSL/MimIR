@@ -10,11 +10,11 @@ namespace thorin {
 class Pi : public Def {
 protected:
     /// Constructor for a *structural* Pi.
-    Pi(const Def* type, const Def* dom, const Def* codom, const Def* dbg)
-        : Def(Node, type, {dom, codom}, 0, dbg) {}
+    Pi(const Def* type, const Def* dom, const Def* codom)
+        : Def(Node, type, {dom, codom}, 0) {}
     /// Constructor for a *nom*inal Pi.
-    Pi(const Def* type, const Def* dbg)
-        : Def(Node, type, 2, 0, dbg) {}
+    Pi(const Def* type)
+        : Def(Node, type, 2, 0) {}
 
 public:
     /// @name ops
@@ -26,7 +26,7 @@ public:
     bool is_cn() const;
     bool is_basicblock() const { return is_cn() && !ret_pi(); }
     bool is_returning() const { return is_cn() && ret_pi(); }
-    const Pi* ret_pi(const Def* dbg = {}) const;
+    const Pi* ret_pi() const;
     ///@}
 
     /// @name setters
@@ -41,8 +41,8 @@ public:
     /// @name virtual methods
     ///@{
     size_t first_dependend_op() { return 1; }
-    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
-    Pi* stub(World&, const Def*, const Def*) override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
+    Pi* stub_(World&, const Def*) override;
     const Pi* restructure() override;
     void check() override;
     ///@}
@@ -53,10 +53,10 @@ public:
 
 class Lam : public Def {
 private:
-    Lam(const Pi* pi, const Def* filter, const Def* body, const Def* dbg)
-        : Def(Node, pi, {filter, body}, 0, dbg) {}
-    Lam(const Pi* pi, const Def* dbg)
-        : Def(Node, pi, 2, 0, dbg) {}
+    Lam(const Pi* pi, const Def* filter, const Def* body)
+        : Def(Node, pi, {filter, body}, 0) {}
+    Lam(const Pi* pi)
+        : Def(Node, pi, 2, 0) {}
 
 public:
     /// @name type
@@ -79,7 +79,7 @@ public:
 
     /// @name vars
     ///@{
-    const Def* ret_var(const Def* dbg = {});
+    const Def* ret_var();
     ///@}
 
     /// @name setters
@@ -98,24 +98,23 @@ public:
     Lam* set_filter(Filter);
     Lam* set_body(const Def* body) { return Def::set(1, body)->as<Lam>(); }
     /// Set body to an App of @p callee and @p arg.
-    Lam* app(Filter filter, const Def* callee, const Def* arg, const Def* dbg = {});
+    Lam* app(Filter filter, const Def* callee, const Def* arg);
     /// Set body to an App of @p callee and @p args.
-    Lam* app(Filter filter, const Def* callee, Defs args, const Def* dbg = {});
+    Lam* app(Filter filter, const Def* callee, Defs args);
     /// Set body to an App of `(f, t)#cond mem`.
-    Lam* branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem, const Def* dbg = {});
+    Lam* branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem);
     Lam* test(Filter filter,
               const Def* val,
               const Def* idx,
               const Def* match,
               const Def* clash,
-              const Def* mem,
-              const Def* dbg = {});
+              const Def* mem);
     ///@}
 
     /// @name virtual methods
     ///@{
-    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
-    Lam* stub(World&, const Def*, const Def*) override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
+    Lam* stub_(World&, const Def*) override;
     void check() override;
     ///@}
 
@@ -130,8 +129,8 @@ using Lam2Lam = LamMap<Lam*>;
 
 class App : public Def {
 private:
-    App(const Axiom* axiom, u8 curry, u8 trip, const Def* type, const Def* callee, const Def* arg, const Def* dbg)
-        : Def(Node, type, {callee, arg}, 0, dbg) {
+    App(const Axiom* axiom, u8 curry, u8 trip, const Def* type, const Def* callee, const Def* arg)
+        : Def(Node, type, {callee, arg}, 0) {
         axiom_ = axiom;
         curry_ = curry;
         trip_  = trip;
@@ -156,7 +155,7 @@ public:
 
     /// @name virtual methods
     ///@{
-    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    const Def* rebuild_(World&, const Def*, Defs) const override;
     ///@}
 
     static constexpr auto Node = Node::App;
