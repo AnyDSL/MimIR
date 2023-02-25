@@ -133,22 +133,22 @@ inline unsigned operator==(Dep d1, unsigned d2) { return unsigned(d1) == d2; }
 inline unsigned operator!=(Dep d1, unsigned d2) { return unsigned(d1) != d2; }
 
 /// Use as mixin to wrap all kind of Def::proj and Def::projs variants.
-#define THORIN_PROJ(NAME, CONST)                                                                                   \
-    nat_t num_##NAME##s() CONST { return ((const Def*)NAME())->num_projs(); }                                      \
+#define THORIN_PROJ(NAME, CONST)                                                         \
+    nat_t num_##NAME##s() CONST { return ((const Def*)NAME())->num_projs(); }            \
     const Def* NAME(nat_t a, nat_t i) CONST { return ((const Def*)NAME())->proj(a, i); } \
     const Def* NAME(nat_t i) CONST { return ((const Def*)NAME())->proj(i); }             \
-    template<nat_t A = -1_s, class F>                                                                              \
-    auto NAME##s(F f) CONST {                                                                      \
-        return ((const Def*)NAME())->projs<A, F>(f);                                                         \
-    }                                                                                                             \
-    template<nat_t A = -1_s>                                                                                       \
-    auto NAME##s() CONST {                                                                           \
-        return ((const Def*)NAME())->projs<A>();                                                               \
-    }                                                                                                              \
-    template<class F>                                                                                              \
-    auto NAME##s(nat_t a, F f) CONST {                                                             \
-        return ((const Def*)NAME())->projs<F>(a, f);                                                                \
-    }                                                                                                              \
+    template<nat_t A = -1_s, class F>                                                    \
+    auto NAME##s(F f) CONST {                                                            \
+        return ((const Def*)NAME())->projs<A, F>(f);                                     \
+    }                                                                                    \
+    template<nat_t A = -1_s>                                                             \
+    auto NAME##s() CONST {                                                               \
+        return ((const Def*)NAME())->projs<A>();                                         \
+    }                                                                                    \
+    template<class F>                                                                    \
+    auto NAME##s(nat_t a, F f) CONST {                                                   \
+        return ((const Def*)NAME())->projs<F>(a, f);                                     \
+    }                                                                                    \
     auto NAME##s(nat_t a) CONST { return ((const Def*)NAME())->projs(a); }
 
 /// Base class for all Def%s.
@@ -326,8 +326,7 @@ public:
         return projs<A>([](const Def* def) { return def; });
     }
     auto projs(nat_t a) const {
-        return projs(
-            a, [](const Def* def) { return def; });
+        return projs(a, [](const Def* def) { return def; });
     }
     ///@}
 
