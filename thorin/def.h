@@ -140,7 +140,7 @@ inline unsigned operator!=(Dep d1, unsigned d2) { return unsigned(d1) != d2; }
     template<nat_t A = -1_s, class F>                                                                              \
     auto NAME##s(F f) CONST {                                                                      \
         return ((const Def*)NAME())->projs<A, F>(f);                                                         \
-    }                                                                                                              \
+    }                                                                                                             \
     template<nat_t A = -1_s>                                                                                       \
     auto NAME##s() CONST {                                                                           \
         return ((const Def*)NAME())->projs<A>();                                                               \
