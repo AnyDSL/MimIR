@@ -307,6 +307,7 @@ public:
     const Def* tuple(Ref type, Defs ops);
     const Tuple* tuple() { return data_.tuple_; } ///< the unit value of type `[]`
     const Def* tuple_str(std::string_view s);
+    const Def* tuple_str(Sym s) { return tuple_str(*s); }
     ///@}
 
     /// @name Pack
@@ -455,11 +456,11 @@ public:
         log().log(level, Loc(sym(file), line), fmt, std::forward<Args&&>(args)...);
     }
 
-    void dump(std::ostream& os) const;  ///< Dump to @p os.
-    void dump() const;                  ///< Dump to `std::cout`.
-    void debug_dump() const;            ///< Dump in Debug build if World::log::level is Log::Level::Debug.
-    void write(const char* file) const; ///< Write to a file named @p file; defaults to World::name.
-    void write() const;                 ///< Same above but file name defaults to World::name.
+    void dump(std::ostream& os);  ///< Dump to @p os.
+    void dump();                  ///< Dump to `std::cout`.
+    void debug_dump();            ///< Dump in Debug build if World::log::level is Log::Level::Debug.
+    void write(const char* file); ///< Write to a file named @p file.
+    void write();                 ///< Same above but file name defaults to World::name.
     ///@}
 
 private:

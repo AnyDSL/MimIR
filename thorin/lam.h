@@ -41,14 +41,11 @@ public:
     /// @name virtual methods
     ///@{
     size_t first_dependend_op() { return 1; }
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    Pi* stub_(World&, const Def*) override;
     const Pi* restructure() override;
     void check() override;
     ///@}
 
-    static constexpr auto Node = Node::Pi;
-    friend class World;
+    THORIN_DEF_MIXIN(Pi, ;)
 };
 
 class Lam : public Def {
@@ -113,13 +110,10 @@ public:
 
     /// @name virtual methods
     ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    Lam* stub_(World&, const Def*) override;
     void check() override;
     ///@}
 
-    static constexpr auto Node = Node::Lam;
-    friend class World;
+    THORIN_DEF_MIXIN(Lam, ;)
 };
 
 template<class To>
@@ -153,13 +147,7 @@ public:
     u8 trip() const { return trip_; }
     ///@}
 
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    ///@}
-
-    static constexpr auto Node = Node::App;
-    friend class World;
+    THORIN_DEF_MIXIN(App)
 };
 
 /// These are Lam%s that are neither `nullptr`, nor Lam::is_external, nor Lam::is_unset.

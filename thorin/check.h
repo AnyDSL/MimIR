@@ -28,11 +28,6 @@ public:
     const Def* inflate(Ref type, u64 n, Ref elem_t);
     ///@}
 
-    /// @name virtual methods
-    ///@{
-    Infer* stub_(World&, const Def*) override;
-    ///@}
-
     /// @name union-find
     ///@{
     /// [Union-Find](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) to unify Infer nodes.
@@ -45,8 +40,7 @@ private:
     flags_t& rank() { return flags_; }
     ///@}
 
-    static constexpr auto Node = Node::Infer;
-    friend class World;
+    THORIN_DEF_MIXIN(Infer, ;)
     friend class Checker;
 };
 

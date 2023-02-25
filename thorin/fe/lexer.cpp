@@ -9,16 +9,16 @@ namespace thorin::fe {
 static bool issign(char32_t i) { return i == '+' || i == '-'; }
 static bool issubscsr(char32_t i) { return U'₀' <= i && i <= U'₉'; }
 
-Lexer::Lexer(World& world, std::string_view filename, std::istream& istream, std::ostream* md /*= nullptr*/)
-    : Super(filename, istream)
+Lexer::Lexer(World& world, Sym file, std::istream& istream, std::ostream* md /*= nullptr*/)
+    : Super(file, istream)
     , world_(world)
     , md_(md) {
-#define CODE(t, str) keywords_[str] = Tok::Tag::t;
+#define CODE(t, str) keywords_[world.sym(str)] = Tok::Tag::t;
     THORIN_KEY(CODE)
 #undef CODE
 
 #define CODE(str, t) \
-    if (Tok::Tag::t != Tok::Tag::Nil) keywords_[str] = Tok::Tag::t;
+    if (Tok::Tag::t != Tok::Tag::Nil) keywords_[world.sym(str)] = Tok::Tag::t;
     THORIN_SUBST(CODE)
 #undef CODE
 
@@ -100,18 +100,19 @@ Tok Lexer::lex() {
         // clang-format on
 
         if (accept('%')) {
-            if (lex_id()) return {loc(), Tok::Tag::M_ax, world_.sym(str_)};
+            if (lex_id()) return {loc(), Tok::Tag::M_ax, world().sym(str_)};
             err(loc_, "invalid axiom name '{}'", str_);
         }
 
         if (accept('.')) {
             if (lex_id()) {
-                if (auto i = keywords_.find(str_); i != keywords_.end()) return tok(i->second);
+                auto sym = world().sym(str_);
+                if (auto i = keywords_.find(sym); i != keywords_.end()) return tok(i->second);
                 // Split non-keyword into T_dot and M_id; M_id goes into cache_ for next lex().
                 assert(!cache_.has_value());
                 auto id_loc = loc();
                 ++id_loc.begin.col;
-                cache_.emplace(id_loc, Tok::Tag::M_id, world_.sym(str_.substr(1)));
+                cache_.emplace(id_loc, Tok::Tag::M_id, world().sym(str_.substr(1)));
                 return {loc().anew_begin(), Tok::Tag::T_dot};
             }
 
@@ -124,7 +125,7 @@ Tok Lexer::lex() {
             return tok(Tok::Tag::T_dot);
         }
 
-        if (lex_id()) return {loc(), Tok::Tag::M_id, world_.sym(str_)};
+        if (lex_id()) return {loc(), Tok::Tag::M_id, world().sym(str_)};
 
         if (isdigit(ahead()) || issign(ahead())) {
             if (auto lit = parse_lit()) return *lit;

@@ -24,7 +24,7 @@ void Scopes::bind(Scope* scope, Loc loc, Sym sym, const Def* def, bool rebind) {
 
     if (rebind) {
         (*scope)[sym] = std::pair(loc, def);
-    } else if (auto [i, ins] = scope->emplace(loc, sym, def); !ins) {
+    } else if (auto [i, ins] = scope->emplace(sym, std::pair(loc, def)); !ins) {
         auto prev = i->second.first;
         err(loc, "symbol '{}' already declared in the current scope here: {}", sym, prev);
     }

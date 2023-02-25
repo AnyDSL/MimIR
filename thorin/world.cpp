@@ -40,19 +40,19 @@ World::World(const State& state)
     data_.lit_univ_1_  = lit_univ(1);
     data_.type_0_      = type(lit_univ_0());
     data_.type_1_      = type(lit_univ_1());
-    data_.type_bot_    = insert<Bot>(0, type(), nullptr);
-    data_.sigma_       = insert<Sigma>(0, type(), Defs{}, nullptr)->as<Sigma>();
-    data_.tuple_       = insert<Tuple>(0, sigma(), Defs{}, nullptr)->as<Tuple>();
+    data_.type_bot_    = insert<Bot>(0, type());
+    data_.sigma_       = insert<Sigma>(0, type(), Defs{})->as<Sigma>();
+    data_.tuple_       = insert<Tuple>(0, sigma(), Defs{})->as<Tuple>();
     data_.type_nat_    = insert<Nat>(0, *this);
     data_.type_idx_    = insert<Idx>(0, pi(type_nat(), type()));
-    data_.top_nat_     = insert<Top>(0, type_nat(), nullptr);
+    data_.top_nat_     = insert<Top>(0, type_nat());
     data_.lit_nat_0_   = lit_nat(0);
     data_.lit_nat_1_   = lit_nat(1);
     data_.type_bool_   = type_idx(2);
     data_.lit_bool_[0] = lit_idx(2, 0_u64);
     data_.lit_bool_[1] = lit_idx(2, 1_u64);
     data_.lit_nat_max_ = lit_nat(nat_t(-1));
-    data_.exit_        = nom_lam(cn(type_bot()))->set(sym("exit"))->as<Lam>();
+    data_.exit_        = nom_lam(cn(type_bot()))->set(sym("exit"));
 }
 
 World::World(std::string_view name /* = {}*/)
@@ -438,7 +438,7 @@ const Def* World::test(Ref value, Ref probe, Ref match, Ref clash) {
     assert(m_pi && c_pi);
     auto a = isa_lit(m_pi->dom()->arity());
     assert_unused(a && *a == 2);
-    assert(checker().equiv(m_pi->dom(2, 0_s), c_pi->dom(), nullptr));
+    assert(checker().equiv(m_pi->dom(2, 0_s), c_pi->dom()));
 
     auto codom = join({m_pi->codom(), c_pi->codom()});
     return unify<Test>(4, pi(c_pi->dom(), codom), value, probe, match, clash);
@@ -515,16 +515,16 @@ const Def* World::gid2def(u32 gid) {
  */
 
 #ifndef DOXYGEN // Doxygen doesn't like this
-template const Def* World::raw_app<true>(Ref, Ref, Ref, Ref);
-template const Def* World::raw_app<false>(Ref, Ref, Ref, Ref);
+template const Def* World::raw_app<true>(Ref, Ref, Ref);
+template const Def* World::raw_app<false>(Ref, Ref, Ref);
 #endif
-template const Def* World::umax<Sort::Term>(DefArray, Ref);
-template const Def* World::umax<Sort::Type>(DefArray, Ref);
-template const Def* World::umax<Sort::Kind>(DefArray, Ref);
-template const Def* World::umax<Sort::Univ>(DefArray, Ref);
-template const Def* World::ext<true>(Ref, Ref);
-template const Def* World::ext<false>(Ref, Ref);
-template const Def* World::bound<true>(Defs, Ref);
-template const Def* World::bound<false>(Defs, Ref);
+template const Def* World::umax<Sort::Term>(DefArray);
+template const Def* World::umax<Sort::Type>(DefArray);
+template const Def* World::umax<Sort::Kind>(DefArray);
+template const Def* World::umax<Sort::Univ>(DefArray);
+template const Def* World::ext<true>(Ref);
+template const Def* World::ext<false>(Ref);
+template const Def* World::bound<true>(Defs);
+template const Def* World::bound<false>(Defs);
 
 } // namespace thorin

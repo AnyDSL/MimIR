@@ -151,6 +151,39 @@ inline unsigned operator!=(Dep d1, unsigned d2) { return unsigned(d1) != d2; }
     }                                                                                    \
     auto NAME##s(nat_t a) CONST { return ((const Def*)NAME())->projs(a); }
 
+// clang-format off
+/// Use as mixin to declare setters for Def::loc, Def::name, and Def::meta using a *covariant* return type.
+#define THORIN_SETTERS(T)                                                                        \
+    public:                                                                                      \
+    const T* set(Loc l, Sym n, const Def* m) const { loc = l; name = n; meta = m; return this; } \
+    const T* set(Loc l, Sym n              ) const { loc = l; name = n;           return this; } \
+    const T* set(Loc l,        const Def* m) const { loc = l;           meta = m; return this; } \
+    const T* set(       Sym n, const Def* m) const {          name = n; meta = m; return this; } \
+    const T* set(Loc l                     ) const { loc = l;                     return this; } \
+    const T* set(       Sym n              ) const {          name = n;           return this; } \
+          T* set(Loc l, Sym n, const Def* m)       { loc = l; name = n; meta = m; return this; } \
+          T* set(Loc l, Sym n              )       { loc = l; name = n;           return this; } \
+          T* set(Loc l,        const Def* m)       { loc = l;           meta = m; return this; } \
+          T* set(       Sym n, const Def* m)       {          name = n; meta = m; return this; } \
+          T* set(Loc l                     )       { loc = l;                     return this; } \
+          T* set(       Sym n              )       {          name = n;           return this; } \
+// clang-format on
+
+#define THORIN_DEF_MIXIN_3(T, S, N)    \
+    THORIN_SETTERS(T)               \
+    T* stub(World& w, const Def* type) { return stub_(w, type)->set(loc, name); } \
+    private: \
+    const Def* rebuild_(World&, const Def*, Defs) const override; \
+    T* stub_(World&, const Def*) override S \
+    static constexpr auto Node = N; \
+    friend class World;
+
+#define THORIN_DEF_MIXIN_2(T, S) THORIN_DEF_MIXIN_3(T, S, Node::T)
+#define THORIN_DEF_MIXIN_1(T) THORIN_DEF_MIXIN_2(T, { unreachable(); })
+
+#define THORIN_GET_MACRO_3(_1, _2, _3, NAME, ...) NAME
+#define THORIN_DEF_MIXIN(...) THORIN_GET_MACRO_3(__VA_ARGS__, THORIN_DEF_MIXIN_3, THORIN_DEF_MIXIN_2, THORIN_DEF_MIXIN_1)(__VA_ARGS__)
+
 /// Base class for all Def%s.
 /// The data layout (see World::alloc and Def::partial_ops) looks like this:
 /// ```
@@ -341,15 +374,13 @@ public:
     /// @name name, location & meta
     ///@{
     std::string unique_name() const; ///< name + "_" + Def::gid
-    /// Set Def::name in Debug build only; does nothing in Release build.
-    // clang-format off
-    const Def* set(Loc l, Sym n) const { loc = l; name = n; return this; }
-    const Def* set(Loc l)        const { loc = l;           return this; }
-    const Def* set(Sym n)        const {          name = n; return this; }
-    Def* set(Loc l, Sym n) { loc = l; name = n; return this; }
-    Def* set(Sym n       ) {          name = n; return this; }
-    Def* set(Loc l       ) { loc  = l;          return this; }
-    // clang-format on
+    THORIN_SETTERS(Def)
+    /// Appends a suffix to Def::name - but only in **DEBUG** build.
+#ifndef NDEBUG
+    const Def* debug_suffix(std::string) const;
+#else
+    const Def* debug_suffix(std::string) const { return this; }
+#endif
     ///@}
 
     /// @name casts
@@ -518,13 +549,8 @@ public:
     ///@{
     Def* nom() const { return op(0)->as_nom(); }
     ///@}
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    ///@}
 
-    static constexpr auto Node = Node::Var;
-    friend class World;
+    THORIN_DEF_MIXIN(Var)
 };
 
 template<class To>
@@ -537,28 +563,14 @@ private:
     Univ(World& world)
         : Def(&world, Node, nullptr, Defs{}, 0) {}
 
-public:
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    ///@}
-
-    static constexpr auto Node = Node::Univ;
-    friend class World;
+    THORIN_DEF_MIXIN(Univ)
 };
 
 class UMax : public Def {
 private:
     UMax(World&, Defs ops);
 
-public:
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    ///@}
-
-    static constexpr auto Node = Node::UMax;
-    friend class World;
+    THORIN_DEF_MIXIN(UMax)
 };
 
 using level_t = u64;
@@ -575,13 +587,7 @@ public:
     level_t offset() const { return flags(); }
     ///@}
 
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    ///@}
-
-    static constexpr auto Node = Node::UInc;
-    friend class World;
+    THORIN_DEF_MIXIN(UInc)
 };
 
 class Type : public Def {
@@ -592,13 +598,7 @@ private:
 public:
     const Def* level() const { return op(0); }
 
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    ///@}
-
-    static constexpr auto Node = Node::Type;
-    friend class World;
+    THORIN_DEF_MIXIN(Type)
 };
 
 class Lit : public Def {
@@ -613,13 +613,7 @@ public:
         return bitcast<T>(flags_);
     }
 
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    ///@}
-
-    static constexpr auto Node = Node::Lit;
-    friend class World;
+    THORIN_DEF_MIXIN(Lit)
 };
 
 template<class T>
@@ -638,14 +632,7 @@ class Nat : public Def {
 private:
     Nat(World& world);
 
-public:
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    ///@}
-
-    static constexpr auto Node = Node::Nat;
-    friend class World;
+    THORIN_DEF_MIXIN(Nat)
 };
 
 /// A built-in constant of type `.Nat -> *`.
@@ -655,11 +642,6 @@ private:
         : Def(Node, type, Defs{}, 0) {}
 
 public:
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    ///@}
-
     /// Checks if @p def isa `.Idx s` and returns s or `nullptr` otherwise.
     static const Def* size(Ref def);
 
@@ -672,8 +654,7 @@ public:
     static std::optional<nat_t> size2bitwidth(const Def* size);
     ///@}
 
-    static constexpr auto Node = Node::Idx;
-    friend class World;
+    THORIN_DEF_MIXIN(Idx)
 };
 
 class Proxy : public Def {
@@ -688,13 +669,7 @@ public:
     u32 tag() const { return u32(flags()); }
     ///@}
 
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    ///@}
-
-    static constexpr auto Node = Node::Proxy;
-    friend class World;
+    THORIN_DEF_MIXIN(Proxy)
 };
 
 /// @deprecated A global variable in the data segment.
@@ -724,13 +699,7 @@ public:
     bool is_mutable() const { return flags(); }
     ///@}
 
-    /// @name virtual methods
-    ///@{
-    Global* stub_(World&, const Def*) override;
-    ///@}
-
-    static constexpr auto Node = Node::Global;
-    friend class World;
+    THORIN_DEF_MIXIN(Global, ;)
 };
 
 hash_t UseHash::operator()(Use use) const { return hash_combine(hash_begin(u16(use.index())), hash_t(use->gid())); }

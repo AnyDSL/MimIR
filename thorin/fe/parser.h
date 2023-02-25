@@ -32,7 +32,7 @@ namespace thorin::fe {
 ///      * If default argument is **provided** we have the same behavior as in 2.
 class Parser {
 public:
-    Parser(World&, std::string_view, std::istream&, Span<std::string>, const Normalizers*, std::ostream* md = nullptr);
+    Parser(World&, Sym file, std::istream&, Span<std::string>, const Normalizers*, std::ostream* md = nullptr);
 
     World& world() { return lexer_.world(); }
 
@@ -55,20 +55,13 @@ private:
             , pos_(pos) {}
 
         Loc loc() const { return {parser_.prev_.file, pos_, parser_.prev_.finis}; }
-        const Def* dbg(const Def* meta = {}) const { return parser_.world().dbg({"", loc(), meta}); }
-        const Def* meta(const Def* m) const { return parser_.world().dbg({"", loc(), m}); }
-        const Def* named(Sym sym) const { return parser_.world().dbg(sym, loc()); }
-        const Def* named(const std::string& str, const Def* meta = {}) const {
-            return parser_.world().dbg({str, loc(), meta});
-        }
 
     private:
         Parser& parser_;
         Pos pos_;
     };
 
-    Sym parse_sym(std::string_view ctxt = {});
-    Sym anonymous_sym() { return {world().lit_nat('_'), nullptr}; }
+    std::pair<Loc, Sym> parse_sym(std::string_view ctxt = {});
     void parse_import();
     const Def* parse_type_ascr(std::string_view ctxt, Implicits*);
 
@@ -127,7 +120,6 @@ private:
 
     /// Factory method to build a Parser::Tracker.
     Tracker tracker() { return Tracker(*this, ahead().loc().begin); }
-    const Def* dbg(Tracker t) { return world().dbg(t.loc()); }
     ///@}
 
     /// @name get next Tok
@@ -175,6 +167,7 @@ private:
     h::Bootstrapper bootstrapper_;
     std::vector<std::string> user_search_paths_;
     const Normalizers* normalizers_;
+    Sym anonymous_;
 };
 
 } // namespace thorin::fe

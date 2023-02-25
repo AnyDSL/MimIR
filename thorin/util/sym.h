@@ -22,6 +22,7 @@ public:
     explicit operator bool() const { return ptr_; }
     const std::string& operator*() const { return *ptr_; }
     const std::string* operator->() const { return ptr_; }
+    char operator[](size_t i) const { return (*ptr_)[i]; }
 
 private:
     const std::string* ptr_ = nullptr;

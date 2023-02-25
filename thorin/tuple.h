@@ -23,13 +23,10 @@ public:
     /// @name virtual methods
     ///@{
     void check() override;
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    Sigma* stub_(World&, const Def*) override;
     const Sigma* restructure() override;
     ///@}
 
-    static constexpr auto Node = Node::Sigma;
-    friend class World;
+    THORIN_DEF_MIXIN(Sigma, ;)
 };
 
 /// Data constructor for a Sigma.
@@ -38,14 +35,7 @@ private:
     Tuple(const Def* type, Defs args)
         : Def(Node, type, args, 0) {}
 
-public:
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    ///@}
-
-    static constexpr auto Node = Node::Tuple;
-    friend class World;
+    THORIN_DEF_MIXIN(Tuple)
 };
 
 class Arr : public Def {
@@ -71,14 +61,11 @@ public:
     /// @name virtual methods
     ///@{
     size_t first_dependend_op() override { return 1; }
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    Arr* stub_(World&, const Def*) override;
     const Def* restructure() override;
     void check() override;
     ///@}
 
-    static constexpr auto Node = Node::Arr;
-    friend class World;
+    THORIN_DEF_MIXIN(Arr, ;)
 };
 
 class Pack : public Def {
@@ -103,13 +90,10 @@ public:
 
     /// @name virtual methods
     ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    Pack* stub_(World&, const Def*) override;
     const Def* restructure() override;
     ///@}
 
-    static constexpr auto Node = Node::Pack;
-    friend class World;
+    THORIN_DEF_MIXIN(Pack, ;)
 };
 
 /// Extracts from a Sigma or Arr-typed Extract::tuple the element at position Extract::index.
@@ -125,13 +109,7 @@ public:
     const Def* index() const { return op(1); }
     ///@}
 
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    ///@}
-
-    static constexpr auto Node = Node::Extract;
-    friend class World;
+    THORIN_DEF_MIXIN(Extract)
 };
 
 /// Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple.
@@ -151,13 +129,7 @@ public:
     const Def* value() const { return op(2); }
     ///@}
 
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    ///@}
-
-    static constexpr auto Node = Node::Insert;
-    friend class World;
+    THORIN_DEF_MIXIN(Insert)
 };
 
 /// Flattens a sigma/array/pack/tuple.

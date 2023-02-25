@@ -8,7 +8,7 @@ void RetWrap::enter() {
 
     // new wrapper that calls the return continuation
     auto ret_cont = world().nom_lam(ret_var->type()->as<Pi>())->set(ret_var->loc, ret_var->name);
-    ret_cont->app(false, ret_var, ret_cont->var(), ret_var->dbg());
+    ret_cont->app(false, ret_var, ret_cont->var())->set(ret_var->loc, ret_var->name);
 
     // rebuild a new "var" that substitutes the actual ret_var with ret_cont
     auto new_vars = curr_nom()->vars();

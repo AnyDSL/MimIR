@@ -39,19 +39,18 @@ const Def* TuplePtrn::type(World& world) const {
     auto ops = Array<const Def*>(n, [&](size_t i) { return ptrn(i)->type(world); });
 
     if (std::ranges::all_of(ptrns_, [](auto&& b) { return b->is_anonymous(); }))
-        return type_ = world.sigma(ops, world.dbg(loc()));
+        return type_ = world.sigma(ops)->set(loc());
 
     assert(ptrns().size() > 0);
 
-    auto fields = Array<const Def*>(n, [&](size_t i) { return ptrn(i)->sym().str(); });
+    auto fields = Array<const Def*>(n, [&](size_t i) { return world.tuple_str(ptrn(i)->sym()); });
     auto type   = world.umax<Sort::Type>(ops);
     auto meta   = world.tuple(fields);
-    auto debug  = Debug(sym(), loc(), meta);
-    auto sigma  = world.nom_sigma(type, n, world.dbg(debug));
+    auto sigma  = world.nom_sigma(type, n)->set(loc(), sym(), meta);
 
     sigma->set(0, ops[0]);
     for (size_t i = 1; i != n; ++i) {
-        if (auto infer = infers_[i - 1]) infer->set(sigma->var(n, i - 1, world.dbg(ptrn(i - 1)->sym())));
+        if (auto infer = infers_[i - 1]) infer->set(sigma->var(n, i - 1)->set(ptrn(i - 1)->sym()));
         sigma->set(i, ops[i]);
     }
 

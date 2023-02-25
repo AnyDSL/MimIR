@@ -19,7 +19,7 @@ class AST {
 public:
     AST(Loc loc)
         : loc_(loc) {}
-    virtual ~AST(){};
+    virtual ~AST() {}
 
     Loc loc() const { return loc_; }
 

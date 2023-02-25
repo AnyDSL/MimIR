@@ -32,7 +32,7 @@ void optimize(World& world, Passes& passes, std::vector<Dialect>& dialects) {
     for (auto ext : world.externals()) {
         auto def = ext.second;
         if (auto lam = def->isa<Lam>(); lam && lam->num_doms() == 0) {
-            if (lam->codom()->name() == "Pipeline") {
+            if (*lam->codom()->name == "Pipeline") {
                 if (!compilation) { compilation = lam; }
                 make_internal.push_back(def);
             }

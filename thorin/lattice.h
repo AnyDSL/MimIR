@@ -37,15 +37,7 @@ private:
     TBound(const Def* type, size_t size)
         : Bound(Node, type, size) {}
 
-public:
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    TBound* stub_(World&, const Def*) override;
-    ///@}
-
-    static constexpr auto Node = up ? Node::Join : Node::Meet;
-    friend class World;
+    THORIN_DEF_MIXIN(TBound<up>, ;, up ? Node::Join : Node::Meet)
 };
 
 /// Constructs a [Meet](@ref thorin::Meet) **value**.
@@ -55,14 +47,7 @@ private:
     Ac(const Def* type, Defs defs)
         : Def(Node, type, defs, 0) {}
 
-public:
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    ///@}
-
-    static constexpr auto Node = Node::Ac;
-    friend class World;
+    THORIN_DEF_MIXIN(Ac)
 };
 
 /// Constructs a [Join](@ref thorin::Join) **value**.
@@ -78,13 +63,7 @@ public:
     const Def* value() const { return op(0); }
     ///@}
 
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    ///@}
-
-    static constexpr auto Node = Node::Vel;
-    friend class World;
+    THORIN_DEF_MIXIN(Vel)
 };
 
 /// Picks the aspect of a Meet [value](Pick::value) by its [type](Def::type).
@@ -98,13 +77,8 @@ public:
     ///@{
     const Def* value() const { return op(0); }
     ///@}
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    ///@}
 
-    static constexpr auto Node = Node::Pick;
-    friend class World;
+    THORIN_DEF_MIXIN(Pick)
 };
 
 /// `test value, probe, match, clash` tests whether Test::value currently holds **type** Test::probe.
@@ -130,13 +104,7 @@ public:
     const Def* clash() const { return op(3); }
     ///@}
 
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    ///@}
-
-    static constexpr auto Node = Node::Test;
-    friend class World;
+    THORIN_DEF_MIXIN(Test)
 };
 
 /// Common base for TExt%remum.
@@ -153,14 +121,7 @@ private:
     TExt(const Def* type)
         : Ext(Node, type) {}
 
-public:
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    ///@}
-
-    static constexpr auto Node = up ? Node::Top : Node::Bot;
-    friend class World;
+    THORIN_DEF_MIXIN(TExt<up>, { unreachable(); }, up ? Node::Top : Node::Bot)
 };
 
 using Bot  = TExt<false>;
@@ -179,13 +140,7 @@ private:
 public:
     const Def* inhabitant() const { return op(0); }
 
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    ///@}
-
-    static constexpr auto Node = Node::Singleton;
-    friend class World;
+    THORIN_DEF_MIXIN(Singleton)
 };
 
 } // namespace thorin

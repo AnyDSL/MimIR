@@ -193,6 +193,13 @@ Defs Def::extended_ops() const {
     return Defs((is_set() ? num_ops_ : 0) + offset, ops_ptr() - offset);
 }
 
+#ifndef NDEBUG
+const Def* Def::debug_suffix(std::string suffix) const {
+    name = world().sym(*name + suffix);
+    return this;
+}
+#endif
+
 // clang-format off
 
 const Var* Def::var() {
