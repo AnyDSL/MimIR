@@ -209,9 +209,7 @@ public:
         auto ax                          = unify<Axiom>(0, n, curry, trip, type, d, t, s);
         return move_.axioms[ax->flags()] = ax;
     }
-    const Axiom* axiom(Ref type, dialect_t d, tag_t t, sub_t s) {
-        return axiom(nullptr, 0, 0, type, d, t, s);
-    }
+    const Axiom* axiom(Ref type, dialect_t d, tag_t t, sub_t s) { return axiom(nullptr, 0, 0, type, d, t, s); }
 
     /// Builds a fresh Axiom with descending Axiom::sub.
     /// This is useful during testing to come up with some entitiy of a specific type.
@@ -290,7 +288,9 @@ public:
     ///@{
     Arr* nom_arr(Ref type) { return insert<Arr>(2, type); }
     template<level_t level = 0>
-    Arr* nom_arr() { return nom_arr(type<level>()); }
+    Arr* nom_arr() {
+        return nom_arr(type<level>());
+    }
     const Def* arr(Ref shape, Ref body);
     const Def* arr(Defs shape, Ref body);
     const Def* arr(u64 n, Ref body) { return arr(lit_nat(n), body); }

@@ -58,4 +58,4 @@ private:
     std::optional<Tok> cache_;
 };
 
-} // namespace thorin
+} // namespace thorin::fe

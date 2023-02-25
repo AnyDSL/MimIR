@@ -121,7 +121,10 @@ private:
     TExt(const Def* type)
         : Ext(Node, type) {}
 
-    THORIN_DEF_MIXIN(TExt<up>, { unreachable(); }, up ? Node::Top : Node::Bot)
+    THORIN_DEF_MIXIN(
+        TExt<up>,
+        { unreachable(); },
+        up ? Node::Top : Node::Bot)
 };
 
 using Bot  = TExt<false>;

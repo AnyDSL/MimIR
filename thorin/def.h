@@ -166,23 +166,24 @@ inline unsigned operator!=(Dep d1, unsigned d2) { return unsigned(d1) != d2; }
           T* set(Loc l,        const Def* m)       { loc = l;           meta = m; return this; } \
           T* set(       Sym n, const Def* m)       {          name = n; meta = m; return this; } \
           T* set(Loc l                     )       { loc = l;                     return this; } \
-          T* set(       Sym n              )       {          name = n;           return this; } \
+          T* set(       Sym n              )       {          name = n;           return this; }
 // clang-format on
 
-#define THORIN_DEF_MIXIN_3(T, S, N)    \
-    THORIN_SETTERS(T)               \
+#define THORIN_DEF_MIXIN_3(T, S, N)                                               \
+    THORIN_SETTERS(T)                                                             \
     T* stub(World& w, const Def* type) { return stub_(w, type)->set(loc, name); } \
-    private: \
-    const Def* rebuild_(World&, const Def*, Defs) const override; \
-    T* stub_(World&, const Def*) override S \
-    static constexpr auto Node = N; \
+                                                                                  \
+private:                                                                          \
+    const Def* rebuild_(World&, const Def*, Defs) const override;                 \
+    T* stub_(World&, const Def*) override S static constexpr auto Node = N;       \
     friend class World;
 
 #define THORIN_DEF_MIXIN_2(T, S) THORIN_DEF_MIXIN_3(T, S, Node::T)
-#define THORIN_DEF_MIXIN_1(T) THORIN_DEF_MIXIN_2(T, { unreachable(); })
+#define THORIN_DEF_MIXIN_1(T)    THORIN_DEF_MIXIN_2(T, { unreachable(); })
 
 #define THORIN_GET_MACRO_3(_1, _2, _3, NAME, ...) NAME
-#define THORIN_DEF_MIXIN(...) THORIN_GET_MACRO_3(__VA_ARGS__, THORIN_DEF_MIXIN_3, THORIN_DEF_MIXIN_2, THORIN_DEF_MIXIN_1)(__VA_ARGS__)
+#define THORIN_DEF_MIXIN(...) \
+    THORIN_GET_MACRO_3(__VA_ARGS__, THORIN_DEF_MIXIN_3, THORIN_DEF_MIXIN_2, THORIN_DEF_MIXIN_1)(__VA_ARGS__)
 
 /// Base class for all Def%s.
 /// The data layout (see World::alloc and Def::partial_ops) looks like this:

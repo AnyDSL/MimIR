@@ -287,7 +287,7 @@ const Def* Parser::parse_Cn() {
 const Def* Parser::parse_var() {
     eat(Tok::Tag::T_at);
     auto [loc, sym] = parse_sym("variable");
-    auto nom = scopes_.find(loc, sym)->isa_nom();
+    auto nom        = scopes_.find(loc, sym)->isa_nom();
     if (!nom) err(prev_, "variable must reference a nominal");
     return nom->var()->set(loc, sym);
 }
