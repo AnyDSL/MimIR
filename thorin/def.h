@@ -154,7 +154,7 @@ inline unsigned operator!=(Dep d1, unsigned d2) { return unsigned(d1) != d2; }
 // clang-format off
 /// Use as mixin to declare setters for Def::loc, Def::name, and Def::meta using a *covariant* return type.
 #define THORIN_SETTERS(T)                                                                           \
-    public:                                                                                         \
+public:                                                                                             \
     const T* set(Loc l, Sym n, const Def* m) const { loc_ = l; name_ = n; meta_ = m; return this; } \
     const T* set(Loc l, Sym n              ) const { loc_ = l; name_ = n;            return this; } \
     const T* set(Loc l,        const Def* m) const { loc_ = l;            meta_ = m; return this; } \
@@ -177,10 +177,10 @@ inline unsigned operator!=(Dep d1, unsigned d2) { return unsigned(d1) != d2; }
     THORIN_SETTERS(T)                                                                 \
     T* stub(World& w, const Def* type) { return stub_(w, type)->set(loc(), name()); } \
     static constexpr auto Node = N;                                                   \
+                                                                                      \
 private:                                                                              \
     const Def* rebuild_(World&, const Def*, Defs) const override;                     \
-    T* stub_(World&, const Def*) override S                                           \
-    friend class World;
+    T* stub_(World&, const Def*) override S friend class World;
 
 #define THORIN_DEF_MIXIN_2(T, S) THORIN_DEF_MIXIN_3(T, S, Node::T)
 #define THORIN_DEF_MIXIN_1(T)    THORIN_DEF_MIXIN_2(T, { unreachable(); })
