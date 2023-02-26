@@ -609,8 +609,8 @@ const Def* Parser::parse_decls(std::string_view ctxt) {
 void Parser::parse_ax() {
     auto track = tracker();
     eat(Tok::Tag::K_ax);
-    auto ax     = expect(Tok::Tag::M_ax, "name of an axiom");
-    auto split  = Axiom::split(ax.sym());
+    auto ax    = expect(Tok::Tag::M_ax, "name of an axiom");
+    auto split = Axiom::split(ax.sym());
     if (!split) err(ax.loc(), "invalid axiom name '{}'", ax);
 
     auto [dialect, tag, sub] = *split;
