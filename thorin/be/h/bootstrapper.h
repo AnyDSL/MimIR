@@ -9,32 +9,30 @@
 #include "thorin/util/sym.h"
 #include "thorin/util/types.h"
 
-#include "absl/container/flat_hash_map.h"
-
 namespace thorin::h {
 
 struct AxiomInfo {
     flags_t tag_id;
-    std::string dialect;
-    std::string tag;
-    std::deque<std::deque<std::string>> subs;
-    std::string normalizer;
+    Sym dialect;
+    Sym tag;
+    std::deque<std::deque<Sym>> subs;
+    Sym normalizer;
     bool pi;
 };
 
 class Bootstrapper {
 public:
-    Bootstrapper(std::string_view dialect)
+    Bootstrapper(Sym dialect)
         : dialect_(dialect) {}
 
     void emit(std::ostream&);
-    std::string_view dialect() const { return dialect_; }
+    Sym dialect() const { return dialect_; }
 
     SymMap<AxiomInfo> axioms;
     Tab tab;
 
 private:
-    std::string dialect_;
+    Sym dialect_;
 };
 
 } // namespace thorin::h

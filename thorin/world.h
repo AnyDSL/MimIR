@@ -223,10 +223,10 @@ public:
     /// Get Axiom from a dialect.
     /// Use this to get an Axiom via Axiom::id.
     template<class Id>
-    const Axiom* ax(Id id) const {
+    const Axiom* ax(Id id) {
         u64 flags = static_cast<u64>(id);
         if (auto i = move_.axioms.find(flags); i != move_.axioms.end()) return i->second;
-        err("Axiom with ID '{}' not found; demangled dialect name is '{}'", flags, Axiom::demangle(flags));
+        err("Axiom with ID '{}' not found; demangled dialect name is '{}'", flags, Axiom::demangle(*this, flags));
     }
 
     /// Get Axiom from a dialect.

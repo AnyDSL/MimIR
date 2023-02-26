@@ -39,7 +39,7 @@ Parser::Parser(World& world,
                std::ostream* md)
     : lexer_(world, file, istream, md)
     , prev_(lexer_.loc())
-    , bootstrapper_(std::filesystem::path{*file}.filename().replace_extension("").string())
+    , bootstrapper_(world.sym(std::filesystem::path{*file}.filename().replace_extension("").string()))
     , user_search_paths_(import_search_paths.begin(), import_search_paths.end())
     , normalizers_(normalizers)
     , anonymous_(world.sym("_")) {
@@ -655,8 +655,8 @@ void Parser::parse_ax() {
         err(ax.loc(), "all declarations of axiom '{}' have to be function types if any is", ax);
     info.pi = type->isa<Pi>() != nullptr;
 
-    auto normalizer_name = (accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom") : Sym()).to_string();
-    if (!is_new && !(info.normalizer.empty() || normalizer_name.empty()) && info.normalizer != normalizer_name)
+    auto normalizer_name = accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom").second : Sym();
+    if (!is_new && !(info.normalizer || normalizer_name) && info.normalizer != normalizer_name)
         err(ax.loc(), "all declarations of axiom '{}' have use the same normalizer name", ax);
     info.normalizer = normalizer_name;
 
@@ -758,7 +758,7 @@ Lam* Parser::parse_lam(bool decl) {
     bool is_cn    = tok.isa(Tok::Tag::K_cn) || tok.isa(Tok::Tag::K_con);
     auto prec     = is_cn ? Tok::Prec::Bot : Tok::Prec::Pi;
     bool external = decl && accept(Tok::Tag::K_extern).has_value();
-    Sym sym       = decl ? parse_sym("nominal lambda") : anonymous_;
+    Sym sym       = decl ? parse_sym("nominal lambda").second : anonymous_;
 
     auto outer = scopes_.curr();
     scopes_.push();
@@ -774,7 +774,7 @@ Lam* Parser::parse_lam(bool decl) {
         auto dom_t        = dom_p->type(world());
         auto pi           = world().nom_pi(world().type_infer_univ())->set_dom(dom_t);
         auto lam          = world().nom_lam(pi, first == nullptr ? track.named(sym) : nullptr);
-        auto lam_var      = lam->var(dom_p->dbg(world()));
+        auto lam_var      = lam->var()->set(dom_p->loc(), dom_p->sym());
 
         has_implicits |= dot;
         implicits.emplace_back(dot);
