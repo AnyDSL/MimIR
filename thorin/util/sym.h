@@ -20,8 +20,9 @@ public:
     operator const std::string_view() const { return *ptr_; }
     operator const std::string&() const { return *ptr_; }
     explicit operator bool() const { return ptr_; }
-    const std::string& operator*() const { return *ptr_; }
+    std::string_view operator*() const { return *ptr_; }
     const std::string* operator->() const { return ptr_; }
+    std::string str() const { return *ptr_; }
     char operator[](size_t i) const { return (*ptr_)[i]; }
 
 private:

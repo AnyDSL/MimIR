@@ -9,6 +9,8 @@
 
 #include "thorin/analyses/scope.h"
 
+using namespace std::literals;
+
 namespace thorin {
 
 // Just assuming looking through the uses is faster if uses().size() is small.
@@ -195,7 +197,7 @@ Defs Def::extended_ops() const {
 
 #ifndef NDEBUG
 const Def* Def::debug_suffix(std::string suffix) const {
-    name = world().sym(*name + suffix);
+    name = world().sym(name.str() + suffix);
     return this;
 }
 #endif
@@ -340,7 +342,7 @@ void Def::make_external() { return world().make_external(this); }
 void Def::make_internal() { return world().make_internal(this); }
 bool Def::is_external() const { return world().is_external(this); }
 
-std::string Def::unique_name() const { return *name + "_" + std::to_string(gid()); }
+std::string Def::unique_name() const { return name.str() + "_"s + std::to_string(gid()); }
 
 DefArray Def::reduce(const Def* arg) const {
     if (auto nom = isa_nom()) return nom->reduce(arg);

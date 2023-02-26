@@ -456,6 +456,7 @@ const Def* World::implicits2meta(const Implicits& implicits) {
     return meta;
 }
 
+#if 0
 /// Returns `{b, x}` from Thorin pair `(b, x)` or `std::nullopt` if @p def doesn't fit the bill.
 static std::optional<std::pair<bool, const Def*>> peel(const Def* def) {
     if (def) {
@@ -466,8 +467,7 @@ static std::optional<std::pair<bool, const Def*>> peel(const Def* def) {
     return {};
 }
 
-#if 0
-const Def* World::iapp(Ref callee, Ref arg, Debug debug) {
+const Def* World::iapp(Ref callee, Ref arg, const Def* meta) {
     Debug mdebug = debug;
     while (auto implicit = peel(callee->meta())) {
         bool dot;

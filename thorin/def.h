@@ -166,7 +166,9 @@ inline unsigned operator!=(Dep d1, unsigned d2) { return unsigned(d1) != d2; }
           T* set(Loc l,        const Def* m)       { loc = l;           meta = m; return this; } \
           T* set(       Sym n, const Def* m)       {          name = n; meta = m; return this; } \
           T* set(Loc l                     )       { loc = l;                     return this; } \
-          T* set(       Sym n              )       {          name = n;           return this; }
+          T* set(       Sym n              )       {          name = n;           return this; } \
+    const T* set_meta(         const Def* m) const {                    meta = m; return this; } \
+          T* set_meta(         const Def* m)       {                    meta = m; return this; }
 // clang-format on
 
 #define THORIN_DEF_MIXIN_3(T, S, N)                                               \

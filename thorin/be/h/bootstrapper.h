@@ -6,6 +6,7 @@
 #include <string_view>
 
 #include "thorin/util/print.h"
+#include "thorin/util/sym.h"
 #include "thorin/util/types.h"
 
 #include "absl/container/flat_hash_map.h"
@@ -29,7 +30,7 @@ public:
     void emit(std::ostream&);
     std::string_view dialect() const { return dialect_; }
 
-    absl::flat_hash_map<std::string, AxiomInfo> axioms;
+    SymMap<AxiomInfo> axioms;
     Tab tab;
 
 private:
