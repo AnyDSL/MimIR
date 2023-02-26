@@ -176,10 +176,10 @@ inline unsigned operator!=(Dep d1, unsigned d2) { return unsigned(d1) != d2; }
 #define THORIN_DEF_MIXIN_3(T, S, N)                                                   \
     THORIN_SETTERS(T)                                                                 \
     T* stub(World& w, const Def* type) { return stub_(w, type)->set(loc(), name()); } \
-                                                                                      \
+    static constexpr auto Node = N;                                                   \
 private:                                                                              \
     const Def* rebuild_(World&, const Def*, Defs) const override;                     \
-    T* stub_(World&, const Def*) override S static constexpr auto Node = N;           \
+    T* stub_(World&, const Def*) override S                                           \
     friend class World;
 
 #define THORIN_DEF_MIXIN_2(T, S) THORIN_DEF_MIXIN_3(T, S, Node::T)
