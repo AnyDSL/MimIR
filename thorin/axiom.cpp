@@ -6,13 +6,7 @@ using namespace std::literals;
 
 namespace thorin {
 
-Axiom::Axiom(NormalizeFn normalizer,
-             u8 curry,
-             u8 trip,
-             const Def* type,
-             dialect_t dialect,
-             tag_t tag,
-             sub_t sub)
+Axiom::Axiom(NormalizeFn normalizer, u8 curry, u8 trip, const Def* type, dialect_t dialect, tag_t tag, sub_t sub)
     : Def(Node, type, Defs{}, dialect | (flags_t(tag) << 8_u64) | flags_t(sub)) {
     normalizer_ = normalizer;
     curry_      = curry;
@@ -120,11 +114,15 @@ std::optional<std::array<Sym, 3>> Axiom::split(World& world, Sym s) {
     if (auto dot = tag.find('.'); dot != std::string_view::npos) {
         auto sub = world.sym(sub_view(tag, dot + 1));
         tag      = sub_view(tag, 0, dot);
-        return { {dialect, world.sym(tag), sub} };
+        return {
+            {dialect, world.sym(tag), sub}
+        };
     }
 
     if (tag.empty()) return {};
-    return { {dialect, world.sym(tag), {}} };
+    return {
+        {dialect, world.sym(tag), {}}
+    };
 }
 
 } // namespace thorin
