@@ -456,7 +456,6 @@ const Def* World::implicits2meta(const Implicits& implicits) {
     return meta;
 }
 
-#if 0
 /// Returns `{b, x}` from Thorin pair `(b, x)` or `std::nullopt` if @p def doesn't fit the bill.
 static std::optional<std::pair<bool, const Def*>> peel(const Def* def) {
     if (def) {
@@ -468,31 +467,28 @@ static std::optional<std::pair<bool, const Def*>> peel(const Def* def) {
 }
 
 const Def* World::iapp(Ref callee, Ref arg, const Def* meta) {
-    Debug mdebug = debug;
     while (auto implicit = peel(callee->meta())) {
         bool dot;
-        std::tie(dot, mdebug.meta) = *implicit;
+        std::tie(dot, meta) = *implicit;
 
         if (dot) {
-            auto infer = nom_infer_entity(dbg(debug));
-            auto d     = dbg(mdebug);
-            auto a     = app(callee, infer, d);
+            auto infer = nom_infer_entity();
+            auto a     = app(callee, infer)->set_meta(meta);
             callee     = a;
         } else {
             // resolve Infers now if possible before normalizers are run
             if (auto app = callee->isa<App>(); app && app->curry() == 1) {
-                checker().assignable(callee->type()->as<Pi>()->dom(), arg, callee->dbg());
+                checker().assignable(callee->type()->as<Pi>()->dom(), arg);
                 auto apps = decurry(app);
                 callee    = apps.front()->callee();
-                for (auto app : apps) callee = this->app(callee, refer(app->arg()), app->dbg());
+                for (auto app : apps) callee = this->app(callee, refer(app->arg()));
             }
             break;
         }
     }
 
-    return app(callee, arg, dbg(mdebug));
+    return app(callee, arg)->set_meta(meta);
 }
-#endif
 
 /*
  * debugging

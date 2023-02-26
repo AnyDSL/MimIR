@@ -105,7 +105,7 @@ private:
     void parse_nom();
     /// If @p sym is **not** empty, this is an inline definition of @p sym,
     /// otherwise it's a standalone definition.
-    void parse_def(Sym sym = {});
+    void parse_def(Loc loc = {}, Sym sym = {});
     ///@}
 
     template<class F>

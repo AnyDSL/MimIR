@@ -99,7 +99,7 @@ static std::string_view sub_view(std::string_view s, size_t i, size_t n = std::s
     return {s.data() + i, n - i};
 }
 
-std::optional<std::array<Sym, 3>> Axiom::split(World& world, Sym s) {
+std::array<Sym, 3> Axiom::split(World& world, Sym s) {
     if (!s || s->empty()) return {};
     if (s[0] != '%') return {};
     auto sv = sub_view(s, 1);
@@ -114,15 +114,11 @@ std::optional<std::array<Sym, 3>> Axiom::split(World& world, Sym s) {
     if (auto dot = tag.find('.'); dot != std::string_view::npos) {
         auto sub = world.sym(sub_view(tag, dot + 1));
         tag      = sub_view(tag, 0, dot);
-        return {
-            {dialect, world.sym(tag), sub}
-        };
+        return {dialect, world.sym(tag), sub};
     }
 
     if (tag.empty()) return {};
-    return {
-        {dialect, world.sym(tag), {}}
-    };
+    return {dialect, world.sym(tag), {}};
 }
 
 } // namespace thorin

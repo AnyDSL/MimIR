@@ -34,7 +34,7 @@ public:
     World& world() const { return world_; }
     Def* entry() const { return entry_; }
     Def* exit() const { return exit_; }
-    Sym name() const { return entry_->name; }
+    Sym name() const { return entry_->name(); }
     ///@}
 
     /// @name Def%s bound/free in this Scope

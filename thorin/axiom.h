@@ -100,7 +100,7 @@ public:
     /// Ignores lower 16-bit of @p u.
     static Sym demangle(World&, dialect_t u);
 
-    static std::optional<std::array<Sym, 3>> split(World&, Sym);
+    static std::array<Sym, 3> split(World&, Sym);
     ///@}
 
     /// @name Helpers for Matching

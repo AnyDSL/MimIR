@@ -74,6 +74,8 @@ UMax::UMax(World& world, Defs ops)
  * rebuild
  */
 
+const Def* Infer    ::rebuild_(World&,   const Def*,   Defs  ) const { unreachable(); }
+const Def* Global   ::rebuild_(World&,   const Def*,   Defs  ) const { unreachable(); }
 const Def* Ac       ::rebuild_(World& w, const Def* t, Defs o) const { return w.ac(t, o); }
 const Def* App      ::rebuild_(World& w, const Def*  , Defs o) const { return w.app(o[0], o[1]); }
 const Def* Arr      ::rebuild_(World& w, const Def*  , Defs o) const { return w.arr(o[0], o[1]); }
@@ -191,13 +193,13 @@ std::string_view Def::node_name() const {
 
 Defs Def::extended_ops() const {
     if (isa<Type>() || isa<Univ>()) return Defs();
-    size_t offset = meta ? 2 : 1;
+    size_t offset = meta() ? 2 : 1;
     return Defs((is_set() ? num_ops_ : 0) + offset, ops_ptr() - offset);
 }
 
 #ifndef NDEBUG
 const Def* Def::debug_suffix(std::string suffix) const {
-    name = world().sym(name.str() + suffix);
+    name_ = world().sym(name().str() + suffix);
     return this;
 }
 #endif
@@ -342,7 +344,7 @@ void Def::make_external() { return world().make_external(this); }
 void Def::make_internal() { return world().make_internal(this); }
 bool Def::is_external() const { return world().is_external(this); }
 
-std::string Def::unique_name() const { return name.str() + "_"s + std::to_string(gid()); }
+std::string Def::unique_name() const { return name().str() + "_"s + std::to_string(gid()); }
 
 DefArray Def::reduce(const Def* arg) const {
     if (auto nom = isa_nom()) return nom->reduce(arg);

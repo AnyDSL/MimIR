@@ -154,14 +154,14 @@ public:
     const auto& externals() const { return move_.externals; }
     bool empty() { return move_.externals.empty(); }
     void make_external(Def* def) {
-        assert(!def->name->empty());
-        auto name = def->name;
+        assert(!def->name()->empty());
+        auto name = def->name();
         move_.externals.emplace(name, def); // TODO enable assert again
         // auto [i, ins] = move_.externals.emplace(name, def);
         // assert((ins || (def == i->second)) && "two different externals registered with the same name");
     }
-    void make_internal(Def* def) { move_.externals.erase(def->name); }
-    bool is_external(Ref def) { return move_.externals.contains(def->name); }
+    void make_internal(Def* def) { move_.externals.erase(def->name()); }
+    bool is_external(Ref def) { return move_.externals.contains(def->name()); }
     Def* lookup(const std::string& name) {
         auto i = move_.externals.find(name);
         return i != move_.externals.end() ? i->second : nullptr;

@@ -153,31 +153,33 @@ inline unsigned operator!=(Dep d1, unsigned d2) { return unsigned(d1) != d2; }
 
 // clang-format off
 /// Use as mixin to declare setters for Def::loc, Def::name, and Def::meta using a *covariant* return type.
-#define THORIN_SETTERS(T)                                                                        \
-    public:                                                                                      \
-    const T* set(Loc l, Sym n, const Def* m) const { loc = l; name = n; meta = m; return this; } \
-    const T* set(Loc l, Sym n              ) const { loc = l; name = n;           return this; } \
-    const T* set(Loc l,        const Def* m) const { loc = l;           meta = m; return this; } \
-    const T* set(       Sym n, const Def* m) const {          name = n; meta = m; return this; } \
-    const T* set(Loc l                     ) const { loc = l;                     return this; } \
-    const T* set(       Sym n              ) const {          name = n;           return this; } \
-          T* set(Loc l, Sym n, const Def* m)       { loc = l; name = n; meta = m; return this; } \
-          T* set(Loc l, Sym n              )       { loc = l; name = n;           return this; } \
-          T* set(Loc l,        const Def* m)       { loc = l;           meta = m; return this; } \
-          T* set(       Sym n, const Def* m)       {          name = n; meta = m; return this; } \
-          T* set(Loc l                     )       { loc = l;                     return this; } \
-          T* set(       Sym n              )       {          name = n;           return this; } \
-    const T* set_meta(         const Def* m) const {                    meta = m; return this; } \
-          T* set_meta(         const Def* m)       {                    meta = m; return this; }
+#define THORIN_SETTERS(T)                                                                           \
+    public:                                                                                         \
+    const T* set(Loc l, Sym n, const Def* m) const { loc_ = l; name_ = n; meta_ = m; return this; } \
+    const T* set(Loc l, Sym n              ) const { loc_ = l; name_ = n;            return this; } \
+    const T* set(Loc l,        const Def* m) const { loc_ = l;            meta_ = m; return this; } \
+    const T* set(       Sym n, const Def* m) const {           name_ = n; meta_ = m; return this; } \
+    const T* set(Loc l                     ) const { loc_ = l;                       return this; } \
+    const T* set(       Sym n              ) const {           name_ = n;            return this; } \
+          T* set(Loc l, Sym n, const Def* m)       { loc_ = l; name_ = n; meta_ = m; return this; } \
+          T* set(Loc l, Sym n              )       { loc_ = l; name_ = n;            return this; } \
+          T* set(Loc l,        const Def* m)       { loc_ = l;            meta_ = m; return this; } \
+          T* set(       Sym n, const Def* m)       {           name_ = n; meta_ = m; return this; } \
+          T* set(Loc l                     )       { loc_ = l;                       return this; } \
+          T* set(       Sym n              )       {           name_ = n;            return this; } \
+    const T* set_meta(         const Def* m) const {                      meta_ = m; return this; } \
+          T* set_meta(         const Def* m)       {                      meta_ = m; return this; } \
+    const T* set(std::pair<Loc, Sym> p) const { loc_ = p.first; name_ = p.second;    return this; } \
+          T* set(std::pair<Loc, Sym> p)       { loc_ = p.first; name_ = p.second;    return this; }
 // clang-format on
 
-#define THORIN_DEF_MIXIN_3(T, S, N)                                               \
-    THORIN_SETTERS(T)                                                             \
-    T* stub(World& w, const Def* type) { return stub_(w, type)->set(loc, name); } \
-                                                                                  \
-private:                                                                          \
-    const Def* rebuild_(World&, const Def*, Defs) const override;                 \
-    T* stub_(World&, const Def*) override S static constexpr auto Node = N;       \
+#define THORIN_DEF_MIXIN_3(T, S, N)                                                   \
+    THORIN_SETTERS(T)                                                                 \
+    T* stub(World& w, const Def* type) { return stub_(w, type)->set(loc(), name()); } \
+                                                                                      \
+private:                                                                              \
+    const Def* rebuild_(World&, const Def*, Defs) const override;                     \
+    T* stub_(World&, const Def*) override S static constexpr auto Node = N;           \
     friend class World;
 
 #define THORIN_DEF_MIXIN_2(T, S) THORIN_DEF_MIXIN_3(T, S, Node::T)
@@ -384,6 +386,10 @@ public:
 #else
     const Def* debug_suffix(std::string) const { return this; }
 #endif
+    Loc loc() const { return loc_; }
+    Sym name() const { return name_; }
+    std::pair<Loc, Sym> loc_name() const { return {loc_, name_}; }
+    const Def* meta() const { return meta_; }
     ///@}
 
     /// @name casts
@@ -431,8 +437,8 @@ public:
     const Def* reduce_rec() const;
     ///@}
 
-    const Def* rebuild(World& w, const Def* type, Defs ops) const { return rebuild_(w, type, ops)->set(loc, name); }
-    Def* stub(World& w, const Def* type) { return stub_(w, type)->set(loc, name); }
+    const Def* rebuild(World& w, const Def* type, Defs ops) const { return rebuild_(w, type, ops)->set(loc(), name()); }
+    Def* stub(World& w, const Def* type) { return stub_(w, type)->set(loc(), name()); }
 
     /// @name virtual methods
     ///@{
@@ -479,11 +485,9 @@ protected:
     u32 gid_;
     u32 num_ops_;
     mutable Uses uses_;
-
-public:
-    mutable Loc loc;
-    mutable Sym name;
-    mutable const Def* meta;
+    mutable Loc loc_;
+    mutable Sym name_;
+    mutable const Def* meta_;
 
 private:
     const Def* type_;
@@ -506,7 +510,7 @@ const T* as([[maybe_unused]] flags_t f, const Def* def) {
 
 template<class T = std::logic_error, class... Args>
 [[noreturn]] void err(const Def* def, const char* fmt, Args&&... args) {
-    err(def->loc, fmt, std::forward<Args&&>(args)...);
+    err(def->loc(), fmt, std::forward<Args&&>(args)...);
 }
 
 //------------------------------------------------------------------------------
