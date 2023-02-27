@@ -30,7 +30,7 @@ private:
     }
 
     static constexpr std::string empty = {};
-    const std::string* ptr_ = nullptr;
+    const std::string* ptr_            = nullptr;
 
     template<class H>
     friend H AbslHashValue(H h, Sym sym) {
@@ -44,13 +44,13 @@ inline std::ostream& operator<<(std::ostream& o, const Sym sym) { return o << *s
 
 class SymPool {
 public:
-    SymPool()            = default;
+    SymPool()               = default;
     SymPool(const SymPool&) = delete;
     SymPool(SymPool&& other)
         : pool_(std::move(other.pool_)) {}
 
     Sym sym(std::string_view s) { return s.empty() ? Sym() : &*pool_.emplace(s).first; }
-    Sym sym(const char* s) { return s == nullptr || *s == '\0'  ? Sym() : &*pool_.emplace(s).first; }
+    Sym sym(const char* s) { return s == nullptr || *s == '\0' ? Sym() : &*pool_.emplace(s).first; }
     Sym sym(std::string&& s) { return s.empty() ? Sym() : &*pool_.emplace(std::move(s)).first; }
 
     friend void swap(SymPool& p1, SymPool& p2) {
