@@ -134,10 +134,9 @@ public:
 
     /// @name Sym
     ///@{
-    Pool& pool() { return move_.pool; }
-    Sym sym(std::string_view s) { return pool().sym(s); }
-    Sym sym(const char* s) { return pool().sym(s); }
-    Sym sym(std::string&& s) { return pool().sym(std::move(s)); }
+    Sym sym(std::string_view s) { return move_.pool.sym(s); }
+    Sym sym(const char* s) { return move_.pool.sym(s); }
+    Sym sym(std::string&& s) { return move_.pool.sym(std::move(s)); }
     ///@}
 
 #if THORIN_ENABLE_CHECKS
@@ -626,7 +625,7 @@ private:
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
         DefDefMap<DefArray> cache;
         std::unique_ptr<Checker> checker;
-        Pool pool;
+        SymPool pool;
 
         friend void swap(Move& m1, Move& m2) {
             using std::swap;

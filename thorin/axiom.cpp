@@ -94,13 +94,8 @@ Sym Axiom::demangle(World& world, dialect_t u) {
     return world.sym(result);
 }
 
-static std::string_view sub_view(std::string_view s, size_t i, size_t n = std::string_view::npos) {
-    n = std::min(n, s.size());
-    return {s.data() + i, n - i};
-}
-
 std::array<Sym, 3> Axiom::split(World& world, Sym s) {
-    if (!s || s->empty()) return {};
+    if (!s) return {};
     if (s[0] != '%') return {};
     auto sv = sub_view(s, 1);
 
@@ -117,7 +112,6 @@ std::array<Sym, 3> Axiom::split(World& world, Sym s) {
         return {dialect, world.sym(tag), sub};
     }
 
-    if (tag.empty()) return {};
     return {dialect, world.sym(tag), {}};
 }
 

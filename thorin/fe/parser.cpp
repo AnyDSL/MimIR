@@ -609,9 +609,9 @@ const Def* Parser::parse_decls(std::string_view ctxt) {
 void Parser::parse_ax() {
     auto track = tracker();
     eat(Tok::Tag::K_ax);
-
     auto ax                  = expect(Tok::Tag::M_ax, "name of an axiom");
     auto [dialect, tag, sub] = Axiom::split(world(), ax.sym());
+
     if (!dialect) err(ax.loc(), "invalid axiom name '{}'", ax);
     if (!sub) err(ax.loc(), "definition of axiom '{}' must not have sub in tag name", ax);
 
