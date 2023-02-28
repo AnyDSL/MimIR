@@ -6,7 +6,7 @@
 
 namespace thorin::direct {
 
-inline const Def* op_cps2ds_dep(const Def* f, const Def* dbg = {}) {
+inline const Def* op_cps2ds_dep(const Def* f) {
     auto& world = f->world();
     // TODO: assert continuation
     world.DLOG("f: {} : {}", f, f->type());
@@ -16,7 +16,7 @@ inline const Def* op_cps2ds_dep(const Def* f, const Def* dbg = {}) {
     world.DLOG("T: {}", T);
     world.DLOG("U: {}", U);
 
-    auto Uf = world.nom_lam(world.pi(T, world.type()), world.dbg("Uf"));
+    auto Uf = world.nom_lam(world.pi(T, world.type()))->set(world.sym("Uf"));
     world.DLOG("Uf: {} : {}", Uf, Uf->type());
 
     const Def* rewritten_codom;
@@ -37,7 +37,7 @@ inline const Def* op_cps2ds_dep(const Def* f, const Def* dbg = {}) {
 
     world.DLOG("axiom app: {} : {}", ax_app, ax_app->type());
 
-    return world.app(ax_app, f, dbg);
+    return world.app(ax_app, f);
 }
 
 } // namespace thorin::direct

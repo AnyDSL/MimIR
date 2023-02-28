@@ -7,7 +7,7 @@ namespace thorin {
 // TODO move to normalize.h
 /// Swap Lit to left - or smaller gid, if no lit present.
 template<class Id>
-static void commute(Id id, const Def*& a, const Def*& b) {
+static void commute(Id id, Ref& a, Ref& b) {
     if (is_commutative(id)) {
         if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>())) std::swap(a, b);
     }
@@ -119,8 +119,8 @@ Res fold(u64 a, u64 b) {
 // clang-format on
 
 template<class Id, Id id>
-static const Def* fold(World& world, const Def* type, const Def* a, const Def* dbg) {
-    if (a->isa<Bot>()) return world.bot(type, dbg);
+static Ref fold(World& world, Ref type, Ref a) {
+    if (a->isa<Bot>()) return world.bot(type);
     auto la = a->isa<Lit>();
 
     if (la) {
@@ -134,7 +134,7 @@ static const Def* fold(World& world, const Def* type, const Def* a, const Def* d
             default: unreachable();
         }
 
-        return world.lit(type, *res, dbg);
+        return world.lit(type, *res);
     }
 
     return nullptr;
@@ -142,10 +142,10 @@ static const Def* fold(World& world, const Def* type, const Def* a, const Def* d
 
 /// @attention Note that @p a and @p b are passed by reference as fold also commutes if possible. @sa commute().
 template<class Id, Id id>
-static const Def* fold(World& world, const Def* type, const Def*& a, const Def*& b, const Def* dbg) {
+static Ref fold(World& world, Ref type, Ref& a, Ref& b) {
     auto la = a->isa<Lit>(), lb = b->isa<Lit>();
 
-    if (a->isa<Bot>() || b->isa<Bot>()) return world.bot(type, dbg);
+    if (a->isa<Bot>() || b->isa<Bot>()) return world.bot(type);
 
     if (la && lb) {
         nat_t width = *isa_f(a->type());
@@ -158,7 +158,7 @@ static const Def* fold(World& world, const Def* type, const Def*& a, const Def*&
             default: unreachable();
         }
 
-        return world.lit(type, *res, dbg);
+        return world.lit(type, *res);
     }
 
     commute(id, a, b);
@@ -177,8 +177,8 @@ static const Def* fold(World& world, const Def* type, const Def*& a, const Def*&
 /// (4) (lx op y) op      b    ->  lx op (y op b)
 /// ```
 template<class Id>
-static const Def*
-reassociate(Id id, World& world, [[maybe_unused]] const App* ab, const Def* a, const Def* b, const Def* dbg) {
+static Ref
+reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref b) {
     if (!is_associative(id)) return nullptr;
 
     auto la = a->isa<Lit>();
@@ -189,7 +189,7 @@ reassociate(Id id, World& world, [[maybe_unused]] const App* ab, const Def* a, c
     auto y  = xy ? xy->arg(1) : nullptr;
     auto w  = zw ? zw->arg(1) : nullptr;
 
-    std::function<const Def*(const Def*, const Def*)> make_op;
+    std::function<Ref(Ref, Ref)> make_op;
 
     // build mode for all new ops by using the least upper bound of all involved apps
     nat_t mode      = Mode::bot;
@@ -204,7 +204,7 @@ reassociate(Id id, World& world, [[maybe_unused]] const App* ab, const Def* a, c
     if (lx && !check_mode(xy->decurry())) return nullptr;
     if (lz && !check_mode(zw->decurry())) return nullptr;
 
-    make_op = [&](const Def* a, const Def* b) { return world.dcall(dbg, id, mode, Defs{a, b}); };
+    make_op = [&](Ref a, Ref b) { return world.call(id, mode, Defs{a, b}); };
 
     if (la && lz) return make_op(make_op(la, lz), w);             // (1)
     if (lx && lz) return make_op(make_op(lx, lz), make_op(y, w)); // (2)
@@ -215,7 +215,7 @@ reassociate(Id id, World& world, [[maybe_unused]] const App* ab, const Def* a, c
 }
 
 template<arith id>
-const Def* normalize_arith(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
+Ref normalize_arith(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -223,7 +223,7 @@ const Def* normalize_arith(const Def* type, const Def* c, const Def* arg, const 
     auto lm     = isa_lit(mode);
     auto w      = isa_f(a->type());
 
-    if (auto result = fold<arith, id>(world, type, a, b, dbg)) return result;
+    if (auto result = fold<arith, id>(world, type, a, b)) return result;
 
     // clang-format off
     // TODO check mode properly
@@ -264,7 +264,7 @@ const Def* normalize_arith(const Def* type, const Def* c, const Def* arg, const 
 
         if (a == b) {
             switch (id) {
-                case arith::add: return world.dcall(dbg, arith::mul, mode, Defs{lit_f(world, *w, 2.0), a}); // a + a -> 2 * a
+                case arith::add: return world.call(arith::mul, mode, Defs{lit_f(world, *w, 2.0), a}); // a + a -> 2 * a
                 case arith::sub: return lit_f(world, *w, 0.0);                                     // a - a -> 0
                 case arith::mul: break;
                 case arith::div: return lit_f(world, *w, 1.0);                                     // a / a -> 1
@@ -274,85 +274,85 @@ const Def* normalize_arith(const Def* type, const Def* c, const Def* arg, const 
     }
     // clang-format on
 
-    if (auto res = reassociate<arith>(id, world, callee, a, b, dbg)) return res;
+    if (auto res = reassociate<arith>(id, world, callee, a, b)) return res;
 
-    return world.raw_app(type, callee, {a, b}, dbg);
+    return world.raw_app(type, callee, {a, b});
 }
 
 template<extrema id>
-const Def* normalize_extrema(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
+Ref normalize_extrema(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
     auto m      = callee->arg();
     auto lm     = isa_lit(m);
 
-    if (auto lit = fold<extrema, id>(world, type, a, b, dbg)) return lit;
+    if (auto lit = fold<extrema, id>(world, type, a, b)) return lit;
 
     if (lm && *lm & (Mode::nnan | Mode::nsz)) { // if ignore NaNs and signed zero, then *imum -> *num
         switch (id) {
-            case extrema::ieee754min: return world.dcall(dbg, extrema::fmin, m, Defs{a, b});
-            case extrema::ieee754max: return world.dcall(dbg, extrema::fmax, m, Defs{a, b});
+            case extrema::ieee754min: return world.call(extrema::fmin, m, Defs{a, b});
+            case extrema::ieee754max: return world.call(extrema::fmax, m, Defs{a, b});
             default: break;
         }
     }
 
-    return world.raw_app(type, c, arg, dbg);
+    return world.raw_app(type, c, arg);
 }
 
 template<tri id>
-const Def* normalize_tri(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
+Ref normalize_tri(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
-    if (auto lit = fold<tri, id>(world, type, arg, dbg)) return lit;
-    return world.raw_app(type, c, arg, dbg);
+    if (auto lit = fold<tri, id>(world, type, arg)) return lit;
+    return world.raw_app(type, c, arg);
 }
 
-const Def* normalize_pow(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
+Ref normalize_pow(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
     auto [a, b] = arg->projs<2>();
-    if (auto lit = fold<pow, /*dummy*/ pow(0)>(world, type, a, b, dbg)) return lit;
-    return world.raw_app(type, c, arg, dbg);
+    if (auto lit = fold<pow, /*dummy*/ pow(0)>(world, type, a, b)) return lit;
+    return world.raw_app(type, c, arg);
 }
 
 template<rt id>
-const Def* normalize_rt(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
+Ref normalize_rt(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
-    if (auto lit = fold<rt, id>(world, type, arg, dbg)) return lit;
-    return world.raw_app(type, c, arg, dbg);
+    if (auto lit = fold<rt, id>(world, type, arg)) return lit;
+    return world.raw_app(type, c, arg);
 }
 
 template<exp id>
-const Def* normalize_exp(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
+Ref normalize_exp(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
-    if (auto lit = fold<exp, id>(world, type, arg, dbg)) return lit;
-    return world.raw_app(type, c, arg, dbg);
+    if (auto lit = fold<exp, id>(world, type, arg)) return lit;
+    return world.raw_app(type, c, arg);
 }
 
 template<er id>
-const Def* normalize_er(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
+Ref normalize_er(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
-    if (auto lit = fold<er, id>(world, type, arg, dbg)) return lit;
-    return world.raw_app(type, c, arg, dbg);
+    if (auto lit = fold<er, id>(world, type, arg)) return lit;
+    return world.raw_app(type, c, arg);
 }
 
 template<gamma id>
-const Def* normalize_gamma(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
+Ref normalize_gamma(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
-    if (auto lit = fold<gamma, id>(world, type, arg, dbg)) return lit;
-    return world.raw_app(type, c, arg, dbg);
+    if (auto lit = fold<gamma, id>(world, type, arg)) return lit;
+    return world.raw_app(type, c, arg);
 }
 
 template<cmp id>
-const Def* normalize_cmp(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
+Ref normalize_cmp(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
 
-    if (auto result = fold<cmp, id>(world, type, a, b, dbg)) return result;
+    if (auto result = fold<cmp, id>(world, type, a, b)) return result;
     if (id == cmp::f) return world.lit_ff();
     if (id == cmp::t) return world.lit_tt();
 
-    return world.raw_app(type, callee, {a, b}, dbg);
+    return world.raw_app(type, callee, {a, b});
 }
 
 template<class Id, Id id, nat_t sw, nat_t dw>
@@ -363,7 +363,7 @@ Res fold(u64 a) {
 }
 
 template<conv id>
-const Def* normalize_conv(const Def* dst_t, const Def* c, const Def* x, const Def* dbg) {
+Ref normalize_conv(Ref dst_t, Ref c, Ref x) {
     auto& world = dst_t->world();
     auto callee = c->as<App>();
     auto s_t    = x->type()->as<App>();
@@ -374,7 +374,7 @@ const Def* normalize_conv(const Def* dst_t, const Def* c, const Def* x, const De
     auto ld     = isa_lit(d);
 
     if (s_t == d_t) return x;
-    if (x->isa<Bot>()) return world.bot(d_t, dbg);
+    if (x->isa<Bot>()) return world.bot(d_t);
 
     if (auto l = isa_lit(x); l && ls && ld) {
         constexpr bool sf     = id == conv::f2f || id == conv::f2s || id == conv::f2u;
@@ -403,11 +403,11 @@ const Def* normalize_conv(const Def* dst_t, const Def* c, const Def* x, const De
 
             else unreachable();
             // clang-format on
-            return world.lit(d_t, *res, dbg);
+            return world.lit(d_t, *res);
         }
     }
 out:
-    return world.raw_app(dst_t, callee, x, dbg);
+    return world.raw_app(dst_t, callee, x);
 }
 
 // TODO I guess we can do that with C++20 <bit>

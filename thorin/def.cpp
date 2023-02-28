@@ -139,7 +139,7 @@ const Pi* Pi::restructure() {
 
 const Sigma* Sigma::restructure() {
     if (std::ranges::none_of(ops(), [this](auto op) { return is_free(this, op); }))
-        return static_cast<const Sigma*>(world().sigma(ops()));
+        return static_cast<const Sigma*>(*world().sigma(ops()));
     return nullptr;
 }
 

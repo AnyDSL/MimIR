@@ -10,7 +10,8 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     auto lam    = def->as_nom<Lam>(); // TODO check if nominal
     world.DLOG("Derive lambda: {}", def);
     auto deriv_ty = autodiff_type_fun_pi(lam->type());
-    auto deriv    = world.nom_lam(deriv_ty, world.dbg(lam->name() + "_deriv"));
+    auto deriv    = world.nom_lam(deriv_ty)->set(lam->name());
+    deriv->debug_suffix("_deriv");
 
     // We first pre-register the derivatives.
     // This knowledge is needed for recursion.
@@ -20,7 +21,7 @@ const Def* AutoDiffEval::derive_(const Def* def) {
 
     auto [arg_ty, ret_pi] = lam->type()->doms<2>();
     auto deriv_all_args   = deriv->var();
-    const Def* deriv_arg  = deriv->var((nat_t)0, world.dbg("arg"));
+    const Def* deriv_arg  = deriv->var(0_s)->set(world.sym("arg"));
 
     // We generate the shadow pullbacks dynamically to save work and avoid code duplication.
     // Only the toplevel pullback for arguments and return continuation is special cased.

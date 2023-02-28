@@ -63,29 +63,29 @@ private:
 
     std::pair<Loc, Sym> parse_sym(std::string_view ctxt = {});
     void parse_import();
-    const Def* parse_type_ascr(std::string_view ctxt, Implicits*);
+    Ref parse_type_ascr(std::string_view ctxt, Implicits*);
 
     /// @name exprs
     ///@{
-    const Def* parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot, Implicits* = {});
-    const Def* parse_primary_expr(std::string_view ctxt, Implicits* = {});
-    const Def* parse_infix_expr(Tracker, const Def* lhs, Tok::Prec = Tok::Prec::Bot, Implicits* = {});
-    const Def* parse_extract(Tracker, const Def*, Tok::Prec);
+    Ref parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot, Implicits* = {});
+    Ref parse_primary_expr(std::string_view ctxt, Implicits* = {});
+    Ref parse_infix_expr(Tracker, const Def* lhs, Tok::Prec = Tok::Prec::Bot, Implicits* = {});
+    Ref parse_extract(Tracker, const Def*, Tok::Prec);
     ///@}
 
     /// @name primary exprs
     ///@{
-    const Def* parse_Cn();
-    const Def* parse_arr();
-    const Def* parse_pack();
-    const Def* parse_block();
-    const Def* parse_sigma();
-    const Def* parse_tuple();
-    const Def* parse_type();
-    const Def* parse_pi(Implicits*);
-    const Def* parse_lit();
-    const Def* parse_var();
-    const Def* parse_insert();
+    Ref parse_Cn();
+    Ref parse_arr();
+    Ref parse_pack();
+    Ref parse_block();
+    Ref parse_sigma();
+    Ref parse_tuple();
+    Ref parse_type();
+    Ref parse_pi(Implicits*);
+    Ref parse_lit();
+    Ref parse_var();
+    Ref parse_insert();
     Lam* parse_lam(bool decl = false);
     ///@}
 
@@ -99,7 +99,7 @@ private:
 
     /// @name decls
     ///@{
-    const Def* parse_decls(std::string_view ctxt);
+    Ref parse_decls(std::string_view ctxt);
     void parse_ax();
     void parse_let();
     void parse_nom();

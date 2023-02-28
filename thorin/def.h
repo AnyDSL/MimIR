@@ -199,7 +199,7 @@ private:                                                                        
 /// @attention This means that any subclass of Def **must not** introduce additional members.
 class Def : public RuntimeCast<Def> {
 public:
-    using NormalizeFn = const Def* (*)(Ref, Ref, Ref);
+    using NormalizeFn = Ref (*)(Ref, Ref, Ref);
 
 private:
     Def& operator=(const Def&) = delete;

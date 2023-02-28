@@ -11,6 +11,8 @@
 #include "dialects/core/core.h"
 #include "dialects/direct/direct.h"
 
+using namespace std::literals;
+
 namespace thorin::autodiff {
 
 // TODO remove macro
@@ -44,8 +46,8 @@ const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
     }
     // TODO: better fix (another pass as analysis?)
     // TODO: handle open functions
-    if (is_open_continuation(lam) || lam->name().find("ret") != std::string::npos ||
-        lam->name().find("_cont") != std::string::npos) {
+    if (is_open_continuation(lam) || lam->name()->find("ret") != std::string::npos ||
+        lam->name()->find("_cont") != std::string::npos) {
         // A open continuation behaves the same as return:
         // ```
         // cont: Cn[X]
@@ -62,7 +64,7 @@ const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
         world.DLOG("pb type is {}", pb_ty);
         auto aug_ty = world.cn({aug_dom, pb_ty});
         world.DLOG("augmented type is {}", aug_ty);
-        auto aug_lam              = world.nom_lam(aug_ty, world.dbg("aug_" + lam->name()));
+        auto aug_lam              = world.nom_lam(aug_ty)->set(world.sym("aug_"s + lam->name().str()));
         auto aug_var              = aug_lam->var((nat_t)0);
         augmented[lam->var()]     = aug_var;
         augmented[lam]            = aug_lam; // TODO: only one of these two
@@ -115,10 +117,10 @@ const Def* AutoDiffEval::augment_extract(const Extract* ext, Lam* f, Lam* f_diff
         assert(partial_pullback.count(aug_tuple));
         auto tuple_pb = partial_pullback[aug_tuple];
         auto pb_ty    = pullback_type(ext->type(), f_arg_ty);
-        auto pb_fun   = world.nom_lam(pb_ty, world.dbg("extract_pb"));
+        auto pb_fun   = world.nom_lam(pb_ty)->set(world.sym("extract_pb"));
         world.DLOG("Pullback: {} : {}", pb_fun, pb_fun->type());
-        auto pb_tangent = pb_fun->var((nat_t)0, world.dbg("s"));
-        auto tuple_tan  = world.insert(op_zero(aug_tuple->type()), aug_index, pb_tangent, world.dbg("tup_s"));
+        auto pb_tangent = pb_fun->var(0_s)->set(world.sym("s"));
+        auto tuple_tan  = world.insert(op_zero(aug_tuple->type()), aug_index, pb_tangent)->set(world.sym("tup_s"));
         pb_fun->app(true, tuple_pb,
                     {
                         tuple_tan,
@@ -152,12 +154,12 @@ const Def* AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
     //      ((cps2ds e0*) (s#0), ..., (cps2ds em*) (s#m))
     // ```
     auto pb_ty = pullback_type(tup->type(), f_arg_ty);
-    auto pb    = world.nom_lam(pb_ty, world.dbg("tup_pb"));
+    auto pb    = world.nom_lam(pb_ty)->set(world.sym("tup_pb"));
     world.DLOG("Augmented tuple: {} : {}", aug_tup, aug_tup->type());
     world.DLOG("Tuple Pullback: {} : {}", pb, pb->type());
     world.DLOG("shadow pb: {} : {}", shadow_pb, shadow_pb->type());
 
-    auto pb_tangent = pb->var((nat_t)0, world.dbg("tup_s"));
+    auto pb_tangent = pb->var(0_s)->set(world.sym("tup_s"));
 
     DefArray tangents(pbs.size(),
                       [&](nat_t i) { return world.app(direct::op_cps2ds_dep(pbs[i]), world.extract(pb_tangent, i)); });
@@ -188,7 +190,7 @@ const Def* AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
     world.DLOG("shadow pb of pack: {} : {}", pb_pack, pb_pack->type());
 
     auto pb_type = pullback_type(pack->type(), f_arg_ty);
-    auto pb      = world.nom_lam(pb_type, world.dbg("pack_pb"));
+    auto pb      = world.nom_lam(pb_type)->set(world.sym("pack_pb"));
 
     world.DLOG("pb of pack: {} : {}", pb, pb_type);
 
@@ -305,7 +307,7 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         world.DLOG("ret_g_deriv_ty: {} ", ret_g_deriv_ty);
         auto c1_ty = ret_g_deriv_ty->as<Pi>();
         world.DLOG("c1_ty: (cn[X, cn[X+, cn E+]]) {}", c1_ty);
-        auto c1   = world.nom_lam(c1_ty, world.dbg("c1"));
+        auto c1   = world.nom_lam(c1_ty)->set(world.sym("c1"));
         auto res  = c1->var((nat_t)0);
         auto r_pb = c1->var(1);
         c1->app(true, aug_cont, {res, compose_continuation(e_pb, r_pb)});

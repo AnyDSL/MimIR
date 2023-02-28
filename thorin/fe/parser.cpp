@@ -146,7 +146,7 @@ std::pair<Loc, Sym> Parser::parse_sym(std::string_view ctxt) {
     return {prev_, world().sym("<error>")};
 }
 
-const Def* Parser::parse_type_ascr(std::string_view ctxt, Implicits* implicits) {
+Ref Parser::parse_type_ascr(std::string_view ctxt, Implicits* implicits) {
     if (accept(Tok::Tag::T_colon)) return parse_expr(ctxt, Tok::Prec::Bot, implicits);
     if (ctxt.empty()) return nullptr;
     syntax_err("':'", ctxt);
@@ -156,13 +156,13 @@ const Def* Parser::parse_type_ascr(std::string_view ctxt, Implicits* implicits) 
  * exprs
  */
 
-const Def* Parser::parse_expr(std::string_view ctxt, Tok::Prec p, Implicits* implicits) {
+Ref Parser::parse_expr(std::string_view ctxt, Tok::Prec p, Implicits* implicits) {
     auto track = tracker();
     auto lhs   = parse_primary_expr(ctxt, implicits);
     return parse_infix_expr(track, lhs, p, implicits);
 }
 
-const Def* Parser::parse_infix_expr(Tracker track, const Def* lhs, Tok::Prec p, Implicits* implicits) {
+Ref Parser::parse_infix_expr(Tracker track, const Def* lhs, Tok::Prec p, Implicits* implicits) {
     while (true) {
         // If operator in ahead has less left precedence: reduce (break).
         if (ahead().isa(Tok::Tag::T_extract)) {
@@ -191,7 +191,7 @@ const Def* Parser::parse_infix_expr(Tracker track, const Def* lhs, Tok::Prec p, 
     return lhs;
 }
 
-const Def* Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
+Ref Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
     auto [l, r] = Tok::prec(Tok::Prec::Extract);
     if (l < p) return nullptr;
     lex();
@@ -216,7 +216,7 @@ const Def* Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
     return world().extract(lhs, rhs)->set(track.loc());
 }
 
-const Def* Parser::parse_insert() {
+Ref Parser::parse_insert() {
     eat(Tok::Tag::K_ins);
     auto track = tracker();
 
@@ -231,7 +231,7 @@ const Def* Parser::parse_insert() {
     return world().insert(tuple, index, value)->set(track.loc());
 }
 
-const Def* Parser::parse_primary_expr(std::string_view ctxt, Implicits* implicits) {
+Ref Parser::parse_primary_expr(std::string_view ctxt, Implicits* implicits) {
     // clang-format off
     switch (ahead().tag()) {
         case Tok::Tag::D_quote_l: return parse_arr();
@@ -277,14 +277,14 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt, Implicits* implicit
     return nullptr;
 }
 
-const Def* Parser::parse_Cn() {
+Ref Parser::parse_Cn() {
     auto track = tracker();
     eat(Tok::Tag::K_Cn);
     auto dom = parse_ptrn(Tok::Tag::D_brckt_l, "domain of a continuation type");
     return world().cn(dom->type(world()))->set(track.loc());
 }
 
-const Def* Parser::parse_var() {
+Ref Parser::parse_var() {
     eat(Tok::Tag::T_at);
     auto [loc, sym] = parse_sym("variable");
     auto nom        = scopes_.find(loc, sym)->isa_nom();
@@ -292,7 +292,7 @@ const Def* Parser::parse_var() {
     return nom->var()->set(loc, sym);
 }
 
-const Def* Parser::parse_arr() {
+Ref Parser::parse_arr() {
     auto track = tracker();
     scopes_.push();
     eat(Tok::Tag::D_quote_l);
@@ -320,7 +320,7 @@ const Def* Parser::parse_arr() {
     return world().arr(shape, body)->set(track.loc());
 }
 
-const Def* Parser::parse_pack() {
+Ref Parser::parse_pack() {
     // TODO This doesn't work. Rework this!
     auto track = tracker();
     scopes_.push();
@@ -346,7 +346,7 @@ const Def* Parser::parse_pack() {
     return world().pack(shape, body)->set(track.loc());
 }
 
-const Def* Parser::parse_block() {
+Ref Parser::parse_block() {
     scopes_.push();
     eat(Tok::Tag::D_brace_l);
     auto res = parse_decls("block expression");
@@ -355,20 +355,20 @@ const Def* Parser::parse_block() {
     return res;
 }
 
-const Def* Parser::parse_sigma() {
+Ref Parser::parse_sigma() {
     auto track = tracker();
     auto bndr  = parse_tuple_ptrn(track, false, anonymous_);
     return bndr->type(world());
 }
 
-const Def* Parser::parse_tuple() {
+Ref Parser::parse_tuple() {
     auto track = tracker();
     DefVec ops;
     parse_list("tuple", Tok::Tag::D_paren_l, [&]() { ops.emplace_back(parse_expr("tuple element")); });
     return world().tuple(ops)->set(track.loc());
 }
 
-const Def* Parser::parse_type() {
+Ref Parser::parse_type() {
     auto track = tracker();
     eat(Tok::Tag::K_Type);
     auto [l, r] = Tok::prec(Tok::Prec::App);
@@ -376,7 +376,7 @@ const Def* Parser::parse_type() {
     return world().type(level)->set(track.loc());
 }
 
-const Def* Parser::parse_pi(Implicits* implicits) {
+Ref Parser::parse_pi(Implicits* implicits) {
     auto track = tracker();
     eat(Tok::Tag::T_Pi);
     scopes_.push();
@@ -412,7 +412,7 @@ const Def* Parser::parse_pi(Implicits* implicits) {
     return first;
 }
 
-const Def* Parser::parse_lit() {
+Ref Parser::parse_lit() {
     auto track  = tracker();
     auto lit    = lex();
     auto [_, r] = Tok::prec(Tok::Prec::Lit);
@@ -585,7 +585,7 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
  * decls
  */
 
-const Def* Parser::parse_decls(std::string_view ctxt) {
+Ref Parser::parse_decls(std::string_view ctxt) {
     while (true) {
         // clang-format off
         switch (ahead().tag()) {
@@ -613,7 +613,7 @@ void Parser::parse_ax() {
     auto [dialect, tag, sub] = Axiom::split(world(), ax.sym());
 
     if (!dialect) err(ax.loc(), "invalid axiom name '{}'", ax);
-    if (!sub) err(ax.loc(), "definition of axiom '{}' must not have sub in tag name", ax);
+    if (sub) err(ax.loc(), "definition of axiom '{}' must not have sub in tag name", ax);
 
     auto [it, is_new] = bootstrapper_.axioms.emplace(ax.sym(), h::AxiomInfo{});
     auto& [key, info] = *it;
@@ -654,8 +654,8 @@ void Parser::parse_ax() {
     info.pi = type->isa<Pi>() != nullptr;
 
     auto normalizer_name = accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom").second : Sym();
-    if (!is_new && !(info.normalizer || normalizer_name) && info.normalizer != normalizer_name)
-        err(ax.loc(), "all declarations of axiom '{}' have use the same normalizer name", ax);
+    if (!is_new && (info.normalizer && normalizer_name) && info.normalizer != normalizer_name)
+        err(ax.loc(), "all declarations of axiom '{}' must use the same normalizer name", ax);
     info.normalizer = normalizer_name;
 
     auto normalizer = [this](dialect_t d, tag_t t, sub_t s) -> Def::NormalizeFn {

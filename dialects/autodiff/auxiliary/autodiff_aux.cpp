@@ -6,13 +6,15 @@
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/mem/mem.h"
 
+using namespace std::literals;
+
 namespace thorin::autodiff {
 
 const Def* id_pullback(const Def* A) {
     auto& world       = A->world();
     auto arg_pb_ty    = pullback_type(A, A);
-    auto id_pb        = world.nom_lam(arg_pb_ty, world.dbg("id_pb"));
-    auto id_pb_scalar = id_pb->var((nat_t)0, world.dbg("s"));
+    auto id_pb        = world.nom_lam(arg_pb_ty)->set(world.sym("id_pb"));
+    auto id_pb_scalar = id_pb->var(0_s)->set(world.sym("s"));
     id_pb->app(true,
                id_pb->var(1), // can not use ret_var as the result might be higher order
                id_pb_scalar);
@@ -24,7 +26,7 @@ const Def* zero_pullback(const Def* E, const Def* A) {
     auto& world    = A->world();
     auto A_tangent = tangent_type_fun(A);
     auto pb_ty     = pullback_type(E, A);
-    auto pb        = world.nom_lam(pb_ty, world.dbg("zero_pb"));
+    auto pb        = world.nom_lam(pb_ty)->set(world.sym("zero_pb"));
     world.DLOG("zero_pullback for {} resp. {} (-> {})", E, A, A_tangent);
     pb->app(true, pb->var(1), op_zero(A_tangent));
     return pb;
@@ -129,7 +131,7 @@ const Def* zero_def(const Def* T) {
         return zero_arr;
     } else if (Idx::size(T)) {
         // TODO: real
-        auto zero = world.lit(T, 0, world.dbg("zero"));
+        auto zero = world.lit(T, 0)->set(world.sym("zero"));
         world.DLOG("zero_def for int is {}", zero);
         return zero;
     } else if (auto sig = T->isa<Sigma>()) {
@@ -234,8 +236,8 @@ const Def* compose_continuation(const Def* f, const Def* g) {
     auto H     = world.cn({A, world.cn(C)});
     auto Hcont = world.cn(B);
 
-    auto h     = world.nom_lam(H, world.dbg("comp_" + f->name() + "_" + g->name()));
-    auto hcont = world.nom_lam(Hcont, world.dbg("comp_" + f->name() + "_" + g->name() + "_cont"));
+    auto h     = world.nom_lam(H)->set(world.sym("comp_"s + f->name().str() + "_"s + g->name().str()));
+    auto hcont = world.nom_lam(Hcont)->set(world.sym("comp_"s + f->name().str() + "_"s + g->name().str() + "_cont"s));
 
     h->app(true, g, {h->var((nat_t)0), hcont});
 

@@ -63,7 +63,8 @@ const Def* DS2CPS::rewrite_lam(Lam* lam) {
     auto cps_ty = world().cn(sig);
     world().DLOG("cps type: {}", cps_ty);
 
-    auto cps_lam = world().nom_lam(cps_ty, world().dbg(lam->name() + "_cps"));
+    auto cps_lam = world().nom_lam(cps_ty)->set(lam->name());
+    cps_lam->debug_suffix("_cps");
 
     // rewrite vars of new function
     // calls handled separately
