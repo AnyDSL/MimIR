@@ -102,8 +102,7 @@ Res fold(u64 a, u64 b, [[maybe_unused]] bool nsw, [[maybe_unused]] bool nuw) {
 
 /// @attention Note that @p a and @p b are passed by reference as fold also commutes if possible. @sa commute().
 template<class Id, Id id>
-static Ref
-fold(World& world, Ref type, Ref& a, Ref& b, Ref mode = {}) {
+static Ref fold(World& world, Ref type, Ref& a, Ref& b, Ref mode = {}) {
     auto la = a->isa<Lit>(), lb = b->isa<Lit>();
 
     if (a->isa<Bot>() || b->isa<Bot>()) return world.bot(type);
@@ -146,8 +145,7 @@ fold(World& world, Ref type, Ref& a, Ref& b, Ref mode = {}) {
 /// (4) (lx op y) op      b    ->  lx op (y op b)
 /// ```
 template<class Id>
-static Ref
-reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref b) {
+static Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref b) {
     if (!is_associative(id)) return nullptr;
 
     auto la = a->isa<Lit>();
@@ -514,7 +512,8 @@ Ref normalize_conv(Ref dst_t, Ref c, Ref x) {
     if (s_t == d_t) return x;
     if (x->isa<Bot>()) return world.bot(d_t);
     if constexpr (id == conv::s) {
-        if (ls && ld && *ld < *ls) return world.dcall(dbg, conv::u, d, x); // just truncate - we don't care for signedness
+        if (ls && ld && *ld < *ls)
+            return world.dcall(dbg, conv::u, d, x); // just truncate - we don't care for signedness
     }
 
     if (auto l = isa_lit(x); l && ls && ld) {

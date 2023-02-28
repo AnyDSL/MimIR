@@ -13,7 +13,7 @@ Ref normalize_pass_phase(Ref type, Ref, Ref arg) {
         // TODO: remove when normalizers are fixed
         if (ax->flags() == flags_t(Axiom::Base<combine_pass_list>)) {
             auto arg_cpl = arg->as<App>();
-            arg = normalize_combine_pass_list(arg_cpl->type(), arg_cpl->callee(), arg_cpl->arg());
+            arg          = normalize_combine_pass_list(arg_cpl->type(), arg_cpl->callee(), arg_cpl->arg());
         } else {
             world.ELOG("pass_phase expects a pass_list as argument but got {}", arg);
         }

@@ -66,7 +66,7 @@ inline Ref op_lea(Ref ptr, Ref index) {
 }
 
 inline Ref op_lea_unsafe(Ref ptr, Ref i) {
-    World& w      = ptr->world();
+    World& w = ptr->world();
     return op_lea(ptr, w.call(core::conv::u, force<Ptr>(ptr->type())->arg(0)->arity(), i));
 }
 
@@ -105,7 +105,5 @@ inline Ref op_mslot(Ref type, Ref mem, Ref id) {
 Ref op_malloc(Ref type, Ref mem);
 Ref op_mslot(Ref type, Ref mem, Ref id);
 
-inline Ref mem_var(Lam* lam) {
-    return match<M>(lam->var(0_s)->type()) ? lam->var(0) : nullptr;
-}
+inline Ref mem_var(Lam* lam) { return match<M>(lam->var(0_s)->type()) ? lam->var(0) : nullptr; }
 } // namespace thorin::mem

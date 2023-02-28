@@ -177,8 +177,7 @@ static Ref fold(World& world, Ref type, Ref& a, Ref& b) {
 /// (4) (lx op y) op      b    ->  lx op (y op b)
 /// ```
 template<class Id>
-static Ref
-reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref b) {
+static Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref b) {
     if (!is_associative(id)) return nullptr;
 
     auto la = a->isa<Lit>();

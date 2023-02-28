@@ -28,10 +28,10 @@ const Def* LowerFor::rewrite(const Def* def) {
         { // construct yield
             auto [begin, end, step, acc] = for_lam->vars<4>();
             begin->set(w.sym("begin"));
-            end  ->set(w.sym("end"));
-            step ->set(w.sym("step"));
-            acc  ->set(w.sym("acc"));
-            auto yield_acc              = yield_lam->var();
+            end->set(w.sym("end"));
+            step->set(w.sym("step"));
+            acc->set(w.sym("acc"));
+            auto yield_acc = yield_lam->var();
 
             auto add = w.call(core::wrap::add, 0_n, Defs{begin, step});
             yield_lam->app(false, for_lam, {add, end, step, yield_acc});

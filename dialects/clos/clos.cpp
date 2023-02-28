@@ -165,8 +165,7 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                 register_pass<clos::clos2sjlj_pass, clos::Clos2SJLJ>(passes);
                 register_pass<clos::lower_typed_clos_pass, clos::LowerTypedClosWrapper>(passes);
                 // TODO:; remove after ho_codegen merge
-                passes[flags_t(Axiom::Base<clos::eta_red_bool_pass>)] = [&](World&, PipelineBuilder& builder,
-                                                                            Ref app) {
+                passes[flags_t(Axiom::Base<clos::eta_red_bool_pass>)] = [&](World&, PipelineBuilder& builder, Ref app) {
                     auto bb      = app->as<App>()->arg();
                     auto bb_only = bb->as<Lit>()->get<u64>();
                     builder.add_pass<EtaRed>(app, bb_only);

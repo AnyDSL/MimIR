@@ -24,7 +24,7 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
 
                     // name has the form %opt.tag where tag = [dialect]_dialect
                     // we want to extract the dialect part
-                    auto name            = dialect_axiom->name();
+                    auto name         = dialect_axiom->name();
                     auto [_, tag, __] = Axiom::split(world, name);
                     assert(tag->find('_') != std::string_view::npos && "dialect_phase: invalid dialect name");
                     auto dialect     = tag->substr(0, tag->find('_'));

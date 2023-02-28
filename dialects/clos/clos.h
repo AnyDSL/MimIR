@@ -156,9 +156,7 @@ inline Ref clos_remove_env(Ref tup_or_sig) {
     return (tup_or_sig->isa<Sigma>()) ? w.sigma(new_ops) : w.tuple(new_ops);
 }
 
-inline Ref clos_sub_env(Ref tup_or_sig, Ref new_env) {
-    return tup_or_sig->refine(Clos_Env_Param, new_env);
-}
+inline Ref clos_sub_env(Ref tup_or_sig, Ref new_env) { return tup_or_sig->refine(Clos_Env_Param, new_env); }
 ///@}
 
 } // namespace thorin::clos
