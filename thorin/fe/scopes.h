@@ -29,5 +29,5 @@ private:
     std::deque<Scope> scopes_;
 };
 
-}
-}
+} // namespace fe
+} // namespace thorin

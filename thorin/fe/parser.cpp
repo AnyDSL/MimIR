@@ -702,11 +702,11 @@ void Parser::parse_let() {
 }
 
 void Parser::parse_nom() {
-    auto track     = tracker();
-    auto tag       = lex().tag();
-    bool external  = accept(Tok::Tag::K_extern).has_value();
-    auto dbg       = parse_sym("nominal");
-    auto type      = accept(Tok::Tag::T_colon) ? parse_expr("type of a nominal") : world().type();
+    auto track    = tracker();
+    auto tag      = lex().tag();
+    bool external = accept(Tok::Tag::K_extern).has_value();
+    auto dbg      = parse_sym("nominal");
+    auto type     = accept(Tok::Tag::T_colon) ? parse_expr("type of a nominal") : world().type();
 
     Def* nom;
     switch (tag) {

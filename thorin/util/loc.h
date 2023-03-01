@@ -3,8 +3,8 @@
 #include <absl/container/flat_hash_map.h>
 #include <absl/container/flat_hash_set.h>
 
-#include "thorin/util/sym.h"
 #include "thorin/util/print.h"
+#include "thorin/util/sym.h"
 
 namespace thorin {
 
