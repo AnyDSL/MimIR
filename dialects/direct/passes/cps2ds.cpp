@@ -14,7 +14,7 @@ void CPS2DS::enter() {
         lam->world().DLOG("skipped non-nom {}", lam);
         return;
     }
-    world().DLOG("CPS2DS: {}", lam->name());
+    world().DLOG("CPS2DS: {}", lam->sym());
     rewrite_lam(lam);
 }
 
@@ -89,11 +89,11 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
                         }
 
                         // The continuation that receives the result of the cps function call.
-                        auto fun_cont = world.nom_lam(world.cn(inst_ret_ty))->set(curr_lam_->name());
+                        auto fun_cont = world.nom_lam(world.cn(inst_ret_ty))->set(curr_lam_->sym());
                         fun_cont->debug_suffix("_cont");
                         // Generate the cps function call `f a` -> `f_cps(a,cont)`
                         auto cps_call = world.app(cps_fun, {new_arg, fun_cont})->set(cps_call_);
-                        world.DLOG("  curr_lam {}", curr_lam_->name());
+                        world.DLOG("  curr_lam {}", curr_lam_->sym());
                         curr_lam_->set_body(cps_call);
 
                         // Fixme: would be great to PE the newly added overhead away..

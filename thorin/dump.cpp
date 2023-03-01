@@ -25,13 +25,13 @@ namespace thorin {
 
 static Def* isa_decl(const Def* def) {
     if (auto nom = def->isa_nom()) {
-        if (nom->is_external() || nom->isa<Lam>() || (nom->name() && !nom->name().is_anonymous())) return nom;
+        if (nom->is_external() || nom->isa<Lam>() || (nom->sym() && !nom->sym().is_anonymous())) return nom;
     }
     return nullptr;
 }
 
 static std::string id(const Def* def) {
-    if (def->is_external() || (!def->is_set() && def->isa<Lam>())) return def->name();
+    if (def->is_external() || (!def->is_set() && def->isa<Lam>())) return def->sym();
     return def->unique_name();
 }
 
@@ -122,7 +122,7 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
     } else if (auto top = u->isa<Top>()) {
         return print(os, "⊤:{}", top->type());
     } else if (auto axiom = u->isa<Axiom>()) {
-        const auto name = axiom->name();
+        const auto name = axiom->sym();
         return print(os, "{}{}", name[0] == '%' ? "" : "%", name);
     } else if (auto lit = u->isa<Lit>()) {
         if (lit->type()->isa<Nat>()) return print(os, "{}", lit->get());

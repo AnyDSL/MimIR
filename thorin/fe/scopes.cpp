@@ -9,7 +9,8 @@ void Scopes::pop() {
     scopes_.pop_back();
 }
 
-const Def* Scopes::find(Loc loc, Sym sym) const {
+const Def* Scopes::find(Dbg dbg) const {
+    auto [loc, sym] = dbg;
     if (sym.is_anonymous()) err(loc, "the symbol '_' is special and never binds to anything", sym);
 
     for (auto& scope : scopes_ | std::ranges::views::reverse) {
@@ -19,7 +20,8 @@ const Def* Scopes::find(Loc loc, Sym sym) const {
     err(loc, "symbol '{}' not found", sym);
 }
 
-void Scopes::bind(Scope* scope, Loc loc, Sym sym, const Def* def, bool rebind) {
+void Scopes::bind(Scope* scope, Dbg dbg, const Def* def, bool rebind) {
+    auto [loc, sym] = dbg;
     if (sym.is_anonymous()) return; // don't do anything with '_'
 
     if (rebind) {

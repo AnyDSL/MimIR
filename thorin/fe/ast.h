@@ -15,40 +15,29 @@ namespace fe {
 
 class Scopes;
 
-class AST {
-public:
-    AST(Loc loc)
-        : loc_(loc) {}
-    virtual ~AST() {}
-
-    Loc loc() const { return loc_; }
-
-private:
-    Loc loc_;
-};
-
 /*
  * Pattern
  */
 
-class Ptrn : public AST {
+class Ptrn {
 public:
-    Ptrn(Loc loc, Sym sym, bool rebind, const Def* type)
-        : AST(loc)
+    Ptrn(Dbg dbg, bool rebind, const Def* type)
+        : dbg_(dbg)
         , rebind_(rebind)
-        , sym_(sym)
         , type_(type) {}
+    virtual ~Ptrn() {}
 
+    Dbg dbg() const { return dbg_; }
+    Loc loc() const { return dbg_.loc; }
+    Sym sym() const { return dbg_.sym; }
     bool rebind() const { return rebind_; }
-    Sym sym() const { return sym_; }
-    bool is_anonymous() const { return sym_.is_anonymous(); }
+    bool is_anonymous() const { return sym().is_anonymous(); }
     virtual void bind(Scopes&, const Def*) const = 0;
     virtual const Def* type(World&) const        = 0;
 
 protected:
+    Dbg dbg_;
     bool rebind_;
-    Sym sym_;
-    Loc loc_;
     mutable const Def* type_;
 };
 
@@ -56,8 +45,8 @@ using Ptrns = std::deque<std::unique_ptr<Ptrn>>;
 
 class IdPtrn : public Ptrn {
 public:
-    IdPtrn(Loc loc, Sym sym, bool rebind, const Def* type)
-        : Ptrn(loc, sym, rebind, type) {}
+    IdPtrn(Dbg dbg, bool rebind, const Def* type)
+        : Ptrn(dbg, rebind, type) {}
 
     void bind(Scopes&, const Def*) const override;
     const Def* type(World&) const override;
@@ -65,8 +54,8 @@ public:
 
 class TuplePtrn : public Ptrn {
 public:
-    TuplePtrn(Loc loc, Sym sym, bool rebind, Ptrns&& ptrns, const Def* type, std::vector<Infer*>&& infers)
-        : Ptrn(loc, sym, rebind, type)
+    TuplePtrn(Dbg dbg, bool rebind, Ptrns&& ptrns, const Def* type, std::vector<Infer*>&& infers)
+        : Ptrn(dbg, rebind, type)
         , ptrns_(std::move(ptrns))
         , infers_(std::move(infers)) {}
 

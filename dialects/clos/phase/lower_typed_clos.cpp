@@ -44,7 +44,7 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
     }));
     if (lam->is_basicblock() && adjust_bb_type) new_dom = insert_ret(new_dom, dummy_ret_->type());
     auto new_type = w.cn(new_dom);
-    auto new_lam  = lam->stub(w, new_type)->set(lam->name());
+    auto new_lam  = lam->stub(w, new_type)->set(lam->sym());
     w.DLOG("stub {} ~> {}", lam, new_lam);
     new_lam->set(lam->filter(), lam->body());
     if (lam->is_external()) {
@@ -118,7 +118,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
         } else if (!mode) {
             auto mem_ptr = (c.get() == attr::esc) ? mem::op_alloc(env->type(), lcm_) : mem::op_slot(env->type(), lcm_);
             auto mem     = w.extract(mem_ptr, 0_u64);
-            auto env_ptr = mem_ptr->proj(1_u64); //, w.dbg(fn->name() + "_env"));
+            auto env_ptr = mem_ptr->proj(1_u64); //, w.dbg(fn->sym() + "_env"));
             lcm_         = w.call<mem::store>(Defs{mem, env_ptr, env});
             map(lvm_, lcm_);
             env = env_ptr;

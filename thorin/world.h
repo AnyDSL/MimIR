@@ -153,14 +153,13 @@ public:
     const auto& externals() const { return move_.externals; }
     bool empty() { return move_.externals.empty(); }
     void make_external(Def* def) {
-        assert(def->name());
-        auto name = def->name();
-        move_.externals.emplace(name, def); // TODO enable assert again
+        assert(def->sym());
+        move_.externals.emplace(def->sym(), def); // TODO enable assert again
         // auto [i, ins] = move_.externals.emplace(name, def);
         // assert((ins || (def == i->second)) && "two different externals registered with the same name");
     }
-    void make_internal(Def* def) { move_.externals.erase(def->name()); }
-    bool is_external(Ref def) { return move_.externals.contains(def->name()); }
+    void make_internal(Def* def) { move_.externals.erase(def->sym()); }
+    bool is_external(Ref def) { return move_.externals.contains(def->sym()); }
     Def* lookup(const std::string& name) {
         auto i = move_.externals.find(name);
         return i != move_.externals.end() ? i->second : nullptr;
@@ -622,7 +621,7 @@ private:
         Move(World&);
 
         absl::btree_map<u64, const Axiom*> axioms;
-        absl::btree_map<std::string, Def*> externals;
+        absl::btree_map<std::string, Def*> externals; // TODO use Sym
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
         DefDefMap<DefArray> cache;
         std::unique_ptr<Checker> checker;

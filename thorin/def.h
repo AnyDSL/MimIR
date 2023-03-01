@@ -155,32 +155,32 @@ inline unsigned operator!=(Dep d1, unsigned d2) { return unsigned(d1) != d2; }
 /// Use as mixin to declare setters for Def::loc, Def::name, and Def::meta using a *covariant* return type.
 #define THORIN_SETTERS(T)                                                                           \
 public:                                                                                             \
-    const T* set(Loc l, Sym n, const Def* m) const { loc_ = l; name_ = n; meta_ = m; return this; } \
-    const T* set(Loc l, Sym n              ) const { loc_ = l; name_ = n;            return this; } \
-    const T* set(Loc l,        const Def* m) const { loc_ = l;            meta_ = m; return this; } \
-    const T* set(       Sym n, const Def* m) const {           name_ = n; meta_ = m; return this; } \
-    const T* set(Loc l                     ) const { loc_ = l;                       return this; } \
-    const T* set(       Sym n              ) const {           name_ = n;            return this; } \
-          T* set(Loc l, Sym n, const Def* m)       { loc_ = l; name_ = n; meta_ = m; return this; } \
-          T* set(Loc l, Sym n              )       { loc_ = l; name_ = n;            return this; } \
-          T* set(Loc l,        const Def* m)       { loc_ = l;            meta_ = m; return this; } \
-          T* set(       Sym n, const Def* m)       {           name_ = n; meta_ = m; return this; } \
-          T* set(Loc l                     )       { loc_ = l;                       return this; } \
-          T* set(       Sym n              )       {           name_ = n;            return this; } \
-    const T* set_meta(         const Def* m) const {                      meta_ = m; return this; } \
-          T* set_meta(         const Def* m)       {                      meta_ = m; return this; } \
-    const T* set(std::pair<Loc, Sym> p) const { loc_ = p.first; name_ = p.second;    return this; } \
-          T* set(std::pair<Loc, Sym> p)       { loc_ = p.first; name_ = p.second;    return this; }
+    const T* set(Loc l, Sym s, const Def* m) const { dbg_.loc = l; dbg_.sym = s; meta_ = m; return this; } \
+    const T* set(Loc l, Sym s              ) const { dbg_.loc = l; dbg_.sym = s;            return this; } \
+    const T* set(Loc l,        const Def* m) const { dbg_.loc = l;               meta_ = m; return this; } \
+    const T* set(       Sym s, const Def* m) const {               dbg_.sym = s; meta_ = m; return this; } \
+    const T* set(Loc l                     ) const { dbg_.loc = l;                          return this; } \
+    const T* set(       Sym s              ) const {               dbg_.sym = s;            return this; } \
+          T* set(Loc l, Sym s, const Def* m)       { dbg_.loc = l; dbg_.sym = s; meta_ = m; return this; } \
+          T* set(Loc l, Sym s              )       { dbg_.loc = l; dbg_.sym = s;            return this; } \
+          T* set(Loc l,        const Def* m)       { dbg_.loc = l;               meta_ = m; return this; } \
+          T* set(       Sym s, const Def* m)       {               dbg_.sym = s; meta_ = m; return this; } \
+          T* set(Loc l                     )       { dbg_.loc = l;                          return this; } \
+          T* set(       Sym s              )       {               dbg_.sym = s;            return this; } \
+    const T* set_meta(         const Def* m) const {                             meta_ = m; return this; } \
+          T* set_meta(         const Def* m)       {                             meta_ = m; return this; } \
+    const T* set(Dbg d) const { dbg_ = d; return this; }                                                   \
+          T* set(Dbg d)       { dbg_ = d; return this; }
 // clang-format on
 
-#define THORIN_DEF_MIXIN_3(T, S, N)                                                   \
-    THORIN_SETTERS(T)                                                                 \
-    T* stub(World& w, const Def* type) { return stub_(w, type)->set(loc(), name()); } \
-    static constexpr auto Node = N;                                                   \
-                                                                                      \
-private:                                                                              \
-    const Def* rebuild_(World&, const Def*, Defs) const override;                     \
-    T* stub_(World&, const Def*) override S;                                          \
+#define THORIN_DEF_MIXIN_3(T, S, N)                                           \
+    THORIN_SETTERS(T)                                                         \
+    T* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg()); } \
+    static constexpr auto Node = N;                                           \
+                                                                              \
+private:                                                                      \
+    const Def* rebuild_(World&, const Def*, Defs) const override;             \
+    T* stub_(World&, const Def*) override S;                                  \
     friend class World;
 
 #define THORIN_DEF_MIXIN_2(T, S) THORIN_DEF_MIXIN_3(T, S, Node::T)
@@ -377,7 +377,7 @@ public:
     void make_internal();
     ///@}
 
-    /// @name name, location & meta
+    /// @name Dbg & meta
     ///@{
     std::string unique_name() const; ///< name + "_" + Def::gid
     THORIN_SETTERS(Def)
@@ -389,9 +389,9 @@ public:
     const Def* debug_prefix(std::string) const { return this; }
     const Def* debug_suffix(std::string) const { return this; }
 #endif
-    Loc loc() const { return loc_; }
-    Sym name() const { return name_; }
-    std::pair<Loc, Sym> loc_name() const { return {loc_, name_}; }
+    Dbg dbg() const { return dbg_; }
+    Loc loc() const { return dbg_.loc; }
+    Sym sym() const { return dbg_.sym; }
     const Def* meta() const { return meta_; }
     ///@}
 
@@ -440,8 +440,8 @@ public:
     const Def* reduce_rec() const;
     ///@}
 
-    const Def* rebuild(World& w, const Def* type, Defs ops) const { return rebuild_(w, type, ops)->set(loc(), name()); }
-    Def* stub(World& w, const Def* type) { return stub_(w, type)->set(loc(), name()); }
+    const Def* rebuild(World& w, const Def* type, Defs ops) const { return rebuild_(w, type, ops)->set(dbg()); }
+    Def* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg()); }
 
     /// @name virtual methods
     ///@{
@@ -488,8 +488,7 @@ protected:
     u32 gid_;
     u32 num_ops_;
     mutable Uses uses_;
-    mutable Loc loc_;
-    mutable Sym name_;
+    mutable Dbg dbg_;
     mutable const Def* meta_;
 
 private:

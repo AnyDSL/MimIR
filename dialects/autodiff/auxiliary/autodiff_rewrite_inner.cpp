@@ -46,8 +46,8 @@ const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
     }
     // TODO: better fix (another pass as analysis?)
     // TODO: handle open functions
-    if (is_open_continuation(lam) || lam->name()->find("ret") != std::string::npos ||
-        lam->name()->find("_cont") != std::string::npos) {
+    if (is_open_continuation(lam) || lam->sym()->find("ret") != std::string::npos ||
+        lam->sym()->find("_cont") != std::string::npos) {
         // A open continuation behaves the same as return:
         // ```
         // cont: Cn[X]
@@ -64,7 +64,7 @@ const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
         world.DLOG("pb type is {}", pb_ty);
         auto aug_ty = world.cn({aug_dom, pb_ty});
         world.DLOG("augmented type is {}", aug_ty);
-        auto aug_lam              = world.nom_lam(aug_ty)->set(world.sym("aug_"s + lam->name().str()));
+        auto aug_lam              = world.nom_lam(aug_ty)->set(world.sym("aug_"s + lam->sym().str()));
         auto aug_var              = aug_lam->var((nat_t)0);
         augmented[lam->var()]     = aug_var;
         augmented[lam]            = aug_lam; // TODO: only one of these two
@@ -366,11 +366,11 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         world.DLOG("Augment axiom: {} : {}", ax, ax->type());
         world.DLOG("axiom curry: {}", ax->curry());
         world.DLOG("axiom flags: {}", ax->flags());
-        std::string diff_name = ax->name();
+        std::string diff_name = ax->sym();
         findAndReplaceAll(diff_name, ".", "_");
         findAndReplaceAll(diff_name, "%", "");
         diff_name = "internal_diff_" + diff_name;
-        world.DLOG("axiom name: {}", ax->name());
+        world.DLOG("axiom name: {}", ax->sym());
         world.DLOG("axiom function name: {}", diff_name);
 
         auto diff_fun = world.lookup(diff_name);

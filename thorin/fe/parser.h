@@ -55,13 +55,14 @@ private:
             , pos_(pos) {}
 
         Loc loc() const { return {parser_.prev_.file, pos_, parser_.prev_.finis}; }
+        Dbg dbg(Sym sym) const { return {loc(), sym}; }
 
     private:
         Parser& parser_;
         Pos pos_;
     };
 
-    std::pair<Loc, Sym> parse_sym(std::string_view ctxt = {});
+    Dbg parse_sym(std::string_view ctxt = {});
     void parse_import();
     Ref parse_type_ascr(std::string_view ctxt, Implicits*);
 
@@ -105,7 +106,7 @@ private:
     void parse_nom();
     /// If @p sym is **not** empty, this is an inline definition of @p sym,
     /// otherwise it's a standalone definition.
-    void parse_def(Loc loc = {}, Sym sym = {});
+    void parse_def(Dbg dbg = {});
     ///@}
 
     template<class F>

@@ -140,8 +140,8 @@ void Parser::parse_import() {
     imported_.merge(parser.imported_);
 }
 
-std::pair<Loc, Sym> Parser::parse_sym(std::string_view ctxt) {
-    if (auto id = accept(Tok::Tag::M_id)) return {id->loc(), id->sym()};
+Dbg Parser::parse_sym(std::string_view ctxt) {
+    if (auto id = accept(Tok::Tag::M_id)) return {id->dbg()};
     syntax_err("identifier", ctxt);
     return {prev_, world().sym("<error>")};
 }
@@ -205,7 +205,7 @@ Ref Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
             if (meta->arity() == sigma->arity()) {
                 size_t a = sigma->num_ops();
                 for (size_t i = 0; i != a; ++i) {
-                    if (meta->proj(a, i)->name() == tok.sym()) return world().extract(lhs, a, i)->set(track.loc());
+                    if (meta->proj(a, i)->sym() == tok.sym()) return world().extract(lhs, a, i)->set(track.loc());
                 }
             }
             err(tok.loc(), "could not find elemement '{}' to extract from '{}' of type '{}'", tok.sym(), lhs, sigma);
@@ -259,16 +259,10 @@ Ref Parser::parse_primary_expr(std::string_view ctxt, Implicits* implicits) {
         case Tok::Tag::L_s:
         case Tok::Tag::L_u:
         case Tok::Tag::L_r:       return parse_lit();
-        case Tok::Tag::M_id: {
-            auto [loc, sym] = parse_sym();
-            return scopes_.find(loc, sym);
-        }
+        case Tok::Tag::M_id:      return scopes_.find(parse_sym());
         case Tok::Tag::M_i:       return lex().index();
         case Tok::Tag::K_ins:     return parse_insert();
-        case Tok::Tag::M_ax: {
-            auto tok = lex();
-            return scopes_.find(tok.loc(), tok.sym());
-        }
+        case Tok::Tag::M_ax:      return scopes_.find(lex().dbg());
         default:
             if (ctxt.empty()) return nullptr;
             syntax_err("primary expression", ctxt);
@@ -286,10 +280,10 @@ Ref Parser::parse_Cn() {
 
 Ref Parser::parse_var() {
     eat(Tok::Tag::T_at);
-    auto [loc, sym] = parse_sym("variable");
-    auto nom        = scopes_.find(loc, sym)->isa_nom();
+    auto dbg = parse_sym("variable");
+    auto nom = scopes_.find(dbg)->isa_nom();
     if (!nom) err(prev_, "variable must reference a nominal");
-    return nom->var()->set(loc, sym);
+    return nom->var()->set(dbg);
 }
 
 Ref Parser::parse_arr() {
@@ -306,7 +300,7 @@ Ref Parser::parse_arr() {
         auto shape = parse_expr("shape of an array");
         auto type  = world().nom_infer_univ();
         arr        = world().nom_arr(type)->set_shape(shape);
-        scopes_.bind(id.loc(), id.sym(), arr->var()->set(id.loc(), id.sym()));
+        scopes_.bind(id.dbg(), arr->var()->set(id.dbg()));
     } else {
         shape = parse_expr("shape of an array");
     }
@@ -334,7 +328,7 @@ Ref Parser::parse_pack() {
 
         shape      = parse_expr("shape of a pack");
         auto infer = world().nom_infer(world().type_idx(shape))->set(id.sym());
-        scopes_.bind(id.loc(), id.sym(), infer);
+        scopes_.bind(id.dbg(), infer);
     } else {
         shape = parse_expr("shape of a pack");
     }
@@ -391,7 +385,7 @@ Ref Parser::parse_pi(Implicits* implicits) {
             err(dot->loc(), "implicit not allowed in this context");
 
         auto dom = parse_ptrn(Tok::Tag::D_brckt_l, "domain of a dependent function type", Tok::Prec::App);
-        auto pi  = world().nom_pi(world().type_infer_univ())->set(dom->loc(), dom->sym())->set_dom(dom->type(world()));
+        auto pi  = world().nom_pi(world().type_infer_univ())->set(dom->dbg())->set_dom(dom->type(world()));
         auto var = pi->var()->set(dom->sym());
         first    = first ? first : pi;
 
@@ -499,7 +493,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
             sym = eat(Tok::Tag::M_id).sym();
             eat(Tok::Tag::T_colon);
             auto type = parse_expr(ctxt, prec);
-            return std::make_unique<IdPtrn>(track.loc(), sym, rebind, type);
+            return std::make_unique<IdPtrn>(track.dbg(sym), rebind, type);
         } else {
             // p ->  s                  b ->    e    where e == id
             // p -> 's
@@ -507,18 +501,18 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
                 // p ->  s
                 // p -> 's
                 sym = eat(Tok::Tag::M_id).sym();
-                return std::make_unique<IdPtrn>(track.loc(), sym, rebind, nullptr);
+                return std::make_unique<IdPtrn>(track.dbg(sym), rebind, nullptr);
             } else {
                 // b ->    e    where e == id
                 auto type = parse_expr(ctxt, prec);
-                return std::make_unique<IdPtrn>(track.loc(), sym, rebind, type);
+                return std::make_unique<IdPtrn>(track.dbg(sym), rebind, type);
             }
         }
     } else if (b) {
         // b ->  e    where e != id
         if (apos) err(apos->loc(), "you can only prefix identifiers with apostrophe for rebinding");
         auto type = parse_expr(ctxt, prec);
-        return std::make_unique<IdPtrn>(track.loc(), sym, rebind, type);
+        return std::make_unique<IdPtrn>(track.dbg(sym), rebind, type);
     } else if (!ctxt.empty()) {
         // p -> ↯
         syntax_err("pattern", ctxt);
@@ -551,11 +545,10 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
             auto type = parse_expr("type of an identifier group within a tuple pattern");
 
             for (auto tok : sym_toks) {
-                auto [loc, sym] = std::pair(tok.loc(), tok.sym());
-                infers.emplace_back(world().nom_infer(type)->set(loc, sym));
+                infers.emplace_back(world().nom_infer(type)->set(tok.dbg()));
                 fields.emplace_back(world().tuple_str(sym));
                 ops.emplace_back(type);
-                ptrns.emplace_back(std::make_unique<IdPtrn>(loc, sym, false, type));
+                ptrns.emplace_back(std::make_unique<IdPtrn>(tok.dbg(), false, type));
             }
         } else {
             auto ptrn = parse_ptrn(delim_l, "element of a tuple pattern");
@@ -564,7 +557,7 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
             if (b) {
                 // If we are able to parse more stuff, we got an expression instead of just a binder.
                 if (auto expr = parse_infix_expr(track, type); expr != type) {
-                    ptrn = std::make_unique<IdPtrn>(track.loc(), anonymous_, false, expr);
+                    ptrn = std::make_unique<IdPtrn>(track.dbg(anonymous_), false, expr);
                     type = ptrn->type(world());
                 }
             }
@@ -578,7 +571,7 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
     scopes_.pop();
 
     // TODO parse type
-    return std::make_unique<TuplePtrn>(track.loc(), sym, rebind, std::move(ptrns), nullptr, std::move(infers));
+    return std::make_unique<TuplePtrn>(track.dbg(sym), rebind, std::move(ptrns), nullptr, std::move(infers));
 }
 
 /*
@@ -636,8 +629,12 @@ void Parser::parse_ax() {
     if (ahead().isa(Tok::Tag::D_paren_l)) {
         parse_list("tag list of an axiom", Tok::Tag::D_paren_l, [&]() {
             auto& aliases = new_subs.emplace_back();
-            aliases.emplace_back(parse_sym("tag of an axiom").second);
-            while (accept(Tok::Tag::T_assign)) aliases.emplace_back(parse_sym("alias of an axiom tag").second);
+            auto [_, tag] = parse_sym("tag of an axiom");
+            aliases.emplace_back(tag);
+            while (accept(Tok::Tag::T_assign)) {
+                auto [_, alias] = parse_sym("alias of an axiom tag");
+                aliases.emplace_back(alias);
+            }
         });
     }
 
@@ -653,7 +650,7 @@ void Parser::parse_ax() {
         err(ax.loc(), "all declarations of axiom '{}' have to be function types if any is", ax);
     info.pi = type->isa<Pi>() != nullptr;
 
-    auto normalizer_name = accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom").second : Sym();
+    auto normalizer_name = accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom").sym : Sym();
     if (!is_new && (info.normalizer && normalizer_name) && info.normalizer != normalizer_name)
         err(ax.loc(), "all declarations of axiom '{}' must use the same normalizer name", ax);
     info.normalizer = normalizer_name;
@@ -679,14 +676,14 @@ void Parser::parse_ax() {
     sub_t s     = info.subs.size();
     if (new_subs.empty()) {
         auto axiom = world().axiom(normalizer(d, t, 0), curry, trip, type, d, t, 0)->set(ax.loc(), ax.sym(), meta);
-        scopes_.bind(ax.loc(), ax.sym(), axiom);
+        scopes_.bind(ax.dbg(), axiom);
     } else {
         for (const auto& sub : new_subs) {
             auto name  = world().sym(ax.sym().str() + "."s + sub.front().str());
             auto axiom = world().axiom(normalizer(d, t, s), curry, trip, type, d, t, s)->set(track.loc(), name, meta);
             for (auto& alias : sub) {
-                auto name = world().sym(ax.sym().str() + "."s + alias.str());
-                scopes_.bind(prev_, name, axiom);
+                auto sym = world().sym(ax.sym().str() + "."s + alias.str());
+                scopes_.bind({prev_, sym}, axiom);
             }
             ++s;
         }
@@ -705,18 +702,18 @@ void Parser::parse_let() {
 }
 
 void Parser::parse_nom() {
-    auto track      = tracker();
-    auto tag        = lex().tag();
-    bool external   = accept(Tok::Tag::K_extern).has_value();
-    auto [loc, sym] = parse_sym("nominal");
-    auto type       = accept(Tok::Tag::T_colon) ? parse_expr("type of a nominal") : world().type();
+    auto track     = tracker();
+    auto tag       = lex().tag();
+    bool external  = accept(Tok::Tag::K_extern).has_value();
+    auto dbg       = parse_sym("nominal");
+    auto type      = accept(Tok::Tag::T_colon) ? parse_expr("type of a nominal") : world().type();
 
     Def* nom;
     switch (tag) {
         case Tok::Tag::K_Sigma: {
             expect(Tok::Tag::T_comma, "nominal Sigma");
             auto arity = expect(Tok::Tag::L_u, "arity of a nominal Sigma");
-            nom        = world().nom_sigma(type, arity.u())->set(loc, sym);
+            nom        = world().nom_sigma(type, arity.u())->set(dbg);
             break;
         }
         case Tok::Tag::K_Arr: {
@@ -725,23 +722,23 @@ void Parser::parse_nom() {
             nom        = world().nom_arr(type)->set(track.loc())->set_shape(shape);
             break;
         }
-        case Tok::Tag::K_pack: nom = world().nom_pack(type)->set(loc, sym); break;
+        case Tok::Tag::K_pack: nom = world().nom_pack(type)->set(dbg); break;
         case Tok::Tag::K_Pi: {
             expect(Tok::Tag::T_comma, "nominal Pi");
             auto dom = parse_expr("domain of a nominal Pi");
-            nom      = world().nom_pi(type)->set(loc, sym)->set_dom(dom);
+            nom      = world().nom_pi(type)->set(dbg)->set_dom(dom);
             break;
         }
         default: unreachable();
     }
-    scopes_.bind(loc, sym, nom);
+    scopes_.bind(dbg, nom);
 
     scopes_.push();
     if (external) nom->make_external();
 
     scopes_.push();
     if (ahead().isa(Tok::Tag::T_assign))
-        parse_def(loc, sym);
+        parse_def(dbg);
     else
         expect(Tok::Tag::T_semicolon, "end of a nominal");
 
@@ -751,12 +748,12 @@ void Parser::parse_nom() {
 
 Lam* Parser::parse_lam(bool decl) {
     // TODO .fn/.fun
-    auto track      = tracker();
-    auto tok        = lex();
-    bool is_cn      = tok.isa(Tok::Tag::K_cn) || tok.isa(Tok::Tag::K_con);
-    auto prec       = is_cn ? Tok::Prec::Bot : Tok::Prec::Pi;
-    bool external   = decl && accept(Tok::Tag::K_extern).has_value();
-    auto [loc, sym] = decl ? parse_sym("nominal lambda") : std::pair(prev_, anonymous_);
+    auto track    = tracker();
+    auto tok      = lex();
+    bool is_cn    = tok.isa(Tok::Tag::K_cn) || tok.isa(Tok::Tag::K_con);
+    auto prec     = is_cn ? Tok::Prec::Bot : Tok::Prec::Pi;
+    bool external = decl && accept(Tok::Tag::K_extern).has_value();
+    auto dbg      = decl ? parse_sym("nominal lambda") : Dbg{prev_, anonymous_};
 
     auto outer = scopes_.curr();
     scopes_.push();
@@ -779,7 +776,7 @@ Lam* Parser::parse_lam(bool decl) {
 
         if (first == nullptr) {
             first = lam;
-            lam->set(track.loc(), sym);
+            lam->set(dbg.sym);
             if (external) first->make_external();
         }
 
@@ -810,7 +807,7 @@ Lam* Parser::parse_lam(bool decl) {
         pi->set_codom(codom);
         Scope scope(lam);
         ScopeRewriter rw(world(), scope);
-        rw.map(lam->var(), pi->var()->set(lam->var()->loc_name()));
+        rw.map(lam->var(), pi->var()->set(lam->var()->dbg()));
 
         // Now update.
         codom = rw.rewrite(codom);
@@ -819,7 +816,7 @@ Lam* Parser::parse_lam(bool decl) {
         codom = pi;
     }
 
-    scopes_.bind(outer, loc, sym, first);
+    scopes_.bind(outer, dbg, first);
 
     auto body = accept(Tok::Tag::T_assign) ? parse_decls("body of a lambda") : nullptr;
     if (!body) {
@@ -835,17 +832,19 @@ Lam* Parser::parse_lam(bool decl) {
 
     if (decl) expect(Tok::Tag::T_semicolon, "end of lambda");
 
+    first->set(track.loc());
+
     scopes_.pop();
     return first;
 }
 
-void Parser::parse_def(Loc loc /*= {}*/, Sym sym /*= {}*/) {
-    if (!sym) {
+void Parser::parse_def(Dbg dbg /*= {}*/) {
+    if (!dbg.sym) {
         eat(Tok::Tag::K_def);
-        std::tie(loc, sym) = parse_sym("nominal definition");
+        dbg = parse_sym("nominal definition");
     }
 
-    auto nom = scopes_.find(loc, sym)->as_nom();
+    auto nom = scopes_.find(dbg)->as_nom();
     expect(Tok::Tag::T_assign, "nominal definition");
 
     size_t i = nom->first_dependend_op();
