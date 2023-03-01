@@ -52,7 +52,8 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
         new_lam->make_external();
     }
     const Def* lcm = mem::mem_var(new_lam);
-    const Def* env = new_lam->var(Clos_Env_Param); //, (mode != No_Env) ? w.dbg("closure_env") : lam->var(Clos_Env_Param)->dbg());
+    const Def* env =
+        new_lam->var(Clos_Env_Param); //, (mode != No_Env) ? w.dbg("closure_env") : lam->var(Clos_Env_Param)->dbg());
     if (mode == Box) {
         auto env_mem = w.call<mem::load>(Defs{lcm, env});
         lcm          = w.extract(env_mem, 0_u64)->set(sym_.mem);

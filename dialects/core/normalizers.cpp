@@ -511,8 +511,7 @@ Ref normalize_conv(Ref dst_t, Ref c, Ref x) {
     if (s_t == d_t) return x;
     if (x->isa<Bot>()) return world.bot(d_t);
     if constexpr (id == conv::s) {
-        if (ls && ld && *ld < *ls)
-            return world.call(conv::u, d, x); // just truncate - we don't care for signedness
+        if (ls && ld && *ld < *ls) return world.call(conv::u, d, x); // just truncate - we don't care for signedness
     }
 
     if (auto l = isa_lit(x); l && ls && ld) {
@@ -605,8 +604,7 @@ Ref normalize_trait(Ref nat, Ref callee, Ref type) {
     } else if (auto arr = type->isa_structural<Arr>()) {
         auto align = op(trait::align, arr->body());
         if constexpr (id == trait::align) return align;
-        if (auto b = op(trait::size, arr->body())->isa<Lit>())
-            return world.call(core::nop::mul, Defs{arr->shape(), b});
+        if (auto b = op(trait::size, arr->body())->isa<Lit>()) return world.call(core::nop::mul, Defs{arr->shape(), b});
     } else if (auto join = type->isa<Join>()) {
         if (auto sigma = convert(join)) return core::op(id, sigma);
     }

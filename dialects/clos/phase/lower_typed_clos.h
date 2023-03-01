@@ -30,10 +30,9 @@ public:
     LowerTypedClos(World& world)
         : Phase(world, "lower_typed_clos", true)
         , dummy_ret_(world.bot(world.cn(mem::type_mem(world))))
-        , sym_{
-            .closure_env = world.sym("closure_env"),
-            .mem         = world.sym("mem"),
-            .unboxed_env = world.sym("unboxed_env")} {}
+        , sym_{.closure_env = world.sym("closure_env"),
+               .mem         = world.sym("mem"),
+               .unboxed_env = world.sym("unboxed_env")} {}
 
     void start() override;
 

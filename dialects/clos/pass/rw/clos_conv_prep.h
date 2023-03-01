@@ -17,11 +17,10 @@ public:
         , eta_exp_(eta_exp)
         , old2wrapper_()
         , lam2fscope_()
-        , sym_{
-            .free_ret     = world().sym("free_ret"),
-            .eta_cont     = world().sym("eta_cont"),
-            .fstclass_ret = world().sym("fstclass_ret"),
-            .eta_br       = world().sym("eta_br") } {}
+        , sym_{.free_ret     = world().sym("free_ret"),
+               .eta_cont     = world().sym("eta_cont"),
+               .fstclass_ret = world().sym("fstclass_ret"),
+               .eta_br       = world().sym("eta_br")} {}
 
     void enter() override;
     const Def* rewrite(const Def*) override;

@@ -134,9 +134,9 @@ void ClosConv::rewrite_body(Lam* new_lam, Def2Def& subst) {
         subst.emplace(env, env_param);
     } else {
         for (size_t i = 0; i < num_fvs; i++) {
-            auto fv  = env->op(i);
+            auto fv = env->op(i);
             // TODO
-            //auto dbg = (fv->name().empty()) ? w.dbg("fv_" + std::to_string(i)) : w.dbg("fv_" + env->op(i)->name());
+            // auto dbg = (fv->name().empty()) ? w.dbg("fv_" + std::to_string(i)) : w.dbg("fv_" + env->op(i)->name());
             subst.emplace(fv, env_param->proj(i));
         }
     }
@@ -285,7 +285,8 @@ ClosConv::Stub ClosConv::make_stub(const DefSet& fvs, Lam* old_lam, Def2Def& sub
     auto new_fn_type = type_clos(old_lam->type(), subst, env_type)->as<Pi>();
     auto new_lam     = old_lam->stub(w, new_fn_type);
     // TODO
-    //new_lam->set_debug_name((old_lam->is_external() || !old_lam->is_set()) ? "cc_" + old_lam->name() : old_lam->name());
+    // new_lam->set_debug_name((old_lam->is_external() || !old_lam->is_set()) ? "cc_" + old_lam->name() :
+    // old_lam->name());
     if (!isa_workable(old_lam)) {
         auto new_ext_type = w.cn(clos_remove_env(new_fn_type->dom()));
         auto new_ext_lam  = old_lam->stub(w, new_ext_type);

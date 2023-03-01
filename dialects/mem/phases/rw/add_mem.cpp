@@ -194,8 +194,8 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
 
     // call-site of a continuation
     if (auto app = def->isa<App>(); app && (app->callee()->dep() & Dep::Var)) {
-        return mem_rewritten_[def] = app->rebuild(
-                   world(), app->type(), {add_mem_to_lams(place, app->callee()), rewrite_arg(app->arg())});
+        return mem_rewritten_[def] =
+                   app->rebuild(world(), app->type(), {add_mem_to_lams(place, app->callee()), rewrite_arg(app->arg())});
     }
 
     // call-site of an axiom (assuming mems are only in the final app..)
@@ -214,8 +214,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
             }
         }
         auto rewritten = mem_rewritten_[def] =
-            app->rebuild(world(), app->type(),
-                         {add_mem_to_lams(place, app->callee()), world().tuple(new_args)});
+            app->rebuild(world(), app->type(), {add_mem_to_lams(place, app->callee()), world().tuple(new_args)});
         if (match<mem::M>(rewritten->type())) val2mem_[place] = rewritten;
         if (rewritten->num_projs() > 0 && match<mem::M>(rewritten->proj(0)->type())) {
             mem_rewritten_[rewritten->proj(0)] = rewritten->proj(0);

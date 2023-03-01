@@ -94,8 +94,8 @@ public:
         : Phase(world, "clos_conv", true)
         , fva_(world)
         , sym_{
-            .closure_env = world.sym("closure_env"),
-        } {}
+              .closure_env = world.sym("closure_env"),
+          } {}
 
     void start() override;
 

@@ -18,9 +18,7 @@ public:
     SSAConstr(PassMan& man, EtaExp* eta_exp)
         : FPPass(man, "ssa_constr")
         , eta_exp_(eta_exp)
-        , sym_{
-            .phi = world().sym("phi")
-        } {}
+        , sym_{.phi = world().sym("phi")} {}
 
     enum : u32 { Phixy, Sloxy, Traxy };
 
