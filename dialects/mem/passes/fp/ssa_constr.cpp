@@ -29,7 +29,7 @@ const Def* SSAConstr::rewrite(const Def* def) {
     if (auto slot = match<mem::slot>(def)) {
         auto [mem, id] = slot->args<2>();
         auto [_, ptr]  = slot->projs<2>();
-        auto sloxy     = proxy(ptr->type(), {curr_nom(), id}, Sloxy, slot->dbg());
+        auto sloxy     = proxy(ptr->type(), {curr_nom(), id}, Sloxy)->set(slot->loc_name());
         world().DLOG("sloxy: '{}'", sloxy);
         if (!keep_.contains(sloxy)) {
             set_val(curr_nom(), sloxy, world().bot(get_sloxy_type(sloxy)));
@@ -44,7 +44,7 @@ const Def* SSAConstr::rewrite(const Def* def) {
         if (auto sloxy = isa_proxy(ptr, Sloxy)) {
             if (data(curr_nom()).writable.contains(sloxy)) {
                 set_val(curr_nom(), sloxy, val);
-                return op_remem(mem, store->dbg());
+                return op_remem(mem)->set(store->loc_name());
             }
         }
     } else if (auto [app, mem_lam] = isa_apped_nom_lam(def); isa_workable(mem_lam)) {
@@ -73,8 +73,8 @@ const Def* SSAConstr::get_val(Lam* lam, const Proxy* sloxy) {
         world().DLOG("get_val recurse: '{}': '{}' -> '{}'", sloxy, pred, lam);
         return get_val(pred, sloxy);
     } else {
-        auto phixy = proxy(get_sloxy_type(sloxy), {sloxy, lam}, Phixy, sloxy->dbg());
-        phixy->set_debug_name(std::string("phi_") + phixy->debug().name);
+        auto phixy = proxy(get_sloxy_type(sloxy), {sloxy, lam}, Phixy)->set(sloxy->loc_name());
+        phixy->debug_prefix("_phi_");
         world().DLOG("get_val phixy: '{}' '{}'", sloxy, lam);
         return set_val(lam, sloxy, phixy);
     }
@@ -108,7 +108,7 @@ const Def* SSAConstr::mem2phi(const App* app, Lam* mem_lam) {
     if (phi_lam == nullptr || old_phis != phis) {
         old_phis      = phis;
         auto new_type = world().pi(merge_sigma(mem_lam->dom(), types), mem_lam->codom());
-        phi_lam       = world().nom_lam(new_type, mem_lam->dbg());
+        phi_lam       = world().nom_lam(new_type)->set(mem_lam->loc_name());
         eta_exp_->new2old(phi_lam, mem_lam);
         world().DLOG("new phi_lam '{}'", phi_lam);
 

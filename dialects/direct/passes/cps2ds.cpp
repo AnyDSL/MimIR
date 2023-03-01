@@ -129,9 +129,9 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
 
     if (auto old_nom = def->isa_nom()) { return old_nom; }
     DefArray new_ops{def->ops(), [&](const Def* op) { return rewrite_body(op); }};
-    if (def->isa<Tuple>()) return world.tuple(new_ops, def->dbg());
+    if (def->isa<Tuple>()) return world.tuple(new_ops); // TODO just remove this line? there is rebuild below
 
-    return def->rebuild(world, def->type(), new_ops, def->dbg());
+    return def->rebuild(world, def->type(), new_ops);
 }
 
 } // namespace thorin::direct

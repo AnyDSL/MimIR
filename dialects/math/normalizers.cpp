@@ -7,7 +7,7 @@ namespace thorin {
 // TODO move to normalize.h
 /// Swap Lit to left - or smaller gid, if no lit present.
 template<class Id>
-static void commute(Id id, Ref& a, Ref& b) {
+static void commute(Id id, const Def*& a, const Def*& b) {
     if (is_commutative(id)) {
         if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>())) std::swap(a, b);
     }
@@ -119,7 +119,7 @@ Res fold(u64 a, u64 b) {
 // clang-format on
 
 template<class Id, Id id>
-static Ref fold(World& world, Ref type, Ref a) {
+static Ref fold(World& world, Ref type, const Def* a) {
     if (a->isa<Bot>()) return world.bot(type);
     auto la = a->isa<Lit>();
 
@@ -142,7 +142,7 @@ static Ref fold(World& world, Ref type, Ref a) {
 
 /// @attention Note that @p a and @p b are passed by reference as fold also commutes if possible. @sa commute().
 template<class Id, Id id>
-static Ref fold(World& world, Ref type, Ref& a, Ref& b) {
+static Ref fold(World& world, Ref type, const Def*& a, const Def*& b) {
     auto la = a->isa<Lit>(), lb = b->isa<Lit>();
 
     if (a->isa<Bot>() || b->isa<Bot>()) return world.bot(type);

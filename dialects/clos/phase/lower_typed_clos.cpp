@@ -44,32 +44,30 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
     }));
     if (lam->is_basicblock() && adjust_bb_type) new_dom = insert_ret(new_dom, dummy_ret_->type());
     auto new_type = w.cn(new_dom);
-    auto new_lam  = lam->stub(w, new_type, w.dbg(lam->name()));
+    auto new_lam  = lam->stub(w, new_type)->set(lam->name());
     w.DLOG("stub {} ~> {}", lam, new_lam);
-    new_lam->set_debug_name(lam->name());
     new_lam->set(lam->filter(), lam->body());
     if (lam->is_external()) {
         lam->make_internal();
         new_lam->make_external();
     }
     const Def* lcm = mem::mem_var(new_lam);
-    const Def* env =
-        new_lam->var(Clos_Env_Param, (mode != No_Env) ? w.dbg("closure_env") : lam->var(Clos_Env_Param)->dbg());
+    const Def* env = new_lam->var(Clos_Env_Param); //, (mode != No_Env) ? w.dbg("closure_env") : lam->var(Clos_Env_Param)->dbg());
     if (mode == Box) {
         auto env_mem = w.call<mem::load>(Defs{lcm, env});
-        lcm          = w.extract(env_mem, 0_u64, w.dbg("mem"));
-        env          = w.extract(env_mem, 1_u64, w.dbg("closure_env"));
+        lcm          = w.extract(env_mem, 0_u64)->set(sym_.mem);
+        env          = w.extract(env_mem, 1_u64)->set(sym_.closure_env);
     } else if (mode == Unbox) {
-        env = core::op_bitcast(lam->dom(Clos_Env_Param), env, w.dbg("unboxed_env"));
+        env = core::op_bitcast(lam->dom(Clos_Env_Param), env)->set(sym_.unboxed_env);
     }
     auto new_args = w.tuple(Array<const Def*>(lam->num_doms(), [&](auto i) {
-        return (i == Clos_Env_Param) ? env : (lam->var(i) == mem::mem_var(lam)) ? lcm : new_lam->var(i);
+        return (i == Clos_Env_Param) ? env : (lam->var(i) == mem::mem_var(lam)) ? lcm : *new_lam->var(i);
     }));
     assert(new_args->num_projs() == lam->num_doms());
     assert(lam->num_doms() <= new_lam->num_doms());
     map(lam->var(), new_args);
     worklist_.emplace(mem::mem_var(lam), lcm, new_lam);
-    return map<Lam>(lam, new_lam);
+    return map(lam, new_lam)->as<Lam>();
 }
 
 const Def* LowerTypedClos::rewrite(const Def* def) {
@@ -89,7 +87,6 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
         assert(false && "Lam vars should appear in a map!");
 
     auto new_type = rewrite(def->type());
-    auto new_dbg  = def->dbg() ? rewrite(def->dbg()) : nullptr;
 
     if (auto ct = isa_clos_type(def)) {
         auto pi = rewrite(ct->op(1))->as<Pi>();
@@ -120,7 +117,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
         } else if (!mode) {
             auto mem_ptr = (c.get() == attr::esc) ? mem::op_alloc(env->type(), lcm_) : mem::op_slot(env->type(), lcm_);
             auto mem     = w.extract(mem_ptr, 0_u64);
-            auto env_ptr = mem_ptr->proj(1_u64, w.dbg(fn->name() + "_env"));
+            auto env_ptr = mem_ptr->proj(1_u64); //, w.dbg(fn->name() + "_env"));
             lcm_         = w.call<mem::store>(Defs{mem, env_ptr, env});
             map(lvm_, lcm_);
             env = env_ptr;
@@ -132,11 +129,11 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
         return make_stub(lam, No_Env, false);
     } else if (auto nom = def->isa_nom()) {
         assert(!isa_clos_type(nom));
-        auto new_nom = nom->stub(w, new_type, new_dbg);
+        auto new_nom = nom->stub(w, new_type);
         map(nom, new_nom);
         for (size_t i = 0; i < nom->num_ops(); i++)
             if (nom->op(i)) new_nom->set(i, rewrite(nom->op(i)));
-        if (!def->isa_nom<Global>() && Checker(w).equiv(nom, new_nom, nullptr)) return map(nom, nom);
+        if (!def->isa_nom<Global>() && Checker(w).equiv(nom, new_nom)) return map(nom, nom);
         if (auto restruct = new_nom->restructure()) return map(nom, restruct);
         return new_nom;
     } else if (def->isa<Axiom>()) {
@@ -151,7 +148,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
                 new_ops[1] = insert_ret(new_ops[1], dummy_ret_);
         }
 
-        auto new_def = def->rebuild(w, new_type, new_ops, new_dbg);
+        auto new_def = def->rebuild(w, new_type, new_ops);
 
         // We may need to update the mem token after all ops have been rewritten:
         // F (m, a1, ..., (env, f):pct)

@@ -17,7 +17,10 @@ class SSAConstr : public FPPass<SSAConstr, Lam> {
 public:
     SSAConstr(PassMan& man, EtaExp* eta_exp)
         : FPPass(man, "ssa_constr")
-        , eta_exp_(eta_exp) {}
+        , eta_exp_(eta_exp)
+        , sym_{
+            .phi = world().sym("phi")
+        } {}
 
     enum : u32 { Phixy, Sloxy, Traxy };
 
@@ -56,6 +59,10 @@ private:
 
     /// Contains @p Sloxy%s we have to keep.
     GIDSet<const Proxy*> keep_;
+
+    struct {
+        Sym phi;
+    } sym_;
 };
 
 } // namespace mem

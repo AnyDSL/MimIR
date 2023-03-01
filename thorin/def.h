@@ -133,22 +133,22 @@ inline unsigned operator==(Dep d1, unsigned d2) { return unsigned(d1) == d2; }
 inline unsigned operator!=(Dep d1, unsigned d2) { return unsigned(d1) != d2; }
 
 /// Use as mixin to wrap all kind of Def::proj and Def::projs variants.
-#define THORIN_PROJ(NAME, CONST)                                                         \
-    nat_t num_##NAME##s() CONST { return ((const Def*)NAME())->num_projs(); }            \
-    const Def* NAME(nat_t a, nat_t i) CONST { return ((const Def*)NAME())->proj(a, i); } \
-    const Def* NAME(nat_t i) CONST { return ((const Def*)NAME())->proj(i); }             \
-    template<nat_t A = -1_s, class F>                                                    \
-    auto NAME##s(F f) CONST {                                                            \
-        return ((const Def*)NAME())->projs<A, F>(f);                                     \
-    }                                                                                    \
-    template<nat_t A = -1_s>                                                             \
-    auto NAME##s() CONST {                                                               \
-        return ((const Def*)NAME())->projs<A>();                                         \
-    }                                                                                    \
-    template<class F>                                                                    \
-    auto NAME##s(nat_t a, F f) CONST {                                                   \
-        return ((const Def*)NAME())->projs<F>(a, f);                                     \
-    }                                                                                    \
+#define THORIN_PROJ(NAME, CONST)                                                  \
+    nat_t num_##NAME##s() CONST { return ((const Def*)NAME())->num_projs(); }     \
+    Ref NAME(nat_t a, nat_t i) CONST { return ((const Def*)NAME())->proj(a, i); } \
+    Ref NAME(nat_t i) CONST { return ((const Def*)NAME())->proj(i); }             \
+    template<nat_t A = -1_s, class F>                                             \
+    auto NAME##s(F f) CONST {                                                     \
+        return ((const Def*)NAME())->projs<A, F>(f);                              \
+    }                                                                             \
+    template<nat_t A = -1_s>                                                      \
+    auto NAME##s() CONST {                                                        \
+        return ((const Def*)NAME())->projs<A>();                                  \
+    }                                                                             \
+    template<class F>                                                             \
+    auto NAME##s(nat_t a, F f) CONST {                                            \
+        return ((const Def*)NAME())->projs<F>(a, f);                              \
+    }                                                                             \
     auto NAME##s(nat_t a) CONST { return ((const Def*)NAME())->projs(a); }
 
 // clang-format off
@@ -180,7 +180,8 @@ public:                                                                         
                                                                                       \
 private:                                                                              \
     const Def* rebuild_(World&, const Def*, Defs) const override;                     \
-    T* stub_(World&, const Def*) override S friend class World;
+    T* stub_(World&, const Def*) override S;                                          \
+    friend class World;
 
 #define THORIN_DEF_MIXIN_2(T, S) THORIN_DEF_MIXIN_3(T, S, Node::T)
 #define THORIN_DEF_MIXIN_1(T)    THORIN_DEF_MIXIN_2(T, { unreachable(); })
@@ -382,8 +383,10 @@ public:
     THORIN_SETTERS(Def)
     /// Appends a suffix to Def::name - but only in **DEBUG** build.
 #ifndef NDEBUG
+    const Def* debug_prefix(std::string) const;
     const Def* debug_suffix(std::string) const;
 #else
+    const Def* debug_prefix(std::string) const { return this; }
     const Def* debug_suffix(std::string) const { return this; }
 #endif
     Loc loc() const { return loc_; }

@@ -92,7 +92,10 @@ class ClosConv : public Phase {
 public:
     ClosConv(World& world)
         : Phase(world, "clos_conv", true)
-        , fva_(world) {}
+        , fva_(world)
+        , sym_{
+            .closure_env = world.sym("closure_env"),
+        } {}
 
     void start() override;
 
@@ -114,7 +117,7 @@ private:
     /// @{
     void rewrite_body(Lam* lam, Def2Def& subst);
     const Def* rewrite(const Def* old_def, Def2Def& subst);
-    Def* rewrite_nom(Def* nom, const Def* new_type, const Def* new_dbg, Def2Def& subst);
+    Def* rewrite_nom(Def* nom, const Def* new_type, Def2Def& subst);
     const Pi* rewrite_type_cn(const Pi*, Def2Def& subst);
     const Def* type_clos(const Pi* pi, Def2Def& subst, const Def* ent_type = nullptr);
     /// @}
@@ -128,6 +131,9 @@ private:
     Def2Def glob_noms_;
 
     std::queue<const Def*> worklist_;
+    struct {
+        Sym closure_env;
+    } sym_;
 };
 
 }; // namespace thorin::clos

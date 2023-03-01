@@ -62,7 +62,7 @@ const Def* CopyProp::rewrite(const Def* def) {
         old_args      = args;
         auto prop_dom = world().sigma(new_doms);
         auto new_pi   = world().pi(prop_dom, var_lam->codom());
-        prop_lam      = var_lam->stub(world(), new_pi, var_lam->dbg());
+        prop_lam      = var_lam->stub(world(), new_pi);
 
         world().DLOG("new prop_lam: {}", prop_lam);
         if (beta_red_) beta_red_->keep(prop_lam);
@@ -82,7 +82,7 @@ const Def* CopyProp::rewrite(const Def* def) {
     }
 
     world().DLOG("var_lam => prop_lam: {}: {} => {}: {}", var_lam, var_lam->dom(), prop_lam, prop_lam->dom());
-    auto res = app->world().app(prop_lam, new_args, app->dbg());
+    auto res = app->world().app(prop_lam, new_args);
 
     // Don't optimize again. Also, keep this line here at the very bottom as this invalidates all references.
     Lam* key = prop_lam; // prop_lam is a Lam*& which might get invalidated by the very insertion happening next.

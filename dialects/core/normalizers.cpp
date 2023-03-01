@@ -7,7 +7,7 @@ namespace thorin::core {
 // TODO move to normalize.h
 /// Swap Lit to left - or smaller gid, if no lit present.
 template<class Id>
-static void commute(Id id, Ref& a, Ref& b) {
+static void commute(Id id, const Def*& a, const Def*& b) {
     if (is_commutative(id)) {
         if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>())) std::swap(a, b);
     }
@@ -102,7 +102,7 @@ Res fold(u64 a, u64 b, [[maybe_unused]] bool nsw, [[maybe_unused]] bool nuw) {
 
 /// @attention Note that @p a and @p b are passed by reference as fold also commutes if possible. @sa commute().
 template<class Id, Id id>
-static Ref fold(World& world, Ref type, Ref& a, Ref& b, Ref mode = {}) {
+static Ref fold(World& world, Ref type, const Def*& a, const Def*& b, Ref mode = {}) {
     auto la = a->isa<Lit>(), lb = b->isa<Lit>();
 
     if (a->isa<Bot>() || b->isa<Bot>()) return world.bot(type);
@@ -160,9 +160,9 @@ static Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref 
 
     if constexpr (std::is_same_v<Id, wrap>) {
         // if we reassociate Wraps, we have to forget about nsw/nuw
-        make_op = [&](Ref a, Ref b) { return world.dcall(dbg, id, Mode::none, Defs{a, b}); };
+        make_op = [&](Ref a, Ref b) { return world.call(id, Mode::none, Defs{a, b}); };
     } else {
-        make_op = [&](Ref a, Ref b) { return world.dcall(dbg, id, Defs{a, b}); };
+        make_op = [&](Ref a, Ref b) { return world.call(id, Defs{a, b}); };
     }
 
     if (la && lz) return make_op(make_op(la, lz), w);             // (1)
@@ -276,10 +276,9 @@ static Ref merge_cmps(std::array<std::array<u64, 2>, 2> tab, Ref a, Ref b) {
         res >>= (7_u8 - u8(num_bits));
 
         if constexpr (std::is_same_v<Id, math::cmp>)
-            return world.dcall(dbg, math::cmp(res), /*rmode*/ a_cmp->decurry()->arg(0),
-                               Defs{a_cmp->arg(0), a_cmp->arg(1)});
+            return world.call(math::cmp(res), /*rmode*/ a_cmp->decurry()->arg(0), Defs{a_cmp->arg(0), a_cmp->arg(1)});
         else
-            return world.dcall(dbg, icmp(Axiom::Base<icmp> | res), Defs{a_cmp->arg(0), a_cmp->arg(1)});
+            return world.call(icmp(Axiom::Base<icmp> | res), Defs{a_cmp->arg(0), a_cmp->arg(1)});
     }
 
     return nullptr;
@@ -307,10 +306,10 @@ Ref normalize_bit2(Ref type, Ref c, Ref arg) {
         case bit2::    t: if (ls) return world.lit(type, *ls-1_u64); break;
         case bit2::  fst: return a;
         case bit2::  snd: return b;
-        case bit2:: nfst: return world.dcall(dbg, bit1::neg, a);
-        case bit2:: nsnd: return world.dcall(dbg, bit1::neg, b);
-        case bit2:: ciff: return world.dcall(dbg, bit2:: iff, Defs{b, a});
-        case bit2::nciff: return world.dcall(dbg, bit2::niff, Defs{b, a});
+        case bit2:: nfst: return world.call(bit1::neg, a);
+        case bit2:: nsnd: return world.call(bit1::neg, b);
+        case bit2:: ciff: return world.call(bit2:: iff, Defs{b, a});
+        case bit2::nciff: return world.call(bit2::niff, Defs{b, a});
         default:         break;
     }
 
@@ -333,7 +332,7 @@ Ref normalize_bit2(Ref type, Ref c, Ref arg) {
         if (!x && !y) return world.lit(type, 0);
         if ( x &&  y) return ls ? world.lit(type, *ls-1_u64) : nullptr;
         if (!x &&  y) return a;
-        if ( x && !y && id != bit2::xor_) return world.dcall(dbg, bit1::neg, a);
+        if ( x && !y && id != bit2::xor_) return world.call(bit1::neg, a);
         return nullptr;
     };
     // clang-format on
@@ -439,14 +438,14 @@ Ref normalize_wrap(Ref type, Ref c, Ref arg) {
         }
 
         if (id == wrap::sub)
-            return world.dcall(dbg, wrap::add, mode, Defs{a, world.lit_idx_mod(*ls, ~lb->get() + 1_u64)}); // a - lb -> a + (~lb + 1)
+            return world.call(wrap::add, mode, Defs{a, world.lit_idx_mod(*ls, ~lb->get() + 1_u64)}); // a - lb -> a + (~lb + 1)
         else if (id == wrap::shl && ls && lb->get() > *ls)
             return world.bot(type);
     }
 
     if (a == b) {
         switch (id) {
-            case wrap::add: return world.dcall(dbg, wrap::mul, mode, Defs{world.lit(type, 2), a}); // a + a -> 2 * a
+            case wrap::add: return world.call(wrap::mul, mode, Defs{world.lit(type, 2), a}); // a + a -> 2 * a
             case wrap::sub: return world.lit(type, 0);                                             // a - a -> 0
             case wrap::mul: break;
             case wrap::shl: break;
@@ -513,7 +512,7 @@ Ref normalize_conv(Ref dst_t, Ref c, Ref x) {
     if (x->isa<Bot>()) return world.bot(d_t);
     if constexpr (id == conv::s) {
         if (ls && ld && *ld < *ls)
-            return world.dcall(dbg, conv::u, d, x); // just truncate - we don't care for signedness
+            return world.call(conv::u, d, x); // just truncate - we don't care for signedness
     }
 
     if (auto l = isa_lit(x); l && ls && ld) {
@@ -547,7 +546,7 @@ Ref normalize_bitcast(Ref dst_t, Ref callee, Ref src) {
     if (src->type() == dst_t) return src;
 
     if (auto other = match<bitcast>(src))
-        return other->arg()->type() == dst_t ? other->arg() : op_bitcast(dst_t, other->arg());
+        return other->arg()->type() == dst_t ? other->arg() : *op_bitcast(dst_t, other->arg());
 
     if (auto lit = src->isa<Lit>()) {
         if (dst_t->isa<Nat>()) return world.lit(dst_t, lit->get());
@@ -607,7 +606,7 @@ Ref normalize_trait(Ref nat, Ref callee, Ref type) {
         auto align = op(trait::align, arr->body());
         if constexpr (id == trait::align) return align;
         if (auto b = op(trait::size, arr->body())->isa<Lit>())
-            return world.dcall(dbg, core::nop::mul, Defs{arr->shape(), b});
+            return world.call(core::nop::mul, Defs{arr->shape(), b});
     } else if (auto join = type->isa<Join>()) {
         if (auto sigma = convert(join)) return core::op(id, sigma);
     }

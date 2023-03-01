@@ -198,6 +198,11 @@ Defs Def::extended_ops() const {
 }
 
 #ifndef NDEBUG
+const Def* Def::debug_prefix(std::string prefix) const {
+    name_ = world().sym(prefix + name().str());
+    return this;
+}
+
 const Def* Def::debug_suffix(std::string suffix) const {
     name_ = world().sym(name().str() + suffix);
     return this;
