@@ -35,7 +35,7 @@ public:
 
     /// @name access operators
     ///@{
-    const std::string& operator*() const { return ptr_ ? *ptr_ : empty;; }
+    const std::string& operator*() const { return ptr_ ? *ptr_ : empty; }
     const std::string* operator->() const { return ptr_ ? ptr_ : &empty; }
     char operator[](size_t i) const { return ((std::string_view)(*this))[i]; }
     ///@}

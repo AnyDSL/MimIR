@@ -35,24 +35,24 @@ World::Move::Move(World& world)
 World::World(const State& state)
     : state_(state)
     , move_(*this) {
-    data_.univ         = insert<Univ>(0, *this);
-    data_.lit_univ_0   = lit_univ(0);
-    data_.lit_univ_1   = lit_univ(1);
-    data_.type_0       = type(lit_univ_0());
-    data_.type_1       = type(lit_univ_1());
-    data_.type_bot     = insert<Bot>(0, type());
-    data_.sigma        = insert<Sigma>(0, type(), Defs{})->as<Sigma>();
-    data_.tuple        = insert<Tuple>(0, sigma(), Defs{})->as<Tuple>();
-    data_.type_nat     = insert<Nat>(0, *this);
-    data_.type_idx     = insert<Idx>(0, pi(type_nat(), type()));
-    data_.top_nat      = insert<Top>(0, type_nat());
-    data_.lit_nat_0    = lit_nat(0);
-    data_.lit_nat_1    = lit_nat(1);
-    data_.type_bool    = type_idx(2);
-    data_.lit_bool[0]  = lit_idx(2, 0_u64);
-    data_.lit_bool[1]  = lit_idx(2, 1_u64);
-    data_.lit_nat_max  = lit_nat(nat_t(-1));
-    data_.exit         = nom_lam(cn(type_bot()))->set(sym("exit"));
+    data_.univ        = insert<Univ>(0, *this);
+    data_.lit_univ_0  = lit_univ(0);
+    data_.lit_univ_1  = lit_univ(1);
+    data_.type_0      = type(lit_univ_0());
+    data_.type_1      = type(lit_univ_1());
+    data_.type_bot    = insert<Bot>(0, type());
+    data_.sigma       = insert<Sigma>(0, type(), Defs{})->as<Sigma>();
+    data_.tuple       = insert<Tuple>(0, sigma(), Defs{})->as<Tuple>();
+    data_.type_nat    = insert<Nat>(0, *this);
+    data_.type_idx    = insert<Idx>(0, pi(type_nat(), type()));
+    data_.top_nat     = insert<Top>(0, type_nat());
+    data_.lit_nat_0   = lit_nat(0);
+    data_.lit_nat_1   = lit_nat(1);
+    data_.type_bool   = type_idx(2);
+    data_.lit_bool[0] = lit_idx(2, 0_u64);
+    data_.lit_bool[1] = lit_idx(2, 1_u64);
+    data_.lit_nat_max = lit_nat(nat_t(-1));
+    data_.exit        = nom_lam(cn(type_bot()))->set(sym("exit"));
 }
 
 World::World(std::string_view name /* = {}*/)
