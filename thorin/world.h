@@ -168,7 +168,7 @@ public:
 
     /// @name Univ, Type, Var, Proxy, Infer
     ///@{
-    const Univ* univ() { return data_.univ_; }
+    const Univ* univ() { return data_.univ; }
     Ref uinc(Ref op, level_t offset = 1);
     template<Sort = Sort::Univ>
     Ref umax(DefArray);
@@ -177,9 +177,9 @@ public:
     template<level_t level = 0>
     const Type* type() {
         if constexpr (level == 0)
-            return data_.type_0_;
+            return data_.type_0;
         else if constexpr (level == 1)
-            return data_.type_1_;
+            return data_.type_1;
         else
             return type(lit_univ(level));
     }
@@ -255,7 +255,7 @@ public:
     Lam* nom_lam(const Pi* cn) { return insert<Lam>(2, cn); }
     const Lam* lam(const Pi* pi, Ref filter, Ref body) { return unify<Lam>(2, pi, filter, body); }
     const Lam* lam(const Pi* pi, Ref body) { return lam(pi, lit_tt(), body); }
-    Lam* exit() { return data_.exit_; } ///< Used as a dummy exit node within Scope.
+    Lam* exit() { return data_.exit; } ///< Used as a dummy exit node within Scope.
     ///@}
 
     /// @name App
@@ -279,7 +279,7 @@ public:
         return nom_sigma(type<level>(), size);
     }
     Ref sigma(Defs ops);
-    const Sigma* sigma() { return data_.sigma_; } ///< The unit type within Type 0.
+    const Sigma* sigma() { return data_.sigma; } ///< The unit type within Type 0.
     ///@}
 
     /// @name Arr
@@ -303,7 +303,7 @@ public:
     Ref tuple(Defs ops);
     /// Ascribes @p type to this tuple - needed for dependently typed and nominal Sigma%s.
     Ref tuple(Ref type, Defs ops);
-    const Tuple* tuple() { return data_.tuple_; } ///< the unit value of type `[]`
+    const Tuple* tuple() { return data_.tuple; } ///< the unit value of type `[]`
     Ref tuple_str(std::string_view s);
     Ref tuple_str(Sym s) { return tuple_str(*s); }
     ///@}
@@ -343,12 +343,12 @@ public:
     ///@{
     const Lit* lit(Ref type, u64 val);
     const Lit* lit_univ(u64 level) { return lit(univ(), level); }
-    const Lit* lit_univ_0() { return data_.lit_univ_0_; }
-    const Lit* lit_univ_1() { return data_.lit_univ_1_; }
+    const Lit* lit_univ_0() { return data_.lit_univ_0; }
+    const Lit* lit_univ_1() { return data_.lit_univ_1; }
     const Lit* lit_nat(nat_t a) { return lit(type_nat(), a); }
-    const Lit* lit_nat_0() { return data_.lit_nat_0_; }
-    const Lit* lit_nat_1() { return data_.lit_nat_1_; }
-    const Lit* lit_nat_max() { return data_.lit_nat_max_; }
+    const Lit* lit_nat_0() { return data_.lit_nat_0; }
+    const Lit* lit_nat_1() { return data_.lit_nat_1; }
+    const Lit* lit_nat_max() { return data_.lit_nat_max; }
     /// Constructs a Lit of type Idx of size @p size.
     /// @note `size = 0` means `2^64`.
     const Lit* lit_idx(nat_t size, u64 val) { return lit(type_idx(size), val); }
@@ -368,9 +368,9 @@ public:
     /// @note `mod == 0` is the special case for $2^64$ and no modulo will be performed on @p val.
     const Lit* lit_idx_mod(nat_t mod, u64 val) { return lit_idx(mod, mod == 0 ? val : (val % mod)); }
 
-    const Lit* lit_bool(bool val) { return data_.lit_bool_[size_t(val)]; }
-    const Lit* lit_ff() { return data_.lit_bool_[0]; }
-    const Lit* lit_tt() { return data_.lit_bool_[1]; }
+    const Lit* lit_bool(bool val) { return data_.lit_bool[size_t(val)]; }
+    const Lit* lit_ff() { return data_.lit_bool[0]; }
+    const Lit* lit_tt() { return data_.lit_bool[1]; }
     // clang-format off
     ///@}
 
@@ -380,8 +380,8 @@ public:
     Ref ext(Ref type);
     Ref bot(Ref type) { return ext<false>(type); }
     Ref top(Ref type) { return ext<true>(type); }
-    Ref type_bot() { return data_.type_bot_; }
-    Ref top_nat() { return data_.top_nat_; }
+    Ref type_bot() { return data_.type_bot; }
+    Ref top_nat() { return data_.top_nat; }
     template<bool up> TBound<up>* nom_bound(Ref type, size_t size) { return insert<TBound<up>>(size, type, size); }
     /// A *nom*inal Bound of Type @p l%evel.
     template<bool up, level_t l = 0> TBound<up>* nom_bound(size_t size) { return nom_bound<up>(type<l>(), size); }
@@ -409,8 +409,8 @@ public:
 
     /// @name types
     ///@{
-    const Nat* type_nat() { return data_.type_nat_; }
-    const Idx* type_idx() { return data_.type_idx_; }
+    const Nat* type_nat() { return data_.type_nat; }
+    const Idx* type_idx() { return data_.type_idx; }
     /// @note `size = 0` means `2^64`.
     Ref type_idx(Ref size) { return app(type_idx(), size); }
     /// @note `size = 0` means `2^64`.
@@ -419,7 +419,7 @@ public:
     /// Constructs a type Idx of size $2^width$.
     /// `width = 64` will be automatically converted to size `0` - the encoding for $2^64$.
     Ref type_int(nat_t width) { return type_idx(lit_nat(Idx::bitwidth2size(width))); }
-    Ref type_bool() { return data_.type_bool_; }
+    Ref type_bool() { return data_.type_bool; }
     ///@}
 
     /// @name cope with implicit arguments
@@ -595,28 +595,6 @@ private:
         bool operator()(const Def* d1, const Def* d2) const { return d1->equal(d2); }
     };
 
-    struct {
-        const Univ* univ_;
-        const Type* type_0_;
-        const Type* type_1_;
-        const Bot* type_bot_;
-        const Def* type_bool_;
-        const Top* top_nat_;
-        const Sigma* sigma_;
-        const Tuple* tuple_;
-        const Nat* type_nat_;
-        const Idx* type_idx_;
-        const Def* table_id;
-        const Def* table_not;
-        std::array<const Lit*, 2> lit_bool_;
-        const Lit* lit_nat_0_;
-        const Lit* lit_nat_1_;
-        const Lit* lit_nat_max_;
-        const Lit* lit_univ_0_;
-        const Lit* lit_univ_1_;
-        Lam* exit_;
-    } data_;
-
     struct Move {
         Move(World&);
 
@@ -641,6 +619,28 @@ private:
         }
     } move_;
 
+    struct {
+        const Univ* univ;
+        const Type* type_0;
+        const Type* type_1;
+        const Bot* type_bot;
+        const Def* type_bool;
+        const Top* top_nat;
+        const Sigma* sigma;
+        const Tuple* tuple;
+        const Nat* type_nat;
+        const Idx* type_idx;
+        const Def* table_id;
+        const Def* table_not;
+        std::array<const Lit*, 2> lit_bool;
+        const Lit* lit_nat_0;
+        const Lit* lit_nat_1;
+        const Lit* lit_nat_max;
+        const Lit* lit_univ_0;
+        const Lit* lit_univ_1;
+        Lam* exit;
+    } data_;
+
     friend void swap(World& w1, World& w2) {
         using std::swap;
         // clang-format off
@@ -650,7 +650,7 @@ private:
         swap(w1.move_,  w2.move_ );
         // clang-format on
 
-        swap(w1.data_.univ_->world_, w2.data_.univ_->world_);
+        swap(w1.data_.univ->world_, w2.data_.univ->world_);
         assert(&w1.univ()->world() == &w1);
         assert(&w2.univ()->world() == &w2);
     }

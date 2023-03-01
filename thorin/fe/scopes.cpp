@@ -11,7 +11,7 @@ void Scopes::pop() {
 
 const Def* Scopes::find(Dbg dbg) const {
     auto [loc, sym] = dbg;
-    if (sym.is_anonymous()) err(loc, "the symbol '_' is special and never binds to anything", sym);
+    if (sym == '_') err(loc, "the symbol '_' is special and never binds to anything", sym);
 
     for (auto& scope : scopes_ | std::ranges::views::reverse) {
         if (auto i = scope.find(sym); i != scope.end()) return i->second.second;
@@ -22,7 +22,7 @@ const Def* Scopes::find(Dbg dbg) const {
 
 void Scopes::bind(Scope* scope, Dbg dbg, const Def* def, bool rebind) {
     auto [loc, sym] = dbg;
-    if (sym.is_anonymous()) return; // don't do anything with '_'
+    if (sym == '_') return; // don't do anything with '_'
 
     if (rebind) {
         (*scope)[sym] = std::pair(loc, def);

@@ -9,33 +9,45 @@
 namespace thorin {
 
 class Sym {
-public:
-    Sym() = default;
-
-    bool is_anonymous() const { return ptr_ && ptr_->size() == 1 && ptr_->front() == '_'; }
-    bool operator==(Sym other) const { return this->ptr_ == other.ptr_; }
-    bool operator!=(Sym other) const { return this->ptr_ != other.ptr_; }
-    operator const std::string_view() const { return ptr_ ? *ptr_ : std::string_view(); }
-    operator const std::string&() const { return ptr_ ? *ptr_ : empty; }
-    explicit operator bool() const { return ptr_; }
-    std::string_view operator*() const { return (std::string_view)(*this); }
-    const std::string* operator->() const { return ptr_ ? ptr_ : &empty; }
-    std::string str() const { return ptr_ ? *ptr_ : empty; }
-    char operator[](size_t i) const { return ((std::string_view)(*this))[i]; }
-
 private:
     Sym(const std::string* ptr)
         : ptr_(ptr) {
         assert(ptr == nullptr || !ptr->empty());
     }
 
-    static constexpr std::string empty = {};
-    const std::string* ptr_            = nullptr;
+public:
+    Sym() = default;
+
+    /// @name comparisions
+    ///@{
+    bool operator==(Sym other) const { return this->ptr_ == other.ptr_; }
+    bool operator!=(Sym other) const { return this->ptr_ != other.ptr_; }
+    bool operator==(char c) const { return (*this)->size() == 1 && (*this)[0] == c; }
+    bool operator!=(char c) const { return !((*this) == c); }
+    ///@}
+
+    /// @name cast operators
+    ///@{
+    operator std::string_view() const { return ptr_ ? *ptr_ : std::string_view(); }
+    operator const std::string&() const { return ptr_ ? *ptr_ : empty; }
+    explicit operator bool() const { return ptr_; }
+    ///@}
+
+    /// @name access operators
+    ///@{
+    const std::string& operator*() const { return ptr_ ? *ptr_ : empty;; }
+    const std::string* operator->() const { return ptr_ ? ptr_ : &empty; }
+    char operator[](size_t i) const { return ((std::string_view)(*this))[i]; }
+    ///@}
 
     template<class H>
     friend H AbslHashValue(H h, Sym sym) {
         return H::combine(std::move(h), sym.ptr_);
     }
+
+private:
+    static constexpr std::string empty = {};
+    const std::string* ptr_            = nullptr;
 
     friend class SymPool;
 };

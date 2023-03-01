@@ -25,7 +25,7 @@ namespace thorin {
 
 static Def* isa_decl(const Def* def) {
     if (auto nom = def->isa_nom()) {
-        if (nom->is_external() || nom->isa<Lam>() || (nom->sym() && !nom->sym().is_anonymous())) return nom;
+        if (nom->is_external() || nom->isa<Lam>() || (nom->sym() && nom->sym() != '_')) return nom;
     }
     return nullptr;
 }

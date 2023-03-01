@@ -199,12 +199,12 @@ Defs Def::extended_ops() const {
 
 #ifndef NDEBUG
 const Def* Def::debug_prefix(std::string prefix) const {
-    dbg_.sym = world().sym(prefix + sym().str());
+    dbg_.sym = world().sym(prefix + *sym());
     return this;
 }
 
 const Def* Def::debug_suffix(std::string suffix) const {
-    dbg_.sym = world().sym(sym().str() + suffix);
+    dbg_.sym = world().sym(*sym() + suffix);
     return this;
 }
 #endif
@@ -349,7 +349,7 @@ void Def::make_external() { return world().make_external(this); }
 void Def::make_internal() { return world().make_internal(this); }
 bool Def::is_external() const { return world().is_external(this); }
 
-std::string Def::unique_name() const { return sym().str() + "_"s + std::to_string(gid()); }
+std::string Def::unique_name() const { return *sym() + "_"s + std::to_string(gid()); }
 
 DefArray Def::reduce(const Def* arg) const {
     if (auto nom = isa_nom()) return nom->reduce(arg);

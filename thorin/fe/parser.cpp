@@ -199,7 +199,7 @@ Ref Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
     if (ahead().isa(Tok::Tag::M_id)) {
         if (auto sigma = lhs->type()->isa_nom<Sigma>()) {
             auto tok = eat(Tok::Tag::M_id);
-            if (tok.sym().is_anonymous()) err(tok.loc(), "you cannot use special symbol '_' as field access");
+            if (tok.sym() == '_') err(tok.loc(), "you cannot use special symbol '_' as field access");
 
             auto meta = sigma->meta();
             if (meta->arity() == sigma->arity()) {
@@ -679,10 +679,10 @@ void Parser::parse_ax() {
         scopes_.bind(ax.dbg(), axiom);
     } else {
         for (const auto& sub : new_subs) {
-            auto name  = world().sym(ax.sym().str() + "."s + sub.front().str());
+            auto name  = world().sym(*ax.sym() + "."s + *sub.front());
             auto axiom = world().axiom(normalizer(d, t, s), curry, trip, type, d, t, s)->set(track.loc(), name, meta);
             for (auto& alias : sub) {
-                auto sym = world().sym(ax.sym().str() + "."s + alias.str());
+                auto sym = world().sym(*ax.sym() + "."s + *alias);
                 scopes_.bind({prev_, sym}, axiom);
             }
             ++s;

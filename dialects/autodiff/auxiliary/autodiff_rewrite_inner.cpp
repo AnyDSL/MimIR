@@ -64,7 +64,7 @@ const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
         world.DLOG("pb type is {}", pb_ty);
         auto aug_ty = world.cn({aug_dom, pb_ty});
         world.DLOG("augmented type is {}", aug_ty);
-        auto aug_lam              = world.nom_lam(aug_ty)->set(world.sym("aug_"s + lam->sym().str()));
+        auto aug_lam              = world.nom_lam(aug_ty)->set(world.sym("aug_"s + *lam->sym()));
         auto aug_var              = aug_lam->var((nat_t)0);
         augmented[lam->var()]     = aug_var;
         augmented[lam]            = aug_lam; // TODO: only one of these two

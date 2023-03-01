@@ -236,8 +236,8 @@ const Def* compose_continuation(const Def* f, const Def* g) {
     auto H     = world.cn({A, world.cn(C)});
     auto Hcont = world.cn(B);
 
-    auto h     = world.nom_lam(H)->set(world.sym("comp_"s + f->sym().str() + "_"s + g->sym().str()));
-    auto hcont = world.nom_lam(Hcont)->set(world.sym("comp_"s + f->sym().str() + "_"s + g->sym().str() + "_cont"s));
+    auto h     = world.nom_lam(H)->set(world.sym("comp_"s + *f->sym() + "_"s + *g->sym()));
+    auto hcont = world.nom_lam(Hcont)->set(world.sym("comp_"s + *f->sym() + "_"s + *g->sym() + "_cont"s));
 
     h->app(true, g, {h->var((nat_t)0), hcont});
 

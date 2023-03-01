@@ -31,7 +31,7 @@ public:
     Loc loc() const { return dbg_.loc; }
     Sym sym() const { return dbg_.sym; }
     bool rebind() const { return rebind_; }
-    bool is_anonymous() const { return sym().is_anonymous(); }
+    bool is_anonymous() const { return sym() == '_'; }
     virtual void bind(Scopes&, const Def*) const = 0;
     virtual const Def* type(World&) const        = 0;
 
