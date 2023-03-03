@@ -112,7 +112,7 @@ static Ref fold(World& world, Ref type, const Def*& a, const Def*& b, Ref mode =
         auto width = Idx::size2bitwidth(size);
         bool nsw = false, nuw = false;
         if constexpr (std::is_same_v<Id, wrap>) {
-            auto m = as_lit(mode);
+            auto m = mode ? as_lit(mode) : 0_n;
             nsw    = m & Mode::nsw;
             nuw    = m & Mode::nuw;
         }

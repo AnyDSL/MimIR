@@ -48,6 +48,7 @@ public:
             u32 curr_gid        = 0;
             u32 curr_sub        = 0;
             mutable bool frozen = false;
+            Loc loc;
         } pod;
 
         std::string name = "module";
@@ -57,6 +58,7 @@ public:
 #endif
         friend void swap(State& s1, State& s2) {
             using std::swap;
+            assert((!s1.pod.loc || !s2.pod.loc) && "Why is emit_loc() still set?");
             // clang-format off
             swap(s1.pod,                s2.pod);
             swap(s1.name,               s2.name);
@@ -104,8 +106,8 @@ public:
         assert(&move_.checker->world() == this);
         return *move_.checker;
     }
-    ///@}
 
+    Loc& emit_loc() { return state_.pod.loc; }
     ///@}
 
     /// @name freeze
@@ -468,6 +470,7 @@ private:
     template<class T, class... Args>
     const T* unify(size_t num_ops, Args&&... args) {
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
+        if (auto loc = emit_loc()) def->set(loc);
         assert(!def->isa_nom());
 #if THORIN_ENABLE_CHECKS
         if (flags().trace_gids) outln("{}: {}", def->node_name(), def->gid());
@@ -495,6 +498,7 @@ private:
     template<class T, class... Args>
     T* insert(size_t num_ops, Args&&... args) {
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
+        if (auto loc = emit_loc()) def->set(loc);
 #if THORIN_ENABLE_CHECKS
         if (flags().trace_gids) outln("{}: {}", def->node_name(), def->gid());
         if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
