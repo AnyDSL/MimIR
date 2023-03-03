@@ -29,15 +29,18 @@ public:
     /// @name cast operators
     ///@{
     operator std::string_view() const { return ptr_ ? *ptr_ : std::string_view(); }
-    operator const std::string&() const { return ptr_ ? *ptr_ : empty; }
+    operator const std::string&() const { return *this->operator->(); }
     explicit operator bool() const { return ptr_; }
     ///@}
 
     /// @name access operators
     ///@{
-    const std::string& operator*() const { return ptr_ ? *ptr_ : empty; }
-    const std::string* operator->() const { return ptr_ ? ptr_ : &empty; }
-    char operator[](size_t i) const { return ((std::string_view)(*this))[i]; }
+    char operator[](size_t i) const { return ((std::string)(*this))[i]; }
+    const std::string& operator*() const { return *this->operator->(); }
+    const std::string* operator->() const {
+        static std::string empty;
+        return ptr_ ? ptr_ : &empty;
+    }
     ///@}
 
     template<class H>
@@ -46,8 +49,7 @@ public:
     }
 
 private:
-    static constexpr std::string empty = {};
-    const std::string* ptr_            = nullptr;
+    const std::string* ptr_ = nullptr;
 
     friend class SymPool;
 };
