@@ -129,7 +129,9 @@ private:
     Def2Def glob_noms_;
 
     std::queue<const Def*> worklist_;
-    struct { Sym closure_env; } sym_;
+    struct {
+        Sym closure_env;
+    } sym_;
 };
 
 }; // namespace thorin::clos

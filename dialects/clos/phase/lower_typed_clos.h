@@ -80,7 +80,9 @@ private:
     const Def* lvm_; //< Last visited memory token
     const Def* lcm_; //< Last created memory token
     ///@}
-    struct { Sym closure_env, mem, unboxed_env; } sym_;
+    struct {
+        Sym closure_env, mem, unboxed_env;
+    } sym_;
 };
 
 } // namespace thorin::clos

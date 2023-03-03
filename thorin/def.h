@@ -491,7 +491,6 @@ protected:
     Sym get_sym(std::string&& s) const;
     ///@}
 
-
     flags_t flags_;
     uint8_t node_;
     unsigned nom_    : 1;
