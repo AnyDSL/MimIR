@@ -908,8 +908,7 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/../thorin \
-                         @CMAKE_CURRENT_SOURCE_DIR@/../dialects \
+INPUT                  = . \
                          @DOXY_EXTRA_FILES_CONFIG@ \
                          @CMAKE_CURRENT_BINARY_DIR@/../include \
                          @CMAKE_CURRENT_BINARY_DIR@/../docs/dialects
@@ -1012,7 +1011,8 @@ RECURSIVE              = YES
 # Note that relative paths are relative to the directory from which doxygen is
 # run.
 
-EXCLUDE                =
+EXCLUDE                = modules \
+                         build* 
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded
@@ -2313,10 +2313,10 @@ SEARCH_INCLUDES        = YES
 # RECURSIVE has no effect here.
 # This tag requires that the tag SEARCH_INCLUDES is set to YES.
 
-INCLUDE_PATH           = @CMAKE_CURRENT_SOURCE_DIR@/../cli \
-                         @CMAKE_CURRENT_SOURCE_DIR@/../thorin \
-                         @CMAKE_CURRENT_SOURCE_DIR@/../dialects \
-                         @CMAKE_CURRENT_BINARY_DIR@/../include
+INCLUDE_PATH           = . \
+                         @DOXY_EXTRA_FILES_CONFIG@ \
+                         @CMAKE_CURRENT_BINARY_DIR@/../include \
+                         @CMAKE_CURRENT_BINARY_DIR@/../docs/dialects
 
 # You can use the INCLUDE_FILE_PATTERNS tag to specify one or more wildcard
 # patterns (like *.h and *.hpp) to filter out the header-files in the
@@ -2365,7 +2365,12 @@ EXPAND_AS_DEFINED      = CODE \
                          THORIN_TRAIT \
                          THORIN_ACC \
                          THORIN_PE \
-                         THORIN_SETTERS
+                         THORIN_SETTERS \
+                         THORIN_DEF_MIXIN \
+                         THORIN_DEF_MIXIN_1 \
+                         THORIN_DEF_MIXIN_2 \
+                         THORIN_DEF_MIXIN_3 \
+                         THORIN_GET_MACRO_3
 
 # If the SKIP_FUNCTION_MACROS tag is set to YES then doxygen's preprocessor will
 # remove all references to function-like macros that are alone on a line, have

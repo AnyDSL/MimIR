@@ -93,9 +93,7 @@ public:
     ClosConv(World& world)
         : Phase(world, "clos_conv", true)
         , fva_(world)
-        , sym_{
-              .closure_env = world.sym("closure_env"),
-          } {}
+        , sym_{.closure_env = world.sym("closure_env")} {}
 
     void start() override;
 
@@ -131,9 +129,7 @@ private:
     Def2Def glob_noms_;
 
     std::queue<const Def*> worklist_;
-    struct {
-        Sym closure_env;
-    } sym_;
+    struct { Sym closure_env; } sym_;
 };
 
 }; // namespace thorin::clos

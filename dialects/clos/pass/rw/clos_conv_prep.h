@@ -56,12 +56,7 @@ private:
     Lam2Lam lam2fscope_;
     std::unique_ptr<Scope> scope_;
     bool ignore_ = false;
-    struct {
-        Sym free_ret;
-        Sym eta_cont;
-        Sym fstclass_ret;
-        Sym eta_br;
-    } sym_;
+    struct { Sym free_ret, eta_cont, fstclass_ret, eta_br; } sym_;
 };
 
 } // namespace clos

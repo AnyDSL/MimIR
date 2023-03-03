@@ -128,6 +128,17 @@ TBound<up>* TBound<up>::stub_(World& w, const Def* t) {
     return w.nom_bound<up>(t, num_ops());
 }
 
+// instantiate templates
+
+// clang-format off
+template const Def*     TExt  <false>::rebuild_(World&, const Def*, Defs) const;
+template const Def*     TExt  <true >::rebuild_(World&, const Def*, Defs) const;
+template const Def*     TBound<false>::rebuild_(World&, const Def*, Defs) const;
+template const Def*     TBound<true >::rebuild_(World&, const Def*, Defs) const;
+template TBound<false>* TBound<false>::stub_(World&, const Def*);
+template TBound<true >* TBound<true >::stub_(World&, const Def*);
+// clang-format on
+
 /*
  * restructure
  */
@@ -165,6 +176,10 @@ const Def* Pack::restructure() {
  * Def
  */
 
+Sym Def::get_sym(const char* s) const { return world().sym(s); }
+Sym Def::get_sym(std::string_view s) const { return world().sym(s); }
+Sym Def::get_sym(std::string&& s) const { return world().sym(std::move(s)); }
+
 World& Def::world() const {
     if (isa<Univ>()) return *world_;
     if (auto type = isa<Type>()) return type->level()->world();
@@ -193,8 +208,8 @@ std::string_view Def::node_name() const {
 
 Defs Def::extended_ops() const {
     if (isa<Type>() || isa<Univ>()) return Defs();
-    size_t offset = meta() ? 2 : 1;
-    return Defs((is_set() ? num_ops_ : 0) + offset, ops_ptr() - offset);
+    assert(type());
+    return Defs((is_set() ? num_ops_ : 0) + 1, ops_ptr() - 1);
 }
 
 #ifndef NDEBUG
@@ -441,21 +456,6 @@ std::optional<nat_t> Idx::size2bitwidth(const Def* size) {
 
 const App* Global::type() const { return Def::type()->as<App>(); }
 const Def* Global::alloced_type() const { return type()->arg(0); }
-
-/*
- * instantiate templates
- */
-
-// clang-format off
-
-template const Def*     TExt  <false>::rebuild_(World&, const Def*, Defs) const;
-template const Def*     TExt  <true >::rebuild_(World&, const Def*, Defs) const;
-template const Def*     TBound<false>::rebuild_(World&, const Def*, Defs) const;
-template const Def*     TBound<true >::rebuild_(World&, const Def*, Defs) const;
-template TBound<false>* TBound<false>::stub_(World&, const Def*);
-template TBound<true >* TBound<true >::stub_(World&, const Def*);
-
-// clang-format on
 
 std::pair<const Def*, std::vector<const Def*>> collect_args(const Def* def) {
     std::vector<const Def*> args;

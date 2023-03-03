@@ -121,7 +121,7 @@ Ref clos_remove_env(size_t i, std::function<Ref(size_t)> f) { return f(skip_env(
 
 Ref ctype(World& w, Defs doms, Ref env_type) {
     if (!env_type) {
-        auto sigma = w.nom_sigma(w.type(), 3_u64)->set(w.sym("Clos"));
+        auto sigma = w.nom_sigma(w.type(), 3_u64)->set("Clos");
         sigma->set(0_u64, w.type());
         sigma->set(1_u64, ctype(w, doms, sigma->var(0_u64)));
         sigma->set(2_u64, sigma->var(0_u64));
