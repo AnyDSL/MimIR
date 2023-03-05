@@ -38,8 +38,7 @@ public:
 
     /// @name entry points
     ///@{
-    static Parser
-    import_module(World&, Sym, Span<std::string> = {}, const Normalizers* normalizers = nullptr);
+    static Parser import_module(World&, Sym, Span<std::string> = {}, const Normalizers* normalizers = nullptr);
     void parse_module();
     void bootstrap(std::ostream&);
     ///@}

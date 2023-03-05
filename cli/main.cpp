@@ -81,7 +81,7 @@ int main(int argc, char** argv) {
 #if THORIN_ENABLE_CHECKS
         for (auto b : breakpoints) driver.breakpoints.emplace(b);
 #endif
-        World& world = driver.world;
+        World& world        = driver.world;
         world.log().ostream = &std::cerr;
         world.log().level   = (Log::Level)verbose;
         // prepare output files and streams

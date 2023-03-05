@@ -1,7 +1,8 @@
 #pragma once
 
-#include "thorin/world.h"
 #include "thorin/flags.h"
+#include "thorin/world.h"
+
 #include "thorin/util/log.h"
 
 namespace thorin {

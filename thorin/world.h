@@ -42,8 +42,8 @@ public:
 
         /// [Plain Old Data](https://en.cppreference.com/w/cpp/named_req/PODType)
         struct POD {
-            u32 curr_gid        = 0;
-            u32 curr_sub        = 0;
+            u32 curr_gid = 0;
+            u32 curr_sub = 0;
             Loc loc;
             Sym name;
             mutable bool frozen = false;

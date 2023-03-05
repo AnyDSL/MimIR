@@ -81,10 +81,8 @@ void Parser::syntax_err(std::string_view what, const Tok& tok, std::string_view 
  * entry points
  */
 
-Parser Parser::import_module(World& world,
-                             Sym name,
-                             Span<std::string> user_search_paths,
-                             const Normalizers* normalizers) {
+Parser
+Parser::import_module(World& world, Sym name, Span<std::string> user_search_paths, const Normalizers* normalizers) {
     auto search_paths = get_plugin_search_paths(user_search_paths);
 
     auto file_name = *name + ".thorin";

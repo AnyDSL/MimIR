@@ -258,7 +258,8 @@ TEST(RestrictedDependentTypes, ll) {
         dialects.back().register_passes(passes);
     }
 
-    for (const auto& dialect : dialects) fe::Parser::import_module(w, w.sym(dialect.name()), dialect_paths, &normalizers);
+    for (const auto& dialect : dialects)
+        fe::Parser::import_module(w, w.sym(dialect.name()), dialect_paths, &normalizers);
 
     auto mem_t  = mem::type_mem(w);
     auto i32_t  = w.type_int(32);
