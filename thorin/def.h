@@ -457,9 +457,7 @@ public:
     ///@{
     Def* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg()); }
     /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
-    const Def* rebuild(World& w, const Def* type, Defs ops) const {
-        return rebuild_(w, type, ops)->set(dbg());
-    }
+    const Def* rebuild(World& w, const Def* type, Defs ops) const { return rebuild_(w, type, ops)->set(dbg()); }
     ///@}
 
     /// @name virtual methods
