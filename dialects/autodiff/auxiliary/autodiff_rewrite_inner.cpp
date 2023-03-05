@@ -373,7 +373,7 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         world.DLOG("axiom name: {}", ax->sym());
         world.DLOG("axiom function name: {}", diff_name);
 
-        auto diff_fun = world.lookup(diff_name);
+        auto diff_fun = world.lookup(world.sym(diff_name));
         if (!diff_fun) {
             world.ELOG("derivation not found: {}", diff_name);
             auto expected_type = autodiff_type_fun(ax->type());

@@ -74,6 +74,19 @@ UMax::UMax(World& world, Defs ops)
  * rebuild
  */
 
+const Def* Def::rebuild(World& w, const Def* type, Defs ops) const {
+    auto def = rebuild_(w, type, ops);
+    // only update if maiden
+    if (!def->sym()) {
+        if (&world() == &w)
+            def->set(sym());
+        else
+            def->set(w.sym(*sym())); // rebuild in new World w
+    }
+    if (!def->loc()) def->set(loc());
+    return def;
+}
+
 const Def* Infer    ::rebuild_(World&,   const Def*,   Defs  ) const { unreachable(); }
 const Def* Global   ::rebuild_(World&,   const Def*,   Defs  ) const { unreachable(); }
 const Def* Ac       ::rebuild_(World& w, const Def* t, Defs o) const { return w.ac(t, o); }

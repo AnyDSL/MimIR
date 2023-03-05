@@ -8,7 +8,7 @@
 
 #include "thorin/def.h"
 #include "thorin/dialects.h"
-#include "thorin/world.h"
+#include "thorin/driver.h"
 
 #include "thorin/fe/parser.h"
 #include "thorin/pass/fp/beta_red.h"
@@ -30,24 +30,25 @@ using namespace thorin;
 
 TEST(RestrictedDependentTypes, join_singleton) {
     auto test_on_world = [](auto test) {
-        World w;
+        Driver driver;
+        World& w = driver.world;
         Normalizers normalizers;
 
         auto compile_d = Dialect::load("compile", {});
         compile_d.register_normalizers(normalizers);
-        fe::Parser::import_module(w, "compile", {}, &normalizers);
+        fe::Parser::import_module(w, w.sym("compile"), {}, &normalizers);
 
         auto mem_d = Dialect::load("mem", {});
         mem_d.register_normalizers(normalizers);
-        fe::Parser::import_module(w, "mem", {}, &normalizers);
+        fe::Parser::import_module(w, w.sym("mem"), {}, &normalizers);
 
         auto core_d = Dialect::load("core", {});
         core_d.register_normalizers(normalizers);
-        fe::Parser::import_module(w, "core", {}, &normalizers);
+        fe::Parser::import_module(w, w.sym("core"), {}, &normalizers);
 
         auto math_d = Dialect::load("math", {});
         math_d.register_normalizers(normalizers);
-        fe::Parser::import_module(w, "math", {}, &normalizers);
+        fe::Parser::import_module(w, w.sym("math"), {}, &normalizers);
 
         auto i32_t = w.type_int(32);
         auto i64_t = w.type_int(64);
@@ -234,7 +235,8 @@ TEST(RestrictedDependentTypes, join_singleton) {
 }
 
 TEST(RestrictedDependentTypes, ll) {
-    World w;
+    Driver driver;
+    World& w = driver.world;
 
     std::vector<std::string> dialect_plugins = {
         "compile",
@@ -256,7 +258,7 @@ TEST(RestrictedDependentTypes, ll) {
         dialects.back().register_passes(passes);
     }
 
-    for (const auto& dialect : dialects) fe::Parser::import_module(w, dialect.name(), dialect_paths, &normalizers);
+    for (const auto& dialect : dialects) fe::Parser::import_module(w, w.sym(dialect.name()), dialect_paths, &normalizers);
 
     auto mem_t  = mem::type_mem(w);
     auto i32_t  = w.type_int(32);

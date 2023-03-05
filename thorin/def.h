@@ -447,17 +447,19 @@ public:
     const Def* reduce_rec() const;
     ///@}
 
-    const Def* rebuild(World& w, const Def* type, Defs ops) const { return rebuild_(w, type, ops)->set(dbg()); }
+    /// @name rebuild/stub/restr
+    ///@{
     Def* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg()); }
+    /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
+    const Def* rebuild(World& w, const Def* type, Defs ops) const;
+    ///@}
 
     /// @name virtual methods
     ///@{
     virtual void check() {}
     virtual size_t first_dependend_op() { return 0; }
     virtual const Def* rebuild_(World&, const Def*, Defs) const { unreachable(); }
-    /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
     const Def* refine(size_t i, const Def* new_op) const;
-    virtual Def* stub_(World&, const Def*) { unreachable(); }
     virtual const Def* restructure() { return nullptr; }
     ///@}
 
@@ -506,6 +508,8 @@ protected:
     mutable const Def* meta_ = nullptr;
 
 private:
+    virtual Def* stub_(World&, const Def*) { unreachable(); }
+
     const Def* type_;
 
     friend class World;

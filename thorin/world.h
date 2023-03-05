@@ -19,9 +19,10 @@
 #include "thorin/util/sym.h"
 
 namespace thorin {
-
 class Checker;
-class Scope;
+class Driver;
+
+using Breakpoints = absl::flat_hash_set<uint32_t>;
 
 /// The World represents the whole program and manages creation of Thorin nodes (Def%s).
 /// *Structural* Def%s are hashed into an internal HashSet.
@@ -38,34 +39,24 @@ public:
     ///@{
     struct State {
         State() = default;
-        State(std::string_view name)
-            : name(name) {}
 
         /// [Plain Old Data](https://en.cppreference.com/w/cpp/named_req/PODType)
         struct POD {
-            Log log;
-            Flags flags;
             u32 curr_gid        = 0;
             u32 curr_sub        = 0;
-            mutable bool frozen = false;
             Loc loc;
+            Sym name;
+            mutable bool frozen = false;
         } pod;
 
-        std::string name = "module";
-        absl::btree_set<std::string> imported_dialects;
-#if THORIN_ENABLE_CHECKS
-        absl::flat_hash_set<u32> breakpoints;
-#endif
+        absl::btree_set<Sym> imported_dialects;
+
         friend void swap(State& s1, State& s2) {
             using std::swap;
             assert((!s1.pod.loc || !s2.pod.loc) && "Why is emit_loc() still set?");
             // clang-format off
             swap(s1.pod,                s2.pod);
-            swap(s1.name,               s2.name);
             swap(s1.imported_dialects,  s2.imported_dialects);
-#if THORIN_ENABLE_CHECKS
-            swap(s1.breakpoints,        s2.breakpoints);
-#endif
             // clang-format on
         }
     };
@@ -75,12 +66,13 @@ public:
     World& operator=(const World&) = delete;
 
     /// Inherits the @p state into the new World.
-    explicit World(const State&);
-    explicit World(std::string_view name = {});
+    explicit World(Driver*);
+    World(Driver*, const State&);
     World(World&& other)
-        : World() {
+        : World(&other.driver(), other.state()) {
         swap(*this, other);
     }
+    World inherit() { return World(&driver(), state()); }
     ~World();
     ///@}
 
@@ -88,10 +80,13 @@ public:
     ///@{
     const State& state() const { return state_; }
 
-    std::string_view name() const { return state_.name; }
-    void set_name(std::string_view name) { state_.name = name; }
+    const Driver& driver() const { return *driver_; }
+    Driver& driver() { return *driver_; }
 
-    void add_imported(std::string_view name) { state_.imported_dialects.emplace(name); }
+    Sym name() const { return state_.pod.name; }
+    void set(Sym name) { state_.pod.name = name; }
+
+    void add_imported(Sym name) { state_.imported_dialects.emplace(name); }
     const auto& imported() const { return state_.imported_dialects; }
 
     /// Manage global identifier - a unique number for each Def.
@@ -99,8 +94,8 @@ public:
     u32 next_gid() { return ++state_.pod.curr_gid; }
 
     /// Retrive compile Flags.
-    const Flags& flags() const { return state_.pod.flags; }
-    Flags& flags() { return state_.pod.flags; }
+    const Flags& flags() const;
+    Flags& flags();
 
     Checker& checker() {
         assert(&move_.checker->world() == this);
@@ -108,6 +103,13 @@ public:
     }
 
     Loc& emit_loc() { return state_.pod.loc; }
+    ///@}
+
+    /// @name Sym
+    ///@{
+    Sym sym(std::string_view);
+    Sym sym(const char*);
+    Sym sym(std::string&&);
     ///@}
 
     /// @name freeze
@@ -134,16 +136,10 @@ public:
     };
     ///@}
 
-    /// @name Sym
-    ///@{
-    Sym sym(std::string_view s) { return move_.pool.sym(s); }
-    Sym sym(const char* s) { return move_.pool.sym(s); }
-    Sym sym(std::string&& s) { return move_.pool.sym(std::move(s)); }
-    ///@}
-
 #if THORIN_ENABLE_CHECKS
     /// @name debugging features
     ///@{
+    Breakpoints& breakpoints();
     void breakpoint(size_t number);
     Ref gid2def(u32 gid);
     ///@}
@@ -162,7 +158,7 @@ public:
     }
     void make_internal(Def* def) { move_.externals.erase(def->sym()); }
     bool is_external(Ref def) { return move_.externals.contains(def->sym()); }
-    Def* lookup(const std::string& name) {
+    Def* lookup(Sym name) {
         auto i = move_.externals.find(name);
         return i != move_.externals.end() ? i->second : nullptr;
     }
@@ -306,8 +302,7 @@ public:
     /// Ascribes @p type to this tuple - needed for dependently typed and nominal Sigma%s.
     Ref tuple(Ref type, Defs ops);
     const Tuple* tuple() { return data_.tuple; } ///< the unit value of type `[]`
-    Ref tuple_str(std::string_view s);
-    Ref tuple_str(Sym s) { return tuple_str(*s); }
+    Ref sym2tuple(Sym s);
     ///@}
 
     /// @name Pack
@@ -450,12 +445,8 @@ public:
 
     /// @name dumping/logging
     ///@{
-    const Log& log() const { return state_.pod.log; }
-    Log& log() { return state_.pod.log; }
-    template<class... Args>
-    void log(Log::Level level, const char* file, u16 line, const char* fmt, Args&&... args) {
-        log().log(level, Loc(sym(file), line), fmt, std::forward<Args&&>(args)...);
-    }
+    const Log& log() const;
+    Log& log();
 
     void dump(std::ostream& os);  ///< Dump to @p os.
     void dump();                  ///< Dump to `std::cout`.
@@ -474,7 +465,7 @@ private:
         assert(!def->isa_nom());
 #if THORIN_ENABLE_CHECKS
         if (flags().trace_gids) outln("{}: {}", def->node_name(), def->gid());
-        if (flags().reeval_breakpoints && state_.breakpoints.contains(def->gid())) thorin::breakpoint();
+        if (flags().reeval_breakpoints && breakpoints().contains(def->gid())) thorin::breakpoint();
 #endif
         if (is_frozen()) {
             --state_.pod.curr_gid;
@@ -489,7 +480,7 @@ private:
             return static_cast<const T*>(*i);
         }
 #if THORIN_ENABLE_CHECKS
-        if (!flags().reeval_breakpoints && state_.breakpoints.contains(def->gid())) thorin::breakpoint();
+        if (!flags().reeval_breakpoints && breakpoints().contains(def->gid())) thorin::breakpoint();
 #endif
         def->finalize();
         return def;
@@ -501,7 +492,7 @@ private:
         if (auto loc = emit_loc()) def->set(loc);
 #if THORIN_ENABLE_CHECKS
         if (flags().trace_gids) outln("{}: {}", def->node_name(), def->gid());
-        if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
+        if (breakpoints().contains(def->gid())) thorin::breakpoint();
 #endif
         auto [_, ins] = move_.defs.emplace(def);
         assert_unused(ins);
@@ -509,6 +500,7 @@ private:
     }
     ///@}
 
+    Driver* driver_;
     State state_;
 
     class Arena {
@@ -602,22 +594,20 @@ private:
     struct Move {
         Move(World&);
 
+        std::unique_ptr<Checker> checker;
         absl::btree_map<u64, const Axiom*> axioms;
-        absl::btree_map<std::string, Def*> externals; // TODO use Sym
+        absl::btree_map<Sym, Def*> externals;
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
         DefDefMap<DefArray> cache;
-        std::unique_ptr<Checker> checker;
-        SymPool pool;
 
         friend void swap(Move& m1, Move& m2) {
             using std::swap;
             // clang-format off
+            swap(m1.checker,   m2.checker);
             swap(m1.axioms,    m2.axioms);
             swap(m1.externals, m2.externals);
             swap(m1.defs,      m2.defs);
             swap(m1.cache,     m2.cache);
-            swap(m1.checker,   m2.checker);
-            swap(m1.pool,      m2.pool);
             // clang-format on
             Checker::swap(*m1.checker, *m2.checker);
         }

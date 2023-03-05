@@ -17,6 +17,7 @@ struct Pos {
         , col(col) {}
 
     explicit operator bool() const { return row; }
+    void dump();
 
     uint16_t row = 0;
     uint16_t col = 0;
@@ -34,6 +35,7 @@ struct Loc {
     Loc anew_begin() const { return {file, begin, begin}; }
     Loc anew_finis() const { return {file, finis, finis}; }
     explicit operator bool() const { return (bool)begin; }
+    void dump();
 
     Sym file;
     Pos begin = {};

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 
 #include <absl/container/flat_hash_map.h>
@@ -18,12 +19,19 @@ private:
 public:
     Sym() = default;
 
+    /// @name begin/end
+    ///@{
+    auto begin() const { return (*this)->cbegin(); }
+    auto end() const { return (*this)->cend(); }
+    ///@}
+
     /// @name comparisions
     ///@{
-    bool operator==(Sym other) const { return this->ptr_ == other.ptr_; }
-    bool operator!=(Sym other) const { return this->ptr_ != other.ptr_; }
     bool operator==(char c) const { return (*this)->size() == 1 && (*this)[0] == c; }
     bool operator!=(char c) const { return !((*this) == c); }
+    bool operator==(Sym other) const { return this->ptr_ == other.ptr_; }
+    bool operator!=(Sym other) const { return this->ptr_ != other.ptr_; }
+    auto operator<=>(Sym other) const { return *(*this) <=> *other; }
     ///@}
 
     /// @name cast operators

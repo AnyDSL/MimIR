@@ -19,5 +19,7 @@ std::ostream& operator<<(std::ostream& os, const Loc loc) {
     return os << "<unknown location>";
 }
 
+void Pos::dump() { std::cout << *this << std::endl; }
+void Loc::dump() { std::cout << *this << std::endl; }
 
 } // namespace thorin

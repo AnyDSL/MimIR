@@ -13,6 +13,7 @@
 
 #include "thorin/check.h"
 #include "thorin/def.h"
+#include "thorin/driver.h"
 #include "thorin/rewrite.h"
 
 #include "thorin/analyses/scope.h"
@@ -32,8 +33,9 @@ bool World::Arena::Lock::guard_ = false;
 World::Move::Move(World& world)
     : checker(std::make_unique<Checker>(world)) {}
 
-World::World(const State& state)
-    : state_(state)
+World::World(Driver* driver, const State& state)
+    : driver_(driver)
+    , state_(state)
     , move_(*this) {
     data_.univ        = insert<Univ>(0, *this);
     data_.lit_univ_0  = lit_univ(0);
@@ -55,12 +57,29 @@ World::World(const State& state)
     data_.exit        = nom_lam(cn(type_bot()))->set(sym("exit"));
 }
 
-World::World(std::string_view name /* = {}*/)
-    : World(State(name)) {}
+World::World(Driver* driver)
+    : World(driver, State()) {}
 
 World::~World() {
     for (auto def : move_.defs) def->~Def();
 }
+
+/*
+ * Driver
+ */
+
+Log& World::log() { return driver().log; }
+const Log& World::log() const { return driver().log; }
+Flags& World::flags() { return driver().flags; }
+const Flags& World::flags() const { return driver().flags; }
+
+Sym World::sym(const char* s) { return driver().sym(s); }
+Sym World::sym(std::string_view s) { return driver().sym(s); }
+Sym World::sym(std::string&& s) { return driver().sym(s); }
+
+/*
+ * factory methods
+ */
 
 const Type* World::type(Ref level) {
     if (!level->type()->isa<Univ>())
@@ -205,7 +224,7 @@ Ref World::tuple(Ref type, Defs ops) {
     return unify<Tuple>(ops.size(), type, ops);
 }
 
-Ref World::tuple_str(std::string_view s) {
+Ref World::sym2tuple(Sym s) {
     DefVec ops;
     for (auto c : s) ops.emplace_back(lit_nat(c));
     return tuple(ops);
@@ -496,7 +515,8 @@ Ref World::iapp(Ref callee, Ref arg, const Def* meta) {
 
 #if THORIN_ENABLE_CHECKS
 
-void World::breakpoint(size_t number) { state_.breakpoints.emplace(number); }
+Breakpoints& World::breakpoints() { return driver().breakpoints; }
+void World::breakpoint(size_t number) { breakpoints().emplace(number); }
 
 Ref World::gid2def(u32 gid) {
     auto i = std::ranges::find_if(move_.defs, [=](auto def) { return def->gid() == gid; });

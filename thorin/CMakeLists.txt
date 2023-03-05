@@ -8,7 +8,7 @@ add_library(libthorin
     dialects.cpp
     dialects.h
     dump.cpp
-    flags.h
+    driver.h
     lam.cpp
     lam.h
     lattice.cpp

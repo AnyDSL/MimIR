@@ -82,12 +82,12 @@ void Parser::syntax_err(std::string_view what, const Tok& tok, std::string_view 
  */
 
 Parser Parser::import_module(World& world,
-                             std::string_view name,
+                             Sym name,
                              Span<std::string> user_search_paths,
                              const Normalizers* normalizers) {
     auto search_paths = get_plugin_search_paths(user_search_paths);
 
-    auto file_name = std::string(name) + ".thorin";
+    auto file_name = *name + ".thorin";
 
     std::string input_path{};
     for (const auto& path : search_paths) {
@@ -128,12 +128,11 @@ void Parser::parse_import() {
     eat(Tok::Tag::K_import);
     auto name = expect(Tok::Tag::M_id, "import name");
     expect(Tok::Tag::T_semicolon, "end of import");
-    auto name_str = *name.sym();
 
     if (auto [_, ins] = imported_.emplace(name.sym()); !ins) return;
 
     // search file and import
-    auto parser = Parser::import_module(world(), name_str, user_search_paths_, normalizers_);
+    auto parser = Parser::import_module(world(), name.sym(), user_search_paths_, normalizers_);
     scopes_.merge(parser.scopes_);
 
     // transitvely remember which files we transitively imported
@@ -546,7 +545,7 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
 
             for (auto tok : sym_toks) {
                 infers.emplace_back(world().nom_infer(type)->set(tok.dbg()));
-                fields.emplace_back(world().tuple_str(sym));
+                fields.emplace_back(world().sym2tuple(sym));
                 ops.emplace_back(type);
                 ptrns.emplace_back(std::make_unique<IdPtrn>(tok.dbg(), false, type));
             }
@@ -563,7 +562,7 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
             }
 
             infers.emplace_back(world().nom_infer(type)->set(ptrn->sym()));
-            fields.emplace_back(world().tuple_str(ptrn->sym()));
+            fields.emplace_back(world().sym2tuple(ptrn->sym()));
             ops.emplace_back(type);
             ptrns.emplace_back(std::move(ptrn));
         }

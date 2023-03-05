@@ -8,6 +8,7 @@
 
 #include "thorin/config.h"
 #include "thorin/dialects.h"
+#include "thorin/driver.h"
 
 #include "thorin/be/dot/dot.h"
 #include "thorin/fe/parser.h"
@@ -26,7 +27,7 @@ int main(int argc, char** argv) {
     try {
         static const auto version = "thorin command-line utility version " THORIN_VER "\n";
 
-        World::State state;
+        Driver driver;
         bool show_help    = false;
         bool show_version = false;
         std::string input, prefix;
@@ -37,7 +38,7 @@ int main(int argc, char** argv) {
         int verbose      = 0;
         int opt          = 2;
         auto inc_verbose = [&](bool) { ++verbose; };
-        auto& flags      = state.pod.flags;
+        auto& flags      = driver.flags;
 
         // clang-format off
         auto cli = lyra::cli()
@@ -78,9 +79,9 @@ int main(int argc, char** argv) {
         }
 
 #if THORIN_ENABLE_CHECKS
-        for (auto b : breakpoints) state.breakpoints.emplace(b);
+        for (auto b : breakpoints) driver.breakpoints.emplace(b);
 #endif
-        World world(state);
+        World& world = driver.world;
         world.log().ostream = &std::cerr;
         world.log().level   = (Log::Level)verbose;
         // prepare output files and streams
@@ -124,7 +125,7 @@ int main(int argc, char** argv) {
         }
 
         for (const auto& dialect : dialects)
-            fe::Parser::import_module(world, dialect.name(), dialect_paths, &normalizers);
+            fe::Parser::import_module(world, world.sym(dialect.name()), dialect_paths, &normalizers);
 
         auto sym = world.sym(std::move(input));
         fe::Parser parser(world, sym, ifs, dialect_paths, &normalizers, os[Md]);
