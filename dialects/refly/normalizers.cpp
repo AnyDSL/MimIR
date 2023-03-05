@@ -4,7 +4,7 @@
 
 namespace thorin::refly {
 
-static_assert(sizeof(const Def*) <= sizeof(u64), "pointer doesn't fit into Lit");
+static_assert(sizeof(void*) <= sizeof(u64), "pointer doesn't fit into Lit");
 
 /// The trick is that we simply "box" the pointer of @p def inside a Lit of type `%refly.Code`.
 static Ref do_reify(const Def* def) { return def->world().lit(type_code(def->world()), reinterpret_cast<u64>(def)); }
@@ -21,7 +21,7 @@ Ref normalize_dbg(Ref type, Ref callee, Ref arg) {
 
 Ref normalize_reify(Ref, Ref, Ref arg) { return do_reify(arg); }
 
-Ref normalize_reflect(Ref, Ref, Ref arg, const Def*) { return do_reflect(arg); }
+Ref normalize_reflect(Ref, Ref, Ref arg) { return do_reflect(arg); }
 
 Ref normalize_refine(Ref type, Ref callee, Ref arg) {
     auto& world       = arg->world();
