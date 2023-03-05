@@ -525,7 +525,6 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
     assert(p ^ b);
 
     std::deque<std::unique_ptr<Ptrn>> ptrns;
-    std::vector<const Def*> fields;
     std::vector<Infer*> infers;
     DefVec ops;
 
@@ -543,7 +542,6 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
 
             for (auto tok : sym_toks) {
                 infers.emplace_back(world().nom_infer(type)->set(tok.dbg()));
-                fields.emplace_back(world().sym2tuple(sym));
                 ops.emplace_back(type);
                 ptrns.emplace_back(std::make_unique<IdPtrn>(tok.dbg(), false, type));
             }
@@ -560,7 +558,6 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
             }
 
             infers.emplace_back(world().nom_infer(type)->set(ptrn->sym()));
-            fields.emplace_back(world().sym2tuple(ptrn->sym()));
             ops.emplace_back(type);
             ptrns.emplace_back(std::move(ptrn));
         }

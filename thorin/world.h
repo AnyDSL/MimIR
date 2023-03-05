@@ -302,7 +302,6 @@ public:
     /// Ascribes @p type to this tuple - needed for dependently typed and nominal Sigma%s.
     Ref tuple(Ref type, Defs ops);
     const Tuple* tuple() { return data_.tuple; } ///< the unit value of type `[]`
-    Ref sym2tuple(Sym s);
     ///@}
 
     /// @name Pack
@@ -564,7 +563,7 @@ private:
 
         template<class T>
         static constexpr inline size_t num_bytes_of(size_t num_ops) {
-            size_t result = sizeof(Def) + sizeof(const Def*) * num_ops;
+            size_t result = sizeof(Def) + sizeof(void*) * num_ops;
             return align(result);
         }
 

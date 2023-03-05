@@ -41,7 +41,7 @@ const Def* LowerFor::rewrite(const Def* def) {
 
             // reduce the body to remove the cn parameter
             auto nom_body = body->as_nom<Lam>();
-            auto new_body = nom_body->stub(w, w.cn(w.sigma()));
+            auto new_body = nom_body->stub(w, w.cn(w.sigma()))->set(body->dbg());
             new_body->set(nom_body->reduce(w.tuple({begin, acc, yield_lam})));
 
             // break

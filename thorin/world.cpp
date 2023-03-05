@@ -224,12 +224,6 @@ Ref World::tuple(Ref type, Defs ops) {
     return unify<Tuple>(ops.size(), type, ops);
 }
 
-Ref World::sym2tuple(Sym s) {
-    DefVec ops;
-    for (auto c : s) ops.emplace_back(lit_nat(c));
-    return tuple(ops);
-}
-
 Ref World::extract(Ref d, Ref index) {
     if (index->isa<Tuple>()) {
         auto n = index->num_ops();
