@@ -18,13 +18,15 @@ const Def* Rewriter::rewrite(Ref old_def) {
 
 const Def* Rewriter::rewrite_structural(const Def* old_def) {
     auto new_type = rewrite(old_def->type());
+    auto new_meta = rewrite(old_def->meta());
     DefArray new_ops(old_def->num_ops(), [&](auto i) { return rewrite(old_def->op(i)); });
-    return old_def->rebuild(world(), new_type, new_ops);
+    return old_def->rebuild(world(), new_type, new_ops)->set_meta(new_meta);
 }
 
 const Def* Rewriter::rewrite_nom(Def* old_nom) {
     auto new_type = rewrite(old_nom->type());
-    auto new_nom  = old_nom->stub(world(), new_type);
+    auto new_meta = rewrite(old_nom->meta());
+    auto new_nom  = old_nom->stub(world(), new_type)->set_meta(new_meta);
     map(old_nom, new_nom);
 
     if (old_nom->is_set()) {

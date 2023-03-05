@@ -153,32 +153,32 @@ inline unsigned operator!=(Dep d1, unsigned d2) { return unsigned(d1) != d2; }
 
 // clang-format off
 /// Use as mixin to declare setters for Def::loc, Def::name, and Def::meta using a *covariant* return type.
-#define THORIN_SETTERS(T)                                                                                                   \
-public:                                                                                                                     \
-    const T* set(Loc l, Sym s,           const Def* m) const { dbg_.loc = l; dbg_.sym = s;          meta_ = m; return this; } \
-    const T* set(Loc l, std::string&& s, const Def* m) const { dbg_.loc = l; dbg_.sym = get_sym(s); meta_ = m; return this; } \
-    const T* set(Loc l, Sym s                        ) const { dbg_.loc = l; dbg_.sym = s;                     return this; } \
-    const T* set(Loc l, std::string&& s              ) const { dbg_.loc = l; dbg_.sym = get_sym(s);            return this; } \
-    const T* set(Loc l,                  const Def* m) const { dbg_.loc = l;                        meta_ = m; return this; } \
-    const T* set(       Sym s,           const Def* m) const {               dbg_.sym = s;          meta_ = m; return this; } \
-    const T* set(       std::string&& s, const Def* m) const {               dbg_.sym = get_sym(s); meta_ = m; return this; } \
-    const T* set(Loc l                               ) const { dbg_.loc = l;                                   return this; } \
-    const T* set(       Sym s                        ) const {               dbg_.sym = s;                     return this; } \
-    const T* set(       std::string&& s              ) const {               dbg_.sym = get_sym(s);            return this; } \
-          T* set(Loc l, Sym s,           const Def* m)       { dbg_.loc = l; dbg_.sym = s;          meta_ = m; return this; } \
-          T* set(Loc l, std::string&& s, const Def* m)       { dbg_.loc = l; dbg_.sym = get_sym(s); meta_ = m; return this; } \
-          T* set(Loc l, Sym s                        )       { dbg_.loc = l; dbg_.sym = s;                     return this; } \
-          T* set(Loc l, std::string&& s              )       { dbg_.loc = l; dbg_.sym = get_sym(s);            return this; } \
-          T* set(Loc l,                  const Def* m)       { dbg_.loc = l;                        meta_ = m; return this; } \
-          T* set(       Sym s,           const Def* m)       {               dbg_.sym = s;          meta_ = m; return this; } \
-          T* set(       std::string&& s, const Def* m)       {               dbg_.sym = get_sym(s); meta_ = m; return this; } \
-          T* set(Loc l                             )       { dbg_.loc = l;                                     return this; } \
-          T* set(       Sym s                      )       {                 dbg_.sym = s;                     return this; } \
-          T* set(       std::string&& s              )       {               dbg_.sym = get_sym(s);            return this; } \
-    const T* set_meta(                 const Def* m) const {                                        meta_ = m; return this; } \
-          T* set_meta(                 const Def* m)       {                                        meta_ = m; return this; } \
-    const T* set(Dbg d) const { dbg_ = d; return this; }                                                                      \
-          T* set(Dbg d)       { dbg_ = d; return this; }
+#define THORIN_SETTERS(T)                                                                                                                     \
+public:                                                                                                                                       \
+    template<bool Ow = false> const T* set(Loc l                               ) const { if (Ow || !dbg_.loc) dbg_.loc = l;    return this; } \
+    template<bool Ow = false>       T* set(Loc l                               )       { if (Ow || !dbg_.loc) dbg_.loc = l;    return this; } \
+    template<bool Ow = false> const T* set(       Sym s                        ) const { if (Ow || !dbg_.sym) dbg_.sym = s;    return this; } \
+    template<bool Ow = false>       T* set(       Sym s                        )       { if (Ow || !dbg_.sym) dbg_.sym = s;    return this; } \
+    template<bool Ow = false> const T* set_meta(                   const Def* m) const { if (Ow || !meta_) meta_ = m;          return this; } \
+    template<bool Ow = false>       T* set_meta(                   const Def* m)       { if (Ow || !meta_) meta_ = m;          return this; } \
+    template<bool Ow = false> const T* set(       std::string&& s              ) const {         set(get_sym(s));              return this; } \
+    template<bool Ow = false>       T* set(       std::string&& s              )       {         set(get_sym(s));              return this; } \
+    template<bool Ow = false> const T* set(Loc l, Sym s,           const Def* m) const { set(l); set(s         ); set_meta(m); return this; } \
+    template<bool Ow = false> const T* set(Loc l, std::string&& s, const Def* m) const { set(l); set(get_sym(s)); set_meta(m); return this; } \
+    template<bool Ow = false> const T* set(Loc l, Sym s                        ) const { set(l); set(s         );              return this; } \
+    template<bool Ow = false> const T* set(Loc l, std::string&& s              ) const { set(l); set(get_sym(s));              return this; } \
+    template<bool Ow = false> const T* set(Loc l,                  const Def* m) const { set(l);                  set_meta(m); return this; } \
+    template<bool Ow = false> const T* set(       Sym s,           const Def* m) const {         set(s         ); set_meta(m); return this; } \
+    template<bool Ow = false> const T* set(       std::string&& s, const Def* m) const {         set(get_sym(s)); set_meta(m); return this; } \
+    template<bool Ow = false>       T* set(Loc l, Sym s,           const Def* m)       { set(l); set(s         ); set_meta(m); return this; } \
+    template<bool Ow = false>       T* set(Loc l, std::string&& s, const Def* m)       { set(l); set(get_sym(s)); set_meta(m); return this; } \
+    template<bool Ow = false>       T* set(Loc l, Sym s                        )       { set(l); set(s         );              return this; } \
+    template<bool Ow = false>       T* set(Loc l, std::string&& s              )       { set(l); set(get_sym(s));              return this; } \
+    template<bool Ow = false>       T* set(Loc l,                  const Def* m)       { set(l);                  set_meta(m); return this; } \
+    template<bool Ow = false>       T* set(       Sym s,           const Def* m)       {         set(s         ); set_meta(m); return this; } \
+    template<bool Ow = false>       T* set(       std::string&& s, const Def* m)       {         set(get_sym(s)); set_meta(m); return this; } \
+    template<bool Ow = false> const T* set(Dbg d) const { set(d.loc, d.sym); return this; }                                                   \
+    template<bool Ow = false>       T* set(Dbg d)       { set(d.loc, d.sym); return this; }
 // clang-format on
 
 #define THORIN_DEF_MIXIN_3(T, S, N)                                           \
@@ -288,7 +288,9 @@ public:
 
     /// @name extended_ops
     ///@{
-    /// Includes Def::type() (if not `nullptr`), and then the other Def::ops() (if Def::is_set) in this order.
+    /// Includes Def::meta(), Def::type(), and then the other Def::ops() in this order.
+    /// Def::meta() and Def::type() are only included, if not `nullptr`.
+    /// Def::ops() is only included, if Def::is_set.
     Defs extended_ops() const;
     const Def* extended_op(size_t i) const { return extended_ops()[i]; }
     size_t num_extended_ops() const { return extended_ops().size(); }
@@ -296,10 +298,10 @@ public:
 
     /// @name partial_ops
     ///@{
-    /// Includes Def::type, and then Def::ops (in this order).
+    /// Includes Def::meta(), Def::type(), and then the other Def::ops() in this order.
     /// Also works with partially set Def%s and doesn't assert.
     /// Unset operands are `nullptr`.
-    Defs partial_ops() const { return Defs(num_ops_ + 1, ops_ptr() - 1); }
+    Defs partial_ops() const { return Defs(num_ops_ + 2, ops_ptr() - 2); }
     const Def* partial_op(size_t i) const { return partial_ops()[i]; }
     size_t num_partial_ops() const { return partial_ops().size(); }
     ///@}
@@ -388,7 +390,15 @@ public:
     ///@{
     std::string unique_name() const; ///< name + "_" + Def::gid
     THORIN_SETTERS(Def)
-    /// Appends a suffix to Def::name - but only in **DEBUG** build.
+    Dbg dbg() const { return dbg_; }
+    Loc loc() const { return dbg_.loc; }
+    Sym sym() const { return dbg_.sym; }
+    const Def* meta() const { return meta_; }
+    ///@}
+
+    /// @name debug prepend/append
+    ///@{
+    /// Prepends/Appends a prefix/suffix to Def::name - but only in **DEBUG** build.
 #ifndef NDEBUG
     const Def* debug_prefix(std::string) const;
     const Def* debug_suffix(std::string) const;
@@ -396,10 +406,6 @@ public:
     const Def* debug_prefix(std::string) const { return this; }
     const Def* debug_suffix(std::string) const { return this; }
 #endif
-    Dbg dbg() const { return dbg_; }
-    Loc loc() const { return dbg_.loc; }
-    Sym sym() const { return dbg_.sym; }
-    const Def* meta() const { return meta_; }
     ///@}
 
     /// @name casts
@@ -451,7 +457,9 @@ public:
     ///@{
     Def* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg()); }
     /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
-    const Def* rebuild(World& w, const Def* type, Defs ops) const;
+    const Def* rebuild(World& w, const Def* type, Defs ops) const {
+        return rebuild_(w, type, ops)->set(dbg());
+    }
     ///@}
 
     /// @name virtual methods
