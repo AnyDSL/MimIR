@@ -27,7 +27,6 @@ public:
     void log(Level level, const char* file, uint16_t line, const char* fmt, Args&&... args) {
         log(level, Loc(sym_pool_.sym(file), line), fmt, std::forward<Args&&>(args)...);
     }
-    void log() const {} ///< Dummy for Debug build.
     ///@}
 
     /// @name conversions
@@ -56,7 +55,7 @@ private:
 #ifndef NDEBUG
 #define DLOG(...) log().log(thorin::Log::Level::Debug,   __FILE__, __LINE__, __VA_ARGS__)
 #else
-#define DLOG(...)
+#define DLOG(...) dummy()
 #endif
 // clang-format on
 

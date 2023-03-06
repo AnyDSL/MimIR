@@ -446,6 +446,7 @@ public:
     ///@{
     const Log& log() const;
     Log& log();
+    void dummy() {}
 
     void dump(std::ostream& os);  ///< Dump to @p os.
     void dump();                  ///< Dump to `std::cout`.

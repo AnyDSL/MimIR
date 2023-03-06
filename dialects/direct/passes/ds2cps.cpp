@@ -16,8 +16,7 @@ const Def* DS2CPS::rewrite(const Def* def) {
             world.DLOG("encountered lam app");
             auto new_lam = rewrite_lam(lam);
             world.DLOG("new lam: {} : {}", new_lam, new_lam->type());
-            auto arg = app->arg();
-            world.DLOG("arg: {} : {}", arg, arg->type());
+            world.DLOG("arg: {} : {}", app->arg(), app->arg()->type());
             auto new_app = world.app(new_lam, app->arg());
             world.DLOG("new app: {} : {}", new_app, new_app->type());
             return new_app;
