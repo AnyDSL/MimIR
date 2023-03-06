@@ -75,7 +75,7 @@ const Flags& World::flags() const { return driver().flags; }
 
 Sym World::sym(const char* s) { return driver().sym(s); }
 Sym World::sym(std::string_view s) { return driver().sym(s); }
-Sym World::sym(std::string&& s) { return driver().sym(s); }
+Sym World::sym(std::string s) { return driver().sym(std::move(s)); }
 
 /*
  * factory methods

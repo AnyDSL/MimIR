@@ -73,7 +73,7 @@ public:
 
     Sym sym(std::string_view s) { return s.empty() ? Sym() : &*pool_.emplace(s).first; }
     Sym sym(const char* s) { return s == nullptr || *s == '\0' ? Sym() : &*pool_.emplace(s).first; }
-    Sym sym(std::string&& s) { return s.empty() ? Sym() : &*pool_.emplace(std::move(s)).first; }
+    Sym sym(std::string s) { return s.empty() ? Sym() : &*pool_.emplace(std::move(s)).first; }
 
     friend void swap(SymPool& p1, SymPool& p2) {
         using std::swap;

@@ -178,7 +178,7 @@ const Def* Pack::restructure() {
 
 Sym Def::get_sym(const char* s) const { return world().sym(s); }
 Sym Def::get_sym(std::string_view s) const { return world().sym(s); }
-Sym Def::get_sym(std::string&& s) const { return world().sym(std::move(s)); }
+Sym Def::get_sym(std::string s) const { return world().sym(std::move(s)); }
 
 World& Def::world() const {
     if (isa<Univ>()) return *world_;

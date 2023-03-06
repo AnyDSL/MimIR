@@ -70,7 +70,7 @@ struct BB {
         swap(a.parts, b.parts);
     }
 
-    DefMap<std::vector<std::pair<std::string, std::string>>> phis;
+    DefMap<std::deque<std::pair<std::string, std::string>>> phis;
     std::array<std::deque<std::ostringstream>, 3> parts;
 };
 
@@ -119,12 +119,12 @@ std::string Emitter::id(const Def* def, bool force_bb /*= false*/) const {
     if (auto lam = def->isa_nom<Lam>(); lam && !force_bb) {
         if (lam->type()->ret_pi()) {
             if (lam->is_external() || !lam->is_set())
-                return "@" + *lam->sym(); // TODO or use is_internal or sth like that?
-            return "@" + lam->unique_name();
+                return "@"s + *lam->sym(); // TODO or use is_internal or sth like that?
+            return "@"s + lam->unique_name();
         }
     }
 
-    return "%" + def->unique_name();
+    return "%"s + def->unique_name();
 }
 
 std::string Emitter::convert(const Def* type) {
@@ -426,6 +426,7 @@ static const char* llvm_suffix(const Def* type) {
 }
 
 std::string Emitter::emit_bb(BB& bb, const Def* def) {
+    std::cout << "hey" << std::endl;
     if (def->isa<Var>()) return {};
     if (auto lam = def->isa<Lam>()) return id(lam);
 
@@ -892,9 +893,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
     } else if (auto er = match<math::er>(def)) {
-        auto a        = emit(er->arg());
-        auto t        = convert(er->type());
-        std::string f = er.id() == math::er::f ? "erf" : "erfc";
+        auto a = emit(er->arg());
+        auto t = convert(er->type());
+        auto f = er.id() == math::er::f ? "erf"s : "erfc"s;
         f += math_suffix(er->type());
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);

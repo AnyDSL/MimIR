@@ -109,7 +109,7 @@ public:
     ///@{
     Sym sym(std::string_view);
     Sym sym(const char*);
-    Sym sym(std::string&&);
+    Sym sym(std::string);
     ///@}
 
     /// @name freeze

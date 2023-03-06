@@ -496,7 +496,7 @@ protected:
     ///@{
     Sym get_sym(const char*) const;
     Sym get_sym(std::string_view) const;
-    Sym get_sym(std::string&& s) const;
+    Sym get_sym(std::string) const;
     ///@}
 
     flags_t flags_;
