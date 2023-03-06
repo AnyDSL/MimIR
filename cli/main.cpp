@@ -128,6 +128,7 @@ int main(int argc, char** argv) {
             fe::Parser::import_module(world, world.sym(dialect.name()), dialect_paths, &normalizers);
 
         auto sym = world.sym(std::move(input));
+        world.set(sym);
         fe::Parser parser(world, sym, ifs, dialect_paths, &normalizers, os[Md]);
         parser.parse_module();
 
