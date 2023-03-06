@@ -446,7 +446,7 @@ Ref normalize_wrap(Ref type, Ref c, Ref arg) {
     if (a == b) {
         switch (id) {
             case wrap::add: return world.call(wrap::mul, mode, Defs{world.lit(type, 2), a}); // a + a -> 2 * a
-            case wrap::sub: return world.lit(type, 0);                                             // a - a -> 0
+            case wrap::sub: return world.lit(type, 0);                                       // a - a -> 0
             case wrap::mul: break;
             case wrap::shl: break;
         }

@@ -230,11 +230,11 @@ Ref normalize_arith(Ref type, Ref c, Ref arg) {
         if (auto la = a->isa<Lit>()) {
             if (la == lit_f(world, *w, 0.0)) {
                 switch (id) {
-                    case arith::add: return b;    // 0 + b -> b
+                    case arith::add: return b;  // 0 + b -> b
                     case arith::sub: break;
-                    case arith::mul: return la;   // 0 * b -> 0
-                    case arith::div: return la;   // 0 / b -> 0
-                    case arith::rem: return la;   // 0 % b -> 0
+                    case arith::mul: return la; // 0 * b -> 0
+                    case arith::div: return la; // 0 / b -> 0
+                    case arith::rem: return la; // 0 % b -> 0
                 }
             }
 
@@ -242,7 +242,7 @@ Ref normalize_arith(Ref type, Ref c, Ref arg) {
                 switch (id) {
                     case arith::add: break;
                     case arith::sub: break;
-                    case arith::mul: return b;    // 1 * b -> b
+                    case arith::mul: return b;  // 1 * b -> b
                     case arith::div: break;
                     case arith::rem: break;
                 }
@@ -252,7 +252,7 @@ Ref normalize_arith(Ref type, Ref c, Ref arg) {
         if (auto lb = b->isa<Lit>()) {
             if (lb == lit_f(world, *w, 0.0)) {
                 switch (id) {
-                    case arith::sub: return a;    // a - 0 -> a
+                    case arith::sub: return a;  // a - 0 -> a
                     case arith::div: break;
                     case arith::rem: break;
                     default: unreachable();
@@ -264,9 +264,9 @@ Ref normalize_arith(Ref type, Ref c, Ref arg) {
         if (a == b) {
             switch (id) {
                 case arith::add: return world.call(arith::mul, mode, Defs{lit_f(world, *w, 2.0), a}); // a + a -> 2 * a
-                case arith::sub: return lit_f(world, *w, 0.0);                                     // a - a -> 0
+                case arith::sub: return lit_f(world, *w, 0.0);                                        // a - a -> 0
                 case arith::mul: break;
-                case arith::div: return lit_f(world, *w, 1.0);                                     // a / a -> 1
+                case arith::div: return lit_f(world, *w, 1.0);                                        // a / a -> 1
                 case arith::rem: break;
             }
         }
