@@ -7,7 +7,8 @@
 
 namespace thorin {
 
-struct Driver : public SymPool {
+class Driver : public SymPool {
+public:
     Driver()
         : log(*this)
         , world(this) {}
