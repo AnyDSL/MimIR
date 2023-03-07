@@ -375,9 +375,9 @@ Ref Parser::parse_pi() {
     do {
         auto implicit = accept(Tok::Tag::T_dot).has_value();
         auto dom      = parse_ptrn(Tok::Tag::D_brckt_l, "domain of a dependent function type", Tok::Prec::App);
-        auto pi       = world().nom_pi(world().type_infer_univ(), implicit)->set(dom->dbg())->set_dom(dom->type(world()));
-        auto var      = pi->var()->set(dom->sym());
-        first         = first ? first : pi;
+        auto pi  = world().nom_pi(world().type_infer_univ(), implicit)->set(dom->dbg())->set_dom(dom->type(world()));
+        auto var = pi->var()->set(dom->sym());
+        first    = first ? first : pi;
 
         dom->bind(scopes_, var);
         pis.emplace_back(pi);

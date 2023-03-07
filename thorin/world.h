@@ -236,7 +236,9 @@ public:
 
     /// @name Pi
     ///@{
-    const Pi* pi(Ref dom, Ref codom, bool implicit = false) { return unify<Pi>(2, Pi::infer(dom, codom), dom, codom, implicit); }
+    const Pi* pi(Ref dom, Ref codom, bool implicit = false) {
+        return unify<Pi>(2, Pi::infer(dom, codom), dom, codom, implicit);
+    }
     const Pi* pi(Defs dom, Ref codom, bool implicit = false) { return pi(sigma(dom), codom, implicit); }
     Pi* nom_pi(Ref type, bool implicit = false) { return insert<Pi>(2, type, implicit); }
     ///@}
