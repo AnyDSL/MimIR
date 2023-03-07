@@ -10,14 +10,14 @@ namespace thorin {
 class Pi : public Def {
 protected:
     /// Constructor for a *structural* Pi.
-    Pi(const Def* type, const Def* dom, const Def* codom)
-        : Def(Node, type, {dom, codom}, 0) {}
+    Pi(const Def* type, const Def* dom, const Def* codom, bool implicit)
+        : Def(Node, type, {dom, codom}, implicit ? 1 : 0) {}
     /// Constructor for a *nom*inal Pi.
-    Pi(const Def* type)
-        : Def(Node, type, 2, 0) {}
+    Pi(const Def* type, bool implicit)
+        : Def(Node, type, 2, implicit ? 1 : 0) {}
 
 public:
-    /// @name ops
+    /// @name getters
     ///@{
     const Def* dom() const { return op(0); }
     THORIN_PROJ(dom, const)
@@ -27,6 +27,7 @@ public:
     bool is_basicblock() const { return is_cn() && !ret_pi(); }
     bool is_returning() const { return is_cn() && ret_pi(); }
     const Pi* ret_pi() const;
+    bool implicit() const { return flags(); }
     ///@}
 
     /// @name setters
@@ -40,7 +41,7 @@ public:
 
     /// @name virtual methods
     ///@{
-    size_t first_dependend_op() { return 1; }
+    size_t first_dependend_op() override { return 1; }
     const Pi* restructure() override;
     void check() override;
     ///@}

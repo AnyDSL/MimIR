@@ -421,7 +421,6 @@ static const char* llvm_suffix(const Def* type) {
 }
 
 std::string Emitter::emit_bb(BB& bb, const Def* def) {
-    std::cout << "hey" << std::endl;
     if (def->isa<Var>()) return {};
     if (auto lam = def->isa<Lam>()) return id(lam);
 

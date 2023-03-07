@@ -236,9 +236,9 @@ public:
 
     /// @name Pi
     ///@{
-    const Pi* pi(Ref dom, Ref codom) { return unify<Pi>(2, Pi::infer(dom, codom), dom, codom); }
-    const Pi* pi(Defs dom, Ref codom) { return pi(sigma(dom), codom); }
-    Pi* nom_pi(Ref type) { return insert<Pi>(2, type); }
+    const Pi* pi(Ref dom, Ref codom, bool implicit = false) { return unify<Pi>(2, Pi::infer(dom, codom), dom, codom, implicit); }
+    const Pi* pi(Defs dom, Ref codom, bool implicit = false) { return pi(sigma(dom), codom, implicit); }
+    Pi* nom_pi(Ref type, bool implicit = false) { return insert<Pi>(2, type, implicit); }
     ///@}
 
     /// @name Cn (Pi with codom Bot)
@@ -422,18 +422,15 @@ public:
     ///@{
 
     /// Places Infer arguments as demanded by @p debug.meta and then apps @p arg.
-    Ref iapp(Ref callee, Ref arg, const Def* meta);
-    Ref iapp(Ref callee, Defs args, const Def* meta) { return iapp(callee, tuple(args), meta); }
-    Ref iapp(Ref callee, nat_t arg, const Def* meta) { return iapp(callee, lit_nat(arg), meta); }
-
-    /// Converts C++ vector `{true, false, false}` to nested Thorin nested pairs `(.tt, (.ff, (.ff, ⊥)))`.
-    Ref implicits2meta(const Implicits&);
+    Ref iapp(Ref callee, Ref arg);
+    Ref iapp(Ref callee, Defs args) { return iapp(callee, tuple(args)); }
+    Ref iapp(Ref callee, nat_t arg) { return iapp(callee, lit_nat(arg)); }
 
     // clang-format off
     template<class Id, class... Args> const Def* call(Id id, Args&&... args) { return call_(ax(id),   std::forward<Args>(args)...); }
     template<class Id, class... Args> const Def* call(       Args&&... args) { return call_(ax<Id>(), std::forward<Args>(args)...); }
-    template<class T, class... Args> const Def* call_(Ref callee, T arg, Args&&... args) { return call_(iapp(callee, arg, nullptr), std::forward<Args>(args)...); }
-    template<class T> const Def* call_(Ref callee, T arg) { return iapp(callee, arg, nullptr); }
+    template<class T, class... Args> const Def* call_(Ref callee, T arg, Args&&... args) { return call_(iapp(callee, arg), std::forward<Args>(args)...); }
+    template<class T> const Def* call_(Ref callee, T arg) { return iapp(callee, arg); }
     // clang-format on
     ///@}
 

@@ -63,13 +63,13 @@ private:
 
     Dbg parse_sym(std::string_view ctxt = {});
     void parse_import();
-    Ref parse_type_ascr(std::string_view ctxt, Implicits*);
+    Ref parse_type_ascr(std::string_view ctxt);
 
     /// @name exprs
     ///@{
-    Ref parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot, Implicits* = {});
-    Ref parse_primary_expr(std::string_view ctxt, Implicits* = {});
-    Ref parse_infix_expr(Tracker, const Def* lhs, Tok::Prec = Tok::Prec::Bot, Implicits* = {});
+    Ref parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
+    Ref parse_primary_expr(std::string_view ctxt);
+    Ref parse_infix_expr(Tracker, const Def* lhs, Tok::Prec = Tok::Prec::Bot);
     Ref parse_extract(Tracker, const Def*, Tok::Prec);
     ///@}
 
@@ -82,7 +82,7 @@ private:
     Ref parse_sigma();
     Ref parse_tuple();
     Ref parse_type();
-    Ref parse_pi(Implicits*);
+    Ref parse_pi();
     Ref parse_lit();
     Ref parse_var();
     Ref parse_insert();

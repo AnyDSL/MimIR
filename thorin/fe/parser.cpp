@@ -143,8 +143,8 @@ Dbg Parser::parse_sym(std::string_view ctxt) {
     return {prev_, world().sym("<error>")};
 }
 
-Ref Parser::parse_type_ascr(std::string_view ctxt, Implicits* implicits) {
-    if (accept(Tok::Tag::T_colon)) return parse_expr(ctxt, Tok::Prec::Bot, implicits);
+Ref Parser::parse_type_ascr(std::string_view ctxt) {
+    if (accept(Tok::Tag::T_colon)) return parse_expr(ctxt, Tok::Prec::Bot);
     if (ctxt.empty()) return nullptr;
     syntax_err("':'", ctxt);
 }
@@ -153,13 +153,13 @@ Ref Parser::parse_type_ascr(std::string_view ctxt, Implicits* implicits) {
  * exprs
  */
 
-Ref Parser::parse_expr(std::string_view ctxt, Tok::Prec p, Implicits* implicits) {
+Ref Parser::parse_expr(std::string_view ctxt, Tok::Prec p) {
     auto track = tracker();
-    auto lhs   = parse_primary_expr(ctxt, implicits);
-    return parse_infix_expr(track, lhs, p, implicits);
+    auto lhs   = parse_primary_expr(ctxt);
+    return parse_infix_expr(track, lhs, p);
 }
 
-Ref Parser::parse_infix_expr(Tracker track, const Def* lhs, Tok::Prec p, Implicits* implicits) {
+Ref Parser::parse_infix_expr(Tracker track, const Def* lhs, Tok::Prec p) {
     while (true) {
         // If operator in ahead has less left precedence: reduce (break).
         if (ahead().isa(Tok::Tag::T_extract)) {
@@ -168,17 +168,16 @@ Ref Parser::parse_infix_expr(Tracker track, const Def* lhs, Tok::Prec p, Implici
             else
                 break;
         } else if (ahead().isa(Tok::Tag::T_arrow)) {
-            if (implicits) implicits->emplace_back(false);
             auto [l, r] = Tok::prec(Tok::Prec::Arrow);
             if (l < p) break;
             lex();
-            auto rhs = parse_expr("right-hand side of an function type", r, implicits);
+            auto rhs = parse_expr("right-hand side of an function type", r);
             lhs      = world().pi(lhs, rhs)->set(track.loc());
         } else {
             auto [l, r] = Tok::prec(Tok::Prec::App);
             if (l < p) break;
             if (auto rhs = parse_expr({}, r)) { // if we can parse an expression, it's an App
-                lhs = world().iapp(lhs, rhs, nullptr)->set(track.loc());
+                lhs = world().iapp(lhs, rhs)->set(track.loc());
             } else {
                 return lhs;
             }
@@ -227,7 +226,7 @@ Ref Parser::parse_insert() {
     return world().insert(tuple, index, value)->set(track.loc());
 }
 
-Ref Parser::parse_primary_expr(std::string_view ctxt, Implicits* implicits) {
+Ref Parser::parse_primary_expr(std::string_view ctxt) {
     // clang-format off
     switch (ahead().tag()) {
         case Tok::Tag::D_quote_l: return parse_arr();
@@ -243,7 +242,7 @@ Ref Parser::parse_primary_expr(std::string_view ctxt, Implicits* implicits) {
         case Tok::Tag::K_Nat:     lex(); return world().type_nat();
         case Tok::Tag::K_ff:      lex(); return world().lit_ff();
         case Tok::Tag::K_tt:      lex(); return world().lit_tt();
-        case Tok::Tag::T_Pi:      return parse_pi(implicits);
+        case Tok::Tag::T_Pi:      return parse_pi();
         case Tok::Tag::T_at:      return parse_var();
         case Tok::Tag::K_cn:
         case Tok::Tag::K_fn:
@@ -366,7 +365,7 @@ Ref Parser::parse_type() {
     return world().type(level)->set(track.loc());
 }
 
-Ref Parser::parse_pi(Implicits* implicits) {
+Ref Parser::parse_pi() {
     auto track = tracker();
     eat(Tok::Tag::T_Pi);
     scopes_.push();
@@ -374,23 +373,18 @@ Ref Parser::parse_pi(Implicits* implicits) {
     Pi* first = nullptr;
     std::deque<Pi*> pis;
     do {
-        auto dot = accept(Tok::Tag::T_dot);
-        if (implicits)
-            implicits->emplace_back(dot.has_value());
-        else if (dot)
-            err(dot->loc(), "implicit not allowed in this context");
-
-        auto dom = parse_ptrn(Tok::Tag::D_brckt_l, "domain of a dependent function type", Tok::Prec::App);
-        auto pi  = world().nom_pi(world().type_infer_univ())->set(dom->dbg())->set_dom(dom->type(world()));
-        auto var = pi->var()->set(dom->sym());
-        first    = first ? first : pi;
+        auto implicit = accept(Tok::Tag::T_dot).has_value();
+        auto dom      = parse_ptrn(Tok::Tag::D_brckt_l, "domain of a dependent function type", Tok::Prec::App);
+        auto pi       = world().nom_pi(world().type_infer_univ(), implicit)->set(dom->dbg())->set_dom(dom->type(world()));
+        auto var      = pi->var()->set(dom->sym());
+        first         = first ? first : pi;
 
         dom->bind(scopes_, var);
         pis.emplace_back(pi);
     } while (!ahead().isa(Tok::Tag::T_arrow));
 
     expect(Tok::Tag::T_arrow, "dependent function type");
-    auto codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow, implicits);
+    auto codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
 
     for (auto pi : pis | std::ranges::views::reverse) {
         pi->set_codom(codom);
@@ -636,9 +630,7 @@ void Parser::parse_ax() {
     else if (!is_new && !new_subs.empty() && info.subs.empty())
         err(ax.loc(), "cannot extend subs of axiom '{}' which does not have subs", ax);
 
-    Implicits implicits;
-    auto type = parse_type_ascr("type ascription of an axiom", &implicits);
-    auto meta = world().implicits2meta(implicits);
+    auto type = parse_type_ascr("type ascription of an axiom");
     if (!is_new && info.pi != (type->isa<Pi>() != nullptr))
         err(ax.loc(), "all declarations of axiom '{}' have to be function types if any is", ax);
     info.pi = type->isa<Pi>() != nullptr;
@@ -668,12 +660,12 @@ void Parser::parse_ax() {
     tag_t t     = info.tag_id;
     sub_t s     = info.subs.size();
     if (new_subs.empty()) {
-        auto axiom = world().axiom(normalizer(d, t, 0), curry, trip, type, d, t, 0)->set(ax.loc(), ax.sym(), meta);
+        auto axiom = world().axiom(normalizer(d, t, 0), curry, trip, type, d, t, 0)->set(ax.loc(), ax.sym());
         scopes_.bind(ax.dbg(), axiom);
     } else {
         for (const auto& sub : new_subs) {
             auto name  = world().sym(*ax.sym() + "."s + *sub.front());
-            auto axiom = world().axiom(normalizer(d, t, s), curry, trip, type, d, t, s)->set(track.loc(), name, meta);
+            auto axiom = world().axiom(normalizer(d, t, s), curry, trip, type, d, t, s)->set(track.loc(), name);
             for (auto& alias : sub) {
                 auto sym = world().sym(*ax.sym() + "."s + *alias);
                 scopes_.bind({prev_, sym}, axiom);
@@ -753,19 +745,14 @@ Lam* Parser::parse_lam(bool decl) {
 
     std::deque<std::pair<Pi*, Lam*>> funs;
     Lam* first = nullptr;
-    Implicits implicits;
-    bool has_implicits = false;
     do {
         const Def* filter = world().lit_bool(accept(Tok::Tag::T_bang).has_value());
-        bool dot          = accept(Tok::Tag::T_dot).has_value();
+        bool implicit     = accept(Tok::Tag::T_dot).has_value();
         auto dom_p        = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda", prec);
         auto dom_t        = dom_p->type(world());
-        auto pi           = world().nom_pi(world().type_infer_univ())->set_dom(dom_t);
+        auto pi           = world().nom_pi(world().type_infer_univ(), implicit)->set_dom(dom_t);
         auto lam          = world().nom_lam(pi);
         auto lam_var      = lam->var()->set(dom_p->loc(), dom_p->sym());
-
-        has_implicits |= dot;
-        implicits.emplace_back(dot);
 
         if (first == nullptr) {
             first = lam;
@@ -789,8 +776,6 @@ Lam* Parser::parse_lam(bool decl) {
         funs.emplace_back(std::pair(pi, lam));
     } while (!ahead().isa(Tok::Tag::T_arrow) && !ahead().isa(Tok::Tag::T_assign) &&
              !ahead().isa(Tok::Tag::T_semicolon));
-
-    if (has_implicits) first->set_meta(world().implicits2meta(implicits));
 
     auto codom = is_cn                     ? world().type_bot()
                : accept(Tok::Tag::T_arrow) ? parse_expr("return type of a lambda", Tok::Prec::Arrow)

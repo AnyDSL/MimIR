@@ -86,7 +86,7 @@ const Def* Lam      ::rebuild_(World& w, const Def* t, Defs o) const { return w.
 const Def* Lit      ::rebuild_(World& w, const Def* t, Defs  ) const { return w.lit(t, get()); }
 const Def* Nat      ::rebuild_(World& w, const Def*  , Defs  ) const { return w.type_nat(); }
 const Def* Pack     ::rebuild_(World& w, const Def* t, Defs o) const { return w.pack(t->arity(), o[0]); }
-const Def* Pi       ::rebuild_(World& w, const Def*  , Defs o) const { return w.pi(o[0], o[1]); }
+const Def* Pi       ::rebuild_(World& w, const Def*  , Defs o) const { return w.pi(o[0], o[1], implicit()); }
 const Def* Pick     ::rebuild_(World& w, const Def* t, Defs o) const { return w.pick(t, o[0]); }
 const Def* Proxy    ::rebuild_(World& w, const Def* t, Defs o) const { return w.proxy(t, o, as<Proxy>()->pass(), as<Proxy>()->tag()); }
 const Def* Sigma    ::rebuild_(World& w, const Def*  , Defs o) const { return w.sigma(o); }
@@ -114,7 +114,7 @@ template<bool up> const Def* TBound<up>::rebuild_(World& w, const Def*  , Defs o
  */
 
 Lam*    Lam   ::stub_(World& w, const Def* t) { return w.nom_lam  (t->as<Pi>()); }
-Pi*     Pi    ::stub_(World& w, const Def* t) { return w.nom_pi   (t); }
+Pi*     Pi    ::stub_(World& w, const Def* t) { return w.nom_pi   (t, implicit()); }
 Sigma*  Sigma ::stub_(World& w, const Def* t) { return w.nom_sigma(t, num_ops()); }
 Arr*    Arr   ::stub_(World& w, const Def* t) { return w.nom_arr  (t); }
 Pack*   Pack  ::stub_(World& w, const Def* t) { return w.nom_pack (t); }

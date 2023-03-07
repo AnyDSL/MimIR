@@ -462,30 +462,14 @@ Ref World::singleton(Ref inner_type) { return unify<Singleton>(1, this->type<1>(
  * implicits
  */
 
-Ref World::implicits2meta(const Implicits& implicits) {
-    const Def* meta = bot(type_bool());
-    for (auto b : implicits | std::ranges::views::reverse) meta = tuple({lit_bool(b), meta});
-    return meta;
-}
+Ref World::iapp(Ref callee, Ref arg) {
+    while (true) {
+        auto pi = callee->type()->isa<Pi>();
+        if (!pi) err(callee, "called expression '{}' : '{}' is not of function type", callee, callee->type());
 
-/// Returns `{b, x}` from Thorin pair `(b, x)` or `std::nullopt` if @p def doesn't fit the bill.
-static std::optional<std::pair<bool, const Def*>> peel(const Def* def) {
-    if (def) {
-        if (auto tuple = def->isa<Tuple>(); tuple && tuple->num_ops() == 2) {
-            if (auto b = isa_lit<bool>(tuple->op(0))) return {std::pair(*b, tuple->op(1))};
-        }
-    }
-    return {};
-}
-
-Ref World::iapp(Ref callee, Ref arg, const Def* meta) {
-    while (auto implicit = peel(callee->meta())) {
-        bool dot;
-        std::tie(dot, meta) = *implicit;
-
-        if (dot) {
+        if (pi->implicit()) {
             auto infer = nom_infer_entity();
-            auto a     = app(callee, infer)->set_meta(meta);
+            auto a     = app(callee, infer);
             callee     = a;
         } else {
             // resolve Infers now if possible before normalizers are run
@@ -499,7 +483,7 @@ Ref World::iapp(Ref callee, Ref arg, const Def* meta) {
         }
     }
 
-    return app(callee, arg)->set_meta(meta);
+    return app(callee, arg);
 }
 
 /*
