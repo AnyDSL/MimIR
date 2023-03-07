@@ -1,6 +1,7 @@
 #include "thorin/def.h"
 
 #include <algorithm>
+#include <optional>
 #include <ranges>
 #include <stack>
 
@@ -279,6 +280,13 @@ const Def* Def::arity() const {
     return world().lit_nat(1);
 }
 
+std::optional<nat_t> Def::isa_lit_arity() const {
+    if (auto sigma  = isa<Sigma>()) return sigma->num_ops();
+    if (auto arr    = isa<Arr  >()) return isa_lit(arr->shape());
+    if (sort() == Sort::Term)       return type()->isa_lit_arity();
+    return 1;
+}
+
 // clang-format on
 
 bool Def::equal(const Def* other) const {
@@ -410,11 +418,11 @@ const Def* Def::proj(nat_t a, nat_t i) const {
         return op(i);
     } else if (auto arr = isa<Arr>()) {
         if (arr->arity()->isa<Top>()) return arr->body();
-        return arr->reduce(w.lit_idx(as_lit(arr->arity()), i));
+        return arr->reduce(w.lit_idx(arr->as_lit_arity(), i));
     } else if (auto pack = isa<Pack>()) {
         if (pack->arity()->isa<Top>()) return pack->body();
         assert(!w.is_frozen() && "TODO");
-        return pack->reduce(w.lit_idx(as_lit(pack->arity()), i));
+        return pack->reduce(w.lit_idx(pack->as_lit_arity(), i));
     } else if (sort() == Sort::Term) {
         if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {
             for (auto u : uses()) {

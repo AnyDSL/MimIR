@@ -229,6 +229,12 @@ public:
     const Def* unfold_type() const;
     Sort sort() const;
     const Def* arity() const;
+    std::optional<nat_t> isa_lit_arity() const;
+    nat_t as_lit_arity() const {
+        auto a = isa_lit_arity();
+        assert(a.has_value());
+        return *a;
+    }
     ///@}
 
     /// @name ops
@@ -314,7 +320,7 @@ public:
 
     /// Yields Def::arity as_lit, if it is in fact a Lit, or `1` otherwise.
     nat_t num_projs() const {
-        if (auto a = isa_lit(arity())) return *a;
+        if (auto a = isa_lit_arity()) return *a;
         return 1;
     }
     /// Similar to World::extract while assuming an arity of @p a but also works on Sigma%s, and Arr%ays.
@@ -342,7 +348,7 @@ public:
         if constexpr (A == -1_s) {
             return projs(num_projs(), f);
         } else {
-            assert(A == as_lit(arity()));
+            assert(A == as_lit_arity());
             std::array<R, A> array;
             for (nat_t i = 0; i != A; ++i) array[i] = f(proj(A, i));
             return array;

@@ -123,7 +123,7 @@ bool Checker::equiv_internal(Ref d1, Ref d2) {
     if (d1->isa<Sigma, Arr>()) {
         if (!equiv(d1->arity(), d2->arity())) return false;
 
-        if (auto a = isa_lit(d1->arity())) {
+        if (auto a = d1->isa_lit_arity()) {
             for (size_t i = 0; i != a; ++i) {
                 if (!equiv(d1->proj(*a, i), d2->proj(*a, i))) return false;
             }

@@ -230,7 +230,7 @@ Ref World::extract(Ref d, Ref index) {
         DefArray ops(n, [&](size_t i) { return d->proj(n, as_lit(idx[i])); });
         return tuple(ops);
     } else if (index->isa<Pack>()) {
-        DefArray ops(as_lit(index->arity()), [&](size_t) { return extract(d, index->ops().back()); });
+        DefArray ops(index->as_lit_arity(), [&](size_t) { return extract(d, index->ops().back()); });
         return tuple(ops);
     }
 
@@ -292,7 +292,7 @@ Ref World::insert(Ref d, Ref index, Ref val) {
 
     // insert(‹4; x›, 2, y) -> (x, x, y, x)
     if (auto pack = d->isa<Pack>()) {
-        if (auto a = isa_lit(pack->arity())) {
+        if (auto a = pack->isa_lit_arity()) {
             DefArray new_ops(*a, pack->body());
             new_ops[as_lit(index)] = val;
             return tuple(type, new_ops);
@@ -448,7 +448,7 @@ Ref World::test(Ref value, Ref probe, Ref match, Ref clash) {
 
     // TODO proper error msg
     assert(m_pi && c_pi);
-    auto a = isa_lit(m_pi->dom()->arity());
+    auto a = m_pi->dom()->isa_lit_arity();
     assert_unused(a && *a == 2);
     assert(checker().equiv(m_pi->dom(2, 0_s), c_pi->dom()));
 

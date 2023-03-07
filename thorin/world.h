@@ -322,7 +322,7 @@ public:
     ///@{
     Ref extract(Ref d, Ref i);
     Ref extract(Ref d, u64 a, u64 i) { return extract(d, lit_idx(a, i)); }
-    Ref extract(Ref d, u64 i) { return extract(d, as_lit(d->arity()), i); }
+    Ref extract(Ref d, u64 i) { return extract(d, d->as_lit_arity(), i); }
 
     /// Builds `(f, t)cond`.
     /// **Note** that select expects @p t as first argument and @p f as second one.
@@ -334,7 +334,7 @@ public:
     ///@{
     Ref insert(Ref d, Ref i, Ref val);
     Ref insert(Ref d, u64 a, u64 i, Ref val) { return insert(d, lit_idx(a, i), val); }
-    Ref insert(Ref d, u64 i, Ref val) { return insert(d, as_lit(d->arity()), i, val); }
+    Ref insert(Ref d, u64 i, Ref val) { return insert(d, d->as_lit_arity(), i, val); }
     ///@}
 
     /// @name Lit
