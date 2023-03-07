@@ -36,7 +36,7 @@ VarSet DepTree::run(Def* nom) {
         parent = n->depth() > parent->depth() ? n : parent;
     }
     if (nom->is_external() && parent != root_.get()) {
-        world().WLOG("external {} would be hidden inside parent {}..", nom, parent->nom());
+        world().WLOG("external {} would be hidden inside parent {}.", nom, parent->nom());
         node->set_parent(root_.get());
     } else
         node->set_parent(parent);
