@@ -217,11 +217,10 @@ void Lam::check() {
     auto& w = world();
     return; // TODO
     if (!w.checker().equiv(filter()->type(), w.type_bool()))
-        err(filter(), "filter '{}' of lambda is of type '{}' but must be of type '.Bool'", filter(),
-            filter()->type());
+        err(filter(), "filter '{}' of lambda is of type '{}' but must be of type '.Bool'", filter(), filter()->type());
     if (!w.checker().equiv(body()->type(), codom()))
-        err(body(), "body '{}' of lambda is of type '{}' but its codomain is of type '{}'", body(),
-            body()->type(), codom());
+        err(body(), "body '{}' of lambda is of type '{}' but its codomain is of type '{}'", body(), body()->type(),
+            codom());
 }
 
 void Pi::check() {
