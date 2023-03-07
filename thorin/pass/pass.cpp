@@ -105,10 +105,9 @@ const Def* PassMan::rewrite(const Def* old_def) {
     }
 
     auto new_type = old_def->type() ? rewrite(old_def->type()) : nullptr;
-    auto new_meta = old_def->meta() ? rewrite(old_def->meta()) : nullptr;
 
     DefArray new_ops(old_def->num_ops(), [&](size_t i) { return rewrite(old_def->op(i)); });
-    auto new_def = old_def->rebuild(world(), new_type, new_ops)->set_meta(new_meta);
+    auto new_def = old_def->rebuild(world(), new_type, new_ops);
 
     if (auto proxy = new_def->isa<Proxy>()) {
         if (auto&& pass = passes_[proxy->pass()]; pass->inspect()) {

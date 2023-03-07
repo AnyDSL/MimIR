@@ -151,32 +151,20 @@ inline unsigned operator!=(Dep d1, unsigned d2) { return unsigned(d1) != d2; }
     auto NAME##s(nat_t a) CONST { return ((const Def*)NAME())->projs(a); }
 
 // clang-format off
-/// Use as mixin to declare setters for Def::loc, Def::name, and Def::meta using a *covariant* return type.
-#define THORIN_SETTERS(T)                                                                                                                     \
-public:                                                                                                                                       \
-    template<bool Ow = false> const T* set(Loc l                               ) const { if (Ow || !dbg_.loc) dbg_.loc = l;    return this; } \
-    template<bool Ow = false>       T* set(Loc l                               )       { if (Ow || !dbg_.loc) dbg_.loc = l;    return this; } \
-    template<bool Ow = false> const T* set(       Sym s                        ) const { if (Ow || !dbg_.sym) dbg_.sym = s;    return this; } \
-    template<bool Ow = false>       T* set(       Sym s                        )       { if (Ow || !dbg_.sym) dbg_.sym = s;    return this; } \
-    template<bool Ow = false> const T* set_meta(                   const Def* m) const { if (Ow || !meta_) meta_ = m;          return this; } \
-    template<bool Ow = false>       T* set_meta(                   const Def* m)       { if (Ow || !meta_) meta_ = m;          return this; } \
-    template<bool Ow = false> const T* set(       std::string&& s              ) const {         set(get_sym(s));              return this; } \
-    template<bool Ow = false>       T* set(       std::string&& s              )       {         set(get_sym(s));              return this; } \
-    template<bool Ow = false> const T* set(Loc l, Sym s,           const Def* m) const { set(l); set(s         ); set_meta(m); return this; } \
-    template<bool Ow = false> const T* set(Loc l, std::string&& s, const Def* m) const { set(l); set(get_sym(s)); set_meta(m); return this; } \
-    template<bool Ow = false> const T* set(Loc l, Sym s                        ) const { set(l); set(s         );              return this; } \
-    template<bool Ow = false> const T* set(Loc l, std::string&& s              ) const { set(l); set(get_sym(s));              return this; } \
-    template<bool Ow = false> const T* set(Loc l,                  const Def* m) const { set(l);                  set_meta(m); return this; } \
-    template<bool Ow = false> const T* set(       Sym s,           const Def* m) const {         set(s         ); set_meta(m); return this; } \
-    template<bool Ow = false> const T* set(       std::string&& s, const Def* m) const {         set(get_sym(s)); set_meta(m); return this; } \
-    template<bool Ow = false>       T* set(Loc l, Sym s,           const Def* m)       { set(l); set(s         ); set_meta(m); return this; } \
-    template<bool Ow = false>       T* set(Loc l, std::string&& s, const Def* m)       { set(l); set(get_sym(s)); set_meta(m); return this; } \
-    template<bool Ow = false>       T* set(Loc l, Sym s                        )       { set(l); set(s         );              return this; } \
-    template<bool Ow = false>       T* set(Loc l, std::string&& s              )       { set(l); set(get_sym(s));              return this; } \
-    template<bool Ow = false>       T* set(Loc l,                  const Def* m)       { set(l);                  set_meta(m); return this; } \
-    template<bool Ow = false>       T* set(       Sym s,           const Def* m)       {         set(s         ); set_meta(m); return this; } \
-    template<bool Ow = false>       T* set(       std::string&& s, const Def* m)       {         set(get_sym(s)); set_meta(m); return this; } \
-    template<bool Ow = false> const T* set(Dbg d) const { set(d.loc, d.sym); return this; }                                                   \
+/// Use as mixin to declare setters for Def::loc \& Def::name using a *covariant* return type.
+#define THORIN_SETTERS(T)                                                                                                   \
+public:                                                                                                                     \
+    template<bool Ow = false> const T* set(Loc l               ) const { if (Ow || !dbg_.loc) dbg_.loc = l;  return this; } \
+    template<bool Ow = false>       T* set(Loc l               )       { if (Ow || !dbg_.loc) dbg_.loc = l;  return this; } \
+    template<bool Ow = false> const T* set(       Sym s        ) const { if (Ow || !dbg_.sym) dbg_.sym = s;  return this; } \
+    template<bool Ow = false>       T* set(       Sym s        )       { if (Ow || !dbg_.sym) dbg_.sym = s;  return this; } \
+    template<bool Ow = false> const T* set(       std::string s) const {         set(get_sym(std::move(s))); return this; } \
+    template<bool Ow = false>       T* set(       std::string s)       {         set(get_sym(std::move(s))); return this; } \
+    template<bool Ow = false> const T* set(Loc l, Sym s        ) const { set(l); set(s);                     return this; } \
+    template<bool Ow = false>       T* set(Loc l, Sym s        )       { set(l); set(s);                     return this; } \
+    template<bool Ow = false> const T* set(Loc l, std::string s) const { set(l); set(get_sym(std::move(s))); return this; } \
+    template<bool Ow = false>       T* set(Loc l, std::string s)       { set(l); set(get_sym(std::move(s))); return this; } \
+    template<bool Ow = false> const T* set(Dbg d) const { set(d.loc, d.sym); return this; }                                 \
     template<bool Ow = false>       T* set(Dbg d)       { set(d.loc, d.sym); return this; }
 // clang-format on
 
@@ -200,9 +188,9 @@ private:                                                                      \
 /// Base class for all Def%s.
 /// The data layout (see World::alloc and Def::partial_ops) looks like this:
 /// ```
-/// Def| meta |type | op(0) ... op(num_ops-1) |
-///    |---------------partial_ops------------|
-///                 |-------extended_ops------|
+/// Def| type | op(0) ... op(num_ops-1) |
+///    |---------partial_ops------------|
+///           |-------extended_ops------|
 /// ```
 /// @attention This means that any subclass of Def **must not** introduce additional members.
 class Def : public RuntimeCast<Def> {
@@ -287,8 +275,7 @@ public:
 
     /// @name extended_ops
     ///@{
-    /// Includes Def::meta(), Def::type(), and then the other Def::ops() in this order.
-    /// Def::meta() and Def::type() are only included, if not `nullptr`.
+    /// Includes Def::type() (if not `nullptr`) and then the other Def::ops() in this order.
     /// Def::ops() is only included, if Def::is_set.
     Defs extended_ops() const;
     const Def* extended_op(size_t i) const { return extended_ops()[i]; }
@@ -297,10 +284,10 @@ public:
 
     /// @name partial_ops
     ///@{
-    /// Includes Def::meta(), Def::type(), and then the other Def::ops() in this order.
+    /// Includes Def::type() and then the other Def::ops() in this order.
     /// Also works with partially set Def%s and doesn't assert.
     /// Unset operands are `nullptr`.
-    Defs partial_ops() const { return Defs(num_ops_ + 2, ops_ptr() - 2); }
+    Defs partial_ops() const { return Defs(num_ops_ + 1, ops_ptr() - 1); }
     const Def* partial_op(size_t i) const { return partial_ops()[i]; }
     size_t num_partial_ops() const { return partial_ops().size(); }
     ///@}
@@ -385,14 +372,13 @@ public:
     void make_internal();
     ///@}
 
-    /// @name Dbg & meta
+    /// @name Dbg
     ///@{
     std::string unique_name() const; ///< name + "_" + Def::gid
     THORIN_SETTERS(Def)
     Dbg dbg() const { return dbg_; }
     Loc loc() const { return dbg_.loc; }
     Sym sym() const { return dbg_.sym; }
-    const Def* meta() const { return meta_; }
     ///@}
 
     /// @name debug prepend/append
@@ -493,6 +479,7 @@ protected:
 
     /// @name wrappers for World::sym
     ///@{
+    /// These are here to have Def::set%ters inline without including `thorin/world.h`.
     Sym get_sym(const char*) const;
     Sym get_sym(std::string_view) const;
     Sym get_sym(std::string) const;
@@ -510,7 +497,6 @@ protected:
     u32 num_ops_;
     mutable Uses uses_;
     mutable Dbg dbg_;
-    mutable const Def* meta_ = nullptr;
 
 private:
     virtual Def* stub_(World&, const Def*) { unreachable(); }

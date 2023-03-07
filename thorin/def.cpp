@@ -209,8 +209,7 @@ std::string_view Def::node_name() const {
 Defs Def::extended_ops() const {
     if (isa<Type>() || isa<Univ>()) return Defs();
     assert(type());
-    size_t offset = meta() ? 2 : 1;
-    return Defs((is_set() ? num_ops_ : 0) + offset, ops_ptr() - offset);
+    return Defs((is_set() ? num_ops_ : 0) + 1, ops_ptr() - 1);
 }
 
 #ifndef NDEBUG

@@ -3,6 +3,8 @@
 #include <deque>
 #include <memory>
 
+#include "thorin/def.h"
+
 #include "thorin/fe/tok.h"
 
 namespace thorin {
@@ -14,6 +16,7 @@ class World;
 namespace fe {
 
 class Scopes;
+using Def2Fields = DefMap<Array<Sym>>;
 
 /*
  * Pattern
@@ -32,8 +35,8 @@ public:
     Sym sym() const { return dbg_.sym; }
     bool rebind() const { return rebind_; }
     bool is_anonymous() const { return sym() == '_'; }
-    virtual void bind(Scopes&, const Def*) const = 0;
-    virtual const Def* type(World&) const        = 0;
+    virtual void bind(Scopes&, const Def*) const       = 0;
+    virtual const Def* type(World&, Def2Fields&) const = 0;
 
 protected:
     Dbg dbg_;
@@ -49,7 +52,7 @@ public:
         : Ptrn(dbg, rebind, type) {}
 
     void bind(Scopes&, const Def*) const override;
-    const Def* type(World&) const override;
+    const Def* type(World&, Def2Fields&) const override;
 };
 
 class TuplePtrn : public Ptrn {
@@ -64,7 +67,7 @@ public:
     size_t num_ptrns() const { return ptrns().size(); }
 
     void bind(Scopes&, const Def*) const override;
-    const Def* type(World&) const override;
+    const Def* type(World&, Def2Fields&) const override;
 
 private:
     Ptrns ptrns_;

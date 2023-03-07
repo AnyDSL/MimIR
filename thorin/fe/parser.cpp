@@ -197,10 +197,11 @@ Ref Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
             auto tok = eat(Tok::Tag::M_id);
             if (tok.sym() == '_') err(tok.loc(), "you cannot use special symbol '_' as field access");
 
-            if (auto meta = sigma->meta(); meta && meta->arity() == sigma->arity()) {
-                auto def = sym2def(world(), tok.sym());
-                for (size_t i = 0, n = sigma->num_ops(); i != n; ++i) {
-                    if (meta->proj(n, i) == def) return world().extract(lhs, n, i)->set(track.loc());
+            if (auto i = def2fields_.find(sigma); i != def2fields_.end()) {
+                if (auto& fields = i->second; fields.size() == sigma->num_ops()) {
+                    for (size_t i = 0, n = sigma->num_ops(); i != n; ++i) {
+                        if (fields[i] == tok.sym()) return world().extract(lhs, n, i)->set(track.loc());
+                    }
                 }
             }
             err(tok.loc(), "could not find elemement '{}' to extract from '{}' of type '{}'", tok.sym(), lhs, sigma);
@@ -270,7 +271,7 @@ Ref Parser::parse_Cn() {
     auto track = tracker();
     eat(Tok::Tag::K_Cn);
     auto dom = parse_ptrn(Tok::Tag::D_brckt_l, "domain of a continuation type");
-    return world().cn(dom->type(world()))->set(track.loc());
+    return world().cn(dom->type(world(), def2fields_))->set(track.loc());
 }
 
 Ref Parser::parse_var() {
@@ -347,7 +348,7 @@ Ref Parser::parse_block() {
 Ref Parser::parse_sigma() {
     auto track = tracker();
     auto bndr  = parse_tuple_ptrn(track, false, anonymous_);
-    return bndr->type(world());
+    return bndr->type(world(), def2fields_);
 }
 
 Ref Parser::parse_tuple() {
@@ -375,9 +376,10 @@ Ref Parser::parse_pi() {
     do {
         auto implicit = accept(Tok::Tag::T_dot).has_value();
         auto dom      = parse_ptrn(Tok::Tag::D_brckt_l, "domain of a dependent function type", Tok::Prec::App);
-        auto pi  = world().nom_pi(world().type_infer_univ(), implicit)->set(dom->dbg())->set_dom(dom->type(world()));
-        auto var = pi->var()->set(dom->sym());
-        first    = first ? first : pi;
+        auto pi       = world().nom_pi(world().type_infer_univ(), implicit)->set_dom(dom->type(world(), def2fields_));
+        auto var      = pi->var()->set(dom->sym());
+        first         = first ? first : pi;
+        pi->set(dom->dbg());
 
         dom->bind(scopes_, var);
         pis.emplace_back(pi);
@@ -404,18 +406,17 @@ Ref Parser::parse_lit() {
     if (accept(Tok::Tag::T_colon)) {
         auto type = parse_expr("literal", r);
 
-        const Def* meta = nullptr;
         // clang-format off
         switch (lit.tag()) {
-            case Tok::Tag::L_s: meta = world().lit_nat('s'); break;
-            case Tok::Tag::L_u: meta = world().lit_nat('u'); break;
-            case Tok::Tag::L_r: meta = world().lit_nat('r'); break;
+            case Tok::Tag::L_s:
+            case Tok::Tag::L_u:
+            case Tok::Tag::L_r: break;
             case Tok::Tag::T_bot: return world().bot(type)->set(track.loc());
             case Tok::Tag::T_top: return world().top(type)->set(track.loc());
             default: unreachable();
         }
         // clang-format on
-        return world().lit(type, lit.u())->set(track.loc(), meta);
+        return world().lit(type, lit.u())->set(track.loc());
     }
 
     if (lit.tag() == Tok::Tag::T_bot) return world().bot(world().type())->set(track.loc());
@@ -540,13 +541,13 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
             }
         } else {
             auto ptrn = parse_ptrn(delim_l, "element of a tuple pattern");
-            auto type = ptrn->type(world());
+            auto type = ptrn->type(world(), def2fields_);
 
             if (b) {
                 // If we are able to parse more stuff, we got an expression instead of just a binder.
                 if (auto expr = parse_infix_expr(track, type); expr != type) {
                     ptrn = std::make_unique<IdPtrn>(track.dbg(anonymous_), false, expr);
-                    type = ptrn->type(world());
+                    type = ptrn->type(world(), def2fields_);
                 }
             }
 
@@ -749,7 +750,7 @@ Lam* Parser::parse_lam(bool decl) {
         const Def* filter = world().lit_bool(accept(Tok::Tag::T_bang).has_value());
         bool implicit     = accept(Tok::Tag::T_dot).has_value();
         auto dom_p        = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda", prec);
-        auto dom_t        = dom_p->type(world());
+        auto dom_t        = dom_p->type(world(), def2fields_);
         auto pi           = world().nom_pi(world().type_infer_univ(), implicit)->set_dom(dom_t);
         auto lam          = world().nom_lam(pi);
         auto lam_var      = lam->var()->set(dom_p->loc(), dom_p->sym());

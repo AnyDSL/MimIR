@@ -159,6 +159,7 @@ private:
 
     Lexer lexer_;
     Scopes scopes_;
+    Def2Fields def2fields_;
     Loc prev_;
     std::string dialect_;
     static constexpr size_t Max_Ahead = 2; ///< maximum lookahead

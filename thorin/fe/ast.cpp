@@ -27,26 +27,26 @@ void TuplePtrn::bind(Scopes& scopes, const Def* def) const {
  * type
  */
 
-const Def* IdPtrn::type(World& world) const {
+const Def* IdPtrn::type(World& world, Def2Fields&) const {
     if (type_) return type_;
     return type_ = world.nom_infer_type()->set(loc());
 }
 
-const Def* TuplePtrn::type(World& world) const {
+const Def* TuplePtrn::type(World& world, Def2Fields& def2fields) const {
     if (type_) return type_;
 
     auto n   = num_ptrns();
-    auto ops = Array<const Def*>(n, [&](size_t i) { return ptrn(i)->type(world); });
+    auto ops = Array<const Def*>(n, [&](size_t i) { return ptrn(i)->type(world, def2fields); });
 
     if (std::ranges::all_of(ptrns_, [](auto&& b) { return b->is_anonymous(); }))
         return type_ = world.sigma(ops)->set(loc());
 
     assert(ptrns().size() > 0);
 
-    auto fields = Array<const Def*>(n, [&](size_t i) { return sym2def(world, ptrn(i)->sym()); });
-    auto type   = world.umax<Sort::Type>(ops);
-    auto meta   = world.tuple(fields);
-    auto sigma  = world.nom_sigma(type, n)->set(loc(), sym(), meta);
+    auto type     = world.umax<Sort::Type>(ops);
+    auto sigma    = world.nom_sigma(type, n)->set(loc(), sym());
+    auto [_, ins] = def2fields.emplace(sigma, Array<Sym>(n, [&](size_t i) { return ptrn(i)->sym(); }));
+    assert(ins);
 
     sigma->set(0, ops[0]);
     for (size_t i = 1; i != n; ++i) {

@@ -149,7 +149,4 @@ bool is_unit(const Def*);
 
 std::string tuple2str(const Def*);
 
-Ref sym2def(World&, Sym);
-Sym def2sym(Ref);
-
 } // namespace thorin
