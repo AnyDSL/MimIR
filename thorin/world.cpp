@@ -463,10 +463,7 @@ Ref World::singleton(Ref inner_type) { return unify<Singleton>(1, this->type<1>(
  */
 
 Ref World::iapp(Ref callee, Ref arg) {
-    while (true) {
-        auto pi = callee->type()->isa<Pi>();
-        if (!pi) err(callee, "called expression '{}' : '{}' is not of function type", callee, callee->type());
-
+    while (auto pi = callee->type()->isa<Pi>()) {
         if (pi->implicit()) {
             auto infer = nom_infer_entity();
             auto a     = app(callee, infer);
