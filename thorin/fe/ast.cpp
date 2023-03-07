@@ -43,8 +43,10 @@ const Def* TuplePtrn::type(World& world) const {
 
     assert(ptrns().size() > 0);
 
-    auto type  = world.umax<Sort::Type>(ops);
-    auto sigma = world.nom_sigma(type, n)->set(loc(), sym());
+    auto fields = Array<const Def*>(n, [&](size_t i) { return sym2def(world, ptrn(i)->sym()); });
+    auto type   = world.umax<Sort::Type>(ops);
+    auto meta   = world.tuple(fields);
+    auto sigma  = world.nom_sigma(type, n)->set(loc(), sym(), meta);
 
     sigma->set(0, ops[0]);
     for (size_t i = 1; i != n; ++i) {

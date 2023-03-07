@@ -108,4 +108,24 @@ const Def* Pack::reduce(const Def* arg) const {
     return body();
 }
 
+/*
+ * Sym/Tuple
+ */
+
+Ref sym2def(World& world, Sym s) {
+    DefVec ops;
+    for (auto c : s) ops.emplace_back(world.lit_nat(c));
+    return world.tuple(ops);
+}
+
+Sym def2sym(Ref tuple) {
+    std::string s;
+    for (size_t i = 0, n = tuple->num_projs(); i != n; ++i)
+        if (auto lit = isa_lit(tuple->op(i)); lit && 1 <= *lit && *lit <= 127)
+            s += (char)*lit;
+        else
+            return {};
+    return tuple->world().sym(std::move(s));
+}
+
 } // namespace thorin

@@ -198,11 +198,10 @@ Ref Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
             auto tok = eat(Tok::Tag::M_id);
             if (tok.sym() == '_') err(tok.loc(), "you cannot use special symbol '_' as field access");
 
-            auto meta = sigma->meta();
-            if (meta->arity() == sigma->arity()) {
-                size_t a = sigma->num_ops();
-                for (size_t i = 0; i != a; ++i) {
-                    if (meta->proj(a, i)->sym() == tok.sym()) return world().extract(lhs, a, i)->set(track.loc());
+            if (auto meta = sigma->meta(); meta && meta->arity() == sigma->arity()) {
+                auto def = sym2def(world(), tok.sym());
+                for (size_t i = 0, n = sigma->num_ops(); i != n; ++i) {
+                    if (meta->proj(n, i) == def) return world().extract(lhs, n, i)->set(track.loc());
                 }
             }
             err(tok.loc(), "could not find elemement '{}' to extract from '{}' of type '{}'", tok.sym(), lhs, sigma);
