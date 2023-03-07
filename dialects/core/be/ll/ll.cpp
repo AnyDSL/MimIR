@@ -158,9 +158,8 @@ std::string Emitter::convert(const Def* type) {
         assert(pi->is_returning() && "should never have to convert type of BB");
         print(s, "{} (", convert_ret_pi(pi->ret_pi()));
 
-        std::string_view sep = "";
-        auto doms            = pi->doms();
-        for (auto dom : doms.skip_back()) {
+        auto doms = pi->doms();
+        for (auto sep = ""; auto dom : doms.skip_back()) {
             if (match<mem::M>(dom)) continue;
             s << sep << convert(dom);
             sep = ", ";
@@ -174,8 +173,7 @@ std::string Emitter::convert(const Def* type) {
             print(s, "{} = type", name);
         }
         print(s, "{{");
-        std::string_view sep = "";
-        for (auto t : sigma->ops()) {
+        for (auto sep = ""; auto t : sigma->ops()) {
             if (match<mem::M>(t)) continue;
             s << sep << convert(t);
             sep = ", ";
@@ -224,9 +222,8 @@ void Emitter::emit_imported(Lam* lam) {
     // TODO merge with declare method
     print(func_decls_, "declare {} {}(", convert_ret_pi(lam->type()->ret_pi()), id(lam));
 
-    auto sep  = "";
     auto doms = lam->doms();
-    for (auto dom : doms.skip_back()) {
+    for (auto sep = ""; auto dom : doms.skip_back()) {
         if (match<mem::M>(dom)) continue;
         print(func_decls_, "{}{}", sep, convert(dom));
         sep = ", ";
@@ -240,9 +237,8 @@ std::string Emitter::prepare(const Scope& scope) {
 
     print(func_impls_, "define {} {}(", convert_ret_pi(lam->type()->ret_pi()), id(lam));
 
-    auto sep  = "";
     auto vars = lam->vars();
-    for (auto var : vars.skip_back()) {
+    for (auto sep = ""; auto var : vars.skip_back()) {
         if (match<mem::M>(var->type())) continue;
         auto name    = id(var);
         locals_[var] = name;
@@ -258,8 +254,7 @@ void Emitter::finalize(const Scope& scope) {
     for (auto& [lam, bb] : lam2bb_) {
         for (const auto& [phi, args] : bb.phis) {
             print(bb.head().emplace_back(), "{} = phi {} ", id(phi), convert(phi->type()));
-            auto sep = "";
-            for (const auto& [arg, pred] : args) {
+            for (auto sep = ""; const auto& [arg, pred] : args) {
                 print(bb.head().back(), "{}[ {}, {} ]", sep, arg, pred);
                 sep = ", ";
             }

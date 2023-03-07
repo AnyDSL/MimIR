@@ -113,10 +113,9 @@ const Def* SSAConstr::mem2phi(const App* app, Lam* mem_lam) {
         world().DLOG("new phi_lam '{}'", phi_lam);
 
         auto num_mem_vars = mem_lam->num_vars();
-        size_t i          = 0;
         DefArray traxy_ops(2 * num_phis + 1);
         traxy_ops[0] = phi_lam->var();
-        for (auto sloxy : sloxys) {
+        for (size_t i = 0; auto sloxy : sloxys) {
             traxy_ops[2 * i + 1] = sloxy;
             traxy_ops[2 * i + 2] = phi_lam->var(num_mem_vars + i);
             ++i;
@@ -163,8 +162,7 @@ undo_t SSAConstr::analyze(const Def* def) {
 
             // TODO this is a bit scruffy - maybe we can do better
             if (succ_lam->is_basicblock() && succ_lam != curr_nom()) {
-                auto writable = data(curr_nom()).writable;
-                for (auto&& w : writable) succ_info.writable.insert(w);
+                for (auto writable = data(curr_nom()).writable; auto&& w : writable) succ_info.writable.insert(w);
             }
 
             if (!isa_callee(def, i)) {
