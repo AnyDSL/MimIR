@@ -945,7 +945,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         return bb.assign(name, "{} {} {} to {}", op, t_src, v_src, t_dst);
     }
 
-    unreachable(); // not yet implemented
+    def->dump(1);
+    world().ELOG("unhandled def in LLVM backend: {}", def);
 }
 
 void emit(World& world, std::ostream& ostream) {
