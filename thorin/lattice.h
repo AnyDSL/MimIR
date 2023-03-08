@@ -38,6 +38,7 @@ private:
         : Bound(Node, type, size) {}
 
     THORIN_DEF_MIXIN(TBound, Up ? Node::Join : Node::Meet)
+    TBound* stub_(World&, Ref) override;
 };
 
 /// Constructs a [Meet](@ref thorin::Meet) **value**.
@@ -122,6 +123,7 @@ private:
         : Ext(Node, type) {}
 
     THORIN_DEF_MIXIN(TExt, Up ? Node::Top : Node::Bot)
+    TExt* stub_(World&, Ref) override;
 };
 
 using Bot  = TExt<false>;

@@ -41,6 +41,7 @@ private:
     ///@}
 
     THORIN_DEF_MIXIN(Infer)
+    Infer* stub_(World&, Ref) override;
     friend class Checker;
 };
 

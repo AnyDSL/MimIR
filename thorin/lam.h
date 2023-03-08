@@ -47,6 +47,7 @@ public:
     ///@}
 
     THORIN_DEF_MIXIN(Pi)
+    Pi* stub_(World&, Ref) override;
 };
 
 class Lam : public Def {
@@ -110,6 +111,7 @@ public:
     ///@}
 
     THORIN_DEF_MIXIN(Lam)
+    Lam* stub_(World&, Ref) override;
 };
 
 template<class To>

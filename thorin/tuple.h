@@ -27,6 +27,7 @@ public:
     ///@}
 
     THORIN_DEF_MIXIN(Sigma)
+    Sigma* stub_(World&, Ref) override;
 };
 
 /// Data constructor for a Sigma.
@@ -66,6 +67,7 @@ public:
     ///@}
 
     THORIN_DEF_MIXIN(Arr)
+    Arr* stub_(World&, Ref) override;
 };
 
 class Pack : public Def {
@@ -94,6 +96,7 @@ public:
     ///@}
 
     THORIN_DEF_MIXIN(Pack)
+    Pack* stub_(World&, Ref) override;
 };
 
 /// Extracts from a Sigma or Arr-typed Extract::tuple the element at position Extract::index.

@@ -168,14 +168,13 @@ public:                                                                         
     template<bool Ow = false>       T* set(Dbg d)       { set(d.loc, d.sym); return this; }
 // clang-format on
 
-#define THORIN_DEF_MIXIN_2(T, N)                                              \
-    THORIN_SETTERS(T)                                                         \
-    T* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg()); } \
-    static constexpr auto Node = N;                                           \
-                                                                              \
-private:                                                                      \
-    Ref rebuild_(World&, Ref, Defs) const override;                           \
-    T* stub_(World&, Ref) override;                                           \
+#define THORIN_DEF_MIXIN_2(T, N)                                                                \
+    THORIN_SETTERS(T)                                                                           \
+    T* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg())->template as<T>(); } \
+    static constexpr auto Node = N;                                                             \
+                                                                                                \
+private:                                                                                        \
+    Ref rebuild_(World&, Ref, Defs) const override;                                             \
     friend class World;
 
 #define THORIN_DEF_MIXIN_1(T) THORIN_DEF_MIXIN_2(T, Node::T)
@@ -468,6 +467,9 @@ public:
     ///@}
 
 protected:
+    virtual Ref rebuild_(World&, Ref, Defs) const = 0;
+    virtual Def* stub_(World&, Ref) { unreachable(); }
+
     const Def** ops_ptr() const {
         return reinterpret_cast<const Def**>(reinterpret_cast<char*>(const_cast<Def*>(this + 1)));
     }
@@ -501,10 +503,6 @@ protected:
     u32 num_ops_;
     mutable Uses uses_;
     mutable Dbg dbg_;
-
-private:
-    virtual Ref rebuild_(World&, Ref, Defs) const = 0;
-    virtual Def* stub_(World&, Ref) = 0;
 
     const Def* type_;
 
@@ -723,6 +721,7 @@ public:
     ///@}
 
     THORIN_DEF_MIXIN(Global)
+    Global* stub_(World&, Ref) override;
 };
 
 hash_t UseHash::operator()(Use use) const { return hash_combine(hash_begin(u16(use.index())), hash_t(use->gid())); }
