@@ -26,30 +26,30 @@ const Def* LowerFor::rewrite(const Def* def) {
         auto yield_lam = w.nom_lam(yield_pi)->set(sym_.yield_);
 
         { // construct yield
-            auto [begin, end, step, acc] = for_lam->vars<4>();
-            begin->set(sym_.begin_);
+            auto [iter, end, step, acc] = for_lam->vars<4>();
+            iter->set(sym_.iter_);
             end->set(sym_.end_);
             step->set(sym_.step_);
             acc->set(sym_.acc_);
             auto yield_acc = yield_lam->var();
 
-            auto add = w.call(core::wrap::add, 0_n, Defs{begin, step});
+            auto add = w.call(core::wrap::add, 0_n, Defs{iter, step});
             yield_lam->app(false, for_lam, {add, end, step, yield_acc});
         }
         { // construct for
-            auto [begin, end, step, acc] = for_lam->vars<4>();
+            auto [iter, end, step, acc] = for_lam->vars<4>();
 
             // reduce the body to remove the cn parameter
             auto nom_body = body->as_nom<Lam>();
             auto new_body = nom_body->stub(w, w.cn(w.sigma()))->set(body->dbg());
-            new_body->set(nom_body->reduce(w.tuple({begin, acc, yield_lam})));
+            new_body->set(nom_body->reduce(w.tuple({iter, acc, yield_lam})));
 
             // break
             auto if_else_cn = w.cn(w.sigma());
             auto if_else    = w.nom_lam(if_else_cn);
             if_else->app(false, brk, acc);
 
-            auto cmp = w.call(core::icmp::ul, Defs{begin, end});
+            auto cmp = w.call(core::icmp::ul, Defs{iter, end});
             for_lam->branch(false, cmp, new_body, if_else, w.tuple());
         }
 
