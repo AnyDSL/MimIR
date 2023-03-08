@@ -9,6 +9,13 @@
 
 namespace thorin {
 
+/// A Sym%bol just wraps a `const std::string*`, so pass Sym itself around as value.
+/// With the exception of the empty string, you should only create Sym%bols via SymPool::sym which in turn will toss all Sym%bols into a big hash set.
+/// This makes Sym::operator== and Sym::operator!= an O(1) operation.
+/// The empty string is internally handled as `nullptr`.
+/// Thus, you can create a Sym%bol representing an empty string without having access to the SymPool.
+/// The empty string, `nullptr`, and `"\0"` are all identified as `Sym::Sym()`.
+/// Since creating a Sym has a slight runtime penalty, it's a good idea to create needed Sym%bols beforehand; see LowerFor for an example.
 class Sym {
 private:
     Sym(const std::string* ptr)
@@ -21,6 +28,8 @@ public:
 
     /// @name begin/end
     ///@{
+    /// Useful for range-based for.
+    /// Will give you `std::string::const_iterator` - yes **const**; you are not supposed to mutate hashed strings.
     auto begin() const { return (*this)->cbegin(); }
     auto end() const { return (*this)->cend(); }
     ///@}
@@ -32,6 +41,8 @@ public:
     bool operator==(Sym other) const { return this->ptr_ == other.ptr_; }
     bool operator!=(Sym other) const { return this->ptr_ != other.ptr_; }
     auto operator<=>(Sym other) const { return *(*this) <=> *other; }
+    friend bool operator==(char c, Sym s) { return s == c; }
+    friend bool operator!=(char c, Sym s) { return s != c; }
     ///@}
 
     /// @name cast operators
@@ -43,7 +54,7 @@ public:
 
     /// @name access operators
     ///@{
-    char operator[](size_t i) const { return ((std::string)(*this))[i]; }
+    char operator[](size_t i) const { return ((const std::string&)(*this))[i]; }
     const std::string& operator*() const { return *this->operator->(); }
     const std::string* operator->() const {
         static std::string empty;
@@ -64,6 +75,8 @@ private:
 
 inline std::ostream& operator<<(std::ostream& o, const Sym sym) { return o << *sym; }
 
+/// Hash set where all strings - wrapped in Sym%bol - live in.
+/// You can access the SymPool from Driver.
 class SymPool {
 public:
     SymPool()               = default;
@@ -89,7 +102,8 @@ using SymMap = absl::flat_hash_map<Sym, V>;
 using SymSet = absl::flat_hash_set<Sym>;
 using Syms   = std::deque<Sym>;
 
-inline std::string_view sub_view(std::string_view s, size_t i, size_t n = std::string_view::npos) {
+/// Like `std::string::substr`, but works on `std::string_view` instead.
+inline std::string_view subview(std::string_view s, size_t i, size_t n = std::string_view::npos) {
     n = std::min(n, s.size());
     return {s.data() + i, n - i};
 }

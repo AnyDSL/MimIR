@@ -7,6 +7,8 @@
 
 namespace thorin {
 
+/// Some "global" variables needed all over the place.
+/// Well, there are not really global - that's the point of this class.
 class Driver : public SymPool {
 public:
     Driver()

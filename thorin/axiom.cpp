@@ -97,18 +97,18 @@ Sym Axiom::demangle(World& world, dialect_t u) {
 std::array<Sym, 3> Axiom::split(World& world, Sym s) {
     if (!s) return {};
     if (s[0] != '%') return {};
-    auto sv = sub_view(s, 1);
+    auto sv = subview(s, 1);
 
     auto dot = sv.find('.');
     if (dot == std::string_view::npos) return {};
 
-    auto dialect = world.sym(sub_view(sv, 0, dot));
+    auto dialect = world.sym(subview(sv, 0, dot));
     if (!mangle(dialect)) return {};
 
-    auto tag = sub_view(sv, dot + 1);
+    auto tag = subview(sv, dot + 1);
     if (auto dot = tag.find('.'); dot != std::string_view::npos) {
-        auto sub = world.sym(sub_view(tag, dot + 1));
-        tag      = sub_view(tag, 0, dot);
+        auto sub = world.sym(subview(tag, dot + 1));
+        tag      = subview(tag, 0, dot);
         return {dialect, world.sym(tag), sub};
     }
 
