@@ -8,6 +8,7 @@
 #include "thorin/check.h"
 #include "thorin/def.h"
 #include "thorin/dialects.h"
+#include "thorin/driver.h"
 #include "thorin/rewrite.h"
 
 #include "thorin/util/array.h"
@@ -81,34 +82,6 @@ void Parser::syntax_err(std::string_view what, const Tok& tok, std::string_view 
  * entry points
  */
 
-Parser
-Parser::import_module(World& world, Sym name, Span<std::string> user_search_paths, const Normalizers* normalizers) {
-    auto search_paths = get_plugin_search_paths(user_search_paths);
-
-    auto file_name = *name + ".thorin";
-
-    std::string input_path{};
-    for (const auto& path : search_paths) {
-        auto full_path = path / file_name;
-
-        std::error_code ignore;
-        if (bool reg_file = std::filesystem::is_regular_file(full_path, ignore); reg_file && !ignore) {
-            input_path = full_path.string();
-            break;
-        }
-    }
-    std::ifstream ifs(input_path);
-
-    if (!ifs) throw std::runtime_error("could not find file '" + file_name + "'");
-
-    thorin::fe::Parser parser(world, world.sym(input_path), ifs, user_search_paths, normalizers);
-    parser.parse_module();
-
-    world.add_imported(name);
-
-    return parser;
-}
-
 void Parser::bootstrap(std::ostream& h) { bootstrapper_.emit(h); }
 
 void Parser::parse_module() {
@@ -118,6 +91,31 @@ void Parser::parse_module() {
     expect(Tok::Tag::M_eof, "module");
 };
 
+void Parser::import(Sym name) {
+    if (auto [i, _] = world().driver().imports.emplace(name); i != world().driver().imports.end()) return;
+
+    auto search_paths = get_plugin_search_paths(user_search_paths_);
+    auto file_name = *name + ".thorin";
+
+    std::string input_path;
+    for (const auto& path : search_paths) {
+        auto full_path = path / file_name;
+
+        std::error_code ignore;
+        if (bool reg_file = std::filesystem::is_regular_file(full_path, ignore); reg_file && !ignore) {
+            input_path = full_path.string();
+            break;
+        }
+    }
+
+    std::ifstream ifs(input_path);
+    if (!ifs) throw std::runtime_error("could not find file '" + file_name + "'");
+
+    auto prev = prev_;
+    parse_module();
+    prev_ = prev;
+}
+
 /*
  * misc
  */
@@ -126,15 +124,7 @@ void Parser::parse_import() {
     eat(Tok::Tag::K_import);
     auto name = expect(Tok::Tag::M_id, "import name");
     expect(Tok::Tag::T_semicolon, "end of import");
-
-    if (auto [_, ins] = imported_.emplace(name.sym()); !ins) return;
-
-    // search file and import
-    auto parser = Parser::import_module(world(), name.sym(), user_search_paths_, normalizers_);
-    scopes_.merge(parser.scopes_);
-
-    // transitvely remember which files we transitively imported
-    imported_.merge(parser.imported_);
+    import(name.sym());
 }
 
 Dbg Parser::parse_sym(std::string_view ctxt) {

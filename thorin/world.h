@@ -49,14 +49,11 @@ public:
             mutable bool frozen = false;
         } pod;
 
-        absl::btree_set<Sym> imported_dialects;
-
         friend void swap(State& s1, State& s2) {
             using std::swap;
             assert((!s1.pod.loc || !s2.pod.loc) && "Why is emit_loc() still set?");
             // clang-format off
             swap(s1.pod,                s2.pod);
-            swap(s1.imported_dialects,  s2.imported_dialects);
             // clang-format on
         }
     };
@@ -85,9 +82,6 @@ public:
 
     Sym name() const { return state_.pod.name; }
     void set(Sym name) { state_.pod.name = name; }
-
-    void add_imported(Sym name) { state_.imported_dialects.emplace(name); }
-    const auto& imported() const { return state_.imported_dialects; }
 
     /// Manage global identifier - a unique number for each Def.
     u32 curr_gid() const { return state_.pod.curr_gid; }
@@ -151,15 +145,16 @@ public:
     const auto& externals() const { return move_.externals; }
     bool empty() { return move_.externals.empty(); }
     void make_external(Def* def) {
+        assert(!def->external_);
         def->external_ = true;
-        assert(def->sym());
-        move_.externals.emplace(def->sym(), def); // TODO enable assert again
-        // auto [i, ins] = move_.externals.emplace(name, def);
-        // assert((ins || (def == i->second)) && "two different externals registered with the same name");
+        auto [i, ins] = move_.externals.emplace(def->sym(), def);
+        assert(ins);
     }
     void make_internal(Def* def) {
+        assert(def->external_);
         def->external_ = false;
-        move_.externals.erase(def->sym());
+        auto num = move_.externals.erase(def->sym());
+        assert(num == 1);
     }
     Def* lookup(Sym name) {
         auto i = move_.externals.find(name);

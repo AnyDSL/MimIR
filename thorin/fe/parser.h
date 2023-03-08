@@ -38,7 +38,7 @@ public:
 
     /// @name entry points
     ///@{
-    static Parser import_module(World&, Sym, Span<std::string> = {}, const Normalizers* normalizers = nullptr);
+    void import(Sym);
     void parse_module();
     void bootstrap(std::ostream&);
     ///@}
@@ -164,7 +164,6 @@ private:
     std::string dialect_;
     static constexpr size_t Max_Ahead = 2; ///< maximum lookahead
     std::array<Tok, Max_Ahead> ahead_;     ///< SLL look ahead
-    SymSet imported_;
     h::Bootstrapper bootstrapper_;
     std::vector<std::string> user_search_paths_;
     const Normalizers* normalizers_;

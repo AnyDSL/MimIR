@@ -20,6 +20,7 @@ public:
 #if THORIN_ENABLE_CHECKS
     absl::flat_hash_set<uint32_t> breakpoints;
 #endif
+    absl::btree_set<Sym> imports;
     World world;
 };
 
