@@ -116,33 +116,32 @@ template<bool up> Ref TBound<up>::rebuild_(World& w, Ref  , Defs o) const { retu
  * stub
  */
 
-Ac*        Ac       ::stub_(World&, Ref) { unreachable(); }
-App*       App      ::stub_(World&, Ref) { unreachable(); }
-Axiom*     Axiom    ::stub_(World&, Ref) { unreachable(); }
-Extract*   Extract  ::stub_(World&, Ref) { unreachable(); }
-Insert*    Insert   ::stub_(World&, Ref) { unreachable(); }
-Idx*       Idx      ::stub_(World&, Ref) { unreachable(); }
-Lit*       Lit      ::stub_(World&, Ref) { unreachable(); }
-Nat*       Nat      ::stub_(World&, Ref) { unreachable(); }
-Pick*      Pick     ::stub_(World&, Ref) { unreachable(); }
-Proxy*     Proxy    ::stub_(World&, Ref) { unreachable(); }
-Singleton* Singleton::stub_(World&, Ref) { unreachable(); }
-Type*      Type     ::stub_(World&, Ref) { unreachable(); }
-Test*      Test     ::stub_(World&, Ref) { unreachable(); }
-Tuple*     Tuple    ::stub_(World&, Ref) { unreachable(); }
-UInc*      UInc     ::stub_(World&, Ref) { unreachable(); }
-UMax*      UMax     ::stub_(World&, Ref) { unreachable(); }
-Univ*      Univ     ::stub_(World&, Ref) { unreachable(); }
-Var*       Var      ::stub_(World&, Ref) { unreachable(); }
-Vel*       Vel      ::stub_(World&, Ref) { unreachable(); }
-
-Arr*       Arr   ::stub_(World& w, Ref t) { return w.nom_arr  (t); }
-Global*    Global::stub_(World& w, Ref t) { return w.global(t, is_mutable()); }
-Infer*     Infer ::stub_(World& w, Ref t) { return w.nom_infer(t); }
-Lam*       Lam   ::stub_(World& w, Ref t) { return w.nom_lam  (t->as<Pi>()); }
-Pack*      Pack  ::stub_(World& w, Ref t) { return w.nom_pack (t); }
-Pi*        Pi    ::stub_(World& w, Ref t) { return w.nom_pi   (t, implicit()); }
-Sigma*     Sigma ::stub_(World& w, Ref t) { return w.nom_sigma(t, num_ops()); }
+Ac*        Ac       ::stub_(World&  , Ref  ) { unreachable(); }
+App*       App      ::stub_(World&  , Ref  ) { unreachable(); }
+Axiom*     Axiom    ::stub_(World&  , Ref  ) { unreachable(); }
+Extract*   Extract  ::stub_(World&  , Ref  ) { unreachable(); }
+Insert*    Insert   ::stub_(World&  , Ref  ) { unreachable(); }
+Idx*       Idx      ::stub_(World&  , Ref  ) { unreachable(); }
+Lit*       Lit      ::stub_(World&  , Ref  ) { unreachable(); }
+Nat*       Nat      ::stub_(World&  , Ref  ) { unreachable(); }
+Pick*      Pick     ::stub_(World&  , Ref  ) { unreachable(); }
+Proxy*     Proxy    ::stub_(World&  , Ref  ) { unreachable(); }
+Singleton* Singleton::stub_(World&  , Ref  ) { unreachable(); }
+Type*      Type     ::stub_(World&  , Ref  ) { unreachable(); }
+Test*      Test     ::stub_(World&  , Ref  ) { unreachable(); }
+Tuple*     Tuple    ::stub_(World&  , Ref  ) { unreachable(); }
+UInc*      UInc     ::stub_(World&  , Ref  ) { unreachable(); }
+UMax*      UMax     ::stub_(World&  , Ref  ) { unreachable(); }
+Univ*      Univ     ::stub_(World&  , Ref  ) { unreachable(); }
+Var*       Var      ::stub_(World&  , Ref  ) { unreachable(); }
+Vel*       Vel      ::stub_(World&  , Ref  ) { unreachable(); }
+Arr*       Arr      ::stub_(World& w, Ref t) { return w.nom_arr  (t); }
+Global*    Global   ::stub_(World& w, Ref t) { return w.global(t, is_mutable()); }
+Infer*     Infer    ::stub_(World& w, Ref t) { return w.nom_infer(t); }
+Lam*       Lam      ::stub_(World& w, Ref t) { return w.nom_lam  (t->as<Pi>()); }
+Pack*      Pack     ::stub_(World& w, Ref t) { return w.nom_pack (t); }
+Pi*        Pi       ::stub_(World& w, Ref t) { return w.nom_pi   (t, implicit()); }
+Sigma*     Sigma    ::stub_(World& w, Ref t) { return w.nom_sigma(t, num_ops()); }
 
 template<bool up> TBound<up>* TBound<up>::stub_(World& w, Ref t) { return w.nom_bound<up>(t, num_ops()); }
 template<bool up> TExt  <up>* TExt  <up>::stub_(World&  , Ref  ) { unreachable(); }

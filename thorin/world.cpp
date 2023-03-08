@@ -390,23 +390,23 @@ const Lit* World::lit(Ref type, u64 val) {
  * set
  */
 
-template<bool up>
+template<bool Up>
 Ref World::ext(Ref type) {
-    if (auto arr = type->isa<Arr>()) return pack(arr->shape(), ext<up>(arr->body()));
+    if (auto arr = type->isa<Arr>()) return pack(arr->shape(), ext<Up>(arr->body()));
     if (auto sigma = type->isa<Sigma>())
-        return tuple(sigma, DefArray(sigma->num_ops(), [&](size_t i) { return ext<up>(sigma->op(i)); }));
-    return unify<TExt<up>>(0, type);
+        return tuple(sigma, DefArray(sigma->num_ops(), [&](size_t i) { return ext<Up>(sigma->op(i)); }));
+    return unify<TExt<Up>>(0, type);
 }
 
-template<bool up>
+template<bool Up>
 Ref World::bound(Defs ops) {
     auto kind = umax<Sort::Type>(ops);
 
-    // has ext<up> value?
-    if (std::ranges::any_of(ops, [&](Ref op) { return up ? bool(op->isa<Top>()) : bool(op->isa<Bot>()); }))
-        return ext<up>(kind);
+    // has ext<Up> value?
+    if (std::ranges::any_of(ops, [&](Ref op) { return Up ? bool(op->isa<Top>()) : bool(op->isa<Bot>()); }))
+        return ext<Up>(kind);
 
-    // ignore: ext<!up>
+    // ignore: ext<!Up>
     DefArray cpy(ops);
     auto [_, end] = std::ranges::copy_if(ops, cpy.begin(), [&](Ref op) { return !op->isa<Ext>(); });
 
@@ -415,12 +415,12 @@ Ref World::bound(Defs ops) {
     end = std::unique(cpy.begin(), end);
     cpy.shrink(std::distance(cpy.begin(), end));
 
-    if (cpy.size() == 0) return ext<!up>(kind);
+    if (cpy.size() == 0) return ext<!Up>(kind);
     if (cpy.size() == 1) return cpy[0];
 
     // TODO simplify mixed terms with joins and meets
 
-    return unify<TBound<up>>(cpy.size(), kind, cpy);
+    return unify<TBound<Up>>(cpy.size(), kind, cpy);
 }
 
 Ref World::ac(Ref type, Defs ops) {

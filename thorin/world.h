@@ -377,16 +377,16 @@ public:
 
     /// @name lattice
     ///@{
-    template<bool up>
+    template<bool Up>
     Ref ext(Ref type);
     Ref bot(Ref type) { return ext<false>(type); }
     Ref top(Ref type) { return ext<true>(type); }
     Ref type_bot() { return data_.type_bot; }
     Ref top_nat() { return data_.top_nat; }
-    template<bool up> TBound<up>* nom_bound(Ref type, size_t size) { return insert<TBound<up>>(size, type, size); }
+    template<bool Up> TBound<Up>* nom_bound(Ref type, size_t size) { return insert<TBound<Up>>(size, type, size); }
     /// A *nom*inal Bound of Type @p l%evel.
-    template<bool up, level_t l = 0> TBound<up>* nom_bound(size_t size) { return nom_bound<up>(type<l>(), size); }
-    template<bool up> Ref bound(Defs ops);
+    template<bool Up, level_t l = 0> TBound<Up>* nom_bound(size_t size) { return nom_bound<Up>(type<l>(), size); }
+    template<bool Up> Ref bound(Defs ops);
     Join* nom_join(Ref type, size_t size) { return nom_bound<true>(type, size); }
     Meet* nom_meet(Ref type, size_t size) { return nom_bound<false>(type, size); }
     template<level_t l = 0> Join* nom_join(size_t size) { return nom_join(type<l>(), size); }

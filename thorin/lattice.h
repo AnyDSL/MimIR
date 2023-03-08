@@ -22,12 +22,12 @@ public:
     const Def* get(const Def* type) const { return op(find(type)); }
 };
 
-/// Specific [Bound](https://en.wikipedia.org/wiki/Join_and_meet) depending on @p up.
-/// The name @p up refers to the property that a [Join](@ref thorin::Join) **ascends** in the underlying
+/// Specific [Bound](https://en.wikipedia.org/wiki/Join_and_meet) depending on @p Up.
+/// The name @p Up refers to the property that a [Join](@ref thorin::Join) **ascends** in the underlying
 /// [lattice](https://en.wikipedia.org/wiki/Lattice_(order)) while a [Meet](@ref thorin::Meet) descends.
-/// * @p up = `true`: [Join](@ref thorin::Join) (aka least upper bound/supremum/union)
-/// * @p up = `false`: [Meet](@ref thorin::Meet) (aka greatest lower bound/infimum/intersection)
-template<bool up>
+/// * @p Up = `true`: [Join](@ref thorin::Join) (aka least Upper bound/supremum/union)
+/// * @p Up = `false`: [Meet](@ref thorin::Meet) (aka greatest lower bound/infimum/intersection)
+template<bool Up>
 class TBound : public Bound {
 private:
     /// Constructor for a *structural* Bound.
@@ -37,7 +37,7 @@ private:
     TBound(const Def* type, size_t size)
         : Bound(Node, type, size) {}
 
-    THORIN_DEF_MIXIN(TBound<up>, up ? Node::Join : Node::Meet)
+    THORIN_DEF_MIXIN(TBound, Up ? Node::Join : Node::Meet)
 };
 
 /// Constructs a [Meet](@ref thorin::Meet) **value**.
@@ -114,14 +114,14 @@ protected:
         : Def(node, type, Defs{}, 0) {}
 };
 
-/// Ext%remum. Either Top (@p up) or Bot%tom.
-template<bool up>
+/// Ext%remum. Either Top (@p Up) or Bot%tom.
+template<bool Up>
 class TExt : public Ext {
 private:
     TExt(const Def* type)
         : Ext(Node, type) {}
 
-    THORIN_DEF_MIXIN(TExt<up>, up ? Node::Top : Node::Bot)
+    THORIN_DEF_MIXIN(TExt, Up ? Node::Top : Node::Bot)
 };
 
 using Bot  = TExt<false>;
