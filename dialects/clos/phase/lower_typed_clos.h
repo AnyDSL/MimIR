@@ -29,7 +29,10 @@ class LowerTypedClos : public Phase {
 public:
     LowerTypedClos(World& world)
         : Phase(world, "lower_typed_clos", true)
-        , dummy_ret_(world.bot(world.cn(mem::type_mem(world)))) {}
+        , dummy_ret_(world.bot(world.cn(mem::type_mem(world))))
+        , sym_{.closure_env = world.sym("closure_env"),
+               .mem         = world.sym("mem"),
+               .unboxed_env = world.sym("unboxed_env")} {}
 
     void start() override;
 
@@ -54,9 +57,9 @@ private:
     ///@{
 
     /// wrapper arround old2new_
-    template<class D = const Def>
-    D* map(const Def* old_def, D* new_def) {
-        old2new_[old_def] = static_cast<const Def*>(new_def);
+    const Def* map(const Def* old_def, const Def* new_def) { return old2new_[old_def] = new_def; }
+    Def* map(const Def* old_def, Def* new_def) {
+        old2new_[old_def] = new_def;
         return new_def;
     }
 
@@ -77,6 +80,9 @@ private:
     const Def* lvm_; //< Last visited memory token
     const Def* lcm_; //< Last created memory token
     ///@}
+    struct {
+        Sym closure_env, mem, unboxed_env;
+    } sym_;
 };
 
 } // namespace thorin::clos

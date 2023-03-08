@@ -19,7 +19,8 @@ namespace thorin {
 
 /// See optimize.h for magic numbers
 void optimize(World& world, Passes& passes, std::vector<Dialect>& dialects) {
-    auto compilation_functions = {"_compile", "_default_compile", "_core_compile", "_fallback_compile"};
+    auto compilation_functions = {world.sym("_compile"), world.sym("_default_compile"), world.sym("_core_compile"),
+                                  world.sym("_fallback_compile")};
     const Def* compilation     = nullptr;
     for (auto compilation_function : compilation_functions) {
         if (auto compilation_ = world.lookup(compilation_function)) {
@@ -32,7 +33,7 @@ void optimize(World& world, Passes& passes, std::vector<Dialect>& dialects) {
     for (auto ext : world.externals()) {
         auto def = ext.second;
         if (auto lam = def->isa<Lam>(); lam && lam->num_doms() == 0) {
-            if (lam->codom()->name() == "Pipeline") {
+            if (*lam->codom()->sym() == "Pipeline") {
                 if (!compilation) { compilation = lam; }
                 make_internal.push_back(def);
             }

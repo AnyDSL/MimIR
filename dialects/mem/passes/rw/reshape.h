@@ -8,8 +8,6 @@ namespace thorin::mem {
 
 using DefQueue = std::deque<const Def*>;
 
-static int i = 0;
-
 /// The general idea of this pass/phase is to change the shape of signatures of functions.
 /// Example: `Cn[ [mem,  A, B], C  , ret]`
 /// Arg    : `Cn[ [mem, [A, B , C]], ret]` (general `Cn[ [mem, args], ret]`)

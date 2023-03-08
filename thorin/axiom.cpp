@@ -1,18 +1,13 @@
 #include "thorin/axiom.h"
 
+#include "thorin/world.h"
+
 using namespace std::literals;
 
 namespace thorin {
 
-Axiom::Axiom(NormalizeFn normalizer,
-             u8 curry,
-             u8 trip,
-             const Def* type,
-             dialect_t dialect,
-             tag_t tag,
-             sub_t sub,
-             const Def* dbg)
-    : Def(Node, type, Defs{}, dialect | (flags_t(tag) << 8_u64) | flags_t(sub), dbg) {
+Axiom::Axiom(NormalizeFn normalizer, u8 curry, u8 trip, const Def* type, dialect_t dialect, tag_t tag, sub_t sub)
+    : Def(Node, type, Defs{}, dialect | (flags_t(tag) << 8_u64) | flags_t(sub)) {
     normalizer_ = normalizer;
     curry_      = curry;
     trip_       = trip;
@@ -48,8 +43,8 @@ std::tuple<const Axiom*, u8, u8> Axiom::get(const Def* def) {
     return {nullptr, 0, 0};
 }
 
-std::optional<dialect_t> Axiom::mangle(std::string_view s) {
-    auto n = s.size();
+std::optional<dialect_t> Axiom::mangle(Sym s) {
+    auto n = s->size();
     if (n > Max_Dialect_Size) return {};
 
     u64 result = 0;
@@ -77,12 +72,12 @@ std::optional<dialect_t> Axiom::mangle(std::string_view s) {
     return result << 16_u64;
 }
 
-std::string Axiom::demangle(dialect_t u) {
+Sym Axiom::demangle(World& world, dialect_t u) {
     std::string result;
     for (size_t i = 0; i != Max_Dialect_Size; ++i) {
         u64 c = (u & 0xfc00000000000000_u64) >> 58_u64;
         if (c == 0) {
-            return result;
+            return world.sym(result);
         } else if (c == 1) {
             result += '_';
         } else if (2 <= c && c < 28) {
@@ -96,38 +91,28 @@ std::string Axiom::demangle(dialect_t u) {
         u <<= 6_u64;
     }
 
-    return result;
+    return world.sym(result);
 }
 
-static std::string_view sub_view(std::string_view s, size_t i, size_t n = std::string_view::npos) {
-    n = std::min(n, s.size());
-    return {s.data() + i, n - i};
-}
-
-std::optional<std::array<std::string_view, 3>> Axiom::split(std::string_view s) {
-    if (s.empty()) return {};
+std::array<Sym, 3> Axiom::split(World& world, Sym s) {
+    if (!s) return {};
     if (s[0] != '%') return {};
-    s = sub_view(s, 1);
+    auto sv = subview(s, 1);
 
-    auto dot = s.find('.');
+    auto dot = sv.find('.');
     if (dot == std::string_view::npos) return {};
 
-    auto dialect = sub_view(s, 0, dot);
+    auto dialect = world.sym(subview(sv, 0, dot));
     if (!mangle(dialect)) return {};
 
-    auto tag = sub_view(s, dot + 1);
+    auto tag = subview(sv, dot + 1);
     if (auto dot = tag.find('.'); dot != std::string_view::npos) {
-        auto sub = sub_view(tag, dot + 1);
-        tag      = sub_view(tag, 0, dot);
-        return {
-            {dialect, tag, sub}
-        };
+        auto sub = world.sym(subview(tag, dot + 1));
+        tag      = subview(tag, 0, dot);
+        return {dialect, world.sym(tag), sub};
     }
 
-    if (tag.empty()) return {};
-    return {
-        {dialect, tag, ""sv}
-    };
+    return {dialect, world.sym(tag), {}};
 }
 
 } // namespace thorin

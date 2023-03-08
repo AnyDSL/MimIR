@@ -9,11 +9,22 @@ namespace thorin::affine {
 class LowerFor : public RWPass<LowerFor, Lam> {
 public:
     LowerFor(PassMan& man)
-        : RWPass(man, "lower_affine_for") {}
+        : RWPass(man, "lower_affine_for")
+        , sym_{.acc_   = world().sym("acc"),
+               .body_  = world().sym("body"),
+               .break_ = world().sym("break"),
+               .end_   = world().sym("end"),
+               .for_   = world().sym("for"),
+               .iter_  = world().sym("iter"),
+               .step_  = world().sym("step"),
+               .yield_ = world().sym("yield")} {}
 
     const Def* rewrite(const Def*) override;
 
 private:
+    struct {
+        Sym acc_, body_, break_, end_, for_, iter_, step_, yield_;
+    } sym_;
     Def2Def rewritten_;
 };
 

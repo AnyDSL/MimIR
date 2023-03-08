@@ -4,7 +4,7 @@
 
 ## Usage
 
-\include "cli-help.md"
+\include "cli-help.inc"
 
 ## Debugging Features {#clidebug}
 

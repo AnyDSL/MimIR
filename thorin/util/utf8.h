@@ -4,8 +4,7 @@
 #include <istream>
 #include <optional>
 
-#include "thorin/debug.h"
-
+#include "thorin/util/loc.h"
 #include "thorin/util/types.h"
 
 namespace thorin::utf8 {
@@ -41,9 +40,9 @@ bool decode(std::ostream& os, char32_t c);
 template<size_t Max_Ahead>
 class Lexer {
 public:
-    Lexer(std::string_view filename, std::istream& istream)
+    Lexer(Sym file, std::istream& istream)
         : istream_(istream)
-        , loc_(filename, {0, 0}) {
+        , loc_(file, {0, 0}) {
         ahead_.back().pos = {1, 0};
         for (size_t i = 0; i != Max_Ahead; ++i) next();
         accept(BOM); // eat utf-8 BOM if present

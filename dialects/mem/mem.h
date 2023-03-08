@@ -23,90 +23,90 @@ enum : nat_t {
 inline const Axiom* type_mem(World& w) { return w.ax<M>(); }
 
 inline const Axiom* type_ptr(World& w) { return w.ax<Ptr>(); }
-inline const App* type_ptr(const Def* pointee, const Def* addr_space, const Def* dbg = {}) {
+inline const App* type_ptr(Ref pointee, Ref addr_space) {
     World& w = pointee->world();
-    return w.app(type_ptr(w), {pointee, addr_space}, dbg)->as<App>();
+    return w.app(type_ptr(w), {pointee, addr_space})->as<App>();
 }
-inline const App* type_ptr(const Def* pointee, nat_t addr_space = AddrSpace::Generic, const Def* dbg = {}) {
+inline const App* type_ptr(Ref pointee, nat_t addr_space = AddrSpace::Generic) {
     World& w = pointee->world();
-    return type_ptr(pointee, w.lit_nat(addr_space), dbg);
+    return type_ptr(pointee, w.lit_nat(addr_space));
 }
 
 /// Same as World::cn / World::pi but adds a World::type_mem-typed Var to each Pi.
-inline const Pi* cn_mem(const Def* dom, const Def* dbg = {}) {
+inline const Pi* cn_mem(Ref dom) {
     World& w = dom->world();
-    return w.cn({type_mem(w), dom}, dbg);
+    return w.cn({type_mem(w), dom});
 }
-inline const Pi* cn_mem_ret(const Def* dom, const Def* ret_dom, const Def* dbg = {}) {
+inline const Pi* cn_mem_ret(Ref dom, Ref ret_dom) {
     World& w = dom->world();
-    return w.cn({type_mem(w), dom, cn_mem(ret_dom)}, dbg);
+    return w.cn({type_mem(w), dom, cn_mem(ret_dom)});
 }
-inline const Pi* pi_mem(const Def* domain, const Def* codomain, const Def* dbg = {}) {
+inline const Pi* pi_mem(Ref domain, Ref codomain) {
     World& w = domain->world();
     auto d   = w.sigma({type_mem(w), domain});
-    return w.pi(d, w.sigma({type_mem(w), codomain}), dbg);
+    return w.pi(d, w.sigma({type_mem(w), codomain}));
 }
-inline const Pi* fn_mem(const Def* domain, const Def* codomain, const Def* dbg = {}) {
+inline const Pi* fn_mem(Ref domain, Ref codomain) {
     World& w = domain->world();
-    return w.cn({type_mem(w), domain, cn_mem(codomain)}, dbg);
+    return w.cn({type_mem(w), domain, cn_mem(codomain)});
 }
 
-static inline const Def* tuple_of_types(const Def* t) {
+static inline Ref tuple_of_types(Ref t) {
     auto& world = t->world();
     if (auto sigma = t->isa<Sigma>()) return world.tuple(sigma->ops());
     if (auto arr = t->isa<Arr>()) return world.pack(arr->shape(), arr->body());
     return t;
 }
 
-inline const Def* op_lea(const Def* ptr, const Def* index, const Def* dbg = {}) {
+inline Ref op_lea(Ref ptr, Ref index) {
     World& w                   = ptr->world();
     auto [pointee, addr_space] = force<Ptr>(ptr->type())->args<2>();
     auto Ts                    = tuple_of_types(pointee);
-    return w.app(w.app(w.ax<lea>(), {pointee->arity(), Ts, addr_space}), {ptr, index}, dbg);
+    return w.app(w.app(w.ax<lea>(), {pointee->arity(), Ts, addr_space}), {ptr, index});
 }
 
-inline const Def* op_lea_unsafe(const Def* ptr, const Def* i, const Def* dbg = {}) {
+inline Ref op_lea_unsafe(Ref ptr, Ref i) {
     World& w = ptr->world();
-    return op_lea(ptr, w.call(core::conv::u, force<Ptr>(ptr->type())->arg(0)->arity(), i), dbg);
+    return op_lea(ptr, w.call(core::conv::u, force<Ptr>(ptr->type())->arg(0)->arity(), i));
 }
 
-inline const Def* op_lea_unsafe(const Def* ptr, u64 i, const Def* dbg = {}) {
+inline Ref op_lea_unsafe(Ref ptr, u64 i) {
     World& w = ptr->world();
-    return op_lea_unsafe(ptr, w.lit_idx(i), dbg);
+    return op_lea(ptr, w.call(core::conv::u, force<Ptr>(ptr->type())->arg(0)->arity(), i));
 }
 
-inline const Def* op_remem(const Def* mem, const Def* dbg = {}) {
+inline Ref op_remem(Ref mem) {
     World& w = mem->world();
-    return w.app(w.ax<remem>(), mem, dbg);
+    return w.app(w.ax<remem>(), mem);
 }
 
-inline const Def* op_alloc(const Def* type, const Def* mem, const Def* dbg = {}) {
+inline Ref op_alloc(Ref type, Ref mem) {
     World& w = type->world();
-    return w.app(w.app(w.ax<alloc>(), {type, w.lit_nat_0()}), mem, dbg);
+    return w.app(w.app(w.ax<alloc>(), {type, w.lit_nat_0()}), mem);
 }
 
-inline const Def* op_slot(const Def* type, const Def* mem, const Def* dbg = {}) {
+inline Ref op_slot(Ref type, Ref mem) {
     World& w = type->world();
-    return w.app(w.app(w.ax<slot>(), {type, w.lit_nat_0()}), {mem, w.lit_nat(w.curr_gid())}, dbg);
+    return w.app(w.app(w.ax<slot>(), {type, w.lit_nat_0()}), {mem, w.lit_nat(w.curr_gid())});
 }
 
-inline const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg) {
+inline Ref op_malloc(Ref type, Ref mem) {
     World& w  = type->world();
-    auto size = w.dcall(dbg, core::trait::size, type);
-    return w.app(w.app(w.ax<malloc>(), {type, w.lit_nat_0()}), {mem, size}, dbg);
+    auto size = w.call(core::trait::size, type);
+    return w.app(w.app(w.ax<malloc>(), {type, w.lit_nat_0()}), {mem, size});
 }
 
-inline const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg) {
+inline Ref op_mslot(Ref type, Ref mem, Ref id) {
     World& w  = type->world();
-    auto size = w.dcall(dbg, core::trait::size, type);
-    return w.app(w.app(w.ax<mslot>(), {type, w.lit_nat_0()}), {mem, size, id}, dbg);
+    auto size = w.call(core::trait::size, type);
+    return w.app(w.app(w.ax<mslot>(), {type, w.lit_nat_0()}), {mem, size, id});
 }
 
-const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg = {});
-const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg = {});
+Ref op_malloc(Ref type, Ref mem);
+Ref op_mslot(Ref type, Ref mem, Ref id);
 
 /// Returns the (first) element of type mem::M from the given tuple.
-static const Def* mem_def(const Def* def, const Def* dbg = nullptr) {
+static Ref mem_def(Ref def) {
     if (match<mem::M>(def->type())) { return def; }
 
     if (def->num_projs() > 1) {
@@ -119,10 +119,10 @@ static const Def* mem_def(const Def* def, const Def* dbg = nullptr) {
 }
 
 /// Returns the memory argument of a function if it has one.
-inline const Def* mem_var(Lam* lam, const Def* dbg = nullptr) { return mem_def(lam->var(), dbg); }
+inline Ref mem_var(Lam* lam) { return mem_def(lam->var()); }
 
 /// Swapps the memory occurrences in the given def with the given memory.
-inline const Def* replace_mem(const Def* mem, const Def* arg) {
+inline Ref replace_mem(Ref mem, Ref arg) {
     // TODO: maybe use rebuild instead?
     if (arg->num_projs() > 1) {
         auto& w = mem->world();
@@ -135,7 +135,7 @@ inline const Def* replace_mem(const Def* mem, const Def* arg) {
 }
 
 /// Removes recusively all occurences of mem from a type (sigma).
-static const Def* strip_mem_ty(const Def* def) {
+static Ref strip_mem_ty(Ref def) {
     auto& world = def->world();
 
     if (auto sigma = def->isa<Sigma>()) {
@@ -155,7 +155,7 @@ static const Def* strip_mem_ty(const Def* def) {
 
 /// Removes recusively all occurences of mem from a tuple.
 /// Returns an empty tuple if applied with mem alone.
-static const Def* strip_mem(const Def* def) {
+static Ref strip_mem(Ref def) {
     auto& world = def->world();
 
     if (auto tuple = def->isa<Tuple>()) {

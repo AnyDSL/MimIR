@@ -90,9 +90,7 @@ const Def* Reshape::rewrite_def_(const Def* def) {
         auto new_ops = DefArray(def->num_ops(), [&](auto i) { return rewrite_def(def->op(i)); });
         // Warning: if the new_type is not correct, inconcistencies will arise.
         auto new_type = rewrite_def(def->type());
-        auto new_dbg  = def->dbg() ? rewrite_def(def->dbg()) : nullptr;
-
-        auto new_def = def->rebuild(w, new_type, new_ops, new_dbg);
+        auto new_def = def->rebuild(w, new_type, new_ops);
         return new_def;
     }
 }
@@ -107,11 +105,12 @@ Lam* Reshape::reshape_lam(Lam* def) {
     auto new_ty = reshape_type(pi_ty)->as<Pi>();
 
     Lam* new_lam;
-    auto name = def->name();
+    auto name = *def->sym();
 
-    if (name != "main") {
+    if (name != "main") { // TODO I don't this is correct. we should check for def->is_external
+        // TODO maybe use new_lam->debug_suff("_reshape"), instead?
         name          = name + "_reshape";
-        new_lam       = w.nom_lam(new_ty, w.dbg(name));
+        new_lam       = w.nom_lam(new_ty)->set((name));
         old2new_[def] = new_lam;
     } else {
         new_lam = def;
@@ -231,7 +230,6 @@ const Def* Reshape::reshape_type(const Def* T) {
 std::vector<const Def*> flatten_def(const Def* def) {
     std::vector<const Def*> defs;
     if (should_flatten(def->type())) {
-        auto& w = def->world();
         for (auto P : def->projs()) {
             auto inner_defs = flatten_def(P);
             defs.insert(defs.end(), inner_defs.begin(), inner_defs.end());
@@ -261,10 +259,10 @@ const Def* Reshape::reshape(std::vector<const Def*>& defs, const Def* T, const D
         }
         // For inner function types, we override the type
         if (!def->type()->isa<Pi>()) {
-            if (!world.checker().equiv(def->type(), T, {})) {
+            if (!world.checker().equiv(def->type(), T)) {
                 world.ELOG("reconstruct T {} from def {}", T, def->type());
             }
-            assert(world.checker().equiv(def->type(), T, {}) && "Reshape: argument type mismatch");
+            assert(world.checker().equiv(def->type(), T) && "Reshape: argument type mismatch");
         }
         return def;
     }
@@ -330,8 +328,8 @@ const Def* Reshape::reshape(const Def* def) {
             flat_defs.pop_back();
         }
         const Def* args = w.tuple(vec2array(flat_defs));
-        if (mem) { args = w.tuple({mem, args}); }
-        if (ret) { args = w.tuple({args, ret}); }
+        if (mem) args = w.tuple({mem, args});
+        if (ret) args = w.tuple({args, ret});
         return args;
     }
 }

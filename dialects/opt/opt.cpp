@@ -20,24 +20,20 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                     auto dialect_axiom = args[1]->as<Axiom>();
                     auto then_phase    = args[2];
                     auto else_phase    = args[3];
-                    world.DLOG("dialect_phase for: {}", dialect_axiom->name());
+                    world.DLOG("dialect_phase for: {}", dialect_axiom->sym());
 
                     // name has the form %opt.tag where tag = [dialect]_dialect
                     // we want to extract the dialect part
-                    auto name            = dialect_axiom->name();
-                    std::string_view tag = Axiom::split(name).value()[1];
-                    assert(tag.find('_') != std::string_view::npos && "dialect_phase: invalid dialect name");
-                    auto dialect     = tag.substr(0, tag.find('_'));
+                    auto name         = dialect_axiom->sym();
+                    auto [_, tag, __] = Axiom::split(world, name);
+                    assert(tag->find('_') != std::string_view::npos && "dialect_phase: invalid dialect name");
+                    auto dialect     = tag->substr(0, tag->find('_'));
                     auto dialect_str = std::string(dialect);
                     world.DLOG("dialect: {}", dialect_str);
                     auto is_loaded = builder.is_registered_dialect(dialect_str);
                     world.DLOG("contained: {}", is_loaded);
 
-                    if (is_loaded) {
-                        compile::handle_optimization_part(then_phase, world, passes, builder);
-                    } else {
-                        compile::handle_optimization_part(else_phase, world, passes, builder);
-                    }
+                    compile::handle_optimization_part(is_loaded ? then_phase : else_phase, world, passes, builder);
                 };
             },
             nullptr, nullptr};

@@ -6,21 +6,21 @@
 
 namespace thorin::clos {
 
-inline const Def* op_alloc_jumpbuf(const Def* mem, const Def* dbg = {}) {
+inline Ref op_alloc_jumpbuf(Ref mem) {
     World& w = mem->world();
-    return w.app(w.ax<alloc_jmpbuf>(), {w.tuple(), mem}, dbg);
+    return w.app(w.ax<alloc_jmpbuf>(), {w.tuple(), mem});
 }
-inline const Def* op_setjmp(const Def* mem, const Def* buf, const Def* dbg = {}) {
+inline Ref op_setjmp(Ref mem, Ref buf) {
     World& w = mem->world();
-    return w.app(w.ax<setjmp>(), {mem, buf}, dbg);
+    return w.app(w.ax<setjmp>(), {mem, buf});
 }
-inline const Def* op_longjmp(const Def* mem, const Def* buf, const Def* id, const Def* dbg = {}) {
+inline Ref op_longjmp(Ref mem, Ref buf, Ref id) {
     World& w = mem->world();
-    return w.app(w.ax<longjmp>(), {mem, buf, id}, dbg);
+    return w.app(w.ax<longjmp>(), {mem, buf, id});
 }
-inline const Def* op(attr o, const Def* def, const Def* dbg = {}) {
+inline Ref op(attr o, Ref def) {
     World& w = def->world();
-    return w.app(w.app(w.ax(o), def->type()), def, dbg);
+    return w.app(w.app(w.ax(o), def->type()), def);
 }
 
 /// @name closures
@@ -36,15 +36,15 @@ public:
         return def_->type()->isa<Sigma>();
     }
 
-    const Def* env();
-    const Def* env_type() { return env()->type(); }
+    Ref env();
+    Ref env_type() { return env()->type(); }
 
-    const Def* fnc();
+    Ref fnc();
     const Pi* fnc_type() { return fnc()->type()->isa<Pi>(); }
     Lam* fnc_as_lam();
 
-    const Def* env_var();
-    const Def* ret_var() { return fnc_as_lam()->ret_var(); }
+    Ref env_var();
+    Ref ret_var() { return fnc_as_lam()->ret_var(); }
     ///@}
 
     operator bool() const { return def_ != nullptr; }
@@ -71,27 +71,23 @@ private:
     const Tuple* def_;
     const attr attr_;
 
-    friend ClosLit isa_clos_lit(const Def*, bool);
+    friend ClosLit isa_clos_lit(Ref, bool);
 };
 
 /// Tries to match a closure literal.
-ClosLit isa_clos_lit(const Def* def, bool fn_isa_lam = true);
+ClosLit isa_clos_lit(Ref def, bool fn_isa_lam = true);
 
 /// Pack a typed closure. This assumes that @p fn expects the environment as its Clos_Env_Param%th argument.
-const Def* clos_pack_dbg(const Def* env, const Def* fn, const Def* dbg, const Def* ct = nullptr);
-
-inline const Def* clos_pack(const Def* env, const Def* fn, const Def* ct = nullptr) {
-    return clos_pack_dbg(env, fn, nullptr, ct);
-}
+Ref clos_pack(Ref env, Ref fn, Ref ct = nullptr);
 
 /// Deconstruct a closure into `(env_type, function, env)`.
 /// **Important**: use this or ClosLit to destruct closures, since typechecking dependent pairs is currently
 /// broken.
-std::tuple<const Def*, const Def*, const Def*> clos_unpack(const Def* c);
+std::tuple<Ref, Ref, Ref> clos_unpack(Ref c);
 
 /// Apply a closure to arguments.
-const Def* clos_apply(const Def* closure, const Def* args);
-inline const Def* apply_closure(const Def* closure, Defs args) {
+Ref clos_apply(Ref closure, Ref args);
+inline Ref apply_closure(Ref closure, Defs args) {
     auto& w = closure->world();
     return clos_apply(closure, w.tuple(args));
 }
@@ -99,7 +95,7 @@ inline const Def* apply_closure(const Def* closure, Defs args) {
 // TODO: rename this
 /// Checks is def is the variable of a nom of type N.
 template<class N>
-std::tuple<const Extract*, N*> ca_isa_var(const Def* def) {
+std::tuple<const Extract*, N*> ca_isa_var(Ref def) {
     if (auto proj = def->isa<Extract>()) {
         if (auto var = proj->tuple()->isa<Var>(); var && var->nom()->isa<N>())
             return std::tuple(proj, var->nom()->as<N>());
@@ -112,14 +108,14 @@ std::tuple<const Extract*, N*> ca_isa_var(const Def* def) {
 ///@{
 
 /// Returns @p def if @p def is a closure and @c nullptr otherwise
-const Sigma* isa_clos_type(const Def* def);
+const Sigma* isa_clos_type(Ref def);
 
 /// Creates a typed closure type from @p pi.
 Sigma* clos_type(const Pi* pi);
 
 /// Convert a closure type to a Pi, where the environment type has been removed or replaced by @p new_env_type
 /// (if @p new_env_type != @c nullptr)
-const Pi* clos_type_to_pi(const Def* ct, const Def* new_env_type = nullptr);
+const Pi* clos_type_to_pi(Ref ct, Ref new_env_type = nullptr);
 
 ///@}
 
@@ -137,32 +133,30 @@ inline size_t shift_env(size_t i) { return (i < Clos_Env_Param) ? i : i - 1_u64;
 inline size_t skip_env(size_t i) { return (i < Clos_Env_Param) ? i : i + 1_u64; }
 
 // TODO what does this do exactly?
-const Def* ctype(World& w, Defs doms, const Def* env_type = nullptr);
+Ref ctype(World& w, Defs doms, Ref env_type = nullptr);
 
-const Def* clos_insert_env(size_t i, const Def* env, std::function<const Def*(size_t)> f);
-inline const Def* clos_insert_env(size_t i, const Def* env, const Def* a) {
+Ref clos_insert_env(size_t i, Ref env, std::function<Ref(size_t)> f);
+inline Ref clos_insert_env(size_t i, Ref env, Ref a) {
     return clos_insert_env(i, env, [&](auto i) { return a->proj(i); });
 }
 
-inline const Def* clos_insert_env(const Def* env, const Def* tup_or_sig) {
+inline Ref clos_insert_env(Ref env, Ref tup_or_sig) {
     auto& w      = tup_or_sig->world();
     auto new_ops = DefArray(tup_or_sig->num_projs() + 1, [&](auto i) { return clos_insert_env(i, env, tup_or_sig); });
     return (tup_or_sig->isa<Sigma>()) ? w.sigma(new_ops) : w.tuple(new_ops);
 }
 
-const Def* clos_remove_env(size_t i, std::function<const Def*(size_t)> f);
-inline const Def* clos_remove_env(size_t i, const Def* def) {
+Ref clos_remove_env(size_t i, std::function<Ref(size_t)> f);
+inline Ref clos_remove_env(size_t i, Ref def) {
     return clos_remove_env(i, [&](auto i) { return def->proj(i); });
 }
-inline const Def* clos_remove_env(const Def* tup_or_sig) {
+inline Ref clos_remove_env(Ref tup_or_sig) {
     auto& w      = tup_or_sig->world();
     auto new_ops = DefArray(tup_or_sig->num_projs() - 1, [&](auto i) { return clos_remove_env(i, tup_or_sig); });
     return (tup_or_sig->isa<Sigma>()) ? w.sigma(new_ops) : w.tuple(new_ops);
 }
 
-inline const Def* clos_sub_env(const Def* tup_or_sig, const Def* new_env) {
-    return tup_or_sig->refine(Clos_Env_Param, new_env);
-}
+inline Ref clos_sub_env(Ref tup_or_sig, Ref new_env) { return tup_or_sig->refine(Clos_Env_Param, new_env); }
 ///@}
 
 } // namespace thorin::clos

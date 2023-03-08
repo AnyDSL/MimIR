@@ -25,13 +25,13 @@ namespace thorin {
 
 static Def* isa_decl(const Def* def) {
     if (auto nom = def->isa_nom()) {
-        if (nom->is_external() || nom->isa<Lam>() || (!nom->name().empty() && nom->name() != "_"s)) return nom;
+        if (nom->is_external() || nom->isa<Lam>() || (nom->sym() && nom->sym() != '_')) return nom;
     }
     return nullptr;
 }
 
 static std::string id(const Def* def) {
-    if (def->is_external() || (!def->is_set() && def->isa<Lam>())) return def->name();
+    if (def->is_external() || (!def->is_set() && def->isa<Lam>())) return def->sym();
     return def->unique_name();
 }
 
@@ -122,7 +122,7 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
     } else if (auto top = u->isa<Top>()) {
         return print(os, "⊤:{}", top->type());
     } else if (auto axiom = u->isa<Axiom>()) {
-        const auto& name = axiom->name();
+        const auto name = axiom->sym();
         return print(os, "{}{}", name[0] == '%' ? "" : "%", name);
     } else if (auto lit = u->isa<Lit>()) {
         if (lit->type()->isa<Nat>()) return print(os, "{}", lit->get());
@@ -372,7 +372,7 @@ void Def::write(int max) const {
  * World
  */
 
-void World::dump(std::ostream& os) const {
+void World::dump(std::ostream& os) {
     auto freezer = World::Freezer(*this);
     auto old_gid = curr_gid();
 
@@ -391,18 +391,18 @@ void World::dump(std::ostream& os) const {
     assertf(old_gid == curr_gid(), "new nodes created during dump. old_gid: {}; curr_gid: {}", old_gid, curr_gid());
 }
 
-void World::dump() const { dump(std::cout); }
+void World::dump() { dump(std::cout); }
 
-void World::debug_dump() const {
+void World::debug_dump() {
     if (log().level == Log::Level::Debug) dump(*log().ostream);
 }
 
-void World::write(const char* file) const {
+void World::write(const char* file) {
     auto ofs = std::ofstream(file);
     dump(ofs);
 }
 
-void World::write() const {
+void World::write() {
     auto file = std::string(name()) + ".thorin"s;
     write(file.c_str());
 }

@@ -30,7 +30,7 @@ void CPS2DS::rewrite_lam(Lam* lam) {
         return;
     }
 
-    lam->world().DLOG("Rewrite lam: {}", lam->name());
+    lam->world().DLOG("Rewrite lam: {}", lam->sym());
 
     lam_stack.push_back(curr_lam_);
     curr_lam_ = lam;
@@ -115,7 +115,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
                             inst_ret_ty = ret_ty;
                         }
 
-                        auto new_name = curr_lam_->name();
+                        auto new_name = *curr_lam_->sym();
                         // append _cps_cont
                         // if name contains _cps_cont append _1
                         // if it contains _[n] append _[n+1]
@@ -135,11 +135,11 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
                         }
 
                         // The continuation that receives the result of the cps function call.
-                        auto fun_cont = world.nom_lam(world.cn(inst_ret_ty), world.dbg(new_name));
+                        auto fun_cont = world.nom_lam(world.cn(inst_ret_ty))->set(new_name);
                         rewritten_lams.insert(fun_cont);
                         // Generate the cps function call `f a` -> `f_cps(a,cont)`
-                        auto cps_call = world.app(cps_fun, {new_arg, fun_cont}, world.dbg("cps_call"));
-                        world.DLOG("  curr_lam {}", curr_lam_->name());
+                        auto cps_call = world.app(cps_fun, {new_arg, fun_cont})->set(sym_.cps_call);
+                        world.DLOG("  curr_lam {}", curr_lam_->sym());
                         curr_lam_->set_body(cps_call);
 
                         // Fixme: would be great to PE the newly added overhead away..
@@ -182,15 +182,11 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
 
     if (auto tuple = def->isa<Tuple>()) {
         DefArray elements(tuple->ops(), [&](const Def* op) { return rewrite_body(op); });
-        return world.tuple(elements, tuple->dbg());
+        return world.tuple(elements)->set(tuple->dbg());
     }
 
     // if (auto old_nom = def->isa_nom()) { return old_nom; }
     DefArray new_ops{def->ops(), [&](const Def* op) { return rewrite_body(op); }};
-
-    // auto new_dbg = rewrite_body(def->dbg());
-    // auto new_type = rewrite_body(def->type());
-    auto new_dbg = def->dbg();
 
     world.DLOG("def {} : {} [{}]", def, def->type(), def->node_name());
 
@@ -201,7 +197,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
         return def;
     }
 
-    return def->rebuild(world, def->type(), new_ops, new_dbg);
+    return def->rebuild(world, def->type(), new_ops);
 }
 
 } // namespace thorin::direct

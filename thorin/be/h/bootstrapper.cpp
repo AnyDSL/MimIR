@@ -38,12 +38,12 @@ void Bootstrapper::emit(std::ostream& h) {
                 tab.print(h, "{} = 0x{},\n", sub, ax_id++);
                 for (size_t i = 1; i < aliases.size(); ++i) tab.print(h, "{} = {},\n", aliases[i], sub);
 
-                if (!ax.normalizer.empty())
+                if (ax.normalizer)
                     print(normalizers.emplace_back(), "normalizers[flags_t({}::{})] = &{}<{}::{}>;", ax.tag, sub,
                           ax.normalizer, ax.tag, sub);
             }
         } else {
-            if (!ax.normalizer.empty())
+            if (ax.normalizer)
                 print(normalizers.emplace_back(), "normalizers[flags_t(Axiom::Base<{}>)] = &{};", ax.tag, ax.normalizer);
         }
         --tab;
@@ -59,11 +59,11 @@ void Bootstrapper::emit(std::ostream& h) {
 
         print(outer_namespace.emplace_back(), "template<> constexpr size_t Axiom::Num<{}::{}> = {};\n", dialect_, ax.tag, ax.subs.size());
 
-        if (!ax.normalizer.empty()) {
+        if (ax.normalizer) {
             if (auto& subs = ax.subs; !subs.empty()) {
-                tab.print(h, "template<{}>\nconst Def* {}(const Def*, const Def*, const Def*, const Def*);\n\n", ax.tag, ax.normalizer);
+                tab.print(h, "template<{}>\nRef {}(Ref, Ref, Ref);\n\n", ax.tag, ax.normalizer);
             } else {
-                tab.print(h, "const Def* {}(const Def*, const Def*, const Def*, const Def*);\n\n", ax.normalizer);
+                tab.print(h, "Ref {}(Ref, Ref, Ref);\n\n", ax.normalizer);
             }
         }
     }

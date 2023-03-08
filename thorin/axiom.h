@@ -8,7 +8,7 @@ namespace thorin {
 
 class Axiom : public Def {
 private:
-    Axiom(NormalizeFn, u8 curry, u8 trip, const Def* type, dialect_t, tag_t, sub_t, const Def* dbg);
+    Axiom(NormalizeFn, u8 curry, u8 trip, const Def* type, dialect_t, tag_t, sub_t);
 
 public:
     /// @name normalization
@@ -49,7 +49,7 @@ public:
     /// %dialect.tag.sub
     /// |  48   | 8 | 8 | <-- Number of bits per field.
     /// ```
-    /// * Def::name() retrieves the full name as `std::string`.
+    /// * Def::name() retrieves the full name as Sym.
     /// * Def::flags() retrieves the full name as Axiom::mangle%d 64-bit integer.
 
     /// Yields the `dialect` part of the name as integer.
@@ -64,11 +64,6 @@ public:
 
     /// Includes Axiom::dialect() and Axiom::tag() but **not** Axiom::sub.
     flags_t base() const { return flags() & ~0xff_u64; }
-    ///@}
-
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     ///@}
 
     /// @name Mangling Dialect Name
@@ -94,13 +89,13 @@ public:
     /// | 54-63:  | `0`-`9` |
     /// The 0 is special and marks the end of the name if the name has less than 8 chars.
     /// @returns `std::nullopt` if encoding is not possible.
-    static std::optional<dialect_t> mangle(std::string_view s);
+    static std::optional<dialect_t> mangle(Sym s);
 
-    /// Reverts an Axiom::mangle%d string to a `std::string`.
+    /// Reverts an Axiom::mangle%d string to a Sym.
     /// Ignores lower 16-bit of @p u.
-    static std::string demangle(dialect_t u);
+    static Sym demangle(World&, dialect_t u);
 
-    static std::optional<std::array<std::string_view, 3>> split(std::string_view);
+    static std::array<Sym, 3> split(World&, Sym);
     ///@}
 
     /// @name Helpers for Matching
@@ -122,8 +117,7 @@ public:
     };
     ///@}
 
-    static constexpr auto Node = Node::Axiom;
-    friend class World;
+    THORIN_DEF_MIXIN(Axiom)
 };
 
 // clang-format off
