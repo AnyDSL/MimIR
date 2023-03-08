@@ -77,69 +77,88 @@ UMax::UMax(World& world, Defs ops)
  * rebuild
  */
 
-const Def* Infer    ::rebuild_(World&,   const Def*,   Defs  ) const { unreachable(); }
-const Def* Global   ::rebuild_(World&,   const Def*,   Defs  ) const { unreachable(); }
-const Def* Ac       ::rebuild_(World& w, const Def* t, Defs o) const { return w.ac(t, o); }
-const Def* App      ::rebuild_(World& w, const Def*  , Defs o) const { return w.app(o[0], o[1]); }
-const Def* Arr      ::rebuild_(World& w, const Def*  , Defs o) const { return w.arr(o[0], o[1]); }
-const Def* Extract  ::rebuild_(World& w, const Def*  , Defs o) const { return w.extract(o[0], o[1]); }
-const Def* Insert   ::rebuild_(World& w, const Def*  , Defs o) const { return w.insert(o[0], o[1], o[2]); }
-const Def* Idx      ::rebuild_(World& w, const Def*  , Defs  ) const { return w.type_idx(); }
-const Def* Lam      ::rebuild_(World& w, const Def* t, Defs o) const { return w.lam(t->as<Pi>(), o[0], o[1]); }
-const Def* Lit      ::rebuild_(World& w, const Def* t, Defs  ) const { return w.lit(t, get()); }
-const Def* Nat      ::rebuild_(World& w, const Def*  , Defs  ) const { return w.type_nat(); }
-const Def* Pack     ::rebuild_(World& w, const Def* t, Defs o) const { return w.pack(t->arity(), o[0]); }
-const Def* Pi       ::rebuild_(World& w, const Def*  , Defs o) const { return w.pi(o[0], o[1], implicit()); }
-const Def* Pick     ::rebuild_(World& w, const Def* t, Defs o) const { return w.pick(t, o[0]); }
-const Def* Proxy    ::rebuild_(World& w, const Def* t, Defs o) const { return w.proxy(t, o, as<Proxy>()->pass(), as<Proxy>()->tag()); }
-const Def* Sigma    ::rebuild_(World& w, const Def*  , Defs o) const { return w.sigma(o); }
-const Def* Singleton::rebuild_(World& w, const Def*  , Defs o) const { return w.singleton(o[0]); }
-const Def* Type     ::rebuild_(World& w, const Def*  , Defs o) const { return w.type(o[0]); }
-const Def* Test     ::rebuild_(World& w, const Def*  , Defs o) const { return w.test(o[0], o[1], o[2], o[3]); }
-const Def* Tuple    ::rebuild_(World& w, const Def* t, Defs o) const { return w.tuple(t, o); }
-const Def* UInc     ::rebuild_(World& w, const Def*  , Defs o) const { return w.uinc(o[0], offset()); }
-const Def* UMax     ::rebuild_(World& w, const Def*  , Defs o) const { return w.umax(o); }
-const Def* Univ     ::rebuild_(World& w, const Def*  , Defs  ) const { return w.univ(); }
-const Def* Var      ::rebuild_(World& w, const Def* t, Defs o) const { return w.var(t, o[0]->as_nom()); }
-const Def* Vel      ::rebuild_(World& w, const Def* t, Defs o) const { return w.vel(t, o[0]); }
+Ref Infer    ::rebuild_(World&,   Ref,   Defs  ) const { unreachable(); }
+Ref Global   ::rebuild_(World&,   Ref,   Defs  ) const { unreachable(); }
+Ref Ac       ::rebuild_(World& w, Ref t, Defs o) const { return w.ac(t, o); }
+Ref App      ::rebuild_(World& w, Ref  , Defs o) const { return w.app(o[0], o[1]); }
+Ref Arr      ::rebuild_(World& w, Ref  , Defs o) const { return w.arr(o[0], o[1]); }
+Ref Extract  ::rebuild_(World& w, Ref  , Defs o) const { return w.extract(o[0], o[1]); }
+Ref Insert   ::rebuild_(World& w, Ref  , Defs o) const { return w.insert(o[0], o[1], o[2]); }
+Ref Idx      ::rebuild_(World& w, Ref  , Defs  ) const { return w.type_idx(); }
+Ref Lam      ::rebuild_(World& w, Ref t, Defs o) const { return w.lam(t->as<Pi>(), o[0], o[1]); }
+Ref Lit      ::rebuild_(World& w, Ref t, Defs  ) const { return w.lit(t, get()); }
+Ref Nat      ::rebuild_(World& w, Ref  , Defs  ) const { return w.type_nat(); }
+Ref Pack     ::rebuild_(World& w, Ref t, Defs o) const { return w.pack(t->arity(), o[0]); }
+Ref Pi       ::rebuild_(World& w, Ref  , Defs o) const { return w.pi(o[0], o[1], implicit()); }
+Ref Pick     ::rebuild_(World& w, Ref t, Defs o) const { return w.pick(t, o[0]); }
+Ref Proxy    ::rebuild_(World& w, Ref t, Defs o) const { return w.proxy(t, o, as<Proxy>()->pass(), as<Proxy>()->tag()); }
+Ref Sigma    ::rebuild_(World& w, Ref  , Defs o) const { return w.sigma(o); }
+Ref Singleton::rebuild_(World& w, Ref  , Defs o) const { return w.singleton(o[0]); }
+Ref Type     ::rebuild_(World& w, Ref  , Defs o) const { return w.type(o[0]); }
+Ref Test     ::rebuild_(World& w, Ref  , Defs o) const { return w.test(o[0], o[1], o[2], o[3]); }
+Ref Tuple    ::rebuild_(World& w, Ref t, Defs o) const { return w.tuple(t, o); }
+Ref UInc     ::rebuild_(World& w, Ref  , Defs o) const { return w.uinc(o[0], offset()); }
+Ref UMax     ::rebuild_(World& w, Ref  , Defs o) const { return w.umax(o); }
+Ref Univ     ::rebuild_(World& w, Ref  , Defs  ) const { return w.univ(); }
+Ref Var      ::rebuild_(World& w, Ref t, Defs o) const { return w.var(t, o[0]->as_nom()); }
+Ref Vel      ::rebuild_(World& w, Ref t, Defs o) const { return w.vel(t, o[0]); }
 
-const Def* Axiom    ::rebuild_(World& w, const Def* t, Defs ) const {
+Ref Axiom    ::rebuild_(World& w, Ref t, Defs ) const {
     if (&w != &world()) return w.axiom(normalizer(), curry(), trip(), t, dialect(), tag(), sub());
     assert(w.checker().equiv(t, type()));
     return this;
 }
 
-template<bool up> const Def* TExt  <up>::rebuild_(World& w, const Def* t, Defs  ) const { return w.ext  <up>(t); }
-template<bool up> const Def* TBound<up>::rebuild_(World& w, const Def*  , Defs o) const { return w.bound<up>(o); }
+template<bool up> Ref TExt  <up>::rebuild_(World& w, Ref t, Defs  ) const { return w.ext  <up>(t); }
+template<bool up> Ref TBound<up>::rebuild_(World& w, Ref  , Defs o) const { return w.bound<up>(o); }
 
 /*
  * stub
  */
 
-Lam*    Lam   ::stub_(World& w, const Def* t) { return w.nom_lam  (t->as<Pi>()); }
-Pi*     Pi    ::stub_(World& w, const Def* t) { return w.nom_pi   (t, implicit()); }
-Sigma*  Sigma ::stub_(World& w, const Def* t) { return w.nom_sigma(t, num_ops()); }
-Arr*    Arr   ::stub_(World& w, const Def* t) { return w.nom_arr  (t); }
-Pack*   Pack  ::stub_(World& w, const Def* t) { return w.nom_pack (t); }
-Infer*  Infer ::stub_(World& w, const Def* t) { return w.nom_infer(t); }
-Global* Global::stub_(World& w, const Def* t) { return w.global(t, is_mutable()); }
+Ac*        Ac       ::stub_(World&, Ref) { unreachable(); }
+App*       App      ::stub_(World&, Ref) { unreachable(); }
+Axiom*     Axiom    ::stub_(World&, Ref) { unreachable(); }
+Extract*   Extract  ::stub_(World&, Ref) { unreachable(); }
+Insert*    Insert   ::stub_(World&, Ref) { unreachable(); }
+Idx*       Idx      ::stub_(World&, Ref) { unreachable(); }
+Lit*       Lit      ::stub_(World&, Ref) { unreachable(); }
+Nat*       Nat      ::stub_(World&, Ref) { unreachable(); }
+Pick*      Pick     ::stub_(World&, Ref) { unreachable(); }
+Proxy*     Proxy    ::stub_(World&, Ref) { unreachable(); }
+Singleton* Singleton::stub_(World&, Ref) { unreachable(); }
+Type*      Type     ::stub_(World&, Ref) { unreachable(); }
+Test*      Test     ::stub_(World&, Ref) { unreachable(); }
+Tuple*     Tuple    ::stub_(World&, Ref) { unreachable(); }
+UInc*      UInc     ::stub_(World&, Ref) { unreachable(); }
+UMax*      UMax     ::stub_(World&, Ref) { unreachable(); }
+Univ*      Univ     ::stub_(World&, Ref) { unreachable(); }
+Var*       Var      ::stub_(World&, Ref) { unreachable(); }
+Vel*       Vel      ::stub_(World&, Ref) { unreachable(); }
 
-// clang-format on
+Arr*       Arr   ::stub_(World& w, Ref t) { return w.nom_arr  (t); }
+Global*    Global::stub_(World& w, Ref t) { return w.global(t, is_mutable()); }
+Infer*     Infer ::stub_(World& w, Ref t) { return w.nom_infer(t); }
+Lam*       Lam   ::stub_(World& w, Ref t) { return w.nom_lam  (t->as<Pi>()); }
+Pack*      Pack  ::stub_(World& w, Ref t) { return w.nom_pack (t); }
+Pi*        Pi    ::stub_(World& w, Ref t) { return w.nom_pi   (t, implicit()); }
+Sigma*     Sigma ::stub_(World& w, Ref t) { return w.nom_sigma(t, num_ops()); }
 
-template<bool up>
-TBound<up>* TBound<up>::stub_(World& w, const Def* t) {
-    return w.nom_bound<up>(t, num_ops());
-}
+template<bool up> TBound<up>* TBound<up>::stub_(World& w, Ref t) { return w.nom_bound<up>(t, num_ops()); }
+template<bool up> TExt  <up>* TExt  <up>::stub_(World&  , Ref  ) { unreachable(); }
 
-// instantiate templates
+/*
+ * instantiate templates
+ */
 
-// clang-format off
-template const Def*     TExt  <false>::rebuild_(World&, const Def*, Defs) const;
-template const Def*     TExt  <true >::rebuild_(World&, const Def*, Defs) const;
-template const Def*     TBound<false>::rebuild_(World&, const Def*, Defs) const;
-template const Def*     TBound<true >::rebuild_(World&, const Def*, Defs) const;
-template TBound<false>* TBound<false>::stub_(World&, const Def*);
-template TBound<true >* TBound<true >::stub_(World&, const Def*);
+template Ref TExt  <false>::rebuild_(World&, Ref, Defs) const;
+template Ref TExt  <true >::rebuild_(World&, Ref, Defs) const;
+template Ref TBound<false>::rebuild_(World&, Ref, Defs) const;
+template Ref TBound<true >::rebuild_(World&, Ref, Defs) const;
+template TBound<false>* TBound<false>::stub_(World&, Ref);
+template TBound<true >* TBound<true >::stub_(World&, Ref);
+template TExt  <false>* TExt  <false>::stub_(World&, Ref);
+template TExt  <true >* TExt  <true >::stub_(World&, Ref);
 // clang-format on
 
 /*

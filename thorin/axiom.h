@@ -66,11 +66,6 @@ public:
     flags_t base() const { return flags() & ~0xff_u64; }
     ///@}
 
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild_(World&, const Def*, Defs) const override;
-    ///@}
-
     /// @name Mangling Dialect Name
     ///@{
     static constexpr size_t Max_Dialect_Size  = 8;
@@ -122,8 +117,7 @@ public:
     };
     ///@}
 
-    static constexpr auto Node = Node::Axiom;
-    friend class World;
+    THORIN_DEF_MIXIN(Axiom)
 };
 
 // clang-format off

@@ -26,7 +26,7 @@ public:
     const Sigma* restructure() override;
     ///@}
 
-    THORIN_DEF_MIXIN(Sigma, ;)
+    THORIN_DEF_MIXIN(Sigma)
 };
 
 /// Data constructor for a Sigma.
@@ -65,7 +65,7 @@ public:
     void check() override;
     ///@}
 
-    THORIN_DEF_MIXIN(Arr, ;)
+    THORIN_DEF_MIXIN(Arr)
 };
 
 class Pack : public Def {
@@ -93,7 +93,7 @@ public:
     const Def* restructure() override;
     ///@}
 
-    THORIN_DEF_MIXIN(Pack, ;)
+    THORIN_DEF_MIXIN(Pack)
 };
 
 /// Extracts from a Sigma or Arr-typed Extract::tuple the element at position Extract::index.

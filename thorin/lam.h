@@ -46,7 +46,7 @@ public:
     void check() override;
     ///@}
 
-    THORIN_DEF_MIXIN(Pi, ;)
+    THORIN_DEF_MIXIN(Pi)
 };
 
 class Lam : public Def {
@@ -109,7 +109,7 @@ public:
     void check() override;
     ///@}
 
-    THORIN_DEF_MIXIN(Lam, ;)
+    THORIN_DEF_MIXIN(Lam)
 };
 
 template<class To>

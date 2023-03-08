@@ -37,7 +37,7 @@ private:
     TBound(const Def* type, size_t size)
         : Bound(Node, type, size) {}
 
-    THORIN_DEF_MIXIN(TBound<up>, ;, up ? Node::Join : Node::Meet)
+    THORIN_DEF_MIXIN(TBound<up>, up ? Node::Join : Node::Meet)
 };
 
 /// Constructs a [Meet](@ref thorin::Meet) **value**.
@@ -121,10 +121,7 @@ private:
     TExt(const Def* type)
         : Ext(Node, type) {}
 
-    THORIN_DEF_MIXIN(
-        TExt<up>,
-        { unreachable(); },
-        up ? Node::Top : Node::Bot)
+    THORIN_DEF_MIXIN(TExt<up>, up ? Node::Top : Node::Bot)
 };
 
 using Bot  = TExt<false>;

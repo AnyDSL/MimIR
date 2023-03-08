@@ -40,7 +40,7 @@ private:
     flags_t& rank() { return flags_; }
     ///@}
 
-    THORIN_DEF_MIXIN(Infer, ;)
+    THORIN_DEF_MIXIN(Infer)
     friend class Checker;
 };
 

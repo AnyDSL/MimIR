@@ -168,22 +168,20 @@ public:                                                                         
     template<bool Ow = false>       T* set(Dbg d)       { set(d.loc, d.sym); return this; }
 // clang-format on
 
-#define THORIN_DEF_MIXIN_3(T, S, N)                                           \
+#define THORIN_DEF_MIXIN_2(T, N)                                              \
     THORIN_SETTERS(T)                                                         \
     T* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg()); } \
     static constexpr auto Node = N;                                           \
                                                                               \
 private:                                                                      \
-    const Def* rebuild_(World&, const Def*, Defs) const override;             \
-    T* stub_(World&, const Def*) override S;                                  \
+    Ref rebuild_(World&, Ref, Defs) const override;                           \
+    T* stub_(World&, Ref) override;                                           \
     friend class World;
 
-#define THORIN_DEF_MIXIN_2(T, S) THORIN_DEF_MIXIN_3(T, S, Node::T)
-#define THORIN_DEF_MIXIN_1(T)    THORIN_DEF_MIXIN_2(T, { unreachable(); })
+#define THORIN_DEF_MIXIN_1(T) THORIN_DEF_MIXIN_2(T, Node::T)
 
-#define THORIN_GET_MACRO_3(_1, _2, _3, NAME, ...) NAME
-#define THORIN_DEF_MIXIN(...) \
-    THORIN_GET_MACRO_3(__VA_ARGS__, THORIN_DEF_MIXIN_3, THORIN_DEF_MIXIN_2, THORIN_DEF_MIXIN_1)(__VA_ARGS__)
+#define THORIN_GET_MACRO_2(_1, _2, NAME, ...) NAME
+#define THORIN_DEF_MIXIN(...) THORIN_GET_MACRO_2(__VA_ARGS__, THORIN_DEF_MIXIN_2, THORIN_DEF_MIXIN_1)(__VA_ARGS__)
 
 /// Base class for all Def%s.
 /// The data layout (see World::alloc and Def::partial_ops) looks like this:
@@ -446,16 +444,15 @@ public:
 
     /// @name rebuild/stub/restr
     ///@{
-    Def* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg()); }
+    Def* stub(World& w, Ref type) { return stub_(w, type)->set(dbg()); }
     /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
-    const Def* rebuild(World& w, const Def* type, Defs ops) const { return rebuild_(w, type, ops)->set(dbg()); }
+    Ref rebuild(World& w, Ref type, Defs ops) const { return rebuild_(w, type, ops)->set(dbg()); }
     ///@}
 
     /// @name virtual methods
     ///@{
     virtual void check() {}
     virtual size_t first_dependend_op() { return 0; }
-    virtual const Def* rebuild_(World&, const Def*, Defs) const { unreachable(); }
     const Def* refine(size_t i, const Def* new_op) const;
     virtual const Def* restructure() { return nullptr; }
     ///@}
@@ -506,7 +503,8 @@ protected:
     mutable Dbg dbg_;
 
 private:
-    virtual Def* stub_(World&, const Def*) { unreachable(); }
+    virtual Ref rebuild_(World&, Ref, Defs) const = 0;
+    virtual Def* stub_(World&, Ref) = 0;
 
     const Def* type_;
 
@@ -724,7 +722,7 @@ public:
     bool is_mutable() const { return flags(); }
     ///@}
 
-    THORIN_DEF_MIXIN(Global, ;)
+    THORIN_DEF_MIXIN(Global)
 };
 
 hash_t UseHash::operator()(Use use) const { return hash_combine(hash_begin(u16(use.index())), hash_t(use->gid())); }
