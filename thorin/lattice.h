@@ -37,8 +37,14 @@ private:
     TBound(const Def* type, size_t size)
         : Bound(Node, type, size) {}
 
-    THORIN_DEF_MIXIN(TBound, Up ? Node::Join : Node::Meet)
+    TBound* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg())->template as<TBound>(); }
+    static constexpr auto Node = Up ? Node::Join : Node::Meet;
+    THORIN_SETTERS(TBound)
+
+private:
+    Ref rebuild_(World&, Ref, Defs) const override;
     TBound* stub_(World&, Ref) override;
+    friend class World;
 };
 
 /// Constructs a [Meet](@ref thorin::Meet) **value**.
