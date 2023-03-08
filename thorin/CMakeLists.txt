@@ -101,11 +101,11 @@ set_target_properties(libthorin PROPERTIES PREFIX "")
 get_target_property(libthorin_HEADERS libthorin SOURCES)
 list(FILTER libthorin_HEADERS INCLUDE REGEX ".*\.h")
 
-configure_file(config.h.in config.h)
+configure_file(config.h.in ${CMAKE_BINARY_DIR}/include/thorin/config.h)
 target_include_directories(libthorin
     PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/..> # for config.h
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..> # for thorin/*
+        $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/> # for config.h
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/>       # for thorin/*
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/modules/half/include>
         $<INSTALL_INTERFACE:include>
 )
