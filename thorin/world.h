@@ -161,7 +161,6 @@ public:
         def->external_ = false;
         move_.externals.erase(def->sym());
     }
-    bool is_external(Ref def) { return move_.externals.contains(def->sym()); }
     Def* lookup(Sym name) {
         auto i = move_.externals.find(name);
         return i != move_.externals.end() ? i->second : nullptr;
