@@ -372,8 +372,8 @@ public:
 
     /// @name externals
     ///@{
-    bool is_external() const;
-    bool is_internal() const { return !is_external(); } ///< *Not* Def::is_external.
+    bool is_external() const { return external_; }
+    bool is_internal() const { return !is_external(); } ///< **Not** Def::is_external.
     void make_external();
     void make_internal();
     ///@}
@@ -493,9 +493,10 @@ protected:
 
     flags_t flags_;
     uint8_t node_;
-    unsigned nom_    : 1;
-    unsigned dep_    : 5;
-    unsigned pading_ : 2;
+    unsigned nom_      : 1;
+    unsigned external_ : 1;
+    unsigned dep_      : 5;
+    unsigned pading_   : 1;
     u8 curry_;
     u8 trip_;
     hash_t hash_;

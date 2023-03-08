@@ -151,12 +151,16 @@ public:
     const auto& externals() const { return move_.externals; }
     bool empty() { return move_.externals.empty(); }
     void make_external(Def* def) {
+        def->external_ = true;
         assert(def->sym());
         move_.externals.emplace(def->sym(), def); // TODO enable assert again
         // auto [i, ins] = move_.externals.emplace(name, def);
         // assert((ins || (def == i->second)) && "two different externals registered with the same name");
     }
-    void make_internal(Def* def) { move_.externals.erase(def->sym()); }
+    void make_internal(Def* def) {
+        def->external_ = false;
+        move_.externals.erase(def->sym());
+    }
     bool is_external(Ref def) { return move_.externals.contains(def->sym()); }
     Def* lookup(Sym name) {
         auto i = move_.externals.find(name);
@@ -463,7 +467,7 @@ private:
         if (auto loc = emit_loc()) def->set(loc);
         assert(!def->isa_nom());
 #if THORIN_ENABLE_CHECKS
-        if (flags().trace_gids) outln("{}: {}", def->node_name(), def->gid());
+        if (flags().trace_gids) outln("{}: {} - {}", def->node_name(), def->gid(), def->flags());
         if (flags().reeval_breakpoints && breakpoints().contains(def->gid())) thorin::breakpoint();
 #endif
         if (is_frozen()) {
@@ -490,7 +494,7 @@ private:
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
         if (auto loc = emit_loc()) def->set(loc);
 #if THORIN_ENABLE_CHECKS
-        if (flags().trace_gids) outln("{}: {}", def->node_name(), def->gid());
+        if (flags().trace_gids) outln("{}: {} - {}", def->node_name(), def->gid(), def->flags());
         if (breakpoints().contains(def->gid())) thorin::breakpoint();
 #endif
         auto [_, ins] = move_.defs.emplace(def);

@@ -27,5 +27,4 @@
     return (mem, c)
 };
 
-// for some reasone eta-red doesn't always work; so don't check this: return{{.*}}47
-// CHECK-DAG: 47:(.Idx 4294967296)
+// CHECK-DAG: return{{.*}}47

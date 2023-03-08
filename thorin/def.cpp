@@ -26,6 +26,7 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
     , flags_(flags)
     , node_(unsigned(node))
     , nom_(false)
+    , external_(false)
     , dep_(unsigned(node == Node::Axiom   ? Dep::Axiom
                     : node == Node::Infer ? Dep::Infer
                     : node == Node::Proxy ? Dep::Proxy
@@ -54,6 +55,7 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags)
     : flags_(flags)
     , node_(node)
     , nom_(true)
+    , external_(false)
     , dep_(Dep::Nom | (node == Node::Infer ? Dep::Infer : Dep::None))
     , num_ops_(num_ops)
     , type_(type) {
@@ -370,7 +372,6 @@ bool Def::is_set() const {
 
 void Def::make_external() { return world().make_external(this); }
 void Def::make_internal() { return world().make_internal(this); }
-bool Def::is_external() const { return world().is_external(this); }
 
 std::string Def::unique_name() const { return *sym() + "_"s + std::to_string(gid()); }
 
