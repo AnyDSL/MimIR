@@ -95,7 +95,7 @@ void Parser::import(Sym name) {
     if (auto [i, _] = world().driver().imports.emplace(name); i != world().driver().imports.end()) return;
 
     auto search_paths = get_plugin_search_paths(user_search_paths_);
-    auto file_name = *name + ".thorin";
+    auto file_name    = *name + ".thorin";
 
     std::string input_path;
     for (const auto& path : search_paths) {

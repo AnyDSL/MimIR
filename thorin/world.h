@@ -147,13 +147,13 @@ public:
     void make_external(Def* def) {
         assert(!def->external_);
         def->external_ = true;
-        auto [i, ins] = move_.externals.emplace(def->sym(), def);
+        auto [i, ins]  = move_.externals.emplace(def->sym(), def);
         assert(ins);
     }
     void make_internal(Def* def) {
         assert(def->external_);
         def->external_ = false;
-        auto num = move_.externals.erase(def->sym());
+        auto num       = move_.externals.erase(def->sym());
         assert(num == 1);
     }
     Def* lookup(Sym name) {
