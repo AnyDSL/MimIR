@@ -40,11 +40,12 @@ private:
     THORIN_SETTERS(TBound)
     TBound* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg())->template as<TBound>(); }
 
+    static constexpr auto Node = Up ? Node::Join : Node::Meet;
+
 private:
     Ref rebuild_(World&, Ref, Defs) const override;
     TBound* stub_(World&, Ref) override;
 
-    static constexpr auto Node = Up ? Node::Join : Node::Meet;
     friend class World;
 };
 
@@ -132,11 +133,12 @@ private:
     THORIN_SETTERS(TExt)
     TExt* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg())->template as<TExt>(); }
 
+    static constexpr auto Node = Up ? Node::Top : Node::Bot;
+
 private:
     Ref rebuild_(World&, Ref, Defs) const override;
     TExt* stub_(World&, Ref) override;
 
-    static constexpr auto Node = Up ? Node::Top : Node::Bot;
     friend class World;
 };
 
