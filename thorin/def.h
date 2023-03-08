@@ -168,19 +168,14 @@ public:                                                                         
     template<bool Ow = false>       T* set(Dbg d)       { set(d.loc, d.sym); return this; }
 // clang-format on
 
-#define THORIN_DEF_MIXIN_2(T, N)                                                                \
-    THORIN_SETTERS(T)                                                                           \
-    T* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg())->template as<T>(); } \
-    static constexpr auto Node = N;                                                             \
-                                                                                                \
-private:                                                                                        \
-    Ref rebuild_(World&, Ref, Defs) const override;                                             \
+#define THORIN_DEF_MIXIN(T)                                                            \
+    THORIN_SETTERS(T)                                                                  \
+    T* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg())->as<T>(); } \
+                                                                                       \
+private:                                                                               \
+    Ref rebuild_(World&, Ref, Defs) const override;                                    \
+    static constexpr auto Node = Node::T;                                              \
     friend class World;
-
-#define THORIN_DEF_MIXIN_1(T) THORIN_DEF_MIXIN_2(T, Node::T)
-
-#define THORIN_GET_MACRO_2(_1, _2, NAME, ...) NAME
-#define THORIN_DEF_MIXIN(...) THORIN_GET_MACRO_2(__VA_ARGS__, THORIN_DEF_MIXIN_2, THORIN_DEF_MIXIN_1)(__VA_ARGS__)
 
 /// Base class for all Def%s.
 /// The data layout (see World::alloc and Def::partial_ops) looks like this:

@@ -37,13 +37,14 @@ private:
     TBound(const Def* type, size_t size)
         : Bound(Node, type, size) {}
 
-    TBound* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg())->template as<TBound>(); }
-    static constexpr auto Node = Up ? Node::Join : Node::Meet;
     THORIN_SETTERS(TBound)
+    TBound* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg())->template as<TBound>(); }
 
 private:
     Ref rebuild_(World&, Ref, Defs) const override;
     TBound* stub_(World&, Ref) override;
+
+    static constexpr auto Node = Up ? Node::Join : Node::Meet;
     friend class World;
 };
 
@@ -128,8 +129,15 @@ private:
     TExt(const Def* type)
         : Ext(Node, type) {}
 
-    THORIN_DEF_MIXIN(TExt, Up ? Node::Top : Node::Bot)
+    THORIN_SETTERS(TExt)
+    TExt* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg())->template as<TExt>(); }
+
+private:
+    Ref rebuild_(World&, Ref, Defs) const override;
     TExt* stub_(World&, Ref) override;
+
+    static constexpr auto Node = Up ? Node::Top : Node::Bot;
+    friend class World;
 };
 
 using Bot  = TExt<false>;
