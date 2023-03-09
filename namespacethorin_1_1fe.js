@@ -1,6 +1,5 @@
 var namespacethorin_1_1fe =
 [
-    [ "AST", "classthorin_1_1fe_1_1AST.html", "classthorin_1_1fe_1_1AST" ],
     [ "IdPtrn", "classthorin_1_1fe_1_1IdPtrn.html", "classthorin_1_1fe_1_1IdPtrn" ],
     [ "Lexer", "classthorin_1_1fe_1_1Lexer.html", "classthorin_1_1fe_1_1Lexer" ],
     [ "Parser", "classthorin_1_1fe_1_1Parser.html", "classthorin_1_1fe_1_1Parser" ],
@@ -8,6 +7,7 @@ var namespacethorin_1_1fe =
     [ "Scopes", "classthorin_1_1fe_1_1Scopes.html", "classthorin_1_1fe_1_1Scopes" ],
     [ "Tok", "classthorin_1_1fe_1_1Tok.html", "classthorin_1_1fe_1_1Tok" ],
     [ "TuplePtrn", "classthorin_1_1fe_1_1TuplePtrn.html", "classthorin_1_1fe_1_1TuplePtrn" ],
+    [ "Def2Fields", "namespacethorin_1_1fe.html#a9556fb86dba0a9baa15b863c932a4f51", null ],
     [ "Ptrns", "namespacethorin_1_1fe.html#a42a193d43619ab8dde374ddc8b4fdd37", null ],
     [ "issign", "namespacethorin_1_1fe.html#a92d64b307c3c5a72e83e776515392d6e", null ],
     [ "issubscsr", "namespacethorin_1_1fe.html#a0d036f1099648b258d0948cfae174039", null ],

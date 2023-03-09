@@ -1,6 +1,6 @@
 var log_8h =
 [
-    [ "thorin::Log", "structthorin_1_1Log.html", "structthorin_1_1Log" ],
+    [ "thorin::Log", "classthorin_1_1Log.html", "classthorin_1_1Log" ],
     [ "DLOG", "log_8h.html#a87fe05eb8767a6b1abf71eea0bdcfcac", null ],
     [ "ELOG", "log_8h.html#a16e6a53bea50271aa28355f071f7df6b", null ],
     [ "ILOG", "log_8h.html#a0c221110c77b993968e98cb53c0d652e", null ],

@@ -1,6 +1,6 @@
 var math_8h =
 [
-    [ "VMode", "math_8h.html#a83a3bb75ae6a40aa4d5feb88d09bdcad", null ],
+    [ "VMode", "math_8h.html#ab290edebb1dee9ec76cc6198c9c036a9", null ],
     [ "Mode", "math_8h.html#aff01396947cc8f294f10ddaec9e8d4ca", [
       [ "none", "math_8h.html#aff01396947cc8f294f10ddaec9e8d4caafb72985afb637442c3428edbfcab42cf", null ],
       [ "nnan", "math_8h.html#aff01396947cc8f294f10ddaec9e8d4caa49780db85e66f388ddbd75410248db52", null ],
@@ -19,19 +19,19 @@ var math_8h =
     [ "is_commutative", "math_8h.html#afa48f99a2dd73efc6dca6e9668759bf0", null ],
     [ "is_commutative", "math_8h.html#a024f494df950b4312faf11037c62ea2f", null ],
     [ "is_commutative", "math_8h.html#a4b1fb225b164aa037424f43ccf0cdf04", null ],
-    [ "isa_f", "math_8h.html#a0d9ce74a90e547a55d2139df35e21e46", null ],
-    [ "lit_f", "math_8h.html#a04b1a3b8372bf5c333706f6e0e21580b", null ],
-    [ "lit_f", "math_8h.html#a5570fcaa92d1a0a5e50202adebc44a79", null ],
-    [ "match_f", "math_8h.html#a57272919e816ac4fd5e70e0e99e1aabb", null ],
-    [ "match_f16", "math_8h.html#a2588a9658dc4724f7688a0dd9742a0c9", null ],
-    [ "match_f32", "math_8h.html#ad92c2b5bb3ee4316d5baf631ea507dc3", null ],
-    [ "match_f64", "math_8h.html#a1e56b462ec622fbee3f9067f0133046f", null ],
-    [ "mode", "math_8h.html#a52cae473fcf4e88414ac2e7c242c77c1", null ],
-    [ "op_rminus", "math_8h.html#a460e44f17208d0584f76ef6bfff44ae1", null ],
-    [ "type_f", "math_8h.html#abdfa99c2b536c607b4cf7a91f4d275e9", null ],
+    [ "isa_f", "math_8h.html#a0720c335cebf20be41bf7155a54e53d8", null ],
+    [ "lit_f", "math_8h.html#a5fef8dad5bbdbf1e1faff609f9664ad1", null ],
+    [ "lit_f", "math_8h.html#ab802bcd5a6ea5682c50d6329dc16712e", null ],
+    [ "match_f", "math_8h.html#a2a7a8dd81270f15fe5b1294f487dece0", null ],
+    [ "match_f16", "math_8h.html#a61a63c0051b11b77df7b2a6f0ac88af4", null ],
+    [ "match_f32", "math_8h.html#a973fb2815b1495540f31fd6aebf675d7", null ],
+    [ "match_f64", "math_8h.html#a638b150e31f9cb6975644e520830edcc", null ],
+    [ "mode", "math_8h.html#a408582bdf76f14317f2e9af9c344131d", null ],
+    [ "op_rminus", "math_8h.html#aa47e6a52c2a741d4f3de9abab3cac111", null ],
+    [ "type_f", "math_8h.html#a18b694cb90515d282f46b45201c5f917", null ],
     [ "type_f", "math_8h.html#ab020cfed6525f8cb9e433d6bd4120be1", null ],
-    [ "type_f", "math_8h.html#a1b362d51a4ec634325245d000b6e8d85", null ],
-    [ "type_f16", "math_8h.html#a81ce9fabde281462135c774ba03570a6", null ],
-    [ "type_f32", "math_8h.html#a73bf8cc31787041d8114fdeff66f4678", null ],
-    [ "type_f64", "math_8h.html#acd639e16118ec51fbc6cd69070b99333", null ]
+    [ "type_f", "math_8h.html#acaec2331d4803eb97a6f6df5f9c7a324", null ],
+    [ "type_f16", "math_8h.html#a27aa82675ad3fa0de81880efb6fd3b93", null ],
+    [ "type_f32", "math_8h.html#a1ed6aac0eaf04b293f0a89c066213349", null ],
+    [ "type_f64", "math_8h.html#a4f169f7740b304d08fa8af863a11b06f", null ]
 ];

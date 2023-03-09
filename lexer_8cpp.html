@@ -122,7 +122,7 @@ $(document).ready(function(){initNavTree('lexer_8cpp.html',''); initResizable();
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for lexer.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="lexer_8cpp__incl.svg" width="1871" height="652"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="lexer_8cpp__incl.svg" width="2032" height="652"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -138,9 +138,9 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a7d12cc9e30e6f91e9135feb7a67bb4df"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lexer_8cpp.html#a7d12cc9e30e6f91e9135feb7a67bb4df">CODE</a>(t,  str)&#160;&#160;&#160;keywords_[str] = Tok::Tag::t;</td></tr>
+<tr class="memitem:a7d12cc9e30e6f91e9135feb7a67bb4df"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lexer_8cpp.html#a7d12cc9e30e6f91e9135feb7a67bb4df">CODE</a>(t,  str)&#160;&#160;&#160;keywords_[world.sym(str)] = Tok::Tag::t;</td></tr>
 <tr class="separator:a7d12cc9e30e6f91e9135feb7a67bb4df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4735e0a8022984aa488607059a90351d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lexer_8cpp.html#a4735e0a8022984aa488607059a90351d">CODE</a>(str,  t)&#160;&#160;&#160;    if (Tok::Tag::t != Tok::Tag::Nil) keywords_[str] = Tok::Tag::t;</td></tr>
+<tr class="memitem:a4735e0a8022984aa488607059a90351d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lexer_8cpp.html#a4735e0a8022984aa488607059a90351d">CODE</a>(str,  t)&#160;&#160;&#160;    if (Tok::Tag::t != Tok::Tag::Nil) keywords_[world.sym(str)] = Tok::Tag::t;</td></tr>
 <tr class="separator:a4735e0a8022984aa488607059a90351d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -172,7 +172,7 @@ Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;    if (Tok::Tag::t != Tok::Tag::Nil) keywords_[str] = Tok::Tag::t;</td>
+          <td></td><td>&#160;&#160;&#160;    if (Tok::Tag::t != Tok::Tag::Nil) keywords_[world.sym(str)] = Tok::Tag::t;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -200,7 +200,7 @@ Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;keywords_[str] = Tok::Tag::t;</td>
+          <td></td><td>&#160;&#160;&#160;keywords_[world.sym(str)] = Tok::Tag::t;</td>
         </tr>
       </table>
 </div><div class="memdoc">

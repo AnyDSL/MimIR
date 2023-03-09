@@ -32,18 +32,18 @@
 <path fill="none" stroke="#63b8ff" d="M153.8,-158.04C143.33,-148.64 130.35,-136.98 121.65,-129.17"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="151.74,-160.91 161.52,-164.98 156.42,-155.7 151.74,-160.91"/>
 </g>
-<!-- Node6 -->
-<g id="node6" class="node">
-<title>Node6</title>
-<g id="a_node6"><a xlink:href="utf8_8cpp.html" target="_top" xlink:title=" ">
+<!-- Node7 -->
+<g id="node7" class="node">
+<title>Node7</title>
+<g id="a_node7"><a xlink:href="utf8_8cpp.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="283.5,-129 176.5,-129 176.5,-110 283.5,-110 283.5,-129"/>
 <text text-anchor="middle" x="230" y="-117" font-family="Helvetica,sans-Serif" font-size="10.00">thorin/util/utf8.cpp</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node6 -->
-<g id="edge5" class="edge">
-<title>Node1&#45;&gt;Node6</title>
+<!-- Node1&#45;&gt;Node7 -->
+<g id="edge6" class="edge">
+<title>Node1&#45;&gt;Node7</title>
 <path fill="none" stroke="#63b8ff" d="M188.2,-158.04C198.67,-148.64 211.65,-136.98 220.35,-129.17"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="185.58,-155.7 180.48,-164.98 190.26,-160.91 185.58,-155.7"/>
 </g>
@@ -80,17 +80,32 @@
 <!-- Node5 -->
 <g id="node5" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="parser_8cpp.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="227.5,-19 116.5,-19 116.5,0 227.5,0 227.5,-19"/>
-<text text-anchor="middle" x="172" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">thorin/fe/parser.cpp</text>
+<g id="a_node5"><a xlink:href="main_8cpp.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="154,-19 78,-19 78,0 154,0 154,-19"/>
+<text text-anchor="middle" x="116" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">cli/main.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node4&#45;&gt;Node5 -->
 <g id="edge4" class="edge">
 <title>Node4&#45;&gt;Node5</title>
-<path fill="none" stroke="#63b8ff" d="M172,-44.66C172,-35.93 172,-25.99 172,-19.09"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="168.5,-44.75 172,-54.75 175.5,-44.75 168.5,-44.75"/>
+<path fill="none" stroke="#63b8ff" d="M155.67,-48.04C145.74,-38.64 133.41,-26.98 125.16,-19.17"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="153.33,-50.65 163,-54.98 158.15,-45.57 153.33,-50.65"/>
+</g>
+<!-- Node6 -->
+<g id="node6" class="node">
+<title>Node6</title>
+<g id="a_node6"><a xlink:href="parser_8cpp.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="283.5,-19 172.5,-19 172.5,0 283.5,0 283.5,-19"/>
+<text text-anchor="middle" x="228" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">thorin/fe/parser.cpp</text>
+</a>
+</g>
+</g>
+<!-- Node4&#45;&gt;Node6 -->
+<g id="edge5" class="edge">
+<title>Node4&#45;&gt;Node6</title>
+<path fill="none" stroke="#63b8ff" d="M188.33,-48.04C198.26,-38.64 210.59,-26.98 218.84,-19.17"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="185.85,-45.57 181,-54.98 190.67,-50.65 185.85,-45.57"/>
 </g>
 </g>
 </svg>

@@ -1,10 +1,10 @@
 var refly_2normalizers_8cpp =
 [
     [ "do_reflect", "refly_2normalizers_8cpp.html#a651050df666c363dc64e58b7232d98ea", null ],
-    [ "do_reify", "refly_2normalizers_8cpp.html#adfade3a7a14a96ccdc7c38ce55ebc972", null ],
-    [ "normalize_dbg", "refly_2normalizers_8cpp.html#a6505dac8d7b837bcb4b880cb802b5a7f", null ],
-    [ "normalize_gid", "refly_2normalizers_8cpp.html#ac3810123d87bbdcb09c083de4eaeeee4", null ],
-    [ "normalize_refine", "refly_2normalizers_8cpp.html#a5227d037e8cda2342ab16b7a015183e3", null ],
-    [ "normalize_reflect", "refly_2normalizers_8cpp.html#afcef2ec7eb1bbff00c0cebb1edded628", null ],
-    [ "normalize_reify", "refly_2normalizers_8cpp.html#aed5ff18498852f85e913f23724f1b383", null ]
+    [ "do_reify", "refly_2normalizers_8cpp.html#a2c71823e5082857b0d426de67ccd1844", null ],
+    [ "normalize_dbg", "refly_2normalizers_8cpp.html#a1d4c579f94fcac60eebde5c8593d9884", null ],
+    [ "normalize_gid", "refly_2normalizers_8cpp.html#aba788e6f901736144880c9710c082528", null ],
+    [ "normalize_refine", "refly_2normalizers_8cpp.html#ad5191894f184796478f7f29b14decad4", null ],
+    [ "normalize_reflect", "refly_2normalizers_8cpp.html#af154d7d91d30c79a49922d90d58fa051", null ],
+    [ "normalize_reify", "refly_2normalizers_8cpp.html#aa4f7164654473913f60f6fe9b7163b5f", null ]
 ];

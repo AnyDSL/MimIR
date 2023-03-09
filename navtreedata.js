@@ -83,6 +83,8 @@ var NAVTREE =
       [ "File Members", "globals.html", [
         [ "All", "globals.html", null ],
         [ "Functions", "globals_func.html", null ],
+        [ "Enumerations", "globals_enum.html", null ],
+        [ "Enumerator", "globals_eval.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
     ] ]
@@ -92,31 +94,34 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "add__mem_8cpp.html",
-"classthorin_1_1Array.html#a18dba53d1d7de7f1d123bc823ce89b6b",
-"classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350",
-"classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39",
-"classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01direct_1_1ds2cps__pass_01_4",
-"classthorin_1_1Debug.html",
-"classthorin_1_1DepTree.html#a80404f985151b68186ef3a12fb56fd9a",
-"classthorin_1_1IndexMap.html#a607bde58a24f80a3ec64f576a63b7741",
-"classthorin_1_1Match.html#a9eb66637814d1f726aadbd1b6ceb304a",
-"classthorin_1_1RWPass.html#a7d0a6ccffb1efc8369210396f0eed6de",
-"classthorin_1_1Sym.html#ac289dab975200929dd4a4fdc5697a34e",
-"classthorin_1_1World.html#a4f4d5b45be0693a73705bc0de2fc8f62",
-"classthorin_1_1autodiff_1_1AutoDiffExternalCleanup.html#a8d8a5c9e44b647cc44b25cd0239a7794",
-"classthorin_1_1fe_1_1Scopes.html#a98afa47cc8d17a4fac0d54772e910373",
-"classthorin_1_1mem_1_1Alloc2Malloc.html#a5dc01b93f4abddb3376e53e3d81968ce",
-"copy__prop_8h.html",
-"debug_8cpp.html#a8d63c0df0c916ee9469f630edccd6984",
-"eta__red_8h_source.html",
-"math_2autogen_8h.html#a4eed4c5c98b8df4aec61e23bda6f06a3",
-"namespacemembers_func_d.html",
-"namespacethorin.html#ad58d3257628152cac25aaa90fd1ece38",
-"namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a84de5b8685ab073b3badaef636d2415f",
-"namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58b",
-"namespacethorin_1_1sys.html#a932508f0d5bde98eb7127e4f2533776f",
-"structthorin_1_1GIDHash.html#a4104c0f823edb45e7aa8436e03a86b1b",
-"tuple_8h.html#ae982c58cbbf8f50804167dc3697e78cd"
+"classthorin_1_1App.html#a7b4bcdf992c21ae83363f25df05b1d25",
+"classthorin_1_1Axiom.html#a52fbe82684065787e1a12f483a93e534",
+"classthorin_1_1Axiom.html#a862de53aa535aa101e327833e9eecd6f",
+"classthorin_1_1Axiom.html#ac5add5e6a2001bbdc8e0e72bcd140550",
+"classthorin_1_1CFA.html#a43f9b6459e38a25f32ae5bfffe155c35",
+"classthorin_1_1Def.html#aa84ede5f4d52d42442032223babde36d",
+"classthorin_1_1EtaExp.html#a156b61a8e9d0843a3e598adb259c7abda42727215769fc9f34f034c9bacff5100",
+"classthorin_1_1IndexSet.html#a84889c90abdfa682b44bdd59f0faa291",
+"classthorin_1_1Log.html#a70d6a9ca5238ae0a175ead16109e7f88",
+"classthorin_1_1PassMan.html",
+"classthorin_1_1RWPass.html",
+"classthorin_1_1Span.html#a80140687099e08a56d72bd46883b8305",
+"classthorin_1_1Tuple.html#a9beb9ba1528a3058f8a6d425bac4e56d",
+"classthorin_1_1World.html#a14c8709b84ccc97ef221124c662982dd",
+"classthorin_1_1World.html#ada59fac911d8db2ace72a5c66a148525",
+"classthorin_1_1fe_1_1IdPtrn.html#a2c0bd6e095dec7ee4807f813efc3d7a3",
+"classthorin_1_1fe_1_1TuplePtrn.html#a5c190eea949b697a57eca8ad6f868490",
+"clos__conv__prep_8cpp.html#af123e0f218ce989157e2ab24f1e7f97e",
+"core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6aa6d4ae7d990ff7dbfef99471f1bd5622",
+"direct_2normalizers_8cpp_source.html",
+"lower__for_8cpp_source.html",
+"math_8h.html#aff01396947cc8f294f10ddaec9e8d4caacc296d9f838506ef43f9a85c9cb1d6d9",
+"namespacethorin.html#a7c899cc6b963ec90be8fd86ded781647",
+"namespacethorin_1_1clos.html#ab8d583f4e70049687d0a0d68d74e2c82",
+"namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6af259ad4240e26ff82530b7e300f37a01",
+"namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa91de8c2707a7342aa4693a263404ca8c",
+"rewrite_8cpp_source.html",
+"sys_8cpp.html#a2eda434a3eb1dcbf48dd570d8d2f7733"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

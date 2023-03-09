@@ -1,7 +1,7 @@
 var classthorin_1_1utf8_1_1Lexer =
 [
     [ "Ahead", "structthorin_1_1utf8_1_1Lexer_1_1Ahead.html", "structthorin_1_1utf8_1_1Lexer_1_1Ahead" ],
-    [ "Lexer", "classthorin_1_1utf8_1_1Lexer.html#ae15c4c0f955cb984d0035a9d6b6ed12b", null ],
+    [ "Lexer", "classthorin_1_1utf8_1_1Lexer.html#a123252cef2944f4b3556ab5154c873fb", null ],
     [ "~Lexer", "classthorin_1_1utf8_1_1Lexer.html#a6e287bb44b69d962efb2940be5738b7b", null ],
     [ "accept", "classthorin_1_1utf8_1_1Lexer.html#a1529c4a3eb02da85de1160f94079db93", null ],
     [ "accept_if", "classthorin_1_1utf8_1_1Lexer.html#a8501db85f043276bad22a6fb4e90df77", null ],

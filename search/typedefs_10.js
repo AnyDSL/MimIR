@@ -4,5 +4,5 @@ var searchData=
   ['var2var_1',['Var2Var',['../namespacethorin.html#a574519644134310f7123469cf121d0a2',1,'thorin']]],
   ['varmap_2',['VarMap',['../namespacethorin.html#af280f2e34b689af6206dfb9756aa1df5',1,'thorin']]],
   ['varset_3',['VarSet',['../namespacethorin.html#a229e892ca840ebda9ce60cfad90ae1b0',1,'thorin']]],
-  ['vmode_4',['VMode',['../namespacethorin_1_1core.html#a70d6ff6fb821b8e67ddb70da93401dc3',1,'thorin::core::VMode()'],['../namespacethorin_1_1math.html#a83a3bb75ae6a40aa4d5feb88d09bdcad',1,'thorin::math::VMode()']]]
+  ['vmode_4',['VMode',['../namespacethorin_1_1core.html#ae025337cbe07dc96616a07d6e4440859',1,'thorin::core::VMode()'],['../namespacethorin_1_1math.html#ab290edebb1dee9ec76cc6198c9c036a9',1,'thorin::math::VMode()']]]
 ];

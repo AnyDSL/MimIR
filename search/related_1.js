@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['cfa_0',['CFA',['../classthorin_1_1CFNode.html#a80e8c5d098120e78d0aed34e5ad03608',1,'thorin::CFNode']]],
-  ['cfg_1',['CFG',['../classthorin_1_1CFNode.html#af332da07177456d7353e83e14b602be3',1,'thorin::CFNode::CFG()'],['../classthorin_1_1CFA.html#af332da07177456d7353e83e14b602be3',1,'thorin::CFA::CFG()']]],
-  ['checker_2',['Checker',['../classthorin_1_1Infer.html#a42e74b7760f36154466246901e25398f',1,'thorin::Infer']]]
+  ['base_0',['Base',['../classthorin_1_1LoopTree_1_1Head.html#a90aa5b342fe070a58857a221d500488c',1,'thorin::LoopTree::Head']]],
+  ['bitset_1',['BitSet',['../classthorin_1_1BitSet_1_1reference.html#a77d87545e15eea930a25387f5ed796e7',1,'thorin::BitSet::reference']]]
 ];

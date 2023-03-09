@@ -6,6 +6,8 @@ var searchData=
   ['get_5fplugin_5fsearch_5fpaths_3',['get_plugin_search_paths',['../namespacethorin.html#a04083cd8dc5a9157c0cf98860b65c921',1,'thorin']]],
   ['get_5fsign_4',['get_sign',['../namespacethorin.html#ac76b51109303662a47f30fa874337254',1,'thorin']]],
   ['get_5fsloxy_5ftype_5',['get_sloxy_type',['../namespacethorin_1_1mem.html#a0b87ca7c95e3fc724d2c7272e0435dac',1,'thorin::mem']]],
-  ['gid_6',['gid',['../classthorin_1_1CFNode.html#ad1b21de5e0cadae309a8343cf43376e6',1,'thorin::CFNode::gid()'],['../classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb',1,'thorin::Def::gid()']]],
-  ['global_7',['global',['../classthorin_1_1World.html#a6dec3ffa17d4b5b243e25516f68f0cc7',1,'thorin::World']]]
+  ['get_5fsym_6',['get_sym',['../classthorin_1_1Def.html#a1a9597bf8af5a707c094ae2d4d52d935',1,'thorin::Def::get_sym(std::string) const'],['../classthorin_1_1Def.html#afdc8a93c2bffb5f52ac89cf3ab3f0345',1,'thorin::Def::get_sym(std::string_view) const'],['../classthorin_1_1Def.html#a148acf6913fb53647461793e036e714c',1,'thorin::Def::get_sym(const char *) const']]],
+  ['gid_7',['gid',['../classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb',1,'thorin::Def::gid()'],['../classthorin_1_1CFNode.html#ad1b21de5e0cadae309a8343cf43376e6',1,'thorin::CFNode::gid()']]],
+  ['gid2def_8',['gid2def',['../classthorin_1_1World.html#a50e487785b278535becdb5d7e2b124ab',1,'thorin::World']]],
+  ['global_9',['global',['../classthorin_1_1World.html#a2dafc82653baa01a772c49d3c7ed1030',1,'thorin::World']]]
 ];

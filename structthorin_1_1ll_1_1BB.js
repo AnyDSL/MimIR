@@ -10,5 +10,5 @@ var structthorin_1_1ll_1_1BB =
     [ "tail", "structthorin_1_1ll_1_1BB.html#a3b03c198eb00e5b6e231295e732f1720", null ],
     [ "swap", "structthorin_1_1ll_1_1BB.html#a89bbe278d11d78b7f380426fd1c89178", null ],
     [ "parts", "structthorin_1_1ll_1_1BB.html#a2147161ad629fa4dd509e3b95f5552a3", null ],
-    [ "phis", "structthorin_1_1ll_1_1BB.html#a22d3a7d469abef311fdd6a06f1aa9f98", null ]
+    [ "phis", "structthorin_1_1ll_1_1BB.html#a02ae1bd1d78aca140fc1e26ba383ce7b", null ]
 ];

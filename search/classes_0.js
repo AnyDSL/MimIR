@@ -19,11 +19,10 @@ var searchData=
   ['arraystorage_3c_20uint64_5ft_2c_20std_3a_3ais_5ftrivial_3c_20uint64_5ft_20_3e_3a_3avalue_20_3f_205_20_3a0_20_3e_16',['ArrayStorage&lt; uint64_t, std::is_trivial&lt; uint64_t &gt;::value ? 5 :0 &gt;',['../classthorin_1_1ArrayStorage.html',1,'thorin']]],
   ['arraystorage_3c_20value_2c_20std_3a_3ais_5ftrivial_3c_20value_20_3e_3a_3avalue_20_3f_205_20_3a0_20_3e_17',['ArrayStorage&lt; Value, std::is_trivial&lt; Value &gt;::value ? 5 :0 &gt;',['../classthorin_1_1ArrayStorage.html',1,'thorin']]],
   ['arraystorage_3c_20void_20_2a_2c_20std_3a_3ais_5ftrivial_3c_20void_20_2a_20_3e_3a_3avalue_20_3f_205_20_3a0_20_3e_18',['ArrayStorage&lt; void *, std::is_trivial&lt; void * &gt;::value ? 5 :0 &gt;',['../classthorin_1_1ArrayStorage.html',1,'thorin']]],
-  ['ast_19',['AST',['../classthorin_1_1fe_1_1AST.html',1,'thorin::fe']]],
-  ['autodiffeval_20',['AutoDiffEval',['../classthorin_1_1autodiff_1_1AutoDiffEval.html',1,'thorin::autodiff']]],
-  ['autodiffexternalcleanup_21',['AutoDiffExternalCleanup',['../classthorin_1_1autodiff_1_1AutoDiffExternalCleanup.html',1,'thorin::autodiff']]],
-  ['autodiffzero_22',['AutoDiffZero',['../classthorin_1_1autodiff_1_1AutoDiffZero.html',1,'thorin::autodiff']]],
-  ['autodiffzerocleanup_23',['AutoDiffZeroCleanup',['../classthorin_1_1autodiff_1_1AutoDiffZeroCleanup.html',1,'thorin::autodiff']]],
-  ['axiom_24',['Axiom',['../classthorin_1_1Axiom.html',1,'thorin']]],
-  ['axiominfo_25',['AxiomInfo',['../namespacethorin_1_1h.html#structthorin_1_1h_1_1AxiomInfo',1,'thorin::h']]]
+  ['autodiffeval_19',['AutoDiffEval',['../classthorin_1_1autodiff_1_1AutoDiffEval.html',1,'thorin::autodiff']]],
+  ['autodiffexternalcleanup_20',['AutoDiffExternalCleanup',['../classthorin_1_1autodiff_1_1AutoDiffExternalCleanup.html',1,'thorin::autodiff']]],
+  ['autodiffzero_21',['AutoDiffZero',['../classthorin_1_1autodiff_1_1AutoDiffZero.html',1,'thorin::autodiff']]],
+  ['autodiffzerocleanup_22',['AutoDiffZeroCleanup',['../classthorin_1_1autodiff_1_1AutoDiffZeroCleanup.html',1,'thorin::autodiff']]],
+  ['axiom_23',['Axiom',['../classthorin_1_1Axiom.html',1,'thorin']]],
+  ['axiominfo_24',['AxiomInfo',['../namespacethorin_1_1h.html#structthorin_1_1h_1_1AxiomInfo',1,'thorin::h']]]
 ];

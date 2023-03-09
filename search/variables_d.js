@@ -4,7 +4,7 @@ var searchData=
   ['pading_5f_1',['pading_',['../classthorin_1_1Def.html#a92926bb427154c103b0d61db8ceb0d2a',1,'thorin::Def']]],
   ['parent_5f_2',['parent_',['../classthorin_1_1LoopTree_1_1Base.html#a91ee5b0f76552ef43b5d7729aace32c6',1,'thorin::LoopTree::Base']]],
   ['parts_3',['parts',['../structthorin_1_1ll_1_1BB.html#a2147161ad629fa4dd509e3b95f5552a3',1,'thorin::ll::BB']]],
-  ['phis_4',['phis',['../structthorin_1_1ll_1_1BB.html#a22d3a7d469abef311fdd6a06f1aa9f98',1,'thorin::ll::BB']]],
+  ['phis_4',['phis',['../structthorin_1_1ll_1_1BB.html#a02ae1bd1d78aca140fc1e26ba383ce7b',1,'thorin::ll::BB']]],
   ['pi_5',['pi',['../namespacethorin_1_1h.html#aed4b533c0d247f4e16ef3f14b66bd12f',1,'thorin::h::AxiomInfo']]],
   ['plugin_5fname_6',['plugin_name',['../structthorin_1_1DialectInfo.html#a354e5f99f9966eb645f6b62b5b8f8834',1,'thorin::DialectInfo']]],
   ['pod_7',['pod',['../structthorin_1_1World_1_1State.html#a8be30c4cfa20cb0cf4f34ec7dd69c193',1,'thorin::World::State']]],

@@ -12,5 +12,5 @@ var searchData=
   ['ssaconstr_9',['SSAConstr',['../classthorin_1_1mem_1_1SSAConstr.html',1,'thorin::mem']]],
   ['state_10',['State',['../structthorin_1_1World_1_1State.html',1,'thorin::World']]],
   ['sym_11',['Sym',['../classthorin_1_1Sym.html',1,'thorin']]],
-  ['symhash_12',['SymHash',['../structthorin_1_1SymHash.html',1,'thorin']]]
+  ['sympool_12',['SymPool',['../classthorin_1_1SymPool.html',1,'thorin']]]
 ];

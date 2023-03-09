@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['looptreebuilder_3c_20forward_20_3e_0',['LoopTreeBuilder&lt; forward &gt;',['../classthorin_1_1LoopTree_1_1Head.html#a0b97215e639132eee69a71502a6a728a',1,'thorin::LoopTree::Head::LoopTreeBuilder&lt; forward &gt;()'],['../classthorin_1_1LoopTree_1_1Leaf.html#a0b97215e639132eee69a71502a6a728a',1,'thorin::LoopTree::Leaf::LoopTreeBuilder&lt; forward &gt;()'],['../classthorin_1_1LoopTree.html#a0b97215e639132eee69a71502a6a728a',1,'thorin::LoopTree::LoopTreeBuilder&lt; forward &gt;()']]]
+  ['indexset_0',['IndexSet',['../classthorin_1_1IndexSet_1_1reference.html#add469a0063023e5ade22035cbaf464fe',1,'thorin::IndexSet::reference']]],
+  ['isa_5fclos_5flit_1',['isa_clos_lit',['../classthorin_1_1clos_1_1ClosLit.html#ac2cadb236b47d937e19919b03baf5f32',1,'thorin::clos::ClosLit']]]
 ];

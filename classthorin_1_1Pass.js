@@ -18,7 +18,7 @@ var classthorin_1_1Pass =
     [ "man", "classthorin_1_1Pass.html#a785e44e89a73b844706c412a37a40359", null ],
     [ "name", "classthorin_1_1Pass.html#adb4b3c1b2145f77898fd1d0c056315e2", null ],
     [ "prepare", "classthorin_1_1Pass.html#a27582b2658d607143385376e34913dc6", null ],
-    [ "proxy", "classthorin_1_1Pass.html#a852a4e1ad220ef4318443ff90dd1b9c7", null ],
+    [ "proxy", "classthorin_1_1Pass.html#af1a69b5fc70410a222ca9c69688d656a", null ],
     [ "rewrite", "classthorin_1_1Pass.html#a76525e5c686c6d515d8ef474489c8d8a", null ],
     [ "rewrite", "classthorin_1_1Pass.html#ab1e228dbe8871f4cd027f9801962b256", null ],
     [ "rewrite", "classthorin_1_1Pass.html#a684fc6ec621aba9ce278f00a46b43a0f", null ],

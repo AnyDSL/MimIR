@@ -13,12 +13,6 @@ var hierarchy =
     [ "thorin::ArrayStorage< uint64_t, std::is_trivial< uint64_t >::value ? 5 :0 >", "classthorin_1_1ArrayStorage.html", null ],
     [ "thorin::ArrayStorage< Value, std::is_trivial< Value >::value ? 5 :0 >", "classthorin_1_1ArrayStorage.html", null ],
     [ "thorin::ArrayStorage< void *, std::is_trivial< void * >::value ? 5 :0 >", "classthorin_1_1ArrayStorage.html", null ],
-    [ "thorin::fe::AST", "classthorin_1_1fe_1_1AST.html", [
-      [ "thorin::fe::Ptrn", "classthorin_1_1fe_1_1Ptrn.html", [
-        [ "thorin::fe::IdPtrn", "classthorin_1_1fe_1_1IdPtrn.html", null ],
-        [ "thorin::fe::TuplePtrn", "classthorin_1_1fe_1_1TuplePtrn.html", null ]
-      ] ]
-    ] ],
     [ "thorin::h::AxiomInfo", "namespacethorin_1_1h.html#structthorin_1_1h_1_1AxiomInfo", null ],
     [ "thorin::dot::BB", "namespacethorin_1_1dot.html#classthorin_1_1dot_1_1BB", null ],
     [ "thorin::ll::BB", "structthorin_1_1ll_1_1BB.html", null ],
@@ -29,7 +23,7 @@ var hierarchy =
     [ "thorin::CFNode", "classthorin_1_1CFNode.html", null ],
     [ "thorin::Checker", "classthorin_1_1Checker.html", null ],
     [ "thorin::clos::ClosLit", "classthorin_1_1clos_1_1ClosLit.html", null ],
-    [ "thorin::Debug", "classthorin_1_1Debug.html", null ],
+    [ "thorin::Dbg", "namespacethorin.html#structthorin_1_1Dbg", null ],
     [ "thorin::DefDefEq", "structthorin_1_1DefDefEq.html", null ],
     [ "thorin::DefDefHash", "structthorin_1_1DefDefHash.html", null ],
     [ "thorin::DepNode", "classthorin_1_1DepNode.html", null ],
@@ -58,7 +52,7 @@ var hierarchy =
     ] ],
     [ "thorin::Loc", "structthorin_1_1Loc.html", null ],
     [ "thorin::World::Arena::Lock", "structthorin_1_1World_1_1Arena_1_1Lock.html", null ],
-    [ "thorin::Log", "structthorin_1_1Log.html", null ],
+    [ "thorin::Log", "classthorin_1_1Log.html", null ],
     [ "thorin::LoopTree< forward >", "classthorin_1_1LoopTree.html", null ],
     [ "thorin::LoopTreeBuilder< forward >", "classthorin_1_1LoopTreeBuilder.html", null ],
     [ "thorin::LRPrec< L >", "structthorin_1_1LRPrec.html", null ],
@@ -224,6 +218,10 @@ var hierarchy =
     [ "thorin::PipelineBuilder", "classthorin_1_1PipelineBuilder.html", null ],
     [ "thorin::World::State::POD", "structthorin_1_1World_1_1State.html#structthorin_1_1World_1_1State_1_1POD", null ],
     [ "thorin::Pos", "structthorin_1_1Pos.html", null ],
+    [ "thorin::fe::Ptrn", "classthorin_1_1fe_1_1Ptrn.html", [
+      [ "thorin::fe::IdPtrn", "classthorin_1_1fe_1_1IdPtrn.html", null ],
+      [ "thorin::fe::TuplePtrn", "classthorin_1_1fe_1_1TuplePtrn.html", null ]
+    ] ],
     [ "thorin::Ref", "classthorin_1_1Ref.html", null ],
     [ "thorin::BitSet::reference", "classthorin_1_1BitSet_1_1reference.html", null ],
     [ "thorin::IndexSet< Indexer, Key >::reference", "classthorin_1_1IndexSet_1_1reference.html", null ],
@@ -250,10 +248,10 @@ var hierarchy =
         [ "thorin::Arr", "classthorin_1_1Arr.html", null ],
         [ "thorin::Axiom", "classthorin_1_1Axiom.html", null ],
         [ "thorin::Bound", "classthorin_1_1Bound.html", [
-          [ "thorin::TBound< up >", "classthorin_1_1TBound.html", null ]
+          [ "thorin::TBound< Up >", "classthorin_1_1TBound.html", null ]
         ] ],
         [ "thorin::Ext", "classthorin_1_1Ext.html", [
-          [ "thorin::TExt< up >", "classthorin_1_1TExt.html", null ]
+          [ "thorin::TExt< Up >", "classthorin_1_1TExt.html", null ]
         ] ],
         [ "thorin::Extract", "classthorin_1_1Extract.html", null ],
         [ "thorin::Global", "classthorin_1_1Global.html", null ],
@@ -285,7 +283,9 @@ var hierarchy =
     [ "thorin::Span< T >", "classthorin_1_1Span.html", null ],
     [ "thorin::World::State", "structthorin_1_1World_1_1State.html", null ],
     [ "thorin::Sym", "classthorin_1_1Sym.html", null ],
-    [ "thorin::SymHash", "structthorin_1_1SymHash.html", null ],
+    [ "thorin::SymPool", "classthorin_1_1SymPool.html", [
+      [ "thorin::Driver", "classthorin_1_1Driver.html", null ]
+    ] ],
     [ "thorin::Tab", "classthorin_1_1Tab.html", null ],
     [ "thorin::fe::Tok", "classthorin_1_1fe_1_1Tok.html", null ],
     [ "thorin::unique_queue< Set >", "classthorin_1_1unique__queue.html", null ],

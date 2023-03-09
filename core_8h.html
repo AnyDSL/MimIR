@@ -124,7 +124,7 @@ $(document).ready(function(){initNavTree('core_8h.html',''); initResizable(); })
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for core.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="core_8h__incl.svg" width="1627" height="1019"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="core_8h__incl.svg" width="1595" height="1019"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -146,8 +146,8 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a70d6ff6fb821b8e67ddb70da93401dc3"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a70d6ff6fb821b8e67ddb70da93401dc3">thorin::core::VMode</a> = std::variant&lt; Mode, nat_t, const Def * &gt;</td></tr>
-<tr class="separator:a70d6ff6fb821b8e67ddb70da93401dc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae025337cbe07dc96616a07d6e4440859"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#ae025337cbe07dc96616a07d6e4440859">thorin::core::VMode</a> = std::variant&lt; Mode, nat_t, Ref &gt;</td></tr>
+<tr class="separator:ae025337cbe07dc96616a07d6e4440859"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -159,8 +159,8 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ae3be08467a25f79254b0c396ef0d2dc6"><td class="memItemLeft" align="right" valign="top">const Def *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#ae3be08467a25f79254b0c396ef0d2dc6">thorin::core::mode</a> (World &amp;w, VMode m)</td></tr>
-<tr class="separator:ae3be08467a25f79254b0c396ef0d2dc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55cf18b70ac6535d67231006c6afc167"><td class="memItemLeft" align="right" valign="top">Ref&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a55cf18b70ac6535d67231006c6afc167">thorin::core::mode</a> (World &amp;w, VMode m)</td></tr>
+<tr class="separator:a55cf18b70ac6535d67231006c6afc167"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40bb70334a973f7e1db526754e894e45"><td class="memItemLeft" align="right" valign="top">constexpr std::array&lt; std::array&lt; u64, 2 &gt;, 2 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a40bb70334a973f7e1db526754e894e45">thorin::core::make_truth_table</a> (bit2 id)</td></tr>
 <tr class="memdesc:a40bb70334a973f7e1db526754e894e45"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classthorin_1_1Use.html" title="References a user.">Use</a> like this: <code>a op b = tab[a][b]</code>  <a href="namespacethorin_1_1core.html#a40bb70334a973f7e1db526754e894e45">More...</a><br /></td></tr>
 <tr class="separator:a40bb70334a973f7e1db526754e894e45"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -170,28 +170,28 @@ Functions</h2></td></tr>
 <tr class="memitem:ac9ec87b1bccd45a5f0303029090374e5"><td class="memItemLeft" align="right" valign="top">const Sigma *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#ac9ec87b1bccd45a5f0303029090374e5">thorin::core::convert</a> (const Bound *b)</td></tr>
 <tr class="separator:ac9ec87b1bccd45a5f0303029090374e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">fn - these guys yield the final function to be invoked for the various operations</div></td></tr>
-<tr class="memitem:adf56b90ff695433e6bd4ce05711427c9"><td class="memItemLeft" align="right" valign="top">const Def *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#adf56b90ff695433e6bd4ce05711427c9">thorin::core::fn_bitcast</a> (const Def *dst_t, const Def *src_t, const Def *dbg={})</td></tr>
-<tr class="separator:adf56b90ff695433e6bd4ce05711427c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcf41c8b2fa6fde6cf306095ef26a6a8"><td class="memItemLeft" align="right" valign="top">Ref&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#adcf41c8b2fa6fde6cf306095ef26a6a8">thorin::core::fn_bitcast</a> (Ref dst_t, Ref src_t)</td></tr>
+<tr class="separator:adcf41c8b2fa6fde6cf306095ef26a6a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">op - these guys build the final function application for the various operations</div></td></tr>
-<tr class="memitem:a244583e88c56d09e20520a8bd0021d7b"><td class="memItemLeft" align="right" valign="top">const Def *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a244583e88c56d09e20520a8bd0021d7b">thorin::core::op</a> (trait o, const Def *type, const Def *dbg={})</td></tr>
-<tr class="separator:a244583e88c56d09e20520a8bd0021d7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9371ef1cda4a055a1b6e58ff50e87326"><td class="memItemLeft" align="right" valign="top">const Def *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a9371ef1cda4a055a1b6e58ff50e87326">thorin::core::op_bitcast</a> (const Def *dst_t, const Def *src, const Def *dbg={})</td></tr>
-<tr class="separator:a9371ef1cda4a055a1b6e58ff50e87326"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4d90a9f4760ff1d7f01a8e8627ae620"><td class="memItemLeft" align="right" valign="top">const Def *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#ab4d90a9f4760ff1d7f01a8e8627ae620">thorin::core::op</a> (pe o, const Def *def, const Def *dbg={})</td></tr>
-<tr class="separator:ab4d90a9f4760ff1d7f01a8e8627ae620"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5c1ec8635852637cd611968311003d0"><td class="memItemLeft" align="right" valign="top">Ref&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#af5c1ec8635852637cd611968311003d0">thorin::core::op</a> (trait o, Ref type)</td></tr>
+<tr class="separator:af5c1ec8635852637cd611968311003d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcaa908374582e9d4e5b8b87e1d03d7b"><td class="memItemLeft" align="right" valign="top">Ref&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#adcaa908374582e9d4e5b8b87e1d03d7b">thorin::core::op_bitcast</a> (Ref dst_t, Ref src)</td></tr>
+<tr class="separator:adcaa908374582e9d4e5b8b87e1d03d7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86904dad0403dbb12c13fb055829d8a4"><td class="memItemLeft" align="right" valign="top">Ref&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a86904dad0403dbb12c13fb055829d8a4">thorin::core::op</a> (pe o, Ref def)</td></tr>
+<tr class="separator:a86904dad0403dbb12c13fb055829d8a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">extract helper</div></td></tr>
-<tr class="memitem:a508b56d335a59fe9405c914f2f318de9"><td class="memItemLeft" align="right" valign="top">const Def *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a508b56d335a59fe9405c914f2f318de9">thorin::core::extract_unsafe</a> (const Def *d, const Def *i, const Def *dbg={})</td></tr>
-<tr class="separator:a508b56d335a59fe9405c914f2f318de9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4dc12a85c453923fa36b40d1fc52bd4"><td class="memItemLeft" align="right" valign="top">const Def *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#ae4dc12a85c453923fa36b40d1fc52bd4">thorin::core::extract_unsafe</a> (const Def *d, u64 i, const Def *dbg={})</td></tr>
-<tr class="separator:ae4dc12a85c453923fa36b40d1fc52bd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade5d8b9acff8ccf41c5d442cb3a2b43b"><td class="memItemLeft" align="right" valign="top">Ref&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#ade5d8b9acff8ccf41c5d442cb3a2b43b">thorin::core::extract_unsafe</a> (Ref d, Ref i)</td></tr>
+<tr class="separator:ade5d8b9acff8ccf41c5d442cb3a2b43b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d37b2d949f034ee2030fc23a5c69467"><td class="memItemLeft" align="right" valign="top">Ref&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a2d37b2d949f034ee2030fc23a5c69467">thorin::core::extract_unsafe</a> (Ref d, u64 i)</td></tr>
+<tr class="separator:a2d37b2d949f034ee2030fc23a5c69467"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">insert helper</div></td></tr>
-<tr class="memitem:a81eef9e98d98fc3d5829db1c5db247bf"><td class="memItemLeft" align="right" valign="top">const Def *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a81eef9e98d98fc3d5829db1c5db247bf">thorin::core::insert_unsafe</a> (const Def *d, const Def *i, const Def *val, const Def *dbg={})</td></tr>
-<tr class="separator:a81eef9e98d98fc3d5829db1c5db247bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e157a76ce6783baf11aa6c167c05a2d"><td class="memItemLeft" align="right" valign="top">const Def *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a1e157a76ce6783baf11aa6c167c05a2d">thorin::core::insert_unsafe</a> (const Def *d, u64 i, const Def *val, const Def *dbg={})</td></tr>
-<tr class="separator:a1e157a76ce6783baf11aa6c167c05a2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45b83d9dd141bf070a6f3f02fc010dc5"><td class="memItemLeft" align="right" valign="top">Ref&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a45b83d9dd141bf070a6f3f02fc010dc5">thorin::core::insert_unsafe</a> (Ref d, Ref i, Ref val)</td></tr>
+<tr class="separator:a45b83d9dd141bf070a6f3f02fc010dc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8dbeaa59742e754efc6e55081738ed3"><td class="memItemLeft" align="right" valign="top">Ref&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#af8dbeaa59742e754efc6e55081738ed3">thorin::core::insert_unsafe</a> (Ref d, u64 i, Ref val)</td></tr>
+<tr class="separator:af8dbeaa59742e754efc6e55081738ed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">wrappers for unary operations</div></td></tr>
-<tr class="memitem:a4eeec1e85068c8ce5928749a53c57d78"><td class="memItemLeft" align="right" valign="top">const Def *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a4eeec1e85068c8ce5928749a53c57d78">thorin::core::op_wminus</a> (VMode m, const Def *a, const Def *dbg={})</td></tr>
-<tr class="separator:a4eeec1e85068c8ce5928749a53c57d78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33a5ece6d189ebc3403bfc134f6892ee"><td class="memItemLeft" align="right" valign="top">Ref&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a33a5ece6d189ebc3403bfc134f6892ee">thorin::core::op_wminus</a> (VMode m, Ref a)</td></tr>
+<tr class="separator:a33a5ece6d189ebc3403bfc134f6892ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">is_commutative/is_associative</div></td></tr>
 <tr class="memitem:a2d1ab75fd94d6b90cd05025d8068a5d4"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a2d1ab75fd94d6b90cd05025d8068a5d4">thorin::is_commutative</a> (core::nop)</td></tr>
 <tr class="separator:a2d1ab75fd94d6b90cd05025d8068a5d4"><td class="memSeparator" colspan="2">&#160;</td></tr>

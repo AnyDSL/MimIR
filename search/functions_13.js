@@ -1,8 +1,8 @@
 var searchData=
 [
   ['u_0',['u',['../classthorin_1_1fe_1_1Tok.html#a12e0844725bcdf270c9650b0211dd39e',1,'thorin::fe::Tok']]],
-  ['uinc_1',['uinc',['../classthorin_1_1World.html#a5ed126a52a420c43991d553c23afe58e',1,'thorin::World']]],
-  ['umax_2',['umax',['../classthorin_1_1World.html#a0ad8a55498e588427e27a1954f7db7d9',1,'thorin::World']]],
+  ['uinc_1',['uinc',['../classthorin_1_1World.html#a56453f209ac2c04024c050df70c66586',1,'thorin::World']]],
+  ['umax_2',['umax',['../classthorin_1_1World.html#a3790c90d77e02fdfd32ee8c630bc5117',1,'thorin::World']]],
   ['undo_5fenter_3',['undo_enter',['../classthorin_1_1FPPass.html#a992db753a80b89fb6bcce0dc6154dd8b',1,'thorin::FPPass']]],
   ['undo_5fvisit_4',['undo_visit',['../classthorin_1_1FPPass.html#ad68f7d1dcf6986dcf22b465b740f706e',1,'thorin::FPPass']]],
   ['unflatten_5',['unflatten',['../namespacethorin.html#a833e2a807b47e7f8a3c67fff75985c6f',1,'thorin::unflatten(const Def *def, const Def *type)'],['../namespacethorin.html#ae982c58cbbf8f50804167dc3697e78cd',1,'thorin::unflatten(Defs ops, const Def *type, bool flatten_noms=true)'],['../namespacethorin.html#ab1a9abc89dbfee14f1535dfbcacf5f97',1,'thorin::unflatten(Defs defs, const Def *type, size_t &amp;j, bool flatten_noms)']]],
