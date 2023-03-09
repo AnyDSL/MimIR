@@ -11,11 +11,13 @@ namespace thorin::direct {
 class CPS2DS : public RWPass<CPS2DS, Lam> {
 public:
     CPS2DS(PassMan& man)
-        : RWPass(man, "cps2ds") {}
+        : RWPass(man, "cps2ds")
+        , cps_call_{world().sym("csp_call")} {}
 
     void enter() override;
 
 private:
+    Sym cps_call_;
     Def2Def rewritten_lams;
     Def2Def rewritten_;
     Lam* curr_lam_ = nullptr;

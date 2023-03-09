@@ -16,8 +16,7 @@ const Def* DS2CPS::rewrite(const Def* def) {
             world.DLOG("encountered lam app");
             auto new_lam = rewrite_lam(lam);
             world.DLOG("new lam: {} : {}", new_lam, new_lam->type());
-            auto arg = app->arg();
-            world.DLOG("arg: {} : {}", arg, arg->type());
+            world.DLOG("arg: {} : {}", app->arg(), app->arg()->type());
             auto new_app = world.app(new_lam, app->arg());
             world.DLOG("new app: {} : {}", new_app, new_app->type());
             return new_app;
@@ -63,7 +62,7 @@ const Def* DS2CPS::rewrite_lam(Lam* lam) {
     auto cps_ty = world().cn(sig);
     world().DLOG("cps type: {}", cps_ty);
 
-    auto cps_lam = world().nom_lam(cps_ty, world().dbg(lam->name() + "_cps"));
+    auto cps_lam = world().nom_lam(cps_ty)->set(*lam->sym() + "_cps");
 
     // rewrite vars of new function
     // calls handled separately

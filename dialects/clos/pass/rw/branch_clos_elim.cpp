@@ -34,7 +34,7 @@ const Def* BranchClosElim::rewrite(const Def* def) {
             auto& dropped_lam      = entry->second;
             if (inserted || !dropped_lam) {
                 auto clam     = c.fnc_as_lam();
-                dropped_lam   = clam->stub(w, clos_type_to_pi(c.type()), clam->dbg());
+                dropped_lam   = clam->stub(w, clos_type_to_pi(c.type()));
                 auto new_vars = clos_insert_env(c.env(), dropped_lam->var());
                 dropped_lam->set(clam->reduce(new_vars));
             }

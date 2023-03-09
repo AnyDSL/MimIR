@@ -24,10 +24,10 @@ undo_t TailRecElim::analyze(const Def* def) {
         if (auto ret_var = old->ret_var(); ret_var && app->args().back() == ret_var) {
             if (auto [i, ins] = old2rec_loop_.emplace(old, std::pair<Lam*, Lam*>(nullptr, nullptr)); ins) {
                 auto& [rec, loop] = i->second;
-                rec               = old->stub(world(), old->type(), old->dbg());
+                rec               = old->stub(world(), old->type());
                 auto doms         = rec->doms();
                 auto loop_dom     = doms.skip_back();
-                loop              = rec->stub(world(), world().cn(loop_dom), rec->dbg());
+                loop              = rec->stub(world(), world().cn(loop_dom));
                 world().DLOG("old {} -> (rec: {}, loop: {})", old, rec, loop);
 
                 auto n = rec->num_doms();

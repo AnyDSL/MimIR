@@ -2,6 +2,8 @@
 
 #include "thorin/pass/fp/eta_red.h"
 
+using namespace std::literals;
+
 namespace thorin {
 
 Lam* EtaExp::new2old(Lam* new_lam) {
@@ -35,14 +37,14 @@ const Def* EtaExp::rewrite(const Def* def) {
         }
     }
 
-    auto new_def              = def->rebuild(world(), def->type(), new_ops, def->dbg());
+    auto new_def              = def->rebuild(world(), def->type(), new_ops);
     return old2new()[new_def] = new_def;
 }
 
 Lam* EtaExp::eta_exp(Lam* lam) {
-    auto exp = lam->stub(world(), lam->type(), lam->dbg());
+    auto exp = lam->stub(world(), lam->type());
     exp2orig_.emplace(exp, lam);
-    exp->set_debug_name(std::string("eta_") + lam->name());
+    exp->debug_suffix("eta_"s + *lam->sym());
     exp->app(false, lam, exp->var());
     if (eta_red_) eta_red_->mark_irreducible(exp);
     return exp;

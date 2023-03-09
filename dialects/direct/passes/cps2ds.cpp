@@ -14,7 +14,7 @@ void CPS2DS::enter() {
         lam->world().DLOG("skipped non-nom {}", lam);
         return;
     }
-    world().DLOG("CPS2DS: {}", lam->name());
+    world().DLOG("CPS2DS: {}", lam->sym());
     rewrite_lam(lam);
 }
 
@@ -89,10 +89,10 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
                         }
 
                         // The continuation that receives the result of the cps function call.
-                        auto fun_cont = world.nom_lam(world.cn(inst_ret_ty), world.dbg(curr_lam_->name() + "_cont"));
+                        auto fun_cont = world.nom_lam(world.cn(inst_ret_ty))->set(*curr_lam_->sym() + "_cont");
                         // Generate the cps function call `f a` -> `f_cps(a,cont)`
-                        auto cps_call = world.app(cps_fun, {new_arg, fun_cont}, world.dbg("cps_call"));
-                        world.DLOG("  curr_lam {}", curr_lam_->name());
+                        auto cps_call = world.app(cps_fun, {new_arg, fun_cont})->set(cps_call_);
+                        world.DLOG("  curr_lam {}", curr_lam_->sym());
                         curr_lam_->set_body(cps_call);
 
                         // Fixme: would be great to PE the newly added overhead away..
@@ -128,9 +128,9 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
 
     if (auto old_nom = def->isa_nom()) { return old_nom; }
     DefArray new_ops{def->ops(), [&](const Def* op) { return rewrite_body(op); }};
-    if (def->isa<Tuple>()) return world.tuple(new_ops, def->dbg());
+    if (def->isa<Tuple>()) return world.tuple(new_ops); // TODO just remove this line? there is rebuild below
 
-    return def->rebuild(world, def->type(), new_ops, def->dbg());
+    return def->rebuild(world, def->type(), new_ops);
 }
 
 } // namespace thorin::direct

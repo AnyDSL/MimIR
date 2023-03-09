@@ -1,6 +1,7 @@
 #include "thorin/def.h"
 
 #include <algorithm>
+#include <optional>
 #include <ranges>
 #include <stack>
 
@@ -8,6 +9,8 @@
 #include "thorin/world.h"
 
 #include "thorin/analyses/scope.h"
+
+using namespace std::literals;
 
 namespace thorin {
 
@@ -18,18 +21,18 @@ static constexpr int Search_In_Uses_Threshold = 8;
  * constructors
  */
 
-Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags, const Def* dbg)
+Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
     : world_(w)
     , flags_(flags)
     , node_(unsigned(node))
     , nom_(false)
+    , external_(false)
     , dep_(unsigned(node == Node::Axiom   ? Dep::Axiom
                     : node == Node::Infer ? Dep::Infer
                     : node == Node::Proxy ? Dep::Proxy
                     : node == Node::Var   ? Dep::Var
                                           : Dep::None))
     , num_ops_(ops.size())
-    , dbg_(dbg)
     , type_(type) {
     std::ranges::copy(ops, ops_ptr());
     gid_ = world().next_gid();
@@ -45,16 +48,16 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags, const 
     }
 }
 
-Def::Def(node_t n, const Def* type, Defs ops, flags_t flags, const Def* dbg)
-    : Def(nullptr, n, type, ops, flags, dbg) {}
+Def::Def(node_t n, const Def* type, Defs ops, flags_t flags)
+    : Def(nullptr, n, type, ops, flags) {}
 
-Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags, const Def* dbg)
+Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags)
     : flags_(flags)
     , node_(node)
     , nom_(true)
+    , external_(false)
     , dep_(Dep::Nom | (node == Node::Infer ? Dep::Infer : Dep::None))
     , num_ops_(num_ops)
-    , dbg_(dbg)
     , type_(type) {
     gid_  = world().next_gid();
     hash_ = murmur3(gid());
@@ -63,10 +66,10 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags, const Def*
 }
 
 Nat::Nat(World& world)
-    : Def(Node, world.type(), Defs{}, 0, nullptr) {}
+    : Def(Node, world.type(), Defs{}, 0) {}
 
-UMax::UMax(World& world, Defs ops, const Def* dbg)
-    : Def(Node, world.univ(), ops, 0, dbg) {}
+UMax::UMax(World& world, Defs ops)
+    : Def(Node, world.univ(), ops, 0) {}
 
 // clang-format off
 
@@ -74,70 +77,82 @@ UMax::UMax(World& world, Defs ops, const Def* dbg)
  * rebuild
  */
 
-const Def* Ac       ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.ac(t, o, dbg); }
-const Def* App      ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.app(o[0], o[1], dbg); }
-const Def* Arr      ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.arr(o[0], o[1], dbg); }
-const Def* Extract  ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.extract(o[0], o[1], dbg); }
-const Def* Insert   ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.insert(o[0], o[1], o[2], dbg); }
-const Def* Idx      ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.type_idx(); }
-const Def* Lam      ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.lam(t->as<Pi>(), o[0], o[1], dbg); }
-const Def* Lit      ::rebuild(World& w, const Def* t, Defs  , const Def* dbg) const { return w.lit(t, get(), dbg); }
-const Def* Nat      ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.type_nat(); }
-const Def* Pack     ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.pack(t->arity(), o[0], dbg); }
-const Def* Pi       ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.pi(o[0], o[1], dbg); }
-const Def* Pick     ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.pick(t, o[0], dbg); }
-const Def* Proxy    ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.proxy(t, o, as<Proxy>()->pass(), as<Proxy>()->tag(), dbg); }
-const Def* Sigma    ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.sigma(o, dbg); }
-const Def* Singleton::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.singleton(o[0], dbg); }
-const Def* Type     ::rebuild(World& w, const Def*  , Defs o, const Def*    ) const { return w.type(o[0]); }
-const Def* Test     ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.test(o[0], o[1], o[2], o[3], dbg); }
-const Def* Tuple    ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.tuple(t, o, dbg); }
-const Def* UInc     ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.uinc(o[0], offset(), dbg); }
-const Def* UMax     ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.umax(o, dbg); }
-const Def* Univ     ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.univ(); }
-const Def* Var      ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.var(t, o[0]->as_nom(), dbg); }
-const Def* Vel      ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.vel(t, o[0], dbg); }
+Ref Infer    ::rebuild_(World&,   Ref,   Defs  ) const { unreachable(); }
+Ref Global   ::rebuild_(World&,   Ref,   Defs  ) const { unreachable(); }
+Ref Ac       ::rebuild_(World& w, Ref t, Defs o) const { return w.ac(t, o); }
+Ref App      ::rebuild_(World& w, Ref  , Defs o) const { return w.app(o[0], o[1]); }
+Ref Arr      ::rebuild_(World& w, Ref  , Defs o) const { return w.arr(o[0], o[1]); }
+Ref Extract  ::rebuild_(World& w, Ref  , Defs o) const { return w.extract(o[0], o[1]); }
+Ref Insert   ::rebuild_(World& w, Ref  , Defs o) const { return w.insert(o[0], o[1], o[2]); }
+Ref Idx      ::rebuild_(World& w, Ref  , Defs  ) const { return w.type_idx(); }
+Ref Lam      ::rebuild_(World& w, Ref t, Defs o) const { return w.lam(t->as<Pi>(), o[0], o[1]); }
+Ref Lit      ::rebuild_(World& w, Ref t, Defs  ) const { return w.lit(t, get()); }
+Ref Nat      ::rebuild_(World& w, Ref  , Defs  ) const { return w.type_nat(); }
+Ref Pack     ::rebuild_(World& w, Ref t, Defs o) const { return w.pack(t->arity(), o[0]); }
+Ref Pi       ::rebuild_(World& w, Ref  , Defs o) const { return w.pi(o[0], o[1], implicit()); }
+Ref Pick     ::rebuild_(World& w, Ref t, Defs o) const { return w.pick(t, o[0]); }
+Ref Proxy    ::rebuild_(World& w, Ref t, Defs o) const { return w.proxy(t, o, as<Proxy>()->pass(), as<Proxy>()->tag()); }
+Ref Sigma    ::rebuild_(World& w, Ref  , Defs o) const { return w.sigma(o); }
+Ref Singleton::rebuild_(World& w, Ref  , Defs o) const { return w.singleton(o[0]); }
+Ref Type     ::rebuild_(World& w, Ref  , Defs o) const { return w.type(o[0]); }
+Ref Test     ::rebuild_(World& w, Ref  , Defs o) const { return w.test(o[0], o[1], o[2], o[3]); }
+Ref Tuple    ::rebuild_(World& w, Ref t, Defs o) const { return w.tuple(t, o); }
+Ref UInc     ::rebuild_(World& w, Ref  , Defs o) const { return w.uinc(o[0], offset()); }
+Ref UMax     ::rebuild_(World& w, Ref  , Defs o) const { return w.umax(o); }
+Ref Univ     ::rebuild_(World& w, Ref  , Defs  ) const { return w.univ(); }
+Ref Var      ::rebuild_(World& w, Ref t, Defs o) const { return w.var(t, o[0]->as_nom()); }
+Ref Vel      ::rebuild_(World& w, Ref t, Defs o) const { return w.vel(t, o[0]); }
 
-const Def* Axiom    ::rebuild(World& w, const Def* t, Defs  , const Def* dbg) const {
-    if (&w != &world()) return w.axiom(normalizer(), curry(), trip(), t, dialect(), tag(), sub(), dbg);
-    assert(w.checker().equiv(t, type(), dbg));
+Ref Axiom    ::rebuild_(World& w, Ref t, Defs ) const {
+    if (&w != &world()) return w.axiom(normalizer(), curry(), trip(), t, dialect(), tag(), sub());
+    assert(w.checker().equiv(t, type()));
     return this;
 }
 
-template<bool up> const Def* TExt  <up>::rebuild(World& w, const Def* t, Defs  , const Def* dbg) const { return w.ext  <up>(t,    dbg); }
-template<bool up> const Def* TBound<up>::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.bound<up>(   o, dbg); }
+template<bool up> Ref TExt  <up>::rebuild_(World& w, Ref t, Defs  ) const { return w.ext  <up>(t); }
+template<bool up> Ref TBound<up>::rebuild_(World& w, Ref  , Defs o) const { return w.bound<up>(o); }
 
 /*
  * stub
  */
 
-Lam*    Lam   ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_lam  (t->as<Pi>(), dbg); }
-Pi*     Pi    ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_pi   (t, dbg); }
-Sigma*  Sigma ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_sigma(t, num_ops(), dbg); }
-Arr*    Arr   ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_arr  (t, dbg); }
-Pack*   Pack  ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_pack (t, dbg); }
-Infer*  Infer ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_infer(t, dbg); }
-Global* Global::stub(World& w, const Def* t, const Def* dbg) { return w.global(t, is_mutable(), dbg); }
+Arr*       Arr   ::stub_(World& w, Ref t) { return w.nom_arr  (t); }
+Global*    Global::stub_(World& w, Ref t) { return w.global(t, is_mutable()); }
+Infer*     Infer ::stub_(World& w, Ref t) { return w.nom_infer(t); }
+Lam*       Lam   ::stub_(World& w, Ref t) { return w.nom_lam  (t->as<Pi>()); }
+Pack*      Pack  ::stub_(World& w, Ref t) { return w.nom_pack (t); }
+Pi*        Pi    ::stub_(World& w, Ref t) { return w.nom_pi   (t, implicit()); }
+Sigma*     Sigma ::stub_(World& w, Ref t) { return w.nom_sigma(t, num_ops()); }
 
+template<bool up> TBound<up>* TBound<up>::stub_(World& w, Ref t) { return w.nom_bound<up>(t, num_ops()); }
+template<bool up> TExt  <up>* TExt  <up>::stub_(World&  , Ref  ) { unreachable(); }
+
+/*
+ * instantiate templates
+ */
+
+template Ref TExt  <false>::rebuild_(World&, Ref, Defs) const;
+template Ref TExt  <true >::rebuild_(World&, Ref, Defs) const;
+template Ref TBound<false>::rebuild_(World&, Ref, Defs) const;
+template Ref TBound<true >::rebuild_(World&, Ref, Defs) const;
+template TBound<false>* TBound<false>::stub_(World&, Ref);
+template TBound<true >* TBound<true >::stub_(World&, Ref);
+template TExt  <false>* TExt  <false>::stub_(World&, Ref);
+template TExt  <true >* TExt  <true >::stub_(World&, Ref);
 // clang-format on
-
-template<bool up>
-TBound<up>* TBound<up>::stub(World& w, const Def* t, const Def* dbg) {
-    return w.nom_bound<up>(t, num_ops(), dbg);
-}
 
 /*
  * restructure
  */
 
 const Pi* Pi::restructure() {
-    if (!is_free(this, codom())) return world().pi(dom(), codom(), dbg());
+    if (!is_free(this, codom())) return world().pi(dom(), codom());
     return nullptr;
 }
 
 const Sigma* Sigma::restructure() {
     if (std::ranges::none_of(ops(), [this](auto op) { return is_free(this, op); }))
-        return static_cast<const Sigma*>(world().sigma(ops(), dbg()));
+        return static_cast<const Sigma*>(*world().sigma(ops()));
     return nullptr;
 }
 
@@ -162,6 +177,10 @@ const Def* Pack::restructure() {
 /*
  * Def
  */
+
+Sym Def::get_sym(const char* s) const { return world().sym(s); }
+Sym Def::get_sym(std::string_view s) const { return world().sym(s); }
+Sym Def::get_sym(std::string s) const { return world().sym(std::move(s)); }
 
 World& Def::world() const {
     if (isa<Univ>()) return *world_;
@@ -191,13 +210,25 @@ std::string_view Def::node_name() const {
 
 Defs Def::extended_ops() const {
     if (isa<Type>() || isa<Univ>()) return Defs();
-    size_t offset = dbg() ? 2 : 1;
-    return Defs((is_set() ? num_ops_ : 0) + offset, ops_ptr() - offset);
+    assert(type());
+    return Defs((is_set() ? num_ops_ : 0) + 1, ops_ptr() - 1);
 }
+
+#ifndef NDEBUG
+const Def* Def::debug_prefix(std::string prefix) const {
+    dbg_.sym = world().sym(prefix + *sym());
+    return this;
+}
+
+const Def* Def::debug_suffix(std::string suffix) const {
+    dbg_.sym = world().sym(*sym() + suffix);
+    return this;
+}
+#endif
 
 // clang-format off
 
-const Var* Def::var(const Def* dbg) {
+const Var* Def::var() {
     auto& w = world();
 
     if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {
@@ -208,12 +239,12 @@ const Var* Def::var(const Def* dbg) {
         if (w.is_frozen()) return nullptr;
     }
 
-    if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam, dbg);
-    if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi, dbg);
-    if (auto sig  = isa<Sigma>()) return w.var(sig,         sig, dbg);
-    if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->shape()), arr,  dbg); // TODO shapes like (2, 3)
-    if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->shape()), pack, dbg); // TODO shapes like (2, 3)
-    if (isa<Bound >()) return w.var(this, this,  dbg);
+    if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam);
+    if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi);
+    if (auto sig  = isa<Sigma>()) return w.var(sig,         sig);
+    if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->shape()), arr ); // TODO shapes like (2, 3)
+    if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->shape()), pack); // TODO shapes like (2, 3)
+    if (isa<Bound >()) return w.var(this, this);
     if (isa<Infer >()) return nullptr;
     if (isa<Global>()) return nullptr;
     unreachable();
@@ -250,6 +281,13 @@ const Def* Def::arity() const {
     return world().lit_nat(1);
 }
 
+std::optional<nat_t> Def::isa_lit_arity() const {
+    if (auto sigma  = isa<Sigma>()) return sigma->num_ops();
+    if (auto arr    = isa<Arr  >()) return isa_lit(arr->shape());
+    if (sort() == Sort::Term)       return type()->isa_lit_arity();
+    return 1;
+}
+
 // clang-format on
 
 bool Def::equal(const Def* other) const {
@@ -263,26 +301,7 @@ bool Def::equal(const Def* other) const {
     return result;
 }
 
-#ifndef NDEBUG
-void Def::set_debug_name(std::string_view n) const {
-    auto& w   = world();
-    auto name = w.tuple_str(n);
-
-    if (dbg_ == nullptr) {
-        auto file  = w.tuple_str("");
-        auto begin = w.lit_nat_max();
-        auto finis = w.lit_nat_max();
-        auto meta  = w.bot(w.type_bot());
-        dbg_       = w.tuple({name, w.tuple({file, begin, finis}), meta});
-    } else {
-        dbg_ = w.insert(dbg_, 3_s, 0_s, name);
-    }
-}
-#endif
-
 void Def::finalize() {
-    assert(!dbg() || !dbg()->dep());
-
     for (size_t i = 0, e = num_ops(); i != e; ++i) {
         dep_ |= op(i)->dep();
         if (!op(i)->dep_const()) {
@@ -352,9 +371,8 @@ bool Def::is_set() const {
 
 void Def::make_external() { return world().make_external(this); }
 void Def::make_internal() { return world().make_internal(this); }
-bool Def::is_external() const { return world().is_external(this); }
 
-std::string Def::unique_name() const { return name() + "_" + std::to_string(gid()); }
+std::string Def::unique_name() const { return *sym() + "_"s + std::to_string(gid()); }
 
 DefArray Def::reduce(const Def* arg) const {
     if (auto nom = isa_nom()) return nom->reduce(arg);
@@ -375,7 +393,7 @@ const Def* Def::reduce_rec() const {
         if (callee->isa_nom()) {
             def = callee->reduce(app->arg()).back();
         } else {
-            def = callee != app->callee() ? world().app(callee, app->arg(), app->dbg()) : app;
+            def = callee != app->callee() ? world().app(callee, app->arg()) : app;
             break;
         }
     }
@@ -385,10 +403,10 @@ const Def* Def::reduce_rec() const {
 const Def* Def::refine(size_t i, const Def* new_op) const {
     DefArray new_ops(ops());
     new_ops[i] = new_op;
-    return rebuild(world(), type(), new_ops, dbg());
+    return rebuild(world(), type(), new_ops);
 }
 
-const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
+const Def* Def::proj(nat_t a, nat_t i) const {
     if (a == 1) {
         if (!type()) return this;
         if (!isa_nom<Sigma>() && !type()->isa_nom<Sigma>()) return this;
@@ -400,11 +418,11 @@ const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
         return op(i);
     } else if (auto arr = isa<Arr>()) {
         if (arr->arity()->isa<Top>()) return arr->body();
-        return arr->reduce(w.lit_idx(as_lit(arr->arity()), i));
+        return arr->reduce(w.lit_idx(arr->as_lit_arity(), i));
     } else if (auto pack = isa<Pack>()) {
         if (pack->arity()->isa<Top>()) return pack->body();
         assert(!w.is_frozen() && "TODO");
-        return pack->reduce(w.lit_idx(as_lit(pack->arity()), i));
+        return pack->reduce(w.lit_idx(pack->as_lit_arity(), i));
     } else if (sort() == Sort::Term) {
         if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {
             for (auto u : uses()) {
@@ -416,7 +434,7 @@ const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
             if (w.is_frozen()) return nullptr;
         }
 
-        return w.extract(this, a, i, dbg);
+        return w.extract(this, a, i);
     }
 
     return nullptr;
@@ -446,21 +464,6 @@ std::optional<nat_t> Idx::size2bitwidth(const Def* size) {
 
 const App* Global::type() const { return Def::type()->as<App>(); }
 const Def* Global::alloced_type() const { return type()->arg(0); }
-
-/*
- * instantiate templates
- */
-
-// clang-format off
-
-template const Def*     TExt  <false>::rebuild(World&, const Def*, Defs, const Def*) const;
-template const Def*     TExt  <true >::rebuild(World&, const Def*, Defs, const Def*) const;
-template const Def*     TBound<false>::rebuild(World&, const Def*, Defs, const Def*) const;
-template const Def*     TBound<true >::rebuild(World&, const Def*, Defs, const Def*) const;
-template TBound<false>* TBound<false>::stub(World&, const Def*, const Def*);
-template TBound<true >* TBound<true >::stub(World&, const Def*, const Def*);
-
-// clang-format on
 
 std::pair<const Def*, std::vector<const Def*>> collect_args(const Def* def) {
     std::vector<const Def*> args;

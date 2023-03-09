@@ -16,18 +16,22 @@ const Def* LowerFor::rewrite(const Def* def) {
 
         auto for_pi = for_ax->callee_type();
         DefArray for_dom{for_pi->num_doms() - 2, [&](size_t i) { return for_pi->dom(i); }};
-        auto for_lam = w.nom_lam(w.cn(for_dom), w.dbg("for"));
+        auto for_lam = w.nom_lam(w.cn(for_dom))->set("for");
 
-        auto body = for_ax->arg(for_ax->num_args() - 2, w.dbg("body"));
-        auto brk  = for_ax->arg(for_ax->num_args() - 1, w.dbg("break"));
+        auto body = for_ax->arg(for_ax->num_args() - 2)->set("body");
+        auto brk  = for_ax->arg(for_ax->num_args() - 1)->set("break");
 
         auto body_type = body->type()->as<Pi>();
         auto yield_pi  = body_type->doms().back()->as<Pi>();
-        auto yield_lam = w.nom_lam(yield_pi, w.dbg("yield"));
+        auto yield_lam = w.nom_lam(yield_pi)->set("yield");
 
         { // construct yield
-            auto [iter, end, step, acc] = for_lam->vars<4>({w.dbg("begin"), w.dbg("end"), w.dbg("step"), w.dbg("acc")});
-            auto yield_acc              = yield_lam->var();
+            auto [iter, end, step, acc] = for_lam->vars<4>();
+            iter->set("iter");
+            end->set("end");
+            step->set("step");
+            acc->set("acc");
+            auto yield_acc = yield_lam->var();
 
             auto add = w.call(core::wrap::add, 0_n, Defs{iter, step});
             yield_lam->app(false, for_lam, {add, end, step, yield_acc});
@@ -37,12 +41,12 @@ const Def* LowerFor::rewrite(const Def* def) {
 
             // reduce the body to remove the cn parameter
             auto nom_body = body->as_nom<Lam>();
-            auto new_body = nom_body->stub(w, w.cn(w.sigma()), body->dbg());
+            auto new_body = nom_body->stub(w, w.cn(w.sigma()))->set(body->dbg());
             new_body->set(nom_body->reduce(w.tuple({iter, acc, yield_lam})));
 
             // break
             auto if_else_cn = w.cn(w.sigma());
-            auto if_else    = w.nom_lam(if_else_cn, nullptr);
+            auto if_else    = w.nom_lam(if_else_cn);
             if_else->app(false, brk, acc);
 
             auto cmp = w.call(core::icmp::ul, Defs{iter, end});
@@ -50,7 +54,7 @@ const Def* LowerFor::rewrite(const Def* def) {
         }
 
         DefArray for_args{for_ax->num_args() - 2, [&](size_t i) { return for_ax->arg(i); }};
-        return rewritten_[def] = w.app(for_lam, for_args, for_ax->dbg());
+        return rewritten_[def] = w.app(for_lam, for_args);
     }
 
     return def;

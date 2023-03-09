@@ -70,8 +70,8 @@ public:
 
     /// @name proxy
     ///@{
-    const Proxy* proxy(const Def* type, Defs ops, u32 tag = 0, const Def* dbg = {}) {
-        return world().proxy(type, ops, index(), tag, dbg);
+    const Proxy* proxy(const Def* type, Defs ops, u32 tag = 0) {
+        return world().proxy(type, ops, index(), tag);
     }
     /// Check whether given @p def is a Proxy whose Proxy::pass matches this Pass's @p IPass::index.
     const Proxy* isa_proxy(const Def* def, u32 tag = 0) {

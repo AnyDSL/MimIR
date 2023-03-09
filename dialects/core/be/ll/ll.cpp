@@ -70,7 +70,7 @@ struct BB {
         swap(a.parts, b.parts);
     }
 
-    DefMap<std::vector<std::pair<std::string, std::string>>> phis;
+    DefMap<std::deque<std::pair<std::string, std::string>>> phis;
     std::array<std::deque<std::ostringstream>, 3> parts;
 };
 
@@ -119,12 +119,12 @@ std::string Emitter::id(const Def* def, bool force_bb /*= false*/) const {
     if (auto lam = def->isa_nom<Lam>(); lam && !force_bb) {
         if (lam->type()->ret_pi()) {
             if (lam->is_external() || !lam->is_set())
-                return "@" + lam->name(); // TODO or use is_internal or sth like that?
-            return "@" + lam->unique_name();
+                return "@"s + *lam->sym(); // TODO or use is_internal or sth like that?
+            return "@"s + lam->unique_name();
         }
     }
 
-    return "%" + def->unique_name();
+    return "%"s + def->unique_name();
 }
 
 std::string Emitter::convert(const Def* type) {
@@ -158,9 +158,8 @@ std::string Emitter::convert(const Def* type) {
         assert(pi->is_returning() && "should never have to convert type of BB");
         print(s, "{} (", convert_ret_pi(pi->ret_pi()));
 
-        std::string_view sep = "";
-        auto doms            = pi->doms();
-        for (auto dom : doms.skip_back()) {
+        auto doms = pi->doms();
+        for (auto sep = ""; auto dom : doms.skip_back()) {
             if (match<mem::M>(dom)) continue;
             s << sep << convert(dom);
             sep = ", ";
@@ -174,8 +173,7 @@ std::string Emitter::convert(const Def* type) {
             print(s, "{} = type", name);
         }
         print(s, "{{");
-        std::string_view sep = "";
-        for (auto t : sigma->ops()) {
+        for (auto sep = ""; auto t : sigma->ops()) {
             if (match<mem::M>(t)) continue;
             s << sep << convert(t);
             sep = ", ";
@@ -224,9 +222,8 @@ void Emitter::emit_imported(Lam* lam) {
     // TODO merge with declare method
     print(func_decls_, "declare {} {}(", convert_ret_pi(lam->type()->ret_pi()), id(lam));
 
-    auto sep  = "";
     auto doms = lam->doms();
-    for (auto dom : doms.skip_back()) {
+    for (auto sep = ""; auto dom : doms.skip_back()) {
         if (match<mem::M>(dom)) continue;
         print(func_decls_, "{}{}", sep, convert(dom));
         sep = ", ";
@@ -240,9 +237,8 @@ std::string Emitter::prepare(const Scope& scope) {
 
     print(func_impls_, "define {} {}(", convert_ret_pi(lam->type()->ret_pi()), id(lam));
 
-    auto sep  = "";
     auto vars = lam->vars();
-    for (auto var : vars.skip_back()) {
+    for (auto sep = ""; auto var : vars.skip_back()) {
         if (match<mem::M>(var->type())) continue;
         auto name    = id(var);
         locals_[var] = name;
@@ -258,8 +254,7 @@ void Emitter::finalize(const Scope& scope) {
     for (auto& [lam, bb] : lam2bb_) {
         for (const auto& [phi, args] : bb.phis) {
             print(bb.head().emplace_back(), "{} = phi {} ", id(phi), convert(phi->type()));
-            auto sep = "";
-            for (const auto& [arg, pred] : args) {
+            for (auto sep = ""; const auto& [arg, pred] : args) {
                 print(bb.head().back(), "{}[ {}, {} ]", sep, arg, pred);
                 sep = ", ";
             }
@@ -892,9 +887,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
     } else if (auto er = match<math::er>(def)) {
-        auto a        = emit(er->arg());
-        auto t        = convert(er->type());
-        std::string f = er.id() == math::er::f ? "erf" : "erfc";
+        auto a = emit(er->arg());
+        auto t = convert(er->type());
+        auto f = er.id() == math::er::f ? "erf"s : "erfc"s;
         f += math_suffix(er->type());
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
@@ -950,7 +945,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         return bb.assign(name, "{} {} {} to {}", op, t_src, v_src, t_dst);
     }
 
-    unreachable(); // not yet implemented
+    def->dump(1);
+    err("unhandled def in LLVM backend: {}", def);
 }
 
 void emit(World& world, std::ostream& ostream) {

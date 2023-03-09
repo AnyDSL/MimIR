@@ -2,16 +2,14 @@
 
 #include <absl/container/flat_hash_map.h>
 
-#include "thorin/debug.h"
-
 #include "thorin/fe/tok.h"
 #include "thorin/util/utf8.h"
 
 namespace thorin {
-
 class World;
+}
 
-namespace fe {
+namespace thorin::fe {
 
 class Lexer : public utf8::Lexer<3> {
     using Super = utf8::Lexer<3>;
@@ -19,10 +17,10 @@ class Lexer : public utf8::Lexer<3> {
 public:
     /// Creates a lexer to read Thorin files (see [Lexical Structure](@ref lex)).
     /// If @p md is not `nullptr`, a Markdown output will be generated.
-    Lexer(World& world, std::string_view file, std::istream& istream, std::ostream* md = nullptr);
+    Lexer(World& world, Sym file, std::istream& istream, std::ostream* md = nullptr);
 
     World& world() { return world_; }
-    std::string_view file() const { return loc_.file; }
+    Sym file() const { return loc_.file; }
     Loc loc() const { return loc_; }
     Tok lex();
 
@@ -56,9 +54,8 @@ private:
     World& world_;
     std::ostream* md_;
     bool out_ = true;
-    absl::flat_hash_map<std::string, Tok::Tag> keywords_;
+    SymMap<Tok::Tag> keywords_;
     std::optional<Tok> cache_;
 };
 
-} // namespace fe
-} // namespace thorin
+} // namespace thorin::fe
