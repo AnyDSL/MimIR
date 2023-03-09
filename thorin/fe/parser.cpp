@@ -38,14 +38,18 @@ Parser::Parser(World& world,
                Span<std::string> import_search_paths,
                const Normalizers* normalizers,
                std::ostream* md)
-    : lexer_(world, file, istream, md)
-    , prev_(lexer_.loc())
+    : world_(world)
     , bootstrapper_(world.sym(std::filesystem::path{*file}.filename().replace_extension("").string()))
     , user_search_paths_(import_search_paths.begin(), import_search_paths.end())
     , normalizers_(normalizers)
     , anonymous_(world.sym("_")) {
-    for (size_t i = 0; i != Max_Ahead; ++i) lex();
-    prev_ = Loc(file, {1, 1}, {1, 1});
+    init(file, istream, md);
+}
+
+void Parser::init(Sym file, std::istream& istream, std::ostream* md) {
+    lexers_.emplace(world(), file, istream, md);
+    for (size_t i = 0; i != Max_Ahead; ++i) ahead(i) = lexer().lex();
+    prev() = Loc(file, {1, 1});
 }
 
 /*
@@ -54,9 +58,9 @@ Parser::Parser(World& world,
 
 Tok Parser::lex() {
     auto result = ahead();
-    prev_       = ahead_[0].loc();
-    for (size_t i = 0; i < Max_Ahead - 1; ++i) ahead_[i] = ahead_[i + 1];
-    ahead_.back() = lexer_.lex();
+    prev()      = result.loc();
+    for (size_t i = 0; i < Max_Ahead - 1; ++i) ahead(i) = ahead(i + 1);
+    ahead(Max_Ahead - 1) = lexer().lex();
     return result;
 }
 
@@ -92,7 +96,7 @@ void Parser::parse_module() {
 };
 
 void Parser::import(Sym name) {
-    if (auto [i, _] = world().driver().imports.emplace(name); i != world().driver().imports.end()) return;
+    if (auto [_, ins] = world().driver().imports.emplace(name); !ins) return;
 
     auto search_paths = get_plugin_search_paths(user_search_paths_);
     auto file_name    = *name + ".thorin";
@@ -111,9 +115,12 @@ void Parser::import(Sym name) {
     std::ifstream ifs(input_path);
     if (!ifs) throw std::runtime_error("could not find file '" + file_name + "'");
 
-    auto prev = prev_;
+    auto file = world().sym(std::move(input_path));
+    auto state = state_;
+    init(file, ifs);
     parse_module();
-    prev_ = prev;
+    state_ = state;
+    lexers_.pop();
 }
 
 /*
@@ -130,7 +137,7 @@ void Parser::parse_import() {
 Dbg Parser::parse_sym(std::string_view ctxt) {
     if (auto id = accept(Tok::Tag::M_id)) return {id->dbg()};
     syntax_err("identifier", ctxt);
-    return {prev_, world().sym("<error>")};
+    return {prev(), world().sym("<error>")};
 }
 
 Ref Parser::parse_type_ascr(std::string_view ctxt) {
@@ -268,7 +275,7 @@ Ref Parser::parse_var() {
     eat(Tok::Tag::T_at);
     auto dbg = parse_sym("variable");
     auto nom = scopes_.find(dbg)->isa_nom();
-    if (!nom) err(prev_, "variable must reference a nominal");
+    if (!nom) err(prev(), "variable must reference a nominal");
     return nom->var()->set(dbg);
 }
 
@@ -411,8 +418,8 @@ Ref Parser::parse_lit() {
 
     if (lit.tag() == Tok::Tag::T_bot) return world().bot(world().type())->set(track.loc());
     if (lit.tag() == Tok::Tag::T_top) return world().top(world().type())->set(track.loc());
-    if (lit.tag() == Tok::Tag::L_s) err(prev_, ".Nat literal specified as signed but must be unsigned");
-    if (lit.tag() == Tok::Tag::L_r) err(prev_, ".Nat literal specified as floating-point but must be unsigned");
+    if (lit.tag() == Tok::Tag::L_s) err(prev(), ".Nat literal specified as signed but must be unsigned");
+    if (lit.tag() == Tok::Tag::L_r) err(prev(), ".Nat literal specified as floating-point but must be unsigned");
 
     return world().lit_nat(lit.u())->set(track.loc());
 }
@@ -659,7 +666,7 @@ void Parser::parse_ax() {
             auto axiom = world().axiom(normalizer(d, t, s), curry, trip, type, d, t, s)->set(track.loc(), name);
             for (auto& alias : sub) {
                 auto sym = world().sym(*ax.sym() + "."s + *alias);
-                scopes_.bind({prev_, sym}, axiom);
+                scopes_.bind({prev(), sym}, axiom);
             }
             ++s;
         }
@@ -729,7 +736,7 @@ Lam* Parser::parse_lam(bool decl) {
     bool is_cn    = tok.isa(Tok::Tag::K_cn) || tok.isa(Tok::Tag::K_con);
     auto prec     = is_cn ? Tok::Prec::Bot : Tok::Prec::Pi;
     bool external = decl && accept(Tok::Tag::K_extern).has_value();
-    auto dbg      = decl ? parse_sym("nominal lambda") : Dbg{prev_, anonymous_};
+    auto dbg      = decl ? parse_sym("nominal lambda") : Dbg{prev(), anonymous_};
 
     auto outer = scopes_.curr();
     scopes_.push();
@@ -789,7 +796,7 @@ Lam* Parser::parse_lam(bool decl) {
 
     auto body = accept(Tok::Tag::T_assign) ? parse_decls("body of a lambda") : nullptr;
     if (!body) {
-        if (!decl) err(prev_, "body of a lambda expression is mandatory");
+        if (!decl) err(prev(), "body of a lambda expression is mandatory");
         // TODO error message if filter is non .ff
         funs.back().second->unset(0);
     }
@@ -822,14 +829,14 @@ void Parser::parse_def(Dbg dbg /*= {}*/) {
     if (ahead().isa(Tok::Tag::D_brace_l)) {
         scopes_.push();
         parse_list("nominal definition", Tok::Tag::D_brace_l, [&]() {
-            if (i == n) err(prev_, "too many operands");
+            if (i == n) err(prev(), "too many operands");
             nom->set(i++, parse_decls("operand of a nominal"));
         });
         scopes_.pop();
     } else if (n - i == 1) {
         nom->set(i, parse_decls("operand of a nominal"));
     } else {
-        err(prev_, "expected operands for nominal definition");
+        err(prev(), "expected operands for nominal definition");
     }
 
     expect(Tok::Tag::T_semicolon, "end of a nominal definition");

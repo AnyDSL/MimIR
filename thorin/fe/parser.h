@@ -34,7 +34,7 @@ class Parser {
 public:
     Parser(World&, Sym file, std::istream&, Span<std::string>, const Normalizers*, std::ostream* md = nullptr);
 
-    World& world() { return lexer_.world(); }
+    World& world() { return world_; }
 
     /// @name entry points
     ///@{
@@ -44,6 +44,8 @@ public:
     ///@}
 
 private:
+    void init(Sym file, std::istream&, std::ostream* md = nullptr);
+
     /// @name Tracker
     ///@{
     /// Trick to easily keep track of Loc%ations.
@@ -53,13 +55,16 @@ private:
             : parser_(parser)
             , pos_(pos) {}
 
-        Loc loc() const { return {parser_.prev_.file, pos_, parser_.prev_.finis}; }
+        Loc loc() const { return {parser_.prev().file, pos_, parser_.prev().finis}; }
         Dbg dbg(Sym sym) const { return {loc(), sym}; }
 
     private:
         Parser& parser_;
         Pos pos_;
     };
+
+    Loc& prev() { return state_.prev; }
+    ///@}
 
     Dbg parse_sym(std::string_view ctxt = {});
     void parse_import();
@@ -125,10 +130,12 @@ private:
     /// @name get next Tok
     ///@{
     /// Get lookahead.
-    Tok ahead(size_t i = 0) const {
+    Tok& ahead(size_t i = 0) {
         assert(i < Max_Ahead);
-        return ahead_[i];
+        return state_.ahead[i];
     }
+
+    Lexer& lexer() { return lexers_.top(); }
 
     /// Invoke Lexer to retrieve next Tok%en.
     Tok lex();
@@ -157,13 +164,17 @@ private:
     [[noreturn]] void syntax_err(std::string_view what, std::string_view ctxt) { syntax_err(what, ahead(), ctxt); }
     ///@}
 
-    Lexer lexer_;
+    static constexpr size_t Max_Ahead = 2; ///< maximum lookahead
+    using Ahead = std::array<Tok, Max_Ahead>;
+
+    World& world_;
+    std::stack<Lexer> lexers_;
+    struct {
+        Loc prev;
+        Ahead ahead; ///< SLL look ahead
+    } state_;
     Scopes scopes_;
     Def2Fields def2fields_;
-    Loc prev_;
-    std::string dialect_;
-    static constexpr size_t Max_Ahead = 2; ///< maximum lookahead
-    std::array<Tok, Max_Ahead> ahead_;     ///< SLL look ahead
     h::Bootstrapper bootstrapper_;
     std::vector<std::string> user_search_paths_;
     const Normalizers* normalizers_;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include <absl/container/flat_hash_map.h>
 
 #include "thorin/fe/tok.h"
@@ -55,7 +56,7 @@ private:
     std::ostream* md_;
     bool out_ = true;
     SymMap<Tok::Tag> keywords_;
-    std::optional<Tok> cache_;
+    std::optional<Tok> cache_ = std::nullopt;
 };
 
 } // namespace thorin::fe
