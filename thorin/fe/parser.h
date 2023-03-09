@@ -136,6 +136,7 @@ private:
     }
 
     Lexer& lexer() { return lexers_.top(); }
+    bool main() const { return lexers_.size() == 1; }
 
     /// Invoke Lexer to retrieve next Tok%en.
     Tok lex();

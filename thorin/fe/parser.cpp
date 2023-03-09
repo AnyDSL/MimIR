@@ -594,7 +594,7 @@ void Parser::parse_ax() {
     if (sub) err(ax.loc(), "definition of axiom '{}' must not have sub in tag name", ax);
 
     auto [it, is_new] = bootstrapper_.axioms.emplace(ax.sym(), h::AxiomInfo{});
-    auto& [key, info] = *it;
+    auto [_, info]    = *it;
     if (is_new) {
         info.dialect = dialect;
         info.tag     = tag;

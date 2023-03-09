@@ -17,7 +17,7 @@ struct AxiomInfo {
     Sym tag;
     std::deque<std::deque<Sym>> subs;
     Sym normalizer;
-    bool pi;
+    bool pi = false;
 };
 
 class Bootstrapper {

@@ -21,6 +21,8 @@ void Bootstrapper::emit(std::ostream& h) {
 
     // clang-format off
     for (const auto& [key, ax] : axioms) {
+        if (ax.dialect != dialect_) continue; // this is from an import
+
         tab.print(h, "#ifdef DOXYGEN // see https://github.com/doxygen/doxygen/issues/9668\n");
         tab.print(h, "enum {} : flags_t {{\n", ax.tag);
         tab.print(h, "#else\n");
