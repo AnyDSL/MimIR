@@ -88,11 +88,10 @@ void Bootstrapper::emit(std::ostream& h) {
     for (const auto& line : outer_namespace) { tab.print(h, "{}", line.str()); }
     tab.print(h, "\n");
 
-    if (std::ranges::any_of(axioms, [](const auto& ax) { return !ax.second.pi; })) {
-        for (const auto& [tag, ax] : axioms) {
-            if (ax.pi) continue;
-            tab.print(h, "template<> struct Axiom::Match<{}::{}> {{ using type = Axiom; }};\n", ax.dialect, ax.tag);
-        }
+    // emit helpers for non-function axiom
+    for (const auto& [tag, ax] : axioms) {
+        if (ax.pi || ax.dialect != dialect_) continue; // from function or other dialect?
+        tab.print(h, "template<> struct Axiom::Match<{}::{}> {{ using type = Axiom; }};\n", ax.dialect, ax.tag);
     }
 
     tab.print(h, "}} // namespace thorin\n");
