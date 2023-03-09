@@ -113,6 +113,8 @@ private:
     void parse_def(Dbg dbg = {});
     ///@}
 
+    /// @name helpers
+    ///@{
     template<class F>
     void parse_list(std::string ctxt, Tok::Tag delim_l, F f, Tok::Tag sep = Tok::Tag::T_comma) {
         expect(delim_l, ctxt);
