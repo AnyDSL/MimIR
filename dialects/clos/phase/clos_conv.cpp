@@ -129,7 +129,7 @@ void ClosConv::rewrite_body(Lam* new_lam, Def2Def& subst) {
     if (!old_fn->is_set()) return;
 
     w.DLOG("rw body: {} [old={}, env={}]\nt", new_fn, old_fn, env);
-    auto env_param = new_fn->var(Clos_Env_Param)->set(sym_.closure_env);
+    auto env_param = new_fn->var(Clos_Env_Param)->set("closure_env");
     if (num_fvs == 1) {
         subst.emplace(env, env_param);
     } else {

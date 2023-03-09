@@ -16,21 +16,21 @@ const Def* LowerFor::rewrite(const Def* def) {
 
         auto for_pi = for_ax->callee_type();
         DefArray for_dom{for_pi->num_doms() - 2, [&](size_t i) { return for_pi->dom(i); }};
-        auto for_lam = w.nom_lam(w.cn(for_dom))->set(sym_.for_);
+        auto for_lam = w.nom_lam(w.cn(for_dom))->set("for");
 
-        auto body = for_ax->arg(for_ax->num_args() - 2)->set(sym_.body_);
-        auto brk  = for_ax->arg(for_ax->num_args() - 1)->set(sym_.break_);
+        auto body = for_ax->arg(for_ax->num_args() - 2)->set("body");
+        auto brk  = for_ax->arg(for_ax->num_args() - 1)->set("break");
 
         auto body_type = body->type()->as<Pi>();
         auto yield_pi  = body_type->doms().back()->as<Pi>();
-        auto yield_lam = w.nom_lam(yield_pi)->set(sym_.yield_);
+        auto yield_lam = w.nom_lam(yield_pi)->set("yield");
 
         { // construct yield
             auto [iter, end, step, acc] = for_lam->vars<4>();
-            iter->set(sym_.iter_);
-            end->set(sym_.end_);
-            step->set(sym_.step_);
-            acc->set(sym_.acc_);
+            iter->set("iter");
+            end->set("end");
+            step->set("step");
+            acc->set("acc");
             auto yield_acc = yield_lam->var();
 
             auto add = w.call(core::wrap::add, 0_n, Defs{iter, step});
