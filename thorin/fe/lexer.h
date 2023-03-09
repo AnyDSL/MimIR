@@ -1,6 +1,7 @@
 #pragma once
 
 #include <optional>
+
 #include <absl/container/flat_hash_map.h>
 
 #include "thorin/fe/tok.h"

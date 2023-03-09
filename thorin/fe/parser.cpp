@@ -115,7 +115,7 @@ void Parser::import(Sym name) {
     std::ifstream ifs(input_path);
     if (!ifs) throw std::runtime_error("could not find file '" + file_name + "'");
 
-    auto file = world().sym(std::move(input_path));
+    auto file  = world().sym(std::move(input_path));
     auto state = state_;
     init(file, ifs);
     parse_module();

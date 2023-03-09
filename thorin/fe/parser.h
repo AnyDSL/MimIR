@@ -165,7 +165,7 @@ private:
     ///@}
 
     static constexpr size_t Max_Ahead = 2; ///< maximum lookahead
-    using Ahead = std::array<Tok, Max_Ahead>;
+    using Ahead                       = std::array<Tok, Max_Ahead>;
 
     World& world_;
     std::stack<Lexer> lexers_;
