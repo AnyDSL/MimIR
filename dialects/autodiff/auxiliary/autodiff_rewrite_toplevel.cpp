@@ -10,8 +10,7 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     auto lam    = def->as_nom<Lam>(); // TODO check if nominal
     world.DLOG("Derive lambda: {}", def);
     auto deriv_ty = autodiff_type_fun_pi(lam->type());
-    auto deriv    = world.nom_lam(deriv_ty)->set(lam->sym());
-    deriv->debug_suffix("_deriv");
+    auto deriv    = world.nom_lam(deriv_ty)->set(*lam->sym() + "_deriv");
 
     // We first pre-register the derivatives.
     // This knowledge is needed for recursion.
