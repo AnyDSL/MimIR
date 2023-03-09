@@ -16,11 +16,7 @@ public:
         : RWPass(man, "eta_cont")
         , eta_exp_(eta_exp)
         , old2wrapper_()
-        , lam2fscope_()
-        , sym_{.free_ret     = world().sym("free_ret"),
-               .eta_cont     = world().sym("eta_cont"),
-               .fstclass_ret = world().sym("fstclass_ret"),
-               .eta_br       = world().sym("eta_br")} {}
+        , lam2fscope_() {}
 
     void enter() override;
     const Def* rewrite(const Def*) override;
@@ -56,9 +52,6 @@ private:
     Lam2Lam lam2fscope_;
     std::unique_ptr<Scope> scope_;
     bool ignore_ = false;
-    struct {
-        Sym free_ret, eta_cont, fstclass_ret, eta_br;
-    } sym_;
 };
 
 } // namespace clos

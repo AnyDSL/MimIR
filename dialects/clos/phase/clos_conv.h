@@ -19,7 +19,7 @@ public:
     FreeDefAna(World& world)
         : world_(world)
         , cur_pass_id(1)
-        , lam2nodes_(){};
+        , lam2nodes_() {}
 
     /// FreeDefAna::run will compute free defs (FD) that appear in @p lam%s body.
     /// Nominal Def%s are only considered free if they are annotated with Clos::freeBB or
@@ -92,8 +92,7 @@ class ClosConv : public Phase {
 public:
     ClosConv(World& world)
         : Phase(world, "clos_conv", true)
-        , fva_(world)
-        , sym_{.closure_env = world.sym("closure_env")} {}
+        , fva_(world) {}
 
     void start() override;
 
@@ -129,9 +128,6 @@ private:
     Def2Def glob_noms_;
 
     std::queue<const Def*> worklist_;
-    struct {
-        Sym closure_env;
-    } sym_;
 };
 
 }; // namespace thorin::clos

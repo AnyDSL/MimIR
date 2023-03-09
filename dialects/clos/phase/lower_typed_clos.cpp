@@ -56,10 +56,10 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
         new_lam->var(Clos_Env_Param); //, (mode != No_Env) ? w.dbg("closure_env") : lam->var(Clos_Env_Param)->dbg());
     if (mode == Box) {
         auto env_mem = w.call<mem::load>(Defs{lcm, env});
-        lcm          = w.extract(env_mem, 0_u64)->set(sym_.mem);
-        env          = w.extract(env_mem, 1_u64)->set(sym_.closure_env);
+        lcm          = w.extract(env_mem, 0_u64)->set("mem");
+        env          = w.extract(env_mem, 1_u64)->set("closure_env");
     } else if (mode == Unbox) {
-        env = core::op_bitcast(lam->dom(Clos_Env_Param), env)->set(sym_.unboxed_env);
+        env = core::op_bitcast(lam->dom(Clos_Env_Param), env)->set("unboxed_env");
     }
     auto new_args = w.tuple(Array<const Def*>(lam->num_doms(), [&](auto i) {
         return (i == Clos_Env_Param) ? env : (lam->var(i) == mem::mem_var(lam)) ? lcm : *new_lam->var(i);

@@ -15,7 +15,6 @@ namespace thorin {
 /// The empty string is internally handled as `nullptr`.
 /// Thus, you can create a Sym%bol representing an empty string without having access to the SymPool.
 /// The empty string, `nullptr`, and `"\0"` are all identified as `Sym::Sym()`.
-/// Since creating a Sym has a slight runtime penalty, it's a good idea to create needed Sym%bols beforehand; see LowerFor for an example.
 class Sym {
 private:
     Sym(const std::string* ptr)
