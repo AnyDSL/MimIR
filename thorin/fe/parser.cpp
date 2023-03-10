@@ -29,6 +29,7 @@
 // clang-format on
 
 using namespace std::string_literals;
+namespace fs = std::filesystem;
 
 namespace thorin::fe {
 
@@ -39,7 +40,7 @@ Parser::Parser(World& world,
                const Normalizers* normalizers,
                std::ostream* md)
     : world_(world)
-    , bootstrapper_(world.sym(std::filesystem::path{*file}.filename().replace_extension("").string()))
+    , bootstrapper_(world.sym(fs::path{*file}.filename().replace_extension("").string()))
     , user_search_paths_(import_search_paths.begin(), import_search_paths.end())
     , normalizers_(normalizers)
     , anonymous_(world.sym("_")) {
@@ -96,8 +97,6 @@ void Parser::parse_module() {
 };
 
 void Parser::import(Sym name) {
-    if (auto [_, ins] = world().driver().imports.emplace(name); !ins) return;
-
     auto search_paths = get_plugin_search_paths(user_search_paths_);
     auto file_name    = *name + ".thorin";
 
@@ -106,11 +105,13 @@ void Parser::import(Sym name) {
         auto full_path = path / file_name;
 
         std::error_code ignore;
-        if (bool reg_file = std::filesystem::is_regular_file(full_path, ignore); reg_file && !ignore) {
+        if (bool reg_file = fs::is_regular_file(full_path, ignore); reg_file && !ignore) {
             input_path = full_path.string();
             break;
         }
     }
+
+    //if (auto [_, ins] = world().driver().imports.emplace(name); !ins) return;
 
     std::ifstream ifs(input_path);
     if (!ifs) throw std::runtime_error("could not find file '" + file_name + "'");

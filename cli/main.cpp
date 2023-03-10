@@ -98,7 +98,7 @@ int main(int argc, char** argv) {
             }
         }
 
-        // we always need core and mem, as long as we are not in bootstrap mode..
+        // we always need core and mem, as long as we are not in bootstrap mode
         if (!os[H]) dialect_plugins.insert(dialect_plugins.end(), {"core", "mem", "compile", "opt"});
 
         std::vector<Dialect> dialects;
@@ -106,7 +106,9 @@ int main(int argc, char** argv) {
         thorin::Normalizers normalizers;
         thorin::Passes passes;
         if (!dialect_plugins.empty()) {
+            thorin::SymSet done;
             for (const auto& dialect : dialect_plugins) {
+                if (auto [_, ins] = done.emplace(driver.sym(dialect)); !ins) continue;
                 dialects.push_back(Dialect::load(dialect, dialect_paths));
                 dialects.back().register_backends(backends);
                 dialects.back().register_normalizers(normalizers);
@@ -127,9 +129,8 @@ int main(int argc, char** argv) {
         auto sym = world.sym(std::move(input));
         world.set(sym);
         auto parser = fe::Parser(world, sym, ifs, dialect_paths, &normalizers, os[Md]);
-
-        for (const auto& dialect : dialects) parser.import(world.sym(dialect.name()));
         parser.parse_module();
+        parser.import(world.sym("opt"));
 
         if (os[H]) {
             parser.bootstrap(*os[H]);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <filesystem>
+
 #include "thorin/flags.h"
 #include "thorin/world.h"
 
@@ -20,8 +22,9 @@ public:
 #if THORIN_ENABLE_CHECKS
     absl::flat_hash_set<uint32_t> breakpoints;
 #endif
-    absl::btree_set<Sym> imports;
     World world;
+    /// Maps from absolute import path to actual usage in the source.
+    absl::btree_map<std::filesystem::path, Sym> imports;
 };
 
 } // namespace thorin

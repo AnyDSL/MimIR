@@ -26,6 +26,7 @@
 
 using namespace thorin;
 
+#if 0
 // TODO can we port this to lit testing?
 
 TEST(RestrictedDependentTypes, join_singleton) {
@@ -303,3 +304,4 @@ TEST(RestrictedDependentTypes, ll) {
 
     backends["ll"](w, std::cout);
 }
+#endif

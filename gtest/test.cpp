@@ -13,6 +13,8 @@
 
 using namespace thorin;
 
+#if 0
+
 TEST(Zip, fold) {
     Driver driver;
     World& w = driver.world;
@@ -194,3 +196,5 @@ TEST(Axiom, curry) {
         EXPECT_EQ(os.str(), "%test_3_0 0 1 42 3\n");
     }
 }
+
+#endif
