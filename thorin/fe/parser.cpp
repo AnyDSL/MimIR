@@ -111,7 +111,7 @@ void Parser::import(Sym name) {
         }
     }
 
-    //if (auto [_, ins] = world().driver().imports.emplace(name); !ins) return;
+    // if (auto [_, ins] = world().driver().imports.emplace(name); !ins) return;
 
     std::ifstream ifs(input_path);
     if (!ifs) throw std::runtime_error("could not find file '" + file_name + "'");

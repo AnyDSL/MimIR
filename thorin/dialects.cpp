@@ -51,9 +51,8 @@ std::vector<fs::path> get_plugin_search_paths(Span<std::string> user_paths) {
     // add default install path
     const auto install_prefixed_path = fs::path{THORIN_INSTALL_PREFIX} / "lib" / "thorin";
 
-    if (paths.empty() ||
-        (fs::is_directory(install_prefixed_path) &&
-         !fs::equivalent(install_prefixed_path, paths.back()))) // avoid double checking install dir
+    if (paths.empty() || (fs::is_directory(install_prefixed_path) &&
+                          !fs::equivalent(install_prefixed_path, paths.back()))) // avoid double checking install dir
         paths.emplace_back(std::move(install_prefixed_path));
 
     // add current working directory
@@ -74,8 +73,7 @@ Dialect::Dialect(const std::string& plugin_path, std::unique_ptr<void, decltype(
 Dialect Dialect::load(const std::string& name, Span<std::string> search_paths) {
     std::unique_ptr<void, decltype(&dl::close)> handle{nullptr, dl::close};
     std::string plugin_path = name;
-    if (auto path = fs::path{name}; path.is_absolute() && fs::is_regular_file(path))
-        handle.reset(dl::open(name));
+    if (auto path = fs::path{name}; path.is_absolute() && fs::is_regular_file(path)) handle.reset(dl::open(name));
     if (!handle) {
         auto paths         = get_plugin_search_paths(search_paths);
         auto name_variants = get_plugin_name_variants(name);
