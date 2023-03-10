@@ -1,7 +1,5 @@
 #pragma once
 
-#include <filesystem>
-
 #include "thorin/dialects.h"
 #include "thorin/world.h"
 
@@ -32,9 +30,10 @@ namespace thorin::fe {
 ///      * If default argument is **provided** we have the same behavior as in 2.
 class Parser {
 public:
-    Parser(World&, Sym file, std::istream&, Span<std::string>, const Normalizers*, std::ostream* md = nullptr);
+    Parser(World&, Sym file, std::istream&, const Normalizers*, std::ostream* md = nullptr);
 
     World& world() { return world_; }
+    Driver& driver() { return world().driver(); }
 
     /// @name entry points
     ///@{
@@ -179,7 +178,6 @@ private:
     Scopes scopes_;
     Def2Fields def2fields_;
     h::Bootstrapper bootstrapper_;
-    std::vector<std::string> user_search_paths_;
     const Normalizers* normalizers_;
     Sym anonymous_;
 };

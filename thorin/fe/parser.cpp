@@ -1,6 +1,5 @@
 #include "thorin/fe/parser.h"
 
-#include <filesystem>
 #include <fstream>
 #include <limits>
 #include <sstream>
@@ -29,19 +28,12 @@
 // clang-format on
 
 using namespace std::string_literals;
-namespace fs = std::filesystem;
 
 namespace thorin::fe {
 
-Parser::Parser(World& world,
-               Sym file,
-               std::istream& istream,
-               Span<std::string> import_search_paths,
-               const Normalizers* normalizers,
-               std::ostream* md)
+Parser::Parser(World& world, Sym file, std::istream& istream, const Normalizers* normalizers, std::ostream* md)
     : world_(world)
     , bootstrapper_(world.sym(fs::path{*file}.filename().replace_extension("").string()))
-    , user_search_paths_(import_search_paths.begin(), import_search_paths.end())
     , normalizers_(normalizers)
     , anonymous_(world.sym("_")) {
     init(file, istream, md);
@@ -97,11 +89,10 @@ void Parser::parse_module() {
 };
 
 void Parser::import(Sym name) {
-    auto search_paths = get_plugin_search_paths(user_search_paths_);
-    auto file_name    = *name + ".thorin";
+    auto file_name = *name + ".thorin";
 
     std::string input_path;
-    for (const auto& path : search_paths) {
+    for (const auto& path : driver().search_paths()) {
         auto full_path = path / file_name;
 
         std::error_code ignore;

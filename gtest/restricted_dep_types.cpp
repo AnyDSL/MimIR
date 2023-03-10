@@ -35,21 +35,21 @@ TEST(RestrictedDependentTypes, join_singleton) {
         World& w = driver.world;
         Normalizers normalizers;
 
-        auto compile_d = Dialect::load("compile", {});
+        auto compile_d = Dialect::load(driver, "compile");
         compile_d.register_normalizers(normalizers);
-        fe::Parser::import_module(w, w.sym("compile"), {}, &normalizers);
+        fe::Parser::import_module(w, w.sym("compile"), &normalizers);
 
-        auto mem_d = Dialect::load("mem", {});
+        auto mem_d = Dialect::load(driver, "mem");
         mem_d.register_normalizers(normalizers);
-        fe::Parser::import_module(w, w.sym("mem"), {}, &normalizers);
+        fe::Parser::import_module(w, w.sym("mem"), &normalizers);
 
-        auto core_d = Dialect::load("core", {});
+        auto core_d = Dialect::load(driver, "core");
         core_d.register_normalizers(normalizers);
-        fe::Parser::import_module(w, w.sym("core"), {}, &normalizers);
+        fe::Parser::import_module(w, w.sym("core"), &normalizers);
 
-        auto math_d = Dialect::load("math", {});
+        auto math_d = Dialect::load(driver, "math");
         math_d.register_normalizers(normalizers);
-        fe::Parser::import_module(w, w.sym("math"), {}, &normalizers);
+        fe::Parser::import_module(w, w.sym("math"), &normalizers);
 
         auto i32_t = w.type_int(32);
         auto i64_t = w.type_int(64);
@@ -245,7 +245,6 @@ TEST(RestrictedDependentTypes, ll) {
         "core",
         "math",
     };
-    std::vector<std::string> dialect_paths = {};
 
     std::vector<Dialect> dialects;
     thorin::Backends backends;
@@ -253,14 +252,13 @@ TEST(RestrictedDependentTypes, ll) {
     Passes passes;
 
     for (const auto& dialect : dialect_plugins) {
-        dialects.push_back(Dialect::load(dialect, dialect_paths));
+        dialects.push_back(Dialect::load(driver, dialect));
         dialects.back().register_backends(backends);
         dialects.back().register_normalizers(normalizers);
         dialects.back().register_passes(passes);
     }
 
-    for (const auto& dialect : dialects)
-        fe::Parser::import_module(w, w.sym(dialect.name()), dialect_paths, &normalizers);
+    for (const auto& dialect : dialects) fe::Parser::import_module(w, w.sym(dialect.name()), &normalizers);
 
     auto mem_t  = mem::type_mem(w);
     auto i32_t  = w.type_int(32);
