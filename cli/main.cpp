@@ -28,8 +28,9 @@ int main(int argc, char** argv) {
         static const auto version = "thorin command-line utility version " THORIN_VER "\n";
 
         Driver driver;
-        bool show_help    = false;
-        bool show_version = false;
+        bool show_help          = false;
+        bool show_version       = false;
+        bool list_dialect_paths = false;
         std::string input, prefix;
         std::string clang = sys::find_cmd("clang");
         std::vector<std::string> dialect_plugins, dialect_paths;
@@ -44,6 +45,7 @@ int main(int argc, char** argv) {
         auto cli = lyra::cli()
             | lyra::help(show_help)
             | lyra::opt(show_version             )["-v"]["--version"           ]("Display version info and exit.")
+            | lyra::opt(list_dialect_paths       )["-l"]["--list-dialect-paths"]("List search paths in order and exit.")
             | lyra::opt(clang,          "clang"  )["-c"]["--clang"             ]("Path to clang executable (default: '" THORIN_WHICH " clang').")
             | lyra::opt(dialect_plugins,"dialect")["-d"]["--dialect"           ]("Dynamically load dialect [WIP].")
             | lyra::opt(dialect_paths,  "path"   )["-D"]["--dialect-path"      ]("Path to search dialects in.")
@@ -78,6 +80,13 @@ int main(int argc, char** argv) {
             std::exit(EXIT_SUCCESS);
         }
 
+        for (auto&& path : dialect_paths) driver.add_search_path(path);
+
+        if (list_dialect_paths) {
+            for (auto&& path : driver.search_paths()) std::cout << path << std::endl;
+            std::exit(EXIT_SUCCESS);
+        }
+
 #if THORIN_ENABLE_CHECKS
         for (auto b : breakpoints) driver.breakpoints.emplace(b);
 #endif
@@ -107,7 +116,7 @@ int main(int argc, char** argv) {
         thorin::Passes passes;
         if (!dialect_plugins.empty()) {
             for (const auto& dialect : dialect_plugins) {
-                dialects.push_back(Dialect::load(dialect, dialect_paths));
+                dialects.push_back(Dialect::load(driver, dialect));
                 dialects.back().register_backends(backends);
                 dialects.back().register_normalizers(normalizers);
                 dialects.back().register_passes(passes);
@@ -125,11 +134,11 @@ int main(int argc, char** argv) {
         }
 
         for (const auto& dialect : dialects)
-            fe::Parser::import_module(world, world.sym(dialect.name()), dialect_paths, &normalizers);
+            fe::Parser::import_module(world, world.sym(dialect.name()), &normalizers);
 
         auto sym = world.sym(std::move(input));
         world.set(sym);
-        fe::Parser parser(world, sym, ifs, dialect_paths, &normalizers, os[Md]);
+        fe::Parser parser(world, sym, ifs, &normalizers, os[Md]);
         parser.parse_module();
 
         if (os[H]) {

@@ -24,14 +24,14 @@ using namespace std::string_literals;
 
 namespace thorin::sys {
 
-std::optional<std::filesystem::path> path_to_curr_exe() {
+std::optional<fs::path> path_to_curr_exe() {
     std::vector<char> path_buffer;
 #ifdef __APPLE__
     uint32_t read = 0;
     _NSGetExecutablePath(nullptr, &read); // get size
     path_buffer.resize(read + 1);
     if (_NSGetExecutablePath(path_buffer.data(), &read) != 0) return {};
-    return std::filesystem::path{path_buffer.data()};
+    return fs::path{path_buffer.data()};
 #elif defined(_WIN32)
     size_t read = 0;
     do {
@@ -43,10 +43,10 @@ std::optional<std::filesystem::path> path_to_curr_exe() {
     if (read != 0) {
         path_buffer.resize(read + 1);
         path_buffer.back() = 0;
-        return std::filesystem::path{path_buffer.data()};
+        return fs::path{path_buffer.data()};
     }
 #else  // Linux only..
-    if (std::filesystem::exists("/proc/self/exe")) return std::filesystem::canonical("/proc/self/exe");
+    if (fs::exists("/proc/self/exe")) return fs::canonical("/proc/self/exe");
 #endif // __APPLE__
     return {};
 }

@@ -1,6 +1,5 @@
 #include "thorin/fe/parser.h"
 
-#include <filesystem>
 #include <fstream>
 #include <limits>
 #include <sstream>
@@ -8,6 +7,7 @@
 #include "thorin/check.h"
 #include "thorin/def.h"
 #include "thorin/dialects.h"
+#include "thorin/driver.h"
 #include "thorin/rewrite.h"
 
 #include "thorin/util/array.h"
@@ -34,13 +34,11 @@ namespace thorin::fe {
 Parser::Parser(World& world,
                Sym file,
                std::istream& istream,
-               Span<std::string> import_search_paths,
                const Normalizers* normalizers,
                std::ostream* md)
     : lexer_(world, file, istream, md)
     , prev_(lexer_.loc())
-    , bootstrapper_(world.sym(std::filesystem::path{*file}.filename().replace_extension("").string()))
-    , user_search_paths_(import_search_paths.begin(), import_search_paths.end())
+    , bootstrapper_(world.sym(fs::path{*file}.filename().replace_extension("").string()))
     , normalizers_(normalizers)
     , anonymous_(world.sym("_")) {
     for (size_t i = 0; i != Max_Ahead; ++i) lex();
@@ -82,17 +80,15 @@ void Parser::syntax_err(std::string_view what, const Tok& tok, std::string_view 
  */
 
 Parser
-Parser::import_module(World& world, Sym name, Span<std::string> user_search_paths, const Normalizers* normalizers) {
-    auto search_paths = get_plugin_search_paths(user_search_paths);
-
+Parser::import_module(World& world, Sym name, const Normalizers* normalizers) {
     auto file_name = *name + ".thorin";
 
     std::string input_path{};
-    for (const auto& path : search_paths) {
+    for (const auto& path : world.driver().search_paths()) {
         auto full_path = path / file_name;
 
         std::error_code ignore;
-        if (bool reg_file = std::filesystem::is_regular_file(full_path, ignore); reg_file && !ignore) {
+        if (bool reg_file = fs::is_regular_file(full_path, ignore); reg_file && !ignore) {
             input_path = full_path.string();
             break;
         }
@@ -101,7 +97,7 @@ Parser::import_module(World& world, Sym name, Span<std::string> user_search_path
 
     if (!ifs) throw std::runtime_error("could not find file '" + file_name + "'");
 
-    thorin::fe::Parser parser(world, world.sym(input_path), ifs, user_search_paths, normalizers);
+    thorin::fe::Parser parser(world, world.sym(input_path), ifs, normalizers);
     parser.parse_module();
 
     world.add_imported(name);
@@ -130,7 +126,7 @@ void Parser::parse_import() {
     if (auto [_, ins] = imported_.emplace(name.sym()); !ins) return;
 
     // search file and import
-    auto parser = Parser::import_module(world(), name.sym(), user_search_paths_, normalizers_);
+    auto parser = Parser::import_module(world(), name.sym(), normalizers_);
     scopes_.merge(parser.scopes_);
 
     // transitvely remember which files we transitively imported

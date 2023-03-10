@@ -10,10 +10,14 @@
 #include <optional>
 #include <string>
 
-namespace thorin::sys {
+namespace thorin {
+
+namespace fs = std::filesystem;
+
+namespace sys {
 
 /// Yields `std::nullopt` if an error occurred.
-std::optional<std::filesystem::path> path_to_curr_exe();
+std::optional<fs::path> path_to_curr_exe();
 
 /// Executes command @p cmd.
 /// @returns the output as string.
@@ -27,4 +31,5 @@ int system(std::string);
 /// Wraps sys::system and puts `.exe` at the back (Windows) and `./` at the front (otherwise) of @p cmd.
 int run(std::string cmd, std::string args = {});
 
-} // namespace thorin::sys
+}
+}

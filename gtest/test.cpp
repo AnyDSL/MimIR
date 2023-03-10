@@ -18,9 +18,9 @@ TEST(Zip, fold) {
     World& w = driver.world;
 
     Normalizers normalizers;
-    auto core_d = Dialect::load("core", {});
+    auto core_d = Dialect::load(driver, "core");
     core_d.register_normalizers(normalizers);
-    fe::Parser::import_module(w, w.sym("core"), {}, &normalizers);
+    fe::Parser::import_module(w, w.sym("core"), &normalizers);
 
     // clang-format off
     auto a = w.tuple({w.tuple({w.lit_idx( 0), w.lit_idx( 1), w.lit_idx( 2)}),
@@ -97,9 +97,9 @@ TEST(trait, idx) {
     World& w = driver.world;
 
     Normalizers normalizers;
-    auto core_d = Dialect::load("core", {});
+    auto core_d = Dialect::load(driver, "core");
     core_d.register_normalizers(normalizers);
-    fe::Parser::import_module(w, w.sym("core"), {}, &normalizers);
+    fe::Parser::import_module(w, w.sym("core"), &normalizers);
 
     EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0000'00FF_n))), 1);
     EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0000'0100_n))), 1);
