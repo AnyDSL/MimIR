@@ -7,6 +7,8 @@
 #include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
 
+using namespace std::literals;
+
 namespace thorin::clos {
 
 /*
@@ -68,23 +70,19 @@ std::pair<FreeDefAna::Node*, bool> FreeDefAna::build_node(Def* nom, NodeQueue& w
 }
 
 void FreeDefAna::run(NodeQueue& worklist) {
-    int iter = 0;
     while (!worklist.empty()) {
         auto node = worklist.front();
         worklist.pop();
-        // w.DLOG("FA: iter {}: {}", iter, node->nom);
         if (is_done(node)) continue;
         auto changed = is_bot(node);
         mark(node);
         for (auto p : node->preds) {
             auto& pfvs = p->fvs;
-            for (auto&& pfv : pfvs) { changed |= node->add_fvs(pfv).second; }
-            // w.DLOG("\tFV({}) ∪= FV({}) = {{{, }}}\b", node->nom, p->nom, pfvs);
+            for (auto&& pfv : pfvs) changed |= node->add_fvs(pfv).second;
         }
         if (changed) {
-            for (auto s : node->succs) { worklist.push(s); }
+            for (auto s : node->succs) worklist.push(s);
         }
-        iter++;
     }
 }
 
@@ -129,15 +127,14 @@ void ClosConv::rewrite_body(Lam* new_lam, Def2Def& subst) {
     if (!old_fn->is_set()) return;
 
     w.DLOG("rw body: {} [old={}, env={}]\nt", new_fn, old_fn, env);
-    auto env_param = new_fn->var(Clos_Env_Param)->set(sym_.closure_env);
+    auto env_param = new_fn->var(Clos_Env_Param)->set("closure_env");
     if (num_fvs == 1) {
         subst.emplace(env, env_param);
     } else {
         for (size_t i = 0; i < num_fvs; i++) {
             auto fv = env->op(i);
-            // TODO
-            // auto dbg = (fv->name().empty()) ? w.dbg("fv_" + std::to_string(i)) : w.dbg("fv_" + env->op(i)->name());
-            subst.emplace(fv, env_param->proj(i));
+            auto sym = w.sym("fv_"s + (fv->sym() ? *fv->sym() : std::to_string(i)));
+            subst.emplace(fv, env_param->proj(i)->set(sym));
         }
     }
 

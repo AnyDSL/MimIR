@@ -72,7 +72,7 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
 
         if (auto lam = isa_retvar(op); lam && from_outer_scope(lam)) {
             w.DLOG("found return var from enclosing scope: {}", op);
-            return refine(eta_wrap(op, attr::freeBB)->set(sym_.free_ret));
+            return refine(eta_wrap(op, attr::freeBB)->set("free_ret"));
         }
         if (auto bb_lam = op->isa_nom<Lam>(); bb_lam && bb_lam->is_basicblock() && from_outer_scope(bb_lam)) {
             w.DLOG("found BB from enclosing scope {}", op);
@@ -84,7 +84,7 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
             } else if (auto contlam = op->isa_nom<Lam>()) {
                 return refine(thorin::clos::op(attr::ret, contlam));
             } else {
-                auto wrapper = eta_wrap(op, attr::ret)->set(sym_.eta_cont);
+                auto wrapper = eta_wrap(op, attr::ret)->set("eta_cont");
                 w.DLOG("eta expanded return cont: {} -> {}", op, wrapper);
                 return refine(wrapper);
             }
@@ -98,7 +98,7 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
             // TODO: If EtaRed eta-reduces branches, we have to wrap them again!
             if (isa_retvar(op)) {
                 w.DLOG("found firstclass use of return var: {}", op);
-                return refine(eta_wrap(op, attr::fstclassBB)->set(sym_.fstclass_ret));
+                return refine(eta_wrap(op, attr::fstclassBB)->set("fstclass_ret"));
             }
         }
     }
@@ -115,7 +115,7 @@ const App* ClosConvPrep::rewrite_callee(const App* app) {
             if (branches->isa<Tuple>() && branches->type()->isa<Arr>()) {
                 for (auto i = 0u; i < branches->num_ops(); i++) {
                     if (!branches->op(i)->isa_nom<Lam>()) {
-                        auto wrapper = eta_wrap(branches->op(i), attr::bot)->set(sym_.eta_br);
+                        auto wrapper = eta_wrap(branches->op(i), attr::bot)->set("eta_br");
                         w.DLOG("eta wrap branch: {} -> {}", branches->op(i), wrapper);
                         branches = branches->refine(i, wrapper);
                     }
