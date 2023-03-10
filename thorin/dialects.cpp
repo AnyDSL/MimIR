@@ -35,8 +35,7 @@ Dialect::Dialect(const std::string& plugin_path, std::unique_ptr<void, decltype(
 Dialect Dialect::load(Driver& driver, const std::string& name) {
     std::unique_ptr<void, decltype(&dl::close)> handle{nullptr, dl::close};
     std::string plugin_path = name;
-    if (auto path = fs::path{name}; path.is_absolute() && fs::is_regular_file(path))
-        handle.reset(dl::open(name));
+    if (auto path = fs::path{name}; path.is_absolute() && fs::is_regular_file(path)) handle.reset(dl::open(name));
     if (!handle) {
         auto name_variants = get_plugin_name_variants(name);
         for (const auto& path : driver.search_paths()) {

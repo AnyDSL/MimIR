@@ -31,5 +31,5 @@ int system(std::string);
 /// Wraps sys::system and puts `.exe` at the back (Windows) and `./` at the front (otherwise) of @p cmd.
 int run(std::string cmd, std::string args = {});
 
-}
-}
+} // namespace sys
+} // namespace thorin

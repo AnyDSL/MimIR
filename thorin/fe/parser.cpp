@@ -31,11 +31,7 @@ using namespace std::string_literals;
 
 namespace thorin::fe {
 
-Parser::Parser(World& world,
-               Sym file,
-               std::istream& istream,
-               const Normalizers* normalizers,
-               std::ostream* md)
+Parser::Parser(World& world, Sym file, std::istream& istream, const Normalizers* normalizers, std::ostream* md)
     : lexer_(world, file, istream, md)
     , prev_(lexer_.loc())
     , bootstrapper_(world.sym(fs::path{*file}.filename().replace_extension("").string()))
@@ -79,8 +75,7 @@ void Parser::syntax_err(std::string_view what, const Tok& tok, std::string_view 
  * entry points
  */
 
-Parser
-Parser::import_module(World& world, Sym name, const Normalizers* normalizers) {
+Parser Parser::import_module(World& world, Sym name, const Normalizers* normalizers) {
     auto file_name = *name + ".thorin";
 
     std::string input_path{};

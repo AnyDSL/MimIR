@@ -17,8 +17,7 @@ public:
     Driver();
 
     void add_search_path(fs::path path) {
-        if (fs::is_directory(path))
-            search_paths_.insert(insert_, fs::absolute(std::move(path)));
+        if (fs::is_directory(path)) search_paths_.insert(insert_, fs::absolute(std::move(path)));
     }
 
     /// 1. \a search_paths, 2. env var \em THORIN_DIALECT_PATH, 3. "/path/to/executable"
