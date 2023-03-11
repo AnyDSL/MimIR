@@ -116,7 +116,7 @@ int main(int argc, char** argv) {
         thorin::Passes passes;
         if (!dialect_plugins.empty()) {
             for (const auto& dialect : dialect_plugins) {
-                dialects.push_back(Dialect::load(driver, dialect));
+                dialects.push_back(driver.load(dialect));
                 dialects.back().register_backends(backends);
                 dialects.back().register_normalizers(normalizers);
                 dialects.back().register_passes(passes);

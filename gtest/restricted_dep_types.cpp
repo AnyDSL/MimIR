@@ -34,19 +34,19 @@ TEST(RestrictedDependentTypes, join_singleton) {
         World& w = driver.world;
         Normalizers normalizers;
 
-        auto compile_d = Dialect::load(driver, "compile");
+        auto compile_d = driver.load("compile");
         compile_d.register_normalizers(normalizers);
         fe::Parser::import_module(w, w.sym("compile"), &normalizers);
 
-        auto mem_d = Dialect::load(driver, "mem");
+        auto mem_d = driver.load("mem");
         mem_d.register_normalizers(normalizers);
         fe::Parser::import_module(w, w.sym("mem"), &normalizers);
 
-        auto core_d = Dialect::load(driver, "core");
+        auto core_d = driver.load("core");
         core_d.register_normalizers(normalizers);
         fe::Parser::import_module(w, w.sym("core"), &normalizers);
 
-        auto math_d = Dialect::load(driver, "math");
+        auto math_d = driver.load("math");
         math_d.register_normalizers(normalizers);
         fe::Parser::import_module(w, w.sym("math"), &normalizers);
 
@@ -251,7 +251,7 @@ TEST(RestrictedDependentTypes, ll) {
     Passes passes;
 
     for (const auto& dialect : dialect_plugins) {
-        dialects.push_back(Dialect::load(driver, dialect));
+        dialects.push_back(driver.load(dialect));
         dialects.back().register_backends(backends);
         dialects.back().register_normalizers(normalizers);
         dialects.back().register_passes(passes);

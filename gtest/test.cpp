@@ -18,7 +18,7 @@ TEST(Zip, fold) {
     World& w = driver.world;
 
     Normalizers normalizers;
-    auto core_d = Dialect::load(driver, "core");
+    auto core_d = driver.load("core");
     core_d.register_normalizers(normalizers);
     fe::Parser::import_module(w, w.sym("core"), &normalizers);
 
@@ -97,7 +97,7 @@ TEST(trait, idx) {
     World& w = driver.world;
 
     Normalizers normalizers;
-    auto core_d = Dialect::load(driver, "core");
+    auto core_d = driver.load("core");
     core_d.register_normalizers(normalizers);
     fe::Parser::import_module(w, w.sym("core"), &normalizers);
 

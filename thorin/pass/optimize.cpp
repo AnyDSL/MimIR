@@ -17,7 +17,6 @@
 
 namespace thorin {
 
-/// See optimize.h for magic numbers
 void optimize(World& world, Passes& passes, std::vector<Dialect>& dialects) {
     auto compilation_functions = {world.sym("_compile"), world.sym("_default_compile"), world.sym("_core_compile"),
                                   world.sym("_fallback_compile")};

@@ -2,6 +2,7 @@
 
 #include <list>
 
+#include "thorin/dialects.h"
 #include "thorin/flags.h"
 #include "thorin/world.h"
 
@@ -22,6 +23,12 @@ public:
 
     /// 1. \a search_paths, 2. env var \em THORIN_DIALECT_PATH, 3. "/path/to/executable"
     const auto& search_paths() const { return search_paths_; }
+
+    /// Finds and loads a shared object file that implements the Thorin dialect @p name.
+    /// If \a name is an absolute path to a `.so`/`.dll` file, this is used.
+    /// Otherwise, "name", "libthorin_name.so" (Linux, Mac), "thorin_name.dll" (Win)
+    /// are searched for in Driver::search_paths().
+    Dialect load(const std::string& name);
 
     Flags flags;
     Log log;

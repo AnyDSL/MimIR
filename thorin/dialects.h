@@ -44,12 +44,6 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info();
 /// A plugin implementor should implement \ref thorin_get_dialect_info and \ref DialectInfo.
 class Dialect {
 public:
-    /// Finds and loads a shared object file that implements the \a name thorin dialect.
-    /// If \a name is an absolute path to a .so/.dll file, this is used.
-    /// Otherwise, "name", "libthorin_name.so" (Linux, Mac), "thorin_name.dll" (Win)
-    /// are searched for in Driver::search_paths().
-    static Dialect load(Driver&, const std::string& name);
-
     /// Name of the dialect.
     std::string name() const { return info_.plugin_name; }
 
@@ -77,6 +71,8 @@ private:
     DialectInfo info_;
     std::string plugin_path_;
     std::unique_ptr<void, void (*)(void*)> handle_;
+
+    friend class Driver;
 };
 
 } // namespace thorin

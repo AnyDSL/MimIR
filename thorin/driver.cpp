@@ -1,8 +1,15 @@
 #include "thorin/driver.h"
 
-#include "thorin/util/sys.h"
+#include "thorin/util/dl.h"
 
 namespace thorin {
+
+static std::vector<fs::path> get_plugin_name_variants(std::string_view name) {
+    std::vector<fs::path> names;
+    names.push_back(name); // if the user gives "libthorin_foo.so"
+    names.push_back(fmt("{}thorin_{}{}", dl::prefix(), name, dl::extension()));
+    return names;
+}
 
 Driver::Driver()
     : log(*this)
@@ -27,6 +34,32 @@ Driver::Driver()
 
     // all other user paths take precedence and are inserted before above fallbacks
     insert_ = search_paths_.begin();
+}
+
+Dialect Driver::load(const std::string& name) {
+    std::unique_ptr<void, decltype(&dl::close)> handle{nullptr, dl::close};
+    auto plugin_path = name;
+    if (auto path = fs::path{name}; path.is_absolute() && fs::is_regular_file(path)) handle.reset(dl::open(name));
+    if (!handle) {
+        auto name_variants = get_plugin_name_variants(name);
+        for (const auto& path : search_paths()) {
+            for (const auto& name_variant : name_variants) {
+                auto full_path = path / name_variant;
+                plugin_path    = full_path.string();
+
+                std::error_code ignore;
+                if (bool reg_file = fs::is_regular_file(full_path, ignore); reg_file && !ignore) {
+                    auto path_str = full_path.string();
+                    if (handle.reset(dl::open(path_str)); handle) break;
+                }
+            }
+            if (handle) break;
+        }
+    }
+
+    if (!handle) throw std::runtime_error("cannot open plugin '" + name + "'");
+
+    return Dialect{plugin_path, std::move(handle)};
 }
 
 } // namespace thorin
