@@ -19,9 +19,9 @@ public:
 
     /// @name getters
     ///@{
-    World& world() { return world_; }
-    Log& log() { return log_; }
     Flags& flags() { return flags_; }
+    Log& log() { return log_; }
+    World& world() { return world_; }
     ///@}
 
     /// @name search paths and dialect loading

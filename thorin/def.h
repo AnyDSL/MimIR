@@ -489,7 +489,7 @@ protected:
     unsigned nom_      : 1;
     unsigned external_ : 1;
     unsigned dep_      : 5;
-    unsigned pading_   : 1;
+    unsigned padding_  : 1;
     u8 curry_;
     u8 trip_;
     hash_t hash_;
