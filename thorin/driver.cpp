@@ -1,4 +1,5 @@
 #include "thorin/driver.h"
+#include <filesystem>
 
 #include "thorin/util/sys.h"
 
@@ -20,9 +21,10 @@ Driver::Driver()
     if (auto path = sys::path_to_curr_exe()) add_search_path(path->parent_path().parent_path() / "lib" / "thorin");
 
     // add install path if different from above
-    auto install_path = fs::path{THORIN_INSTALL_PREFIX} / "lib" / "thorin";
-    if (search_paths().empty() || !fs::equivalent(install_path, search_paths().back()))
-        add_search_path(std::move(install_path));
+    if (auto install_path = fs::path{THORIN_INSTALL_PREFIX} / "lib" / "thorin"; fs::exists(install_path)) {
+        if (search_paths().empty() || !fs::equivalent(install_path, search_paths().back()))
+            add_search_path(std::move(install_path));
+    }
 
     // all other user paths take precedence and are inserted before above fallbacks
     insert_ = search_paths_.begin();
