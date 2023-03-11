@@ -293,7 +293,6 @@ public:
     /// @name uses
     ///@{
     const Uses& uses() const { return uses_; }
-    Array<Use> copy_uses() const { return Array<Use>(uses_.begin(), uses_.end()); }
     size_t num_uses() const { return uses().size(); }
     ///@}
 
