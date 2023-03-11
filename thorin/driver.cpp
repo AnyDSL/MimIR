@@ -12,8 +12,8 @@ static std::vector<fs::path> get_plugin_name_variants(std::string_view name) {
 }
 
 Driver::Driver()
-    : log(*this)
-    , world(this) {
+    : log_(*this)
+    , world_(this) {
     add_search_path(fs::current_path());
 
     // paths from env

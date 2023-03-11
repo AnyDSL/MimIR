@@ -14,7 +14,7 @@ using namespace thorin::fe;
 TEST(Lexer, Toks) {
     Driver driver;
     std::istringstream is("{ } ( ) [ ] ‹ › « » : , . .lam .Pi λ Π");
-    Lexer lexer(driver.world, driver.sym("<is>"), is);
+    Lexer lexer(driver.world(), driver.sym("<is>"), is);
 
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_brace_l));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_brace_r));
@@ -40,7 +40,7 @@ TEST(Lexer, Loc) {
     Driver driver;
     auto sym = driver.sym("<is>");
     std::istringstream is(" test  abc    def if  \nwhile λ foo   ");
-    Lexer lexer(driver.world, sym, is);
+    Lexer lexer(driver.world(), sym, is);
     auto t1 = lexer.lex();
     auto t2 = lexer.lex();
     auto t3 = lexer.lex();
@@ -66,21 +66,21 @@ TEST(Lexer, Loc) {
 TEST(Lexer, Errors) {
     Driver driver;
     std::istringstream is1("asdf \xc0\xc0");
-    Lexer l1(driver.world, driver.sym("<is1>"), is1);
+    Lexer l1(driver.world(), driver.sym("<is1>"), is1);
     l1.lex();
     EXPECT_ANY_THROW(l1.lex());
 
     std::istringstream is2("foo \xaa");
-    Lexer l2(driver.world, driver.sym("<is2>"), is2);
+    Lexer l2(driver.world(), driver.sym("<is2>"), is2);
     l2.lex();
     EXPECT_ANY_THROW(l2.lex());
 
     std::istringstream is3("+");
-    Lexer l3(driver.world, driver.sym("<is3>"), is3);
+    Lexer l3(driver.world(), driver.sym("<is3>"), is3);
     EXPECT_ANY_THROW(l3.lex());
 
     std::istringstream is4("-");
-    Lexer l4(driver.world, driver.sym("<is4>"), is4);
+    Lexer l4(driver.world(), driver.sym("<is4>"), is4);
     EXPECT_ANY_THROW(l4.lex());
 }
 
@@ -88,7 +88,7 @@ TEST(Lexer, Eof) {
     Driver driver;
     std::istringstream is("");
 
-    Lexer lexer(driver.world, driver.sym("<is>"), is);
+    Lexer lexer(driver.world(), driver.sym("<is>"), is);
     for (int i = 0; i < 10; i++) EXPECT_TRUE(lexer.lex().isa(Tok::Tag::M_eof));
 }
 
@@ -96,7 +96,7 @@ class Real : public testing::TestWithParam<int> {};
 
 TEST_P(Real, sign) {
     Driver driver;
-    World& w = driver.world;
+    World& w = driver.world();
 
     // clang-format off
     auto check = [&w](std::string s, f64 r) {

@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
         int verbose      = 0;
         int opt          = 2;
         auto inc_verbose = [&](bool) { ++verbose; };
-        auto& flags      = driver.flags;
+        auto& flags      = driver.flags();
 
         // clang-format off
         auto cli = lyra::cli()
@@ -87,10 +87,10 @@ int main(int argc, char** argv) {
             std::exit(EXIT_SUCCESS);
         }
 
+        World& world = driver.world();
 #if THORIN_ENABLE_CHECKS
-        for (auto b : breakpoints) driver.breakpoints.emplace(b);
+        for (auto b : breakpoints) world.breakpoint(b);
 #endif
-        World& world        = driver.world;
         world.log().ostream = &std::cerr;
         world.log().level   = (Log::Level)verbose;
         // prepare output files and streams

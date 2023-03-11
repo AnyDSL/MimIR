@@ -68,10 +68,8 @@ World::~World() {
  * Driver
  */
 
-Log& World::log() { return driver().log; }
-const Log& World::log() const { return driver().log; }
-Flags& World::flags() { return driver().flags; }
-const Flags& World::flags() const { return driver().flags; }
+Log& World::log() { return driver().log(); }
+Flags& World::flags() { return driver().flags(); }
 
 Sym World::sym(const char* s) { return driver().sym(s); }
 Sym World::sym(std::string_view s) { return driver().sym(s); }
@@ -489,8 +487,7 @@ Ref World::iapp(Ref callee, Ref arg) {
 
 #if THORIN_ENABLE_CHECKS
 
-Breakpoints& World::breakpoints() { return driver().breakpoints; }
-void World::breakpoint(size_t number) { breakpoints().emplace(number); }
+void World::breakpoint(u32 gid) { state_.breakpoints.emplace(gid); }
 
 Ref World::gid2def(u32 gid) {
     auto i = std::ranges::find_if(move_.defs, [=](auto def) { return def->gid() == gid; });

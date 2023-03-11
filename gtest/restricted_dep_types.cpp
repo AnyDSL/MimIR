@@ -31,7 +31,7 @@ using namespace thorin;
 TEST(RestrictedDependentTypes, join_singleton) {
     auto test_on_world = [](auto test) {
         Driver driver;
-        World& w = driver.world;
+        World& w = driver.world();
         Normalizers normalizers;
 
         auto compile_d = driver.load("compile");
@@ -236,7 +236,7 @@ TEST(RestrictedDependentTypes, join_singleton) {
 
 TEST(RestrictedDependentTypes, ll) {
     Driver driver;
-    World& w = driver.world;
+    World& w = driver.world();
 
     std::vector<std::string> dialect_plugins = {
         "compile",
