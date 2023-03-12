@@ -91,8 +91,8 @@ int main(int argc, char** argv) {
 #if THORIN_ENABLE_CHECKS
         for (auto b : breakpoints) world.breakpoint(b);
 #endif
-        world.log().ostream = &std::cerr;
-        world.log().level   = (Log::Level)verbose;
+        world.log().set(&std::cerr).set((Log::Level)verbose);
+
         // prepare output files and streams
         std::array<std::ofstream, Num_Backends> ofs;
         std::array<std::ostream*, Num_Backends> os;
