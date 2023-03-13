@@ -65,16 +65,7 @@ inline Ref op_lea(Ref ptr, Ref index) {
     return w.app(w.app(w.ax<lea>(), {pointee->arity(), Ts, addr_space}), {ptr, index});
 }
 
-<<<<<<< HEAD
-inline const Def* op_lea_unsafe(const Def* ptr, const Def* i, const Def* dbg = {}) {
-    World& w = ptr->world();
-    return op_lea(ptr, w.call(core::conv::u, force<Ptr>(ptr->type())->arg(0)->arity(), i), dbg);
-}
-
-inline const Def* op_lea_unsafe(const Def* ptr, u64 i, const Def* dbg = {}) {
-=======
 inline Ref op_lea_unsafe(Ref ptr, Ref i) {
->>>>>>> origin/master
     World& w = ptr->world();
     return op_lea(ptr, w.call(core::conv::u, force<Ptr>(ptr->type())->arg(0)->arity(), i));
 }
