@@ -813,26 +813,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t      = convert(arith->type());
         auto mode   = as_lit(arith->decurry()->arg());
 
-        // #    if 0
-        //         // TODO this was von closure-conv branch which I need to double-check
-        //         if (tuple->isa<Var>()) {
-        //             // computing the index may crash, so we bail out
-        //             assert(match<mem::M>(extract->type()) && "only mem-var should not be mapped");
-        //             return {};
-        //         }
-        // #    endif
-
-        //         auto ll_tup = emit_unsafe(tuple);
-
-        //         // this exact location is important: after emitting the tuple -> ordering of mem ops
-        //         // before emitting the index, as it might be a weird value for mem vars.
-        //         if (match<mem::M>(extract->type())) return {};
-
-        //         auto ll_idx = emit_unsafe(index);
-
-        //         if (tuple->num_projs() == 2) {
-        //             if (match<mem::M>(tuple->proj(2, 0_s)->type())) return ll_tup;
-        //             if (match<mem::M>(tuple->proj(2, 1_s)->type())) return ll_tup;
         switch (arith.id()) {
             case math::arith::add: op = "fadd"; break;
             case math::arith::sub: op = "fsub"; break;

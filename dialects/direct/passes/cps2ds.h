@@ -14,7 +14,7 @@ class CPS2DS : public RWPass<CPS2DS, Lam> {
 public:
     CPS2DS(PassMan& man)
         : RWPass(man, "cps2ds")
-        , sym_{.cps_call = world().sym("csp_call")} {}
+        , sym_{.cps_call = world().sym("cps_call")} {}
 
     void enter() override;
 

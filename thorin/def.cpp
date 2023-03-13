@@ -362,25 +362,6 @@ void Def::unset_type() {
 }
 
 bool Def::is_set() const {
-    //     auto all_set = std::ranges::all_of(ops(), [](auto op) { return op != nullptr; });
-    //     assert((!isa_structural() || all_set) && "structurals must be always set");
-
-    //     if (all_set) return true;
-    //     if (!(std::ranges::all_of(ops(), [](auto op) { return op == nullptr; }))) {
-    //         world().ELOG("{} {}", this->unique_name(), this->name());
-    //         if (auto lam = isa<Lam>()) {
-    //             world().ELOG("  {}", lam->filter());
-    //             world().ELOG("  {}", lam->body());
-    //         }
-    //         assert(false && "some operands are set, others aren't");
-    //     }
-
-    //     assert(std::ranges::all_of(ops(), [](auto op) { return op == nullptr; }) && "some operands are set, others
-    //     aren't"); return false;
-    // }
-
-    // bool Def::is_unfinished() const {
-    //     return std::ranges::any_of(ops(), [](auto op) { return op == nullptr; });
     if (num_ops() == 0) return true;
     bool result = ops().back();
     assert((!result || std::ranges::all_of(ops().skip_back(), [](auto op) { return op; })) &&

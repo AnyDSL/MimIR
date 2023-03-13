@@ -70,8 +70,6 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
                         // TODO: rewrite function?
                         auto cps_fun = fun_app->arg();
                         cps_fun      = rewrite_body(cps_fun);
-                        // if (!cps_fun->isa_nom<Lam>()) { world.DLOG("cps_fun {} is not a lambda", cps_fun); }
-                        // rewrite_lam(cps_fun->as_nom<Lam>());
                         world.DLOG("function: {} : {}", cps_fun, cps_fun->type());
 
                         // ```
@@ -165,27 +163,19 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
             }
         }
 
-        // auto new_callee = rewrite_body(app->callee());
-        // auto new_callee = app->callee();
         return world.app(new_callee, new_arg);
     }
-    // TODO: are ops rewrites + app calle/arg rewrites all possible combinations?
-    // TODO: check if lam is necessary or if var is enough
 
     if (auto lam = def->isa_nom<Lam>()) {
         rewrite_lam(lam);
         return lam;
     }
 
-    // We need this case to not descend into infinite chains through function
-    // if (auto var = def->isa<Var>()) { return var; }
-
     if (auto tuple = def->isa<Tuple>()) {
         DefArray elements(tuple->ops(), [&](const Def* op) { return rewrite_body(op); });
         return world.tuple(elements)->set(tuple->dbg());
     }
 
-    // if (auto old_nom = def->isa_nom()) { return old_nom; }
     DefArray new_ops{def->ops(), [&](const Def* op) { return rewrite_body(op); }};
 
     world.DLOG("def {} : {} [{}]", def, def->type(), def->node_name());
