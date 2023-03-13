@@ -234,11 +234,10 @@ public:
     ///@{
     template<size_t N = -1_s>
     auto ops() const {
-        if constexpr (N == -1_s) {
+        if constexpr (N == -1_s)
             return Defs(num_ops_, ops_ptr());
-        } else {
+        else
             return Span<const Def*>(N, ops_ptr()).template to_array<N>();
-        }
     }
     const Def* op(size_t i) const { return ops()[i]; }
     size_t num_ops() const { return num_ops_; }

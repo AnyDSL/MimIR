@@ -30,7 +30,7 @@ void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue&
     assert(!match<mem::M>(fd) && "mem tokens must not be free");
     if (is_toplevel(fd)) return;
     if (auto [var, lam] = ca_isa_var<Lam>(fd); var && lam) {
-        if (var != lam->ret_var()) { node->add_fvs(fd); }
+        if (var != lam->ret_var()) node->add_fvs(fd);
     } else if (auto q = match(attr::freeBB, fd)) {
         node->add_fvs(q);
     } else if (auto pred = fd->isa_nom()) {
@@ -61,7 +61,7 @@ std::pair<FreeDefAna::Node*, bool> FreeDefAna::build_node(Def* nom, NodeQueue& w
     auto node      = p->second.get();
     auto scope     = Scope(nom);
     bool init_node = false;
-    for (auto v : scope.free_defs()) { split_fd(node, v, init_node, worklist); }
+    for (auto v : scope.free_defs()) split_fd(node, v, init_node, worklist);
     if (!init_node) {
         worklist.push(node);
         w.DLOG("FVA: init {}", nom);
@@ -80,9 +80,8 @@ void FreeDefAna::run(NodeQueue& worklist) {
             auto& pfvs = p->fvs;
             for (auto&& pfv : pfvs) changed |= node->add_fvs(pfv).second;
         }
-        if (changed) {
+        if (changed)
             for (auto s : node->succs) worklist.push(s);
-        }
     }
 }
 
@@ -132,7 +131,7 @@ void ClosConv::rewrite_body(Lam* new_lam, Def2Def& subst) {
         subst.emplace(env, env_param);
     } else {
         for (size_t i = 0; i < num_fvs; i++) {
-            auto fv = env->op(i);
+            auto fv  = env->op(i);
             auto sym = w.sym("fv_"s + (fv->sym() ? *fv->sym() : std::to_string(i)));
             subst.emplace(fv, env_param->proj(i)->set(sym));
         }
@@ -229,13 +228,12 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         return map(new_nom);
     } else {
         auto new_ops = DefArray(def->num_ops(), [&](auto i) { return rewrite(def->op(i), subst); });
-        if (auto app = def->isa<App>(); app && new_ops[0]->type()->isa<Sigma>()) {
+        if (auto app = def->isa<App>(); app && new_ops[0]->type()->isa<Sigma>())
             return map(clos_apply(new_ops[0], new_ops[1]));
-        } else if (def->isa<Axiom>()) {
+        else if (def->isa<Axiom>())
             return def;
-        } else {
+        else
             return map(def->rebuild(w, new_type, new_ops));
-        }
     }
 
     thorin::unreachable();
@@ -245,9 +243,8 @@ Def* ClosConv::rewrite_nom(Def* nom, const Def* new_type, Def2Def& subst) {
     auto& w      = world();
     auto new_nom = nom->stub(w, new_type);
     subst.emplace(nom, new_nom);
-    for (size_t i = 0; i < nom->num_ops(); i++) {
+    for (size_t i = 0; i < nom->num_ops(); i++)
         if (nom->op(i)) new_nom->set(i, rewrite(nom->op(i), subst));
-    }
     return new_nom;
 }
 

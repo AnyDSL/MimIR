@@ -9,9 +9,7 @@
 
 namespace thorin {
 
-static bool should_flatten(const Def* def) {
-    return (def->is_term() ? def->type() : def)->isa<Sigma, Arr>();
-}
+static bool should_flatten(const Def* def) { return (def->is_term() ? def->type() : def)->isa<Sigma, Arr>(); }
 
 static bool nom_val_or_typ(const Def* def) {
     auto typ = def->is_term() ? def->type() : def;
