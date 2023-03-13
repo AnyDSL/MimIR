@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['l_0',['l',['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fab56bd84b4325cae0ff953569daeeecd6',1,'thorin::math::l()'],['../namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628afb255a4afa664b7d505609cd9f04e49c',1,'thorin::core::l()']]],
+  ['l_0',['l',['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fab56bd84b4325cae0ff953569daeeecd6',1,'thorin::math::l()'],['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eafb255a4afa664b7d505609cd9f04e49c',1,'thorin::core::l()']]],
   ['l_5fr_1',['L_r',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79aff4732a008160f463364cd4285d4bc9f',1,'thorin::fe::Tok']]],
   ['l_5fs_2',['L_s',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a210614a1117e89a255b9d0b39516b604',1,'thorin::fe::Tok']]],
   ['l_5fu_3',['L_u',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a7e6dfe77ddaaa4a0c994660de2d38ead',1,'thorin::fe::Tok']]],
@@ -98,7 +98,7 @@ var searchData=
   ['lowerfor_95',['LowerFor',['../classthorin_1_1affine_1_1LowerFor.html#a1ccb326f60d9381a8ecd8af8ebb94ced',1,'thorin::affine::LowerFor::LowerFor()'],['../classthorin_1_1affine_1_1LowerFor.html',1,'thorin::affine::LowerFor']]],
   ['lowertypedclos_96',['LowerTypedClos',['../classthorin_1_1clos_1_1LowerTypedClos.html#ae34dd43d483efec29ea0335be5199560',1,'thorin::clos::LowerTypedClos::LowerTypedClos()'],['../classthorin_1_1clos_1_1LowerTypedClos.html',1,'thorin::clos::LowerTypedClos']]],
   ['lowertypedclosprep_97',['LowerTypedClosPrep',['../classthorin_1_1clos_1_1LowerTypedClosPrep.html#aa033f29324dcaffb112b87a8c40022ad',1,'thorin::clos::LowerTypedClosPrep::LowerTypedClosPrep()'],['../classthorin_1_1clos_1_1LowerTypedClosPrep.html',1,'thorin::clos::LowerTypedClosPrep']]],
-  ['lowertypedcloswrapper_98',['LowerTypedClosWrapper',['../classthorin_1_1clos_1_1LowerTypedClosWrapper.html#a03e57e3718ca057bf0b74b72c34d4129',1,'thorin::clos::LowerTypedClosWrapper::LowerTypedClosWrapper()'],['../classthorin_1_1clos_1_1LowerTypedClosWrapper.html',1,'thorin::clos::LowerTypedClosWrapper']]],
+  ['lowertypedcloswrapper_98',['LowerTypedClosWrapper',['../classLowerTypedClosWrapper.html',1,'LowerTypedClosWrapper'],['../classLowerTypedClosWrapper.html#ae61553a36ec4e5076ebab4a4dc082a57',1,'LowerTypedClosWrapper::LowerTypedClosWrapper()']]],
   ['lprec_99',['LPrec',['../namespacethorin.html#a8a6f378914383c7e6e801d31a00d0eb0',1,'thorin']]],
   ['lrprec_100',['LRPrec',['../structthorin_1_1LRPrec.html#a6cb98f4eac50388d92b191cbef0712b0',1,'thorin::LRPrec::LRPrec()'],['../structthorin_1_1LRPrec.html',1,'thorin::LRPrec&lt; L &gt;']]]
 ];

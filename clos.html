@@ -182,9 +182,9 @@ Phases</h2>
 <div class="line">    %compile.combined_phase </div>
 <div class="line">        (%compile.phase_list</div>
 <div class="line">            (%compile.single_pass_phase nullptr)</div>
-<div class="line">            // optimization_phase</div>
-<div class="line">            // (%compile.single_pass_phase (%mem.reshape_pass %mem.reshape_flat))</div>
-<div class="line">            // (%compile.single_pass_phase %mem.add_mem_pass)</div>
+<div class="line">            optimization_phase</div>
+<div class="line">            (%compile.single_pass_phase (%mem.reshape_pass %mem.reshape_flat))</div>
+<div class="line">            (%compile.single_pass_phase %mem.add_mem_pass)</div>
 <div class="line">            (%compile.single_pass_phase %clos.clos_conv_prep_pass)</div>
 <div class="line">            (%compile.single_pass_phase (%compile.eta_exp_pass nullptr))</div>
 <div class="line">            (%compile.single_pass_phase %clos.clos_conv_pass)</div>

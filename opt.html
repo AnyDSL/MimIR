@@ -114,23 +114,15 @@ $(document).ready(function(){initNavTree('opt.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md144">Dependencies</a></li>
-<li class="level1"><a href="#autotoc_md145">Types</a><ul><li class="level2"><a href="#autotoc_md146">%opt.Dialect</a></li>
-</ul>
-</li>
-<li class="level1"><a href="#autotoc_md147">Operations</a><ul><li class="level2"><a href="#autotoc_md148">registered dialects</a></li>
-<li class="level2"><a href="#autotoc_md149">%opt.is_loaded</a></li>
-</ul>
-</li>
-<li class="level1"><a href="#autotoc_md150">Compilation passes, phases, and pipelines</a><ul><li class="level2"><a href="#autotoc_md151">Phases</a></li>
-<li class="level2"><a href="#autotoc_md152">Pipelines</a></li>
+<ul><li class="level1"><a href="#autotoc_md148">Dependencies</a></li>
+<li class="level1"><a href="#autotoc_md149">Compilation passes, phases, and pipelines</a><ul><li class="level2"><a href="#autotoc_md150">Pipelines</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md_build_docs_dialects_opt"></a></p>
 <p >Manages the default compilation pipeline of Thorin programs using dialects.</p>
-<h1><a class="anchor" id="autotoc_md144"></a>
+<h1><a class="anchor" id="autotoc_md148"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">.import core; // includes mem, compile (and avoids clashing re-import)</div>
 </div><!-- fragment --><p> supported dialects with passes </p><div class="fragment"><div class="line">.import affine;</div>
@@ -138,44 +130,9 @@ Dependencies</h1>
 <div class="line">.import clos;</div>
 <div class="line">.import direct;</div>
 <div class="line">.import refly;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md145"></a>
-Types</h1>
-<h2><a class="anchor" id="autotoc_md146"></a>
-%opt.Dialect</h2>
-<div class="fragment"><div class="line">.ax %opt.Dialect: *;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md147"></a>
-Operations</h1>
-<h2><a class="anchor" id="autotoc_md148"></a>
-registered dialects</h2>
-<p >We expect the name in the tag before the <code>_</code> to be the name of the dialect (as given in <code>DialectInfo.plugin_name</code>).</p>
-<div class="fragment"><div class="line">.ax %opt.core_dialect    : %opt.Dialect;</div>
-<div class="line">.ax %opt.mem_dialect     : %opt.Dialect;</div>
-<div class="line">.ax %opt.demo_dialect    : %opt.Dialect;</div>
-<div class="line">.ax %opt.affine_dialect  : %opt.Dialect;</div>
-<div class="line">.ax %opt.autodiff_dialect: %opt.Dialect;</div>
-<div class="line">.ax %opt.clos_dialect    : %opt.Dialect;</div>
-<div class="line">.ax %opt.direct_dialect  : %opt.Dialect;</div>
-<div class="line">.ax %opt.refly_dialect   : %opt.Dialect;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md149"></a>
-%opt.is_loaded</h2>
-<p >Indicates whether a dialect is loaded. The normalizer will statically evaluate this expression to a constant boolean. TODO: find correct point (not at parsing but before compilation)</p>
-<div class="fragment"><div class="line">.ax %opt.is_loaded: %opt.Dialect -&gt; .Bool, normalize_is_loaded;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md150"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md149"></a>
 Compilation passes, phases, and pipelines</h1>
-<h2><a class="anchor" id="autotoc_md151"></a>
-Phases</h2>
-<div class="fragment"><div class="line">.let empty_pass = %compile.nullptr_pass;</div>
-<div class="line">.let empty_phase = %compile.passes_to_phase 0 ();</div>
-<div class="line">.ax %opt.dialect_select: Π [T:*] -&gt; %opt.Dialect -&gt; T -&gt; T -&gt; T;</div>
-<div class="line">.let dialect_phase = %opt.dialect_select %compile.Phase;</div>
-<div class="line">.let dialect_pass = %opt.dialect_select %compile.Pass;</div>
-<div class="line">.lam dialect_cond_phase ![dialect: %opt.Dialect,phase: %compile.Phase] -&gt; %compile.Phase = {</div>
-<div class="line">  dialect_phase dialect phase empty_phase</div>
-<div class="line">};</div>
-<div class="line">.lam dialect_cond_pass ![dialect: %opt.Dialect,pass: %compile.Pass] -&gt; %compile.Pass = {</div>
-<div class="line">  dialect_pass dialect pass empty_pass</div>
-<div class="line">};</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md152"></a>
+<h2><a class="anchor" id="autotoc_md150"></a>
 Pipelines</h2>
 <div class="fragment"><div class="line">.lam .extern _default_compile [] -&gt; Pipeline = {</div>
 <div class="line">    .let nullptr = %compile.nullptr_pass;</div>
@@ -191,26 +148,26 @@ Pipelines</h2>
 <div class="line">          (</div>
 <div class="line">            optimization_pass_list,</div>
 <div class="line">            %compile.pass_list</div>
-<div class="line">              (dialect_cond_pass (%opt.affine_dialect, %affine.lower_for_pass)),</div>
+<div class="line">              (dialect_cond_pass (%compile.affine_dialect, %affine.lower_for_pass)),</div>
 <div class="line">            mem_opt_pass_list</div>
 <div class="line">          ))</div>
 <div class="line">        )</div>
-<div class="line">        (dialect_cond_phase (%opt.autodiff_dialect,</div>
+<div class="line">        (dialect_cond_phase (%compile.autodiff_dialect,</div>
 <div class="line">          %compile.combined_phase (%compile.phase_list</div>
 <div class="line">            (%compile.single_pass_phase %autodiff.ad_eval_pass)</div>
 <div class="line">            // optimization_phase</div>
 <div class="line">            (%compile.single_pass_phase %autodiff.ad_zero_pass)</div>
 <div class="line">          )</div>
 <div class="line">        ))</div>
-<div class="line">        (dialect_cond_phase (%opt.direct_dialect,</div>
+<div class="line">        (dialect_cond_phase (%compile.direct_dialect,</div>
 <div class="line">          direct_phases</div>
 <div class="line">        ))</div>
 <div class="line">        (%compile.single_pass_phase %compile.internal_cleanup_pass)</div>
-<div class="line">        (dialect_cond_phase (%opt.clos_dialect,</div>
+<div class="line">        (dialect_cond_phase (%compile.clos_dialect,</div>
 <div class="line">          clos_phases</div>
 <div class="line">        ))</div>
 <div class="line">        (%compile.single_pass_phase %compile.lam_spec_pass)</div>
-<div class="line">        (dialect_cond_phase (%opt.autodiff_dialect,</div>
+<div class="line">        (dialect_cond_phase (%compile.autodiff_dialect,</div>
 <div class="line">          ad_cleanup_phase</div>
 <div class="line">        ))</div>
 <div class="line">        // CodeGenPrep</div>
@@ -224,7 +181,7 @@ Pipelines</h2>
 <div class="line">              %mem.remem_elim_pass</div>
 <div class="line">              %mem.alloc2malloc_pass,</div>
 <div class="line">            %compile.pass_list</div>
-<div class="line">              (dialect_cond_pass (%opt.refly_dialect, %refly.remove_dbg_perm_pass)),</div>
+<div class="line">              (dialect_cond_pass (%compile.refly_dialect, %refly.remove_dbg_perm_pass)),</div>
 <div class="line">          ))</div>
 <div class="line">        )</div>
 <div class="line">};</div>

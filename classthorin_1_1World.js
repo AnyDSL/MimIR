@@ -11,6 +11,7 @@ var classthorin_1_1World =
     [ "add_imported", "classthorin_1_1World.html#a9ac95adf7b1b61bd7167333d62bce6e3", null ],
     [ "app", "classthorin_1_1World.html#ab8548748ae9c111a15984fa4e3754945", null ],
     [ "app", "classthorin_1_1World.html#acead59ea11597f876b9c1ee24bf2e48a", null ],
+    [ "append_suffix", "classthorin_1_1World.html#a75df597014689e9b0b6a45de76916813", null ],
     [ "arr", "classthorin_1_1World.html#a3e1a67c419fd8fe5b6dfb61530ab4341", null ],
     [ "arr", "classthorin_1_1World.html#abf102354cde498147c2a094691d1fbc5", null ],
     [ "arr", "classthorin_1_1World.html#a223f9d00e5f499e2b43a64e7ab389e6b", null ],

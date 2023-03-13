@@ -36,8 +36,29 @@ var classthorin_1_1Axiom =
     [ "Match< clos::lower_typed_clos_prep_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01clos_1_1lower__typed__clos__prep__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#acfcc47bf4110b009071da2779ee35caf", null ]
     ] ],
+    [ "Match< compile::affine_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1affine__dialect_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a1c3fbde0a8ccfc264bd2ee0a5a7d1c27", null ]
+    ] ],
+    [ "Match< compile::autodiff_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1autodiff__dialect_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a4544be40bbfa91ccca9da686949c1444", null ]
+    ] ],
     [ "Match< compile::beta_red_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1beta__red__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#a4999ea47cb4217d74e23da5d7d85e859", null ]
+    ] ],
+    [ "Match< compile::clos_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1clos__dialect_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a1cf603259e873dcee4c5be091642bee8", null ]
+    ] ],
+    [ "Match< compile::core_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1core__dialect_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a8c762720a77d2f74ad831f577b8deee6", null ]
+    ] ],
+    [ "Match< compile::demo_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1demo__dialect_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#afcafa15491ec17c7efdac1f6ceb70698", null ]
+    ] ],
+    [ "Match< compile::Dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1Dialect_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#ac2b37cacd355befd7130697ad748169d", null ]
+    ] ],
+    [ "Match< compile::direct_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1direct__dialect_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#abdb21eca3bd7d9f5d74e0e04a6ab2823", null ]
     ] ],
     [ "Match< compile::eta_red_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1eta__red__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#acf9f4cd3413f82765cccbb4743be7981", null ]
@@ -47,6 +68,9 @@ var classthorin_1_1Axiom =
     ] ],
     [ "Match< compile::lam_spec_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1lam__spec__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#a53c6c93695a175aedbe44e5c801f19e4", null ]
+    ] ],
+    [ "Match< compile::mem_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1mem__dialect_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a400858577560e79c5d975d023328d665", null ]
     ] ],
     [ "Match< compile::nullptr_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1nullptr__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#a0414b85bcde776072958b43a3e667c4f", null ]
@@ -60,6 +84,9 @@ var classthorin_1_1Axiom =
     [ "Match< compile::Phase >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1Phase_01_4", [
       [ "type", "classthorin_1_1Axiom.html#a862de53aa535aa101e327833e9eecd6f", null ]
     ] ],
+    [ "Match< compile::refly_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1refly__dialect_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#aea48af55a0a77738fcac816d9ed6b597", null ]
+    ] ],
     [ "Match< compile::ret_wrap_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1ret__wrap__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#abeaa38565a71c239a18ba5af648f5d26", null ]
     ] ],
@@ -68,6 +95,9 @@ var classthorin_1_1Axiom =
     ] ],
     [ "Match< direct::ds2cps_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01direct_1_1ds2cps__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#aec83f9272377e5ded68b9020a6fe5b18", null ]
+    ] ],
+    [ "Match< mem::add_mem_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1add__mem__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#acda02b049969a475c986a4a5cbcfce4c", null ]
     ] ],
     [ "Match< mem::alloc2malloc_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1alloc2malloc__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#a359d554257152f2022ac21a9a0f82c0c", null ]
@@ -78,32 +108,14 @@ var classthorin_1_1Axiom =
     [ "Match< mem::remem_elim_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1remem__elim__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#ace068ec44fcb060b9e8afe795834280e", null ]
     ] ],
-    [ "Match< opt::affine_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1affine__dialect_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a4503c9d76ec82deda704d4dc88682080", null ]
+    [ "Match< mem::reshape_arg >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1reshape__arg_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a23a7671845776174b241394c8a0cf9e1", null ]
     ] ],
-    [ "Match< opt::autodiff_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1autodiff__dialect_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a307ae72f8f35cd89f95673cbfcb90e73", null ]
+    [ "Match< mem::reshape_flat >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1reshape__flat_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a6a7bbc91356f366e4b7977e30a8d52df", null ]
     ] ],
-    [ "Match< opt::clos_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1clos__dialect_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a8ccb495e17b4115c6fe2707b5209fea0", null ]
-    ] ],
-    [ "Match< opt::core_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1core__dialect_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#add62d37f0cfad64d83c26b602288e50b", null ]
-    ] ],
-    [ "Match< opt::demo_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1demo__dialect_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a4076afd8faf54f1f41fbd3d5c5d54c41", null ]
-    ] ],
-    [ "Match< opt::Dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1Dialect_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a97bbb02238440b20872499e5aec8e410", null ]
-    ] ],
-    [ "Match< opt::direct_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1direct__dialect_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a5721b4b97f217534283306e5d0c89fc7", null ]
-    ] ],
-    [ "Match< opt::mem_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1mem__dialect_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a50aa08a8612a70ca34cb01ffed8c5fb4", null ]
-    ] ],
-    [ "Match< opt::refly_dialect >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01opt_1_1refly__dialect_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a673da53ec8715c341ff86c5a3e7be419", null ]
+    [ "Match< mem::reshape_mode >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1reshape__mode_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a1584f37fe97197c036a80c765f2c0ce8", null ]
     ] ],
     [ "Match< refly::Code >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01refly_1_1Code_01_4", [
       [ "type", "classthorin_1_1Axiom.html#ad1470de2ff689e04a5173754a332dd3c", null ]
@@ -111,6 +123,10 @@ var classthorin_1_1Axiom =
     [ "Match< refly::remove_dbg_perm_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01refly_1_1remove__dbg__perm__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#a861184151afcba49825206bd193901f1", null ]
     ] ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
     [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
     [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
     [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
@@ -226,6 +242,10 @@ var classthorin_1_1Axiom =
     [ "infer_curry_and_trip", "classthorin_1_1Axiom.html#af5c4f866aea98479d4ae54e9770c22ce", null ],
     [ "mangle", "classthorin_1_1Axiom.html#a9b63b953f49e6cdd3f516349960045ab", null ],
     [ "normalizer", "classthorin_1_1Axiom.html#a05d2e899a18e55005f71c1803da89ae3", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
     [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
     [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
     [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],

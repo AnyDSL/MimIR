@@ -14,6 +14,6 @@ var searchData=
   ['lowerfor_11',['LowerFor',['../classthorin_1_1affine_1_1LowerFor.html',1,'thorin::affine']]],
   ['lowertypedclos_12',['LowerTypedClos',['../classthorin_1_1clos_1_1LowerTypedClos.html',1,'thorin::clos']]],
   ['lowertypedclosprep_13',['LowerTypedClosPrep',['../classthorin_1_1clos_1_1LowerTypedClosPrep.html',1,'thorin::clos']]],
-  ['lowertypedcloswrapper_14',['LowerTypedClosWrapper',['../classthorin_1_1clos_1_1LowerTypedClosWrapper.html',1,'thorin::clos']]],
+  ['lowertypedcloswrapper_14',['LowerTypedClosWrapper',['../classLowerTypedClosWrapper.html',1,'']]],
   ['lrprec_15',['LRPrec',['../structthorin_1_1LRPrec.html',1,'thorin']]]
 ];

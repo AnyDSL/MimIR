@@ -9,8 +9,9 @@ var searchData=
   ['passes_2emd_6',['passes.md',['../passes_8md.html',1,'']]],
   ['phase_2ecpp_7',['phase.cpp',['../phase_8cpp.html',1,'']]],
   ['phase_2eh_8',['phase.h',['../phase_8h.html',1,'']]],
-  ['pipelinebuilder_2ecpp_9',['pipelinebuilder.cpp',['../pipelinebuilder_8cpp.html',1,'']]],
-  ['pipelinebuilder_2eh_10',['pipelinebuilder.h',['../pipelinebuilder_8h.html',1,'']]],
-  ['print_2ecpp_11',['print.cpp',['../print_8cpp.html',1,'']]],
-  ['print_2eh_12',['print.h',['../print_8h.html',1,'']]]
+  ['phase_5fwrapper_2eh_9',['phase_wrapper.h',['../phase__wrapper_8h.html',1,'']]],
+  ['pipelinebuilder_2ecpp_10',['pipelinebuilder.cpp',['../pipelinebuilder_8cpp.html',1,'']]],
+  ['pipelinebuilder_2eh_11',['pipelinebuilder.h',['../pipelinebuilder_8h.html',1,'']]],
+  ['print_2ecpp_12',['print.cpp',['../print_8cpp.html',1,'']]],
+  ['print_2eh_13',['print.h',['../print_8h.html',1,'']]]
 ];

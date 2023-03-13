@@ -15,12 +15,10 @@ var annotated_dup =
         [ "Clos2SJLJ", "classthorin_1_1clos_1_1Clos2SJLJ.html", "classthorin_1_1clos_1_1Clos2SJLJ" ],
         [ "ClosConv", "classthorin_1_1clos_1_1ClosConv.html", "classthorin_1_1clos_1_1ClosConv" ],
         [ "ClosConvPrep", "classthorin_1_1clos_1_1ClosConvPrep.html", "classthorin_1_1clos_1_1ClosConvPrep" ],
-        [ "ClosConvWrapper", "classthorin_1_1clos_1_1ClosConvWrapper.html", "classthorin_1_1clos_1_1ClosConvWrapper" ],
         [ "ClosLit", "classthorin_1_1clos_1_1ClosLit.html", "classthorin_1_1clos_1_1ClosLit" ],
         [ "FreeDefAna", "classthorin_1_1clos_1_1FreeDefAna.html", "classthorin_1_1clos_1_1FreeDefAna" ],
         [ "LowerTypedClos", "classthorin_1_1clos_1_1LowerTypedClos.html", "classthorin_1_1clos_1_1LowerTypedClos" ],
-        [ "LowerTypedClosPrep", "classthorin_1_1clos_1_1LowerTypedClosPrep.html", "classthorin_1_1clos_1_1LowerTypedClosPrep" ],
-        [ "LowerTypedClosWrapper", "classthorin_1_1clos_1_1LowerTypedClosWrapper.html", "classthorin_1_1clos_1_1LowerTypedClosWrapper" ]
+        [ "LowerTypedClosPrep", "classthorin_1_1clos_1_1LowerTypedClosPrep.html", "classthorin_1_1clos_1_1LowerTypedClosPrep" ]
       ] ],
       [ "compile", "namespacethorin_1_1compile.html", [
         [ "DebugPrint", "classthorin_1_1compile_1_1DebugPrint.html", "classthorin_1_1compile_1_1DebugPrint" ],
@@ -66,6 +64,7 @@ var annotated_dup =
         [ "Alloc2Malloc", "classthorin_1_1mem_1_1Alloc2Malloc.html", "classthorin_1_1mem_1_1Alloc2Malloc" ],
         [ "CopyProp", "classthorin_1_1mem_1_1CopyProp.html", "classthorin_1_1mem_1_1CopyProp" ],
         [ "RememElim", "classthorin_1_1mem_1_1RememElim.html", "classthorin_1_1mem_1_1RememElim" ],
+        [ "Reshape", "classthorin_1_1mem_1_1Reshape.html", "classthorin_1_1mem_1_1Reshape" ],
         [ "SSAConstr", "classthorin_1_1mem_1_1SSAConstr.html", "classthorin_1_1mem_1_1SSAConstr" ]
       ] ],
       [ "refly", "namespacethorin_1_1refly.html", [
@@ -192,5 +191,8 @@ var annotated_dup =
       [ "w2u_< 64 >", "namespacethorin.html#structthorin_1_1w2u___3_0164_01_4", "namespacethorin_structthorin_1_1w2u___3_0164_01_4_dup" ],
       [ "w2u_< 8 >", "namespacethorin.html#structthorin_1_1w2u___3_018_01_4", "namespacethorin_structthorin_1_1w2u___3_018_01_4_dup" ],
       [ "World", "classthorin_1_1World.html", "classthorin_1_1World" ]
-    ] ]
+    ] ],
+    [ "ClosConvWrapper", "classClosConvWrapper.html", "classClosConvWrapper" ],
+    [ "DebugDump", "classDebugDump.html", "classDebugDump" ],
+    [ "LowerTypedClosWrapper", "classLowerTypedClosWrapper.html", "classLowerTypedClosWrapper" ]
 ];

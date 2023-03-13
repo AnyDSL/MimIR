@@ -1,7 +1,5 @@
 var clos_8cpp =
 [
-    [ "thorin::clos::ClosConvWrapper", "classthorin_1_1clos_1_1ClosConvWrapper.html", "classthorin_1_1clos_1_1ClosConvWrapper" ],
-    [ "thorin::clos::LowerTypedClosWrapper", "classthorin_1_1clos_1_1LowerTypedClosWrapper.html", "classthorin_1_1clos_1_1LowerTypedClosWrapper" ],
     [ "clos_apply", "clos_8cpp.html#ae7b28ae502c58d6351cdc0f8dc882fd2", null ],
     [ "clos_insert_env", "clos_8cpp.html#aa5546cb140c4f29b6f1a9c2e75ea873f", null ],
     [ "clos_pack", "clos_8cpp.html#aed43da0142d48a19792c9ded903e2310", null ],

@@ -120,15 +120,18 @@ $(document).ready(function(){initNavTree('compile.html',''); initResizable(); })
 <li class="level2"><a href="#autotoc_md75">%compile.PassList</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md76">Expressions</a><ul><li class="level2"><a href="#autotoc_md77">%compile.pipe</a></li>
+<li class="level1"><a href="#autotoc_md76">Expressions</a><ul><li class="level2"><a href="#autotoc_md77">registered dialects</a></li>
+<li class="level2"><a href="#autotoc_md78">%opt.is_loaded</a></li>
+<li class="level2"><a href="#autotoc_md79">%compile.pipe</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md78">Compilation Passes and Phases</a><ul><li class="level2"><a href="#autotoc_md79">%compile.debug_phase</a></li>
-<li class="level2"><a href="#autotoc_md80">%compile.pass_phase</a></li>
-<li class="level2"><a href="#autotoc_md81">%compile.combined_phase</a></li>
-<li class="level2"><a href="#autotoc_md82">Passes</a></li>
-<li class="level2"><a href="#autotoc_md83">Phases</a></li>
-<li class="level2"><a href="#autotoc_md84">Pipelines</a></li>
+<li class="level1"><a href="#autotoc_md80">Compilation Passes and Phases</a><ul><li class="level2"><a href="#autotoc_md81">%compile.debug_phase</a></li>
+<li class="level2"><a href="#autotoc_md82">%compile.pass_phase</a></li>
+<li class="level2"><a href="#autotoc_md83">%compile.combined_phase</a></li>
+<li class="level2"><a href="#autotoc_md84">Passes</a></li>
+<li class="level2"><a href="#autotoc_md85">Phases</a></li>
+<li class="level2"><a href="#autotoc_md86">Pipelines</a></li>
+<li class="level2"><a href="#autotoc_md87">Dependent Passes and Phases</a></li>
 </ul>
 </li>
 </ul>
@@ -152,19 +155,36 @@ Types</h1>
 <div class="fragment"><div class="line">.Pi Pipeline: *, %compile.Phase = Pipeline;</div>
 <div class="line">.Pi PassList: *, %compile.Pass = PassList;</div>
 <div class="line">.Pi CombinedPhase: *, %compile.Phase = CombinedPhase;</div>
+</div><!-- fragment --><p >(This is a forward declaration for opt.thorin.)</p>
+<div class="fragment"><div class="line">.ax %compile.Dialect: *;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md76"></a>
 Expressions</h1>
 <h2><a class="anchor" id="autotoc_md77"></a>
+registered dialects</h2>
+<p >We expect the name in the tag before the <code>_</code> to be the name of the dialect (as given in <code>DialectInfo.plugin_name</code>). (This is a forward declaration for opt.thorin.)</p>
+<div class="fragment"><div class="line">.ax %compile.core_dialect    : %compile.Dialect;</div>
+<div class="line">.ax %compile.mem_dialect     : %compile.Dialect;</div>
+<div class="line">.ax %compile.demo_dialect    : %compile.Dialect;</div>
+<div class="line">.ax %compile.affine_dialect  : %compile.Dialect;</div>
+<div class="line">.ax %compile.autodiff_dialect: %compile.Dialect;</div>
+<div class="line">.ax %compile.clos_dialect    : %compile.Dialect;</div>
+<div class="line">.ax %compile.direct_dialect  : %compile.Dialect;</div>
+<div class="line">.ax %compile.refly_dialect   : %compile.Dialect;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md78"></a>
+%opt.is_loaded</h2>
+<p >Indicates whether a dialect is loaded. The normalizer will statically evaluate this expression to a constant boolean. TODO: find correct point (not at parsing but before compilation)</p>
+<div class="fragment"><div class="line">// .ax %opt.is_loaded: %opt.Dialect -&gt; .Bool;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md79"></a>
 %compile.pipe</h2>
 <p >Given n phases, returns the representation of a pipeline.</p>
 <div class="fragment"><div class="line">.ax %compile.pipe: Pipeline;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md78"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md80"></a>
 Compilation Passes and Phases</h1>
-<h2><a class="anchor" id="autotoc_md79"></a>
+<h2><a class="anchor" id="autotoc_md81"></a>
 %compile.debug_phase</h2>
 <p >Given a log level, returns a phase that prints the externals (for log level &gt;= 2).</p>
 <div class="fragment"><div class="line">.ax %compile.debug_phase: .Nat -&gt; %compile.Phase;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md80"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md82"></a>
 %compile.pass_phase</h2>
 <p >Given n passes, returns a phase that applies them in order.</p>
 <p >TODO: combine two pass_list </p><div class="fragment"><div class="line">.ax %compile.pass_list: PassList;</div>
@@ -173,13 +193,13 @@ Compilation Passes and Phases</h1>
 </div><!-- fragment --><p> <code>combine_pass_list K (pass_list pass11 ... pass1N) ... (pass_list passK1 ... passKM) = pass_list pass11 ... p1N ... passK1 ... passKM</code> </p><div class="fragment"><div class="line">.ax %compile.combine_pass_list: Π [n:.Nat] -&gt; «n; PassList» -&gt; PassList, normalize_combine_pass_list;</div>
 </div><!-- fragment --><p> <code>single_pass_phase pass = passes_to_phase 1 pass</code> </p><div class="fragment"><div class="line">// TODO: as let instead of axiom</div>
 <div class="line">.ax %compile.single_pass_phase: %compile.Pass -&gt; %compile.Phase, normalize_single_pass_phase;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md81"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md83"></a>
 %compile.combined_phase</h2>
 <p >Given n phases, returns a phase that applies them in order.</p>
 <div class="fragment"><div class="line">.ax %compile.phase_list: CombinedPhase;</div>
 </div><!-- fragment --><p> <code>combined_phase (phase_list phase1 ... phaseN) = phases_to_phase N (phase1, ..., phaseN)</code> </p><div class="fragment"><div class="line">.ax %compile.combined_phase: CombinedPhase -&gt; %compile.Phase, normalize_combined_phase;</div>
 <div class="line">.ax %compile.phases_to_phase: Π [n:.Nat] -&gt; «n; %compile.Phase» -&gt; %compile.Phase;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md82"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md84"></a>
 Passes</h2>
 <p >Basic passes that are defined in the core of Thorin.</p>
 <div class="fragment"><div class="line">.ax %compile.partial_eval_pass: %compile.Pass;</div>
@@ -192,7 +212,7 @@ Passes</h2>
 <div class="line">.ax %compile.ret_wrap_pass: %compile.Pass;</div>
 </div><!-- fragment --><p> has to be registered in the pipeline </p><div class="fragment"><div class="line">.ax %compile.nullptr_pass: %compile.Pass;</div>
 <div class="line">.ax %compile.internal_cleanup_pass: %compile.Pass;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md83"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md85"></a>
 Phases</h2>
 <div class="fragment"><div class="line">// TODO: allow functions by inlining them first</div>
 <div class="line">.let optimization_pass_list = {</div>
@@ -209,7 +229,7 @@ Phases</h2>
 <div class="line">.let optimization_phase = {</div>
 <div class="line">    %compile.pass_phase optimization_pass_list</div>
 <div class="line">};</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md84"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md86"></a>
 Pipelines</h2>
 <div class="fragment"><div class="line">.let default_core_pipeline = {</div>
 <div class="line">    .let nullptr = %compile.nullptr_pass;</div>
@@ -225,6 +245,19 @@ Pipelines</h2>
 <div class="line">};</div>
 <div class="line">.lam .extern _fallback_compile [] -&gt; Pipeline = {</div>
 <div class="line">    default_core_pipeline</div>
+<div class="line">};</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md87"></a>
+Dependent Passes and Phases</h2>
+<div class="fragment"><div class="line">.let empty_pass = %compile.nullptr_pass;</div>
+<div class="line">.let empty_phase = %compile.passes_to_phase 0 ();</div>
+<div class="line">.ax %compile.dialect_select: Π [T:*] -&gt; %compile.Dialect -&gt; T -&gt; T -&gt; T;</div>
+<div class="line">.let dialect_phase = %compile.dialect_select %compile.Phase;</div>
+<div class="line">.let dialect_pass = %compile.dialect_select %compile.Pass;</div>
+<div class="line">.lam dialect_cond_phase ![dialect: %compile.Dialect,phase: %compile.Phase] -&gt; %compile.Phase = {</div>
+<div class="line">  dialect_phase dialect phase empty_phase</div>
+<div class="line">};</div>
+<div class="line">.lam dialect_cond_pass ![dialect: %compile.Dialect,pass: %compile.Pass] -&gt; %compile.Pass = {</div>
+<div class="line">  dialect_pass dialect pass empty_pass</div>
 <div class="line">};</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
