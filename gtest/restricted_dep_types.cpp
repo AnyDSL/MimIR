@@ -32,23 +32,15 @@ TEST(RestrictedDependentTypes, join_singleton) {
     auto test_on_world = [](auto test) {
         Driver driver;
         World& w = driver.world();
-        Normalizers normalizers;
 
-        auto compile_d = driver.load("compile");
-        compile_d.register_normalizers(normalizers);
-        fe::Parser::import_module(w, w.sym("compile"), &normalizers);
-
-        auto mem_d = driver.load("mem");
-        mem_d.register_normalizers(normalizers);
-        fe::Parser::import_module(w, w.sym("mem"), &normalizers);
-
-        auto core_d = driver.load("core");
-        core_d.register_normalizers(normalizers);
-        fe::Parser::import_module(w, w.sym("core"), &normalizers);
-
-        auto math_d = driver.load("math");
-        math_d.register_normalizers(normalizers);
-        fe::Parser::import_module(w, w.sym("math"), &normalizers);
+        auto xx = driver.load("compile");
+        auto xy = driver.load("mem");
+        auto xz = driver.load("core");
+        auto xw = driver.load("math");
+        fe::Parser::import_module(w, w.sym("compile"));
+        fe::Parser::import_module(w, w.sym("mem"));
+        fe::Parser::import_module(w, w.sym("core"));
+        fe::Parser::import_module(w, w.sym("math"));
 
         auto i32_t = w.type_int(32);
         auto i64_t = w.type_int(64);
@@ -247,17 +239,14 @@ TEST(RestrictedDependentTypes, ll) {
 
     std::vector<Dialect> dialects;
     thorin::Backends backends;
-    Normalizers normalizers;
     Passes passes;
 
     for (const auto& dialect : dialect_plugins) {
         dialects.push_back(driver.load(dialect));
-        dialects.back().register_backends(backends);
-        dialects.back().register_normalizers(normalizers);
         dialects.back().register_passes(passes);
     }
 
-    for (const auto& dialect : dialects) fe::Parser::import_module(w, w.sym(dialect.name()), &normalizers);
+    for (const auto& dialect : dialects) fe::Parser::import_module(w, w.sym(dialect.name()));
 
     auto mem_t  = mem::type_mem(w);
     auto i32_t  = w.type_int(32);

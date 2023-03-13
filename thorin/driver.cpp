@@ -41,9 +41,8 @@ Dialect Driver::load(const std::string& name) {
     auto plugin_path = name;
     if (auto path = fs::path{name}; path.is_absolute() && fs::is_regular_file(path)) handle.reset(dl::open(name));
     if (!handle) {
-        auto name_variants = get_plugin_name_variants(name);
         for (const auto& path : search_paths()) {
-            for (const auto& name_variant : name_variants) {
+            for (auto name_variants = get_plugin_name_variants(name); const auto& name_variant : name_variants) {
                 auto full_path = path / name_variant;
                 plugin_path    = full_path.string();
 
@@ -59,7 +58,10 @@ Dialect Driver::load(const std::string& name) {
 
     if (!handle) throw std::runtime_error("cannot open plugin '" + name + "'");
 
-    return Dialect{plugin_path, std::move(handle)};
+    auto dialect = Dialect{plugin_path, std::move(handle)};
+    dialect.register_normalizers(normalizers_);
+    dialect.register_backends(backends_);
+    return dialect;
 }
 
 } // namespace thorin

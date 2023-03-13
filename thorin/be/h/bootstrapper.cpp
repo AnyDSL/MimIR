@@ -39,12 +39,12 @@ void Bootstrapper::emit(std::ostream& h) {
                 for (size_t i = 1; i < aliases.size(); ++i) tab.print(h, "{} = {},\n", aliases[i], sub);
 
                 if (ax.normalizer)
-                    print(normalizers.emplace_back(), "normalizers[flags_t({}::{})] = &{}<{}::{}>;", ax.tag, sub,
+                    print(normalizers.emplace_back(), "{{ std::cout << flags_t({}::{}) << std::endl; auto [_, ins] = normalizers.emplace(flags_t({}::{}), &{}<{}::{}>); assert(ins); }}", ax.tag, sub, ax.tag, sub,
                           ax.normalizer, ax.tag, sub);
             }
         } else {
             if (ax.normalizer)
-                print(normalizers.emplace_back(), "normalizers[flags_t(Axiom::Base<{}>)] = &{};", ax.tag, ax.normalizer);
+                print(normalizers.emplace_back(), "{{ std::cout << flags_t(Axiom::Base<{}>) << std::endl; auto [_, ins] = normalizers.emplace(flags_t(Axiom::Base<{}>), &{}); assert(ins); }}", ax.tag, ax.tag, ax.normalizer);
         }
         --tab;
         tab.print(h, "}};\n\n");
@@ -73,7 +73,7 @@ void Bootstrapper::emit(std::ostream& h) {
         tab.print(h, "void register_normalizers(Normalizers& normalizers);\n\n");
         tab.print(h, "#define THORIN_{}_NORMALIZER_IMPL \\\n", dialect_);
         ++tab;
-        tab.print(h, "void register_normalizers(Normalizers& normalizers) {{\\\n");
+        tab.print(h, "void register_normalizers(Normalizers& normalizers) {{   std::cout << \"{}\" << std::endl; \\\n", dialect_);
         ++tab;
         for (const auto& normalizer : normalizers) tab.print(h, "{} \\\n", normalizer.str());
         --tab;

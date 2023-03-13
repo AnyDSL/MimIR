@@ -111,14 +111,10 @@ int main(int argc, char** argv) {
         if (!os[H]) dialect_plugins.insert(dialect_plugins.end(), {"core", "mem", "compile", "opt"});
 
         std::vector<Dialect> dialects;
-        thorin::Backends backends;
-        thorin::Normalizers normalizers;
         thorin::Passes passes;
         if (!dialect_plugins.empty()) {
             for (const auto& dialect : dialect_plugins) {
                 dialects.push_back(driver.load(dialect));
-                dialects.back().register_backends(backends);
-                dialects.back().register_normalizers(normalizers);
                 dialects.back().register_passes(passes);
             }
         }
@@ -133,11 +129,11 @@ int main(int argc, char** argv) {
             return EXIT_FAILURE;
         }
 
-        for (const auto& dialect : dialects) fe::Parser::import_module(world, world.sym(dialect.name()), &normalizers);
+        for (const auto& dialect : dialects) fe::Parser::import_module(world, world.sym(dialect.name()));
 
         auto sym = world.sym(std::move(input));
         world.set(sym);
-        fe::Parser parser(world, sym, ifs, &normalizers, os[Md]);
+        fe::Parser parser(world, sym, ifs, os[Md]);
         parser.parse_module();
 
         if (os[H]) {
@@ -158,7 +154,7 @@ int main(int argc, char** argv) {
         if (os[Dot]) dot::emit(world, *os[Dot]);
 
         if (os[LL]) {
-            if (auto it = backends.find("ll"); it != backends.end()) {
+            if (auto it = driver.backends().find("ll"); it != driver.backends().end()) {
                 it->second(world, *os[LL]);
             } else
                 errln("error: 'll' emitter not loaded. Try loading 'mem' dialect.");

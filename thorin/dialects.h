@@ -7,14 +7,13 @@
 #include <absl/container/btree_map.h>
 #include <absl/container/flat_hash_map.h>
 
-#include "thorin/be/emitter.h"
 #include "thorin/pass/pass.h"
 #include "thorin/pass/pipelinebuilder.h"
 
 namespace thorin {
 
-using Backends    = absl::btree_map<std::string, std::function<void(World&, std::ostream&)>>;
 using Normalizers = absl::flat_hash_map<flags_t, Def::NormalizeFn>;
+using Backends    = absl::btree_map<std::string, std::function<void(World&, std::ostream&)>>;
 
 extern "C" {
 /// Basic info and registration function pointer to be returned from a dialect plugin.

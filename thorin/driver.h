@@ -45,12 +45,17 @@ public:
     Dialect load(const std::string& name);
     ///@}
 
+    const auto& normalizers() const { return normalizers_; }
+    const auto& backends() const { return backends_; }
+
 private:
     Flags flags_;
     Log log_;
     World world_;
     std::list<fs::path> search_paths_;
     std::list<fs::path>::iterator insert_ = search_paths_.end();
+    Normalizers normalizers_;
+    Backends backends_;
 };
 
 } // namespace thorin

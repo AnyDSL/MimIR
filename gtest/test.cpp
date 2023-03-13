@@ -17,10 +17,8 @@ TEST(Zip, fold) {
     Driver driver;
     World& w = driver.world();
 
-    Normalizers normalizers;
     auto core_d = driver.load("core");
-    core_d.register_normalizers(normalizers);
-    fe::Parser::import_module(w, w.sym("core"), &normalizers);
+    fe::Parser::import_module(w, w.sym("core"));
 
     // clang-format off
     auto a = w.tuple({w.tuple({w.lit_idx( 0), w.lit_idx( 1), w.lit_idx( 2)}),
@@ -96,10 +94,8 @@ TEST(trait, idx) {
     Driver driver;
     World& w = driver.world();
 
-    Normalizers normalizers;
     auto core_d = driver.load("core");
-    core_d.register_normalizers(normalizers);
-    fe::Parser::import_module(w, w.sym("core"), &normalizers);
+    fe::Parser::import_module(w, w.sym("core"));
 
     EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0000'00FF_n))), 1);
     EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0000'0100_n))), 1);

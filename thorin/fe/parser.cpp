@@ -31,11 +31,10 @@ using namespace std::string_literals;
 
 namespace thorin::fe {
 
-Parser::Parser(World& world, Sym file, std::istream& istream, const Normalizers* normalizers, std::ostream* md)
+Parser::Parser(World& world, Sym file, std::istream& istream, std::ostream* md)
     : lexer_(world, file, istream, md)
     , prev_(lexer_.loc())
     , bootstrapper_(world.sym(fs::path{*file}.filename().replace_extension("").string()))
-    , normalizers_(normalizers)
     , anonymous_(world.sym("_")) {
     for (size_t i = 0; i != Max_Ahead; ++i) lex();
     prev_ = Loc(file, {1, 1}, {1, 1});
@@ -75,7 +74,7 @@ void Parser::syntax_err(std::string_view what, const Tok& tok, std::string_view 
  * entry points
  */
 
-Parser Parser::import_module(World& world, Sym name, const Normalizers* normalizers) {
+Parser Parser::import_module(World& world, Sym name) {
     auto file_name = *name + ".thorin";
 
     std::string input_path{};
@@ -92,7 +91,7 @@ Parser Parser::import_module(World& world, Sym name, const Normalizers* normaliz
 
     if (!ifs) throw std::runtime_error("could not find file '" + file_name + "'");
 
-    thorin::fe::Parser parser(world, world.sym(input_path), ifs, normalizers);
+    thorin::fe::Parser parser(world, world.sym(input_path), ifs);
     parser.parse_module();
 
     world.add_imported(name);
@@ -121,7 +120,7 @@ void Parser::parse_import() {
     if (auto [_, ins] = imported_.emplace(name.sym()); !ins) return;
 
     // search file and import
-    auto parser = Parser::import_module(world(), name.sym(), normalizers_);
+    auto parser = Parser::import_module(world(), name.sym());
     scopes_.merge(parser.scopes_);
 
     // transitvely remember which files we transitively imported
@@ -633,8 +632,7 @@ void Parser::parse_ax() {
     info.normalizer = normalizer_name;
 
     auto normalizer = [this](dialect_t d, tag_t t, sub_t s) -> Def::NormalizeFn {
-        if (normalizers_)
-            if (auto it = normalizers_->find(d | flags_t(t << 8u) | s); it != normalizers_->end()) return it->second;
+        if (auto i = normalizers().find(d | flags_t(t << 8u) | s); i != normalizers().end()) return i->second;
         return nullptr;
     };
 
