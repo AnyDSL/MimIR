@@ -220,7 +220,6 @@ public:
     const Def* type() const { return type_; }
     /// Yields the type of this Def and unfolds it if necessary. See Def::type, Def::reduce_rec.
     const Def* unfold_type() const;
-    Sort sort() const;
     const Def* arity() const;
     std::optional<nat_t> isa_lit_arity() const;
     nat_t as_lit_arity() const {
@@ -228,6 +227,7 @@ public:
         assert(a.has_value());
         return *a;
     }
+    bool is_term() const;
     ///@}
 
     /// @name ops
@@ -317,7 +317,6 @@ public:
         return 1;
     }
     /// Similar to World::extract while assuming an arity of @p a but also works on Sigma%s, and Arr%ays.
-    /// If `this` is a Sort::Term (see Def::sort), Def::proj resorts to World::extract.
     const Def* proj(nat_t a, nat_t i) const;
 
     /// Same as above but takes Def::num_projs as arity.

@@ -16,7 +16,7 @@ namespace thorin::clos {
  */
 
 static bool is_toplevel(const Def* fd) {
-    return fd->dep_const() || fd->isa_nom<Global>() || fd->isa<Axiom>() || fd->sort() != Sort::Term;
+    return fd->dep_const() || fd->isa_nom<Global>() || fd->isa<Axiom>() || !fd->is_term();
 }
 
 static bool is_memop_res(const Def* fd) {

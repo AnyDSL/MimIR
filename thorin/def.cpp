@@ -250,28 +250,15 @@ const Var* Def::var() {
     unreachable();
 }
 
-Sort Def::sort() const {
-    if (auto type = isa<Type>()) {
-        auto level = as_lit(type->level()); // TODO other levels
-        return level == 0 ? Sort::Kind : Sort::Space;
+bool Def::is_term() const {
+    if (auto t = type()) {
+        if (auto u = t->type()) {
+            if (auto type = u->isa<Type>()) {
+                if (auto level = isa_lit(type->level())) return *level == 0;
+            }
+        }
     }
-
-    switch (node()) {
-        case Node::Univ:  return Sort::Univ;
-        case Node::Arr:
-        case Node::Nat:
-        case Node::Pi:
-        case Node::Sigma:
-        case Node::Join:
-        case Node::Meet: return Sort::Type;
-        case Node::Global:
-        case Node::Insert:
-        case Node::Lam:
-        case Node::Pack:
-        case Node::Test:
-        case Node::Tuple: return Sort::Term;
-        default:          return Sort(int(type()->sort()) - 1);
-    }
+    return false;
 }
 
 const Def* Def::arity() const {
