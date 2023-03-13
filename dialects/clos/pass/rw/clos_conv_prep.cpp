@@ -45,11 +45,10 @@ void ClosConvPrep::enter() {
             }
         }
     }
-    if (auto body = curr_nom()->body()->isa<App>();
-        !wrapper_.contains(curr_nom()) && body && body->callee_type()->is_cn())
-        ignore_ = false;
-    else
-        ignore_ = true;
+
+    auto body = curr_nom()->body()->isa<App>();
+    // Skip if the nominal is already wrapped or the body is undefined/no continuation.
+    ignore_ = !(body && body->callee_type()->is_cn()) || wrapper_.contains(curr_nom());
 }
 
 const App* ClosConvPrep::rewrite_arg(const App* app) {

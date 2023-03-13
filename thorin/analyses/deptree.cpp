@@ -28,11 +28,10 @@ VarSet DepTree::run(Def* nom) {
         auto n = nom2node_[var->nom()].get();
         if (!n) {
             world().ELOG("var {} used before nom {} discovered, old var still around?", var, var->nom());
-            world().ELOG("var {} : {}", var, var->type());
+            world().ELOG("var {} : {} [{}]", var, var->type(), var->node_name());
             world().ELOG("var nom {} : {}", var->nom(), var->nom()->type());
         }
         assert(n && "Old var still around?");
-
         parent = n->depth() > parent->depth() ? n : parent;
     }
     if (nom->is_external() && parent != root_.get()) {

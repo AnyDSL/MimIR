@@ -72,7 +72,7 @@ inline Ref op_lea_unsafe(Ref ptr, Ref i) {
 
 inline Ref op_lea_unsafe(Ref ptr, u64 i) {
     World& w = ptr->world();
-    return op_lea_unsafe(ptr, w.lit_idx(i));
+    return op_lea(ptr, w.call(core::conv::u, force<Ptr>(ptr->type())->arg(0)->arity(), i));
 }
 
 inline Ref op_remem(Ref mem) {
@@ -105,5 +105,80 @@ inline Ref op_mslot(Ref type, Ref mem, Ref id) {
 Ref op_malloc(Ref type, Ref mem);
 Ref op_mslot(Ref type, Ref mem, Ref id);
 
-inline Ref mem_var(Lam* lam) { return match<M>(lam->var(0_s)->type()) ? lam->var(0) : nullptr; }
+/// Returns the (first) element of type mem::M from the given tuple.
+static Ref mem_def(Ref def) {
+    if (match<mem::M>(def->type())) { return def; }
+
+    if (def->num_projs() > 1) {
+        for (auto proj : def->projs()) {
+            if (auto mem = mem_def(proj)) { return mem; }
+        }
+    }
+
+    return nullptr;
+}
+
+/// Returns the memory argument of a function if it has one.
+inline Ref mem_var(Lam* lam) { return mem_def(lam->var()); }
+
+/// Swapps the memory occurrences in the given def with the given memory.
+inline Ref replace_mem(Ref mem, Ref arg) {
+    // TODO: maybe use rebuild instead?
+    if (arg->num_projs() > 1) {
+        auto& w = mem->world();
+        return w.tuple(DefArray(arg->num_projs(), [&](auto i) { return replace_mem(mem, arg->proj(i)); }));
+    }
+
+    if (match<mem::M>(arg->type())) { return mem; }
+
+    return arg;
+}
+
+/// Removes recusively all occurences of mem from a type (sigma).
+static Ref strip_mem_ty(Ref def) {
+    auto& world = def->world();
+
+    if (auto sigma = def->isa<Sigma>()) {
+        DefVec new_ops;
+        for (auto op : sigma->ops()) {
+            if (auto new_op = strip_mem_ty(op); new_op != world.sigma()) new_ops.push_back(new_op);
+        }
+
+        return world.sigma(new_ops);
+    } else if (match<mem::M>(def)) {
+        return world.sigma();
+    }
+
+    return def;
+}
+
+/// Removes recusively all occurences of mem from a tuple.
+/// Returns an empty tuple if applied with mem alone.
+static Ref strip_mem(Ref def) {
+    auto& world = def->world();
+
+    if (auto tuple = def->isa<Tuple>()) {
+        DefVec new_ops;
+        for (auto op : tuple->ops()) {
+            if (auto new_op = strip_mem(op); new_op != world.tuple()) new_ops.push_back(new_op);
+        }
+
+        return world.tuple(new_ops);
+    } else if (match<mem::M>(def->type())) {
+        return world.tuple();
+    } else if (auto extract = def->isa<Extract>()) {
+        // The case that this one element is a mem and should return () is handled above.
+        if (extract->num_projs() == 1) { return extract; }
+
+        DefVec new_ops;
+        for (auto op : extract->projs()) {
+            if (auto new_op = strip_mem(op); new_op != world.tuple()) new_ops.push_back(new_op);
+        }
+
+        return world.tuple(new_ops);
+    }
+
+    return def;
+}
+
 } // namespace thorin::mem

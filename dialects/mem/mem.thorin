@@ -78,6 +78,14 @@
 ///
 /// ## Compilation Passes and Phases
 /// 
+/// ### Misc
+/// 
+/// Reshape mode enum.
+///
+.ax %mem.reshape_mode: *;
+.ax %mem.reshape_flat: %mem.reshape_mode;
+.ax %mem.reshape_arg: %mem.reshape_mode;
+/// 
 /// ### Passes
 /// 
 /// The SSA expects the eta expansion as argument
@@ -86,6 +94,8 @@
 .ax %mem.copy_prop_pass: [%compile.Pass,%compile.Pass, .Bool] -> %compile.Pass;
 .ax %mem.remem_elim_pass: %compile.Pass;
 .ax %mem.alloc2malloc_pass: %compile.Pass;
+.ax %mem.reshape_pass: %mem.reshape_mode -> %compile.Pass;
+.ax %mem.add_mem_pass: %compile.Pass;
 /// 
 /// ### Phases
 /// 
