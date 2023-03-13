@@ -277,14 +277,14 @@ Sort Def::sort() const {
 const Def* Def::arity() const {
     if (auto sigma  = isa<Sigma>()) return world().lit_nat(sigma->num_ops());
     if (auto arr    = isa<Arr  >()) return arr->shape();
-    if (sort() == Sort::Term)       return type()->arity();
-    return world().lit_nat(1);
+    if (auto t = type())            return t->arity();
+    return world().lit_nat_1();
 }
 
 std::optional<nat_t> Def::isa_lit_arity() const {
     if (auto sigma  = isa<Sigma>()) return sigma->num_ops();
     if (auto arr    = isa<Arr  >()) return isa_lit(arr->shape());
-    if (sort() == Sort::Term)       return type()->isa_lit_arity();
+    if (auto t = type())            return t->isa_lit_arity();
     return 1;
 }
 
