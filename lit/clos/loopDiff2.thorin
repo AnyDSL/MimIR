@@ -212,7 +212,7 @@
 
             .con enter [mem: %mem.M] = {
                 .let lea_pb = %mem.lea (⊤:.Nat, <⊤:.Nat; pb_type>, 0) (pb_arr, i);
-                .let (backward_pass_mem, backward_pass) = %mem.load (pb_type, 0) (mem, lea_pb);
+                .let (backward_pass_mem, backward_pass) = %mem.load (mem, lea_pb);
                 backward_pass ( backward_pass_mem, 1:i32, yield )
             };
 
@@ -228,14 +228,14 @@
             };
 
             .con yield [mem: %mem.M] = {
-                loop_head( mem, %core.wrap.add _32 0 (i, 1:i32) )
+                loop_head( mem, %core.wrap.add 0 (i, 1:i32) )
             };
 
             .con enter [mem: %mem.M] = {
                 loop_body ( mem, i, yield )
             };
 
-            .let condition = %core.icmp.ul 4294967296 (i, %core.bitcast (i32, .Nat) size);
+            .let condition = %core.icmp.ul (i, %core.bitcast (i32, .Nat) size);
             .let target = (exit, enter)#condition;
             target ( mem )
         };

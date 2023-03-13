@@ -4,8 +4,8 @@
 
 namespace thorin::demo {
 
-const Def* normalize_const(const Def*, const Def*, const Def* arg, const Def*) {
-    auto& world = arg->world();
+Ref normalize_const(Ref type, Ref, Ref arg) {
+    auto& world = type->world();
     return world.lit(world.type_idx(arg), 42);
 }
 

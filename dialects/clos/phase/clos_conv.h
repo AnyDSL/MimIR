@@ -19,7 +19,7 @@ public:
     FreeDefAna(World& world)
         : world_(world)
         , cur_pass_id(1)
-        , lam2nodes_(){};
+        , lam2nodes_() {}
 
     /// FreeDefAna::run will compute free defs (FD) that appear in @p lam%s body.
     /// Nominal Def%s are only considered free if they are annotated with Clos::freeBB or
@@ -114,7 +114,7 @@ private:
     /// @{
     void rewrite_body(Lam* lam, Def2Def& subst);
     const Def* rewrite(const Def* old_def, Def2Def& subst);
-    Def* rewrite_nom(Def* nom, const Def* new_type, const Def* new_dbg, Def2Def& subst);
+    Def* rewrite_nom(Def* nom, const Def* new_type, Def2Def& subst);
     const Pi* rewrite_type_cn(const Pi*, Def2Def& subst);
     const Def* type_clos(const Pi* pi, Def2Def& subst, const Def* ent_type = nullptr);
     /// @}

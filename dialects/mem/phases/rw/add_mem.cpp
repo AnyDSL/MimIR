@@ -44,7 +44,7 @@ static const Def* rewrite_nom_lam_in_tuple(const Def* def, F&& rewrite, H&& rewr
     DefArray new_ops{tuple->ops(), [&](const Def* op) {
                          return rewrite_nom_lam_in_tuple(op, std::forward<F>(rewrite), std::forward<H>(rewrite_idx));
                      }};
-    return w.extract(w.tuple(new_ops, tuple->dbg()), rewrite_idx(extract->index()), extract->dbg());
+    return w.extract(w.tuple(new_ops), rewrite_idx(extract->index()));
 }
 
 // @pre isa_apped_nom_lam_in_tuple(def) valid
@@ -58,7 +58,7 @@ static const Def* rewrite_apped_nom_lam_in_tuple(const Def* def,
     auto callee = rewrite_nom_lam_in_tuple(app->callee(), std::forward<RewriteCallee>(rewrite_callee),
                                            std::forward<RewriteIdx>(rewrite_idx));
     auto arg    = std::forward<RewriteArg>(rewrite_arg)(app->arg());
-    return app->rebuild(w, app->type(), {callee, arg}, app->dbg());
+    return app->rebuild(w, app->type(), {callee, arg});
 }
 
 // Entry point of the phase.
@@ -92,7 +92,7 @@ const Def* AddMem::rewrite_type(const Def* type) {
     if (auto it = mem_rewritten_.find(type); it != mem_rewritten_.end()) return it->second;
 
     DefArray new_ops{type->num_ops(), [&](size_t i) { return rewrite_type(type->op(i)); }};
-    return mem_rewritten_[type] = type->rebuild(world(), type->type(), new_ops, type->dbg());
+    return mem_rewritten_[type] = type->rebuild(world(), type->type(), new_ops);
 }
 
 const Def* AddMem::rewrite_pi(const Pi* pi) {
@@ -105,7 +105,7 @@ const Def* AddMem::rewrite_pi(const Pi* pi) {
             DefArray{dom->num_projs() + 1, [&](size_t i) { return i == 0 ? mem::type_mem(world()) : new_dom[i - 1]; }};
     }
 
-    return mem_rewritten_[pi] = world().pi(new_dom, pi->codom(), pi->dbg());
+    return mem_rewritten_[pi] = world().pi(new_dom, pi->codom());
 }
 
 const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
@@ -147,7 +147,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
         bool is_bound = sched_.scope().bound(nom) || nom == curr_lam;
 
         if (new_nom == nom) // if not stubbed yet
-            if (auto new_pi = rewrite_pi(pi); new_pi != pi) { new_nom = nom->stub(world(), new_pi, nom->dbg()); }
+            if (auto new_pi = rewrite_pi(pi); new_pi != pi) { new_nom = nom->stub(world(), new_pi); }
 
         if (!is_bound) {
             world().DLOG("free lam {}", nom);
@@ -156,9 +156,9 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
         }
 
         auto var_offset = new_nom->num_doms() - nom->num_doms(); // have we added a mem var?
-        if (nom->num_vars() != 0) mem_rewritten_[nom->var()] = new_nom->var(nom->var()->dbg());
+        if (nom->num_vars() != 0) mem_rewritten_[nom->var()] = new_nom->var();
         for (size_t i = 0; i < nom->num_vars() && new_nom->num_vars() > 1; ++i)
-            mem_rewritten_[nom->var(i)] = new_nom->var(i + var_offset, nom->var(i)->dbg());
+            mem_rewritten_[nom->var(i)] = new_nom->var(i + var_offset);
 
         mem_rewritten_[new_nom]           = new_nom;
         mem_rewritten_[nom]               = new_nom;
@@ -194,7 +194,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
             new_args[i] =
                 i == 0 ? add_mem_to_lams(place, mem_for_lam(place)) : add_mem_to_lams(place, arg->proj(i - offset));
         }
-        return arg->world().tuple(new_args, arg->dbg());
+        return arg->world().tuple(new_args);
     };
 
     // call-site of a nominal lambda
@@ -206,8 +206,8 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
 
     // call-site of a continuation
     if (auto app = def->isa<App>(); app && (app->callee()->dep() & Dep::Var)) {
-        return mem_rewritten_[def] = app->rebuild(
-                   world(), app->type(), {add_mem_to_lams(place, app->callee()), rewrite_arg(app->arg())}, app->dbg());
+        return mem_rewritten_[def] =
+                   app->rebuild(world(), app->type(), {add_mem_to_lams(place, app->callee()), rewrite_arg(app->arg())});
     }
 
     // call-site of an axiom (assuming mems are only in the final app..)
@@ -227,7 +227,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
         }
         auto rewritten = mem_rewritten_[def] =
             app->rebuild(world(), app->type(),
-                         {add_mem_to_lams(place, app->callee()), world().tuple(new_args, arg->dbg())}, app->dbg());
+                         {add_mem_to_lams(place, app->callee()), world().tuple(new_args)->set(arg->dbg())})->set(app->dbg());
         if (match<mem::M>(rewritten->type())) {
             world().DLOG("memory from axiom {} : {}", rewritten, rewritten->type());
             val2mem_[place] = rewritten;
@@ -246,7 +246,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
         auto new_arg    = add_mem_to_lams(place, app->arg());
         if (app->callee()->type()->as<Pi>()->num_doms() + 1 == new_callee->type()->as<Pi>()->num_doms())
             new_arg = rewrite_arg(app->arg());
-        auto rewritten = mem_rewritten_[def] = app->rebuild(world(), app->type(), {new_callee, new_arg}, app->dbg());
+        auto rewritten = mem_rewritten_[def] = app->rebuild(world(), app->type(), {new_callee, new_arg})->set(app->dbg());
         if (match<mem::M>(rewritten->type())) {
             world().DLOG("memory from other {} : {}", rewritten, rewritten->type());
             val2mem_[place] = rewritten;
@@ -268,7 +268,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
                          return add_mem_to_lams(place, op);
                      }};
 
-    auto tmp = mem_rewritten_[def] = def->rebuild(world(), rewrite_type(def->type()), new_ops, def->dbg());
+    auto tmp = mem_rewritten_[def] = def->rebuild(world(), rewrite_type(def->type()), new_ops)->set(def->dbg());
     // if (match<mem::M>(tmp->type())) {
     //     world().DLOG("memory from other op 1 {} : {}", tmp, tmp->type());
     //     val2mem_[place] = tmp;

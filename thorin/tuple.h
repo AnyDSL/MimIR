@@ -7,11 +7,11 @@ namespace thorin {
 class Sigma : public Def {
 private:
     /// Constructor for a *structural* Sigma.
-    Sigma(const Def* type, Defs ops, const Def* dbg)
-        : Def(Node, type, ops, 0, dbg) {}
+    Sigma(const Def* type, Defs ops)
+        : Def(Node, type, ops, 0) {}
     /// Constructor for a *nom*inal Sigma.
-    Sigma(const Def* type, size_t size, const Def* dbg)
-        : Def(Node, type, size, 0, dbg) {}
+    Sigma(const Def* type, size_t size)
+        : Def(Node, type, size, 0) {}
 
 public:
     /// @name setters
@@ -23,39 +23,30 @@ public:
     /// @name virtual methods
     ///@{
     void check() override;
-    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
-    Sigma* stub(World&, const Def*, const Def*) override;
     const Sigma* restructure() override;
     ///@}
 
-    static constexpr auto Node = Node::Sigma;
-    friend class World;
+    THORIN_DEF_MIXIN(Sigma)
+    Sigma* stub_(World&, Ref) override;
 };
 
 /// Data constructor for a Sigma.
 class Tuple : public Def {
 private:
-    Tuple(const Def* type, Defs args, const Def* dbg)
-        : Def(Node, type, args, 0, dbg) {}
+    Tuple(const Def* type, Defs args)
+        : Def(Node, type, args, 0) {}
 
-public:
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
-    ///@}
-
-    static constexpr auto Node = Node::Tuple;
-    friend class World;
+    THORIN_DEF_MIXIN(Tuple)
 };
 
 class Arr : public Def {
 private:
     /// Constructor for a *structural* Arr.
-    Arr(const Def* type, const Def* shape, const Def* body, const Def* dbg)
-        : Def(Node, type, {shape, body}, 0, dbg) {}
+    Arr(const Def* type, const Def* shape, const Def* body)
+        : Def(Node, type, {shape, body}, 0) {}
     /// Constructor for a *nom*inaml Arr.
-    Arr(const Def* type, const Def* dbg)
-        : Def(Node, type, 2, 0, dbg) {}
+    Arr(const Def* type)
+        : Def(Node, type, 2, 0) {}
 
 public:
     /// @name ops
@@ -71,24 +62,22 @@ public:
     /// @name virtual methods
     ///@{
     size_t first_dependend_op() override { return 1; }
-    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
-    Arr* stub(World&, const Def*, const Def*) override;
     const Def* restructure() override;
     void check() override;
     ///@}
 
-    static constexpr auto Node = Node::Arr;
-    friend class World;
+    THORIN_DEF_MIXIN(Arr)
+    Arr* stub_(World&, Ref) override;
 };
 
 class Pack : public Def {
 private:
     /// Constructor for a *structural* Pack.
-    Pack(const Def* type, const Def* body, const Def* dbg)
-        : Def(Node, type, {body}, 0, dbg) {}
+    Pack(const Def* type, const Def* body)
+        : Def(Node, type, {body}, 0) {}
     /// Constructor for a *nom*inaml Pack.
-    Pack(const Def* type, const Def* dbg)
-        : Def(Node, type, 1, 0, dbg) {}
+    Pack(const Def* type)
+        : Def(Node, type, 1, 0) {}
 
 public:
     /// @name ops
@@ -103,20 +92,18 @@ public:
 
     /// @name virtual methods
     ///@{
-    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
-    Pack* stub(World&, const Def*, const Def*) override;
     const Def* restructure() override;
     ///@}
 
-    static constexpr auto Node = Node::Pack;
-    friend class World;
+    THORIN_DEF_MIXIN(Pack)
+    Pack* stub_(World&, Ref) override;
 };
 
 /// Extracts from a Sigma or Arr-typed Extract::tuple the element at position Extract::index.
 class Extract : public Def {
 private:
-    Extract(const Def* type, const Def* tuple, const Def* index, const Def* dbg)
-        : Def(Node, type, {tuple, index}, 0, dbg) {}
+    Extract(const Def* type, const Def* tuple, const Def* index)
+        : Def(Node, type, {tuple, index}, 0) {}
 
 public:
     /// @name ops
@@ -125,13 +112,7 @@ public:
     const Def* index() const { return op(1); }
     ///@}
 
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
-    ///@}
-
-    static constexpr auto Node = Node::Extract;
-    friend class World;
+    THORIN_DEF_MIXIN(Extract)
 };
 
 /// Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple.
@@ -140,8 +121,8 @@ public:
 ///     The Insert itself is a *new* Tuple / Pack which contains the inserted Insert::value.
 class Insert : public Def {
 private:
-    Insert(const Def* tuple, const Def* index, const Def* value, const Def* dbg)
-        : Def(Node, tuple->type(), {tuple, index, value}, 0, dbg) {}
+    Insert(const Def* tuple, const Def* index, const Def* value)
+        : Def(Node, tuple->type(), {tuple, index, value}, 0) {}
 
 public:
     /// @name ops
@@ -151,13 +132,7 @@ public:
     const Def* value() const { return op(2); }
     ///@}
 
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
-    ///@}
-
-    static constexpr auto Node = Node::Insert;
-    friend class World;
+    THORIN_DEF_MIXIN(Insert)
 };
 
 /// Flattens a sigma/array/pack/tuple.

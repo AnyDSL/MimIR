@@ -1,7 +1,5 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin %s --output-ll %t.ll -o -
-
-// TODO: add filecheck
+// RUN: %thorin %s -o - | FileCheck %s
 
 .import core;
 .import mem;
@@ -32,3 +30,12 @@
         // optimization_phase
         (%compile.single_pass_phase %mem.add_mem_pass)
 };
+
+// CHECK: g {{[a-z0-9_:]*}}[[[gMemId:[a-z_0-9]*]]: %mem.M, [[gaId:[a-z_0-9]*]]: .Idx 4294967296, [[gRetId:[a-z_0-9]*]]: .Cn [%mem.M, .Idx 4294967296]]
+// CHECK: [[gRetId]] ([[gMemId]], [[gaId]])
+
+// CHECK: h {{[a-z0-9_:]*}}[[[hMemId:[a-z_0-9]*]]: %mem.M, [[haId:[a-z_0-9]*]]: .Idx 4294967296, [[hRetId:[a-z_0-9]*]]: .Cn [%mem.M, .Idx 4294967296]]
+// CHECK: [[hRetId]] ([[hMemId]], [[haId]])
+
+// CHECK: main {{[a-z0-9_:]*}}[[[memId:[a-z_0-9]*]]: %mem.M
+// CHECK: f ([[memId]], 

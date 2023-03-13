@@ -15,51 +15,7 @@
 .import matrix;
 .import refly;
 ///
-/// ## Types
-/// 
-/// ### %opt.Dialect
-///
-.ax %opt.Dialect: *;
-///
-/// ## Operations
-///
-/// ### registered dialects
-/// 
-/// We expect the name in the tag before the `_` to be the name of the dialect (as given in `DialectInfo.plugin_name`).
-/// 
-.ax %opt.core_dialect    : %opt.Dialect;
-.ax %opt.mem_dialect     : %opt.Dialect;
-.ax %opt.demo_dialect    : %opt.Dialect;
-.ax %opt.affine_dialect  : %opt.Dialect;
-.ax %opt.autodiff_dialect: %opt.Dialect;
-.ax %opt.clos_dialect    : %opt.Dialect;
-.ax %opt.direct_dialect  : %opt.Dialect;
-.ax %opt.refly_dialect   : %opt.Dialect;
-.ax %opt.matrix_dialect   : %opt.Dialect;
-/// 
-/// ### %opt.is_loaded
-/// 
-/// Indicates whether a dialect is loaded.
-/// The normalizer will statically evaluate this expression to a constant boolean.
-/// TODO: find correct point (not at parsing but before compilation)
-/// 
-.ax %opt.is_loaded: %opt.Dialect -> .Bool, normalize_is_loaded;
-///
 /// ## Compilation passes, phases, and pipelines
-///
-/// ### Phases
-/// 
-.let empty_pass = %compile.nullptr_pass;
-.let empty_phase = %compile.passes_to_phase 0 ();
-.ax %opt.dialect_select: Π [T:*] -> %opt.Dialect -> T -> T -> T;
-.let dialect_phase = %opt.dialect_select %compile.Phase;
-.let dialect_pass = %opt.dialect_select %compile.Pass;
-.lam dialect_cond_phase ![dialect: %opt.Dialect,phase: %compile.Phase] -> %compile.Phase = {
-  dialect_phase dialect phase empty_phase
-};
-.lam dialect_cond_pass ![dialect: %opt.Dialect,pass: %compile.Pass] -> %compile.Pass = {
-  dialect_pass dialect pass empty_pass
-};
 ///
 /// ### Pipelines
 /// 
@@ -76,18 +32,19 @@
           (%compile.combine_pass_list (⊤:.Nat)
           (
             optimization_pass_list,
-            %compile.pass_list (dialect_cond_pass (%opt.affine_dialect, %affine.lower_for_pass)),
+            %compile.pass_list
+              (dialect_cond_pass (%compile.affine_dialect, %affine.lower_for_pass)),
             mem_opt_pass_list
           ))
         )
-        (dialect_cond_phase (%opt.autodiff_dialect,
+        (dialect_cond_phase (%compile.autodiff_dialect,
           %compile.combined_phase (%compile.phase_list
             (%compile.single_pass_phase %autodiff.ad_eval_pass)
             // optimization_phase
             (%compile.single_pass_phase %autodiff.ad_zero_pass)
           )
         ))
-        (dialect_cond_phase (%opt.direct_dialect,
+        (dialect_cond_phase (%compile.direct_dialect,
           direct_phases
         ))
         (dialect_cond_phase (%opt.matrix_dialect,
@@ -97,11 +54,11 @@
             (dialect_cond_phase (%opt.affine_dialect, %compile.single_pass_phase %affine.lower_for_pass))
         )))
         (%compile.single_pass_phase %compile.internal_cleanup_pass)
-        (dialect_cond_phase (%opt.clos_dialect,
+        (dialect_cond_phase (%compile.clos_dialect,
           clos_phases
         ))
         (%compile.single_pass_phase %compile.lam_spec_pass)
-        (dialect_cond_phase (%opt.autodiff_dialect,
+        (dialect_cond_phase (%compile.autodiff_dialect,
           ad_cleanup_phase
         ))
         // CodeGenPrep
@@ -115,7 +72,7 @@
               %mem.remem_elim_pass
               %mem.alloc2malloc_pass,
             %compile.pass_list
-              (dialect_cond_pass (%opt.refly_dialect, %refly.remove_dbg_perm_pass)),
+              (dialect_cond_pass (%compile.refly_dialect, %refly.remove_dbg_perm_pass)),
           ))
         )
 };

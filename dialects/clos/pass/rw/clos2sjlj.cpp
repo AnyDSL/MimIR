@@ -83,7 +83,7 @@ Lam* Clos2SJLJ::get_throw(const Def* dom) {
     auto& tlam         = p->second;
     if (inserted || !tlam) {
         auto pi                = w.cn(clos_sub_env(dom, w.sigma({jb_type(), rb_type(), tag_type()})));
-        tlam                   = w.nom_lam(pi, w.dbg("throw"));
+        tlam                   = w.nom_lam(pi)->set("throw");
         auto [m0, env, var]    = split(tlam->var());
         auto [jbuf, rbuf, tag] = env->projs<3>();
         auto [m1, r]           = mem::op_alloc(var->type(), m0)->projs<2>();
@@ -103,7 +103,7 @@ Lam* Clos2SJLJ::get_lpad(Lam* lam, const Def* rb) {
     if (inserted || !lpad) {
         auto [_, env_type, dom] = split(lam->dom());
         auto pi                 = w.cn(w.sigma({mem::type_mem(w), env_type}));
-        lpad                    = w.nom_lam(pi, w.dbg("lpad"));
+        lpad                    = w.nom_lam(pi)->set("lpad");
         auto [m, env, __]       = split(lpad->var());
         auto [m1, arg_ptr]      = w.call<mem::load>(Defs{m, rb})->projs<2>();
         arg_ptr                 = core::op_bitcast(mem::type_ptr(dom), arg_ptr);
@@ -142,10 +142,10 @@ void Clos2SJLJ::enter() {
     auto branches    = DefVec(lam2tag_.size() + 1);
     {
         auto env             = w.tuple(body->args().skip_front());
-        auto new_callee      = w.nom_lam(w.cn({mem::type_mem(w), env->type()}), w.dbg("sjlj_wrap"));
+        auto new_callee      = w.nom_lam(w.cn({mem::type_mem(w), env->type()}))->set("sjlj_wrap");
         auto [m, env_var, _] = split(new_callee->var());
         auto new_args = DefArray(env->num_projs() + 1, [&](auto i) { return (i == 0) ? m : env_var->proj(i - 1); });
-        new_callee->app(false, body->callee(), new_args, body->dbg());
+        new_callee->app(false, body->callee(), new_args);
         branches[0] = clos_pack(env, new_callee, branch_type);
     }
 

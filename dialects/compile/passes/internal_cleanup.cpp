@@ -8,7 +8,7 @@ namespace thorin::compile {
 
 void InternalCleanup::enter() {
     Lam* lam = curr_nom();
-    if (lam->name().starts_with(prefix_)) {
+    if (lam->sym()->starts_with(prefix_)) {
         lam->make_internal();
         world().DLOG("internalized {}", lam);
     }

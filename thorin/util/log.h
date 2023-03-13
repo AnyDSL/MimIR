@@ -1,14 +1,19 @@
 #pragma once
 
-#include "thorin/debug.h"
-
-#include "thorin/util/print.h"
+#include "thorin/util/loc.h"
 
 namespace thorin {
 
-struct Log {
+class Log {
+public:
     enum class Level { Error, Warn, Info, Verbose, Debug };
 
+    Log(SymPool& sym_pool)
+        : sym_pool_(sym_pool) {}
+
+    /// @name log
+    ///@{
+    /// Output @p fmt to Log::ostream; does nothing if Log::ostream is `nullptr`.
     template<class... Args>
     void log(Level level, Loc loc, const char* fmt, Args&&... args) const {
         if (ostream && int(level) <= int(this->level)) {
@@ -18,26 +23,39 @@ struct Log {
             print(*ostream, fmt, std::forward<Args&&>(args)...) << std::endl;
         }
     }
-    void log() const {} ///< Dummy for Debug build.
+    template<class... Args>
+    void log(Level level, const char* file, uint16_t line, const char* fmt, Args&&... args) {
+        log(level, Loc(sym_pool_.sym(file), line), fmt, std::forward<Args&&>(args)...);
+    }
+    ///@}
 
+    /// @name conversions
+    ///@{
     static std::string_view level2acro(Level);
     static Level str2level(std::string_view);
     static int level2color(Level level);
     static std::string colorize(std::string_view str, int color);
+    ///@}
 
+    /// @name Log Level and output stream as public members
+    ///@{
     std::ostream* ostream = nullptr;
     Level level           = Level::Error; ///< **Maximum** log Level.
+    ///@}
+
+private:
+    SymPool& sym_pool_;
 };
 
 // clang-format off
-#define ELOG(...) log().log(thorin::Log::Level::Error,   thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
-#define WLOG(...) log().log(thorin::Log::Level::Warn,    thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
-#define ILOG(...) log().log(thorin::Log::Level::Info,    thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
-#define VLOG(...) log().log(thorin::Log::Level::Verbose, thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
+#define ELOG(...) log().log(thorin::Log::Level::Error,   __FILE__, __LINE__, __VA_ARGS__)
+#define WLOG(...) log().log(thorin::Log::Level::Warn,    __FILE__, __LINE__, __VA_ARGS__)
+#define ILOG(...) log().log(thorin::Log::Level::Info,    __FILE__, __LINE__, __VA_ARGS__)
+#define VLOG(...) log().log(thorin::Log::Level::Verbose, __FILE__, __LINE__, __VA_ARGS__)
 #ifndef NDEBUG
-#define DLOG(...) log().log(thorin::Log::Level::Debug,   thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
+#define DLOG(...) log().log(thorin::Log::Level::Debug,   __FILE__, __LINE__, __VA_ARGS__)
 #else
-#define DLOG(...) log().log()
+#define DLOG(...) dummy()
 #endif
 // clang-format on
 

@@ -3,7 +3,7 @@
 #include <fstream>
 #include <ranges>
 
-#include "thorin/world.h"
+#include "thorin/driver.h"
 
 #include "thorin/fe/parser.h"
 #include "thorin/util/sys.h"
@@ -14,12 +14,13 @@
 using namespace thorin;
 
 TEST(Zip, fold) {
-    World w;
+    Driver driver;
+    World& w = driver.world;
 
     Normalizers normalizers;
     auto core_d = Dialect::load("core", {});
     core_d.register_normalizers(normalizers);
-    fe::Parser::import_module(w, "core", {}, &normalizers);
+    fe::Parser::import_module(w, w.sym("core"), {}, &normalizers);
 
     // clang-format off
     auto a = w.tuple({w.tuple({w.lit_idx( 0), w.lit_idx( 1), w.lit_idx( 2)}),
@@ -43,12 +44,13 @@ TEST(Zip, fold) {
 }
 
 TEST(World, simplify_one_tuple) {
-    World w;
+    Driver driver;
+    World& w = driver.world;
 
     ASSERT_EQ(w.lit_ff(), w.tuple({w.lit_ff()})) << "constant fold (false) -> false";
 
     auto type = w.nom_sigma(w.type(), 2);
-    type->set({w.type_nat(), w.type_nat()});
+    type->set(Defs{w.type_nat(), w.type_nat()});
     ASSERT_EQ(type, w.sigma({type})) << "constant fold [nom] -> nom";
 
     auto v = w.tuple(type, {w.lit_idx(42), w.lit_idx(1337)});
@@ -56,7 +58,9 @@ TEST(World, simplify_one_tuple) {
 }
 
 TEST(World, dependent_extract) {
-    World w;
+    Driver driver;
+    World& w = driver.world;
+
     auto sig = w.nom_sigma(w.type<1>(), 2); // sig = [T: *, T]
     sig->set(0, w.type<0>());
     sig->set(1, sig->var(0_u64));
@@ -65,29 +69,37 @@ TEST(World, dependent_extract) {
 }
 
 TEST(Axiom, mangle) {
-    EXPECT_EQ(Axiom::demangle(*Axiom::mangle("test")), "test");
-    EXPECT_EQ(Axiom::demangle(*Axiom::mangle("azAZ09_")), "azAZ09_");
-    EXPECT_EQ(Axiom::demangle(*Axiom::mangle("01234567")), "01234567");
-    EXPECT_FALSE(Axiom::mangle("012345678"));
-    EXPECT_FALSE(Axiom::mangle("!"));
+    Driver driver;
+    World& w = driver.world;
+
+    EXPECT_EQ(Axiom::demangle(w, *Axiom::mangle(w.sym("test"))), w.sym("test"));
+    EXPECT_EQ(Axiom::demangle(w, *Axiom::mangle(w.sym("azAZ09_"))), w.sym("azAZ09_"));
+    EXPECT_EQ(Axiom::demangle(w, *Axiom::mangle(w.sym("01234567"))), w.sym("01234567"));
+    EXPECT_FALSE(Axiom::mangle(w.sym("012345678")));
+    EXPECT_FALSE(Axiom::mangle(w.sym("!")));
     // Check whether lower 16 bits are properly ignored
-    EXPECT_EQ(Axiom::demangle(*Axiom::mangle("test") | 0xFF_u64), "test");
-    EXPECT_EQ(Axiom::demangle(*Axiom::mangle("01234567") | 0xFF_u64), "01234567");
+    EXPECT_EQ(Axiom::demangle(w, *Axiom::mangle(w.sym("test")) | 0xFF_u64), w.sym("test"));
+    EXPECT_EQ(Axiom::demangle(w, *Axiom::mangle(w.sym("01234567")) | 0xFF_u64), w.sym("01234567"));
 }
 
 TEST(Axiom, split) {
-    auto [dialect, group, tag] = *Axiom::split("%foo.bar.baz");
-    EXPECT_EQ(dialect, "foo");
-    EXPECT_EQ(group, "bar");
-    EXPECT_EQ(tag, "baz");
+    Driver driver;
+    World& w = driver.world;
+
+    auto [dialect, group, tag] = Axiom::split(w, w.sym("%foo.bar.baz"));
+    EXPECT_EQ(dialect, w.sym("foo"));
+    EXPECT_EQ(group, w.sym("bar"));
+    EXPECT_EQ(tag, w.sym("baz"));
 }
 
 TEST(trait, idx) {
-    World w;
+    Driver driver;
+    World& w = driver.world;
+
     Normalizers normalizers;
     auto core_d = Dialect::load("core", {});
     core_d.register_normalizers(normalizers);
-    fe::Parser::import_module(w, "core", {}, &normalizers);
+    fe::Parser::import_module(w, w.sym("core"), {}, &normalizers);
 
     EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0000'00FF_n))), 1);
     EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0000'0100_n))), 1);
@@ -105,13 +117,14 @@ TEST(trait, idx) {
     EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0000'0000_n))), 8);
 }
 
-const Def* normalize_test_curry(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+Ref normalize_test_curry(Ref type, Ref callee, Ref arg) {
     auto& w = arg->world();
-    return w.raw_app(type, callee, w.lit_nat(42), dbg);
+    return w.raw_app(type, callee, w.lit_nat(42));
 }
 
 TEST(Axiom, curry) {
-    World w;
+    Driver driver;
+    World& w = driver.world;
 
     DefArray n(11, [&w](size_t i) { return w.lit_nat(i); });
     auto nat = w.type_nat();
@@ -129,7 +142,7 @@ TEST(Axiom, curry) {
         EXPECT_EQ(curry, 5);
         EXPECT_EQ(trip, 3);
 
-        auto ax = w.axiom(normalize_test_curry, curry, trip, pi, w.dbg("test_5_3"));
+        auto ax = w.axiom(normalize_test_curry, curry, trip, pi)->set("test_5_3");
         auto a1 = w.app(w.app(w.app(w.app(w.app(ax, n[0]), n[1]), n[2]), n[3]), n[4]);
         auto a2 = w.app(w.app(w.app(a1, n[5]), n[6]), n[7]);
         auto a3 = w.app(w.app(w.app(a2, n[8]), n[9]), n[10]);
@@ -150,7 +163,7 @@ TEST(Axiom, curry) {
         EXPECT_EQ(curry, 1);
         EXPECT_EQ(trip, 1);
 
-        auto ax = w.axiom(normalize_test_curry, curry, trip, rec, w.dbg("test_1_1"));
+        auto ax = w.axiom(normalize_test_curry, curry, trip, rec)->set("test_1_1");
         auto a1 = w.app(ax, n[0]);
         auto a2 = w.app(a1, n[1]);
         auto a3 = w.app(a2, n[2]);
@@ -169,7 +182,7 @@ TEST(Axiom, curry) {
         EXPECT_EQ(curry, 4);
         EXPECT_EQ(trip, 0);
 
-        auto ax = w.axiom(normalize_test_curry, 3, 0, pi, w.dbg("test_3_0"));
+        auto ax = w.axiom(normalize_test_curry, 3, 0, pi)->set("test_3_0");
         auto a1 = w.app(w.app(w.app(ax, n[0]), n[1]), n[2]);
         auto a2 = w.app(a1, n[3]);
 

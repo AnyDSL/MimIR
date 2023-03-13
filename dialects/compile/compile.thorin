@@ -25,8 +25,35 @@
 .Pi PassList: *, %compile.Pass = PassList;
 .Pi CombinedPhase: *, %compile.Phase = CombinedPhase;
 ///
+/// (This is a forward declaration for opt.thorin.)
+///
+.ax %compile.Dialect: *;
+///
 /// ## Expressions
 ///
+/// ### registered dialects
+/// 
+/// We expect the name in the tag before the `_` to be the name of the dialect (as given in `DialectInfo.plugin_name`).
+/// (This is a forward declaration for opt.thorin.)
+/// 
+.ax %compile.core_dialect    : %compile.Dialect;
+.ax %compile.mem_dialect     : %compile.Dialect;
+.ax %compile.demo_dialect    : %compile.Dialect;
+.ax %compile.affine_dialect  : %compile.Dialect;
+.ax %compile.autodiff_dialect: %compile.Dialect;
+.ax %compile.clos_dialect    : %compile.Dialect;
+.ax %compile.direct_dialect  : %compile.Dialect;
+.ax %compile.refly_dialect   : %compile.Dialect;
+.ax %compile.matrix_dialect  : %compile.Dialect;
+///
+/// ### %opt.is_loaded
+/// 
+/// Indicates whether a dialect is loaded.
+/// The normalizer will statically evaluate this expression to a constant boolean.
+/// TODO: find correct point (not at parsing but before compilation)
+/// 
+// .ax %opt.is_loaded: %opt.Dialect -> .Bool;
+/// 
 /// ### %compile.pipe
 /// 
 /// Given n phases, returns the representation of a pipeline.
@@ -118,5 +145,19 @@
 };
 .lam .extern _fallback_compile [] -> Pipeline = {
     default_core_pipeline
+};
+///
+/// ### Dependent Passes and Phases
+/// 
+.let empty_pass = %compile.nullptr_pass;
+.let empty_phase = %compile.passes_to_phase 0 ();
+.ax %compile.dialect_select: Π [T:*] -> %compile.Dialect -> T -> T -> T;
+.let dialect_phase = %compile.dialect_select %compile.Phase;
+.let dialect_pass = %compile.dialect_select %compile.Pass;
+.lam dialect_cond_phase ![dialect: %compile.Dialect,phase: %compile.Phase] -> %compile.Phase = {
+  dialect_phase dialect phase empty_phase
+};
+.lam dialect_cond_pass ![dialect: %compile.Dialect,pass: %compile.Pass] -> %compile.Pass = {
+  dialect_pass dialect pass empty_pass
 };
 

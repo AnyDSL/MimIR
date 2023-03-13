@@ -35,13 +35,13 @@ private:
 
 class DepTree {
 public:
-    DepTree(const World& world)
+    DepTree(World& world)
         : world_(world)
         , root_(std::make_unique<DepNode>(nullptr, 0)) {
         run();
     }
 
-    const World& world() const { return world_; };
+    World& world() const { return world_; };
     const DepNode* root() const { return root_.get(); }
     const DepNode* nom2node(Def* nom) const { return nom2node_.find(nom)->second.get(); }
     bool depends(Def* a, Def* b) const; ///< Does @p a depend on @p b?
@@ -52,7 +52,7 @@ private:
     VarSet run(Def*, const Def*);
     static void adjust_depth(DepNode* node, size_t depth);
 
-    const World& world_;
+    World& world_;
     std::unique_ptr<DepNode> root_;
     NomMap<std::unique_ptr<DepNode>> nom2node_;
     DefMap<VarSet> def2vars_;

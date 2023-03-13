@@ -3,51 +3,44 @@
 #include <deque>
 #include <memory>
 
+#include "thorin/def.h"
+
 #include "thorin/fe/tok.h"
 
 namespace thorin {
 
 class Infer;
 class Sigma;
+class World;
 
 namespace fe {
 
 class Scopes;
-
-class AST {
-public:
-    AST(Loc loc)
-        : loc_(loc) {}
-    virtual ~AST(){};
-
-    Loc loc() const { return loc_; }
-
-private:
-    Loc loc_;
-};
+using Def2Fields = DefMap<Array<Sym>>;
 
 /*
  * Pattern
  */
 
-class Ptrn : public AST {
+class Ptrn {
 public:
-    Ptrn(Loc loc, bool rebind, Sym sym, const Def* type)
-        : AST(loc)
+    Ptrn(Dbg dbg, bool rebind, const Def* type)
+        : dbg_(dbg)
         , rebind_(rebind)
-        , sym_(sym)
         , type_(type) {}
+    virtual ~Ptrn() {}
 
+    Dbg dbg() const { return dbg_; }
+    Loc loc() const { return dbg_.loc; }
+    Sym sym() const { return dbg_.sym; }
     bool rebind() const { return rebind_; }
-    Sym sym() const { return sym_; }
-    bool is_anonymous() const { return sym_.is_anonymous(); }
-    virtual void bind(Scopes&, const Def*) const = 0;
-    virtual const Def* type(World&) const        = 0;
-    const Def* dbg(World&);
+    bool is_anonymous() const { return sym() == '_'; }
+    virtual void bind(Scopes&, const Def*) const       = 0;
+    virtual const Def* type(World&, Def2Fields&) const = 0;
 
 protected:
+    Dbg dbg_;
     bool rebind_;
-    Sym sym_;
     mutable const Def* type_;
 };
 
@@ -55,17 +48,17 @@ using Ptrns = std::deque<std::unique_ptr<Ptrn>>;
 
 class IdPtrn : public Ptrn {
 public:
-    IdPtrn(Loc loc, bool rebind, Sym sym, const Def* type)
-        : Ptrn(loc, rebind, sym, type) {}
+    IdPtrn(Dbg dbg, bool rebind, const Def* type)
+        : Ptrn(dbg, rebind, type) {}
 
     void bind(Scopes&, const Def*) const override;
-    const Def* type(World&) const override;
+    const Def* type(World&, Def2Fields&) const override;
 };
 
 class TuplePtrn : public Ptrn {
 public:
-    TuplePtrn(Loc loc, bool rebind, Sym sym, Ptrns&& ptrns, const Def* type, std::vector<Infer*>&& infers)
-        : Ptrn(loc, rebind, sym, type)
+    TuplePtrn(Dbg dbg, bool rebind, Ptrns&& ptrns, const Def* type, std::vector<Infer*>&& infers)
+        : Ptrn(dbg, rebind, type)
         , ptrns_(std::move(ptrns))
         , infers_(std::move(infers)) {}
 
@@ -74,7 +67,7 @@ public:
     size_t num_ptrns() const { return ptrns().size(); }
 
     void bind(Scopes&, const Def*) const override;
-    const Def* type(World&) const override;
+    const Def* type(World&, Def2Fields&) const override;
 
 private:
     Ptrns ptrns_;

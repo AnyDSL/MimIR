@@ -18,7 +18,6 @@ public:
     void enter() override;
 
 private:
-    // Def2Def rewritten_lams;
     Def2Def rewritten_;
     DefSet rewritten_lams;
     std::vector<Lam*> lam_stack;

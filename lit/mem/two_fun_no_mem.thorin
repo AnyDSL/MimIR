@@ -13,21 +13,21 @@
 .let Tas = (I32, 0);
 
 .con f [mem: %mem.M, p: %mem.Ptr (I32, 0), ret: .Cn [%mem.M, I32]] = {
-    .let (mem2, v) = %mem.load Tas (mem, p);
+    .let (mem2, v) = %mem.load (mem, p);
 
     .con g1 [ret: .Cn I32] = {
-        .let b = %core.wrap.add _32 0 (v, 1:I32);
+        .let b = %core.wrap.add 0 (v, 1:I32);
         ret b
     };
 
     .con g2 [ret: .Cn I32] = {
-        .let c = %core.wrap.add _32 0 (v, 2:I32);
+        .let c = %core.wrap.add 0 (v, 2:I32);
         ret c
     };
 
     .con cont1 [a:I32] = {
         .con cont2 [b:I32] = {
-            .let c = %core.wrap.add _32 0 (a, b);
+            .let c = %core.wrap.add 0 (a, b);
             ret (mem2, c)
         };
         g2 cont2
@@ -38,7 +38,7 @@
 .con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
     
     .let (mem2,p) = %mem.alloc Tas mem;
-    .let mem3 = %mem.store Tas (mem2, p, argc);
+    .let mem3 = %mem.store (mem2, p, argc);
 
     f (mem3, p, return)
 };

@@ -20,20 +20,20 @@
     loop (mem, 0:(.Idx 4294967296), 0:(.Idx 4294967296))
 };
 
-// CHECK-DAG: .con .extern main _[[mainVarId:[0-9_]+]]::[mem_[[memId:[0-9_]+]]: %mem.M, argc_[[argcId:[0-9_]+]]: .Idx 4294967296, %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return_[[returnId:[0-9_]+]]: .Cn [%mem.M, .Idx 4294967296]] {{(@.*)?}}= {
+// CHECK-DAG: .con .extern main _[[mainVarId:[0-9_]+]]::[mem_[[memId:[0-9_]+]]: %mem.M, argc_[[argcId:[0-9_]+]]: .Idx 4294967296, %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return_[[returnId:[0-9_]+]]: .Cn [%mem.M, .Idx 4294967296]]{{(@.*)?}}= {
 // CHECK-DAG: loop_[[loopId:[0-9_]+]] (mem_[[memId]], 0:(.Idx 4294967296), 0:(.Idx 4294967296))
 
-// CHECK-DAG: .con return_[[returnEtaId:[0-9_]+]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, .Idx 4294967296] {{(@.*)?}}= {
+// CHECK-DAG: .con return_[[returnEtaId:[0-9_]+]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, .Idx 4294967296]{{(@.*)?}}= {
 // CHECK-DAG: return_[[returnId]] _[[returnEtaVarId]]
 
-// CHECK-DAG: .con loop_[[loopId]] _{{[0-9_]+}}::[mem_[[loopMemId:[0-9_]+]]: %mem.M, i_[[iterId:[0-9_]+]]: .Idx 4294967296, acc_[[accId:[0-9_]+]]: .Idx 4294967296] {{(@.*)?}}= {
+// CHECK-DAG: .con loop_[[loopId]] _{{[0-9_]+}}::[mem_[[loopMemId:[0-9_]+]]: %mem.M, i_[[iterId:[0-9_]+]]: .Idx 4294967296, acc_[[accId:[0-9_]+]]: .Idx 4294967296]{{(@.*)?}}= {
 // CHECK-DAG:   _[[condId:[0-9_]+]]: .Idx 2 = %core.icmp.XygLe 4294967296 (i_[[iterId]], argc_[[argcId]]);
 // CHECK-DAG: (_[[exitId:[0-9_]+]], body_[[bodyId:[0-9_]+]])#_[[condId]] mem_[[loopMemId]]
 
-// CHECK-DAG: .con _[[exitId]] [[mExitVarId:[0-9m_]+]]: %mem.M {{(@.*)?}}= {
+// CHECK-DAG: .con _[[exitId]] [[mExitVarId:[0-9a-z_]+]]: %mem.M{{(@.*)?}}= {
 // CHECK-DAG: return_[[returnEtaId]] ([[mExitVarId]], acc_[[accId]])
 
-// CHECK-DAG: .con body_[[bodyId]] [[mBodyVarId:[0-9m_]+]]: %mem.M {{(@.*)?}}= {
+// CHECK-DAG: .con body_[[bodyId]] [[mBodyVarId:[0-9a-z_]+]]: %mem.M{{(@.*)?}}= {
 // CHECK-DAG:   _[[addIterId:[0-9_]+]]: .Idx 4294967296 = %core.wrap.add 4294967296 0 (1:(.Idx 4294967296), i_[[iterId]]);
 // CHECK-DAG:   _[[addAccId:[0-9_]+]]: .Idx 4294967296 = %core.wrap.add 4294967296 0 (acc_[[accId]], i_[[iterId]]);
 // CHECK-DAG: loop_[[loopId]] ([[mBodyVarId]], _[[addIterId]], _[[addAccId]])

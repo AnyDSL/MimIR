@@ -13,68 +13,68 @@ enum Mode : nat_t {
     nuw  = 1 << 1,
 };
 
-using VMode = std::variant<Mode, nat_t, const Def*>;
+using VMode = std::variant<Mode, nat_t, Ref>;
 
-inline const Def* mode(World& w, VMode m) {
-    if (auto def = std::get_if<const Def*>(&m)) return *def;
+inline Ref mode(World& w, VMode m) {
+    if (auto def = std::get_if<Ref>(&m)) return *def;
     if (auto nat = std::get_if<nat_t>(&m)) return w.lit_nat(*nat);
     return w.lit_nat(std::get<Mode>(m));
 }
 
 /// @name fn - these guys yield the final function to be invoked for the various operations
 ///@{
-inline const Def* fn_bitcast(const Def* dst_t, const Def* src_t, const Def* dbg = {}) {
+inline Ref fn_bitcast(Ref dst_t, Ref src_t) {
     World& w = dst_t->world();
-    return w.app(w.ax<bitcast>(), {dst_t, src_t}, dbg);
+    return w.app(w.ax<bitcast>(), {dst_t, src_t});
 }
 ///@}
 
 /// @name op - these guys build the final function application for the various operations
 ///@{
-inline const Def* op(trait o, const Def* type, const Def* dbg = {}) {
+inline Ref op(trait o, Ref type) {
     World& w = type->world();
-    return w.app(w.ax(o), type, dbg);
+    return w.app(w.ax(o), type);
 }
-inline const Def* op_bitcast(const Def* dst_t, const Def* src, const Def* dbg = {}) {
+inline Ref op_bitcast(Ref dst_t, Ref src) {
     World& w = dst_t->world();
-    return w.app(fn_bitcast(dst_t, src->type()), src, dbg);
+    return w.app(fn_bitcast(dst_t, src->type()), src);
 }
-inline const Def* op(pe o, const Def* def, const Def* dbg = {}) {
+inline Ref op(pe o, Ref def) {
     World& w = def->world();
-    return w.app(w.app(w.ax(o), def->type()), def, dbg);
+    return w.app(w.app(w.ax(o), def->type()), def);
 }
 ///@}
 
 /// @name extract helper
 ///@{
-inline const Def* extract_unsafe(const Def* d, const Def* i, const Def* dbg = {}) {
+inline Ref extract_unsafe(Ref d, Ref i) {
     World& w = d->world();
-    return w.extract(d, w.call(conv::u, d->unfold_type()->arity(), i), dbg);
+    return w.extract(d, w.call(conv::u, d->unfold_type()->arity(), i));
 }
-inline const Def* extract_unsafe(const Def* d, u64 i, const Def* dbg = {}) {
+inline Ref extract_unsafe(Ref d, u64 i) {
     World& w = d->world();
-    return extract_unsafe(d, w.lit_idx(0_u64, i), dbg);
+    return extract_unsafe(d, w.lit_idx(0_u64, i));
 }
 ///@}
 
 /// @name insert helper
 ///@{
-inline const Def* insert_unsafe(const Def* d, const Def* i, const Def* val, const Def* dbg = {}) {
+inline Ref insert_unsafe(Ref d, Ref i, Ref val) {
     World& w = d->world();
-    return w.insert(d, w.call(conv::u, d->unfold_type()->arity(), i), val, dbg);
+    return w.insert(d, w.call(conv::u, d->unfold_type()->arity(), i), val);
 }
-inline const Def* insert_unsafe(const Def* d, u64 i, const Def* val, const Def* dbg = {}) {
+inline Ref insert_unsafe(Ref d, u64 i, Ref val) {
     World& w = d->world();
-    return insert_unsafe(d, w.lit_idx(0_u64, i), val, dbg);
+    return insert_unsafe(d, w.lit_idx(0_u64, i), val);
 }
 ///@}
 
 /// @name wrappers for unary operations
 ///@{
-inline const Def* op_wminus(VMode m, const Def* a, const Def* dbg = {}) {
+inline Ref op_wminus(VMode m, Ref a) {
     World& w = a->world();
     auto s   = as_lit(w.iinfer(a));
-    return w.dcall(dbg, wrap::sub, mode(w, m), Defs{w.lit_idx(s, 0), a});
+    return w.call(wrap::sub, mode(w, m), Defs{w.lit_idx(s, 0), a});
 }
 ///@}
 

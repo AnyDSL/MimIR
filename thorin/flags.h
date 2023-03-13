@@ -1,5 +1,7 @@
 #pragma once
 
+#include "thorin/config.h"
+
 namespace thorin {
 
 // Compiler switches that must be saved and looked up in later phases of compilation.

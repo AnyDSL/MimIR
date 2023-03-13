@@ -9,7 +9,7 @@
 .let I32 = .Idx _32;
 
 .con f ![a:I32, return: .Cn I32] = {
-    .let b = %core.wrap.add _32 0 (2:I32, a);
+    .let b = %core.wrap.add 0 (2:I32, a);
     return b
 };
 

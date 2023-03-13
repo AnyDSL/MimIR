@@ -29,7 +29,7 @@ void FPPhase::start() {
 }
 
 void Cleanup::start() {
-    World new_world(world().state());
+    auto new_world = world().inherit();
     Rewriter rewriter(new_world);
 
     for (const auto& [_, ax] : world().axioms()) rewriter.rewrite(ax);
