@@ -305,26 +305,7 @@ void Emitter::emit_epilogue(Lam* lam) {
             }
         }
     } else if (auto ex = app->callee()->isa<Extract>(); ex && app->callee_type()->is_basicblock()) {
-        // A call to an extract like constructed for conditionals (else,then)#cond (args)
-        // TODO: we can not rely on the structure of the extract (it might be a nested extract)
-        for (auto callee_def : ex->tuple()->projs()) {
-            // dissect the tuple of lambdas
-            auto callee = callee_def->isa_nom<Lam>();
-            assert(callee);
-            // each callees type should agree with the argument type (should be checked by type checking).
-            // Especially, the number of vars should be the number of arguments.
-            // TODO: does not hold for complex arguments that are not tuples.
-            assert(callee->num_vars() == app->num_args());
-            for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
-                // emits the arguments one by one (TODO: handle together like before)
-                if (auto arg = emit_unsafe(app->arg(i)); !arg.empty()) {
-                    auto phi = callee->var(i);
-                    assert(!match<mem::M>(phi->type()));
-                    lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
-                    locals_[phi] = id(phi);
-                }
-            }
-        }
+        emit_unsafe(app->arg());
 
         auto c = emit(ex->index());
         if (ex->tuple()->num_projs() == 2) {
