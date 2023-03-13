@@ -169,9 +169,11 @@ public:                                                                         
 // clang-format on
 
 #define THORIN_DEF_MIXIN(T)                                                            \
+public:                                                                                \
     THORIN_SETTERS(T)                                                                  \
     T* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg())->as<T>(); } \
     static constexpr auto Node = Node::T;                                              \
+                                                                                       \
 private:                                                                               \
     Ref rebuild_(World&, Ref, Defs) const override;                                    \
     friend class World;

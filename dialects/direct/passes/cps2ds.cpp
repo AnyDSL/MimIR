@@ -136,7 +136,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
                         auto fun_cont = world.nom_lam(world.cn(inst_ret_ty))->set(new_name);
                         rewritten_lams.insert(fun_cont);
                         // Generate the cps function call `f a` -> `f_cps(a,cont)`
-                        auto cps_call = world.app(cps_fun, {new_arg, fun_cont})->set(sym_.cps_call);
+                        auto cps_call = world.app(cps_fun, {new_arg, fun_cont})->set("cps_call");
                         world.DLOG("  curr_lam {}", curr_lam_->sym());
                         curr_lam_->set_body(cps_call);
 
