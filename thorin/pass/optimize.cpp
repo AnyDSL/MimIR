@@ -24,7 +24,7 @@ void optimize(World& world, Passes& passes, std::vector<Dialect>& dialects) {
     const Def* compilation     = nullptr;
     for (auto compilation_function : compilation_functions) {
         if (auto compilation_ = world.lookup(compilation_function)) {
-            if (!compilation) { compilation = compilation_; }
+            if (!compilation) compilation = compilation_;
             compilation_->make_internal();
         }
     }
@@ -34,12 +34,12 @@ void optimize(World& world, Passes& passes, std::vector<Dialect>& dialects) {
         auto def = ext.second;
         if (auto lam = def->isa<Lam>(); lam && lam->num_doms() == 0) {
             if (*lam->codom()->sym() == "Pipeline") {
-                if (!compilation) { compilation = lam; }
+                if (!compilation) compilation = lam;
                 make_internal.push_back(def);
             }
         }
     }
-    for (auto def : make_internal) { def->make_internal(); }
+    for (auto def : make_internal) def->make_internal();
     assert(compilation && "no compilation function found");
 
     // We found a compilation directive in the file and use it to build the compilation pipeline.
@@ -55,7 +55,7 @@ void optimize(World& world, Passes& passes, std::vector<Dialect>& dialects) {
 
     PipelineBuilder pipe_builder(world);
     // TODO: remove indirections of pipeline builder. Just add passes and phases directly to the pipeline.
-    for (auto& dialect : dialects) { pipe_builder.register_dialect(dialect); }
+    for (auto& dialect : dialects) pipe_builder.register_dialect(dialect);
 
     auto pipeline     = compilation->as<Lam>()->body();
     auto [ax, phases] = collect_args(pipeline);
