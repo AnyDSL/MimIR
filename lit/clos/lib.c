@@ -15,18 +15,10 @@
 void print_i32(int32_t i) { }
 void println_i32(int32_t i) { }
 void newline() { }
-
-void printInteger(int i) {}
-void printIntegerNL(int i) {}
-void printNL() {}
 #else
 void print_i32(int32_t i) { printf("%" PRId32 "\n", i); }
 void println_i32(int32_t i) { printf("%" PRId32 "\n", i); }
 void newline() { printf("\n"); }
-
-void printInteger(int i) { printf("%d, ", i); }
-void printIntegerNL(int i) { printf("%d\n", i); }
-void printNL() { printf("\n"); }
 #endif
 
 // long jmpbuf_size(){

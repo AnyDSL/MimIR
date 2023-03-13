@@ -139,13 +139,12 @@ static Ref strip_mem_ty(Ref def) {
     auto& world = def->world();
 
     if (auto sigma = def->isa<Sigma>()) {
-        DefVec newOps;
+        DefVec new_ops;
         for (auto op : sigma->ops()) {
-            auto newOp = strip_mem_ty(op);
-            if (newOp != world.sigma()) { newOps.push_back(newOp); }
+            if (auto new_op = strip_mem_ty(op); new_op != world.sigma()) new_ops.push_back(new_op);
         }
 
-        return world.sigma(newOps);
+        return world.sigma(new_ops);
     } else if (match<mem::M>(def)) {
         return world.sigma();
     }
@@ -159,26 +158,24 @@ static Ref strip_mem(Ref def) {
     auto& world = def->world();
 
     if (auto tuple = def->isa<Tuple>()) {
-        DefVec newOps;
+        DefVec new_ops;
         for (auto op : tuple->ops()) {
-            auto newOp = strip_mem(op);
-            if (newOp != world.tuple()) { newOps.push_back(newOp); }
+            if (auto new_op = strip_mem(op); new_op != world.tuple()) new_ops.push_back(new_op);
         }
 
-        return world.tuple(newOps);
+        return world.tuple(new_ops);
     } else if (match<mem::M>(def->type())) {
         return world.tuple();
     } else if (auto extract = def->isa<Extract>()) {
         // The case that this one element is a mem and should return () is handled above.
         if (extract->num_projs() == 1) { return extract; }
 
-        DefVec newOps;
+        DefVec new_ops;
         for (auto op : extract->projs()) {
-            auto newOp = strip_mem(op);
-            if (newOp != world.tuple()) { newOps.push_back(newOp); }
+            if (auto new_op = strip_mem(op); new_op != world.tuple()) new_ops.push_back(new_op);
         }
 
-        return world.tuple(newOps);
+        return world.tuple(new_ops);
     }
 
     return def;
