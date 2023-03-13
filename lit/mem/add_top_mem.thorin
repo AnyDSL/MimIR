@@ -1,0 +1,27 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin %s -o - | FileCheck %s
+
+.import core;
+.import mem;
+
+.let _32 = 4294967296;
+.let I32 = .Idx _32;
+
+.con .extern f [mem: %mem.M, a: I32, ret: .Cn [%mem.M, I32]] = {
+    ret (mem,a)
+};
+
+
+.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
+    f (⊤:%mem.M, argc,return)
+};
+
+.lam .extern _compile [] -> Pipeline = {
+    %compile.pipe
+        (%compile.single_pass_phase %compile.internal_cleanup_pass)
+        // optimization_phase
+        (%compile.single_pass_phase %mem.add_mem_pass)
+};
+
+// CHECK: main {{[a-z0-9_:]*}}[[[memId:[a-z_0-9]*]]: %mem.M
+// CHECK: f ([[memId]], 

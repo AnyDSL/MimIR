@@ -10,38 +10,6 @@ old var access
 .import core;
 .import direct;
 .import mem;
-.lam .extern internal_diff_core_icmp_xYgLE __661202: .Nat → .Cn [«2; (.Idx __661202)», .Cn [(.Idx 2), .Cn [(.Idx 2), .Cn «2; (.Idx __661202)»]]] = {
-    .con cmp_pb_661307 __661318::[(.Idx 2), pb_ret_661320: .Cn «2; (.Idx __661202)»] = {
-        pb_ret_661320 ‹2; 0:(.Idx __661202)›
-    };
-    .con inner_cmp_661249 __661263::[__661282::[_661286: (.Idx __661202), _661290: (.Idx __661202)], ret_661265: .Cn [(.Idx 2), .Cn [(.Idx 2), .Cn «2; (.Idx __661202)»]]] = {
-        .let _661293: (.Idx 2) = %core.icmp.xYgLE __661282;
-        ret_661265 (_661293, cmp_pb_661307)
-    };
-    inner_cmp_661249
-};
-.lam .extern internal_diff_core_wrap_add __661416::[_661507: .Nat, w_661417: .Nat] → .Cn [«2; (.Idx w_661417)», .Cn [(.Idx w_661417), .Cn [(.Idx w_661417), .Cn «2; (.Idx w_661417)»]]] = {
-    .con add_pb_661520 __661529::[s_661539: (.Idx w_661417), pb_ret_661531: .Cn «2; (.Idx w_661417)»] = {
-        pb_ret_661531 ‹2; s_661539›
-    };
-    .con inner_add_deriv_cps_661466 __661475::[__661495::[_661499: (.Idx w_661417), _661503: (.Idx w_661417)], ret_661477: .Cn [(.Idx w_661417), .Cn [(.Idx w_661417), .Cn «2; (.Idx w_661417)»]]] = {
-        .let _661510: (.Idx w_661417) = %core.wrap.add __661495;
-        ret_661477 (_661510, add_pb_661520)
-    };
-    inner_add_deriv_cps_661466
-};
-.lam .extern internal_diff_core_wrap_mul __661617::[_661702: .Nat, w_661618: .Nat] → .Cn [«2; (.Idx w_661618)», .Cn [(.Idx w_661618), .Cn [(.Idx w_661618), .Cn «2; (.Idx w_661618)»]]] = {
-    .con inner_mul_deriv_cps_661661 __661670::[__661690::[_661694: (.Idx w_661618), _661698: (.Idx w_661618)], ret_661672: .Cn [(.Idx w_661618), .Cn [(.Idx w_661618), .Cn «2; (.Idx w_661618)»]]] = {
-        .con mul_pb_661715 __661724::[s_661739: (.Idx w_661618), pb_ret_661726: .Cn «2; (.Idx w_661618)»] = {
-            .let _661751: (.Idx w_661618) = %core.wrap.mul (__661690#1:(.Idx 2), s_661739);
-            .let _661761: (.Idx w_661618) = %core.wrap.mul (__661690#0:(.Idx 2), s_661739);
-            pb_ret_661726 (_661751, _661761)
-        };
-        .let _661705: (.Idx w_661618) = %core.wrap.mul __661690;
-        ret_661672 (_661705, mul_pb_661715)
-    };
-    inner_mul_deriv_cps_661661
-};
 .lam Uf_661956 _661974: (.Idx 4294967296) → ★ = {
     (.Idx 4294967296)
 };

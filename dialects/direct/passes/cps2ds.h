@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include <thorin/def.h>
 #include <thorin/pass/pass.h>
 
@@ -11,15 +13,14 @@ namespace thorin::direct {
 class CPS2DS : public RWPass<CPS2DS, Lam> {
 public:
     CPS2DS(PassMan& man)
-        : RWPass(man, "cps2ds")
-        , cps_call_{world().sym("csp_call")} {}
+        : RWPass(man, "cps2ds") {}
 
     void enter() override;
 
 private:
-    Sym cps_call_;
-    Def2Def rewritten_lams;
     Def2Def rewritten_;
+    DefSet rewritten_lams;
+    std::vector<Lam*> lam_stack;
     Lam* curr_lam_ = nullptr;
 
     void rewrite_lam(Lam* lam);
