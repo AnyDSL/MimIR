@@ -22,7 +22,7 @@ public:
         auto pass = (Pass*)man->add<P>(std::forward<Args>(args)...);
         remember_pass_instance(pass, def);
     }
-    // TODO: add rememered entry
+    // TODO: add remembered entry
     template<class P, class... Args>
     void add_phase(Args&&... args) {
         assert(!man && "cannot add phase while in pass phase");
@@ -56,6 +56,7 @@ void register_pass(Passes& passes, CArgs&&... args) {
         builder.add_pass<P>(app, args...);
     };
 }
+
 
 template<class A, class P, class... CArgs>
 void register_phase(Passes& passes, CArgs&&... args) {

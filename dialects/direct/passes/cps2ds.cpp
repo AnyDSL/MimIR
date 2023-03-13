@@ -113,24 +113,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
                             inst_ret_ty = ret_ty;
                         }
 
-                        auto new_name = *curr_lam_->sym();
-                        // append _cps_cont
-                        // if name contains _cps_cont append _1
-                        // if it contains _[n] append _[n+1]
-                        std::string append = "_cps_cont";
-                        auto pos           = new_name.find(append);
-                        if (pos != std::string::npos) {
-                            auto num = new_name.substr(pos + append.size());
-                            if (num.empty()) {
-                                new_name += "_1";
-                            } else {
-                                num      = num.substr(1);
-                                num      = std::to_string(std::stoi(num) + 1);
-                                new_name = new_name.substr(0, pos + append.size()) + "_" + num;
-                            }
-                        } else {
-                            new_name += append;
-                        }
+                        auto new_name = world.append_suffix(curr_lam_->sym(), "_cps_cont");
 
                         // The continuation that receives the result of the cps function call.
                         auto fun_cont = world.nom_lam(world.cn(inst_ret_ty))->set(new_name);

@@ -466,6 +466,27 @@ Ref World::test(Ref value, Ref probe, Ref match, Ref clash) {
 
 Ref World::singleton(Ref inner_type) { return unify<Singleton>(1, this->type<1>(), inner_type); }
 
+// appends a suffix or an increasing number if the suffix already exists
+Sym World::append_suffix(Sym symbol, std::string suffix) {
+    auto name = *symbol;
+
+    auto pos = name.find(suffix);
+    if (pos != std::string::npos) {
+        auto num = name.substr(pos + suffix.size());
+        if (num.empty()) {
+            name += "_1";
+        } else {
+            num  = num.substr(1);
+            num  = std::to_string(std::stoi(num) + 1);
+            name = name.substr(0, pos + suffix.size()) + "_" + num;
+        }
+    } else {
+        name += suffix;
+    }
+
+    return sym(std::move(name));
+}
+
 /*
  * implicits
  */
