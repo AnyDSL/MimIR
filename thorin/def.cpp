@@ -423,21 +423,19 @@ const Def* Def::proj(nat_t a, nat_t i) const {
         if (pack->arity()->isa<Top>()) return pack->body();
         assert(!w.is_frozen() && "TODO");
         return pack->reduce(w.lit_idx(pack->as_lit_arity(), i));
-    } else if (sort() == Sort::Term) {
-        if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {
-            for (auto u : uses()) {
-                if (auto ex = u->isa<Extract>(); ex && ex->tuple() == this) {
-                    if (auto index = isa_lit(ex->index()); index && *index == i) return ex;
-                }
-            }
-
-            if (w.is_frozen()) return nullptr;
-        }
-
-        return w.extract(this, a, i);
     }
 
-    return nullptr;
+    if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {
+        for (auto u : uses()) {
+            if (auto ex = u->isa<Extract>(); ex && ex->tuple() == this) {
+                if (auto index = isa_lit(ex->index()); index && *index == i) return ex;
+            }
+        }
+
+        if (w.is_frozen()) return nullptr;
+    }
+
+    return w.extract(this, a, i);
 }
 
 /*
