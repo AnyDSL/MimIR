@@ -13,16 +13,11 @@ namespace thorin::direct {
 class CPS2DS : public RWPass<CPS2DS, Lam> {
 public:
     CPS2DS(PassMan& man)
-        : RWPass(man, "cps2ds")
-        , sym_{.cps_call = world().sym("cps_call")} {}
+        : RWPass(man, "cps2ds") {}
 
     void enter() override;
 
 private:
-    // Def2Def rewritten_lams;
-    struct {
-        Sym cps_call;
-    } sym_;
     Def2Def rewritten_;
     DefSet rewritten_lams;
     std::vector<Lam*> lam_stack;
