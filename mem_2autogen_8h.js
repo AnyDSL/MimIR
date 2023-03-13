@@ -1,10 +1,10 @@
 var mem_2autogen_8h =
 [
-    [ "thorin::Axiom::Match< mem::remem_elim_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1remem__elim__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#ace068ec44fcb060b9e8afe795834280e", null ]
-    ] ],
     [ "thorin::Axiom::Match< mem::alloc2malloc_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1alloc2malloc__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#a359d554257152f2022ac21a9a0f82c0c", null ]
+    ] ],
+    [ "thorin::Axiom::Match< mem::remem_elim_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1remem__elim__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#ace068ec44fcb060b9e8afe795834280e", null ]
     ] ],
     [ "thorin::Axiom::Match< mem::M >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1M_01_4", [
       [ "type", "classthorin_1_1Axiom.html#adcf7c21e3b3e0287680818e5ae2d939d", null ]
