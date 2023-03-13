@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
         int verbose      = 0;
         int opt          = 2;
         auto inc_verbose = [&](bool) { ++verbose; };
-        auto& flags      = driver.flags;
+        auto& flags      = driver.flags();
 
         // clang-format off
         auto cli = lyra::cli()
@@ -87,12 +87,12 @@ int main(int argc, char** argv) {
             std::exit(EXIT_SUCCESS);
         }
 
+        World& world = driver.world();
 #if THORIN_ENABLE_CHECKS
-        for (auto b : breakpoints) driver.breakpoints.emplace(b);
+        for (auto b : breakpoints) world.breakpoint(b);
 #endif
-        World& world        = driver.world;
-        world.log().ostream = &std::cerr;
-        world.log().level   = (Log::Level)verbose;
+        world.log().set(&std::cerr).set((Log::Level)verbose);
+
         // prepare output files and streams
         std::array<std::ofstream, Num_Backends> ofs;
         std::array<std::ostream*, Num_Backends> os;
@@ -118,7 +118,7 @@ int main(int argc, char** argv) {
             thorin::SymSet done;
             for (const auto& dialect : dialect_plugins) {
                 if (auto [_, ins] = done.emplace(driver.sym(dialect)); !ins) continue;
-                dialects.push_back(Dialect::load(driver, dialect));
+                dialects.push_back(driver.load(dialect));
                 dialects.back().register_backends(backends);
                 dialects.back().register_normalizers(normalizers);
                 dialects.back().register_passes(passes);

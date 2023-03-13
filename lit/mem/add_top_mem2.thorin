@@ -1,0 +1,41 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin %s -o - | FileCheck %s
+
+.import core;
+.import mem;
+
+.let _32 = 4294967296;
+.let I32 = .Idx _32;
+
+.con .extern f [mem: %mem.M, a: I32, ret: .Cn [%mem.M, I32]] = {
+    ret (mem,a)
+};
+
+.con .extern g [a: I32, ret: .Cn [I32]] = {
+    ret a
+};
+
+.con .extern h [a: I32, ret: .Cn [%mem.M, I32]] = {
+    ret (⊤:%mem.M,a)
+};
+
+
+.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
+    f (⊤:%mem.M, argc,return)
+};
+
+.lam .extern _compile [] -> Pipeline = {
+    %compile.pipe
+        (%compile.single_pass_phase %compile.internal_cleanup_pass)
+        // optimization_phase
+        (%compile.single_pass_phase %mem.add_mem_pass)
+};
+
+// CHECK: g {{[a-z0-9_:]*}}[[[gMemId:[a-z_0-9]*]]: %mem.M, [[gaId:[a-z_0-9]*]]: .Idx 4294967296, [[gRetId:[a-z_0-9]*]]: .Cn [%mem.M, .Idx 4294967296]]
+// CHECK: [[gRetId]] ([[gMemId]], [[gaId]])
+
+// CHECK: h {{[a-z0-9_:]*}}[[[hMemId:[a-z_0-9]*]]: %mem.M, [[haId:[a-z_0-9]*]]: .Idx 4294967296, [[hRetId:[a-z_0-9]*]]: .Cn [%mem.M, .Idx 4294967296]]
+// CHECK: [[hRetId]] ([[hMemId]], [[haId]])
+
+// CHECK: main {{[a-z0-9_:]*}}[[[memId:[a-z_0-9]*]]: %mem.M
+// CHECK: f ([[memId]], 

@@ -169,9 +169,11 @@ public:                                                                         
 // clang-format on
 
 #define THORIN_DEF_MIXIN(T)                                                            \
+public:                                                                                \
     THORIN_SETTERS(T)                                                                  \
     T* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg())->as<T>(); } \
     static constexpr auto Node = Node::T;                                              \
+                                                                                       \
 private:                                                                               \
     Ref rebuild_(World&, Ref, Defs) const override;                                    \
     friend class World;
@@ -292,7 +294,6 @@ public:
     /// @name uses
     ///@{
     const Uses& uses() const { return uses_; }
-    Array<Use> copy_uses() const { return Array<Use>(uses_.begin(), uses_.end()); }
     size_t num_uses() const { return uses().size(); }
     ///@}
 
@@ -489,7 +490,7 @@ protected:
     unsigned nom_      : 1;
     unsigned external_ : 1;
     unsigned dep_      : 5;
-    unsigned pading_   : 1;
+    unsigned padding_  : 1;
     u8 curry_;
     u8 trip_;
     hash_t hash_;

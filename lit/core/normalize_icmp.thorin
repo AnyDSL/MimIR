@@ -7,8 +7,8 @@
     return (%core.icmp.e (%core.icmp.uge (.tt, .ff), %core.icmp.ug (.tt, .ff)))
 };
 
-// CHECK-DAG: icmp_lit _[[retId:[0-9_]+]]: .Cn .Idx 2 = {
+// CHECK-DAG: icmp_lit _[[retId:[0-9_]+]]: .Cn .Idx 2{{(@.*)?}}= {
 // CHECK-DAG: _[[etaId:[0-9_]+]] 1:(.Idx 2)
 
-// CHECK-DAG: _[[etaId]] _[[etaVar:[0-9_]+]]: .Idx 2 = {
+// CHECK-DAG: _[[etaId]] _[[etaVar:[0-9_]+]]: .Idx 2{{(@.*)?}}= {
 // CHECK-DAG: _[[retId]] _[[etaVar]]

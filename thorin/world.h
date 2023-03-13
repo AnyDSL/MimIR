@@ -22,8 +22,6 @@ namespace thorin {
 class Checker;
 class Driver;
 
-using Breakpoints = absl::flat_hash_set<uint32_t>;
-
 /// The World represents the whole program and manages creation of Thorin nodes (Def%s).
 /// *Structural* Def%s are hashed into an internal HashSet.
 /// The getters just calculate a hash and lookup the Def, if it is already present, or create a new one otherwise.
@@ -49,12 +47,19 @@ public:
             mutable bool frozen = false;
         } pod;
 
+        absl::btree_set<Sym> imported_dialects;
+#if THORIN_ENABLE_CHECKS
+        absl::flat_hash_set<uint32_t> breakpoints;
+#endif
         friend void swap(State& s1, State& s2) {
             using std::swap;
             assert((!s1.pod.loc || !s2.pod.loc) && "Why is emit_loc() still set?");
             // clang-format off
             swap(s1.pod,                s2.pod);
             // clang-format on
+#if THORIN_ENABLE_CHECKS
+            swap(s1.breakpoints, s2.breakpoints);
+#endif
         }
     };
 
@@ -82,13 +87,13 @@ public:
 
     Sym name() const { return state_.pod.name; }
     void set(Sym name) { state_.pod.name = name; }
+    Sym append_suffix(Sym name, std::string suffix);
 
     /// Manage global identifier - a unique number for each Def.
     u32 curr_gid() const { return state_.pod.curr_gid; }
     u32 next_gid() { return ++state_.pod.curr_gid; }
 
     /// Retrive compile Flags.
-    const Flags& flags() const;
     Flags& flags();
 
     Checker& checker() {
@@ -133,9 +138,10 @@ public:
 #if THORIN_ENABLE_CHECKS
     /// @name debugging features
     ///@{
-    Breakpoints& breakpoints();
-    void breakpoint(size_t number);
     Ref gid2def(u32 gid);
+    const auto& breakpoints() { return state_.breakpoints; }
+    /// Trigger breakpoint in your debugger when creating Def with Def::gid @p gid.
+    void breakpoint(u32 gid);
     ///@}
 #endif
 
@@ -441,7 +447,6 @@ public:
 
     /// @name dumping/logging
     ///@{
-    const Log& log() const;
     Log& log();
     void dummy() {}
 

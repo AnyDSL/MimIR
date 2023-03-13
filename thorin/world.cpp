@@ -68,10 +68,8 @@ World::~World() {
  * Driver
  */
 
-Log& World::log() { return driver().log; }
-const Log& World::log() const { return driver().log; }
-Flags& World::flags() { return driver().flags; }
-const Flags& World::flags() const { return driver().flags; }
+Log& World::log() { return driver().log(); }
+Flags& World::flags() { return driver().flags(); }
 
 Sym World::sym(const char* s) { return driver().sym(s); }
 Sym World::sym(std::string_view s) { return driver().sym(s); }
@@ -224,6 +222,7 @@ Ref World::tuple(Ref type, Defs ops) {
 }
 
 Ref World::extract(Ref d, Ref index) {
+    assert(d);
     if (index->isa<Tuple>()) {
         auto n = index->num_ops();
         DefArray idx(n, [&](size_t i) { return index->op(i); });
@@ -274,6 +273,7 @@ Ref World::extract(Ref d, Ref index) {
     else
         elem_t = extract(tuple(type->as<Sigma>()->ops()), index);
 
+    assert(d);
     return unify<Extract>(2, elem_t, d, index);
 }
 
@@ -283,6 +283,12 @@ Ref World::insert(Ref d, Ref index, Ref val) {
 
     if (!checker().equiv(type->arity(), size))
         err(index, "index '{}' does not fit within arity '{}'", type->arity(), index);
+
+    if (auto index_lit = isa_lit(index)) {
+        auto target_type = type->proj(*index_lit);
+        if (!checker().assignable(target_type, val))
+            err(val, "value of type {} is not assignable to type {}", val->type(), target_type);
+    }
 
     if (auto l = isa_lit(size); l && *l == 1)
         return tuple(d, {val}); // d could be nom - that's why the tuple ctor is needed
@@ -458,6 +464,27 @@ Ref World::test(Ref value, Ref probe, Ref match, Ref clash) {
 
 Ref World::singleton(Ref inner_type) { return unify<Singleton>(1, this->type<1>(), inner_type); }
 
+// appends a suffix or an increasing number if the suffix already exists
+Sym World::append_suffix(Sym symbol, std::string suffix) {
+    auto name = *symbol;
+
+    auto pos = name.find(suffix);
+    if (pos != std::string::npos) {
+        auto num = name.substr(pos + suffix.size());
+        if (num.empty()) {
+            name += "_1";
+        } else {
+            num  = num.substr(1);
+            num  = std::to_string(std::stoi(num) + 1);
+            name = name.substr(0, pos + suffix.size()) + "_" + num;
+        }
+    } else {
+        name += suffix;
+    }
+
+    return sym(std::move(name));
+}
+
 /*
  * implicits
  */
@@ -489,8 +516,7 @@ Ref World::iapp(Ref callee, Ref arg) {
 
 #if THORIN_ENABLE_CHECKS
 
-Breakpoints& World::breakpoints() { return driver().breakpoints; }
-void World::breakpoint(size_t number) { breakpoints().emplace(number); }
+void World::breakpoint(u32 gid) { state_.breakpoints.emplace(gid); }
 
 Ref World::gid2def(u32 gid) {
     auto i = std::ranges::find_if(move_.defs, [=](auto def) { return def->gid() == gid; });

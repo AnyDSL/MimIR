@@ -2,6 +2,7 @@
 
 #include <list>
 
+#include "thorin/dialects.h"
 #include "thorin/flags.h"
 #include "thorin/world.h"
 
@@ -16,23 +17,41 @@ class Driver : public SymPool {
 public:
     Driver();
 
+    /// @name getters
+    ///@{
+    Flags& flags() { return flags_; }
+    Log& log() { return log_; }
+    World& world() { return world_; }
+    ///@}
+
+    /// @name search paths and dialect loading
+    ///@{
     void add_search_path(fs::path path) {
-        if (fs::is_directory(path)) search_paths_.insert(insert_, fs::absolute(std::move(path)));
+        if (fs::exists(path) && fs::is_directory(path)) search_paths_.insert(insert_, fs::absolute(std::move(path)));
     }
 
-    /// 1. \a search_paths, 2. env var \em THORIN_DIALECT_PATH, 3. "/path/to/executable"
+    /// Search paths for dialect plugins are in the following order:
+    /// 1. All further user-specified paths via Driver::add_search_path; paths added first will also be searched first.
+    /// 2. Current working directory.
+    /// 3. All paths specified in the environment variable `THORIN_DIALECT_PATH`.
+    /// 4. `path/to/thorin.exe/../../lib/thorin`
+    /// 5. `CMAKE_INSTALL_PREFIX/lib/thorin`
     const auto& search_paths() const { return search_paths_; }
 
-    Flags flags;
-    Log log;
-#if THORIN_ENABLE_CHECKS
-    absl::flat_hash_set<uint32_t> breakpoints;
-#endif
-    World world;
+    /// Finds and loads a shared object file that implements the Thorin dialect @p name.
+    /// If \a name is an absolute path to a `.so`/`.dll` file, this is used.
+    /// Otherwise, "name", "libthorin_name.so" (Linux, Mac), "thorin_name.dll" (Win)
+    /// are searched for in Driver::search_paths().
+    Dialect load(const std::string& name);
+    ///@}
+
     /// Maps from absolute import path to actual usage in the source.
-    absl::btree_map<std::filesystem::path, Sym> imports;
+    absl::btree_map<fs::path, Sym> imports;
 
 private:
+    Flags flags_;
+    Log log_;
+    World world_;
     std::list<fs::path> search_paths_;
     std::list<fs::path>::iterator insert_ = search_paths_.end();
 };

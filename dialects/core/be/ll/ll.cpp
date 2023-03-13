@@ -191,17 +191,9 @@ std::string Emitter::convert(const Def* type) {
 }
 
 std::string Emitter::convert_ret_pi(const Pi* pi) {
-    switch (pi->num_doms()) {
-        case 0: return "void";
-        case 1:
-            if (match<mem::M>(pi->dom())) return "void";
-            return convert(pi->dom());
-        case 2:
-            if (match<mem::M>(pi->dom(0))) return convert(pi->dom(1));
-            if (match<mem::M>(pi->dom(1))) return convert(pi->dom(0));
-            [[fallthrough]];
-        default: return convert(pi->dom());
-    }
+    auto dom = mem::strip_mem_ty(pi->dom());
+    if (dom == world().sigma()) { return "void"; }
+    return convert(dom);
 }
 
 /*
@@ -314,6 +306,7 @@ void Emitter::emit_epilogue(Lam* lam) {
         }
     } else if (auto ex = app->callee()->isa<Extract>(); ex && app->callee_type()->is_basicblock()) {
         emit_unsafe(app->arg());
+
         auto c = emit(ex->index());
         if (ex->tuple()->num_projs() == 2) {
             auto [f, t] = ex->tuple()->projs<2>([this](auto def) { return emit(def); });
@@ -448,12 +441,14 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         std::string prev = "undef";
         auto t           = convert(tuple->type());
-        for (size_t i = 0, n = tuple->num_projs(); i != n; ++i) {
-            auto e = tuple->proj(n, i);
-            if (auto v_elem = emit_unsafe(e); !v_elem.empty()) {
-                auto t_elem = convert(e->type());
-                auto namei  = name + "." + std::to_string(i);
-                prev        = bb.assign(namei, "insertvalue {} {}, {} {}, {}", t, prev, t_elem, v_elem, i);
+        for (size_t src = 0, dst = 0, n = tuple->num_projs(); src != n; ++src) {
+            auto e = tuple->proj(n, src);
+            if (auto elem = emit_unsafe(e); !elem.empty()) {
+                auto elem_t = convert(e->type());
+                // TODO: check dst vs src
+                auto namei = name + "." + std::to_string(dst);
+                prev       = bb.assign(namei, "insertvalue {} {}, {} {}, {}", t, prev, elem_t, elem, dst);
+                dst++;
             }
         }
         return prev;
@@ -736,10 +731,19 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         declare("i8* @malloc(i64)");
 
         emit_unsafe(malloc->arg(0));
-        auto v_size = emit(malloc->arg(1));
-        auto t_ptr  = convert(force<mem::Ptr>(def->proj(1)->type()));
-        bb.assign(name + ".i8", "call i8* @malloc(i64 {})", v_size);
-        return bb.assign(name, "bitcast i8* {} to {}", name + ".i8", t_ptr);
+        auto size  = emit(malloc->arg(1));
+        auto ptr_t = convert(force<mem::Ptr>(def->proj(1)->type()));
+        bb.assign(name + ".i8", "call i8* @malloc(i64 {})", size);
+        return bb.assign(name, "bitcast i8* {} to {}", name + ".i8", ptr_t);
+    } else if (auto free = match<mem::free>(def)) {
+        declare("void @free(i8*)");
+        emit_unsafe(free->arg(0));
+        auto ptr   = emit(free->arg(1));
+        auto ptr_t = convert(force<mem::Ptr>(free->arg(1)->type()));
+
+        bb.assign(name + ".i8", "bitcast {} {} to i8*", ptr_t, ptr);
+        bb.tail("call void @free(i8* {})", name + ".i8");
+        return {};
     } else if (auto mslot = match<mem::mslot>(def)) {
         emit_unsafe(mslot->arg(0));
         // TODO array with size
@@ -944,6 +948,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         return bb.assign(name, "{} {} {} to {}", op, t_src, v_src, t_dst);
     }
+    auto& world = def->world();
+    world.DLOG("unhandled def: {} : {}", def, def->type());
+    def->dump();
 
     def->dump(1);
     err("unhandled def in LLVM backend: {}", def);

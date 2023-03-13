@@ -85,7 +85,7 @@ void Bootstrapper::emit(std::ostream& h) {
 
     tab.print(h, "}} // namespace {}\n\n", dialect_);
 
-    for (const auto& line : outer_namespace) { tab.print(h, "{}", line.str()); }
+    for (const auto& line : outer_namespace) tab.print(h, "{}", line.str());
     tab.print(h, "\n");
 
     // emit helpers for non-function axiom
