@@ -112,14 +112,14 @@ var NAVTREEINDEX =
 "classthorin_1_1core_1_1Res.html#ac2bc703e62f366f42e8f9bb7e1ef6831",
 "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79add7e7307bb61b436ebfaff2f7f0e0e29",
 "clos_2normalizers_8cpp.html#ac9f972eb39228514383964979ae688b1",
-"core_2autogen_8h.html#ab1f42e21a4de8bd328e18b8006b9f74fa2417b496d526d2ad5b184798d2938924",
+"core_2autogen_8h.html#ab1f42e21a4de8bd328e18b8006b9f74fa641220906872c172d2238e5a2f54600f",
 "dir_3f1b6b218438912357615aa72d3bb6e7.html",
 "lam__spec_8cpp_source.html",
 "math_2autogen_8h.html#af5795434c033575fef9826010d58bc2da8c1b96a13f7c1435ca95fb36566ed661",
 "namespacethorin.html#a3871d8e6d247d00a69094936175c20e1",
 "namespacethorin_1_1autodiff.html#a1912043d907a1881a4c09dfcc332b6cb",
-"namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa91608a3e04d4c29b574a36a550594d56",
-"namespacethorin_1_1math.html#a89cb7767a778d4204e26860588096530ab56bd84b4325cae0ff953569daeeecd6",
+"namespacethorin_1_1core.html#ab3241f0d5e0f7df67a2f64b22911bf63",
+"namespacethorin_1_1math.html#a974e641acfc1e991c463275750708cec",
 "print_8cpp.html#a7dae34cc4eb75fe0cf5a914431353c8c",
 "structthorin_1_1UseHash.html"
 ];

@@ -94,7 +94,7 @@ var namespacethorin_1_1core =
       [ "glE", "namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eaba9d3f7f019cb6d5f3165917d62aeace", null ],
       [ "e", "namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea2617461720290be8740985537e6e1bfd", null ],
       [ "gLe", "namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eab94b516e2c692fc7b3b4f68d34fae6a1", null ],
-      [ "l", "namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eafb255a4afa664b7d505609cd9f04e49c", null ],
+      [ "l", "namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628afb255a4afa664b7d505609cd9f04e49c", null ],
       [ "gLE", "namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea2be16bf3b205ad3e1cedf8f3e983d8f4", null ],
       [ "le", "namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eab657ad5aed815314489c6fc5f73d8c5d", null ],
       [ "Gle", "namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eabb34545856373637e340eba75e51d06f", null ],
@@ -117,7 +117,7 @@ var namespacethorin_1_1core =
     ] ],
     [ "shr", "namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628", [
       [ "a", "namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628a85b63feaff2f38f8b5976454a8355a7d", null ],
-      [ "l", "namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eafb255a4afa664b7d505609cd9f04e49c", null ]
+      [ "l", "namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628afb255a4afa664b7d505609cd9f04e49c", null ]
     ] ],
     [ "trait", "namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbf", [
       [ "size", "namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbfab8b1ce69c3ef90d0c06c30009490d4de", null ],
