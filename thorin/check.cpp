@@ -101,9 +101,8 @@ bool Checker::equiv_internal(Ref d1, Ref d2) {
         if (!equiv(d1->arity(), d2->arity())) return false;
 
         if (auto a = d1->isa_lit_arity()) {
-            for (size_t i = 0; i != a; ++i) {
+            for (size_t i = 0; i != a; ++i)
                 if (!equiv(d1->proj(*a, i), d2->proj(*a, i))) return false;
-            }
             return true;
         }
     }
@@ -111,9 +110,8 @@ bool Checker::equiv_internal(Ref d1, Ref d2) {
     if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return false;
 
     if (auto var = d1->isa<Var>()) { // vars are equal if they appeared under the same binder
-        for (auto [n1, n2] : vars_) {
+        for (auto [n1, n2] : vars_)
             if (var->nom() == n1) return d2->as<Var>()->nom() == n2;
-        }
         // TODO what if Var is free?
         return false;
     }
@@ -133,18 +131,16 @@ bool Checker::assignable(Ref type, Ref val) {
         size_t a = sigma->num_ops();
         auto red = sigma->reduce(val);
 
-        for (size_t i = 0; i != a; ++i) {
+        for (size_t i = 0; i != a; ++i)
             if (!assignable(red[i], val->proj(a, i))) return false;
-        }
 
         return true;
     } else if (auto arr = type->isa<Arr>()) {
         if (!equiv(type->arity(), val_ty->arity())) return false;
 
         if (auto a = isa_lit(arr->arity())) {
-            for (size_t i = 0; i != *a; ++i) {
+            for (size_t i = 0; i != *a; ++i)
                 if (!assignable(arr->proj(*a, i), val->proj(*a, i))) return false;
-            }
 
             return true;
         }
