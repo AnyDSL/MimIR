@@ -42,29 +42,6 @@ const Def* Infer::find(const Def* def) {
     return res;
 }
 
-const Def* Infer::inflate(Ref ty, Defs elems_t) {
-    auto& w = world();
-    if (!is_set()) {
-        DefArray infer_ops(elems_t.size(), [&](size_t i) { return w.nom_infer(elems_t[i]); });
-        set(w.tuple(infer_ops));
-        if (auto t = type()->isa_nom<Infer>(); t && !t->is_set() && ty) t->set(ty);
-    }
-
-    return op();
-}
-
-// TODO try to merge with above
-const Def* Infer::inflate(Ref ty, u64 n, Ref elem_t) {
-    auto& w = world();
-    if (!is_set()) {
-        DefArray infer_ops(n, [&](size_t) { return w.nom_infer(elem_t); });
-        set(w.tuple(infer_ops));
-        if (auto t = type()->isa_nom<Infer>(); t && !t->is_set() && ty) t->set(ty);
-    }
-
-    return op();
-}
-
 /*
  * Checker
  */
@@ -148,14 +125,13 @@ bool Checker::assignable(Ref type, Ref val) {
     auto val_ty = refer(val->type());
     if (type == val_ty) return true;
 
-    auto infer = val->isa_nom<Infer>();
+    if (auto infer = val->isa_nom<Infer>()) return equiv(type, infer->type());
+
     if (auto sigma = type->isa<Sigma>()) {
-        if (!infer && !equiv(type->arity(), val_ty->arity())) return false;
+        if (!equiv(type->arity(), val_ty->arity())) return false;
 
         size_t a = sigma->num_ops();
         auto red = sigma->reduce(val);
-
-        if (infer) infer->inflate(sigma, red);
 
         for (size_t i = 0; i != a; ++i) {
             if (!assignable(red[i], val->proj(a, i))) return false;
@@ -163,11 +139,9 @@ bool Checker::assignable(Ref type, Ref val) {
 
         return true;
     } else if (auto arr = type->isa<Arr>()) {
-        if (!infer && !equiv(type->arity(), val_ty->arity())) return false;
+        if (!equiv(type->arity(), val_ty->arity())) return false;
 
         if (auto a = isa_lit(arr->arity())) {
-            if (infer) infer->inflate(arr, *a, arr->body());
-
             for (size_t i = 0; i != *a; ++i) {
                 if (!assignable(arr->proj(*a, i), val->proj(*a, i))) return false;
             }
