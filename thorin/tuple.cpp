@@ -9,12 +9,10 @@
 
 namespace thorin {
 
-static bool should_flatten(const Def* def) {
-    return (def->sort() == Sort::Term ? def->type() : def)->isa<Sigma, Arr>();
-}
+static bool should_flatten(const Def* def) { return (def->is_term() ? def->type() : def)->isa<Sigma, Arr>(); }
 
 static bool nom_val_or_typ(const Def* def) {
-    auto typ = (def->sort() == Sort::Term) ? def->type() : def;
+    auto typ = def->is_term() ? def->type() : def;
     return typ->isa_nom();
 }
 
@@ -33,7 +31,7 @@ const Def* flatten(const Def* def) {
     if (!should_flatten(def)) return def;
     DefVec ops;
     flatten(ops, def);
-    return def->sort() == Sort::Term ? def->world().tuple(def->type(), ops) : def->world().sigma(ops);
+    return def->is_term() ? def->world().tuple(def->type(), ops) : def->world().sigma(ops);
 }
 
 static const Def* unflatten(Defs defs, const Def* type, size_t& j, bool flatten_noms) {

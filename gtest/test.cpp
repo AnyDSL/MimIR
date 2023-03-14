@@ -22,6 +22,7 @@ TEST(Zip, fold) {
     core_d.register_normalizers(normalizers);
     fe::Parser::import_module(w, w.sym("core"), {}, &normalizers);
 
+    auto zip = w.ax<core::zip>();
     // clang-format off
     auto a = w.tuple({w.tuple({w.lit_idx( 0), w.lit_idx( 1), w.lit_idx( 2)}),
                       w.tuple({w.lit_idx( 3), w.lit_idx( 4), w.lit_idx( 5)})});
@@ -34,10 +35,14 @@ TEST(Zip, fold) {
 
     auto f = w.app(w.app(w.ax(core::wrap::add), w.lit_nat(Idx::bitwidth2size(32))), w.lit_nat_0());
     auto i32_t = w.type_int(32);
-    auto res = w.app(w.app(w.app(w.ax<core::zip>(), {/*r*/w.lit_nat(2), /*s*/w.tuple({w.lit_nat(2), w.lit_nat(3)})}),
+    auto res = w.app(w.app(w.app(zip, {/*r*/w.lit_nat(2), /*s*/w.tuple({w.lit_nat(2), w.lit_nat(3)})}),
                                              {/*n_i*/ w.lit_nat(2), /*Is*/w.pack(2, i32_t), /*n_o*/w.lit_nat(1), /*Os*/i32_t, f}),
                                              {a, b});
     // clang-format on
+    EXPECT_TRUE(res->is_term());
+    EXPECT_TRUE(!zip->is_term());
+    EXPECT_TRUE(!res->type()->is_term());
+    EXPECT_TRUE(!zip->type()->is_term());
 
     res->dump(0);
     EXPECT_EQ(c, res);
