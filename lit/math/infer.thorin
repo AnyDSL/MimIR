@@ -1,0 +1,5 @@
+// RUN: %thorin %s -o -
+
+.import math;
+
+.con .extern foo(pe: «2; .Nat», f: %math.F pe, return: .Cn %math.F pe) = return %math.arith.mul 0 f f;
