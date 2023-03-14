@@ -203,6 +203,6 @@ TEST(Axiom, curry) {
 TEST(Type, Level) {
     Driver driver;
     World& w = driver.world;
-    auto pi = w.pi(w.type<7>(), w.type<2>());
+    auto pi  = w.pi(w.type<7>(), w.type<2>());
     EXPECT_EQ(as_lit(pi->type()->isa<Type>()->level()), 8);
 }
