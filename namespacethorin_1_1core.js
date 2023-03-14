@@ -107,8 +107,8 @@ var namespacethorin_1_1core =
       [ "t", "namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea2cd637f8af229640a38fe0daff901035", null ]
     ] ],
     [ "nop", "namespacethorin_1_1core.html#a7367a6650ab2feeba43426b8e1853bf7", [
-      [ "add", "namespacethorin_1_1core.html#a7367a6650ab2feeba43426b8e1853bf7a2417b496d526d2ad5b184798d2938924", null ],
-      [ "mul", "namespacethorin_1_1core.html#a7367a6650ab2feeba43426b8e1853bf7a91608a3e04d4c29b574a36a550594d56", null ]
+      [ "add", "namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa2417b496d526d2ad5b184798d2938924", null ],
+      [ "mul", "namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa91608a3e04d4c29b574a36a550594d56", null ]
     ] ],
     [ "pe", "namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254a", [
       [ "hlt", "namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aa3d4e5f853ce392452ab1815f961ea93a", null ],
@@ -124,9 +124,9 @@ var namespacethorin_1_1core =
       [ "align", "namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbfa62ac19ce1cbaf53f8d88ce15a29f03a8", null ]
     ] ],
     [ "wrap", "namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74f", [
-      [ "add", "namespacethorin_1_1core.html#a7367a6650ab2feeba43426b8e1853bf7a2417b496d526d2ad5b184798d2938924", null ],
+      [ "add", "namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa2417b496d526d2ad5b184798d2938924", null ],
       [ "sub", "namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa641220906872c172d2238e5a2f54600f", null ],
-      [ "mul", "namespacethorin_1_1core.html#a7367a6650ab2feeba43426b8e1853bf7a91608a3e04d4c29b574a36a550594d56", null ],
+      [ "mul", "namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa91608a3e04d4c29b574a36a550594d56", null ],
       [ "shl", "namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa7f0dec3b27b1d6ad0b7cbf34b0ae37da", null ]
     ] ],
     [ "zip", "namespacethorin_1_1core.html#a4786eb5f5c5a7edca2c2bc332c0dfa4a", null ],
