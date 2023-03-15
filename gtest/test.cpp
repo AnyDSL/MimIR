@@ -199,3 +199,10 @@ TEST(Axiom, curry) {
         EXPECT_EQ(os.str(), "%test_3_0 0 1 42 3\n");
     }
 }
+
+TEST(Type, Level) {
+    Driver driver;
+    World& w = driver.world;
+    auto pi  = w.pi(w.type<7>(), w.type<2>());
+    EXPECT_EQ(as_lit(pi->type()->isa<Type>()->level()), 8);
+}

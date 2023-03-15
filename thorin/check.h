@@ -21,13 +21,6 @@ public:
     Infer* set(const Def* op) { return Def::set(0, op)->as<Infer>(); }
     ///@}
 
-    /// @name inflate
-    ///@{
-    /// If we figure out that an Infer is a Tuple/Sigma, we create a new Tuple/Sigma where each element is an Infer.
-    const Def* inflate(Ref type, Defs elems_t);
-    const Def* inflate(Ref type, u64 n, Ref elem_t);
-    ///@}
-
     /// @name union-find
     ///@{
     /// [Union-Find](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) to unify Infer nodes.

@@ -42,29 +42,6 @@ const Def* Infer::find(const Def* def) {
     return res;
 }
 
-const Def* Infer::inflate(Ref ty, Defs elems_t) {
-    auto& w = world();
-    if (!is_set()) {
-        DefArray infer_ops(elems_t.size(), [&](size_t i) { return w.nom_infer(elems_t[i]); });
-        set(w.tuple(infer_ops));
-        if (auto t = type()->isa_nom<Infer>(); t && !t->is_set() && ty) t->set(ty);
-    }
-
-    return op();
-}
-
-// TODO try to merge with above
-const Def* Infer::inflate(Ref ty, u64 n, Ref elem_t) {
-    auto& w = world();
-    if (!is_set()) {
-        DefArray infer_ops(n, [&](size_t) { return w.nom_infer(elem_t); });
-        set(w.tuple(infer_ops));
-        if (auto t = type()->isa_nom<Infer>(); t && !t->is_set() && ty) t->set(ty);
-    }
-
-    return op();
-}
-
 /*
  * Checker
  */
@@ -124,9 +101,8 @@ bool Checker::equiv_internal(Ref d1, Ref d2) {
         if (!equiv(d1->arity(), d2->arity())) return false;
 
         if (auto a = d1->isa_lit_arity()) {
-            for (size_t i = 0; i != a; ++i) {
+            for (size_t i = 0; i != a; ++i)
                 if (!equiv(d1->proj(*a, i), d2->proj(*a, i))) return false;
-            }
             return true;
         }
     }
@@ -134,9 +110,8 @@ bool Checker::equiv_internal(Ref d1, Ref d2) {
     if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return false;
 
     if (auto var = d1->isa<Var>()) { // vars are equal if they appeared under the same binder
-        for (auto [n1, n2] : vars_) {
+        for (auto [n1, n2] : vars_)
             if (var->nom() == n1) return d2->as<Var>()->nom() == n2;
-        }
         // TODO what if Var is free?
         return false;
     }
@@ -148,29 +123,24 @@ bool Checker::assignable(Ref type, Ref val) {
     auto val_ty = refer(val->type());
     if (type == val_ty) return true;
 
-    auto infer = val->isa_nom<Infer>();
+    if (auto infer = val->isa_nom<Infer>()) return equiv(type, infer->type());
+
     if (auto sigma = type->isa<Sigma>()) {
-        if (!infer && !equiv(type->arity(), val_ty->arity())) return false;
+        if (!equiv(type->arity(), val_ty->arity())) return false;
 
         size_t a = sigma->num_ops();
         auto red = sigma->reduce(val);
 
-        if (infer) infer->inflate(sigma, red);
-
-        for (size_t i = 0; i != a; ++i) {
+        for (size_t i = 0; i != a; ++i)
             if (!assignable(red[i], val->proj(a, i))) return false;
-        }
 
         return true;
     } else if (auto arr = type->isa<Arr>()) {
-        if (!infer && !equiv(type->arity(), val_ty->arity())) return false;
+        if (!equiv(type->arity(), val_ty->arity())) return false;
 
         if (auto a = isa_lit(arr->arity())) {
-            if (infer) infer->inflate(arr, *a, arr->body());
-
-            for (size_t i = 0; i != *a; ++i) {
+            for (size_t i = 0; i != *a; ++i)
                 if (!assignable(arr->proj(*a, i), val->proj(*a, i))) return false;
-            }
 
             return true;
         }
