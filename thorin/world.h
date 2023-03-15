@@ -208,7 +208,7 @@ public:
 
     /// @name Axiom
     ///@{
-    const Axiom* axiom(Def::NormalizeFn n, u8 curry, u8 trip, Ref type, dialect_t d, tag_t t, sub_t s) {
+    const Axiom* axiom(NormalizeFn n, u8 curry, u8 trip, Ref type, dialect_t d, tag_t t, sub_t s) {
         auto ax                          = unify<Axiom>(0, n, curry, trip, type, d, t, s);
         return move_.axioms[ax->flags()] = ax;
     }
@@ -218,7 +218,7 @@ public:
     /// This is useful during testing to come up with some entitiy of a specific type.
     /// It uses the dialect Axiom::Global_Dialect and starts with `0` for Axiom::sub and counts up from there.
     /// The Axiom::tag is set to `0` and the Axiom::normalizer to `nullptr`.
-    const Axiom* axiom(Def::NormalizeFn n, u8 curry, u8 trip, Ref type) {
+    const Axiom* axiom(NormalizeFn n, u8 curry, u8 trip, Ref type) {
         return axiom(n, curry, trip, type, Axiom::Global_Dialect, 0, state_.pod.curr_sub++);
     }
     const Axiom* axiom(Ref type) { return axiom(nullptr, 0, 0, type); } ///< See above.

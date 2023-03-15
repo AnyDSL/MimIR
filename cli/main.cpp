@@ -18,8 +18,6 @@
 #include "thorin/phase/phase.h"
 #include "thorin/util/sys.h"
 
-#include "absl/container/flat_hash_map.h"
-
 using namespace thorin;
 using namespace std::literals;
 

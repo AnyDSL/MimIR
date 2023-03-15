@@ -21,11 +21,11 @@
 
 namespace thorin {
 
-void PipelineBuilder::remember_pass_instance(Pass* p, const Def* def) {
+void PipelineBuilder::def2pass(const Def* def, Pass* p) {
     def->world().DLOG("associating {} with {}", def->gid(), p);
-    pass_instances_[def] = p;
+    def2pass_[def] = p;
 }
-Pass* PipelineBuilder::get_pass_instance(const Def* def) { return pass_instances_[def]; }
+Pass* PipelineBuilder::def2pass(const Def* def) { return def2pass_[def]; }
 
 void PipelineBuilder::begin_pass_phase() { man = std::make_unique<PassMan>(world_); }
 void PipelineBuilder::end_pass_phase() {

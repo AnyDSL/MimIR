@@ -46,18 +46,23 @@ public:
     void load(std::string name) { return load(sym(std::move(name))); }
     ///@}
 
+    /// @name manage plugins
+    ///@{
+    const auto& normalizers() const { return normalizers_; }
+    const auto& passes() const { return passes_; }
+    const auto& backends() const { return backends_; }
+
+    /// Yields the Plugin @p sym or `nullptr` if none exists.
     const Dialect* sym2plugin(Sym sym) const {
         auto i = sym2plugin_.find(sym);
         return i != sym2plugin_.end() ? &i->second : nullptr;
     }
 
-    const auto& normalizers() const { return normalizers_; }
-    const auto& passes() const { return passes_; }
-    const auto& backends() const { return backends_; }
     Backend* backend(std::string_view name) {
         if (auto i = backends_.find(name); i != backends_.end()) return &i->second;
         return nullptr;
     }
+    ///@}
 
 private:
     Flags flags_;

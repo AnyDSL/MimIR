@@ -630,7 +630,7 @@ void Parser::parse_ax() {
     info.normalizer = normalizer_name;
 
     const auto& normalizers = driver().normalizers();
-    auto normalizer         = [&normalizers](dialect_t d, tag_t t, sub_t s) -> Def::NormalizeFn {
+    auto normalizer         = [&normalizers](dialect_t d, tag_t t, sub_t s) -> NormalizeFn {
         if (auto i = normalizers.find(d | flags_t(t << 8u) | s); i != normalizers.end()) return i->second;
         return nullptr;
     };

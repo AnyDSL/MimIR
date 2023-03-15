@@ -1,6 +1,7 @@
 #pragma once
 
-#include "thorin/pass/pass.h"
+#include <thorin/analyses/scope.h>
+#include <thorin/pass/pass.h>
 
 #include "dialects/clos/clos.h"
 

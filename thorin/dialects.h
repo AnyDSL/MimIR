@@ -7,14 +7,18 @@
 #include <absl/container/btree_map.h>
 #include <absl/container/flat_hash_map.h>
 
-#include "thorin/pass/pass.h"
-#include "thorin/pass/pipelinebuilder.h"
+#include "thorin/def.h"
 
 namespace thorin {
 
+class PipelineBuilder;
+
 using Backend     = std::function<void(World&, std::ostream&)>;
 using Backends    = absl::btree_map<std::string, Backend>;
-using Normalizers = absl::flat_hash_map<flags_t, Def::NormalizeFn>;
+using Normalizers = absl::flat_hash_map<flags_t, NormalizeFn>;
+/// `axiom ↦ (pipeline part) × (axiom application) → ()` <br/>
+/// The function should inspect App%lication to construct the Pass/Phase and add it to the pipeline.
+using Passes = absl::flat_hash_map<flags_t, std::function<void(World&, PipelineBuilder&, const Def*)>>;
 
 extern "C" {
 /// Basic info and registration function pointer to be returned from a dialect plugin.
