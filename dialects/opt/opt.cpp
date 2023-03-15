@@ -14,7 +14,7 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
     return {"opt",
             [](Passes& passes) {
                 passes[flags_t(Axiom::Base<compile::dialect_select>)] = [&](World& world, PipelineBuilder& builder,
-                                                                        const Def* app) {
+                                                                            const Def* app) {
                     auto [ax, args]    = collect_args(app);
                     auto dialect_axiom = args[1]->as<Axiom>();
                     auto then_phase    = args[2];
@@ -29,7 +29,7 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                     auto dialect     = tag->substr(0, tag->find('_'));
                     auto dialect_str = std::string(dialect);
                     world.DLOG("dialect: {}", dialect_str);
-                    auto& driver = builder.world().driver();
+                    auto& driver   = builder.world().driver();
                     bool is_loaded = driver.sym2plugin(driver.sym(dialect_str));
                     world.DLOG("contained: {}", is_loaded);
 

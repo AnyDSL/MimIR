@@ -17,6 +17,7 @@
 #include "thorin/pass/pipelinebuilder.h"
 #include "thorin/phase/phase.h"
 #include "thorin/util/sys.h"
+
 #include "absl/container/flat_hash_map.h"
 
 using namespace thorin;
@@ -111,10 +112,8 @@ int main(int argc, char** argv) {
         // we always need core and mem, as long as we are not in bootstrap mode..
         if (!os[H]) plugins.insert(plugins.end(), {"core", "mem", "compile", "opt"});
 
-        if (!plugins.empty()) {
-            for (const auto& plugin : plugins)
-                driver.load(plugin);
-        }
+        if (!plugins.empty())
+            for (const auto& plugin : plugins) driver.load(plugin);
 
         if (input.empty()) throw std::invalid_argument("error: no input given");
         if (input[0] == '-' || input.substr(0, 2) == "--")
@@ -151,9 +150,9 @@ int main(int argc, char** argv) {
         if (os[Dot]) dot::emit(world, *os[Dot]);
 
         if (os[LL]) {
-            if (auto backend = driver.backend("ll")) {
+            if (auto backend = driver.backend("ll"))
                 (*backend)(world, *os[LL]);
-            } else
+            else
                 err("'ll' emitter not loaded. Try loading 'mem' dialect.");
         }
     } catch (const std::exception& e) {
