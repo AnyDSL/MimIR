@@ -8,6 +8,7 @@
 #include "dialects/autodiff/passes/autodiff_eval.h"
 #include "dialects/autodiff/passes/autodiff_zero.h"
 #include "dialects/autodiff/passes/autodiff_zero_cleanup.h"
+#include "dialects/compile/passes/internal_cleanup.h"
 #include "dialects/direct/passes/ds2cps.h"
 
 using namespace thorin;
@@ -18,7 +19,7 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                 register_pass<autodiff::ad_eval_pass, autodiff::AutoDiffEval>(passes);
                 register_pass<autodiff::ad_zero_pass, autodiff::AutoDiffZero>(passes);
                 register_pass<autodiff::ad_zero_cleanup_pass, autodiff::AutoDiffZeroCleanup>(passes);
-                // register_pass<autodiff::ad_ext_cleanup_pass, autodiff::AutoDiffExternalCleanup>(passes);
+                register_pass<autodiff::ad_ext_cleanup_pass, compile::InternalCleanup>(passes, "internal_diff_");
             },
             nullptr, [](Normalizers& normalizers) { autodiff::register_normalizers(normalizers); }};
 }

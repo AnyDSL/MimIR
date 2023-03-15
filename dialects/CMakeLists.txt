@@ -28,6 +28,7 @@ add_thorin_dialect(autodiff
         autodiff/auxiliary/autodiff_rewrite_inner.cpp
         autodiff/auxiliary/autodiff_rewrite_toplevel.cpp
         autodiff/normalizers.cpp
+        compile/passes/internal_cleanup.cpp
     DEPENDS
         mem
         core
