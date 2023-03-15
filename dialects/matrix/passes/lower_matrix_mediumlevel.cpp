@@ -20,14 +20,15 @@ const Def* LowerMatrixMediumLevel::rewrite(const Def* def) {
 }
 
 std::pair<Lam*, const Def*> counting_for(const Def* bound, Defs acc, const Def* exit, const char* name = "for_body") {
-    auto& world   = bound->world();
-    auto acc_ty   = world.tuple(acc)->type();
-    auto body     = world.nom_lam(world.cn({
-                                      world.type_int(32), // iterator
-                                      acc_ty,             // acc = memory+extra
-                                      world.cn({acc_ty})  // exit = return
-                              }),
-                                  world.dbg(name));
+    auto& world = bound->world();
+    auto acc_ty = world.tuple(acc)->type();
+    auto body   = world
+                    .nom_lam(world.cn({
+                        world.type_int(32),      // iterator
+                        acc_ty,                  // acc = memory+extra
+                        world.cn((Defs){acc_ty}) // exit = return
+                    }))
+                    ->set(name);
     auto for_loop = affine::op_for(world, world.lit_int(32, 0), bound, world.lit_int(32, 1), acc, body, exit);
     return {body, for_loop};
 }
@@ -163,11 +164,10 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
                     world.DLOG("        prev dim {} = {}", idx_nat, prev_dim);
                     // override with more precise information
                     if (auto dim_lit = dim->isa<Lit>()) {
-                        if (auto prev_dim_lit = prev_dim->isa<Lit>()) {
+                        if (auto prev_dim_lit = prev_dim->isa<Lit>())
                             assert(dim_lit->get<u64>() == prev_dim_lit->get<u64>() && "dimensions must be equal");
-                        } else {
+                        else
                             dims[idx_nat] = dim;
-                        }
                     }
                 }
             }
@@ -175,11 +175,10 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
 
         for (auto [idx, dim] : dims) {
             world.DLOG("dim {} = {}", idx, dim);
-            if (idx < n_nat) {
+            if (idx < n_nat)
                 out_indices.push_back(idx);
-            } else {
+            else
                 in_indices.push_back(idx);
-            }
         }
 
         // create function `%mem.M -> [%mem.M, %matrix.Mat (n,S,T)]` to replace axiom call
@@ -187,12 +186,12 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         auto mem_type = mem::type_mem(world);
         auto fun_ty   = world.cn({mem_type, world.cn(mapReduce_ax->type())});
         world.DLOG("fun_ty = {}", fun_ty);
-        auto fun = world.nom_lam(fun_ty, world.dbg("mapRed"));
+        auto fun = world.nom_lam(fun_ty)->set("mapRed");
 
         // assert(0);
         auto ds_fun = direct::op_cps2ds_dep(fun);
         world.DLOG("ds_fun {} : {}", ds_fun, ds_fun->type());
-        auto call = world.app(ds_fun, {mem});
+        auto call = world.app(ds_fun, (Defs){mem});
         world.DLOG("call {} : {}", call, call->type());
 
         // flowchart:
@@ -257,7 +256,7 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
 
         // First create the accumulator.
         auto element_acc = zero;
-        element_acc->set_debug_name("acc");
+        element_acc->set("acc");
         current_mem    = acc[0];
         auto wb_matrix = acc[1];
         // world.DLOG("wb_matrix {} ", wb_matrix);
@@ -266,7 +265,7 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         // world.DLOG("acc[1] at inner: {} : {}", acc[1], acc[1]->type());
 
         // Write back element to matrix. Set this as return after all inner loops.
-        auto write_back = world.nom_lam(world.cn({mem::type_mem(world), T}), world.dbg("matrixWriteBack"));
+        auto write_back = world.nom_lam(world.cn({mem::type_mem(world), T}))->set("matrixWriteBack");
         // TODO: why is acc no longer valid from here on?
         world.DLOG("write_back {} : {}", write_back, write_back->type());
         // world.DLOG("acc[1] at inner: {} : {}", acc[1], acc[1]->type());

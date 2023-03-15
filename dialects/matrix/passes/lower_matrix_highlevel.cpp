@@ -29,12 +29,12 @@ const Def* LowerMatrixHighLevelMapRed::rewrite(const Def* def) {
 
 std::optional<const Def*> internal_function_of_axiom(const Axiom* axiom, const Def* meta_args, const Def* args) {
     auto& world      = axiom->world();
-    std::string name = axiom->name();
+    std::string name = *axiom->sym();
     findAndReplaceAll(name, ".", "_");
     findAndReplaceAll(name, "%", "");
     name = INTERNAL_PREFIX + name;
 
-    auto replacement = world.lookup(name);
+    auto replacement = world.lookup(world.sym(name));
     if (replacement) {
         auto spec_fun = world.app(replacement, meta_args);
         auto ds_fun   = direct::op_cps2ds_dep(spec_fun);
@@ -55,7 +55,7 @@ const Def* LowerMatrixHighLevelMapRed::rewrite_(const Def* def) {
 
         auto w_lit = w->isa<Lit>();
 
-        auto ext_fun = world.lookup("extern_matrix_prod");
+        auto ext_fun = world.lookup(world.sym("extern_matrix_prod"));
         if (ext_fun && (w_lit && w_lit->get<u64>() == 64)) {
             auto ds_fun  = direct::op_cps2ds_dep(ext_fun);
             auto fun_app = world.app(ds_fun, {mem, m, k, l, M, N});
@@ -68,7 +68,7 @@ const Def* LowerMatrixHighLevelMapRed::rewrite_(const Def* def) {
             if (auto axiom = inner_app->callee()->isa<Axiom>()) {
                 // world.DLOG("try to lower axiom: {}", def);
                 if (auto internal_function = internal_function_of_axiom(axiom, inner_app->arg(), outer_app->arg())) {
-                    world.DLOG("lower matrix axiom {} in {} : {}", axiom->name(), def, def->type());
+                    world.DLOG("lower matrix axiom {} in {} : {}", *axiom->sym(), def, def->type());
                     world.DLOG("lower matrix axiom using: {} : {}", *internal_function, (*internal_function)->type());
                     return *internal_function;
                 }

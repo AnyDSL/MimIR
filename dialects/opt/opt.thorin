@@ -47,11 +47,11 @@
         (dialect_cond_phase (%compile.direct_dialect,
           direct_phases
         ))
-        (dialect_cond_phase (%opt.matrix_dialect,
+        (dialect_cond_phase (%compile.matrix_dialect,
           %compile.combined_phase (%compile.phase_list
             matrix_lower_phase
-            (dialect_cond_phase (%opt.direct_dialect, direct_phases))
-            (dialect_cond_phase (%opt.affine_dialect, %compile.single_pass_phase %affine.lower_for_pass))
+            (dialect_cond_phase (%compile.direct_dialect, direct_phases))
+            (dialect_cond_phase (%compile.affine_dialect, %compile.single_pass_phase %affine.lower_for_pass))
         )))
         (%compile.single_pass_phase %compile.internal_cleanup_pass)
         (dialect_cond_phase (%compile.clos_dialect,

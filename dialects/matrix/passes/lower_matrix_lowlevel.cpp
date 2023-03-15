@@ -25,7 +25,7 @@ const Def* op_lea_tuple(const Def* arr, const Def* tuple) {
     world.DLOG("op_lea_tuple arr {} : {}", arr, arr->type());
     auto n       = tuple->num_projs();
     auto element = arr;
-    for (size_t i = 0; i < n; ++i) { element = mem::op_lea(element, tuple->proj(n, i)); }
+    for (size_t i = 0; i < n; ++i) element = mem::op_lea(element, tuple->proj(n, i));
     return element;
 }
 
@@ -118,7 +118,7 @@ const Def* LowerMatrixLowLevel::rewrite_structural(const Def* def) {
         // TODO: check if mat is already converted
         auto ptr_mat     = mat;
         auto element_ptr = op_lea_tuple(ptr_mat, idx);
-        auto [mem2, val] = mem::op_load(mem, element_ptr)->projs<2>();
+        auto [mem2, val] = world.call<mem::load>(Defs{mem, element_ptr})->projs<2>();
         return world.tuple({mem2, val});
     } else if (auto insert_ax = match<matrix::insert>(def)) {
         auto [mem, mat, idx, val] = insert_ax->args<4>();
@@ -138,7 +138,7 @@ const Def* LowerMatrixLowLevel::rewrite_structural(const Def* def) {
         world.DLOG("  val: {} : {}", val, val->type());
         auto ptr_mat     = mat;
         auto element_ptr = op_lea_tuple(ptr_mat, idx);
-        auto mem2        = mem::op_store(mem, element_ptr, val);
+        auto mem2        = world.call<mem::store>(Defs{mem, element_ptr, val});
         // return mem2, ptr_mat);
         return world.tuple({mem2, ptr_mat});
     } else if (auto const_ax = match<matrix::constMat>(def)) {
@@ -156,13 +156,13 @@ const Def* LowerMatrixLowLevel::rewrite_structural(const Def* def) {
         auto initial = op_pack_tuple(n, S, val);
 
         // TODO: test if this is a valid initialization
-        auto mem3 = mem::op_store(mem2, ptr_mat, initial);
+        auto mem3 = world.call<mem::store>(Defs{mem2, ptr_mat, initial});
 
         return world.tuple({mem3, ptr_mat});
     }
 
     // ignore unapplied axioms to avoid spurious type replacements
-    if (auto ax = def->isa<Axiom>()) { return def; }
+    if (auto ax = def->isa<Axiom>()) return def;
 
     return Rewriter::rewrite_structural(def); // continue recursive rewriting with everything else
 }
