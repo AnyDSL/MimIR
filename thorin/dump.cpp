@@ -65,7 +65,7 @@ struct Inline {
         if (auto app = def_->isa<App>()) {
             if (app->type()->isa<Pi>()) return true; // curried apps are printed inline
             if (app->type()->isa<Type>()) return true;
-            if (app->callee()->isa<Axiom>()) { return app->callee_type()->num_doms() <= 1; }
+            if (app->callee()->isa<Axiom>()) return app->callee_type()->num_doms() <= 1;
             return false;
         }
 
@@ -173,8 +173,8 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
     }
 
     // other
-    if (u->flags() == 0) return print(os, ".{} ({, })", u->node_name(), u->ops());
-    return print(os, ".{}#{} ({, })", u->node_name(), u->flags(), u->ops());
+    if (u->flags() == 0) return print(os, "(.{} {, })", u->node_name(), u->ops());
+    return print(os, "(.{}#{} {, })", u->node_name(), u->flags(), u->ops());
 }
 
 /*
@@ -259,11 +259,10 @@ void Dumper::dump(Lam* lam) {
     // TODO filter
     auto ptrn = [&](auto&) { dump_ptrn(lam->var(), lam->type()->dom()); };
 
-    if (lam->type()->is_cn()) {
+    if (lam->type()->is_cn())
         tab.println(os, ".con {}{} {}@({}) = {{", external(lam), id(lam), ptrn, lam->filter());
-    } else {
+    else
         tab.println(os, ".lam {}{} {} → {} = {{", external(lam), id(lam), ptrn, lam->type()->codom());
-    }
 
     ++tab;
     if (lam->is_set()) {
@@ -301,9 +300,8 @@ void Dumper::dump_ptrn(const Def* def, const Def* type) {
 }
 
 void Dumper::recurse(const DepNode* node) {
-    for (auto child : node->children()) {
+    for (auto child : node->children())
         if (auto nom = isa_decl(child->nom())) dump(nom);
-    }
 }
 
 void Dumper::recurse(const Def* def, bool first /*= false*/) {

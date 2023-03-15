@@ -136,7 +136,7 @@
 /// | Name           | Meaning                      | Semantics                                                                |
 /// |----------------|------------------------------|--------------------------------------------------------------------------|
 /// | `%%math.er.f`  | error function               | \f$\frac{2}{\sqrt\pi}\int_0^x e^{-t^2}\,dt\f$                            |
-/// | `%%math.er.fc` | complementary error funciton | \f$\frac{2}{\sqrt\pi}\int_x^\infty e^{-t^2}\,dt = 1 - \textrm{erf}(x)\f$ |
+/// | `%%math.er.fc` | complementary error function | \f$\frac{2}{\sqrt\pi}\int_x^\infty e^{-t^2}\,dt = 1 - \textrm{erf}(x)\f$ |
 ///
 .ax %math.er(f, fc): Π.[pe: «2; .Nat»][.Nat][%math.F pe] -> %math.F pe, normalize_er;
 ///
@@ -146,8 +146,8 @@
 /// 
 /// | Name               | Meaning                             | Semantics                                                        |
 /// |--------------------|-------------------------------------|------------------------------------------------------------------|
-/// | ``%%math.gamma.t`` | gamma funciton                      | \f$\Gamma(x) = \int_0^\infty t^{x-1} e^{-t}\,dt\f$               |
-/// | ``%%math.gamma.l`` | natural logarithm of gamma funciton | \f$\ln \mid \int_0^\infty t^{x-1} e^{-t}\,dt \mid\f$ |
+/// | ``%%math.gamma.t`` | gamma function                      | \f$\Gamma(x) = \int_0^\infty t^{x-1} e^{-t}\,dt\f$               |
+/// | ``%%math.gamma.l`` | natural logarithm of gamma function | \f$\ln \mid \int_0^\infty t^{x-1} e^{-t}\,dt \mid\f$ |
 ///
 .ax %math.gamma(t, l): Π.[pe: «2; .Nat»][.Nat][%math.F pe] -> %math.F pe, normalize_gamma;
 ///

@@ -90,7 +90,7 @@ Ref World::uinc(Ref op, level_t offset) {
     if (!op->type()->isa<Univ>())
         err(op, "operand '{}' of a universe increment must be of type `.Univ` but is of type `{}`", op, op->type());
 
-    if (auto l = isa_lit(op)) return lit_univ(*l);
+    if (auto l = isa_lit(op)) return lit_univ(*l + 1);
     return unify<UInc>(1, op, offset);
 }
 
@@ -138,8 +138,7 @@ Ref World::app(Ref callee, Ref arg) {
     if (!checker().assignable(pi->dom(), arg))
         err(arg, "cannot pass argument '{}' of type '{}' to '{}' of domain '{}'", arg, arg->type(), callee, pi->dom());
 
-    if (auto lam = callee->isa<Lam>(); lam && lam->is_set() && lam->codom()->sort() > Sort::Type)
-        return lam->reduce(arg).back();
+    if (auto lam = callee->isa<Lam>(); lam && lam->is_set() && !lam->is_term()) return lam->reduce(arg).back();
 
     auto type = pi->reduce(arg).back();
     return raw_app<true>(type, callee, arg);

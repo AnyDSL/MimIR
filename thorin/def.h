@@ -220,7 +220,6 @@ public:
     const Def* type() const { return type_; }
     /// Yields the type of this Def and unfolds it if necessary. See Def::type, Def::reduce_rec.
     const Def* unfold_type() const;
-    Sort sort() const;
     const Def* arity() const;
     std::optional<nat_t> isa_lit_arity() const;
     nat_t as_lit_arity() const {
@@ -228,17 +227,17 @@ public:
         assert(a.has_value());
         return *a;
     }
+    bool is_term() const;
     ///@}
 
     /// @name ops
     ///@{
     template<size_t N = -1_s>
     auto ops() const {
-        if constexpr (N == -1_s) {
+        if constexpr (N == -1_s)
             return Defs(num_ops_, ops_ptr());
-        } else {
+        else
             return Span<const Def*>(N, ops_ptr()).template to_array<N>();
-        }
     }
     const Def* op(size_t i) const { return ops()[i]; }
     size_t num_ops() const { return num_ops_; }
@@ -316,7 +315,6 @@ public:
         return 1;
     }
     /// Similar to World::extract while assuming an arity of @p a but also works on Sigma%s, and Arr%ays.
-    /// If `this` is a Sort::Term (see Def::sort), Def::proj resorts to World::extract.
     const Def* proj(nat_t a, nat_t i) const;
 
     /// Same as above but takes Def::num_projs as arity.
@@ -659,7 +657,7 @@ private:
 
 public:
     /// Checks if @p def isa `.Idx s` and returns s or `nullptr` otherwise.
-    static const Def* size(Ref def);
+    static Ref size(Ref def);
 
     /// @name convert between Idx::size and bitwidth and vice versa
     ///@{
