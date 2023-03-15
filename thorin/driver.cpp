@@ -44,7 +44,7 @@ void Driver::load(Sym name) {
         return;
     }
 
-    std::unique_ptr<void, decltype(&dl::close)> handle{nullptr, dl::close};
+    Dialect::Handle handle{nullptr, dl::close};
     auto plugin_path = *name;
     if (auto path = fs::path{*name}; path.is_absolute() && fs::is_regular_file(path)) handle.reset(dl::open(*name));
     if (!handle) {
@@ -65,9 +65,9 @@ void Driver::load(Sym name) {
 
     if (!handle) err("cannot open plugin '{}'", name);
 
-    auto&& [i, ins] = sym2plugin_.emplace(name, Dialect{plugin_path, std::move(handle)});
-    assert(ins);
-    auto&& [_, plugin] = *i;
+    auto [i, ins] = sym2plugin_.emplace(name, Dialect{plugin_path, std::move(handle)});
+    assert_unused(ins);
+    auto& plugin = i->second;
     plugin.register_passes(passes_);
     plugin.register_backends(backends_);
     plugin.register_normalizers(normalizers_);
