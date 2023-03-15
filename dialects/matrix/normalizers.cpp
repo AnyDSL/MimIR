@@ -16,7 +16,7 @@ namespace thorin::matrix {
 /// - read(transpose m, (i,j)) -> read(m, (j,i)) (TODO: check for mapReduce)
 /// - read(product m1 m2, (i,j)) -> ... (TODO: check with mapReduce)
 /// - read (mapReduce f) idx = loop f idx (TODO: implement => use inner loop from lowering phase)
-const Def* normalize_read(const Def* type, const Def* callee, const Def* arg) {
+Ref normalize_read(Ref type, Ref callee, Ref arg) {
     auto& world            = type->world();
     auto [mem, mat, index] = arg->projs<3>();
 
@@ -49,7 +49,7 @@ const Def* normalize_read(const Def* type, const Def* callee, const Def* arg) {
 
 /// Normalizer for write operations
 /// TODO: implement
-const Def* normalize_insert(const Def* type, const Def* callee, const Def* arg) {
+Ref normalize_insert(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
     // auto [mat, index, val] = arg->projs<3>();
 
@@ -65,7 +65,7 @@ const Def* normalize_insert(const Def* type, const Def* callee, const Def* arg) 
 /// - transpose (tranpose m) -> m (TODO: implement)
 
 /// - shape (@mat n (k1,k2,...,kn) i) -> (k1,k2,...,kn)#i (TODO: implement)
-const Def* normalize_shape(const Def* type, const Def* callee, const Def* arg) {
+Ref normalize_shape(Ref type, Ref callee, Ref arg) {
     auto& world                   = type->world();
     auto [mat, index]             = arg->projs<2>();
     auto [dims, sizes, body_type] = match<Mat, false>(mat->type())->args<3>();
@@ -110,7 +110,7 @@ u64 get_max_index(u64 init, Defs inputs) {
 /// - mapReduce (..., ((idx,mapReduce([out, ]...), ...))) -> unify idx, out (out is implicit), name vars apart
 ///   requires: same reduction, distributive reduction
 /// we assume distributivity of the reduction function
-const Def* normalize_mapReduce(const Def* type, const Def* callee, const Def* arg) {
+Ref normalize_mapReduce(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
 
     //     // TODO: now that mapReduce returns a mem needs to check if extract from mapReduce
@@ -202,12 +202,12 @@ const Def* normalize_mapReduce(const Def* type, const Def* callee, const Def* ar
     //     // //                            world.dbg("TI"), world.dbg("SI")});
 }
 
-const Def* normalize_prod(const Def* type, const Def* callee, const Def* arg) {
+Ref normalize_prod(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
     return world.raw_app(type, callee, arg);
 }
 
-const Def* normalize_transpose(const Def* type, const Def* callee, const Def* arg) {
+Ref normalize_transpose(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
     return world.raw_app(type, callee, arg);
 }
