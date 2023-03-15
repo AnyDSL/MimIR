@@ -17,7 +17,7 @@ TEST(Zip, fold) {
     Driver driver;
     World& w = driver.world();
 
-    auto core_d = driver.load("core");
+    driver.load("core");
     fe::Parser::import_module(w, w.sym("core"));
 
     auto zip = w.ax<core::zip>();
@@ -99,7 +99,7 @@ TEST(trait, idx) {
     Driver driver;
     World& w = driver.world();
 
-    auto core_d = driver.load("core");
+    driver.load("core");
     fe::Parser::import_module(w, w.sym("core"));
 
     EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0000'00FF_n))), 1);
@@ -198,7 +198,7 @@ TEST(Axiom, curry) {
 
 TEST(Type, Level) {
     Driver driver;
-    World& w = driver.world;
+    World& w = driver.world();
     auto pi  = w.pi(w.type<7>(), w.type<2>());
     EXPECT_EQ(as_lit(pi->type()->isa<Type>()->level()), 8);
 }

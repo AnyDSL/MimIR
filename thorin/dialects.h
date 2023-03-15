@@ -12,8 +12,9 @@
 
 namespace thorin {
 
+using Backend     = std::function<void(World&, std::ostream&)>;
+using Backends    = absl::btree_map<std::string, Backend>;
 using Normalizers = absl::flat_hash_map<flags_t, Def::NormalizeFn>;
-using Backends    = absl::btree_map<std::string, std::function<void(World&, std::ostream&)>>;
 
 extern "C" {
 /// Basic info and registration function pointer to be returned from a dialect plugin.
@@ -43,6 +44,8 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info();
 /// A plugin implementor should implement \ref thorin_get_dialect_info and \ref DialectInfo.
 class Dialect {
 public:
+    using Handle = std::unique_ptr<void, void (*)(void*)>;
+
     /// Name of the dialect.
     std::string name() const { return info_.plugin_name; }
 
@@ -65,7 +68,7 @@ public:
     }
 
 private:
-    explicit Dialect(const std::string& plugin_path, std::unique_ptr<void, void (*)(void*)>&& handle);
+    explicit Dialect(const std::string& plugin_path, Handle&&);
 
     DialectInfo info_;
     std::string plugin_path_;

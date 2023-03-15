@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "thorin/dialects.h"
+#include "thorin/driver.h"
 
 #include "thorin/pass/fp/beta_red.h"
 #include "thorin/pass/fp/eta_exp.h"
@@ -17,7 +17,7 @@
 
 namespace thorin {
 
-void optimize(World& world, Passes& passes, std::vector<Dialect>& dialects) {
+void optimize(World& world) {
     auto compilation_functions = {world.sym("_compile"), world.sym("_default_compile"), world.sym("_core_compile"),
                                   world.sym("_fallback_compile")};
     const Def* compilation     = nullptr;
@@ -53,18 +53,19 @@ void optimize(World& world, Passes& passes, std::vector<Dialect>& dialects) {
     // Therefore, we register the handlers and let the compile dialect call them.
 
     PipelineBuilder pipe_builder(world);
-    // TODO: remove indirections of pipeline builder. Just add passes and phases directly to the pipeline.
-    for (auto& dialect : dialects) pipe_builder.register_dialect(dialect);
-
     auto pipeline     = compilation->as<Lam>()->body();
     auto [ax, phases] = collect_args(pipeline);
 
     // handle pipeline like all other pass axioms
+    const auto& passes = world.driver().passes();
     auto pipeline_axiom = ax->as<Axiom>();
     auto pipeline_flags = pipeline_axiom->flags();
     assert(passes.contains(pipeline_flags));
     world.DLOG("Building pipeline");
-    passes[pipeline_flags](world, pipe_builder, pipeline);
+    if (auto i = passes.find(pipeline_flags); i != passes.end())
+        (i->second)(world, pipe_builder, pipeline);
+    else
+        err("pipeline_axiom not found in passes");
 
     world.DLOG("Executing pipeline");
     pipe_builder.run_pipeline();

@@ -16,6 +16,8 @@ public:
         : pipe(std::make_unique<Pipeline>(world))
         , world_(world) {}
 
+    World& world() { return world_; }
+
     // Adds a pass and remembers it associated with the given def.
     template<class P, class... Args>
     void add_pass(const Def* def, Args&&... args) {
@@ -35,14 +37,9 @@ public:
     void remember_pass_instance(Pass* p, const Def*);
     Pass* get_pass_instance(const Def*);
 
-    void register_dialect(Dialect& d);
-    bool is_registered_dialect(std::string name);
-
     void run_pipeline();
 
 private:
-    std::set<std::string> registered_dialects_;
-    std::vector<Dialect*> dialects_;
     PassInstanceMap pass_instances_;
     std::unique_ptr<PassMan> man;
     std::unique_ptr<Pipeline> pipe;

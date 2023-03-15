@@ -17,6 +17,7 @@
 #include "thorin/pass/pipelinebuilder.h"
 #include "thorin/phase/phase.h"
 #include "thorin/util/sys.h"
+#include "absl/container/flat_hash_map.h"
 
 using namespace thorin;
 using namespace std::literals;
@@ -33,7 +34,7 @@ int main(int argc, char** argv) {
         bool list_dialect_paths = false;
         std::string input, prefix;
         std::string clang = sys::find_cmd("clang");
-        std::vector<std::string> dialect_plugins, dialect_paths;
+        std::vector<std::string> plugins, dialect_paths;
         std::vector<size_t> breakpoints;
         std::array<std::string, Num_Backends> output;
         int verbose      = 0;
@@ -47,7 +48,7 @@ int main(int argc, char** argv) {
             | lyra::opt(show_version             )["-v"]["--version"           ]("Display version info and exit.")
             | lyra::opt(list_dialect_paths       )["-l"]["--list-dialect-paths"]("List search paths in order and exit.")
             | lyra::opt(clang,          "clang"  )["-c"]["--clang"             ]("Path to clang executable (default: '" THORIN_WHICH " clang').")
-            | lyra::opt(dialect_plugins,"dialect")["-d"]["--dialect"           ]("Dynamically load dialect [WIP].")
+            | lyra::opt(plugins,        "dialect")["-d"]["--dialect"           ]("Dynamically load dialect [WIP].")
             | lyra::opt(dialect_paths,  "path"   )["-D"]["--dialect-path"      ]("Path to search dialects in.")
             | lyra::opt(inc_verbose              )["-V"]["--verbose"           ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
             | lyra::opt(opt,            "level"  )["-O"]["--optimize"          ]("Optimization level (default: 2).")
@@ -108,15 +109,11 @@ int main(int argc, char** argv) {
         }
 
         // we always need core and mem, as long as we are not in bootstrap mode..
-        if (!os[H]) dialect_plugins.insert(dialect_plugins.end(), {"core", "mem", "compile", "opt"});
+        if (!os[H]) plugins.insert(plugins.end(), {"core", "mem", "compile", "opt"});
 
-        std::vector<Dialect> dialects;
-        thorin::Passes passes;
-        if (!dialect_plugins.empty()) {
-            for (const auto& dialect : dialect_plugins) {
-                dialects.push_back(driver.load(dialect));
-                dialects.back().register_passes(passes);
-            }
+        if (!plugins.empty()) {
+            for (const auto& plugin : plugins)
+                driver.load(plugin);
         }
 
         if (input.empty()) throw std::invalid_argument("error: no input given");
@@ -129,7 +126,7 @@ int main(int argc, char** argv) {
             return EXIT_FAILURE;
         }
 
-        for (const auto& dialect : dialects) fe::Parser::import_module(world, world.sym(dialect.name()));
+        for (const auto& plugin : plugins) fe::Parser::import_module(world, world.sym(plugin));
 
         auto sym = world.sym(std::move(input));
         world.set(sym);
@@ -145,7 +142,7 @@ int main(int argc, char** argv) {
         switch (opt) {
             case 0:                             break;
             case 1: Phase::run<Cleanup>(world); break;
-            case 2: optimize(world, passes, dialects);   break;
+            case 2: optimize(world);            break;
             default: errln("error: illegal optimization level '{}'", opt);
         }
         // clang-format on
@@ -154,10 +151,10 @@ int main(int argc, char** argv) {
         if (os[Dot]) dot::emit(world, *os[Dot]);
 
         if (os[LL]) {
-            if (auto it = driver.backends().find("ll"); it != driver.backends().end()) {
-                it->second(world, *os[LL]);
+            if (auto backend = driver.backend("ll")) {
+                (*backend)(world, *os[LL]);
             } else
-                errln("error: 'll' emitter not loaded. Try loading 'mem' dialect.");
+                err("'ll' emitter not loaded. Try loading 'mem' dialect.");
         }
     } catch (const std::exception& e) {
         errln("{}", e.what());

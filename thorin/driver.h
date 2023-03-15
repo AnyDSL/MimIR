@@ -42,11 +42,22 @@ public:
     /// If \a name is an absolute path to a `.so`/`.dll` file, this is used.
     /// Otherwise, "name", "libthorin_name.so" (Linux, Mac), "thorin_name.dll" (Win)
     /// are searched for in Driver::search_paths().
-    Dialect load(const std::string& name);
+    void load(Sym name);
+    void load(std::string name) { return load(sym(std::move(name))); }
     ///@}
 
+    const Dialect* sym2plugin(Sym sym) const {
+        auto i = sym2plugin_.find(sym);
+        return i != sym2plugin_.end() ? &i->second : nullptr;
+    }
+
     const auto& normalizers() const { return normalizers_; }
+    const auto& passes() const { return passes_; }
     const auto& backends() const { return backends_; }
+    Backend* backend(std::string_view name) {
+        if (auto i = backends_.find(name); i != backends_.end()) return &i->second;
+        return nullptr;
+    }
 
 private:
     Flags flags_;
@@ -54,8 +65,10 @@ private:
     World world_;
     std::list<fs::path> search_paths_;
     std::list<fs::path>::iterator insert_ = search_paths_.end();
-    Normalizers normalizers_;
+    absl::node_hash_map<Sym, Dialect> sym2plugin_;
     Backends backends_;
+    Passes passes_;
+    Normalizers normalizers_;
 };
 
 } // namespace thorin

@@ -631,8 +631,9 @@ void Parser::parse_ax() {
         err(ax.loc(), "all declarations of axiom '{}' must use the same normalizer name", ax);
     info.normalizer = normalizer_name;
 
-    auto normalizer = [this](dialect_t d, tag_t t, sub_t s) -> Def::NormalizeFn {
-        if (auto i = normalizers().find(d | flags_t(t << 8u) | s); i != normalizers().end()) return i->second;
+    const auto& normalizers = driver().normalizers();
+    auto normalizer = [&normalizers](dialect_t d, tag_t t, sub_t s) -> Def::NormalizeFn {
+        if (auto i = normalizers.find(d | flags_t(t << 8u) | s); i != normalizers.end()) return i->second;
         return nullptr;
     };
 

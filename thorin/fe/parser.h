@@ -42,8 +42,6 @@ public:
     ///@}
 
 private:
-    const auto& normalizers() { return driver().normalizers(); }
-
     /// @name Tracker
     ///@{
     /// Trick to easily keep track of Loc%ations.

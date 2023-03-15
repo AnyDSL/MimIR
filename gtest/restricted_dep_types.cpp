@@ -33,10 +33,10 @@ TEST(RestrictedDependentTypes, join_singleton) {
         Driver driver;
         World& w = driver.world();
 
-        auto xx = driver.load("compile");
-        auto xy = driver.load("mem");
-        auto xz = driver.load("core");
-        auto xw = driver.load("math");
+        driver.load("compile");
+        driver.load("mem");
+        driver.load("core");
+        driver.load("math");
         fe::Parser::import_module(w, w.sym("compile"));
         fe::Parser::import_module(w, w.sym("mem"));
         fe::Parser::import_module(w, w.sym("core"));
@@ -230,23 +230,7 @@ TEST(RestrictedDependentTypes, ll) {
     Driver driver;
     World& w = driver.world();
 
-    std::vector<std::string> dialect_plugins = {
-        "compile",
-        "mem",
-        "core",
-        "math",
-    };
-
-    std::vector<Dialect> dialects;
-    thorin::Backends backends;
-    Passes passes;
-
-    for (const auto& dialect : dialect_plugins) {
-        dialects.push_back(driver.load(dialect));
-        dialects.back().register_passes(passes);
-    }
-
-    for (const auto& dialect : dialects) fe::Parser::import_module(w, w.sym(dialect.name()));
+    for (auto dialect : {"compile", "mem", "core", "math"}) fe::Parser::import_module(w, w.sym(dialect));
 
     auto mem_t  = mem::type_mem(w);
     auto i32_t  = w.type_int(32);
@@ -286,7 +270,6 @@ TEST(RestrictedDependentTypes, ll) {
         main->app(false, exp_lam, {main->var(0_s), i32_t, R, core::op_bitcast(app_exp, main->var(1)), main->var(3)});
     }
 
-    optimize(w, passes, dialects);
-
-    backends["ll"](w, std::cout);
+    optimize(w);
+    (*driver.backend("ll"))(w, std::cout);
 }

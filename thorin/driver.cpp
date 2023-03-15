@@ -36,10 +36,17 @@ Driver::Driver()
     insert_ = search_paths_.begin();
 }
 
-Dialect Driver::load(const std::string& name) {
+void Driver::load(Sym name) {
+    ILOG("loading plugin: '{}'", name);
+
+    if (auto i = sym2plugin_.find(name); i != sym2plugin_.end()) {
+        WLOG("plugin '{}' already loaded", name);
+        return;
+    }
+
     std::unique_ptr<void, decltype(&dl::close)> handle{nullptr, dl::close};
-    auto plugin_path = name;
-    if (auto path = fs::path{name}; path.is_absolute() && fs::is_regular_file(path)) handle.reset(dl::open(name));
+    auto plugin_path = *name;
+    if (auto path = fs::path{*name}; path.is_absolute() && fs::is_regular_file(path)) handle.reset(dl::open(*name));
     if (!handle) {
         for (const auto& path : search_paths()) {
             for (auto name_variants = get_plugin_name_variants(name); const auto& name_variant : name_variants) {
@@ -56,12 +63,14 @@ Dialect Driver::load(const std::string& name) {
         }
     }
 
-    if (!handle) throw std::runtime_error("cannot open plugin '" + name + "'");
+    if (!handle) err("cannot open plugin '{}'", name);
 
-    auto dialect = Dialect{plugin_path, std::move(handle)};
-    dialect.register_normalizers(normalizers_);
-    dialect.register_backends(backends_);
-    return dialect;
+    auto&& [i, ins] = sym2plugin_.emplace(name, Dialect{plugin_path, std::move(handle)});
+    assert(ins);
+    auto&& [_, plugin] = *i;
+    plugin.register_passes(passes_);
+    plugin.register_backends(backends_);
+    plugin.register_normalizers(normalizers_);
 }
 
 } // namespace thorin

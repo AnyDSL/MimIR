@@ -34,14 +34,6 @@ void PipelineBuilder::end_pass_phase() {
     man = nullptr;
 }
 
-void PipelineBuilder::register_dialect(Dialect& dialect) { dialects_.push_back(&dialect); }
-bool PipelineBuilder::is_registered_dialect(std::string name) {
-    for (auto& dialect : dialects_) {
-        if (dialect->name() == name) { return true; }
-    }
-    return false;
-}
-
 void PipelineBuilder::run_pipeline() { pipe->run(); }
 
 } // namespace thorin

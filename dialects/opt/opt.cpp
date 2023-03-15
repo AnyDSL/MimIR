@@ -2,8 +2,7 @@
 
 #include <string_view>
 
-#include <thorin/config.h>
-#include <thorin/dialects.h>
+#include <thorin/driver.h>
 #include <thorin/pass/pass.h>
 
 #include "dialects/compile/compile.h"
@@ -30,7 +29,8 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                     auto dialect     = tag->substr(0, tag->find('_'));
                     auto dialect_str = std::string(dialect);
                     world.DLOG("dialect: {}", dialect_str);
-                    auto is_loaded = builder.is_registered_dialect(dialect_str);
+                    auto& driver = builder.world().driver();
+                    bool is_loaded = driver.sym2plugin(driver.sym(dialect_str));
                     world.DLOG("contained: {}", is_loaded);
 
                     compile::handle_optimization_part(is_loaded ? then_phase : else_phase, world, passes, builder);

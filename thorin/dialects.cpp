@@ -15,13 +15,12 @@
 
 namespace thorin {
 
-Dialect::Dialect(const std::string& plugin_path, std::unique_ptr<void, decltype(&dl::close)>&& handle)
+Dialect::Dialect(const std::string& plugin_path, Handle&& handle)
     : plugin_path_(plugin_path)
     , handle_(std::move(handle)) {
     auto get_info =
         reinterpret_cast<decltype(&thorin_get_dialect_info)>(dl::get(this->handle(), "thorin_get_dialect_info"));
-
-    if (!get_info) throw std::runtime_error{"dialect plugin has no thorin_get_dialect_info()"};
+    if (!get_info) err("plugin has no 'thorin_get_dialect_info()'");
     info_ = get_info();
 }
 
