@@ -12,8 +12,8 @@
     [k:.Nat, l:.Nat],
     return: .Cn[%mem.M, I32]] = {
 
-    .let two = %core.conv.u2u _32 k (2:I32);
-    .let three = %core.conv.u2u _32 l (3:I32);
+    .let two = %core.conv.u k (2:I32);
+    .let three = %core.conv.u l (3:I32);
 
     .let (mem2, M) = %matrix.init (2,(k,l),I32,mem);
     // :%matrix.Mat (2,(k,l),I32),
