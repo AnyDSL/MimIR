@@ -13,7 +13,7 @@ var classthorin_1_1Idx =
     [ "set", "classthorin_1_1Idx.html#a174e3935f8c6716f6fb3560bd85124ab", null ],
     [ "set", "classthorin_1_1Idx.html#a8da897edb0d69950d2cee4975cb5f21f", null ],
     [ "set", "classthorin_1_1Idx.html#a28941d20684bf767bfd6ffa031de590f", null ],
-    [ "size", "classthorin_1_1Idx.html#acf43821635bf64968b070f70a8e977b8", null ],
+    [ "size", "classthorin_1_1Idx.html#a852e1df6246ead39440fd793eda80846", null ],
     [ "size2bitwidth", "classthorin_1_1Idx.html#aff1cd5016b1bafb2d55fb51c531210b7", null ],
     [ "size2bitwidth", "classthorin_1_1Idx.html#a8df71d71f9471826e15df4a58e49844f", null ],
     [ "stub", "classthorin_1_1Idx.html#aaf76cfb303332cc880b6621a1f467533", null ],

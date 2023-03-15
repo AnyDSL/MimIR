@@ -1,9 +1,5 @@
 var NAVTREEINDEX27 =
 {
-"print_8cpp.html#a7dae34cc4eb75fe0cf5a914431353c8c":[6,0,4,5,16,1],
-"print_8cpp_source.html":[6,0,4,5,16],
-"print_8h.html":[6,0,4,5,17],
-"print_8h.html#a01d195c52d754394a58dec37e2913430":[6,0,4,5,17,6],
 "print_8h.html#a1e961804cf2964efea4388ebe218f496":[6,0,4,5,17,9],
 "print_8h.html#a425b2158f0d5c5ea2d8f27542c1f8ec3":[6,0,4,5,17,8],
 "print_8h.html#a7bc6143638d489bb640260462bf07777":[6,0,4,5,17,3],
@@ -249,5 +245,9 @@ var NAVTREEINDEX27 =
 "structthorin_1_1UseEq.html":[3,0,0,120],
 "structthorin_1_1UseEq.html#af1350f6aed59e4cc75043814c9887639":[5,0,0,115,0],
 "structthorin_1_1UseEq.html#af1350f6aed59e4cc75043814c9887639":[3,0,0,120,0],
-"structthorin_1_1UseHash.html":[3,0,0,121]
+"structthorin_1_1UseHash.html":[3,0,0,121],
+"structthorin_1_1UseHash.html":[5,0,0,116],
+"structthorin_1_1UseHash.html#a2413a5ec73625a1d55aaaa22a4e81bc3":[3,0,0,121,0],
+"structthorin_1_1UseHash.html#a2413a5ec73625a1d55aaaa22a4e81bc3":[5,0,0,116,0],
+"structthorin_1_1World_1_1Freezer.html":[5,0,0,132,0]
 };

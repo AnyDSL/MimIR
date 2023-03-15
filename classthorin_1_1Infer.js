@@ -1,8 +1,6 @@
 var classthorin_1_1Infer =
 [
     [ "find", "classthorin_1_1Infer.html#a2360ebd60a14311cf8b6730835958b34", null ],
-    [ "inflate", "classthorin_1_1Infer.html#a1f46be7eeb4d1b2f697591aefed8ac4e", null ],
-    [ "inflate", "classthorin_1_1Infer.html#adc1479602961ab28b6fecd13a1b41971", null ],
     [ "op", "classthorin_1_1Infer.html#a72096cb953dac16f9505b0d1f44483ef", null ],
     [ "set", "classthorin_1_1Infer.html#a4d2d8587b48cba25573997637e1c99e2", null ],
     [ "set", "classthorin_1_1Infer.html#a88e87abf43bb9635784a7528af55da7e", null ],

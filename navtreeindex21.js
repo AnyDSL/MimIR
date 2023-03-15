@@ -1,9 +1,5 @@
 var NAVTREEINDEX21 =
 {
-"lam__spec_8cpp_source.html":[6,0,4,3,1,0],
-"lam__spec_8h.html":[6,0,4,3,1,1],
-"lam__spec_8h_source.html":[6,0,4,3,1,1],
-"langref.html":[1,1],
 "lattice_8cpp.html":[6,0,4,19],
 "lattice_8cpp_source.html":[6,0,4,19],
 "lattice_8h.html":[6,0,4,20],
@@ -249,5 +245,9 @@ var NAVTREEINDEX21 =
 "math_2autogen_8h.html#af5795434c033575fef9826010d58bc2d":[6,0,0,1,0,7,0,3],
 "math_2autogen_8h.html#af5795434c033575fef9826010d58bc2da64cc4f23df17159f168885fa9dcb812c":[6,0,0,1,0,7,0,3,2],
 "math_2autogen_8h.html#af5795434c033575fef9826010d58bc2da773617e49009ca6b1da12f8fdf1fdca2":[6,0,0,1,0,7,0,3,0],
-"math_2autogen_8h.html#af5795434c033575fef9826010d58bc2da7b39587020327361b25edf8fdae94209":[6,0,0,1,0,7,0,3,4]
+"math_2autogen_8h.html#af5795434c033575fef9826010d58bc2da7b39587020327361b25edf8fdae94209":[6,0,0,1,0,7,0,3,4],
+"math_2autogen_8h.html#af5795434c033575fef9826010d58bc2da8c1b96a13f7c1435ca95fb36566ed661":[6,0,0,1,0,7,0,3,3],
+"math_2autogen_8h.html#af5795434c033575fef9826010d58bc2dafc614cb09a28cadbf7b0c5f9afc65989":[6,0,0,1,0,7,0,3,1],
+"math_2autogen_8h.html#af6ff928603f930814700e2ea16846363":[6,0,0,1,0,7,0,52],
+"math_2autogen_8h.html#af762c28da873286700e29f8627ec197d":[6,0,0,1,0,7,0,58]
 };

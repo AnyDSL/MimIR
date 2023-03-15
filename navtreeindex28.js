@@ -1,9 +1,5 @@
 var NAVTREEINDEX28 =
 {
-"structthorin_1_1UseHash.html":[5,0,0,116],
-"structthorin_1_1UseHash.html#a2413a5ec73625a1d55aaaa22a4e81bc3":[3,0,0,121,0],
-"structthorin_1_1UseHash.html#a2413a5ec73625a1d55aaaa22a4e81bc3":[5,0,0,116,0],
-"structthorin_1_1World_1_1Freezer.html":[5,0,0,132,0],
 "structthorin_1_1World_1_1Freezer.html":[3,0,0,137,0],
 "structthorin_1_1World_1_1Freezer.html#a1ae93854a3c0acf2114ceca36622b708":[3,0,0,137,0,1],
 "structthorin_1_1World_1_1Freezer.html#a1ae93854a3c0acf2114ceca36622b708":[5,0,0,132,0,1],

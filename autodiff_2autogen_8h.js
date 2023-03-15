@@ -1,20 +1,20 @@
 var autodiff_2autogen_8h =
 [
-    [ "thorin::Axiom::Match< autodiff::ad_ext_cleanup_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01autodiff_1_1ad__ext__cleanup__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a59456a7b45bf3a080b0006c7aa0855dd", null ]
-    ] ],
     [ "thorin::Axiom::Match< autodiff::ad_zero_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01autodiff_1_1ad__zero__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#a4ad6acbc4d82980046f2e5a4bee7a33e", null ]
     ] ],
-    [ "thorin::Axiom::Match< autodiff::ad_zero_cleanup_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01autodiff_1_1ad__zero__cleanup__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#afc298ecd7abf933a73c6e80095564b2b", null ]
+    [ "thorin::Axiom::Match< autodiff::ad_ext_cleanup_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01autodiff_1_1ad__ext__cleanup__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a59456a7b45bf3a080b0006c7aa0855dd", null ]
     ] ],
     [ "thorin::Axiom::Match< autodiff::ad_eval_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01autodiff_1_1ad__eval__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#ab42adeb1b399f9a9c8708c52f5bccbea", null ]
     ] ],
+    [ "thorin::Axiom::Match< autodiff::ad_zero_cleanup_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01autodiff_1_1ad__zero__cleanup__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#afc298ecd7abf933a73c6e80095564b2b", null ]
+    ] ],
     [ "THORIN_autodiff_NORMALIZER_IMPL", "autodiff_2autogen_8h.html#ab540efb299fd71903b57a8a2549fe24d", null ],
-    [ "ad", "autodiff_2autogen_8h.html#aa01669317ac5a2c1679e4dd25678a051", null ],
     [ "AD", "autodiff_2autogen_8h.html#ae4a2884a429ac996dc3a0d42e0077985", null ],
+    [ "ad", "autodiff_2autogen_8h.html#aa01669317ac5a2c1679e4dd25678a051", null ],
     [ "ad_eval_pass", "autodiff_2autogen_8h.html#a70e498c2379dc6134a75385b61561590", null ],
     [ "ad_ext_cleanup_pass", "autodiff_2autogen_8h.html#a31ed274d65f6ce6f65f91d9cff047e37", null ],
     [ "ad_zero_cleanup_pass", "autodiff_2autogen_8h.html#a26d7f2c0898e592b451903ecc52fb1d8", null ],
