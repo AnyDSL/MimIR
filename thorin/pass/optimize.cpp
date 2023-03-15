@@ -57,13 +57,11 @@ void optimize(World& world) {
     auto [ax, phases] = collect_args(pipeline);
 
     // handle pipeline like all other pass axioms
-    const auto& passes  = world.driver().passes();
     auto pipeline_axiom = ax->as<Axiom>();
     auto pipeline_flags = pipeline_axiom->flags();
-    assert(passes.contains(pipeline_flags));
     world.DLOG("Building pipeline");
-    if (auto i = passes.find(pipeline_flags); i != passes.end())
-        (i->second)(world, pipe_builder, pipeline);
+    if (auto pass = world.driver().pass(pipeline_flags))
+        (*pass)(world, pipe_builder, pipeline);
     else
         err("pipeline_axiom not found in passes");
 

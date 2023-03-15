@@ -29,7 +29,7 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                     assert(tag->find('_') != std::string_view::npos && "dialect_phase: invalid dialect name");
                     auto dialect = driver.sym(tag->substr(0, tag->find('_')));
                     world.DLOG("dialect: {}", dialect);
-                    bool is_loaded = driver.sym2plugin(dialect);
+                    bool is_loaded = driver.plugin(dialect);
                     world.DLOG("contained: {}", is_loaded);
 
                     compile::handle_optimization_part(is_loaded ? then_phase : else_phase, world, passes, builder);

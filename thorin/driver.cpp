@@ -39,7 +39,7 @@ Driver::Driver()
 void Driver::load(Sym name) {
     ILOG("loading plugin: '{}'", name);
 
-    if (auto i = sym2plugin_.find(name); i != sym2plugin_.end()) {
+    if (plugin(name)) {
         WLOG("plugin '{}' already loaded", name);
         return;
     }
@@ -65,7 +65,7 @@ void Driver::load(Sym name) {
 
     if (!handle) err("cannot open plugin '{}'", name);
 
-    auto [i, ins] = sym2plugin_.emplace(name, Dialect{plugin_path, std::move(handle)});
+    auto [i, ins] = plugins_.emplace(name, Dialect{plugin_path, std::move(handle)});
     assert_unused(ins);
     auto& plugin = i->second;
     plugin.register_passes(passes_);

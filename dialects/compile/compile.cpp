@@ -68,7 +68,7 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                     add_phases(phases, world, passes, builder);
                 };
                 passes[flags_t(Axiom::Base<thorin::compile::nullptr_pass>)] =
-                    [&](World&, PipelineBuilder& builder, const Def* def) { builder.def2pass(def, nullptr); };
+                    [](World&, PipelineBuilder& builder, const Def* def) { builder.def2pass(def, nullptr); };
 
                 register_pass<compile::partial_eval_pass, PartialEval>(passes);
                 register_pass<compile::beta_red_pass, BetaRed>(passes);

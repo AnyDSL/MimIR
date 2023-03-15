@@ -48,24 +48,12 @@ public:
 
     /// @name manage plugins
     ///@{
-    const auto& passes() const { return passes_; }
-
-    /// Yields the Plugin @p sym or `nullptr` if none exists.
-    const Dialect* sym2plugin(Sym sym) const {
-        auto i = sym2plugin_.find(sym);
-        return i != sym2plugin_.end() ? &i->second : nullptr;
-    }
-
-    NormalizeFn normalizer(dialect_t d, tag_t t, sub_t s) const { return normalizer(d | flags_t(t << 8u) | s); }
-    NormalizeFn normalizer(flags_t flags) const {
-        if (auto i = normalizers_.find(flags); i != normalizers_.end()) return i->second;
-        return nullptr;
-    }
-
-    Backend backend(std::string_view name) {
-        if (auto i = backends_.find(name); i != backends_.end()) return i->second;
-        return nullptr;
-    }
+    /// All these lookups yield `nullptr` if the key has not been found.
+    auto plugin(Sym sym) const { return lookup(plugins_, sym); }
+    auto pass(flags_t flags) { return lookup(passes_, flags); }
+    auto normalizer(flags_t flags) const { return lookup(normalizers_, flags); }
+    auto normalizer(dialect_t d, tag_t t, sub_t s) const { return normalizer(d | flags_t(t << 8u) | s); }
+    auto backend(std::string_view name) { return lookup(backends_, name); }
     ///@}
 
 private:
@@ -74,7 +62,7 @@ private:
     World world_;
     std::list<fs::path> search_paths_;
     std::list<fs::path>::iterator insert_ = search_paths_.end();
-    absl::node_hash_map<Sym, Dialect> sym2plugin_;
+    absl::node_hash_map<Sym, Dialect> plugins_;
     Backends backends_;
     Passes passes_;
     Normalizers normalizers_;

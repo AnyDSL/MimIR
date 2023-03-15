@@ -34,8 +34,8 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                                                                         const Def* app) {
                     auto [br, ee, bb] = app->as<App>()->args<3>();
                     // TODO: let get_pass do the casts
-                    auto br_pass = (BetaRed*)builder.def2pass(br);
-                    auto ee_pass = (EtaExp*)builder.def2pass(ee);
+                    auto br_pass = (BetaRed*)builder.pass(br);
+                    auto ee_pass = (EtaExp*)builder.pass(ee);
                     auto bb_only = bb->as<Lit>()->get<u64>();
                     world.DLOG("registering copy_prop with br = {}, ee = {}, bb_only = {}", br, ee, bb_only);
                     builder.add_pass<mem::CopyProp>(app, br_pass, ee_pass, bb_only);

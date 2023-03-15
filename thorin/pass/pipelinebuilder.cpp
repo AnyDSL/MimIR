@@ -25,7 +25,7 @@ void PipelineBuilder::def2pass(const Def* def, Pass* p) {
     def->world().DLOG("associating {} with {}", def->gid(), p);
     def2pass_[def] = p;
 }
-Pass* PipelineBuilder::def2pass(const Def* def) { return def2pass_[def]; }
+Pass* PipelineBuilder::pass(const Def* def) { return def2pass_[def]; }
 
 void PipelineBuilder::begin_pass_phase() { man = std::make_unique<PassMan>(world_); }
 void PipelineBuilder::end_pass_phase() {
