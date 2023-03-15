@@ -231,7 +231,7 @@ TEST(RestrictedDependentTypes, ll) {
     World& w = driver.world();
 
     auto dialects = {"compile", "mem", "core", "math"};
-    for (auto dialect : dialects) driver.load(dialects);
+    for (auto dialect : dialects) driver.load(dialect);
     for (auto dialect : dialects) fe::Parser::import_module(w, w.sym(dialect));
 
     auto mem_t  = mem::type_mem(w);
