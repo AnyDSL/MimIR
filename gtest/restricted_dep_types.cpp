@@ -33,14 +33,9 @@ TEST(RestrictedDependentTypes, join_singleton) {
         Driver driver;
         World& w = driver.world();
 
-        driver.load("compile");
-        driver.load("mem");
-        driver.load("core");
-        driver.load("math");
-        fe::Parser::import_module(w, w.sym("compile"));
-        fe::Parser::import_module(w, w.sym("mem"));
-        fe::Parser::import_module(w, w.sym("core"));
-        fe::Parser::import_module(w, w.sym("math"));
+        auto dialects = {"compile", "mem", "core", "math"};
+        for (auto dialect : dialects) driver.load(dialect);
+        for (auto dialect : dialects) fe::Parser::import_module(w, w.sym(dialect));
 
         auto i32_t = w.type_int(32);
         auto i64_t = w.type_int(64);
