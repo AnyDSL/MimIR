@@ -3,6 +3,7 @@
 #include <thorin/config.h>
 #include <thorin/dialects.h>
 #include <thorin/pass/pass.h>
+#include <thorin/pass/pipelinebuilder.h>
 
 #include "dialects/refly/passes/remove_perm.h"
 

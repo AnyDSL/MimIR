@@ -250,41 +250,28 @@ const Var* Def::var() {
     unreachable();
 }
 
-Sort Def::sort() const {
-    if (auto type = isa<Type>()) {
-        auto level = as_lit(type->level()); // TODO other levels
-        return level == 0 ? Sort::Kind : Sort::Space;
+bool Def::is_term() const {
+    if (auto t = type()) {
+        if (auto u = t->type()) {
+            if (auto type = u->isa<Type>()) {
+                if (auto level = isa_lit(type->level())) return *level == 0;
+            }
+        }
     }
-
-    switch (node()) {
-        case Node::Univ:  return Sort::Univ;
-        case Node::Arr:
-        case Node::Nat:
-        case Node::Pi:
-        case Node::Sigma:
-        case Node::Join:
-        case Node::Meet: return Sort::Type;
-        case Node::Global:
-        case Node::Insert:
-        case Node::Lam:
-        case Node::Pack:
-        case Node::Test:
-        case Node::Tuple: return Sort::Term;
-        default:          return Sort(int(type()->sort()) - 1);
-    }
+    return false;
 }
 
 const Def* Def::arity() const {
     if (auto sigma  = isa<Sigma>()) return world().lit_nat(sigma->num_ops());
     if (auto arr    = isa<Arr  >()) return arr->shape();
-    if (sort() == Sort::Term)       return type()->arity();
-    return world().lit_nat(1);
+    if (auto t = type())            return t->arity();
+    return world().lit_nat_1();
 }
 
 std::optional<nat_t> Def::isa_lit_arity() const {
     if (auto sigma  = isa<Sigma>()) return sigma->num_ops();
     if (auto arr    = isa<Arr  >()) return isa_lit(arr->shape());
-    if (sort() == Sort::Term)       return type()->isa_lit_arity();
+    if (auto t = type())            return t->isa_lit_arity();
     return 1;
 }
 
@@ -423,28 +410,26 @@ const Def* Def::proj(nat_t a, nat_t i) const {
         if (pack->arity()->isa<Top>()) return pack->body();
         assert(!w.is_frozen() && "TODO");
         return pack->reduce(w.lit_idx(pack->as_lit_arity(), i));
-    } else if (sort() == Sort::Term) {
-        if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {
-            for (auto u : uses()) {
-                if (auto ex = u->isa<Extract>(); ex && ex->tuple() == this) {
-                    if (auto index = isa_lit(ex->index()); index && *index == i) return ex;
-                }
-            }
-
-            if (w.is_frozen()) return nullptr;
-        }
-
-        return w.extract(this, a, i);
     }
 
-    return nullptr;
+    if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {
+        for (auto u : uses()) {
+            if (auto ex = u->isa<Extract>(); ex && ex->tuple() == this) {
+                if (auto index = isa_lit(ex->index()); index && *index == i) return ex;
+            }
+        }
+
+        if (w.is_frozen()) return nullptr;
+    }
+
+    return w.extract(this, a, i);
 }
 
 /*
  * Idx
  */
 
-const Def* Idx::size(Ref def) {
+Ref Idx::size(Ref def) {
     if (auto app = def->isa<App>()) {
         if (app->callee()->isa<Idx>()) return app->arg();
     }

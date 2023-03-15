@@ -5,7 +5,7 @@
 namespace thorin::clos {
 
 void Clos2SJLJ::get_exn_closures(const Def* def, DefSet& visited) {
-    if (def->sort() != Sort::Term || def->isa_nom<Lam>() || visited.contains(def)) return;
+    if (!def->is_term() || def->isa_nom<Lam>() || visited.contains(def)) return;
     visited.emplace(def);
     if (auto c = isa_clos_lit(def)) {
         auto lam = c.fnc_as_lam();
@@ -58,7 +58,7 @@ static std::array<const Def*, 3> split(const Def* def) {
             new_ops[j++] = op;
     }
     assert(mem && env);
-    auto remaining = (def->sort() == Sort::Term) ? w.tuple(new_ops) : w.sigma(new_ops);
+    auto remaining = def->is_term() ? w.tuple(new_ops) : w.sigma(new_ops);
     if (new_ops.size() == 1 && remaining != new_ops[0]) {
         // FIXME: For some reason this is not constant folded away??
         remaining = new_ops[0];

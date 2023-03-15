@@ -1,13 +1,13 @@
 #include "dialects/clos/clos.h"
 
 #include <thorin/config.h>
+#include <thorin/pass/fp/eta_exp.h>
+#include <thorin/pass/fp/eta_red.h>
 #include <thorin/pass/pass.h>
+#include <thorin/pass/pipelinebuilder.h>
+#include <thorin/pass/rw/scalarize.h>
 
 #include "thorin/dialects.h"
-
-#include "thorin/pass/fp/eta_exp.h"
-#include "thorin/pass/fp/eta_red.h"
-#include "thorin/pass/rw/scalarize.h"
 
 #include "dialects/clos/pass/fp/lower_typed_clos_prep.h"
 #include "dialects/clos/pass/rw/branch_clos_elim.h"

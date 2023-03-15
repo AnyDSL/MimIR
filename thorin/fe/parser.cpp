@@ -31,10 +31,9 @@ using namespace std::string_literals;
 
 namespace thorin::fe {
 
-Parser::Parser(World& world, Sym file, std::istream& istream, const Normalizers* normalizers, std::ostream* md)
+Parser::Parser(World& world, Sym file, std::istream& istream, std::ostream* md)
     : world_(world)
     , bootstrapper_(world.sym(fs::path{*file}.filename().replace_extension("").string()))
-    , normalizers_(normalizers)
     , anonymous_(world.sym("_")) {
     init(file, istream, md);
 }
@@ -165,11 +164,10 @@ Ref Parser::parse_infix_expr(Tracker track, const Def* lhs, Tok::Prec p) {
         } else {
             auto [l, r] = Tok::prec(Tok::Prec::App);
             if (l < p) break;
-            if (auto rhs = parse_expr({}, r)) { // if we can parse an expression, it's an App
+            if (auto rhs = parse_expr({}, r)) // if we can parse an expression, it's an App
                 lhs = world().iapp(lhs, rhs)->set(track.loc());
-            } else {
+            else
                 return lhs;
-            }
         }
     }
 
@@ -188,9 +186,8 @@ Ref Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
 
             if (auto i = def2fields_.find(sigma); i != def2fields_.end()) {
                 if (auto& fields = i->second; fields.size() == sigma->num_ops()) {
-                    for (size_t i = 0, n = sigma->num_ops(); i != n; ++i) {
+                    for (size_t i = 0, n = sigma->num_ops(); i != n; ++i)
                         if (fields[i] == tok.sym()) return world().extract(lhs, n, i)->set(track.loc());
-                    }
                 }
             }
             err(tok.loc(), "could not find elemement '{}' to extract from '{}' of type '{}'", tok.sym(), lhs, sigma);
@@ -630,12 +627,6 @@ void Parser::parse_ax() {
         err(ax.loc(), "all declarations of axiom '{}' must use the same normalizer name", ax);
     info.normalizer = normalizer_name;
 
-    auto normalizer = [this](dialect_t d, tag_t t, sub_t s) -> Def::NormalizeFn {
-        if (normalizers_)
-            if (auto it = normalizers_->find(d | flags_t(t << 8u) | s); it != normalizers_->end()) return it->second;
-        return nullptr;
-    };
-
     auto [curry, trip] = Axiom::infer_curry_and_trip(type);
 
     if (accept(Tok::Tag::T_comma)) {
@@ -650,12 +641,14 @@ void Parser::parse_ax() {
     tag_t t     = info.tag_id;
     sub_t s     = info.subs.size();
     if (new_subs.empty()) {
-        auto axiom = world().axiom(normalizer(d, t, 0), curry, trip, type, d, t, 0)->set(ax.loc(), ax.sym());
+        auto norm  = driver().normalizer(d, t, 0);
+        auto axiom = world().axiom(norm, curry, trip, type, d, t, 0)->set(ax.loc(), ax.sym());
         scopes_.bind(ax.dbg(), axiom);
     } else {
         for (const auto& sub : new_subs) {
             auto name  = world().sym(*ax.sym() + "."s + *sub.front());
-            auto axiom = world().axiom(normalizer(d, t, s), curry, trip, type, d, t, s)->set(track.loc(), name);
+            auto norm  = driver().normalizer(d, t, s);
+            auto axiom = world().axiom(norm, curry, trip, type, d, t, s)->set(track.loc(), name);
             for (auto& alias : sub) {
                 auto sym = world().sym(*ax.sym() + "."s + *alias);
                 scopes_.bind({prev(), sym}, axiom);

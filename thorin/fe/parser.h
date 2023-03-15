@@ -1,7 +1,6 @@
 #pragma once
 
-#include "thorin/dialects.h"
-#include "thorin/world.h"
+#include "thorin/driver.h"
 
 #include "thorin/be/h/bootstrapper.h"
 #include "thorin/fe/ast.h"
@@ -30,7 +29,7 @@ namespace thorin::fe {
 ///      * If default argument is **provided** we have the same behavior as in 2.
 class Parser {
 public:
-    Parser(World&, Sym file, std::istream&, const Normalizers*, std::ostream* md = nullptr);
+    Parser(World&, Sym file, std::istream&, std::ostream* md = nullptr);
 
     World& world() { return world_; }
     Driver& driver() { return world().driver(); }
@@ -68,6 +67,7 @@ private:
     Dbg parse_sym(std::string_view ctxt = {});
     void parse_import();
     Ref parse_type_ascr(std::string_view ctxt);
+    ///@}
 
     /// @name exprs
     ///@{
@@ -126,10 +126,7 @@ private:
 
     /// Factory method to build a Parser::Tracker.
     Tracker tracker() { return Tracker(*this, ahead().loc().begin); }
-    ///@}
 
-    /// @name get next Tok
-    ///@{
     /// Get lookahead.
     Tok& ahead(size_t i = 0) {
         assert(i < Max_Ahead);
@@ -178,7 +175,6 @@ private:
     Scopes scopes_;
     Def2Fields def2fields_;
     h::Bootstrapper bootstrapper_;
-    const Normalizers* normalizers_;
     Sym anonymous_;
 };
 

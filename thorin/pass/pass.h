@@ -11,8 +11,6 @@ class PassMan;
 using undo_t                    = size_t;
 static constexpr undo_t No_Undo = std::numeric_limits<undo_t>::max();
 
-struct PassTag {};
-
 /// All Pass%es that want to be registered in the PassMan must implement this interface.
 /// * Inherit from RWPass if your pass does **not** need state and a fixed-point iteration.
 /// * Inherit from FPPass if you **do** need state and a fixed-point.
@@ -70,9 +68,7 @@ public:
 
     /// @name proxy
     ///@{
-    const Proxy* proxy(const Def* type, Defs ops, u32 tag = 0) {
-        return world().proxy(type, ops, index(), tag);
-    }
+    const Proxy* proxy(const Def* type, Defs ops, u32 tag = 0) { return world().proxy(type, ops, index(), tag); }
     /// Check whether given @p def is a Proxy whose Proxy::pass matches this Pass's @p IPass::index.
     const Proxy* isa_proxy(const Def* def, u32 tag = 0) {
         if (auto proxy = def->isa<Proxy>(); proxy != nullptr && proxy->pass() == index() && proxy->tag() == tag)
@@ -198,9 +194,8 @@ private:
     ///@{
     undo_t analyze(const Def*);
     bool analyzed(const Def* def) {
-        for (auto& state : states_ | std::ranges::views::reverse) {
+        for (auto& state : states_ | std::ranges::views::reverse)
             if (state.analyzed.contains(def)) return true;
-        }
         curr_state().analyzed.emplace(def);
         return false;
     }
