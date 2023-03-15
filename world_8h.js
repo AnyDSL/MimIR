@@ -11,6 +11,5 @@ var world_8h =
     ] ],
     [ "thorin::World::Freezer", "structthorin_1_1World_1_1Freezer.html", "structthorin_1_1World_1_1Freezer" ],
     [ "thorin::World::Arena::Zone", "structthorin_1_1World_1_1Arena_1_1Zone.html", "structthorin_1_1World_1_1Arena_1_1Zone" ],
-    [ "thorin::World::Arena::Lock", "structthorin_1_1World_1_1Arena_1_1Lock.html", "structthorin_1_1World_1_1Arena_1_1Lock" ],
-    [ "Breakpoints", "world_8h.html#aeacdfc7d80d52a29850922e7b56af08b", null ]
+    [ "thorin::World::Arena::Lock", "structthorin_1_1World_1_1Arena_1_1Lock.html", "structthorin_1_1World_1_1Arena_1_1Lock" ]
 ];

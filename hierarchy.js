@@ -205,7 +205,6 @@ var hierarchy =
       ] ]
     ] ],
     [ "thorin::PassMan", "classthorin_1_1PassMan.html", null ],
-    [ "thorin::PassTag", "namespacethorin.html#structthorin_1_1PassTag", null ],
     [ "thorin::Phase", "classthorin_1_1Phase.html", [
       [ "thorin::Cleanup", "classthorin_1_1Cleanup.html", null ],
       [ "thorin::PassManPhase", "classthorin_1_1PassManPhase.html", null ],

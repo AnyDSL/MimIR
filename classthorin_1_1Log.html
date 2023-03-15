@@ -137,14 +137,27 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a7af62b2ec980bf070972db13fd71b09b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Log.html#a7af62b2ec980bf070972db13fd71b09b">Log</a> (<a class="el" href="classthorin_1_1SymPool.html">SymPool</a> &amp;sym_pool)</td></tr>
 <tr class="separator:a7af62b2ec980bf070972db13fd71b09b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">getters</div></td></tr>
+<tr class="memitem:a87db1e60e758f1aee7ceeb522d034058"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1a">Level</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Log.html#a87db1e60e758f1aee7ceeb522d034058">level</a> () const</td></tr>
+<tr class="separator:a87db1e60e758f1aee7ceeb522d034058"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9efb8f85ee03f3495ffb9afb8f117556"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Log.html#a9efb8f85ee03f3495ffb9afb8f117556">ostream</a> () const</td></tr>
+<tr class="separator:a9efb8f85ee03f3495ffb9afb8f117556"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2a1ee6fb5cd86df57f1d3499f752bf6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Log.html#ad2a1ee6fb5cd86df57f1d3499f752bf6">operator bool</a> () const</td></tr>
+<tr class="memdesc:ad2a1ee6fb5cd86df57f1d3499f752bf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if Log::ostream_ is set.  <a href="classthorin_1_1Log.html#ad2a1ee6fb5cd86df57f1d3499f752bf6">More...</a><br /></td></tr>
+<tr class="separator:ad2a1ee6fb5cd86df57f1d3499f752bf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">setters</div></td></tr>
+<tr class="memitem:af05569443ced1196eac9043970e8f64c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Log.html">Log</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Log.html#af05569443ced1196eac9043970e8f64c">set</a> (std::ostream *<a class="el" href="classthorin_1_1Log.html#a9efb8f85ee03f3495ffb9afb8f117556">ostream</a>)</td></tr>
+<tr class="separator:af05569443ced1196eac9043970e8f64c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe29f5e05acd379464e4e67c28a0d732"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Log.html">Log</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Log.html#afe29f5e05acd379464e4e67c28a0d732">set</a> (<a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1a">Level</a> max_level)</td></tr>
+<tr class="separator:afe29f5e05acd379464e4e67c28a0d732"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">log</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p >Output <code>fmt</code> to <a class="el" href="classthorin_1_1Log.html#a9a8c7b53890137fd684f4e90cb1fb0e0">Log::ostream</a>; does nothing if <a class="el" href="classthorin_1_1Log.html#a9a8c7b53890137fd684f4e90cb1fb0e0">Log::ostream</a> is <code>nullptr</code>. </p>
+<tr><td colspan="2"><div class="groupText"><p >Output <code>fmt</code> to <a class="el" href="classthorin_1_1Log.html#a9efb8f85ee03f3495ffb9afb8f117556">Log::ostream</a>; does nothing if <a class="el" href="classthorin_1_1Log.html#a9efb8f85ee03f3495ffb9afb8f117556">Log::ostream</a> is <code>nullptr</code>. </p>
 </div></td></tr>
 <tr class="memitem:ae71c3bf4868ad20c8ee2dcef8c72813f"><td class="memTemplParams" colspan="2">template&lt;class... Args&gt; </td></tr>
-<tr class="memitem:ae71c3bf4868ad20c8ee2dcef8c72813f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Log.html#ae71c3bf4868ad20c8ee2dcef8c72813f">log</a> (<a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1a">Level</a> <a class="el" href="classthorin_1_1Log.html#a63ea2999521567a43b28f00081cd1e82">level</a>, <a class="el" href="structthorin_1_1Loc.html">Loc</a> loc, const char *<a class="el" href="namespacethorin.html#ac2a988f71a64a048c61d5a2238269ea8">fmt</a>, Args &amp;&amp;... args) const</td></tr>
+<tr class="memitem:ae71c3bf4868ad20c8ee2dcef8c72813f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Log.html#ae71c3bf4868ad20c8ee2dcef8c72813f">log</a> (<a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1a">Level</a> <a class="el" href="classthorin_1_1Log.html#a87db1e60e758f1aee7ceeb522d034058">level</a>, <a class="el" href="structthorin_1_1Loc.html">Loc</a> loc, const char *<a class="el" href="namespacethorin.html#ac2a988f71a64a048c61d5a2238269ea8">fmt</a>, Args &amp;&amp;... args) const</td></tr>
 <tr class="separator:ae71c3bf4868ad20c8ee2dcef8c72813f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70d6a9ca5238ae0a175ead16109e7f88"><td class="memTemplParams" colspan="2">template&lt;class... Args&gt; </td></tr>
-<tr class="memitem:a70d6a9ca5238ae0a175ead16109e7f88"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Log.html#a70d6a9ca5238ae0a175ead16109e7f88">log</a> (<a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1a">Level</a> <a class="el" href="classthorin_1_1Log.html#a63ea2999521567a43b28f00081cd1e82">level</a>, const char *file, uint16_t line, const char *<a class="el" href="namespacethorin.html#ac2a988f71a64a048c61d5a2238269ea8">fmt</a>, Args &amp;&amp;... args)</td></tr>
+<tr class="memitem:a70d6a9ca5238ae0a175ead16109e7f88"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Log.html#a70d6a9ca5238ae0a175ead16109e7f88">log</a> (<a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1a">Level</a> <a class="el" href="classthorin_1_1Log.html#a87db1e60e758f1aee7ceeb522d034058">level</a>, const char *file, uint16_t line, const char *<a class="el" href="namespacethorin.html#ac2a988f71a64a048c61d5a2238269ea8">fmt</a>, Args &amp;&amp;... args)</td></tr>
 <tr class="separator:a70d6a9ca5238ae0a175ead16109e7f88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -154,23 +167,14 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a5ee67d670442fd8476290292f0f4a738"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06c1e1a99d980b61192e10020bb53928"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1a">Level</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Log.html#a06c1e1a99d980b61192e10020bb53928">str2level</a> (std::string_view)</td></tr>
 <tr class="separator:a06c1e1a99d980b61192e10020bb53928"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0b95355e12aa74f6bb27a0079fcfca2"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Log.html#aa0b95355e12aa74f6bb27a0079fcfca2">level2color</a> (<a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1a">Level</a> <a class="el" href="classthorin_1_1Log.html#a63ea2999521567a43b28f00081cd1e82">level</a>)</td></tr>
+<tr class="memitem:aa0b95355e12aa74f6bb27a0079fcfca2"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Log.html#aa0b95355e12aa74f6bb27a0079fcfca2">level2color</a> (<a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1a">Level</a> <a class="el" href="classthorin_1_1Log.html#a87db1e60e758f1aee7ceeb522d034058">level</a>)</td></tr>
 <tr class="separator:aa0b95355e12aa74f6bb27a0079fcfca2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad81027bbd12e257e9285305c6fee465e"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Log.html#ad81027bbd12e257e9285305c6fee465e">colorize</a> (std::string_view str, int color)</td></tr>
 <tr class="separator:ad81027bbd12e257e9285305c6fee465e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr><td colspan="2"><div class="groupHeader">Log Level and output stream as public members</div></td></tr>
-<tr class="memitem:a9a8c7b53890137fd684f4e90cb1fb0e0"><td class="memItemLeft" align="right" valign="top">std::ostream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Log.html#a9a8c7b53890137fd684f4e90cb1fb0e0">ostream</a> = nullptr</td></tr>
-<tr class="separator:a9a8c7b53890137fd684f4e90cb1fb0e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63ea2999521567a43b28f00081cd1e82"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1a">Level</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Log.html#a63ea2999521567a43b28f00081cd1e82">level</a> = <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa902b0d55fddef6f8d651fe1035b7d4bd">Level::Error</a></td></tr>
-<tr class="memdesc:a63ea2999521567a43b28f00081cd1e82"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>Maximum</b> log Level.  <a href="classthorin_1_1Log.html#a63ea2999521567a43b28f00081cd1e82">More...</a><br /></td></tr>
-<tr class="separator:a63ea2999521567a43b28f00081cd1e82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00007">7</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00009">9</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="ae8ff4129d521840f869d27c15ead3a1a" name="ae8ff4129d521840f869d27c15ead3a1a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae8ff4129d521840f869d27c15ead3a1a">&#9670;&#160;</a></span>Level</h2>
@@ -199,7 +203,7 @@ Public Attributes</h2></td></tr>
 <tr><td class="fieldname"><a id="ae8ff4129d521840f869d27c15ead3a1aaa603905470e2a5b8c13e96b579ef0dba" name="ae8ff4129d521840f869d27c15ead3a1aaa603905470e2a5b8c13e96b579ef0dba"></a>Debug&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00009">9</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00011">11</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
 
 </div>
 </div>
@@ -228,7 +232,7 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00011">11</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00013">13</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
 
 </div>
 </div>
@@ -269,7 +273,36 @@ Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="log_8cpp_source.html#l00048">48</a> of file <a class="el" href="log_8cpp_source.html">log.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="log_8h_source.html#l00018">log()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="log_8h_source.html#l00042">log()</a>.</p>
+
+</div>
+</div>
+<a id="a87db1e60e758f1aee7ceeb522d034058" name="a87db1e60e758f1aee7ceeb522d034058"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87db1e60e758f1aee7ceeb522d034058">&#9670;&#160;</a></span>level()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1a">Level</a> thorin::Log::level </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00018">18</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="log_8cpp_source.html#l00006">level2acro()</a>, <a class="el" href="log_8cpp_source.html#l00027">level2color()</a>, and <a class="el" href="log_8h_source.html#l00042">log()</a>.</p>
 
 </div>
 </div>
@@ -299,9 +332,9 @@ Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="log_8cpp_source.html#l00006">6</a> of file <a class="el" href="log_8cpp_source.html">log.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aaa603905470e2a5b8c13e96b579ef0dba">Debug</a>, <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa902b0d55fddef6f8d651fe1035b7d4bd">Error</a>, <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa4059b0251f66a18cb56f544728796875">Info</a>, <a class="el" href="log_8h_source.html#l00043">level</a>, <a class="el" href="assert_8h_source.html#l00019">thorin::unreachable()</a>, <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aad4a9fa383ab700c5bdd6f31cf7df0faf">Verbose</a>, and <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa56525ae64d370c0b448ac0d60710ef17">Warn</a>.</p>
+<p class="reference">References <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aaa603905470e2a5b8c13e96b579ef0dba">Debug</a>, <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa902b0d55fddef6f8d651fe1035b7d4bd">Error</a>, <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa4059b0251f66a18cb56f544728796875">Info</a>, <a class="el" href="log_8h_source.html#l00018">level()</a>, <a class="el" href="assert_8h_source.html#l00019">thorin::unreachable()</a>, <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aad4a9fa383ab700c5bdd6f31cf7df0faf">Verbose</a>, and <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa56525ae64d370c0b448ac0d60710ef17">Warn</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="log_8h_source.html#l00018">log()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="log_8h_source.html#l00042">log()</a>.</p>
 
 </div>
 </div>
@@ -331,9 +364,9 @@ Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="log_8cpp_source.html#l00027">27</a> of file <a class="el" href="log_8cpp_source.html">log.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aaa603905470e2a5b8c13e96b579ef0dba">Debug</a>, <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa902b0d55fddef6f8d651fe1035b7d4bd">Error</a>, <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa4059b0251f66a18cb56f544728796875">Info</a>, <a class="el" href="log_8h_source.html#l00043">level</a>, <a class="el" href="assert_8h_source.html#l00019">thorin::unreachable()</a>, <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aad4a9fa383ab700c5bdd6f31cf7df0faf">Verbose</a>, and <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa56525ae64d370c0b448ac0d60710ef17">Warn</a>.</p>
+<p class="reference">References <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aaa603905470e2a5b8c13e96b579ef0dba">Debug</a>, <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa902b0d55fddef6f8d651fe1035b7d4bd">Error</a>, <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa4059b0251f66a18cb56f544728796875">Info</a>, <a class="el" href="log_8h_source.html#l00018">level()</a>, <a class="el" href="assert_8h_source.html#l00019">thorin::unreachable()</a>, <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aad4a9fa383ab700c5bdd6f31cf7df0faf">Verbose</a>, and <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa56525ae64d370c0b448ac0d60710ef17">Warn</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="log_8h_source.html#l00018">log()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="log_8h_source.html#l00042">log()</a>.</p>
 
 </div>
 </div>
@@ -391,9 +424,9 @@ template&lt;class... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00027">27</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00051">51</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8h_source.html#l00132">thorin::fmt()</a>, <a class="el" href="log_8h_source.html#l00043">level</a>, <a class="el" href="log_8h_source.html#l00018">log()</a>, and <a class="el" href="sym_8h_source.html#l00086">thorin::SymPool::sym()</a>.</p>
+<p class="reference">References <a class="el" href="print_8h_source.html#l00132">thorin::fmt()</a>, <a class="el" href="log_8h_source.html#l00018">level()</a>, <a class="el" href="log_8h_source.html#l00042">log()</a>, and <a class="el" href="sym_8h_source.html#l00086">thorin::SymPool::sym()</a>.</p>
 
 </div>
 </div>
@@ -445,11 +478,129 @@ template&lt;class... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00018">18</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00042">42</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
 
-<p class="reference">References <a class="el" href="log_8cpp_source.html#l00048">colorize()</a>, <a class="el" href="print_8h_source.html#l00132">thorin::fmt()</a>, <a class="el" href="log_8h_source.html#l00043">level</a>, <a class="el" href="log_8cpp_source.html#l00006">level2acro()</a>, <a class="el" href="log_8cpp_source.html#l00027">level2color()</a>, <a class="el" href="log_8h_source.html#l00042">ostream</a>, and <a class="el" href="print_8cpp_source.html#l00005">thorin::print()</a>.</p>
+<p class="reference">References <a class="el" href="log_8cpp_source.html#l00048">colorize()</a>, <a class="el" href="print_8h_source.html#l00132">thorin::fmt()</a>, <a class="el" href="log_8h_source.html#l00018">level()</a>, <a class="el" href="log_8cpp_source.html#l00006">level2acro()</a>, <a class="el" href="log_8cpp_source.html#l00027">level2color()</a>, <a class="el" href="log_8h_source.html#l00019">ostream()</a>, and <a class="el" href="print_8cpp_source.html#l00005">thorin::print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="log_8h_source.html#l00027">log()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="log_8h_source.html#l00051">log()</a>.</p>
+
+</div>
+</div>
+<a id="ad2a1ee6fb5cd86df57f1d3499f752bf6" name="ad2a1ee6fb5cd86df57f1d3499f752bf6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2a1ee6fb5cd86df57f1d3499f752bf6">&#9670;&#160;</a></span>operator bool()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">thorin::Log::operator <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Checks if Log::ostream_ is set. </p>
+
+<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00023">23</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
+
+</div>
+</div>
+<a id="a9efb8f85ee03f3495ffb9afb8f117556" name="a9efb8f85ee03f3495ffb9afb8f117556"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9efb8f85ee03f3495ffb9afb8f117556">&#9670;&#160;</a></span>ostream()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; thorin::Log::ostream </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00019">19</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="log_8h_source.html#l00042">log()</a>, and <a class="el" href="log_8h_source.html#l00028">set()</a>.</p>
+
+</div>
+</div>
+<a id="afe29f5e05acd379464e4e67c28a0d732" name="afe29f5e05acd379464e4e67c28a0d732"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe29f5e05acd379464e4e67c28a0d732">&#9670;&#160;</a></span>set() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1Log.html">Log</a> &amp; thorin::Log::set </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1a">Level</a>&#160;</td>
+          <td class="paramname"><em>max_level</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00032">32</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
+
+</div>
+</div>
+<a id="af05569443ced1196eac9043970e8f64c" name="af05569443ced1196eac9043970e8f64c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af05569443ced1196eac9043970e8f64c">&#9670;&#160;</a></span>set() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1Log.html">Log</a> &amp; thorin::Log::set </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream *&#160;</td>
+          <td class="paramname"><em>ostream</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00028">28</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
+
+<p class="reference">References <a class="el" href="log_8h_source.html#l00019">ostream()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00026">main()</a>.</p>
 
 </div>
 </div>
@@ -480,45 +631,6 @@ template&lt;class... Args&gt; </div>
 <p class="definition">Definition at line <a class="el" href="log_8cpp_source.html#l00017">17</a> of file <a class="el" href="log_8cpp_source.html">log.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aaa603905470e2a5b8c13e96b579ef0dba">Debug</a>, <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa902b0d55fddef6f8d651fe1035b7d4bd">Error</a>, <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa4059b0251f66a18cb56f544728796875">Info</a>, <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aad4a9fa383ab700c5bdd6f31cf7df0faf">Verbose</a>, and <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa56525ae64d370c0b448ac0d60710ef17">Warn</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a63ea2999521567a43b28f00081cd1e82" name="a63ea2999521567a43b28f00081cd1e82"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a63ea2999521567a43b28f00081cd1e82">&#9670;&#160;</a></span>level</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1a">Level</a> thorin::Log::level = <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa902b0d55fddef6f8d651fe1035b7d4bd">Level::Error</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p><b>Maximum</b> log Level. </p>
-
-<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00043">43</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="log_8cpp_source.html#l00006">level2acro()</a>, <a class="el" href="log_8cpp_source.html#l00027">level2color()</a>, <a class="el" href="log_8h_source.html#l00018">log()</a>, and <a class="el" href="main_8cpp_source.html#l00026">main()</a>.</p>
-
-</div>
-</div>
-<a id="a9a8c7b53890137fd684f4e90cb1fb0e0" name="a9a8c7b53890137fd684f4e90cb1fb0e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a8c7b53890137fd684f4e90cb1fb0e0">&#9670;&#160;</a></span>ostream</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::ostream* thorin::Log::ostream = nullptr</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00042">42</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="log_8h_source.html#l00018">log()</a>, and <a class="el" href="main_8cpp_source.html#l00026">main()</a>.</p>
 
 </div>
 </div>

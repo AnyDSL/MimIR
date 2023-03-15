@@ -5,6 +5,6 @@ var searchData=
   ['nom2nom_2',['Nom2Nom',['../namespacethorin.html#a847863dc99817523db80a5e862acbb8e',1,'thorin']]],
   ['nommap_3',['NomMap',['../namespacethorin.html#a1f4495ac5ca4bee6965b07d96c22253b',1,'thorin']]],
   ['nomset_4',['NomSet',['../namespacethorin.html#a6448a89fa59bf8622639c34a0747b364',1,'thorin']]],
-  ['normalizefn_5',['NormalizeFn',['../classthorin_1_1Def.html#a9110e815664a8139b5b312b0af4cb68a',1,'thorin::Def']]],
-  ['normalizers_6',['Normalizers',['../namespacethorin.html#a286f60254e3f9699ea27cb2bc98b6051',1,'thorin']]]
+  ['normalizefn_5',['NormalizeFn',['../namespacethorin.html#a00699ac904a16b60cdac9cc7005ed0d8',1,'thorin']]],
+  ['normalizers_6',['Normalizers',['../namespacethorin.html#a6ad6eaa1c542646fa592d10b05676464',1,'thorin']]]
 ];

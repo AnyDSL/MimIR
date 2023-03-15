@@ -111,26 +111,24 @@ $(document).ready(function(){initNavTree('dialects_8cpp.html',''); initResizable
 
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle"><div class="title">dialects.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="dialects_8h_source.html">thorin/dialects.h</a>&quot;</code><br />
 <code>#include &lt;cstdlib&gt;</code><br />
-<code>#include &lt;filesystem&gt;</code><br />
 <code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;sstream&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 <code>#include &quot;<a class="el" href="config_8h_source.html">thorin/config.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="world_8h_source.html">thorin/world.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="driver_8h_source.html">thorin/driver.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="pass_8h_source.html">thorin/pass/pass.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="dl_8h_source.html">thorin/util/dl.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="sys_8h_source.html">thorin/util/sys.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for dialects.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="dialects_8cpp__incl.svg" width="2126" height="946"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="dialects_8cpp__incl.svg" width="2624" height="594"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -141,79 +139,7 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacethorin"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html">thorin</a></td></tr>
 <tr class="memdesc:namespacethorin"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper functions of general interest. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a5ccbd280e82a0383c90916617721ca41"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dialects_8cpp.html#a5ccbd280e82a0383c90916617721ca41">add_paths_from_env</a> (std::vector&lt; std::filesystem::path &gt; &amp;paths)</td></tr>
-<tr class="separator:a5ccbd280e82a0383c90916617721ca41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49212dd422133bcdea8cb79cd90bb975"><td class="memItemLeft" align="right" valign="top">static std::vector&lt; std::filesystem::path &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dialects_8cpp.html#a49212dd422133bcdea8cb79cd90bb975">get_plugin_name_variants</a> (std::string_view name)</td></tr>
-<tr class="separator:a49212dd422133bcdea8cb79cd90bb975"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04083cd8dc5a9157c0cf98860b65c921"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::filesystem::path &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a04083cd8dc5a9157c0cf98860b65c921">thorin::get_plugin_search_paths</a> (<a class="el" href="classthorin_1_1Span.html">Span</a>&lt; std::string &gt; user_paths)</td></tr>
-<tr class="separator:a04083cd8dc5a9157c0cf98860b65c921"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="a5ccbd280e82a0383c90916617721ca41" name="a5ccbd280e82a0383c90916617721ca41"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ccbd280e82a0383c90916617721ca41">&#9670;&#160;</a></span>add_paths_from_env()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void add_paths_from_env </td>
-          <td>(</td>
-          <td class="paramtype">std::vector&lt; std::filesystem::path &gt; &amp;&#160;</td>
-          <td class="paramname"><em>paths</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="dialects_8cpp_source.html#l00019">19</a> of file <a class="el" href="dialects_8cpp_source.html">dialects.cpp</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="dialects_8cpp_source.html#l00039">thorin::get_plugin_search_paths()</a>.</p>
-
-</div>
-</div>
-<a id="a49212dd422133bcdea8cb79cd90bb975" name="a49212dd422133bcdea8cb79cd90bb975"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a49212dd422133bcdea8cb79cd90bb975">&#9670;&#160;</a></span>get_plugin_name_variants()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static std::vector&lt; std::filesystem::path &gt; get_plugin_name_variants </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="dialects_8cpp_source.html#l00030">30</a> of file <a class="el" href="dialects_8cpp_source.html">dialects.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="dl_8cpp_source.html#l00025">thorin::dl::extension()</a>, <a class="el" href="print_8h_source.html#l00132">thorin::fmt()</a>, and <a class="el" href="dl_8cpp_source.html#l00017">thorin::dl::prefix()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="dialects_8cpp_source.html#l00074">thorin::Dialect::load()</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

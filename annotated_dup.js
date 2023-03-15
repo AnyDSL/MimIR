@@ -136,7 +136,6 @@ var annotated_dup =
       [ "PassMan", "classthorin_1_1PassMan.html", "classthorin_1_1PassMan" ],
       [ "PassManPhase", "classthorin_1_1PassManPhase.html", "classthorin_1_1PassManPhase" ],
       [ "PassPhase", "classthorin_1_1PassPhase.html", "classthorin_1_1PassPhase" ],
-      [ "PassTag", "namespacethorin.html#structthorin_1_1PassTag", null ],
       [ "Phase", "classthorin_1_1Phase.html", "classthorin_1_1Phase" ],
       [ "Pi", "classthorin_1_1Pi.html", "classthorin_1_1Pi" ],
       [ "Pick", "classthorin_1_1Pick.html", "classthorin_1_1Pick" ],

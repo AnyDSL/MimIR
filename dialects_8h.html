@@ -118,24 +118,22 @@ $(document).ready(function(){initNavTree('dialects_8h.html',''); initResizable()
   <div class="headertitle"><div class="title">dialects.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;filesystem&gt;</code><br />
-<code>#include &lt;memory&gt;</code><br />
+<div class="textblock"><code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
-<code>#include &quot;<a class="el" href="emitter_8h_source.html">thorin/be/emitter.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="pass_8h_source.html">thorin/pass/pass.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="pipelinebuilder_8h_source.html">thorin/pass/pipelinebuilder.h</a>&quot;</code><br />
-<code>#include &quot;absl/container/flat_hash_map.h&quot;</code><br />
+<code>#include &lt;absl/container/btree_map.h&gt;</code><br />
+<code>#include &lt;absl/container/flat_hash_map.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="def_8h_source.html">thorin/def.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for dialects.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="dialects_8h__incl.svg" width="2610" height="872"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="dialects_8h__incl.svg" width="2276" height="447"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="dialects_8h__dep__incl.svg" width="4506" height="476"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="dialects_8h__dep__incl.svg" width="4676" height="476"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -158,18 +156,20 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ab70a3eb6856bc409f9ed3627fff8ab36"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ab70a3eb6856bc409f9ed3627fff8ab36">thorin::Backends</a> = std::map&lt; std::string, std::function&lt; void(World &amp;, std::ostream &amp;)&gt; &gt;</td></tr>
-<tr class="separator:ab70a3eb6856bc409f9ed3627fff8ab36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a286f60254e3f9699ea27cb2bc98b6051"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a286f60254e3f9699ea27cb2bc98b6051">thorin::Normalizers</a> = absl::flat_hash_map&lt; flags_t, Def::NormalizeFn &gt;</td></tr>
-<tr class="separator:a286f60254e3f9699ea27cb2bc98b6051"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a334ff18080cd42969f863f22ec82694c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a334ff18080cd42969f863f22ec82694c">thorin::Passes</a> = absl::flat_hash_map&lt; flags_t, std::function&lt; void(World &amp;, PipelineBuilder &amp;, const Def *)&gt; &gt;</td></tr>
+<tr class="memdesc:a334ff18080cd42969f863f22ec82694c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>axiom ↦ (pipeline part) × (axiom application) → ()</code> <br  />
+ The function should inspect <a class="el" href="classthorin_1_1App.html">App</a>lication to construct the Pass/Phase and add it to the pipeline.  <a href="namespacethorin.html#a334ff18080cd42969f863f22ec82694c">More...</a><br /></td></tr>
+<tr class="separator:a334ff18080cd42969f863f22ec82694c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a790538bc68a2e08c788ee7666933c60b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a790538bc68a2e08c788ee7666933c60b">thorin::Backends</a> = absl::btree_map&lt; std::string, void(*)(World &amp;, std::ostream &amp;)&gt;</td></tr>
+<tr class="separator:a790538bc68a2e08c788ee7666933c60b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ad6eaa1c542646fa592d10b05676464"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a6ad6eaa1c542646fa592d10b05676464">thorin::Normalizers</a> = absl::flat_hash_map&lt; flags_t, NormalizeFn &gt;</td></tr>
+<tr class="separator:a6ad6eaa1c542646fa592d10b05676464"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ad64a18507465904296ceed7c776bf75a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="config_8h.html#a479c17cabac34a4216996c05ffa7e071">THORIN_EXPORT</a> <a class="el" href="structthorin_1_1DialectInfo.html">thorin::DialectInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ad64a18507465904296ceed7c776bf75a">thorin::thorin_get_dialect_info</a> ()</td></tr>
 <tr class="memdesc:ad64a18507465904296ceed7c776bf75a"><td class="mdescLeft">&#160;</td><td class="mdescRight">To be implemented and exported by the dialect plugins.  <a href="namespacethorin.html#ad64a18507465904296ceed7c776bf75a">More...</a><br /></td></tr>
 <tr class="separator:ad64a18507465904296ceed7c776bf75a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04083cd8dc5a9157c0cf98860b65c921"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::filesystem::path &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a04083cd8dc5a9157c0cf98860b65c921">thorin::get_plugin_search_paths</a> (<a class="el" href="classthorin_1_1Span.html">Span</a>&lt; std::string &gt; user_paths)</td></tr>
-<tr class="separator:a04083cd8dc5a9157c0cf98860b65c921"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
