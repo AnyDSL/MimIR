@@ -268,5 +268,5 @@ TEST(RestrictedDependentTypes, ll) {
     }
 
     optimize(w);
-    (*driver.backend("ll"))(w, std::cout);
+    driver.backend("ll")(w, std::cout);
 }

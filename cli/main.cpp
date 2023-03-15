@@ -149,7 +149,7 @@ int main(int argc, char** argv) {
 
         if (os[LL]) {
             if (auto backend = driver.backend("ll"))
-                (*backend)(world, *os[LL]);
+                backend(world, *os[LL]);
             else
                 err("'ll' emitter not loaded. Try loading 'mem' dialect.");
         }

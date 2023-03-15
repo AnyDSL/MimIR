@@ -48,9 +48,7 @@ public:
 
     /// @name manage plugins
     ///@{
-    const auto& normalizers() const { return normalizers_; }
     const auto& passes() const { return passes_; }
-    const auto& backends() const { return backends_; }
 
     /// Yields the Plugin @p sym or `nullptr` if none exists.
     const Dialect* sym2plugin(Sym sym) const {
@@ -58,8 +56,14 @@ public:
         return i != sym2plugin_.end() ? &i->second : nullptr;
     }
 
-    Backend* backend(std::string_view name) {
-        if (auto i = backends_.find(name); i != backends_.end()) return &i->second;
+    NormalizeFn normalizer(dialect_t d, tag_t t, sub_t s) const { return normalizer(d | flags_t(t << 8u) | s); }
+    NormalizeFn normalizer(flags_t flags) const {
+        if (auto i = normalizers_.find(flags); i != normalizers_.end()) return i->second;
+        return nullptr;
+    }
+
+    Backend backend(std::string_view name) {
+        if (auto i = backends_.find(name); i != backends_.end()) return i->second;
         return nullptr;
     }
     ///@}

@@ -13,7 +13,7 @@ namespace thorin {
 
 class PipelineBuilder;
 
-using Backend     = std::function<void(World&, std::ostream&)>;
+using Backend     = void (*)(World&, std::ostream&);
 using Backends    = absl::btree_map<std::string, Backend>;
 using Normalizers = absl::flat_hash_map<flags_t, NormalizeFn>;
 /// `axiom ↦ (pipeline part) × (axiom application) → ()` <br/>

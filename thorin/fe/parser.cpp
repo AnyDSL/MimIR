@@ -629,12 +629,6 @@ void Parser::parse_ax() {
         err(ax.loc(), "all declarations of axiom '{}' must use the same normalizer name", ax);
     info.normalizer = normalizer_name;
 
-    const auto& normalizers = driver().normalizers();
-    auto normalizer         = [&normalizers](dialect_t d, tag_t t, sub_t s) -> NormalizeFn {
-        if (auto i = normalizers.find(d | flags_t(t << 8u) | s); i != normalizers.end()) return i->second;
-        return nullptr;
-    };
-
     auto [curry, trip] = Axiom::infer_curry_and_trip(type);
 
     if (accept(Tok::Tag::T_comma)) {
@@ -649,12 +643,14 @@ void Parser::parse_ax() {
     tag_t t     = info.tag_id;
     sub_t s     = info.subs.size();
     if (new_subs.empty()) {
-        auto axiom = world().axiom(normalizer(d, t, 0), curry, trip, type, d, t, 0)->set(ax.loc(), ax.sym());
+        auto norm  = driver().normalizer(d, t, 0);
+        auto axiom = world().axiom(norm, curry, trip, type, d, t, 0)->set(ax.loc(), ax.sym());
         scopes_.bind(ax.dbg(), axiom);
     } else {
         for (const auto& sub : new_subs) {
             auto name  = world().sym(*ax.sym() + "."s + *sub.front());
-            auto axiom = world().axiom(normalizer(d, t, s), curry, trip, type, d, t, s)->set(track.loc(), name);
+            auto norm  = driver().normalizer(d, t, s);
+            auto axiom = world().axiom(norm, curry, trip, type, d, t, s)->set(track.loc(), name);
             for (auto& alias : sub) {
                 auto sym = world().sym(*ax.sym() + "."s + *alias);
                 scopes_.bind({prev_, sym}, axiom);
