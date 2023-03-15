@@ -173,8 +173,8 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
     }
 
     // other
-    if (u->flags() == 0) return print(os, ".{} ({, })", u->node_name(), u->ops());
-    return print(os, ".{}#{} ({, })", u->node_name(), u->flags(), u->ops());
+    if (u->flags() == 0) return print(os, "(.{} {, })", u->node_name(), u->ops());
+    return print(os, "(.{}#{} {, })", u->node_name(), u->flags(), u->ops());
 }
 
 /*
