@@ -230,7 +230,9 @@ TEST(RestrictedDependentTypes, ll) {
     Driver driver;
     World& w = driver.world();
 
-    for (auto dialect : {"compile", "mem", "core", "math"}) fe::Parser::import_module(w, w.sym(dialect));
+    auto dialects = {"compile", "mem", "core", "math"};
+    for (auto dialect : dialects) driver.load(dialects);
+    for (auto dialect : dialects) fe::Parser::import_module(w, w.sym(dialect));
 
     auto mem_t  = mem::type_mem(w);
     auto i32_t  = w.type_int(32);
