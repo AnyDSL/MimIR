@@ -1,9 +1,6 @@
 #pragma once
 
-#include <filesystem>
-
-#include "thorin/dialects.h"
-#include "thorin/world.h"
+#include "thorin/driver.h"
 
 #include "thorin/be/h/bootstrapper.h"
 #include "thorin/fe/ast.h"
@@ -32,13 +29,14 @@ namespace thorin::fe {
 ///      * If default argument is **provided** we have the same behavior as in 2.
 class Parser {
 public:
-    Parser(World&, Sym file, std::istream&, Span<std::string>, const Normalizers*, std::ostream* md = nullptr);
+    Parser(World&, Sym file, std::istream&, std::ostream* md = nullptr);
 
     World& world() { return lexer_.world(); }
+    Driver& driver() { return world().driver(); }
 
     /// @name entry points
     ///@{
-    static Parser import_module(World&, Sym, Span<std::string> = {}, const Normalizers* normalizers = nullptr);
+    static Parser import_module(World&, Sym);
     void parse_module();
     void bootstrap(std::ostream&);
     ///@}
@@ -61,9 +59,21 @@ private:
         Pos pos_;
     };
 
+    /// @name misc parsing helpers
+    ///@{
+    template<class F>
+    void parse_list(std::string ctxt, Tok::Tag delim_l, F f, Tok::Tag sep = Tok::Tag::T_comma) {
+        expect(delim_l, ctxt);
+        auto delim_r = Tok::delim_l2r(delim_l);
+        if (!ahead().isa(delim_r)) {
+            do { f(); } while (accept(sep) && !ahead().isa(delim_r));
+        }
+        expect(delim_r, std::string("closing delimiter of a ") + ctxt);
+    }
     Dbg parse_sym(std::string_view ctxt = {});
     void parse_import();
     Ref parse_type_ascr(std::string_view ctxt);
+    ///@}
 
     /// @name exprs
     ///@{
@@ -108,22 +118,12 @@ private:
     void parse_def(Dbg dbg = {});
     ///@}
 
-    template<class F>
-    void parse_list(std::string ctxt, Tok::Tag delim_l, F f, Tok::Tag sep = Tok::Tag::T_comma) {
-        expect(delim_l, ctxt);
-        auto delim_r = Tok::delim_l2r(delim_l);
-        if (!ahead().isa(delim_r)) {
-            do { f(); } while (accept(sep) && !ahead().isa(delim_r));
-        }
-        expect(delim_r, std::string("closing delimiter of a ") + ctxt);
-    }
+    /// @name get next Tok and manage Location
+    ///@{
 
     /// Factory method to build a Parser::Tracker.
     Tracker tracker() { return Tracker(*this, ahead().loc().begin); }
-    ///@}
 
-    /// @name get next Tok
-    ///@{
     /// Get lookahead.
     Tok ahead(size_t i = 0) const {
         assert(i < Max_Ahead);
@@ -166,8 +166,6 @@ private:
     std::array<Tok, Max_Ahead> ahead_;     ///< SLL look ahead
     SymSet imported_;
     h::Bootstrapper bootstrapper_;
-    std::vector<std::string> user_search_paths_;
-    const Normalizers* normalizers_;
     Sym anonymous_;
 };
 

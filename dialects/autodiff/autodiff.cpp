@@ -2,8 +2,7 @@
 
 #include <thorin/config.h>
 #include <thorin/pass/pass.h>
-
-#include "thorin/dialects.h"
+#include <thorin/pass/pipelinebuilder.h>
 
 #include "dialects/autodiff/passes/autodiff_eval.h"
 #include "dialects/autodiff/passes/autodiff_ext_cleanup.h"

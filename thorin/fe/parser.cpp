@@ -1,6 +1,5 @@
 #include "thorin/fe/parser.h"
 
-#include <filesystem>
 #include <fstream>
 #include <limits>
 #include <sstream>
@@ -8,6 +7,7 @@
 #include "thorin/check.h"
 #include "thorin/def.h"
 #include "thorin/dialects.h"
+#include "thorin/driver.h"
 #include "thorin/rewrite.h"
 
 #include "thorin/util/array.h"
@@ -31,17 +31,10 @@ using namespace std::string_literals;
 
 namespace thorin::fe {
 
-Parser::Parser(World& world,
-               Sym file,
-               std::istream& istream,
-               Span<std::string> import_search_paths,
-               const Normalizers* normalizers,
-               std::ostream* md)
+Parser::Parser(World& world, Sym file, std::istream& istream, std::ostream* md)
     : lexer_(world, file, istream, md)
     , prev_(lexer_.loc())
-    , bootstrapper_(world.sym(std::filesystem::path{*file}.filename().replace_extension("").string()))
-    , user_search_paths_(import_search_paths.begin(), import_search_paths.end())
-    , normalizers_(normalizers)
+    , bootstrapper_(world.sym(fs::path{*file}.filename().replace_extension("").string()))
     , anonymous_(world.sym("_")) {
     for (size_t i = 0; i != Max_Ahead; ++i) lex();
     prev_ = Loc(file, {1, 1}, {1, 1});
@@ -81,18 +74,15 @@ void Parser::syntax_err(std::string_view what, const Tok& tok, std::string_view 
  * entry points
  */
 
-Parser
-Parser::import_module(World& world, Sym name, Span<std::string> user_search_paths, const Normalizers* normalizers) {
-    auto search_paths = get_plugin_search_paths(user_search_paths);
-
+Parser Parser::import_module(World& world, Sym name) {
     auto file_name = *name + ".thorin";
 
     std::string input_path{};
-    for (const auto& path : search_paths) {
+    for (const auto& path : world.driver().search_paths()) {
         auto full_path = path / file_name;
 
         std::error_code ignore;
-        if (bool reg_file = std::filesystem::is_regular_file(full_path, ignore); reg_file && !ignore) {
+        if (bool reg_file = fs::is_regular_file(full_path, ignore); reg_file && !ignore) {
             input_path = full_path.string();
             break;
         }
@@ -101,7 +91,7 @@ Parser::import_module(World& world, Sym name, Span<std::string> user_search_path
 
     if (!ifs) throw std::runtime_error("could not find file '" + file_name + "'");
 
-    thorin::fe::Parser parser(world, world.sym(input_path), ifs, user_search_paths, normalizers);
+    thorin::fe::Parser parser(world, world.sym(input_path), ifs);
     parser.parse_module();
 
     world.add_imported(name);
@@ -130,7 +120,7 @@ void Parser::parse_import() {
     if (auto [_, ins] = imported_.emplace(name.sym()); !ins) return;
 
     // search file and import
-    auto parser = Parser::import_module(world(), name.sym(), user_search_paths_, normalizers_);
+    auto parser = Parser::import_module(world(), name.sym());
     scopes_.merge(parser.scopes_);
 
     // transitvely remember which files we transitively imported
@@ -176,11 +166,10 @@ Ref Parser::parse_infix_expr(Tracker track, const Def* lhs, Tok::Prec p) {
         } else {
             auto [l, r] = Tok::prec(Tok::Prec::App);
             if (l < p) break;
-            if (auto rhs = parse_expr({}, r)) { // if we can parse an expression, it's an App
+            if (auto rhs = parse_expr({}, r)) // if we can parse an expression, it's an App
                 lhs = world().iapp(lhs, rhs)->set(track.loc());
-            } else {
+            else
                 return lhs;
-            }
         }
     }
 
@@ -199,9 +188,8 @@ Ref Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
 
             if (auto i = def2fields_.find(sigma); i != def2fields_.end()) {
                 if (auto& fields = i->second; fields.size() == sigma->num_ops()) {
-                    for (size_t i = 0, n = sigma->num_ops(); i != n; ++i) {
+                    for (size_t i = 0, n = sigma->num_ops(); i != n; ++i)
                         if (fields[i] == tok.sym()) return world().extract(lhs, n, i)->set(track.loc());
-                    }
                 }
             }
             err(tok.loc(), "could not find elemement '{}' to extract from '{}' of type '{}'", tok.sym(), lhs, sigma);
@@ -641,12 +629,6 @@ void Parser::parse_ax() {
         err(ax.loc(), "all declarations of axiom '{}' must use the same normalizer name", ax);
     info.normalizer = normalizer_name;
 
-    auto normalizer = [this](dialect_t d, tag_t t, sub_t s) -> Def::NormalizeFn {
-        if (normalizers_)
-            if (auto it = normalizers_->find(d | flags_t(t << 8u) | s); it != normalizers_->end()) return it->second;
-        return nullptr;
-    };
-
     auto [curry, trip] = Axiom::infer_curry_and_trip(type);
 
     if (accept(Tok::Tag::T_comma)) {
@@ -661,12 +643,14 @@ void Parser::parse_ax() {
     tag_t t     = info.tag_id;
     sub_t s     = info.subs.size();
     if (new_subs.empty()) {
-        auto axiom = world().axiom(normalizer(d, t, 0), curry, trip, type, d, t, 0)->set(ax.loc(), ax.sym());
+        auto norm  = driver().normalizer(d, t, 0);
+        auto axiom = world().axiom(norm, curry, trip, type, d, t, 0)->set(ax.loc(), ax.sym());
         scopes_.bind(ax.dbg(), axiom);
     } else {
         for (const auto& sub : new_subs) {
             auto name  = world().sym(*ax.sym() + "."s + *sub.front());
-            auto axiom = world().axiom(normalizer(d, t, s), curry, trip, type, d, t, s)->set(track.loc(), name);
+            auto norm  = driver().normalizer(d, t, s);
+            auto axiom = world().axiom(norm, curry, trip, type, d, t, s)->set(track.loc(), name);
             for (auto& alias : sub) {
                 auto sym = world().sym(*ax.sym() + "."s + *alias);
                 scopes_.bind({prev_, sym}, axiom);

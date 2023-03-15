@@ -28,24 +28,26 @@ int main(int argc, char** argv) {
         static const auto version = "thorin command-line utility version " THORIN_VER "\n";
 
         Driver driver;
-        bool show_help    = false;
-        bool show_version = false;
+        bool show_help          = false;
+        bool show_version       = false;
+        bool list_dialect_paths = false;
         std::string input, prefix;
         std::string clang = sys::find_cmd("clang");
-        std::vector<std::string> dialect_plugins, dialect_paths;
+        std::vector<std::string> plugins, dialect_paths;
         std::vector<size_t> breakpoints;
         std::array<std::string, Num_Backends> output;
         int verbose      = 0;
         int opt          = 2;
         auto inc_verbose = [&](bool) { ++verbose; };
-        auto& flags      = driver.flags;
+        auto& flags      = driver.flags();
 
         // clang-format off
         auto cli = lyra::cli()
             | lyra::help(show_help)
             | lyra::opt(show_version             )["-v"]["--version"           ]("Display version info and exit.")
+            | lyra::opt(list_dialect_paths       )["-l"]["--list-dialect-paths"]("List search paths in order and exit.")
             | lyra::opt(clang,          "clang"  )["-c"]["--clang"             ]("Path to clang executable (default: '" THORIN_WHICH " clang').")
-            | lyra::opt(dialect_plugins,"dialect")["-d"]["--dialect"           ]("Dynamically load dialect [WIP].")
+            | lyra::opt(plugins,        "dialect")["-d"]["--dialect"           ]("Dynamically load dialect [WIP].")
             | lyra::opt(dialect_paths,  "path"   )["-D"]["--dialect-path"      ]("Path to search dialects in.")
             | lyra::opt(inc_verbose              )["-V"]["--verbose"           ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
             | lyra::opt(opt,            "level"  )["-O"]["--optimize"          ]("Optimization level (default: 2).")
@@ -78,12 +80,19 @@ int main(int argc, char** argv) {
             std::exit(EXIT_SUCCESS);
         }
 
+        for (auto&& path : dialect_paths) driver.add_search_path(path);
+
+        if (list_dialect_paths) {
+            for (auto&& path : driver.search_paths()) std::cout << path << std::endl;
+            std::exit(EXIT_SUCCESS);
+        }
+
+        World& world = driver.world();
 #if THORIN_ENABLE_CHECKS
-        for (auto b : breakpoints) driver.breakpoints.emplace(b);
+        for (auto b : breakpoints) world.breakpoint(b);
 #endif
-        World& world        = driver.world;
-        world.log().ostream = &std::cerr;
-        world.log().level   = (Log::Level)verbose;
+        world.log().set(&std::cerr).set((Log::Level)verbose);
+
         // prepare output files and streams
         std::array<std::ofstream, Num_Backends> ofs;
         std::array<std::ostream*, Num_Backends> os;
@@ -99,20 +108,10 @@ int main(int argc, char** argv) {
         }
 
         // we always need core and mem, as long as we are not in bootstrap mode..
-        if (!os[H]) dialect_plugins.insert(dialect_plugins.end(), {"core", "mem", "compile", "opt"});
+        if (!os[H]) plugins.insert(plugins.end(), {"core", "mem", "compile", "opt"});
 
-        std::vector<Dialect> dialects;
-        thorin::Backends backends;
-        thorin::Normalizers normalizers;
-        thorin::Passes passes;
-        if (!dialect_plugins.empty()) {
-            for (const auto& dialect : dialect_plugins) {
-                dialects.push_back(Dialect::load(dialect, dialect_paths));
-                dialects.back().register_backends(backends);
-                dialects.back().register_normalizers(normalizers);
-                dialects.back().register_passes(passes);
-            }
-        }
+        if (!plugins.empty())
+            for (const auto& plugin : plugins) driver.load(plugin);
 
         if (input.empty()) throw std::invalid_argument("error: no input given");
         if (input[0] == '-' || input.substr(0, 2) == "--")
@@ -124,12 +123,11 @@ int main(int argc, char** argv) {
             return EXIT_FAILURE;
         }
 
-        for (const auto& dialect : dialects)
-            fe::Parser::import_module(world, world.sym(dialect.name()), dialect_paths, &normalizers);
+        for (const auto& plugin : plugins) fe::Parser::import_module(world, world.sym(plugin));
 
         auto sym = world.sym(std::move(input));
         world.set(sym);
-        fe::Parser parser(world, sym, ifs, dialect_paths, &normalizers, os[Md]);
+        fe::Parser parser(world, sym, ifs, os[Md]);
         parser.parse_module();
 
         if (os[H]) {
@@ -141,7 +139,7 @@ int main(int argc, char** argv) {
         switch (opt) {
             case 0:                             break;
             case 1: Phase::run<Cleanup>(world); break;
-            case 2: optimize(world, passes, dialects);   break;
+            case 2: optimize(world);            break;
             default: errln("error: illegal optimization level '{}'", opt);
         }
         // clang-format on
@@ -150,10 +148,10 @@ int main(int argc, char** argv) {
         if (os[Dot]) dot::emit(world, *os[Dot]);
 
         if (os[LL]) {
-            if (auto it = backends.find("ll"); it != backends.end()) {
-                it->second(world, *os[LL]);
-            } else
-                errln("error: 'll' emitter not loaded. Try loading 'mem' dialect.");
+            if (auto backend = driver.backend("ll"))
+                backend(world, *os[LL]);
+            else
+                err("'ll' emitter not loaded. Try loading 'mem' dialect.");
         }
     } catch (const std::exception& e) {
         errln("{}", e.what());

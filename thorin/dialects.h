@@ -1,20 +1,23 @@
 #pragma once
 
-#include <filesystem>
 #include <memory>
 #include <string>
 #include <vector>
 
-#include "thorin/be/emitter.h"
-#include "thorin/pass/pass.h"
-#include "thorin/pass/pipelinebuilder.h"
+#include <absl/container/btree_map.h>
+#include <absl/container/flat_hash_map.h>
 
-#include "absl/container/flat_hash_map.h"
+#include "thorin/def.h"
 
 namespace thorin {
 
-using Backends    = std::map<std::string, std::function<void(World&, std::ostream&)>>;
-using Normalizers = absl::flat_hash_map<flags_t, Def::NormalizeFn>;
+class PipelineBuilder;
+
+/// `axiom ↦ (pipeline part) × (axiom application) → ()` <br/>
+/// The function should inspect App%lication to construct the Pass/Phase and add it to the pipeline.
+using Passes      = absl::flat_hash_map<flags_t, std::function<void(World&, PipelineBuilder&, const Def*)>>;
+using Backends    = absl::btree_map<std::string, void (*)(World&, std::ostream&)>;
+using Normalizers = absl::flat_hash_map<flags_t, NormalizeFn>;
 
 extern "C" {
 /// Basic info and registration function pointer to be returned from a dialect plugin.
@@ -44,12 +47,7 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info();
 /// A plugin implementor should implement \ref thorin_get_dialect_info and \ref DialectInfo.
 class Dialect {
 public:
-    /// Finds and loads a shared object file that implements the \a name thorin dialect.
-    /// If \a name is an absolute path to a .so/.dll file, this is used.
-    /// Otherwise, "name", "libthorin_name.so" (Linux, Mac), "thorin_name.dll" (Win)
-    /// are searched for in the search paths:
-    /// 1. \a search_paths, 2. env var \em THORIN_DIALECT_PATH, 3. "/path/to/executable"
-    static Dialect load(const std::string& name, Span<std::string> search_paths);
+    using Handle = std::unique_ptr<void, void (*)(void*)>;
 
     /// Name of the dialect.
     std::string name() const { return info_.plugin_name; }
@@ -73,13 +71,13 @@ public:
     }
 
 private:
-    explicit Dialect(const std::string& plugin_path, std::unique_ptr<void, void (*)(void*)>&& handle);
+    explicit Dialect(const std::string& plugin_path, Handle&&);
 
     DialectInfo info_;
     std::string plugin_path_;
     std::unique_ptr<void, void (*)(void*)> handle_;
-};
 
-std::vector<std::filesystem::path> get_plugin_search_paths(Span<std::string> user_paths);
+    friend class Driver;
+};
 
 } // namespace thorin

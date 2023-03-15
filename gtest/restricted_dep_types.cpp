@@ -31,24 +31,11 @@ using namespace thorin;
 TEST(RestrictedDependentTypes, join_singleton) {
     auto test_on_world = [](auto test) {
         Driver driver;
-        World& w = driver.world;
-        Normalizers normalizers;
+        World& w = driver.world();
 
-        auto compile_d = Dialect::load("compile", {});
-        compile_d.register_normalizers(normalizers);
-        fe::Parser::import_module(w, w.sym("compile"), {}, &normalizers);
-
-        auto mem_d = Dialect::load("mem", {});
-        mem_d.register_normalizers(normalizers);
-        fe::Parser::import_module(w, w.sym("mem"), {}, &normalizers);
-
-        auto core_d = Dialect::load("core", {});
-        core_d.register_normalizers(normalizers);
-        fe::Parser::import_module(w, w.sym("core"), {}, &normalizers);
-
-        auto math_d = Dialect::load("math", {});
-        math_d.register_normalizers(normalizers);
-        fe::Parser::import_module(w, w.sym("math"), {}, &normalizers);
+        auto dialects = {"compile", "mem", "core", "math"};
+        for (auto dialect : dialects) driver.load(dialect);
+        for (auto dialect : dialects) fe::Parser::import_module(w, w.sym(dialect));
 
         auto i32_t = w.type_int(32);
         auto i64_t = w.type_int(64);
@@ -236,30 +223,11 @@ TEST(RestrictedDependentTypes, join_singleton) {
 
 TEST(RestrictedDependentTypes, ll) {
     Driver driver;
-    World& w = driver.world;
+    World& w = driver.world();
 
-    std::vector<std::string> dialect_plugins = {
-        "compile",
-        "mem",
-        "core",
-        "math",
-    };
-    std::vector<std::string> dialect_paths = {};
-
-    std::vector<Dialect> dialects;
-    thorin::Backends backends;
-    Normalizers normalizers;
-    Passes passes;
-
-    for (const auto& dialect : dialect_plugins) {
-        dialects.push_back(Dialect::load(dialect, dialect_paths));
-        dialects.back().register_backends(backends);
-        dialects.back().register_normalizers(normalizers);
-        dialects.back().register_passes(passes);
-    }
-
-    for (const auto& dialect : dialects)
-        fe::Parser::import_module(w, w.sym(dialect.name()), dialect_paths, &normalizers);
+    auto dialects = {"compile", "mem", "core", "math"};
+    for (auto dialect : dialects) driver.load(dialect);
+    for (auto dialect : dialects) fe::Parser::import_module(w, w.sym(dialect));
 
     auto mem_t  = mem::type_mem(w);
     auto i32_t  = w.type_int(32);
@@ -299,7 +267,6 @@ TEST(RestrictedDependentTypes, ll) {
         main->app(false, exp_lam, {main->var(0_s), i32_t, R, core::op_bitcast(app_exp, main->var(1)), main->var(3)});
     }
 
-    optimize(w, passes, dialects);
-
-    backends["ll"](w, std::cout);
+    optimize(w);
+    driver.backend("ll")(w, std::cout);
 }

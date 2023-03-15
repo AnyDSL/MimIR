@@ -78,9 +78,9 @@ endif()
 include(CMakePackageConfigHelpers)
 
 write_basic_package_version_file(
-  "${PROJECT_BINARY_DIR}/thorin-config-version.cmake"
-  VERSION ${Thorin_VERSION}
-  COMPATIBILITY SameMajorVersion
+    "${PROJECT_BINARY_DIR}/thorin-config-version.cmake"
+    VERSION ${Thorin_VERSION}
+    COMPATIBILITY SameMajorVersion
 )
 
 set(THORIN_CMAKE_INSTALL_DIR lib/cmake/thorin)

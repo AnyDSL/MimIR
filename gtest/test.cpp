@@ -15,12 +15,10 @@ using namespace thorin;
 
 TEST(Zip, fold) {
     Driver driver;
-    World& w = driver.world;
+    World& w = driver.world();
 
-    Normalizers normalizers;
-    auto core_d = Dialect::load("core", {});
-    core_d.register_normalizers(normalizers);
-    fe::Parser::import_module(w, w.sym("core"), {}, &normalizers);
+    driver.load("core");
+    fe::Parser::import_module(w, w.sym("core"));
 
     auto zip = w.ax<core::zip>();
     // clang-format off
@@ -50,7 +48,7 @@ TEST(Zip, fold) {
 
 TEST(World, simplify_one_tuple) {
     Driver driver;
-    World& w = driver.world;
+    World& w = driver.world();
 
     ASSERT_EQ(w.lit_ff(), w.tuple({w.lit_ff()})) << "constant fold (false) -> false";
 
@@ -64,7 +62,7 @@ TEST(World, simplify_one_tuple) {
 
 TEST(World, dependent_extract) {
     Driver driver;
-    World& w = driver.world;
+    World& w = driver.world();
 
     auto sig = w.nom_sigma(w.type<1>(), 2); // sig = [T: *, T]
     sig->set(0, w.type<0>());
@@ -75,7 +73,7 @@ TEST(World, dependent_extract) {
 
 TEST(Axiom, mangle) {
     Driver driver;
-    World& w = driver.world;
+    World& w = driver.world();
 
     EXPECT_EQ(Axiom::demangle(w, *Axiom::mangle(w.sym("test"))), w.sym("test"));
     EXPECT_EQ(Axiom::demangle(w, *Axiom::mangle(w.sym("azAZ09_"))), w.sym("azAZ09_"));
@@ -89,7 +87,7 @@ TEST(Axiom, mangle) {
 
 TEST(Axiom, split) {
     Driver driver;
-    World& w = driver.world;
+    World& w = driver.world();
 
     auto [dialect, group, tag] = Axiom::split(w, w.sym("%foo.bar.baz"));
     EXPECT_EQ(dialect, w.sym("foo"));
@@ -99,12 +97,10 @@ TEST(Axiom, split) {
 
 TEST(trait, idx) {
     Driver driver;
-    World& w = driver.world;
+    World& w = driver.world();
 
-    Normalizers normalizers;
-    auto core_d = Dialect::load("core", {});
-    core_d.register_normalizers(normalizers);
-    fe::Parser::import_module(w, w.sym("core"), {}, &normalizers);
+    driver.load("core");
+    fe::Parser::import_module(w, w.sym("core"));
 
     EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0000'00FF_n))), 1);
     EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0000'0100_n))), 1);
@@ -129,7 +125,7 @@ Ref normalize_test_curry(Ref type, Ref callee, Ref arg) {
 
 TEST(Axiom, curry) {
     Driver driver;
-    World& w = driver.world;
+    World& w = driver.world();
 
     DefArray n(11, [&w](size_t i) { return w.lit_nat(i); });
     auto nat = w.type_nat();
@@ -202,7 +198,7 @@ TEST(Axiom, curry) {
 
 TEST(Type, Level) {
     Driver driver;
-    World& w = driver.world;
+    World& w = driver.world();
     auto pi  = w.pi(w.type<7>(), w.type<2>());
     EXPECT_EQ(as_lit(pi->type()->isa<Type>()->level()), 8);
 }

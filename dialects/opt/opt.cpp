@@ -2,8 +2,7 @@
 
 #include <string_view>
 
-#include <thorin/config.h>
-#include <thorin/dialects.h>
+#include <thorin/driver.h>
 #include <thorin/pass/pass.h>
 
 #include "dialects/compile/compile.h"
@@ -15,7 +14,8 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
     return {"opt",
             [](Passes& passes) {
                 passes[flags_t(Axiom::Base<compile::dialect_select>)] = [&](World& world, PipelineBuilder& builder,
-                                                                        const Def* app) {
+                                                                            const Def* app) {
+                    auto& driver       = builder.world().driver();
                     auto [ax, args]    = collect_args(app);
                     auto dialect_axiom = args[1]->as<Axiom>();
                     auto then_phase    = args[2];
@@ -27,10 +27,9 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                     auto name         = dialect_axiom->sym();
                     auto [_, tag, __] = Axiom::split(world, name);
                     assert(tag->find('_') != std::string_view::npos && "dialect_phase: invalid dialect name");
-                    auto dialect     = tag->substr(0, tag->find('_'));
-                    auto dialect_str = std::string(dialect);
-                    world.DLOG("dialect: {}", dialect_str);
-                    auto is_loaded = builder.is_registered_dialect(dialect_str);
+                    auto dialect = driver.sym(tag->substr(0, tag->find('_')));
+                    world.DLOG("dialect: {}", dialect);
+                    bool is_loaded = driver.plugin(dialect);
                     world.DLOG("contained: {}", is_loaded);
 
                     compile::handle_optimization_part(is_loaded ? then_phase : else_phase, world, passes, builder);
