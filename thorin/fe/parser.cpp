@@ -31,13 +31,13 @@ using namespace std::string_literals;
 
 namespace thorin::fe {
 
-Parser::Parser(World& world, Sym file, std::istream& istream, std::ostream* md)
-    : lexer_(world, file, istream, md)
+Parser::Parser(World& world, std::istream& istream, const fs::path* path, std::ostream* md)
+    : lexer_(world, istream, path, md)
     , prev_(lexer_.loc())
-    , bootstrapper_(world.sym(fs::path{*file}.filename().replace_extension("").string()))
+    , bootstrapper_(world.sym(fs::path{*path}.filename().replace_extension().string()))
     , anonymous_(world.sym("_")) {
     for (size_t i = 0; i != Max_Ahead; ++i) lex();
-    prev_ = Loc(file, {1, 1}, {1, 1});
+    prev_ = Loc(path, {1, 1}, {1, 1});
 }
 
 /*
@@ -74,27 +74,24 @@ void Parser::syntax_err(std::string_view what, const Tok& tok, std::string_view 
  * entry points
  */
 
-Parser Parser::import_module(World& world, Sym name) {
-    auto file_name = *name + ".thorin";
+Parser Parser::import_module(World& world, std::string_view name) {
+    auto filename = std::string(name) + ".thorin";
 
-    std::string input_path{};
+    fs::path full_path;
     for (const auto& path : world.driver().search_paths()) {
-        auto full_path = path / file_name;
+        full_path = path / filename;
 
         std::error_code ignore;
-        if (bool reg_file = fs::is_regular_file(full_path, ignore); reg_file && !ignore) {
-            input_path = full_path.string();
-            break;
-        }
+        if (bool reg_file = fs::is_regular_file(full_path, ignore); reg_file && !ignore) break;
     }
-    std::ifstream ifs(input_path);
 
-    if (!ifs) throw std::runtime_error("could not find file '" + file_name + "'");
+    std::ifstream ifs(full_path);
+    if (!ifs) err("could not find file '{}'", filename);
 
-    thorin::fe::Parser parser(world, world.sym(input_path), ifs);
+    thorin::fe::Parser parser(world, ifs, &full_path);
     parser.parse_module();
 
-    world.add_imported(name);
+    world.add_imported(world.sym(name));
 
     return parser;
 }

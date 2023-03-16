@@ -29,14 +29,14 @@ namespace thorin::fe {
 ///      * If default argument is **provided** we have the same behavior as in 2.
 class Parser {
 public:
-    Parser(World&, Sym file, std::istream&, std::ostream* md = nullptr);
+    Parser(World&, std::istream&, const fs::path* path = nullptr, std::ostream* md = nullptr);
 
     World& world() { return lexer_.world(); }
     Driver& driver() { return world().driver(); }
 
     /// @name entry points
     ///@{
-    static Parser import_module(World&, Sym);
+    static Parser import_module(World&, std::string_view);
     void parse_module();
     void bootstrap(std::ostream&);
     ///@}
@@ -51,7 +51,7 @@ private:
             : parser_(parser)
             , pos_(pos) {}
 
-        Loc loc() const { return {parser_.prev_.file, pos_, parser_.prev_.finis}; }
+        Loc loc() const { return {parser_.prev_.path, pos_, parser_.prev_.finis}; }
         Dbg dbg(Sym sym) const { return {loc(), sym}; }
 
     private:

@@ -11,8 +11,8 @@ std::ostream& operator<<(std::ostream& os, const Pos pos) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Loc loc) {
-    if (loc.begin) {
-        os << loc.file << ':' << loc.begin;
+    if (loc) {
+        os << (loc.path ? *loc.path : "<unknown file>") << ':' << loc.begin;
         if (loc.begin != loc.finis) os << '-' << loc.finis;
         return os;
     }

@@ -88,6 +88,7 @@ public:
 
     Sym name() const { return state_.pod.name; }
     void set(Sym name) { state_.pod.name = name; }
+    void set(std::string_view name) { state_.pod.name = sym(name); }
     Sym append_suffix(Sym name, std::string suffix);
 
     void add_imported(Sym name) { state_.imported_dialects.emplace(name); }

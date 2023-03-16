@@ -7,7 +7,6 @@
 #include "thorin/world.h"
 
 #include "thorin/util/log.h"
-#include "thorin/util/sys.h"
 
 namespace thorin {
 

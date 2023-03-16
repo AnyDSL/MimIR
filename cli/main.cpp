@@ -1,7 +1,6 @@
 #include <cstdlib>
 #include <cstring>
 
-#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <lyra/lyra.hpp>
@@ -125,9 +124,9 @@ int main(int argc, char** argv) {
 
         for (const auto& plugin : plugins) fe::Parser::import_module(world, world.sym(plugin));
 
-        auto sym = world.sym(std::move(input));
-        world.set(sym);
-        fe::Parser parser(world, sym, ifs, os[Md]);
+        auto path = fs::path(input);
+        world.set(path.filename().replace_extension().string());
+        fe::Parser parser(world, ifs, &path, os[Md]);
         parser.parse_module();
 
         if (os[H]) {
