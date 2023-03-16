@@ -1,7 +1,8 @@
-// ./build/bin/thorin -d matrix lit/matrix/print_const_dyn_mat.thorin  -d affine -d direct -d clos -o - -VVVV --output-ll T.ll
-
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -d matrix -d affine -d direct -d math -o - %s | FileCheck %s
 
 // TODO: allocation error due to dynamic size,
+// ./build/bin/thorin -d matrix lit/matrix/print_const_dyn_mat.thorin  -d affine -d direct -d clos -o - -VVVV --output-ll T.ll
 // add_mem error (bitcast gets (mem, mat) as argument at some point)
 
 .import core;
@@ -43,10 +44,10 @@
     };
 
     .let arg1_ptr = %mem.lea (⊤:.Nat, ‹⊤:.Nat; String›, 0) (argv, 1:I32); // argv+1 : const char**
-    .let (mem2,arg1) = %mem.load (String, 0) (mem1, arg1_ptr); // argv[1] : const char*
+    .let (mem2,arg1) = %mem.load (mem1, arg1_ptr); // argv[1] : const char*
 
     .let arg2_ptr = %mem.lea (⊤:.Nat, ‹⊤:.Nat; String›, 0) (argv, 2:I32); // argv+2
-    .let (mem3,arg2) = %mem.load (String, 0) (mem2, arg2_ptr); // argv[2]
+    .let (mem3,arg2) = %mem.load (mem2, arg2_ptr); // argv[2]
 
     .con atoi_cont_1 [mem : %mem.M, a : I32] = {
         .con atoi_cont_2 [mem : %mem.M, b : I32] = {
@@ -63,3 +64,5 @@
     // return (mem3, 0:I32)
     atoi (mem3, arg1, atoi_cont_1)
 };
+
+// CHECK-NOT: %matrix.
