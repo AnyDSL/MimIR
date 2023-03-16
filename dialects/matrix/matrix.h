@@ -1,7 +1,8 @@
 #ifndef THORIN_DIALECTS_MATRIX_MATRIX_H
 #define THORIN_DIALECTS_MATRIX_MATRIX_H
 
-#include "thorin/world.h"
+#include <thorin/pass/pipelinebuilder.h>
+#include <thorin/world.h>
 
 #include "dialects/matrix/autogen.h"
 #include "dialects/mem/mem.h"
