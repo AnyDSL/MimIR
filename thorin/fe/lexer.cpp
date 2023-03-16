@@ -9,8 +9,8 @@ namespace thorin::fe {
 static bool issign(char32_t i) { return i == '+' || i == '-'; }
 static bool issubscsr(char32_t i) { return U'₀' <= i && i <= U'₉'; }
 
-Lexer::Lexer(World& world, Sym file, std::istream& istream, std::ostream* md /*= nullptr*/)
-    : Super(file, istream)
+Lexer::Lexer(World& world, std::istream& istream, const fs::path* path /*= nullptr*/, std::ostream* md /*= nullptr*/)
+    : Super(istream, path)
     , world_(world)
     , md_(md) {
 #define CODE(t, str) keywords_[world.sym(str)] = Tok::Tag::t;
@@ -148,11 +148,11 @@ Tok Lexer::lex() {
                 continue;
             }
 
-            err({loc_.file, ahead().pos}, "invalid input char '/'; maybe you wanted to start a comment?");
+            err({loc_.path, ahead().pos}, "invalid input char '/'; maybe you wanted to start a comment?");
             continue;
         }
 
-        err({loc_.file, ahead().pos}, "invalid input char '{}'", (char)ahead());
+        err({loc_.path, ahead().pos}, "invalid input char '{}'", (char)ahead());
         next();
     }
 }

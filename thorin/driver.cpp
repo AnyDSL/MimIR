@@ -1,6 +1,7 @@
 #include "thorin/driver.h"
 
 #include "thorin/util/dl.h"
+#include "thorin/util/sys.h"
 
 namespace thorin {
 
@@ -12,8 +13,7 @@ static std::vector<fs::path> get_plugin_name_variants(std::string_view name) {
 }
 
 Driver::Driver()
-    : log_(*this)
-    , world_(this) {
+    : world_(this) {
     add_search_path(fs::current_path());
 
     // paths from env

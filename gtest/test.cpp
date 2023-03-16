@@ -6,7 +6,6 @@
 #include "thorin/driver.h"
 
 #include "thorin/fe/parser.h"
-#include "thorin/util/sys.h"
 
 #include "dialects/core/core.h"
 #include "helpers.h"

@@ -1,7 +1,6 @@
 #include <cstdlib>
 #include <cstring>
 
-#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <lyra/lyra.hpp>
@@ -123,9 +122,12 @@ int main(int argc, char** argv) {
             return EXIT_FAILURE;
         }
 
-        auto sym = driver.sym(std::move(input));
-        world.set(sym);
-        auto parser = fe::Parser(world, sym, ifs, os[Md]);
+        auto path = fs::path(input);
+        world.set(path.filename().replace_extension().string());
+        auto parser = fe::Parser(world, ifs, &path, os[Md]);
+
+        //for (const auto& plugin : plugins) fe::Parser::import_module(world, plugin);
+
         parser.parse_module();
         //parser.import(driver.sym("opt"));
 

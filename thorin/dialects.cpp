@@ -11,7 +11,6 @@
 
 #include "thorin/pass/pass.h"
 #include "thorin/util/dl.h"
-#include "thorin/util/sys.h"
 
 namespace thorin {
 

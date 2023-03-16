@@ -29,7 +29,7 @@ namespace thorin::fe {
 ///      * If default argument is **provided** we have the same behavior as in 2.
 class Parser {
 public:
-    Parser(World&, Sym file, std::istream&, std::ostream* md = nullptr);
+    Parser(World&, std::istream&, const fs::path* path = nullptr, std::ostream* md = nullptr);
 
     World& world() { return world_; }
     Driver& driver() { return world().driver(); }
@@ -42,7 +42,7 @@ public:
     ///@}
 
 private:
-    void init(Sym file, std::istream&, std::ostream* md = nullptr);
+    void init(std::istream& , const fs::path*, std::ostream* md = nullptr);
 
     /// @name Tracker
     ///@{
@@ -53,7 +53,7 @@ private:
             : parser_(parser)
             , pos_(pos) {}
 
-        Loc loc() const { return {parser_.prev().file, pos_, parser_.prev().finis}; }
+        Loc loc() const { return {parser_.prev().path, pos_, parser_.prev().finis}; }
         Dbg dbg(Sym sym) const { return {loc(), sym}; }
 
     private:
@@ -62,11 +62,54 @@ private:
     };
 
     Loc& prev() { return state_.prev; }
+
+    /// Factory method to build a Parser::Tracker.
+    Tracker tracker() { return Tracker(*this, ahead().loc().begin); }
     ///@}
 
+    /// @name get next token
+    ///@{
+    /// Get lookahead.
+    Tok& ahead(size_t i = 0) {
+        assert(i < Max_Ahead);
+        return state_.ahead[i];
+    }
+
+    Lexer& lexer() { return lexers_.top(); }
+    bool main() const { return lexers_.size() == 1; }
+
+    /// Invoke Lexer to retrieve next Tok%en.
+    Tok lex();
+
+    /// If Parser::ahead() is a @p tag, Parser::lex(), and return `true`.
+    std::optional<Tok> accept(Tok::Tag tag);
+
+    /// Parser::lex Parser::ahead() which must be a @p tag.
+    /// Issue err%or with @p ctxt otherwise.
+    Tok expect(Tok::Tag tag, std::string_view ctxt);
+
+    /// Consume Parser::ahead which must be a @p tag; asserts otherwise.
+    Tok eat([[maybe_unused]] Tok::Tag tag) {
+        assert(tag == ahead().tag() && "internal parser error");
+        return lex();
+    }
+    ///@}
+
+    /// @name parse helpers
+    ///@{
     Dbg parse_sym(std::string_view ctxt = {});
     void parse_import();
     Ref parse_type_ascr(std::string_view ctxt);
+
+    template<class F>
+    void parse_list(std::string ctxt, Tok::Tag delim_l, F f, Tok::Tag sep = Tok::Tag::T_comma) {
+        expect(delim_l, ctxt);
+        auto delim_r = Tok::delim_l2r(delim_l);
+        if (!ahead().isa(delim_r)) {
+            do { f(); } while (accept(sep) && !ahead().isa(delim_r));
+        }
+        expect(delim_r, std::string("closing delimiter of a ") + ctxt);
+    }
     ///@}
 
     /// @name exprs
@@ -110,47 +153,6 @@ private:
     /// If @p sym is **not** empty, this is an inline definition of @p sym,
     /// otherwise it's a standalone definition.
     void parse_def(Dbg dbg = {});
-    ///@}
-
-    /// @name helpers
-    ///@{
-    template<class F>
-    void parse_list(std::string ctxt, Tok::Tag delim_l, F f, Tok::Tag sep = Tok::Tag::T_comma) {
-        expect(delim_l, ctxt);
-        auto delim_r = Tok::delim_l2r(delim_l);
-        if (!ahead().isa(delim_r)) {
-            do { f(); } while (accept(sep) && !ahead().isa(delim_r));
-        }
-        expect(delim_r, std::string("closing delimiter of a ") + ctxt);
-    }
-
-    /// Factory method to build a Parser::Tracker.
-    Tracker tracker() { return Tracker(*this, ahead().loc().begin); }
-
-    /// Get lookahead.
-    Tok& ahead(size_t i = 0) {
-        assert(i < Max_Ahead);
-        return state_.ahead[i];
-    }
-
-    Lexer& lexer() { return lexers_.top(); }
-    bool main() const { return lexers_.size() == 1; }
-
-    /// Invoke Lexer to retrieve next Tok%en.
-    Tok lex();
-
-    /// If Parser::ahead() is a @p tag, Parser::lex(), and return `true`.
-    std::optional<Tok> accept(Tok::Tag tag);
-
-    /// Parser::lex Parser::ahead() which must be a @p tag.
-    /// Issue err%or with @p ctxt otherwise.
-    Tok expect(Tok::Tag tag, std::string_view ctxt);
-
-    /// Consume Parser::ahead which must be a @p tag; asserts otherwise.
-    Tok eat([[maybe_unused]] Tok::Tag tag) {
-        assert(tag == ahead().tag() && "internal parser error");
-        return lex();
-    }
     ///@}
 
     /// @name error messages

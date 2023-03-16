@@ -17,7 +17,6 @@
 #include "thorin/pass/optimize.h"
 #include "thorin/pass/pass.h"
 #include "thorin/pass/pipelinebuilder.h"
-#include "thorin/util/sys.h"
 
 #include "dialects/compile/compile.h"
 #include "dialects/core/core.h"

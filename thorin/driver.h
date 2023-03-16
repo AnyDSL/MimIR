@@ -7,7 +7,6 @@
 #include "thorin/world.h"
 
 #include "thorin/util/log.h"
-#include "thorin/util/sys.h"
 
 namespace thorin {
 
@@ -56,8 +55,8 @@ public:
     auto backend(std::string_view name) { return lookup(backends_, name); }
     ///@}
 
-    /// Maps from absolute import path to actual usage in the source.
-    absl::btree_map<fs::path, Sym> imports;
+    /// Maps from absolute path to relative path and the actual usage in the source.
+    absl::btree_map<fs::path, std::pair<fs::path, Sym>> imports;
 
 private:
     Flags flags_;

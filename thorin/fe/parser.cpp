@@ -1,5 +1,6 @@
 #include "thorin/fe/parser.h"
 
+#include <filesystem>
 #include <fstream>
 #include <limits>
 #include <sstream>
@@ -31,17 +32,17 @@ using namespace std::string_literals;
 
 namespace thorin::fe {
 
-Parser::Parser(World& world, Sym file, std::istream& istream, std::ostream* md)
+Parser::Parser(World& world, std::istream& istream, const fs::path* path, std::ostream* md)
     : world_(world)
-    , bootstrapper_(world.sym(fs::path{*file}.filename().replace_extension("").string()))
+    , bootstrapper_(path ? world.sym(fs::path{*path}.filename().replace_extension().string()) : Sym())
     , anonymous_(world.sym("_")) {
-    init(file, istream, md);
+    init(istream, path, md);
 }
 
-void Parser::init(Sym file, std::istream& istream, std::ostream* md) {
-    lexers_.emplace(world(), file, istream, md);
+void Parser::init(std::istream& istream, const fs::path* path, std::ostream* md) {
+    lexers_.emplace(world(), istream, path, md);
     for (size_t i = 0; i != Max_Ahead; ++i) ahead(i) = lexer().lex();
-    prev() = Loc(file, {1, 1});
+    prev() = Loc(path, {1, 1});
 }
 
 /*
@@ -88,27 +89,27 @@ void Parser::parse_module() {
 };
 
 void Parser::import(Sym name) {
-    auto file_name = *name + ".thorin";
+    auto filename = *name + ".thorin";
 
-    std::string input_path;
-    for (const auto& path : driver().search_paths()) {
-        auto full_path = path / file_name;
+    fs::path full_path;
+    for (const auto& path : world().driver().search_paths()) {
+        full_path = path / filename;
 
         std::error_code ignore;
-        if (bool reg_file = fs::is_regular_file(full_path, ignore); reg_file && !ignore) {
-            input_path = full_path.string();
-            break;
-        }
+        if (bool reg_file = fs::is_regular_file(full_path, ignore); reg_file && !ignore) break;
     }
 
-    // if (auto [_, ins] = world().driver().imports.emplace(name); !ins) return;
 
-    std::ifstream ifs(input_path);
-    if (!ifs) throw std::runtime_error("could not find file '" + file_name + "'");
+    auto abs_path = fs::absolute(full_path);
+    auto& imports = world().driver().imports;
+    auto [i, ins] = imports.emplace(std::move(abs_path), std::pair(std::move(full_path), name));
+    if (!ins) return;
 
-    auto file  = world().sym(std::move(input_path));
+    std::ifstream ifs(i->first);
+    if (!ifs) err("could not find file '{}'", filename);
+
     auto state = state_;
-    init(file, ifs);
+    init(ifs, &i->second.first);
     parse_module();
     state_ = state;
     lexers_.pop();
