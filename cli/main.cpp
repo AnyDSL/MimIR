@@ -125,11 +125,7 @@ int main(int argc, char** argv) {
         auto path = fs::path(input);
         world.set(path.filename().replace_extension().string());
         auto parser = fe::Parser(world, ifs, &path, os[Md]);
-
-        //for (const auto& plugin : plugins) fe::Parser::import_module(world, plugin);
-
         parser.parse_module();
-        //parser.import(driver.sym("opt"));
 
         if (os[H]) {
             parser.bootstrap(*os[H]);
