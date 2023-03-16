@@ -79,9 +79,4 @@ const Def* LowerMatrixHighLevelMapRed::rewrite_(const Def* def) {
     return def;
 }
 
-PassTag* LowerMatrixHighLevelMapRed::ID() {
-    static PassTag Key;
-    return &Key;
-}
-
 } // namespace thorin::matrix

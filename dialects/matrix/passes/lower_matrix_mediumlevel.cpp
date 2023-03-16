@@ -364,9 +364,4 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
     return def;
 }
 
-PassTag* LowerMatrixMediumLevel::ID() {
-    static PassTag Key;
-    return &Key;
-}
-
 } // namespace thorin::matrix
