@@ -40,6 +40,7 @@ Parser::Parser(World& world, std::istream& istream, const fs::path* path, std::o
 }
 
 void Parser::init(std::istream& istream, const fs::path* path, std::ostream* md) {
+    world().ILOG("reading: {}", path ? path->filename() : "<unknown path>");
     lexers_.emplace(world(), istream, path, md);
     for (size_t i = 0; i != Max_Ahead; ++i) ahead(i) = lexer().lex();
     prev() = Loc(path, {1, 1});
@@ -91,18 +92,19 @@ void Parser::parse_module() {
 void Parser::import(Sym name) {
     auto filename = *name + ".thorin";
 
-    fs::path full_path;
+    fs::path rel_path;
     for (const auto& path : world().driver().search_paths()) {
-        full_path = path / filename;
+        rel_path = path / filename;
 
         std::error_code ignore;
-        if (bool reg_file = fs::is_regular_file(full_path, ignore); reg_file && !ignore) break;
+        if (bool reg_file = fs::is_regular_file(rel_path, ignore); reg_file && !ignore) break;
     }
 
 
-    auto abs_path = fs::absolute(full_path);
+    auto abs_path = fs::absolute(rel_path);
     auto& imports = world().driver().imports;
-    auto [i, ins] = imports.emplace(std::move(abs_path), std::pair(std::move(full_path), name));
+    outln("imports. {}, {}, {}
+    auto [i, ins] = imports.emplace(std::move(abs_path), std::pair(std::move(rel_path), name));
     if (!ins) return;
 
     std::ifstream ifs(i->first);
@@ -583,12 +585,13 @@ void Parser::parse_ax() {
     if (!dialect) err(ax.loc(), "invalid axiom name '{}'", ax);
     if (sub) err(ax.loc(), "definition of axiom '{}' must not have sub in tag name", ax);
 
-    auto [it, is_new] = bootstrapper_.axioms.emplace(ax.sym(), h::AxiomInfo{});
+    auto& axioms = bootstrapper_.plugin2axioms[dialect];
+    auto [it, is_new] = axioms.emplace(ax.sym(), h::AxiomInfo{});
     auto& [_, info]   = *it;
     if (is_new) {
         info.dialect = dialect;
         info.tag     = tag;
-        info.tag_id  = bootstrapper_.axioms.size() - 1;
+        info.tag_id  = axioms.size() - 1;
     }
 
     if (dialect != bootstrapper_.dialect()) {
@@ -597,7 +600,7 @@ void Parser::parse_ax() {
         // info.dialect, lexer_.file());
     }
 
-    if (bootstrapper_.axioms.size() >= std::numeric_limits<tag_t>::max())
+    if (axioms.size() >= std::numeric_limits<tag_t>::max())
         err(ax.loc(), "exceeded maxinum number of axioms in current dialect");
 
     std::deque<std::deque<Sym>> new_subs;
@@ -616,7 +619,7 @@ void Parser::parse_ax() {
     if (!is_new && new_subs.empty() && !info.subs.empty())
         err(ax.loc(), "redeclaration of axiom '{}' without specifying new subs", ax);
     else if (!is_new && !new_subs.empty() && info.subs.empty())
-        err(ax.loc(), "cannot extend subs of axiom '{}' which does not have subs", ax);
+        err(ax.loc(), "cannot extend subs of axiom '{}' because it was declared as a subless axiom", ax);
 
     auto type = parse_type_ascr("type ascription of an axiom");
     if (!is_new && info.pi != (type->isa<Pi>() != nullptr))

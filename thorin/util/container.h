@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include <queue>
 #include <stack>
 
@@ -8,6 +9,7 @@
 #include <absl/container/node_hash_map.h>
 #include <absl/container/node_hash_set.h>
 
+#include "thorin/util/assert.h"
 #include "thorin/util/hash.h"
 
 namespace thorin {
@@ -123,6 +125,14 @@ auto lookup(const C& container, const K& key) {
     } else {
         return i != container.end() ? &i->second : nullptr;
     }
+}
+
+/// Invokes `emplace` on @p map, asserts that insertion actually happened, and returns the iterator.
+template<class M, class... Args >
+auto assert_emplace(M& map, Args&&... args) {
+    auto [i, ins] = map.emplace(std::forward<Args&&>(args)...);
+    assert_unused(ins);
+    return i;
 }
 
 } // namespace thorin

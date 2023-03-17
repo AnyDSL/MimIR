@@ -28,7 +28,7 @@ public:
     void emit(std::ostream&);
     Sym dialect() const { return dialect_; }
 
-    SymMap<AxiomInfo> axioms;
+    SymMap<SymMap<AxiomInfo>> plugin2axioms;
     Tab tab;
 
 private:

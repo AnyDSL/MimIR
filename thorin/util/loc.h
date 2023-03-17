@@ -27,6 +27,10 @@ struct Pos {
     uint16_t col = 0;
 };
 
+/// Loc%ation in a File.
+/// @warning Loc::path is only a pointer and it is your job to guarantee
+/// that the underlying `std::filesystem::path` outlives this Loc%ation.
+/// In Thorin itself, the Driver takes care of this.
 struct Loc {
     Loc() = default;
     Loc(const fs::path* path, Pos begin, Pos finis)

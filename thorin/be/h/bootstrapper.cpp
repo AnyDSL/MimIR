@@ -20,7 +20,7 @@ void Bootstrapper::emit(std::ostream& h) {
     tab.print(h << std::hex, "static constexpr dialect_t Dialect_Id = 0x{};\n\n", dialect_id);
 
     // clang-format off
-    for (const auto& [key, ax] : axioms) {
+    for (const auto& [key, ax] : plugin2axioms[dialect_]) {
         if (ax.dialect != dialect_) continue; // this is from an import
 
         tab.print(h, "#ifdef DOXYGEN // see https://github.com/doxygen/doxygen/issues/9668\n");
@@ -89,7 +89,7 @@ void Bootstrapper::emit(std::ostream& h) {
     tab.print(h, "\n");
 
     // emit helpers for non-function axiom
-    for (const auto& [tag, ax] : axioms) {
+    for (const auto& [tag, ax] : plugin2axioms[dialect_]) {
         if (ax.pi || ax.dialect != dialect_) continue; // from function or other dialect?
         tab.print(h, "template<> struct Axiom::Match<{}::{}> {{ using type = Axiom; }};\n", ax.dialect, ax.tag);
     }

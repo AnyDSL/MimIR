@@ -126,6 +126,8 @@ int main(int argc, char** argv) {
         world.set(path.filename().replace_extension().string());
         auto parser = fe::Parser(world, ifs, &path, os[Md]);
         parser.parse_module();
+        parser.import(driver.sym("compile"));
+        parser.import(driver.sym("opt"));
 
         if (os[H]) {
             parser.bootstrap(*os[H]);

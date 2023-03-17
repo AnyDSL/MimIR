@@ -47,28 +47,28 @@ private:
 
 template<class A, class P, class... CArgs>
 void register_pass(Passes& passes, CArgs&&... args) {
-    passes[flags_t(Axiom::Base<A>)] = [... args = std::forward<CArgs>(args)](World&, PipelineBuilder& builder,
+    assert_emplace(passes, flags_t(Axiom::Base<A>), [... args = std::forward<CArgs>(args)](World&, PipelineBuilder& builder,
                                                                              const Def* app) {
         builder.add_pass<P>(app, args...);
-    };
+    });
 }
 
 template<class A, class P, class... CArgs>
 void register_phase(Passes& passes, CArgs&&... args) {
-    passes[flags_t(Axiom::Base<A>)] = [... args = std::forward<CArgs>(args)](World&, PipelineBuilder& builder,
+    assert_emplace(passes, flags_t(Axiom::Base<A>), [... args = std::forward<CArgs>(args)](World&, PipelineBuilder& builder,
                                                                              const Def*) {
         builder.add_phase<P>(args...);
-    };
+    });
 }
 
 template<class A, class P, class Q>
 void register_pass_with_arg(Passes& passes) {
-    passes[flags_t(Axiom::Base<A>)] = [](World& world, PipelineBuilder& builder, const Def* app) {
+    assert_emplace(passes, flags_t(Axiom::Base<A>), [](World& world, PipelineBuilder& builder, const Def* app) {
         auto pass_arg = (Q*)(builder.pass(app->as<App>()->arg()));
         world.DLOG("register using arg: {} of type {} for gid {}", pass_arg, typeid(Q).name(),
                    app->as<App>()->arg()->gid());
         builder.add_pass<P>(app, pass_arg);
-    };
+    });
 }
 
 } // namespace thorin

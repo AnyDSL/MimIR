@@ -65,9 +65,7 @@ void Driver::load(Sym name) {
 
     if (!handle) err("cannot open plugin '{}'", name);
 
-    auto [i, ins] = plugins_.emplace(name, Dialect{plugin_path, std::move(handle)});
-    assert_unused(ins);
-    auto& plugin = i->second;
+    auto& [_, plugin] = *assert_emplace(plugins_, name, Dialect{plugin_path, std::move(handle)});
     plugin.register_passes(passes_);
     plugin.register_backends(backends_);
     plugin.register_normalizers(normalizers_);
