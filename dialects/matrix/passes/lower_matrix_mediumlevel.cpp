@@ -24,9 +24,9 @@ std::pair<Lam*, const Def*> counting_for(const Def* bound, Defs acc, const Def* 
     auto acc_ty = world.tuple(acc)->type();
     auto body   = world
                     .nom_lam(world.cn({
-                        world.type_int(32),      // iterator
-                        acc_ty,                  // acc = memory+extra
-                        world.cn((Defs){acc_ty}) // exit = return
+                        world.type_int(32), // iterator
+                        acc_ty,             // acc = memory+extra
+                        world.cn(acc_ty)    // exit = return
                     }))
                     ->set(name);
     auto for_loop = affine::op_for(world, world.lit_int(32, 0), bound, world.lit_int(32, 1), acc, body, exit);
@@ -191,7 +191,7 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         // assert(0);
         auto ds_fun = direct::op_cps2ds_dep(fun);
         world.DLOG("ds_fun {} : {}", ds_fun, ds_fun->type());
-        auto call = world.app(ds_fun, (Defs){mem});
+        auto call = world.app(ds_fun, mem);
         world.DLOG("call {} : {}", call, call->type());
 
         // flowchart:
