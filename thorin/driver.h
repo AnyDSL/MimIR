@@ -10,6 +10,15 @@
 
 namespace thorin {
 
+struct AxiomInfo {
+    flags_t tag_id;
+    Sym dialect;
+    Sym tag;
+    std::deque<std::deque<Sym>> subs; ///< List of subs which is a list of aliases.
+    Sym normalizer;
+    bool pi = false;
+};
+
 /// Some "global" variables needed all over the place.
 /// Well, there are not really global - that's the point of this class.
 class Driver : public SymPool {
@@ -57,6 +66,7 @@ public:
 
     /// Maps from absolute path to relative path and the actual usage in the source.
     absl::btree_map<fs::path, std::pair<fs::path, Sym>> imports;
+    SymMap<SymMap<AxiomInfo>> plugin2axioms;
 
 private:
     Flags flags_;

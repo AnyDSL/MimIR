@@ -9,30 +9,10 @@
 #include "thorin/util/sym.h"
 #include "thorin/util/types.h"
 
-namespace thorin::h {
+namespace thorin {
 
-struct AxiomInfo {
-    flags_t tag_id;
-    Sym dialect;
-    Sym tag;
-    std::deque<std::deque<Sym>> subs;
-    Sym normalizer;
-    bool pi = false;
-};
+class Driver;
 
-class Bootstrapper {
-public:
-    Bootstrapper(Sym dialect)
-        : dialect_(dialect) {}
-
-    void emit(std::ostream&);
-    Sym dialect() const { return dialect_; }
-
-    SymMap<SymMap<AxiomInfo>> plugin2axioms;
-    Tab tab;
-
-private:
-    Sym dialect_;
-};
+void bootstrap(Driver&, Sym, std::ostream&);
 
 } // namespace thorin::h

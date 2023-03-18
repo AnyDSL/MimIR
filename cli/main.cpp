@@ -10,6 +10,7 @@
 #include "thorin/driver.h"
 
 #include "thorin/be/dot/dot.h"
+#include "thorin/be/h/bootstrapper.h"
 #include "thorin/fe/parser.h"
 #include "thorin/pass/optimize.h"
 #include "thorin/pass/pass.h"
@@ -116,23 +117,17 @@ int main(int argc, char** argv) {
         if (input[0] == '-' || input.substr(0, 2) == "--")
             throw std::invalid_argument("error: unknown option " + input);
 
-        std::ifstream ifs(input);
-        if (!ifs) {
-            errln("error: cannot read file '{}'", input);
-            return EXIT_FAILURE;
-        }
-
         auto path = fs::path(input);
         world.set(path.filename().replace_extension().string());
-        auto parser = fe::Parser(world, ifs, &path, os[Md]);
-        parser.parse_module();
-        parser.import(driver.sym("compile"));
-        parser.import(driver.sym("opt"));
+        auto parser = fe::Parser(world);
+        parser.import("compile");
+        parser.import("opt");
+        parser.import(input, os[Md]);
 
-        if (os[H]) {
-            parser.bootstrap(*os[H]);
-            opt = std::min(opt, 1);
-        }
+        if (auto h = os[H])
+            bootstrap(driver, world.sym(fs::path{path}.filename().replace_extension().string()), *h);
+
+        if (os[H]) opt = std::min(opt, 1);
 
         // clang-format off
         switch (opt) {

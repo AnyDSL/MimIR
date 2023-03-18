@@ -4,8 +4,28 @@
 #include <sstream>
 
 #include "thorin/axiom.h"
+#include "thorin/driver.h"
 
-namespace thorin::h {
+namespace thorin {
+
+class Bootstrapper {
+public:
+    Bootstrapper(Driver& driver, Sym dialect)
+        : driver_(driver)
+        , dialect_(dialect) {}
+
+    Driver& driver() { return driver_; }
+    Sym dialect() { return dialect_; }
+
+    void emit(std::ostream&);
+    Sym dialect() const { return dialect_; }
+
+    Tab tab;
+
+private:
+    Driver& driver_;
+    Sym dialect_;
+};
 
 void Bootstrapper::emit(std::ostream& h) {
     tab.print(h, "#pragma once\n\n");
@@ -19,8 +39,10 @@ void Bootstrapper::emit(std::ostream& h) {
 
     tab.print(h << std::hex, "static constexpr dialect_t Dialect_Id = 0x{};\n\n", dialect_id);
 
+    auto& axioms = driver().plugin2axioms[dialect()];
+
     // clang-format off
-    for (const auto& [key, ax] : plugin2axioms[dialect_]) {
+    for (const auto& [key, ax] : axioms) {
         if (ax.dialect != dialect_) continue; // this is from an import
 
         tab.print(h, "#ifdef DOXYGEN // see https://github.com/doxygen/doxygen/issues/9668\n");
@@ -89,7 +111,7 @@ void Bootstrapper::emit(std::ostream& h) {
     tab.print(h, "\n");
 
     // emit helpers for non-function axiom
-    for (const auto& [tag, ax] : plugin2axioms[dialect_]) {
+    for (const auto& [tag, ax] : axioms) {
         if (ax.pi || ax.dialect != dialect_) continue; // from function or other dialect?
         tab.print(h, "template<> struct Axiom::Match<{}::{}> {{ using type = Axiom; }};\n", ax.dialect, ax.tag);
     }
@@ -97,4 +119,9 @@ void Bootstrapper::emit(std::ostream& h) {
     tab.print(h, "}} // namespace thorin\n");
 }
 
-} // namespace thorin::h
+void bootstrap(Driver& driver, Sym sym, std::ostream& os) {
+    Bootstrapper b(driver, sym);
+    b.emit(os);
+}
+
+} // namespace thorin

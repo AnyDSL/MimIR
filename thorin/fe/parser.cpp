@@ -32,20 +32,6 @@ using namespace std::string_literals;
 
 namespace thorin::fe {
 
-Parser::Parser(World& world, std::istream& istream, const fs::path* path, std::ostream* md)
-    : world_(world)
-    , bootstrapper_(path ? world.sym(fs::path{*path}.filename().replace_extension().string()) : Sym())
-    , anonymous_(world.sym("_")) {
-    init(istream, path, md);
-}
-
-void Parser::init(std::istream& istream, const fs::path* path, std::ostream* md) {
-    world().ILOG("reading: {}", path ? path->filename() : "<unknown path>");
-    lexers_.emplace(world(), istream, path, md);
-    for (size_t i = 0; i != Max_Ahead; ++i) ahead(i) = lexer().lex();
-    prev() = Loc(path, {1, 1});
-}
-
 /*
  * helpers
  */
@@ -80,8 +66,6 @@ void Parser::syntax_err(std::string_view what, const Tok& tok, std::string_view 
  * entry points
  */
 
-void Parser::bootstrap(std::ostream& h) { bootstrapper_.emit(h); }
-
 void Parser::parse_module() {
     while (ahead().tag() == Tok::Tag::K_import) parse_import();
 
@@ -89,29 +73,35 @@ void Parser::parse_module() {
     expect(Tok::Tag::M_eof, "module");
 };
 
-void Parser::import(Sym name) {
-    auto filename = *name + ".thorin";
-
+void Parser::import(fs::path name, std::ostream* md) {
+    world().VLOG("import: {}", name);
+    auto filename = name.replace_extension("thorin"); // TODO error cases
     fs::path rel_path;
     for (const auto& path : world().driver().search_paths()) {
         rel_path = path / filename;
+        world().VLOG("{}", rel_path);
 
         std::error_code ignore;
         if (bool reg_file = fs::is_regular_file(rel_path, ignore); reg_file && !ignore) break;
     }
 
-
     auto abs_path = fs::absolute(rel_path);
     auto& imports = world().driver().imports;
-    outln("imports. {}, {}, {}
-    auto [i, ins] = imports.emplace(std::move(abs_path), std::pair(std::move(rel_path), name));
+    auto [i, ins] = imports.emplace(std::move(abs_path), std::pair(std::move(rel_path), world().sym(std::move(name))));
     if (!ins) return;
 
-    std::ifstream ifs(i->first);
-    if (!ifs) err("could not find file '{}'", filename);
+    world().VLOG("reading: {} - {} - {}", i->first, i->second.first, i->second.second);
+    auto path = &i->second.first;
 
+    auto ifs     = std::ifstream(*path);
+    if (!ifs) err("error: cannot read file '{}'", *path);
+
+    lexers_.emplace(world(), ifs, path, md);
     auto state = state_;
-    init(ifs, &i->second.first);
+
+    for (size_t i = 0; i != Max_Ahead; ++i) ahead(i) = lexer().lex();
+    prev() = Loc(path, {1, 1});
+
     parse_module();
     state_ = state;
     lexers_.pop();
@@ -125,7 +115,7 @@ void Parser::parse_import() {
     eat(Tok::Tag::K_import);
     auto name = expect(Tok::Tag::M_id, "import name");
     expect(Tok::Tag::T_semicolon, "end of import");
-    import(name.sym());
+    import(*name.sym());
 }
 
 Dbg Parser::parse_sym(std::string_view ctxt) {
@@ -585,8 +575,8 @@ void Parser::parse_ax() {
     if (!dialect) err(ax.loc(), "invalid axiom name '{}'", ax);
     if (sub) err(ax.loc(), "definition of axiom '{}' must not have sub in tag name", ax);
 
-    auto& axioms = bootstrapper_.plugin2axioms[dialect];
-    auto [it, is_new] = axioms.emplace(ax.sym(), h::AxiomInfo{});
+    auto& axioms = driver().plugin2axioms[dialect];
+    auto [it, is_new] = axioms.emplace(ax.sym(), AxiomInfo{});
     auto& [_, info]   = *it;
     if (is_new) {
         info.dialect = dialect;
@@ -594,11 +584,11 @@ void Parser::parse_ax() {
         info.tag_id  = axioms.size() - 1;
     }
 
-    if (dialect != bootstrapper_.dialect()) {
+    //if (dialect != bootstrapper_.dialect()) {
         // TODO
         // err(ax.loc(), "axiom name `{}` implies a dialect name of `{}` but input file is named `{}`", ax,
         // info.dialect, lexer_.file());
-    }
+    //}
 
     if (axioms.size() >= std::numeric_limits<tag_t>::max())
         err(ax.loc(), "exceeded maxinum number of axioms in current dialect");

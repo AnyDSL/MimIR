@@ -2,7 +2,6 @@
 
 #include "thorin/driver.h"
 
-#include "thorin/be/h/bootstrapper.h"
 #include "thorin/fe/ast.h"
 #include "thorin/fe/lexer.h"
 #include "thorin/fe/scopes.h"
@@ -29,21 +28,15 @@ namespace thorin::fe {
 ///      * If default argument is **provided** we have the same behavior as in 2.
 class Parser {
 public:
-    Parser(World&, std::istream&, const fs::path* path = nullptr, std::ostream* md = nullptr);
+    Parser(World& world)
+        : world_(world)
+        , anonymous_(world.sym("_")) {}
 
     World& world() { return world_; }
     Driver& driver() { return world().driver(); }
-
-    /// @name entry points
-    ///@{
-    void import(Sym);
-    void parse_module();
-    void bootstrap(std::ostream&);
-    ///@}
+    void import(fs::path, std::ostream* md = nullptr);
 
 private:
-    void init(std::istream& , const fs::path*, std::ostream* md = nullptr);
-
     /// @name Tracker
     ///@{
     /// Trick to easily keep track of Loc%ations.
@@ -95,8 +88,9 @@ private:
     }
     ///@}
 
-    /// @name parse helpers
+    /// @name parse misc
     ///@{
+    void parse_module();
     Dbg parse_sym(std::string_view ctxt = {});
     void parse_import();
     Ref parse_type_ascr(std::string_view ctxt);
@@ -112,7 +106,7 @@ private:
     }
     ///@}
 
-    /// @name exprs
+    /// @name parse exprs
     ///@{
     Ref parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
     Ref parse_primary_expr(std::string_view ctxt);
@@ -120,7 +114,7 @@ private:
     Ref parse_extract(Tracker, const Def*, Tok::Prec);
     ///@}
 
-    /// @name primary exprs
+    /// @name parse primary exprs
     ///@{
     Ref parse_Cn();
     Ref parse_arr();
@@ -136,7 +130,7 @@ private:
     Lam* parse_lam(bool decl = false);
     ///@}
 
-    /// @name ptrns
+    /// @name parse ptrns
     ///@{
 
     /// Depending on @p tag, this parses a `()`-style (Tok::Tag::D_paren_l) or `[]`-style (Tok::Tag::D_brckt_l) Ptrn.
@@ -144,7 +138,7 @@ private:
     std::unique_ptr<TuplePtrn> parse_tuple_ptrn(Tracker, bool, Sym);
     ///@}
 
-    /// @name decls
+    /// @name parse decls
     ///@{
     Ref parse_decls(std::string_view ctxt);
     void parse_ax();
@@ -176,7 +170,6 @@ private:
     } state_;
     Scopes scopes_;
     Def2Fields def2fields_;
-    h::Bootstrapper bootstrapper_;
     Sym anonymous_;
 };
 
