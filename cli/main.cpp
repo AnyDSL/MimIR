@@ -124,8 +124,7 @@ int main(int argc, char** argv) {
         parser.import("opt");
         parser.import(input, os[Md]);
 
-        if (auto h = os[H])
-            bootstrap(driver, world.sym(fs::path{path}.filename().replace_extension().string()), *h);
+        if (auto h = os[H]) bootstrap(driver, world.sym(fs::path{path}.filename().replace_extension().string()), *h);
 
         if (os[H]) opt = std::min(opt, 1);
 

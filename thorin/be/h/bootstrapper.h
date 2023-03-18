@@ -15,4 +15,4 @@ class Driver;
 
 void bootstrap(Driver&, Sym, std::ostream&);
 
-} // namespace thorin::h
+} // namespace thorin

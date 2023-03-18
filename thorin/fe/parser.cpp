@@ -93,7 +93,7 @@ void Parser::import(fs::path name, std::ostream* md) {
     world().VLOG("reading: {} - {} - {}", i->first, i->second.first, i->second.second);
     auto path = &i->second.first;
 
-    auto ifs     = std::ifstream(*path);
+    auto ifs = std::ifstream(*path);
     if (!ifs) err("error: cannot read file '{}'", *path);
 
     lexers_.emplace(world(), ifs, path, md);
@@ -575,7 +575,7 @@ void Parser::parse_ax() {
     if (!dialect) err(ax.loc(), "invalid axiom name '{}'", ax);
     if (sub) err(ax.loc(), "definition of axiom '{}' must not have sub in tag name", ax);
 
-    auto& axioms = driver().plugin2axioms[dialect];
+    auto& axioms      = driver().plugin2axioms[dialect];
     auto [it, is_new] = axioms.emplace(ax.sym(), AxiomInfo{});
     auto& [_, info]   = *it;
     if (is_new) {
@@ -584,10 +584,10 @@ void Parser::parse_ax() {
         info.tag_id  = axioms.size() - 1;
     }
 
-    //if (dialect != bootstrapper_.dialect()) {
-        // TODO
-        // err(ax.loc(), "axiom name `{}` implies a dialect name of `{}` but input file is named `{}`", ax,
-        // info.dialect, lexer_.file());
+    // if (dialect != bootstrapper_.dialect()) {
+    //  TODO
+    //  err(ax.loc(), "axiom name `{}` implies a dialect name of `{}` but input file is named `{}`", ax,
+    //  info.dialect, lexer_.file());
     //}
 
     if (axioms.size() >= std::numeric_limits<tag_t>::max())
