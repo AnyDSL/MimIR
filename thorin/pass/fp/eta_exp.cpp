@@ -27,12 +27,10 @@ const Def* EtaExp::rewrite(const Def* def) {
         if (auto lam = def->op(i)->isa_nom<Lam>(); lam && lam->is_set()) {
             if (isa_callee(def, i)) {
                 if (auto orig = lookup(exp2orig_, lam)) new_ops[i] = orig;
-            } else {
-                if (expand_.contains(lam)) {
-                    if (new_ops[i] == lam) new_ops[i] = eta_exp(lam);
-                } else if (auto orig = lookup(exp2orig_, lam)) {
-                    if (new_ops[i] == lam) new_ops[i] = eta_exp(orig);
-                }
+            } else if (expand_.contains(lam)) {
+                if (new_ops[i] == lam) new_ops[i] = eta_exp(lam);
+            } else if (auto orig = lookup(exp2orig_, lam)) {
+                if (new_ops[i] == lam) new_ops[i] = eta_exp(orig);
             }
         }
     }
