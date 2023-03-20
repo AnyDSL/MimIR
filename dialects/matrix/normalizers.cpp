@@ -64,7 +64,7 @@ Ref normalize_insert(Ref type, Ref callee, Ref arg) {
 /// - transpose (insert m v (i,j)) -> insert (transpose m) v (j,i) (TODO: implement, maybe other way around?)
 /// - transpose (tranpose m) -> m (TODO: implement)
 
-/// - shape (@mat n (k1,k2,...,kn) i) -> (k1,k2,...,kn)#i (TODO: implement)
+/// - shape (\@mat n (k1,k2,...,kn) i) -> (k1,k2,...,kn)\#i (TODO: implement)
 Ref normalize_shape(Ref type, Ref callee, Ref arg) {
     auto& world                   = type->world();
     auto [mat, index]             = arg->projs<2>();

@@ -94,7 +94,7 @@
 /// 
 /// ### %matrix.transpose
 ///
-/// transpose _ (m:@mat _ k*l T) : @mat _ l*k T
+/// transpose _ (m:mat _ k*l T) : mat _ l*k T
 /// completely resolved during normalization and implicitely rewriting
 /// (for instance: read(transpose m) (i,j) = read m (j,i))
 ///
@@ -103,7 +103,7 @@
 /// 
 /// ### %matrix.id
 ///
-/// id (k, m) : @mat _ (k,k) (Int m)
+/// id (k, m) : mat _ (k,k) (Int m)
 ///
 /// the idendity matrix
 /// 
