@@ -73,7 +73,7 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         world.DLOG("  comb = {} : {}", comb, comb->type());
         world.DLOG("  inputs = {} : {}", inputs, inputs->type());
 
-        // Goal: generate call to function that performs:
+        // Our goal is to generate a call to a function that performs:
         // ```
         // matrix = new matrix (n, S, T)
         // for out_idx { // n for loops
@@ -107,7 +107,7 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         auto n_nat = n_lit->get<u64>(); // number of output dimensions (in S)
         auto m_nat = m_lit->get<u64>(); // number of input matrices
 
-        // collect out dimensions
+        // collect output dimensions
         world.DLOG("out dims (n) = {}", n_nat);
         for (u64 i = 0; i < n_nat; ++i) {
             auto dim = S->proj(n_nat, i);
@@ -262,28 +262,17 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         element_acc->set("acc");
         current_mem    = acc[0];
         auto wb_matrix = acc[1];
-        // world.DLOG("wb_matrix {} ", wb_matrix);
         assert(wb_matrix);
         world.DLOG("wb_matrix {} : {}", wb_matrix, wb_matrix->type());
-        // world.DLOG("acc[1] at inner: {} : {}", acc[1], acc[1]->type());
 
         // Write back element to matrix. Set this as return after all inner loops.
         auto write_back = world.nom_lam(world.cn({mem::type_mem(world), T}))->set("matrixWriteBack");
-        // TODO: why is acc no longer valid from here on?
         world.DLOG("write_back {} : {}", write_back, write_back->type());
-        // world.DLOG("acc[1] at inner: {} : {}", acc[1], acc[1]->type());
         auto [wb_mem, element_final] = write_back->vars<2>();
-        // world.DLOG("acc[1] at inner: {} : {}", acc[1], acc[1]->type());
-        // world.DLOG("acc[1] at inner: {} : {}", acc[1], acc[1]->type());
 
         DefArray output_iterators((size_t)n_nat, [&](u64 i) {
             auto idx = out_indices[i];
             assert(idx == i && "output indices must be consecutive 0..n-1");
-            // auto iter_int_def = raw_iterator[idx];
-            // auto dim          = dims[idx];
-            // world.DLOG("dim of {} = {}", i, dim);
-            // return iter_int_def;
-            // auto iter_idx_def = core::op_bitcast(world.type_idx(dim), iter_int_def);
             auto iter_idx_def = iterator[idx];
             return iter_idx_def;
         });
@@ -354,14 +343,10 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         world.DLOG("  read elements {,}", input_elements);
         world.DLOG("  fun {} : {}", fun, fun->type());
 
-        // current_nom->app(true, cont, {current_mem, element_acc});
         // TODO: make non-scalar or completely scalar?
         current_nom->app(true, comb, {world.tuple({current_mem, element_acc, world.tuple(input_elements)}), cont});
-        // current_nom->app(true, comb, {current_mem, element_acc, world.tuple(input_elements), cont});
 
         return call;
-
-        // create out iterations
     }
 
     return def;

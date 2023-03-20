@@ -6,25 +6,20 @@
 
 namespace thorin::matrix {
 
-/// Resolved by normalizer:
-/// - shape
-/// - transpose (mapReduce)
-/// Rewrites into loop:
-/// - product (mapReduce)
-/// - map (mapReduce)
-/// - zipWith (mapReduce)
-/// - fold (mapReduce)
-/// - id
-/// - constMat
-/// Left for final phase:
-/// - Mat
-/// - read
-/// - insert
-
-/// Lowers the for axiom to actual control flow in CPS style
-/// Requires CopyProp to cleanup afterwards.
+/// In this step, we lower `mapReduce` operations into affine for loops making the iteration scheme explicit.
+/// Pseudo-code:
+/// ```
+/// out_matrix = init
+/// for output_indices:
+///   acc = zero
+///   for input_indices:
+///     element_[0..m] = read(matrix[0..m], indices)
+///     acc = f (acc, elements)
+///   insert (out_matrix, output_indices, acc)
+/// return out_matrix
+/// ```
 ///
-/// pseudo code to lower mapReduce:
+/// Detailed pseudo-code:
 /// * out indices = (0,1,2, ..., n)
 /// * bounds in S
 /// * we assume that certain paramters are constant and statically known
@@ -48,7 +43,6 @@ namespace thorin::matrix {
 ///         s = add(s, mul (e_0, ..., e_(m-1)) )
 ///       write (output, (i_0, ..., i_{n-1}), s)
 /// ```
-/// TODO: identify patterns and emit specialized operations like matrix product (blas)
 class LowerMatrixMediumLevel : public RWPass<LowerMatrixMediumLevel, Lam> {
 public:
     LowerMatrixMediumLevel(PassMan& man)

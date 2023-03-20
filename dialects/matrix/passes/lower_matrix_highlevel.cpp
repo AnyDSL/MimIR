@@ -66,7 +66,6 @@ const Def* LowerMatrixHighLevelMapRed::rewrite_(const Def* def) {
     if (auto outer_app = def->isa<App>()) {
         if (auto inner_app = outer_app->callee()->isa<App>()) {
             if (auto axiom = inner_app->callee()->isa<Axiom>()) {
-                // world.DLOG("try to lower axiom: {}", def);
                 if (auto internal_function = internal_function_of_axiom(axiom, inner_app->arg(), outer_app->arg())) {
                     world.DLOG("lower matrix axiom {} in {} : {}", *axiom->sym(), def, def->type());
                     world.DLOG("lower matrix axiom using: {} : {}", *internal_function, (*internal_function)->type());

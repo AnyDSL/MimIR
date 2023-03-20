@@ -20,7 +20,6 @@
 namespace thorin::matrix {
 
 const Def* op_lea_tuple(const Def* arr, const Def* tuple) {
-    // mem::op_lea(arr, tuple);
     auto& world = arr->world();
     world.DLOG("op_lea_tuple arr {} : {}", arr, arr->type());
     auto n       = tuple->num_projs();
@@ -32,13 +31,10 @@ const Def* op_lea_tuple(const Def* arr, const Def* tuple) {
 const Def* op_pack_tuple(u64 n, const Def* tuple, const Def* val) {
     auto& world = val->world();
     // TODO: find out why num_projs is wrong
-    // auto n = val->num_projs();
-    // world.DLOG("create {} dimensional pack", n);
     auto element = val;
     for (int i = n - 1; i >= 0; i--) {
         auto dim = tuple->proj(n, i);
-        // world.DLOG("dim {}: {}", i, dim);
-        element = world.pack(dim, element);
+        element  = world.pack(dim, element);
     }
     world.DLOG("op_pack_tuple: {} -> {}", val, element);
     world.DLOG("  for tuple: {} : {}", tuple, tuple->type());
@@ -47,15 +43,11 @@ const Def* op_pack_tuple(u64 n, const Def* tuple, const Def* val) {
 
 const Def* arrTyOfMatrixTy(const Def* S, const Def* T) {
     auto& world = S->world();
-    // auto size   = computeSize(S);
-    // auto arr_ty = world.arr(size, T);
     auto n      = S->num_projs();
     auto arr_ty = T;
     for (int i = n - 1; i >= 0; i--) {
         auto dim = S->proj(n, i);
-        // world.DLOG("dim {}: {}", i, dim);
-        arr_ty = world.arr(dim, arr_ty);
-        // world.DLOG("arr_ty {}..{}: {}", i, n, arr_ty);
+        arr_ty   = world.arr(dim, arr_ty);
     }
     return arr_ty;
 }
@@ -139,7 +131,6 @@ const Def* LowerMatrixLowLevel::rewrite_structural(const Def* def) {
         auto ptr_mat     = mat;
         auto element_ptr = op_lea_tuple(ptr_mat, idx);
         auto mem2        = world.call<mem::store>(Defs{mem, element_ptr, val});
-        // return mem2, ptr_mat);
         return world.tuple({mem2, ptr_mat});
     } else if (auto const_ax = match<matrix::constMat>(def)) {
         auto [mem, val]      = const_ax->args<2>();
@@ -155,7 +146,6 @@ const Def* LowerMatrixLowLevel::rewrite_structural(const Def* def) {
         auto n       = n_def->as<Lit>()->get<u64>();
         auto initial = op_pack_tuple(n, S, val);
 
-        // TODO: test if this is a valid initialization
         auto mem3 = world.call<mem::store>(Defs{mem2, ptr_mat, initial});
 
         return world.tuple({mem3, ptr_mat});

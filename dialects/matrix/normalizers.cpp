@@ -84,11 +84,6 @@ Ref normalize_shape(Ref type, Ref callee, Ref arg) {
 /// - map(constMat v, f) -> constMat f(v) (TODO: implement)
 /// - map f (map g m) -> map (f . g) m (TODO: implement)
 /// - map f (zipWith g m1 m2) -> zipWith (f . g) m1 m2 (TODO: implement)
-
-/// TODO: implement
-
-/// TODO: implement
-
 u64 get_max_index(u64 init, Defs inputs) {
     auto max_idx = init;
 
@@ -107,99 +102,14 @@ u64 get_max_index(u64 init, Defs inputs) {
 }
 
 /// mapReduce normalizers
-/// - mapReduce (..., ((idx,mapReduce([out, ]...), ...))) -> unify idx, out (out is implicit), name vars apart
+/// - TODO: mapReduce (..., ((idx,mapReduce([out, ]...), ...))) -> unify idx, out (out is implicit), name vars apart
 ///   requires: same reduction, distributive reduction
 /// we assume distributivity of the reduction function
 Ref normalize_mapReduce(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
 
     //     // TODO: now that mapReduce returns a mem needs to check if extract from mapReduce
-
     return world.raw_app(type, callee, arg);
-
-    //     // auto [mem, zero, add, mul, input] = arg->projs<5>();
-    //     // // auto [dims, sizes, body_type] = match<Mat, false>(mat->type())->args<3>();
-
-    //     // auto [n, S, T, m, NI, TI, SI] = callee->as<App>()->args<7>();
-
-    //     // auto def = world.raw_app(callee, arg, dbg);
-
-    //     // auto m_lit = isa_lit(m);
-    //     // auto n_lit = isa_lit(n);
-    //     // if (!m_lit || !n_lit) return def;
-
-    //     // // get largest used index to name apart
-    //     // auto inputs  = input->projs();
-    //     // auto max_idx = get_max_index(n_lit, inputs);
-    //     // TODO: return def if max_idx is null
-
-    //     // for (auto inp : inputs) {
-    //     //     auto [idx, mat] = inp->projs<2>();
-    //     //     //
-    //     //     auto mapRedMat = match<mapReduce>(mat);
-    //     //     if (!mapRedMat) continue;
-    //     //     auto [imem, izero, iadd, imul, iinput]    = mapRedMat->args<5>();
-    //     //     auto [in, iS, iT, im, iNI, iTI, SI] = mapRedMat->callee()->as<App>()->args<7>();
-    //     //     // TODO: allow if one of them is useless (dummyAddition)
-    //     //     if (iadd != add) continue;
-
-    //     //     auto in_lit = isa_lit(in);
-    //     //     auto im_lit = isa_lit(im);
-    //     //     if (!im_lit) continue;
-    //     //     if (!in_lit) continue;
-    //     //     auto iinputs   = iinput->projs();
-    //     //     auto inner_max = get_max_index(as_lit(in), iinputs);
-    //     // TODO: return def if inner_max is null
-    //     //     // replace out with idx, add max_idx to others (to avoid name clash)
-    //     //     // out = (0,1,...,in)
-    //     //     // => replace i<in with idx[i]
-    //     //     //    and i>=in with i+max_idx
-
-    //     //     DefArray new_inputs(im_lit.value());
-
-    //     //     bool canReplace = true;
-    //     //     // for (auto iinp : iinputs) {
-    //     //     for (int i = 0; i < iinputs.size(); i++) {
-    //     //         auto iinp = iinputs[i];
-
-    //     //         auto [iindices, imat] = iinp->projs<2>();
-    //     //         if (!isa_lit(iindices->arity())) {
-    //     //             canReplace = false;
-    //     //             break;
-    //     //         }
-    //     //         auto iidxs = iindices->projs();
-    //     //         for (auto iidx : iidxs) {
-    //     //             auto iidx_val = isa_lit(iidx);
-    //     //             if (!iidx_val) {
-    //     //                 canReplace = false;
-    //     //                 break;
-    //     //             }
-    //     //             nat_t new_idx;
-    //     //             if (iidx_val < in_lit) {
-    //     //                 // replace with idx[iidx_val]
-    //     //                 new_idx = as_lit(world.extract(idx, iidx_val.value()));
-    //     //             } else {
-    //     //                 new_idx = iidx_val + max_idx;
-    //     //             }
-    //     //             // new_inputs[i] = world.tuple(world.lit_nat
-    //     //             // TODO: build new indices
-    //     //         }
-    //     //     }
-    //     //     if (!canReplace) continue;
-
-    //     //     // increase max_idx with the newly used indices (or something larger)
-    //     //     max_idx += inner_max;
-    //     // }
-
-    //     // // auto n = input->num_projs();
-
-    //     // // auto [zero, add, mul, input] =
-    //     // //     mapReduce_ax->args<4>({world.dbg("zero"), world.dbg("add"), world.dbg("mul"), world.dbg("input")});
-    //     // // auto inner_callee = mapReduce_ax->callee()->as<App>();
-    //     // // auto [n, S, T, m, NI, TI, SI] =
-    //     // //     inner_callee->args<7>({world.dbg("n"), world.dbg("S"), world.dbg("T"), world.dbg("m"),
-    //     world.dbg("NI"),
-    //     // //                            world.dbg("TI"), world.dbg("SI")});
 }
 
 Ref normalize_prod(Ref type, Ref callee, Ref arg) {
