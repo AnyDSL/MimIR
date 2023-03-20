@@ -7,14 +7,20 @@
 #include "thorin/world.h"
 
 #include "thorin/util/log.h"
+#include "absl/container/node_hash_map.h"
 
 namespace thorin {
 
 struct AxiomInfo {
-    flags_t tag_id;
+    AxiomInfo(Sym dialect, Sym tag, flags_t tag_id)
+        : dialect(dialect)
+        , tag(tag)
+        , tag_id(tag_id) {}
+
     Sym dialect;
     Sym tag;
     std::deque<std::deque<Sym>> subs; ///< List of subs which is a list of aliases.
+    flags_t tag_id;
     Sym normalizer;
     bool pi = false;
 };
@@ -35,12 +41,12 @@ public:
     /// @name search paths and dialect loading
     ///@{
     void add_search_path(fs::path path) {
-        if (fs::exists(path) && fs::is_directory(path)) search_paths_.insert(insert_, fs::absolute(std::move(path)));
+        if (fs::exists(path) && fs::is_directory(path)) search_paths_.insert(insert_, std::move(path));
     }
 
     /// Search paths for dialect plugins are in the following order:
-    /// 1. All further user-specified paths via Driver::add_search_path; paths added first will also be searched first.
-    /// 2. Current working directory.
+    /// 1. Current working directory.
+    /// 2. All further user-specified paths via Driver::add_search_path; paths added first will also be searched first.
     /// 3. All paths specified in the environment variable `THORIN_DIALECT_PATH`.
     /// 4. `path/to/thorin.exe/../../lib/thorin`
     /// 5. `CMAKE_INSTALL_PREFIX/lib/thorin`
@@ -64,8 +70,14 @@ public:
     auto backend(std::string_view name) { return lookup(backends_, name); }
     ///@}
 
+    const fs::path* add_import(fs::path rel_path, Sym sym) {
+        auto abs_path = fs::absolute(rel_path);
+        auto [i, ins] = imports.emplace(std::move(abs_path), std::pair(std::move(rel_path), sym));
+        return ins ? &i->second.first : nullptr;
+    }
+
     /// Maps from absolute path to relative path and the actual usage in the source.
-    absl::btree_map<fs::path, std::pair<fs::path, Sym>> imports;
+    absl::node_hash_map<fs::path, std::pair<fs::path, Sym>> imports;
     SymMap<SymMap<AxiomInfo>> plugin2axioms;
 
 private:

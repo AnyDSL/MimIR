@@ -85,26 +85,21 @@ void Parser::import(fs::path name, std::ostream* md) {
         if (bool reg_file = fs::is_regular_file(rel_path, ignore); reg_file && !ignore) break;
     }
 
-    auto abs_path = fs::absolute(rel_path);
-    auto& imports = world().driver().imports;
-    auto [i, ins] = imports.emplace(std::move(abs_path), std::pair(std::move(rel_path), world().sym(std::move(name))));
-    if (!ins) return;
+    if (auto path = driver().add_import(std::move(rel_path), world().sym(std::move(name)))) {
+        world().VLOG("reading: {}", *path);
+        auto ifs = std::ifstream(*path);
+        if (!ifs) err("error: cannot read file '{}'", *path);
 
-    world().VLOG("reading: {} - {} - {}", i->first, i->second.first, i->second.second);
-    auto path = &i->second.first;
+        lexers_.emplace(world(), ifs, path, md);
+        auto state = state_;
 
-    auto ifs = std::ifstream(*path);
-    if (!ifs) err("error: cannot read file '{}'", *path);
+        for (size_t i = 0; i != Max_Ahead; ++i) ahead(i) = lexer().lex();
+        prev() = Loc(path, {1, 1});
 
-    lexers_.emplace(world(), ifs, path, md);
-    auto state = state_;
-
-    for (size_t i = 0; i != Max_Ahead; ++i) ahead(i) = lexer().lex();
-    prev() = Loc(path, {1, 1});
-
-    parse_module();
-    state_ = state;
-    lexers_.pop();
+        parse_module();
+        state_ = state;
+        lexers_.pop();
+    }
 }
 
 /*
@@ -576,13 +571,8 @@ void Parser::parse_ax() {
     if (sub) err(ax.loc(), "definition of axiom '{}' must not have sub in tag name", ax);
 
     auto& axioms      = driver().plugin2axioms[dialect];
-    auto [it, is_new] = axioms.emplace(ax.sym(), AxiomInfo{});
+    auto [it, is_new] = axioms.emplace(ax.sym(), AxiomInfo{dialect, tag, axioms.size()});
     auto& [_, info]   = *it;
-    if (is_new) {
-        info.dialect = dialect;
-        info.tag     = tag;
-        info.tag_id  = axioms.size() - 1;
-    }
 
     // if (dialect != bootstrapper_.dialect()) {
     //  TODO
