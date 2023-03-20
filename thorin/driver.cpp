@@ -1,4 +1,5 @@
 #include "thorin/driver.h"
+
 #include <filesystem>
 
 #include "thorin/util/dl.h"
@@ -71,9 +72,8 @@ void Driver::load(Sym name) {
 }
 
 const fs::path* Driver::add_import(fs::path path, Sym sym) {
-    for (auto& [p, _] : imports_) {
+    for (auto& [p, _] : imports_)
         if (fs::equivalent(path, p)) return nullptr;
-    }
 
     imports_.emplace_back(std::pair(std::move(path), sym));
     return &imports_.back().first;
