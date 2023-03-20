@@ -4,6 +4,8 @@
 
 #include <thorin/lam.h>
 
+#include "thorin/def.h"
+
 #include "dialects/affine/affine.h"
 #include "dialects/core/core.h"
 #include "dialects/direct/direct.h"
@@ -19,7 +21,8 @@ const Def* LowerMatrixMediumLevel::rewrite(const Def* def) {
     return rewritten[def];
 }
 
-std::pair<Lam*, const Def*> counting_for(const Def* bound, Defs acc, const Def* exit, const char* name = "for_body") {
+std::pair<Lam*, const Def*>
+counting_for(const Def* bound, DefArray acc, const Def* exit, const char* name = "for_body") {
     auto& world = bound->world();
     auto acc_ty = world.tuple(acc)->type();
     auto body   = world
@@ -229,7 +232,7 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         auto current_nom = fun;
 
         // Each of the outer loops contains the memory and matrix as accumulator (in an inner monad).
-        Defs acc = {current_mem, init_mat};
+        DefArray acc = {current_mem, init_mat};
 
         for (auto idx : out_indices) {
             char for_name[32];
