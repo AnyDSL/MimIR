@@ -120,15 +120,14 @@ template<class K>          using GIDNodeSet = absl::node_hash_set<K,    GIDHash<
 template<class C, class K>
 auto lookup(const C& container, const K& key) {
     auto i = container.find(key);
-    if constexpr (std::is_pointer_v<typename C::mapped_type>) {
+    if constexpr (std::is_pointer_v<typename C::mapped_type>)
         return i != container.end() ? i->second : nullptr;
-    } else {
+    else
         return i != container.end() ? &i->second : nullptr;
-    }
 }
 
 /// Invokes `emplace` on @p container, asserts that insertion actually happened, and returns the iterator.
-template<class C, class... Args >
+template<class C, class... Args>
 auto assert_emplace(C& container, Args&&... args) {
     auto [i, ins] = container.emplace(std::forward<Args&&>(args)...);
     assert_unused(ins);
