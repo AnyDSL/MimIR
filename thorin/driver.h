@@ -73,7 +73,8 @@ public:
 
     const fs::path* add_import(fs::path rel_path, Sym sym) {
         auto abs_path = fs::absolute(rel_path);
-        auto [i, ins] = imports.emplace(std::move(abs_path), std::pair(std::move(rel_path), sym));
+        auto pair     = std::pair(std::move(rel_path), sym);
+        auto [i, ins] = imports.emplace(std::move(abs_path), std::move(pair));
         return ins ? &i->second.first : nullptr;
     }
 

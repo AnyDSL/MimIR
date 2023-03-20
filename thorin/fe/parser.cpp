@@ -85,7 +85,7 @@ void Parser::import(fs::path name, std::ostream* md) {
         if (bool reg_file = fs::is_regular_file(rel_path, ignore); reg_file && !ignore) break;
     }
 
-    if (auto path = driver().add_import(std::move(rel_path), world().sym(std::move(name)))) {
+    if (auto path = driver().add_import(std::move(rel_path), world().sym(name.string()))) {
         world().VLOG("reading: {}", *path);
         auto ifs = std::ifstream(*path);
         if (!ifs) err("error: cannot read file '{}'", *path);
