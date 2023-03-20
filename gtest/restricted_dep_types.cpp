@@ -30,7 +30,7 @@ using namespace thorin;
 TEST(RestrictedDependentTypes, join_singleton) {
     auto test_on_world = [](auto test) {
         Driver driver;
-        World& w = driver.world();
+        World& w    = driver.world();
         auto parser = fe::Parser(w);
 
         auto dialects = {"compile", "mem", "core", "math"};
@@ -223,7 +223,7 @@ TEST(RestrictedDependentTypes, join_singleton) {
 
 TEST(RestrictedDependentTypes, ll) {
     Driver driver;
-    World& w = driver.world();
+    World& w    = driver.world();
     auto parser = fe::Parser(w);
 
     auto dialects = {"compile", "mem", "core", "math"};

@@ -14,7 +14,7 @@ using namespace thorin;
 
 TEST(Zip, fold) {
     Driver driver;
-    World& w = driver.world();
+    World& w    = driver.world();
     auto parser = fe::Parser(w);
 
     driver.load("core");
@@ -97,7 +97,7 @@ TEST(Axiom, split) {
 
 TEST(trait, idx) {
     Driver driver;
-    World& w = driver.world();
+    World& w    = driver.world();
     auto parser = fe::Parser(w);
 
     driver.load("core");
