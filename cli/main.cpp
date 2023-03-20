@@ -121,12 +121,14 @@ int main(int argc, char** argv) {
         world.set(path.filename().replace_extension().string());
         auto parser = fe::Parser(world);
         parser.import("compile");
-        parser.import("opt");
         parser.import(input, os[Md]);
 
-        if (auto h = os[H]) bootstrap(driver, world.sym(fs::path{path}.filename().replace_extension().string()), *h);
-
-        if (os[H]) opt = std::min(opt, 1);
+        if (auto h = os[H]) {
+            bootstrap(driver, world.sym(fs::path{path}.filename().replace_extension().string()), *h);
+            opt = std::min(opt, 1);
+        } else {
+            parser.import("opt");
+        }
 
         // clang-format off
         switch (opt) {

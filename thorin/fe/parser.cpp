@@ -76,7 +76,7 @@ void Parser::parse_module() {
 void Parser::import(fs::path name, std::ostream* md) {
     world().VLOG("import: {}", name);
     auto filename = name.replace_extension("thorin"); // TODO error cases
-                                                      //
+
     fs::path rel_path;
     auto paths = world().driver().search_paths();
     paths.emplace_front(fs::path{}); // prepend empty path
@@ -86,7 +86,6 @@ void Parser::import(fs::path name, std::ostream* md) {
         if (bool reg_file = fs::is_regular_file(rel_path, ignore); reg_file && !ignore) break;
     }
 
-    world().VLOG("add_import: {} - {}", rel_path, name.string());
     if (auto path = driver().add_import(std::move(rel_path), world().sym(name.string()))) {
         world().VLOG("reading: {}", *path);
         auto ifs = std::ifstream(*path);

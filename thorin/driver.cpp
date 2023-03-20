@@ -1,7 +1,5 @@
 #include "thorin/driver.h"
 
-#include <filesystem>
-
 #include "thorin/util/dl.h"
 #include "thorin/util/sys.h"
 
