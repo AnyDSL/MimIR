@@ -31,18 +31,7 @@ Ref normalize_read(Ref type, Ref callee, Ref arg) {
             auto [cmem, v] = mcm->arg()->projs<2>();
             return world.tuple({mem, v});
         }
-        // else if (auto mcm = match<transpose>(ccall)) {
-        //     auto [i, j] = index->projs<2>();
-        //     return world.raw_app(callee,
-        //         world.tuple({mem, mcm->arg(), world.tuple({j, i})}), dbg);
-        // }
     }
-
-    // auto mcm = match<constMat>(mat);
-    // if (mcm) {
-    //     auto v = mcm->arg();
-    //     return world.tuple({mem, v});
-    // }
 
     return world.raw_app(type, callee, arg);
 }
