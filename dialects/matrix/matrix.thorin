@@ -19,24 +19,9 @@
 /// can be seen as generalization of Coq's vector type
 ///
 /// matrix = Π [n: .Nat, S: «n; .Nat», T: *] -> *
-/// matrix n S T = «Π_i=0^n S_i; T»
-/// or 
 /// matrix n S T = «S_0; «S_1; ... «S_{n-1}; T» ... »»
 /// => a matrix is a dependend array
 ///
-/// Alternative (current implementation):
-/// matrix n S Ty = [i64, ..., i64, ptr(<T, Ty>)]
-/// (currently with mem and as fat pointer without static size association:
-///   [bit_field:i32, content:ptr(<T, Ty>), size_0:i64, size_1:i64])
-/// * size: dependend vs i64 tuple
-/// * shape: nested vs flat (n0*n1*...) elements
-/// * mutability: mutable by nature vs mutable by its element type (liftet in thorin optimization / codegen)
-///
-/// advantage of opaque type for matrizes:
-/// * prevent arbitrary read & insertions
-/// 
-/// depending on operations, one probably wants matrices to be a transparent definition instead of an opaque axiom
-/// (currently: mat: [T: *] -> *)
 .ax %matrix.Mat: Π [n: .Nat, S: «n; .Nat», T: *] -> *; 
 ///
 /// ## Operations
@@ -50,62 +35,11 @@
 /// normalization rules: 
 /// * resolve shape calls at construction by replacing them with the size argument
 .ax %matrix.shape:  Π [n: .Nat, S: «n; .Nat», T: *] -> [%matrix.Mat (n,S,T), i: .Idx n] -> .Nat, normalize_shape;
-///
-/// ### %matrix.prod
-///
-/// matrix product
-/// takes a m*k matrix, a k*l matrix and returns the product, a m*l matrix
-/// only defined on two-dimensional matrices
-/// 
-/// ### %matrix.map
-///
-/// unary elementwise operation
-/// that lifts a function to the matrix level
-/// f can not simply be T->P as thorin code is written in CPS
-/// (currently (comment): Map: [dims: nat, in: *, out: *] -> [mat[] w] -> m64 w)
-/// (currently: map: [mat_type: *, out_sigma: *, f_pi: *] -> [:mem, m: mat_type, f: f_ty] -> [:mem, out: out_sigma])
-/// rewrite: 
-/// - map on constant matrix
-/// - parallel map without effect
-/// - map combination
-/// - map zipWith
-/// 
-/// ### %matrix.zip
-///
-/// binary elementwise operation
-/// that lifts a binary function to the matrix level
-/// same as map
-/// rewrite: 
-/// - zip on constant matrices
-/// - parallel zip without effect
-/// - zip combination
-/// - zip with one side constant matrix
-/// - meta_zip add zero m = m
-/// (currently: hardcoded as matrix operations)
-/// 
-/// ### %matrix.fold
-///
 /// 
 /// ### %matrix.const
 ///
 /// a constant matrix
-/// (currently: const i32 as bitfield)
 .ax %matrix.constMat: Π [n: .Nat, S: «n; .Nat», T: *] -> [%mem.M,T] -> [%mem.M,%matrix.Mat (n,S,T)];
-/// 
-/// ### %matrix.transpose
-///
-/// transpose _ (m:mat _ k*l T) : mat _ l*k T
-/// completely resolved during normalization and implicitely rewriting
-/// (for instance: read(transpose m) (i,j) = read m (j,i))
-///
-/// transpose matrix
-/// 
-/// 
-/// ### %matrix.id
-///
-/// id (k, m) : mat _ (k,k) (Int m)
-///
-/// the idendity matrix
 /// 
 /// ### %matrix.read
 ///
@@ -131,152 +65,50 @@
 /// * with initialization
 .ax %matrix.insert: Π [n: .Nat, S: «n; .Nat», T: *] -> [%mem.M,%matrix.Mat (n,S,T), idx: «i: n; .Idx S#i», val: T] -> [%mem.M,%matrix.Mat (n,S,T)], normalize_insert;
 ///
-/// ## Related operations
-///
-/// ### multiiter
-///
-/// iterated over n dimensions
-/// takes:
-/// * n: number of dimensions
-/// * sizes: shape of the dimensions
-/// * function: mem -> index -> mem
-/// the function is taken in cps style
-// .ax %matrix.multiiter: Π [n: .Nat, S: «n; .Nat»] -> 
-//     .Cn[mem: %mem.M, body: .Cn[%mem.M, «i: n; .Idx (S#i)», .Cn[%mem.M]], .Cn[%mem.M]], normalize_multiiter;
-///
-/// ## Internal operations
-/// 
 /// ### %matrix.init
 ///
 /// a fresh matrix 
 .ax %matrix.init: Π [n: .Nat, S: «n; .Nat», T: *, %mem.M] -> [%mem.M,%matrix.Mat (n,S,T)];
 ///
-/// ## Definitions and aliases
-/// 
-/// ### zero
-// .lam .extern matrix_zero_int: Π [n: .Nat, S: «n; .Nat», m: .Nat] -> %matrix.Mat (n,S,(.Idx m)) = {
-//     .tt,
-//     %matrix.constMat (n,S,(.Idx m)) (0: (.Idx m))
-// };
-// .lam .extern matrix_zero: Π [n: .Nat, S: «n; .Nat», m: .Nat] -> %matrix.Mat (n,S,(%Real m)) = {
-//     .tt,
-//     %matrix.constMat (n,S,(%Real m)) (0: (%Real m))
-// };
-/// ### zip
+/// ### High-level matrix operations
 ///
-/// zip A B = zipWith id A B
-// .lam .extern zip: 
-//     Π [n: .Nat, S: «n; .Nat», P: *, Q: *] -> 
-//     [(%matrix.Mat(n,S,P)), (%matrix.Mat(n,S,Q))] -> 
-//     %matrix.Mat(n,S,[P,Q]) = {
-//     .tt,
-//     .lam zipper: .Cn[mem: %mem.M, p: P, q: Q, ret: .Cn[%mem.M, [P,Q]]] = {
-//         .tt,
-//         ret (mem,(p,q))
-//     };
-//     .lam inner: 
-//         Π [A: (%matrix.Mat(n,S,P)), B: (%matrix.Mat(n,S,Q))] -> 
-//         %matrix.Mat(n,S,[P,Q]) = {
-//         .tt,
-//         %matrix.zipWith (n,S,P,Q,[P,Q]) (A,B,zipper)
-//     };
-//     inner
-// };
-
-
-/// ### fst, snd, split
-// .lam .extern matrix_fst: 
-//     Π [n: .Nat, S: «n; .Nat», P: *, Q: *] -> 
-//     [M: (%matrix.Mat (n,S,[P,Q]))] -> 
-//     %matrix.Mat (n,S,P) = {
-//     .tt,
-//     .lam fst : .Cn[mem: %mem.M, pq: [P,Q], ret: .Cn[%mem.M, P]] = {
-//         .let (p,q) = pq;
-//         ret (mem,p)
-//     };
-//     %matrix.map (n,S,[P,Q],P) (M,fst)
-// };
-// .lam .extern matrix_snd: 
-//     Π [n: .Nat, S: «n; .Nat», P: *, Q: *] -> 
-//     [M: (%matrix.Mat (n,S,[P,Q]))] -> 
-//     %matrix.Mat (n,S,Q) = {
-//     .tt,
-//     .lam snd : .Cn[mem: %mem.M, pq: [P,Q], ret: .Cn[%mem.M, Q]] = {
-//         .let (p,q) = pq;
-//         ret (mem,q)
-//     };
-//     %matrix.map (n,S,[P,Q],Q) (M,snd)
-// };
-// .lam .extern matrix_split: 
-//     Π [n: .Nat, S: «n; .Nat», P: *, Q: *] -> 
-//     [M: (%matrix.Mat (n,S,[P,Q]))] -> 
-//     [%matrix.Mat (n,S,P), %matrix.Mat (n,S,Q)] = {
-//     .tt,
-//     (
-//         matrix_fst (n,S,[P,Q]) (M),
-//         matrix_snd (n,S,[P,Q]) (M)
-//     )
-// };
-
-
-
-
-// TODO:
-// define alias:
-// * fst, snd, split
-// * zip = zipWith id
-// .ax %matrix.id: Π [k: .Nat, m: .Nat] -> %matrix.Mat (2,(k,k),(.Idx m));
-// .ax %matrix.transpose: Π [kl: «2: .Nat; .Nat», T: *] -> 
-//     .let (k,l) = kl;
-//     %matrix.Mat (2,(k,l),T) -> %matrix.Mat (2,(l,k),T), normalize_tranpose;
-// .ax %matrix.fold:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat (n,S,T), accu: P, f: .Cn [%mem.M, P, T, .Cn [%mem.M, P] ] ] -> P, normalize_fold;
-// .ax %matrix.zipWith:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%matrix.Mat(n,S,P), %matrix.Mat(n,S,Q), f: .Cn [%mem.M, P, Q, .Cn [%mem.M, R] ] ] -> %matrix.Mat(n,S,R), normalize_zip;
-// .ax %matrix.parallel_zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%matrix.Mat n S P, %matrix.Mat n S Q, f: .Cn [P, Q, .Cn [R] ] ] -> %matrix.Mat n S R, normalize_parallel_zip;
-// .ax %matrix.meta_zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%matrix.Mat n S P, %matrix.Mat n S Q, f: P -> Q -> R ] -> %matrix.Mat n S R, normalize_meta_zip;
-// .ax %matrix.map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat (n,S,T), f: .Cn [%mem.M, T, .Cn [%mem.M, P] ] ] -> %matrix.Mat (n,S,P), normalize_map;
-// .ax %matrix.parallel_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat n S T, f: .Cn [T, .Cn [P] ] ] -> %matrix.Mat n S P, normalize_parallel_map;
-// .ax %matrix.meta_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat n S T, f: T -> P ] -> %matrix.Mat n S P, normalize_meta_map;
+// TODO: define alias: * fst, snd, split * zip = zipWith id
 .ax %matrix.prod:  Π [m: .Nat, k: .Nat, l: .Nat, [p: .Nat, e:.Nat]] -> 
     [%mem.M,%matrix.Mat (2,(m, k),%math.F (p,e)), %matrix.Mat (2,(k, l),%math.F (p,e))] -> [%mem.M,%matrix.Mat (2,(m, l),%math.F (p,e))], normalize_prod;
 .ax %matrix.transpose: Π [[k:.Nat, l:.Nat], T: *] -> 
     [%mem.M,%matrix.Mat (2,(k,l),T)] -> [%mem.M,%matrix.Mat (2,(l,k),T)], normalize_transpose;
-
-// .ax %matrix.sum: Π [n: .Nat, S: «n; .Nat», T: *] -> [%mem.M,%matrix.Mat (n,S,T)] -> [%mem.M,T];
 .ax %matrix.sum: Π [n: .Nat, S: «n; .Nat», [p:.Nat,e:.Nat]] -> [%mem.M,%matrix.Mat (n,S,%math.F (p,e))] -> [%mem.M,%math.F (p,e)];
-
-
-// TODO: handle reduction case
-//  n=0, S=[] => not empty but scalar
-
-// inspired by einsum
-// reference:
-// * Tensorflow / XLA: einsum
-// * Pytorch: einsum
-// * NumPy: einsum
-// * Halide
-// * Haskell: Tensor DSL
-// * Ricci Calculus
-// * Einstein Notation
-// * Pytorch DSL
-// https://optimized-einsum.readthedocs.io/en/stable/
-
-// mapReduce application:
-// * einsum(idx, MatrixIndices) = mapReduce(0,+,product,MatrixIndices)
-// * map f M = mapReduce (0,+,f,[(idx,M)])  [TODO: get rid of reduce step if not needed with dummy values]
-// * reduce acc f M = mapReduce (n=0) (acc,f,id,[(idx,M)])  [TODO: see index problem above]
-// einsum application:
-// * tranpose ij->ji  (einsum(,[(1,0),M]))
-// * trace ii->
-// * sum ij ->
-// * col sum ij -> j 
-// * mat vec prod ik,k->i
-// * mat mat prod ik,kj -> ij
-// * dot product i,i ->
-// * dot matrix ij,ij ->
-// * outer product i,j -> ij
-
-// TODO: introduce dummies
-// dummy = has correct type but can not produce code (should always be eliminated)
+///
+// TODO: handle reduction case: n=0, S=[] => not empty but scalar
+/// Our notation is inspired by einsum (with some generalizations):
+/// * Tensorflow / XLA: einsum
+/// * Pytorch: einsum
+/// * NumPy: einsum
+/// * Halide
+/// * Haskell: Tensor DSL
+/// * Ricci Calculus
+/// * Einstein Notation
+/// * Pytorch DSL
+/// * https://optimized-einsum.readthedocs.io/en/stable/
+///
+/// The `mapReduce` operation can be seen as the minimal abstraction over general iteration/control flow schemes over tensors.
+///
+/// mapReduce applications:
+/// * `einsum(idx, MatrixIndices) = mapReduce(0,+,product,MatrixIndices)`
+/// * `map f M = mapReduce (0,+,f,[(idx,M)])` (TODO: get rid of reduce step if not needed with dummy values)
+/// * `reduce acc f M = mapReduce (n=0) (acc,f,id,[(idx,M)])` (TODO: see index problem above)
+/// einsum application:
+/// * `tranpose ij->ji  (einsum(,[(1,0),M]))`
+/// * `trace ii->`
+/// * `sum ij ->`
+/// * `col sum ij -> j `
+/// * `mat vec prod ik,k->i`
+/// * `mat mat prod ik,kj -> ij`
+/// * `dot product i,i ->`
+/// * `dot matrix ij,ij ->`
+/// * `outer product i,j -> ij`
+/// TODO: introduce dummy values (zero, add, ...) in refly and use these
+/// dummy = has correct type but can not produce code (should always be eliminated)
 .ax %matrix.mapReduce: 
     // out shape depends on in shape but is complex
     Π [n: .Nat, S: «n; .Nat», T: *, // out shape
@@ -302,17 +134,13 @@
     ] ->
     [%mem.M, %matrix.Mat (n,S,T)],
     normalize_mapReduce;
-
-
-
-
-
-
-// ///
-// /// ## Unfolding functions
-// /// 
-// /// ### product
-// /// 
+///
+///
+/// ## Unfolding functions
+/// 
+/// ### product
+/// 
+/// Follow the principle `ij <- ik,kj` (`out[i,j] = sum_k in1[i,k] * in2[k,j]`) by using mulplication as combination function and addition as reduction function.
 .lam .extern internal_mapRed_matrix_prod 
     ![m: .Nat, k: .Nat, l: .Nat, [p: .Nat, e:.Nat]] ->
     (.Cn[
@@ -362,11 +190,12 @@
     };
     inner_matrix_prod
 };
-// /// 
-// /// ### transpose
-// /// 
-// // TODO: check code for 1-matrix edge case
-// // TODO: would this automatically be handled by read(transpose) ?
+/// 
+/// ### transpose
+/// 
+/// Transpose a matrix by iterating the indices in swapped order.
+// TODO: check code for 1-matrix edge case
+// TODO: would this automatically be handled by read(transpose) ?
 .lam .extern internal_mapRed_matrix_transpose
     ![[k: .Nat, l: .Nat], T:*] ->
     (.Cn[
@@ -375,8 +204,7 @@
     ]) 
     = {
     .con transpose_comb [[mem:%mem.M, acc:T, [a:T]], ret:.Cn[%mem.M,T]] = {
-        // TODO: or use generalized addition function
-        // ignore acc
+        // We ignore the (zero) accumulator and just return the read value.
         .let new_acc = a;
         ret (mem, new_acc)
     };
@@ -411,10 +239,11 @@
     };
     inner_matrix_transpose
 };
-// /// 
-// /// ### sum
-// /// 
-// // TODO: test 0d matrix (edge cases in code)
+/// 
+/// ### sum
+/// 
+/// Sums up all elements of a matrix and returns a scalar.
+//  TODO: test 0d matrix (edge cases in code)
 .lam .extern internal_mapRed_matrix_sum
     ![n: .Nat, S: «n; .Nat», [p:.Nat,e:.Nat]] ->
     (.Cn[
@@ -440,7 +269,6 @@
         .let zero_64 = 0.0:(%math.F (52,11));
         .let zero_real = %math.conv.f2f (p,e) zero_64;
         // should be normalized to lit tuple
-        // TODO: test normalization
         .let idxs =
             <i:n;
             %core.nop.add (1,
@@ -463,6 +291,7 @@
                     )
                 );
         ret (mem2,
+            // TODO: test this cast
             %core.bitcast (
                 R,
                 %matrix.Mat (1,1,R)
@@ -479,7 +308,6 @@
 /// 
 /// ### Passes
 /// 
-// .ax %matrix.lower_matrix_high_level_external: %compile.Pass;
 .ax %matrix.lower_matrix_high_level_map_reduce: %compile.Pass;
 .ax %matrix.lower_matrix_medium_level: %compile.Pass;
 .ax %matrix.lower_matrix_low_level: %compile.Phase;
@@ -497,6 +325,5 @@
         // TODO: only in map_red namespace
         %compile.single_pass_phase %matrix.internal_map_reduce_cleanup,
         %matrix.lower_matrix_low_level
-        //   %compile.internal_cleanup_pass
     )
 };
