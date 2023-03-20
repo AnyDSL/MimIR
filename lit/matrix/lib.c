@@ -2,7 +2,10 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef linux
+// TODO: use platform independent time functions
 #include <sys/time.h>
+#endif
 
 // #define printf(...) do {} while (0)
 
@@ -41,6 +44,7 @@ void print_double_matrix(int n, int m, double* v) {
     for (int i = 0; i < n; i++) { print_double_vector(m, v + i * m); }
 }
 
+#ifdef linux
 void* time() {
     struct timeval* tv = (struct timeval*)malloc(sizeof(*tv));
     gettimeofday(tv, NULL);
@@ -54,3 +58,8 @@ static float tdiff(struct timeval* start, struct timeval* end) {
 void print_time_diff(void* tv1, void* tv2) {
     printf("real\t%0.6f \n", tdiff((struct timeval*)tv1, (struct timeval*)tv2));
 }
+#else
+void* time() { return NULL; }
+void print_time_diff(void* tv1, void* tv2) {}
+static float tdiff(struct timeval* start, struct timeval* end) { return 0; }
+#endif
