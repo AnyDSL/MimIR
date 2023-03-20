@@ -127,10 +127,10 @@ auto lookup(const C& container, const K& key) {
     }
 }
 
-/// Invokes `emplace` on @p map, asserts that insertion actually happened, and returns the iterator.
-template<class M, class... Args >
-auto assert_emplace(M& map, Args&&... args) {
-    auto [i, ins] = map.emplace(std::forward<Args&&>(args)...);
+/// Invokes `emplace` on @p container, asserts that insertion actually happened, and returns the iterator.
+template<class C, class... Args >
+auto assert_emplace(C& container, Args&&... args) {
+    auto [i, ins] = container.emplace(std::forward<Args&&>(args)...);
     assert_unused(ins);
     return i;
 }

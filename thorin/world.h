@@ -154,8 +154,7 @@ public:
     void make_external(Def* def) {
         assert(!def->external_);
         def->external_ = true;
-        auto [i, ins]  = move_.externals.emplace(def->sym(), def);
-        assert(ins);
+        assert_emplace(move_.externals, def->sym(), def);
     }
     void make_internal(Def* def) {
         assert(def->external_);
@@ -163,10 +162,7 @@ public:
         auto num       = move_.externals.erase(def->sym());
         assert(num == 1);
     }
-    Def* lookup(Sym name) {
-        auto i = move_.externals.find(name);
-        return i != move_.externals.end() ? i->second : nullptr;
-    }
+    Def* lookup(Sym name) { return thorin::lookup(move_.externals, name); }
     ///@}
 
     /// @name Univ, Type, Var, Proxy, Infer
@@ -497,8 +493,7 @@ private:
         if (flags().trace_gids) outln("{}: {} - {}", def->node_name(), def->gid(), def->flags());
         if (breakpoints().contains(def->gid())) thorin::breakpoint();
 #endif
-        auto [_, ins] = move_.defs.emplace(def);
-        assert_unused(ins);
+        assert_emplace(move_.defs, def);
         return def;
     }
     ///@}
