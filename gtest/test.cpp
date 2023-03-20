@@ -12,14 +12,13 @@
 
 using namespace thorin;
 
-#if 0
-
 TEST(Zip, fold) {
     Driver driver;
     World& w = driver.world();
+    auto parser = fe::Parser(w);
 
     driver.load("core");
-    fe::Parser::import_module(w, w.sym("core"));
+    parser.import("core");
 
     auto zip = w.ax<core::zip>();
     // clang-format off
@@ -99,9 +98,10 @@ TEST(Axiom, split) {
 TEST(trait, idx) {
     Driver driver;
     World& w = driver.world();
+    auto parser = fe::Parser(w);
 
     driver.load("core");
-    fe::Parser::import_module(w, w.sym("core"));
+    parser.import("core");
 
     EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0000'00FF_n))), 1);
     EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0000'0100_n))), 1);
@@ -203,4 +203,3 @@ TEST(Type, Level) {
     auto pi  = w.pi(w.type<7>(), w.type<2>());
     EXPECT_EQ(as_lit(pi->type()->isa<Type>()->level()), 8);
 }
-#endif

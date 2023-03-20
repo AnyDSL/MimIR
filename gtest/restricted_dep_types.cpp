@@ -25,17 +25,17 @@
 
 using namespace thorin;
 
-#if 0
 // TODO can we port this to lit testing?
 
 TEST(RestrictedDependentTypes, join_singleton) {
     auto test_on_world = [](auto test) {
         Driver driver;
         World& w = driver.world();
+        auto parser = fe::Parser(w);
 
         auto dialects = {"compile", "mem", "core", "math"};
         for (auto dialect : dialects) driver.load(dialect);
-        for (auto dialect : dialects) fe::Parser::import_module(w, w.sym(dialect));
+        for (auto dialect : dialects) parser.import(dialect);
 
         auto i32_t = w.type_int(32);
         auto i64_t = w.type_int(64);
@@ -224,10 +224,11 @@ TEST(RestrictedDependentTypes, join_singleton) {
 TEST(RestrictedDependentTypes, ll) {
     Driver driver;
     World& w = driver.world();
+    auto parser = fe::Parser(w);
 
     auto dialects = {"compile", "mem", "core", "math"};
     for (auto dialect : dialects) driver.load(dialect);
-    for (auto dialect : dialects) fe::Parser::import_module(w, w.sym(dialect));
+    for (auto dialect : dialects) parser.import(dialect);
 
     auto mem_t  = mem::type_mem(w);
     auto i32_t  = w.type_int(32);
@@ -270,4 +271,3 @@ TEST(RestrictedDependentTypes, ll) {
     optimize(w);
     driver.backend("ll")(w, std::cout);
 }
-#endif
