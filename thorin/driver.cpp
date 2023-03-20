@@ -1,4 +1,5 @@
 #include "thorin/driver.h"
+#include <filesystem>
 
 #include "thorin/util/dl.h"
 #include "thorin/util/sys.h"
@@ -14,8 +15,6 @@ static std::vector<fs::path> get_plugin_name_variants(std::string_view name) {
 
 Driver::Driver()
     : world_(this) {
-    add_search_path(fs::path("."));
-
     // paths from env
     if (auto env_path = std::getenv("THORIN_DIALECT_PATH")) {
         std::stringstream env_path_stream{env_path};
@@ -32,9 +31,8 @@ Driver::Driver()
             add_search_path(std::move(install_path));
     }
 
-    // all other user paths are placed just behind the current working directory
+    // all other user paths take precedence over the fallbacks above
     insert_ = search_paths_.begin();
-    ++insert_;
 }
 
 void Driver::load(Sym name) {
@@ -70,6 +68,15 @@ void Driver::load(Sym name) {
     plugin.register_passes(passes_);
     plugin.register_backends(backends_);
     plugin.register_normalizers(normalizers_);
+}
+
+const fs::path* Driver::add_import(fs::path path, Sym sym) {
+    for (auto& [p, _] : imports_) {
+        if (fs::equivalent(path, p)) return nullptr;
+    }
+
+    imports_.emplace_back(std::pair(std::move(path), sym));
+    return &imports_.back().first;
 }
 
 } // namespace thorin

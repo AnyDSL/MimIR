@@ -46,11 +46,10 @@ public:
     }
 
     /// Search paths for dialect plugins are in the following order:
-    /// 1. Current working directory.
-    /// 2. All further user-specified paths via Driver::add_search_path; paths added first will also be searched first.
-    /// 3. All paths specified in the environment variable `THORIN_DIALECT_PATH`.
-    /// 4. `path/to/thorin.exe/../../lib/thorin`
-    /// 5. `CMAKE_INSTALL_PREFIX/lib/thorin`
+    /// 1. All further user-specified paths via Driver::add_search_path; paths added first will also be searched first.
+    /// 2. All paths specified in the environment variable `THORIN_DIALECT_PATH`.
+    /// 3. `path/to/thorin.exe/../../lib/thorin`
+    /// 4. `CMAKE_INSTALL_PREFIX/lib/thorin`
     const auto& search_paths() const { return search_paths_; }
 
     /// Finds and loads a shared object file that implements the Thorin dialect @p name.
@@ -71,15 +70,10 @@ public:
     auto backend(std::string_view name) { return lookup(backends_, name); }
     ///@}
 
-    const fs::path* add_import(fs::path rel_path, Sym sym) {
-        auto abs_path = fs::absolute(rel_path);
-        auto pair     = std::pair(std::move(rel_path), sym);
-        auto [i, ins] = imports.emplace(std::move(abs_path), std::move(pair));
-        return ins ? &i->second.first : nullptr;
-    }
+    const fs::path* add_import(fs::path rel_path, Sym sym);
+    const auto& imports() const { return imports_; }
 
     /// Maps from absolute path to relative path and the actual usage in the source.
-    absl::node_hash_map<fs::path, std::pair<fs::path, Sym>> imports;
     SymMap<SymMap<AxiomInfo>> plugin2axioms;
 
 private:
@@ -92,6 +86,7 @@ private:
     Backends backends_;
     Passes passes_;
     Normalizers normalizers_;
+    std::deque<std::pair<fs::path, Sym>> imports_;
 };
 
 } // namespace thorin
