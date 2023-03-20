@@ -7,6 +7,7 @@
 #include "thorin/world.h"
 
 #include "thorin/util/log.h"
+
 #include "absl/container/node_hash_map.h"
 
 namespace thorin {

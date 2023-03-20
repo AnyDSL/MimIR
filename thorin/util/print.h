@@ -23,7 +23,13 @@ struct Elem {
 };
 
 namespace detail {
-template<typename T>
+
+template<class T>
+concept Printable = requires(std::ostream& os, T a) {
+    os << a;
+};
+
+template<class T>
 concept Elemable = requires(T elem) {
     elem.range;
     elem.f;
@@ -102,13 +108,15 @@ std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
                     std::invoke(t);
                 } else if constexpr (std::is_invocable_v<decltype(t), std::ostream&>) {
                     std::invoke(t, os);
+                } else if constexpr (detail::Printable<decltype(t)>) {
+                    os << t;
                 } else if constexpr (detail::Elemable<decltype(t)>) {
                     detail::range(os, t.range, t.f, spec.c_str());
                 } else if constexpr (std::ranges::range<decltype(t)>) {
                     detail::range(
                         os, t, [&](const auto& x) { os << x; }, spec.c_str());
                 } else {
-                    os << t;
+                    []<bool flag = false>() { static_assert(flag, "cannot print T t"); }();
                 }
 
                 ++s; // skip closing brace '}'
