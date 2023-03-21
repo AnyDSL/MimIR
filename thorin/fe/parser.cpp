@@ -78,9 +78,7 @@ void Parser::import(fs::path name, std::ostream* md) {
     auto filename = name.replace_extension("thorin"); // TODO error cases
 
     fs::path rel_path;
-    auto paths = world().driver().search_paths();
-    paths.emplace_front(fs::path{}); // prepend empty path
-    for (const auto& path : paths) {
+    for (const auto& path : driver().search_paths()) {
         rel_path = path / filename;
         std::error_code ignore;
         if (bool reg_file = fs::is_regular_file(rel_path, ignore); reg_file && !ignore) break;

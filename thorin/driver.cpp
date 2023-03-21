@@ -14,6 +14,9 @@ static std::vector<fs::path> get_plugin_name_variants(std::string_view name) {
 
 Driver::Driver()
     : world_(this) {
+    // prepend empty path
+    search_paths_.emplace_front(fs::path{});
+
     // paths from env
     if (auto env_path = std::getenv("THORIN_DIALECT_PATH")) {
         std::stringstream env_path_stream{env_path};
@@ -31,7 +34,7 @@ Driver::Driver()
     }
 
     // all other user paths take precedence over the fallbacks above
-    insert_ = search_paths_.begin();
+    insert_ = ++search_paths_.begin();
 }
 
 void Driver::load(Sym name) {

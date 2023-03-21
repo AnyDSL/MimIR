@@ -83,7 +83,8 @@ int main(int argc, char** argv) {
         for (auto&& path : dialect_paths) driver.add_search_path(path);
 
         if (list_dialect_paths) {
-            for (auto&& path : driver.search_paths()) std::cout << path << std::endl;
+            for (auto&& path : driver.search_paths() | std::views::drop(1)) // skip first empty path
+                std::cout << path << std::endl;
             std::exit(EXIT_SUCCESS);
         }
 
@@ -120,7 +121,6 @@ int main(int argc, char** argv) {
         auto path = fs::path(input);
         world.set(path.filename().replace_extension().string());
         auto parser = fe::Parser(world);
-        parser.import("compile");
         parser.import(input, os[Md]);
 
         if (auto h = os[H]) {
