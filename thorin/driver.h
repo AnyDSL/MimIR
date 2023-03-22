@@ -60,7 +60,7 @@ public:
     /// 2. The name as Sym%bol used in the `.import` directive or in Parser::import.
     const auto& imports() { return imports_; }
     /// Yields a `fs::path*` if not already added that you can use in Loc%ation; returns `nullptr` otherwise.
-    const fs::path* add_import(fs::path rel_path, Sym sym);
+    const fs::path* add_import(fs::path, Sym);
     ///@}
 
     /// @name load plugin

@@ -38,11 +38,13 @@ Driver::Driver()
     insert_ = ++search_paths_.begin();
 }
 
-const fs::path* Driver::add_import(fs::path rel_path, Sym sym) {
-    auto abs_path = fs::absolute(rel_path);
-    auto pair     = std::pair(std::move(rel_path), sym);
-    auto [i, ins] = imports_.emplace(std::move(abs_path), std::move(pair));
-    return ins ? &i->second.first : nullptr;
+const fs::path* Driver::add_import(fs::path path, Sym sym) {
+    for (const auto& [p, _] : imports_) {
+        if (fs::equivalent(p, path)) return nullptr;
+    }
+
+    imports_.emplace_back(std::pair(std::move(path), sym));
+    return &imports_.back().first;
 }
 
 void Driver::load(Sym name) {
