@@ -41,9 +41,7 @@ Ref rewrite(Ref def, Ref old_def, Ref new_def, const Scope& scope) {
     return rewriter.rewrite(def);
 }
 
-Ref rewrite(Def* nom, Ref arg, size_t i, const Scope& scope) {
-    return rewrite(nom->op(i), nom->var(), arg, scope);
-}
+Ref rewrite(Def* nom, Ref arg, size_t i, const Scope& scope) { return rewrite(nom->op(i), nom->var(), arg, scope); }
 
 Ref rewrite(Def* nom, Ref arg, size_t i) {
     Scope scope(nom);

@@ -150,7 +150,7 @@ Ref World::app(Ref callee, Ref arg) {
     if (callee->has_dep(Dep::Infer) || arg->has_dep(Dep::Infer)) {
         InferRewriter rw(*this);
         callee = rw.rewrite(callee);
-        arg = rw.rewrite(arg);
+        arg    = rw.rewrite(arg);
     }
 
     auto pi = callee->type()->isa<Pi>();
