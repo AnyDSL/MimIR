@@ -112,7 +112,7 @@ void Parser::import(std::istream& is, const fs::path* path, std::ostream* md) {
 }
 
 void Parser::plugin(fs::path name) {
-    driver().load(name);
+    driver().load(name.string());
     import(name);
 }
 
