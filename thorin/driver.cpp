@@ -38,7 +38,7 @@ Driver::Driver()
     insert_ = ++search_paths_.begin();
 }
 
-const Driver::fs::path* add_import(fs::path rel_path, Sym sym) {
+const fs::path* Driver::add_import(fs::path rel_path, Sym sym) {
     auto abs_path = fs::absolute(rel_path);
     auto pair     = std::pair(std::move(rel_path), sym);
     auto [i, ins] = imports_.emplace(std::move(abs_path), std::move(pair));
