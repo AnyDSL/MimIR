@@ -7,7 +7,6 @@
 #include <gtest/gtest.h>
 
 #include "thorin/def.h"
-#include "thorin/dialects.h"
 #include "thorin/driver.h"
 
 #include "thorin/fe/parser.h"

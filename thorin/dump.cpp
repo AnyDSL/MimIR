@@ -382,7 +382,7 @@ void World::dump(std::ostream& os) {
         auto dep    = DepTree(*this);
         auto dumper = Dumper(os, &dep);
 
-        for (auto [_, sym] : driver().imports()) print(os, ".import {};\n", sym);
+        for (auto [_, name] : driver().imports()) print(os, ".import {};\n", name);
         dumper.recurse(dep.root());
     }
 

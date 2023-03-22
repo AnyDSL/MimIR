@@ -47,7 +47,6 @@ public:
             mutable bool frozen = false;
         } pod;
 
-        absl::btree_set<Sym> imported_dialects;
 #if THORIN_ENABLE_CHECKS
         absl::flat_hash_set<uint32_t> breakpoints;
 #endif
@@ -202,31 +201,31 @@ public:
 
     /// @name Axiom
     ///@{
-    const Axiom* axiom(NormalizeFn n, u8 curry, u8 trip, Ref type, dialect_t d, tag_t t, sub_t s) {
-        auto ax                          = unify<Axiom>(0, n, curry, trip, type, d, t, s);
+    const Axiom* axiom(NormalizeFn n, u8 curry, u8 trip, Ref type, plugin_t p, tag_t t, sub_t s) {
+        auto ax                          = unify<Axiom>(0, n, curry, trip, type, p, t, s);
         return move_.axioms[ax->flags()] = ax;
     }
-    const Axiom* axiom(Ref type, dialect_t d, tag_t t, sub_t s) { return axiom(nullptr, 0, 0, type, d, t, s); }
+    const Axiom* axiom(Ref type, plugin_t p, tag_t t, sub_t s) { return axiom(nullptr, 0, 0, type, p, t, s); }
 
     /// Builds a fresh Axiom with descending Axiom::sub.
     /// This is useful during testing to come up with some entitiy of a specific type.
-    /// It uses the dialect Axiom::Global_Dialect and starts with `0` for Axiom::sub and counts up from there.
+    /// It uses the plugin Axiom::Global_Plugin and starts with `0` for Axiom::sub and counts up from there.
     /// The Axiom::tag is set to `0` and the Axiom::normalizer to `nullptr`.
     const Axiom* axiom(NormalizeFn n, u8 curry, u8 trip, Ref type) {
-        return axiom(n, curry, trip, type, Axiom::Global_Dialect, 0, state_.pod.curr_sub++);
+        return axiom(n, curry, trip, type, Axiom::Global_Plugin, 0, state_.pod.curr_sub++);
     }
     const Axiom* axiom(Ref type) { return axiom(nullptr, 0, 0, type); } ///< See above.
 
-    /// Get Axiom from a dialect.
+    /// Get Axiom from a plugin.
     /// Use this to get an Axiom via Axiom::id.
     template<class Id>
     const Axiom* ax(Id id) {
         u64 flags = static_cast<u64>(id);
         if (auto i = move_.axioms.find(flags); i != move_.axioms.end()) return i->second;
-        err("Axiom with ID '{}' not found; demangled dialect name is '{}'", flags, Axiom::demangle(*this, flags));
+        err("Axiom with ID '{}' not found; demangled plugin name is '{}'", flags, Axiom::demangle(*this, flags));
     }
 
-    /// Get Axiom from a dialect.
+    /// Get Axiom from a plugin.
     /// Can be used to get an Axiom without sub-tags.
     /// E.g. use `w.ax<mem::M>();` to get the `%mem.M` Axiom.
     template<axiom_without_subs id>

@@ -6,7 +6,6 @@
 #include <lyra/lyra.hpp>
 
 #include "thorin/config.h"
-#include "thorin/dialects.h"
 #include "thorin/driver.h"
 
 #include "thorin/be/dot/dot.h"

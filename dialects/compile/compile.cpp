@@ -1,7 +1,6 @@
 #include "dialects/compile/compile.h"
 
 #include <thorin/config.h>
-#include <thorin/dialects.h>
 #include <thorin/pass/pass.h>
 
 #include "thorin/pass/fp/beta_red.h"
@@ -35,7 +34,7 @@ void add_passes(World& world, PipelineBuilder& builder, Passes& passes, DefVec& 
     builder.end_pass_phase();
 }
 
-extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
+extern "C" THORIN_EXPORT thorin::Plugin thorin_get_plugin() {
     return {"compile",
             [](Passes& passes) {
                 auto debug_phase_flag    = flags_t(Axiom::Base<thorin::compile::debug_phase>);

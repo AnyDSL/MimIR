@@ -1,6 +1,6 @@
 #pragma once
 
-#include "thorin/dialects.h"
+#include "thorin/plugin.h"
 #include "thorin/world.h"
 
 #include "thorin/pass/optimize.h"

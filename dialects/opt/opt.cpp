@@ -10,7 +10,7 @@
 
 using namespace thorin;
 
-extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
+extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
     return {"opt",
             [](Passes& passes) {
                 passes[flags_t(Axiom::Base<compile::dialect_select>)] = [&](World& world, PipelineBuilder& builder,

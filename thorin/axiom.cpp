@@ -6,8 +6,8 @@ using namespace std::literals;
 
 namespace thorin {
 
-Axiom::Axiom(NormalizeFn normalizer, u8 curry, u8 trip, const Def* type, dialect_t dialect, tag_t tag, sub_t sub)
-    : Def(Node, type, Defs{}, dialect | (flags_t(tag) << 8_u64) | flags_t(sub)) {
+Axiom::Axiom(NormalizeFn normalizer, u8 curry, u8 trip, const Def* type, plugin_t plugin, tag_t tag, sub_t sub)
+    : Def(Node, type, Defs{}, plugin | (flags_t(tag) << 8_u64) | flags_t(sub)) {
     normalizer_ = normalizer;
     curry_      = curry;
     trip_       = trip;
@@ -43,12 +43,12 @@ std::tuple<const Axiom*, u8, u8> Axiom::get(const Def* def) {
     return {nullptr, 0, 0};
 }
 
-std::optional<dialect_t> Axiom::mangle(Sym s) {
+std::optional<plugin_t> Axiom::mangle(Sym s) {
     auto n = s->size();
-    if (n > Max_Dialect_Size) return {};
+    if (n > Max_Plugin_Size) return {};
 
     u64 result = 0;
-    for (size_t i = 0; i != Max_Dialect_Size; ++i) {
+    for (size_t i = 0; i != Max_Plugin_Size; ++i) {
         u64 u = '\0';
 
         if (i < n) {
@@ -72,9 +72,9 @@ std::optional<dialect_t> Axiom::mangle(Sym s) {
     return result << 16_u64;
 }
 
-Sym Axiom::demangle(World& world, dialect_t u) {
+Sym Axiom::demangle(World& world, plugin_t u) {
     std::string result;
-    for (size_t i = 0; i != Max_Dialect_Size; ++i) {
+    for (size_t i = 0; i != Max_Plugin_Size; ++i) {
         u64 c = (u & 0xfc00000000000000_u64) >> 58_u64;
         if (c == 0) {
             return world.sym(result);
@@ -102,17 +102,17 @@ std::array<Sym, 3> Axiom::split(World& world, Sym s) {
     auto dot = sv.find('.');
     if (dot == std::string_view::npos) return {};
 
-    auto dialect = world.sym(subview(sv, 0, dot));
-    if (!mangle(dialect)) return {};
+    auto plugin = world.sym(subview(sv, 0, dot));
+    if (!mangle(plugin)) return {};
 
     auto tag = subview(sv, dot + 1);
     if (auto dot = tag.find('.'); dot != std::string_view::npos) {
         auto sub = world.sym(subview(tag, dot + 1));
         tag      = subview(tag, 0, dot);
-        return {dialect, world.sym(tag), sub};
+        return {plugin, world.sym(tag), sub};
     }
 
-    return {dialect, world.sym(tag), {}};
+    return {plugin, world.sym(tag), {}};
 }
 
 } // namespace thorin

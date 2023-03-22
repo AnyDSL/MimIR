@@ -8,24 +8,24 @@
 
 namespace thorin {
 
-void bootstrap(Driver& driver, Sym dialect, std::ostream& h) {
+void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
     Tab tab;
     tab.print(h, "#pragma once\n\n");
     tab.print(h, "#include \"thorin/axiom.h\"\n"
-                 "#include \"thorin/dialects.h\"\n\n");
+                 "#include \"thorin/plugin.h\"\n\n");
 
-    tab.print(h, "namespace thorin {{\nnamespace {} {{\n\n", dialect);
+    tab.print(h, "namespace thorin {{\nnamespace {} {{\n\n", plugin);
 
-    dialect_t dialect_id = *Axiom::mangle(dialect);
+    plugin_t plugin_id = *Axiom::mangle(plugin);
     std::vector<std::ostringstream> normalizers, outer_namespace;
 
-    tab.print(h << std::hex, "static constexpr dialect_t Dialect_Id = 0x{};\n\n", dialect_id);
+    tab.print(h << std::hex, "static constexpr plugin_t Plugin_Id = 0x{};\n\n", plugin_id);
 
-    auto& axioms = driver.plugin2axioms[dialect];
+    auto& axioms = driver.plugin2axioms[plugin];
 
     // clang-format off
     for (const auto& [key, ax] : axioms) {
-        if (ax.dialect != dialect) continue; // this is from an import
+        if (ax.plugin != plugin) continue; // this is from an import
 
         tab.print(h, "#ifdef DOXYGEN // see https://github.com/doxygen/doxygen/issues/9668\n");
         tab.print(h, "enum {} : flags_t {{\n", ax.tag);
@@ -33,10 +33,10 @@ void bootstrap(Driver& driver, Sym dialect, std::ostream& h) {
         tab.print(h, "enum class {} : flags_t {{\n", ax.tag);
         tab.print(h, "#endif\n");
         ++tab;
-        flags_t ax_id = dialect_id | (ax.tag_id << 8u);
+        flags_t ax_id = plugin_id | (ax.tag_id << 8u);
 
         auto& os = outer_namespace.emplace_back();
-        print(os << std::hex, "template<> constexpr flags_t Axiom::Base<{}::{}> = 0x{};\n", dialect, ax.tag, ax_id);
+        print(os << std::hex, "template<> constexpr flags_t Axiom::Base<{}::{}> = 0x{};\n", plugin, ax.tag, ax_id);
 
         if (auto& subs = ax.subs; !subs.empty()) {
             for (const auto& aliases : subs) {
@@ -63,7 +63,7 @@ void bootstrap(Driver& driver, Sym dialect, std::ostream& h) {
             tab.print(h, "inline flags_t operator|({} lhs, {} rhs) {{ return static_cast<flags_t>(lhs) | static_cast<flags_t>(rhs); }}\n\n", ax.tag, ax.tag);
         }
 
-        print(outer_namespace.emplace_back(), "template<> constexpr size_t Axiom::Num<{}::{}> = {};\n", dialect, ax.tag, ax.subs.size());
+        print(outer_namespace.emplace_back(), "template<> constexpr size_t Axiom::Num<{}::{}> = {};\n", plugin, ax.tag, ax.subs.size());
 
         if (ax.normalizer) {
             if (auto& subs = ax.subs; !subs.empty()) {
@@ -77,7 +77,7 @@ void bootstrap(Driver& driver, Sym dialect, std::ostream& h) {
 
     if (!normalizers.empty()) {
         tab.print(h, "void register_normalizers(Normalizers& normalizers);\n\n");
-        tab.print(h, "#define THORIN_{}_NORMALIZER_IMPL \\\n", dialect);
+        tab.print(h, "#define THORIN_{}_NORMALIZER_IMPL \\\n", plugin);
         ++tab;
         tab.print(h, "void register_normalizers(Normalizers& normalizers) {{\\\n");
         ++tab;
@@ -87,15 +87,15 @@ void bootstrap(Driver& driver, Sym dialect, std::ostream& h) {
         --tab;
     }
 
-    tab.print(h, "}} // namespace {}\n\n", dialect);
+    tab.print(h, "}} // namespace {}\n\n", plugin);
 
     for (const auto& line : outer_namespace) tab.print(h, "{}", line.str());
     tab.print(h, "\n");
 
     // emit helpers for non-function axiom
     for (const auto& [tag, ax] : axioms) {
-        if (ax.pi || ax.dialect != dialect) continue; // from function or other dialect?
-        tab.print(h, "template<> struct Axiom::Match<{}::{}> {{ using type = Axiom; }};\n", ax.dialect, ax.tag);
+        if (ax.pi || ax.plugin != plugin) continue; // from function or other plugin?
+        tab.print(h, "template<> struct Axiom::Match<{}::{}> {{ using type = Axiom; }};\n", ax.plugin, ax.tag);
     }
 
     tab.print(h, "}} // namespace thorin\n");

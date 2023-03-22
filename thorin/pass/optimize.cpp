@@ -49,8 +49,8 @@ void optimize(World& world) {
     world.DLOG("compilation using {} : {}", compilation, compilation->type());
 
     // We can not directly access compile axioms here.
-    // But the compile dialect has not the necessary communication pipeline.
-    // Therefore, we register the handlers and let the compile dialect call them.
+    // But the compile plugin has not the necessary communication pipeline.
+    // Therefore, we register the handlers and let the compile plugin call them.
 
     PipelineBuilder pipe_builder(world);
     auto pipeline     = compilation->as<Lam>()->body();

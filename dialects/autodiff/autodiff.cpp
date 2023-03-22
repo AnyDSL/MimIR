@@ -12,7 +12,7 @@
 
 using namespace thorin;
 
-extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
+extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
     return {"autodiff",
             [](Passes& passes) {
                 register_pass<autodiff::ad_eval_pass, autodiff::AutoDiffEval>(passes);

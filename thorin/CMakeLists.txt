@@ -5,8 +5,7 @@ add_library(libthorin
     check.h
     def.cpp
     def.h
-    dialects.cpp
-    dialects.h
+    plugin.h
     dump.cpp
     driver.cpp
     driver.h

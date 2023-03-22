@@ -1,7 +1,7 @@
 #include "thorin/pass/pipelinebuilder.h"
 
 #include "thorin/def.h"
-#include "thorin/dialects.h"
+#include "thorin/plugin.h"
 #include "thorin/lattice.h"
 
 #include "thorin/pass/fp/beta_red.h"

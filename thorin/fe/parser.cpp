@@ -7,7 +7,6 @@
 
 #include "thorin/check.h"
 #include "thorin/def.h"
-#include "thorin/dialects.h"
 #include "thorin/driver.h"
 #include "thorin/rewrite.h"
 
@@ -564,23 +563,23 @@ void Parser::parse_ax() {
     auto track = tracker();
     eat(Tok::Tag::K_ax);
     auto ax                  = expect(Tok::Tag::M_ax, "name of an axiom");
-    auto [dialect, tag, sub] = Axiom::split(world(), ax.sym());
+    auto [plugin, tag, sub] = Axiom::split(world(), ax.sym());
 
-    if (!dialect) err(ax.loc(), "invalid axiom name '{}'", ax);
+    if (!plugin) err(ax.loc(), "invalid axiom name '{}'", ax);
     if (sub) err(ax.loc(), "definition of axiom '{}' must not have sub in tag name", ax);
 
-    auto& axioms      = driver().plugin2axioms[dialect];
-    auto [it, is_new] = axioms.emplace(ax.sym(), AxiomInfo{dialect, tag, axioms.size()});
+    auto& axioms      = driver().plugin2axioms[plugin];
+    auto [it, is_new] = axioms.emplace(ax.sym(), AxiomInfo{plugin, tag, axioms.size()});
     auto& [_, info]   = *it;
 
-    // if (dialect != bootstrapper_.dialect()) {
+    // if (plugin != bootstrapper_.plugin()) {
     //  TODO
-    //  err(ax.loc(), "axiom name `{}` implies a dialect name of `{}` but input file is named `{}`", ax,
-    //  info.dialect, lexer_.file());
+    //  err(ax.loc(), "axiom name `{}` implies a plugin name of `{}` but input file is named `{}`", ax,
+    //  info.plugin, lexer_.file());
     //}
 
     if (axioms.size() >= std::numeric_limits<tag_t>::max())
-        err(ax.loc(), "exceeded maxinum number of axioms in current dialect");
+        err(ax.loc(), "exceeded maxinum number of axioms in current plugin");
 
     std::deque<std::deque<Sym>> new_subs;
     if (ahead().isa(Tok::Tag::D_paren_l)) {
@@ -620,18 +619,18 @@ void Parser::parse_ax() {
 
     if (accept(Tok::Tag::T_comma)) trip = expect(Tok::Tag::L_u, "trip count for axiom").u();
 
-    dialect_t d = *Axiom::mangle(dialect);
+    plugin_t p = *Axiom::mangle(plugin);
     tag_t t     = info.tag_id;
     sub_t s     = info.subs.size();
     if (new_subs.empty()) {
-        auto norm  = driver().normalizer(d, t, 0);
-        auto axiom = world().axiom(norm, curry, trip, type, d, t, 0)->set(ax.loc(), ax.sym());
+        auto norm  = driver().normalizer(p, t, 0);
+        auto axiom = world().axiom(norm, curry, trip, type, p, t, 0)->set(ax.loc(), ax.sym());
         scopes_.bind(ax.dbg(), axiom);
     } else {
         for (const auto& sub : new_subs) {
             auto name  = world().sym(*ax.sym() + "."s + *sub.front());
-            auto norm  = driver().normalizer(d, t, s);
-            auto axiom = world().axiom(norm, curry, trip, type, d, t, s)->set(track.loc(), name);
+            auto norm  = driver().normalizer(p, t, s);
+            auto axiom = world().axiom(norm, curry, trip, type, p, t, s)->set(track.loc(), name);
             for (auto& alias : sub) {
                 auto sym = world().sym(*ax.sym() + "."s + *alias);
                 scopes_.bind({prev(), sym}, axiom);
