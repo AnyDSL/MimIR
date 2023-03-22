@@ -66,14 +66,13 @@ void Parser::syntax_err(std::string_view what, const Tok& tok, std::string_view 
  */
 
 void Parser::parse_module() {
-    while (true) {
+    while (true)
         if (ahead().tag() == Tok::Tag::K_import)
             parse_import();
         else if (ahead().tag() == Tok::Tag::K_plugin)
             parse_plugin();
         else
             break;
-    }
 
     parse_decls({});
     expect(Tok::Tag::M_eof, "module");
@@ -585,7 +584,7 @@ Ref Parser::parse_decls(std::string_view ctxt) {
 void Parser::parse_ax() {
     auto track = tracker();
     eat(Tok::Tag::K_ax);
-    auto ax                  = expect(Tok::Tag::M_ax, "name of an axiom");
+    auto ax                 = expect(Tok::Tag::M_ax, "name of an axiom");
     auto [plugin, tag, sub] = Axiom::split(world(), ax.sym());
 
     if (!plugin) err(ax.loc(), "invalid axiom name '{}'", ax);
@@ -643,8 +642,8 @@ void Parser::parse_ax() {
     if (accept(Tok::Tag::T_comma)) trip = expect(Tok::Tag::L_u, "trip count for axiom").u();
 
     plugin_t p = *Axiom::mangle(plugin);
-    tag_t t     = info.tag_id;
-    sub_t s     = info.subs.size();
+    tag_t t    = info.tag_id;
+    sub_t s    = info.subs.size();
     if (new_subs.empty()) {
         auto norm  = driver().normalizer(p, t, 0);
         auto axiom = world().axiom(norm, curry, trip, type, p, t, 0)->set(ax.loc(), ax.sym());
