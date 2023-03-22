@@ -463,7 +463,6 @@ Ref World::test(Ref value, Ref probe, Ref match, Ref clash) {
 
 Ref World::singleton(Ref inner_type) { return unify<Singleton>(1, this->type<1>(), inner_type); }
 
-// appends a suffix or an increasing number if the suffix already exists
 Sym World::append_suffix(Sym symbol, std::string suffix) {
     auto name = *symbol;
 

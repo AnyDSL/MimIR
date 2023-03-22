@@ -28,6 +28,7 @@ private:
     Def2Def old2new_;
 };
 
+/// Stops rewriting when leaving the Scope.
 class ScopeRewriter : public Rewriter {
 public:
     ScopeRewriter(World& world, const Scope& scope)
@@ -43,6 +44,15 @@ public:
 
 private:
     const Scope& scope_;
+};
+
+/// Stops rewriting on nominals.
+class DAGRewriter : public Rewriter {
+public:
+    DAGRewriter(World& world)
+        : Rewriter(world) {}
+
+    const Def* rewrite_nom(Def* nom) override { return nom; }
 };
 
 /// Rewrites @p def by mapping @p old_def to @p new_def while obeying @p scope.
