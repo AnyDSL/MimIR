@@ -124,7 +124,35 @@ Ref World::umax(DefArray ops) {
     return sort == Sort::Univ ? ldef : type(ldef);
 }
 
+Ref World::iapp(Ref callee, Ref arg) {
+    while (auto pi = callee->type()->isa<Pi>()) {
+        if (pi->implicit()) {
+            auto infer = nom_infer_entity();
+            auto a     = app(callee, infer);
+            callee     = a;
+        } else {
+            // resolve Infers now if possible before normalizers are run
+            if (auto app = callee->isa<App>(); app && app->curry() == 1) {
+                checker().assignable(callee->type()->as<Pi>()->dom(), arg);
+                auto apps = decurry(app);
+                callee    = apps.front()->callee();
+                for (auto app : apps) callee = this->app(callee, refer(app->arg()));
+            }
+            break;
+        }
+    }
+
+    return app(callee, arg);
+}
+
 Ref World::app(Ref callee, Ref arg) {
+    // try to eliminate Infers if present - TODO better place for this?
+    if (callee->has_dep(Dep::Infer) || arg->has_dep(Dep::Infer)) {
+        InferRewriter rw(*this);
+        callee = rw.rewrite(callee);
+        arg = rw.rewrite(arg);
+    }
+
     auto pi = callee->type()->isa<Pi>();
 
     // (a, b)#i arg     where a = A -> B; b = A -> B
@@ -481,31 +509,6 @@ Sym World::append_suffix(Sym symbol, std::string suffix) {
     }
 
     return sym(std::move(name));
-}
-
-/*
- * implicits
- */
-
-Ref World::iapp(Ref callee, Ref arg) {
-    while (auto pi = callee->type()->isa<Pi>()) {
-        if (pi->implicit()) {
-            auto infer = nom_infer_entity();
-            auto a     = app(callee, infer);
-            callee     = a;
-        } else {
-            // resolve Infers now if possible before normalizers are run
-            if (auto app = callee->isa<App>(); app && app->curry() == 1) {
-                checker().assignable(callee->type()->as<Pi>()->dom(), arg);
-                auto apps = decurry(app);
-                callee    = apps.front()->callee();
-                for (auto app : apps) callee = this->app(callee, refer(app->arg()));
-            }
-            break;
-        }
-    }
-
-    return app(callee, arg);
 }
 
 /*

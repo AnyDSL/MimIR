@@ -5,6 +5,7 @@
 #include <sstream>
 
 #include "thorin/driver.h"
+#include "thorin/rewrite.h"
 
 #include "thorin/fe/parser.h"
 
@@ -31,8 +32,7 @@ TEST(Zip, fold) {
 
     EXPECT_TRUE(r->is_term());
     EXPECT_TRUE(!r->type()->is_term());
-    // TODO here we are seen some Infers ...
-    // EXPECT_EQ(c, r);
+    EXPECT_EQ(c, r);
 }
 
 TEST(World, simplify_one_tuple) {
