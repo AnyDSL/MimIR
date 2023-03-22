@@ -66,7 +66,14 @@ void Parser::syntax_err(std::string_view what, const Tok& tok, std::string_view 
  */
 
 void Parser::parse_module() {
-    while (ahead().tag() == Tok::Tag::K_import) parse_import();
+    while (true) {
+        if (ahead().tag() == Tok::Tag::K_import)
+            parse_import();
+        else if (ahead().tag() == Tok::Tag::K_plugin)
+            parse_plugin();
+        else
+            break;
+    }
 
     parse_decls({});
     expect(Tok::Tag::M_eof, "module");
@@ -84,20 +91,29 @@ void Parser::import(fs::path name, std::ostream* md) {
     }
 
     if (auto path = driver().add_import(std::move(rel_path), world().sym(name.string()))) {
-        world().VLOG("reading: {}", *path);
         auto ifs = std::ifstream(*path);
-        if (!ifs) err("error: cannot read file '{}'", *path);
-
-        lexers_.emplace(world(), ifs, path, md);
-        auto state = state_;
-
-        for (size_t i = 0; i != Max_Ahead; ++i) ahead(i) = lexer().lex();
-        prev() = Loc(path, {1, 1});
-
-        parse_module();
-        state_ = state;
-        lexers_.pop();
+        import(ifs, path, md);
     }
+}
+
+void Parser::import(std::istream& is, const fs::path* path, std::ostream* md) {
+    world().VLOG("reading: {}", path ? path->string() : "<unknown file>"s);
+    if (!is) err("error: cannot read file '{}'", *path);
+
+    lexers_.emplace(world(), is, path, md);
+    auto state = state_;
+
+    for (size_t i = 0; i != Max_Ahead; ++i) ahead(i) = lexer().lex();
+    prev() = Loc(path, {1, 1});
+
+    parse_module();
+    state_ = state;
+    lexers_.pop();
+}
+
+void Parser::plugin(fs::path name) {
+    driver().load(name);
+    import(name);
 }
 
 /*
@@ -109,6 +125,13 @@ void Parser::parse_import() {
     auto name = expect(Tok::Tag::M_id, "import name");
     expect(Tok::Tag::T_semicolon, "end of import");
     import(*name.sym());
+}
+
+void Parser::parse_plugin() {
+    eat(Tok::Tag::K_plugin);
+    auto name = expect(Tok::Tag::M_id, "plugin name");
+    expect(Tok::Tag::T_semicolon, "end of import");
+    plugin(*name.sym());
 }
 
 Dbg Parser::parse_sym(std::string_view ctxt) {

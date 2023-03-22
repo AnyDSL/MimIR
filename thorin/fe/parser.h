@@ -35,6 +35,9 @@ public:
     World& world() { return world_; }
     Driver& driver() { return world().driver(); }
     void import(fs::path, std::ostream* md = nullptr);
+    void import(std::istream&, const fs::path* = nullptr, std::ostream* md = nullptr);
+    void plugin(fs::path);
+    const Scopes& scopes() const { return scopes_; }
 
 private:
     /// @name Tracker
@@ -93,6 +96,7 @@ private:
     void parse_module();
     Dbg parse_sym(std::string_view ctxt = {});
     void parse_import();
+    void parse_plugin();
     Ref parse_type_ascr(std::string_view ctxt);
 
     template<class F>

@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <ranges>
+#include <sstream>
 
 #include "thorin/driver.h"
 
@@ -17,33 +18,21 @@ TEST(Zip, fold) {
     World& w    = driver.world();
     auto parser = fe::Parser(w);
 
-    driver.load("core");
-    parser.import("core");
+    std::istringstream iss(
+            ".plugin core;"
+            ".let _32 = 4294967296;"
+            ".let I32 = .Idx _32;"
+            ".let a = ((0:I32, 1:I32,  2:I32), ( 3:I32,  4:I32,  5:I32));"
+            ".let b = ((6:I32, 7:I32,  8:I32), ( 9:I32, 10:I32, 11:I32));"
+            ".let c = ((6:I32, 8:I32, 10:I32), (12:I32, 14:I32, 16:I32));"
+            ".let r = %core.zip (2, (2, 3)) (2, (I32, I32), 1, I32, %core.wrap.add 0) (a, b);");
+    parser.import(iss);
+    auto c = parser.scopes().find({Loc(), driver.sym("c")});
+    auto r = parser.scopes().find({Loc(), driver.sym("r")});
 
-    auto zip = w.ax<core::zip>();
-    // clang-format off
-    auto a = w.tuple({w.tuple({w.lit_idx( 0), w.lit_idx( 1), w.lit_idx( 2)}),
-                      w.tuple({w.lit_idx( 3), w.lit_idx( 4), w.lit_idx( 5)})});
-
-    auto b = w.tuple({w.tuple({w.lit_idx( 6), w.lit_idx( 7), w.lit_idx( 8)}),
-                      w.tuple({w.lit_idx( 9), w.lit_idx(10), w.lit_idx(11)})});
-
-    auto c = w.tuple({w.tuple({w.lit_idx( 6), w.lit_idx( 8), w.lit_idx(10)}),
-                      w.tuple({w.lit_idx(12), w.lit_idx(14), w.lit_idx(16)})});
-
-    auto f = w.app(w.app(w.ax(core::wrap::add), w.lit_nat(Idx::bitwidth2size(32))), w.lit_nat_0());
-    auto i32_t = w.type_int(32);
-    auto res = w.app(w.app(w.app(zip, {/*r*/w.lit_nat(2), /*s*/w.tuple({w.lit_nat(2), w.lit_nat(3)})}),
-                                             {/*n_i*/ w.lit_nat(2), /*Is*/w.pack(2, i32_t), /*n_o*/w.lit_nat(1), /*Os*/i32_t, f}),
-                                             {a, b});
-    // clang-format on
-    EXPECT_TRUE(res->is_term());
-    EXPECT_TRUE(!zip->is_term());
-    EXPECT_TRUE(!res->type()->is_term());
-    EXPECT_TRUE(!zip->type()->is_term());
-
-    res->dump(0);
-    EXPECT_EQ(c, res);
+    EXPECT_TRUE(r->is_term());
+    EXPECT_TRUE(!r->type()->is_term());
+    EXPECT_EQ(c, r);
 }
 
 TEST(World, simplify_one_tuple) {
@@ -99,9 +88,7 @@ TEST(trait, idx) {
     Driver driver;
     World& w    = driver.world();
     auto parser = fe::Parser(w);
-
-    driver.load("core");
-    parser.import("core");
+    parser.plugin("core");
 
     EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0000'00FF_n))), 1);
     EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0000'0100_n))), 1);
