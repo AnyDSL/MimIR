@@ -2,8 +2,8 @@
 
 #include <list>
 
-#include "thorin/plugin.h"
 #include "thorin/flags.h"
+#include "thorin/plugin.h"
 #include "thorin/world.h"
 
 #include "thorin/util/log.h"
