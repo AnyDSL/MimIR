@@ -586,11 +586,10 @@ void Parser::parse_ax() {
     eat(Tok::Tag::K_ax);
     auto ax                 = expect(Tok::Tag::M_ax, "name of an axiom");
     auto [plugin, tag, sub] = Axiom::split(world(), ax.sym());
+    auto&& [info, is_new]   = driver().axiom2info(ax.sym(), plugin, tag, ax.loc());
 
     if (!plugin) err(ax.loc(), "invalid axiom name '{}'", ax);
     if (sub) err(ax.loc(), "definition of axiom '{}' must not have sub in tag name", ax);
-
-    auto&& [info, is_new] = driver().axiom2info(ax.dbg());
 
     // if (plugin != bootstrapper_.plugin()) {
     //  TODO

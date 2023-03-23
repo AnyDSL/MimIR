@@ -72,7 +72,7 @@ public:
     /// @name manage Axiom::Info
     ///@{
     const auto& plugin2axiom_infos(Sym plugin) { return plugin2axiom_infos_[plugin]; }
-    std::pair<Axiom::Info&, bool> axiom2info(Dbg);
+    std::pair<Axiom::Info&, bool> axiom2info(Sym sym, Sym plugin, Sym tag, Loc loc);
     ///@}
 
 private:

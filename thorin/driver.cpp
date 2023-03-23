@@ -84,14 +84,12 @@ void Driver::load(Sym name) {
     }
 }
 
-std::pair<Axiom::Info&, bool> Driver::axiom2info(Dbg ax) {
-    auto [plugin, tag, sub] = Axiom::split(world(), ax.sym);
-    auto& infos             = plugin2axiom_infos_[plugin];
-
+std::pair<Axiom::Info&, bool> Driver::axiom2info(Sym sym, Sym plugin, Sym tag, Loc loc) {
+    auto& infos = plugin2axiom_infos_[plugin];
     if (infos.size() > std::numeric_limits<tag_t>::max())
-        err(ax.loc, "exceeded maxinum number of axioms in current plugin");
+        err(loc, "exceeded maxinum number of axioms in current plugin");
 
-    auto [it, is_new] = infos.emplace(ax.sym, Axiom::Info{plugin, tag, infos.size()});
+    auto [it, is_new] = infos.emplace(sym, Axiom::Info{plugin, tag, infos.size()});
     return {it->second, is_new};
 }
 
