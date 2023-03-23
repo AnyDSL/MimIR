@@ -12,20 +12,6 @@
 
 namespace thorin {
 
-struct AxiomInfo {
-    AxiomInfo(Sym plugin, Sym tag, flags_t tag_id)
-        : plugin(plugin)
-        , tag(tag)
-        , tag_id(tag_id) {}
-
-    Sym plugin;
-    Sym tag;
-    std::deque<std::deque<Sym>> subs; ///< List of subs which is a list of aliases.
-    flags_t tag_id;
-    Sym normalizer;
-    bool pi = false;
-};
-
 /// Some "global" variables needed all over the place.
 /// Well, there are not really global - that's the point of this class.
 class Driver : public SymPool {
@@ -71,19 +57,23 @@ public:
     /// are searched for in Driver::search_paths().
     void load(Sym name);
     void load(std::string name) { return load(sym(std::move(name))); }
+    bool is_loaded(Sym sym) const { return lookup(plugins_, sym); }
     ///@}
 
     /// @name manage plugins
     ///@{
     /// All these lookups yield `nullptr` if the key has not been found.
-    auto plugin(Sym sym) const { return lookup(plugins_, sym); }
     auto pass(flags_t flags) { return lookup(passes_, flags); }
     auto normalizer(flags_t flags) const { return lookup(normalizers_, flags); }
     auto normalizer(plugin_t d, tag_t t, sub_t s) const { return normalizer(d | flags_t(t << 8u) | s); }
     auto backend(std::string_view name) { return lookup(backends_, name); }
     ///@}
 
-    SymMap<SymMap<AxiomInfo>> plugin2axioms;
+    /// @name manage Axiom::Info
+    ///@{
+    const auto& plugin2axiom_infos(Sym plugin) { return plugin2axiom_infos_[plugin]; }
+    std::pair<Axiom::Info&, bool> axiom2info(Dbg);
+    ///@}
 
 private:
     Flags flags_;
@@ -96,6 +86,7 @@ private:
     Passes passes_;
     Normalizers normalizers_;
     std::deque<std::pair<fs::path, Sym>> imports_;
+    SymMap<SymMap<Axiom::Info>> plugin2axiom_infos_;
 };
 
 } // namespace thorin

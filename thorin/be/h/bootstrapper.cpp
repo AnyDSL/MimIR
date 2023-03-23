@@ -21,10 +21,10 @@ void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
 
     tab.print(h << std::hex, "static constexpr plugin_t Plugin_Id = 0x{};\n\n", plugin_id);
 
-    auto& axioms = driver.plugin2axioms[plugin];
+    auto& infos = driver.plugin2axiom_infos(plugin);
 
     // clang-format off
-    for (const auto& [key, ax] : axioms) {
+    for (const auto& [key, ax] : infos) {
         if (ax.plugin != plugin) continue; // this is from an import
 
         tab.print(h, "#ifdef DOXYGEN // see https://github.com/doxygen/doxygen/issues/9668\n");
@@ -93,7 +93,7 @@ void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
     tab.print(h, "\n");
 
     // emit helpers for non-function axiom
-    for (const auto& [tag, ax] : axioms) {
+    for (const auto& [tag, ax] : infos) {
         if (ax.pi || ax.plugin != plugin) continue; // from function or other plugin?
         tab.print(h, "template<> struct Axiom::Match<{}::{}> {{ using type = Axiom; }};\n", ax.plugin, ax.tag);
     }

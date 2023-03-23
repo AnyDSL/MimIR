@@ -11,6 +11,20 @@ private:
     Axiom(NormalizeFn, u8 curry, u8 trip, const Def* type, plugin_t, tag_t, sub_t);
 
 public:
+    struct Info {
+        Info(Sym plugin, Sym tag, flags_t tag_id)
+            : plugin(plugin)
+            , tag(tag)
+            , tag_id(tag_id) {}
+
+        Sym plugin;
+        Sym tag;
+        flags_t tag_id;
+        std::deque<std::deque<Sym>> subs; ///< List of subs which is a list of aliases.
+        Sym normalizer;
+        bool pi = false;
+    };
+
     /// @name normalization
     ///@{
     /// For a curried App of an Axiom, you only want to trigger normalization at specific spots.

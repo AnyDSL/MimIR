@@ -50,7 +50,7 @@ const fs::path* Driver::add_import(fs::path path, Sym sym) {
 void Driver::load(Sym name) {
     ILOG("loading plugin: '{}'", name);
 
-    if (plugin(name)) {
+    if (is_loaded(name)) {
         WLOG("plugin '{}' already loaded", name);
         return;
     }
@@ -82,6 +82,17 @@ void Driver::load(Sym name) {
     } else {
         err("plugin has no 'thorin_get_plugin()'");
     }
+}
+
+std::pair<Axiom::Info&, bool> Driver::axiom2info(Dbg ax) {
+    auto [plugin, tag, sub] = Axiom::split(world(), ax.sym);
+    auto& infos             = plugin2axiom_infos_[plugin];
+
+    if (infos.size() > std::numeric_limits<tag_t>::max())
+        err(ax.loc, "exceeded maxinum number of axioms in current plugin");
+
+    auto [it, is_new] = infos.emplace(ax.sym, Axiom::Info{plugin, tag, infos.size()});
+    return {it->second, is_new};
 }
 
 } // namespace thorin

@@ -590,18 +590,13 @@ void Parser::parse_ax() {
     if (!plugin) err(ax.loc(), "invalid axiom name '{}'", ax);
     if (sub) err(ax.loc(), "definition of axiom '{}' must not have sub in tag name", ax);
 
-    auto& axioms      = driver().plugin2axioms[plugin];
-    auto [it, is_new] = axioms.emplace(ax.sym(), AxiomInfo{plugin, tag, axioms.size()});
-    auto& [_, info]   = *it;
+    auto&& [info, is_new] = driver().axiom2info(ax.dbg());
 
     // if (plugin != bootstrapper_.plugin()) {
     //  TODO
     //  err(ax.loc(), "axiom name `{}` implies a plugin name of `{}` but input file is named `{}`", ax,
     //  info.plugin, lexer_.file());
     //}
-
-    if (axioms.size() >= std::numeric_limits<tag_t>::max())
-        err(ax.loc(), "exceeded maxinum number of axioms in current plugin");
 
     std::deque<std::deque<Sym>> new_subs;
     if (ahead().isa(Tok::Tag::D_paren_l)) {
