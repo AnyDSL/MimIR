@@ -39,7 +39,7 @@ public:
     World& world() { return world_; }
     ///@}
 
-    /// @name manage paths
+    /// @name manage search paths
     ///@{
     /// Search paths for plugins are in the following order:
     /// 1. The empty path. Used as prefix to look into current working directory without resorting to an absolute path.
@@ -53,7 +53,7 @@ public:
     }
     ///@}
 
-    /// @name manage paths
+    /// @name manage imports
     ///@{
     /// This is a list of pairs where each pair contains:
     /// 1. The `fs::path` used during import,
