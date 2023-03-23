@@ -9,7 +9,7 @@
 #include "thorin/driver.h"
 
 #include "thorin/be/dot/dot.h"
-#include "thorin/be/h/bootstrapper.h"
+#include "thorin/be/h/bootstrap.h"
 #include "thorin/fe/parser.h"
 #include "thorin/pass/optimize.h"
 #include "thorin/pass/pass.h"

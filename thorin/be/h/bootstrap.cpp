@@ -1,4 +1,4 @@
-#include "thorin/be/h/bootstrapper.h"
+#include "thorin/be/h/bootstrap.h"
 
 #include <ranges>
 #include <sstream>
