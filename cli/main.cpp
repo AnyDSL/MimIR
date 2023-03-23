@@ -108,7 +108,8 @@ int main(int argc, char** argv) {
         }
 
         // we always need core and mem, as long as we are not in bootstrap mode
-        if (!os[H]) plugins.insert(plugins.end(), {"core", "mem", "compile", "opt"});
+        flags.bootstrap = os[H];
+        if (!flags.bootstrap) plugins.insert(plugins.end(), {"core", "mem", "compile", "opt"});
 
         if (!plugins.empty())
             for (const auto& plugin : plugins) driver.load(plugin);
