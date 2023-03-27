@@ -7,8 +7,8 @@ using namespace std::literals;
 namespace thorin {
 
 Lam* EtaExp::new2old(Lam* new_lam) {
-    if (auto i = new2old_.find(new_lam); i != new2old_.end()) {
-        auto root = new2old(i->second); // path compression
+    if (auto old = lookup(new2old_, new_lam)) {
+        auto root = new2old(old); // path compression
         assert(root != new_lam);
         new2old_[new_lam] = root;
         return root;
@@ -19,20 +19,18 @@ Lam* EtaExp::new2old(Lam* new_lam) {
 
 const Def* EtaExp::rewrite(const Def* def) {
     if (std::ranges::none_of(def->ops(), [](const Def* def) { return def->isa<Lam>(); })) return def;
-    if (auto i = old2new().find(def); i != old2new().end()) return i->second;
+    if (auto n = lookup(old2new(), def)) return n;
 
     auto& [_, new_ops] = *def2new_ops_.emplace(def, def->ops()).first;
 
     for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
         if (auto lam = def->op(i)->isa_nom<Lam>(); lam && lam->is_set()) {
             if (isa_callee(def, i)) {
-                if (auto it = exp2orig_.find(lam); it != exp2orig_.end()) new_ops[i] = it->second;
-            } else {
-                if (expand_.contains(lam)) {
-                    if (new_ops[i] == lam) new_ops[i] = eta_exp(lam);
-                } else if (auto it = exp2orig_.find(lam); it != exp2orig_.end()) {
-                    if (new_ops[i] == lam) new_ops[i] = eta_exp(it->second);
-                }
+                if (auto orig = lookup(exp2orig_, lam)) new_ops[i] = orig;
+            } else if (expand_.contains(lam)) {
+                if (new_ops[i] == lam) new_ops[i] = eta_exp(lam);
+            } else if (auto orig = lookup(exp2orig_, lam)) {
+                if (new_ops[i] == lam) new_ops[i] = eta_exp(orig);
             }
         }
     }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include <absl/container/flat_hash_map.h>
 
 #include "thorin/fe/tok.h"
@@ -17,15 +19,15 @@ class Lexer : public utf8::Lexer<3> {
 public:
     /// Creates a lexer to read Thorin files (see [Lexical Structure](@ref lex)).
     /// If @p md is not `nullptr`, a Markdown output will be generated.
-    Lexer(World& world, Sym file, std::istream& istream, std::ostream* md = nullptr);
+    Lexer(World& world, std::istream& istream, const fs::path* path = nullptr, std::ostream* md = nullptr);
 
     World& world() { return world_; }
-    Sym file() const { return loc_.file; }
+    const fs::path* path() const { return loc_.path; }
     Loc loc() const { return loc_; }
     Tok lex();
 
 private:
-    Ahead next() override {
+    Char next() override {
         auto res = Super::next();
         if (md_ && out_) {
             if (res.c32 == utf8::EoF) {
@@ -55,7 +57,7 @@ private:
     std::ostream* md_;
     bool out_ = true;
     SymMap<Tok::Tag> keywords_;
-    std::optional<Tok> cache_;
+    std::optional<Tok> cache_ = std::nullopt;
 };
 
 } // namespace thorin::fe

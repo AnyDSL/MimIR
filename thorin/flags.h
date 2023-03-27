@@ -9,6 +9,7 @@ struct Flags {
     int dump_gid               = 0;
     bool dump_recursive        = false;
     bool disable_type_checking = false; // TODO implement this flag
+    bool bootstrap             = false;
 #if THORIN_ENABLE_CHECKS
     bool reeval_breakpoints = false;
     bool trace_gids         = false;

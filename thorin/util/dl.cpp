@@ -35,7 +35,7 @@ void* open(const std::string& file) {
     if (HMODULE handle = LoadLibraryA(file.c_str())) {
         return static_cast<void*>(handle);
     } else {
-        err("could not load dialect plugin '{}' due to error '{}'\n"
+        err("could not load plugin '{}' due to error '{}'\n"
             "see https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes\n",
             file, GetLastError());
     }

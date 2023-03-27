@@ -7,7 +7,6 @@
 #include <gtest/gtest.h>
 
 #include "thorin/def.h"
-#include "thorin/dialects.h"
 #include "thorin/driver.h"
 
 #include "thorin/fe/parser.h"
@@ -17,7 +16,6 @@
 #include "thorin/pass/optimize.h"
 #include "thorin/pass/pass.h"
 #include "thorin/pass/pipelinebuilder.h"
-#include "thorin/util/sys.h"
 
 #include "dialects/compile/compile.h"
 #include "dialects/core/core.h"
@@ -31,11 +29,9 @@ using namespace thorin;
 TEST(RestrictedDependentTypes, join_singleton) {
     auto test_on_world = [](auto test) {
         Driver driver;
-        World& w = driver.world();
-
-        auto dialects = {"compile", "mem", "core", "math"};
-        for (auto dialect : dialects) driver.load(dialect);
-        for (auto dialect : dialects) fe::Parser::import_module(w, w.sym(dialect));
+        World& w    = driver.world();
+        auto parser = fe::Parser(w);
+        for (auto dialect : {"compile", "mem", "core", "math"}) parser.plugin(dialect);
 
         auto i32_t = w.type_int(32);
         auto i64_t = w.type_int(64);
@@ -223,11 +219,9 @@ TEST(RestrictedDependentTypes, join_singleton) {
 
 TEST(RestrictedDependentTypes, ll) {
     Driver driver;
-    World& w = driver.world();
-
-    auto dialects = {"compile", "mem", "core", "math"};
-    for (auto dialect : dialects) driver.load(dialect);
-    for (auto dialect : dialects) fe::Parser::import_module(w, w.sym(dialect));
+    World& w    = driver.world();
+    auto parser = fe::Parser(w);
+    for (auto dialect : {"compile", "mem", "core", "math"}) parser.plugin(dialect);
 
     auto mem_t  = mem::type_mem(w);
     auto i32_t  = w.type_int(32);

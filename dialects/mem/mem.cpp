@@ -1,7 +1,6 @@
 #include "dialects/mem/mem.h"
 
 #include <thorin/config.h>
-#include <thorin/dialects.h>
 #include <thorin/pass/fp/beta_red.h>
 #include <thorin/pass/fp/eta_exp.h>
 #include <thorin/pass/fp/eta_red.h>
@@ -22,7 +21,7 @@
 
 using namespace thorin;
 
-extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
+extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
     return {"mem",
             [](Passes& passes) {
                 register_pass_with_arg<mem::ssa_pass, mem::SSAConstr, EtaExp>(passes);

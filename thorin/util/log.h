@@ -10,9 +10,6 @@ class Log {
 public:
     enum class Level { Error, Warn, Info, Verbose, Debug };
 
-    Log(SymPool& sym_pool)
-        : sym_pool_(sym_pool) {}
-
     /// @name getters
     ///@{
     Level level() const { return max_level_; }
@@ -49,7 +46,8 @@ public:
     }
     template<class... Args>
     void log(Level level, const char* file, uint16_t line, const char* fmt, Args&&... args) {
-        log(level, Loc(sym_pool_.sym(file), line), fmt, std::forward<Args&&>(args)...);
+        auto path = fs::path(file);
+        log(level, Loc(&path, line), fmt, std::forward<Args&&>(args)...);
     }
     ///@}
 
@@ -64,7 +62,6 @@ public:
 private:
     std::ostream* ostream_ = nullptr;
     Level max_level_       = Level::Error;
-    SymPool& sym_pool_;
 };
 
 // clang-format off

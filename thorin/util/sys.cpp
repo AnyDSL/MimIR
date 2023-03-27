@@ -21,6 +21,7 @@
 #endif
 
 using namespace std::string_literals;
+namespace fs = std::filesystem;
 
 namespace thorin::sys {
 

@@ -5,8 +5,7 @@ add_library(libthorin
     check.h
     def.cpp
     def.h
-    dialects.cpp
-    dialects.h
+    plugin.h
     dump.cpp
     driver.cpp
     driver.h
@@ -37,8 +36,8 @@ add_library(libthorin
     be/emitter.h
     be/dot/dot.cpp
     be/dot/dot.h
-    be/h/bootstrapper.cpp
-    be/h/bootstrapper.h
+    be/h/bootstrap.cpp
+    be/h/bootstrap.h
     fe/ast.cpp
     fe/ast.h
     fe/lexer.cpp

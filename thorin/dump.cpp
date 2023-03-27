@@ -1,6 +1,6 @@
 #include <fstream>
 
-#include "thorin/world.h"
+#include "thorin/driver.h"
 
 #include "thorin/analyses/deptree.h"
 #include "thorin/fe/tok.h"
@@ -382,7 +382,8 @@ void World::dump(std::ostream& os) {
         auto dep    = DepTree(*this);
         auto dumper = Dumper(os, &dep);
 
-        for (const auto& import : imported()) print(os, ".import {};\n", import);
+        for (auto [_, name] : driver().imports())
+            print(os, ".{} {};\n", driver().is_loaded(name) ? "plugin" : "import", name);
         dumper.recurse(dep.root());
     }
 

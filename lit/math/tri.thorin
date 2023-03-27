@@ -3,9 +3,9 @@
 // RUN: clang++ %t.ll -o %t -Wno-override-module
 // RUN: %t foo; test $? -eq 98
 
-.import math;
-.import mem;
-.import core;
+.plugin math;
+.plugin mem;
+.plugin core;
 
 .let _32 = 4294967296;
 .let I32 = .Idx _32;

@@ -3,8 +3,6 @@
 #include <thorin/config.h>
 #include <thorin/pass/pass.h>
 
-#include "thorin/dialects.h"
-
 #include "dialects/clos/phase/clos_conv.h"
 #include "dialects/clos/phase/lower_typed_clos.h"
 

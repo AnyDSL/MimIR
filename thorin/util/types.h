@@ -75,12 +75,12 @@ template<int w> using w2u = typename w2u_<w>::type;
 template<int w> using w2s = typename w2s_<w>::type;
 template<int w> using w2f = typename w2f_<w>::type;
 
-using nat_t     = u64;
-using node_t    = u8;
-using flags_t   = u64;
-using dialect_t = u64;
-using tag_t     = u8;
-using sub_t     = u8;
+using nat_t    = u64;
+using node_t   = u8;
+using flags_t  = u64;
+using plugin_t = u64;
+using tag_t    = u8;
+using sub_t    = u8;
 
 /// A `size_t` literal. Use `0_s` to disambiguate `0` from `nullptr`.
 constexpr size_t operator""_s(unsigned long long int i) { return size_t(i); }

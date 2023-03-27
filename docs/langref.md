@@ -33,33 +33,34 @@ In addition you can use `⟨`, `⟩`, `⟪`, and `⟫` as an alternative for `�
 
 In addition the following keywords are *terminals*:
 
-| Terminal    | Comment                                           |
-|-------------|---------------------------------------------------|
-| `.ax`       | axiom                                             |
-| `.let`      | let expression                                    |
-| `.Pi`       | nominal thorin::Pi                                |
-| `.con`      | [continuation](@ref thorin::Lam) (declaration)    |
-| `.fun`      | [function](@ref thorin::Lam) (declaration - TODO) |
-| `.lam`      | [lambda](@ref thorin::Lam) (declaration)          |
-| `.cn`       | [continuation](@ref thorin::Lam) (expression)     |
-| `.fn`       | [function](@ref thorin::Lam) (expression - TODO)  |
-| `.cn`       | [lambda](@ref thorin::Lam) (expression)           |
-| `.Arr`      | nominal thorin::Arr                               |
-| `.pack`     | nominal thorin::Pack                              |
-| `.Sigma`    | nominal thorin::Sigma                             |
-| `.def`      | nominal definition                                |
-| `.extern`   | marks nominal as external                         |
-| `.ins`      | thorin::Insert expression                         |
-| `.insert`   | alias for `.ins`                                  |
-| `.module`   | starts a module                                   |
-| `.import`   | imports a dialect                                 |
-| `.Nat`      | thorin::Nat                                       |
-| `.Idx`      | thorin::Idx                                       |
-| `.Bool`     | alias for `.Idx 2`                                |
-| `.ff`       | alias for `0₂`                                    |
-| `.tt`       | alias for `1₂`                                    |
-| `.Type`     | thorin::Type                                      |
-| `.Univ`     | thorin::Univ                                      |
+| Terminal  | Comment                                                   |
+|-----------|-----------------------------------------------------------|
+| `.ax`     | axiom                                                     |
+| `.let`    | let expression                                            |
+| `.Pi`     | nominal thorin::Pi                                        |
+| `.con`    | [continuation](@ref thorin::Lam) (declaration)            |
+| `.fun`    | [function](@ref thorin::Lam) (declaration - TODO)         |
+| `.lam`    | [lambda](@ref thorin::Lam) (declaration)                  |
+| `.cn`     | [continuation](@ref thorin::Lam) (expression)             |
+| `.fn`     | [function](@ref thorin::Lam) (expression - TODO)          |
+| `.cn`     | [lambda](@ref thorin::Lam) (expression)                   |
+| `.Arr`    | nominal thorin::Arr                                       |
+| `.pack`   | nominal thorin::Pack                                      |
+| `.Sigma`  | nominal thorin::Sigma                                     |
+| `.def`    | nominal definition                                        |
+| `.extern` | marks nominal as external                                 |
+| `.ins`    | thorin::Insert expression                                 |
+| `.insert` | alias for `.ins`                                          |
+| `.module` | starts a module                                           |
+| `.import` | imports another Thorin file                               |
+| `.plugin` | like `.import` and additionally loads the compiler plugin |
+| `.Nat`    | thorin::Nat                                               |
+| `.Idx`    | thorin::Idx                                               |
+| `.Bool`   | alias for `.Idx 2`                                        |
+| `.ff`     | alias for `0₂`                                            |
+| `.tt`     | alias for `1₂`                                            |
+| `.Type`   | thorin::Type                                              |
+| `.Univ`   | thorin::Univ                                              |
 
 All keywords start with a `.` to prevent name clashes with identifiers.
 
