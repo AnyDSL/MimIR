@@ -1,5 +1,5 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d clos %s --output-ll %t.ll -o - 
+// RUN: %thorin -p clos %s --output-ll %t.ll -o - 
 
 /*
 TODO: investigate and open error
@@ -7,8 +7,8 @@ dialects/clos/phase/clos_conv.cpp:195: RW: pack tup_pb_745946_346616 ~> ([], tup
 :4294967295: error: cannot pass argument '([], ((.Idx 4294967296, aug_pow_else_745690_348490, _348192):closure_type_348380, ([], aug_pow_then_745900_348623, ()):closure_type_348692)#_348817#2:(.Idx 3))' of type '[★, ((.Idx 4294967296, aug_pow_else_745690_348490, _348192):closure_type_348380, ([], aug_pow_then_745900_348623, ()):closure_type_348692)#_348817#0:(.Idx 3)]' to '((.Idx 4294967296, aug_pow_else_745690_348490, _348192):closure_type_348380, ([], aug_pow_then_745900_348623, ()):closure_type_348692)#_348817#1:(.Idx 3)' of domain '[closure_type_348334, ((.Idx 4294967296, aug_pow_else_745690_348490, _348192):closure_type_348380, ([], aug_pow_then_745900_348623, ()):closure_type_348692)#_348817#0:(.Idx 3)]'
 */
 
-.import core;
-.import mem;
+.plugin core;
+
 .con zero_pb_745910 _745912::[.Idx 4294967296, _745914: .Cn «2; .Idx 4294967296»] @(1:(.Idx 2)) = {
     .con _745911 [_745915: «2; .Idx 4294967296»] @(0:(.Idx 2)) = {
         _745914 _745915

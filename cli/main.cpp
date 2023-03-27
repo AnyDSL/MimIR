@@ -43,26 +43,27 @@ int main(int argc, char** argv) {
         // clang-format off
         auto cli = lyra::cli()
             | lyra::help(show_help)
-            | lyra::opt(show_version             )["-v"]["--version"           ]("Display version info and exit.")
-            | lyra::opt(list_search_paths        )["-l"]["--list-search-paths" ]("List search paths in order and exit.")
-            | lyra::opt(clang,          "clang"  )["-c"]["--clang"             ]("Path to clang executable (default: '" THORIN_WHICH " clang').")
-            | lyra::opt(plugins,        "dialect")["-d"]["--dialect"           ]("Dynamically load plugin.")
-            | lyra::opt(search_paths,   "path"   )["-D"]["--dialect-path"      ]("Path to search for plugins.")
-            | lyra::opt(inc_verbose              )["-V"]["--verbose"           ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
-            | lyra::opt(opt,            "level"  )["-O"]["--optimize"          ]("Optimization level (default: 2).")
-            | lyra::opt(output[Dot   ], "file"   )      ["--output-dot"        ]("Emits the Thorin program as a graph using Graphviz' DOT language.")
-            | lyra::opt(output[H     ], "file"   )      ["--output-h"          ]("Emits a header file to be used to interface with a plugin in C++.")
-            | lyra::opt(output[LL    ], "file"   )      ["--output-ll"         ]("Compiles the Thorin program to LLVM.")
-            | lyra::opt(output[Md    ], "file"   )      ["--output-md"         ]("Emits the input formatted as Markdown.")
-            | lyra::opt(output[Thorin], "file"   )["-o"]["--output-thorin"     ]("Emits the Thorin program again.")
-            | lyra::opt(flags.dump_gid, "level"  )      ["--dump-gid"          ]("Dumps gid of inline expressions as a comment in output if <level> > 0. Use a <level> of 2 to also emit the gid of trivial defs.")
-            | lyra::opt(flags.dump_recursive     )      ["--dump-recursive"    ]("Dumps Thorin program with a simple recursive algorithm that is not readable again from Thorin but is less fragile and also works for broken Thorin programs.")
+            | lyra::opt(show_version            )["-v"]["--version"           ]("Display version info and exit.")
+            | lyra::opt(list_search_paths       )["-l"]["--list-search-paths" ]("List search paths in order and exit.")
+            | lyra::opt(clang,          "clang" )["-c"]["--clang"             ]("Path to clang executable (default: '" THORIN_WHICH " clang').")
+            | lyra::opt(plugins,        "plugin")["-p"]["--plugin"            ]("Dynamically load plugin.")
+            | lyra::opt(search_paths,   "path"  )["-P"]["--plugin-path"       ]("Path to search for plugins.")
+            | lyra::opt(inc_verbose             )["-V"]["--verbose"           ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
+            | lyra::opt(opt,            "level" )["-O"]["--optimize"          ]("Optimization level (default: 2).")
+            | lyra::opt(output[Dot   ], "file"  )      ["--output-dot"        ]("Emits the Thorin program as a graph using Graphviz' DOT language.")
+            | lyra::opt(output[H     ], "file"  )      ["--output-h"          ]("Emits a header file to be used to interface with a plugin in C++.")
+            | lyra::opt(output[LL    ], "file"  )      ["--output-ll"         ]("Compiles the Thorin program to LLVM.")
+            | lyra::opt(output[Md    ], "file"  )      ["--output-md"         ]("Emits the input formatted as Markdown.")
+            | lyra::opt(output[Thorin], "file"  )["-o"]["--output-thorin"     ]("Emits the Thorin program again.")
+            | lyra::opt(flags.bootstrap         )      ["--bootstrap"         ]("Puts thorin into \"bootstrap mode\". This means a `.plugin` directive has the same effect as an `.import` and will not load a library.")
+            | lyra::opt(flags.dump_gid, "level" )      ["--dump-gid"          ]("Dumps gid of inline expressions as a comment in output if <level> > 0. Use a <level> of 2 to also emit the gid of trivial defs.")
+            | lyra::opt(flags.dump_recursive    )      ["--dump-recursive"    ]("Dumps Thorin program with a simple recursive algorithm that is not readable again from Thorin but is less fragile and also works for broken Thorin programs.")
 #if THORIN_ENABLE_CHECKS
-            | lyra::opt(breakpoints,    "gid"    )["-b"]["--break"             ]("Trigger breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
-            | lyra::opt(flags.reeval_breakpoints )      ["--reeval-breakpoints"]("Triggers breakpoint even upon unfying a node that has already been built.")
-            | lyra::opt(flags.trace_gids         )      ["--trace-gids"        ]("Output gids during World::unify/insert.")
+            | lyra::opt(breakpoints,    "gid"   )["-b"]["--break"             ]("Trigger breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
+            | lyra::opt(flags.reeval_breakpoints)      ["--reeval-breakpoints"]("Triggers breakpoint even upon unfying a node that has already been built.")
+            | lyra::opt(flags.trace_gids        )      ["--trace-gids"        ]("Output gids during World::unify/insert.")
 #endif
-            | lyra::arg(input,          "file"   )                              ("Input file.")
+            | lyra::arg(input,          "file"  )                              ("Input file.")
             ;
         // clang-format on
 
@@ -108,7 +109,6 @@ int main(int argc, char** argv) {
         }
 
         // we always need core and mem, as long as we are not in bootstrap mode
-        flags.bootstrap = os[H];
         if (!flags.bootstrap) plugins.insert(plugins.end(), {"core", "mem", "compile", "opt"});
 
         if (!plugins.empty())
@@ -146,7 +146,7 @@ int main(int argc, char** argv) {
             if (auto backend = driver.backend("ll"))
                 backend(world, *os[LL]);
             else
-                err("'ll' emitter not loaded. Try loading 'mem' dialect.");
+                err("'ll' emitter not loaded. Try loading 'mem' plugin.");
         }
     } catch (const std::exception& e) {
         errln("{}", e.what());

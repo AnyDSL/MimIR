@@ -1,8 +1,7 @@
 // RUN: rm -f %t.ll ; \
 // RUN: %thorin %s -o - | FileCheck %s
 
-.import core;
-.import mem;
+.plugin core;
 
 .let _32 = 4294967296;
 .let I32 = .Idx _32;

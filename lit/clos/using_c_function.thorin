@@ -1,5 +1,5 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d clos %s --output-ll %t.ll -o -
+// RUN: %thorin -p clos %s --output-ll %t.ll -o -
 
 
 // build a linked list/stack/for loop 
@@ -8,9 +8,8 @@
 // then the stack is called and should print them descending
 // the functions are stored and loaded in between each iteration
 
-.import mem;
-.import core;
-.import direct;
+.plugin core;
+.plugin direct;
 
 .let i32 = .Idx 4294967296;
 .let i8 = .Idx 256;

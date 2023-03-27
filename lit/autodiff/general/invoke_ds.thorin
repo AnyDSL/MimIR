@@ -1,11 +1,9 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d direct -d autodiff %s -o - --output-ll %t.ll | FileCheck %s
+// RUN: %thorin %s -o - --output-ll %t.ll | FileCheck %s
 
-.import core;
-.import direct;
-.import mem;
-
-.import autodiff;
+.plugin core;
+.plugin direct;
+.plugin autodiff;
 
 .con extract_pb_535733 _535735::[s_535741: %mem.M, _535737: .Cn [%mem.M, «2; (.Idx 4294967296)»]] = {
     .con _535734 _535738: [%mem.M, «2; (.Idx 4294967296)»] = {

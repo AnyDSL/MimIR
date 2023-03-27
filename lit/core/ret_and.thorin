@@ -4,8 +4,7 @@
 // RUN: %t 3 1 ; test $? -eq 1
 // RUN: %t 7 5 ; test $? -eq 5
 
-.import core;
-.import mem;
+.plugin core;
 
 .con atoi [%mem.M, %mem.Ptr («⊤:.Nat; .Idx 256», 0), .Cn [%mem.M, .Idx 4294967296]];
 

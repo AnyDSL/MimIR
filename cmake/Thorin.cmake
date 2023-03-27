@@ -99,7 +99,7 @@ function(add_thorin_plugin)
 
     add_custom_command(
         OUTPUT ${PLUGIN_MD} ${PLUGIN_H}
-        COMMAND $<TARGET_FILE:${THORIN_TARGET_NAMESPACE}thorin> ${THORIN_FILE_LIB_DIR} -D ${THORIN_LIB_DIR} --output-h ${PLUGIN_H} --output-md ${PLUGIN_MD}
+        COMMAND $<TARGET_FILE:${THORIN_TARGET_NAMESPACE}thorin> ${THORIN_FILE_LIB_DIR} -P ${THORIN_LIB_DIR} --bootstrap --output-h ${PLUGIN_H} --output-md ${PLUGIN_MD}
         DEPENDS ${THORIN_TARGET_NAMESPACE}thorin internal_thorin_${PLUGIN}_thorin ${THORIN_FILE_LIB_DIR}
         COMMENT "Bootstrapping Thorin plugin '${PLUGIN}' from '${THORIN_FILE}'"
     )

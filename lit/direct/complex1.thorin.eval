@@ -1,6 +1,6 @@
-.import core;
-.import direct;
-.import mem;
+.plugin core;
+.plugin direct;
+
 .lam .extern internal_diff_core_wrap_mul __691353::[_691435: .Nat, w_691354: .Nat] → .Cn [«2; .Idx w_691354», .Cn [.Idx w_691354, .Cn [.Idx w_691354, .Cn «2; .Idx w_691354»]]] = {
     .con inner_mul_deriv_cps_691394 __691403::[__691423::[_691427: .Idx w_691354, _691431: .Idx w_691354], ret_691405: .Cn [.Idx w_691354, .Cn [.Idx w_691354, .Cn «2; .Idx w_691354»]]] = {
         .con mul_pb_691448 __691457::[s_691472: .Idx w_691354, pb_ret_691459: .Cn «2; .Idx w_691354»] = {
