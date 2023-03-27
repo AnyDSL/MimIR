@@ -1,7 +1,7 @@
 #include "dialects/demo/demo.h"
 
-#include <thorin/plugin.h>
 #include <thorin/pass/pass.h>
+#include <thorin/plugin.h>
 
 using namespace thorin;
 
