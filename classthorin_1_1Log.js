@@ -7,7 +7,6 @@ var classthorin_1_1Log =
       [ "Verbose", "classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aad4a9fa383ab700c5bdd6f31cf7df0faf", null ],
       [ "Debug", "classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aaa603905470e2a5b8c13e96b579ef0dba", null ]
     ] ],
-    [ "Log", "classthorin_1_1Log.html#a7af62b2ec980bf070972db13fd71b09b", null ],
     [ "colorize", "classthorin_1_1Log.html#ad81027bbd12e257e9285305c6fee465e", null ],
     [ "level", "classthorin_1_1Log.html#a87db1e60e758f1aee7ceeb522d034058", null ],
     [ "level2acro", "classthorin_1_1Log.html#a5ee67d670442fd8476290292f0f4a738", null ],

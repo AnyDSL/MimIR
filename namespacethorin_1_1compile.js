@@ -40,5 +40,5 @@ var namespacethorin_1_1compile =
     [ "normalize_pass_phase", "namespacethorin_1_1compile.html#abdc0b6ee0a2671cf49fc27308be9aa51", null ],
     [ "normalize_single_pass_phase", "namespacethorin_1_1compile.html#a19a2a366156bc2e4e12e7329579b8f47", null ],
     [ "register_normalizers", "namespacethorin_1_1compile.html#a0ba02745cf075dadf81dd8e781c1e45b", null ],
-    [ "Dialect_Id", "namespacethorin_1_1compile.html#a6675ca36b24a77c6cf91397f6eaf820b", null ]
+    [ "Plugin_Id", "namespacethorin_1_1compile.html#aed372996ee9d18e1a295126e205a4906", null ]
 ];

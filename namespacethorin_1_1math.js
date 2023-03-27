@@ -210,5 +210,5 @@ var namespacethorin_1_1math =
     [ "type_f16", "namespacethorin_1_1math.html#a27aa82675ad3fa0de81880efb6fd3b93", null ],
     [ "type_f32", "namespacethorin_1_1math.html#a1ed6aac0eaf04b293f0a89c066213349", null ],
     [ "type_f64", "namespacethorin_1_1math.html#a4f169f7740b304d08fa8af863a11b06f", null ],
-    [ "Dialect_Id", "namespacethorin_1_1math.html#a1914a72504aea437bf73ec521ebb8397", null ]
+    [ "Plugin_Id", "namespacethorin_1_1math.html#a528a45f767dc0f1cc85c6d66fb4c0cbf", null ]
 ];

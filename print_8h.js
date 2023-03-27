@@ -2,6 +2,7 @@ var print_8h =
 [
     [ "thorin::Elem< R, F >", "structthorin_1_1Elem.html", "structthorin_1_1Elem" ],
     [ "thorin::Tab", "classthorin_1_1Tab.html", "classthorin_1_1Tab" ],
+    [ "thorin::detail::Printable", "conceptthorin_1_1detail_1_1Printable.html", null ],
     [ "thorin::detail::Elemable", "conceptthorin_1_1detail_1_1Elemable.html", null ],
     [ "assertf", "print_8h.html#a7bc6143638d489bb640260462bf07777", null ],
     [ "err", "print_8h.html#aac934f1d1e901ba18050dd1302d65507", null ],

@@ -1,6 +1,7 @@
 var axiom_8h =
 [
     [ "thorin::Axiom", "classthorin_1_1Axiom.html", "classthorin_1_1Axiom" ],
+    [ "thorin::Axiom::Info", "structthorin_1_1Axiom_1_1Info.html", "structthorin_1_1Axiom_1_1Info" ],
     [ "thorin::Axiom::Match< T >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match", [
       [ "type", "classthorin_1_1Axiom.html#a90bea664417af17801b73ee688147b7d", null ]
     ] ],

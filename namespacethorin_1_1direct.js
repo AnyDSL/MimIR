@@ -9,5 +9,5 @@ var namespacethorin_1_1direct =
     [ "normalize_cps2ds", "namespacethorin_1_1direct.html#a6beae5c3898aeca60a19475f4b124999", null ],
     [ "op_cps2ds_dep", "namespacethorin_1_1direct.html#a45805d24b490ed23a0800e93dac940b8", null ],
     [ "register_normalizers", "namespacethorin_1_1direct.html#acc07303a8181af1620758514f7c1329f", null ],
-    [ "Dialect_Id", "namespacethorin_1_1direct.html#a24e96b8b210db4064ed13a6ff78c675b", null ]
+    [ "Plugin_Id", "namespacethorin_1_1direct.html#aef82355824b02489f1f6633eb9a513d2", null ]
 ];

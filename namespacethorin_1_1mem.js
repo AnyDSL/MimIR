@@ -66,5 +66,5 @@ var namespacethorin_1_1mem =
     [ "type_ptr", "namespacethorin_1_1mem.html#afd9c95a269d3c893c8fe1ae2dbfa1e59", null ],
     [ "type_ptr", "namespacethorin_1_1mem.html#a538c585266aeecfe400ba79cd77145ea", null ],
     [ "vec2array", "namespacethorin_1_1mem.html#a05daec323670b5604838b263124b0f72", null ],
-    [ "Dialect_Id", "namespacethorin_1_1mem.html#a41b7439a65e69145a9f5f3a85b1d8501", null ]
+    [ "Plugin_Id", "namespacethorin_1_1mem.html#ac08277b34b0939ecee1ec2add68bbee8", null ]
 ];

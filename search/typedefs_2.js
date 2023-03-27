@@ -12,7 +12,6 @@ var searchData=
   ['defs_9',['Defs',['../namespacethorin.html#ab6c106c44c8584cd4bdb99b75b915c38',1,'thorin']]],
   ['defset_10',['DefSet',['../namespacethorin.html#a7fddaff34d4e4927bc748c28b49eef46',1,'thorin']]],
   ['defvec_11',['DefVec',['../namespacethorin.html#a79fff1449ba1eaecead8f607520f8574',1,'thorin']]],
-  ['dialect_5ft_12',['dialect_t',['../namespacethorin.html#adb7875050bd88ae8cd44a2fc16a7143d',1,'thorin']]],
-  ['domfrontiers_13',['DomFrontiers',['../namespacethorin.html#a8a90b869bd49f86b0ee4b3b37503d33f',1,'thorin']]],
-  ['domtree_14',['DomTree',['../namespacethorin.html#a27a76a1f311546f00c650982da319cb5',1,'thorin']]]
+  ['domfrontiers_12',['DomFrontiers',['../namespacethorin.html#a8a90b869bd49f86b0ee4b3b37503d33f',1,'thorin']]],
+  ['domtree_13',['DomTree',['../namespacethorin.html#a27a76a1f311546f00c650982da319cb5',1,'thorin']]]
 ];

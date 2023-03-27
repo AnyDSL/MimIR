@@ -4,8 +4,8 @@ var namespacethorin_1_1autodiff =
     [ "AutoDiffExternalCleanup", "classthorin_1_1autodiff_1_1AutoDiffExternalCleanup.html", "classthorin_1_1autodiff_1_1AutoDiffExternalCleanup" ],
     [ "AutoDiffZero", "classthorin_1_1autodiff_1_1AutoDiffZero.html", "classthorin_1_1autodiff_1_1AutoDiffZero" ],
     [ "AutoDiffZeroCleanup", "classthorin_1_1autodiff_1_1AutoDiffZeroCleanup.html", "classthorin_1_1autodiff_1_1AutoDiffZeroCleanup" ],
-    [ "ad", "namespacethorin_1_1autodiff.html#aa01669317ac5a2c1679e4dd25678a051", null ],
     [ "AD", "namespacethorin_1_1autodiff.html#ae4a2884a429ac996dc3a0d42e0077985", null ],
+    [ "ad", "namespacethorin_1_1autodiff.html#aa01669317ac5a2c1679e4dd25678a051", null ],
     [ "ad_eval_pass", "namespacethorin_1_1autodiff.html#a70e498c2379dc6134a75385b61561590", null ],
     [ "ad_ext_cleanup_pass", "namespacethorin_1_1autodiff.html#a31ed274d65f6ce6f65f91d9cff047e37", null ],
     [ "ad_zero_cleanup_pass", "namespacethorin_1_1autodiff.html#a26d7f2c0898e592b451903ecc52fb1d8", null ],
@@ -32,5 +32,5 @@ var namespacethorin_1_1autodiff =
     [ "tangent_type_fun", "namespacethorin_1_1autodiff.html#a0183a16e3a07c4937c9aa7822923bde2", null ],
     [ "zero_def", "namespacethorin_1_1autodiff.html#a0625c818ce50225081948f7520171b53", null ],
     [ "zero_pullback", "namespacethorin_1_1autodiff.html#a425ac0b0201ca7273b6cceede10692fd", null ],
-    [ "Dialect_Id", "namespacethorin_1_1autodiff.html#a457dbdd516cc73e625369f8a392426ce", null ]
+    [ "Plugin_Id", "namespacethorin_1_1autodiff.html#a51e048391d578c34bb807adb276323ea", null ]
 ];

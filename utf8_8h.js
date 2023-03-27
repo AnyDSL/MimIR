@@ -1,7 +1,7 @@
 var utf8_8h =
 [
     [ "thorin::utf8::Lexer< Max_Ahead >", "classthorin_1_1utf8_1_1Lexer.html", "classthorin_1_1utf8_1_1Lexer" ],
-    [ "thorin::utf8::Lexer< Max_Ahead >::Ahead", "structthorin_1_1utf8_1_1Lexer_1_1Ahead.html", "structthorin_1_1utf8_1_1Lexer_1_1Ahead" ],
+    [ "thorin::utf8::Lexer< Max_Ahead >::Char", "structthorin_1_1utf8_1_1Lexer_1_1Char.html", "structthorin_1_1utf8_1_1Lexer_1_1Char" ],
     [ "append", "utf8_8h.html#ab193286524b0df4c5483ae6290004959", null ],
     [ "decode", "utf8_8h.html#a830878e63c9e4b8bf2f73ba457a790ca", null ],
     [ "encode", "utf8_8h.html#a420279844f511969229c3af8d8f9435c", null ],

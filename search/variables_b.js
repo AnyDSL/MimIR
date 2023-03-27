@@ -8,7 +8,7 @@ var searchData=
   ['node_5f_5',['node_',['../classthorin_1_1Def.html#ac9edbbbcb5a6cd3800e51f79cb30fcd5',1,'thorin::Def']]],
   ['nom_5f_6',['nom_',['../classthorin_1_1Def.html#a8dbf3d598ca965f8b5227f55eeffd37e',1,'thorin::Def']]],
   ['noms_7',['noms',['../classthorin_1_1Dumper.html#aa58457a8c9046ec7249f4d32fbd87c53',1,'thorin::Dumper']]],
-  ['normalizer_8',['normalizer',['../namespacethorin_1_1h.html#a179e65567d348a01f1f21a81c5102a21',1,'thorin::h::AxiomInfo']]],
+  ['normalizer_8',['normalizer',['../structthorin_1_1Axiom_1_1Info.html#a3c4676c28fc6304ba7b99d83d530127e',1,'thorin::Axiom::Info']]],
   ['num_9',['Num',['../classthorin_1_1Axiom.html#adf7e0a254dcc8c8342f84827d7cac371',1,'thorin::Axiom']]],
   ['num_5fkeys_10',['Num_Keys',['../namespacethorin_1_1fe.html#a6260d69793231000822afe60b38892ac',1,'thorin::fe']]],
   ['num_5fops_5f_11',['num_ops_',['../classthorin_1_1Def.html#aca8c4b92e68fac58f8c2812cdff26442',1,'thorin::Def']]]

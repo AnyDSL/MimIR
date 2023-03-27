@@ -21,11 +21,12 @@ var searchData=
   ['k_5fnat_18',['K_Nat',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79aefffde19d56073e2539eb8c5b2d51296',1,'thorin::fe::Tok']]],
   ['k_5fpack_19',['K_pack',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a56ac63798d37335301d7e04344bc839f',1,'thorin::fe::Tok']]],
   ['k_5fpi_20',['K_Pi',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a12200d43209d8e4947abce31b7a550aa',1,'thorin::fe::Tok']]],
-  ['k_5fsigma_21',['K_Sigma',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79ae3df2a467ffbdf1e8c8629d62b09efbf',1,'thorin::fe::Tok']]],
-  ['k_5ftt_22',['K_tt',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a2879fcb4320671691958f7a455aa82bd',1,'thorin::fe::Tok']]],
-  ['k_5ftype_23',['K_Type',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a99c9443b98ae3d0847fdcd64f6600e25',1,'thorin::fe::Tok']]],
-  ['k_5funiv_24',['K_Univ',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a49b3d477647d73a29f5821aad9819448',1,'thorin::fe::Tok']]],
-  ['keep_25',['keep',['../classthorin_1_1BetaRed.html#a256524bd29ecf0fefeed14c65e037c91',1,'thorin::BetaRed']]],
-  ['kind_26',['Kind',['../namespacethorin.html#abb917bebc699083d990fc4592abcc50ead626102cfc2416a570fc0dc582a9b771',1,'thorin']]],
-  ['known_27',['known',['../namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aa16b4c02b986c1c384ebffc8cb89c57a6',1,'thorin::core']]]
+  ['k_5fplugin_21',['K_plugin',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a16b614bec0670bc8776c90f9d69d2a62',1,'thorin::fe::Tok']]],
+  ['k_5fsigma_22',['K_Sigma',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79ae3df2a467ffbdf1e8c8629d62b09efbf',1,'thorin::fe::Tok']]],
+  ['k_5ftt_23',['K_tt',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a2879fcb4320671691958f7a455aa82bd',1,'thorin::fe::Tok']]],
+  ['k_5ftype_24',['K_Type',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a99c9443b98ae3d0847fdcd64f6600e25',1,'thorin::fe::Tok']]],
+  ['k_5funiv_25',['K_Univ',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a49b3d477647d73a29f5821aad9819448',1,'thorin::fe::Tok']]],
+  ['keep_26',['keep',['../classthorin_1_1BetaRed.html#a256524bd29ecf0fefeed14c65e037c91',1,'thorin::BetaRed']]],
+  ['kind_27',['Kind',['../namespacethorin.html#abb917bebc699083d990fc4592abcc50ead626102cfc2416a570fc0dc582a9b771',1,'thorin']]],
+  ['known_28',['known',['../namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aa16b4c02b986c1c384ebffc8cb89c57a6',1,'thorin::core']]]
 ];

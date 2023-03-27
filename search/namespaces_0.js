@@ -12,14 +12,13 @@ var searchData=
   ['dl_9',['dl',['../namespacethorin_1_1dl.html',1,'thorin']]],
   ['dot_10',['dot',['../namespacethorin_1_1dot.html',1,'thorin']]],
   ['fe_11',['fe',['../namespacethorin_1_1fe.html',1,'thorin']]],
-  ['h_12',['h',['../namespacethorin_1_1h.html',1,'thorin']]],
-  ['ll_13',['ll',['../namespacethorin_1_1ll.html',1,'thorin']]],
-  ['math_14',['math',['../namespacethorin_1_1math.html',1,'thorin']]],
-  ['mem_15',['mem',['../namespacethorin_1_1mem.html',1,'thorin']]],
-  ['node_16',['Node',['../namespacethorin_1_1Node.html',1,'thorin']]],
-  ['opt_17',['opt',['../namespacethorin_1_1opt.html',1,'thorin']]],
-  ['refly_18',['refly',['../namespacethorin_1_1refly.html',1,'thorin']]],
-  ['sys_19',['sys',['../namespacethorin_1_1sys.html',1,'thorin']]],
-  ['thorin_20',['thorin',['../namespacethorin.html',1,'']]],
-  ['utf8_21',['utf8',['../namespacethorin_1_1utf8.html',1,'thorin']]]
+  ['ll_12',['ll',['../namespacethorin_1_1ll.html',1,'thorin']]],
+  ['math_13',['math',['../namespacethorin_1_1math.html',1,'thorin']]],
+  ['mem_14',['mem',['../namespacethorin_1_1mem.html',1,'thorin']]],
+  ['node_15',['Node',['../namespacethorin_1_1Node.html',1,'thorin']]],
+  ['opt_16',['opt',['../namespacethorin_1_1opt.html',1,'thorin']]],
+  ['refly_17',['refly',['../namespacethorin_1_1refly.html',1,'thorin']]],
+  ['sys_18',['sys',['../namespacethorin_1_1sys.html',1,'thorin']]],
+  ['thorin_19',['thorin',['../namespacethorin.html',1,'']]],
+  ['utf8_20',['utf8',['../namespacethorin_1_1utf8.html',1,'thorin']]]
 ];

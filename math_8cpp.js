@@ -1,4 +1,4 @@
 var math_8cpp =
 [
-    [ "thorin_get_dialect_info", "math_8cpp.html#a63090a34caf572bdd21bbe2441bf661d", null ]
+    [ "thorin_get_plugin", "math_8cpp.html#a2b0c506ec13141b704c0aea991f89b55", null ]
 ];

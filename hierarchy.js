@@ -1,6 +1,5 @@
 var hierarchy =
 [
-    [ "thorin::utf8::Lexer< Max_Ahead >::Ahead", "structthorin_1_1utf8_1_1Lexer_1_1Ahead.html", null ],
     [ "thorin::Array< T >", "classthorin_1_1Array.html", null ],
     [ "thorin::Array< const Def * >", "classthorin_1_1Array.html", null ],
     [ "thorin::Array< uint64_t >", "classthorin_1_1Array.html", null ],
@@ -13,14 +12,13 @@ var hierarchy =
     [ "thorin::ArrayStorage< uint64_t, std::is_trivial< uint64_t >::value ? 5 :0 >", "classthorin_1_1ArrayStorage.html", null ],
     [ "thorin::ArrayStorage< Value, std::is_trivial< Value >::value ? 5 :0 >", "classthorin_1_1ArrayStorage.html", null ],
     [ "thorin::ArrayStorage< void *, std::is_trivial< void * >::value ? 5 :0 >", "classthorin_1_1ArrayStorage.html", null ],
-    [ "thorin::h::AxiomInfo", "namespacethorin_1_1h.html#structthorin_1_1h_1_1AxiomInfo", null ],
     [ "thorin::dot::BB", "namespacethorin_1_1dot.html#classthorin_1_1dot_1_1BB", null ],
     [ "thorin::ll::BB", "structthorin_1_1ll_1_1BB.html", null ],
     [ "thorin::BitSet", "classthorin_1_1BitSet.html", null ],
-    [ "thorin::h::Bootstrapper", "classthorin_1_1h_1_1Bootstrapper.html", null ],
     [ "thorin::CFA", "classthorin_1_1CFA.html", null ],
     [ "thorin::CFG< forward >", "classthorin_1_1CFG.html", null ],
     [ "thorin::CFNode", "classthorin_1_1CFNode.html", null ],
+    [ "thorin::utf8::Lexer< Max_Ahead >::Char", "structthorin_1_1utf8_1_1Lexer_1_1Char.html", null ],
     [ "thorin::Checker", "classthorin_1_1Checker.html", null ],
     [ "thorin::clos::ClosLit", "classthorin_1_1clos_1_1ClosLit.html", null ],
     [ "thorin::Dbg", "namespacethorin.html#structthorin_1_1Dbg", null ],
@@ -28,8 +26,6 @@ var hierarchy =
     [ "thorin::DefDefHash", "structthorin_1_1DefDefHash.html", null ],
     [ "thorin::DepNode", "classthorin_1_1DepNode.html", null ],
     [ "thorin::DepTree", "classthorin_1_1DepTree.html", null ],
-    [ "thorin::Dialect", "classthorin_1_1Dialect.html", null ],
-    [ "thorin::DialectInfo", "structthorin_1_1DialectInfo.html", null ],
     [ "thorin::DomFrontierBase< forward >", "classthorin_1_1DomFrontierBase.html", null ],
     [ "thorin::DomTreeBase< forward >", "classthorin_1_1DomTreeBase.html", null ],
     [ "thorin::Dumper", "classthorin_1_1Dumper.html", null ],
@@ -44,6 +40,7 @@ var hierarchy =
     [ "thorin::IndexMap< Indexer, Key, Value >", "classthorin_1_1IndexMap.html", null ],
     [ "thorin::IndexMap< const thorin::CFNode * >", "classthorin_1_1IndexMap.html", null ],
     [ "thorin::IndexSet< Indexer, Key >", "classthorin_1_1IndexSet.html", null ],
+    [ "thorin::Axiom::Info", "structthorin_1_1Axiom_1_1Info.html", null ],
     [ "thorin::mem::SSAConstr::Info", "classthorin_1_1mem_1_1SSAConstr.html#structthorin_1_1mem_1_1SSAConstr_1_1Info", null ],
     [ "thorin::Inline", "structthorin_1_1Inline.html", null ],
     [ "thorin::utf8::Lexer< Max_Ahead >", "classthorin_1_1utf8_1_1Lexer.html", null ],
@@ -225,6 +222,7 @@ var hierarchy =
       [ "thorin::clos::LowerTypedClos", "classthorin_1_1clos_1_1LowerTypedClos.html", null ]
     ] ],
     [ "thorin::PipelineBuilder", "classthorin_1_1PipelineBuilder.html", null ],
+    [ "thorin::Plugin", "structthorin_1_1Plugin.html", null ],
     [ "thorin::World::State::POD", "structthorin_1_1World_1_1State.html#structthorin_1_1World_1_1State_1_1POD", null ],
     [ "thorin::Pos", "structthorin_1_1Pos.html", null ],
     [ "thorin::fe::Ptrn", "classthorin_1_1fe_1_1Ptrn.html", [
@@ -237,6 +235,7 @@ var hierarchy =
     [ "thorin::core::Res", "classthorin_1_1core_1_1Res.html", null ],
     [ "thorin::math::Res", "classthorin_1_1math_1_1Res.html", null ],
     [ "thorin::Rewriter", "classthorin_1_1Rewriter.html", [
+      [ "thorin::InferRewriter", "classthorin_1_1InferRewriter.html", null ],
       [ "thorin::RWPhase", "classthorin_1_1RWPhase.html", null ],
       [ "thorin::ScopeRewriter", "classthorin_1_1ScopeRewriter.html", null ]
     ] ],

@@ -70,5 +70,5 @@ var namespacethorin_1_1clos =
     [ "split", "namespacethorin_1_1clos.html#aafdf4d2b2ec100ee66f833b54786b3aa", null ],
     [ "split", "namespacethorin_1_1clos.html#a57ce28d98e5778910dba8acdb40f3d6b", null ],
     [ "Clos_Env_Param", "namespacethorin_1_1clos.html#aef2b719a7074044446ad7efd00ed8d86", null ],
-    [ "Dialect_Id", "namespacethorin_1_1clos.html#a825f85d6f84051d8c57118e012949b8e", null ]
+    [ "Plugin_Id", "namespacethorin_1_1clos.html#a1fa7da73fdc2c7148dc222ad76bb0322", null ]
 ];

@@ -117,6 +117,9 @@ $(document).ready(function(){initNavTree('classthorin_1_1ScopeRewriter.html','')
 </div><!--header-->
 <div class="contents">
 
+<p>Stops rewriting when leaving the <a class="el" href="classthorin_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a>.  
+ <a href="classthorin_1_1ScopeRewriter.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="rewrite_8h_source.html">thorin/rewrite.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for thorin::ScopeRewriter:</div>
@@ -131,23 +134,24 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aea90b2a111c66c7f32f5f921e38ec7d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6eecb085d8bcccea5874451542d1a765"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Scope.html">Scope</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ScopeRewriter.html#a6eecb085d8bcccea5874451542d1a765">scope</a> () const</td></tr>
 <tr class="separator:a6eecb085d8bcccea5874451542d1a765"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a561b96840c605621ab51b87e809a781c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ScopeRewriter.html#a561b96840c605621ab51b87e809a781c">rewrite</a> (<a class="el" href="classthorin_1_1Ref.html">Ref</a> old_def) override</td></tr>
-<tr class="separator:a561b96840c605621ab51b87e809a781c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47360ef051d5416d4b1f756a15ab8619"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ScopeRewriter.html#a47360ef051d5416d4b1f756a15ab8619">rewrite</a> (<a class="el" href="classthorin_1_1Ref.html">Ref</a> old_def) override</td></tr>
+<tr class="separator:a47360ef051d5416d4b1f756a15ab8619"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classthorin_1_1Rewriter"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classthorin_1_1Rewriter')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classthorin_1_1Rewriter.html">thorin::Rewriter</a></td></tr>
 <tr class="memitem:a293eaaddc06822804fb895150a3edc0f inherit pub_methods_classthorin_1_1Rewriter"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#a293eaaddc06822804fb895150a3edc0f">Rewriter</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;<a class="el" href="classthorin_1_1Rewriter.html#a02e6136af63730146609ef84a373f890">world</a>)</td></tr>
 <tr class="separator:a293eaaddc06822804fb895150a3edc0f inherit pub_methods_classthorin_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02e6136af63730146609ef84a373f890 inherit pub_methods_classthorin_1_1Rewriter"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#a02e6136af63730146609ef84a373f890">world</a> ()</td></tr>
 <tr class="separator:a02e6136af63730146609ef84a373f890 inherit pub_methods_classthorin_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4673508fde7194f0ba16c03c48424f0 inherit pub_methods_classthorin_1_1Rewriter"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#af4673508fde7194f0ba16c03c48424f0">map</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *old_def, const <a class="el" href="classthorin_1_1Def.html">Def</a> *new_def)</td></tr>
-<tr class="separator:af4673508fde7194f0ba16c03c48424f0 inherit pub_methods_classthorin_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c380b720f711a5f0ec667e6b647275a inherit pub_methods_classthorin_1_1Rewriter"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#a7c380b720f711a5f0ec667e6b647275a">rewrite_structural</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *)</td></tr>
-<tr class="separator:a7c380b720f711a5f0ec667e6b647275a inherit pub_methods_classthorin_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc61a59833679a2c40d9a7dbfdfa4c02 inherit pub_methods_classthorin_1_1Rewriter"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#abc61a59833679a2c40d9a7dbfdfa4c02">rewrite_nom</a> (<a class="el" href="classthorin_1_1Def.html">Def</a> *)</td></tr>
-<tr class="separator:abc61a59833679a2c40d9a7dbfdfa4c02 inherit pub_methods_classthorin_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a665ee00c61e0122369a8dfd70e8dcb15 inherit pub_methods_classthorin_1_1Rewriter"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#a665ee00c61e0122369a8dfd70e8dcb15">map</a> (<a class="el" href="classthorin_1_1Ref.html">Ref</a> old_def, <a class="el" href="classthorin_1_1Ref.html">Ref</a> new_def)</td></tr>
+<tr class="separator:a665ee00c61e0122369a8dfd70e8dcb15 inherit pub_methods_classthorin_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62baa1dbbe56b9d25b411958629315dc inherit pub_methods_classthorin_1_1Rewriter"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#a62baa1dbbe56b9d25b411958629315dc">rewrite_structural</a> (<a class="el" href="classthorin_1_1Ref.html">Ref</a>)</td></tr>
+<tr class="separator:a62baa1dbbe56b9d25b411958629315dc inherit pub_methods_classthorin_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab07ac4af6d60d18d24df3c246e12e443 inherit pub_methods_classthorin_1_1Rewriter"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#ab07ac4af6d60d18d24df3c246e12e443">rewrite_nom</a> (<a class="el" href="classthorin_1_1Def.html">Def</a> *)</td></tr>
+<tr class="separator:ab07ac4af6d60d18d24df3c246e12e443 inherit pub_methods_classthorin_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00031">31</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
+<div class="textblock"><p >Stops rewriting when leaving the <a class="el" href="classthorin_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a>. </p>
+
+<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00032">32</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aea90b2a111c66c7f32f5f921e38ec7d4" name="aea90b2a111c66c7f32f5f921e38ec7d4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aea90b2a111c66c7f32f5f921e38ec7d4">&#9670;&#160;</a></span>ScopeRewriter()</h2>
@@ -183,13 +187,13 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00033">33</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00034">34</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a561b96840c605621ab51b87e809a781c" name="a561b96840c605621ab51b87e809a781c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a561b96840c605621ab51b87e809a781c">&#9670;&#160;</a></span>rewrite()</h2>
+<a id="a47360ef051d5416d4b1f756a15ab8619" name="a47360ef051d5416d4b1f756a15ab8619"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47360ef051d5416d4b1f756a15ab8619">&#9670;&#160;</a></span>rewrite()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -198,7 +202,7 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classthorin_1_1Def.html">Def</a> * thorin::ScopeRewriter::rewrite </td>
+          <td class="memname"><a class="el" href="classthorin_1_1Ref.html">Ref</a> thorin::ScopeRewriter::rewrite </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td>
           <td class="paramname"><em>old_def</em></td><td>)</td>
@@ -212,11 +216,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented from <a class="el" href="classthorin_1_1Rewriter.html#ad20fa8b6456d3e390dcc14aae200333b">thorin::Rewriter</a>.</p>
+<p>Reimplemented from <a class="el" href="classthorin_1_1Rewriter.html#a59b6816aee709e3d3ee157e17b5c01e3">thorin::Rewriter</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00039">39</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00040">40</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
-<p class="reference">References <a class="el" href="rewrite_8cpp_source.html#l00009">thorin::Rewriter::rewrite()</a>, and <a class="el" href="rewrite_8h_source.html#l00037">scope()</a>.</p>
+<p class="reference">References <a class="el" href="rewrite_8cpp_source.html#l00009">thorin::Rewriter::rewrite()</a>, and <a class="el" href="rewrite_8h_source.html#l00038">scope()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00038">thorin::rewrite()</a>, and <a class="el" href="ast_8cpp_source.html#l00035">thorin::fe::TuplePtrn::type()</a>.</p>
 
@@ -245,9 +249,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00037">37</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00038">38</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="rewrite_8h_source.html#l00039">rewrite()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="rewrite_8h_source.html#l00040">rewrite()</a>.</p>
 
 </div>
 </div>

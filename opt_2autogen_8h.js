@@ -1,4 +1,4 @@
 var opt_2autogen_8h =
 [
-    [ "Dialect_Id", "opt_2autogen_8h.html#a510fdbe3cf7faacd701bda0ee255822d", null ]
+    [ "Plugin_Id", "opt_2autogen_8h.html#ac98fef23b0390a2cd059bde9b1174720", null ]
 ];

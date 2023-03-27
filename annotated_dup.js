@@ -47,10 +47,6 @@ var annotated_dup =
         [ "Tok", "classthorin_1_1fe_1_1Tok.html", "classthorin_1_1fe_1_1Tok" ],
         [ "TuplePtrn", "classthorin_1_1fe_1_1TuplePtrn.html", "classthorin_1_1fe_1_1TuplePtrn" ]
       ] ],
-      [ "h", "namespacethorin_1_1h.html", [
-        [ "AxiomInfo", "namespacethorin_1_1h.html#structthorin_1_1h_1_1AxiomInfo", "namespacethorin_1_1h_structthorin_1_1h_1_1AxiomInfo_dup" ],
-        [ "Bootstrapper", "classthorin_1_1h_1_1Bootstrapper.html", "classthorin_1_1h_1_1Bootstrapper" ]
-      ] ],
       [ "ll", "namespacethorin_1_1ll.html", [
         [ "BB", "structthorin_1_1ll_1_1BB.html", "structthorin_1_1ll_1_1BB" ],
         [ "Emitter", "classthorin_1_1ll_1_1Emitter.html", "classthorin_1_1ll_1_1Emitter" ]
@@ -94,8 +90,6 @@ var annotated_dup =
       [ "DefDefHash", "structthorin_1_1DefDefHash.html", "structthorin_1_1DefDefHash" ],
       [ "DepNode", "classthorin_1_1DepNode.html", "classthorin_1_1DepNode" ],
       [ "DepTree", "classthorin_1_1DepTree.html", "classthorin_1_1DepTree" ],
-      [ "Dialect", "classthorin_1_1Dialect.html", "classthorin_1_1Dialect" ],
-      [ "DialectInfo", "structthorin_1_1DialectInfo.html", "structthorin_1_1DialectInfo" ],
       [ "DomFrontierBase", "classthorin_1_1DomFrontierBase.html", "classthorin_1_1DomFrontierBase" ],
       [ "DomTreeBase", "classthorin_1_1DomTreeBase.html", "classthorin_1_1DomTreeBase" ],
       [ "Driver", "classthorin_1_1Driver.html", "classthorin_1_1Driver" ],
@@ -118,6 +112,7 @@ var annotated_dup =
       [ "IndexMap", "classthorin_1_1IndexMap.html", "classthorin_1_1IndexMap" ],
       [ "IndexSet", "classthorin_1_1IndexSet.html", "classthorin_1_1IndexSet" ],
       [ "Infer", "classthorin_1_1Infer.html", "classthorin_1_1Infer" ],
+      [ "InferRewriter", "classthorin_1_1InferRewriter.html", "classthorin_1_1InferRewriter" ],
       [ "Inline", "structthorin_1_1Inline.html", "structthorin_1_1Inline" ],
       [ "Insert", "classthorin_1_1Insert.html", "classthorin_1_1Insert" ],
       [ "Lam", "classthorin_1_1Lam.html", "classthorin_1_1Lam" ],
@@ -141,6 +136,7 @@ var annotated_dup =
       [ "Pick", "classthorin_1_1Pick.html", "classthorin_1_1Pick" ],
       [ "Pipeline", "classthorin_1_1Pipeline.html", "classthorin_1_1Pipeline" ],
       [ "PipelineBuilder", "classthorin_1_1PipelineBuilder.html", "classthorin_1_1PipelineBuilder" ],
+      [ "Plugin", "structthorin_1_1Plugin.html", "structthorin_1_1Plugin" ],
       [ "Pos", "structthorin_1_1Pos.html", "structthorin_1_1Pos" ],
       [ "Proxy", "classthorin_1_1Proxy.html", "classthorin_1_1Proxy" ],
       [ "Ref", "classthorin_1_1Ref.html", "classthorin_1_1Ref" ],

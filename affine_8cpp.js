@@ -1,4 +1,4 @@
 var affine_8cpp =
 [
-    [ "thorin_get_dialect_info", "affine_8cpp.html#a2c21eaacd70577467e5becbb4bab374a", null ]
+    [ "thorin_get_plugin", "affine_8cpp.html#a2b0c506ec13141b704c0aea991f89b55", null ]
 ];

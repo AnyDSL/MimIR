@@ -6,7 +6,6 @@ var classthorin_1_1fe_1_1Scopes =
     [ "bind", "classthorin_1_1fe_1_1Scopes.html#a5aef029ca3a34a295a5911a1d1422ba1", null ],
     [ "curr", "classthorin_1_1fe_1_1Scopes.html#a9dfd5b14f5b002fa2dae96b890352099", null ],
     [ "find", "classthorin_1_1fe_1_1Scopes.html#a724efe05900c16b286ce5492e205e85d", null ],
-    [ "merge", "classthorin_1_1fe_1_1Scopes.html#ae2f464f1efb3ae51da627c6125a58d3b", null ],
     [ "pop", "classthorin_1_1fe_1_1Scopes.html#ab60385d699a5a71d9bdeefb40afe839b", null ],
     [ "push", "classthorin_1_1fe_1_1Scopes.html#a296a055b0407e4412e0581ad04e67942", null ],
     [ "swap", "classthorin_1_1fe_1_1Scopes.html#a98afa47cc8d17a4fac0d54772e910373", null ]

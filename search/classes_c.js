@@ -12,8 +12,9 @@ var searchData=
   ['pick_9',['Pick',['../classthorin_1_1Pick.html',1,'thorin']]],
   ['pipeline_10',['Pipeline',['../classthorin_1_1Pipeline.html',1,'thorin']]],
   ['pipelinebuilder_11',['PipelineBuilder',['../classthorin_1_1PipelineBuilder.html',1,'thorin']]],
-  ['pod_12',['POD',['../structthorin_1_1World_1_1State.html#structthorin_1_1World_1_1State_1_1POD',1,'thorin::World::State']]],
-  ['pos_13',['Pos',['../structthorin_1_1Pos.html',1,'thorin']]],
-  ['proxy_14',['Proxy',['../classthorin_1_1Proxy.html',1,'thorin']]],
-  ['ptrn_15',['Ptrn',['../classthorin_1_1fe_1_1Ptrn.html',1,'thorin::fe']]]
+  ['plugin_12',['Plugin',['../structthorin_1_1Plugin.html',1,'thorin']]],
+  ['pod_13',['POD',['../structthorin_1_1World_1_1State.html#structthorin_1_1World_1_1State_1_1POD',1,'thorin::World::State']]],
+  ['pos_14',['Pos',['../structthorin_1_1Pos.html',1,'thorin']]],
+  ['proxy_15',['Proxy',['../classthorin_1_1Proxy.html',1,'thorin']]],
+  ['ptrn_16',['Ptrn',['../classthorin_1_1fe_1_1Ptrn.html',1,'thorin::fe']]]
 ];

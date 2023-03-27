@@ -172,5 +172,5 @@ var math_2autogen_8h =
     [ "operator|", "math_2autogen_8h.html#a3aefbd1e5084acb2c92417c687fde2b1", null ],
     [ "operator|", "math_2autogen_8h.html#add2d5ed9da31fada3457f8e132d21126", null ],
     [ "register_normalizers", "math_2autogen_8h.html#adb33c52d8187a3232c6792776a151620", null ],
-    [ "Dialect_Id", "math_2autogen_8h.html#a1914a72504aea437bf73ec521ebb8397", null ]
+    [ "Plugin_Id", "math_2autogen_8h.html#a528a45f767dc0f1cc85c6d66fb4c0cbf", null ]
 ];

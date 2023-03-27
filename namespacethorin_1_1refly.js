@@ -26,5 +26,5 @@ var namespacethorin_1_1refly =
     [ "operator|", "namespacethorin_1_1refly.html#a4867d2c4637bc4a409f35f5acb532261", null ],
     [ "register_normalizers", "namespacethorin_1_1refly.html#a308b889d433339a153302adbe67339fe", null ],
     [ "type_code", "namespacethorin_1_1refly.html#a2cf796606d851c9bab06caf5a2332170", null ],
-    [ "Dialect_Id", "namespacethorin_1_1refly.html#ae1f0ffa94ba8ecc878b7849b6c1ad04f", null ]
+    [ "Plugin_Id", "namespacethorin_1_1refly.html#a323a1d074b165a712a766e8da367dd11", null ]
 ];

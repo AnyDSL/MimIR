@@ -131,6 +131,8 @@ Inheritance diagram for thorin::Axiom:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1Axiom_1_1Info.html">Info</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:structthorin_1_1Axiom_1_1Match"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match">Match</a></td></tr>
 <tr class="memdesc:structthorin_1_1Axiom_1_1Match"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classthorin_1_1Type.html">Type</a> of Match::def_.  <a href="classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match">More...</a><br /></td></tr>
 <tr class="separator:structthorin_1_1Axiom_1_1Match"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -257,17 +259,17 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:acf7f0ecd6ce68f0d308e98a1ad04be55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Axiom name</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p >Anatomy of an <a class="el" href="classthorin_1_1Axiom.html">Axiom</a> name:</p>
-<div class="fragment"><div class="line">%<a class="code hl_function" href="classthorin_1_1Axiom.html#a6002270fd4ecc1ea8a493681d09a0f43">dialect</a>.tag.sub</div>
+<div class="fragment"><div class="line">%<a class="code hl_function" href="classthorin_1_1Axiom.html#a9db26953a313f11f96fb93f361766bd1">plugin</a>.tag.sub</div>
 <div class="line">|  48   | 8 | 8 | &lt;-- Number of bits per field.</div>
-<div class="ttc" id="aclassthorin_1_1Axiom_html_a6002270fd4ecc1ea8a493681d09a0f43"><div class="ttname"><a href="classthorin_1_1Axiom.html#a6002270fd4ecc1ea8a493681d09a0f43">thorin::Axiom::dialect</a></div><div class="ttdeci">dialect_t dialect() const</div><div class="ttdoc">Yields the dialect part of the name as integer.</div><div class="ttdef"><b>Definition:</b> <a href="axiom_8h_source.html#l00057">axiom.h:57</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Axiom_html_a9db26953a313f11f96fb93f361766bd1"><div class="ttname"><a href="classthorin_1_1Axiom.html#a9db26953a313f11f96fb93f361766bd1">thorin::Axiom::plugin</a></div><div class="ttdeci">plugin_t plugin() const</div><div class="ttdoc">Yields the plugin part of the name as integer.</div><div class="ttdef"><b>Definition:</b> <a href="axiom_8h_source.html#l00071">axiom.h:71</a></div></div>
 </div><!-- fragment --><ul>
 <li>Def::name() retrieves the full name as <a class="el" href="classthorin_1_1Sym.html" title="A Symbol just wraps a const std::string*, so pass Sym itself around as value.">Sym</a>.</li>
-<li><a class="el" href="classthorin_1_1Def.html#ae5ea4e372acd23fa84ffef357a781084">Def::flags()</a> retrieves the full name as <a class="el" href="classthorin_1_1Axiom.html#a9b63b953f49e6cdd3f516349960045ab" title="Mangles s into a dense 48-bit representation.">Axiom::mangle</a>d 64-bit integer. </li>
+<li><a class="el" href="classthorin_1_1Def.html#ae5ea4e372acd23fa84ffef357a781084">Def::flags()</a> retrieves the full name as <a class="el" href="classthorin_1_1Axiom.html#a16d8c7c277234bf06ccc59c1b8b25fa5" title="Mangles s into a dense 48-bit representation.">Axiom::mangle</a>d 64-bit integer. </li>
 </ul>
 </div></td></tr>
-<tr class="memitem:a6002270fd4ecc1ea8a493681d09a0f43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#adb7875050bd88ae8cd44a2fc16a7143d">dialect_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Axiom.html#a6002270fd4ecc1ea8a493681d09a0f43">dialect</a> () const</td></tr>
-<tr class="memdesc:a6002270fd4ecc1ea8a493681d09a0f43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields the <code>dialect</code> part of the name as integer.  <a href="classthorin_1_1Axiom.html#a6002270fd4ecc1ea8a493681d09a0f43">More...</a><br /></td></tr>
-<tr class="separator:a6002270fd4ecc1ea8a493681d09a0f43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9db26953a313f11f96fb93f361766bd1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#adc4504461c3f6cec792a3fdb3e57f076">plugin_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Axiom.html#a9db26953a313f11f96fb93f361766bd1">plugin</a> () const</td></tr>
+<tr class="memdesc:a9db26953a313f11f96fb93f361766bd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields the <code>plugin</code> part of the name as integer.  <a href="classthorin_1_1Axiom.html#a9db26953a313f11f96fb93f361766bd1">More...</a><br /></td></tr>
+<tr class="separator:a9db26953a313f11f96fb93f361766bd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52fbe82684065787e1a12f483a93e534"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#ad6f0807de74648433d98df664cbb79ba">tag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Axiom.html#a52fbe82684065787e1a12f483a93e534">tag</a> () const</td></tr>
 <tr class="memdesc:a52fbe82684065787e1a12f483a93e534"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields the <code>tag</code> part of the name as integer.  <a href="classthorin_1_1Axiom.html#a52fbe82684065787e1a12f483a93e534">More...</a><br /></td></tr>
 <tr class="separator:a52fbe82684065787e1a12f483a93e534"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -275,7 +277,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a9188e87e6a0284c7f0745cafc0bd6e13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields the <code>sub</code> part of the name as integer.  <a href="classthorin_1_1Axiom.html#a9188e87e6a0284c7f0745cafc0bd6e13">More...</a><br /></td></tr>
 <tr class="separator:a9188e87e6a0284c7f0745cafc0bd6e13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cd2576283c1b9f1a29901e82b6a7f56"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#ae4dba9b3be2d9956cd3c0df92ba53dc2">flags_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Axiom.html#a5cd2576283c1b9f1a29901e82b6a7f56">base</a> () const</td></tr>
-<tr class="memdesc:a5cd2576283c1b9f1a29901e82b6a7f56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Includes <a class="el" href="classthorin_1_1Axiom.html#a6002270fd4ecc1ea8a493681d09a0f43" title="Yields the dialect part of the name as integer.">Axiom::dialect()</a> and <a class="el" href="classthorin_1_1Axiom.html#a52fbe82684065787e1a12f483a93e534" title="Yields the tag part of the name as integer.">Axiom::tag()</a> but <b>not</b> <a class="el" href="classthorin_1_1Axiom.html#a9188e87e6a0284c7f0745cafc0bd6e13" title="Yields the sub part of the name as integer.">Axiom::sub</a>.  <a href="classthorin_1_1Axiom.html#a5cd2576283c1b9f1a29901e82b6a7f56">More...</a><br /></td></tr>
+<tr class="memdesc:a5cd2576283c1b9f1a29901e82b6a7f56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Includes <a class="el" href="classthorin_1_1Axiom.html#a9db26953a313f11f96fb93f361766bd1" title="Yields the plugin part of the name as integer.">Axiom::plugin()</a> and <a class="el" href="classthorin_1_1Axiom.html#a52fbe82684065787e1a12f483a93e534" title="Yields the tag part of the name as integer.">Axiom::tag()</a> but <b>not</b> <a class="el" href="classthorin_1_1Axiom.html#a9188e87e6a0284c7f0745cafc0bd6e13" title="Yields the sub part of the name as integer.">Axiom::sub</a>.  <a href="classthorin_1_1Axiom.html#a5cd2576283c1b9f1a29901e82b6a7f56">More...</a><br /></td></tr>
 <tr class="separator:a5cd2576283c1b9f1a29901e82b6a7f56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classthorin_1_1Def"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classthorin_1_1Def')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classthorin_1_1Def.html">thorin::Def</a></td></tr>
 <tr class="memitem:affc2d40fbec3022f7b253bd14358dfe2 inherit pub_methods_classthorin_1_1Def"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#affc2d40fbec3022f7b253bd14358dfe2">world</a> () const</td></tr>
@@ -1227,17 +1229,17 @@ Friends</h2></td></tr>
 <tr class="memitem:af5c4f866aea98479d4ae54e9770c22ce"><td class="memItemLeft" align="right" valign="top">static std::pair&lt; <a class="el" href="namespacethorin.html#ad56e33ae995f3dc833c281c3945c335d">u8</a>, <a class="el" href="namespacethorin.html#ad56e33ae995f3dc833c281c3945c335d">u8</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Axiom.html#af5c4f866aea98479d4ae54e9770c22ce">infer_curry_and_trip</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *<a class="el" href="classthorin_1_1Def.html#aa7ad6f240ca55e9056230ce136c67c90">type</a>)</td></tr>
 <tr class="separator:af5c4f866aea98479d4ae54e9770c22ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader">Mangling Dialect Name</h2></td></tr>
-<tr class="memitem:a939bf893516cb849960e09442f2edb7f"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Axiom.html#a939bf893516cb849960e09442f2edb7f">Max_Dialect_Size</a> = 8</td></tr>
-<tr class="separator:a939bf893516cb849960e09442f2edb7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a2d4a4ceb6b5424e316d0c52baea3e3"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacethorin.html#adb7875050bd88ae8cd44a2fc16a7143d">dialect_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Axiom.html#a5a2d4a4ceb6b5424e316d0c52baea3e3">Global_Dialect</a> = 0xffff'ffff'ffff'0000_u64</td></tr>
-<tr class="separator:a5a2d4a4ceb6b5424e316d0c52baea3e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b63b953f49e6cdd3f516349960045ab"><td class="memItemLeft" align="right" valign="top">static std::optional&lt; <a class="el" href="namespacethorin.html#adb7875050bd88ae8cd44a2fc16a7143d">dialect_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Axiom.html#a9b63b953f49e6cdd3f516349960045ab">mangle</a> (<a class="el" href="classthorin_1_1Sym.html">Sym</a> s)</td></tr>
-<tr class="memdesc:a9b63b953f49e6cdd3f516349960045ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mangles <code>s</code> into a dense 48-bit representation.  <a href="classthorin_1_1Axiom.html#a9b63b953f49e6cdd3f516349960045ab">More...</a><br /></td></tr>
-<tr class="separator:a9b63b953f49e6cdd3f516349960045ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a077cf9255edba8e20474768c2f8bce3a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classthorin_1_1Sym.html">Sym</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Axiom.html#a077cf9255edba8e20474768c2f8bce3a">demangle</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;, <a class="el" href="namespacethorin.html#adb7875050bd88ae8cd44a2fc16a7143d">dialect_t</a> u)</td></tr>
-<tr class="memdesc:a077cf9255edba8e20474768c2f8bce3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reverts an <a class="el" href="classthorin_1_1Axiom.html#a9b63b953f49e6cdd3f516349960045ab" title="Mangles s into a dense 48-bit representation.">Axiom::mangle</a>d string to a <a class="el" href="classthorin_1_1Sym.html" title="A Symbol just wraps a const std::string*, so pass Sym itself around as value.">Sym</a>.  <a href="classthorin_1_1Axiom.html#a077cf9255edba8e20474768c2f8bce3a">More...</a><br /></td></tr>
-<tr class="separator:a077cf9255edba8e20474768c2f8bce3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader">Mangling plugin Name</h2></td></tr>
+<tr class="memitem:a332119d03dbb78d6b2b7364ae1011973"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Axiom.html#a332119d03dbb78d6b2b7364ae1011973">Max_Plugin_Size</a> = 8</td></tr>
+<tr class="separator:a332119d03dbb78d6b2b7364ae1011973"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5101fb86e417f72b0a734243b1f2fcf4"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacethorin.html#adc4504461c3f6cec792a3fdb3e57f076">plugin_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Axiom.html#a5101fb86e417f72b0a734243b1f2fcf4">Global_Plugin</a> = 0xffff'ffff'ffff'0000_u64</td></tr>
+<tr class="separator:a5101fb86e417f72b0a734243b1f2fcf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16d8c7c277234bf06ccc59c1b8b25fa5"><td class="memItemLeft" align="right" valign="top">static std::optional&lt; <a class="el" href="namespacethorin.html#adc4504461c3f6cec792a3fdb3e57f076">plugin_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Axiom.html#a16d8c7c277234bf06ccc59c1b8b25fa5">mangle</a> (<a class="el" href="classthorin_1_1Sym.html">Sym</a> s)</td></tr>
+<tr class="memdesc:a16d8c7c277234bf06ccc59c1b8b25fa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mangles <code>s</code> into a dense 48-bit representation.  <a href="classthorin_1_1Axiom.html#a16d8c7c277234bf06ccc59c1b8b25fa5">More...</a><br /></td></tr>
+<tr class="separator:a16d8c7c277234bf06ccc59c1b8b25fa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3c97731461410f722db99d8fde739cb"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classthorin_1_1Sym.html">Sym</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Axiom.html#af3c97731461410f722db99d8fde739cb">demangle</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;, <a class="el" href="namespacethorin.html#adc4504461c3f6cec792a3fdb3e57f076">plugin_t</a> u)</td></tr>
+<tr class="memdesc:af3c97731461410f722db99d8fde739cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reverts an <a class="el" href="classthorin_1_1Axiom.html#a16d8c7c277234bf06ccc59c1b8b25fa5" title="Mangles s into a dense 48-bit representation.">Axiom::mangle</a>d string to a <a class="el" href="classthorin_1_1Sym.html" title="A Symbol just wraps a const std::string*, so pass Sym itself around as value.">Sym</a>.  <a href="classthorin_1_1Axiom.html#af3c97731461410f722db99d8fde739cb">More...</a><br /></td></tr>
+<tr class="separator:af3c97731461410f722db99d8fde739cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ffa6c75c6f3c40a8f5a454e465818ba"><td class="memItemLeft" align="right" valign="top">static std::array&lt; <a class="el" href="classthorin_1_1Sym.html">Sym</a>, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Axiom.html#a6ffa6c75c6f3c40a8f5a454e465818ba">split</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;, <a class="el" href="classthorin_1_1Sym.html">Sym</a>)</td></tr>
 <tr class="separator:a6ffa6c75c6f3c40a8f5a454e465818ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -1329,7 +1331,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class T&gt;<br />
 struct thorin::Axiom::Match&lt; T &gt;</div><p ><a class="el" href="classthorin_1_1Type.html">Type</a> of Match::def_. </p>
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00115">115</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00129">129</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1379,7 +1381,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="autodiff_2autogen_8h_source.html#l00129">129</a> of file <a class="el" href="autodiff_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="autodiff_2autogen_8h_source.html#l00127">127</a> of file <a class="el" href="autodiff_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1404,7 +1406,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="autodiff_2autogen_8h_source.html#l00127">127</a> of file <a class="el" href="autodiff_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="autodiff_2autogen_8h_source.html#l00129">129</a> of file <a class="el" href="autodiff_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1429,7 +1431,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="autodiff_2autogen_8h_source.html#l00128">128</a> of file <a class="el" href="autodiff_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="autodiff_2autogen_8h_source.html#l00130">130</a> of file <a class="el" href="autodiff_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1454,7 +1456,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="autodiff_2autogen_8h_source.html#l00130">130</a> of file <a class="el" href="autodiff_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="autodiff_2autogen_8h_source.html#l00128">128</a> of file <a class="el" href="autodiff_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1479,7 +1481,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="clos_2autogen_8h_source.html#l00142">142</a> of file <a class="el" href="clos_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="clos_2autogen_8h_source.html#l00140">140</a> of file <a class="el" href="clos_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1504,7 +1506,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="clos_2autogen_8h_source.html#l00140">140</a> of file <a class="el" href="clos_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="clos_2autogen_8h_source.html#l00142">142</a> of file <a class="el" href="clos_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1529,7 +1531,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="clos_2autogen_8h_source.html#l00141">141</a> of file <a class="el" href="clos_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="clos_2autogen_8h_source.html#l00138">138</a> of file <a class="el" href="clos_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1554,7 +1556,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="clos_2autogen_8h_source.html#l00138">138</a> of file <a class="el" href="clos_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="clos_2autogen_8h_source.html#l00137">137</a> of file <a class="el" href="clos_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1604,7 +1606,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="clos_2autogen_8h_source.html#l00137">137</a> of file <a class="el" href="clos_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="clos_2autogen_8h_source.html#l00141">141</a> of file <a class="el" href="clos_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1629,7 +1631,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00325">325</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00324">324</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1654,7 +1656,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00327">327</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00335">335</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1679,7 +1681,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00330">330</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00326">326</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1704,7 +1706,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00319">319</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00332">332</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1729,7 +1731,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00334">334</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00333">333</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1754,7 +1756,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00323">323</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00325">325</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1779,7 +1781,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00335">335</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00331">331</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1804,7 +1806,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00324">324</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00320">320</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1829,7 +1831,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00333">333</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00327">327</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1854,7 +1856,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00332">332</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00319">319</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1879,7 +1881,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00329">329</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00323">323</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1904,7 +1906,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00328">328</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00321">321</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1929,7 +1931,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00336">336</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00329">329</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1954,7 +1956,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00321">321</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00334">334</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -1979,7 +1981,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00326">326</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00322">322</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -2004,7 +2006,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00331">331</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00328">328</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -2029,7 +2031,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00320">320</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00336">336</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -2054,7 +2056,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00322">322</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00330">330</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -2079,7 +2081,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="direct_2autogen_8h_source.html#l00059">59</a> of file <a class="el" href="direct_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="direct_2autogen_8h_source.html#l00058">58</a> of file <a class="el" href="direct_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -2104,7 +2106,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="direct_2autogen_8h_source.html#l00058">58</a> of file <a class="el" href="direct_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="direct_2autogen_8h_source.html#l00059">59</a> of file <a class="el" href="direct_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -2129,7 +2131,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="mem_2autogen_8h_source.html#l00216">216</a> of file <a class="el" href="mem_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2autogen_8h_source.html#l00212">212</a> of file <a class="el" href="mem_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -2154,7 +2156,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="mem_2autogen_8h_source.html#l00215">215</a> of file <a class="el" href="mem_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2autogen_8h_source.html#l00211">211</a> of file <a class="el" href="mem_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -2179,7 +2181,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="mem_2autogen_8h_source.html#l00211">211</a> of file <a class="el" href="mem_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2autogen_8h_source.html#l00213">213</a> of file <a class="el" href="mem_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -2204,7 +2206,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="mem_2autogen_8h_source.html#l00213">213</a> of file <a class="el" href="mem_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2autogen_8h_source.html#l00216">216</a> of file <a class="el" href="mem_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -2229,7 +2231,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="mem_2autogen_8h_source.html#l00212">212</a> of file <a class="el" href="mem_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2autogen_8h_source.html#l00215">215</a> of file <a class="el" href="mem_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -2304,7 +2306,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="refly_2autogen_8h_source.html#l00107">107</a> of file <a class="el" href="refly_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="refly_2autogen_8h_source.html#l00108">108</a> of file <a class="el" href="refly_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -2329,7 +2331,7 @@ type</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="refly_2autogen_8h_source.html#l00108">108</a> of file <a class="el" href="refly_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="refly_2autogen_8h_source.html#l00107">107</a> of file <a class="el" href="refly_2autogen_8h_source.html">autogen.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -5252,9 +5254,9 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Includes <a class="el" href="classthorin_1_1Axiom.html#a6002270fd4ecc1ea8a493681d09a0f43" title="Yields the dialect part of the name as integer.">Axiom::dialect()</a> and <a class="el" href="classthorin_1_1Axiom.html#a52fbe82684065787e1a12f483a93e534" title="Yields the tag part of the name as integer.">Axiom::tag()</a> but <b>not</b> <a class="el" href="classthorin_1_1Axiom.html#a9188e87e6a0284c7f0745cafc0bd6e13" title="Yields the sub part of the name as integer.">Axiom::sub</a>. </p>
+<p>Includes <a class="el" href="classthorin_1_1Axiom.html#a9db26953a313f11f96fb93f361766bd1" title="Yields the plugin part of the name as integer.">Axiom::plugin()</a> and <a class="el" href="classthorin_1_1Axiom.html#a52fbe82684065787e1a12f483a93e534" title="Yields the tag part of the name as integer.">Axiom::tag()</a> but <b>not</b> <a class="el" href="classthorin_1_1Axiom.html#a9188e87e6a0284c7f0745cafc0bd6e13" title="Yields the sub part of the name as integer.">Axiom::sub</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00066">66</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00080">80</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00209">thorin::Def::flags()</a>.</p>
 
@@ -5283,14 +5285,14 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00034">34</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00048">48</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00492">thorin::Def::curry_</a>.</p>
 
 </div>
 </div>
-<a id="a077cf9255edba8e20474768c2f8bce3a" name="a077cf9255edba8e20474768c2f8bce3a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a077cf9255edba8e20474768c2f8bce3a">&#9670;&#160;</a></span>demangle()</h2>
+<a id="af3c97731461410f722db99d8fde739cb" name="af3c97731461410f722db99d8fde739cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3c97731461410f722db99d8fde739cb">&#9670;&#160;</a></span>demangle()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5307,7 +5309,7 @@ template&lt;&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacethorin.html#adb7875050bd88ae8cd44a2fc16a7143d">dialect_t</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacethorin.html#adc4504461c3f6cec792a3fdb3e57f076">plugin_t</a>&#160;</td>
           <td class="paramname"><em>u</em>&#160;</td>
         </tr>
         <tr>
@@ -5323,48 +5325,14 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Reverts an <a class="el" href="classthorin_1_1Axiom.html#a9b63b953f49e6cdd3f516349960045ab" title="Mangles s into a dense 48-bit representation.">Axiom::mangle</a>d string to a <a class="el" href="classthorin_1_1Sym.html" title="A Symbol just wraps a const std::string*, so pass Sym itself around as value.">Sym</a>. </p>
+<p>Reverts an <a class="el" href="classthorin_1_1Axiom.html#a16d8c7c277234bf06ccc59c1b8b25fa5" title="Mangles s into a dense 48-bit representation.">Axiom::mangle</a>d string to a <a class="el" href="classthorin_1_1Sym.html" title="A Symbol just wraps a const std::string*, so pass Sym itself around as value.">Sym</a>. </p>
 <p >Ignores lower 16-bit of <code>u</code>. </p>
 
 <p class="definition">Definition at line <a class="el" href="axiom_8cpp_source.html#l00075">75</a> of file <a class="el" href="axiom_8cpp_source.html">axiom.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="world_8cpp_source.html#l00075">thorin::World::sym()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00229">thorin::World::ax()</a>.</p>
-
-</div>
-</div>
-<a id="a6002270fd4ecc1ea8a493681d09a0f43" name="a6002270fd4ecc1ea8a493681d09a0f43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6002270fd4ecc1ea8a493681d09a0f43">&#9670;&#160;</a></span>dialect()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacethorin.html#adb7875050bd88ae8cd44a2fc16a7143d">dialect_t</a> thorin::Axiom::dialect </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Yields the <code>dialect</code> part of the name as integer. </p>
-<p >It consists of 48 relevant bits that are returned in the highest 6 bytes of a 64-bit integer. </p>
-
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00057">57</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
-
-<p class="reference">References <a class="el" href="def_8h_source.html#l00209">thorin::Def::flags()</a>, and <a class="el" href="axiom_8h_source.html#l00072">Global_Dialect</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="axiom_8h_source.html#l00149">thorin::Match&lt; Id, D &gt;::dialect()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00223">thorin::World::ax()</a>.</p>
 
 </div>
 </div>
@@ -5399,7 +5367,7 @@ template&lt;&gt; </div>
 
 <p class="reference">References <a class="el" href="cast_8h_source.html#l00044">thorin::RuntimeCast&lt; B &gt;::isa()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="axiom_8h_source.html#l00164">thorin::match()</a>, and <a class="el" href="world_8cpp_source.html#l00148">thorin::World::raw_app()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="axiom_8h_source.html#l00178">thorin::match()</a>, and <a class="el" href="world_8cpp_source.html#l00176">thorin::World::raw_app()</a>.</p>
 
 </div>
 </div>
@@ -5433,8 +5401,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="a9b63b953f49e6cdd3f516349960045ab" name="a9b63b953f49e6cdd3f516349960045ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b63b953f49e6cdd3f516349960045ab">&#9670;&#160;</a></span>mangle()</h2>
+<a id="a16d8c7c277234bf06ccc59c1b8b25fa5" name="a16d8c7c277234bf06ccc59c1b8b25fa5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16d8c7c277234bf06ccc59c1b8b25fa5">&#9670;&#160;</a></span>mangle()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5443,7 +5411,7 @@ template&lt;&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt; <a class="el" href="namespacethorin.html#adb7875050bd88ae8cd44a2fc16a7143d">dialect_t</a> &gt; thorin::Axiom::mangle </td>
+          <td class="memname">std::optional&lt; <a class="el" href="namespacethorin.html#adc4504461c3f6cec792a3fdb3e57f076">plugin_t</a> &gt; thorin::Axiom::mangle </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classthorin_1_1Sym.html">Sym</a>&#160;</td>
           <td class="paramname"><em>s</em></td><td>)</td>
@@ -5461,7 +5429,7 @@ template&lt;&gt; </div>
 <p >The layout is as follows: </p><div class="fragment"><div class="line">|---7--||---6--||---5--||---4--||---3--||---2--||---1--||---0--|</div>
 <div class="line">7654321076543210765432107654321076543210765432107654321076543210</div>
 <div class="line">Char67Char66Char65Char64Char63Char62Char61Char60|---reserved---|</div>
-</div><!-- fragment --><p> The <code>reserved</code> part is used for the <a class="el" href="classthorin_1_1Axiom.html#a52fbe82684065787e1a12f483a93e534" title="Yields the tag part of the name as integer.">Axiom::tag</a> and the <a class="el" href="classthorin_1_1Axiom.html#a9188e87e6a0284c7f0745cafc0bd6e13" title="Yields the sub part of the name as integer.">Axiom::sub</a>. Each <code>Char6x</code> is 6-bit wide and hence a dialect name has at most <a class="el" href="classthorin_1_1Axiom.html#a939bf893516cb849960e09442f2edb7f">Axiom::Max_Dialect_Size</a> = 8 chars. It uses this encoding: </p><table class="markdownTable">
+</div><!-- fragment --><p> The <code>reserved</code> part is used for the <a class="el" href="classthorin_1_1Axiom.html#a52fbe82684065787e1a12f483a93e534" title="Yields the tag part of the name as integer.">Axiom::tag</a> and the <a class="el" href="classthorin_1_1Axiom.html#a9188e87e6a0284c7f0745cafc0bd6e13" title="Yields the sub part of the name as integer.">Axiom::sub</a>. Each <code>Char6x</code> is 6-bit wide and hence a plugin name has at most <a class="el" href="classthorin_1_1Axiom.html#a332119d03dbb78d6b2b7364ae1011973">Axiom::Max_Plugin_Size</a> = 8 chars. It uses this encoding: </p><table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone"><code>Char6</code>   </th><th class="markdownTableHeadNone">ASCII    </th></tr>
 <tr class="markdownTableRowOdd">
@@ -5477,7 +5445,7 @@ template&lt;&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="axiom_8cpp_source.html#l00046">46</a> of file <a class="el" href="axiom_8cpp_source.html">axiom.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="bootstrapper_8cpp_source.html#l00010">thorin::h::Bootstrapper::emit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="bootstrap_8cpp_source.html#l00011">thorin::bootstrap()</a>.</p>
 
 </div>
 </div>
@@ -5504,9 +5472,9 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00033">33</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00047">47</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00148">thorin::World::raw_app()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00176">thorin::World::raw_app()</a>.</p>
 
 </div>
 </div>
@@ -8396,6 +8364,40 @@ template&lt;&gt; </div>
 
 </div>
 </div>
+<a id="a9db26953a313f11f96fb93f361766bd1" name="a9db26953a313f11f96fb93f361766bd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9db26953a313f11f96fb93f361766bd1">&#9670;&#160;</a></span>plugin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacethorin.html#adc4504461c3f6cec792a3fdb3e57f076">plugin_t</a> thorin::Axiom::plugin </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Yields the <code>plugin</code> part of the name as integer. </p>
+<p >It consists of 48 relevant bits that are returned in the highest 6 bytes of a 64-bit integer. </p>
+
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00071">71</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+
+<p class="reference">References <a class="el" href="def_8h_source.html#l00209">thorin::Def::flags()</a>, and <a class="el" href="axiom_8h_source.html#l00086">Global_Plugin</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="axiom_8h_source.html#l00163">thorin::Match&lt; Id, D &gt;::plugin()</a>.</p>
+
+</div>
+</div>
 <a id="a211ef1bfe03c246fd3933800d90310a9" name="a211ef1bfe03c246fd3933800d90310a9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a211ef1bfe03c246fd3933800d90310a9">&#9670;&#160;</a></span>set() <span class="overload">[1/12]</span></h2>
 
@@ -8422,7 +8424,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00120">120</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00134">134</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 </div>
 </div>
@@ -8452,7 +8454,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00120">120</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00134">134</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 </div>
 </div>
@@ -8482,7 +8484,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00120">120</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00134">134</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 </div>
 </div>
@@ -8512,7 +8514,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00120">120</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00134">134</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 </div>
 </div>
@@ -8552,7 +8554,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00120">120</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00134">134</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 </div>
 </div>
@@ -8592,7 +8594,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00120">120</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00134">134</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 </div>
 </div>
@@ -8632,7 +8634,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00120">120</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00134">134</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 </div>
 </div>
@@ -8672,7 +8674,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00120">120</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00134">134</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 </div>
 </div>
@@ -8702,7 +8704,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00120">120</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00134">134</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 </div>
 </div>
@@ -8732,7 +8734,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00120">120</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00134">134</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 </div>
 </div>
@@ -8762,7 +8764,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00120">120</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00134">134</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 </div>
 </div>
@@ -8792,7 +8794,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00120">120</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00134">134</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 </div>
 </div>
@@ -8834,7 +8836,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p class="reference">References <a class="el" href="sym_8h_source.html#l00105">thorin::subview()</a>, and <a class="el" href="world_8cpp_source.html#l00075">thorin::World::sym()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00013">thorin_get_dialect_info()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="opt_8cpp_source.html#l00013">thorin_get_plugin()</a>.</p>
 
 </div>
 </div>
@@ -8872,7 +8874,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00120">120</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00134">134</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 </div>
 </div>
@@ -8901,11 +8903,11 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p>Yields the <code>sub</code> part of the name as integer. </p>
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00063">63</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00077">77</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00209">thorin::Def::flags()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="axiom_8h_source.html#l00152">thorin::Match&lt; Id, D &gt;::base()</a>, and <a class="el" href="axiom_8h_source.html#l00151">thorin::Match&lt; Id, D &gt;::sub()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="axiom_8h_source.html#l00166">thorin::Match&lt; Id, D &gt;::base()</a>, and <a class="el" href="axiom_8h_source.html#l00165">thorin::Match&lt; Id, D &gt;::sub()</a>.</p>
 
 </div>
 </div>
@@ -8934,11 +8936,11 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p>Yields the <code>tag</code> part of the name as integer. </p>
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00060">60</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00074">74</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00209">thorin::Def::flags()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="axiom_8h_source.html#l00150">thorin::Match&lt; Id, D &gt;::tag()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="axiom_8h_source.html#l00164">thorin::Match&lt; Id, D &gt;::tag()</a>.</p>
 
 </div>
 </div>
@@ -8965,7 +8967,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00035">35</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00049">49</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00493">thorin::Def::trip_</a>.</p>
 
@@ -8992,7 +8994,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00120">120</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00134">134</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 </div>
 </div>
@@ -9018,14 +9020,14 @@ template&lt;class Id &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classthorin_1_1Axiom.html#a5cd2576283c1b9f1a29901e82b6a7f56" title="Includes Axiom::dialect() and Axiom::tag() but not Axiom::sub.">Axiom::base</a>. </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classthorin_1_1Axiom.html#a5cd2576283c1b9f1a29901e82b6a7f56" title="Includes Axiom::plugin() and Axiom::tag() but not Axiom::sub.">Axiom::base</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00111">111</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00125">125</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 </div>
 </div>
-<a id="a5a2d4a4ceb6b5424e316d0c52baea3e3" name="a5a2d4a4ceb6b5424e316d0c52baea3e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a2d4a4ceb6b5424e316d0c52baea3e3">&#9670;&#160;</a></span>Global_Dialect</h2>
+<a id="a5101fb86e417f72b0a734243b1f2fcf4" name="a5101fb86e417f72b0a734243b1f2fcf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5101fb86e417f72b0a734243b1f2fcf4">&#9670;&#160;</a></span>Global_Plugin</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -9034,7 +9036,7 @@ template&lt;class Id &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="namespacethorin.html#adb7875050bd88ae8cd44a2fc16a7143d">dialect_t</a> thorin::Axiom::Global_Dialect = 0xffff'ffff'ffff'0000_u64</td>
+          <td class="memname">constexpr <a class="el" href="namespacethorin.html#adc4504461c3f6cec792a3fdb3e57f076">plugin_t</a> thorin::Axiom::Global_Plugin = 0xffff'ffff'ffff'0000_u64</td>
         </tr>
       </table>
   </td>
@@ -9044,14 +9046,14 @@ template&lt;class Id &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00072">72</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00086">86</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00221">thorin::World::axiom()</a>, and <a class="el" href="axiom_8h_source.html#l00057">dialect()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00215">thorin::World::axiom()</a>, and <a class="el" href="axiom_8h_source.html#l00071">plugin()</a>.</p>
 
 </div>
 </div>
-<a id="a939bf893516cb849960e09442f2edb7f" name="a939bf893516cb849960e09442f2edb7f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a939bf893516cb849960e09442f2edb7f">&#9670;&#160;</a></span>Max_Dialect_Size</h2>
+<a id="a332119d03dbb78d6b2b7364ae1011973" name="a332119d03dbb78d6b2b7364ae1011973"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a332119d03dbb78d6b2b7364ae1011973">&#9670;&#160;</a></span>Max_Plugin_Size</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -9060,7 +9062,7 @@ template&lt;class Id &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> thorin::Axiom::Max_Dialect_Size = 8</td>
+          <td class="memname">constexpr <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> thorin::Axiom::Max_Plugin_Size = 8</td>
         </tr>
       </table>
   </td>
@@ -9070,7 +9072,7 @@ template&lt;class Id &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00071">71</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00085">85</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 </div>
 </div>
@@ -9094,7 +9096,7 @@ template&lt;class Id &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00120">120</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00134">134</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 </div>
 </div>
@@ -9122,7 +9124,7 @@ template&lt;class Id &gt; </div>
 
 <p>Number of <a class="el" href="classthorin_1_1Axiom.html#a9188e87e6a0284c7f0745cafc0bd6e13" title="Yields the sub part of the name as integer.">Axiom::sub</a>tags. </p>
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00107">107</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00121">121</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 </div>
 </div>
@@ -9146,9 +9148,9 @@ template&lt;class Id &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00042">42</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00056">56</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00148">thorin::World::raw_app()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00176">thorin::World::raw_app()</a>.</p>
 
 </div>
 </div>

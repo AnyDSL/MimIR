@@ -10,5 +10,5 @@ var clos_8cpp =
     [ "ctype", "clos_8cpp.html#a62651f0a4bc50bb46df6e5089d88a4a9", null ],
     [ "isa_clos_lit", "clos_8cpp.html#ab4851fdbabcc33da21495e85c1bd3ebd", null ],
     [ "isa_clos_type", "clos_8cpp.html#ab618d9d39a9cfa2874fede6d8081f0ea", null ],
-    [ "thorin_get_dialect_info", "clos_8cpp.html#a63090a34caf572bdd21bbe2441bf661d", null ]
+    [ "thorin_get_plugin", "clos_8cpp.html#a2b0c506ec13141b704c0aea991f89b55", null ]
 ];

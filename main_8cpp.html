@@ -118,14 +118,13 @@ $(document).ready(function(){initNavTree('main_8cpp.html',''); initResizable(); 
 <div class="contents">
 <div class="textblock"><code>#include &lt;cstdlib&gt;</code><br />
 <code>#include &lt;cstring&gt;</code><br />
-<code>#include &lt;filesystem&gt;</code><br />
 <code>#include &lt;fstream&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
 <code>#include &lt;lyra/lyra.hpp&gt;</code><br />
 <code>#include &quot;<a class="el" href="config_8h_source.html">thorin/config.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="dialects_8h_source.html">thorin/dialects.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="driver_8h_source.html">thorin/driver.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="dot_8h_source.html">thorin/be/dot/dot.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="bootstrap_8h_source.html">thorin/be/h/bootstrap.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="parser_8h_source.html">thorin/fe/parser.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="optimize_8h_source.html">thorin/pass/optimize.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="pass_8h_source.html">thorin/pass/pass.h</a>&quot;</code><br />
@@ -135,7 +134,7 @@ $(document).ready(function(){initNavTree('main_8cpp.html',''); initResizable(); 
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for main.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp__incl.svg" width="2640" height="799"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="main_8cpp__incl.svg" width="2663" height="755"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -181,7 +180,7 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="a085744bf883a85c3fb7407874efa1d9da894ff1b9ab1ff14efbfff100c0752be4" name="a085744bf883a85c3fb7407874efa1d9da894ff1b9ab1ff14efbfff100c0752be4"></a>Num_Backends&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="main_8cpp_source.html#l00024">24</a> of file <a class="el" href="main_8cpp_source.html">main.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8cpp_source.html#l00023">23</a> of file <a class="el" href="main_8cpp_source.html">main.cpp</a>.</p>
 
 </div>
 </div>
@@ -212,9 +211,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8cpp_source.html#l00026">26</a> of file <a class="el" href="main_8cpp_source.html">main.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8cpp_source.html#l00025">25</a> of file <a class="el" href="main_8cpp_source.html">main.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="parser_8cpp_source.html#l00102">thorin::fe::Parser::bootstrap()</a>, <a class="el" href="world_8cpp_source.html#l00518">thorin::World::breakpoint()</a>, <a class="el" href="main_8cpp_source.html#l00024">Dot</a>, <a class="el" href="dump_8cpp_source.html#l00373">thorin::World::dump()</a>, <a class="el" href="dot_8cpp_source.html#l00044">thorin::dot::emit()</a>, <a class="el" href="def_8h_source.html#l00519">thorin::err()</a>, <a class="el" href="print_8h_source.html#l00149">thorin::errln()</a>, <a class="el" href="sys_8cpp_source.html#l00064">thorin::sys::find_cmd()</a>, <a class="el" href="driver_8h_source.html#l00022">thorin::Driver::flags()</a>, <a class="el" href="main_8cpp_source.html#l00024">H</a>, <a class="el" href="parser_8cpp_source.html#l00077">thorin::fe::Parser::import_module()</a>, <a class="el" href="main_8cpp_source.html#l00024">LL</a>, <a class="el" href="world_8cpp_source.html#l00071">thorin::World::log()</a>, <a class="el" href="main_8cpp_source.html#l00024">Md</a>, <a class="el" href="main_8cpp_source.html#l00024">Num_Backends</a>, <a class="el" href="optimize_8cpp_source.html#l00020">thorin::optimize()</a>, <a class="el" href="parser_8cpp_source.html#l00104">thorin::fe::Parser::parse_module()</a>, <a class="el" href="log_8h_source.html#l00028">thorin::Log::set()</a>, <a class="el" href="world_8h_source.html#l00090">thorin::World::set()</a>, <a class="el" href="world_8cpp_source.html#l00075">thorin::World::sym()</a>, <a class="el" href="main_8cpp_source.html#l00024">Thorin</a>, <a class="el" href="config_8h_source.html#l00003">THORIN_ENABLE_CHECKS</a>, <a class="el" href="config_8h_source.html#l00007">THORIN_VER</a>, and <a class="el" href="sys_8h_source.html#l00006">THORIN_WHICH</a>.</p>
+<p class="reference">References <a class="el" href="bootstrap_8cpp_source.html#l00011">thorin::bootstrap()</a>, <a class="el" href="world_8cpp_source.html#l00520">thorin::World::breakpoint()</a>, <a class="el" href="main_8cpp_source.html#l00023">Dot</a>, <a class="el" href="dump_8cpp_source.html#l00373">thorin::World::dump()</a>, <a class="el" href="dot_8cpp_source.html#l00044">thorin::dot::emit()</a>, <a class="el" href="def_8h_source.html#l00519">thorin::err()</a>, <a class="el" href="print_8h_source.html#l00155">thorin::errln()</a>, <a class="el" href="sys_8cpp_source.html#l00065">thorin::sys::find_cmd()</a>, <a class="el" href="driver_8h_source.html#l00023">thorin::Driver::flags()</a>, <a class="el" href="main_8cpp_source.html#l00023">H</a>, <a class="el" href="main_8cpp_source.html#l00023">LL</a>, <a class="el" href="world_8cpp_source.html#l00071">thorin::World::log()</a>, <a class="el" href="main_8cpp_source.html#l00023">Md</a>, <a class="el" href="main_8cpp_source.html#l00023">Num_Backends</a>, <a class="el" href="optimize_8cpp_source.html#l00020">thorin::optimize()</a>, <a class="el" href="log_8h_source.html#l00025">thorin::Log::set()</a>, <a class="el" href="world_8h_source.html#l00088">thorin::World::set()</a>, <a class="el" href="world_8cpp_source.html#l00075">thorin::World::sym()</a>, <a class="el" href="main_8cpp_source.html#l00023">Thorin</a>, <a class="el" href="config_8h_source.html#l00003">THORIN_ENABLE_CHECKS</a>, <a class="el" href="config_8h_source.html#l00007">THORIN_VER</a>, and <a class="el" href="sys_8h_source.html#l00006">THORIN_WHICH</a>.</p>
 
 </div>
 </div>
