@@ -138,7 +138,7 @@ In addition, you may find it helpful to turn assertion failures into debugger br
 
 [This](https://github.com/AnyDSL/vim-thorin2) Vim plugin provides syntax highlighting for Thorin files.
 
-## Third-Party Dialects
+## Third-Party Plugins
 
 After installing Thorin, third-party plugins just need to find the `thorin` package:
 ```cmake
