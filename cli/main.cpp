@@ -27,8 +27,8 @@ int main(int argc, char** argv) {
         static const auto version = "thorin command-line utility version " THORIN_VER "\n";
 
         Driver driver;
-        bool show_help          = false;
-        bool show_version       = false;
+        bool show_help         = false;
+        bool show_version      = false;
         bool list_search_paths = false;
         std::string input, prefix;
         std::string clang = sys::find_cmd("clang");
