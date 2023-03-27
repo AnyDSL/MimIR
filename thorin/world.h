@@ -424,7 +424,7 @@ public:
     /// @name cope with implicit arguments
     ///@{
 
-    /// Places Infer arguments as demanded by @p debug.meta and then apps @p arg.
+    /// Places Infer arguments as demanded by Pi::implicit and then apps @p arg.
     Ref iapp(Ref callee, Ref arg);
     Ref iapp(Ref callee, Defs args) { return iapp(callee, tuple(args)); }
     Ref iapp(Ref callee, nat_t arg) { return iapp(callee, lit_nat(arg)); }
