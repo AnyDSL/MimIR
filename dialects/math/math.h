@@ -15,7 +15,7 @@ enum Mode : nat_t {
                        ///< Such optimizations are required to retain defined behavior over NaNs,
                        ///< but the value of the result is undefined.
     ninf     = 1 << 1, ///< No Infs.
-                       ///> Allow optimizations to assume the arguments and result are not +/-Inf.
+                       ///< Allow optimizations to assume the arguments and result are not +/-Inf.
                        ///< Such optimizations are required to retain defined behavior over +/-Inf,
                        ///< but the value of the result is undefined.
     nsz      = 1 << 2, ///< No Signed Zeros.
