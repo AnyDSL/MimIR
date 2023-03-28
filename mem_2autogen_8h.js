@@ -1,25 +1,25 @@
 var mem_2autogen_8h =
 [
-    [ "thorin::Axiom::Match< mem::add_mem_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1add__mem__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#acda02b049969a475c986a4a5cbcfce4c", null ]
+    [ "thorin::Axiom::Match< mem::reshape_arg >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1reshape__arg_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a23a7671845776174b241394c8a0cf9e1", null ]
     ] ],
-    [ "thorin::Axiom::Match< mem::reshape_flat >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1reshape__flat_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a6a7bbc91356f366e4b7977e30a8d52df", null ]
-    ] ],
-    [ "thorin::Axiom::Match< mem::remem_elim_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1remem__elim__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#ace068ec44fcb060b9e8afe795834280e", null ]
+    [ "thorin::Axiom::Match< mem::alloc2malloc_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1alloc2malloc__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a359d554257152f2022ac21a9a0f82c0c", null ]
     ] ],
     [ "thorin::Axiom::Match< mem::reshape_mode >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1reshape__mode_01_4", [
       [ "type", "classthorin_1_1Axiom.html#a1584f37fe97197c036a80c765f2c0ce8", null ]
     ] ],
-    [ "thorin::Axiom::Match< mem::reshape_arg >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1reshape__arg_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a23a7671845776174b241394c8a0cf9e1", null ]
+    [ "thorin::Axiom::Match< mem::reshape_flat >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1reshape__flat_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a6a7bbc91356f366e4b7977e30a8d52df", null ]
+    ] ],
+    [ "thorin::Axiom::Match< mem::add_mem_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1add__mem__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#acda02b049969a475c986a4a5cbcfce4c", null ]
+    ] ],
+    [ "thorin::Axiom::Match< mem::remem_elim_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1remem__elim__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#ace068ec44fcb060b9e8afe795834280e", null ]
     ] ],
     [ "thorin::Axiom::Match< mem::M >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1M_01_4", [
       [ "type", "classthorin_1_1Axiom.html#adcf7c21e3b3e0287680818e5ae2d939d", null ]
-    ] ],
-    [ "thorin::Axiom::Match< mem::alloc2malloc_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1alloc2malloc__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a359d554257152f2022ac21a9a0f82c0c", null ]
     ] ],
     [ "THORIN_mem_NORMALIZER_IMPL", "mem_2autogen_8h.html#aad05e4016c65ad57be606950cefa7140", null ],
     [ "add_mem_pass", "mem_2autogen_8h.html#a37fb23a096de274a1800c8329167619c", null ],
