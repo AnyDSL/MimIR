@@ -5,9 +5,9 @@ add_library(libthorin
     check.h
     def.cpp
     def.h
-    dialects.cpp
-    dialects.h
+    plugin.h
     dump.cpp
+    driver.cpp
     driver.h
     lam.cpp
     lam.h
@@ -36,8 +36,8 @@ add_library(libthorin
     be/emitter.h
     be/dot/dot.cpp
     be/dot/dot.h
-    be/h/bootstrapper.cpp
-    be/h/bootstrapper.h
+    be/h/bootstrap.cpp
+    be/h/bootstrap.h
     fe/ast.cpp
     fe/ast.h
     fe/lexer.cpp
@@ -102,6 +102,7 @@ get_target_property(libthorin_HEADERS libthorin SOURCES)
 list(FILTER libthorin_HEADERS INCLUDE REGEX ".*\.h")
 
 configure_file(config.h.in ${CMAKE_BINARY_DIR}/include/thorin/config.h)
+
 target_include_directories(libthorin
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/> # for config.h
@@ -109,6 +110,7 @@ target_include_directories(libthorin
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/modules/half/include>
         $<INSTALL_INTERFACE:include>
 )
+
 target_link_libraries(libthorin
     PUBLIC
         absl::btree

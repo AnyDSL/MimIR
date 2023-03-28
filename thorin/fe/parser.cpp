@@ -7,7 +7,7 @@
 
 #include "thorin/check.h"
 #include "thorin/def.h"
-#include "thorin/dialects.h"
+#include "thorin/driver.h"
 #include "thorin/rewrite.h"
 
 #include "thorin/util/array.h"
@@ -31,31 +31,15 @@ using namespace std::string_literals;
 
 namespace thorin::fe {
 
-Parser::Parser(World& world,
-               Sym file,
-               std::istream& istream,
-               Span<std::string> import_search_paths,
-               const Normalizers* normalizers,
-               std::ostream* md)
-    : lexer_(world, file, istream, md)
-    , prev_(lexer_.loc())
-    , bootstrapper_(world.sym(std::filesystem::path{*file}.filename().replace_extension("").string()))
-    , user_search_paths_(import_search_paths.begin(), import_search_paths.end())
-    , normalizers_(normalizers)
-    , anonymous_(world.sym("_")) {
-    for (size_t i = 0; i != Max_Ahead; ++i) lex();
-    prev_ = Loc(file, {1, 1}, {1, 1});
-}
-
 /*
  * helpers
  */
 
 Tok Parser::lex() {
     auto result = ahead();
-    prev_       = ahead_[0].loc();
-    for (size_t i = 0; i < Max_Ahead - 1; ++i) ahead_[i] = ahead_[i + 1];
-    ahead_.back() = lexer_.lex();
+    prev()      = result.loc();
+    for (size_t i = 0; i < Max_Ahead - 1; ++i) ahead(i) = ahead(i + 1);
+    ahead(Max_Ahead - 1) = lexer().lex();
     return result;
 }
 
@@ -81,42 +65,56 @@ void Parser::syntax_err(std::string_view what, const Tok& tok, std::string_view 
  * entry points
  */
 
-Parser
-Parser::import_module(World& world, Sym name, Span<std::string> user_search_paths, const Normalizers* normalizers) {
-    auto search_paths = get_plugin_search_paths(user_search_paths);
-
-    auto file_name = *name + ".thorin";
-
-    std::string input_path{};
-    for (const auto& path : search_paths) {
-        auto full_path = path / file_name;
-
-        std::error_code ignore;
-        if (bool reg_file = std::filesystem::is_regular_file(full_path, ignore); reg_file && !ignore) {
-            input_path = full_path.string();
-            break;
-        }
-    }
-    std::ifstream ifs(input_path);
-
-    if (!ifs) throw std::runtime_error("could not find file '" + file_name + "'");
-
-    thorin::fe::Parser parser(world, world.sym(input_path), ifs, user_search_paths, normalizers);
-    parser.parse_module();
-
-    world.add_imported(name);
-
-    return parser;
-}
-
-void Parser::bootstrap(std::ostream& h) { bootstrapper_.emit(h); }
-
 void Parser::parse_module() {
-    while (ahead().tag() == Tok::Tag::K_import) parse_import();
+    while (true)
+        if (ahead().tag() == Tok::Tag::K_import)
+            parse_import();
+        else if (ahead().tag() == Tok::Tag::K_plugin)
+            parse_plugin();
+        else
+            break;
 
     parse_decls({});
     expect(Tok::Tag::M_eof, "module");
 };
+
+void Parser::import(fs::path name, std::ostream* md) {
+    world().VLOG("import: {}", name);
+    auto filename = name;
+    filename.replace_extension("thorin"); // TODO error cases
+
+    fs::path rel_path;
+    for (const auto& path : driver().search_paths()) {
+        rel_path = path / filename;
+        std::error_code ignore;
+        if (bool reg_file = fs::is_regular_file(rel_path, ignore); reg_file && !ignore) break;
+    }
+
+    if (auto path = driver().add_import(std::move(rel_path), world().sym(name.string()))) {
+        auto ifs = std::ifstream(*path);
+        import(ifs, path, md);
+    }
+}
+
+void Parser::import(std::istream& is, const fs::path* path, std::ostream* md) {
+    world().VLOG("reading: {}", path ? path->string() : "<unknown file>"s);
+    if (!is) err("error: cannot read file '{}'", *path);
+
+    lexers_.emplace(world(), is, path, md);
+    auto state = state_;
+
+    for (size_t i = 0; i != Max_Ahead; ++i) ahead(i) = lexer().lex();
+    prev() = Loc(path, {1, 1});
+
+    parse_module();
+    state_ = state;
+    lexers_.pop();
+}
+
+void Parser::plugin(fs::path name) {
+    if (!driver().flags().bootstrap) driver().load(name.string());
+    import(name);
+}
 
 /*
  * misc
@@ -126,21 +124,20 @@ void Parser::parse_import() {
     eat(Tok::Tag::K_import);
     auto name = expect(Tok::Tag::M_id, "import name");
     expect(Tok::Tag::T_semicolon, "end of import");
+    import(*name.sym());
+}
 
-    if (auto [_, ins] = imported_.emplace(name.sym()); !ins) return;
-
-    // search file and import
-    auto parser = Parser::import_module(world(), name.sym(), user_search_paths_, normalizers_);
-    scopes_.merge(parser.scopes_);
-
-    // transitvely remember which files we transitively imported
-    imported_.merge(parser.imported_);
+void Parser::parse_plugin() {
+    eat(Tok::Tag::K_plugin);
+    auto name = expect(Tok::Tag::M_id, "plugin name");
+    expect(Tok::Tag::T_semicolon, "end of import");
+    plugin(*name.sym());
 }
 
 Dbg Parser::parse_sym(std::string_view ctxt) {
     if (auto id = accept(Tok::Tag::M_id)) return {id->dbg()};
     syntax_err("identifier", ctxt);
-    return {prev_, world().sym("<error>")};
+    return {prev(), world().sym("<error>")};
 }
 
 Ref Parser::parse_type_ascr(std::string_view ctxt) {
@@ -176,11 +173,10 @@ Ref Parser::parse_infix_expr(Tracker track, const Def* lhs, Tok::Prec p) {
         } else {
             auto [l, r] = Tok::prec(Tok::Prec::App);
             if (l < p) break;
-            if (auto rhs = parse_expr({}, r)) { // if we can parse an expression, it's an App
+            if (auto rhs = parse_expr({}, r)) // if we can parse an expression, it's an App
                 lhs = world().iapp(lhs, rhs)->set(track.loc());
-            } else {
+            else
                 return lhs;
-            }
         }
     }
 
@@ -199,9 +195,8 @@ Ref Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
 
             if (auto i = def2fields_.find(sigma); i != def2fields_.end()) {
                 if (auto& fields = i->second; fields.size() == sigma->num_ops()) {
-                    for (size_t i = 0, n = sigma->num_ops(); i != n; ++i) {
+                    for (size_t i = 0, n = sigma->num_ops(); i != n; ++i)
                         if (fields[i] == tok.sym()) return world().extract(lhs, n, i)->set(track.loc());
-                    }
                 }
             }
             err(tok.loc(), "could not find elemement '{}' to extract from '{}' of type '{}'", tok.sym(), lhs, sigma);
@@ -278,7 +273,7 @@ Ref Parser::parse_var() {
     eat(Tok::Tag::T_at);
     auto dbg = parse_sym("variable");
     auto nom = scopes_.find(dbg)->isa_nom();
-    if (!nom) err(prev_, "variable must reference a nominal");
+    if (!nom) err(prev(), "variable must reference a nominal");
     return nom->var()->set(dbg);
 }
 
@@ -421,8 +416,8 @@ Ref Parser::parse_lit() {
 
     if (lit.tag() == Tok::Tag::T_bot) return world().bot(world().type())->set(track.loc());
     if (lit.tag() == Tok::Tag::T_top) return world().top(world().type())->set(track.loc());
-    if (lit.tag() == Tok::Tag::L_s) err(prev_, ".Nat literal specified as signed but must be unsigned");
-    if (lit.tag() == Tok::Tag::L_r) err(prev_, ".Nat literal specified as floating-point but must be unsigned");
+    if (lit.tag() == Tok::Tag::L_s) err(prev(), ".Nat literal specified as signed but must be unsigned");
+    if (lit.tag() == Tok::Tag::L_r) err(prev(), ".Nat literal specified as floating-point but must be unsigned");
 
     return world().lit_nat(lit.u())->set(track.loc());
 }
@@ -590,28 +585,18 @@ Ref Parser::parse_decls(std::string_view ctxt) {
 void Parser::parse_ax() {
     auto track = tracker();
     eat(Tok::Tag::K_ax);
-    auto ax                  = expect(Tok::Tag::M_ax, "name of an axiom");
-    auto [dialect, tag, sub] = Axiom::split(world(), ax.sym());
+    auto ax                 = expect(Tok::Tag::M_ax, "name of an axiom");
+    auto [plugin, tag, sub] = Axiom::split(world(), ax.sym());
+    auto&& [info, is_new]   = driver().axiom2info(ax.sym(), plugin, tag, ax.loc());
 
-    if (!dialect) err(ax.loc(), "invalid axiom name '{}'", ax);
+    if (!plugin) err(ax.loc(), "invalid axiom name '{}'", ax);
     if (sub) err(ax.loc(), "definition of axiom '{}' must not have sub in tag name", ax);
 
-    auto [it, is_new] = bootstrapper_.axioms.emplace(ax.sym(), h::AxiomInfo{});
-    auto& [key, info] = *it;
-    if (is_new) {
-        info.dialect = dialect;
-        info.tag     = tag;
-        info.tag_id  = bootstrapper_.axioms.size() - 1;
-    }
-
-    if (dialect != bootstrapper_.dialect()) {
-        // TODO
-        // err(ax.loc(), "axiom name `{}` implies a dialect name of `{}` but input file is named `{}`", ax,
-        // info.dialect, lexer_.file());
-    }
-
-    if (bootstrapper_.axioms.size() >= std::numeric_limits<tag_t>::max())
-        err(ax.loc(), "exceeded maxinum number of axioms in current dialect");
+    // if (plugin != bootstrapper_.plugin()) {
+    //  TODO
+    //  err(ax.loc(), "axiom name `{}` implies a plugin name of `{}` but input file is named `{}`", ax,
+    //  info.plugin, lexer_.file());
+    //}
 
     std::deque<std::deque<Sym>> new_subs;
     if (ahead().isa(Tok::Tag::D_paren_l)) {
@@ -629,7 +614,7 @@ void Parser::parse_ax() {
     if (!is_new && new_subs.empty() && !info.subs.empty())
         err(ax.loc(), "redeclaration of axiom '{}' without specifying new subs", ax);
     else if (!is_new && !new_subs.empty() && info.subs.empty())
-        err(ax.loc(), "cannot extend subs of axiom '{}' which does not have subs", ax);
+        err(ax.loc(), "cannot extend subs of axiom '{}' because it was declared as a subless axiom", ax);
 
     auto type = parse_type_ascr("type ascription of an axiom");
     if (!is_new && info.pi != (type->isa<Pi>() != nullptr))
@@ -641,12 +626,6 @@ void Parser::parse_ax() {
         err(ax.loc(), "all declarations of axiom '{}' must use the same normalizer name", ax);
     info.normalizer = normalizer_name;
 
-    auto normalizer = [this](dialect_t d, tag_t t, sub_t s) -> Def::NormalizeFn {
-        if (normalizers_)
-            if (auto it = normalizers_->find(d | flags_t(t << 8u) | s); it != normalizers_->end()) return it->second;
-        return nullptr;
-    };
-
     auto [curry, trip] = Axiom::infer_curry_and_trip(type);
 
     if (accept(Tok::Tag::T_comma)) {
@@ -657,19 +636,21 @@ void Parser::parse_ax() {
 
     if (accept(Tok::Tag::T_comma)) trip = expect(Tok::Tag::L_u, "trip count for axiom").u();
 
-    dialect_t d = *Axiom::mangle(dialect);
-    tag_t t     = info.tag_id;
-    sub_t s     = info.subs.size();
+    plugin_t p = *Axiom::mangle(plugin);
+    tag_t t    = info.tag_id;
+    sub_t s    = info.subs.size();
     if (new_subs.empty()) {
-        auto axiom = world().axiom(normalizer(d, t, 0), curry, trip, type, d, t, 0)->set(ax.loc(), ax.sym());
+        auto norm  = driver().normalizer(p, t, 0);
+        auto axiom = world().axiom(norm, curry, trip, type, p, t, 0)->set(ax.loc(), ax.sym());
         scopes_.bind(ax.dbg(), axiom);
     } else {
         for (const auto& sub : new_subs) {
             auto name  = world().sym(*ax.sym() + "."s + *sub.front());
-            auto axiom = world().axiom(normalizer(d, t, s), curry, trip, type, d, t, s)->set(track.loc(), name);
+            auto norm  = driver().normalizer(p, t, s);
+            auto axiom = world().axiom(norm, curry, trip, type, p, t, s)->set(track.loc(), name);
             for (auto& alias : sub) {
                 auto sym = world().sym(*ax.sym() + "."s + *alias);
-                scopes_.bind({prev_, sym}, axiom);
+                scopes_.bind({prev(), sym}, axiom);
             }
             ++s;
         }
@@ -739,7 +720,7 @@ Lam* Parser::parse_lam(bool decl) {
     bool is_cn    = tok.isa(Tok::Tag::K_cn) || tok.isa(Tok::Tag::K_con);
     auto prec     = is_cn ? Tok::Prec::Bot : Tok::Prec::Pi;
     bool external = decl && accept(Tok::Tag::K_extern).has_value();
-    auto dbg      = decl ? parse_sym("nominal lambda") : Dbg{prev_, anonymous_};
+    auto dbg      = decl ? parse_sym("nominal lambda") : Dbg{prev(), anonymous_};
 
     auto outer = scopes_.curr();
     scopes_.push();
@@ -799,7 +780,7 @@ Lam* Parser::parse_lam(bool decl) {
 
     auto body = accept(Tok::Tag::T_assign) ? parse_decls("body of a lambda") : nullptr;
     if (!body) {
-        if (!decl) err(prev_, "body of a lambda expression is mandatory");
+        if (!decl) err(prev(), "body of a lambda expression is mandatory");
         // TODO error message if filter is non .ff
         funs.back().second->unset(0);
     }
@@ -832,14 +813,14 @@ void Parser::parse_def(Dbg dbg /*= {}*/) {
     if (ahead().isa(Tok::Tag::D_brace_l)) {
         scopes_.push();
         parse_list("nominal definition", Tok::Tag::D_brace_l, [&]() {
-            if (i == n) err(prev_, "too many operands");
+            if (i == n) err(prev(), "too many operands");
             nom->set(i++, parse_decls("operand of a nominal"));
         });
         scopes_.pop();
     } else if (n - i == 1) {
         nom->set(i, parse_decls("operand of a nominal"));
     } else {
-        err(prev_, "expected operands for nominal definition");
+        err(prev(), "expected operands for nominal definition");
     }
 
     expect(Tok::Tag::T_semicolon, "end of a nominal definition");

@@ -8,9 +8,23 @@ namespace thorin {
 
 class Axiom : public Def {
 private:
-    Axiom(NormalizeFn, u8 curry, u8 trip, const Def* type, dialect_t, tag_t, sub_t);
+    Axiom(NormalizeFn, u8 curry, u8 trip, const Def* type, plugin_t, tag_t, sub_t);
 
 public:
+    struct Info {
+        Info(Sym plugin, Sym tag, flags_t tag_id)
+            : plugin(plugin)
+            , tag(tag)
+            , tag_id(tag_id) {}
+
+        Sym plugin;
+        Sym tag;
+        flags_t tag_id;
+        std::deque<std::deque<Sym>> subs; ///< List of subs which is a list of aliases.
+        Sym normalizer;
+        bool pi = false;
+    };
+
     /// @name normalization
     ///@{
     /// For a curried App of an Axiom, you only want to trigger normalization at specific spots.
@@ -46,15 +60,15 @@ public:
     ///@{
     /// Anatomy of an Axiom name:
     /// ```
-    /// %dialect.tag.sub
+    /// %plugin.tag.sub
     /// |  48   | 8 | 8 | <-- Number of bits per field.
     /// ```
     /// * Def::name() retrieves the full name as Sym.
     /// * Def::flags() retrieves the full name as Axiom::mangle%d 64-bit integer.
 
-    /// Yields the `dialect` part of the name as integer.
+    /// Yields the `plugin` part of the name as integer.
     /// It consists of 48 relevant bits that are returned in the highest 6 bytes of a 64-bit integer.
-    dialect_t dialect() const { return flags() & Global_Dialect; }
+    plugin_t plugin() const { return flags() & Global_Plugin; }
 
     /// Yields the `tag` part of the name as integer.
     tag_t tag() const { return tag_t((flags() & 0x0000'0000'0000'ff00_u64) >> 8_u64); }
@@ -62,14 +76,14 @@ public:
     /// Yields the `sub` part of the name as integer.
     sub_t sub() const { return sub_t(flags() & 0x0000'0000'0000'00ff_u64); }
 
-    /// Includes Axiom::dialect() and Axiom::tag() but **not** Axiom::sub.
+    /// Includes Axiom::plugin() and Axiom::tag() but **not** Axiom::sub.
     flags_t base() const { return flags() & ~0xff_u64; }
     ///@}
 
-    /// @name Mangling Dialect Name
+    /// @name Mangling plugin Name
     ///@{
-    static constexpr size_t Max_Dialect_Size  = 8;
-    static constexpr dialect_t Global_Dialect = 0xffff'ffff'ffff'0000_u64;
+    static constexpr size_t Max_Plugin_Size  = 8;
+    static constexpr plugin_t Global_Plugin = 0xffff'ffff'ffff'0000_u64;
 
     /// Mangles @p s into a dense 48-bit representation.
     /// The layout is as follows:
@@ -79,7 +93,7 @@ public:
     /// Char67Char66Char65Char64Char63Char62Char61Char60|---reserved---|
     /// ```
     /// The `reserved` part is used for the Axiom::tag and the Axiom::sub.
-    /// Each `Char6x` is 6-bit wide and hence a dialect name has at most Axiom::Max_Dialect_Size = 8 chars.
+    /// Each `Char6x` is 6-bit wide and hence a plugin name has at most Axiom::Max_Plugin_Size = 8 chars.
     /// It uses this encoding:
     /// | `Char6` | ASCII   |
     /// |---------|---------|
@@ -89,11 +103,11 @@ public:
     /// | 54-63:  | `0`-`9` |
     /// The 0 is special and marks the end of the name if the name has less than 8 chars.
     /// @returns `std::nullopt` if encoding is not possible.
-    static std::optional<dialect_t> mangle(Sym s);
+    static std::optional<plugin_t> mangle(Sym s);
 
     /// Reverts an Axiom::mangle%d string to a Sym.
     /// Ignores lower 16-bit of @p u.
-    static Sym demangle(World&, dialect_t u);
+    static Sym demangle(World&, plugin_t u);
 
     static std::array<Sym, 3> split(World&, Sym);
     ///@}
@@ -146,11 +160,11 @@ public:
 
     /// @name Axiom name
     ///@{
-    auto dialect() const { return axiom()->dialect(); } ///< @sa Axiom::dialect.
-    auto tag() const { return axiom()->tag(); }         ///< @sa Axiom::tag.
-    auto sub() const { return axiom()->sub(); }         ///< @sa Axiom::sub.
-    auto base() const { return axiom()->sub(); }        ///< @sa Axiom::base.
-    auto id() const { return Id(axiom()->flags()); }    ///< Axiom::flags cast to @p Id.
+    auto plugin() const { return axiom()->plugin(); } ///< @sa Axiom::plugin.
+    auto tag() const { return axiom()->tag(); }       ///< @sa Axiom::tag.
+    auto sub() const { return axiom()->sub(); }       ///< @sa Axiom::sub.
+    auto base() const { return axiom()->sub(); }      ///< @sa Axiom::base.
+    auto id() const { return Id(axiom()->flags()); }  ///< Axiom::flags cast to @p Id.
     ///@}
 
 private:

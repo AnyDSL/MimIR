@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include <queue>
 #include <stack>
 
@@ -8,6 +9,7 @@
 #include <absl/container/node_hash_map.h>
 #include <absl/container/node_hash_set.h>
 
+#include "thorin/util/assert.h"
 #include "thorin/util/hash.h"
 
 namespace thorin {
@@ -113,5 +115,25 @@ template<class K, class V> using GIDNodeMap = absl::node_hash_map<K, V, GIDHash<
 template<class K>          using GIDNodeSet = absl::node_hash_set<K,    GIDHash<K>, GIDEq<K>>;
 // clang-format on
 ///@}
+
+/// Yields pointer to element (or the element itself if it is already a pointer), if found and `nullptr` otherwise.
+/// @warning If the element is **not** already a pointer, this lookup will simply take the address of this element.
+/// This means that, e.g., a rehash of an `absl::flat_hash_map` will invalidate this pointer.
+template<class C, class K>
+auto lookup(const C& container, const K& key) {
+    auto i = container.find(key);
+    if constexpr (std::is_pointer_v<typename C::mapped_type>)
+        return i != container.end() ? i->second : nullptr;
+    else
+        return i != container.end() ? &i->second : nullptr;
+}
+
+/// Invokes `emplace` on @p container, asserts that insertion actually happened, and returns the iterator.
+template<class C, class... Args>
+auto assert_emplace(C& container, Args&&... args) {
+    auto [i, ins] = container.emplace(std::forward<Args&&>(args)...);
+    assert_unused(ins);
+    return i;
+}
 
 } // namespace thorin

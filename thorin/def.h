@@ -3,6 +3,8 @@
 #include <optional>
 #include <vector>
 
+#include "thorin/config.h"
+
 #include "thorin/util/array.h"
 #include "thorin/util/cast.h"
 #include "thorin/util/container.h"
@@ -67,6 +69,7 @@ private:
     const Def* def_ = nullptr;
 };
 
+using NormalizeFn = Ref (*)(Ref, Ref, Ref);
 template<class T = u64>
 std::optional<T> isa_lit(const Def*);
 template<class T = u64>
@@ -187,9 +190,6 @@ private:                                                                        
 /// ```
 /// @attention This means that any subclass of Def **must not** introduce additional members.
 class Def : public RuntimeCast<Def> {
-public:
-    using NormalizeFn = Ref (*)(Ref, Ref, Ref);
-
 private:
     Def& operator=(const Def&) = delete;
     Def(const Def&)            = delete;
@@ -293,7 +293,6 @@ public:
     /// @name uses
     ///@{
     const Uses& uses() const { return uses_; }
-    Array<Use> copy_uses() const { return Array<Use>(uses_.begin(), uses_.end()); }
     size_t num_uses() const { return uses().size(); }
     ///@}
 
@@ -489,7 +488,7 @@ protected:
     unsigned nom_      : 1;
     unsigned external_ : 1;
     unsigned dep_      : 5;
-    unsigned pading_   : 1;
+    unsigned padding_  : 1;
     u8 curry_;
     u8 trip_;
     hash_t hash_;

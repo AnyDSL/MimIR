@@ -22,8 +22,6 @@ namespace thorin {
 class Checker;
 class Driver;
 
-using Breakpoints = absl::flat_hash_set<uint32_t>;
-
 /// The World represents the whole program and manages creation of Thorin nodes (Def%s).
 /// *Structural* Def%s are hashed into an internal HashSet.
 /// The getters just calculate a hash and lookup the Def, if it is already present, or create a new one otherwise.
@@ -49,15 +47,18 @@ public:
             mutable bool frozen = false;
         } pod;
 
-        absl::btree_set<Sym> imported_dialects;
-
+#if THORIN_ENABLE_CHECKS
+        absl::flat_hash_set<uint32_t> breakpoints;
+#endif
         friend void swap(State& s1, State& s2) {
             using std::swap;
             assert((!s1.pod.loc || !s2.pod.loc) && "Why is emit_loc() still set?");
             // clang-format off
             swap(s1.pod,                s2.pod);
-            swap(s1.imported_dialects,  s2.imported_dialects);
             // clang-format on
+#if THORIN_ENABLE_CHECKS
+            swap(s1.breakpoints, s2.breakpoints);
+#endif
         }
     };
 
@@ -85,17 +86,13 @@ public:
 
     Sym name() const { return state_.pod.name; }
     void set(Sym name) { state_.pod.name = name; }
-    Sym append_suffix(Sym name, std::string suffix);
-
-    void add_imported(Sym name) { state_.imported_dialects.emplace(name); }
-    const auto& imported() const { return state_.imported_dialects; }
+    void set(std::string_view name) { state_.pod.name = sym(name); }
 
     /// Manage global identifier - a unique number for each Def.
     u32 curr_gid() const { return state_.pod.curr_gid; }
     u32 next_gid() { return ++state_.pod.curr_gid; }
 
     /// Retrive compile Flags.
-    const Flags& flags() const;
     Flags& flags();
 
     Checker& checker() {
@@ -111,6 +108,8 @@ public:
     Sym sym(std::string_view);
     Sym sym(const char*);
     Sym sym(std::string);
+    /// Appends a @p suffix or an increasing number if the suffix already exists.
+    Sym append_suffix(Sym name, std::string suffix);
     ///@}
 
     /// @name freeze
@@ -140,9 +139,10 @@ public:
 #if THORIN_ENABLE_CHECKS
     /// @name debugging features
     ///@{
-    Breakpoints& breakpoints();
-    void breakpoint(size_t number);
     Ref gid2def(u32 gid);
+    const auto& breakpoints() { return state_.breakpoints; }
+    /// Trigger breakpoint in your debugger when creating Def with Def::gid @p gid.
+    void breakpoint(u32 gid);
     ///@}
 #endif
 
@@ -152,20 +152,17 @@ public:
     const auto& externals() const { return move_.externals; }
     bool empty() { return move_.externals.empty(); }
     void make_external(Def* def) {
+        assert(!def->external_);
         def->external_ = true;
-        assert(def->sym());
-        move_.externals.emplace(def->sym(), def); // TODO enable assert again
-        // auto [i, ins] = move_.externals.emplace(name, def);
-        // assert((ins || (def == i->second)) && "two different externals registered with the same name");
+        assert_emplace(move_.externals, def->sym(), def);
     }
     void make_internal(Def* def) {
+        assert(def->external_);
         def->external_ = false;
-        move_.externals.erase(def->sym());
+        auto num       = move_.externals.erase(def->sym());
+        assert(num == 1);
     }
-    Def* lookup(Sym name) {
-        auto i = move_.externals.find(name);
-        return i != move_.externals.end() ? i->second : nullptr;
-    }
+    Def* lookup(Sym name) { return thorin::lookup(move_.externals, name); }
     ///@}
 
     /// @name Univ, Type, Var, Proxy, Infer
@@ -205,31 +202,31 @@ public:
 
     /// @name Axiom
     ///@{
-    const Axiom* axiom(Def::NormalizeFn n, u8 curry, u8 trip, Ref type, dialect_t d, tag_t t, sub_t s) {
-        auto ax                          = unify<Axiom>(0, n, curry, trip, type, d, t, s);
+    const Axiom* axiom(NormalizeFn n, u8 curry, u8 trip, Ref type, plugin_t p, tag_t t, sub_t s) {
+        auto ax                          = unify<Axiom>(0, n, curry, trip, type, p, t, s);
         return move_.axioms[ax->flags()] = ax;
     }
-    const Axiom* axiom(Ref type, dialect_t d, tag_t t, sub_t s) { return axiom(nullptr, 0, 0, type, d, t, s); }
+    const Axiom* axiom(Ref type, plugin_t p, tag_t t, sub_t s) { return axiom(nullptr, 0, 0, type, p, t, s); }
 
     /// Builds a fresh Axiom with descending Axiom::sub.
     /// This is useful during testing to come up with some entitiy of a specific type.
-    /// It uses the dialect Axiom::Global_Dialect and starts with `0` for Axiom::sub and counts up from there.
+    /// It uses the plugin Axiom::Global_Plugin and starts with `0` for Axiom::sub and counts up from there.
     /// The Axiom::tag is set to `0` and the Axiom::normalizer to `nullptr`.
-    const Axiom* axiom(Def::NormalizeFn n, u8 curry, u8 trip, Ref type) {
-        return axiom(n, curry, trip, type, Axiom::Global_Dialect, 0, state_.pod.curr_sub++);
+    const Axiom* axiom(NormalizeFn n, u8 curry, u8 trip, Ref type) {
+        return axiom(n, curry, trip, type, Axiom::Global_Plugin, 0, state_.pod.curr_sub++);
     }
     const Axiom* axiom(Ref type) { return axiom(nullptr, 0, 0, type); } ///< See above.
 
-    /// Get Axiom from a dialect.
+    /// Get Axiom from a plugin.
     /// Use this to get an Axiom via Axiom::id.
     template<class Id>
     const Axiom* ax(Id id) {
         u64 flags = static_cast<u64>(id);
         if (auto i = move_.axioms.find(flags); i != move_.axioms.end()) return i->second;
-        err("Axiom with ID '{}' not found; demangled dialect name is '{}'", flags, Axiom::demangle(*this, flags));
+        err("Axiom with ID '{}' not found; demangled plugin name is '{}'", flags, Axiom::demangle(*this, flags));
     }
 
-    /// Get Axiom from a dialect.
+    /// Get Axiom from a plugin.
     /// Can be used to get an Axiom without sub-tags.
     /// E.g. use `w.ax<mem::M>();` to get the `%mem.M` Axiom.
     template<axiom_without_subs id>
@@ -427,7 +424,7 @@ public:
     /// @name cope with implicit arguments
     ///@{
 
-    /// Places Infer arguments as demanded by @p debug.meta and then apps @p arg.
+    /// Places Infer arguments as demanded by Pi::implicit and then apps @p arg.
     Ref iapp(Ref callee, Ref arg);
     Ref iapp(Ref callee, Defs args) { return iapp(callee, tuple(args)); }
     Ref iapp(Ref callee, nat_t arg) { return iapp(callee, lit_nat(arg)); }
@@ -447,7 +444,6 @@ public:
 
     /// @name dumping/logging
     ///@{
-    const Log& log() const;
     Log& log();
     void dummy() {}
 
@@ -497,8 +493,7 @@ private:
         if (flags().trace_gids) outln("{}: {} - {}", def->node_name(), def->gid(), def->flags());
         if (breakpoints().contains(def->gid())) thorin::breakpoint();
 #endif
-        auto [_, ins] = move_.defs.emplace(def);
-        assert_unused(ins);
+        assert_emplace(move_.defs, def);
         return def;
     }
     ///@}

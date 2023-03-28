@@ -32,9 +32,4 @@ void Scopes::bind(Scope* scope, Dbg dbg, const Def* def, bool rebind) {
     }
 }
 
-void Scopes::merge(Scopes& other) {
-    assert(scopes_.size() == 1 && other.scopes_.size() == 1);
-    scopes_.front().merge(other.scopes_.front());
-}
-
 } // namespace thorin::fe

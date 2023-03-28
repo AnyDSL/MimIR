@@ -1,13 +1,11 @@
 #include "dialects/clos/clos.h"
 
 #include <thorin/config.h>
+#include <thorin/pass/fp/eta_exp.h>
+#include <thorin/pass/fp/eta_red.h>
 #include <thorin/pass/pass.h>
-
-#include "thorin/dialects.h"
-
-#include "thorin/pass/fp/eta_exp.h"
-#include "thorin/pass/fp/eta_red.h"
-#include "thorin/pass/rw/scalarize.h"
+#include <thorin/pass/pipelinebuilder.h>
+#include <thorin/pass/rw/scalarize.h>
 
 #include "dialects/clos/pass/fp/lower_typed_clos_prep.h"
 #include "dialects/clos/pass/rw/branch_clos_elim.h"
@@ -137,7 +135,7 @@ Ref ctype(World& w, Defs doms, Ref env_type) {
 
 using namespace thorin;
 
-extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
+extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
     return {"clos",
             [](Passes& passes) {
                 register_pass<clos::clos_conv_prep_pass, clos::ClosConvPrep>(passes, nullptr);

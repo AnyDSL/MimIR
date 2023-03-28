@@ -1,5 +1,7 @@
 #pragma once
 
+#include <filesystem>
+
 #include <absl/container/flat_hash_map.h>
 #include <absl/container/flat_hash_set.h>
 
@@ -7,6 +9,8 @@
 #include "thorin/util/sym.h"
 
 namespace thorin {
+
+namespace fs = std::filesystem;
 
 struct Pos {
     Pos() = default;
@@ -23,21 +27,29 @@ struct Pos {
     uint16_t col = 0;
 };
 
+/// Loc%ation in a File.
+/// @warning Loc::path is only a pointer and it is your job to guarantee
+/// that the underlying `std::filesystem::path` outlives this Loc%ation.
+/// In Thorin itself, the Driver takes care of this.
 struct Loc {
     Loc() = default;
-    Loc(Sym file, Pos begin, Pos finis)
-        : file(file)
+    Loc(const fs::path* path, Pos begin, Pos finis)
+        : path(path)
         , begin(begin)
         , finis(finis) {}
-    Loc(Sym file, Pos pos)
+    Loc(const fs::path* file, Pos pos)
         : Loc(file, pos, pos) {}
+    Loc(Pos begin, Pos finis)
+        : Loc(nullptr, begin, finis) {}
+    Loc(Pos pos)
+        : Loc(nullptr, pos, pos) {}
 
-    Loc anew_begin() const { return {file, begin, begin}; }
-    Loc anew_finis() const { return {file, finis, finis}; }
+    Loc anew_begin() const { return {path, begin, begin}; }
+    Loc anew_finis() const { return {path, finis, finis}; }
     explicit operator bool() const { return (bool)begin; }
     void dump();
 
-    Sym file;
+    const fs::path* path = nullptr;
     Pos begin = {};
     Pos finis = {};
     ///< It's called `finis` because it refers to the **last** character within this Loc%ation.
@@ -56,7 +68,8 @@ std::ostream& operator<<(std::ostream&, const Pos);
 std::ostream& operator<<(std::ostream&, const Loc);
 
 inline bool operator==(Pos p1, Pos p2) { return p1.row == p2.row && p1.col == p2.col; }
-inline bool operator==(Loc l1, Loc l2) { return l1.begin == l2.begin && l1.finis == l2.finis && l1.file == l2.file; }
+/// @note Loc::path is only checked via pointer equality.
+inline bool operator==(Loc l1, Loc l2) { return l1.begin == l2.begin && l1.finis == l2.finis && l1.path == l2.path; }
 
 struct Dbg {
     Loc loc;

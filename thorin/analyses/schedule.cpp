@@ -20,16 +20,14 @@ Scheduler::Scheduler(const Scope& s)
 
     auto enqueue = [&](const Def* def, size_t i, const Def* op) {
         if (scope().bound(op)) {
-            auto [_, ins] = def2uses_[op].emplace(def, i);
-            assert_unused(ins);
+            assert_emplace(def2uses_[op], def, i);
             if (auto [_, ins] = done.emplace(op); ins) queue.push(op);
         }
     };
 
     for (auto n : cfg().reverse_post_order()) {
         queue.push(n->nom());
-        auto p = done.emplace(n->nom());
-        assert_unused(p.second);
+        assert_emplace(done, n->nom());
     }
 
     while (!queue.empty()) {

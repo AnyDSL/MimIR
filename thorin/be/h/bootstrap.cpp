@@ -1,36 +1,42 @@
-#include "thorin/be/h/bootstrapper.h"
+#include "thorin/be/h/bootstrap.h"
 
 #include <ranges>
 #include <sstream>
 
 #include "thorin/axiom.h"
+#include "thorin/driver.h"
 
-namespace thorin::h {
+namespace thorin {
 
-void Bootstrapper::emit(std::ostream& h) {
+void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
+    Tab tab;
     tab.print(h, "#pragma once\n\n");
     tab.print(h, "#include \"thorin/axiom.h\"\n"
-                 "#include \"thorin/dialects.h\"\n\n");
+                 "#include \"thorin/plugin.h\"\n\n");
 
-    tab.print(h, "namespace thorin {{\nnamespace {} {{\n\n", dialect_);
+    tab.print(h, "namespace thorin {{\nnamespace {} {{\n\n", plugin);
 
-    dialect_t dialect_id = *Axiom::mangle(dialect_);
+    plugin_t plugin_id = *Axiom::mangle(plugin);
     std::vector<std::ostringstream> normalizers, outer_namespace;
 
-    tab.print(h << std::hex, "static constexpr dialect_t Dialect_Id = 0x{};\n\n", dialect_id);
+    tab.print(h << std::hex, "static constexpr plugin_t Plugin_Id = 0x{};\n\n", plugin_id);
+
+    auto& infos = driver.plugin2axiom_infos(plugin);
 
     // clang-format off
-    for (const auto& [key, ax] : axioms) {
+    for (const auto& [key, ax] : infos) {
+        if (ax.plugin != plugin) continue; // this is from an import
+
         tab.print(h, "#ifdef DOXYGEN // see https://github.com/doxygen/doxygen/issues/9668\n");
         tab.print(h, "enum {} : flags_t {{\n", ax.tag);
         tab.print(h, "#else\n");
         tab.print(h, "enum class {} : flags_t {{\n", ax.tag);
         tab.print(h, "#endif\n");
         ++tab;
-        flags_t ax_id = dialect_id | (ax.tag_id << 8u);
+        flags_t ax_id = plugin_id | (ax.tag_id << 8u);
 
         auto& os = outer_namespace.emplace_back();
-        print(os << std::hex, "template<> constexpr flags_t Axiom::Base<{}::{}> = 0x{};\n", dialect_, ax.tag, ax_id);
+        print(os << std::hex, "template<> constexpr flags_t Axiom::Base<{}::{}> = 0x{};\n", plugin, ax.tag, ax_id);
 
         if (auto& subs = ax.subs; !subs.empty()) {
             for (const auto& aliases : subs) {
@@ -57,7 +63,7 @@ void Bootstrapper::emit(std::ostream& h) {
             tab.print(h, "inline flags_t operator|({} lhs, {} rhs) {{ return static_cast<flags_t>(lhs) | static_cast<flags_t>(rhs); }}\n\n", ax.tag, ax.tag);
         }
 
-        print(outer_namespace.emplace_back(), "template<> constexpr size_t Axiom::Num<{}::{}> = {};\n", dialect_, ax.tag, ax.subs.size());
+        print(outer_namespace.emplace_back(), "template<> constexpr size_t Axiom::Num<{}::{}> = {};\n", plugin, ax.tag, ax.subs.size());
 
         if (ax.normalizer) {
             if (auto& subs = ax.subs; !subs.empty()) {
@@ -71,7 +77,7 @@ void Bootstrapper::emit(std::ostream& h) {
 
     if (!normalizers.empty()) {
         tab.print(h, "void register_normalizers(Normalizers& normalizers);\n\n");
-        tab.print(h, "#define THORIN_{}_NORMALIZER_IMPL \\\n", dialect_);
+        tab.print(h, "#define THORIN_{}_NORMALIZER_IMPL \\\n", plugin);
         ++tab;
         tab.print(h, "void register_normalizers(Normalizers& normalizers) {{\\\n");
         ++tab;
@@ -81,19 +87,18 @@ void Bootstrapper::emit(std::ostream& h) {
         --tab;
     }
 
-    tab.print(h, "}} // namespace {}\n\n", dialect_);
+    tab.print(h, "}} // namespace {}\n\n", plugin);
 
     for (const auto& line : outer_namespace) tab.print(h, "{}", line.str());
     tab.print(h, "\n");
 
-    if (std::ranges::any_of(axioms, [](const auto& ax) { return !ax.second.pi; })) {
-        for (const auto& [tag, ax] : axioms) {
-            if (ax.pi) continue;
-            tab.print(h, "template<> struct Axiom::Match<{}::{}> {{ using type = Axiom; }};\n", ax.dialect, ax.tag);
-        }
+    // emit helpers for non-function axiom
+    for (const auto& [tag, ax] : infos) {
+        if (ax.pi || ax.plugin != plugin) continue; // from function or other plugin?
+        tab.print(h, "template<> struct Axiom::Match<{}::{}> {{ using type = Axiom; }};\n", ax.plugin, ax.tag);
     }
 
     tab.print(h, "}} // namespace thorin\n");
 }
 
-} // namespace thorin::h
+} // namespace thorin

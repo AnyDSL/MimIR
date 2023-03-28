@@ -1,6 +1,7 @@
 #pragma once
 
-#include "thorin/world.h"
+#include <thorin/analyses/scope.h>
+#include <thorin/rewrite.h>
 
 #include "dialects/direct/autogen.h"
 
