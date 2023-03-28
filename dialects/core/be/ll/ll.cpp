@@ -192,7 +192,7 @@ std::string Emitter::convert(const Def* type) {
 
 std::string Emitter::convert_ret_pi(const Pi* pi) {
     auto dom = mem::strip_mem_ty(pi->dom());
-    if (dom == world().sigma()) { return "void"; }
+    if (dom == world().sigma()) return "void";
     return convert(dom);
 }
 
@@ -261,9 +261,8 @@ void Emitter::finalize(const Scope& scope) {
             print(func_impls_, "{}:\n", lam->unique_name());
 
             ++tab;
-            for (const auto& part : bb.parts) {
+            for (const auto& part : bb.parts)
                 for (const auto& line : part) tab.print(func_impls_, "{}\n", line.str());
-            }
             --tab;
             func_impls_ << std::endl;
         }
@@ -344,9 +343,8 @@ void Emitter::emit_epilogue(Lam* lam) {
 
         std::vector<std::string> args;
         auto app_args = app->args();
-        for (auto arg : app_args.skip_back()) {
+        for (auto arg : app_args.skip_back())
             if (auto v_arg = emit_unsafe(arg); !v_arg.empty()) args.emplace_back(convert(arg->type()) + " " + v_arg);
-        }
 
         if (app->args().back()->isa<Bot>()) {
             // TODO: Perhaps it'd be better to simply η-wrap this prior to the BE...
