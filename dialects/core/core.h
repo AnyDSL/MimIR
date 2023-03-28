@@ -21,23 +21,11 @@ inline Ref mode(World& w, VMode m) {
     return w.lit_nat(std::get<Mode>(m));
 }
 
-/// @name fn - these guys yield the final function to be invoked for the various operations
-///@{
-inline Ref fn_bitcast(Ref dst_t, Ref src_t) {
-    World& w = dst_t->world();
-    return w.app(w.ax<bitcast>(), {dst_t, src_t});
-}
-///@}
-
 /// @name op - these guys build the final function application for the various operations
 ///@{
 inline Ref op(trait o, Ref type) {
     World& w = type->world();
     return w.app(w.ax(o), type);
-}
-inline Ref op_bitcast(Ref dst_t, Ref src) {
-    World& w = dst_t->world();
-    return w.app(fn_bitcast(dst_t, src->type()), src);
 }
 inline Ref op(pe o, Ref def) {
     World& w = def->world();

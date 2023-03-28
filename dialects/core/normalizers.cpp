@@ -540,12 +540,13 @@ Ref normalize_conv(Ref dst_t, Ref c, Ref x) {
 
 Ref normalize_bitcast(Ref dst_t, Ref callee, Ref src) {
     auto& world = dst_t->world();
+    auto src_t  = src->type();
 
     if (src->isa<Bot>()) return world.bot(dst_t);
-    if (src->type() == dst_t) return src;
+    if (src_t == dst_t) return src;
 
     if (auto other = match<bitcast>(src))
-        return other->arg()->type() == dst_t ? other->arg() : *op_bitcast(dst_t, other->arg());
+        return other->arg()->type() == dst_t ? other->arg() : world.call<bitcast>(dst_t, other->arg());
 
     if (auto lit = src->isa<Lit>()) {
         if (dst_t->isa<Nat>()) return world.lit(dst_t, lit->get());

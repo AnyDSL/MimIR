@@ -28,32 +28,22 @@
     .let arr_size = ⊤:.Nat;
 
     .let (alloc_pb_mem, pb_ptr) = %mem.malloc Tas (mem, 32);
-
-    .let pb_arr = %core.bitcast (
-       %mem.Ptr («⊤:.Nat; .Cn [%mem.M, (.Idx 4294967296), .Cn [%mem.M, (.Idx 4294967296)]]», 0),
-       %mem.Ptr (.Cn [%mem.M, (.Idx 4294967296), .Cn [%mem.M, (.Idx 4294967296)]], 0)) pb_ptr;
-
-    .let (alloc_mem, a_arr) = %mem.alloc (<<%core.bitcast (.Nat, I32) 4:I32; I32>>, 0) (alloc_pb_mem);
+    .let pb_arr = %core.bitcast (%mem.Ptr («⊤:.Nat; .Cn [%mem.M, (.Idx 4294967296), .Cn [%mem.M, (.Idx 4294967296)]]», 0)) pb_ptr;
+    .let (alloc_mem, a_arr) = %mem.alloc (<<4; I32>>, 0) (alloc_pb_mem);
 
     .let lea_0 = %mem.lea (arr_size, <arr_size; pb_type>, 0) (pb_arr, 0:I32);
-    .let mem2 = %mem.store (alloc_mem, lea_0, f);
+    .let mem2  = %mem.store (alloc_mem, lea_0, f);
     .let lea_1 = %mem.lea (arr_size, <arr_size; pb_type>, 0) (pb_arr, 1:I32);
-    .let mem3 = %mem.store (mem2, lea_1, g);
+    .let mem3  = %mem.store (mem2, lea_1, g);
     .let lea_2 = %mem.lea (arr_size, <arr_size; pb_type>, 0) (pb_arr, 2:I32);
-    .let mem4 = %mem.store (mem3, lea_2, h);
-
-    .let lea = %mem.lea (arr_size, <arr_size; I32>, 0) (a_arr, 0:I32);
-
+    .let mem4  = %mem.store (mem3, lea_2, h);
+    .let lea   = %mem.lea (arr_size, <arr_size; I32>, 0) (a_arr, 0:I32);
     .let mem5 = %mem.store (mem4, lea, 10:I32);
-
     .let fn_lea = %mem.lea (arr_size, <arr_size; pb_type>, 0) (pb_arr, 2:I32);
     .let load = %mem.load (mem5, fn_lea);
-
     .let load_mem = load#0:(.Idx 2);
     .let load2 = %mem.load (load_mem, lea);
-
     .let func = load#1:(.Idx 2);
-
     .let load2_mem = load2#0:(.Idx 2);
     .let load2_val = load2#1:(.Idx 2);
 

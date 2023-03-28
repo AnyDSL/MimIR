@@ -189,7 +189,7 @@
 /// Bitcast to reinterpret a value as another type.
 /// Can be used for pointer / integer conversions as well as integer / nat conversions.
 ///
-.ax %core.bitcast: Π [D: *, S: *][S] -> D, normalize_bitcast;
+.ax %core.bitcast: Π.[S: *][D: *][S] -> D, normalize_bitcast;
 ///
 /// ## Other Operations
 ///

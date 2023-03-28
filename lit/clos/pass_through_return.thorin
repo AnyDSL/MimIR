@@ -20,7 +20,7 @@
     };
 
     .let (alloc_pb_mem, pb_ptr) = %mem.malloc (pb_type, 0) (mem, 100);
-    .let pb_arr = %core.bitcast ( %mem.Ptr («⊤:.Nat; pb_type», 0), %mem.Ptr (pb_type, 0)) pb_ptr;
+    .let pb_arr = %core.bitcast (%mem.Ptr («⊤:.Nat; pb_type», 0)) pb_ptr;
     .let lea_pb = %mem.lea (⊤:.Nat, <⊤:.Nat; pb_type>, 0) (pb_arr, 0:i32);
     .let store_pb = %mem.store (alloc_pb_mem, lea_pb, end);
 
