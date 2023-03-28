@@ -30,7 +30,7 @@ var menudata={children:[
 {text:"Coding & Debugging",url:"coding.html"},
 {text:"Developer Guide",url:"dev.html"},
 {text:"Passes",url:"passes.html"}]},
-{text:"Dialects",url:"usergroup1.html",children:[
+{text:"Plugins",url:"usergroup1.html",children:[
 {text:"affine",url:"affine.html"},
 {text:"autodiff",url:"autodiff.html"},
 {text:"clos",url:"clos.html"},

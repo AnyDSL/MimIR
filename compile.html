@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.5"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: The compile dialect</title>
+<title>Thorin: The compile Plugin</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('compile.html',''); initResizable(); })
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">The compile dialect </div></div>
+  <div class="headertitle"><div class="title">The compile Plugin </div></div>
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
@@ -120,7 +120,7 @@ $(document).ready(function(){initNavTree('compile.html',''); initResizable(); })
 <li class="level2"><a href="#autotoc_md75">%compile.PassList</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md76">Expressions</a><ul><li class="level2"><a href="#autotoc_md77">registered dialects</a></li>
+<li class="level1"><a href="#autotoc_md76">Expressions</a><ul><li class="level2"><a href="#autotoc_md77">Registered Plugins</a></li>
 <li class="level2"><a href="#autotoc_md78">%opt.is_loaded</a></li>
 <li class="level2"><a href="#autotoc_md79">%compile.pipe</a></li>
 </ul>
@@ -137,7 +137,7 @@ $(document).ready(function(){initNavTree('compile.html',''); initResizable(); })
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md_build_docs_dialects_compile"></a></p>
-<p >This dialect handles the optimization part of the compilation of Thorin programs. Dialects can register passes and phases using the axioms from this dialect. The program then can invoke the optimization pipeline by defining a function <code>_compile: [] -&gt; Pipeline</code>.</p>
+<p >This plugin handles the optimization part of the compilation of Thorin programs. Plugins can register passes and phases using the axioms from this plugin. The program then can invoke the optimization pipeline by defining a function <code>_compile: [] -&gt; Pipeline</code>.</p>
 <h1><a class="anchor" id="autotoc_md71"></a>
 Types</h1>
 <h2><a class="anchor" id="autotoc_md72"></a>
@@ -156,24 +156,24 @@ Types</h1>
 <div class="line">.Pi PassList: □, %compile.Pass = PassList;</div>
 <div class="line">.Pi CombinedPhase: □, %compile.Phase = CombinedPhase;</div>
 </div><!-- fragment --><p >(This is a forward declaration for opt.thorin.)</p>
-<div class="fragment"><div class="line">.ax %compile.Dialect: *;</div>
+<div class="fragment"><div class="line">.ax %compile.Plugin: *;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md76"></a>
 Expressions</h1>
 <h2><a class="anchor" id="autotoc_md77"></a>
-registered dialects</h2>
-<p >We expect the name in the tag before the <code>_</code> to be the name of the dialect (as given in <code>DialectInfo.plugin_name</code>). (This is a forward declaration for opt.thorin.)</p>
-<div class="fragment"><div class="line">.ax %compile.core_dialect    : %compile.Dialect;</div>
-<div class="line">.ax %compile.mem_dialect     : %compile.Dialect;</div>
-<div class="line">.ax %compile.demo_dialect    : %compile.Dialect;</div>
-<div class="line">.ax %compile.affine_dialect  : %compile.Dialect;</div>
-<div class="line">.ax %compile.autodiff_dialect: %compile.Dialect;</div>
-<div class="line">.ax %compile.clos_dialect    : %compile.Dialect;</div>
-<div class="line">.ax %compile.direct_dialect  : %compile.Dialect;</div>
-<div class="line">.ax %compile.refly_dialect   : %compile.Dialect;</div>
+Registered Plugins</h2>
+<p >We expect the name in the tag before the <code>_</code> to be the name of the plugin (as given in <code>Plugin.plugin_name</code>). (This is a forward declaration for opt.thorin.)</p>
+<div class="fragment"><div class="line">.ax %compile.core_plugin    : %compile.Plugin;</div>
+<div class="line">.ax %compile.mem_plugin     : %compile.Plugin;</div>
+<div class="line">.ax %compile.demo_plugin    : %compile.Plugin;</div>
+<div class="line">.ax %compile.affine_plugin  : %compile.Plugin;</div>
+<div class="line">.ax %compile.autodiff_plugin: %compile.Plugin;</div>
+<div class="line">.ax %compile.clos_plugin    : %compile.Plugin;</div>
+<div class="line">.ax %compile.direct_plugin  : %compile.Plugin;</div>
+<div class="line">.ax %compile.refly_plugin   : %compile.Plugin;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md78"></a>
 %opt.is_loaded</h2>
-<p >Indicates whether a dialect is loaded. The normalizer will statically evaluate this expression to a constant boolean. TODO: find correct point (not at parsing but before compilation)</p>
-<div class="fragment"><div class="line">// .ax %opt.is_loaded: %opt.Dialect -&gt; .Bool;</div>
+<p >Indicates whether a plugin is loaded. The normalizer will statically evaluate this expression to a constant boolean. TODO: find correct point (not at parsing but before compilation)</p>
+<div class="fragment"><div class="line">// .ax %opt.is_loaded: %opt.Plugin -&gt; .Bool;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md79"></a>
 %compile.pipe</h2>
 <p >Given n phases, returns the representation of a pipeline.</p>
@@ -243,22 +243,16 @@ Pipelines</h2>
 <div class="line">        (%compile.single_pass_phase %compile.lam_spec_pass)</div>
 <div class="line">        (%compile.single_pass_phase %compile.ret_wrap_pass)</div>
 <div class="line">};</div>
-<div class="line">.lam .extern _fallback_compile [] -&gt; Pipeline = {</div>
-<div class="line">    default_core_pipeline</div>
-<div class="line">};</div>
+<div class="line">.lam .extern _fallback_compile() -&gt; Pipeline = default_core_pipeline;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md87"></a>
 Dependent Passes and Phases</h2>
 <div class="fragment"><div class="line">.let empty_pass = %compile.nullptr_pass;</div>
 <div class="line">.let empty_phase = %compile.passes_to_phase 0 ();</div>
-<div class="line">.ax %compile.dialect_select: Π [T:*] -&gt; %compile.Dialect -&gt; T -&gt; T -&gt; T;</div>
-<div class="line">.let dialect_phase = %compile.dialect_select %compile.Phase;</div>
-<div class="line">.let dialect_pass = %compile.dialect_select %compile.Pass;</div>
-<div class="line">.lam dialect_cond_phase ![dialect: %compile.Dialect,phase: %compile.Phase] -&gt; %compile.Phase = {</div>
-<div class="line">  dialect_phase dialect phase empty_phase</div>
-<div class="line">};</div>
-<div class="line">.lam dialect_cond_pass ![dialect: %compile.Dialect,pass: %compile.Pass] -&gt; %compile.Pass = {</div>
-<div class="line">  dialect_pass dialect pass empty_pass</div>
-<div class="line">};</div>
+<div class="line">.ax %compile.plugin_select: Π [T:*] -&gt; %compile.Plugin -&gt; T -&gt; T -&gt; T;</div>
+<div class="line">.let plugin_phase = %compile.plugin_select %compile.Phase;</div>
+<div class="line">.let plugin_pass = %compile.plugin_select %compile.Pass;</div>
+<div class="line">.lam plugin_cond_phase!(plugin: %compile.Plugin, phase: %compile.Phase) -&gt; %compile.Phase = plugin_phase plugin phase empty_phase;</div>
+<div class="line">.lam plugin_cond_pass!(plugin: %compile.Plugin, pass: %compile.Pass) -&gt; %compile.Pass = plugin_pass plugin pass empty_pass;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

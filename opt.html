@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.5"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: The opt dialect</title>
+<title>Thorin: The opt Plugin</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('opt.html',''); initResizable(); });
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">The opt dialect </div></div>
+  <div class="headertitle"><div class="title">The opt Plugin </div></div>
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
@@ -121,11 +121,11 @@ $(document).ready(function(){initNavTree('opt.html',''); initResizable(); });
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md_build_docs_dialects_opt"></a></p>
-<p >Manages the default compilation pipeline of Thorin programs using dialects.</p>
+<p >Manages the default compilation pipeline of Thorin programs using plugins.</p>
 <h1><a class="anchor" id="autotoc_md148"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">.import core; // includes mem, compile (and avoids clashing re-import)</div>
-</div><!-- fragment --><p> supported dialects with passes </p><div class="fragment"><div class="line">.import affine;</div>
+</div><!-- fragment --><p> supported plugins with passes </p><div class="fragment"><div class="line">.import affine;</div>
 <div class="line">.import autodiff;</div>
 <div class="line">.import clos;</div>
 <div class="line">.import direct;</div>
@@ -144,30 +144,30 @@ Pipelines</h2>
 <div class="line">        (%compile.single_pass_phase (%compile.tail_rec_elim_pass nullptr))</div>
 <div class="line">        // optimize</div>
 <div class="line">        (%compile.pass_phase </div>
-<div class="line">          (%compile.combine_pass_list (⊤:.Nat)</div>
-<div class="line">          (</div>
-<div class="line">            optimization_pass_list,</div>
-<div class="line">            %compile.pass_list</div>
-<div class="line">              (dialect_cond_pass (%compile.affine_dialect, %affine.lower_for_pass)),</div>
-<div class="line">            mem_opt_pass_list</div>
-<div class="line">          ))</div>
+<div class="line">            (%compile.combine_pass_list (⊤:.Nat)</div>
+<div class="line">            (</div>
+<div class="line">                optimization_pass_list,</div>
+<div class="line">                %compile.pass_list</div>
+<div class="line">                (plugin_cond_pass (%compile.affine_plugin, %affine.lower_for_pass)),</div>
+<div class="line">                mem_opt_pass_list</div>
+<div class="line">            ))</div>
 <div class="line">        )</div>
-<div class="line">        (dialect_cond_phase (%compile.autodiff_dialect,</div>
-<div class="line">          %compile.combined_phase (%compile.phase_list</div>
+<div class="line">        (plugin_cond_phase (%compile.autodiff_plugin,</div>
+<div class="line">            %compile.combined_phase (%compile.phase_list</div>
 <div class="line">            (%compile.single_pass_phase %autodiff.ad_eval_pass)</div>
 <div class="line">            // optimization_phase</div>
 <div class="line">            (%compile.single_pass_phase %autodiff.ad_zero_pass)</div>
-<div class="line">          )</div>
+<div class="line">            )</div>
 <div class="line">        ))</div>
-<div class="line">        (dialect_cond_phase (%compile.direct_dialect,</div>
+<div class="line">        (plugin_cond_phase (%compile.direct_plugin,</div>
 <div class="line">          direct_phases</div>
 <div class="line">        ))</div>
 <div class="line">        (%compile.single_pass_phase %compile.internal_cleanup_pass)</div>
-<div class="line">        (dialect_cond_phase (%compile.clos_dialect,</div>
+<div class="line">        (plugin_cond_phase (%compile.clos_plugin,</div>
 <div class="line">          clos_phases</div>
 <div class="line">        ))</div>
 <div class="line">        (%compile.single_pass_phase %compile.lam_spec_pass)</div>
-<div class="line">        (dialect_cond_phase (%compile.autodiff_dialect,</div>
+<div class="line">        (plugin_cond_phase (%compile.autodiff_plugin,</div>
 <div class="line">          ad_cleanup_phase</div>
 <div class="line">        ))</div>
 <div class="line">        // CodeGenPrep</div>
@@ -181,7 +181,7 @@ Pipelines</h2>
 <div class="line">              %mem.remem_elim_pass</div>
 <div class="line">              %mem.alloc2malloc_pass,</div>
 <div class="line">            %compile.pass_list</div>
-<div class="line">              (dialect_cond_pass (%compile.refly_dialect, %refly.remove_dbg_perm_pass)),</div>
+<div class="line">              (plugin_cond_pass (%compile.refly_plugin, %refly.remove_dbg_perm_pass)),</div>
 <div class="line">          ))</div>
 <div class="line">        )</div>
 <div class="line">};</div>

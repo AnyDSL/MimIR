@@ -127,31 +127,24 @@ $(document).ready(function(){initNavTree('dev.html',''); initResizable(); });
 <p >This guide summaries typicical idioms you want to use when working with Thorin as a developer.</p>
 <h1><a class="anchor" id="autotoc_md13"></a>
 Compiling and Executing</h1>
-<p >Here is a small example that first constructs a <code>main</code> function and simply returns the <code>argc</code>: </p><div class="fragment"><div class="line">World w;</div>
-<div class="line"> </div>
-<div class="line"><span class="keyword">auto</span> mem_d = Dialect::load(<span class="stringliteral">&quot;mem&quot;</span>, {});</div>
-<div class="line">Normalizers normalizers;</div>
-<div class="line">mem_d.register_normalizers(normalizers);</div>
-<div class="line">Parser::import_module(w, <span class="stringliteral">&quot;mem&quot;</span>, {}, &amp;normalizers);</div>
+<p >Here is a small example that first constructs a <code>main</code> function and simply returns the <code>argc</code>: </p><div class="fragment"><div class="line">Driver driver;</div>
+<div class="line">World&amp; w    = driver.world();</div>
+<div class="line"><span class="keyword">auto</span> parser = fe::Parser(w);</div>
+<div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> plugin : {<span class="stringliteral">&quot;compile&quot;</span>, <span class="stringliteral">&quot;mem&quot;</span>, <span class="stringliteral">&quot;core&quot;</span>, <span class="stringliteral">&quot;math&quot;</span>}) parser.plugin(plugin);</div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">auto</span> mem_t  = mem::type_mem(w);</div>
-<div class="line"><span class="keyword">auto</span> i32_t  = w.type_int_width(32);</div>
+<div class="line"><span class="keyword">auto</span> i32_t  = w.type_int(32);</div>
 <div class="line"><span class="keyword">auto</span> argv_t = mem::type_ptr(mem::type_ptr(i32_t));</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Cn [mem, i32, Cn [mem, i32]]</span></div>
 <div class="line"><span class="keyword">auto</span> main_t = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})});</div>
-<div class="line"><span class="keyword">auto</span> <a class="code hl_function" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a> = w.nom_lam(main_t, w.dbg(<span class="stringliteral">&quot;main&quot;</span>));</div>
+<div class="line"><span class="keyword">auto</span> <a class="code hl_function" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a> = w.nom_lam(main_t)-&gt;set(<span class="stringliteral">&quot;main&quot;</span>);</div>
 <div class="line"><span class="keyword">auto</span> [mem, argc, argv, <a class="code hl_enumvalue" href="namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aa2348b9af292e8373483f8ff836d5aac2">ret</a>] = <a class="code hl_function" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a>-&gt;vars&lt;4&gt;();</div>
 <div class="line"><a class="code hl_function" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a>-&gt;app(ret, {mem, argc});</div>
 <div class="line"><a class="code hl_function" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a>-&gt;make_external();</div>
 <div class="line"> </div>
 <div class="line">PipelineBuilder builder;</div>
-<div class="line">mem_d.register_passes(builder);</div>
 <div class="line"><a class="code hl_function" href="namespacethorin.html#a9e64c2e92ce1a1166c536644960116c2">optimize</a>(w, builder);</div>
-<div class="line"> </div>
-<div class="line"><span class="keyword">auto</span> core_d = Dialect::load(<span class="stringliteral">&quot;core&quot;</span>, {});</div>
-<div class="line"><a class="code hl_enumeration" href="main_8cpp.html#a085744bf883a85c3fb7407874efa1d9d">Backends</a> backends;</div>
-<div class="line">core_d.register_backends(backends);</div>
 <div class="line"> </div>
 <div class="line">std::ofstream file(<span class="stringliteral">&quot;test.ll&quot;</span>);</div>
 <div class="line">Stream <a class="code hl_enumvalue" href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937aa1f7876be8b2419af003e22a537fa0a8">s</a>(file);</div>
@@ -160,10 +153,9 @@ Compiling and Executing</h1>
 <div class="line"> </div>
 <div class="line">std::system(<span class="stringliteral">&quot;clang test.ll -o test&quot;</span>);</div>
 <div class="line">assert(4 == WEXITSTATUS(std::system(<span class="stringliteral">&quot;./test a b c&quot;</span>)));</div>
-<div class="ttc" id="amain_8cpp_html_a085744bf883a85c3fb7407874efa1d9d"><div class="ttname"><a href="main_8cpp.html#a085744bf883a85c3fb7407874efa1d9d">Backends</a></div><div class="ttdeci">Backends</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00023">main.cpp:23</a></div></div>
 <div class="ttc" id="amain_8cpp_html_a3c04138a5bfe5d72780bb7e82a18e627"><div class="ttname"><a href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a></div><div class="ttdeci">int main(int argc, char **argv)</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00025">main.cpp:25</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1clos_html_a5c55a5bd62132e28b49915902ea0117aa2348b9af292e8373483f8ff836d5aac2"><div class="ttname"><a href="namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aa2348b9af292e8373483f8ff836d5aac2">thorin::clos::ret</a></div><div class="ttdeci">@ ret</div><div class="ttdef"><b>Definition:</b> <a href="clos_2autogen_8h_source.html#l00037">autogen.h:37</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1core_html_a016fae77d6f5857b429ceb5b433c4937aa1f7876be8b2419af003e22a537fa0a8"><div class="ttname"><a href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937aa1f7876be8b2419af003e22a537fa0a8">thorin::core::s</a></div><div class="ttdeci">@ s</div><div class="ttdef"><b>Definition:</b> <a href="core_2autogen_8h_source.html#l00264">autogen.h:264</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1clos_html_a5c55a5bd62132e28b49915902ea0117aa2348b9af292e8373483f8ff836d5aac2"><div class="ttname"><a href="namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aa2348b9af292e8373483f8ff836d5aac2">thorin::clos::ret</a></div><div class="ttdeci">@ ret</div><div class="ttdef"><b>Definition:</b> <a href="clos_2autogen_8h_source.html#l00086">autogen.h:86</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1core_html_a016fae77d6f5857b429ceb5b433c4937aa1f7876be8b2419af003e22a537fa0a8"><div class="ttname"><a href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937aa1f7876be8b2419af003e22a537fa0a8">thorin::core::s</a></div><div class="ttdeci">@ s</div><div class="ttdef"><b>Definition:</b> <a href="core_2autogen_8h_source.html#l00016">autogen.h:16</a></div></div>
 <div class="ttc" id="anamespacethorin_html_a9e64c2e92ce1a1166c536644960116c2"><div class="ttname"><a href="namespacethorin.html#a9e64c2e92ce1a1166c536644960116c2">thorin::optimize</a></div><div class="ttdeci">void optimize(World &amp;world)</div><div class="ttdef"><b>Definition:</b> <a href="optimize_8cpp_source.html#l00020">optimize.cpp:20</a></div></div>
 </div><!-- fragment --><p> TODO explain</p>
 <h1><a class="anchor" id="autotoc_md14"></a>

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['e_0',['e',['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea2617461720290be8740985537e6e1bfd',1,'thorin::core::e()'],['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fae3d34eae2d815c0b27ec6caf0bdb2707',1,'thorin::math::e()']]],
+  ['e_0',['e',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2617461720290be8740985537e6e1bfd',1,'thorin::core::e()'],['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fae3d34eae2d815c0b27ec6caf0bdb2707',1,'thorin::math::e()']]],
   ['early_1',['early',['../classthorin_1_1Scheduler.html#ac327f6bf1e80d3aeb499b27892e89589',1,'thorin::Scheduler']]],
   ['elem_2',['Elem',['../structthorin_1_1Elem.html#a6bfad49817f9558d69b923f5bd69297b',1,'thorin::Elem::Elem()'],['../structthorin_1_1Elem.html',1,'thorin::Elem&lt; R, F &gt;']]],
   ['elog_3',['ELOG',['../log_8h.html#a16e6a53bea50271aa28355f071f7df6b',1,'log.h']]],
@@ -31,8 +31,8 @@ var searchData=
   ['equiv_28',['equiv',['../classthorin_1_1Checker.html#a9871f99b0347f8576b99391c70ee6659',1,'thorin::Checker']]],
   ['er_29',['er',['../namespacethorin_1_1math.html#a6dd8e88f4b0e547ae80c76780070119a',1,'thorin::math']]],
   ['erase_30',['erase',['../classthorin_1_1IndexSet.html#a84889c90abdfa682b44bdd59f0faa291',1,'thorin::IndexSet']]],
-  ['err_31',['err',['../namespacethorin.html#aac934f1d1e901ba18050dd1302d65507',1,'thorin::err(const char *fmt, Args &amp;&amp;... args)'],['../namespacethorin.html#a76230671e563449407228fa716175097',1,'thorin::err(Loc loc, const char *fmt, Args &amp;&amp;... args)'],['../namespacethorin.html#a39adafebf1d49f2e8d46455a23fd711c',1,'thorin::err(const Def *def, const char *fmt, Args &amp;&amp;... args)']]],
-  ['err_32',['Err',['../namespacethorin_1_1utf8.html#a52719151c16151f7d70287c5ce19aac5',1,'thorin::utf8']]],
+  ['err_31',['Err',['../namespacethorin_1_1utf8.html#a52719151c16151f7d70287c5ce19aac5',1,'thorin::utf8']]],
+  ['err_32',['err',['../namespacethorin.html#aac934f1d1e901ba18050dd1302d65507',1,'thorin::err(const char *fmt, Args &amp;&amp;... args)'],['../namespacethorin.html#a76230671e563449407228fa716175097',1,'thorin::err(Loc loc, const char *fmt, Args &amp;&amp;... args)'],['../namespacethorin.html#a39adafebf1d49f2e8d46455a23fd711c',1,'thorin::err(const Def *def, const char *fmt, Args &amp;&amp;... args)']]],
   ['errf_33',['errf',['../namespacethorin.html#af538a45dc8c0c242b9a51f2ea1e6afea',1,'thorin']]],
   ['errln_34',['errln',['../namespacethorin.html#a01d195c52d754394a58dec37e2913430',1,'thorin']]],
   ['error_35',['Error',['../classthorin_1_1dl_1_1Error.html#a6d7e38d59acfedda2f73e4dc38e1a59b',1,'thorin::dl::Error::Error()'],['../classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa902b0d55fddef6f8d651fe1035b7d4bd',1,'thorin::Log::Error()'],['../classthorin_1_1dl_1_1Error.html',1,'thorin::dl::Error']]],

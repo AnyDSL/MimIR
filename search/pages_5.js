@@ -1,14 +1,14 @@
 var searchData=
 [
-  ['the_20affine_20dialect_0',['The affine Dialect',['../affine.html',1,'']]],
-  ['the_20automatic_20differentiation_20dialect_1',['The automatic differentiation dialect',['../autodiff.html',1,'']]],
-  ['the_20clos_20dialect_2',['The clos Dialect',['../clos.html',1,'']]],
-  ['the_20compile_20dialect_3',['The compile dialect',['../compile.html',1,'']]],
-  ['the_20core_20dialect_4',['The core Dialect',['../core.html',1,'']]],
-  ['the_20demo_20dialect_5',['The demo dialect',['../demo.html',1,'']]],
-  ['the_20direct_20style_20dialect_6',['The direct style dialect',['../direct.html',1,'']]],
-  ['the_20math_20dialect_7',['The math Dialect',['../math.html',1,'']]],
-  ['the_20mem_20dialect_8',['The mem Dialect',['../mem.html',1,'']]],
-  ['the_20opt_20dialect_9',['The opt dialect',['../opt.html',1,'']]],
-  ['the_20refly_20dialect_10',['The refly dialect',['../refly.html',1,'']]]
+  ['the_20affine_20plugin_0',['The affine Plugin',['../affine.html',1,'']]],
+  ['the_20automatic_20differentiation_20plugin_1',['The automatic differentiation Plugin',['../autodiff.html',1,'']]],
+  ['the_20clos_20plugin_2',['The clos Plugin',['../clos.html',1,'']]],
+  ['the_20compile_20plugin_3',['The compile Plugin',['../compile.html',1,'']]],
+  ['the_20core_20plugin_4',['The core Plugin',['../core.html',1,'']]],
+  ['the_20demo_20plugin_5',['The demo Plugin',['../demo.html',1,'']]],
+  ['the_20direct_20style_20plugin_6',['The direct style Plugin',['../direct.html',1,'']]],
+  ['the_20math_20plugin_7',['The math Plugin',['../math.html',1,'']]],
+  ['the_20mem_20plugin_8',['The mem Plugin',['../mem.html',1,'']]],
+  ['the_20opt_20plugin_9',['The opt Plugin',['../opt.html',1,'']]],
+  ['the_20refly_20plugin_10',['The refly Plugin',['../refly.html',1,'']]]
 ];

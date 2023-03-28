@@ -122,7 +122,7 @@ $(document).ready(function(){initNavTree('cli.html',''); initResizable(); });
 <h1><a class="anchor" id="autotoc_md0"></a>
 Usage</h1>
 <div class="fragment"><div class="line">USAGE:</div>
-<div class="line">  <a class="code hl_namespace" href="namespacethorin.html">thorin</a> [-?|-h|--help] [-v|--version] [-l|--list-search-paths] [-c|--clang &lt;clang&gt;] [-d|--dialect &lt;dialect&gt;] [-D|--dialect-path &lt;path&gt;] [-V|--verbose] [-O|--optimize &lt;level&gt;] [--output-dot &lt;file&gt;] [--output-h &lt;file&gt;] [--output-ll &lt;file&gt;] [--output-md &lt;file&gt;] [-o|--output-thorin &lt;file&gt;] [--dump-gid &lt;level&gt;] [--dump-recursive] [-b|--break &lt;gid&gt;] [--reeval-breakpoints] [--trace-gids] [&lt;file&gt;]</div>
+<div class="line">  <a class="code hl_namespace" href="namespacethorin.html">thorin</a> [-?|-h|--help] [-v|--version] [-l|--list-search-paths] [-c|--clang &lt;clang&gt;] [-p|--plugin &lt;plugin&gt;] [-P|--plugin-path &lt;path&gt;] [-V|--verbose] [-O|--optimize &lt;level&gt;] [--output-dot &lt;file&gt;] [--output-h &lt;file&gt;] [--output-ll &lt;file&gt;] [--output-md &lt;file&gt;] [-o|--output-thorin &lt;file&gt;] [--bootstrap] [--dump-gid &lt;level&gt;] [--dump-recursive] [-b|--break &lt;gid&gt;] [--reeval-breakpoints] [--trace-gids] [&lt;file&gt;]</div>
 <div class="line"> </div>
 <div class="line">Display usage information.</div>
 <div class="line"> </div>
@@ -131,8 +131,8 @@ Usage</h1>
 <div class="line">  -v, --version           Display version info and exit.</div>
 <div class="line">  -l, --list-search-paths List search paths in order and exit.</div>
 <div class="line">  -c, --clang &lt;clang&gt;     Path to clang executable (<span class="keywordflow">default</span>: <span class="stringliteral">&#39;which clang&#39;</span>).</div>
-<div class="line">  -d, --dialect &lt;dialect&gt; Dynamically load plugin.</div>
-<div class="line">  -D, --dialect-path &lt;path&gt;</div>
+<div class="line">  -p, --plugin &lt;plugin&gt;   Dynamically load plugin.</div>
+<div class="line">  -P, --plugin-path &lt;path&gt;</div>
 <div class="line">                          Path to search <span class="keywordflow">for</span> plugins.</div>
 <div class="line">  -V, --verbose           Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.</div>
 <div class="line">  -O, --optimize &lt;level&gt;  Optimization level (<span class="keywordflow">default</span>: 2).</div>
@@ -142,6 +142,7 @@ Usage</h1>
 <div class="line"><span class="stringliteral">  --output-md &lt;file&gt;      Emits the input formatted as Markdown.</span></div>
 <div class="line"><span class="stringliteral">  -o, --output-thorin &lt;file&gt;</span></div>
 <div class="line"><span class="stringliteral">                          Emits the Thorin program again.</span></div>
+<div class="line"><span class="stringliteral">  --bootstrap             Puts thorin into &quot;bootstrap mode&quot;. This means a `.plugin` directive has the same effect as an `.import` and will not load a library.</span></div>
 <div class="line"><span class="stringliteral">  --dump-gid &lt;level&gt;      Dumps gid of inline expressions as a comment in output if &lt;level&gt; &gt; 0. Use a &lt;level&gt; of 2 to also emit the gid of trivial defs.</span></div>
 <div class="line"><span class="stringliteral">  --dump-recursive        Dumps Thorin program with a simple recursive algorithm that is not readable again from Thorin but is less fragile and also works for broken Thorin programs.</span></div>
 <div class="line"><span class="stringliteral">  -b, --break &lt;gid&gt;       Trigger breakpoint upon construction of node with global id &lt;gid&gt;. Useful when running in a debugger.</span></div>

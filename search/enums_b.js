@@ -10,8 +10,10 @@ var searchData=
   ['phase_5flist_7',['phase_list',['../namespacethorin_1_1compile.html#ae0d2830384ea9aab466affaae3b29784',1,'thorin::compile']]],
   ['phases_5fto_5fphase_8',['phases_to_phase',['../namespacethorin_1_1compile.html#a9aebdf34d0284b713c32514cffa31617',1,'thorin::compile']]],
   ['pipe_9',['pipe',['../namespacethorin_1_1compile.html#a4c10b2c4505daf8df519b230b2f39d60',1,'thorin::compile']]],
-  ['pos_10',['Pos',['../classthorin_1_1EtaExp.html#a156b61a8e9d0843a3e598adb259c7abd',1,'thorin::EtaExp']]],
-  ['pow_11',['pow',['../namespacethorin_1_1math.html#a324add07f496847fd3381b0f642b5cec',1,'thorin::math']]],
-  ['prec_12',['Prec',['../classthorin_1_1fe_1_1Tok.html#a5a4207be68a5850473177397df2e34fa',1,'thorin::fe::Tok']]],
-  ['ptr_13',['Ptr',['../namespacethorin_1_1mem.html#a1e9242c771b97a95fe41b54fbe0385ab',1,'thorin::mem']]]
+  ['plugin_10',['Plugin',['../namespacethorin_1_1compile.html#a63648e99f518e4fdfb5f3abe1af3f383',1,'thorin::compile']]],
+  ['plugin_5fselect_11',['plugin_select',['../namespacethorin_1_1compile.html#a5ddee3ee70a5907fbdc80b00e0fb283c',1,'thorin::compile']]],
+  ['pos_12',['Pos',['../classthorin_1_1EtaExp.html#a156b61a8e9d0843a3e598adb259c7abd',1,'thorin::EtaExp']]],
+  ['pow_13',['pow',['../namespacethorin_1_1math.html#a324add07f496847fd3381b0f642b5cec',1,'thorin::math']]],
+  ['prec_14',['Prec',['../classthorin_1_1fe_1_1Tok.html#a5a4207be68a5850473177397df2e34fa',1,'thorin::fe::Tok']]],
+  ['ptr_15',['Ptr',['../namespacethorin_1_1mem.html#a1e9242c771b97a95fe41b54fbe0385ab',1,'thorin::mem']]]
 ];

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.5"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: The automatic differentiation dialect</title>
+<title>Thorin: The automatic differentiation Plugin</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('autodiff.html',''); initResizable(); }
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">The automatic differentiation dialect </div></div>
+  <div class="headertitle"><div class="title">The automatic differentiation Plugin </div></div>
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
@@ -135,9 +135,9 @@ $(document).ready(function(){initNavTree('autodiff.html',''); initResizable(); }
 <div class="textblock"><p ><a class="anchor" id="md_build_docs_dialects_autodiff"></a></p>
 <h1><a class="anchor" id="autotoc_md52"></a>
 Dependencies</h1>
-<div class="fragment"><div class="line">.import mem;</div>
+<div class="fragment"><div class="line">.plugin mem;</div>
 <div class="line">.import compile;</div>
-</div><!-- fragment --><p> For derivatives: </p><div class="fragment"><div class="line">.import core;</div>
+</div><!-- fragment --><p> For derivatives: </p><div class="fragment"><div class="line">.plugin core;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md53"></a>
 Types</h1>
 <div class="fragment"><div class="line">.ax %autodiff.Tangent: * -&gt; *, normalize_Tangent;</div>
@@ -185,7 +185,7 @@ Phases</h2>
 <div class="line">};</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md61"></a>
 Registered translations</h1>
-<p >In this section, we define translations for axioms of other dialects. This best would be done using a register mechanism in a third dialect or at least in a separate file.</p>
+<p >In this section, we define translations for axioms of other plugins. This best would be done using a register mechanism in a third plugin or at least in a separate file.</p>
 <p >The general concept is that a call to an axiom is replaced with a call to the augmented axiom. The augmented axiom needs a wrapper for meta arguments (HO-function). Appropiate cps2ds wrappers are introduced to handle that the augmented axioms are in cps where the original axioms were in ds. Example: </p><div class="fragment"><div class="line">mul&#39; =&gt; args -&gt; result*pullback</div>
 <div class="line">call: r    = mul  (m,w) (a,b) </div>
 <div class="line">res : r,r* = mul&#39; (m,w) (a,b)</div>
