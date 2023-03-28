@@ -99,7 +99,7 @@ namespace thorin {
 /// @name is_commutative/is_associative
 ///@{
 // clang-format off
-constexpr bool is_commutative(core::nop    ) { return true; }
+constexpr bool is_commutative(core::nat    ) { return true; }
 constexpr bool is_commutative(core::wrap id) { return id == core::wrap::add || id == core::wrap::mul; }
 constexpr bool is_commutative(core::ncmp id) { return id == core::ncmp::  e || id == core::ncmp:: ne; }
 constexpr bool is_commutative(core::icmp id) { return id == core::icmp::  e || id == core::icmp:: ne; }

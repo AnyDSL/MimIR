@@ -553,12 +553,12 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto [pointee, addr_space] = force<mem::Ptr>(global->type())->args<2>();
         print(vars_decls_, "{} = global {} {}\n", name, convert(pointee), v_init);
         return globals_[global] = name;
-    } else if (auto nop = match<core::nop>(def)) {
-        auto [a, b] = nop->args<2>([this](auto def) { return emit(def); });
+    } else if (auto nat = match<core::nat>(def)) {
+        auto [a, b] = nat->args<2>([this](auto def) { return emit(def); });
 
-        switch (nop.id()) {
-            case core::nop::add: op = "add"; break;
-            case core::nop::mul: op = "mul"; break;
+        switch (nat.id()) {
+            case core::nat::add: op = "add"; break;
+            case core::nat::mul: op = "mul"; break;
         }
 
         return bb.assign(name, "{} nsw nuw i64 {}, {}", op, a, b);

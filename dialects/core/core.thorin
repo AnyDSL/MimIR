@@ -8,11 +8,11 @@
 ///
 /// ## Nat Operations
 ///
-/// ### %core.nop
+/// ### %core.nat
 ///
 /// Standard arithmetic operations on `.Nat`s.
 ///
-.ax %core.nop(add, mul): «2; .Nat» -> .Nat, normalize_nop;
+.ax %core.nat(add, mul): «2; .Nat» -> .Nat, normalize_nat;
 ///
 /// ### %core.ncmp
 ///

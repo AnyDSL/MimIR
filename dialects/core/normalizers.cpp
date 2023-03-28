@@ -173,8 +173,8 @@ static Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref 
     return nullptr;
 }
 
-template<nop id>
-Ref normalize_nop(Ref type, Ref callee, Ref arg) {
+template<nat id>
+Ref normalize_nat(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
     auto [a, b] = arg->projs<2>();
     commute(id, a, b);
@@ -182,8 +182,8 @@ Ref normalize_nop(Ref type, Ref callee, Ref arg) {
     if (auto la = isa_lit(a)) {
         if (auto lb = isa_lit(b)) {
             switch (id) {
-                case nop::add: return world.lit_nat(*la + *lb);
-                case nop::mul: return world.lit_nat(*la * *lb);
+                case nat::add: return world.lit_nat(*la + *lb);
+                case nat::mul: return world.lit_nat(*la * *lb);
             }
         }
     }
@@ -604,7 +604,7 @@ Ref normalize_trait(Ref nat, Ref callee, Ref type) {
     } else if (auto arr = type->isa_structural<Arr>()) {
         auto align = op(trait::align, arr->body());
         if constexpr (id == trait::align) return align;
-        if (auto b = op(trait::size, arr->body())->isa<Lit>()) return world.call(core::nop::mul, Defs{arr->shape(), b});
+        if (auto b = op(trait::size, arr->body())->isa<Lit>()) return world.call(nat::mul, Defs{arr->shape(), b});
     } else if (auto join = type->isa<Join>()) {
         if (auto sigma = convert(join)) return core::op(id, sigma);
     }
