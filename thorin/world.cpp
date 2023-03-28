@@ -11,7 +11,6 @@
 #    include <unistd.h>
 #endif
 
-#include "thorin/check.h"
 #include "thorin/def.h"
 #include "thorin/driver.h"
 #include "thorin/rewrite.h"
@@ -30,13 +29,9 @@ namespace thorin {
 bool World::Arena::Lock::guard_ = false;
 #endif
 
-World::Move::Move(World& world)
-    : checker(std::make_unique<Checker>(world)) {}
-
 World::World(Driver* driver, const State& state)
     : driver_(driver)
-    , state_(state)
-    , move_(*this) {
+    , state_(state) {
     data_.univ        = insert<Univ>(0, *this);
     data_.lit_univ_0  = lit_univ(0);
     data_.lit_univ_1  = lit_univ(1);
@@ -133,7 +128,7 @@ Ref World::iapp(Ref callee, Ref arg) {
         } else {
             // resolve Infers now if possible before normalizers are run
             if (auto app = callee->isa<App>(); app && app->curry() == 1) {
-                checker().assignable(callee->type()->as<Pi>()->dom(), arg);
+                assignable(callee->type()->as<Pi>()->dom(), arg);
                 auto apps = decurry(app);
                 callee    = apps.front()->callee();
                 for (auto app : apps) callee = this->app(callee, refer(app->arg()));
@@ -158,12 +153,12 @@ Ref World::app(Ref callee, Ref arg) {
     // (a, b)#i arg     where a = A -> B; b = A -> B
     if (auto extract = callee->type()->isa<Extract>()) {
         if (auto tuple = extract->tuple()->isa<Tuple>()) {
-            if (auto uni = checker().is_uniform(tuple->ops())) pi = uni->isa<Pi>();
+            if (auto uni = is_uniform(tuple->ops())) pi = uni->isa<Pi>();
         }
     }
 
     if (!pi) err(callee, "called expression '{}' : '{}' is not of function type", callee, callee->type());
-    if (!checker().assignable(pi->dom(), arg))
+    if (!assignable(pi->dom(), arg))
         err(arg, "cannot pass argument '{}' of type '{}' to '{}' of domain '{}'", arg, arg->type(), callee, pi->dom());
 
     if (auto lam = callee->isa<Lam>(); lam && lam->is_set() && !lam->is_term()) return lam->reduce(arg).back();
@@ -206,7 +201,7 @@ Ref World::tuple(Defs ops) {
 
     auto sigma = infer_sigma(*this, ops);
     auto t     = tuple(sigma, ops);
-    if (!checker().assignable(sigma, t))
+    if (!assignable(sigma, t))
         err(t, "cannot assign tuple '{}' of type '{}' to incompatible tuple type '{}'", t, t->type(), sigma);
 
     return t;
@@ -267,7 +262,7 @@ Ref World::extract(Ref d, Ref index) {
     if (auto l = isa_lit(size); l && *l == 1 && !d->type()->isa_nom<Sigma>()) return d;
     if (auto pack = d->isa_structural<Pack>()) return pack->body();
 
-    if (!checker().equiv(type->arity(), size))
+    if (!equiv(type->arity(), size))
         err(index, "index '{}' does not fit within arity '{}'", type->arity(), index);
 
     // extract(insert(x, index, val), index) -> val
@@ -308,12 +303,12 @@ Ref World::insert(Ref d, Ref index, Ref val) {
     auto type = d->unfold_type();
     auto size = Idx::size(index->type());
 
-    if (!checker().equiv(type->arity(), size))
+    if (!equiv(type->arity(), size))
         err(index, "index '{}' does not fit within arity '{}'", type->arity(), index);
 
     if (auto index_lit = isa_lit(index)) {
         auto target_type = type->proj(*index_lit);
-        if (!checker().assignable(target_type, val))
+        if (!assignable(target_type, val))
             err(val, "value of type {} is not assignable to type {}", val->type(), target_type);
     }
 
@@ -483,7 +478,7 @@ Ref World::test(Ref value, Ref probe, Ref match, Ref clash) {
     assert(m_pi && c_pi);
     auto a = m_pi->dom()->isa_lit_arity();
     assert_unused(a && *a == 2);
-    assert(checker().equiv(m_pi->dom(2, 0_s), c_pi->dom()));
+    assert(equiv(m_pi->dom(2, 0_s), c_pi->dom()));
 
     auto codom = join({m_pi->codom(), c_pi->codom()});
     return unify<Test>(4, pi(c_pi->dom(), codom), value, probe, match, clash);

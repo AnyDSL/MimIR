@@ -46,6 +46,16 @@ const Def* Infer::find(const Def* def) {
  * Checker
  */
 
+struct Checker {
+    bool equiv(Ref d1, Ref d2);
+    bool assignable(Ref type, Ref value);
+    bool equiv_internal(Ref, Ref);
+
+
+    NomSet done;
+    std::deque<std::pair<Def*, Def*>> vars;
+};
+
 bool Checker::equiv(Ref r1, Ref r2) {
     auto d1 = *r1; // find
     auto d2 = *r2; // find
@@ -75,27 +85,15 @@ bool Checker::equiv(Ref r1, Ref r2) {
     assert(!i1 && !i2);
     if (d1->gid() > d2->gid()) std::swap(d1, d2); // normalize
 
-    if (auto [it, ins] = equiv_.emplace(std::pair(d1, d2), Equiv::Unknown); !ins) {
-        switch (it->second) {
-            case Equiv::Distinct: return false;
-            case Equiv::Unknown:
-            case Equiv::Equiv: return true;
-            default: unreachable();
-        }
-    }
-
-    bool res                  = equiv_internal(d1, d2);
-    equiv_[std::pair(d1, d2)] = res ? Equiv::Equiv : Equiv::Distinct;
-    return res;
-}
-
-bool Checker::equiv_internal(Ref d1, Ref d2) {
     if (!equiv(d1->type(), d2->type())) return false;
     if (d1->isa<Top>() || d2->isa<Top>()) return equiv(d1->type(), d2->type());
 
-    if (auto n1 = d1->isa_nom()) {
-        if (auto n2 = d2->isa_nom()) vars_.emplace_back(n1, n2);
-    }
+    auto n1 = d1->isa_nom();
+    auto n2 = d2->isa_nom();
+    // don't recurse for nominals
+    if (n1 && !done.emplace(n1).second) return false;
+    if (n2 && !done.emplace(n2).second) return false;
+    if (n1 && n2) vars.emplace_back(n1, n2);
 
     if (d1->isa<Sigma, Arr>()) {
         if (!equiv(d1->arity(), d2->arity())) return false;
@@ -110,7 +108,7 @@ bool Checker::equiv_internal(Ref d1, Ref d2) {
     if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return false;
 
     if (auto var = d1->isa<Var>()) { // vars are equal if they appeared under the same binder
-        for (auto [n1, n2] : vars_)
+        for (auto [n1, n2] : vars)
             if (var->nom() == n1) return d2->as<Var>()->nom() == n2;
         // TODO what if Var is free?
         return false;
@@ -151,12 +149,16 @@ bool Checker::assignable(Ref type, Ref val) {
     return equiv(type, val_ty);
 }
 
-const Def* Checker::is_uniform(Defs defs) {
+Ref is_uniform(Defs defs) {
     assert(!defs.empty());
-    auto first = defs.front();
-    auto ops   = defs.skip_front();
-    return std::ranges::all_of(ops, [&](auto op) { return equiv(first, op); }) ? first : nullptr;
+    auto first   = defs.front();
+    auto ops     = defs.skip_front();
+    auto checker = Checker();
+    return std::ranges::all_of(ops, [&](auto op) { return checker.equiv(first, op); }) ? first : nullptr;
 }
+
+bool equiv(Ref d1, Ref d2) { return Checker().equiv(d1, d2); }
+bool assignable(Ref type, Ref value) { return Checker().assignable(type, value); }
 
 /*
  * infer
@@ -172,10 +174,8 @@ const Def* Pi::infer(const Def* dom, const Def* codom) {
  */
 
 void Arr::check() {
-    auto& w = world();
     auto t  = body()->unfold_type();
-
-    if (!w.checker().equiv(t, type()))
+    if (!equiv(t, type()))
         err(type(), "declared sort '{}' of array does not match inferred one '{}'", type(), t);
 }
 
@@ -186,18 +186,16 @@ void Sigma::check() {
 void Lam::check() {
     auto& w = world();
     return; // TODO
-    if (!w.checker().equiv(filter()->type(), w.type_bool()))
+    if (!equiv(filter()->type(), w.type_bool()))
         err(filter(), "filter '{}' of lambda is of type '{}' but must be of type '.Bool'", filter(), filter()->type());
-    if (!w.checker().equiv(body()->type(), codom()))
+    if (!equiv(body()->type(), codom()))
         err(body(), "body '{}' of lambda is of type '{}' but its codomain is of type '{}'", body(), body()->type(),
             codom());
 }
 
 void Pi::check() {
-    auto& w = world();
     auto t  = infer(dom(), codom());
-
-    if (!w.checker().equiv(t, type()))
+    if (!equiv(t, type()))
         err(type(), "declared sort '{}' of function type does not match inferred one '{}'", type(), t);
 }
 

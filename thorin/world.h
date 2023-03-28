@@ -8,8 +8,8 @@
 #include <absl/container/btree_set.h>
 
 #include "thorin/axiom.h"
-#include "thorin/check.h"
 #include "thorin/config.h"
+#include "thorin/check.h"
 #include "thorin/flags.h"
 #include "thorin/lattice.h"
 #include "thorin/tuple.h"
@@ -19,7 +19,7 @@
 #include "thorin/util/sym.h"
 
 namespace thorin {
-class Checker;
+
 class Driver;
 
 /// The World represents the whole program and manages creation of Thorin nodes (Def%s).
@@ -94,11 +94,6 @@ public:
 
     /// Retrive compile Flags.
     Flags& flags();
-
-    Checker& checker() {
-        assert(&move_.checker->world() == this);
-        return *move_.checker;
-    }
 
     Loc& emit_loc() { return state_.pod.loc; }
     ///@}
@@ -590,9 +585,6 @@ private:
     };
 
     struct Move {
-        Move(World&);
-
-        std::unique_ptr<Checker> checker;
         absl::btree_map<u64, const Axiom*> axioms;
         absl::btree_map<Sym, Def*> externals;
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
@@ -601,13 +593,11 @@ private:
         friend void swap(Move& m1, Move& m2) {
             using std::swap;
             // clang-format off
-            swap(m1.checker,   m2.checker);
             swap(m1.axioms,    m2.axioms);
             swap(m1.externals, m2.externals);
             swap(m1.defs,      m2.defs);
             swap(m1.cache,     m2.cache);
             // clang-format on
-            Checker::swap(*m1.checker, *m2.checker);
         }
     } move_;
 

@@ -223,7 +223,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         w.DLOG("RW: nom {}", nom);
         auto new_nom = rewrite_nom(nom, new_type, subst);
         // Try to reduce the amount of noms that are created
-        if (!nom->isa_nom<Global>() && Checker(w).equiv(nom, new_nom)) return map(nom);
+        if (!nom->isa_nom<Global>() && equiv(nom, new_nom)) return map(nom);
         if (auto restruct = new_nom->restructure()) return map(restruct);
         return map(new_nom);
     } else {

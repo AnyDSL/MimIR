@@ -35,40 +35,17 @@ private:
 
     THORIN_DEF_MIXIN(Infer)
     Infer* stub_(World&, Ref) override;
-    friend class Checker;
+    friend struct Checker;
 };
 
-class Checker {
-public:
-    Checker(World& world)
-        : world_(&world) {}
+/// Are @p d1 and @p d2 α-equivalent?
+bool equiv(Ref d1, Ref d2);
 
-    World& world() const { return *world_; }
+/// Can @p value be assigned to sth of @p type?
+/// @note This is different from `equiv(type, value->type())` since @p type may be dependent.
+bool assignable(Ref type, Ref value);
 
-    /// Are @p d1 and @p d2 α-equivalent?
-    bool equiv(Ref d1, Ref d2);
-
-    /// Can @p value be assigned to sth of @p type?
-    /// @note This is different from `equiv(type, value->type())` since @p type may be dependent.
-    bool assignable(Ref type, Ref value);
-
-    /// Yields `defs.front()`, if all @p defs are α-equiv%alent and `nullptr` otherwise.
-    const Def* is_uniform(Defs defs);
-
-    static void swap(Checker& c1, Checker& c2) { std::swap(c1.world_, c2.world_); }
-
-private:
-    bool equiv_internal(Ref, Ref);
-
-    enum class Equiv {
-        Distinct,
-        Unknown,
-        Equiv,
-    };
-
-    World* world_;
-    DefDefMap<Equiv> equiv_;
-    std::deque<std::pair<Def*, Def*>> vars_;
-};
+/// Yields `defs.front()`, if all @p defs are α-equiv%alent and `nullptr` otherwise.
+Ref is_uniform(Defs defs);
 
 } // namespace thorin
