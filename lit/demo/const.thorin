@@ -1,8 +1,8 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d demo %s --output-ll %t.ll -o - | FileCheck %s
+// RUN: %thorin %s --output-ll %t.ll -o - | FileCheck %s
 
-.import mem;
-.import demo;
+.plugin mem;
+.plugin demo;
 
 .let _32 = 4294967296;
 .let I32 = .Idx _32;

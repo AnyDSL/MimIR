@@ -1,10 +1,9 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d matrix -e thorin %s -e ll -o %t | FileCheck %s
+// RUN: %thorin -e thorin %s -e ll -o %t | FileCheck %s
 // RUN: clang %t.ll -o %t -Wno-override-module
 
-.import core;
-.import mem;
-.import matrix;
+.plugin core;
+.plugin matrix;
 
 .let _32 = 4294967296;
 .let I32 = .Idx _32;

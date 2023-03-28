@@ -30,4 +30,4 @@ add_custom_command(
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 )
 
-add_custom_target(docs ALL DEPENDS ${DOXY_INDEX_HTML} ${THORIN_DIALECT_LIST})
+add_custom_target(docs ALL DEPENDS ${DOXY_INDEX_HTML} ${THORIN_PLUGIN_LIST})

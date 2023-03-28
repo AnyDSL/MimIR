@@ -1,13 +1,12 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d matrix -d affine -d direct -d math -o - %s | FileCheck %s
+// RUN: %thorin -p affine -p direct -p math -o - %s | FileCheck %s
 
 // TODO: allocation error due to dynamic size,
-// ./build/bin/thorin -d matrix lit/matrix/print_const_dyn_mat.thorin  -d affine -d direct -d clos -o - -VVVV --output-ll T.ll
+// ./build/bin/thorin lit/matrix/print_const_dyn_mat.thorin  -p affine -p direct -p clos -o - -VVVV --output-ll T.ll
 // add_mem error (bitcast gets (mem, mat) as argument at some point)
 
-.import core;
-.import mem;
-.import matrix;
+.plugin core;
+.plugin matrix;
 
 .let _32 = 4294967296;
 .let I32 = .Idx _32;

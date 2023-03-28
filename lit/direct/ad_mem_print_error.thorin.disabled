@@ -1,6 +1,6 @@
-.import core;
-.import direct;
-.import mem;
+.plugin core;
+.plugin direct;
+
 .lam .extern internal_diff_core_icmp_XygLe __689499: .Nat → .Cn [«2; .Idx __689422», .Cn [.Idx 2, .Cn [.Idx 2, .Cn «2; .Idx __689422»]]] = {
     .con cmp_pb_689606 __689620::[.Idx 2, pb_ret_689622: .Cn «2; .Idx __689499»] @(1:(.Idx 2)) = {
         pb_ret_689622 ‹2; 0:(.Idx __689499)›

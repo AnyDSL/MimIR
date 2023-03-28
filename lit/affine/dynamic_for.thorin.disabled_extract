@@ -1,12 +1,10 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d affine %s --output-ll %t.ll -o - | FileCheck %s
+// RUN: %thorin %s --output-ll %t.ll -o - | FileCheck %s
 // RUN: clang %t.ll -o %t -Wno-override-module
 // RUN: %t 1 3 1; test $? -eq 3
 // RUN: %t 0 5 2 ; test $? -eq 6
 
-.import affine;
-.import mem;
-.import core;
+.plugin affine;
 
 .con atoi [%mem.M, %mem.Ptr («⊤:.Nat; .Idx 256», 0), .Cn [%mem.M, .Idx 4294967296]];
 

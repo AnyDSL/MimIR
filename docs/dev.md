@@ -8,31 +8,24 @@ This guide summaries typicical idioms you want to use when working with Thorin a
 
 Here is a small example that first constructs a `main` function and simply returns the `argc`:
 ```cpp
-    World w;
-
-    auto mem_d = Dialect::load("mem", {});
-    Normalizers normalizers;
-    mem_d.register_normalizers(normalizers);
-    Parser::import_module(w, "mem", {}, &normalizers);
+    Driver driver;
+    World& w    = driver.world();
+    auto parser = fe::Parser(w);
+    for (auto plugin : {"compile", "mem", "core", "math"}) parser.plugin(plugin);
 
     auto mem_t  = mem::type_mem(w);
-    auto i32_t  = w.type_int_width(32);
+    auto i32_t  = w.type_int(32);
     auto argv_t = mem::type_ptr(mem::type_ptr(i32_t));
 
     // Cn [mem, i32, Cn [mem, i32]]
     auto main_t = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})});
-    auto main = w.nom_lam(main_t, w.dbg("main"));
+    auto main = w.nom_lam(main_t)->set("main");
     auto [mem, argc, argv, ret] = main->vars<4>();
     main->app(ret, {mem, argc});
     main->make_external();
 
     PipelineBuilder builder;
-    mem_d.register_passes(builder);
     optimize(w, builder);
-
-    auto core_d = Dialect::load("core", {});
-    Backends backends;
-    core_d.register_backends(backends);
 
     std::ofstream file("test.ll");
     Stream s(file);

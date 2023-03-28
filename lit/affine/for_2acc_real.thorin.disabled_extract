@@ -1,13 +1,11 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d affine %s --output-ll %t.ll -o - | FileCheck %s
+// RUN: %thorin %s --output-ll %t.ll -o - | FileCheck %s
 // RUN: clang %t.ll -o %t -Wno-override-module
 // RUN: %t ; test $? -eq 0
 // RUN: %t 1 2 3 ; test $? -eq 6
 
-.import core;
-.import math;
-.import mem;
-.import affine;
+.plugin math;
+.plugin affine;
 
 .let _32 = 4294967296;
 .let I32 = .Idx _32;

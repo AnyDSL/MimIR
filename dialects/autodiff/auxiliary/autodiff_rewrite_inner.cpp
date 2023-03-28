@@ -362,7 +362,7 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         world.DLOG("Augment pack: {} : {} with {}", shape, shape->type(), body);
         return augment_pack(pack, f, f_diff);
     } else if (auto ax = def->isa<Axiom>()) {
-        //  TODO: move concrete handling to own function / file / directory (file per dialect)
+        //  TODO: move concrete handling to own function / file / directory (file per plugin)
         world.DLOG("Augment axiom: {} : {}", ax, ax->type());
         world.DLOG("axiom curry: {}", ax->curry());
         world.DLOG("axiom flags: {}", ax->flags());

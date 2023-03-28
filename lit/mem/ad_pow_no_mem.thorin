@@ -1,9 +1,9 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d mem -d clos %s --output-ll %t.ll -o -
+// RUN: %thorin -p clos %s --output-ll %t.ll -o -
 
-.import clos;
-.import core;
-.import mem;
+.plugin clos;
+.plugin core;
+
 .con zero_pb_792997 _792998::[.Idx 4294967296, _793000: .Cn «2; .Idx 4294967296»] @(1:(.Idx 2)) = {
     _793000 ‹2; 0:(.Idx 4294967296)›
 };

@@ -3,8 +3,7 @@
 // RUN: clang %t.ll -o %t -Wno-override-module
 // RUN: %t 3 10 ; test $? -eq 13
 
-.import core;
-.import mem;
+.plugin core;
 
 .let _32 = 4294967296;
 .let I32 = .Idx _32;

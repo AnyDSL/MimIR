@@ -1,13 +1,13 @@
-/// # The opt dialect {#opt}
+/// # The opt Plugin {#opt}
 ///
 /// [TOC]
 ///
-/// Manages the default compilation pipeline of Thorin programs using dialects.
+/// Manages the default compilation pipeline of Thorin programs using plugins.
 ///
 /// ## Dependencies
 ///
 .import core; // includes mem, compile (and avoids clashing re-import)
-/// supported dialects with passes
+/// supported plugins with passes
 .import affine;
 .import autodiff;
 .import clos;
@@ -29,36 +29,36 @@
         (%compile.single_pass_phase (%compile.tail_rec_elim_pass nullptr))
         // optimize
         (%compile.pass_phase 
-          (%compile.combine_pass_list (⊤:.Nat)
-          (
-            optimization_pass_list,
-            %compile.pass_list
-              (dialect_cond_pass (%compile.affine_dialect, %affine.lower_for_pass)),
-            mem_opt_pass_list
-          ))
+            (%compile.combine_pass_list (⊤:.Nat)
+            (
+                optimization_pass_list,
+                %compile.pass_list
+                (plugin_cond_pass (%compile.affine_plugin, %affine.lower_for_pass)),
+                mem_opt_pass_list
+            ))
         )
-        (dialect_cond_phase (%compile.autodiff_dialect,
-          %compile.combined_phase (%compile.phase_list
+        (plugin_cond_phase (%compile.autodiff_plugin,
+            %compile.combined_phase (%compile.phase_list
             (%compile.single_pass_phase %autodiff.ad_eval_pass)
             // optimization_phase
             (%compile.single_pass_phase %autodiff.ad_zero_pass)
-          )
+            )
         ))
-        (dialect_cond_phase (%compile.direct_dialect,
+        (plugin_cond_phase (%compile.direct_plugin,
           direct_phases
         ))
-        (dialect_cond_phase (%compile.matrix_dialect,
+        (plugin_cond_phase (%compile.matrix_plugin,
           %compile.combined_phase (%compile.phase_list
             matrix_lower_phase
-            (dialect_cond_phase (%compile.direct_dialect, direct_phases))
-            (dialect_cond_phase (%compile.affine_dialect, %compile.single_pass_phase %affine.lower_for_pass))
+            (plugin_cond_phase (%compile.direct_plugin, direct_phases))
+            (plugin_cond_phase (%compile.affine_plugin, %compile.single_pass_phase %affine.lower_for_pass))
         )))
         (%compile.single_pass_phase %compile.internal_cleanup_pass)
-        (dialect_cond_phase (%compile.clos_dialect,
+        (plugin_cond_phase (%compile.clos_plugin,
           clos_phases
         ))
         (%compile.single_pass_phase %compile.lam_spec_pass)
-        (dialect_cond_phase (%compile.autodiff_dialect,
+        (plugin_cond_phase (%compile.autodiff_plugin,
           ad_cleanup_phase
         ))
         // CodeGenPrep
@@ -72,7 +72,7 @@
               %mem.remem_elim_pass
               %mem.alloc2malloc_pass,
             %compile.pass_list
-              (dialect_cond_pass (%compile.refly_dialect, %refly.remove_dbg_perm_pass)),
+              (plugin_cond_pass (%compile.refly_plugin, %refly.remove_dbg_perm_pass)),
           ))
         )
 };

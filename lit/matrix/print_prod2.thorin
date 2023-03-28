@@ -1,11 +1,11 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d matrix -d affine -d direct -d clos -d math -o - --output-ll %t.ll %s 
+// RUN: %thorin -p affine -p direct -p clos -o - --output-ll %t.ll %s 
 // RUN: clang %S/lib.c %t.ll -o %t -Wno-override-module
 // RUN: %t 2 3 | FileCheck %s
 
-.import core;
-.import mem;
-.import matrix;
+.plugin core;
+.plugin math;
+.plugin matrix;
 
 .let _32 = 4294967296;
 .let I32 = .Idx _32;

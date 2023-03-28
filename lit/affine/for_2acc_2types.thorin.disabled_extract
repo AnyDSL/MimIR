@@ -1,12 +1,10 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d affine %s --output-ll %t.ll -o - | FileCheck %s
+// RUN: %thorin %s --output-ll %t.ll -o - | FileCheck %s
 // RUN: clang %t.ll -o %t -Wno-override-module
 // RUN: %t ; test $? -eq 0
 // RUN: %t 1 2 3 ; test $? -eq 6
 
-.import core;
-.import mem;
-.import affine;
+.plugin affine;
 
 .con .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (.Idx 4294967296, 0), 0), return : .Cn [%mem.M, .Idx 0]] = {
     .con for_exit [acc : [.Idx 4294967296, .Idx 0]] = {

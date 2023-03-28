@@ -1,9 +1,8 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d matrix -o - %s | FileCheck %s
+// RUN: %thorin -o - %s | FileCheck %s
 
-.import core;
-.import mem;
-.import matrix;
+.plugin core;
+.plugin matrix;
 
 .let _32 = 4294967296;
 .let I32 = .Idx _32;

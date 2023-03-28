@@ -1,13 +1,13 @@
-/// # The automatic differentiation dialect {#autodiff}
+/// # The automatic differentiation Plugin {#autodiff}
 ///
 /// [TOC]
 ///
 /// ## Dependencies
 ///
-.import mem;
+.plugin mem;
 .import compile;
 /// For derivatives:
-.import core;
+.plugin core;
 ///
 ///
 /// ## Types
@@ -73,8 +73,8 @@
 /// 
 /// ## Registered translations
 /// 
-/// In this section, we define translations for axioms of other dialects.
-/// This best would be done using a register mechanism in a third dialect or at least in a separate file.
+/// In this section, we define translations for axioms of other plugins.
+/// This best would be done using a register mechanism in a third plugin or at least in a separate file.
 /// 
 /// The general concept is that a call to an axiom is replaced with a call to the augmented axiom.
 /// The augmented axiom needs a wrapper for meta arguments (HO-function).

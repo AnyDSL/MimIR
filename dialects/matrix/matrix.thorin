@@ -4,9 +4,8 @@
 ///
 /// ## Dependencies
 ///
-.import mem;
-.import core;
-.import math;
+.plugin core;
+.plugin math;
 // needed to access cps2ds
 .import direct;
 .import affine;

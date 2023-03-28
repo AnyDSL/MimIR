@@ -1,14 +1,13 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d clos %s --output-ll %t.ll -o -
+// RUN: %thorin -p clos %s --output-ll %t.ll -o -
 
 /*
 TODO: investigate and open error
 thorin: /dialects/clos/phase/clos_conv.cpp:64: const thorin::Def* thorin::clos::clos_pack_dbg(const thorin::Def*, const thorin::Def*, const thorin::Def*, const thorin::Def*): Assertion `pi && env->type() == pi->dom(Clos_Env_Param)' failed.
 */
 
-.import mem;
-.import core;
-.import direct;
+.plugin core;
+.plugin direct;
 
 .let i32 = .Idx 4294967296;
 .let i8 = .Idx 256;
