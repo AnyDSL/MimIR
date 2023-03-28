@@ -1,9 +1,7 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d clos %s --output-ll %t.ll -o - 
+// RUN: %thorin -p clos -p direct %s --output-ll %t.ll -o - 
 
-.import mem;
-.import core;
-.import direct;
+.plugin core;
 
 .let i32 = .Idx 4294967296;
 .let i8 = .Idx 256;

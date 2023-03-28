@@ -5,8 +5,7 @@
 // RUN: %t 1; test $? -eq 7
 // RUN: %t 1 2; test $? -eq 9
 
-.import core;
-.import mem;
+.plugin core;
 
 .let _32 = 4294967296;
 .let I32 = .Idx _32;

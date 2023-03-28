@@ -1,7 +1,7 @@
-# must be registered before `add_thorin_dialect` calls
-add_custom_target(thorin_all_dialects)
+# must be registered before `add_thorin_plugin` calls
+add_custom_target(thorin_all_plugins)
 
-add_thorin_dialect(affine
+add_thorin_plugin(affine
     SOURCES
         affine/affine.cpp
         affine/affine.h
@@ -13,7 +13,7 @@ add_thorin_dialect(affine
     INSTALL
 )
 
-add_thorin_dialect(autodiff
+add_thorin_plugin(autodiff
     SOURCES
         autodiff/autodiff.cpp
         autodiff/autodiff.h
@@ -41,7 +41,7 @@ add_thorin_dialect(autodiff
     INSTALL
 )
 
-add_thorin_dialect(clos
+add_thorin_plugin(clos
     SOURCES
         clos/clos.cpp
         clos/clos.h
@@ -70,7 +70,7 @@ add_thorin_dialect(clos
     INSTALL
 )
 
-add_thorin_dialect(compile
+add_thorin_plugin(compile
     SOURCES
         compile/compile.cpp
         compile/compile.h
@@ -82,7 +82,7 @@ add_thorin_dialect(compile
     INSTALL
 )
 
-add_thorin_dialect(core
+add_thorin_plugin(core
     SOURCES
         core/core.cpp
         core/core.h
@@ -95,7 +95,7 @@ add_thorin_dialect(core
     INSTALL
 )
 
-add_thorin_dialect(demo
+add_thorin_plugin(demo
     SOURCES
         demo/demo.cpp
         demo/demo.h
@@ -105,7 +105,7 @@ add_thorin_dialect(demo
     INSTALL
 )
 
-add_thorin_dialect(direct
+add_thorin_plugin(direct
     SOURCES
         direct/direct.cpp
         direct/direct.h
@@ -119,7 +119,7 @@ add_thorin_dialect(direct
     INSTALL
 )
 
-add_thorin_dialect(math
+add_thorin_plugin(math
     SOURCES
         math/math.cpp
         math/math.h
@@ -127,7 +127,7 @@ add_thorin_dialect(math
     INSTALL
 )
 
-add_thorin_dialect(mem
+add_thorin_plugin(mem
     SOURCES
         mem/mem.cpp
         mem/mem.h
@@ -151,7 +151,7 @@ add_thorin_dialect(mem
     INSTALL
 )
 
-add_thorin_dialect(opt
+add_thorin_plugin(opt
     SOURCES
         opt/opt.cpp
         opt/opt.h
@@ -162,7 +162,7 @@ add_thorin_dialect(opt
     INSTALL
 )
 
-add_thorin_dialect(refly
+add_thorin_plugin(refly
     SOURCES
         refly/refly.h
         refly/refly.cpp

@@ -1,7 +1,7 @@
 // RUN: rm -f %t.ll ; \
 // RUN: %thorin %s -o - | FileCheck %s
 
-.import core;
+.plugin core;
 
 .con .extern icmp_lit [return : .Cn .Bool] = {
     return (%core.icmp.e (%core.icmp.uge (.tt, .ff), %core.icmp.ug (.tt, .ff)))

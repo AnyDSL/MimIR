@@ -1,12 +1,8 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d clos %s --output-ll %t.ll -o - 
+// RUN: %thorin -p clos %s --output-ll %t.ll -o - 
 
+.plugin core;
 
-/*
-*/
-
-.import core;
-.import mem;
 .con zero_pb_745910_661133 _745912_661141::[.Idx 4294967296, _745914_661143: .Cn «2; .Idx 4294967296»] @(1:(.Idx 2)) = {
     .con _745914_661139 [_661144: «2; .Idx 4294967296»]@(0:(.Idx 2)) = {
         _745914_661143 _661144

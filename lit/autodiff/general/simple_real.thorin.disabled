@@ -1,9 +1,9 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d autodiff %s --output-ll %t.ll -o - | FileCheck %s
+// RUN: %thorin %s --output-ll %t.ll -o - | FileCheck %s
 
-.import autodiff;
-.import mem;
-.import math;
+.plugin mem;
+.plugin math;
+.plugin autodiff;
 
 .let I32 = .Idx 4294967296;
 .let F32 = %math.F (23, 8);

@@ -78,8 +78,8 @@ TEST(Axiom, split) {
     Driver driver;
     World& w = driver.world();
 
-    auto [dialect, group, tag] = Axiom::split(w, w.sym("%foo.bar.baz"));
-    EXPECT_EQ(dialect, w.sym("foo"));
+    auto [plugin, group, tag] = Axiom::split(w, w.sym("%foo.bar.baz"));
+    EXPECT_EQ(plugin, w.sym("foo"));
     EXPECT_EQ(group, w.sym("bar"));
     EXPECT_EQ(tag, w.sym("baz"));
 }

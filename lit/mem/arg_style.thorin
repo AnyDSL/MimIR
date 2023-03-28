@@ -3,8 +3,7 @@
 
 // TODO: add filecheck
 
-.import core;
-.import mem;
+.plugin core;
 
 .let _32 = 4294967296;
 .let I32 = .Idx _32;

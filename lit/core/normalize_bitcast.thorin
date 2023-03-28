@@ -2,7 +2,7 @@
 // RUN: %thorin %s --output-ll %t.ll -o - | FileCheck %s
 // RUN: clang -c %t.ll -o %t -Wno-override-module
 
-.import core;
+.plugin core;
 
 .con .extern bitcast_bitcast [i : %mem.Ptr (.Idx 256, 0), return : .Cn .Idx 4294967296] = {
     return (%core.bitcast (.Idx 4294967296, .Nat) (%core.bitcast (.Nat, %mem.Ptr (.Idx 256, 0)) i))

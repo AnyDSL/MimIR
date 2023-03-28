@@ -8,9 +8,6 @@
 
 using namespace thorin;
 
-/// heart of the dialect
-/// registers passes in the different optimization phases
-/// as well as normalizers for the axioms
 extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
     return {"refly", [](Passes& passes) { register_pass<refly::remove_dbg_perm_pass, refly::RemoveDbgPerm>(passes); },
             nullptr, [](Normalizers& normalizers) { refly::register_normalizers(normalizers); }};

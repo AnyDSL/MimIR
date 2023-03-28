@@ -1,8 +1,8 @@
-/// # The direct style dialect {#direct}
+/// # The direct style Plugin {#direct}
 ///
 /// [TOC]
 ///
-/// This dialect has three jobs:
+/// This plugin has three jobs:
 /// 1. Convert inline direct style calls to CPS (and their functions).
 /// 2. Wrap DS functions to CPS functions using an axiom.
 /// 3. Convert CPS functions to DS functions using an axiom.

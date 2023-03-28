@@ -1,9 +1,9 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d direct %s -o - | FileCheck %s
+// RUN: %thorin %s -o - | FileCheck %s
 
-.import core;
-.import direct;
-.import mem;
+.plugin core;
+.plugin direct;
+
 .lam Uf_690595 _690612: .Idx 4294967296 → ★ = {
     [%mem.M, .Idx 4294967296]
 };
