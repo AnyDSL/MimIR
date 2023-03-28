@@ -262,8 +262,7 @@ Ref World::extract(Ref d, Ref index) {
     if (auto l = isa_lit(size); l && *l == 1 && !d->type()->isa_nom<Sigma>()) return d;
     if (auto pack = d->isa_structural<Pack>()) return pack->body();
 
-    if (!equiv(type->arity(), size))
-        err(index, "index '{}' does not fit within arity '{}'", type->arity(), index);
+    if (!equiv(type->arity(), size)) err(index, "index '{}' does not fit within arity '{}'", type->arity(), index);
 
     // extract(insert(x, index, val), index) -> val
     if (auto insert = d->isa<Insert>()) {
@@ -303,8 +302,7 @@ Ref World::insert(Ref d, Ref index, Ref val) {
     auto type = d->unfold_type();
     auto size = Idx::size(index->type());
 
-    if (!equiv(type->arity(), size))
-        err(index, "index '{}' does not fit within arity '{}'", type->arity(), index);
+    if (!equiv(type->arity(), size)) err(index, "index '{}' does not fit within arity '{}'", type->arity(), index);
 
     if (auto index_lit = isa_lit(index)) {
         auto target_type = type->proj(*index_lit);

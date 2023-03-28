@@ -51,7 +51,6 @@ struct Checker {
     bool assignable(Ref type, Ref value);
     bool equiv_internal(Ref, Ref);
 
-
     NomSet done;
     std::deque<std::pair<Def*, Def*>> vars;
 };
@@ -174,9 +173,8 @@ const Def* Pi::infer(const Def* dom, const Def* codom) {
  */
 
 void Arr::check() {
-    auto t  = body()->unfold_type();
-    if (!equiv(t, type()))
-        err(type(), "declared sort '{}' of array does not match inferred one '{}'", type(), t);
+    auto t = body()->unfold_type();
+    if (!equiv(t, type())) err(type(), "declared sort '{}' of array does not match inferred one '{}'", type(), t);
 }
 
 void Sigma::check() {
@@ -194,7 +192,7 @@ void Lam::check() {
 }
 
 void Pi::check() {
-    auto t  = infer(dom(), codom());
+    auto t = infer(dom(), codom());
     if (!equiv(t, type()))
         err(type(), "declared sort '{}' of function type does not match inferred one '{}'", type(), t);
 }
