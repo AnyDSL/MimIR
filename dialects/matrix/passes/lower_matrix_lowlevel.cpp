@@ -19,7 +19,7 @@
 
 namespace thorin::matrix {
 
-const Def* op_lea_tuple(const Def* arr, const Def* tuple) {
+static Ref op_lea_tuple(Ref arr, Ref tuple) {
     auto& world = arr->world();
     world.DLOG("op_lea_tuple arr {} : {}", arr, arr->type());
     auto n       = tuple->num_projs();
@@ -28,7 +28,7 @@ const Def* op_lea_tuple(const Def* arr, const Def* tuple) {
     return element;
 }
 
-const Def* op_pack_tuple(u64 n, const Def* tuple, const Def* val) {
+static Ref op_pack_tuple(u64 n, Ref tuple, Ref val) {
     auto& world = val->world();
     // TODO: find out why num_projs is wrong
     auto element = val;
@@ -41,7 +41,7 @@ const Def* op_pack_tuple(u64 n, const Def* tuple, const Def* val) {
     return element;
 }
 
-const Def* arrTyOfMatrixTy(const Def* S, const Def* T) {
+static Ref arrTyOfMatrixTy(Ref S, Ref T) {
     auto& world = S->world();
     auto n      = S->num_projs();
     auto arr_ty = T;
@@ -52,16 +52,7 @@ const Def* arrTyOfMatrixTy(const Def* S, const Def* T) {
     return arr_ty;
 }
 
-const Def* arrTyOfMatrixTy(const Def* Mat) {
-    auto& world = Mat->world();
-    world.DLOG("compute array type of matrix type {}", Mat);
-    auto mat_ax = match<matrix::Mat>(Mat);
-    assert(mat_ax && "type must be a matrix");
-    auto [n_def, S, T] = mat_ax->args<3>();
-    return arrTyOfMatrixTy(S, T);
-}
-
-const Def* LowerMatrixLowLevel::rewrite_structural(const Def* def) {
+Ref LowerMatrixLowLevel::rewrite_structural(Ref def) {
     auto& world = def->world();
 
     assert(!match<matrix::mapReduce>(def) && "mapReduce should have been lowered to for loops by now");
@@ -152,7 +143,7 @@ const Def* LowerMatrixLowLevel::rewrite_structural(const Def* def) {
     }
 
     // ignore unapplied axioms to avoid spurious type replacements
-    if (auto ax = def->isa<Axiom>()) return def;
+    if (def->isa<Axiom>()) return def;
 
     return Rewriter::rewrite_structural(def); // continue recursive rewriting with everything else
 }

@@ -1,8 +1,7 @@
 
 #include "dialects/matrix/matrix.h"
 
-#include <thorin/config.h>
-#include <thorin/dialects.h>
+#include <thorin/plugin.h>
 #include <thorin/pass/pass.h>
 
 #include "dialects/compile/passes/internal_cleanup.h"
@@ -13,7 +12,7 @@
 
 using namespace thorin;
 
-extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
+extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
     return {"matrix",
             [](Passes& passes) {
                 register_pass<matrix::lower_matrix_high_level_map_reduce, thorin::matrix::LowerMatrixHighLevelMapRed>(
