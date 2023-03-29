@@ -1,6 +1,5 @@
 var NAVTREEINDEX20 =
 {
-"cps2ds_8h.html":[6,0,2,6,0,1],
 "cps2ds_8h_source.html":[6,0,2,6,0,1],
 "debug__dump_8h.html":[6,0,2,11,0,0],
 "debug__dump_8h_source.html":[6,0,2,11,0,0],
@@ -245,9 +244,10 @@ var NAVTREEINDEX20 =
 "files.html":[6,0],
 "flags_8h.html":[6,0,4,15],
 "flags_8h_source.html":[6,0,4,15],
-"functions.html":[5,3,0],
 "functions.html":[5,3,0,0],
+"functions.html":[5,3,0],
 "functions_b.html":[5,3,0,1],
 "functions_c.html":[5,3,0,2],
-"functions_d.html":[5,3,0,3]
+"functions_d.html":[5,3,0,3],
+"functions_e.html":[5,3,0,4]
 };

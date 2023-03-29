@@ -114,59 +114,59 @@ $(document).ready(function(){initNavTree('refly.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md168">Dependencies</a></li>
-<li class="level1"><a href="#autotoc_md169">Types</a></li>
-<li class="level1"><a href="#autotoc_md170">Reify/Reflect</a><ul><li class="level2"><a href="#autotoc_md171">%refly.reify</a></li>
-<li class="level2"><a href="#autotoc_md172">%refly.reflect</a></li>
+<ul><li class="level1"><a href="#autotoc_md171">Dependencies</a></li>
+<li class="level1"><a href="#autotoc_md172">Types</a></li>
+<li class="level1"><a href="#autotoc_md173">Reify/Reflect</a><ul><li class="level2"><a href="#autotoc_md174">%refly.reify</a></li>
+<li class="level2"><a href="#autotoc_md175">%refly.reflect</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md173">Inspect</a><ul><li class="level2"><a href="#autotoc_md174">%refly.gid</a></li>
-<li class="level2"><a href="#autotoc_md175">%refly.dbg</a></li>
+<li class="level1"><a href="#autotoc_md176">Inspect</a><ul><li class="level2"><a href="#autotoc_md177">%refly.gid</a></li>
+<li class="level2"><a href="#autotoc_md178">%refly.dbg</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md176">Manipulate</a><ul><li class="level2"><a href="#autotoc_md177">%refly.refine</a></li>
+<li class="level1"><a href="#autotoc_md179">Manipulate</a><ul><li class="level2"><a href="#autotoc_md180">%refly.refine</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md178">Compilation Passes and Phases</a><ul><li class="level2"><a href="#autotoc_md179">Passes</a></li>
+<li class="level1"><a href="#autotoc_md181">Compilation Passes and Phases</a><ul><li class="level2"><a href="#autotoc_md182">Passes</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md_build_docs_dialects_refly"></a> The refly plugin allows to <a href="https://en.wikipedia.org/wiki/Reification_(computer_science)">reify</a> and <a href="https://en.wikipedia.org/wiki/Reflective_programming">reflect</a> Thorin's own representation.</p>
-<h1><a class="anchor" id="autotoc_md168"></a>
+<h1><a class="anchor" id="autotoc_md171"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">.import compile;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md169"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md172"></a>
 Types</h1>
 <div class="fragment"><div class="line">.ax %refly.Code: *;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md170"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md173"></a>
 Reify/Reflect</h1>
-<h2><a class="anchor" id="autotoc_md171"></a>
+<h2><a class="anchor" id="autotoc_md174"></a>
 %refly.reify</h2>
 <p >Yields the internal representation of a Thorin expression as <code>%refly.Code</code>. </p><div class="fragment"><div class="line">.ax %refly.reify: Π T: * -&gt; T -&gt; %refly.Code, normalize_reify;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md172"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md175"></a>
 %refly.reflect</h2>
 <p >Converts a <code>%refly.Code</code> back to a Thorin expression. </p><div class="fragment"><div class="line">.ax %refly.reflect: Π T: * -&gt; %refly.Code -&gt; T, normalize_reflect;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md173"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md176"></a>
 Inspect</h1>
-<h2><a class="anchor" id="autotoc_md174"></a>
+<h2><a class="anchor" id="autotoc_md177"></a>
 %refly.gid</h2>
 <p >Retuns the internal <a class="el" href="classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb">thorin::Def::gid</a> of the argument. </p><div class="fragment"><div class="line">.ax %refly.gid: Π T: * -&gt; T -&gt; .Nat, normalize_gid;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md175"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md178"></a>
 %refly.dbg</h2>
 <p >Debugs a given expression.</p><ul>
 <li><code>tmp</code>: Prints debug information of a given expression at construction time and vanishes afterwards.</li>
 <li><code>perm</code>: Permanently debugs at every construction. Gets removed at codegen preparation in <a class="el" href="classthorin_1_1refly_1_1RemoveDbgPerm.html" title="Removes all refly.debug.perm markers for code gen.">thorin::refly::RemoveDbgPerm</a>.</li>
 </ul>
 <div class="fragment"><div class="line">.ax %refly.dbg(tmp, perm): Π T: * -&gt; T -&gt; T, normalize_dbg;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md176"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md179"></a>
 Manipulate</h1>
-<h2><a class="anchor" id="autotoc_md177"></a>
+<h2><a class="anchor" id="autotoc_md180"></a>
 %refly.refine</h2>
 <p >Sets the <code>i</code>th operand of the reified Code <code>e</code> to <code>x</code>. </p><div class="fragment"><div class="line">.ax %refly.refine: [e: %refly.Code, i: .Nat, x: %refly.Code] -&gt; %refly.Code, normalize_refine;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md178"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md181"></a>
 Compilation Passes and Phases</h1>
-<h2><a class="anchor" id="autotoc_md179"></a>
+<h2><a class="anchor" id="autotoc_md182"></a>
 Passes</h2>
 <div class="fragment"><div class="line">.ax %refly.remove_dbg_perm_pass: %compile.Pass;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
