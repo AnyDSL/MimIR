@@ -112,14 +112,14 @@ var NAVTREEINDEX =
 "classthorin_1_1core_1_1Res.html#a4e4d842f152efb4d40b4474c6c2d53b7",
 "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79acf02c22fc164faf4976cae168d7d73bd",
 "clos_8cpp.html",
-"core_2autogen_8h.html#ab1f42e21a4de8bd328e18b8006b9f74fa7f0dec3b27b1d6ad0b7cbf34b0ae37da",
+"core_2autogen_8h.html#ab1f42e21a4de8bd328e18b8006b9f74fa91608a3e04d4c29b574a36a550594d56",
 "dir_50d79fc898b8bbe7dfdde7c185e765d0.html",
 "lattice_8cpp_source.html",
 "math_2autogen_8h_source.html",
 "namespacethorin.html#a39f3964760b6df40869a6e6fc4cfd418",
 "namespacethorin_1_1autodiff.html#a30a4f7f04039cdb6844cd593b6a47eba",
 "namespacethorin_1_1core.html#ac2dda5ba0299d2f51e5af69b260fbddb",
-"namespacethorin_1_1math.html#aa47e6a52c2a741d4f3de9abab3cac111",
+"namespacethorin_1_1math.html#aa313bc84ec271c77a5d5d1f6b3897ec4",
 "print_8h.html#a7dae34cc4eb75fe0cf5a914431353c8c",
 "structthorin_1_1Pos.html#a3b4a27b040022f47385c39b059b155c2"
 ];

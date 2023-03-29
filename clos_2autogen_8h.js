@@ -1,19 +1,19 @@
 var clos_2autogen_8h =
 [
-    [ "thorin::Axiom::Match< clos::clos2sjlj_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01clos_1_1clos2sjlj__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a583701a1b6005be3e5b073398e113350", null ]
-    ] ],
-    [ "thorin::Axiom::Match< clos::lower_typed_clos_prep_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01clos_1_1lower__typed__clos__prep__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#acfcc47bf4110b009071da2779ee35caf", null ]
+    [ "thorin::Axiom::Match< clos::clos_conv_prep_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01clos_1_1clos__conv__prep__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a4dc9dd50fa02923e6851bfbeef39aa82", null ]
     ] ],
     [ "thorin::Axiom::Match< clos::branch_clos_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01clos_1_1branch__clos__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#a30506ad337187cc6cf713c9bc72bc5a5", null ]
     ] ],
-    [ "thorin::Axiom::Match< clos::clos_conv_prep_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01clos_1_1clos__conv__prep__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a4dc9dd50fa02923e6851bfbeef39aa82", null ]
+    [ "thorin::Axiom::Match< clos::clos2sjlj_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01clos_1_1clos2sjlj__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a583701a1b6005be3e5b073398e113350", null ]
     ] ],
     [ "thorin::Axiom::Match< clos::lower_typed_clos_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01clos_1_1lower__typed__clos__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#aa3d4dfaca1c111efbba6934eab4aed9b", null ]
+    ] ],
+    [ "thorin::Axiom::Match< clos::lower_typed_clos_prep_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01clos_1_1lower__typed__clos__prep__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#acfcc47bf4110b009071da2779ee35caf", null ]
     ] ],
     [ "thorin::Axiom::Match< clos::clos_conv_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01clos_1_1clos__conv__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#a1d6bd7b3284e9b9b0d12681d5cd0d660", null ]
