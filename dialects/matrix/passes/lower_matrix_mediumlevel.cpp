@@ -126,7 +126,7 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
                 world.DLOG("matrix {} has non-constant dimension count", i);
                 return def;
             }
-            auto ni_nat = *ni_lit;
+            u64 ni_nat = *ni_lit;
             world.DLOG("  dims({i}) = {}", i, ni_nat);
             auto SI_i = SI->proj(m_nat, i);
             std::vector<const Def*> input_dims_i;
@@ -154,8 +154,8 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
                     world.DLOG("    index {} {} is not a literal", i, j);
                     return def;
                 }
-                auto idx_nat = *idx_lit;
-                auto dim     = input_dims[i][j];
+                u64 idx_nat = *idx_lit;
+                auto dim    = input_dims[i][j];
                 world.DLOG("      index {} = {}", j, idx);
                 world.DLOG("        dim {} = {}", idx, dim);
                 if (!dims.contains(idx_nat)) {
@@ -177,12 +177,15 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         }
 
         for (auto [idx, dim] : dims) {
-            world.DLOG("dim {} = {}", idx, dim);
+            world.ILOG("dim {} = {}", idx, dim);
             if (idx < n_nat)
                 out_indices.push_back(idx);
             else
                 in_indices.push_back(idx);
         }
+        // sort indices to make checks easier later.
+        std::sort(out_indices.begin(), out_indices.end());
+        std::sort(in_indices.begin(), in_indices.end());
 
         // create function `%mem.M -> [%mem.M, %matrix.Mat (n,S,T)]` to replace axiom call
 
@@ -272,6 +275,7 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
 
         DefArray output_iterators((size_t)n_nat, [&](u64 i) {
             auto idx = out_indices[i];
+            if (idx != i) world.ELOG("output indices must be consecutive 0..n-1 but {} != {}", idx, i);
             assert(idx == i && "output indices must be consecutive 0..n-1");
             auto iter_idx_def = iterator[idx];
             return iter_idx_def;
