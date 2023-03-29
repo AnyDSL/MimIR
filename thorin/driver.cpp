@@ -9,7 +9,7 @@ namespace thorin {
 static std::vector<fs::path> get_plugin_name_variants(std::string_view name) {
     std::vector<fs::path> names;
     names.push_back(name); // if the user gives "libthorin_foo.so"
-    names.push_back(fmt("{}thorin_{}{}", dl::prefix(), name, dl::extension()));
+    names.push_back(fmt("libthorin_{}{}", name, dl::extension()));
     return names;
 }
 

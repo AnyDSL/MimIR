@@ -14,14 +14,6 @@
 
 namespace thorin::dl {
 
-std::string_view prefix() {
-#ifdef _WIN32
-    return "";
-#else
-    return "lib";
-#endif
-}
-
 std::string_view extension() {
 #ifdef _WIN32
     return ".dll";
