@@ -35,7 +35,7 @@
     .let 'mem = %mem.store (mem, lea, 10:I32);
     .let 'lea = %mem.lea (arr_size, <arr_size; pb_type>, 0) (pb_arr, 2:I32);
     .let ('mem, func) = %mem.load (mem, lea);
-    .let ('mem,  val) = %mem.load (load_mem, lea);
+    .let ('mem,  val) = %mem.load (mem, lea);
 
     .con callback (mem: %mem.M, x: I32) = return (mem, x);
 
