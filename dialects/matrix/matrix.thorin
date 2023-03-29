@@ -1,4 +1,4 @@
-/// # The matrix Dialect {#mat}
+/// # The matrix Dialect {#matrix}
 ///
 /// [TOC]
 ///
@@ -16,9 +16,10 @@
 ///
 /// Thorin matrices are n-dimensional tensors with elements of type T.
 /// They can be seen as a generalization of Coq's vector type (a container with a fixed number of elements specified on type level).
-///
+/// ```
 /// matrix = Π [n: .Nat, S: «n; .Nat», T: *] -> *
 /// matrix n S T = «S_0; «S_1; ... «S_{n-1}; T» ... »»
+/// ```
 /// => a matrix is a dependend array
 ///
 .ax %matrix.Mat: Π [n: .Nat, S: «n; .Nat», T: *] -> *; 
@@ -30,8 +31,9 @@
 /// Extracts the size along the i-th dimension from the type.
 /// For a dependent matrix this is a simple projection to S(i).
 ///
-/// normalization rules: 
+/// #### Normalization
 /// * resolve shape calls at construction by replacing them with the size argument
+///
 .ax %matrix.shape:  Π [n: .Nat, S: «n; .Nat», T: *] -> [%matrix.Mat (n,S,T), i: .Idx n] -> .Nat, normalize_shape;
 /// 
 /// ### %matrix.const
@@ -45,9 +47,11 @@
 ///
 /// Accesses an element of the matrix.
 /// (currently: arithmetic pointer access)
-/// normalization:
+///
+/// #### Normalization:
 /// * read(insert)
 /// * read(const)
+///
 .ax %matrix.read: Π [n: .Nat, S: «n; .Nat», T: *] -> [%mem.M, %matrix.Mat (n,S,T), idx: «i: n; .Idx S#i»] -> [%mem.M,T], normalize_read;
 /// 
 /// ### %matrix.insert
@@ -56,9 +60,11 @@
 ///
 /// Depending on the matrix implementation, this operations needs the mem monad
 /// The implementation can be either as write or array insertion.
-/// normalization:
+///
+/// #### Normalization:
 /// * with other inserts
 /// * with initialization
+///
 .ax %matrix.insert: Π [n: .Nat, S: «n; .Nat», T: *] -> [%mem.M,%matrix.Mat (n,S,T), idx: «i: n; .Idx S#i», val: T] -> [%mem.M,%matrix.Mat (n,S,T)], normalize_insert;
 ///
 /// ### %matrix.init
