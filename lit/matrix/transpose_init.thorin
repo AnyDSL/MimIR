@@ -34,7 +34,7 @@
         // TODO: use generalized zero
         .let zero = (⊥:T);
         ret (
-            %matrix.mapReduce
+            %matrix.map_reduce
                 (2, (l, k), T, 
                     1,
                     2,

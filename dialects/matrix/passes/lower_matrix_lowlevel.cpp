@@ -55,7 +55,7 @@ static Ref arrTyOfMatrixTy(Ref S, Ref T) {
 Ref LowerMatrixLowLevel::rewrite_structural(Ref def) {
     auto& world = def->world();
 
-    assert(!match<matrix::mapReduce>(def) && "mapReduce should have been lowered to for loops by now");
+    assert(!match<matrix::map_reduce>(def) && "map_reduce should have been lowered to for loops by now");
     assert(!match<matrix::shape>(def) && "high level operations should have been lowered to for loops by now");
     assert(!match<matrix::prod>(def) && "high level operations should have been lowered to for loops by now");
     assert(!match<matrix::transpose>(def) && "high level operations should have been lowered to for loops by now");

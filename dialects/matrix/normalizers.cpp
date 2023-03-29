@@ -5,17 +5,17 @@
 
 #include "dialects/matrix/matrix.h"
 
-// TODO: combine mapReduce calls
+// TODO: combine map_reduce calls
 
 namespace thorin::matrix {
 
 /// Normalizer for read opertions
 /// - read(constMat v) -> v
-/// - read(insert m v i, i) -> v (TODO: check with mapReduce)
+/// - read(insert m v i, i) -> v (TODO: check with map_reduce)
 /// - read(insert m v i, j) -> read(m, i) if i <> j (TODO: wanted? useful?)
-/// - read(transpose m, (i,j)) -> read(m, (j,i)) (TODO: check for mapReduce)
-/// - read(product m1 m2, (i,j)) -> ... (TODO: check with mapReduce)
-/// - read (mapReduce f) idx = loop f idx (TODO: implement => use inner loop from lowering phase)
+/// - read(transpose m, (i,j)) -> read(m, (j,i)) (TODO: check for map_reduce)
+/// - read(product m1 m2, (i,j)) -> ... (TODO: check with map_reduce)
+/// - read (map_reduce f) idx = loop f idx (TODO: implement => use inner loop from lowering phase)
 Ref normalize_read(Ref type, Ref callee, Ref arg) {
     auto& world            = type->world();
     auto [mem, mat, index] = arg->projs<3>();
@@ -90,14 +90,14 @@ u64 get_max_index(u64 init, Defs inputs) {
     return max_idx;
 }
 
-/// mapReduce normalizers
-/// - TODO: mapReduce (..., ((idx,mapReduce([out, ]...), ...))) -> unify idx, out (out is implicit), name vars apart
+/// map_reduce normalizers
+/// - TODO: map_reduce (..., ((idx,map_reduce([out, ]...), ...))) -> unify idx, out (out is implicit), name vars apart
 ///   requires: same reduction, distributive reduction
 /// we assume distributivity of the reduction function
-Ref normalize_mapReduce(Ref type, Ref callee, Ref arg) {
+Ref normalize_map_reduce(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
 
-    //     // TODO: now that mapReduce returns a mem needs to check if extract from mapReduce
+    //     // TODO: now that map_reduce returns a mem needs to check if extract from map_reduce
     return world.raw_app(type, callee, arg);
 }
 

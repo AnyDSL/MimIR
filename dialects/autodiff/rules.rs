@@ -493,7 +493,7 @@ zip*:
 
 zip*:
     λ S. split(
-        mapReduce
+        map_reduce
             (λ (m,n,s).
                 let (_, f*) = f' (m,n);
                 f* s

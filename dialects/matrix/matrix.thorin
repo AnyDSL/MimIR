@@ -14,8 +14,8 @@
 ///
 /// ### %matrix.Mat
 ///
-/// a n-dimensional tensor with elements of type T
-/// can be seen as generalization of Coq's vector type
+/// Thorin matrices are n-dimensional tensors with elements of type T.
+/// They can be seen as a generalization of Coq's vector type (a container with a fixed number of elements specified on type level).
 ///
 /// matrix = Π [n: .Nat, S: «n; .Nat», T: *] -> *
 /// matrix n S T = «S_0; «S_1; ... «S_{n-1}; T» ... »»
@@ -27,9 +27,8 @@
 ///
 /// ### %matrix.shape
 /// 
-/// gets the size along the i-th dimension
-/// for a dependent matrix this is a simple projection
-/// returns S(i)
+/// Extracts the size along the i-th dimension from the type.
+/// For a dependent matrix this is a simple projection to S(i).
 ///
 /// normalization rules: 
 /// * resolve shape calls at construction by replacing them with the size argument
@@ -44,7 +43,7 @@
 ///
 /// read _ (mat, idx) : body_type
 ///
-/// a access to an element of the matrix
+/// Accesses an element of the matrix.
 /// (currently: arithmetic pointer access)
 /// normalization:
 /// * read(insert)
@@ -55,10 +54,8 @@
 ///
 /// insert (dims, sizes, type) (mat, idx, val) : mat
 ///
-/// depending on matrix implementation needs mem monad
-/// as it is implemented as write
-/// for mutable body types, the monad should be liftet
-/// implementation either as write or array insertion
+/// Depending on the matrix implementation, this operations needs the mem monad
+/// The implementation can be either as write or array insertion.
 /// normalization:
 /// * with other inserts
 /// * with initialization
@@ -66,7 +63,7 @@
 ///
 /// ### %matrix.init
 ///
-/// a fresh matrix 
+/// A fresh matrix with uninitialized values.
 .ax %matrix.init: Π [n: .Nat, S: «n; .Nat», T: *, %mem.M] -> [%mem.M,%matrix.Mat (n,S,T)];
 ///
 /// ### High-level matrix operations
@@ -90,12 +87,12 @@
 /// * Pytorch DSL
 /// * https://optimized-einsum.readthedocs.io/en/stable/
 ///
-/// The `mapReduce` operation can be seen as the minimal abstraction over general iteration/control flow schemes over tensors.
+/// The `map_reduce` operation can be seen as the minimal abstraction over general iteration/control flow schemes over tensors.
 ///
-/// mapReduce applications:
-/// * `einsum(idx, MatrixIndices) = mapReduce(0,+,product,MatrixIndices)`
-/// * `map f M = mapReduce (0,+,f,[(idx,M)])` (TODO: get rid of reduce step if not needed with dummy values)
-/// * `reduce acc f M = mapReduce (n=0) (acc,f,id,[(idx,M)])` (TODO: see index problem above)
+/// map_reduce applications:
+/// * `einsum(idx, MatrixIndices) = map_reduce(0,+,product,MatrixIndices)`
+/// * `map f M = map_reduce (0,+,f,[(idx,M)])` (TODO: get rid of reduce step if not needed with dummy values)
+/// * `reduce acc f M = map_reduce (n=0) (acc,f,id,[(idx,M)])` (TODO: see index problem above)
 /// einsum application:
 /// * `tranpose ij->ji  (einsum(,[(1,0),M]))`
 /// * `trace ii->`
@@ -108,7 +105,7 @@
 /// * `outer product i,j -> ij`
 /// TODO: introduce dummy values (zero, add, ...) in refly and use these
 /// dummy = has correct type but can not produce code (should always be eliminated)
-.ax %matrix.mapReduce: 
+.ax %matrix.map_reduce: 
     // out shape depends on in shape but is complex
     Π [n: .Nat, S: «n; .Nat», T: *, // out shape
         m: .Nat, // number of inputs
@@ -132,7 +129,7 @@
             »
     ] ->
     [%mem.M, %matrix.Mat (n,S,T)],
-    normalize_mapReduce;
+    normalize_map_reduce;
 ///
 ///
 /// ## Unfolding functions
@@ -169,7 +166,7 @@
         .let zero_64 = 0.0:(%math.F (52,11));
         .let zero_real = %math.conv.f2f (p,e) zero_64;
         ret (
-            %matrix.mapReduce
+            %matrix.map_reduce
                 (2, (m, l), R, 
                     2,
                     (2, 2),
@@ -219,7 +216,7 @@
         // TODO: use generalized zero
         .let zero = (⊥:T);
         ret (
-            %matrix.mapReduce
+            %matrix.map_reduce
                 (2, (l, k), T, 
                     1,
                     2,
@@ -274,7 +271,7 @@
                 %core.bitcast (.Nat, .Idx n) i
             )
             >;
-        .let (mem2,res) = %matrix.mapReduce
+        .let (mem2,res) = %matrix.map_reduce
                 (1, (1), R, 
                     1,
                     n,

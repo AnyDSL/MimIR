@@ -1,5 +1,4 @@
-#ifndef THORIN_PASS_RW_LOWER_MATRIX_LOWLEVEL_H
-#define THORIN_PASS_RW_LOWER_MATRIX_LOWLEVEL_H
+#pragma once
 
 #include <thorin/def.h>
 #include <thorin/pass/pass.h>
@@ -26,5 +25,3 @@ private:
 };
 
 } // namespace thorin::matrix
-
-#endif

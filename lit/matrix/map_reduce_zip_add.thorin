@@ -27,7 +27,7 @@
 
 
     .let MT = M;
-    .let (mem2,MT2) = %matrix.mapReduce
+    .let (mem2,MT2) = %matrix.map_reduce
         (
             2, (k,l), I32,
             2,

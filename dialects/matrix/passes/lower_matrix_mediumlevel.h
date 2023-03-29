@@ -1,12 +1,11 @@
-#ifndef THORIN_PASS_RW_LOWER_MATRIX_MEDIUMLEVEL_H
-#define THORIN_PASS_RW_LOWER_MATRIX_MEDIUMLEVEL_H
+#pragma once
 
 #include <thorin/def.h>
 #include <thorin/pass/pass.h>
 
 namespace thorin::matrix {
 
-/// In this step, we lower `mapReduce` operations into affine for loops making the iteration scheme explicit.
+/// In this step, we lower `map_reduce` operations into affine for loops making the iteration scheme explicit.
 /// Pseudo-code:
 /// ```
 /// out_matrix = init
@@ -58,5 +57,3 @@ private:
 };
 
 } // namespace thorin::matrix
-
-#endif

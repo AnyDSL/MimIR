@@ -1,5 +1,4 @@
-#ifndef THORIN_DIALECTS_MATRIX_MATRIX_H
-#define THORIN_DIALECTS_MATRIX_MATRIX_H
+#pragma once
 
 #include <thorin/pass/pipelinebuilder.h>
 #include <thorin/world.h>
@@ -12,12 +11,12 @@ namespace thorin::matrix {
 #define INTERNAL_PREFIX "internal_mapRed_"
 
 /// %mat.zero: Π [n: .Nat, S: «n; .Nat», m: .Nat] -> %mat.Mat (n,S,(.Idx m));
-inline const Def* zero_int(World& w, const Def* n, const Def* S, Def* mem, nat_t m) {
+inline const Def* zero_int(World& w, Ref n, Ref S, Ref mem, nat_t m) {
     // TODO: use thorin definition by name
     return w.app(w.ax<matrix::constMat>(), {n, S, w.type_idx(m), mem, w.lit_idx(m, 0)});
 }
 
-inline const Def* op_read(const Def* mem, const Def* matrix, const Def* idx) {
+inline const Def* op_read(Ref mem, Ref matrix, Ref idx) {
     auto& world = matrix->world();
     auto mat_ty = match<Mat>(matrix->type());
     if (!mat_ty) return matrix;
@@ -30,5 +29,3 @@ inline const Def* op_read(const Def* mem, const Def* matrix, const Def* idx) {
 }
 
 } // namespace thorin::matrix
-
-#endif

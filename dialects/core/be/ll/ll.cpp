@@ -309,8 +309,7 @@ void Emitter::emit_epilogue(Lam* lam) {
         // TODO: we can not rely on the structure of the extract (it might be a nested extract)
         for (auto callee_def : ex->tuple()->projs()) {
             // dissect the tuple of lambdas
-            auto callee = callee_def->isa_nom<Lam>();
-            assert(callee);
+            auto callee = callee_def->as_nom<Lam>();
             // each callees type should agree with the argument type (should be checked by type checking).
             // Especially, the number of vars should be the number of arguments.
             // TODO: does not hold for complex arguments that are not tuples.
@@ -743,9 +742,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto [v_i, t_i] = emit_gep_index(i);
 
         return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, {} {}", t_pointee, t_ptr, v_ptr, t_i, v_i);
-    } else if (match<core::trait>(def)) {
-        // trait should be lowered before codegen.
-        unreachable();
     } else if (auto malloc = match<mem::malloc>(def)) {
         declare("i8* @malloc(i64)");
 

@@ -28,7 +28,7 @@
     .let (mem3, N) = %matrix.constMat (2,(m,l),I32) (mem2, 44:I32);
 
     // .let mem4 = mem3;
-    .let (mem4,MN) = %matrix.mapReduce
+    .let (mem4,MN) = %matrix.map_reduce
         (
             2, (k,l), I32,
             2,

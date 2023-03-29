@@ -42,7 +42,7 @@ counting_for(const Def* bound, DefArray acc, const Def* exit, const char* name =
 const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
     auto& world = def->world();
 
-    if (auto mapReduce_ax = match<matrix::mapReduce>(def); mapReduce_ax) {
+    if (auto map_reduce_ax = match<matrix::map_reduce>(def); map_reduce_ax) {
         // meta arguments:
         // * n = out-count, (nat)
         // * S = out-dim, (n*nat)
@@ -56,9 +56,9 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         // * zero = accumulator init (T)
         // * combination function (mem, acc, inputs) -> (mem, acc)
         // * input matrixes
-        auto [mem, zero, comb, inputs] = mapReduce_ax->args<4>();
-        auto [n, S, T, m, NI, TI, SI]  = mapReduce_ax->callee()->as<App>()->args<7>();
-        world.DLOG("mapReduce_ax {} : {}", mapReduce_ax, mapReduce_ax->type());
+        auto [mem, zero, comb, inputs] = map_reduce_ax->args<4>();
+        auto [n, S, T, m, NI, TI, SI]  = map_reduce_ax->callee()->as<App>()->args<7>();
+        world.DLOG("map_reduce_ax {} : {}", map_reduce_ax, map_reduce_ax->type());
         world.DLOG("meta variables:");
         world.DLOG("  n = {}", n);
         world.DLOG("  S = {}", S);
@@ -87,11 +87,11 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         // return matrix
         // ```
 
-        std::map<u64, const Def*> dims;         // idx ↦ nat (size bound = dimension)
-        std::map<u64, const Def*> raw_iterator; // idx ↦ I32
-        std::map<u64, const Def*> iterator;     // idx ↦ %Idx (S/NI#i)
-        std::vector<u64> out_indices;           // output indices 0..n-1
-        std::vector<u64> in_indices;            // input indices ≥ n
+        absl::flat_hash_map<u64, const Def*> dims;         // idx ↦ nat (size bound = dimension)
+        absl::flat_hash_map<u64, const Def*> raw_iterator; // idx ↦ I32
+        absl::flat_hash_map<u64, const Def*> iterator;     // idx ↦ %Idx (S/NI#i)
+        std::vector<u64> out_indices;                      // output indices 0..n-1
+        std::vector<u64> in_indices;                       // input indices ≥ n
 
         std::vector<const Def*> output_dims;             // i<n ↦ nat (dimension S#i)
         std::vector<std::vector<const Def*>> input_dims; // i<m ↦ j<NI#i ↦ nat (dimension SI#i#j)
@@ -121,12 +121,12 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
 
         for (u64 i = 0; i < m_nat; ++i) {
             auto ni     = NI->proj(m_nat, i);
-            auto ni_lit = ni->isa<Lit>();
+            auto ni_lit = isa_lit(ni);
             if (!ni_lit) {
                 world.DLOG("matrix {} has non-constant dimension count", i);
                 return def;
             }
-            auto ni_nat = ni_lit->get<u64>();
+            auto ni_nat = *ni_lit;
             world.DLOG("  dims({i}) = {}", i, ni_nat);
             auto SI_i = SI->proj(m_nat, i);
             std::vector<const Def*> input_dims_i;
@@ -149,12 +149,12 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
             for (u64 j = 0; j < n_input[i]; ++j) {
                 // world.DLOG("    dimension {} / {}", j, n_input[i]);
                 auto idx     = indices->proj(n_input[i], j);
-                auto idx_lit = idx->isa<Lit>();
+                auto idx_lit = isa_lit(idx);
                 if (!idx_lit) {
                     world.DLOG("    index {} {} is not a literal", i, j);
                     return def;
                 }
-                auto idx_nat = idx_lit->get<u64>();
+                auto idx_nat = *idx_lit;
                 auto dim     = input_dims[i][j];
                 world.DLOG("      index {} = {}", j, idx);
                 world.DLOG("        dim {} = {}", idx, dim);
@@ -187,7 +187,7 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         // create function `%mem.M -> [%mem.M, %matrix.Mat (n,S,T)]` to replace axiom call
 
         auto mem_type = mem::type_mem(world);
-        auto fun_ty   = world.cn({mem_type, world.cn(mapReduce_ax->type())});
+        auto fun_ty   = world.cn({mem_type, world.cn(map_reduce_ax->type())});
         world.DLOG("fun_ty = {}", fun_ty);
         auto fun = world.nom_lam(fun_ty)->set("mapRed");
 

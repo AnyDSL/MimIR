@@ -16,12 +16,12 @@ inline const Def* fn_for(World& w, Defs params) {
 /// See documentation for %affine.For axiom in @ref affine.
 // clang-format off
 inline const Def* op_for(World& w,
-                         const Def* begin,
-                         const Def* end,
-                         const Def* step,
+                         Ref begin,
+                         Ref end,
+                         Ref step,
                          Defs inits,
-                         const Def* body,
-                         const Def* brk) {
+                         Ref body,
+                         Ref brk) {
     DefArray types(inits.size(), [&](size_t i) { return inits[i]->type(); });
     return w.app(fn_for(w, types), {begin, end, step, w.tuple(inits), body, brk});
 }
