@@ -241,17 +241,20 @@ template<bit1 id>
 Ref normalize_bit1(Ref type, Ref c, Ref a) {
     auto& world = type->world();
     auto callee = c->as<App>();
-    auto l      = isa_lit(a);
+    // TODO cope with wrap around
 
-    if (auto ls = isa_lit(callee->arg())) {
+    if constexpr (id == bit1::id) return a;
+
+    if (auto ls = isa_lit(callee->decurry()->arg())) {
         switch (id) {
             case bit1::f: return world.lit_idx(*ls, 0);
             case bit1::t: return world.lit_idx(*ls, *ls - 1_u64);
-            case bit1::id: return a;
+            case bit1::id: unreachable();
             default: break;
         }
 
-        if (l) return world.lit_idx_mod(*ls, ~*l);
+        assert(id == bit1::neg);
+        if (auto la = isa_lit(a)) return world.lit_idx_mod(*ls, ~*la);
     }
 
     return world.raw_app(type, callee, a);
@@ -289,7 +292,8 @@ Ref normalize_bit2(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto ls     = isa_lit(callee->arg());
+    auto ls     = isa_lit(callee->decurry()->arg());
+    // TODO cope with wrap around
 
     commute(id, a, b);
 
