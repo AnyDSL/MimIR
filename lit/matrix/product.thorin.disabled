@@ -13,8 +13,6 @@
 .let _32 = 4294967296;
 .let I32 = .Idx _32;
 .let f32 = (23,  8);
-.let _f64_1 = 52;
-.let _f64_2 = 11;
 .let f64 = (52, 11);
 .let F32 = %math.F f32;
 .let F64 = %math.F f64;
@@ -25,7 +23,7 @@
     N:%matrix.Mat (2,(k,l),F64),
     return: .Cn[%mem.M, %matrix.Mat (2,(m,l),F64)]] = {
 
-    .let (mem2,MN) = %matrix.prod (m,k,l,_f64_1,_f64_2) (mem,M,N);
+    .let (mem2,MN) = %matrix.prod (m,k,l, f64) (mem,M,N);
 
     return (mem2, MN)
 };
