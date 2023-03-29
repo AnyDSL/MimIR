@@ -4,10 +4,12 @@ var namespacethorin_1_1clos =
     [ "Clos2SJLJ", "classthorin_1_1clos_1_1Clos2SJLJ.html", "classthorin_1_1clos_1_1Clos2SJLJ" ],
     [ "ClosConv", "classthorin_1_1clos_1_1ClosConv.html", "classthorin_1_1clos_1_1ClosConv" ],
     [ "ClosConvPrep", "classthorin_1_1clos_1_1ClosConvPrep.html", "classthorin_1_1clos_1_1ClosConvPrep" ],
+    [ "ClosConvWrapper", "classthorin_1_1clos_1_1ClosConvWrapper.html", "classthorin_1_1clos_1_1ClosConvWrapper" ],
     [ "ClosLit", "classthorin_1_1clos_1_1ClosLit.html", "classthorin_1_1clos_1_1ClosLit" ],
     [ "FreeDefAna", "classthorin_1_1clos_1_1FreeDefAna.html", "classthorin_1_1clos_1_1FreeDefAna" ],
     [ "LowerTypedClos", "classthorin_1_1clos_1_1LowerTypedClos.html", "classthorin_1_1clos_1_1LowerTypedClos" ],
     [ "LowerTypedClosPrep", "classthorin_1_1clos_1_1LowerTypedClosPrep.html", "classthorin_1_1clos_1_1LowerTypedClosPrep" ],
+    [ "LowerTypedClosWrapper", "classthorin_1_1clos_1_1LowerTypedClosWrapper.html", "classthorin_1_1clos_1_1LowerTypedClosWrapper" ],
     [ "alloc_jmpbuf", "namespacethorin_1_1clos.html#a0aabdb9a4da6e16afb462b4ce783fec8", null ],
     [ "attr", "namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117a", [
       [ "ret", "namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aa2348b9af292e8373483f8ff836d5aac2", null ],

@@ -18,6 +18,7 @@ var namespacethorin =
     [ "fe", "namespacethorin_1_1fe.html", "namespacethorin_1_1fe" ],
     [ "ll", "namespacethorin_1_1ll.html", "namespacethorin_1_1ll" ],
     [ "math", "namespacethorin_1_1math.html", "namespacethorin_1_1math" ],
+    [ "matrix", "namespacethorin_1_1matrix.html", "namespacethorin_1_1matrix" ],
     [ "mem", "namespacethorin_1_1mem.html", "namespacethorin_1_1mem" ],
     [ "Node", "namespacethorin_1_1Node.html", null ],
     [ "opt", "namespacethorin_1_1opt.html", [

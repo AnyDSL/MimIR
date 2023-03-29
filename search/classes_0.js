@@ -19,8 +19,7 @@ var searchData=
   ['arraystorage_3c_20value_2c_20std_3a_3ais_5ftrivial_3c_20value_20_3e_3a_3avalue_20_3f_205_20_3a0_20_3e_16',['ArrayStorage&lt; Value, std::is_trivial&lt; Value &gt;::value ? 5 :0 &gt;',['../classthorin_1_1ArrayStorage.html',1,'thorin']]],
   ['arraystorage_3c_20void_20_2a_2c_20std_3a_3ais_5ftrivial_3c_20void_20_2a_20_3e_3a_3avalue_20_3f_205_20_3a0_20_3e_17',['ArrayStorage&lt; void *, std::is_trivial&lt; void * &gt;::value ? 5 :0 &gt;',['../classthorin_1_1ArrayStorage.html',1,'thorin']]],
   ['autodiffeval_18',['AutoDiffEval',['../classthorin_1_1autodiff_1_1AutoDiffEval.html',1,'thorin::autodiff']]],
-  ['autodiffexternalcleanup_19',['AutoDiffExternalCleanup',['../classthorin_1_1autodiff_1_1AutoDiffExternalCleanup.html',1,'thorin::autodiff']]],
-  ['autodiffzero_20',['AutoDiffZero',['../classthorin_1_1autodiff_1_1AutoDiffZero.html',1,'thorin::autodiff']]],
-  ['autodiffzerocleanup_21',['AutoDiffZeroCleanup',['../classthorin_1_1autodiff_1_1AutoDiffZeroCleanup.html',1,'thorin::autodiff']]],
-  ['axiom_22',['Axiom',['../classthorin_1_1Axiom.html',1,'thorin']]]
+  ['autodiffzero_19',['AutoDiffZero',['../classthorin_1_1autodiff_1_1AutoDiffZero.html',1,'thorin::autodiff']]],
+  ['autodiffzerocleanup_20',['AutoDiffZeroCleanup',['../classthorin_1_1autodiff_1_1AutoDiffZeroCleanup.html',1,'thorin::autodiff']]],
+  ['axiom_21',['Axiom',['../classthorin_1_1Axiom.html',1,'thorin']]]
 ];

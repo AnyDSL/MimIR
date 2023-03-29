@@ -39,6 +39,7 @@ var menudata={children:[
 {text:"demo",url:"demo.html"},
 {text:"direct",url:"direct.html"},
 {text:"math",url:"math.html"},
+{text:"matrix",url:"@ref matrix"},
 {text:"mem",url:"mem.html"},
 {text:"opt",url:"opt.html"},
 {text:"refly",url:"refly.html"}]},

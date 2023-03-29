@@ -1,7 +1,6 @@
 var namespacethorin_1_1autodiff =
 [
     [ "AutoDiffEval", "classthorin_1_1autodiff_1_1AutoDiffEval.html", "classthorin_1_1autodiff_1_1AutoDiffEval" ],
-    [ "AutoDiffExternalCleanup", "classthorin_1_1autodiff_1_1AutoDiffExternalCleanup.html", "classthorin_1_1autodiff_1_1AutoDiffExternalCleanup" ],
     [ "AutoDiffZero", "classthorin_1_1autodiff_1_1AutoDiffZero.html", "classthorin_1_1autodiff_1_1AutoDiffZero" ],
     [ "AutoDiffZeroCleanup", "classthorin_1_1autodiff_1_1AutoDiffZeroCleanup.html", "classthorin_1_1autodiff_1_1AutoDiffZeroCleanup" ],
     [ "AD", "namespacethorin_1_1autodiff.html#ae4a2884a429ac996dc3a0d42e0077985", null ],

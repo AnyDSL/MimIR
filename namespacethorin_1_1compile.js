@@ -16,6 +16,7 @@ var namespacethorin_1_1compile =
     [ "eta_red_pass", "namespacethorin_1_1compile.html#a01cd76fbc5ee1574ae59aeff5231285a", null ],
     [ "internal_cleanup_pass", "namespacethorin_1_1compile.html#a65f2332cfc72ed416ad4335aa7c1c4bb", null ],
     [ "lam_spec_pass", "namespacethorin_1_1compile.html#ac58680fd18cec50e30c824a108f182e9", null ],
+    [ "matrix_plugin", "namespacethorin_1_1compile.html#a60c43d8a43f0693594c12c4f53077153", null ],
     [ "mem_plugin", "namespacethorin_1_1compile.html#aa7ca59086050987ba2f34dd587c2f1cc", null ],
     [ "nullptr_pass", "namespacethorin_1_1compile.html#adf962e2b4aa79a8af2217f19c82fe3bf", null ],
     [ "partial_eval_pass", "namespacethorin_1_1compile.html#a06381a9611392feb1e3886b30a86b1a8", null ],

@@ -1,20 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classthorin_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases." alt="" coords="13,243,120,268"/>
-<area shape="rect" id="node2" href="$classthorin_1_1Cleanup.html" title="Removes unreachable and dead code by rebuilding the whole World into a new one and swapping afterward..." alt="" coords="219,217,340,243"/>
-<area shape="rect" id="node3" href="$classthorin_1_1PassManPhase.html" title="Wraps a PassMan pipeline as a Phase." alt="" coords="197,267,361,292"/>
-<area shape="rect" id="node4" href="$classthorin_1_1PassPhase.html" title="Wraps a Pass as a Phase." alt="" coords="192,316,367,341"/>
-<area shape="rect" id="node5" href="$classthorin_1_1Pipeline.html" title="Organizes several Phases as a pipeline." alt="" coords="219,365,339,391"/>
-<area shape="rect" id="node6" href="$classthorin_1_1RWPhase.html" title="Visits the current Phase::world and constructs a new RWPhase::world along the way." alt="" coords="215,415,344,440"/>
-<area shape="rect" id="node8" href="$classthorin_1_1ScopePhase.html" title="Transitively visits all reachable Scopes in World that do not have free variables." alt="" coords="206,69,353,95"/>
-<area shape="rect" id="node14" href="$classthorin_1_1clos_1_1ClosConv.html" title="Performs typed closure conversion." alt="" coords="198,119,361,144"/>
-<area shape="rect" id="node15" href="$classthorin_1_1clos_1_1LowerTypedClos.html" title="This pass lowers typed closures to untyped closures." alt="" coords="176,168,383,193"/>
-<area shape="rect" id="node7" href="$classthorin_1_1FPPhase.html" title="Like a RWPhase but starts with a fixed&#45;point loop of FPPhase::analyze beforehand." alt="" coords="455,415,577,440"/>
-<area shape="rect" id="node9" href="$classthorin_1_1Emitter.html" title=" " alt="" coords="441,55,591,109"/>
-<area shape="rect" id="node12" href="$classthorin_1_1Emitter.html" title=" " alt="" coords="431,134,601,174"/>
-<area shape="rect" id="node13" href="$classthorin_1_1mem_1_1AddMem.html" title="This phase adds mems to all lambdas and continuations." alt="" coords="432,5,600,31"/>
-<area shape="rect" id="node10" href="$classthorin_1_1dot_1_1Emitter.html" title=" " alt="" coords="649,45,795,71"/>
-<area shape="rect" id="node11" href="$classthorin_1_1ll_1_1Emitter.html" title=" " alt="" coords="656,95,788,120"/>
-<area shape="rect" id="node16" href="$classthorin_1_1Rewriter.html" title="Recurseivly rewrites part of a program into the provided World." alt="" coords="5,464,128,489"/>
-<area shape="rect" id="node17" href="$classthorin_1_1InferRewriter.html" title=" " alt="" coords="203,464,356,489"/>
-<area shape="rect" id="node18" href="$classthorin_1_1ScopeRewriter.html" title="Stops rewriting when leaving the Scope." alt="" coords="198,513,361,539"/>
+<area shape="rect" id="node1" href="$classthorin_1_1Match.html" title=" " alt="" coords="5,5,173,31"/>
 </map>

@@ -6,7 +6,6 @@ var annotated_dup =
       ] ],
       [ "autodiff", "namespacethorin_1_1autodiff.html", [
         [ "AutoDiffEval", "classthorin_1_1autodiff_1_1AutoDiffEval.html", "classthorin_1_1autodiff_1_1AutoDiffEval" ],
-        [ "AutoDiffExternalCleanup", "classthorin_1_1autodiff_1_1AutoDiffExternalCleanup.html", "classthorin_1_1autodiff_1_1AutoDiffExternalCleanup" ],
         [ "AutoDiffZero", "classthorin_1_1autodiff_1_1AutoDiffZero.html", "classthorin_1_1autodiff_1_1AutoDiffZero" ],
         [ "AutoDiffZeroCleanup", "classthorin_1_1autodiff_1_1AutoDiffZeroCleanup.html", "classthorin_1_1autodiff_1_1AutoDiffZeroCleanup" ]
       ] ],
@@ -15,10 +14,12 @@ var annotated_dup =
         [ "Clos2SJLJ", "classthorin_1_1clos_1_1Clos2SJLJ.html", "classthorin_1_1clos_1_1Clos2SJLJ" ],
         [ "ClosConv", "classthorin_1_1clos_1_1ClosConv.html", "classthorin_1_1clos_1_1ClosConv" ],
         [ "ClosConvPrep", "classthorin_1_1clos_1_1ClosConvPrep.html", "classthorin_1_1clos_1_1ClosConvPrep" ],
+        [ "ClosConvWrapper", "classthorin_1_1clos_1_1ClosConvWrapper.html", "classthorin_1_1clos_1_1ClosConvWrapper" ],
         [ "ClosLit", "classthorin_1_1clos_1_1ClosLit.html", "classthorin_1_1clos_1_1ClosLit" ],
         [ "FreeDefAna", "classthorin_1_1clos_1_1FreeDefAna.html", "classthorin_1_1clos_1_1FreeDefAna" ],
         [ "LowerTypedClos", "classthorin_1_1clos_1_1LowerTypedClos.html", "classthorin_1_1clos_1_1LowerTypedClos" ],
-        [ "LowerTypedClosPrep", "classthorin_1_1clos_1_1LowerTypedClosPrep.html", "classthorin_1_1clos_1_1LowerTypedClosPrep" ]
+        [ "LowerTypedClosPrep", "classthorin_1_1clos_1_1LowerTypedClosPrep.html", "classthorin_1_1clos_1_1LowerTypedClosPrep" ],
+        [ "LowerTypedClosWrapper", "classthorin_1_1clos_1_1LowerTypedClosWrapper.html", "classthorin_1_1clos_1_1LowerTypedClosWrapper" ]
       ] ],
       [ "compile", "namespacethorin_1_1compile.html", [
         [ "DebugPrint", "classthorin_1_1compile_1_1DebugPrint.html", "classthorin_1_1compile_1_1DebugPrint" ],
@@ -53,6 +54,11 @@ var annotated_dup =
       ] ],
       [ "math", "namespacethorin_1_1math.html", [
         [ "Res", "classthorin_1_1math_1_1Res.html", "classthorin_1_1math_1_1Res" ]
+      ] ],
+      [ "matrix", "namespacethorin_1_1matrix.html", [
+        [ "LowerMatrixHighLevelMapRed", "classthorin_1_1matrix_1_1LowerMatrixHighLevelMapRed.html", "classthorin_1_1matrix_1_1LowerMatrixHighLevelMapRed" ],
+        [ "LowerMatrixLowLevel", "classthorin_1_1matrix_1_1LowerMatrixLowLevel.html", "classthorin_1_1matrix_1_1LowerMatrixLowLevel" ],
+        [ "LowerMatrixMediumLevel", "classthorin_1_1matrix_1_1LowerMatrixMediumLevel.html", "classthorin_1_1matrix_1_1LowerMatrixMediumLevel" ]
       ] ],
       [ "mem", "namespacethorin_1_1mem.html", [
         [ "AddMem", "classthorin_1_1mem_1_1AddMem.html", "classthorin_1_1mem_1_1AddMem" ],
@@ -187,7 +193,5 @@ var annotated_dup =
       [ "w2u_< 8 >", "namespacethorin.html#structthorin_1_1w2u___3_018_01_4", "namespacethorin_structthorin_1_1w2u___3_018_01_4_dup" ],
       [ "World", "classthorin_1_1World.html", "classthorin_1_1World" ]
     ] ],
-    [ "ClosConvWrapper", "classClosConvWrapper.html", "classClosConvWrapper" ],
-    [ "DebugDump", "classDebugDump.html", "classDebugDump" ],
-    [ "LowerTypedClosWrapper", "classLowerTypedClosWrapper.html", "classLowerTypedClosWrapper" ]
+    [ "DebugDump", "classDebugDump.html", "classDebugDump" ]
 ];

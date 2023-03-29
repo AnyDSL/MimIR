@@ -76,6 +76,7 @@ var hierarchy =
     [ "thorin::Axiom::Match< compile::eta_red_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1eta__red__pass_01_4", null ],
     [ "thorin::Axiom::Match< compile::internal_cleanup_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1internal__cleanup__pass_01_4", null ],
     [ "thorin::Axiom::Match< compile::lam_spec_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1lam__spec__pass_01_4", null ],
+    [ "thorin::Axiom::Match< compile::matrix_plugin >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1matrix__plugin_01_4", null ],
     [ "thorin::Axiom::Match< compile::mem_plugin >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1mem__plugin_01_4", null ],
     [ "thorin::Axiom::Match< compile::nullptr_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1nullptr__pass_01_4", null ],
     [ "thorin::Axiom::Match< compile::partial_eval_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1partial__eval__pass_01_4", null ],
@@ -86,6 +87,10 @@ var hierarchy =
     [ "thorin::Axiom::Match< compile::ret_wrap_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1ret__wrap__pass_01_4", null ],
     [ "thorin::Axiom::Match< direct::cps2ds_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01direct_1_1cps2ds__pass_01_4", null ],
     [ "thorin::Axiom::Match< direct::ds2cps_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01direct_1_1ds2cps__pass_01_4", null ],
+    [ "thorin::Axiom::Match< matrix::internal_map_reduce_cleanup >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01matrix_1_1internal__map__reduce__cleanup_01_4", null ],
+    [ "thorin::Axiom::Match< matrix::lower_matrix_high_level_map_reduce >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01matrix_1_1lower__matrix__high__level__map__reduce_01_4", null ],
+    [ "thorin::Axiom::Match< matrix::lower_matrix_low_level >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01matrix_1_1lower__matrix__low__level_01_4", null ],
+    [ "thorin::Axiom::Match< matrix::lower_matrix_medium_level >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01matrix_1_1lower__matrix__medium__level_01_4", null ],
     [ "thorin::Axiom::Match< mem::add_mem_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1add__mem__pass_01_4", null ],
     [ "thorin::Axiom::Match< mem::alloc2malloc_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1alloc2malloc__pass_01_4", null ],
     [ "thorin::Axiom::Match< mem::M >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1M_01_4", null ],
@@ -97,14 +102,8 @@ var hierarchy =
     [ "thorin::Axiom::Match< refly::remove_dbg_perm_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01refly_1_1remove__dbg__perm__pass_01_4", null ],
     [ "thorin::fe::Parser", "classthorin_1_1fe_1_1Parser.html", null ],
     [ "thorin::Pass", "classthorin_1_1Pass.html", [
-      [ "thorin::RWPass< ClosConvWrapper, Lam >", "classthorin_1_1RWPass.html", [
-        [ "ClosConvWrapper", "classClosConvWrapper.html", null ]
-      ] ],
       [ "thorin::RWPass< DebugDump, Lam >", "classthorin_1_1RWPass.html", [
         [ "DebugDump", "classDebugDump.html", null ]
-      ] ],
-      [ "thorin::RWPass< LowerTypedClosWrapper, Lam >", "classthorin_1_1RWPass.html", [
-        [ "LowerTypedClosWrapper", "classLowerTypedClosWrapper.html", null ]
       ] ],
       [ "thorin::RWPass< BetaRed, Def >", "classthorin_1_1RWPass.html", null ],
       [ "thorin::RWPass< EtaExp, Lam >", "classthorin_1_1RWPass.html", null ],
@@ -128,9 +127,6 @@ var hierarchy =
       [ "thorin::RWPass< AutoDiffEval, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::autodiff::AutoDiffEval", "classthorin_1_1autodiff_1_1AutoDiffEval.html", null ]
       ] ],
-      [ "thorin::RWPass< AutoDiffExternalCleanup, Lam >", "classthorin_1_1RWPass.html", [
-        [ "thorin::autodiff::AutoDiffExternalCleanup", "classthorin_1_1autodiff_1_1AutoDiffExternalCleanup.html", null ]
-      ] ],
       [ "thorin::RWPass< AutoDiffZero, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::autodiff::AutoDiffZero", "classthorin_1_1autodiff_1_1AutoDiffZero.html", null ]
       ] ],
@@ -146,7 +142,13 @@ var hierarchy =
       [ "thorin::RWPass< ClosConvPrep, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::clos::ClosConvPrep", "classthorin_1_1clos_1_1ClosConvPrep.html", null ]
       ] ],
+      [ "thorin::RWPass< ClosConvWrapper, Lam >", "classthorin_1_1RWPass.html", [
+        [ "thorin::clos::ClosConvWrapper", "classthorin_1_1clos_1_1ClosConvWrapper.html", null ]
+      ] ],
       [ "thorin::RWPass< LowerTypedClosPrep, Lam >", "classthorin_1_1RWPass.html", null ],
+      [ "thorin::RWPass< LowerTypedClosWrapper, Lam >", "classthorin_1_1RWPass.html", [
+        [ "thorin::clos::LowerTypedClosWrapper", "classthorin_1_1clos_1_1LowerTypedClosWrapper.html", null ]
+      ] ],
       [ "thorin::RWPass< DebugPrint, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::compile::DebugPrint", "classthorin_1_1compile_1_1DebugPrint.html", null ]
       ] ],
@@ -158,6 +160,12 @@ var hierarchy =
       ] ],
       [ "thorin::RWPass< DS2CPS, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::direct::DS2CPS", "classthorin_1_1direct_1_1DS2CPS.html", null ]
+      ] ],
+      [ "thorin::RWPass< LowerMatrixHighLevelMapRed, Lam >", "classthorin_1_1RWPass.html", [
+        [ "thorin::matrix::LowerMatrixHighLevelMapRed", "classthorin_1_1matrix_1_1LowerMatrixHighLevelMapRed.html", null ]
+      ] ],
+      [ "thorin::RWPass< LowerMatrixMediumLevel, Lam >", "classthorin_1_1RWPass.html", [
+        [ "thorin::matrix::LowerMatrixMediumLevel", "classthorin_1_1matrix_1_1LowerMatrixMediumLevel.html", null ]
       ] ],
       [ "thorin::RWPass< AddMemWrapper, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::mem::AddMemWrapper", "classthorin_1_1mem_1_1AddMemWrapper.html", null ]
@@ -208,7 +216,8 @@ var hierarchy =
       [ "thorin::PassPhase< P >", "classthorin_1_1PassPhase.html", null ],
       [ "thorin::Pipeline", "classthorin_1_1Pipeline.html", null ],
       [ "thorin::RWPhase", "classthorin_1_1RWPhase.html", [
-        [ "thorin::FPPhase", "classthorin_1_1FPPhase.html", null ]
+        [ "thorin::FPPhase", "classthorin_1_1FPPhase.html", null ],
+        [ "thorin::matrix::LowerMatrixLowLevel", "classthorin_1_1matrix_1_1LowerMatrixLowLevel.html", null ]
       ] ],
       [ "thorin::ScopePhase", "classthorin_1_1ScopePhase.html", [
         [ "thorin::Emitter< std::string, std::string, BB, Emitter >", "classthorin_1_1Emitter.html", [

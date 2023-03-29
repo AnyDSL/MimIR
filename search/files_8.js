@@ -19,8 +19,14 @@ var searchData=
   ['looptree_2eh_16',['looptree.h',['../looptree_8h.html',1,'']]],
   ['lower_5ffor_2ecpp_17',['lower_for.cpp',['../lower__for_8cpp.html',1,'']]],
   ['lower_5ffor_2eh_18',['lower_for.h',['../lower__for_8h.html',1,'']]],
-  ['lower_5ftyped_5fclos_2ecpp_19',['lower_typed_clos.cpp',['../lower__typed__clos_8cpp.html',1,'']]],
-  ['lower_5ftyped_5fclos_2eh_20',['lower_typed_clos.h',['../lower__typed__clos_8h.html',1,'']]],
-  ['lower_5ftyped_5fclos_5fprep_2ecpp_21',['lower_typed_clos_prep.cpp',['../lower__typed__clos__prep_8cpp.html',1,'']]],
-  ['lower_5ftyped_5fclos_5fprep_2eh_22',['lower_typed_clos_prep.h',['../lower__typed__clos__prep_8h.html',1,'']]]
+  ['lower_5fmatrix_5fhighlevel_2ecpp_19',['lower_matrix_highlevel.cpp',['../lower__matrix__highlevel_8cpp.html',1,'']]],
+  ['lower_5fmatrix_5fhighlevel_2eh_20',['lower_matrix_highlevel.h',['../lower__matrix__highlevel_8h.html',1,'']]],
+  ['lower_5fmatrix_5flowlevel_2ecpp_21',['lower_matrix_lowlevel.cpp',['../lower__matrix__lowlevel_8cpp.html',1,'']]],
+  ['lower_5fmatrix_5flowlevel_2eh_22',['lower_matrix_lowlevel.h',['../lower__matrix__lowlevel_8h.html',1,'']]],
+  ['lower_5fmatrix_5fmediumlevel_2ecpp_23',['lower_matrix_mediumlevel.cpp',['../lower__matrix__mediumlevel_8cpp.html',1,'']]],
+  ['lower_5fmatrix_5fmediumlevel_2eh_24',['lower_matrix_mediumlevel.h',['../lower__matrix__mediumlevel_8h.html',1,'']]],
+  ['lower_5ftyped_5fclos_2ecpp_25',['lower_typed_clos.cpp',['../lower__typed__clos_8cpp.html',1,'']]],
+  ['lower_5ftyped_5fclos_2eh_26',['lower_typed_clos.h',['../lower__typed__clos_8h.html',1,'']]],
+  ['lower_5ftyped_5fclos_5fprep_2ecpp_27',['lower_typed_clos_prep.cpp',['../lower__typed__clos__prep_8cpp.html',1,'']]],
+  ['lower_5ftyped_5fclos_5fprep_2eh_28',['lower_typed_clos_prep.h',['../lower__typed__clos__prep_8h.html',1,'']]]
 ];

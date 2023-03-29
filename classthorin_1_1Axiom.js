@@ -67,6 +67,9 @@ var classthorin_1_1Axiom =
     [ "Match< compile::lam_spec_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1lam__spec__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#a53c6c93695a175aedbe44e5c801f19e4", null ]
     ] ],
+    [ "Match< compile::matrix_plugin >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1matrix__plugin_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#af378002ebed67d92a81dde3d3275ae60", null ]
+    ] ],
     [ "Match< compile::mem_plugin >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1mem__plugin_01_4", [
       [ "type", "classthorin_1_1Axiom.html#ab541de647f86062566441b290741bb66", null ]
     ] ],
@@ -96,6 +99,18 @@ var classthorin_1_1Axiom =
     ] ],
     [ "Match< direct::ds2cps_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01direct_1_1ds2cps__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#aec83f9272377e5ded68b9020a6fe5b18", null ]
+    ] ],
+    [ "Match< matrix::internal_map_reduce_cleanup >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01matrix_1_1internal__map__reduce__cleanup_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#aa81e7f6fe0de7aa2acbf37fa0bfb524d", null ]
+    ] ],
+    [ "Match< matrix::lower_matrix_high_level_map_reduce >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01matrix_1_1lower__matrix__high__level__map__reduce_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#aa58ea7106b5b5677dc3d8180e4bb0745", null ]
+    ] ],
+    [ "Match< matrix::lower_matrix_low_level >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01matrix_1_1lower__matrix__low__level_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#aefaff41dd1c275f04d6342e379eefd7d", null ]
+    ] ],
+    [ "Match< matrix::lower_matrix_medium_level >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01matrix_1_1lower__matrix__medium__level_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a40cd877445208c762387a972b06ce7ea", null ]
     ] ],
     [ "Match< mem::add_mem_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1add__mem__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#acda02b049969a475c986a4a5cbcfce4c", null ]
@@ -235,6 +250,21 @@ var classthorin_1_1Axiom =
     [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
     [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
     [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
     [ "base", "classthorin_1_1Axiom.html#a5cd2576283c1b9f1a29901e82b6a7f56", null ],
     [ "curry", "classthorin_1_1Axiom.html#a3702d9483f034b85ff45ccafbed0d968", null ],
     [ "demangle", "classthorin_1_1Axiom.html#af3c97731461410f722db99d8fde739cb", null ],
@@ -242,6 +272,21 @@ var classthorin_1_1Axiom =
     [ "infer_curry_and_trip", "classthorin_1_1Axiom.html#af5c4f866aea98479d4ae54e9770c22ce", null ],
     [ "mangle", "classthorin_1_1Axiom.html#a16d8c7c277234bf06ccc59c1b8b25fa5", null ],
     [ "normalizer", "classthorin_1_1Axiom.html#a05d2e899a18e55005f71c1803da89ae3", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
     [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
     [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
     [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],

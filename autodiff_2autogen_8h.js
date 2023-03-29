@@ -1,5 +1,8 @@
 var autodiff_2autogen_8h =
 [
+    [ "thorin::Axiom::Match< autodiff::ad_zero_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01autodiff_1_1ad__zero__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a4ad6acbc4d82980046f2e5a4bee7a33e", null ]
+    ] ],
     [ "thorin::Axiom::Match< autodiff::ad_ext_cleanup_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01autodiff_1_1ad__ext__cleanup__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#a59456a7b45bf3a080b0006c7aa0855dd", null ]
     ] ],
@@ -8,9 +11,6 @@ var autodiff_2autogen_8h =
     ] ],
     [ "thorin::Axiom::Match< autodiff::ad_eval_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01autodiff_1_1ad__eval__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#ab42adeb1b399f9a9c8708c52f5bccbea", null ]
-    ] ],
-    [ "thorin::Axiom::Match< autodiff::ad_zero_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01autodiff_1_1ad__zero__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a4ad6acbc4d82980046f2e5a4bee7a33e", null ]
     ] ],
     [ "THORIN_autodiff_NORMALIZER_IMPL", "autodiff_2autogen_8h.html#ab540efb299fd71903b57a8a2549fe24d", null ],
     [ "AD", "autodiff_2autogen_8h.html#ae4a2884a429ac996dc3a0d42e0077985", null ],
