@@ -23,13 +23,12 @@ add_thorin_plugin(autodiff
         autodiff/passes/autodiff_zero.h
         autodiff/passes/autodiff_zero_cleanup.cpp
         autodiff/passes/autodiff_zero_cleanup.h
-        autodiff/passes/autodiff_ext_cleanup.cpp
-        autodiff/passes/autodiff_ext_cleanup.h
         autodiff/auxiliary/autodiff_aux.cpp
         autodiff/auxiliary/autodiff_aux.h
         autodiff/auxiliary/autodiff_rewrite_inner.cpp
         autodiff/auxiliary/autodiff_rewrite_toplevel.cpp
         autodiff/normalizers.cpp
+        compile/passes/internal_cleanup.cpp
     DEPENDS
         mem
         core
@@ -127,6 +126,27 @@ add_thorin_plugin(math
     INSTALL
 )
 
+add_thorin_plugin(matrix
+    SOURCES
+        matrix/matrix.cpp
+        matrix/matrix.h
+        matrix/normalizers.cpp
+        matrix/passes/lower_matrix_highlevel.cpp
+        matrix/passes/lower_matrix_highlevel.h
+        matrix/passes/lower_matrix_mediumlevel.cpp
+        matrix/passes/lower_matrix_mediumlevel.h
+        matrix/passes/lower_matrix_lowlevel.cpp
+        matrix/passes/lower_matrix_lowlevel.h
+        compile/passes/internal_cleanup.cpp
+    DEPENDS
+        refly
+        direct
+        affine
+        core
+        mem
+        compile
+    INSTALL
+)
 add_thorin_plugin(mem
     SOURCES
         mem/mem.cpp

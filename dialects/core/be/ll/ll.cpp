@@ -192,7 +192,7 @@ std::string Emitter::convert(const Def* type) {
 
 std::string Emitter::convert_ret_pi(const Pi* pi) {
     auto dom = mem::strip_mem_ty(pi->dom());
-    if (dom == world().sigma()) { return "void"; }
+    if (dom == world().sigma()) return "void";
     return convert(dom);
 }
 
@@ -261,9 +261,8 @@ void Emitter::finalize(const Scope& scope) {
             print(func_impls_, "{}:\n", lam->unique_name());
 
             ++tab;
-            for (const auto& part : bb.parts) {
+            for (const auto& part : bb.parts)
                 for (const auto& line : part) tab.print(func_impls_, "{}\n", line.str());
-            }
             --tab;
             func_impls_ << std::endl;
         }
@@ -305,7 +304,26 @@ void Emitter::emit_epilogue(Lam* lam) {
             }
         }
     } else if (auto ex = app->callee()->isa<Extract>(); ex && app->callee_type()->is_basicblock()) {
-        emit_unsafe(app->arg());
+        // emit_unsafe(app->arg());
+        // A call to an extract like constructed for conditionals (else,then)#cond (args)
+        // TODO: we can not rely on the structure of the extract (it might be a nested extract)
+        for (auto callee_def : ex->tuple()->projs()) {
+            // dissect the tuple of lambdas
+            auto callee = callee_def->as_nom<Lam>();
+            // each callees type should agree with the argument type (should be checked by type checking).
+            // Especially, the number of vars should be the number of arguments.
+            // TODO: does not hold for complex arguments that are not tuples.
+            assert(callee->num_vars() == app->num_args());
+            for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
+                // emits the arguments one by one (TODO: handle together like before)
+                if (auto arg = emit_unsafe(app->arg(i)); !arg.empty()) {
+                    auto phi = callee->var(i);
+                    assert(!match<mem::M>(phi->type()));
+                    lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
+                    locals_[phi] = id(phi);
+                }
+            }
+        }
 
         auto c = emit(ex->index());
         if (ex->tuple()->num_projs() == 2) {
@@ -344,9 +362,8 @@ void Emitter::emit_epilogue(Lam* lam) {
 
         std::vector<std::string> args;
         auto app_args = app->args();
-        for (auto arg : app_args.skip_back()) {
+        for (auto arg : app_args.skip_back())
             if (auto v_arg = emit_unsafe(arg); !v_arg.empty()) args.emplace_back(convert(arg->type()) + " " + v_arg);
-        }
 
         if (app->args().back()->isa<Bot>()) {
             // TODO: Perhaps it'd be better to simply η-wrap this prior to the BE...
@@ -725,8 +742,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto [v_i, t_i] = emit_gep_index(i);
 
         return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, {} {}", t_pointee, t_ptr, v_ptr, t_i, v_i);
-    } else if (match<core::trait>(def)) {
-        unreachable();
     } else if (auto malloc = match<mem::malloc>(def)) {
         declare("i8* @malloc(i64)");
 

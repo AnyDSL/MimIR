@@ -139,11 +139,11 @@ extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
     return {"clos",
             [](Passes& passes) {
                 register_pass<clos::clos_conv_prep_pass, clos::ClosConvPrep>(passes, nullptr);
-                register_pass<clos::clos_conv_pass, ClosConvWrapper>(passes);
+                register_pass<clos::clos_conv_pass, clos::ClosConvWrapper>(passes);
                 register_pass<clos::branch_clos_pass, clos::BranchClosElim>(passes);
                 register_pass<clos::lower_typed_clos_prep_pass, clos::LowerTypedClosPrep>(passes);
                 register_pass<clos::clos2sjlj_pass, clos::Clos2SJLJ>(passes);
-                register_pass<clos::lower_typed_clos_pass, LowerTypedClosWrapper>(passes);
+                register_pass<clos::lower_typed_clos_pass, clos::LowerTypedClosWrapper>(passes);
                 // TODO:; remove after ho_codegen merge
                 passes[flags_t(Axiom::Base<clos::eta_red_bool_pass>)] = [&](World&, PipelineBuilder& builder, Ref app) {
                     auto bb      = app->as<App>()->arg();

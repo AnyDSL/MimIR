@@ -1,0 +1,19 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -o - %s | FileCheck %s
+
+.plugin core;
+.plugin matrix;
+
+.let _32 = 4294967296;
+.let I32 = .Idx _32;
+
+.con .extern f [mem : %mem.M, 
+    [k:.Nat, l:.Nat],
+    return: .Cn[%mem.M]] = {
+
+    .let (mem2, M) = %matrix.init (2,(k,l),I32,mem);
+
+    return mem2
+};
+
+// CHECK-NOT: %matrix.

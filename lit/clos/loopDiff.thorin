@@ -220,8 +220,6 @@
             .let condition = %core.icmp.ul (i, %core.bitcast (i32, .Nat) size);
             .let target = (exit, enter)#condition;
             target ( mem )
-        // .con yield [mem: %mem.M] = {
-        //     loop_head( mem, %core.wrap.add 4294967296 0 (i, 1:i32) )
         };
 
         loop_head ( mem, 0:i32 )

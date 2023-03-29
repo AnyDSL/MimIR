@@ -12,6 +12,7 @@
 .import autodiff;
 .import clos;
 .import direct;
+.import matrix;
 .import refly;
 ///
 /// ## Compilation passes, phases, and pipelines
@@ -46,6 +47,12 @@
         (plugin_cond_phase (%compile.direct_plugin,
           direct_phases
         ))
+        (plugin_cond_phase (%compile.matrix_plugin,
+          %compile.combined_phase (%compile.phase_list
+            matrix_lower_phase
+            (plugin_cond_phase (%compile.direct_plugin, direct_phases))
+            (plugin_cond_phase (%compile.affine_plugin, %compile.single_pass_phase %affine.lower_for_pass))
+        )))
         (%compile.single_pass_phase %compile.internal_cleanup_pass)
         (plugin_cond_phase (%compile.clos_plugin,
           clos_phases

@@ -6,6 +6,7 @@
 
 #include "thorin/check.h"
 #include "thorin/def.h"
+#include "thorin/lam.h"
 #include "thorin/tuple.h"
 
 #include "dialects/mem/mem.h"
