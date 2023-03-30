@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['f_0',['f',['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa90f68af5cf3a2df678258becc2d3f714',1,'thorin::math::f()'],['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aa6d4ae7d990ff7dbfef99471f1bd5622',1,'thorin::core::f()']]],
+  ['f_0',['f',['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa90f68af5cf3a2df678258becc2d3f714',1,'thorin::math::f()'],['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eaa6d4ae7d990ff7dbfef99471f1bd5622',1,'thorin::core::f()']]],
   ['f_1',['F',['../namespacethorin_1_1math.html#a9dcd63c8ff0e514ef5d45f52082e9444',1,'thorin::math']]],
   ['f_2',['f',['../structthorin_1_1Elem.html#a00f7ab23a26038ee3fef5ed8ceda6af9',1,'thorin::Elem']]],
   ['f16_3',['f16',['../namespacethorin.html#a76438d3d8f2823c15edaf4754c733a91',1,'thorin']]],

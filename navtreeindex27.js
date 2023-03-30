@@ -1,8 +1,5 @@
 var NAVTREEINDEX27 =
 {
-"namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caaed12a2391d1a04e3ff2fa64048db4863":[3,0,0,12,10,11],
-"namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caafb72985afb637442c3428edbfcab42cf":[3,0,0,12,10,0],
-"namespacethorin_1_1math.html#affa329559558a7650117f9a27fcef52a":[3,0,0,12,46],
 "namespacethorin_1_1matrix.html":[3,0,0,13],
 "namespacethorin_1_1matrix.html#a0954bcc3c7802f484045b0cf3b4b1e6a":[3,0,0,13,11],
 "namespacethorin_1_1matrix.html#a0c165e50d5c34eb21a0f5c33c8955743":[3,0,0,13,26],
@@ -249,5 +246,8 @@ var NAVTREEINDEX27 =
 "refly_2normalizers_8cpp.html#af154d7d91d30c79a49922d90d58fa051":[6,0,2,11,1,5],
 "refly_2normalizers_8cpp_source.html":[6,0,2,11,1],
 "refly_8cpp.html":[6,0,2,11,2],
-"refly_8cpp.html#a2b0c506ec13141b704c0aea991f89b55":[6,0,2,11,2,3]
+"refly_8cpp.html#a2b0c506ec13141b704c0aea991f89b55":[6,0,2,11,2,3],
+"refly_8cpp.html#a30122fc088057538572d8631a0df6d2b":[6,0,2,11,2,2],
+"refly_8cpp.html#a5aebfba92373e0dc8a76d272bcd8e85d":[6,0,2,11,2,0],
+"refly_8cpp.html#abf681265909adf3d3e8116c93c0ba179":[6,0,2,11,2,1]
 };
