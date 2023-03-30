@@ -119,6 +119,7 @@ function(add_thorin_plugin)
             CXX_VISIBILITY_PRESET hidden
             VISIBILITY_INLINES_HIDDEN 1
             WINDOWS_EXPORT_ALL_SYMBOLS OFF
+            PREFIX "lib" # always use "lib" as prefix regardless of OS/compiler
             LIBRARY_OUTPUT_DIRECTORY ${THORIN_LIB_DIR}
     )
 

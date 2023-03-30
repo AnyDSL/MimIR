@@ -14,14 +14,6 @@
 
 namespace thorin::dl {
 
-std::string_view prefix() {
-#ifdef _WIN32
-    return "";
-#else
-    return "lib";
-#endif
-}
-
 std::string_view extension() {
 #ifdef _WIN32
     return ".dll";
@@ -40,14 +32,12 @@ void* open(const std::string& file) {
             file, GetLastError());
     }
 #else
-    if (void* handle = dlopen(file.c_str(), RTLD_NOW)) {
+    if (void* handle = dlopen(file.c_str(), RTLD_NOW))
         return handle;
-    } else {
-        if (char* error = dlerror())
-            err("could not load plugin '{}' due to error '{}'\n", file, error);
-        else
-            err("could not load plugin '{}'\n", file);
-    }
+    else if (char* error = dlerror())
+        err("could not load plugin '{}' due to error '{}'\n", file, error);
+    else
+        err("could not load plugin '{}'\n", file);
 #endif
 }
 
@@ -63,11 +53,10 @@ void* get(void* handle, const std::string& symbol) {
 #else
     dlerror(); // clear error state
     void* addr = dlsym(handle, symbol.c_str());
-    if (char* error = dlerror()) {
+    if (char* error = dlerror())
         err("could not find symbol '{}' in plugin due to error '{}' \n", symbol, error);
-    } else {
+    else
         return addr;
-    }
 #endif
 }
 
