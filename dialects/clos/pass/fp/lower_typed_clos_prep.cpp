@@ -7,7 +7,7 @@
 
 namespace thorin::clos {
 
-static bool interesting_type(const Def* type, DefSet& visited) {
+static bool interesting_type(Ref type, DefSet& visited) {
     if (type->isa_mut()) visited.insert(type);
     if (isa_clos_type(type)) return true;
     if (auto sigma = type->isa<Sigma>())
@@ -17,12 +17,12 @@ static bool interesting_type(const Def* type, DefSet& visited) {
     return false;
 }
 
-static bool interesting_type(const Def* def) {
+static bool interesting_type(Ref def) {
     auto visited = DefSet();
     return interesting_type(def->type(), visited);
 }
 
-static void split(DefSet& out, const Def* def, bool as_callee) {
+static void split(DefSet& out, Ref def, bool as_callee) {
     if (auto lam = def->isa<Lam>()) {
         out.insert(lam);
     } else if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam) {
@@ -42,13 +42,13 @@ static void split(DefSet& out, const Def* def, bool as_callee) {
     }
 }
 
-static DefSet split(const Def* def, bool keep_others) {
+static DefSet split(Ref def, bool keep_others) {
     DefSet out;
     split(out, def, keep_others);
     return out;
 }
 
-undo_t LowerTypedClosPrep::set_esc(const Def* def) {
+undo_t LowerTypedClosPrep::set_esc(Ref def) {
     auto undo = No_Undo;
     for (auto d : split(def, false)) {
         if (is_esc(d)) continue;
@@ -62,7 +62,7 @@ undo_t LowerTypedClosPrep::set_esc(const Def* def) {
     return undo;
 }
 
-const Def* LowerTypedClosPrep::rewrite(const Def* def) {
+Ref LowerTypedClosPrep::rewrite(Ref def) {
     if (auto closure = isa_clos_lit(def, false)) {
         auto fnc = closure.fnc();
         if (!match<attr>(fnc)) {
@@ -73,7 +73,7 @@ const Def* LowerTypedClosPrep::rewrite(const Def* def) {
     return def;
 }
 
-undo_t LowerTypedClosPrep::analyze(const Def* def) {
+undo_t LowerTypedClosPrep::analyze(Ref def) {
     auto& w = world();
     if (auto c = isa_clos_lit(def, false)) {
         w.DLOG("closure ({}, {})", c.env(), c.fnc());
@@ -87,7 +87,7 @@ undo_t LowerTypedClosPrep::analyze(const Def* def) {
         auto callees = split(app->callee(), true);
         for (auto i = 0_u64; i < app->num_args(); i++) {
             if (!interesting_type(app->arg(i))) continue;
-            if (std::any_of(callees.begin(), callees.end(), [&](const Def* callee) {
+            if (std::any_of(callees.begin(), callees.end(), [&](Ref callee) {
                     if (auto lam = callee->isa_mut<Lam>()) return is_esc(lam->var(i));
                     return true;
                 }))

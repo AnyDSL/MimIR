@@ -161,11 +161,8 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
     }
 
     DefArray new_ops{def->ops(), [&](const Def* op) { return rewrite_body(op); }};
-
     world.DLOG("def {} : {} [{}]", def, def->type(), def->node_name());
 
-    // TODO: where does this come from?
-    // example: ./build/bin/thorin -d matrix -d affine -d direct lit/matrix/read_transpose.thorin -o - -VVVV
     if (def->isa<Infer>()) {
         world.WLOG("infer node {} : {} [{}]", def, def->type(), def->node_name());
         return def;

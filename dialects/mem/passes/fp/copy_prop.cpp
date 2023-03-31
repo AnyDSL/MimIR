@@ -7,7 +7,7 @@
 
 namespace thorin::mem {
 
-const Def* CopyProp::rewrite(const Def* def) {
+Ref CopyProp::rewrite(Ref def) {
     auto [app, var_lam] = isa_apped_mut_lam(def);
     if (!isa_workable(var_lam) || (bb_only_ && var_lam->is_returning())) return def;
 
@@ -69,7 +69,7 @@ const Def* CopyProp::rewrite(const Def* def) {
         if (eta_exp_) eta_exp_->new2old(prop_lam, var_lam);
 
         size_t j = 0;
-        DefArray new_vars(n, [&, prop_lam = prop_lam](size_t i) -> const Def* {
+        DefArray new_vars(n, [&, prop_lam = prop_lam](size_t i) -> Ref {
             switch (lattice[i]) {
                 case Lattice::Dead: return proxy(var_lam->var(i)->type(), {var_lam, world().lit_nat(i)}, Varxy);
                 case Lattice::Prop: return args[i];

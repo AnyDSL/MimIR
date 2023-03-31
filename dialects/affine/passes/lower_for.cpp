@@ -7,7 +7,7 @@
 
 namespace thorin::affine {
 
-const Def* LowerFor::rewrite(const Def* def) {
+Ref LowerFor::rewrite(Ref def) {
     if (auto i = rewritten_.find(def); i != rewritten_.end()) return i->second;
 
     if (auto for_ax = match<affine::For>(def)) {

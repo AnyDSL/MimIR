@@ -4,7 +4,7 @@
 
 namespace thorin::clos {
 
-void Clos2SJLJ::get_exn_closures(const Def* def, DefSet& visited) {
+void Clos2SJLJ::get_exn_closures(Ref def, DefSet& visited) {
     if (!def->is_term() || def->isa_mut<Lam>() || visited.contains(def)) return;
     visited.emplace(def);
     if (auto c = isa_clos_lit(def)) {
@@ -43,7 +43,7 @@ void Clos2SJLJ::get_exn_closures() {
     get_exn_closures(app->arg(), visited);
 }
 
-static std::array<const Def*, 3> split(const Def* def) {
+static std::array<Ref, 3> split(Ref def) {
     auto new_ops = DefArray(def->num_projs() - 2, nullptr);
     auto& w      = def->world();
     const Def *mem, *env;
@@ -66,9 +66,9 @@ static std::array<const Def*, 3> split(const Def* def) {
     return {mem, env, remaining};
 }
 
-static const Def* rebuild(const Def* mem, const Def* env, Defs remaining) {
+static Ref rebuild(Ref mem, Ref env, Defs remaining) {
     auto& w      = mem->world();
-    auto new_ops = DefArray(remaining.size() + 2, [&](auto i) {
+    auto new_ops = DefArray(remaining.size() + 2, [&](auto i) -> const Def* {
         static_assert(Clos_Env_Param == 1);
         if (i == 0) return mem;
         if (i == 1) return env;
@@ -77,7 +77,7 @@ static const Def* rebuild(const Def* mem, const Def* env, Defs remaining) {
     return w.tuple(new_ops);
 }
 
-Lam* Clos2SJLJ::get_throw(const Def* dom) {
+Lam* Clos2SJLJ::get_throw(Ref dom) {
     auto& w            = world();
     auto [p, inserted] = dom2throw_.emplace(dom, nullptr);
     auto& tlam         = p->second;
@@ -96,7 +96,7 @@ Lam* Clos2SJLJ::get_throw(const Def* dom) {
     return tlam;
 }
 
-Lam* Clos2SJLJ::get_lpad(Lam* lam, const Def* rb) {
+Lam* Clos2SJLJ::get_lpad(Lam* lam, Ref rb) {
     auto& w            = world();
     auto [p, inserted] = lam2lpad_.emplace(w.tuple({lam, rb}), nullptr);
     auto& lpad         = p->second;
@@ -144,7 +144,7 @@ void Clos2SJLJ::enter() {
         auto env             = w.tuple(body->args().skip_front());
         auto new_callee      = w.mut_lam(w.cn({mem::type_mem(w), env->type()}))->set("sjlj_wrap");
         auto [m, env_var, _] = split(new_callee->var());
-        auto new_args = DefArray(env->num_projs() + 1, [&](auto i) { return (i == 0) ? m : env_var->proj(i - 1); });
+        auto new_args = DefArray(env->num_projs() + 1, [&](auto i) -> const Def* { return (i == 0) ? *m : env_var->proj(i - 1); });
         new_callee->app(false, body->callee(), new_args);
         branches[0] = clos_pack(env, new_callee, branch_type);
     }
@@ -162,7 +162,7 @@ void Clos2SJLJ::enter() {
     curr_mut()->set_body(clos_apply(branch, m1));
 }
 
-const Def* Clos2SJLJ::rewrite(const Def* def) {
+Ref Clos2SJLJ::rewrite(Ref def) {
     if (auto c = isa_clos_lit(def); c && lam2tag_.contains(c.fnc_as_lam())) {
         auto& w     = world();
         auto [i, _] = lam2tag_[c.fnc_as_lam()];

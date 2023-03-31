@@ -4,7 +4,7 @@
 
 namespace thorin::mem {
 
-const Def* RememElim::rewrite(const Def* def) {
+Ref RememElim::rewrite(Ref def) {
     if (auto remem = match<mem::remem>(def)) return remem->arg();
     return def;
 }

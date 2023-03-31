@@ -6,7 +6,7 @@
 
 namespace thorin::mem {
 
-static const Def* get_sloxy_type(const Proxy* sloxy) { return force<mem::Ptr>(sloxy->type())->arg(0); }
+static Ref get_sloxy_type(const Proxy* sloxy) { return force<mem::Ptr>(sloxy->type())->arg(0); }
 
 static std::tuple<const Proxy*, Lam*> split_phixy(const Proxy* phixy) {
     return {phixy->op(0)->as<Proxy>(), phixy->op(1)->as_mut<Lam>()};
@@ -14,7 +14,7 @@ static std::tuple<const Proxy*, Lam*> split_phixy(const Proxy* phixy) {
 
 void SSAConstr::enter() { lam2sloxy2val_[curr_mut()].clear(); }
 
-const Def* SSAConstr::rewrite(const Proxy* proxy) {
+Ref SSAConstr::rewrite(const Proxy* proxy) {
     if (proxy->tag() == Traxy) {
         world().DLOG("traxy '{}'", proxy);
         for (size_t i = 1, e = proxy->num_ops(); i != e; i += 2)
@@ -25,7 +25,7 @@ const Def* SSAConstr::rewrite(const Proxy* proxy) {
     return proxy;
 }
 
-const Def* SSAConstr::rewrite(const Def* def) {
+Ref SSAConstr::rewrite(Ref def) {
     if (auto slot = match<mem::slot>(def)) {
         auto [mem, id] = slot->args<2>();
         auto [_, ptr]  = slot->projs<2>();
@@ -60,7 +60,7 @@ const Def* SSAConstr::rewrite(const Def* def) {
     return def;
 }
 
-const Def* SSAConstr::get_val(Lam* lam, const Proxy* sloxy) {
+Ref SSAConstr::get_val(Lam* lam, const Proxy* sloxy) {
     auto& sloxy2val = lam2sloxy2val_[lam];
     if (auto i = sloxy2val.find(sloxy); i != sloxy2val.end()) {
         auto val = i->second;
@@ -80,12 +80,12 @@ const Def* SSAConstr::get_val(Lam* lam, const Proxy* sloxy) {
     }
 }
 
-const Def* SSAConstr::set_val(Lam* lam, const Proxy* sloxy, const Def* val) {
+Ref SSAConstr::set_val(Lam* lam, const Proxy* sloxy, Ref val) {
     world().DLOG("set_val: '{}': '{}': '{}'", sloxy, val, lam);
     return lam2sloxy2val_[lam][sloxy] = val;
 }
 
-const Def* SSAConstr::mem2phi(const App* app, Lam* mem_lam) {
+Ref SSAConstr::mem2phi(const App* app, Lam* mem_lam) {
     auto&& sloxys = lam2sloxys_[mem_lam];
     if (sloxys.empty()) return app;
 
@@ -155,7 +155,7 @@ undo_t SSAConstr::analyze(const Proxy* proxy) {
     return No_Undo;
 }
 
-undo_t SSAConstr::analyze(const Def* def) {
+undo_t SSAConstr::analyze(Ref def) {
     for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
         if (auto succ_lam = isa_workable(def->op(i)->isa_mut<Lam>())) {
             auto& succ_info = data(succ_lam);

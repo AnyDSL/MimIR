@@ -15,7 +15,7 @@ public:
         : RWPass(man, "unbox_closures")
         , branch2dropped_() {}
 
-    const Def* rewrite(const Def*) override;
+    Ref rewrite(Ref) override;
 
 private:
     DefMap<Lam*> branch2dropped_;

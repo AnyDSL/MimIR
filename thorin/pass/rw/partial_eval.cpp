@@ -4,7 +4,7 @@
 
 namespace thorin {
 
-const Def* PartialEval::rewrite(const Def* def) {
+Ref PartialEval::rewrite(Ref def) {
     if (auto [app, lam] = isa_apped_mut_lam(def); lam && lam->is_set()) {
         if (lam->filter() == world().lit_ff()) return def; // optimize this common case
 

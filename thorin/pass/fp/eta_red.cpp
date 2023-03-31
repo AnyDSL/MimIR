@@ -2,7 +2,7 @@
 
 namespace thorin {
 
-static bool is_var(const Def* def) {
+static bool is_var(Ref def) {
     if (def->isa<Var>()) return true;
     if (auto extract = def->isa<Extract>()) return extract->tuple()->isa<Var>();
     return false;
@@ -16,7 +16,7 @@ static const App* eta_rule(Lam* lam) {
     return nullptr;
 }
 
-const Def* EtaRed::rewrite(const Def* def) {
+Ref EtaRed::rewrite(Ref def) {
     for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
         // TODO (ClosureConv): Factor this out
         if (auto lam = def->op(i)->isa_mut<Lam>(); (!callee_only_ || isa_callee(def, i)) && lam && lam->is_set()) {

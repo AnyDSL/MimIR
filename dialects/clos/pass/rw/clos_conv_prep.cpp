@@ -7,22 +7,22 @@
 namespace thorin::clos {
 
 // FIXME: these guys do not work if another pass rewrites curr_mut()'s body
-static bool isa_cont(const App* body, const Def* def, size_t i) {
+static bool isa_cont(const App* body, Ref def, size_t i) {
     return body->callee_type()->is_returning() && body->arg() == def && i == def->num_ops() - 1;
 }
 
-static const Def* isa_br(const App* body, const Def* def) {
+static Ref isa_br(const App* body, Ref def) {
     if (!body->callee_type()->is_cn()) return nullptr;
     auto proj = body->callee()->isa<Extract>();
     return (proj && proj->tuple() == def && proj->tuple()->isa<Tuple>()) ? proj->tuple() : nullptr;
 }
 
-static bool isa_callee_br(const App* body, const Def* def, size_t i) {
+static bool isa_callee_br(const App* body, Ref def, size_t i) {
     if (!body->callee_type()->is_cn()) return false;
     return isa_callee(def, i) || isa_br(body, def);
 }
 
-static Lam* isa_retvar(const Def* def) {
+static Lam* isa_retvar(Ref def) {
     if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam && var == lam->ret_var()) return lam;
     return nullptr;
 }
@@ -60,8 +60,8 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
     for (auto i = 0u; i < arg->num_projs(); i++) {
         auto op = arg->proj(i);
 
-        auto refine = [&](const Def* new_op) {
-            const Def* args;
+        auto refine = [&](Ref new_op) {
+            Ref args;
             if (arg == op)
                 args = new_op;
             else
@@ -127,7 +127,7 @@ const App* ClosConvPrep::rewrite_callee(const App* app) {
     return app;
 }
 
-const Def* ClosConvPrep::rewrite(const Def* def) {
+Ref ClosConvPrep::rewrite(Ref def) {
     if (ignore_ || match<attr>(def)) return def;
 
     if (auto app = def->isa<App>(); app) {

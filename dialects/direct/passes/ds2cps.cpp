@@ -8,7 +8,7 @@
 
 namespace thorin::direct {
 
-const Def* DS2CPS::rewrite(const Def* def) {
+Ref DS2CPS::rewrite(Ref def) {
     auto& world = def->world();
     if (auto app = def->isa<App>()) {
         auto callee = app->callee();
@@ -27,7 +27,7 @@ const Def* DS2CPS::rewrite(const Def* def) {
 
 /// This function generates the cps function `f_cps : cn [a:A, cn B]` for a ds function `f: Π a : A -> B`.
 /// The translation is associated in the `rewritten_` map.
-const Def* DS2CPS::rewrite_lam(Lam* lam) {
+Ref DS2CPS::rewrite_lam(Lam* lam) {
     if (auto i = rewritten_.find(lam); i != rewritten_.end()) return i->second;
 
     // only look at lambdas (ds not cps)

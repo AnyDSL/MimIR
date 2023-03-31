@@ -11,7 +11,7 @@ public:
     RemoveDbgPerm(PassMan& man)
         : RWPass(man, "remove_dbg_perm") {}
 
-    const Def* rewrite(const Def*) override;
+    Ref rewrite(Ref) override;
 };
 
 } // namespace thorin::refly

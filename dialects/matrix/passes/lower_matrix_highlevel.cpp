@@ -20,14 +20,14 @@ void findAndReplaceAll(std::string& data, std::string toSearch, std::string repl
     }
 }
 
-const Def* LowerMatrixHighLevelMapRed::rewrite(const Def* def) {
+Ref LowerMatrixHighLevelMapRed::rewrite(Ref def) {
     if (auto i = rewritten.find(def); i != rewritten.end()) return i->second;
     auto new_def   = rewrite_(def);
     rewritten[def] = new_def;
     return rewritten[def];
 }
 
-std::optional<const Def*> internal_function_of_axiom(const Axiom* axiom, const Def* meta_args, const Def* args) {
+std::optional<Ref> internal_function_of_axiom(const Axiom* axiom, Ref meta_args, Ref args) {
     auto& world      = axiom->world();
     std::string name = *axiom->sym();
     findAndReplaceAll(name, ".", "_");
@@ -43,7 +43,7 @@ std::optional<const Def*> internal_function_of_axiom(const Axiom* axiom, const D
     return std::nullopt;
 }
 
-const Def* LowerMatrixHighLevelMapRed::rewrite_(const Def* def) {
+Ref LowerMatrixHighLevelMapRed::rewrite_(Ref def) {
     auto& world = def->world();
 
     if (auto mat_ax = match<matrix::prod>(def)) {

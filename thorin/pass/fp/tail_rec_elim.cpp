@@ -5,7 +5,7 @@
 
 namespace thorin {
 
-const Def* TailRecElim::rewrite(const Def* def) {
+Ref TailRecElim::rewrite(Ref def) {
     if (auto [app, old] = isa_apped_mut_lam(def); old) {
         if (auto i = old2rec_loop_.find(old); i != old2rec_loop_.end()) {
             auto [rec, loop] = i->second;
@@ -19,7 +19,7 @@ const Def* TailRecElim::rewrite(const Def* def) {
     return def;
 }
 
-undo_t TailRecElim::analyze(const Def* def) {
+undo_t TailRecElim::analyze(Ref def) {
     if (auto [app, old] = isa_apped_mut_lam(def); old) {
         if (auto ret_var = old->ret_var(); ret_var && app->args().back() == ret_var) {
             if (auto [i, ins] = old2rec_loop_.emplace(old, std::pair<Lam*, Lam*>(nullptr, nullptr)); ins) {
@@ -31,8 +31,8 @@ undo_t TailRecElim::analyze(const Def* def) {
                 world().DLOG("old {} -> (rec: {}, loop: {})", old, rec, loop);
 
                 auto n = rec->num_doms();
-                std::vector<const Def*> loop_args(n - 1);
-                std::vector<const Def*> loop_vars(n);
+                DefVec loop_args(n - 1);
+                DefVec loop_vars(n);
                 for (size_t i = 0; i != n - 1; ++i) {
                     loop_args[i] = rec->var(i);
                     loop_vars[i] = loop->var(i);

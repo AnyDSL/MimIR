@@ -11,7 +11,7 @@
 
 namespace thorin::autodiff {
 
-const Def* AutoDiffZeroCleanup::rewrite(const Def* def) {
+Ref AutoDiffZeroCleanup::rewrite(Ref def) {
     // Ideally this code segment is never reached.
     // (all zeros are resolved before)
     if (auto zero_app = match<zero>(def); zero_app) {

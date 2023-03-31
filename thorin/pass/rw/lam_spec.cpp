@@ -30,7 +30,7 @@ static bool is_top_level(Lam* lam) {
     return is_top_level(top, lam);
 }
 
-const Def* LamSpec::rewrite(const Def* def) {
+Ref LamSpec::rewrite(Ref def) {
     if (auto i = old2new_.find(def); i != old2new_.end()) return i->second;
 
     auto [app, old_lam] = isa_apped_mut_lam(def);

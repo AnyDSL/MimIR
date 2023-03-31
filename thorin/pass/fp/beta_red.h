@@ -16,9 +16,9 @@ public:
     void keep(Lam* lam) { keep_.emplace(lam); }
 
 private:
-    const Def* rewrite(const Def*) override;
+    Ref rewrite(Ref) override;
     undo_t analyze(const Proxy*) override;
-    undo_t analyze(const Def*) override;
+    undo_t analyze(Ref) override;
 
     LamSet keep_;
 };

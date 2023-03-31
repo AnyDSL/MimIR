@@ -20,12 +20,12 @@ public:
     DS2CPS(PassMan& man)
         : RWPass(man, "ds2cps") {}
 
-    const Def* rewrite(const Def*) override;
+    Ref rewrite(Ref) override;
 
 private:
     Def2Def rewritten_;
 
-    const Def* rewrite_lam(Lam* lam);
+    Ref rewrite_lam(Lam* lam);
 };
 
 } // namespace thorin::direct
