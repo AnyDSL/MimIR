@@ -24,8 +24,8 @@ class Driver;
 
 /// The World represents the whole program and manages creation of Thorin nodes (Def%s).
 /// Def%s are hashed into an internal HashSet.
-/// The World's factory methods just calculate a hash and lookup the Def, if it is already present, or create a new one otherwise.
-/// This corresponds to value numbering.
+/// The World's factory methods just calculate a hash and lookup the Def, if it is already present, or create a new one
+/// otherwise. This corresponds to value numbering.
 ///
 /// You can create several worlds.
 /// All worlds are completely independent from each other.
@@ -392,7 +392,7 @@ public:
     Ref join(Defs ops) { return bound<true>(ops); }
     Ref meet(Defs ops) { return bound<false>(ops); }
     Ref ac(Ref type, Defs ops);
-    /// Infers the type using a *immutable* Meet.
+    /// Infers the type using an *immutable* Meet.
     Ref ac(Defs ops);
     Ref vel(Ref type, Ref value);
     Ref pick(Ref type, Ref value);

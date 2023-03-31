@@ -6,10 +6,10 @@ namespace thorin {
 
 class Sigma : public Def {
 private:
-    Sigma(const Def* type, Defs ops) ///< Constructor for a *imm*utable Sigma.
-        : Def(Node, type, ops, 0) {}
-    Sigma(const Def* type, size_t size) ///< Constructor for a *mut*able Sigma.
-        : Def(Node, type, size, 0) {}
+    Sigma(const Def* type, Defs ops)
+        : Def(Node, type, ops, 0) {} ///< Constructor for an *imm*utable Sigma.
+    Sigma(const Def* type, size_t size)
+        : Def(Node, type, size, 0) {} ///< Constructor for a *mut*able Sigma.
 
 public:
     /// @name setters
@@ -39,10 +39,10 @@ private:
 
 class Arr : public Def {
 private:
-    Arr(const Def* type, const Def* shape, const Def* body) /// Constructor for a *imm*utable Arr.
-        : Def(Node, type, {shape, body}, 0) {}
-    Arr(const Def* type) /// Constructor for a *mut*able Arr.
-        : Def(Node, type, 2, 0) {}
+    Arr(const Def* type, const Def* shape, const Def* body)
+        : Def(Node, type, {shape, body}, 0) {} ///< Constructor for an *imm*utable Arr.
+    Arr(const Def* type)
+        : Def(Node, type, 2, 0) {}             ///< Constructor for a *mut*able Arr.
 
 public:
     /// @name ops
@@ -68,10 +68,10 @@ public:
 
 class Pack : public Def {
 private:
-    Pack(const Def* type, const Def* body) ///< Constructor for a *imm*utable Pack.
-        : Def(Node, type, {body}, 0) {}
-    Pack(const Def* type) ///< Constructor for a *mut*ablel Pack.
-        : Def(Node, type, 1, 0) {}
+    Pack(const Def* type, const Def* body)
+        : Def(Node, type, {body}, 0) {} ///< Constructor for an *imm*utable Pack.
+    Pack(const Def* type)
+        : Def(Node, type, 1, 0) {}      ///< Constructor for a *mut*ablel Pack.
 
 public:
     /// @name ops
