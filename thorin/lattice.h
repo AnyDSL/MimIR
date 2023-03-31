@@ -11,7 +11,7 @@ class Sigma;
 class Bound : public Def {
 protected:
     Bound(node_t node, const Def* type, Defs ops)
-        : Def(node, type, ops, 0) {}  ///< Constructor for an *imm*utable Bound.
+        : Def(node, type, ops, 0) {} ///< Constructor for an *imm*utable Bound.
     Bound(node_t node, const Def* type, size_t size)
         : Def(node, type, size, 0) {} ///< Constructor for a *mut*able Bound.
 
@@ -29,7 +29,7 @@ template<bool Up>
 class TBound : public Bound {
 private:
     TBound(const Def* type, Defs ops)
-        : Bound(Node, type, ops) {}  ///< Constructor for an *imm*utable Bound.
+        : Bound(Node, type, ops) {} ///< Constructor for an *imm*utable Bound.
     TBound(const Def* type, size_t size)
         : Bound(Node, type, size) {} ///< Constructor for a *mut*able Bound.
 

@@ -344,8 +344,7 @@ Ref World::insert(Ref d, Ref index, Ref val) {
 bool is_shape(Ref s) {
     if (s->isa<Nat>()) return true;
     if (auto arr = s->isa<Arr>()) return arr->body()->isa<Nat>();
-    if (auto sig = s->isa_imm<Sigma>())
-        return std::ranges::all_of(sig->ops(), [](Ref op) { return op->isa<Nat>(); });
+    if (auto sig = s->isa_imm<Sigma>()) return std::ranges::all_of(sig->ops(), [](Ref op) { return op->isa<Nat>(); });
 
     return false;
 }

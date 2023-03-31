@@ -59,9 +59,8 @@ protected:
         auto muts = schedule(scope); // TODO make sure to not compute twice
 
         // make sure that we don't need to rehash later on
-        for (auto mut : muts) {
+        for (auto mut : muts)
             if (auto lam = mut->isa<Lam>()) lam2bb_.emplace(lam, BB());
-        }
         auto old_size = lam2bb_.size();
 
         entry_ = scope.entry()->as_mut<Lam>();

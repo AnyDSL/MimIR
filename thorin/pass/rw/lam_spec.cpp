@@ -44,9 +44,8 @@ const Def* LamSpec::rewrite(const Def* def) {
     auto skip     = old_lam->ret_var() && is_top_level(old_lam);
     auto old_doms = old_lam->doms();
 
-    for (auto dom : old_doms.skip_back(skip)) {
+    for (auto dom : old_doms.skip_back(skip))
         if (!dom->isa<Pi>()) new_doms.emplace_back(dom);
-    }
 
     if (skip) new_doms.emplace_back(old_lam->doms().back());
     if (new_doms.size() == old_lam->num_doms()) return def;

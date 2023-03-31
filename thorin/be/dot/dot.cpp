@@ -57,7 +57,7 @@ static void emit_cluster_start(std::ostream& os, Lam* lam) {
 }
 
 static void emit_node_attributes(std::ostream& stream, const Def* def) {
-    if (def->isa<Var>()) { stream << ", color=blue"; }
+    if (def->isa<Var>()) stream << ", color=blue";
 }
 
 void Emitter::emit_imported(Lam* lam) {

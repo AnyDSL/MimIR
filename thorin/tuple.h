@@ -6,7 +6,7 @@ namespace thorin {
 
 class Sigma : public Def {
 private:
-    Sigma(const Def* type, Defs ops)    ///< Constructor for a *imm*utable Sigma.
+    Sigma(const Def* type, Defs ops) ///< Constructor for a *imm*utable Sigma.
         : Def(Node, type, ops, 0) {}
     Sigma(const Def* type, size_t size) ///< Constructor for a *mut*able Sigma.
         : Def(Node, type, size, 0) {}
@@ -41,7 +41,7 @@ class Arr : public Def {
 private:
     Arr(const Def* type, const Def* shape, const Def* body) /// Constructor for a *imm*utable Arr.
         : Def(Node, type, {shape, body}, 0) {}
-    Arr(const Def* type)                                    /// Constructor for a *mut*able Arr.
+    Arr(const Def* type) /// Constructor for a *mut*able Arr.
         : Def(Node, type, 2, 0) {}
 
 public:
@@ -70,7 +70,7 @@ class Pack : public Def {
 private:
     Pack(const Def* type, const Def* body) ///< Constructor for a *imm*utable Pack.
         : Def(Node, type, {body}, 0) {}
-    Pack(const Def* type)                  ///< Constructor for a *mut*ablel Pack.
+    Pack(const Def* type) ///< Constructor for a *mut*ablel Pack.
         : Def(Node, type, 1, 0) {}
 
 public:

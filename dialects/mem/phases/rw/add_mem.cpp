@@ -19,11 +19,10 @@ static std::pair<const App*, Array<Lam*>> isa_apped_mut_lam_in_tuple(const Def* 
             if (auto mut = elem->isa_mut<Lam>()) {
                 lams.push_back(mut);
             } else if (auto extract = elem->isa<Extract>()) {
-                if (auto tuple = extract->tuple()->isa<Tuple>()) {
+                if (auto tuple = extract->tuple()->isa<Tuple>())
                     for (auto&& op : tuple->ops()) wl.push_back(op);
-                } else {
+                else
                     return {nullptr, {}};
-                }
             } else {
                 return {nullptr, {}};
             }
@@ -37,7 +36,7 @@ static std::pair<const App*, Array<Lam*>> isa_apped_mut_lam_in_tuple(const Def* 
 template<class F, class H>
 static const Def* rewrite_mut_lam_in_tuple(const Def* def, F&& rewrite, H&& rewrite_idx) {
     auto& w = def->world();
-    if (auto mut = def->isa_mut<Lam>()) { return std::forward<F>(rewrite)(mut); }
+    if (auto mut = def->isa_mut<Lam>()) return std::forward<F>(rewrite)(mut);
 
     auto extract = def->as<Extract>();
     auto tuple   = extract->tuple()->as<Tuple>();
@@ -128,7 +127,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
             return tmp;
         }
     }
-    if (match<mem::M>(def->type())) { world().DLOG("new mem {} in {}", def, curr_lam); }
+    if (match<mem::M>(def->type())) world().DLOG("new mem {} in {}", def, curr_lam);
 
     auto rewrite_lam = [&](Lam* mut) -> const Def* {
         auto pi      = mut->type()->as<Pi>();
@@ -147,7 +146,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
         bool is_bound = sched_.scope().bound(mut) || mut == curr_lam;
 
         if (new_mut == mut) // if not stubbed yet
-            if (auto new_pi = rewrite_pi(pi); new_pi != pi) { new_mut = mut->stub(world(), new_pi); }
+            if (auto new_pi = rewrite_pi(pi); new_pi != pi) new_mut = mut->stub(world(), new_pi);
 
         if (!is_bound) {
             world().DLOG("free lam {}", mut);
@@ -165,9 +164,8 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
         val2mem_[new_mut]                 = new_mut->var(0_s);
         val2mem_[mut]                     = new_mut->var(0_s);
         mem_rewritten_[new_mut->var(0_s)] = new_mut->var(0_s);
-        for (size_t i = 0, n = new_mut->num_ops(); i < n; ++i) {
+        for (size_t i = 0, n = new_mut->num_ops(); i < n; ++i)
             if (auto op = mut->op(i)) static_cast<Def*>(new_mut)->set(i, add_mem_to_lams(mut, op));
-        }
 
         if (mut != new_mut && mut->is_external()) {
             mut->make_internal();
@@ -177,7 +175,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
     };
 
     // rewrite top-level lams
-    if (auto mut = def->isa_mut<Lam>()) { return rewrite_lam(mut); }
+    if (auto mut = def->isa_mut<Lam>()) return rewrite_lam(mut);
     assert(!def->isa_mut());
 
     if (auto pi = def->isa<Pi>()) return rewrite_pi(pi);
@@ -227,7 +225,8 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
         }
         auto rewritten = mem_rewritten_[def] =
             app->rebuild(world(), app->type(),
-                         {add_mem_to_lams(place, app->callee()), world().tuple(new_args)->set(arg->dbg())})->set(app->dbg());
+                         {add_mem_to_lams(place, app->callee()), world().tuple(new_args)->set(arg->dbg())})
+                ->set(app->dbg());
         if (match<mem::M>(rewritten->type())) {
             world().DLOG("memory from axiom {} : {}", rewritten, rewritten->type());
             val2mem_[place] = rewritten;
@@ -246,7 +245,8 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
         auto new_arg    = add_mem_to_lams(place, app->arg());
         if (app->callee()->type()->as<Pi>()->num_doms() + 1 == new_callee->type()->as<Pi>()->num_doms())
             new_arg = rewrite_arg(app->arg());
-        auto rewritten = mem_rewritten_[def] = app->rebuild(world(), app->type(), {new_callee, new_arg})->set(app->dbg());
+        auto rewritten = mem_rewritten_[def] =
+            app->rebuild(world(), app->type(), {new_callee, new_arg})->set(app->dbg());
         if (match<mem::M>(rewritten->type())) {
             world().DLOG("memory from other {} : {}", rewritten, rewritten->type());
             val2mem_[place] = rewritten;

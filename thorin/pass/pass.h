@@ -57,9 +57,9 @@ public:
 
     /// Invoked just before Pass::rewrite%ing PassMan::curr_mut's body.
     /// @note This is invoked when seeing the *inside* of a mutable the first time.
-    /// This is often too late, as you usually want to do something when you see a mutable the first time from the *outside*.
-    /// This means that this PassMan::curr_mut has already been encountered elsewhere.
-    /// Otherwise, we wouldn't have seen PassMan::curr_mut to begin with (unless it is Def::is_external).
+    /// This is often too late, as you usually want to do something when you see a mutable the first time from the
+    /// *outside*. This means that this PassMan::curr_mut has already been encountered elsewhere. Otherwise, we wouldn't
+    /// have seen PassMan::curr_mut to begin with (unless it is Def::is_external).
     virtual void enter() {}
 
     /// Invoked **once** before entering the main rewrite loop.

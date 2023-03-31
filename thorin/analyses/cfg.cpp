@@ -100,9 +100,8 @@ void CFA::link_to_exit() {
 
         enqueue(n);
 
-        while (!queue.empty()) {
+        while (!queue.empty())
             for (auto pred : pop(queue)->preds()) enqueue(pred);
-        }
     };
 
     std::stack<const CFNode*> stack;
@@ -168,9 +167,8 @@ size_t CFG<forward>::post_order_visit(const CFNode* n, size_t i) {
     auto& n_index = forward ? n->f_index_ : n->b_index_;
     n_index       = size_t(-2);
 
-    for (auto succ : succs(n)) {
+    for (auto succ : succs(n))
         if (index(succ) == size_t(-1)) i = post_order_visit(succ, i);
-    }
 
     n_index = i - 1;
     rpo_[n] = n;

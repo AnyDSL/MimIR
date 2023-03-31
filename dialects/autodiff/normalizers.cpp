@@ -99,7 +99,7 @@ Ref normalize_sum(Ref type, Ref callee, Ref arg) {
         DefArray args = arg->projs(val);
         auto sum      = world.app(world.ax<zero>(), T);
         // This special case would also be handled by add zero
-        if (val >= 1) { sum = args[0]; }
+        if (val >= 1) sum = args[0];
         for (size_t i = 1; i < val; ++i) sum = world.app(world.app(world.ax<add>(), T), {sum, args[i]});
         return sum;
     }

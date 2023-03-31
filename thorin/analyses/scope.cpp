@@ -30,9 +30,8 @@ void Scope::run() {
         queue.push(var);
 
         while (!queue.empty()) {
-            for (auto use : queue.pop()->uses()) {
+            for (auto use : queue.pop()->uses())
                 if (use != entry_ && use != exit_) queue.push(use);
-            }
         }
     }
 }
@@ -56,9 +55,8 @@ void Scope::calc_bound() const {
 
     for (auto op : entry()->partial_ops()) enqueue(op);
 
-    while (!queue.empty()) {
+    while (!queue.empty())
         for (auto op : queue.pop()->partial_ops()) enqueue(op);
-    }
 
     swap(live, bound_);
 }
@@ -82,9 +80,8 @@ void Scope::calc_free() const {
 
     for (auto free : free_defs()) enqueue(free);
 
-    while (!queue.empty()) {
+    while (!queue.empty())
         for (auto op : queue.pop()->extended_ops()) enqueue(op);
-    }
 }
 
 const CFA& Scope::cfa() const { return lazy_init(this, cfa_); }

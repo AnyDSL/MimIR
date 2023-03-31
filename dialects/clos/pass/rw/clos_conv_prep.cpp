@@ -62,11 +62,10 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
 
         auto refine = [&](const Def* new_op) {
             const Def* args;
-            if (arg == op) {
+            if (arg == op)
                 args = new_op;
-            } else {
+            else
                 args = arg->refine(i, new_op);
-            }
             return app->refine(1, args)->as<App>();
         };
 

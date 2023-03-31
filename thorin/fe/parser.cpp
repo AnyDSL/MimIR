@@ -82,8 +82,7 @@ void Parser::import(fs::path name, std::ostream* md) {
     world().VLOG("import: {}", name);
     auto filename = name;
 
-    if (!filename.has_extension())
-        filename.replace_extension("thorin"); // TODO error cases
+    if (!filename.has_extension()) filename.replace_extension("thorin"); // TODO error cases
 
     fs::path rel_path;
     for (const auto& path : driver().search_paths()) {

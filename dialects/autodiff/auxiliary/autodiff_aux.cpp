@@ -92,10 +92,10 @@ const Pi* autodiff_type_fun_pi(const Pi* pi) {
 const Def* autodiff_type_fun(const Def* ty) {
     auto& world = ty->world();
     // TODO: handle DS (operators)
-    if (auto pi = ty->isa<Pi>()) { return autodiff_type_fun_pi(pi); }
+    if (auto pi = ty->isa<Pi>()) return autodiff_type_fun_pi(pi);
     // Also handles autodiff call from axiom declaration => abstract => leave it.
     world.DLOG("AutoDiff on type: {} <{}>", ty, ty->node_name());
-    if (Idx::size(ty)) { return ty; }
+    if (Idx::size(ty)) return ty;
     if (ty == world.type_nat()) return ty;
     if (auto arr = ty->isa<Arr>()) {
         auto shape   = arr->shape();
@@ -156,7 +156,7 @@ const Def* op_sum(const Def* T, DefArray defs) {
 namespace thorin {
 
 bool is_continuation_type(const Def* E) {
-    if (auto pi = E->isa<Pi>()) { return pi->codom()->isa<Bot>(); }
+    if (auto pi = E->isa<Pi>()) return pi->codom()->isa<Bot>();
     return false;
 }
 
@@ -185,7 +185,7 @@ bool is_direct_style_function(const Def* e) {
 const Def* continuation_dom(const Def* E) {
     auto pi = E->as<Pi>();
     assert(pi != NULL);
-    if (pi->num_doms() == 0) { return pi->dom(); }
+    if (pi->num_doms() == 0) return pi->dom();
     return pi->dom(0);
 }
 
