@@ -31,7 +31,7 @@ public:
 
     /// @name Rewrite Hook for the PassMan
     ///@{
-    /// Rewrites a *structural* @p def within PassMan::curr_mut.
+    /// Rewrites an *imm*utable @p def within PassMan::curr_mut.
     /// @returns the replacement.
     virtual const Def* rewrite(const Def* def) { return def; }
     virtual const Def* rewrite(const Var* var) { return var; }

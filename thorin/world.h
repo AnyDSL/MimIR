@@ -23,8 +23,8 @@ class Checker;
 class Driver;
 
 /// The World represents the whole program and manages creation of Thorin nodes (Def%s).
-/// *Structural* Def%s are hashed into an internal HashSet.
-/// The getters just calculate a hash and lookup the Def, if it is already present, or create a new one otherwise.
+/// Def%s are hashed into an internal HashSet.
+/// The World's factory methods just calculate a hash and lookup the Def, if it is already present, or create a new one otherwise.
 /// This corresponds to value numbering.
 ///
 /// You can create several worlds.
