@@ -26,7 +26,7 @@ counting_for(const Def* bound, DefArray acc, const Def* exit, const char* name =
     auto& world = bound->world();
     auto acc_ty = world.tuple(acc)->type();
     auto body   = world
-                    .nom_lam(world.cn({
+                    .mut_lam(world.cn({
                         world.type_int(32), // iterator
                         acc_ty,             // acc = memory+extra
                         world.cn(acc_ty)    // exit = return
@@ -192,7 +192,7 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         auto mem_type = mem::type_mem(world);
         auto fun_ty   = world.cn({mem_type, world.cn(map_reduce_ax->type())});
         world.DLOG("fun_ty = {}", fun_ty);
-        auto fun = world.nom_lam(fun_ty)->set("mapRed");
+        auto fun = world.mut_lam(fun_ty)->set("mapRed");
 
         // assert(0);
         auto ds_fun = direct::op_cps2ds_dep(fun);
@@ -232,7 +232,7 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
 
         // The function on where to continue -- return after all output loops.
         auto cont        = fun->var(1);
-        auto current_nom = fun;
+        auto current_mut = fun;
 
         // Each of the outer loops contains the memory and matrix as accumulator (in an inner monad).
         DefArray acc = {current_mem, init_mat};
@@ -251,9 +251,9 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
             iterator[idx]               = core::op_bitcast(world.type_idx(dim_nat_def), iter);
             auto [new_mem, new_mat]     = new_acc->projs<2>();
             acc                         = {new_mem, new_mat};
-            current_nom->set_body(for_call);
-            current_nom->set_filter(dim_nat_def);
-            current_nom = body;
+            current_mut->set_body(for_call);
+            current_mut->set_filter(dim_nat_def);
+            current_mut = body;
         }
 
         // Now the inner loops for the inputs:
@@ -269,7 +269,7 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         world.DLOG("wb_matrix {} : {}", wb_matrix, wb_matrix->type());
 
         // Write back element to matrix. Set this as return after all inner loops.
-        auto write_back = world.nom_lam(world.cn({mem::type_mem(world), T}))->set("matrixWriteBack");
+        auto write_back = world.mut_lam(world.cn({mem::type_mem(world), T}))->set("matrixWriteBack");
         world.DLOG("write_back {} : {}", write_back, write_back->type());
         auto [wb_mem, element_final] = write_back->vars<2>();
 
@@ -308,13 +308,13 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
             iterator[idx]               = core::op_bitcast(world.type_idx(dim_nat_def), iter);
             auto [new_mem, new_element] = new_acc->projs<2>();
             acc                         = {new_mem, new_element};
-            current_nom->set_body(for_call);
-            current_nom->set_filter(dim_nat_def);
-            current_nom = body;
+            current_mut->set_body(for_call);
+            current_mut->set_filter(dim_nat_def);
+            current_mut = body;
         }
 
         // For testing: id in innermost loop instead of read, fun:
-        // current_nom->app(true, cont, acc);
+        // current_mut->app(true, cont, acc);
 
         current_mem = acc[0];
         element_acc = acc[1];
@@ -348,7 +348,7 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         world.DLOG("  fun {} : {}", fun, fun->type());
 
         // TODO: make non-scalar or completely scalar?
-        current_nom->app(true, comb, {world.tuple({current_mem, element_acc, world.tuple(input_elements)}), cont});
+        current_mut->app(true, comb, {world.tuple({current_mem, element_acc, world.tuple(input_elements)}), cont});
 
         return call;
     }

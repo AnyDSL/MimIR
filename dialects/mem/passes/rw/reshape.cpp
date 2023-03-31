@@ -13,7 +13,7 @@
 
 namespace thorin::mem {
 
-void Reshape::enter() { rewrite_def(curr_nom()); }
+void Reshape::enter() { rewrite_def(curr_mut()); }
 
 const Def* Reshape::rewrite_def(const Def* def) {
     if (auto i = old2new_.find(def); i != old2new_.end()) return i->second;
@@ -78,7 +78,7 @@ const Def* Reshape::rewrite_def_(const Def* def) {
         world().DLOG("into arg {} : {}", reshaped_arg, reshaped_arg->type());
         auto new_app = w.app(callee, reshaped_arg);
         return new_app;
-    } else if (auto lam = def->isa_nom<Lam>()) {
+    } else if (auto lam = def->isa_mut<Lam>()) {
         world().DLOG("rewrite_def lam {} : {}", def, def->type());
         auto new_lam = reshape_lam(lam);
         world().DLOG("rewrote lam {} : {}", def, def->type());
@@ -111,7 +111,7 @@ Lam* Reshape::reshape_lam(Lam* def) {
     if (name != "main") { // TODO I don't this is correct. we should check for def->is_external
         // TODO maybe use new_lam->debug_suff("_reshape"), instead?
         name          = name + "_reshape";
-        new_lam       = w.nom_lam(new_ty)->set((name));
+        new_lam       = w.mut_lam(new_ty)->set((name));
         old2new_[def] = new_lam;
     } else {
         new_lam = def;

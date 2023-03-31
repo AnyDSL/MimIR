@@ -16,10 +16,10 @@ void PassMan::push_state() {
 
         // copy over from prev_state to curr_state
         auto&& prev_state      = states_[states_.size() - 2];
-        curr_state().curr_nom  = prev_state.stack.top();
-        curr_state().old_ops   = curr_state().curr_nom->ops();
+        curr_state().curr_mut  = prev_state.stack.top();
+        curr_state().old_ops   = curr_state().curr_mut->ops();
         curr_state().stack     = prev_state.stack;
-        curr_state().nom2visit = prev_state.nom2visit;
+        curr_state().mut2visit = prev_state.mut2visit;
 
         for (size_t i = 0; i != passes().size(); ++i) curr_state().data[i] = passes_[i]->copy(prev_state.data[i]);
     }
@@ -30,7 +30,7 @@ void PassMan::pop_states(size_t undo) {
         for (size_t i = 0, e = curr_state().data.size(); i != e; ++i) passes_[i]->dealloc(curr_state().data[i]);
 
         if (undo != 0) // only reset if not final cleanup
-            curr_state().curr_nom->set(curr_state().old_ops);
+            curr_state().curr_mut->set(curr_state().old_ops);
 
         states_.pop_back();
     }
@@ -49,31 +49,31 @@ void PassMan::run() {
     for (auto&& pass : passes_) pass->prepare();
 
     auto externals = std::vector(world().externals().begin(), world().externals().end());
-    for (const auto& [_, nom] : externals) {
-        analyzed(nom);
-        curr_state().stack.push(nom);
+    for (const auto& [_, mut] : externals) {
+        analyzed(mut);
+        curr_state().stack.push(mut);
     }
 
     while (!curr_state().stack.empty()) {
         push_state();
-        curr_nom_ = pop(curr_state().stack);
-        world().VLOG("=== state {}: {} ===", states_.size() - 1, curr_nom_);
+        curr_mut_ = pop(curr_state().stack);
+        world().VLOG("=== state {}: {} ===", states_.size() - 1, curr_mut_);
 
-        if (!curr_nom_->is_set()) continue;
+        if (!curr_mut_->is_set()) continue;
 
         for (auto&& pass : passes_)
             if (pass->inspect()) pass->enter();
 
-        curr_nom_->world().DLOG("curr_nom: {} : {}", curr_nom_, curr_nom_->type());
-        for (size_t i = 0, e = curr_nom_->num_ops(); i != e; ++i) curr_nom_->set(i, rewrite(curr_nom_->op(i)));
+        curr_mut_->world().DLOG("curr_mut: {} : {}", curr_mut_, curr_mut_->type());
+        for (size_t i = 0, e = curr_mut_->num_ops(); i != e; ++i) curr_mut_->set(i, rewrite(curr_mut_->op(i)));
 
         world().VLOG("=== analyze ===");
         proxy_    = false;
         auto undo = No_Undo;
-        for (auto op : curr_nom_->extended_ops()) undo = std::min(undo, analyze(op));
+        for (auto op : curr_mut_->extended_ops()) undo = std::min(undo, analyze(op));
 
         if (undo == No_Undo) {
-            assert(!proxy_ && "proxies must not occur anymore after leaving a nom with No_Undo");
+            assert(!proxy_ && "proxies must not occur anymore after leaving a mut with No_Undo");
             world().DLOG("=== done ===");
         } else {
             pop_states(undo);
@@ -91,9 +91,9 @@ void PassMan::run() {
 const Def* PassMan::rewrite(const Def* old_def) {
     if (!old_def->dep()) return old_def;
 
-    if (auto nom = old_def->isa_nom()) {
-        curr_state().nom2visit.emplace(nom, curr_undo());
-        return map(nom, nom);
+    if (auto mut = old_def->isa_mut()) {
+        curr_state().mut2visit.emplace(mut, curr_undo());
+        return map(mut, mut);
     }
 
     if (auto new_def = lookup(old_def)) {
@@ -132,8 +132,8 @@ undo_t PassMan::analyze(const Def* def) {
 
     if (!def->dep() || analyzed(def)) {
         // do nothing
-    } else if (auto nom = def->isa_nom()) {
-        curr_state().stack.push(nom);
+    } else if (auto mut = def->isa_mut()) {
+        curr_state().stack.push(mut);
     } else if (auto proxy = def->isa<Proxy>()) {
         proxy_ = true;
         undo   = passes_[proxy->pass()]->analyze(proxy);

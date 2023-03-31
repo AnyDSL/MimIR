@@ -37,7 +37,7 @@ Ref ClosLit::fnc() {
 Lam* ClosLit::fnc_as_lam() {
     auto f = fnc();
     if (auto a = match<attr>(f)) f = a->arg();
-    return f->isa_nom<Lam>();
+    return f->isa_mut<Lam>();
 }
 
 Ref ClosLit::env_var() { return fnc_as_lam()->var(Clos_Env_Param); }
@@ -91,7 +91,7 @@ Ref clos_apply(Ref closure, Ref args) {
 
 const Sigma* isa_clos_type(Ref def) {
     auto& w  = def->world();
-    auto sig = def->isa_nom<Sigma>();
+    auto sig = def->isa_mut<Sigma>();
     if (!sig || sig->num_ops() < 3 || sig->op(0_u64) != w.type()) return nullptr;
     auto var = sig->var(0_u64);
     if (sig->op(2_u64) != var) return nullptr;
@@ -99,7 +99,7 @@ const Sigma* isa_clos_type(Ref def) {
     return (pi && pi->is_cn() && pi->num_ops() > 1_u64 && pi->dom(Clos_Env_Param) == var) ? sig : nullptr;
 }
 
-Sigma* clos_type(const Pi* pi) { return ctype(pi->world(), pi->doms(), nullptr)->as_nom<Sigma>(); }
+Sigma* clos_type(const Pi* pi) { return ctype(pi->world(), pi->doms(), nullptr)->as_mut<Sigma>(); }
 
 const Pi* clos_type_to_pi(Ref ct, Ref new_env_type) {
     assert(isa_clos_type(ct));
@@ -121,7 +121,7 @@ Ref clos_remove_env(size_t i, std::function<Ref(size_t)> f) { return f(skip_env(
 
 Ref ctype(World& w, Defs doms, Ref env_type) {
     if (!env_type) {
-        auto sigma = w.nom_sigma(w.type(), 3_u64)->set("Clos");
+        auto sigma = w.mut_sigma(w.type(), 3_u64)->set("Clos");
         sigma->set(0_u64, w.type());
         sigma->set(1_u64, ctype(w, doms, sigma->var(0_u64)));
         sigma->set(2_u64, sigma->var(0_u64));

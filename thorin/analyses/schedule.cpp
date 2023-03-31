@@ -26,8 +26,8 @@ Scheduler::Scheduler(const Scope& s)
     };
 
     for (auto n : cfg().reverse_post_order()) {
-        queue.push(n->nom());
-        assert_emplace(done, n->nom());
+        queue.push(n->mut());
+        assert_emplace(done, n->mut());
     }
 
     while (!queue.empty()) {
@@ -37,25 +37,25 @@ Scheduler::Scheduler(const Scope& s)
         if (!def->is_set()) continue;
 
         for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
-            // all reachable noms have already been registered above
-            // NOTE we might still see references to unreachable noms in the schedule
-            if (!def->op(i)->isa_nom()) enqueue(def, i, def->op(i));
+            // all reachable muts have already been registered above
+            // NOTE we might still see references to unreachable muts in the schedule
+            if (!def->op(i)->isa_mut()) enqueue(def, i, def->op(i));
         }
 
-        if (!def->type()->isa_nom()) enqueue(def, -1, def->type());
+        if (!def->type()->isa_mut()) enqueue(def, -1, def->type());
     }
 }
 
 Def* Scheduler::early(const Def* def) {
     if (auto i = early_.find(def); i != early_.end()) return i->second;
     if (def->dep_const() || !scope().bound(def)) return early_[def] = scope().entry();
-    if (auto var = def->isa<Var>()) return early_[def] = var->nom();
+    if (auto var = def->isa<Var>()) return early_[def] = var->mut();
 
     auto result = scope().entry();
     for (auto op : def->extended_ops()) {
-        if (!op->isa_nom() && def2uses_.find(op) != def2uses_.end()) {
-            auto nom = early(op);
-            if (domtree().depth(cfg(nom)) > domtree().depth(cfg(result))) result = nom;
+        if (!op->isa_mut() && def2uses_.find(op) != def2uses_.end()) {
+            auto mut = early(op);
+            if (domtree().depth(cfg(mut)) > domtree().depth(cfg(result))) result = mut;
         }
     }
 
@@ -67,14 +67,14 @@ Def* Scheduler::late(const Def* def) {
     if (def->dep_const() || !scope().bound(def)) return early_[def] = scope().entry();
 
     Def* result = nullptr;
-    if (auto nom = def->isa_nom()) {
-        result = nom;
+    if (auto mut = def->isa_mut()) {
+        result = mut;
     } else if (auto var = def->isa<Var>()) {
-        result = var->nom();
+        result = var->mut();
     } else {
         for (auto use : uses(def)) {
-            auto nom = late(use);
-            result   = result ? domtree().least_common_ancestor(cfg(result), cfg(nom))->nom() : nom;
+            auto mut = late(use);
+            result   = result ? domtree().least_common_ancestor(cfg(result), cfg(mut))->mut() : mut;
         }
     }
 
@@ -106,13 +106,13 @@ Def* Scheduler::smart(const Def* def) {
         }
     }
 
-    return smart_[def] = s->nom();
+    return smart_[def] = s->mut();
 }
 
 Schedule schedule(const Scope& scope) {
     // until we have sth better simply use the RPO of the CFG
     Schedule result;
-    for (auto n : scope.f_cfg().reverse_post_order()) result.emplace_back(n->nom());
+    for (auto n : scope.f_cfg().reverse_post_order()) result.emplace_back(n->mut());
 
     return result;
 }

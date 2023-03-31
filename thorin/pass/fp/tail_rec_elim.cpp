@@ -6,7 +6,7 @@
 namespace thorin {
 
 const Def* TailRecElim::rewrite(const Def* def) {
-    if (auto [app, old] = isa_apped_nom_lam(def); old) {
+    if (auto [app, old] = isa_apped_mut_lam(def); old) {
         if (auto i = old2rec_loop_.find(old); i != old2rec_loop_.end()) {
             auto [rec, loop] = i->second;
             if (auto ret_var = rec->ret_var(); app->args().back() == ret_var)
@@ -20,7 +20,7 @@ const Def* TailRecElim::rewrite(const Def* def) {
 }
 
 undo_t TailRecElim::analyze(const Def* def) {
-    if (auto [app, old] = isa_apped_nom_lam(def); old) {
+    if (auto [app, old] = isa_apped_mut_lam(def); old) {
         if (auto ret_var = old->ret_var(); ret_var && app->args().back() == ret_var) {
             if (auto [i, ins] = old2rec_loop_.emplace(old, std::pair<Lam*, Lam*>(nullptr, nullptr)); ins) {
                 auto& [rec, loop] = i->second;

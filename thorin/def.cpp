@@ -25,7 +25,7 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
     : world_(w)
     , flags_(flags)
     , node_(unsigned(node))
-    , nom_(false)
+    , mut_(false)
     , external_(false)
     , dep_(unsigned(node == Node::Axiom   ? Dep::Axiom
                     : node == Node::Infer ? Dep::Infer
@@ -54,9 +54,9 @@ Def::Def(node_t n, const Def* type, Defs ops, flags_t flags)
 Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags)
     : flags_(flags)
     , node_(node)
-    , nom_(true)
+    , mut_(true)
     , external_(false)
-    , dep_(Dep::Nom | (node == Node::Infer ? Dep::Infer : Dep::None))
+    , dep_(Dep::Mut | (node == Node::Infer ? Dep::Infer : Dep::None))
     , num_ops_(num_ops)
     , type_(type) {
     gid_  = world().next_gid();
@@ -100,7 +100,7 @@ Ref Tuple    ::rebuild_(World& w, Ref t, Defs o) const { return w.tuple(t, o); }
 Ref UInc     ::rebuild_(World& w, Ref  , Defs o) const { return w.uinc(o[0], offset()); }
 Ref UMax     ::rebuild_(World& w, Ref  , Defs o) const { return w.umax(o); }
 Ref Univ     ::rebuild_(World& w, Ref  , Defs  ) const { return w.univ(); }
-Ref Var      ::rebuild_(World& w, Ref t, Defs o) const { return w.var(t, o[0]->as_nom()); }
+Ref Var      ::rebuild_(World& w, Ref t, Defs o) const { return w.var(t, o[0]->as_mut()); }
 Ref Vel      ::rebuild_(World& w, Ref t, Defs o) const { return w.vel(t, o[0]); }
 
 Ref Axiom    ::rebuild_(World& w, Ref t, Defs ) const {
@@ -116,15 +116,15 @@ template<bool up> Ref TBound<up>::rebuild_(World& w, Ref  , Defs o) const { retu
  * stub
  */
 
-Arr*       Arr   ::stub_(World& w, Ref t) { return w.nom_arr  (t); }
+Arr*       Arr   ::stub_(World& w, Ref t) { return w.mut_arr  (t); }
 Global*    Global::stub_(World& w, Ref t) { return w.global(t, is_mutable()); }
-Infer*     Infer ::stub_(World& w, Ref t) { return w.nom_infer(t); }
-Lam*       Lam   ::stub_(World& w, Ref t) { return w.nom_lam  (t->as<Pi>()); }
-Pack*      Pack  ::stub_(World& w, Ref t) { return w.nom_pack (t); }
-Pi*        Pi    ::stub_(World& w, Ref t) { return w.nom_pi   (t, implicit()); }
-Sigma*     Sigma ::stub_(World& w, Ref t) { return w.nom_sigma(t, num_ops()); }
+Infer*     Infer ::stub_(World& w, Ref t) { return w.mut_infer(t); }
+Lam*       Lam   ::stub_(World& w, Ref t) { return w.mut_lam  (t->as<Pi>()); }
+Pack*      Pack  ::stub_(World& w, Ref t) { return w.mut_pack (t); }
+Pi*        Pi    ::stub_(World& w, Ref t) { return w.mut_pi   (t, implicit()); }
+Sigma*     Sigma ::stub_(World& w, Ref t) { return w.mut_sigma(t, num_ops()); }
 
-template<bool up> TBound<up>* TBound<up>::stub_(World& w, Ref t) { return w.nom_bound<up>(t, num_ops()); }
+template<bool up> TBound<up>* TBound<up>::stub_(World& w, Ref t) { return w.mut_bound<up>(t, num_ops()); }
 template<bool up> TExt  <up>* TExt  <up>::stub_(World&  , Ref  ) { unreachable(); }
 
 /*
@@ -233,7 +233,7 @@ const Var* Def::var() {
 
     if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {
         for (auto u : uses()) {
-            if (auto var = u->isa<Var>(); var && var->nom() == this) return var;
+            if (auto var = u->isa<Var>(); var && var->mut() == this) return var;
         }
 
         if (w.is_frozen()) return nullptr;
@@ -278,7 +278,7 @@ std::optional<nat_t> Def::isa_lit_arity() const {
 // clang-format on
 
 bool Def::equal(const Def* other) const {
-    if (isa<Univ>() || this->isa_nom() || other->isa_nom()) return this == other;
+    if (isa<Univ>() || this->isa_mut() || other->isa_mut()) return this == other;
 
     bool result = this->node() == other->node() && this->flags() == other->flags() &&
                   this->num_ops() == other->num_ops() && this->type() == other->type();
@@ -362,7 +362,7 @@ void Def::make_internal() { return world().make_internal(this); }
 std::string Def::unique_name() const { return *sym() + "_"s + std::to_string(gid()); }
 
 DefArray Def::reduce(const Def* arg) const {
-    if (auto nom = isa_nom()) return nom->reduce(arg);
+    if (auto mut = isa_mut()) return mut->reduce(arg);
     return ops();
 }
 
@@ -377,7 +377,7 @@ const Def* Def::reduce_rec() const {
     auto def = this;
     while (auto app = def->isa<App>()) {
         auto callee = app->callee()->reduce_rec();
-        if (callee->isa_nom()) {
+        if (callee->isa_mut()) {
             def = callee->reduce(app->arg()).back();
         } else {
             def = callee != app->callee() ? world().app(callee, app->arg()) : app;
@@ -396,7 +396,7 @@ const Def* Def::refine(size_t i, const Def* new_op) const {
 const Def* Def::proj(nat_t a, nat_t i) const {
     if (a == 1) {
         if (!type()) return this;
-        if (!isa_nom<Sigma>() && !type()->isa_nom<Sigma>()) return this;
+        if (!isa_mut<Sigma>() && !type()->isa_mut<Sigma>()) return this;
     }
 
     World& w = world();

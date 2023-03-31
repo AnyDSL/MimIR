@@ -16,8 +16,8 @@ static bool is_top_level(LamMap<bool>& top, Lam* lam) {
     Scope scope(lam);
     if (!scope.free_vars().empty()) return top[lam] = false;
 
-    for (auto nom : scope.free_noms()) {
-        if (auto inner = nom->isa<Lam>()) {
+    for (auto mut : scope.free_muts()) {
+        if (auto inner = mut->isa<Lam>()) {
             if (!is_top_level(top, inner)) return top[lam] = false;
         }
     }
@@ -33,7 +33,7 @@ static bool is_top_level(Lam* lam) {
 const Def* LamSpec::rewrite(const Def* def) {
     if (auto i = old2new_.find(def); i != old2new_.end()) return i->second;
 
-    auto [app, old_lam] = isa_apped_nom_lam(def);
+    auto [app, old_lam] = isa_apped_mut_lam(def);
     if (!isa_workable(old_lam)) return def;
 
     Scope scope(old_lam);

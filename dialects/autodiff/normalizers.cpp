@@ -66,7 +66,7 @@ Ref normalize_add(Ref type, Ref callee, Ref arg) {
     } else if (auto arr = T->isa<Arr>()) {
         // TODO: is this working for non-lit (non-tuple) or do we need a loop?
         world.DLOG("add arrays {} {} {}", T, a, b);
-        auto pack      = world.nom_pack(T);
+        auto pack      = world.mut_pack(T);
         auto body_type = arr->body();
         world.DLOG("body type {}", body_type);
         pack->set(world.app(world.app(world.ax<add>(), body_type),

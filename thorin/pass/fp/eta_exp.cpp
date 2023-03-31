@@ -24,7 +24,7 @@ const Def* EtaExp::rewrite(const Def* def) {
     auto& [_, new_ops] = *def2new_ops_.emplace(def, def->ops()).first;
 
     for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
-        if (auto lam = def->op(i)->isa_nom<Lam>(); lam && lam->is_set()) {
+        if (auto lam = def->op(i)->isa_mut<Lam>(); lam && lam->is_set()) {
             if (isa_callee(def, i)) {
                 if (auto orig = lookup(exp2orig_, lam)) new_ops[i] = orig;
             } else if (expand_.contains(lam)) {
@@ -50,7 +50,7 @@ Lam* EtaExp::eta_exp(Lam* lam) {
 
 undo_t EtaExp::analyze(const Proxy* proxy) {
     world().DLOG("found proxy: {}", proxy);
-    auto lam = proxy->op(0)->as_nom<Lam>();
+    auto lam = proxy->op(0)->as_mut<Lam>();
     if (expand_.emplace(lam).second) return undo_visit(lam);
     return No_Undo;
 }
@@ -58,7 +58,7 @@ undo_t EtaExp::analyze(const Proxy* proxy) {
 undo_t EtaExp::analyze(const Def* def) {
     auto undo = No_Undo;
     for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
-        if (auto lam = def->op(i)->isa_nom<Lam>(); lam && lam->is_set()) {
+        if (auto lam = def->op(i)->isa_mut<Lam>(); lam && lam->is_set()) {
             lam = new2old(lam);
             if (expand_.contains(lam) || exp2orig_.contains(lam)) continue;
 

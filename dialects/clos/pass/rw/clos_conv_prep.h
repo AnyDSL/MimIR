@@ -28,7 +28,7 @@ public:
 
     bool from_outer_scope(Lam* lam) {
         // return scope_.free_defs().contains(lam);
-        return scope(lam) && scope(lam) != scope(curr_nom());
+        return scope(lam) && scope(lam) != scope(curr_mut());
     }
 
     bool from_outer_scope(const Def* lam) { return scope_->free_defs().contains(lam); }
@@ -38,9 +38,9 @@ public:
         auto [entry, inserted] = old2wrapper_.emplace(def, nullptr);
         auto& wrapper          = entry->second;
         if (inserted) {
-            wrapper = w.nom_lam(def->type()->as<Pi>());
+            wrapper = w.mut_lam(def->type()->as<Pi>());
             wrapper->app(false, def, wrapper->var());
-            lam2fscope_[wrapper] = scope(curr_nom());
+            lam2fscope_[wrapper] = scope(curr_mut());
             wrapper_.emplace(wrapper);
         }
         return op(a, wrapper);

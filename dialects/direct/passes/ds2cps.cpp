@@ -12,7 +12,7 @@ const Def* DS2CPS::rewrite(const Def* def) {
     auto& world = def->world();
     if (auto app = def->isa<App>()) {
         auto callee = app->callee();
-        if (auto lam = callee->isa_nom<Lam>()) {
+        if (auto lam = callee->isa_mut<Lam>()) {
             world.DLOG("encountered lam app");
             auto new_lam = rewrite_lam(lam);
             world.DLOG("new lam: {} : {}", new_lam, new_lam->type());
@@ -46,12 +46,12 @@ const Def* DS2CPS::rewrite_lam(Lam* lam) {
     auto dom   = ty->dom();
     auto codom = ty->codom();
 
-    Sigma* sig = world().nom_sigma(2);
+    Sigma* sig = world().mut_sigma(2);
     sig->set(0, dom);
 
     // replace ds dom var with cps sigma var (cps dom)
-    Scope r_scope{ty->as_nom()};
-    auto dom_var         = ty->as_nom<Pi>()->var();
+    Scope r_scope{ty->as_mut()};
+    auto dom_var         = ty->as_mut<Pi>()->var();
     auto cps_dom_var     = sig->var((nat_t)0);
     auto rewritten_codom = thorin::rewrite(codom, dom_var, cps_dom_var, r_scope);
     sig->set(1, world().cn(rewritten_codom));
@@ -62,7 +62,7 @@ const Def* DS2CPS::rewrite_lam(Lam* lam) {
     auto cps_ty = world().cn(sig);
     world().DLOG("cps type: {}", cps_ty);
 
-    auto cps_lam = world().nom_lam(cps_ty)->set(*lam->sym() + "_cps");
+    auto cps_lam = world().mut_lam(cps_ty)->set(*lam->sym() + "_cps");
 
     // rewrite vars of new function
     // calls handled separately

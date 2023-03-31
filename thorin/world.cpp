@@ -54,7 +54,7 @@ World::World(Driver* driver, const State& state)
     data_.lit_bool[0] = lit_idx(2, 0_u64);
     data_.lit_bool[1] = lit_idx(2, 1_u64);
     data_.lit_nat_max = lit_nat(nat_t(-1));
-    data_.exit        = nom_lam(cn(type_bot()))->set(sym("exit"));
+    data_.exit        = mut_lam(cn(type_bot()))->set(sym("exit"));
 }
 
 World::World(Driver* driver)
@@ -127,7 +127,7 @@ Ref World::umax(DefArray ops) {
 Ref World::iapp(Ref callee, Ref arg) {
     while (auto pi = callee->type()->isa<Pi>()) {
         if (pi->implicit()) {
-            auto infer = nom_infer_entity();
+            auto infer = mut_infer_entity();
             auto a     = app(callee, infer);
             callee     = a;
         } else {
@@ -217,7 +217,7 @@ Ref World::tuple(Ref type, Defs ops) {
     // TODO type-check type vs inferred type
 
     auto n = ops.size();
-    if (!type->isa_nom<Sigma>()) {
+    if (!type->isa_mut<Sigma>()) {
         if (n == 0) return tuple();
         if (n == 1) return ops[0];
         auto front = ops.front();
@@ -264,9 +264,9 @@ Ref World::extract(Ref d, Ref index) {
     Ref size = Idx::size(index->type());
     Ref type = d->unfold_type();
 
-    // nom sigmas can be 1-tuples
-    if (auto l = isa_lit(size); l && *l == 1 && !d->type()->isa_nom<Sigma>()) return d;
-    if (auto pack = d->isa_structural<Pack>()) return pack->body();
+    // mut sigmas can be 1-tuples
+    if (auto l = isa_lit(size); l && *l == 1 && !d->type()->isa_mut<Sigma>()) return d;
+    if (auto pack = d->isa_imm<Pack>()) return pack->body();
 
     if (!checker().equiv(type->arity(), size))
         err(index, "index '{}' does not fit within arity '{}'", type->arity(), index);
@@ -285,9 +285,9 @@ Ref World::extract(Ref d, Ref index) {
         }
 
         if (auto sigma = type->isa<Sigma>()) {
-            if (auto nom_sigma = sigma->isa_nom<Sigma>()) {
-                Scope scope(nom_sigma);
-                auto t = rewrite(sigma->op(*i), nom_sigma->var(), d, scope);
+            if (auto mut_sigma = sigma->isa_mut<Sigma>()) {
+                Scope scope(mut_sigma);
+                auto t = rewrite(sigma->op(*i), mut_sigma->var(), d, scope);
                 return unify<Extract>(2, t, d, index);
             }
 
@@ -319,7 +319,7 @@ Ref World::insert(Ref d, Ref index, Ref val) {
     }
 
     if (auto l = isa_lit(size); l && *l == 1)
-        return tuple(d, {val}); // d could be nom - that's why the tuple ctor is needed
+        return tuple(d, {val}); // d could be mut - that's why the tuple ctor is needed
 
     // insert((a, b, c, d), 2, x) -> (a, b, x, d)
     if (auto t = d->isa<Tuple>()) return t->refine(as_lit(index), val);
@@ -344,7 +344,7 @@ Ref World::insert(Ref d, Ref index, Ref val) {
 bool is_shape(Ref s) {
     if (s->isa<Nat>()) return true;
     if (auto arr = s->isa<Arr>()) return arr->body()->isa<Nat>();
-    if (auto sig = s->isa_structural<Sigma>())
+    if (auto sig = s->isa_imm<Sigma>())
         return std::ranges::all_of(sig->ops(), [](Ref op) { return op->isa<Nat>(); });
 
     return false;

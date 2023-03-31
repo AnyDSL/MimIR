@@ -31,7 +31,7 @@ public:
 
     /// @name Rewrite Hook for the PassMan
     ///@{
-    /// Rewrites a *structural* @p def within PassMan::curr_nom.
+    /// Rewrites a *structural* @p def within PassMan::curr_mut.
     /// @returns the replacement.
     virtual const Def* rewrite(const Def* def) { return def; }
     virtual const Def* rewrite(const Var* var) { return var; }
@@ -40,7 +40,7 @@ public:
 
     /// @name Analyze Hook for the PassMan
     ///@{
-    /// Invoked after the PassMan has finished Pass::rewrite%ing PassMan::curr_nom to analyze the Def.
+    /// Invoked after the PassMan has finished Pass::rewrite%ing PassMan::curr_mut to analyze the Def.
     /// Will only be invoked if Pass::fixed_point() yields `true` - which will be the case for FPPass%es.
     /// @returns thorin::No_Undo or the state to roll back to.
     virtual undo_t analyze(const Def*) { return No_Undo; }
@@ -55,11 +55,11 @@ public:
     /// Should the PassMan even consider this pass?
     virtual bool inspect() const = 0;
 
-    /// Invoked just before Pass::rewrite%ing PassMan::curr_nom's body.
-    /// @note This is invoked when seeing the *inside* of a nominal the first time.
-    /// This is often too late, as you usually want to do something when you see a nominal the first time from the *outside*.
-    /// This means that this PassMan::curr_nom has already been encountered elsewhere.
-    /// Otherwise, we wouldn't have seen PassMan::curr_nom to begin with (unless it is Def::is_external).
+    /// Invoked just before Pass::rewrite%ing PassMan::curr_mut's body.
+    /// @note This is invoked when seeing the *inside* of a mutable the first time.
+    /// This is often too late, as you usually want to do something when you see a mutable the first time from the *outside*.
+    /// This means that this PassMan::curr_mut has already been encountered elsewhere.
+    /// Otherwise, we wouldn't have seen PassMan::curr_mut to begin with (unless it is Def::is_external).
     virtual void enter() {}
 
     /// Invoked **once** before entering the main rewrite loop.
@@ -110,7 +110,7 @@ public:
     World& world() const { return world_; }
     const auto& passes() const { return passes_; }
     bool fixed_point() const { return fixed_point_; }
-    Def* curr_nom() const { return curr_nom_; }
+    Def* curr_mut() const { return curr_mut_; }
     ///@}
 
     /// @name create and run passes
@@ -151,10 +151,10 @@ private:
         State(size_t num)
             : data(num) {}
 
-        Def* curr_nom = nullptr;
+        Def* curr_mut = nullptr;
         DefArray old_ops;
         std::stack<Def*> stack;
-        NomMap<undo_t> nom2visit;
+        MutMap<undo_t> mut2visit;
         Array<void*> data;
         Def2Def old2new;
         DefSet analyzed;
@@ -205,7 +205,7 @@ private:
     std::deque<std::unique_ptr<Pass>> passes_;
     absl::flat_hash_map<std::type_index, Pass*> registry_;
     std::deque<State> states_;
-    Def* curr_nom_    = nullptr;
+    Def* curr_mut_    = nullptr;
     bool fixed_point_ = false;
     bool proxy_       = false;
 
@@ -222,16 +222,16 @@ public:
 
     bool inspect() const override {
         if constexpr (std::is_same<N, Def>::value)
-            return man().curr_nom();
+            return man().curr_mut();
         else
-            return man().curr_nom()->template isa<N>();
+            return man().curr_mut()->template isa<N>();
     }
 
-    N* curr_nom() const {
+    N* curr_mut() const {
         if constexpr (std::is_same<N, Def>::value)
-            return man().curr_nom();
+            return man().curr_mut();
         else
-            return man().curr_nom()->template as<N>();
+            return man().curr_mut()->template as<N>();
     }
 };
 
@@ -277,17 +277,17 @@ protected:
     ///@{
     undo_t curr_undo() const { return Super::man().curr_undo(); } ///< Current undo point.
 
-    /// Retrieves the point to backtrack to just **before** @p nom was seen the very first time.
-    undo_t undo_visit(Def* nom) const {
-        const auto& nom2visit = Super::man().curr_state().nom2visit;
-        if (auto i = nom2visit.find(nom); i != nom2visit.end()) return i->second;
+    /// Retrieves the point to backtrack to just **before** @p mut was seen the very first time.
+    undo_t undo_visit(Def* mut) const {
+        const auto& mut2visit = Super::man().curr_state().mut2visit;
+        if (auto i = mut2visit.find(mut); i != mut2visit.end()) return i->second;
         return No_Undo;
     }
 
-    /// Retrieves the point to backtrack to just **before** rewriting @p nom%'s body.
-    undo_t undo_enter(Def* nom) const {
+    /// Retrieves the point to backtrack to just **before** rewriting @p mut%'s body.
+    undo_t undo_enter(Def* mut) const {
         for (auto i = states().size(); i-- != 0;)
-            if (states()[i].curr_nom == nom) return i;
+            if (states()[i].curr_mut == mut) return i;
         return No_Undo;
     }
     ///@}

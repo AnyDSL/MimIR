@@ -9,16 +9,16 @@ namespace thorin::mem {
 static const Def* get_sloxy_type(const Proxy* sloxy) { return force<mem::Ptr>(sloxy->type())->arg(0); }
 
 static std::tuple<const Proxy*, Lam*> split_phixy(const Proxy* phixy) {
-    return {phixy->op(0)->as<Proxy>(), phixy->op(1)->as_nom<Lam>()};
+    return {phixy->op(0)->as<Proxy>(), phixy->op(1)->as_mut<Lam>()};
 }
 
-void SSAConstr::enter() { lam2sloxy2val_[curr_nom()].clear(); }
+void SSAConstr::enter() { lam2sloxy2val_[curr_mut()].clear(); }
 
 const Def* SSAConstr::rewrite(const Proxy* proxy) {
     if (proxy->tag() == Traxy) {
         world().DLOG("traxy '{}'", proxy);
         for (size_t i = 1, e = proxy->num_ops(); i != e; i += 2)
-            set_val(curr_nom(), as_proxy(proxy->op(i), Sloxy), proxy->op(i + 1));
+            set_val(curr_mut(), as_proxy(proxy->op(i), Sloxy), proxy->op(i + 1));
         return proxy->op(0);
     }
 
@@ -29,29 +29,29 @@ const Def* SSAConstr::rewrite(const Def* def) {
     if (auto slot = match<mem::slot>(def)) {
         auto [mem, id] = slot->args<2>();
         auto [_, ptr]  = slot->projs<2>();
-        auto sloxy     = proxy(ptr->type(), {curr_nom(), id}, Sloxy)->set(slot->dbg());
+        auto sloxy     = proxy(ptr->type(), {curr_mut(), id}, Sloxy)->set(slot->dbg());
         world().DLOG("sloxy: '{}'", sloxy);
         if (!keep_.contains(sloxy)) {
-            set_val(curr_nom(), sloxy, world().bot(get_sloxy_type(sloxy)));
-            data(curr_nom()).writable.emplace(sloxy);
+            set_val(curr_mut(), sloxy, world().bot(get_sloxy_type(sloxy)));
+            data(curr_mut()).writable.emplace(sloxy);
             return world().tuple({mem, sloxy});
         }
     } else if (auto load = match<mem::load>(def)) {
         auto [mem, ptr] = load->args<2>();
-        if (auto sloxy = isa_proxy(ptr, Sloxy)) return world().tuple({mem, get_val(curr_nom(), sloxy)});
+        if (auto sloxy = isa_proxy(ptr, Sloxy)) return world().tuple({mem, get_val(curr_mut(), sloxy)});
     } else if (auto store = match<mem::store>(def)) {
         auto [mem, ptr, val] = store->args<3>();
         if (auto sloxy = isa_proxy(ptr, Sloxy)) {
-            if (data(curr_nom()).writable.contains(sloxy)) {
-                set_val(curr_nom(), sloxy, val);
+            if (data(curr_mut()).writable.contains(sloxy)) {
+                set_val(curr_mut(), sloxy, val);
                 return op_remem(mem)->set(store->dbg());
             }
         }
-    } else if (auto [app, mem_lam] = isa_apped_nom_lam(def); isa_workable(mem_lam)) {
+    } else if (auto [app, mem_lam] = isa_apped_mut_lam(def); isa_workable(mem_lam)) {
         return mem2phi(app, mem_lam);
     } else {
         for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
-            if (auto lam = def->op(i)->isa_nom<Lam>(); isa_workable(lam)) {
+            if (auto lam = def->op(i)->isa_mut<Lam>(); isa_workable(lam)) {
                 if (mem2phi_.contains(lam)) return def->refine(i, eta_exp_->proxy(lam));
             }
         }
@@ -108,7 +108,7 @@ const Def* SSAConstr::mem2phi(const App* app, Lam* mem_lam) {
     if (phi_lam == nullptr || old_phis != phis) {
         old_phis      = phis;
         auto new_type = world().pi(merge_sigma(mem_lam->dom(), types), mem_lam->codom());
-        phi_lam       = world().nom_lam(new_type)->set(mem_lam->dbg());
+        phi_lam       = world().mut_lam(new_type)->set(mem_lam->dbg());
         eta_exp_->new2old(phi_lam, mem_lam);
         world().DLOG("new phi_lam '{}'", phi_lam);
 
@@ -131,13 +131,13 @@ const Def* SSAConstr::mem2phi(const App* app, Lam* mem_lam) {
     world().DLOG("mem_lam => phi_lam: '{}': '{}' => '{}': '{}'", mem_lam, mem_lam->type()->dom(), phi_lam,
                  phi_lam->dom());
     auto sloxy = sloxys.begin();
-    DefArray args(num_phis, [&](auto) { return get_val(curr_nom(), *sloxy++); });
+    DefArray args(num_phis, [&](auto) { return get_val(curr_mut(), *sloxy++); });
     return world().app(phi_lam, merge_tuple(app->arg(), args));
 }
 
 undo_t SSAConstr::analyze(const Proxy* proxy) {
     if (proxy->tag() == Sloxy) {
-        auto sloxy_lam = proxy->op(0)->as_nom<Lam>();
+        auto sloxy_lam = proxy->op(0)->as_mut<Lam>();
 
         if (keep_.emplace(proxy).second) {
             world().DLOG("keep: '{}'; pointer needed", proxy);
@@ -157,12 +157,12 @@ undo_t SSAConstr::analyze(const Proxy* proxy) {
 
 undo_t SSAConstr::analyze(const Def* def) {
     for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
-        if (auto succ_lam = isa_workable(def->op(i)->isa_nom<Lam>())) {
+        if (auto succ_lam = isa_workable(def->op(i)->isa_mut<Lam>())) {
             auto& succ_info = data(succ_lam);
 
             // TODO this is a bit scruffy - maybe we can do better
-            if (succ_lam->is_basicblock() && succ_lam != curr_nom()) {
-                for (auto writable = data(curr_nom()).writable; auto&& w : writable) succ_info.writable.insert(w);
+            if (succ_lam->is_basicblock() && succ_lam != curr_mut()) {
+                for (auto writable = data(curr_mut()).writable; auto&& w : writable) succ_info.writable.insert(w);
             }
 
             if (!isa_callee(def, i)) {
@@ -170,8 +170,8 @@ undo_t SSAConstr::analyze(const Def* def) {
                     world().DLOG("several preds in non-callee position; wait for EtaExp");
                     succ_info.pred = nullptr;
                 } else {
-                    world().DLOG("'{}' -> '{}'", curr_nom(), succ_lam);
-                    succ_info.pred = curr_nom();
+                    world().DLOG("'{}' -> '{}'", curr_mut(), succ_lam);
+                    succ_info.pred = curr_mut();
                 }
             }
         }

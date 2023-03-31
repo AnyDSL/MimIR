@@ -30,7 +30,7 @@ static const Def* insert_ret(const Def* def, const Def* ret) {
 
 Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
     assert(lam && "make_stub: not a lam");
-    if (auto i = old2new_.find(lam); i != old2new_.end() && i->second->isa_nom<Lam>()) return i->second->as_nom<Lam>();
+    if (auto i = old2new_.find(lam); i != old2new_.end() && i->second->isa_mut<Lam>()) return i->second->as_mut<Lam>();
     auto& w      = world();
     auto new_dom = w.sigma(Array<const Def*>(lam->num_doms(), [&](auto i) -> const Def* {
         auto new_dom = rewrite(lam->dom(i));
@@ -84,7 +84,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
 
     if (auto i = old2new_.find(def); i != old2new_.end()) return i->second;
     if (auto var = def->isa<Var>();
-        var && var->nom()->isa_nom<Lam>()) // TODO put this conditions inside the assert below
+        var && var->mut()->isa_mut<Lam>()) // TODO put this conditions inside the assert below
         assert(false && "Lam vars should appear in a map!");
 
     auto new_type = rewrite(def->type());
@@ -103,7 +103,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
                 return map(def, env_type());
             else
                 return map(def, rewrite(tuple)->proj(*idx - 1));
-        } else if (auto var = tuple->isa<Var>(); var && isa_clos_type(var->nom())) {
+        } else if (auto var = tuple->isa<Var>(); var && isa_clos_type(var->mut())) {
             assert(false && "proj fst type form closure type");
         }
     }
@@ -126,17 +126,17 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
         fn  = core::op_bitcast(new_type->op(0), fn);
         env = core::op_bitcast(new_type->op(1), env);
         return map(def, w.tuple({fn, env}));
-    } else if (auto lam = def->isa_nom<Lam>()) {
+    } else if (auto lam = def->isa_mut<Lam>()) {
         return make_stub(lam, No_Env, false);
-    } else if (auto nom = def->isa_nom()) {
-        assert(!isa_clos_type(nom));
-        auto new_nom = nom->stub(w, new_type);
-        map(nom, new_nom);
-        for (size_t i = 0; i < nom->num_ops(); i++)
-            if (nom->op(i)) new_nom->set(i, rewrite(nom->op(i)));
-        if (!def->isa_nom<Global>() && Checker(w).equiv(nom, new_nom)) return map(nom, nom);
-        if (auto restruct = new_nom->restructure()) return map(nom, restruct);
-        return new_nom;
+    } else if (auto mut = def->isa_mut()) {
+        assert(!isa_clos_type(mut));
+        auto new_mut = mut->stub(w, new_type);
+        map(mut, new_mut);
+        for (size_t i = 0; i < mut->num_ops(); i++)
+            if (mut->op(i)) new_mut->set(i, rewrite(mut->op(i)));
+        if (!def->isa_mut<Global>() && Checker(w).equiv(mut, new_mut)) return map(mut, mut);
+        if (auto restruct = new_mut->restructure()) return map(mut, restruct);
+        return new_mut;
     } else if (def->isa<Axiom>()) {
         return def;
     } else {

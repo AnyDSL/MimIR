@@ -36,7 +36,7 @@ Lam* Lam::set_filter(Filter filter) {
 }
 
 Lam* Lam::app(Filter f, const Def* callee, const Def* arg) {
-    assert(isa_nom() && !filter());
+    assert(isa_mut() && !filter());
     set_filter(f);
     return set_body(world().app(callee, arg));
 }

@@ -52,7 +52,7 @@ static Ref arrTyOfMatrixTy(Ref S, Ref T) {
     return arr_ty;
 }
 
-Ref LowerMatrixLowLevel::rewrite_structural(Ref def) {
+Ref LowerMatrixLowLevel::rewrite_imm(Ref def) {
     auto& world = def->world();
 
     assert(!match<matrix::map_reduce>(def) && "map_reduce should have been lowered to for loops by now");
@@ -145,7 +145,7 @@ Ref LowerMatrixLowLevel::rewrite_structural(Ref def) {
     // ignore unapplied axioms to avoid spurious type replacements
     if (def->isa<Axiom>()) return def;
 
-    return Rewriter::rewrite_structural(def); // continue recursive rewriting with everything else
+    return Rewriter::rewrite_imm(def); // continue recursive rewriting with everything else
 }
 
 } // namespace thorin::matrix

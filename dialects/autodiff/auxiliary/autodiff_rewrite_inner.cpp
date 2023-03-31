@@ -64,7 +64,7 @@ const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
         world.DLOG("pb type is {}", pb_ty);
         auto aug_ty = world.cn({aug_dom, pb_ty});
         world.DLOG("augmented type is {}", aug_ty);
-        auto aug_lam              = world.nom_lam(aug_ty)->set("aug_"s + *lam->sym());
+        auto aug_lam              = world.mut_lam(aug_ty)->set("aug_"s + *lam->sym());
         auto aug_var              = aug_lam->var((nat_t)0);
         augmented[lam->var()]     = aug_var;
         augmented[lam]            = aug_lam; // TODO: only one of these two
@@ -117,7 +117,7 @@ const Def* AutoDiffEval::augment_extract(const Extract* ext, Lam* f, Lam* f_diff
         assert(partial_pullback.count(aug_tuple));
         auto tuple_pb = partial_pullback[aug_tuple];
         auto pb_ty    = pullback_type(ext->type(), f_arg_ty);
-        auto pb_fun   = world.nom_lam(pb_ty)->set("extract_pb");
+        auto pb_fun   = world.mut_lam(pb_ty)->set("extract_pb");
         world.DLOG("Pullback: {} : {}", pb_fun, pb_fun->type());
         auto pb_tangent = pb_fun->var(0_s)->set("s");
         auto tuple_tan  = world.insert(op_zero(aug_tuple->type()), aug_index, pb_tangent)->set("tup_s");
@@ -154,7 +154,7 @@ const Def* AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
     //      ((cps2ds e0*) (s#0), ..., (cps2ds em*) (s#m))
     // ```
     auto pb_ty = pullback_type(tup->type(), f_arg_ty);
-    auto pb    = world.nom_lam(pb_ty)->set("tup_pb");
+    auto pb    = world.mut_lam(pb_ty)->set("tup_pb");
     world.DLOG("Augmented tuple: {} : {}", aug_tup, aug_tup->type());
     world.DLOG("Tuple Pullback: {} : {}", pb, pb->type());
     world.DLOG("shadow pb: {} : {}", shadow_pb, shadow_pb->type());
@@ -190,12 +190,12 @@ const Def* AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
     world.DLOG("shadow pb of pack: {} : {}", pb_pack, pb_pack->type());
 
     auto pb_type = pullback_type(pack->type(), f_arg_ty);
-    auto pb      = world.nom_lam(pb_type)->set("pack_pb");
+    auto pb      = world.mut_lam(pb_type)->set("pack_pb");
 
     world.DLOG("pb of pack: {} : {}", pb, pb_type);
 
     auto f_arg_ty_diff = tangent_type_fun(f_arg_ty);
-    auto app_pb        = world.nom_pack(world.arr(aug_shape, f_arg_ty_diff));
+    auto app_pb        = world.mut_pack(world.arr(aug_shape, f_arg_ty_diff));
 
     // TODO: special case for const width (special tuple)
 
@@ -307,7 +307,7 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         world.DLOG("ret_g_deriv_ty: {} ", ret_g_deriv_ty);
         auto c1_ty = ret_g_deriv_ty->as<Pi>();
         world.DLOG("c1_ty: (cn[X, cn[X+, cn E+]]) {}", c1_ty);
-        auto c1   = world.nom_lam(c1_ty)->set("c1");
+        auto c1   = world.mut_lam(c1_ty)->set("c1");
         auto res  = c1->var((nat_t)0);
         auto r_pb = c1->var(1);
         c1->app(true, aug_cont, {res, compose_continuation(e_pb, r_pb)});
@@ -343,12 +343,12 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
     } else if (auto var = def->isa<Var>()) {
         world.DLOG("Augment variable: {}", var);
         return augment_var(var, f, f_diff);
-    } else if (auto lam = def->isa_nom<Lam>()) {
-        world.DLOG("Augment nom lambda: {}", lam);
+    } else if (auto lam = def->isa_mut<Lam>()) {
+        world.DLOG("Augment mut lambda: {}", lam);
         return augment_lam(lam, f, f_diff);
     } else if (auto lam = def->isa<Lam>()) {
         world.ELOG("Augment lambda: {}", lam);
-        assert(false && "can not handle non-nominal lambdas");
+        assert(false && "can not handle non-mutable lambdas");
     } else if (auto lit = def->isa<Lit>()) {
         world.DLOG("Augment literal: {}", def);
         return augment_lit(lit, f, f_diff);
@@ -356,7 +356,7 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         world.DLOG("Augment tuple: {}", def);
         return augment_tuple(tup, f, f_diff);
     } else if (auto pack = def->isa<Pack>()) {
-        // TODO: handle nom packs (dependencies in the pack) (=> see paper about vectors)
+        // TODO: handle mut packs (dependencies in the pack) (=> see paper about vectors)
         auto shape = pack->arity(); // TODO: arity vs shape
         auto body  = pack->body();
         world.DLOG("Augment pack: {} : {} with {}", shape, shape->type(), body);

@@ -19,7 +19,7 @@ static const App* eta_rule(Lam* lam) {
 const Def* EtaRed::rewrite(const Def* def) {
     for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
         // TODO (ClosureConv): Factor this out
-        if (auto lam = def->op(i)->isa_nom<Lam>(); (!callee_only_ || isa_callee(def, i)) && lam && lam->is_set()) {
+        if (auto lam = def->op(i)->isa_mut<Lam>(); (!callee_only_ || isa_callee(def, i)) && lam && lam->is_set()) {
             if (auto app = eta_rule(lam); app && !irreducible_.contains(lam)) {
                 data().emplace(lam, Lattice::Reduce);
                 auto new_def = def->refine(i, app->callee());
@@ -33,7 +33,7 @@ const Def* EtaRed::rewrite(const Def* def) {
 }
 
 undo_t EtaRed::analyze(const Var* var) {
-    if (auto lam = var->nom()->isa_nom<Lam>()) {
+    if (auto lam = var->mut()->isa_mut<Lam>()) {
         auto [_, l] = *data().emplace(lam, Lattice::Bot).first;
         auto succ   = irreducible_.emplace(lam).second;
         if (l == Lattice::Reduce && succ) {

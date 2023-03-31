@@ -13,9 +13,9 @@ using namespace std::literals;
 // * Inline: These Defs are *always* displayed with all of its operands "inline".
 //   E.g.: (1, 2, 3).
 // * All other Defs are referenced by its name/unique_name (see id) when they appear as an operand.
-// * Nominals are either classifed as "decl" (see isa_decl).
+// * Mutables are either classifed as "decl" (see isa_decl).
 //   In this case, recursing through the Defs' operands stops and this particular Decl is dumped as its own thing.
-// * Or - if they are not a "decl" - they are basicallally handled like structurals.
+// * Or - if they are not a "decl" - they are basicallally handled like immutables.
 
 namespace thorin {
 
@@ -24,8 +24,8 @@ namespace thorin {
  */
 
 static Def* isa_decl(const Def* def) {
-    if (auto nom = def->isa_nom()) {
-        if (nom->is_external() || nom->isa<Lam>() || (nom->sym() && nom->sym() != '_')) return nom;
+    if (auto mut = def->isa_mut()) {
+        if (mut->is_external() || mut->isa<Lam>() || (mut->sym() && mut->sym() != '_')) return mut;
     }
     return nullptr;
 }
@@ -57,8 +57,8 @@ struct Inline {
     explicit operator bool() const {
         if (def_->dep_const()) return true;
 
-        if (auto nom = def_->isa_nom()) {
-            if (isa_decl(nom)) return false;
+        if (auto mut = def_->isa_mut()) {
+            if (isa_decl(mut)) return false;
             return true;
         }
 
@@ -135,18 +135,18 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         return print(os, "{}", var->unique_name());
     } else if (auto pi = u->isa<Pi>()) {
         if (pi->is_cn()) return print(os, ".Cn {}", pi->dom());
-        if (auto nom = pi->isa_nom<Pi>(); nom && nom->var())
-            return print(os, "Π {}: {} → {}", nom->var(), pi->dom(), pi->codom());
+        if (auto mut = pi->isa_mut<Pi>(); mut && mut->var())
+            return print(os, "Π {}: {} → {}", mut->var(), pi->dom(), pi->codom());
         return print(os, "Π {} → {}", pi->dom(), pi->codom());
     } else if (auto lam = u->isa<Lam>()) {
         return print(os, "{}, {}", lam->filter(), lam->body());
     } else if (auto app = u->isa<App>()) {
         return print(os, "{} {}", LPrec(app->callee(), app), RPrec(app, app->arg()));
     } else if (auto sigma = u->isa<Sigma>()) {
-        if (auto nom = sigma->isa_nom<Sigma>(); nom && nom->var()) {
+        if (auto mut = sigma->isa_mut<Sigma>(); mut && mut->var()) {
             size_t i = 0;
             return print(os, "[{, }]", Elem(sigma->ops(), [&](auto op) {
-                             if (auto v = nom->var(i++))
+                             if (auto v = mut->var(i++))
                                  print(os, "{}: {}", v, op);
                              else
                                  os << op;
@@ -155,20 +155,20 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         return print(os, "[{, }]", sigma->ops());
     } else if (auto tuple = u->isa<Tuple>()) {
         print(os, "({, })", tuple->ops());
-        return tuple->type()->isa_nom() ? print(os, ":{}", tuple->type()) : os;
+        return tuple->type()->isa_mut() ? print(os, ":{}", tuple->type()) : os;
     } else if (auto arr = u->isa<Arr>()) {
-        if (auto nom = arr->isa_nom<Arr>(); nom && nom->var())
-            return print(os, "«{}: {}; {}»", nom->var(), nom->shape(), nom->body());
+        if (auto mut = arr->isa_mut<Arr>(); mut && mut->var())
+            return print(os, "«{}: {}; {}»", mut->var(), mut->shape(), mut->body());
         return print(os, "«{}; {}»", arr->shape(), arr->body());
     } else if (auto pack = u->isa<Pack>()) {
-        if (auto nom = pack->isa_nom<Pack>(); nom && nom->var())
-            return print(os, "‹{}: {}; {}›", nom->var(), nom->shape(), nom->body());
+        if (auto mut = pack->isa_mut<Pack>(); mut && mut->var())
+            return print(os, "‹{}: {}; {}›", mut->var(), mut->shape(), mut->body());
         return print(os, "‹{}; {}›", pack->shape(), pack->body());
     } else if (auto proxy = u->isa<Proxy>()) {
         return print(os, ".proxy#{}#{} {, }", proxy->pass(), proxy->tag(), proxy->ops());
     } else if (auto bound = u->isa<Bound>()) {
         auto op = bound->isa<Join>() ? "∪" : "∩";
-        if (auto nom = u->isa_nom()) print(os, "{}{}: {}", op, nom->unique_name(), nom->type());
+        if (auto mut = u->isa_mut()) print(os, "{}{}: {}", op, mut->unique_name(), mut->type());
         return print(os, "{}({, })", op, bound->ops());
     }
 
@@ -184,7 +184,7 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
 /// This thing operates in two modes:
 /// 1. The output of decls is driven by the DepTree.
 /// 2. Alternatively, decls are output as soon as they appear somewhere during recurse%ing.
-///     Then, they are pushed to Dumper::noms.
+///     Then, they are pushed to Dumper::muts.
 class Dumper {
 public:
     Dumper(std::ostream& os, const DepTree* dep = nullptr)
@@ -201,17 +201,17 @@ public:
     std::ostream& os;
     const DepTree* dep;
     Tab tab;
-    unique_queue<NomSet> noms;
+    unique_queue<MutSet> muts;
     DefSet defs;
 };
 
-void Dumper::dump(Def* nom) {
-    if (auto lam = nom->isa<Lam>()) {
+void Dumper::dump(Def* mut) {
+    if (auto lam = mut->isa<Lam>()) {
         dump(lam);
         return;
     }
 
-    auto nom_prefix = [&](const Def* def) {
+    auto mut_prefix = [&](const Def* def) {
         if (def->isa<Sigma>()) return ".Sigma";
         if (def->isa<Arr>()) return ".Arr";
         if (def->isa<Pack>()) return ".pack";
@@ -219,7 +219,7 @@ void Dumper::dump(Def* nom) {
         unreachable();
     };
 
-    auto nom_op0 = [&](const Def* def) -> std::ostream& {
+    auto mut_op0 = [&](const Def* def) -> std::ostream& {
         if (auto sig = def->isa<Sigma>()) return print(os, ", {}", sig->num_ops());
         if (auto arr = def->isa<Arr>()) return print(os, ", {}", arr->shape());
         if (auto pack = def->isa<Pack>()) return print(os, ", {}", pack->shape());
@@ -227,30 +227,30 @@ void Dumper::dump(Def* nom) {
         unreachable();
     };
 
-    if (!nom->is_set()) {
-        tab.print(os, "{}: {} = {{ <unset> }};", id(nom), nom->type());
+    if (!mut->is_set()) {
+        tab.print(os, "{}: {} = {{ <unset> }};", id(mut), mut->type());
         return;
     }
 
-    tab.print(os, "{} {}{}: {}", nom_prefix(nom), external(nom), id(nom), nom->type());
-    nom_op0(nom);
-    if (nom->var()) { // TODO rewrite with dedicated methods
-        if (auto e = nom->num_vars(); e != 1) {
-            print(os, "{, }", Elem(nom->vars(), [&](auto def) {
+    tab.print(os, "{} {}{}: {}", mut_prefix(mut), external(mut), id(mut), mut->type());
+    mut_op0(mut);
+    if (mut->var()) { // TODO rewrite with dedicated methods
+        if (auto e = mut->num_vars(); e != 1) {
+            print(os, "{, }", Elem(mut->vars(), [&](auto def) {
                       if (def)
                           os << def->unique_name();
                       else
                           os << "<TODO>";
                   }));
         } else {
-            print(os, ", @{}", nom->var()->unique_name());
+            print(os, ", @{}", mut->var()->unique_name());
         }
     }
     tab.println(os, " = {{");
     ++tab;
-    if (dep) recurse(dep->nom2node(nom));
-    recurse(nom);
-    tab.print(os, "{, }\n", nom->ops());
+    if (dep) recurse(dep->mut2node(mut));
+    recurse(mut);
+    tab.print(os, "{, }\n", mut->ops());
     --tab;
     tab.print(os, "}};\n");
 }
@@ -266,10 +266,10 @@ void Dumper::dump(Lam* lam) {
 
     ++tab;
     if (lam->is_set()) {
-        if (dep) recurse(dep->nom2node(lam));
+        if (dep) recurse(dep->mut2node(lam));
         recurse(lam->filter());
         recurse(lam->body(), true);
-        if (lam->body()->isa_nom())
+        if (lam->body()->isa_mut())
             tab.print(os, "{}\n", lam->body());
         else
             tab.print(os, "{}\n", Inline(lam->body()));
@@ -301,12 +301,12 @@ void Dumper::dump_ptrn(const Def* def, const Def* type) {
 
 void Dumper::recurse(const DepNode* node) {
     for (auto child : node->children())
-        if (auto nom = isa_decl(child->nom())) dump(nom);
+        if (auto mut = isa_decl(child->mut())) dump(mut);
 }
 
 void Dumper::recurse(const Def* def, bool first /*= false*/) {
-    if (auto nom = isa_decl(def)) {
-        if (!dep) noms.push(nom);
+    if (auto mut = isa_decl(def)) {
+        if (!dep) muts.push(mut);
         return;
     }
 
@@ -340,15 +340,15 @@ std::ostream& Def::stream(std::ostream& os, int max) const {
 
     if (max == 0) {
         os << this << std::endl;
-    } else if (auto nom = isa_decl(this)) {
-        dumper.noms.push(nom);
+    } else if (auto mut = isa_decl(this)) {
+        dumper.muts.push(mut);
     } else {
         dumper.recurse(this);
         dumper.tab.print(os, "{}\n", Inline(this));
         --max;
     }
 
-    for (; !dumper.noms.empty() && max > 0; --max) dumper.dump(dumper.noms.pop());
+    for (; !dumper.muts.empty() && max > 0; --max) dumper.dump(dumper.muts.pop());
 
     return os;
 }
@@ -376,8 +376,8 @@ void World::dump(std::ostream& os) {
 
     if (flags().dump_recursive) {
         auto dumper = Dumper(os);
-        for (const auto& [_, nom] : externals()) dumper.noms.push(nom);
-        while (!dumper.noms.empty()) dumper.dump(dumper.noms.pop());
+        for (const auto& [_, mut] : externals()) dumper.muts.push(mut);
+        while (!dumper.muts.empty()) dumper.dump(dumper.muts.pop());
     } else {
         auto dep    = DepTree(*this);
         auto dumper = Dumper(os, &dep);

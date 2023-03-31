@@ -16,16 +16,16 @@ Axiom::Axiom(NormalizeFn normalizer, u8 curry, u8 trip, const Def* type, plugin_
 std::pair<u8, u8> Axiom::infer_curry_and_trip(const Def* type) {
     u8 curry = 0;
     u8 trip  = 0;
-    NomSet done;
+    MutSet done;
     while (auto pi = type->isa<Pi>()) {
-        if (auto nom = pi->isa_nom()) {
-            if (auto [_, ins] = done.emplace(nom); !ins) {
+        if (auto mut = pi->isa_mut()) {
+            if (auto [_, ins] = done.emplace(mut); !ins) {
                 // infer trip
                 auto curr = pi;
                 do {
                     ++trip;
                     curr = curr->codom()->as<Pi>();
-                } while (curr != nom);
+                } while (curr != mut);
                 break;
             }
         }

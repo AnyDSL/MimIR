@@ -7,7 +7,7 @@
 
 namespace thorin {
 
-// TODO should also work for nominal non-dependent sigmas
+// TODO should also work for mutable non-dependent sigmas
 
 // TODO merge with make_scalar
 bool Scalerize::should_expand(Lam* lam) {
@@ -15,14 +15,14 @@ bool Scalerize::should_expand(Lam* lam) {
     if (auto i = tup2sca_.find(lam); i != tup2sca_.end() && i->second && i->second == lam) return false;
 
     auto pi = lam->type();
-    if (lam->num_doms() > 1 && pi->is_cn() && !pi->isa_nom()) return true; // no ugly dependent pis
+    if (lam->num_doms() > 1 && pi->is_cn() && !pi->isa_mut()) return true; // no ugly dependent pis
 
     tup2sca_[lam] = lam;
     return false;
 }
 
 Lam* Scalerize::make_scalar(const Def* def) {
-    auto tup_lam = def->isa_nom<Lam>();
+    auto tup_lam = def->isa_mut<Lam>();
     assert(tup_lam);
     if (auto i = tup2sca_.find(tup_lam); i != tup2sca_.end()) return i->second;
 
@@ -58,13 +58,13 @@ const Def* Scalerize::rewrite(const Def* def) {
     if (auto app = def->isa<App>()) {
         const Def* sca_callee = app->callee();
 
-        if (auto tup_lam = sca_callee->isa_nom<Lam>(); should_expand(tup_lam)) {
+        if (auto tup_lam = sca_callee->isa_mut<Lam>(); should_expand(tup_lam)) {
             sca_callee = make_scalar(tup_lam);
 
         } else if (auto proj = sca_callee->isa<Extract>()) {
             auto tuple = proj->tuple()->isa<Tuple>();
             if (tuple && std::all_of(tuple->ops().begin(), tuple->ops().end(),
-                                     [&](const Def* op) { return should_expand(op->isa_nom<Lam>()); })) {
+                                     [&](const Def* op) { return should_expand(op->isa_mut<Lam>()); })) {
                 auto new_tuple = w.tuple(DefArray(tuple->num_ops(), [&](auto i) { return make_scalar(tuple->op(i)); }));
                 sca_callee     = w.extract(new_tuple, proj->index());
                 w.DLOG("Expand tuple: {, } ~> {, }", tuple->ops(), new_tuple->ops());

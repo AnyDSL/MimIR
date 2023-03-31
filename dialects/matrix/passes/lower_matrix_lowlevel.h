@@ -18,7 +18,7 @@ public:
     LowerMatrixLowLevel(World& world)
         : RWPhase(world, "lower_matrix_lowlevel") {}
 
-    Ref rewrite_structural(Ref) override;
+    Ref rewrite_imm(Ref) override;
 
 private:
     Def2Def rewritten;

@@ -22,10 +22,10 @@ public:
         , lam2nodes_() {}
 
     /// FreeDefAna::run will compute free defs (FD) that appear in @p lam%s body.
-    /// Nominal Def%s are only considered free if they are annotated with Clos::freeBB or
+    /// Mutable Def%s are only considered free if they are annotated with Clos::freeBB or
     /// Clos::fstclassBB.
-    /// Otherwise, we add a nom's free defs in order to build a closure for it.
-    /// Structural Def%s containing nominals are broken up if necessary.
+    /// Otherwise, we add a mut's free defs in order to build a closure for it.
+    /// Structural Def%s containing mutable are broken up if necessary.
     DefSet& run(Lam* lam);
 
 private:
@@ -35,10 +35,10 @@ private:
     using NodeQueue = std::queue<Node*>;
     using Nodes     = std::vector<Node*>;
 
-    /// In order to avoid recomputing FDs sets, sets are computed for the subgraph reachable from nom and memorized.
+    /// In order to avoid recomputing FDs sets, sets are computed for the subgraph reachable from mut and memorized.
     /// `pass_id` determines if the node has been initialized.
     struct Node {
-        Def* nom;
+        Def* mut;
         DefSet fvs;
         Nodes preds;
         Nodes succs;
@@ -63,7 +63,7 @@ private:
     /// Split a free Def. This may create more Nodes as more reachable nodes are discovered.
     void split_fd(Node* node, const Def* fv, bool& is_init, NodeQueue& worklist);
 
-    std::pair<Node*, bool> build_node(Def* nom, NodeQueue& worklist);
+    std::pair<Node*, bool> build_node(Def* mut, NodeQueue& worklist);
     void run(NodeQueue& worklist);
 
     World& world() { return world_; }
@@ -114,7 +114,7 @@ private:
     /// @{
     void rewrite_body(Lam* lam, Def2Def& subst);
     const Def* rewrite(const Def* old_def, Def2Def& subst);
-    Def* rewrite_nom(Def* nom, const Def* new_type, Def2Def& subst);
+    Def* rewrite_mut(Def* mut, const Def* new_type, Def2Def& subst);
     const Pi* rewrite_type_cn(const Pi*, Def2Def& subst);
     const Def* type_clos(const Pi* pi, Def2Def& subst, const Def* ent_type = nullptr);
     /// @}
@@ -122,10 +122,10 @@ private:
     FreeDefAna fva_;
     DefMap<Stub> closures_;
 
-    // Noms that must be re rewritten uniformly across the whole module:
+    // Muts that must be re rewritten uniformly across the whole module:
     // Currently, this includes globals and closure types (for typechecking to go through).
-    // Such noms must not depend on defs that live inside the scope of a continuation!
-    Def2Def glob_noms_;
+    // Such muts must not depend on defs that live inside the scope of a continuation!
+    Def2Def glob_muts_;
 
     std::queue<const Def*> worklist_;
 };

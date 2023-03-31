@@ -6,7 +6,7 @@
 
 namespace thorin::clos {
 
-// FIXME: these guys do not work if another pass rewrites curr_nom()'s body
+// FIXME: these guys do not work if another pass rewrites curr_mut()'s body
 static bool isa_cont(const App* body, const Def* def, size_t i) {
     return body->callee_type()->is_returning() && body->arg() == def && i == def->num_ops() - 1;
 }
@@ -33,22 +33,22 @@ Lam* ClosConvPrep::scope(Lam* lam) {
 }
 
 void ClosConvPrep::enter() {
-    if (curr_nom()->type()->is_returning()) {
-        lam2fscope_[curr_nom()] = curr_nom();
-        world().DLOG("scope {} -> {}", curr_nom(), curr_nom());
-        scope_ = std::make_unique<Scope>(curr_nom());
+    if (curr_mut()->type()->is_returning()) {
+        lam2fscope_[curr_mut()] = curr_mut();
+        world().DLOG("scope {} -> {}", curr_mut(), curr_mut());
+        scope_ = std::make_unique<Scope>(curr_mut());
         for (auto def : scope_->bound()) {
             assert(def);
-            if (auto bb_lam = def->isa_nom<Lam>(); bb_lam && bb_lam->is_basicblock()) {
-                world().DLOG("scope {} -> {}", bb_lam, curr_nom());
-                lam2fscope_[bb_lam] = curr_nom();
+            if (auto bb_lam = def->isa_mut<Lam>(); bb_lam && bb_lam->is_basicblock()) {
+                world().DLOG("scope {} -> {}", bb_lam, curr_mut());
+                lam2fscope_[bb_lam] = curr_mut();
             }
         }
     }
 
-    auto body = curr_nom()->body()->isa<App>();
-    // Skip if the nominal is already wrapped or the body is undefined/no continuation.
-    ignore_ = !(body && body->callee_type()->is_cn()) || wrapper_.contains(curr_nom());
+    auto body = curr_mut()->body()->isa<App>();
+    // Skip if the mutable is already wrapped or the body is undefined/no continuation.
+    ignore_ = !(body && body->callee_type()->is_cn()) || wrapper_.contains(curr_mut());
 }
 
 const App* ClosConvPrep::rewrite_arg(const App* app) {
@@ -74,14 +74,14 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
             w.DLOG("found return var from enclosing scope: {}", op);
             return refine(eta_wrap(op, attr::freeBB)->set("free_ret"));
         }
-        if (auto bb_lam = op->isa_nom<Lam>(); bb_lam && bb_lam->is_basicblock() && from_outer_scope(bb_lam)) {
+        if (auto bb_lam = op->isa_mut<Lam>(); bb_lam && bb_lam->is_basicblock() && from_outer_scope(bb_lam)) {
             w.DLOG("found BB from enclosing scope {}", op);
             return refine(thorin::clos::op(attr::freeBB, op));
         }
         if (isa_cont(app, arg, i)) {
             if (match<attr>(attr::ret, op) || isa_retvar(op)) {
                 return app;
-            } else if (auto contlam = op->isa_nom<Lam>()) {
+            } else if (auto contlam = op->isa_mut<Lam>()) {
                 return refine(thorin::clos::op(attr::ret, contlam));
             } else {
                 auto wrapper = eta_wrap(op, attr::ret)->set("eta_cont");
@@ -91,7 +91,7 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
         }
 
         if (!isa_callee_br(app, arg, i)) {
-            if (auto bb_lam = op->isa_nom<Lam>(); bb_lam && bb_lam->is_basicblock()) {
+            if (auto bb_lam = op->isa_mut<Lam>(); bb_lam && bb_lam->is_basicblock()) {
                 w.DLOG("found firstclass use of BB: {}", bb_lam);
                 return refine(thorin::clos::op(attr::fstclassBB, bb_lam));
             }
@@ -114,7 +114,7 @@ const App* ClosConvPrep::rewrite_callee(const App* app) {
             // Eta-Expand branches
             if (branches->isa<Tuple>() && branches->type()->isa<Arr>()) {
                 for (auto i = 0u; i < branches->num_ops(); i++) {
-                    if (!branches->op(i)->isa_nom<Lam>()) {
+                    if (!branches->op(i)->isa_mut<Lam>()) {
                         auto wrapper = eta_wrap(branches->op(i), attr::bot)->set("eta_br");
                         w.DLOG("eta wrap branch: {} -> {}", branches->op(i), wrapper);
                         branches = branches->refine(i, wrapper);

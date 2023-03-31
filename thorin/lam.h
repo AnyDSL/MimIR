@@ -9,10 +9,10 @@ namespace thorin {
 /// A function type AKA Pi type.
 class Pi : public Def {
 protected:
-    /// Constructor for a *structural* Pi.
+    /// Constructor for an *immutable* Pi.
     Pi(const Def* type, const Def* dom, const Def* codom, bool implicit)
         : Def(Node, type, {dom, codom}, implicit ? 1 : 0) {}
-    /// Constructor for a *nom*inal Pi.
+    /// Constructor for a *mut*able Pi.
     Pi(const Def* type, bool implicit)
         : Def(Node, type, 2, implicit ? 1 : 0) {}
 
@@ -155,8 +155,8 @@ inline Lam* isa_workable(Lam* lam) {
 }
 
 inline const App* isa_callee(const Def* def, size_t i) { return i == 0 ? def->isa<App>() : nullptr; }
-inline std::pair<const App*, Lam*> isa_apped_nom_lam(const Def* def) {
-    if (auto app = def->isa<App>()) return {app, app->callee()->isa_nom<Lam>()};
+inline std::pair<const App*, Lam*> isa_apped_mut_lam(const Def* def) {
+    if (auto app = def->isa<App>()) return {app, app->callee()->isa_mut<Lam>()};
     return {nullptr, nullptr};
 }
 

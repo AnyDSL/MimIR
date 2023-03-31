@@ -9,7 +9,7 @@
 namespace thorin::direct {
 
 void CPS2DS::enter() {
-    Lam* lam = curr_nom();
+    Lam* lam = curr_mut();
     rewrite_lam(lam);
 }
 
@@ -17,8 +17,8 @@ void CPS2DS::rewrite_lam(Lam* lam) {
     if (rewritten_lams.contains(lam)) return;
     rewritten_lams.insert(lam);
 
-    if (!lam->isa_nom()) {
-        lam->world().DLOG("skipped non-nom {}", lam);
+    if (!lam->isa_mut()) {
+        lam->world().DLOG("skipped imm {}", lam);
         return;
     }
     if (!lam->is_set()) {
@@ -102,12 +102,12 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
 
                         // TODO: use reduce (beta reduction)
                         const Def* inst_ret_ty;
-                        if (auto ty_pi = ty->isa_nom<Pi>()) {
+                        if (auto ty_pi = ty->isa_mut<Pi>()) {
                             auto ty_dom = ty_pi->var();
                             world.DLOG("replace ty_dom: {} : {} <{};{}>", ty_dom, ty_dom->type(), ty_dom->unique_name(),
                                        ty_dom->node_name());
 
-                            Scope r_scope{ty->as_nom()}; // scope that surrounds ret_ty
+                            Scope r_scope{ty->as_mut()}; // scope that surrounds ret_ty
                             inst_ret_ty = thorin::rewrite(ret_ty, ty_dom, new_arg, r_scope);
                             world.DLOG("inst_ret_ty {}", inst_ret_ty);
                         } else {
@@ -117,7 +117,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
                         auto new_name = world.append_suffix(curr_lam_->sym(), "_cps_cont");
 
                         // The continuation that receives the result of the cps function call.
-                        auto fun_cont = world.nom_lam(world.cn(inst_ret_ty))->set(new_name);
+                        auto fun_cont = world.mut_lam(world.cn(inst_ret_ty))->set(new_name);
                         rewritten_lams.insert(fun_cont);
                         // Generate the cps function call `f a` -> `f_cps(a,cont)`
                         auto cps_call = world.app(cps_fun, {new_arg, fun_cont})->set("cps_call");
@@ -150,7 +150,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
         return world.app(new_callee, new_arg);
     }
 
-    if (auto lam = def->isa_nom<Lam>()) {
+    if (auto lam = def->isa_mut<Lam>()) {
         rewrite_lam(lam);
         return lam;
     }

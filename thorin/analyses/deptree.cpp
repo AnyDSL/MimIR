@@ -7,35 +7,35 @@ namespace thorin {
 static void merge(VarSet& vars, VarSet&& other) { vars.insert(other.begin(), other.end()); }
 
 void DepTree::run() {
-    for (const auto& [_, nom] : world().externals()) run(nom);
+    for (const auto& [_, mut] : world().externals()) run(mut);
     adjust_depth(root_.get(), 0);
 }
 
-VarSet DepTree::run(Def* nom) {
-    auto [i, inserted] = nom2node_.emplace(nom, std::unique_ptr<DepNode>());
+VarSet DepTree::run(Def* mut) {
+    auto [i, inserted] = mut2node_.emplace(mut, std::unique_ptr<DepNode>());
     if (!inserted) {
-        if (auto i = def2vars_.find(nom); i != def2vars_.end()) return i->second;
+        if (auto i = def2vars_.find(mut); i != def2vars_.end()) return i->second;
         return {};
     }
 
-    i->second = std::make_unique<DepNode>(nom, stack_.size() + 1);
+    i->second = std::make_unique<DepNode>(mut, stack_.size() + 1);
     auto node = i->second.get();
     stack_.push_back(node);
 
-    auto result = run(nom, nom);
+    auto result = run(mut, mut);
     auto parent = root_.get();
     for (auto var : result) {
-        auto n = nom2node_[var->nom()].get();
+        auto n = mut2node_[var->mut()].get();
         if (!n) {
-            world().ELOG("var {} used before nom {} discovered, old var still around?", var, var->nom());
+            world().ELOG("var {} used before mut {} discovered, old var still around?", var, var->mut());
             world().ELOG("var {} : {} [{}]", var, var->type(), var->node_name());
-            world().ELOG("var nom {} : {}", var->nom(), var->nom()->type());
+            world().ELOG("var mut {} : {}", var->mut(), var->mut()->type());
         }
         assert(n && "Old var still around?");
         parent = n->depth() > parent->depth() ? n : parent;
     }
-    if (nom->is_external() && parent != root_.get()) {
-        world().WLOG("external {} would be hidden inside parent {}.", nom, parent->nom());
+    if (mut->is_external() && parent != root_.get()) {
+        world().WLOG("external {} would be hidden inside parent {}.", mut, parent->mut());
         node->set_parent(root_.get());
     } else
         node->set_parent(parent);
@@ -44,19 +44,19 @@ VarSet DepTree::run(Def* nom) {
     return result;
 }
 
-VarSet DepTree::run(Def* curr_nom, const Def* def) {
+VarSet DepTree::run(Def* curr_mut, const Def* def) {
     if (def->dep_const()) return {};
     if (auto i = def2vars_.find(def); i != def2vars_.end()) return i->second;
-    if (auto nom = def->isa_nom(); nom && curr_nom != nom) return run(nom);
+    if (auto mut = def->isa_mut(); mut && curr_mut != mut) return run(mut);
 
     VarSet result;
     if (auto var = def->isa<Var>()) {
         result.emplace(var);
     } else {
-        for (auto op : def->extended_ops()) merge(result, run(curr_nom, op));
+        for (auto op : def->extended_ops()) merge(result, run(curr_mut, op));
 
-        if (auto var = curr_nom->var()) {
-            if (curr_nom == def) result.erase(var);
+        if (auto var = curr_mut->var()) {
+            if (curr_mut == def) result.erase(var);
         }
     }
 
@@ -70,8 +70,8 @@ void DepTree::adjust_depth(DepNode* node, size_t depth) {
 }
 
 bool DepTree::depends(Def* a, Def* b) const {
-    auto n = nom2node(a);
-    auto m = nom2node(b);
+    auto n = mut2node(a);
+    auto m = mut2node(b);
 
     if (n->depth() < m->depth()) return false;
 

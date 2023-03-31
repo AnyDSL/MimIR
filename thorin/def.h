@@ -118,7 +118,7 @@ enum class Dep : unsigned {
     None  = 0,
     Axiom = 1 << 0,
     Infer = 1 << 1,
-    Nom   = 1 << 2,
+    Mut   = 1 << 2,
     Proxy = 1 << 3,
     Var   = 1 << 4,
 };
@@ -195,11 +195,9 @@ private:
     Def(const Def&)            = delete;
 
 protected:
-    /// Constructor for a structural Def.
-    Def(World*, node_t, const Def* type, Defs ops, flags_t flags);
+    Def(World*, node_t, const Def* type, Defs ops, flags_t flags); ///< Constructor for an *imm*utable Def.
     Def(node_t n, const Def* type, Defs ops, flags_t flags);
-    /// Constructor for a *nom*inal Def.
-    Def(node_t, const Def* type, size_t num_ops, flags_t flags);
+    Def(node_t, const Def* type, size_t num_ops, flags_t flags);   ///< Constructor for a *mut*able Def.
     virtual ~Def() = default;
 
 public:
@@ -243,11 +241,11 @@ public:
     size_t num_ops() const { return num_ops_; }
     ///@}
 
-    /// @name set/unset ops (nominals only)
+    /// @name set/unset ops (mutable only)
     ///@{
     /// You are supposed to set operands from left to right.
     /// You can change operands later on or even Def::unset them.
-    /// @warning But Thorin assumes that a nominal is "final" if its last operands is set.
+    /// @warning But Thorin assumes that a mutable is "final" if its last operands is set.
     /// So, don't set the last operand and leave the first one unset.
     Def* set(size_t i, const Def* def);
     Def* set(Defs ops) {
@@ -302,7 +300,7 @@ public:
     unsigned dep() const { return dep_; }
     bool has_dep(Dep d) const { return has_dep(unsigned(d)); }
     bool has_dep(unsigned u) const { return dep() & u; }
-    bool dep_const() const { return !has_dep(Dep::Nom | Dep::Var); }
+    bool dep_const() const { return !has_dep(Dep::Mut | Dep::Var); }
     ///@}
 
     /// @name proj
@@ -392,24 +390,24 @@ public:
     /// @name casts
     ///@{
     // clang-format off
-    template<class T = Def> const T* isa_structural() const { return isa_nom<T, true>(); }
-    template<class T = Def> const T*  as_structural() const { return  as_nom<T, true>(); }
+    template<class T = Def> const T* isa_imm() const { return isa_mut<T, true>(); }
+    template<class T = Def> const T*  as_imm() const { return  as_mut<T, true>(); }
     // clang-format on
 
-    /// If `this` is *nom*inal, it will cast constness away and perform a dynamic cast to @p T.
+    /// If `this` is *mut*able, it will cast constness away and perform a dynamic cast to @p T.
     template<class T = Def, bool invert = false>
-    T* isa_nom() const {
+    T* isa_mut() const {
         if constexpr (std::is_same<T, Def>::value)
-            return nom_ ^ invert ? const_cast<Def*>(this) : nullptr;
+            return mut_ ^ invert ? const_cast<Def*>(this) : nullptr;
         else
-            return nom_ ^ invert ? const_cast<Def*>(this)->template isa<T>() : nullptr;
+            return mut_ ^ invert ? const_cast<Def*>(this)->template isa<T>() : nullptr;
     }
 
-    /// Asserts that @c this is a *nom*inal, casts constness away and performs a static cast to @p T (checked in Debug
+    /// Asserts that @c this is a *mut*able, casts constness away and performs a static cast to @p T (checked in Debug
     /// build).
     template<class T = Def, bool invert = false>
-    T* as_nom() const {
-        assert(nom_ ^ invert);
+    T* as_mut() const {
+        assert(mut_ ^ invert);
         if constexpr (std::is_same<T, Def>::value)
             return const_cast<Def*>(this);
         else
@@ -419,14 +417,14 @@ public:
 
     /// @name var
     ///@{
-    /// Retrieve Var for *nominals*.
+    /// Retrieve Var for *mutable*.
     const Var* var();
     THORIN_PROJ(var, )
     ///@}
 
     /// @name reduce
     ///@{
-    /// Rewrites Def::ops by substituting `this` nominal's Var with @p arg.
+    /// Rewrites Def::ops by substituting `this` mutable's Var with @p arg.
     DefArray reduce(const Def* arg) const;
     DefArray reduce(const Def* arg);
     /// Transitively Def::reduce Lam%s, if `this` is an App.
@@ -485,10 +483,10 @@ protected:
 
     flags_t flags_;
     uint8_t node_;
-    unsigned nom_      : 1;
-    unsigned external_ : 1;
-    unsigned dep_      : 5;
-    unsigned padding_  : 1;
+    bool mut_      : 1;
+    bool external_ : 1;
+    unsigned dep_  : 5;
+    bool padding_  : 1;
     u8 curry_;
     u8 trip_;
     hash_t hash_;
@@ -547,21 +545,21 @@ using DefDefMap = absl::flat_hash_map<DefDef, To, DefDefHash, DefDefEq>;
 using DefDefSet = absl::flat_hash_set<DefDef, DefDefHash, DefDefEq>;
 
 template<class To>
-using NomMap  = GIDMap<Def*, To>;
-using NomSet  = GIDSet<Def*>;
-using Nom2Nom = NomMap<Def*>;
+using MutMap  = GIDMap<Def*, To>;
+using MutSet  = GIDSet<Def*>;
+using Mut2Mut = MutMap<Def*>;
 
 //------------------------------------------------------------------------------
 
 class Var : public Def {
 private:
-    Var(const Def* type, Def* nom)
-        : Def(Node, type, Defs{nom}, 0) {}
+    Var(const Def* type, Def* mut)
+        : Def(Node, type, Defs{mut}, 0) {}
 
 public:
     /// @name ops
     ///@{
-    Def* nom() const { return op(0)->as_nom(); }
+    Def* mut() const { return op(0)->as_mut(); }
     ///@}
 
     THORIN_DEF_MIXIN(Var)

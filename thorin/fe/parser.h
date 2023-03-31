@@ -147,7 +147,7 @@ private:
     Ref parse_decls(std::string_view ctxt);
     void parse_ax();
     void parse_let();
-    void parse_nom();
+    void parse_mut();
     /// If @p sym is **not** empty, this is an inline definition of @p sym,
     /// otherwise it's a standalone definition.
     void parse_def(Dbg dbg = {});

@@ -8,7 +8,7 @@
 namespace thorin::clos {
 
 static bool interesting_type(const Def* type, DefSet& visited) {
-    if (type->isa_nom()) visited.insert(type);
+    if (type->isa_mut()) visited.insert(type);
     if (isa_clos_type(type)) return true;
     if (auto sigma = type->isa<Sigma>())
         return std::any_of(sigma->ops().begin(), sigma->ops().end(),
@@ -52,7 +52,7 @@ undo_t LowerTypedClosPrep::set_esc(const Def* def) {
     auto undo = No_Undo;
     for (auto d : split(def, false)) {
         if (is_esc(d)) continue;
-        if (auto lam = d->isa_nom<Lam>())
+        if (auto lam = d->isa_mut<Lam>())
             undo = std::min(undo, undo_visit(lam));
         else if (auto [var, lam] = ca_isa_var<Lam>(d); var && lam)
             undo = std::min(undo, undo_visit(lam));
@@ -88,7 +88,7 @@ undo_t LowerTypedClosPrep::analyze(const Def* def) {
         for (auto i = 0_u64; i < app->num_args(); i++) {
             if (!interesting_type(app->arg(i))) continue;
             if (std::any_of(callees.begin(), callees.end(), [&](const Def* callee) {
-                    if (auto lam = callee->isa_nom<Lam>()) return is_esc(lam->var(i));
+                    if (auto lam = callee->isa_mut<Lam>()) return is_esc(lam->var(i));
                     return true;
                 }))
                 undo = std::min(undo, set_esc(app->arg(i)));

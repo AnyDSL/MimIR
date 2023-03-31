@@ -6,11 +6,9 @@ namespace thorin {
 
 class Sigma : public Def {
 private:
-    /// Constructor for a *structural* Sigma.
-    Sigma(const Def* type, Defs ops)
+    Sigma(const Def* type, Defs ops)    ///< Constructor for a *imm*utable Sigma.
         : Def(Node, type, ops, 0) {}
-    /// Constructor for a *nom*inal Sigma.
-    Sigma(const Def* type, size_t size)
+    Sigma(const Def* type, size_t size) ///< Constructor for a *mut*able Sigma.
         : Def(Node, type, size, 0) {}
 
 public:
@@ -41,11 +39,9 @@ private:
 
 class Arr : public Def {
 private:
-    /// Constructor for a *structural* Arr.
-    Arr(const Def* type, const Def* shape, const Def* body)
+    Arr(const Def* type, const Def* shape, const Def* body) /// Constructor for a *imm*utable Arr.
         : Def(Node, type, {shape, body}, 0) {}
-    /// Constructor for a *nom*inaml Arr.
-    Arr(const Def* type)
+    Arr(const Def* type)                                    /// Constructor for a *mut*able Arr.
         : Def(Node, type, 2, 0) {}
 
 public:
@@ -72,11 +68,9 @@ public:
 
 class Pack : public Def {
 private:
-    /// Constructor for a *structural* Pack.
-    Pack(const Def* type, const Def* body)
+    Pack(const Def* type, const Def* body) ///< Constructor for a *imm*utable Pack.
         : Def(Node, type, {body}, 0) {}
-    /// Constructor for a *nom*inaml Pack.
-    Pack(const Def* type)
+    Pack(const Def* type)                  ///< Constructor for a *mut*ablel Pack.
         : Def(Node, type, 1, 0) {}
 
 public:
@@ -142,7 +136,7 @@ size_t flatten(DefVec& ops, const Def* def, bool flatten_sigmas = true);
 /// Applies the reverse transformation on a pack/tuple, given the original type.
 const Def* unflatten(const Def* def, const Def* type);
 /// Same as unflatten, but uses the operands of a flattened pack/tuple directly.
-const Def* unflatten(Defs ops, const Def* type, bool flatten_noms = true);
+const Def* unflatten(Defs ops, const Def* type, bool flatten_muts = true);
 
 DefArray merge(const Def* def, Defs defs);
 const Def* merge_sigma(const Def* def, Defs defs);

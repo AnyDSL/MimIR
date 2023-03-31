@@ -13,10 +13,10 @@ const Def* refer(const Def* def) { return def ? Infer::find(def) : nullptr; }
 const Def* Infer::find(const Def* def) {
     // find root
     auto res = def;
-    for (auto infer = res->isa_nom<Infer>(); infer && infer->op(); infer = res->isa_nom<Infer>()) res = infer->op();
+    for (auto infer = res->isa_mut<Infer>(); infer && infer->op(); infer = res->isa_mut<Infer>()) res = infer->op();
 
     // path compression: set all Infers along the chain to res
-    for (auto infer = def->isa_nom<Infer>(); infer && infer->op(); infer = def->isa_nom<Infer>()) {
+    for (auto infer = def->isa_mut<Infer>(); infer && infer->op(); infer = def->isa_mut<Infer>()) {
         def = infer->op();
         infer->set(res);
     }
@@ -25,7 +25,7 @@ const Def* Infer::find(const Def* def) {
 
     // If we have an Infer as operand, try to get rid of it now.
     // TODO why does this not work?
-    // if (res->isa_structural() && res->has_dep(Dep::Infer)) {
+    // if (res->isa_imm() && res->has_dep(Dep::Infer)) {
     if (res->isa<Tuple>() || res->isa<Type>()) {
         auto new_type = refer(res->type());
         bool update   = new_type != res->type();
@@ -53,8 +53,8 @@ bool Checker::equiv(Ref r1, Ref r2) {
     if (d1 == d2) return true;
     if (!d1 || !d2) return false;
 
-    auto i1 = d1->isa_nom<Infer>();
-    auto i2 = d2->isa_nom<Infer>();
+    auto i1 = d1->isa_mut<Infer>();
+    auto i2 = d2->isa_mut<Infer>();
 
     if ((!i1 && !d1->is_set()) || (!i2 && !d2->is_set())) return false;
 
@@ -93,8 +93,8 @@ bool Checker::equiv_internal(Ref d1, Ref d2) {
     if (!equiv(d1->type(), d2->type())) return false;
     if (d1->isa<Top>() || d2->isa<Top>()) return equiv(d1->type(), d2->type());
 
-    if (auto n1 = d1->isa_nom()) {
-        if (auto n2 = d2->isa_nom()) vars_.emplace_back(n1, n2);
+    if (auto n1 = d1->isa_mut()) {
+        if (auto n2 = d2->isa_mut()) vars_.emplace_back(n1, n2);
     }
 
     if (d1->isa<Sigma, Arr>()) {
@@ -111,7 +111,7 @@ bool Checker::equiv_internal(Ref d1, Ref d2) {
 
     if (auto var = d1->isa<Var>()) { // vars are equal if they appeared under the same binder
         for (auto [n1, n2] : vars_)
-            if (var->nom() == n1) return d2->as<Var>()->nom() == n2;
+            if (var->mut() == n1) return d2->as<Var>()->mut() == n2;
         // TODO what if Var is free?
         return false;
     }
@@ -123,7 +123,7 @@ bool Checker::assignable(Ref type, Ref val) {
     auto val_ty = refer(val->type());
     if (type == val_ty) return true;
 
-    if (auto infer = val->isa_nom<Infer>()) return equiv(type, infer->type());
+    if (auto infer = val->isa_mut<Infer>()) return equiv(type, infer->type());
 
     if (auto sigma = type->isa<Sigma>()) {
         if (!equiv(type->arity(), val_ty->arity())) return false;

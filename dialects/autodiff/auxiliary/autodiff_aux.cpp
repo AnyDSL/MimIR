@@ -13,7 +13,7 @@ namespace thorin::autodiff {
 const Def* id_pullback(const Def* A) {
     auto& world       = A->world();
     auto arg_pb_ty    = pullback_type(A, A);
-    auto id_pb        = world.nom_lam(arg_pb_ty)->set("id_pb");
+    auto id_pb        = world.mut_lam(arg_pb_ty)->set("id_pb");
     auto id_pb_scalar = id_pb->var(0_s)->set("s");
     id_pb->app(true,
                id_pb->var(1), // can not use ret_var as the result might be higher order
@@ -26,7 +26,7 @@ const Def* zero_pullback(const Def* E, const Def* A) {
     auto& world    = A->world();
     auto A_tangent = tangent_type_fun(A);
     auto pb_ty     = pullback_type(E, A);
-    auto pb        = world.nom_lam(pb_ty)->set("zero_pb");
+    auto pb        = world.mut_lam(pb_ty)->set("zero_pb");
     world.DLOG("zero_pullback for {} resp. {} (-> {})", E, A, A_tangent);
     pb->app(true, pb->var(1), op_zero(A_tangent));
     return pb;
@@ -105,7 +105,7 @@ const Def* autodiff_type_fun(const Def* ty) {
         return world.arr(shape, body_ad);
     }
     if (auto sig = ty->isa<Sigma>()) {
-        // TODO: nom sigma
+        // TODO: mut sigma
         DefArray ops(sig->ops(), [&](const Def* op) { return autodiff_type_fun(op); });
         world.DLOG("ops: {,}", ops);
         return world.sigma(ops);
@@ -236,8 +236,8 @@ const Def* compose_continuation(const Def* f, const Def* g) {
     auto H     = world.cn({A, world.cn(C)});
     auto Hcont = world.cn(B);
 
-    auto h     = world.nom_lam(H)->set("comp_"s + *f->sym() + "_"s + *g->sym());
-    auto hcont = world.nom_lam(Hcont)->set("comp_"s + *f->sym() + "_"s + *g->sym() + "_cont"s);
+    auto h     = world.mut_lam(H)->set("comp_"s + *f->sym() + "_"s + *g->sym());
+    auto hcont = world.mut_lam(Hcont)->set("comp_"s + *f->sym() + "_"s + *g->sym() + "_cont"s);
 
     h->app(true, g, {h->var((nat_t)0), hcont});
 

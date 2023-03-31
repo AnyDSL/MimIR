@@ -23,12 +23,12 @@ using CFNodes = GIDSet<const CFNode*>;
 /// Managed by CFA.
 class CFNode {
 public:
-    CFNode(Def* nom)
-        : nom_(nom)
+    CFNode(Def* mut)
+        : mut_(mut)
         , gid_(gid_counter_++) {}
 
     uint64_t gid() const { return gid_; }
-    Def* nom() const { return nom_; }
+    Def* mut() const { return mut_; }
 
 private:
     const CFNodes& preds() const { return preds_; }
@@ -38,7 +38,7 @@ private:
     mutable size_t f_index_ = -1; ///< RPO index in a **forward** CFG.
     mutable size_t b_index_ = -1; ///< RPO index in a **backwards** CFG.
 
-    Def* nom_;
+    Def* mut_;
     size_t gid_;
     static uint64_t gid_counter_;
     mutable CFNodes preds_;
@@ -65,24 +65,24 @@ public:
     const Scope& scope() const { return scope_; }
     World& world() const { return scope().world(); }
     size_t size() const { return nodes().size(); }
-    const NomMap<const CFNode*>& nodes() const { return nodes_; }
+    const MutMap<const CFNode*>& nodes() const { return nodes_; }
     const F_CFG& f_cfg() const;
     const B_CFG& b_cfg() const;
-    const CFNode* operator[](Def* nom) const {
-        auto i = nodes_.find(nom);
+    const CFNode* operator[](Def* mut) const {
+        auto i = nodes_.find(mut);
         return i == nodes_.end() ? nullptr : i->second;
     }
 
 private:
     void link_to_exit();
     void verify();
-    const CFNodes& preds(Def* nom) const {
-        auto cn = nodes_.find(nom)->second;
+    const CFNodes& preds(Def* mut) const {
+        auto cn = nodes_.find(mut)->second;
         assert(cn);
         return cn->preds();
     }
-    const CFNodes& succs(Def* nom) const {
-        auto cn = nodes_.find(nom)->second;
+    const CFNodes& succs(Def* mut) const {
+        auto cn = nodes_.find(mut)->second;
         assert(cn);
         return cn->succs();
     }
@@ -91,7 +91,7 @@ private:
     const CFNode* node(Def*);
 
     const Scope& scope_;
-    NomMap<const CFNode*> nodes_;
+    MutMap<const CFNode*> nodes_;
     const CFNode* entry_;
     const CFNode* exit_;
     mutable std::unique_ptr<const F_CFG> f_cfg_;
@@ -125,12 +125,12 @@ public:
     size_t size() const { return cfa().size(); }
     const CFNodes& preds(const CFNode* n) const;
     const CFNodes& succs(const CFNode* n) const;
-    const CFNodes& preds(Def* nom) const { return preds(cfa()[nom]); }
-    const CFNodes& succs(Def* nom) const { return succs(cfa()[nom]); }
+    const CFNodes& preds(Def* mut) const { return preds(cfa()[mut]); }
+    const CFNodes& succs(Def* mut) const { return succs(cfa()[mut]); }
     size_t num_preds(const CFNode* n) const { return preds(n).size(); }
     size_t num_succs(const CFNode* n) const { return succs(n).size(); }
-    size_t num_preds(Def* nom) const { return num_preds(cfa()[nom]); }
-    size_t num_succs(Def* nom) const { return num_succs(cfa()[nom]); }
+    size_t num_preds(Def* mut) const { return num_preds(cfa()[mut]); }
+    size_t num_succs(Def* mut) const { return num_succs(cfa()[mut]); }
     const CFNode* entry() const { return forward ? cfa().entry() : cfa().exit(); }
     const CFNode* exit() const { return forward ? cfa().exit() : cfa().entry(); }
 
@@ -140,7 +140,7 @@ public:
     const CFNode* reverse_post_order(size_t i) const { return rpo_.array()[i]; }
     /// Maps from post-order index to CFNode.
     const CFNode* post_order(size_t i) const { return rpo_.array()[size() - 1 - i]; }
-    const CFNode* operator[](Def* nom) const { return cfa()[nom]; } ///< Maps from @p nom to CFNode.
+    const CFNode* operator[](Def* mut) const { return cfa()[mut]; } ///< Maps from @p mut to CFNode.
     const DomTreeBase<forward>& domtree() const;
     const LoopTree<forward>& looptree() const;
     const DomFrontierBase<forward>& domfrontier() const;

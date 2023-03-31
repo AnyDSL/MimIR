@@ -601,7 +601,7 @@ Ref normalize_trait(Ref nat, Ref callee, Ref type) {
             case trait::align: return world.lit_nat(align);
             case trait::size: return world.lit_nat(size);
         }
-    } else if (auto arr = type->isa_structural<Arr>()) {
+    } else if (auto arr = type->isa_imm<Arr>()) {
         auto align = op(trait::align, arr->body());
         if constexpr (id == trait::align) return align;
         if (auto b = op(trait::size, arr->body())->isa<Lit>()) return world.call(core::nop::mul, Defs{arr->shape(), b});

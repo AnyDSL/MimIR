@@ -41,9 +41,9 @@ TEST(World, simplify_one_tuple) {
 
     ASSERT_EQ(w.lit_ff(), w.tuple({w.lit_ff()})) << "constant fold (false) -> false";
 
-    auto type = w.nom_sigma(w.type(), 2);
+    auto type = w.mut_sigma(w.type(), 2);
     type->set(Defs{w.type_nat(), w.type_nat()});
-    ASSERT_EQ(type, w.sigma({type})) << "constant fold [nom] -> nom";
+    ASSERT_EQ(type, w.sigma({type})) << "constant fold [mut] -> mut";
 
     auto v = w.tuple(type, {w.lit_idx(42), w.lit_idx(1337)});
     ASSERT_EQ(v, w.tuple({v})) << "constant fold ({42, 1337}) -> {42, 1337}";
@@ -53,7 +53,7 @@ TEST(World, dependent_extract) {
     Driver driver;
     World& w = driver.world();
 
-    auto sig = w.nom_sigma(w.type<1>(), 2); // sig = [T: *, T]
+    auto sig = w.mut_sigma(w.type<1>(), 2); // sig = [T: *, T]
     sig->set(0, w.type<0>());
     sig->set(1, sig->var(0_u64));
     auto a = w.axiom(sig);
@@ -123,7 +123,7 @@ TEST(Axiom, curry) {
         //           ^         |
         //           |         |
         //           +---------+
-        auto rec = w.nom_pi(w.type())->set_dom(nat);
+        auto rec = w.mut_pi(w.type())->set_dom(nat);
         rec->set_codom(w.pi(nat, w.pi(nat, rec)));
         auto pi = w.pi(nat, w.pi(nat, rec));
 
@@ -145,7 +145,7 @@ TEST(Axiom, curry) {
         EXPECT_EQ(os.str(), "%test_5_3 0 1 2 3 42 5 6 42 8 9 42\n");
     }
     {
-        auto rec = w.nom_pi(w.type())->set_dom(nat);
+        auto rec = w.mut_pi(w.type())->set_dom(nat);
         rec->set_codom(rec);
 
         auto [curry, trip] = Axiom::infer_curry_and_trip(rec);

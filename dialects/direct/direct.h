@@ -17,12 +17,12 @@ inline const Def* op_cps2ds_dep(const Def* f) {
     world.DLOG("T: {}", T);
     world.DLOG("U: {}", U);
 
-    auto Uf = world.nom_lam(world.pi(T, world.type()))->set("Uf");
+    auto Uf = world.mut_lam(world.pi(T, world.type()))->set("Uf");
     world.DLOG("Uf: {} : {}", Uf, Uf->type());
 
     const Def* rewritten_codom;
 
-    if (auto f_ty_sig = f_ty->dom()->isa_nom<Sigma>()) {
+    if (auto f_ty_sig = f_ty->dom()->isa_mut<Sigma>()) {
         auto dom_var = f_ty_sig->var((nat_t)0);
         world.DLOG("dom_var: {}", dom_var);
         Scope r_scope{f_ty_sig};
