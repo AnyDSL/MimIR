@@ -21,8 +21,7 @@ Ref LowerMatrixMediumLevel::rewrite(Ref def) {
     return rewritten[def];
 }
 
-std::pair<Lam*, Ref>
-counting_for(Ref bound, DefArray acc, Ref exit, const char* name = "for_body") {
+std::pair<Lam*, Ref> counting_for(Ref bound, DefArray acc, Ref exit, const char* name = "for_body") {
     auto& world = bound->world();
     auto acc_ty = world.tuple(acc)->type();
     auto body   = world
@@ -87,11 +86,11 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
         // return matrix
         // ```
 
-        absl::flat_hash_map<u64, Ref> dims;              // idx ↦ nat (size bound = dimension)
-        absl::flat_hash_map<u64, Ref> raw_iterator;      // idx ↦ I32
-        absl::flat_hash_map<u64, Ref> iterator;          // idx ↦ %Idx (S/NI#i)
-        std::vector<u64> out_indices;                    // output indices 0..n-1
-        std::vector<u64> in_indices;                     // input indices ≥ n
+        absl::flat_hash_map<u64, Ref> dims;         // idx ↦ nat (size bound = dimension)
+        absl::flat_hash_map<u64, Ref> raw_iterator; // idx ↦ I32
+        absl::flat_hash_map<u64, Ref> iterator;     // idx ↦ %Idx (S/NI#i)
+        std::vector<u64> out_indices;               // output indices 0..n-1
+        std::vector<u64> in_indices;                // input indices ≥ n
 
         std::vector<Ref> output_dims;                    // i<n ↦ nat (dimension S#i)
         std::vector<std::vector<const Def*>> input_dims; // i<m ↦ j<NI#i ↦ nat (dimension SI#i#j)

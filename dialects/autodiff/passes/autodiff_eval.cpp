@@ -33,7 +33,7 @@ Ref AutoDiffEval::rewrite(Ref def) {
         auto arg = ad_app->arg();
         world().DLOG("found a autodiff::autodiff of {}", arg);
 
-        if (arg->isa<Lam>()) { return derive(arg); }
+        if (arg->isa<Lam>()) return derive(arg);
 
         // TODO: handle operators analogous
 
