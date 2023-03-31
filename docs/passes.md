@@ -30,8 +30,8 @@ There are two kind of passes in Thorin:
 ## Rewrite Pass
 
 In order to write a [rewrite pass](@ref thorin::RWPass), you have to inherit from [RWPass](@ref thorin::RWPass).
-Usually, you are only interested in looking for code patterns that only occur in specific mutable - typically [Lam](@ref thorin::Lam)bdas.
-You can filter for these mutable by passing it as template parameter to [RWPass](@ref thorin::RWPass) when inherting from it.
+Usually, you are only interested in looking for code patterns that only occur in specific mutables - typically [Lam](@ref thorin::Lam)bdas.
+You can filter for these mutables by passing it as template parameter to [RWPass](@ref thorin::RWPass) when inherting from it.
 The main hook to the [PassMan](@ref thorin::PassMan), is the [rewrite](@ref thorin::Pass::rewrite) method.
 As an example, let's have a look at the [Alloc2Malloc](@ref thorin::mem::Alloc2Malloc) pass.
 It rewrites `alloc`/`slot` calls into their more verbose siblings `malloc`/`mslot` that make the size of the alloc'ed type explicit:
@@ -90,7 +90,7 @@ The reason is that the very program you are constructing is the **only** way to 
 
 ### Creating Mutables
 
-Eventually, you will need to create mutable during a [fixed-point pass](@ref thorin::FPPass).
+Eventually, you will need to create mutables during a [fixed-point pass](@ref thorin::FPPass).
 You must be super cautious to remember in which exact context you created said mutable.
 If you ever come into the same situation again (due to backtracking) you have to make sure that you return the **very same** mutable.
-Otherwise, if you create a different mutable, the [PassMan](@ref thorin::PassMan) will most likely diverge as it will constantly backtrack while creating new mutable that the other passes don't know anything about.
+Otherwise, if you create a different mutable, the [PassMan](@ref thorin::PassMan) will most likely diverge as it will constantly backtrack while creating new mutables that the other passes don't know anything about.

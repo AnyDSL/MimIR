@@ -241,7 +241,7 @@ public:
     size_t num_ops() const { return num_ops_; }
     ///@}
 
-    /// @name set/unset ops (mutable only)
+    /// @name set/unset ops (mutables only)
     ///@{
     /// You are supposed to set operands from left to right.
     /// You can change operands later on or even Def::unset them.
@@ -417,7 +417,7 @@ public:
 
     /// @name var
     ///@{
-    /// Retrieve Var for *mutable*.
+    /// Retrieve Var for *mut*ables.
     const Var* var();
     THORIN_PROJ(var, )
     ///@}

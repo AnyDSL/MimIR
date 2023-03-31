@@ -51,8 +51,8 @@ Each `Def` is a node in a graph which is maintained in the [World](@ref thorin::
 
 | **Immutable**                                                         | **Mutable**                                                                   |
 |-----------------------------------------------------------------------|-------------------------------------------------------------------------------|
-| must be `const`                                                       | maybe non-`const`                                                             |
 | immutable                                                             | mutable                                                                       |
+| *must be* `const`                                                     | *may be* **non**-`const`                                                      |
 | ops form [DAG](https://en.wikipedia.org/wiki/Directed_acyclic_graph)  | ops may be cyclic                                                             |
 | no recursion                                                          | may be recursive                                                              |
 | no [Var](@ref thorin::Var)                                            | has [Var](@ref thorin::Var); get with [Def::var](@ref thorin::Def::var)       |
@@ -66,7 +66,7 @@ Use [Def::isa_mut](@ref thorin::Def::isa_mut) to check whether a specific `Def` 
 void foo(const Def* def) {
     if (auto mut = def->isa_mut()) {
         // mut of type Def* - const has been removed!
-        // This gives give you access to the non-const methods that only make sense for mutable:
+        // This gives give you access to the non-const methods that only make sense for mutables:
         auto var = mut->var();
         auto stub = mut->stub(world, type, debug)
         // ...

@@ -25,7 +25,7 @@ public:
     /// Mutable Def%s are only considered free if they are annotated with Clos::freeBB or
     /// Clos::fstclassBB.
     /// Otherwise, we add a mut's free defs in order to build a closure for it.
-    /// Structural Def%s containing mutable are broken up if necessary.
+    /// Immutables containing mutables are broken up if necessary.
     DefSet& run(Lam* lam);
 
 private:

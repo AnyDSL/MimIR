@@ -146,7 +146,7 @@ The following tables comprise all production rules:
 | d           | `.Arr` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> v? n   | array declaration                  | thorin::Arr   |
 | d           | `.pack` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> v? n  | pack declaration                   | thorin::Pack  |
 | d           | `.Sigma` Sym ( `:` e<sub>type</sub> )? `,` L<sub>arity</sub> v? n | sigma declaration                  | thorin::Sigma |
-| d           | `.def` Sym n                                                      | mutable definition                 | mutable      |
+| d           | `.def` Sym n                                                      | mutable definition                 | mutables      |
 | n           | `;` \| o                                                          | mutable definition                 | -             |
 | o           | `=` de `;`                                                        | operand of definition              | -             |
 | o           | `=` `{` e `,` ... `,` e  `}` `;`                                  | operands of definition<sup>s</sup> | -             |
