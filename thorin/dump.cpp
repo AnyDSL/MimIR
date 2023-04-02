@@ -312,7 +312,7 @@ void Dumper::recurse(const Def* def, bool first /*= false*/) {
 
     if (!defs.emplace(def).second) return;
 
-    for (auto op : def->partial_ops().skip_front()) { // ignore dbg
+    for (auto op : def->partial_ops()) {
         if (!op) continue;
         recurse(op);
     }
