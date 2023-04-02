@@ -289,20 +289,15 @@ bool Def::equal(const Def* other) const {
 }
 
 void Def::finalize() {
-    for (size_t i = 0, e = num_ops(); i != e; ++i) {
-        dep_ |= op(i)->dep();
-        if (!op(i)->dep_const()) {
-            const auto& p = op(i)->uses_.emplace(this, i);
-            assert_unused(p.second);
+    for (size_t i = Use::Type; auto op : partial_ops()) {
+        if (op) {
+            dep_ |= op->dep();
+            if (!op->dep_const()) {
+                const auto& p = op->uses_.emplace(this, i);
+                assert_unused(p.second);
+            }
         }
-    }
-
-    if (auto t = type()) {
-        dep_ |= t->dep();
-        if (!t->dep_const()) {
-            const auto& p = type()->uses_.emplace(this, Use::Type);
-            assert_unused(p.second);
-        }
+        ++i;
     }
 }
 
