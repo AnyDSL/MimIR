@@ -13,7 +13,7 @@
     .let exp = %refly.reify <<4; .Nat>> (0, 1, 2, 3);
     .let new = %refly.refine (exp, 1, %refly.reify .Nat 42);
     .let tup = %refly.reflect <<4; .Nat>> new;
-    .let x   = %core.bitcast (I64, .Nat) tup#1_4;
+    .let x   = %core.bitcast I64 tup#1_4;
     return (mem, %core.conv.u _32 x)
 };
 
