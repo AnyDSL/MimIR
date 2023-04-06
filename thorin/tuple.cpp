@@ -9,20 +9,17 @@
 
 namespace thorin {
 
-static bool should_flatten(const Def* def) {
-    return (def->sort() == Sort::Term ? def->type() : def)->isa<Sigma, Arr>();
+static bool should_flatten(const Def* def) { return (def->is_term() ? def->type() : def)->isa<Sigma, Arr>(); }
+
+static bool mut_val_or_typ(const Def* def) {
+    auto typ = def->is_term() ? def->type() : def;
+    return typ->isa_mut();
 }
 
-static bool nom_val_or_typ(const Def* def) {
-    auto typ = (def->sort() == Sort::Term) ? def->type() : def;
-    return typ->isa_nom();
-}
-
-size_t flatten(DefVec& ops, const Def* def, bool flatten_noms) {
-    if (auto a = isa_lit<nat_t>(def->arity());
-        a && *a != 1 && should_flatten(def) && flatten_noms == nom_val_or_typ(def)) {
+size_t flatten(DefVec& ops, const Def* def, bool flatten_muts) {
+    if (auto a = def->isa_lit_arity(); a && *a != 1 && should_flatten(def) && flatten_muts == mut_val_or_typ(def)) {
         auto n = 0;
-        for (size_t i = 0; i != *a; ++i) n += flatten(ops, def->proj(*a, i), flatten_noms);
+        for (size_t i = 0; i != *a; ++i) n += flatten(ops, def->proj(*a, i), flatten_muts);
         return n;
     } else {
         ops.emplace_back(def);
@@ -34,24 +31,23 @@ const Def* flatten(const Def* def) {
     if (!should_flatten(def)) return def;
     DefVec ops;
     flatten(ops, def);
-    return def->sort() == Sort::Term ? def->world().tuple(def->type(), ops, def->dbg())
-                                     : def->world().sigma(ops, def->dbg());
+    return def->is_term() ? def->world().tuple(def->type(), ops) : def->world().sigma(ops);
 }
 
-static const Def* unflatten(Defs defs, const Def* type, size_t& j, bool flatten_noms) {
+static const Def* unflatten(Defs defs, const Def* type, size_t& j, bool flatten_muts) {
     if (!defs.empty() && defs[0]->type() == type) return defs[j++];
-    if (auto a = isa_lit<nat_t>(type->arity()); flatten_noms == nom_val_or_typ(type) && a && *a != 1) {
+    if (auto a = type->isa_lit_arity(); flatten_muts == mut_val_or_typ(type) && a && *a != 1) {
         auto& world = type->world();
-        DefArray ops(*a, [&](size_t i) { return unflatten(defs, type->proj(*a, i), j, flatten_noms); });
+        DefArray ops(*a, [&](size_t i) { return unflatten(defs, type->proj(*a, i), j, flatten_muts); });
         return world.tuple(type, ops);
     }
 
     return defs[j++];
 }
 
-const Def* unflatten(Defs defs, const Def* type, bool flatten_noms) {
+const Def* unflatten(Defs defs, const Def* type, bool flatten_muts) {
     size_t j = 0;
-    auto def = unflatten(defs, type, j, flatten_noms);
+    auto def = unflatten(defs, type, j, flatten_muts);
     assert(j == defs.size());
     return def;
 }
@@ -72,14 +68,14 @@ DefArray merge(Defs a, Defs b) {
 }
 
 const Def* merge_sigma(const Def* def, Defs defs) {
-    if (auto sigma = def->isa<Sigma>(); sigma && !sigma->isa_nom())
+    if (auto sigma = def->isa<Sigma>(); sigma && !sigma->isa_mut())
         return def->world().sigma(merge(sigma->ops(), defs));
     return def->world().sigma(merge(def, defs));
 }
 
 const Def* merge_tuple(const Def* def, Defs defs) {
     auto& w = def->world();
-    if (auto sigma = def->type()->isa<Sigma>(); sigma && !sigma->isa_nom()) {
+    if (auto sigma = def->type()->isa<Sigma>(); sigma && !sigma->isa_mut()) {
         auto a = sigma->num_ops();
         DefArray tuple(a, [&](auto i) { return w.extract(def, a, i); });
         return w.tuple(merge(tuple, defs));
@@ -100,12 +96,12 @@ std::string tuple2str(const Def* def) {
  */
 
 const Def* Arr::reduce(const Def* arg) const {
-    if (auto nom = isa_nom<Arr>()) return rewrite(nom, arg, 1);
+    if (auto mut = isa_mut<Arr>()) return rewrite(mut, arg, 1);
     return body();
 }
 
 const Def* Pack::reduce(const Def* arg) const {
-    if (auto nom = isa_nom<Pack>()) return rewrite(nom, arg, 0);
+    if (auto mut = isa_mut<Pack>()) return rewrite(mut, arg, 0);
     return body();
 }
 

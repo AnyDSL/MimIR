@@ -1,11 +1,7 @@
 #pragma once
 
-#include <filesystem>
+#include "thorin/driver.h"
 
-#include "thorin/dialects.h"
-#include "thorin/world.h"
-
-#include "thorin/be/h/bootstrapper.h"
 #include "thorin/fe/ast.h"
 #include "thorin/fe/lexer.h"
 #include "thorin/fe/scopes.h"
@@ -32,17 +28,16 @@ namespace thorin::fe {
 ///      * If default argument is **provided** we have the same behavior as in 2.
 class Parser {
 public:
-    Parser(World&, std::string_view, std::istream&, Span<std::string>, const Normalizers*, std::ostream* md = nullptr);
+    Parser(World& world)
+        : world_(world)
+        , anonymous_(world.sym("_")) {}
 
-    World& world() { return lexer_.world(); }
-
-    /// @name entry points
-    ///@{
-    static Parser
-    import_module(World&, std::string_view, Span<std::string> = {}, const Normalizers* normalizers = nullptr);
-    void parse_module();
-    void bootstrap(std::ostream&);
-    ///@}
+    World& world() { return world_; }
+    Driver& driver() { return world().driver(); }
+    void import(fs::path, std::ostream* md = nullptr);
+    void import(std::istream&, const fs::path* = nullptr, std::ostream* md = nullptr);
+    void plugin(fs::path);
+    const Scopes& scopes() const { return scopes_; }
 
 private:
     /// @name Tracker
@@ -54,89 +49,30 @@ private:
             : parser_(parser)
             , pos_(pos) {}
 
-        Loc loc() const { return {parser_.prev_.file, pos_, parser_.prev_.finis}; }
-        const Def* dbg(const Def* meta = {}) const { return parser_.world().dbg({"", loc(), meta}); }
-        const Def* meta(const Def* m) const { return parser_.world().dbg({"", loc(), m}); }
-        const Def* named(Sym sym) const { return parser_.world().dbg(sym, loc()); }
-        const Def* named(const std::string& str, const Def* meta = {}) const {
-            return parser_.world().dbg({str, loc(), meta});
-        }
+        Loc loc() const { return {parser_.prev().path, pos_, parser_.prev().finis}; }
+        Dbg dbg(Sym sym) const { return {loc(), sym}; }
 
     private:
         Parser& parser_;
         Pos pos_;
     };
 
-    Sym parse_sym(std::string_view ctxt = {});
-    Sym anonymous_sym() { return {world().lit_nat('_'), nullptr}; }
-    void parse_import();
-    const Def* parse_type_ascr(std::string_view ctxt, Implicits*);
-
-    /// @name exprs
-    ///@{
-    const Def* parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot, Implicits* = {});
-    const Def* parse_primary_expr(std::string_view ctxt, Implicits* = {});
-    const Def* parse_infix_expr(Tracker, const Def* lhs, Tok::Prec = Tok::Prec::Bot, Implicits* = {});
-    const Def* parse_extract(Tracker, const Def*, Tok::Prec);
-    ///@}
-
-    /// @name primary exprs
-    ///@{
-    const Def* parse_Cn();
-    const Def* parse_arr();
-    const Def* parse_pack();
-    const Def* parse_block();
-    const Def* parse_sigma();
-    const Def* parse_tuple();
-    const Def* parse_type();
-    const Def* parse_pi(Implicits*);
-    const Def* parse_lit();
-    const Def* parse_var();
-    const Def* parse_insert();
-    Lam* parse_lam(bool decl = false);
-    ///@}
-
-    /// @name ptrns
-    ///@{
-
-    /// Depending on @p tag, this parses a `()`-style (Tok::Tag::D_paren_l) or `[]`-style (Tok::Tag::D_brckt_l) Ptrn.
-    std::unique_ptr<Ptrn> parse_ptrn(Tok::Tag tag, std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
-    std::unique_ptr<TuplePtrn> parse_tuple_ptrn(Tracker, bool, Sym);
-    ///@}
-
-    /// @name decls
-    ///@{
-    const Def* parse_decls(std::string_view ctxt);
-    void parse_ax();
-    void parse_let();
-    void parse_nom();
-    /// If @p sym is **not** empty, this is an inline definition of @p sym,
-    /// otherwise it's a standalone definition.
-    void parse_def(Sym sym = {});
-    ///@}
-
-    template<class F>
-    void parse_list(std::string ctxt, Tok::Tag delim_l, F f, Tok::Tag sep = Tok::Tag::T_comma) {
-        expect(delim_l, ctxt);
-        auto delim_r = Tok::delim_l2r(delim_l);
-        if (!ahead().isa(delim_r)) {
-            do { f(); } while (accept(sep) && !ahead().isa(delim_r));
-        }
-        expect(delim_r, std::string("closing delimiter of a ") + ctxt);
-    }
+    Loc& prev() { return state_.prev; }
 
     /// Factory method to build a Parser::Tracker.
     Tracker tracker() { return Tracker(*this, ahead().loc().begin); }
-    const Def* dbg(Tracker t) { return world().dbg(t.loc()); }
     ///@}
 
-    /// @name get next Tok
+    /// @name get next token
     ///@{
     /// Get lookahead.
-    Tok ahead(size_t i = 0) const {
+    Tok& ahead(size_t i = 0) {
         assert(i < Max_Ahead);
-        return ahead_[i];
+        return state_.ahead[i];
     }
+
+    Lexer& lexer() { return lexers_.top(); }
+    bool main() const { return lexers_.size() == 1; }
 
     /// Invoke Lexer to retrieve next Tok%en.
     Tok lex();
@@ -155,6 +91,68 @@ private:
     }
     ///@}
 
+    /// @name parse misc
+    ///@{
+    void parse_module();
+    Dbg parse_sym(std::string_view ctxt = {});
+    void parse_import();
+    void parse_plugin();
+    Ref parse_type_ascr(std::string_view ctxt);
+
+    template<class F>
+    void parse_list(std::string ctxt, Tok::Tag delim_l, F f, Tok::Tag sep = Tok::Tag::T_comma) {
+        expect(delim_l, ctxt);
+        auto delim_r = Tok::delim_l2r(delim_l);
+        if (!ahead().isa(delim_r)) {
+            do { f(); } while (accept(sep) && !ahead().isa(delim_r));
+        }
+        expect(delim_r, std::string("closing delimiter of a ") + ctxt);
+    }
+    ///@}
+
+    /// @name parse exprs
+    ///@{
+    Ref parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
+    Ref parse_primary_expr(std::string_view ctxt);
+    Ref parse_infix_expr(Tracker, const Def* lhs, Tok::Prec = Tok::Prec::Bot);
+    Ref parse_extract(Tracker, const Def*, Tok::Prec);
+    ///@}
+
+    /// @name parse primary exprs
+    ///@{
+    Ref parse_Cn();
+    Ref parse_arr();
+    Ref parse_pack();
+    Ref parse_block();
+    Ref parse_sigma();
+    Ref parse_tuple();
+    Ref parse_type();
+    Ref parse_pi();
+    Ref parse_lit();
+    Ref parse_var();
+    Ref parse_insert();
+    Lam* parse_lam(bool decl = false);
+    ///@}
+
+    /// @name parse ptrns
+    ///@{
+
+    /// Depending on @p tag, this parses a `()`-style (Tok::Tag::D_paren_l) or `[]`-style (Tok::Tag::D_brckt_l) Ptrn.
+    std::unique_ptr<Ptrn> parse_ptrn(Tok::Tag tag, std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
+    std::unique_ptr<TuplePtrn> parse_tuple_ptrn(Tracker, bool, Sym);
+    ///@}
+
+    /// @name parse decls
+    ///@{
+    Ref parse_decls(std::string_view ctxt);
+    void parse_ax();
+    void parse_let();
+    void parse_mut();
+    /// If @p sym is **not** empty, this is an inline definition of @p sym,
+    /// otherwise it's a standalone definition.
+    void parse_def(Dbg dbg = {});
+    ///@}
+
     /// @name error messages
     ///@{
     /// Issue an error message of the form:
@@ -165,16 +163,18 @@ private:
     [[noreturn]] void syntax_err(std::string_view what, std::string_view ctxt) { syntax_err(what, ahead(), ctxt); }
     ///@}
 
-    Lexer lexer_;
-    Scopes scopes_;
-    Loc prev_;
-    std::string dialect_;
     static constexpr size_t Max_Ahead = 2; ///< maximum lookahead
-    std::array<Tok, Max_Ahead> ahead_;     ///< SLL look ahead
-    SymSet imported_;
-    h::Bootstrapper bootstrapper_;
-    std::vector<std::string> user_search_paths_;
-    const Normalizers* normalizers_;
+    using Ahead                       = std::array<Tok, Max_Ahead>;
+
+    World& world_;
+    std::stack<Lexer> lexers_;
+    struct {
+        Loc prev;
+        Ahead ahead; ///< SLL look ahead
+    } state_;
+    Scopes scopes_;
+    Def2Fields def2fields_;
+    Sym anonymous_;
 };
 
 } // namespace thorin::fe

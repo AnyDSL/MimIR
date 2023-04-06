@@ -49,7 +49,7 @@ protected:
 
 /// Visits the current Phase::world and constructs a new RWPhase::world along the way.
 /// It recursively **rewrites** all World::externals().
-/// @note You can override Rewriter::rewrite, Rewriter::rewrite_structural, and Rewriter::rewrite_nom.
+/// @note You can override Rewriter::rewrite, Rewriter::rewrite_imm, and Rewriter::rewrite_mut.
 class RWPhase : public Phase, public Rewriter {
 public:
     RWPhase(World& world, std::string_view name)
@@ -145,7 +145,7 @@ private:
 
 /// Transitively visits all *reachable* Scope%s in World that do not have free variables.
 /// We call these Scope%s *top-level* Scope%s.
-/// Select with `elide_empty` whether you want to visit trivial Scope%s of *noms* without body.
+/// Select with `elide_empty` whether you want to visit trivial Scope%s of *muts* without body.
 /// Assumes that you don't change anything - hence `dirty` flag is set to `false`.
 class ScopePhase : public Phase {
 public:

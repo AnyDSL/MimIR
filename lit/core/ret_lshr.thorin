@@ -4,8 +4,7 @@
 // RUN: %t 2 1 ; test $? -eq 1
 // RUN: %t 16 3 ; test $? -eq 2
 
-.import core;
-.import mem;
+.plugin core;
 
 .con atoi [%mem.M, %mem.Ptr («⊤:.Nat; .Idx 256», 0), .Cn [%mem.M, .Idx 4294967296]];
 
@@ -25,7 +24,7 @@
     atoi (argv_load_a#.ff, argv_load_a#.tt, atoi_cont_a)
 };
 
-// CHECK-DAG: main _{{[0-9_]+}}::[mem_[[memId:[0-9_]+]]: %mem.M, .Idx 4294967296, argv_{{[0-9]+}}: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), return_[[returnId:[0-9_]+]]: .Cn [%mem.M, .Idx 4294967296]] = {
+// CHECK-DAG: main _{{[0-9_]+}}::[mem_[[memId:[0-9_]+]]: %mem.M, .Idx 4294967296, argv_{{[0-9]+}}: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), return_[[returnId:[0-9_]+]]: .Cn [%mem.M, .Idx 4294967296]]{{(@.*)?}}= {
 
 // CHECK-DAG: atoi_cont_a_[[aContId:[0-9_]+]] _{{[0-9_]+}}::[mem_{{[0-9]+}}: %mem.M, a_[[aId:[0-9_]+]]: .Idx 4294967296]
 

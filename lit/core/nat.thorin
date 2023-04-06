@@ -1,0 +1,10 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin %s -o - | FileCheck %s
+
+.import core;
+
+.con .extern f [[a:.Nat, b:.Nat], return : .Cn .Nat] = {
+    return (%core.nat.add (b,a))
+};
+
+// CHECK-DAG: %core.nat.add ([[arg:[0-9_]+]]#1:(.Idx 2), [[arg]]#0:(.Idx 2))

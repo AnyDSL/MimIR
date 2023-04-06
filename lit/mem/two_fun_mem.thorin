@@ -1,0 +1,45 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin %s --output-ll %t.ll -o - 
+// RUN: clang %t.ll -o %t -Wno-override-module
+// RUN: %t; test $? -eq 5
+// RUN: %t 1; test $? -eq 7
+// RUN: %t 1 2; test $? -eq 9
+
+.plugin core;
+
+.let _32 = 4294967296;
+.let I32 = .Idx _32;
+.let Tas = (I32, 0);
+
+.con f [mem: %mem.M, p: %mem.Ptr (I32, 0), ret: .Cn [%mem.M, I32]] = {
+    .let (mem2, v) = %mem.load (mem, p);
+
+    .con g1 [mem: %mem.M, ret: .Cn [%mem.M, I32]] = {
+        .let b = %core.wrap.add 0 (v, 1:I32);
+        ret (mem2, b)
+    };
+
+    .con g2 [mem: %mem.M, ret: .Cn [%mem.M, I32]] = {
+        .let c = %core.wrap.add 0 (v, 2:I32);
+        ret (mem2, c)
+    };
+
+    .con cont1 [mem:%mem.M, a:I32] = {
+        .con cont2 [mem:%mem.M, b:I32] = {
+            .let c = %core.wrap.add 0 (a, b);
+            ret (mem, c)
+        };
+        g2 (mem2, cont2)
+    };
+    g1 (mem2, cont1)
+};
+
+.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
+    
+    .let (mem2,p) = %mem.alloc Tas mem;
+    .let mem3 = %mem.store (mem2, p, argc);
+
+    f (mem3, p, return)
+};
+
+// TODO: check for 1+x, 2+x, a+b

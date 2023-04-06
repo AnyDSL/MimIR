@@ -1,0 +1,15 @@
+// RUN: rm -f %t.ll ; \
+// RUN: timeout 10 %thorin -p clos %s --output-ll %t.ll --output-thorin -
+
+.plugin mem;
+
+.let i32 = .Idx 4294967296;
+.let size = 100000000:.Nat;
+
+.con .extern main [mem: %mem.M, argc: i32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, i32]] = {
+    .let (alloc_mem, arr) = %mem.alloc (<<size; i32>>, 0) (mem);
+    .let lea = %mem.lea (size, <size; i32>, 0) (arr, 0:(.Idx size));
+    .let (load_mem, val) = %mem.load (i32, 0) (alloc_mem, lea);
+
+    return ( load_mem, 1:i32 )
+};

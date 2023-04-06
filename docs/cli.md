@@ -4,7 +4,15 @@
 
 ## Usage
 
-\include "cli-help.md"
+\include "cli-help.inc"
+
+In addition, you can specify more search paths using the environment variable `THORIN_PLUGIN_PATH`.
+Thorin will look for plugins in this priority:
+1. The current working directory.
+2. All paths specified via `-D` (in the given order).
+3. All paths specified in the environment variable `THORIN_PLUGIN_PATH` (in the given order).
+4. `path/to/thorin.exe/../../lib/thorin`
+5. `CMAKE_INSTALL_PREFIX/lib/thorin`
 
 ## Debugging Features {#clidebug}
 

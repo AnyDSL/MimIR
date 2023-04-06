@@ -34,7 +34,7 @@ namespace thorin::ll {
 static bool is_const(const Def* def) {
     if (def->isa<Bot>()) return true;
     if (def->isa<Lit>()) return true;
-    if (auto pack = def->isa_structural<Pack>()) return is_const(pack->shape()) && is_const(pack->body());
+    if (auto pack = def->isa_imm<Pack>()) return is_const(pack->shape()) && is_const(pack->body());
 
     if (auto tuple = def->isa<Tuple>()) {
         auto ops = tuple->ops();
@@ -70,7 +70,7 @@ struct BB {
         swap(a.parts, b.parts);
     }
 
-    DefMap<std::vector<std::pair<std::string, std::string>>> phis;
+    DefMap<std::deque<std::pair<std::string, std::string>>> phis;
     std::array<std::deque<std::ostringstream>, 3> parts;
 };
 
@@ -116,15 +116,15 @@ private:
 std::string Emitter::id(const Def* def, bool force_bb /*= false*/) const {
     if (auto global = def->isa<Global>()) return "@" + global->unique_name();
 
-    if (auto lam = def->isa_nom<Lam>(); lam && !force_bb) {
+    if (auto lam = def->isa_mut<Lam>(); lam && !force_bb) {
         if (lam->type()->ret_pi()) {
             if (lam->is_external() || !lam->is_set())
-                return "@" + lam->name(); // TODO or use is_internal or sth like that?
-            return "@" + lam->unique_name();
+                return "@"s + *lam->sym(); // TODO or use is_internal or sth like that?
+            return "@"s + lam->unique_name();
         }
     }
 
-    return "%" + def->unique_name();
+    return "%"s + def->unique_name();
 }
 
 std::string Emitter::convert(const Def* type) {
@@ -158,9 +158,8 @@ std::string Emitter::convert(const Def* type) {
         assert(pi->is_returning() && "should never have to convert type of BB");
         print(s, "{} (", convert_ret_pi(pi->ret_pi()));
 
-        std::string_view sep = "";
-        auto doms            = pi->doms();
-        for (auto dom : doms.skip_back()) {
+        auto doms = pi->doms();
+        for (auto sep = ""; auto dom : doms.skip_back()) {
             if (match<mem::M>(dom)) continue;
             s << sep << convert(dom);
             sep = ", ";
@@ -168,14 +167,13 @@ std::string Emitter::convert(const Def* type) {
 
         s << ")*";
     } else if (auto sigma = type->isa<Sigma>()) {
-        if (sigma->isa_nom()) {
+        if (sigma->isa_mut()) {
             name          = id(sigma);
             types_[sigma] = name;
             print(s, "{} = type", name);
         }
         print(s, "{{");
-        std::string_view sep = "";
-        for (auto t : sigma->ops()) {
+        for (auto sep = ""; auto t : sigma->ops()) {
             if (match<mem::M>(t)) continue;
             s << sep << convert(t);
             sep = ", ";
@@ -193,17 +191,9 @@ std::string Emitter::convert(const Def* type) {
 }
 
 std::string Emitter::convert_ret_pi(const Pi* pi) {
-    switch (pi->num_doms()) {
-        case 0: return "void";
-        case 1:
-            if (match<mem::M>(pi->dom())) return "void";
-            return convert(pi->dom());
-        case 2:
-            if (match<mem::M>(pi->dom(0))) return convert(pi->dom(1));
-            if (match<mem::M>(pi->dom(1))) return convert(pi->dom(0));
-            [[fallthrough]];
-        default: return convert(pi->dom());
-    }
+    auto dom = mem::strip_mem_ty(pi->dom());
+    if (dom == world().sigma()) return "void";
+    return convert(dom);
 }
 
 /*
@@ -224,9 +214,8 @@ void Emitter::emit_imported(Lam* lam) {
     // TODO merge with declare method
     print(func_decls_, "declare {} {}(", convert_ret_pi(lam->type()->ret_pi()), id(lam));
 
-    auto sep  = "";
     auto doms = lam->doms();
-    for (auto dom : doms.skip_back()) {
+    for (auto sep = ""; auto dom : doms.skip_back()) {
         if (match<mem::M>(dom)) continue;
         print(func_decls_, "{}{}", sep, convert(dom));
         sep = ", ";
@@ -236,13 +225,12 @@ void Emitter::emit_imported(Lam* lam) {
 }
 
 std::string Emitter::prepare(const Scope& scope) {
-    auto lam = scope.entry()->as_nom<Lam>();
+    auto lam = scope.entry()->as_mut<Lam>();
 
     print(func_impls_, "define {} {}(", convert_ret_pi(lam->type()->ret_pi()), id(lam));
 
-    auto sep  = "";
     auto vars = lam->vars();
-    for (auto var : vars.skip_back()) {
+    for (auto sep = ""; auto var : vars.skip_back()) {
         if (match<mem::M>(var->type())) continue;
         auto name    = id(var);
         locals_[var] = name;
@@ -258,25 +246,23 @@ void Emitter::finalize(const Scope& scope) {
     for (auto& [lam, bb] : lam2bb_) {
         for (const auto& [phi, args] : bb.phis) {
             print(bb.head().emplace_back(), "{} = phi {} ", id(phi), convert(phi->type()));
-            auto sep = "";
-            for (const auto& [arg, pred] : args) {
+            for (auto sep = ""; const auto& [arg, pred] : args) {
                 print(bb.head().back(), "{}[ {}, {} ]", sep, arg, pred);
                 sep = ", ";
             }
         }
     }
 
-    for (auto nom : schedule(scope)) {
-        if (auto lam = nom->isa_nom<Lam>()) {
+    for (auto mut : schedule(scope)) {
+        if (auto lam = mut->isa_mut<Lam>()) {
             if (lam == scope.exit()) continue;
             assert(lam2bb_.contains(lam));
             auto& bb = lam2bb_[lam];
             print(func_impls_, "{}:\n", lam->unique_name());
 
             ++tab;
-            for (const auto& part : bb.parts) {
+            for (const auto& part : bb.parts)
                 for (const auto& line : part) tab.print(func_impls_, "{}\n", line.str());
-            }
             --tab;
             func_impls_ << std::endl;
         }
@@ -318,7 +304,27 @@ void Emitter::emit_epilogue(Lam* lam) {
             }
         }
     } else if (auto ex = app->callee()->isa<Extract>(); ex && app->callee_type()->is_basicblock()) {
-        emit_unsafe(app->arg());
+        // emit_unsafe(app->arg());
+        // A call to an extract like constructed for conditionals (else,then)#cond (args)
+        // TODO: we can not rely on the structure of the extract (it might be a nested extract)
+        for (auto callee_def : ex->tuple()->projs()) {
+            // dissect the tuple of lambdas
+            auto callee = callee_def->as_mut<Lam>();
+            // each callees type should agree with the argument type (should be checked by type checking).
+            // Especially, the number of vars should be the number of arguments.
+            // TODO: does not hold for complex arguments that are not tuples.
+            assert(callee->num_vars() == app->num_args());
+            for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
+                // emits the arguments one by one (TODO: handle together like before)
+                if (auto arg = emit_unsafe(app->arg(i)); !arg.empty()) {
+                    auto phi = callee->var(i);
+                    assert(!match<mem::M>(phi->type()));
+                    lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
+                    locals_[phi] = id(phi);
+                }
+            }
+        }
+
         auto c = emit(ex->index());
         if (ex->tuple()->num_projs() == 2) {
             auto [f, t] = ex->tuple()->projs<2>([this](auto def) { return emit(def); });
@@ -332,7 +338,7 @@ void Emitter::emit_epilogue(Lam* lam) {
         }
     } else if (app->callee()->isa<Bot>()) {
         return bb.tail("ret ; bottom: unreachable");
-    } else if (auto callee = app->callee()->isa_nom<Lam>(); callee && callee->is_basicblock()) { // ordinary jump
+    } else if (auto callee = app->callee()->isa_mut<Lam>(); callee && callee->is_basicblock()) { // ordinary jump
         for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
             if (auto arg = emit_unsafe(app->arg(i)); !arg.empty()) {
                 auto phi = callee->var(i);
@@ -356,9 +362,8 @@ void Emitter::emit_epilogue(Lam* lam) {
 
         std::vector<std::string> args;
         auto app_args = app->args();
-        for (auto arg : app_args.skip_back()) {
+        for (auto arg : app_args.skip_back())
             if (auto v_arg = emit_unsafe(arg); !v_arg.empty()) args.emplace_back(convert(arg->type()) + " " + v_arg);
-        }
 
         if (app->args().back()->isa<Bot>()) {
             // TODO: Perhaps it'd be better to simply η-wrap this prior to the BE...
@@ -367,7 +372,7 @@ void Emitter::emit_epilogue(Lam* lam) {
             return bb.tail("unreachable");
         }
 
-        auto ret_lam    = app->args().back()->as_nom<Lam>();
+        auto ret_lam    = app->args().back()->as_mut<Lam>();
         size_t num_vars = ret_lam->num_vars();
         size_t n        = 0;
         Array<const Def*> values(num_vars);
@@ -453,12 +458,14 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         std::string prev = "undef";
         auto t           = convert(tuple->type());
-        for (size_t i = 0, n = tuple->num_projs(); i != n; ++i) {
-            auto e = tuple->proj(n, i);
-            if (auto v_elem = emit_unsafe(e); !v_elem.empty()) {
-                auto t_elem = convert(e->type());
-                auto namei  = name + "." + std::to_string(i);
-                prev        = bb.assign(namei, "insertvalue {} {}, {} {}, {}", t, prev, t_elem, v_elem, i);
+        for (size_t src = 0, dst = 0, n = tuple->num_projs(); src != n; ++src) {
+            auto e = tuple->proj(n, src);
+            if (auto elem = emit_unsafe(e); !elem.empty()) {
+                auto elem_t = convert(e->type());
+                // TODO: check dst vs src
+                auto namei = name + "." + std::to_string(dst);
+                prev       = bb.assign(namei, "insertvalue {} {}, {} {}, {}", t, prev, elem_t, elem, dst);
+                dst++;
             }
         }
         return prev;
@@ -563,12 +570,12 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto [pointee, addr_space] = force<mem::Ptr>(global->type())->args<2>();
         print(vars_decls_, "{} = global {} {}\n", name, convert(pointee), v_init);
         return globals_[global] = name;
-    } else if (auto nop = match<core::nop>(def)) {
-        auto [a, b] = nop->args<2>([this](auto def) { return emit(def); });
+    } else if (auto nat = match<core::nat>(def)) {
+        auto [a, b] = nat->args<2>([this](auto def) { return emit(def); });
 
-        switch (nop.id()) {
-            case core::nop::add: op = "add"; break;
-            case core::nop::mul: op = "mul"; break;
+        switch (nat.id()) {
+            case core::nat::add: op = "add"; break;
+            case core::nat::mul: op = "mul"; break;
         }
 
         return bb.assign(name, "{} nsw nuw i64 {}, {}", op, a, b);
@@ -735,16 +742,23 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto [v_i, t_i] = emit_gep_index(i);
 
         return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, {} {}", t_pointee, t_ptr, v_ptr, t_i, v_i);
-    } else if (match<core::trait>(def)) {
-        unreachable();
     } else if (auto malloc = match<mem::malloc>(def)) {
         declare("i8* @malloc(i64)");
 
         emit_unsafe(malloc->arg(0));
-        auto v_size = emit(malloc->arg(1));
-        auto t_ptr  = convert(force<mem::Ptr>(def->proj(1)->type()));
-        bb.assign(name + ".i8", "call i8* @malloc(i64 {})", v_size);
-        return bb.assign(name, "bitcast i8* {} to {}", name + ".i8", t_ptr);
+        auto size  = emit(malloc->arg(1));
+        auto ptr_t = convert(force<mem::Ptr>(def->proj(1)->type()));
+        bb.assign(name + ".i8", "call i8* @malloc(i64 {})", size);
+        return bb.assign(name, "bitcast i8* {} to {}", name + ".i8", ptr_t);
+    } else if (auto free = match<mem::free>(def)) {
+        declare("void @free(i8*)");
+        emit_unsafe(free->arg(0));
+        auto ptr   = emit(free->arg(1));
+        auto ptr_t = convert(force<mem::Ptr>(free->arg(1)->type()));
+
+        bb.assign(name + ".i8", "bitcast {} {} to i8*", ptr_t, ptr);
+        bb.tail("call void @free(i8* {})", name + ".i8");
+        return {};
     } else if (auto mslot = match<mem::mslot>(def)) {
         emit_unsafe(mslot->arg(0));
         // TODO array with size
@@ -892,9 +906,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
     } else if (auto er = match<math::er>(def)) {
-        auto a        = emit(er->arg());
-        auto t        = convert(er->type());
-        std::string f = er.id() == math::er::f ? "erf" : "erfc";
+        auto a = emit(er->arg());
+        auto t = convert(er->type());
+        auto f = er.id() == math::er::f ? "erf"s : "erfc"s;
         f += math_suffix(er->type());
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
@@ -949,8 +963,12 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         return bb.assign(name, "{} {} {} to {}", op, t_src, v_src, t_dst);
     }
+    auto& world = def->world();
+    world.DLOG("unhandled def: {} : {}", def, def->type());
+    def->dump();
 
-    unreachable(); // not yet implemented
+    def->dump(1);
+    err("unhandled def in LLVM backend: {}", def);
 }
 
 void emit(World& world, std::ostream& ostream) {

@@ -1,0 +1,42 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin %s --output-ll %t.ll -o - | FileCheck %s
+// RUN: clang %t.ll -o %t -Wno-override-module
+// RUN: %t 1 3 1; test $? -eq 3
+// RUN: %t 0 5 2 ; test $? -eq 6
+
+.plugin affine;
+
+.con atoi [%mem.M, %mem.Ptr («⊤:.Nat; .Idx 256», 0), .Cn [%mem.M, .Idx 4294967296]];
+
+.con .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), return : .Cn [%mem.M, .Idx 4294967296]] = {
+    .con for_body [i : .Idx 4294967296, [acc_a : .Idx 4294967296, acc_b : .Idx 4294967296], continue : .Cn [.Idx 4294967296, .Idx 4294967296]] = {
+        .let a : .Idx 4294967296 = %core.wrap.add 0 (i, acc_a);
+        .let b : .Idx 4294967296 = %core.wrap.sub 0 (i, acc_b);
+        continue (a, b)
+    };
+    
+    .con atoi_cont_begin [mem : %mem.M, start : .Idx 4294967296] = {
+        .let _19234: %mem.Ptr (%mem.Ptr («⊤:.Nat; .Idx 256», 0), 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)›, 0) (argv, 2:(.Idx 4294967296));
+        .let _19247: [%mem.M, %mem.Ptr («⊤:.Nat; .Idx 256», 0)] = %mem.load (mem, _19234);
+
+        .con atoi_cont_end [mem : %mem.M, stop : .Idx 4294967296] = {
+            .let _19318: %mem.Ptr (%mem.Ptr («⊤:.Nat; .Idx 256», 0), 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)›, 0) (argv, 3:(.Idx 4294967296));
+            .let _19331: [%mem.M, %mem.Ptr («⊤:.Nat; .Idx 256», 0)] = %mem.load (mem, _19318);
+            .con atoi_cont_step [mem : %mem.M, step : .Idx 4294967296] = {
+                .con for_exit [acc : [.Idx 4294967296, .Idx 4294967296]] = {
+                    return (mem, acc#.ff)
+                };
+
+                %affine.For (4294967296, 2, (.Idx 4294967296, .Idx 4294967296)) (start, stop, step, (0:(.Idx 4294967296), 5:(.Idx 4294967296)), for_body, for_exit)
+            };
+            atoi (_19331#.ff, _19331#.tt, atoi_cont_step)
+        };
+        atoi (_19247#.ff, _19247#.tt, atoi_cont_end)
+    };
+
+    .let _19093: %mem.Ptr (%mem.Ptr («⊤:.Nat; .Idx 256», 0), 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)›, 0) (argv, 1:(.Idx 4294967296));
+    .let _19163: [%mem.M, %mem.Ptr («⊤:.Nat; .Idx 256», 0)] = %mem.load (mem, _19093);
+    atoi (_19163#.ff, _19163#.tt, atoi_cont_begin)
+};
+
+// CHECK-NOT: affine.for

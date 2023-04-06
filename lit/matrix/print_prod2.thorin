@@ -1,0 +1,48 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -p affine -p direct -p clos -o - --output-ll %t.ll %s 
+// RUN: clang %S/lib.c %t.ll -o %t -Wno-override-module
+// RUN: %t 2 3 | FileCheck %s
+
+.plugin core;
+.plugin math;
+.plugin matrix;
+
+.let _32 = 4294967296;
+.let I32 = .Idx _32;
+.let _f64_p = 52;
+.let _f64_e = 11;
+.let _f64 = (_f64_p, _f64_e);
+.let F64 = %math.F _f64;
+.let MT1 = (2, (2,4), F64);
+.let MT2 = (2, (4,3), F64);
+
+.con print_int_matrix    [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (⊤:.Nat,⊤:.Nat), I32), return : .Cn [%mem.M]];
+.con print_double_matrix [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (⊤:.Nat,⊤:.Nat), F64), return : .Cn [%mem.M]];
+
+.con print_int_matrix_wrap [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (k,l), I32), return : .Cn [%mem.M]] = {
+    .let m2 = %core.bitcast (%matrix.Mat (2,(⊤:.Nat,⊤:.Nat),I32)) m;
+    print_int_matrix(mem, k, l, m2, return)
+};
+
+.con print_double_matrix_wrap [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (k,l), F64), return : .Cn [%mem.M]] = {
+    .let m2 = %core.bitcast (%matrix.Mat (2,(⊤:.Nat,⊤:.Nat), F64)) m;
+    print_double_matrix(mem, k, l, m2, return)
+};
+
+
+.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
+    .con return_cont [mem:%mem.M] = return (mem, 0:I32);
+
+    .let c = 3.0:F64;
+    .let d = 5.0:F64;
+    .let (mem2,m1) = %matrix.constMat MT1 (mem,c);
+    .let (mem3,m2) = %matrix.constMat MT2 (mem2,d);
+    .let (mem4,m1_2) = %matrix.insert MT1 (mem3,m1, (0:(.Idx 2),2:(.Idx 4)), 4.0:F64);
+    .let (mem5,m2_2) = %matrix.insert MT2 (mem4,m2, (1:(.Idx 4),2:(.Idx 3)), 6.0:F64);
+
+    .let (mem6, mP) = %matrix.prod (2,4,3, _f64) (mem5, m1_2, m2_2);
+    print_double_matrix_wrap (mem6, 2, 3, mP, return_cont)
+};
+
+// CHECK: 65.00, 65.00, 68.00, 
+// CHECK: 60.00, 60.00, 63.00, 

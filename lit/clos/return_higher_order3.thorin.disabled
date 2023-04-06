@@ -1,0 +1,27 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -p clos %s --output-ll %t.ll -o -
+
+/*
+TODO: investigate and open error
+thorin: /dialects/clos/phase/clos_conv.cpp:64: const thorin::Def* thorin::clos::clos_pack_dbg(const thorin::Def*, const thorin::Def*, const thorin::Def*, const thorin::Def*): Assertion `pi && env->type() == pi->dom(Clos_Env_Param)' failed.
+*/
+
+.plugin core;
+.plugin direct;
+
+.let i32 = .Idx 4294967296;
+.let i8 = .Idx 256;
+.let pb_type = .Cn [%mem.M];
+
+.con .extern main [mem: %mem.M, argc: i32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, i32]] = {
+    .con callback (mem: %mem.M) = {
+        return (mem, 1:i32)
+    };
+
+    .let (alloc_pb_mem, pb_ptr) = %mem.malloc (pb_type, 0) (mem, 1);
+
+    .let store_return_mem = %mem.store (pb_type, 0) (alloc_pb_mem, pb_ptr, callback);
+
+    .let (load_clos_mem, load_clos) = %mem.load (pb_type, 0) (store_return_mem, pb_ptr);
+    load_clos(load_clos_mem)
+};

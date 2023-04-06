@@ -1,9 +1,9 @@
-/// # The compile dialect {#compile}
+/// # The compile Plugin {#compile}
 ///
 /// [TOC]
 ///
-/// This dialect handles the optimization part of the compilation of Thorin programs.
-/// Dialects can register passes and phases using the axioms from this dialect.
+/// This plugin handles the optimization part of the compilation of Thorin programs.
+/// Plugins can register passes and phases using the axioms from this plugin.
 /// The program then can invoke the optimization pipeline by defining a function `_compile: [] -> Pipeline`.
 ///
 /// ## Types
@@ -21,12 +21,39 @@
 /// 
 /// Types for functions that accept an arbitrary number of phases and passes respectively.
 /// 
-.Pi Pipeline: *, %compile.Phase = Pipeline;
-.Pi PassList: *, %compile.Pass = PassList;
-.Pi CombinedPhase: *, %compile.Phase = CombinedPhase;
+.Pi Pipeline: □, %compile.Phase = Pipeline;
+.Pi PassList: □, %compile.Pass = PassList;
+.Pi CombinedPhase: □, %compile.Phase = CombinedPhase;
+///
+/// (This is a forward declaration for opt.thorin.)
+///
+.ax %compile.Plugin: *;
 ///
 /// ## Expressions
 ///
+/// ### Registered Plugins
+/// 
+/// We expect the name in the tag before the `_` to be the name of the plugin (as given in `Plugin.plugin_name`).
+/// (This is a forward declaration for opt.thorin.)
+/// 
+.ax %compile.core_plugin    : %compile.Plugin;
+.ax %compile.mem_plugin     : %compile.Plugin;
+.ax %compile.demo_plugin    : %compile.Plugin;
+.ax %compile.affine_plugin  : %compile.Plugin;
+.ax %compile.autodiff_plugin: %compile.Plugin;
+.ax %compile.clos_plugin    : %compile.Plugin;
+.ax %compile.direct_plugin  : %compile.Plugin;
+.ax %compile.refly_plugin   : %compile.Plugin;
+.ax %compile.matrix_plugin  : %compile.Plugin;
+///
+/// ### %opt.is_loaded
+/// 
+/// Indicates whether a plugin is loaded.
+/// The normalizer will statically evaluate this expression to a constant boolean.
+/// TODO: find correct point (not at parsing but before compilation)
+/// 
+// .ax %opt.is_loaded: %opt.Plugin -> .Bool;
+/// 
 /// ### %compile.pipe
 /// 
 /// Given n phases, returns the representation of a pipeline.
@@ -116,7 +143,15 @@
         (%compile.single_pass_phase %compile.lam_spec_pass)
         (%compile.single_pass_phase %compile.ret_wrap_pass)
 };
-.lam .extern _fallback_compile [] -> Pipeline = {
-    default_core_pipeline
-};
+.lam .extern _fallback_compile() -> Pipeline = default_core_pipeline;
+///
+/// ### Dependent Passes and Phases
+/// 
+.let empty_pass = %compile.nullptr_pass;
+.let empty_phase = %compile.passes_to_phase 0 ();
+.ax %compile.plugin_select: Π [T:*] -> %compile.Plugin -> T -> T -> T;
+.let plugin_phase = %compile.plugin_select %compile.Phase;
+.let plugin_pass = %compile.plugin_select %compile.Pass;
+.lam plugin_cond_phase!(plugin: %compile.Plugin, phase: %compile.Phase) -> %compile.Phase = plugin_phase plugin phase empty_phase;
+.lam plugin_cond_pass!(plugin: %compile.Plugin, pass: %compile.Pass) -> %compile.Pass = plugin_pass plugin pass empty_pass;
 

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "thorin/pass/pass.h"
+#include <thorin/analyses/scope.h>
+#include <thorin/pass/pass.h>
 
 #include "dialects/clos/clos.h"
 
@@ -19,7 +20,7 @@ public:
         , lam2fscope_() {}
 
     void enter() override;
-    const Def* rewrite(const Def*) override;
+    Ref rewrite(Ref) override;
     const App* rewrite_arg(const App* app);
     const App* rewrite_callee(const App* app);
 
@@ -27,19 +28,19 @@ public:
 
     bool from_outer_scope(Lam* lam) {
         // return scope_.free_defs().contains(lam);
-        return scope(lam) && scope(lam) != scope(curr_nom());
+        return scope(lam) && scope(lam) != scope(curr_mut());
     }
 
-    bool from_outer_scope(const Def* lam) { return scope_->free_defs().contains(lam); }
+    bool from_outer_scope(Ref lam) { return scope_->free_defs().contains(lam); }
 
-    const Def* eta_wrap(const Def* def, attr a, const std::string& dbg) {
+    Ref eta_wrap(Ref def, attr a) {
         auto& w                = world();
         auto [entry, inserted] = old2wrapper_.emplace(def, nullptr);
         auto& wrapper          = entry->second;
         if (inserted) {
-            wrapper = w.nom_lam(def->type()->as<Pi>(), w.dbg(dbg));
+            wrapper = w.mut_lam(def->type()->as<Pi>());
             wrapper->app(false, def, wrapper->var());
-            lam2fscope_[wrapper] = scope(curr_nom());
+            lam2fscope_[wrapper] = scope(curr_mut());
             wrapper_.emplace(wrapper);
         }
         return op(a, wrapper);

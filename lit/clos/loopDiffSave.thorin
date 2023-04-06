@@ -1,9 +1,7 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d clos %s --output-ll %t.ll -o - 
+// RUN: %thorin -p clos -p direct %s --output-ll %t.ll -o - 
 
-.import mem;
-.import core;
-.import direct;
+.plugin core;
 
 .let i32 = .Idx 4294967296;
 .let i8 = .Idx 256;
@@ -43,13 +41,13 @@
 
     .let arr_size = ⊤:.Nat;
 
-    .let (alloc_mem_a, a_arr) = %mem.alloc (<<%core.bitcast (.Nat, i32) 4:i32; i32>>, 0) (mem);
-    .let (alloc_mem_b, b_arr) = %mem.alloc (<<%core.bitcast (.Nat, i32) 4:i32; i32>>, 0) (alloc_mem_a);
-    .let (alloc_mem_c, c_arr) = %mem.alloc (<<%core.bitcast (.Nat, i32) 4:i32; i32>>, 0) (alloc_mem_b);
+    .let (alloc_mem_a, a_arr) = %mem.alloc (<<4; i32>>, 0) (mem);
+    .let (alloc_mem_b, b_arr) = %mem.alloc (<<4; i32>>, 0) (alloc_mem_a);
+    .let (alloc_mem_c, c_arr) = %mem.alloc (<<4; i32>>, 0) (alloc_mem_b);
 
-    .let (alloc_mem_ad, ad_arr) = %mem.alloc (<<%core.bitcast (.Nat, i32) 4:i32; i32>>, 0) (alloc_mem_c);
-    .let (alloc_mem_bd, bd_arr) = %mem.alloc (<<%core.bitcast (.Nat, i32) 4:i32; i32>>, 0) (alloc_mem_ad);
-    .let (alloc_mem_cd, cd_arr) = %mem.alloc (<<%core.bitcast (.Nat, i32) 4:i32; i32>>, 0) (alloc_mem_bd);
+    .let (alloc_mem_ad, ad_arr) = %mem.alloc (<<4; i32>>, 0) (alloc_mem_c);
+    .let (alloc_mem_bd, bd_arr) = %mem.alloc (<<4; i32>>, 0) (alloc_mem_ad);
+    .let (alloc_mem_cd, cd_arr) = %mem.alloc (<<4; i32>>, 0) (alloc_mem_bd);
 
     .con finish_pb_trace [mem: %mem.M, return : .Cn %mem.M] = {
             // TODO: check if fix is correct
@@ -59,10 +57,7 @@
     .let pb_type = .Cn [%mem.M, .Cn [%mem.M]];
     .let (alloc_pb_mem, pb_ptr) = %mem.malloc (pb_type, 0) (mem, 32);
 
-    .let pb_arr = %core.bitcast (
-       %mem.Ptr («⊤:.Nat; .Cn [%mem.M, .Cn [%mem.M]]», 0),
-       %mem.Ptr (.Cn [%mem.M, .Cn [%mem.M]], 0)) pb_ptr;
-
+    .let pb_arr = %core.bitcast (%mem.Ptr («⊤:.Nat; .Cn [%mem.M, .Cn [%mem.M]]», 0)) pb_ptr;
     .let lea_pb = %mem.lea (⊤:.Nat, <⊤:.Nat; pb_type>, 0) (pb_arr, 0:i32);
     .let mem_assign_pb_anchor = %mem.store (alloc_pb_mem, lea_pb, finish_pb_trace);
 

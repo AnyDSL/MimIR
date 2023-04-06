@@ -11,31 +11,31 @@ namespace thorin::autodiff {
 
 /// Currently this normalizer does nothin.
 /// TODO: Maybe we want to handle trivial lookup replacements here.
-const Def* normalize_ad(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+Ref normalize_ad(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
-    return world.raw_app(type, callee, arg, dbg);
+    return world.raw_app(type, callee, arg);
 }
 
-const Def* normalize_AD(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+Ref normalize_AD(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
     auto ad_ty  = autodiff_type_fun(arg);
     if (ad_ty) return ad_ty;
-    return world.raw_app(type, callee, arg, dbg);
+    return world.raw_app(type, callee, arg);
 }
 
-const Def* normalize_Tangent(const Def*, const Def*, const Def* arg, const Def*) { return tangent_type_fun(arg); }
+Ref normalize_Tangent(Ref, Ref, Ref arg) { return tangent_type_fun(arg); }
 
 /// Currently this normalizer does nothing.
 /// We usually want to keep zeros as long as possible to avoid unnecessary allocations.
 /// A high-level addition with zero can be shortened directly.
-const Def* normalize_zero(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+Ref normalize_zero(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
-    return world.raw_app(type, callee, arg, dbg);
+    return world.raw_app(type, callee, arg);
 }
 
 /// Currently resolved the full addition.
 /// There is no benefit in keeping additions around longer than necessary.
-const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+Ref normalize_add(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
 
     // TODO: add tuple -> tuple of adds
@@ -66,7 +66,7 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
     } else if (auto arr = T->isa<Arr>()) {
         // TODO: is this working for non-lit (non-tuple) or do we need a loop?
         world.DLOG("add arrays {} {} {}", T, a, b);
-        auto pack      = world.nom_pack(T);
+        auto pack      = world.mut_pack(T);
         auto body_type = arr->body();
         world.DLOG("body type {}", body_type);
         pack->set(world.app(world.app(world.ax<add>(), body_type),
@@ -85,10 +85,10 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
     }
     // TODO: mem stays here (only resolved after direct simplification)
 
-    return world.raw_app(type, callee, arg, dbg);
+    return world.raw_app(type, callee, arg);
 }
 
-const Def* normalize_sum(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+Ref normalize_sum(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
 
     auto [count, T] = callee->as<App>()->args<2>();
@@ -99,13 +99,13 @@ const Def* normalize_sum(const Def* type, const Def* callee, const Def* arg, con
         DefArray args = arg->projs(val);
         auto sum      = world.app(world.ax<zero>(), T);
         // This special case would also be handled by add zero
-        if (val >= 1) { sum = args[0]; }
+        if (val >= 1) sum = args[0];
         for (size_t i = 1; i < val; ++i) sum = world.app(world.app(world.ax<add>(), T), {sum, args[i]});
         return sum;
     }
     assert(0);
 
-    return world.raw_app(type, callee, arg, dbg);
+    return world.raw_app(type, callee, arg);
 }
 
 THORIN_autodiff_NORMALIZER_IMPL

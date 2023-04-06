@@ -4,7 +4,7 @@
 
 namespace thorin::refly {
 
-const Def* RemoveDbgPerm::rewrite(const Def* def) {
+Ref RemoveDbgPerm::rewrite(Ref def) {
     if (auto dbg_perm = match(dbg::perm, def)) {
         auto e = dbg_perm->arg();
         world().DLOG("dbg_perm: {}", e);

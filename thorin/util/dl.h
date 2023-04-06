@@ -1,7 +1,6 @@
 #pragma once
 
-#include <filesystem>
-#include <optional>
+#include <stdexcept>
 #include <string>
 
 namespace thorin::dl {
@@ -12,7 +11,6 @@ public:
         : std::runtime_error(what_arg) {}
 };
 
-std::string_view prefix();    ///< `"lib"` or `""`
 std::string_view extension(); ///< `".dll"` or `".so"`
 
 void* open(const std::string& filename);

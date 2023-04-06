@@ -1,17 +1,17 @@
 #pragma once
 
-#include <absl/container/flat_hash_map.h>
+#include <optional>
 
-#include "thorin/debug.h"
+#include <absl/container/flat_hash_map.h>
 
 #include "thorin/fe/tok.h"
 #include "thorin/util/utf8.h"
 
 namespace thorin {
-
 class World;
+}
 
-namespace fe {
+namespace thorin::fe {
 
 class Lexer : public utf8::Lexer<3> {
     using Super = utf8::Lexer<3>;
@@ -19,15 +19,15 @@ class Lexer : public utf8::Lexer<3> {
 public:
     /// Creates a lexer to read Thorin files (see [Lexical Structure](@ref lex)).
     /// If @p md is not `nullptr`, a Markdown output will be generated.
-    Lexer(World& world, std::string_view file, std::istream& istream, std::ostream* md = nullptr);
+    Lexer(World& world, std::istream& istream, const fs::path* path = nullptr, std::ostream* md = nullptr);
 
     World& world() { return world_; }
-    std::string_view file() const { return loc_.file; }
+    const fs::path* path() const { return loc_.path; }
     Loc loc() const { return loc_; }
     Tok lex();
 
 private:
-    Ahead next() override {
+    Char next() override {
         auto res = Super::next();
         if (md_ && out_) {
             if (res.c32 == utf8::EoF) {
@@ -56,9 +56,8 @@ private:
     World& world_;
     std::ostream* md_;
     bool out_ = true;
-    absl::flat_hash_map<std::string, Tok::Tag> keywords_;
-    std::optional<Tok> cache_;
+    SymMap<Tok::Tag> keywords_;
+    std::optional<Tok> cache_ = std::nullopt;
 };
 
-} // namespace fe
-} // namespace thorin
+} // namespace thorin::fe

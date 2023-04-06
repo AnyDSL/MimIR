@@ -14,14 +14,6 @@
 
 namespace thorin::dl {
 
-std::string_view prefix() {
-#ifdef _WIN32
-    return "";
-#else
-    return "lib";
-#endif
-}
-
 std::string_view extension() {
 #ifdef _WIN32
     return ".dll";
@@ -35,19 +27,17 @@ void* open(const std::string& file) {
     if (HMODULE handle = LoadLibraryA(file.c_str())) {
         return static_cast<void*>(handle);
     } else {
-        err("could not load dialect plugin '{}' due to error '{}'\n"
+        err("could not load plugin '{}' due to error '{}'\n"
             "see https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes\n",
             file, GetLastError());
     }
 #else
-    if (void* handle = dlopen(file.c_str(), RTLD_NOW)) {
+    if (void* handle = dlopen(file.c_str(), RTLD_NOW))
         return handle;
-    } else {
-        if (char* error = dlerror())
-            err("could not load plugin '{}' due to error '{}'\n", file, error);
-        else
-            err("could not load plugin '{}'\n", file);
-    }
+    else if (char* error = dlerror())
+        err("could not load plugin '{}' due to error '{}'\n", file, error);
+    else
+        err("could not load plugin '{}'\n", file);
 #endif
 }
 
@@ -63,11 +53,10 @@ void* get(void* handle, const std::string& symbol) {
 #else
     dlerror(); // clear error state
     void* addr = dlsym(handle, symbol.c_str());
-    if (char* error = dlerror()) {
+    if (char* error = dlerror())
         err("could not find symbol '{}' in plugin due to error '{}' \n", symbol, error);
-    } else {
+    else
         return addr;
-    }
 #endif
 }
 

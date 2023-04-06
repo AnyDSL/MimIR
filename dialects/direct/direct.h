@@ -1,12 +1,13 @@
 #pragma once
 
-#include "thorin/world.h"
+#include <thorin/analyses/scope.h>
+#include <thorin/rewrite.h>
 
 #include "dialects/direct/autogen.h"
 
 namespace thorin::direct {
 
-inline const Def* op_cps2ds_dep(const Def* f, const Def* dbg = {}) {
+inline const Def* op_cps2ds_dep(const Def* f) {
     auto& world = f->world();
     // TODO: assert continuation
     world.DLOG("f: {} : {}", f, f->type());
@@ -16,12 +17,12 @@ inline const Def* op_cps2ds_dep(const Def* f, const Def* dbg = {}) {
     world.DLOG("T: {}", T);
     world.DLOG("U: {}", U);
 
-    auto Uf = world.nom_lam(world.pi(T, world.type()), world.dbg("Uf"));
+    auto Uf = world.mut_lam(world.pi(T, world.type()))->set("Uf");
     world.DLOG("Uf: {} : {}", Uf, Uf->type());
 
     const Def* rewritten_codom;
 
-    if (auto f_ty_sig = f_ty->dom()->isa_nom<Sigma>()) {
+    if (auto f_ty_sig = f_ty->dom()->isa_mut<Sigma>()) {
         auto dom_var = f_ty_sig->var((nat_t)0);
         world.DLOG("dom_var: {}", dom_var);
         Scope r_scope{f_ty_sig};
@@ -37,7 +38,7 @@ inline const Def* op_cps2ds_dep(const Def* f, const Def* dbg = {}) {
 
     world.DLOG("axiom app: {} : {}", ax_app, ax_app->type());
 
-    return world.app(ax_app, f, dbg);
+    return world.app(ax_app, f);
 }
 
 } // namespace thorin::direct

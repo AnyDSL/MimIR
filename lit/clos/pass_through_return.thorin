@@ -1,9 +1,8 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d clos %s --output-ll %t.ll -o - 
+// RUN: %thorin -p clos %s --output-ll %t.ll -o - 
 
-.import mem;
-.import core;
-.import direct;
+.plugin core;
+.plugin direct;
 
 .let i32 = .Idx 4294967296;
 .let i8 = .Idx 256;
@@ -21,7 +20,7 @@
     };
 
     .let (alloc_pb_mem, pb_ptr) = %mem.malloc (pb_type, 0) (mem, 100);
-    .let pb_arr = %core.bitcast ( %mem.Ptr («⊤:.Nat; pb_type», 0), %mem.Ptr (pb_type, 0)) pb_ptr;
+    .let pb_arr = %core.bitcast (%mem.Ptr («⊤:.Nat; pb_type», 0)) pb_ptr;
     .let lea_pb = %mem.lea (⊤:.Nat, <⊤:.Nat; pb_type>, 0) (pb_arr, 0:i32);
     .let store_pb = %mem.store (alloc_pb_mem, lea_pb, end);
 

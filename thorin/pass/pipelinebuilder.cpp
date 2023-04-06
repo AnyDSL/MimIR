@@ -1,7 +1,7 @@
 #include "thorin/pass/pipelinebuilder.h"
 
 #include "thorin/def.h"
-#include "thorin/dialects.h"
+#include "thorin/plugin.h"
 #include "thorin/lattice.h"
 
 #include "thorin/pass/fp/beta_red.h"
@@ -21,25 +21,17 @@
 
 namespace thorin {
 
-void PipelineBuilder::remember_pass_instance(Pass* p, const Def* def) {
+void PipelineBuilder::def2pass(const Def* def, Pass* p) {
     def->world().DLOG("associating {} with {}", def->gid(), p);
-    pass_instances_[def] = p;
+    def2pass_[def] = p;
 }
-Pass* PipelineBuilder::get_pass_instance(const Def* def) { return pass_instances_[def]; }
+Pass* PipelineBuilder::pass(const Def* def) { return def2pass_[def]; }
 
 void PipelineBuilder::begin_pass_phase() { man = std::make_unique<PassMan>(world_); }
 void PipelineBuilder::end_pass_phase() {
     std::unique_ptr<thorin::PassMan>&& pass_man_ref = std::move(man);
     pipe->add<PassManPhase>(std::move(pass_man_ref));
     man = nullptr;
-}
-
-void PipelineBuilder::register_dialect(Dialect& dialect) { dialects_.push_back(&dialect); }
-bool PipelineBuilder::is_registered_dialect(std::string name) {
-    for (auto& dialect : dialects_) {
-        if (dialect->name() == name) { return true; }
-    }
-    return false;
 }
 
 void PipelineBuilder::run_pipeline() { pipe->run(); }

@@ -1,0 +1,34 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin %s --output-ll %t.ll -o - | FileCheck %s
+// RUN: clang %t.ll -o %t -Wno-override-module
+// RUN: %t ; test $? -eq 0
+// RUN: %t 1 2 3 ; test $? -eq 6
+
+.plugin affine;
+
+.con .extern main (mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return : .Cn [%mem.M, .Idx 4294967296]) = {
+    .con for_exit [acc : .Idx 4294967296] = {
+        return (mem, acc)
+    };
+
+    .con for_body [i : .Idx 4294967296, acc : .Idx 4294967296, continue : .Cn [.Idx 4294967296]] = {
+        continue (%core.wrap.add 0 (i, acc))
+    };
+    %affine.For (4294967296, 1, (.Idx 4294967296)) (0:(.Idx 4294967296), argc, 1:(.Idx 4294967296), (0:(.Idx 4294967296)), for_body, for_exit)
+};
+
+// CHECK-DAG: .con .extern main _[[mainVar:[0-9_]+]]::[mem_[[memVar:[0-9_]+]]: %mem.M, argc_[[argcId:[0-9_]+]]: .Idx 4294967296, %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return_[[returnId:[0-9_]+]]: .Cn [%mem.M, .Idx 4294967296]] {{(@.*)?}}= {
+
+// CHECK-DAG: .con return_[[returnId:[0-9_]+]] _[[returnVarId:[0-9_]+]]: [%mem.M, .Idx 4294967296]
+
+// CHECK-DAG: .con for_[[forId:[0-9_]+]] _[[forVarId:[0-9_]+]]::[iter_[[forIdxId:[0-9_]+]]: .Idx 4294967296, acc_[[forAccId:[0-9_]+]]: .Idx 4294967296]
+// CHECK-DAG: _[[cmpId:[0-9_]+]]: .Idx 2 = %core.icmp.XygLe
+// CHECK-DAG: ([[falseId:[a-z0-9_]+]], for_body_[[bodyId:[0-9_]+]])#_[[cmpId]]
+
+// CHECK-DAG: .con for_body_[[bodyId]] 
+// CHECK-DAG: = %core.wrap.add
+// CHECK-DAG: = %core.wrap.add
+// CHECK-DAG: for_[[forId]]
+
+// CHECK DAG: for_[[forId]]
+// CHECK-NOT: %affine.For

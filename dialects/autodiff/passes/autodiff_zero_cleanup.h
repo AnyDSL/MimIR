@@ -11,7 +11,7 @@ public:
     AutoDiffZeroCleanup(PassMan& man)
         : RWPass(man, "autodiff_zero_cleanup") {}
 
-    const Def* rewrite(const Def*) override;
+    Ref rewrite(Ref) override;
 };
 
 } // namespace thorin::autodiff

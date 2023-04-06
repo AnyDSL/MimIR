@@ -1,9 +1,9 @@
 // RUN: rm -f %t.ll ; \
 // RUN: %thorin %s --output-ll %t.ll -o -
 
-.ax %matrix.Mat: Π [n: .Nat, S: «n; .Nat», T: *] -> *; 
+.ax %foo.Mat: Π [n: .Nat, S: «n; .Nat», T: *] -> *; 
 
-.ax %matrix.mapReduce: 
+.ax %foo.map_reduce: 
     // out shape depends on in shape but is complex
     Π [n: .Nat, S: «n; .Nat», T: *, // out shape
         m: .Nat,                    // number of inputs
@@ -22,14 +22,14 @@
             «x:m; 
                 [
                     «NI#x;.Nat»,
-                    %matrix.Mat (NI#x,SI#x,TI#x)
+                    %foo.Mat (NI#x,SI#x,TI#x)
                 ]
             »
     ] ->
-    %matrix.Mat (n,S,T);
+    %foo.Mat (n,S,T);
 
 .let I32 = .Idx 4294967296;
-.let test = %matrix.mapReduce 
+.let test = %foo.map_reduce 
     (2,(4,3),I32,
         2,
         (2,3),

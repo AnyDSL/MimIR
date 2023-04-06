@@ -1,0 +1,59 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -o - %s  | FileCheck %s
+
+.plugin core;
+.plugin matrix;
+
+.let _32 = 4294967296;
+.let I32 = .Idx _32;
+// .let MT = (2, (2,4), I32);
+
+.con .extern fun [[mem:%mem.M, acc:I32, [a:I32, b:I32]], ret:.Cn[%mem.M,I32]] = {
+    .let v = %core.wrap.add 0 (a,b);
+
+    // reduce op = addition
+    .let new_acc = %core.wrap.add 0 (acc,v);
+
+    ret (mem, new_acc)
+};
+
+.con .extern f [mem : %mem.M, 
+    [k:.Nat, l:.Nat],
+    M:%matrix.Mat (2,(k,l),I32),
+    return: .Cn[%mem.M, %matrix.Mat (2,(k,l),I32)]] = {
+    // .let v2 = %core.wrap.add (0:.Nat, 4294967296:.Nat) (v, v);
+    // .let (k,l) = kl;
+    // .let add = %core.wrap.add (0:.Nat, 4294967296:.Nat);
+
+
+    .let MT = M;
+    .let (mem2,MT2) = %matrix.map_reduce
+        (
+            2, (k,l), I32,
+            2,
+            (2,2),
+            (I32,I32),
+            ((k,l),(k,l))
+        )
+        (
+            mem,
+            0:I32,
+            fun,
+            (
+                ((0,1),M),
+                ((0,1),M)
+            )
+        )
+        ;
+        // (
+        //     (0:I32),
+        //     addition,
+        //     identity,
+        //     (((1,0),M))
+        // );
+
+
+    return (mem2, MT)
+};
+
+// CHECK-NOT: %matrix.

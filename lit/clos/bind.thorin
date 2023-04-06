@@ -1,5 +1,5 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d clos %s --output-ll %t.ll
+// RUN: %thorin -p clos %s --output-ll %t.ll
 // RUN: clang %S/lib.c %t.ll -o %t -Wno-override-module
 // RUN: %t | FileCheck %s
 
@@ -35,7 +35,7 @@
         println_i32( mem, i , next )
     };
 
-    .let condition = %core.icmp.ul (i, %core.bitcast (i32, .Nat) size);
+    .let condition = %core.icmp.ul (i, %core.bitcast i32 size);
     .let target = (exit, loop_body)#condition;
     target ( mem )
 };

@@ -4,8 +4,7 @@
 #include <istream>
 #include <optional>
 
-#include "thorin/debug.h"
-
+#include "thorin/util/loc.h"
 #include "thorin/util/types.h"
 
 namespace thorin::utf8 {
@@ -41,9 +40,9 @@ bool decode(std::ostream& os, char32_t c);
 template<size_t Max_Ahead>
 class Lexer {
 public:
-    Lexer(std::string_view filename, std::istream& istream)
+    Lexer(std::istream& istream, const fs::path* path)
         : istream_(istream)
-        , loc_(filename, {0, 0}) {
+        , loc_(path, {0, 0}) {
         ahead_.back().pos = {1, 0};
         for (size_t i = 0; i != Max_Ahead; ++i) next();
         accept(BOM); // eat utf-8 BOM if present
@@ -51,9 +50,9 @@ public:
     virtual ~Lexer() {}
 
 protected:
-    struct Ahead {
-        Ahead() = default;
-        Ahead(char32_t c32, Pos pos)
+    struct Char {
+        Char() = default;
+        Char(char32_t c32, Pos pos)
             : c32(c32)
             , pos(pos) {}
 
@@ -62,12 +61,12 @@ protected:
         Pos pos;
     };
 
-    Ahead ahead(size_t i = 0) const {
+    Char ahead(size_t i = 0) const {
         assert(i < Max_Ahead);
         return ahead_[i];
     }
 
-    virtual Ahead next() {
+    virtual Char next() {
         auto result = ahead();
         auto prev   = ahead_.back().pos;
 
@@ -108,7 +107,7 @@ protected:
     std::istream& istream_;
     Loc loc_;
     std::string str_;
-    std::array<Ahead, Max_Ahead> ahead_;
+    std::array<Char, Max_Ahead> ahead_;
 };
 
 } // namespace thorin::utf8

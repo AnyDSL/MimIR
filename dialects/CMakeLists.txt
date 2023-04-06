@@ -1,7 +1,7 @@
-# must be registered before `add_thorin_dialect` calls
-add_custom_target(thorin_all_dialects)
+# must be registered before `add_thorin_plugin` calls
+add_custom_target(thorin_all_plugins)
 
-add_thorin_dialect(affine
+add_thorin_plugin(affine
     SOURCES
         affine/affine.cpp
         affine/affine.h
@@ -13,7 +13,7 @@ add_thorin_dialect(affine
     INSTALL
 )
 
-add_thorin_dialect(autodiff
+add_thorin_plugin(autodiff
     SOURCES
         autodiff/autodiff.cpp
         autodiff/autodiff.h
@@ -23,13 +23,12 @@ add_thorin_dialect(autodiff
         autodiff/passes/autodiff_zero.h
         autodiff/passes/autodiff_zero_cleanup.cpp
         autodiff/passes/autodiff_zero_cleanup.h
-        autodiff/passes/autodiff_ext_cleanup.cpp
-        autodiff/passes/autodiff_ext_cleanup.h
         autodiff/auxiliary/autodiff_aux.cpp
         autodiff/auxiliary/autodiff_aux.h
         autodiff/auxiliary/autodiff_rewrite_inner.cpp
         autodiff/auxiliary/autodiff_rewrite_toplevel.cpp
         autodiff/normalizers.cpp
+        compile/passes/internal_cleanup.cpp
     DEPENDS
         mem
         core
@@ -41,7 +40,7 @@ add_thorin_dialect(autodiff
     INSTALL
 )
 
-add_thorin_dialect(clos
+add_thorin_plugin(clos
     SOURCES
         clos/clos.cpp
         clos/clos.h
@@ -54,11 +53,14 @@ add_thorin_dialect(clos
         clos/pass/rw/clos2sjlj.h
         clos/pass/rw/clos_conv_prep.cpp
         clos/pass/rw/clos_conv_prep.h
+        clos/pass/rw/phase_wrapper.h
         clos/phase/clos_conv.cpp
         clos/phase/clos_conv.h
         clos/phase/lower_typed_clos.cpp
         clos/phase/lower_typed_clos.h
         mem/passes/fp/copy_prop.cpp
+        mem/passes/rw/reshape.cpp
+        mem/phases/rw/add_mem.cpp
     DEPENDS
         mem
         affine
@@ -67,7 +69,7 @@ add_thorin_dialect(clos
     INSTALL
 )
 
-add_thorin_dialect(compile
+add_thorin_plugin(compile
     SOURCES
         compile/compile.cpp
         compile/compile.h
@@ -79,7 +81,7 @@ add_thorin_dialect(compile
     INSTALL
 )
 
-add_thorin_dialect(core
+add_thorin_plugin(core
     SOURCES
         core/core.cpp
         core/core.h
@@ -89,10 +91,12 @@ add_thorin_dialect(core
     DEPENDS
         math
         mem
+    HEADER_DEPENDS
+        clos
     INSTALL
 )
 
-add_thorin_dialect(demo
+add_thorin_plugin(demo
     SOURCES
         demo/demo.cpp
         demo/demo.h
@@ -102,7 +106,7 @@ add_thorin_dialect(demo
     INSTALL
 )
 
-add_thorin_dialect(direct
+add_thorin_plugin(direct
     SOURCES
         direct/direct.cpp
         direct/direct.h
@@ -116,7 +120,7 @@ add_thorin_dialect(direct
     INSTALL
 )
 
-add_thorin_dialect(math
+add_thorin_plugin(math
     SOURCES
         math/math.cpp
         math/math.h
@@ -124,7 +128,28 @@ add_thorin_dialect(math
     INSTALL
 )
 
-add_thorin_dialect(mem
+add_thorin_plugin(matrix
+    SOURCES
+        matrix/matrix.cpp
+        matrix/matrix.h
+        matrix/normalizers.cpp
+        matrix/passes/lower_matrix_highlevel.cpp
+        matrix/passes/lower_matrix_highlevel.h
+        matrix/passes/lower_matrix_mediumlevel.cpp
+        matrix/passes/lower_matrix_mediumlevel.h
+        matrix/passes/lower_matrix_lowlevel.cpp
+        matrix/passes/lower_matrix_lowlevel.h
+        compile/passes/internal_cleanup.cpp
+    DEPENDS
+        refly
+        direct
+        affine
+        core
+        mem
+        compile
+    INSTALL
+)
+add_thorin_plugin(mem
     SOURCES
         mem/mem.cpp
         mem/mem.h
@@ -137,6 +162,8 @@ add_thorin_dialect(mem
         mem/passes/rw/alloc2malloc.h
         mem/passes/rw/remem_elim.cpp
         mem/passes/rw/remem_elim.h
+        mem/passes/rw/reshape.cpp
+        mem/passes/rw/reshape.h
         mem/phases/rw/add_mem.cpp
         mem/phases/rw/add_mem.h
     DEPENDS
@@ -146,11 +173,10 @@ add_thorin_dialect(mem
     INSTALL
 )
 
-add_thorin_dialect(opt
+add_thorin_plugin(opt
     SOURCES
         opt/opt.cpp
         opt/opt.h
-        opt/normalizers.cpp
     DEPENDS
         compile
         mem
@@ -158,12 +184,13 @@ add_thorin_dialect(opt
     INSTALL
 )
 
-add_thorin_dialect(refly
+add_thorin_plugin(refly
     SOURCES
         refly/refly.h
         refly/refly.cpp
         refly/passes/remove_perm.h
         refly/passes/remove_perm.cpp
+        refly/passes/debug_dump.h
         refly/normalizers.cpp
     DEPENDS
         compile

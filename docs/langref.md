@@ -33,33 +33,34 @@ In addition you can use `⟨`, `⟩`, `⟪`, and `⟫` as an alternative for `�
 
 In addition the following keywords are *terminals*:
 
-| Terminal    | Comment                                           |
-|-------------|---------------------------------------------------|
-| `.ax`       | axiom                                             |
-| `.let`      | let expression                                    |
-| `.Pi`       | nominal thorin::Pi                                |
-| `.con`      | [continuation](@ref thorin::Lam) (declaration)    |
-| `.fun`      | [function](@ref thorin::Lam) (declaration - TODO) |
-| `.lam`      | [lambda](@ref thorin::Lam) (declaration)          |
-| `.cn`       | [continuation](@ref thorin::Lam) (expression)     |
-| `.fn`       | [function](@ref thorin::Lam) (expression - TODO)  |
-| `.cn`       | [lambda](@ref thorin::Lam) (expression)           |
-| `.Arr`      | nominal thorin::Arr                               |
-| `.pack`     | nominal thorin::Pack                              |
-| `.Sigma`    | nominal thorin::Sigma                             |
-| `.def`      | nominal definition                                |
-| `.extern`   | marks nominal as external                         |
-| `.ins`      | thorin::Insert expression                         |
-| `.insert`   | alias for `.ins`                                  |
-| `.module`   | starts a module                                   |
-| `.import`   | imports a dialect                                 |
-| `.Nat`      | thorin::Nat                                       |
-| `.Idx`      | thorin::Idx                                       |
-| `.Bool`     | alias for `.Idx 2`                                |
-| `.ff`       | alias for `0₂`                                    |
-| `.tt`       | alias for `1₂`                                    |
-| `.Type`     | thorin::Type                                      |
-| `.Univ`     | thorin::Univ                                      |
+| Terminal  | Comment                                                   |
+|-----------|-----------------------------------------------------------|
+| `.ax`     | axiom                                                     |
+| `.let`    | let expression                                            |
+| `.Pi`     | mutable thorin::Pi                                        |
+| `.con`    | [continuation](@ref thorin::Lam) (declaration)            |
+| `.fun`    | [function](@ref thorin::Lam) (declaration - TODO)         |
+| `.lam`    | [lambda](@ref thorin::Lam) (declaration)                  |
+| `.cn`     | [continuation](@ref thorin::Lam) (expression)             |
+| `.fn`     | [function](@ref thorin::Lam) (expression - TODO)          |
+| `.cn`     | [lambda](@ref thorin::Lam) (expression)                   |
+| `.Arr`    | mutable thorin::Arr                                       |
+| `.pack`   | mutable thorin::Pack                                      |
+| `.Sigma`  | mutable thorin::Sigma                                     |
+| `.def`    | mutable definition                                        |
+| `.extern` | marks mutable as external                                 |
+| `.ins`    | thorin::Insert expression                                 |
+| `.insert` | alias for `.ins`                                          |
+| `.module` | starts a module                                           |
+| `.import` | imports another Thorin file                               |
+| `.plugin` | like `.import` and additionally loads the compiler plugin |
+| `.Nat`    | thorin::Nat                                               |
+| `.Idx`    | thorin::Idx                                               |
+| `.Bool`   | alias for `.Idx 2`                                        |
+| `.ff`     | alias for `0₂`                                            |
+| `.tt`     | alias for `1₂`                                            |
+| `.Type`   | thorin::Type                                              |
+| `.Univ`   | thorin::Univ                                              |
 
 All keywords start with a `.` to prevent name clashes with identifiers.
 
@@ -145,8 +146,8 @@ The following tables comprise all production rules:
 | d           | `.Arr` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> v? n   | array declaration                  | thorin::Arr   |
 | d           | `.pack` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> v? n  | pack declaration                   | thorin::Pack  |
 | d           | `.Sigma` Sym ( `:` e<sub>type</sub> )? `,` L<sub>arity</sub> v? n | sigma declaration                  | thorin::Sigma |
-| d           | `.def` Sym n                                                      | nominal definition                 | nominals      |
-| n           | `;` \| o                                                          | nominal definition                 | -             |
+| d           | `.def` Sym n                                                      | mutable definition                 | mutables      |
+| n           | `;` \| o                                                          | mutable definition                 | -             |
 | o           | `=` de `;`                                                        | operand of definition              | -             |
 | o           | `=` `{` e `,` ... `,` e  `}` `;`                                  | operands of definition<sup>s</sup> | -             |
 <sup>s</sup> opens new scope
@@ -206,7 +207,7 @@ For this reason there is no rule `b -> s (p, ..., p)`.
 An elided type of
 * a literal defaults to `.Nat`,
 * a bottom/top defaults to `*`,
-* a nominals defaults to `*`.
+* a mutable defaults to `*`.
 
 #### Precedence
 
@@ -218,10 +219,10 @@ Expressions nesting is disambiguated according to the following precedence table
 | e `#` e              | extract                             | left-to-right |
 | e e                  | application                         | left-to-right |
 | `Π` Sym `:` e        | domain of a dependent function type | -             |
-| `.fun` Sym Sym `:` e | nominal funciton declaration        | -             |
-| `.lam` Sym Sym `:` e | nominal continuation declaration    | -             |
-| `.fn` Sym `:` e      | nominal funciton expression         | -             |
-| `.lm` Sym `:` e      | nominal continuation expression     | -             |
+| `.fun` Sym Sym `:` e | mutable funciton declaration        | -             |
+| `.lam` Sym Sym `:` e | mutable continuation declaration    | -             |
+| `.fn` Sym `:` e      | mutable funciton expression         | -             |
+| `.lm` Sym `:` e      | mutable continuation expression     | -             |
 | e `→` e              | function type                       | right-to-left |
 
 Note that the domain of a dependent function type binds slightly stronger than `→`.
@@ -255,7 +256,7 @@ The names of axioms are special and live in a global namespace.
 
 ### Field Names of Sigmas
 
-Named elements of nominal sigmas are avaiable for extracts/inserts.
+Named elements of mutable sigmas are avaiable for extracts/inserts.
 These names take precedence over the usual scope.
 In the following example, `i` refers to the first element `i` of `X` and **not** to the `i` introduced via `.let`:
 ```

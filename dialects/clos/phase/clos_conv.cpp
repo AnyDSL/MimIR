@@ -7,6 +7,8 @@
 #include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
 
+using namespace std::literals;
+
 namespace thorin::clos {
 
 /*
@@ -14,7 +16,7 @@ namespace thorin::clos {
  */
 
 static bool is_toplevel(const Def* fd) {
-    return fd->dep_const() || fd->isa_nom<Global>() || fd->isa<Axiom>() || fd->sort() != Sort::Term;
+    return fd->dep_const() || fd->isa_mut<Global>() || fd->isa<Axiom>() || !fd->is_term();
 }
 
 static bool is_memop_res(const Def* fd) {
@@ -28,18 +30,18 @@ void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue&
     assert(!match<mem::M>(fd) && "mem tokens must not be free");
     if (is_toplevel(fd)) return;
     if (auto [var, lam] = ca_isa_var<Lam>(fd); var && lam) {
-        if (var != lam->ret_var()) { node->add_fvs(fd); }
+        if (var != lam->ret_var()) node->add_fvs(fd);
     } else if (auto q = match(attr::freeBB, fd)) {
         node->add_fvs(q);
-    } else if (auto pred = fd->isa_nom()) {
-        if (pred != node->nom) {
+    } else if (auto pred = fd->isa_mut()) {
+        if (pred != node->mut) {
             auto [pnode, inserted] = build_node(pred, worklist);
             node->preds.push_back(pnode);
             pnode->succs.push_back(node);
             init_node |= inserted;
         }
     } else if (fd->dep() == Dep::Var && !fd->isa<Tuple>()) {
-        // Note: Var's can still have Def::Top, if their type is a nom!
+        // Note: Var's can still have Def::Top, if their type is a mut!
         // So the first case is *not* redundant
         node->add_fvs(fd);
     } else if (is_memop_res(fd)) {
@@ -50,41 +52,36 @@ void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue&
     }
 }
 
-std::pair<FreeDefAna::Node*, bool> FreeDefAna::build_node(Def* nom, NodeQueue& worklist) {
+std::pair<FreeDefAna::Node*, bool> FreeDefAna::build_node(Def* mut, NodeQueue& worklist) {
     auto& w            = world();
-    auto [p, inserted] = lam2nodes_.emplace(nom, nullptr);
+    auto [p, inserted] = lam2nodes_.emplace(mut, nullptr);
     if (!inserted) return {p->second.get(), false};
-    w.DLOG("FVA: create node: {}", nom);
-    p->second      = std::make_unique<Node>(Node{nom, {}, {}, {}, 0});
+    w.DLOG("FVA: create node: {}", mut);
+    p->second      = std::make_unique<Node>(Node{mut, {}, {}, {}, 0});
     auto node      = p->second.get();
-    auto scope     = Scope(nom);
+    auto scope     = Scope(mut);
     bool init_node = false;
-    for (auto v : scope.free_defs()) { split_fd(node, v, init_node, worklist); }
+    for (auto v : scope.free_defs()) split_fd(node, v, init_node, worklist);
     if (!init_node) {
         worklist.push(node);
-        w.DLOG("FVA: init {}", nom);
+        w.DLOG("FVA: init {}", mut);
     }
     return {node, true};
 }
 
 void FreeDefAna::run(NodeQueue& worklist) {
-    int iter = 0;
     while (!worklist.empty()) {
         auto node = worklist.front();
         worklist.pop();
-        // w.DLOG("FA: iter {}: {}", iter, node->nom);
         if (is_done(node)) continue;
         auto changed = is_bot(node);
         mark(node);
         for (auto p : node->preds) {
             auto& pfvs = p->fvs;
-            for (auto&& pfv : pfvs) { changed |= node->add_fvs(pfv).second; }
-            // w.DLOG("\tFV({}) ∪= FV({}) = {{{, }}}\b", node->nom, p->nom, pfvs);
+            for (auto&& pfv : pfvs) changed |= node->add_fvs(pfv).second;
         }
-        if (changed) {
-            for (auto s : node->succs) { worklist.push(s); }
-        }
-        iter++;
+        if (changed)
+            for (auto s : node->succs) worklist.push(s);
     }
 }
 
@@ -129,19 +126,18 @@ void ClosConv::rewrite_body(Lam* new_lam, Def2Def& subst) {
     if (!old_fn->is_set()) return;
 
     w.DLOG("rw body: {} [old={}, env={}]\nt", new_fn, old_fn, env);
-    auto env_param = new_fn->var(Clos_Env_Param, w.dbg("closure_env"));
+    auto env_param = new_fn->var(Clos_Env_Param)->set("closure_env");
     if (num_fvs == 1) {
         subst.emplace(env, env_param);
     } else {
         for (size_t i = 0; i < num_fvs; i++) {
             auto fv  = env->op(i);
-            auto dbg = (fv->name().empty()) ? w.dbg("fv_" + std::to_string(i)) : w.dbg("fv_" + env->op(i)->name());
-            subst.emplace(fv, env_param->proj(i, dbg));
+            auto sym = w.sym("fv_"s + (fv->sym() ? *fv->sym() : std::to_string(i)));
+            subst.emplace(fv, env_param->proj(i)->set(sym));
         }
     }
 
-    auto params =
-        w.tuple(DefArray(old_fn->num_doms(), [&](auto i) { return new_lam->var(skip_env(i), old_fn->var(i)->dbg()); }));
+    auto params = w.tuple(DefArray(old_fn->num_doms(), [&](auto i) { return new_lam->var(skip_env(i)); }));
     subst.emplace(old_fn->var(), params);
 
     auto filter = rewrite(new_fn->filter(), subst);
@@ -170,7 +166,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         return i->second;
     } else if (auto pi = def->isa<Pi>(); pi && pi->is_cn()) {
         return map(type_clos(pi, subst));
-    } else if (auto lam = def->isa_nom<Lam>(); lam && lam->type()->is_cn()) {
+    } else if (auto lam = def->isa_mut<Lam>(); lam && lam->type()->is_cn()) {
         auto [_, __, fv_env, new_lam] = make_stub(lam, subst);
         auto clos_ty                  = rewrite(lam->type(), subst);
         auto env                      = rewrite(fv_env, subst);
@@ -180,13 +176,13 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
     } else if (auto a = match<attr>(def)) {
         switch (a.id()) {
             case attr::ret:
-                if (auto ret_lam = a->arg()->isa_nom<Lam>()) {
+                if (auto ret_lam = a->arg()->isa_mut<Lam>()) {
                     // assert(ret_lam && ret_lam->is_basicblock());
                     //  Note: This should be cont_lam's only occurance after η-expansion, so its okay to
                     //  put into the local subst only
                     auto new_doms =
                         DefArray(ret_lam->num_doms(), [&](auto i) { return rewrite(ret_lam->dom(i), subst); });
-                    auto new_lam   = ret_lam->stub(w, w.cn(new_doms), ret_lam->dbg());
+                    auto new_lam   = ret_lam->stub(w, w.cn(new_doms));
                     subst[ret_lam] = new_lam;
                     if (ret_lam->is_set()) {
                         new_lam->set_filter(rewrite(ret_lam->filter(), subst));
@@ -198,7 +194,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
             case attr::fstclassBB:
             case attr::freeBB: {
                 // Note: Same thing about η-conversion applies here
-                auto bb_lam = a->arg()->isa_nom<Lam>();
+                auto bb_lam = a->arg()->isa_mut<Lam>();
                 assert(bb_lam && bb_lam->is_basicblock());
                 auto [_, __, ___, new_lam] = make_stub({}, bb_lam, subst);
                 subst[bb_lam]              = clos_pack(w.tuple(), new_lam, rewrite(bb_lam->type(), subst));
@@ -216,43 +212,40 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
     }
 
     auto new_type = rewrite(def->type(), subst);
-    auto new_dbg  = (def->dbg()) ? rewrite(def->dbg(), subst) : nullptr;
 
-    if (auto nom = def->isa_nom()) {
-        if (auto global = def->isa_nom<Global>()) {
-            if (auto i = glob_noms_.find(global); i != glob_noms_.end()) return i->second;
+    if (auto mut = def->isa_mut()) {
+        if (auto global = def->isa_mut<Global>()) {
+            if (auto i = glob_muts_.find(global); i != glob_muts_.end()) return i->second;
             auto subst             = Def2Def();
-            return glob_noms_[nom] = rewrite_nom(global, new_type, new_dbg, subst);
+            return glob_muts_[mut] = rewrite_mut(global, new_type, subst);
         }
-        assert(!isa_clos_type(nom));
-        w.DLOG("RW: nom {}", nom);
-        auto new_nom = rewrite_nom(nom, new_type, new_dbg, subst);
-        // Try to reduce the amount of noms that are created
-        if (!nom->isa_nom<Global>() && Checker(w).equiv(nom, new_nom, nullptr)) return map(nom);
-        if (auto restruct = new_nom->restructure()) return map(restruct);
-        return map(new_nom);
+        assert(!isa_clos_type(mut));
+        w.DLOG("RW: mut {}", mut);
+        auto new_mut = rewrite_mut(mut, new_type, subst);
+        // Try to reduce the amount of muts that are created
+        if (!mut->isa_mut<Global>() && Checker(w).equiv(mut, new_mut)) return map(mut);
+        if (auto restruct = new_mut->restructure()) return map(restruct);
+        return map(new_mut);
     } else {
         auto new_ops = DefArray(def->num_ops(), [&](auto i) { return rewrite(def->op(i), subst); });
-        if (auto app = def->isa<App>(); app && new_ops[0]->type()->isa<Sigma>()) {
+        if (auto app = def->isa<App>(); app && new_ops[0]->type()->isa<Sigma>())
             return map(clos_apply(new_ops[0], new_ops[1]));
-        } else if (def->isa<Axiom>()) {
+        else if (def->isa<Axiom>())
             return def;
-        } else {
-            return map(def->rebuild(w, new_type, new_ops, new_dbg));
-        }
+        else
+            return map(def->rebuild(w, new_type, new_ops));
     }
 
     thorin::unreachable();
 }
 
-Def* ClosConv::rewrite_nom(Def* nom, const Def* new_type, const Def* new_dbg, Def2Def& subst) {
+Def* ClosConv::rewrite_mut(Def* mut, const Def* new_type, Def2Def& subst) {
     auto& w      = world();
-    auto new_nom = nom->stub(w, new_type, new_dbg);
-    subst.emplace(nom, new_nom);
-    for (size_t i = 0; i < nom->num_ops(); i++) {
-        if (nom->op(i)) new_nom->set(i, rewrite(nom->op(i), subst));
-    }
-    return new_nom;
+    auto new_mut = mut->stub(w, new_type);
+    subst.emplace(mut, new_mut);
+    for (size_t i = 0; i < mut->num_ops(); i++)
+        if (mut->op(i)) new_mut->set(i, rewrite(mut->op(i), subst));
+    return new_mut;
 }
 
 const Pi* ClosConv::rewrite_type_cn(const Pi* pi, Def2Def& subst) {
@@ -262,7 +255,7 @@ const Pi* ClosConv::rewrite_type_cn(const Pi* pi, Def2Def& subst) {
 }
 
 const Def* ClosConv::type_clos(const Pi* pi, Def2Def& subst, const Def* env_type) {
-    if (auto i = glob_noms_.find(pi); i != glob_noms_.end() && !env_type) return i->second;
+    if (auto i = glob_muts_.find(pi); i != glob_muts_.end() && !env_type) return i->second;
     auto& w       = world();
     auto new_doms = DefArray(pi->num_doms(), [&](auto i) {
         return (i == pi->num_doms() - 1 && pi->is_returning()) ? rewrite_type_cn(pi->ret_pi(), subst)
@@ -270,7 +263,7 @@ const Def* ClosConv::type_clos(const Pi* pi, Def2Def& subst, const Def* env_type
     });
     auto ct       = ctype(w, new_doms, env_type);
     if (!env_type) {
-        glob_noms_.emplace(pi, ct);
+        glob_muts_.emplace(pi, ct);
         w.DLOG("C-TYPE: pct {} ~~> {}", pi, ct);
     } else {
         w.DLOG("C-TYPE: ct {}, env = {} ~~> {}", pi, env_type, ct);
@@ -284,11 +277,13 @@ ClosConv::Stub ClosConv::make_stub(const DefSet& fvs, Lam* old_lam, Def2Def& sub
     auto num_fvs     = fvs.size();
     auto env_type    = rewrite(env->type(), subst);
     auto new_fn_type = type_clos(old_lam->type(), subst, env_type)->as<Pi>();
-    auto new_lam     = old_lam->stub(w, new_fn_type, w.dbg(old_lam->name()));
-    new_lam->set_debug_name((old_lam->is_external() || !old_lam->is_set()) ? "cc_" + old_lam->name() : old_lam->name());
+    auto new_lam     = old_lam->stub(w, new_fn_type);
+    // TODO
+    // new_lam->set_debug_name((old_lam->is_external() || !old_lam->is_set()) ? "cc_" + old_lam->name() :
+    // old_lam->name());
     if (!isa_workable(old_lam)) {
         auto new_ext_type = w.cn(clos_remove_env(new_fn_type->dom()));
-        auto new_ext_lam  = old_lam->stub(w, new_ext_type, w.dbg(old_lam->name()));
+        auto new_ext_lam  = old_lam->stub(w, new_ext_type);
         w.DLOG("wrap ext lam: {} -> stub: {}, ext: {}", old_lam, new_lam, new_ext_lam);
         if (old_lam->is_set()) {
             old_lam->make_internal();
@@ -296,7 +291,7 @@ ClosConv::Stub ClosConv::make_stub(const DefSet& fvs, Lam* old_lam, Def2Def& sub
             new_ext_lam->app(false, new_lam, clos_insert_env(env, new_ext_lam->var()));
             new_lam->set(old_lam->filter(), old_lam->body());
         } else {
-            new_ext_lam->set(nullptr, nullptr);
+            new_ext_lam->set((const Def*)nullptr, (const Def*)nullptr);
             new_lam->app(false, new_ext_lam, clos_remove_env(new_lam->var()));
         }
     } else {

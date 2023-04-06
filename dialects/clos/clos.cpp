@@ -1,22 +1,22 @@
 #include "dialects/clos/clos.h"
 
 #include <thorin/config.h>
+#include <thorin/pass/fp/eta_exp.h>
+#include <thorin/pass/fp/eta_red.h>
 #include <thorin/pass/pass.h>
-
-#include "thorin/dialects.h"
-
-#include "thorin/pass/fp/eta_exp.h"
-#include "thorin/pass/fp/eta_red.h"
-#include "thorin/pass/rw/scalarize.h"
+#include <thorin/pass/pipelinebuilder.h>
+#include <thorin/pass/rw/scalarize.h>
 
 #include "dialects/clos/pass/fp/lower_typed_clos_prep.h"
 #include "dialects/clos/pass/rw/branch_clos_elim.h"
 #include "dialects/clos/pass/rw/clos2sjlj.h"
 #include "dialects/clos/pass/rw/clos_conv_prep.h"
-#include "dialects/clos/phase/clos_conv.h"
-#include "dialects/clos/phase/lower_typed_clos.h"
+#include "dialects/clos/pass/rw/phase_wrapper.h"
 #include "dialects/mem/mem.h"
 #include "dialects/mem/passes/fp/copy_prop.h"
+#include "dialects/mem/passes/rw/reshape.h"
+#include "dialects/mem/phases/rw/add_mem.h"
+#include "dialects/refly/passes/debug_dump.h"
 
 namespace thorin::clos {
 
@@ -24,12 +24,12 @@ namespace thorin::clos {
  * ClosLit
  */
 
-const Def* ClosLit::env() {
+Ref ClosLit::env() {
     assert(def_);
     return std::get<2_u64>(clos_unpack(def_));
 }
 
-const Def* ClosLit::fnc() {
+Ref ClosLit::fnc() {
     assert(def_);
     return std::get<1_u64>(clos_unpack(def_));
 }
@@ -37,12 +37,12 @@ const Def* ClosLit::fnc() {
 Lam* ClosLit::fnc_as_lam() {
     auto f = fnc();
     if (auto a = match<attr>(f)) f = a->arg();
-    return f->isa_nom<Lam>();
+    return f->isa_mut<Lam>();
 }
 
-const Def* ClosLit::env_var() { return fnc_as_lam()->var(Clos_Env_Param); }
+Ref ClosLit::env_var() { return fnc_as_lam()->var(Clos_Env_Param); }
 
-ClosLit isa_clos_lit(const Def* def, bool lambda_or_branch) {
+ClosLit isa_clos_lit(Ref def, bool lambda_or_branch) {
     auto tpl = def->isa<Tuple>();
     if (tpl && isa_clos_type(def->type())) {
         auto a   = attr::bot;
@@ -56,17 +56,17 @@ ClosLit isa_clos_lit(const Def* def, bool lambda_or_branch) {
     return ClosLit(nullptr, attr::bot);
 }
 
-const Def* clos_pack_dbg(const Def* env, const Def* lam, const Def* dbg, const Def* ct) {
+Ref clos_pack(Ref env, Ref lam, Ref ct) {
     assert(env && lam);
     assert(!ct || isa_clos_type(ct));
     auto& w = env->world();
     auto pi = lam->type()->as<Pi>();
     assert(env->type() == pi->dom(Clos_Env_Param));
     ct = (ct) ? ct : clos_type(w.cn(clos_remove_env(pi->dom())));
-    return w.tuple(ct, {env->type(), lam, env}, dbg)->isa<Tuple>();
+    return w.tuple(ct, {env->type(), lam, env})->isa<Tuple>();
 }
 
-std::tuple<const Def*, const Def*, const Def*> clos_unpack(const Def* c) {
+std::tuple<Ref, Ref, Ref> clos_unpack(Ref c) {
     assert(c && isa_clos_type(c->type()));
     // auto& w       = c->world();
     // auto env_type = c->proj(0_u64);
@@ -78,7 +78,7 @@ std::tuple<const Def*, const Def*, const Def*> clos_unpack(const Def* c) {
     return {ty, pi, env};
 }
 
-const Def* clos_apply(const Def* closure, const Def* args) {
+Ref clos_apply(Ref closure, Ref args) {
     auto& w           = closure->world();
     auto [_, fn, env] = clos_unpack(closure);
     auto pi           = fn->type()->as<Pi>();
@@ -89,9 +89,9 @@ const Def* clos_apply(const Def* closure, const Def* args) {
  * closure types
  */
 
-const Sigma* isa_clos_type(const Def* def) {
+const Sigma* isa_clos_type(Ref def) {
     auto& w  = def->world();
-    auto sig = def->isa_nom<Sigma>();
+    auto sig = def->isa_mut<Sigma>();
     if (!sig || sig->num_ops() < 3 || sig->op(0_u64) != w.type()) return nullptr;
     auto var = sig->var(0_u64);
     if (sig->op(2_u64) != var) return nullptr;
@@ -99,9 +99,9 @@ const Sigma* isa_clos_type(const Def* def) {
     return (pi && pi->is_cn() && pi->num_ops() > 1_u64 && pi->dom(Clos_Env_Param) == var) ? sig : nullptr;
 }
 
-Sigma* clos_type(const Pi* pi) { return ctype(pi->world(), pi->doms(), nullptr)->as_nom<Sigma>(); }
+Sigma* clos_type(const Pi* pi) { return ctype(pi->world(), pi->doms(), nullptr)->as_mut<Sigma>(); }
 
-const Pi* clos_type_to_pi(const Def* ct, const Def* new_env_type) {
+const Pi* clos_type_to_pi(Ref ct, Ref new_env_type) {
     assert(isa_clos_type(ct));
     auto& w      = ct->world();
     auto pi      = ct->op(1_u64)->as<Pi>();
@@ -113,15 +113,15 @@ const Pi* clos_type_to_pi(const Def* ct, const Def* new_env_type) {
  * closure environments
  */
 
-const Def* clos_insert_env(size_t i, const Def* env, std::function<const Def*(size_t)> f) {
+Ref clos_insert_env(size_t i, Ref env, std::function<Ref(size_t)> f) {
     return (i == Clos_Env_Param) ? env : f(shift_env(i));
 }
 
-const Def* clos_remove_env(size_t i, std::function<const Def*(size_t)> f) { return f(skip_env(i)); }
+Ref clos_remove_env(size_t i, std::function<Ref(size_t)> f) { return f(skip_env(i)); }
 
-const Def* ctype(World& w, Defs doms, const Def* env_type) {
+Ref ctype(World& w, Defs doms, Ref env_type) {
     if (!env_type) {
-        auto sigma = w.nom_sigma(w.type(), 3_u64, w.dbg("Clos"));
+        auto sigma = w.mut_sigma(w.type(), 3_u64)->set("Clos");
         sigma->set(0_u64, w.type());
         sigma->set(1_u64, ctype(w, doms, sigma->var(0_u64)));
         sigma->set(2_u64, sigma->var(0_u64));
@@ -131,31 +131,11 @@ const Def* ctype(World& w, Defs doms, const Def* env_type) {
                          [&](auto i) { return clos_insert_env(i, env_type, [&](auto j) { return doms[j]; }); }));
 }
 
-/*
- * Pass Wrappers
- */
-
-class ClosConvWrapper : public RWPass<ClosConvWrapper, Lam> {
-public:
-    ClosConvWrapper(PassMan& man)
-        : RWPass(man, "clos_conv") {}
-
-    void prepare() override { ClosConv(world()).run(); }
-};
-
-class LowerTypedClosWrapper : public RWPass<LowerTypedClosWrapper, Lam> {
-public:
-    LowerTypedClosWrapper(PassMan& man)
-        : RWPass(man, "lower_typed_clos") {}
-
-    void prepare() override { LowerTypedClos(world()).run(); }
-};
-
 } // namespace thorin::clos
 
 using namespace thorin;
 
-extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
+extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
     return {"clos",
             [](Passes& passes) {
                 register_pass<clos::clos_conv_prep_pass, clos::ClosConvPrep>(passes, nullptr);
@@ -165,8 +145,7 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                 register_pass<clos::clos2sjlj_pass, clos::Clos2SJLJ>(passes);
                 register_pass<clos::lower_typed_clos_pass, clos::LowerTypedClosWrapper>(passes);
                 // TODO:; remove after ho_codegen merge
-                passes[flags_t(Axiom::Base<clos::eta_red_bool_pass>)] = [&](World&, PipelineBuilder& builder,
-                                                                            const Def* app) {
+                passes[flags_t(Axiom::Base<clos::eta_red_bool_pass>)] = [&](World&, PipelineBuilder& builder, Ref app) {
                     auto bb      = app->as<App>()->arg();
                     auto bb_only = bb->as<Lit>()->get<u64>();
                     builder.add_pass<EtaRed>(app, bb_only);

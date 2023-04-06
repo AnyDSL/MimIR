@@ -1,18 +1,18 @@
-/// # The core Dialect {#core}
+/// # The core Plugin {#core}
 ///
 /// [TOC]
 ///
 /// ## Dependencies
 ///
-.import mem;
+.plugin mem;
 ///
 /// ## Nat Operations
 ///
-/// ### %core.nop
+/// ### %core.nat
 ///
 /// Standard arithmetic operations on `.Nat`s.
 ///
-.ax %core.nop(add, mul): «2; .Nat» -> .Nat, normalize_nop;
+.ax %core.nat(add, mul): «2; .Nat» -> .Nat, normalize_nat;
 ///
 /// ### %core.ncmp
 ///
@@ -49,7 +49,7 @@
 /// | id     | x | o | identity                     |
 /// | t      | x | x | always true                  |
 ///
-.ax %core.bit1(f, neg, id, t): Π.[s: .Nat][.Idx s] -> .Idx s, normalize_bit1;
+.ax %core.bit1(f, neg, id, t): Π.[s: .Nat][.Nat][.Idx s] -> .Idx s, normalize_bit1;
 ///
 /// ### %core.bit2
 ///
@@ -76,7 +76,7 @@
 ///
 .ax %core.bit2( f,      nor, nciff, nfst, niff, nsnd, xor_, nand,
                 and_,  nxor,   snd,  iff,  fst, ciff,  or_,    t):
-    Π.[s: .Nat][«2; .Idx s»] -> .Idx s , normalize_bit2;
+    Π.[s: .Nat][.Nat][«2; .Idx s»] -> .Idx s , normalize_bit2;
 ///
 /// ### %core.shr
 ///
@@ -189,7 +189,7 @@
 /// Bitcast to reinterpret a value as another type.
 /// Can be used for pointer / integer conversions as well as integer / nat conversions.
 ///
-.ax %core.bitcast: Π [D: *, S: *][S] -> D, normalize_bitcast;
+.ax %core.bitcast: Π.[S: *][D: *][S] -> D, normalize_bitcast;
 ///
 /// ## Other Operations
 ///

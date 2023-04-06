@@ -23,7 +23,7 @@ inline void handle_optimization_part(const Def* part, World& world, Passes& pass
             auto phase_fun = passes[flag];
             phase_fun(world, builder, part);
         } else {
-            world.WLOG("pass/phase '{}' not found", phase_ax->name());
+            world.WLOG("pass/phase '{}' not found", phase_ax->sym());
             assert(passes.contains(flag) && "pass/phase not found");
         }
     } else if (phase_def->isa<Lam>()) {

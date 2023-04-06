@@ -1,0 +1,27 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin %s -output-ll ll -o - | FileCheck %s
+// RUN: clang %t.ll -o %t -Wno-override-module
+// RUN: %t ; test $? -eq 5
+// RUN: %t 1 2 3 ; test $? -eq 5
+// RUN: %t a b c d e f ; test $? -eq 5
+
+.plugin core;
+.plugin matrix;
+
+.let _32 = 4294967296;
+.let I32 = .Idx _32;
+.let f32 = (23,  8);
+.let f64 = (52, 11);
+.let F32 = %math.F f32;
+.let F64 = %math.F f64;
+
+.con .extern f [mem : %mem.M, 
+    [k:.Nat, l:.Nat, m:.Nat],
+    M:%matrix.Mat (2,(m,k),F64),
+    N:%matrix.Mat (2,(k,l),F64),
+    return: .Cn[%mem.M, %matrix.Mat (2,(m,l),F64)]] = {
+
+    .let (mem2,MN) = %matrix.prod (m,k,l, f64) (mem,M,N);
+
+    return (mem2, MN)
+};

@@ -5,7 +5,7 @@
 // RUN: %t 1 2 3; test $? -eq 4
 // RUN: %t 1 2 3 4 5; test $? -eq 6
 
-.import mem;
+.plugin mem;
 
 .let I32 = .Idx 4294967296;
 .con .extern main(mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), return: .Cn [%mem.M, I32]) = {
@@ -16,7 +16,7 @@
     return (mem, val)
 };
 
-// CHECK-DAG: .con .extern main _{{[0-9_]+}}::[mem_[[mainMemId:[_0-9]*]]: %mem.M, argc_[[argcId:[0-9_]+]]: .Idx 4294967296, %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, .Idx 4294967296]] = {
+// CHECK-DAG: .con .extern main _{{[0-9_]+}}::[mem_[[mainMemId:[_0-9]*]]: %mem.M, argc_[[argcId:[0-9_]+]]: .Idx 4294967296, %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, .Idx 4294967296]]{{(@.*)?}}= {
 // CHECK-DAG: _[[appAllocId:[0-9_]+]]: [%mem.M, %mem.Ptr (.Idx 4294967296, 0)] = %mem.malloc (.Idx 4294967296, 0) (mem_[[mainMemId]], 4);
 // CHECK-DAG: _[[appStoreId:[0-9_]+]]: %mem.M = %mem.store (.Idx 4294967296, 0) (_[[appAllocId]]#0:(.Idx 2), _[[appAllocId]]#1:(.Idx 2), argc_[[argcId]]);
 // CHECK-DAG: _[[appLoadId:[0-9_]+]]: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (_[[appStoreId]], _[[appAllocId]]#1:(.Idx 2));
@@ -24,5 +24,5 @@
 
 // CHECK-DAG: return_[[returnEtaId:[0-9_]+]] (_[[appFreeId]], _[[appLoadId]]#1:(.Idx 2))
 
-// CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, .Idx 4294967296] = {
+// CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, .Idx 4294967296]{{(@.*)?}}= {
 // CHECK-DAG: return_[[returnId]] _[[returnEtaVarId]]

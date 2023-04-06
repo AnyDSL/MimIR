@@ -1,10 +1,8 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d clos %s --output-ll %t.ll -o - 
+// RUN: %thorin %s --output-ll %t.ll -o - 
 
-.import mem;
-.import core;
-.import clos;
-
+.plugin core;
+.plugin clos;
 
 .let I32 = .Idx 4294967296;
 
@@ -30,8 +28,8 @@
 
     .let arr_size = ⊤:.Nat;
 
-    .let (alloc_pb_mem, pb_arr) = %mem.alloc (<<%core.bitcast (.Nat, I32) 4:I32; pb_type>>, 0) (mem);
-    .let (alloc_mem, a_arr) = %mem.alloc (<<%core.bitcast (.Nat, I32) 4:I32; I32>>, 0) (alloc_pb_mem);
+    .let (alloc_pb_mem, pb_arr) = %mem.alloc (<<%core.bitcast .Nat 4:I32; pb_type>>, 0) (mem);
+    .let (alloc_mem, a_arr) = %mem.alloc (<<%core.bitcast .Nat 4:I32; I32>>, 0) (alloc_pb_mem);
 
     .let lea_0 = %mem.lea (arr_size, <arr_size; pb_type>, 0) (pb_arr, 0:I32);
     .let mem2 = %mem.store (alloc_mem, lea_0, f);

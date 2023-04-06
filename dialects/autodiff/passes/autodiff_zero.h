@@ -11,7 +11,7 @@ public:
     AutoDiffZero(PassMan& man)
         : RWPass(man, "autodiff_zero") {}
 
-    const Def* rewrite(const Def*) override;
+    Ref rewrite(Ref) override;
 };
 
 } // namespace thorin::autodiff

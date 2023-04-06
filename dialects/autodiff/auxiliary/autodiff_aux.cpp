@@ -6,13 +6,15 @@
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/mem/mem.h"
 
+using namespace std::literals;
+
 namespace thorin::autodiff {
 
 const Def* id_pullback(const Def* A) {
     auto& world       = A->world();
     auto arg_pb_ty    = pullback_type(A, A);
-    auto id_pb        = world.nom_lam(arg_pb_ty, world.dbg("id_pb"));
-    auto id_pb_scalar = id_pb->var((nat_t)0, world.dbg("s"));
+    auto id_pb        = world.mut_lam(arg_pb_ty)->set("id_pb");
+    auto id_pb_scalar = id_pb->var(0_s)->set("s");
     id_pb->app(true,
                id_pb->var(1), // can not use ret_var as the result might be higher order
                id_pb_scalar);
@@ -24,7 +26,7 @@ const Def* zero_pullback(const Def* E, const Def* A) {
     auto& world    = A->world();
     auto A_tangent = tangent_type_fun(A);
     auto pb_ty     = pullback_type(E, A);
-    auto pb        = world.nom_lam(pb_ty, world.dbg("zero_pb"));
+    auto pb        = world.mut_lam(pb_ty)->set("zero_pb");
     world.DLOG("zero_pullback for {} resp. {} (-> {})", E, A, A_tangent);
     pb->app(true, pb->var(1), op_zero(A_tangent));
     return pb;
@@ -90,10 +92,10 @@ const Pi* autodiff_type_fun_pi(const Pi* pi) {
 const Def* autodiff_type_fun(const Def* ty) {
     auto& world = ty->world();
     // TODO: handle DS (operators)
-    if (auto pi = ty->isa<Pi>()) { return autodiff_type_fun_pi(pi); }
+    if (auto pi = ty->isa<Pi>()) return autodiff_type_fun_pi(pi);
     // Also handles autodiff call from axiom declaration => abstract => leave it.
     world.DLOG("AutoDiff on type: {} <{}>", ty, ty->node_name());
-    if (Idx::size(ty)) { return ty; }
+    if (Idx::size(ty)) return ty;
     if (ty == world.type_nat()) return ty;
     if (auto arr = ty->isa<Arr>()) {
         auto shape   = arr->shape();
@@ -103,7 +105,7 @@ const Def* autodiff_type_fun(const Def* ty) {
         return world.arr(shape, body_ad);
     }
     if (auto sig = ty->isa<Sigma>()) {
-        // TODO: nom sigma
+        // TODO: mut sigma
         DefArray ops(sig->ops(), [&](const Def* op) { return autodiff_type_fun(op); });
         world.DLOG("ops: {,}", ops);
         return world.sigma(ops);
@@ -129,7 +131,7 @@ const Def* zero_def(const Def* T) {
         return zero_arr;
     } else if (Idx::size(T)) {
         // TODO: real
-        auto zero = world.lit(T, 0, world.dbg("zero"));
+        auto zero = world.lit(T, 0)->set("zero");
         world.DLOG("zero_def for int is {}", zero);
         return zero;
     } else if (auto sig = T->isa<Sigma>()) {
@@ -154,7 +156,7 @@ const Def* op_sum(const Def* T, DefArray defs) {
 namespace thorin {
 
 bool is_continuation_type(const Def* E) {
-    if (auto pi = E->isa<Pi>()) { return pi->codom()->isa<Bot>(); }
+    if (auto pi = E->isa<Pi>()) return pi->codom()->isa<Bot>();
     return false;
 }
 
@@ -183,7 +185,7 @@ bool is_direct_style_function(const Def* e) {
 const Def* continuation_dom(const Def* E) {
     auto pi = E->as<Pi>();
     assert(pi != NULL);
-    if (pi->num_doms() == 0) { return pi->dom(); }
+    if (pi->num_doms() == 0) return pi->dom();
     return pi->dom(0);
 }
 
@@ -234,8 +236,8 @@ const Def* compose_continuation(const Def* f, const Def* g) {
     auto H     = world.cn({A, world.cn(C)});
     auto Hcont = world.cn(B);
 
-    auto h     = world.nom_lam(H, world.dbg("comp_" + f->name() + "_" + g->name()));
-    auto hcont = world.nom_lam(Hcont, world.dbg("comp_" + f->name() + "_" + g->name() + "_cont"));
+    auto h     = world.mut_lam(H)->set("comp_"s + *f->sym() + "_"s + *g->sym());
+    auto hcont = world.mut_lam(Hcont)->set("comp_"s + *f->sym() + "_"s + *g->sym() + "_cont"s);
 
     h->app(true, g, {h->var((nat_t)0), hcont});
 

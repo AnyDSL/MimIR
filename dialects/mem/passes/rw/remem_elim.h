@@ -9,7 +9,7 @@ public:
     RememElim(PassMan& man)
         : RWPass(man, "remem_elim") {}
 
-    const Def* rewrite(const Def*) override;
+    Ref rewrite(Ref) override;
 };
 
 } // namespace thorin::mem

@@ -1,16 +1,21 @@
 #pragma once
 
-#include "thorin/debug.h"
-
 #include "thorin/util/assert.h"
+#include "thorin/util/loc.h"
+#include "thorin/util/sym.h"
 #include "thorin/util/types.h"
 
-namespace thorin::fe {
+namespace thorin {
+
+class Def;
+
+namespace fe {
 
 // clang-format off
 #define THORIN_KEY(m)                  \
     m(K_module, ".module")             \
     m(K_import, ".import")             \
+    m(K_plugin, ".plugin")             \
     m(K_ax,     ".ax"    )             \
     m(K_def,    ".def"   )             \
     m(K_let,    ".let"   )             \
@@ -161,9 +166,10 @@ public:
         , tag_(Tag::M_i)
         , index_(index) {}
 
-    Loc loc() const { return loc_; }
-    Tag tag() const { return tag_; }
     bool isa(Tag tag) const { return tag == tag_; }
+    Tag tag() const { return tag_; }
+    Dbg dbg() const { return {loc(), sym()}; }
+    Loc loc() const { return loc_; }
     // clang-format off
     u64 u()            const { assert(isa(Tag::L_u ) || isa(Tag::L_s) || isa(Tag::L_r)); return u_; }
     Sym sym()          const { assert(isa(Tag::M_id) || isa(Tag::M_ax)); return sym_; }
@@ -181,4 +187,5 @@ private:
     };
 };
 
-} // namespace thorin::fe
+} // namespace fe
+} // namespace thorin

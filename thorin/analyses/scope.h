@@ -34,7 +34,7 @@ public:
     World& world() const { return world_; }
     Def* entry() const { return entry_; }
     Def* exit() const { return exit_; }
-    std::string name() const { return entry_->debug().name; }
+    Sym sym() const { return entry_->sym(); }
     ///@}
 
     /// @name Def%s bound/free in this Scope
@@ -42,9 +42,9 @@ public:
     bool bound(const Def* def) const { return bound().contains(def); }
     // clang-format off
     const DefSet& bound()     const { calc_bound(); return bound_;     } ///< All @p Def%s within this @p Scope.
-    const DefSet& free_defs() const { calc_bound(); return free_defs_; } ///< All @em non-const @p Def%s @em directly referenced but @em not @p bound within this @p Scope. May also include @p Var%s or @em noms.
-    const VarSet& free_vars() const { calc_free (); return free_vars_; } ///< All @p Var%s that occurr free in this @p Scope. Does @em not transitively contain any free @p Var%s from @p noms.
-    const NomSet& free_noms() const { calc_free (); return free_noms_; } ///< All @em noms that occurr free in this @p Scope.
+    const DefSet& free_defs() const { calc_bound(); return free_defs_; } ///< All @em non-const @p Def%s @em directly referenced but @em not @p bound within this @p Scope. May also include @p Var%s or @em muts.
+    const VarSet& free_vars() const { calc_free (); return free_vars_; } ///< All @p Var%s that occurr free in this @p Scope. Does @em not transitively contain any free @p Var%s from @p muts.
+    const MutSet& free_muts() const { calc_free (); return free_muts_; } ///< All @em muts that occurr free in this @p Scope.
     // clang-format on
     ///@}
 
@@ -68,11 +68,11 @@ private:
     mutable DefSet bound_;
     mutable DefSet free_defs_;
     mutable VarSet free_vars_;
-    mutable NomSet free_noms_;
+    mutable MutSet free_muts_;
     mutable std::unique_ptr<const CFA> cfa_;
 };
 
-/// Does @p nom's Var occurr free in @p def?
-bool is_free(Def* nom, const Def* def);
+/// Does @p mut's Var occurr free in @p def?
+bool is_free(Def* mut, const Def* def);
 
 } // namespace thorin

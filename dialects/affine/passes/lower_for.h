@@ -11,7 +11,7 @@ public:
     LowerFor(PassMan& man)
         : RWPass(man, "lower_affine_for") {}
 
-    const Def* rewrite(const Def*) override;
+    Ref rewrite(Ref) override;
 
 private:
     Def2Def rewritten_;

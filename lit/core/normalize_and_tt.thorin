@@ -1,14 +1,14 @@
 // RUN: rm -f %t.ll ; \
 // RUN: %thorin %s -o - | FileCheck %s
 
-.import core;
+.plugin core;
 
 .con .extern and_tt [i :.Idx 2, return : .Cn .Idx 2] = {
-    return (%core.bit2.and_ (i, .tt))
+    return (%core.bit2.and_ 0 (i, .tt))
 };
 
-// CHECK-DAG: and_tt _{{[0-9_]+}}::[i_[[valId_tt:[0-9_]+]]: .Idx 2, return_[[retId_tt:[0-9_]+]]: .Cn .Idx 2] = {
+// CHECK-DAG: and_tt _{{[0-9_]+}}::[i_[[valId_tt:[0-9_]+]]: .Idx 2, return_[[retId_tt:[0-9_]+]]: .Cn .Idx 2]{{(@.*)?}}= {
 // CHECK-DAG: return_[[etaId_tt:[0-9_]+]] i_[[valId_tt]]
 
-// CHECK-DAG: return_[[etaId_tt]] _[[etaVar_tt:[0-9_]+]]: .Idx 2 = {
+// CHECK-DAG: return_[[etaId_tt]] _[[etaVar_tt:[0-9_]+]]: .Idx 2{{(@.*)?}}= {
 // CHECK-DAG: return_[[retId_tt]] _[[etaVar_tt]]

@@ -16,7 +16,7 @@ private:
     /// Internal wrapper for Emitter::emit that schedules @p def and invokes `child().emit_bb`.
     Value emit_(const Def* def) {
         auto place = scheduler_.smart(def);
-        auto& bb   = lam2bb_[place->as_nom<Lam>()];
+        auto& bb   = lam2bb_[place->as_mut<Lam>()];
         return child().emit_bb(bb, def);
     }
 
@@ -49,22 +49,21 @@ protected:
     }
 
     void visit(const Scope& scope) override {
-        if (entry_ = scope.entry()->isa_nom<Lam>(); !entry_) return;
+        if (entry_ = scope.entry()->isa_mut<Lam>(); !entry_) return;
 
         if (!entry_->is_set()) {
             child().emit_imported(entry_);
             return;
         }
 
-        auto noms = schedule(scope); // TODO make sure to not compute twice
+        auto muts = schedule(scope); // TODO make sure to not compute twice
 
         // make sure that we don't need to rehash later on
-        for (auto nom : noms) {
-            if (auto lam = nom->isa<Lam>()) lam2bb_.emplace(lam, BB());
-        }
+        for (auto mut : muts)
+            if (auto lam = mut->isa<Lam>()) lam2bb_.emplace(lam, BB());
         auto old_size = lam2bb_.size();
 
-        entry_ = scope.entry()->as_nom<Lam>();
+        entry_ = scope.entry()->as_mut<Lam>();
         assert(entry_->ret_var());
 
         auto fct = child().prepare(scope);
@@ -72,8 +71,8 @@ protected:
         Scheduler new_scheduler(scope);
         swap(scheduler_, new_scheduler);
 
-        for (auto nom : noms) {
-            if (auto lam = nom->isa<Lam>(); lam && lam != scope.exit()) {
+        for (auto mut : muts) {
+            if (auto lam = mut->isa<Lam>(); lam && lam != scope.exit()) {
                 assert(lam == entry_ || lam->is_basicblock());
                 child().emit_epilogue(lam);
             }

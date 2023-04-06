@@ -25,12 +25,12 @@ void LowerTypedClos::start() {
 static const Def* insert_ret(const Def* def, const Def* ret) {
     auto new_ops = DefArray(def->num_projs() + 1, [&](auto i) { return (i == def->num_projs()) ? ret : def->proj(i); });
     auto& w      = def->world();
-    return (def->sort() == Sort::Term) ? w.tuple(new_ops) : w.sigma(new_ops);
+    return def->is_term() ? w.tuple(new_ops) : w.sigma(new_ops);
 }
 
 Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
     assert(lam && "make_stub: not a lam");
-    if (auto i = old2new_.find(lam); i != old2new_.end() && i->second->isa_nom<Lam>()) return i->second->as_nom<Lam>();
+    if (auto i = old2new_.find(lam); i != old2new_.end() && i->second->isa_mut<Lam>()) return i->second->as_mut<Lam>();
     auto& w      = world();
     auto new_dom = w.sigma(Array<const Def*>(lam->num_doms(), [&](auto i) -> const Def* {
         auto new_dom = rewrite(lam->dom(i));
@@ -44,9 +44,8 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
     }));
     if (lam->is_basicblock() && adjust_bb_type) new_dom = insert_ret(new_dom, dummy_ret_->type());
     auto new_type = w.cn(new_dom);
-    auto new_lam  = lam->stub(w, new_type, w.dbg(lam->name()));
+    auto new_lam  = lam->stub(w, new_type)->set(lam->sym());
     w.DLOG("stub {} ~> {}", lam, new_lam);
-    new_lam->set_debug_name(lam->name());
     new_lam->set(lam->filter(), lam->body());
     if (lam->is_external()) {
         lam->make_internal();
@@ -54,22 +53,22 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
     }
     const Def* lcm = mem::mem_var(new_lam);
     const Def* env =
-        new_lam->var(Clos_Env_Param, (mode != No_Env) ? w.dbg("closure_env") : lam->var(Clos_Env_Param)->dbg());
+        new_lam->var(Clos_Env_Param); //, (mode != No_Env) ? w.dbg("closure_env") : lam->var(Clos_Env_Param)->dbg());
     if (mode == Box) {
         auto env_mem = w.call<mem::load>(Defs{lcm, env});
-        lcm          = w.extract(env_mem, 0_u64, w.dbg("mem"));
-        env          = w.extract(env_mem, 1_u64, w.dbg("closure_env"));
+        lcm          = w.extract(env_mem, 0_u64)->set("mem");
+        env          = w.extract(env_mem, 1_u64)->set("closure_env");
     } else if (mode == Unbox) {
-        env = core::op_bitcast(lam->dom(Clos_Env_Param), env, w.dbg("unboxed_env"));
+        env = w.call<core::bitcast>(lam->dom(Clos_Env_Param), env)->set("unboxed_env");
     }
     auto new_args = w.tuple(Array<const Def*>(lam->num_doms(), [&](auto i) {
-        return (i == Clos_Env_Param) ? env : (lam->var(i) == mem::mem_var(lam)) ? lcm : new_lam->var(i);
+        return (i == Clos_Env_Param) ? env : (lam->var(i) == mem::mem_var(lam)) ? lcm : *new_lam->var(i);
     }));
     assert(new_args->num_projs() == lam->num_doms());
     assert(lam->num_doms() <= new_lam->num_doms());
     map(lam->var(), new_args);
     worklist_.emplace(mem::mem_var(lam), lcm, new_lam);
-    return map<Lam>(lam, new_lam);
+    return map(lam, new_lam)->as<Lam>();
 }
 
 const Def* LowerTypedClos::rewrite(const Def* def) {
@@ -85,11 +84,10 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
 
     if (auto i = old2new_.find(def); i != old2new_.end()) return i->second;
     if (auto var = def->isa<Var>();
-        var && var->nom()->isa_nom<Lam>()) // TODO put this conditions inside the assert below
+        var && var->mut()->isa_mut<Lam>()) // TODO put this conditions inside the assert below
         assert(false && "Lam vars should appear in a map!");
 
     auto new_type = rewrite(def->type());
-    auto new_dbg  = def->dbg() ? rewrite(def->dbg()) : nullptr;
 
     if (auto ct = isa_clos_type(def)) {
         auto pi = rewrite(ct->op(1))->as<Pi>();
@@ -105,7 +103,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
                 return map(def, env_type());
             else
                 return map(def, rewrite(tuple)->proj(*idx - 1));
-        } else if (auto var = tuple->isa<Var>(); var && isa_clos_type(var->nom())) {
+        } else if (auto var = tuple->isa<Var>(); var && isa_clos_type(var->mut())) {
             assert(false && "proj fst type form closure type");
         }
     }
@@ -120,25 +118,25 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
         } else if (!mode) {
             auto mem_ptr = (c.get() == attr::esc) ? mem::op_alloc(env->type(), lcm_) : mem::op_slot(env->type(), lcm_);
             auto mem     = w.extract(mem_ptr, 0_u64);
-            auto env_ptr = mem_ptr->proj(1_u64, w.dbg(fn->name() + "_env"));
+            auto env_ptr = mem_ptr->proj(1_u64); //, w.dbg(fn->sym() + "_env"));
             lcm_         = w.call<mem::store>(Defs{mem, env_ptr, env});
             map(lvm_, lcm_);
             env = env_ptr;
         }
-        fn  = core::op_bitcast(new_type->op(0), fn);
-        env = core::op_bitcast(new_type->op(1), env);
+        fn  = w.call<core::bitcast>(new_type->op(0), fn);
+        env = w.call<core::bitcast>(new_type->op(1), env);
         return map(def, w.tuple({fn, env}));
-    } else if (auto lam = def->isa_nom<Lam>()) {
+    } else if (auto lam = def->isa_mut<Lam>()) {
         return make_stub(lam, No_Env, false);
-    } else if (auto nom = def->isa_nom()) {
-        assert(!isa_clos_type(nom));
-        auto new_nom = nom->stub(w, new_type, new_dbg);
-        map(nom, new_nom);
-        for (size_t i = 0; i < nom->num_ops(); i++)
-            if (nom->op(i)) new_nom->set(i, rewrite(nom->op(i)));
-        if (!def->isa_nom<Global>() && Checker(w).equiv(nom, new_nom, nullptr)) return map(nom, nom);
-        if (auto restruct = new_nom->restructure()) return map(nom, restruct);
-        return new_nom;
+    } else if (auto mut = def->isa_mut()) {
+        assert(!isa_clos_type(mut));
+        auto new_mut = mut->stub(w, new_type);
+        map(mut, new_mut);
+        for (size_t i = 0; i < mut->num_ops(); i++)
+            if (mut->op(i)) new_mut->set(i, rewrite(mut->op(i)));
+        if (!def->isa_mut<Global>() && Checker(w).equiv(mut, new_mut)) return map(mut, mut);
+        if (auto restruct = new_mut->restructure()) return map(mut, restruct);
+        return new_mut;
     } else if (def->isa<Axiom>()) {
         return def;
     } else {
@@ -151,7 +149,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
                 new_ops[1] = insert_ret(new_ops[1], dummy_ret_);
         }
 
-        auto new_def = def->rebuild(w, new_type, new_ops, new_dbg);
+        auto new_def = def->rebuild(w, new_type, new_ops);
 
         // We may need to update the mem token after all ops have been rewritten:
         // F (m, a1, ..., (env, f):pct)

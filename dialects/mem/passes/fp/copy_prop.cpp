@@ -7,8 +7,8 @@
 
 namespace thorin::mem {
 
-const Def* CopyProp::rewrite(const Def* def) {
-    auto [app, var_lam] = isa_apped_nom_lam(def);
+Ref CopyProp::rewrite(Ref def) {
+    auto [app, var_lam] = isa_apped_mut_lam(def);
     if (!isa_workable(var_lam) || (bb_only_ && var_lam->is_returning())) return def;
 
     auto n = app->num_args();
@@ -62,14 +62,14 @@ const Def* CopyProp::rewrite(const Def* def) {
         old_args      = args;
         auto prop_dom = world().sigma(new_doms);
         auto new_pi   = world().pi(prop_dom, var_lam->codom());
-        prop_lam      = var_lam->stub(world(), new_pi, var_lam->dbg());
+        prop_lam      = var_lam->stub(world(), new_pi);
 
         world().DLOG("new prop_lam: {}", prop_lam);
         if (beta_red_) beta_red_->keep(prop_lam);
         if (eta_exp_) eta_exp_->new2old(prop_lam, var_lam);
 
         size_t j = 0;
-        DefArray new_vars(n, [&, prop_lam = prop_lam](size_t i) -> const Def* {
+        DefArray new_vars(n, [&, prop_lam = prop_lam](size_t i) -> Ref {
             switch (lattice[i]) {
                 case Lattice::Dead: return proxy(var_lam->var(i)->type(), {var_lam, world().lit_nat(i)}, Varxy);
                 case Lattice::Prop: return args[i];
@@ -82,7 +82,7 @@ const Def* CopyProp::rewrite(const Def* def) {
     }
 
     world().DLOG("var_lam => prop_lam: {}: {} => {}: {}", var_lam, var_lam->dom(), prop_lam, prop_lam->dom());
-    auto res = app->world().app(prop_lam, new_args, app->dbg());
+    auto res = app->world().app(prop_lam, new_args);
 
     // Don't optimize again. Also, keep this line here at the very bottom as this invalidates all references.
     Lam* key = prop_lam; // prop_lam is a Lam*& which might get invalidated by the very insertion happening next.
@@ -92,7 +92,7 @@ const Def* CopyProp::rewrite(const Def* def) {
 
 undo_t CopyProp::analyze(const Proxy* proxy) {
     world().DLOG("found proxy: {}", proxy);
-    auto var_lam                        = proxy->op(0)->as_nom<Lam>();
+    auto var_lam                        = proxy->op(0)->as_mut<Lam>();
     auto& [lattice, prop_lam, old_args] = lam2info_[var_lam];
 
     if (proxy->tag() == Varxy) {
@@ -104,8 +104,7 @@ undo_t CopyProp::analyze(const Proxy* proxy) {
         }
     } else {
         assert(proxy->tag() == Appxy);
-        auto ops = proxy->ops();
-        for (auto op : ops.skip_front()) {
+        for (auto ops = proxy->ops(); auto op : ops.skip_front()) {
             auto i = as_lit(op);
             if (auto& l = lattice[i]; l != Lattice::Keep) {
                 l = Lattice::Keep;
