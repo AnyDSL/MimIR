@@ -7,7 +7,7 @@
 namespace thorin::compile {
 
 void DebugPrint::enter() {
-    if (level >= 2) { world().DLOG("L{}: enter {}", level, curr_nom()); }
+    if (level >= 2) world().DLOG("L{}: enter {}", level, curr_mut());
 }
 
 } // namespace thorin::compile

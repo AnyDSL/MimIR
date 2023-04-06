@@ -4,8 +4,8 @@
 
 namespace thorin::clos {
 
-void Clos2SJLJ::get_exn_closures(const Def* def, DefSet& visited) {
-    if (!def->is_term() || def->isa_nom<Lam>() || visited.contains(def)) return;
+void Clos2SJLJ::get_exn_closures(Ref def, DefSet& visited) {
+    if (!def->is_term() || def->isa_mut<Lam>() || visited.contains(def)) return;
     visited.emplace(def);
     if (auto c = isa_clos_lit(def)) {
         auto lam = c.fnc_as_lam();
@@ -21,8 +21,8 @@ void Clos2SJLJ::get_exn_closures(const Def* def, DefSet& visited) {
 
 void Clos2SJLJ::get_exn_closures() {
     lam2tag_.clear();
-    if (!curr_nom()->is_set() || !curr_nom()->type()->is_cn()) return;
-    auto app = curr_nom()->body()->isa<App>();
+    if (!curr_mut()->is_set() || !curr_mut()->type()->is_cn()) return;
+    auto app = curr_mut()->body()->isa<App>();
     if (!app) return;
     if (auto p = app->callee()->isa<Extract>(); p && isa_clos_type(p->tuple()->type())) {
         auto p2 = p->tuple()->isa<Extract>();
@@ -43,7 +43,7 @@ void Clos2SJLJ::get_exn_closures() {
     get_exn_closures(app->arg(), visited);
 }
 
-static std::array<const Def*, 3> split(const Def* def) {
+static std::array<Ref, 3> split(Ref def) {
     auto new_ops = DefArray(def->num_projs() - 2, nullptr);
     auto& w      = def->world();
     const Def *mem, *env;
@@ -66,9 +66,9 @@ static std::array<const Def*, 3> split(const Def* def) {
     return {mem, env, remaining};
 }
 
-static const Def* rebuild(const Def* mem, const Def* env, Defs remaining) {
+static Ref rebuild(Ref mem, Ref env, Defs remaining) {
     auto& w      = mem->world();
-    auto new_ops = DefArray(remaining.size() + 2, [&](auto i) {
+    auto new_ops = DefArray(remaining.size() + 2, [&](auto i) -> const Def* {
         static_assert(Clos_Env_Param == 1);
         if (i == 0) return mem;
         if (i == 1) return env;
@@ -77,13 +77,13 @@ static const Def* rebuild(const Def* mem, const Def* env, Defs remaining) {
     return w.tuple(new_ops);
 }
 
-Lam* Clos2SJLJ::get_throw(const Def* dom) {
+Lam* Clos2SJLJ::get_throw(Ref dom) {
     auto& w            = world();
     auto [p, inserted] = dom2throw_.emplace(dom, nullptr);
     auto& tlam         = p->second;
     if (inserted || !tlam) {
         auto pi                = w.cn(clos_sub_env(dom, w.sigma({jb_type(), rb_type(), tag_type()})));
-        tlam                   = w.nom_lam(pi)->set("throw");
+        tlam                   = w.mut_lam(pi)->set("throw");
         auto [m0, env, var]    = split(tlam->var());
         auto [jbuf, rbuf, tag] = env->projs<3>();
         auto [m1, r]           = mem::op_alloc(var->type(), m0)->projs<2>();
@@ -96,14 +96,14 @@ Lam* Clos2SJLJ::get_throw(const Def* dom) {
     return tlam;
 }
 
-Lam* Clos2SJLJ::get_lpad(Lam* lam, const Def* rb) {
+Lam* Clos2SJLJ::get_lpad(Lam* lam, Ref rb) {
     auto& w            = world();
     auto [p, inserted] = lam2lpad_.emplace(w.tuple({lam, rb}), nullptr);
     auto& lpad         = p->second;
     if (inserted || !lpad) {
         auto [_, env_type, dom] = split(lam->dom());
         auto pi                 = w.cn(w.sigma({mem::type_mem(w), env_type}));
-        lpad                    = w.nom_lam(pi)->set("lpad");
+        lpad                    = w.mut_lam(pi)->set("lpad");
         auto [m, env, __]       = split(lpad->var());
         auto [m1, arg_ptr]      = w.call<mem::load>(Defs{m, rb})->projs<2>();
         arg_ptr                 = w.call<core::bitcast>(mem::type_ptr(dom), arg_ptr);
@@ -121,13 +121,13 @@ void Clos2SJLJ::enter() {
     if (lam2tag_.empty()) return;
 
     {
-        auto m0       = mem::mem_var(curr_nom());
+        auto m0       = mem::mem_var(curr_mut());
         auto [m1, jb] = op_alloc_jumpbuf(m0)->projs<2>();
         auto [m2, rb] = mem::op_slot(void_ptr(), m1)->projs<2>();
 
-        auto new_args = curr_nom()->vars();
+        auto new_args = curr_mut()->vars();
         new_args[0]   = m2;
-        curr_nom()->set(curr_nom()->reduce(w.tuple(new_args)));
+        curr_mut()->set(curr_mut()->reduce(w.tuple(new_args)));
 
         cur_jbuf_ = jb;
         cur_rbuf_ = rb;
@@ -136,15 +136,16 @@ void Clos2SJLJ::enter() {
         get_exn_closures();
     }
 
-    auto body = curr_nom()->body()->as<App>();
+    auto body = curr_mut()->body()->as<App>();
 
     auto branch_type = clos_type(w.cn(mem::type_mem(w)));
     auto branches    = DefVec(lam2tag_.size() + 1);
     {
         auto env             = w.tuple(body->args().skip_front());
-        auto new_callee      = w.nom_lam(w.cn({mem::type_mem(w), env->type()}))->set("sjlj_wrap");
+        auto new_callee      = w.mut_lam(w.cn({mem::type_mem(w), env->type()}))->set("sjlj_wrap");
         auto [m, env_var, _] = split(new_callee->var());
-        auto new_args = DefArray(env->num_projs() + 1, [&](auto i) { return (i == 0) ? m : env_var->proj(i - 1); });
+        auto new_args =
+            DefArray(env->num_projs() + 1, [&](auto i) -> const Def* { return (i == 0) ? *m : env_var->proj(i - 1); });
         new_callee->app(false, body->callee(), new_args);
         branches[0] = clos_pack(env, new_callee, branch_type);
     }
@@ -159,10 +160,10 @@ void Clos2SJLJ::enter() {
     auto [m1, tag] = op_setjmp(m0, cur_jbuf_)->projs<2>();
     tag            = w.call(core::conv::s, branches.size(), tag);
     auto branch    = w.extract(w.tuple(branches), tag);
-    curr_nom()->set_body(clos_apply(branch, m1));
+    curr_mut()->set_body(clos_apply(branch, m1));
 }
 
-const Def* Clos2SJLJ::rewrite(const Def* def) {
+Ref Clos2SJLJ::rewrite(Ref def) {
     if (auto c = isa_clos_lit(def); c && lam2tag_.contains(c.fnc_as_lam())) {
         auto& w     = world();
         auto [i, _] = lam2tag_[c.fnc_as_lam()];

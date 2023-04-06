@@ -22,7 +22,7 @@ void CFNode::link(const CFNode* other) const {
     other->preds_.emplace(this);
 }
 
-std::ostream& operator<<(std::ostream& os, const CFNode* n) { return os << n->nom(); }
+std::ostream& operator<<(std::ostream& os, const CFNode* n) { return os << n->mut(); }
 
 //------------------------------------------------------------------------------
 
@@ -31,10 +31,10 @@ CFA::CFA(const Scope& scope)
     , entry_(node(scope.entry()))
     , exit_(node(scope.exit())) {
     std::queue<Def*> cfg_queue;
-    NomSet cfg_done;
+    MutSet cfg_done;
 
-    auto cfg_enqueue = [&](Def* nom) {
-        if (nom->is_set() && cfg_done.emplace(nom).second) cfg_queue.push(nom);
+    auto cfg_enqueue = [&](Def* mut) {
+        if (mut->is_set() && cfg_done.emplace(mut).second) cfg_queue.push(mut);
     };
 
     cfg_enqueue(scope.entry());
@@ -48,7 +48,7 @@ CFA::CFA(const Scope& scope)
             if (def->isa<Var>()) return;
             // TODO maybe optimize a little bit by using the order
             if (scope.bound(def) && done.emplace(def).second) {
-                if (auto dst = def->isa_nom()) {
+                if (auto dst = def->isa_mut()) {
                     cfg_enqueue(dst);
                     node(src)->link(node(dst));
                 } else
@@ -68,9 +68,9 @@ CFA::CFA(const Scope& scope)
     verify();
 }
 
-const CFNode* CFA::node(Def* nom) {
-    auto&& n = nodes_[nom];
-    if (n == nullptr) n = new CFNode(nom);
+const CFNode* CFA::node(Def* mut) {
+    auto&& n = nodes_[mut];
+    if (n == nullptr) n = new CFNode(mut);
     return n;
 }
 
@@ -100,9 +100,8 @@ void CFA::link_to_exit() {
 
         enqueue(n);
 
-        while (!queue.empty()) {
+        while (!queue.empty())
             for (auto pred : pop(queue)->preds()) enqueue(pred);
-        }
     };
 
     std::stack<const CFNode*> stack;
@@ -142,7 +141,7 @@ void CFA::verify() {
     for (const auto& p : nodes()) {
         auto in = p.second;
         if (in != entry() && in->preds_.size() == 0) {
-            world().VLOG("missing predecessors: {}", in->nom());
+            world().VLOG("missing predecessors: {}", in->mut());
             error = true;
         }
     }
@@ -168,9 +167,8 @@ size_t CFG<forward>::post_order_visit(const CFNode* n, size_t i) {
     auto& n_index = forward ? n->f_index_ : n->b_index_;
     n_index       = size_t(-2);
 
-    for (auto succ : succs(n)) {
+    for (auto succ : succs(n))
         if (index(succ) == size_t(-1)) i = post_order_visit(succ, i);
-    }
 
     n_index = i - 1;
     rpo_[n] = n;

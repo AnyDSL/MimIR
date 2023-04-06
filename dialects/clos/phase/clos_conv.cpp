@@ -16,7 +16,7 @@ namespace thorin::clos {
  */
 
 static bool is_toplevel(const Def* fd) {
-    return fd->dep_const() || fd->isa_nom<Global>() || fd->isa<Axiom>() || !fd->is_term();
+    return fd->dep_const() || fd->isa_mut<Global>() || fd->isa<Axiom>() || !fd->is_term();
 }
 
 static bool is_memop_res(const Def* fd) {
@@ -33,15 +33,15 @@ void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue&
         if (var != lam->ret_var()) node->add_fvs(fd);
     } else if (auto q = match(attr::freeBB, fd)) {
         node->add_fvs(q);
-    } else if (auto pred = fd->isa_nom()) {
-        if (pred != node->nom) {
+    } else if (auto pred = fd->isa_mut()) {
+        if (pred != node->mut) {
             auto [pnode, inserted] = build_node(pred, worklist);
             node->preds.push_back(pnode);
             pnode->succs.push_back(node);
             init_node |= inserted;
         }
     } else if (fd->dep() == Dep::Var && !fd->isa<Tuple>()) {
-        // Note: Var's can still have Def::Top, if their type is a nom!
+        // Note: Var's can still have Def::Top, if their type is a mut!
         // So the first case is *not* redundant
         node->add_fvs(fd);
     } else if (is_memop_res(fd)) {
@@ -52,19 +52,19 @@ void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue&
     }
 }
 
-std::pair<FreeDefAna::Node*, bool> FreeDefAna::build_node(Def* nom, NodeQueue& worklist) {
+std::pair<FreeDefAna::Node*, bool> FreeDefAna::build_node(Def* mut, NodeQueue& worklist) {
     auto& w            = world();
-    auto [p, inserted] = lam2nodes_.emplace(nom, nullptr);
+    auto [p, inserted] = lam2nodes_.emplace(mut, nullptr);
     if (!inserted) return {p->second.get(), false};
-    w.DLOG("FVA: create node: {}", nom);
-    p->second      = std::make_unique<Node>(Node{nom, {}, {}, {}, 0});
+    w.DLOG("FVA: create node: {}", mut);
+    p->second      = std::make_unique<Node>(Node{mut, {}, {}, {}, 0});
     auto node      = p->second.get();
-    auto scope     = Scope(nom);
+    auto scope     = Scope(mut);
     bool init_node = false;
     for (auto v : scope.free_defs()) split_fd(node, v, init_node, worklist);
     if (!init_node) {
         worklist.push(node);
-        w.DLOG("FVA: init {}", nom);
+        w.DLOG("FVA: init {}", mut);
     }
     return {node, true};
 }
@@ -166,7 +166,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         return i->second;
     } else if (auto pi = def->isa<Pi>(); pi && pi->is_cn()) {
         return map(type_clos(pi, subst));
-    } else if (auto lam = def->isa_nom<Lam>(); lam && lam->type()->is_cn()) {
+    } else if (auto lam = def->isa_mut<Lam>(); lam && lam->type()->is_cn()) {
         auto [_, __, fv_env, new_lam] = make_stub(lam, subst);
         auto clos_ty                  = rewrite(lam->type(), subst);
         auto env                      = rewrite(fv_env, subst);
@@ -176,7 +176,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
     } else if (auto a = match<attr>(def)) {
         switch (a.id()) {
             case attr::ret:
-                if (auto ret_lam = a->arg()->isa_nom<Lam>()) {
+                if (auto ret_lam = a->arg()->isa_mut<Lam>()) {
                     // assert(ret_lam && ret_lam->is_basicblock());
                     //  Note: This should be cont_lam's only occurance after η-expansion, so its okay to
                     //  put into the local subst only
@@ -194,7 +194,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
             case attr::fstclassBB:
             case attr::freeBB: {
                 // Note: Same thing about η-conversion applies here
-                auto bb_lam = a->arg()->isa_nom<Lam>();
+                auto bb_lam = a->arg()->isa_mut<Lam>();
                 assert(bb_lam && bb_lam->is_basicblock());
                 auto [_, __, ___, new_lam] = make_stub({}, bb_lam, subst);
                 subst[bb_lam]              = clos_pack(w.tuple(), new_lam, rewrite(bb_lam->type(), subst));
@@ -213,19 +213,19 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
 
     auto new_type = rewrite(def->type(), subst);
 
-    if (auto nom = def->isa_nom()) {
-        if (auto global = def->isa_nom<Global>()) {
-            if (auto i = glob_noms_.find(global); i != glob_noms_.end()) return i->second;
+    if (auto mut = def->isa_mut()) {
+        if (auto global = def->isa_mut<Global>()) {
+            if (auto i = glob_muts_.find(global); i != glob_muts_.end()) return i->second;
             auto subst             = Def2Def();
-            return glob_noms_[nom] = rewrite_nom(global, new_type, subst);
+            return glob_muts_[mut] = rewrite_mut(global, new_type, subst);
         }
-        assert(!isa_clos_type(nom));
-        w.DLOG("RW: nom {}", nom);
-        auto new_nom = rewrite_nom(nom, new_type, subst);
-        // Try to reduce the amount of noms that are created
-        if (!nom->isa_nom<Global>() && Checker(w).equiv(nom, new_nom)) return map(nom);
-        if (auto restruct = new_nom->restructure()) return map(restruct);
-        return map(new_nom);
+        assert(!isa_clos_type(mut));
+        w.DLOG("RW: mut {}", mut);
+        auto new_mut = rewrite_mut(mut, new_type, subst);
+        // Try to reduce the amount of muts that are created
+        if (!mut->isa_mut<Global>() && Checker(w).equiv(mut, new_mut)) return map(mut);
+        if (auto restruct = new_mut->restructure()) return map(restruct);
+        return map(new_mut);
     } else {
         auto new_ops = DefArray(def->num_ops(), [&](auto i) { return rewrite(def->op(i), subst); });
         if (auto app = def->isa<App>(); app && new_ops[0]->type()->isa<Sigma>())
@@ -239,13 +239,13 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
     thorin::unreachable();
 }
 
-Def* ClosConv::rewrite_nom(Def* nom, const Def* new_type, Def2Def& subst) {
+Def* ClosConv::rewrite_mut(Def* mut, const Def* new_type, Def2Def& subst) {
     auto& w      = world();
-    auto new_nom = nom->stub(w, new_type);
-    subst.emplace(nom, new_nom);
-    for (size_t i = 0; i < nom->num_ops(); i++)
-        if (nom->op(i)) new_nom->set(i, rewrite(nom->op(i), subst));
-    return new_nom;
+    auto new_mut = mut->stub(w, new_type);
+    subst.emplace(mut, new_mut);
+    for (size_t i = 0; i < mut->num_ops(); i++)
+        if (mut->op(i)) new_mut->set(i, rewrite(mut->op(i), subst));
+    return new_mut;
 }
 
 const Pi* ClosConv::rewrite_type_cn(const Pi* pi, Def2Def& subst) {
@@ -255,7 +255,7 @@ const Pi* ClosConv::rewrite_type_cn(const Pi* pi, Def2Def& subst) {
 }
 
 const Def* ClosConv::type_clos(const Pi* pi, Def2Def& subst, const Def* env_type) {
-    if (auto i = glob_noms_.find(pi); i != glob_noms_.end() && !env_type) return i->second;
+    if (auto i = glob_muts_.find(pi); i != glob_muts_.end() && !env_type) return i->second;
     auto& w       = world();
     auto new_doms = DefArray(pi->num_doms(), [&](auto i) {
         return (i == pi->num_doms() - 1 && pi->is_returning()) ? rewrite_type_cn(pi->ret_pi(), subst)
@@ -263,7 +263,7 @@ const Def* ClosConv::type_clos(const Pi* pi, Def2Def& subst, const Def* env_type
     });
     auto ct       = ctype(w, new_doms, env_type);
     if (!env_type) {
-        glob_noms_.emplace(pi, ct);
+        glob_muts_.emplace(pi, ct);
         w.DLOG("C-TYPE: pct {} ~~> {}", pi, ct);
     } else {
         w.DLOG("C-TYPE: ct {}, env = {} ~~> {}", pi, env_type, ct);

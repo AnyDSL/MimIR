@@ -4,7 +4,7 @@
 
 namespace thorin::mem {
 
-const Def* Alloc2Malloc::rewrite(const Def* def) {
+Ref Alloc2Malloc::rewrite(Ref def) {
     if (auto alloc = match<mem::alloc>(def)) {
         auto [pointee, addr_space] = alloc->decurry()->args<2>();
         return op_malloc(pointee, alloc->arg());

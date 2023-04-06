@@ -6,7 +6,7 @@
 - [x] remove extra data from subclasses of `Def`
 - [x] remove RTTI
 - [x] `Lam` and `App` instead of `Continuation`
-- [x] make analyses work with all nominals, not just `Lam`s
+- [x] make analyses work with all mutables, not just `Lam`s
 - [x] remove `Type` and make it a `Def`
 - [x] PTS calculus of constructions style IR (mostly done)
 - [x] remove arg/param lists

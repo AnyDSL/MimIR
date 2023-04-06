@@ -7,7 +7,7 @@
 namespace thorin {
 
 /// This node is a hole in the IR that is inferred by its context later on.
-/// It is modelled as a *nom*inal Def.
+/// It is modelled as a *mut*able Def.
 /// If inference was successful, it's Infer::op will be set to the inferred Def.
 class Infer : public Def {
 private:

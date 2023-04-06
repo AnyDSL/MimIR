@@ -34,7 +34,7 @@ namespace thorin::ll {
 static bool is_const(const Def* def) {
     if (def->isa<Bot>()) return true;
     if (def->isa<Lit>()) return true;
-    if (auto pack = def->isa_structural<Pack>()) return is_const(pack->shape()) && is_const(pack->body());
+    if (auto pack = def->isa_imm<Pack>()) return is_const(pack->shape()) && is_const(pack->body());
 
     if (auto tuple = def->isa<Tuple>()) {
         auto ops = tuple->ops();
@@ -116,7 +116,7 @@ private:
 std::string Emitter::id(const Def* def, bool force_bb /*= false*/) const {
     if (auto global = def->isa<Global>()) return "@" + global->unique_name();
 
-    if (auto lam = def->isa_nom<Lam>(); lam && !force_bb) {
+    if (auto lam = def->isa_mut<Lam>(); lam && !force_bb) {
         if (lam->type()->ret_pi()) {
             if (lam->is_external() || !lam->is_set())
                 return "@"s + *lam->sym(); // TODO or use is_internal or sth like that?
@@ -167,7 +167,7 @@ std::string Emitter::convert(const Def* type) {
 
         s << ")*";
     } else if (auto sigma = type->isa<Sigma>()) {
-        if (sigma->isa_nom()) {
+        if (sigma->isa_mut()) {
             name          = id(sigma);
             types_[sigma] = name;
             print(s, "{} = type", name);
@@ -225,7 +225,7 @@ void Emitter::emit_imported(Lam* lam) {
 }
 
 std::string Emitter::prepare(const Scope& scope) {
-    auto lam = scope.entry()->as_nom<Lam>();
+    auto lam = scope.entry()->as_mut<Lam>();
 
     print(func_impls_, "define {} {}(", convert_ret_pi(lam->type()->ret_pi()), id(lam));
 
@@ -253,8 +253,8 @@ void Emitter::finalize(const Scope& scope) {
         }
     }
 
-    for (auto nom : schedule(scope)) {
-        if (auto lam = nom->isa_nom<Lam>()) {
+    for (auto mut : schedule(scope)) {
+        if (auto lam = mut->isa_mut<Lam>()) {
             if (lam == scope.exit()) continue;
             assert(lam2bb_.contains(lam));
             auto& bb = lam2bb_[lam];
@@ -309,7 +309,7 @@ void Emitter::emit_epilogue(Lam* lam) {
         // TODO: we can not rely on the structure of the extract (it might be a nested extract)
         for (auto callee_def : ex->tuple()->projs()) {
             // dissect the tuple of lambdas
-            auto callee = callee_def->as_nom<Lam>();
+            auto callee = callee_def->as_mut<Lam>();
             // each callees type should agree with the argument type (should be checked by type checking).
             // Especially, the number of vars should be the number of arguments.
             // TODO: does not hold for complex arguments that are not tuples.
@@ -338,7 +338,7 @@ void Emitter::emit_epilogue(Lam* lam) {
         }
     } else if (app->callee()->isa<Bot>()) {
         return bb.tail("ret ; bottom: unreachable");
-    } else if (auto callee = app->callee()->isa_nom<Lam>(); callee && callee->is_basicblock()) { // ordinary jump
+    } else if (auto callee = app->callee()->isa_mut<Lam>(); callee && callee->is_basicblock()) { // ordinary jump
         for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
             if (auto arg = emit_unsafe(app->arg(i)); !arg.empty()) {
                 auto phi = callee->var(i);
@@ -372,7 +372,7 @@ void Emitter::emit_epilogue(Lam* lam) {
             return bb.tail("unreachable");
         }
 
-        auto ret_lam    = app->args().back()->as_nom<Lam>();
+        auto ret_lam    = app->args().back()->as_mut<Lam>();
         size_t num_vars = ret_lam->num_vars();
         size_t n        = 0;
         Array<const Def*> values(num_vars);

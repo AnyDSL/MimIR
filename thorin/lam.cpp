@@ -36,25 +36,18 @@ Lam* Lam::set_filter(Filter filter) {
 }
 
 Lam* Lam::app(Filter f, const Def* callee, const Def* arg) {
-    assert(isa_nom() && !filter());
+    assert(isa_mut() && !filter());
     set_filter(f);
     return set_body(world().app(callee, arg));
 }
 
-Lam* Lam::app(Filter filter, const Def* callee, Defs args) {
-    return app(filter, callee, world().tuple(args));
-}
+Lam* Lam::app(Filter filter, const Def* callee, Defs args) { return app(filter, callee, world().tuple(args)); }
 
 Lam* Lam::branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem) {
     return app(filter, world().select(t, f, cond), mem);
 }
 
-Lam* Lam::test(Filter filter,
-               const Def* value,
-               const Def* index,
-               const Def* match,
-               const Def* clash,
-               const Def* mem) {
+Lam* Lam::test(Filter filter, const Def* value, const Def* index, const Def* match, const Def* clash, const Def* mem) {
     return app(filter, world().test(value, index, match, clash), mem);
 }
 

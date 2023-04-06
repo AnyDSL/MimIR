@@ -8,11 +8,11 @@ namespace thorin {
 
 class DepNode {
 public:
-    DepNode(Def* nom, size_t depth)
-        : nom_(nom)
+    DepNode(Def* mut, size_t depth)
+        : mut_(mut)
         , depth_(depth) {}
 
-    Def* nom() const { return nom_; }
+    Def* mut() const { return mut_; }
     size_t depth() const { return depth_; }
     DepNode* parent() const { return parent_; }
     const auto& children() const { return children_; }
@@ -25,7 +25,7 @@ private:
         return this;
     }
 
-    Def* nom_;
+    Def* mut_;
     size_t depth_;
     DepNode* parent_ = nullptr;
     std::vector<DepNode*> children_;
@@ -43,7 +43,7 @@ public:
 
     World& world() const { return world_; };
     const DepNode* root() const { return root_.get(); }
-    const DepNode* nom2node(Def* nom) const { return nom2node_.find(nom)->second.get(); }
+    const DepNode* mut2node(Def* mut) const { return mut2node_.find(mut)->second.get(); }
     bool depends(Def* a, Def* b) const; ///< Does @p a depend on @p b?
 
 private:
@@ -54,7 +54,7 @@ private:
 
     World& world_;
     std::unique_ptr<DepNode> root_;
-    NomMap<std::unique_ptr<DepNode>> nom2node_;
+    MutMap<std::unique_ptr<DepNode>> mut2node_;
     DefMap<VarSet> def2vars_;
     std::deque<DepNode*> stack_;
 };

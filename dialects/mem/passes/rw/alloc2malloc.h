@@ -9,7 +9,7 @@ public:
     Alloc2Malloc(PassMan& man)
         : RWPass(man, "alloc2malloc") {}
 
-    const Def* rewrite(const Def*) override;
+    Ref rewrite(Ref) override;
 };
 
 } // namespace thorin::mem

@@ -6,12 +6,10 @@ namespace thorin {
 
 class Sigma : public Def {
 private:
-    /// Constructor for a *structural* Sigma.
     Sigma(const Def* type, Defs ops)
-        : Def(Node, type, ops, 0) {}
-    /// Constructor for a *nom*inal Sigma.
+        : Def(Node, type, ops, 0) {} ///< Constructor for an *imm*utable Sigma.
     Sigma(const Def* type, size_t size)
-        : Def(Node, type, size, 0) {}
+        : Def(Node, type, size, 0) {} ///< Constructor for a *mut*able Sigma.
 
 public:
     /// @name setters
@@ -41,12 +39,10 @@ private:
 
 class Arr : public Def {
 private:
-    /// Constructor for a *structural* Arr.
     Arr(const Def* type, const Def* shape, const Def* body)
-        : Def(Node, type, {shape, body}, 0) {}
-    /// Constructor for a *nom*inaml Arr.
+        : Def(Node, type, {shape, body}, 0) {} ///< Constructor for an *imm*utable Arr.
     Arr(const Def* type)
-        : Def(Node, type, 2, 0) {}
+        : Def(Node, type, 2, 0) {} ///< Constructor for a *mut*able Arr.
 
 public:
     /// @name ops
@@ -72,12 +68,10 @@ public:
 
 class Pack : public Def {
 private:
-    /// Constructor for a *structural* Pack.
     Pack(const Def* type, const Def* body)
-        : Def(Node, type, {body}, 0) {}
-    /// Constructor for a *nom*inaml Pack.
+        : Def(Node, type, {body}, 0) {} ///< Constructor for an *imm*utable Pack.
     Pack(const Def* type)
-        : Def(Node, type, 1, 0) {}
+        : Def(Node, type, 1, 0) {} ///< Constructor for a *mut*ablel Pack.
 
 public:
     /// @name ops
@@ -142,7 +136,7 @@ size_t flatten(DefVec& ops, const Def* def, bool flatten_sigmas = true);
 /// Applies the reverse transformation on a pack/tuple, given the original type.
 const Def* unflatten(const Def* def, const Def* type);
 /// Same as unflatten, but uses the operands of a flattened pack/tuple directly.
-const Def* unflatten(Defs ops, const Def* type, bool flatten_noms = true);
+const Def* unflatten(Defs ops, const Def* type, bool flatten_muts = true);
 
 DefArray merge(const Def* def, Defs defs);
 const Def* merge_sigma(const Def* def, Defs defs);

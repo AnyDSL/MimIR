@@ -23,9 +23,9 @@ class Checker;
 class Driver;
 
 /// The World represents the whole program and manages creation of Thorin nodes (Def%s).
-/// *Structural* Def%s are hashed into an internal HashSet.
-/// The getters just calculate a hash and lookup the Def, if it is already present, or create a new one otherwise.
-/// This corresponds to value numbering.
+/// Def%s are hashed into an internal HashSet.
+/// The World's factory methods just calculate a hash and lookup the Def, if it is already present, or create a new one
+/// otherwise. This corresponds to value numbering.
 ///
 /// You can create several worlds.
 /// All worlds are completely independent from each other.
@@ -172,7 +172,7 @@ public:
     template<Sort = Sort::Univ>
     Ref umax(DefArray);
     const Type* type(Ref level);
-    const Type* type_infer_univ() { return type(nom_infer_univ()); }
+    const Type* type_infer_univ() { return type(mut_infer_univ()); }
     template<level_t level = 0>
     const Type* type() {
         if constexpr (level == 0)
@@ -182,19 +182,19 @@ public:
         else
             return type(lit_univ(level));
     }
-    const Var* var(Ref type, Def* nom) { return unify<Var>(1, type, nom); }
+    const Var* var(Ref type, Def* mut) { return unify<Var>(1, type, mut); }
     const Proxy* proxy(Ref type, Defs ops, u32 index, u32 tag) {
         return unify<Proxy>(ops.size(), type, ops, index, tag);
     }
 
-    Infer* nom_infer(Ref type) { return insert<Infer>(1, type); }
-    Infer* nom_infer_univ() { return nom_infer(univ()); }
-    Infer* nom_infer_type() { return nom_infer(type_infer_univ()); }
+    Infer* mut_infer(Ref type) { return insert<Infer>(1, type); }
+    Infer* mut_infer_univ() { return mut_infer(univ()); }
+    Infer* mut_infer_type() { return mut_infer(type_infer_univ()); }
 
     /// Either a value `?:?:.Type ?` or a type `?:.Type ?:.Type ?`.
-    Infer* nom_infer_entity() {
+    Infer* mut_infer_entity() {
         auto t   = type_infer_univ();
-        auto res = nom_infer(nom_infer(t));
+        auto res = mut_infer(mut_infer(t));
         assert(this == &res->world());
         return res;
     }
@@ -241,7 +241,7 @@ public:
         return unify<Pi>(2, Pi::infer(dom, codom), dom, codom, implicit);
     }
     const Pi* pi(Defs dom, Ref codom, bool implicit = false) { return pi(sigma(dom), codom, implicit); }
-    Pi* nom_pi(Ref type, bool implicit = false) { return insert<Pi>(2, type, implicit); }
+    Pi* mut_pi(Ref type, bool implicit = false) { return insert<Pi>(2, type, implicit); }
     ///@}
 
     /// @name Cn (Pi with codom Bot)
@@ -253,7 +253,7 @@ public:
 
     /// @name Lam
     ///@{
-    Lam* nom_lam(const Pi* cn) { return insert<Lam>(2, cn); }
+    Lam* mut_lam(const Pi* cn) { return insert<Lam>(2, cn); }
     const Lam* lam(const Pi* pi, Ref filter, Ref body) { return unify<Lam>(2, pi, filter, body); }
     const Lam* lam(const Pi* pi, Ref body) { return lam(pi, lit_tt(), body); }
     Lam* exit() { return data_.exit; } ///< Used as a dummy exit node within Scope.
@@ -273,11 +273,11 @@ public:
 
     /// @name Sigma
     ///@{
-    Sigma* nom_sigma(Ref type, size_t size) { return insert<Sigma>(size, type, size); }
-    /// A *nom*inal Sigma of type @p level.
+    Sigma* mut_sigma(Ref type, size_t size) { return insert<Sigma>(size, type, size); }
+    /// A *mut*able Sigma of type @p level.
     template<level_t level = 0>
-    Sigma* nom_sigma(size_t size) {
-        return nom_sigma(type<level>(), size);
+    Sigma* mut_sigma(size_t size) {
+        return mut_sigma(type<level>(), size);
     }
     Ref sigma(Defs ops);
     const Sigma* sigma() { return data_.sigma; } ///< The unit type within Type 0.
@@ -285,10 +285,10 @@ public:
 
     /// @name Arr
     ///@{
-    Arr* nom_arr(Ref type) { return insert<Arr>(2, type); }
+    Arr* mut_arr(Ref type) { return insert<Arr>(2, type); }
     template<level_t level = 0>
-    Arr* nom_arr() {
-        return nom_arr(type<level>());
+    Arr* mut_arr() {
+        return mut_arr(type<level>());
     }
     Ref arr(Ref shape, Ref body);
     Ref arr(Defs shape, Ref body);
@@ -302,14 +302,14 @@ public:
     /// @name Tuple
     ///@{
     Ref tuple(Defs ops);
-    /// Ascribes @p type to this tuple - needed for dependently typed and nominal Sigma%s.
+    /// Ascribes @p type to this tuple - needed for dependently typed and mutable Sigma%s.
     Ref tuple(Ref type, Defs ops);
     const Tuple* tuple() { return data_.tuple; } ///< the unit value of type `[]`
     ///@}
 
     /// @name Pack
     ///@{
-    Pack* nom_pack(Ref type) { return insert<Pack>(1, type); }
+    Pack* mut_pack(Ref type) { return insert<Pack>(1, type); }
     Ref pack(Ref arity, Ref body);
     Ref pack(Defs shape, Ref body);
     Ref pack(u64 n, Ref body) { return pack(lit_nat(n), body); }
@@ -381,18 +381,18 @@ public:
     Ref top(Ref type) { return ext<true>(type); }
     Ref type_bot() { return data_.type_bot; }
     Ref top_nat() { return data_.top_nat; }
-    template<bool Up> TBound<Up>* nom_bound(Ref type, size_t size) { return insert<TBound<Up>>(size, type, size); }
-    /// A *nom*inal Bound of Type @p l%evel.
-    template<bool Up, level_t l = 0> TBound<Up>* nom_bound(size_t size) { return nom_bound<Up>(type<l>(), size); }
+    template<bool Up> TBound<Up>* mut_bound(Ref type, size_t size) { return insert<TBound<Up>>(size, type, size); }
+    /// A *mut*able Bound of Type @p l%evel.
+    template<bool Up, level_t l = 0> TBound<Up>* mut_bound(size_t size) { return mut_bound<Up>(type<l>(), size); }
     template<bool Up> Ref bound(Defs ops);
-    Join* nom_join(Ref type, size_t size) { return nom_bound<true>(type, size); }
-    Meet* nom_meet(Ref type, size_t size) { return nom_bound<false>(type, size); }
-    template<level_t l = 0> Join* nom_join(size_t size) { return nom_join(type<l>(), size); }
-    template<level_t l = 0> Meet* nom_meet(size_t size) { return nom_meet(type<l>(), size); }
+    Join* mut_join(Ref type, size_t size) { return mut_bound<true>(type, size); }
+    Meet* mut_meet(Ref type, size_t size) { return mut_bound<false>(type, size); }
+    template<level_t l = 0> Join* mut_join(size_t size) { return mut_join(type<l>(), size); }
+    template<level_t l = 0> Meet* mut_meet(size_t size) { return mut_meet(type<l>(), size); }
     Ref join(Defs ops) { return bound<true>(ops); }
     Ref meet(Defs ops) { return bound<false>(ops); }
     Ref ac(Ref type, Defs ops);
-    /// Infers the type using a *structural* Meet.
+    /// Infers the type using an *immutable* Meet.
     Ref ac(Defs ops);
     Ref vel(Ref type, Ref value);
     Ref pick(Ref type, Ref value);
@@ -461,7 +461,7 @@ private:
     const T* unify(size_t num_ops, Args&&... args) {
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
         if (auto loc = emit_loc()) def->set(loc);
-        assert(!def->isa_nom());
+        assert(!def->isa_mut());
 #if THORIN_ENABLE_CHECKS
         if (flags().trace_gids) outln("{}: {} - {}", def->node_name(), def->gid(), def->flags());
         if (flags().reeval_breakpoints && breakpoints().contains(def->gid())) thorin::breakpoint();

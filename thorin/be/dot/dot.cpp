@@ -35,7 +35,7 @@ public:
 
 private:
     std::function<void(std::ostream&, const Def*)> stream_def_;
-    DefSet visited_noms_;
+    DefSet visited_muts_;
     std::ostringstream connections_;
 };
 
@@ -57,7 +57,7 @@ static void emit_cluster_start(std::ostream& os, Lam* lam) {
 }
 
 static void emit_node_attributes(std::ostream& stream, const Def* def) {
-    if (def->isa<Var>()) { stream << ", color=blue"; }
+    if (def->isa<Var>()) stream << ", color=blue";
 }
 
 void Emitter::emit_imported(Lam* lam) {
@@ -65,8 +65,8 @@ void Emitter::emit_imported(Lam* lam) {
 }
 
 void Emitter::emit_epilogue(Lam* lam) {
-    if (visited_noms_.contains(lam)) return;
-    visited_noms_.insert(lam);
+    if (visited_muts_.contains(lam)) return;
+    visited_muts_.insert(lam);
 
     if (lam != entry_) {
         emit_cluster_start(ostream_, lam);
@@ -96,7 +96,7 @@ std::string Emitter::emit_bb(BB&, const Def* def) {
 }
 
 std::string Emitter::prepare(const Scope& scope) {
-    auto lam = scope.entry()->as_nom<Lam>();
+    auto lam = scope.entry()->as_mut<Lam>();
 
     emit_cluster_start(ostream_, lam);
 

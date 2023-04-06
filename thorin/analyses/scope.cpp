@@ -30,9 +30,8 @@ void Scope::run() {
         queue.push(var);
 
         while (!queue.empty()) {
-            for (auto use : queue.pop()->uses()) {
+            for (auto use : queue.pop()->uses())
                 if (use != entry_ && use != exit_) queue.push(use);
-            }
         }
     }
 }
@@ -56,9 +55,8 @@ void Scope::calc_bound() const {
 
     for (auto op : entry()->partial_ops()) enqueue(op);
 
-    while (!queue.empty()) {
+    while (!queue.empty())
         for (auto op : queue.pop()->partial_ops()) enqueue(op);
-    }
 
     swap(live, bound_);
 }
@@ -74,32 +72,31 @@ void Scope::calc_free() const {
 
         if (auto var = def->isa<Var>())
             free_vars_.emplace(var);
-        else if (auto nom = def->isa_nom())
-            free_noms_.emplace(nom);
+        else if (auto mut = def->isa_mut())
+            free_muts_.emplace(mut);
         else
             queue.push(def);
     };
 
     for (auto free : free_defs()) enqueue(free);
 
-    while (!queue.empty()) {
+    while (!queue.empty())
         for (auto op : queue.pop()->extended_ops()) enqueue(op);
-    }
 }
 
 const CFA& Scope::cfa() const { return lazy_init(this, cfa_); }
 const F_CFG& Scope::f_cfg() const { return cfa().f_cfg(); }
 const B_CFG& Scope::b_cfg() const { return cfa().b_cfg(); }
 
-bool is_free(Def* nom, const Def* def) {
-    if (auto var = nom->var()) {
+bool is_free(Def* mut, const Def* def) {
+    if (auto var = mut->var()) {
         // optimize common cases first
         if (def->num_ops() == 0) return false;
         if (var == def) return true;
-        for (auto v : var->nom()->vars())
+        for (auto v : var->mut()->vars())
             if (var == v) return true;
 
-        Scope scope(nom);
+        Scope scope(mut);
         return scope.bound(def);
     }
 

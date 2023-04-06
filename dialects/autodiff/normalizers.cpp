@@ -66,7 +66,7 @@ Ref normalize_add(Ref type, Ref callee, Ref arg) {
     } else if (auto arr = T->isa<Arr>()) {
         // TODO: is this working for non-lit (non-tuple) or do we need a loop?
         world.DLOG("add arrays {} {} {}", T, a, b);
-        auto pack      = world.nom_pack(T);
+        auto pack      = world.mut_pack(T);
         auto body_type = arr->body();
         world.DLOG("body type {}", body_type);
         pack->set(world.app(world.app(world.ax<add>(), body_type),
@@ -99,7 +99,7 @@ Ref normalize_sum(Ref type, Ref callee, Ref arg) {
         DefArray args = arg->projs(val);
         auto sum      = world.app(world.ax<zero>(), T);
         // This special case would also be handled by add zero
-        if (val >= 1) { sum = args[0]; }
+        if (val >= 1) sum = args[0];
         for (size_t i = 1; i < val; ++i) sum = world.app(world.app(world.ax<add>(), T), {sum, args[i]});
         return sum;
     }

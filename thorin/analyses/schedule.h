@@ -17,7 +17,7 @@ public:
     ///@{
     const Scope& scope() const { return *scope_; }
     const F_CFG& cfg() const { return *cfg_; }
-    const CFNode* cfg(Def* nom) const { return cfg()[nom]; }
+    const CFNode* cfg(Def* mut) const { return cfg()[mut]; }
     const DomTree& domtree() const { return *domtree_; }
     const Uses& uses(const Def* def) const {
         auto i = def2uses_.find(def);

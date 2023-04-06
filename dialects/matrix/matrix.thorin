@@ -273,11 +273,11 @@
         // should be normalized to lit tuple
         .let idxs =
             <i:n;
-            %core.nop.add (1,
-                %core.bitcast (.Nat, .Idx n) i
+            %core.nat.add (1,
+                %core.bitcast .Nat i
             )
             >;
-        .let (mem2,res) = %matrix.map_reduce
+        .let (mem2, res) = %matrix.map_reduce
                 (1, (1), R, 
                     1,
                     n,
@@ -294,10 +294,7 @@
                 );
         ret (mem2,
             // TODO: test this cast
-            %core.bitcast (
-                R,
-                %matrix.Mat (1,1,R)
-            ) res
+            %core.bitcast R res
         )
     };
     inner_matrix_sum

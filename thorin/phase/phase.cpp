@@ -13,9 +13,9 @@ void Phase::run() {
 void RWPhase::start() {
     for (const auto& [_, ax] : world().axioms()) rewrite(ax);
     auto externals = world().externals();
-    for (const auto& [_, nom] : externals) {
-        nom->make_internal();
-        rewrite(nom)->as_nom()->make_external();
+    for (const auto& [_, mut] : externals) {
+        mut->make_internal();
+        rewrite(mut)->as_mut()->make_external();
     }
 }
 
@@ -33,7 +33,7 @@ void Cleanup::start() {
     Rewriter rewriter(new_world);
 
     for (const auto& [_, ax] : world().axioms()) rewriter.rewrite(ax);
-    for (const auto& [_, nom] : world().externals()) rewriter.rewrite(nom)->as_nom()->make_external();
+    for (const auto& [_, mut] : world().externals()) rewriter.rewrite(mut)->as_mut()->make_external();
 
     swap(world(), new_world);
 }
@@ -43,22 +43,22 @@ void Pipeline::start() {
 }
 
 void ScopePhase::start() {
-    unique_queue<NomSet> noms;
+    unique_queue<MutSet> muts;
 
-    for (const auto& [name, nom] : world().externals()) {
-        assert(nom->is_set() && "external must not be empty");
-        noms.push(nom);
+    for (const auto& [name, mut] : world().externals()) {
+        assert(mut->is_set() && "external must not be empty");
+        muts.push(mut);
     }
 
-    while (!noms.empty()) {
-        auto nom = noms.pop();
-        if (elide_empty_ && !nom->is_set()) continue;
+    while (!muts.empty()) {
+        auto mut = muts.pop();
+        if (elide_empty_ && !mut->is_set()) continue;
 
-        Scope scope(nom);
+        Scope scope(mut);
         scope_ = &scope;
         visit(scope);
 
-        for (auto nom : scope.free_noms()) noms.push(nom);
+        for (auto mut : scope.free_muts()) muts.push(mut);
     }
 }
 

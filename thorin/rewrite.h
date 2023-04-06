@@ -19,8 +19,8 @@ public:
     ///@{
     Ref map(Ref old_def, Ref new_def) { return old2new_[old_def] = new_def; }
     virtual Ref rewrite(Ref);
-    virtual Ref rewrite_structural(Ref);
-    virtual Ref rewrite_nom(Def*);
+    virtual Ref rewrite_imm(Ref);
+    virtual Ref rewrite_mut(Def*);
     ///@}
 
 private:
@@ -52,7 +52,7 @@ public:
         : Rewriter(world) {}
 
     Ref rewrite(Ref old_def) override {
-        if (old_def->isa_nom()) return old_def;
+        if (old_def->isa_mut()) return old_def;
         if (old_def->has_dep(Dep::Infer)) return Rewriter::rewrite(old_def);
         return old_def;
     }
@@ -61,16 +61,16 @@ public:
 /// Rewrites @p def by mapping @p old_def to @p new_def while obeying @p scope.
 Ref rewrite(Ref def, Ref old_def, Ref new_def, const Scope& scope);
 
-/// Rewrites @p nom's @p i^th op by substituting @p nom's @p Var with @p arg while obeying @p nom's @p scope.
-Ref rewrite(Def* nom, Ref arg, size_t i);
+/// Rewrites @p mut's @p i^th op by substituting @p mut's @p Var with @p arg while obeying @p mut's @p scope.
+Ref rewrite(Def* mut, Ref arg, size_t i);
 
 /// Same as above but uses @p scope as an optimization instead of computing a new Scope.
-Ref rewrite(Def* nom, Ref arg, size_t i, const Scope& scope);
+Ref rewrite(Def* mut, Ref arg, size_t i, const Scope& scope);
 
-/// Rewrites @p nom's ops by substituting @p nom's @p Var with @p arg while obeying @p nom's @p scope.
-DefArray rewrite(Def* nom, Ref arg);
+/// Rewrites @p mut's ops by substituting @p mut's @p Var with @p arg while obeying @p mut's @p scope.
+DefArray rewrite(Def* mut, Ref arg);
 
 /// Same as above but uses @p scope as an optimization instead of computing a new Scope.
-DefArray rewrite(Def* nom, Ref arg, const Scope& scope);
+DefArray rewrite(Def* mut, Ref arg, const Scope& scope);
 
 } // namespace thorin

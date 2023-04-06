@@ -14,19 +14,18 @@
 
 namespace thorin::matrix {
 
-const Def* LowerMatrixMediumLevel::rewrite(const Def* def) {
+Ref LowerMatrixMediumLevel::rewrite(Ref def) {
     if (auto i = rewritten.find(def); i != rewritten.end()) return i->second;
     auto new_def   = rewrite_(def);
     rewritten[def] = new_def;
     return rewritten[def];
 }
 
-std::pair<Lam*, const Def*>
-counting_for(const Def* bound, DefArray acc, const Def* exit, const char* name = "for_body") {
+std::pair<Lam*, Ref> counting_for(Ref bound, DefArray acc, Ref exit, const char* name = "for_body") {
     auto& world = bound->world();
     auto acc_ty = world.tuple(acc)->type();
     auto body   = world
-                    .nom_lam(world.cn({
+                    .mut_lam(world.cn({
                         world.type_int(32), // iterator
                         acc_ty,             // acc = memory+extra
                         world.cn(acc_ty)    // exit = return
@@ -39,7 +38,7 @@ counting_for(const Def* bound, DefArray acc, const Def* exit, const char* name =
 // TODO: compare with other impala version (why is one easier than the other?)
 // TODO: replace sum_ptr by using sum as accumulator
 // TODO: extract inner loop into function (for read normalizer)
-const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
+Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
     auto& world = def->world();
 
     if (auto map_reduce_ax = match<matrix::map_reduce>(def); map_reduce_ax) {
@@ -87,13 +86,13 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         // return matrix
         // ```
 
-        absl::flat_hash_map<u64, const Def*> dims;         // idx ↦ nat (size bound = dimension)
-        absl::flat_hash_map<u64, const Def*> raw_iterator; // idx ↦ I32
-        absl::flat_hash_map<u64, const Def*> iterator;     // idx ↦ %Idx (S/NI#i)
-        std::vector<u64> out_indices;                      // output indices 0..n-1
-        std::vector<u64> in_indices;                       // input indices ≥ n
+        absl::flat_hash_map<u64, Ref> dims;         // idx ↦ nat (size bound = dimension)
+        absl::flat_hash_map<u64, Ref> raw_iterator; // idx ↦ I32
+        absl::flat_hash_map<u64, Ref> iterator;     // idx ↦ %Idx (S/NI#i)
+        std::vector<u64> out_indices;               // output indices 0..n-1
+        std::vector<u64> in_indices;                // input indices ≥ n
 
-        std::vector<const Def*> output_dims;             // i<n ↦ nat (dimension S#i)
+        std::vector<Ref> output_dims;                    // i<n ↦ nat (dimension S#i)
         std::vector<std::vector<const Def*>> input_dims; // i<m ↦ j<NI#i ↦ nat (dimension SI#i#j)
         std::vector<u64> n_input;                        // i<m ↦ nat (number of dimensions of SI#i)
 
@@ -192,7 +191,7 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         auto mem_type = mem::type_mem(world);
         auto fun_ty   = world.cn({mem_type, world.cn(map_reduce_ax->type())});
         world.DLOG("fun_ty = {}", fun_ty);
-        auto fun = world.nom_lam(fun_ty)->set("mapRed");
+        auto fun = world.mut_lam(fun_ty)->set("mapRed");
 
         // assert(0);
         auto ds_fun = direct::op_cps2ds_dep(fun);
@@ -232,7 +231,7 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
 
         // The function on where to continue -- return after all output loops.
         auto cont        = fun->var(1);
-        auto current_nom = fun;
+        auto current_mut = fun;
 
         // Each of the outer loops contains the memory and matrix as accumulator (in an inner monad).
         DefArray acc = {current_mem, init_mat};
@@ -242,18 +241,18 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
             sprintf(for_name, "forOut_%lu", idx);
 
             auto dim_nat_def = dims[idx];
-            auto dim         = core::op_bitcast(world.type_int(32), dim_nat_def);
+            auto dim         = world.call<core::bitcast>(world.type_int(32), dim_nat_def);
 
             auto [body, for_call]       = counting_for(dim, acc, cont, for_name);
             auto [iter, new_acc, yield] = body->vars<3>();
             cont                        = yield;
             raw_iterator[idx]           = iter;
-            iterator[idx]               = core::op_bitcast(world.type_idx(dim_nat_def), iter);
+            iterator[idx]               = world.call<core::bitcast>(world.type_idx(dim_nat_def), iter);
             auto [new_mem, new_mat]     = new_acc->projs<2>();
             acc                         = {new_mem, new_mat};
-            current_nom->set_body(for_call);
-            current_nom->set_filter(dim_nat_def);
-            current_nom = body;
+            current_mut->set_body(for_call);
+            current_mut->set_filter(dim_nat_def);
+            current_mut = body;
         }
 
         // Now the inner loops for the inputs:
@@ -269,7 +268,7 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         world.DLOG("wb_matrix {} : {}", wb_matrix, wb_matrix->type());
 
         // Write back element to matrix. Set this as return after all inner loops.
-        auto write_back = world.nom_lam(world.cn({mem::type_mem(world), T}))->set("matrixWriteBack");
+        auto write_back = world.mut_lam(world.cn({mem::type_mem(world), T}))->set("matrixWriteBack");
         world.DLOG("write_back {} : {}", write_back, write_back->type());
         auto [wb_mem, element_final] = write_back->vars<2>();
 
@@ -299,22 +298,22 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
             sprintf(for_name, "forIn_%lu", idx);
 
             auto dim_nat_def = dims[idx];
-            auto dim         = core::op_bitcast(world.type_int(32), dim_nat_def);
+            auto dim         = world.call<core::bitcast>(world.type_int(32), dim_nat_def);
 
             auto [body, for_call]       = counting_for(dim, acc, cont, for_name);
             auto [iter, new_acc, yield] = body->vars<3>();
             cont                        = yield;
             raw_iterator[idx]           = iter;
-            iterator[idx]               = core::op_bitcast(world.type_idx(dim_nat_def), iter);
+            iterator[idx]               = world.call<core::bitcast>(world.type_idx(dim_nat_def), iter);
             auto [new_mem, new_element] = new_acc->projs<2>();
             acc                         = {new_mem, new_element};
-            current_nom->set_body(for_call);
-            current_nom->set_filter(dim_nat_def);
-            current_nom = body;
+            current_mut->set_body(for_call);
+            current_mut->set_filter(dim_nat_def);
+            current_mut = body;
         }
 
         // For testing: id in innermost loop instead of read, fun:
-        // current_nom->app(true, cont, acc);
+        // current_mut->app(true, cont, acc);
 
         current_mem = acc[0];
         element_acc = acc[1];
@@ -348,7 +347,7 @@ const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
         world.DLOG("  fun {} : {}", fun, fun->type());
 
         // TODO: make non-scalar or completely scalar?
-        current_nom->app(true, comb, {world.tuple({current_mem, element_acc, world.tuple(input_elements)}), cont});
+        current_mut->app(true, comb, {world.tuple({current_mem, element_acc, world.tuple(input_elements)}), cont});
 
         return call;
     }

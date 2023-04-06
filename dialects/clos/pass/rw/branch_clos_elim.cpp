@@ -4,24 +4,23 @@
 
 namespace thorin::clos {
 
-static std::tuple<std::vector<ClosLit>, const Def*> isa_branch(const Def* callee) {
+static std::tuple<std::vector<ClosLit>, Ref> isa_branch(Ref callee) {
     if (auto closure_proj = callee->isa<Extract>()) {
         auto inner_proj = closure_proj->tuple()->isa<Extract>();
         if (inner_proj && inner_proj->tuple()->isa<Tuple>() && isa_clos_type(inner_proj->type())) {
             auto branches = std::vector<ClosLit>();
-            for (auto op : inner_proj->tuple()->ops()) {
+            for (auto op : inner_proj->tuple()->ops())
                 if (auto c = isa_clos_lit(op))
                     branches.push_back(std::move(c));
                 else
                     return {};
-            }
             return {branches, inner_proj->index()};
         }
     }
     return {};
 }
 
-const Def* BranchClosElim::rewrite(const Def* def) {
+Ref BranchClosElim::rewrite(Ref def) {
     auto& w  = world();
     auto app = def->isa<App>();
     if (!app || !app->callee_type()->is_cn()) return def;

@@ -49,8 +49,8 @@ public:
 
     /// custom rewrite function
     /// memoized version of rewrite_
-    const Def* rewrite(const Def*) override;
-    const Def* rewrite_(const Def*);
+    Ref rewrite(Ref) override;
+    Ref rewrite_(Ref);
 
 private:
     Def2Def rewritten;

@@ -9,7 +9,7 @@ public:
     PartialEval(PassMan& man)
         : RWPass(man, "partial_eval") {}
 
-    const Def* rewrite(const Def*) override;
+    Ref rewrite(Ref) override;
 };
 
 } // namespace thorin

@@ -17,29 +17,29 @@ public:
         , ignore_() {}
 
     void enter() override;
-    const Def* rewrite(const Def*) override;
+    Ref rewrite(Ref) override;
 
 private:
-    const Def* void_ptr() { return mem::type_ptr(world().type_int(8)); }
-    const Def* jb_type() { return void_ptr(); }
-    const Def* rb_type() { return mem::type_ptr(void_ptr()); }
-    const Def* tag_type() { return world().type_int(32); }
+    Ref void_ptr() { return mem::type_ptr(world().type_int(8)); }
+    Ref jb_type() { return void_ptr(); }
+    Ref rb_type() { return mem::type_ptr(void_ptr()); }
+    Ref tag_type() { return world().type_int(32); }
 
-    Lam* get_throw(const Def* res_type);
-    Lam* get_lpad(Lam* lam, const Def* rb);
+    Lam* get_throw(Ref res_type);
+    Lam* get_lpad(Lam* lam, Ref rb);
 
     void get_exn_closures();
-    void get_exn_closures(const Def* def, DefSet& visited);
+    void get_exn_closures(Ref def, DefSet& visited);
 
     // clang-format off
-    LamMap<std::pair<int, const Def*>> lam2tag_;
+    LamMap<std::pair<int, Ref>> lam2tag_;
     DefMap<Lam*> dom2throw_;
     DefMap<Lam*> lam2lpad_;
     LamSet ignore_;
     // clang-format on
 
-    const Def* cur_rbuf_ = nullptr;
-    const Def* cur_jbuf_ = nullptr;
+    Ref cur_rbuf_ = nullptr;
+    Ref cur_jbuf_ = nullptr;
 };
 
 } // namespace thorin::clos

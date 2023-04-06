@@ -82,8 +82,7 @@ void Parser::import(fs::path name, std::ostream* md) {
     world().VLOG("import: {}", name);
     auto filename = name;
 
-    if (!filename.has_extension())
-        filename.replace_extension("thorin"); // TODO error cases
+    if (!filename.has_extension()) filename.replace_extension("thorin"); // TODO error cases
 
     fs::path rel_path;
     for (const auto& path : driver().search_paths()) {
@@ -191,7 +190,7 @@ Ref Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
     lex();
 
     if (ahead().isa(Tok::Tag::M_id)) {
-        if (auto sigma = lhs->type()->isa_nom<Sigma>()) {
+        if (auto sigma = lhs->type()->isa_mut<Sigma>()) {
             auto tok = eat(Tok::Tag::M_id);
             if (tok.sym() == '_') err(tok.loc(), "you cannot use special symbol '_' as field access");
 
@@ -274,9 +273,9 @@ Ref Parser::parse_Cn() {
 Ref Parser::parse_var() {
     eat(Tok::Tag::T_at);
     auto dbg = parse_sym("variable");
-    auto nom = scopes_.find(dbg)->isa_nom();
-    if (!nom) err(prev(), "variable must reference a nominal");
-    return nom->var()->set(dbg);
+    auto mut = scopes_.find(dbg)->isa_mut();
+    if (!mut) err(prev(), "variable must reference a mutable");
+    return mut->var()->set(dbg);
 }
 
 Ref Parser::parse_arr() {
@@ -291,8 +290,8 @@ Ref Parser::parse_arr() {
         eat(Tok::Tag::T_colon);
 
         auto shape = parse_expr("shape of an array");
-        auto type  = world().nom_infer_univ();
-        arr        = world().nom_arr(type)->set_shape(shape);
+        auto type  = world().mut_infer_univ();
+        arr        = world().mut_arr(type)->set_shape(shape);
         scopes_.bind(id.dbg(), arr->var()->set(id.dbg()));
     } else {
         shape = parse_expr("shape of an array");
@@ -314,13 +313,13 @@ Ref Parser::parse_pack() {
     eat(Tok::Tag::D_angle_l);
 
     const Def* shape;
-    // bool nom = false;
+    // bool mut = false;
     if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
         auto id = eat(Tok::Tag::M_id);
         eat(Tok::Tag::T_colon);
 
         shape      = parse_expr("shape of a pack");
-        auto infer = world().nom_infer(world().type_idx(shape))->set(id.sym());
+        auto infer = world().mut_infer(world().type_idx(shape))->set(id.sym());
         scopes_.bind(id.dbg(), infer);
     } else {
         shape = parse_expr("shape of a pack");
@@ -373,7 +372,7 @@ Ref Parser::parse_pi() {
     do {
         auto implicit = accept(Tok::Tag::T_dot).has_value();
         auto dom      = parse_ptrn(Tok::Tag::D_brckt_l, "domain of a dependent function type", Tok::Prec::App);
-        auto pi       = world().nom_pi(world().type_infer_univ(), implicit)->set_dom(dom->type(world(), def2fields_));
+        auto pi       = world().mut_pi(world().type_infer_univ(), implicit)->set_dom(dom->type(world(), def2fields_));
         auto var      = pi->var()->set(dom->sym());
         first         = first ? first : pi;
         pi->set(dom->dbg());
@@ -532,7 +531,7 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
             auto type = parse_expr("type of an identifier group within a tuple pattern");
 
             for (auto tok : sym_toks) {
-                infers.emplace_back(world().nom_infer(type)->set(tok.dbg()));
+                infers.emplace_back(world().mut_infer(type)->set(tok.dbg()));
                 ops.emplace_back(type);
                 ptrns.emplace_back(std::make_unique<IdPtrn>(tok.dbg(), false, type));
             }
@@ -548,7 +547,7 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
                 }
             }
 
-            infers.emplace_back(world().nom_infer(type)->set(ptrn->sym()));
+            infers.emplace_back(world().mut_infer(type)->set(ptrn->sym()));
             ops.emplace_back(type);
             ptrns.emplace_back(std::move(ptrn));
         }
@@ -573,7 +572,7 @@ Ref Parser::parse_decls(std::string_view ctxt) {
             case Tok::Tag::K_Sigma:
             case Tok::Tag::K_Arr:
             case Tok::Tag::K_pack:
-            case Tok::Tag::K_Pi:        parse_nom();     break;
+            case Tok::Tag::K_Pi:        parse_mut();     break;
             case Tok::Tag::K_con:
             case Tok::Tag::K_fun:
             case Tok::Tag::K_lam:       parse_lam(true); break;
@@ -670,46 +669,46 @@ void Parser::parse_let() {
     expect(Tok::Tag::T_semicolon, "let expression");
 }
 
-void Parser::parse_nom() {
+void Parser::parse_mut() {
     auto track    = tracker();
     auto tag      = lex().tag();
     bool external = accept(Tok::Tag::K_extern).has_value();
-    auto dbg      = parse_sym("nominal");
-    auto type     = accept(Tok::Tag::T_colon) ? parse_expr("type of a nominal") : world().type();
+    auto dbg      = parse_sym("mutable");
+    auto type     = accept(Tok::Tag::T_colon) ? parse_expr("type of a mutable") : world().type();
 
-    Def* nom;
+    Def* mut;
     switch (tag) {
         case Tok::Tag::K_Sigma: {
-            expect(Tok::Tag::T_comma, "nominal Sigma");
-            auto arity = expect(Tok::Tag::L_u, "arity of a nominal Sigma");
-            nom        = world().nom_sigma(type, arity.u())->set(dbg);
+            expect(Tok::Tag::T_comma, "mutable Sigma");
+            auto arity = expect(Tok::Tag::L_u, "arity of a mutable Sigma");
+            mut        = world().mut_sigma(type, arity.u())->set(dbg);
             break;
         }
         case Tok::Tag::K_Arr: {
-            expect(Tok::Tag::T_comma, "nominal array");
-            auto shape = parse_expr("shape of a nominal array");
-            nom        = world().nom_arr(type)->set(track.loc())->set_shape(shape);
+            expect(Tok::Tag::T_comma, "mutable array");
+            auto shape = parse_expr("shape of a mutable array");
+            mut        = world().mut_arr(type)->set(track.loc())->set_shape(shape);
             break;
         }
-        case Tok::Tag::K_pack: nom = world().nom_pack(type)->set(dbg); break;
+        case Tok::Tag::K_pack: mut = world().mut_pack(type)->set(dbg); break;
         case Tok::Tag::K_Pi: {
-            expect(Tok::Tag::T_comma, "nominal Pi");
-            auto dom = parse_expr("domain of a nominal Pi");
-            nom      = world().nom_pi(type)->set(dbg)->set_dom(dom);
+            expect(Tok::Tag::T_comma, "mutable Pi");
+            auto dom = parse_expr("domain of a mutable Pi");
+            mut      = world().mut_pi(type)->set(dbg)->set_dom(dom);
             break;
         }
         default: unreachable();
     }
-    scopes_.bind(dbg, nom);
+    scopes_.bind(dbg, mut);
 
     scopes_.push();
-    if (external) nom->make_external();
+    if (external) mut->make_external();
 
     scopes_.push();
     if (ahead().isa(Tok::Tag::T_assign))
         parse_def(dbg);
     else
-        expect(Tok::Tag::T_semicolon, "end of a nominal");
+        expect(Tok::Tag::T_semicolon, "end of a mutable");
 
     scopes_.pop();
     scopes_.pop();
@@ -722,7 +721,7 @@ Lam* Parser::parse_lam(bool decl) {
     bool is_cn    = tok.isa(Tok::Tag::K_cn) || tok.isa(Tok::Tag::K_con);
     auto prec     = is_cn ? Tok::Prec::Bot : Tok::Prec::Pi;
     bool external = decl && accept(Tok::Tag::K_extern).has_value();
-    auto dbg      = decl ? parse_sym("nominal lambda") : Dbg{prev(), anonymous_};
+    auto dbg      = decl ? parse_sym("mutable lambda") : Dbg{prev(), anonymous_};
 
     auto outer = scopes_.curr();
     scopes_.push();
@@ -734,8 +733,8 @@ Lam* Parser::parse_lam(bool decl) {
         bool implicit     = accept(Tok::Tag::T_dot).has_value();
         auto dom_p        = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda", prec);
         auto dom_t        = dom_p->type(world(), def2fields_);
-        auto pi           = world().nom_pi(world().type_infer_univ(), implicit)->set_dom(dom_t);
-        auto lam          = world().nom_lam(pi);
+        auto pi           = world().mut_pi(world().type_infer_univ(), implicit)->set_dom(dom_t);
+        auto lam          = world().mut_lam(pi);
         auto lam_var      = lam->var()->set(dom_p->loc(), dom_p->sym());
 
         if (first == nullptr) {
@@ -763,7 +762,7 @@ Lam* Parser::parse_lam(bool decl) {
 
     auto codom = is_cn                     ? world().type_bot()
                : accept(Tok::Tag::T_arrow) ? parse_expr("return type of a lambda", Tok::Prec::Arrow)
-                                           : world().nom_infer_type();
+                                           : world().mut_infer_type();
     for (auto [pi, lam] : funs | std::ranges::views::reverse) {
         // First, connect old codom to lam. Otherwise, scope will not find it.
         pi->set_codom(codom);
@@ -803,29 +802,29 @@ Lam* Parser::parse_lam(bool decl) {
 void Parser::parse_def(Dbg dbg /*= {}*/) {
     if (!dbg.sym) {
         eat(Tok::Tag::K_def);
-        dbg = parse_sym("nominal definition");
+        dbg = parse_sym("mutable definition");
     }
 
-    auto nom = scopes_.find(dbg)->as_nom();
-    expect(Tok::Tag::T_assign, "nominal definition");
+    auto mut = scopes_.find(dbg)->as_mut();
+    expect(Tok::Tag::T_assign, "mutable definition");
 
-    size_t i = nom->first_dependend_op();
-    size_t n = nom->num_ops();
+    size_t i = mut->first_dependend_op();
+    size_t n = mut->num_ops();
 
     if (ahead().isa(Tok::Tag::D_brace_l)) {
         scopes_.push();
-        parse_list("nominal definition", Tok::Tag::D_brace_l, [&]() {
+        parse_list("mutable definition", Tok::Tag::D_brace_l, [&]() {
             if (i == n) err(prev(), "too many operands");
-            nom->set(i++, parse_decls("operand of a nominal"));
+            mut->set(i++, parse_decls("operand of a mutable"));
         });
         scopes_.pop();
     } else if (n - i == 1) {
-        nom->set(i, parse_decls("operand of a nominal"));
+        mut->set(i, parse_decls("operand of a mutable"));
     } else {
-        err(prev(), "expected operands for nominal definition");
+        err(prev(), "expected operands for mutable definition");
     }
 
-    expect(Tok::Tag::T_semicolon, "end of a nominal definition");
+    expect(Tok::Tag::T_semicolon, "end of a mutable definition");
 }
 
 } // namespace thorin::fe

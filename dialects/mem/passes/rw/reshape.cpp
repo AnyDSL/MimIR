@@ -13,7 +13,7 @@
 
 namespace thorin::mem {
 
-void Reshape::enter() { rewrite_def(curr_nom()); }
+void Reshape::enter() { rewrite_def(curr_mut()); }
 
 const Def* Reshape::rewrite_def(const Def* def) {
     if (auto i = old2new_.find(def); i != old2new_.end()) return i->second;
@@ -35,7 +35,7 @@ bool should_flatten(const Def* T) {
     // Problem with 2 Arr -> flatten
     // lea (2, <<2;I32>>, ...) -> lea (2, I32, I32, ...)
     if (auto lit = T->arity()->isa<Lit>(); lit && lit->get<u64>() <= 2) {
-        if (auto arr = T->isa<Arr>(); arr && arr->body()->isa<Pi>()) { return lit->get<u64>() > 1; }
+        if (auto arr = T->isa<Arr>(); arr && arr->body()->isa<Pi>()) return lit->get<u64>() > 1;
     }
     return false;
 }
@@ -52,7 +52,7 @@ const Def* Reshape::rewrite_def_(const Def* def) {
     }
 
     // ignore axioms
-    if (def->isa<Axiom>()) { return def; }
+    if (def->isa<Axiom>()) return def;
 
     // This is dead code for debugging purposes.
     // It allows for inspection of the current def.
@@ -61,7 +61,7 @@ const Def* Reshape::rewrite_def_(const Def* def) {
     std::string str = ss.str();
 
     // vars are handled by association.
-    if (def->isa<Var>()) { world().ELOG("Var: {}", def); }
+    if (def->isa<Var>()) world().ELOG("Var: {}", def);
     assert(!def->isa<Var>());
 
     auto& w = world();
@@ -78,7 +78,7 @@ const Def* Reshape::rewrite_def_(const Def* def) {
         world().DLOG("into arg {} : {}", reshaped_arg, reshaped_arg->type());
         auto new_app = w.app(callee, reshaped_arg);
         return new_app;
-    } else if (auto lam = def->isa_nom<Lam>()) {
+    } else if (auto lam = def->isa_mut<Lam>()) {
         world().DLOG("rewrite_def lam {} : {}", def, def->type());
         auto new_lam = reshape_lam(lam);
         world().DLOG("rewrote lam {} : {}", def, def->type());
@@ -111,7 +111,7 @@ Lam* Reshape::reshape_lam(Lam* def) {
     if (name != "main") { // TODO I don't this is correct. we should check for def->is_external
         // TODO maybe use new_lam->debug_suff("_reshape"), instead?
         name          = name + "_reshape";
-        new_lam       = w.nom_lam(new_ty)->set((name));
+        new_lam       = w.mut_lam(new_ty)->set((name));
         old2new_[def] = new_lam;
     } else {
         new_lam = def;
@@ -181,9 +181,8 @@ const Def* Reshape::reshape_type(const Def* T) {
         if (mode_ == Mode::Flat) {
             const Def* mem = nullptr;
             // find mem
-            for (auto i = new_types.begin(); i != new_types.end(); i++) {
-                if (is_mem_ty(*i) && !mem) { mem = *i; }
-            }
+            for (auto i = new_types.begin(); i != new_types.end(); i++)
+                if (is_mem_ty(*i) && !mem) mem = *i;
             // filter out mems
             new_types.erase(std::remove_if(new_types.begin(), new_types.end(), is_mem_ty), new_types.end());
             // readd mem in the front
@@ -196,9 +195,8 @@ const Def* Reshape::reshape_type(const Def* T) {
             const Def* mem = nullptr;
             const Def* ret = nullptr;
             // find mem
-            for (auto i = new_types.begin(); i != new_types.end(); i++) {
-                if (is_mem_ty(*i) && !mem) { mem = *i; }
-            }
+            for (auto i = new_types.begin(); i != new_types.end(); i++)
+                if (is_mem_ty(*i) && !mem) mem = *i;
             // filter out mems
             new_types.erase(std::remove_if(new_types.begin(), new_types.end(), is_mem_ty), new_types.end());
             // TODO: more fine-grained test
@@ -208,8 +206,8 @@ const Def* Reshape::reshape_type(const Def* T) {
             }
             // Create the arg form `[[mem,args],ret]`
             const Def* args = w.sigma(vec2array(new_types));
-            if (mem) { args = w.sigma({mem, args}); }
-            if (ret) { args = w.sigma({args, ret}); }
+            if (mem) args = w.sigma({mem, args});
+            if (ret) args = w.sigma({args, ret});
             return args;
         }
     } else {
@@ -249,7 +247,7 @@ const Def* Reshape::reshape(std::vector<const Def*>& defs, const Def* T, const D
         }
         // For inner function types, we override the type
         if (!def->type()->isa<Pi>()) {
-            if (!world.checker().equiv(def->type(), T)) { world.ELOG("reconstruct T {} from def {}", T, def->type()); }
+            if (!world.checker().equiv(def->type(), T)) world.ELOG("reconstruct T {} from def {}", T, def->type());
             assert(world.checker().equiv(def->type(), T) && "Reshape: argument type mismatch");
         }
         return def;
@@ -261,9 +259,8 @@ const Def* Reshape::reshape(const Def* def, const Def* target) {
     auto flat_defs = flatten_def(def);
     const Def* mem = nullptr;
     // find mem
-    for (auto i = flat_defs.begin(); i != flat_defs.end(); i++) {
-        if (is_mem_ty((*i)->type()) && !mem) { mem = *i; }
-    }
+    for (auto i = flat_defs.begin(); i != flat_defs.end(); i++)
+        if (is_mem_ty((*i)->type()) && !mem) mem = *i;
     def->world().DLOG("mem: {}", mem);
     return reshape(flat_defs, target, mem);
 }
@@ -281,15 +278,14 @@ const Def* Reshape::reshape(const Def* def) {
     if (mode_ == Mode::Flat) {
         const Def* mem = nullptr;
         // find mem
-        for (auto i = flat_defs.begin(); i != flat_defs.end(); i++) {
-            if (is_mem_ty((*i)->type()) && !mem) { mem = *i; }
-        }
+        for (auto i = flat_defs.begin(); i != flat_defs.end(); i++)
+            if (is_mem_ty((*i)->type()) && !mem) mem = *i;
         // filter out mems
         flat_defs.erase(
             std::remove_if(flat_defs.begin(), flat_defs.end(), [](const Def* def) { return is_mem_ty(def->type()); }),
             flat_defs.end());
         // insert mem
-        if (mem) { flat_defs.insert(flat_defs.begin(), mem); }
+        if (mem) flat_defs.insert(flat_defs.begin(), mem);
         return w.tuple(vec2array(flat_defs));
     } else {
         // arg style
@@ -297,9 +293,8 @@ const Def* Reshape::reshape(const Def* def) {
         const Def* mem = nullptr;
         const Def* ret = nullptr;
         // find mem
-        for (auto i = flat_defs.begin(); i != flat_defs.end(); i++) {
-            if (is_mem_ty((*i)->type()) && !mem) { mem = *i; }
-        }
+        for (auto i = flat_defs.begin(); i != flat_defs.end(); i++)
+            if (is_mem_ty((*i)->type()) && !mem) mem = *i;
         // filter out mems
         flat_defs.erase(
             std::remove_if(flat_defs.begin(), flat_defs.end(), [](const Def* def) { return is_mem_ty(def->type()); }),

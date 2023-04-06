@@ -93,12 +93,12 @@ inline Ref apply_closure(Ref closure, Defs args) {
 }
 
 // TODO: rename this
-/// Checks is def is the variable of a nom of type N.
+/// Checks is def is the variable of a mut of type N.
 template<class N>
 std::tuple<const Extract*, N*> ca_isa_var(Ref def) {
     if (auto proj = def->isa<Extract>()) {
-        if (auto var = proj->tuple()->isa<Var>(); var && var->nom()->isa<N>())
-            return std::tuple(proj, var->nom()->as<N>());
+        if (auto var = proj->tuple()->isa<Var>(); var && var->mut()->isa<N>())
+            return std::tuple(proj, var->mut()->as<N>());
     }
     return {nullptr, nullptr};
 }
