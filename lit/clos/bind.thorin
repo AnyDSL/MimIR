@@ -35,7 +35,7 @@
         println_i32( mem, i , next )
     };
 
-    .let condition = %core.icmp.ul (i, %core.bitcast (i32, .Nat) size);
+    .let condition = %core.icmp.ul (i, %core.bitcast i32 size);
     .let target = (exit, loop_body)#condition;
     target ( mem )
 };

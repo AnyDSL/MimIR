@@ -4,7 +4,7 @@
 .import core;
 
 .con .extern f [[a:.Nat, b:.Nat], return : .Cn .Nat] = {
-    return (%core.nop.add (b,a))
+    return (%core.nat.add (b,a))
 };
 
-// CHECK-DAG: %core.nop.add ([[arg:[0-9_]+]]#1:(.Idx 2), [[arg]]#0:(.Idx 2))
+// CHECK-DAG: %core.nat.add ([[arg:[0-9_]+]]#1:(.Idx 2), [[arg]]#0:(.Idx 2))

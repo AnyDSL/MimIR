@@ -20,12 +20,12 @@
 .con print_double_matrix [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (⊤:.Nat,⊤:.Nat), F64), return : .Cn [%mem.M]];
 
 .con print_int_matrix_wrap [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (k,l), I32), return : .Cn [%mem.M]] = {
-    .let m2 = %core.bitcast  (%matrix.Mat (2,(⊤:.Nat,⊤:.Nat),I32),%matrix.Mat (2,(k,l),I32)) m;
+    .let m2 = %core.bitcast (%matrix.Mat (2,(⊤:.Nat,⊤:.Nat),I32)) m;
     print_int_matrix(mem, k, l, m2, return)
 };
 
 .con print_double_matrix_wrap [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (k,l), F64), return : .Cn [%mem.M]] = {
-    .let m2 = %core.bitcast  (%matrix.Mat (2,(⊤:.Nat,⊤:.Nat),F64),%matrix.Mat (2,(k,l),F64)) m;
+    .let m2 = %core.bitcast (%matrix.Mat (2,(⊤:.Nat,⊤:.Nat), F64)) m;
     print_double_matrix(mem, k, l, m2, return)
 };
 

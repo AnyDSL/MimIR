@@ -10,11 +10,10 @@
 .con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
     .let MT = (2, (3,5), I32);
     .let c = 5:I32;
-    .let (mem2,m) = %matrix.constMat MT (mem,c);
-    .let idx = 0:(.Idx 2);
-    .let d = %matrix.shape MT (m, idx);
-    .let e = %core.bitcast (I32, .Nat) d;
-    return (mem2, e)
+    .let ('mem, m) = %matrix.constMat MT (mem,c);
+    .let d = %matrix.shape MT (m, 0_2);
+    .let e = %core.bitcast I32 d;
+    return (mem, e)
 };
 
 // CHECK-DAG: return{{.*}}3{{.*}}

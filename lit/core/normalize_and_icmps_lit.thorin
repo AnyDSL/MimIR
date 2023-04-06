@@ -4,7 +4,7 @@
 .plugin core;
 
 .con .extern and_lit [return : .Cn .Idx 2] = {
-    return (%core.bit2.and_ (%core.icmp.uge (.tt, .ff), %core.icmp.ug (.tt, .ff)))
+    return (%core.bit2.and_ 0 (%core.icmp.uge (.tt, .ff), %core.icmp.ug (.tt, .ff)))
 };
 
 // CHECK-DAG: and_lit _[[retId:[0-9_]+]]: .Cn .Idx 2

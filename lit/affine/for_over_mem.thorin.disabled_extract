@@ -12,7 +12,7 @@
 .con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (I32, 0), 0), return : .Cn [%mem.M, I32]] = {
     // .let arr_size = 16;
     .let arr_size = ⊤:.Nat;
-    .let (alloc_mem, ptr) = %mem.alloc (<<%core.bitcast (.Nat, I32) argc; I32>>, 0) (mem);
+    .let (alloc_mem, ptr) = %mem.alloc (<<%core.bitcast .Nat argc; I32>>, 0) (mem);
     .con for_exit acc :: [mem : %mem.M, I32, I32] = {
         .let lea = %mem.lea (arr_size, <arr_size; I32>, 0) (ptr, %core.conv.u arr_size (%core.wrap.sub 0 (argc, 4:I32)));
         .let (load_mem, val) = %mem.load (mem, lea);

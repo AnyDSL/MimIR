@@ -173,8 +173,8 @@ static Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref 
     return nullptr;
 }
 
-template<nop id>
-Ref normalize_nop(Ref type, Ref callee, Ref arg) {
+template<nat id>
+Ref normalize_nat(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
     auto [a, b] = arg->projs<2>();
     commute(id, a, b);
@@ -182,8 +182,8 @@ Ref normalize_nop(Ref type, Ref callee, Ref arg) {
     if (auto la = isa_lit(a)) {
         if (auto lb = isa_lit(b)) {
             switch (id) {
-                case nop::add: return world.lit_nat(*la + *lb);
-                case nop::mul: return world.lit_nat(*la * *lb);
+                case nat::add: return world.lit_nat(*la + *lb);
+                case nat::mul: return world.lit_nat(*la * *lb);
             }
         }
     }
@@ -241,17 +241,20 @@ template<bit1 id>
 Ref normalize_bit1(Ref type, Ref c, Ref a) {
     auto& world = type->world();
     auto callee = c->as<App>();
-    auto l      = isa_lit(a);
+    // TODO cope with wrap around
 
-    if (auto ls = isa_lit(callee->arg())) {
+    if constexpr (id == bit1::id) return a;
+
+    if (auto ls = isa_lit(callee->decurry()->arg())) {
         switch (id) {
             case bit1::f: return world.lit_idx(*ls, 0);
             case bit1::t: return world.lit_idx(*ls, *ls - 1_u64);
-            case bit1::id: return a;
+            case bit1::id: unreachable();
             default: break;
         }
 
-        if (l) return world.lit_idx_mod(*ls, ~*l);
+        assert(id == bit1::neg);
+        if (auto la = isa_lit(a)) return world.lit_idx_mod(*ls, ~*la);
     }
 
     return world.raw_app(type, callee, a);
@@ -289,7 +292,8 @@ Ref normalize_bit2(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto ls     = isa_lit(callee->arg());
+    auto ls     = isa_lit(callee->decurry()->arg());
+    // TODO cope with wrap around
 
     commute(id, a, b);
 
@@ -540,12 +544,13 @@ Ref normalize_conv(Ref dst_t, Ref c, Ref x) {
 
 Ref normalize_bitcast(Ref dst_t, Ref callee, Ref src) {
     auto& world = dst_t->world();
+    auto src_t  = src->type();
 
     if (src->isa<Bot>()) return world.bot(dst_t);
-    if (src->type() == dst_t) return src;
+    if (src_t == dst_t) return src;
 
     if (auto other = match<bitcast>(src))
-        return other->arg()->type() == dst_t ? other->arg() : *op_bitcast(dst_t, other->arg());
+        return other->arg()->type() == dst_t ? other->arg() : world.call<bitcast>(dst_t, other->arg());
 
     if (auto lit = src->isa<Lit>()) {
         if (dst_t->isa<Nat>()) return world.lit(dst_t, lit->get());
@@ -604,7 +609,7 @@ Ref normalize_trait(Ref nat, Ref callee, Ref type) {
     } else if (auto arr = type->isa_imm<Arr>()) {
         auto align = op(trait::align, arr->body());
         if constexpr (id == trait::align) return align;
-        if (auto b = op(trait::size, arr->body())->isa<Lit>()) return world.call(core::nop::mul, Defs{arr->shape(), b});
+        if (auto b = op(trait::size, arr->body())->isa<Lit>()) return world.call(nat::mul, Defs{arr->shape(), b});
     } else if (auto join = type->isa<Join>()) {
         if (auto sigma = convert(join)) return core::op(id, sigma);
     }

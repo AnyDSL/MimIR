@@ -241,13 +241,13 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
             sprintf(for_name, "forOut_%lu", idx);
 
             auto dim_nat_def = dims[idx];
-            auto dim         = core::op_bitcast(world.type_int(32), dim_nat_def);
+            auto dim         = world.call<core::bitcast>(world.type_int(32), dim_nat_def);
 
             auto [body, for_call]       = counting_for(dim, acc, cont, for_name);
             auto [iter, new_acc, yield] = body->vars<3>();
             cont                        = yield;
             raw_iterator[idx]           = iter;
-            iterator[idx]               = core::op_bitcast(world.type_idx(dim_nat_def), iter);
+            iterator[idx]               = world.call<core::bitcast>(world.type_idx(dim_nat_def), iter);
             auto [new_mem, new_mat]     = new_acc->projs<2>();
             acc                         = {new_mem, new_mat};
             current_mut->set_body(for_call);
@@ -298,13 +298,13 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
             sprintf(for_name, "forIn_%lu", idx);
 
             auto dim_nat_def = dims[idx];
-            auto dim         = core::op_bitcast(world.type_int(32), dim_nat_def);
+            auto dim         = world.call<core::bitcast>(world.type_int(32), dim_nat_def);
 
             auto [body, for_call]       = counting_for(dim, acc, cont, for_name);
             auto [iter, new_acc, yield] = body->vars<3>();
             cont                        = yield;
             raw_iterator[idx]           = iter;
-            iterator[idx]               = core::op_bitcast(world.type_idx(dim_nat_def), iter);
+            iterator[idx]               = world.call<core::bitcast>(world.type_idx(dim_nat_def), iter);
             auto [new_mem, new_element] = new_acc->projs<2>();
             acc                         = {new_mem, new_element};
             current_mut->set_body(for_call);

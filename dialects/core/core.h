@@ -21,23 +21,11 @@ inline Ref mode(World& w, VMode m) {
     return w.lit_nat(std::get<Mode>(m));
 }
 
-/// @name fn - these guys yield the final function to be invoked for the various operations
-///@{
-inline Ref fn_bitcast(Ref dst_t, Ref src_t) {
-    World& w = dst_t->world();
-    return w.app(w.ax<bitcast>(), {dst_t, src_t});
-}
-///@}
-
 /// @name op - these guys build the final function application for the various operations
 ///@{
 inline Ref op(trait o, Ref type) {
     World& w = type->world();
     return w.app(w.ax(o), type);
-}
-inline Ref op_bitcast(Ref dst_t, Ref src) {
-    World& w = dst_t->world();
-    return w.app(fn_bitcast(dst_t, src->type()), src);
 }
 inline Ref op(pe o, Ref def) {
     World& w = def->world();
@@ -99,7 +87,7 @@ namespace thorin {
 /// @name is_commutative/is_associative
 ///@{
 // clang-format off
-constexpr bool is_commutative(core::nop    ) { return true; }
+constexpr bool is_commutative(core::nat    ) { return true; }
 constexpr bool is_commutative(core::wrap id) { return id == core::wrap::add || id == core::wrap::mul; }
 constexpr bool is_commutative(core::ncmp id) { return id == core::ncmp::  e || id == core::ncmp:: ne; }
 constexpr bool is_commutative(core::icmp id) { return id == core::icmp::  e || id == core::icmp:: ne; }

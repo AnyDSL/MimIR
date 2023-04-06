@@ -4,7 +4,7 @@
 .plugin core;
 
 .con .extern and (a b: .Bool, return : .Cn .Bool) = {
-    return (%core.bit2.and_ (%core.icmp.uge (a, b), %core.icmp.ug (a, b)))
+    return (%core.bit2.and_ 0 (%core.icmp.uge (a, b), %core.icmp.ug (a, b)))
 };
 
 // CHECK-DAG: .con .extern and _{{[0-9_]+}}::[a_[[aId:[0-9_]+]]: .Idx 2, b_[[bId:[0-9_]+]]: .Idx 2, return_[[retId:[0-9_]+]]: .Cn .Idx 2]

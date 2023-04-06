@@ -91,6 +91,8 @@ add_thorin_plugin(core
     DEPENDS
         math
         mem
+    HEADER_DEPENDS
+        clos
     INSTALL
 )
 

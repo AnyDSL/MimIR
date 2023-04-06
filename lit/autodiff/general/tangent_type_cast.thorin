@@ -14,12 +14,12 @@
 .con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return : .Cn [%mem.M, I32]] = {
 
     .con ret_cont r::[%autodiff.Tangent I32] = {
-        .let r2=%core.bitcast (I32,(%autodiff.Tangent I32)) r;
+        .let r2=%core.bitcast I32 r;
         return (mem, r2)
     };
 
     .con ret_wrap r::[I32] = {
-        .let r2=%core.bitcast ((%autodiff.Tangent I32),I32) r;
+        .let r2=%core.bitcast (%autodiff.Tangent I32) r;
         ret_cont r2
     };
 
