@@ -115,7 +115,7 @@ $(document).ready(function(){initNavTree('core.html',''); initResizable(); });
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#autotoc_md88">Dependencies</a></li>
-<li class="level1"><a href="#autotoc_md89">Nat Operations</a><ul><li class="level2"><a href="#autotoc_md90">%core.nop</a></li>
+<li class="level1"><a href="#autotoc_md89">Nat Operations</a><ul><li class="level2"><a href="#autotoc_md90">%core.nat</a></li>
 <li class="level2"><a href="#autotoc_md91">%core.ncmp</a></li>
 </ul>
 </li>
@@ -145,9 +145,9 @@ Dependencies</h1>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md89"></a>
 Nat Operations</h1>
 <h2><a class="anchor" id="autotoc_md90"></a>
-%core.nop</h2>
+%core.nat</h2>
 <p >Standard arithmetic operations on <code>.Nat</code>s.</p>
-<div class="fragment"><div class="line">.ax %core.nop(add, mul): «2; .Nat» -&gt; .Nat, normalize_nop;</div>
+<div class="fragment"><div class="line">.ax %core.nat(add, mul): «2; .Nat» -&gt; .Nat, normalize_nat;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md91"></a>
 %core.ncmp</h2>
 <p >Nat comparison is made of 3 disjoint relations:</p><ul>
@@ -195,7 +195,7 @@ Integer Operations</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">t   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">always true   </td></tr>
 </table>
-<div class="fragment"><div class="line">.ax %core.bit1(f, neg, id, t): Π.[s: .Nat][.Idx s] -&gt; .Idx s, normalize_bit1;</div>
+<div class="fragment"><div class="line">.ax %core.bit1(f, neg, id, t): Π.[s: .Nat][.Nat][.Idx s] -&gt; .Idx s, normalize_bit1;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md94"></a>
 %core.bit2</h2>
 <p >This <em>binary</em> bitwise operations offers all <a href="https://en.wikipedia.org/wiki/Truth_table#Truth_table_for_all_binary_logical_operators">16 possible operations</a> as summarized in the following table:</p>
@@ -237,7 +237,7 @@ Integer Operations</h1>
 </table>
 <div class="fragment"><div class="line">.ax %core.bit2( f,      nor, nciff, nfst, niff, nsnd, xor_, nand,</div>
 <div class="line">                and_,  nxor,   snd,  iff,  fst, ciff,  or_,    t):</div>
-<div class="line">    Π.[s: .Nat][«2; .Idx s»] -&gt; .Idx s , normalize_bit2;</div>
+<div class="line">    Π.[s: .Nat][.Nat][«2; .Idx s»] -&gt; .Idx s , normalize_bit2;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md95"></a>
 %core.shr</h2>
 <p >Shift right:</p><ul>
@@ -378,7 +378,7 @@ Conversions</h1>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md101"></a>
 %core.bitcast</h2>
 <p >Bitcast to reinterpret a value as another type. Can be used for pointer / integer conversions as well as integer / nat conversions.</p>
-<div class="fragment"><div class="line">.ax %core.bitcast: Π [D: *, S: *][S] -&gt; D, normalize_bitcast;</div>
+<div class="fragment"><div class="line">.ax %core.bitcast: Π.[S: *][D: *][S] -&gt; D, normalize_bitcast;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md102"></a>
 Other Operations</h1>
 <h2><a class="anchor" id="autotoc_md103"></a>

@@ -11,6 +11,6 @@ var classthorin_1_1FPPass =
     [ "fixed_point", "classthorin_1_1FPPass.html#a35213ec76ef3bea4362f431837f14403", null ],
     [ "states", "classthorin_1_1FPPass.html#aec19110c9b35d32e8025737d4b2ae61f", null ],
     [ "states", "classthorin_1_1FPPass.html#aa34d0e1bfb9ccc1c56c8fc291c19905d", null ],
-    [ "undo_enter", "classthorin_1_1FPPass.html#a992db753a80b89fb6bcce0dc6154dd8b", null ],
-    [ "undo_visit", "classthorin_1_1FPPass.html#ad68f7d1dcf6986dcf22b465b740f706e", null ]
+    [ "undo_enter", "classthorin_1_1FPPass.html#ab4bdda21afb901a79270214318661273", null ],
+    [ "undo_visit", "classthorin_1_1FPPass.html#af9b3614b16092de61a561b66814af101", null ]
 ];

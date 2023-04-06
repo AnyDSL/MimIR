@@ -4,7 +4,7 @@ var searchData=
   ['get_5fmax_5findex_1',['get_max_index',['../namespacethorin_1_1matrix.html#ab5a388cdfea023abde6f2d540fd4607e',1,'thorin::matrix']]],
   ['get_5fplugin_5fname_5fvariants_2',['get_plugin_name_variants',['../namespacethorin.html#a0f8e0d5ce8c0fb18a8a2dd8b045cd51f',1,'thorin']]],
   ['get_5fsign_3',['get_sign',['../namespacethorin.html#ac76b51109303662a47f30fa874337254',1,'thorin']]],
-  ['get_5fsloxy_5ftype_4',['get_sloxy_type',['../namespacethorin_1_1mem.html#a0b87ca7c95e3fc724d2c7272e0435dac',1,'thorin::mem']]],
+  ['get_5fsloxy_5ftype_4',['get_sloxy_type',['../namespacethorin_1_1mem.html#a5290c1d8ea2658bcbee087714ff55ed5',1,'thorin::mem']]],
   ['get_5fsym_5',['get_sym',['../classthorin_1_1Def.html#a148acf6913fb53647461793e036e714c',1,'thorin::Def::get_sym(const char *) const'],['../classthorin_1_1Def.html#afdc8a93c2bffb5f52ac89cf3ab3f0345',1,'thorin::Def::get_sym(std::string_view) const'],['../classthorin_1_1Def.html#a1a9597bf8af5a707c094ae2d4d52d935',1,'thorin::Def::get_sym(std::string) const']]],
   ['gid_6',['gid',['../classthorin_1_1CFNode.html#ad1b21de5e0cadae309a8343cf43376e6',1,'thorin::CFNode::gid()'],['../classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb',1,'thorin::Def::gid()']]],
   ['gid2def_7',['gid2def',['../classthorin_1_1World.html#a50e487785b278535becdb5d7e2b124ab',1,'thorin::World']]],

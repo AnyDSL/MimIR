@@ -388,11 +388,11 @@ sum</h2>
 <div class="line">        // should be normalized to lit tuple</div>
 <div class="line">        .let idxs =</div>
 <div class="line">            &lt;i:n;</div>
-<div class="line">            %core.nop.add (1,</div>
-<div class="line">                %core.bitcast (.Nat, .Idx n) i</div>
+<div class="line">            %core.nat.add (1,</div>
+<div class="line">                %core.bitcast .Nat i</div>
 <div class="line">            )</div>
 <div class="line">            &gt;;</div>
-<div class="line">        .let (mem2,res) = %matrix.map_reduce</div>
+<div class="line">        .let (mem2, res) = %matrix.map_reduce</div>
 <div class="line">                (1, (1), R, </div>
 <div class="line">                    1,</div>
 <div class="line">                    n,</div>
@@ -409,10 +409,7 @@ sum</h2>
 <div class="line">                );</div>
 <div class="line">        ret (mem2,</div>
 <div class="line">            // TODO: test this cast</div>
-<div class="line">            %core.bitcast (</div>
-<div class="line">                R,</div>
-<div class="line">                %matrix.Mat (1,1,R)</div>
-<div class="line">            ) res</div>
+<div class="line">            %core.bitcast R res</div>
 <div class="line">        )</div>
 <div class="line">    };</div>
 <div class="line">    inner_matrix_sum</div>

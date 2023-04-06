@@ -174,7 +174,7 @@ Keywords</h3>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>.let</code>   </td><td class="markdownTableBodyNone">let expression    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>.Pi</code>   </td><td class="markdownTableBodyNone">nominal <a class="el" href="classthorin_1_1Pi.html" title="A function type AKA Pi type.">thorin::Pi</a>    </td></tr>
+<td class="markdownTableBodyNone"><code>.Pi</code>   </td><td class="markdownTableBodyNone">mutable <a class="el" href="classthorin_1_1Pi.html" title="A function type AKA Pi type.">thorin::Pi</a>    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>.con</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lam.html">continuation</a> (declaration)    </td></tr>
 <tr class="markdownTableRowOdd">
@@ -188,15 +188,15 @@ Keywords</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>.cn</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lam.html">lambda</a> (expression)    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>.Arr</code>   </td><td class="markdownTableBodyNone">nominal <a class="el" href="classthorin_1_1Arr.html">thorin::Arr</a>    </td></tr>
+<td class="markdownTableBodyNone"><code>.Arr</code>   </td><td class="markdownTableBodyNone">mutable <a class="el" href="classthorin_1_1Arr.html">thorin::Arr</a>    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>.pack</code>   </td><td class="markdownTableBodyNone">nominal <a class="el" href="classthorin_1_1Pack.html">thorin::Pack</a>    </td></tr>
+<td class="markdownTableBodyNone"><code>.pack</code>   </td><td class="markdownTableBodyNone">mutable <a class="el" href="classthorin_1_1Pack.html">thorin::Pack</a>    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>.Sigma</code>   </td><td class="markdownTableBodyNone">nominal <a class="el" href="classthorin_1_1Sigma.html">thorin::Sigma</a>    </td></tr>
+<td class="markdownTableBodyNone"><code>.Sigma</code>   </td><td class="markdownTableBodyNone">mutable <a class="el" href="classthorin_1_1Sigma.html">thorin::Sigma</a>    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>.def</code>   </td><td class="markdownTableBodyNone">nominal definition    </td></tr>
+<td class="markdownTableBodyNone"><code>.def</code>   </td><td class="markdownTableBodyNone">mutable definition    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>.extern</code>   </td><td class="markdownTableBodyNone">marks nominal as external    </td></tr>
+<td class="markdownTableBodyNone"><code>.extern</code>   </td><td class="markdownTableBodyNone">marks mutable as external    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>.ins</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Insert.html" title="Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple.">thorin::Insert</a> expression    </td></tr>
 <tr class="markdownTableRowEven">
@@ -345,9 +345,9 @@ Declarations</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">d   </td><td class="markdownTableBodyNone"><code>.Sigma</code> Sym ( <code>:</code> e<sub>type</sub> )? <code>,</code> L<sub>arity</sub> v? n   </td><td class="markdownTableBodyNone">sigma declaration   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Sigma.html">thorin::Sigma</a>    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">d   </td><td class="markdownTableBodyNone"><code>.def</code> Sym n   </td><td class="markdownTableBodyNone">nominal definition   </td><td class="markdownTableBodyNone">nominals    </td></tr>
+<td class="markdownTableBodyNone">d   </td><td class="markdownTableBodyNone"><code>.def</code> Sym n   </td><td class="markdownTableBodyNone">mutable definition   </td><td class="markdownTableBodyNone">mutables    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">n   </td><td class="markdownTableBodyNone"><code>;</code> | o   </td><td class="markdownTableBodyNone">nominal definition   </td><td class="markdownTableBodyNone">-    </td></tr>
+<td class="markdownTableBodyNone">n   </td><td class="markdownTableBodyNone"><code>;</code> | o   </td><td class="markdownTableBodyNone">mutable definition   </td><td class="markdownTableBodyNone">-    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone"><code>=</code> de <code>;</code>   </td><td class="markdownTableBodyNone">operand of definition   </td><td class="markdownTableBodyNone">-    </td></tr>
 <tr class="markdownTableRowOdd">
@@ -447,7 +447,7 @@ Expressions</h2>
 <p >An elided type of</p><ul>
 <li>a literal defaults to <code>.Nat</code>,</li>
 <li>a bottom/top defaults to <code>*</code>,</li>
-<li>a nominals defaults to <code>*</code>.</li>
+<li>a mutable defaults to <code>*</code>.</li>
 </ul>
 <h3><a class="anchor" id="autotoc_md27"></a>
 Precedence</h3>
@@ -464,13 +464,13 @@ Precedence</h3>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>Π</code> Sym <code>:</code> e   </td><td class="markdownTableBodyNone">domain of a dependent function type   </td><td class="markdownTableBodyNone">-    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>.fun</code> Sym Sym <code>:</code> e   </td><td class="markdownTableBodyNone">nominal funciton declaration   </td><td class="markdownTableBodyNone">-    </td></tr>
+<td class="markdownTableBodyNone"><code>.fun</code> Sym Sym <code>:</code> e   </td><td class="markdownTableBodyNone">mutable funciton declaration   </td><td class="markdownTableBodyNone">-    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>.lam</code> Sym Sym <code>:</code> e   </td><td class="markdownTableBodyNone">nominal continuation declaration   </td><td class="markdownTableBodyNone">-    </td></tr>
+<td class="markdownTableBodyNone"><code>.lam</code> Sym Sym <code>:</code> e   </td><td class="markdownTableBodyNone">mutable continuation declaration   </td><td class="markdownTableBodyNone">-    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>.fn</code> Sym <code>:</code> e   </td><td class="markdownTableBodyNone">nominal funciton expression   </td><td class="markdownTableBodyNone">-    </td></tr>
+<td class="markdownTableBodyNone"><code>.fn</code> Sym <code>:</code> e   </td><td class="markdownTableBodyNone">mutable funciton expression   </td><td class="markdownTableBodyNone">-    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>.lm</code> Sym <code>:</code> e   </td><td class="markdownTableBodyNone">nominal continuation expression   </td><td class="markdownTableBodyNone">-    </td></tr>
+<td class="markdownTableBodyNone"><code>.lm</code> Sym <code>:</code> e   </td><td class="markdownTableBodyNone">mutable continuation expression   </td><td class="markdownTableBodyNone">-    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">e <code>→</code> e   </td><td class="markdownTableBodyNone">function type   </td><td class="markdownTableBodyNone">right-to-left   </td></tr>
 </table>
@@ -489,7 +489,7 @@ Axioms</h2>
 <p >The names of axioms are special and live in a global namespace.</p>
 <h2><a class="anchor" id="autotoc_md32"></a>
 Field Names of Sigmas</h2>
-<p >Named elements of nominal sigmas are avaiable for extracts/inserts. These names take precedence over the usual scope. In the following example, <code>i</code> refers to the first element <code>i</code> of <code>X</code> and <b>not</b> to the <code>i</code> introduced via <code>.let</code>: </p><div class="fragment"><div class="line">.let i = 1_2;</div>
+<p >Named elements of mutable sigmas are avaiable for extracts/inserts. These names take precedence over the usual scope. In the following example, <code>i</code> refers to the first element <code>i</code> of <code>X</code> and <b>not</b> to the <code>i</code> introduced via <code>.let</code>: </p><div class="fragment"><div class="line">.let i = 1_2;</div>
 <div class="line">Π X: [i: .Nat, j: .Nat] → f X#i;</div>
 </div><!-- fragment --><p> Use parentheses to refer to the <code>.let</code>-bounded <code>i</code>: </p><div class="fragment"><div class="line">.let i = 1_2;</div>
 <div class="line">Π X: [i: .Nat, j: .Nat] → f X#(i);</div>

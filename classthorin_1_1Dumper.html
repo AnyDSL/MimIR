@@ -146,8 +146,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ab40217d2a5df21a6902fcb21d7db0789"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a702dc3deeef279f698f7314aebaf4e8e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Tab.html">Tab</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Dumper.html#a702dc3deeef279f698f7314aebaf4e8e">tab</a></td></tr>
 <tr class="separator:a702dc3deeef279f698f7314aebaf4e8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa58457a8c9046ec7249f4d32fbd87c53"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1unique__queue.html">unique_queue</a>&lt; <a class="el" href="namespacethorin.html#a6448a89fa59bf8622639c34a0747b364">NomSet</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Dumper.html#aa58457a8c9046ec7249f4d32fbd87c53">noms</a></td></tr>
-<tr class="separator:aa58457a8c9046ec7249f4d32fbd87c53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18d61d65eab24bf96e0afca556fa3cf8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1unique__queue.html">unique_queue</a>&lt; <a class="el" href="namespacethorin.html#a89eae41d087b28bd4eba7fafd36d6fdf">MutSet</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Dumper.html#a18d61d65eab24bf96e0afca556fa3cf8">muts</a></td></tr>
+<tr class="separator:a18d61d65eab24bf96e0afca556fa3cf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3dbdd523615597736f8e06ac27d9c1ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a7fddaff34d4e4927bc748c28b49eef46">DefSet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Dumper.html#a3dbdd523615597736f8e06ac27d9c1ba">defs</a></td></tr>
 <tr class="separator:a3dbdd523615597736f8e06ac27d9c1ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -155,7 +155,7 @@ Public Attributes</h2></td></tr>
 <div class="textblock"><p >This thing operates in two modes: </p>
 <ol type="1">
 <li>The output of decls is driven by the <a class="el" href="classthorin_1_1DepTree.html">DepTree</a>.</li>
-<li>Alternatively, decls are output as soon as they appear somewhere during recurseing. Then, they are pushed to <a class="el" href="classthorin_1_1Dumper.html#aa58457a8c9046ec7249f4d32fbd87c53">Dumper::noms</a>. </li>
+<li>Alternatively, decls are output as soon as they appear somewhere during recurseing. Then, they are pushed to <a class="el" href="classthorin_1_1Dumper.html#a18d61d65eab24bf96e0afca556fa3cf8">Dumper::muts</a>. </li>
 </ol>
 
 <p class="definition">Definition at line <a class="el" href="dump_8cpp_source.html#l00188">188</a> of file <a class="el" href="dump_8cpp_source.html">dump.cpp</a>.</p>
@@ -209,7 +209,7 @@ Public Attributes</h2></td></tr>
           <td class="memname">void thorin::Dumper::dump </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
-          <td class="paramname"><em>nom</em></td><td>)</td>
+          <td class="paramname"><em>mut</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -217,7 +217,7 @@ Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="dump_8cpp_source.html#l00208">208</a> of file <a class="el" href="dump_8cpp_source.html">dump.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="dump_8cpp_source.html#l00202">dep</a>, <a class="el" href="dump_8cpp_source.html#l00208">dump()</a>, <a class="el" href="dump_8cpp_source.html#l00038">thorin::external()</a>, <a class="el" href="def_8cpp_source.html#l00350">thorin::Def::is_set()</a>, <a class="el" href="cast_8h_source.html#l00044">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="deptree_8h_source.html#l00046">thorin::DepTree::nom2node()</a>, <a class="el" href="def_8h_source.html#l00424">thorin::Def::num_vars()</a>, <a class="el" href="def_8h_source.html#l00236">thorin::Def::ops()</a>, <a class="el" href="dump_8cpp_source.html#l00201">os</a>, <a class="el" href="print_8cpp_source.html#l00005">thorin::print()</a>, <a class="el" href="print_8h_source.html#l00167">thorin::Tab::print()</a>, <a class="el" href="print_8h_source.html#l00178">thorin::Tab::println()</a>, <a class="el" href="dump_8cpp_source.html#l00302">recurse()</a>, <a class="el" href="dump_8cpp_source.html#l00203">tab</a>, <a class="el" href="def_8h_source.html#l00220">thorin::Def::type()</a>, <a class="el" href="def_8cpp_source.html#l00361">thorin::Def::unique_name()</a>, <a class="el" href="assert_8h_source.html#l00019">thorin::unreachable()</a>, <a class="el" href="def_8cpp_source.html#l00230">thorin::Def::var()</a>, and <a class="el" href="def_8h_source.html#l00424">thorin::Def::vars()</a>.</p>
+<p class="reference">References <a class="el" href="dump_8cpp_source.html#l00202">dep</a>, <a class="el" href="dump_8cpp_source.html#l00208">dump()</a>, <a class="el" href="dump_8cpp_source.html#l00038">thorin::external()</a>, <a class="el" href="def_8cpp_source.html#l00345">thorin::Def::is_set()</a>, <a class="el" href="cast_8h_source.html#l00044">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="deptree_8h_source.html#l00046">thorin::DepTree::mut2node()</a>, <a class="el" href="def_8h_source.html#l00422">thorin::Def::num_vars()</a>, <a class="el" href="def_8h_source.html#l00234">thorin::Def::ops()</a>, <a class="el" href="dump_8cpp_source.html#l00201">os</a>, <a class="el" href="print_8cpp_source.html#l00005">thorin::print()</a>, <a class="el" href="print_8h_source.html#l00167">thorin::Tab::print()</a>, <a class="el" href="print_8h_source.html#l00178">thorin::Tab::println()</a>, <a class="el" href="dump_8cpp_source.html#l00302">recurse()</a>, <a class="el" href="dump_8cpp_source.html#l00203">tab</a>, <a class="el" href="def_8h_source.html#l00218">thorin::Def::type()</a>, <a class="el" href="def_8cpp_source.html#l00356">thorin::Def::unique_name()</a>, <a class="el" href="assert_8h_source.html#l00019">thorin::unreachable()</a>, <a class="el" href="def_8cpp_source.html#l00230">thorin::Def::var()</a>, and <a class="el" href="def_8h_source.html#l00422">thorin::Def::vars()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="dump_8cpp_source.html#l00208">dump()</a>, and <a class="el" href="dump_8cpp_source.html#l00302">recurse()</a>.</p>
 
@@ -241,7 +241,7 @@ Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="dump_8cpp_source.html#l00258">258</a> of file <a class="el" href="dump_8cpp_source.html">dump.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="lam_8h_source.html#l00076">thorin::Lam::body()</a>, <a class="el" href="lam_8h_source.html#l00024">thorin::Pi::codom()</a>, <a class="el" href="dump_8cpp_source.html#l00202">dep</a>, <a class="el" href="lam_8h_source.html#l00022">thorin::Pi::dom()</a>, <a class="el" href="dump_8cpp_source.html#l00287">dump_ptrn()</a>, <a class="el" href="dump_8cpp_source.html#l00038">thorin::external()</a>, <a class="el" href="lam_8h_source.html#l00075">thorin::Lam::filter()</a>, <a class="el" href="lam_8cpp_source.html#l00021">thorin::Pi::is_cn()</a>, <a class="el" href="def_8cpp_source.html#l00350">thorin::Def::is_set()</a>, <a class="el" href="def_8h_source.html#l00401">thorin::Def::isa_nom()</a>, <a class="el" href="deptree_8h_source.html#l00046">thorin::DepTree::nom2node()</a>, <a class="el" href="dump_8cpp_source.html#l00201">os</a>, <a class="el" href="print_8h_source.html#l00167">thorin::Tab::print()</a>, <a class="el" href="print_8h_source.html#l00178">thorin::Tab::println()</a>, <a class="el" href="dump_8cpp_source.html#l00302">recurse()</a>, <a class="el" href="dump_8cpp_source.html#l00203">tab</a>, <a class="el" href="lam_8h_source.html#l00063">thorin::Lam::type()</a>, and <a class="el" href="def_8cpp_source.html#l00230">thorin::Def::var()</a>.</p>
+<p class="reference">References <a class="el" href="lam_8h_source.html#l00076">thorin::Lam::body()</a>, <a class="el" href="lam_8h_source.html#l00024">thorin::Pi::codom()</a>, <a class="el" href="dump_8cpp_source.html#l00202">dep</a>, <a class="el" href="lam_8h_source.html#l00022">thorin::Pi::dom()</a>, <a class="el" href="dump_8cpp_source.html#l00287">dump_ptrn()</a>, <a class="el" href="dump_8cpp_source.html#l00038">thorin::external()</a>, <a class="el" href="lam_8h_source.html#l00075">thorin::Lam::filter()</a>, <a class="el" href="lam_8cpp_source.html#l00021">thorin::Pi::is_cn()</a>, <a class="el" href="def_8cpp_source.html#l00345">thorin::Def::is_set()</a>, <a class="el" href="def_8h_source.html#l00399">thorin::Def::isa_mut()</a>, <a class="el" href="deptree_8h_source.html#l00046">thorin::DepTree::mut2node()</a>, <a class="el" href="dump_8cpp_source.html#l00201">os</a>, <a class="el" href="print_8h_source.html#l00167">thorin::Tab::print()</a>, <a class="el" href="print_8h_source.html#l00178">thorin::Tab::println()</a>, <a class="el" href="dump_8cpp_source.html#l00302">recurse()</a>, <a class="el" href="dump_8cpp_source.html#l00203">tab</a>, <a class="el" href="lam_8h_source.html#l00063">thorin::Lam::type()</a>, and <a class="el" href="def_8cpp_source.html#l00230">thorin::Def::var()</a>.</p>
 
 </div>
 </div>
@@ -263,7 +263,7 @@ Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="dump_8cpp_source.html#l00283">283</a> of file <a class="el" href="dump_8cpp_source.html">dump.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="dump_8cpp_source.html#l00201">os</a>, <a class="el" href="print_8h_source.html#l00167">thorin::Tab::print()</a>, <a class="el" href="dump_8cpp_source.html#l00203">tab</a>, <a class="el" href="def_8h_source.html#l00220">thorin::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00361">thorin::Def::unique_name()</a>.</p>
+<p class="reference">References <a class="el" href="dump_8cpp_source.html#l00201">os</a>, <a class="el" href="print_8h_source.html#l00167">thorin::Tab::print()</a>, <a class="el" href="dump_8cpp_source.html#l00203">tab</a>, <a class="el" href="def_8h_source.html#l00218">thorin::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00356">thorin::Def::unique_name()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="dump_8cpp_source.html#l00307">recurse()</a>.</p>
 
@@ -297,7 +297,7 @@ Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="dump_8cpp_source.html#l00287">287</a> of file <a class="el" href="dump_8cpp_source.html">dump.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="dump_8cpp_source.html#l00287">dump_ptrn()</a>, <a class="el" href="dump_8cpp_source.html#l00201">os</a>, <a class="el" href="print_8cpp_source.html#l00005">thorin::print()</a>, <a class="el" href="def_8cpp_source.html#l00395">thorin::Def::proj()</a>, <a class="el" href="def_8h_source.html#l00336">thorin::Def::projs()</a>, and <a class="el" href="def_8cpp_source.html#l00361">thorin::Def::unique_name()</a>.</p>
+<p class="reference">References <a class="el" href="dump_8cpp_source.html#l00287">dump_ptrn()</a>, <a class="el" href="dump_8cpp_source.html#l00201">os</a>, <a class="el" href="print_8cpp_source.html#l00005">thorin::print()</a>, <a class="el" href="def_8cpp_source.html#l00390">thorin::Def::proj()</a>, <a class="el" href="def_8h_source.html#l00334">thorin::Def::projs()</a>, and <a class="el" href="def_8cpp_source.html#l00356">thorin::Def::unique_name()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="dump_8cpp_source.html#l00258">dump()</a>, and <a class="el" href="dump_8cpp_source.html#l00287">dump_ptrn()</a>.</p>
 
@@ -331,7 +331,7 @@ Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="dump_8cpp_source.html#l00307">307</a> of file <a class="el" href="dump_8cpp_source.html">dump.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="dump_8cpp_source.html#l00205">defs</a>, <a class="el" href="dump_8cpp_source.html#l00202">dep</a>, <a class="el" href="dump_8cpp_source.html#l00283">dump_let()</a>, <a class="el" href="dump_8cpp_source.html#l00026">thorin::isa_decl()</a>, <a class="el" href="dump_8cpp_source.html#l00204">noms</a>, <a class="el" href="def_8h_source.html#l00288">thorin::Def::partial_ops()</a>, <a class="el" href="container_8h_source.html#l00072">thorin::unique_queue&lt; Set &gt;::push()</a>, <a class="el" href="dump_8cpp_source.html#l00302">recurse()</a>, and <a class="el" href="array_8h_source.html#l00112">thorin::Span&lt; T &gt;::skip_front()</a>.</p>
+<p class="reference">References <a class="el" href="dump_8cpp_source.html#l00205">defs</a>, <a class="el" href="dump_8cpp_source.html#l00202">dep</a>, <a class="el" href="dump_8cpp_source.html#l00283">dump_let()</a>, <a class="el" href="dump_8cpp_source.html#l00026">thorin::isa_decl()</a>, <a class="el" href="dump_8cpp_source.html#l00204">muts</a>, <a class="el" href="def_8h_source.html#l00286">thorin::Def::partial_ops()</a>, <a class="el" href="container_8h_source.html#l00072">thorin::unique_queue&lt; Set &gt;::push()</a>, and <a class="el" href="dump_8cpp_source.html#l00302">recurse()</a>.</p>
 
 </div>
 </div>
@@ -396,14 +396,14 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aa58457a8c9046ec7249f4d32fbd87c53" name="aa58457a8c9046ec7249f4d32fbd87c53"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa58457a8c9046ec7249f4d32fbd87c53">&#9670;&#160;</a></span>noms</h2>
+<a id="a18d61d65eab24bf96e0afca556fa3cf8" name="a18d61d65eab24bf96e0afca556fa3cf8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18d61d65eab24bf96e0afca556fa3cf8">&#9670;&#160;</a></span>muts</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1unique__queue.html">unique_queue</a>&lt;<a class="el" href="namespacethorin.html#a6448a89fa59bf8622639c34a0747b364">NomSet</a>&gt; thorin::Dumper::noms</td>
+          <td class="memname"><a class="el" href="classthorin_1_1unique__queue.html">unique_queue</a>&lt;<a class="el" href="namespacethorin.html#a89eae41d087b28bd4eba7fafd36d6fdf">MutSet</a>&gt; thorin::Dumper::muts</td>
         </tr>
       </table>
 </div><div class="memdoc">

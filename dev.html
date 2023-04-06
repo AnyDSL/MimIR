@@ -118,7 +118,7 @@ $(document).ready(function(){initNavTree('dev.html',''); initResizable(); });
 <li class="level1"><a href="#autotoc_md14">Defs and the World</a><ul><li class="level2"><a href="#autotoc_md15">Hash Consing</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md16">Structural vs. Nominal</a></li>
+<li class="level1"><a href="#autotoc_md16">Immutables vs. Mutables</a></li>
 <li class="level1"><a href="#autotoc_md17">Matching IR</a></li>
 <li class="level1"><a href="#autotoc_md18">Iterating over the Program</a></li>
 </ul>
@@ -138,7 +138,7 @@ Compiling and Executing</h1>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Cn [mem, i32, Cn [mem, i32]]</span></div>
 <div class="line"><span class="keyword">auto</span> main_t = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})});</div>
-<div class="line"><span class="keyword">auto</span> <a class="code hl_function" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a> = w.nom_lam(main_t)-&gt;set(<span class="stringliteral">&quot;main&quot;</span>);</div>
+<div class="line"><span class="keyword">auto</span> <a class="code hl_function" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a> = w.mut_lam(main_t)-&gt;set(<span class="stringliteral">&quot;main&quot;</span>);</div>
 <div class="line"><span class="keyword">auto</span> [mem, argc, argv, <a class="code hl_enumvalue" href="namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aa2348b9af292e8373483f8ff836d5aac2">ret</a>] = <a class="code hl_function" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a>-&gt;vars&lt;4&gt;();</div>
 <div class="line"><a class="code hl_function" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a>-&gt;app(ret, {mem, argc});</div>
 <div class="line"><a class="code hl_function" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a>-&gt;make_external();</div>
@@ -154,8 +154,8 @@ Compiling and Executing</h1>
 <div class="line">std::system(<span class="stringliteral">&quot;clang test.ll -o test&quot;</span>);</div>
 <div class="line">assert(4 == WEXITSTATUS(std::system(<span class="stringliteral">&quot;./test a b c&quot;</span>)));</div>
 <div class="ttc" id="amain_8cpp_html_a3c04138a5bfe5d72780bb7e82a18e627"><div class="ttname"><a href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a></div><div class="ttdeci">int main(int argc, char **argv)</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00025">main.cpp:25</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1clos_html_a5c55a5bd62132e28b49915902ea0117aa2348b9af292e8373483f8ff836d5aac2"><div class="ttname"><a href="namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aa2348b9af292e8373483f8ff836d5aac2">thorin::clos::ret</a></div><div class="ttdeci">@ ret</div><div class="ttdef"><b>Definition:</b> <a href="clos_2autogen_8h_source.html#l00079">autogen.h:79</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1core_html_a016fae77d6f5857b429ceb5b433c4937aa1f7876be8b2419af003e22a537fa0a8"><div class="ttname"><a href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937aa1f7876be8b2419af003e22a537fa0a8">thorin::core::s</a></div><div class="ttdeci">@ s</div><div class="ttdef"><b>Definition:</b> <a href="core_2autogen_8h_source.html#l00106">autogen.h:106</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1clos_html_a5c55a5bd62132e28b49915902ea0117aa2348b9af292e8373483f8ff836d5aac2"><div class="ttname"><a href="namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aa2348b9af292e8373483f8ff836d5aac2">thorin::clos::ret</a></div><div class="ttdeci">@ ret</div><div class="ttdef"><b>Definition:</b> <a href="clos_2autogen_8h_source.html#l00086">autogen.h:86</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1core_html_a016fae77d6f5857b429ceb5b433c4937aa1f7876be8b2419af003e22a537fa0a8"><div class="ttname"><a href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937aa1f7876be8b2419af003e22a537fa0a8">thorin::core::s</a></div><div class="ttdeci">@ s</div><div class="ttdef"><b>Definition:</b> <a href="core_2autogen_8h_source.html#l00016">autogen.h:16</a></div></div>
 <div class="ttc" id="anamespacethorin_html_a9e64c2e92ce1a1166c536644960116c2"><div class="ttname"><a href="namespacethorin.html#a9e64c2e92ce1a1166c536644960116c2">thorin::optimize</a></div><div class="ttdeci">void optimize(World &amp;world)</div><div class="ttdef"><b>Definition:</b> <a href="optimize_8cpp_source.html#l00020">optimize.cpp:20</a></div></div>
 </div><!-- fragment --><p> TODO explain</p>
 <h1><a class="anchor" id="autotoc_md14"></a>
@@ -165,14 +165,14 @@ Defs and the World</h1>
 Hash Consing</h2>
 <p >Each <code>Def</code> is a node in a graph which is maintained in the <a class="el" href="classthorin_1_1World.html">World</a>. <a href="https://en.wikipedia.org/wiki/Hash_consing">Hash consing</a> TODO</p>
 <h1><a class="anchor" id="autotoc_md16"></a>
-Structural vs. Nominal</h1>
+Immutables vs. Mutables</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Structural   </th><th class="markdownTableHeadNone">Nominal    </th></tr>
+<th class="markdownTableHeadNone"><b>Immutable</b>   </th><th class="markdownTableHeadNone"><b>Mutable</b>    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">must be <code>const</code>   </td><td class="markdownTableBodyNone">maybe non-<code>const</code>    </td></tr>
-<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">immutable   </td><td class="markdownTableBodyNone">mutable    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><em>must be</em> <code>const</code>   </td><td class="markdownTableBodyNone"><em>may be</em> <b>non</b>-<code>const</code>    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">ops form <a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph">DAG</a>   </td><td class="markdownTableBodyNone">ops may be cyclic    </td></tr>
 <tr class="markdownTableRowEven">
@@ -186,30 +186,30 @@ Structural vs. Nominal</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Def.html#aa3ef5a959bc070291a921d128553ae83">Def::rebuild</a>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Def.html#a8bbe80423f2be4e8159378069236bd62">Def::stub</a>   </td></tr>
 </table>
-<p >Usually, you will encounter <code>defs</code> as <code>const Def*</code>. Use <a class="el" href="classthorin_1_1Def.html#ac79cb2db748fbf0177eb2e6c0fef3fdc">Def::isa_nom</a> to check whether a specific <code>Def</code> is in fact nominal to cast away the <code>const</code> or <a class="el" href="classthorin_1_1Def.html#a1e009bced6c7f37b6316d81ead2ad27e">Def::as_nom</a> to force this cast (and assert if not possible): </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> Def* def) {</div>
-<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> nom = def-&gt;isa_nom()) {</div>
-<div class="line">        <span class="comment">// nom of type Def* - const has been removed!</span></div>
-<div class="line">        <span class="comment">// This gives give you access to the non-const methods that only make sense for nominals:</span></div>
-<div class="line">        <span class="keyword">auto</span> var = nom-&gt;var();</div>
-<div class="line">        <span class="keyword">auto</span> stub = nom-&gt;stub(world, type, debug)</div>
+<p >Usually, you will encounter <code>defs</code> as <code>const Def*</code>. Use <a class="el" href="classthorin_1_1Def.html#aabf1066a0dbcaa6ec6f08877b86767e4">Def::isa_mut</a> to check whether a specific <code>Def</code> is in fact mutable to cast away the <code>const</code> or <a class="el" href="classthorin_1_1Def.html#af11b2eb1d65239b9e9f5ca1920742ddb">Def::as_mut</a> to force this cast (and assert if not possible): </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> Def* def) {</div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> mut = def-&gt;isa_mut()) {</div>
+<div class="line">        <span class="comment">// mut of type Def* - const has been removed!</span></div>
+<div class="line">        <span class="comment">// This gives give you access to the non-const methods that only make sense for mutables:</span></div>
+<div class="line">        <span class="keyword">auto</span> var = mut-&gt;var();</div>
+<div class="line">        <span class="keyword">auto</span> stub = mut-&gt;stub(world, type, debug)</div>
 <div class="line">        <span class="comment">// ...</span></div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> lam = def-&gt;isa_nom&lt;Lam&gt;()) {</div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> lam = def-&gt;isa_mut&lt;Lam&gt;()) {</div>
 <div class="line">        <span class="comment">// lam of type Lam* - const has been removed!</span></div>
 <div class="line">    }</div>
 <div class="line">}</div>
-</div><!-- fragment --><p> You can also check whether a specific <code>def</code> is really a structural: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> Def* def) {</div>
-<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> s = def-&gt;isa_structural()) {</div>
-<div class="line">        <span class="comment">// s cannot be a nominal</span></div>
+</div><!-- fragment --><p> You can also check whether a specific <code>def</code> is really an *imm*utable: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> Def* def) {</div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> s = def-&gt;isa_imm()) {</div>
+<div class="line">        <span class="comment">// s cannot be a mutable</span></div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> sigma = def-&gt;isa_structural&lt;Sigma&gt;()) {</div>
-<div class="line">        <span class="comment">// sigma is of type const Sigma* and cannot be a nominal Sigma</span></div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> sigma = def-&gt;isa_imm&lt;Sigma&gt;()) {</div>
+<div class="line">        <span class="comment">// sigma is of type const Sigma* and cannot be a mutable Sigma</span></div>
 <div class="line">    }</div>
 <div class="line">}</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md17"></a>
@@ -217,8 +217,8 @@ Matching IR</h1>
 <h1><a class="anchor" id="autotoc_md18"></a>
 Iterating over the Program</h1>
 <p >There are several ways of doing this. It depends on what exactly you want to achieve and how much structure you need during the traversal. The simplest way is to kick off with <a class="el" href="classthorin_1_1World.html#a5b40a0d582ba6e1b28bc50dc0ceb0840">World::externals</a> and recursively run over <a class="el" href="classthorin_1_1Def.html#a543cbdcb17d574373aa65244dcead8f8">Def::extended_ops</a> like this: </p><div class="fragment"><div class="line">DefSet done;</div>
-<div class="line"><span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [_, nom] : world.externals())</div>
-<div class="line">    visit(done, nom);</div>
+<div class="line"><span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [_, mut] : world.externals())</div>
+<div class="line">    visit(done, mut);</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">void</span> visit(DefSet&amp; done, <span class="keyword">const</span> Def* def) {</div>
 <div class="line">    <span class="keywordflow">if</span> (!done.emplace(def).second) <span class="keywordflow">return</span>;</div>

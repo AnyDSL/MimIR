@@ -306,7 +306,7 @@ var hierarchy =
     [ "thorin::Tab", "classthorin_1_1Tab.html", null ],
     [ "thorin::fe::Tok", "classthorin_1_1fe_1_1Tok.html", null ],
     [ "thorin::unique_queue< Set >", "classthorin_1_1unique__queue.html", null ],
-    [ "thorin::unique_queue< NomSet >", "classthorin_1_1unique__queue.html", null ],
+    [ "thorin::unique_queue< MutSet >", "classthorin_1_1unique__queue.html", null ],
     [ "thorin::unique_stack< Set >", "classthorin_1_1unique__stack.html", null ],
     [ "thorin::Use", "classthorin_1_1Use.html", null ],
     [ "thorin::UseEq", "structthorin_1_1UseEq.html", null ],
@@ -330,6 +330,6 @@ var hierarchy =
     [ "DefMap< std::string >", "namespace_3globalScope_4.html#classDefMap_3_01std_1_1string_01_4", null ],
     [ "DefMap< thorin::Type >", "namespace_3globalScope_4.html#classDefMap_3_01thorin_1_1Type_01_4", null ],
     [ "LamMap< BB >", "namespace_3globalScope_4.html#classLamMap_3_01BB_01_4", null ],
-    [ "NomSet", "namespace_3globalScope_4.html#classNomSet", null ],
+    [ "MutSet", "namespace_3globalScope_4.html#classMutSet", null ],
     [ "size_t", "namespace_3globalScope_4.html#classsize__t", null ]
 ];

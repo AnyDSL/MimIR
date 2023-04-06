@@ -3,7 +3,7 @@ var classthorin_1_1Scheduler =
     [ "Scheduler", "classthorin_1_1Scheduler.html#aea097a0893dca330de7a5713bbcbe937", null ],
     [ "Scheduler", "classthorin_1_1Scheduler.html#a637466e564bdec5a37e310fb142db773", null ],
     [ "cfg", "classthorin_1_1Scheduler.html#a9a0513dec38abf1318b7db8dbe0f5260", null ],
-    [ "cfg", "classthorin_1_1Scheduler.html#a79e99fbd623dcc370ebb81149ed089a4", null ],
+    [ "cfg", "classthorin_1_1Scheduler.html#a45fc3a71b1f9a83a74af087b6a8ea378", null ],
     [ "domtree", "classthorin_1_1Scheduler.html#aa9884fedc95935045a30ead01c39ccd5", null ],
     [ "early", "classthorin_1_1Scheduler.html#ac327f6bf1e80d3aeb499b27892e89589", null ],
     [ "late", "classthorin_1_1Scheduler.html#a428fbabff1d1d2794c6f7d3bf48025d2", null ],

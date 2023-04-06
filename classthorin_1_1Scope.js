@@ -11,7 +11,7 @@ var classthorin_1_1Scope =
     [ "exit", "classthorin_1_1Scope.html#afffa3ca84a3c3bbfbda14739c08b0a09", null ],
     [ "f_cfg", "classthorin_1_1Scope.html#a2c8fbd2333af4d00bd701452f21f2369", null ],
     [ "free_defs", "classthorin_1_1Scope.html#a546abdb4b59161b1ba6094ec0a5e4b86", null ],
-    [ "free_noms", "classthorin_1_1Scope.html#a3b967377bae646cbd9b148947558cb47", null ],
+    [ "free_muts", "classthorin_1_1Scope.html#a899909392b9e434a07a2146bb73aaaa9", null ],
     [ "free_vars", "classthorin_1_1Scope.html#ad1382b17547a92c8e469ddf4fd5f11b3", null ],
     [ "operator=", "classthorin_1_1Scope.html#a3418a230e32861c44b2f8def79a832f9", null ],
     [ "sym", "classthorin_1_1Scope.html#a60d2462e9762e64ca71cb2fb39cde7e2", null ],

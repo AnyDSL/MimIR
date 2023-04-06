@@ -1,16 +1,16 @@
 var classthorin_1_1autodiff_1_1AutoDiffEval =
 [
     [ "AutoDiffEval", "classthorin_1_1autodiff_1_1AutoDiffEval.html#a6857af669251a1791511cd2c21f021b8", null ],
-    [ "augment", "classthorin_1_1autodiff_1_1AutoDiffEval.html#a3bd8c184d6d273604c1b8c926d469a0b", null ],
-    [ "augment_", "classthorin_1_1autodiff_1_1AutoDiffEval.html#a9c4f0f6afb140694a3b5086f51a73427", null ],
-    [ "augment_app", "classthorin_1_1autodiff_1_1AutoDiffEval.html#aa3ede47e3ce09bfaebfb698662d8a6fa", null ],
-    [ "augment_extract", "classthorin_1_1autodiff_1_1AutoDiffEval.html#a44b391fcfe263a51c6c76c0d1dae9a83", null ],
-    [ "augment_lam", "classthorin_1_1autodiff_1_1AutoDiffEval.html#ad79b64506ca90c519a557ab8419698fe", null ],
-    [ "augment_lit", "classthorin_1_1autodiff_1_1AutoDiffEval.html#aa7c7dfcdf84e2c1a8f62af74d9afae79", null ],
-    [ "augment_pack", "classthorin_1_1autodiff_1_1AutoDiffEval.html#a4807f8b2760733e4a5dd92a15db70915", null ],
-    [ "augment_tuple", "classthorin_1_1autodiff_1_1AutoDiffEval.html#ab676513f869624d2aef9c19cd33c88ed", null ],
-    [ "augment_var", "classthorin_1_1autodiff_1_1AutoDiffEval.html#a7556b1828a357959d414ea2dee2171cb", null ],
-    [ "derive", "classthorin_1_1autodiff_1_1AutoDiffEval.html#a06367632f154ac8e14276742a2f6332d", null ],
-    [ "derive_", "classthorin_1_1autodiff_1_1AutoDiffEval.html#a55cc07314049a74616d8a9a08a615932", null ],
-    [ "rewrite", "classthorin_1_1autodiff_1_1AutoDiffEval.html#a144793c8f1c197520637fcf3090f5e6e", null ]
+    [ "augment", "classthorin_1_1autodiff_1_1AutoDiffEval.html#a02eb65cfda24f0533f39d86d2c8671cd", null ],
+    [ "augment_", "classthorin_1_1autodiff_1_1AutoDiffEval.html#a71894c651b5244a7de44e1af314631ba", null ],
+    [ "augment_app", "classthorin_1_1autodiff_1_1AutoDiffEval.html#a13ec102640d1d3601bf46773d8e9a80f", null ],
+    [ "augment_extract", "classthorin_1_1autodiff_1_1AutoDiffEval.html#ae928685ec8732e24a17a547b7f336b44", null ],
+    [ "augment_lam", "classthorin_1_1autodiff_1_1AutoDiffEval.html#af521855368746db61048ffc8197eede3", null ],
+    [ "augment_lit", "classthorin_1_1autodiff_1_1AutoDiffEval.html#af158f7d3142f19ebc80cf38d9ced5529", null ],
+    [ "augment_pack", "classthorin_1_1autodiff_1_1AutoDiffEval.html#a8a204eac93d13fca093b0d7c8818a589", null ],
+    [ "augment_tuple", "classthorin_1_1autodiff_1_1AutoDiffEval.html#ad4705a62dfdf5a520eb7e3f7141acb5e", null ],
+    [ "augment_var", "classthorin_1_1autodiff_1_1AutoDiffEval.html#ae02fb889454dc14a850c5580324936a8", null ],
+    [ "derive", "classthorin_1_1autodiff_1_1AutoDiffEval.html#a8449517020a98e7d7f6bf26f14801288", null ],
+    [ "derive_", "classthorin_1_1autodiff_1_1AutoDiffEval.html#a9f9a5b50432fa30025cb4c1668b4066d", null ],
+    [ "rewrite", "classthorin_1_1autodiff_1_1AutoDiffEval.html#a8eb54467dcc78984d28b25ff3dcbde3f", null ]
 ];

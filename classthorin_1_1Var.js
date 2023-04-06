@@ -1,6 +1,6 @@
 var classthorin_1_1Var =
 [
-    [ "nom", "classthorin_1_1Var.html#a27aeb666b311530b6a0b6cbe1a2f9d11", null ],
+    [ "mut", "classthorin_1_1Var.html#af12aae8045367da3079a7a47d367c5db", null ],
     [ "set", "classthorin_1_1Var.html#a5a950001c9f43642539b1d4de3b796f6", null ],
     [ "set", "classthorin_1_1Var.html#a276c2b067ba833ffe4678635fb384b03", null ],
     [ "set", "classthorin_1_1Var.html#a226b6650d9ae0bdb3e313b71de85c6da", null ],
