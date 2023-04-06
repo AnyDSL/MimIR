@@ -24,4 +24,4 @@ public:
     void prepare() override { clos::LowerTypedClos(world()).run(); }
 };
 
-}
+} // namespace thorin::clos

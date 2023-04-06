@@ -47,18 +47,18 @@ private:
 
 template<class A, class P, class... CArgs>
 void register_pass(Passes& passes, CArgs&&... args) {
-    assert_emplace(passes, flags_t(Axiom::Base<A>), [... args = std::forward<CArgs>(args)](World&, PipelineBuilder& builder,
-                                                                             const Def* app) {
-        builder.add_pass<P>(app, args...);
-    });
+    assert_emplace(passes, flags_t(Axiom::Base<A>),
+                   [... args = std::forward<CArgs>(args)](World&, PipelineBuilder& builder, const Def* app) {
+                       builder.add_pass<P>(app, args...);
+                   });
 }
 
 template<class A, class P, class... CArgs>
 void register_phase(Passes& passes, CArgs&&... args) {
-    assert_emplace(passes, flags_t(Axiom::Base<A>), [... args = std::forward<CArgs>(args)](World&, PipelineBuilder& builder,
-                                                                             const Def*) {
-        builder.add_phase<P>(args...);
-    });
+    assert_emplace(passes, flags_t(Axiom::Base<A>),
+                   [... args = std::forward<CArgs>(args)](World&, PipelineBuilder& builder, const Def*) {
+                       builder.add_phase<P>(args...);
+                   });
 }
 
 template<class A, class P, class Q>

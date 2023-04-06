@@ -13,9 +13,8 @@ const Def* Scopes::find(Dbg dbg) const {
     auto [loc, sym] = dbg;
     if (sym == '_') err(loc, "the symbol '_' is special and never binds to anything", sym);
 
-    for (auto& scope : scopes_ | std::ranges::views::reverse) {
+    for (auto& scope : scopes_ | std::ranges::views::reverse)
         if (auto i = scope.find(sym); i != scope.end()) return i->second.second;
-    }
 
     err(loc, "symbol '{}' not found", sym);
 }

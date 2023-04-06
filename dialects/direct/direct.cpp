@@ -1,7 +1,7 @@
 #include "dialects/direct/direct.h"
 
-#include <thorin/plugin.h>
 #include <thorin/pass/pipelinebuilder.h>
+#include <thorin/plugin.h>
 
 #include "dialects/direct/passes/cps2ds.h"
 #include "dialects/direct/passes/ds2cps.h"

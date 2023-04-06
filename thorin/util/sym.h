@@ -10,11 +10,10 @@
 namespace thorin {
 
 /// A Sym%bol just wraps a `const std::string*`, so pass Sym itself around as value.
-/// With the exception of the empty string, you should only create Sym%bols via SymPool::sym which in turn will toss all Sym%bols into a big hash set.
-/// This makes Sym::operator== and Sym::operator!= an O(1) operation.
-/// The empty string is internally handled as `nullptr`.
-/// Thus, you can create a Sym%bol representing an empty string without having access to the SymPool.
-/// The empty string, `nullptr`, and `"\0"` are all identified as `Sym::Sym()`.
+/// With the exception of the empty string, you should only create Sym%bols via SymPool::sym which in turn will toss all
+/// Sym%bols into a big hash set. This makes Sym::operator== and Sym::operator!= an O(1) operation. The empty string is
+/// internally handled as `nullptr`. Thus, you can create a Sym%bol representing an empty string without having access
+/// to the SymPool. The empty string, `nullptr`, and `"\0"` are all identified as `Sym::Sym()`.
 class Sym {
 private:
     Sym(const std::string* ptr)

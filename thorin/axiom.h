@@ -82,7 +82,7 @@ public:
 
     /// @name Mangling plugin Name
     ///@{
-    static constexpr size_t Max_Plugin_Size  = 8;
+    static constexpr size_t Max_Plugin_Size = 8;
     static constexpr plugin_t Global_Plugin = 0xffff'ffff'ffff'0000_u64;
 
     /// Mangles @p s into a dense 48-bit representation.

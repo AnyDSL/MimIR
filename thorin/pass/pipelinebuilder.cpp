@@ -1,8 +1,8 @@
 #include "thorin/pass/pipelinebuilder.h"
 
 #include "thorin/def.h"
-#include "thorin/plugin.h"
 #include "thorin/lattice.h"
+#include "thorin/plugin.h"
 
 #include "thorin/pass/fp/beta_red.h"
 #include "thorin/pass/fp/eta_exp.h"

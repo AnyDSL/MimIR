@@ -1,8 +1,8 @@
 
 #include "dialects/matrix/matrix.h"
 
-#include <thorin/plugin.h>
 #include <thorin/pass/pass.h>
+#include <thorin/plugin.h>
 
 #include "dialects/compile/passes/internal_cleanup.h"
 #include "dialects/matrix/passes/lower_matrix_highlevel.h"

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #ifdef linux
 // TODO: use platform independent time functions
-#include <sys/time.h>
+#    include <sys/time.h>
 #endif
 // #include <setjmp.h>
 
@@ -12,9 +12,9 @@
 
 #ifdef SILENT
 // less intrusive than redefining printf
-void print_i32(int32_t i) { }
-void println_i32(int32_t i) { }
-void newline() { }
+void print_i32(int32_t i) {}
+void println_i32(int32_t i) {}
+void newline() {}
 #else
 void print_i32(int32_t i) { printf("%" PRId32 "\n", i); }
 void println_i32(int32_t i) { printf("%" PRId32 "\n", i); }

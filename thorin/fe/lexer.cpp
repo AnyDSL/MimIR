@@ -290,11 +290,10 @@ void Lexer::emit_md(bool start_of_file) {
         accept('\n');
     } while (start_md());
 
-    if (ahead() == utf8::EoF) {
+    if (ahead() == utf8::EoF)
         out_ = false;
-    } else {
+    else
         md_fence();
-    }
 }
 
 } // namespace thorin::fe
