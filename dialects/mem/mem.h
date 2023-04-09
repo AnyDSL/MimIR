@@ -70,10 +70,7 @@ inline Ref op_lea_unsafe(Ref ptr, Ref i) {
     return op_lea(ptr, w.call(core::conv::u, force<Ptr>(ptr->type())->arg(0)->arity(), i));
 }
 
-inline Ref op_lea_unsafe(Ref ptr, u64 i) {
-    World& w = ptr->world();
-    return op_lea(ptr, w.call(core::conv::u, force<Ptr>(ptr->type())->arg(0)->arity(), i));
-}
+inline Ref op_lea_unsafe(Ref ptr, u64 i) { return op_lea_unsafe(ptr, ptr->world().lit_int(64, i)); }
 
 inline Ref op_remem(Ref mem) {
     World& w = mem->world();

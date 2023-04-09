@@ -92,7 +92,7 @@ int main(int argc, char** argv) {
 #if THORIN_ENABLE_CHECKS
         for (auto b : breakpoints) world.breakpoint(b);
 #endif
-        world.log().set(&std::cerr).set((Log::Level)verbose);
+        driver.log().set(&std::cerr).set((Log::Level)verbose);
 
         // prepare output files and streams
         std::array<std::ofstream, Num_Backends> ofs;
