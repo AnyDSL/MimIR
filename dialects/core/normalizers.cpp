@@ -134,7 +134,7 @@ static Ref fold(World& world, Ref type, const Def*& a, const Def*& b, Ref mode =
 }
 
 /// Reassociates @p a und @p b according to following rules.
-/// We use the following naming convention while literals are prefixed with an 'l':
+/// We use the following naming convention while literals are prefixed with an `l`:
 /// ```
 ///     a    op     b
 /// (x op y) op (z op w)
@@ -156,14 +156,8 @@ static Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref 
     auto y  = xy ? xy->arg(1) : nullptr;
     auto w  = zw ? zw->arg(1) : nullptr;
 
-    std::function<Ref(Ref, Ref)> make_op;
-
-    if constexpr (std::is_same_v<Id, wrap>) {
-        // if we reassociate Wraps, we have to forget about nsw/nuw
-        make_op = [&](Ref a, Ref b) { return world.call(id, Mode::none, Defs{a, b}); };
-    } else {
-        make_op = [&](Ref a, Ref b) { return world.call(id, Defs{a, b}); };
-    }
+    // if we reassociate, we have to forget about nsw/nuw
+    auto make_op = [&world, id](Ref a, Ref b) { return world.call(id, Mode::none, Defs{a, b}); };
 
     if (la && lz) return make_op(make_op(la, lz), w);             // (1)
     if (lx && lz) return make_op(make_op(lx, lz), make_op(y, w)); // (2)
@@ -241,11 +235,12 @@ template<bit1 id>
 Ref normalize_bit1(Ref type, Ref c, Ref a) {
     auto& world = type->world();
     auto callee = c->as<App>();
+    auto s      = callee->decurry()->arg();
     // TODO cope with wrap around
 
     if constexpr (id == bit1::id) return a;
 
-    if (auto ls = isa_lit(callee->decurry()->arg())) {
+    if (auto ls = isa_lit(s)) {
         switch (id) {
             case bit1::f: return world.lit_idx(*ls, 0);
             case bit1::t: return world.lit_idx(*ls, *ls - 1_u64);
@@ -292,7 +287,8 @@ Ref normalize_bit2(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto ls     = isa_lit(callee->decurry()->arg());
+    auto s      = callee->decurry()->arg();
+    auto ls     = isa_lit(s);
     // TODO cope with wrap around
 
     commute(id, a, b);
@@ -306,14 +302,14 @@ Ref normalize_bit2(Ref type, Ref c, Ref arg) {
 
     // clang-format off
     switch (id) {
-        case bit2::    f: return world.lit(type,        0);
+        case bit2::    f: return world.lit(type, 0);
         case bit2::    t: if (ls) return world.lit(type, *ls-1_u64); break;
         case bit2::  fst: return a;
         case bit2::  snd: return b;
-        case bit2:: nfst: return world.call(bit1::neg, a);
-        case bit2:: nsnd: return world.call(bit1::neg, b);
-        case bit2:: ciff: return world.call(bit2:: iff, Defs{b, a});
-        case bit2::nciff: return world.call(bit2::niff, Defs{b, a});
+        case bit2:: nfst: return world.call(bit1::neg,  s, a);
+        case bit2:: nsnd: return world.call(bit1::neg,  s, b);
+        case bit2:: ciff: return world.call(bit2:: iff, s, Defs{b, a});
+        case bit2::nciff: return world.call(bit2::niff, s, Defs{b, a});
         default:         break;
     }
 
@@ -336,7 +332,7 @@ Ref normalize_bit2(Ref type, Ref c, Ref arg) {
         if (!x && !y) return world.lit(type, 0);
         if ( x &&  y) return ls ? world.lit(type, *ls-1_u64) : nullptr;
         if (!x &&  y) return a;
-        if ( x && !y && id != bit2::xor_) return world.call(bit1::neg, a);
+        if ( x && !y && id != bit2::xor_) return world.call(bit1::neg, s, a);
         return nullptr;
     };
     // clang-format on

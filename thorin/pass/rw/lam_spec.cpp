@@ -36,9 +36,10 @@ Ref LamSpec::rewrite(Ref def) {
     auto [app, old_lam] = isa_apped_mut_lam(def);
     if (!isa_workable(old_lam)) return def;
 
+    // Skip recursion to avoid infinite inlining if not "aggressive_lam_spec".
+    // This is a hack - but we want to get rid off this Pass anyway.
     Scope scope(old_lam);
-    // Skip recursion to avoid infinite inlining.
-    if (scope.free_defs().contains(old_lam)) return def;
+    if (!world().flags().aggressive_lam_spec && scope.free_defs().contains(old_lam)) return def;
 
     DefVec new_doms, new_vars, new_args;
     auto skip     = old_lam->ret_var() && is_top_level(old_lam);

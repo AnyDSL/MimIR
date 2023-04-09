@@ -41,18 +41,17 @@ bool should_flatten(const Def* T) {
 }
 
 const Def* Reshape::rewrite_def_(const Def* def) {
-    // We ignore types.
+    // We ignore types, Globals, and Axioms.
     switch (def->node()) {
         // TODO: check if bot: Cn[[A,B],Cn[Ret]] is handled correctly
         // case Node::Bot:
         // case Node::Top:
         case Node::Type:
         case Node::Univ:
-        case Node::Nat: return def;
+        case Node::Nat:
+        case Node::Axiom:
+        case Node::Global: return def;
     }
-
-    // ignore axioms
-    if (def->isa<Axiom>()) return def;
 
     // This is dead code for debugging purposes.
     // It allows for inspection of the current def.
@@ -64,8 +63,6 @@ const Def* Reshape::rewrite_def_(const Def* def) {
     if (def->isa<Var>()) world().ELOG("Var: {}", def);
     assert(!def->isa<Var>());
 
-    auto& w = world();
-
     if (auto app = def->isa<App>()) {
         auto callee = rewrite_def(app->callee());
         auto arg    = rewrite_def(app->arg());
@@ -76,7 +73,7 @@ const Def* Reshape::rewrite_def_(const Def* def) {
         auto reshaped_arg = reshape(arg);
         world().DLOG("reshape arg {} : {}", arg, arg->type());
         world().DLOG("into arg {} : {}", reshaped_arg, reshaped_arg->type());
-        auto new_app = w.app(callee, reshaped_arg);
+        auto new_app = world().app(callee, reshaped_arg);
         return new_app;
     } else if (auto lam = def->isa_mut<Lam>()) {
         world().DLOG("rewrite_def lam {} : {}", def, def->type());
@@ -86,20 +83,19 @@ const Def* Reshape::rewrite_def_(const Def* def) {
         return new_lam;
     } else if (auto tuple = def->isa<Tuple>()) {
         DefArray elements(tuple->ops(), [&](const Def* op) { return rewrite_def(op); });
-        return w.tuple(elements);
+        return world().tuple(elements);
     } else {
         auto new_ops = DefArray(def->num_ops(), [&](auto i) { return rewrite_def(def->op(i)); });
         // Warning: if the new_type is not correct, inconcistencies will arise.
         auto new_type = rewrite_def(def->type());
-        auto new_def  = def->rebuild(w, new_type, new_ops);
+        auto new_def  = def->rebuild(world(), new_type, new_ops);
         return new_def;
     }
 }
 
 Lam* Reshape::reshape_lam(Lam* def) {
-    auto& w = def->world();
     if (!def->is_set()) {
-        w.DLOG("reshape_lam: {} is not a set", def);
+        world().DLOG("reshape_lam: {} is not a set", def);
         return def;
     }
     auto pi_ty  = def->type();
@@ -111,14 +107,14 @@ Lam* Reshape::reshape_lam(Lam* def) {
     if (name != "main") { // TODO I don't this is correct. we should check for def->is_external
         // TODO maybe use new_lam->debug_suff("_reshape"), instead?
         name          = name + "_reshape";
-        new_lam       = w.mut_lam(new_ty)->set((name));
+        new_lam       = world().mut_lam(new_ty)->set((name));
         old2new_[def] = new_lam;
     } else {
         new_lam = def;
     }
 
-    w.DLOG("Reshape lam: {} : {}", def, pi_ty);
-    w.DLOG("         to: {} : {}", new_lam, new_ty);
+    world().DLOG("Reshape lam: {} : {}", def, pi_ty);
+    world().DLOG("         to: {} : {}", new_lam, new_ty);
 
     // We associate the arguments (reshape the old vars).
     // Alternatively, we could use beta reduction (reduce) to do this for us.
@@ -127,11 +123,11 @@ Lam* Reshape::reshape_lam(Lam* def) {
     // We deeply associate `def->var()` with `new_arg` in a reconstructed shape.
     // Idea: first make new_arg into "atomic" def list, then recrusively imitate `def->var`.
     auto reformed_new_arg = reshape(new_arg, def->var()->type()); // `def->var()->type() = pi_ty`
-    w.DLOG("var {} : {}", def->var(), def->var()->type());
-    w.DLOG("new var {} : {}", new_arg, new_arg->type());
-    w.DLOG("reshaped new_var {} : {}", reformed_new_arg, reformed_new_arg->type());
-    w.DLOG("{}", def->var()->type());
-    w.DLOG("{}", reformed_new_arg->type());
+    world().DLOG("var {} : {}", def->var(), def->var()->type());
+    world().DLOG("new var {} : {}", new_arg, new_arg->type());
+    world().DLOG("reshaped new_var {} : {}", reformed_new_arg, reformed_new_arg->type());
+    world().DLOG("{}", def->var()->type());
+    world().DLOG("{}", reformed_new_arg->type());
     old2new_[def->var()] = reformed_new_arg;
     // TODO: add if necessary. This probably was an issue with unintended overriding due to bad previous naming.
     // TODO: Remove after testing.
@@ -146,7 +142,7 @@ Lam* Reshape::reshape_lam(Lam* def) {
         new_lam->make_external();
     }
 
-    w.DLOG("finished transforming: {} : {}", new_lam, new_ty);
+    world().DLOG("finished transforming: {} : {}", new_lam, new_ty);
     return new_lam;
 }
 
@@ -167,12 +163,10 @@ bool is_mem_ty(const Def* T) { return match<mem::M>(T); }
 DefArray vec2array(const std::vector<const Def*>& vec) { return DefArray(vec.begin(), vec.end()); }
 
 const Def* Reshape::reshape_type(const Def* T) {
-    auto& w = T->world();
-
     if (auto pi = T->isa<Pi>()) {
         auto new_dom = reshape_type(pi->dom());
         auto new_cod = reshape_type(pi->codom());
-        return w.pi(new_dom, new_cod);
+        return world().pi(new_dom, new_cod);
     } else if (auto sigma = T->isa<Sigma>()) {
         auto flat_types = flatten_ty(sigma);
         std::vector<const Def*> new_types(flat_types.size());
@@ -187,10 +181,10 @@ const Def* Reshape::reshape_type(const Def* T) {
             new_types.erase(std::remove_if(new_types.begin(), new_types.end(), is_mem_ty), new_types.end());
             // readd mem in the front
             if (mem) new_types.insert(new_types.begin(), mem);
-            auto reshaped_type = w.sigma(vec2array(new_types));
+            auto reshaped_type = world().sigma(vec2array(new_types));
             return reshaped_type;
         } else {
-            if (new_types.size() == 0) return w.sigma();
+            if (new_types.size() == 0) return world().sigma();
             if (new_types.size() == 1) return new_types[0];
             const Def* mem = nullptr;
             const Def* ret = nullptr;
@@ -205,9 +199,9 @@ const Def* Reshape::reshape_type(const Def* T) {
                 new_types.pop_back();
             }
             // Create the arg form `[[mem,args],ret]`
-            const Def* args = w.sigma(vec2array(new_types));
-            if (mem) args = w.sigma({mem, args});
-            if (ret) args = w.sigma({args, ret});
+            const Def* args = world().sigma(vec2array(new_types));
+            if (mem) args = world().sigma({mem, args});
+            if (ret) args = world().sigma({args, ret});
             return args;
         }
     } else {
@@ -270,8 +264,6 @@ const Def* Reshape::reshape(const Def* def, const Def* target) {
 // TODO: ignore mem erase, replace with more general
 // TODO: capture names
 const Def* Reshape::reshape(const Def* def) {
-    auto& w = def->world();
-
     auto flat_defs = flatten_def(def);
     if (flat_defs.size() == 1) return flat_defs[0];
     // TODO: move mem removal to flatten_def
@@ -286,7 +278,7 @@ const Def* Reshape::reshape(const Def* def) {
             flat_defs.end());
         // insert mem
         if (mem) flat_defs.insert(flat_defs.begin(), mem);
-        return w.tuple(vec2array(flat_defs));
+        return world().tuple(vec2array(flat_defs));
     } else {
         // arg style
         // [[mem,args],ret]
@@ -303,9 +295,9 @@ const Def* Reshape::reshape(const Def* def) {
             ret = flat_defs.back();
             flat_defs.pop_back();
         }
-        const Def* args = w.tuple(vec2array(flat_defs));
-        if (mem) args = w.tuple({mem, args});
-        if (ret) args = w.tuple({args, ret});
+        const Def* args = world().tuple(vec2array(flat_defs));
+        if (mem) args = world().tuple({mem, args});
+        if (ret) args = world().tuple({args, ret});
         return args;
     }
 }
