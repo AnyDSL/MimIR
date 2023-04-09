@@ -14,7 +14,7 @@ namespace clos {
 class ClosConvPrep : public RWPass<ClosConvPrep, Lam> {
 public:
     ClosConvPrep(PassMan& man, EtaExp* eta_exp)
-        : RWPass(man, "eta_cont")
+        : RWPass(man, "clos_conv_prep")
         , eta_exp_(eta_exp)
         , old2wrapper_()
         , lam2fscope_() {}
