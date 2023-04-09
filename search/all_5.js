@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['f_0',['f',['../structthorin_1_1Elem.html#a00f7ab23a26038ee3fef5ed8ceda6af9',1,'thorin::Elem::f()'],['../namespacethorin_1_1math.html#a6dd8e88f4b0e547ae80c76780070119aa90f68af5cf3a2df678258becc2d3f714',1,'thorin::math::f()'],['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eaa6d4ae7d990ff7dbfef99471f1bd5622',1,'thorin::core::f()']]],
+  ['f_0',['f',['../structthorin_1_1Elem.html#a00f7ab23a26038ee3fef5ed8ceda6af9',1,'thorin::Elem::f()'],['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa90f68af5cf3a2df678258becc2d3f714',1,'thorin::math::f()'],['../namespacethorin_1_1core.html#a60b6d2484fb68ef9ce568db15502e349aa6d4ae7d990ff7dbfef99471f1bd5622',1,'thorin::core::f()']]],
   ['f_1',['F',['../namespacethorin_1_1math.html#a9dcd63c8ff0e514ef5d45f52082e9444',1,'thorin::math']]],
   ['f16_2',['f16',['../namespacethorin.html#a76438d3d8f2823c15edaf4754c733a91',1,'thorin']]],
   ['f2f_3',['f2f',['../namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2da7b39587020327361b25edf8fdae94209',1,'thorin::math']]],
@@ -13,8 +13,8 @@ var searchData=
   ['f_5fcfg_10',['f_cfg',['../classthorin_1_1CFA.html#ae4a109ef76a97fb3ab65511cab7140df',1,'thorin::CFA::f_cfg()'],['../classthorin_1_1Scope.html#a2c8fbd2333af4d00bd701452f21f2369',1,'thorin::Scope::f_cfg()']]],
   ['fast_11',['fast',['../namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa75ae81d9f34fba3b8ff7d443518ac983',1,'thorin::math']]],
   ['fc_12',['fc',['../namespacethorin_1_1math.html#a6dd8e88f4b0e547ae80c76780070119aa086bc53f36970b37e40ffc9d36fc30dc',1,'thorin::math']]],
-  ['filter_13',['filter',['../classthorin_1_1Lam.html#a5dd1b643b9a52c1925c795894713e2f7',1,'thorin::Lam']]],
-  ['filter_14',['Filter',['../classthorin_1_1Lam.html#a00fff27553becf66ab25fea2e8eb7a55',1,'thorin::Lam']]],
+  ['filter_13',['Filter',['../classthorin_1_1Lam.html#a00fff27553becf66ab25fea2e8eb7a55',1,'thorin::Lam']]],
+  ['filter_14',['filter',['../classthorin_1_1Lam.html#a5dd1b643b9a52c1925c795894713e2f7',1,'thorin::Lam']]],
   ['finalize_15',['finalize',['../classthorin_1_1Def.html#a3717421752dcb88f0c58773c85c09fa7',1,'thorin::Def::finalize()'],['../classthorin_1_1dot_1_1Emitter.html#a9cb407822cd201ea721b57435fc41444',1,'thorin::dot::Emitter::finalize()'],['../classthorin_1_1ll_1_1Emitter.html#a0eaa20953360e78a6705fc3e84fa5afa',1,'thorin::ll::Emitter::finalize()']]],
   ['find_16',['find',['../classthorin_1_1Infer.html#a2360ebd60a14311cf8b6730835958b34',1,'thorin::Infer::find()'],['../classthorin_1_1fe_1_1Scopes.html#a724efe05900c16b286ce5492e205e85d',1,'thorin::fe::Scopes::find()'],['../classthorin_1_1Bound.html#aecf17a4b630b45614381bba2860b06ac',1,'thorin::Bound::find()'],['../namespacethorin.html#a9ada650270dac66b3f87bca30593dc5e',1,'thorin::find(const IndexMap&lt; Indexer, Key, Value * &gt; &amp;map, Key key)'],['../namespacethorin.html#aa0a62994b63462d082addeddb1c92029',1,'thorin::find(IndexMap&lt; Indexer, Key, Value * &gt; &amp;map, Key key)']]],
   ['find_5fcmd_17',['find_cmd',['../namespacethorin_1_1sys.html#a2eda434a3eb1dcbf48dd570d8d2f7733',1,'thorin::sys']]],

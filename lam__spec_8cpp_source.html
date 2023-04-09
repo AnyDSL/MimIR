@@ -151,45 +151,46 @@ $(document).ready(function(){initNavTree('lam__spec_8cpp_source.html',''); initR
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keyword">auto</span> [app, old_lam] = <a class="code hl_function" href="namespacethorin.html#aed3d96cb0b2cc194a61801ac78bc1a5c">isa_apped_mut_lam</a>(def);</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespacethorin.html#afbcb1bda3428d2211797b024635936ee">isa_workable</a>(old_lam)) <span class="keywordflow">return</span> def;</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    Scope scope(old_lam);</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="comment">// Skip recursion to avoid infinite inlining.</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordflow">if</span> (scope.free_defs().contains(old_lam)) <span class="keywordflow">return</span> def;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <a class="code hl_typedef" href="namespacethorin.html#a79fff1449ba1eaecead8f607520f8574">DefVec</a> new_doms, new_vars, new_args;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keyword">auto</span> skip     = old_lam-&gt;ret_var() &amp;&amp; <a class="code hl_function" href="namespacethorin.html#a1ea2d1f8b0075a5710d3da6b0447ab01">is_top_level</a>(old_lam);</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keyword">auto</span> old_doms = old_lam-&gt;doms();</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> dom : old_doms.skip_back(skip))</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        <span class="keywordflow">if</span> (!dom-&gt;isa&lt;Pi&gt;()) new_doms.emplace_back(dom);</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordflow">if</span> (skip) new_doms.emplace_back(old_lam-&gt;doms().back());</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordflow">if</span> (new_doms.size() == old_lam-&gt;num_doms()) <span class="keywordflow">return</span> def;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keyword">auto</span> new_pi  = <a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>().<a class="code hl_function" href="classthorin_1_1World.html#ada59fac911d8db2ace72a5c66a148525">cn</a>(<a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>().sigma(new_doms));</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keyword">auto</span> new_lam = old_lam-&gt;<a class="code hl_function" href="classthorin_1_1Pi.html#a9a177d63be5b05cd3adfb00fcea7381a">stub</a>(<a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>(), new_pi);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> arg_i = 0, var_i = 0, n = app-&gt;num_args() - skip; arg_i != n; ++arg_i) {</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <span class="keyword">auto</span> arg = app-&gt;arg(arg_i);</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        <span class="keywordflow">if</span> (old_lam-&gt;dom(arg_i)-&gt;isa&lt;Pi&gt;()) {</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>            new_vars.emplace_back(arg);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>            new_vars.emplace_back(new_lam-&gt;var(var_i++));</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>            new_args.emplace_back(arg);</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        }</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    }</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordflow">if</span> (skip) {</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        new_vars.emplace_back(new_lam-&gt;vars().back());</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        new_args.emplace_back(app-&gt;args().back());</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    }</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    new_lam-&gt;<a class="code hl_function" href="classthorin_1_1Pi.html#a11b32506da11fb997f570fd983f08a5e">set</a>(old_lam-&gt;reduce(<a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>().tuple(new_vars)));</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>().DLOG(<span class="stringliteral">&quot;{} -&gt; {}: {} -&gt; {})&quot;</span>, old_lam, new_lam, old_lam-&gt;dom(), new_lam-&gt;dom());</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordflow">return</span> old2new_[def] = <a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>().<a class="code hl_function" href="classthorin_1_1World.html#acead59ea11597f876b9c1ee24bf2e48a">app</a>(new_lam, new_args);</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>}</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>} <span class="comment">// namespace thorin</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="comment">// Skip recursion to avoid infinite inlining if not &quot;aggressive_lam_spec&quot;.</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="comment">// This is a hack - but we want to get rid off this Pass anyway.</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    Scope scope(old_lam);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>().flags().aggressive_lam_spec &amp;&amp; scope.free_defs().contains(old_lam)) <span class="keywordflow">return</span> def;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <a class="code hl_typedef" href="namespacethorin.html#a79fff1449ba1eaecead8f607520f8574">DefVec</a> new_doms, new_vars, new_args;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keyword">auto</span> skip     = old_lam-&gt;ret_var() &amp;&amp; <a class="code hl_function" href="namespacethorin.html#a1ea2d1f8b0075a5710d3da6b0447ab01">is_top_level</a>(old_lam);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keyword">auto</span> old_doms = old_lam-&gt;doms();</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> dom : old_doms.skip_back(skip))</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="keywordflow">if</span> (!dom-&gt;isa&lt;Pi&gt;()) new_doms.emplace_back(dom);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordflow">if</span> (skip) new_doms.emplace_back(old_lam-&gt;doms().back());</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">if</span> (new_doms.size() == old_lam-&gt;num_doms()) <span class="keywordflow">return</span> def;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keyword">auto</span> new_pi  = <a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>().<a class="code hl_function" href="classthorin_1_1World.html#ada59fac911d8db2ace72a5c66a148525">cn</a>(<a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>().sigma(new_doms));</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keyword">auto</span> new_lam = old_lam-&gt;<a class="code hl_function" href="classthorin_1_1Pi.html#a9a177d63be5b05cd3adfb00fcea7381a">stub</a>(<a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>(), new_pi);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> arg_i = 0, var_i = 0, n = app-&gt;num_args() - skip; arg_i != n; ++arg_i) {</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        <span class="keyword">auto</span> arg = app-&gt;arg(arg_i);</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        <span class="keywordflow">if</span> (old_lam-&gt;dom(arg_i)-&gt;isa&lt;Pi&gt;()) {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>            new_vars.emplace_back(arg);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>            new_vars.emplace_back(new_lam-&gt;var(var_i++));</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>            new_args.emplace_back(arg);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        }</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    }</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">if</span> (skip) {</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        new_vars.emplace_back(new_lam-&gt;vars().back());</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        new_args.emplace_back(app-&gt;args().back());</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    }</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    new_lam-&gt;<a class="code hl_function" href="classthorin_1_1Pi.html#a11b32506da11fb997f570fd983f08a5e">set</a>(old_lam-&gt;reduce(<a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>().tuple(new_vars)));</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>().DLOG(<span class="stringliteral">&quot;{} -&gt; {}: {} -&gt; {})&quot;</span>, old_lam, new_lam, old_lam-&gt;dom(), new_lam-&gt;dom());</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordflow">return</span> old2new_[def] = <a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>().<a class="code hl_function" href="classthorin_1_1World.html#acead59ea11597f876b9c1ee24bf2e48a">app</a>(new_lam, new_args);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>}</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>} <span class="comment">// namespace thorin</span></div>
 <div class="ttc" id="abeta__red_8h_html"><div class="ttname"><a href="beta__red_8h.html">beta_red.h</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Def_html_a7701ec0e042a91951dcff7bf0b56573c"><div class="ttname"><a href="classthorin_1_1Def.html#a7701ec0e042a91951dcff7bf0b56573c">thorin::Def::is_external</a></div><div class="ttdeci">bool is_external() const</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00363">def.h:363</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Lam_html"><div class="ttname"><a href="classthorin_1_1Lam.html">thorin::Lam</a></div><div class="ttdef"><b>Definition:</b> <a href="lam_8h_source.html#l00053">lam.h:53</a></div></div>

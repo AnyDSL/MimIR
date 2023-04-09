@@ -1,5 +1,6 @@
 var NAVTREEINDEX27 =
 {
+"namespacethorin_1_1matrix.html#a145673d51fccbfe62fb8486b219434e8":[3,0,0,13,15],
 "namespacethorin_1_1matrix.html#a16168e39eacc252a7e17796ab5ce8771":[3,0,0,13,6],
 "namespacethorin_1_1matrix.html#a17fe5e912d09fe66b52704b8c96ad3cb":[3,0,0,13,19],
 "namespacethorin_1_1matrix.html#a1e9655f096ec704d830d265bcc7ba032":[3,0,0,13,18],
@@ -248,6 +249,5 @@ var NAVTREEINDEX27 =
 "refly_8cpp.html#abf681265909adf3d3e8116c93c0ba179":[6,0,2,11,2,1],
 "refly_8cpp_source.html":[6,0,2,11,2],
 "refly_8h.html":[6,0,2,11,3],
-"refly_8h.html#a2cf796606d851c9bab06caf5a2332170":[6,0,2,11,3,1],
-"refly_8h.html#a30122fc088057538572d8631a0df6d2b":[6,0,2,11,3,0]
+"refly_8h.html#a2cf796606d851c9bab06caf5a2332170":[6,0,2,11,3,1]
 };
