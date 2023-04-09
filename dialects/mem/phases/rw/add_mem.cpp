@@ -112,6 +112,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
 
     // world().DLOG("rewriting {} : {} in {}", def, def->type(), place);
 
+    if (auto global = def->isa<Global>()) return global;
     if (auto mut_lam = def->isa_mut<Lam>(); mut_lam && !mut_lam->is_set()) return def;
     if (auto ax = def->isa<Axiom>()) return ax;
     if (auto it = mem_rewritten_.find(def); it != mem_rewritten_.end()) {

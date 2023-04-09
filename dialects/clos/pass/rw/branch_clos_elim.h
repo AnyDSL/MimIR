@@ -12,7 +12,7 @@ namespace thorin::clos {
 class BranchClosElim : public RWPass<BranchClosElim, Lam> {
 public:
     BranchClosElim(PassMan& man)
-        : RWPass(man, "unbox_closures")
+        : RWPass(man, "branch_clos_elim")
         , branch2dropped_() {}
 
     Ref rewrite(Ref) override;

@@ -112,7 +112,7 @@ const App* ClosConvPrep::rewrite_callee(const App* app) {
             auto branches = br->tuple();
             // Eta-Expand branches
             if (branches->isa<Tuple>() && branches->type()->isa<Arr>()) {
-                for (auto i = 0u; i < branches->num_ops(); i++) {
+                for (size_t i = 0, e = branches->num_ops(); i != e; ++i) {
                     if (!branches->op(i)->isa_mut<Lam>()) {
                         auto wrapper = eta_wrap(branches->op(i), attr::bot)->set("eta_br");
                         w.DLOG("eta wrap branch: {} -> {}", branches->op(i), wrapper);
@@ -130,7 +130,7 @@ const App* ClosConvPrep::rewrite_callee(const App* app) {
 Ref ClosConvPrep::rewrite(Ref def) {
     if (ignore_ || match<attr>(def)) return def;
 
-    if (auto app = def->isa<App>(); app) {
+    if (auto app = def->isa<App>()) {
         app = rewrite_arg(app);
         app = rewrite_callee(app);
         return app;
