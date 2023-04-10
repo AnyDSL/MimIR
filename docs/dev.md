@@ -45,7 +45,7 @@ Finally, we execute the generated program with `./hello a b c` and `assert` that
 
 ## Immutables vs. Mutables {#mut}
 
-There are tow different kind of [Defs](@ref thorin::Def) in Thorin: *mutables* and *immutables*:
+There are two different kind of [Defs](@ref thorin::Def) in Thorin: *mutables* and *immutables*:
 
 | **Immutable**                                                         | **Mutable**                                                                   |
 |-----------------------------------------------------------------------|-------------------------------------------------------------------------------|
@@ -62,7 +62,7 @@ There are tow different kind of [Defs](@ref thorin::Def) in Thorin: *mutables* a
 ### Matching Builtins
 
 Usually, you will encounter a [Def](@ref thorin::Def) as [Ref](@ref thorin::Ref) which is just a wrapper for a `const Def*`.
-Use [Def::isa_mut<T>](@ref thorin::Def::isa_mut) like a `dynamic_cast` to check whether a specific [Ref](@ref thorin::Ref)/`const Def*` is in fact mutable to cast away the `const`,
+Use [Def::isa_mut](@ref thorin::Def::isa_mut) like a `dynamic_cast` to check whether a specific [Ref](@ref thorin::Ref)/`const Def*` is in fact mutable to cast away the `const`,
 or [Def::as_mut](@ref thorin::Def::as_mut) to force this cast (like a `static_cast` and `assert` if not possible):
 ```cpp
 void foo(Ref def) {
