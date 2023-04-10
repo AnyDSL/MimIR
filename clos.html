@@ -114,27 +114,27 @@ $(document).ready(function(){initNavTree('clos.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md67">Dependencies</a></li>
-<li class="level1"><a href="#autotoc_md68">Operations related to longjmp</a></li>
-<li class="level1"><a href="#autotoc_md69">Closure Attribute</a></li>
-<li class="level1"><a href="#autotoc_md70">Compilation Passes and Phases</a><ul><li class="level2"><a href="#autotoc_md71">Passes</a></li>
-<li class="level2"><a href="#autotoc_md72">Phases</a></li>
+<ul><li class="level1"><a href="#autotoc_md64">Dependencies</a></li>
+<li class="level1"><a href="#autotoc_md65">Operations related to longjmp</a></li>
+<li class="level1"><a href="#autotoc_md66">Closure Attribute</a></li>
+<li class="level1"><a href="#autotoc_md67">Compilation Passes and Phases</a><ul><li class="level2"><a href="#autotoc_md68">Passes</a></li>
+<li class="level2"><a href="#autotoc_md69">Phases</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md_build_docs_dialects_clos"></a></p>
-<h1><a class="anchor" id="autotoc_md67"></a>
+<h1><a class="anchor" id="autotoc_md64"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">.import mem;</div>
 <div class="line">.import compile;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md68"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md65"></a>
 Operations related to longjmp</h1>
 <div class="fragment"><div class="line">.let BufPtr = %mem.Ptr ((.Idx 256), 0:.Nat);</div>
 <div class="line">.ax %clos.alloc_jmpbuf: [[], %mem.M] -&gt; [%mem.M, BufPtr];</div>
 <div class="line">.ax %clos.setjmp: [%mem.M, BufPtr] -&gt; [%mem.M, .Idx 4294967296];</div>
 <div class="line">.ax %clos.longjmp: .Cn [%mem.M, BufPtr, .Idx 4294967296];</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md69"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md66"></a>
 Closure Attribute</h1>
 <p >Used internally to classify the use of differen Lambdas. <a class="el" href="classthorin_1_1clos_1_1ClosConvPrep.html">thorin::clos::ClosConvPrep</a> places these attributes:</p><ul>
 <li><code>ret</code>: returning lambda</li>
@@ -144,9 +144,9 @@ Closure Attribute</h1>
 <li><code>bot</code>: no special use <div class="fragment"><div class="line">.ax %clos.attr(ret, freeBB, fstclassBB, esc, bot): Π T: * -&gt; T -&gt; T, normalize_clos;</div>
 </div><!-- fragment --></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md70"></a>
+<h1><a class="anchor" id="autotoc_md67"></a>
 Compilation Passes and Phases</h1>
-<h2><a class="anchor" id="autotoc_md71"></a>
+<h2><a class="anchor" id="autotoc_md68"></a>
 Passes</h2>
 <div class="fragment"><div class="line">.ax %clos.clos_conv_prep_pass: %compile.Pass;</div>
 <div class="line">.ax %clos.clos_conv_pass: %compile.Pass;</div>
@@ -155,7 +155,7 @@ Passes</h2>
 <div class="line">.ax %clos.clos2sjlj_pass: %compile.Pass;</div>
 <div class="line">.ax %clos.lower_typed_clos_pass: %compile.Pass;</div>
 <div class="line">.ax %clos.eta_red_bool_pass: .Bool -&gt; %compile.Pass;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md72"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md69"></a>
 Phases</h2>
 <div class="fragment"><div class="line">.let clos_opt1_phase = {</div>
 <div class="line">  .let eta_red = (%clos.eta_red_bool_pass (1:.Bool) ); </div>

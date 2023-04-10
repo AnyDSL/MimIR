@@ -26,11 +26,11 @@ var NAVTREE =
 [
   [ "Thorin", "index.html", [
     [ "Introduction", "index.html", [
-      [ "Building", "index.html#autotoc_md45", [
-        [ "Install", "index.html#autotoc_md46", null ],
-        [ "Build Switches", "index.html#autotoc_md47", null ]
+      [ "Building", "index.html#autotoc_md42", [
+        [ "Install", "index.html#autotoc_md43", null ],
+        [ "Build Switches", "index.html#autotoc_md44", null ]
       ] ],
-      [ "Dependencies", "index.html#autotoc_md48", null ]
+      [ "Dependencies", "index.html#autotoc_md45", null ]
     ] ],
     [ "Documentation", "usergroup0.html", [
       [ "Command-Line Reference", "cli.html", null ],
@@ -115,14 +115,14 @@ var NAVTREEINDEX =
 "classthorin_1_1mem_1_1SSAConstr.html#a77523bbc1cf5687f0de2bfda7508038e",
 "container_8h.html#ad35b50772866ed1025ef1473bb99856a",
 "debug__dump_8h_source.html",
-"functions_func.html",
-"math_2autogen_8h.html#a3ce804e3dfaa4ffc4002611767d5e58ba3ba963458121173bac48573d0dc48892",
-"mem_2autogen_8h.html#ac08277b34b0939ecee1ec2add68bbee8",
-"namespacethorin.html#a83dd1a97c4b17f7188a981d3036cb717",
-"namespacethorin_1_1clos.html#ae83e8d057abe7c818bdc3ac863fce298",
-"namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6afaf30cd898f893e3adf3db1d00e46a42",
-"namespacethorin_1_1matrix.html#a145673d51fccbfe62fb8486b219434e8",
-"refly_8h.html#a30122fc088057538572d8631a0df6d2b",
+"functions_func_b.html",
+"math_2autogen_8h.html#a3ce804e3dfaa4ffc4002611767d5e58ba4657aa99e1a2428ea4cf07f371243135",
+"mem_2autogen_8h.html#ad0aa4023e8ce5b22802d114ee5312bf1",
+"namespacethorin.html#a85d359a40aef5ef0148d3fc6880b8a00",
+"namespacethorin_1_1clos.html#aed43da0142d48a19792c9ded903e2310",
+"namespacethorin_1_1core.html#afae2a2fc85b617562167d622078c561b",
+"namespacethorin_1_1matrix.html#a16168e39eacc252a7e17796ab5ce8771",
+"refly_8h_source.html",
 "structthorin_1_1World_1_1State.html#af3aeb3115c071d23a6c3e18f47999a18"
 ];
 
