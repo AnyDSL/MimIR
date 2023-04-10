@@ -86,8 +86,8 @@ add_thorin_plugin(core
         core/core.cpp
         core/core.h
         core/normalizers.cpp
-        core/be/ll/ll.cpp
-        core/be/ll/ll.h
+        core/be/ll.cpp
+        core/be/ll.h
     DEPENDS
         math
         mem

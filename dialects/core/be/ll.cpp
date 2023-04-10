@@ -1,4 +1,4 @@
-#include "dialects/core/be/ll/ll.h"
+#include "dialects/core/be/ll.h"
 
 #include <deque>
 #include <fstream>
@@ -963,12 +963,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         return bb.assign(name, "{} {} {} to {}", op, t_src, v_src, t_dst);
     }
-    auto& world = def->world();
-    world.DLOG("unhandled def: {} : {}", def, def->type());
-    def->dump();
-
-    def->dump(1);
-    err("unhandled def in LLVM backend: {}", def);
+    err("unhandled def in LLVM backend: {} : {}", def, def->type());
 }
 
 void emit(World& world, std::ostream& ostream) {

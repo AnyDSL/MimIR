@@ -3,7 +3,7 @@
 #include <thorin/config.h>
 #include <thorin/pass/pass.h>
 
-#include "dialects/core/be/ll/ll.h"
+#include "dialects/core/be/ll.h"
 
 using namespace thorin;
 
