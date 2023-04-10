@@ -119,8 +119,11 @@ $(document).ready(function(){initNavTree('dev.html',''); initResizable(); });
 </ul>
 </li>
 <li class="level1"><a href="#autotoc_md16">Immutables vs. Mutables</a></li>
-<li class="level1"><a href="#autotoc_md17">Matching IR</a></li>
-<li class="level1"><a href="#autotoc_md18">Iterating over the Program</a></li>
+<li class="level1"><a href="#autotoc_md17">Matching IR</a><ul><li class="level2"><a href="#autotoc_md18">Matching Builtins</a></li>
+<li class="level2"><a href="#autotoc_md19">Matching Axioms</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md20">Iterating over the Program</a></li>
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md_docs_dev"></a></p>
@@ -154,8 +157,8 @@ Compiling and Executing</h1>
 <div class="line">std::system(<span class="stringliteral">&quot;clang test.ll -o test&quot;</span>);</div>
 <div class="line">assert(4 == WEXITSTATUS(std::system(<span class="stringliteral">&quot;./test a b c&quot;</span>)));</div>
 <div class="ttc" id="amain_8cpp_html_a3c04138a5bfe5d72780bb7e82a18e627"><div class="ttname"><a href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a></div><div class="ttdeci">int main(int argc, char **argv)</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00025">main.cpp:25</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1clos_html_a5c55a5bd62132e28b49915902ea0117aa2348b9af292e8373483f8ff836d5aac2"><div class="ttname"><a href="namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aa2348b9af292e8373483f8ff836d5aac2">thorin::clos::ret</a></div><div class="ttdeci">@ ret</div><div class="ttdef"><b>Definition:</b> <a href="clos_2autogen_8h_source.html#l00016">autogen.h:16</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1core_html_a016fae77d6f5857b429ceb5b433c4937aa1f7876be8b2419af003e22a537fa0a8"><div class="ttname"><a href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937aa1f7876be8b2419af003e22a537fa0a8">thorin::core::s</a></div><div class="ttdeci">@ s</div><div class="ttdef"><b>Definition:</b> <a href="core_2autogen_8h_source.html#l00221">autogen.h:221</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1clos_html_a5c55a5bd62132e28b49915902ea0117aa2348b9af292e8373483f8ff836d5aac2"><div class="ttname"><a href="namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aa2348b9af292e8373483f8ff836d5aac2">thorin::clos::ret</a></div><div class="ttdeci">@ ret</div><div class="ttdef"><b>Definition:</b> <a href="clos_2autogen_8h_source.html#l00044">autogen.h:44</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1core_html_a016fae77d6f5857b429ceb5b433c4937aa1f7876be8b2419af003e22a537fa0a8"><div class="ttname"><a href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937aa1f7876be8b2419af003e22a537fa0a8">thorin::core::s</a></div><div class="ttdeci">@ s</div><div class="ttdef"><b>Definition:</b> <a href="core_2autogen_8h_source.html#l00016">autogen.h:16</a></div></div>
 <div class="ttc" id="anamespacethorin_html_a9e64c2e92ce1a1166c536644960116c2"><div class="ttname"><a href="namespacethorin.html#a9e64c2e92ce1a1166c536644960116c2">thorin::optimize</a></div><div class="ttdeci">void optimize(World &amp;world)</div><div class="ttdef"><b>Definition:</b> <a href="optimize_8cpp_source.html#l00020">optimize.cpp:20</a></div></div>
 </div><!-- fragment --><p> TODO explain</p>
 <h1><a class="anchor" id="autotoc_md14"></a>
@@ -186,35 +189,105 @@ Immutables vs. Mutables</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Def.html#aa3ef5a959bc070291a921d128553ae83">Def::rebuild</a>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Def.html#a8bbe80423f2be4e8159378069236bd62">Def::stub</a>   </td></tr>
 </table>
-<p >Usually, you will encounter <code>defs</code> as <code>const Def*</code>. Use <a class="el" href="classthorin_1_1Def.html#aabf1066a0dbcaa6ec6f08877b86767e4">Def::isa_mut</a> to check whether a specific <code>Def</code> is in fact mutable to cast away the <code>const</code> or <a class="el" href="classthorin_1_1Def.html#af11b2eb1d65239b9e9f5ca1920742ddb">Def::as_mut</a> to force this cast (and assert if not possible): </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> Def* def) {</div>
+<h1><a class="anchor" id="autotoc_md17"></a>
+Matching IR</h1>
+<h2><a class="anchor" id="autotoc_md18"></a>
+Matching Builtins</h2>
+<p >Usually, you will encounter a <a class="el" href="classthorin_1_1Def.html">Def</a> as <a class="el" href="classthorin_1_1Ref.html">Ref</a> which is just a wrapper for a <code>const Def*</code>. Use <a class="el" href="classthorin_1_1Def.html#aabf1066a0dbcaa6ec6f08877b86767e4">Def::isa_mut</a> to check whether a specific <a class="el" href="classthorin_1_1Ref.html">Ref</a>/<code>const Def*</code> is in fact mutable to cast away the <code>const</code> or <a class="el" href="classthorin_1_1Def.html#af11b2eb1d65239b9e9f5ca1920742ddb">Def::as_mut</a> to force this cast (and assert if not possible): </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(Ref def) {</div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> mut = def-&gt;isa_mut()) {</div>
-<div class="line">        <span class="comment">// mut of type Def* - const has been removed!</span></div>
-<div class="line">        <span class="comment">// This gives give you access to the non-const methods that only make sense for mutables:</span></div>
+<div class="line">        <span class="comment">// mut of type &quot;Def*&quot; - &quot;const&quot; has been removed!</span></div>
+<div class="line">        <span class="comment">// This gives you access to the non-const methods that only make sense for mutables:</span></div>
 <div class="line">        <span class="keyword">auto</span> var = mut-&gt;var();</div>
 <div class="line">        <span class="keyword">auto</span> stub = mut-&gt;stub(world, type, debug)</div>
 <div class="line">        <span class="comment">// ...</span></div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    <span class="comment">// ...</span></div>
-<div class="line"> </div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> lam = def-&gt;isa_mut&lt;Lam&gt;()) {</div>
-<div class="line">        <span class="comment">// lam of type Lam* - const has been removed!</span></div>
-<div class="line">    }</div>
-<div class="line">}</div>
-</div><!-- fragment --><p> You can also check whether a specific <code>def</code> is really an *imm*utable: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> Def* def) {</div>
-<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> s = def-&gt;isa_imm()) {</div>
-<div class="line">        <span class="comment">// s cannot be a mutable</span></div>
+<div class="line">        <span class="comment">// lam of type &quot;Lam*&quot; - &quot;const&quot; has been removed!</span></div>
 <div class="line">    }</div>
 <div class="line"> </div>
-<div class="line">    <span class="comment">// ...</span></div>
+<div class="line">    <span class="comment">// lam of type &quot;Lam*&quot; and *must* be a mutable Lam.</span></div>
+<div class="line">    <span class="comment">// Otherwise, an assert will fire.</span></div>
+<div class="line">    <span class="keyword">auto</span> lam = def-&gt;as&lt;<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a3083dfa50d05b28c3cafe6ec116d0362">Lam</a>&gt;();</div>
+<div class="line">}</div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a56e125fc0469d17b1569c31b803d08b5a3083dfa50d05b28c3cafe6ec116d0362"><div class="ttname"><a href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a3083dfa50d05b28c3cafe6ec116d0362">thorin::Node::Lam</a></div><div class="ttdeci">@ Lam</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00037">def.h:37</a></div></div>
+</div><!-- fragment --><p> You can also check whether a specific <a class="el" href="classthorin_1_1Ref.html">Ref</a>/<code>const Def*</code> is in fact an <em>immutable</em>: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(Ref def) {</div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> imm = def-&gt;isa_imm()) {</div>
+<div class="line">        <span class="comment">// imm of type &quot;const Def*&quot; and is an immutable</span></div>
+<div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> sigma = def-&gt;isa_imm&lt;Sigma&gt;()) {</div>
-<div class="line">        <span class="comment">// sigma is of type const Sigma* and cannot be a mutable Sigma</span></div>
+<div class="line">        <span class="comment">// sigma is of type &quot;const Sigma*&quot; and is an immutable Sigma</span></div>
 <div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// sigma of type &quot;const Sigma*&quot; and *must* be an immutable Sigma - otherwise, asserts</span></div>
+<div class="line">    <span class="keyword">auto</span> sigma = def-&gt;as_imm&lt;<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5ac1fb2543759c1fd49ae0fea3855ea812">Sigma</a>&gt;();</div>
 <div class="line">}</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md17"></a>
-Matching IR</h1>
-<h1><a class="anchor" id="autotoc_md18"></a>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a56e125fc0469d17b1569c31b803d08b5ac1fb2543759c1fd49ae0fea3855ea812"><div class="ttname"><a href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5ac1fb2543759c1fd49ae0fea3855ea812">thorin::Node::Sigma</a></div><div class="ttdeci">@ Sigma</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00037">def.h:37</a></div></div>
+</div><!-- fragment --><p> If you just check via <a class="el" href="classthorin_1_1RuntimeCast.html#a9b3aab7e1699f26e91e8675de9c0b202">Def::isa</a>/<a class="el" href="classthorin_1_1RuntimeCast.html#a909777be7f178004b0cca5ec68356c4c">Def::as</a> a <a class="el" href="classthorin_1_1Ref.html">Ref</a>/<code>const Def*</code>, you match either a <em>mutable</em> or an <em>immutable</em>. </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(Ref def) {</div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> sigma = def-&gt;isa&lt;Sigma&gt;()) {</div>
+<div class="line">        <span class="comment">// sigma is of type const Sigma* and could be a mutable or an immutable</span></div>
+<div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// sigma of type &quot;const Sigma*&quot; and could be an immutable or a mutable</span></div>
+<div class="line">    <span class="comment">// asserts, if def is not a Sigma</span></div>
+<div class="line">    <span class="keyword">auto</span> sigma = def-&gt;as_imm&lt;Sigma&gt;();</div>
+<div class="line">}</div>
+</div><!-- fragment --><p> Checking via <a class="el" href="classthorin_1_1RuntimeCast.html#a9b3aab7e1699f26e91e8675de9c0b202">Def::isa</a>/<a class="el" href="classthorin_1_1RuntimeCast.html#a909777be7f178004b0cca5ec68356c4c">Def::as</a> a <code>Def*</code> has the same effect as using <a class="el" href="classthorin_1_1Def.html#aabf1066a0dbcaa6ec6f08877b86767e4">Def::isa_mut</a>/<a class="el" href="classthorin_1_1Def.html#af11b2eb1d65239b9e9f5ca1920742ddb">Def::isa_mut</a> since the scrutinee must be a <em>mutable</em> due to the lack of the <code>const</code> qualifier: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(Def* def) { <span class="comment">// note the lack of &quot;const&quot; here</span></div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> sigma = def-&gt;isa&lt;Sigma&gt;()) {</div>
+<div class="line">        <span class="comment">// sigma is of type Sigma* and is a mutable</span></div>
+<div class="line">    }</div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> sigma = def-&gt;isa_mut&lt;Sigma&gt;()) {</div>
+<div class="line">        <span class="comment">// sigma is of type Sigma* and is a mutable</span></div>
+<div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// sigma of type &quot;Sigma*&quot; and is a mutable - otherwise, asserts</span></div>
+<div class="line">    <span class="keyword">auto</span> sigma = def-&gt;as&lt;<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5ac1fb2543759c1fd49ae0fea3855ea812">Sigma</a>&gt;();</div>
+<div class="line">}</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md19"></a>
+Matching Axioms</h2>
+<p >You can match <a class="el" href="classthorin_1_1Axiom.html">axioms</a> via <a class="el" href="namespacethorin.html#a38ddc530ce32edb30248a9bb99c6c90d">thorin::match</a> / <a class="el" href="namespacethorin.html#a73e99aec74e2e132591d174b75bb920b">thorin::force</a>. By default, Thorin assumes that the magic of an <a class="el" href="classthorin_1_1Axiom.html">axiom</a> happens when applying the final argument to a curried <a class="el" href="classthorin_1_1Axiom.html">axiom</a>. If you want to design an <a class="el" href="classthorin_1_1Axiom.html">axiom</a> that really returns a function, you can <a class="el" href="classthorin_1_1Axiom.html#a05d2e899a18e55005f71c1803da89ae3">fine-adjust the trigger point</a> of a <a class="el" href="namespacethorin.html#a38ddc530ce32edb30248a9bb99c6c90d">thorin::match</a> / <a class="el" href="namespacethorin.html#a73e99aec74e2e132591d174b75bb920b">thorin::force</a>.</p>
+<p >In order to match an <a class="el" href="classthorin_1_1Axiom.html">axiom</a> <b>without</b> any subtags like <code>%mem.load</code>, do this: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(Ref def) {</div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> load = match&lt;mem::load&gt;(def)) {</div>
+<div class="line">        <span class="keyword">auto</span> [mem, ptr]            = load-&gt;args&lt;2&gt;();</div>
+<div class="line">        <span class="keyword">auto</span> [pointee, addr_space] = load-&gt;decurry()-&gt;args&lt;2&gt;();</div>
+<div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// def must match as a mem::load - otherwise, asserts</span></div>
+<div class="line">    <span class="keyword">auto</span> load = force&lt;mem::load&gt;(def);</div>
+<div class="line">}</div>
+</div><!-- fragment --><p> The <code>match</code> only triggers for the final <a class="el" href="classthorin_1_1App.html">thorin::App</a> of the curried call <code>%mem.load (T, as) (mem, ptr)</code> and <code>%mem.load (T, as)</code> will <b>not</b> match as explained above.</p>
+<p >In order to match an <a class="el" href="classthorin_1_1Axiom.html">axiom</a> <b>with</b> subtags like <code>%core.wrap</code>, do this: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(Ref def) {</div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> wrap = match&lt;core::wrap&gt;(def)) {</div>
+<div class="line">        <span class="keyword">auto</span> [a, b] = wrap-&gt;args&lt;2&gt;();</div>
+<div class="line">        <span class="keyword">auto</span> mode   = wrap-&gt;decurry()-&gt;arg();</div>
+<div class="line">        <span class="keywordflow">switch</span> (wrap.id()) {</div>
+<div class="line">            <span class="keywordflow">case</span> core::wrap::add: <span class="comment">// ...</span></div>
+<div class="line">            <span class="keywordflow">case</span> core::wrap::sub: <span class="comment">// ...</span></div>
+<div class="line">            <span class="keywordflow">case</span> core::wrap::mul: <span class="comment">// ...</span></div>
+<div class="line">            <span class="keywordflow">case</span> core::wrap::shl: <span class="comment">// ...</span></div>
+<div class="line">        }</div>
+<div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> add = <a class="code hl_function" href="namespacethorin.html#a38ddc530ce32edb30248a9bb99c6c90d">match</a>(core::wrap::add, def)) {</div>
+<div class="line">        <span class="keyword">auto</span> [<a class="code hl_enumvalue" href="namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628a85b63feaff2f38f8b5976454a8355a7d">a</a>, <a class="code hl_enumvalue" href="namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea142b727ea49fce05521e55d5137130a9">b</a>] = <a class="code hl_enumeration" href="namespacethorin_1_1autodiff.html#a401c1924abe6294a7a98d2318c21289c">add</a>-&gt;args&lt;2&gt;();</div>
+<div class="line">        <span class="keyword">auto</span> <a class="code hl_function" href="namespacethorin_1_1core.html#a55cf18b70ac6535d67231006c6afc167">mode</a>   = <a class="code hl_enumeration" href="namespacethorin_1_1autodiff.html#a401c1924abe6294a7a98d2318c21289c">add</a>-&gt;decurry()-&gt;arg();</div>
+<div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// def must match as a core::wrap - otherwise, asserts</span></div>
+<div class="line">    <span class="keyword">auto</span> <a class="code hl_enumeration" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74f">wrap</a> = force&lt;core::wrap&gt;(def);</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// def must match as a core::wrap::add - otherwise, asserts</span></div>
+<div class="line">    <span class="keyword">auto</span> <a class="code hl_enumeration" href="namespacethorin_1_1autodiff.html#a401c1924abe6294a7a98d2318c21289c">add</a> = <a class="code hl_function" href="namespacethorin.html#a73e99aec74e2e132591d174b75bb920b">force</a>(core::wrap::add, def);</div>
+<div class="line">}</div>
+<div class="ttc" id="anamespacethorin_1_1autodiff_html_a401c1924abe6294a7a98d2318c21289c"><div class="ttname"><a href="namespacethorin_1_1autodiff.html#a401c1924abe6294a7a98d2318c21289c">thorin::autodiff::add</a></div><div class="ttdeci">add</div><div class="ttdef"><b>Definition:</b> <a href="autodiff_2autogen_8h_source.html#l00028">autogen.h:28</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1core_html_a55cf18b70ac6535d67231006c6afc167"><div class="ttname"><a href="namespacethorin_1_1core.html#a55cf18b70ac6535d67231006c6afc167">thorin::core::mode</a></div><div class="ttdeci">Ref mode(World &amp;w, VMode m)</div><div class="ttdef"><b>Definition:</b> <a href="core_8h_source.html#l00018">core.h:18</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1core_html_ab1f42e21a4de8bd328e18b8006b9f74f"><div class="ttname"><a href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74f">thorin::core::wrap</a></div><div class="ttdeci">wrap</div><div class="ttdef"><b>Definition:</b> <a href="core_2autogen_8h_source.html#l00095">autogen.h:95</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1core_html_ae493f33140e983cf79dc6b66a1637628a85b63feaff2f38f8b5976454a8355a7d"><div class="ttname"><a href="namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628a85b63feaff2f38f8b5976454a8355a7d">thorin::core::a</a></div><div class="ttdeci">@ a</div><div class="ttdef"><b>Definition:</b> <a href="core_2autogen_8h_source.html#l00148">autogen.h:148</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1math_html_a00e74d198c086fe1fb880c87ea3bb8fea142b727ea49fce05521e55d5137130a9"><div class="ttname"><a href="namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea142b727ea49fce05521e55d5137130a9">thorin::math::b</a></div><div class="ttdeci">@ b</div><div class="ttdef"><b>Definition:</b> <a href="math_2autogen_8h_source.html#l00022">autogen.h:22</a></div></div>
+<div class="ttc" id="anamespacethorin_html_a38ddc530ce32edb30248a9bb99c6c90d"><div class="ttname"><a href="namespacethorin.html#a38ddc530ce32edb30248a9bb99c6c90d">thorin::match</a></div><div class="ttdeci">auto match(Ref def)</div><div class="ttdef"><b>Definition:</b> <a href="axiom_8h_source.html#l00178">axiom.h:178</a></div></div>
+<div class="ttc" id="anamespacethorin_html_a73e99aec74e2e132591d174b75bb920b"><div class="ttname"><a href="namespacethorin.html#a73e99aec74e2e132591d174b75bb920b">thorin::force</a></div><div class="ttdeci">auto force(Ref def)</div><div class="ttdef"><b>Definition:</b> <a href="axiom_8h_source.html#l00200">axiom.h:200</a></div></div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md20"></a>
 Iterating over the Program</h1>
 <p >There are several ways of doing this. It depends on what exactly you want to achieve and how much structure you need during the traversal. The simplest way is to kick off with <a class="el" href="classthorin_1_1World.html#a5b40a0d582ba6e1b28bc50dc0ceb0840">World::externals</a> and recursively run over <a class="el" href="classthorin_1_1Def.html#a543cbdcb17d574373aa65244dcead8f8">Def::extended_ops</a> like this: </p><div class="fragment"><div class="line">DefSet done;</div>
 <div class="line"><span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [_, mut] : world.externals())</div>

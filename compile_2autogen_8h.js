@@ -1,61 +1,61 @@
 var compile_2autogen_8h =
 [
-    [ "thorin::Axiom::Match< compile::partial_eval_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1partial__eval__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a253f444b07e313a2d62569d2c9a38147", null ]
-    ] ],
-    [ "thorin::Axiom::Match< compile::clos_plugin >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1clos__plugin_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#ab34d3ba3a1769b1aff36f2bcd1bc1a08", null ]
-    ] ],
-    [ "thorin::Axiom::Match< compile::internal_cleanup_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1internal__cleanup__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a28596b833e6491553d741e4f4a6ea212", null ]
-    ] ],
-    [ "thorin::Axiom::Match< compile::refly_plugin >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1refly__plugin_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a12cf759131bc91b07e776df9fc040c0b", null ]
-    ] ],
-    [ "thorin::Axiom::Match< compile::Pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1Pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#ac5add5e6a2001bbdc8e0e72bcd140550", null ]
-    ] ],
-    [ "thorin::Axiom::Match< compile::direct_plugin >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1direct__plugin_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a3f57a5ef83704fae9d96120c9f5ddad8", null ]
-    ] ],
-    [ "thorin::Axiom::Match< compile::matrix_plugin >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1matrix__plugin_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#af378002ebed67d92a81dde3d3275ae60", null ]
+    [ "thorin::Axiom::Match< compile::Phase >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1Phase_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a862de53aa535aa101e327833e9eecd6f", null ]
     ] ],
     [ "thorin::Axiom::Match< compile::mem_plugin >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1mem__plugin_01_4", [
       [ "type", "classthorin_1_1Axiom.html#ab541de647f86062566441b290741bb66", null ]
     ] ],
-    [ "thorin::Axiom::Match< compile::Phase >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1Phase_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a862de53aa535aa101e327833e9eecd6f", null ]
+    [ "thorin::Axiom::Match< compile::Pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1Pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#ac5add5e6a2001bbdc8e0e72bcd140550", null ]
     ] ],
-    [ "thorin::Axiom::Match< compile::autodiff_plugin >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1autodiff__plugin_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a1fbafa970c9c903fbdef78c2b907012a", null ]
-    ] ],
-    [ "thorin::Axiom::Match< compile::nullptr_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1nullptr__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a0414b85bcde776072958b43a3e667c4f", null ]
-    ] ],
-    [ "thorin::Axiom::Match< compile::ret_wrap_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1ret__wrap__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#abeaa38565a71c239a18ba5af648f5d26", null ]
-    ] ],
-    [ "thorin::Axiom::Match< compile::beta_red_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1beta__red__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a4999ea47cb4217d74e23da5d7d85e859", null ]
-    ] ],
-    [ "thorin::Axiom::Match< compile::lam_spec_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1lam__spec__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a53c6c93695a175aedbe44e5c801f19e4", null ]
-    ] ],
-    [ "thorin::Axiom::Match< compile::Plugin >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1Plugin_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#aa375b511f62d75be7163b7ff029b9d6f", null ]
+    [ "thorin::Axiom::Match< compile::clos_plugin >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1clos__plugin_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#ab34d3ba3a1769b1aff36f2bcd1bc1a08", null ]
     ] ],
     [ "thorin::Axiom::Match< compile::core_plugin >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1core__plugin_01_4", [
       [ "type", "classthorin_1_1Axiom.html#a1bbdfaf274757a65f3928900838fa096", null ]
     ] ],
-    [ "thorin::Axiom::Match< compile::demo_plugin >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1demo__plugin_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#abb8d8d425f09adfdee1b5d0f67908092", null ]
+    [ "thorin::Axiom::Match< compile::nullptr_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1nullptr__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a0414b85bcde776072958b43a3e667c4f", null ]
+    ] ],
+    [ "thorin::Axiom::Match< compile::lam_spec_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1lam__spec__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a53c6c93695a175aedbe44e5c801f19e4", null ]
+    ] ],
+    [ "thorin::Axiom::Match< compile::direct_plugin >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1direct__plugin_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a3f57a5ef83704fae9d96120c9f5ddad8", null ]
     ] ],
     [ "thorin::Axiom::Match< compile::affine_plugin >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1affine__plugin_01_4", [
       [ "type", "classthorin_1_1Axiom.html#a922c9a3479632e6037d59e7fd13d471a", null ]
     ] ],
+    [ "thorin::Axiom::Match< compile::matrix_plugin >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1matrix__plugin_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#af378002ebed67d92a81dde3d3275ae60", null ]
+    ] ],
+    [ "thorin::Axiom::Match< compile::partial_eval_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1partial__eval__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a253f444b07e313a2d62569d2c9a38147", null ]
+    ] ],
+    [ "thorin::Axiom::Match< compile::Plugin >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1Plugin_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#aa375b511f62d75be7163b7ff029b9d6f", null ]
+    ] ],
     [ "thorin::Axiom::Match< compile::eta_red_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1eta__red__pass_01_4", [
       [ "type", "classthorin_1_1Axiom.html#acf9f4cd3413f82765cccbb4743be7981", null ]
+    ] ],
+    [ "thorin::Axiom::Match< compile::ret_wrap_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1ret__wrap__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#abeaa38565a71c239a18ba5af648f5d26", null ]
+    ] ],
+    [ "thorin::Axiom::Match< compile::autodiff_plugin >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1autodiff__plugin_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a1fbafa970c9c903fbdef78c2b907012a", null ]
+    ] ],
+    [ "thorin::Axiom::Match< compile::internal_cleanup_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1internal__cleanup__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a28596b833e6491553d741e4f4a6ea212", null ]
+    ] ],
+    [ "thorin::Axiom::Match< compile::demo_plugin >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1demo__plugin_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#abb8d8d425f09adfdee1b5d0f67908092", null ]
+    ] ],
+    [ "thorin::Axiom::Match< compile::beta_red_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1beta__red__pass_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a4999ea47cb4217d74e23da5d7d85e859", null ]
+    ] ],
+    [ "thorin::Axiom::Match< compile::refly_plugin >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01compile_1_1refly__plugin_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#a12cf759131bc91b07e776df9fc040c0b", null ]
     ] ],
     [ "THORIN_compile_NORMALIZER_IMPL", "compile_2autogen_8h.html#a60a6c0a2c35f3aff109d80851e24fddc", null ],
     [ "affine_plugin", "compile_2autogen_8h.html#aa784009ea73e4eb42e743f08d07ce4c9", null ],
