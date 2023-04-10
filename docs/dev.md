@@ -2,62 +2,59 @@
 
 [TOC]
 
-This guide summaries typicical idioms you want to use when working with Thorin as a developer.
+This guide summaries typical idioms you want to use when working with Thorin as a developer.
 
-## Compiling and Executing
+## Basics
 
-Here is a small example that first constructs a `main` function and simply returns the `argc`:
-```cpp
-    Driver driver;
-    World& w    = driver.world();
-    auto parser = fe::Parser(w);
-    for (auto plugin : {"compile", "mem", "core", "math"}) parser.plugin(plugin);
+Let's jump straight into an example.
+\include "examples/hello.cpp"
 
-    auto mem_t  = mem::type_mem(w);
-    auto i32_t  = w.type_int(32);
-    auto argv_t = mem::type_ptr(mem::type_ptr(i32_t));
+[Driver](@ref thorin::Driver) is the first class that you want to allocate.
+It keeps track of a few global variables like some [flags](@ref thorin::Flags) or the [log](@ref thorin::Log).
+Here, the log is set up to output to `std::cerr` with thorin::Log::Level::Debug (see also @ref clidebug).
 
-    // Cn [mem, i32, Cn [mem, i32]]
-    auto main_t = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})});
-    auto main = w.mut_lam(main_t)->set("main");
-    auto [mem, argc, argv, ret] = main->vars<4>();
-    main->app(ret, {mem, argc});
-    main->make_external();
+Then, we load the plugins [compile](@ref compile) and [core](@ref core), which in turn will load the plugin [mem](@ref mem).
+A plugin consists of a shared object (`.so`/`.dll`) and a `.thorin` file.
+The shared object contains [Passes](@ref thorin::Pass), [normalizers](@ref thorin::Axiom::normalizer), and so on.
+The `.thorin` file contains the [axiom](@ref thorin::Axiom) declarations and links the normalizers with the [axioms](@ref thorin::Axiom).
+For this reason, we need to allocate the thorin::fe::Parser to parse the `.thorin` file; thorin::fe::Parser::plugin will also load the shared object.
+The [driver](@ref thorin::Driver) keeps track of all plugins.
 
-    PipelineBuilder builder;
-    optimize(w, builder);
-
-    std::ofstream file("test.ll");
-    Stream s(file);
-    backends["ll"](w, std::cout);
-    file.close();
-
-    std::system("clang test.ll -o test");
-    assert(4 == WEXITSTATUS(std::system("./test a b c")));
+Next, we create actual code.
+[Def](@ref thorin::Def) is the base class for **all** nodes/expressions in Thorin.
+Each [Def](@ref thorin::Def) is a node in a graph which is maintained in the [World](@ref thorin::World).
+The [World](@ref thorin::World) is essentially a big hash set where all [Defs](@ref thorin::Def) are tossed into.
+The [World](@ref thorin::World) provides factory methods to create all kind of different [Defs](@ref thorin::Def).
+Here, we create the `main` function.
+In direct style, its type looks like this:
 ```
-TODO explain
+[%mem.M, I32, %mem.Ptr (I32, 0)] -> [%mem.M, I32]]
+```
+Converted to [continuation-passing style (CPS)](https://en.wikipedia.org/wiki/Continuation-passing_style) this type looks like this:
+```
+.Cn [%mem.M, I32, %mem.Ptr (I32, 0), .Cn [%mem.M, I32]]
+```
+The `%%mem.M` type is a type that keeps track of side effects that may occur.
+Since, `main` introduces [variables](@ref thorin::Var) we must create a [*mutable*](@ref mut) [Lam](@ref thorin::Lam).
+The, only thing `main` is doing, is to invoke its `ret`urn continuation with `mem` and `argc` as argument `ret (mem, argc)`.
+It is also important to make `main` [external](@ref thorin::Def::make_external).
+Otherwise, Thorin will simply remove this function.
 
-## Defs and the World
+We optimize the program, emit an [LLVM assembly file](https://llvm.org/docs/LangRef.html), and compile it via `clang`.
+Finally, we execute the generated program with `./hello a b c` and `assert` that the output is in fact `4`.
 
-[Def](@ref thorin::Def) is the base class for @em all nodes/expressions in Thorin.
-TODO
+## Immutables vs. Mutables {#mut}
 
-### Hash Consing
-
-Each `Def` is a node in a graph which is maintained in the [World](@ref thorin::World).
-[Hash consing](https://en.wikipedia.org/wiki/Hash_consing) TODO
-
-## Immutables vs. Mutables
+There are two different kind of [Defs](@ref thorin::Def) in Thorin: *mutables* and *immutables*:
 
 | **Immutable**                                                         | **Mutable**                                                                   |
 |-----------------------------------------------------------------------|-------------------------------------------------------------------------------|
-| immutable                                                             | mutable                                                                       |
 | *must be* `const`                                                     | *may be* **non**-`const`                                                      |
 | ops form [DAG](https://en.wikipedia.org/wiki/Directed_acyclic_graph)  | ops may be cyclic                                                             |
 | no recursion                                                          | may be recursive                                                              |
 | no [Var](@ref thorin::Var)                                            | has [Var](@ref thorin::Var); get with [Def::var](@ref thorin::Def::var)       |
-| hash consed                                                           | each new instance is fresh                                                    |
 | build ops first, then the actual node                                 | build the actual node first, then [set](@ref thorin::Def::set) the ops        |
+| [Hash consed](https://en.wikipedia.org/wiki/Hash_consing)             | each new instance is fresh                                                    |
 | [Def::rebuild](@ref thorin::Def::rebuild)                             | [Def::stub](@ref thorin::Def::stub)                                           |
 
 ## Matching IR
@@ -65,7 +62,8 @@ Each `Def` is a node in a graph which is maintained in the [World](@ref thorin::
 ### Matching Builtins
 
 Usually, you will encounter a [Def](@ref thorin::Def) as [Ref](@ref thorin::Ref) which is just a wrapper for a `const Def*`.
-Use [Def::isa_mut](@ref thorin::Def::isa_mut) to check whether a specific [Ref](@ref thorin::Ref)/`const Def*` is in fact mutable to cast away the `const` or [Def::as_mut](@ref thorin::Def::as_mut) to force this cast (and assert if not possible):
+Use [Def::isa_mut](@ref thorin::Def::isa_mut) like a `dynamic_cast` to check whether a specific [Ref](@ref thorin::Ref)/`const Def*` is in fact mutable to cast away the `const`,
+or [Def::as_mut](@ref thorin::Def::as_mut) to force this cast (like a `static_cast` and `assert` if not possible):
 ```cpp
 void foo(Ref def) {
     if (auto mut = def->isa_mut()) {

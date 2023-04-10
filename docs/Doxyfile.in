@@ -1050,6 +1050,7 @@ EXCLUDE_SYMBOLS        =
 
 EXAMPLE_PATH           = thorin \
                          dialects \
+                         examples \
                          @CMAKE_CURRENT_BINARY_DIR@
 
 # If the value of the EXAMPLE_PATH tag contains directories, you can use the
