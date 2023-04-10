@@ -1,10 +1,10 @@
 #include <fstream>
 
+#include <dialects/mem/mem.h>
 #include <thorin/driver.h>
 #include <thorin/fe/parser.h>
 #include <thorin/pass/optimize.h>
 #include <thorin/util/sys.h>
-#include <dialects/mem/mem.h>
 
 using namespace thorin;
 
@@ -22,8 +22,8 @@ int main(int, char**) {
         auto argv_t = mem::type_ptr(mem::type_ptr(i32_t));
 
         // .Cn [%mem.M, I32, %mem.Ptr (I32, 0) .Cn [%mem.M, I32]]
-        auto main_t = world.cn({mem_t, i32_t, argv_t, world.cn({mem_t, i32_t})});
-        auto main = world.mut_lam(main_t)->set("main");
+        auto main_t                 = world.cn({mem_t, i32_t, argv_t, world.cn({mem_t, i32_t})});
+        auto main                   = world.mut_lam(main_t)->set("main");
         auto [mem, argc, argv, ret] = main->vars<4>();
         main->app(false, ret, {mem, argc});
         main->make_external();
