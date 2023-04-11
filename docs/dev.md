@@ -59,7 +59,10 @@ There are two different kind of [Defs](@ref thorin::Def) in Thorin: *mutables* a
 
 ## Matching IR
 
-### Matching Builtins
+Thorin provides different means to scrutinize [Defs](@ref thorin::Def).
+Methods beginning with `isa` work like a `dynamic_cast` with a runtime check while those beginning with `as` are more like a `static_cast` with an additional assertion via its `isa` sibling in the `Debug` build that the cast is correct.
+
+### Builtins
 
 Usually, you will encounter a [Def](@ref thorin::Def) as [Ref](@ref thorin::Ref) which is just a wrapper for a `const Def*`.
 Use [Def::isa_mut](@ref thorin::Def::isa_mut) like a `dynamic_cast` to check whether a specific [Ref](@ref thorin::Ref)/`const Def*` is in fact mutable to cast away the `const`,
@@ -102,7 +105,7 @@ If you just check via [Def::isa](@ref thorin::RuntimeCast::isa)/[Def::as](@ref t
 ```cpp
 void foo(Ref def) {
     if (auto sigma = def->isa<Sigma>()) {
-        // sigma is of type const Sigma* and could be a mutable or an immutable
+        // sigma is of type "const Sigma*" and could be a mutable or an immutable
     }
 
     // sigma of type "const Sigma*" and could be an immutable or a mutable
@@ -124,8 +127,26 @@ void foo(Def* def) { // note the lack of "const" here
     auto sigma = def->as<Sigma>();
 }
 ```
+Often, you want to match a [literal](@ref thorin::Lit) and grab its content.
+You can use thorin::isa_lit / thorin::as_lit for this.
+```cpp
+void foo(Ref def) {
+    if (auto lit = isa_lit(def)) {
+        // lit is of type "std::optional<u64>"
+        // It's your repsonsibility that the grabbed value makes sense as u64.
+    }
+    if (auto lit = isa_lit<f32>(def)) {
+        // lit is of type "std::optional<f32>"
+        // It's your repsonsibility that the grabbed value makes sense as f32.
+    }
 
-### Matching Axioms
+    // asserts if def is not a Lit.
+    auto lu64 = as_lit(def);
+    auto lf32 = as_lit<f32>(def);
+}
+```
+
+### Axioms
 
 You can match [axioms](@ref thorin::Axiom) via thorin::match / thorin::force.
 By default, Thorin assumes that the magic of an [axiom](@ref thorin::Axiom) happens when applying the final argument to a curried [axiom](@ref thorin::Axiom).
@@ -144,6 +165,7 @@ void foo(Ref def) {
 }
 ```
 The `match` only triggers for the final thorin::App of the curried call `%%mem.load (T, as) (mem, ptr)` and `%%mem.load (T, as)` will **not** match as explained above.
+This will give you a [Match](@ref thorin::Match) which usually just wraps an [App](@ref thorin::App) but may wrap a [Def](@ref thorin::Def) or other subclasses of it if the type of the axiom is not a [function type](@ref thorin::Pi).
 
 In order to match an [axiom](@ref thorin::Axiom) **with** subtags like `%%core.wrap`, do this:
 ```cpp
