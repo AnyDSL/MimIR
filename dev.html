@@ -116,8 +116,8 @@ $(document).ready(function(){initNavTree('dev.html',''); initResizable(); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#autotoc_md13">Basics</a></li>
 <li class="level1"><a href="#mut">Immutables vs. Mutables</a></li>
-<li class="level1"><a href="#autotoc_md14">Matching IR</a><ul><li class="level2"><a href="#autotoc_md15">Matching Builtins</a></li>
-<li class="level2"><a href="#autotoc_md16">Matching Axioms</a></li>
+<li class="level1"><a href="#autotoc_md14">Matching IR</a><ul><li class="level2"><a href="#autotoc_md15">Builtins</a></li>
+<li class="level2"><a href="#autotoc_md16">Axioms</a></li>
 </ul>
 </li>
 <li class="level1"><a href="#autotoc_md17">Iterating over the Program</a></li>
@@ -146,13 +146,14 @@ Basics</h1>
 <div class="line">        <span class="keyword">auto</span> parser = <a class="code hl_class" href="classthorin_1_1fe_1_1Parser.html">fe::Parser</a>(world);</div>
 <div class="line">        <span class="keywordflow">for</span> (<span class="keyword">auto</span> plugin : {<span class="stringliteral">&quot;compile&quot;</span>, <span class="stringliteral">&quot;core&quot;</span>}) parser.plugin(plugin);</div>
 <div class="line"> </div>
+<div class="line">        <span class="comment">// .Cn [%mem.M, I32, %mem.Ptr (I32, 0) .Cn [%mem.M, I32]]</span></div>
 <div class="line">        <span class="keyword">auto</span> mem_t  = mem::type_mem(world);</div>
 <div class="line">        <span class="keyword">auto</span> i32_t  = world.type_int(32);</div>
 <div class="line">        <span class="keyword">auto</span> argv_t = mem::type_ptr(mem::type_ptr(i32_t));</div>
+<div class="line">        <span class="keyword">auto</span> ret_t  = world.cn({mem_t, i32_t});</div>
+<div class="line">        <span class="keyword">auto</span> main_t = world.cn({mem_t, i32_t, argv_t, ret_t});</div>
+<div class="line">        <span class="keyword">auto</span> <a class="code hl_function" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a>   = world.mut_lam(main_t)-&gt;set(<span class="stringliteral">&quot;main&quot;</span>);</div>
 <div class="line"> </div>
-<div class="line">        <span class="comment">// .Cn [%mem.M, I32, %mem.Ptr (I32, 0) .Cn [%mem.M, I32]]</span></div>
-<div class="line">        <span class="keyword">auto</span> main_t                 = world.cn({mem_t, i32_t, argv_t, world.cn({mem_t, i32_t})});</div>
-<div class="line">        <span class="keyword">auto</span> <a class="code hl_function" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a>                   = world.mut_lam(main_t)-&gt;set(<span class="stringliteral">&quot;main&quot;</span>);</div>
 <div class="line">        <span class="keyword">auto</span> [mem, argc, argv, <a class="code hl_enumvalue" href="namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aa2348b9af292e8373483f8ff836d5aac2">ret</a>] = <a class="code hl_function" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a>-&gt;vars&lt;4&gt;();</div>
 <div class="line">        <a class="code hl_function" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a>-&gt;app(<span class="keyword">false</span>, ret, {mem, argc});</div>
 <div class="line">        <a class="code hl_function" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a>-&gt;make_external();</div>
@@ -183,8 +184,8 @@ Basics</h1>
 <div class="ttc" id="adriver_8h_html"><div class="ttname"><a href="driver_8h.html">driver.h</a></div></div>
 <div class="ttc" id="amain_8cpp_html_a3c04138a5bfe5d72780bb7e82a18e627"><div class="ttname"><a href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a></div><div class="ttdeci">int main(int argc, char **argv)</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00025">main.cpp:25</a></div></div>
 <div class="ttc" id="amem_8h_html"><div class="ttname"><a href="mem_8h.html">mem.h</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1clos_html_a5c55a5bd62132e28b49915902ea0117aa2348b9af292e8373483f8ff836d5aac2"><div class="ttname"><a href="namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aa2348b9af292e8373483f8ff836d5aac2">thorin::clos::ret</a></div><div class="ttdeci">@ ret</div><div class="ttdef"><b>Definition:</b> <a href="clos_2autogen_8h_source.html#l00044">autogen.h:44</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1core_html_afab2045241ef2b508a0c6867099991e6a2617461720290be8740985537e6e1bfd"><div class="ttname"><a href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2617461720290be8740985537e6e1bfd">thorin::core::e</a></div><div class="ttdeci">@ e</div><div class="ttdef"><b>Definition:</b> <a href="core_2autogen_8h_source.html#l00220">autogen.h:220</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1clos_html_a5c55a5bd62132e28b49915902ea0117aa2348b9af292e8373483f8ff836d5aac2"><div class="ttname"><a href="namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aa2348b9af292e8373483f8ff836d5aac2">thorin::clos::ret</a></div><div class="ttdeci">@ ret</div><div class="ttdef"><b>Definition:</b> <a href="clos_2autogen_8h_source.html#l00065">autogen.h:65</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1core_html_afab2045241ef2b508a0c6867099991e6a2617461720290be8740985537e6e1bfd"><div class="ttname"><a href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2617461720290be8740985537e6e1bfd">thorin::core::e</a></div><div class="ttdeci">@ e</div><div class="ttdef"><b>Definition:</b> <a href="core_2autogen_8h_source.html#l00019">autogen.h:19</a></div></div>
 <div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdoc">Helper functions of general interest.</div><div class="ttdef"><b>Definition:</b> <a href="affine_8h_source.html#l00007">affine.h:7</a></div></div>
 <div class="ttc" id="anamespacethorin_html_a01d195c52d754394a58dec37e2913430"><div class="ttname"><a href="namespacethorin.html#a01d195c52d754394a58dec37e2913430">thorin::errln</a></div><div class="ttdeci">std::ostream &amp; errln(const char *fmt, Args &amp;&amp;... args)</div><div class="ttdef"><b>Definition:</b> <a href="print_8h_source.html#l00155">print.h:155</a></div></div>
 <div class="ttc" id="anamespacethorin_html_a9e64c2e92ce1a1166c536644960116c2"><div class="ttname"><a href="namespacethorin.html#a9e64c2e92ce1a1166c536644960116c2">thorin::optimize</a></div><div class="ttdeci">void optimize(World &amp;world)</div><div class="ttdef"><b>Definition:</b> <a href="optimize_8cpp_source.html#l00020">optimize.cpp:20</a></div></div>
@@ -220,8 +221,9 @@ Immutables vs. Mutables</h1>
 </table>
 <h1><a class="anchor" id="autotoc_md14"></a>
 Matching IR</h1>
+<p >Thorin provides different means to scrutinize <a class="el" href="classthorin_1_1Def.html">Defs</a>. Methods beginning with <code>isa</code> work like a <code>dynamic_cast</code> with a runtime check while those beginning with <code>as</code> are more like a <code>static_cast</code> with an additional assertion via its <code>isa</code> sibling in the <code>Debug</code> build that the cast is correct.</p>
 <h2><a class="anchor" id="autotoc_md15"></a>
-Matching Builtins</h2>
+Builtins</h2>
 <p >Usually, you will encounter a <a class="el" href="classthorin_1_1Def.html">Def</a> as <a class="el" href="classthorin_1_1Ref.html">Ref</a> which is just a wrapper for a <code>const Def*</code>. Use <a class="el" href="classthorin_1_1Def.html#aabf1066a0dbcaa6ec6f08877b86767e4">Def::isa_mut</a> like a <code>dynamic_cast</code> to check whether a specific <a class="el" href="classthorin_1_1Ref.html">Ref</a>/<code>const Def*</code> is in fact mutable to cast away the <code>const</code>, or <a class="el" href="classthorin_1_1Def.html#af11b2eb1d65239b9e9f5ca1920742ddb">Def::as_mut</a> to force this cast (like a <code>static_cast</code> and <code>assert</code> if not possible): </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<a class="code hl_class" href="classthorin_1_1Ref.html">Ref</a> def) {</div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> mut = def-&gt;<a class="code hl_function" href="classthorin_1_1Def.html#aabf1066a0dbcaa6ec6f08877b86767e4">isa_mut</a>()) {</div>
 <div class="line">        <span class="comment">// mut of type &quot;Def*&quot; - &quot;const&quot; has been removed!</span></div>
@@ -260,7 +262,7 @@ Matching Builtins</h2>
 <div class="ttc" id="aclassthorin_1_1Sigma_html"><div class="ttname"><a href="classthorin_1_1Sigma.html">thorin::Sigma</a></div><div class="ttdef"><b>Definition:</b> <a href="tuple_8h_source.html#l00007">tuple.h:7</a></div></div>
 </div><!-- fragment --><p> If you just check via <a class="el" href="classthorin_1_1RuntimeCast.html#a9b3aab7e1699f26e91e8675de9c0b202">Def::isa</a>/<a class="el" href="classthorin_1_1RuntimeCast.html#a909777be7f178004b0cca5ec68356c4c">Def::as</a> a <a class="el" href="classthorin_1_1Ref.html">Ref</a>/<code>const Def*</code>, you match either a <em>mutable</em> or an <em>immutable</em>. </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<a class="code hl_class" href="classthorin_1_1Ref.html">Ref</a> def) {</div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> sigma = def-&gt;<a class="code hl_function" href="classthorin_1_1RuntimeCast.html#a9b3aab7e1699f26e91e8675de9c0b202">isa</a>&lt;<a class="code hl_class" href="classthorin_1_1Sigma.html">Sigma</a>&gt;()) {</div>
-<div class="line">        <span class="comment">// sigma is of type const Sigma* and could be a mutable or an immutable</span></div>
+<div class="line">        <span class="comment">// sigma is of type &quot;const Sigma*&quot; and could be a mutable or an immutable</span></div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// sigma of type &quot;const Sigma*&quot; and could be an immutable or a mutable</span></div>
@@ -280,8 +282,23 @@ Matching Builtins</h2>
 <div class="line">    <span class="keyword">auto</span> sigma = def-&gt;<a class="code hl_function" href="classthorin_1_1RuntimeCast.html#a909777be7f178004b0cca5ec68356c4c">as</a>&lt;<a class="code hl_class" href="classthorin_1_1Sigma.html">Sigma</a>&gt;();</div>
 <div class="line">}</div>
 <div class="ttc" id="aclassthorin_1_1Def_html"><div class="ttname"><a href="classthorin_1_1Def.html">thorin::Def</a></div><div class="ttdoc">Base class for all Defs.</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00192">def.h:192</a></div></div>
+</div><!-- fragment --><p> Often, you want to match a <a class="el" href="classthorin_1_1Lit.html">literal</a> and grab its content. You can use <a class="el" href="namespacethorin.html#a196c8dd3968fd28a00dc082c191feee6">thorin::isa_lit</a> / <a class="el" href="namespacethorin.html#a4784a7ada8e2badb49500623824d79e5">thorin::as_lit</a> for this. </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<a class="code hl_class" href="classthorin_1_1Ref.html">Ref</a> def) {</div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> lit = isa_lit(def)) {</div>
+<div class="line">        <span class="comment">// lit is of type &quot;std::optional&lt;u64&gt;&quot;</span></div>
+<div class="line">        <span class="comment">// It&#39;s your repsonsibility that the grabbed value makes sense as u64.</span></div>
+<div class="line">    }</div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> lit = isa_lit&lt;f32&gt;(def)) {</div>
+<div class="line">        <span class="comment">// lit is of type &quot;std::optional&lt;f32&gt;&quot;</span></div>
+<div class="line">        <span class="comment">// It&#39;s your repsonsibility that the grabbed value makes sense as f32.</span></div>
+<div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// asserts if def is not a Lit.</span></div>
+<div class="line">    <span class="keyword">auto</span> lu64 = <a class="code hl_function" href="namespacethorin.html#a4784a7ada8e2badb49500623824d79e5">as_lit</a>(def);</div>
+<div class="line">    <span class="keyword">auto</span> lf32 = as_lit&lt;f32&gt;(def);</div>
+<div class="line">}</div>
+<div class="ttc" id="anamespacethorin_html_a4784a7ada8e2badb49500623824d79e5"><div class="ttname"><a href="namespacethorin.html#a4784a7ada8e2badb49500623824d79e5">thorin::as_lit</a></div><div class="ttdeci">T as_lit(const Def *def)</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00639">def.h:639</a></div></div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md16"></a>
-Matching Axioms</h2>
+Axioms</h2>
 <p >You can match <a class="el" href="classthorin_1_1Axiom.html">axioms</a> via <a class="el" href="namespacethorin.html#a38ddc530ce32edb30248a9bb99c6c90d">thorin::match</a> / <a class="el" href="namespacethorin.html#a73e99aec74e2e132591d174b75bb920b">thorin::force</a>. By default, Thorin assumes that the magic of an <a class="el" href="classthorin_1_1Axiom.html">axiom</a> happens when applying the final argument to a curried <a class="el" href="classthorin_1_1Axiom.html">axiom</a>. If you want to design an <a class="el" href="classthorin_1_1Axiom.html">axiom</a> that really returns a function, you can <a class="el" href="classthorin_1_1Axiom.html#a05d2e899a18e55005f71c1803da89ae3">fine-adjust the trigger point</a> of a <a class="el" href="namespacethorin.html#a38ddc530ce32edb30248a9bb99c6c90d">thorin::match</a> / <a class="el" href="namespacethorin.html#a73e99aec74e2e132591d174b75bb920b">thorin::force</a>.</p>
 <p >In order to match an <a class="el" href="classthorin_1_1Axiom.html">axiom</a> <b>without</b> any subtags like <code>%mem.load</code>, do this: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<a class="code hl_class" href="classthorin_1_1Ref.html">Ref</a> def) {</div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> load = match&lt;mem::load&gt;(def)) {</div>
@@ -292,7 +309,7 @@ Matching Axioms</h2>
 <div class="line">    <span class="comment">// def must match as a mem::load - otherwise, asserts</span></div>
 <div class="line">    <span class="keyword">auto</span> load = force&lt;mem::load&gt;(def);</div>
 <div class="line">}</div>
-</div><!-- fragment --><p> The <code>match</code> only triggers for the final <a class="el" href="classthorin_1_1App.html">thorin::App</a> of the curried call <code>%mem.load (T, as) (mem, ptr)</code> and <code>%mem.load (T, as)</code> will <b>not</b> match as explained above.</p>
+</div><!-- fragment --><p> The <code>match</code> only triggers for the final <a class="el" href="classthorin_1_1App.html">thorin::App</a> of the curried call <code>%mem.load (T, as) (mem, ptr)</code> and <code>%mem.load (T, as)</code> will <b>not</b> match as explained above. This will give you a <a class="el" href="classthorin_1_1Match.html">Match</a> which usually just wraps an <a class="el" href="classthorin_1_1App.html">App</a> but may wrap a <a class="el" href="classthorin_1_1Def.html">Def</a> or other subclasses of it if the type of the axiom is not a <a class="el" href="classthorin_1_1Pi.html">function type</a>.</p>
 <p >In order to match an <a class="el" href="classthorin_1_1Axiom.html">axiom</a> <b>with</b> subtags like <code>%core.wrap</code>, do this: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<a class="code hl_class" href="classthorin_1_1Ref.html">Ref</a> def) {</div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> wrap = match&lt;core::wrap&gt;(def)) {</div>
 <div class="line">        <span class="keyword">auto</span> [a, b] = wrap-&gt;args&lt;2&gt;();</div>
@@ -316,11 +333,11 @@ Matching Axioms</h2>
 <div class="line">    <span class="comment">// def must match as a core::wrap::add - otherwise, asserts</span></div>
 <div class="line">    <span class="keyword">auto</span> <a class="code hl_enumeration" href="namespacethorin_1_1autodiff.html#a401c1924abe6294a7a98d2318c21289c">add</a> = <a class="code hl_function" href="namespacethorin.html#a73e99aec74e2e132591d174b75bb920b">force</a>(core::wrap::add, def);</div>
 <div class="line">}</div>
-<div class="ttc" id="anamespacethorin_1_1autodiff_html_a401c1924abe6294a7a98d2318c21289c"><div class="ttname"><a href="namespacethorin_1_1autodiff.html#a401c1924abe6294a7a98d2318c21289c">thorin::autodiff::add</a></div><div class="ttdeci">add</div><div class="ttdef"><b>Definition:</b> <a href="autodiff_2autogen_8h_source.html#l00053">autogen.h:53</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1autodiff_html_a401c1924abe6294a7a98d2318c21289c"><div class="ttname"><a href="namespacethorin_1_1autodiff.html#a401c1924abe6294a7a98d2318c21289c">thorin::autodiff::add</a></div><div class="ttdeci">add</div><div class="ttdef"><b>Definition:</b> <a href="autodiff_2autogen_8h_source.html#l00076">autogen.h:76</a></div></div>
 <div class="ttc" id="anamespacethorin_1_1core_html_a55cf18b70ac6535d67231006c6afc167"><div class="ttname"><a href="namespacethorin_1_1core.html#a55cf18b70ac6535d67231006c6afc167">thorin::core::mode</a></div><div class="ttdeci">Ref mode(World &amp;w, VMode m)</div><div class="ttdef"><b>Definition:</b> <a href="core_8h_source.html#l00018">core.h:18</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1core_html_ab1f42e21a4de8bd328e18b8006b9f74f"><div class="ttname"><a href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74f">thorin::core::wrap</a></div><div class="ttdeci">wrap</div><div class="ttdef"><b>Definition:</b> <a href="core_2autogen_8h_source.html#l00193">autogen.h:193</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1core_html_ae493f33140e983cf79dc6b66a1637628a85b63feaff2f38f8b5976454a8355a7d"><div class="ttname"><a href="namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628a85b63feaff2f38f8b5976454a8355a7d">thorin::core::a</a></div><div class="ttdeci">@ a</div><div class="ttdef"><b>Definition:</b> <a href="core_2autogen_8h_source.html#l00095">autogen.h:95</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1math_html_a00e74d198c086fe1fb880c87ea3bb8fea142b727ea49fce05521e55d5137130a9"><div class="ttname"><a href="namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea142b727ea49fce05521e55d5137130a9">thorin::math::b</a></div><div class="ttdeci">@ b</div><div class="ttdef"><b>Definition:</b> <a href="math_2autogen_8h_source.html#l00195">autogen.h:195</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1core_html_ab1f42e21a4de8bd328e18b8006b9f74f"><div class="ttname"><a href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74f">thorin::core::wrap</a></div><div class="ttdeci">wrap</div><div class="ttdef"><b>Definition:</b> <a href="core_2autogen_8h_source.html#l00081">autogen.h:81</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1core_html_ae493f33140e983cf79dc6b66a1637628a85b63feaff2f38f8b5976454a8355a7d"><div class="ttname"><a href="namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628a85b63feaff2f38f8b5976454a8355a7d">thorin::core::a</a></div><div class="ttdeci">@ a</div><div class="ttdef"><b>Definition:</b> <a href="core_2autogen_8h_source.html#l00170">autogen.h:170</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1math_html_a00e74d198c086fe1fb880c87ea3bb8fea142b727ea49fce05521e55d5137130a9"><div class="ttname"><a href="namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea142b727ea49fce05521e55d5137130a9">thorin::math::b</a></div><div class="ttdeci">@ b</div><div class="ttdef"><b>Definition:</b> <a href="math_2autogen_8h_source.html#l00040">autogen.h:40</a></div></div>
 <div class="ttc" id="anamespacethorin_html_a38ddc530ce32edb30248a9bb99c6c90d"><div class="ttname"><a href="namespacethorin.html#a38ddc530ce32edb30248a9bb99c6c90d">thorin::match</a></div><div class="ttdeci">auto match(Ref def)</div><div class="ttdef"><b>Definition:</b> <a href="axiom_8h_source.html#l00178">axiom.h:178</a></div></div>
 <div class="ttc" id="anamespacethorin_html_a73e99aec74e2e132591d174b75bb920b"><div class="ttname"><a href="namespacethorin.html#a73e99aec74e2e132591d174b75bb920b">thorin::force</a></div><div class="ttdeci">auto force(Ref def)</div><div class="ttdef"><b>Definition:</b> <a href="axiom_8h_source.html#l00200">axiom.h:200</a></div></div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md17"></a>
