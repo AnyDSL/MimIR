@@ -26,11 +26,11 @@ var NAVTREE =
 [
   [ "Thorin", "index.html", [
     [ "Introduction", "index.html", [
-      [ "Building", "index.html#autotoc_md50", [
-        [ "Install", "index.html#autotoc_md51", null ],
-        [ "Build Switches", "index.html#autotoc_md52", null ]
+      [ "Building", "index.html#autotoc_md47", [
+        [ "Install", "index.html#autotoc_md48", null ],
+        [ "Build Switches", "index.html#autotoc_md49", null ]
       ] ],
-      [ "Dependencies", "index.html#autotoc_md53", null ]
+      [ "Dependencies", "index.html#autotoc_md50", null ]
     ] ],
     [ "Documentation", "usergroup0.html", [
       [ "Command-Line Reference", "cli.html", null ],
