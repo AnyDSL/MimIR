@@ -3,14 +3,14 @@ var matrix_2autogen_8h =
     [ "thorin::Axiom::Match< matrix::internal_map_reduce_cleanup >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01matrix_1_1internal__map__reduce__cleanup_01_4", [
       [ "type", "classthorin_1_1Axiom.html#aa81e7f6fe0de7aa2acbf37fa0bfb524d", null ]
     ] ],
+    [ "thorin::Axiom::Match< matrix::lower_matrix_low_level >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01matrix_1_1lower__matrix__low__level_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#aefaff41dd1c275f04d6342e379eefd7d", null ]
+    ] ],
     [ "thorin::Axiom::Match< matrix::lower_matrix_medium_level >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01matrix_1_1lower__matrix__medium__level_01_4", [
       [ "type", "classthorin_1_1Axiom.html#a40cd877445208c762387a972b06ce7ea", null ]
     ] ],
     [ "thorin::Axiom::Match< matrix::lower_matrix_high_level_map_reduce >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01matrix_1_1lower__matrix__high__level__map__reduce_01_4", [
       [ "type", "classthorin_1_1Axiom.html#aa58ea7106b5b5677dc3d8180e4bb0745", null ]
-    ] ],
-    [ "thorin::Axiom::Match< matrix::lower_matrix_low_level >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01matrix_1_1lower__matrix__low__level_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#aefaff41dd1c275f04d6342e379eefd7d", null ]
     ] ],
     [ "THORIN_matrix_NORMALIZER_IMPL", "matrix_2autogen_8h.html#a913e0ffaab8ec2d0f9731f0e80c9afdf", null ],
     [ "constMat", "matrix_2autogen_8h.html#a47e24cd2f5c1721d3cd278b92424a3e0", null ],

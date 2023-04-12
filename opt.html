@@ -114,15 +114,15 @@ $(document).ready(function(){initNavTree('opt.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md167">Dependencies</a></li>
-<li class="level1"><a href="#autotoc_md168">Compilation passes, phases, and pipelines</a><ul><li class="level2"><a href="#autotoc_md169">Pipelines</a></li>
+<ul><li class="level1"><a href="#autotoc_md175">Dependencies</a></li>
+<li class="level1"><a href="#autotoc_md176">Compilation passes, phases, and pipelines</a><ul><li class="level2"><a href="#autotoc_md177">Pipelines</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md_build_docs_dialects_opt"></a></p>
 <p >Manages the default compilation pipeline of Thorin programs using plugins.</p>
-<h1><a class="anchor" id="autotoc_md167"></a>
+<h1><a class="anchor" id="autotoc_md175"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">.import core; // includes mem, compile (and avoids clashing re-import)</div>
 </div><!-- fragment --><p> supported plugins with passes </p><div class="fragment"><div class="line">.import affine;</div>
@@ -131,9 +131,9 @@ Dependencies</h1>
 <div class="line">.import direct;</div>
 <div class="line">.import matrix;</div>
 <div class="line">.import refly;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md168"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md176"></a>
 Compilation passes, phases, and pipelines</h1>
-<h2><a class="anchor" id="autotoc_md169"></a>
+<h2><a class="anchor" id="autotoc_md177"></a>
 Pipelines</h2>
 <div class="fragment"><div class="line">.lam .extern _default_compile [] -&gt; Pipeline = {</div>
 <div class="line">    .let nullptr = %compile.nullptr_pass;</div>
