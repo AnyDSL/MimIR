@@ -32,7 +32,7 @@ int main(int, char**) {
         optimize(world);
         std::ofstream ofs("hello.ll");
         driver.backend("ll")(world, ofs);
-        ofs.close();
+        ofs.close(); // make sure everything is written before clang is invoked
 
         sys::system("clang hello.ll -o hello -Wno-override-module");
         assert(4 == WEXITSTATUS(sys::system("./hello a b c")));

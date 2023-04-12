@@ -35,8 +35,11 @@ Converted to [continuation-passing style (CPS)](https://en.wikipedia.org/wiki/Co
 .Cn [%mem.M, I32, %mem.Ptr (I32, 0), .Cn [%mem.M, I32]]
 ```
 The `%%mem.M` type is a type that keeps track of side effects that may occur.
-Since, `main` introduces [variables](@ref thorin::Var) we must create a [*mutable*](@ref mut) [Lam](@ref thorin::Lam).
-The, only thing `main` is doing, is to invoke its `ret`urn continuation with `mem` and `argc` as argument `ret (mem, argc)`.
+Since, `main` introduces [variables](@ref thorin::Var) we must create a *[mutable](@ref mut)* [Lam](@ref thorin::Lam)bda.
+The, only thing `main` is doing, is to invoke its `ret`urn continuation with `mem` and `argc` as argument:
+```
+ret (mem, argc)
+```
 It is also important to make `main` [external](@ref thorin::Def::make_external).
 Otherwise, Thorin will simply remove this function.
 
@@ -60,13 +63,51 @@ There are two different kind of [Defs](@ref thorin::Def) in Thorin: *mutables* a
 ## Matching IR
 
 Thorin provides different means to scrutinize [Defs](@ref thorin::Def).
-Methods beginning with `isa` work like a `dynamic_cast` with a runtime check while those beginning with `as` are more like a `static_cast` with an additional assertion via its `isa` sibling in the `Debug` build that the cast is correct.
-
-### Builtins
-
 Usually, you will encounter a [Def](@ref thorin::Def) as [Ref](@ref thorin::Ref) which is just a wrapper for a `const Def*`.
-Use [Def::isa_mut](@ref thorin::Def::isa_mut) like a `dynamic_cast` to check whether a specific [Ref](@ref thorin::Ref)/`const Def*` is in fact mutable to cast away the `const`,
-or [Def::as_mut](@ref thorin::Def::as_mut) to force this cast (like a `static_cast` and `assert` if not possible):
+Matching built-ins, i.e., all subclasses of [Def](@ref thorin::Def), works differently than matching [Axiom](@ref thorin::Axiom)s.
+
+### Built-ins
+
+Methods beginning with
+* `isa` work like a `dynamic_cast` with a runtime check while
+* those beginning with `as` are more like a `static_cast` and `assert` via its `isa` sibling in the `Debug` build that the cast is correct.
+
+#### Upcast
+
+[Def::isa](@ref thorin::RuntimeCast::isa)/[Def::as](@ref thorin::RuntimeCast::as) allows for an *upcast* that matches both *mutables* and *immutables*:
+```cpp
+void foo(Ref def) {
+    if (auto sigma = def->isa<Sigma>()) {
+        // sigma is of type "const Sigma*" and could be a mutable or an immutable
+    }
+
+    // sigma of type "const Sigma*" and could be an immutable or a mutable
+    // asserts, if def is not a Sigma
+    auto sigma = def->as_imm<Sigma>();
+}
+```
+
+#### Upcast for Immutables
+
+[Def::isa_imm](@ref thorin::Def::isa_imm)/[Def::as_imm](@ref thorin::Def::as_imm) allows for an *upcast* and **only** matches *immutables*:
+```cpp
+void foo(Ref def) {
+    if (auto imm = def->isa_imm()) {
+        // imm of type "const Def*" and is an immutable
+    }
+
+    if (auto sigma = def->isa_imm<Sigma>()) {
+        // sigma is of type "const Sigma*" and is an immutable Sigma
+    }
+
+    // sigma of type "const Sigma*" and *must* be an immutable Sigma - otherwise, asserts
+    auto sigma = def->as_imm<Sigma>();
+}
+```
+
+#### Upcast for Mutables
+
+[Def::isa_mut](@ref thorin::Def::isa_mut)/[Def::as_mut](@ref thorin::Def::as_mut) allows for an *upcast* and **only** matches *mutables*:
 ```cpp
 void foo(Ref def) {
     if (auto mut = def->isa_mut()) {
@@ -86,34 +127,7 @@ void foo(Ref def) {
     auto lam = def->as<Lam>();
 }
 ```
-You can also check whether a specific [Ref](@ref thorin::Ref)/`const Def*` is in fact an *immutable*:
-```cpp
-void foo(Ref def) {
-    if (auto imm = def->isa_imm()) {
-        // imm of type "const Def*" and is an immutable
-    }
-
-    if (auto sigma = def->isa_imm<Sigma>()) {
-        // sigma is of type "const Sigma*" and is an immutable Sigma
-    }
-
-    // sigma of type "const Sigma*" and *must* be an immutable Sigma - otherwise, asserts
-    auto sigma = def->as_imm<Sigma>();
-}
-```
-If you just check via [Def::isa](@ref thorin::RuntimeCast::isa)/[Def::as](@ref thorin::RuntimeCast::as) a [Ref](@ref thorin::Ref)/`const Def*`, you match either a *mutable* or an *immutable*.
-```cpp
-void foo(Ref def) {
-    if (auto sigma = def->isa<Sigma>()) {
-        // sigma is of type "const Sigma*" and could be a mutable or an immutable
-    }
-
-    // sigma of type "const Sigma*" and could be an immutable or a mutable
-    // asserts, if def is not a Sigma
-    auto sigma = def->as_imm<Sigma>();
-}
-```
-Checking via [Def::isa](@ref thorin::RuntimeCast::isa)/[Def::as](@ref thorin::RuntimeCast::as) a `Def*` has the same effect as using [Def::isa_mut](@ref thorin::Def::isa_mut)/[Def::isa_mut](@ref thorin::Def::as_mut) since the scrutinee must be a *mutable* due to the lack of the `const` qualifier:
+Checking via [Def::isa](@ref thorin::RuntimeCast::isa)/[Def::as](@ref thorin::RuntimeCast::as) a `Def*` has the same effect as using [Def::isa_mut](@ref thorin::Def::isa_mut)/[Def::isa_mut](@ref thorin::Def::as_mut) since the scrutinee must be already a *mutable* due to the lack of the `const` qualifier:
 ```cpp
 void foo(Def* def) { // note the lack of "const" here
     if (auto sigma = def->isa<Sigma>()) {
@@ -127,7 +141,10 @@ void foo(Def* def) { // note the lack of "const" here
     auto sigma = def->as<Sigma>();
 }
 ```
-Often, you want to match a [literal](@ref thorin::Lit) and grab its content.
+
+#### Upcast for Literals
+
+Often, you want to match a [Lit](@ref thorin::Lit)eral and grab its content.
 You can use thorin::isa_lit / thorin::as_lit for this.
 ```cpp
 void foo(Ref def) {
@@ -146,13 +163,30 @@ void foo(Ref def) {
 }
 ```
 
+#### Summary
+
+The following table summarizes all important casts:
+
+| `dynamic_cast`        | `static_cast`        | Comment                                                                                         |
+|-----------------------|----------------------|-------------------------------------------------------------------------------------------------|
+| `def->isa<Lam>()`     | `def->as<Lam>()`     | upcast to `const Lam*`                                                                          |
+| `def->isa_imm<Lam>()` | `def->as_imm<Lam>()` | upcast to `const Lam*` if `def` is an immutable                                                 |
+| `def->isa_mut<Lam>()` | `def->as_mut<Lam>()` | upcast to `Lam*` if `def` is a mutable                                                          |
+| `isa_lit(def)`        | `as_lit(def)`        | yields `std::optional<nat_t>`/[nat_t](@ref thorin::nat_t) if `def` is a [Lit](@ref thorin::Lit) |
+| `isa_lit<f32>(def)`   | `as_lit<f32>(def)`   | yields `std::optional<f32>`/[f32](@ref thorin::f32) if `def` is a [Lit](@ref thorin::Lit)       |
+
 ### Axioms
 
-You can match [axioms](@ref thorin::Axiom) via thorin::match / thorin::force.
-By default, Thorin assumes that the magic of an [axiom](@ref thorin::Axiom) happens when applying the final argument to a curried [axiom](@ref thorin::Axiom).
-If you want to design an [axiom](@ref thorin::Axiom) that really returns a function, you can [fine-adjust the trigger point](@ref thorin::Axiom::normalizer) of a thorin::match / thorin::force.
+You can match [Axiom](@ref thorin::Axiom)s via
+* thorin::match which is again similar to a `dynamic_cast` and
+* thorin::force which is more like a `static_cast` and `assert`s via its `match` sibling in the `Debug` build that the cast is correct.
 
-In order to match an [axiom](@ref thorin::Axiom) **without** any subtags like `%%mem.load`, do this:
+By default, Thorin assumes that the magic of an [Axiom](@ref thorin::Axiom) happens when applying the final argument to a curried [Axiom](@ref thorin::Axiom).
+If you want to design an [Axiom](@ref thorin::Axiom) that really returns a function, you can [fine-adjust the trigger point](@ref thorin::Axiom::normalizer) of a thorin::match / thorin::force.
+
+#### Without Subtags
+
+In order to match an [Axiom](@ref thorin::Axiom) **without** any subtags like `%%mem.load`, do this:
 ```cpp
 void foo(Ref def) {
     if (auto load = match<mem::load>(def)) {
@@ -165,9 +199,11 @@ void foo(Ref def) {
 }
 ```
 The `match` only triggers for the final thorin::App of the curried call `%%mem.load (T, as) (mem, ptr)` and `%%mem.load (T, as)` will **not** match as explained above.
-This will give you a [Match](@ref thorin::Match) which usually just wraps an [App](@ref thorin::App) but may wrap a [Def](@ref thorin::Def) or other subclasses of it if the type of the axiom is not a [function type](@ref thorin::Pi).
+This will yield a [Match](@ref thorin::Match) which *usually* just wraps a `const` [App](@ref thorin::App)`*` but may wrap a [Def](@ref thorin::Def) or other subclasses of it if the type of the Axiom is **not** a [function type](@ref thorin::Pi).
 
-In order to match an [axiom](@ref thorin::Axiom) **with** subtags like `%%core.wrap`, do this:
+#### With Subtags
+
+In order to match an [Axiom](@ref thorin::Axiom) **with** subtags like `%%core.wrap`, do this:
 ```cpp
 void foo(Ref def) {
     if (auto wrap = match<core::wrap>(def)) {
@@ -193,6 +229,16 @@ void foo(Ref def) {
     auto add = force(core::wrap::add, def);
 }
 ```
+
+#### Summary
+
+The following table summarizes all important casts:
+
+| `dynamic_cast`                | `static_cast`                 | Comment                                               |
+|-------------------------------|-------------------------------|-------------------------------------------------------|
+| `match<mem::load>(def)`       | `force<mem::load>(def)`       | yields [Match](@ref thorin::Match)`<mem::load, App>`  |
+| `match<core::wrap>(def)`      | `force<core::wrap>(def)`      | yields [Match](@ref thorin::Match)`<core::wrap, App>` |
+| `match(core::wrap::add, def)` | `force(core::wrap::add, def)` | yields [Match](@ref thorin::Match)`<core::wrap, App>` |
 
 ## Iterating over the Program
 
