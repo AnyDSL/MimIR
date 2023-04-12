@@ -66,7 +66,7 @@ Thorin provides different means to scrutinize [Defs](@ref thorin::Def).
 Usually, you will encounter a [Def](@ref thorin::Def) as [Ref](@ref thorin::Ref) which is just a wrapper for a `const Def*`.
 Matching built-ins, i.e., all subclasses of [Def](@ref thorin::Def), works differently than matching [Axiom](@ref thorin::Axiom)s.
 
-### Built-ins
+### Upcast for Built-ins {#cast_builtin}
 
 Methods beginning with
 * `isa` work like a `dynamic_cast` with a runtime check while
@@ -142,10 +142,10 @@ void foo(Def* def) { // note the lack of "const" here
 }
 ```
 
-#### Upcast for Literals
+#### Matching Literals {#cast_lit}
 
 Often, you want to match a [Lit](@ref thorin::Lit)eral and grab its content.
-You can use thorin::isa_lit / thorin::as_lit for this.
+You can use thorin::isa_lit / thorin::as_lit for this:
 ```cpp
 void foo(Ref def) {
     if (auto lit = isa_lit(def)) {
@@ -167,15 +167,15 @@ void foo(Ref def) {
 
 The following table summarizes all important casts:
 
-| `dynamic_cast`        | `static_cast`        | Comment                                                                                         |
-|-----------------------|----------------------|-------------------------------------------------------------------------------------------------|
-| `def->isa<Lam>()`     | `def->as<Lam>()`     | upcast to `const Lam*`                                                                          |
-| `def->isa_imm<Lam>()` | `def->as_imm<Lam>()` | upcast to `const Lam*` if `def` is an immutable                                                 |
-| `def->isa_mut<Lam>()` | `def->as_mut<Lam>()` | upcast to `Lam*` if `def` is a mutable                                                          |
-| `isa_lit(def)`        | `as_lit(def)`        | yields `std::optional<nat_t>`/[nat_t](@ref thorin::nat_t) if `def` is a [Lit](@ref thorin::Lit) |
-| `isa_lit<f32>(def)`   | `as_lit<f32>(def)`   | yields `std::optional<f32>`/[f32](@ref thorin::f32) if `def` is a [Lit](@ref thorin::Lit)       |
+| `dynamic_cast`        <br> `static_cast`        | Returns                                                                                                                               | If `def` is a ...                     |
+|-------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------|
+| `def->isa<Lam>()`     <br> `def->as<Lam>()`     | `const Lam*`                                                                                                                          | [Lam](@ref thorin::Lam)               |
+| `def->isa_imm<Lam>()` <br> `def->as_imm<Lam>()` | `const Lam*`                                                                                                                          | **immutable** [Lam](@ref thorin::Lam) |
+| `def->isa_mut<Lam>()` <br> `def->as_mut<Lam>()` | `Lam*`                                                                                                                                | **mutable** [Lam](@ref thorin::Lam)   |
+| `isa_lit(def)`        <br> `as_lit(def)`        | [std::optional](https://en.cppreference.com/w/cpp/utility/optional)`<`[nat_t](@ref thorin::nat_t)`>` <br> [nat_t](@ref thorin::nat_t) | [Lit](@ref thorin::Lit)               |
+| `isa_lit<f32>(def)`   <br> `as_lit<f32>(def)`   | [std::optional](https://en.cppreference.com/w/cpp/utility/optional)`<`[f32](@ref thorin::f32)`>`     <br> [f32](@ref thorin::f32)     | [Lit](@ref thorin::Lit)               |
 
-### Axioms
+### Axioms {#cast_axioms}
 
 You can match [Axiom](@ref thorin::Axiom)s via
 * thorin::match which is again similar to a `dynamic_cast` and
@@ -234,11 +234,11 @@ void foo(Ref def) {
 
 The following table summarizes all important casts:
 
-| `dynamic_cast`                | `static_cast`                 | Comment                                               |
-|-------------------------------|-------------------------------|-------------------------------------------------------|
-| `match<mem::load>(def)`       | `force<mem::load>(def)`       | yields [Match](@ref thorin::Match)`<mem::load, App>`  |
-| `match<core::wrap>(def)`      | `force<core::wrap>(def)`      | yields [Match](@ref thorin::Match)`<core::wrap, App>` |
-| `match(core::wrap::add, def)` | `force(core::wrap::add, def)` | yields [Match](@ref thorin::Match)`<core::wrap, App>` |
+| `dynamic_cast`                <br> `static_cast`                 | Returns                                        | If `def` is a ...               |
+|-------------------------------------------------------------------|------------------------------------------------|---------------------------------|
+| `match<mem::load>(def)`       <br> `force<mem::load>(def)`       | [Match](@ref thorin::Match)`<mem::load, App>`  | `%%mem.load (T, as) (mem, ptr)` |
+| `match<core::wrap>(def)`      <br> `force<core::wrap>(def)`      | [Match](@ref thorin::Match)`<core::wrap, App>` | `%%core.wrap.??? s m (a, b)`    |
+| `match(core::wrap::add, def)` <br> `force(core::wrap::add, def)` | [Match](@ref thorin::Match)`<core::wrap, App>` | `%%core.wrap.add s m (a, b)`    |
 
 ## Iterating over the Program
 

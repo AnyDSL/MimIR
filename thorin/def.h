@@ -389,6 +389,7 @@ public:
 
     /// @name casts
     ///@{
+    /// @see @ref cast_builtin
     // clang-format off
     template<class T = Def> const T* isa_imm() const { return isa_mut<T, true>(); }
     template<class T = Def> const T*  as_imm() const { return  as_mut<T, true>(); }
@@ -628,6 +629,9 @@ public:
     THORIN_DEF_MIXIN(Lit)
 };
 
+/// @name cast for Lit
+///@{
+/// @see @ref cast_lit
 template<class T>
 std::optional<T> isa_lit(const Def* def) {
     if (def == nullptr) return {};
@@ -639,6 +643,7 @@ template<class T>
 T as_lit(const Def* def) {
     return def->as<Lit>()->get<T>();
 }
+///@}
 
 class Nat : public Def {
 private:
