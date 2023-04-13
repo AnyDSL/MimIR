@@ -56,11 +56,9 @@ var def_8h =
       [ "Univ", "def_8h.html#abb917bebc699083d990fc4592abcc50ea143bb06341e537e7143fb33624517946", null ],
       [ "Level", "def_8h.html#abb917bebc699083d990fc4592abcc50eaa0db49ba470c1c9ae2128c3470339153", null ]
     ] ],
-    [ "as", "def_8h.html#a77128b6187ea06fcc6b07e5e34efcc3d", null ],
     [ "as_lit", "def_8h.html#a4784a7ada8e2badb49500623824d79e5", null ],
     [ "collect_args", "def_8h.html#a957335953a7051820ba1edc227999812", null ],
     [ "error", "def_8h.html#a1de4d5b631f17319d8e0fa712800fa14", null ],
-    [ "isa", "def_8h.html#a4ee21e07e5bfcf99d87cf5b3effb1ba1", null ],
     [ "isa_lit", "def_8h.html#a196c8dd3968fd28a00dc082c191feee6", null ],
     [ "operator!=", "def_8h.html#abc1f01f662846f8caad92888ad8a17d8", null ],
     [ "operator!=", "def_8h.html#aee916580c13eda56077bf2d72c16c826", null ],

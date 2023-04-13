@@ -189,13 +189,12 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Lattice</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p ><a class="el" href="classthorin_1_1EtaExp.html" title="Performs η-expansion: f -&gt; λx.f x, if f is a Lam with more than one user and does not appear in calle...">EtaExp</a> uses the following lattice:</p>
-<div class="fragment"><div class="line">     expand_            &lt;-- η-expand non-callee <a class="code hl_function" href="namespacethorin.html#a77128b6187ea06fcc6b07e5e34efcc3d">as</a> the <a class="code hl_class" href="classthorin_1_1Lam.html">Lam</a> occurs more than once.</div>
+<div class="fragment"><div class="line">     expand_            &lt;-- η-expand non-callee as the <a class="code hl_class" href="classthorin_1_1Lam.html">Lam</a> occurs more than once.</div>
 <div class="line">      /   \                 Don<span class="stringliteral">&#39;t η-reduce the expansion again.</span></div>
 <div class="line"><span class="stringliteral">Callee     Non_Callee_1 &lt;-- Pos: Either multiple callees, **or** exactly one non-callee are okay.</span></div>
 <div class="line"><span class="stringliteral">      \   /</span></div>
 <div class="line"><span class="stringliteral">       Bot              &lt;-- Never seen.</span></div>
 <div class="ttc" id="aclassthorin_1_1Lam_html"><div class="ttname"><a href="classthorin_1_1Lam.html">thorin::Lam</a></div><div class="ttdef"><b>Definition:</b> <a href="lam_8h_source.html#l00053">lam.h:53</a></div></div>
-<div class="ttc" id="anamespacethorin_html_a77128b6187ea06fcc6b07e5e34efcc3d"><div class="ttname"><a href="namespacethorin.html#a77128b6187ea06fcc6b07e5e34efcc3d">thorin::as</a></div><div class="ttdeci">const T * as(flags_t f, const Def *def)</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00512">def.h:512</a></div></div>
 </div><!-- fragment --><ul>
 <li>EtaExp::expand_ trackes if a <a class="el" href="classthorin_1_1Lam.html">Lam</a> is the top element.</li>
 <li>If it's not within EtaExp::expand_, it's either <code><a class="el" href="structthorin_1_1Pos.html">Pos</a></code> or <code>Bot</code>. But there is no need to differentiate this any further.</li>

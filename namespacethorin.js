@@ -242,7 +242,6 @@ var namespacethorin =
       [ "Univ", "namespacethorin.html#abb917bebc699083d990fc4592abcc50ea143bb06341e537e7143fb33624517946", null ],
       [ "Level", "namespacethorin.html#abb917bebc699083d990fc4592abcc50eaa0db49ba470c1c9ae2128c3470339153", null ]
     ] ],
-    [ "as", "namespacethorin.html#a77128b6187ea06fcc6b07e5e34efcc3d", null ],
     [ "as_lit", "namespacethorin.html#a4784a7ada8e2badb49500623824d79e5", null ],
     [ "assert_emplace", "namespacethorin.html#aad6b4767dbf4afe9eafefc0eb401eb5d", null ],
     [ "begin_mask", "namespacethorin.html#abb6ffec182ef74fe659befbe360ca0f9", null ],
@@ -307,7 +306,6 @@ var namespacethorin =
     [ "is_top_level", "namespacethorin.html#a1ea2d1f8b0075a5710d3da6b0447ab01", null ],
     [ "is_unit", "namespacethorin.html#a496a5dfe6e208b166676c88e28092d48", null ],
     [ "is_var", "namespacethorin.html#aa6469adafc2cc51e621f2d10689270f6", null ],
-    [ "isa", "namespacethorin.html#a4ee21e07e5bfcf99d87cf5b3effb1ba1", null ],
     [ "isa_apped_mut_lam", "namespacethorin.html#aed3d96cb0b2cc194a61801ac78bc1a5c", null ],
     [ "isa_callee", "namespacethorin.html#ad9eaf597de3eb9f0abdfad6e1d60d40b", null ],
     [ "isa_decl", "namespacethorin.html#a83dd1a97c4b17f7188a981d3036cb717", null ],
