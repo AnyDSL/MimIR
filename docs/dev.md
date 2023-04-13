@@ -35,7 +35,7 @@ Converted to [continuation-passing style (CPS)](https://en.wikipedia.org/wiki/Co
 .Cn [%mem.M, I32, %mem.Ptr (I32, 0), .Cn [%mem.M, I32]]
 ```
 The `%%mem.M` type is a type that keeps track of side effects that may occur.
-Since, `main` introduces [variables](@ref thorin::Var) we must create a **[mutable](@ref mut)** [Lam](@ref thorin::Lam)bda.
+Since, `main` introduces [variables](@ref thorin::Var) we must create a **mutable** [Lam](@ref thorin::Lam)bda (see @ref mut).
 The only thing `main` is doing, is to invoke its `ret`urn continuation with `mem` and `argc` as argument:
 ```
 ret (mem, argc)
