@@ -119,7 +119,7 @@ $(document).ready(function(){initNavTree('mem.html',''); initResizable(); });
 <li class="level2"><a href="#autotoc_md157">%mem.Ptr</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md158">Operations with Side Effects</a><ul><li class="level2"><a href="#autotoc_md159">%mem.load</a></li>
+<li class="level1"><a href="#autotoc_md158">Operations w/ Side Effects</a><ul><li class="level2"><a href="#autotoc_md159">%mem.load</a></li>
 <li class="level2"><a href="#autotoc_md160">%mem.store</a></li>
 <li class="level2"><a href="#autotoc_md161">%mem.remem</a></li>
 <li class="level2"><a href="#autotoc_md162">%mem.alloc</a></li>
@@ -129,10 +129,10 @@ $(document).ready(function(){initNavTree('mem.html',''); initResizable(); });
 <li class="level2"><a href="#autotoc_md166">%mem.mslot</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md167">Operations without Side Effects</a><ul><li class="level2"><a href="#autotoc_md168">%mem.lea</a></li>
+<li class="level1"><a href="#autotoc_md167">Operations w/o Side Effects</a><ul><li class="level2"><a href="#autotoc_md168">%mem.lea</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md169">Compilation Passes and Phases</a><ul><li class="level2"><a href="#autotoc_md170">Misc</a></li>
+<li class="level1"><a href="#autotoc_md169">Passes and Phases</a><ul><li class="level2"><a href="#autotoc_md170">Misc</a></li>
 <li class="level2"><a href="#autotoc_md171">Passes</a></li>
 <li class="level2"><a href="#autotoc_md172">Phases</a></li>
 </ul>
@@ -152,7 +152,7 @@ Types</h1>
 %mem.Ptr</h2>
 <p >Pointer type with <em>pointee</em> type <code>T</code> and <em>address space</em> <code>as</code>. At the moment, the <em>address space</em> is not really used and a placeholder for future work. </p><div class="fragment"><div class="line">.ax %mem.Ptr: [*, .Nat] -&gt; *;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md158"></a>
-Operations with Side Effects</h1>
+Operations w/ Side Effects</h1>
 <p >The following operations have side effects. For this reason, they consume a <code>%mem.M</code> and yield a new <code>%mem.M</code>.</p>
 <h2><a class="anchor" id="autotoc_md159"></a>
 %mem.load</h2>
@@ -179,12 +179,12 @@ Operations with Side Effects</h1>
 %mem.mslot</h2>
 <p >Reserves a memory slot for type <code>T</code> in address space <code>as</code>. The reserved slot will be <code>size</code> bytes large. <code>id</code> has to be provided an unique id. </p><div class="fragment"><div class="line">.ax %mem.mslot: Π Tas::[*, .Nat][%mem.M, size: .Nat, id: .Nat] -&gt; [%mem.M, %mem.Ptr Tas];</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md167"></a>
-Operations without Side Effects</h1>
+Operations w/o Side Effects</h1>
 <h2><a class="anchor" id="autotoc_md168"></a>
 %mem.lea</h2>
 <p >Load effective address. Performs address computation by offsetting the passed pointer with index <code>i</code>. </p><div class="fragment"><div class="line">.ax %mem.lea: Π [n: .Nat, Ts: «n; *», as: .Nat][%mem.Ptr(«j: n; Ts#j», as), i: .Idx n] -&gt; %mem.Ptr(Ts#i, as), normalize_lea;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md169"></a>
-Compilation Passes and Phases</h1>
+Passes and Phases</h1>
 <h2><a class="anchor" id="autotoc_md170"></a>
 Misc</h2>
 <p >Reshape mode enum.</p>

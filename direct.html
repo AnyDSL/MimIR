@@ -119,7 +119,7 @@ $(document).ready(function(){initNavTree('direct.html',''); initResizable(); });
 <li class="level2"><a href="#autotoc_md116">%direct.cps2ds</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md117">Compilation Passes and Phases</a><ul><li class="level2"><a href="#autotoc_md118">Passes</a></li>
+<li class="level1"><a href="#autotoc_md117">Passes and Phases</a><ul><li class="level2"><a href="#autotoc_md118">Passes</a></li>
 <li class="level2"><a href="#autotoc_md119">Phases</a></li>
 </ul>
 </li>
@@ -145,7 +145,7 @@ Operations</h1>
 <div class="fragment"><div class="line">.ax %direct.cps2ds: Π [T: *, U: *] -&gt; (.Cn [T, .Cn U]) -&gt; (T -&gt; U), normalize_cps2ds, 2;</div>
 <div class="line">.ax %direct.cps2ds_dep: Π [T: *, U: T -&gt; *] -&gt; (.Cn [t:T, .Cn ((U t))]) -&gt; (Π [t:T] -&gt; ((U t)));</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md117"></a>
-Compilation Passes and Phases</h1>
+Passes and Phases</h1>
 <h2><a class="anchor" id="autotoc_md118"></a>
 Passes</h2>
 <div class="fragment"><div class="line">.ax %direct.ds2cps_pass: %compile.Pass;</div>
