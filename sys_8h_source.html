@@ -115,44 +115,43 @@ $(document).ready(function(){initNavTree('sys_8h_source.html',''); initResizable
 <div class="contents">
 <a href="sys_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#ifdef _WIN32</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#    define THORIN_WHICH &quot;where&quot;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="sys_8h.html#a8c190e94eb07b7ca90ecd8e07bf04ff8">    6</a></span><span class="preprocessor">#    define THORIN_WHICH &quot;which&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;filesystem&gt;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;optional&gt;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;filesystem&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;optional&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#ifdef _WIN32</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#    define THORIN_WHICH &quot;where&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="sys_8h.html#a8c190e94eb07b7ca90ecd8e07bf04ff8">   10</a></span><span class="preprocessor">#    define THORIN_WHICH &quot;which&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin.html">thorin</a> {</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">namespace </span>fs = std::filesystem;</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">namespace </span>sys {</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment"></span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">/// Yields `std::nullopt` if an error occurred.</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"></span>std::optional&lt;fs::path&gt; <a class="code hl_function" href="namespacethorin_1_1sys.html#a488b79cdd1c20430809790046dd7f917">path_to_curr_exe</a>();</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"></span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">/// Executes command @p cmd.</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">/// @returns the output as string.</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"></span>std::string <a class="code hl_function" href="namespacethorin_1_1sys.html#ac4dd1156a86eb6db52f2cd93fec5a962">exec</a>(std::string cmd);</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>std::string <a class="code hl_function" href="namespacethorin_1_1sys.html#a2eda434a3eb1dcbf48dd570d8d2f7733">find_cmd</a>(std::string);</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"></span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">/// Wraps `std::system` and makes the return value usable.</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment"></span><span class="keywordtype">int</span> <a class="code hl_function" href="namespacethorin_1_1sys.html#a932508f0d5bde98eb7127e4f2533776f">system</a>(std::string);</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment"></span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">/// Wraps sys::system and puts `.exe` at the back (Windows) and `./` at the front (otherwise) of @p cmd.</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"></span><span class="keywordtype">int</span> <a class="code hl_function" href="namespacethorin_1_1sys.html#ac7f063860c3477d428af8c6387ef38ee">run</a>(std::string cmd, std::string args = {});</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>} <span class="comment">// namespace sys</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>} <span class="comment">// namespace thorin</span></div>
-<div class="ttc" id="anamespacethorin_1_1sys_html_a2eda434a3eb1dcbf48dd570d8d2f7733"><div class="ttname"><a href="namespacethorin_1_1sys.html#a2eda434a3eb1dcbf48dd570d8d2f7733">thorin::sys::find_cmd</a></div><div class="ttdeci">std::string find_cmd(std::string cmd)</div><div class="ttdef"><b>Definition:</b> <a href="sys_8cpp_source.html#l00065">sys.cpp:65</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1sys_html_a488b79cdd1c20430809790046dd7f917"><div class="ttname"><a href="namespacethorin_1_1sys.html#a488b79cdd1c20430809790046dd7f917">thorin::sys::path_to_curr_exe</a></div><div class="ttdeci">std::optional&lt; fs::path &gt; path_to_curr_exe()</div><div class="ttdoc">Yields std::nullopt if an error occurred.</div><div class="ttdef"><b>Definition:</b> <a href="sys_8cpp_source.html#l00028">sys.cpp:28</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1sys_html_a932508f0d5bde98eb7127e4f2533776f"><div class="ttname"><a href="namespacethorin_1_1sys.html#a932508f0d5bde98eb7127e4f2533776f">thorin::sys::system</a></div><div class="ttdeci">int system(std::string cmd)</div><div class="ttdoc">Wraps std::system and makes the return value usable.</div><div class="ttdef"><b>Definition:</b> <a href="sys_8cpp_source.html#l00071">sys.cpp:71</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1sys_html_ac4dd1156a86eb6db52f2cd93fec5a962"><div class="ttname"><a href="namespacethorin_1_1sys.html#ac4dd1156a86eb6db52f2cd93fec5a962">thorin::sys::exec</a></div><div class="ttdeci">std::string exec(std::string cmd)</div><div class="ttdoc">Executes command cmd.</div><div class="ttdef"><b>Definition:</b> <a href="sys_8cpp_source.html#l00056">sys.cpp:56</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1sys_html_ac7f063860c3477d428af8c6387ef38ee"><div class="ttname"><a href="namespacethorin_1_1sys.html#ac7f063860c3477d428af8c6387ef38ee">thorin::sys::run</a></div><div class="ttdeci">int run(std::string cmd, std::string args)</div><div class="ttdoc">Wraps sys::system and puts .exe at the back (Windows) and ./ at the front (otherwise) of cmd.</div><div class="ttdef"><b>Definition:</b> <a href="sys_8cpp_source.html#l00077">sys.cpp:77</a></div></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>std::optional&lt;fs::path&gt; <a class="code hl_function" href="namespacethorin_1_1sys.html#a488b79cdd1c20430809790046dd7f917">path_to_curr_exe</a>(); <span class="comment">///&lt; Yields `std::nullopt` if an error occurred.</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"></span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">/// Executes command @p cmd.</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">/// @returns the output as string.</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"></span>std::string <a class="code hl_function" href="namespacethorin_1_1sys.html#ac4dd1156a86eb6db52f2cd93fec5a962">exec</a>(std::string cmd);</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>std::string <a class="code hl_function" href="namespacethorin_1_1sys.html#a2eda434a3eb1dcbf48dd570d8d2f7733">find_cmd</a>(std::string);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="comment"></span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment">/// Wraps `std::system` and makes the return value usable.</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment"></span><span class="keywordtype">int</span> <a class="code hl_function" href="namespacethorin_1_1sys.html#a932508f0d5bde98eb7127e4f2533776f">system</a>(std::string);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment"></span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">/// Wraps sys::system and puts `.exe` at the back (Windows) and `./` at the front (otherwise) of @p cmd.</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment"></span><span class="keywordtype">int</span> <a class="code hl_function" href="namespacethorin_1_1sys.html#ac7f063860c3477d428af8c6387ef38ee">run</a>(std::string cmd, std::string args = {});</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>} <span class="comment">// namespace sys</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>} <span class="comment">// namespace thorin</span></div>
+<div class="ttc" id="anamespacethorin_1_1sys_html_a2eda434a3eb1dcbf48dd570d8d2f7733"><div class="ttname"><a href="namespacethorin_1_1sys.html#a2eda434a3eb1dcbf48dd570d8d2f7733">thorin::sys::find_cmd</a></div><div class="ttdeci">std::string find_cmd(std::string cmd)</div><div class="ttdef"><b>Definition:</b> <a href="sys_8cpp_source.html#l00064">sys.cpp:64</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1sys_html_a488b79cdd1c20430809790046dd7f917"><div class="ttname"><a href="namespacethorin_1_1sys.html#a488b79cdd1c20430809790046dd7f917">thorin::sys::path_to_curr_exe</a></div><div class="ttdeci">std::optional&lt; fs::path &gt; path_to_curr_exe()</div><div class="ttdoc">Yields std::nullopt if an error occurred.</div><div class="ttdef"><b>Definition:</b> <a href="sys_8cpp_source.html#l00027">sys.cpp:27</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1sys_html_a932508f0d5bde98eb7127e4f2533776f"><div class="ttname"><a href="namespacethorin_1_1sys.html#a932508f0d5bde98eb7127e4f2533776f">thorin::sys::system</a></div><div class="ttdeci">int system(std::string cmd)</div><div class="ttdoc">Wraps std::system and makes the return value usable.</div><div class="ttdef"><b>Definition:</b> <a href="sys_8cpp_source.html#l00070">sys.cpp:70</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1sys_html_ac4dd1156a86eb6db52f2cd93fec5a962"><div class="ttname"><a href="namespacethorin_1_1sys.html#ac4dd1156a86eb6db52f2cd93fec5a962">thorin::sys::exec</a></div><div class="ttdeci">std::string exec(std::string cmd)</div><div class="ttdoc">Executes command cmd.</div><div class="ttdef"><b>Definition:</b> <a href="sys_8cpp_source.html#l00055">sys.cpp:55</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1sys_html_ac7f063860c3477d428af8c6387ef38ee"><div class="ttname"><a href="namespacethorin_1_1sys.html#ac7f063860c3477d428af8c6387ef38ee">thorin::sys::run</a></div><div class="ttdeci">int run(std::string cmd, std::string args)</div><div class="ttdoc">Wraps sys::system and puts .exe at the back (Windows) and ./ at the front (otherwise) of cmd.</div><div class="ttdef"><b>Definition:</b> <a href="sys_8cpp_source.html#l00076">sys.cpp:76</a></div></div>
 <div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdoc">Helper functions of general interest.</div><div class="ttdef"><b>Definition:</b> <a href="affine_8h_source.html#l00007">affine.h:7</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

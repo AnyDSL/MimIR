@@ -59,7 +59,7 @@ var def_8h =
     [ "as", "def_8h.html#a77128b6187ea06fcc6b07e5e34efcc3d", null ],
     [ "as_lit", "def_8h.html#a4784a7ada8e2badb49500623824d79e5", null ],
     [ "collect_args", "def_8h.html#a957335953a7051820ba1edc227999812", null ],
-    [ "err", "def_8h.html#a39adafebf1d49f2e8d46455a23fd711c", null ],
+    [ "error", "def_8h.html#a1de4d5b631f17319d8e0fa712800fa14", null ],
     [ "isa", "def_8h.html#a4ee21e07e5bfcf99d87cf5b3effb1ba1", null ],
     [ "isa_lit", "def_8h.html#a196c8dd3968fd28a00dc082c191feee6", null ],
     [ "operator!=", "def_8h.html#abc1f01f662846f8caad92888ad8a17d8", null ],

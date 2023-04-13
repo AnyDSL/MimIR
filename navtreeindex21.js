@@ -1,9 +1,5 @@
 var NAVTREEINDEX21 =
 {
-"functions_func_b.html":[5,3,1,1],
-"functions_func_c.html":[5,3,1,2],
-"functions_func_d.html":[5,3,1,3],
-"functions_func_e.html":[5,3,1,4],
 "functions_func_f.html":[5,3,1,5],
 "functions_func_g.html":[5,3,1,6],
 "functions_func_h.html":[5,3,1,7],
@@ -71,10 +67,10 @@ var NAVTREEINDEX21 =
 "hierarchy.html":[5,2],
 "index.html":[0],
 "index.html":[],
-"index.html#autotoc_md47":[0,0],
-"index.html#autotoc_md48":[0,0,0],
-"index.html#autotoc_md49":[0,0,1],
-"index.html#autotoc_md50":[0,1],
+"index.html#autotoc_md48":[0,0],
+"index.html#autotoc_md49":[0,0,0],
+"index.html#autotoc_md50":[0,0,1],
+"index.html#autotoc_md51":[0,1],
 "indexmap_8h.html":[6,0,4,5,10],
 "indexmap_8h.html#a9ada650270dac66b3f87bca30593dc5e":[6,0,4,5,10,1],
 "indexmap_8h.html#aa0a62994b63462d082addeddb1c92029":[6,0,4,5,10,2],
@@ -144,8 +140,8 @@ var NAVTREEINDEX21 =
 "loc_8h.html":[6,0,4,5,13],
 "loc_8h.html#a49109a7ac6192579b86068a0ed22206e":[6,0,4,5,13,5],
 "loc_8h.html#a5207b75bc2b0b46621df4adabaa55f38":[6,0,4,5,13,7],
-"loc_8h.html#a76230671e563449407228fa716175097":[6,0,4,5,13,3],
 "loc_8h.html#a8d63c0df0c916ee9469f630edccd6984":[6,0,4,5,13,4],
+"loc_8h.html#abdc406072b98cd1578653354cfaabf27":[6,0,4,5,13,3],
 "loc_8h.html#ac61d02cc44f6d51285905bd3ff39c069":[6,0,4,5,13,6],
 "loc_8h_source.html":[6,0,4,5,13],
 "log_8cpp.html":[6,0,4,5,14],
@@ -249,5 +245,9 @@ var NAVTREEINDEX21 =
 "math_2autogen_8h.html#a3ce804e3dfaa4ffc4002611767d5e58ba2acf183341e8c60e853c07e1aaf9d1f5":[6,0,0,1,0,7,0,11,29],
 "math_2autogen_8h.html#a3ce804e3dfaa4ffc4002611767d5e58ba2e9fdad2db619826298fac82dd6e9779":[6,0,0,1,0,7,0,11,6],
 "math_2autogen_8h.html#a3ce804e3dfaa4ffc4002611767d5e58ba34b8ab3650b264fef9b7052c11ff7af4":[6,0,0,1,0,7,0,11,23],
-"math_2autogen_8h.html#a3ce804e3dfaa4ffc4002611767d5e58ba3ba963458121173bac48573d0dc48892":[6,0,0,1,0,7,0,11,3]
+"math_2autogen_8h.html#a3ce804e3dfaa4ffc4002611767d5e58ba3ba963458121173bac48573d0dc48892":[6,0,0,1,0,7,0,11,3],
+"math_2autogen_8h.html#a3ce804e3dfaa4ffc4002611767d5e58ba4657aa99e1a2428ea4cf07f371243135":[6,0,0,1,0,7,0,11,5],
+"math_2autogen_8h.html#a3ce804e3dfaa4ffc4002611767d5e58ba46d0554f214d3a2dec67777291c78b43":[6,0,0,1,0,7,0,11,0],
+"math_2autogen_8h.html#a3ce804e3dfaa4ffc4002611767d5e58ba530f06c2f94f6ce28eb71ddf223183ae":[6,0,0,1,0,7,0,11,25],
+"math_2autogen_8h.html#a3ce804e3dfaa4ffc4002611767d5e58ba5d762a5468e7ec8dd60fd1e2498abede":[6,0,0,1,0,7,0,11,22]
 };

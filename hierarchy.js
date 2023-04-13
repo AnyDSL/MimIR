@@ -248,9 +248,6 @@ var hierarchy =
       [ "thorin::RWPhase", "classthorin_1_1RWPhase.html", null ],
       [ "thorin::ScopeRewriter", "classthorin_1_1ScopeRewriter.html", null ]
     ] ],
-    [ "std::runtime_error", null, [
-      [ "thorin::dl::Error", "classthorin_1_1dl_1_1Error.html", null ]
-    ] ],
     [ "thorin::RuntimeCast< B >", "classthorin_1_1RuntimeCast.html", null ],
     [ "thorin::RuntimeCast< Base >", "classthorin_1_1RuntimeCast.html", [
       [ "thorin::LoopTree< forward >::Base", "classthorin_1_1LoopTree_1_1Base.html", [

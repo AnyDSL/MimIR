@@ -1,9 +1,5 @@
 var NAVTREEINDEX27 =
 {
-"namespacethorin_1_1matrix.html#a16168e39eacc252a7e17796ab5ce8771":[3,0,0,13,6],
-"namespacethorin_1_1matrix.html#a17fe5e912d09fe66b52704b8c96ad3cb":[3,0,0,13,19],
-"namespacethorin_1_1matrix.html#a1e9655f096ec704d830d265bcc7ba032":[3,0,0,13,18],
-"namespacethorin_1_1matrix.html#a1f69fb3e480eccec78794f1e64a73c9a":[3,0,0,13,21],
 "namespacethorin_1_1matrix.html#a2626ad4f815b7afd1aaac953bce400fe":[3,0,0,13,27],
 "namespacethorin_1_1matrix.html#a40a39a623bc03e242cfbd5da3369d6b8":[3,0,0,13,30],
 "namespacethorin_1_1matrix.html#a47895d6c22853b66c768f238d854b6ba":[3,0,0,13,14],
@@ -195,17 +191,17 @@ var NAVTREEINDEX27 =
 "print_8cpp.html#a7dae34cc4eb75fe0cf5a914431353c8c":[6,0,4,5,16,1],
 "print_8cpp_source.html":[6,0,4,5,16],
 "print_8h.html":[6,0,4,5,17],
-"print_8h.html#a01d195c52d754394a58dec37e2913430":[6,0,4,5,17,7],
+"print_8h.html#a01d195c52d754394a58dec37e2913430":[6,0,4,5,17,6],
 "print_8h.html#a1e961804cf2964efea4388ebe218f496":[6,0,4,5,17,10],
 "print_8h.html#a425b2158f0d5c5ea2d8f27542c1f8ec3":[6,0,4,5,17,9],
 "print_8h.html#a7bc6143638d489bb640260462bf07777":[6,0,4,5,17,4],
 "print_8h.html#a7dae34cc4eb75fe0cf5a914431353c8c":[6,0,4,5,17,12],
 "print_8h.html#a923e8f4b4842964409d2fbf66c72d0b0":[6,0,4,5,17,14],
-"print_8h.html#aac934f1d1e901ba18050dd1302d65507":[6,0,4,5,17,5],
 "print_8h.html#ac2a988f71a64a048c61d5a2238269ea8":[6,0,4,5,17,8],
 "print_8h.html#acdd5a2cf60c9be78d38baa06024fb860":[6,0,4,5,17,13],
-"print_8h.html#af538a45dc8c0c242b9a51f2ea1e6afea":[6,0,4,5,17,6],
+"print_8h.html#af538a45dc8c0c242b9a51f2ea1e6afea":[6,0,4,5,17,5],
 "print_8h.html#af7ec5537fa7b52e17905ef114e40a765":[6,0,4,5,17,11],
+"print_8h.html#afb84214de2ce577bd1666f65e366b389":[6,0,4,5,17,7],
 "print_8h_source.html":[6,0,4,5,17],
 "refly.html":[2,11],
 "refly_2autogen_8h.html":[6,0,0,1,0,11,0],
@@ -249,5 +245,9 @@ var NAVTREEINDEX27 =
 "refly_8cpp_source.html":[6,0,2,11,2],
 "refly_8h.html":[6,0,2,11,3],
 "refly_8h.html#a2cf796606d851c9bab06caf5a2332170":[6,0,2,11,3,1],
-"refly_8h.html#a30122fc088057538572d8631a0df6d2b":[6,0,2,11,3,0]
+"refly_8h.html#a30122fc088057538572d8631a0df6d2b":[6,0,2,11,3,0],
+"refly_8h_source.html":[6,0,2,11,3],
+"remem__elim_8h.html":[6,0,2,9,0,1,3],
+"remem__elim_8h_source.html":[6,0,2,9,0,1,3],
+"remove__perm_8cpp.html":[6,0,2,11,0,1]
 };

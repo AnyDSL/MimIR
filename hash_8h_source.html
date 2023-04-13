@@ -121,7 +121,7 @@ $(document).ready(function(){initNavTree('hash_8h_source.html',''); initResizabl
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">    7</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> = uint32_t;</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"></span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">/// @name murmur3 hash</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">/// @name Murmur3 Hash</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">///@{</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">/// See [Wikipedia](https://en.wikipedia.org/wiki/MurmurHash).</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="namespacethorin.html#a8a5c4e987f83e9076f9d3d70b1022663">   12</a></span><span class="comment"></span><span class="keyword">inline</span> <a class="code hl_typedef" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> <a class="code hl_function" href="namespacethorin.html#a8a5c4e987f83e9076f9d3d70b1022663">murmur_32_scramble</a>(<a class="code hl_typedef" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> k) {</div>
@@ -181,7 +181,7 @@ $(document).ready(function(){initNavTree('hash_8h_source.html',''); initResizabl
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>}<span class="comment"></span></div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">///@}</span></div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment"></span><span class="comment"></span> </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment">/// @name FNV-1 hash</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment">/// @name FNV-1 Hash</span></div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="comment">///@{</span></div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment">/// See [Wikipedia](https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function#FNV-1_hash).</span></div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment"></span><span class="comment"></span> </div>
@@ -223,7 +223,7 @@ $(document).ready(function(){initNavTree('hash_8h_source.html',''); initResizabl
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="namespacethorin.html#a25e65e2898328d7df97d05cbe8263220">  108</a></span><span class="keyword">inline</span> <a class="code hl_typedef" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> <a class="code hl_function" href="namespacethorin.html#a25e65e2898328d7df97d05cbe8263220">hash_begin</a>() { <span class="keywordflow">return</span> <a class="code hl_variable" href="structthorin_1_1FNV1.html#a5f45f7a10a2980f0d2171e79aabf7b8a">FNV1::offset</a>; }<span class="comment"></span></div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="comment">///@}</span></div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="comment"></span><span class="comment"></span> </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="comment">/// @name string hashing</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="comment">/// @name String Hashing</span></div>
 <div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="comment">///@{</span></div>
 <div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="comment"></span><a class="code hl_typedef" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> <a class="code hl_function" href="namespacethorin.html#ae0e621eb1be011dcdfe11e5171fd7dd4">hash</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>*);</div>
 <div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><a class="code hl_typedef" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> <a class="code hl_function" href="namespacethorin.html#ae0e621eb1be011dcdfe11e5171fd7dd4">hash</a>(std::string_view);<span class="comment"></span></div>

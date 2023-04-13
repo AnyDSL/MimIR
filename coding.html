@@ -114,20 +114,22 @@ $(document).ready(function(){initNavTree('coding.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md1">Coding Style</a></li>
-<li class="level1"><a href="#autotoc_md2">Debugging</a><ul><li class="level2"><a href="#autotoc_md3">Dumping</a></li>
-<li class="level2"><a href="#autotoc_md4">Conditional Breakpoints</a></li>
-<li class="level2"><a href="#autotoc_md5">Catching Throw</a></li>
-<li class="level2"><a href="#autotoc_md6">Valgrind &amp; GDB</a></li>
-<li class="level2"><a href="#autotoc_md7">VS Code</a></li>
+<ul><li class="level1"><a href="#autotoc_md1">Coding Style</a><ul><li class="level2"><a href="#autotoc_md2">Doxygen Style</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#tests">Tests</a><ul><li class="level2"><a href="#autotoc_md8">lit Tests</a></li>
-<li class="level2"><a href="#autotoc_md9">GoogleTest</a></li>
+<li class="level1"><a href="#autotoc_md3">Debugging</a><ul><li class="level2"><a href="#autotoc_md4">Dumping</a></li>
+<li class="level2"><a href="#autotoc_md5">Conditional Breakpoints</a></li>
+<li class="level2"><a href="#autotoc_md6">Catching Throw</a></li>
+<li class="level2"><a href="#autotoc_md7">Valgrind &amp; GDB</a></li>
+<li class="level2"><a href="#autotoc_md8">VS Code</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md10">Syntax Highlighting</a></li>
-<li class="level1"><a href="#autotoc_md11">Third-Party Plugins</a><ul><li class="level2"><a href="#autotoc_md12">add_thorin_plugin</a></li>
+<li class="level1"><a href="#tests">Tests</a><ul><li class="level2"><a href="#autotoc_md9">lit Tests</a></li>
+<li class="level2"><a href="#autotoc_md10">GoogleTest</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md11">Syntax Highlighting</a></li>
+<li class="level1"><a href="#autotoc_md12">Third-Party Plugins</a><ul><li class="level2"><a href="#autotoc_md13">add_thorin_plugin</a></li>
 </ul>
 </li>
 </ul>
@@ -152,17 +154,22 @@ Coding Style</h1>
 </ol>
 </li>
 <li>prefer <code>// C++-style comments</code> over <code>/* C-style comments */</code></li>
-<li>use <code>/// three slashes for Doxygen</code> and <a href="https://www.doxygen.nl/manual/grouping.html">group</a> your methods into logical units if possible</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md2"></a>
+Doxygen Style</h2>
+<ul>
+<li>use <code>/// three slashes for Doxygen</code></li>
 <li>use <a href="https://doxygen.nl/manual/markdown.html">Markdown-style</a> Doxygen comments</li>
+<li><a href="https://www.doxygen.nl/manual/grouping.html">group</a> your methods into logical units if possible</li>
 <li>methods/functions that return a <code>bool</code> should be prefixed with <code>is_</code></li>
 <li>methods/functions that return a <code>std::optional</code> or a pointer that may be <code>nullptr</code> should be prefixed with <code>isa_</code></li>
 </ul>
 <p >For all the other minute details like indentation width etc. use <a href="https://clang.llvm.org/docs/ClangFormat.html">clang-format</a> and the provided <code>.clang-format</code> file in the root of the repository. In order to run <code>clang-format</code> automatically on all changed files, switch to the provided pre-commit hook: </p><div class="fragment"><div class="line">git config --local core.hooksPath .githooks/</div>
 </div><!-- fragment --><p> Note that you can <a href="https://clang.llvm.org/docs/ClangFormatStyleOptions.html#disabling-formatting-on-a-piece-of-code">disable clang-format for a piece of code</a>. In addition, you might want to check out plugins like the <a href="https://clang.llvm.org/docs/ClangFormat.html#vim-integration">Vim integration</a>.</p>
-<h1><a class="anchor" id="autotoc_md2"></a>
+<h1><a class="anchor" id="autotoc_md3"></a>
 Debugging</h1>
 <p >For logging and automatic firing of breakpoints refer to the <a class="el" href="cli.html#clidebug">Command-Line Reference</a>.</p>
-<h2><a class="anchor" id="autotoc_md3"></a>
+<h2><a class="anchor" id="autotoc_md4"></a>
 Dumping</h2>
 <p >Note that you can simply invoke <a class="el" href="classthorin_1_1Def.html#adeb490fdb674323acba48da1ffb28787">thorin::Def::dump</a>, <a class="el" href="classthorin_1_1Def.html#a7805eeac4955c9e68103f794c765654c">thorin::Def::write</a>, <a class="el" href="classthorin_1_1World.html#a8ae719e183b88f40276a1e93ac695cdf" title="Dump to os.">thorin::World::dump</a>, or <a class="el" href="classthorin_1_1World.html#a46b35348fdf798ec546a9b67968fc9b1" title="Write to a file named file.">thorin::World::write</a> from within <a href="https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_30.html">GDB</a>: </p><div class="fragment"><div class="line">(gdb) call def-&gt;dump()</div>
 <div class="line">(gdb) call def-&gt;dump(0)</div>
@@ -174,38 +181,38 @@ Dumping</h2>
 </div><!-- fragment --><p> Another useful feature is to retrieve a <code>Def*</code> from a <a class="el" href="classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb">thorin::Def::gid</a> via <a class="el" href="classthorin_1_1World.html#a50e487785b278535becdb5d7e2b124ab">thorin::World::gid2def</a>: </p><div class="fragment"><div class="line">(gdb) p world.gid2def(123);</div>
 <div class="line">$1 = ...</div>
 <div class="line">(gdb) $1-&gt;dump();</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md4"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md5"></a>
 Conditional Breakpoints</h2>
 <p >Often, you will want to inspect a certain <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">thorin::Def</a> at a particular point within the program. You can use <a href="https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_33.html">conditional breakpoints</a> for this. For example, the following GDB command will break, if the <a class="el" href="classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb">thorin::Def::gid</a> of variable <code>def</code> is <code>42</code> in source code location <code>foo.cpp:23</code>: </p><div class="fragment"><div class="line">break foo.cpp:23 if def-&gt;gid() == 42</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md5"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md6"></a>
 Catching Throw</h2>
 <p >For several things like errors in Thorin's front end, Thorin relies on C++ exceptions for error handling. Simply, do this to encounter them within GDB: </p><div class="fragment"><div class="line">catch throw</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md6"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md7"></a>
 Valgrind &amp; GDB</h2>
 <p >If you encounter memory related problems, you might want to run the program with <a href="https://valgrind.org/docs/manual/manual-core-adv.html">Valgrind's GDB server</a>. Simply launch the program like this </p><div class="fragment"><div class="line">valgrind --vgdb=yes --vgdb-error=0 thorin-gtest</div>
 </div><!-- fragment --><p> and follow the instructions.</p>
-<h2><a class="anchor" id="autotoc_md7"></a>
+<h2><a class="anchor" id="autotoc_md8"></a>
 VS Code</h2>
 <p >As a utility to make debugging Thorin itself less painful with certain debuggers, the <code>thorin.natvis</code> file can be loaded for getting more expressive value inspection. In VS Code you can do so by adding the following to the <code>launch.json</code> configurations. When launching from VS Code via CMake, put it in <code>settings.json</code>'s <code>"cmake.debugConfig":</code>: </p><div class="fragment"><div class="line">&quot;visualizerFile&quot;: &quot;${workspaceFolder}/thorin.natvis&quot;,</div>
 <div class="line">&quot;showDisplayString&quot;: true,</div>
 </div><!-- fragment --><h1><a class="anchor" id="tests"></a>
 Tests</h1>
-<h2><a class="anchor" id="autotoc_md8"></a>
+<h2><a class="anchor" id="autotoc_md9"></a>
 lit Tests</h2>
 <p >Run the <a href="https://llvm.org/docs/CommandGuide/lit.html">lit</a> testsuite with: </p><div class="fragment"><div class="line">cmake --build build -t check</div>
 </div><!-- fragment --><p> You can manually invoke the lit tests like this and maybe filter for a specific test: </p><div class="fragment"><div class="line">cd lit</div>
 <div class="line">./lit ../build/lit -a --filter foo.thorin</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md9"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md10"></a>
 GoogleTest</h2>
 <p >Run the <a href="https://google.github.io/googletest/">GoogleTest</a> unit tests within the <code>build</code> folder with: </p><div class="fragment"><div class="line">ctest</div>
 </div><!-- fragment --><p> In addition, you can enable <a href="https://valgrind.org/">Valgrind</a> with: </p><div class="fragment"><div class="line">ctest -T memcheck</div>
 </div><!-- fragment --><p >During debugging you probably only want to run a specifig test case. You can <a href="https://github.com/google/googletest/blob/main/docs/advanced.md#running-a-subset-of-the-tests">filter</a> the test cases like this: </p><div class="fragment"><div class="line">./thorin-gtest --gtest_filter=&quot;*Loc*&quot;</div>
 </div><!-- fragment --><p> This command lists all available tests: </p><div class="fragment"><div class="line">./thorin-gtest --gtest_list_tests</div>
 </div><!-- fragment --><p> In addition, you may find it helpful to turn assertion failures into debugger breakpoints: </p><div class="fragment"><div class="line">./thorin-test --gtest_break_on_failure</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md10"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md11"></a>
 Syntax Highlighting</h1>
 <p ><a href="https://github.com/AnyDSL/vim-thorin2">This</a> Vim plugin provides syntax highlighting for Thorin files.</p>
-<h1><a class="anchor" id="autotoc_md11"></a>
+<h1><a class="anchor" id="autotoc_md12"></a>
 Third-Party Plugins</h1>
 <p >After installing Thorin, third-party plugins just need to find the <code>thorin</code> package: </p><div class="fragment"><div class="line">cmake_minimum_required(VERSION 3.20 FATAL_ERROR)</div>
 <div class="line">project(plugin)</div>
@@ -220,7 +227,7 @@ Third-Party Plugins</h1>
 </div><!-- fragment --><p> Use </p><div class="fragment"><div class="line">cmake .. -Dthorin_DIR=&lt;THORIN_INSTALL_PREFIX&gt;/lib/cmake/thorin</div>
 </div><!-- fragment --><p> to configure the project.</p>
 <p >Check out the <a class="el" href="demo.html">demo</a> plugin for a minimalistic plugin.</p>
-<h2><a class="anchor" id="autotoc_md12"></a>
+<h2><a class="anchor" id="autotoc_md13"></a>
 add_thorin_plugin</h2>
 <p >Registers a new Thorin plugin.</p>
 <div class="fragment"><div class="line">add_thorin_plugin(&lt;name&gt;</div>

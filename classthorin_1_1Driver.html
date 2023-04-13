@@ -132,14 +132,14 @@ Inheritance diagram for thorin::Driver:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:acbb15296b54edf6ef5fe300ba8075072"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#acbb15296b54edf6ef5fe300ba8075072">Driver</a> ()</td></tr>
 <tr class="separator:acbb15296b54edf6ef5fe300ba8075072"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">getters</div></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Getters</div></td></tr>
 <tr class="memitem:a844fdfa5c5e75e96d6f92072c395a859"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#structthorin_1_1Flags">Flags</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#a844fdfa5c5e75e96d6f92072c395a859">flags</a> ()</td></tr>
 <tr class="separator:a844fdfa5c5e75e96d6f92072c395a859"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a591d82f03685b27cbfd9e1ab549d3648"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Log.html">Log</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#a591d82f03685b27cbfd9e1ab549d3648">log</a> ()</td></tr>
 <tr class="separator:a591d82f03685b27cbfd9e1ab549d3648"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49bf53fc0f6930391779ef722713c57e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#a49bf53fc0f6930391779ef722713c57e">world</a> ()</td></tr>
 <tr class="separator:a49bf53fc0f6930391779ef722713c57e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">manage search paths</div></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Manage Search Paths</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p >Search paths for plugins are in the following order:</p>
 <ol type="1">
 <li>The empty path. Used as prefix to look into current working directory without resorting to an absolute path.</li>
@@ -153,7 +153,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5d932eb2868df04e7fa6da9481e38626"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac541f45d2f696fc5593be983b1525fa4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#ac541f45d2f696fc5593be983b1525fa4">add_search_path</a> (fs::path path)</td></tr>
 <tr class="separator:ac541f45d2f696fc5593be983b1525fa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">manage imports</div></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Manage Imports</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p >This is a list of pairs where each pair contains:</p>
 <ol type="1">
 <li>The <code>fs::path</code> used during import,</li>
@@ -165,7 +165,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6801247588172d274cf3fb8cf73441bd"><td class="memItemLeft" align="right" valign="top">const fs::path *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#a6801247588172d274cf3fb8cf73441bd">add_import</a> (fs::path, <a class="el" href="classthorin_1_1Sym.html">Sym</a>)</td></tr>
 <tr class="memdesc:a6801247588172d274cf3fb8cf73441bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields a <code>fs::path*</code> if not already added that you can use in <a class="el" href="structthorin_1_1Loc.html" title="Location in a File.">Loc</a>ation; returns <code>nullptr</code> otherwise.  <a href="classthorin_1_1Driver.html#a6801247588172d274cf3fb8cf73441bd">More...</a><br /></td></tr>
 <tr class="separator:a6801247588172d274cf3fb8cf73441bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">load plugin</div></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Load Plugin</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p >Finds and loads a shared object file that implements the Thorin <a class="el" href="structthorin_1_1Plugin.html" title="Basic info and registration function pointer to be returned from a specific plugin.">Plugin</a> <code>name</code>.</p>
 <p >If <em>name</em> is an absolute path to a <code>.so</code>/<code>.dll</code> file, this is used. Otherwise, "name", "libthorin_name.so" (Linux, Mac), "thorin_name.dll" (Win) are searched for in <a class="el" href="classthorin_1_1Driver.html#a5d932eb2868df04e7fa6da9481e38626">Driver::search_paths()</a>. </p>
 </div></td></tr>
@@ -175,7 +175,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa3798846a66a913a6dd5c13b340181bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b6979427703e0812fc67c8f20589e75"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#a7b6979427703e0812fc67c8f20589e75">is_loaded</a> (<a class="el" href="classthorin_1_1Sym.html">Sym</a> <a class="el" href="classthorin_1_1SymPool.html#aa99023728b86d1989eb48b62d893f1f7">sym</a>) const</td></tr>
 <tr class="separator:a7b6979427703e0812fc67c8f20589e75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">manage plugins</div></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Manage Plugins</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p >All these lookups yield <code>nullptr</code> if the key has not been found. </p>
 </div></td></tr>
 <tr class="memitem:ab7408ae856ee251c92fed867832f1090"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#ab7408ae856ee251c92fed867832f1090">pass</a> (<a class="el" href="namespacethorin.html#ae4dba9b3be2d9956cd3c0df92ba53dc2">flags_t</a> <a class="el" href="classthorin_1_1Driver.html#a844fdfa5c5e75e96d6f92072c395a859">flags</a>)</td></tr>
@@ -186,7 +186,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a89d8fb02daccc496f3670f8ad26a1aba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6cbf574516649c25fc161aad036e295"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#aa6cbf574516649c25fc161aad036e295">backend</a> (std::string_view name)</td></tr>
 <tr class="separator:aa6cbf574516649c25fc161aad036e295"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">manage Axiom::Info</div></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Manage Axiom::Info</div></td></tr>
 <tr class="memitem:ac2b6afb66bff8686029af004d923f445"><td class="memItemLeft" align="right" valign="top">const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#ac2b6afb66bff8686029af004d923f445">plugin2axiom_infos</a> (<a class="el" href="classthorin_1_1Sym.html">Sym</a> plugin)</td></tr>
 <tr class="separator:ac2b6afb66bff8686029af004d923f445"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1439a5b35ee82f84f2826925c6896f2e"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="structthorin_1_1Axiom_1_1Info.html">Axiom::Info</a> &amp;, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#a1439a5b35ee82f84f2826925c6896f2e">axiom2info</a> (<a class="el" href="classthorin_1_1Sym.html">Sym</a> <a class="el" href="classthorin_1_1SymPool.html#aa99023728b86d1989eb48b62d893f1f7">sym</a>, <a class="el" href="classthorin_1_1Sym.html">Sym</a> plugin, <a class="el" href="classthorin_1_1Sym.html">Sym</a> tag, <a class="el" href="structthorin_1_1Loc.html">Loc</a> loc)</td></tr>
@@ -228,7 +228,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="driver_8cpp_source.html#l00017">17</a> of file <a class="el" href="driver_8cpp_source.html">driver.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="driver_8h_source.html#l00037">add_search_path()</a>, <a class="el" href="sys_8cpp_source.html#l00028">thorin::sys::path_to_curr_exe()</a>, <a class="el" href="driver_8h_source.html#l00036">search_paths()</a>, and <a class="el" href="config_8h_source.html#l00012">THORIN_INSTALL_PREFIX</a>.</p>
+<p class="reference">References <a class="el" href="driver_8h_source.html#l00037">add_search_path()</a>, <a class="el" href="sys_8cpp_source.html#l00027">thorin::sys::path_to_curr_exe()</a>, <a class="el" href="driver_8h_source.html#l00036">search_paths()</a>, and <a class="el" href="config_8h_source.html#l00012">THORIN_INSTALL_PREFIX</a>.</p>
 
 </div>
 </div>
@@ -337,7 +337,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="driver_8cpp_source.html#l00087">87</a> of file <a class="el" href="driver_8cpp_source.html">driver.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00518">thorin::err()</a>, and <a class="el" href="sym_8h_source.html#l00086">thorin::SymPool::sym()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00521">thorin::error()</a>, and <a class="el" href="sym_8h_source.html#l00086">thorin::SymPool::sym()</a>.</p>
 
 </div>
 </div>
@@ -509,7 +509,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="driver_8cpp_source.html#l00050">50</a> of file <a class="el" href="driver_8cpp_source.html">driver.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="container_8h_source.html#l00133">thorin::assert_emplace()</a>, <a class="el" href="dl_8cpp_source.html#l00063">thorin::dl::close()</a>, <a class="el" href="def_8h_source.html#l00518">thorin::err()</a>, <a class="el" href="dl_8cpp_source.html#l00044">thorin::dl::get()</a>, <a class="el" href="driver_8cpp_source.html#l00010">thorin::get_plugin_name_variants()</a>, <a class="el" href="log_8h_source.html#l00070">ILOG</a>, <a class="el" href="driver_8h_source.html#l00060">is_loaded()</a>, <a class="el" href="dl_8cpp_source.html#l00025">thorin::dl::open()</a>, <a class="el" href="driver_8h_source.html#l00036">search_paths()</a>, <a class="el" href="namespacethorin.html#a3cc8a1ed7b039e8a6bfccdbcb9514633">thorin::thorin_get_plugin()</a>, and <a class="el" href="log_8h_source.html#l00069">WLOG</a>.</p>
+<p class="reference">References <a class="el" href="container_8h_source.html#l00133">thorin::assert_emplace()</a>, <a class="el" href="dl_8cpp_source.html#l00063">thorin::dl::close()</a>, <a class="el" href="def_8h_source.html#l00521">thorin::error()</a>, <a class="el" href="dl_8cpp_source.html#l00044">thorin::dl::get()</a>, <a class="el" href="driver_8cpp_source.html#l00010">thorin::get_plugin_name_variants()</a>, <a class="el" href="log_8h_source.html#l00070">ILOG</a>, <a class="el" href="driver_8h_source.html#l00060">is_loaded()</a>, <a class="el" href="dl_8cpp_source.html#l00025">thorin::dl::open()</a>, <a class="el" href="driver_8h_source.html#l00036">search_paths()</a>, <a class="el" href="namespacethorin.html#a3cc8a1ed7b039e8a6bfccdbcb9514633">thorin::thorin_get_plugin()</a>, and <a class="el" href="log_8h_source.html#l00069">WLOG</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="parser_8cpp_source.html#l00115">thorin::fe::Parser::plugin()</a>.</p>
 

@@ -32,9 +32,6 @@ var annotated_dup =
         [ "CPS2DS", "classthorin_1_1direct_1_1CPS2DS.html", "classthorin_1_1direct_1_1CPS2DS" ],
         [ "DS2CPS", "classthorin_1_1direct_1_1DS2CPS.html", "classthorin_1_1direct_1_1DS2CPS" ]
       ] ],
-      [ "dl", "namespacethorin_1_1dl.html", [
-        [ "Error", "classthorin_1_1dl_1_1Error.html", "classthorin_1_1dl_1_1Error" ]
-      ] ],
       [ "dot", "namespacethorin_1_1dot.html", [
         [ "BB", "namespacethorin_1_1dot.html#classthorin_1_1dot_1_1BB", null ],
         [ "Emitter", "classthorin_1_1dot_1_1Emitter.html", "classthorin_1_1dot_1_1Emitter" ]

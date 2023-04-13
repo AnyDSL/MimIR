@@ -114,26 +114,26 @@ $(document).ready(function(){initNavTree('langref.html',''); initResizable(); })
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#lex">Lexical Structure</a><ul><li class="level2"><a href="#terminals">Terminals</a><ul><li class="level3"><a href="#autotoc_md23">Primary Terminals</a></li>
-<li class="level3"><a href="#autotoc_md24">Keywords</a></li>
-<li class="level3"><a href="#autotoc_md25">Regular Expressions</a></li>
+<ul><li class="level1"><a href="#lex">Lexical Structure</a><ul><li class="level2"><a href="#terminals">Terminals</a><ul><li class="level3"><a href="#autotoc_md24">Primary Terminals</a></li>
+<li class="level3"><a href="#autotoc_md25">Keywords</a></li>
+<li class="level3"><a href="#autotoc_md26">Regular Expressions</a></li>
 </ul>
 </li>
-<li class="level2"><a href="#autotoc_md26">Comments</a></li>
+<li class="level2"><a href="#autotoc_md27">Comments</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#grammar">Grammar</a><ul><li class="level2"><a href="#autotoc_md27">Module</a></li>
-<li class="level2"><a href="#autotoc_md28">Declarations</a></li>
-<li class="level2"><a href="#autotoc_md29">Patterns</a></li>
-<li class="level2"><a href="#autotoc_md30">Expressions</a><ul><li class="level3"><a href="#autotoc_md31">Precedence</a></li>
+<li class="level1"><a href="#grammar">Grammar</a><ul><li class="level2"><a href="#autotoc_md28">Module</a></li>
+<li class="level2"><a href="#autotoc_md29">Declarations</a></li>
+<li class="level2"><a href="#autotoc_md30">Patterns</a></li>
+<li class="level2"><a href="#autotoc_md31">Expressions</a><ul><li class="level3"><a href="#autotoc_md32">Precedence</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md32">Scoping</a><ul><li class="level2"><a href="#autotoc_md33">Underscore</a></li>
-<li class="level2"><a href="#autotoc_md34">Pis</a></li>
-<li class="level2"><a href="#autotoc_md35">Axioms</a></li>
-<li class="level2"><a href="#autotoc_md36">Field Names of Sigmas</a></li>
+<li class="level1"><a href="#autotoc_md33">Scoping</a><ul><li class="level2"><a href="#autotoc_md34">Underscore</a></li>
+<li class="level2"><a href="#autotoc_md35">Pis</a></li>
+<li class="level2"><a href="#autotoc_md36">Axioms</a></li>
+<li class="level2"><a href="#autotoc_md37">Field Names of Sigmas</a></li>
 </ul>
 </li>
 </ul>
@@ -145,7 +145,7 @@ Lexical Structure</h1>
 <h2><a class="anchor" id="terminals"></a>
 Terminals</h2>
 <p >The actual <em><a href="https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols">terminals</a></em> are specified in the following tables.</p>
-<h3><a class="anchor" id="autotoc_md23"></a>
+<h3><a class="anchor" id="autotoc_md24"></a>
 Primary Terminals</h3>
 <p >The <a class="el" href="langref.html#grammar">grammatical rules</a> will directly reference these <em>primary <a href="https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols">terminals</a></em>. <em>Secondary terminals</em> are <a href="https://en.wikipedia.org/wiki/ASCII">ASCII</a>-only tokens that represent the <b>same</b> lexical element as its corresponding <em>primary token</em>. For example, the lexer doesn't care, if you use <code>⊥</code> or <code>.bot</code>. Both tokens are identified as <code>⊥</code>.</p>
 <table class="markdownTable">
@@ -163,7 +163,7 @@ Primary Terminals</h3>
 <td class="markdownTableBodyNone"><code>&lt;eof&gt;</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">marks the end of the file   </td></tr>
 </table>
 <p >In addition you can use <code>⟨</code>, <code>⟩</code>, <code>⟪</code>, and <code>⟫</code> as an alternative for <code>‹</code>, <code>›</code>, <code>«</code>, and <code>»</code>.</p>
-<h3><a class="anchor" id="autotoc_md24"></a>
+<h3><a class="anchor" id="autotoc_md25"></a>
 Keywords</h3>
 <p >In addition the following keywords are <em>terminals</em>:</p>
 <table class="markdownTable">
@@ -223,7 +223,7 @@ Keywords</h3>
 <td class="markdownTableBodyNone"><code>.Univ</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Univ.html">thorin::Univ</a>   </td></tr>
 </table>
 <p >All keywords start with a <code>.</code> to prevent name clashes with identifiers.</p>
-<h3><a class="anchor" id="autotoc_md25"></a>
+<h3><a class="anchor" id="autotoc_md26"></a>
 Regular Expressions</h3>
 <p >The following <em>terminals</em> comprise more complicated patterns that are specified via <a href="https://en.wikipedia.org/wiki/Regular_expression">regular expressions</a>:</p>
 <table class="markdownTable">
@@ -296,7 +296,7 @@ Regular Expressions</h3>
 <td class="markdownTableBodyNone">sym   </td><td class="markdownTableBodyNone">[ <code>_</code><code>a</code>-<code>z</code><code>A</code>-<code>Z</code> ][ <code>.</code><code>_</code><code>0</code>-<code>9</code><code>a</code>-<code>z</code><code>A</code>-<code>Z</code> ]*   </td><td class="markdownTableBodyNone">symbol   </td></tr>
 </table>
 <p >So, <em>sym</em> refers to the shorthand rule while <em>Sym</em> refers to the <em>terminal</em> that is identical to <em>sym</em>. However, the terminal <em>Ax</em> also uses the shorthand rule <em>sym</em>.</p>
-<h2><a class="anchor" id="autotoc_md26"></a>
+<h2><a class="anchor" id="autotoc_md27"></a>
 Comments</h2>
 <p >In addition, the following comments are available:</p><ul>
 <li><code>/* ... */</code>: multi-line comment</li>
@@ -311,7 +311,7 @@ Comments</h2>
 Grammar</h1>
 <p >Thorin's grammar is defined as a <a href="https://en.wikipedia.org/wiki/Context-free_grammar">context-free grammar</a> that consists of the <em>terminals</em> defined <a class="el" href="langref.html#terminals">above</a> as well as the <em>nonterminals</em> and <em>productions</em> defined below. The start symbol is "m" (module).</p>
 <p >The following tables comprise all production rules:</p>
-<h2><a class="anchor" id="autotoc_md27"></a>
+<h2><a class="anchor" id="autotoc_md28"></a>
 Module</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -321,7 +321,7 @@ Module</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">i   </td><td class="markdownTableBodyNone"><code>.import</code> Sym <code>;</code>   </td><td class="markdownTableBodyNone">import   </td><td class="markdownTableBodyNone"></td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md28"></a>
+<h2><a class="anchor" id="autotoc_md29"></a>
 Declarations</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -354,7 +354,7 @@ Declarations</h2>
 <td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone"><code>=</code> <code>{</code> e <code>,</code> ... <code>,</code> e <code>}</code> <code>;</code>   </td><td class="markdownTableBodyNone">operands of definition<sup>s</sup>   </td><td class="markdownTableBodyNone">-   </td></tr>
 </table>
 <p><sup>s</sup> opens new scope</p>
-<h2><a class="anchor" id="autotoc_md29"></a>
+<h2><a class="anchor" id="autotoc_md30"></a>
 Patterns</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -379,7 +379,7 @@ Patterns</h2>
 <td class="markdownTableBodyNone">s   </td><td class="markdownTableBodyNone">( Sym <code>::</code> )?   </td><td class="markdownTableBodyNone">optional symbol   </td></tr>
 </table>
 <p >Note that you <b>can</b> switch from a pattern to a binder (from <code>p</code> to <code>b</code> inside a pattern), but not vice versa. For this reason there is no rule <code>b -&gt; s (p, ..., p)</code>.</p>
-<h2><a class="anchor" id="autotoc_md30"></a>
+<h2><a class="anchor" id="autotoc_md31"></a>
 Expressions</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -449,7 +449,7 @@ Expressions</h2>
 <li>a bottom/top defaults to <code>*</code>,</li>
 <li>a mutable defaults to <code>*</code>.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md31"></a>
+<h3><a class="anchor" id="autotoc_md32"></a>
 Precedence</h3>
 <p >Expressions nesting is disambiguated according to the following precedence table (from strongest to weakest binding):</p>
 <table class="markdownTable">
@@ -475,19 +475,19 @@ Precedence</h3>
 <td class="markdownTableBodyNone">e <code>→</code> e   </td><td class="markdownTableBodyNone">function type   </td><td class="markdownTableBodyNone">right-to-left   </td></tr>
 </table>
 <p >Note that the domain of a dependent function type binds slightly stronger than <code>→</code>. This has the effect that, e.g., <code>Π T: * → T → T</code> has the expected binding like this: (<code>Π T: *</code>) <code>→</code> (<code>T → T</code>). Otherwise, <code>→</code> would be consumed by the domain: <code>Π T:</code> (<code>* →</code> (<code>T → T</code>)) ↯. A similar situation occurs for a <code>.lam</code> declaration.</p>
-<h1><a class="anchor" id="autotoc_md32"></a>
+<h1><a class="anchor" id="autotoc_md33"></a>
 Scoping</h1>
 <p >Thorin uses <a href="https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scope"><em>lexical scoping</em></a> where all names live within the same namespace - with a few exceptions noted below. The grammar tables above also indiciate which constructs open new scopes (and close them again).</p>
-<h2><a class="anchor" id="autotoc_md33"></a>
+<h2><a class="anchor" id="autotoc_md34"></a>
 Underscore</h2>
 <p >The symbol <code>_</code> is special and never binds to an entity. For this reason, <code>_</code> can be bound over and over again within the same scope (without effect). Hence, using the symbol <code>_</code> will always result in a scoping error.</p>
-<h2><a class="anchor" id="autotoc_md34"></a>
+<h2><a class="anchor" id="autotoc_md35"></a>
 Pis</h2>
 <p >Note that <em>only</em> <code>Π x: e → e</code> introduces a new scope. <code>x: e → e</code> is a syntax error. If the variable name of a Pi's domain is elided and the domain is a sigma, its elements will be imported into the Pi's scope to make these elements available in the Pi's codomain: </p><div class="fragment"><div class="line">Π [T: *, U: *] → [T, U]</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md35"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md36"></a>
 Axioms</h2>
 <p >The names of axioms are special and live in a global namespace.</p>
-<h2><a class="anchor" id="autotoc_md36"></a>
+<h2><a class="anchor" id="autotoc_md37"></a>
 Field Names of Sigmas</h2>
 <p >Named elements of mutable sigmas are avaiable for extracts/inserts. These names take precedence over the usual scope. In the following example, <code>i</code> refers to the first element <code>i</code> of <code>X</code> and <b>not</b> to the <code>i</code> introduced via <code>.let</code>: </p><div class="fragment"><div class="line">.let i = 1_2;</div>
 <div class="line">Π X: [i: .Nat, j: .Nat] → f X#i;</div>
