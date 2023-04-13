@@ -25,9 +25,6 @@ var annotated_dup =
         [ "DebugPrint", "classthorin_1_1compile_1_1DebugPrint.html", "classthorin_1_1compile_1_1DebugPrint" ],
         [ "InternalCleanup", "classthorin_1_1compile_1_1InternalCleanup.html", "classthorin_1_1compile_1_1InternalCleanup" ]
       ] ],
-      [ "core", "namespacethorin_1_1core.html", [
-        [ "Res", "classthorin_1_1core_1_1Res.html", "classthorin_1_1core_1_1Res" ]
-      ] ],
       [ "direct", "namespacethorin_1_1direct.html", [
         [ "CPS2DS", "classthorin_1_1direct_1_1CPS2DS.html", "classthorin_1_1direct_1_1CPS2DS" ],
         [ "DS2CPS", "classthorin_1_1direct_1_1DS2CPS.html", "classthorin_1_1direct_1_1DS2CPS" ]
@@ -48,9 +45,6 @@ var annotated_dup =
       [ "ll", "namespacethorin_1_1ll.html", [
         [ "BB", "structthorin_1_1ll_1_1BB.html", "structthorin_1_1ll_1_1BB" ],
         [ "Emitter", "classthorin_1_1ll_1_1Emitter.html", "classthorin_1_1ll_1_1Emitter" ]
-      ] ],
-      [ "math", "namespacethorin_1_1math.html", [
-        [ "Res", "classthorin_1_1math_1_1Res.html", "classthorin_1_1math_1_1Res" ]
       ] ],
       [ "matrix", "namespacethorin_1_1matrix.html", [
         [ "LowerMatrixHighLevelMapRed", "classthorin_1_1matrix_1_1LowerMatrixHighLevelMapRed.html", "classthorin_1_1matrix_1_1LowerMatrixHighLevelMapRed" ],
@@ -96,7 +90,6 @@ var annotated_dup =
       [ "DomFrontierBase", "classthorin_1_1DomFrontierBase.html", "classthorin_1_1DomFrontierBase" ],
       [ "DomTreeBase", "classthorin_1_1DomTreeBase.html", "classthorin_1_1DomTreeBase" ],
       [ "Driver", "classthorin_1_1Driver.html", "classthorin_1_1Driver" ],
-      [ "Dumper", "classthorin_1_1Dumper.html", "classthorin_1_1Dumper" ],
       [ "Elem", "structthorin_1_1Elem.html", "structthorin_1_1Elem" ],
       [ "Emitter", "classthorin_1_1Emitter.html", "classthorin_1_1Emitter" ],
       [ "EtaExp", "classthorin_1_1EtaExp.html", "classthorin_1_1EtaExp" ],
@@ -116,7 +109,6 @@ var annotated_dup =
       [ "IndexSet", "classthorin_1_1IndexSet.html", "classthorin_1_1IndexSet" ],
       [ "Infer", "classthorin_1_1Infer.html", "classthorin_1_1Infer" ],
       [ "InferRewriter", "classthorin_1_1InferRewriter.html", "classthorin_1_1InferRewriter" ],
-      [ "Inline", "structthorin_1_1Inline.html", "structthorin_1_1Inline" ],
       [ "Insert", "classthorin_1_1Insert.html", "classthorin_1_1Insert" ],
       [ "Lam", "classthorin_1_1Lam.html", "classthorin_1_1Lam" ],
       [ "LamSpec", "classthorin_1_1LamSpec.html", "classthorin_1_1LamSpec" ],
@@ -125,7 +117,6 @@ var annotated_dup =
       [ "Log", "classthorin_1_1Log.html", "classthorin_1_1Log" ],
       [ "LoopTree", "classthorin_1_1LoopTree.html", "classthorin_1_1LoopTree" ],
       [ "LoopTreeBuilder", "classthorin_1_1LoopTreeBuilder.html", "classthorin_1_1LoopTreeBuilder" ],
-      [ "LRPrec", "structthorin_1_1LRPrec.html", "structthorin_1_1LRPrec" ],
       [ "Match", "classthorin_1_1Match.html", "classthorin_1_1Match" ],
       [ "Nat", "classthorin_1_1Nat.html", "classthorin_1_1Nat" ],
       [ "Pack", "classthorin_1_1Pack.html", "classthorin_1_1Pack" ],
@@ -176,6 +167,9 @@ var annotated_dup =
       [ "Var", "classthorin_1_1Var.html", "classthorin_1_1Var" ],
       [ "Vel", "classthorin_1_1Vel.html", "classthorin_1_1Vel" ],
       [ "w2f_", "namespacethorin.html#structthorin_1_1w2f__", "namespacethorin_structthorin_1_1w2f___dup" ],
+      [ "w2f_< 16 >", "namespacethorin.html#structthorin_1_1w2f___3_0116_01_4", "namespacethorin_structthorin_1_1w2f___3_0116_01_4_dup" ],
+      [ "w2f_< 32 >", "namespacethorin.html#structthorin_1_1w2f___3_0132_01_4", "namespacethorin_structthorin_1_1w2f___3_0132_01_4_dup" ],
+      [ "w2f_< 64 >", "namespacethorin.html#structthorin_1_1w2f___3_0164_01_4", "namespacethorin_structthorin_1_1w2f___3_0164_01_4_dup" ],
       [ "w2s_", "namespacethorin.html#structthorin_1_1w2s__", "namespacethorin_structthorin_1_1w2s___dup" ],
       [ "w2s_< 1 >", "namespacethorin.html#structthorin_1_1w2s___3_011_01_4", "namespacethorin_structthorin_1_1w2s___3_011_01_4_dup" ],
       [ "w2s_< 16 >", "namespacethorin.html#structthorin_1_1w2s___3_0116_01_4", "namespacethorin_structthorin_1_1w2s___3_0116_01_4_dup" ],

@@ -8,7 +8,5 @@ var loc_8h =
     ] ],
     [ "error", "loc_8h.html#abdc406072b98cd1578653354cfaabf27", null ],
     [ "operator<<", "loc_8h.html#a8d63c0df0c916ee9469f630edccd6984", null ],
-    [ "operator<<", "loc_8h.html#a49109a7ac6192579b86068a0ed22206e", null ],
-    [ "operator==", "loc_8h.html#ac61d02cc44f6d51285905bd3ff39c069", null ],
-    [ "operator==", "loc_8h.html#a5207b75bc2b0b46621df4adabaa55f38", null ]
+    [ "operator<<", "loc_8h.html#a49109a7ac6192579b86068a0ed22206e", null ]
 ];

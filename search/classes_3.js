@@ -11,6 +11,5 @@ var searchData=
   ['domfrontierbase_8',['DomFrontierBase',['../classthorin_1_1DomFrontierBase.html',1,'thorin']]],
   ['domtreebase_9',['DomTreeBase',['../classthorin_1_1DomTreeBase.html',1,'thorin']]],
   ['driver_10',['Driver',['../classthorin_1_1Driver.html',1,'thorin']]],
-  ['ds2cps_11',['DS2CPS',['../classthorin_1_1direct_1_1DS2CPS.html',1,'thorin::direct']]],
-  ['dumper_12',['Dumper',['../classthorin_1_1Dumper.html',1,'thorin']]]
+  ['ds2cps_11',['DS2CPS',['../classthorin_1_1direct_1_1DS2CPS.html',1,'thorin::direct']]]
 ];

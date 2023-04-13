@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['tab_0',['tab',['../classthorin_1_1Emitter.html#a970073a2e4b9447f3c146d6623360452',1,'thorin::Emitter::tab()'],['../classthorin_1_1Dumper.html#a702dc3deeef279f698f7314aebaf4e8e',1,'thorin::Dumper::tab()']]],
+  ['tab_0',['tab',['../classthorin_1_1Emitter.html#a970073a2e4b9447f3c146d6623360452',1,'thorin::Emitter']]],
   ['tag_1',['tag',['../structthorin_1_1Axiom_1_1Info.html#a0028174a8a9b20f8503b679f61e65dd6',1,'thorin::Axiom::Info']]],
   ['tag_5fid_2',['tag_id',['../structthorin_1_1Axiom_1_1Info.html#ae010357282cff1ae7435f2c2789d7503',1,'thorin::Axiom::Info']]],
   ['trace_5fgids_3',['trace_gids',['../namespacethorin.html#a0c6e11089999fb8349a4fbd2463578bb',1,'thorin::Flags']]],

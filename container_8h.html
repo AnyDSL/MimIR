@@ -112,8 +112,7 @@ $(document).ready(function(){initNavTree('container_8h.html',''); initResizable(
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle"><div class="title">container.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -178,15 +177,13 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Helpers for containers/algorithms</div></td></tr>
 <tr class="memitem:ab31c89d6a2afc9d7693f7fbdd992c7fe"><td class="memTemplParams" colspan="2">template&lt;class S &gt; </td></tr>
 <tr class="memitem:ab31c89d6a2afc9d7693f7fbdd992c7fe"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ab31c89d6a2afc9d7693f7fbdd992c7fe">thorin::pop</a> (S &amp;s) -&gt; decltype(s.top(), typename S::value_type())</td></tr>
 <tr class="separator:ab31c89d6a2afc9d7693f7fbdd992c7fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac092144d1251320b5e13b22eaab57d64"><td class="memTemplParams" colspan="2">template&lt;class Q &gt; </td></tr>
 <tr class="memitem:ac092144d1251320b5e13b22eaab57d64"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ac092144d1251320b5e13b22eaab57d64">thorin::pop</a> (Q &amp;q) -&gt; decltype(q.front(), typename Q::value_type())</td></tr>
 <tr class="separator:ac092144d1251320b5e13b22eaab57d64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a437c6f50faf6e57f126429d5a0ce9642"><td class="memTemplParams" colspan="2">template&lt;class I , class T , class Cmp &gt; </td></tr>
-<tr class="memitem:a437c6f50faf6e57f126429d5a0ce9642"><td class="memTemplItemLeft" align="right" valign="top">I&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a437c6f50faf6e57f126429d5a0ce9642">thorin::binary_find</a> (I begin, I end, T val, Cmp cmp)</td></tr>
-<tr class="separator:a437c6f50faf6e57f126429d5a0ce9642"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42a3bf6e82a9f72ff7df63dd4ca5299f"><td class="memTemplParams" colspan="2">template&lt;class C , class K &gt; </td></tr>
 <tr class="memitem:a42a3bf6e82a9f72ff7df63dd4ca5299f"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a42a3bf6e82a9f72ff7df63dd4ca5299f">thorin::lookup</a> (const C &amp;container, const K &amp;key)</td></tr>
 <tr class="memdesc:a42a3bf6e82a9f72ff7df63dd4ca5299f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields pointer to element (or the element itself if it is already a pointer), if found and <code>nullptr</code> otherwise.  <a href="namespacethorin.html#a42a3bf6e82a9f72ff7df63dd4ca5299f">More...</a><br /></td></tr>
@@ -195,6 +192,12 @@ Functions</h2></td></tr>
 <tr class="memitem:aad6b4767dbf4afe9eafefc0eb401eb5d"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#aad6b4767dbf4afe9eafefc0eb401eb5d">thorin::assert_emplace</a> (C &amp;container, Args &amp;&amp;... args)</td></tr>
 <tr class="memdesc:aad6b4767dbf4afe9eafefc0eb401eb5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invokes <code>emplace</code> on <code>container</code>, asserts that insertion actually happened, and returns the iterator.  <a href="namespacethorin.html#aad6b4767dbf4afe9eafefc0eb401eb5d">More...</a><br /></td></tr>
 <tr class="separator:aad6b4767dbf4afe9eafefc0eb401eb5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a437c6f50faf6e57f126429d5a0ce9642"><td class="memTemplParams" colspan="2">template&lt;class I , class T , class Cmp &gt; </td></tr>
+<tr class="memitem:a437c6f50faf6e57f126429d5a0ce9642"><td class="memTemplItemLeft" align="right" valign="top">I&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a437c6f50faf6e57f126429d5a0ce9642">thorin::binary_find</a> (I begin, I end, T val, Cmp cmp)</td></tr>
+<tr class="separator:a437c6f50faf6e57f126429d5a0ce9642"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0068b7e16803fb6183c849f8a446d141"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a0068b7e16803fb6183c849f8a446d141">thorin::subview</a> (std::string_view s, <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> i, <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> n=std::string_view::npos)</td></tr>
+<tr class="memdesc:a0068b7e16803fb6183c849f8a446d141"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <code>std::string::substr</code>, but works on <code>std::string_view</code> instead.  <a href="namespacethorin.html#a0068b7e16803fb6183c849f8a446d141">More...</a><br /></td></tr>
+<tr class="separator:a0068b7e16803fb6183c849f8a446d141"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

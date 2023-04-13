@@ -1,15 +1,10 @@
 var math_2normalizers_8cpp =
 [
-    [ "thorin::math::Res", "classthorin_1_1math_1_1Res.html", "classthorin_1_1math_1_1Res" ],
     [ "CODE", "math_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c", null ],
     [ "CODE", "math_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c", null ],
     [ "M", "math_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89", null ],
-    [ "commute", "math_2normalizers_8cpp.html#a203125b7865c862699c650180bc5c21f", null ],
-    [ "fold", "math_2normalizers_8cpp.html#a31966d01e053685bd3bf0b7cc9da169d", null ],
+    [ "commute", "math_2normalizers_8cpp.html#aada517c5e50f2d547239d4ea03824f77", null ],
     [ "fold", "math_2normalizers_8cpp.html#a0cf63c6923dfa1f7af6ec153e5f122b6", null ],
-    [ "fold", "math_2normalizers_8cpp.html#a4d7bf1845a505a89fd83326be23c7ddf", null ],
-    [ "fold", "math_2normalizers_8cpp.html#a3a20b2b5b561a91857a4a0c745ea9b54", null ],
-    [ "fold", "math_2normalizers_8cpp.html#a28dec2b2da2e3fc1920d5770c7a1dd5b", null ],
     [ "normalize_arith", "math_2normalizers_8cpp.html#a043e8c60e23d31a6d663672eadee2bcf", null ],
     [ "normalize_cmp", "math_2normalizers_8cpp.html#a72ac378d2391c5a54e7c6a60234beaa1", null ],
     [ "normalize_conv", "math_2normalizers_8cpp.html#abb9921d1dbdfac714ed5f685137c8423", null ],
@@ -20,6 +15,5 @@ var math_2normalizers_8cpp =
     [ "normalize_pow", "math_2normalizers_8cpp.html#adb513511d10525c5acf25f5f64266929", null ],
     [ "normalize_rt", "math_2normalizers_8cpp.html#a2191c9079354097898b7df0ba218f883", null ],
     [ "normalize_tri", "math_2normalizers_8cpp.html#a9f03f2cd6530e1ec131486e3d771a975", null ],
-    [ "pad", "math_2normalizers_8cpp.html#ac21074f8f373cf8a86c0206b5137ae34", null ],
-    [ "reassociate", "math_2normalizers_8cpp.html#a6dbd4873d88f4d6d5fcf0ebd6e2b3876", null ]
+    [ "pad", "math_2normalizers_8cpp.html#ac21074f8f373cf8a86c0206b5137ae34", null ]
 ];

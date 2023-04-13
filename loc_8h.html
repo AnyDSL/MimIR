@@ -112,8 +112,7 @@ $(document).ready(function(){initNavTree('loc_8h.html',''); initResizable(); });
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle"><div class="title">loc.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -155,18 +154,10 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a49109a7ac6192579b86068a0ed22206e"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a49109a7ac6192579b86068a0ed22206e">thorin::operator&lt;&lt;</a> (std::ostream &amp;os, const Pos pos)</td></tr>
-<tr class="separator:a49109a7ac6192579b86068a0ed22206e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d63c0df0c916ee9469f630edccd6984"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a8d63c0df0c916ee9469f630edccd6984">thorin::operator&lt;&lt;</a> (std::ostream &amp;os, const Loc loc)</td></tr>
-<tr class="separator:a8d63c0df0c916ee9469f630edccd6984"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5207b75bc2b0b46621df4adabaa55f38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a5207b75bc2b0b46621df4adabaa55f38">thorin::operator==</a> (Pos p1, Pos p2)</td></tr>
-<tr class="separator:a5207b75bc2b0b46621df4adabaa55f38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac61d02cc44f6d51285905bd3ff39c069"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ac61d02cc44f6d51285905bd3ff39c069">thorin::operator==</a> (Loc l1, Loc l2)</td></tr>
-<tr class="separator:ac61d02cc44f6d51285905bd3ff39c069"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Formatted Output</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p ><a class="anchor" id="fmt"></a> Provides a <code>printf</code>-like interface to format <code>s</code> with <code>args</code> and puts it into <code>os</code>.</p>
 <p >Use <code>{}</code> as a placeholder within your format string <code>s</code>.</p><ul>
-<li>By default, <code>os &lt;&lt; t</code>` will be used to stream the appropriate argument: <div class="fragment"><div class="line">print(os, <span class="stringliteral">&quot;int: {}, float: {}&quot;</span>, 23, 42.f);</div>
+<li>By default, <code>os &lt;&lt; t</code> will be used to stream the appropriate argument: <div class="fragment"><div class="line">print(os, <span class="stringliteral">&quot;int: {}, float: {}&quot;</span>, 23, 42.f);</div>
 </div><!-- fragment --></li>
 <li>You can also place a function as argument to inject arbitrary code: <div class="fragment"><div class="line">print(os, <span class="stringliteral">&quot;int: {}, fun: {}, float: {}&quot;</span>, 23, [&amp;]() { os &lt;&lt; <span class="stringliteral">&quot;hey :)&quot;</span>}, 42.f);</div>
 </div><!-- fragment --></li>
@@ -182,13 +173,18 @@ Functions</h2></td></tr>
 <li>You again have the option to pass <code>os</code> to the bundled function: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {3, 2, 1, 0};</div>
 <div class="line"><span class="keywordtype">size_t</span> i = 0;</div>
 <div class="line">print(os, <span class="stringliteral">&quot;v: {, }&quot;</span>, Elem(v, [&amp;](<span class="keyword">auto</span>&amp; os, <span class="keyword">auto</span> elem) { print(os, <span class="stringliteral">&quot;{}: {}&quot;</span>, i++, elem); }));</div>
-</div><!-- fragment --> <dl class="section see"><dt>See also</dt><dd>Tab</dd></dl>
-Use with print to output complicated <code>std::ranges::range</code>s. </li>
+</div><!-- fragment --> <dl class="section see"><dt>See also</dt><dd>Tab </dd></dl>
+</li>
 </ul>
 </div></td></tr>
 <tr class="memitem:abdc406072b98cd1578653354cfaabf27"><td class="memTemplParams" colspan="2">template&lt;class T  = std::logic_error, class... Args&gt; </td></tr>
 <tr class="memitem:abdc406072b98cd1578653354cfaabf27"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#abdc406072b98cd1578653354cfaabf27">thorin::error</a> (Loc loc, const char *fmt, Args &amp;&amp;... args)</td></tr>
 <tr class="separator:abdc406072b98cd1578653354cfaabf27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">std::ostream operator</div></td></tr>
+<tr class="memitem:a49109a7ac6192579b86068a0ed22206e"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a49109a7ac6192579b86068a0ed22206e">thorin::operator&lt;&lt;</a> (std::ostream &amp;os, const Pos pos)</td></tr>
+<tr class="separator:a49109a7ac6192579b86068a0ed22206e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d63c0df0c916ee9469f630edccd6984"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a8d63c0df0c916ee9469f630edccd6984">thorin::operator&lt;&lt;</a> (std::ostream &amp;os, const Loc loc)</td></tr>
+<tr class="separator:a8d63c0df0c916ee9469f630edccd6984"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/><h2 class="groupheader">Class Documentation</h2>
 <a name="structthorin_1_1Dbg" id="structthorin_1_1Dbg"></a>
@@ -203,7 +199,7 @@ Use with print to output complicated <code>std::ranges::range</code>s. </li>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="loc_8h_source.html#l00078">78</a> of file <a class="el" href="loc_8h_source.html">loc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="loc_8h_source.html#l00080">80</a> of file <a class="el" href="loc_8h_source.html">loc.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">

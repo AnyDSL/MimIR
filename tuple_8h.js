@@ -7,7 +7,7 @@ var tuple_8h =
     [ "thorin::Extract", "classthorin_1_1Extract.html", "classthorin_1_1Extract" ],
     [ "thorin::Insert", "classthorin_1_1Insert.html", "classthorin_1_1Insert" ],
     [ "flatten", "tuple_8h.html#a4e087368518f24e3174721f3f993b20e", null ],
-    [ "flatten", "tuple_8h.html#affd33b6423ef4b0e8175d4508f3799f5", null ],
+    [ "flatten", "tuple_8h.html#a9eda30a2f713580e14731ab17fef67e9", null ],
     [ "is_unit", "tuple_8h.html#a496a5dfe6e208b166676c88e28092d48", null ],
     [ "merge", "tuple_8h.html#ae79b3c7a7656f77b147095feb289c019", null ],
     [ "merge_sigma", "tuple_8h.html#abf42540454f2067831c8d4424d18a1ad", null ],

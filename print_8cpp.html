@@ -141,7 +141,7 @@ Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Formatted Output</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p ><a class="anchor" id="fmt"></a> Provides a <code>printf</code>-like interface to format <code>s</code> with <code>args</code> and puts it into <code>os</code>.</p>
 <p >Use <code>{}</code> as a placeholder within your format string <code>s</code>.</p><ul>
-<li>By default, <code>os &lt;&lt; t</code>` will be used to stream the appropriate argument: <div class="fragment"><div class="line">print(os, <span class="stringliteral">&quot;int: {}, float: {}&quot;</span>, 23, 42.f);</div>
+<li>By default, <code>os &lt;&lt; t</code> will be used to stream the appropriate argument: <div class="fragment"><div class="line">print(os, <span class="stringliteral">&quot;int: {}, float: {}&quot;</span>, 23, 42.f);</div>
 </div><!-- fragment --></li>
 <li>You can also place a function as argument to inject arbitrary code: <div class="fragment"><div class="line">print(os, <span class="stringliteral">&quot;int: {}, fun: {}, float: {}&quot;</span>, 23, [&amp;]() { os &lt;&lt; <span class="stringliteral">&quot;hey :)&quot;</span>}, 42.f);</div>
 </div><!-- fragment --></li>
@@ -157,8 +157,8 @@ Functions</h2></td></tr>
 <li>You again have the option to pass <code>os</code> to the bundled function: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {3, 2, 1, 0};</div>
 <div class="line"><span class="keywordtype">size_t</span> i = 0;</div>
 <div class="line">print(os, <span class="stringliteral">&quot;v: {, }&quot;</span>, Elem(v, [&amp;](<span class="keyword">auto</span>&amp; os, <span class="keyword">auto</span> elem) { print(os, <span class="stringliteral">&quot;{}: {}&quot;</span>, i++, elem); }));</div>
-</div><!-- fragment --> <dl class="section see"><dt>See also</dt><dd>Tab</dd></dl>
-Use with print to output complicated <code>std::ranges::range</code>s. </li>
+</div><!-- fragment --> <dl class="section see"><dt>See also</dt><dd>Tab </dd></dl>
+</li>
 </ul>
 </div></td></tr>
 <tr class="memitem:a7dae34cc4eb75fe0cf5a914431353c8c"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">thorin::print</a> (std::ostream &amp;os, const char *s)</td></tr>

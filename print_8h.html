@@ -143,6 +143,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1Elem.html">thorin::Elem&lt; R, F &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classthorin_1_1Use.html" title="References a user.">Use</a> with print to output complicated <code>std::ranges::range</code>s.  <a href="structthorin_1_1Elem.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Tab.html">thorin::Tab</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keeps track of indentation level.  <a href="classthorin_1_1Tab.html#details">More...</a><br /></td></tr>
@@ -170,10 +171,26 @@ Functions</h2></td></tr>
 <tr class="separator:a923e8f4b4842964409d2fbf66c72d0b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a425b2158f0d5c5ea2d8f27542c1f8ec3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1detail.html#a425b2158f0d5c5ea2d8f27542c1f8ec3">thorin::detail::match2nd</a> (std::ostream &amp;os, const char *next, const char *&amp;s, const char c)</td></tr>
 <tr class="separator:a425b2158f0d5c5ea2d8f27542c1f8ec3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Formatted Output</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p ><a class="anchor" id="fmt"></a> Provides a <code>printf</code>-like interface to format <code>s</code> with <code>args</code> and puts it into <code>os</code>.</p>
+<tr><td colspan="2"><div class="groupHeader">out/err</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p ><a class="el" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c" title="Base case.">thorin::print</a>s to <code>std::cout</code>/<code>std::cerr</code>; the *<code>ln</code> variants emit an additional <code>std::endl</code>. </p>
+</div></td></tr>
+<tr class="memitem:a1e961804cf2964efea4388ebe218f496"><td class="memTemplParams" colspan="2">template&lt;class... Args&gt; </td></tr>
+<tr class="memitem:a1e961804cf2964efea4388ebe218f496"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a1e961804cf2964efea4388ebe218f496">thorin::outf</a> (const char *fmt, Args &amp;&amp;... args)</td></tr>
+<tr class="separator:a1e961804cf2964efea4388ebe218f496"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af538a45dc8c0c242b9a51f2ea1e6afea"><td class="memTemplParams" colspan="2">template&lt;class... Args&gt; </td></tr>
+<tr class="memitem:af538a45dc8c0c242b9a51f2ea1e6afea"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#af538a45dc8c0c242b9a51f2ea1e6afea">thorin::errf</a> (const char *fmt, Args &amp;&amp;... args)</td></tr>
+<tr class="separator:af538a45dc8c0c242b9a51f2ea1e6afea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7ec5537fa7b52e17905ef114e40a765"><td class="memTemplParams" colspan="2">template&lt;class... Args&gt; </td></tr>
+<tr class="memitem:af7ec5537fa7b52e17905ef114e40a765"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#af7ec5537fa7b52e17905ef114e40a765">thorin::outln</a> (const char *fmt, Args &amp;&amp;... args)</td></tr>
+<tr class="separator:af7ec5537fa7b52e17905ef114e40a765"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01d195c52d754394a58dec37e2913430"><td class="memTemplParams" colspan="2">template&lt;class... Args&gt; </td></tr>
+<tr class="memitem:a01d195c52d754394a58dec37e2913430"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a01d195c52d754394a58dec37e2913430">thorin::errln</a> (const char *fmt, Args &amp;&amp;... args)</td></tr>
+<tr class="separator:a01d195c52d754394a58dec37e2913430"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">Formatted Output</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p ><a class="anchor" id="fmt"></a> Provides a <code>printf</code>-like interface to format <code>s</code> with <code>args</code> and puts it into <code>os</code>.</p>
 <p >Use <code>{}</code> as a placeholder within your format string <code>s</code>.</p><ul>
-<li>By default, <code>os &lt;&lt; t</code>` will be used to stream the appropriate argument: <div class="fragment"><div class="line">print(os, <span class="stringliteral">&quot;int: {}, float: {}&quot;</span>, 23, 42.f);</div>
+<li>By default, <code>os &lt;&lt; t</code> will be used to stream the appropriate argument: <div class="fragment"><div class="line">print(os, <span class="stringliteral">&quot;int: {}, float: {}&quot;</span>, 23, 42.f);</div>
 </div><!-- fragment --></li>
 <li>You can also place a function as argument to inject arbitrary code: <div class="fragment"><div class="line">print(os, <span class="stringliteral">&quot;int: {}, fun: {}, float: {}&quot;</span>, 23, [&amp;]() { os &lt;&lt; <span class="stringliteral">&quot;hey :)&quot;</span>}, 42.f);</div>
 </div><!-- fragment --></li>
@@ -189,10 +206,12 @@ Functions</h2></td></tr>
 <li>You again have the option to pass <code>os</code> to the bundled function: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {3, 2, 1, 0};</div>
 <div class="line"><span class="keywordtype">size_t</span> i = 0;</div>
 <div class="line">print(os, <span class="stringliteral">&quot;v: {, }&quot;</span>, Elem(v, [&amp;](<span class="keyword">auto</span>&amp; os, <span class="keyword">auto</span> elem) { print(os, <span class="stringliteral">&quot;{}: {}&quot;</span>, i++, elem); }));</div>
-</div><!-- fragment --> <dl class="section see"><dt>See also</dt><dd>Tab</dd></dl>
-Use with print to output complicated <code>std::ranges::range</code>s. </li>
+</div><!-- fragment --> <dl class="section see"><dt>See also</dt><dd>Tab </dd></dl>
+</li>
 </ul>
-</div></td></tr>
+</td></tr>
+<tr class="memitem:a7bc6143638d489bb640260462bf07777"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="print_8h.html#a7bc6143638d489bb640260462bf07777">assertf</a>(condition, ...)</td></tr>
+<tr class="separator:a7bc6143638d489bb640260462bf07777"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7dae34cc4eb75fe0cf5a914431353c8c"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">thorin::print</a> (std::ostream &amp;os, const char *s)</td></tr>
 <tr class="memdesc:a7dae34cc4eb75fe0cf5a914431353c8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base case.  <a href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">More...</a><br /></td></tr>
 <tr class="separator:a7dae34cc4eb75fe0cf5a914431353c8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -207,24 +226,6 @@ Use with print to output complicated <code>std::ranges::range</code>s. </li>
 <tr class="memitem:afb84214de2ce577bd1666f65e366b389"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#afb84214de2ce577bd1666f65e366b389">thorin::error</a> (const char *fmt, Args &amp;&amp;... args)</td></tr>
 <tr class="memdesc:afb84214de2ce577bd1666f65e366b389"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps <a class="el" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c" title="Base case.">thorin::print</a> to throw <code>T</code> with a formatted message.  <a href="namespacethorin.html#afb84214de2ce577bd1666f65e366b389">More...</a><br /></td></tr>
 <tr class="separator:afb84214de2ce577bd1666f65e366b389"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader">out/err</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p ><a class="el" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c" title="Base case.">thorin::print</a>s to <code>std::cout</code>/<code>std::cerr</code>; the *<code>ln</code> variants emit an additional <code>std::endl</code>. </p>
-</td></tr>
-<tr class="memitem:a7bc6143638d489bb640260462bf07777"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="print_8h.html#a7bc6143638d489bb640260462bf07777">assertf</a>(condition, ...)</td></tr>
-<tr class="separator:a7bc6143638d489bb640260462bf07777"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e961804cf2964efea4388ebe218f496"><td class="memTemplParams" colspan="2">template&lt;class... Args&gt; </td></tr>
-<tr class="memitem:a1e961804cf2964efea4388ebe218f496"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a1e961804cf2964efea4388ebe218f496">thorin::outf</a> (const char *fmt, Args &amp;&amp;... args)</td></tr>
-<tr class="separator:a1e961804cf2964efea4388ebe218f496"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af538a45dc8c0c242b9a51f2ea1e6afea"><td class="memTemplParams" colspan="2">template&lt;class... Args&gt; </td></tr>
-<tr class="memitem:af538a45dc8c0c242b9a51f2ea1e6afea"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#af538a45dc8c0c242b9a51f2ea1e6afea">thorin::errf</a> (const char *fmt, Args &amp;&amp;... args)</td></tr>
-<tr class="separator:af538a45dc8c0c242b9a51f2ea1e6afea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7ec5537fa7b52e17905ef114e40a765"><td class="memTemplParams" colspan="2">template&lt;class... Args&gt; </td></tr>
-<tr class="memitem:af7ec5537fa7b52e17905ef114e40a765"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#af7ec5537fa7b52e17905ef114e40a765">thorin::outln</a> (const char *fmt, Args &amp;&amp;... args)</td></tr>
-<tr class="separator:af7ec5537fa7b52e17905ef114e40a765"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01d195c52d754394a58dec37e2913430"><td class="memTemplParams" colspan="2">template&lt;class... Args&gt; </td></tr>
-<tr class="memitem:a01d195c52d754394a58dec37e2913430"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a01d195c52d754394a58dec37e2913430">thorin::errln</a> (const char *fmt, Args &amp;&amp;... args)</td></tr>
-<tr class="separator:a01d195c52d754394a58dec37e2913430"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a7bc6143638d489bb640260462bf07777" name="a7bc6143638d489bb640260462bf07777"></a>
@@ -260,7 +261,7 @@ Use with print to output complicated <code>std::ranges::range</code>s. </li>
 <div class="line">            }                                                           \</div>
 <div class="line">        } <span class="keywordflow">while</span> (<span class="keyword">false</span>)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00167">167</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00159">159</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
 </div>
 </div>

@@ -8,7 +8,6 @@ var searchData=
   ['infer_5',['Infer',['../classthorin_1_1Infer.html',1,'thorin']]],
   ['inferrewriter_6',['InferRewriter',['../classthorin_1_1InferRewriter.html',1,'thorin']]],
   ['info_7',['Info',['../structthorin_1_1Axiom_1_1Info.html',1,'thorin::Axiom::Info'],['../classthorin_1_1mem_1_1SSAConstr.html#structthorin_1_1mem_1_1SSAConstr_1_1Info',1,'thorin::mem::SSAConstr::Info']]],
-  ['inline_8',['Inline',['../structthorin_1_1Inline.html',1,'thorin']]],
-  ['insert_9',['Insert',['../classthorin_1_1Insert.html',1,'thorin']]],
-  ['internalcleanup_10',['InternalCleanup',['../classthorin_1_1compile_1_1InternalCleanup.html',1,'thorin::compile']]]
+  ['insert_8',['Insert',['../classthorin_1_1Insert.html',1,'thorin']]],
+  ['internalcleanup_9',['InternalCleanup',['../classthorin_1_1compile_1_1InternalCleanup.html',1,'thorin::compile']]]
 ];

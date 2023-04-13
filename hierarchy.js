@@ -28,7 +28,6 @@ var hierarchy =
     [ "thorin::DepTree", "classthorin_1_1DepTree.html", null ],
     [ "thorin::DomFrontierBase< forward >", "classthorin_1_1DomFrontierBase.html", null ],
     [ "thorin::DomTreeBase< forward >", "classthorin_1_1DomTreeBase.html", null ],
-    [ "thorin::Dumper", "classthorin_1_1Dumper.html", null ],
     [ "thorin::Elem< R, F >", "structthorin_1_1Elem.html", null ],
     [ "thorin::Flags", "namespacethorin.html#structthorin_1_1Flags", null ],
     [ "thorin::FNV1", "structthorin_1_1FNV1.html", null ],
@@ -42,7 +41,6 @@ var hierarchy =
     [ "thorin::IndexSet< Indexer, Key >", "classthorin_1_1IndexSet.html", null ],
     [ "thorin::Axiom::Info", "structthorin_1_1Axiom_1_1Info.html", null ],
     [ "thorin::mem::SSAConstr::Info", "classthorin_1_1mem_1_1SSAConstr.html#structthorin_1_1mem_1_1SSAConstr_1_1Info", null ],
-    [ "thorin::Inline", "structthorin_1_1Inline.html", null ],
     [ "thorin::utf8::Lexer< Max_Ahead >", "classthorin_1_1utf8_1_1Lexer.html", null ],
     [ "thorin::utf8::Lexer< 3 >", "classthorin_1_1utf8_1_1Lexer.html", [
       [ "thorin::fe::Lexer", "classthorin_1_1fe_1_1Lexer.html", null ]
@@ -52,7 +50,6 @@ var hierarchy =
     [ "thorin::Log", "classthorin_1_1Log.html", null ],
     [ "thorin::LoopTree< forward >", "classthorin_1_1LoopTree.html", null ],
     [ "thorin::LoopTreeBuilder< forward >", "classthorin_1_1LoopTreeBuilder.html", null ],
-    [ "thorin::LRPrec< L >", "structthorin_1_1LRPrec.html", null ],
     [ "thorin::Axiom::Match< T >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match", null ],
     [ "thorin::Match< Id, D >", "classthorin_1_1Match.html", null ],
     [ "thorin::fe::Parser", "classthorin_1_1fe_1_1Parser.html", null ],
@@ -196,8 +193,6 @@ var hierarchy =
     [ "thorin::Ref", "classthorin_1_1Ref.html", null ],
     [ "thorin::BitSet::reference", "classthorin_1_1BitSet_1_1reference.html", null ],
     [ "thorin::IndexSet< Indexer, Key >::reference", "classthorin_1_1IndexSet_1_1reference.html", null ],
-    [ "thorin::core::Res", "classthorin_1_1core_1_1Res.html", null ],
-    [ "thorin::math::Res", "classthorin_1_1math_1_1Res.html", null ],
     [ "thorin::Rewriter", "classthorin_1_1Rewriter.html", [
       [ "thorin::InferRewriter", "classthorin_1_1InferRewriter.html", null ],
       [ "thorin::RWPhase", "classthorin_1_1RWPhase.html", null ],
@@ -258,12 +253,14 @@ var hierarchy =
     [ "thorin::Tab", "classthorin_1_1Tab.html", null ],
     [ "thorin::fe::Tok", "classthorin_1_1fe_1_1Tok.html", null ],
     [ "thorin::unique_queue< Set >", "classthorin_1_1unique__queue.html", null ],
-    [ "thorin::unique_queue< MutSet >", "classthorin_1_1unique__queue.html", null ],
     [ "thorin::unique_stack< Set >", "classthorin_1_1unique__stack.html", null ],
     [ "thorin::Use", "classthorin_1_1Use.html", null ],
     [ "thorin::UseEq", "structthorin_1_1UseEq.html", null ],
     [ "thorin::UseHash", "structthorin_1_1UseHash.html", null ],
     [ "thorin::w2f_< int >", "namespacethorin.html#structthorin_1_1w2f__", null ],
+    [ "thorin::w2f_< 16 >", "namespacethorin.html#structthorin_1_1w2f___3_0116_01_4", null ],
+    [ "thorin::w2f_< 32 >", "namespacethorin.html#structthorin_1_1w2f___3_0132_01_4", null ],
+    [ "thorin::w2f_< 64 >", "namespacethorin.html#structthorin_1_1w2f___3_0164_01_4", null ],
     [ "thorin::w2s_< int >", "namespacethorin.html#structthorin_1_1w2s__", null ],
     [ "thorin::w2s_< 1 >", "namespacethorin.html#structthorin_1_1w2s___3_011_01_4", null ],
     [ "thorin::w2s_< 16 >", "namespacethorin.html#structthorin_1_1w2s___3_0116_01_4", null ],
@@ -282,6 +279,5 @@ var hierarchy =
     [ "DefMap< std::string >", "namespace_3globalScope_4.html#classDefMap_3_01std_1_1string_01_4", null ],
     [ "DefMap< thorin::Type >", "namespace_3globalScope_4.html#classDefMap_3_01thorin_1_1Type_01_4", null ],
     [ "LamMap< BB >", "namespace_3globalScope_4.html#classLamMap_3_01BB_01_4", null ],
-    [ "MutSet", "namespace_3globalScope_4.html#classMutSet", null ],
     [ "size_t", "namespace_3globalScope_4.html#classsize__t", null ]
 ];

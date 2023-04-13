@@ -12,8 +12,6 @@ var namespacethorin_1_1refly =
     [ "reify", "namespacethorin_1_1refly.html#ab126eca8fb6114846260a8c356d1488d", null ],
     [ "remove_dbg_perm_pass", "namespacethorin_1_1refly.html#abb25ddaaece56242a704ba11b92cd6db", null ],
     [ "debug_print", "namespacethorin_1_1refly.html#a30122fc088057538572d8631a0df6d2b", null ],
-    [ "do_reflect", "namespacethorin_1_1refly.html#a651050df666c363dc64e58b7232d98ea", null ],
-    [ "do_reify", "namespacethorin_1_1refly.html#a2c71823e5082857b0d426de67ccd1844", null ],
     [ "normalize_dbg", "namespacethorin_1_1refly.html#a1d4c579f94fcac60eebde5c8593d9884", null ],
     [ "normalize_gid", "namespacethorin_1_1refly.html#aba788e6f901736144880c9710c082528", null ],
     [ "normalize_refine", "namespacethorin_1_1refly.html#ad5191894f184796478f7f29b14decad4", null ],

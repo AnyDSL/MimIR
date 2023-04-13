@@ -12,7 +12,7 @@ var dir_c4168c80b7484587a21dc92c326c695e =
     [ "check.h", "check_8h.html", "check_8h" ],
     [ "def.cpp", "def_8cpp.html", "def_8cpp" ],
     [ "def.h", "def_8h.html", "def_8h" ],
-    [ "driver.cpp", "driver_8cpp.html", "driver_8cpp" ],
+    [ "driver.cpp", "driver_8cpp.html", null ],
     [ "driver.h", "driver_8h.html", "driver_8h" ],
     [ "dump.cpp", "dump_8cpp.html", "dump_8cpp" ],
     [ "flags.h", "flags_8h.html", "flags_8h" ],
