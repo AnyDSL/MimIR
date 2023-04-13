@@ -91,6 +91,7 @@ void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
 
     tab.print(h, "}} // namespace {}\n\n", plugin);
 
+    tab.print(h, "#ifndef DOXYGEN // don't include in Doxygen documentation\n");
     for (const auto& line : outer_namespace) tab.print(h, "{}", line.str());
     tab.print(h, "\n");
 
@@ -100,6 +101,7 @@ void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
         tab.print(h, "template<> struct Axiom::Match<{}::{}> {{ using type = Axiom; }};\n", ax.plugin, ax.tag);
     }
 
+    tab.print(h, "#endif\n");
     tab.print(h, "}} // namespace thorin\n");
 }
 

@@ -1,5 +1,7 @@
 /// # The math Plugin {#math}
 ///
+/// @see thorin::math
+///
 /// Introduces a type constructor `%%math.F` for viarious [IEEE-754](https://en.wikipedia.org/wiki/IEEE_754) floating-point formats and a set of operations to calculate with instances of these types.
 /// All operations with the exception of `%%math.conv` expect a `.Nat` just in front of its actual argument.
 /// Here you can fine adjust via thorin::math::Mode how strictly you want to obey floating-point transformations.
