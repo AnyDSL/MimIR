@@ -176,7 +176,7 @@ The following table summarizes all important casts:
 | `isa_lit(def)`        <br> `as_lit(def)`        | [std::optional](https://en.cppreference.com/w/cpp/utility/optional)`<`[nat_t](@ref thorin::nat_t)`>` <br> [nat_t](@ref thorin::nat_t) | [Lit](@ref thorin::Lit)               |
 | `isa_lit<f32>(def)`   <br> `as_lit<f32>(def)`   | [std::optional](https://en.cppreference.com/w/cpp/utility/optional)`<`[f32](@ref thorin::f32)`>`     <br> [f32](@ref thorin::f32)     | [Lit](@ref thorin::Lit)               |
 
-### Axioms {#cast_axioms}
+### Matching Axioms {#cast_axiom}
 
 You can match [Axiom](@ref thorin::Axiom)s via
 * thorin::match which is again similar to a `dynamic_cast` with a runtime check and returns [a wrapped](@ref thorin::Match::Match) `nullptr` (see below), if the cast is not possible, or

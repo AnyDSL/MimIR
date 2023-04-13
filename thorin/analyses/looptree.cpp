@@ -200,26 +200,29 @@ LoopTree<forward>::Base::Base(Head* parent, int depth, const std::vector<const C
 }
 
 template<bool forward>
-std::ostream& operator<<(std::ostream& os, const typename LoopTree<forward>::Base* n) {
-    using LT = LoopTree<forward>;
-    if (auto l = n->template isa<typename LT::Leaf>()) return print(os, "<{} | dfs: {}", l->cf_node(), l->index());
-    if (auto h = n->template isa<typename LT::Head>()) return print(os, "[{, }]", h->cf_nodes());
-    unreachable();
-}
-
-//------------------------------------------------------------------------------
-
-template<bool forward>
 LoopTree<forward>::LoopTree(const CFG<forward>& cfg)
     : cfg_(cfg)
     , leaves_(cfg) {
     LoopTreeBuilder<forward>(*this);
 }
 
+/// @name std::ostream operator
+///@{
+template<bool forward>
+std::ostream& operator<<(std::ostream& os, const typename LoopTree<forward>::Base* n) {
+    using LT = LoopTree<forward>;
+    if (auto l = n->template isa<typename LT::Leaf>()) return print(os, "<{} | dfs: {}", l->cf_node(), l->index());
+    if (auto h = n->template isa<typename LT::Head>()) return print(os, "[{, }]", h->cf_nodes());
+    unreachable();
+}
+///@}
+
+#ifndef DOXYGEN
 template class LoopTree<true>;
 template class LoopTree<false>;
 template std::ostream& operator<< <true>(std::ostream&, const typename LoopTree<true>::Base*);
 template std::ostream& operator<< <false>(std::ostream&, const typename LoopTree<false>::Base*);
+#endif
 
 //------------------------------------------------------------------------------
 

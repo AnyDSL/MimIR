@@ -7,7 +7,7 @@ namespace thorin {
 // TODO move to normalize.h
 /// Swap Lit to left - or smaller gid, if no lit present.
 template<class Id>
-static void commute(Id id, const Def*& a, const Def*& b) {
+void commute(Id id, const Def*& a, const Def*& b) {
     if (is_commutative(id)) {
         if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>())) std::swap(a, b);
     }
@@ -17,12 +17,14 @@ static void commute(Id id, const Def*& a, const Def*& b) {
 
 namespace thorin::math {
 
+namespace {
+
 class Res {
 public:
     Res() = default;
     template<class T>
     Res(T val)
-        : data_(thorin::bitcast<u64>(val)) {}
+        : data_(bitcast<u64>(val)) {}
 
     constexpr const u64& operator*() const& { return data_; }
     constexpr u64& operator*() & { return data_; }
@@ -119,7 +121,7 @@ Res fold(u64 a, u64 b) {
 // clang-format on
 
 template<class Id, Id id>
-static Ref fold(World& world, Ref type, const Def* a) {
+Ref fold(World& world, Ref type, const Def* a) {
     if (a->isa<Bot>()) return world.bot(type);
     auto la = a->isa<Lit>();
 
@@ -142,7 +144,7 @@ static Ref fold(World& world, Ref type, const Def* a) {
 
 /// @attention Note that @p a and @p b are passed by reference as fold also commutes if possible. @sa commute().
 template<class Id, Id id>
-static Ref fold(World& world, Ref type, const Def*& a, const Def*& b) {
+Ref fold(World& world, Ref type, const Def*& a, const Def*& b) {
     auto la = a->isa<Lit>(), lb = b->isa<Lit>();
 
     if (a->isa<Bot>() || b->isa<Bot>()) return world.bot(type);
@@ -177,7 +179,7 @@ static Ref fold(World& world, Ref type, const Def*& a, const Def*& b) {
 /// (4) (lx op y) op      b    ->  lx op (y op b)
 /// ```
 template<class Id>
-static Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref b) {
+Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref b) {
     if (!is_associative(id)) return nullptr;
 
     auto la = a->isa<Lit>();
@@ -211,6 +213,7 @@ static Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref 
     if (lx) return make_op(lx, make_op(y, b));                    // (4)
 
     return nullptr;
+}
 }
 
 template<arith id>

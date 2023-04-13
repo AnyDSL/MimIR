@@ -21,6 +21,7 @@ struct Pos {
         , col(col) {}
 
     explicit operator bool() const { return row; }
+    bool operator==(Pos other) const { return row == other.row && col == other.col; }
     void dump();
 
     uint16_t row = 0;
@@ -47,6 +48,8 @@ struct Loc {
     Loc anew_begin() const { return {path, begin, begin}; }
     Loc anew_finis() const { return {path, finis, finis}; }
     explicit operator bool() const { return (bool)begin; }
+    /// @note Loc::path is only checked via pointer equality.
+    bool operator==(Loc other) const { return begin == other.begin && finis == other.finis && path == other.path; }
     void dump();
 
     const fs::path* path = nullptr;
@@ -68,12 +71,11 @@ template<class T = std::logic_error, class... Args>
 }
 ///@}
 
+/// @name std::ostream operator
+///@{
 std::ostream& operator<<(std::ostream&, const Pos);
 std::ostream& operator<<(std::ostream&, const Loc);
-
-inline bool operator==(Pos p1, Pos p2) { return p1.row == p2.row && p1.col == p2.col; }
-/// @note Loc::path is only checked via pointer equality.
-inline bool operator==(Loc l1, Loc l2) { return l1.begin == l2.begin && l1.finis == l2.finis && l1.path == l2.path; }
+///@}
 
 struct Dbg {
     Loc loc;

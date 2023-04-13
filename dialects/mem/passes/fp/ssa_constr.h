@@ -1,7 +1,6 @@
 #pragma once
 
 #include "thorin/pass/pass.h"
-#include "thorin/util/bitset.h"
 
 namespace thorin {
 

@@ -31,7 +31,8 @@ using namespace std::string_literals;
 
 namespace thorin::ll {
 
-static bool is_const(const Def* def) {
+namespace {
+bool is_const(const Def* def) {
     if (def->isa<Bot>()) return true;
     if (def->isa<Lit>()) return true;
     if (auto pack = def->isa_imm<Pack>()) return is_const(pack->shape()) && is_const(pack->body());
@@ -42,6 +43,28 @@ static bool is_const(const Def* def) {
     }
 
     return false;
+}
+
+const char* math_suffix(const Def* type) {
+    if (auto w = math::isa_f(type)) {
+        switch (*w) {
+            case 32: return "f";
+            case 64: return "";
+        }
+    }
+    error("unsupported foating point type '{}'", type);
+}
+
+const char* llvm_suffix(const Def* type) {
+    if (auto w = math::isa_f(type)) {
+        switch (*w) {
+            case 16: return ".f16";
+            case 32: return ".f32";
+            case 64: return ".f64";
+        }
+    }
+    error("unsupported foating point type '{}'", type);
+}
 }
 
 struct BB {
@@ -408,26 +431,6 @@ void Emitter::emit_epilogue(Lam* lam) {
 
         return bb.tail("br label {}", id(ret_lam));
     }
-}
-
-static const char* math_suffix(const Def* type) {
-    if (auto w = math::isa_f(type)) {
-        switch (*w) {
-            case 32: return "f";
-            case 64: return "";
-        }
-    }
-    error("unsupported foating point type '{}'", type);
-}
-static const char* llvm_suffix(const Def* type) {
-    if (auto w = math::isa_f(type)) {
-        switch (*w) {
-            case 16: return ".f16";
-            case 32: return ".f32";
-            case 64: return ".f64";
-        }
-    }
-    error("unsupported foating point type '{}'", type);
 }
 
 std::string Emitter::emit_bb(BB& bb, const Def* def) {

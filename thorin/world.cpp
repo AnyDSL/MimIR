@@ -22,6 +22,16 @@
 
 namespace thorin {
 
+namespace {
+bool is_shape(Ref s) {
+    if (s->isa<Nat>()) return true;
+    if (auto arr = s->isa<Arr>()) return arr->body()->isa<Nat>();
+    if (auto sig = s->isa_imm<Sigma>()) return std::ranges::all_of(sig->ops(), [](Ref op) { return op->isa<Nat>(); });
+
+    return false;
+}
+}
+
 /*
  * constructor & destructor
  */
@@ -341,14 +351,6 @@ Ref World::insert(Ref d, Ref index, Ref val) {
     return unify<Insert>(3, d, index, val);
 }
 
-bool is_shape(Ref s) {
-    if (s->isa<Nat>()) return true;
-    if (auto arr = s->isa<Arr>()) return arr->body()->isa<Nat>();
-    if (auto sig = s->isa_imm<Sigma>()) return std::ranges::all_of(sig->ops(), [](Ref op) { return op->isa<Nat>(); });
-
-    return false;
-}
-
 // TODO merge this code with pack
 Ref World::arr(Ref shape, Ref body) {
     if (!is_shape(shape->type())) error(shape, "expected shape but got '{}' of type '{}'", shape, shape->type());
@@ -527,14 +529,9 @@ Ref World::gid2def(u32 gid) {
 
 #endif
 
-/*
- * instantiate templates
- */
-
-#ifndef DOXYGEN // Doxygen doesn't like this
+#ifndef DOXYGEN
 template Ref World::raw_app<true>(Ref, Ref, Ref);
 template Ref World::raw_app<false>(Ref, Ref, Ref);
-#endif
 template Ref World::umax<Sort::Term>(DefArray);
 template Ref World::umax<Sort::Type>(DefArray);
 template Ref World::umax<Sort::Kind>(DefArray);
@@ -543,5 +540,6 @@ template Ref World::ext<true>(Ref);
 template Ref World::ext<false>(Ref);
 template Ref World::bound<true>(Defs);
 template Ref World::bound<false>(Defs);
+#endif
 
 } // namespace thorin

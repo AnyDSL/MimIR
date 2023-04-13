@@ -9,6 +9,8 @@
 
 namespace thorin::utf8 {
 
+/// @name UTF-8
+///@{
 static constexpr size_t Max   = 4;          ///< Maximal number of `char8_t`s of an UTF-8 byte sequence.
 static constexpr char32_t BOM = 0xfeff_u32; ///< [Byte Order Mark](https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8).
 static constexpr char32_t EoF = (char32_t)std::istream::traits_type::eof(); ///< End of File.
@@ -36,6 +38,7 @@ char32_t encode(std::istream& is);
 /// Decodes the UTF-32 char @p c to UTF-8 and writes the sequence of bytes to @p os.
 /// @returns `false` on error.
 bool decode(std::ostream& os, char32_t c);
+///@}
 
 template<size_t Max_Ahead>
 class Lexer {

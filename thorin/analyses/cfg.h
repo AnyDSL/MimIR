@@ -49,7 +49,10 @@ private:
     friend class CFG;
 };
 
+/// @name std::ostream operator
+///@{
 std::ostream& operator<<(std::ostream&, const CFNode*);
+///@}
 
 //------------------------------------------------------------------------------
 

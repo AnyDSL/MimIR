@@ -72,7 +72,10 @@ private:
     friend class SymPool;
 };
 
+/// @name std::ostream operator
+///@{
 inline std::ostream& operator<<(std::ostream& o, const Sym sym) { return o << *sym; }
+///@}
 
 /// Hash set where all strings - wrapped in Sym%bol - live in.
 /// You can access the SymPool from Driver.
@@ -100,11 +103,5 @@ template<class V>
 using SymMap = absl::flat_hash_map<Sym, V>;
 using SymSet = absl::flat_hash_set<Sym>;
 using Syms   = std::deque<Sym>;
-
-/// Like `std::string::substr`, but works on `std::string_view` instead.
-inline std::string_view subview(std::string_view s, size_t i, size_t n = std::string_view::npos) {
-    n = std::min(n, s.size());
-    return {s.data() + i, n - i};
-}
 
 } // namespace thorin

@@ -98,6 +98,8 @@ private:
     Array<uint64_t> bits_;
 };
 
+/// @name IndexSet visit
+///@{
 template<class Indexer, class Key>
 bool visit(IndexSet<Indexer, Key>& set, const Key& key) {
     return !set.insert(key);
@@ -108,5 +110,6 @@ void visit_first(IndexSet<Indexer, Key>& set, const Key& key) {
     assert(!set.contains(key));
     visit(set, key);
 }
+///@}
 
 } // namespace thorin

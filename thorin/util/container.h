@@ -14,6 +14,8 @@
 
 namespace thorin {
 
+/// @name Helpers for containers/algorithms
+///@{
 template<class S>
 auto pop(S& s) -> decltype(s.top(), typename S::value_type()) {
     auto val = s.top();
@@ -28,11 +30,38 @@ auto pop(Q& q) -> decltype(q.front(), typename Q::value_type()) {
     return val;
 }
 
+/// Yields pointer to element (or the element itself if it is already a pointer), if found and `nullptr` otherwise.
+/// @warning If the element is **not** already a pointer, this lookup will simply take the address of this element.
+/// This means that, e.g., a rehash of an `absl::flat_hash_map` will invalidate this pointer.
+template<class C, class K>
+auto lookup(const C& container, const K& key) {
+    auto i = container.find(key);
+    if constexpr (std::is_pointer_v<typename C::mapped_type>)
+        return i != container.end() ? i->second : nullptr;
+    else
+        return i != container.end() ? &i->second : nullptr;
+}
+
+/// Invokes `emplace` on @p container, asserts that insertion actually happened, and returns the iterator.
+template<class C, class... Args>
+auto assert_emplace(C& container, Args&&... args) {
+    auto [i, ins] = container.emplace(std::forward<Args&&>(args)...);
+    assert_unused(ins);
+    return i;
+}
+
 template<class I, class T, class Cmp>
 I binary_find(I begin, I end, T val, Cmp cmp) {
     auto i = std::lower_bound(begin, end, val, cmp);
     return (i != end && !(cmp(val, *i))) ? i : end;
 }
+
+/// Like `std::string::substr`, but works on `std::string_view` instead.
+inline std::string_view subview(std::string_view s, size_t i, size_t n = std::string_view::npos) {
+    n = std::min(n, s.size());
+    return {s.data() + i, n - i};
+}
+///@}
 
 template<class Set>
 class unique_stack {
@@ -115,25 +144,5 @@ template<class K, class V> using GIDNodeMap = absl::node_hash_map<K, V, GIDHash<
 template<class K>          using GIDNodeSet = absl::node_hash_set<K,    GIDHash<K>, GIDEq<K>>;
 // clang-format on
 ///@}
-
-/// Yields pointer to element (or the element itself if it is already a pointer), if found and `nullptr` otherwise.
-/// @warning If the element is **not** already a pointer, this lookup will simply take the address of this element.
-/// This means that, e.g., a rehash of an `absl::flat_hash_map` will invalidate this pointer.
-template<class C, class K>
-auto lookup(const C& container, const K& key) {
-    auto i = container.find(key);
-    if constexpr (std::is_pointer_v<typename C::mapped_type>)
-        return i != container.end() ? i->second : nullptr;
-    else
-        return i != container.end() ? &i->second : nullptr;
-}
-
-/// Invokes `emplace` on @p container, asserts that insertion actually happened, and returns the iterator.
-template<class C, class... Args>
-auto assert_emplace(C& container, Args&&... args) {
-    auto [i, ins] = container.emplace(std::forward<Args&&>(args)...);
-    assert_unused(ins);
-    return i;
-}
 
 } // namespace thorin

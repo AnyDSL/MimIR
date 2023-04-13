@@ -58,6 +58,8 @@ public:
     }
 };
 
+/// @name rewrite
+///@{
 /// Rewrites @p def by mapping @p old_def to @p new_def while obeying @p scope.
 Ref rewrite(Ref def, Ref old_def, Ref new_def, const Scope& scope);
 
@@ -72,5 +74,6 @@ DefArray rewrite(Def* mut, Ref arg);
 
 /// Same as above but uses @p scope as an optimization instead of computing a new Scope.
 DefArray rewrite(Def* mut, Ref arg, const Scope& scope);
+///@}
 
 } // namespace thorin

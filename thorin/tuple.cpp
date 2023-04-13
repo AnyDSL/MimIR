@@ -9,11 +9,33 @@
 
 namespace thorin {
 
-static bool should_flatten(const Def* def) { return (def->is_term() ? def->type() : def)->isa<Sigma, Arr>(); }
+namespace {
+bool should_flatten(const Def* def) { return (def->is_term() ? def->type() : def)->isa<Sigma, Arr>(); }
 
-static bool mut_val_or_typ(const Def* def) {
+bool mut_val_or_typ(const Def* def) {
     auto typ = def->is_term() ? def->type() : def;
     return typ->isa_mut();
+}
+
+const Def* unflatten(Defs defs, const Def* type, size_t& j, bool flatten_muts) {
+    if (!defs.empty() && defs[0]->type() == type) return defs[j++];
+    if (auto a = type->isa_lit_arity(); flatten_muts == mut_val_or_typ(type) && a && *a != 1) {
+        auto& world = type->world();
+        DefArray ops(*a, [&](size_t i) { return unflatten(defs, type->proj(*a, i), j, flatten_muts); });
+        return world.tuple(type, ops);
+    }
+
+    return defs[j++];
+}
+}
+
+bool is_unit(const Def* def) { return def->type() == def->world().sigma(); }
+
+std::string tuple2str(const Def* def) {
+    if (def == nullptr) return {};
+
+    auto array = def->projs(as_lit(def->arity()), as_lit<nat_t>);
+    return std::string(array.begin(), array.end());
 }
 
 size_t flatten(DefVec& ops, const Def* def, bool flatten_muts) {
@@ -34,17 +56,6 @@ const Def* flatten(const Def* def) {
     return def->is_term() ? def->world().tuple(def->type(), ops) : def->world().sigma(ops);
 }
 
-static const Def* unflatten(Defs defs, const Def* type, size_t& j, bool flatten_muts) {
-    if (!defs.empty() && defs[0]->type() == type) return defs[j++];
-    if (auto a = type->isa_lit_arity(); flatten_muts == mut_val_or_typ(type) && a && *a != 1) {
-        auto& world = type->world();
-        DefArray ops(*a, [&](size_t i) { return unflatten(defs, type->proj(*a, i), j, flatten_muts); });
-        return world.tuple(type, ops);
-    }
-
-    return defs[j++];
-}
-
 const Def* unflatten(Defs defs, const Def* type, bool flatten_muts) {
     size_t j = 0;
     auto def = unflatten(defs, type, j, flatten_muts);
@@ -53,8 +64,6 @@ const Def* unflatten(Defs defs, const Def* type, bool flatten_muts) {
 }
 
 const Def* unflatten(const Def* def, const Def* type) { return unflatten(def->projs(as_lit(def->arity())), type); }
-
-bool is_unit(const Def* def) { return def->type() == def->world().sigma(); }
 
 DefArray merge(const Def* def, Defs defs) {
     return DefArray(defs.size() + 1, [&](auto i) { return i == 0 ? def : defs[i - 1]; });
@@ -82,13 +91,6 @@ const Def* merge_tuple(const Def* def, Defs defs) {
     }
 
     return def->world().tuple(merge(def, defs));
-}
-
-std::string tuple2str(const Def* def) {
-    if (def == nullptr) return {};
-
-    auto array = def->projs(as_lit(def->arity()), as_lit<nat_t>);
-    return std::string(array.begin(), array.end());
 }
 
 /*
