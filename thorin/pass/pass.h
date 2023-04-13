@@ -20,7 +20,7 @@ public:
     Pass(PassMan&, std::string_view name);
     virtual ~Pass() = default;
 
-    /// @name Setters
+    /// @name Getters
     ///@{
     World& world();
     PassMan& man() { return man_; }
