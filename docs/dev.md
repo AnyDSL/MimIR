@@ -64,7 +64,7 @@ There are two different kind of [Defs](@ref thorin::Def) in Thorin: *mutables* a
 
 Thorin provides different means to scrutinize [Defs](@ref thorin::Def).
 Usually, you will encounter a [Def](@ref thorin::Def) as [Ref](@ref thorin::Ref) which is just a wrapper for a `const Def*`.
-Its purpose is to resolve varialbes (called *[Infer](@ref thorin::Infer)s* in Thorin) that may pop up due to type inference.
+Its purpose is to resolve variables (called *[Infer](@ref thorin::Infer)s* in Thorin) that may pop up due to type inference.
 Matching built-ins, i.e. all subclasses of [Def](@ref thorin::Def), works differently than matching [Axiom](@ref thorin::Axiom)s.
 
 ### Upcast for Built-ins {#cast_builtin}
@@ -151,11 +151,11 @@ You can use thorin::isa_lit / thorin::as_lit for this:
 void foo(Ref def) {
     if (auto lit = isa_lit(def)) {
         // lit is of type "std::optional<u64>"
-        // It's your repsonsibility that the grabbed value makes sense as u64.
+        // It's your responsibility that the grabbed value makes sense as u64.
     }
     if (auto lit = isa_lit<f32>(def)) {
         // lit is of type "std::optional<f32>"
-        // It's your repsonsibility that the grabbed value makes sense as f32.
+        // It's your responsibility that the grabbed value makes sense as f32.
     }
 
     // asserts if def is not a Lit.
