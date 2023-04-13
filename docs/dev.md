@@ -64,12 +64,13 @@ There are two different kind of [Defs](@ref thorin::Def) in Thorin: *mutables* a
 
 Thorin provides different means to scrutinize [Defs](@ref thorin::Def).
 Usually, you will encounter a [Def](@ref thorin::Def) as [Ref](@ref thorin::Ref) which is just a wrapper for a `const Def*`.
-Matching built-ins, i.e., all subclasses of [Def](@ref thorin::Def), works differently than matching [Axiom](@ref thorin::Axiom)s.
+Its purpose is to resolve varialbes (called *[Infer](@ref thorin::Infer)s* in Thorin) that may pop up due to type inference.
+Matching built-ins, i.e. all subclasses of [Def](@ref thorin::Def), works differently than matching [Axiom](@ref thorin::Axiom)s.
 
 ### Upcast for Built-ins {#cast_builtin}
 
 Methods beginning with
-* `isa` work like a `dynamic_cast` with a runtime check while
+* `isa` work like a `dynamic_cast` with a runtime check and return `nullptr` if the cast is not possible, while
 * those beginning with `as` are more like a `static_cast` and `assert` via its `isa` sibling in the `Debug` build that the cast is correct.
 
 #### Upcast
@@ -178,13 +179,19 @@ The following table summarizes all important casts:
 ### Axioms {#cast_axioms}
 
 You can match [Axiom](@ref thorin::Axiom)s via
-* thorin::match which is again similar to a `dynamic_cast` and
-* thorin::force which is more like a `static_cast` and `assert`s via its `match` sibling in the `Debug` build that the cast is correct.
+* thorin::match which is again similar to a `dynamic_cast` with a runtime check and returns [a wrapped](@ref thorin::Match::Match) `nullptr` (see below), if the cast is not possible, or
+* thorin::force which is again more like a `static_cast` and `assert`s via its thorin::match sibling in the `Debug` build that the cast is correct.
+
+This will yield a [Match](@ref thorin::Match)`<Id, D>` which just wraps a `const D*`.
+`Id` is the `enum` of the corresponding `tag` of the [matched Axiom](@ref anatomy).
+Usually, `D` will be an [App](@ref thorin::App) because most [Axiom](@ref thorin::Axiom)s inhabit a [function type](@ref thorin::Pi).
+Otherwise, it may wrap a [Def](@ref thorin::Def) or other subclasses of it.
+For instance, [match](@ref thorin::match)ing `%%mem.M` yields [Match](@ref thorin::Match)`<`[mem::M](@ref thorin::mem::M), [Def](@ref thorin::Def)`>`.
 
 By default, Thorin assumes that the magic of an [Axiom](@ref thorin::Axiom) happens when applying the final argument to a curried [Axiom](@ref thorin::Axiom).
 If you want to design an [Axiom](@ref thorin::Axiom) that really returns a function, you can [fine-adjust the trigger point](@ref normalization) of a thorin::match / thorin::force.
 
-#### Without Subtags
+#### w/o Subtags
 
 In order to match an [Axiom](@ref thorin::Axiom) **without** any subtags like `%%mem.load`, do this:
 ```cpp
@@ -199,9 +206,9 @@ void foo(Ref def) {
 }
 ```
 The `match` only triggers for the final thorin::App of the curried call `%%mem.load (T, as) (mem, ptr)` and `%%mem.load (T, as)` will **not** match as explained above.
-This will yield a [Match](@ref thorin::Match) which *usually* just wraps a `const` [App](@ref thorin::App)`*` but may wrap a [Def](@ref thorin::Def) or other subclasses of it if the type of the Axiom is **not** a [function type](@ref thorin::Pi).
+This will yield a [Match](@ref thorin::Match) which *usually* just wraps a `const` [App](@ref thorin::App)`*` but may wrap a [Def](@ref thorin::Def) or other subclasses of it, if the type of the Axiom is **not** a [function type](@ref thorin::Pi).
 
-#### With Subtags
+#### w/ Subtags
 
 In order to match an [Axiom](@ref thorin::Axiom) **with** subtags like `%%core.wrap`, do this:
 ```cpp
@@ -234,11 +241,11 @@ void foo(Ref def) {
 
 The following table summarizes all important casts:
 
-| `dynamic_cast`                <br> `static_cast`                 | Returns                                        | If `def` is a ...               |
-|-------------------------------------------------------------------|------------------------------------------------|---------------------------------|
-| `match<mem::load>(def)`       <br> `force<mem::load>(def)`       | [Match](@ref thorin::Match)`<mem::load, App>`  | `%%mem.load (T, as) (mem, ptr)` |
-| `match<core::wrap>(def)`      <br> `force<core::wrap>(def)`      | [Match](@ref thorin::Match)`<core::wrap, App>` | `%%core.wrap.??? s m (a, b)`    |
-| `match(core::wrap::add, def)` <br> `force(core::wrap::add, def)` | [Match](@ref thorin::Match)`<core::wrap, App>` | `%%core.wrap.add s m (a, b)`    |
+| `dynamic_cast`                <br> `static_cast`                 | Returns                                                                                       | If `def` is a ...               |
+|------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|---------------------------------|
+| `match<mem::load>(def)`       <br> `force<mem::load>(def)`       | [Match](@ref thorin::Match)`<`[mem::load](@ref thorin::mem.load), [App](@ref thorin::App)`>`  | `%%mem.load (T, as) (mem, ptr)` |
+| `match<core::wrap>(def)`      <br> `force<core::wrap>(def)`      | [Match](@ref thorin::Match)`<`[core::wrap](@ref thorin::mem.load), [App](@ref thorin::App)`>` | `%%core.wrap.??? s m (a, b)`    |
+| `match(core::wrap::add, def)` <br> `force(core::wrap::add, def)` | [Match](@ref thorin::Match)`<`[core::wrap)](ref thorin::mem.load), [App](@ref thorin::App)`>` | `%%core.wrap.add s m (a, b)`    |
 
 ## Iterating over the Program
 

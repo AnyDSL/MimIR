@@ -27,7 +27,7 @@
 .ax %direct.cps2ds: Π [T: *, U: *] -> (.Cn [T, .Cn U]) -> (T -> U), normalize_cps2ds, 2;
 .ax %direct.cps2ds_dep: Π [T: *, U: T -> *] -> (.Cn [t:T, .Cn ((U t))]) -> (Π [t:T] -> ((U t)));
 ///
-/// ## Compilation Passes and Phases
+/// ## Passes and Phases
 /// 
 /// ### Passes
 /// 

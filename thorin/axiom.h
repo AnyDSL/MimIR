@@ -58,6 +58,7 @@ public:
     ///@}
 
     /// @name Axiom Name
+    /// @anchor anatomy
     ///@{
     /// Anatomy of an Axiom name:
     /// ```

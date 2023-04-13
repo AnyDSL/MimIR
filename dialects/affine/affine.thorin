@@ -25,7 +25,7 @@
         body: .Cn [iter: .Idx m, acc: «i: n; Ts#i», yield: .Cn [«i: n; Ts#i»]], 
         exit: .Cn [«i: n; Ts#i»]];
 ///
-/// ## Compilation Passes and Phases
+/// ## Passes and Phases
 ///
 /// ### %affine.lower_for_pass
 /// 
