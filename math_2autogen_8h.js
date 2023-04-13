@@ -10,7 +10,7 @@ var math_2autogen_8h =
     ] ],
     [ "cmp", "math_2autogen_8h.html#ab58b0e0aa2975069c10eaf88cff49d5f", [
       [ "ugle", "math_2autogen_8h.html#ab58b0e0aa2975069c10eaf88cff49d5faa8a4fa1f20051298cafecf2e0017b61e", null ],
-      [ "f", "math_2autogen_8h.html#ab58b0e0aa2975069c10eaf88cff49d5fa90f68af5cf3a2df678258becc2d3f714", null ],
+      [ "f", "math_2autogen_8h.html#a6dd8e88f4b0e547ae80c76780070119aa90f68af5cf3a2df678258becc2d3f714", null ],
       [ "uglE", "math_2autogen_8h.html#ab58b0e0aa2975069c10eaf88cff49d5faf6c943d09c26fa62b63ca0be6f128a00", null ],
       [ "e", "math_2autogen_8h.html#ab58b0e0aa2975069c10eaf88cff49d5fae3d34eae2d815c0b27ec6caf0bdb2707", null ],
       [ "ugLe", "math_2autogen_8h.html#ab58b0e0aa2975069c10eaf88cff49d5fa1c77ce918fdf91c3a3f5ad23d550f8ca", null ],
@@ -50,7 +50,7 @@ var math_2autogen_8h =
       [ "f2f", "math_2autogen_8h.html#af5795434c033575fef9826010d58bc2da7b39587020327361b25edf8fdae94209", null ]
     ] ],
     [ "er", "math_2autogen_8h.html#a6dd8e88f4b0e547ae80c76780070119a", [
-      [ "f", "math_2autogen_8h.html#ab58b0e0aa2975069c10eaf88cff49d5fa90f68af5cf3a2df678258becc2d3f714", null ],
+      [ "f", "math_2autogen_8h.html#a6dd8e88f4b0e547ae80c76780070119aa90f68af5cf3a2df678258becc2d3f714", null ],
       [ "fc", "math_2autogen_8h.html#a6dd8e88f4b0e547ae80c76780070119aa086bc53f36970b37e40ffc9d36fc30dc", null ]
     ] ],
     [ "exp", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fe", [
