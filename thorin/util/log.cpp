@@ -21,7 +21,7 @@ Log::Level Log::str2level(std::string_view s) {
     else if (s == "info"   ) return Level::Info;
     else if (s == "warn"   ) return Level::Warn;
     else if (s == "error"  ) return Level::Error;
-    else throw std::invalid_argument("invalid log level");
+    else error("invalid log level");
 }
 
 int Log::level2color(Level level) {

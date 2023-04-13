@@ -1,14 +1,14 @@
 #pragma once
 
+#include <filesystem>
+#include <optional>
+#include <string>
+
 #ifdef _WIN32
 #    define THORIN_WHICH "where"
 #else
 #    define THORIN_WHICH "which"
 #endif
-
-#include <filesystem>
-#include <optional>
-#include <string>
 
 namespace thorin {
 
@@ -16,8 +16,7 @@ namespace fs = std::filesystem;
 
 namespace sys {
 
-/// Yields `std::nullopt` if an error occurred.
-std::optional<fs::path> path_to_curr_exe();
+std::optional<fs::path> path_to_curr_exe(); ///< Yields `std::nullopt` if an error occurred.
 
 /// Executes command @p cmd.
 /// @returns the output as string.

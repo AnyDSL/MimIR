@@ -10,18 +10,6 @@
 #include "thorin/util/assert.h"
 
 namespace thorin {
-
-/// Use with print to output complicated `std::ranges::range`s.
-template<class R, class F>
-struct Elem {
-    Elem(const R& range, const F& f)
-        : range(range)
-        , f(f) {}
-
-    const R range;
-    const F f;
-};
-
 namespace detail {
 
 template<class T>
@@ -51,9 +39,8 @@ std::ostream& range(std::ostream& os, const R& r, F f, const char* sep = ", ") {
 bool match2nd(std::ostream& os, const char* next, const char*& s, const char c);
 } // namespace detail
 
-/// Base case.
-std::ostream& print(std::ostream& os, const char* s);
-
+/// @name Formatted Output
+/// @anchor fmt
 /// Provides a `printf`-like interface to format @p s with @p args and puts it into @p os.
 /// Use `{}` as a placeholder within your format string @p s.
 /// * By default, `os << t`` will be used to stream the appropriate argument:
@@ -87,6 +74,21 @@ std::ostream& print(std::ostream& os, const char* s);
 /// size_t i = 0;
 /// print(os, "v: {, }", Elem(v, [&](auto& os, auto elem) { print(os, "{}: {}", i++, elem); }));
 /// ```
+/// @sa Tab
+///@{
+/// Use with print to output complicated `std::ranges::range`s.
+template<class R, class F>
+struct Elem {
+    Elem(const R& range, const F& f)
+        : range(range)
+        , f(f) {}
+
+    const R range;
+    const F f;
+};
+
+std::ostream& print(std::ostream& os, const char* s); ///< Base case.
+
 template<class T, class... Args>
 std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
     while (*s != '\0') {
@@ -133,7 +135,7 @@ std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
     unreachable();
 }
 
-/// Wraps print to output a formatted `std:string`.
+/// Wraps thorin::print to output a formatted `std:string`.
 template<class... Args>
 std::string fmt(const char* s, Args&&... args) {
     std::ostringstream os;
@@ -141,19 +143,37 @@ std::string fmt(const char* s, Args&&... args) {
     return os.str();
 }
 
+/// Wraps thorin::print to throw `T` with a formatted message.
 template<class T = std::logic_error, class... Args>
-[[noreturn]] void err(const char* fmt, Args&&... args) {
+[[noreturn]] void error(const char* fmt, Args&&... args) {
     std::ostringstream oss;
     print(oss << "error: ", fmt, std::forward<Args&&>(args)...);
     throw T(oss.str());
 }
 
+/// @name out/err
+/// thorin::print%s to `std::cout`/`std::cerr`; the *`ln` variants emit an additional `std::endl`.
 // clang-format off
 template<class... Args> std::ostream& outf (const char* fmt, Args&&... args) { return print(std::cout, fmt, std::forward<Args&&>(args)...); }
 template<class... Args> std::ostream& errf (const char* fmt, Args&&... args) { return print(std::cerr, fmt, std::forward<Args&&>(args)...); }
 template<class... Args> std::ostream& outln(const char* fmt, Args&&... args) { return outf(fmt, std::forward<Args&&>(args)...) << std::endl; }
 template<class... Args> std::ostream& errln(const char* fmt, Args&&... args) { return errf(fmt, std::forward<Args&&>(args)...) << std::endl; }
 // clang-format on
+
+#ifdef NDEBUG
+#    define assertf(condition, ...) \
+        do { (void)sizeof(condition); } while (false)
+#else
+#    define assertf(condition, ...)                                     \
+        do {                                                            \
+            if (!(condition)) {                                         \
+                thorin::errf("{}:{}: assertion: ", __FILE__, __LINE__); \
+                thorin::errln(__VA_ARGS__);                             \
+                thorin::breakpoint();                                   \
+            }                                                           \
+        } while (false)
+#endif
+///@}
 
 /// Keeps track of indentation level.
 class Tab {
@@ -209,19 +229,5 @@ private:
     std::string_view tab_;
     size_t indent_ = 0;
 };
-
-#ifdef NDEBUG
-#    define assertf(condition, ...) \
-        do { (void)sizeof(condition); } while (false)
-#else
-#    define assertf(condition, ...)                                     \
-        do {                                                            \
-            if (!(condition)) {                                         \
-                thorin::errf("{}:{}: assertion: ", __FILE__, __LINE__); \
-                thorin::errln(__VA_ARGS__);                             \
-                thorin::breakpoint();                                   \
-            }                                                           \
-        } while (false)
-#endif
 
 } // namespace thorin

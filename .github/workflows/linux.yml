@@ -69,7 +69,7 @@ jobs:
         run: CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DTHORIN_BUILD_TESTING=ON -DTHORIN_LIT_WITH_VALGRIND=ON
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target thorin-gtest thorin thorin_all_plugins
+        run: cmake --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target thorin-gtest thorin thorin_all_plugins hello
 
       - name: Run lit test suite
         working-directory: ${{github.workspace}}/build

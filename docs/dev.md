@@ -35,8 +35,8 @@ Converted to [continuation-passing style (CPS)](https://en.wikipedia.org/wiki/Co
 .Cn [%mem.M, I32, %mem.Ptr (I32, 0), .Cn [%mem.M, I32]]
 ```
 The `%%mem.M` type is a type that keeps track of side effects that may occur.
-Since, `main` introduces [variables](@ref thorin::Var) we must create a *[mutable](@ref mut)* [Lam](@ref thorin::Lam)bda.
-The, only thing `main` is doing, is to invoke its `ret`urn continuation with `mem` and `argc` as argument:
+Since, `main` introduces [variables](@ref thorin::Var) we must create a **[mutable](@ref mut)** [Lam](@ref thorin::Lam)bda.
+The only thing `main` is doing, is to invoke its `ret`urn continuation with `mem` and `argc` as argument:
 ```
 ret (mem, argc)
 ```
@@ -44,7 +44,7 @@ It is also important to make `main` [external](@ref thorin::Def::make_external).
 Otherwise, Thorin will simply remove this function.
 
 We optimize the program, emit an [LLVM assembly file](https://llvm.org/docs/LangRef.html), and compile it via `clang`.
-Finally, we execute the generated program with `./hello a b c` and `assert` that the output is in fact `4`.
+Finally, we execute the generated program with `./hello a b c` and [output](@ref fmt) its exit code - which should be `4`.
 
 ## Immutables vs. Mutables {#mut}
 
@@ -182,7 +182,7 @@ You can match [Axiom](@ref thorin::Axiom)s via
 * thorin::force which is more like a `static_cast` and `assert`s via its `match` sibling in the `Debug` build that the cast is correct.
 
 By default, Thorin assumes that the magic of an [Axiom](@ref thorin::Axiom) happens when applying the final argument to a curried [Axiom](@ref thorin::Axiom).
-If you want to design an [Axiom](@ref thorin::Axiom) that really returns a function, you can [fine-adjust the trigger point](@ref thorin::Axiom::normalizer) of a thorin::match / thorin::force.
+If you want to design an [Axiom](@ref thorin::Axiom) that really returns a function, you can [fine-adjust the trigger point](@ref normalization) of a thorin::match / thorin::force.
 
 #### Without Subtags
 

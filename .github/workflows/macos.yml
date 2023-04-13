@@ -70,7 +70,7 @@ jobs:
           echo "CXX=$LLVM_PATH/bin/clang++" >> $GITHUB_ENV
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target thorin-gtest thorin thorin_all_plugins
+        run: cmake --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target thorin-gtest thorin thorin_all_plugins hello
 
       - name: Run lit test suite
         working-directory: ${{github.workspace}}/build

@@ -35,7 +35,7 @@ int main(int, char**) {
         ofs.close(); // make sure everything is written before clang is invoked
 
         sys::system("clang hello.ll -o hello -Wno-override-module");
-        assert(4 == WEXITSTATUS(sys::system("./hello a b c")));
+        outln("exit code: {}", sys::system("./hello a b c"));
     } catch (const std::exception& e) {
         errln("{}", e.what());
         return EXIT_FAILURE;

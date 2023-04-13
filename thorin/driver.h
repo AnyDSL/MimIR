@@ -18,14 +18,14 @@ class Driver : public SymPool {
 public:
     Driver();
 
-    /// @name getters
+    /// @name Getters
     ///@{
     Flags& flags() { return flags_; }
     Log& log() { return log_; }
     World& world() { return world_; }
     ///@}
 
-    /// @name manage search paths
+    /// @name Manage Search Paths
     ///@{
     /// Search paths for plugins are in the following order:
     /// 1. The empty path. Used as prefix to look into current working directory without resorting to an absolute path.
@@ -39,7 +39,7 @@ public:
     }
     ///@}
 
-    /// @name manage imports
+    /// @name Manage Imports
     ///@{
     /// This is a list of pairs where each pair contains:
     /// 1. The `fs::path` used during import,
@@ -49,7 +49,7 @@ public:
     const fs::path* add_import(fs::path, Sym);
     ///@}
 
-    /// @name load plugin
+    /// @name Load Plugin
     ///@{
     /// Finds and loads a shared object file that implements the Thorin Plugin @p name.
     /// If \a name is an absolute path to a `.so`/`.dll` file, this is used.
@@ -60,7 +60,7 @@ public:
     bool is_loaded(Sym sym) const { return lookup(plugins_, sym); }
     ///@}
 
-    /// @name manage plugins
+    /// @name Manage Plugins
     ///@{
     /// All these lookups yield `nullptr` if the key has not been found.
     auto pass(flags_t flags) { return lookup(passes_, flags); }
@@ -69,7 +69,7 @@ public:
     auto backend(std::string_view name) { return lookup(backends_, name); }
     ///@}
 
-    /// @name manage Axiom::Info
+    /// @name Manage Axiom::Info
     ///@{
     const auto& plugin2axiom_infos(Sym plugin) { return plugin2axiom_infos_[plugin]; }
     std::pair<Axiom::Info&, bool> axiom2info(Sym sym, Sym plugin, Sym tag, Loc loc);

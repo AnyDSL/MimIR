@@ -20,7 +20,7 @@ public:
         , dirty_(dirty) {}
     virtual ~Phase() = default;
 
-    /// @name getters
+    /// @name Getters
     ///@{
     World& world() { return world_; }
     std::string_view name() const { return name_; }
