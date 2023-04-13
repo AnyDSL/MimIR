@@ -206,19 +206,21 @@ $(document).ready(function(){initNavTree('bootstrap_8cpp_source.html',''); initR
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    tab.<a class="code hl_function" href="classthorin_1_1Tab.html#a191ef17ecb136f7334a6dd1165e92a4c">print</a>(h, <span class="stringliteral">&quot;}} // namespace {}\n\n&quot;</span>, plugin);</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; line : outer_namespace) tab.<a class="code hl_function" href="classthorin_1_1Tab.html#a191ef17ecb136f7334a6dd1165e92a4c">print</a>(h, <span class="stringliteral">&quot;{}&quot;</span>, line.str());</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    tab.<a class="code hl_function" href="classthorin_1_1Tab.html#a191ef17ecb136f7334a6dd1165e92a4c">print</a>(h, <span class="stringliteral">&quot;\n&quot;</span>);</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="comment">// emit helpers for non-function axiom</span></div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [tag, ax] : infos) {</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        <span class="keywordflow">if</span> (ax.pi || ax.plugin != plugin) <span class="keywordflow">continue</span>; <span class="comment">// from function or other plugin?</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        tab.<a class="code hl_function" href="classthorin_1_1Tab.html#a191ef17ecb136f7334a6dd1165e92a4c">print</a>(h, <span class="stringliteral">&quot;template&lt;&gt; struct Axiom::Match&lt;{}::{}&gt; {{ using type = Axiom; }};\n&quot;</span>, ax.plugin, ax.tag);</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    }</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    tab.<a class="code hl_function" href="classthorin_1_1Tab.html#a191ef17ecb136f7334a6dd1165e92a4c">print</a>(h, <span class="stringliteral">&quot;}} // namespace thorin\n&quot;</span>);</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>}</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>} <span class="comment">// namespace thorin</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    tab.<a class="code hl_function" href="classthorin_1_1Tab.html#a191ef17ecb136f7334a6dd1165e92a4c">print</a>(h, <span class="stringliteral">&quot;#ifndef DOXYGEN // don&#39;t include in Doxygen documentation\n&quot;</span>);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; line : outer_namespace) tab.<a class="code hl_function" href="classthorin_1_1Tab.html#a191ef17ecb136f7334a6dd1165e92a4c">print</a>(h, <span class="stringliteral">&quot;{}&quot;</span>, line.str());</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    tab.<a class="code hl_function" href="classthorin_1_1Tab.html#a191ef17ecb136f7334a6dd1165e92a4c">print</a>(h, <span class="stringliteral">&quot;\n&quot;</span>);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="comment">// emit helpers for non-function axiom</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [tag, ax] : infos) {</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        <span class="keywordflow">if</span> (ax.pi || ax.plugin != plugin) <span class="keywordflow">continue</span>; <span class="comment">// from function or other plugin?</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        tab.<a class="code hl_function" href="classthorin_1_1Tab.html#a191ef17ecb136f7334a6dd1165e92a4c">print</a>(h, <span class="stringliteral">&quot;template&lt;&gt; struct Axiom::Match&lt;{}::{}&gt; {{ using type = Axiom; }};\n&quot;</span>, ax.plugin, ax.tag);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    }</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    tab.<a class="code hl_function" href="classthorin_1_1Tab.html#a191ef17ecb136f7334a6dd1165e92a4c">print</a>(h, <span class="stringliteral">&quot;#endif\n&quot;</span>);</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    tab.<a class="code hl_function" href="classthorin_1_1Tab.html#a191ef17ecb136f7334a6dd1165e92a4c">print</a>(h, <span class="stringliteral">&quot;}} // namespace thorin\n&quot;</span>);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>}</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>} <span class="comment">// namespace thorin</span></div>
 <div class="ttc" id="aaxiom_8h_html"><div class="ttname"><a href="axiom_8h.html">axiom.h</a></div></div>
 <div class="ttc" id="abootstrap_8h_html"><div class="ttname"><a href="bootstrap_8h.html">bootstrap.h</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Axiom_html_a16d8c7c277234bf06ccc59c1b8b25fa5"><div class="ttname"><a href="classthorin_1_1Axiom.html#a16d8c7c277234bf06ccc59c1b8b25fa5">thorin::Axiom::mangle</a></div><div class="ttdeci">static std::optional&lt; plugin_t &gt; mangle(Sym s)</div><div class="ttdoc">Mangles s into a dense 48-bit representation.</div><div class="ttdef"><b>Definition:</b> <a href="axiom_8cpp_source.html#l00046">axiom.cpp:46</a></div></div>

@@ -1,11 +1,5 @@
 var refly_2autogen_8h =
 [
-    [ "thorin::Axiom::Match< refly::Code >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01refly_1_1Code_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#ad1470de2ff689e04a5173754a332dd3c", null ]
-    ] ],
-    [ "thorin::Axiom::Match< refly::remove_dbg_perm_pass >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01refly_1_1remove__dbg__perm__pass_01_4", [
-      [ "type", "classthorin_1_1Axiom.html#a861184151afcba49825206bd193901f1", null ]
-    ] ],
     [ "THORIN_refly_NORMALIZER_IMPL", "refly_2autogen_8h.html#abd362ca8bc57725552b7356e62d844f8", null ],
     [ "Code", "refly_2autogen_8h.html#a3f05eabc5ee2f65901758d5f61d7beaa", null ],
     [ "dbg", "refly_2autogen_8h.html#ac062d21f6636a7927391d6c70c40ce70", [
