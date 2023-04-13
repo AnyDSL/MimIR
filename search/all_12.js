@@ -26,7 +26,7 @@ var searchData=
   ['refly_23',['refly',['../namespacethorin_1_1refly.html',1,'thorin']]],
   ['sys_24',['sys',['../namespacethorin_1_1sys.html',1,'thorin']]],
   ['t_25',['T',['../classthorin_1_1unique__stack.html#a87015b5531d6fb3a120dcee49766ef42',1,'thorin::unique_stack::T()'],['../classthorin_1_1unique__queue.html#a8a1b5bd4fe99341c3523d34095152523',1,'thorin::unique_queue::T()']]],
-  ['t_26',['t',['../namespacethorin_1_1math.html#a89cb7767a778d4204e26860588096530a015078298390da60594549c03f211240',1,'thorin::math::t()'],['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a2cd637f8af229640a38fe0daff901035',1,'thorin::core::t()']]],
+  ['t_26',['t',['../namespacethorin_1_1math.html#a89cb7767a778d4204e26860588096530a015078298390da60594549c03f211240',1,'thorin::math::t()'],['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea2cd637f8af229640a38fe0daff901035',1,'thorin::core::t()']]],
   ['t_5fapos_27',['T_apos',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79aa0ba84168cd06de10a453c2e72a2a403',1,'thorin::fe::Tok']]],
   ['t_5farrow_28',['T_arrow',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a2ab208dbb70e7df673fbabe32bb142eb',1,'thorin::fe::Tok']]],
   ['t_5fassign_29',['T_assign',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a5cde09f8e1c778aeb1790bb89e72982b',1,'thorin::fe::Tok']]],
