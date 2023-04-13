@@ -43,7 +43,7 @@ Tok Lexer::lex() {
 #else
         if (accept_if(isspace)) continue;
 #endif
-        if (accept(utf8::Err)) err(loc_, "invalid UTF-8 character");
+        if (accept(utf8::Err)) error(loc_, "invalid UTF-8 character");
         if (accept(utf8::EoF)) return tok(Tok::Tag::M_eof);
 
         // clang-format off
@@ -94,14 +94,14 @@ Tok Lexer::lex() {
             if (accept('~')) {
                 if (accept('|')) return tok(Tok::Tag::T_Pi);
             }
-            err(loc_, "invalid input char '{}'; maybe you wanted to use '|~|'?", str_);
+            error(loc_, "invalid input char '{}'; maybe you wanted to use '|~|'?", str_);
             continue;
         }
         // clang-format on
 
         if (accept('%')) {
             if (lex_id()) return {loc(), Tok::Tag::M_ax, world().sym(str_)};
-            err(loc_, "invalid axiom name '{}'", str_);
+            error(loc_, "invalid axiom name '{}'", str_);
         }
 
         if (accept('.')) {
@@ -148,11 +148,11 @@ Tok Lexer::lex() {
                 continue;
             }
 
-            err({loc_.path, ahead().pos}, "invalid input char '/'; maybe you wanted to start a comment?");
+            error({loc_.path, ahead().pos}, "invalid input char '/'; maybe you wanted to start a comment?");
             continue;
         }
 
-        err({loc_.path, ahead().pos}, "invalid input char '{}'", (char)ahead());
+        error({loc_.path, ahead().pos}, "invalid input char '{}'", (char)ahead());
         next();
     }
 }
@@ -207,7 +207,7 @@ std::optional<Tok> Lexer::parse_lit() {
                 auto m = strtoull(str_.c_str(), nullptr, 10);
                 return Tok{loc_, world().lit_idx_mod(m, i)};
             } else {
-                err(loc_, "stray underscore in unsigned literal");
+                error(loc_, "stray underscore in unsigned literal");
                 auto i = strtoull(str_.c_str(), nullptr, 10);
                 return Tok{loc_, u64(i)};
             }
@@ -226,7 +226,7 @@ std::optional<Tok> Lexer::parse_lit() {
     }
 
     if (sign && str_.empty()) {
-        err(loc_, "stray '{}'", *sign ? "-" : "+");
+        error(loc_, "stray '{}'", *sign ? "-" : "+");
         return {};
     }
 
@@ -252,13 +252,13 @@ bool Lexer::parse_exp(int base /*= 10*/) {
     if (accept_if(base == 10 ? [](int i) { return i == 'e' || i == 'E'; }
                              : [](int i) { return i == 'p' || i == 'P'; })) {
         accept_if(issign);
-        if (!isdigit(ahead())) err(loc_, "exponent has no digits");
+        if (!isdigit(ahead())) error(loc_, "exponent has no digits");
         parse_digits();
         return true;
     }
 
     if (base == 16) {
-        err(loc_, "hexadecimal floating constants require an exponent");
+        error(loc_, "hexadecimal floating constants require an exponent");
         return {};
     }
     return false;
@@ -269,7 +269,7 @@ void Lexer::eat_comments() {
     while (true) {
         while (ahead() != utf8::EoF && ahead() != '*') next();
         if (accept(utf8::EoF)) {
-            err(loc_, "non-terminated multiline comment");
+            error(loc_, "non-terminated multiline comment");
             return;
         }
         next();
@@ -290,11 +290,10 @@ void Lexer::emit_md(bool start_of_file) {
         accept('\n');
     } while (start_md());
 
-    if (ahead() == utf8::EoF) {
+    if (ahead() == utf8::EoF)
         out_ = false;
-    } else {
+    else
         md_fence();
-    }
 }
 
 } // namespace thorin::fe

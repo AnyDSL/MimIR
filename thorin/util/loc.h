@@ -50,19 +50,23 @@ struct Loc {
     void dump();
 
     const fs::path* path = nullptr;
-    Pos begin = {};
-    Pos finis = {};
+    Pos begin            = {};
+    Pos finis            = {};
     ///< It's called `finis` because it refers to the **last** character within this Loc%ation.
     /// In the STL the word `end` refers to the position of something that is one element **past** the end.
 };
 
+/// @name Formatted Output
+///@{
+/// Prefixes error message with `<location>: error: `.
 template<class T = std::logic_error, class... Args>
-[[noreturn]] void err(Loc loc, const char* fmt, Args&&... args) {
+[[noreturn]] void error(Loc loc, const char* fmt, Args&&... args) {
     std::ostringstream o;
     print(o, "{}: error: ", loc);
     print(o, fmt, std::forward<Args&&>(args)...);
     throw T(o.str());
 }
+///@}
 
 std::ostream& operator<<(std::ostream&, const Pos);
 std::ostream& operator<<(std::ostream&, const Loc);

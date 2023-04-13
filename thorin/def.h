@@ -201,7 +201,7 @@ protected:
     virtual ~Def() = default;
 
 public:
-    /// @name getters
+    /// @name Getters
     ///@{
     World& world() const;
     flags_t flags() const { return flags_; }
@@ -294,7 +294,7 @@ public:
     size_t num_uses() const { return uses().size(); }
     ///@}
 
-    /// @name dependence checks
+    /// @name dep
     ///@{
     /// @see Dep.
     unsigned dep() const { return dep_; }
@@ -358,7 +358,7 @@ public:
     }
     ///@}
 
-    /// @name externals
+    /// @name External
     ///@{
     bool is_external() const { return external_; }
     bool is_internal() const { return !is_external(); } ///< **Not** Def::is_external.
@@ -375,7 +375,7 @@ public:
     Sym sym() const { return dbg_.sym; }
     ///@}
 
-    /// @name debug prepend/append
+    /// @name debug prefix/suffix
     ///@{
     /// Prepends/Appends a prefix/suffix to Def::name - but only in **DEBUG** build.
 #ifndef NDEBUG
@@ -387,7 +387,7 @@ public:
 #endif
     ///@}
 
-    /// @name casts
+    /// @name Casts
     ///@{
     /// @see @ref cast_builtin
     // clang-format off
@@ -433,14 +433,14 @@ public:
     const Def* reduce_rec() const;
     ///@}
 
-    /// @name rebuild/stub/restr
+    /// @name stub/rebuild
     ///@{
     Def* stub(World& w, Ref type) { return stub_(w, type)->set(dbg()); }
     /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
     Ref rebuild(World& w, Ref type, Defs ops) const { return rebuild_(w, type, ops)->set(dbg()); }
     ///@}
 
-    /// @name virtual methods
+    /// @name Virtual Methods
     ///@{
     virtual void check() {}
     virtual size_t first_dependend_op() { return 0; }
@@ -474,7 +474,7 @@ protected:
         mutable World* world_;
     };
 
-    /// @name wrappers for World::sym
+    /// @name Wrappers for World::sym
     ///@{
     /// These are here to have Def::set%ters inline without including `thorin/world.h`.
     Sym get_sym(const char*) const;
@@ -514,10 +514,14 @@ const T* as([[maybe_unused]] flags_t f, const Def* def) {
     return def;
 }
 
+/// @name Formatted Output
+///@{
+/// Uses @p def->loc() as Loc%ation.
 template<class T = std::logic_error, class... Args>
-[[noreturn]] void err(const Def* def, const char* fmt, Args&&... args) {
-    err(def->loc(), fmt, std::forward<Args&&>(args)...);
+[[noreturn]] void error(const Def* def, const char* fmt, Args&&... args) {
+    error(def->loc(), fmt, std::forward<Args&&>(args)...);
 }
+///@}
 
 //------------------------------------------------------------------------------
 
@@ -629,7 +633,7 @@ public:
     THORIN_DEF_MIXIN(Lit)
 };
 
-/// @name cast for Lit
+/// @name Cast for Lit
 ///@{
 /// @see @ref cast_lit
 template<class T>
@@ -662,7 +666,7 @@ public:
     /// Checks if @p def isa `.Idx s` and returns s or `nullptr` otherwise.
     static Ref size(Ref def);
 
-    /// @name convert between Idx::size and bitwidth and vice versa
+    /// @name Convert between Idx::size and bitwidth and vice versa
     ///@{
     // clang-format off
     static constexpr nat_t bitwidth2size(nat_t n) { assert(n != 0); return n == 64 ? 0 : (1_n << n); }
@@ -680,7 +684,7 @@ private:
         : Def(Node, type, ops, (u64(pass) << 32_u64) | u64(tag)) {}
 
 public:
-    /// @name misc getters
+    /// @name Getters
     ///@{
     u32 pass() const { return u32(flags() >> 32_u64); } ///< IPass::index within PassMan.
     u32 tag() const { return u32(flags()); }
@@ -711,7 +715,7 @@ public:
     const Def* alloced_type() const;
     ///@}
 
-    /// @name misc getters
+    /// @name Getters
     ///@{
     bool is_mutable() const { return flags(); }
     ///@}

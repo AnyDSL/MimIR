@@ -71,7 +71,7 @@ void Driver::load(Sym name) {
         }
     }
 
-    if (!handle) err("cannot open plugin '{}'", name);
+    if (!handle) error("cannot open plugin '{}'", name);
 
     if (auto get_info = reinterpret_cast<decltype(&thorin_get_plugin)>(dl::get(handle.get(), "thorin_get_plugin"))) {
         assert_emplace(plugins_, name, std::move(handle));
@@ -80,14 +80,14 @@ void Driver::load(Sym name) {
         if (auto reg = info.register_normalizers) reg(normalizers_);
         if (auto reg = info.register_backends) reg(backends_);
     } else {
-        err("plugin has no 'thorin_get_plugin()'");
+        error("plugin has no 'thorin_get_plugin()'");
     }
 }
 
 std::pair<Axiom::Info&, bool> Driver::axiom2info(Sym sym, Sym plugin, Sym tag, Loc loc) {
     auto& infos = plugin2axiom_infos_[plugin];
     if (infos.size() > std::numeric_limits<tag_t>::max())
-        err(loc, "exceeded maxinum number of axioms in current plugin");
+        error(loc, "exceeded maxinum number of axioms in current plugin");
 
     auto [it, is_new] = infos.emplace(sym, Axiom::Info{plugin, tag, infos.size()});
     return {it->second, is_new};

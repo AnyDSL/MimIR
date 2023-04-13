@@ -417,7 +417,7 @@ static const char* math_suffix(const Def* type) {
             case 64: return "";
         }
     }
-    err("unsupported foating point type '{}'", type);
+    error("unsupported foating point type '{}'", type);
 }
 static const char* llvm_suffix(const Def* type) {
     if (auto w = math::isa_f(type)) {
@@ -427,7 +427,7 @@ static const char* llvm_suffix(const Def* type) {
             case 64: return ".f64";
         }
     }
-    err("unsupported foating point type '{}'", type);
+    error("unsupported foating point type '{}'", type);
 }
 
 std::string Emitter::emit_bb(BB& bb, const Def* def) {
@@ -849,7 +849,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 case math::tri::sin: f += "sin"; break;
                 case math::tri::cos: f += "cos"; break;
                 case math::tri::tan: f += "tan"; break;
-                case math::tri::ahFF: err("this axiom is supposed to be unused");
+                case math::tri::ahFF: error("this axiom is supposed to be unused");
                 default: unreachable();
             }
 
@@ -963,7 +963,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         return bb.assign(name, "{} {} {} to {}", op, t_src, v_src, t_dst);
     }
-    err("unhandled def in LLVM backend: {} : {}", def, def->type());
+    error("unhandled def in LLVM backend: {} : {}", def, def->type());
 }
 
 void emit(World& world, std::ostream& ostream) {
@@ -990,7 +990,7 @@ int compile(World& world, std::string ll, std::string out) {
 
 int compile_and_run(World& world, std::string name, std::string args) {
     if (compile(world, name) == 0) return sys::run(name, args);
-    throw std::runtime_error("compilation failed");
+    error("compilation failed");
 }
 
 } // namespace thorin::ll

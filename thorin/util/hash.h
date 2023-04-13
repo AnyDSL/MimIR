@@ -6,7 +6,7 @@ namespace thorin {
 
 using hash_t = uint32_t;
 
-/// @name murmur3 hash
+/// @name Murmur3 Hash
 ///@{
 /// See [Wikipedia](https://en.wikipedia.org/wiki/MurmurHash).
 inline hash_t murmur_32_scramble(hash_t k) {
@@ -66,7 +66,7 @@ inline hash_t murmur3(hash_t h) {
 }
 ///@}
 
-/// @name FNV-1 hash
+/// @name FNV-1 Hash
 ///@{
 /// See [Wikipedia](https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function#FNV-1_hash).
 
@@ -108,7 +108,7 @@ hash_t hash_begin(T val) {
 inline hash_t hash_begin() { return FNV1::offset; }
 ///@}
 
-/// @name string hashing
+/// @name String Hashing
 ///@{
 hash_t hash(const char*);
 hash_t hash(std::string_view);

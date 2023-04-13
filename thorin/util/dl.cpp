@@ -27,17 +27,17 @@ void* open(const std::string& file) {
     if (HMODULE handle = LoadLibraryA(file.c_str())) {
         return static_cast<void*>(handle);
     } else {
-        err("could not load plugin '{}' due to error '{}'\n"
-            "see https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes\n",
-            file, GetLastError());
+        error("could not load plugin '{}' due to error '{}'\n"
+              "see https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes\n",
+              file, GetLastError());
     }
 #else
     if (void* handle = dlopen(file.c_str(), RTLD_NOW))
         return handle;
-    else if (char* error = dlerror())
-        err("could not load plugin '{}' due to error '{}'\n", file, error);
+    else if (auto err = dlerror())
+        error("could not load plugin '{}' due to error '{}'\n", file, err);
     else
-        err("could not load plugin '{}'\n", file);
+        error("could not load plugin '{}'\n", file);
 #endif
 }
 
@@ -46,15 +46,15 @@ void* get(void* handle, const std::string& symbol) {
     if (auto addr = GetProcAddress(static_cast<HMODULE>(handle), symbol.c_str())) {
         return reinterpret_cast<void*>(addr);
     } else {
-        err("could not find symbol '{}' in plugin due to error '{}'\n"
-            "see (https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes)\n",
-            symbol, GetLastError());
+        error("could not find symbol '{}' in plugin due to error '{}'\n"
+              "see (https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes)\n",
+              symbol, GetLastError());
     }
 #else
     dlerror(); // clear error state
     void* addr = dlsym(handle, symbol.c_str());
-    if (char* error = dlerror())
-        err("could not find symbol '{}' in plugin due to error '{}' \n", symbol, error);
+    if (auto err = dlerror())
+        error("could not find symbol '{}' in plugin due to error '{}' \n", symbol, err);
     else
         return addr;
 #endif
@@ -62,9 +62,9 @@ void* get(void* handle, const std::string& symbol) {
 
 void close(void* handle) {
 #ifdef _WIN32
-    if (!FreeLibrary(static_cast<HMODULE>(handle))) err("FreeLibrary() failed\n");
+    if (!FreeLibrary(static_cast<HMODULE>(handle))) error("FreeLibrary() failed\n");
 #else
-    if (int error = dlclose(handle)) err("error: dlclose() failed with error code '{}'\n", error);
+    if (auto err = dlclose(handle)) error("dlclose() failed with error code '{}'\n", err);
 #endif
 }
 

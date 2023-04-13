@@ -33,7 +33,7 @@ class Driver;
 /// Note that types are also just Def%s and will be hashed as well.
 class World {
 public:
-    /// @name state
+    /// @name State
     ///@{
     struct State {
         State() = default;
@@ -62,7 +62,7 @@ public:
         }
     };
 
-    /// @name c'tor and d'tor
+    /// @name C'tor and D'tor
     ///@{
     World& operator=(const World&) = delete;
 
@@ -77,7 +77,7 @@ public:
     ~World();
     ///@}
 
-    /// @name misc getters/setters
+    /// @name Getters/Setters
     ///@{
     const State& state() const { return state_; }
 
@@ -112,7 +112,7 @@ public:
     Sym append_suffix(Sym name, std::string suffix);
     ///@}
 
-    /// @name freeze
+    /// @name Freeze
     ///@{
     /// In frozen state the World does not create any nodes.
     bool is_frozen() const { return state_.pod.frozen; }
@@ -137,7 +137,7 @@ public:
     ///@}
 
 #if THORIN_ENABLE_CHECKS
-    /// @name debugging features
+    /// @name Debugging Features
     ///@{
     Ref gid2def(u32 gid);
     const auto& breakpoints() { return state_.breakpoints; }
@@ -146,7 +146,7 @@ public:
     ///@}
 #endif
 
-    /// @name manage nodes
+    /// @name Manage Nodes
     ///@{
     const auto& axioms() const { return move_.axioms; }
     const auto& externals() const { return move_.externals; }
@@ -223,7 +223,7 @@ public:
     const Axiom* ax(Id id) {
         u64 flags = static_cast<u64>(id);
         if (auto i = move_.axioms.find(flags); i != move_.axioms.end()) return i->second;
-        err("Axiom with ID '{}' not found; demangled plugin name is '{}'", flags, Axiom::demangle(*this, flags));
+        error("Axiom with ID '{}' not found; demangled plugin name is '{}'", flags, Axiom::demangle(*this, flags));
     }
 
     /// Get Axiom from a plugin.
@@ -373,7 +373,7 @@ public:
     // clang-format off
     ///@}
 
-    /// @name lattice
+    /// @name Lattice
     ///@{
     template<bool Up>
     Ref ext(Ref type);
@@ -400,13 +400,14 @@ public:
     Ref singleton(Ref inner_type);
     ///@}
 
-    /// @name globals -- depdrecated; will be removed
+    /// @name Globals
+    /// @deprecated { will be removed }
     ///@{
     Global* global(Ref type, bool is_mutable = true) { return insert<Global>(1, type, is_mutable); }
     ///@}
     // clang-format on
 
-    /// @name types
+    /// @name Types
     ///@{
     const Nat* type_nat() { return data_.type_nat; }
     const Idx* type_idx() { return data_.type_idx; }
@@ -421,7 +422,7 @@ public:
     Ref type_bool() { return data_.type_bool; }
     ///@}
 
-    /// @name cope with implicit arguments
+    /// @name Cope with implicit Arguments
     ///@{
 
     /// Places Infer arguments as demanded by Pi::implicit and then apps @p arg.
@@ -437,12 +438,12 @@ public:
     // clang-format on
     ///@}
 
-    /// @name helpers
+    /// @name Helpers
     ///@{
     Ref iinfer(Ref def) { return Idx::size(def->type()); }
     ///@}
 
-    /// @name dumping/logging
+    /// @name dump/log
     ///@{
     Log& log();
     void dummy() {}
@@ -455,7 +456,7 @@ public:
     ///@}
 
 private:
-    /// @name put into sea of nodes
+    /// @name Put into Sea of Nodes
     ///@{
     template<class T, class... Args>
     const T* unify(size_t num_ops, Args&&... args) {

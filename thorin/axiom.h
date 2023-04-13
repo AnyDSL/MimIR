@@ -25,7 +25,8 @@ public:
         bool pi = false;
     };
 
-    /// @name normalization
+    /// @name Normalization
+    /// @anchor normalization
     ///@{
     /// For a curried App of an Axiom, you only want to trigger normalization at specific spots.
     /// For this reason, Thorin maintains a Def::curry_ counter that each App decrements.
@@ -56,7 +57,7 @@ public:
     static constexpr u8 Trip_End = u8(-1);
     ///@}
 
-    /// @name Axiom name
+    /// @name Axiom Name
     ///@{
     /// Anatomy of an Axiom name:
     /// ```
@@ -80,7 +81,7 @@ public:
     flags_t base() const { return flags() & ~0xff_u64; }
     ///@}
 
-    /// @name Mangling plugin Name
+    /// @name Mangling Plugin Name
     ///@{
     static constexpr size_t Max_Plugin_Size = 8;
     static constexpr plugin_t Global_Plugin = 0xffff'ffff'ffff'0000_u64;
@@ -150,7 +151,7 @@ public:
         : axiom_(axiom)
         , def_(def) {}
 
-    /// @name getters
+    /// @name Getters
     ///@{
     const Axiom* axiom() const { return axiom_; }
     const D* operator->() const { return def_; }
@@ -158,7 +159,7 @@ public:
     explicit operator bool() { return axiom_ != nullptr; }
     ///@}
 
-    /// @name Axiom name
+    /// @name Axiom Name
     ///@{
     auto plugin() const { return axiom()->plugin(); } ///< @sa Axiom::plugin.
     auto tag() const { return axiom()->tag(); }       ///< @sa Axiom::tag.

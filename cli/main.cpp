@@ -135,7 +135,7 @@ int main(int argc, char** argv) {
             case 0:                             break;
             case 1: Phase::run<Cleanup>(world); break;
             case 2: optimize(world);            break;
-            default: errln("error: illegal optimization level '{}'", opt);
+            default: error("illegal optimization level '{}'", opt);
         }
         // clang-format on
 
@@ -146,7 +146,7 @@ int main(int argc, char** argv) {
             if (auto backend = driver.backend("ll"))
                 backend(world, *os[LL]);
             else
-                err("'ll' emitter not loaded. Try loading 'mem' plugin.");
+                error("'ll' emitter not loaded; try loading 'mem' plugin");
         }
     } catch (const std::exception& e) {
         errln("{}", e.what());

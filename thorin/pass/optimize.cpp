@@ -63,7 +63,7 @@ void optimize(World& world) {
     if (auto pass = world.driver().pass(pipeline_flags))
         (*pass)(world, pipe_builder, pipeline);
     else
-        err("pipeline_axiom not found in passes");
+        error("pipeline_axiom not found in passes");
 
     world.DLOG("Executing pipeline");
     pipe_builder.run_pipeline();

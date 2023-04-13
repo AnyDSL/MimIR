@@ -58,7 +58,7 @@ Tok Parser::expect(Tok::Tag tag, std::string_view ctxt) {
 }
 
 void Parser::syntax_err(std::string_view what, const Tok& tok, std::string_view ctxt) {
-    err(tok.loc(), "expected {}, got '{}' while parsing {}", what, tok, ctxt);
+    error(tok.loc(), "expected {}, got '{}' while parsing {}", what, tok, ctxt);
 }
 
 /*
@@ -99,7 +99,7 @@ void Parser::import(fs::path name, std::ostream* md) {
 
 void Parser::import(std::istream& is, const fs::path* path, std::ostream* md) {
     world().VLOG("reading: {}", path ? path->string() : "<unknown file>"s);
-    if (!is) err("error: cannot read file '{}'", *path);
+    if (!is) error("cannot read file '{}'", *path);
 
     lexers_.emplace(world(), is, path, md);
     auto state = state_;
@@ -192,7 +192,7 @@ Ref Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
     if (ahead().isa(Tok::Tag::M_id)) {
         if (auto sigma = lhs->type()->isa_mut<Sigma>()) {
             auto tok = eat(Tok::Tag::M_id);
-            if (tok.sym() == '_') err(tok.loc(), "you cannot use special symbol '_' as field access");
+            if (tok.sym() == '_') error(tok.loc(), "you cannot use special symbol '_' as field access");
 
             if (auto i = def2fields_.find(sigma); i != def2fields_.end()) {
                 if (auto& fields = i->second; fields.size() == sigma->num_ops()) {
@@ -200,7 +200,7 @@ Ref Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
                         if (fields[i] == tok.sym()) return world().extract(lhs, n, i)->set(track.loc());
                 }
             }
-            err(tok.loc(), "could not find elemement '{}' to extract from '{}' of type '{}'", tok.sym(), lhs, sigma);
+            error(tok.loc(), "could not find elemement '{}' to extract from '{}' of type '{}'", tok.sym(), lhs, sigma);
         }
     }
 
@@ -274,7 +274,7 @@ Ref Parser::parse_var() {
     eat(Tok::Tag::T_at);
     auto dbg = parse_sym("variable");
     auto mut = scopes_.find(dbg)->isa_mut();
-    if (!mut) err(prev(), "variable must reference a mutable");
+    if (!mut) error(prev(), "variable must reference a mutable");
     return mut->var()->set(dbg);
 }
 
@@ -417,8 +417,8 @@ Ref Parser::parse_lit() {
 
     if (lit.tag() == Tok::Tag::T_bot) return world().bot(world().type())->set(track.loc());
     if (lit.tag() == Tok::Tag::T_top) return world().top(world().type())->set(track.loc());
-    if (lit.tag() == Tok::Tag::L_s) err(prev(), ".Nat literal specified as signed but must be unsigned");
-    if (lit.tag() == Tok::Tag::L_r) err(prev(), ".Nat literal specified as floating-point but must be unsigned");
+    if (lit.tag() == Tok::Tag::L_s) error(prev(), ".Nat literal specified as signed but must be unsigned");
+    if (lit.tag() == Tok::Tag::L_r) error(prev(), ".Nat literal specified as floating-point but must be unsigned");
 
     return world().lit_nat(lit.u())->set(track.loc());
 }
@@ -468,7 +468,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
             sym = eat(Tok::Tag::M_id).sym();
             eat(Tok::Tag::T_colon_colon);
             if (b && ahead().isa(Tok::Tag::D_paren_l))
-                err(ahead().loc(), "switching from []-style patterns to ()-style patterns is not allowed");
+                error(ahead().loc(), "switching from []-style patterns to ()-style patterns is not allowed");
             // b ->  s::(p, ..., p)
             // b ->  s::[b, ..., b]     b ->  s::[b, ..., b]
             // b -> 's::(p, ..., p)
@@ -497,7 +497,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
         }
     } else if (b) {
         // b ->  e    where e != id
-        if (apos) err(apos->loc(), "you can only prefix identifiers with apostrophe for rebinding");
+        if (apos) error(apos->loc(), "you can only prefix identifiers with apostrophe for rebinding");
         auto type = parse_expr(ctxt, prec);
         return std::make_unique<IdPtrn>(track.dbg(sym), rebind, type);
     } else if (!ctxt.empty()) {
@@ -590,12 +590,12 @@ void Parser::parse_ax() {
     auto [plugin, tag, sub] = Axiom::split(world(), ax.sym());
     auto&& [info, is_new]   = driver().axiom2info(ax.sym(), plugin, tag, ax.loc());
 
-    if (!plugin) err(ax.loc(), "invalid axiom name '{}'", ax);
-    if (sub) err(ax.loc(), "definition of axiom '{}' must not have sub in tag name", ax);
+    if (!plugin) error(ax.loc(), "invalid axiom name '{}'", ax);
+    if (sub) error(ax.loc(), "definition of axiom '{}' must not have sub in tag name", ax);
 
     // if (plugin != bootstrapper_.plugin()) {
     //  TODO
-    //  err(ax.loc(), "axiom name `{}` implies a plugin name of `{}` but input file is named `{}`", ax,
+    //  error(ax.loc(), "axiom name `{}` implies a plugin name of `{}` but input file is named `{}`", ax,
     //  info.plugin, lexer_.file());
     //}
 
@@ -613,25 +613,25 @@ void Parser::parse_ax() {
     }
 
     if (!is_new && new_subs.empty() && !info.subs.empty())
-        err(ax.loc(), "redeclaration of axiom '{}' without specifying new subs", ax);
+        error(ax.loc(), "redeclaration of axiom '{}' without specifying new subs", ax);
     else if (!is_new && !new_subs.empty() && info.subs.empty())
-        err(ax.loc(), "cannot extend subs of axiom '{}' because it was declared as a subless axiom", ax);
+        error(ax.loc(), "cannot extend subs of axiom '{}' because it was declared as a subless axiom", ax);
 
     auto type = parse_type_ascr("type ascription of an axiom");
     if (!is_new && info.pi != (type->isa<Pi>() != nullptr))
-        err(ax.loc(), "all declarations of axiom '{}' have to be function types if any is", ax);
+        error(ax.loc(), "all declarations of axiom '{}' have to be function types if any is", ax);
     info.pi = type->isa<Pi>() != nullptr;
 
     auto normalizer_name = accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom").sym : Sym();
     if (!is_new && (info.normalizer && normalizer_name) && info.normalizer != normalizer_name)
-        err(ax.loc(), "all declarations of axiom '{}' must use the same normalizer name", ax);
+        error(ax.loc(), "all declarations of axiom '{}' must use the same normalizer name", ax);
     info.normalizer = normalizer_name;
 
     auto [curry, trip] = Axiom::infer_curry_and_trip(type);
 
     if (accept(Tok::Tag::T_comma)) {
         auto c = expect(Tok::Tag::L_u, "curry counter for axiom");
-        if (c.u() > curry) err(c.loc(), "curry counter cannot be greater than {}", curry);
+        if (c.u() > curry) error(c.loc(), "curry counter cannot be greater than {}", curry);
         curry = c.u();
     }
 
@@ -781,7 +781,7 @@ Lam* Parser::parse_lam(bool decl) {
 
     auto body = accept(Tok::Tag::T_assign) ? parse_decls("body of a lambda") : nullptr;
     if (!body) {
-        if (!decl) err(prev(), "body of a lambda expression is mandatory");
+        if (!decl) error(prev(), "body of a lambda expression is mandatory");
         // TODO error message if filter is non .ff
         funs.back().second->unset(0);
     }
@@ -814,14 +814,14 @@ void Parser::parse_def(Dbg dbg /*= {}*/) {
     if (ahead().isa(Tok::Tag::D_brace_l)) {
         scopes_.push();
         parse_list("mutable definition", Tok::Tag::D_brace_l, [&]() {
-            if (i == n) err(prev(), "too many operands");
+            if (i == n) error(prev(), "too many operands");
             mut->set(i++, parse_decls("operand of a mutable"));
         });
         scopes_.pop();
     } else if (n - i == 1) {
         mut->set(i, parse_decls("operand of a mutable"));
     } else {
-        err(prev(), "expected operands for mutable definition");
+        error(prev(), "expected operands for mutable definition");
     }
 
     expect(Tok::Tag::T_semicolon, "end of a mutable definition");

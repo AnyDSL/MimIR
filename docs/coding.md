@@ -20,8 +20,12 @@ Use the following coding conventions:
     2. `protected`
     3. `private`
 * prefer `// C++-style comments` over `/* C-style comments */`
-* use `/// three slashes for Doxygen` and [group](https://www.doxygen.nl/manual/grouping.html) your methods into logical units if possible
+
+### Doxygen Style
+
+* use `/// three slashes for Doxygen`
 * use [Markdown-style](https://doxygen.nl/manual/markdown.html) Doxygen comments
+* [group](https://www.doxygen.nl/manual/grouping.html) your methods into logical units if possible
 * methods/functions that return a `bool` should be prefixed with `is_`
 * methods/functions that return a `std::optional` or a pointer that may be `nullptr` should be prefixed with `isa_`
 

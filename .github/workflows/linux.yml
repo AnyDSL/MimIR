@@ -62,18 +62,18 @@ jobs:
 
       - name: Configure Debug
         if: matrix.build-type == 'Debug'
-        run: CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DTHORIN_BUILD_TESTING=ON
+        run: CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DTHORIN_BUILD_TESTING=ON -DTHORIN_BUILD_EXAMPLES=ON
       
       - name: Configure Release
         if: matrix.build-type == 'Release'
-        run: CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DTHORIN_BUILD_TESTING=ON -DTHORIN_LIT_WITH_VALGRIND=ON
+        run: CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DTHORIN_BUILD_TESTING=ON -DTHORIN_BUILD_EXAMPLES=ON -DTHORIN_LIT_WITH_VALGRIND=ON
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target thorin-gtest thorin thorin_all_plugins
+        run: cmake --build ${{github.workspace}}/build -v
 
       - name: Run lit test suite
         working-directory: ${{github.workspace}}/build
-        run: cmake --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target check
+        run: cmake --build ${{github.workspace}}/build -v --target check
 
       - name: Test with Valgrind
         working-directory: ${{github.workspace}}/build

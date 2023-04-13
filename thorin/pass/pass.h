@@ -20,7 +20,7 @@ public:
     Pass(PassMan&, std::string_view name);
     virtual ~Pass() = default;
 
-    /// @name getters
+    /// @name Tetters
     ///@{
     World& world();
     PassMan& man() { return man_; }
@@ -83,7 +83,7 @@ public:
     ///@}
 
 private:
-    /// @name memory management
+    /// @name Memory Management
     ///@{
     virtual void* alloc() { return nullptr; }           ///< Default constructor.
     virtual void* copy(const void*) { return nullptr; } ///< Copy constructor.
@@ -105,7 +105,7 @@ public:
     PassMan(World& world)
         : world_(world) {}
 
-    /// @name getters
+    /// @name Getters
     ///@{
     World& world() const { return world_; }
     const auto& passes() const { return passes_; }
@@ -113,7 +113,7 @@ public:
     Def* curr_mut() const { return curr_mut_; }
     ///@}
 
-    /// @name create and run passes
+    /// @name Create and run Passes
     ///@{
     void run(); ///< Run all registered passes on the whole World.
 
@@ -249,7 +249,7 @@ public:
     bool fixed_point() const override { return true; }
 
 protected:
-    /// @name state-related getters
+    /// @name State-related Getters
     ///@{
     const auto& states() const { return Super::man().states_; }
     auto& states() { return Super::man().states_; }
@@ -293,7 +293,7 @@ protected:
     ///@}
 
 private:
-    /// @name memory management for state
+    /// @name Memory Management for State
     ///@{
     void* alloc() override { return new typename P::Data(); }
     void* copy(const void* p) override { return new typename P::Data(*static_cast<const typename P::Data*>(p)); }
