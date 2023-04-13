@@ -20,7 +20,7 @@ public:
     Pass(PassMan&, std::string_view name);
     virtual ~Pass() = default;
 
-    /// @name Tetters
+    /// @name Setters
     ///@{
     World& world();
     PassMan& man() { return man_; }
@@ -31,7 +31,7 @@ public:
 
     /// @name Rewrite Hook for the PassMan
     ///@{
-    /// Rewrites an *imm*utable @p def within PassMan::curr_mut.
+    /// Rewrites an *immutable* @p def within PassMan::curr_mut.
     /// @returns the replacement.
     virtual Ref rewrite(Ref def) { return def; }
     virtual Ref rewrite(const Var* var) { return var; }

@@ -7,9 +7,9 @@ namespace thorin {
 class Sigma : public Def {
 private:
     Sigma(const Def* type, Defs ops)
-        : Def(Node, type, ops, 0) {} ///< Constructor for an *imm*utable Sigma.
+        : Def(Node, type, ops, 0) {} ///< Constructor for an *immutable* Sigma.
     Sigma(const Def* type, size_t size)
-        : Def(Node, type, size, 0) {} ///< Constructor for a *mut*able Sigma.
+        : Def(Node, type, size, 0) {} ///< Constructor for a *mutable* Sigma.
 
 public:
     /// @name setters
@@ -40,7 +40,7 @@ private:
 class Arr : public Def {
 private:
     Arr(const Def* type, const Def* shape, const Def* body)
-        : Def(Node, type, {shape, body}, 0) {} ///< Constructor for an *imm*utable Arr.
+        : Def(Node, type, {shape, body}, 0) {} ///< Constructor for an *immutable* Arr.
     Arr(const Def* type)
         : Def(Node, type, 2, 0) {} ///< Constructor for a *mut*able Arr.
 
@@ -69,7 +69,7 @@ public:
 class Pack : public Def {
 private:
     Pack(const Def* type, const Def* body)
-        : Def(Node, type, {body}, 0) {} ///< Constructor for an *imm*utable Pack.
+        : Def(Node, type, {body}, 0) {} ///< Constructor for an *immutable* Pack.
     Pack(const Def* type)
         : Def(Node, type, 1, 0) {} ///< Constructor for a *mut*ablel Pack.
 

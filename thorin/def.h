@@ -198,9 +198,9 @@ private:
     Def(const Def&)            = delete;
 
 protected:
-    Def(World*, node_t, const Def* type, Defs ops, flags_t flags); ///< Constructor for an *imm*utable Def.
+    Def(World*, node_t, const Def* type, Defs ops, flags_t flags); ///< Constructor for an *immutable* Def.
     Def(node_t n, const Def* type, Defs ops, flags_t flags);
-    Def(node_t, const Def* type, size_t num_ops, flags_t flags); ///< Constructor for a *mut*able Def.
+    Def(node_t, const Def* type, size_t num_ops, flags_t flags); ///< Constructor for a *mutable* Def.
     virtual ~Def() = default;
 
 public:

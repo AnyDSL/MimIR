@@ -11,9 +11,9 @@ class Sigma;
 class Bound : public Def {
 protected:
     Bound(node_t node, const Def* type, Defs ops)
-        : Def(node, type, ops, 0) {} ///< Constructor for an *imm*utable Bound.
+        : Def(node, type, ops, 0) {} ///< Constructor for an *immutable* Bound.
     Bound(node_t node, const Def* type, size_t size)
-        : Def(node, type, size, 0) {} ///< Constructor for a *mut*able Bound.
+        : Def(node, type, size, 0) {} ///< Constructor for a *mutable* Bound.
 
 public:
     size_t find(const Def* type) const;
@@ -29,9 +29,9 @@ template<bool Up>
 class TBound : public Bound {
 private:
     TBound(const Def* type, Defs ops)
-        : Bound(Node, type, ops) {} ///< Constructor for an *imm*utable Bound.
+        : Bound(Node, type, ops) {} ///< Constructor for an *immutable* Bound.
     TBound(const Def* type, size_t size)
-        : Bound(Node, type, size) {} ///< Constructor for a *mut*able Bound.
+        : Bound(Node, type, size) {} ///< Constructor for a *mutable* Bound.
 
     THORIN_SETTERS(TBound)
     TBound* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg())->template as<TBound>(); }
