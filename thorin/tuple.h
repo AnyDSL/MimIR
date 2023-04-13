@@ -129,8 +129,14 @@ public:
     THORIN_DEF_MIXIN(Insert)
 };
 
+/// @name Helpers to work with Tulpes/Sigmas/Arrays/Packs
+///@{
+bool is_unit(const Def*);
+std::string tuple2str(const Def*);
+
 /// Flattens a sigma/array/pack/tuple.
 const Def* flatten(const Def* def);
+/// Same as unflatten, but uses the operands of a flattened pack/tuple directly.
 size_t flatten(DefVec& ops, const Def* def, bool flatten_sigmas = true);
 
 /// Applies the reverse transformation on a pack/tuple, given the original type.
@@ -141,9 +147,6 @@ const Def* unflatten(Defs ops, const Def* type, bool flatten_muts = true);
 DefArray merge(const Def* def, Defs defs);
 const Def* merge_sigma(const Def* def, Defs defs);
 const Def* merge_tuple(const Def* def, Defs defs);
-
-bool is_unit(const Def*);
-
-std::string tuple2str(const Def*);
+///@}
 
 } // namespace thorin

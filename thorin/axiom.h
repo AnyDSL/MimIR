@@ -176,7 +176,7 @@ private:
 
 /// @name match/force
 ///@{
-/// @see @ref cast_lit
+/// @see @ref cast_axiom
 template<class Id, bool DynCast = true>
 auto match(Ref def) {
     using D                = typename Axiom::Match<Id>::type;

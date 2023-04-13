@@ -382,6 +382,8 @@ private:
     ArrayStorage<T, std::is_trivial<T>::value ? 5 : 0> storage_;
 };
 
+/// @name Array/ArrayRef helpers
+///@{
 template<class T, class U>
 auto concat(const T& a, const U& b) -> Array<typename T::value_type> {
     Array<typename T::value_type> result(a.size() + b.size());
@@ -409,5 +411,6 @@ template<class T>
 Array<typename T::value_type> make_array(const T& container) {
     return Array<typename T::value_type>(container.begin(), container.end());
 }
+///@}
 
 } // namespace thorin

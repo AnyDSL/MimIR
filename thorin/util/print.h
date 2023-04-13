@@ -41,9 +41,10 @@ bool match2nd(std::ostream& os, const char* next, const char*& s, const char c);
 
 /// @name Formatted Output
 /// @anchor fmt
+///@{
 /// Provides a `printf`-like interface to format @p s with @p args and puts it into @p os.
 /// Use `{}` as a placeholder within your format string @p s.
-/// * By default, `os << t`` will be used to stream the appropriate argument:
+/// * By default, `os << t` will be used to stream the appropriate argument:
 /// ```
 /// print(os, "int: {}, float: {}", 23, 42.f);
 /// ```
@@ -75,7 +76,7 @@ bool match2nd(std::ostream& os, const char* next, const char*& s, const char c);
 /// print(os, "v: {, }", Elem(v, [&](auto& os, auto elem) { print(os, "{}: {}", i++, elem); }));
 /// ```
 /// @sa Tab
-///@{
+
 /// Use with print to output complicated `std::ranges::range`s.
 template<class R, class F>
 struct Elem {
@@ -151,15 +152,6 @@ template<class T = std::logic_error, class... Args>
     throw T(oss.str());
 }
 
-/// @name out/err
-/// thorin::print%s to `std::cout`/`std::cerr`; the *`ln` variants emit an additional `std::endl`.
-// clang-format off
-template<class... Args> std::ostream& outf (const char* fmt, Args&&... args) { return print(std::cout, fmt, std::forward<Args&&>(args)...); }
-template<class... Args> std::ostream& errf (const char* fmt, Args&&... args) { return print(std::cerr, fmt, std::forward<Args&&>(args)...); }
-template<class... Args> std::ostream& outln(const char* fmt, Args&&... args) { return outf(fmt, std::forward<Args&&>(args)...) << std::endl; }
-template<class... Args> std::ostream& errln(const char* fmt, Args&&... args) { return errf(fmt, std::forward<Args&&>(args)...) << std::endl; }
-// clang-format on
-
 #ifdef NDEBUG
 #    define assertf(condition, ...) \
         do { (void)sizeof(condition); } while (false)
@@ -173,6 +165,17 @@ template<class... Args> std::ostream& errln(const char* fmt, Args&&... args) { r
             }                                                           \
         } while (false)
 #endif
+///@}
+
+/// @name out/err
+///@{
+/// thorin::print%s to `std::cout`/`std::cerr`; the *`ln` variants emit an additional `std::endl`.
+// clang-format off
+template<class... Args> std::ostream& outf (const char* fmt, Args&&... args) { return print(std::cout, fmt, std::forward<Args&&>(args)...); }
+template<class... Args> std::ostream& errf (const char* fmt, Args&&... args) { return print(std::cerr, fmt, std::forward<Args&&>(args)...); }
+template<class... Args> std::ostream& outln(const char* fmt, Args&&... args) { return outf(fmt, std::forward<Args&&>(args)...) << std::endl; }
+template<class... Args> std::ostream& errln(const char* fmt, Args&&... args) { return errf(fmt, std::forward<Args&&>(args)...) << std::endl; }
+// clang-format on
 ///@}
 
 /// Keeps track of indentation level.

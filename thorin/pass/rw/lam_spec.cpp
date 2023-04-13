@@ -9,7 +9,8 @@
 
 namespace thorin {
 
-static bool is_top_level(LamMap<bool>& top, Lam* lam) {
+namespace {
+bool is_top_level(LamMap<bool>& top, Lam* lam) {
     if (lam->is_external()) return true;
     if (auto [i, ins] = top.emplace(lam, true); !ins) return i->second;
 
@@ -25,9 +26,10 @@ static bool is_top_level(LamMap<bool>& top, Lam* lam) {
     return true;
 }
 
-static bool is_top_level(Lam* lam) {
+bool is_top_level(Lam* lam) {
     LamMap<bool> top;
     return is_top_level(top, lam);
+}
 }
 
 Ref LamSpec::rewrite(Ref def) {

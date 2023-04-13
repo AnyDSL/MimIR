@@ -4,6 +4,8 @@
 
 namespace thorin {
 
+/// @name Debug helpers
+///@{
 // see https://stackoverflow.com/a/65258501
 #ifdef __GNUC__ // GCC 4.8+, Clang, Intel and other compilers compatible with GCC (-std=c++0x or above)
 [[noreturn]] inline __attribute__((always_inline)) void unreachable() {
@@ -27,6 +29,7 @@ inline void breakpoint() {
     *p              = 42;
 }
 #endif
+///@}
 
 } // namespace thorin
 

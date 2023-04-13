@@ -64,6 +64,8 @@ private:
     Level max_level_       = Level::Error;
 };
 
+/// @name Macros for differen Log Levels for ease of use
+///@{
 // clang-format off
 #define ELOG(...) log().log(thorin::Log::Level::Error,   __FILE__, __LINE__, __VA_ARGS__)
 #define WLOG(...) log().log(thorin::Log::Level::Warn,    __FILE__, __LINE__, __VA_ARGS__)
@@ -75,5 +77,6 @@ private:
 #define DLOG(...) dummy()
 #endif
 // clang-format on
+///@}
 
 } // namespace thorin

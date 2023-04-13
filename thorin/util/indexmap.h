@@ -64,6 +64,8 @@ private:
     Array<Value> array_;
 };
 
+/// @name IndexMap find
+///@{
 template<class Indexer, class Key, class Value>
 inline Value* find(IndexMap<Indexer, Key, Value*>& map, Key key) {
     auto i = map.indexer().index(key);
@@ -74,5 +76,6 @@ template<class Indexer, class Key, class Value>
 inline const Value* find(const IndexMap<Indexer, Key, Value*>& map, Key key) {
     return find(const_cast<IndexMap<Indexer, Key, Value*>&>(map), key);
 }
+///@}
 
 } // namespace thorin

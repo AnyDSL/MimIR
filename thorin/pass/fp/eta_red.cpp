@@ -2,18 +2,20 @@
 
 namespace thorin {
 
-static bool is_var(Ref def) {
+namespace {
+bool is_var(Ref def) {
     if (def->isa<Var>()) return true;
     if (auto extract = def->isa<Extract>()) return extract->tuple()->isa<Var>();
     return false;
 }
 
-/// For now, only η-reduce `lam x.e x` if e is a @p Var or a @p Lam.
-static const App* eta_rule(Lam* lam) {
+// For now, only η-reduce `lam x.e x` if e is a @p Var or a @p Lam.
+const App* eta_rule(Lam* lam) {
     if (auto app = lam->body()->isa<App>()) {
         if (app->arg() == lam->var() && (is_var(app->callee()) || app->callee()->isa<Lam>())) return app;
     }
     return nullptr;
+}
 }
 
 Ref EtaRed::rewrite(Ref def) {

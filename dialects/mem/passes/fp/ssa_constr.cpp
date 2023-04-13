@@ -6,10 +6,12 @@
 
 namespace thorin::mem {
 
-static Ref get_sloxy_type(const Proxy* sloxy) { return force<mem::Ptr>(sloxy->type())->arg(0); }
+namespace {
+Ref get_sloxy_type(const Proxy* sloxy) { return force<mem::Ptr>(sloxy->type())->arg(0); }
 
-static std::tuple<const Proxy*, Lam*> split_phixy(const Proxy* phixy) {
+std::tuple<const Proxy*, Lam*> split_phixy(const Proxy* phixy) {
     return {phixy->op(0)->as<Proxy>(), phixy->op(1)->as_mut<Lam>()};
+}
 }
 
 void SSAConstr::enter() { lam2sloxy2val_[curr_mut()].clear(); }

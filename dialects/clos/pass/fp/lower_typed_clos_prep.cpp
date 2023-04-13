@@ -1,7 +1,5 @@
 #include "dialects/clos/pass/fp/lower_typed_clos_prep.h"
 
-#include "thorin/util/bitset.h"
-
 #include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
 

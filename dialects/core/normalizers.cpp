@@ -7,12 +7,13 @@ namespace thorin::core {
 // TODO move to normalize.h
 /// Swap Lit to left - or smaller gid, if no lit present.
 template<class Id>
-static void commute(Id id, const Def*& a, const Def*& b) {
+void commute(Id id, const Def*& a, const Def*& b) {
     if (is_commutative(id)) {
         if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>())) std::swap(a, b);
     }
 }
 
+namespace {
 /*
  * Fold
  */
@@ -102,7 +103,7 @@ Res fold(u64 a, u64 b, [[maybe_unused]] bool nsw, [[maybe_unused]] bool nuw) {
 
 /// @attention Note that @p a and @p b are passed by reference as fold also commutes if possible. @sa commute().
 template<class Id, Id id>
-static Ref fold(World& world, Ref type, const Def*& a, const Def*& b, Ref mode = {}) {
+Ref fold(World& world, Ref type, const Def*& a, const Def*& b, Ref mode = {}) {
     auto la = a->isa<Lit>(), lb = b->isa<Lit>();
 
     if (a->isa<Bot>() || b->isa<Bot>()) return world.bot(type);
@@ -145,7 +146,7 @@ static Ref fold(World& world, Ref type, const Def*& a, const Def*& b, Ref mode =
 /// (4) (lx op y) op      b    ->  lx op (y op b)
 /// ```
 template<class Id>
-static Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref b) {
+Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref b) {
     if (!is_associative(id)) return nullptr;
 
     auto la = a->isa<Lit>();
@@ -165,6 +166,34 @@ static Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref 
     if (lx) return make_op(lx, make_op(y, b));                    // (4)
 
     return nullptr;
+}
+
+template<class Id>
+Ref merge_cmps(std::array<std::array<u64, 2>, 2> tab, Ref a, Ref b) {
+    static_assert(sizeof(sub_t) == 1, "if this ever changes, please adjust the logic below");
+    static constexpr size_t num_bits = std::bit_width(Axiom::Num<Id> - 1_u64);
+
+    auto& world = a->world();
+    auto a_cmp  = match<Id>(a);
+    auto b_cmp  = match<Id>(b);
+
+    if (a_cmp && b_cmp && a_cmp->arg() == b_cmp->arg()) {
+        // push sub bits of a_cmp and b_cmp through truth table
+        sub_t res   = 0;
+        sub_t a_sub = a_cmp.sub();
+        sub_t b_sub = b_cmp.sub();
+        for (size_t i = 0; i != num_bits; ++i, res >>= 1, a_sub >>= 1, b_sub >>= 1)
+            res |= tab[a_sub & 1][b_sub & 1] << 7_u8;
+        res >>= (7_u8 - u8(num_bits));
+
+        if constexpr (std::is_same_v<Id, math::cmp>)
+            return world.call(math::cmp(res), /*rmode*/ a_cmp->decurry()->arg(0), Defs{a_cmp->arg(0), a_cmp->arg(1)});
+        else
+            return world.call(icmp(Axiom::Base<icmp> | res), Defs{a_cmp->arg(0), a_cmp->arg(1)});
+    }
+
+    return nullptr;
+}
 }
 
 template<nat id>
@@ -253,33 +282,6 @@ Ref normalize_bit1(Ref type, Ref c, Ref a) {
     }
 
     return world.raw_app(type, callee, a);
-}
-
-template<class Id>
-static Ref merge_cmps(std::array<std::array<u64, 2>, 2> tab, Ref a, Ref b) {
-    static_assert(sizeof(sub_t) == 1, "if this ever changes, please adjust the logic below");
-    static constexpr size_t num_bits = std::bit_width(Axiom::Num<Id> - 1_u64);
-
-    auto& world = a->world();
-    auto a_cmp  = match<Id>(a);
-    auto b_cmp  = match<Id>(b);
-
-    if (a_cmp && b_cmp && a_cmp->arg() == b_cmp->arg()) {
-        // push sub bits of a_cmp and b_cmp through truth table
-        sub_t res   = 0;
-        sub_t a_sub = a_cmp.sub();
-        sub_t b_sub = b_cmp.sub();
-        for (size_t i = 0; i != num_bits; ++i, res >>= 1, a_sub >>= 1, b_sub >>= 1)
-            res |= tab[a_sub & 1][b_sub & 1] << 7_u8;
-        res >>= (7_u8 - u8(num_bits));
-
-        if constexpr (std::is_same_v<Id, math::cmp>)
-            return world.call(math::cmp(res), /*rmode*/ a_cmp->decurry()->arg(0), Defs{a_cmp->arg(0), a_cmp->arg(1)});
-        else
-            return world.call(icmp(Axiom::Base<icmp> | res), Defs{a_cmp->arg(0), a_cmp->arg(1)});
-    }
-
-    return nullptr;
 }
 
 template<bit2 id>

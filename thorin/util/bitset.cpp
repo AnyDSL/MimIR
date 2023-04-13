@@ -6,6 +6,11 @@
 
 namespace thorin {
 
+namespace {
+inline uint64_t begin_mask(uint64_t i) { return -1_u64 << (i % 64_u64); }
+inline uint64_t end_mask(uint64_t i) { return ~begin_mask(i); }
+}
+
 void BitSet::dealloc() const {
     if (num_words_ != 1) delete[] words_;
 }
@@ -16,9 +21,6 @@ size_t BitSet::count() const {
     for (size_t i = 0, e = num_words(); i != e; ++i) result += std::popcount(w[i]);
     return result;
 }
-
-inline static uint64_t begin_mask(uint64_t i) { return -1_u64 << (i % 64_u64); }
-inline static uint64_t end_mask(uint64_t i) { return ~begin_mask(i); }
 
 bool BitSet::operator==(const BitSet& other) const {
     auto n = std::min(this->num_words(), other.num_words());

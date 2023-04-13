@@ -19,9 +19,7 @@ using namespace std::literals;
 
 namespace thorin {
 
-/*
- * helper
- */
+namespace {
 
 static Def* isa_decl(const Def* def) {
     if (auto mut = def->isa_mut()) {
@@ -72,11 +70,11 @@ struct Inline {
         return true;
     }
 
-    friend std::ostream& operator<<(std::ostream&, Inline);
-
 private:
     const Def* def_;
     const int dump_gid_;
+
+    friend std::ostream& operator<<(std::ostream&, Inline);
 };
 
 // TODO prec is currently broken
@@ -85,6 +83,10 @@ struct LRPrec {
     LRPrec(const Def* l, const Def* r)
         : l(l)
         , r(r) {}
+
+private:
+    const Def* l;
+    const Def* r;
 
     friend std::ostream& operator<<(std::ostream& os, const LRPrec& p) {
         if constexpr (L) {
@@ -95,15 +97,13 @@ struct LRPrec {
             return print(os, "{}", p.r);
         }
     }
-
-private:
-    const Def* l;
-    const Def* r;
 };
 
 using LPrec = LRPrec<true>;
 using RPrec = LRPrec<false>;
 
+/// @name std::ostream operator
+///@{
 std::ostream& operator<<(std::ostream& os, Inline u) {
     if (u.dump_gid_ == 2 || (u.dump_gid_ == 1 && !u->isa<Var>() && u->num_ops() != 0)) print(os, "/*{}*/", u->gid());
 
@@ -319,10 +319,15 @@ void Dumper::recurse(const Def* def, bool first /*= false*/) {
 
     if (!first && !Inline(def)) dump_let(def);
 }
+}
 
 /*
  * Def
  */
+
+/// @name std::ostream operator
+///@{
+std::ostream& operator<<(std::ostream& os, Ref ref) { return os << *ref; }
 
 /// This will stream @p def as an operand.
 /// This is usually `id(def)` unless it can be displayed Inline.
@@ -331,8 +336,7 @@ std::ostream& operator<<(std::ostream& os, const Def* def) {
     if (Inline(def)) return os << Inline(def);
     return os << id(def);
 }
-
-std::ostream& operator<<(std::ostream& os, Ref ref) { return os << *ref; }
+///@}
 
 std::ostream& Def::stream(std::ostream& os, int max) const {
     auto freezer = World::Freezer(world());
