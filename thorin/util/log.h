@@ -6,11 +6,12 @@
 
 namespace thorin {
 
+/// Facility to log what you are doing.
 class Log {
 public:
     enum class Level { Error, Warn, Info, Verbose, Debug };
 
-    /// @name getters
+    /// @name Getters
     ///@{
     Level level() const { return max_level_; }
     std::ostream& ostream() const {
@@ -20,7 +21,7 @@ public:
     explicit operator bool() const { return ostream_; } ///< Checks if Log::ostream_ is set.
     ///@}
 
-    /// @name setters
+    /// @name Setters
     ///@{
     Log& set(std::ostream* ostream) {
         ostream_ = ostream;
@@ -32,9 +33,10 @@ public:
     }
     ///@}
 
-    /// @name log
+    /// @name Log
     ///@{
     /// Output @p fmt to Log::ostream; does nothing if Log::ostream is `nullptr`.
+    /// @sa @ref fmt
     template<class... Args>
     void log(Level level, Loc loc, const char* fmt, Args&&... args) const {
         if (ostream_ && level <= max_level_) {
@@ -51,7 +53,7 @@ public:
     }
     ///@}
 
-    /// @name conversions
+    /// @name Conversions
     ///@{
     static std::string_view level2acro(Level);
     static Level str2level(std::string_view);
@@ -64,8 +66,9 @@ private:
     Level max_level_       = Level::Error;
 };
 
-/// @name Macros for differen Log Levels for ease of use
+/// @name Macros for different Log Levels for Ease of Use
 ///@{
+/// @sa @ref fmt
 // clang-format off
 #define ELOG(...) log().log(thorin::Log::Level::Error,   __FILE__, __LINE__, __VA_ARGS__)
 #define WLOG(...) log().log(thorin::Log::Level::Warn,    __FILE__, __LINE__, __VA_ARGS__)
