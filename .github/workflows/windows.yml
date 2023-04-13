@@ -42,7 +42,7 @@ jobs:
           set CXX=cl.exe
           python -c "import sys; import os; print(os.path.dirname(sys.executable))" > tmpPath
           set /p PYTHON_PATH= < tmpPath
-          cmake -B ${{github.workspace}}/build -G Ninja -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DTHORIN_BUILD_TESTING=ON -DPython3_ROOT_DIR=%PYTHON_PATH%
+          cmake -B ${{github.workspace}}/build -G Ninja -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DTHORIN_BUILD_TESTING=ON -DTHORIN_BUILD_EXAMPLES=ON -DPython3_ROOT_DIR=%PYTHON_PATH%
 
       - name: Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@v1.6.0
@@ -53,7 +53,7 @@ jobs:
         shell: cmd
         run: |
           call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-          cmake --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target thorin-gtest thorin thorin_all_plugins hello
+          cmake --build ${{github.workspace}}/build -v
 
       - name: Run lit test suite
         working-directory: ${{github.workspace}}/build
@@ -61,7 +61,7 @@ jobs:
         run: |
           call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
           set PATH=${{github.workspace}}/bin;%PATH%
-          cmake --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target check
+          cmake --build ${{github.workspace}}/build -v --target check
 
       - name: Test
         working-directory: ${{github.workspace}}/build
