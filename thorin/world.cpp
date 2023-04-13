@@ -165,7 +165,7 @@ Ref World::app(Ref callee, Ref arg) {
     if (!pi) error(callee, "called expression '{}' : '{}' is not of function type", callee, callee->type());
     if (!checker().assignable(pi->dom(), arg))
         error(arg, "cannot pass argument \n'{}' of type \n'{}' to \n'{}' of domain \n'{}'", arg, arg->type(), callee,
-            pi->dom());
+              pi->dom());
 
     if (auto lam = callee->isa<Lam>(); lam && lam->is_set() && !lam->is_term()) return lam->reduce(arg).back();
 

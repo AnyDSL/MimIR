@@ -50,8 +50,8 @@ struct Loc {
     void dump();
 
     const fs::path* path = nullptr;
-    Pos begin = {};
-    Pos finis = {};
+    Pos begin            = {};
+    Pos finis            = {};
     ///< It's called `finis` because it refers to the **last** character within this Loc%ation.
     /// In the STL the word `end` refers to the position of something that is one element **past** the end.
 };
