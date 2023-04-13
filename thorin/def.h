@@ -502,18 +502,6 @@ protected:
     friend void swap(World&, World&);
 };
 
-template<class T>
-const T* isa(flags_t f, const Def* def) {
-    if (auto d = def->template isa<T>(); d && d->flags() == f) return d;
-    return nullptr;
-}
-
-template<class T>
-const T* as([[maybe_unused]] flags_t f, const Def* def) {
-    assert(isa<T>(f, def));
-    return def;
-}
-
 /// @name Formatted Output
 ///@{
 /// Uses @p def->loc() as Loc%ation.

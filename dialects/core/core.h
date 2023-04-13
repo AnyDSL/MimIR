@@ -21,8 +21,9 @@ inline Ref mode(World& w, VMode m) {
     return w.lit_nat(std::get<Mode>(m));
 }
 
-/// @name op - these guys build the final function application for the various operations
+/// @name op
 ///@{
+/// These guys build the final function application for the various operations
 inline Ref op(trait o, Ref type) {
     World& w = type->world();
     return w.app(w.ax(o), type);
@@ -31,9 +32,14 @@ inline Ref op(pe o, Ref def) {
     World& w = def->world();
     return w.app(w.app(w.ax(o), def->type()), def);
 }
+inline Ref op_wminus(VMode m, Ref a) {
+    World& w = a->world();
+    auto s   = as_lit(w.iinfer(a));
+    return w.call(wrap::sub, mode(w, m), Defs{w.lit_idx(s, 0), a});
+}
 ///@}
 
-/// @name extract helper
+/// @name extract_unsafe
 ///@{
 inline Ref extract_unsafe(Ref d, Ref i) {
     World& w = d->world();
@@ -45,7 +51,7 @@ inline Ref extract_unsafe(Ref d, u64 i) {
 }
 ///@}
 
-/// @name insert helper
+/// @name insert_unsafe
 ///@{
 inline Ref insert_unsafe(Ref d, Ref i, Ref val) {
     World& w = d->world();
@@ -54,15 +60,6 @@ inline Ref insert_unsafe(Ref d, Ref i, Ref val) {
 inline Ref insert_unsafe(Ref d, u64 i, Ref val) {
     World& w = d->world();
     return insert_unsafe(d, w.lit_idx(0_u64, i), val);
-}
-///@}
-
-/// @name wrappers for unary operations
-///@{
-inline Ref op_wminus(VMode m, Ref a) {
-    World& w = a->world();
-    auto s   = as_lit(w.iinfer(a));
-    return w.call(wrap::sub, mode(w, m), Defs{w.lit_idx(s, 0), a});
 }
 ///@}
 

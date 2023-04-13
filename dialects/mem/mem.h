@@ -131,7 +131,7 @@ inline Ref replace_mem(Ref mem, Ref arg) {
 }
 
 /// Removes recusively all occurences of mem from a type (sigma).
-static Ref strip_mem_ty(Ref def) {
+inline Ref strip_mem_ty(Ref def) {
     auto& world = def->world();
 
     if (auto sigma = def->isa<Sigma>()) {
@@ -149,7 +149,7 @@ static Ref strip_mem_ty(Ref def) {
 
 /// Removes recusively all occurences of mem from a tuple.
 /// Returns an empty tuple if applied with mem alone.
-static Ref strip_mem(Ref def) {
+inline Ref strip_mem(Ref def) {
     auto& world = def->world();
 
     if (auto tuple = def->isa<Tuple>()) {
