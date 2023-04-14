@@ -12,7 +12,7 @@ Ref get_sloxy_type(const Proxy* sloxy) { return force<mem::Ptr>(sloxy->type())->
 std::tuple<const Proxy*, Lam*> split_phixy(const Proxy* phixy) {
     return {phixy->op(0)->as<Proxy>(), phixy->op(1)->as_mut<Lam>()};
 }
-}
+} // namespace
 
 void SSAConstr::enter() { lam2sloxy2val_[curr_mut()].clear(); }
 

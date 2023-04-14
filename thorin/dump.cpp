@@ -319,6 +319,7 @@ void Dumper::recurse(const Def* def, bool first /*= false*/) {
 
     if (!first && !Inline(def)) dump_let(def);
 }
+
 } // namespace
 
 /*
