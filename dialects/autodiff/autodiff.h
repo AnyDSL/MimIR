@@ -6,7 +6,7 @@
 
 namespace thorin::autodiff {
 
-/// Helper function related to automatic differentiation.
+/// @name Helper function related to automatic differentiation.
 ///@{
 inline const Def* op_autodiff(const Def* fun) {
     World& world = fun->world();

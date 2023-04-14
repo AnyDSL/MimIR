@@ -243,21 +243,10 @@ const Def* compose_continuation(const Def* f, const Def* g) {
 
     h->app(true, g, {h->var((nat_t)0), hcont});
 
-    hcont->app(true, f,
-               {
-                   hcont->var(), // Warning: not var(0) => only one var => normalization flattens tuples down here
-                   h->var(1)     // ret_var
-               });
+    auto hcont_var = hcont->var(); // Warning: not var(0) => only one var => normalization flattens tuples down here.
+    hcont->app(true, f, {hcont_var, h->var(1) /* ret_var */});
 
     return h;
 }
 
 } // namespace thorin
-
-void findAndReplaceAll(std::string& data, std::string toSearch, std::string replaceStr) {
-    size_t pos = data.find(toSearch);
-    while (pos != std::string::npos) {
-        data.replace(pos, toSearch.size(), replaceStr);
-        pos = data.find(toSearch, pos + replaceStr.size());
-    }
-}
