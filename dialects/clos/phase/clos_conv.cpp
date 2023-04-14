@@ -166,7 +166,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         return i->second;
     } else if (auto pi = def->isa<Pi>(); pi && pi->is_cn()) {
         return map(type_clos(pi, subst));
-    } else if (auto lam = def->isa_mut<Lam>(); lam && lam->type()->is_cn()) {
+    } else if (auto lam = def->isa_mut<Lam>(); lam && lam->is_cn()) {
         auto [_, __, fv_env, new_lam] = make_stub(lam, subst);
         auto clos_ty                  = rewrite(lam->type(), subst);
         auto env                      = rewrite(fv_env, subst);

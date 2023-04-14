@@ -30,6 +30,12 @@ bool is_shape(Ref s) {
 
     return false;
 }
+
+const Def* infer_sigma(World& world, Defs ops) {
+    DefArray elems(ops.size());
+    for (size_t i = 0, e = ops.size(); i != e; ++i) elems[i] = ops[i]->type();
+    return world.sigma(elems);
+}
 }
 
 /*
@@ -204,12 +210,6 @@ Ref World::sigma(Defs ops) {
     auto front = ops.front();
     if (std::ranges::all_of(ops.skip_front(), [front](auto op) { return front == op; })) return arr(n, front);
     return unify<Sigma>(ops.size(), umax<Sort::Type>(ops), ops);
-}
-
-static const Def* infer_sigma(World& world, Defs ops) {
-    DefArray elems(ops.size());
-    for (size_t i = 0, e = ops.size(); i != e; ++i) elems[i] = ops[i]->type();
-    return world.sigma(elems);
 }
 
 Ref World::tuple(Defs ops) {

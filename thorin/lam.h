@@ -17,20 +17,31 @@ protected:
         : Def(Node, type, 2, implicit ? 1 : 0) {}
 
 public:
-    /// @name getters
+    /// @name Getters
     ///@{
-    const Def* dom() const { return op(0); }
+    Ref dom() const { return op(0); }
     THORIN_PROJ(dom, const)
-    const Def* codom() const { return op(1); }
+    Ref codom() const { return op(1); }
     THORIN_PROJ(codom, const)
+    bool implicit() const { return flags(); }
     bool is_cn() const;
     bool is_basicblock() const { return is_cn() && !ret_pi(); }
     bool is_returning() const { return is_cn() && ret_pi(); }
     const Pi* ret_pi() const;
-    bool implicit() const { return flags(); }
     ///@}
 
-    /// @name setters
+    /// @name cn_dom/cn_codom
+    ///@{
+    /// Interprets `.Cn [A, .Cn B]` as `A -> B`.
+    // clang-format off
+    Ref cn_dom() const { assert(is_cn()); return dom(2, 0); }
+    THORIN_PROJ(cn_dom, const)
+    Ref cn_codom() const { assert(is_cn()); return dom(2, 1)->as<Pi>()->dom(); }
+    THORIN_PROJ(cn_codom, const)
+    // clang-format on
+    ///@}
+
+    /// @name Setters
     ///@{
     Pi* set_dom(const Def* dom) { return Def::set(0, dom)->as<Pi>(); }
     Pi* set_dom(Defs doms);
@@ -39,7 +50,7 @@ public:
 
     static const Def* infer(const Def* dom, const Def* codom);
 
-    /// @name virtual methods
+    /// @name Virtual Methods
     ///@{
     size_t first_dependend_op() override { return 1; }
     const Pi* restructure() override;
@@ -61,19 +72,29 @@ public:
     /// @name type
     ///@{
     const Pi* type() const { return Def::type()->as<Pi>(); }
-    const Def* dom() const { return type()->dom(); }
+    Ref dom() const { return type()->dom(); }
     THORIN_PROJ(dom, const)
-    const Def* codom() const { return type()->codom(); }
+    Ref codom() const { return type()->codom(); }
     THORIN_PROJ(codom, const)
+    bool is_cn() const { return type()->is_cn(); }
     bool is_basicblock() const { return type()->is_basicblock(); }
     bool is_returning() const { return type()->is_returning(); }
     const Pi* ret_pi() const { return type()->ret_pi(); }
     ///@}
 
+    /// @name cn_dom/cn_codom
+    ///@{
+    /// Interprets `.Cn [A, .Cn B]` as `A -> B`.
+    Ref cn_dom() const { return type()->cn_dom(); }
+    THORIN_PROJ(cn_dom, const)
+    Ref cn_codom() const { return type()->cn_codom(); }
+    THORIN_PROJ(cn_codom, const)
+    ///@}
+
     /// @name ops
     ///@{
-    const Def* filter() const { return op(0); }
-    const Def* body() const { return op(1); }
+    Ref filter() const { return op(0); }
+    Ref body() const { return op(1); }
     ///@}
 
     /// @name vars
@@ -81,7 +102,7 @@ public:
     const Def* ret_var();
     ///@}
 
-    /// @name setters
+    /// @name Setters
     ///@{
     /// Lam::Filter is a `std::variant<bool, const Def*>` that lets you set the Lam::filter() like this:
     /// ```cpp
@@ -105,7 +126,7 @@ public:
     Lam* test(Filter filter, const Def* val, const Def* idx, const Def* match, const Def* clash, const Def* mem);
     ///@}
 
-    /// @name virtual methods
+    /// @name Virtual Methods
     ///@{
     void check() override;
     ///@}
@@ -138,7 +159,7 @@ public:
     THORIN_PROJ(arg, const)
     ///@}
 
-    /// @name get axiom, current curry counter and trip count
+    /// @name Get axiom, current curry counter and trip count
     ///@{
     const Axiom* axiom() const { return axiom_; }
     u8 curry() const { return curry_; }

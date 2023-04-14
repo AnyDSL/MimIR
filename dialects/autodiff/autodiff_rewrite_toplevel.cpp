@@ -1,5 +1,4 @@
 #include "dialects/autodiff/autodiff.h"
-#include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
 
 namespace thorin::autodiff {

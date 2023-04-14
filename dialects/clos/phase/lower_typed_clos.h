@@ -46,11 +46,11 @@ private:
         No_Env   //< Lambda has no environment (lifted, top-level).
     };
 
-    /// Create a new lambda stub.
+    /// Create a new Lam stub.
     /// @p adjust_bb_type is true if the @p lam should be rewritten to a returning function.
     Lam* make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type);
 
-    /// @name helpers
+    /// @name Helpers
     ///@{
 
     /// wrapper arround old2new_

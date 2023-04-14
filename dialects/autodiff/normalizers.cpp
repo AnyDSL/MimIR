@@ -4,7 +4,6 @@
 #include "thorin/world.h"
 
 #include "dialects/autodiff/autodiff.h"
-#include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/core/core.h"
 
 namespace thorin::autodiff {

@@ -192,6 +192,7 @@ private:                                                                        
 ///           |-------extended_ops------|
 /// ```
 /// @attention This means that any subclass of Def **must not** introduce additional members.
+/// @sa @ref mut
 class Def : public RuntimeCast<Def> {
 private:
     Def& operator=(const Def&) = delete;
@@ -217,10 +218,16 @@ public:
     /// @name type
     ///@{
 
-    /// Yields the **raw** type of this Def; maybe `nullptr`. @sa Def::unfold_type.
+    /// Yields the **raw** type of this Def, i.e. maybe `nullptr`. @sa Def::unfold_type.
     const Def* type() const { return type_; }
-    /// Yields the type of this Def and unfolds it if necessary. See Def::type, Def::reduce_rec.
+    /// Yields the type of this Def and unfolds it if necessary. @sa Def::type, Def::reduce_rec.
     const Def* unfold_type() const;
+    /// Yields `true` if `this:T` and `T:(.Type 0)`.
+    bool is_term() const;
+    ///@}
+
+    /// @name arity
+    ///@{
     const Def* arity() const;
     std::optional<nat_t> isa_lit_arity() const;
     nat_t as_lit_arity() const {
@@ -228,7 +235,6 @@ public:
         assert(a.has_value());
         return *a;
     }
-    bool is_term() const;
     ///@}
 
     /// @name ops
@@ -351,7 +357,6 @@ public:
         using R = std::decay_t<decltype(f(this))>;
         return Array<R>(a, [&](nat_t i) { return f(proj(a, i)); });
     }
-
     template<nat_t A = -1_s>
     auto projs() const {
         return projs<A>([](const Def* def) { return def; });
@@ -378,7 +383,7 @@ public:
     Sym sym() const { return dbg_.sym; }
     ///@}
 
-    /// @name debug prefix/suffix
+    /// @name debug_prefix/suffix
     ///@{
     /// Prepends/Appends a prefix/suffix to Def::name - but only in **DEBUG** build.
 #ifndef NDEBUG
@@ -398,7 +403,7 @@ public:
     template<class T = Def> const T*  as_imm() const { return  as_mut<T, true>(); }
     // clang-format on
 
-    /// If `this` is *mut*able, it will cast constness away and perform a dynamic cast to @p T.
+    /// If `this` is *mut*able, it will cast `const`ness away and perform a `dynamic_cast` to @p T.
     template<class T = Def, bool invert = false>
     T* isa_mut() const {
         if constexpr (std::is_same<T, Def>::value)
@@ -407,8 +412,7 @@ public:
             return mut_ ^ invert ? const_cast<Def*>(this)->template isa<T>() : nullptr;
     }
 
-    /// Asserts that @c this is a *mut*able, casts constness away and performs a static cast to @p T (checked in Debug
-    /// build).
+    /// Asserts that `this` is a *mutable*, casts `const`ness away and performs a `static_cast` to @p T.
     template<class T = Def, bool invert = false>
     T* as_mut() const {
         assert(mut_ ^ invert);
@@ -458,7 +462,6 @@ public:
     void write(int max) const;
     void write(int max, const char* file) const;
     std::ostream& stream(std::ostream&, int max) const;
-    friend std::ostream& operator<<(std::ostream&, const Def*);
     ///@}
 
 protected:
@@ -498,11 +501,11 @@ protected:
     u32 num_ops_;
     mutable Uses uses_;
     mutable Dbg dbg_;
-
     const Def* type_;
 
     friend class World;
     friend void swap(World&, World&);
+    friend std::ostream& operator<<(std::ostream&, const Def*);
 };
 
 /// @name Formatted Output

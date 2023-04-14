@@ -10,7 +10,7 @@ Let's jump straight into an example.
 \include "examples/hello.cpp"
 
 [Driver](@ref thorin::Driver) is the first class that you want to allocate.
-It keeps track of a few global variables like some [flags](@ref thorin::Flags) or the [log](@ref thorin::Log).
+It keeps track of a few "global" variables like some [flags](@ref thorin::Flags) or the [log](@ref thorin::Log).
 Here, the log is set up to output to `std::cerr` with thorin::Log::Level::Debug (see also @ref clidebug).
 
 Then, we load the plugins [compile](@ref compile) and [core](@ref core), which in turn will load the plugin [mem](@ref mem).
@@ -35,7 +35,7 @@ Converted to [continuation-passing style (CPS)](https://en.wikipedia.org/wiki/Co
 .Cn [%mem.M, I32, %mem.Ptr (I32, 0), .Cn [%mem.M, I32]]
 ```
 The `%%mem.M` type is a type that keeps track of side effects that may occur.
-Since, `main` introduces [variables](@ref thorin::Var) we must create a **mutable** [Lam](@ref thorin::Lam)bda (see @ref mut).
+Since, `main` introduces [Var](@ref thorin::Var)iables we must create a **mutable** [Lam](@ref thorin::Lam)bda (see @ref mut).
 The only thing `main` is doing, is to invoke its `ret`urn continuation with `mem` and `argc` as argument:
 ```
 ret (mem, argc)
@@ -43,8 +43,8 @@ ret (mem, argc)
 It is also important to make `main` [external](@ref thorin::Def::make_external).
 Otherwise, Thorin will simply remove this function.
 
-We optimize the program, emit an [LLVM assembly file](https://llvm.org/docs/LangRef.html), and compile it via `clang`.
-Finally, we execute the generated program with `./hello a b c` and [output](@ref fmt) its exit code - which should be `4`.
+We [optimize](@ref thorin::optimize) the program, emit an [LLVM assembly file](https://llvm.org/docs/LangRef.html), and compile it [via](@ref thorin::sys::system) `clang`.
+Finally, we [execute](@ref thorin::sys::system) the generated program with `./hello a b c` and [output](@ref fmt) its exit code - which should be `4`.
 
 ## Immutables vs. Mutables {#mut}
 

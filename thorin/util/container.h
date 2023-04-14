@@ -14,7 +14,7 @@
 
 namespace thorin {
 
-/// @name Helpers for containers/algorithms
+/// @name Helpers for Containers/Algorithms
 ///@{
 template<class S>
 auto pop(S& s) -> decltype(s.top(), typename S::value_type()) {
@@ -60,6 +60,12 @@ I binary_find(I begin, I end, T val, Cmp cmp) {
 inline std::string_view subview(std::string_view s, size_t i, size_t n = std::string_view::npos) {
     n = std::min(n, s.size());
     return {s.data() + i, n - i};
+}
+
+/// Replaces all occurrences of @p what with @p repl.
+inline void find_and_replace(std::string& str, std::string_view what, std::string_view repl) {
+    for (size_t pos = str.find(what); pos != std::string::npos; pos = str.find(what, pos + repl.size()))
+        str.replace(pos, what.size(), repl);
 }
 ///@}
 
