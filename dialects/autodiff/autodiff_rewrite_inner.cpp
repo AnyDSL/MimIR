@@ -321,7 +321,8 @@ Ref AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
 Ref AutoDiffEval::augment_(Ref def, Lam* f, Lam* f_diff) {
     auto& world = def->world();
     // We use macros above to avoid recomputation.
-    // TODO: Alternative: Use class instances to rewrite inside a function and save such values (f, f_diff, f->cn_dom()).
+    // TODO: Alternative: Use class instances to rewrite inside a function and save such values (f, f_diff,
+    // f->cn_dom()).
 
     world.DLOG("Augment def {} : {}", def, def->type());
 

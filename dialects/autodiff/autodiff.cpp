@@ -183,8 +183,8 @@ bool is_returning_continuation(const Def* e) {
     auto E = e->type();
     if (auto pi = E->isa<Pi>()) {
         if (pi->is_cn() && /* args, return */ pi->num_doms() == 2) {
-            if (auto ret_pi = pi->dom(1)->isa<Pi>()) return ret_pi->is_cn()
-            && /* return type */ is_continuation_type(pi->dom(1));
+            if (auto ret_pi = pi->dom(1)->isa<Pi>())
+                return ret_pi->is_cn() && /* return type */ is_continuation_type(pi->dom(1));
         }
     }
     return false;

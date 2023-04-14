@@ -36,7 +36,7 @@ const Def* infer_sigma(World& world, Defs ops) {
     for (size_t i = 0, e = ops.size(); i != e; ++i) elems[i] = ops[i]->type();
     return world.sigma(elems);
 }
-}
+} // namespace
 
 /*
  * constructor & destructor

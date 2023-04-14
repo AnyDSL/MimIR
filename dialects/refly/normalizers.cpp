@@ -28,7 +28,7 @@ void debug_print(const Def* def) {
     world.DLOG("proj: {}", def->num_projs());
     world.DLOG("eops: {}", def->num_extended_ops());
 }
-}
+} // namespace
 
 template<dbg id>
 Ref normalize_dbg(Ref type, Ref callee, Ref arg) {
