@@ -40,12 +40,10 @@ namespace thorin {
 /// @name Helpers to work with Continuations
 ///@{
 // TODO: replace with closedness checks (scopes) at appropriate places
-bool is_continuation_type(const Def* E);
 bool is_continuation(const Def* e);
 // TODO: change name to returning_continuation
 bool is_returning_continuation(const Def* e);
 bool is_open_continuation(const Def* e);
-bool is_direct_style_function(const Def* e);
 
 /// Computes the composition `λ x. f(g(x))`.
 /// The given functions `f` and `g` are expected to be in cps.

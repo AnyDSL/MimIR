@@ -171,31 +171,21 @@ const Def* op_sum(const Def* T, DefArray defs) {
 
 namespace thorin {
 
-bool is_continuation_type(const Def* E) {
-    if (auto pi = E->isa<Pi>()) return pi->codom()->isa<Bot>();
-    return false;
-}
-
-bool is_continuation(const Def* e) { return is_continuation_type(e->type()); }
+bool is_continuation(const Def* e) { return e->type()->isa<Pi>() && e->type()->as<Pi>()->is_cn(); }
 
 bool is_returning_continuation(const Def* e) {
     // TODO: fix open functions
     auto E = e->type();
     if (auto pi = E->isa<Pi>()) {
         if (pi->is_cn() && /* args, return */ pi->num_doms() == 2) {
-            if (auto ret_pi = pi->dom(1)->isa<Pi>())
-                return ret_pi->is_cn() && /* return type */ is_continuation_type(pi->dom(1));
+            if (auto ret_pi = pi->dom(2, 1)->isa<Pi>())
+                return ret_pi->is_cn() && ret_pi->is_cn();
         }
     }
     return false;
 }
 
 bool is_open_continuation(const Def* e) { return is_continuation(e) && !is_returning_continuation(e); }
-
-bool is_direct_style_function(const Def* e) {
-    // codom != Bot
-    return e->type()->isa<Pi>() && !is_continuation(e);
-}
 
 /// The high level view is:
 /// ```
