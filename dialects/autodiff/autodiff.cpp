@@ -178,8 +178,7 @@ bool is_returning_continuation(const Def* e) {
     auto E = e->type();
     if (auto pi = E->isa<Pi>()) {
         if (pi->is_cn() && /* args, return */ pi->num_doms() == 2) {
-            if (auto ret_pi = pi->dom(2, 1)->isa<Pi>())
-                return ret_pi->is_cn() && ret_pi->is_cn();
+            if (auto ret_pi = pi->dom(2, 1)->isa<Pi>()) return ret_pi->is_cn() && ret_pi->is_cn();
         }
     }
     return false;
