@@ -77,14 +77,14 @@ DefArray merge(Defs a, Defs b) {
 }
 
 const Def* merge_sigma(const Def* def, Defs defs) {
-    if (auto sigma = def->isa<Sigma>(); sigma && !sigma->isa_mut())
+    if (auto sigma = def->isa_imm<Sigma>())
         return def->world().sigma(merge(sigma->ops(), defs));
     return def->world().sigma(merge(def, defs));
 }
 
 const Def* merge_tuple(const Def* def, Defs defs) {
     auto& w = def->world();
-    if (auto sigma = def->type()->isa<Sigma>(); sigma && !sigma->isa_mut()) {
+    if (auto sigma = def->type()->isa_imm<Sigma>()) {
         auto a = sigma->num_ops();
         DefArray tuple(a, [&](auto i) { return w.extract(def, a, i); });
         return w.tuple(merge(tuple, defs));

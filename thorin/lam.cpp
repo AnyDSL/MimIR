@@ -11,7 +11,7 @@ namespace thorin {
 const Pi* Pi::ret_pi() const {
     if (num_doms() > 0) {
         auto ret = dom(num_doms() - 1);
-        if (auto pi = ret->isa<Pi>(); pi != nullptr && pi->is_basicblock()) return pi;
+        if (auto pi = ret->isa(&Pi::is_basicblock)) return pi;
     }
 
     return nullptr;

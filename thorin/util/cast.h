@@ -49,12 +49,19 @@ public:
         }
     }
 
-    /// Yields `B*` if it is *either* @p T or @p U and `nullptr* otherwise.
+    template<class T, class R>
+    T* isa(R (T::*f)() const) {
+        if (auto t = isa<T>(); t && (t->*f)()) return t;
+        return nullptr;
+    }
+
+    /// Yields `B*` if it is **either** @p T or @p U and `nullptr` otherwise.
     template<class T, class U> B* isa() { return (isa<T>() || isa<U>()) ? static_cast<B*>(this) : nullptr; }
 
-    template<class T         > const T*  as() const { return const_cast<RuntimeCast*>(this)->template  as<T   >(); } ///< `const` version.
-    template<class T         > const T* isa() const { return const_cast<RuntimeCast*>(this)->template isa<T   >(); } ///< `const` version.
-    template<class T, class U> const B* isa() const { return const_cast<RuntimeCast*>(this)->template isa<T, U>(); } ///< `const` version.
+    template<class T         > const T*  as() const { return const_cast<RuntimeCast*>(this)->template  as<T   >();  } ///< `const` version.
+    template<class T         > const T* isa() const { return const_cast<RuntimeCast*>(this)->template isa<T   >();  } ///< `const` version.
+    template<class T, class U> const B* isa() const { return const_cast<RuntimeCast*>(this)->template isa<T, U>();  } ///< `const` version.
+    template<class T, class R> const T* isa(R (T::*f)() const) const { return const_cast<RuntimeCast*>(this)->template isa<T, R>(f); } ///< `const` version.
     // clang-format on
 };
 
