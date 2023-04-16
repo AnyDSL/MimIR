@@ -113,7 +113,8 @@ public:
     /// @see @ref return_continuation
     const Pi* ret_pi() const { return type()->ret_pi(); }
     Ref ret_dom() const { return ret_pi()->dom(); }
-    Ref ret_var() { return type()->ret_pi() ? var(num_vars() - 1) : nullptr; } ///< Yields the Lam::var of the Lam::ret_pi.
+    /// Yields the Lam::var of the Lam::ret_pi.
+    Ref ret_var() { return type()->ret_pi() ? var(num_vars() - 1) : nullptr; }
     ///@}
 
     /// @name Setters
