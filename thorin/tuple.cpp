@@ -27,7 +27,7 @@ const Def* unflatten(Defs defs, const Def* type, size_t& j, bool flatten_muts) {
 
     return defs[j++];
 }
-}
+} // namespace
 
 bool is_unit(const Def* def) { return def->type() == def->world().sigma(); }
 
@@ -77,8 +77,7 @@ DefArray merge(Defs a, Defs b) {
 }
 
 const Def* merge_sigma(const Def* def, Defs defs) {
-    if (auto sigma = def->isa_imm<Sigma>())
-        return def->world().sigma(merge(sigma->ops(), defs));
+    if (auto sigma = def->isa_imm<Sigma>()) return def->world().sigma(merge(sigma->ops(), defs));
     return def->world().sigma(merge(def, defs));
 }
 

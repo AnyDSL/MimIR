@@ -423,7 +423,8 @@ public:
             return const_cast<Def*>(this)->template as<T>();
     }
 
-    template<class T = Def, class R> T* isa_mut(R (T::*f)() const) const {
+    template<class T = Def, class R>
+    T* isa_mut(R (T::*f)() const) const {
         if (auto t = isa_mut<T>(); t && (t->*f)()) return t;
         return nullptr;
     }

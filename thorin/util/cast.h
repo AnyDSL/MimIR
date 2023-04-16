@@ -24,9 +24,9 @@ inline D bitcast(const S& src) {
 namespace detail {
 template<class T>
 concept Nodeable = requires(T n) {
-    T::Node;
-    n.node();
-};
+                       T::Node;
+                       n.node();
+                   };
 } // namespace detail
 
 /// Inherit from this class using [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern),
