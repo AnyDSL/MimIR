@@ -2,6 +2,8 @@
 
 #include "thorin/world.h"
 
+using namespace std::string_literals;
+
 namespace thorin {
 
 /*
