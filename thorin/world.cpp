@@ -142,7 +142,7 @@ Ref World::umax(DefArray ops) {
 
 Ref World::iapp(Ref callee, Ref arg) {
     while (auto pi = callee->type()->isa<Pi>()) {
-        if (pi->implicit()) {
+        if (pi->is_implicit()) {
             auto infer = mut_infer_entity();
             auto a     = app(callee, infer);
             callee     = a;

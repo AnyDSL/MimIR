@@ -89,7 +89,7 @@ Ref Lam      ::rebuild_(World& w, Ref t, Defs o) const { return w.lam(t->as<Pi>(
 Ref Lit      ::rebuild_(World& w, Ref t, Defs  ) const { return w.lit(t, get()); }
 Ref Nat      ::rebuild_(World& w, Ref  , Defs  ) const { return w.type_nat(); }
 Ref Pack     ::rebuild_(World& w, Ref t, Defs o) const { return w.pack(t->arity(), o[0]); }
-Ref Pi       ::rebuild_(World& w, Ref  , Defs o) const { return w.pi(o[0], o[1], implicit()); }
+Ref Pi       ::rebuild_(World& w, Ref  , Defs o) const { return w.pi(o[0], o[1], is_implicit()); }
 Ref Pick     ::rebuild_(World& w, Ref t, Defs o) const { return w.pick(t, o[0]); }
 Ref Proxy    ::rebuild_(World& w, Ref t, Defs o) const { return w.proxy(t, o, as<Proxy>()->pass(), as<Proxy>()->tag()); }
 Ref Sigma    ::rebuild_(World& w, Ref  , Defs o) const { return w.sigma(o); }
@@ -121,7 +121,7 @@ Global*    Global::stub_(World& w, Ref t) { return w.global(t, is_mutable()); }
 Infer*     Infer ::stub_(World& w, Ref t) { return w.mut_infer(t); }
 Lam*       Lam   ::stub_(World& w, Ref t) { return w.mut_lam  (t->as<Pi>()); }
 Pack*      Pack  ::stub_(World& w, Ref t) { return w.mut_pack (t); }
-Pi*        Pi    ::stub_(World& w, Ref t) { return w.mut_pi   (t, implicit()); }
+Pi*        Pi    ::stub_(World& w, Ref t) { return w.mut_pi   (t, is_implicit()); }
 Sigma*     Sigma ::stub_(World& w, Ref t) { return w.mut_sigma(t, num_ops()); }
 
 template<bool up> TBound<up>* TBound<up>::stub_(World& w, Ref t) { return w.mut_bound<up>(t, num_ops()); }
