@@ -34,7 +34,7 @@ bool is_unit(const Def* def) { return def->type() == def->world().sigma(); }
 std::string tuple2str(const Def* def) {
     if (def == nullptr) return {};
 
-    auto array = def->projs(Lit::as(def->arity()), Lit::as_<nat_t>);
+    auto array = def->projs(Lit::as(def->arity()), [](auto op) { return Lit::as(op); });
     return std::string(array.begin(), array.end());
 }
 
