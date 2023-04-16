@@ -19,8 +19,8 @@ class PipelineBuilder;
 using Normalizers = absl::flat_hash_map<flags_t, NormalizeFn>;
 /// `axiom ↦ (pipeline part) × (axiom application) → ()` <br/>
 /// The function should inspect App%lication to construct the Pass/Phase and add it to the pipeline.
-using Passes      = absl::flat_hash_map<flags_t, std::function<void(World&, PipelineBuilder&, const Def*)>>;
-using Backends    = absl::btree_map<std::string, void (*)(World&, std::ostream&)>;
+using Passes   = absl::flat_hash_map<flags_t, std::function<void(World&, PipelineBuilder&, const Def*)>>;
+using Backends = absl::btree_map<std::string, void (*)(World&, std::ostream&)>;
 ///@}
 
 extern "C" {

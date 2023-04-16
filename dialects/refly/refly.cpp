@@ -10,5 +10,5 @@ using namespace thorin;
 
 extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
     return {"refly", [](Normalizers& normalizers) { refly::register_normalizers(normalizers); },
-        [](Passes& passes) { register_pass<refly::remove_dbg_perm_pass, refly::RemoveDbgPerm>(passes); }, nullptr};
+            [](Passes& passes) { register_pass<refly::remove_dbg_perm_pass, refly::RemoveDbgPerm>(passes); }, nullptr};
 }

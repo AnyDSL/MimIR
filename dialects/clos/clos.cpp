@@ -21,8 +21,7 @@
 using namespace thorin;
 
 extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
-    return {"clos",
-            [](Normalizers& normalizers) { clos::register_normalizers(normalizers); },
+    return {"clos", [](Normalizers& normalizers) { clos::register_normalizers(normalizers); },
             [](Passes& passes) {
                 register_pass<clos::clos_conv_prep_pass, clos::ClosConvPrep>(passes, nullptr);
                 register_pass<clos::clos_conv_pass, clos::ClosConvWrapper>(passes);

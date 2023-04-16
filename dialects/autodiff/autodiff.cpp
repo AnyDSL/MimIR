@@ -14,8 +14,7 @@ using namespace std::literals;
 using namespace thorin;
 
 extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
-    return {"autodiff",
-            [](Normalizers& normalizers) { autodiff::register_normalizers(normalizers); },
+    return {"autodiff", [](Normalizers& normalizers) { autodiff::register_normalizers(normalizers); },
             [](Passes& passes) {
                 register_pass<autodiff::ad_eval_pass, autodiff::AutoDiffEval>(passes);
                 register_pass<autodiff::ad_zero_pass, autodiff::AutoDiffZero>(passes);

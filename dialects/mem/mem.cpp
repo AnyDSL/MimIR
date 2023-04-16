@@ -22,7 +22,7 @@
 using namespace thorin;
 
 extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
-    return {"mem",[](Normalizers& normalizers) { mem::register_normalizers(normalizers); },
+    return {"mem", [](Normalizers& normalizers) { mem::register_normalizers(normalizers); },
             [](Passes& passes) {
                 register_pass_with_arg<mem::ssa_pass, mem::SSAConstr, EtaExp>(passes);
                 register_pass<mem::remem_elim_pass, mem::RememElim>(passes);

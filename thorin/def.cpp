@@ -159,7 +159,8 @@ const Sigma* Sigma::restructure() {
 const Def* Arr::restructure() {
     auto& w = world();
     if (auto n = Lit::isa(shape())) {
-        if (Scope::is_free(this, body())) return w.sigma(DefArray(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
+        if (Scope::is_free(this, body()))
+            return w.sigma(DefArray(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
         return w.arr(shape(), body());
     }
     return nullptr;
@@ -168,7 +169,8 @@ const Def* Arr::restructure() {
 const Def* Pack::restructure() {
     auto& w = world();
     if (auto n = Lit::isa(shape())) {
-        if (Scope::is_free(this, body())) return w.tuple(DefArray(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
+        if (Scope::is_free(this, body()))
+            return w.tuple(DefArray(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
         return w.pack(shape(), body());
     }
     return nullptr;

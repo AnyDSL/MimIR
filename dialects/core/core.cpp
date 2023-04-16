@@ -8,7 +8,8 @@
 using namespace thorin;
 
 extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
-    return {"core", [](Normalizers& normalizers) { core::register_normalizers(normalizers); }, nullptr, [](Backends& backends) { backends["ll"] = &ll::emit; }};
+    return {"core", [](Normalizers& normalizers) { core::register_normalizers(normalizers); }, nullptr,
+            [](Backends& backends) { backends["ll"] = &ll::emit; }};
 }
 
 namespace thorin::core {

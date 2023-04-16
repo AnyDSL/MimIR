@@ -35,10 +35,9 @@ void add_passes(World& world, PipelineBuilder& builder, Passes& passes, DefVec& 
 }
 
 extern "C" THORIN_EXPORT thorin::Plugin thorin_get_plugin() {
-    return {"compile",
-            [](Normalizers& normalizers) { compile::register_normalizers(normalizers); },
+    return {"compile", [](Normalizers& normalizers) { compile::register_normalizers(normalizers); },
             [](Passes& passes) {
-                auto debug_phase_flag    = flags_t(Axiom::Base<thorin::compile::debug_phase>);
+                auto debug_phase_flag = flags_t(Axiom::Base<thorin::compile::debug_phase>);
                 assert_emplace(passes, debug_phase_flag, [](World& world, PipelineBuilder& builder, const Def* app) {
                     world.DLOG("Generate debug_phase: {}", app);
                     int level = (int)(app->as<App>()->arg(0)->as<Lit>()->get<u64>());
@@ -47,27 +46,28 @@ extern "C" THORIN_EXPORT thorin::Plugin thorin_get_plugin() {
                 });
 
                 assert_emplace(passes, flags_t(Axiom::Base<thorin::compile::passes_to_phase>),
-                    [&](World& world, PipelineBuilder& builder, const Def* app) {
-                        auto pass_array = app->as<App>()->arg()->projs();
-                        DefVec pass_list;
-                        for (auto pass : pass_array) pass_list.push_back(pass);
-                        add_passes(world, builder, passes, pass_list);
-                    });
+                               [&](World& world, PipelineBuilder& builder, const Def* app) {
+                                   auto pass_array = app->as<App>()->arg()->projs();
+                                   DefVec pass_list;
+                                   for (auto pass : pass_array) pass_list.push_back(pass);
+                                   add_passes(world, builder, passes, pass_list);
+                               });
 
                 assert_emplace(passes, flags_t(Axiom::Base<thorin::compile::phases_to_phase>),
-                    [&](World& world, PipelineBuilder& builder, const Def* app) {
-                        auto phase_array = app->as<App>()->arg()->projs();
-                        DefVec phase_list;
-                        for (auto phase : phase_array) phase_list.push_back(phase);
-                        add_phases(phase_list, world, passes, builder);
-                    });
+                               [&](World& world, PipelineBuilder& builder, const Def* app) {
+                                   auto phase_array = app->as<App>()->arg()->projs();
+                                   DefVec phase_list;
+                                   for (auto phase : phase_array) phase_list.push_back(phase);
+                                   add_phases(phase_list, world, passes, builder);
+                               });
 
-                assert_emplace(passes, flags_t(Axiom::Base<thorin::compile::pipe>), [&](World& world, PipelineBuilder& builder,
-                                                                          const Def* app) {
-                    auto [ax, phases] = collect_args(app);
-                    add_phases(phases, world, passes, builder);
-                });
-                assert_emplace(passes, flags_t(Axiom::Base<thorin::compile::nullptr_pass>),
+                assert_emplace(passes, flags_t(Axiom::Base<thorin::compile::pipe>),
+                               [&](World& world, PipelineBuilder& builder, const Def* app) {
+                                   auto [ax, phases] = collect_args(app);
+                                   add_phases(phases, world, passes, builder);
+                               });
+                assert_emplace(
+                    passes, flags_t(Axiom::Base<thorin::compile::nullptr_pass>),
                     [](World&, PipelineBuilder& builder, const Def* def) { builder.def2pass(def, nullptr); });
 
                 register_pass<compile::partial_eval_pass, PartialEval>(passes);
