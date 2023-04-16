@@ -18,7 +18,7 @@ protected:
         : Def(Node, type, 2, implicit ? 1 : 0) {}
 
 public:
-    bool implicit() const { return flags(); }
+    bool is_implicit() const { return flags(); }
 
     /// @name dom
     ///@{

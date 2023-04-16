@@ -153,7 +153,7 @@ inline unsigned operator!=(Dep d1, unsigned d2) { return unsigned(d1) != d2; }
 
 // clang-format off
 /// Use as mixin to declare setters for Def::loc \& Def::name using a *covariant* return type.
-#define THORIN_SETTERS(T)                                                                                                   \
+#define THORIN_SETTERS_(T)                                                                                                  \
 public:                                                                                                                     \
     template<bool Ow = false> const T* set(Loc l               ) const { if (Ow || !dbg_.loc) dbg_.loc = l;  return this; } \
     template<bool Ow = false>       T* set(Loc l               )       { if (Ow || !dbg_.loc) dbg_.loc = l;  return this; } \
@@ -168,6 +168,12 @@ public:                                                                         
     template<bool Ow = false> const T* set(Dbg d) const { set(d.loc, d.sym); return this; }                                 \
     template<bool Ow = false>       T* set(Dbg d)       { set(d.loc, d.sym); return this; }
 // clang-format on
+
+#ifdef DOXYGEN
+#define THORIN_SETTERS(T) public: // Don't spam each and every sub class of Def with basically the same docs.
+#else
+#define THORIN_SETTERS(T) THORIN_SETTERS_(T)
+#endif
 
 #define THORIN_DEF_MIXIN(T)                                                            \
 public:                                                                                \
@@ -362,33 +368,20 @@ public:
     }
     ///@}
 
-    /// @name External
+    /// @name var
+    ///@{
+    /// Retrieve Var for *mut*ables.
+    /// @see @ref proj
+    const Var* var();
+    THORIN_PROJ(var, )
+    ///@}
+
+    /// @name external
     ///@{
     bool is_external() const { return external_; }
     bool is_internal() const { return !is_external(); } ///< **Not** Def::is_external.
     void make_external();
     void make_internal();
-    ///@}
-
-    /// @name Dbg
-    ///@{
-    std::string unique_name() const; ///< name + "_" + Def::gid
-    THORIN_SETTERS(Def)
-    Dbg dbg() const { return dbg_; }
-    Loc loc() const { return dbg_.loc; }
-    Sym sym() const { return dbg_.sym; }
-    ///@}
-
-    /// @name debug_prefix/suffix
-    ///@{
-    /// Prepends/Appends a prefix/suffix to Def::name - but only in **DEBUG** build.
-#ifndef NDEBUG
-    const Def* debug_prefix(std::string) const;
-    const Def* debug_suffix(std::string) const;
-#else
-    const Def* debug_prefix(std::string) const { return this; }
-    const Def* debug_suffix(std::string) const { return this; }
-#endif
     ///@}
 
     /// @name Casts
@@ -426,12 +419,30 @@ public:
     }
     ///@}
 
-    /// @name var
+    /// @name Dbg Getters
     ///@{
-    /// Retrieve Var for *mut*ables.
-    /// @see @ref proj
-    const Var* var();
-    THORIN_PROJ(var, )
+    Dbg dbg() const { return dbg_; }
+    Loc loc() const { return dbg_.loc; }
+    Sym sym() const { return dbg_.sym; }
+    std::string unique_name() const; ///< name + "_" + Def::gid
+    ///@}
+
+    /// @name Dbg Setters
+    ///@{
+    /// Every subclass `S` of Def has the same setters that return `S*`/`const S*` but will not show up in Doxygen.
+    THORIN_SETTERS_(Def)
+    ///@}
+
+    /// @name debug_prefix/suffix
+    ///@{
+    /// Prepends/Appends a prefix/suffix to Def::name - but only in `Debug` build.
+#ifndef NDEBUG
+    const Def* debug_prefix(std::string) const;
+    const Def* debug_suffix(std::string) const;
+#else
+    const Def* debug_prefix(std::string) const { return this; }
+    const Def* debug_suffix(std::string) const { return this; }
+#endif
     ///@}
 
     /// @name reduce
