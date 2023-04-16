@@ -33,19 +33,3 @@ const Def* op_sum(const Def* T, DefArray defs);
 ///@}
 
 } // namespace thorin::autodiff
-
-namespace thorin {
-
-// TODO much duplication to what Lam/Pi already provides
-/// @name Helpers to work with Continuations
-///@{
-// TODO: replace with closedness checks (scopes) at appropriate places
-bool is_continuation(const Def* e);
-// TODO: change name to returning_continuation
-
-/// Computes the composition `λ x. f(g(x))`.
-/// The given functions `f` and `g` are expected to be in cps.
-const Def* compose_continuation(const Def* f, const Def* g);
-///@}
-
-} // namespace thorin

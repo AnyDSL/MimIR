@@ -49,6 +49,10 @@ Lam* Lam::test(Filter filter, const Def* value, const Def* index, const Def* mat
     return app(filter, world().test(value, index, match, clash), mem);
 }
 
+/*
+ * Helpers
+ */
+
 std::deque<const App*> decurry(const Def* def) {
     std::deque<const App*> apps;
     while (auto app = def->isa<App>()) {
@@ -56,6 +60,42 @@ std::deque<const App*> decurry(const Def* def) {
         def = app->callee();
     }
     return apps;
+}
+
+const Def* compose_continuation(const Def* f, const Def* g) {
+    auto& world = f->world();
+    world.DLOG("compose f (B->C): {} : {}", f, f->type());
+    world.DLOG("compose g (A->B): {} : {}", g, g->type());
+
+    auto F = f->type()->as<Pi>();
+    auto G = g->type()->as<Pi>();
+
+    assert(F->is_cn() && F->is_returning());
+    assert(F->is_cn() && G->is_returning());
+
+    auto A = G->dom(2, 0);
+    auto B = G->ret_dom();
+    auto C = F->ret_dom();
+    // The type check of codom G = dom F is better handled by the application type checking
+
+    world.DLOG("compose f (B->C): {} : {}", f, F);
+    world.DLOG("compose g (A->B): {} : {}", g, G);
+    world.DLOG("  A: {}", A);
+    world.DLOG("  B: {}", B);
+    world.DLOG("  C: {}", C);
+
+    auto H     = world.cn({A, world.cn(C)});
+    auto Hcont = world.cn(B);
+
+    auto h     = world.mut_lam(H)->set("comp_"s + *f->sym() + "_"s + *g->sym());
+    auto hcont = world.mut_lam(Hcont)->set("comp_"s + *f->sym() + "_"s + *g->sym() + "_cont"s);
+
+    h->app(true, g, {h->var((nat_t)0), hcont});
+
+    auto hcont_var = hcont->var(); // Warning: not var(0) => only one var => normalization flattens tuples down here.
+    hcont->app(true, f, {hcont_var, h->var(1) /* ret_var */});
+
+    return h;
 }
 
 } // namespace thorin

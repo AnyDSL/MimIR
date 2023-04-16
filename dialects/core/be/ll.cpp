@@ -361,7 +361,7 @@ void Emitter::emit_epilogue(Lam* lam) {
         }
     } else if (app->callee()->isa<Bot>()) {
         return bb.tail("ret ; bottom: unreachable");
-    } else if (auto callee = app->callee()->isa_mut<Lam>(); callee && callee->is_basicblock()) { // ordinary jump
+    } else if (auto callee = app->callee()->isa_mut(&Lam::is_basicblock)) { // ordinary jump
         for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
             if (auto arg = emit_unsafe(app->arg(i)); !arg.empty()) {
                 auto phi = callee->var(i);

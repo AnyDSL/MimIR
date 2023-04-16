@@ -157,6 +157,8 @@ public:
     THORIN_DEF_MIXIN(App)
 };
 
+/// @name Helpers to work with Functions
+///@{
 /// These are Lam%s that are neither `nullptr`, nor Lam::is_external, nor Lam::is_unset.
 inline Lam* isa_workable(Lam* lam) {
     if (!lam || lam->is_external() || !lam->is_set()) return nullptr;
@@ -171,5 +173,24 @@ inline std::pair<const App*, Lam*> isa_apped_mut_lam(const Def* def) {
 
 /// Yields curried App%s in a flat `std::deque<const App*>`.
 std::deque<const App*> decurry(const Def*);
+
+/// The high level view is:
+/// ```
+/// f: B -> C
+/// g: A -> B
+/// f o g := λ x. f(g(x)) : A -> C
+/// ```
+/// In CPS the types look like:
+/// ```
+/// f:  .Cn[B, .Cn C]
+/// g:  .Cn[A, .Cn B]
+/// h = f o g
+/// h:  .Cn[A, cn C]
+/// h = λ (a ret_h) = g (a, h')
+/// h': .Cn B
+/// h'= λ b = f (b, ret_h)
+/// ```
+const Def* compose_continuation(const Def* f, const Def* g);
+///@}
 
 } // namespace thorin

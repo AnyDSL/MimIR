@@ -222,7 +222,7 @@ Ref AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     world.DLOG("augmented argument <{}> {} : {}", aug_arg->unique_name(), aug_arg, aug_arg->type());
     world.DLOG("augmented callee  <{}> {} : {}", aug_callee->unique_name(), aug_callee, aug_callee->type());
     // TODO: move down to if(!is_cont(callee))
-    if (!is_continuation(callee) && is_continuation(aug_callee)) {
+    if (!callee->type()->isa(&Pi::is_cn) && aug_callee->type()->isa(&Pi::is_cn)) {
         aug_callee = direct::op_cps2ds_dep(aug_callee);
         world.DLOG("wrapped augmented callee: <{}> {} : {}", aug_callee->unique_name(), aug_callee, aug_callee->type());
     }
@@ -238,7 +238,7 @@ Ref AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     }
 
     // continuation (ret, if, ...)
-    if (auto callee_pi = callee->type()->isa<Pi>(); callee_pi && callee_pi->is_basicblock()) {
+    if (callee->type()->isa(&Pi::is_basicblock)) {
         // TODO: check if function (not operator)
         // The original function is an open function (return cont / continuation) of type `Cn[E]`
         // The augmented function `aug_callee` looks like a function but is not really a function has the type `Cn[E,
@@ -255,7 +255,7 @@ Ref AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     }
 
     // ds function
-    if (!is_continuation(callee)) {
+    if (!callee->type()->isa(&Pi::is_cn)) {
         auto aug_app = world.app(aug_callee, aug_arg);
         world.DLOG("Augmented application: <{}> {} : {}", aug_app->unique_name(), aug_app, aug_app->type());
 

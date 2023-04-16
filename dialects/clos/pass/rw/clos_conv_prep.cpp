@@ -39,7 +39,7 @@ void ClosConvPrep::enter() {
         scope_ = std::make_unique<Scope>(curr_mut());
         for (auto def : scope_->bound()) {
             assert(def);
-            if (auto bb_lam = def->isa_mut<Lam>(); bb_lam && bb_lam->is_basicblock()) {
+            if (auto bb_lam = def->isa_mut(&Lam::is_basicblock)) {
                 world().DLOG("scope {} -> {}", bb_lam, curr_mut());
                 lam2fscope_[bb_lam] = curr_mut();
             }
@@ -73,7 +73,7 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
             w.DLOG("found return var from enclosing scope: {}", op);
             return refine(eta_wrap(op, attr::freeBB)->set("free_ret"));
         }
-        if (auto bb_lam = op->isa_mut<Lam>(); bb_lam && bb_lam->is_basicblock() && from_outer_scope(bb_lam)) {
+        if (auto bb_lam = op->isa_mut(&Lam::is_basicblock); bb_lam && from_outer_scope(bb_lam)) {
             w.DLOG("found BB from enclosing scope {}", op);
             return refine(thorin::clos::op(attr::freeBB, op));
         }
@@ -90,7 +90,7 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
         }
 
         if (!isa_callee_br(app, arg, i)) {
-            if (auto bb_lam = op->isa_mut<Lam>(); bb_lam && bb_lam->is_basicblock()) {
+            if (auto bb_lam = op->isa_mut(&Lam::is_basicblock)) {
                 w.DLOG("found firstclass use of BB: {}", bb_lam);
                 return refine(thorin::clos::op(attr::fstclassBB, bb_lam));
             }
