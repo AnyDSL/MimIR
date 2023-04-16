@@ -633,7 +633,10 @@ public:
         if (auto lit = def->isa<Lit>()) return lit->get<T>();
         return {};
     }
-    template<class T = nat_t> static T as(Ref def) { return def->as<Lit>()->get<T>(); }
+    template<class T = nat_t>
+    static T as(Ref def) {
+        return def->as<Lit>()->get<T>();
+    }
     ///@}
 
     template<class T = flags_t>
