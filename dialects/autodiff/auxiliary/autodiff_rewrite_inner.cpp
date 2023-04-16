@@ -238,7 +238,7 @@ Ref AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     }
 
     // continuation (ret, if, ...)
-    if (auto pi = Pi::isa_basicblock(callee->type())) {
+    if (Pi::isa_basicblock(callee->type())) {
         // TODO: check if function (not operator)
         // The original function is an open function (return cont / continuation) of type `Cn[E]`
         // The augmented function `aug_callee` looks like a function but is not really a function has the type `Cn[E,
