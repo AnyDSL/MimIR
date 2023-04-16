@@ -65,7 +65,7 @@ const char* llvm_suffix(const Def* type) {
     }
     error("unsupported foating point type '{}'", type);
 }
-}
+} // namespace
 
 struct BB {
     BB()          = default;
