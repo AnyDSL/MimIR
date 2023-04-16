@@ -138,7 +138,7 @@ bool Checker::assignable(Ref type, Ref val) {
     } else if (auto arr = type->isa<Arr>()) {
         if (!equiv(type->arity(), val_ty->arity())) return false;
 
-        if (auto a = isa_lit(arr->arity())) {
+        if (auto a = Lit::isa(arr->arity())) {
             for (size_t i = 0; i != *a; ++i)
                 if (!assignable(arr->proj(*a, i), val->proj(*a, i))) return false;
 

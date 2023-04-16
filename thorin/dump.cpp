@@ -108,7 +108,7 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
     if (u.dump_gid_ == 2 || (u.dump_gid_ == 1 && !u->isa<Var>() && u->num_ops() != 0)) print(os, "/*{}*/", u->gid());
 
     if (auto type = u->isa<Type>()) {
-        if (auto level = isa_lit(type->level())) {
+        if (auto level = Lit::isa(type->level())) {
             if (level == 0) return print(os, "★");
             if (level == 1) return print(os, "□");
         }

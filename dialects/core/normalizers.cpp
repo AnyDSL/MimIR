@@ -109,11 +109,11 @@ Ref fold(World& world, Ref type, const Def*& a, const Def*& b, Ref mode = {}) {
     if (a->isa<Bot>() || b->isa<Bot>()) return world.bot(type);
 
     if (la && lb) {
-        auto size  = as_lit(Idx::size(a->type()));
+        auto size  = Lit::as(Idx::size(a->type()));
         auto width = Idx::size2bitwidth(size);
         bool nsw = false, nuw = false;
         if constexpr (std::is_same_v<Id, wrap>) {
-            auto m = mode ? as_lit(mode) : 0_n;
+            auto m = mode ? Lit::as(mode) : 0_n;
             nsw    = m & Mode::nsw;
             nuw    = m & Mode::nuw;
         }
@@ -202,8 +202,8 @@ Ref normalize_nat(Ref type, Ref callee, Ref arg) {
     auto [a, b] = arg->projs<2>();
     commute(id, a, b);
 
-    if (auto la = isa_lit(a)) {
-        if (auto lb = isa_lit(b)) {
+    if (auto la = Lit::isa(a)) {
+        if (auto lb = Lit::isa(b)) {
             switch (id) {
                 case nat::add: return world.lit_nat(*la + *lb);
                 case nat::mul: return world.lit_nat(*la * *lb);
@@ -224,8 +224,8 @@ Ref normalize_ncmp(Ref type, Ref callee, Ref arg) {
     auto [a, b] = arg->projs<2>();
     commute(id, a, b);
 
-    if (auto la = isa_lit(a)) {
-        if (auto lb = isa_lit(b)) {
+    if (auto la = Lit::isa(a)) {
+        if (auto lb = Lit::isa(b)) {
             // clang-format off
             switch (id) {
                 case ncmp:: e: return world.lit_nat(*la == *lb);
@@ -269,7 +269,7 @@ Ref normalize_bit1(Ref type, Ref c, Ref a) {
 
     if constexpr (id == bit1::id) return a;
 
-    if (auto ls = isa_lit(s)) {
+    if (auto ls = Lit::isa(s)) {
         switch (id) {
             case bit1::f: return world.lit_idx(*ls, 0);
             case bit1::t: return world.lit_idx(*ls, *ls - 1_u64);
@@ -278,7 +278,7 @@ Ref normalize_bit1(Ref type, Ref c, Ref a) {
         }
 
         assert(id == bit1::neg);
-        if (auto la = isa_lit(a)) return world.lit_idx_mod(*ls, ~*la);
+        if (auto la = Lit::isa(a)) return world.lit_idx_mod(*ls, ~*la);
     }
 
     return world.raw_app(type, callee, a);
@@ -290,7 +290,7 @@ Ref normalize_bit2(Ref type, Ref c, Ref arg) {
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
     auto s      = callee->decurry()->arg();
-    auto ls     = isa_lit(s);
+    auto ls     = Lit::isa(s);
     // TODO cope with wrap around
 
     commute(id, a, b);
@@ -299,8 +299,8 @@ Ref normalize_bit2(Ref type, Ref c, Ref arg) {
     if (auto res = merge_cmps<icmp>(tab, a, b)) return res;
     if (auto res = merge_cmps<math::cmp>(tab, a, b)) return res;
 
-    auto la = isa_lit(a);
-    auto lb = isa_lit(b);
+    auto la = Lit::isa(a);
+    auto lb = Lit::isa(b);
 
     // clang-format off
     switch (id) {
@@ -370,7 +370,7 @@ Ref normalize_shr(Ref type, Ref c, Ref arg) {
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
     auto s      = Idx::size(arg->type());
-    auto ls     = isa_lit(s);
+    auto ls     = Lit::isa(s);
 
     if (auto result = fold<shr, id>(world, type, a, b)) return result;
 
@@ -404,7 +404,7 @@ Ref normalize_wrap(Ref type, Ref c, Ref arg) {
     auto [a, b] = arg->projs<2>();
     auto mode   = callee->arg();
     auto s      = Idx::size(a->type());
-    auto ls     = isa_lit(s);
+    auto ls     = Lit::isa(s);
 
     if (auto result = fold<wrap, id>(world, type, a, b)) return result;
 
@@ -507,8 +507,8 @@ Ref normalize_conv(Ref dst_t, Ref c, Ref x) {
     auto d_t    = dst_t->as<App>();
     auto s      = s_t->arg();
     auto d      = d_t->arg();
-    auto ls     = isa_lit(s);
-    auto ld     = isa_lit(d);
+    auto ls     = Lit::isa(s);
+    auto ld     = Lit::isa(d);
 
     if (s_t == d_t) return x;
     if (x->isa<Bot>()) return world.bot(d_t);
@@ -516,7 +516,7 @@ Ref normalize_conv(Ref dst_t, Ref c, Ref x) {
         if (ls && ld && *ld < *ls) return world.call(conv::u, d, x); // just truncate - we don't care for signedness
     }
 
-    if (auto l = isa_lit(x); l && ls && ld) {
+    if (auto l = Lit::isa(x); l && ls && ld) {
         if constexpr (id == conv::u) {
             if (*ld == 0) return world.lit(d_t, *l); // I64
             return world.lit(d_t, *l % *ld);
@@ -589,8 +589,8 @@ Ref normalize_trait(Ref nat, Ref callee, Ref type) {
         u64 offset = 0;
         u64 align  = 1;
         for (auto t : type->ops()) {
-            auto a = isa_lit(core::op(trait::align, t));
-            auto s = isa_lit(core::op(trait::size, t));
+            auto a = Lit::isa(core::op(trait::align, t));
+            auto s = Lit::isa(core::op(trait::size, t));
             if (!a || !s) goto out;
 
             align  = std::max(align, *a);
@@ -622,8 +622,8 @@ Ref normalize_zip(Ref type, Ref c, Ref arg) {
     auto is_os                 = callee->arg();
     auto [n_i, Is, n_o, Os, f] = is_os->projs<5>();
     auto [r, s]                = callee->decurry()->args<2>();
-    auto lr                    = isa_lit(r);
-    auto ls                    = isa_lit(s);
+    auto lr                    = Lit::isa(r);
+    auto ls                    = Lit::isa(s);
 
     // TODO commute
     // TODO reassociate
@@ -632,12 +632,12 @@ Ref normalize_zip(Ref type, Ref c, Ref arg) {
 
     if (lr && ls && *lr == 1 && *ls == 1) return w.app(f, arg);
 
-    if (auto l_in = isa_lit(n_i)) {
+    if (auto l_in = Lit::isa(n_i)) {
         auto args = arg->projs(*l_in);
 
         if (lr && std::ranges::all_of(args, [](Ref arg) { return arg->isa<Tuple, Pack>(); })) {
             auto shapes = s->projs(*lr);
-            auto s_n    = isa_lit(shapes.front());
+            auto s_n    = Lit::isa(shapes.front());
 
             if (s_n) {
                 DefArray elems(*s_n, [&, f = f](size_t s_i) {

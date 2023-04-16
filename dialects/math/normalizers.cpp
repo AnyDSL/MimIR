@@ -195,7 +195,7 @@ Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref 
     // build mode for all new ops by using the least upper bound of all involved apps
     nat_t mode      = Mode::bot;
     auto check_mode = [&](const App* app) {
-        auto app_m = isa_lit(app->arg(0));
+        auto app_m = Lit::isa(app->arg(0));
         if (!app_m || !(*app_m & Mode::reassoc)) return false;
         mode &= *app_m; // least upper bound
         return true;
@@ -222,7 +222,7 @@ Ref normalize_arith(Ref type, Ref c, Ref arg) {
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
     auto mode   = callee->arg();
-    auto lm     = isa_lit(mode);
+    auto lm     = Lit::isa(mode);
     auto w      = isa_f(a->type());
 
     if (auto result = fold<arith, id>(world, type, a, b)) return result;
@@ -287,7 +287,7 @@ Ref normalize_extrema(Ref type, Ref c, Ref arg) {
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
     auto m      = callee->arg();
-    auto lm     = isa_lit(m);
+    auto lm     = Lit::isa(m);
 
     if (auto lit = fold<extrema, id>(world, type, a, b)) return lit;
 
@@ -372,13 +372,13 @@ Ref normalize_conv(Ref dst_t, Ref c, Ref x) {
     auto d_t    = dst_t->as<App>();
     auto s      = s_t->arg();
     auto d      = d_t->arg();
-    auto ls     = isa_lit(s);
-    auto ld     = isa_lit(d);
+    auto ls     = Lit::isa(s);
+    auto ld     = Lit::isa(d);
 
     if (s_t == d_t) return x;
     if (x->isa<Bot>()) return world.bot(d_t);
 
-    if (auto l = isa_lit(x); l && ls && ld) {
+    if (auto l = Lit::isa(x); l && ls && ld) {
         constexpr bool sf     = id == conv::f2f || id == conv::f2s || id == conv::f2u;
         constexpr bool df     = id == conv::f2f || id == conv::s2f || id == conv::u2f;
         constexpr nat_t min_s = sf ? 16 : 1;

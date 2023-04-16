@@ -23,8 +23,8 @@ const Sigma* convert(const TBound<up>* b) {
         nat_t size  = 0;
 
         for (auto op : b->ops()) {
-            auto a = isa_lit(w.call(trait::align, op));
-            auto s = isa_lit(w.call(trait::size, op));
+            auto a = Lit::isa(w.call(trait::align, op));
+            auto s = Lit::isa(w.call(trait::size, op));
             if (!a || !s) return nullptr;
 
             align = std::max(align, *a);

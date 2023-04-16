@@ -158,7 +158,7 @@ const Sigma* Sigma::restructure() {
 
 const Def* Arr::restructure() {
     auto& w = world();
-    if (auto n = isa_lit(shape())) {
+    if (auto n = Lit::isa(shape())) {
         if (is_free(this, body())) return w.sigma(DefArray(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
         return w.arr(shape(), body());
     }
@@ -167,7 +167,7 @@ const Def* Arr::restructure() {
 
 const Def* Pack::restructure() {
     auto& w = world();
-    if (auto n = isa_lit(shape())) {
+    if (auto n = Lit::isa(shape())) {
         if (is_free(this, body())) return w.tuple(DefArray(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
         return w.pack(shape(), body());
     }
@@ -254,7 +254,7 @@ bool Def::is_term() const {
     if (auto t = type()) {
         if (auto u = t->type()) {
             if (auto type = u->isa<Type>()) {
-                if (auto level = isa_lit(type->level())) return *level == 0;
+                if (auto level = Lit::isa(type->level())) return *level == 0;
             }
         }
     }
@@ -270,7 +270,7 @@ const Def* Def::arity() const {
 
 std::optional<nat_t> Def::isa_lit_arity() const {
     if (auto sigma  = isa<Sigma>()) return sigma->num_ops();
-    if (auto arr    = isa<Arr  >()) return isa_lit(arr->shape());
+    if (auto arr    = isa<Arr  >()) return Lit::isa(arr->shape());
     if (auto t = type())            return t->isa_lit_arity();
     return 1;
 }
@@ -410,7 +410,7 @@ const Def* Def::proj(nat_t a, nat_t i) const {
     if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {
         for (auto u : uses()) {
             if (auto ex = u->isa<Extract>(); ex && ex->tuple() == this) {
-                if (auto index = isa_lit(ex->index()); index && *index == i) return ex;
+                if (auto index = Lit::isa(ex->index()); index && *index == i) return ex;
             }
         }
 
@@ -434,7 +434,7 @@ Ref Idx::size(Ref def) {
 
 std::optional<nat_t> Idx::size2bitwidth(const Def* size) {
     if (size->isa<Top>()) return 64;
-    if (auto s = isa_lit(size)) return size2bitwidth(*s);
+    if (auto s = Lit::isa(size)) return size2bitwidth(*s);
     return {};
 }
 

@@ -70,10 +70,6 @@ private:
 };
 
 using NormalizeFn = Ref (*)(Ref, Ref, Ref);
-template<class T = u64>
-std::optional<T> isa_lit(const Def*);
-template<class T = u64>
-T as_lit(const Def* def);
 
 //------------------------------------------------------------------------------
 
@@ -625,6 +621,24 @@ private:
         : Def(Node, type, Defs{}, val) {}
 
 public:
+    using Def::as;
+    using Def::isa;
+
+    /// @name Casts
+    ///@{
+    /// @see @ref cast_lit
+    template<class T = nat_t>
+    static std::optional<T> isa(Ref def) {
+        if (!def) return {};
+        if (auto lit = def->isa<Lit>()) return lit->get<T>();
+        return {};
+    }
+
+    template<class T = nat_t> static T as(Ref def) { return def->as<Lit>()->get<T>(); }
+    template<class T = nat_t> static T as_(Ref def) { return as<T>(def); }
+    template<class T = nat_t> static std::optional<T> isa_(Ref def) { return isa_<T>(def); }
+    ///@}
+
     template<class T = flags_t>
     T get() const {
         static_assert(sizeof(T) <= 8);
@@ -633,22 +647,6 @@ public:
 
     THORIN_DEF_MIXIN(Lit)
 };
-
-/// @name Cast for Lit
-///@{
-/// @see @ref cast_lit
-template<class T>
-std::optional<T> isa_lit(const Def* def) {
-    if (def == nullptr) return {};
-    if (auto lit = def->isa<Lit>()) return lit->get<T>();
-    return {};
-}
-
-template<class T>
-T as_lit(const Def* def) {
-    return def->as<Lit>()->get<T>();
-}
-///@}
 
 class Nat : public Def {
 private:

@@ -96,7 +96,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
         return map(def, w.sigma({pi, env_type}));
     } else if (auto proj = def->isa<Extract>()) {
         auto tuple = proj->tuple();
-        auto idx   = isa_lit(proj->index());
+        auto idx   = Lit::isa(proj->index());
         if (isa_clos_type(tuple->type())) {
             assert(idx && idx <= 2 && "unknown proj from closure tuple");
             if (*idx == 0)

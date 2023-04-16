@@ -207,7 +207,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         // HACK to rewrite a retvar that is defined in an enclosing lambda
         // If we put external bb's into the env, this should never happen
         auto new_lam = make_stub(lam, subst).fn;
-        auto new_idx = skip_env(as_lit(var->index()));
+        auto new_idx = skip_env(Lit::as(var->index()));
         return map(new_lam->var(new_idx));
     }
 

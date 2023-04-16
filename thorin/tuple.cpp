@@ -34,7 +34,7 @@ bool is_unit(const Def* def) { return def->type() == def->world().sigma(); }
 std::string tuple2str(const Def* def) {
     if (def == nullptr) return {};
 
-    auto array = def->projs(as_lit(def->arity()), as_lit<nat_t>);
+    auto array = def->projs(Lit::as(def->arity()), Lit::as_<nat_t>);
     return std::string(array.begin(), array.end());
 }
 
@@ -63,7 +63,7 @@ const Def* unflatten(Defs defs, const Def* type, bool flatten_muts) {
     return def;
 }
 
-const Def* unflatten(const Def* def, const Def* type) { return unflatten(def->projs(as_lit(def->arity())), type); }
+const Def* unflatten(const Def* def, const Def* type) { return unflatten(def->projs(Lit::as(def->arity())), type); }
 
 DefArray merge(const Def* def, Defs defs) {
     return DefArray(defs.size() + 1, [&](auto i) { return i == 0 ? def : defs[i - 1]; });

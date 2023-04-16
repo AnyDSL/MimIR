@@ -175,7 +175,7 @@ std::string Emitter::convert(const Def* type) {
     } else if (auto arr = type->isa<Arr>()) {
         auto t_elem = convert(arr->body());
         u64 size    = 0;
-        if (auto arity = isa_lit(arr->shape())) size = *arity;
+        if (auto arity = Lit::isa(arr->shape())) size = *arity;
         print(s, "[{} x {}]", size, t_elem);
     } else if (auto pi = type->isa<Pi>()) {
         assert(Pi::isa_returning(pi) && "should never have to convert type of BB");
@@ -518,7 +518,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto tuple = def->isa<Tuple>()) {
         return emit_tuple(tuple);
     } else if (auto pack = def->isa<Pack>()) {
-        if (auto lit = isa_lit(pack->body()); lit && *lit == 0) return "zeroinitializer";
+        if (auto lit = Lit::isa(pack->body()); lit && *lit == 0) return "zeroinitializer";
         return emit_tuple(pack);
     } else if (auto extract = def->isa<Extract>()) {
         auto tuple = extract->tuple();
@@ -547,7 +547,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         auto t_tup = convert(tuple->type());
-        if (isa_lit(index)) {
+        if (Lit::isa(index)) {
             assert(!v_tup.empty());
             return bb.assign(name, "extractvalue {} {}, {}", t_tup, v_tup, v_idx);
         } else {
@@ -636,7 +636,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto wrap = match<core::wrap>(def)) {
         auto [a, b] = wrap->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(wrap->type());
-        auto mode   = as_lit(wrap->decurry()->arg());
+        auto mode   = Lit::as(wrap->decurry()->arg());
 
         switch (wrap.id()) {
             case core::wrap::add: op = "add"; break;
@@ -709,7 +709,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t_src        = convert(bitcast->arg()->type());
         auto t_dst        = convert(bitcast->type());
 
-        if (auto lit = isa_lit(bitcast->arg()); lit && *lit == 0) return "zeroinitializer";
+        if (auto lit = Lit::isa(bitcast->arg()); lit && *lit == 0) return "zeroinitializer";
         // clang-format off
         if (src_type_ptr && dst_type_ptr) return bb.assign(name,  "bitcast {} {} to {}", t_src, v_src, t_dst);
         if (src_type_ptr)                 return bb.assign(name, "ptrtoint {} {} to {}", t_src, v_src, t_dst);
@@ -739,7 +739,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t_ptr     = convert(ptr->type());
         if (pointee->isa<Sigma>())
             return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, i32 {}", t_pointee, t_ptr, v_ptr,
-                             as_lit(i));
+                             Lit::as(i));
 
         assert(pointee->isa<Arr>());
         auto [v_i, t_i] = emit_gep_index(i);
@@ -810,7 +810,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto arith = match<math::arith>(def)) {
         auto [a, b] = arith->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(arith->type());
-        auto mode   = as_lit(arith->decurry()->arg());
+        auto mode   = Lit::as(arith->decurry()->arg());
 
         switch (arith.id()) {
             case math::arith::add: op = "fadd"; break;

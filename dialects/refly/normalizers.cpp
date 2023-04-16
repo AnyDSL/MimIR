@@ -44,7 +44,7 @@ Ref normalize_reflect(Ref, Ref, Ref arg) { return do_reflect(arg); }
 Ref normalize_refine(Ref type, Ref callee, Ref arg) {
     auto& world       = arg->world();
     auto [code, i, x] = arg->projs<3>();
-    if (auto l = isa_lit(i)) {
+    if (auto l = Lit::isa(i)) {
         auto def = do_reflect(code);
         return do_reify(def->refine(*l, do_reflect(x)));
     }

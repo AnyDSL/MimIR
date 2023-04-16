@@ -146,21 +146,21 @@ void foo(Def* def) { // note the lack of "const" here
 #### Matching Literals {#cast_lit}
 
 Often, you want to match a [Lit](@ref thorin::Lit)eral and grab its content.
-You can use thorin::isa_lit / thorin::as_lit for this:
+You can use thorin::Lit::isa / thorin::Lit::as for this:
 ```cpp
 void foo(Ref def) {
-    if (auto lit = isa_lit(def)) {
+    if (auto lit = Lit::isa(def)) {
         // lit is of type "std::optional<u64>"
         // It's your responsibility that the grabbed value makes sense as u64.
     }
-    if (auto lit = isa_lit<f32>(def)) {
+    if (auto lit = Lit::isa<f32>(def)) {
         // lit is of type "std::optional<f32>"
         // It's your responsibility that the grabbed value makes sense as f32.
     }
 
     // asserts if def is not a Lit.
-    auto lu64 = as_lit(def);
-    auto lf32 = as_lit<f32>(def);
+    auto lu64 = Lit::as(def);
+    auto lf32 = Lit::as<f32>(def);
 }
 ```
 
@@ -173,8 +173,8 @@ The following table summarizes all important casts:
 | `def->isa<Lam>()`     <br> `def->as<Lam>()`     | `const Lam*`                                                                                                                          | [Lam](@ref thorin::Lam)               |
 | `def->isa_imm<Lam>()` <br> `def->as_imm<Lam>()` | `const Lam*`                                                                                                                          | **immutable** [Lam](@ref thorin::Lam) |
 | `def->isa_mut<Lam>()` <br> `def->as_mut<Lam>()` | `Lam*`                                                                                                                                | **mutable** [Lam](@ref thorin::Lam)   |
-| `isa_lit(def)`        <br> `as_lit(def)`        | [std::optional](https://en.cppreference.com/w/cpp/utility/optional)`<`[nat_t](@ref thorin::nat_t)`>` <br> [nat_t](@ref thorin::nat_t) | [Lit](@ref thorin::Lit)               |
-| `isa_lit<f32>(def)`   <br> `as_lit<f32>(def)`   | [std::optional](https://en.cppreference.com/w/cpp/utility/optional)`<`[f32](@ref thorin::f32)`>`     <br> [f32](@ref thorin::f32)     | [Lit](@ref thorin::Lit)               |
+| `Lit::isa(def)`        <br> `Lit::as(def)`        | [std::optional](https://en.cppreference.com/w/cpp/utility/optional)`<`[nat_t](@ref thorin::nat_t)`>` <br> [nat_t](@ref thorin::nat_t) | [Lit](@ref thorin::Lit)               |
+| `Lit::isa<f32>(def)`   <br> `Lit::as<f32>(def)`   | [std::optional](https://en.cppreference.com/w/cpp/utility/optional)`<`[f32](@ref thorin::f32)`>`     <br> [f32](@ref thorin::f32)     | [Lit](@ref thorin::Lit)               |
 
 ### Matching Axioms {#cast_axiom}
 

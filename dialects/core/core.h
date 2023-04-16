@@ -34,7 +34,7 @@ inline Ref op(pe o, Ref def) {
 }
 inline Ref op_wminus(VMode m, Ref a) {
     World& w = a->world();
-    auto s   = as_lit(w.iinfer(a));
+    auto s   = Lit::as(w.iinfer(a));
     return w.call(wrap::sub, mode(w, m), Defs{w.lit_idx(s, 0), a});
 }
 ///@}

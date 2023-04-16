@@ -48,7 +48,7 @@ inline Ref mode(World& w, VMode m) {
 template<nat_t P, nat_t E>
 inline auto match_f(Ref def) {
     if (auto f_ty = match<F>(def)) {
-        if (auto [p, e] = f_ty->arg()->projs<2>(isa_lit<nat_t>); p && e && *p == P && *e == E) return f_ty;
+        if (auto [p, e] = f_ty->arg()->projs<2>(Lit::isa_<nat_t>); p && e && *p == P && *e == E) return f_ty;
     }
     return Match<F, App>();
 }
@@ -57,7 +57,7 @@ inline auto match_f32(Ref def) { return match_f<23, 8>(def); }
 inline auto match_f64(Ref def) { return match_f<52, 11>(def); }
 inline std::optional<nat_t> isa_f(Ref def) {
     if (auto f_ty = match<F>(def)) {
-        if (auto [p, e] = f_ty->arg()->projs<2>(isa_lit<nat_t>); p && e) {
+        if (auto [p, e] = f_ty->arg()->projs<2>(Lit::isa_<nat_t>); p && e) {
             if (*p == 10 && e == 5) return 16;
             if (*p == 23 && e == 8) return 32;
             if (*p == 52 && e == 11) return 64;

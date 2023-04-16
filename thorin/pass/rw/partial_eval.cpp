@@ -9,7 +9,7 @@ Ref PartialEval::rewrite(Ref def) {
         if (lam->filter() == world().lit_ff()) return def; // optimize this common case
 
         auto [filter, body] = lam->reduce(app->arg()).to_array<2>();
-        if (auto f = isa_lit<bool>(filter); f && *f) {
+        if (auto f = Lit::isa<bool>(filter); f && *f) {
             world().DLOG("PE {} within {}", lam, curr_mut());
             return body;
         }
