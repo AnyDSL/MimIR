@@ -170,9 +170,9 @@ public:                                                                         
 // clang-format on
 
 #ifdef DOXYGEN
-#define THORIN_SETTERS(T) public: // Don't spam each and every sub class of Def with basically the same docs.
+#    define THORIN_SETTERS(T) public: // Don't spam each and every sub class of Def with basically the same docs.
 #else
-#define THORIN_SETTERS(T) THORIN_SETTERS_(T)
+#    define THORIN_SETTERS(T) THORIN_SETTERS_(T)
 #endif
 
 #define THORIN_DEF_MIXIN(T)                                                            \
