@@ -146,7 +146,7 @@ void foo(Def* def) { // note the lack of "const" here
 #### Matching Literals {#cast_lit}
 
 Often, you want to match a [Lit](@ref thorin::Lit)eral and grab its content.
-You can use thorin::Lit::isa / thorin::Lit::as for this:
+You can use [Lit::isa](@ref thorin::Lit::isa)/[Lit::as](@ref thorin::Lit::as) for this:
 ```cpp
 void foo(Ref def) {
     if (auto lit = Lit::isa(def)) {
@@ -175,6 +175,26 @@ The following table summarizes all important casts:
 | `def->isa_mut<Lam>()` <br> `def->as_mut<Lam>()` | `Lam*`                                                                                                                                | **mutable** [Lam](@ref thorin::Lam)   |
 | `Lit::isa(def)`        <br> `Lit::as(def)`        | [std::optional](https://en.cppreference.com/w/cpp/utility/optional)`<`[nat_t](@ref thorin::nat_t)`>` <br> [nat_t](@ref thorin::nat_t) | [Lit](@ref thorin::Lit)               |
 | `Lit::isa<f32>(def)`   <br> `Lit::as<f32>(def)`   | [std::optional](https://en.cppreference.com/w/cpp/utility/optional)`<`[f32](@ref thorin::f32)`>`     <br> [f32](@ref thorin::f32)     | [Lit](@ref thorin::Lit)               |
+
+#### Further Casts
+
+There are also some additional checks available that usually come as `static` methods and either return a pointer or `Ref` to the checked entity or `nullptr`.
+Here are some examples:
+```cpp
+void foo(Ref def) {
+    if (auto size = Idx::size(def)) {
+        // def = .Idx size
+    }
+
+    if (auto lam = Lam::isa_mut_cn(def)) {
+        // def isa mutable Lam of type .Cn T
+    }
+
+    if (auto pi = Pi::isa_basicblock(def)) {
+        // def is a Pi whose co-domain is bottom and which is not returning
+    }
+```
+
 
 ### Matching Axioms {#cast_axiom}
 

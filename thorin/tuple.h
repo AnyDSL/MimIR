@@ -4,6 +4,8 @@
 
 namespace thorin {
 
+/// A [dependent tuple type](https://en.wikipedia.org/wiki/Dependent_type#%CE%A3_type).
+/// @sa Tuple, Arr, Pack
 class Sigma : public Def {
 private:
     Sigma(const Def* type, Defs ops)
@@ -29,6 +31,7 @@ public:
 };
 
 /// Data constructor for a Sigma.
+/// @sa Sigma, Arr, Pack
 class Tuple : public Def {
 private:
     Tuple(const Def* type, Defs args)
@@ -37,6 +40,9 @@ private:
     THORIN_DEF_MIXIN(Tuple)
 };
 
+/// A (possibly paramterized) Arr%ay.
+/// Arr%ays are usually homogenous but they can be *inhomogenous* as well: `«i: N; T#i»'
+/// @sa Sigma, Tuple, Pack
 class Arr : public Def {
 private:
     Arr(const Def* type, const Def* shape, const Def* body)
@@ -66,6 +72,8 @@ public:
     Arr* stub_(World&, Ref) override;
 };
 
+/// A (possibly paramterized) Tuple.
+/// @sa Sigma, Tuple, Arr
 class Pack : public Def {
 private:
     Pack(const Def* type, const Def* body)
@@ -93,7 +101,7 @@ public:
     Pack* stub_(World&, Ref) override;
 };
 
-/// Extracts from a Sigma or Arr-typed Extract::tuple the element at position Extract::index.
+/// Extracts from a Sigma or Arr%ay-typed Extract::tuple the element at position Extract::index.
 class Extract : public Def {
 private:
     Extract(const Def* type, const Def* tuple, const Def* index)

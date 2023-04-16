@@ -6,7 +6,8 @@
 
 namespace thorin {
 
-/// A function type AKA Pi type.
+/// A [dependent function type](https://en.wikipedia.org/wiki/Dependent_type#%CE%A0_type).
+/// @sa Lam
 class Pi : public Def {
 protected:
     /// Constructor for an *immutable* Pi.
@@ -21,12 +22,14 @@ public:
 
     /// @name dom
     ///@{
+    /// @see @ref proj
     Ref dom() const { return op(0); }
     THORIN_PROJ(dom, const)
     ///@}
 
     /// @name codom
     ///@{
+    /// @see @ref proj
     Ref codom() const { return op(1); }
     THORIN_PROJ(codom, const)
     ///@}
@@ -72,6 +75,8 @@ public:
     Pi* stub_(World&, Ref) override;
 };
 
+/// A function.
+/// @sa Pi
 class Lam : public Def {
 private:
     Lam(const Pi* pi, const Def* filter, const Def* body)
@@ -80,19 +85,26 @@ private:
         : Def(Node, pi, 2, 0) {}
 
 public:
-    /// @name type
-    ///@{
-    const Pi* type() const { return Def::type()->as<Pi>(); }
-    Ref dom() const { return type()->dom(); }
-    THORIN_PROJ(dom, const)
-    Ref codom() const { return type()->codom(); }
-    THORIN_PROJ(codom, const)
-    ///@}
-
-    /// @name ops
+    /// @name ops & type
     ///@{
     Ref filter() const { return op(0); }
     Ref body() const { return op(1); }
+    const Pi* type() const { return Def::type()->as<Pi>(); }
+    ///@}
+
+    /// @name dom
+    ///@{
+    ///@{
+    /// @see @ref proj
+    Ref dom() const { return type()->dom(); }
+    THORIN_PROJ(dom, const)
+    ///@}
+
+    /// @name codom
+    ///@{
+    /// @see @ref proj
+    Ref codom() const { return type()->codom(); }
+    THORIN_PROJ(codom, const)
     ///@}
 
     /// @name Continuations
@@ -102,9 +114,9 @@ public:
     static const Lam* isa_cn(Ref d) { return Pi::isa_cn(d->type()) ? d->isa<Lam>() : nullptr; }
     static const Lam* isa_basicblock(Ref d) { return Pi::isa_basicblock(d->type()) ? d->isa<Lam>() : nullptr; }
     static const Lam* isa_returning(Ref d)  { return Pi::isa_returning (d->type()) ? d->isa<Lam>() : nullptr; }
-    static Lam* isa_mut_cn(Ref d) { return isa_cn(d) ? d->isa_mut<Lam>() : nullptr; }
-    static Lam* isa_mut_basicblock(Ref d) { return isa_basicblock(d) ? d->isa_mut<Lam>(): nullptr; }
-    static Lam* isa_mut_returning(Ref d)  { return isa_returning (d) ? d->isa_mut<Lam>(): nullptr; }
+    static Lam* isa_mut_cn(Ref d) { return isa_cn(d) ? d->isa_mut<Lam>() : nullptr; }                ///< Only for mutables.
+    static Lam* isa_mut_basicblock(Ref d) { return isa_basicblock(d) ? d->isa_mut<Lam>(): nullptr; } ///< Only for mutables.
+    static Lam* isa_mut_returning(Ref d)  { return isa_returning (d) ? d->isa_mut<Lam>(): nullptr; } ///< Only for mutables.
     // clang-format on
     ///@}
 
@@ -165,11 +177,16 @@ private:
     }
 
 public:
-    /// @name ops
+    /// @name callee
     ///@{
     const Def* callee() const { return op(0); }
     const App* decurry() const { return callee()->as<App>(); } ///< Returns App::callee again as App.
     const Pi* callee_type() const { return callee()->type()->as<Pi>(); }
+    ///@}
+
+    /// @name arg
+    ///@{
+    /// @see @ref proj
     const Def* arg() const { return op(1); }
     THORIN_PROJ(arg, const)
     ///@}

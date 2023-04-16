@@ -309,6 +309,7 @@ public:
     ///@}
 
     /// @name proj
+    /// @anchor proj
     ///@{
     /// Splits this Def via Extract%s or directly accessing the Def::ops in the case of Sigma%s or Arr%ays.
 
@@ -429,6 +430,7 @@ public:
     /// @name var
     ///@{
     /// Retrieve Var for *mut*ables.
+    /// @see @ref proj
     const Var* var();
     THORIN_PROJ(var, )
     ///@}
