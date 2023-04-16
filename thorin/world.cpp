@@ -18,7 +18,7 @@
 
 #include "thorin/analyses/scope.h"
 #include "thorin/util/array.h"
-#include "thorin/util/container.h"
+#include "thorin/util/util.h"
 
 namespace thorin {
 

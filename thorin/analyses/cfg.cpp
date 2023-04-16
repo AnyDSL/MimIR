@@ -9,7 +9,7 @@
 #include "thorin/analyses/domtree.h"
 #include "thorin/analyses/looptree.h"
 #include "thorin/analyses/scope.h"
-#include "thorin/util/container.h"
+#include "thorin/util/util.h"
 
 namespace thorin {
 

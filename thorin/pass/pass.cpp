@@ -1,7 +1,7 @@
 #include "thorin/pass/pass.h"
 
 #include "thorin/phase/phase.h"
-#include "thorin/util/container.h"
+#include "thorin/util/util.h"
 
 namespace thorin {
 

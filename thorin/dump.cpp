@@ -5,7 +5,7 @@
 #include "thorin/analyses/deptree.h"
 #include "thorin/fe/tok.h"
 #include "thorin/util/assert.h"
-#include "thorin/util/container.h"
+#include "thorin/util/util.h"
 
 using namespace std::literals;
 

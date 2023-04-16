@@ -14,6 +14,14 @@ void commute(Id id, const Def*& a, const Def*& b) {
 }
 
 namespace {
+
+// TODO I guess we can do that with C++20 <bit>
+u64 pad(u64 offset, u64 align) {
+    auto mod = offset % align;
+    if (mod != 0) offset += align - mod;
+    return offset;
+}
+
 /*
  * Fold
  */
@@ -556,13 +564,6 @@ Ref normalize_bitcast(Ref dst_t, Ref callee, Ref src) {
     }
 
     return world.raw_app(dst_t, callee, src);
-}
-
-// TODO I guess we can do that with C++20 <bit>
-inline u64 pad(u64 offset, u64 align) {
-    auto mod = offset % align;
-    if (mod != 0) offset += align - mod;
-    return offset;
 }
 
 // TODO this currently hard-codes x86_64 ABI

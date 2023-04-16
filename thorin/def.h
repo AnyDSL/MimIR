@@ -7,10 +7,10 @@
 
 #include "thorin/util/array.h"
 #include "thorin/util/cast.h"
-#include "thorin/util/container.h"
 #include "thorin/util/hash.h"
 #include "thorin/util/loc.h"
 #include "thorin/util/print.h"
+#include "thorin/util/util.h"
 
 // clang-format off
 #define THORIN_NODE(m)                                                        \
