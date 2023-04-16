@@ -30,7 +30,7 @@ bool is_top_level(Lam* lam) {
     LamMap<bool> top;
     return is_top_level(top, lam);
 }
-}
+} // namespace
 
 Ref LamSpec::rewrite(Ref def) {
     if (auto i = old2new_.find(def); i != old2new_.end()) return i->second;

@@ -29,12 +29,11 @@ char32_t encode(std::istream& is) {
         default:
             result = utf8::first(result, n);
 
-            for (size_t i = 1; i != n; ++i) {
+            for (size_t i = 1; i != n; ++i)
                 if (auto x = utf8::is_valid(is.get()))
                     result = utf8::append(result, *x);
                 else
                     return Err;
-            }
     }
 
     return result;
