@@ -70,10 +70,10 @@ void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
             if (auto& subs = ax.subs; !subs.empty()) {
                 tab.print(h, "template<{}>\nRef {}(Ref, Ref, Ref);\n\n", ax.tag, ax.normalizer);
             } else {
-                tab.print(h, "Ref {}(Ref, Ref, Ref);\n\n", ax.normalizer);
+                tab.print(h, "Ref {}(Ref, Ref, Ref);\n", ax.normalizer);
             }
         }
-        tab.print(h, "///@}}\n");
+        tab.print(h, "///@}}\n\n");
     }
     // clang-format on
 

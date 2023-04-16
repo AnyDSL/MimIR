@@ -319,7 +319,7 @@ public:
     ///@}
 
     /// @name Extract
-    /// @sa core::extract_unsafe
+    /// @see core::extract_unsafe
     ///@{
     Ref extract(Ref d, Ref i);
     Ref extract(Ref d, u64 a, u64 i) { return extract(d, lit_idx(a, i)); }
@@ -331,7 +331,7 @@ public:
     ///@}
 
     /// @name Insert
-    /// @sa core::insert_unsafe
+    /// @see core::insert_unsafe
     ///@{
     Ref insert(Ref d, Ref i, Ref val);
     Ref insert(Ref d, u64 a, u64 i, Ref val) { return insert(d, lit_idx(a, i), val); }

@@ -146,12 +146,12 @@ template TExt  <true >* TExt  <true >::stub_(World&, Ref);
  */
 
 const Pi* Pi::restructure() {
-    if (!is_free(this, codom())) return world().pi(dom(), codom());
+    if (!Scope::is_free(this, codom())) return world().pi(dom(), codom());
     return nullptr;
 }
 
 const Sigma* Sigma::restructure() {
-    if (std::ranges::none_of(ops(), [this](auto op) { return is_free(this, op); }))
+    if (std::ranges::none_of(ops(), [this](auto op) { return Scope::is_free(this, op); }))
         return static_cast<const Sigma*>(*world().sigma(ops()));
     return nullptr;
 }
@@ -159,7 +159,7 @@ const Sigma* Sigma::restructure() {
 const Def* Arr::restructure() {
     auto& w = world();
     if (auto n = Lit::isa(shape())) {
-        if (is_free(this, body())) return w.sigma(DefArray(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
+        if (Scope::is_free(this, body())) return w.sigma(DefArray(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
         return w.arr(shape(), body());
     }
     return nullptr;
@@ -168,7 +168,7 @@ const Def* Arr::restructure() {
 const Def* Pack::restructure() {
     auto& w = world();
     if (auto n = Lit::isa(shape())) {
-        if (is_free(this, body())) return w.tuple(DefArray(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
+        if (Scope::is_free(this, body())) return w.tuple(DefArray(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
         return w.pack(shape(), body());
     }
     return nullptr;
@@ -444,18 +444,5 @@ std::optional<nat_t> Idx::size2bitwidth(const Def* size) {
 
 const App* Global::type() const { return Def::type()->as<App>(); }
 const Def* Global::alloced_type() const { return type()->arg(0); }
-
-std::pair<const Def*, std::vector<const Def*>> collect_args(const Def* def) {
-    std::vector<const Def*> args;
-    if (auto app = def->isa<App>()) {
-        auto callee               = app->callee();
-        auto arg                  = app->arg();
-        auto [inner_callee, args] = collect_args(callee);
-        args.push_back(arg);
-        return {inner_callee, args};
-    } else {
-        return {def, args};
-    }
-}
 
 } // namespace thorin

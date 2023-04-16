@@ -4,22 +4,15 @@
 
 namespace thorin::core {
 
-// TODO move to normalize.h
-/// Swap Lit to left - or smaller gid, if no lit present.
-template<class Id>
-void commute(Id id, const Def*& a, const Def*& b) {
-    if (is_commutative(id)) {
-        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>())) std::swap(a, b);
-    }
-}
-
 namespace {
 
-// TODO I guess we can do that with C++20 <bit>
-u64 pad(u64 offset, u64 align) {
-    auto mod = offset % align;
-    if (mod != 0) offset += align - mod;
-    return offset;
+// TODO move to normalize.h or so?
+// Swap Lit to left - or smaller gid, if no lit present.
+template<class Id>
+void commute(Id id, const Def*& a, const Def*& b) {
+    if (::thorin::is_commutative(id)) {
+        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>())) std::swap(a, b);
+    }
 }
 
 /*
@@ -109,7 +102,7 @@ Res fold(u64 a, u64 b, [[maybe_unused]] bool nsw, [[maybe_unused]] bool nuw) {
 }
 // clang-format on
 
-/// @attention Note that @p a and @p b are passed by reference as fold also commutes if possible. @sa commute().
+// Note that @p a and @p b are passed by reference as fold also commutes if possible.
 template<class Id, Id id>
 Ref fold(World& world, Ref type, const Def*& a, const Def*& b, Ref mode = {}) {
     auto la = a->isa<Lit>(), lb = b->isa<Lit>();

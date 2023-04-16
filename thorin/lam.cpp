@@ -63,7 +63,7 @@ std::deque<const App*> decurry(const Def* def) {
     return apps;
 }
 
-const Def* compose_continuation(const Def* f, const Def* g) {
+const Def* compose_cn(const Def* f, const Def* g) {
     auto& world = f->world();
     world.DLOG("compose f (B->C): {} : {}", f, f->type());
     world.DLOG("compose g (A->B): {} : {}", g, g->type());
@@ -97,6 +97,19 @@ const Def* compose_continuation(const Def* f, const Def* g) {
     hcont->app(true, f, {hcont_var, h->var(1) /* ret_var */});
 
     return h;
+}
+
+std::pair<const Def*, std::vector<const Def*>> collect_args(const Def* def) {
+    std::vector<const Def*> args;
+    if (auto app = def->isa<App>()) {
+        auto callee               = app->callee();
+        auto arg                  = app->arg();
+        auto [inner_callee, args] = collect_args(callee);
+        args.push_back(arg);
+        return {inner_callee, args};
+    } else {
+        return {def, args};
+    }
 }
 
 } // namespace thorin

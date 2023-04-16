@@ -13,7 +13,7 @@ public:
     Scheduler() = default;
     explicit Scheduler(const Scope&);
 
-    /// @name getters
+    /// @name Getters
     ///@{
     const Scope& scope() const { return *scope_; }
     const F_CFG& cfg() const { return *cfg_; }
@@ -26,11 +26,18 @@ public:
     }
     ///@}
 
-    /// @name compute schedules
+    /// @name Compute Schedules
     ///@{
     Def* early(const Def*);
     Def* late(const Def*);
     Def* smart(const Def*);
+    ///@}
+
+    /// @name Schedule Mutabales
+    ///@{
+    /// Order of Mutables within a Scope.
+    using Schedule = std::vector<Def*>;
+    static Schedule schedule(const Scope&);
     ///@}
 
     friend void swap(Scheduler& s1, Scheduler& s2) {
@@ -53,8 +60,5 @@ private:
     DefMap<Def*> smart_;
     DefMap<Uses> def2uses_;
 };
-
-using Schedule = std::vector<Def*>;
-Schedule schedule(const Scope&);
 
 } // namespace thorin

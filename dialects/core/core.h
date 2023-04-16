@@ -7,6 +7,8 @@
 
 namespace thorin::core {
 
+/// @name Mode
+///@{
 enum Mode : nat_t {
     none = 0,
     nsw  = 1 << 0,
@@ -20,10 +22,10 @@ inline Ref mode(World& w, VMode m) {
     if (auto nat = std::get_if<nat_t>(&m)) return w.lit_nat(*nat);
     return w.lit_nat(std::get<Mode>(m));
 }
+///@}
 
 /// @name op
 ///@{
-/// These guys build the final function application for the various operations
 inline Ref op(trait o, Ref type) {
     World& w = type->world();
     return w.app(w.ax(o), type);
@@ -63,19 +65,26 @@ inline Ref insert_unsafe(Ref d, u64 i, Ref val) {
 }
 ///@}
 
-/// Use like this:
-/// `a op b = tab[a][b]`
+/// @name bit2
+///@{
+
+/// Use like this: `a op b = tab[a][b]`
 constexpr std::array<std::array<u64, 2>, 2> make_truth_table(bit2 id) {
     return {
         {{sub_t(id) & sub_t(0b0001) ? u64(-1) : 0, sub_t(id) & sub_t(0b0100) ? u64(-1) : 0},
          {sub_t(id) & sub_t(0b0010) ? u64(-1) : 0, sub_t(id) & sub_t(0b1000) ? u64(-1) : 0}}
     };
 }
+///@}
 
+/// @name Convert TBound to Sigma
+///@{
+/// This is WIP.
 template<bool up>
 const Sigma* convert(const TBound<up>* b);
 
 inline const Sigma* convert(const Bound* b) { return b->isa<Join>() ? convert(b->as<Join>()) : convert(b->as<Meet>()); }
+///@}
 
 } // namespace thorin::core
 

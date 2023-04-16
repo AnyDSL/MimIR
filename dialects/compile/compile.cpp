@@ -36,6 +36,7 @@ void add_passes(World& world, PipelineBuilder& builder, Passes& passes, DefVec& 
 
 extern "C" THORIN_EXPORT thorin::Plugin thorin_get_plugin() {
     return {"compile",
+            [](Normalizers& normalizers) { compile::register_normalizers(normalizers); },
             [](Passes& passes) {
                 auto debug_phase_flag    = flags_t(Axiom::Base<thorin::compile::debug_phase>);
                 assert_emplace(passes, debug_phase_flag, [](World& world, PipelineBuilder& builder, const Def* app) {
@@ -81,5 +82,5 @@ extern "C" THORIN_EXPORT thorin::Plugin thorin_get_plugin() {
                 register_pass_with_arg<compile::scalerize_pass, Scalerize, EtaExp>(passes);
                 register_pass_with_arg<compile::tail_rec_elim_pass, TailRecElim, EtaRed>(passes);
             },
-            nullptr, [](Normalizers& normalizers) { compile::register_normalizers(normalizers); }};
+            nullptr};
 }

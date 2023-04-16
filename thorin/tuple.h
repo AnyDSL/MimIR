@@ -5,7 +5,7 @@
 namespace thorin {
 
 /// A [dependent tuple type](https://en.wikipedia.org/wiki/Dependent_type#%CE%A3_type).
-/// @sa Tuple, Arr, Pack
+/// @see Tuple, Arr, Pack
 class Sigma : public Def {
 private:
     Sigma(const Def* type, Defs ops)
@@ -31,7 +31,7 @@ public:
 };
 
 /// Data constructor for a Sigma.
-/// @sa Sigma, Arr, Pack
+/// @see Sigma, Arr, Pack
 class Tuple : public Def {
 private:
     Tuple(const Def* type, Defs args)
@@ -42,7 +42,7 @@ private:
 
 /// A (possibly paramterized) Arr%ay.
 /// Arr%ays are usually homogenous but they can be *inhomogenous* as well: `«i: N; T#i»'
-/// @sa Sigma, Tuple, Pack
+/// @see Sigma, Tuple, Pack
 class Arr : public Def {
 private:
     Arr(const Def* type, const Def* shape, const Def* body)
@@ -73,7 +73,7 @@ public:
 };
 
 /// A (possibly paramterized) Tuple.
-/// @sa Sigma, Tuple, Arr
+/// @see Sigma, Tuple, Arr
 class Pack : public Def {
 private:
     Pack(const Def* type, const Def* body)

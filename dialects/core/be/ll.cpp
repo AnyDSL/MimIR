@@ -276,7 +276,7 @@ void Emitter::finalize(const Scope& scope) {
         }
     }
 
-    for (auto mut : schedule(scope)) {
+    for (auto mut : Scheduler::schedule(scope)) {
         if (auto lam = mut->isa_mut<Lam>()) {
             if (lam == scope.exit()) continue;
             assert(lam2bb_.contains(lam));

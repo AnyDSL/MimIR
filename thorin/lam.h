@@ -7,7 +7,7 @@
 namespace thorin {
 
 /// A [dependent function type](https://en.wikipedia.org/wiki/Dependent_type#%CE%A0_type).
-/// @sa Lam
+/// @see Lam
 class Pi : public Def {
 protected:
     /// Constructor for an *immutable* Pi.
@@ -76,7 +76,7 @@ public:
 };
 
 /// A function.
-/// @sa Pi
+/// @see Pi
 class Lam : public Def {
 private:
     Lam(const Pi* pi, const Def* filter, const Def* body)
@@ -203,13 +203,14 @@ public:
 
 /// @name Helpers to work with Functions
 ///@{
+inline const App* isa_callee(const Def* def, size_t i) { return i == 0 ? def->isa<App>() : nullptr; }
+
 /// These are Lam%s that are neither `nullptr`, nor Lam::is_external, nor Lam::is_unset.
 inline Lam* isa_workable(Lam* lam) {
     if (!lam || lam->is_external() || !lam->is_set()) return nullptr;
     return lam;
 }
 
-inline const App* isa_callee(const Def* def, size_t i) { return i == 0 ? def->isa<App>() : nullptr; }
 inline std::pair<const App*, Lam*> isa_apped_mut_lam(const Def* def) {
     if (auto app = def->isa<App>()) return {app, app->callee()->isa_mut<Lam>()};
     return {nullptr, nullptr};
@@ -234,7 +235,10 @@ std::deque<const App*> decurry(const Def*);
 /// h': .Cn B
 /// h'= λ b = f (b, ret_h)
 /// ```
-const Def* compose_continuation(const Def* f, const Def* g);
+const Def* compose_cn(const Def* f, const Def* g);
+
+/// Helper function to cope with the fact that normalizers take all arguments and not only its axiom arguments.
+std::pair<const Def*, std::vector<const Def*>> collect_args(const Def* def);
 ///@}
 
 } // namespace thorin

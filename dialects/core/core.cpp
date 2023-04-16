@@ -8,8 +8,7 @@
 using namespace thorin;
 
 extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
-    return {"core", nullptr, [](Backends& backends) { backends["ll"] = &ll::emit; },
-            [](Normalizers& normalizers) { core::register_normalizers(normalizers); }};
+    return {"core", [](Normalizers& normalizers) { core::register_normalizers(normalizers); }, nullptr, [](Backends& backends) { backends["ll"] = &ll::emit; }};
 }
 
 namespace thorin::core {
@@ -40,7 +39,9 @@ const Sigma* convert(const TBound<up>* b) {
     }
 }
 
+#ifndef DOXYGEN
 template const Sigma* convert(const TBound<false>*);
 template const Sigma* convert(const TBound<true>*);
+#endif
 
 } // namespace thorin::core

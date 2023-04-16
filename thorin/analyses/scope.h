@@ -6,11 +6,6 @@
 
 namespace thorin {
 
-template<class This, class T>
-inline T& lazy_init(const This* self, std::unique_ptr<T>& ptr) {
-    return *(ptr ? ptr : ptr = std::make_unique<T>(*self));
-}
-
 class CFA;
 template<bool>
 class CFG;
@@ -55,6 +50,9 @@ public:
     const B_CFG& b_cfg() const;
     ///@}
 
+    /// Does @p mut's Var occurr free in @p def?
+    static bool is_free(Def* mut, const Def* def);
+
 private:
     void run();
     void calc_bound() const;
@@ -71,8 +69,5 @@ private:
     mutable MutSet free_muts_;
     mutable std::unique_ptr<const CFA> cfa_;
 };
-
-/// Does @p mut's Var occurr free in @p def?
-bool is_free(Def* mut, const Def* def);
 
 } // namespace thorin

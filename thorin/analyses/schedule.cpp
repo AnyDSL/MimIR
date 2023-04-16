@@ -109,7 +109,7 @@ Def* Scheduler::smart(const Def* def) {
     return smart_[def] = s->mut();
 }
 
-Schedule schedule(const Scope& scope) {
+Scheduler::Schedule Scheduler::schedule(const Scope& scope) {
     // until we have sth better simply use the RPO of the CFG
     Schedule result;
     for (auto n : scope.f_cfg().reverse_post_order()) result.emplace_back(n->mut());

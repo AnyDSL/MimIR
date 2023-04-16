@@ -45,6 +45,8 @@ private:
     World& world_;
 };
 
+/// @name Register Pass/Phase
+///@{
 template<class A, class P, class... CArgs>
 void register_pass(Passes& passes, CArgs&&... args) {
     assert_emplace(passes, flags_t(Axiom::Base<A>), [... args = std::forward<CArgs>(args)](World&, PipelineBuilder& builder,
@@ -70,5 +72,6 @@ void register_pass_with_arg(Passes& passes) {
         builder.add_pass<P>(app, pass_arg);
     });
 }
+///@}
 
 } // namespace thorin

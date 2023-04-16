@@ -49,9 +49,6 @@ using DefArray = Array<const Def*>;
 
 //------------------------------------------------------------------------------
 
-/// Retrieves Infer::arg from @p def
-const Def* refer(const Def* def);
-
 /// Helper class to retrieve Infer::arg if present.
 class Ref {
 public:
@@ -63,6 +60,8 @@ public:
     const Def* operator->() const { return refer(def_); }
     operator const Def*() const { return refer(def_); }
     explicit operator bool() const { return def_; }
+    static const Def* refer(const Def* def); ///< Retrieves Infer::arg from @p def.
+
     friend std::ostream& operator<<(std::ostream&, Ref);
 
 private:
@@ -188,7 +187,7 @@ private:                                                                        
 ///           |-------extended_ops------|
 /// ```
 /// @attention This means that any subclass of Def **must not** introduce additional members.
-/// @sa @ref mut
+/// @see @ref mut
 class Def : public RuntimeCast<Def> {
 private:
     Def& operator=(const Def&) = delete;
@@ -214,9 +213,9 @@ public:
     /// @name type
     ///@{
 
-    /// Yields the **raw** type of this Def, i.e. maybe `nullptr`. @sa Def::unfold_type.
+    /// Yields the **raw** type of this Def, i.e. maybe `nullptr`. @see Def::unfold_type.
     const Def* type() const { return type_; }
-    /// Yields the type of this Def and unfolds it if necessary. @sa Def::type, Def::reduce_rec.
+    /// Yields the type of this Def and unfolds it if necessary. @see Def::type, Def::reduce_rec.
     const Def* unfold_type() const;
     /// Yields `true` if `this:T` and `T:(.Type 0)`.
     bool is_term() const;
@@ -267,7 +266,7 @@ public:
 
     /// Resolves Infer%s of this Def's type.
     void update() {
-        if (auto r = refer(type()); r && r != type()) set_type(r);
+        if (auto r = Ref::refer(type()); r && r != type()) set_type(r);
     }
 
     /// Yields `true` if empty or the last op is set.
@@ -726,11 +725,5 @@ public:
 };
 
 hash_t UseHash::operator()(Use use) const { return hash_combine(hash_begin(u16(use.index())), hash_t(use->gid())); }
-
-//------------------------------------------------------------------------------
-
-// TODO: move
-/// Helper function to cope with the fact that normalizers take all arguments and not only its axiom arguments.
-std::pair<const Def*, std::vector<const Def*>> collect_args(const Def* def);
 
 } // namespace thorin

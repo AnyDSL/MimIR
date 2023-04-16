@@ -15,13 +15,14 @@ using namespace thorin;
 
 extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
     return {"autodiff",
+            [](Normalizers& normalizers) { autodiff::register_normalizers(normalizers); },
             [](Passes& passes) {
                 register_pass<autodiff::ad_eval_pass, autodiff::AutoDiffEval>(passes);
                 register_pass<autodiff::ad_zero_pass, autodiff::AutoDiffZero>(passes);
                 register_pass<autodiff::ad_zero_cleanup_pass, autodiff::AutoDiffZeroCleanup>(passes);
                 register_pass<autodiff::ad_ext_cleanup_pass, compile::InternalCleanup>(passes, "internal_diff_");
             },
-            nullptr, [](Normalizers& normalizers) { autodiff::register_normalizers(normalizers); }};
+            nullptr};
 }
 
 namespace thorin::autodiff {
@@ -64,12 +65,13 @@ const Pi* pullback_type(const Def* E, const Def* A) {
     return pb_ty;
 }
 
+namespace {
 // `A,R` => `(A->R)' = A' -> R' * (R* -> A*)`
 const Pi* autodiff_type_fun(const Def* arg, const Def* ret) {
     auto& world = arg->world();
     world.DLOG("autodiff type for {} => {}", arg, ret);
-    auto aug_arg = autodiff_type_fun(arg);
-    auto aug_ret = autodiff_type_fun(ret);
+    auto aug_arg = thorin::autodiff::autodiff_type_fun(arg);
+    auto aug_ret = thorin::autodiff::autodiff_type_fun(ret);
     world.DLOG("augmented types: {} => {}", aug_arg, aug_ret);
     if (!aug_arg || !aug_ret) return nullptr;
     // `Q* -> P*`
@@ -81,6 +83,7 @@ const Pi* autodiff_type_fun(const Def* arg, const Def* ret) {
     world.DLOG("autodiff type: {}", deriv_ty);
     return deriv_ty;
 }
+} // namespace
 
 const Pi* autodiff_type_fun_pi(const Pi* pi) {
     auto& world = pi->world();

@@ -75,7 +75,7 @@ bool match2nd(std::ostream& os, const char* next, const char*& s, const char c);
 /// size_t i = 0;
 /// print(os, "v: {, }", Elem(v, [&](auto& os, auto elem) { print(os, "{}: {}", i++, elem); }));
 /// ```
-/// @sa Tab
+/// @see Tab
 
 /// Use with print to output complicated `std::ranges::range`s.
 template<class R, class F>

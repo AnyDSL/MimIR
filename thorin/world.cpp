@@ -152,7 +152,7 @@ Ref World::iapp(Ref callee, Ref arg) {
                 checker().assignable(callee->type()->as<Pi>()->dom(), arg);
                 auto apps = decurry(app);
                 callee    = apps.front()->callee();
-                for (auto app : apps) callee = this->app(callee, refer(app->arg()));
+                for (auto app : apps) callee = this->app(callee, Ref::refer(app->arg()));
             }
             break;
         }

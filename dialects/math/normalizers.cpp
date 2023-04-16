@@ -2,22 +2,18 @@
 
 #include "dialects/math/math.h"
 
-namespace thorin {
-
-// TODO move to normalize.h
-/// Swap Lit to left - or smaller gid, if no lit present.
-template<class Id>
-void commute(Id id, const Def*& a, const Def*& b) {
-    if (is_commutative(id)) {
-        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>())) std::swap(a, b);
-    }
-}
-
-} // namespace thorin
-
 namespace thorin::math {
 
 namespace {
+
+// TODO move to normalize.h or so?
+// Swap Lit to left - or smaller gid, if no lit present.
+template<class Id>
+void commute(Id id, const Def*& a, const Def*& b) {
+    if (::thorin::is_commutative(id)) {
+        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>())) std::swap(a, b);
+    }
+}
 
 class Res {
 public:
@@ -142,7 +138,7 @@ Ref fold(World& world, Ref type, const Def* a) {
     return nullptr;
 }
 
-/// @attention Note that @p a and @p b are passed by reference as fold also commutes if possible. @sa commute().
+// Note that @p a and @p b are passed by reference as fold also commutes if possible.
 template<class Id, Id id>
 Ref fold(World& world, Ref type, const Def*& a, const Def*& b) {
     auto la = a->isa<Lit>(), lb = b->isa<Lit>();
@@ -214,6 +210,14 @@ Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref 
 
     return nullptr;
 }
+
+template<class Id, Id id, nat_t sw, nat_t dw>
+Res fold(u64 a) {
+    using S = std::conditional_t<id == conv::s2f, w2s<sw>, std::conditional_t<id == conv::u2f, w2u<sw>, w2f<sw>>>;
+    using D = std::conditional_t<id == conv::f2s, w2s<dw>, std::conditional_t<id == conv::f2u, w2u<dw>, w2f<dw>>>;
+    return D(bitcast<S>(a));
+}
+
 } // namespace
 
 template<arith id>
@@ -357,13 +361,6 @@ Ref normalize_cmp(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, callee, {a, b});
 }
 
-template<class Id, Id id, nat_t sw, nat_t dw>
-Res fold(u64 a) {
-    using S = std::conditional_t<id == conv::s2f, w2s<sw>, std::conditional_t<id == conv::u2f, w2u<sw>, w2f<sw>>>;
-    using D = std::conditional_t<id == conv::f2s, w2s<dw>, std::conditional_t<id == conv::f2u, w2u<dw>, w2f<dw>>>;
-    return D(bitcast<S>(a));
-}
-
 template<conv id>
 Ref normalize_conv(Ref dst_t, Ref c, Ref x) {
     auto& world = dst_t->world();
@@ -410,13 +407,6 @@ Ref normalize_conv(Ref dst_t, Ref c, Ref x) {
     }
 out:
     return world.raw_app(dst_t, callee, x);
-}
-
-// TODO I guess we can do that with C++20 <bit>
-inline u64 pad(u64 offset, u64 align) {
-    auto mod = offset % align;
-    if (mod != 0) offset += align - mod;
-    return offset;
 }
 
 THORIN_math_NORMALIZER_IMPL

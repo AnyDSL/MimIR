@@ -11,7 +11,7 @@
 using namespace thorin;
 
 extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
-    return {"opt",
+    return {"opt", nullptr,
             [](Passes& passes) {
                 passes[flags_t(Axiom::Base<compile::plugin_select>)] = [&](World& world, PipelineBuilder& builder,
                                                                            const Def* app) {
@@ -33,5 +33,5 @@ extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
                     compile::handle_optimization_part(is_loaded ? then_phase : else_phase, world, passes, builder);
                 };
             },
-            nullptr, nullptr};
+            nullptr};
 }

@@ -7,6 +7,8 @@
 
 namespace thorin::math {
 
+/// @name Mode
+///@{
 // clang-format off
 enum Mode : nat_t {
     none     = 0,
@@ -43,7 +45,9 @@ inline Ref mode(World& w, VMode m) {
     if (auto nat = std::get_if<nat_t>(&m)) return w.lit_nat(*nat);
     return w.lit_nat(std::get<Mode>(m));
 }
+///@}
 
+/// @name match_f/isa_f
 ///@{
 template<nat_t P, nat_t E>
 inline auto match_f(Ref def) {
@@ -53,9 +57,11 @@ inline auto match_f(Ref def) {
     }
     return Match<F, App>();
 }
+
 inline auto match_f16(Ref def) { return match_f<10, 5>(def); }
 inline auto match_f32(Ref def) { return match_f<23, 8>(def); }
 inline auto match_f64(Ref def) { return match_f<52, 11>(def); }
+
 inline std::optional<nat_t> isa_f(Ref def) {
     if (auto f_ty = match<F>(def)) {
         if (auto [p, e] = f_ty->arg()->projs<2>([](auto op) { return Lit::isa(op); }); p && e) {

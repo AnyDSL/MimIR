@@ -14,7 +14,7 @@ std::vector<fs::path> get_plugin_name_variants(std::string_view name) {
     names.push_back(fmt("libthorin_{}{}", name, dl::extension()));
     return names;
 }
-}
+} // namespace
 
 Driver::Driver()
     : world_(this) {

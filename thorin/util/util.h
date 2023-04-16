@@ -17,6 +17,11 @@ namespace thorin {
 /// @name Utility Functions
 ///@{
 
+template<class This, class T>
+inline T& lazy_init(const This* self, std::unique_ptr<T>& ptr) {
+    return *(ptr ? ptr : ptr = std::make_unique<T>(*self));
+}
+
 /// A bitcast from @p src of type @p S to @p D.
 template<class D, class S>
 inline D bitcast(const S& src) {
@@ -40,6 +45,13 @@ bool get_sign(T val) {
         return val < 0;
     else
         return val >> (T(sizeof(val)) * T(8) - T(1));
+}
+
+// TODO I guess we can do that with C++20 <bit>
+inline u64 pad(u64 offset, u64 align) {
+    auto mod = offset % align;
+    if (mod != 0) offset += align - mod;
+    return offset;
 }
 ///@}
 

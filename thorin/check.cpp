@@ -8,7 +8,7 @@ namespace thorin {
  * Infer
  */
 
-const Def* refer(const Def* def) { return def ? Infer::find(def) : nullptr; }
+const Def* Ref::refer(const Def* def) { return def ? Infer::find(def) : nullptr; }
 
 const Def* Infer::find(const Def* def) {
     // find root
@@ -27,11 +27,11 @@ const Def* Infer::find(const Def* def) {
     // TODO why does this not work?
     // if (res->isa_imm() && res->has_dep(Dep::Infer)) {
     if (res->isa<Tuple>() || res->isa<Type>()) {
-        auto new_type = refer(res->type());
+        auto new_type = Ref::refer(res->type());
         bool update   = new_type != res->type();
 
         auto new_ops = DefArray(res->num_ops(), [res, &update](size_t i) {
-            auto r = refer(res->op(i));
+            auto r = Ref::refer(res->op(i));
             update |= r != res->op(i);
             return r;
         });
@@ -120,7 +120,7 @@ bool Checker::equiv_internal(Ref d1, Ref d2) {
 }
 
 bool Checker::assignable(Ref type, Ref val) {
-    auto val_ty = refer(val->type());
+    auto val_ty = Ref::refer(val->type());
     if (type == val_ty) return true;
 
     if (auto infer = val->isa_mut<Infer>()) return equiv(type, infer->type());

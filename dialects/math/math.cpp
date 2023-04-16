@@ -6,6 +6,5 @@
 using namespace thorin;
 
 extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
-    return {"math", nullptr, [](Backends&) {},
-            [](Normalizers& normalizers) { math::register_normalizers(normalizers); }};
+    return {"math", [](Normalizers& normalizers) { math::register_normalizers(normalizers); }, nullptr, nullptr};
 }

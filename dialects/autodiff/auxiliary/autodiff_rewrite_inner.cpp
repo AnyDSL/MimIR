@@ -270,7 +270,7 @@ Ref AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         // `arg_pb: arg_tan -> fun_tan`
         world.DLOG("function pullback: {} : {}", fun_pb, fun_pb->type());
         world.DLOG("argument pullback: {} : {}", arg_pb, arg_pb->type());
-        auto res_pb = compose_continuation(arg_pb, fun_pb);
+        auto res_pb = compose_cn(arg_pb, fun_pb);
         world.DLOG("result pullback: {} : {}", res_pb, res_pb->type());
         partial_pullback[aug_res] = res_pb;
         world.debug_dump();
@@ -306,7 +306,7 @@ Ref AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         auto c1   = world.mut_lam(c1_ty)->set("c1");
         auto res  = c1->var((nat_t)0);
         auto r_pb = c1->var(1);
-        c1->app(true, aug_cont, {res, compose_continuation(e_pb, r_pb)});
+        c1->app(true, aug_cont, {res, compose_cn(e_pb, r_pb)});
 
         auto aug_app = world.app(aug_callee, {real_aug_args, c1});
         world.DLOG("aug_app: {} : {}", aug_app, aug_app->type());
