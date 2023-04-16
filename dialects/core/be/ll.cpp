@@ -178,7 +178,7 @@ std::string Emitter::convert(const Def* type) {
         if (auto arity = isa_lit(arr->shape())) size = *arity;
         print(s, "[{} x {}]", size, t_elem);
     } else if (auto pi = type->isa<Pi>()) {
-        assert(pi->is_returning() && "should never have to convert type of BB");
+        assert(Pi::isa_returning(pi) && "should never have to convert type of BB");
         print(s, "{} (", convert_ret_pi(pi->ret_pi()));
 
         auto doms = pi->doms();
@@ -326,7 +326,7 @@ void Emitter::emit_epilogue(Lam* lam) {
                 bb.tail("ret {} {}", type, prev);
             }
         }
-    } else if (auto ex = app->callee()->isa<Extract>(); ex && app->callee_type()->is_basicblock()) {
+    } else if (auto ex = app->callee()->isa<Extract>(); ex && Pi::isa_basicblock(app->callee_type())) {
         // emit_unsafe(app->arg());
         // A call to an extract like constructed for conditionals (else,then)#cond (args)
         // TODO: we can not rely on the structure of the extract (it might be a nested extract)
@@ -361,7 +361,7 @@ void Emitter::emit_epilogue(Lam* lam) {
         }
     } else if (app->callee()->isa<Bot>()) {
         return bb.tail("ret ; bottom: unreachable");
-    } else if (auto callee = app->callee()->isa_mut(&Lam::is_basicblock)) { // ordinary jump
+    } else if (auto callee = Lam::isa_mut_basicblock(app->callee())) { // ordinary jump
         for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
             if (auto arg = emit_unsafe(app->arg(i)); !arg.empty()) {
                 auto phi = callee->var(i);
@@ -380,7 +380,7 @@ void Emitter::emit_epilogue(Lam* lam) {
         auto v_tag = emit(tag);
         bb.tail("call void @longjmp(i8* {}, i32 {})", v_jb, v_tag);
         return bb.tail("unreachable");
-    } else if (app->callee_type()->is_returning()) { // function call
+    } else if (Pi::isa_returning(app->callee_type())) { // function call
         auto v_callee = emit(app->callee());
 
         std::vector<std::string> args;

@@ -42,7 +42,7 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
         }
         return new_dom;
     }));
-    if (lam->is_basicblock() && adjust_bb_type) new_dom = insert_ret(new_dom, dummy_ret_->type());
+    if (Lam::isa_basicblock(lam) && adjust_bb_type) new_dom = insert_ret(new_dom, dummy_ret_->type());
     auto new_type = w.cn(new_dom);
     auto new_lam  = lam->stub(w, new_type)->set(lam->sym());
     w.DLOG("stub {} ~> {}", lam, new_lam);
@@ -91,7 +91,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
 
     if (auto ct = isa_clos_type(def)) {
         auto pi = rewrite(ct->op(1))->as<Pi>();
-        if (pi->is_basicblock()) pi = w.cn(insert_ret(pi->dom(), dummy_ret_->type()));
+        if (Pi::isa_basicblock(pi)) pi = w.cn(insert_ret(pi->dom(), dummy_ret_->type()));
         auto env_type = rewrite(ct->op(2));
         return map(def, w.sigma({pi, env_type}));
     } else if (auto proj = def->isa<Extract>()) {
@@ -145,7 +145,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
         if (auto app = def->isa<App>()) {
             // Add dummy retcont to first-class BB
             if (auto p = app->callee()->isa<Extract>();
-                p && isa_clos_type(p->tuple()->type()) && app->callee_type()->is_basicblock())
+                p && isa_clos_type(p->tuple()->type()) && Pi::isa_basicblock(app->callee_type()))
                 new_ops[1] = insert_ret(new_ops[1], dummy_ret_);
         }
 

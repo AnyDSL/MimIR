@@ -21,7 +21,7 @@ void Clos2SJLJ::get_exn_closures(Ref def, DefSet& visited) {
 
 void Clos2SJLJ::get_exn_closures() {
     lam2tag_.clear();
-    if (!curr_mut()->is_set() || !curr_mut()->is_cn()) return;
+    if (!curr_mut()->is_set() || !Lam::isa_cn(curr_mut())) return;
     auto app = curr_mut()->body()->isa<App>();
     if (!app) return;
     if (auto p = app->callee()->isa<Extract>(); p && isa_clos_type(p->tuple()->type())) {

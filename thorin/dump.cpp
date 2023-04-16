@@ -134,7 +134,7 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
     } else if (auto var = u->isa<Var>()) {
         return print(os, "{}", var->unique_name());
     } else if (auto pi = u->isa<Pi>()) {
-        if (pi->is_cn()) return print(os, ".Cn {}", pi->dom());
+        if (Pi::isa_cn(pi)) return print(os, ".Cn {}", pi->dom());
         if (auto mut = pi->isa_mut<Pi>(); mut && mut->var())
             return print(os, "Π {}: {} → {}", mut->var(), pi->dom(), pi->codom());
         return print(os, "Π {} → {}", pi->dom(), pi->codom());
@@ -259,7 +259,7 @@ void Dumper::dump(Lam* lam) {
     // TODO filter
     auto ptrn = [&](auto&) { dump_ptrn(lam->var(), lam->type()->dom()); };
 
-    if (lam->is_cn())
+    if (Lam::isa_cn(lam))
         tab.println(os, ".con {}{} {}@({}) = {{", external(lam), id(lam), ptrn, lam->filter());
     else
         tab.println(os, ".lam {}{} {} → {} = {{", external(lam), id(lam), ptrn, lam->type()->codom());

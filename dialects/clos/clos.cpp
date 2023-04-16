@@ -96,7 +96,7 @@ const Sigma* isa_clos_type(Ref def) {
     auto var = sig->var(0_u64);
     if (sig->op(2_u64) != var) return nullptr;
     auto pi = sig->op(1_u64)->isa<Pi>();
-    return (pi && pi->is_cn() && pi->num_ops() > 1_u64 && pi->dom(Clos_Env_Param) == var) ? sig : nullptr;
+    return (pi && Pi::isa_cn(pi) && pi->num_ops() > 1_u64 && pi->dom(Clos_Env_Param) == var) ? sig : nullptr;
 }
 
 Sigma* clos_type(const Pi* pi) { return ctype(pi->world(), pi->doms(), nullptr)->as_mut<Sigma>(); }

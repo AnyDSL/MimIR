@@ -8,17 +8,17 @@ namespace thorin::clos {
 
 // FIXME: these guys do not work if another pass rewrites curr_mut()'s body
 static bool isa_cont(const App* body, Ref def, size_t i) {
-    return body->callee_type()->is_returning() && body->arg() == def && i == def->num_ops() - 1;
+    return Pi::isa_returning(body->callee_type()) && body->arg() == def && i == def->num_ops() - 1;
 }
 
 static Ref isa_br(const App* body, Ref def) {
-    if (!body->callee_type()->is_cn()) return nullptr;
+    if (!Pi::isa_cn(body->callee_type())) return nullptr;
     auto proj = body->callee()->isa<Extract>();
     return (proj && proj->tuple() == def && proj->tuple()->isa<Tuple>()) ? proj->tuple() : nullptr;
 }
 
 static bool isa_callee_br(const App* body, Ref def, size_t i) {
-    if (!body->callee_type()->is_cn()) return false;
+    if (!Pi::isa_cn(body->callee_type())) return false;
     return isa_callee(def, i) || isa_br(body, def);
 }
 
@@ -33,13 +33,13 @@ Lam* ClosConvPrep::scope(Lam* lam) {
 }
 
 void ClosConvPrep::enter() {
-    if (curr_mut()->type()->is_returning()) {
+    if (Pi::isa_returning(curr_mut())) {
         lam2fscope_[curr_mut()] = curr_mut();
         world().DLOG("scope {} -> {}", curr_mut(), curr_mut());
         scope_ = std::make_unique<Scope>(curr_mut());
         for (auto def : scope_->bound()) {
             assert(def);
-            if (auto bb_lam = def->isa_mut(&Lam::is_basicblock)) {
+            if (auto bb_lam = Lam::isa_mut_basicblock(def)) {
                 world().DLOG("scope {} -> {}", bb_lam, curr_mut());
                 lam2fscope_[bb_lam] = curr_mut();
             }
@@ -48,7 +48,7 @@ void ClosConvPrep::enter() {
 
     auto body = curr_mut()->body()->isa<App>();
     // Skip if the mutable is already wrapped or the body is undefined/no continuation.
-    ignore_ = !(body && body->callee_type()->is_cn()) || wrapper_.contains(curr_mut());
+    ignore_ = !(body && Pi::isa_cn(body->callee_type())) || wrapper_.contains(curr_mut());
 }
 
 const App* ClosConvPrep::rewrite_arg(const App* app) {
@@ -73,7 +73,7 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
             w.DLOG("found return var from enclosing scope: {}", op);
             return refine(eta_wrap(op, attr::freeBB)->set("free_ret"));
         }
-        if (auto bb_lam = op->isa_mut(&Lam::is_basicblock); bb_lam && from_outer_scope(bb_lam)) {
+        if (auto bb_lam = Lam::isa_mut_basicblock(op); bb_lam && from_outer_scope(bb_lam)) {
             w.DLOG("found BB from enclosing scope {}", op);
             return refine(thorin::clos::op(attr::freeBB, op));
         }
@@ -90,7 +90,7 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
         }
 
         if (!isa_callee_br(app, arg, i)) {
-            if (auto bb_lam = op->isa_mut(&Lam::is_basicblock)) {
+            if (auto bb_lam = Lam::isa_mut_basicblock(op)) {
                 w.DLOG("found firstclass use of BB: {}", bb_lam);
                 return refine(thorin::clos::op(attr::fstclassBB, bb_lam));
             }
@@ -107,7 +107,7 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
 
 const App* ClosConvPrep::rewrite_callee(const App* app) {
     auto& w = world();
-    if (app->callee_type()->is_cn()) {
+    if (Pi::isa_cn(app->callee_type())) {
         if (auto br = app->callee()->isa<Extract>()) {
             auto branches = br->tuple();
             // Eta-Expand branches

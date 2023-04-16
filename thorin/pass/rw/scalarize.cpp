@@ -15,7 +15,7 @@ bool Scalerize::should_expand(Lam* lam) {
     if (auto i = tup2sca_.find(lam); i != tup2sca_.end() && i->second && i->second == lam) return false;
 
     auto pi = lam->type();
-    if (lam->num_doms() > 1 && pi->is_cn() && !pi->isa_mut()) return true; // no ugly dependent pis
+    if (lam->num_doms() > 1 && Pi::isa_cn(pi) && pi->isa_imm()) return true; // no ugly dependent pis
 
     tup2sca_[lam] = lam;
     return false;

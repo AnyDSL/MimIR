@@ -163,7 +163,7 @@ undo_t SSAConstr::analyze(Ref def) {
             auto& succ_info = data(succ_lam);
 
             // TODO this is a bit scruffy - maybe we can do better
-            if (succ_lam->is_basicblock() && succ_lam != curr_mut())
+            if (Lam::isa_basicblock(succ_lam) && succ_lam != curr_mut())
                 for (auto writable = data(curr_mut()).writable; auto&& w : writable) succ_info.writable.insert(w);
 
             if (!isa_callee(def, i)) {

@@ -73,7 +73,7 @@ protected:
 
         for (auto mut : muts) {
             if (auto lam = mut->isa<Lam>(); lam && lam != scope.exit()) {
-                assert(lam == entry_ || lam->is_basicblock());
+                assert(lam == entry_ || Lam::isa_basicblock(lam));
                 child().emit_epilogue(lam);
             }
         }

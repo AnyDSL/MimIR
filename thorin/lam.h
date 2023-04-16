@@ -17,23 +17,39 @@ protected:
         : Def(Node, type, 2, implicit ? 1 : 0) {}
 
 public:
-    /// @name Getters
+    bool implicit() const { return flags(); }
+
+    /// @name dom
     ///@{
     Ref dom() const { return op(0); }
     THORIN_PROJ(dom, const)
+    ///@}
+
+    /// @name codom
+    ///@{
     Ref codom() const { return op(1); }
     THORIN_PROJ(codom, const)
-    bool implicit() const { return flags(); }
-    bool is_cn() const;
-    bool is_basicblock() const { return is_cn() && !ret_pi(); }
-    bool is_returning() const { return is_cn() && ret_pi(); }
+    ///@}
+
+    /// @name Continuations
+    /// @anchor continuations
+    ///@{
+    /// Checks certain properties of this Pi regarding continuations.
+    // clang-format off
+    /// Is this a continuation - i.e. the Pi::codom is Bot?
+    static const Pi* isa_cn(Ref d) { return d->isa<Pi>() && d->as<Pi>()->codom()->node() == Node::Bot ? d->as<Pi>() : nullptr; }
+    /// Is this a continuation (Pi::isa_cn) which has a Pi::ret_pi?
+    static const Pi* isa_returning(Ref d)  { return isa_cn(d) &&  d->as<Pi>()->ret_pi() ? d->as<Pi>() : nullptr; }
+    /// Is this a continuation (Pi::isa_cn) that is **not** Pi::isa_returning?
+    static const Pi* isa_basicblock(Ref d) { return isa_cn(d) && !d->as<Pi>()->ret_pi() ? d->as<Pi>() : nullptr; }
+    // clang-format on
     ///@}
 
     /// @name Return Continuation
-    /// @anchor ret_pi
+    /// @anchor return_continuation
     ///@{
-    const Pi* ret_pi() const;
-    Ref ret_dom() const { return ret_pi()->dom(); }
+    const Pi* ret_pi() const;                       ///< Yields the last Pi::dom, if it is a Pi::isa_basicblock.
+    Ref ret_dom() const { return ret_pi()->dom(); } ///< Pi::dom%ain of Pi::ret_pi.
     ///@}
 
     /// @name Setters
@@ -71,9 +87,6 @@ public:
     THORIN_PROJ(dom, const)
     Ref codom() const { return type()->codom(); }
     THORIN_PROJ(codom, const)
-    bool is_cn() const { return type()->is_cn(); }
-    bool is_basicblock() const { return type()->is_basicblock(); }
-    bool is_returning() const { return type()->is_returning(); }
     ///@}
 
     /// @name ops
@@ -82,12 +95,25 @@ public:
     Ref body() const { return op(1); }
     ///@}
 
+    /// @name Continuations
+    ///@{
+    /// @see @ref continuations
+    // clang-format off
+    static const Lam* isa_cn(Ref d) { return Pi::isa_cn(d->type()) ? d->isa<Lam>() : nullptr; }
+    static const Lam* isa_basicblock(Ref d) { return Pi::isa_basicblock(d->type()) ? d->isa<Lam>() : nullptr; }
+    static const Lam* isa_returning(Ref d)  { return Pi::isa_returning (d->type()) ? d->isa<Lam>() : nullptr; }
+    static Lam* isa_mut_cn(Ref d) { return isa_cn(d) ? d->isa_mut<Lam>() : nullptr; }
+    static Lam* isa_mut_basicblock(Ref d) { return isa_basicblock(d) ? d->isa_mut<Lam>(): nullptr; }
+    static Lam* isa_mut_returning(Ref d)  { return isa_returning (d) ? d->isa_mut<Lam>(): nullptr; }
+    // clang-format on
+    ///@}
+
     /// @name Return Continuation
     ///@{
-    /// @see ret_pi
+    /// @see @ref return_continuation
     const Pi* ret_pi() const { return type()->ret_pi(); }
-    Ref ret_dom() const { return type()->ret_dom(); }
-    Ref ret_var() { return type()->ret_pi() ? var(num_vars() - 1) : nullptr; }
+    Ref ret_dom() const { return ret_pi()->dom(); }
+    Ref ret_var() { return type()->ret_pi() ? var(num_vars() - 1) : nullptr; } ///< Yields the Lam::var of the Lam::ret_pi.
     ///@}
 
     /// @name Setters

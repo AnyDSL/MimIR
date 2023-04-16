@@ -13,14 +13,13 @@ namespace thorin {
 const Pi* Pi::ret_pi() const {
     if (num_doms() > 0) {
         auto ret = dom(num_doms() - 1);
-        if (auto pi = ret->isa(&Pi::is_basicblock)) return pi;
+        if (auto pi = Pi::isa_basicblock(ret)) return pi;
     }
 
     return nullptr;
 }
 
 Pi* Pi::set_dom(Defs doms) { return Def::set(0, world().sigma(doms))->as<Pi>(); }
-bool Pi::is_cn() const { return codom()->isa<Bot>(); }
 
 /*
  * Lam
@@ -72,8 +71,8 @@ const Def* compose_continuation(const Def* f, const Def* g) {
     auto F = f->type()->as<Pi>();
     auto G = g->type()->as<Pi>();
 
-    assert(F->is_cn() && F->is_returning());
-    assert(F->is_cn() && G->is_returning());
+    assert(Pi::isa_returning(F));
+    assert(Pi::isa_returning(G));
 
     auto A = G->dom(2, 0);
     auto B = G->ret_dom();

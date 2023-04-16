@@ -164,9 +164,9 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
 
     if (auto i = subst.find(def); i != subst.end()) {
         return i->second;
-    } else if (auto pi = def->isa(&Pi::is_cn)) {
+    } else if (auto pi = Pi::isa_cn(def)) {
         return map(type_clos(pi, subst));
-    } else if (auto lam = def->isa_mut(&Lam::is_cn)) {
+    } else if (auto lam = def->isa_mut<Lam>(); lam && Lam::isa_cn(lam)) {
         auto [_, __, fv_env, new_lam] = make_stub(lam, subst);
         auto clos_ty                  = rewrite(lam->type(), subst);
         auto env                      = rewrite(fv_env, subst);
@@ -195,7 +195,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
             case attr::freeBB: {
                 // Note: Same thing about η-conversion applies here
                 auto bb_lam = a->arg()->isa_mut<Lam>();
-                assert(bb_lam && bb_lam->is_basicblock());
+                assert(bb_lam && Lam::isa_basicblock(bb_lam));
                 auto [_, __, ___, new_lam] = make_stub({}, bb_lam, subst);
                 subst[bb_lam]              = clos_pack(w.tuple(), new_lam, rewrite(bb_lam->type(), subst));
                 rewrite_body(new_lam, subst);
@@ -249,7 +249,7 @@ Def* ClosConv::rewrite_mut(Def* mut, const Def* new_type, Def2Def& subst) {
 }
 
 const Pi* ClosConv::rewrite_type_cn(const Pi* pi, Def2Def& subst) {
-    assert(pi->is_basicblock());
+    assert(Pi::isa_basicblock(pi));
     auto new_ops = DefArray(pi->num_doms(), [&](auto i) { return rewrite(pi->dom(i), subst); });
     return world().cn(new_ops);
 }
@@ -258,8 +258,8 @@ const Def* ClosConv::type_clos(const Pi* pi, Def2Def& subst, const Def* env_type
     if (auto i = glob_muts_.find(pi); i != glob_muts_.end() && !env_type) return i->second;
     auto& w       = world();
     auto new_doms = DefArray(pi->num_doms(), [&](auto i) {
-        return (i == pi->num_doms() - 1 && pi->is_returning()) ? rewrite_type_cn(pi->ret_pi(), subst)
-                                                               : rewrite(pi->dom(i), subst);
+        return (i == pi->num_doms() - 1 && Pi::isa_returning(pi)) ? rewrite_type_cn(pi->ret_pi(), subst)
+                                                                  : rewrite(pi->dom(i), subst);
     });
     auto ct       = ctype(w, new_doms, env_type);
     if (!env_type) {

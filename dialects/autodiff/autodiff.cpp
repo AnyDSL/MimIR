@@ -84,7 +84,7 @@ const Pi* autodiff_type_fun(const Def* arg, const Def* ret) {
 
 const Pi* autodiff_type_fun_pi(const Pi* pi) {
     auto& world = pi->world();
-    if (!pi->is_cn()) {
+    if (!Pi::isa_cn(pi)) {
         // TODO: dependency
         auto arg = pi->dom();
         auto ret = pi->codom();

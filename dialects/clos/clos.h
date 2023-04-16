@@ -58,8 +58,8 @@ public:
 
     /// @name Properties
     ///@{
-    bool is_returning() { return fnc_type()->is_returning(); }
-    bool is_basicblock() { return fnc_type()->is_basicblock(); }
+    bool is_returning() { return Pi::isa_returning(fnc_type()); }
+    bool is_basicblock() { return Pi::isa_basicblock(fnc_type()); }
     attr get() { return attr_; } ///< Clos annotation. These should appear in front of the code-part.
     ///@}
 

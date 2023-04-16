@@ -9,7 +9,7 @@ namespace thorin::mem {
 
 Ref CopyProp::rewrite(Ref def) {
     auto [app, var_lam] = isa_apped_mut_lam(def);
-    if (!isa_workable(var_lam) || (bb_only_ && var_lam->is_returning())) return def;
+    if (!isa_workable(var_lam) || (bb_only_ && Lam::isa_returning(var_lam))) return def;
 
     auto n = app->num_args();
     if (n == 0) return app;

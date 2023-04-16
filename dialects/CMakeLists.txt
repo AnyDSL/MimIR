@@ -17,14 +17,14 @@ add_thorin_plugin(autodiff
     SOURCES
         autodiff/autodiff.cpp
         autodiff/autodiff.h
-        autodiff/autodiff_rewrite_inner.cpp
-        autodiff/autodiff_rewrite_toplevel.cpp
         autodiff/passes/autodiff_eval.cpp
         autodiff/passes/autodiff_eval.h
         autodiff/passes/autodiff_zero.cpp
         autodiff/passes/autodiff_zero.h
         autodiff/passes/autodiff_zero_cleanup.cpp
         autodiff/passes/autodiff_zero_cleanup.h
+        autodiff/auxiliary/autodiff_rewrite_inner.cpp
+        autodiff/auxiliary/autodiff_rewrite_toplevel.cpp
         autodiff/normalizers.cpp
         compile/passes/internal_cleanup.cpp
     DEPENDS

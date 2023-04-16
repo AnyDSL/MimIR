@@ -31,7 +31,7 @@ Ref DS2CPS::rewrite_lam(Lam* lam) {
     if (auto i = rewritten_.find(lam); i != rewritten_.end()) return i->second;
 
     // only look at lambdas (ds not cps)
-    if (lam->is_cn()) return lam;
+    if (Lam::isa_cn(lam)) return lam;
     // ignore ds on type level
     if (lam->type()->codom()->isa<Type>()) return lam;
     // ignore higher order function
