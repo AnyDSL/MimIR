@@ -194,7 +194,7 @@ Ref merge_cmps(std::array<std::array<u64, 2>, 2> tab, Ref a, Ref b) {
 
     return nullptr;
 }
-}
+} // namespace
 
 template<nat id>
 Ref normalize_nat(Ref type, Ref callee, Ref arg) {

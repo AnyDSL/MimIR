@@ -214,7 +214,7 @@ Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref 
 
     return nullptr;
 }
-}
+} // namespace
 
 template<arith id>
 Ref normalize_arith(Ref type, Ref c, Ref arg) {

@@ -634,9 +634,18 @@ public:
         return {};
     }
 
-    template<class T = nat_t> static T as(Ref def) { return def->as<Lit>()->get<T>(); }
-    template<class T = nat_t> static T as_(Ref def) { return as<T>(def); }
-    template<class T = nat_t> static std::optional<T> isa_(Ref def) { return isa_<T>(def); }
+    template<class T = nat_t>
+    static T as(Ref def) {
+        return def->as<Lit>()->get<T>();
+    }
+    template<class T = nat_t>
+    static T as_(Ref def) {
+        return as<T>(def);
+    }
+    template<class T = nat_t>
+    static std::optional<T> isa_(Ref def) {
+        return isa_<T>(def);
+    }
     ///@}
 
     template<class T = flags_t>
