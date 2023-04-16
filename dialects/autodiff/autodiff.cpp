@@ -173,45 +173,32 @@ namespace thorin {
 
 bool is_continuation(const Def* e) { return e->type()->isa<Pi>() && e->type()->as<Pi>()->is_cn(); }
 
-bool is_returning_continuation(const Def* e) {
-    // TODO: fix open functions
-    auto E = e->type();
-    if (auto pi = E->isa<Pi>()) {
-        if (pi->is_cn() && /* args, return */ pi->num_doms() == 2) {
-            if (auto ret_pi = pi->dom(2, 1)->isa<Pi>()) return ret_pi->is_cn() && ret_pi->is_cn();
-        }
-    }
-    return false;
-}
-
-bool is_open_continuation(const Def* e) { return is_continuation(e) && !is_returning_continuation(e); }
-
 /// The high level view is:
 /// ```
 /// f: B -> C
 /// g: A -> B
 /// f o g := λ x. f(g(x)) : A -> C
 /// ```
-/// In cps the types look like:
+/// In CPS the types look like:
 /// ```
-/// f: cn[B, cn C]
-/// g: cn[A, cn B]
+/// f:  .Cn[B, .Cn C]
+/// g:  .Cn[A, .Cn B]
 /// h = f o g
-/// h : cn[A, cn C]
-/// h = λ a ret_h. g(a,h')
-/// h' : cn B
-/// h' = λ b. f(b,ret_h)
+/// h:  .Cn[A, cn C]
+/// h = λ (a ret_h) = g (a, h')
+/// h': .Cn B
+/// h'= λ b = f (b, ret_h)
 /// ```
 const Def* compose_continuation(const Def* f, const Def* g) {
-    assert(is_continuation(f));
     auto& world = f->world();
     world.DLOG("compose f (B->C): {} : {}", f, f->type());
     world.DLOG("compose g (A->B): {} : {}", g, g->type());
-    assert(is_returning_continuation(f));
-    assert(is_returning_continuation(g));
 
     auto F = f->type()->as<Pi>();
     auto G = g->type()->as<Pi>();
+
+    assert(F->is_cn() && F->is_returning());
+    assert(F->is_cn() && G->is_returning());
 
     auto A = G->dom(2, 0);
     auto B = G->ret_dom();

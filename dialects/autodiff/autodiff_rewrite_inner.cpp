@@ -42,7 +42,7 @@ Ref AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
     }
     // TODO: better fix (another pass as analysis?)
     // TODO: handle open functions
-    if (is_open_continuation(lam) || lam->sym()->find("ret") != std::string::npos ||
+    if (lam->is_basicblock() || lam->sym()->find("ret") != std::string::npos ||
         lam->sym()->find("_cont") != std::string::npos) {
         // A open continuation behaves the same as return:
         // ```
@@ -238,7 +238,7 @@ Ref AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     }
 
     // continuation (ret, if, ...)
-    if (is_open_continuation(callee)) {
+    if (auto callee_pi = callee->type()->isa<Pi>(); callee_pi && callee_pi->is_basicblock()) {
         // TODO: check if function (not operator)
         // The original function is an open function (return cont / continuation) of type `Cn[E]`
         // The augmented function `aug_callee` looks like a function but is not really a function has the type `Cn[E,
