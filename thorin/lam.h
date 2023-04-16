@@ -109,7 +109,7 @@ public:
 
     /// @name Continuations
     ///@{
-    /// @see @ref continuations
+    /// @see @ref continuations "Pi: Continuations"
     // clang-format off
     static const Lam* isa_cn(Ref d) { return Pi::isa_cn(d->type()) ? d->isa<Lam>() : nullptr; }
     static const Lam* isa_basicblock(Ref d) { return Pi::isa_basicblock(d->type()) ? d->isa<Lam>() : nullptr; }
@@ -122,7 +122,7 @@ public:
 
     /// @name Return Continuation
     ///@{
-    /// @see @ref return_continuation
+    /// @see @ref return_continuation "Pi: Return Continuation"
     const Pi* ret_pi() const { return type()->ret_pi(); }
     Ref ret_dom() const { return ret_pi()->dom(); }
     /// Yields the Lam::var of the Lam::ret_pi.
