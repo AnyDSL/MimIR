@@ -27,18 +27,13 @@ public:
     bool is_cn() const;
     bool is_basicblock() const { return is_cn() && !ret_pi(); }
     bool is_returning() const { return is_cn() && ret_pi(); }
-    const Pi* ret_pi() const;
     ///@}
 
-    /// @name cn_dom/cn_codom
+    /// @name Return Continuation
+    /// @anchor ret_pi
     ///@{
-    /// Interprets `.Cn [A, .Cn B]` as `A -> B`.
-    // clang-format off
-    Ref cn_dom() const { assert(is_cn()); return dom(2, 0); }
-    THORIN_PROJ(cn_dom, const)
-    Ref cn_codom() const { assert(is_cn()); return dom(2, 1)->as<Pi>()->dom(); }
-    THORIN_PROJ(cn_codom, const)
-    // clang-format on
+    const Pi* ret_pi() const;
+    Ref ret_dom() const { return ret_pi()->dom(); }
     ///@}
 
     /// @name Setters
@@ -79,16 +74,6 @@ public:
     bool is_cn() const { return type()->is_cn(); }
     bool is_basicblock() const { return type()->is_basicblock(); }
     bool is_returning() const { return type()->is_returning(); }
-    const Pi* ret_pi() const { return type()->ret_pi(); }
-    ///@}
-
-    /// @name cn_dom/cn_codom
-    ///@{
-    /// Interprets `.Cn [A, .Cn B]` as `A -> B`.
-    Ref cn_dom() const { return type()->cn_dom(); }
-    THORIN_PROJ(cn_dom, const)
-    Ref cn_codom() const { return type()->cn_codom(); }
-    THORIN_PROJ(cn_codom, const)
     ///@}
 
     /// @name ops
@@ -97,9 +82,12 @@ public:
     Ref body() const { return op(1); }
     ///@}
 
-    /// @name vars
+    /// @name Return Continuation
     ///@{
-    const Def* ret_var();
+    /// @see ret_pi
+    const Pi* ret_pi() const { return type()->ret_pi(); }
+    Ref ret_dom() const { return type()->ret_dom(); }
+    Ref ret_var() { return type()->ret_pi() ? var(num_vars() - 1) : nullptr; }
     ///@}
 
     /// @name Setters

@@ -24,8 +24,6 @@ bool Pi::is_cn() const { return codom()->isa<Bot>(); }
  * Lam
  */
 
-const Def* Lam::ret_var() { return type()->ret_pi() ? var(num_vars() - 1) : nullptr; }
-
 Lam* Lam::set_filter(Filter filter) {
     const Def* f;
     if (auto b = std::get_if<bool>(&filter))

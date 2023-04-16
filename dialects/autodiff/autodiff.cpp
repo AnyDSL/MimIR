@@ -213,9 +213,9 @@ const Def* compose_continuation(const Def* f, const Def* g) {
     auto F = f->type()->as<Pi>();
     auto G = g->type()->as<Pi>();
 
-    auto A = G->cn_dom();
-    auto B = G->cn_codom();
-    auto C = F->cn_codom();
+    auto A = G->dom(2, 0);
+    auto B = G->ret_dom();
+    auto C = F->ret_dom();
     // The type check of codom G = dom F is better handled by the application type checking
 
     world.DLOG("compose f (B->C): {} : {}", f, F);
