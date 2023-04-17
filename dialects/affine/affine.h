@@ -6,7 +6,7 @@
 
 namespace thorin::affine {
 
-/// @name For
+/// @name %%affine.For
 ///@{
 /// Returns the affine_for axiom applied with \a params.
 /// See documentation for %affine.For axiom in @ref affine.

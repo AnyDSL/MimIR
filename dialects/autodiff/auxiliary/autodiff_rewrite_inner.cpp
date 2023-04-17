@@ -82,7 +82,7 @@ Ref AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
     }
     world.DLOG("found a closed function call {} : {}", lam, lam->type());
     // Some general function in the program needs to be differentiated.
-    auto aug_lam = op_autodiff(lam);
+    auto aug_lam = op_ad(lam);
     // TODO: directly more association here? => partly inline op_autodiff
     world.DLOG("augmented function is {} : {}", aug_lam, aug_lam->type());
     return aug_lam;

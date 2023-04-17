@@ -9,7 +9,7 @@
 
 namespace thorin::mem {
 
-/// @name M
+/// @name %%mem.M
 ///@{
 inline const Axiom* type_mem(World& w) { return w.ax<M>(); }
 
@@ -105,17 +105,15 @@ inline Ref strip_mem(Ref def) {
 }
 ///@}
 
-/// @name Ptr
+/// @name %%mem.Ptr
 ///@{
-namespace AddrSpace {
-enum : nat_t {
+enum class AddrSpace : nat_t {
     Generic  = 0,
     Global   = 1,
     Texture  = 2,
     Shared   = 3,
     Constant = 4,
 };
-}
 
 inline const Axiom* type_ptr(World& w) { return w.ax<Ptr>(); }
 inline const App* type_ptr(Ref pointee, Ref addr_space) {
@@ -123,13 +121,13 @@ inline const App* type_ptr(Ref pointee, Ref addr_space) {
     return w.app(type_ptr(w), {pointee, addr_space})->as<App>();
 }
 
-inline const App* type_ptr(Ref pointee, nat_t addr_space = AddrSpace::Generic) {
+inline const App* type_ptr(Ref pointee, AddrSpace as = AddrSpace::Generic) {
     World& w = pointee->world();
-    return type_ptr(pointee, w.lit_nat(addr_space));
+    return type_ptr(pointee, w.lit_nat((nat_t)as));
 }
 ///@}
 
-/// @name lea
+/// @name %%mem.lea
 ///@{
 inline Ref op_lea(Ref ptr, Ref index) {
     World& w                   = ptr->world();
@@ -146,7 +144,7 @@ inline Ref op_lea_unsafe(Ref ptr, Ref i) {
 inline Ref op_lea_unsafe(Ref ptr, u64 i) { return op_lea_unsafe(ptr, ptr->world().lit_int(64, i)); }
 ///@}
 
-/// @name remem
+/// @name %%mem.remem
 ///@{
 inline Ref op_remem(Ref mem) {
     World& w = mem->world();
@@ -154,7 +152,7 @@ inline Ref op_remem(Ref mem) {
 }
 ///@}
 
-/// @name alloc
+/// @name %%mem.alloc
 ///@{
 inline Ref op_alloc(Ref type, Ref mem) {
     World& w = type->world();
@@ -162,7 +160,7 @@ inline Ref op_alloc(Ref type, Ref mem) {
 }
 ///@}
 
-/// @name slot
+/// @name %%mem.slot
 ///@{
 inline Ref op_slot(Ref type, Ref mem) {
     World& w = type->world();
@@ -170,7 +168,7 @@ inline Ref op_slot(Ref type, Ref mem) {
 }
 ///@}
 
-/// @name malloc
+/// @name %%mem.malloc
 ///@{
 inline Ref op_malloc(Ref type, Ref mem) {
     World& w  = type->world();
@@ -179,7 +177,7 @@ inline Ref op_malloc(Ref type, Ref mem) {
 }
 ///@}
 
-/// @name mslot
+/// @name %%mem.mslot
 ///@{
 inline Ref op_mslot(Ref type, Ref mem, Ref id) {
     World& w  = type->world();

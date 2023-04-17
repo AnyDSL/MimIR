@@ -50,7 +50,7 @@ inline Ref mode(World& w, VMode m) {
 }
 ///@}
 
-/// @name F
+/// @name %%math.F
 ///@{
 inline const Axiom* type_f(World& w) { return w.ax<F>(); }
 inline Ref type_f(Ref pe) {
@@ -88,10 +88,7 @@ inline std::optional<nat_t> isa_f(Ref def) {
     }
     return {};
 }
-///@}
 
-/// @name lit_f
-///@{
 // clang-format off
 template<class R>
 const Lit* lit_f(World& w, R val) {
@@ -114,7 +111,7 @@ inline const Lit* lit_f(World& w, nat_t width, f64 val) {
 // clang-format on
 ///@}
 
-/// @name arith
+/// @name %%math.arith
 ///@{
 inline Ref op_rminus(VMode m, Ref a) {
     World& w = a->world();

@@ -7,7 +7,7 @@
 
 namespace thorin::direct {
 
-/// @name cps2ds_dep
+/// @name %%direct.cps2ds_dep
 ///@{
 inline const Def* op_cps2ds_dep(const Def* f) {
     auto& world = f->world();

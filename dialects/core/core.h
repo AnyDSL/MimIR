@@ -27,7 +27,7 @@ inline Ref mode(World& w, VMode m) {
 }
 ///@}
 
-/// @name wrap
+/// @name %%core.wrap
 ///@{
 inline Ref op_wminus(VMode m, Ref a) {
     World& w = a->world();
@@ -36,7 +36,7 @@ inline Ref op_wminus(VMode m, Ref a) {
 }
 ///@}
 
-/// @name trait
+/// @name %%core.trait
 ///@{
 inline Ref op(trait o, Ref type) {
     World& w = type->world();
@@ -44,11 +44,23 @@ inline Ref op(trait o, Ref type) {
 }
 ///@}
 
-/// @name pe
+/// @name %%core.pe
 ///@{
 inline Ref op(pe o, Ref def) {
     World& w = def->world();
     return w.app(w.app(w.ax(o), def->type()), def);
+}
+///@}
+
+/// @name %%core.bit2
+///@{
+
+/// Use like this: `a op b = tab[a][b]`
+constexpr std::array<std::array<u64, 2>, 2> make_truth_table(bit2 id) {
+    return {
+        {{sub_t(id) & sub_t(0b0001) ? u64(-1) : 0, sub_t(id) & sub_t(0b0100) ? u64(-1) : 0},
+         {sub_t(id) & sub_t(0b0010) ? u64(-1) : 0, sub_t(id) & sub_t(0b1000) ? u64(-1) : 0}}
+    };
 }
 ///@}
 
@@ -73,18 +85,6 @@ inline Ref insert_unsafe(Ref d, Ref i, Ref val) {
 inline Ref insert_unsafe(Ref d, u64 i, Ref val) {
     World& w = d->world();
     return insert_unsafe(d, w.lit_idx(0_u64, i), val);
-}
-///@}
-
-/// @name bit2
-///@{
-
-/// Use like this: `a op b = tab[a][b]`
-constexpr std::array<std::array<u64, 2>, 2> make_truth_table(bit2 id) {
-    return {
-        {{sub_t(id) & sub_t(0b0001) ? u64(-1) : 0, sub_t(id) & sub_t(0b0100) ? u64(-1) : 0},
-         {sub_t(id) & sub_t(0b0010) ? u64(-1) : 0, sub_t(id) & sub_t(0b1000) ? u64(-1) : 0}}
-    };
 }
 ///@}
 

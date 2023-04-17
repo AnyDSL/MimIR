@@ -30,7 +30,7 @@ void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
     for (const auto& [key, ax] : infos) {
         if (ax.plugin != plugin) continue; // this is from an import
 
-        tab.print(h, "/// @name {}\n///@{{\n", ax.tag);
+        tab.print(h, "/// @name %%{}.{}\n///@{{\n", plugin, ax.tag);
         tab.print(h, "#ifdef DOXYGEN // see https://github.com/doxygen/doxygen/issues/9668\n");
         tab.print(h, "enum {} : flags_t {{\n", ax.tag);
         tab.print(h, "#else\n");
