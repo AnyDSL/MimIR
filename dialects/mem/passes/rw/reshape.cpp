@@ -13,15 +13,12 @@
 
 namespace thorin::mem {
 
-void Reshape::enter() { rewrite_def(curr_mut()); }
+namespace {
 
-const Def* Reshape::rewrite_def(const Def* def) {
-    if (auto i = old2new_.find(def); i != old2new_.end()) return i->second;
-    auto new_def  = rewrite_def_(def);
-    old2new_[def] = new_def;
-    return new_def;
-}
+bool is_mem_ty(const Def* T) { return match<mem::M>(T); }
+DefArray vec2array(const std::vector<const Def*>& vec) { return DefArray(vec.begin(), vec.end()); }
 
+// TODO merge with should_flatten from tuple.*
 bool should_flatten(const Def* T) {
     // handle [] cases
     if (T->isa<Sigma>()) return true;
@@ -38,6 +35,45 @@ bool should_flatten(const Def* T) {
         if (auto arr = T->isa<Arr>(); arr && arr->body()->isa<Pi>()) return lit->get<u64>() > 1;
     }
     return false;
+}
+
+// TODO merge with tuple.*
+std::vector<const Def*> flatten_ty(const Def* T) {
+    std::vector<const Def*> types;
+    if (should_flatten(T)) {
+        for (auto P : T->projs()) {
+            auto inner_types = flatten_ty(P);
+            types.insert(types.end(), inner_types.begin(), inner_types.end());
+        }
+    } else {
+        types.push_back(T);
+    }
+    return types;
+}
+
+// TODO try to remove code duplication with flatten_ty
+std::vector<const Def*> flatten_def(const Def* def) {
+    std::vector<const Def*> defs;
+    if (should_flatten(def->type())) {
+        for (auto P : def->projs()) {
+            auto inner_defs = flatten_def(P);
+            defs.insert(defs.end(), inner_defs.begin(), inner_defs.end());
+        }
+    } else {
+        defs.push_back(def);
+    }
+    return defs;
+}
+
+} // namespace
+
+void Reshape::enter() { rewrite_def(curr_mut()); }
+
+const Def* Reshape::rewrite_def(const Def* def) {
+    if (auto i = old2new_.find(def); i != old2new_.end()) return i->second;
+    auto new_def  = rewrite_def_(def);
+    old2new_[def] = new_def;
+    return new_def;
 }
 
 const Def* Reshape::rewrite_def_(const Def* def) {
@@ -146,22 +182,6 @@ Lam* Reshape::reshape_lam(Lam* def) {
     return new_lam;
 }
 
-std::vector<const Def*> flatten_ty(const Def* T) {
-    std::vector<const Def*> types;
-    if (should_flatten(T)) {
-        for (auto P : T->projs()) {
-            auto inner_types = flatten_ty(P);
-            types.insert(types.end(), inner_types.begin(), inner_types.end());
-        }
-    } else {
-        types.push_back(T);
-    }
-    return types;
-}
-
-bool is_mem_ty(const Def* T) { return match<mem::M>(T); }
-DefArray vec2array(const std::vector<const Def*>& vec) { return DefArray(vec.begin(), vec.end()); }
-
 const Def* Reshape::reshape_type(const Def* T) {
     if (auto pi = T->isa<Pi>()) {
         auto new_dom = reshape_type(pi->dom());
@@ -207,19 +227,6 @@ const Def* Reshape::reshape_type(const Def* T) {
     } else {
         return T;
     }
-}
-
-std::vector<const Def*> flatten_def(const Def* def) {
-    std::vector<const Def*> defs;
-    if (should_flatten(def->type())) {
-        for (auto P : def->projs()) {
-            auto inner_defs = flatten_def(P);
-            defs.insert(defs.end(), inner_defs.begin(), inner_defs.end());
-        }
-    } else {
-        defs.push_back(def);
-    }
-    return defs;
 }
 
 const Def* Reshape::reshape(std::vector<const Def*>& defs, const Def* T, const Def* mem) {

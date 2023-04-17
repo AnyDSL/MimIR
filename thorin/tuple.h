@@ -152,6 +152,8 @@ DefArray merge(Defs, Defs);
 DefArray merge(const Def* def, Defs defs);
 const Def* merge_sigma(const Def* def, Defs defs);
 const Def* merge_tuple(const Def* def, Defs defs);
+
+Ref tuple_of_types(Ref t);
 ///@}
 
 } // namespace thorin

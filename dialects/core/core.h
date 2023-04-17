@@ -9,14 +9,17 @@ namespace thorin::core {
 
 /// @name Mode
 ///@{
+/// What should happen if Idx arithmetic overflows?
 enum Mode : nat_t {
-    none = 0,
-    nsw  = 1 << 0,
-    nuw  = 1 << 1,
+    none = 0,      ///< Wrap around.
+    nsw  = 1 << 0, ///< No Signed Wrap around.
+    nuw  = 1 << 1, ///< No Unsigned Wrap around.
 };
 
+/// Give Mode as thorin::math::Mode, thorin::nat_t or Ref.
 using VMode = std::variant<Mode, nat_t, Ref>;
 
+/// thorin::math::VMode -> Ref.
 inline Ref mode(World& w, VMode m) {
     if (auto def = std::get_if<Ref>(&m)) return *def;
     if (auto nat = std::get_if<nat_t>(&m)) return w.lit_nat(*nat);
@@ -24,20 +27,28 @@ inline Ref mode(World& w, VMode m) {
 }
 ///@}
 
-/// @name op
+/// @name wrap
+///@{
+inline Ref op_wminus(VMode m, Ref a) {
+    World& w = a->world();
+    auto s   = Lit::as(w.iinfer(a));
+    return w.call(wrap::sub, mode(w, m), Defs{w.lit_idx(s, 0), a});
+}
+///@}
+
+/// @name trait
 ///@{
 inline Ref op(trait o, Ref type) {
     World& w = type->world();
     return w.app(w.ax(o), type);
 }
+///@}
+
+/// @name pe
+///@{
 inline Ref op(pe o, Ref def) {
     World& w = def->world();
     return w.app(w.app(w.ax(o), def->type()), def);
-}
-inline Ref op_wminus(VMode m, Ref a) {
-    World& w = a->world();
-    auto s   = Lit::as(w.iinfer(a));
-    return w.call(wrap::sub, mode(w, m), Defs{w.lit_idx(s, 0), a});
 }
 ///@}
 

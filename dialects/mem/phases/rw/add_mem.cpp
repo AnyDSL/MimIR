@@ -8,7 +8,9 @@
 
 namespace thorin::mem {
 
-static std::pair<const App*, Array<Lam*>> isa_apped_mut_lam_in_tuple(const Def* def) {
+namespace {
+
+std::pair<const App*, Array<Lam*>> isa_apped_mut_lam_in_tuple(const Def* def) {
     if (auto app = def->isa<App>()) {
         std::vector<Lam*> lams;
         std::deque<const Def*> wl;
@@ -34,7 +36,7 @@ static std::pair<const App*, Array<Lam*>> isa_apped_mut_lam_in_tuple(const Def* 
 
 // @pre isa_apped_mut_lam_in_tuple(def) valid
 template<class F, class H>
-static const Def* rewrite_mut_lam_in_tuple(const Def* def, F&& rewrite, H&& rewrite_idx) {
+const Def* rewrite_mut_lam_in_tuple(const Def* def, F&& rewrite, H&& rewrite_idx) {
     auto& w = def->world();
     if (auto mut = def->isa_mut<Lam>()) return std::forward<F>(rewrite)(mut);
 
@@ -48,7 +50,7 @@ static const Def* rewrite_mut_lam_in_tuple(const Def* def, F&& rewrite, H&& rewr
 
 // @pre isa_apped_mut_lam_in_tuple(def) valid
 template<class RewriteCallee, class RewriteArg, class RewriteIdx>
-static const Def* rewrite_apped_mut_lam_in_tuple(const Def* def,
+const Def* rewrite_apped_mut_lam_in_tuple(const Def* def,
                                                  RewriteCallee&& rewrite_callee,
                                                  RewriteArg&& rewrite_arg,
                                                  RewriteIdx&& rewrite_idx) {
@@ -59,6 +61,8 @@ static const Def* rewrite_apped_mut_lam_in_tuple(const Def* def,
     auto arg    = std::forward<RewriteArg>(rewrite_arg)(app->arg());
     return app->rebuild(w, app->type(), {callee, arg});
 }
+
+} // namespace
 
 // Entry point of the phase.
 void AddMem::visit(const Scope& scope) {

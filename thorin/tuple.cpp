@@ -92,4 +92,11 @@ const Def* merge_tuple(const Def* def, Defs defs) {
     return def->world().tuple(merge(def, defs));
 }
 
+Ref tuple_of_types(Ref t) {
+    auto& world = t->world();
+    if (auto sigma = t->isa<Sigma>()) return world.tuple(sigma->ops());
+    if (auto arr = t->isa<Arr>()) return world.pack(arr->shape(), arr->body());
+    return t;
+}
+
 } // namespace thorin

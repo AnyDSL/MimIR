@@ -10,8 +10,10 @@ namespace thorin::math {
 /// @name Mode
 ///@{
 // clang-format off
+/// Allowed optimizations for a specific operation.
 enum Mode : nat_t {
-    none     = 0,
+    top      = 0,
+    none     = top,
     nnan     = 1 << 0, ///< No NaNs.
                        ///< Allow optimizations to assume the arguments and result are not NaN.
                        ///< Such optimizations are required to retain defined behavior over NaNs,
@@ -34,12 +36,13 @@ enum Mode : nat_t {
     unsafe = nsz | arcp | reassoc,
     fast   = nnan | ninf | nsz | arcp | contract | afn | reassoc,
     bot    = fast,
-    top    = none,
 };
 // clang-format on
 
+/// Give Mode as thorin::math::Mode, thorin::nat_t or Ref.
 using VMode = std::variant<Mode, nat_t, Ref>;
 
+/// thorin::math::VMode -> Ref.
 inline Ref mode(World& w, VMode m) {
     if (auto def = std::get_if<Ref>(&m)) return *def;
     if (auto nat = std::get_if<nat_t>(&m)) return w.lit_nat(*nat);
@@ -47,8 +50,21 @@ inline Ref mode(World& w, VMode m) {
 }
 ///@}
 
-/// @name match_f/isa_f
+/// @name F
 ///@{
+inline const Axiom* type_f(World& w) { return w.ax<F>(); }
+inline Ref type_f(Ref pe) {
+    World& w = pe->world();
+    return w.app(type_f(w), pe);
+}
+inline Ref type_f(World& w, nat_t p, nat_t e) {
+    auto lp = w.lit_nat(p);
+    auto le = w.lit_nat(e);
+    return type_f(w.tuple({lp, le}));
+}
+inline Ref type_f16(World& w) { return type_f(w, 10, 5); }
+inline Ref type_f32(World& w) { return type_f(w, 23, 8); }
+inline Ref type_f64(World& w) { return type_f(w, 52, 11); }
 template<nat_t P, nat_t E>
 inline auto match_f(Ref def) {
     if (auto f_ty = match<F>(def)) {
@@ -72,23 +88,6 @@ inline std::optional<nat_t> isa_f(Ref def) {
     }
     return {};
 }
-///@}
-
-/// @name type_f
-///@{
-inline const Axiom* type_f(World& w) { return w.ax<F>(); }
-inline Ref type_f(Ref pe) {
-    World& w = pe->world();
-    return w.app(type_f(w), pe);
-}
-inline Ref type_f(World& w, nat_t p, nat_t e) {
-    auto lp = w.lit_nat(p);
-    auto le = w.lit_nat(e);
-    return type_f(w.tuple({lp, le}));
-}
-inline Ref type_f16(World& w) { return type_f(w, 10, 5); }
-inline Ref type_f32(World& w) { return type_f(w, 23, 8); }
-inline Ref type_f64(World& w) { return type_f(w, 52, 11); }
 ///@}
 
 /// @name lit_f
@@ -115,7 +114,7 @@ inline const Lit* lit_f(World& w, nat_t width, f64 val) {
 // clang-format on
 ///@}
 
-/// @name wrappers for unary operations
+/// @name arith
 ///@{
 inline Ref op_rminus(VMode m, Ref a) {
     World& w = a->world();
