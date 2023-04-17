@@ -36,7 +36,7 @@ public:
     /// @name Log
     ///@{
     /// Output @p fmt to Log::ostream; does nothing if Log::ostream is `nullptr`.
-    /// @see @ref fmt
+    /// @see @ref fmt "Formatted Output"
     template<class... Args>
     void log(Level level, Loc loc, const char* fmt, Args&&... args) const {
         if (ostream_ && level <= max_level_) {
@@ -68,7 +68,7 @@ private:
 
 /// @name Macros for different Log Levels for Ease of Use
 ///@{
-/// @see @ref fmt
+/// @see @ref fmt "Formatted Output"
 // clang-format off
 #define ELOG(...) log().log(thorin::Log::Level::Error,   __FILE__, __LINE__, __VA_ARGS__)
 #define WLOG(...) log().log(thorin::Log::Level::Warn,    __FILE__, __LINE__, __VA_ARGS__)
