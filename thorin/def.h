@@ -175,13 +175,13 @@ public:                                                                         
 #    define THORIN_SETTERS(T) THORIN_SETTERS_(T)
 #endif
 
-#define THORIN_DEF_MIXIN(T)                                                            \
-public:                                                                                \
-    THORIN_SETTERS(T)                                                                  \
-    static constexpr auto Node = Node::T;                                              \
-                                                                                       \
-private:                                                                               \
-    Ref rebuild_(World&, Ref, Defs) const override;                                    \
+#define THORIN_DEF_MIXIN(T)                         \
+public:                                             \
+    THORIN_SETTERS(T)                               \
+    static constexpr auto Node = Node::T;           \
+                                                    \
+private:                                            \
+    Ref rebuild_(World&, Ref, Defs) const override; \
     friend class World;
 
 /// Base class for all Def%s.
