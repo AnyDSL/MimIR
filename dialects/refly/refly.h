@@ -6,7 +6,9 @@
 
 namespace thorin::refly {
 
-// constructors
+/// @name Code
+///@{
 inline const Axiom* type_code(World& w) { return w.ax<Code>(); }
+///@}
 
 } // namespace thorin::refly

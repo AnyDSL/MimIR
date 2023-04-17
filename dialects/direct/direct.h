@@ -7,6 +7,8 @@
 
 namespace thorin::direct {
 
+/// @name cps2ds_dep
+///@{
 inline const Def* op_cps2ds_dep(const Def* f) {
     auto& world = f->world();
     // TODO: assert continuation
@@ -40,5 +42,6 @@ inline const Def* op_cps2ds_dep(const Def* f) {
 
     return world.app(ax_app, f);
 }
+///@}
 
 } // namespace thorin::direct

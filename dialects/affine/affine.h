@@ -6,6 +6,8 @@
 
 namespace thorin::affine {
 
+/// @name For
+///@{
 /// Returns the affine_for axiom applied with \a params.
 /// See documentation for %affine.For axiom in @ref affine.
 inline const Def* fn_for(World& w, Defs params) {
@@ -26,4 +28,6 @@ inline const Def* op_for(World& w,
     return w.app(fn_for(w, types), {begin, end, step, w.tuple(inits), body, brk});
 }
 // clang-format on
+///@}
+
 } // namespace thorin::affine
