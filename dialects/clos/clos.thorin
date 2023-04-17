@@ -25,6 +25,7 @@
 ///     * `fstclassBB`: basic block that is passed around
 ///     * `esc`: lambda that escapes its parent scope
 ///     * `bot`: no special use
+///
 .ax %clos.attr(ret, freeBB, fstclassBB, esc, bot): Π T: * -> T -> T, normalize_clos;
 ///
 /// ## Passes and Phases
