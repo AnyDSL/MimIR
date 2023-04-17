@@ -128,6 +128,22 @@ Sigma*     Sigma ::stub(World& w, Ref t) { return w.mut_sigma(t, num_ops())     
 
 template<bool up> TBound<up>* TBound<up>::stub(World& w, Ref t) { return w.mut_bound<up>(t, num_ops()); }
 template<bool up> TExt  <up>* TExt  <up>::stub(World&  , Ref  ) { unreachable(); }
+
+/*
+ * instantiate templates
+ */
+
+#ifndef DOXYGEN
+template Ref TExt<false>  ::rebuild(World&, Ref, Defs) const;
+template Ref TExt<true >  ::rebuild(World&, Ref, Defs) const;
+template Ref TBound<false>::rebuild(World&, Ref, Defs) const;
+template Ref TBound<true >::rebuild(World&, Ref, Defs) const;
+template TBound<false>* TBound<false>::stub(World&, Ref);
+template TBound<true >* TBound<true >::stub(World&, Ref);
+template TExt<false>*   TExt<false>  ::stub(World&, Ref);
+template TExt<true >*   TExt<true >  ::stub(World&, Ref);
+#endif
+
 // clang-format on
 
 /*
@@ -212,21 +228,6 @@ const Def* Def::refine(size_t i, const Def* new_op) const {
     new_ops[i] = new_op;
     return rebuild(world(), type(), new_ops);
 }
-
-/*
- * instantiate templates
- */
-
-#ifndef DOXYGEN
-template Ref TExt  <false>::rebuild(World&, Ref, Defs) const;
-template Ref TExt  <true >::rebuild(World&, Ref, Defs) const;
-template Ref TBound<false>::rebuild(World&, Ref, Defs) const;
-template Ref TBound<true >::rebuild(World&, Ref, Defs) const;
-template TBound<false>* TBound<false>::stub(World&, Ref);
-template TBound<true >* TBound<true >::stub(World&, Ref);
-template TExt  <false>* TExt  <false>::stub(World&, Ref);
-template TExt  <true >* TExt  <true >::stub(World&, Ref);
-#endif
 
 /*
  * Def
