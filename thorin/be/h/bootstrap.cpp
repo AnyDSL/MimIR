@@ -21,7 +21,9 @@ void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
 
     tab.print(h << std::hex, "static constexpr plugin_t Plugin_Id = 0x{};\n\n", plugin_id);
 
-    auto& infos = driver.plugin2axiom_infos(plugin);
+    const auto& unordered_infos = driver.plugin2axiom_infos(plugin);
+    std::deque<std::pair<Sym, Axiom::Info>> infos(unordered_infos.begin(), unordered_infos.end());
+    std::ranges::sort(infos, [&](const auto& p1, const auto& p2) { return p1.second.tag_id < p2.second.tag_id; });
 
     // clang-format off
     for (const auto& [key, ax] : infos) {
