@@ -68,11 +68,11 @@ public:
     ///@{
     size_t first_dependend_op() override { return 1; }
     const Pi* restructure() override;
+    Pi* stub(World&, Ref) override;
     void check() override;
     ///@}
 
     THORIN_DEF_MIXIN(Pi)
-    Pi* stub_(World&, Ref) override;
 };
 
 /// A function.
@@ -155,11 +155,11 @@ public:
 
     /// @name Virtual Methods
     ///@{
+    Lam* stub(World&, Ref) override;
     void check() override;
     ///@}
 
     THORIN_DEF_MIXIN(Lam)
-    Lam* stub_(World&, Ref) override;
 };
 
 template<class To>

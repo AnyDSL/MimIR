@@ -24,10 +24,10 @@ public:
     ///@{
     void check() override;
     const Sigma* restructure() override;
+    Sigma* stub(World&, Ref) override;
     ///@}
 
     THORIN_DEF_MIXIN(Sigma)
-    Sigma* stub_(World&, Ref) override;
 };
 
 /// Data constructor for a Sigma.
@@ -65,11 +65,11 @@ public:
     ///@{
     size_t first_dependend_op() override { return 1; }
     const Def* restructure() override;
+    Arr* stub(World&, Ref) override;
     void check() override;
     ///@}
 
     THORIN_DEF_MIXIN(Arr)
-    Arr* stub_(World&, Ref) override;
 };
 
 /// A (possibly paramterized) Tuple.
@@ -95,10 +95,10 @@ public:
     /// @name virtual methods
     ///@{
     const Def* restructure() override;
+    Pack* stub(World&, Ref) override;
     ///@}
 
     THORIN_DEF_MIXIN(Pack)
-    Pack* stub_(World&, Ref) override;
 };
 
 /// Extracts from a Sigma or Arr%ay-typed Extract::tuple the element at position Extract::index.

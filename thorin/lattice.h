@@ -34,13 +34,12 @@ private:
         : Bound(Node, type, size) {} ///< Constructor for a *mutable* Bound.
 
     THORIN_SETTERS(TBound)
-    TBound* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg())->template as<TBound>(); }
+    TBound* stub(World&, Ref) override;
 
     static constexpr auto Node = Up ? Node::Join : Node::Meet;
 
 private:
     Ref rebuild_(World&, Ref, Defs) const override;
-    TBound* stub_(World&, Ref) override;
 
     friend class World;
 };
@@ -127,13 +126,11 @@ private:
         : Ext(Node, type) {}
 
     THORIN_SETTERS(TExt)
-    TExt* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg())->template as<TExt>(); }
-
+    TExt* stub(World&, Ref) override;
     static constexpr auto Node = Up ? Node::Top : Node::Bot;
 
 private:
     Ref rebuild_(World&, Ref, Defs) const override;
-    TExt* stub_(World&, Ref) override;
 
     friend class World;
 };

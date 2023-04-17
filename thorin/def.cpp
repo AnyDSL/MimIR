@@ -116,16 +116,16 @@ template<bool up> Ref TBound<up>::rebuild_(World& w, Ref  , Defs o) const { retu
  * stub
  */
 
-Arr*       Arr   ::stub_(World& w, Ref t) { return w.mut_arr  (t); }
-Global*    Global::stub_(World& w, Ref t) { return w.global(t, is_mutable()); }
-Infer*     Infer ::stub_(World& w, Ref t) { return w.mut_infer(t); }
-Lam*       Lam   ::stub_(World& w, Ref t) { return w.mut_lam  (t->as<Pi>()); }
-Pack*      Pack  ::stub_(World& w, Ref t) { return w.mut_pack (t); }
-Pi*        Pi    ::stub_(World& w, Ref t) { return w.mut_pi   (t, is_implicit()); }
-Sigma*     Sigma ::stub_(World& w, Ref t) { return w.mut_sigma(t, num_ops()); }
+Arr*       Arr   ::stub(World& w, Ref t) { return w.mut_arr  (t)->set(dbg()); }
+Global*    Global::stub(World& w, Ref t) { return w.global(t, is_mutable())->set(dbg()); }
+Infer*     Infer ::stub(World& w, Ref t) { return w.mut_infer(t)->set(dbg()); }
+Lam*       Lam   ::stub(World& w, Ref t) { return w.mut_lam  (t->as<Pi>())->set(dbg()); }
+Pack*      Pack  ::stub(World& w, Ref t) { return w.mut_pack (t)->set(dbg()); }
+Pi*        Pi    ::stub(World& w, Ref t) { return w.mut_pi   (t, is_implicit())->set(dbg()); }
+Sigma*     Sigma ::stub(World& w, Ref t) { return w.mut_sigma(t, num_ops())->set(dbg()); }
 
-template<bool up> TBound<up>* TBound<up>::stub_(World& w, Ref t) { return w.mut_bound<up>(t, num_ops()); }
-template<bool up> TExt  <up>* TExt  <up>::stub_(World&  , Ref  ) { unreachable(); }
+template<bool up> TBound<up>* TBound<up>::stub(World& w, Ref t) { return w.mut_bound<up>(t, num_ops()); }
+template<bool up> TExt  <up>* TExt  <up>::stub(World&  , Ref  ) { unreachable(); }
 
 /*
  * instantiate templates
@@ -135,10 +135,10 @@ template Ref TExt  <false>::rebuild_(World&, Ref, Defs) const;
 template Ref TExt  <true >::rebuild_(World&, Ref, Defs) const;
 template Ref TBound<false>::rebuild_(World&, Ref, Defs) const;
 template Ref TBound<true >::rebuild_(World&, Ref, Defs) const;
-template TBound<false>* TBound<false>::stub_(World&, Ref);
-template TBound<true >* TBound<true >::stub_(World&, Ref);
-template TExt  <false>* TExt  <false>::stub_(World&, Ref);
-template TExt  <true >* TExt  <true >::stub_(World&, Ref);
+template TBound<false>* TBound<false>::stub(World&, Ref);
+template TBound<true >* TBound<true >::stub(World&, Ref);
+template TExt  <false>* TExt  <false>::stub(World&, Ref);
+template TExt  <true >* TExt  <true >::stub(World&, Ref);
 // clang-format on
 
 /*

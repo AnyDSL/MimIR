@@ -178,7 +178,6 @@ public:                                                                         
 #define THORIN_DEF_MIXIN(T)                                                            \
 public:                                                                                \
     THORIN_SETTERS(T)                                                                  \
-    T* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg())->as<T>(); } \
     static constexpr auto Node = Node::T;                                              \
                                                                                        \
 private:                                                                               \
@@ -457,7 +456,7 @@ public:
 
     /// @name stub/rebuild
     ///@{
-    Def* stub(World& w, Ref type) { return stub_(w, type)->set(dbg()); }
+    virtual Def* stub(World&, Ref) { unreachable(); }
     /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
     Ref rebuild(World& w, Ref type, Defs ops) const { return rebuild_(w, type, ops)->set(dbg()); }
     ///@}
@@ -481,7 +480,6 @@ public:
 
 protected:
     virtual Ref rebuild_(World&, Ref, Defs) const = 0;
-    virtual Def* stub_(World&, Ref) { unreachable(); }
 
     const Def** ops_ptr() const {
         return reinterpret_cast<const Def**>(reinterpret_cast<char*>(const_cast<Def*>(this + 1)));
@@ -731,8 +729,9 @@ public:
     bool is_mutable() const { return flags(); }
     ///@}
 
+    Global* stub(World&, Ref) override;
+
     THORIN_DEF_MIXIN(Global)
-    Global* stub_(World&, Ref) override;
 };
 
 hash_t UseHash::operator()(Use use) const { return hash_combine(hash_begin(u16(use.index())), hash_t(use->gid())); }
