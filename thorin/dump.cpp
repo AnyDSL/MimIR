@@ -21,19 +21,19 @@ namespace thorin {
 
 namespace {
 
-static Def* isa_decl(const Def* def) {
+Def* isa_decl(const Def* def) {
     if (auto mut = def->isa_mut()) {
         if (mut->is_external() || mut->isa<Lam>() || (mut->sym() && mut->sym() != '_')) return mut;
     }
     return nullptr;
 }
 
-static std::string id(const Def* def) {
+std::string id(const Def* def) {
     if (def->is_external() || (!def->is_set() && def->isa<Lam>())) return def->sym();
     return def->unique_name();
 }
 
-static std::string_view external(const Def* def) {
+std::string_view external(const Def* def) {
     if (def->is_external()) return ".extern "sv;
     return ""sv;
 }

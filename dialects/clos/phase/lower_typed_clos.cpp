@@ -6,6 +6,14 @@
 
 namespace thorin::clos {
 
+namespace {
+const Def* insert_ret(const Def* def, const Def* ret) {
+    auto new_ops = DefArray(def->num_projs() + 1, [&](auto i) { return (i == def->num_projs()) ? ret : def->proj(i); });
+    auto& w      = def->world();
+    return def->is_term() ? w.tuple(new_ops) : w.sigma(new_ops);
+}
+} // namespace
+
 void LowerTypedClos::start() {
     auto externals = std::vector(world().externals().begin(), world().externals().end());
     for (auto [_, n] : externals) rewrite(n);
@@ -20,12 +28,6 @@ void LowerTypedClos::start() {
             lam->set_filter(rewrite(lam->filter()));
         }
     }
-}
-
-static const Def* insert_ret(const Def* def, const Def* ret) {
-    auto new_ops = DefArray(def->num_projs() + 1, [&](auto i) { return (i == def->num_projs()) ? ret : def->proj(i); });
-    auto& w      = def->world();
-    return def->is_term() ? w.tuple(new_ops) : w.sigma(new_ops);
 }
 
 Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {

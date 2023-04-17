@@ -4,6 +4,44 @@
 
 namespace thorin::clos {
 
+namespace {
+
+std::array<Ref, 3> split(Ref def) {
+    auto new_ops = DefArray(def->num_projs() - 2, nullptr);
+    auto& w      = def->world();
+    const Def *mem, *env;
+    auto j = 0;
+    for (size_t i = 0; i < def->num_projs(); i++) {
+        auto op = def->proj(i);
+        if (op == mem::type_mem(w) || op->type() == mem::type_mem(w))
+            mem = op;
+        else if (i == Clos_Env_Param)
+            env = op;
+        else
+            new_ops[j++] = op;
+    }
+    assert(mem && env);
+    auto remaining = def->is_term() ? w.tuple(new_ops) : w.sigma(new_ops);
+    if (new_ops.size() == 1 && remaining != new_ops[0]) {
+        // FIXME: For some reason this is not constant folded away??
+        remaining = new_ops[0];
+    }
+    return {mem, env, remaining};
+}
+
+Ref rebuild(Ref mem, Ref env, Defs remaining) {
+    auto& w      = mem->world();
+    auto new_ops = DefArray(remaining.size() + 2, [&](auto i) -> const Def* {
+        static_assert(Clos_Env_Param == 1);
+        if (i == 0) return mem;
+        if (i == 1) return env;
+        return remaining[i - 2];
+    });
+    return w.tuple(new_ops);
+}
+
+} // namespace
+
 void Clos2SJLJ::get_exn_closures(Ref def, DefSet& visited) {
     if (!def->is_term() || def->isa_mut<Lam>() || visited.contains(def)) return;
     visited.emplace(def);
@@ -41,40 +79,6 @@ void Clos2SJLJ::get_exn_closures() {
     }
     auto visited = DefSet();
     get_exn_closures(app->arg(), visited);
-}
-
-static std::array<Ref, 3> split(Ref def) {
-    auto new_ops = DefArray(def->num_projs() - 2, nullptr);
-    auto& w      = def->world();
-    const Def *mem, *env;
-    auto j = 0;
-    for (size_t i = 0; i < def->num_projs(); i++) {
-        auto op = def->proj(i);
-        if (op == mem::type_mem(w) || op->type() == mem::type_mem(w))
-            mem = op;
-        else if (i == Clos_Env_Param)
-            env = op;
-        else
-            new_ops[j++] = op;
-    }
-    assert(mem && env);
-    auto remaining = def->is_term() ? w.tuple(new_ops) : w.sigma(new_ops);
-    if (new_ops.size() == 1 && remaining != new_ops[0]) {
-        // FIXME: For some reason this is not constant folded away??
-        remaining = new_ops[0];
-    }
-    return {mem, env, remaining};
-}
-
-static Ref rebuild(Ref mem, Ref env, Defs remaining) {
-    auto& w      = mem->world();
-    auto new_ops = DefArray(remaining.size() + 2, [&](auto i) -> const Def* {
-        static_assert(Clos_Env_Param == 1);
-        if (i == 0) return mem;
-        if (i == 1) return env;
-        return remaining[i - 2];
-    });
-    return w.tuple(new_ops);
 }
 
 Lam* Clos2SJLJ::get_throw(Ref dom) {

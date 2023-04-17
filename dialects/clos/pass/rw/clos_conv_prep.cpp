@@ -6,26 +6,29 @@
 
 namespace thorin::clos {
 
+namespace {
 // FIXME: these guys do not work if another pass rewrites curr_mut()'s body
-static bool isa_cont(const App* body, Ref def, size_t i) {
+bool isa_cont(const App* body, Ref def, size_t i) {
     return Pi::isa_returning(body->callee_type()) && body->arg() == def && i == def->num_ops() - 1;
 }
 
-static Ref isa_br(const App* body, Ref def) {
+Ref isa_br(const App* body, Ref def) {
     if (!Pi::isa_cn(body->callee_type())) return nullptr;
     auto proj = body->callee()->isa<Extract>();
     return (proj && proj->tuple() == def && proj->tuple()->isa<Tuple>()) ? proj->tuple() : nullptr;
 }
 
-static bool isa_callee_br(const App* body, Ref def, size_t i) {
+bool isa_callee_br(const App* body, Ref def, size_t i) {
     if (!Pi::isa_cn(body->callee_type())) return false;
     return isa_callee(def, i) || isa_br(body, def);
 }
 
-static Lam* isa_retvar(Ref def) {
+Lam* isa_retvar(Ref def) {
     if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam && var == lam->ret_var()) return lam;
     return nullptr;
 }
+
+} // namespace
 
 Lam* ClosConvPrep::scope(Lam* lam) {
     if (eta_exp_) lam = eta_exp_->new2old(lam);

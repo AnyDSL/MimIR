@@ -14,8 +14,10 @@ using namespace std::literals;
 
 namespace thorin {
 
+namespace {
 // Just assuming looking through the uses is faster if uses().size() is small.
-static constexpr int Search_In_Uses_Threshold = 8;
+constexpr int Search_In_Uses_Threshold = 8;
+} // namespace
 
 /*
  * constructors

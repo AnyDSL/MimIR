@@ -11,20 +11,24 @@ using namespace std::literals;
 
 namespace thorin::clos {
 
-/*
- * Free variable analysis
- */
+namespace {
 
-static bool is_toplevel(const Def* fd) {
+bool is_toplevel(const Def* fd) {
     return fd->dep_const() || fd->isa_mut<Global>() || fd->isa<Axiom>() || !fd->is_term();
 }
 
-static bool is_memop_res(const Def* fd) {
+bool is_memop_res(const Def* fd) {
     auto proj = fd->isa<Extract>();
     if (!proj) return false;
     auto types = proj->tuple()->type()->ops();
     return std::any_of(types.begin(), types.end(), [](auto d) { return match<mem::M>(d); });
 }
+
+} // namespace
+
+/*
+ * Free variable analysis
+ */
 
 void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue& worklist) {
     assert(!match<mem::M>(fd) && "mem tokens must not be free");
