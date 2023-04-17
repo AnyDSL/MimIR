@@ -14,6 +14,7 @@ void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
     tab.print(h, "#include \"thorin/axiom.h\"\n"
                  "#include \"thorin/plugin.h\"\n\n");
 
+    tab.print(h, "/// @namespace thorin::{} @see @ref {} \n", plugin, plugin);
     tab.print(h, "namespace thorin {{\nnamespace {} {{\n\n", plugin);
 
     plugin_t plugin_id = *Axiom::mangle(plugin);
