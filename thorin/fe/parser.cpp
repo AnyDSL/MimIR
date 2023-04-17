@@ -808,7 +808,7 @@ void Parser::parse_def(Dbg dbg /*= {}*/) {
     auto mut = scopes_.find(dbg)->as_mut();
     expect(Tok::Tag::T_assign, "mutable definition");
 
-    size_t i = mut->first_dependend_op();
+    size_t i = mut->isa<Arr, Pi>() ? 1 : 0; // first dependend op
     size_t n = mut->num_ops();
 
     if (ahead().isa(Tok::Tag::D_brace_l)) {

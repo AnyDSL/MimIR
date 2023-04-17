@@ -62,15 +62,14 @@ public:
     Pi* set_codom(const Def* codom) { return Def::set(1, codom)->as<Pi>(); }
     ///@}
 
-    static const Def* infer(const Def* dom, const Def* codom);
-
-    /// @name Virtual Methods
+    /// @name Type Checking
     ///@{
-    size_t first_dependend_op() override { return 1; }
-    const Pi* restructure() override;
-    Pi* stub(World&, Ref) override;
     void check() override;
+    static const Def* infer(const Def* dom, const Def* codom);
     ///@}
+
+    const Pi* freeze() override;
+    Pi* stub(World&, Ref) override;
 
     THORIN_DEF_MIXIN(Pi)
 };
@@ -153,9 +152,10 @@ public:
     Lam* test(Filter filter, const Def* val, const Def* idx, const Def* match, const Def* clash, const Def* mem);
     ///@}
 
-    /// @name Virtual Methods
-    ///@{
     Lam* stub(World&, Ref) override;
+
+    /// @name Type Checking
+    ///@{
     void check() override;
     ///@}
 

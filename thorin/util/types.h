@@ -40,6 +40,7 @@ using u1       = bool;
 using f16      = half;
 using f32      = float;
 using f64      = double;
+using level_t  = u64;
 using nat_t    = u64;
 using node_t   = u8;
 using flags_t  = u64;

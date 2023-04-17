@@ -175,13 +175,13 @@ public:                                                                         
 #    define THORIN_SETTERS(T) THORIN_SETTERS_(T)
 #endif
 
-#define THORIN_DEF_MIXIN(T)                         \
-public:                                             \
-    THORIN_SETTERS(T)                               \
-    static constexpr auto Node = Node::T;           \
-                                                    \
-private:                                            \
-    Ref rebuild_(World&, Ref, Defs) const override; \
+#define THORIN_DEF_MIXIN(T)                        \
+public:                                            \
+    THORIN_SETTERS(T)                              \
+    Ref rebuild(World&, Ref, Defs) const override; \
+    static constexpr auto Node = Node::T;          \
+                                                   \
+private:                                           \
     friend class World;
 
 /// Base class for all Def%s.
@@ -444,29 +444,30 @@ public:
 #endif
     ///@}
 
-    /// @name reduce
+    /// @name Rebuild
     ///@{
+    virtual Def* stub(World&, Ref) { unreachable(); }
+
+    /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
+    virtual Ref rebuild(World& w, Ref type, Defs ops) const = 0;
+
+    /// Tries to make an immutable from a mutable.
+    virtual const Def* freeze() { return nullptr; }
+
+    const Def* refine(size_t i, const Def* new_op) const;
+
     /// Rewrites Def::ops by substituting `this` mutable's Var with @p arg.
     DefArray reduce(const Def* arg) const;
     DefArray reduce(const Def* arg);
+
     /// Transitively Def::reduce Lam%s, if `this` is an App.
     /// @returns the reduced body.
     const Def* reduce_rec() const;
     ///@}
 
-    /// @name stub/rebuild
-    ///@{
-    virtual Def* stub(World&, Ref) { unreachable(); }
-    /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
-    Ref rebuild(World& w, Ref type, Defs ops) const { return rebuild_(w, type, ops)->set(dbg()); }
-    ///@}
-
-    /// @name Virtual Methods
+    /// @name Type Checking
     ///@{
     virtual void check() {}
-    virtual size_t first_dependend_op() { return 0; }
-    const Def* refine(size_t i, const Def* new_op) const;
-    virtual const Def* restructure() { return nullptr; }
     ///@}
 
     /// @name dump
@@ -479,8 +480,6 @@ public:
     ///@}
 
 protected:
-    virtual Ref rebuild_(World&, Ref, Defs) const = 0;
-
     const Def** ops_ptr() const {
         return reinterpret_cast<const Def**>(reinterpret_cast<char*>(const_cast<Def*>(this + 1)));
     }
@@ -597,8 +596,6 @@ private:
     THORIN_DEF_MIXIN(UMax)
 };
 
-using level_t = u64;
-
 class UInc : public Def {
 private:
     UInc(const Def* op, level_t offset)
@@ -620,7 +617,10 @@ private:
         : Def(Node, nullptr, {level}, 0) {}
 
 public:
+    /// @name ops
+    ///@{
     const Def* level() const { return op(0); }
+    ///@}
 
     THORIN_DEF_MIXIN(Type)
 };
@@ -631,6 +631,15 @@ private:
         : Def(Node, type, Defs{}, val) {}
 
 public:
+    /// @name Get actual Constant
+    ///@{
+    template<class T = flags_t>
+    T get() const {
+        static_assert(sizeof(T) <= 8);
+        return bitcast<T>(flags_);
+    }
+    ///@}
+
     using Def::as;
     using Def::isa;
 
@@ -649,12 +658,6 @@ public:
     }
     ///@}
 
-    template<class T = flags_t>
-    T get() const {
-        static_assert(sizeof(T) <= 8);
-        return bitcast<T>(flags_);
-    }
-
     THORIN_DEF_MIXIN(Lit)
 };
 
@@ -672,7 +675,7 @@ private:
         : Def(Node, type, Defs{}, 0) {}
 
 public:
-    /// Checks if @p def isa `.Idx s` and returns s or `nullptr` otherwise.
+    /// Checks if @p def is a `.Idx s` and returns `s` or `nullptr` otherwise.
     static Ref size(Ref def);
 
     /// @name Convert between Idx::size and bitwidth and vice versa

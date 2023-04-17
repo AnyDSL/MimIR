@@ -92,18 +92,4 @@ const Def* merge_tuple(const Def* def, Defs defs) {
     return def->world().tuple(merge(def, defs));
 }
 
-/*
- * reduce
- */
-
-const Def* Arr::reduce(const Def* arg) const {
-    if (auto mut = isa_mut<Arr>()) return rewrite(mut, arg, 1);
-    return body();
-}
-
-const Def* Pack::reduce(const Def* arg) const {
-    if (auto mut = isa_mut<Pack>()) return rewrite(mut, arg, 0);
-    return body();
-}
-
 } // namespace thorin

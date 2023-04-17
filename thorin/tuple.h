@@ -14,17 +14,18 @@ private:
         : Def(Node, type, size, 0) {} ///< Constructor for a *mutable* Sigma.
 
 public:
-    /// @name setters
+    /// @name Setters
     ///@{
     Sigma* set(size_t i, const Def* def) { return Def::set(i, def)->as<Sigma>(); }
     Sigma* set(Defs ops) { return Def::set(ops)->as<Sigma>(); }
     ///@}
 
-    /// @name virtual methods
+    const Sigma* freeze() override;
+    Sigma* stub(World&, Ref) override;
+
+    /// @name Type Checking
     ///@{
     void check() override;
-    const Sigma* restructure() override;
-    Sigma* stub(World&, Ref) override;
     ///@}
 
     THORIN_DEF_MIXIN(Sigma)
@@ -41,7 +42,7 @@ private:
 };
 
 /// A (possibly paramterized) Arr%ay.
-/// Arr%ays are usually homogenous but they can be *inhomogenous* as well: `«i: N; T#i»'
+/// Arr%ays are usually homogenous but they can be *inhomogenous* as well: `«i: N; T#i»`
 /// @see Sigma, Tuple, Pack
 class Arr : public Def {
 private:
@@ -59,13 +60,12 @@ public:
     Arr* set_body(const Def* body) { return Def::set(1, body)->as<Arr>(); }
     ///@}
 
+    const Def* freeze() override;
+    Arr* stub(World&, Ref) override;
     const Def* reduce(const Def* arg) const;
 
-    /// @name virtual methods
+    /// @name Type Checking
     ///@{
-    size_t first_dependend_op() override { return 1; }
-    const Def* restructure() override;
-    Arr* stub(World&, Ref) override;
     void check() override;
     ///@}
 
@@ -90,13 +90,9 @@ public:
     Pack* set(const Def* body) { return Def::set(0, body)->as<Pack>(); }
     ///@}
 
-    const Def* reduce(const Def* arg) const;
-
-    /// @name virtual methods
-    ///@{
-    const Def* restructure() override;
+    const Def* freeze() override;
     Pack* stub(World&, Ref) override;
-    ///@}
+    const Def* reduce(const Def* arg) const;
 
     THORIN_DEF_MIXIN(Pack)
 };

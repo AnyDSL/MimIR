@@ -224,7 +224,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         auto new_mut = rewrite_mut(mut, new_type, subst);
         // Try to reduce the amount of muts that are created
         if (!mut->isa_mut<Global>() && Checker(w).equiv(mut, new_mut)) return map(mut);
-        if (auto restruct = new_mut->restructure()) return map(restruct);
+        if (auto imm = new_mut->freeze()) return map(imm);
         return map(new_mut);
     } else {
         auto new_ops = DefArray(def->num_ops(), [&](auto i) { return rewrite(def->op(i), subst); });
