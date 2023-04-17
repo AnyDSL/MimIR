@@ -18,7 +18,10 @@ protected:
         : Def(Node, type, 2, implicit ? 1 : 0) {}
 
 public:
+    /// @name Getters
+    ///@{
     bool is_implicit() const { return flags(); }
+    ///@}
 
     /// @name dom
     ///@{
