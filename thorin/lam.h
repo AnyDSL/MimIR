@@ -42,7 +42,7 @@ public:
     ///@{
     /// Checks certain properties of this Pi regarding continuations.
     // clang-format off
-    /// Is this a continuation - i.e. the Pi::codom is Bot?
+    /// Is this a continuation - i.e. is the Pi::codom thorin::Bot%tom?
     static const Pi* isa_cn(Ref d) { return d->isa<Pi>() && d->as<Pi>()->codom()->node() == Node::Bot ? d->as<Pi>() : nullptr; }
     /// Is this a continuation (Pi::isa_cn) which has a Pi::ret_pi?
     static const Pi* isa_returning(Ref d)  { return isa_cn(d) &&  d->as<Pi>()->ret_pi() ? d->as<Pi>() : nullptr; }

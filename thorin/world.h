@@ -244,7 +244,8 @@ public:
     Pi* mut_pi(Ref type, bool implicit = false) { return insert<Pi>(2, type, implicit); }
     ///@}
 
-    /// @name Cn (Pi with codom Bot)
+    /// @name Cn
+    /// Pi with codom thorin::Bot%tom
     ///@{
     const Pi* cn() { return cn(sigma()); }
     const Pi* cn(Ref dom) { return pi(dom, type_bot()); }
