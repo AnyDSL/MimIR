@@ -58,7 +58,7 @@ public:
     /// @name Getters
     ///@{
     int foo() const { return foo_; }
-    int bar() const { return foo_; }
+    int bar() const { return bar_; }
     ///@}
 
 private:
