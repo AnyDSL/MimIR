@@ -3,8 +3,6 @@ var math_2normalizers_8cpp =
     [ "CODE", "math_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c", null ],
     [ "CODE", "math_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c", null ],
     [ "M", "math_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89", null ],
-    [ "commute", "math_2normalizers_8cpp.html#aada517c5e50f2d547239d4ea03824f77", null ],
-    [ "fold", "math_2normalizers_8cpp.html#a0cf63c6923dfa1f7af6ec153e5f122b6", null ],
     [ "normalize_arith", "math_2normalizers_8cpp.html#a043e8c60e23d31a6d663672eadee2bcf", null ],
     [ "normalize_cmp", "math_2normalizers_8cpp.html#a72ac378d2391c5a54e7c6a60234beaa1", null ],
     [ "normalize_conv", "math_2normalizers_8cpp.html#abb9921d1dbdfac714ed5f685137c8423", null ],
@@ -14,6 +12,5 @@ var math_2normalizers_8cpp =
     [ "normalize_gamma", "math_2normalizers_8cpp.html#ac8695d8e00a1c7308da513601f0aa79f", null ],
     [ "normalize_pow", "math_2normalizers_8cpp.html#adb513511d10525c5acf25f5f64266929", null ],
     [ "normalize_rt", "math_2normalizers_8cpp.html#a2191c9079354097898b7df0ba218f883", null ],
-    [ "normalize_tri", "math_2normalizers_8cpp.html#a9f03f2cd6530e1ec131486e3d771a975", null ],
-    [ "pad", "math_2normalizers_8cpp.html#ac21074f8f373cf8a86c0206b5137ae34", null ]
+    [ "normalize_tri", "math_2normalizers_8cpp.html#a9f03f2cd6530e1ec131486e3d771a975", null ]
 ];

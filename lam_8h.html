@@ -113,8 +113,7 @@ $(document).ready(function(){initNavTree('lam_8h.html',''); initResizable(); });
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle"><div class="title">lam.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -123,13 +122,13 @@ $(document).ready(function(){initNavTree('lam_8h.html',''); initResizable(); });
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for lam.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="lam_8h__incl.svg" width="2304" height="432"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="lam_8h__incl.svg" width="2242" height="432"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="lam_8h__dep__incl.svg" width="4462" height="491"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="lam_8h__dep__incl.svg" width="5586" height="579"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -138,9 +137,10 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pi.html">thorin::Pi</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function type AKA <a class="el" href="classthorin_1_1Pi.html" title="A function type AKA Pi type.">Pi</a> type.  <a href="classthorin_1_1Pi.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <a href="https://en.wikipedia.org/wiki/Dependent_type#%CE%A0_type">dependent function type</a>.  <a href="classthorin_1_1Pi.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Lam.html">thorin::Lam</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function.  <a href="classthorin_1_1Lam.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1App.html">thorin::App</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -148,7 +148,6 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacethorin"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html">thorin</a></td></tr>
-<tr class="memdesc:namespacethorin"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper functions of general interest. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
@@ -163,16 +162,23 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:afbcb1bda3428d2211797b024635936ee"><td class="memItemLeft" align="right" valign="top">Lam *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#afbcb1bda3428d2211797b024635936ee">thorin::isa_workable</a> (Lam *lam)</td></tr>
-<tr class="memdesc:afbcb1bda3428d2211797b024635936ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">These are <a class="el" href="classthorin_1_1Lam.html">Lam</a>s that are neither <code>nullptr</code>, nor <a class="el" href="classthorin_1_1Def.html#a7701ec0e042a91951dcff7bf0b56573c">Lam::is_external</a>, nor Lam::is_unset.  <a href="namespacethorin.html#afbcb1bda3428d2211797b024635936ee">More...</a><br /></td></tr>
-<tr class="separator:afbcb1bda3428d2211797b024635936ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Helpers to work with Functions</div></td></tr>
 <tr class="memitem:ad9eaf597de3eb9f0abdfad6e1d60d40b"><td class="memItemLeft" align="right" valign="top">const App *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ad9eaf597de3eb9f0abdfad6e1d60d40b">thorin::isa_callee</a> (const Def *def, <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> i)</td></tr>
 <tr class="separator:ad9eaf597de3eb9f0abdfad6e1d60d40b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbcb1bda3428d2211797b024635936ee"><td class="memItemLeft" align="right" valign="top">Lam *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#afbcb1bda3428d2211797b024635936ee">thorin::isa_workable</a> (Lam *lam)</td></tr>
+<tr class="memdesc:afbcb1bda3428d2211797b024635936ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">These are <a class="el" href="classthorin_1_1Lam.html" title="A function.">Lam</a>s that are neither <code>nullptr</code>, nor <a class="el" href="classthorin_1_1Def.html#a7701ec0e042a91951dcff7bf0b56573c">Lam::is_external</a>, nor Lam::is_unset.  <a href="namespacethorin.html#afbcb1bda3428d2211797b024635936ee">More...</a><br /></td></tr>
+<tr class="separator:afbcb1bda3428d2211797b024635936ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed3d96cb0b2cc194a61801ac78bc1a5c"><td class="memItemLeft" align="right" valign="top">std::pair&lt; const App *, Lam * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#aed3d96cb0b2cc194a61801ac78bc1a5c">thorin::isa_apped_mut_lam</a> (const Def *def)</td></tr>
 <tr class="separator:aed3d96cb0b2cc194a61801ac78bc1a5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc13c6dc794ec069c13ab03e305a6ee4"><td class="memItemLeft" align="right" valign="top">std::deque&lt; const App * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#adc13c6dc794ec069c13ab03e305a6ee4">thorin::decurry</a> (const Def *)</td></tr>
 <tr class="memdesc:adc13c6dc794ec069c13ab03e305a6ee4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields curried <a class="el" href="classthorin_1_1App.html">App</a>s in a flat <code>std::deque&lt;const App*&gt;</code>.  <a href="namespacethorin.html#adc13c6dc794ec069c13ab03e305a6ee4">More...</a><br /></td></tr>
 <tr class="separator:adc13c6dc794ec069c13ab03e305a6ee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a022d5af8f2049a71d4aba1f9fc9fbed2"><td class="memItemLeft" align="right" valign="top">const Def *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a022d5af8f2049a71d4aba1f9fc9fbed2">thorin::compose_cn</a> (const Def *f, const Def *g)</td></tr>
+<tr class="memdesc:a022d5af8f2049a71d4aba1f9fc9fbed2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The high level view is:  <a href="namespacethorin.html#a022d5af8f2049a71d4aba1f9fc9fbed2">More...</a><br /></td></tr>
+<tr class="separator:a022d5af8f2049a71d4aba1f9fc9fbed2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a957335953a7051820ba1edc227999812"><td class="memItemLeft" align="right" valign="top">std::pair&lt; const Def *, std::vector&lt; const Def * &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a957335953a7051820ba1edc227999812">thorin::collect_args</a> (const Def *def)</td></tr>
+<tr class="memdesc:a957335953a7051820ba1edc227999812"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper function to cope with the fact that normalizers take all arguments and not only its axiom arguments.  <a href="namespacethorin.html#a957335953a7051820ba1edc227999812">More...</a><br /></td></tr>
+<tr class="separator:a957335953a7051820ba1edc227999812"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -111,6 +111,7 @@ $(document).ready(function(){initNavTree('autodiff_8cpp.html',''); initResizable
 
 <div class="header">
   <div class="summary">
+<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">autodiff.cpp File Reference</div></div>
 </div><!--header-->
@@ -123,20 +124,49 @@ $(document).ready(function(){initNavTree('autodiff_8cpp.html',''); initResizable
 <code>#include &quot;<a class="el" href="autodiff__zero_8h_source.html">dialects/autodiff/passes/autodiff_zero.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="autodiff__zero__cleanup_8h_source.html">dialects/autodiff/passes/autodiff_zero_cleanup.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="internal__cleanup_8h_source.html">dialects/compile/passes/internal_cleanup.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="ds2cps_8h_source.html">dialects/direct/passes/ds2cps.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="mem_8h_source.html">dialects/mem/mem.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for autodiff.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="autodiff_8cpp__incl.svg" width="2239" height="902"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="autodiff_8cpp__incl.svg" width="2051" height="902"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
 <p><a href="autodiff_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacethorin"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html">thorin</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacethorin_1_1autodiff"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1autodiff.html">thorin::autodiff</a></td></tr>
+<tr class="memdesc:namespacethorin_1_1autodiff"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="autodiff.html">The automatic differentiation Plugin</a> <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a2b0c506ec13141b704c0aea991f89b55"><td class="memItemLeft" align="right" valign="top"><a class="el" href="config_8h.html#a479c17cabac34a4216996c05ffa7e071">THORIN_EXPORT</a> <a class="el" href="structthorin_1_1Plugin.html">Plugin</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="autodiff_8cpp.html#a2b0c506ec13141b704c0aea991f89b55">thorin_get_plugin</a> ()</td></tr>
 <tr class="separator:a2b0c506ec13141b704c0aea991f89b55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Helpers</div></td></tr>
+<tr class="memitem:a4edeeeca7c04f18b1bdf6fb6565b2c2c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1autodiff.html#a4edeeeca7c04f18b1bdf6fb6565b2c2c">thorin::autodiff::id_pullback</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *A)</td></tr>
+<tr class="separator:a4edeeeca7c04f18b1bdf6fb6565b2c2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06f207047fafa881cc1cbf6fc4f42d0f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Pi.html">Pi</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1autodiff.html#a06f207047fafa881cc1cbf6fc4f42d0f">thorin::autodiff::pullback_type</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *E, const <a class="el" href="classthorin_1_1Def.html">Def</a> *A)</td></tr>
+<tr class="memdesc:a06f207047fafa881cc1cbf6fc4f42d0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">computes pb type <code>E* -&gt; A*</code> <code>E</code> - type of the expression (return type for a function) <code>A</code> - type of the argument (point of orientation resp.  <a href="namespacethorin_1_1autodiff.html#a06f207047fafa881cc1cbf6fc4f42d0f">More...</a><br /></td></tr>
+<tr class="separator:a06f207047fafa881cc1cbf6fc4f42d0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f4a41e00718e35126f7d7c1129ec1a7"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Pi.html">Pi</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1autodiff.html#a8f4a41e00718e35126f7d7c1129ec1a7">thorin::autodiff::autodiff_type_fun_pi</a> (const <a class="el" href="classthorin_1_1Pi.html">Pi</a> *pi)</td></tr>
+<tr class="separator:a8f4a41e00718e35126f7d7c1129ec1a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0de34cfcb9b0717e5a46ab1196ae9b9"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1autodiff.html#ad0de34cfcb9b0717e5a46ab1196ae9b9">thorin::autodiff::autodiff_type_fun</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *ty)</td></tr>
+<tr class="separator:ad0de34cfcb9b0717e5a46ab1196ae9b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%autodiff.zero</div></td></tr>
+<tr class="memitem:a425ac0b0201ca7273b6cceede10692fd"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1autodiff.html#a425ac0b0201ca7273b6cceede10692fd">thorin::autodiff::zero_pullback</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *E, const <a class="el" href="classthorin_1_1Def.html">Def</a> *A)</td></tr>
+<tr class="separator:a425ac0b0201ca7273b6cceede10692fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0625c818ce50225081948f7520171b53"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1autodiff.html#a0625c818ce50225081948f7520171b53">thorin::autodiff::zero_def</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *T)</td></tr>
+<tr class="separator:a0625c818ce50225081948f7520171b53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%autodiff.Tangent</div></td></tr>
+<tr class="memitem:a0183a16e3a07c4937c9aa7822923bde2"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1autodiff.html#a0183a16e3a07c4937c9aa7822923bde2">thorin::autodiff::tangent_type_fun</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *ty)</td></tr>
+<tr class="separator:a0183a16e3a07c4937c9aa7822923bde2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%autodiff.sum</div></td></tr>
+<tr class="memitem:a1d80794fc7152a0c80498cce438159ca"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1autodiff.html#a1d80794fc7152a0c80498cce438159ca">thorin::autodiff::op_sum</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *T, <a class="el" href="namespacethorin.html#a81c6780cfdf58e5be888c4c16c68476d">DefArray</a> defs)</td></tr>
+<tr class="separator:a1d80794fc7152a0c80498cce438159ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a2b0c506ec13141b704c0aea991f89b55" name="a2b0c506ec13141b704c0aea991f89b55"></a>
@@ -154,7 +184,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="autodiff_8cpp_source.html#l00015">15</a> of file <a class="el" href="autodiff_8cpp_source.html">autodiff.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="autodiff_8cpp_source.html#l00016">16</a> of file <a class="el" href="autodiff_8cpp_source.html">autodiff.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="namespacethorin_1_1autodiff.html#ab63c854a52fb3a0419962a2b4e826510">thorin::autodiff::register_normalizers()</a>.</p>
 

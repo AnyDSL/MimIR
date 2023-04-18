@@ -112,7 +112,8 @@ $(document).ready(function(){initNavTree('namespacethorin_1_1utf8.html',''); ini
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">thorin::utf8 Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -124,22 +125,6 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aa6dceebd5276e97e1147dd786456e666"><td class="memItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1utf8.html#aa6dceebd5276e97e1147dd786456e666">ao</a> (std::ostream &amp;os, char32_t c32, char32_t a=0b00111111_u32, char32_t o=0b10000000_u32)</td></tr>
-<tr class="separator:aa6dceebd5276e97e1147dd786456e666"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader">UTF-8</h2></td></tr>
-<tr class="memitem:a25bc821db221db9aad00c895e937c9bb"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1utf8.html#a25bc821db221db9aad00c895e937c9bb">Max</a> = 4</td></tr>
-<tr class="memdesc:a25bc821db221db9aad00c895e937c9bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximal number of <code>char8_t</code>s of an UTF-8 byte sequence.  <a href="namespacethorin_1_1utf8.html#a25bc821db221db9aad00c895e937c9bb">More...</a><br /></td></tr>
-<tr class="separator:a25bc821db221db9aad00c895e937c9bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac779262d791a964e365ba7ff793aa0a5"><td class="memItemLeft" align="right" valign="top">static constexpr char32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1utf8.html#ac779262d791a964e365ba7ff793aa0a5">BOM</a> = 0xfeff_u32</td></tr>
-<tr class="memdesc:ac779262d791a964e365ba7ff793aa0a5"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a href="https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8">Byte Order Mark</a>.  <a href="namespacethorin_1_1utf8.html#ac779262d791a964e365ba7ff793aa0a5">More...</a><br /></td></tr>
-<tr class="separator:ac779262d791a964e365ba7ff793aa0a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c5126a8e6311260cf8ee8126dd59c39"><td class="memItemLeft" align="right" valign="top">static constexpr char32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1utf8.html#a5c5126a8e6311260cf8ee8126dd59c39">EoF</a> = (char32_t)std::istream::traits_type::eof()</td></tr>
-<tr class="memdesc:a5c5126a8e6311260cf8ee8126dd59c39"><td class="mdescLeft">&#160;</td><td class="mdescRight">End of File.  <a href="namespacethorin_1_1utf8.html#a5c5126a8e6311260cf8ee8126dd59c39">More...</a><br /></td></tr>
-<tr class="separator:a5c5126a8e6311260cf8ee8126dd59c39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52719151c16151f7d70287c5ce19aac5"><td class="memItemLeft" align="right" valign="top">static constexpr char32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1utf8.html#a52719151c16151f7d70287c5ce19aac5">Err</a> = (char32_t)-2</td></tr>
-<tr class="memdesc:a52719151c16151f7d70287c5ce19aac5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Erroneous UTF char.  <a href="namespacethorin_1_1utf8.html#a52719151c16151f7d70287c5ce19aac5">More...</a><br /></td></tr>
-<tr class="separator:a52719151c16151f7d70287c5ce19aac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6920d66962b6221e75a9869c1f4da509"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1utf8.html#a6920d66962b6221e75a9869c1f4da509">num_bytes</a> (char8_t c)</td></tr>
 <tr class="memdesc:a6920d66962b6221e75a9869c1f4da509"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the expected number of bytes for an UTF-8 char sequence by inspecting the first byte.  <a href="namespacethorin_1_1utf8.html#a6920d66962b6221e75a9869c1f4da509">More...</a><br /></td></tr>
 <tr class="separator:a6920d66962b6221e75a9869c1f4da509"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -158,60 +143,23 @@ Functions</h2></td></tr>
 <tr class="memitem:a50d67a2652dfa25b33bc6128f2a49437"><td class="memItemLeft" align="right" valign="top">std::optional&lt; char8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1utf8.html#a50d67a2652dfa25b33bc6128f2a49437">is_valid</a> (char8_t c)</td></tr>
 <tr class="memdesc:a50d67a2652dfa25b33bc6128f2a49437"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the 2nd, 3rd, or 4th byte of an UTF-8 byte sequence valid?  <a href="namespacethorin_1_1utf8.html#a50d67a2652dfa25b33bc6128f2a49437">More...</a><br /></td></tr>
 <tr class="separator:a50d67a2652dfa25b33bc6128f2a49437"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a25bc821db221db9aad00c895e937c9bb"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1utf8.html#a25bc821db221db9aad00c895e937c9bb">Max</a> = 4</td></tr>
+<tr class="memdesc:a25bc821db221db9aad00c895e937c9bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximal number of <code>char8_t</code>s of an UTF-8 byte sequence.  <a href="namespacethorin_1_1utf8.html#a25bc821db221db9aad00c895e937c9bb">More...</a><br /></td></tr>
+<tr class="separator:a25bc821db221db9aad00c895e937c9bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac779262d791a964e365ba7ff793aa0a5"><td class="memItemLeft" align="right" valign="top">static constexpr char32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1utf8.html#ac779262d791a964e365ba7ff793aa0a5">BOM</a> = 0xfeff_u32</td></tr>
+<tr class="memdesc:ac779262d791a964e365ba7ff793aa0a5"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a href="https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8">Byte Order Mark</a>.  <a href="namespacethorin_1_1utf8.html#ac779262d791a964e365ba7ff793aa0a5">More...</a><br /></td></tr>
+<tr class="separator:ac779262d791a964e365ba7ff793aa0a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c5126a8e6311260cf8ee8126dd59c39"><td class="memItemLeft" align="right" valign="top">static constexpr char32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1utf8.html#a5c5126a8e6311260cf8ee8126dd59c39">EoF</a> = (char32_t)std::istream::traits_type::eof()</td></tr>
+<tr class="memdesc:a5c5126a8e6311260cf8ee8126dd59c39"><td class="mdescLeft">&#160;</td><td class="mdescRight">End of File.  <a href="namespacethorin_1_1utf8.html#a5c5126a8e6311260cf8ee8126dd59c39">More...</a><br /></td></tr>
+<tr class="separator:a5c5126a8e6311260cf8ee8126dd59c39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52719151c16151f7d70287c5ce19aac5"><td class="memItemLeft" align="right" valign="top">static constexpr char32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1utf8.html#a52719151c16151f7d70287c5ce19aac5">Err</a> = (char32_t)-2</td></tr>
+<tr class="memdesc:a52719151c16151f7d70287c5ce19aac5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Erroneous UTF char.  <a href="namespacethorin_1_1utf8.html#a52719151c16151f7d70287c5ce19aac5">More...</a><br /></td></tr>
+<tr class="separator:a52719151c16151f7d70287c5ce19aac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="aa6dceebd5276e97e1147dd786456e666" name="aa6dceebd5276e97e1147dd786456e666"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa6dceebd5276e97e1147dd786456e666">&#9670;&#160;</a></span>ao()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static std::ostream &amp; thorin::utf8::ao </td>
-          <td>(</td>
-          <td class="paramtype">std::ostream &amp;&#160;</td>
-          <td class="paramname"><em>os</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char32_t&#160;</td>
-          <td class="paramname"><em>c32</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char32_t&#160;</td>
-          <td class="paramname"><em>a</em> = <code>0b00111111_u32</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char32_t&#160;</td>
-          <td class="paramname"><em>o</em> = <code>0b10000000_u32</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="utf8_8cpp_source.html#l00037">37</a> of file <a class="el" href="utf8_8cpp_source.html">utf8.cpp</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="utf8_8cpp_source.html#l00041">decode()</a>.</p>
-
-</div>
-</div>
 <a id="ab193286524b0df4c5483ae6290004959" name="ab193286524b0df4c5483ae6290004959"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab193286524b0df4c5483ae6290004959">&#9670;&#160;</a></span>append()</h2>
 
@@ -248,9 +196,9 @@ Functions</h2></td></tr>
 
 <p>Append <code>b</code> to <code>c</code> for converting UTF-8 to UTF-32. </p>
 
-<p class="definition">Definition at line <a class="el" href="utf8_8h_source.html#l00024">24</a> of file <a class="el" href="utf8_8h_source.html">utf8.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utf8_8h_source.html#l00022">22</a> of file <a class="el" href="utf8_8h_source.html">utf8.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="utf8_8h_source.html#l00106">thorin::utf8::Lexer&lt; Max_Ahead &gt;::accept()</a>, <a class="el" href="utf8_8h_source.html#l00097">thorin::utf8::Lexer&lt; Max_Ahead &gt;::accept_if()</a>, and <a class="el" href="utf8_8cpp_source.html#l00015">encode()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="utf8_8h_source.html#l00103">thorin::utf8::Lexer&lt; Max_Ahead &gt;::accept()</a>, <a class="el" href="utf8_8h_source.html#l00094">thorin::utf8::Lexer&lt; Max_Ahead &gt;::accept_if()</a>, and <a class="el" href="utf8_8cpp_source.html#l00022">encode()</a>.</p>
 
 </div>
 </div>
@@ -283,9 +231,7 @@ Functions</h2></td></tr>
 <p>Decodes the UTF-32 char <code>c</code> to UTF-8 and writes the sequence of bytes to <code>os</code>. </p>
 <dl class="section return"><dt>Returns</dt><dd><code>false</code> on error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="utf8_8cpp_source.html#l00041">41</a> of file <a class="el" href="utf8_8cpp_source.html">utf8.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="utf8_8cpp_source.html#l00037">ao()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utf8_8cpp_source.html#l00042">42</a> of file <a class="el" href="utf8_8cpp_source.html">utf8.cpp</a>.</p>
 
 </div>
 </div>
@@ -308,11 +254,11 @@ Functions</h2></td></tr>
 <p>Encodes the next sequence of bytes from <code>is</code> as UTF-32. </p>
 <dl class="section return"><dt>Returns</dt><dd><code>std::nullopt</code> on error. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="utf8_8cpp_source.html#l00015">15</a> of file <a class="el" href="utf8_8cpp_source.html">utf8.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utf8_8cpp_source.html#l00022">22</a> of file <a class="el" href="utf8_8cpp_source.html">utf8.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="utf8_8h_source.html#l00024">append()</a>, <a class="el" href="utf8_8h_source.html#l00016">EoF</a>, <a class="el" href="utf8_8h_source.html#l00017">Err</a>, <a class="el" href="utf8_8h_source.html#l00027">first()</a>, <a class="el" href="utf8_8h_source.html#l00030">is_valid()</a>, and <a class="el" href="utf8_8cpp_source.html#l00007">num_bytes()</a>.</p>
+<p class="reference">References <a class="el" href="utf8_8h_source.html#l00022">append()</a>, <a class="el" href="utf8_8h_source.html#l00014">EoF</a>, <a class="el" href="utf8_8h_source.html#l00015">Err</a>, <a class="el" href="utf8_8h_source.html#l00025">first()</a>, <a class="el" href="utf8_8h_source.html#l00028">is_valid()</a>, and <a class="el" href="utf8_8cpp_source.html#l00014">num_bytes()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="utf8_8h_source.html#l00072">thorin::utf8::Lexer&lt; Max_Ahead &gt;::next()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="utf8_8h_source.html#l00069">thorin::utf8::Lexer&lt; Max_Ahead &gt;::next()</a>.</p>
 
 </div>
 </div>
@@ -352,9 +298,9 @@ Functions</h2></td></tr>
 
 <p>Get relevant bits of first UTF-8 byte <code>c</code> of a <em>multi-byte</em> sequence consisting of <code>num</code> bytes. </p>
 
-<p class="definition">Definition at line <a class="el" href="utf8_8h_source.html#l00027">27</a> of file <a class="el" href="utf8_8h_source.html">utf8.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utf8_8h_source.html#l00025">25</a> of file <a class="el" href="utf8_8h_source.html">utf8.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="utf8_8cpp_source.html#l00015">encode()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="utf8_8cpp_source.html#l00022">encode()</a>.</p>
 
 </div>
 </div>
@@ -384,9 +330,9 @@ Functions</h2></td></tr>
 
 <p>Is the 2nd, 3rd, or 4th byte of an UTF-8 byte sequence valid? </p>
 
-<p class="definition">Definition at line <a class="el" href="utf8_8h_source.html#l00030">30</a> of file <a class="el" href="utf8_8h_source.html">utf8.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utf8_8h_source.html#l00028">28</a> of file <a class="el" href="utf8_8h_source.html">utf8.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="utf8_8cpp_source.html#l00015">encode()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="utf8_8cpp_source.html#l00022">encode()</a>.</p>
 
 </div>
 </div>
@@ -409,9 +355,9 @@ Functions</h2></td></tr>
 <p>Returns the expected number of bytes for an UTF-8 char sequence by inspecting the first byte. </p>
 <p >Retuns <code>0</code> if invalid. </p>
 
-<p class="definition">Definition at line <a class="el" href="utf8_8cpp_source.html#l00007">7</a> of file <a class="el" href="utf8_8cpp_source.html">utf8.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utf8_8cpp_source.html#l00014">14</a> of file <a class="el" href="utf8_8cpp_source.html">utf8.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="utf8_8cpp_source.html#l00015">encode()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="utf8_8cpp_source.html#l00022">encode()</a>.</p>
 
 </div>
 </div>
@@ -438,7 +384,7 @@ Functions</h2></td></tr>
 
 <p><a href="https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8">Byte Order Mark</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="utf8_8h_source.html#l00015">15</a> of file <a class="el" href="utf8_8h_source.html">utf8.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utf8_8h_source.html#l00013">13</a> of file <a class="el" href="utf8_8h_source.html">utf8.h</a>.</p>
 
 </div>
 </div>
@@ -464,9 +410,9 @@ Functions</h2></td></tr>
 
 <p>End of File. </p>
 
-<p class="definition">Definition at line <a class="el" href="utf8_8h_source.html#l00016">16</a> of file <a class="el" href="utf8_8h_source.html">utf8.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utf8_8h_source.html#l00014">14</a> of file <a class="el" href="utf8_8h_source.html">utf8.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="utf8_8cpp_source.html#l00015">encode()</a>, <a class="el" href="lexer_8cpp_source.html#l00030">thorin::fe::Lexer::lex()</a>, and <a class="el" href="utf8_8h_source.html#l00072">thorin::utf8::Lexer&lt; Max_Ahead &gt;::next()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="utf8_8cpp_source.html#l00022">encode()</a>, <a class="el" href="lexer_8cpp_source.html#l00032">thorin::fe::Lexer::lex()</a>, and <a class="el" href="utf8_8h_source.html#l00069">thorin::utf8::Lexer&lt; Max_Ahead &gt;::next()</a>.</p>
 
 </div>
 </div>
@@ -492,9 +438,9 @@ Functions</h2></td></tr>
 
 <p>Erroneous UTF char. </p>
 
-<p class="definition">Definition at line <a class="el" href="utf8_8h_source.html#l00017">17</a> of file <a class="el" href="utf8_8h_source.html">utf8.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utf8_8h_source.html#l00015">15</a> of file <a class="el" href="utf8_8h_source.html">utf8.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="utf8_8cpp_source.html#l00015">encode()</a>, and <a class="el" href="lexer_8cpp_source.html#l00030">thorin::fe::Lexer::lex()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="utf8_8cpp_source.html#l00022">encode()</a>, and <a class="el" href="lexer_8cpp_source.html#l00032">thorin::fe::Lexer::lex()</a>.</p>
 
 </div>
 </div>
@@ -520,7 +466,7 @@ Functions</h2></td></tr>
 
 <p>Maximal number of <code>char8_t</code>s of an UTF-8 byte sequence. </p>
 
-<p class="definition">Definition at line <a class="el" href="utf8_8h_source.html#l00014">14</a> of file <a class="el" href="utf8_8h_source.html">utf8.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="utf8_8h_source.html#l00012">12</a> of file <a class="el" href="utf8_8h_source.html">utf8.h</a>.</p>
 
 </div>
 </div>

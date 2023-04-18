@@ -111,10 +111,7 @@ $(document).ready(function(){initNavTree('math_8h.html',''); initResizable(); })
 
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle"><div class="title">math.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -124,7 +121,7 @@ $(document).ready(function(){initNavTree('math_8h.html',''); initResizable(); })
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for math.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="math_8h__incl.svg" width="2091" height="667"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="math_8h__incl.svg" width="2066" height="667"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -139,56 +136,14 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacethorin"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html">thorin</a></td></tr>
-<tr class="memdesc:namespacethorin"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper functions of general interest. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacethorin_1_1math"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html">thorin::math</a></td></tr>
+<tr class="memdesc:namespacethorin_1_1math"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="math.html">The math Plugin</a> <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:ab290edebb1dee9ec76cc6198c9c036a9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#ab290edebb1dee9ec76cc6198c9c036a9">thorin::math::VMode</a> = std::variant&lt; Mode, nat_t, Ref &gt;</td></tr>
-<tr class="separator:ab290edebb1dee9ec76cc6198c9c036a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:aff01396947cc8f294f10ddaec9e8d4ca"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4ca">thorin::math::Mode</a> : nat_t { <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caafb72985afb637442c3428edbfcab42cf">thorin::math::none</a> = 0
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa49780db85e66f388ddbd75410248db52">thorin::math::nnan</a> = 1 &lt;&lt; 0
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caab4443a092df50028ff5c3e11d58d1135">thorin::math::ninf</a> = 1 &lt;&lt; 1
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa451eb19da340803f2a8b2407a9a0af05">thorin::math::nsz</a> = 1 &lt;&lt; 2
-, <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa98db259675dc243f0a4c95ef6b59350f">thorin::math::arcp</a> = 1 &lt;&lt; 3
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa591813887f3357070c45c279b0fbb9db">thorin::math::contract</a> = 1 &lt;&lt; 4
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa6f3bb93d53cc842dabaf318cc4920c80">thorin::math::afn</a> = 1 &lt;&lt; 5
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa51f94b89c5bd1ef61af4687faee90237">thorin::math::reassoc</a> = 1 &lt;&lt; 6
-, <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caacc296d9f838506ef43f9a85c9cb1d6d9">thorin::math::finite</a> = nnan | ninf
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa91de8c2707a7342aa4693a263404ca8c">thorin::math::unsafe</a> = nsz | arcp | reassoc
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa75ae81d9f34fba3b8ff7d443518ac983">thorin::math::fast</a> = nnan | ninf | nsz | arcp | contract | afn | reassoc
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caaed12a2391d1a04e3ff2fa64048db4863">thorin::math::bot</a> = fast
-, <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa2451cb1bbbbdeadb363013d2fe2bbb8f">thorin::math::top</a> = none
-<br />
- }</td></tr>
-<tr class="separator:aff01396947cc8f294f10ddaec9e8d4ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a408582bdf76f14317f2e9af9c344131d"><td class="memItemLeft" align="right" valign="top">Ref&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a408582bdf76f14317f2e9af9c344131d">thorin::math::mode</a> (World &amp;w, VMode m)</td></tr>
-<tr class="separator:a408582bdf76f14317f2e9af9c344131d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
-<tr class="memitem:a2a7a8dd81270f15fe5b1294f487dece0"><td class="memTemplParams" colspan="2">template&lt;nat_t P, nat_t E&gt; </td></tr>
-<tr class="memitem:a2a7a8dd81270f15fe5b1294f487dece0"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a2a7a8dd81270f15fe5b1294f487dece0">thorin::math::match_f</a> (Ref def)</td></tr>
-<tr class="separator:a2a7a8dd81270f15fe5b1294f487dece0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61a63c0051b11b77df7b2a6f0ac88af4"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a61a63c0051b11b77df7b2a6f0ac88af4">thorin::math::match_f16</a> (Ref def)</td></tr>
-<tr class="separator:a61a63c0051b11b77df7b2a6f0ac88af4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a973fb2815b1495540f31fd6aebf675d7"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a973fb2815b1495540f31fd6aebf675d7">thorin::math::match_f32</a> (Ref def)</td></tr>
-<tr class="separator:a973fb2815b1495540f31fd6aebf675d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a638b150e31f9cb6975644e520830edcc"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a638b150e31f9cb6975644e520830edcc">thorin::math::match_f64</a> (Ref def)</td></tr>
-<tr class="separator:a638b150e31f9cb6975644e520830edcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0720c335cebf20be41bf7155a54e53d8"><td class="memItemLeft" align="right" valign="top">std::optional&lt; nat_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a0720c335cebf20be41bf7155a54e53d8">thorin::math::isa_f</a> (Ref def)</td></tr>
-<tr class="separator:a0720c335cebf20be41bf7155a54e53d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">type_f</div></td></tr>
+<tr><td colspan="2"><div class="groupHeader">%math.F</div></td></tr>
 <tr class="memitem:ab020cfed6525f8cb9e433d6bd4120be1"><td class="memItemLeft" align="right" valign="top">const Axiom *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#ab020cfed6525f8cb9e433d6bd4120be1">thorin::math::type_f</a> (World &amp;w)</td></tr>
 <tr class="separator:ab020cfed6525f8cb9e433d6bd4120be1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18b694cb90515d282f46b45201c5f917"><td class="memItemLeft" align="right" valign="top">Ref&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a18b694cb90515d282f46b45201c5f917">thorin::math::type_f</a> (Ref pe)</td></tr>
@@ -201,13 +156,23 @@ Functions</h2></td></tr>
 <tr class="separator:a1ed6aac0eaf04b293f0a89c066213349"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f169f7740b304d08fa8af863a11b06f"><td class="memItemLeft" align="right" valign="top">Ref&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a4f169f7740b304d08fa8af863a11b06f">thorin::math::type_f64</a> (World &amp;w)</td></tr>
 <tr class="separator:a4f169f7740b304d08fa8af863a11b06f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">lit_f</div></td></tr>
+<tr class="memitem:a2a7a8dd81270f15fe5b1294f487dece0"><td class="memTemplParams" colspan="2">template&lt;nat_t P, nat_t E&gt; </td></tr>
+<tr class="memitem:a2a7a8dd81270f15fe5b1294f487dece0"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a2a7a8dd81270f15fe5b1294f487dece0">thorin::math::match_f</a> (Ref def)</td></tr>
+<tr class="separator:a2a7a8dd81270f15fe5b1294f487dece0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61a63c0051b11b77df7b2a6f0ac88af4"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a61a63c0051b11b77df7b2a6f0ac88af4">thorin::math::match_f16</a> (Ref def)</td></tr>
+<tr class="separator:a61a63c0051b11b77df7b2a6f0ac88af4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a973fb2815b1495540f31fd6aebf675d7"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a973fb2815b1495540f31fd6aebf675d7">thorin::math::match_f32</a> (Ref def)</td></tr>
+<tr class="separator:a973fb2815b1495540f31fd6aebf675d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a638b150e31f9cb6975644e520830edcc"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a638b150e31f9cb6975644e520830edcc">thorin::math::match_f64</a> (Ref def)</td></tr>
+<tr class="separator:a638b150e31f9cb6975644e520830edcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0720c335cebf20be41bf7155a54e53d8"><td class="memItemLeft" align="right" valign="top">std::optional&lt; nat_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a0720c335cebf20be41bf7155a54e53d8">thorin::math::isa_f</a> (Ref def)</td></tr>
+<tr class="separator:a0720c335cebf20be41bf7155a54e53d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab802bcd5a6ea5682c50d6329dc16712e"><td class="memTemplParams" colspan="2">template&lt;class R &gt; </td></tr>
 <tr class="memitem:ab802bcd5a6ea5682c50d6329dc16712e"><td class="memTemplItemLeft" align="right" valign="top">const Lit *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#ab802bcd5a6ea5682c50d6329dc16712e">thorin::math::lit_f</a> (World &amp;w, R val)</td></tr>
 <tr class="separator:ab802bcd5a6ea5682c50d6329dc16712e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5fef8dad5bbdbf1e1faff609f9664ad1"><td class="memItemLeft" align="right" valign="top">const Lit *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a5fef8dad5bbdbf1e1faff609f9664ad1">thorin::math::lit_f</a> (World &amp;w, nat_t width, f64 val)</td></tr>
 <tr class="separator:a5fef8dad5bbdbf1e1faff609f9664ad1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">wrappers for unary operations</div></td></tr>
+<tr><td colspan="2"><div class="groupHeader">%math.arith</div></td></tr>
 <tr class="memitem:aa47e6a52c2a741d4f3de9abab3cac111"><td class="memItemLeft" align="right" valign="top">Ref&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#aa47e6a52c2a741d4f3de9abab3cac111">thorin::math::op_rminus</a> (VMode m, Ref a)</td></tr>
 <tr class="separator:aa47e6a52c2a741d4f3de9abab3cac111"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">is_commutative/is_associative</div></td></tr>
@@ -217,6 +182,35 @@ Functions</h2></td></tr>
 <tr class="separator:afa48f99a2dd73efc6dca6e9668759bf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a024f494df950b4312faf11037c62ea2f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a024f494df950b4312faf11037c62ea2f">thorin::is_commutative</a> (math::cmp id)</td></tr>
 <tr class="separator:a024f494df950b4312faf11037c62ea2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">Mode</h2></td></tr>
+<tr class="memitem:aff01396947cc8f294f10ddaec9e8d4ca"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4ca">thorin::math::Mode</a> : nat_t { <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa2451cb1bbbbdeadb363013d2fe2bbb8f">thorin::math::top</a> = 0
+, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caafb72985afb637442c3428edbfcab42cf">thorin::math::none</a> = top
+, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa49780db85e66f388ddbd75410248db52">thorin::math::nnan</a> = 1 &lt;&lt; 0
+, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caab4443a092df50028ff5c3e11d58d1135">thorin::math::ninf</a> = 1 &lt;&lt; 1
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa451eb19da340803f2a8b2407a9a0af05">thorin::math::nsz</a> = 1 &lt;&lt; 2
+, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa98db259675dc243f0a4c95ef6b59350f">thorin::math::arcp</a> = 1 &lt;&lt; 3
+, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa591813887f3357070c45c279b0fbb9db">thorin::math::contract</a> = 1 &lt;&lt; 4
+, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa6f3bb93d53cc842dabaf318cc4920c80">thorin::math::afn</a> = 1 &lt;&lt; 5
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa51f94b89c5bd1ef61af4687faee90237">thorin::math::reassoc</a> = 1 &lt;&lt; 6
+, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caacc296d9f838506ef43f9a85c9cb1d6d9">thorin::math::finite</a> = nnan | ninf
+, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa91de8c2707a7342aa4693a263404ca8c">thorin::math::unsafe</a> = nsz | arcp | reassoc
+, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa75ae81d9f34fba3b8ff7d443518ac983">thorin::math::fast</a> = nnan | ninf | nsz | arcp | contract | afn | reassoc
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caaed12a2391d1a04e3ff2fa64048db4863">thorin::math::bot</a> = fast
+<br />
+ }</td></tr>
+<tr class="memdesc:aff01396947cc8f294f10ddaec9e8d4ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allowed optimizations for a specific operation.  <a href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4ca">More...</a><br /></td></tr>
+<tr class="separator:aff01396947cc8f294f10ddaec9e8d4ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab290edebb1dee9ec76cc6198c9c036a9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#ab290edebb1dee9ec76cc6198c9c036a9">thorin::math::VMode</a> = std::variant&lt; Mode, nat_t, Ref &gt;</td></tr>
+<tr class="memdesc:ab290edebb1dee9ec76cc6198c9c036a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Give Mode as <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4ca" title="Allowed optimizations for a specific operation.">thorin::math::Mode</a>, <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">thorin::nat_t</a> or <a class="el" href="classthorin_1_1Ref.html" title="Helper class to retrieve Infer::arg if present.">Ref</a>.  <a href="namespacethorin_1_1math.html#ab290edebb1dee9ec76cc6198c9c036a9">More...</a><br /></td></tr>
+<tr class="separator:ab290edebb1dee9ec76cc6198c9c036a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a408582bdf76f14317f2e9af9c344131d"><td class="memItemLeft" align="right" valign="top">Ref&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a408582bdf76f14317f2e9af9c344131d">thorin::math::mode</a> (World &amp;w, VMode m)</td></tr>
+<tr class="memdesc:a408582bdf76f14317f2e9af9c344131d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="namespacethorin_1_1math.html#ab290edebb1dee9ec76cc6198c9c036a9" title="Give Mode as thorin::math::Mode, thorin::nat_t or Ref.">thorin::math::VMode</a> -&gt; <a class="el" href="classthorin_1_1Ref.html" title="Helper class to retrieve Infer::arg if present.">Ref</a>.  <a href="namespacethorin_1_1math.html#a408582bdf76f14317f2e9af9c344131d">More...</a><br /></td></tr>
+<tr class="separator:a408582bdf76f14317f2e9af9c344131d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

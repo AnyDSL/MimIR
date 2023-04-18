@@ -1,6 +1,5 @@
 var namespacethorin_1_1mem =
 [
-    [ "AddrSpace", "namespacethorin_1_1mem_1_1AddrSpace.html", null ],
     [ "AddMem", "classthorin_1_1mem_1_1AddMem.html", "classthorin_1_1mem_1_1AddMem" ],
     [ "AddMemWrapper", "classthorin_1_1mem_1_1AddMemWrapper.html", "classthorin_1_1mem_1_1AddMemWrapper" ],
     [ "Alloc2Malloc", "classthorin_1_1mem_1_1Alloc2Malloc.html", "classthorin_1_1mem_1_1Alloc2Malloc" ],
@@ -10,6 +9,13 @@ var namespacethorin_1_1mem =
     [ "SSAConstr", "classthorin_1_1mem_1_1SSAConstr.html", "classthorin_1_1mem_1_1SSAConstr" ],
     [ "DefQueue", "namespacethorin_1_1mem.html#ae147e7f025d7a0f837ebf7e1752d97ce", null ],
     [ "add_mem_pass", "namespacethorin_1_1mem.html#a37fb23a096de274a1800c8329167619c", null ],
+    [ "AddrSpace", "namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3", [
+      [ "Generic", "namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3a8045a0a6c688b0635e3caccc408a1446", null ],
+      [ "Global", "namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3a4cc6684df7b4a92b1dec6fce3264fac8", null ],
+      [ "Texture", "namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3aa3e8ae43188ae76d38f414b2bdb0077b", null ],
+      [ "Shared", "namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3aa6156ea9d66fef24e87e841fbabf7cca", null ],
+      [ "Constant", "namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3acb17869fe51048b5a5c4c6106551a255", null ]
+    ] ],
     [ "alloc", "namespacethorin_1_1mem.html#af4043e188d46c7390a04884c0785d51c", null ],
     [ "alloc2malloc_pass", "namespacethorin_1_1mem.html#ad889ac67c2a213fdc191c1a69df167b8", null ],
     [ "copy_prop_pass", "namespacethorin_1_1mem.html#ae0adbeb17f968059495d11f1d74868c4", null ],
@@ -31,12 +37,8 @@ var namespacethorin_1_1mem =
     [ "store", "namespacethorin_1_1mem.html#aedbbb7c918acd521287b625ed1ae1b42", null ],
     [ "cn_mem", "namespacethorin_1_1mem.html#ab3d6dd1f6ed130ad2246c8326bb0b796", null ],
     [ "cn_mem_ret", "namespacethorin_1_1mem.html#a2e880fbf261c490475e3af952afc8fde", null ],
-    [ "flatten_def", "namespacethorin_1_1mem.html#a29c7ea3439489c1cab32c3f13ac5ee5f", null ],
-    [ "flatten_ty", "namespacethorin_1_1mem.html#a0bcef4cec2ed8231abb89d2545187b54", null ],
     [ "fn_mem", "namespacethorin_1_1mem.html#a05678889e5d7c9860bd7f707b0eb74b1", null ],
-    [ "is_mem_ty", "namespacethorin_1_1mem.html#a77b5bb8d330dd1d114a0f2d877c3df01", null ],
-    [ "isa_apped_mut_lam_in_tuple", "namespacethorin_1_1mem.html#aa3374dc452e0c1f90c46f0824a0741da", null ],
-    [ "mem_def", "namespacethorin_1_1mem.html#a43fc8951ee43aa4950dcdda44ffdb519", null ],
+    [ "mem_def", "namespacethorin_1_1mem.html#a4dd5adf975c59db404934fd02ce8c04e", null ],
     [ "mem_var", "namespacethorin_1_1mem.html#ac3295e5b7279aa7116e7a186e0096884", null ],
     [ "normalize_lea", "namespacethorin_1_1mem.html#a2f55ee95e57e48f456e1ae466a345f00", null ],
     [ "normalize_load", "namespacethorin_1_1mem.html#a39709fe41308e08738211b781b801d84", null ],
@@ -53,16 +55,11 @@ var namespacethorin_1_1mem =
     [ "pi_mem", "namespacethorin_1_1mem.html#a038498b369d9ce594e5f2a0b09a8e945", null ],
     [ "register_normalizers", "namespacethorin_1_1mem.html#a18ce435a82c6dd1841de54648994d037", null ],
     [ "replace_mem", "namespacethorin_1_1mem.html#a5aa2ac956b823057b63c3b49aa27012f", null ],
-    [ "rewrite_apped_mut_lam_in_tuple", "namespacethorin_1_1mem.html#a7f4c4b094da0db8f3ed041ceb2d2d5a8", null ],
-    [ "rewrite_mut_lam_in_tuple", "namespacethorin_1_1mem.html#a4d6419773e67adbeddfd3a4b811687c6", null ],
-    [ "should_flatten", "namespacethorin_1_1mem.html#a66cdaab1ebafa40b0bdbff7b490e743a", null ],
     [ "strip_mem", "namespacethorin_1_1mem.html#acd226b7d1c8502907f767b255670bfc6", null ],
     [ "strip_mem_ty", "namespacethorin_1_1mem.html#a397370e30c40a54922fccdedda4be78c", null ],
-    [ "tuple_of_types", "namespacethorin_1_1mem.html#a3fb86a3e06b142e5e358c64da677864d", null ],
     [ "type_mem", "namespacethorin_1_1mem.html#a0246ffea30f87b7af8ef581b9aafbdb0", null ],
-    [ "type_ptr", "namespacethorin_1_1mem.html#aaaaf233ff70f9f23ba04a0ee180683b4", null ],
+    [ "type_ptr", "namespacethorin_1_1mem.html#a91a836c3e21c82a41e7e89d8cc6b7a1e", null ],
     [ "type_ptr", "namespacethorin_1_1mem.html#afd9c95a269d3c893c8fe1ae2dbfa1e59", null ],
     [ "type_ptr", "namespacethorin_1_1mem.html#a538c585266aeecfe400ba79cd77145ea", null ],
-    [ "vec2array", "namespacethorin_1_1mem.html#a05daec323670b5604838b263124b0f72", null ],
     [ "Plugin_Id", "namespacethorin_1_1mem.html#ac08277b34b0939ecee1ec2add68bbee8", null ]
 ];

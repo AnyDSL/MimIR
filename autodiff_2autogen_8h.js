@@ -1,8 +1,8 @@
 var autodiff_2autogen_8h =
 [
     [ "THORIN_autodiff_NORMALIZER_IMPL", "autodiff_2autogen_8h.html#ab540efb299fd71903b57a8a2549fe24d", null ],
-    [ "ad", "autodiff_2autogen_8h.html#aa01669317ac5a2c1679e4dd25678a051", null ],
     [ "AD", "autodiff_2autogen_8h.html#ae4a2884a429ac996dc3a0d42e0077985", null ],
+    [ "ad", "autodiff_2autogen_8h.html#aa01669317ac5a2c1679e4dd25678a051", null ],
     [ "ad_eval_pass", "autodiff_2autogen_8h.html#a70e498c2379dc6134a75385b61561590", null ],
     [ "ad_ext_cleanup_pass", "autodiff_2autogen_8h.html#a31ed274d65f6ce6f65f91d9cff047e37", null ],
     [ "ad_zero_cleanup_pass", "autodiff_2autogen_8h.html#a26d7f2c0898e592b451903ecc52fb1d8", null ],

@@ -171,8 +171,8 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >This pass lowers <em>typed closures</em> to <em>untyped closures</em>. </p>
 <p >For details on typed closures, see <a class="el" href="classthorin_1_1clos_1_1ClosConv.html" title="Performs typed closure conversion.">ClosConv</a>. In general, untyped closure have the form <code>(pointer-to-environment, code)</code> with the following exceptions:</p><ul>
-<li><a class="el" href="classthorin_1_1Lam.html">Lam</a>s in callee-position should be λ-lifted and thus don't receive an environment.</li>
-<li>External and imported (not set) <a class="el" href="classthorin_1_1Lam.html">Lam</a>s also don't receive an environment. They are appropriately η-wrapped by <a class="el" href="classthorin_1_1clos_1_1ClosConv.html" title="Performs typed closure conversion.">ClosConv</a>.</li>
+<li><a class="el" href="classthorin_1_1Lam.html" title="A function.">Lam</a>s in callee-position should be λ-lifted and thus don't receive an environment.</li>
+<li>External and imported (not set) <a class="el" href="classthorin_1_1Lam.html" title="A function.">Lam</a>s also don't receive an environment. They are appropriately η-wrapped by <a class="el" href="classthorin_1_1clos_1_1ClosConv.html" title="Performs typed closure conversion.">ClosConv</a>.</li>
 <li>If the environment is of integer type, it's directly stored in the environment-pointer ("unboxed"). <dl class="section note"><dt>Note</dt><dd>In theory this should work for other primitive types as well, but the LL backend does not handle the required conversion correctly.</dd></dl>
 Further, first class continuations are rewritten to returning functions. They receive <code>⊥</code> as a dummy continuation. Therefore <a class="el" href="classthorin_1_1clos_1_1Clos2SJLJ.html">Clos2SJLJ</a> should have taken place prior to this pass.</li>
 </ul>
@@ -236,7 +236,7 @@ Further, first class continuations are rewritten to returning functions. They re
 
 <p>Implements <a class="el" href="classthorin_1_1Phase.html#a205f687060888dc825ee521c99534426">thorin::Phase</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="lower__typed__clos_8cpp_source.html#l00009">9</a> of file <a class="el" href="lower__typed__clos_8cpp_source.html">lower_typed_clos.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lower__typed__clos_8cpp_source.html#l00017">17</a> of file <a class="el" href="lower__typed__clos_8cpp_source.html">lower_typed_clos.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="phase_8h_source.html#l00025">thorin::Phase::world()</a>.</p>
 

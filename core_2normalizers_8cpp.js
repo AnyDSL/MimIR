@@ -2,7 +2,6 @@ var core_2normalizers_8cpp =
 [
     [ "CODE", "core_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c", null ],
     [ "M", "core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89", null ],
-    [ "commute", "core_2normalizers_8cpp.html#aba8587d02736f24d5dc95af5d798c6ba", null ],
     [ "normalize_bit1", "core_2normalizers_8cpp.html#adfbfef621aa0342ee7e98be7636dbbef", null ],
     [ "normalize_bit2", "core_2normalizers_8cpp.html#a34ebaedb0956f16c949acc7ffea1d70a", null ],
     [ "normalize_bitcast", "core_2normalizers_8cpp.html#ac2dda5ba0299d2f51e5af69b260fbddb", null ],
@@ -15,6 +14,5 @@ var core_2normalizers_8cpp =
     [ "normalize_shr", "core_2normalizers_8cpp.html#a585b2ccaaab3aaf619cfee8622dded81", null ],
     [ "normalize_trait", "core_2normalizers_8cpp.html#af1d50c499d443e107d011c00d9b7e5de", null ],
     [ "normalize_wrap", "core_2normalizers_8cpp.html#ae5d6369eb756f22dc7464565a97ebee8", null ],
-    [ "normalize_zip", "core_2normalizers_8cpp.html#a4bcedf948858b14e96f0ffbf36035a52", null ],
-    [ "pad", "core_2normalizers_8cpp.html#a166904dfa7742d726f66138de3f2af4f", null ]
+    [ "normalize_zip", "core_2normalizers_8cpp.html#a4bcedf948858b14e96f0ffbf36035a52", null ]
 ];

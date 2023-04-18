@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vlog_0',['VLOG',['../log_8h.html#a35e71de09dfd64892a48e3f7c56c5619',1,'log.h']]]
+  ['wlog_0',['WLOG',['../log_8h.html#a32648fc31390d09eaa0cc2ef0afeb02a',1,'log.h']]]
 ];

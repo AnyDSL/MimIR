@@ -187,7 +187,7 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p >Perform Scalarization (= Argument simplification), i.e.: </p>
 <div class="fragment"><div class="line">f := λ (x_1:[T_1, T_2], .., x_n:T_n).E`</div>
 </div><!-- fragment --><p> will be transformed to </p><div class="fragment"><div class="line">f<span class="stringliteral">&#39; := λ (y_1:T_1, y_2:T2, .. y_n:T_n).E[x_1 \ (y_1, y2); ..; x_n \ y_n]</span></div>
-</div><!-- fragment --><p> if <code>f</code> appears in callee position only (see <code><a class="el" href="classthorin_1_1EtaExp.html" title="Performs η-expansion: f -&gt; λx.f x, if f is a Lam with more than one user and does not appear in calle...">EtaExp</a></code>). It will not flatten mutable <code><a class="el" href="classthorin_1_1Sigma.html">Sigma</a>s</code> or <code><a class="el" href="classthorin_1_1Arr.html">Arr</a>ays</code>. </p>
+</div><!-- fragment --><p> if <code>f</code> appears in callee position only (see <code><a class="el" href="classthorin_1_1EtaExp.html" title="Performs η-expansion: f -&gt; λx.f x, if f is a Lam with more than one user and does not appear in calle...">EtaExp</a></code>). It will not flatten mutable <code><a class="el" href="classthorin_1_1Sigma.html" title="A dependent tuple type.">Sigma</a>s</code> or <code><a class="el" href="classthorin_1_1Arr.html" title="A (possibly paramterized) Array.">Arr</a>ays</code>. </p>
 
 <p class="definition">Definition at line <a class="el" href="scalarize_8h_source.html#l00019">19</a> of file <a class="el" href="scalarize_8h_source.html">scalarize.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -258,7 +258,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="scalarize_8cpp_source.html#l00056">56</a> of file <a class="el" href="scalarize_8cpp_source.html">scalarize.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00041">thorin::flatten()</a>, <a class="el" href="cast_8h_source.html#l00044">thorin::RuntimeCast&lt; B &gt;::isa()</a>, and <a class="el" href="def_8h_source.html#l00403">thorin::Def::isa_mut()</a>.</p>
+<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00041">thorin::flatten()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; B &gt;::isa()</a>, and <a class="el" href="def_8h_source.html#l00397">thorin::Def::isa_mut()</a>.</p>
 
 </div>
 </div>

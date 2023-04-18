@@ -112,9 +112,7 @@ $(document).ready(function(){initNavTree('plugin_8h.html',''); initResizable(); 
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle"><div class="title">plugin.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -128,13 +126,13 @@ $(document).ready(function(){initNavTree('plugin_8h.html',''); initResizable(); 
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for plugin.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="plugin_8h__incl.svg" width="2375" height="447"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="plugin_8h__incl.svg" width="2190" height="447"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="plugin_8h__dep__incl.svg" width="3692" height="491"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="plugin_8h__dep__incl.svg" width="3555" height="491"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -149,24 +147,21 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacethorin"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html">thorin</a></td></tr>
-<tr class="memdesc:namespacethorin"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper functions of general interest. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader">Plugin Interface</h2></td></tr>
+<tr><td class="ititle" colspan="2"><dl class="section see"><dt>See also</dt><dd>Plugin </dd></dl>
+</td></tr>
+<tr class="memitem:a6ad6eaa1c542646fa592d10b05676464"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a6ad6eaa1c542646fa592d10b05676464">thorin::Normalizers</a> = absl::flat_hash_map&lt; flags_t, NormalizeFn &gt;</td></tr>
+<tr class="separator:a6ad6eaa1c542646fa592d10b05676464"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a334ff18080cd42969f863f22ec82694c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a334ff18080cd42969f863f22ec82694c">thorin::Passes</a> = absl::flat_hash_map&lt; flags_t, std::function&lt; void(World &amp;, PipelineBuilder &amp;, const Def *)&gt; &gt;</td></tr>
 <tr class="memdesc:a334ff18080cd42969f863f22ec82694c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>axiom ↦ (pipeline part) × (axiom application) → ()</code> <br  />
  The function should inspect <a class="el" href="classthorin_1_1App.html">App</a>lication to construct the Pass/Phase and add it to the pipeline.  <a href="namespacethorin.html#a334ff18080cd42969f863f22ec82694c">More...</a><br /></td></tr>
 <tr class="separator:a334ff18080cd42969f863f22ec82694c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a790538bc68a2e08c788ee7666933c60b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a790538bc68a2e08c788ee7666933c60b">thorin::Backends</a> = absl::btree_map&lt; std::string, void(*)(World &amp;, std::ostream &amp;)&gt;</td></tr>
 <tr class="separator:a790538bc68a2e08c788ee7666933c60b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ad6eaa1c542646fa592d10b05676464"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a6ad6eaa1c542646fa592d10b05676464">thorin::Normalizers</a> = absl::flat_hash_map&lt; flags_t, NormalizeFn &gt;</td></tr>
-<tr class="separator:a6ad6eaa1c542646fa592d10b05676464"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
 <tr class="memitem:a3cc8a1ed7b039e8a6bfccdbcb9514633"><td class="memItemLeft" align="right" valign="top"><a class="el" href="config_8h.html#a479c17cabac34a4216996c05ffa7e071">THORIN_EXPORT</a> <a class="el" href="structthorin_1_1Plugin.html">thorin::Plugin</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a3cc8a1ed7b039e8a6bfccdbcb9514633">thorin::thorin_get_plugin</a> ()</td></tr>
-<tr class="memdesc:a3cc8a1ed7b039e8a6bfccdbcb9514633"><td class="mdescLeft">&#160;</td><td class="mdescRight">To be implemented and exported by a plugin; shall return a filled <a class="el" href="structthorin_1_1Plugin.html" title="Basic info and registration function pointer to be returned from a specific plugin.">Plugin</a>.  <a href="namespacethorin.html#a3cc8a1ed7b039e8a6bfccdbcb9514633">More...</a><br /></td></tr>
+<tr class="memdesc:a3cc8a1ed7b039e8a6bfccdbcb9514633"><td class="mdescLeft">&#160;</td><td class="mdescRight">To be implemented and exported by a plugin.  <a href="namespacethorin.html#a3cc8a1ed7b039e8a6bfccdbcb9514633">More...</a><br /></td></tr>
 <tr class="separator:a3cc8a1ed7b039e8a6bfccdbcb9514633"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->

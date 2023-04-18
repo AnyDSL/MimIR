@@ -281,11 +281,11 @@ Public Member Functions</h2></td></tr>
 <p>Applies to (open) expressions in a functional context. </p>
 <p >Returns the rewritten expressions and augments the partial and modular pullbacks. The rewrite is identity on the term up to renaming of variables. Otherwise, only pullbacks are added. To do so, some calls (e.g. axioms) are replaced by their derivatives. This transformation can be seen as an augmentation with a dual computation that generates the derivatives. </p>
 
-<p class="definition">Definition at line <a class="el" href="autodiff__eval_8cpp_source.html#l00016">16</a> of file <a class="el" href="autodiff__eval_8cpp_source.html">autodiff_eval.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="autodiff__eval_8cpp_source.html#l00015">15</a> of file <a class="el" href="autodiff__eval_8cpp_source.html">autodiff_eval.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00325">augment_()</a>.</p>
+<p class="reference">References <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00321">augment_()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00217">augment_app()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00095">augment_extract()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00034">augment_lam()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00174">augment_pack()</a>, and <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00008">derive_()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00213">augment_app()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00091">augment_extract()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00030">augment_lam()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00170">augment_pack()</a>, and <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00007">derive_()</a>.</p>
 
 </div>
 </div>
@@ -323,11 +323,11 @@ Public Member Functions</h2></td></tr>
 
 <p>Rewrites the given definition in a lambda environment. </p>
 
-<p class="definition">Definition at line <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00325">325</a> of file <a class="el" href="autodiff__rewrite__inner_8cpp_source.html">autodiff_rewrite_inner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00321">321</a> of file <a class="el" href="autodiff__rewrite__inner_8cpp_source.html">autodiff_rewrite_inner.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00217">augment_app()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00095">augment_extract()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00034">augment_lam()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00021">augment_lit()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00174">augment_pack()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00138">augment_tuple()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00027">augment_var()</a>, <a class="el" href="autodiff__aux_8cpp_source.html#l00052">thorin::autodiff::autodiff_type_fun()</a>, <a class="el" href="autodiff__aux_8cpp_source.html#l00255">findAndReplaceAll()</a>, <a class="el" href="pass_8h_source.html#l00029">thorin::Pass::index()</a>, <a class="el" href="cast_8h_source.html#l00044">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00403">thorin::Def::isa_mut()</a>, <a class="el" href="world_8h_source.html#l00165">thorin::World::lookup()</a>, <a class="el" href="def_8cpp_source.html#l00201">thorin::Def::node_name()</a>, <a class="el" href="world_8cpp_source.html#l00085">thorin::World::sym()</a>, <a class="el" href="def_8h_source.html#l00221">thorin::Def::type()</a>, <a class="el" href="pass_8h_source.html#l00304">thorin::Pass::world()</a>, and <a class="el" href="def_8cpp_source.html#l00185">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00213">augment_app()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00091">augment_extract()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00030">augment_lam()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00017">augment_lit()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00170">augment_pack()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00134">augment_tuple()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00023">augment_var()</a>, <a class="el" href="autodiff_8cpp_source.html#l00110">thorin::autodiff::autodiff_type_fun()</a>, <a class="el" href="util_8h_source.html#l00073">thorin::find_and_replace()</a>, <a class="el" href="pass_8h_source.html#l00029">thorin::Pass::index()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00397">thorin::Def::isa_mut()</a>, <a class="el" href="world_8h_source.html#l00165">thorin::World::lookup()</a>, <a class="el" href="def_8cpp_source.html#l00259">thorin::Def::node_name()</a>, <a class="el" href="world_8cpp_source.html#l00091">thorin::World::sym()</a>, <a class="el" href="def_8h_source.html#l00222">thorin::Def::type()</a>, <a class="el" href="pass_8h_source.html#l00304">thorin::Pass::world()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__eval_8cpp_source.html#l00016">augment()</a>, and <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00174">augment_pack()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__eval_8cpp_source.html#l00015">augment()</a>, and <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00170">augment_pack()</a>.</p>
 
 </div>
 </div>
@@ -363,11 +363,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00217">217</a> of file <a class="el" href="autodiff__rewrite__inner_8cpp_source.html">autodiff_rewrite_inner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00213">213</a> of file <a class="el" href="autodiff__rewrite__inner_8cpp_source.html">autodiff_rewrite_inner.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8cpp_source.html#l00158">thorin::World::app()</a>, <a class="el" href="lam_8h_source.html#l00137">thorin::App::arg()</a>, <a class="el" href="cast_8h_source.html#l00039">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="autodiff__eval_8cpp_source.html#l00016">augment()</a>, <a class="el" href="lam_8h_source.html#l00134">thorin::App::callee()</a>, <a class="el" href="autodiff__aux_8cpp_source.html#l00214">thorin::compose_continuation()</a>, <a class="el" href="dump_8cpp_source.html#l00399">thorin::World::debug_dump()</a>, <a class="el" href="autodiff__aux_8cpp_source.html#l00163">thorin::is_continuation()</a>, <a class="el" href="autodiff__aux_8cpp_source.html#l00178">thorin::is_open_continuation()</a>, <a class="el" href="cast_8h_source.html#l00044">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="world_8h_source.html#l00256">thorin::World::mut_lam()</a>, <a class="el" href="direct_8h_source.html#l00010">thorin::direct::op_cps2ds_dep()</a>, <a class="el" href="lam_8h_source.html#l00092">thorin::Lam::set()</a>, <a class="el" href="def_8h_source.html#l00221">thorin::Def::type()</a>, <a class="el" href="world_8cpp_source.html#l00092">thorin::World::type()</a>, <a class="el" href="def_8cpp_source.html#l00230">thorin::Def::var()</a>, <a class="el" href="pass_8h_source.html#l00304">thorin::Pass::world()</a>, and <a class="el" href="def_8cpp_source.html#l00185">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="world_8cpp_source.html#l00164">thorin::World::app()</a>, <a class="el" href="lam_8h_source.html#l00193">thorin::App::arg()</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="autodiff__eval_8cpp_source.html#l00015">augment()</a>, <a class="el" href="lam_8h_source.html#l00185">thorin::App::callee()</a>, <a class="el" href="lam_8cpp_source.html#l00066">thorin::compose_cn()</a>, <a class="el" href="dump_8cpp_source.html#l00400">thorin::World::debug_dump()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="lam_8h_source.html#l00050">thorin::Pi::isa_basicblock()</a>, <a class="el" href="lam_8h_source.html#l00046">thorin::Pi::isa_cn()</a>, <a class="el" href="world_8h_source.html#l00257">thorin::World::mut_lam()</a>, <a class="el" href="direct_8h_source.html#l00012">thorin::direct::op_cps2ds_dep()</a>, <a class="el" href="lam_8h_source.html#l00142">thorin::Lam::set()</a>, <a class="el" href="def_8h_source.html#l00222">thorin::Def::type()</a>, <a class="el" href="world_8cpp_source.html#l00098">thorin::World::type()</a>, <a class="el" href="def_8cpp_source.html#l00288">thorin::Def::var()</a>, <a class="el" href="pass_8h_source.html#l00304">thorin::Pass::world()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00325">augment_()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00321">augment_()</a>.</p>
 
 </div>
 </div>
@@ -403,11 +403,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00095">95</a> of file <a class="el" href="autodiff__rewrite__inner_8cpp_source.html">autodiff_rewrite_inner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00091">91</a> of file <a class="el" href="autodiff__rewrite__inner_8cpp_source.html">autodiff_rewrite_inner.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="autodiff__eval_8cpp_source.html#l00016">augment()</a>, <a class="el" href="world_8cpp_source.html#l00262">thorin::World::extract()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00019">f_arg_ty</a>, <a class="el" href="pass_8h_source.html#l00029">thorin::Pass::index()</a>, <a class="el" href="tuple_8h_source.html#l00106">thorin::Extract::index()</a>, <a class="el" href="world_8cpp_source.html#l00318">thorin::World::insert()</a>, <a class="el" href="world_8h_source.html#l00256">thorin::World::mut_lam()</a>, <a class="el" href="autodiff_8h_source.html#l00016">thorin::autodiff::op_zero()</a>, <a class="el" href="autodiff__aux_8cpp_source.html#l00043">thorin::autodiff::pullback_type()</a>, <a class="el" href="lam_8h_source.html#l00092">thorin::Lam::set()</a>, <a class="el" href="def_8h_source.html#l00561">thorin::Var::set()</a>, <a class="el" href="def_8cpp_source.html#l00303">thorin::Def::set()</a>, <a class="el" href="tuple_8h_source.html#l00105">thorin::Extract::tuple()</a>, <a class="el" href="def_8h_source.html#l00221">thorin::Def::type()</a>, <a class="el" href="world_8h_source.html#l00185">thorin::World::var()</a>, <a class="el" href="pass_8h_source.html#l00304">thorin::Pass::world()</a>, and <a class="el" href="def_8cpp_source.html#l00185">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="autodiff__eval_8cpp_source.html#l00015">augment()</a>, <a class="el" href="world_8cpp_source.html#l00262">thorin::World::extract()</a>, <a class="el" href="pass_8h_source.html#l00029">thorin::Pass::index()</a>, <a class="el" href="tuple_8h_source.html#l00110">thorin::Extract::index()</a>, <a class="el" href="world_8cpp_source.html#l00318">thorin::World::insert()</a>, <a class="el" href="world_8h_source.html#l00257">thorin::World::mut_lam()</a>, <a class="el" href="autodiff_8h_source.html#l00026">thorin::autodiff::op_zero()</a>, <a class="el" href="autodiff_8cpp_source.html#l00059">thorin::autodiff::pullback_type()</a>, <a class="el" href="lam_8h_source.html#l00142">thorin::Lam::set()</a>, <a class="el" href="def_8cpp_source.html#l00361">thorin::Def::set()</a>, <a class="el" href="tuple_8h_source.html#l00109">thorin::Extract::tuple()</a>, <a class="el" href="def_8h_source.html#l00222">thorin::Def::type()</a>, <a class="el" href="world_8h_source.html#l00185">thorin::World::var()</a>, <a class="el" href="pass_8h_source.html#l00304">thorin::Pass::world()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00325">augment_()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00321">augment_()</a>.</p>
 
 </div>
 </div>
@@ -443,11 +443,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00034">34</a> of file <a class="el" href="autodiff__rewrite__inner_8cpp_source.html">autodiff_rewrite_inner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00030">30</a> of file <a class="el" href="autodiff__rewrite__inner_8cpp_source.html">autodiff_rewrite_inner.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="autodiff__eval_8cpp_source.html#l00016">augment()</a>, <a class="el" href="autodiff__aux_8cpp_source.html#l00052">thorin::autodiff::autodiff_type_fun()</a>, <a class="el" href="lam_8h_source.html#l00076">thorin::Lam::body()</a>, <a class="el" href="world_8h_source.html#l00249">thorin::World::cn()</a>, <a class="el" href="lam_8h_source.html#l00022">thorin::Pi::dom()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00019">f_arg_ty</a>, <a class="el" href="lam_8h_source.html#l00075">thorin::Lam::filter()</a>, <a class="el" href="autodiff__aux_8cpp_source.html#l00178">thorin::is_open_continuation()</a>, <a class="el" href="world_8h_source.html#l00256">thorin::World::mut_lam()</a>, <a class="el" href="autodiff_8h_source.html#l00009">thorin::autodiff::op_autodiff()</a>, <a class="el" href="autodiff__aux_8cpp_source.html#l00043">thorin::autodiff::pullback_type()</a>, <a class="el" href="lam_8h_source.html#l00092">thorin::Lam::set()</a>, <a class="el" href="def_8h_source.html#l00378">thorin::Def::sym()</a>, <a class="el" href="lam_8h_source.html#l00063">thorin::Lam::type()</a>, <a class="el" href="def_8cpp_source.html#l00230">thorin::Def::var()</a>, <a class="el" href="pass_8h_source.html#l00304">thorin::Pass::world()</a>, <a class="el" href="def_8cpp_source.html#l00185">thorin::Def::world()</a>, and <a class="el" href="autodiff__aux_8cpp_source.html#l00025">thorin::autodiff::zero_pullback()</a>.</p>
+<p class="reference">References <a class="el" href="autodiff__eval_8cpp_source.html#l00015">augment()</a>, <a class="el" href="autodiff_8cpp_source.html#l00110">thorin::autodiff::autodiff_type_fun()</a>, <a class="el" href="lam_8h_source.html#l00093">thorin::Lam::body()</a>, <a class="el" href="world_8h_source.html#l00250">thorin::World::cn()</a>, <a class="el" href="lam_8h_source.html#l00029">thorin::Pi::dom()</a>, <a class="el" href="lam_8h_source.html#l00092">thorin::Lam::filter()</a>, <a class="el" href="lam_8h_source.html#l00117">thorin::Lam::isa_basicblock()</a>, <a class="el" href="world_8h_source.html#l00257">thorin::World::mut_lam()</a>, <a class="el" href="autodiff_8h_source.html#l00016">thorin::autodiff::op_ad()</a>, <a class="el" href="autodiff_8cpp_source.html#l00059">thorin::autodiff::pullback_type()</a>, <a class="el" href="lam_8h_source.html#l00142">thorin::Lam::set()</a>, <a class="el" href="def_8h_source.html#l00425">thorin::Def::sym()</a>, <a class="el" href="lam_8h_source.html#l00094">thorin::Lam::type()</a>, <a class="el" href="def_8cpp_source.html#l00288">thorin::Def::var()</a>, <a class="el" href="pass_8h_source.html#l00304">thorin::Pass::world()</a>, <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>, and <a class="el" href="autodiff_8cpp_source.html#l00041">thorin::autodiff::zero_pullback()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00325">augment_()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00321">augment_()</a>.</p>
 
 </div>
 </div>
@@ -483,11 +483,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00021">21</a> of file <a class="el" href="autodiff__rewrite__inner_8cpp_source.html">autodiff_rewrite_inner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00017">17</a> of file <a class="el" href="autodiff__rewrite__inner_8cpp_source.html">autodiff_rewrite_inner.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00019">f_arg_ty</a>, <a class="el" href="def_8h_source.html#l00221">thorin::Def::type()</a>, and <a class="el" href="autodiff__aux_8cpp_source.html#l00025">thorin::autodiff::zero_pullback()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00222">thorin::Def::type()</a>, and <a class="el" href="autodiff_8cpp_source.html#l00041">thorin::autodiff::zero_pullback()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00325">augment_()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00321">augment_()</a>.</p>
 
 </div>
 </div>
@@ -523,11 +523,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00174">174</a> of file <a class="el" href="autodiff__rewrite__inner_8cpp_source.html">autodiff_rewrite_inner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00170">170</a> of file <a class="el" href="autodiff__rewrite__inner_8cpp_source.html">autodiff_rewrite_inner.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8cpp_source.html#l00158">thorin::World::app()</a>, <a class="el" href="def_8cpp_source.html#l00263">thorin::Def::arity()</a>, <a class="el" href="world_8cpp_source.html#l00355">thorin::World::arr()</a>, <a class="el" href="autodiff__eval_8cpp_source.html#l00016">augment()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00325">augment_()</a>, <a class="el" href="world_8h_source.html#l00223">thorin::World::ax()</a>, <a class="el" href="tuple_8h_source.html#l00079">thorin::Pack::body()</a>, <a class="el" href="world_8cpp_source.html#l00262">thorin::World::extract()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00019">f_arg_ty</a>, <a class="el" href="world_8h_source.html#l00256">thorin::World::mut_lam()</a>, <a class="el" href="world_8h_source.html#l00312">thorin::World::mut_pack()</a>, <a class="el" href="direct_8h_source.html#l00010">thorin::direct::op_cps2ds_dep()</a>, <a class="el" href="world_8cpp_source.html#l00382">thorin::World::pack()</a>, <a class="el" href="autodiff__aux_8cpp_source.html#l00043">thorin::autodiff::pullback_type()</a>, <a class="el" href="tuple_8h_source.html#l00082">thorin::Pack::set()</a>, <a class="el" href="lam_8h_source.html#l00092">thorin::Lam::set()</a>, <a class="el" href="autodiff__aux_8cpp_source.html#l00038">thorin::autodiff::tangent_type_fun()</a>, <a class="el" href="tuple_8h_source.html#l00080">thorin::Pack::type()</a>, <a class="el" href="pass_8h_source.html#l00304">thorin::Pass::world()</a>, and <a class="el" href="def_8cpp_source.html#l00185">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="world_8cpp_source.html#l00164">thorin::World::app()</a>, <a class="el" href="def_8cpp_source.html#l00321">thorin::Def::arity()</a>, <a class="el" href="world_8cpp_source.html#l00355">thorin::World::arr()</a>, <a class="el" href="autodiff__eval_8cpp_source.html#l00015">augment()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00321">augment_()</a>, <a class="el" href="world_8h_source.html#l00223">thorin::World::ax()</a>, <a class="el" href="tuple_8h_source.html#l00087">thorin::Pack::body()</a>, <a class="el" href="world_8cpp_source.html#l00262">thorin::World::extract()</a>, <a class="el" href="world_8h_source.html#l00257">thorin::World::mut_lam()</a>, <a class="el" href="world_8h_source.html#l00313">thorin::World::mut_pack()</a>, <a class="el" href="direct_8h_source.html#l00012">thorin::direct::op_cps2ds_dep()</a>, <a class="el" href="world_8cpp_source.html#l00382">thorin::World::pack()</a>, <a class="el" href="autodiff_8cpp_source.html#l00059">thorin::autodiff::pullback_type()</a>, <a class="el" href="tuple_8h_source.html#l00090">thorin::Pack::set()</a>, <a class="el" href="lam_8h_source.html#l00142">thorin::Lam::set()</a>, <a class="el" href="autodiff_8cpp_source.html#l00054">thorin::autodiff::tangent_type_fun()</a>, <a class="el" href="tuple_8h_source.html#l00088">thorin::Pack::type()</a>, <a class="el" href="pass_8h_source.html#l00304">thorin::Pass::world()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00325">augment_()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00321">augment_()</a>.</p>
 
 </div>
 </div>
@@ -563,11 +563,11 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00138">138</a> of file <a class="el" href="autodiff__rewrite__inner_8cpp_source.html">autodiff_rewrite_inner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00134">134</a> of file <a class="el" href="autodiff__rewrite__inner_8cpp_source.html">autodiff_rewrite_inner.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00019">f_arg_ty</a>, <a class="el" href="world_8h_source.html#l00256">thorin::World::mut_lam()</a>, <a class="el" href="autodiff__aux_8cpp_source.html#l00148">thorin::autodiff::op_sum()</a>, <a class="el" href="def_8h_source.html#l00337">thorin::Def::projs()</a>, <a class="el" href="autodiff__aux_8cpp_source.html#l00043">thorin::autodiff::pullback_type()</a>, <a class="el" href="lam_8h_source.html#l00092">thorin::Lam::set()</a>, <a class="el" href="def_8h_source.html#l00561">thorin::Var::set()</a>, <a class="el" href="autodiff__aux_8cpp_source.html#l00038">thorin::autodiff::tangent_type_fun()</a>, <a class="el" href="world_8cpp_source.html#l00215">thorin::World::tuple()</a>, <a class="el" href="def_8h_source.html#l00221">thorin::Def::type()</a>, <a class="el" href="world_8h_source.html#l00185">thorin::World::var()</a>, <a class="el" href="pass_8h_source.html#l00304">thorin::Pass::world()</a>, and <a class="el" href="def_8cpp_source.html#l00185">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00257">thorin::World::mut_lam()</a>, <a class="el" href="autodiff_8cpp_source.html#l00166">thorin::autodiff::op_sum()</a>, <a class="el" href="def_8h_source.html#l00344">thorin::Def::projs()</a>, <a class="el" href="autodiff_8cpp_source.html#l00059">thorin::autodiff::pullback_type()</a>, <a class="el" href="lam_8h_source.html#l00142">thorin::Lam::set()</a>, <a class="el" href="def_8cpp_source.html#l00361">thorin::Def::set()</a>, <a class="el" href="autodiff_8cpp_source.html#l00054">thorin::autodiff::tangent_type_fun()</a>, <a class="el" href="world_8cpp_source.html#l00215">thorin::World::tuple()</a>, <a class="el" href="def_8h_source.html#l00222">thorin::Def::type()</a>, <a class="el" href="world_8h_source.html#l00185">thorin::World::var()</a>, <a class="el" href="pass_8h_source.html#l00304">thorin::Pass::world()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00325">augment_()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00321">augment_()</a>.</p>
 
 </div>
 </div>
@@ -605,9 +605,9 @@ Public Member Functions</h2></td></tr>
 
 <p>helper functions for augment </p>
 
-<p class="definition">Definition at line <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00027">27</a> of file <a class="el" href="autodiff__rewrite__inner_8cpp_source.html">autodiff_rewrite_inner.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00023">23</a> of file <a class="el" href="autodiff__rewrite__inner_8cpp_source.html">autodiff_rewrite_inner.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00325">augment_()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00321">augment_()</a>.</p>
 
 </div>
 </div>
@@ -633,11 +633,11 @@ Public Member Functions</h2></td></tr>
 <li>Creates new lambda, calls associate variables, init maps, calls augment. </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="autodiff__eval_8cpp_source.html#l00022">22</a> of file <a class="el" href="autodiff__eval_8cpp_source.html">autodiff_eval.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="autodiff__eval_8cpp_source.html#l00021">21</a> of file <a class="el" href="autodiff__eval_8cpp_source.html">autodiff_eval.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00008">derive_()</a>.</p>
+<p class="reference">References <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00007">derive_()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__eval_8cpp_source.html#l00028">rewrite()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__eval_8cpp_source.html#l00027">rewrite()</a>.</p>
 
 </div>
 </div>
@@ -659,11 +659,11 @@ Public Member Functions</h2></td></tr>
 
 <p>Additionally to the derivation, the pullback is registered and the maps are initialized. </p>
 
-<p class="definition">Definition at line <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00008">8</a> of file <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html">autodiff_rewrite_toplevel.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00007">7</a> of file <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html">autodiff_rewrite_toplevel.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00413">thorin::Def::as_mut()</a>, <a class="el" href="autodiff__eval_8cpp_source.html#l00016">augment()</a>, <a class="el" href="autodiff__aux_8cpp_source.html#l00069">thorin::autodiff::autodiff_type_fun_pi()</a>, <a class="el" href="autodiff__aux_8cpp_source.html#l00013">thorin::autodiff::id_pullback()</a>, <a class="el" href="world_8h_source.html#l00256">thorin::World::mut_lam()</a>, <a class="el" href="lam_8h_source.html#l00092">thorin::Lam::set()</a>, <a class="el" href="def_8h_source.html#l00561">thorin::Var::set()</a>, <a class="el" href="world_8cpp_source.html#l00215">thorin::World::tuple()</a>, <a class="el" href="def_8h_source.html#l00221">thorin::Def::type()</a>, <a class="el" href="def_8cpp_source.html#l00230">thorin::Def::var()</a>, <a class="el" href="pass_8h_source.html#l00304">thorin::Pass::world()</a>, <a class="el" href="def_8cpp_source.html#l00185">thorin::Def::world()</a>, and <a class="el" href="autodiff__aux_8cpp_source.html#l00025">thorin::autodiff::zero_pullback()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00406">thorin::Def::as_mut()</a>, <a class="el" href="autodiff__eval_8cpp_source.html#l00015">augment()</a>, <a class="el" href="autodiff_8cpp_source.html#l00087">thorin::autodiff::autodiff_type_fun_pi()</a>, <a class="el" href="autodiff_8cpp_source.html#l00029">thorin::autodiff::id_pullback()</a>, <a class="el" href="world_8h_source.html#l00257">thorin::World::mut_lam()</a>, <a class="el" href="lam_8h_source.html#l00142">thorin::Lam::set()</a>, <a class="el" href="def_8cpp_source.html#l00361">thorin::Def::set()</a>, <a class="el" href="world_8cpp_source.html#l00215">thorin::World::tuple()</a>, <a class="el" href="def_8h_source.html#l00222">thorin::Def::type()</a>, <a class="el" href="def_8cpp_source.html#l00288">thorin::Def::var()</a>, <a class="el" href="pass_8h_source.html#l00304">thorin::Pass::world()</a>, <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>, and <a class="el" href="autodiff_8cpp_source.html#l00041">thorin::autodiff::zero_pullback()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__eval_8cpp_source.html#l00022">derive()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__eval_8cpp_source.html#l00021">derive()</a>.</p>
 
 </div>
 </div>
@@ -695,9 +695,9 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classthorin_1_1Pass.html#aaff9e8035d221f0b950990efee302c70">thorin::Pass</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="autodiff__eval_8cpp_source.html#l00028">28</a> of file <a class="el" href="autodiff__eval_8cpp_source.html">autodiff_eval.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="autodiff__eval_8cpp_source.html#l00027">27</a> of file <a class="el" href="autodiff__eval_8cpp_source.html">autodiff_eval.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="autodiff__eval_8cpp_source.html#l00022">derive()</a>, and <a class="el" href="pass_8h_source.html#l00304">thorin::Pass::world()</a>.</p>
+<p class="reference">References <a class="el" href="autodiff__eval_8cpp_source.html#l00021">derive()</a>, and <a class="el" href="pass_8h_source.html#l00304">thorin::Pass::world()</a>.</p>
 
 </div>
 </div>

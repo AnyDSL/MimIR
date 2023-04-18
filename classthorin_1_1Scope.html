@@ -112,6 +112,7 @@ $(document).ready(function(){initNavTree('classthorin_1_1Scope.html',''); initRe
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classthorin_1_1Scope-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">thorin::Scope Class Reference</div></div>
 </div><!--header-->
@@ -163,12 +164,18 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2c8fbd2333af4d00bd701452f21f2369"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5a83c4f289787430c1bff72ea57d851"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacethorin.html#af1f71555d0d56905937ef1c9a5bc2c96">B_CFG</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Scope.html#ab5a83c4f289787430c1bff72ea57d851">b_cfg</a> () const</td></tr>
 <tr class="separator:ab5a83c4f289787430c1bff72ea57d851"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ae800b2598d5772d01415dcc90d423375"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Scope.html#ae800b2598d5772d01415dcc90d423375">is_free</a> (<a class="el" href="classthorin_1_1Def.html">Def</a> *mut, const <a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
+<tr class="memdesc:ae800b2598d5772d01415dcc90d423375"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does <code>mut's</code> <a class="el" href="classthorin_1_1Var.html">Var</a> occurr free in <code>def</code>?  <a href="classthorin_1_1Scope.html#ae800b2598d5772d01415dcc90d423375">More...</a><br /></td></tr>
+<tr class="separator:ae800b2598d5772d01415dcc90d423375"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >A <code><a class="el" href="classthorin_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a></code> represents a region of <code><a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a>s</code> that are live from the view of an <code>entry's</code> <code><a class="el" href="classthorin_1_1Var.html">Var</a></code>. </p>
 <p >Transitively, all user's of the <code>entry's</code> <code><a class="el" href="classthorin_1_1Var.html">Var</a></code> are pooled into this <code><a class="el" href="classthorin_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a></code> (see <code>defs()</code>). Both <code><a class="el" href="classthorin_1_1Scope.html#aebab8ed8577e05bccc79db0927aacf0e">entry()</a></code> and <code><a class="el" href="classthorin_1_1Scope.html#afffa3ca84a3c3bbfbda14739c08b0a09">exit()</a></code> are <em>NOT</em> part of the <code><a class="el" href="classthorin_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a></code> itself. The <code><a class="el" href="classthorin_1_1Scope.html#afffa3ca84a3c3bbfbda14739c08b0a09">exit()</a></code> is just a virtual dummy to have a unique exit dual to <code><a class="el" href="classthorin_1_1Scope.html#aebab8ed8577e05bccc79db0927aacf0e">entry()</a></code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00024">24</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00019">19</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a1c6b1b6b8394e9f5f8a5d6d99874e324" name="a1c6b1b6b8394e9f5f8a5d6d99874e324"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1c6b1b6b8394e9f5f8a5d6d99874e324">&#9670;&#160;</a></span>Scope() <span class="overload">[1/2]</span></h2>
@@ -290,7 +297,7 @@ Public Member Functions</h2></td></tr>
 
 <p>All <code><a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a>s</code> within this <code><a class="el" href="classthorin_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a></code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00044">44</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00039">39</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
 
 </div>
 </div>
@@ -318,11 +325,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00042">42</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00037">37</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
 
-<p class="reference">References <a class="el" href="scope_8h_source.html#l00042">bound()</a>.</p>
+<p class="reference">References <a class="el" href="scope_8h_source.html#l00037">bound()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="scope_8h_source.html#l00042">bound()</a>, <a class="el" href="cfg_8cpp_source.html#l00029">thorin::CFA::CFA()</a>, <a class="el" href="scope_8cpp_source.html#l00091">thorin::is_free()</a>, and <a class="el" href="schedule_8cpp_source.html#l00014">thorin::Scheduler::Scheduler()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="scope_8h_source.html#l00037">bound()</a>, <a class="el" href="cfg_8cpp_source.html#l00029">thorin::CFA::CFA()</a>, <a class="el" href="scope_8cpp_source.html#l00091">is_free()</a>, and <a class="el" href="schedule_8cpp_source.html#l00014">thorin::Scheduler::Scheduler()</a>.</p>
 
 </div>
 </div>
@@ -343,7 +350,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="scope_8cpp_source.html#l00087">87</a> of file <a class="el" href="scope_8cpp_source.html">scope.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="scope_8h_source.html#l00010">thorin::lazy_init()</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00021">thorin::lazy_init()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="scope_8cpp_source.html#l00089">b_cfg()</a>, and <a class="el" href="scope_8cpp_source.html#l00088">f_cfg()</a>.</p>
 
@@ -372,9 +379,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00035">35</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00030">30</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cfg_8cpp_source.html#l00029">thorin::CFA::CFA()</a>, <a class="el" href="schedule_8cpp_source.html#l00049">thorin::Scheduler::early()</a>, <a class="el" href="schedule_8cpp_source.html#l00065">thorin::Scheduler::late()</a>, <a class="el" href="ll_8cpp_source.html#l00250">thorin::ll::Emitter::prepare()</a>, <a class="el" href="dot_8cpp_source.html#l00098">thorin::dot::Emitter::prepare()</a>, <a class="el" href="add__mem_8cpp_source.html#l00064">thorin::mem::AddMem::visit()</a>, and <a class="el" href="emitter_8h_source.html#l00051">thorin::Emitter&lt; Value, Type, BB, Child &gt;::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cfg_8cpp_source.html#l00029">thorin::CFA::CFA()</a>, <a class="el" href="schedule_8cpp_source.html#l00049">thorin::Scheduler::early()</a>, <a class="el" href="schedule_8cpp_source.html#l00065">thorin::Scheduler::late()</a>, <a class="el" href="ll_8cpp_source.html#l00250">thorin::ll::Emitter::prepare()</a>, <a class="el" href="dot_8cpp_source.html#l00102">thorin::dot::Emitter::prepare()</a>, <a class="el" href="add__mem_8cpp_source.html#l00068">thorin::mem::AddMem::visit()</a>, and <a class="el" href="emitter_8h_source.html#l00051">thorin::Emitter&lt; Value, Type, BB, Child &gt;::visit()</a>.</p>
 
 </div>
 </div>
@@ -401,7 +408,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00036">36</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00031">31</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00268">thorin::ll::Emitter::finalize()</a>, and <a class="el" href="emitter_8h_source.html#l00051">thorin::Emitter&lt; Value, Type, BB, Child &gt;::visit()</a>.</p>
 
@@ -426,7 +433,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="reference">References <a class="el" href="scope_8cpp_source.html#l00087">cfa()</a>, and <a class="el" href="cfg_8cpp_source.html#l00081">thorin::CFA::f_cfg()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="schedule_8cpp_source.html#l00112">thorin::schedule()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="schedule_8cpp_source.html#l00112">thorin::Scheduler::schedule()</a>.</p>
 
 </div>
 </div>
@@ -455,7 +462,7 @@ Public Member Functions</h2></td></tr>
 
 <p>All <em>non-const</em> <code><a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a>s</code> <em>directly</em> referenced but <em>not</em> <code>bound</code> within this <code><a class="el" href="classthorin_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a></code>. May also include <code><a class="el" href="classthorin_1_1Var.html">Var</a>s</code> or <em>muts</em>. </p>
 
-<p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00045">45</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00040">40</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
 
 </div>
 </div>
@@ -484,9 +491,9 @@ Public Member Functions</h2></td></tr>
 
 <p>All <em>muts</em> that occurr free in this <code><a class="el" href="classthorin_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a></code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00047">47</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00042">42</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="phase_8cpp_source.html#l00045">thorin::ScopePhase::start()</a>, and <a class="el" href="add__mem_8cpp_source.html#l00064">thorin::mem::AddMem::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="phase_8cpp_source.html#l00045">thorin::ScopePhase::start()</a>, and <a class="el" href="add__mem_8cpp_source.html#l00068">thorin::mem::AddMem::visit()</a>.</p>
 
 </div>
 </div>
@@ -515,7 +522,51 @@ Public Member Functions</h2></td></tr>
 
 <p>All <code><a class="el" href="classthorin_1_1Var.html">Var</a>s</code> that occurr free in this <code><a class="el" href="classthorin_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a></code>. Does <em>not</em> transitively contain any free <code><a class="el" href="classthorin_1_1Var.html">Var</a>s</code> from <code>muts</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00046">46</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00041">41</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
+
+</div>
+</div>
+<a id="ae800b2598d5772d01415dcc90d423375" name="ae800b2598d5772d01415dcc90d423375"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae800b2598d5772d01415dcc90d423375">&#9670;&#160;</a></span>is_free()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> thorin::Scope::is_free </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>mut</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>def</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Does <code>mut's</code> <a class="el" href="classthorin_1_1Var.html">Var</a> occurr free in <code>def</code>? </p>
+
+<p class="definition">Definition at line <a class="el" href="scope_8cpp_source.html#l00091">91</a> of file <a class="el" href="scope_8cpp_source.html">scope.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="scope_8h_source.html#l00037">bound()</a>, <a class="el" href="def_8h_source.html#l00250">thorin::Def::num_ops()</a>, and <a class="el" href="def_8cpp_source.html#l00288">thorin::Def::var()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00156">thorin::Pi::immutabilize()</a>, <a class="el" href="def_8cpp_source.html#l00161">thorin::Sigma::immutabilize()</a>, <a class="el" href="def_8cpp_source.html#l00167">thorin::Arr::immutabilize()</a>, and <a class="el" href="def_8cpp_source.html#l00177">thorin::Pack::immutabilize()</a>.</p>
 
 </div>
 </div>
@@ -568,9 +619,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00037">37</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00032">32</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00378">thorin::Def::sym()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00425">thorin::Def::sym()</a>.</p>
 
 </div>
 </div>
@@ -597,7 +648,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00034">34</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00029">29</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="schedule_8cpp_source.html#l00084">thorin::Scheduler::smart()</a>, and <a class="el" href="cfg_8h_source.html#l00069">thorin::CFA::world()</a>.</p>
 

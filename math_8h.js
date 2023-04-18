@@ -2,6 +2,7 @@ var math_8h =
 [
     [ "VMode", "math_8h.html#ab290edebb1dee9ec76cc6198c9c036a9", null ],
     [ "Mode", "math_8h.html#aff01396947cc8f294f10ddaec9e8d4ca", [
+      [ "top", "math_8h.html#aff01396947cc8f294f10ddaec9e8d4caa2451cb1bbbbdeadb363013d2fe2bbb8f", null ],
       [ "none", "math_8h.html#aff01396947cc8f294f10ddaec9e8d4caafb72985afb637442c3428edbfcab42cf", null ],
       [ "nnan", "math_8h.html#aff01396947cc8f294f10ddaec9e8d4caa49780db85e66f388ddbd75410248db52", null ],
       [ "ninf", "math_8h.html#aff01396947cc8f294f10ddaec9e8d4caab4443a092df50028ff5c3e11d58d1135", null ],
@@ -13,8 +14,7 @@ var math_8h =
       [ "finite", "math_8h.html#aff01396947cc8f294f10ddaec9e8d4caacc296d9f838506ef43f9a85c9cb1d6d9", null ],
       [ "unsafe", "math_8h.html#aff01396947cc8f294f10ddaec9e8d4caa91de8c2707a7342aa4693a263404ca8c", null ],
       [ "fast", "math_8h.html#aff01396947cc8f294f10ddaec9e8d4caa75ae81d9f34fba3b8ff7d443518ac983", null ],
-      [ "bot", "math_8h.html#aff01396947cc8f294f10ddaec9e8d4caaed12a2391d1a04e3ff2fa64048db4863", null ],
-      [ "top", "math_8h.html#aff01396947cc8f294f10ddaec9e8d4caa2451cb1bbbbdeadb363013d2fe2bbb8f", null ]
+      [ "bot", "math_8h.html#aff01396947cc8f294f10ddaec9e8d4caaed12a2391d1a04e3ff2fa64048db4863", null ]
     ] ],
     [ "is_commutative", "math_8h.html#afa48f99a2dd73efc6dca6e9668759bf0", null ],
     [ "is_commutative", "math_8h.html#a024f494df950b4312faf11037c62ea2f", null ],

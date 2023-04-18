@@ -133,21 +133,21 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a558a4271a9951f27ba9ec56b06e1d391"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1Plugin.html#a558a4271a9951f27ba9ec56b06e1d391">plugin_name</a></td></tr>
 <tr class="memdesc:a558a4271a9951f27ba9ec56b06e1d391"><td class="mdescLeft">&#160;</td><td class="mdescRight">Name of the <a class="el" href="structthorin_1_1Plugin.html" title="Basic info and registration function pointer to be returned from a specific plugin.">Plugin</a>.  <a href="structthorin_1_1Plugin.html#a558a4271a9951f27ba9ec56b06e1d391">More...</a><br /></td></tr>
 <tr class="separator:a558a4271a9951f27ba9ec56b06e1d391"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84019ca2515d961119fa7de7b587550a"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1Plugin.html#a84019ca2515d961119fa7de7b587550a">register_normalizers</a> )(<a class="el" href="namespacethorin.html#a6ad6eaa1c542646fa592d10b05676464">Normalizers</a> &amp;normalizers)</td></tr>
+<tr class="memdesc:a84019ca2515d961119fa7de7b587550a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for registering the mapping from axiom ids to normalizer functions in the given <code>normalizers</code> map.  <a href="structthorin_1_1Plugin.html#a84019ca2515d961119fa7de7b587550a">More...</a><br /></td></tr>
+<tr class="separator:a84019ca2515d961119fa7de7b587550a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa107a093a32a77320c2e7210119f859b"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1Plugin.html#aa107a093a32a77320c2e7210119f859b">register_passes</a> )(<a class="el" href="namespacethorin.html#a334ff18080cd42969f863f22ec82694c">Passes</a> &amp;passes)</td></tr>
 <tr class="memdesc:aa107a093a32a77320c2e7210119f859b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for registering the <a class="el" href="structthorin_1_1Plugin.html" title="Basic info and registration function pointer to be returned from a specific plugin.">Plugin</a>'s callbacks for the pipeline extension points.  <a href="structthorin_1_1Plugin.html#aa107a093a32a77320c2e7210119f859b">More...</a><br /></td></tr>
 <tr class="separator:aa107a093a32a77320c2e7210119f859b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72102c6b1390838f8ea6339d244f35cf"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1Plugin.html#a72102c6b1390838f8ea6339d244f35cf">register_backends</a> )(<a class="el" href="namespacethorin.html#a790538bc68a2e08c788ee7666933c60b">Backends</a> &amp;backends)</td></tr>
-<tr class="memdesc:a72102c6b1390838f8ea6339d244f35cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for registering the mapping from backend names to emission functions in the given <em>backends</em> map.  <a href="structthorin_1_1Plugin.html#a72102c6b1390838f8ea6339d244f35cf">More...</a><br /></td></tr>
+<tr class="memdesc:a72102c6b1390838f8ea6339d244f35cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for registering the mapping from backend names to emission functions in the given <code>backends</code> map.  <a href="structthorin_1_1Plugin.html#a72102c6b1390838f8ea6339d244f35cf">More...</a><br /></td></tr>
 <tr class="separator:a72102c6b1390838f8ea6339d244f35cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84019ca2515d961119fa7de7b587550a"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1Plugin.html#a84019ca2515d961119fa7de7b587550a">register_normalizers</a> )(<a class="el" href="namespacethorin.html#a6ad6eaa1c542646fa592d10b05676464">Normalizers</a> &amp;normalizers)</td></tr>
-<tr class="memdesc:a84019ca2515d961119fa7de7b587550a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for registering the mapping from axiom ids to normalizer functions in the given <em>normalizers</em> map.  <a href="structthorin_1_1Plugin.html#a84019ca2515d961119fa7de7b587550a">More...</a><br /></td></tr>
-<tr class="separator:a84019ca2515d961119fa7de7b587550a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Basic info and registration function pointer to be returned from a specific plugin. </p>
 <p ><a class="el" href="classthorin_1_1Use.html" title="References a user.">Use</a> <a class="el" href="classthorin_1_1Driver.html" title="Some &quot;global&quot; variables needed all over the place.">Driver</a> to load such a plugin. </p>
 
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00026">26</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00029">29</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="aae591752da76e65471bf51cc4acc1e06" name="aae591752da76e65471bf51cc4acc1e06"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aae591752da76e65471bf51cc4acc1e06">&#9670;&#160;</a></span>Handle</h2>
@@ -161,7 +161,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00027">27</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00030">30</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 
 </div>
 </div>
@@ -180,7 +180,7 @@ Public Attributes</h2></td></tr>
 
 <p>Name of the <a class="el" href="structthorin_1_1Plugin.html" title="Basic info and registration function pointer to be returned from a specific plugin.">Plugin</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00030">30</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00032">32</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 
 </div>
 </div>
@@ -196,9 +196,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Callback for registering the mapping from backend names to emission functions in the given <em>backends</em> map. </p>
+<p>Callback for registering the mapping from backend names to emission functions in the given <code>backends</code> map. </p>
 
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00036">36</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00039">39</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 
 </div>
 </div>
@@ -214,9 +214,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Callback for registering the mapping from axiom ids to normalizer functions in the given <em>normalizers</em> map. </p>
+<p>Callback for registering the mapping from axiom ids to normalizer functions in the given <code>normalizers</code> map. </p>
 
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00039">39</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00035">35</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 
 </div>
 </div>
@@ -234,7 +234,7 @@ Public Attributes</h2></td></tr>
 
 <p>Callback for registering the <a class="el" href="structthorin_1_1Plugin.html" title="Basic info and registration function pointer to be returned from a specific plugin.">Plugin</a>'s callbacks for the pipeline extension points. </p>
 
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00033">33</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00037">37</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 
 </div>
 </div>

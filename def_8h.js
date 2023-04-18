@@ -22,6 +22,7 @@ var def_8h =
     [ "THORIN_NODE", "def_8h.html#ad441fba8cfece95e5b9a6bfb4e2c65f1", null ],
     [ "THORIN_PROJ", "def_8h.html#adf5d1a62a53cfba7b0dcd4caac0090ab", null ],
     [ "THORIN_SETTERS", "def_8h.html#a57527d868675a8ac8b24717d6fa05d77", null ],
+    [ "THORIN_SETTERS_", "def_8h.html#a2e88d501015a917e5422345e14273cfa", null ],
     [ "Def2Def", "def_8h.html#a7907156065ecc2f7a8ad6d0c4b48752d", null ],
     [ "DefArray", "def_8h.html#a81c6780cfdf58e5be888c4c16c68476d", null ],
     [ "DefDef", "def_8h.html#a1c686b5d4a914909b3433cae517ec294", null ],
@@ -31,7 +32,6 @@ var def_8h =
     [ "Defs", "def_8h.html#ab6c106c44c8584cd4bdb99b75b915c38", null ],
     [ "DefSet", "def_8h.html#a7fddaff34d4e4927bc748c28b49eef46", null ],
     [ "DefVec", "def_8h.html#a79fff1449ba1eaecead8f607520f8574", null ],
-    [ "level_t", "def_8h.html#ae2b9a3abaa277c7852b0f465240b0dd7", null ],
     [ "Mut2Mut", "def_8h.html#a0cc502ae65de73467eb1e87f435968d7", null ],
     [ "MutMap", "def_8h.html#a224fc7612589a582a48dbb6167ef3e14", null ],
     [ "MutSet", "def_8h.html#a89eae41d087b28bd4eba7fafd36d6fdf", null ],
@@ -56,10 +56,7 @@ var def_8h =
       [ "Univ", "def_8h.html#abb917bebc699083d990fc4592abcc50ea143bb06341e537e7143fb33624517946", null ],
       [ "Level", "def_8h.html#abb917bebc699083d990fc4592abcc50eaa0db49ba470c1c9ae2128c3470339153", null ]
     ] ],
-    [ "as_lit", "def_8h.html#a4784a7ada8e2badb49500623824d79e5", null ],
-    [ "collect_args", "def_8h.html#a957335953a7051820ba1edc227999812", null ],
     [ "error", "def_8h.html#a1de4d5b631f17319d8e0fa712800fa14", null ],
-    [ "isa_lit", "def_8h.html#a196c8dd3968fd28a00dc082c191feee6", null ],
     [ "operator!=", "def_8h.html#abc1f01f662846f8caad92888ad8a17d8", null ],
     [ "operator!=", "def_8h.html#aee916580c13eda56077bf2d72c16c826", null ],
     [ "operator&", "def_8h.html#a61a3a6294c41470122e64271506291fb", null ],
@@ -69,6 +66,5 @@ var def_8h =
     [ "operator==", "def_8h.html#a35c57a45b298546a946b2e128a7fe004", null ],
     [ "operator|", "def_8h.html#a05e4042b75626c2cee51c3ca443cf644", null ],
     [ "operator|", "def_8h.html#aa0cd1c1ad234722bde2ff65359c0de15", null ],
-    [ "operator|", "def_8h.html#a4d592df48be3ccd8d3990dfa38c6b145", null ],
-    [ "refer", "def_8h.html#ad3b07a81df411fc9fb8d544d8e044189", null ]
+    [ "operator|", "def_8h.html#a4d592df48be3ccd8d3990dfa38c6b145", null ]
 ];

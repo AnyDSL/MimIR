@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wlog_0',['WLOG',['../log_8h.html#a32648fc31390d09eaa0cc2ef0afeb02a',1,'log.h']]]
+  ['yellow_0',['YELLOW',['../refly_2normalizers_8cpp.html#abf681265909adf3d3e8116c93c0ba179',1,'normalizers.cpp']]]
 ];

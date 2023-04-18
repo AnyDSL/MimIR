@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.5"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: thorin/util/container.h File Reference</title>
+<title>Thorin: thorin/util/util.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -84,7 +84,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('container_8h.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('util_8h.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -113,7 +113,7 @@ $(document).ready(function(){initNavTree('container_8h.html',''); initResizable(
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a>  </div>
-  <div class="headertitle"><div class="title">container.h File Reference</div></div>
+  <div class="headertitle"><div class="title">util.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;optional&gt;</code><br />
@@ -126,19 +126,19 @@ $(document).ready(function(){initNavTree('container_8h.html',''); initResizable(
 <code>#include &quot;<a class="el" href="assert_8h_source.html">thorin/util/assert.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="hash_8h_source.html">thorin/util/hash.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for container.h:</div>
+Include dependency graph for util.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="container_8h__incl.svg" width="1474" height="271"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="util_8h__incl.svg" width="1474" height="271"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="container_8h__dep__incl.svg" width="5012" height="374"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="util_8h__dep__incl.svg" width="5204" height="374"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
-<p><a href="container_8h_source.html">Go to the source code of this file.</a></p>
+<p><a href="util_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -156,12 +156,11 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacethorin"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html">thorin</a></td></tr>
-<tr class="memdesc:namespacethorin"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper functions of general interest. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr><td colspan="2"><div class="groupHeader">maps/sets based upon gid</div></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Maps/Sets based upon gid</div></td></tr>
 <tr class="memitem:a7b3fd301e4692211ebf0d5bcfa17f1ac"><td class="memTemplParams" colspan="2">template&lt;class K , class V &gt; </td></tr>
 <tr class="memitem:a7b3fd301e4692211ebf0d5bcfa17f1ac"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a7b3fd301e4692211ebf0d5bcfa17f1ac">thorin::GIDMap</a> = absl::flat_hash_map&lt; K, V, GIDHash&lt; K &gt;, GIDEq&lt; K &gt; &gt;</td></tr>
 <tr class="separator:a7b3fd301e4692211ebf0d5bcfa17f1ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -177,7 +176,30 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr><td colspan="2"><div class="groupHeader">Helpers for containers/algorithms</div></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Utility Functions</div></td></tr>
+<tr class="memitem:aee2f56c5529fe06f8a103083f64d13f4"><td class="memTemplParams" colspan="2">template&lt;class This , class T &gt; </td></tr>
+<tr class="memitem:aee2f56c5529fe06f8a103083f64d13f4"><td class="memTemplItemLeft" align="right" valign="top">T &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#aee2f56c5529fe06f8a103083f64d13f4">thorin::lazy_init</a> (const This *self, std::unique_ptr&lt; T &gt; &amp;ptr)</td></tr>
+<tr class="separator:aee2f56c5529fe06f8a103083f64d13f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35ef19aa33b6c70ef2aca7bf23009527"><td class="memTemplParams" colspan="2">template&lt;class D , class S &gt; </td></tr>
+<tr class="memitem:a35ef19aa33b6c70ef2aca7bf23009527"><td class="memTemplItemLeft" align="right" valign="top">D&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a35ef19aa33b6c70ef2aca7bf23009527">thorin::bitcast</a> (const S &amp;src)</td></tr>
+<tr class="memdesc:a35ef19aa33b6c70ef2aca7bf23009527"><td class="mdescLeft">&#160;</td><td class="mdescRight">A bitcast from <code>src</code> of type <code>S</code> to <code>D</code>.  <a href="namespacethorin.html#a35ef19aa33b6c70ef2aca7bf23009527">More...</a><br /></td></tr>
+<tr class="separator:a35ef19aa33b6c70ef2aca7bf23009527"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac76b51109303662a47f30fa874337254"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ac76b51109303662a47f30fa874337254"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ac76b51109303662a47f30fa874337254">thorin::get_sign</a> (T val)</td></tr>
+<tr class="separator:ac76b51109303662a47f30fa874337254"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0939197f6f85434871b98845c13c9a0"><td class="memItemLeft" align="right" valign="top">u64&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ac0939197f6f85434871b98845c13c9a0">thorin::pad</a> (u64 offset, u64 align)</td></tr>
+<tr class="separator:ac0939197f6f85434871b98845c13c9a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Algorithms</div></td></tr>
+<tr class="memitem:a437c6f50faf6e57f126429d5a0ce9642"><td class="memTemplParams" colspan="2">template&lt;class I , class T , class Cmp &gt; </td></tr>
+<tr class="memitem:a437c6f50faf6e57f126429d5a0ce9642"><td class="memTemplItemLeft" align="right" valign="top">I&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a437c6f50faf6e57f126429d5a0ce9642">thorin::binary_find</a> (I begin, I end, T val, Cmp cmp)</td></tr>
+<tr class="separator:a437c6f50faf6e57f126429d5a0ce9642"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0068b7e16803fb6183c849f8a446d141"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a0068b7e16803fb6183c849f8a446d141">thorin::subview</a> (std::string_view s, <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> i, <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> n=std::string_view::npos)</td></tr>
+<tr class="memdesc:a0068b7e16803fb6183c849f8a446d141"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <code>std::string::substr</code>, but works on <code>std::string_view</code> instead.  <a href="namespacethorin.html#a0068b7e16803fb6183c849f8a446d141">More...</a><br /></td></tr>
+<tr class="separator:a0068b7e16803fb6183c849f8a446d141"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3eb00e4b86fdf94bee3c80beb4edefa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ae3eb00e4b86fdf94bee3c80beb4edefa">thorin::find_and_replace</a> (std::string &amp;str, std::string_view what, std::string_view repl)</td></tr>
+<tr class="memdesc:ae3eb00e4b86fdf94bee3c80beb4edefa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replaces all occurrences of <code>what</code> with <code>repl</code>.  <a href="namespacethorin.html#ae3eb00e4b86fdf94bee3c80beb4edefa">More...</a><br /></td></tr>
+<tr class="separator:ae3eb00e4b86fdf94bee3c80beb4edefa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Helpers for Containers</div></td></tr>
 <tr class="memitem:ab31c89d6a2afc9d7693f7fbdd992c7fe"><td class="memTemplParams" colspan="2">template&lt;class S &gt; </td></tr>
 <tr class="memitem:ab31c89d6a2afc9d7693f7fbdd992c7fe"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ab31c89d6a2afc9d7693f7fbdd992c7fe">thorin::pop</a> (S &amp;s) -&gt; decltype(s.top(), typename S::value_type())</td></tr>
 <tr class="separator:ab31c89d6a2afc9d7693f7fbdd992c7fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -192,19 +214,13 @@ Functions</h2></td></tr>
 <tr class="memitem:aad6b4767dbf4afe9eafefc0eb401eb5d"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#aad6b4767dbf4afe9eafefc0eb401eb5d">thorin::assert_emplace</a> (C &amp;container, Args &amp;&amp;... args)</td></tr>
 <tr class="memdesc:aad6b4767dbf4afe9eafefc0eb401eb5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invokes <code>emplace</code> on <code>container</code>, asserts that insertion actually happened, and returns the iterator.  <a href="namespacethorin.html#aad6b4767dbf4afe9eafefc0eb401eb5d">More...</a><br /></td></tr>
 <tr class="separator:aad6b4767dbf4afe9eafefc0eb401eb5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a437c6f50faf6e57f126429d5a0ce9642"><td class="memTemplParams" colspan="2">template&lt;class I , class T , class Cmp &gt; </td></tr>
-<tr class="memitem:a437c6f50faf6e57f126429d5a0ce9642"><td class="memTemplItemLeft" align="right" valign="top">I&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a437c6f50faf6e57f126429d5a0ce9642">thorin::binary_find</a> (I begin, I end, T val, Cmp cmp)</td></tr>
-<tr class="separator:a437c6f50faf6e57f126429d5a0ce9642"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0068b7e16803fb6183c849f8a446d141"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a0068b7e16803fb6183c849f8a446d141">thorin::subview</a> (std::string_view s, <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> i, <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> n=std::string_view::npos)</td></tr>
-<tr class="memdesc:a0068b7e16803fb6183c849f8a446d141"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <code>std::string::substr</code>, but works on <code>std::string_view</code> instead.  <a href="namespacethorin.html#a0068b7e16803fb6183c849f8a446d141">More...</a><br /></td></tr>
-<tr class="separator:a0068b7e16803fb6183c849f8a446d141"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_c4168c80b7484587a21dc92c326c695e.html">thorin</a></li><li class="navelem"><a class="el" href="dir_af13e0a143b7ca68f7428894b6ff07d9.html">util</a></li><li class="navelem"><a class="el" href="container_8h.html">container.h</a></li>
+    <li class="navelem"><a class="el" href="dir_c4168c80b7484587a21dc92c326c695e.html">thorin</a></li><li class="navelem"><a class="el" href="dir_af13e0a143b7ca68f7428894b6ff07d9.html">util</a></li><li class="navelem"><a class="el" href="util_8h.html">util.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
   </ul>
 </div>

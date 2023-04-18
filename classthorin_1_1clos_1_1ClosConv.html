@@ -171,13 +171,13 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Performs <em>typed closure conversion</em>. </p>
-<p >This is based on the <a href="https://dl.acm.org/doi/abs/10.1145/237721.237791">Simply Typed Closure Conversion</a>. Closures are represented using tuples: <code>[Env: *, .Cn [Env, Args..], Env]</code>. In general only <em>continuations</em> are converted. Different kind of <a class="el" href="classthorin_1_1Lam.html">Lam</a>s may be rewritten differently:</p><ul>
+<p >This is based on the <a href="https://dl.acm.org/doi/abs/10.1145/237721.237791">Simply Typed Closure Conversion</a>. Closures are represented using tuples: <code>[Env: *, .Cn [Env, Args..], Env]</code>. In general only <em>continuations</em> are converted. Different kind of <a class="el" href="classthorin_1_1Lam.html" title="A function.">Lam</a>s may be rewritten differently:</p><ul>
 <li><em>returning continuations</em> ("functions"), <em>join-points</em> and <em>branches</em> are fully closure converted.</li>
 <li><em>return continuations</em> are not closure converted.</li>
 <li><em>first-class continuations</em> get a "dummy" closure, they still have free variables.</li>
 </ul>
 <p >This pass relies on <a class="el" href="classthorin_1_1clos_1_1ClosConvPrep.html">ClosConvPrep</a> to introduce annotations for these cases.</p>
-<p >Note: Since direct-style <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a>s are not rewritten, this can lead to problems with certain <a class="el" href="classthorin_1_1Axiom.html">Axiom</a>s: <code>ax : (B : *, int -&gt; B) -&gt; (int -&gt; B)</code> won't be converted, possible arguments may. Further, there is no machinery to handle free variables in a <a class="el" href="classthorin_1_1Lam.html">Lam</a>s type; this may lead to problems with polymorphic functions. </p>
+<p >Note: Since direct-style <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a>s are not rewritten, this can lead to problems with certain <a class="el" href="classthorin_1_1Axiom.html">Axiom</a>s: <code>ax : (B : *, int -&gt; B) -&gt; (int -&gt; B)</code> won't be converted, possible arguments may. Further, there is no machinery to handle free variables in a <a class="el" href="classthorin_1_1Lam.html" title="A function.">Lam</a>s type; this may lead to problems with polymorphic functions. </p>
 
 <p class="definition">Definition at line <a class="el" href="clos__conv_8h_source.html#l00091">91</a> of file <a class="el" href="clos__conv_8h_source.html">clos_conv.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -237,7 +237,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Implements <a class="el" href="classthorin_1_1Phase.html#a205f687060888dc825ee521c99534426">thorin::Phase</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="clos__conv_8cpp_source.html#l00103">103</a> of file <a class="el" href="clos__conv_8cpp_source.html">clos_conv.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="clos__conv_8cpp_source.html#l00107">107</a> of file <a class="el" href="clos__conv_8cpp_source.html">clos_conv.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="phase_8h_source.html#l00025">thorin::Phase::world()</a>.</p>
 

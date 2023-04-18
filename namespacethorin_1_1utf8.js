@@ -1,7 +1,6 @@
 var namespacethorin_1_1utf8 =
 [
     [ "Lexer", "classthorin_1_1utf8_1_1Lexer.html", "classthorin_1_1utf8_1_1Lexer" ],
-    [ "ao", "namespacethorin_1_1utf8.html#aa6dceebd5276e97e1147dd786456e666", null ],
     [ "append", "namespacethorin_1_1utf8.html#ab193286524b0df4c5483ae6290004959", null ],
     [ "decode", "namespacethorin_1_1utf8.html#a830878e63c9e4b8bf2f73ba457a790ca", null ],
     [ "encode", "namespacethorin_1_1utf8.html#a420279844f511969229c3af8d8f9435c", null ],
