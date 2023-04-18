@@ -8,13 +8,17 @@
 namespace thorin {
 
 class PassMan;
+/// @name Undo
+/// Used by FPPass::analyze to indicate where to backtrack to.
+///@{
 using undo_t                    = size_t;
 static constexpr undo_t No_Undo = std::numeric_limits<undo_t>::max();
+///@}
 
 /// All Pass%es that want to be registered in the PassMan must implement this interface.
 /// * Inherit from RWPass if your pass does **not** need state and a fixed-point iteration.
 /// * Inherit from FPPass if you **do** need state and a fixed-point.
-/// * If you do not rely on interaction between differen Pass%es, consider using Phase instead.
+/// * If you do not rely on interaction between different Pass%es, consider using Phase instead.
 class Pass {
 public:
     Pass(PassMan&, std::string_view name);

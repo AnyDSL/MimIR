@@ -185,7 +185,7 @@ struct GIDLt {
     bool operator()(T a, T b) const { return a->gid() < b->gid(); }
 };
 
-/// @name Maps/Sets based upon gid
+/// @name GID
 ///@{
 // clang-format off
 template<class K, class V> using GIDMap     = absl::flat_hash_map<K, V, GIDHash<K>, GIDEq<K>>;

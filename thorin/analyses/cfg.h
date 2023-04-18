@@ -17,7 +17,10 @@ template<bool> class DomTreeBase;
 template<bool> class DomFrontierBase;
 // clang-format on
 
+/// @name Control Flow
+///@{
 using CFNodes = GIDSet<const CFNode*>;
+///@}
 
 /// A Control-Flow Node.
 /// Managed by CFA.

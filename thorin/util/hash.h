@@ -4,7 +4,10 @@
 
 namespace thorin {
 
+/// @name Aliases for some Base Types
+///@{
 using hash_t = uint32_t;
+///@}
 
 /// @name Murmur3 Hash
 ///@{

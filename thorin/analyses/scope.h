@@ -9,8 +9,12 @@ namespace thorin {
 class CFA;
 template<bool>
 class CFG;
+
+/// @name Control Flow
+///@{
 using F_CFG = CFG<true>;
 using B_CFG = CFG<false>;
+///@}
 
 /// A @p Scope represents a region of @p Def%s that are live from the view of an @p entry's @p Var.
 /// Transitively, all user's of the @p entry's @p Var are pooled into this @p Scope (see @p defs()).

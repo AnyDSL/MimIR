@@ -87,7 +87,10 @@ public:
     THORIN_DEF_MIXIN(Pick)
 };
 
-/// `test value, probe, match, clash` tests whether Test::value currently holds **type** Test::probe.
+/// Test whether Test::value currently holds **type** Test::probe:
+/// ```
+/// test value, probe, match, clash
+/// ```
 /// @note
 /// * Test::probe is a **type**!
 /// * This operation yields Test::match, if `tt`, and Test::clash otherwise.
@@ -136,10 +139,13 @@ private:
     friend class World;
 };
 
+/// @name Lattice
+///@{
 using Bot  = TExt<false>;
 using Top  = TExt<true>;
 using Meet = TBound<false>;
 using Join = TBound<true>;
+/// @}
 
 /// A singleton wraps a type into a higher order type.
 /// Therefore any type can be the only inhabitant of a singleton.

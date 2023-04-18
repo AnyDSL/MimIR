@@ -38,7 +38,10 @@ private:
     typename CFG<forward>::template Map<std::vector<const CFNode*>> succs_;
 };
 
+/// @name Control Flow
+///@{
 using DomFrontiers = DomFrontierBase<true>;
 using ControlDeps  = DomFrontierBase<false>;
+///@}
 
 } // namespace thorin

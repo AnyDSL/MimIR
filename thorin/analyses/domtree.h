@@ -42,7 +42,10 @@ private:
     typename CFG<forward>::template Map<int> depth_;
 };
 
+/// @name Control Flow
+///@{
 using DomTree     = DomTreeBase<true>;
 using PostDomTree = DomTreeBase<false>;
+///@}
 
 } // namespace thorin

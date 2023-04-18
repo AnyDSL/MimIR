@@ -165,10 +165,14 @@ public:
     THORIN_DEF_MIXIN(Lam)
 };
 
+/// @name Lam
+///@{
+/// GIDSet / GIDMap keyed by Lam::gid of `Lam*`.
 template<class To>
 using LamMap  = GIDMap<Lam*, To>;
 using LamSet  = GIDSet<Lam*>;
 using Lam2Lam = LamMap<Lam*>;
+///@}
 
 class App : public Def {
 private:

@@ -10,11 +10,12 @@
 namespace thorin {
 
 /// A Sym%bol just wraps a `const std::string*`, so pass Sym itself around as value.
-/// With the exception of the empty string, you should only create Sym%bols via SymPool::sym which in turn will toss all Sym%bols into a big hash set.
+/// With the exception of the empty string, you should only create Sym%bols via SymPool::sym.
+/// This in turn will toss all Sym%bols into a big hash set.
 /// This makes Sym::operator== and Sym::operator!= an O(1) operation.
 /// The empty string is internally handled as `nullptr`.
 /// Thus, you can create a Sym%bol representing an empty string without having access to the SymPool.
-/// The empty string, `nullptr`, and `"\0"` are all identified as `Sym::Sym()`.
+/// The empty string, `nullptr`, and `"\0"` are all identified as Sym::Sym().
 class Sym {
 private:
     Sym(const std::string* ptr)
@@ -33,7 +34,7 @@ public:
     auto end() const { return (*this)->cend(); }
     ///@}
 
-    /// @name comparisions
+    /// @name Comparisons
     ///@{
     bool operator==(char c) const { return (*this)->size() == 1 && (*this)[0] == c; }
     bool operator!=(char c) const { return !((*this) == c); }
@@ -44,14 +45,14 @@ public:
     friend bool operator!=(char c, Sym s) { return s != c; }
     ///@}
 
-    /// @name cast operators
+    /// @name Cast Operators
     ///@{
     operator std::string_view() const { return ptr_ ? *ptr_ : std::string_view(); }
     operator const std::string&() const { return *this->operator->(); }
     explicit operator bool() const { return ptr_; }
     ///@}
 
-    /// @name access operators
+    /// @name Access Operators
     ///@{
     char operator[](size_t i) const { return ((const std::string&)(*this))[i]; }
     const std::string& operator*() const { return *this->operator->(); }
@@ -86,9 +87,12 @@ public:
     SymPool(SymPool&& other)
         : pool_(std::move(other.pool_)) {}
 
+    /// @name sym
+    ///@{
     Sym sym(std::string_view s) { return s.empty() ? Sym() : &*pool_.emplace(s).first; }
     Sym sym(const char* s) { return s == nullptr || *s == '\0' ? Sym() : &*pool_.emplace(s).first; }
     Sym sym(std::string s) { return s.empty() ? Sym() : &*pool_.emplace(std::move(s)).first; }
+    ///@}
 
     friend void swap(SymPool& p1, SymPool& p2) {
         using std::swap;
@@ -99,9 +103,13 @@ private:
     absl::node_hash_set<std::string> pool_;
 };
 
+/// @name Sym
+///@{
+/// Set/Map is keyed by pointer - which is hashed in SymPool.
 template<class V>
 using SymMap = absl::flat_hash_map<Sym, V>;
 using SymSet = absl::flat_hash_set<Sym>;
 using Syms   = std::deque<Sym>;
+///@}
 
 } // namespace thorin

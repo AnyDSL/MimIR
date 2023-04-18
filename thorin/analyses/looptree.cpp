@@ -20,11 +20,13 @@
 
 namespace thorin {
 
+namespace {
 enum {
     InSCC   = 1, // is in current walk_scc run?
     OnStack = 2, // is in current SCC stack?
     IsHead  = 4, // all heads are marked, so subsequent runs can ignore backedges when searching for SCCs
 };
+} // namespace
 
 template<bool forward>
 class LoopTreeBuilder {
@@ -70,9 +72,8 @@ private:
 
     bool is_leaf(const CFNode* n, size_t num) {
         if (num == 1) {
-            for (const auto& succ : cfg().succs(n)) {
+            for (const auto& succ : cfg().succs(n))
                 if (!is_head(succ) && n == succ) return false;
-            }
             return true;
         }
         return false;
@@ -121,14 +122,12 @@ void LoopTreeBuilder<forward>::recurse(Head* parent, Span<const CFNode*> heads, 
         walk_scc(head, parent, depth, 0);
 
         // now mark all newly found heads globally as head
-        for (size_t e = parent->num_children(); curr_new_child != e; ++curr_new_child) {
+        for (size_t e = parent->num_children(); curr_new_child != e; ++curr_new_child)
             for (const auto& head : parent->child(curr_new_child)->cf_nodes()) states_[head] |= IsHead;
-        }
     }
 
-    for (const auto& node : parent->children()) {
+    for (const auto& node : parent->children())
         if (auto new_parent = node->template isa<Head>()) recurse(new_parent, new_parent->cf_nodes(), depth + 1);
-    }
 }
 
 template<bool forward>

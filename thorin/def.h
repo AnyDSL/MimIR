@@ -44,8 +44,34 @@ class Var;
 class Def;
 class World;
 
+/// @name Def
+///@{
+/// GIDSet / GIDMap keyed by Def::gid of `conset Def*`.
+template<class To>
+using DefMap   = GIDMap<const Def*, To>;
+using DefSet   = GIDSet<const Def*>;
+using Def2Def  = DefMap<const Def*>;
 using Defs     = Span<const Def*>;
 using DefArray = Array<const Def*>;
+///@}
+
+/// @name Def (Mutable)
+///@{
+/// GIDSet / GIDMap keyed by Def::gid of `Def*`.
+template<class To>
+using MutMap  = GIDMap<Def*, To>;
+using MutSet  = GIDSet<Def*>;
+using Mut2Mut = MutMap<Def*>;
+///@}
+
+/// @name Var
+///@{
+/// GIDSet / GIDMap keyed by Var::gid of `const Var*`.
+template<class To>
+using VarMap  = GIDMap<const Var*, To>;
+using VarSet  = GIDSet<const Var*>;
+using Var2Var = VarMap<const Var*>;
+///@{
 
 //------------------------------------------------------------------------------
 
@@ -530,14 +556,10 @@ template<class T = std::logic_error, class... Args>
 }
 ///@}
 
-//------------------------------------------------------------------------------
-
-template<class To>
-using DefMap  = GIDMap<const Def*, To>;
-using DefSet  = GIDSet<const Def*>;
-using Def2Def = DefMap<const Def*>;
-using DefDef  = std::tuple<const Def*, const Def*>;
-using DefVec  = std::vector<const Def*>;
+/// @name DefDef
+///@{
+using DefDef = std::tuple<const Def*, const Def*>;
+using DefVec = std::vector<const Def*>;
 
 struct DefDefHash {
     hash_t operator()(DefDef pair) const {
@@ -555,13 +577,7 @@ struct DefDefEq {
 template<class To>
 using DefDefMap = absl::flat_hash_map<DefDef, To, DefDefHash, DefDefEq>;
 using DefDefSet = absl::flat_hash_set<DefDef, DefDefHash, DefDefEq>;
-
-template<class To>
-using MutMap  = GIDMap<Def*, To>;
-using MutSet  = GIDSet<Def*>;
-using Mut2Mut = MutMap<Def*>;
-
-//------------------------------------------------------------------------------
+///@}
 
 class Var : public Def {
 private:
@@ -576,11 +592,6 @@ public:
 
     THORIN_DEF_MIXIN(Var)
 };
-
-template<class To>
-using VarMap  = GIDMap<const Var*, To>;
-using VarSet  = GIDSet<const Var*>;
-using Var2Var = VarMap<const Var*>;
 
 class Univ : public Def {
 private:
