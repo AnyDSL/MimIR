@@ -53,8 +53,7 @@ class Foo {
 public:
     Foo(int foo, int bar)
         : foo_(foo)
-        , bar_(bar)
-    {}
+        , bar_(bar) {}
 
     /// @name Getters
     ///@{

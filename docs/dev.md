@@ -10,7 +10,7 @@ Let's jump straight into an example.
 \include "examples/hello.cpp"
 
 [Driver](@ref thorin::Driver) is the first class that you want to allocate.
-It keeps track of a few "global" variables like some [flags](@ref thorin::Flags) or the [log](@ref thorin::Log).
+It keeps track of a few "global" variables like some [Flags](@ref thorin::Flags) or the [Log](@ref thorin::Log).
 Here, the log is set up to output to `std::cerr` with thorin::Log::Level::Debug (see also @ref clidebug).
 
 Then, we load the plugins [compile](@ref compile) and [core](@ref core), which in turn will load the plugin [mem](@ref mem).
