@@ -88,8 +88,6 @@ public:
     explicit operator bool() const { return def_; }
     static const Def* refer(const Def* def); ///< Retrieves Infer::arg from @p def.
 
-    friend std::ostream& operator<<(std::ostream&, Ref);
-
 private:
     const Def* def_ = nullptr;
 };
@@ -544,8 +542,13 @@ protected:
 
     friend class World;
     friend void swap(World&, World&);
-    friend std::ostream& operator<<(std::ostream&, const Def*);
 };
+
+/// @name std::ostream operator
+///@{
+std::ostream& operator<<(std::ostream&, const Def*);
+std::ostream& operator<<(std::ostream&, Ref);
+///@}
 
 /// @name Formatted Output
 ///@{

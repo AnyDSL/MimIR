@@ -102,8 +102,6 @@ private:
 using LPrec = LRPrec<true>;
 using RPrec = LRPrec<false>;
 
-/// @name std::ostream operator
-///@{
 std::ostream& operator<<(std::ostream& os, Inline u) {
     if (u.dump_gid_ == 2 || (u.dump_gid_ == 1 && !u->isa<Var>() && u->num_ops() != 0)) print(os, "/*{}*/", u->gid());
 
@@ -326,8 +324,6 @@ void Dumper::recurse(const Def* def, bool first /*= false*/) {
  * Def
  */
 
-/// @name std::ostream operator
-///@{
 std::ostream& operator<<(std::ostream& os, Ref ref) { return os << *ref; }
 
 /// This will stream @p def as an operand.
@@ -337,7 +333,6 @@ std::ostream& operator<<(std::ostream& os, const Def* def) {
     if (Inline(def)) return os << Inline(def);
     return os << id(def);
 }
-///@}
 
 std::ostream& Def::stream(std::ostream& os, int max) const {
     auto freezer = World::Freezer(world());
