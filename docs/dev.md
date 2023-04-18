@@ -10,7 +10,7 @@ Let's jump straight into an example.
 \include "examples/hello.cpp"
 
 [Driver](@ref thorin::Driver) is the first class that you want to allocate.
-It keeps track of a few global variables like some [flags](@ref thorin::Flags) or the [log](@ref thorin::Log).
+It keeps track of a few "global" variables like some [flags](@ref thorin::Flags) or the [log](@ref thorin::Log).
 Here, the log is set up to output to `std::cerr` with thorin::Log::Level::Debug (see also @ref clidebug).
 
 Then, we load the plugins [compile](@ref compile) and [core](@ref core), which in turn will load the plugin [mem](@ref mem).
@@ -35,7 +35,7 @@ Converted to [continuation-passing style (CPS)](https://en.wikipedia.org/wiki/Co
 .Cn [%mem.M, I32, %mem.Ptr (I32, 0), .Cn [%mem.M, I32]]
 ```
 The `%%mem.M` type is a type that keeps track of side effects that may occur.
-Since, `main` introduces [variables](@ref thorin::Var) we must create a **mutable** [Lam](@ref thorin::Lam)bda (see @ref mut).
+Since, `main` introduces [Var](@ref thorin::Var)iables we must create a **mutable** [Lam](@ref thorin::Lam)bda (see @ref mut).
 The only thing `main` is doing, is to invoke its `ret`urn continuation with `mem` and `argc` as argument:
 ```
 ret (mem, argc)
@@ -43,8 +43,8 @@ ret (mem, argc)
 It is also important to make `main` [external](@ref thorin::Def::make_external).
 Otherwise, Thorin will simply remove this function.
 
-We optimize the program, emit an [LLVM assembly file](https://llvm.org/docs/LangRef.html), and compile it via `clang`.
-Finally, we execute the generated program with `./hello a b c` and [output](@ref fmt) its exit code - which should be `4`.
+We [optimize](@ref thorin::optimize) the program, emit an [LLVM assembly file](https://llvm.org/docs/LangRef.html), and compile it [via](@ref thorin::sys::system) `clang`.
+Finally, we [execute](@ref thorin::sys::system) the generated program with `./hello a b c` and [output](@ref fmt) its exit code - which should be `4`.
 
 ## Immutables vs. Mutables {#mut}
 
@@ -146,21 +146,21 @@ void foo(Def* def) { // note the lack of "const" here
 #### Matching Literals {#cast_lit}
 
 Often, you want to match a [Lit](@ref thorin::Lit)eral and grab its content.
-You can use thorin::isa_lit / thorin::as_lit for this:
+You can use [Lit::isa](@ref thorin::Lit::isa)/[Lit::as](@ref thorin::Lit::as) for this:
 ```cpp
 void foo(Ref def) {
-    if (auto lit = isa_lit(def)) {
+    if (auto lit = Lit::isa(def)) {
         // lit is of type "std::optional<u64>"
         // It's your responsibility that the grabbed value makes sense as u64.
     }
-    if (auto lit = isa_lit<f32>(def)) {
+    if (auto lit = Lit::isa<f32>(def)) {
         // lit is of type "std::optional<f32>"
         // It's your responsibility that the grabbed value makes sense as f32.
     }
 
     // asserts if def is not a Lit.
-    auto lu64 = as_lit(def);
-    auto lf32 = as_lit<f32>(def);
+    auto lu64 = Lit::as(def);
+    auto lf32 = Lit::as<f32>(def);
 }
 ```
 
@@ -173,8 +173,28 @@ The following table summarizes all important casts:
 | `def->isa<Lam>()`     <br> `def->as<Lam>()`     | `const Lam*`                                                                                                                          | [Lam](@ref thorin::Lam)               |
 | `def->isa_imm<Lam>()` <br> `def->as_imm<Lam>()` | `const Lam*`                                                                                                                          | **immutable** [Lam](@ref thorin::Lam) |
 | `def->isa_mut<Lam>()` <br> `def->as_mut<Lam>()` | `Lam*`                                                                                                                                | **mutable** [Lam](@ref thorin::Lam)   |
-| `isa_lit(def)`        <br> `as_lit(def)`        | [std::optional](https://en.cppreference.com/w/cpp/utility/optional)`<`[nat_t](@ref thorin::nat_t)`>` <br> [nat_t](@ref thorin::nat_t) | [Lit](@ref thorin::Lit)               |
-| `isa_lit<f32>(def)`   <br> `as_lit<f32>(def)`   | [std::optional](https://en.cppreference.com/w/cpp/utility/optional)`<`[f32](@ref thorin::f32)`>`     <br> [f32](@ref thorin::f32)     | [Lit](@ref thorin::Lit)               |
+| `Lit::isa(def)`        <br> `Lit::as(def)`        | [std::optional](https://en.cppreference.com/w/cpp/utility/optional)`<`[nat_t](@ref thorin::nat_t)`>` <br> [nat_t](@ref thorin::nat_t) | [Lit](@ref thorin::Lit)               |
+| `Lit::isa<f32>(def)`   <br> `Lit::as<f32>(def)`   | [std::optional](https://en.cppreference.com/w/cpp/utility/optional)`<`[f32](@ref thorin::f32)`>`     <br> [f32](@ref thorin::f32)     | [Lit](@ref thorin::Lit)               |
+
+#### Further Casts
+
+There are also some additional checks available that usually come as `static` methods and either return a pointer or `Ref` to the checked entity or `nullptr`.
+Here are some examples:
+```cpp
+void foo(Ref def) {
+    if (auto size = Idx::size(def)) {
+        // def = .Idx size
+    }
+
+    if (auto lam = Lam::isa_mut_cn(def)) {
+        // def isa mutable Lam of type .Cn T
+    }
+
+    if (auto pi = Pi::isa_basicblock(def)) {
+        // def is a Pi whose co-domain is bottom and which is not returning
+    }
+```
+
 
 ### Matching Axioms {#cast_axiom}
 

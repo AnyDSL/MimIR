@@ -12,7 +12,7 @@ Ref get_sloxy_type(const Proxy* sloxy) { return force<mem::Ptr>(sloxy->type())->
 std::tuple<const Proxy*, Lam*> split_phixy(const Proxy* phixy) {
     return {phixy->op(0)->as<Proxy>(), phixy->op(1)->as_mut<Lam>()};
 }
-}
+} // namespace
 
 void SSAConstr::enter() { lam2sloxy2val_[curr_mut()].clear(); }
 
@@ -163,7 +163,7 @@ undo_t SSAConstr::analyze(Ref def) {
             auto& succ_info = data(succ_lam);
 
             // TODO this is a bit scruffy - maybe we can do better
-            if (succ_lam->is_basicblock() && succ_lam != curr_mut())
+            if (Lam::isa_basicblock(succ_lam) && succ_lam != curr_mut())
                 for (auto writable = data(curr_mut()).writable; auto&& w : writable) succ_info.writable.insert(w);
 
             if (!isa_callee(def, i)) {

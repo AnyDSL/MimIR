@@ -75,7 +75,6 @@ add_library(libthorin
     util/bitset.cpp
     util/bitset.h
     util/cast.h
-    util/container.h
     util/dl.cpp
     util/dl.h
     util/hash.cpp
@@ -94,6 +93,7 @@ add_library(libthorin
     util/types.h
     util/utf8.cpp
     util/utf8.h
+    util/util.h
 )
 
 set_target_properties(libthorin PROPERTIES PREFIX "")

@@ -26,16 +26,7 @@ namespace thorin {
 #define THORIN_8_16_32_64(m)        m(8) m(16) m(32) m(64)
 #define THORIN_16_32_64(m)               m(16) m(32) m(64)
 
-template<class T>
-bool get_sign(T val) {
-    static_assert(std::is_integral<T>(), "get_sign only supported for signed and unsigned integer types");
-    if constexpr(std::is_signed<T>())
-        return val < 0;
-    else
-        return val >> (T(sizeof(val)) * T(8) - T(1));
-}
-
-/// @name Types
+/// @name Aliases for some Base Types
 ///@{
 // using CODE1, CODE2, ... here as a workaround for Doxygen
 #define CODE1(i)                   \
@@ -49,6 +40,7 @@ using u1       = bool;
 using f16      = half;
 using f32      = float;
 using f64      = double;
+using level_t  = u64;
 using nat_t    = u64;
 using node_t   = u8;
 using flags_t  = u64;
@@ -57,8 +49,7 @@ using tag_t    = u8;
 using sub_t    = u8;
 ///@}
 
-/// @name width to signed/unsigned/float
-///@{
+namespace detail {
 template<int> struct w2u_ { using type = void; };
 template<int> struct w2s_ { using type = void; };
 template<int> struct w2f_ { using type = void; };
@@ -75,10 +66,13 @@ THORIN_8_16_32_64(CODE2)
     template<> struct w2f_<i> { using type = f ## i; };
 THORIN_16_32_64(CODE3)
 #undef CODE3
+} // namespace detail
 
-template<int w> using w2u = typename w2u_<w>::type;
-template<int w> using w2s = typename w2s_<w>::type;
-template<int w> using w2f = typename w2f_<w>::type;
+/// @name Width to Signed/Unsigned/Float
+///@{
+template<int w> using w2u = typename detail::w2u_<w>::type;
+template<int w> using w2s = typename detail::w2s_<w>::type;
+template<int w> using w2f = typename detail::w2f_<w>::type;
 ///@}
 
 /// @name User-Defined Literals

@@ -122,7 +122,7 @@ public:
     template<class Id>
     static constexpr size_t Num = size_t(-1);
 
-    /// @sa Axiom::base.
+    /// @see Axiom::base.
     template<class Id>
     static constexpr flags_t Base = flags_t(-1);
 
@@ -162,10 +162,10 @@ public:
 
     /// @name Axiom Name
     ///@{
-    auto plugin() const { return axiom()->plugin(); } ///< @sa Axiom::plugin.
-    auto tag() const { return axiom()->tag(); }       ///< @sa Axiom::tag.
-    auto sub() const { return axiom()->sub(); }       ///< @sa Axiom::sub.
-    auto base() const { return axiom()->sub(); }      ///< @sa Axiom::base.
+    auto plugin() const { return axiom()->plugin(); } ///< @see Axiom::plugin.
+    auto tag() const { return axiom()->tag(); }       ///< @see Axiom::tag.
+    auto sub() const { return axiom()->sub(); }       ///< @see Axiom::sub.
+    auto base() const { return axiom()->sub(); }      ///< @see exiom::base.
     auto id() const { return Id(axiom()->flags()); }  ///< Axiom::flags cast to @p Id.
     ///@}
 

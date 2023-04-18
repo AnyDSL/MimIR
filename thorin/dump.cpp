@@ -5,7 +5,7 @@
 #include "thorin/analyses/deptree.h"
 #include "thorin/fe/tok.h"
 #include "thorin/util/assert.h"
-#include "thorin/util/container.h"
+#include "thorin/util/util.h"
 
 using namespace std::literals;
 
@@ -21,19 +21,19 @@ namespace thorin {
 
 namespace {
 
-static Def* isa_decl(const Def* def) {
+Def* isa_decl(const Def* def) {
     if (auto mut = def->isa_mut()) {
         if (mut->is_external() || mut->isa<Lam>() || (mut->sym() && mut->sym() != '_')) return mut;
     }
     return nullptr;
 }
 
-static std::string id(const Def* def) {
+std::string id(const Def* def) {
     if (def->is_external() || (!def->is_set() && def->isa<Lam>())) return def->sym();
     return def->unique_name();
 }
 
-static std::string_view external(const Def* def) {
+std::string_view external(const Def* def) {
     if (def->is_external()) return ".extern "sv;
     return ""sv;
 }
@@ -108,7 +108,7 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
     if (u.dump_gid_ == 2 || (u.dump_gid_ == 1 && !u->isa<Var>() && u->num_ops() != 0)) print(os, "/*{}*/", u->gid());
 
     if (auto type = u->isa<Type>()) {
-        if (auto level = isa_lit(type->level())) {
+        if (auto level = Lit::isa(type->level())) {
             if (level == 0) return print(os, "★");
             if (level == 1) return print(os, "□");
         }
@@ -134,7 +134,7 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
     } else if (auto var = u->isa<Var>()) {
         return print(os, "{}", var->unique_name());
     } else if (auto pi = u->isa<Pi>()) {
-        if (pi->is_cn()) return print(os, ".Cn {}", pi->dom());
+        if (Pi::isa_cn(pi)) return print(os, ".Cn {}", pi->dom());
         if (auto mut = pi->isa_mut<Pi>(); mut && mut->var())
             return print(os, "Π {}: {} → {}", mut->var(), pi->dom(), pi->codom());
         return print(os, "Π {} → {}", pi->dom(), pi->codom());
@@ -259,7 +259,7 @@ void Dumper::dump(Lam* lam) {
     // TODO filter
     auto ptrn = [&](auto&) { dump_ptrn(lam->var(), lam->type()->dom()); };
 
-    if (lam->type()->is_cn())
+    if (Lam::isa_cn(lam))
         tab.println(os, ".con {}{} {}@({}) = {{", external(lam), id(lam), ptrn, lam->filter());
     else
         tab.println(os, ".lam {}{} {} → {} = {{", external(lam), id(lam), ptrn, lam->type()->codom());
@@ -319,7 +319,8 @@ void Dumper::recurse(const Def* def, bool first /*= false*/) {
 
     if (!first && !Inline(def)) dump_let(def);
 }
-}
+
+} // namespace
 
 /*
  * Def

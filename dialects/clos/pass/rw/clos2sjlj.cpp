@@ -4,46 +4,9 @@
 
 namespace thorin::clos {
 
-void Clos2SJLJ::get_exn_closures(Ref def, DefSet& visited) {
-    if (!def->is_term() || def->isa_mut<Lam>() || visited.contains(def)) return;
-    visited.emplace(def);
-    if (auto c = isa_clos_lit(def)) {
-        auto lam = c.fnc_as_lam();
-        if (c.is_basicblock() && !ignore_.contains(lam)) {
-            def->world().DLOG("FOUND exn closure: {}", c.fnc_as_lam());
-            lam2tag_[c.fnc_as_lam()] = {lam2tag_.size() + 1, c.env()};
-        }
-        get_exn_closures(c.env(), visited);
-    } else {
-        for (auto op : def->ops()) get_exn_closures(op, visited);
-    }
-}
+namespace {
 
-void Clos2SJLJ::get_exn_closures() {
-    lam2tag_.clear();
-    if (!curr_mut()->is_set() || !curr_mut()->type()->is_cn()) return;
-    auto app = curr_mut()->body()->isa<App>();
-    if (!app) return;
-    if (auto p = app->callee()->isa<Extract>(); p && isa_clos_type(p->tuple()->type())) {
-        auto p2 = p->tuple()->isa<Extract>();
-        if (p2 && p2->tuple()->isa<Tuple>()) {
-            // branch: Check the closure environments, but be careful not to traverse
-            // the closures themselves
-            auto branches = p2->tuple()->ops();
-            for (auto b : branches) {
-                auto c = isa_clos_lit(b);
-                if (c) {
-                    ignore_.emplace(c.fnc_as_lam());
-                    world().DLOG("IGNORE {}", c.fnc_as_lam());
-                }
-            }
-        }
-    }
-    auto visited = DefSet();
-    get_exn_closures(app->arg(), visited);
-}
-
-static std::array<Ref, 3> split(Ref def) {
+std::array<Ref, 3> split(Ref def) {
     auto new_ops = DefArray(def->num_projs() - 2, nullptr);
     auto& w      = def->world();
     const Def *mem, *env;
@@ -66,7 +29,7 @@ static std::array<Ref, 3> split(Ref def) {
     return {mem, env, remaining};
 }
 
-static Ref rebuild(Ref mem, Ref env, Defs remaining) {
+Ref rebuild(Ref mem, Ref env, Defs remaining) {
     auto& w      = mem->world();
     auto new_ops = DefArray(remaining.size() + 2, [&](auto i) -> const Def* {
         static_assert(Clos_Env_Param == 1);
@@ -75,6 +38,47 @@ static Ref rebuild(Ref mem, Ref env, Defs remaining) {
         return remaining[i - 2];
     });
     return w.tuple(new_ops);
+}
+
+} // namespace
+
+void Clos2SJLJ::get_exn_closures(Ref def, DefSet& visited) {
+    if (!def->is_term() || def->isa_mut<Lam>() || visited.contains(def)) return;
+    visited.emplace(def);
+    if (auto c = isa_clos_lit(def)) {
+        auto lam = c.fnc_as_lam();
+        if (c.is_basicblock() && !ignore_.contains(lam)) {
+            def->world().DLOG("FOUND exn closure: {}", c.fnc_as_lam());
+            lam2tag_[c.fnc_as_lam()] = {lam2tag_.size() + 1, c.env()};
+        }
+        get_exn_closures(c.env(), visited);
+    } else {
+        for (auto op : def->ops()) get_exn_closures(op, visited);
+    }
+}
+
+void Clos2SJLJ::get_exn_closures() {
+    lam2tag_.clear();
+    if (!curr_mut()->is_set() || !Lam::isa_cn(curr_mut())) return;
+    auto app = curr_mut()->body()->isa<App>();
+    if (!app) return;
+    if (auto p = app->callee()->isa<Extract>(); p && isa_clos_type(p->tuple()->type())) {
+        auto p2 = p->tuple()->isa<Extract>();
+        if (p2 && p2->tuple()->isa<Tuple>()) {
+            // branch: Check the closure environments, but be careful not to traverse
+            // the closures themselves
+            auto branches = p2->tuple()->ops();
+            for (auto b : branches) {
+                auto c = isa_clos_lit(b);
+                if (c) {
+                    ignore_.emplace(c.fnc_as_lam());
+                    world().DLOG("IGNORE {}", c.fnc_as_lam());
+                }
+            }
+        }
+    }
+    auto visited = DefSet();
+    get_exn_closures(app->arg(), visited);
 }
 
 Lam* Clos2SJLJ::get_throw(Ref dom) {

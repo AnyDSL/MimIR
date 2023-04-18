@@ -7,35 +7,60 @@
 
 namespace thorin::core {
 
+/// @name Mode
+///@{
+/// What should happen if Idx arithmetic overflows?
 enum Mode : nat_t {
-    none = 0,
-    nsw  = 1 << 0,
-    nuw  = 1 << 1,
+    none = 0,      ///< Wrap around.
+    nsw  = 1 << 0, ///< No Signed Wrap around.
+    nuw  = 1 << 1, ///< No Unsigned Wrap around.
 };
 
+/// Give Mode as thorin::math::Mode, thorin::nat_t or Ref.
 using VMode = std::variant<Mode, nat_t, Ref>;
 
+/// thorin::math::VMode -> Ref.
 inline Ref mode(World& w, VMode m) {
     if (auto def = std::get_if<Ref>(&m)) return *def;
     if (auto nat = std::get_if<nat_t>(&m)) return w.lit_nat(*nat);
     return w.lit_nat(std::get<Mode>(m));
 }
+///@}
 
-/// @name op
+/// @name %%core.wrap
 ///@{
-/// These guys build the final function application for the various operations
+inline Ref op_wminus(VMode m, Ref a) {
+    World& w = a->world();
+    auto s   = Lit::as(w.iinfer(a));
+    return w.call(wrap::sub, mode(w, m), Defs{w.lit_idx(s, 0), a});
+}
+///@}
+
+/// @name %%core.trait
+///@{
 inline Ref op(trait o, Ref type) {
     World& w = type->world();
     return w.app(w.ax(o), type);
 }
+///@}
+
+/// @name %%core.pe
+///@{
 inline Ref op(pe o, Ref def) {
     World& w = def->world();
     return w.app(w.app(w.ax(o), def->type()), def);
 }
-inline Ref op_wminus(VMode m, Ref a) {
-    World& w = a->world();
-    auto s   = as_lit(w.iinfer(a));
-    return w.call(wrap::sub, mode(w, m), Defs{w.lit_idx(s, 0), a});
+///@}
+
+/// @name %%core.bit2
+///@{
+
+/// Use like this: `a op b = tab[a][b]`
+constexpr std::array<std::array<u64, 2>, 2> make_truth_table(bit2 id) {
+    return {
+        {{sub_t(id) & sub_t(0b0001) ? u64(-1) : 0, sub_t(id) & sub_t(0b0100) ? u64(-1) : 0},
+         {sub_t(id) & sub_t(0b0010) ? u64(-1) : 0, sub_t(id) & sub_t(0b1000) ? u64(-1) : 0}}
+    };
 }
 ///@}
 
@@ -63,19 +88,14 @@ inline Ref insert_unsafe(Ref d, u64 i, Ref val) {
 }
 ///@}
 
-/// Use like this:
-/// `a op b = tab[a][b]`
-constexpr std::array<std::array<u64, 2>, 2> make_truth_table(bit2 id) {
-    return {
-        {{sub_t(id) & sub_t(0b0001) ? u64(-1) : 0, sub_t(id) & sub_t(0b0100) ? u64(-1) : 0},
-         {sub_t(id) & sub_t(0b0010) ? u64(-1) : 0, sub_t(id) & sub_t(0b1000) ? u64(-1) : 0}}
-    };
-}
-
+/// @name Convert TBound to Sigma
+///@{
+/// This is WIP.
 template<bool up>
 const Sigma* convert(const TBound<up>* b);
 
 inline const Sigma* convert(const Bound* b) { return b->isa<Join>() ? convert(b->as<Join>()) : convert(b->as<Meet>()); }
+///@}
 
 } // namespace thorin::core
 

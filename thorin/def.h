@@ -7,10 +7,10 @@
 
 #include "thorin/util/array.h"
 #include "thorin/util/cast.h"
-#include "thorin/util/container.h"
 #include "thorin/util/hash.h"
 #include "thorin/util/loc.h"
 #include "thorin/util/print.h"
+#include "thorin/util/util.h"
 
 // clang-format off
 #define THORIN_NODE(m)                                                        \
@@ -49,9 +49,6 @@ using DefArray = Array<const Def*>;
 
 //------------------------------------------------------------------------------
 
-/// Retrieves Infer::arg from @p def
-const Def* refer(const Def* def);
-
 /// Helper class to retrieve Infer::arg if present.
 class Ref {
 public:
@@ -63,6 +60,8 @@ public:
     const Def* operator->() const { return refer(def_); }
     operator const Def*() const { return refer(def_); }
     explicit operator bool() const { return def_; }
+    static const Def* refer(const Def* def); ///< Retrieves Infer::arg from @p def.
+
     friend std::ostream& operator<<(std::ostream&, Ref);
 
 private:
@@ -70,10 +69,6 @@ private:
 };
 
 using NormalizeFn = Ref (*)(Ref, Ref, Ref);
-template<class T = u64>
-std::optional<T> isa_lit(const Def*);
-template<class T = u64>
-T as_lit(const Def* def);
 
 //------------------------------------------------------------------------------
 
@@ -158,7 +153,7 @@ inline unsigned operator!=(Dep d1, unsigned d2) { return unsigned(d1) != d2; }
 
 // clang-format off
 /// Use as mixin to declare setters for Def::loc \& Def::name using a *covariant* return type.
-#define THORIN_SETTERS(T)                                                                                                   \
+#define THORIN_SETTERS_(T)                                                                                                  \
 public:                                                                                                                     \
     template<bool Ow = false> const T* set(Loc l               ) const { if (Ow || !dbg_.loc) dbg_.loc = l;  return this; } \
     template<bool Ow = false>       T* set(Loc l               )       { if (Ow || !dbg_.loc) dbg_.loc = l;  return this; } \
@@ -174,14 +169,19 @@ public:                                                                         
     template<bool Ow = false>       T* set(Dbg d)       { set(d.loc, d.sym); return this; }
 // clang-format on
 
-#define THORIN_DEF_MIXIN(T)                                                            \
-public:                                                                                \
-    THORIN_SETTERS(T)                                                                  \
-    T* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg())->as<T>(); } \
-    static constexpr auto Node = Node::T;                                              \
-                                                                                       \
-private:                                                                               \
-    Ref rebuild_(World&, Ref, Defs) const override;                                    \
+#ifdef DOXYGEN
+#    define THORIN_SETTERS(T) public: // Don't spam each and every sub class of Def with basically the same docs.
+#else
+#    define THORIN_SETTERS(T) THORIN_SETTERS_(T)
+#endif
+
+#define THORIN_DEF_MIXIN(T)                        \
+public:                                            \
+    THORIN_SETTERS(T)                              \
+    Ref rebuild(World&, Ref, Defs) const override; \
+    static constexpr auto Node = Node::T;          \
+                                                   \
+private:                                           \
     friend class World;
 
 /// Base class for all Def%s.
@@ -192,6 +192,7 @@ private:                                                                        
 ///           |-------extended_ops------|
 /// ```
 /// @attention This means that any subclass of Def **must not** introduce additional members.
+/// @see @ref mut
 class Def : public RuntimeCast<Def> {
 private:
     Def& operator=(const Def&) = delete;
@@ -217,10 +218,16 @@ public:
     /// @name type
     ///@{
 
-    /// Yields the **raw** type of this Def; maybe `nullptr`. @sa Def::unfold_type.
+    /// Yields the **raw** type of this Def, i.e. maybe `nullptr`. @see Def::unfold_type.
     const Def* type() const { return type_; }
-    /// Yields the type of this Def and unfolds it if necessary. See Def::type, Def::reduce_rec.
+    /// Yields the type of this Def and unfolds it if necessary. @see Def::type, Def::reduce_rec.
     const Def* unfold_type() const;
+    /// Yields `true` if `this:T` and `T:(.Type 0)`.
+    bool is_term() const;
+    ///@}
+
+    /// @name arity
+    ///@{
     const Def* arity() const;
     std::optional<nat_t> isa_lit_arity() const;
     nat_t as_lit_arity() const {
@@ -228,7 +235,6 @@ public:
         assert(a.has_value());
         return *a;
     }
-    bool is_term() const;
     ///@}
 
     /// @name ops
@@ -265,7 +271,7 @@ public:
 
     /// Resolves Infer%s of this Def's type.
     void update() {
-        if (auto r = refer(type()); r && r != type()) set_type(r);
+        if (auto r = Ref::refer(type()); r && r != type()) set_type(r);
     }
 
     /// Yields `true` if empty or the last op is set.
@@ -307,6 +313,7 @@ public:
     ///@}
 
     /// @name proj
+    /// @anchor proj
     ///@{
     /// Splits this Def via Extract%s or directly accessing the Def::ops in the case of Sigma%s or Arr%ays.
 
@@ -351,7 +358,6 @@ public:
         using R = std::decay_t<decltype(f(this))>;
         return Array<R>(a, [&](nat_t i) { return f(proj(a, i)); });
     }
-
     template<nat_t A = -1_s>
     auto projs() const {
         return projs<A>([](const Def* def) { return def; });
@@ -361,7 +367,15 @@ public:
     }
     ///@}
 
-    /// @name External
+    /// @name var
+    ///@{
+    /// Retrieve Var for *mut*ables.
+    /// @see @ref proj
+    const Var* var();
+    THORIN_PROJ(var, )
+    ///@}
+
+    /// @name external
     ///@{
     bool is_external() const { return external_; }
     bool is_internal() const { return !is_external(); } ///< **Not** Def::is_external.
@@ -369,18 +383,58 @@ public:
     void make_internal();
     ///@}
 
-    /// @name Dbg
+    /// @name Casts
     ///@{
-    std::string unique_name() const; ///< name + "_" + Def::gid
-    THORIN_SETTERS(Def)
+    /// @see @ref cast_builtin
+    // clang-format off
+    template<class T = Def> const T* isa_imm() const { return isa_mut<T, true>(); }
+    template<class T = Def> const T*  as_imm() const { return  as_mut<T, true>(); }
+    template<class T = Def, class R> const T* isa_imm(R (T::*f)() const) const { return isa_mut<T, R, true>(f); }
+    // clang-format on
+
+    /// If `this` is *mut*able, it will cast `const`ness away and perform a `dynamic_cast` to @p T.
+    template<class T = Def, bool invert = false>
+    T* isa_mut() const {
+        if constexpr (std::is_same<T, Def>::value)
+            return mut_ ^ invert ? const_cast<Def*>(this) : nullptr;
+        else
+            return mut_ ^ invert ? const_cast<Def*>(this)->template isa<T>() : nullptr;
+    }
+
+    /// Asserts that `this` is a *mutable*, casts `const`ness away and performs a `static_cast` to @p T.
+    template<class T = Def, bool invert = false>
+    T* as_mut() const {
+        assert(mut_ ^ invert);
+        if constexpr (std::is_same<T, Def>::value)
+            return const_cast<Def*>(this);
+        else
+            return const_cast<Def*>(this)->template as<T>();
+    }
+
+    template<class T = Def, class R>
+    T* isa_mut(R (T::*f)() const) const {
+        if (auto t = isa_mut<T>(); t && (t->*f)()) return t;
+        return nullptr;
+    }
+    ///@}
+
+    /// @name Dbg Getters
+    ///@{
     Dbg dbg() const { return dbg_; }
     Loc loc() const { return dbg_.loc; }
     Sym sym() const { return dbg_.sym; }
+    std::string unique_name() const; ///< name + "_" + Def::gid
     ///@}
 
-    /// @name debug prefix/suffix
+    /// @name Dbg Setters
     ///@{
-    /// Prepends/Appends a prefix/suffix to Def::name - but only in **DEBUG** build.
+    /// Every subclass `S` of Def has the same setters that return `S*`/`const S*` but will not show up in Doxygen.
+    THORIN_SETTERS_(Def)
+    ///@}
+
+    /// @name debug_prefix/suffix
+    ///@{
+    /// Prepends/Appends a prefix/suffix to Def::name - but only in `Debug` build.
 #ifndef NDEBUG
     const Def* debug_prefix(std::string) const;
     const Def* debug_suffix(std::string) const;
@@ -390,65 +444,31 @@ public:
 #endif
     ///@}
 
-    /// @name Casts
+    /// @name Rebuild
     ///@{
-    /// @see @ref cast_builtin
-    // clang-format off
-    template<class T = Def> const T* isa_imm() const { return isa_mut<T, true>(); }
-    template<class T = Def> const T*  as_imm() const { return  as_mut<T, true>(); }
-    // clang-format on
+    virtual Def* stub(World&, Ref) { unreachable(); }
 
-    /// If `this` is *mut*able, it will cast constness away and perform a dynamic cast to @p T.
-    template<class T = Def, bool invert = false>
-    T* isa_mut() const {
-        if constexpr (std::is_same<T, Def>::value)
-            return mut_ ^ invert ? const_cast<Def*>(this) : nullptr;
-        else
-            return mut_ ^ invert ? const_cast<Def*>(this)->template isa<T>() : nullptr;
-    }
+    /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
+    virtual Ref rebuild(World& w, Ref type, Defs ops) const = 0;
 
-    /// Asserts that @c this is a *mut*able, casts constness away and performs a static cast to @p T (checked in Debug
-    /// build).
-    template<class T = Def, bool invert = false>
-    T* as_mut() const {
-        assert(mut_ ^ invert);
-        if constexpr (std::is_same<T, Def>::value)
-            return const_cast<Def*>(this);
-        else
-            return const_cast<Def*>(this)->template as<T>();
-    }
-    ///@}
+    /// Tries to make an immutable from a mutable.
+    /// This usually works if the mutable isn't recursive and its var isn't used.
+    virtual const Def* immutabilize() { return nullptr; }
 
-    /// @name var
-    ///@{
-    /// Retrieve Var for *mut*ables.
-    const Var* var();
-    THORIN_PROJ(var, )
-    ///@}
+    const Def* refine(size_t i, const Def* new_op) const;
 
-    /// @name reduce
-    ///@{
     /// Rewrites Def::ops by substituting `this` mutable's Var with @p arg.
     DefArray reduce(const Def* arg) const;
     DefArray reduce(const Def* arg);
+
     /// Transitively Def::reduce Lam%s, if `this` is an App.
     /// @returns the reduced body.
     const Def* reduce_rec() const;
     ///@}
 
-    /// @name stub/rebuild
-    ///@{
-    Def* stub(World& w, Ref type) { return stub_(w, type)->set(dbg()); }
-    /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
-    Ref rebuild(World& w, Ref type, Defs ops) const { return rebuild_(w, type, ops)->set(dbg()); }
-    ///@}
-
-    /// @name Virtual Methods
+    /// @name Type Checking
     ///@{
     virtual void check() {}
-    virtual size_t first_dependend_op() { return 0; }
-    const Def* refine(size_t i, const Def* new_op) const;
-    virtual const Def* restructure() { return nullptr; }
     ///@}
 
     /// @name dump
@@ -458,13 +478,9 @@ public:
     void write(int max) const;
     void write(int max, const char* file) const;
     std::ostream& stream(std::ostream&, int max) const;
-    friend std::ostream& operator<<(std::ostream&, const Def*);
     ///@}
 
 protected:
-    virtual Ref rebuild_(World&, Ref, Defs) const = 0;
-    virtual Def* stub_(World&, Ref) { unreachable(); }
-
     const Def** ops_ptr() const {
         return reinterpret_cast<const Def**>(reinterpret_cast<char*>(const_cast<Def*>(this + 1)));
     }
@@ -498,11 +514,11 @@ protected:
     u32 num_ops_;
     mutable Uses uses_;
     mutable Dbg dbg_;
-
     const Def* type_;
 
     friend class World;
     friend void swap(World&, World&);
+    friend std::ostream& operator<<(std::ostream&, const Def*);
 };
 
 /// @name Formatted Output
@@ -581,8 +597,6 @@ private:
     THORIN_DEF_MIXIN(UMax)
 };
 
-using level_t = u64;
-
 class UInc : public Def {
 private:
     UInc(const Def* op, level_t offset)
@@ -604,7 +618,10 @@ private:
         : Def(Node, nullptr, {level}, 0) {}
 
 public:
+    /// @name ops
+    ///@{
     const Def* level() const { return op(0); }
+    ///@}
 
     THORIN_DEF_MIXIN(Type)
 };
@@ -615,30 +632,35 @@ private:
         : Def(Node, type, Defs{}, val) {}
 
 public:
+    /// @name Get actual Constant
+    ///@{
     template<class T = flags_t>
     T get() const {
         static_assert(sizeof(T) <= 8);
         return bitcast<T>(flags_);
     }
+    ///@}
+
+    using Def::as;
+    using Def::isa;
+
+    /// @name Casts
+    ///@{
+    /// @see @ref cast_lit
+    template<class T = nat_t>
+    static std::optional<T> isa(Ref def) {
+        if (!def) return {};
+        if (auto lit = def->isa<Lit>()) return lit->get<T>();
+        return {};
+    }
+    template<class T = nat_t>
+    static T as(Ref def) {
+        return def->as<Lit>()->get<T>();
+    }
+    ///@}
 
     THORIN_DEF_MIXIN(Lit)
 };
-
-/// @name Cast for Lit
-///@{
-/// @see @ref cast_lit
-template<class T>
-std::optional<T> isa_lit(const Def* def) {
-    if (def == nullptr) return {};
-    if (auto lit = def->isa<Lit>()) return lit->get<T>();
-    return {};
-}
-
-template<class T>
-T as_lit(const Def* def) {
-    return def->as<Lit>()->get<T>();
-}
-///@}
 
 class Nat : public Def {
 private:
@@ -654,7 +676,7 @@ private:
         : Def(Node, type, Defs{}, 0) {}
 
 public:
-    /// Checks if @p def isa `.Idx s` and returns s or `nullptr` otherwise.
+    /// Checks if @p def is a `.Idx s` and returns `s` or `nullptr` otherwise.
     static Ref size(Ref def);
 
     /// @name Convert between Idx::size and bitwidth and vice versa
@@ -711,16 +733,11 @@ public:
     bool is_mutable() const { return flags(); }
     ///@}
 
+    Global* stub(World&, Ref) override;
+
     THORIN_DEF_MIXIN(Global)
-    Global* stub_(World&, Ref) override;
 };
 
 hash_t UseHash::operator()(Use use) const { return hash_combine(hash_begin(u16(use.index())), hash_t(use->gid())); }
-
-//------------------------------------------------------------------------------
-
-// TODO: move
-/// Helper function to cope with the fact that normalizers take all arguments and not only its axiom arguments.
-std::pair<const Def*, std::vector<const Def*>> collect_args(const Def* def);
 
 } // namespace thorin

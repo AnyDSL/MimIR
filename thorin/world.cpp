@@ -18,7 +18,7 @@
 
 #include "thorin/analyses/scope.h"
 #include "thorin/util/array.h"
-#include "thorin/util/container.h"
+#include "thorin/util/util.h"
 
 namespace thorin {
 
@@ -30,7 +30,13 @@ bool is_shape(Ref s) {
 
     return false;
 }
+
+const Def* infer_sigma(World& world, Defs ops) {
+    DefArray elems(ops.size());
+    for (size_t i = 0, e = ops.size(); i != e; ++i) elems[i] = ops[i]->type();
+    return world.sigma(elems);
 }
+} // namespace
 
 /*
  * constructor & destructor
@@ -100,7 +106,7 @@ Ref World::uinc(Ref op, level_t offset) {
     if (!op->type()->isa<Univ>())
         error(op, "operand '{}' of a universe increment must be of type `.Univ` but is of type `{}`", op, op->type());
 
-    if (auto l = isa_lit(op)) return lit_univ(*l + 1);
+    if (auto l = Lit::isa(op)) return lit_univ(*l + 1);
     return unify<UInc>(1, op, offset);
 }
 
@@ -123,7 +129,7 @@ Ref World::umax(DefArray ops) {
 
         op = r;
 
-        if (auto l = isa_lit(op))
+        if (auto l = Lit::isa(op))
             lvl = std::max(lvl, *l);
         else
             lvl = level_t(-1);
@@ -136,7 +142,7 @@ Ref World::umax(DefArray ops) {
 
 Ref World::iapp(Ref callee, Ref arg) {
     while (auto pi = callee->type()->isa<Pi>()) {
-        if (pi->implicit()) {
+        if (pi->is_implicit()) {
             auto infer = mut_infer_entity();
             auto a     = app(callee, infer);
             callee     = a;
@@ -146,7 +152,7 @@ Ref World::iapp(Ref callee, Ref arg) {
                 checker().assignable(callee->type()->as<Pi>()->dom(), arg);
                 auto apps = decurry(app);
                 callee    = apps.front()->callee();
-                for (auto app : apps) callee = this->app(callee, refer(app->arg()));
+                for (auto app : apps) callee = this->app(callee, Ref::refer(app->arg()));
             }
             break;
         }
@@ -206,12 +212,6 @@ Ref World::sigma(Defs ops) {
     return unify<Sigma>(ops.size(), umax<Sort::Type>(ops), ops);
 }
 
-static const Def* infer_sigma(World& world, Defs ops) {
-    DefArray elems(ops.size());
-    for (size_t i = 0, e = ops.size(); i != e; ++i) elems[i] = ops[i]->type();
-    return world.sigma(elems);
-}
-
 Ref World::tuple(Defs ops) {
     if (ops.size() == 1) return ops[0];
 
@@ -242,7 +242,7 @@ Ref World::tuple(Ref type, Defs ops) {
             bool eta = tup->type() == type;
             for (size_t i = 0; i != n && eta; ++i) {
                 if (auto extract = ops[i]->isa<Extract>()) {
-                    if (auto index = isa_lit(extract->index())) {
+                    if (auto index = Lit::isa(extract->index())) {
                         if (eta &= u64(i) == *index) {
                             eta &= extract->tuple() == tup;
                             continue;
@@ -264,7 +264,7 @@ Ref World::extract(Ref d, Ref index) {
     if (index->isa<Tuple>()) {
         auto n = index->num_ops();
         DefArray idx(n, [&](size_t i) { return index->op(i); });
-        DefArray ops(n, [&](size_t i) { return d->proj(n, as_lit(idx[i])); });
+        DefArray ops(n, [&](size_t i) { return d->proj(n, Lit::as(idx[i])); });
         return tuple(ops);
     } else if (index->isa<Pack>()) {
         DefArray ops(index->as_lit_arity(), [&](size_t) { return extract(d, index->ops().back()); });
@@ -275,7 +275,7 @@ Ref World::extract(Ref d, Ref index) {
     Ref type = d->unfold_type();
 
     // mut sigmas can be 1-tuples
-    if (auto l = isa_lit(size); l && *l == 1 && !d->type()->isa_mut<Sigma>()) return d;
+    if (auto l = Lit::isa(size); l && *l == 1 && !d->type()->isa_mut<Sigma>()) return d;
     if (auto pack = d->isa_imm<Pack>()) return pack->body();
 
     if (!checker().equiv(type->arity(), size))
@@ -286,7 +286,7 @@ Ref World::extract(Ref d, Ref index) {
         if (index == insert->index()) return insert->value();
     }
 
-    if (auto i = isa_lit(index)) {
+    if (auto i = Lit::isa(index)) {
         if (auto tuple = d->isa<Tuple>()) return tuple->op(*i);
 
         // extract(insert(x, j, val), i) -> extract(x, i) where i != j (guaranteed by rule above)
@@ -322,23 +322,23 @@ Ref World::insert(Ref d, Ref index, Ref val) {
     if (!checker().equiv(type->arity(), size))
         error(index, "index '{}' does not fit within arity '{}'", type->arity(), index);
 
-    if (auto index_lit = isa_lit(index)) {
+    if (auto index_lit = Lit::isa(index)) {
         auto target_type = type->proj(*index_lit);
         if (!checker().assignable(target_type, val))
             error(val, "value of type {} is not assignable to type {}", val->type(), target_type);
     }
 
-    if (auto l = isa_lit(size); l && *l == 1)
+    if (auto l = Lit::isa(size); l && *l == 1)
         return tuple(d, {val}); // d could be mut - that's why the tuple ctor is needed
 
     // insert((a, b, c, d), 2, x) -> (a, b, x, d)
-    if (auto t = d->isa<Tuple>()) return t->refine(as_lit(index), val);
+    if (auto t = d->isa<Tuple>()) return t->refine(Lit::as(index), val);
 
     // insert(‹4; x›, 2, y) -> (x, x, y, x)
     if (auto pack = d->isa<Pack>()) {
         if (auto a = pack->isa_lit_arity()) {
             DefArray new_ops(*a, pack->body());
-            new_ops[as_lit(index)] = val;
+            new_ops[Lit::as(index)] = val;
             return tuple(type, new_ops);
         }
     }
@@ -355,7 +355,7 @@ Ref World::insert(Ref d, Ref index, Ref val) {
 Ref World::arr(Ref shape, Ref body) {
     if (!is_shape(shape->type())) error(shape, "expected shape but got '{}' of type '{}'", shape, shape->type());
 
-    if (auto a = isa_lit<u64>(shape)) {
+    if (auto a = Lit::isa(shape)) {
         if (*a == 0) return sigma();
         if (*a == 1) return body;
     }
@@ -373,7 +373,7 @@ Ref World::arr(Ref shape, Ref body) {
 
     // «<n; x>; body» -> «x; «<n-1, x>; body»»
     if (auto p = shape->isa<Pack>()) {
-        if (auto s = isa_lit(p->shape())) return arr(*s, arr(pack(*s - 1, p->body()), body));
+        if (auto s = Lit::isa(p->shape())) return arr(*s, arr(pack(*s - 1, p->body()), body));
     }
 
     return unify<Arr>(2, body->unfold_type(), shape, body);
@@ -382,7 +382,7 @@ Ref World::arr(Ref shape, Ref body) {
 Ref World::pack(Ref shape, Ref body) {
     if (!is_shape(shape->type())) error(shape, "expected shape but got '{}' of type '{}'", shape, shape->type());
 
-    if (auto a = isa_lit<u64>(shape)) {
+    if (auto a = Lit::isa(shape)) {
         if (*a == 0) return tuple();
         if (*a == 1) return body;
     }
@@ -392,7 +392,7 @@ Ref World::pack(Ref shape, Ref body) {
 
     // <<n; x>; body> -> <x; <<n-1, x>; body>>
     if (auto p = shape->isa<Pack>()) {
-        if (auto s = isa_lit(p->shape())) return pack(*s, pack(pack(*s - 1, p->body()), body));
+        if (auto s = Lit::isa(p->shape())) return pack(*s, pack(pack(*s - 1, p->body()), body));
     }
 
     auto type = arr(shape, body->type());
@@ -411,7 +411,7 @@ Ref World::pack(Defs shape, Ref body) {
 
 const Lit* World::lit(Ref type, u64 val) {
     if (auto size = Idx::size(type)) {
-        if (auto s = isa_lit(size)) {
+        if (auto s = Lit::isa(size)) {
             if (*s != 0 && val >= *s) error(type, "index '{}' does not fit within arity '{}'", size, val);
         } else if (val != 0) { // 0 of any size is allowed
             error(type, "cannot create literal '{}' of '.Idx {}' as size is unknown", val, size);

@@ -18,6 +18,27 @@
 #include "dialects/mem/phases/rw/add_mem.h"
 #include "dialects/refly/passes/debug_dump.h"
 
+using namespace thorin;
+
+extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
+    return {"clos", [](Normalizers& normalizers) { clos::register_normalizers(normalizers); },
+            [](Passes& passes) {
+                register_pass<clos::clos_conv_prep_pass, clos::ClosConvPrep>(passes, nullptr);
+                register_pass<clos::clos_conv_pass, clos::ClosConvWrapper>(passes);
+                register_pass<clos::branch_clos_pass, clos::BranchClosElim>(passes);
+                register_pass<clos::lower_typed_clos_prep_pass, clos::LowerTypedClosPrep>(passes);
+                register_pass<clos::clos2sjlj_pass, clos::Clos2SJLJ>(passes);
+                register_pass<clos::lower_typed_clos_pass, clos::LowerTypedClosWrapper>(passes);
+                // TODO:; remove after ho_codegen merge
+                passes[flags_t(Axiom::Base<clos::eta_red_bool_pass>)] = [&](World&, PipelineBuilder& builder, Ref app) {
+                    auto bb      = app->as<App>()->arg();
+                    auto bb_only = bb->as<Lit>()->get<u64>();
+                    builder.add_pass<EtaRed>(app, bb_only);
+                };
+            },
+            nullptr};
+}
+
 namespace thorin::clos {
 
 /*
@@ -96,7 +117,7 @@ const Sigma* isa_clos_type(Ref def) {
     auto var = sig->var(0_u64);
     if (sig->op(2_u64) != var) return nullptr;
     auto pi = sig->op(1_u64)->isa<Pi>();
-    return (pi && pi->is_cn() && pi->num_ops() > 1_u64 && pi->dom(Clos_Env_Param) == var) ? sig : nullptr;
+    return (pi && Pi::isa_cn(pi) && pi->num_ops() > 1_u64 && pi->dom(Clos_Env_Param) == var) ? sig : nullptr;
 }
 
 Sigma* clos_type(const Pi* pi) { return ctype(pi->world(), pi->doms(), nullptr)->as_mut<Sigma>(); }
@@ -132,24 +153,3 @@ Ref ctype(World& w, Defs doms, Ref env_type) {
 }
 
 } // namespace thorin::clos
-
-using namespace thorin;
-
-extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
-    return {"clos",
-            [](Passes& passes) {
-                register_pass<clos::clos_conv_prep_pass, clos::ClosConvPrep>(passes, nullptr);
-                register_pass<clos::clos_conv_pass, clos::ClosConvWrapper>(passes);
-                register_pass<clos::branch_clos_pass, clos::BranchClosElim>(passes);
-                register_pass<clos::lower_typed_clos_prep_pass, clos::LowerTypedClosPrep>(passes);
-                register_pass<clos::clos2sjlj_pass, clos::Clos2SJLJ>(passes);
-                register_pass<clos::lower_typed_clos_pass, clos::LowerTypedClosWrapper>(passes);
-                // TODO:; remove after ho_codegen merge
-                passes[flags_t(Axiom::Base<clos::eta_red_bool_pass>)] = [&](World&, PipelineBuilder& builder, Ref app) {
-                    auto bb      = app->as<App>()->arg();
-                    auto bb_only = bb->as<Lit>()->get<u64>();
-                    builder.add_pass<EtaRed>(app, bb_only);
-                };
-            },
-            nullptr, [](Normalizers& normalizers) { clos::register_normalizers(normalizers); }};
-}

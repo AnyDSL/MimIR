@@ -4,7 +4,6 @@
 #include "thorin/world.h"
 
 #include "dialects/autodiff/autodiff.h"
-#include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/core/core.h"
 
 namespace thorin::autodiff {
@@ -75,7 +74,7 @@ Ref normalize_add(Ref type, Ref callee, Ref arg) {
         return pack;
     } else if (Idx::size(type)) {
         world.DLOG("add int");
-        auto width = as_lit(world.iinfer(a));
+        auto width = Lit::as(world.iinfer(a));
         world.DLOG("width {}", width);
         auto int_add = world.call(core::wrap::add, 0_n, Defs{a, b});
         world.DLOG("int add {} : {}", int_add, world.iinfer(int_add));

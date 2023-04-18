@@ -27,14 +27,14 @@ const Def* unflatten(Defs defs, const Def* type, size_t& j, bool flatten_muts) {
 
     return defs[j++];
 }
-}
+} // namespace
 
 bool is_unit(const Def* def) { return def->type() == def->world().sigma(); }
 
 std::string tuple2str(const Def* def) {
     if (def == nullptr) return {};
 
-    auto array = def->projs(as_lit(def->arity()), as_lit<nat_t>);
+    auto array = def->projs(Lit::as(def->arity()), [](auto op) { return Lit::as(op); });
     return std::string(array.begin(), array.end());
 }
 
@@ -63,7 +63,7 @@ const Def* unflatten(Defs defs, const Def* type, bool flatten_muts) {
     return def;
 }
 
-const Def* unflatten(const Def* def, const Def* type) { return unflatten(def->projs(as_lit(def->arity())), type); }
+const Def* unflatten(const Def* def, const Def* type) { return unflatten(def->projs(Lit::as(def->arity())), type); }
 
 DefArray merge(const Def* def, Defs defs) {
     return DefArray(defs.size() + 1, [&](auto i) { return i == 0 ? def : defs[i - 1]; });
@@ -77,14 +77,13 @@ DefArray merge(Defs a, Defs b) {
 }
 
 const Def* merge_sigma(const Def* def, Defs defs) {
-    if (auto sigma = def->isa<Sigma>(); sigma && !sigma->isa_mut())
-        return def->world().sigma(merge(sigma->ops(), defs));
+    if (auto sigma = def->isa_imm<Sigma>()) return def->world().sigma(merge(sigma->ops(), defs));
     return def->world().sigma(merge(def, defs));
 }
 
 const Def* merge_tuple(const Def* def, Defs defs) {
     auto& w = def->world();
-    if (auto sigma = def->type()->isa<Sigma>(); sigma && !sigma->isa_mut()) {
+    if (auto sigma = def->type()->isa_imm<Sigma>()) {
         auto a = sigma->num_ops();
         DefArray tuple(a, [&](auto i) { return w.extract(def, a, i); });
         return w.tuple(merge(tuple, defs));
@@ -93,18 +92,11 @@ const Def* merge_tuple(const Def* def, Defs defs) {
     return def->world().tuple(merge(def, defs));
 }
 
-/*
- * reduce
- */
-
-const Def* Arr::reduce(const Def* arg) const {
-    if (auto mut = isa_mut<Arr>()) return rewrite(mut, arg, 1);
-    return body();
-}
-
-const Def* Pack::reduce(const Def* arg) const {
-    if (auto mut = isa_mut<Pack>()) return rewrite(mut, arg, 0);
-    return body();
+Ref tuple_of_types(Ref t) {
+    auto& world = t->world();
+    if (auto sigma = t->isa<Sigma>()) return world.tuple(sigma->ops());
+    if (auto arr = t->isa<Arr>()) return world.pack(arr->shape(), arr->body());
+    return t;
 }
 
 } // namespace thorin

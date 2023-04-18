@@ -12,14 +12,6 @@
 
 namespace thorin::matrix {
 
-void findAndReplaceAll(std::string& data, std::string toSearch, std::string replaceStr) {
-    size_t pos = data.find(toSearch);
-    while (pos != std::string::npos) {
-        data.replace(pos, toSearch.size(), replaceStr);
-        pos = data.find(toSearch, pos + replaceStr.size());
-    }
-}
-
 Ref LowerMatrixHighLevelMapRed::rewrite(Ref def) {
     if (auto i = rewritten.find(def); i != rewritten.end()) return i->second;
     auto new_def   = rewrite_(def);
@@ -30,8 +22,8 @@ Ref LowerMatrixHighLevelMapRed::rewrite(Ref def) {
 std::optional<Ref> internal_function_of_axiom(const Axiom* axiom, Ref meta_args, Ref args) {
     auto& world      = axiom->world();
     std::string name = *axiom->sym();
-    findAndReplaceAll(name, ".", "_");
-    findAndReplaceAll(name, "%", "");
+    find_and_replace(name, ".", "_");
+    find_and_replace(name, "%", "");
     name = INTERNAL_PREFIX + name;
 
     auto replacement = world.lookup(world.sym(name));

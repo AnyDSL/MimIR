@@ -9,7 +9,7 @@
 #include "thorin/analyses/domtree.h"
 #include "thorin/analyses/looptree.h"
 #include "thorin/analyses/schedule.h"
-#include "thorin/util/container.h"
+#include "thorin/util/util.h"
 
 namespace thorin {
 
@@ -88,7 +88,7 @@ const CFA& Scope::cfa() const { return lazy_init(this, cfa_); }
 const F_CFG& Scope::f_cfg() const { return cfa().f_cfg(); }
 const B_CFG& Scope::b_cfg() const { return cfa().b_cfg(); }
 
-bool is_free(Def* mut, const Def* def) {
+bool Scope::is_free(Def* mut, const Def* def) {
     if (auto var = mut->var()) {
         // optimize common cases first
         if (def->num_ops() == 0) return false;

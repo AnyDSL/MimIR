@@ -382,7 +382,7 @@ private:
     ArrayStorage<T, std::is_trivial<T>::value ? 5 : 0> storage_;
 };
 
-/// @name Array/ArrayRef helpers
+/// @name Array/ArrayRef Helpers
 ///@{
 template<class T, class U>
 auto concat(const T& a, const U& b) -> Array<typename T::value_type> {

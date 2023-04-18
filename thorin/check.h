@@ -27,14 +27,15 @@ public:
     /// Def::flags is used to keep track of rank for
     /// [Union by rank](https://en.wikipedia.org/wiki/Disjoint-set_data_structure#Union_by_rank).
     static const Def* find(const Def*);
+    ///@}
+
+    Infer* stub(World&, Ref) override;
 
 private:
     flags_t rank() const { return flags(); }
     flags_t& rank() { return flags_; }
-    ///@}
 
     THORIN_DEF_MIXIN(Infer)
-    Infer* stub_(World&, Ref) override;
     friend class Checker;
 };
 

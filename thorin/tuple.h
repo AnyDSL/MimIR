@@ -4,6 +4,8 @@
 
 namespace thorin {
 
+/// A [dependent tuple type](https://en.wikipedia.org/wiki/Dependent_type#%CE%A3_type).
+/// @see Tuple, Arr, Pack
 class Sigma : public Def {
 private:
     Sigma(const Def* type, Defs ops)
@@ -12,23 +14,25 @@ private:
         : Def(Node, type, size, 0) {} ///< Constructor for a *mutable* Sigma.
 
 public:
-    /// @name setters
+    /// @name Setters
     ///@{
     Sigma* set(size_t i, const Def* def) { return Def::set(i, def)->as<Sigma>(); }
     Sigma* set(Defs ops) { return Def::set(ops)->as<Sigma>(); }
     ///@}
 
-    /// @name virtual methods
+    const Sigma* immutabilize() override;
+    Sigma* stub(World&, Ref) override;
+
+    /// @name Type Checking
     ///@{
     void check() override;
-    const Sigma* restructure() override;
     ///@}
 
     THORIN_DEF_MIXIN(Sigma)
-    Sigma* stub_(World&, Ref) override;
 };
 
 /// Data constructor for a Sigma.
+/// @see Sigma, Arr, Pack
 class Tuple : public Def {
 private:
     Tuple(const Def* type, Defs args)
@@ -37,6 +41,9 @@ private:
     THORIN_DEF_MIXIN(Tuple)
 };
 
+/// A (possibly paramterized) Arr%ay.
+/// Arr%ays are usually homogenous but they can be *inhomogenous* as well: `«i: N; T#i»`
+/// @see Sigma, Tuple, Pack
 class Arr : public Def {
 private:
     Arr(const Def* type, const Def* shape, const Def* body)
@@ -53,19 +60,20 @@ public:
     Arr* set_body(const Def* body) { return Def::set(1, body)->as<Arr>(); }
     ///@}
 
+    const Def* immutabilize() override;
+    Arr* stub(World&, Ref) override;
     const Def* reduce(const Def* arg) const;
 
-    /// @name virtual methods
+    /// @name Type Checking
     ///@{
-    size_t first_dependend_op() override { return 1; }
-    const Def* restructure() override;
     void check() override;
     ///@}
 
     THORIN_DEF_MIXIN(Arr)
-    Arr* stub_(World&, Ref) override;
 };
 
+/// A (possibly paramterized) Tuple.
+/// @see Sigma, Tuple, Arr
 class Pack : public Def {
 private:
     Pack(const Def* type, const Def* body)
@@ -82,18 +90,14 @@ public:
     Pack* set(const Def* body) { return Def::set(0, body)->as<Pack>(); }
     ///@}
 
+    const Def* immutabilize() override;
+    Pack* stub(World&, Ref) override;
     const Def* reduce(const Def* arg) const;
 
-    /// @name virtual methods
-    ///@{
-    const Def* restructure() override;
-    ///@}
-
     THORIN_DEF_MIXIN(Pack)
-    Pack* stub_(World&, Ref) override;
 };
 
-/// Extracts from a Sigma or Arr-typed Extract::tuple the element at position Extract::index.
+/// Extracts from a Sigma or Arr%ay-typed Extract::tuple the element at position Extract::index.
 class Extract : public Def {
 private:
     Extract(const Def* type, const Def* tuple, const Def* index)
@@ -144,9 +148,12 @@ const Def* unflatten(const Def* def, const Def* type);
 /// Same as unflatten, but uses the operands of a flattened pack/tuple directly.
 const Def* unflatten(Defs ops, const Def* type, bool flatten_muts = true);
 
+DefArray merge(Defs, Defs);
 DefArray merge(const Def* def, Defs defs);
 const Def* merge_sigma(const Def* def, Defs defs);
 const Def* merge_tuple(const Def* def, Defs defs);
+
+Ref tuple_of_types(Ref t);
 ///@}
 
 } // namespace thorin

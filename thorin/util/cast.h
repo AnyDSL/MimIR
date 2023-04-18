@@ -5,28 +5,12 @@
 
 namespace thorin {
 
-/// A bitcast.
-template<class D, class S>
-inline D bitcast(const S& src) {
-    D dst;
-    auto s = reinterpret_cast<const void*>(&src);
-    auto d = reinterpret_cast<void*>(&dst);
-
-    if constexpr (sizeof(D) == sizeof(S)) memcpy(d, s, sizeof(D));
-    if constexpr (sizeof(D) < sizeof(S)) memcpy(d, s, sizeof(D));
-    if constexpr (sizeof(D) > sizeof(S)) {
-        memset(d, 0, sizeof(D));
-        memcpy(d, s, sizeof(S));
-    }
-    return dst;
-}
-
 namespace detail {
 template<class T>
 concept Nodeable = requires(T n) {
-    T::Node;
-    n.node();
-};
+                       T::Node;
+                       n.node();
+                   };
 } // namespace detail
 
 /// Inherit from this class using [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern),

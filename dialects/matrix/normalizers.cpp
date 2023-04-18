@@ -78,10 +78,10 @@ u64 get_max_index(u64 init, Defs inputs) {
 
     for (auto inp : inputs) {
         auto [indices, mat] = inp->projs<2>();
-        auto indice_count   = isa_lit(indices->arity());
+        auto indice_count   = Lit::isa(indices->arity());
         if (!indice_count) return -1;
         for (auto idx : indices->projs()) {
-            auto idx_val = isa_lit(idx);
+            auto idx_val = Lit::isa(idx);
             if (!idx_val) return -1;
             if (idx_val > max_idx) max_idx = idx_val.value();
         }

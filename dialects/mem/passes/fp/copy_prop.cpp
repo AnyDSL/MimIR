@@ -9,7 +9,7 @@ namespace thorin::mem {
 
 Ref CopyProp::rewrite(Ref def) {
     auto [app, var_lam] = isa_apped_mut_lam(def);
-    if (!isa_workable(var_lam) || (bb_only_ && var_lam->is_returning())) return def;
+    if (!isa_workable(var_lam) || (bb_only_ && Lam::isa_returning(var_lam))) return def;
 
     auto n = app->num_args();
     if (n == 0) return app;
@@ -96,7 +96,7 @@ undo_t CopyProp::analyze(const Proxy* proxy) {
     auto& [lattice, prop_lam, old_args] = lam2info_[var_lam];
 
     if (proxy->tag() == Varxy) {
-        auto i = as_lit(proxy->op(1));
+        auto i = Lit::as(proxy->op(1));
         if (auto& l = lattice[i]; l == Lattice::Dead) {
             l = Lattice::Prop;
             world().DLOG("Dead -> Prop: @{}#{}", var_lam, i);
@@ -105,7 +105,7 @@ undo_t CopyProp::analyze(const Proxy* proxy) {
     } else {
         assert(proxy->tag() == Appxy);
         for (auto ops = proxy->ops(); auto op : ops.skip_front()) {
-            auto i = as_lit(op);
+            auto i = Lit::as(op);
             if (auto& l = lattice[i]; l != Lattice::Keep) {
                 l = Lattice::Keep;
                 world().DLOG("Prop -> Keep: @{}#{}", var_lam, i);

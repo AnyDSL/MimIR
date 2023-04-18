@@ -1,5 +1,7 @@
 /// # The automatic differentiation Plugin {#autodiff}
 ///
+/// @see thorin::autodiff
+///
 /// [TOC]
 ///
 /// ## Dependencies
@@ -43,7 +45,7 @@
 .ax %autodiff.add: Π [T:*] -> [T,T] -> T, normalize_add;
 .ax %autodiff.sum: Π [n:.Nat,T:*] -> «n; T» -> T, normalize_sum;
 ///
-/// ## Compilation Passes and Phases
+/// ## Passes and Phases
 /// 
 /// ### Passes
 /// 

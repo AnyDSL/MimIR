@@ -7,9 +7,13 @@
 
 namespace thorin::math {
 
+/// @name Mode
+///@{
 // clang-format off
+/// Allowed optimizations for a specific operation.
 enum Mode : nat_t {
-    none     = 0,
+    top      = 0,
+    none     = top,
     nnan     = 1 << 0, ///< No NaNs.
                        ///< Allow optimizations to assume the arguments and result are not NaN.
                        ///< Such optimizations are required to retain defined behavior over NaNs,
@@ -32,42 +36,21 @@ enum Mode : nat_t {
     unsafe = nsz | arcp | reassoc,
     fast   = nnan | ninf | nsz | arcp | contract | afn | reassoc,
     bot    = fast,
-    top    = none,
 };
 // clang-format on
 
+/// Give Mode as thorin::math::Mode, thorin::nat_t or Ref.
 using VMode = std::variant<Mode, nat_t, Ref>;
 
+/// thorin::math::VMode -> Ref.
 inline Ref mode(World& w, VMode m) {
     if (auto def = std::get_if<Ref>(&m)) return *def;
     if (auto nat = std::get_if<nat_t>(&m)) return w.lit_nat(*nat);
     return w.lit_nat(std::get<Mode>(m));
 }
-
-///@{
-template<nat_t P, nat_t E>
-inline auto match_f(Ref def) {
-    if (auto f_ty = match<F>(def)) {
-        if (auto [p, e] = f_ty->arg()->projs<2>(isa_lit<nat_t>); p && e && *p == P && *e == E) return f_ty;
-    }
-    return Match<F, App>();
-}
-inline auto match_f16(Ref def) { return match_f<10, 5>(def); }
-inline auto match_f32(Ref def) { return match_f<23, 8>(def); }
-inline auto match_f64(Ref def) { return match_f<52, 11>(def); }
-inline std::optional<nat_t> isa_f(Ref def) {
-    if (auto f_ty = match<F>(def)) {
-        if (auto [p, e] = f_ty->arg()->projs<2>(isa_lit<nat_t>); p && e) {
-            if (*p == 10 && e == 5) return 16;
-            if (*p == 23 && e == 8) return 32;
-            if (*p == 52 && e == 11) return 64;
-        }
-    }
-    return {};
-}
 ///@}
 
-/// @name type_f
+/// @name %%math.F
 ///@{
 inline const Axiom* type_f(World& w) { return w.ax<F>(); }
 inline Ref type_f(Ref pe) {
@@ -82,10 +65,30 @@ inline Ref type_f(World& w, nat_t p, nat_t e) {
 inline Ref type_f16(World& w) { return type_f(w, 10, 5); }
 inline Ref type_f32(World& w) { return type_f(w, 23, 8); }
 inline Ref type_f64(World& w) { return type_f(w, 52, 11); }
-///@}
+template<nat_t P, nat_t E>
+inline auto match_f(Ref def) {
+    if (auto f_ty = match<F>(def)) {
+        auto [p, e] = f_ty->arg()->projs<2>([](auto op) { return Lit::isa(op); });
+        if (p && e && *p == P && *e == E) return f_ty;
+    }
+    return Match<F, App>();
+}
 
-/// @name lit_f
-///@{
+inline auto match_f16(Ref def) { return match_f<10, 5>(def); }
+inline auto match_f32(Ref def) { return match_f<23, 8>(def); }
+inline auto match_f64(Ref def) { return match_f<52, 11>(def); }
+
+inline std::optional<nat_t> isa_f(Ref def) {
+    if (auto f_ty = match<F>(def)) {
+        if (auto [p, e] = f_ty->arg()->projs<2>([](auto op) { return Lit::isa(op); }); p && e) {
+            if (*p == 10 && e == 5) return 16;
+            if (*p == 23 && e == 8) return 32;
+            if (*p == 52 && e == 11) return 64;
+        }
+    }
+    return {};
+}
+
 // clang-format off
 template<class R>
 const Lit* lit_f(World& w, R val) {
@@ -108,7 +111,7 @@ inline const Lit* lit_f(World& w, nat_t width, f64 val) {
 // clang-format on
 ///@}
 
-/// @name wrappers for unary operations
+/// @name %%math.arith
 ///@{
 inline Ref op_rminus(VMode m, Ref a) {
     World& w = a->world();

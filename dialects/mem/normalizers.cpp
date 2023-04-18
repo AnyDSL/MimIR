@@ -9,7 +9,7 @@ Ref normalize_lea(Ref type, Ref callee, Ref arg) {
     auto [ptr, index]          = arg->projs<2>();
     auto [pointee, addr_space] = force<Ptr>(ptr->type())->args<2>();
 
-    if (auto a = isa_lit(pointee->arity()); a && *a == 1) return ptr;
+    if (auto a = Lit::isa(pointee->arity()); a && *a == 1) return ptr;
     // TODO
 
     return world.raw_app(type, callee, {ptr, index});

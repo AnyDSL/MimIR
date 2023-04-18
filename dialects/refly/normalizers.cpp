@@ -12,7 +12,23 @@ Ref do_reify(const Def* def) { return def->world().lit(type_code(def->world()), 
 
 // And here we are doing the reverse to retrieve the original pointer again.
 const Def* do_reflect(const Def* def) { return reinterpret_cast<const Def*>(def->as<Lit>()->get()); }
+
+// TODO: check (and fix) for windows
+#define YELLOW "\033[0;33m"
+#define BLANK  "\033[0m"
+
+void debug_print(const Def* def) {
+    auto& world = def->world();
+    world.DLOG(YELLOW "debug_print: {}" BLANK, def);
+    world.DLOG("def : {}", def);
+    world.DLOG("id  : {}", def->unique_name());
+    world.DLOG("type: {}", def->type());
+    world.DLOG("node: {}", def->node_name());
+    world.DLOG("ops : {}", def->num_ops());
+    world.DLOG("proj: {}", def->num_projs());
+    world.DLOG("eops: {}", def->num_extended_ops());
 }
+} // namespace
 
 template<dbg id>
 Ref normalize_dbg(Ref type, Ref callee, Ref arg) {
@@ -28,7 +44,7 @@ Ref normalize_reflect(Ref, Ref, Ref arg) { return do_reflect(arg); }
 Ref normalize_refine(Ref type, Ref callee, Ref arg) {
     auto& world       = arg->world();
     auto [code, i, x] = arg->projs<3>();
-    if (auto l = isa_lit(i)) {
+    if (auto l = Lit::isa(i)) {
         auto def = do_reflect(code);
         return do_reify(def->refine(*l, do_reflect(x)));
     }

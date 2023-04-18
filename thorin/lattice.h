@@ -16,8 +16,11 @@ protected:
         : Def(node, type, size, 0) {} ///< Constructor for a *mutable* Bound.
 
 public:
+    /// @name Get Element by Type
+    ///@{
     size_t find(const Def* type) const;
     const Def* get(const Def* type) const { return op(find(type)); }
+    ///@}
 };
 
 /// Specific [Bound](https://en.wikipedia.org/wiki/Join_and_meet) depending on @p Up.
@@ -33,16 +36,14 @@ private:
     TBound(const Def* type, size_t size)
         : Bound(Node, type, size) {} ///< Constructor for a *mutable* Bound.
 
+public:
     THORIN_SETTERS(TBound)
-    TBound* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg())->template as<TBound>(); }
 
-    static constexpr auto Node = Up ? Node::Join : Node::Meet;
-
-private:
-    Ref rebuild_(World&, Ref, Defs) const override;
-    TBound* stub_(World&, Ref) override;
+    Ref rebuild(World&, Ref, Defs) const override;
+    TBound* stub(World&, Ref) override;
 
     friend class World;
+    static constexpr auto Node = Up ? Node::Join : Node::Meet;
 };
 
 /// Constructs a [Meet](@ref thorin::Meet) **value**.
@@ -127,14 +128,11 @@ private:
         : Ext(Node, type) {}
 
     THORIN_SETTERS(TExt)
-    TExt* stub(World& w, const Def* type) { return stub_(w, type)->set(dbg())->template as<TExt>(); }
+
+    Ref rebuild(World&, Ref, Defs) const override;
+    TExt* stub(World&, Ref) override;
 
     static constexpr auto Node = Up ? Node::Top : Node::Bot;
-
-private:
-    Ref rebuild_(World&, Ref, Defs) const override;
-    TExt* stub_(World&, Ref) override;
-
     friend class World;
 };
 
@@ -152,7 +150,10 @@ private:
         : Def(Node, type, {inner_type}, 0) {}
 
 public:
+    /// @name ops
+    ///@{
     const Def* inhabitant() const { return op(0); }
+    ///@}
 
     THORIN_DEF_MIXIN(Singleton)
 };

@@ -14,7 +14,69 @@
 
 namespace thorin {
 
-/// @name Helpers for containers/algorithms
+/// @name Utility Functions
+///@{
+
+template<class This, class T>
+inline T& lazy_init(const This* self, std::unique_ptr<T>& ptr) {
+    return *(ptr ? ptr : ptr = std::make_unique<T>(*self));
+}
+
+/// A bitcast from @p src of type @p S to @p D.
+template<class D, class S>
+inline D bitcast(const S& src) {
+    D dst;
+    auto s = reinterpret_cast<const void*>(&src);
+    auto d = reinterpret_cast<void*>(&dst);
+
+    if constexpr (sizeof(D) == sizeof(S)) std::memcpy(d, s, sizeof(D));
+    if constexpr (sizeof(D) < sizeof(S)) std::memcpy(d, s, sizeof(D));
+    if constexpr (sizeof(D) > sizeof(S)) {
+        std::memset(d, 0, sizeof(D));
+        std::memcpy(d, s, sizeof(S));
+    }
+    return dst;
+}
+
+template<class T>
+bool get_sign(T val) {
+    static_assert(std::is_integral<T>(), "get_sign only supported for signed and unsigned integer types");
+    if constexpr (std::is_signed<T>())
+        return val < 0;
+    else
+        return val >> (T(sizeof(val)) * T(8) - T(1));
+}
+
+// TODO I guess we can do that with C++20 <bit>
+inline u64 pad(u64 offset, u64 align) {
+    auto mod = offset % align;
+    if (mod != 0) offset += align - mod;
+    return offset;
+}
+///@}
+
+/// @name Algorithms
+///@{
+template<class I, class T, class Cmp>
+I binary_find(I begin, I end, T val, Cmp cmp) {
+    auto i = std::lower_bound(begin, end, val, cmp);
+    return (i != end && !(cmp(val, *i))) ? i : end;
+}
+
+/// Like `std::string::substr`, but works on `std::string_view` instead.
+inline std::string_view subview(std::string_view s, size_t i, size_t n = std::string_view::npos) {
+    n = std::min(n, s.size());
+    return {s.data() + i, n - i};
+}
+
+/// Replaces all occurrences of @p what with @p repl.
+inline void find_and_replace(std::string& str, std::string_view what, std::string_view repl) {
+    for (size_t pos = str.find(what); pos != std::string::npos; pos = str.find(what, pos + repl.size()))
+        str.replace(pos, what.size(), repl);
+}
+///@}
+
+/// @name Helpers for Containers
 ///@{
 template<class S>
 auto pop(S& s) -> decltype(s.top(), typename S::value_type()) {
@@ -48,18 +110,6 @@ auto assert_emplace(C& container, Args&&... args) {
     auto [i, ins] = container.emplace(std::forward<Args&&>(args)...);
     assert_unused(ins);
     return i;
-}
-
-template<class I, class T, class Cmp>
-I binary_find(I begin, I end, T val, Cmp cmp) {
-    auto i = std::lower_bound(begin, end, val, cmp);
-    return (i != end && !(cmp(val, *i))) ? i : end;
-}
-
-/// Like `std::string::substr`, but works on `std::string_view` instead.
-inline std::string_view subview(std::string_view s, size_t i, size_t n = std::string_view::npos) {
-    n = std::min(n, s.size());
-    return {s.data() + i, n - i};
 }
 ///@}
 
@@ -120,8 +170,6 @@ private:
     std::queue<T> queue_;
 };
 
-/// @name maps/sets based upon gid
-///@{
 template<class T>
 struct GIDHash {
     size_t operator()(T p) const { return murmur3(p->gid()); };
@@ -137,6 +185,8 @@ struct GIDLt {
     bool operator()(T a, T b) const { return a->gid() < b->gid(); }
 };
 
+/// @name Maps/Sets based upon gid
+///@{
 // clang-format off
 template<class K, class V> using GIDMap     = absl::flat_hash_map<K, V, GIDHash<K>, GIDEq<K>>;
 template<class K>          using GIDSet     = absl::flat_hash_set<K,    GIDHash<K>, GIDEq<K>>;

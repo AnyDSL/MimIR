@@ -9,24 +9,6 @@
 using namespace thorin;
 
 extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
-    return {"refly", [](Passes& passes) { register_pass<refly::remove_dbg_perm_pass, refly::RemoveDbgPerm>(passes); },
-            nullptr, [](Normalizers& normalizers) { refly::register_normalizers(normalizers); }};
+    return {"refly", [](Normalizers& normalizers) { refly::register_normalizers(normalizers); },
+            [](Passes& passes) { register_pass<refly::remove_dbg_perm_pass, refly::RemoveDbgPerm>(passes); }, nullptr};
 }
-
-// TODO: check (and fix) for windows
-#define YELLOW "\033[0;33m"
-#define BLANK  "\033[0m"
-
-namespace thorin::refly {
-void debug_print(const Def* def) {
-    auto& world = def->world();
-    world.DLOG(YELLOW "debug_print: {}" BLANK, def);
-    world.DLOG("def : {}", def);
-    world.DLOG("id  : {}", def->unique_name());
-    world.DLOG("type: {}", def->type());
-    world.DLOG("node: {}", def->node_name());
-    world.DLOG("ops : {}", def->num_ops());
-    world.DLOG("proj: {}", def->num_projs());
-    world.DLOG("eops: {}", def->num_extended_ops());
-}
-} // namespace thorin::refly

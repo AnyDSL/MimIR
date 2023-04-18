@@ -578,7 +578,7 @@ HIDE_UNDOC_CLASSES     = NO
 # documentation.
 # The default value is: NO.
 
-HIDE_FRIEND_COMPOUNDS  = NO
+HIDE_FRIEND_COMPOUNDS  = YES
 
 # If the HIDE_IN_BODY_DOCS tag is set to YES, doxygen will hide any
 # documentation blocks found inside the body of a function. If set to NO, these
@@ -1042,7 +1042,7 @@ EXCLUDE_PATTERNS       =
 # Note that the wildcards are matched against the file with absolute path, so to
 # exclude all test directories use the pattern */test/*
 
-EXCLUDE_SYMBOLS        =
+EXCLUDE_SYMBOLS        = detail::*,*::detail::*,*::detail
 
 # The EXAMPLE_PATH tag can be used to specify one or more files or directories
 # that contain example code fragments that are included (see the \include
@@ -2374,6 +2374,7 @@ EXPAND_AS_DEFINED      = CODE \
                          THORIN_ACC \
                          THORIN_PE \
                          THORIN_SETTERS \
+                         THORIN_SETTERS_ \
                          THORIN_DEF_MIXIN
 
 # If the SKIP_FUNCTION_MACROS tag is set to YES then doxygen's preprocessor will

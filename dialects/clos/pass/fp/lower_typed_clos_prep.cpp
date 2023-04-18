@@ -5,7 +5,9 @@
 
 namespace thorin::clos {
 
-static bool interesting_type(Ref type, DefSet& visited) {
+namespace {
+
+bool interesting_type(Ref type, DefSet& visited) {
     if (type->isa_mut()) visited.insert(type);
     if (isa_clos_type(type)) return true;
     if (auto sigma = type->isa<Sigma>())
@@ -15,12 +17,12 @@ static bool interesting_type(Ref type, DefSet& visited) {
     return false;
 }
 
-static bool interesting_type(Ref def) {
+bool interesting_type(Ref def) {
     auto visited = DefSet();
     return interesting_type(def->type(), visited);
 }
 
-static void split(DefSet& out, Ref def, bool as_callee) {
+void split(DefSet& out, Ref def, bool as_callee) {
     if (auto lam = def->isa<Lam>()) {
         out.insert(lam);
     } else if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam) {
@@ -40,11 +42,13 @@ static void split(DefSet& out, Ref def, bool as_callee) {
     }
 }
 
-static DefSet split(Ref def, bool keep_others) {
+DefSet split(Ref def, bool keep_others) {
     DefSet out;
     split(out, def, keep_others);
     return out;
 }
+
+} // namespace
 
 undo_t LowerTypedClosPrep::set_esc(Ref def) {
     auto undo = No_Undo;
@@ -79,7 +83,7 @@ undo_t LowerTypedClosPrep::analyze(Ref def) {
     } else if (auto store = match<mem::store>(def)) {
         w.DLOG("store {}", store->arg(2));
         return set_esc(store->arg(2));
-    } else if (auto app = def->isa<App>(); app && app->callee_type()->is_cn()) {
+    } else if (auto app = def->isa<App>(); app && Pi::isa_cn(app->callee_type())) {
         w.DLOG("app {}", def);
         auto undo    = No_Undo;
         auto callees = split(app->callee(), true);

@@ -120,7 +120,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
 
         for (u64 i = 0; i < m_nat; ++i) {
             auto ni     = NI->proj(m_nat, i);
-            auto ni_lit = isa_lit(ni);
+            auto ni_lit = Lit::isa(ni);
             if (!ni_lit) {
                 world.DLOG("matrix {} has non-constant dimension count", i);
                 return def;
@@ -148,7 +148,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
             for (u64 j = 0; j < n_input[i]; ++j) {
                 // world.DLOG("    dimension {} / {}", j, n_input[i]);
                 auto idx     = indices->proj(n_input[i], j);
-                auto idx_lit = isa_lit(idx);
+                auto idx_lit = Lit::isa(idx);
                 if (!idx_lit) {
                     world.DLOG("    index {} {} is not a literal", i, j);
                     return def;

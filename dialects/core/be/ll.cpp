@@ -65,7 +65,7 @@ const char* llvm_suffix(const Def* type) {
     }
     error("unsupported foating point type '{}'", type);
 }
-}
+} // namespace
 
 struct BB {
     BB()          = default;
@@ -175,10 +175,10 @@ std::string Emitter::convert(const Def* type) {
     } else if (auto arr = type->isa<Arr>()) {
         auto t_elem = convert(arr->body());
         u64 size    = 0;
-        if (auto arity = isa_lit(arr->shape())) size = *arity;
+        if (auto arity = Lit::isa(arr->shape())) size = *arity;
         print(s, "[{} x {}]", size, t_elem);
     } else if (auto pi = type->isa<Pi>()) {
-        assert(pi->is_returning() && "should never have to convert type of BB");
+        assert(Pi::isa_returning(pi) && "should never have to convert type of BB");
         print(s, "{} (", convert_ret_pi(pi->ret_pi()));
 
         auto doms = pi->doms();
@@ -276,7 +276,7 @@ void Emitter::finalize(const Scope& scope) {
         }
     }
 
-    for (auto mut : schedule(scope)) {
+    for (auto mut : Scheduler::schedule(scope)) {
         if (auto lam = mut->isa_mut<Lam>()) {
             if (lam == scope.exit()) continue;
             assert(lam2bb_.contains(lam));
@@ -326,7 +326,7 @@ void Emitter::emit_epilogue(Lam* lam) {
                 bb.tail("ret {} {}", type, prev);
             }
         }
-    } else if (auto ex = app->callee()->isa<Extract>(); ex && app->callee_type()->is_basicblock()) {
+    } else if (auto ex = app->callee()->isa<Extract>(); ex && Pi::isa_basicblock(app->callee_type())) {
         // emit_unsafe(app->arg());
         // A call to an extract like constructed for conditionals (else,then)#cond (args)
         // TODO: we can not rely on the structure of the extract (it might be a nested extract)
@@ -361,7 +361,7 @@ void Emitter::emit_epilogue(Lam* lam) {
         }
     } else if (app->callee()->isa<Bot>()) {
         return bb.tail("ret ; bottom: unreachable");
-    } else if (auto callee = app->callee()->isa_mut<Lam>(); callee && callee->is_basicblock()) { // ordinary jump
+    } else if (auto callee = Lam::isa_mut_basicblock(app->callee())) { // ordinary jump
         for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
             if (auto arg = emit_unsafe(app->arg(i)); !arg.empty()) {
                 auto phi = callee->var(i);
@@ -380,7 +380,7 @@ void Emitter::emit_epilogue(Lam* lam) {
         auto v_tag = emit(tag);
         bb.tail("call void @longjmp(i8* {}, i32 {})", v_jb, v_tag);
         return bb.tail("unreachable");
-    } else if (app->callee_type()->is_returning()) { // function call
+    } else if (Pi::isa_returning(app->callee_type())) { // function call
         auto v_callee = emit(app->callee());
 
         std::vector<std::string> args;
@@ -518,7 +518,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto tuple = def->isa<Tuple>()) {
         return emit_tuple(tuple);
     } else if (auto pack = def->isa<Pack>()) {
-        if (auto lit = isa_lit(pack->body()); lit && *lit == 0) return "zeroinitializer";
+        if (auto lit = Lit::isa(pack->body()); lit && *lit == 0) return "zeroinitializer";
         return emit_tuple(pack);
     } else if (auto extract = def->isa<Extract>()) {
         auto tuple = extract->tuple();
@@ -547,7 +547,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         auto t_tup = convert(tuple->type());
-        if (isa_lit(index)) {
+        if (Lit::isa(index)) {
             assert(!v_tup.empty());
             return bb.assign(name, "extractvalue {} {}, {}", t_tup, v_tup, v_idx);
         } else {
@@ -636,7 +636,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto wrap = match<core::wrap>(def)) {
         auto [a, b] = wrap->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(wrap->type());
-        auto mode   = as_lit(wrap->decurry()->arg());
+        auto mode   = Lit::as(wrap->decurry()->arg());
 
         switch (wrap.id()) {
             case core::wrap::add: op = "add"; break;
@@ -709,7 +709,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t_src        = convert(bitcast->arg()->type());
         auto t_dst        = convert(bitcast->type());
 
-        if (auto lit = isa_lit(bitcast->arg()); lit && *lit == 0) return "zeroinitializer";
+        if (auto lit = Lit::isa(bitcast->arg()); lit && *lit == 0) return "zeroinitializer";
         // clang-format off
         if (src_type_ptr && dst_type_ptr) return bb.assign(name,  "bitcast {} {} to {}", t_src, v_src, t_dst);
         if (src_type_ptr)                 return bb.assign(name, "ptrtoint {} {} to {}", t_src, v_src, t_dst);
@@ -739,7 +739,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t_ptr     = convert(ptr->type());
         if (pointee->isa<Sigma>())
             return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, i32 {}", t_pointee, t_ptr, v_ptr,
-                             as_lit(i));
+                             Lit::as(i));
 
         assert(pointee->isa<Arr>());
         auto [v_i, t_i] = emit_gep_index(i);
@@ -810,7 +810,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto arith = match<math::arith>(def)) {
         auto [a, b] = arith->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(arith->type());
-        auto mode   = as_lit(arith->decurry()->arg());
+        auto mode   = Lit::as(arith->decurry()->arg());
 
         switch (arith.id()) {
             case math::arith::add: op = "fadd"; break;

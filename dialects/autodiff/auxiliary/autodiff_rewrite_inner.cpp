@@ -6,7 +6,6 @@
 #include "thorin/util/assert.h"
 
 #include "dialects/autodiff/autodiff.h"
-#include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
 #include "dialects/core/core.h"
 #include "dialects/direct/direct.h"
@@ -15,11 +14,8 @@ using namespace std::literals;
 
 namespace thorin::autodiff {
 
-// TODO remove macro
-#define f_arg_ty continuation_dom(f->type())
-
 Ref AutoDiffEval::augment_lit(const Lit* lit, Lam* f, Lam*) {
-    auto pb               = zero_pullback(lit->type(), f_arg_ty);
+    auto pb               = zero_pullback(lit->type(), f->dom(2, 0));
     partial_pullback[lit] = pb;
     return lit;
 }
@@ -46,7 +42,7 @@ Ref AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
     }
     // TODO: better fix (another pass as analysis?)
     // TODO: handle open functions
-    if (is_open_continuation(lam) || lam->sym()->find("ret") != std::string::npos ||
+    if (Lam::isa_basicblock(lam) || lam->sym()->find("ret") != std::string::npos ||
         lam->sym()->find("_cont") != std::string::npos) {
         // A open continuation behaves the same as return:
         // ```
@@ -58,7 +54,7 @@ Ref AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
 
         world.DLOG("found an open continuation {} : {}", lam, lam->type());
         auto cont_dom = lam->type()->dom(); // not only 0 but all
-        auto pb_ty    = pullback_type(cont_dom, f_arg_ty);
+        auto pb_ty    = pullback_type(cont_dom, f->dom(2, 0));
         auto aug_dom  = autodiff_type_fun(cont_dom);
         world.DLOG("augmented domain {}", aug_dom);
         world.DLOG("pb type is {}", pb_ty);
@@ -76,7 +72,7 @@ Ref AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
         aug_lam->set_filter(lam->filter());
         aug_lam->set_body(new_body);
 
-        auto lam_pb               = zero_pullback(lam->type(), f_arg_ty);
+        auto lam_pb               = zero_pullback(lam->type(), f->dom(2, 0));
         partial_pullback[aug_lam] = lam_pb;
         world.DLOG("augmented {} : {}", lam, lam->type());
         world.DLOG("to {} : {}", aug_lam, aug_lam->type());
@@ -86,7 +82,7 @@ Ref AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
     }
     world.DLOG("found a closed function call {} : {}", lam, lam->type());
     // Some general function in the program needs to be differentiated.
-    auto aug_lam = op_autodiff(lam);
+    auto aug_lam = op_ad(lam);
     // TODO: directly more association here? => partly inline op_autodiff
     world.DLOG("augmented function is {} : {}", aug_lam, aug_lam->type());
     return aug_lam;
@@ -116,7 +112,7 @@ Ref AutoDiffEval::augment_extract(const Extract* ext, Lam* f, Lam* f_diff) {
         // ```
         assert(partial_pullback.count(aug_tuple));
         auto tuple_pb = partial_pullback[aug_tuple];
-        auto pb_ty    = pullback_type(ext->type(), f_arg_ty);
+        auto pb_ty    = pullback_type(ext->type(), f->dom(2, 0));
         auto pb_fun   = world.mut_lam(pb_ty)->set("extract_pb");
         world.DLOG("Pullback: {} : {}", pb_fun, pb_fun->type());
         auto pb_tangent = pb_fun->var(0_s)->set("s");
@@ -153,7 +149,7 @@ Ref AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
     //    sum (m,A)
     //      ((cps2ds e0*) (s#0), ..., (cps2ds em*) (s#m))
     // ```
-    auto pb_ty = pullback_type(tup->type(), f_arg_ty);
+    auto pb_ty = pullback_type(tup->type(), f->dom(2, 0));
     auto pb    = world.mut_lam(pb_ty)->set("tup_pb");
     world.DLOG("Augmented tuple: {} : {}", aug_tup, aug_tup->type());
     world.DLOG("Tuple Pullback: {} : {}", pb, pb->type());
@@ -165,7 +161,7 @@ Ref AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
                       [&](nat_t i) { return world.app(direct::op_cps2ds_dep(pbs[i]), world.extract(pb_tangent, i)); });
     pb->app(true, pb->var(1),
             // summed up tangents
-            op_sum(tangent_type_fun(f_arg_ty), tangents));
+            op_sum(tangent_type_fun(f->dom(2, 0)), tangents));
     partial_pullback[aug_tup] = pb;
 
     return aug_tup;
@@ -189,12 +185,12 @@ Ref AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
 
     world.DLOG("shadow pb of pack: {} : {}", pb_pack, pb_pack->type());
 
-    auto pb_type = pullback_type(pack->type(), f_arg_ty);
+    auto pb_type = pullback_type(pack->type(), f->dom(2, 0));
     auto pb      = world.mut_lam(pb_type)->set("pack_pb");
 
     world.DLOG("pb of pack: {} : {}", pb, pb_type);
 
-    auto f_arg_ty_diff = tangent_type_fun(f_arg_ty);
+    auto f_arg_ty_diff = tangent_type_fun(f->dom(2, 0));
     auto app_pb        = world.mut_pack(world.arr(aug_shape, f_arg_ty_diff));
 
     // TODO: special case for const width (special tuple)
@@ -226,7 +222,7 @@ Ref AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     world.DLOG("augmented argument <{}> {} : {}", aug_arg->unique_name(), aug_arg, aug_arg->type());
     world.DLOG("augmented callee  <{}> {} : {}", aug_callee->unique_name(), aug_callee, aug_callee->type());
     // TODO: move down to if(!is_cont(callee))
-    if (!is_continuation(callee) && is_continuation(aug_callee)) {
+    if (!Pi::isa_cn(callee->type()) && Pi::isa_cn(aug_callee->type())) {
         aug_callee = direct::op_cps2ds_dep(aug_callee);
         world.DLOG("wrapped augmented callee: <{}> {} : {}", aug_callee->unique_name(), aug_callee, aug_callee->type());
     }
@@ -242,7 +238,7 @@ Ref AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     }
 
     // continuation (ret, if, ...)
-    if (is_open_continuation(callee)) {
+    if (Pi::isa_basicblock(callee->type())) {
         // TODO: check if function (not operator)
         // The original function is an open function (return cont / continuation) of type `Cn[E]`
         // The augmented function `aug_callee` looks like a function but is not really a function has the type `Cn[E,
@@ -259,7 +255,7 @@ Ref AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     }
 
     // ds function
-    if (!is_continuation(callee)) {
+    if (!Pi::isa_cn(callee->type())) {
         auto aug_app = world.app(aug_callee, aug_arg);
         world.DLOG("Augmented application: <{}> {} : {}", aug_app->unique_name(), aug_app, aug_app->type());
 
@@ -274,7 +270,7 @@ Ref AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         // `arg_pb: arg_tan -> fun_tan`
         world.DLOG("function pullback: {} : {}", fun_pb, fun_pb->type());
         world.DLOG("argument pullback: {} : {}", arg_pb, arg_pb->type());
-        auto res_pb = compose_continuation(arg_pb, fun_pb);
+        auto res_pb = compose_cn(arg_pb, fun_pb);
         world.DLOG("result pullback: {} : {}", res_pb, res_pb->type());
         partial_pullback[aug_res] = res_pb;
         world.debug_dump();
@@ -310,7 +306,7 @@ Ref AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         auto c1   = world.mut_lam(c1_ty)->set("c1");
         auto res  = c1->var((nat_t)0);
         auto r_pb = c1->var(1);
-        c1->app(true, aug_cont, {res, compose_continuation(e_pb, r_pb)});
+        c1->app(true, aug_cont, {res, compose_cn(e_pb, r_pb)});
 
         auto aug_app = world.app(aug_callee, {real_aug_args, c1});
         world.DLOG("aug_app: {} : {}", aug_app, aug_app->type());
@@ -325,7 +321,8 @@ Ref AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
 Ref AutoDiffEval::augment_(Ref def, Lam* f, Lam* f_diff) {
     auto& world = def->world();
     // We use macros above to avoid recomputation.
-    // TODO: Alternative: Use class instances to rewrite inside a function and save such values (f, f_diff, f_arg_ty).
+    // TODO: Alternative:
+    // Use class instances to rewrite inside a function and save such values (f, f_diff, f->dom(2, 0)).
 
     world.DLOG("Augment def {} : {}", def, def->type());
 
@@ -367,8 +364,8 @@ Ref AutoDiffEval::augment_(Ref def, Lam* f, Lam* f_diff) {
         world.DLOG("axiom curry: {}", ax->curry());
         world.DLOG("axiom flags: {}", ax->flags());
         std::string diff_name = ax->sym();
-        findAndReplaceAll(diff_name, ".", "_");
-        findAndReplaceAll(diff_name, "%", "");
+        find_and_replace(diff_name, ".", "_");
+        find_and_replace(diff_name, "%", "");
         diff_name = "internal_diff_" + diff_name;
         world.DLOG("axiom name: {}", ax->sym());
         world.DLOG("axiom function name: {}", diff_name);

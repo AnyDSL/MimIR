@@ -6,8 +6,10 @@ using namespace std::literals;
 
 namespace thorin::fe {
 
-static bool issign(char32_t i) { return i == '+' || i == '-'; }
-static bool issubscsr(char32_t i) { return U'₀' <= i && i <= U'₉'; }
+namespace {
+bool issign(char32_t i) { return i == '+' || i == '-'; }
+bool issubscsr(char32_t i) { return U'₀' <= i && i <= U'₉'; }
+} // namespace
 
 Lexer::Lexer(World& world, std::istream& istream, const fs::path* path /*= nullptr*/, std::ostream* md /*= nullptr*/)
     : Super(istream, path)

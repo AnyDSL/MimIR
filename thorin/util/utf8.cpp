@@ -4,6 +4,13 @@
 
 namespace thorin::utf8 {
 
+namespace {
+// and, or
+std::ostream& ao(std::ostream& os, char32_t c32, char32_t a = 0b00111111_u32, char32_t o = 0b10000000_u32) {
+    return os << char((c32 & a) | o);
+}
+} // namespace
+
 size_t num_bytes(char8_t c) {
     if ((c & 0b10000000_u8) == 0b00000000_u8) return 1;
     if ((c & 0b11100000_u8) == 0b11000000_u8) return 2;
@@ -22,20 +29,14 @@ char32_t encode(std::istream& is) {
         default:
             result = utf8::first(result, n);
 
-            for (size_t i = 1; i != n; ++i) {
+            for (size_t i = 1; i != n; ++i)
                 if (auto x = utf8::is_valid(is.get()))
                     result = utf8::append(result, *x);
                 else
                     return Err;
-            }
     }
 
     return result;
-}
-
-// and, or
-static std::ostream& ao(std::ostream& os, char32_t c32, char32_t a = 0b00111111_u32, char32_t o = 0b10000000_u32) {
-    return os << char((c32 & a) | o);
 }
 
 bool decode(std::ostream& os, char32_t c32) {

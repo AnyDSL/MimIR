@@ -56,7 +56,7 @@ protected:
             return;
         }
 
-        auto muts = schedule(scope); // TODO make sure to not compute twice
+        auto muts = Scheduler::schedule(scope); // TODO make sure to not compute twice
 
         // make sure that we don't need to rehash later on
         for (auto mut : muts)
@@ -73,7 +73,7 @@ protected:
 
         for (auto mut : muts) {
             if (auto lam = mut->isa<Lam>(); lam && lam != scope.exit()) {
-                assert(lam == entry_ || lam->is_basicblock());
+                assert(lam == entry_ || Lam::isa_basicblock(lam));
                 child().emit_epilogue(lam);
             }
         }

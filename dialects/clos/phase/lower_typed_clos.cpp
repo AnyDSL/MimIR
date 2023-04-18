@@ -6,6 +6,14 @@
 
 namespace thorin::clos {
 
+namespace {
+const Def* insert_ret(const Def* def, const Def* ret) {
+    auto new_ops = DefArray(def->num_projs() + 1, [&](auto i) { return (i == def->num_projs()) ? ret : def->proj(i); });
+    auto& w      = def->world();
+    return def->is_term() ? w.tuple(new_ops) : w.sigma(new_ops);
+}
+} // namespace
+
 void LowerTypedClos::start() {
     auto externals = std::vector(world().externals().begin(), world().externals().end());
     for (auto [_, n] : externals) rewrite(n);
@@ -22,12 +30,6 @@ void LowerTypedClos::start() {
     }
 }
 
-static const Def* insert_ret(const Def* def, const Def* ret) {
-    auto new_ops = DefArray(def->num_projs() + 1, [&](auto i) { return (i == def->num_projs()) ? ret : def->proj(i); });
-    auto& w      = def->world();
-    return def->is_term() ? w.tuple(new_ops) : w.sigma(new_ops);
-}
-
 Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
     assert(lam && "make_stub: not a lam");
     if (auto i = old2new_.find(lam); i != old2new_.end() && i->second->isa_mut<Lam>()) return i->second->as_mut<Lam>();
@@ -42,7 +44,7 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
         }
         return new_dom;
     }));
-    if (lam->is_basicblock() && adjust_bb_type) new_dom = insert_ret(new_dom, dummy_ret_->type());
+    if (Lam::isa_basicblock(lam) && adjust_bb_type) new_dom = insert_ret(new_dom, dummy_ret_->type());
     auto new_type = w.cn(new_dom);
     auto new_lam  = lam->stub(w, new_type)->set(lam->sym());
     w.DLOG("stub {} ~> {}", lam, new_lam);
@@ -91,12 +93,12 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
 
     if (auto ct = isa_clos_type(def)) {
         auto pi = rewrite(ct->op(1))->as<Pi>();
-        if (pi->is_basicblock()) pi = w.cn(insert_ret(pi->dom(), dummy_ret_->type()));
+        if (Pi::isa_basicblock(pi)) pi = w.cn(insert_ret(pi->dom(), dummy_ret_->type()));
         auto env_type = rewrite(ct->op(2));
         return map(def, w.sigma({pi, env_type}));
     } else if (auto proj = def->isa<Extract>()) {
         auto tuple = proj->tuple();
-        auto idx   = isa_lit(proj->index());
+        auto idx   = Lit::isa(proj->index());
         if (isa_clos_type(tuple->type())) {
             assert(idx && idx <= 2 && "unknown proj from closure tuple");
             if (*idx == 0)
@@ -135,7 +137,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
         for (size_t i = 0; i < mut->num_ops(); i++)
             if (mut->op(i)) new_mut->set(i, rewrite(mut->op(i)));
         if (!def->isa_mut<Global>() && Checker(w).equiv(mut, new_mut)) return map(mut, mut);
-        if (auto restruct = new_mut->restructure()) return map(mut, restruct);
+        if (auto imm = new_mut->immutabilize()) return map(mut, imm);
         return new_mut;
     } else if (def->isa<Axiom>()) {
         return def;
@@ -145,7 +147,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
         if (auto app = def->isa<App>()) {
             // Add dummy retcont to first-class BB
             if (auto p = app->callee()->isa<Extract>();
-                p && isa_clos_type(p->tuple()->type()) && app->callee_type()->is_basicblock())
+                p && isa_clos_type(p->tuple()->type()) && Pi::isa_basicblock(app->callee_type()))
                 new_ops[1] = insert_ret(new_ops[1], dummy_ret_);
         }
 

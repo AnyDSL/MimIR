@@ -8,6 +8,24 @@
 
 namespace thorin::dot {
 
+namespace {
+
+void emit_cluster_start(std::ostream& os, Lam* lam) {
+    print(os, "subgraph cluster_{} {{\n", lam->unique_name());
+    print(os, "shape=square;\n");
+    print(os, "label=\"{}\";\n", lam->unique_name());
+    print(os, "\"{}:{}\" [shape=rect];\n", lam->node_name(), lam->unique_name());
+    if (auto body = lam->body())
+        print(os, "\"{}:{}\"->\"{}:{}\" [style=dashed];\n", lam->node_name(), lam->unique_name(), body->node_name(),
+              body->unique_name());
+}
+
+void emit_node_attributes(std::ostream& stream, const Def* def) {
+    if (def->isa<Var>()) stream << ", color=blue";
+}
+
+} // namespace
+
 class BB {};
 
 class Emitter : public thorin::Emitter<std::string, std::string, BB, Emitter> {
@@ -44,20 +62,6 @@ void default_stream_def(std::ostream& s, const Def* def) { def->stream(s, 0); }
 void emit(World& w, std::ostream& s, std::function<void(std::ostream&, const Def*)> stream_def) {
     Emitter emitter{w, s, stream_def};
     emitter.run();
-}
-
-static void emit_cluster_start(std::ostream& os, Lam* lam) {
-    print(os, "subgraph cluster_{} {{\n", lam->unique_name());
-    print(os, "shape=square;\n");
-    print(os, "label=\"{}\";\n", lam->unique_name());
-    print(os, "\"{}:{}\" [shape=rect];\n", lam->node_name(), lam->unique_name());
-    if (auto body = lam->body())
-        print(os, "\"{}:{}\"->\"{}:{}\" [style=dashed];\n", lam->node_name(), lam->unique_name(), body->node_name(),
-              body->unique_name());
-}
-
-static void emit_node_attributes(std::ostream& stream, const Def* def) {
-    if (def->isa<Var>()) stream << ", color=blue";
 }
 
 void Emitter::emit_imported(Lam* lam) {

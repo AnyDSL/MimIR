@@ -1,8 +1,8 @@
 
 #include "dialects/matrix/matrix.h"
 
-#include <thorin/plugin.h>
 #include <thorin/pass/pass.h>
+#include <thorin/plugin.h>
 
 #include "dialects/compile/passes/internal_cleanup.h"
 #include "dialects/matrix/passes/lower_matrix_highlevel.h"
@@ -13,7 +13,7 @@
 using namespace thorin;
 
 extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
-    return {"matrix",
+    return {"matrix", [](Normalizers& normalizers) { matrix::register_normalizers(normalizers); },
             [](Passes& passes) {
                 register_pass<matrix::lower_matrix_high_level_map_reduce, thorin::matrix::LowerMatrixHighLevelMapRed>(
                     passes);
@@ -22,5 +22,5 @@ extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
                 register_pass<matrix::internal_map_reduce_cleanup, thorin::compile::InternalCleanup>(passes,
                                                                                                      INTERNAL_PREFIX);
             },
-            nullptr, [](Normalizers& normalizers) { matrix::register_normalizers(normalizers); }};
+            nullptr};
 }

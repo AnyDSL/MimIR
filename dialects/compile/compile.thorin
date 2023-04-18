@@ -1,5 +1,7 @@
 /// # The compile Plugin {#compile}
 ///
+/// @see thorin::compile
+///
 /// [TOC]
 ///
 /// This plugin handles the optimization part of the compilation of Thorin programs.
@@ -60,7 +62,7 @@
 ///
 .ax %compile.pipe: Pipeline;
 ///
-/// ## Compilation Passes and Phases
+/// ## Passes and Phases
 ///
 /// ### %compile.debug_phase
 /// 

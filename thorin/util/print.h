@@ -75,7 +75,7 @@ bool match2nd(std::ostream& os, const char* next, const char*& s, const char c);
 /// size_t i = 0;
 /// print(os, "v: {, }", Elem(v, [&](auto& os, auto elem) { print(os, "{}: {}", i++, elem); }));
 /// ```
-/// @sa Tab
+/// @see Tab
 
 /// Use with print to output complicated `std::ranges::range`s.
 template<class R, class F>
@@ -185,7 +185,16 @@ public:
         : tab_(tab)
         , indent_(indent) {}
 
+    /// @name Getters
+    ///@{
+    size_t indent() const { return indent_; }
+    std::string_view tab() const { return tab_; }
+    ///@}
+
+    /// @name print
+    ///@{
     /// Wraps thorin::print to prefix it with indentation.
+    /// @see @ref fmt "Formatted Output"
     template<class... Args>
     std::ostream& print(std::ostream& os, const char* s, Args&&... args) {
         for (size_t i = 0; i < indent_; ++i) os << tab_;
@@ -201,15 +210,10 @@ public:
     std::ostream& println(std::ostream& os, const char* s, Args&&... args) {
         return print(os, s, std::forward<Args>(args)...) << std::endl;
     }
-
-    /// @name getters
-    ///@{
-    size_t indent() const { return indent_; }
-    std::string_view tab() const { return tab_; }
     ///@}
 
     // clang-format off
-    /// @name creates a new Tab
+    /// @name Creates a new Tab
     ///@{
     [[nodiscard]] Tab operator++(int) const {                      return {tab_, indent_ + 1}; }
     [[nodiscard]] Tab operator--(int) const { assert(indent_ > 0); return {tab_, indent_ - 1}; }
@@ -217,7 +221,7 @@ public:
     [[nodiscard]] Tab operator-(size_t indent) const { assert(indent_ > 0); return {tab_, indent_ - indent}; }
     ///@}
 
-    /// @name modifies this Tab
+    /// @name Modifies this Tab
     ///@{
     Tab& operator++() {                      ++indent_; return *this; }
     Tab& operator--() { assert(indent_ > 0); --indent_; return *this; }

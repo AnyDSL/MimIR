@@ -6,24 +6,39 @@
 
 namespace thorin::clos {
 
+/// @name %%clos.alloc_jmpbuf
+///@{
 inline Ref op_alloc_jumpbuf(Ref mem) {
     World& w = mem->world();
     return w.app(w.ax<alloc_jmpbuf>(), {w.tuple(), mem});
 }
+///@}
+
+/// @name %%clos.setjmp
+///@{
 inline Ref op_setjmp(Ref mem, Ref buf) {
     World& w = mem->world();
     return w.app(w.ax<setjmp>(), {mem, buf});
 }
+///@}
+
+/// @name %%clos.longjmp
+///@{
 inline Ref op_longjmp(Ref mem, Ref buf, Ref id) {
     World& w = mem->world();
     return w.app(w.ax<longjmp>(), {mem, buf, id});
 }
+///@}
+
+/// @name %%clos.attr
+///@{
 inline Ref op(attr o, Ref def) {
     World& w = def->world();
     return w.app(w.app(w.ax(o), def->type()), def);
 }
+///@}
 
-/// @name closures
+/// @name Closures
 ///@{
 
 /// Wrapper around a Def that can be used to match closures (see isa_clos_lit).
@@ -58,8 +73,8 @@ public:
 
     /// @name Properties
     ///@{
-    bool is_returning() { return fnc_type()->is_returning(); }
-    bool is_basicblock() { return fnc_type()->is_basicblock(); }
+    bool is_returning() { return Pi::isa_returning(fnc_type()); }
+    bool is_basicblock() { return Pi::isa_basicblock(fnc_type()); }
     attr get() { return attr_; } ///< Clos annotation. These should appear in front of the code-part.
     ///@}
 
@@ -104,7 +119,7 @@ std::tuple<const Extract*, N*> ca_isa_var(Ref def) {
 }
 ///@}
 
-/// @name closure types
+/// @name Closure Types
 ///@{
 
 /// Returns @p def if @p def is a closure and @c nullptr otherwise
@@ -119,9 +134,9 @@ const Pi* clos_type_to_pi(Ref ct, Ref new_env_type = nullptr);
 
 ///@}
 
-/// @name closure environments
-/// @p tup_or_sig should generally be a Tuple, Sigma or Var.
+/// @name Closure Environment
 ///@{
+/// `tup_or_sig` should generally be a Tuple, Sigma or Var.
 
 /// Describes where the environment is placed in the argument list.
 static constexpr size_t Clos_Env_Param = 1_u64;

@@ -14,6 +14,7 @@ void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
     tab.print(h, "#include \"thorin/axiom.h\"\n"
                  "#include \"thorin/plugin.h\"\n\n");
 
+    tab.print(h, "/// @namespace thorin::{} @ref {} \n", plugin, plugin);
     tab.print(h, "namespace thorin {{\nnamespace {} {{\n\n", plugin);
 
     plugin_t plugin_id = *Axiom::mangle(plugin);
@@ -21,13 +22,15 @@ void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
 
     tab.print(h << std::hex, "static constexpr plugin_t Plugin_Id = 0x{};\n\n", plugin_id);
 
-    auto& infos = driver.plugin2axiom_infos(plugin);
+    const auto& unordered_infos = driver.plugin2axiom_infos(plugin);
+    std::deque<std::pair<Sym, Axiom::Info>> infos(unordered_infos.begin(), unordered_infos.end());
+    std::ranges::sort(infos, [&](const auto& p1, const auto& p2) { return p1.second.tag_id < p2.second.tag_id; });
 
     // clang-format off
     for (const auto& [key, ax] : infos) {
         if (ax.plugin != plugin) continue; // this is from an import
 
-        tab.print(h, "/// @name {}\n///@{{\n", ax.tag);
+        tab.print(h, "/// @name %%{}.{}\n///@{{\n", plugin, ax.tag);
         tab.print(h, "#ifdef DOXYGEN // see https://github.com/doxygen/doxygen/issues/9668\n");
         tab.print(h, "enum {} : flags_t {{\n", ax.tag);
         tab.print(h, "#else\n");
@@ -70,10 +73,10 @@ void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
             if (auto& subs = ax.subs; !subs.empty()) {
                 tab.print(h, "template<{}>\nRef {}(Ref, Ref, Ref);\n\n", ax.tag, ax.normalizer);
             } else {
-                tab.print(h, "Ref {}(Ref, Ref, Ref);\n\n", ax.normalizer);
+                tab.print(h, "Ref {}(Ref, Ref, Ref);\n", ax.normalizer);
             }
         }
-        tab.print(h, "///@}}\n");
+        tab.print(h, "///@}}\n\n");
     }
     // clang-format on
 

@@ -90,20 +90,20 @@ TEST(trait, idx) {
     auto parser = fe::Parser(w);
     parser.plugin("core");
 
-    EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0000'00FF_n))), 1);
-    EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0000'0100_n))), 1);
-    EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0000'0101_n))), 2);
+    EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'0000'00FF_n))), 1);
+    EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'0000'0100_n))), 1);
+    EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'0000'0101_n))), 2);
 
-    EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0000'FFFF_n))), 2);
-    EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0001'0000_n))), 2);
-    EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0001'0001_n))), 4);
+    EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'0000'FFFF_n))), 2);
+    EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'0001'0000_n))), 2);
+    EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'0001'0001_n))), 4);
 
-    EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'FFFF'FFFF_n))), 4);
-    EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0001'0000'0000_n))), 4);
-    EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0001'0000'0001_n))), 8);
+    EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'FFFF'FFFF_n))), 4);
+    EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0001'0000'0000_n))), 4);
+    EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0001'0000'0001_n))), 8);
 
-    EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0xFFFF'FFFF'FFFF'FFFF_n))), 8);
-    EXPECT_EQ(as_lit(op(core::trait::size, w.type_idx(0x0000'0000'0000'0000_n))), 8);
+    EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0xFFFF'FFFF'FFFF'FFFF_n))), 8);
+    EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'0000'0000_n))), 8);
 }
 
 Ref normalize_test_curry(Ref type, Ref callee, Ref arg) {
@@ -188,5 +188,5 @@ TEST(Type, Level) {
     Driver driver;
     World& w = driver.world();
     auto pi  = w.pi(w.type<7>(), w.type<2>());
-    EXPECT_EQ(as_lit(pi->type()->isa<Type>()->level()), 8);
+    EXPECT_EQ(Lit::as(pi->type()->isa<Type>()->level()), 8);
 }
