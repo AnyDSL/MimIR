@@ -41,9 +41,14 @@ In addition, you might want to check out plugins like the [Vim integration](http
 
 ### Example
 
-```c++
+Here is an example for a header that follows above conventions:
+
+```cpp
 #pragma once
 
+namespace thorin {
+
+/// This is a cool class.
 class Foo {
 public:
     Foo(int foo, int bar)
@@ -61,6 +66,8 @@ private:
     int foo_;
     int bar_;
 }
+
+} // namespace thorin
 ```
 
 ## Debugging
