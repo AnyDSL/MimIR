@@ -121,13 +121,13 @@ $(document).ready(function(){initNavTree('log_8h.html',''); initResizable(); });
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for log.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="log_8h__incl.svg" width="1243" height="344"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="log_8h__incl.svg" width="100%" height="558"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="log_8h__dep__incl.svg" width="5260" height="418"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="log_8h__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 </div>
@@ -146,8 +146,9 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr><td colspan="2"><div class="groupHeader">Macros for different Log Levels for Ease of Use</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacethorin.html#fmt">Formatted Output</a> </dd></dl>
+<tr><td colspan="2"><div class="groupHeader">Logging Macros</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p ><a class="anchor" id="log"></a> Macros for different <a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1a">thorin::Log::Level</a>s for ease of use.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacethorin.html#fmt">Formatted Output</a> </dd></dl>
 </div></td></tr>
 <tr class="memitem:a16e6a53bea50271aa28355f071f7df6b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="log_8h.html#a16e6a53bea50271aa28355f071f7df6b">ELOG</a>(...)&#160;&#160;&#160;log().log(<a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa902b0d55fddef6f8d651fe1035b7d4bd">thorin::Log::Level::Error</a>,   __FILE__, __LINE__, __VA_ARGS__)</td></tr>
 <tr class="separator:a16e6a53bea50271aa28355f071f7df6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -158,6 +159,7 @@ Macros</h2></td></tr>
 <tr class="memitem:a35e71de09dfd64892a48e3f7c56c5619"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="log_8h.html#a35e71de09dfd64892a48e3f7c56c5619">VLOG</a>(...)&#160;&#160;&#160;log().log(<a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aad4a9fa383ab700c5bdd6f31cf7df0faf">thorin::Log::Level::Verbose</a>, __FILE__, __LINE__, __VA_ARGS__)</td></tr>
 <tr class="separator:a35e71de09dfd64892a48e3f7c56c5619"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87fe05eb8767a6b1abf71eea0bdcfcac"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="log_8h.html#a87fe05eb8767a6b1abf71eea0bdcfcac">DLOG</a>(...)&#160;&#160;&#160;log().log(<a class="el" href="classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aaa603905470e2a5b8c13e96b579ef0dba">thorin::Log::Level::Debug</a>,   __FILE__, __LINE__, __VA_ARGS__)</td></tr>
+<tr class="memdesc:a87fe05eb8767a6b1abf71eea0bdcfcac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Vaporizes to nothingness in <code>Debug</code> build.  <a href="log_8h.html#a87fe05eb8767a6b1abf71eea0bdcfcac">More...</a><br /></td></tr>
 <tr class="separator:a87fe05eb8767a6b1abf71eea0bdcfcac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
@@ -177,7 +179,9 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00078">78</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
+<p>Vaporizes to nothingness in <code>Debug</code> build. </p>
+
+<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00082">82</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
 
 </div>
 </div>
@@ -197,7 +201,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00073">73</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00076">76</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
 
 </div>
 </div>
@@ -217,7 +221,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00075">75</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00078">78</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
 
 </div>
 </div>
@@ -237,7 +241,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00076">76</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00079">79</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
 
 </div>
 </div>
@@ -257,7 +261,7 @@ Macros</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00074">74</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="log_8h_source.html#l00077">77</a> of file <a class="el" href="log_8h_source.html">log.h</a>.</p>
 
 </div>
 </div>
