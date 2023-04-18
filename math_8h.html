@@ -186,19 +186,28 @@ Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Mode</h2></td></tr>
 <tr class="memitem:aff01396947cc8f294f10ddaec9e8d4ca"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4ca">thorin::math::Mode</a> : nat_t { <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa2451cb1bbbbdeadb363013d2fe2bbb8f">thorin::math::top</a> = 0
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caafb72985afb637442c3428edbfcab42cf">thorin::math::none</a> = top
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa49780db85e66f388ddbd75410248db52">thorin::math::nnan</a> = 1 &lt;&lt; 0
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caab4443a092df50028ff5c3e11d58d1135">thorin::math::ninf</a> = 1 &lt;&lt; 1
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caafb72985afb637442c3428edbfcab42cf">thorin::math::none</a> = top
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa49780db85e66f388ddbd75410248db52">thorin::math::nnan</a> = 1 &lt;&lt; 0
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caab4443a092df50028ff5c3e11d58d1135">thorin::math::ninf</a> = 1 &lt;&lt; 1
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa451eb19da340803f2a8b2407a9a0af05">thorin::math::nsz</a> = 1 &lt;&lt; 2
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa98db259675dc243f0a4c95ef6b59350f">thorin::math::arcp</a> = 1 &lt;&lt; 3
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa591813887f3357070c45c279b0fbb9db">thorin::math::contract</a> = 1 &lt;&lt; 4
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa6f3bb93d53cc842dabaf318cc4920c80">thorin::math::afn</a> = 1 &lt;&lt; 5
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa98db259675dc243f0a4c95ef6b59350f">thorin::math::arcp</a> = 1 &lt;&lt; 3
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa591813887f3357070c45c279b0fbb9db">thorin::math::contract</a> = 1 &lt;&lt; 4
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa6f3bb93d53cc842dabaf318cc4920c80">thorin::math::afn</a> = 1 &lt;&lt; 5
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa51f94b89c5bd1ef61af4687faee90237">thorin::math::reassoc</a> = 1 &lt;&lt; 6
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caacc296d9f838506ef43f9a85c9cb1d6d9">thorin::math::finite</a> = nnan | ninf
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa91de8c2707a7342aa4693a263404ca8c">thorin::math::unsafe</a> = nsz | arcp | reassoc
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa75ae81d9f34fba3b8ff7d443518ac983">thorin::math::fast</a> = nnan | ninf | nsz | arcp | contract | afn | reassoc
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caacc296d9f838506ef43f9a85c9cb1d6d9">thorin::math::finite</a> = nnan | ninf
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa91de8c2707a7342aa4693a263404ca8c">thorin::math::unsafe</a> = nsz | arcp | reassoc
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa75ae81d9f34fba3b8ff7d443518ac983">thorin::math::fast</a> = nnan | ninf | nsz | arcp | contract | afn | reassoc
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caaed12a2391d1a04e3ff2fa64048db4863">thorin::math::bot</a> = fast
 <br />

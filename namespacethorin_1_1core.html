@@ -151,9 +151,13 @@ Variables</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Mode</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p >What should happen if <a class="el" href="classthorin_1_1Idx.html" title="A built-in constant of type .Nat -&gt; *.">Idx</a> arithmetic overflows? </p>
 </td></tr>
-<tr class="memitem:af4b6ec81c99cf0437d00e76854e45493"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493">Mode</a> : nat_t { <a class="el" href="namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493a53712cc893c52d29f88f66ea099a10c9">none</a> = 0
-, <a class="el" href="namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493aecf1322b1dbfad3fb96bdd08d25ad086">nsw</a> = 1 &lt;&lt; 0
-, <a class="el" href="namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493a6402074467372da6601927f3cf6023e7">nuw</a> = 1 &lt;&lt; 1
+<tr class="memitem:af4b6ec81c99cf0437d00e76854e45493"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493">Mode</a> : nat_t { <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493a53712cc893c52d29f88f66ea099a10c9">none</a> = 0
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493aecf1322b1dbfad3fb96bdd08d25ad086">nsw</a> = 1 &lt;&lt; 0
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493a6402074467372da6601927f3cf6023e7">nuw</a> = 1 &lt;&lt; 1
+<br />
  }</td></tr>
 <tr class="separator:af4b6ec81c99cf0437d00e76854e45493"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae025337cbe07dc96616a07d6e4440859"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#ae025337cbe07dc96616a07d6e4440859">VMode</a> = std::variant&lt; <a class="el" href="namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493">Mode</a>, <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a>, <a class="el" href="classthorin_1_1Ref.html">Ref</a> &gt;</td></tr>
@@ -164,8 +168,11 @@ Variables</h2></td></tr>
 <tr class="separator:a55cf18b70ac6535d67231006c6afc167"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%core.nat</h2></td></tr>
-<tr class="memitem:a3102b1c3eb691e8bc7ac034dece1a92d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a3102b1c3eb691e8bc7ac034dece1a92d">nat</a> : flags_t { <a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa2417b496d526d2ad5b184798d2938924">add</a> = 0x1104c60000000000
-, <a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa91608a3e04d4c29b574a36a550594d56">mul</a> = 0x1104c60000000001
+<tr class="memitem:a3102b1c3eb691e8bc7ac034dece1a92d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a3102b1c3eb691e8bc7ac034dece1a92d">nat</a> : flags_t { <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa2417b496d526d2ad5b184798d2938924">add</a> = 0x1104c60000000000
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa91608a3e04d4c29b574a36a550594d56">mul</a> = 0x1104c60000000001
+<br />
  }</td></tr>
 <tr class="separator:a3102b1c3eb691e8bc7ac034dece1a92d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58ec95ed7b754d9d52ee1f70432ca38b"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacethorin_1_1core.html#a3102b1c3eb691e8bc7ac034dece1a92d">nat</a> id&gt; </td></tr>
@@ -185,24 +192,36 @@ Variables</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%core.ncmp</h2></td></tr>
 <tr class="memitem:a7551e53258352c571450549b0f99c47e"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47e">ncmp</a> : flags_t { <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eab66873505577b501426d6678ce07095e">gle</a> = 0x1104c60000000100
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aa6d4ae7d990ff7dbfef99471f1bd5622">f</a> = gle
-, <a class="el" href="namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eaba9d3f7f019cb6d5f3165917d62aeace">glE</a> = 0x1104c60000000101
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2617461720290be8740985537e6e1bfd">e</a> = glE
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aa6d4ae7d990ff7dbfef99471f1bd5622">f</a> = gle
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eaba9d3f7f019cb6d5f3165917d62aeace">glE</a> = 0x1104c60000000101
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2617461720290be8740985537e6e1bfd">e</a> = glE
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eab94b516e2c692fc7b3b4f68d34fae6a1">gLe</a> = 0x1104c60000000102
-, <a class="el" href="namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628afb255a4afa664b7d505609cd9f04e49c">l</a> = gLe
-, <a class="el" href="namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea2be16bf3b205ad3e1cedf8f3e983d8f4">gLE</a> = 0x1104c60000000103
-, <a class="el" href="namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eab657ad5aed815314489c6fc5f73d8c5d">le</a> = gLE
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628afb255a4afa664b7d505609cd9f04e49c">l</a> = gLe
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea2be16bf3b205ad3e1cedf8f3e983d8f4">gLE</a> = 0x1104c60000000103
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eab657ad5aed815314489c6fc5f73d8c5d">le</a> = gLE
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eabb34545856373637e340eba75e51d06f">Gle</a> = 0x1104c60000000104
-, <a class="el" href="namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea9c764a9a21a68c768e5617f3cf949d7e">g</a> = Gle
-, <a class="el" href="namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eaaa4912ddff2dea4db46be2ba7ca144c6">GlE</a> = 0x1104c60000000105
-, <a class="el" href="namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea30c13ed52d7508b8feb5c20225c91ebd">ge</a> = GlE
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea9c764a9a21a68c768e5617f3cf949d7e">g</a> = Gle
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eaaa4912ddff2dea4db46be2ba7ca144c6">GlE</a> = 0x1104c60000000105
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea30c13ed52d7508b8feb5c20225c91ebd">ge</a> = GlE
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea0094426ffc4e5fdd9a1eaaec3d4f9f98">GLe</a> = 0x1104c60000000106
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2023fd5d4e7d81d38b7539ac2e697d34">ne</a> = GLe
-, <a class="el" href="namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea506c59f072d80632dbed0f77b33042c2">GLE</a> = 0x1104c60000000107
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2cd637f8af229640a38fe0daff901035">t</a> = GLE
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2023fd5d4e7d81d38b7539ac2e697d34">ne</a> = GLe
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea506c59f072d80632dbed0f77b33042c2">GLE</a> = 0x1104c60000000107
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2cd637f8af229640a38fe0daff901035">t</a> = GLE
 <br />
  }</td></tr>
 <tr class="separator:a7551e53258352c571450549b0f99c47e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -221,10 +240,15 @@ Variables</h2></td></tr>
 <tr class="separator:afb5718b07222ca5a170945fcb57da5a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%core.bit1</h2></td></tr>
-<tr class="memitem:a60b6d2484fb68ef9ce568db15502e349"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a60b6d2484fb68ef9ce568db15502e349">bit1</a> : flags_t { <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aa6d4ae7d990ff7dbfef99471f1bd5622">f</a> = gle
-, <a class="el" href="namespacethorin_1_1core.html#a60b6d2484fb68ef9ce568db15502e349a416ad0b3ec8b1647918fe60ae4a91a7d">neg</a> = 0x1104c60000000201
-, <a class="el" href="namespacethorin_1_1core.html#a60b6d2484fb68ef9ce568db15502e349aac8161ee4ef433b6815b2d835a0f6d64">id</a> = 0x1104c60000000202
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2cd637f8af229640a38fe0daff901035">t</a> = GLE
+<tr class="memitem:a60b6d2484fb68ef9ce568db15502e349"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a60b6d2484fb68ef9ce568db15502e349">bit1</a> : flags_t { <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aa6d4ae7d990ff7dbfef99471f1bd5622">f</a> = gle
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a60b6d2484fb68ef9ce568db15502e349a416ad0b3ec8b1647918fe60ae4a91a7d">neg</a> = 0x1104c60000000201
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a60b6d2484fb68ef9ce568db15502e349aac8161ee4ef433b6815b2d835a0f6d64">id</a> = 0x1104c60000000202
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2cd637f8af229640a38fe0daff901035">t</a> = GLE
+<br />
  }</td></tr>
 <tr class="separator:a60b6d2484fb68ef9ce568db15502e349"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adfbfef621aa0342ee7e98be7636dbbef"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacethorin_1_1core.html#a60b6d2484fb68ef9ce568db15502e349">bit1</a> id&gt; </td></tr>
@@ -244,24 +268,36 @@ Variables</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%core.bit2</h2></td></tr>
 <tr class="memitem:a70895f76bd16fdb3db2c75dd1fd38978"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978">bit2</a> : flags_t { <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aa6d4ae7d990ff7dbfef99471f1bd5622">f</a> = gle
-, <a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978ab0abbcb5b3415de46aff30e977a1010f">nor</a> = 0x1104c60000000301
-, <a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a62672b0c20974c44eccd928ce11ae8eb">nciff</a> = 0x1104c60000000302
-, <a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a7872993d08f2af9d4cf107f4d1f4abb9">nfst</a> = 0x1104c60000000303
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978ab0abbcb5b3415de46aff30e977a1010f">nor</a> = 0x1104c60000000301
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a62672b0c20974c44eccd928ce11ae8eb">nciff</a> = 0x1104c60000000302
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a7872993d08f2af9d4cf107f4d1f4abb9">nfst</a> = 0x1104c60000000303
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a8b0f4861006f3cf89f86fbd004d85811">niff</a> = 0x1104c60000000304
-, <a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a9f8d62627174783a561f1942c35d7345">nsnd</a> = 0x1104c60000000305
-, <a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978afc4e6ce8b102a2b265c6d54a5f533f03">xor_</a> = 0x1104c60000000306
-, <a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a1ce87c5aa5d9dd874faa83546f8bb9f9">nand</a> = 0x1104c60000000307
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a9f8d62627174783a561f1942c35d7345">nsnd</a> = 0x1104c60000000305
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978afc4e6ce8b102a2b265c6d54a5f533f03">xor_</a> = 0x1104c60000000306
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a1ce87c5aa5d9dd874faa83546f8bb9f9">nand</a> = 0x1104c60000000307
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a9881dac61995e4403ab96ebca441b90b">and_</a> = 0x1104c60000000308
-, <a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a9989c0fe0d3c40b4184f53f612ce350d">nxor</a> = 0x1104c60000000309
-, <a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a84de5b8685ab073b3badaef636d2415f">snd</a> = 0x1104c6000000030a
-, <a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a8dc34183d1c8dc9c4b787b78f09d33b9">iff</a> = 0x1104c6000000030b
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a9989c0fe0d3c40b4184f53f612ce350d">nxor</a> = 0x1104c60000000309
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a84de5b8685ab073b3badaef636d2415f">snd</a> = 0x1104c6000000030a
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a8dc34183d1c8dc9c4b787b78f09d33b9">iff</a> = 0x1104c6000000030b
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978af9d9bbc137d1c4cfaa560b6c8dfcba63">fst</a> = 0x1104c6000000030c
-, <a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a88fe0bfe999c6d15e93053a5abaa2647">ciff</a> = 0x1104c6000000030d
-, <a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978abfd7ad9ece5000d003f6c156c3b8f9cc">or_</a> = 0x1104c6000000030e
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2cd637f8af229640a38fe0daff901035">t</a> = GLE
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a88fe0bfe999c6d15e93053a5abaa2647">ciff</a> = 0x1104c6000000030d
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978abfd7ad9ece5000d003f6c156c3b8f9cc">or_</a> = 0x1104c6000000030e
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2cd637f8af229640a38fe0daff901035">t</a> = GLE
 <br />
  }</td></tr>
 <tr class="separator:a70895f76bd16fdb3db2c75dd1fd38978"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -283,8 +319,11 @@ Variables</h2></td></tr>
 <tr class="separator:ac3949490a32714b79b7be24e9dc2468d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%core.shr</h2></td></tr>
-<tr class="memitem:ae493f33140e983cf79dc6b66a1637628"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628">shr</a> : flags_t { <a class="el" href="namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628a85b63feaff2f38f8b5976454a8355a7d">a</a> = 0x1104c60000000400
-, <a class="el" href="namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628afb255a4afa664b7d505609cd9f04e49c">l</a> = gLe
+<tr class="memitem:ae493f33140e983cf79dc6b66a1637628"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628">shr</a> : flags_t { <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628a85b63feaff2f38f8b5976454a8355a7d">a</a> = 0x1104c60000000400
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628afb255a4afa664b7d505609cd9f04e49c">l</a> = gLe
+<br />
  }</td></tr>
 <tr class="separator:ae493f33140e983cf79dc6b66a1637628"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a585b2ccaaab3aaf619cfee8622dded81"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628">shr</a> id&gt; </td></tr>
@@ -302,10 +341,15 @@ Variables</h2></td></tr>
 <tr class="separator:a415f6ec8c9825dd15268179859bac8b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%core.wrap</h2></td></tr>
-<tr class="memitem:ab1f42e21a4de8bd328e18b8006b9f74f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74f">wrap</a> : flags_t { <a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa2417b496d526d2ad5b184798d2938924">add</a> = 0x1104c60000000000
-, <a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa641220906872c172d2238e5a2f54600f">sub</a> = 0x1104c60000000501
-, <a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa91608a3e04d4c29b574a36a550594d56">mul</a> = 0x1104c60000000001
-, <a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa7f0dec3b27b1d6ad0b7cbf34b0ae37da">shl</a> = 0x1104c60000000503
+<tr class="memitem:ab1f42e21a4de8bd328e18b8006b9f74f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74f">wrap</a> : flags_t { <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa2417b496d526d2ad5b184798d2938924">add</a> = 0x1104c60000000000
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa641220906872c172d2238e5a2f54600f">sub</a> = 0x1104c60000000501
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa91608a3e04d4c29b574a36a550594d56">mul</a> = 0x1104c60000000001
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa7f0dec3b27b1d6ad0b7cbf34b0ae37da">shl</a> = 0x1104c60000000503
+<br />
  }</td></tr>
 <tr class="separator:ab1f42e21a4de8bd328e18b8006b9f74f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33a5ece6d189ebc3403bfc134f6892ee"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a33a5ece6d189ebc3403bfc134f6892ee">op_wminus</a> (<a class="el" href="namespacethorin_1_1core.html#ae025337cbe07dc96616a07d6e4440859">VMode</a> m, <a class="el" href="classthorin_1_1Ref.html">Ref</a> <a class="el" href="namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628a85b63feaff2f38f8b5976454a8355a7d">a</a>)</td></tr>
@@ -325,10 +369,15 @@ Variables</h2></td></tr>
 <tr class="separator:a81093334127d1c3fdef8208607d68780"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%core.div</h2></td></tr>
-<tr class="memitem:abaf61e089dbdb52b9c30b4b166f8309e"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#abaf61e089dbdb52b9c30b4b166f8309e">div</a> : flags_t { <a class="el" href="namespacethorin_1_1core.html#abaf61e089dbdb52b9c30b4b166f8309eabdddcd82353d94f5472752cb7811f41b">sdiv</a> = 0x1104c60000000600
-, <a class="el" href="namespacethorin_1_1core.html#abaf61e089dbdb52b9c30b4b166f8309ea64ac71547f9cb891653b946a526e151a">udiv</a> = 0x1104c60000000601
-, <a class="el" href="namespacethorin_1_1core.html#abaf61e089dbdb52b9c30b4b166f8309eaed1e432f525397a1c7d61ff78e04ea18">srem</a> = 0x1104c60000000602
-, <a class="el" href="namespacethorin_1_1core.html#abaf61e089dbdb52b9c30b4b166f8309eab90a0e524d99b7ba0a892ed76cb0c5b6">urem</a> = 0x1104c60000000603
+<tr class="memitem:abaf61e089dbdb52b9c30b4b166f8309e"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#abaf61e089dbdb52b9c30b4b166f8309e">div</a> : flags_t { <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#abaf61e089dbdb52b9c30b4b166f8309eabdddcd82353d94f5472752cb7811f41b">sdiv</a> = 0x1104c60000000600
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#abaf61e089dbdb52b9c30b4b166f8309ea64ac71547f9cb891653b946a526e151a">udiv</a> = 0x1104c60000000601
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#abaf61e089dbdb52b9c30b4b166f8309eaed1e432f525397a1c7d61ff78e04ea18">srem</a> = 0x1104c60000000602
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#abaf61e089dbdb52b9c30b4b166f8309eab90a0e524d99b7ba0a892ed76cb0c5b6">urem</a> = 0x1104c60000000603
+<br />
  }</td></tr>
 <tr class="separator:abaf61e089dbdb52b9c30b4b166f8309e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bf3708433f042b01aaa3664e0cbbb43"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacethorin_1_1core.html#abaf61e089dbdb52b9c30b4b166f8309e">div</a> id&gt; </td></tr>
@@ -348,59 +397,92 @@ Variables</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%core.icmp</h2></td></tr>
 <tr class="memitem:afab2045241ef2b508a0c6867099991e6"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6">icmp</a> : flags_t { <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aba077e40c621337d35d1021bd9eb62de">xygle</a> = 0x1104c60000000700
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aa6d4ae7d990ff7dbfef99471f1bd5622">f</a> = gle
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6ab719a14ba4d6370e2e77d8cb014c22dd">xyglE</a> = 0x1104c60000000701
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2617461720290be8740985537e6e1bfd">e</a> = glE
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aa6d4ae7d990ff7dbfef99471f1bd5622">f</a> = gle
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6ab719a14ba4d6370e2e77d8cb014c22dd">xyglE</a> = 0x1104c60000000701
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2617461720290be8740985537e6e1bfd">e</a> = glE
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aa2552bdde6430d37115ed0aeab972b7e">xygLe</a> = 0x1104c60000000702
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a5a8b45733df67dbe71fcdb55deb38dc8">xygLE</a> = 0x1104c60000000703
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a48cdb9073adc02d3e15f01b6d633d244">xyGle</a> = 0x1104c60000000704
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a3c55cc7d62963ed423db694d6f8326b3">xyGlE</a> = 0x1104c60000000705
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a5a8b45733df67dbe71fcdb55deb38dc8">xygLE</a> = 0x1104c60000000703
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a48cdb9073adc02d3e15f01b6d633d244">xyGle</a> = 0x1104c60000000704
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a3c55cc7d62963ed423db694d6f8326b3">xyGlE</a> = 0x1104c60000000705
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a5c2828fe3a71c80efb430189a6889953">xyGLe</a> = 0x1104c60000000706
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a0e0274799ae2b1c52039215ebb13ffc2">xyGLE</a> = 0x1104c60000000707
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a494578dca0c2b405ae62d09623320d2f">xYgle</a> = 0x1104c60000000708
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6afaf30cd898f893e3adf3db1d00e46a42">xYglE</a> = 0x1104c60000000709
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a0e0274799ae2b1c52039215ebb13ffc2">xyGLE</a> = 0x1104c60000000707
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a494578dca0c2b405ae62d09623320d2f">xYgle</a> = 0x1104c60000000708
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6afaf30cd898f893e3adf3db1d00e46a42">xYglE</a> = 0x1104c60000000709
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a7261c02d67b8963647f9d950b16113ee">xYgLe</a> = 0x1104c6000000070a
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aae0da9a49cbad73b6038ecb611600659">sl</a> = xYgLe
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a7dfb00d63ae4101769339064c0f2a8b1">xYgLE</a> = 0x1104c6000000070b
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6adf5c25f46ecccb55de65f7531899181a">sle</a> = xYgLE
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aae0da9a49cbad73b6038ecb611600659">sl</a> = xYgLe
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a7dfb00d63ae4101769339064c0f2a8b1">xYgLE</a> = 0x1104c6000000070b
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6adf5c25f46ecccb55de65f7531899181a">sle</a> = xYgLE
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a85c87e6f39470cd7b5c70f533c049476">xYGle</a> = 0x1104c6000000070c
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a50390ce22d9c7daef48173185eeb6d7a">ug</a> = xYGle
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a5880ca88e2da64050d53ab3f992c81ba">xYGlE</a> = 0x1104c6000000070d
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6ae542fb817ad63f4fcd1a3a1dc64b8732">uge</a> = xYGlE
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a50390ce22d9c7daef48173185eeb6d7a">ug</a> = xYGle
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a5880ca88e2da64050d53ab3f992c81ba">xYGlE</a> = 0x1104c6000000070d
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6ae542fb817ad63f4fcd1a3a1dc64b8732">uge</a> = xYGlE
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a1e632aa2f14e9203c760731ff2c2a1b1">xYGLe</a> = 0x1104c6000000070e
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aa6c3b542819c43c9a9d2ef3b61d72f2a">xYGLE</a> = 0x1104c6000000070f
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a12e5d694c9a97e35a45f5511504a3fa4">Xygle</a> = 0x1104c60000000710
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aa8367fe69c543f5c90f436be38973738">XyglE</a> = 0x1104c60000000711
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aa6c3b542819c43c9a9d2ef3b61d72f2a">xYGLE</a> = 0x1104c6000000070f
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a12e5d694c9a97e35a45f5511504a3fa4">Xygle</a> = 0x1104c60000000710
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aa8367fe69c543f5c90f436be38973738">XyglE</a> = 0x1104c60000000711
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a4a89e7ddc01aabf1ca5965f974f4e033">XygLe</a> = 0x1104c60000000712
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a6c8aba67edd6027868826e3afb703cff">ul</a> = XygLe
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a71cf79ebba26254b717af1cae51d84c6">XygLE</a> = 0x1104c60000000713
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6ac279edb2da92f8dc81a389f329f0dbf8">ule</a> = XygLE
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a6c8aba67edd6027868826e3afb703cff">ul</a> = XygLe
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a71cf79ebba26254b717af1cae51d84c6">XygLE</a> = 0x1104c60000000713
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6ac279edb2da92f8dc81a389f329f0dbf8">ule</a> = XygLE
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a6697875c411e8e8bdcc9c77b919e4224">XyGle</a> = 0x1104c60000000714
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6ac2129b994edbcb7c094693bc64465413">sg</a> = XyGle
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6ab15ecc9e674391f5605442711012f147">XyGlE</a> = 0x1104c60000000715
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a45393b013a7f649817e0b74d37fb6d4c">sge</a> = XyGlE
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6ac2129b994edbcb7c094693bc64465413">sg</a> = XyGle
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6ab15ecc9e674391f5605442711012f147">XyGlE</a> = 0x1104c60000000715
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a45393b013a7f649817e0b74d37fb6d4c">sge</a> = XyGlE
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a339bb73a031b7d143957087fe8876a14">XyGLe</a> = 0x1104c60000000716
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6ac9c66bf55e69be8c8c0f6970d694ce8c">XyGLE</a> = 0x1104c60000000717
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a7c2bd77d3db2b47ea75aff600f2ce081">XYgle</a> = 0x1104c60000000718
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a00b992992955c2baf1b9efe0a570638f">XYglE</a> = 0x1104c60000000719
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6ac9c66bf55e69be8c8c0f6970d694ce8c">XyGLE</a> = 0x1104c60000000717
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a7c2bd77d3db2b47ea75aff600f2ce081">XYgle</a> = 0x1104c60000000718
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a00b992992955c2baf1b9efe0a570638f">XYglE</a> = 0x1104c60000000719
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6af259ad4240e26ff82530b7e300f37a01">XYgLe</a> = 0x1104c6000000071a
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a65d5d6983e3667a778e952f00d794c52">XYgLE</a> = 0x1104c6000000071b
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a6274936c1080e77febebed934c8e78e5">XYGle</a> = 0x1104c6000000071c
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a1399530b78dc48d20356530407ac46fd">XYGlE</a> = 0x1104c6000000071d
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a65d5d6983e3667a778e952f00d794c52">XYgLE</a> = 0x1104c6000000071b
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a6274936c1080e77febebed934c8e78e5">XYGle</a> = 0x1104c6000000071c
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a1399530b78dc48d20356530407ac46fd">XYGlE</a> = 0x1104c6000000071d
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a4826676e20bc20a94a833c095867c571">XYGLe</a> = 0x1104c6000000071e
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2023fd5d4e7d81d38b7539ac2e697d34">ne</a> = GLe
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a8a869d0d1e0551d63fbaa835a8c5ca6b">XYGLE</a> = 0x1104c6000000071f
-, <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2cd637f8af229640a38fe0daff901035">t</a> = GLE
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2023fd5d4e7d81d38b7539ac2e697d34">ne</a> = GLe
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a8a869d0d1e0551d63fbaa835a8c5ca6b">XYGLE</a> = 0x1104c6000000071f
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2cd637f8af229640a38fe0daff901035">t</a> = GLE
 <br />
  }</td></tr>
 <tr class="separator:afab2045241ef2b508a0c6867099991e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -419,8 +501,11 @@ Variables</h2></td></tr>
 <tr class="separator:a50c01b99cccd156b6aadcab3d1f0f3ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%core.conv</h2></td></tr>
-<tr class="memitem:a016fae77d6f5857b429ceb5b433c4937"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937">conv</a> : flags_t { <a class="el" href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937aa1f7876be8b2419af003e22a537fa0a8">s</a> = 0x1104c60000000800
-, <a class="el" href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937a8d8cf81d2813f24f7b83199532c38a53">u</a> = 0x1104c60000000801
+<tr class="memitem:a016fae77d6f5857b429ceb5b433c4937"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937">conv</a> : flags_t { <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937aa1f7876be8b2419af003e22a537fa0a8">s</a> = 0x1104c60000000800
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937a8d8cf81d2813f24f7b83199532c38a53">u</a> = 0x1104c60000000801
+<br />
  }</td></tr>
 <tr class="separator:a016fae77d6f5857b429ceb5b433c4937"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab066c49453efb651a96eb6b077fbdc40"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937">conv</a> id&gt; </td></tr>
@@ -444,8 +529,11 @@ Variables</h2></td></tr>
 <tr class="separator:ac2dda5ba0299d2f51e5af69b260fbddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%core.trait</h2></td></tr>
-<tr class="memitem:aa0072b0cc07c0996ceb3516d925c5fbf"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbf">trait</a> : flags_t { <a class="el" href="namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbfab8b1ce69c3ef90d0c06c30009490d4de">size</a> = 0x1104c60000000a00
-, <a class="el" href="namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbfa62ac19ce1cbaf53f8d88ce15a29f03a8">align</a> = 0x1104c60000000a01
+<tr class="memitem:aa0072b0cc07c0996ceb3516d925c5fbf"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbf">trait</a> : flags_t { <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbfab8b1ce69c3ef90d0c06c30009490d4de">size</a> = 0x1104c60000000a00
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbfa62ac19ce1cbaf53f8d88ce15a29f03a8">align</a> = 0x1104c60000000a01
+<br />
  }</td></tr>
 <tr class="separator:aa0072b0cc07c0996ceb3516d925c5fbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5c1ec8635852637cd611968311003d0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#af5c1ec8635852637cd611968311003d0">op</a> (<a class="el" href="namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbf">trait</a> o, <a class="el" href="classthorin_1_1Ref.html">Ref</a> type)</td></tr>
@@ -465,9 +553,13 @@ Variables</h2></td></tr>
 <tr class="separator:ada96be7dbaba09986d143c68ada49651"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%core.pe</h2></td></tr>
-<tr class="memitem:a9b3426ae9489ca2217b83a20c38d254a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254a">pe</a> : flags_t { <a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aa3d4e5f853ce392452ab1815f961ea93a">hlt</a> = 0x1104c60000000b00
-, <a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aa90341f808c05c33292c8c707be0c807d">run</a> = 0x1104c60000000b01
-, <a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aa16b4c02b986c1c384ebffc8cb89c57a6">known</a> = 0x1104c60000000b02
+<tr class="memitem:a9b3426ae9489ca2217b83a20c38d254a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254a">pe</a> : flags_t { <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aa3d4e5f853ce392452ab1815f961ea93a">hlt</a> = 0x1104c60000000b00
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aa90341f808c05c33292c8c707be0c807d">run</a> = 0x1104c60000000b01
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aa16b4c02b986c1c384ebffc8cb89c57a6">known</a> = 0x1104c60000000b02
+<br />
  }</td></tr>
 <tr class="separator:a9b3426ae9489ca2217b83a20c38d254a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a86904dad0403dbb12c13fb055829d8a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a86904dad0403dbb12c13fb055829d8a4">op</a> (<a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254a">pe</a> o, <a class="el" href="classthorin_1_1Ref.html">Ref</a> def)</td></tr>
@@ -1252,7 +1344,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db
 
 <p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00288">288</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00137">a</a>, <a class="el" href="core_2autogen_8h_source.html#l00109">and_</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="core_2autogen_8h_source.html#l00114">ciff</a>, <a class="el" href="core_2autogen_8h_source.html#l00113">fst</a>, <a class="el" href="core_2autogen_8h_source.html#l00112">iff</a>, <a class="el" href="core_8h_source.html#l00107">thorin::is_commutative()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="core_8h_source.html#l00059">make_truth_table()</a>, <a class="el" href="core_2autogen_8h_source.html#l00108">nand</a>, <a class="el" href="core_2autogen_8h_source.html#l00103">nciff</a>, <a class="el" href="core_2autogen_8h_source.html#l00078">neg</a>, <a class="el" href="core_2autogen_8h_source.html#l00104">nfst</a>, <a class="el" href="core_2autogen_8h_source.html#l00105">niff</a>, <a class="el" href="core_2autogen_8h_source.html#l00102">nor</a>, <a class="el" href="core_2autogen_8h_source.html#l00106">nsnd</a>, <a class="el" href="core_2autogen_8h_source.html#l00110">nxor</a>, <a class="el" href="core_2autogen_8h_source.html#l00115">or_</a>, <a class="el" href="def_8h_source.html#l00344">thorin::Def::projs()</a>, <a class="el" href="core_2autogen_8h_source.html#l00271">s</a>, <a class="el" href="core_2autogen_8h_source.html#l00111">snd</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>, and <a class="el" href="core_2autogen_8h_source.html#l00107">xor_</a>.</p>
+<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00137">a</a>, <a class="el" href="core_2autogen_8h_source.html#l00109">and_</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="core_2autogen_8h_source.html#l00114">ciff</a>, <a class="el" href="core_2autogen_8h_source.html#l00113">fst</a>, <a class="el" href="core_2autogen_8h_source.html#l00112">iff</a>, <a class="el" href="core_8h_source.html#l00107">thorin::is_commutative()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="core_8h_source.html#l00059">make_truth_table()</a>, <a class="el" href="core_2autogen_8h_source.html#l00108">nand</a>, <a class="el" href="core_2autogen_8h_source.html#l00103">nciff</a>, <a class="el" href="core_2autogen_8h_source.html#l00078">neg</a>, <a class="el" href="core_2autogen_8h_source.html#l00104">nfst</a>, <a class="el" href="core_2autogen_8h_source.html#l00105">niff</a>, <a class="el" href="core_2autogen_8h_source.html#l00102">nor</a>, <a class="el" href="core_2autogen_8h_source.html#l00106">nsnd</a>, <a class="el" href="core_2autogen_8h_source.html#l00110">nxor</a>, <a class="el" href="core_2autogen_8h_source.html#l00115">or_</a>, <a class="el" href="def_8h_source.html#l00370">thorin::Def::projs()</a>, <a class="el" href="core_2autogen_8h_source.html#l00271">s</a>, <a class="el" href="core_2autogen_8h_source.html#l00111">snd</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>, and <a class="el" href="core_2autogen_8h_source.html#l00107">xor_</a>.</p>
 
 </div>
 </div>
@@ -1290,7 +1382,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db
 
 <p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00543">543</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="def_8cpp_source.html#l00452">thorin::Idx::size()</a>, <a class="el" href="def_8h_source.html#l00222">thorin::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="def_8cpp_source.html#l00452">thorin::Idx::size()</a>, <a class="el" href="def_8h_source.html#l00248">thorin::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -1330,7 +1422,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#a016fae77d6f5857b42
 
 <p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00503">503</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="lam_8h_source.html#l00193">thorin::App::arg()</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="core_2autogen_8h_source.html#l00046">l</a>, <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>, <a class="el" href="core_2autogen_8h_source.html#l00271">s</a>, <a class="el" href="def_8h_source.html#l00686">thorin::Idx::size2bitwidth()</a>, <a class="el" href="def_8h_source.html#l00222">thorin::Def::type()</a>, <a class="el" href="core_2autogen_8h_source.html#l00272">u</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="lam_8h_source.html#l00197">thorin::App::arg()</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="core_2autogen_8h_source.html#l00046">l</a>, <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>, <a class="el" href="core_2autogen_8h_source.html#l00271">s</a>, <a class="el" href="def_8h_source.html#l00697">thorin::Idx::size2bitwidth()</a>, <a class="el" href="def_8h_source.html#l00248">thorin::Def::type()</a>, <a class="el" href="core_2autogen_8h_source.html#l00272">u</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -1370,7 +1462,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#abaf61e089dbdb52b9c
 
 <p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00464">464</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00137">a</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="def_8h_source.html#l00344">thorin::Def::projs()</a>, <a class="el" href="core_2autogen_8h_source.html#l00183">sdiv</a>, <a class="el" href="core_2autogen_8h_source.html#l00185">srem</a>, <a class="el" href="core_2autogen_8h_source.html#l00184">udiv</a>, <a class="el" href="core_2autogen_8h_source.html#l00186">urem</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00137">a</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="def_8h_source.html#l00370">thorin::Def::projs()</a>, <a class="el" href="core_2autogen_8h_source.html#l00183">sdiv</a>, <a class="el" href="core_2autogen_8h_source.html#l00185">srem</a>, <a class="el" href="core_2autogen_8h_source.html#l00184">udiv</a>, <a class="el" href="core_2autogen_8h_source.html#l00186">urem</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -1410,7 +1502,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a
 
 <p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00247">247</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00137">a</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="core_2autogen_8h_source.html#l00044">e</a>, <a class="el" href="core_2autogen_8h_source.html#l00042">f</a>, <a class="el" href="core_2autogen_8h_source.html#l00054">ne</a>, <a class="el" href="def_8h_source.html#l00344">thorin::Def::projs()</a>, <a class="el" href="core_2autogen_8h_source.html#l00056">t</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00137">a</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="core_2autogen_8h_source.html#l00044">e</a>, <a class="el" href="core_2autogen_8h_source.html#l00042">f</a>, <a class="el" href="core_2autogen_8h_source.html#l00054">ne</a>, <a class="el" href="def_8h_source.html#l00370">thorin::Def::projs()</a>, <a class="el" href="core_2autogen_8h_source.html#l00056">t</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -1450,7 +1542,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#a3102b1c3eb691e8bc7
 
 <p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00200">200</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00137">a</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00344">thorin::Def::projs()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00137">a</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00370">thorin::Def::projs()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -1490,7 +1582,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#a7551e53258352c5714
 
 <p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00218">218</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00137">a</a>, <a class="el" href="core_2autogen_8h_source.html#l00050">g</a>, <a class="el" href="core_2autogen_8h_source.html#l00052">ge</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="core_2autogen_8h_source.html#l00048">le</a>, <a class="el" href="world_8h_source.html#l00373">thorin::World::lit_tt()</a>, <a class="el" href="def_8h_source.html#l00344">thorin::Def::projs()</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00137">a</a>, <a class="el" href="core_2autogen_8h_source.html#l00050">g</a>, <a class="el" href="core_2autogen_8h_source.html#l00052">ge</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="core_2autogen_8h_source.html#l00048">le</a>, <a class="el" href="world_8h_source.html#l00373">thorin::World::lit_tt()</a>, <a class="el" href="def_8h_source.html#l00370">thorin::Def::projs()</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -1530,7 +1622,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217
 
 <p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00654">654</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00312">thorin::Def::dep_const()</a>, <a class="el" href="core_2autogen_8h_source.html#l00327">hlt</a>, <a class="el" href="core_2autogen_8h_source.html#l00329">known</a>, <a class="el" href="world_8h_source.html#l00372">thorin::World::lit_ff()</a>, <a class="el" href="axiom_8h_source.html#l00181">thorin::match()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00338">thorin::Def::dep_const()</a>, <a class="el" href="core_2autogen_8h_source.html#l00327">hlt</a>, <a class="el" href="core_2autogen_8h_source.html#l00329">known</a>, <a class="el" href="world_8h_source.html#l00372">thorin::World::lit_ff()</a>, <a class="el" href="axiom_8h_source.html#l00181">thorin::match()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -1570,7 +1662,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ae493f33140e983cf79
 
 <p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00368">368</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00137">a</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="core_2autogen_8h_source.html#l00046">l</a>, <a class="el" href="def_8h_source.html#l00344">thorin::Def::projs()</a>, <a class="el" href="core_2autogen_8h_source.html#l00271">s</a>, <a class="el" href="def_8cpp_source.html#l00452">thorin::Idx::size()</a>, <a class="el" href="def_8h_source.html#l00222">thorin::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00137">a</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="core_2autogen_8h_source.html#l00046">l</a>, <a class="el" href="def_8h_source.html#l00370">thorin::Def::projs()</a>, <a class="el" href="core_2autogen_8h_source.html#l00271">s</a>, <a class="el" href="def_8cpp_source.html#l00452">thorin::Idx::size()</a>, <a class="el" href="def_8h_source.html#l00248">thorin::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -1610,7 +1702,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#aa0072b0cc07c0996ce
 
 <p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00566">566</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00137">a</a>, <a class="el" href="core_2autogen_8h_source.html#l00306">align</a>, <a class="el" href="core_8cpp_source.html#l00018">convert()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="math_8h_source.html#l00081">thorin::math::isa_f()</a>, <a class="el" href="def_8h_source.html#l00390">thorin::Def::isa_imm()</a>, <a class="el" href="world_8h_source.html#l00348">thorin::World::lit_nat()</a>, <a class="el" href="core_8h_source.html#l00041">op()</a>, <a class="el" href="def_8h_source.html#l00243">thorin::Def::ops()</a>, <a class="el" href="util_8h_source.html#l00051">thorin::pad()</a>, <a class="el" href="core_2autogen_8h_source.html#l00271">s</a>, <a class="el" href="core_2autogen_8h_source.html#l00305">size</a>, <a class="el" href="def_8cpp_source.html#l00452">thorin::Idx::size()</a>, <a class="el" href="def_8h_source.html#l00686">thorin::Idx::size2bitwidth()</a>, <a class="el" href="core_2autogen_8h_source.html#l00056">t</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00137">a</a>, <a class="el" href="core_2autogen_8h_source.html#l00306">align</a>, <a class="el" href="core_8cpp_source.html#l00018">convert()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="math_8h_source.html#l00081">thorin::math::isa_f()</a>, <a class="el" href="def_8h_source.html#l00416">thorin::Def::isa_imm()</a>, <a class="el" href="world_8h_source.html#l00348">thorin::World::lit_nat()</a>, <a class="el" href="core_8h_source.html#l00041">op()</a>, <a class="el" href="def_8h_source.html#l00269">thorin::Def::ops()</a>, <a class="el" href="util_8h_source.html#l00051">thorin::pad()</a>, <a class="el" href="core_2autogen_8h_source.html#l00271">s</a>, <a class="el" href="core_2autogen_8h_source.html#l00305">size</a>, <a class="el" href="def_8cpp_source.html#l00452">thorin::Idx::size()</a>, <a class="el" href="def_8h_source.html#l00697">thorin::Idx::size2bitwidth()</a>, <a class="el" href="core_2autogen_8h_source.html#l00056">t</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -1650,7 +1742,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 
 <p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00401">401</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00137">a</a>, <a class="el" href="core_2autogen_8h_source.html#l00019">add</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="core_8h_source.html#l00023">mode()</a>, <a class="el" href="core_2autogen_8h_source.html#l00020">mul</a>, <a class="el" href="def_8h_source.html#l00344">thorin::Def::projs()</a>, <a class="el" href="core_2autogen_8h_source.html#l00271">s</a>, <a class="el" href="core_2autogen_8h_source.html#l00162">shl</a>, <a class="el" href="def_8cpp_source.html#l00452">thorin::Idx::size()</a>, <a class="el" href="core_2autogen_8h_source.html#l00160">sub</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00137">a</a>, <a class="el" href="core_2autogen_8h_source.html#l00019">add</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="core_8h_source.html#l00023">mode()</a>, <a class="el" href="core_2autogen_8h_source.html#l00020">mul</a>, <a class="el" href="def_8h_source.html#l00370">thorin::Def::projs()</a>, <a class="el" href="core_2autogen_8h_source.html#l00271">s</a>, <a class="el" href="core_2autogen_8h_source.html#l00162">shl</a>, <a class="el" href="def_8cpp_source.html#l00452">thorin::Idx::size()</a>, <a class="el" href="core_2autogen_8h_source.html#l00160">sub</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -1688,7 +1780,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 
 <p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00612">612</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="lam_8h_source.html#l00193">thorin::App::arg()</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="core_2autogen_8h_source.html#l00042">f</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00344">thorin::Def::projs()</a>, <a class="el" href="core_2autogen_8h_source.html#l00271">s</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="lam_8h_source.html#l00197">thorin::App::arg()</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="core_2autogen_8h_source.html#l00042">f</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00370">thorin::Def::projs()</a>, <a class="el" href="core_2autogen_8h_source.html#l00271">s</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -1728,7 +1820,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 
 <p class="definition">Definition at line <a class="el" href="core_8h_source.html#l00049">49</a> of file <a class="el" href="core_8h_source.html">core.h</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8cpp_source.html#l00164">thorin::World::app()</a>, <a class="el" href="world_8h_source.html#l00223">thorin::World::ax()</a>, <a class="el" href="def_8h_source.html#l00222">thorin::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="world_8cpp_source.html#l00164">thorin::World::app()</a>, <a class="el" href="world_8h_source.html#l00223">thorin::World::ax()</a>, <a class="el" href="def_8h_source.html#l00248">thorin::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>

@@ -114,7 +114,6 @@ $(document).ready(function(){initNavTree('def_8h.html',''); initResizable(); });
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#define-members">Macros</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle"><div class="title">def.h File Reference</div></div>
 </div><!--header-->
@@ -210,14 +209,9 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ab6c106c44c8584cd4bdb99b75b915c38"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ab6c106c44c8584cd4bdb99b75b915c38">thorin::Defs</a> = Span&lt; const Def * &gt;</td></tr>
-<tr class="separator:ab6c106c44c8584cd4bdb99b75b915c38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81c6780cfdf58e5be888c4c16c68476d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a81c6780cfdf58e5be888c4c16c68476d">thorin::DefArray</a> = Array&lt; const Def * &gt;</td></tr>
-<tr class="separator:a81c6780cfdf58e5be888c4c16c68476d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a00699ac904a16b60cdac9cc7005ed0d8"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a00699ac904a16b60cdac9cc7005ed0d8">thorin::NormalizeFn</a> = Ref(*)(Ref, Ref, Ref)</td></tr>
-<tr class="separator:a00699ac904a16b60cdac9cc7005ed0d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39c45420c934930021cbf0784f2ce5a6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a39c45420c934930021cbf0784f2ce5a6">thorin::Uses</a> = absl::flat_hash_set&lt; Use, UseHash, UseEq &gt;</td></tr>
-<tr class="separator:a39c45420c934930021cbf0784f2ce5a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Def</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p >GIDSet / GIDMap keyed by Def::gid of <code>conset Def*</code>. </p>
+</div></td></tr>
 <tr class="memitem:ad6fd3e5738182c43950e6e22607a7cd6"><td class="memTemplParams" colspan="2">template&lt;class To &gt; </td></tr>
 <tr class="memitem:ad6fd3e5738182c43950e6e22607a7cd6"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ad6fd3e5738182c43950e6e22607a7cd6">thorin::DefMap</a> = GIDMap&lt; const Def *, To &gt;</td></tr>
 <tr class="separator:ad6fd3e5738182c43950e6e22607a7cd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -225,6 +219,21 @@ Typedefs</h2></td></tr>
 <tr class="separator:a7fddaff34d4e4927bc748c28b49eef46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7907156065ecc2f7a8ad6d0c4b48752d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a7907156065ecc2f7a8ad6d0c4b48752d">thorin::Def2Def</a> = DefMap&lt; const Def * &gt;</td></tr>
 <tr class="separator:a7907156065ecc2f7a8ad6d0c4b48752d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6c106c44c8584cd4bdb99b75b915c38"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ab6c106c44c8584cd4bdb99b75b915c38">thorin::Defs</a> = Span&lt; const Def * &gt;</td></tr>
+<tr class="separator:ab6c106c44c8584cd4bdb99b75b915c38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81c6780cfdf58e5be888c4c16c68476d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a81c6780cfdf58e5be888c4c16c68476d">thorin::DefArray</a> = Array&lt; const Def * &gt;</td></tr>
+<tr class="separator:a81c6780cfdf58e5be888c4c16c68476d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Def (Mutable)</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p >GIDSet / GIDMap keyed by Def::gid of <code>Def*</code>. </p>
+</div></td></tr>
+<tr class="memitem:a224fc7612589a582a48dbb6167ef3e14"><td class="memTemplParams" colspan="2">template&lt;class To &gt; </td></tr>
+<tr class="memitem:a224fc7612589a582a48dbb6167ef3e14"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a224fc7612589a582a48dbb6167ef3e14">thorin::MutMap</a> = GIDMap&lt; Def *, To &gt;</td></tr>
+<tr class="separator:a224fc7612589a582a48dbb6167ef3e14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89eae41d087b28bd4eba7fafd36d6fdf"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a89eae41d087b28bd4eba7fafd36d6fdf">thorin::MutSet</a> = GIDSet&lt; Def * &gt;</td></tr>
+<tr class="separator:a89eae41d087b28bd4eba7fafd36d6fdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cc502ae65de73467eb1e87f435968d7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a0cc502ae65de73467eb1e87f435968d7">thorin::Mut2Mut</a> = MutMap&lt; Def * &gt;</td></tr>
+<tr class="separator:a0cc502ae65de73467eb1e87f435968d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">DefDef</div></td></tr>
 <tr class="memitem:a1c686b5d4a914909b3433cae517ec294"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a1c686b5d4a914909b3433cae517ec294">thorin::DefDef</a> = std::tuple&lt; const Def *, const Def * &gt;</td></tr>
 <tr class="separator:a1c686b5d4a914909b3433cae517ec294"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79fff1449ba1eaecead8f607520f8574"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a79fff1449ba1eaecead8f607520f8574">thorin::DefVec</a> = std::vector&lt; const Def * &gt;</td></tr>
@@ -234,75 +243,72 @@ Typedefs</h2></td></tr>
 <tr class="separator:aefcf5612184c98f309c0a49b174bb5fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf1a7e310ceb35245e55027593cf1025"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#aaf1a7e310ceb35245e55027593cf1025">thorin::DefDefSet</a> = absl::flat_hash_set&lt; DefDef, DefDefHash, DefDefEq &gt;</td></tr>
 <tr class="separator:aaf1a7e310ceb35245e55027593cf1025"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a224fc7612589a582a48dbb6167ef3e14"><td class="memTemplParams" colspan="2">template&lt;class To &gt; </td></tr>
-<tr class="memitem:a224fc7612589a582a48dbb6167ef3e14"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a224fc7612589a582a48dbb6167ef3e14">thorin::MutMap</a> = GIDMap&lt; Def *, To &gt;</td></tr>
-<tr class="separator:a224fc7612589a582a48dbb6167ef3e14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89eae41d087b28bd4eba7fafd36d6fdf"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a89eae41d087b28bd4eba7fafd36d6fdf">thorin::MutSet</a> = GIDSet&lt; Def * &gt;</td></tr>
-<tr class="separator:a89eae41d087b28bd4eba7fafd36d6fdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0cc502ae65de73467eb1e87f435968d7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a0cc502ae65de73467eb1e87f435968d7">thorin::Mut2Mut</a> = MutMap&lt; Def * &gt;</td></tr>
-<tr class="separator:a0cc502ae65de73467eb1e87f435968d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af280f2e34b689af6206dfb9756aa1df5"><td class="memTemplParams" colspan="2">template&lt;class To &gt; </td></tr>
-<tr class="memitem:af280f2e34b689af6206dfb9756aa1df5"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#af280f2e34b689af6206dfb9756aa1df5">thorin::VarMap</a> = GIDMap&lt; const Var *, To &gt;</td></tr>
-<tr class="separator:af280f2e34b689af6206dfb9756aa1df5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a229e892ca840ebda9ce60cfad90ae1b0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a229e892ca840ebda9ce60cfad90ae1b0">thorin::VarSet</a> = GIDSet&lt; const Var * &gt;</td></tr>
-<tr class="separator:a229e892ca840ebda9ce60cfad90ae1b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a574519644134310f7123469cf121d0a2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a574519644134310f7123469cf121d0a2">thorin::Var2Var</a> = VarMap&lt; const Var * &gt;</td></tr>
-<tr class="separator:a574519644134310f7123469cf121d0a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:aa68fef075db159e1626cb89e0874e023"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">: node_t { <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a921d97e8cfab1f7c0026e2d98995d14c">thorin::Node::Type</a>
-, <a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023ae882a8f030afe817e8f82f3a2bc2710a">thorin::Node::Univ</a>
-, <a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a92dc8a43fbe7c390956a899a27b8b08d">thorin::Node::UMax</a>
-, <a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023aa7f623c1c58f22b66c65460a385801fb">thorin::Node::UInc</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023ae882a8f030afe817e8f82f3a2bc2710a">thorin::Node::Univ</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a92dc8a43fbe7c390956a899a27b8b08d">thorin::Node::UMax</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023aa7f623c1c58f22b66c65460a385801fb">thorin::Node::UInc</a>
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023acc524d86ec74bf18ee3f5a5ec4d36b6d">thorin::Node::Pi</a>
-, <a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a3083dfa50d05b28c3cafe6ec116d0362">thorin::Node::Lam</a>
-, <a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023ad26ed8ccf9be433863b45140f88c43ff">thorin::Node::App</a>
-, <a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023ac1fb2543759c1fd49ae0fea3855ea812">thorin::Node::Sigma</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a3083dfa50d05b28c3cafe6ec116d0362">thorin::Node::Lam</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023ad26ed8ccf9be433863b45140f88c43ff">thorin::Node::App</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023ac1fb2543759c1fd49ae0fea3855ea812">thorin::Node::Sigma</a>
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023adebbca699bf3e5ae3338dd01934423bc">thorin::Node::Tuple</a>
-, <a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a257bf2499ed2c21151ca373f7c4c0307">thorin::Node::Extract</a>
-, <a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a5d47f4021a0e2f797e8232d6e4b29cc4">thorin::Node::Insert</a>
-, <a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a5f71ccf180cb6f7fb169c8632cc66912">thorin::Node::Arr</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a257bf2499ed2c21151ca373f7c4c0307">thorin::Node::Extract</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a5d47f4021a0e2f797e8232d6e4b29cc4">thorin::Node::Insert</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a5f71ccf180cb6f7fb169c8632cc66912">thorin::Node::Arr</a>
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023ac5d4ed55a25bdab2945a7027dc213778">thorin::Node::Pack</a>
-, <a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023ac41543bb0ee7c88b2ca13e9f72de28dc">thorin::Node::Join</a>
-, <a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a8488f8c3464a90aa07238d6ae0bce35d">thorin::Node::Vel</a>
-, <a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a2761c4aad624ceedae7edbf3c551c49b">thorin::Node::Test</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023ac41543bb0ee7c88b2ca13e9f72de28dc">thorin::Node::Join</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a8488f8c3464a90aa07238d6ae0bce35d">thorin::Node::Vel</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a2761c4aad624ceedae7edbf3c551c49b">thorin::Node::Test</a>
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023aed6c4ae568966987abe32f7fc9342f3e">thorin::Node::Top</a>
-, <a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a1176c238713240939d0ce7767f2c83fd">thorin::Node::Meet</a>
-, <a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a756f26cda5f2e0caa8254e8e9aa11e49">thorin::Node::Ac</a>
-, <a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a32daf84d1b553daef38b172edace4d9c">thorin::Node::Pick</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a1176c238713240939d0ce7767f2c83fd">thorin::Node::Meet</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a756f26cda5f2e0caa8254e8e9aa11e49">thorin::Node::Ac</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a32daf84d1b553daef38b172edace4d9c">thorin::Node::Pick</a>
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a68c4ea4a1177ed112e3b590ef39b6538">thorin::Node::Bot</a>
-, <a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023aad888bbf600987dd2d6f78a8e50c88b7">thorin::Node::Proxy</a>
-, <a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a1e0700ae57d0a544e259f1ae04af55c4">thorin::Node::Axiom</a>
-, <a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a8a318b95f9e4e08fd5b5cbcadcd93b7e">thorin::Node::Lit</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023aad888bbf600987dd2d6f78a8e50c88b7">thorin::Node::Proxy</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a1e0700ae57d0a544e259f1ae04af55c4">thorin::Node::Axiom</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a8a318b95f9e4e08fd5b5cbcadcd93b7e">thorin::Node::Lit</a>
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a1b3ad193ab60d8bfe3aa5f31beef9355">thorin::Node::Nat</a>
-, <a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a14586df6a2656fabf41a56e19c844434">thorin::Node::Idx</a>
-, <a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a7a5700ae028d415a5e1e20feac76eda5">thorin::Node::Var</a>
-, <a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a8d94437120ef9485341077ce00c86443">thorin::Node::Infer</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a14586df6a2656fabf41a56e19c844434">thorin::Node::Idx</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a7a5700ae028d415a5e1e20feac76eda5">thorin::Node::Var</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a8d94437120ef9485341077ce00c86443">thorin::Node::Infer</a>
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023abd8d7821a2fd1239acef09706db6bace">thorin::Node::Global</a>
-, <a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a9aa3d738ffa11f86c81842510d5288df">thorin::Node::Singleton</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a9aa3d738ffa11f86c81842510d5288df">thorin::Node::Singleton</a>
 <br />
  }</td></tr>
 <tr class="separator:aa68fef075db159e1626cb89e0874e023"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb917bebc699083d990fc4592abcc50e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50e">thorin::Sort</a> { <br />
-&#160;&#160;<a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50eacf5f3091e30dee6597885d8c0e0c357f">thorin::Term</a>
-, <a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50eaa1fa27779242b4902f7ae3bdd5c6d508">thorin::Type</a>
-, <a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50ead626102cfc2416a570fc0dc582a9b771">thorin::Kind</a>
-, <a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50ead511f8439ecde36647437fbba67a4394">thorin::Space</a>
-, <br />
-&#160;&#160;<a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50ea143bb06341e537e7143fb33624517946">thorin::Univ</a>
-, <a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50eaa0db49ba470c1c9ae2128c3470339153">thorin::Level</a>
-<br />
- }</td></tr>
-<tr class="separator:abb917bebc699083d990fc4592abcc50e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -333,15 +339,49 @@ Functions</h2></td></tr>
 <tr class="memitem:a1de4d5b631f17319d8e0fa712800fa14"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a1de4d5b631f17319d8e0fa712800fa14">thorin::error</a> (const Def *def, const char *fmt, Args &amp;&amp;... args)</td></tr>
 <tr class="separator:a1de4d5b631f17319d8e0fa712800fa14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">Var</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p >GIDSet / GIDMap keyed by Var::gid of <code>const Var*</code>. </p>
+</td></tr>
+<tr class="memitem:abb917bebc699083d990fc4592abcc50e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50e">thorin::Sort</a> { <br />
+&#160;&#160;<a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50eacf5f3091e30dee6597885d8c0e0c357f">thorin::Term</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50eaa1fa27779242b4902f7ae3bdd5c6d508">thorin::Type</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50ead626102cfc2416a570fc0dc582a9b771">thorin::Kind</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50ead511f8439ecde36647437fbba67a4394">thorin::Space</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50ea143bb06341e537e7143fb33624517946">thorin::Univ</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50eaa0db49ba470c1c9ae2128c3470339153">thorin::Level</a>
+<br />
+ }</td></tr>
+<tr class="separator:abb917bebc699083d990fc4592abcc50e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af280f2e34b689af6206dfb9756aa1df5"><td class="memTemplParams" colspan="2">template&lt;class To &gt; </td></tr>
+<tr class="memitem:af280f2e34b689af6206dfb9756aa1df5"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#af280f2e34b689af6206dfb9756aa1df5">thorin::VarMap</a> = GIDMap&lt; const Var *, To &gt;</td></tr>
+<tr class="separator:af280f2e34b689af6206dfb9756aa1df5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a229e892ca840ebda9ce60cfad90ae1b0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a229e892ca840ebda9ce60cfad90ae1b0">thorin::VarSet</a> = GIDSet&lt; const Var * &gt;</td></tr>
+<tr class="separator:a229e892ca840ebda9ce60cfad90ae1b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a574519644134310f7123469cf121d0a2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a574519644134310f7123469cf121d0a2">thorin::Var2Var</a> = VarMap&lt; const Var * &gt;</td></tr>
+<tr class="separator:a574519644134310f7123469cf121d0a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00699ac904a16b60cdac9cc7005ed0d8"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a00699ac904a16b60cdac9cc7005ed0d8">thorin::NormalizeFn</a> = Ref(*)(Ref, Ref, Ref)</td></tr>
+<tr class="separator:a00699ac904a16b60cdac9cc7005ed0d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39c45420c934930021cbf0784f2ce5a6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a39c45420c934930021cbf0784f2ce5a6">thorin::Uses</a> = absl::flat_hash_set&lt; Use, UseHash, UseEq &gt;</td></tr>
+<tr class="separator:a39c45420c934930021cbf0784f2ce5a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Dep</h2></td></tr>
 <tr class="memitem:a55a6c38c7e5330a05b17f8134f60264a"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a55a6c38c7e5330a05b17f8134f60264a">thorin::Dep</a> : unsigned { <br />
 &#160;&#160;<a class="el" href="namespacethorin.html#a55a6c38c7e5330a05b17f8134f60264aa6adf97f83acf6453d4a6a4b1070f3754">thorin::None</a> = 0
-, <a class="el" href="namespacethorin.html#a55a6c38c7e5330a05b17f8134f60264aa2c5d94dd609855f43c21c46744afec3d">thorin::Axiom</a> = 1 &lt;&lt; 0
-, <a class="el" href="namespacethorin.html#a55a6c38c7e5330a05b17f8134f60264aa442b0d534b230e2f2c9b562974652f79">thorin::Infer</a> = 1 &lt;&lt; 1
-, <a class="el" href="namespacethorin.html#a55a6c38c7e5330a05b17f8134f60264aaebb87a770abac0e394d963d20ed574b7">thorin::Mut</a> = 1 &lt;&lt; 2
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin.html#a55a6c38c7e5330a05b17f8134f60264aa2c5d94dd609855f43c21c46744afec3d">thorin::Axiom</a> = 1 &lt;&lt; 0
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin.html#a55a6c38c7e5330a05b17f8134f60264aa442b0d534b230e2f2c9b562974652f79">thorin::Infer</a> = 1 &lt;&lt; 1
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin.html#a55a6c38c7e5330a05b17f8134f60264aaebb87a770abac0e394d963d20ed574b7">thorin::Mut</a> = 1 &lt;&lt; 2
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin.html#a55a6c38c7e5330a05b17f8134f60264aaf56ec2ab97d604832d90f6394e3f341f">thorin::Proxy</a> = 1 &lt;&lt; 3
-, <a class="el" href="namespacethorin.html#a55a6c38c7e5330a05b17f8134f60264aa5a92344ee95acf10c31901b36418be77">thorin::Var</a> = 1 &lt;&lt; 4
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin.html#a55a6c38c7e5330a05b17f8134f60264aa5a92344ee95acf10c31901b36418be77">thorin::Var</a> = 1 &lt;&lt; 4
 <br />
  }</td></tr>
 <tr class="separator:a55a6c38c7e5330a05b17f8134f60264a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -420,7 +460,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="keyword">private</span>:                                           \</div>
 <div class="line">    <span class="keyword">friend</span> <span class="keyword">class </span>World;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00178">178</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00204">204</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -507,7 +547,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p>Use as mixin to wrap all kind of Def::proj and Def::projs variants. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00136">136</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00162">162</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -527,7 +567,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00173">173</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00199">199</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -562,7 +602,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p>Use as mixin to declare setters for Def::loc &amp; Def::name using a <em>covariant</em> return type. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00156">156</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00182">182</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>

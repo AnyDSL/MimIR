@@ -134,14 +134,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a819a1153f0037cc74f0aebf14bd00629"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a130a9d5fd5cb4f47011683fc8d3348b4"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Sym.html#a130a9d5fd5cb4f47011683fc8d3348b4">end</a> () const</td></tr>
 <tr class="separator:a130a9d5fd5cb4f47011683fc8d3348b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">cast operators</div></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Cast Operators</div></td></tr>
 <tr class="memitem:a49db318ca2085b6088ba2467e927cbe4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Sym.html#a49db318ca2085b6088ba2467e927cbe4">operator std::string_view</a> () const</td></tr>
 <tr class="separator:a49db318ca2085b6088ba2467e927cbe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af119462f627c306219c751183d095046"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Sym.html#af119462f627c306219c751183d095046">operator const std::string &amp;</a> () const</td></tr>
 <tr class="separator:af119462f627c306219c751183d095046"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3bd324985bdadfceb0bf89c6d740550d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Sym.html#a3bd324985bdadfceb0bf89c6d740550d">operator bool</a> () const</td></tr>
 <tr class="separator:a3bd324985bdadfceb0bf89c6d740550d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">access operators</div></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Access Operators</div></td></tr>
 <tr class="memitem:ab94f6aaa2862bec0b806a1062c1ecbbe"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Sym.html#ab94f6aaa2862bec0b806a1062c1ecbbe">operator[]</a> (<a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> i) const</td></tr>
 <tr class="separator:ab94f6aaa2862bec0b806a1062c1ecbbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7b27a2036ff3ede4062255da43ef8c6"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Sym.html#ab7b27a2036ff3ede4062255da43ef8c6">operator*</a> () const</td></tr>
@@ -149,7 +149,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abd59c04550b593aa71f934081d985a76"><td class="memItemLeft" align="right" valign="top">const std::string *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Sym.html#abd59c04550b593aa71f934081d985a76">operator-&gt;</a> () const</td></tr>
 <tr class="separator:abd59c04550b593aa71f934081d985a76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader">comparisions</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader">Comparisons</h2></td></tr>
 <tr class="memitem:a54ec1860d0c430d754a82084b89ad34b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Sym.html#a54ec1860d0c430d754a82084b89ad34b">operator==</a> (char c) const</td></tr>
 <tr class="separator:a54ec1860d0c430d754a82084b89ad34b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b96954364ef93657305259f39f4045f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Sym.html#a6b96954364ef93657305259f39f4045f">operator!=</a> (char c) const</td></tr>
@@ -163,9 +163,9 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >A <a class="el" href="classthorin_1_1Sym.html" title="A Symbol just wraps a const std::string*, so pass Sym itself around as value.">Sym</a>bol just wraps a <code>const std::string*</code>, so pass <a class="el" href="classthorin_1_1Sym.html" title="A Symbol just wraps a const std::string*, so pass Sym itself around as value.">Sym</a> itself around as value. </p>
-<p >With the exception of the empty string, you should only create <a class="el" href="classthorin_1_1Sym.html" title="A Symbol just wraps a const std::string*, so pass Sym itself around as value.">Sym</a>bols via <a class="el" href="classthorin_1_1SymPool.html#aa99023728b86d1989eb48b62d893f1f7">SymPool::sym</a> which in turn will toss all <a class="el" href="classthorin_1_1Sym.html" title="A Symbol just wraps a const std::string*, so pass Sym itself around as value.">Sym</a>bols into a big hash set. This makes <a class="el" href="classthorin_1_1Sym.html#a54ec1860d0c430d754a82084b89ad34b">Sym::operator==</a> and <a class="el" href="classthorin_1_1Sym.html#a6b96954364ef93657305259f39f4045f">Sym::operator!=</a> an O(1) operation. The empty string is internally handled as <code>nullptr</code>. Thus, you can create a <a class="el" href="classthorin_1_1Sym.html" title="A Symbol just wraps a const std::string*, so pass Sym itself around as value.">Sym</a>bol representing an empty string without having access to the <a class="el" href="classthorin_1_1SymPool.html" title="Hash set where all strings - wrapped in Symbol - live in.">SymPool</a>. The empty string, <code>nullptr</code>, and <code>"\0"</code> are all identified as <code><a class="el" href="classthorin_1_1Sym.html#aba2ab6d1d758f2db79d6bc71db7c660b">Sym::Sym()</a></code>. </p>
+<p >With the exception of the empty string, you should only create <a class="el" href="classthorin_1_1Sym.html" title="A Symbol just wraps a const std::string*, so pass Sym itself around as value.">Sym</a>bols via <a class="el" href="classthorin_1_1SymPool.html#aa99023728b86d1989eb48b62d893f1f7">SymPool::sym</a>. This in turn will toss all <a class="el" href="classthorin_1_1Sym.html" title="A Symbol just wraps a const std::string*, so pass Sym itself around as value.">Sym</a>bols into a big hash set. This makes <a class="el" href="classthorin_1_1Sym.html#a54ec1860d0c430d754a82084b89ad34b">Sym::operator==</a> and <a class="el" href="classthorin_1_1Sym.html#a6b96954364ef93657305259f39f4045f">Sym::operator!=</a> an O(1) operation. The empty string is internally handled as <code>nullptr</code>. Thus, you can create a <a class="el" href="classthorin_1_1Sym.html" title="A Symbol just wraps a const std::string*, so pass Sym itself around as value.">Sym</a>bol representing an empty string without having access to the <a class="el" href="classthorin_1_1SymPool.html" title="Hash set where all strings - wrapped in Symbol - live in.">SymPool</a>. The empty string, <code>nullptr</code>, and <code>"\0"</code> are all identified as <a class="el" href="classthorin_1_1Sym.html#aba2ab6d1d758f2db79d6bc71db7c660b">Sym::Sym()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00018">18</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00019">19</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aba2ab6d1d758f2db79d6bc71db7c660b" name="aba2ab6d1d758f2db79d6bc71db7c660b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aba2ab6d1d758f2db79d6bc71db7c660b">&#9670;&#160;</a></span>Sym()</h2>
@@ -216,7 +216,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00032">32</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00033">33</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
 </div>
 </div>
@@ -243,7 +243,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00033">33</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00034">34</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
 </div>
 </div>
@@ -270,7 +270,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00051">51</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00052">52</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
 </div>
 </div>
@@ -297,9 +297,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00050">50</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00051">51</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
-<p class="reference">References <a class="el" href="sym_8h_source.html#l00058">operator-&gt;()</a>.</p>
+<p class="reference">References <a class="el" href="sym_8h_source.html#l00059">operator-&gt;()</a>.</p>
 
 </div>
 </div>
@@ -326,7 +326,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00049">49</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00050">50</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
 </div>
 </div>
@@ -354,7 +354,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00039">39</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00040">40</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
 </div>
 </div>
@@ -382,7 +382,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00041">41</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00042">42</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
 </div>
 </div>
@@ -409,9 +409,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00057">57</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00058">58</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
-<p class="reference">References <a class="el" href="sym_8h_source.html#l00058">operator-&gt;()</a>.</p>
+<p class="reference">References <a class="el" href="sym_8h_source.html#l00059">operator-&gt;()</a>.</p>
 
 </div>
 </div>
@@ -438,9 +438,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00058">58</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00059">59</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="sym_8h_source.html#l00050">operator const std::string &amp;()</a>, and <a class="el" href="sym_8h_source.html#l00057">operator*()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="sym_8h_source.html#l00051">operator const std::string &amp;()</a>, and <a class="el" href="sym_8h_source.html#l00058">operator*()</a>.</p>
 
 </div>
 </div>
@@ -468,7 +468,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00042">42</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00043">43</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
 </div>
 </div>
@@ -496,7 +496,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00038">38</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00039">39</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
 </div>
 </div>
@@ -524,7 +524,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00040">40</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00041">41</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
 </div>
 </div>
@@ -552,7 +552,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00056">56</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sym_8h_source.html#l00057">57</a> of file <a class="el" href="sym_8h_source.html">sym.h</a>.</p>
 
 </div>
 </div>

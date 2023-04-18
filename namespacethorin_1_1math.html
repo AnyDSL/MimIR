@@ -133,19 +133,28 @@ Variables</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Mode</h2></td></tr>
 <tr class="memitem:aff01396947cc8f294f10ddaec9e8d4ca"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4ca">Mode</a> : nat_t { <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa2451cb1bbbbdeadb363013d2fe2bbb8f">top</a> = 0
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caafb72985afb637442c3428edbfcab42cf">none</a> = top
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa49780db85e66f388ddbd75410248db52">nnan</a> = 1 &lt;&lt; 0
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caab4443a092df50028ff5c3e11d58d1135">ninf</a> = 1 &lt;&lt; 1
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caafb72985afb637442c3428edbfcab42cf">none</a> = top
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa49780db85e66f388ddbd75410248db52">nnan</a> = 1 &lt;&lt; 0
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caab4443a092df50028ff5c3e11d58d1135">ninf</a> = 1 &lt;&lt; 1
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa451eb19da340803f2a8b2407a9a0af05">nsz</a> = 1 &lt;&lt; 2
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa98db259675dc243f0a4c95ef6b59350f">arcp</a> = 1 &lt;&lt; 3
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa591813887f3357070c45c279b0fbb9db">contract</a> = 1 &lt;&lt; 4
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa6f3bb93d53cc842dabaf318cc4920c80">afn</a> = 1 &lt;&lt; 5
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa98db259675dc243f0a4c95ef6b59350f">arcp</a> = 1 &lt;&lt; 3
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa591813887f3357070c45c279b0fbb9db">contract</a> = 1 &lt;&lt; 4
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa6f3bb93d53cc842dabaf318cc4920c80">afn</a> = 1 &lt;&lt; 5
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa51f94b89c5bd1ef61af4687faee90237">reassoc</a> = 1 &lt;&lt; 6
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caacc296d9f838506ef43f9a85c9cb1d6d9">finite</a> = nnan | ninf
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa91de8c2707a7342aa4693a263404ca8c">unsafe</a> = nsz | arcp | reassoc
-, <a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa75ae81d9f34fba3b8ff7d443518ac983">fast</a> = nnan | ninf | nsz | arcp | contract | afn | reassoc
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caacc296d9f838506ef43f9a85c9cb1d6d9">finite</a> = nnan | ninf
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa91de8c2707a7342aa4693a263404ca8c">unsafe</a> = nsz | arcp | reassoc
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa75ae81d9f34fba3b8ff7d443518ac983">fast</a> = nnan | ninf | nsz | arcp | contract | afn | reassoc
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caaed12a2391d1a04e3ff2fa64048db4863">bot</a> = fast
 <br />
@@ -194,9 +203,12 @@ Variables</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%math.arith</h2></td></tr>
 <tr class="memitem:aa313bc84ec271c77a5d5d1f6b3897ec4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#aa313bc84ec271c77a5d5d1f6b3897ec4">arith</a> : flags_t { <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aa313bc84ec271c77a5d5d1f6b3897ec4a45de8c627f4c537dd05cfd3dab1a0a36">add</a> = 0x3825490000000100
-, <a class="el" href="namespacethorin_1_1math.html#aa313bc84ec271c77a5d5d1f6b3897ec4a863f99016e8a7d80db237d49643f432c">sub</a> = 0x3825490000000101
-, <a class="el" href="namespacethorin_1_1math.html#aa313bc84ec271c77a5d5d1f6b3897ec4aa47625b6c04dd8ae4c3a60d759a0a4e7">mul</a> = 0x3825490000000102
-, <a class="el" href="namespacethorin_1_1math.html#aa313bc84ec271c77a5d5d1f6b3897ec4afc1a284af4fda7948584dab673881dc0">div</a> = 0x3825490000000103
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aa313bc84ec271c77a5d5d1f6b3897ec4a863f99016e8a7d80db237d49643f432c">sub</a> = 0x3825490000000101
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aa313bc84ec271c77a5d5d1f6b3897ec4aa47625b6c04dd8ae4c3a60d759a0a4e7">mul</a> = 0x3825490000000102
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aa313bc84ec271c77a5d5d1f6b3897ec4afc1a284af4fda7948584dab673881dc0">div</a> = 0x3825490000000103
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#aa313bc84ec271c77a5d5d1f6b3897ec4ab1b8e1495d33858059c67fde581ebefc">rem</a> = 0x3825490000000104
 <br />
@@ -221,14 +233,20 @@ Variables</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%math.extrema</h2></td></tr>
 <tr class="memitem:a774a066119a3684958cf3d8565ff52a8"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8">extrema</a> : flags_t { <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8ad1c887896b48aa2a9c4e43d9a078af70">im</a> = 0x3825490000000200
-, <a class="el" href="namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8af9be911bfd79f024a23cf7be7c140486">fmin</a> = im
-, <a class="el" href="namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8a944245d361338aeb5cc4ba415b28fd73">iM</a> = 0x3825490000000201
-, <a class="el" href="namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8a1856bed17bf34ba61fa943ce45662127">fmax</a> = iM
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8af9be911bfd79f024a23cf7be7c140486">fmin</a> = im
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8a944245d361338aeb5cc4ba415b28fd73">iM</a> = 0x3825490000000201
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8a1856bed17bf34ba61fa943ce45662127">fmax</a> = iM
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8ac1ccd3c46f171f95ae8b8d3467f8dd64">Im</a> = 0x3825490000000202
-, <a class="el" href="namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8a37d2b8ae5de994415a09a66b91baad69">ieee754min</a> = Im
-, <a class="el" href="namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8a24d3478a2b8b37e683a4a8302adfea00">IM</a> = 0x3825490000000203
-, <a class="el" href="namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8a91c8847700cdefe83157d370d84e9082">ieee754max</a> = IM
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8a37d2b8ae5de994415a09a66b91baad69">ieee754min</a> = Im
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8a24d3478a2b8b37e683a4a8302adfea00">IM</a> = 0x3825490000000203
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8a91c8847700cdefe83157d370d84e9082">ieee754max</a> = IM
 <br />
  }</td></tr>
 <tr class="separator:a774a066119a3684958cf3d8565ff52a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -249,42 +267,64 @@ Variables</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%math.tri</h2></td></tr>
 <tr class="memitem:a3ce804e3dfaa4ffc4002611767d5e58b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58b">tri</a> : flags_t { <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba46d0554f214d3a2dec67777291c78b43">ahff</a> = 0x3825490000000300
-, <a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba5fb80f6231ed10a8f882cd7b8784d20b">sin</a> = ahff
-, <a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58bae9babc90df4fa7d95b98d263c980d9b8">ahfF</a> = 0x3825490000000301
-, <a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba3ba963458121173bac48573d0dc48892">cos</a> = ahfF
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba5fb80f6231ed10a8f882cd7b8784d20b">sin</a> = ahff
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58bae9babc90df4fa7d95b98d263c980d9b8">ahfF</a> = 0x3825490000000301
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba3ba963458121173bac48573d0dc48892">cos</a> = ahfF
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba1fae2c70355eba2011c28b7f3779c2fc">ahFf</a> = 0x3825490000000302
-, <a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba4657aa99e1a2428ea4cf07f371243135">tan</a> = ahFf
-, <a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba2e9fdad2db619826298fac82dd6e9779">ahFF</a> = 0x3825490000000303
-, <a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba171fb020139a3c71afd02c2c34bf0612">aHff</a> = 0x3825490000000304
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba4657aa99e1a2428ea4cf07f371243135">tan</a> = ahFf
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba2e9fdad2db619826298fac82dd6e9779">ahFF</a> = 0x3825490000000303
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba171fb020139a3c71afd02c2c34bf0612">aHff</a> = 0x3825490000000304
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58bafb7ff8f92f98d47585c66d364bc2fcf0">sinh</a> = aHff
-, <a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba611a5ed075e6a68e5c564630beda6946">h</a> = aHff
-, <a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba1722c1529e6559a14e4645b639b99d97">aHfF</a> = 0x3825490000000305
-, <a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba84caaab33bdc562a640dfbfd8051fa2d">cosh</a> = aHfF
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba611a5ed075e6a68e5c564630beda6946">h</a> = aHff
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba1722c1529e6559a14e4645b639b99d97">aHfF</a> = 0x3825490000000305
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba84caaab33bdc562a640dfbfd8051fa2d">cosh</a> = aHfF
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58bac45652f2947228e7fa8c247da6724633">aHFf</a> = 0x3825490000000306
-, <a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba7c12c20d4b34baf10c60d22a29b6decc">tanh</a> = aHFf
-, <a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58bac5773dba3b5d3dc292f68fc0e927ded0">aHFF</a> = 0x3825490000000307
-, <a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba68162067f49ed5ffad09dbe524e91737">Ahff</a> = 0x3825490000000308
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba7c12c20d4b34baf10c60d22a29b6decc">tanh</a> = aHFf
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58bac5773dba3b5d3dc292f68fc0e927ded0">aHFF</a> = 0x3825490000000307
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba68162067f49ed5ffad09dbe524e91737">Ahff</a> = 0x3825490000000308
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58baa148ea054eca09226704747439633cdf">asin</a> = Ahff
-, <a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba60f1a8639065b52013c23fc0ccece534">a</a> = Ahff
-, <a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba8a11c3b88a2960d2749e2780c773818a">AhfF</a> = 0x3825490000000309
-, <a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58bad86cbfef3df7ac911f1d2605b4c1db41">acos</a> = AhfF
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba60f1a8639065b52013c23fc0ccece534">a</a> = Ahff
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba8a11c3b88a2960d2749e2780c773818a">AhfF</a> = 0x3825490000000309
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58bad86cbfef3df7ac911f1d2605b4c1db41">acos</a> = AhfF
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58bad33a1bd269346796cc020767c944bfb6">AhFf</a> = 0x382549000000030a
-, <a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba91e3ce23f4a6bdf8c4ac28df80299ccf">atan</a> = AhFf
-, <a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba5d762a5468e7ec8dd60fd1e2498abede">AhFF</a> = 0x382549000000030b
-, <a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba34b8ab3650b264fef9b7052c11ff7af4">AHff</a> = 0x382549000000030c
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba91e3ce23f4a6bdf8c4ac28df80299ccf">atan</a> = AhFf
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba5d762a5468e7ec8dd60fd1e2498abede">AhFF</a> = 0x382549000000030b
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba34b8ab3650b264fef9b7052c11ff7af4">AHff</a> = 0x382549000000030c
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58bad5da1aeb7301950278b9e8a8c150766e">asinh</a> = AHff
-, <a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba530f06c2f94f6ce28eb71ddf223183ae">AHfF</a> = 0x382549000000030d
-, <a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58babbc318760d6b9e8a6bed4780bf831578">acosh</a> = AHfF
-, <a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba0128eda1417bd4b64635155e38752cd5">AHFf</a> = 0x382549000000030e
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba530f06c2f94f6ce28eb71ddf223183ae">AHfF</a> = 0x382549000000030d
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58babbc318760d6b9e8a6bed4780bf831578">acosh</a> = AHfF
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba0128eda1417bd4b64635155e38752cd5">AHFf</a> = 0x382549000000030e
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58bafc539a7a7715906f5b7c7db5d97b9bf9">atanh</a> = AHFf
-, <a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba2acf183341e8c60e853c07e1aaf9d1f5">AHFF</a> = 0x382549000000030f
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba2acf183341e8c60e853c07e1aaf9d1f5">AHFF</a> = 0x382549000000030f
 <br />
  }</td></tr>
 <tr class="separator:a3ce804e3dfaa4ffc4002611767d5e58b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -309,8 +349,11 @@ Variables</h2></td></tr>
 <tr class="separator:adb513511d10525c5acf25f5f64266929"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%math.rt</h2></td></tr>
-<tr class="memitem:a2e71ce8f35522fa3a803797e930e5ddf"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a2e71ce8f35522fa3a803797e930e5ddf">rt</a> : flags_t { <a class="el" href="namespacethorin_1_1math.html#a2e71ce8f35522fa3a803797e930e5ddfa2adf7677d6630835f8e4cfc5fd6e4302">sq</a> = 0x3825490000000500
-, <a class="el" href="namespacethorin_1_1math.html#a2e71ce8f35522fa3a803797e930e5ddfa4b1b5a0f069db8df94c9d48ea823ed4d">cb</a> = 0x3825490000000501
+<tr class="memitem:a2e71ce8f35522fa3a803797e930e5ddf"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a2e71ce8f35522fa3a803797e930e5ddf">rt</a> : flags_t { <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a2e71ce8f35522fa3a803797e930e5ddfa2adf7677d6630835f8e4cfc5fd6e4302">sq</a> = 0x3825490000000500
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a2e71ce8f35522fa3a803797e930e5ddfa4b1b5a0f069db8df94c9d48ea823ed4d">cb</a> = 0x3825490000000501
+<br />
  }</td></tr>
 <tr class="separator:a2e71ce8f35522fa3a803797e930e5ddf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2191c9079354097898b7df0ba218f883"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacethorin_1_1math.html#a2e71ce8f35522fa3a803797e930e5ddf">rt</a> id&gt; </td></tr>
@@ -330,14 +373,20 @@ Variables</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%math.exp</h2></td></tr>
 <tr class="memitem:a00e74d198c086fe1fb880c87ea3bb8fe"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fe">exp</a> : flags_t { <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fead9f2588c436d436d3f18a5dadac37efb">bl</a> = 0x3825490000000600
-, <a class="el" href="namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea5f71e9a601eddb735afe66f6f58dc6d9">exp</a> = bl
-, <a class="el" href="namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea5e258b8b92a1188b1fcf39d2467cc91d">bL</a> = 0x3825490000000601
-, <a class="el" href="namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8feae9cf998d2c129918d6ac0913287090a5">log</a> = bL
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea5f71e9a601eddb735afe66f6f58dc6d9">exp</a> = bl
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea5e258b8b92a1188b1fcf39d2467cc91d">bL</a> = 0x3825490000000601
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8feae9cf998d2c129918d6ac0913287090a5">log</a> = bL
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea4237abb58fd06eb53c5c9f5f8289ade1">Bl</a> = 0x3825490000000602
-, <a class="el" href="namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea4e9c84df80a6dd3be2eaf40f79b51dcf">exp2</a> = Bl
-, <a class="el" href="namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea142b727ea49fce05521e55d5137130a9">b</a> = Bl
-, <a class="el" href="namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea38015fe0a0f89084d5c4301ba5dfcc85">BL</a> = 0x3825490000000603
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea4e9c84df80a6dd3be2eaf40f79b51dcf">exp2</a> = Bl
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea142b727ea49fce05521e55d5137130a9">b</a> = Bl
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea38015fe0a0f89084d5c4301ba5dfcc85">BL</a> = 0x3825490000000603
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea6b0f54a2a201c4240bfc3ab831058832">log2</a> = BL
 <br />
@@ -358,8 +407,11 @@ Variables</h2></td></tr>
 <tr class="separator:a95b868c038b09e9046322aeecf4f07d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%math.er</h2></td></tr>
-<tr class="memitem:a6dd8e88f4b0e547ae80c76780070119a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a6dd8e88f4b0e547ae80c76780070119a">er</a> : flags_t { <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa90f68af5cf3a2df678258becc2d3f714">f</a> = 0x3825490000000700
-, <a class="el" href="namespacethorin_1_1math.html#a6dd8e88f4b0e547ae80c76780070119aa086bc53f36970b37e40ffc9d36fc30dc">fc</a> = 0x3825490000000701
+<tr class="memitem:a6dd8e88f4b0e547ae80c76780070119a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a6dd8e88f4b0e547ae80c76780070119a">er</a> : flags_t { <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa90f68af5cf3a2df678258becc2d3f714">f</a> = 0x3825490000000700
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#a6dd8e88f4b0e547ae80c76780070119aa086bc53f36970b37e40ffc9d36fc30dc">fc</a> = 0x3825490000000701
+<br />
  }</td></tr>
 <tr class="separator:a6dd8e88f4b0e547ae80c76780070119a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac0d2a33688ecfe15836f4126f63f96c"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacethorin_1_1math.html#a6dd8e88f4b0e547ae80c76780070119a">er</a> id&gt; </td></tr>
@@ -377,8 +429,11 @@ Variables</h2></td></tr>
 <tr class="separator:a7e1bafab431d930aec3b73b5477619c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%math.gamma</h2></td></tr>
-<tr class="memitem:a89cb7767a778d4204e26860588096530"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a89cb7767a778d4204e26860588096530">gamma</a> : flags_t { <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa015078298390da60594549c03f211240">t</a> = 0x3825490000000800
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fab56bd84b4325cae0ff953569daeeecd6">l</a> = 0x3825490000000801
+<tr class="memitem:a89cb7767a778d4204e26860588096530"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a89cb7767a778d4204e26860588096530">gamma</a> : flags_t { <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa015078298390da60594549c03f211240">t</a> = 0x3825490000000800
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fab56bd84b4325cae0ff953569daeeecd6">l</a> = 0x3825490000000801
+<br />
  }</td></tr>
 <tr class="separator:a89cb7767a778d4204e26860588096530"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8695d8e00a1c7308da513601f0aa79f"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacethorin_1_1math.html#a89cb7767a778d4204e26860588096530">gamma</a> id&gt; </td></tr>
@@ -398,44 +453,68 @@ Variables</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%math.cmp</h2></td></tr>
 <tr class="memitem:ab58b0e0aa2975069c10eaf88cff49d5f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5f">cmp</a> : flags_t { <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5faa8a4fa1f20051298cafecf2e0017b61e">ugle</a> = 0x3825490000000900
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa90f68af5cf3a2df678258becc2d3f714">f</a> = 0x3825490000000700
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5faf6c943d09c26fa62b63ca0be6f128a00">uglE</a> = 0x3825490000000901
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fae3d34eae2d815c0b27ec6caf0bdb2707">e</a> = uglE
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa90f68af5cf3a2df678258becc2d3f714">f</a> = 0x3825490000000700
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5faf6c943d09c26fa62b63ca0be6f128a00">uglE</a> = 0x3825490000000901
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fae3d34eae2d815c0b27ec6caf0bdb2707">e</a> = uglE
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa1c77ce918fdf91c3a3f5ad23d550f8ca">ugLe</a> = 0x3825490000000902
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fab56bd84b4325cae0ff953569daeeecd6">l</a> = 0x3825490000000801
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa5b5b96b26fca556b5f4fe7a9ab518536">ugLE</a> = 0x3825490000000903
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa6610618976be0d91d5f65449ab5cbe31">le</a> = ugLE
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fab56bd84b4325cae0ff953569daeeecd6">l</a> = 0x3825490000000801
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa5b5b96b26fca556b5f4fe7a9ab518536">ugLE</a> = 0x3825490000000903
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa6610618976be0d91d5f65449ab5cbe31">le</a> = ugLE
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fad388c268085578f1acb459ad1865ec90">uGle</a> = 0x3825490000000904
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa1399663b77cc792a2adbbb9790295ea1">g</a> = uGle
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa90413302ce0cc7a5e524998eaf24f9c7">uGlE</a> = 0x3825490000000905
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fac4c308a34366a61a6d0fa7648abe4f00">ge</a> = uGlE
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa1399663b77cc792a2adbbb9790295ea1">g</a> = uGle
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa90413302ce0cc7a5e524998eaf24f9c7">uGlE</a> = 0x3825490000000905
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fac4c308a34366a61a6d0fa7648abe4f00">ge</a> = uGlE
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5facad4fc7dbb432b61ff232e9655e73744">uGLe</a> = 0x3825490000000906
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa33514849b83fe7dc41d216f2282ce2bd">ne</a> = uGLe
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa22cdf6f6aed88da37cce1bce22ca0d86">uGLE</a> = 0x3825490000000907
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa40cb03db644ff4a37367abcc150c5938">o</a> = uGLE
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa33514849b83fe7dc41d216f2282ce2bd">ne</a> = uGLe
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa22cdf6f6aed88da37cce1bce22ca0d86">uGLE</a> = 0x3825490000000907
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa40cb03db644ff4a37367abcc150c5938">o</a> = uGLE
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fad55876f2c437bb5238209b466e21b323">Ugle</a> = 0x3825490000000908
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fada09cf1016a53638950c1933cab851ea">u</a> = Ugle
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa7387ebc5867516684f7e68488b200926">UglE</a> = 0x3825490000000909
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa3bf70fc23413c5fe801a55198390271a">ue</a> = UglE
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fada09cf1016a53638950c1933cab851ea">u</a> = Ugle
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa7387ebc5867516684f7e68488b200926">UglE</a> = 0x3825490000000909
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa3bf70fc23413c5fe801a55198390271a">ue</a> = UglE
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa4c394b7fc2971c52dd9c0cb9d4175be9">UgLe</a> = 0x382549000000090a
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fabc298854e325a9c726bfeeb6f842d717">ul</a> = UgLe
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa33dcaac4188e68a9e03c65ea302908cf">UgLE</a> = 0x382549000000090b
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa7f50ccbd9de4f54d89bec8e9a071abc5">ule</a> = UgLE
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fabc298854e325a9c726bfeeb6f842d717">ul</a> = UgLe
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa33dcaac4188e68a9e03c65ea302908cf">UgLE</a> = 0x382549000000090b
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa7f50ccbd9de4f54d89bec8e9a071abc5">ule</a> = UgLE
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fae52fd2019029ff178698098fefa87d63">UGle</a> = 0x382549000000090c
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa2bb6d6b536ab879b00278ca9031f0143">ug</a> = UGle
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa3a1488279d989dc356dc95e7e36468f7">UGlE</a> = 0x382549000000090d
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5faac684ca9e172f53e29e0e0c011a8cc9e">uge</a> = UGlE
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa2bb6d6b536ab879b00278ca9031f0143">ug</a> = UGle
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa3a1488279d989dc356dc95e7e36468f7">UGlE</a> = 0x382549000000090d
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5faac684ca9e172f53e29e0e0c011a8cc9e">uge</a> = UGlE
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fab622ed72a49719419c304c84ea1f0b8d">UGLe</a> = 0x382549000000090e
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa8195652010d24c76aad556f821b49254">une</a> = UGLe
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa02016af6df7c2edf0971327a781509f5">UGLE</a> = 0x382549000000090f
-, <a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa015078298390da60594549c03f211240">t</a> = 0x3825490000000800
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa8195652010d24c76aad556f821b49254">une</a> = UGLe
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa02016af6df7c2edf0971327a781509f5">UGLE</a> = 0x382549000000090f
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa015078298390da60594549c03f211240">t</a> = 0x3825490000000800
 <br />
  }</td></tr>
 <tr class="separator:ab58b0e0aa2975069c10eaf88cff49d5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -456,9 +535,12 @@ Variables</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%math.conv</h2></td></tr>
 <tr class="memitem:af5795434c033575fef9826010d58bc2d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2d">conv</a> : flags_t { <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2da773617e49009ca6b1da12f8fdf1fdca2">s2f</a> = 0x3825490000000a00
-, <a class="el" href="namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2dafc614cb09a28cadbf7b0c5f9afc65989">u2f</a> = 0x3825490000000a01
-, <a class="el" href="namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2da64cc4f23df17159f168885fa9dcb812c">f2s</a> = 0x3825490000000a02
-, <a class="el" href="namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2da8c1b96a13f7c1435ca95fb36566ed661">f2u</a> = 0x3825490000000a03
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2dafc614cb09a28cadbf7b0c5f9afc65989">u2f</a> = 0x3825490000000a01
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2da64cc4f23df17159f168885fa9dcb812c">f2s</a> = 0x3825490000000a02
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2da8c1b96a13f7c1435ca95fb36566ed661">f2u</a> = 0x3825490000000a03
 , <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2da7b39587020327361b25edf8fdae94209">f2f</a> = 0x3825490000000a04
 <br />
@@ -1147,7 +1229,7 @@ template&lt;<a class="el" href="namespacethorin_1_1math.html#aa313bc84ec271c77a5
 
 <p class="definition">Definition at line <a class="el" href="math_2normalizers_8cpp_source.html#l00222">222</a> of file <a class="el" href="math_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="math_2autogen_8h_source.html#l00100">a</a>, <a class="el" href="math_2autogen_8h_source.html#l00030">add</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="math_2autogen_8h_source.html#l00173">b</a>, <a class="el" href="math_2autogen_8h_source.html#l00033">div</a>, <a class="el" href="math_8h_source.html#l00037">fast</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="math_8h_source.html#l00081">isa_f()</a>, <a class="el" href="math_8h_source.html#l00094">lit_f()</a>, <a class="el" href="math_8h_source.html#l00046">mode()</a>, <a class="el" href="math_2autogen_8h_source.html#l00032">mul</a>, <a class="el" href="def_8h_source.html#l00344">thorin::Def::projs()</a>, <a class="el" href="math_2autogen_8h_source.html#l00034">rem</a>, <a class="el" href="math_2autogen_8h_source.html#l00031">sub</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="math_2autogen_8h_source.html#l00100">a</a>, <a class="el" href="math_2autogen_8h_source.html#l00030">add</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="math_2autogen_8h_source.html#l00173">b</a>, <a class="el" href="math_2autogen_8h_source.html#l00033">div</a>, <a class="el" href="math_8h_source.html#l00037">fast</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="math_8h_source.html#l00081">isa_f()</a>, <a class="el" href="math_8h_source.html#l00094">lit_f()</a>, <a class="el" href="math_8h_source.html#l00046">mode()</a>, <a class="el" href="math_2autogen_8h_source.html#l00032">mul</a>, <a class="el" href="def_8h_source.html#l00370">thorin::Def::projs()</a>, <a class="el" href="math_2autogen_8h_source.html#l00034">rem</a>, <a class="el" href="math_2autogen_8h_source.html#l00031">sub</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -1187,7 +1269,7 @@ template&lt;<a class="el" href="namespacethorin_1_1math.html#ab58b0e0aa2975069c1
 
 <p class="definition">Definition at line <a class="el" href="math_2normalizers_8cpp_source.html#l00350">350</a> of file <a class="el" href="math_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="math_2autogen_8h_source.html#l00100">a</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="math_2autogen_8h_source.html#l00173">b</a>, <a class="el" href="math_2autogen_8h_source.html#l00196">f</a>, <a class="el" href="def_8h_source.html#l00344">thorin::Def::projs()</a>, <a class="el" href="math_2autogen_8h_source.html#l00218">t</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="math_2autogen_8h_source.html#l00100">a</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="math_2autogen_8h_source.html#l00173">b</a>, <a class="el" href="math_2autogen_8h_source.html#l00196">f</a>, <a class="el" href="def_8h_source.html#l00370">thorin::Def::projs()</a>, <a class="el" href="math_2autogen_8h_source.html#l00218">t</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -1227,7 +1309,7 @@ template&lt;<a class="el" href="namespacethorin_1_1math.html#af5795434c033575fef
 
 <p class="definition">Definition at line <a class="el" href="math_2normalizers_8cpp_source.html#l00363">363</a> of file <a class="el" href="math_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="lam_8h_source.html#l00193">thorin::App::arg()</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="math_2autogen_8h_source.html#l00296">f2f</a>, <a class="el" href="math_2autogen_8h_source.html#l00294">f2s</a>, <a class="el" href="math_2autogen_8h_source.html#l00295">f2u</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="math_8h_source.html#l00081">isa_f()</a>, <a class="el" href="math_2autogen_8h_source.html#l00219">l</a>, <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>, <a class="el" href="math_2autogen_8h_source.html#l00292">s2f</a>, <a class="el" href="def_8h_source.html#l00686">thorin::Idx::size2bitwidth()</a>, <a class="el" href="def_8h_source.html#l00222">thorin::Def::type()</a>, <a class="el" href="math_2autogen_8h_source.html#l00293">u2f</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="lam_8h_source.html#l00197">thorin::App::arg()</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="math_2autogen_8h_source.html#l00296">f2f</a>, <a class="el" href="math_2autogen_8h_source.html#l00294">f2s</a>, <a class="el" href="math_2autogen_8h_source.html#l00295">f2u</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="math_8h_source.html#l00081">isa_f()</a>, <a class="el" href="math_2autogen_8h_source.html#l00219">l</a>, <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>, <a class="el" href="math_2autogen_8h_source.html#l00292">s2f</a>, <a class="el" href="def_8h_source.html#l00697">thorin::Idx::size2bitwidth()</a>, <a class="el" href="def_8h_source.html#l00248">thorin::Def::type()</a>, <a class="el" href="math_2autogen_8h_source.html#l00293">u2f</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -1347,7 +1429,7 @@ template&lt;<a class="el" href="namespacethorin_1_1math.html#a774a066119a3684958
 
 <p class="definition">Definition at line <a class="el" href="math_2normalizers_8cpp_source.html#l00287">287</a> of file <a class="el" href="math_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="math_2autogen_8h_source.html#l00100">a</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="math_2autogen_8h_source.html#l00173">b</a>, <a class="el" href="math_2autogen_8h_source.html#l00058">fmax</a>, <a class="el" href="math_2autogen_8h_source.html#l00056">fmin</a>, <a class="el" href="math_2autogen_8h_source.html#l00062">ieee754max</a>, <a class="el" href="math_2autogen_8h_source.html#l00060">ieee754min</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="math_8h_source.html#l00017">nnan</a>, <a class="el" href="math_8h_source.html#l00025">nsz</a>, <a class="el" href="def_8h_source.html#l00344">thorin::Def::projs()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="math_2autogen_8h_source.html#l00100">a</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="math_2autogen_8h_source.html#l00173">b</a>, <a class="el" href="math_2autogen_8h_source.html#l00058">fmax</a>, <a class="el" href="math_2autogen_8h_source.html#l00056">fmin</a>, <a class="el" href="math_2autogen_8h_source.html#l00062">ieee754max</a>, <a class="el" href="math_2autogen_8h_source.html#l00060">ieee754min</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="math_8h_source.html#l00017">nnan</a>, <a class="el" href="math_8h_source.html#l00025">nsz</a>, <a class="el" href="def_8h_source.html#l00370">thorin::Def::projs()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
