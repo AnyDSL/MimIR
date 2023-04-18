@@ -8,7 +8,7 @@ else()
 endif()
 
 configure_file(lit.site.cfg.py.in lit.site.cfg.py @ONLY)
-add_custom_target(check
+add_custom_target(lit
         COMMAND ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/lit" "${CMAKE_CURRENT_BINARY_DIR}" -v --timeout=300
         DEPENDS thorin thorin_all_plugins)
 

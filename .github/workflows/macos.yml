@@ -76,7 +76,7 @@ jobs:
         working-directory: ${{github.workspace}}/build
         run: |
           export PATH=${{github.workspace}}/bin:$PATH
-          cmake --build ${{github.workspace}}/build -v --target check
+          cmake --build ${{github.workspace}}/build -v --target lit
 
       - name: Test
         working-directory: ${{github.workspace}}/build

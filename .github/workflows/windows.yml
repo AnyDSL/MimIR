@@ -61,7 +61,7 @@ jobs:
         run: |
           call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
           set PATH=${{github.workspace}}/bin;%PATH%
-          cmake --build ${{github.workspace}}/build -v --target check
+          cmake --build ${{github.workspace}}/build -v --target lit
 
       - name: Test
         working-directory: ${{github.workspace}}/build

@@ -107,7 +107,7 @@ target_include_directories(libthorin
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/> # for config.h
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/>       # for thorin/*
-        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/modules/half/include>
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/external/half/include>
         $<INSTALL_INTERFACE:include>
 )
 
@@ -128,4 +128,4 @@ endif()
 install(TARGETS libthorin EXPORT install_exports INCLUDES DESTINATION include)
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} DESTINATION include FILES_MATCHING PATTERN "*.h")
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/config.h DESTINATION include/thorin)
-install(FILES ${PROJECT_SOURCE_DIR}/modules/half/include/half.hpp DESTINATION include)
+install(FILES ${PROJECT_SOURCE_DIR}/external/half/include/half.hpp DESTINATION include)
