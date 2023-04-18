@@ -62,6 +62,8 @@ var def_8h =
     [ "operator&", "def_8h.html#a61a3a6294c41470122e64271506291fb", null ],
     [ "operator&", "def_8h.html#a58ff1afd62c82d2960e01023b6204583", null ],
     [ "operator&", "def_8h.html#a18134e90494d262232fae6aad1e66ba9", null ],
+    [ "operator<<", "def_8h.html#a95f0f301a18bbb510ecfbdffaaa70376", null ],
+    [ "operator<<", "def_8h.html#a2a31cdc1f3cb66759ad44e6052b4b575", null ],
     [ "operator==", "def_8h.html#a26431d4cec8a02f3b17e0e277f05c9d0", null ],
     [ "operator==", "def_8h.html#a35c57a45b298546a946b2e128a7fe004", null ],
     [ "operator|", "def_8h.html#a05e4042b75626c2cee51c3ca443cf644", null ],
