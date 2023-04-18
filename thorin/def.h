@@ -493,9 +493,9 @@ protected:
         mutable World* world_;
     };
 
-    /// @name Wrappers for World::sym
+    /// @name get_sym
     ///@{
-    /// These are here to have Def::set%ters inline without including `thorin/world.h`.
+    /// These are wrappers for World::sym and allwos us to have Def::set%ters inline without including `thorin/world.h`.
     Sym get_sym(const char*) const;
     Sym get_sym(std::string_view) const;
     Sym get_sym(std::string) const;
