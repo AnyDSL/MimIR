@@ -7,27 +7,29 @@ This document comprises some information that is related to coding but not direc
 ## Coding Style
 
 Use the following coding conventions:
-* class/type names in `CamelCase`
-* constants as defined in an `enum` or via `static const` in `Camel_Snake_Case`
-* macro names in `SNAKE_IN_ALL_CAPS`
-* everything else like variables, functions, etc. in `snake_case`
-* use a trailing underscore suffix for a `private_or_protected_member_variable_`
-* don't do that for a `public_member_variable`
-* use `struct` for [plain old data](https://en.cppreference.com/w/cpp/named_req/PODType)
-* use `class` for everything else
-* visibility groups in this order:
+* Class/Type names in `CamelCase`.
+* Constants as defined in an `enum` or via `static const` in `Camel_Snake_Case`.
+* Macro names in `SNAKE_IN_ALL_CAPS`.
+* Everything else like variables, functions, etc. in `snake_case`.
+* Use a trailing underscore suffix for a `private_or_protected_member_variable_`.
+* Methods/functions that return a `bool` should be prefixed with `is_`.
+* Methods/functions that return a `std::optional` or a pointer that may be `nullptr` should be prefixed with `isa_`.
+* Don't do that for a `public_member_variable`.
+* Use `struct` for [plain old data](https://en.cppreference.com/w/cpp/named_req/PODType).
+* Use `class` for everything else.
+* Prefer `// C++-style comments` over `/* C-style comments */`.
+* use `#pragma once` as guard for headers.
+* Visibility groups in this order:
     1. `public`
     2. `protected`
     3. `private`
-* prefer `// C++-style comments` over `/* C-style comments */`
 
 ### Doxygen Style
 
-* use `/// three slashes for Doxygen`
-* use [Markdown-style](https://doxygen.nl/manual/markdown.html) Doxygen comments
-* [group](https://www.doxygen.nl/manual/grouping.html) your methods into logical units if possible
-* methods/functions that return a `bool` should be prefixed with `is_`
-* methods/functions that return a `std::optional` or a pointer that may be `nullptr` should be prefixed with `isa_`
+* Use `/// three slashes for Doxygen`
+* Use [Markdown-style](https://doxygen.nl/manual/markdown.html) Doxygen comments
+* Group your functions etc. via [named member groups](https://www.doxygen.nl/manual/grouping.html#memgroup) into logical units.
+* Capitalize the group name unless it is directly named after a method
 
 For all the other minute details like indentation width etc. use [clang-format](https://clang.llvm.org/docs/ClangFormat.html) and the provided `.clang-format` file in the root of the repository.
 In order to run `clang-format` automatically on all changed files, switch to the provided pre-commit hook:
@@ -36,6 +38,30 @@ git config --local core.hooksPath .githooks/
 ```
 Note that you can [disable clang-format for a piece of code](https://clang.llvm.org/docs/ClangFormatStyleOptions.html#disabling-formatting-on-a-piece-of-code).
 In addition, you might want to check out plugins like the [Vim integration](https://clang.llvm.org/docs/ClangFormat.html#vim-integration).
+
+### Example
+
+```c++
+#pragma once
+
+class Foo {
+public:
+    Foo(int foo, int bar)
+        : foo_(foo)
+        , bar_(bar)
+    {}
+
+    /// @name Getters
+    ///@{
+    int foo() const { return foo_; }
+    int bar() const { return foo_; }
+    ///@}
+
+private:
+    int foo_;
+    int bar_;
+}
+```
 
 ## Debugging
 

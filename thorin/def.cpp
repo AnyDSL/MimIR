@@ -149,21 +149,22 @@ template TExt<true >*   TExt<true >  ::stub(World&, Ref);
 // clang-format on
 
 /*
- * freeze
+ * immutabilize
  */
 
-const Pi* Pi::freeze() {
+// TODO check for recursion
+const Pi* Pi::immutabilize() {
     if (!Scope::is_free(this, codom())) return world().pi(dom(), codom());
     return nullptr;
 }
 
-const Sigma* Sigma::freeze() {
+const Sigma* Sigma::immutabilize() {
     if (std::ranges::none_of(ops(), [this](auto op) { return Scope::is_free(this, op); }))
         return static_cast<const Sigma*>(*world().sigma(ops()));
     return nullptr;
 }
 
-const Def* Arr::freeze() {
+const Def* Arr::immutabilize() {
     auto& w = world();
     if (auto n = Lit::isa(shape())) {
         if (Scope::is_free(this, body()))
@@ -173,7 +174,7 @@ const Def* Arr::freeze() {
     return nullptr;
 }
 
-const Def* Pack::freeze() {
+const Def* Pack::immutabilize() {
     auto& w = world();
     if (auto n = Lit::isa(shape())) {
         if (Scope::is_free(this, body()))

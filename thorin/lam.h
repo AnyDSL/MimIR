@@ -71,7 +71,7 @@ public:
     static const Def* infer(const Def* dom, const Def* codom);
     ///@}
 
-    const Pi* freeze() override;
+    const Pi* immutabilize() override;
     Pi* stub(World&, Ref) override;
 
     THORIN_DEF_MIXIN(Pi)

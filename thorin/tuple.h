@@ -20,7 +20,7 @@ public:
     Sigma* set(Defs ops) { return Def::set(ops)->as<Sigma>(); }
     ///@}
 
-    const Sigma* freeze() override;
+    const Sigma* immutabilize() override;
     Sigma* stub(World&, Ref) override;
 
     /// @name Type Checking
@@ -60,7 +60,7 @@ public:
     Arr* set_body(const Def* body) { return Def::set(1, body)->as<Arr>(); }
     ///@}
 
-    const Def* freeze() override;
+    const Def* immutabilize() override;
     Arr* stub(World&, Ref) override;
     const Def* reduce(const Def* arg) const;
 
@@ -90,7 +90,7 @@ public:
     Pack* set(const Def* body) { return Def::set(0, body)->as<Pack>(); }
     ///@}
 
-    const Def* freeze() override;
+    const Def* immutabilize() override;
     Pack* stub(World&, Ref) override;
     const Def* reduce(const Def* arg) const;
 

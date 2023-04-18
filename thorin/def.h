@@ -452,7 +452,8 @@ public:
     virtual Ref rebuild(World& w, Ref type, Defs ops) const = 0;
 
     /// Tries to make an immutable from a mutable.
-    virtual const Def* freeze() { return nullptr; }
+    /// This usually works if the mutable isn't recursive and its var isn't used.
+    virtual const Def* immutabilize() { return nullptr; }
 
     const Def* refine(size_t i, const Def* new_op) const;
 
