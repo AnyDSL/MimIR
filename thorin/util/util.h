@@ -3,6 +3,7 @@
 #include <optional>
 #include <queue>
 #include <stack>
+#include <type_traits>
 
 #include <absl/container/flat_hash_map.h>
 #include <absl/container/flat_hash_set.h>
@@ -185,14 +186,33 @@ struct GIDLt {
     bool operator()(T a, T b) const { return a->gid() < b->gid(); }
 };
 
+// clang-format off
 /// @name GID
 ///@{
-// clang-format off
 template<class K, class V> using GIDMap     = absl::flat_hash_map<K, V, GIDHash<K>, GIDEq<K>>;
 template<class K>          using GIDSet     = absl::flat_hash_set<K,    GIDHash<K>, GIDEq<K>>;
 template<class K, class V> using GIDNodeMap = absl::node_hash_map<K, V, GIDHash<K>, GIDEq<K>>;
 template<class K>          using GIDNodeSet = absl::node_hash_set<K,    GIDHash<K>, GIDEq<K>>;
-// clang-format on
 ///@}
+
+/// Use this to declare all kind of bit and comparison operators for an `enum` @p E.
+/// Note that the bit operators return the @p E's underlying type and not the original `enum` @p E.
+/// This is because the result may not be a valid `enum` value.
+/// For the same reason, it doesn't make sense to declare operators such as `&=`.
+#define THORIN_ENUM_OPERATORS(E)                                                                                                                                         \
+    constexpr inline auto operator&  (                       E  x,                       E  y) { return std::underlying_type_t<E>(x)  &  std::underlying_type_t<E>(y); } \
+    constexpr inline auto operator&  (std::underlying_type_t<E> x,                       E  y) { return                           x   &  std::underlying_type_t<E>(y); } \
+    constexpr inline auto operator&  (                       E x, std::underlying_type_t<E> y) { return std::underlying_type_t<E>(x)  &                            y ; } \
+    constexpr inline auto operator|  (                       E x,                        E  y) { return std::underlying_type_t<E>(x)  |  std::underlying_type_t<E>(y); } \
+    constexpr inline auto operator|  (std::underlying_type_t<E> x,                       E  y) { return                           x   |  std::underlying_type_t<E>(y); } \
+    constexpr inline auto operator|  (                       E x, std::underlying_type_t<E> y) { return std::underlying_type_t<E>(x)  |                            y ; } \
+    constexpr inline auto operator^  (                       E x,                        E  y) { return std::underlying_type_t<E>(x)  ^  std::underlying_type_t<E>(y); } \
+    constexpr inline auto operator^  (std::underlying_type_t<E> x,                       E  y) { return                           x   ^  std::underlying_type_t<E>(y); } \
+    constexpr inline auto operator^  (                       E x, std::underlying_type_t<E> y) { return std::underlying_type_t<E>(x)  ^                            y ; } \
+    constexpr inline auto operator<=>(std::underlying_type_t<E> x,                       E  y) { return                           x  <=> std::underlying_type_t<E>(y); } \
+    constexpr inline auto operator<=>(                       E x, std::underlying_type_t<E> y) { return std::underlying_type_t<E>(x) <=>                           y ; } \
+    constexpr inline auto operator== (std::underlying_type_t<E> x,                       E  y) { return                           x  ==  std::underlying_type_t<E>(y); } \
+    constexpr inline auto operator!= (                       E x, std::underlying_type_t<E> y) { return std::underlying_type_t<E>(x) !=                            y ; }
+// clang-format on
 
 } // namespace thorin

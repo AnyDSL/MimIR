@@ -36,11 +36,11 @@ public:
 
     /// @name Comparisons
     ///@{
-    bool operator==(char c) const { return (*this)->size() == 1 && (*this)[0] == c; }
-    bool operator!=(char c) const { return !((*this) == c); }
+    auto operator<=>(Sym other) const { return *(*this) <=> *other; }
     bool operator==(Sym other) const { return this->ptr_ == other.ptr_; }
     bool operator!=(Sym other) const { return this->ptr_ != other.ptr_; }
-    auto operator<=>(Sym other) const { return *(*this) <=> *other; }
+    bool operator==(char c) const { return (*this)->size() == 1 && (*this)[0] == c; }
+    bool operator!=(char c) const { return !((*this) == c); }
     friend bool operator==(char c, Sym s) { return s == c; }
     friend bool operator!=(char c, Sym s) { return s != c; }
     ///@}

@@ -159,7 +159,7 @@ Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref 
     auto w  = zw ? zw->arg(1) : nullptr;
 
     // if we reassociate, we have to forget about nsw/nuw
-    auto make_op = [&world, id](Ref a, Ref b) { return world.call(id, Mode::none, Defs{a, b}); };
+    auto make_op = [&world, id](Ref a, Ref b) { return world.call(id, (nat_t)Mode::none, Defs{a, b}); };
 
     if (la && lz) return make_op(make_op(la, lz), w);             // (1)
     if (lx && lz) return make_op(make_op(lx, lz), make_op(y, w)); // (2)
