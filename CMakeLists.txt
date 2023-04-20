@@ -58,7 +58,7 @@ set(ABSL_PROPAGATE_CXX_STD ON)
 set(ABSL_USE_EXTERNAL_GOOGLETEST ON)
 set(ABSL_ENABLE_INSTALL ON)
 add_subdirectory(modules/abseil-cpp EXCLUDE_FROM_ALL)
-add_subdirectory(modules/lyra       EXCLUDE_FROM_ALL)
+add_subdirectory(modules/CLI11      EXCLUDE_FROM_ALL)
 
 add_subdirectory(thorin)
 add_subdirectory(cli)

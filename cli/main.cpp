@@ -3,7 +3,7 @@
 
 #include <fstream>
 #include <iostream>
-#include <lyra/lyra.hpp>
+#include <CLI/CLI.hpp>
 
 #include "thorin/config.h"
 #include "thorin/driver.h"
@@ -16,6 +16,7 @@
 #include "thorin/pass/pipelinebuilder.h"
 #include "thorin/phase/phase.h"
 #include "thorin/util/sys.h"
+#include "CLI/Error.hpp"
 
 using namespace thorin;
 using namespace std::literals;
@@ -23,11 +24,14 @@ using namespace std::literals;
 enum Backends { Dot, H, LL, Md, Thorin, Num_Backends };
 
 int main(int argc, char** argv) {
+    CLI::App app{"The Higher ORder INtermediate Representation"};
+    auto formatter = app.get_formatter();
+    formatter->label("INT", "<level>");
+    formatter->label("TEXT", "<arg>");
     try {
         static const auto version = "thorin command-line utility version " THORIN_VER "\n";
 
         Driver driver;
-        bool show_help         = false;
         bool show_version      = false;
         bool list_search_paths = false;
         std::string input, prefix;
@@ -37,43 +41,32 @@ int main(int argc, char** argv) {
         std::array<std::string, Num_Backends> output;
         int verbose      = 0;
         int opt          = 2;
-        auto inc_verbose = [&](bool) { ++verbose; };
         auto& flags      = driver.flags();
 
         // clang-format off
-        auto cli = lyra::cli()
-            | lyra::help(show_help)
-            | lyra::opt(show_version            )["-v"]["--version"           ]("Display version info and exit.")
-            | lyra::opt(list_search_paths       )["-l"]["--list-search-paths" ]("List search paths in order and exit.")
-            | lyra::opt(clang,          "clang" )["-c"]["--clang"             ]("Path to clang executable (default: '" THORIN_WHICH " clang').")
-            | lyra::opt(plugins,        "plugin")["-p"]["--plugin"            ]("Dynamically load plugin.")
-            | lyra::opt(search_paths,   "path"  )["-P"]["--plugin-path"       ]("Path to search for plugins.")
-            | lyra::opt(inc_verbose             )["-V"]["--verbose"           ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
-            | lyra::opt(opt,            "level" )["-O"]["--optimize"          ]("Optimization level (default: 2).")
-            | lyra::opt(output[Dot   ], "file"  )      ["--output-dot"        ]("Emits the Thorin program as a graph using Graphviz' DOT language.")
-            | lyra::opt(output[H     ], "file"  )      ["--output-h"          ]("Emits a header file to be used to interface with a plugin in C++.")
-            | lyra::opt(output[LL    ], "file"  )      ["--output-ll"         ]("Compiles the Thorin program to LLVM.")
-            | lyra::opt(output[Md    ], "file"  )      ["--output-md"         ]("Emits the input formatted as Markdown.")
-            | lyra::opt(output[Thorin], "file"  )["-o"]["--output-thorin"     ]("Emits the Thorin program again.")
-            | lyra::opt(flags.bootstrap         )      ["--bootstrap"         ]("Puts thorin into \"bootstrap mode\". This means a `.plugin` directive has the same effect as an `.import` and will not load a library.")
-            | lyra::opt(flags.dump_gid, "level" )      ["--dump-gid"          ]("Dumps gid of inline expressions as a comment in output if <level> > 0. Use a <level> of 2 to also emit the gid of trivial defs.")
-            | lyra::opt(flags.dump_recursive    )      ["--dump-recursive"    ]("Dumps Thorin program with a simple recursive algorithm that is not readable again from Thorin but is less fragile and also works for broken Thorin programs.")
+        app.add_option(      "input file",      input,                      "Input file.");
+        app.add_flag  ("-v,--version",          show_version,               "Display version info and exit.");
+        app.add_flag  ("-V,--verbose",          verbose,                    "Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.");
+        app.add_flag  ("-l,--list-search_paths",list_search_paths,          "List search paths in order and exit.");
+        app.add_flag  (   "--bootstrap",        flags.bootstrap,            "Puts thorin into \"bootstrap mode\". This means a `.plugin` directive has the same effect as an `.import` and will not load a library.");
+        app.add_option("-c,--clang",            clang,                      "Path to clang executable.")->default_str(clang);
+        app.add_option("-p,--plugin",           plugins,                    "Dynamically load plugin.");
+        app.add_option("-P,--plugin-path",      search_paths,               "Path to search for plugins.");
+        app.add_option(   "--output-dot",       output[Dot   ],             "Emits the Thorin program as a graph using Graphviz' DOT language.");
+        app.add_option(   "--output-h",         output[H     ],             "Emits a header file to be used to interface with a plugin in C++.");
+        app.add_option(   "--output-ll",        output[LL    ],             "Compiles the Thorin program to LLVM.");
+        app.add_option(   "--output-md",        output[Md    ],             "Emits the input formatted as Markdown.");
+        app.add_option("-o,--output-thorin",    output[Thorin],             "Emits the Thorin program again.");
+        app.add_option("-O,--optimize",         opt,                        "Optimization level.")->default_val(2);
 #if THORIN_ENABLE_CHECKS
-            | lyra::opt(breakpoints,    "gid"   )["-b"]["--break"             ]("Trigger breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
-            | lyra::opt(flags.reeval_breakpoints)      ["--reeval-breakpoints"]("Triggers breakpoint even upon unfying a node that has already been built.")
-            | lyra::opt(flags.trace_gids        )      ["--trace-gids"        ]("Output gids during World::unify/insert.")
+        app.add_option("-b,--break",            breakpoints,                "Trigger breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.");
+        app.add_flag  ("--reeval-breakpoints",  flags.reeval_breakpoints,   "Triggers breakpoint even upon unfying a node that has already been built.");
+        app.add_flag  ("--trace-gids",          flags.trace_gids,           "Output gids during World::unify/insert.");
 #endif
-            | lyra::arg(input,          "file"  )                              ("Input file.")
-            ;
+        app.add_option("--dump-gid",            flags.dump_gid,             "Dumps gid of inline expressions as a comment in output if <level> > 0. Use a <level> of 2 to also emit the gid of trivial defs.")->default_val(0);
+        app.add_flag  ("--dump-recursive",      flags.dump_recursive,       "Dumps Thorin program with a simple recursive algorithm that is not readable again from Thorin but is less fragile and also works for broken Thorin programs.");
+        app.parse(argc, argv);
         // clang-format on
-
-        if (auto result = cli.parse({argc, argv}); !result) throw std::invalid_argument(result.message());
-
-        if (show_help) {
-            std::cout << cli << std::endl;
-            std::cout << "Use \"-\" as <file> to output to stdout." << std::endl;
-            return EXIT_SUCCESS;
-        }
 
         if (show_version) {
             std::cerr << version;
@@ -92,6 +85,7 @@ int main(int argc, char** argv) {
 #if THORIN_ENABLE_CHECKS
         for (auto b : breakpoints) world.breakpoint(b);
 #endif
+        if (verbose > int(Log::Level::Debug)) throw CLI::ValidationError("--verbose can only be given 0 to 4 times");
         driver.log().set(&std::cerr).set((Log::Level)verbose);
 
         // prepare output files and streams
@@ -148,6 +142,8 @@ int main(int argc, char** argv) {
             else
                 error("'ll' emitter not loaded; try loading 'mem' plugin");
         }
+    } catch (const CLI::ParseError &e) {
+        return app.exit(e);
     } catch (const std::exception& e) {
         errln("{}", e.what());
         return EXIT_FAILURE;

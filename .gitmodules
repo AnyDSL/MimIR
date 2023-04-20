@@ -1,6 +1,9 @@
 [submodule "abseil-cpp"]
 	path = modules/abseil-cpp
 	url = ../../abseil/abseil-cpp
+[submodule "CLI11"]
+	path = modules/CLI11
+	url = ../../CLIUtils/CLI11.git
 [submodule "doxygen-awesome-css"]
 	path = modules/doxygen-awesome-css
 	url = ../../jothepro/doxygen-awesome-css.git
@@ -10,6 +13,3 @@
 [submodule "half"]
 	path = modules/half
 	url = ../../AnyDSL/half.git
-[submodule "lyra"]
-	path = modules/lyra
-	url = ../../bfgroup/lyra.git
