@@ -26,7 +26,7 @@
             <a href="https://cmake.org/"><img src="https://img.shields.io/badge/cmake-3.20-blue.svg?logo=cmake" alt="CMake"></a>
             <a href="https://isocpp.org/"><img src="https://img.shields.io/badge/standard-C%2B%2B%2020-blue.svg?logo=C%2B%2B" alt="C++"></a>
             <a href="https://llvm.org/"><img src="https://img.shields.io/badge/LLVM%2FClang-13.x--14.x-blue?logo=llvm" alt="LLVM/Clang"></a>
-            <a href="https://github.com/AnyDSL/thorin2/tree/master/modules"><img src="https://img.shields.io/badge/submodules-5-blue?logo=git&logoColor=white" alt="Submodules"></a>
+            <a href="https://github.com/AnyDSL/thorin2/tree/master/modules"><img src="https://img.shields.io/badge/submodules-6-blue?logo=git&logoColor=white" alt="Submodules"></a>
         </td>
     </tr>
     <tr class="markdownTableRowEven">

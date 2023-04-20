@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ostream>
+#include <rang.hpp>
 
 #include "thorin/util/loc.h"
 
@@ -42,8 +43,8 @@ public:
     void log(Level level, Loc loc, const char* fmt, Args&&... args) const {
         if (ostream_ && level <= max_level_) {
             std::ostringstream oss;
-            oss << loc;
-            print(ostream(), "{}:{}: ", colorize(level2acro(level), level2color(level)), colorize(oss.str(), 7));
+            print(ostream(), "{}{}:{}{}:{} ", level2color(level), level2acro(level), rang::fg::gray, loc,
+                  rang::fg::reset);
             print(ostream(), fmt, std::forward<Args&&>(args)...) << std::endl;
         }
     }
@@ -57,9 +58,7 @@ public:
     /// @name Conversions
     ///@{
     static std::string_view level2acro(Level);
-    static Level str2level(std::string_view);
-    static int level2color(Level level);
-    static std::string colorize(std::string_view str, int color);
+    static rang::fg level2color(Level level);
     ///@}
 
 private:
