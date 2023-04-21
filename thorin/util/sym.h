@@ -15,7 +15,7 @@ namespace thorin {
 /// This makes Sym::operator== and Sym::operator!= an O(1) operation.
 /// The empty string is internally handled as `nullptr`.
 /// Thus, you can create a Sym%bol representing an empty string without having access to the SymPool.
-/// The empty string, `nullptr`, and `"\0"` are all identified as Sym::Sym().
+/// @note The empty string, `nullptr`, and `"\0"` are all identified as Sym::Sym().
 class Sym {
 private:
     Sym(const std::string* ptr)
