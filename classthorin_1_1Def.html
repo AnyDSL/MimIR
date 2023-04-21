@@ -228,20 +228,30 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af935d7bd0e841594abd9b63b21ebc78f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#af935d7bd0e841594abd9b63b21ebc78f">dep_const</a> () const</td></tr>
 <tr class="separator:af935d7bd0e841594abd9b63b21ebc78f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">proj</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p ><a class="anchor" id="proj"></a> Splits this <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a> via <a class="el" href="classthorin_1_1Extract.html" title="Extracts from a Sigma or Array-typed Extract::tuple the element at position Extract::index.">Extract</a>s or directly accessing the <a class="el" href="classthorin_1_1Def.html#a246337e70da227a251e631aab3fad84d">Def::ops</a> in the case of <a class="el" href="classthorin_1_1Sigma.html" title="A dependent tuple type.">Sigma</a>s or <a class="el" href="classthorin_1_1Arr.html" title="A (possibly paramterized) Array.">Arr</a>ays. </p>
-</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p ><a class="anchor" id="proj"></a> Splits this <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a> via <a class="el" href="classthorin_1_1Extract.html" title="Extracts from a Sigma or Array-typed Extract::tuple the element at position Extract::index.">Extract</a>s or directly accessing the <a class="el" href="classthorin_1_1Def.html#a246337e70da227a251e631aab3fad84d">Def::ops</a> in the case of <a class="el" href="classthorin_1_1Sigma.html" title="A dependent tuple type.">Sigma</a>s or <a class="el" href="classthorin_1_1Arr.html" title="A (possibly paramterized) Array.">Arr</a>ays.</p>
+<div class="fragment"><div class="line">std::array&lt;const Def*, 2&gt; ab = def-&gt;projs&lt;2&gt;();</div>
+<div class="line">std::array&lt;u64, 2&gt;        xy = def-&gt;projs&lt;2&gt;([](<span class="keyword">auto</span> def) { <span class="keywordflow">return</span> <a class="code hl_function" href="classthorin_1_1RuntimeCast.html#a909777be7f178004b0cca5ec68356c4c">Lit::as</a>(def); });</div>
+<div class="line"><span class="keyword">auto</span> [a, b]                  = def-&gt;projs&lt;2&gt;();</div>
+<div class="line"><span class="keyword">auto</span> [x, y]                  = def-&gt;projs&lt;2&gt;([](<span class="keyword">auto</span> def) { <span class="keywordflow">return</span> <a class="code hl_function" href="classthorin_1_1RuntimeCast.html#a909777be7f178004b0cca5ec68356c4c">Lit::as</a>(def); });</div>
+<div class="line">Array&lt;const Def*&gt; projs1     = def-&gt;projs(); <span class="comment">// &quot;projs1&quot; has def-&gt;num_projs() many elements</span></div>
+<div class="line">Array&lt;const Def*&gt; projs2     = def-&gt;projs(n);<span class="comment">// &quot;projs2&quot; has n elements - asserts if incorrect</span></div>
+<div class="line"><span class="comment">// same as above but applies Lit::as&lt;nat_t&gt;(op) to each element</span></div>
+<div class="line">Array&lt;const Lit*&gt; lits1      = def-&gt;projs(   [](<span class="keyword">auto</span> def) { <span class="keywordflow">return</span> <a class="code hl_function" href="classthorin_1_1RuntimeCast.html#a909777be7f178004b0cca5ec68356c4c">Lit::as</a>(def); });</div>
+<div class="line">Array&lt;const Lit*&gt; lits2      = def-&gt;projs(n, [](<span class="keyword">auto</span> def) { <span class="keywordflow">return</span> <a class="code hl_function" href="classthorin_1_1RuntimeCast.html#a909777be7f178004b0cca5ec68356c4c">Lit::as</a>(def); });</div>
+<div class="ttc" id="aclassthorin_1_1RuntimeCast_html_a909777be7f178004b0cca5ec68356c4c"><div class="ttname"><a href="classthorin_1_1RuntimeCast.html#a909777be7f178004b0cca5ec68356c4c">thorin::RuntimeCast&lt; Def &gt;::as</a></div><div class="ttdeci">T * as()</div><div class="ttdoc">static_cast with debug check.</div><div class="ttdef"><b>Definition:</b> <a href="cast_8h_source.html#l00023">cast.h:23</a></div></div>
+</div><!-- fragment --> </div></td></tr>
 <tr class="memitem:ade4d2dbcacdc78e6662c7ddf431f57e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2">num_projs</a> () const</td></tr>
-<tr class="memdesc:ade4d2dbcacdc78e6662c7ddf431f57e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields <a class="el" href="classthorin_1_1Def.html#a5077873bd4203c0ea099b044b0231d3d">Def::arity</a> as_lit, if it is in fact a <a class="el" href="classthorin_1_1Lit.html">Lit</a>, or <code>1</code> otherwise.  <a href="classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2">More...</a><br /></td></tr>
+<tr class="memdesc:ade4d2dbcacdc78e6662c7ddf431f57e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields <a class="el" href="classthorin_1_1Def.html#a16d05019a1084e09ba37ca6eb14fc36d">Def::as_lit_arity()</a>, if it is in fact a <a class="el" href="classthorin_1_1Lit.html">Lit</a>, or <code>1</code> otherwise.  <a href="classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2">More...</a><br /></td></tr>
 <tr class="separator:ade4d2dbcacdc78e6662c7ddf431f57e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5a66d05737e701114113c2cfda9002d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#af5a66d05737e701114113c2cfda9002d">proj</a> (<a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> a, <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> i) const</td></tr>
-<tr class="memdesc:af5a66d05737e701114113c2cfda9002d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to <a class="el" href="classthorin_1_1World.html#aa589e154cb6fd00699311c3951ca90ad">World::extract</a> while assuming an arity of <code>a</code> but also works on <a class="el" href="classthorin_1_1Sigma.html" title="A dependent tuple type.">Sigma</a>s, and <a class="el" href="classthorin_1_1Arr.html" title="A (possibly paramterized) Array.">Arr</a>ays.  <a href="classthorin_1_1Def.html#af5a66d05737e701114113c2cfda9002d">More...</a><br /></td></tr>
+<tr class="memdesc:af5a66d05737e701114113c2cfda9002d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to <a class="el" href="classthorin_1_1World.html#aa589e154cb6fd00699311c3951ca90ad">World::extract</a> while assuming an arity of <code>a</code>, but also works on <a class="el" href="classthorin_1_1Sigma.html" title="A dependent tuple type.">Sigma</a>s and <a class="el" href="classthorin_1_1Arr.html" title="A (possibly paramterized) Array.">Arr</a>ays.  <a href="classthorin_1_1Def.html#af5a66d05737e701114113c2cfda9002d">More...</a><br /></td></tr>
 <tr class="separator:af5a66d05737e701114113c2cfda9002d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af96aeed73c96b0e34b1be1d1b92fcdf6"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#af96aeed73c96b0e34b1be1d1b92fcdf6">proj</a> (<a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> i) const</td></tr>
-<tr class="memdesc:af96aeed73c96b0e34b1be1d1b92fcdf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as above but takes <a class="el" href="classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2" title="Yields Def::arity as_lit, if it is in fact a Lit, or 1 otherwise.">Def::num_projs</a> as arity.  <a href="classthorin_1_1Def.html#af96aeed73c96b0e34b1be1d1b92fcdf6">More...</a><br /></td></tr>
+<tr class="memdesc:af96aeed73c96b0e34b1be1d1b92fcdf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as above but takes <a class="el" href="classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2" title="Yields Def::as_lit_arity(), if it is in fact a Lit, or 1 otherwise.">Def::num_projs</a> as arity.  <a href="classthorin_1_1Def.html#af96aeed73c96b0e34b1be1d1b92fcdf6">More...</a><br /></td></tr>
 <tr class="separator:af96aeed73c96b0e34b1be1d1b92fcdf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a364bd4ddf5c4cfc758f497a0c67f5f16"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> A = -1_s, class F &gt; </td></tr>
 <tr class="memitem:a364bd4ddf5c4cfc758f497a0c67f5f16"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a364bd4ddf5c4cfc758f497a0c67f5f16">projs</a> (F f) const</td></tr>
-<tr class="memdesc:a364bd4ddf5c4cfc758f497a0c67f5f16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits this <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a> via <a class="el" href="classthorin_1_1Def.html#af5a66d05737e701114113c2cfda9002d" title="Similar to World::extract while assuming an arity of a but also works on Sigmas, and Arrays.">Def::proj</a>ections into an <a class="el" href="classthorin_1_1Arr.html" title="A (possibly paramterized) Array.">Arr</a>ay (if <code>A == -1_s</code>) or <code>std::array</code> (otherwise).  <a href="classthorin_1_1Def.html#a364bd4ddf5c4cfc758f497a0c67f5f16">More...</a><br /></td></tr>
+<tr class="memdesc:a364bd4ddf5c4cfc758f497a0c67f5f16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits this <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a> via <a class="el" href="classthorin_1_1Def.html#af5a66d05737e701114113c2cfda9002d" title="Similar to World::extract while assuming an arity of a, but also works on Sigmas and Arrays.">Def::proj</a>ections into an <a class="el" href="classthorin_1_1Array.html" title="A container for an array, either heap-allocated or stack allocated.">Array</a> (if <code>A == -1_s</code>) or <code>std::array</code> (otherwise).  <a href="classthorin_1_1Def.html#a364bd4ddf5c4cfc758f497a0c67f5f16">More...</a><br /></td></tr>
 <tr class="separator:a364bd4ddf5c4cfc758f497a0c67f5f16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a07170f39e2c7cef110b37f89420255"><td class="memTemplParams" colspan="2">template&lt;class F &gt; </td></tr>
 <tr class="memitem:a6a07170f39e2c7cef110b37f89420255"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a6a07170f39e2c7cef110b37f89420255">projs</a> (<a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> a, F f) const</td></tr>
@@ -252,7 +262,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6c186d90d163a76eb2cbbf875d657766"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a6c186d90d163a76eb2cbbf875d657766">projs</a> (<a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> a) const</td></tr>
 <tr class="separator:a6c186d90d163a76eb2cbbf875d657766"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">var</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p >Retrieve <a class="el" href="classthorin_1_1Var.html">Var</a> for *mut*ables.</p>
+<tr><td colspan="2"><div class="groupText"><p >Retrieve <a class="el" href="classthorin_1_1Var.html">Var</a> for <em>mutables</em>.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classthorin_1_1Def.html#proj">proj</a> </dd></dl>
 </div></td></tr>
 <tr class="memitem:a77cfe4c3a72b404c3be0af3b926e8146"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Var.html">Var</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a77cfe4c3a72b404c3be0af3b926e8146">var</a> ()</td></tr>
@@ -304,9 +314,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af11b2eb1d65239b9e9f5ca1920742ddb"><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#af11b2eb1d65239b9e9f5ca1920742ddb">as_mut</a> () const</td></tr>
 <tr class="memdesc:af11b2eb1d65239b9e9f5ca1920742ddb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Asserts that <code>this</code> is a <em>mutable</em>, casts <code>const</code>ness away and performs a <code>static_cast</code> to <code>T</code>.  <a href="classthorin_1_1Def.html#af11b2eb1d65239b9e9f5ca1920742ddb">More...</a><br /></td></tr>
 <tr class="separator:af11b2eb1d65239b9e9f5ca1920742ddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9faaa57a307cbb0d97e4de68cb1f656e"><td class="memTemplParams" colspan="2">template&lt;class T  = Def, class R &gt; </td></tr>
-<tr class="memitem:a9faaa57a307cbb0d97e4de68cb1f656e"><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a9faaa57a307cbb0d97e4de68cb1f656e">isa_mut</a> (R(T::*f)() const) const</td></tr>
-<tr class="separator:a9faaa57a307cbb0d97e4de68cb1f656e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Dbg Getters</div></td></tr>
 <tr class="memitem:aad389227b1fe98c3ef4d1a70e0f4ab19"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#structthorin_1_1Dbg">Dbg</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#aad389227b1fe98c3ef4d1a70e0f4ab19">dbg</a> () const</td></tr>
 <tr class="separator:aad389227b1fe98c3ef4d1a70e0f4ab19"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -558,7 +565,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00026">26</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00528">flags_</a>, <a class="el" href="def_8h_source.html#l00236">gid()</a>, <a class="el" href="def_8h_source.html#l00537">gid_</a>, <a class="el" href="def_8h_source.html#l00536">hash_</a>, <a class="el" href="hash_8h_source.html#l00022">thorin::murmur3()</a>, <a class="el" href="hash_8h_source.html#l00051">thorin::murmur3_finalize()</a>, <a class="el" href="hash_8h_source.html#l00041">thorin::murmur3_rest()</a>, <a class="el" href="world_8h_source.html#l00093">thorin::World::next_gid()</a>, <a class="el" href="def_8h_source.html#l00238">node()</a>, <a class="el" href="def_8h_source.html#l00274">num_ops()</a>, <a class="el" href="def_8h_source.html#l00273">op()</a>, <a class="el" href="def_8h_source.html#l00267">ops()</a>, <a class="el" href="def_8h_source.html#l00508">ops_ptr()</a>, <a class="el" href="def_8h_source.html#l00246">type()</a>, <a class="el" href="def_8h_source.html#l00037">thorin::Node::Univ</a>, and <a class="el" href="def_8cpp_source.html#l00243">world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00521">flags_</a>, <a class="el" href="def_8h_source.html#l00236">gid()</a>, <a class="el" href="def_8h_source.html#l00530">gid_</a>, <a class="el" href="def_8h_source.html#l00529">hash_</a>, <a class="el" href="hash_8h_source.html#l00022">thorin::murmur3()</a>, <a class="el" href="hash_8h_source.html#l00051">thorin::murmur3_finalize()</a>, <a class="el" href="hash_8h_source.html#l00041">thorin::murmur3_rest()</a>, <a class="el" href="world_8h_source.html#l00093">thorin::World::next_gid()</a>, <a class="el" href="def_8h_source.html#l00238">node()</a>, <a class="el" href="def_8h_source.html#l00274">num_ops()</a>, <a class="el" href="def_8h_source.html#l00273">op()</a>, <a class="el" href="def_8h_source.html#l00267">ops()</a>, <a class="el" href="def_8h_source.html#l00501">ops_ptr()</a>, <a class="el" href="def_8h_source.html#l00246">type()</a>, <a class="el" href="def_8h_source.html#l00037">thorin::Node::Univ</a>, and <a class="el" href="def_8cpp_source.html#l00243">world()</a>.</p>
 
 </div>
 </div>
@@ -662,7 +669,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00056">56</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00336">dep_const()</a>, <a class="el" href="def_8h_source.html#l00236">gid()</a>, <a class="el" href="def_8h_source.html#l00537">gid_</a>, <a class="el" href="def_8h_source.html#l00536">hash_</a>, <a class="el" href="hash_8h_source.html#l00022">thorin::murmur3()</a>, <a class="el" href="world_8h_source.html#l00093">thorin::World::next_gid()</a>, <a class="el" href="def_8h_source.html#l00274">num_ops()</a>, <a class="el" href="def_8h_source.html#l00508">ops_ptr()</a>, <a class="el" href="def_8h_source.html#l00103">thorin::Use::Type</a>, <a class="el" href="def_8h_source.html#l00246">type()</a>, <a class="el" href="def_8h_source.html#l00539">uses_</a>, and <a class="el" href="def_8cpp_source.html#l00243">world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00336">dep_const()</a>, <a class="el" href="def_8h_source.html#l00236">gid()</a>, <a class="el" href="def_8h_source.html#l00530">gid_</a>, <a class="el" href="def_8h_source.html#l00529">hash_</a>, <a class="el" href="hash_8h_source.html#l00022">thorin::murmur3()</a>, <a class="el" href="world_8h_source.html#l00093">thorin::World::next_gid()</a>, <a class="el" href="def_8h_source.html#l00274">num_ops()</a>, <a class="el" href="def_8h_source.html#l00501">ops_ptr()</a>, <a class="el" href="def_8h_source.html#l00103">thorin::Use::Type</a>, <a class="el" href="def_8h_source.html#l00246">type()</a>, <a class="el" href="def_8h_source.html#l00532">uses_</a>, and <a class="el" href="def_8cpp_source.html#l00243">world()</a>.</p>
 
 </div>
 </div>
@@ -740,7 +747,7 @@ template&lt;class T  = Def&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00415">415</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00414">414</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -771,7 +778,7 @@ template&lt;class T  = Def&gt; </div>
 
 <p class="reference">References <a class="el" href="def_8cpp_source.html#l00328">isa_lit_arity()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00262">thorin::World::extract()</a>, <a class="el" href="world_8h_source.html#l00339">thorin::World::insert()</a>, and <a class="el" href="def_8h_source.html#l00368">projs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00262">thorin::World::extract()</a>, <a class="el" href="world_8h_source.html#l00339">thorin::World::insert()</a>, and <a class="el" href="def_8h_source.html#l00367">projs()</a>.</p>
 
 </div>
 </div>
@@ -802,11 +809,11 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p>Asserts that <code>this</code> is a <em>mutable</em>, casts <code>const</code>ness away and performs a <code>static_cast</code> to <code>T</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00430">430</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00429">429</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00530">mut_</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00523">mut_</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="clos_8cpp_source.html#l00123">thorin::clos::clos_type()</a>, <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00007">thorin::autodiff::AutoDiffEval::derive_()</a>, <a class="el" href="ll_8cpp_source.html#l00297">thorin::ll::Emitter::emit_epilogue()</a>, <a class="el" href="def_8h_source.html#l00593">thorin::Var::mut()</a>, <a class="el" href="ll_8cpp_source.html#l00250">thorin::ll::Emitter::prepare()</a>, <a class="el" href="dot_8cpp_source.html#l00102">thorin::dot::Emitter::prepare()</a>, <a class="el" href="phase_8cpp_source.html#l00013">thorin::RWPhase::start()</a>, <a class="el" href="phase_8cpp_source.html#l00031">thorin::Cleanup::start()</a>, and <a class="el" href="emitter_8h_source.html#l00051">thorin::Emitter&lt; Value, Type, BB, Child &gt;::visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="clos_8cpp_source.html#l00123">thorin::clos::clos_type()</a>, <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00007">thorin::autodiff::AutoDiffEval::derive_()</a>, <a class="el" href="ll_8cpp_source.html#l00297">thorin::ll::Emitter::emit_epilogue()</a>, <a class="el" href="def_8h_source.html#l00586">thorin::Var::mut()</a>, <a class="el" href="ll_8cpp_source.html#l00250">thorin::ll::Emitter::prepare()</a>, <a class="el" href="dot_8cpp_source.html#l00102">thorin::dot::Emitter::prepare()</a>, <a class="el" href="phase_8cpp_source.html#l00013">thorin::RWPhase::start()</a>, <a class="el" href="phase_8cpp_source.html#l00031">thorin::Cleanup::start()</a>, and <a class="el" href="emitter_8h_source.html#l00051">thorin::Emitter&lt; Value, Type, BB, Child &gt;::visit()</a>.</p>
 
 </div>
 </div>
@@ -835,7 +842,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p>Reimplemented in <a class="el" href="classthorin_1_1Pi.html#a351adf1a32abae49238461e89cc0a00d">thorin::Pi</a>, <a class="el" href="classthorin_1_1Lam.html#add7dba9df1cf541e1b6b93e3f6ba479f">thorin::Lam</a>, <a class="el" href="classthorin_1_1Sigma.html#a2f8e21438b006ac4a57ea76eeb7def97">thorin::Sigma</a>, and <a class="el" href="classthorin_1_1Arr.html#a9f9b15c1260f57ea15d8aa829c12d3ef">thorin::Arr</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00495">495</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00488">488</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00361">set()</a>.</p>
 
@@ -864,9 +871,9 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00447">447</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00440">440</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00540">dbg_</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00533">dbg_</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00101">thorin::Singleton::rebuild()</a>, and <a class="el" href="def_8cpp_source.html#l00124">thorin::Global::stub()</a>.</p>
 
@@ -890,7 +897,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00275">275</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00540">dbg_</a>, <a class="el" href="def_8h_source.html#l00449">sym()</a>, <a class="el" href="loc_8h_source.html#l00082">thorin::Dbg::sym</a>, <a class="el" href="world_8cpp_source.html#l00091">thorin::World::sym()</a>, and <a class="el" href="def_8cpp_source.html#l00243">world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00533">dbg_</a>, <a class="el" href="def_8h_source.html#l00442">sym()</a>, <a class="el" href="loc_8h_source.html#l00082">thorin::Dbg::sym</a>, <a class="el" href="world_8cpp_source.html#l00091">thorin::World::sym()</a>, and <a class="el" href="def_8cpp_source.html#l00243">world()</a>.</p>
 
 </div>
 </div>
@@ -912,7 +919,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00280">280</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00540">dbg_</a>, <a class="el" href="def_8h_source.html#l00449">sym()</a>, <a class="el" href="loc_8h_source.html#l00082">thorin::Dbg::sym</a>, <a class="el" href="world_8cpp_source.html#l00091">thorin::World::sym()</a>, and <a class="el" href="def_8cpp_source.html#l00243">world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00533">dbg_</a>, <a class="el" href="def_8h_source.html#l00442">sym()</a>, <a class="el" href="loc_8h_source.html#l00082">thorin::Dbg::sym</a>, <a class="el" href="world_8cpp_source.html#l00091">thorin::World::sym()</a>, and <a class="el" href="def_8cpp_source.html#l00243">world()</a>.</p>
 
 </div>
 </div>
@@ -941,7 +948,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00333">333</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00532">dep_</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00525">dep_</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00348">finalize()</a>, and <a class="el" href="def_8h_source.html#l00335">has_dep()</a>.</p>
 
@@ -1045,7 +1052,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00337">337</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00235">flags()</a>, <a class="el" href="def_8h_source.html#l00421">isa_mut()</a>, <a class="el" href="def_8h_source.html#l00238">node()</a>, <a class="el" href="def_8h_source.html#l00274">num_ops()</a>, <a class="el" href="def_8h_source.html#l00273">op()</a>, and <a class="el" href="def_8h_source.html#l00246">type()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00235">flags()</a>, <a class="el" href="def_8h_source.html#l00420">isa_mut()</a>, <a class="el" href="def_8h_source.html#l00238">node()</a>, <a class="el" href="def_8h_source.html#l00274">num_ops()</a>, <a class="el" href="def_8h_source.html#l00273">op()</a>, and <a class="el" href="def_8h_source.html#l00246">type()</a>.</p>
 
 </div>
 </div>
@@ -1096,7 +1103,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00268">268</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp_source.html#l00403">is_set()</a>, <a class="el" href="def_8h_source.html#l00538">num_ops_</a>, <a class="el" href="def_8h_source.html#l00508">ops_ptr()</a>, and <a class="el" href="def_8h_source.html#l00246">type()</a>.</p>
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00403">is_set()</a>, <a class="el" href="def_8h_source.html#l00531">num_ops_</a>, <a class="el" href="def_8h_source.html#l00501">ops_ptr()</a>, and <a class="el" href="def_8h_source.html#l00246">type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="schedule_8cpp_source.html#l00049">thorin::Scheduler::early()</a>, <a class="el" href="def_8h_source.html#l00310">extended_op()</a>, <a class="el" href="def_8h_source.html#l00311">num_extended_ops()</a>, and <a class="el" href="pass_8cpp_source.html#l00039">thorin::PassMan::run()</a>.</p>
 
@@ -1127,7 +1134,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00348">348</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="assert_8h_source.html#l00037">assert_unused</a>, <a class="el" href="def_8h_source.html#l00333">dep()</a>, <a class="el" href="def_8h_source.html#l00532">dep_</a>, <a class="el" href="def_8h_source.html#l00336">dep_const()</a>, <a class="el" href="def_8h_source.html#l00273">op()</a>, <a class="el" href="def_8h_source.html#l00319">partial_ops()</a>, <a class="el" href="def_8h_source.html#l00103">thorin::Use::Type</a>, and <a class="el" href="def_8h_source.html#l00539">uses_</a>.</p>
+<p class="reference">References <a class="el" href="assert_8h_source.html#l00037">assert_unused</a>, <a class="el" href="def_8h_source.html#l00333">dep()</a>, <a class="el" href="def_8h_source.html#l00525">dep_</a>, <a class="el" href="def_8h_source.html#l00336">dep_const()</a>, <a class="el" href="def_8h_source.html#l00273">op()</a>, <a class="el" href="def_8h_source.html#l00319">partial_ops()</a>, <a class="el" href="def_8h_source.html#l00103">thorin::Use::Type</a>, and <a class="el" href="def_8h_source.html#l00532">uses_</a>.</p>
 
 </div>
 </div>
@@ -1156,9 +1163,9 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00235">235</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00528">flags_</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00521">flags_</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00205">thorin::World::axiom()</a>, <a class="el" href="axiom_8h_source.html#l00082">thorin::Axiom::base()</a>, <a class="el" href="def_8cpp_source.html#l00337">equal()</a>, <a class="el" href="lam_8h_source.html#l00023">thorin::Pi::is_implicit()</a>, <a class="el" href="def_8h_source.html#l00747">thorin::Global::is_mutable()</a>, <a class="el" href="def_8h_source.html#l00623">thorin::UInc::offset()</a>, <a class="el" href="optimize_8cpp_source.html#l00020">thorin::optimize()</a>, <a class="el" href="def_8h_source.html#l00716">thorin::Proxy::pass()</a>, <a class="el" href="axiom_8h_source.html#l00073">thorin::Axiom::plugin()</a>, <a class="el" href="axiom_8h_source.html#l00079">thorin::Axiom::sub()</a>, <a class="el" href="axiom_8h_source.html#l00076">thorin::Axiom::tag()</a>, <a class="el" href="def_8h_source.html#l00717">thorin::Proxy::tag()</a>, and <a class="el" href="mem_8cpp_source.html#l00024">thorin_get_plugin()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00205">thorin::World::axiom()</a>, <a class="el" href="axiom_8h_source.html#l00082">thorin::Axiom::base()</a>, <a class="el" href="def_8cpp_source.html#l00337">equal()</a>, <a class="el" href="lam_8h_source.html#l00023">thorin::Pi::is_implicit()</a>, <a class="el" href="def_8h_source.html#l00740">thorin::Global::is_mutable()</a>, <a class="el" href="def_8h_source.html#l00616">thorin::UInc::offset()</a>, <a class="el" href="optimize_8cpp_source.html#l00020">thorin::optimize()</a>, <a class="el" href="def_8h_source.html#l00709">thorin::Proxy::pass()</a>, <a class="el" href="axiom_8h_source.html#l00073">thorin::Axiom::plugin()</a>, <a class="el" href="axiom_8h_source.html#l00079">thorin::Axiom::sub()</a>, <a class="el" href="axiom_8h_source.html#l00076">thorin::Axiom::tag()</a>, <a class="el" href="def_8h_source.html#l00710">thorin::Proxy::tag()</a>, and <a class="el" href="mem_8cpp_source.html#l00024">thorin_get_plugin()</a>.</p>
 
 </div>
 </div>
@@ -1277,9 +1284,9 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00236">236</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00537">gid_</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00530">gid_</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00026">Def()</a>, <a class="el" href="pipelinebuilder_8cpp_source.html#l00024">thorin::PipelineBuilder::def2pass()</a>, <a class="el" href="refly_2normalizers_8cpp_source.html#l00055">thorin::refly::normalize_gid()</a>, <a class="el" href="def_8h_source.html#l00755">thorin::UseHash::operator()()</a>, <a class="el" href="pipelinebuilder_8h_source.html#l00067">thorin::register_pass_with_arg()</a>, and <a class="el" href="def_8cpp_source.html#l00414">unique_name()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00026">Def()</a>, <a class="el" href="pipelinebuilder_8cpp_source.html#l00024">thorin::PipelineBuilder::def2pass()</a>, <a class="el" href="refly_2normalizers_8cpp_source.html#l00055">thorin::refly::normalize_gid()</a>, <a class="el" href="def_8h_source.html#l00748">thorin::UseHash::operator()()</a>, <a class="el" href="pipelinebuilder_8h_source.html#l00067">thorin::register_pass_with_arg()</a>, and <a class="el" href="def_8cpp_source.html#l00414">unique_name()</a>.</p>
 
 </div>
 </div>
@@ -1370,7 +1377,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00237">237</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00536">hash_</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00529">hash_</a>.</p>
 
 </div>
 </div>
@@ -1402,7 +1409,7 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p>Reimplemented in <a class="el" href="classthorin_1_1Pi.html#a8dd35928d4315162100bc42f208472f9">thorin::Pi</a>, <a class="el" href="classthorin_1_1Sigma.html#a79be50c005954dd0842b384b78a26d5e">thorin::Sigma</a>, <a class="el" href="classthorin_1_1Arr.html#ac81a03a939a97c47f8d5f82fd0eec58a">thorin::Arr</a>, and <a class="el" href="classthorin_1_1Pack.html#aeaaf08c6ea3745068053125cfd22742b">thorin::Pack</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00480">480</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00473">473</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -1429,11 +1436,11 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00404">404</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00403">403</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00531">external_</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00524">external_</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00405">is_internal()</a>, and <a class="el" href="lam_8h_source.html#l00216">thorin::isa_workable()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00404">is_internal()</a>, and <a class="el" href="lam_8h_source.html#l00216">thorin::isa_workable()</a>.</p>
 
 </div>
 </div>
@@ -1462,9 +1469,9 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p><b>Not</b> <a class="el" href="classthorin_1_1Def.html#a7701ec0e042a91951dcff7bf0b56573c">Def::is_external</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00405">405</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00404">404</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00404">is_external()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00403">is_external()</a>.</p>
 
 </div>
 </div>
@@ -1543,7 +1550,7 @@ template&lt;class T  = Def&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00414">414</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00413">413</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00262">thorin::World::extract()</a>, <a class="el" href="tuple_8cpp_source.html#l00079">thorin::merge_sigma()</a>, <a class="el" href="tuple_8cpp_source.html#l00084">thorin::merge_tuple()</a>, and <a class="el" href="core_2normalizers_8cpp_source.html#l00566">thorin::core::normalize_trait()</a>.</p>
 
@@ -1575,7 +1582,7 @@ template&lt;class T  = Def, class R &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00416">416</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00415">415</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -1598,12 +1605,12 @@ template&lt;class T  = Def, class R &gt; </div>
 
 <p class="reference">References <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, and <a class="el" href="def_8h_source.html#l00246">type()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00257">as_lit_arity()</a>, <a class="el" href="tuple_8cpp_source.html#l00041">thorin::flatten()</a>, <a class="el" href="world_8cpp_source.html#l00318">thorin::World::insert()</a>, and <a class="el" href="def_8h_source.html#l00345">num_projs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00257">as_lit_arity()</a>, <a class="el" href="tuple_8cpp_source.html#l00041">thorin::flatten()</a>, <a class="el" href="world_8cpp_source.html#l00318">thorin::World::insert()</a>, and <a class="el" href="def_8h_source.html#l00356">num_projs()</a>.</p>
 
 </div>
 </div>
 <a id="aabf1066a0dbcaa6ec6f08877b86767e4" name="aabf1066a0dbcaa6ec6f08877b86767e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aabf1066a0dbcaa6ec6f08877b86767e4">&#9670;&#160;</a></span>isa_mut() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aabf1066a0dbcaa6ec6f08877b86767e4">&#9670;&#160;</a></span>isa_mut()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1629,41 +1636,11 @@ template&lt;class T  = Def, <a class="el" href="namespace_3globalScope_4.html#cl
 
 <p>If <code>this</code> is *mut*able, it will cast <code>const</code>ness away and perform a <code>dynamic_cast</code> to <code>T</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00421">421</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00420">420</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00530">mut_</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00523">mut_</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="lam_8cpp_source.html#l00037">thorin::Lam::app()</a>, <a class="el" href="check_8cpp_source.html#l00122">thorin::Checker::assignable()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00321">thorin::autodiff::AutoDiffEval::augment_()</a>, <a class="el" href="schedule_8cpp_source.html#l00049">thorin::Scheduler::early()</a>, <a class="el" href="def_8cpp_source.html#l00337">equal()</a>, <a class="el" href="check_8cpp_source.html#l00049">thorin::Checker::equiv()</a>, <a class="el" href="world_8cpp_source.html#l00262">thorin::World::extract()</a>, <a class="el" href="check_8cpp_source.html#l00013">thorin::Infer::find()</a>, <a class="el" href="lattice_8cpp_source.html#l00010">thorin::Bound::find()</a>, <a class="el" href="clos_8cpp_source.html#l00113">thorin::clos::isa_clos_type()</a>, <a class="el" href="lam_8h_source.html#l00120">thorin::Lam::isa_mut_basicblock()</a>, <a class="el" href="lam_8h_source.html#l00119">thorin::Lam::isa_mut_cn()</a>, <a class="el" href="lam_8h_source.html#l00121">thorin::Lam::isa_mut_returning()</a>, <a class="el" href="schedule_8cpp_source.html#l00065">thorin::Scheduler::late()</a>, <a class="el" href="def_8cpp_source.html#l00203">reduce()</a>, <a class="el" href="rewrite_8h_source.html#l00054">thorin::InferRewriter::rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">thorin::Rewriter::rewrite()</a>, <a class="el" href="scalarize_8cpp_source.html#l00056">thorin::Scalerize::rewrite()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00057">thorin::clos::ClosConvPrep::rewrite_arg()</a>, <a class="el" href="schedule_8cpp_source.html#l00014">thorin::Scheduler::Scheduler()</a>, <a class="el" href="world_8cpp_source.html#l00226">thorin::World::tuple()</a>, <a class="el" href="add__mem_8cpp_source.html#l00068">thorin::mem::AddMem::visit()</a>, and <a class="el" href="emitter_8h_source.html#l00051">thorin::Emitter&lt; Value, Type, BB, Child &gt;::visit()</a>.</p>
-
-</div>
-</div>
-<a id="a9faaa57a307cbb0d97e4de68cb1f656e" name="a9faaa57a307cbb0d97e4de68cb1f656e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9faaa57a307cbb0d97e4de68cb1f656e">&#9670;&#160;</a></span>isa_mut() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T  = Def, class R &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">T * thorin::Def::isa_mut </td>
-          <td>(</td>
-          <td class="paramtype">R(T::*)() const&#160;</td>
-          <td class="paramname"><em>f</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00439">439</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -1690,11 +1667,11 @@ template&lt;class T  = Def, class R &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00448">448</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00441">441</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00540">dbg_</a>, and <a class="el" href="loc_8h_source.html#l00081">thorin::Dbg::loc</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00533">dbg_</a>, and <a class="el" href="loc_8h_source.html#l00081">thorin::Dbg::loc</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00557">thorin::error()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00550">thorin::error()</a>.</p>
 
 </div>
 </div>
@@ -1765,7 +1742,7 @@ template&lt;class T  = Def, class R &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00238">238</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00529">node_</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00522">node_</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00026">Def()</a>, <a class="el" href="def_8cpp_source.html#l00337">equal()</a>, <a class="el" href="lam_8h_source.html#l00046">thorin::Pi::isa_cn()</a>, and <a class="el" href="def_8cpp_source.html#l00259">node_name()</a>.</p>
 
@@ -1848,7 +1825,7 @@ template&lt;class T  = Def, class R &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00274">274</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00538">num_ops_</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00531">num_ops_</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00026">Def()</a>, <a class="el" href="def_8cpp_source.html#l00337">equal()</a>, <a class="el" href="world_8cpp_source.html#l00429">thorin::World::ext()</a>, <a class="el" href="world_8cpp_source.html#l00262">thorin::World::extract()</a>, <a class="el" href="scope_8cpp_source.html#l00091">thorin::Scope::is_free()</a>, <a class="el" href="def_8cpp_source.html#l00403">is_set()</a>, <a class="el" href="clos_8cpp_source.html#l00113">thorin::clos::isa_clos_type()</a>, <a class="el" href="rewrite_8cpp_source.html#l00051">thorin::rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00019">thorin::Rewriter::rewrite_imm()</a>, <a class="el" href="rewrite_8cpp_source.html#l00025">thorin::Rewriter::rewrite_mut()</a>, <a class="el" href="pass_8cpp_source.html#l00039">thorin::PassMan::run()</a>, <a class="el" href="schedule_8cpp_source.html#l00014">thorin::Scheduler::Scheduler()</a>, <a class="el" href="def_8cpp_source.html#l00361">set()</a>, and <a class="el" href="def_8cpp_source.html#l00380">unset()</a>.</p>
 
@@ -1906,13 +1883,13 @@ template&lt;class T  = Def, class R &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Yields <a class="el" href="classthorin_1_1Def.html#a5077873bd4203c0ea099b044b0231d3d">Def::arity</a> as_lit, if it is in fact a <a class="el" href="classthorin_1_1Lit.html">Lit</a>, or <code>1</code> otherwise. </p>
+<p>Yields <a class="el" href="classthorin_1_1Def.html#a16d05019a1084e09ba37ca6eb14fc36d">Def::as_lit_arity()</a>, if it is in fact a <a class="el" href="classthorin_1_1Lit.html">Lit</a>, or <code>1</code> otherwise. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00345">345</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00356">356</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8cpp_source.html#l00328">isa_lit_arity()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="clos_8h_source.html#l00158">thorin::clos::clos_insert_env()</a>, <a class="el" href="clos_8h_source.html#l00168">thorin::clos::clos_remove_env()</a>, <a class="el" href="mem_8h_source.html#l00036">thorin::mem::mem_def()</a>, <a class="el" href="def_8h_source.html#l00353">proj()</a>, <a class="el" href="def_8h_source.html#l00368">projs()</a>, and <a class="el" href="mem_8h_source.html#l00051">thorin::mem::replace_mem()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="clos_8h_source.html#l00158">thorin::clos::clos_insert_env()</a>, <a class="el" href="clos_8h_source.html#l00168">thorin::clos::clos_remove_env()</a>, <a class="el" href="mem_8h_source.html#l00036">thorin::mem::mem_def()</a>, <a class="el" href="def_8h_source.html#l00362">proj()</a>, <a class="el" href="def_8h_source.html#l00367">projs()</a>, and <a class="el" href="mem_8h_source.html#l00051">thorin::mem::replace_mem()</a>.</p>
 
 </div>
 </div>
@@ -1968,7 +1945,7 @@ template&lt;class T  = Def, class R &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00399">399</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00398">398</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00297">thorin::ll::Emitter::emit_epilogue()</a>, and <a class="el" href="lam_8h_source.html#l00131">thorin::Lam::ret_var()</a>.</p>
 
@@ -2002,7 +1979,7 @@ template&lt;class T  = Def, class R &gt; </div>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00267">ops()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="lam_8h_source.html#l00197">thorin::App::arg()</a>, <a class="el" href="lam_8h_source.html#l00093">thorin::Lam::body()</a>, <a class="el" href="tuple_8h_source.html#l00058">thorin::Arr::body()</a>, <a class="el" href="tuple_8h_source.html#l00087">thorin::Pack::body()</a>, <a class="el" href="lam_8h_source.html#l00189">thorin::App::callee()</a>, <a class="el" href="lattice_8h_source.html#l00113">thorin::Test::clash()</a>, <a class="el" href="clos_8cpp_source.html#l00125">thorin::clos::clos_type_to_pi()</a>, <a class="el" href="lam_8h_source.html#l00036">thorin::Pi::codom()</a>, <a class="el" href="def_8cpp_source.html#l00026">Def()</a>, <a class="el" href="lam_8h_source.html#l00029">thorin::Pi::dom()</a>, <a class="el" href="def_8cpp_source.html#l00337">equal()</a>, <a class="el" href="world_8cpp_source.html#l00262">thorin::World::extract()</a>, <a class="el" href="lam_8h_source.html#l00092">thorin::Lam::filter()</a>, <a class="el" href="def_8cpp_source.html#l00348">finalize()</a>, <a class="el" href="check_8cpp_source.html#l00013">thorin::Infer::find()</a>, <a class="el" href="lattice_8h_source.html#l00022">thorin::Bound::get()</a>, <a class="el" href="def_8cpp_source.html#l00161">thorin::Sigma::immutabilize()</a>, <a class="el" href="tuple_8h_source.html#l00110">thorin::Extract::index()</a>, <a class="el" href="tuple_8h_source.html#l00129">thorin::Insert::index()</a>, <a class="el" href="lattice_8h_source.html#l00161">thorin::Singleton::inhabitant()</a>, <a class="el" href="def_8h_source.html#l00735">thorin::Global::init()</a>, <a class="el" href="def_8cpp_source.html#l00403">is_set()</a>, <a class="el" href="clos_8cpp_source.html#l00113">thorin::clos::isa_clos_type()</a>, <a class="el" href="def_8h_source.html#l00637">thorin::Type::level()</a>, <a class="el" href="lattice_8h_source.html#l00112">thorin::Test::match()</a>, <a class="el" href="def_8h_source.html#l00593">thorin::Var::mut()</a>, <a class="el" href="mem_2normalizers_8cpp_source.html#l00018">thorin::mem::normalize_load()</a>, <a class="el" href="check_8h_source.html#l00020">thorin::Infer::op()</a>, <a class="el" href="def_8h_source.html#l00622">thorin::UInc::op()</a>, <a class="el" href="lattice_8h_source.html#l00111">thorin::Test::probe()</a>, <a class="el" href="def_8cpp_source.html#l00416">proj()</a>, <a class="el" href="rewrite_8cpp_source.html#l00044">thorin::rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00025">thorin::Rewriter::rewrite_mut()</a>, <a class="el" href="pass_8cpp_source.html#l00039">thorin::PassMan::run()</a>, <a class="el" href="schedule_8cpp_source.html#l00014">thorin::Scheduler::Scheduler()</a>, <a class="el" href="def_8cpp_source.html#l00361">set()</a>, <a class="el" href="tuple_8h_source.html#l00057">thorin::Arr::shape()</a>, <a class="el" href="tuple_8h_source.html#l00109">thorin::Extract::tuple()</a>, <a class="el" href="tuple_8h_source.html#l00128">thorin::Insert::tuple()</a>, <a class="el" href="def_8cpp_source.html#l00380">unset()</a>, <a class="el" href="lattice_8h_source.html#l00069">thorin::Vel::value()</a>, <a class="el" href="lattice_8h_source.html#l00084">thorin::Pick::value()</a>, <a class="el" href="lattice_8h_source.html#l00110">thorin::Test::value()</a>, and <a class="el" href="tuple_8h_source.html#l00130">thorin::Insert::value()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="lam_8h_source.html#l00197">thorin::App::arg()</a>, <a class="el" href="lam_8h_source.html#l00093">thorin::Lam::body()</a>, <a class="el" href="tuple_8h_source.html#l00058">thorin::Arr::body()</a>, <a class="el" href="tuple_8h_source.html#l00087">thorin::Pack::body()</a>, <a class="el" href="lam_8h_source.html#l00189">thorin::App::callee()</a>, <a class="el" href="lattice_8h_source.html#l00113">thorin::Test::clash()</a>, <a class="el" href="clos_8cpp_source.html#l00125">thorin::clos::clos_type_to_pi()</a>, <a class="el" href="lam_8h_source.html#l00036">thorin::Pi::codom()</a>, <a class="el" href="def_8cpp_source.html#l00026">Def()</a>, <a class="el" href="lam_8h_source.html#l00029">thorin::Pi::dom()</a>, <a class="el" href="def_8cpp_source.html#l00337">equal()</a>, <a class="el" href="world_8cpp_source.html#l00262">thorin::World::extract()</a>, <a class="el" href="lam_8h_source.html#l00092">thorin::Lam::filter()</a>, <a class="el" href="def_8cpp_source.html#l00348">finalize()</a>, <a class="el" href="check_8cpp_source.html#l00013">thorin::Infer::find()</a>, <a class="el" href="lattice_8h_source.html#l00022">thorin::Bound::get()</a>, <a class="el" href="def_8cpp_source.html#l00161">thorin::Sigma::immutabilize()</a>, <a class="el" href="tuple_8h_source.html#l00110">thorin::Extract::index()</a>, <a class="el" href="tuple_8h_source.html#l00129">thorin::Insert::index()</a>, <a class="el" href="lattice_8h_source.html#l00161">thorin::Singleton::inhabitant()</a>, <a class="el" href="def_8h_source.html#l00728">thorin::Global::init()</a>, <a class="el" href="def_8cpp_source.html#l00403">is_set()</a>, <a class="el" href="clos_8cpp_source.html#l00113">thorin::clos::isa_clos_type()</a>, <a class="el" href="def_8h_source.html#l00630">thorin::Type::level()</a>, <a class="el" href="lattice_8h_source.html#l00112">thorin::Test::match()</a>, <a class="el" href="def_8h_source.html#l00586">thorin::Var::mut()</a>, <a class="el" href="mem_2normalizers_8cpp_source.html#l00018">thorin::mem::normalize_load()</a>, <a class="el" href="check_8h_source.html#l00020">thorin::Infer::op()</a>, <a class="el" href="def_8h_source.html#l00615">thorin::UInc::op()</a>, <a class="el" href="lattice_8h_source.html#l00111">thorin::Test::probe()</a>, <a class="el" href="def_8cpp_source.html#l00416">proj()</a>, <a class="el" href="rewrite_8cpp_source.html#l00044">thorin::rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00025">thorin::Rewriter::rewrite_mut()</a>, <a class="el" href="pass_8cpp_source.html#l00039">thorin::PassMan::run()</a>, <a class="el" href="schedule_8cpp_source.html#l00014">thorin::Scheduler::Scheduler()</a>, <a class="el" href="def_8cpp_source.html#l00361">set()</a>, <a class="el" href="tuple_8h_source.html#l00057">thorin::Arr::shape()</a>, <a class="el" href="tuple_8h_source.html#l00109">thorin::Extract::tuple()</a>, <a class="el" href="tuple_8h_source.html#l00128">thorin::Insert::tuple()</a>, <a class="el" href="def_8cpp_source.html#l00380">unset()</a>, <a class="el" href="lattice_8h_source.html#l00069">thorin::Vel::value()</a>, <a class="el" href="lattice_8h_source.html#l00084">thorin::Pick::value()</a>, <a class="el" href="lattice_8h_source.html#l00110">thorin::Test::value()</a>, and <a class="el" href="tuple_8h_source.html#l00130">thorin::Insert::value()</a>.</p>
 
 </div>
 </div>
@@ -2033,7 +2010,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classsize__t">size
 
 <p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00267">267</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00538">num_ops_</a>, and <a class="el" href="def_8h_source.html#l00508">ops_ptr()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00531">num_ops_</a>, and <a class="el" href="def_8h_source.html#l00501">ops_ptr()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00164">thorin::World::app()</a>, <a class="el" href="world_8cpp_source.html#l00355">thorin::World::arr()</a>, <a class="el" href="cfg_8cpp_source.html#l00029">thorin::CFA::CFA()</a>, <a class="el" href="def_8cpp_source.html#l00026">Def()</a>, <a class="el" href="dot_8cpp_source.html#l00084">thorin::dot::Emitter::emit_bb()</a>, <a class="el" href="world_8cpp_source.html#l00262">thorin::World::extract()</a>, <a class="el" href="lattice_8cpp_source.html#l00010">thorin::Bound::find()</a>, <a class="el" href="def_8cpp_source.html#l00161">thorin::Sigma::immutabilize()</a>, <a class="el" href="def_8cpp_source.html#l00403">is_set()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00566">thorin::core::normalize_trait()</a>, <a class="el" href="def_8h_source.html#l00273">op()</a>, <a class="el" href="world_8cpp_source.html#l00382">thorin::World::pack()</a>, <a class="el" href="def_8cpp_source.html#l00203">reduce()</a>, <a class="el" href="def_8cpp_source.html#l00229">refine()</a>, <a class="el" href="def_8h_source.html#l00284">set()</a>, <a class="el" href="lam_8h_source.html#l00142">thorin::Lam::set()</a>, <a class="el" href="tuple_8h_source.html#l00020">thorin::Sigma::set()</a>, <a class="el" href="mem_8h_source.html#l00082">thorin::mem::strip_mem()</a>, and <a class="el" href="mem_8h_source.html#l00064">thorin::mem::strip_mem_ty()</a>.</p>
 
@@ -2062,7 +2039,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classsize__t">size
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00508">508</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00501">501</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00026">Def()</a>, <a class="el" href="def_8cpp_source.html#l00268">extended_ops()</a>, <a class="el" href="def_8h_source.html#l00267">ops()</a>, <a class="el" href="def_8h_source.html#l00319">partial_ops()</a>, <a class="el" href="def_8cpp_source.html#l00361">set()</a>, and <a class="el" href="def_8cpp_source.html#l00380">unset()</a>.</p>
 
@@ -2123,7 +2100,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classsize__t">size
 
 <p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00319">319</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00538">num_ops_</a>, and <a class="el" href="def_8h_source.html#l00508">ops_ptr()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00531">num_ops_</a>, and <a class="el" href="def_8h_source.html#l00501">ops_ptr()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00348">finalize()</a>, <a class="el" href="def_8h_source.html#l00321">num_partial_ops()</a>, and <a class="el" href="def_8h_source.html#l00320">partial_op()</a>.</p>
 
@@ -2155,13 +2132,13 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classsize__t">size
       </table>
 </div><div class="memdoc">
 
-<p>Similar to <a class="el" href="classthorin_1_1World.html#aa589e154cb6fd00699311c3951ca90ad">World::extract</a> while assuming an arity of <code>a</code> but also works on <a class="el" href="classthorin_1_1Sigma.html" title="A dependent tuple type.">Sigma</a>s, and <a class="el" href="classthorin_1_1Arr.html" title="A (possibly paramterized) Array.">Arr</a>ays. </p>
+<p>Similar to <a class="el" href="classthorin_1_1World.html#aa589e154cb6fd00699311c3951ca90ad">World::extract</a> while assuming an arity of <code>a</code>, but also works on <a class="el" href="classthorin_1_1Sigma.html" title="A dependent tuple type.">Sigma</a>s and <a class="el" href="classthorin_1_1Arr.html" title="A (possibly paramterized) Array.">Arr</a>ays. </p>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00416">416</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="world_8cpp_source.html#l00262">thorin::World::extract()</a>, <a class="el" href="world_8h_source.html#l00118">thorin::World::is_frozen()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="world_8h_source.html#l00354">thorin::World::lit_idx()</a>, <a class="el" href="def_8h_source.html#l00273">op()</a>, <a class="el" href="tuple_8h_source.html#l00109">thorin::Extract::tuple()</a>, <a class="el" href="def_8h_source.html#l00246">type()</a>, <a class="el" href="def_8h_source.html#l00326">uses()</a>, and <a class="el" href="def_8cpp_source.html#l00243">world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00122">thorin::Checker::assignable()</a>, <a class="el" href="ast_8cpp_source.html#l00018">thorin::fe::TuplePtrn::bind()</a>, <a class="el" href="clos_8h_source.html#l00165">thorin::clos::clos_remove_env()</a>, <a class="el" href="ll_8cpp_source.html#l00436">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="world_8cpp_source.html#l00262">thorin::World::extract()</a>, <a class="el" href="tuple_8cpp_source.html#l00041">thorin::flatten()</a>, <a class="el" href="world_8cpp_source.html#l00318">thorin::World::insert()</a>, <a class="el" href="def_8h_source.html#l00368">projs()</a>, and <a class="el" href="clos__conv__prep_8cpp_source.html#l00057">thorin::clos::ClosConvPrep::rewrite_arg()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00122">thorin::Checker::assignable()</a>, <a class="el" href="ast_8cpp_source.html#l00018">thorin::fe::TuplePtrn::bind()</a>, <a class="el" href="clos_8h_source.html#l00165">thorin::clos::clos_remove_env()</a>, <a class="el" href="ll_8cpp_source.html#l00436">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="world_8cpp_source.html#l00262">thorin::World::extract()</a>, <a class="el" href="tuple_8cpp_source.html#l00041">thorin::flatten()</a>, <a class="el" href="world_8cpp_source.html#l00318">thorin::World::insert()</a>, <a class="el" href="def_8h_source.html#l00367">projs()</a>, and <a class="el" href="clos__conv__prep_8cpp_source.html#l00057">thorin::clos::ClosConvPrep::rewrite_arg()</a>.</p>
 
 </div>
 </div>
@@ -2189,13 +2166,13 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classsize__t">size
 </table>
 </div><div class="memdoc">
 
-<p>Same as above but takes <a class="el" href="classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2" title="Yields Def::arity as_lit, if it is in fact a Lit, or 1 otherwise.">Def::num_projs</a> as arity. </p>
+<p>Same as above but takes <a class="el" href="classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2" title="Yields Def::as_lit_arity(), if it is in fact a Lit, or 1 otherwise.">Def::num_projs</a> as arity. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00353">353</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00362">362</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00345">num_projs()</a>, and <a class="el" href="def_8h_source.html#l00353">proj()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00356">num_projs()</a>, and <a class="el" href="def_8h_source.html#l00362">proj()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00353">proj()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00362">proj()</a>.</p>
 
 </div>
 </div>
@@ -2224,9 +2201,9 @@ template&lt;<a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00386">386</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00385">385</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00368">projs()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00367">projs()</a>.</p>
 
 </div>
 </div>
@@ -2256,21 +2233,12 @@ template&lt;<a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4
 </table>
 </div><div class="memdoc">
 
-<p>Splits this <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a> via <a class="el" href="classthorin_1_1Def.html#af5a66d05737e701114113c2cfda9002d" title="Similar to World::extract while assuming an arity of a but also works on Sigmas, and Arrays.">Def::proj</a>ections into an <a class="el" href="classthorin_1_1Arr.html" title="A (possibly paramterized) Array.">Arr</a>ay (if <code>A == -1_s</code>) or <code>std::array</code> (otherwise). </p>
-<p >Applies <code>f</code> to each element. </p><div class="fragment"><div class="line">std::array&lt;const Def*, 2&gt; ab = def-&gt;projs&lt;2&gt;();</div>
-<div class="line">std::array&lt;u64, 2&gt;        xy = def-&gt;projs&lt;2&gt;(as_lit&lt;nat_t&gt;);</div>
-<div class="line"><span class="keyword">auto</span> [a, b] = def-&gt;projs&lt;2&gt;();</div>
-<div class="line"><span class="keyword">auto</span> [x, y] = def-&gt;projs&lt;2&gt;(as_lit&lt;nat_t&gt;);</div>
-<div class="line"><a class="code hl_class" href="classthorin_1_1Array.html">Array&lt;const Def*&gt;</a> <a class="code hl_function" href="classthorin_1_1Def.html#acd68d5b2ca448a5281241b802524c824">projs</a> = def-&gt;projs();               <span class="comment">// projs has def-&gt;num_projs() many elements</span></div>
-<div class="line"><a class="code hl_class" href="classthorin_1_1Array.html">Array&lt;const Def*&gt;</a> <a class="code hl_function" href="classthorin_1_1Def.html#acd68d5b2ca448a5281241b802524c824">projs</a> = def-&gt;projs(n);              <span class="comment">// projs has n elements - asserts if incorrect</span></div>
-<div class="line"><a class="code hl_class" href="classthorin_1_1Array.html">Array&lt;const Lit*&gt;</a> lits = def-&gt;projs(as_lit&lt;nat_t&gt;);   <span class="comment">// same as above but applies as_lit&lt;nat_t&gt; to each element</span></div>
-<div class="line"><a class="code hl_class" href="classthorin_1_1Array.html">Array&lt;const Lit*&gt;</a> lits = def-&gt;projs(n, as_lit&lt;nat_t&gt;);<span class="comment">// same as above but applies as_lit&lt;nat_t&gt; to each element</span></div>
-<div class="ttc" id="aclassthorin_1_1Array_html"><div class="ttname"><a href="classthorin_1_1Array.html">thorin::Array</a></div><div class="ttdoc">A container for an array, either heap-allocated or stack allocated.</div><div class="ttdef"><b>Definition:</b> <a href="array_8h_source.html#l00240">array.h:240</a></div></div>
-<div class="ttc" id="aclassthorin_1_1Def_html_acd68d5b2ca448a5281241b802524c824"><div class="ttname"><a href="classthorin_1_1Def.html#acd68d5b2ca448a5281241b802524c824">thorin::Def::projs</a></div><div class="ttdeci">auto projs() const</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00386">def.h:386</a></div></div>
-</div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00368">368</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p>Splits this <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a> via <a class="el" href="classthorin_1_1Def.html#af5a66d05737e701114113c2cfda9002d" title="Similar to World::extract while assuming an arity of a, but also works on Sigmas and Arrays.">Def::proj</a>ections into an <a class="el" href="classthorin_1_1Array.html" title="A container for an array, either heap-allocated or stack allocated.">Array</a> (if <code>A == -1_s</code>) or <code>std::array</code> (otherwise). </p>
+<p >Applies <code>f</code> to each element. </p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00257">as_lit_arity()</a>, <a class="el" href="def_8h_source.html#l00345">num_projs()</a>, <a class="el" href="def_8cpp_source.html#l00416">proj()</a>, and <a class="el" href="def_8h_source.html#l00386">projs()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00367">367</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+
+<p class="reference">References <a class="el" href="def_8h_source.html#l00257">as_lit_arity()</a>, <a class="el" href="def_8h_source.html#l00356">num_projs()</a>, <a class="el" href="def_8cpp_source.html#l00416">proj()</a>, and <a class="el" href="def_8h_source.html#l00385">projs()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00134">thorin::autodiff::AutoDiffEval::augment_tuple()</a>, <a class="el" href="clos_8cpp_source.html#l00090">thorin::clos::clos_unpack()</a>, <a class="el" href="clos2sjlj_8cpp_source.html#l00122">thorin::clos::Clos2SJLJ::enter()</a>, <a class="el" href="mem_8h_source.html#l00036">thorin::mem::mem_def()</a>, <a class="el" href="autodiff_2normalizers_8cpp_source.html#l00037">thorin::autodiff::normalize_add()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00222">thorin::math::normalize_arith()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00288">thorin::core::normalize_bit2()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00350">thorin::math::normalize_cmp()</a>, <a class="el" href="compile_2normalizers_8cpp_source.html#l00048">thorin::compile::normalize_combine_pass_list()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00464">thorin::core::normalize_div()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00287">thorin::math::normalize_extrema()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00247">thorin::core::normalize_icmp()</a>, <a class="el" href="mem_2normalizers_8cpp_source.html#l00007">thorin::mem::normalize_lea()</a>, <a class="el" href="mem_2normalizers_8cpp_source.html#l00018">thorin::mem::normalize_load()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00200">thorin::core::normalize_nat()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00218">thorin::core::normalize_ncmp()</a>, <a class="el" href="matrix_2normalizers_8cpp_source.html#l00019">thorin::matrix::normalize_read()</a>, <a class="el" href="refly_2normalizers_8cpp_source.html#l00044">thorin::refly::normalize_refine()</a>, <a class="el" href="matrix_2normalizers_8cpp_source.html#l00057">thorin::matrix::normalize_shape()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00368">thorin::core::normalize_shr()</a>, <a class="el" href="mem_2normalizers_8cpp_source.html#l00039">thorin::mem::normalize_store()</a>, <a class="el" href="autodiff_2normalizers_8cpp_source.html#l00090">thorin::autodiff::normalize_sum()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00401">thorin::core::normalize_wrap()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00612">thorin::core::normalize_zip()</a>, <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00041">thorin::matrix::LowerMatrixMediumLevel::rewrite_()</a>, <a class="el" href="lower__matrix__lowlevel_8cpp_source.html#l00059">thorin::matrix::LowerMatrixLowLevel::rewrite_imm()</a>, <a class="el" href="mem_8h_source.html#l00082">thorin::mem::strip_mem()</a>, <a class="el" href="compile_8cpp_source.html#l00037">thorin_get_plugin()</a>, <a class="el" href="tuple_8cpp_source.html#l00034">thorin::tuple2str()</a>, and <a class="el" href="tuple_8cpp_source.html#l00066">thorin::unflatten()</a>.</p>
 
@@ -2300,9 +2268,9 @@ template&lt;<a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00389">389</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00388">388</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00386">projs()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00385">projs()</a>.</p>
 
 </div>
 </div>
@@ -2342,7 +2310,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00381">381</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00380">380</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8cpp_source.html#l00416">proj()</a>.</p>
 
@@ -2438,7 +2406,7 @@ template&lt;class F &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00203">203</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00421">isa_mut()</a>, and <a class="el" href="def_8h_source.html#l00267">ops()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00420">isa_mut()</a>, and <a class="el" href="def_8h_source.html#l00267">ops()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00164">thorin::World::app()</a>, <a class="el" href="world_8cpp_source.html#l00262">thorin::World::extract()</a>, <a class="el" href="compile_8h_source.html#l00010">thorin::compile::handle_optimization_part()</a>, <a class="el" href="def_8cpp_source.html#l00215">reduce_rec()</a>, and <a class="el" href="partial__eval_8cpp_source.html#l00007">thorin::PartialEval::rewrite()</a>.</p>
 
@@ -2530,7 +2498,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00456">456</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00449">449</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -2560,7 +2528,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00456">456</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00449">449</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -2620,7 +2588,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00456">456</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00449">449</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -2650,7 +2618,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00456">456</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00449">449</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -2690,7 +2658,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00456">456</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00449">449</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -2730,7 +2698,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00456">456</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00449">449</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -2770,7 +2738,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00456">456</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00449">449</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -2810,7 +2778,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00456">456</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00449">449</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -2842,9 +2810,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00361">361</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="assert_8h_source.html#l00037">assert_unused</a>, <a class="el" href="def_8h_source.html#l00495">check()</a>, <a class="el" href="def_8h_source.html#l00274">num_ops()</a>, <a class="el" href="def_8h_source.html#l00273">op()</a>, <a class="el" href="def_8h_source.html#l00508">ops_ptr()</a>, <a class="el" href="def_8h_source.html#l00290">unset()</a>, <a class="el" href="def_8h_source.html#l00297">update()</a>, and <a class="el" href="def_8h_source.html#l00539">uses_</a>.</p>
+<p class="reference">References <a class="el" href="assert_8h_source.html#l00037">assert_unused</a>, <a class="el" href="def_8h_source.html#l00488">check()</a>, <a class="el" href="def_8h_source.html#l00274">num_ops()</a>, <a class="el" href="def_8h_source.html#l00273">op()</a>, <a class="el" href="def_8h_source.html#l00501">ops_ptr()</a>, <a class="el" href="def_8h_source.html#l00290">unset()</a>, <a class="el" href="def_8h_source.html#l00297">update()</a>, and <a class="el" href="def_8h_source.html#l00532">uses_</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00091">thorin::autodiff::AutoDiffEval::augment_extract()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00134">thorin::autodiff::AutoDiffEval::augment_tuple()</a>, <a class="el" href="ast_8cpp_source.html#l00018">thorin::fe::TuplePtrn::bind()</a>, <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00024">thorin::matrix::counting_for()</a>, <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00007">thorin::autodiff::AutoDiffEval::derive_()</a>, <a class="el" href="check_8cpp_source.html#l00013">thorin::Infer::find()</a>, <a class="el" href="def_8cpp_source.html#l00110">thorin::Axiom::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00107">thorin::Var::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00106">thorin::UMax::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00105">thorin::UInc::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00102">thorin::Type::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00095">thorin::Lit::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00099">thorin::Proxy::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00097">thorin::Pi::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00090">thorin::App::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00089">thorin::Ac::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00108">thorin::Vel::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00098">thorin::Pick::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00103">thorin::Test::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00101">thorin::Singleton::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00100">thorin::Sigma::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00104">thorin::Tuple::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00091">thorin::Arr::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00096">thorin::Pack::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00092">thorin::Extract::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00093">thorin::Insert::rebuild()</a>, <a class="el" href="lower__for_8cpp_source.html#l00010">thorin::affine::LowerFor::rewrite()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00057">thorin::clos::ClosConvPrep::rewrite_arg()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00111">thorin::clos::ClosConvPrep::rewrite_callee()</a>, <a class="el" href="pass_8cpp_source.html#l00039">thorin::PassMan::run()</a>, <a class="el" href="tuple_8h_source.html#l00090">thorin::Pack::set()</a>, <a class="el" href="def_8h_source.html#l00736">thorin::Global::set()</a>, <a class="el" href="check_8h_source.html#l00021">thorin::Infer::set()</a>, <a class="el" href="def_8h_source.html#l00284">set()</a>, <a class="el" href="lam_8h_source.html#l00142">thorin::Lam::set()</a>, <a class="el" href="tuple_8h_source.html#l00019">thorin::Sigma::set()</a>, <a class="el" href="lam_8h_source.html#l00148">thorin::Lam::set_body()</a>, <a class="el" href="tuple_8h_source.html#l00060">thorin::Arr::set_body()</a>, <a class="el" href="lam_8h_source.html#l00065">thorin::Pi::set_codom()</a>, <a class="el" href="lam_8cpp_source.html#l00022">thorin::Pi::set_dom()</a>, <a class="el" href="lam_8cpp_source.html#l00028">thorin::Lam::set_filter()</a>, <a class="el" href="tuple_8h_source.html#l00059">thorin::Arr::set_shape()</a>, <a class="el" href="def_8cpp_source.html#l00128">thorin::Pi::stub()</a>, <a class="el" href="def_8cpp_source.html#l00123">thorin::Arr::stub()</a>, and <a class="el" href="ast_8cpp_source.html#l00035">thorin::fe::TuplePtrn::type()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00091">thorin::autodiff::AutoDiffEval::augment_extract()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00134">thorin::autodiff::AutoDiffEval::augment_tuple()</a>, <a class="el" href="ast_8cpp_source.html#l00018">thorin::fe::TuplePtrn::bind()</a>, <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00024">thorin::matrix::counting_for()</a>, <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00007">thorin::autodiff::AutoDiffEval::derive_()</a>, <a class="el" href="check_8cpp_source.html#l00013">thorin::Infer::find()</a>, <a class="el" href="def_8cpp_source.html#l00110">thorin::Axiom::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00107">thorin::Var::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00106">thorin::UMax::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00105">thorin::UInc::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00102">thorin::Type::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00095">thorin::Lit::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00099">thorin::Proxy::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00097">thorin::Pi::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00090">thorin::App::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00089">thorin::Ac::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00108">thorin::Vel::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00098">thorin::Pick::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00103">thorin::Test::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00101">thorin::Singleton::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00100">thorin::Sigma::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00104">thorin::Tuple::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00091">thorin::Arr::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00096">thorin::Pack::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00092">thorin::Extract::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00093">thorin::Insert::rebuild()</a>, <a class="el" href="lower__for_8cpp_source.html#l00010">thorin::affine::LowerFor::rewrite()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00057">thorin::clos::ClosConvPrep::rewrite_arg()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00111">thorin::clos::ClosConvPrep::rewrite_callee()</a>, <a class="el" href="pass_8cpp_source.html#l00039">thorin::PassMan::run()</a>, <a class="el" href="tuple_8h_source.html#l00090">thorin::Pack::set()</a>, <a class="el" href="def_8h_source.html#l00729">thorin::Global::set()</a>, <a class="el" href="check_8h_source.html#l00021">thorin::Infer::set()</a>, <a class="el" href="def_8h_source.html#l00284">set()</a>, <a class="el" href="lam_8h_source.html#l00142">thorin::Lam::set()</a>, <a class="el" href="tuple_8h_source.html#l00019">thorin::Sigma::set()</a>, <a class="el" href="lam_8h_source.html#l00148">thorin::Lam::set_body()</a>, <a class="el" href="tuple_8h_source.html#l00060">thorin::Arr::set_body()</a>, <a class="el" href="lam_8h_source.html#l00065">thorin::Pi::set_codom()</a>, <a class="el" href="lam_8cpp_source.html#l00022">thorin::Pi::set_dom()</a>, <a class="el" href="lam_8cpp_source.html#l00028">thorin::Lam::set_filter()</a>, <a class="el" href="tuple_8h_source.html#l00059">thorin::Arr::set_shape()</a>, <a class="el" href="def_8cpp_source.html#l00128">thorin::Pi::stub()</a>, <a class="el" href="def_8cpp_source.html#l00123">thorin::Arr::stub()</a>, and <a class="el" href="ast_8cpp_source.html#l00035">thorin::fe::TuplePtrn::type()</a>.</p>
 
 </div>
 </div>
@@ -2874,7 +2842,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00456">456</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00449">449</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -2904,7 +2872,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00456">456</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00449">449</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -2934,7 +2902,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00456">456</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00449">449</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -2964,7 +2932,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00456">456</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00449">449</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -2986,7 +2954,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00389">389</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00103">thorin::Use::Type</a>, <a class="el" href="def_8h_source.html#l00246">type()</a>, <a class="el" href="def_8h_source.html#l00541">type_</a>, <a class="el" href="def_8cpp_source.html#l00396">unset_type()</a>, and <a class="el" href="def_8h_source.html#l00539">uses_</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00103">thorin::Use::Type</a>, <a class="el" href="def_8h_source.html#l00246">type()</a>, <a class="el" href="def_8h_source.html#l00534">type_</a>, <a class="el" href="def_8cpp_source.html#l00396">unset_type()</a>, and <a class="el" href="def_8h_source.html#l00532">uses_</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00297">update()</a>.</p>
 
@@ -3062,7 +3030,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p>Reimplemented in <a class="el" href="classthorin_1_1Infer.html#a901a0f1b670bac472d78ca9c163484a0">thorin::Infer</a>, <a class="el" href="classthorin_1_1Global.html#a963f6d9d2bc8c12d3100fe505453ef35">thorin::Global</a>, <a class="el" href="classthorin_1_1Pi.html#ab9ab74c1a1aedb98b7aed3a60015bb3c">thorin::Pi</a>, <a class="el" href="classthorin_1_1Lam.html#a0c84612b6c0e1ef6579c1a4dd70cf134">thorin::Lam</a>, <a class="el" href="classthorin_1_1TBound.html#a9016e2d457e60291aa6f3ea46c49cf06">thorin::TBound&lt; Up &gt;</a>, <a class="el" href="classthorin_1_1TExt.html#a9ac437c338df546a7498935dc8a5eab9">thorin::TExt&lt; Up &gt;</a>, <a class="el" href="classthorin_1_1Sigma.html#a5b5d5c19b93a53dba42f426ba3f1a31b">thorin::Sigma</a>, <a class="el" href="classthorin_1_1Arr.html#a5c8fd0fe38abf0f648497dc91e35fc80">thorin::Arr</a>, and <a class="el" href="classthorin_1_1Pack.html#aa7acd035075cd6bce0e5ee475032c29d">thorin::Pack</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00473">473</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00466">466</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">References <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>.</p>
 
@@ -3093,9 +3061,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00449">449</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00442">442</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00540">dbg_</a>, and <a class="el" href="loc_8h_source.html#l00082">thorin::Dbg::sym</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00533">dbg_</a>, and <a class="el" href="loc_8h_source.html#l00082">thorin::Dbg::sym</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00030">thorin::autodiff::AutoDiffEval::augment_lam()</a>, <a class="el" href="def_8cpp_source.html#l00275">debug_prefix()</a>, <a class="el" href="def_8cpp_source.html#l00280">debug_suffix()</a>, <a class="el" href="internal__cleanup_8cpp_source.html#l00009">thorin::compile::InternalCleanup::enter()</a>, <a class="el" href="lower__matrix__highlevel_8cpp_source.html#l00022">thorin::matrix::internal_function_of_axiom()</a>, <a class="el" href="world_8h_source.html#l00154">thorin::World::make_external()</a>, <a class="el" href="world_8h_source.html#l00159">thorin::World::make_internal()</a>, <a class="el" href="scope_8h_source.html#l00036">thorin::Scope::sym()</a>, <a class="el" href="opt_8cpp_source.html#l00013">thorin_get_plugin()</a>, and <a class="el" href="def_8cpp_source.html#l00414">unique_name()</a>.</p>
 
@@ -3129,7 +3097,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00246">246</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00541">type_</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00534">type_</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00471">thorin::Global::alloced_type()</a>, <a class="el" href="world_8cpp_source.html#l00164">thorin::World::app()</a>, <a class="el" href="def_8cpp_source.html#l00321">arity()</a>, <a class="el" href="check_8cpp_source.html#l00122">thorin::Checker::assignable()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00321">thorin::autodiff::AutoDiffEval::augment_()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00213">thorin::autodiff::AutoDiffEval::augment_app()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00091">thorin::autodiff::AutoDiffEval::augment_extract()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00017">thorin::autodiff::AutoDiffEval::augment_lit()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00134">thorin::autodiff::AutoDiffEval::augment_tuple()</a>, <a class="el" href="lam_8h_source.html#l00191">thorin::App::callee_type()</a>, <a class="el" href="check_8cpp_source.html#l00197">thorin::Pi::check()</a>, <a class="el" href="check_8cpp_source.html#l00174">thorin::Arr::check()</a>, <a class="el" href="clos_8cpp_source.html#l00080">thorin::clos::clos_pack()</a>, <a class="el" href="clos_8cpp_source.html#l00090">thorin::clos::clos_unpack()</a>, <a class="el" href="lower__matrix__mediumlevel_8cpp_source.html#l00024">thorin::matrix::counting_for()</a>, <a class="el" href="def_8cpp_source.html#l00026">Def()</a>, <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00007">thorin::autodiff::AutoDiffEval::derive_()</a>, <a class="el" href="ll_8cpp_source.html#l00436">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="clos_8h_source.html#l00055">thorin::clos::ClosLit::env_type()</a>, <a class="el" href="def_8cpp_source.html#l00337">equal()</a>, <a class="el" href="clos__conv__prep_8h_source.html#l00036">thorin::clos::ClosConvPrep::eta_wrap()</a>, <a class="el" href="def_8cpp_source.html#l00268">extended_ops()</a>, <a class="el" href="world_8cpp_source.html#l00262">thorin::World::extract()</a>, <a class="el" href="lattice_8cpp_source.html#l00010">thorin::Bound::find()</a>, <a class="el" href="tuple_8cpp_source.html#l00052">thorin::flatten()</a>, <a class="el" href="clos_8h_source.html#l00058">thorin::clos::ClosLit::fnc_type()</a>, <a class="el" href="lattice_8h_source.html#l00022">thorin::Bound::get()</a>, <a class="el" href="compile_8h_source.html#l00010">thorin::compile::handle_optimization_part()</a>, <a class="el" href="world_8cpp_source.html#l00143">thorin::World::iapp()</a>, <a class="el" href="world_8h_source.html#l00444">thorin::World::iinfer()</a>, <a class="el" href="world_8cpp_source.html#l00318">thorin::World::insert()</a>, <a class="el" href="def_8cpp_source.html#l00310">is_term()</a>, <a class="el" href="tuple_8cpp_source.html#l00032">thorin::is_unit()</a>, <a class="el" href="lam_8h_source.html#l00117">thorin::Lam::isa_basicblock()</a>, <a class="el" href="def_8cpp_source.html#l00328">isa_lit_arity()</a>, <a class="el" href="lam_8h_source.html#l00118">thorin::Lam::isa_returning()</a>, <a class="el" href="mem_8h_source.html#l00036">thorin::mem::mem_def()</a>, <a class="el" href="tuple_8cpp_source.html#l00084">thorin::merge_tuple()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00543">thorin::core::normalize_bitcast()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00503">thorin::core::normalize_conv()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00363">thorin::math::normalize_conv()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00368">thorin::core::normalize_shr()</a>, <a class="el" href="clos_8h_source.html#l00035">thorin::clos::op()</a>, <a class="el" href="core_8h_source.html#l00049">thorin::core::op()</a>, <a class="el" href="autodiff_8h_source.html#l00016">thorin::autodiff::op_ad()</a>, <a class="el" href="direct_8h_source.html#l00012">thorin::direct::op_cps2ds_dep()</a>, <a class="el" href="mem_8h_source.html#l00132">thorin::mem::op_lea()</a>, <a class="el" href="mem_8h_source.html#l00139">thorin::mem::op_lea_unsafe()</a>, <a class="el" href="matrix_8h_source.html#l00019">thorin::matrix::op_read()</a>, <a class="el" href="optimize_8cpp_source.html#l00020">thorin::optimize()</a>, <a class="el" href="world_8cpp_source.html#l00382">thorin::World::pack()</a>, <a class="el" href="def_8cpp_source.html#l00416">proj()</a>, <a class="el" href="def_8cpp_source.html#l00229">refine()</a>, <a class="el" href="mem_8h_source.html#l00051">thorin::mem::replace_mem()</a>, <a class="el" href="lower__matrix__highlevel_8cpp_source.html#l00038">thorin::matrix::LowerMatrixHighLevelMapRed::rewrite_()</a>, <a class="el" href="clos__conv__prep_8cpp_source.html#l00111">thorin::clos::ClosConvPrep::rewrite_callee()</a>, <a class="el" href="rewrite_8cpp_source.html#l00019">thorin::Rewriter::rewrite_imm()</a>, <a class="el" href="lower__matrix__lowlevel_8cpp_source.html#l00059">thorin::matrix::LowerMatrixLowLevel::rewrite_imm()</a>, <a class="el" href="rewrite_8cpp_source.html#l00025">thorin::Rewriter::rewrite_mut()</a>, <a class="el" href="pass_8cpp_source.html#l00039">thorin::PassMan::run()</a>, <a class="el" href="schedule_8cpp_source.html#l00014">thorin::Scheduler::Scheduler()</a>, <a class="el" href="def_8cpp_source.html#l00389">set_type()</a>, <a class="el" href="mem_8h_source.html#l00082">thorin::mem::strip_mem()</a>, <a class="el" href="world_8cpp_source.html#l00480">thorin::World::test()</a>, <a class="el" href="world_8cpp_source.html#l00226">thorin::World::tuple()</a>, <a class="el" href="clos_8h_source.html#l00049">thorin::clos::ClosLit::type()</a>, <a class="el" href="lam_8h_source.html#l00094">thorin::Lam::type()</a>, <a class="el" href="tuple_8h_source.html#l00088">thorin::Pack::type()</a>, <a class="el" href="world_8cpp_source.html#l00098">thorin::World::type()</a>, <a class="el" href="world_8cpp_source.html#l00105">thorin::World::uinc()</a>, <a class="el" href="world_8cpp_source.html#l00114">thorin::World::umax()</a>, <a class="el" href="def_8h_source.html#l00297">update()</a>, and <a class="el" href="def_8cpp_source.html#l00243">world()</a>.</p>
 
@@ -3155,7 +3123,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00249">249</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp_source.html#l00215">reduce_rec()</a>, <a class="el" href="world_8cpp_source.html#l00098">thorin::World::type()</a>, <a class="el" href="def_8h_source.html#l00541">type_</a>, and <a class="el" href="def_8cpp_source.html#l00243">world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00215">reduce_rec()</a>, <a class="el" href="world_8cpp_source.html#l00098">thorin::World::type()</a>, <a class="el" href="def_8h_source.html#l00534">type_</a>, and <a class="el" href="def_8cpp_source.html#l00243">world()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00355">thorin::World::arr()</a>, <a class="el" href="check_8cpp_source.html#l00174">thorin::Arr::check()</a>, <a class="el" href="world_8cpp_source.html#l00262">thorin::World::extract()</a>, <a class="el" href="core_8h_source.html#l00069">thorin::core::extract_unsafe()</a>, <a class="el" href="check_8cpp_source.html#l00165">thorin::Pi::infer()</a>, <a class="el" href="world_8cpp_source.html#l00318">thorin::World::insert()</a>, <a class="el" href="core_8h_source.html#l00081">thorin::core::insert_unsafe()</a>, and <a class="el" href="world_8cpp_source.html#l00114">thorin::World::umax()</a>.</p>
 
@@ -3180,7 +3148,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00414">414</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00236">gid()</a>, and <a class="el" href="def_8h_source.html#l00449">sym()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00236">gid()</a>, and <a class="el" href="def_8h_source.html#l00442">sym()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="dot_8cpp_source.html#l00084">thorin::dot::Emitter::emit_bb()</a>, and <a class="el" href="dot_8cpp_source.html#l00067">thorin::dot::Emitter::emit_imported()</a>.</p>
 
@@ -3235,7 +3203,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00380">380</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00274">num_ops()</a>, <a class="el" href="def_8h_source.html#l00273">op()</a>, and <a class="el" href="def_8h_source.html#l00508">ops_ptr()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00274">num_ops()</a>, <a class="el" href="def_8h_source.html#l00273">op()</a>, and <a class="el" href="def_8h_source.html#l00501">ops_ptr()</a>.</p>
 
 </div>
 </div>
@@ -3256,7 +3224,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00396">396</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00103">thorin::Use::Type</a>, <a class="el" href="def_8h_source.html#l00541">type_</a>, and <a class="el" href="def_8h_source.html#l00539">uses_</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00103">thorin::Use::Type</a>, <a class="el" href="def_8h_source.html#l00534">type_</a>, and <a class="el" href="def_8h_source.html#l00532">uses_</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00389">set_type()</a>.</p>
 
@@ -3320,7 +3288,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00326">326</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00539">uses_</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00532">uses_</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00327">num_uses()</a>, <a class="el" href="def_8cpp_source.html#l00416">proj()</a>, and <a class="el" href="def_8cpp_source.html#l00288">var()</a>.</p>
 
@@ -3343,7 +3311,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00288">288</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00593">thorin::Var::mut()</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, <a class="el" href="def_8h_source.html#l00326">uses()</a>, <a class="el" href="def_8cpp_source.html#l00288">var()</a>, and <a class="el" href="def_8cpp_source.html#l00243">world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00586">thorin::Var::mut()</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, <a class="el" href="def_8h_source.html#l00326">uses()</a>, <a class="el" href="def_8cpp_source.html#l00288">var()</a>, and <a class="el" href="def_8cpp_source.html#l00243">world()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00213">thorin::autodiff::AutoDiffEval::augment_app()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00030">thorin::autodiff::AutoDiffEval::augment_lam()</a>, <a class="el" href="autodiff__rewrite__toplevel_8cpp_source.html#l00007">thorin::autodiff::AutoDiffEval::derive_()</a>, <a class="el" href="ll_8cpp_source.html#l00297">thorin::ll::Emitter::emit_epilogue()</a>, <a class="el" href="clos_8cpp_source.html#l00064">thorin::clos::ClosLit::env_var()</a>, <a class="el" href="clos__conv__prep_8h_source.html#l00036">thorin::clos::ClosConvPrep::eta_wrap()</a>, <a class="el" href="world_8cpp_source.html#l00262">thorin::World::extract()</a>, <a class="el" href="scope_8cpp_source.html#l00091">thorin::Scope::is_free()</a>, <a class="el" href="clos_8cpp_source.html#l00113">thorin::clos::isa_clos_type()</a>, <a class="el" href="mem_8h_source.html#l00048">thorin::mem::mem_var()</a>, <a class="el" href="direct_8h_source.html#l00012">thorin::direct::op_cps2ds_dep()</a>, <a class="el" href="lam_8h_source.html#l00131">thorin::Lam::ret_var()</a>, <a class="el" href="rewrite_8cpp_source.html#l00044">thorin::rewrite()</a>, <a class="el" href="lower__for_8cpp_source.html#l00010">thorin::affine::LowerFor::rewrite()</a>, and <a class="el" href="def_8cpp_source.html#l00288">var()</a>.</p>
 
@@ -3383,7 +3351,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00399">399</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00398">398</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -3411,7 +3379,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00399">399</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00398">398</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -3440,7 +3408,7 @@ template&lt;<a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00399">399</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00398">398</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -3470,7 +3438,7 @@ template&lt;<a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00399">399</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00398">398</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="clos2sjlj_8cpp_source.html#l00122">thorin::clos::Clos2SJLJ::enter()</a>, <a class="el" href="ret__wrap_8cpp_source.html#l00005">thorin::RetWrap::enter()</a>, and <a class="el" href="lower__for_8cpp_source.html#l00010">thorin::affine::LowerFor::rewrite()</a>.</p>
 
@@ -3500,7 +3468,7 @@ template&lt;<a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00399">399</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00398">398</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -3540,7 +3508,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00399">399</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00398">398</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -3658,7 +3626,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00534">534</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00527">527</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="axiom_8h_source.html#l00049">thorin::Axiom::curry()</a>, and <a class="el" href="lam_8h_source.html#l00204">thorin::App::curry()</a>.</p>
 
@@ -3684,9 +3652,9 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00540">540</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00533">533</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00447">dbg()</a>, <a class="el" href="def_8cpp_source.html#l00275">debug_prefix()</a>, <a class="el" href="def_8cpp_source.html#l00280">debug_suffix()</a>, <a class="el" href="def_8h_source.html#l00448">loc()</a>, and <a class="el" href="def_8h_source.html#l00449">sym()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00440">dbg()</a>, <a class="el" href="def_8cpp_source.html#l00275">debug_prefix()</a>, <a class="el" href="def_8cpp_source.html#l00280">debug_suffix()</a>, <a class="el" href="def_8h_source.html#l00441">loc()</a>, and <a class="el" href="def_8h_source.html#l00442">sym()</a>.</p>
 
 </div>
 </div>
@@ -3710,7 +3678,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00532">532</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00525">525</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00333">dep()</a>, and <a class="el" href="def_8cpp_source.html#l00348">finalize()</a>.</p>
 
@@ -3736,9 +3704,9 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00531">531</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00524">524</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00404">is_external()</a>, <a class="el" href="world_8h_source.html#l00154">thorin::World::make_external()</a>, and <a class="el" href="world_8h_source.html#l00159">thorin::World::make_internal()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00403">is_external()</a>, <a class="el" href="world_8h_source.html#l00154">thorin::World::make_external()</a>, and <a class="el" href="world_8h_source.html#l00159">thorin::World::make_internal()</a>.</p>
 
 </div>
 </div>
@@ -3762,9 +3730,9 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00528">528</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00521">521</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00026">Def()</a>, <a class="el" href="def_8h_source.html#l00235">flags()</a>, and <a class="el" href="def_8h_source.html#l00652">thorin::Lit::get()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00026">Def()</a>, <a class="el" href="def_8h_source.html#l00235">flags()</a>, and <a class="el" href="def_8h_source.html#l00645">thorin::Lit::get()</a>.</p>
 
 </div>
 </div>
@@ -3788,7 +3756,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00537">537</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00530">530</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00026">Def()</a>, and <a class="el" href="def_8h_source.html#l00236">gid()</a>.</p>
 
@@ -3814,7 +3782,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00536">536</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00529">529</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00026">Def()</a>, and <a class="el" href="def_8h_source.html#l00237">hash()</a>.</p>
 
@@ -3840,9 +3808,9 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00530">530</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00523">523</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00430">as_mut()</a>, and <a class="el" href="def_8h_source.html#l00421">isa_mut()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00429">as_mut()</a>, and <a class="el" href="def_8h_source.html#l00420">isa_mut()</a>.</p>
 
 </div>
 </div>
@@ -3866,7 +3834,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00529">529</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00522">522</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00238">node()</a>.</p>
 
@@ -3892,7 +3860,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00538">538</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00531">531</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00268">extended_ops()</a>, <a class="el" href="def_8h_source.html#l00274">num_ops()</a>, <a class="el" href="def_8h_source.html#l00267">ops()</a>, and <a class="el" href="def_8h_source.html#l00319">partial_ops()</a>.</p>
 
@@ -3918,7 +3886,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00533">533</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00526">526</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -3942,7 +3910,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00535">535</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00528">528</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="axiom_8h_source.html#l00050">thorin::Axiom::trip()</a>, and <a class="el" href="lam_8h_source.html#l00205">thorin::App::trip()</a>.</p>
 
@@ -3968,7 +3936,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00541">541</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00534">534</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00389">set_type()</a>, <a class="el" href="def_8h_source.html#l00246">type()</a>, <a class="el" href="def_8cpp_source.html#l00249">unfold_type()</a>, and <a class="el" href="def_8cpp_source.html#l00396">unset_type()</a>.</p>
 
@@ -3994,7 +3962,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00539">539</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00532">532</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00056">Def()</a>, <a class="el" href="def_8cpp_source.html#l00348">finalize()</a>, <a class="el" href="def_8cpp_source.html#l00361">set()</a>, <a class="el" href="def_8cpp_source.html#l00389">set_type()</a>, <a class="el" href="def_8cpp_source.html#l00396">unset_type()</a>, and <a class="el" href="def_8h_source.html#l00326">uses()</a>.</p>
 

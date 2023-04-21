@@ -1,7 +1,5 @@
 var NAVTREEINDEX22 =
 {
-"structthorin_1_1World_1_1State.html#a6ff146e35adca4aa3cd684f71115030f":[5,0,0,112,1,0,1],
-"structthorin_1_1World_1_1State.html#a77ba724f87e9b5fcafbe62e36f909273":[3,0,0,119,1,1],
 "structthorin_1_1World_1_1State.html#a77ba724f87e9b5fcafbe62e36f909273":[5,0,0,112,1,1],
 "structthorin_1_1World_1_1State.html#a7f6b68de40c0d4e36c8b26ec364f503d":[6,0,4,26,2,0],
 "structthorin_1_1World_1_1State.html#a7f6b68de40c0d4e36c8b26ec364f503d":[5,0,0,112,1,0,0],

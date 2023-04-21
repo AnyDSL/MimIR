@@ -37,7 +37,6 @@ var classthorin_1_1Def =
     [ "isa_imm", "classthorin_1_1Def.html#a3842b6611568e3c9bd1d6a3a7575e091", null ],
     [ "isa_lit_arity", "classthorin_1_1Def.html#a3435dfa9281402d7c74e7a163ec0a6d8", null ],
     [ "isa_mut", "classthorin_1_1Def.html#aabf1066a0dbcaa6ec6f08877b86767e4", null ],
-    [ "isa_mut", "classthorin_1_1Def.html#a9faaa57a307cbb0d97e4de68cb1f656e", null ],
     [ "loc", "classthorin_1_1Def.html#aaa260e29035d724e0f5c4286b93c5f0d", null ],
     [ "make_external", "classthorin_1_1Def.html#a0478725100ec49c9cb03ae02864a78d6", null ],
     [ "make_internal", "classthorin_1_1Def.html#ab0027c07e24d090144365a0857f76d43", null ],
