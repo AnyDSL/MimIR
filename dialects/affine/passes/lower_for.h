@@ -5,7 +5,7 @@
 
 namespace thorin::affine {
 
-/// Lowers the for axiom to actual control flow in CPS style
+/// Lowers the for axiom to actual control flow in CPS.
 class LowerFor : public RWPass<LowerFor, Lam> {
 public:
     LowerFor(PassMan& man)
