@@ -40,7 +40,7 @@ public:
         if ((*this)->size() == 0) return std::strong_ordering::less;
         auto cmp = (*this)[0] <=> c;
         if ((*this)->size() == 1) return cmp;
-        return (*this)[0] == c ? std::strong_ordering::greater : cmp;
+        return cmp == 0 ? std::strong_ordering::greater : cmp;
     }
     auto operator==(char c) const { return (*this) <=> c == std::strong_ordering::equal; }
     auto operator<=>(Sym other) const { return **this <=> *other; }
