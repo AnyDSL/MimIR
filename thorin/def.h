@@ -340,30 +340,29 @@ public:
     /// @anchor proj
     ///@{
     /// Splits this Def via Extract%s or directly accessing the Def::ops in the case of Sigma%s or Arr%ays.
+    /// ```
+    /// std::array<const Def*, 2> ab = def->projs<2>();
+    /// std::array<u64, 2>        xy = def->projs<2>([](auto def) { return Lit::as(def); });
+    /// auto [a, b]                  = def->projs<2>();
+    /// auto [x, y]                  = def->projs<2>([](auto def) { return Lit::as(def); });
+    /// Array<const Def*> projs1     = def->projs(); // "projs1" has def->num_projs() many elements
+    /// Array<const Def*> projs2     = def->projs(n);// "projs2" has n elements - asserts if incorrect
+    /// // same as above but applies Lit::as<nat_t>(op) to each element
+    /// Array<const Lit*> lits1      = def->projs(   [](auto def) { return Lit::as(def); });
+    /// Array<const Lit*> lits2      = def->projs(n, [](auto def) { return Lit::as(def); });
+    /// ```
 
-    /// Yields Def::arity as_lit, if it is in fact a Lit, or `1` otherwise.
-    nat_t num_projs() const {
-        if (auto a = isa_lit_arity()) return *a;
-        return 1;
-    }
-    /// Similar to World::extract while assuming an arity of @p a but also works on Sigma%s, and Arr%ays.
+    /// Yields Def::as_lit_arity(), if it is in fact a Lit, or `1` otherwise.
+    nat_t num_projs() const { return isa_lit_arity().value_or(1); }
+
+    /// Similar to World::extract while assuming an arity of @p a, but also works on Sigma%s and Arr%ays.
     const Def* proj(nat_t a, nat_t i) const;
 
     /// Same as above but takes Def::num_projs as arity.
     const Def* proj(nat_t i) const { return proj(num_projs(), i); }
 
-    /// Splits this Def via Def::proj%ections into an Arr%ay (if `A == -1_s`) or `std::array` (otherwise).
+    /// Splits this Def via Def::proj%ections into an Array (if `A == -1_s`) or `std::array` (otherwise).
     /// Applies @p f to each element.
-    /// ```
-    /// std::array<const Def*, 2> ab = def->projs<2>();
-    /// std::array<u64, 2>        xy = def->projs<2>(as_lit<nat_t>);
-    /// auto [a, b] = def->projs<2>();
-    /// auto [x, y] = def->projs<2>(as_lit<nat_t>);
-    /// Array<const Def*> projs = def->projs();               // projs has def->num_projs() many elements
-    /// Array<const Def*> projs = def->projs(n);              // projs has n elements - asserts if incorrect
-    /// Array<const Lit*> lits = def->projs(as_lit<nat_t>);   // same as above but applies as_lit<nat_t> to each element
-    /// Array<const Lit*> lits = def->projs(n, as_lit<nat_t>);// same as above but applies as_lit<nat_t> to each element
-    /// ```
     template<nat_t A = -1_s, class F>
     auto projs(F f) const {
         using R = std::decay_t<decltype(f(this))>;
@@ -393,7 +392,7 @@ public:
 
     /// @name var
     ///@{
-    /// Retrieve Var for *mut*ables.
+    /// Retrieve Var for *mutables*.
     /// @see @ref proj
     const Var* var();
     THORIN_PROJ(var, )
@@ -433,12 +432,6 @@ public:
             return const_cast<Def*>(this);
         else
             return const_cast<Def*>(this)->template as<T>();
-    }
-
-    template<class T = Def, class R>
-    T* isa_mut(R (T::*f)() const) const {
-        if (auto t = isa_mut<T>(); t && (t->*f)()) return t;
-        return nullptr;
     }
     ///@}
 
