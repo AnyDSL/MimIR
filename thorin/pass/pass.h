@@ -270,7 +270,7 @@ protected:
     auto& data(const K& key) {
         return data()[key];
     }
-    /// Use this for your convenience if `P::Data` is a map.
+    /// Use this for your convenience if `P::Data<I>` is a map.
     template<size_t I, class K>
     auto& data(const K& key) {
         return data<I>()[key];
