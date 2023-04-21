@@ -36,13 +36,11 @@ public:
 
     /// @name Comparisons
     ///@{
-    auto operator<=>(Sym other) const { return *(*this) <=> *other; }
+    auto operator<=>(char c) const { return (*this)->size() == 0 ? std::strong_ordering::less : (*this)[0] <=> c; }
+    auto operator==(char c) const { return (*this) <=> c == std::strong_ordering::equal; }
+    auto operator<=>(Sym other) const { return **this <=> *other; }
     bool operator==(Sym other) const { return this->ptr_ == other.ptr_; }
     bool operator!=(Sym other) const { return this->ptr_ != other.ptr_; }
-    bool operator==(char c) const { return (*this)->size() == 1 && (*this)[0] == c; }
-    bool operator!=(char c) const { return !((*this) == c); }
-    friend bool operator==(char c, Sym s) { return s == c; }
-    friend bool operator!=(char c, Sym s) { return s != c; }
     ///@}
 
     /// @name Cast Operators

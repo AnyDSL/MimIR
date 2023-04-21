@@ -566,10 +566,10 @@ private:
             assert(index_ % alignof(T) == 0);
         }
 
-        static constexpr inline size_t align(size_t n) { return (n + (sizeof(void*) - 1)) & ~(sizeof(void*) - 1); }
+        static constexpr size_t align(size_t n) { return (n + (sizeof(void*) - 1)) & ~(sizeof(void*) - 1); }
 
         template<class T>
-        static constexpr inline size_t num_bytes_of(size_t num_ops) {
+        static constexpr size_t num_bytes_of(size_t num_ops) {
             size_t result = sizeof(Def) + sizeof(void*) * num_ops;
             return align(result);
         }
