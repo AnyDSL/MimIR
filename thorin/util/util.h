@@ -196,7 +196,7 @@ template<class K>          using GIDNodeSet = absl::node_hash_set<K,    GIDHash<
 ///@}
 
 /// Use this to declare all kind of bit and comparison operators for an `enum` @p E.
-/// Note that the bit operators return the @p E's underlying type and not the original `enum` @p E.
+/// Note that the bit operators return @p E's underlying type and not the original `enum` @p E.
 /// This is because the result may not be a valid `enum` value.
 /// For the same reason, it doesn't make sense to declare operators such as `&=`.
 #define THORIN_ENUM_OPERATORS(E)                                                                                                                                 \
