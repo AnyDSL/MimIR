@@ -36,7 +36,7 @@ int Log::level2color(Level level) {
 }
 // clang-format on
 
-#ifdef THORIN_COLOR_TERM
+#if THORIN_COLOR_TERM
 std::string Log::colorize(std::string_view str, int color) {
     if (isatty(fileno(stdout))) {
         const char c = '0' + color;
