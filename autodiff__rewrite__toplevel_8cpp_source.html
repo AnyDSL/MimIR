@@ -174,13 +174,12 @@ $(document).ready(function(){initNavTree('autodiff__rewrite__toplevel_8cpp_sourc
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="comment">// The partial pullback is then `e*: B* -&gt; A*`</span></div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="comment">// The derivatived version is `e&#39;: B&#39; × (B* -&gt; A*)` which is an application of `e&#39;_fun: A&#39; -&gt; B&#39; × (B* -&gt; A*)`</span></div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keyword">auto</span> new_body = <a class="code hl_function" href="classthorin_1_1autodiff_1_1AutoDiffEval.html#a02eb65cfda24f0533f39d86d2c8671cd">augment</a>(lam-&gt;body(), lam, deriv);</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    deriv-&gt;set_filter(<span class="keyword">true</span>);</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    deriv-&gt;set_body(new_body);</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordflow">return</span> deriv;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>}</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>} <span class="comment">// namespace thorin::autodiff</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    deriv-&gt;set(<span class="keyword">true</span>, new_body);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keywordflow">return</span> deriv;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>} <span class="comment">// namespace thorin::autodiff</span></div>
 <div class="ttc" id="aautodiff_8h_html"><div class="ttname"><a href="autodiff_8h.html">autodiff.h</a></div></div>
 <div class="ttc" id="aautodiff__eval_8h_html"><div class="ttname"><a href="autodiff__eval_8h.html">autodiff_eval.h</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Def_html_a77cfe4c3a72b404c3be0af3b926e8146"><div class="ttname"><a href="classthorin_1_1Def.html#a77cfe4c3a72b404c3be0af3b926e8146">thorin::Def::var</a></div><div class="ttdeci">const Var * var()</div><div class="ttdef"><b>Definition:</b> <a href="def_8cpp_source.html#l00288">def.cpp:288</a></div></div>

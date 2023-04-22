@@ -148,21 +148,21 @@ $(document).ready(function(){initNavTree('direct_8h_source.html',''); initResiza
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    } <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        rewritten_codom = U;</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    }</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    Uf-&gt;set_filter(<span class="keyword">true</span>);</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    Uf-&gt;set_body(rewritten_codom);</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keyword">auto</span> ax_app = world.app(world.ax&lt;<a class="code hl_enumeration" href="namespacethorin_1_1direct.html#a1efc4793431921a101ffe359ce204139">direct::cps2ds_dep</a>&gt;(), {T, Uf});</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    world.DLOG(<span class="stringliteral">&quot;axiom app: {} : {}&quot;</span>, ax_app, ax_app-&gt;type());</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordflow">return</span> world.app(ax_app, f);</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>}<span class="comment"></span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">///@}</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment"></span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>} <span class="comment">// namespace thorin::direct</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    Uf-&gt;<a class="code hl_function" href="classthorin_1_1Def.html#af401dbc2a8092cdc438507614174f792">set</a>(<span class="keyword">true</span>, rewritten_codom);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keyword">auto</span> ax_app = world.app(world.ax&lt;<a class="code hl_enumeration" href="namespacethorin_1_1direct.html#a1efc4793431921a101ffe359ce204139">direct::cps2ds_dep</a>&gt;(), {T, Uf});</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    world.DLOG(<span class="stringliteral">&quot;axiom app: {} : {}&quot;</span>, ax_app, ax_app-&gt;type());</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordflow">return</span> world.app(ax_app, f);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>}<span class="comment"></span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">///@}</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment"></span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>} <span class="comment">// namespace thorin::direct</span></div>
 <div class="ttc" id="aclassthorin_1_1Def_html"><div class="ttname"><a href="classthorin_1_1Def.html">thorin::Def</a></div><div class="ttdoc">Base class for all Defs.</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00220">def.h:220</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Def_html_a77cfe4c3a72b404c3be0af3b926e8146"><div class="ttname"><a href="classthorin_1_1Def.html#a77cfe4c3a72b404c3be0af3b926e8146">thorin::Def::var</a></div><div class="ttdeci">const Var * var()</div><div class="ttdef"><b>Definition:</b> <a href="def_8cpp_source.html#l00288">def.cpp:288</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Def_html_aa7ad6f240ca55e9056230ce136c67c90"><div class="ttname"><a href="classthorin_1_1Def.html#aa7ad6f240ca55e9056230ce136c67c90">thorin::Def::type</a></div><div class="ttdeci">const Def * type() const</div><div class="ttdoc">Yields the raw type of this Def, i.e. maybe nullptr.</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00246">def.h:246</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Def_html_af401dbc2a8092cdc438507614174f792"><div class="ttname"><a href="classthorin_1_1Def.html#af401dbc2a8092cdc438507614174f792">thorin::Def::set</a></div><div class="ttdeci">Def * set(size_t i, const Def *def)</div><div class="ttdef"><b>Definition:</b> <a href="def_8cpp_source.html#l00361">def.cpp:361</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Pi_html"><div class="ttname"><a href="classthorin_1_1Pi.html">thorin::Pi</a></div><div class="ttdoc">A dependent function type.</div><div class="ttdef"><b>Definition:</b> <a href="lam_8h_source.html#l00011">lam.h:11</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Pi_html_a94f7defce560b958a8dc54bc0c89692d"><div class="ttname"><a href="classthorin_1_1Pi.html#a94f7defce560b958a8dc54bc0c89692d">thorin::Pi::dom</a></div><div class="ttdeci">Ref dom() const</div><div class="ttdef"><b>Definition:</b> <a href="lam_8h_source.html#l00029">lam.h:29</a></div></div>
 <div class="ttc" id="aclassthorin_1_1RuntimeCast_html_a909777be7f178004b0cca5ec68356c4c"><div class="ttname"><a href="classthorin_1_1RuntimeCast.html#a909777be7f178004b0cca5ec68356c4c">thorin::RuntimeCast::as</a></div><div class="ttdeci">T * as()</div><div class="ttdoc">static_cast with debug check.</div><div class="ttdef"><b>Definition:</b> <a href="cast_8h_source.html#l00023">cast.h:23</a></div></div>
