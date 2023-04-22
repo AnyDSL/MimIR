@@ -47,7 +47,7 @@ public:
             mutable bool frozen = false;
         } pod;
 
-#if THORIN_ENABLE_CHECKS
+#ifdef THORIN_ENABLE_CHECKS
         absl::flat_hash_set<uint32_t> breakpoints;
 #endif
         friend void swap(State& s1, State& s2) {
@@ -56,7 +56,7 @@ public:
             // clang-format off
             swap(s1.pod,                s2.pod);
             // clang-format on
-#if THORIN_ENABLE_CHECKS
+#ifdef THORIN_ENABLE_CHECKS
             swap(s1.breakpoints, s2.breakpoints);
 #endif
         }
@@ -136,7 +136,7 @@ public:
     };
     ///@}
 
-#if THORIN_ENABLE_CHECKS
+#ifdef THORIN_ENABLE_CHECKS
     /// @name Debugging Features
     ///@{
     Ref gid2def(u32 gid);
@@ -464,7 +464,7 @@ private:
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
         if (auto loc = emit_loc()) def->set(loc);
         assert(!def->isa_mut());
-#if THORIN_ENABLE_CHECKS
+#ifdef THORIN_ENABLE_CHECKS
         if (flags().trace_gids) outln("{}: {} - {}", def->node_name(), def->gid(), def->flags());
         if (flags().reeval_breakpoints && breakpoints().contains(def->gid())) thorin::breakpoint();
 #endif
@@ -480,7 +480,7 @@ private:
             arena_.deallocate<T>(def);
             return static_cast<const T*>(*i);
         }
-#if THORIN_ENABLE_CHECKS
+#ifdef THORIN_ENABLE_CHECKS
         if (!flags().reeval_breakpoints && breakpoints().contains(def->gid())) thorin::breakpoint();
 #endif
         def->finalize();
@@ -491,7 +491,7 @@ private:
     T* insert(size_t num_ops, Args&&... args) {
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
         if (auto loc = emit_loc()) def->set(loc);
-#if THORIN_ENABLE_CHECKS
+#ifdef THORIN_ENABLE_CHECKS
         if (flags().trace_gids) outln("{}: {} - {}", def->node_name(), def->gid(), def->flags());
         if (breakpoints().contains(def->gid())) thorin::breakpoint();
 #endif

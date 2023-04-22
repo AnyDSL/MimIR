@@ -58,7 +58,7 @@ int main(int argc, char** argv) {
             | lyra::opt(flags.bootstrap         )      ["--bootstrap"         ]("Puts thorin into \"bootstrap mode\". This means a '.plugin' directive has the same effect as an '.import' and will not load a library.")
             | lyra::opt(flags.dump_gid, "level" )      ["--dump-gid"          ]("Dumps gid of inline expressions as a comment in output if <level> > 0. Use a <level> of 2 to also emit the gid of trivial defs.")
             | lyra::opt(flags.dump_recursive    )      ["--dump-recursive"    ]("Dumps Thorin program with a simple recursive algorithm that is not readable again from Thorin but is less fragile and also works for broken Thorin programs.")
-#if THORIN_ENABLE_CHECKS
+#ifdef THORIN_ENABLE_CHECKS
             | lyra::opt(breakpoints,    "gid"   )["-b"]["--break"             ]("*Triggers breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
             | lyra::opt(flags.reeval_breakpoints)      ["--reeval-breakpoints"]("*Triggers breakpoint even upon unfying a node that has already been built.")
             | lyra::opt(flags.break_on_error    )      ["--break-on-error"    ]("*Triggers breakpoint on ELOG.")
@@ -92,7 +92,7 @@ int main(int argc, char** argv) {
         }
 
         World& world = driver.world();
-#if THORIN_ENABLE_CHECKS
+#ifdef THORIN_ENABLE_CHECKS
         for (auto b : breakpoints) world.breakpoint(b);
 #endif
         driver.log().set(&std::cerr).set((Log::Level)verbose);
