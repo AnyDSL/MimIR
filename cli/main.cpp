@@ -55,13 +55,15 @@ int main(int argc, char** argv) {
             | lyra::opt(output[LL    ], "file"  )      ["--output-ll"         ]("Compiles the Thorin program to LLVM.")
             | lyra::opt(output[Md    ], "file"  )      ["--output-md"         ]("Emits the input formatted as Markdown.")
             | lyra::opt(output[Thorin], "file"  )["-o"]["--output-thorin"     ]("Emits the Thorin program again.")
-            | lyra::opt(flags.bootstrap         )      ["--bootstrap"         ]("Puts thorin into \"bootstrap mode\". This means a `.plugin` directive has the same effect as an `.import` and will not load a library.")
+            | lyra::opt(flags.bootstrap         )      ["--bootstrap"         ]("Puts thorin into \"bootstrap mode\". This means a '.plugin' directive has the same effect as an '.import' and will not load a library.")
             | lyra::opt(flags.dump_gid, "level" )      ["--dump-gid"          ]("Dumps gid of inline expressions as a comment in output if <level> > 0. Use a <level> of 2 to also emit the gid of trivial defs.")
             | lyra::opt(flags.dump_recursive    )      ["--dump-recursive"    ]("Dumps Thorin program with a simple recursive algorithm that is not readable again from Thorin but is less fragile and also works for broken Thorin programs.")
 #if THORIN_ENABLE_CHECKS
-            | lyra::opt(breakpoints,    "gid"   )["-b"]["--break"             ]("Trigger breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
-            | lyra::opt(flags.reeval_breakpoints)      ["--reeval-breakpoints"]("Triggers breakpoint even upon unfying a node that has already been built.")
-            | lyra::opt(flags.trace_gids        )      ["--trace-gids"        ]("Output gids during World::unify/insert.")
+            | lyra::opt(breakpoints,    "gid"   )["-b"]["--break"             ]("*Triggers breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
+            | lyra::opt(flags.reeval_breakpoints)      ["--reeval-breakpoints"]("*Triggers breakpoint even upon unfying a node that has already been built.")
+            | lyra::opt(flags.break_on_error    )      ["--break-on-error"    ]("*Triggers breakpoint on ELOG.")
+            | lyra::opt(flags.break_on_warn     )      ["--break-on-warn"     ]("*Triggers breakpoint on WLOG.")
+            | lyra::opt(flags.trace_gids        )      ["--trace-gids"        ]("*Output gids during World::unify/insert.")
 #endif
             | lyra::arg(input,          "file"  )                              ("Input file.")
             ;
@@ -71,6 +73,7 @@ int main(int argc, char** argv) {
 
         if (show_help) {
             std::cout << cli << std::endl;
+            std::cout << "*These are developer options only enabled, if 'THORIN_ENABLE_CHECKS' is ON." << std::endl;
             std::cout << "Use \"-\" as <file> to output to stdout." << std::endl;
             return EXIT_SUCCESS;
         }

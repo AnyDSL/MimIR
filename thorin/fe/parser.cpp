@@ -112,9 +112,10 @@ void Parser::import(std::istream& is, const fs::path* path, std::ostream* md) {
     lexers_.pop();
 }
 
-void Parser::plugin(fs::path name) {
-    if (!driver().flags().bootstrap) driver().load(name.string());
-    import(name);
+void Parser::plugin(fs::path path) {
+    auto sym = driver().sym(path.string());
+    if (!driver().flags().bootstrap && !driver().is_loaded(sym)) driver().load(sym);
+    import(path);
 }
 
 /*

@@ -14,6 +14,8 @@ struct Flags {
 #if THORIN_ENABLE_CHECKS
     bool reeval_breakpoints = false;
     bool trace_gids         = false;
+    bool break_on_error     = false;
+    bool break_on_warn      = false;
 #endif
 };
 

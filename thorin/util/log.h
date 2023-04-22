@@ -2,6 +2,8 @@
 
 #include <ostream>
 
+#include "thorin/flags.h"
+
 #include "thorin/util/loc.h"
 
 namespace thorin {
@@ -10,10 +12,14 @@ namespace thorin {
 /// @see @ref fmt "Formatted Output", @ref log "Logging Macros"
 class Log {
 public:
+    Log(const Flags& flags)
+        : flags_(flags) {}
+
     enum class Level { Error, Warn, Info, Verbose, Debug };
 
     /// @name Getters
     ///@{
+    const Flags& flags() const { return flags_; }
     Level level() const { return max_level_; }
     std::ostream& ostream() const {
         assert(ostream_);
@@ -45,6 +51,8 @@ public:
             oss << loc;
             print(ostream(), "{}:{}: ", colorize(level2acro(level), level2color(level)), colorize(oss.str(), 7));
             print(ostream(), fmt, std::forward<Args&&>(args)...) << std::endl;
+            if ((level == Level::Error && flags().break_on_error) || (level == Level::Warn && flags().break_on_warn))
+                breakpoint();
         }
     }
     template<class... Args>
@@ -63,6 +71,7 @@ public:
     ///@}
 
 private:
+    const Flags& flags_;
     std::ostream* ostream_ = nullptr;
     Level max_level_       = Level::Error;
 };
