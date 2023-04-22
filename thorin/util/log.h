@@ -51,8 +51,10 @@ public:
             oss << loc;
             print(ostream(), "{}:{}: ", colorize(level2acro(level), level2color(level)), colorize(oss.str(), 7));
             print(ostream(), fmt, std::forward<Args&&>(args)...) << std::endl;
+#if THORIN_ENABLE_CHECKS
             if ((level == Level::Error && flags().break_on_error) || (level == Level::Warn && flags().break_on_warn))
                 breakpoint();
+#endif
         }
     }
     template<class... Args>
