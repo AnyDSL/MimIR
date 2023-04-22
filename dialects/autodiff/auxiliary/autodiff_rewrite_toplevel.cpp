@@ -59,8 +59,7 @@ Ref AutoDiffEval::derive_(Ref def) {
     // The partial pullback is then `e*: B* -> A*`
     // The derivatived version is `e': B' × (B* -> A*)` which is an application of `e'_fun: A' -> B' × (B* -> A*)`
     auto new_body = augment(lam->body(), lam, deriv);
-    deriv->set_filter(true);
-    deriv->set_body(new_body);
+    deriv->set(true, new_body);
 
     return deriv;
 }

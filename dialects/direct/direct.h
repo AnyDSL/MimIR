@@ -33,8 +33,7 @@ inline const Def* op_cps2ds_dep(const Def* f) {
     } else {
         rewritten_codom = U;
     }
-    Uf->set_filter(true);
-    Uf->set_body(rewritten_codom);
+    Uf->set(true, rewritten_codom);
 
     auto ax_app = world.app(world.ax<direct::cps2ds_dep>(), {T, Uf});
 

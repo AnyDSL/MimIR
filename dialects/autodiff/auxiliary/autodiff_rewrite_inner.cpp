@@ -69,8 +69,8 @@ Ref AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
         partial_pullback[aug_var] = pb;
         // We are still in same closed function.
         auto new_body = augment(lam->body(), f, f_diff);
-        aug_lam->set_filter(lam->filter());
-        aug_lam->set_body(new_body);
+        // TODO we also need to rewrite the filter
+        aug_lam->set(lam->filter(), new_body);
 
         auto lam_pb               = zero_pullback(lam->type(), f->dom(2, 0));
         partial_pullback[aug_lam] = lam_pb;
