@@ -11,8 +11,7 @@ namespace thorin::direct {
 Ref DS2CPS::rewrite(Ref def) {
     auto& world = def->world();
     if (auto app = def->isa<App>()) {
-        auto callee = app->callee();
-        if (auto lam = callee->isa_mut<Lam>()) {
+        if (auto lam = app->callee()->isa_mut<Lam>()) {
             world.DLOG("encountered lam app");
             auto new_lam = rewrite_lam(lam);
             world.DLOG("new lam: {} : {}", new_lam, new_lam->type());
@@ -45,21 +44,20 @@ Ref DS2CPS::rewrite_lam(Lam* lam) {
     auto ty    = lam->type();
     auto dom   = ty->dom();
     auto codom = ty->codom();
-
-    Sigma* sig = world().mut_sigma(2);
-    sig->set(0, dom);
+    auto sigma = world().mut_sigma(2);
+    sigma->set(0, dom);
 
     // replace ds dom var with cps sigma var (cps dom)
     Scope r_scope{ty->as_mut()};
     auto dom_var         = ty->as_mut<Pi>()->var();
-    auto cps_dom_var     = sig->var((nat_t)0);
+    auto cps_dom_var     = sigma->var(2, 0);
     auto rewritten_codom = thorin::rewrite(codom, dom_var, cps_dom_var, r_scope);
-    sig->set(1, world().cn(rewritten_codom));
+    sigma->set(1, world().cn(rewritten_codom));
 
     world().DLOG("original codom: {}", codom);
     world().DLOG("rewritten codom: {}", rewritten_codom);
 
-    auto cps_ty = world().cn(sig);
+    auto cps_ty = world().cn(sigma);
     world().DLOG("cps type: {}", cps_ty);
 
     auto cps_lam = world().mut_lam(cps_ty)->set(*lam->sym() + "_cps");
@@ -69,7 +67,7 @@ Ref DS2CPS::rewrite_lam(Lam* lam) {
     Scope l_scope{lam};
     world().DLOG("body: {} : {}", lam->body(), lam->body()->type());
 
-    auto cps_body = thorin::rewrite(lam->body(), lam->var(), cps_lam->var((nat_t)0), l_scope);
+    auto cps_body = thorin::rewrite(lam->body(), lam->var(), cps_lam->var(0_n), l_scope);
 
     world().DLOG("cps body: {} : {}", cps_body, cps_body->type());
 

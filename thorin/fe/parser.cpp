@@ -623,10 +623,15 @@ void Parser::parse_ax() {
         error(ax.loc(), "all declarations of axiom '{}' have to be function types if any is", ax);
     info.pi = type->isa<Pi>() != nullptr;
 
-    auto normalizer_name = accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom").sym : Sym();
-    if (!is_new && (info.normalizer && normalizer_name) && info.normalizer != normalizer_name)
+    Sym normalizer;
+    if (ahead().isa(Tok::Tag::T_comma) && ahead(1).isa(Tok::Tag::M_id)) {
+        lex();
+        normalizer = parse_sym("normalizer of an axiom").sym;
+    }
+
+    if (!is_new && (info.normalizer && normalizer) && info.normalizer != normalizer)
         error(ax.loc(), "all declarations of axiom '{}' must use the same normalizer name", ax);
-    info.normalizer = normalizer_name;
+    info.normalizer = normalizer;
 
     auto [curry, trip] = Axiom::infer_curry_and_trip(type);
 
