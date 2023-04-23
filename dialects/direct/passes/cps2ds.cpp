@@ -28,7 +28,8 @@ void CPS2DS::rewrite_lam(Lam* lam) {
     auto new_b = rewrite_body(curr_lam_->body());
     // curr_lam_ might be different at this point (newly introduced continuation).
     world().DLOG("Result of rewrite {} in {}", lam, curr_lam_);
-    curr_lam_->reset(new_f, new_b);
+    // TODO This is odd: Why is this *sometimes* not set?
+    curr_lam_->unset()->set({new_f, new_b});
     curr_lam_ = lam_stack.back();
     lam_stack.pop_back();
 }
@@ -94,10 +95,12 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
             // Generate the cps function call `f a` -> `f_cps(a,cont)`
             auto cps_call = world().app(cps_fun, {new_arg, fun_cont})->set("cps_call");
             world().DLOG("  curr_lam {}", curr_lam_->sym());
-            if (curr_lam_->is_set())
-                curr_lam_->reset(curr_lam_->filter(), cps_call);
-            else
+            if (curr_lam_->is_set()) {
+                auto filter = curr_lam_->filter();
+                curr_lam_->unset()->set({filter, cps_call});
+            } else {
                 curr_lam_->set(world().lit_ff(), cps_call);
+            }
 
             // Fixme: would be great to PE the newly added overhead away..
             // The current PE just does not terminate on loops.. :/

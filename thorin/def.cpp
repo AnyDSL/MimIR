@@ -374,11 +374,9 @@ Def* Def::set(size_t i, const Def* def) {
 }
 
 Def* Def::unset(size_t i) {
-    if (auto def = op(i)) {
-        assert(def->uses_.contains(Use(this, i)));
-        def->uses_.erase(Use(this, i));
-        ops_ptr()[i] = nullptr;
-    }
+    assert(op(i) && op(i)->uses_.contains(Use(this, i)));
+    op(i)->uses_.erase(Use(this, i));
+    ops_ptr()[i] = nullptr;
     return this;
 }
 

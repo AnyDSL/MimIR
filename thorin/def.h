@@ -287,8 +287,20 @@ public:
     Def*   set(size_t i, const Def* def);
     Def* reset(size_t i, const Def* def) { return unset(i)->set(i, def); }
     Def*   set(Defs ops) { for (size_t i = 0, e = num_ops(); i != e; ++i)   set(i, ops[i]); return this; }
-    Def* unset()         { for (size_t i = 0, e = num_ops(); i != e; ++i) unset(i);         return this; }
     Def* reset(Defs ops) { for (size_t i = 0, e = num_ops(); i != e; ++i) reset(i, ops[i]); return this; }
+
+    Def* unset() {
+        for (size_t i = 0, e = num_ops(); i != e; ++i) {
+            if (op(i))
+                unset(i);
+            else {
+                assert(std::all_of(ops_ptr() + i + 1, ops_ptr() + num_ops(), [](auto op) { return !op; }));
+                break;
+            }
+        }
+        return this;
+    }
+
     // clang-format on
     Def* set_type(const Def*);
     void unset_type();

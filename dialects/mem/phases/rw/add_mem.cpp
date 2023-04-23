@@ -164,13 +164,15 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
         for (size_t i = 0; i < lam->num_vars() && new_lam->num_vars() > 1; ++i)
             mem_rewritten_[lam->var(i)] = new_lam->var(i + var_offset);
 
-        mem_rewritten_[new_lam]           = new_lam;
-        mem_rewritten_[lam]               = new_lam;
-        val2mem_[new_lam]                 = new_lam->var(0_s);
-        val2mem_[lam]                     = new_lam->var(0_s);
-        mem_rewritten_[new_lam->var(0_s)] = new_lam->var(0_s);
-        for (size_t i = 0, n = new_lam->num_ops(); i < n; ++i)
-            if (auto op = lam->op(i)) static_cast<Def*>(new_lam)->reset(i, add_mem_to_lams(lam, op));
+        auto var                = new_lam->var(0_n);
+        mem_rewritten_[new_lam] = new_lam;
+        mem_rewritten_[lam]     = new_lam;
+        val2mem_[new_lam]       = var;
+        val2mem_[lam]           = var;
+        mem_rewritten_[var]     = var;
+        auto filter             = add_mem_to_lams(lam, lam->filter());
+        auto body               = add_mem_to_lams(lam, lam->body());
+        new_lam->unset()->set({filter, body});
 
         if (lam != new_lam && lam->is_external()) {
             lam->make_internal();

@@ -140,12 +140,9 @@ public:
     /// ```
     /// @see Def::set_ops
     using Filter = std::variant<bool, const Def*>;
-    Lam* set(Defs ops) { return Def::set(ops)->as<Lam>(); }
     Lam* set(Filter filter, const Def* body) { return set_filter(filter)->set_body(body); }
-    Lam* reset(Defs ops) { return Def::unset()->set(ops)->as<Lam>(); }
-    Lam* reset(Filter filter, const Def* body) { return Def::unset()->as<Lam>()->set(filter, body); }
-    Lam* set_filter(Filter);
-    Lam* set_body(const Def* body) { return Def::set(1, body)->as<Lam>(); }
+    Lam* set_filter(Filter);                                                ///< Set filter first.
+    Lam* set_body(const Def* body) { return Def::set(1, body)->as<Lam>(); } ///< Set body second.
     /// Set body to an App of @p callee and @p arg.
     Lam* app(Filter filter, const Def* callee, const Def* arg);
     /// Set body to an App of @p callee and @p args.
@@ -153,6 +150,7 @@ public:
     /// Set body to an App of `(f, t)#cond mem`.
     Lam* branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem);
     Lam* test(Filter filter, const Def* val, const Def* idx, const Def* match, const Def* clash, const Def* mem);
+    Lam* set(Defs ops) { return Def::set(ops)->as<Lam>(); }
     ///@}
 
     Lam* stub(World&, Ref) override;

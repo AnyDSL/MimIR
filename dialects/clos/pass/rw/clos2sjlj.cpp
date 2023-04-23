@@ -163,8 +163,9 @@ void Clos2SJLJ::enter() {
     assert(m0->type() == mem::type_mem(w));
     auto [m1, tag] = op_setjmp(m0, cur_jbuf_)->projs<2>();
     tag            = w.call(core::conv::s, branches.size(), tag);
+    auto filter    = curr_mut()->filter();
     auto branch    = w.extract(w.tuple(branches), tag);
-    curr_mut()->reset(curr_mut()->filter(), clos_apply(branch, m1));
+    curr_mut()->unset()->set({filter, clos_apply(branch, m1)});
 }
 
 Ref Clos2SJLJ::rewrite(Ref def) {
