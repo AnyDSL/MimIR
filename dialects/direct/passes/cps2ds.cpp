@@ -12,19 +12,10 @@ namespace thorin::direct {
 void CPS2DS::enter() { rewrite_lam(curr_mut()); }
 
 void CPS2DS::rewrite_lam(Lam* lam) {
-    if (rewritten_lams.contains(lam)) return;
-    rewritten_lams.insert(lam);
+    if (auto [_, ins] = rewritten_lams.emplace(lam); !ins) return;
 
-    if (!lam->isa_mut()) {
-        lam->world().DLOG("skipped imm {}", lam);
-        return;
-    }
-    if (!lam->is_set()) {
-        lam->world().DLOG("skipped non-set {}", lam);
-        return;
-    }
-    if (lam->codom()->isa<Type>()) {
-        world().DLOG("skipped type {}", lam);
+    if (lam->isa_imm() || !lam->is_set() || lam->codom()->isa<Type>()) {
+        lam->world().DLOG("skipped {}", lam);
         return;
     }
 
@@ -53,13 +44,13 @@ const Def* CPS2DS::rewrite_body(const Def* def) {
 const Def* CPS2DS::rewrite_body_(const Def* def) {
     if (auto app = def->isa<App>()) {
         auto callee     = app->callee();
-        auto args       = app->arg();
+        auto arg        = app->arg();
         auto new_callee = rewrite_body(callee);
-        auto new_arg    = rewrite_body(app->arg());
+        auto new_arg    = rewrite_body(arg);
 
         if (auto cps2ds = match<direct::cps2ds_dep>(new_callee)) {
             world().DLOG("rewrite callee {} : {}", callee, callee->type());
-            world().DLOG("rewrite args {} : {}", args, args->type());
+            world().DLOG("rewrite arg  {} : {}", arg, arg->type());
             // TODO: rewrite function?
             auto cps_fun = cps2ds->arg();
             cps_fun      = rewrite_body(cps_fun);
