@@ -142,8 +142,8 @@ Lam* Reshape::reshape_lam(Lam* old_lam) {
 
     if (name != "main") { // TODO I don't this is correct. we should check for old_lam->is_external
         // TODO maybe use new_lam->debug_suff("_reshape"), instead?
-        name          = name + "_reshape";
-        new_lam       = world().mut_lam(new_ty)->set((name));
+        name              = name + "_reshape";
+        new_lam           = world().mut_lam(new_ty)->set((name));
         old2new_[old_lam] = new_lam;
     } else {
         new_lam = old_lam;
