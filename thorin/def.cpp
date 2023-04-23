@@ -236,9 +236,9 @@ const Def* Def::refine(size_t i, const Def* new_op) const {
  * Def
  */
 
-Sym Def::get_sym(const char* s) const { return world().sym(s); }
-Sym Def::get_sym(std::string_view s) const { return world().sym(s); }
-Sym Def::get_sym(std::string s) const { return world().sym(std::move(s)); }
+Sym Def::sym(const char* s) const { return world().sym(s); }
+Sym Def::sym(std::string_view s) const { return world().sym(s); }
+Sym Def::sym(std::string s) const { return world().sym(std::move(s)); }
 
 World& Def::world() const {
     if (isa<Univ>()) return *world_;
@@ -360,11 +360,12 @@ void Def::finalize() {
 }
 
 Def* Def::set(size_t i, const Def* def) {
-    if (op(i) == def) return this;
-    if (op(i) != nullptr) unset(i);
+    if (op(i)) {
+        world().WLOG("You should Def::unset() this whole Def beforehand!");
+        unset(i);
+    }
 
     if (def != nullptr) {
-        assert(i < num_ops() && "index out of bounds");
         ops_ptr()[i]  = def;
         const auto& p = def->uses_.emplace(this, i);
         assert_unused(p.second);
@@ -380,13 +381,13 @@ Def* Def::set(size_t i, const Def* def) {
     return this;
 }
 
-void Def::unset(size_t i) {
-    assert(i < num_ops() && "index out of bounds");
-    auto def = op(i);
-    assert(def->uses_.contains(Use(this, i)));
-    def->uses_.erase(Use(this, i));
-    assert(!def->uses_.contains(Use(this, i)));
-    ops_ptr()[i] = nullptr;
+Def* Def::unset(size_t i) {
+    if (auto def = op(i)) {
+        assert(def->uses_.contains(Use(this, i)));
+        def->uses_.erase(Use(this, i));
+        ops_ptr()[i] = nullptr;
+    }
+    return this;
 }
 
 Def* Def::set_type(const Def* type) {
@@ -399,7 +400,6 @@ Def* Def::set_type(const Def* type) {
 void Def::unset_type() {
     assert(type_->uses_.contains(Use(this, Use::Type)));
     type_->uses_.erase(Use(this, Use::Type));
-    assert(!type_->uses_.contains(Use(this, Use::Type)));
     type_ = nullptr;
 }
 

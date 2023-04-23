@@ -51,9 +51,9 @@ const Def* rewrite_mut_lam_in_tuple(const Def* def, F&& rewrite, H&& rewrite_idx
 // @pre isa_apped_mut_lam_in_tuple(def) valid
 template<class RewriteCallee, class RewriteArg, class RewriteIdx>
 const Def* rewrite_apped_mut_lam_in_tuple(const Def* def,
-                                                 RewriteCallee&& rewrite_callee,
-                                                 RewriteArg&& rewrite_arg,
-                                                 RewriteIdx&& rewrite_idx) {
+                                          RewriteCallee&& rewrite_callee,
+                                          RewriteArg&& rewrite_arg,
+                                          RewriteIdx&& rewrite_idx) {
     auto& w     = def->world();
     auto app    = def->as<App>();
     auto callee = rewrite_mut_lam_in_tuple(app->callee(), std::forward<RewriteCallee>(rewrite_callee),
@@ -134,53 +134,53 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
     }
     if (match<mem::M>(def->type())) world().DLOG("new mem {} in {}", def, curr_lam);
 
-    auto rewrite_lam = [&](Lam* mut) -> const Def* {
-        auto pi      = mut->type()->as<Pi>();
-        auto new_mut = mut;
+    auto rewrite_lam = [&](Lam* lam) -> const Def* {
+        auto pi      = lam->type()->as<Pi>();
+        auto new_lam = lam;
 
-        if (auto it = mem_rewritten_.find(mut); it != mem_rewritten_.end()) {
-            if (curr_lam == mut) // i.e. we've stubbed this, but now we rewrite it
-                new_mut = it->second->as_mut<Lam>();
+        if (auto it = mem_rewritten_.find(lam); it != mem_rewritten_.end()) {
+            if (curr_lam == lam) // i.e. we've stubbed this, but now we rewrite it
+                new_lam = it->second->as_mut<Lam>();
             else if (auto pi = it->second->type()->as<Pi>(); pi->num_doms() > 0 && match<mem::M>(pi->dom(0_s)))
                 return it->second;
         }
 
-        if (!mut->is_set()) return mut;
-        world().DLOG("rewrite mut lam {}", mut);
+        if (!lam->is_set()) return lam;
+        world().DLOG("rewrite lam {}", lam);
 
-        bool is_bound = sched_.scope().bound(mut) || mut == curr_lam;
+        bool is_bound = sched_.scope().bound(lam) || lam == curr_lam;
 
-        if (new_mut == mut) // if not stubbed yet
-            if (auto new_pi = rewrite_pi(pi); new_pi != pi) new_mut = mut->stub(world(), new_pi);
+        if (new_lam == lam) // if not stubbed yet
+            if (auto new_pi = rewrite_pi(pi); new_pi != pi) new_lam = lam->stub(world(), new_pi);
 
         if (!is_bound) {
-            world().DLOG("free lam {}", mut);
-            mem_rewritten_[mut] = new_mut;
-            return new_mut;
+            world().DLOG("free lam {}", lam);
+            mem_rewritten_[lam] = new_lam;
+            return new_lam;
         }
 
-        auto var_offset = new_mut->num_doms() - mut->num_doms(); // have we added a mem var?
-        if (mut->num_vars() != 0) mem_rewritten_[mut->var()] = new_mut->var();
-        for (size_t i = 0; i < mut->num_vars() && new_mut->num_vars() > 1; ++i)
-            mem_rewritten_[mut->var(i)] = new_mut->var(i + var_offset);
+        auto var_offset = new_lam->num_doms() - lam->num_doms(); // have we added a mem var?
+        if (lam->num_vars() != 0) mem_rewritten_[lam->var()] = new_lam->var();
+        for (size_t i = 0; i < lam->num_vars() && new_lam->num_vars() > 1; ++i)
+            mem_rewritten_[lam->var(i)] = new_lam->var(i + var_offset);
 
-        mem_rewritten_[new_mut]           = new_mut;
-        mem_rewritten_[mut]               = new_mut;
-        val2mem_[new_mut]                 = new_mut->var(0_s);
-        val2mem_[mut]                     = new_mut->var(0_s);
-        mem_rewritten_[new_mut->var(0_s)] = new_mut->var(0_s);
-        for (size_t i = 0, n = new_mut->num_ops(); i < n; ++i)
-            if (auto op = mut->op(i)) static_cast<Def*>(new_mut)->set(i, add_mem_to_lams(mut, op));
+        mem_rewritten_[new_lam]           = new_lam;
+        mem_rewritten_[lam]               = new_lam;
+        val2mem_[new_lam]                 = new_lam->var(0_s);
+        val2mem_[lam]                     = new_lam->var(0_s);
+        mem_rewritten_[new_lam->var(0_s)] = new_lam->var(0_s);
+        for (size_t i = 0, n = new_lam->num_ops(); i < n; ++i)
+            if (auto op = lam->op(i)) static_cast<Def*>(new_lam)->reset(i, add_mem_to_lams(lam, op));
 
-        if (mut != new_mut && mut->is_external()) {
-            mut->make_internal();
-            new_mut->make_external();
+        if (lam != new_lam && lam->is_external()) {
+            lam->make_internal();
+            new_lam->make_external();
         }
-        return new_mut;
+        return new_lam;
     };
 
     // rewrite top-level lams
-    if (auto mut = def->isa_mut<Lam>()) return rewrite_lam(mut);
+    if (auto lam = def->isa_mut<Lam>()) return rewrite_lam(lam);
     assert(!def->isa_mut());
 
     if (auto pi = def->isa<Pi>()) return rewrite_pi(pi);

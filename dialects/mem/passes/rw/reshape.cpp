@@ -129,50 +129,50 @@ const Def* Reshape::rewrite_def_(const Def* def) {
     }
 }
 
-Lam* Reshape::reshape_lam(Lam* def) {
-    if (!def->is_set()) {
-        world().DLOG("reshape_lam: {} is not a set", def);
-        return def;
+Lam* Reshape::reshape_lam(Lam* old_lam) {
+    if (!old_lam->is_set()) {
+        world().DLOG("reshape_lam: {} is not a set", old_lam);
+        return old_lam;
     }
-    auto pi_ty  = def->type();
+    auto pi_ty  = old_lam->type();
     auto new_ty = reshape_type(pi_ty)->as<Pi>();
 
     Lam* new_lam;
-    auto name = *def->sym();
 
-    if (name != "main") { // TODO I don't this is correct. we should check for def->is_external
-        // TODO maybe use new_lam->debug_suff("_reshape"), instead?
-        name          = name + "_reshape";
-        new_lam       = world().mut_lam(new_ty)->set((name));
-        old2new_[def] = new_lam;
+    if (!old_lam->is_external()) {
+        new_lam = world().mut_lam(new_ty)->set(old_lam->dbg());
+        new_lam->debug_suffix("_reshape");
+        old2new_[old_lam] = new_lam;
     } else {
-        new_lam = def;
+        new_lam = old_lam;
     }
 
-    world().DLOG("Reshape lam: {} : {}", def, pi_ty);
+    world().DLOG("Reshape lam: {} : {}", old_lam, pi_ty);
     world().DLOG("         to: {} : {}", new_lam, new_ty);
 
     // We associate the arguments (reshape the old vars).
     // Alternatively, we could use beta reduction (reduce) to do this for us.
     auto new_arg = new_lam->var();
 
-    // We deeply associate `def->var()` with `new_arg` in a reconstructed shape.
-    // Idea: first make new_arg into "atomic" def list, then recrusively imitate `def->var`.
-    auto reformed_new_arg = reshape(new_arg, def->var()->type()); // `def->var()->type() = pi_ty`
-    world().DLOG("var {} : {}", def->var(), def->var()->type());
+    // We deeply associate `old_lam->var()` with `new_arg` in a reconstructed shape.
+    // Idea: first make new_arg into "atomic" old_lam list, then recrusively imitate `old_lam->var`.
+    auto reformed_new_arg = reshape(new_arg, old_lam->var()->type()); // `old_lam->var()->type() = pi_ty`
+    world().DLOG("var {} : {}", old_lam->var(), old_lam->var()->type());
     world().DLOG("new var {} : {}", new_arg, new_arg->type());
     world().DLOG("reshaped new_var {} : {}", reformed_new_arg, reformed_new_arg->type());
-    world().DLOG("{}", def->var()->type());
+    world().DLOG("{}", old_lam->var()->type());
     world().DLOG("{}", reformed_new_arg->type());
-    old2new_[def->var()] = reformed_new_arg;
+    old2new_[old_lam->var()] = reformed_new_arg;
     // TODO: add if necessary. This probably was an issue with unintended overriding due to bad previous naming.
     // TODO: Remove after testing.
     // old2new_[new_arg] = new_arg;
 
-    new_lam->set(true, rewrite_def(def->body()));
+    auto new_body = rewrite_def(old_lam->body());
+    if (new_lam->is_set()) new_lam->unset();
+    new_lam->set(true, new_body);
 
-    if (def->is_external()) {
-        def->make_internal();
+    if (old_lam->is_external()) {
+        old_lam->make_internal();
         new_lam->make_external();
     }
 
