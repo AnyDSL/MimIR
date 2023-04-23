@@ -83,25 +83,14 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
             world().DLOG("new arguments {} : {}", new_arg, new_arg->type());
             world().DLOG("ret_ty {}", ret_ty);
 
-            // TODO: use reduce (beta reduction)
-            const Def* inst_ret_ty;
-            if (auto ty_pi = ty->isa_mut<Pi>()) {
-                auto ty_dom = ty_pi->var();
-                world().DLOG("replace ty_dom: {} : {} <{};{}>", ty_dom, ty_dom->type(), ty_dom->unique_name(),
-                             ty_dom->node_name());
-
-                Scope r_scope{ty->as_mut()}; // scope that surrounds ret_ty
-                inst_ret_ty = thorin::rewrite(ret_ty, ty_dom, new_arg, r_scope);
-                world().DLOG("inst_ret_ty {}", inst_ret_ty);
-            } else {
-                inst_ret_ty = ret_ty;
-            }
-
-            auto new_name = world().append_suffix(curr_lam_->sym(), "_cps_cont");
+            auto inst_ret_ty = ret_ty;
+            if (auto pi = ty->isa_mut<Pi>()) inst_ret_ty = pi->reduce(new_arg).back();
 
             // The continuation that receives the result of the cps function call.
+            auto new_name = world().append_suffix(curr_lam_->sym(), "_cps_cont");
             auto fun_cont = world().mut_lam(world().cn(inst_ret_ty))->set(new_name);
             rewritten_lams.insert(fun_cont);
+
             // Generate the cps function call `f a` -> `f_cps(a,cont)`
             auto cps_call = world().app(cps_fun, {new_arg, fun_cont})->set("cps_call");
             world().DLOG("  curr_lam {}", curr_lam_->sym());
@@ -123,7 +112,6 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
             auto res = fun_cont->var();
 
             world().DLOG("  result {} : {} instead of {} : {}", res, res->type(), def, def->type());
-
             return res;
         }
 
