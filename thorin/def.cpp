@@ -360,24 +360,16 @@ void Def::finalize() {
 }
 
 Def* Def::set(size_t i, const Def* def) {
-    if (op(i)) {
-        world().ELOG("You should Def::unset() this whole Def beforehand!");
-        unset(i);
+    assert(def && !op(i));
+    ops_ptr()[i]  = def;
+    const auto& p = def->uses_.emplace(this, i);
+    assert_unused(p.second);
+
+    if (i == num_ops() - 1) {
+        check();
+        update();
     }
 
-    if (def != nullptr) {
-        ops_ptr()[i]  = def;
-        const auto& p = def->uses_.emplace(this, i);
-        assert_unused(p.second);
-
-        // TODO check that others are set
-        if (i == num_ops() - 1) {
-            check();
-            update();
-        }
-    } else {
-        world().ELOG("You shouldn't invoke with nullptr: 'Def::set({}, nullptr)'", i);
-    }
     return this;
 }
 
