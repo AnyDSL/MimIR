@@ -138,12 +138,12 @@ public:
     /// lam1->app(true, f, arg);
     /// lam2->app(my_filter_def, f, arg);
     /// ```
+    /// @see Def::set_ops
     using Filter = std::variant<bool, const Def*>;
     Lam* set(Defs ops) { return Def::set(ops)->as<Lam>(); }
-    Lam* set(Filter filter, const Def* body) {
-        set_filter(filter);
-        return set_body(body);
-    }
+    Lam* set(Filter filter, const Def* body) { return set_filter(filter)->set_body(body); }
+    Lam* reset(Defs ops) { return Def::unset()->set(ops)->as<Lam>(); }
+    Lam* reset(Filter filter, const Def* body) { return Def::unset()->as<Lam>()->set(filter, body); }
     Lam* set_filter(Filter);
     Lam* set_body(const Def* body) { return Def::set(1, body)->as<Lam>(); }
     /// Set body to an App of @p callee and @p arg.
