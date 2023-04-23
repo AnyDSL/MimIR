@@ -361,7 +361,7 @@ void Def::finalize() {
 
 Def* Def::set(size_t i, const Def* def) {
     if (op(i)) {
-        world().WLOG("You should Def::unset() this whole Def beforehand!");
+        world().ELOG("You should Def::unset() this whole Def beforehand!");
         unset(i);
     }
 
@@ -376,7 +376,7 @@ Def* Def::set(size_t i, const Def* def) {
             update();
         }
     } else {
-        world().WLOG("You shouldn't invoke with nullptr: 'Def::set({}, nullptr)'", i);
+        world().ELOG("You shouldn't invoke with nullptr: 'Def::set({}, nullptr)'", i);
     }
     return this;
 }

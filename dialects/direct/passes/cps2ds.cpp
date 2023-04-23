@@ -8,10 +8,7 @@
 
 namespace thorin::direct {
 
-void CPS2DS::enter() {
-    Lam* lam = curr_mut();
-    rewrite_lam(lam);
-}
+void CPS2DS::enter() { rewrite_lam(curr_mut()); }
 
 void CPS2DS::rewrite_lam(Lam* lam) {
     if (rewritten_lams.contains(lam)) return;
@@ -35,12 +32,11 @@ void CPS2DS::rewrite_lam(Lam* lam) {
     lam_stack.push_back(curr_lam_);
     curr_lam_ = lam;
 
-    auto result = rewrite_body(curr_lam_->body());
+    auto new_f = rewrite_body(curr_lam_->filter());
+    auto new_b = rewrite_body(curr_lam_->body());
     // curr_lam_ might be different at this point (newly introduced continuation).
-    auto& w = curr_lam_->world();
-    w.DLOG("Result of rewrite {} in {}", lam, curr_lam_);
-    curr_lam_->set_body(result);
-
+    world().DLOG("Result of rewrite {} in {}", lam, curr_lam_);
+    curr_lam_->reset(new_f, new_b);
     curr_lam_ = lam_stack.back();
     lam_stack.pop_back();
 }
@@ -54,7 +50,6 @@ const Def* CPS2DS::rewrite_body(const Def* def) {
 }
 
 const Def* CPS2DS::rewrite_body_(const Def* def) {
-    auto& world = def->world();
     if (auto app = def->isa<App>()) {
         auto callee     = app->callee();
         auto args       = app->arg();
@@ -65,13 +60,13 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
             if (auto ty_app = fun_app->callee()->isa<App>(); ty_app) {
                 if (auto axiom = ty_app->callee()->isa<Axiom>()) {
                     if (axiom->flags() == ((flags_t)Axiom::Base<cps2ds_dep>)) {
-                        world.DLOG("rewrite callee {} : {}", callee, callee->type());
-                        world.DLOG("rewrite args {} : {}", args, args->type());
-                        world.DLOG("rewrite cps axiom {} : {}", ty_app, ty_app->type());
+                        world().DLOG("rewrite callee {} : {}", callee, callee->type());
+                        world().DLOG("rewrite args {} : {}", args, args->type());
+                        world().DLOG("rewrite cps axiom {} : {}", ty_app, ty_app->type());
                         // TODO: rewrite function?
                         auto cps_fun = fun_app->arg();
                         cps_fun      = rewrite_body(cps_fun);
-                        world.DLOG("function: {} : {}", cps_fun, cps_fun->type());
+                        world().DLOG("function: {} : {}", cps_fun, cps_fun->type());
 
                         // ```
                         // h:
@@ -96,32 +91,32 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
                         // We instantiate the function type with the applied argument.
                         auto ty     = callee->type();
                         auto ret_ty = ty->as<Pi>()->codom();
-                        world.DLOG("callee {} : {}", callee, ty);
-                        world.DLOG("new arguments {} : {}", new_arg, new_arg->type());
-                        world.DLOG("ret_ty {}", ret_ty);
+                        world().DLOG("callee {} : {}", callee, ty);
+                        world().DLOG("new arguments {} : {}", new_arg, new_arg->type());
+                        world().DLOG("ret_ty {}", ret_ty);
 
                         // TODO: use reduce (beta reduction)
                         const Def* inst_ret_ty;
                         if (auto ty_pi = ty->isa_mut<Pi>()) {
                             auto ty_dom = ty_pi->var();
-                            world.DLOG("replace ty_dom: {} : {} <{};{}>", ty_dom, ty_dom->type(), ty_dom->unique_name(),
+                            world().DLOG("replace ty_dom: {} : {} <{};{}>", ty_dom, ty_dom->type(), ty_dom->unique_name(),
                                        ty_dom->node_name());
 
                             Scope r_scope{ty->as_mut()}; // scope that surrounds ret_ty
                             inst_ret_ty = thorin::rewrite(ret_ty, ty_dom, new_arg, r_scope);
-                            world.DLOG("inst_ret_ty {}", inst_ret_ty);
+                            world().DLOG("inst_ret_ty {}", inst_ret_ty);
                         } else {
                             inst_ret_ty = ret_ty;
                         }
 
-                        auto new_name = world.append_suffix(curr_lam_->sym(), "_cps_cont");
+                        auto new_name = world().append_suffix(curr_lam_->sym(), "_cps_cont");
 
                         // The continuation that receives the result of the cps function call.
-                        auto fun_cont = world.mut_lam(world.cn(inst_ret_ty))->set(new_name);
+                        auto fun_cont = world().mut_lam(world().cn(inst_ret_ty))->set(new_name);
                         rewritten_lams.insert(fun_cont);
                         // Generate the cps function call `f a` -> `f_cps(a,cont)`
-                        auto cps_call = world.app(cps_fun, {new_arg, fun_cont})->set("cps_call");
-                        world.DLOG("  curr_lam {}", curr_lam_->sym());
+                        auto cps_call = world().app(cps_fun, {new_arg, fun_cont})->set("cps_call");
+                        world().DLOG("  curr_lam {}", curr_lam_->sym());
                         curr_lam_->set_body(cps_call);
 
                         // Fixme: would be great to PE the newly added overhead away..
@@ -139,7 +134,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
                         // `res` is the result of the cps function.
                         auto res = fun_cont->var();
 
-                        world.DLOG("  result {} : {} instead of {} : {}", res, res->type(), def, def->type());
+                        world().DLOG("  result {} : {} instead of {} : {}", res, res->type(), def, def->type());
 
                         return res;
                     }
@@ -147,7 +142,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
             }
         }
 
-        return world.app(new_callee, new_arg);
+        return world().app(new_callee, new_arg);
     }
 
     if (auto lam = def->isa_mut<Lam>()) {
@@ -157,18 +152,18 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
 
     if (auto tuple = def->isa<Tuple>()) {
         DefArray elements(tuple->ops(), [&](const Def* op) { return rewrite_body(op); });
-        return world.tuple(elements)->set(tuple->dbg());
+        return world().tuple(elements)->set(tuple->dbg());
     }
 
     DefArray new_ops{def->ops(), [&](const Def* op) { return rewrite_body(op); }};
-    world.DLOG("def {} : {} [{}]", def, def->type(), def->node_name());
+    world().DLOG("def {} : {} [{}]", def, def->type(), def->node_name());
 
     if (def->isa<Infer>()) {
-        world.WLOG("infer node {} : {} [{}]", def, def->type(), def->node_name());
+        world().WLOG("infer node {} : {} [{}]", def, def->type(), def->node_name());
         return def;
     }
 
-    return def->rebuild(world, def->type(), new_ops);
+    return def->rebuild(world(), def->type(), new_ops);
 }
 
 } // namespace thorin::direct
