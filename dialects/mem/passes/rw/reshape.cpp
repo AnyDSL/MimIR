@@ -138,12 +138,9 @@ Lam* Reshape::reshape_lam(Lam* old_lam) {
     auto new_ty = reshape_type(pi_ty)->as<Pi>();
 
     Lam* new_lam;
-    auto name = *old_lam->sym();
-
-    if (name != "main") { // TODO I don't this is correct. we should check for old_lam->is_external
-        // TODO maybe use new_lam->debug_suff("_reshape"), instead?
-        name              = name + "_reshape";
-        new_lam           = world().mut_lam(new_ty)->set((name));
+    if (*old_lam->sym() != "main") { // TODO I don't this is correct. we should check for old_lam->is_external
+        new_lam = old_lam->stub(world(), new_ty);
+        new_lam->debug_suffix("_reshape");
         old2new_[old_lam] = new_lam;
     } else {
         new_lam = old_lam;
@@ -169,7 +166,9 @@ Lam* Reshape::reshape_lam(Lam* old_lam) {
     // TODO: Remove after testing.
     // old2new_[new_arg] = new_arg;
 
-    new_lam->set(true, rewrite_def(old_lam->body()));
+    auto new_body = rewrite_def(old_lam->body());
+    if (new_lam->is_set()) new_lam->unset();
+    new_lam->set(true, new_body);
 
     if (old_lam->is_external()) {
         old_lam->make_internal();
