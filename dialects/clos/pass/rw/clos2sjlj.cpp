@@ -131,7 +131,7 @@ void Clos2SJLJ::enter() {
 
         auto new_args = curr_mut()->vars();
         new_args[0]   = m2;
-        curr_mut()->set(curr_mut()->reduce(w.tuple(new_args)));
+        curr_mut()->reset(curr_mut()->reduce(w.tuple(new_args)));
 
         cur_jbuf_ = jb;
         cur_rbuf_ = rb;
@@ -164,7 +164,7 @@ void Clos2SJLJ::enter() {
     auto [m1, tag] = op_setjmp(m0, cur_jbuf_)->projs<2>();
     tag            = w.call(core::conv::s, branches.size(), tag);
     auto branch    = w.extract(w.tuple(branches), tag);
-    curr_mut()->set_body(clos_apply(branch, m1));
+    curr_mut()->reset(curr_mut()->filter(), clos_apply(branch, m1));
 }
 
 Ref Clos2SJLJ::rewrite(Ref def) {
