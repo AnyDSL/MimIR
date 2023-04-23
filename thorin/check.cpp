@@ -18,7 +18,7 @@ const Def* Infer::find(const Def* def) {
     // path compression: set all Infers along the chain to res
     for (auto infer = def->isa_mut<Infer>(); infer && infer->op(); infer = def->isa_mut<Infer>()) {
         def = infer->op();
-        infer->set(res);
+        infer->reset(res);
     }
 
     assert((!res->isa<Infer>() || res != res->op(0)) && "an Infer shouldn't point to itself");

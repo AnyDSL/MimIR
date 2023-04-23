@@ -772,9 +772,9 @@ Lam* Parser::parse_lam(bool decl) {
         rw.map(lam->var(), pi->var()->set(lam->var()->dbg()));
 
         // Now update.
-        codom = rw.rewrite(codom);
-        pi->set_codom(codom);
-
+        auto dom = pi->dom();
+        codom    = rw.rewrite(codom);
+        pi->unset()->set({dom, codom});
         codom = pi;
     }
 

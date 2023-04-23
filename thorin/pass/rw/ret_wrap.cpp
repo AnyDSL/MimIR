@@ -15,7 +15,7 @@ void RetWrap::enter() {
     assert(new_vars.back() == ret_var && "we assume that the last element is the ret_var");
     new_vars.back() = ret_cont;
     auto new_var    = world().tuple(curr_mut()->dom(), new_vars);
-    curr_mut()->set(curr_mut()->reduce(new_var));
+    curr_mut()->reset(curr_mut()->reduce(new_var));
 }
 
 } // namespace thorin

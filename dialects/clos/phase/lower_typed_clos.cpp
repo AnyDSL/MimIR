@@ -24,8 +24,9 @@ void LowerTypedClos::start() {
         lvm_ = lvm;
         world().DLOG("in {} (lvm={}, lcm={})", lam, lvm_, lcm_);
         if (lam->is_set()) {
-            lam->set_filter(rewrite(lam->filter()));
-            lam->set_body(rewrite(lam->body()));
+            auto new_f = rewrite(lam->filter());
+            auto new_b = rewrite(lam->body());
+            lam->reset(new_f, new_b);
         }
     }
 }
