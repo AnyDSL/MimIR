@@ -783,8 +783,7 @@ Lam* Parser::parse_lam(bool decl) {
     auto body = accept(Tok::Tag::T_assign) ? parse_decls("body of a lambda") : nullptr;
     if (!body) {
         if (!decl) error(prev(), "body of a lambda expression is mandatory");
-        if (auto [_, __, filter] = funs.back(); filter)
-            error(prev(), "cannot specify filter of a lambda declaration");
+        if (auto [_, __, filter] = funs.back(); filter) error(prev(), "cannot specify filter of a lambda declaration");
     }
 
     for (auto [_, lam, filter] : funs | std::ranges::views::reverse) {
