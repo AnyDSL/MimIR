@@ -55,7 +55,7 @@ const Def* TuplePtrn::type(World& world, Def2Fields& def2fields) const {
 
     thorin::Scope scope(sigma);
     ScopeRewriter rw(world, scope);
-    //sigma->unset()->set(0, ops[0]);
+    // sigma->unset()->set(0, ops[0]);
     for (size_t i = 1; i != n; ++i) sigma->set(i, rw.rewrite(ops[i]));
 
     if (auto imm = sigma->immutabilize()) return type_ = imm;
