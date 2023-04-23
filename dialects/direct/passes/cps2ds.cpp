@@ -96,8 +96,8 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
             const Def* inst_ret_ty;
             if (auto ty_pi = ty->isa_mut<Pi>()) {
                 auto ty_dom = ty_pi->var();
-                world().DLOG("replace ty_dom: {} : {} <{};{}>", ty_dom, ty_dom->type(),
-                            ty_dom->unique_name(), ty_dom->node_name());
+                world().DLOG("replace ty_dom: {} : {} <{};{}>", ty_dom, ty_dom->type(), ty_dom->unique_name(),
+                             ty_dom->node_name());
 
                 Scope r_scope{ty->as_mut()}; // scope that surrounds ret_ty
                 inst_ret_ty = thorin::rewrite(ret_ty, ty_dom, new_arg, r_scope);
