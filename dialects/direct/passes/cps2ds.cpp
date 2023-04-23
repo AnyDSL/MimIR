@@ -94,16 +94,17 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
             // Generate the cps function call `f a` -> `f_cps(a,cont)`
             auto cps_call = world().app(cps_fun, {new_arg, fun_cont})->set("cps_call");
             world().DLOG("  curr_lam {}", curr_lam_->sym());
-            curr_lam_->set_body(cps_call);
+            if (curr_lam_->is_set())
+                curr_lam_->reset(curr_lam_->filter(), cps_call);
+            else
+                curr_lam_->set(world().lit_ff(), cps_call);
 
             // Fixme: would be great to PE the newly added overhead away..
             // The current PE just does not terminate on loops.. :/
             // TODO: Set filter (inline call wrapper)
             // curr_lam_->set_filter(true);
 
-            // The filter can only be set here (not earlier) as otherwise a debug print causes the "some
-            // operands are set" issue.
-            fun_cont->set_filter(curr_lam_->filter());
+            // fun_cont->set_filter(curr_lam_->filter());
 
             // We write the body context in the newly created continuation that has access to the result
             // (as its argument).
