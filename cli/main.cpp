@@ -33,7 +33,9 @@ int main(int argc, char** argv) {
         std::string input, prefix;
         std::string clang = sys::find_cmd("clang");
         std::vector<std::string> plugins, search_paths;
+#ifdef THORIN_ENABLE_CHECKS
         std::vector<size_t> breakpoints;
+#endif
         std::array<std::string, Num_Backends> output;
         int verbose      = 0;
         int opt          = 2;
@@ -73,7 +75,9 @@ int main(int argc, char** argv) {
 
         if (show_help) {
             std::cout << cli << std::endl;
+#ifdef THORIN_ENABLE_CHECKS
             std::cout << "*These are developer options only enabled, if 'THORIN_ENABLE_CHECKS' is ON." << std::endl;
+#endif
             std::cout << "Use \"-\" as <file> to output to stdout." << std::endl;
             return EXIT_SUCCESS;
         }
