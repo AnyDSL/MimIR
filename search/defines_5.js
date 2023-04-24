@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['half_5fround_5fstyle_0',['HALF_ROUND_STYLE',['../types_8h.html#af470ed60568b3e7f4fde6092d22abbde',1,'types.h']]],
-  ['half_5fround_5fties_5fto_5feven_1',['HALF_ROUND_TIES_TO_EVEN',['../types_8h.html#ab0c3c06432f0247f22594abe3df0ebfe',1,'types.h']]]
+  ['ilog_0',['ILOG',['../log_8h.html#a0c221110c77b993968e98cb53c0d652e',1,'log.h']]],
+  ['internal_5fprefix_1',['INTERNAL_PREFIX',['../matrix_8h.html#a076f90e3d41ff22230a75a561d43d116',1,'matrix.h']]]
 ];
