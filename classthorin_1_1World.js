@@ -55,6 +55,7 @@ var classthorin_1_1World =
     [ "gid2def", "classthorin_1_1World.html#a50e487785b278535becdb5d7e2b124ab", null ],
     [ "global", "classthorin_1_1World.html#a2dafc82653baa01a772c49d3c7ed1030", null ],
     [ "iapp", "classthorin_1_1World.html#ab3ba4b0bcf82ba27663fb03ed22bbc5c", null ],
+    [ "iapp", "classthorin_1_1World.html#a4bfa129668e4da47c25780477c59ee67", null ],
     [ "iapp", "classthorin_1_1World.html#a64f3c70ae4635886b053e02073268f26", null ],
     [ "iapp", "classthorin_1_1World.html#a2e72cafde3c36d76c0850467716bd3d9", null ],
     [ "iinfer", "classthorin_1_1World.html#a1d5d159d934c3e75f7c13ebef5419ae5", null ],

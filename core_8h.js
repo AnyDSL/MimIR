@@ -2,9 +2,9 @@ var core_8h =
 [
     [ "VMode", "core_8h.html#ae025337cbe07dc96616a07d6e4440859", null ],
     [ "Mode", "core_8h.html#af4b6ec81c99cf0437d00e76854e45493", [
-      [ "none", "core_8h.html#af4b6ec81c99cf0437d00e76854e45493a53712cc893c52d29f88f66ea099a10c9", null ],
-      [ "nsw", "core_8h.html#af4b6ec81c99cf0437d00e76854e45493aecf1322b1dbfad3fb96bdd08d25ad086", null ],
-      [ "nuw", "core_8h.html#af4b6ec81c99cf0437d00e76854e45493a6402074467372da6601927f3cf6023e7", null ]
+      [ "none", "core_8h.html#af4b6ec81c99cf0437d00e76854e45493a334c4a4c42fdb79d7ebc3e73b517e6f8", null ],
+      [ "nsw", "core_8h.html#af4b6ec81c99cf0437d00e76854e45493ac3768fe04ce22117d45f8d401c628de3", null ],
+      [ "nuw", "core_8h.html#af4b6ec81c99cf0437d00e76854e45493a1cb6ecf47d175b4055a768fee5f76e97", null ]
     ] ],
     [ "convert", "core_8h.html#ac9ec87b1bccd45a5f0303029090374e5", null ],
     [ "convert", "core_8h.html#a672e39c03f5c2b7a4e3eb7a04f5d10ba", null ],
@@ -22,5 +22,18 @@ var core_8h =
     [ "mode", "core_8h.html#a55cf18b70ac6535d67231006c6afc167", null ],
     [ "op", "core_8h.html#a86904dad0403dbb12c13fb055829d8a4", null ],
     [ "op", "core_8h.html#af5c1ec8635852637cd611968311003d0", null ],
-    [ "op_wminus", "core_8h.html#a33a5ece6d189ebc3403bfc134f6892ee", null ]
+    [ "op_wminus", "core_8h.html#a33a5ece6d189ebc3403bfc134f6892ee", null ],
+    [ "operator&", "core_8h.html#a28bcd1b4070999e92b1fe8c67e364e32", null ],
+    [ "operator&", "core_8h.html#a90ae04742f2f5a64ee7de7764e55a581", null ],
+    [ "operator&", "core_8h.html#a0616dd08762ef4ffe9fc20c760962a93", null ],
+    [ "operator<=>", "core_8h.html#a97652d606d3cf90b6cbed312ae6e592e", null ],
+    [ "operator<=>", "core_8h.html#a28256613f85b10cafe0ca3cdd4cede09", null ],
+    [ "operator==", "core_8h.html#a1d2ca2683912d8b5266ff646a3f9f55c", null ],
+    [ "operator==", "core_8h.html#a77ea72973892500f93dda9901ec89204", null ],
+    [ "operator^", "core_8h.html#a520845c1cb35544a5a0312f9cabbaaf8", null ],
+    [ "operator^", "core_8h.html#a463e54ed50168ac0004f139072978a39", null ],
+    [ "operator^", "core_8h.html#a0b2d916e22d4846d8c73db7c0d55b678", null ],
+    [ "operator|", "core_8h.html#a9e04a59e5f0b6793b2ccc371778842fb", null ],
+    [ "operator|", "core_8h.html#aa67dcf509f1d2e6a5a2704dc2954f94e", null ],
+    [ "operator|", "core_8h.html#a213f37a2d4025716ed99e18d2340f838", null ]
 ];

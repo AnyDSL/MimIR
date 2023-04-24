@@ -5,6 +5,7 @@ var util_8h =
     [ "thorin::GIDHash< T >", "structthorin_1_1GIDHash.html", "structthorin_1_1GIDHash" ],
     [ "thorin::GIDEq< T >", "structthorin_1_1GIDEq.html", "structthorin_1_1GIDEq" ],
     [ "thorin::GIDLt< T >", "structthorin_1_1GIDLt.html", "structthorin_1_1GIDLt" ],
+    [ "THORIN_ENUM_OPERATORS", "util_8h.html#af3874ddf85487564c7549797492223b6", null ],
     [ "GIDMap", "util_8h.html#a7b3fd301e4692211ebf0d5bcfa17f1ac", null ],
     [ "GIDNodeMap", "util_8h.html#abbb08512ded2c0a47698a71177d29217", null ],
     [ "GIDNodeSet", "util_8h.html#a56063a2d17c29f75d2e405b36278df32", null ],

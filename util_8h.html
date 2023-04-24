@@ -112,13 +112,15 @@ $(document).ready(function(){initNavTree('util_8h.html',''); initResizable(); })
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle"><div class="title">util.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;optional&gt;</code><br />
 <code>#include &lt;queue&gt;</code><br />
 <code>#include &lt;stack&gt;</code><br />
+<code>#include &lt;type_traits&gt;</code><br />
 <code>#include &lt;absl/container/flat_hash_map.h&gt;</code><br />
 <code>#include &lt;absl/container/flat_hash_set.h&gt;</code><br />
 <code>#include &lt;absl/container/node_hash_map.h&gt;</code><br />
@@ -157,6 +159,12 @@ Classes</h2></td></tr>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacethorin"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html">thorin</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:af3874ddf85487564c7549797492223b6"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="util_8h.html#af3874ddf85487564c7549797492223b6">THORIN_ENUM_OPERATORS</a>(E)</td></tr>
+<tr class="memdesc:af3874ddf85487564c7549797492223b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this to declare all kind of bit and comparison operators for an <code>enum</code> <code>E</code>.  <a href="util_8h.html#af3874ddf85487564c7549797492223b6">More...</a><br /></td></tr>
+<tr class="separator:af3874ddf85487564c7549797492223b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -215,6 +223,48 @@ Functions</h2></td></tr>
 <tr class="memdesc:aad6b4767dbf4afe9eafefc0eb401eb5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invokes <code>emplace</code> on <code>container</code>, asserts that insertion actually happened, and returns the iterator.  <a href="namespacethorin.html#aad6b4767dbf4afe9eafefc0eb401eb5d">More...</a><br /></td></tr>
 <tr class="separator:aad6b4767dbf4afe9eafefc0eb401eb5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="af3874ddf85487564c7549797492223b6" name="af3874ddf85487564c7549797492223b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3874ddf85487564c7549797492223b6">&#9670;&#160;</a></span>THORIN_ENUM_OPERATORS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define THORIN_ENUM_OPERATORS</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">E</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> operator&amp;(                       E  x,                        E  y) { <span class="keywordflow">return</span> std::underlying_type_t&lt;E&gt;(x)  &amp;  std::underlying_type_t&lt;E&gt;(y); } \</div>
+<div class="line">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> operator&amp;(std::underlying_type_t&lt;E&gt; x,                        E  y) { <span class="keywordflow">return</span>                           x   &amp;  std::underlying_type_t&lt;E&gt;(y); } \</div>
+<div class="line">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespacethorin_1_1core.html#a28bcd1b4070999e92b1fe8c67e364e32">operator&amp;</a>(                       E  x, std::underlying_type_t&lt;E&gt; y) { <span class="keywordflow">return</span> std::underlying_type_t&lt;E&gt;(x)  &amp;                            y ; } \</div>
+<div class="line">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespacethorin_1_1core.html#a9e04a59e5f0b6793b2ccc371778842fb">operator|</a>(                       E  x,                        E  y) { <span class="keywordflow">return</span> std::underlying_type_t&lt;E&gt;(x)  |  std::underlying_type_t&lt;E&gt;(y); } \</div>
+<div class="line">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespacethorin_1_1core.html#a9e04a59e5f0b6793b2ccc371778842fb">operator|</a>(std::underlying_type_t&lt;E&gt; x,                        E  y) { <span class="keywordflow">return</span>                           x   |  std::underlying_type_t&lt;E&gt;(y); } \</div>
+<div class="line">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespacethorin_1_1core.html#a9e04a59e5f0b6793b2ccc371778842fb">operator|</a>(                       E  x, std::underlying_type_t&lt;E&gt; y) { <span class="keywordflow">return</span> std::underlying_type_t&lt;E&gt;(x)  |                            y ; } \</div>
+<div class="line">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespacethorin_1_1core.html#a520845c1cb35544a5a0312f9cabbaaf8">operator^</a>(                       E  x,                        E  y) { <span class="keywordflow">return</span> std::underlying_type_t&lt;E&gt;(x)  ^  std::underlying_type_t&lt;E&gt;(y); } \</div>
+<div class="line">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespacethorin_1_1core.html#a520845c1cb35544a5a0312f9cabbaaf8">operator^</a>(std::underlying_type_t&lt;E&gt; x,                        E  y) { <span class="keywordflow">return</span>                           x   ^  std::underlying_type_t&lt;E&gt;(y); } \</div>
+<div class="line">    <span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="namespacethorin_1_1core.html#a520845c1cb35544a5a0312f9cabbaaf8">operator^</a>(                       E  x, std::underlying_type_t&lt;E&gt; y) { <span class="keywordflow">return</span> std::underlying_type_t&lt;E&gt;(x)  ^                            y ; } \</div>
+<div class="line">    <span class="keyword">constexpr</span> std::strong_ordering <a class="code hl_function" href="namespacethorin_1_1core.html#a28256613f85b10cafe0ca3cdd4cede09">operator&lt;=&gt;</a>(std::underlying_type_t&lt;E&gt; x, E y) { <span class="keywordflow">return</span> x &lt;=&gt; std::underlying_type_t&lt;E&gt;(y); }                                  \</div>
+<div class="line">    <span class="keyword">constexpr</span> std::strong_ordering <a class="code hl_function" href="namespacethorin_1_1core.html#a28256613f85b10cafe0ca3cdd4cede09">operator&lt;=&gt;</a>(E x, std::underlying_type_t&lt;E&gt; y) { <span class="keywordflow">return</span> std::underlying_type_t&lt;E&gt;(x) &lt;=&gt; y; }                                  \</div>
+<div class="line">    <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespacethorin_1_1core.html#a77ea72973892500f93dda9901ec89204">operator==</a>(std::underlying_type_t&lt;E&gt; x, E y) { <span class="keywordflow">return</span> x == std::underlying_type_t&lt;E&gt;(y); }                                                    \</div>
+<div class="line">    <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="namespacethorin_1_1core.html#a77ea72973892500f93dda9901ec89204">operator==</a>(E x, std::underlying_type_t&lt;E&gt; y) { <span class="keywordflow">return</span> std::underlying_type_t&lt;E&gt;(x) == y; }</div>
+<div class="ttc" id="anamespacethorin_1_1core_html_a28256613f85b10cafe0ca3cdd4cede09"><div class="ttname"><a href="namespacethorin_1_1core.html#a28256613f85b10cafe0ca3cdd4cede09">thorin::core::operator&lt;=&gt;</a></div><div class="ttdeci">constexpr std::strong_ordering operator&lt;=&gt;(std::underlying_type_t&lt; Mode &gt; x, Mode y)</div><div class="ttdef"><b>Definition:</b> <a href="core_8h_source.html#l00019">core.h:19</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1core_html_a28bcd1b4070999e92b1fe8c67e364e32"><div class="ttname"><a href="namespacethorin_1_1core.html#a28bcd1b4070999e92b1fe8c67e364e32">thorin::core::operator&amp;</a></div><div class="ttdeci">constexpr auto operator&amp;(Mode x, Mode y)</div><div class="ttdef"><b>Definition:</b> <a href="core_8h_source.html#l00019">core.h:19</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1core_html_a520845c1cb35544a5a0312f9cabbaaf8"><div class="ttname"><a href="namespacethorin_1_1core.html#a520845c1cb35544a5a0312f9cabbaaf8">thorin::core::operator^</a></div><div class="ttdeci">constexpr auto operator^(Mode x, Mode y)</div><div class="ttdef"><b>Definition:</b> <a href="core_8h_source.html#l00019">core.h:19</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1core_html_a77ea72973892500f93dda9901ec89204"><div class="ttname"><a href="namespacethorin_1_1core.html#a77ea72973892500f93dda9901ec89204">thorin::core::operator==</a></div><div class="ttdeci">constexpr bool operator==(std::underlying_type_t&lt; Mode &gt; x, Mode y)</div><div class="ttdef"><b>Definition:</b> <a href="core_8h_source.html#l00019">core.h:19</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1core_html_a9e04a59e5f0b6793b2ccc371778842fb"><div class="ttname"><a href="namespacethorin_1_1core.html#a9e04a59e5f0b6793b2ccc371778842fb">thorin::core::operator|</a></div><div class="ttdeci">constexpr auto operator|(Mode x, Mode y)</div><div class="ttdef"><b>Definition:</b> <a href="core_8h_source.html#l00019">core.h:19</a></div></div>
+</div><!-- fragment -->
+<p>Use this to declare all kind of bit and comparison operators for an <code>enum</code> <code>E</code>. </p>
+<p >Note that the bit operators return <code>E's</code> underlying type and not the original <code>enum</code> <code>E</code>. This is because the result may not be a valid <code>enum</code> value. For the same reason, it doesn't make sense to declare operators such as <code>&amp;=</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="util_8h_source.html#l00202">202</a> of file <a class="el" href="util_8h_source.html">util.h</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

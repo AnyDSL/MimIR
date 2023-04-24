@@ -99,7 +99,7 @@ var searchData=
   ['constidx_96',['constIdx',['../namespacethorin_1_1demo.html#a47ac0f1b8414b61332e12f3d6161a32c',1,'thorin::demo']]],
   ['constmat_97',['constMat',['../namespacethorin_1_1matrix.html#a47e24cd2f5c1721d3cd278b92424a3e0',1,'thorin::matrix']]],
   ['contains_98',['contains',['../classthorin_1_1IndexSet.html#a9ec5c4f63dcb39da3a10ccbf26bae240',1,'thorin::IndexSet']]],
-  ['contract_99',['contract',['../namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa591813887f3357070c45c279b0fbb9db',1,'thorin::math']]],
+  ['contract_99',['contract',['../namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa800c327aefb3f9241513cbf551abbfda',1,'thorin::math']]],
   ['controldeps_100',['ControlDeps',['../namespacethorin.html#ae06bba681d8d0c4022d03b1f20b5718a',1,'thorin']]],
   ['conv_101',['conv',['../namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937',1,'thorin::core::conv()'],['../namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2d',1,'thorin::math::conv()']]],
   ['convert_102',['convert',['../namespacethorin_1_1core.html#a672e39c03f5c2b7a4e3eb7a04f5d10ba',1,'thorin::core::convert(const TBound&lt; up &gt; *b)'],['../namespacethorin_1_1core.html#ac9ec87b1bccd45a5f0303029090374e5',1,'thorin::core::convert(const Bound *b)']]],
