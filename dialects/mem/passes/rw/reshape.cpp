@@ -167,7 +167,7 @@ Lam* Reshape::reshape_lam(Lam* old_lam) {
     // old2new_[new_arg] = new_arg;
 
     auto new_body = rewrite_def(old_lam->body());
-    if (new_lam->is_set()) new_lam->unset();
+    new_lam->unset();
     new_lam->set(true, new_body);
 
     if (old_lam->is_external()) {
