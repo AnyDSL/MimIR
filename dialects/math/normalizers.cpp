@@ -189,7 +189,7 @@ Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref 
     std::function<Ref(Ref, Ref)> make_op;
 
     // build mode for all new ops by using the least upper bound of all involved apps
-    auto mode      = (nat_t)Mode::bot;
+    auto mode       = (nat_t)Mode::bot;
     auto check_mode = [&](const App* app) {
         auto app_m = Lit::isa(app->arg(0));
         if (!app_m || !(*app_m & Mode::reassoc)) return false;

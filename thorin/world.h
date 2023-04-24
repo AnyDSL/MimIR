@@ -433,7 +433,8 @@ public:
     Ref iapp(Ref callee, nat_t arg) { return iapp(callee, lit_nat(arg)); }
     template<class E>
     Ref iapp(Ref callee, E arg)
-    requires std::is_enum_v<E> && std::is_same_v<std::underlying_type_t<E>, nat_t> {
+    requires std::is_enum_v<E> && std::is_same_v<std::underlying_type_t<E>, nat_t>
+    {
         return iapp(callee, lit_nat((nat_t)arg));
     }
 
