@@ -10,11 +10,13 @@ namespace thorin::core {
 /// @name Mode
 ///@{
 /// What should happen if Idx arithmetic overflows?
-enum Mode : nat_t {
+enum class Mode : nat_t {
     none = 0,      ///< Wrap around.
     nsw  = 1 << 0, ///< No Signed Wrap around.
     nuw  = 1 << 1, ///< No Unsigned Wrap around.
 };
+
+THORIN_ENUM_OPERATORS(Mode)
 
 /// Give Mode as thorin::math::Mode, thorin::nat_t or Ref.
 using VMode = std::variant<Mode, nat_t, Ref>;
@@ -23,7 +25,7 @@ using VMode = std::variant<Mode, nat_t, Ref>;
 inline Ref mode(World& w, VMode m) {
     if (auto def = std::get_if<Ref>(&m)) return *def;
     if (auto nat = std::get_if<nat_t>(&m)) return w.lit_nat(*nat);
-    return w.lit_nat(std::get<Mode>(m));
+    return w.lit_nat((nat_t)std::get<Mode>(m));
 }
 ///@}
 
