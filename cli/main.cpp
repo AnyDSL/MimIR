@@ -70,9 +70,6 @@ int main(int argc, char** argv) {
         // clang-format on
 
         if (auto result = cli.parse({argc, argv}); !result) throw std::invalid_argument(result.message());
-#if 0
-        flags.break_on_error = true;
-#endif
 
         if (show_help) {
             std::cout << cli << std::endl;
