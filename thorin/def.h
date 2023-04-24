@@ -274,13 +274,16 @@ public:
     size_t num_ops() const { return num_ops_; }
     ///@}
 
-    /// @name set/unset/reset ops (mutables only)
+    /// @name Setting Ops (Mutables Only)
     /// @anchor set_ops
     ///@{
-    /// When setting/updating operands, you have to obey the following rules:
+    /// You can set and change the Def::ops of a mutable after construction.
+    /// However, you have to obey the following rules:
     /// 1. If Def::is_set() is ...
-    ///     1. ... `true`, Def::set the operands from left (`i == 0`) to right (`i == num_ops() - 1`).
-    ///     2. ... `false`, Def::reset the operands from left to right as in 1a.
+    ///     1. ... `false`, [set](@ref Def::set) the [operands](@ref Def::ops) from
+    ///         * left (`i == 0`) to
+    ///         * right (`i == num_ops() - 1`).
+    ///     2. ... `true`, [reset](@ref Def::reset) the operands from left to right as in 1a.
     /// 2. In addition, you can invoke Def::unset() at *any time* to start over with 1a:
     /// ```
     /// mut->unset()->set({a, b, c}); // This will always work, but should be your last resort.

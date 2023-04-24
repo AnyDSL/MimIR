@@ -60,6 +60,7 @@ public:
 
     /// @name Setters
     ///@{
+    /// @see @ref set_ops "Setting Ops"
     Pi* set_dom(const Def* dom) { return Def::set(0, dom)->as<Pi>(); }
     Pi* set_dom(Defs doms);
     Pi* set_codom(const Def* codom) { return Def::set(1, codom)->as<Pi>(); }
@@ -95,7 +96,6 @@ public:
     ///@}
 
     /// @name dom
-    ///@{
     ///@{
     /// @see @ref proj
     Ref dom() const { return type()->dom(); }
@@ -138,7 +138,7 @@ public:
     /// lam1->app(true, f, arg);
     /// lam2->app(my_filter_def, f, arg);
     /// ```
-    /// @see Def::set_ops
+    /// @see @ref set_ops "Setting Ops"
     using Filter = std::variant<bool, const Def*>;
     Lam* set(Filter filter, const Def* body) { return set_filter(filter)->set_body(body); }
     Lam* set_filter(Filter);                                                ///< Set filter first.
