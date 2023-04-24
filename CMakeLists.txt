@@ -35,10 +35,8 @@ else()
 endif()
 
 if(WIN32)
-    option(THORIN_COLOR_TERM "Use colored output (doesn't work in Windows terminal)" FALSE)
     add_compile_definitions(NOMINMAX) # prevents windows.h defining min/max macros
 else()
-    option(THORIN_COLOR_TERM "Use colored output (doesn't work in Windows terminal)" TRUE)
     add_compile_options(-Wall -Wextra)
 endif()
 
@@ -58,8 +56,8 @@ set(ABSL_PROPAGATE_CXX_STD ON)
 set(ABSL_USE_EXTERNAL_GOOGLETEST ON)
 set(ABSL_ENABLE_INSTALL ON)
 add_subdirectory(modules/abseil-cpp EXCLUDE_FROM_ALL)
+add_subdirectory(modules/rang       EXCLUDE_FROM_ALL)
 add_subdirectory(modules/lyra       EXCLUDE_FROM_ALL)
-
 add_subdirectory(thorin)
 add_subdirectory(cli)
 add_subdirectory(dialects)
