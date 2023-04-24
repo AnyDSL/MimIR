@@ -359,8 +359,16 @@ void Def::finalize() {
     }
 }
 
+// clang-format off
+Def* Def::  set(Defs ops) { assert(ops.size() == num_ops()); for (size_t i = 0, e = num_ops(); i != e; ++i)   set(i, ops[i]); return this; }
+Def* Def::reset(Defs ops) { assert(ops.size() == num_ops()); for (size_t i = 0, e = num_ops(); i != e; ++i) reset(i, ops[i]); return this; }
+// clang-format on
+
 Def* Def::set(size_t i, const Def* def) {
-    assert(def && !op(i));
+    assert(def && !op(i) && curr_op_ == i);
+#ifndef NDEBUG
+    curr_op_ = (curr_op_ + 1) % num_ops();
+#endif
     ops_ptr()[i]  = def;
     const auto& p = def->uses_.emplace(this, i);
     assert_unused(p.second);
@@ -370,6 +378,21 @@ Def* Def::set(size_t i, const Def* def) {
         update();
     }
 
+    return this;
+}
+
+Def* Def::unset() {
+#ifndef NDEBUG
+    curr_op_ = 0;
+#endif
+    for (size_t i = 0, e = num_ops(); i != e; ++i) {
+        if (op(i))
+            unset(i);
+        else {
+            assert(std::all_of(ops_ptr() + i + 1, ops_ptr() + num_ops(), [](auto op) { return !op; }));
+            break;
+        }
+    }
     return this;
 }
 

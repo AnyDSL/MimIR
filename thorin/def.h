@@ -277,31 +277,22 @@ public:
     /// @name set/unset/reset ops (mutables only)
     /// @anchor set_ops
     ///@{
-    /// You **must** set operands from left to right.
-    /// You can change operands later on, but you either have to
-    /// * Def::unset() them either all at beforehand, or
-    /// * Def::reset them successively.
+    /// When setting/updating operands, you have to obey the following rules:
+    /// 1. If Def::is_set() is ...
+    ///     1. ... `true`, Def::set the operands from left (`i == 0`) to right (`i == num_ops() - 1`).
+    ///     2. ... `false`, Def::reset the operands from left to right as in 1a.
+    /// 2. In addition, you can invoke Def::unset() at *any time* to start over with 1a:
+    /// ```
+    /// mut->unset()->set({a, b, c}); // This will always work, but should be your last resort.
+    /// ```
+    ///
     /// Thorin assumes that a mutable is *final*, when its last operand is set.
     /// Then, Def::check() will be invoked.
-    // clang-format off
-    Def*   set(size_t i, const Def* def);
-    Def* reset(size_t i, const Def* def) { return unset(i)->set(i, def); }
-    Def*   set(Defs ops) { for (size_t i = 0, e = num_ops(); i != e; ++i)   set(i, ops[i]); return this; }
-    Def* reset(Defs ops) { for (size_t i = 0, e = num_ops(); i != e; ++i) reset(i, ops[i]); return this; }
-
-    Def* unset() {
-        for (size_t i = 0, e = num_ops(); i != e; ++i) {
-            if (op(i))
-                unset(i);
-            else {
-                assert(std::all_of(ops_ptr() + i + 1, ops_ptr() + num_ops(), [](auto op) { return !op; }));
-                break;
-            }
-        }
-        return this;
-    }
-
-    // clang-format on
+    Def* set(size_t i, const Def* def);                                    ///< Successively   set from left to right.
+    Def* reset(size_t i, const Def* def) { return unset(i)->set(i, def); } ///< Successively reset from left to right.
+    Def* set(Defs ops);                                                    ///< Def::set @p ops all at once.
+    Def* reset(Defs ops);                                                  ///< Def::reset @p ops all at once.
+    Def* unset(); ///< Unsets all Def::ops; works even, if not set at all or partially.
     Def* set_type(const Def*);
     void unset_type();
 
@@ -525,6 +516,10 @@ private:
     }
     void finalize();
     bool equal(const Def* other) const;
+
+#ifndef NDEBUG
+    size_t curr_op_ = 0;
+#endif
 
 protected:
     mutable Dbg dbg_;

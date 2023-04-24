@@ -97,7 +97,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
             world().DLOG("  curr_lam {}", curr_lam_->sym());
             if (curr_lam_->is_set()) {
                 auto filter = curr_lam_->filter();
-                curr_lam_->unset()->set({filter, cps_call});
+                curr_lam_->reset({filter, cps_call});
             } else {
                 curr_lam_->set(world().lit_ff(), cps_call);
             }

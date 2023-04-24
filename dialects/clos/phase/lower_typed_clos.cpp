@@ -26,7 +26,7 @@ void LowerTypedClos::start() {
         if (lam->is_set()) {
             auto new_f = rewrite(lam->filter());
             auto new_b = rewrite(lam->body());
-            lam->unset()->set({new_f, new_b});
+            lam->reset({new_f, new_b});
         }
     }
 }

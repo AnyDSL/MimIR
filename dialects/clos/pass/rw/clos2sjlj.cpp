@@ -165,7 +165,7 @@ void Clos2SJLJ::enter() {
     tag            = w.call(core::conv::s, branches.size(), tag);
     auto filter    = curr_mut()->filter();
     auto branch    = w.extract(w.tuple(branches), tag);
-    curr_mut()->unset()->set({filter, clos_apply(branch, m1)});
+    curr_mut()->reset({filter, clos_apply(branch, m1)});
 }
 
 Ref Clos2SJLJ::rewrite(Ref def) {
