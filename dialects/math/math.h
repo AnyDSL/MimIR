@@ -11,33 +11,35 @@ namespace thorin::math {
 ///@{
 // clang-format off
 /// Allowed optimizations for a specific operation.
-enum Mode : nat_t {
+enum class Mode : nat_t {
     top      = 0,
-    none     = top,
-    nnan     = 1 << 0, ///< No NaNs.
-                       ///< Allow optimizations to assume the arguments and result are not NaN.
-                       ///< Such optimizations are required to retain defined behavior over NaNs,
-                       ///< but the value of the result is undefined.
-    ninf     = 1 << 1, ///< No Infs.
-                       ///< Allow optimizations to assume the arguments and result are not +/-Inf.
-                       ///< Such optimizations are required to retain defined behavior over +/-Inf,
-                       ///< but the value of the result is undefined.
-    nsz      = 1 << 2, ///< No Signed Zeros.
-                       ///< Allow optimizations to treat the sign of a zero argument or result as insignificant.
-    arcp     = 1 << 3, ///< Allow Reciprocal.
-                       ///< Allow optimizations to use the reciprocal of an argument rather than perform division.
-    contract = 1 << 4, ///< Allow floating-point contraction.
-                       ///< (e.g. fusing a multiply followed by an addition into a fused multiply-and-add).
-    afn      = 1 << 5, ///< Approximate functions.
-                       ///< Allow substitution of approximate calculations for functions (sin, log, sqrt, etc).
-    reassoc  = 1 << 6, ///< Allow reassociation transformations for floating-point operations.
-                       ///< This may dramatically change results in floating point.
-    finite = nnan | ninf,
-    unsafe = nsz | arcp | reassoc,
-    fast   = nnan | ninf | nsz | arcp | contract | afn | reassoc,
-    bot    = fast,
+    none     = top,                ///< Alias for Mode::none.
+    nnan     = 1 << 0,             ///< No NaNs.
+                                   ///< Allow optimizations to assume the arguments and result are not NaN.
+                                   ///< Such optimizations are required to retain defined behavior over NaNs, but the value of the result is undefined.
+    ninf     = 1 << 1,             ///< No Infs.
+                                   ///< Allow optimizations to assume the arguments and result are not +/-Inf.
+                                   ///< Such optimizations are required to retain defined behavior over +/-Inf, but the value of the result is undefined.
+    nsz      = 1 << 2,             ///< No Signed Zeros.
+                                   ///< Allow optimizations to treat the sign of a zero argument or result as insignificant.
+    arcp     = 1 << 3,             ///< Allow Reciprocal.
+                                   ///< Allow optimizations to use the reciprocal of an argument rather than perform division.
+    contract = 1 << 4,             ///< Allow floating-point contraction
+                                   ///< (e.g. fusing a multiply followed by an addition into a fused multiply-and-add).
+    afn      = 1 << 5,             ///< Approximate functions.
+                                   ///< Allow substitution of approximate calculations for functions (sin, log, sqrt, etc).
+    reassoc  = 1 << 6,             ///< Allow reassociation transformations for floating-point operations.
+                                   ///< This may dramatically change results in floating point.
+    finite = nnan | ninf,          ///< Mode::nnan `|` Mode::ninf.
+    unsafe = nsz | arcp | reassoc, ///< Mode::nsz `|` Mode::arcp `|` Mode::reassoc
+    fast   = nnan | ninf | nsz
+           | arcp | contract | afn
+           | reassoc,              ///< All flags.
+    bot    = fast,                 ///< Alias for Mode::fast.
 };
 // clang-format on
+
+THORIN_ENUM_OPERATORS(Mode)
 
 /// Give Mode as thorin::math::Mode, thorin::nat_t or Ref.
 using VMode = std::variant<Mode, nat_t, Ref>;
@@ -46,7 +48,7 @@ using VMode = std::variant<Mode, nat_t, Ref>;
 inline Ref mode(World& w, VMode m) {
     if (auto def = std::get_if<Ref>(&m)) return *def;
     if (auto nat = std::get_if<nat_t>(&m)) return w.lit_nat(*nat);
-    return w.lit_nat(std::get<Mode>(m));
+    return w.lit_nat((nat_t)std::get<Mode>(m));
 }
 ///@}
 

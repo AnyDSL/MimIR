@@ -190,3 +190,17 @@ TEST(Type, Level) {
     auto pi  = w.pi(w.type<7>(), w.type<2>());
     EXPECT_EQ(Lit::as(pi->type()->isa<Type>()->level()), 8);
 }
+
+TEST(Sym, cmp) {
+    Driver driver;
+    auto abc = driver.sym("abc");
+    auto b   = driver.sym("b");
+
+    EXPECT_GT(b, 'a');
+    EXPECT_EQ(b, 'b');
+    EXPECT_LT(b, 'c');
+    EXPECT_GT(abc, 'a');
+    EXPECT_LT(abc, 'b');
+    EXPECT_NE(b, 'a');
+    EXPECT_EQ(b, 'b');
+}

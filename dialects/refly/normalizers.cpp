@@ -1,3 +1,5 @@
+#include <rang.hpp>
+
 #include "thorin/world.h"
 
 #include "dialects/refly/refly.h"
@@ -13,13 +15,9 @@ Ref do_reify(const Def* def) { return def->world().lit(type_code(def->world()), 
 // And here we are doing the reverse to retrieve the original pointer again.
 const Def* do_reflect(const Def* def) { return reinterpret_cast<const Def*>(def->as<Lit>()->get()); }
 
-// TODO: check (and fix) for windows
-#define YELLOW "\033[0;33m"
-#define BLANK  "\033[0m"
-
 void debug_print(const Def* def) {
     auto& world = def->world();
-    world.DLOG(YELLOW "debug_print: {}" BLANK, def);
+    world.DLOG("{}debug_print: {}{}", rang::fg::yellow, def, rang::fg::reset);
     world.DLOG("def : {}", def);
     world.DLOG("id  : {}", def->unique_name());
     world.DLOG("type: {}", def->type());

@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <string_view>
+#include <type_traits>
 
 #include <absl/container/btree_map.h>
 #include <absl/container/btree_set.h>
@@ -430,6 +431,12 @@ public:
     Ref iapp(Ref callee, Ref arg);
     Ref iapp(Ref callee, Defs args) { return iapp(callee, tuple(args)); }
     Ref iapp(Ref callee, nat_t arg) { return iapp(callee, lit_nat(arg)); }
+    template<class E>
+    Ref iapp(Ref callee, E arg)
+    requires std::is_enum_v<E> && std::is_same_v<std::underlying_type_t<E>, nat_t>
+    {
+        return iapp(callee, lit_nat((nat_t)arg));
+    }
 
     // clang-format off
     template<class Id, class... Args> const Def* call(Id id, Args&&... args) { return call_(ax(id),   std::forward<Args>(args)...); }
@@ -560,10 +567,10 @@ private:
             assert(index_ % alignof(T) == 0);
         }
 
-        static constexpr inline size_t align(size_t n) { return (n + (sizeof(void*) - 1)) & ~(sizeof(void*) - 1); }
+        static constexpr size_t align(size_t n) { return (n + (sizeof(void*) - 1)) & ~(sizeof(void*) - 1); }
 
         template<class T>
-        static constexpr inline size_t num_bytes_of(size_t num_ops) {
+        static constexpr size_t num_bytes_of(size_t num_ops) {
             size_t result = sizeof(Def) + sizeof(void*) * num_ops;
             return align(result);
         }
