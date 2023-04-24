@@ -374,6 +374,8 @@ Def* Def::set(size_t i, const Def* def) {
             check();
             update();
         }
+    } else {
+        world().WLOG("You shouldn't invoke with nullptr: 'Def::set({}, nullptr)'", i);
     }
     return this;
 }

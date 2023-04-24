@@ -11,9 +11,11 @@ struct Flags {
     bool disable_type_checking = false; // TODO implement this flag
     bool bootstrap             = false;
     bool aggressive_lam_spec   = false; // HACK makes LamSpec more agressive but potentially non-terminating
-#if THORIN_ENABLE_CHECKS
+#ifdef THORIN_ENABLE_CHECKS
     bool reeval_breakpoints = false;
     bool trace_gids         = false;
+    bool break_on_error     = false;
+    bool break_on_warn      = false;
 #endif
 };
 
