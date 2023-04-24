@@ -1,5 +1,10 @@
 var NAVTREEINDEX17 =
 {
+"math_2normalizers_8cpp.html#a72ac378d2391c5a54e7c6a60234beaa1":[6,0,2,7,2,4],
+"math_2normalizers_8cpp.html#a9f03f2cd6530e1ec131486e3d771a975":[6,0,2,7,2,12],
+"math_2normalizers_8cpp.html#a9fe884c46e33997818b9124018788d26":[6,0,2,7,2,7],
+"math_2normalizers_8cpp.html#aac0d2a33688ecfe15836f4126f63f96c":[6,0,2,7,2,6],
+"math_2normalizers_8cpp.html#abb9921d1dbdfac714ed5f685137c8423":[6,0,2,7,2,5],
 "math_2normalizers_8cpp.html#ac8695d8e00a1c7308da513601f0aa79f":[6,0,2,7,2,9],
 "math_2normalizers_8cpp.html#adb513511d10525c5acf25f5f64266929":[6,0,2,7,2,10],
 "math_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89":[6,0,2,7,2,2],
@@ -173,8 +178,8 @@ var NAVTREEINDEX17 =
 "namespacemembers_d.html":[3,1,0,3],
 "namespacemembers_e.html":[3,1,0,4],
 "namespacemembers_enum.html":[3,1,4],
-"namespacemembers_eval.html":[3,1,5,0],
 "namespacemembers_eval.html":[3,1,5],
+"namespacemembers_eval.html":[3,1,5,0],
 "namespacemembers_eval_b.html":[3,1,5,1],
 "namespacemembers_eval_c.html":[3,1,5,2],
 "namespacemembers_eval_d.html":[3,1,5,3],
@@ -197,8 +202,8 @@ var NAVTREEINDEX17 =
 "namespacemembers_eval_v.html":[3,1,5,20],
 "namespacemembers_eval_x.html":[3,1,5,21],
 "namespacemembers_f.html":[3,1,0,5],
-"namespacemembers_func.html":[3,1,1],
 "namespacemembers_func.html":[3,1,1,0],
+"namespacemembers_func.html":[3,1,1],
 "namespacemembers_func_b.html":[3,1,1,1],
 "namespacemembers_func_c.html":[3,1,1,2],
 "namespacemembers_func_d.html":[3,1,1,3],
@@ -244,10 +249,5 @@ var NAVTREEINDEX17 =
 "namespacethorin.html#a00699ac904a16b60cdac9cc7005ed0d8":[3,0,0,159],
 "namespacethorin.html#a01d195c52d754394a58dec37e2913430":[3,0,0,201],
 "namespacethorin.html#a022d5af8f2049a71d4aba1f9fc9fbed2":[3,0,0,195],
-"namespacethorin.html#a024f494df950b4312faf11037c62ea2f":[3,0,0,230],
-"namespacethorin.html#a02f88714441141b4cafcf80c5e49f554":[3,0,0,313],
-"namespacethorin.html#a0a8b060eec2807f90e96b0ccd90a49ff":[6,0,4,15,0,5],
-"namespacethorin.html#a0a9f89738776aea8cf4cdaed2104a346":[3,0,0,221],
-"namespacethorin.html#a0c6e11089999fb8349a4fbd2463578bb":[6,0,4,15,0,8],
-"namespacethorin.html#a0cc502ae65de73467eb1e87f435968d7":[3,0,0,154]
+"namespacethorin.html#a024f494df950b4312faf11037c62ea2f":[3,0,0,230]
 };
