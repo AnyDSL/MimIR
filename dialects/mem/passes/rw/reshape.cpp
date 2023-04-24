@@ -169,9 +169,7 @@ Lam* Reshape::reshape_lam(Lam* def) {
     // TODO: Remove after testing.
     // old2new_[new_arg] = new_arg;
 
-    auto new_body = rewrite_def(def->body());
-    new_lam->set_body(new_body);
-    new_lam->set_filter(true);
+    new_lam->set(true, rewrite_def(def->body()));
 
     if (def->is_external()) {
         def->make_internal();

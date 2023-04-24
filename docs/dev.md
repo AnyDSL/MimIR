@@ -108,12 +108,13 @@ void foo(Ref def) {
 
 #### Upcast for Mutables
 
-[Def::isa_mut](@ref thorin::Def::isa_mut)/[Def::as_mut](@ref thorin::Def::as_mut) allows for an *upcast* and **only** matches *mutables*:
+[Def::isa_mut](@ref thorin::Def::isa_mut)/[Def::as_mut](@ref thorin::Def::as_mut) allows for an *upcast* and **only** matches *mutables*.
+By doing so, it removes the `const` qualifier and gives you access to the **non**-`const` methods that only make sense for *mutables*:
 ```cpp
 void foo(Ref def) {
     if (auto mut = def->isa_mut()) {
         // mut of type "Def*" - "const" has been removed!
-        // This gives you access to the non-const methods that only make sense for mutables:
+        // This gives you access to the non-const methods:
         auto var = mut->var();
         auto stub = mut->stub(world, type, debug)
         // ...
@@ -209,7 +210,23 @@ Otherwise, it may wrap a [Def](@ref thorin::Def) or other subclasses of it.
 For instance, [match](@ref thorin::match)ing `%%mem.M` yields [Match](@ref thorin::Match)`<`[mem::M](@ref thorin::mem::M), [Def](@ref thorin::Def)`>`.
 
 By default, Thorin assumes that the magic of an [Axiom](@ref thorin::Axiom) happens when applying the final argument to a curried [Axiom](@ref thorin::Axiom).
-If you want to design an [Axiom](@ref thorin::Axiom) that really returns a function, you can [fine-adjust the trigger point](@ref normalization) of a thorin::match / thorin::force.
+For example, [match](@ref thorin::match)ing a `%%mem.load` will only trigger for the final [App](@ref thorin::App) of the curried call
+```
+%mem.load (T, as) (mem, ptr)
+```
+while
+```
+%mem.load (T, as)
+```
+will **not** match.
+The wrapped [App](@ref thorin::App) inside the [Match](@ref thorin::Match) refers to the last [App](@ref thorin::App) of the curried call.
+So in this example
+* thorin::App::arg() is `(mem, ptr)` and
+* thorin::App::callee() is `%%mem.load (T, as)`.
+
+    Use thorin::App::decurry() to directly get the thorin::App::callee() as thorin::App.
+
+If you want to design an [Axiom](@ref thorin::Axiom) that returns a function, you can [fine-adjust the trigger point](@ref normalization) of a thorin::match / thorin::force.
 
 #### w/o Subtags
 
@@ -225,8 +242,6 @@ void foo(Ref def) {
     auto load = force<mem::load>(def);
 }
 ```
-The `match` only triggers for the final thorin::App of the curried call `%%mem.load (T, as) (mem, ptr)` and `%%mem.load (T, as)` will **not** match as explained above.
-This will yield a [Match](@ref thorin::Match) which *usually* just wraps a `const` [App](@ref thorin::App)`*` but may wrap a [Def](@ref thorin::Def) or other subclasses of it, if the type of the Axiom is **not** a [function type](@ref thorin::Pi).
 
 #### w/ Subtags
 

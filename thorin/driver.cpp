@@ -17,7 +17,8 @@ std::vector<fs::path> get_plugin_name_variants(std::string_view name) {
 } // namespace
 
 Driver::Driver()
-    : world_(this) {
+    : log_(flags_)
+    , world_(this) {
     // prepend empty path
     search_paths_.emplace_front(fs::path{});
 

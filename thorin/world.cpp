@@ -517,7 +517,7 @@ Sym World::append_suffix(Sym symbol, std::string suffix) {
  * debugging
  */
 
-#if THORIN_ENABLE_CHECKS
+#ifdef THORIN_ENABLE_CHECKS
 
 void World::breakpoint(u32 gid) { state_.breakpoints.emplace(gid); }
 

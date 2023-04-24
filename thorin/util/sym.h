@@ -15,7 +15,7 @@ namespace thorin {
 /// This makes Sym::operator== and Sym::operator!= an O(1) operation.
 /// The empty string is internally handled as `nullptr`.
 /// Thus, you can create a Sym%bol representing an empty string without having access to the SymPool.
-/// The empty string, `nullptr`, and `"\0"` are all identified as Sym::Sym().
+/// @note The empty string, `nullptr`, and `"\0"` are all identified as Sym::Sym().
 class Sym {
 private:
     Sym(const std::string* ptr)
@@ -36,13 +36,16 @@ public:
 
     /// @name Comparisons
     ///@{
-    bool operator==(char c) const { return (*this)->size() == 1 && (*this)[0] == c; }
-    bool operator!=(char c) const { return !((*this) == c); }
+    auto operator<=>(char c) const {
+        if ((*this)->size() == 0) return std::strong_ordering::less;
+        auto cmp = (*this)[0] <=> c;
+        if ((*this)->size() == 1) return cmp;
+        return cmp == 0 ? std::strong_ordering::greater : cmp;
+    }
+    auto operator==(char c) const { return (*this) <=> c == std::strong_ordering::equal; }
+    auto operator<=>(Sym other) const { return **this <=> *other; }
     bool operator==(Sym other) const { return this->ptr_ == other.ptr_; }
     bool operator!=(Sym other) const { return this->ptr_ != other.ptr_; }
-    auto operator<=>(Sym other) const { return *(*this) <=> *other; }
-    friend bool operator==(char c, Sym s) { return s == c; }
-    friend bool operator!=(char c, Sym s) { return s != c; }
     ///@}
 
     /// @name Cast Operators
