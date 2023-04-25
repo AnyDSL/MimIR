@@ -232,7 +232,6 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::D_brace_l: return parse_block();
         case Tok::Tag::D_brckt_l: return parse_sigma();
         case Tok::Tag::D_paren_l: return parse_tuple();
-        case Tok::Tag::K_Cn:      return parse_Cn();
         case Tok::Tag::K_Type:    return parse_type();
         case Tok::Tag::K_Univ:    lex(); return world().univ();
         case Tok::Tag::K_Bool:    lex(); return world().type_bool();
@@ -240,8 +239,10 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::K_Nat:     lex(); return world().type_nat();
         case Tok::Tag::K_ff:      lex(); return world().lit_ff();
         case Tok::Tag::K_tt:      lex(); return world().lit_tt();
-        case Tok::Tag::T_Pi:      return parse_pi();
         case Tok::Tag::T_at:      return parse_var();
+        case Tok::Tag::K_Cn:
+        case Tok::Tag::K_Fn:
+        case Tok::Tag::T_Pi:      return parse_pi();
         case Tok::Tag::K_cn:
         case Tok::Tag::K_fn:
         case Tok::Tag::T_lm:      return parse_lam();
@@ -262,13 +263,6 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
     }
     // clang-format on
     return nullptr;
-}
-
-Ref Parser::parse_Cn() {
-    auto track = tracker();
-    eat(Tok::Tag::K_Cn);
-    auto dom = parse_ptrn(Tok::Tag::D_brckt_l, "domain of a continuation type");
-    return world().cn(dom->type(world(), def2fields_))->set(track.loc());
 }
 
 Ref Parser::parse_var() {
@@ -364,26 +358,39 @@ Ref Parser::parse_type() {
 }
 
 Ref Parser::parse_pi() {
+    assert(ahead().isa(Tok::Tag::T_Pi) || ahead().isa(Tok::Tag::K_Cn) || ahead().isa(Tok::Tag::K_Fn));
     auto track = tracker();
-    eat(Tok::Tag::T_Pi);
+    auto tok   = lex();
+    bool is_cn = tok.isa(Tok::Tag::K_Cn);
+    auto name = tok.isa(Tok::Tag::T_Pi) ? "dependent function type"
+        : tok.isa(Tok::Tag::K_Cn) ? "continuation type"
+        : tok.isa(Tok::Tag::K_Fn) ? "returning continuation type"
+        : (unreachable(), nullptr);
+
     scopes_.push();
 
     Pi* first = nullptr;
     std::deque<Pi*> pis;
     do {
         auto implicit = accept(Tok::Tag::T_dot).has_value();
-        auto dom      = parse_ptrn(Tok::Tag::D_brckt_l, "domain of a dependent function type", Tok::Prec::App);
-        auto pi       = world().mut_pi(world().type_infer_univ(), implicit)->set_dom(dom->type(world(), def2fields_));
+        auto dom      = parse_ptrn(Tok::Tag::D_brckt_l, "domain of a "s + name, is_cn ? Tok::Prec::Bot : Tok::Prec::App);
+        auto dom_t    = dom->type(world(), def2fields_);
+        auto pi       = world().mut_pi(world().type_infer_univ(), implicit)->set_dom(dom_t);
         auto var      = pi->var()->set(dom->sym());
         first         = first ? first : pi;
         pi->set(dom->dbg());
 
         dom->bind(scopes_, var);
         pis.emplace_back(pi);
-    } while (!ahead().isa(Tok::Tag::T_arrow));
+    } while (ahead().isa(Tok::Tag::D_brckt_l));
 
-    expect(Tok::Tag::T_arrow, "dependent function type");
-    auto codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
+    Ref codom;
+    if (is_cn) {
+        codom = world().type_bot();
+    } else {
+        expect(Tok::Tag::T_arrow, "dependent function type");
+        codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
+    }
 
     for (auto pi : pis | std::ranges::views::reverse) {
         pi->set_codom(codom);
@@ -725,6 +732,7 @@ Lam* Parser::parse_lam(bool decl) {
     auto track    = tracker();
     auto tok      = lex();
     bool is_cn    = tok.isa(Tok::Tag::K_cn) || tok.isa(Tok::Tag::K_con);
+    //bool is_fn    = tok.isa(Tok::Tag::K_fn) || tok.isa(Tok::Tag::K_fun);
     auto prec     = is_cn ? Tok::Prec::Bot : Tok::Prec::Pi;
     bool external = decl && accept(Tok::Tag::K_extern).has_value();
     auto dbg      = decl ? parse_sym("mutable lambda") : Dbg{prev(), anonymous_};

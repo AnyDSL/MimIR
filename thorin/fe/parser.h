@@ -120,7 +120,6 @@ private:
 
     /// @name parse primary exprs
     ///@{
-    Ref parse_Cn();
     Ref parse_arr();
     Ref parse_pack();
     Ref parse_block();
