@@ -378,10 +378,10 @@ Patterns</h2>
 <li><code>(a, b, c)</code> means <code>(a: ?, b: ?, c: ?)</code> whereas</li>
 <li><code>[a, b, c]</code> means <code>[_: a, _: c, _: d]</code>.</li>
 </ul>
-<p >Note that you <b>can</b> switch from a <code>()</code>-style pattern to a <code>[]</code>-pattern but not vice versa. What is more, <code>()</code>-style patterns allow for a <em>groups</em>:</p><ul>
+<p >Note that you <b>can</b> switch from a <code>()</code>-style pattern to a <code>[]</code>-pattern but not vice versa. For this reason there is no rule for <code>()</code>-<code>[]</code>-pattern. What is more, <code>()</code>-style patterns allow for <em>groups</em>:</p><ul>
 <li><code>(a b c: .Nat, d e: .Bool)</code> means <code>(a: .Nat, b: .Nat, c: .Nat, d: .Bool, e: .Bool)</code>.</li>
 </ul>
-<p >You can introduce an optional name for the whole tuple/sigma pattern: </p><div class="fragment"><div class="line">.let abc::(a, b, c) = (1, 2, 3);</div>
+<p >Finally, you can introduce an optional name for the whole tuple pattern: </p><div class="fragment"><div class="line">.let abc::(a, b, c) = (1, 2, 3);</div>
 </div><!-- fragment --><p> This will bind</p><ul>
 <li><code>a</code> to <code>1</code>,</li>
 <li><code>b</code> to <code>2</code>,</li>
@@ -400,11 +400,11 @@ Patterns</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">b   </td><td class="markdownTableBodyNone">(<code>'</code>? Sym <code>:</code>)? e<sub>type</sub>   </td><td class="markdownTableBodyNone">identifier <code>[]</code>-pattern    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">p   </td><td class="markdownTableBodyNone">(<code>'</code>? Sym <code>::</code>)? <code>(</code> g <code>,</code> ... <code>,</code> g <code>)</code> (<code>:</code> e<sub>type</sub>)?   </td><td class="markdownTableBodyNone">tuple <code>()</code>-pattern    </td></tr>
+<td class="markdownTableBodyNone">p   </td><td class="markdownTableBodyNone">(<code>'</code>? Sym <code>::</code>)? <code>(</code> g <code>,</code> ... <code>,</code> g <code>)</code> (<code>:</code> e<sub>type</sub>)?   </td><td class="markdownTableBodyNone"><code>()</code>-<code>()</code>-tuple pattern    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">p   </td><td class="markdownTableBodyNone">(<code>'</code>? Sym <code>::</code>)? <code>[</code> b <code>,</code> ... <code>,</code> b <code>]</code> (<code>:</code> e<sub>type</sub>)?   </td><td class="markdownTableBodyNone">sigma <code>()</code>-pattern    </td></tr>
+<td class="markdownTableBodyNone">p   </td><td class="markdownTableBodyNone">(<code>'</code>? Sym <code>::</code>)? <code>[</code> b <code>,</code> ... <code>,</code> b <code>]</code> (<code>:</code> e<sub>type</sub>)?   </td><td class="markdownTableBodyNone"><code>[]</code>-<code>()</code>-tuple pattern    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">b   </td><td class="markdownTableBodyNone">(<code>'</code>? Sym <code>::</code>)? <code>[</code> b <code>,</code> ... <code>,</code> b <code>]</code> (<code>:</code> e<sub>type</sub>)?   </td><td class="markdownTableBodyNone">sigma <code>[]</code>-pattern    </td></tr>
+<td class="markdownTableBodyNone">b   </td><td class="markdownTableBodyNone">(<code>'</code>? Sym <code>::</code>)? <code>[</code> b <code>,</code> ... <code>,</code> b <code>]</code> (<code>:</code> e<sub>type</sub>)?   </td><td class="markdownTableBodyNone"><code>[]</code>-<code>[]</code>-tuple pattern    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">g   </td><td class="markdownTableBodyNone">p   </td><td class="markdownTableBodyNone">group    </td></tr>
 <tr class="markdownTableRowOdd">
