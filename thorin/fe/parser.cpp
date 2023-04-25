@@ -362,10 +362,10 @@ Ref Parser::parse_pi() {
     auto track = tracker();
     auto tok   = lex();
     bool is_cn = tok.isa(Tok::Tag::K_Cn);
-    auto name = tok.isa(Tok::Tag::T_Pi) ? "dependent function type"
-        : tok.isa(Tok::Tag::K_Cn) ? "continuation type"
-        : tok.isa(Tok::Tag::K_Fn) ? "returning continuation type"
-        : (unreachable(), nullptr);
+    auto name  = tok.isa(Tok::Tag::T_Pi) ? "dependent function type"
+               : tok.isa(Tok::Tag::K_Cn) ? "continuation type"
+               : tok.isa(Tok::Tag::K_Fn) ? "returning continuation type"
+                                         : (unreachable(), nullptr);
 
     scopes_.push();
 
@@ -373,11 +373,11 @@ Ref Parser::parse_pi() {
     std::deque<Pi*> pis;
     do {
         auto implicit = accept(Tok::Tag::T_dot).has_value();
-        auto dom      = parse_ptrn(Tok::Tag::D_brckt_l, "domain of a "s + name, is_cn ? Tok::Prec::Bot : Tok::Prec::App);
-        auto dom_t    = dom->type(world(), def2fields_);
-        auto pi       = world().mut_pi(world().type_infer_univ(), implicit)->set_dom(dom_t);
-        auto var      = pi->var()->set(dom->sym());
-        first         = first ? first : pi;
+        auto dom   = parse_ptrn(Tok::Tag::D_brckt_l, "domain of a "s + name, is_cn ? Tok::Prec::Bot : Tok::Prec::App);
+        auto dom_t = dom->type(world(), def2fields_);
+        auto pi    = world().mut_pi(world().type_infer_univ(), implicit)->set_dom(dom_t);
+        auto var   = pi->var()->set(dom->sym());
+        first      = first ? first : pi;
         pi->set(dom->dbg());
 
         dom->bind(scopes_, var);
@@ -729,10 +729,10 @@ void Parser::parse_mut() {
 
 Lam* Parser::parse_lam(bool decl) {
     // TODO .fn/.fun
-    auto track    = tracker();
-    auto tok      = lex();
-    bool is_cn    = tok.isa(Tok::Tag::K_cn) || tok.isa(Tok::Tag::K_con);
-    //bool is_fn    = tok.isa(Tok::Tag::K_fn) || tok.isa(Tok::Tag::K_fun);
+    auto track = tracker();
+    auto tok   = lex();
+    bool is_cn = tok.isa(Tok::Tag::K_cn) || tok.isa(Tok::Tag::K_con);
+    // bool is_fn    = tok.isa(Tok::Tag::K_fn) || tok.isa(Tok::Tag::K_fun);
     auto prec     = is_cn ? Tok::Prec::Bot : Tok::Prec::Pi;
     bool external = decl && accept(Tok::Tag::K_extern).has_value();
     auto dbg      = decl ? parse_sym("mutable lambda") : Dbg{prev(), anonymous_};
