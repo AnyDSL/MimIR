@@ -39,8 +39,8 @@ var searchData=
   ['proj_36',['proj',['../classthorin_1_1Def.html#af5a66d05737e701114113c2cfda9002d',1,'thorin::Def::proj(nat_t a, nat_t i) const'],['../classthorin_1_1Def.html#af96aeed73c96b0e34b1be1d1b92fcdf6',1,'thorin::Def::proj(nat_t i) const']]],
   ['projs_37',['projs',['../classthorin_1_1Def.html#a6c186d90d163a76eb2cbbf875d657766',1,'thorin::Def::projs(nat_t a) const'],['../classthorin_1_1Def.html#acd68d5b2ca448a5281241b802524c824',1,'thorin::Def::projs() const'],['../classthorin_1_1Def.html#a6a07170f39e2c7cef110b37f89420255',1,'thorin::Def::projs(nat_t a, F f) const'],['../classthorin_1_1Def.html#a364bd4ddf5c4cfc758f497a0c67f5f16',1,'thorin::Def::projs(F f) const']]],
   ['proxy_38',['proxy',['../classthorin_1_1World.html#a5d5b8b93c200c1ebd092d20d6f02530c',1,'thorin::World::proxy()'],['../classthorin_1_1Pass.html#ae559ab3c18887d4e6f74f59e1e63c88b',1,'thorin::Pass::proxy()'],['../classthorin_1_1EtaExp.html#a35db4dd4600db84d8867a2ca4dbecfdb',1,'thorin::EtaExp::proxy()']]],
-  ['ptrn_39',['Ptrn',['../classthorin_1_1fe_1_1Ptrn.html#a358978b3b43f2945bcd03201899a1f9e',1,'thorin::fe::Ptrn']]],
-  ['ptrn_40',['ptrn',['../classthorin_1_1fe_1_1TuplePtrn.html#a5c190eea949b697a57eca8ad6f868490',1,'thorin::fe::TuplePtrn']]],
+  ['ptrn_39',['ptrn',['../classthorin_1_1fe_1_1TuplePtrn.html#a5c190eea949b697a57eca8ad6f868490',1,'thorin::fe::TuplePtrn']]],
+  ['ptrn_40',['Ptrn',['../classthorin_1_1fe_1_1Ptrn.html#a358978b3b43f2945bcd03201899a1f9e',1,'thorin::fe::Ptrn']]],
   ['ptrns_41',['ptrns',['../classthorin_1_1fe_1_1TuplePtrn.html#a8bdee1edb9b85bda8f81e1772a218345',1,'thorin::fe::TuplePtrn']]],
   ['pullback_5ftype_42',['pullback_type',['../namespacethorin_1_1autodiff.html#a06f207047fafa881cc1cbf6fc4f42d0f',1,'thorin::autodiff']]],
   ['push_43',['push',['../classthorin_1_1fe_1_1Scopes.html#a296a055b0407e4412e0581ad04e67942',1,'thorin::fe::Scopes::push()'],['../classthorin_1_1unique__stack.html#a69738c049d6f032000deb25c56bbbf36',1,'thorin::unique_stack::push()'],['../classthorin_1_1unique__queue.html#a3bf8b02f709f6e80d7b1119341ec68c5',1,'thorin::unique_queue::push()']]]

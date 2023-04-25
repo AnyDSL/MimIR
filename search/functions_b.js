@@ -8,7 +8,7 @@ var searchData=
   ['least_5fcommon_5fancestor_5',['least_common_ancestor',['../classthorin_1_1DomTreeBase.html#a8d66dda27fbfe5be9a90a5f65df791a7',1,'thorin::DomTreeBase']]],
   ['level_6',['level',['../classthorin_1_1Log.html#a87db1e60e758f1aee7ceeb522d034058',1,'thorin::Log::level()'],['../classthorin_1_1Type.html#a1a0b11f4a53c4e501669c5bfa1531d76',1,'thorin::Type::level()']]],
   ['level2acro_7',['level2acro',['../classthorin_1_1Log.html#a5ee67d670442fd8476290292f0f4a738',1,'thorin::Log']]],
-  ['level2color_8',['level2color',['../classthorin_1_1Log.html#aa0b95355e12aa74f6bb27a0079fcfca2',1,'thorin::Log']]],
+  ['level2color_8',['level2color',['../classthorin_1_1Log.html#a80a5d75dcbcd8118240a27588c1e6de5',1,'thorin::Log']]],
   ['lex_9',['lex',['../classthorin_1_1fe_1_1Lexer.html#ae8aa9e435c3e352e7b37e39cb0a4e2c9',1,'thorin::fe::Lexer']]],
   ['lexer_10',['Lexer',['../classthorin_1_1fe_1_1Lexer.html#a31935718019ddf8a21bfb780e941157b',1,'thorin::fe::Lexer::Lexer()'],['../classthorin_1_1utf8_1_1Lexer.html#a9bc8871536b62cd7ba4acb53ce15495c',1,'thorin::utf8::Lexer::Lexer()']]],
   ['lit_11',['lit',['../classthorin_1_1World.html#a2f8435d869a29a87718419f3cb750710',1,'thorin::World']]],

@@ -1,10 +1,5 @@
 var NAVTREEINDEX21 =
 {
-"namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba7c12c20d4b34baf10c60d22a29b6decc":[3,0,0,11,12,13],
-"namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba84caaab33bdc562a640dfbfd8051fa2d":[3,0,0,11,12,11],
-"namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba8a11c3b88a2960d2749e2780c773818a":[3,0,0,11,12,18],
-"namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba91e3ce23f4a6bdf8c4ac28df80299ccf":[3,0,0,11,12,21],
-"namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58baa148ea054eca09226704747439633cdf":[3,0,0,11,12,16],
 "namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58babbc318760d6b9e8a6bed4780bf831578":[3,0,0,11,12,26],
 "namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58bac45652f2947228e7fa8c247da6724633":[3,0,0,11,12,12],
 "namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58bac5773dba3b5d3dc292f68fc0e927ded0":[3,0,0,11,12,14],
@@ -107,8 +102,8 @@ var NAVTREEINDEX21 =
 "namespacethorin_1_1math.html#ab290edebb1dee9ec76cc6198c9c036a9":[3,0,0,11,0],
 "namespacethorin_1_1math.html#ab343cda01cc1f5d8962d9d7c47813679":[3,0,0,11,59],
 "namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5f":[3,0,0,11,2],
-"namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa015078298390da60594549c03f211240":[3,0,0,11,8,0],
 "namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa015078298390da60594549c03f211240":[3,0,0,11,2,31],
+"namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa015078298390da60594549c03f211240":[3,0,0,11,8,0],
 "namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa02016af6df7c2edf0971327a781509f5":[3,0,0,11,2,30],
 "namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa1399663b77cc792a2adbbb9790295ea1":[3,0,0,11,2,9],
 "namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa1c77ce918fdf91c3a3f5ad23d550f8ca":[3,0,0,11,2,4],
@@ -130,8 +125,8 @@ var NAVTREEINDEX21 =
 "namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa90f68af5cf3a2df678258becc2d3f714":[3,0,0,11,4,0],
 "namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5faa8a4fa1f20051298cafecf2e0017b61e":[3,0,0,11,2,0],
 "namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5faac684ca9e172f53e29e0e0c011a8cc9e":[3,0,0,11,2,27],
-"namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fab56bd84b4325cae0ff953569daeeecd6":[3,0,0,11,8,1],
 "namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fab56bd84b4325cae0ff953569daeeecd6":[3,0,0,11,2,5],
+"namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fab56bd84b4325cae0ff953569daeeecd6":[3,0,0,11,8,1],
 "namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fab622ed72a49719419c304c84ea1f0b8d":[3,0,0,11,2,28],
 "namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fabc298854e325a9c726bfeeb6f842d717":[3,0,0,11,2,21],
 "namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fac4c308a34366a61a6d0fa7648abe4f00":[3,0,0,11,2,11],
@@ -249,5 +244,10 @@ var NAVTREEINDEX21 =
 "namespacethorin_1_1mem.html#a2f55ee95e57e48f456e1ae466a345f00":[3,0,0,13,34],
 "namespacethorin_1_1mem.html#a30546bfaf37291765e8655dadea0c9da":[3,0,0,13,25],
 "namespacethorin_1_1mem.html#a371cc13b75d561b78458893722d9478f":[3,0,0,13,41],
-"namespacethorin_1_1mem.html#a37fb23a096de274a1800c8329167619c":[3,0,0,13,8]
+"namespacethorin_1_1mem.html#a37fb23a096de274a1800c8329167619c":[3,0,0,13,8],
+"namespacethorin_1_1mem.html#a39709fe41308e08738211b781b801d84":[3,0,0,13,35],
+"namespacethorin_1_1mem.html#a397370e30c40a54922fccdedda4be78c":[3,0,0,13,50],
+"namespacethorin_1_1mem.html#a3ea2b24bde54543be604111cefd54752":[3,0,0,13,39],
+"namespacethorin_1_1mem.html#a43c692f59c1e8ef9de9b9ae936683ede":[3,0,0,13,37],
+"namespacethorin_1_1mem.html#a4dd5adf975c59db404934fd02ce8c04e":[3,0,0,13,32]
 };
