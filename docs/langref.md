@@ -173,10 +173,11 @@ The main difference is that
 * `[a, b, c]` means `[_: a, _: c, _: d]`.
 
 Note that you **can** switch from a `()`-style pattern to a `[]`-pattern but not vice versa.
-What is more, `()`-style patterns allow for a *groups*:
+For this reason there is no  rule for `()`-`[]`-pattern.
+What is more, `()`-style patterns allow for *groups*:
 * `(a b c: .Nat, d e: .Bool)` means `(a: .Nat, b: .Nat, c: .Nat, d: .Bool, e: .Bool)`.
 
-You can introduce an optional name for the whole tuple/sigma pattern:
+Finally, you can introduce an optional name for the whole tuple pattern:
 ```
 .let abc::(a, b, c) = (1, 2, 3);
 ```
@@ -199,9 +200,9 @@ This is particularly useful, when dealing with memory:
 |-------------|--------------------------------------------------------------------|-------------------------|
 | p           | ``'``? Sym (`:` e<sub>type</sub> )?                                | identifier `()`-pattern |
 | b           | (``'``? Sym `:`)? e<sub>type</sub>                                 | identifier `[]`-pattern |
-| p           | (``'``? Sym `::`)? `(` g `,` ... `,` g `)` (`:` e<sub>type</sub>)? | tuple `()`-pattern      |
-| p           | (``'``? Sym `::`)? `[` b `,` ... `,` b `]` (`:` e<sub>type</sub>)? | sigma `()`-pattern      |
-| b           | (``'``? Sym `::`)? `[` b `,` ... `,` b `]` (`:` e<sub>type</sub>)? | sigma `[]`-pattern      |
+| p           | (``'``? Sym `::`)? `(` g `,` ... `,` g `)` (`:` e<sub>type</sub>)? | `()`-`()`-tuple pattern |
+| p           | (``'``? Sym `::`)? `[` b `,` ... `,` b `]` (`:` e<sub>type</sub>)? | `[]`-`()`-tuple pattern |
+| b           | (``'``? Sym `::`)? `[` b `,` ... `,` b `]` (`:` e<sub>type</sub>)? | `[]`-`[]`-tuple pattern |
 | g           | p                                                                  | group                   |
 | g           | Sym+ `:` e                                                         | group                   |
 
