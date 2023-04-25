@@ -170,14 +170,15 @@ There are
 
 The main difference is that
 * `(a, b, c)` means `(a: ?, b: ?, c: ?)` whereas
-* `[a, b, c]` means `[_: a, _: c, _: d]`.
+* `[a, b, c]` means `[_: a, _: c, _: d]` while
+* `(a: A, b: B, c: C)` is the same as `[a: A, b: B, C: C]`.
 
 Note that you **can** switch from a `()`-style pattern to a `[]`-pattern but not vice versa.
-For this reason there is no  rule for `()`-`[]`-pattern.
+For this reason there is no rule for a `()`-`[]`-pattern.
 What is more, `()`-style patterns allow for *groups*:
 * `(a b c: .Nat, d e: .Bool)` means `(a: .Nat, b: .Nat, c: .Nat, d: .Bool, e: .Bool)`.
 
-Finally, you can introduce an optional name for the whole tuple pattern:
+You can introduce an optional name for the whole tuple pattern:
 ```
 .let abc::(a, b, c) = (1, 2, 3);
 ```
@@ -187,13 +188,17 @@ This will bind
 * `c` to `3`, and
 * `abc` to `(1, 2, 3)`.
 
-Finally, you can put a ``'`` in front of an identifier, to (potentially) rebind a name to a different value.
+Here is another example:
+```
+Π.Tas::[T: *, as: .Nat][%mem.M, %mem.Ptr Tas] -> [%mem.M, T]
+```
+
+Finally, you can put a ``'`` in front of an identifier of a `()`-style pattern to (potentially) rebind a name to a different value.
 This is particularly useful, when dealing with memory:
 ```
-.let 'lea = %mem.lea (arr_size, ‹arr_size; pb_type›, 0) (pb_arr, 0:I32);
-.let 'mem = %mem.store (mem, lea, f);
-.let 'lea = %mem.lea (arr_size, ‹arr_size; pb_type›, 0) (pb_arr, 1:I32);
-.let 'mem = %mem.store (mem, lea, g);
+.let ('mem, ptr) = %mem.alloc (I32, 0) mem;
+.let 'mem        = %mem.store (mem, ptr, 23:I32);
+.let ('mem, val) = %mem.load (mem, ptr);
 ```
 
 | Nonterminal | Right-Hand Side                                                    | Comment                 |
