@@ -35,7 +35,6 @@ namespace fe {
     m(K_fun,    ".fun"   )             \
     m(K_lam,    ".lam"   )             \
     m(K_cn,     ".cn"    )             \
-    m(K_lm,     ".lm"    )             \
     m(K_fn,     ".fn"    )             \
     m(K_ff,     ".ff"    )             \
     m(K_tt,     ".tt"    )             \
@@ -82,10 +81,12 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(T_comma,      ",")                \
     m(T_dot,        ".")                \
     m(T_extract,    "#")                \
+    m(T_lm,         "λ")                \
     m(T_semicolon,  ";")                \
     m(T_star,       "*")                \
 
 #define THORIN_SUBST(m)                 \
+    m(".lm",     T_lm   )               \
     m(".bot",    T_bot  )               \
     m(".top",    T_top  )               \
     m(".insert", K_ins  )               \

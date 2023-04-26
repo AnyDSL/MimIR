@@ -245,7 +245,7 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::T_Pi:      return parse_pi();
         case Tok::Tag::K_cn:
         case Tok::Tag::K_fn:
-        case Tok::Tag::K_lm:      return parse_lam();
+        case Tok::Tag::T_lm:      return parse_lam();
         case Tok::Tag::T_star:    lex(); return world().type();
         case Tok::Tag::T_box:     lex(); return world().type<1>();
         case Tok::Tag::T_bot:
@@ -424,7 +424,7 @@ Lam* Parser::parse_lam(bool decl) {
     std::string name;
     // clang-format off
     switch (tok.tag()) {
-        case Tok::Tag::K_lm:  name = "function expression";                break;
+        case Tok::Tag::T_lm:  name = "function expression";                break;
         case Tok::Tag::K_cn:  name = "continuation expression";            break;
         case Tok::Tag::K_fn:  name = "returning continuation expression";  break;
         case Tok::Tag::K_lam: name = "function declaration";               break;
@@ -467,7 +467,7 @@ Lam* Parser::parse_lam(bool decl) {
 
     Ref codom;
     switch (tok.tag()) {
-        case Tok::Tag::K_lm:
+        case Tok::Tag::T_lm:
         case Tok::Tag::K_lam: {
             codom = accept(Tok::Tag::T_arrow) ? parse_expr("return type of a "s + name, Tok::Prec::Arrow)
                                               : world().mut_infer_type();
