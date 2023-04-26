@@ -727,6 +727,7 @@ Ref Parser::parse_decls(std::string_view ctxt) {
             case Tok::Tag::T_semicolon: lex();           break; // eat up stray semicolons
             case Tok::Tag::K_ax:        parse_ax();      break;
             case Tok::Tag::K_let:       parse_let();     break;
+            case Tok::Tag::K_ret:       parse_ret();     break;
             case Tok::Tag::K_Sigma:
             case Tok::Tag::K_Arr:
             case Tok::Tag::K_pack:
@@ -827,9 +828,30 @@ void Parser::parse_let() {
     eat(Tok::Tag::K_let);
     auto ptrn = parse_ptrn(Tok::Tag::D_paren_l, "binding pattern of a let expression");
     expect(Tok::Tag::T_assign, "let expression");
-    auto body = parse_expr("body of a let expression");
-    ptrn->bind(scopes_, body);
+    auto expr = parse_expr("right-hand side of a let expression");
+    ptrn->bind(scopes_, expr);
     expect(Tok::Tag::T_semicolon, "let expression");
+}
+
+void Parser::parse_ret() {
+    eat(Tok::Tag::K_ret);
+    auto ptrn = parse_ptrn(Tok::Tag::D_paren_l, "binding pattern of a let expression");
+    expect(Tok::Tag::T_assign, "let expression");
+
+    Ref cn;
+    if (auto tok = accept(Tok::Tag::M_id))
+        cn = scopes_.find(tok->dbg());
+    else
+        cn = parse_expr("continuation callee of a ret expression");
+    if (auto ret_pi = Pi::ret_pi(cn->type())) {
+        auto arg = parse_expr("argument of ret expression");
+        auto lam = world().mut_lam(ret_pi);
+        ptrn->bind(scopes_, lam->var());
+        expect(Tok::Tag::T_semicolon, "let expression");
+        return world().app(cn, {arg, lam});
+    } else {
+        error(prev(), "continuation of the ret expression is not a returning continuation but has type '{}'", cn->type());
+    }
 }
 
 void Parser::parse_mut() {

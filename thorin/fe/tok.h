@@ -19,6 +19,7 @@ namespace fe {
     m(K_ax,     ".ax"    )             \
     m(K_def,    ".def"   )             \
     m(K_let,    ".let"   )             \
+    m(K_ret,    ".ret"   )             \
     m(K_Bool,   ".Bool"  )             \
     m(K_Nat,    ".Nat"   )             \
     m(K_Idx,    ".Idx"   )             \
