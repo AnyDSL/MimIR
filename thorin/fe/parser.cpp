@@ -358,38 +358,48 @@ Ref Parser::parse_type() {
 }
 
 Ref Parser::parse_pi() {
-    assert(ahead().isa(Tok::Tag::T_Pi) || ahead().isa(Tok::Tag::K_Cn) || ahead().isa(Tok::Tag::K_Fn));
     auto track = tracker();
     auto tok   = lex();
-    bool is_cn = tok.isa(Tok::Tag::K_Cn);
     auto name  = tok.isa(Tok::Tag::T_Pi) ? "dependent function type"
                : tok.isa(Tok::Tag::K_Cn) ? "continuation type"
                : tok.isa(Tok::Tag::K_Fn) ? "returning continuation type"
                                          : (unreachable(), nullptr);
-
-    scopes_.push();
-
-    Pi* first = nullptr;
+    Pi* first  = nullptr;
     std::deque<Pi*> pis;
+    scopes_.push();
     do {
         auto implicit = accept(Tok::Tag::T_dot).has_value();
-        auto dom   = parse_ptrn(Tok::Tag::D_brckt_l, "domain of a "s + name, is_cn ? Tok::Prec::Bot : Tok::Prec::App);
-        auto dom_t = dom->type(world(), def2fields_);
-        auto pi    = world().mut_pi(world().type_infer_univ(), implicit)->set_dom(dom_t);
-        auto var   = pi->var()->set(dom->sym());
-        first      = first ? first : pi;
-        pi->set(dom->dbg());
+        auto prec     = tok.isa(Tok::Tag::K_Cn) ? Tok::Prec::Bot : Tok::Prec::App;
+        auto dom      = parse_ptrn(Tok::Tag::D_brckt_l, "domain of a "s + name, prec);
+        auto dom_t    = dom->type(world(), def2fields_);
+        auto pi       = world().mut_pi(world().type_infer_univ(), implicit)->set_dom(dom_t);
+        auto var      = pi->var()->set(dom->sym());
+        first         = first ? first : pi;
 
+        pi->set(dom->dbg());
         dom->bind(scopes_, var);
         pis.emplace_back(pi);
     } while (ahead().isa(Tok::Tag::D_brckt_l));
 
     Ref codom;
-    if (is_cn) {
-        codom = world().type_bot();
-    } else {
-        expect(Tok::Tag::T_arrow, "dependent function type");
-        codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
+    switch (tok.tag()) {
+        case Tok::Tag::T_Pi:
+            expect(Tok::Tag::T_arrow, name);
+            codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
+            break;
+        case Tok::Tag::K_Cn:
+            codom = world().type_bot();
+            break;
+        case Tok::Tag::K_Fn: {
+            codom = world().type_bot();
+            expect(Tok::Tag::T_arrow, name);
+            auto ret  = parse_expr("domain of return continuation", Tok::Prec::Arrow);
+            auto pi   = pis.back();
+            auto last = world().sigma({pi->dom(), world().cn(ret)});
+            pi->unset()->set_dom(last);
+            break;
+        }
+        default: unreachable();
     }
 
     for (auto pi : pis | std::ranges::views::reverse) {

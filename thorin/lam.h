@@ -64,6 +64,7 @@ public:
     Pi* set_dom(const Def* dom) { return Def::set(0, dom)->as<Pi>(); }
     Pi* set_dom(Defs doms);
     Pi* set_codom(const Def* codom) { return Def::set(1, codom)->as<Pi>(); }
+    Pi* unset() { return Def::unset()->as<Pi>(); }
     ///@}
 
     /// @name Type Checking
@@ -151,6 +152,7 @@ public:
     Lam* branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem);
     Lam* test(Filter filter, const Def* val, const Def* idx, const Def* match, const Def* clash, const Def* mem);
     Lam* set(Defs ops) { return Def::set(ops)->as<Lam>(); }
+    Lam* unset() { return Def::unset()->as<Lam>(); }
     ///@}
 
     Lam* stub(World&, Ref) override;

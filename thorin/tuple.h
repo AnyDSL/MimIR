@@ -19,6 +19,7 @@ public:
     /// @see @ref set_ops "Setting Ops"
     Sigma* set(size_t i, const Def* def) { return Def::set(i, def)->as<Sigma>(); }
     Sigma* set(Defs ops) { return Def::set(ops)->as<Sigma>(); }
+    Sigma* unset() { return Def::unset()->as<Sigma>(); }
     ///@}
 
     const Sigma* immutabilize() override;
@@ -64,6 +65,7 @@ public:
     /// @see @ref set_ops "Setting Ops"
     Arr* set_shape(const Def* shape) { return Def::set(0, shape)->as<Arr>(); }
     Arr* set_body(const Def* body) { return Def::set(1, body)->as<Arr>(); }
+    Arr* unset() { return Def::unset()->as<Arr>(); }
     ///@}
 
     const Def* immutabilize() override;
@@ -99,6 +101,7 @@ public:
     ///@{
     /// @see @ref set_ops "Setting Ops"
     Pack* set(const Def* body) { return Def::set(0, body)->as<Pack>(); }
+    Pack* unset() { return Def::unset()->as<Pack>(); }
     ///@}
 
     const Def* immutabilize() override;
