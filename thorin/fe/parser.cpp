@@ -411,8 +411,8 @@ Ref Parser::parse_pi() {
 }
 
 Lam* Parser::parse_lam(bool decl) {
-    auto track = tracker();
-    auto tok   = lex();
+    auto track    = tracker();
+    auto tok      = lex();
     auto prec     = tok.isa(Tok::Tag::K_cn) || tok.isa(Tok::Tag::K_con) ? Tok::Prec::Bot : Tok::Prec::Pi;
     bool external = decl && accept(Tok::Tag::K_extern).has_value();
     auto name     = tok.isa(Tok::Tag::K_lm)  ? "function expression"
@@ -461,9 +461,7 @@ Lam* Parser::parse_lam(bool decl) {
                                               : world().mut_infer_type();
             break;
         case Tok::Tag::K_cn:
-        case Tok::Tag::K_con:
-            codom = world().type_bot();
-            break;
+        case Tok::Tag::K_con: codom = world().type_bot(); break;
         case Tok::Tag::K_fn:
         case Tok::Tag::K_fun: {
             codom              = world().type_bot();

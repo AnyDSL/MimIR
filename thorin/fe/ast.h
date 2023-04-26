@@ -35,8 +35,8 @@ public:
     Sym sym() const { return dbg_.sym; }
     bool rebind() const { return rebind_; }
     bool is_anonymous() const { return sym() == '_'; }
-    virtual void bind(Scopes&, const Def*, bool rebind = false) const       = 0;
-    virtual const Def* type(World&, Def2Fields&) const = 0;
+    virtual void bind(Scopes&, const Def*, bool rebind = false) const = 0;
+    virtual const Def* type(World&, Def2Fields&) const                = 0;
 
 protected:
     Dbg dbg_;
