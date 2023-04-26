@@ -386,8 +386,8 @@ Ref Parser::parse_pi() {
         pi->set(dom->dbg());
         dom->bind(scopes_, var);
         pis.emplace_back(pi);
-    } while (ahead().isa(Tag::T_dot) || ahead().isa(Tag::D_brckt_l) || ahead().isa(Tag::T_apos) ||
-             (ahead(0).isa(Tag::M_id) && ahead(1).isa(Tag::T_colon_colon)));
+    } while (ahead().isa(Tag::T_dot) || ahead().isa(Tag::D_brckt_l) || ahead().isa(Tag::T_apos)
+             || (ahead(0).isa(Tag::M_id) && ahead(1).isa(Tag::T_colon_colon)));
 
     Ref codom;
     switch (tok.tag()) {
