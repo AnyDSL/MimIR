@@ -7,7 +7,6 @@
 .let I32 = .Idx _32;
 .let I64 = .Idx 0;
 .lam Ptr(T: *) -> * = %mem.Ptr (T, 0);
-.let F = .Fn [T:*]
 
 .fun foo(mem: %mem.M, x: I32)@(%core.icmp.e (x, 23:I32)) -> [%mem.M, I32]  = return (mem, %core.wrap.add 0 (x, 1:I32));
 
