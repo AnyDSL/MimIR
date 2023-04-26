@@ -369,7 +369,7 @@ Ref Parser::parse_pi() {
         default: unreachable();
     }
 
-    Pi* first  = nullptr;
+    Pi* first = nullptr;
     std::deque<Pi*> pis;
     scopes_.push();
     do {
@@ -441,7 +441,6 @@ Lam* Parser::parse_lam(bool decl) {
     scopes_.push();
     std::deque<std::tuple<Pi*, Lam*, const Def*>> funs;
     do {
-
         const Def* filter = accept(Tok::Tag::T_bang) ? world().lit_tt() : nullptr;
         bool implicit     = accept(Tok::Tag::T_dot).has_value();
         dom_p             = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a "s + name, prec);
@@ -500,7 +499,7 @@ Lam* Parser::parse_lam(bool decl) {
                 ScopeRewriter rw(world(), scope);
                 rw.map(lam->var(), new_lam->var(2, 0)->set(lam->var()->dbg()));
                 auto new_filter = rw.rewrite(filter);
-                filter = new_filter;
+                filter          = new_filter;
             }
 
             lam->unset();

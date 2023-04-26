@@ -562,6 +562,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             return bb.assign(name, "load {}, {}* {}.gep", t_elem, t_elem, name);
         }
     } else if (auto insert = def->isa<Insert>()) {
+        assert(!match<mem::M>(insert->tuple()->proj(0)->type()));
         auto v_tuple = emit(insert->tuple());
         auto v_index = emit(insert->index());
         auto v_value = emit(insert->value());
