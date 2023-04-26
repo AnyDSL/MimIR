@@ -386,7 +386,8 @@ Ref Parser::parse_pi() {
         pi->set(dom->dbg());
         dom->bind(scopes_, var);
         pis.emplace_back(pi);
-    } while (ahead().isa(Tag::T_dot) || ahead().isa(Tag::D_brckt_l) || ahead().isa(Tag::T_apos) || (ahead(0).isa(Tag::M_id) && ahead(1).isa(Tag::T_colon_colon)));
+    } while (ahead().isa(Tag::T_dot) || ahead().isa(Tag::D_brckt_l) || ahead().isa(Tag::T_apos) ||
+             (ahead(0).isa(Tag::M_id) && ahead(1).isa(Tag::T_colon_colon)));
 
     Ref codom;
     switch (tok.tag()) {
@@ -471,7 +472,7 @@ Lam* Parser::parse_lam(bool decl) {
         case Tag::T_lm:
         case Tag::K_lam: {
             codom = accept(Tag::T_arrow) ? parse_expr("return type of a "s + name, Tok::Prec::Arrow)
-                                              : world().mut_infer_type();
+                                         : world().mut_infer_type();
             break;
         }
         case Tag::K_cn:
@@ -483,7 +484,7 @@ Lam* Parser::parse_lam(bool decl) {
             codom          = world().type_bot();
             auto ret_track = tracker();
             auto ret       = accept(Tag::T_arrow) ? parse_expr("return type of a "s + name, Tok::Prec::Arrow)
-                                                       : world().mut_infer_type();
+                                                  : world().mut_infer_type();
             auto ret_loc   = dom_p->loc() + ret_track.loc();
             auto last      = world().sigma({pi->dom(), world().cn(ret)});
             auto new_pi    = world().mut_pi(pi->type(), pi->is_implicit())->set(ret_loc)->set_dom(last);
