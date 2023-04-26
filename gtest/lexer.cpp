@@ -31,7 +31,7 @@ TEST(Lexer, Toks) {
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_dot));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::K_lam));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::K_Pi));
-    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_lm));
+    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::K_lm));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_Pi));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::M_eof));
 }

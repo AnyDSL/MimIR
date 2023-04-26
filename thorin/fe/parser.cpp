@@ -245,7 +245,7 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::T_Pi:      return parse_pi();
         case Tok::Tag::K_cn:
         case Tok::Tag::K_fn:
-        case Tok::Tag::T_lm:      return parse_lam();
+        case Tok::Tag::K_lm:      return parse_lam();
         case Tok::Tag::T_star:    lex(); return world().type();
         case Tok::Tag::T_box:     lex(); return world().type<1>();
         case Tok::Tag::T_bot:
@@ -389,8 +389,8 @@ Ref Parser::parse_pi() {
             break;
         case Tok::Tag::K_Cn: codom = world().type_bot(); break;
         case Tok::Tag::K_Fn: {
-            codom = world().type_bot();
             expect(Tok::Tag::T_arrow, name);
+            codom     = world().type_bot();
             auto ret  = parse_expr("domain of return continuation", Tok::Prec::Arrow);
             auto pi   = pis.back();
             auto last = world().sigma({pi->dom(), world().cn(ret)});
@@ -406,6 +406,120 @@ Ref Parser::parse_pi() {
     }
 
     first->set(track.loc());
+    scopes_.pop();
+    return first;
+}
+
+Lam* Parser::parse_lam(bool decl) {
+    auto track = tracker();
+    auto tok   = lex();
+    auto prec     = tok.isa(Tok::Tag::K_cn) || tok.isa(Tok::Tag::K_con) ? Tok::Prec::Bot : Tok::Prec::Pi;
+    bool external = decl && accept(Tok::Tag::K_extern).has_value();
+    auto name     = tok.isa(Tok::Tag::K_lm)  ? "function expression"
+                  : tok.isa(Tok::Tag::K_cn)  ? "continuation expression"
+                  : tok.isa(Tok::Tag::K_fn)  ? "returning continuation expression"
+                  : tok.isa(Tok::Tag::K_lam) ? "function declaration"
+                  : tok.isa(Tok::Tag::K_con) ? "continuation declaration"
+                  : tok.isa(Tok::Tag::K_fun) ? "returning continuation declaration"
+                                             : (unreachable(), nullptr);
+    auto dbg      = decl ? parse_sym(name) : Dbg{prev(), anonymous_};
+    auto outer    = scopes_.curr();
+    std::unique_ptr<Ptrn> dom_p;
+    scopes_.push();
+    std::deque<std::tuple<Pi*, Lam*, const Def*>> funs;
+    do {
+        const Def* filter = accept(Tok::Tag::T_bang) ? world().lit_tt() : nullptr;
+        bool implicit     = accept(Tok::Tag::T_dot).has_value();
+        dom_p             = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a "s + name, prec);
+        auto dom_t        = dom_p->type(world(), def2fields_);
+        auto pi           = world().mut_pi(world().type_infer_univ(), implicit)->set_dom(dom_t);
+        auto lam          = world().mut_lam(pi);
+        auto lam_var      = lam->var()->set(dom_p->loc(), dom_p->sym());
+
+        dom_p->bind(scopes_, lam_var);
+
+        if (auto tok = accept(Tok::Tag::T_at)) {
+            if (filter) error(tok->loc(), "filter already specified via '!'");
+            if (accept(Tok::Tag::T_at)) {
+                filter = world().lit_tt();
+            } else {
+                expect(Tok::Tag::D_paren_l, "opening parenthesis of a filter");
+                filter = parse_expr("filter");
+                expect(Tok::Tag::D_paren_r, "closing parenthesis of a filter");
+            }
+        }
+
+        funs.emplace_back(std::tuple(pi, lam, filter));
+    } while (!ahead().isa(Tok::Tag::T_arrow) && !ahead().isa(Tok::Tag::T_assign) &&
+             !ahead().isa(Tok::Tag::T_semicolon));
+
+    Ref codom;
+    switch (tok.tag()) {
+        case Tok::Tag::K_lm:
+        case Tok::Tag::K_lam:
+            codom = accept(Tok::Tag::T_arrow) ? parse_expr("return type of a "s + name, Tok::Prec::Arrow)
+                                              : world().mut_infer_type();
+            break;
+        case Tok::Tag::K_cn:
+        case Tok::Tag::K_con:
+            codom = world().type_bot();
+            break;
+        case Tok::Tag::K_fn:
+        case Tok::Tag::K_fun: {
+            codom              = world().type_bot();
+            auto& [pi, lam, _] = funs.back();
+
+            auto ret_track = tracker();
+            auto ret       = accept(Tok::Tag::T_arrow) ? parse_expr("return type of a "s + name, Tok::Prec::Arrow)
+                                                       : world().mut_infer_type();
+            auto ret_loc   = ret_track.loc();
+            auto last      = world().sigma({pi->dom(), world().cn(ret)});
+            pi->unset()->set_dom(last);
+
+            lam          = world().mut_lam(pi);
+            auto lam_var = lam->var()->set(dom_p->loc() + ret_loc);
+            dom_p->bind(scopes_, lam_var->proj(2, 0), true);
+            scopes_.bind({ret_loc, return_}, lam_var->proj(2, 1)->set(Dbg{ret_loc, return_}));
+            break;
+        }
+        default: unreachable();
+    }
+
+    auto [_, first, __] = funs.front();
+    first->set(dbg.sym);
+    if (external) first->make_external();
+
+    for (auto [pi, lam, _] : funs | std::ranges::views::reverse) {
+        // First, connect old codom to lam. Otherwise, scope will not find it.
+        pi->set_codom(codom);
+        Scope scope(lam);
+        ScopeRewriter rw(world(), scope);
+        rw.map(lam->var(), pi->var()->set(lam->var()->dbg()));
+
+        // Now update.
+        auto dom = pi->dom();
+        codom    = rw.rewrite(codom);
+        pi->reset({dom, codom});
+        codom = pi;
+    }
+
+    scopes_.bind(outer, dbg, first);
+
+    auto body = accept(Tok::Tag::T_assign) ? parse_decls("body of a "s + name) : nullptr;
+    if (!body) {
+        if (!decl) error(prev(), "body of a {}", name);
+        if (auto [_, __, filter] = funs.back(); filter) error(prev(), "cannot specify filter of a {}", name);
+    }
+
+    for (auto [_, lam, filter] : funs | std::ranges::views::reverse) {
+        if (body) lam->set(filter ? filter : world().lit_ff(), body);
+        body = lam;
+    }
+
+    if (decl) expect(Tok::Tag::T_semicolon, "end of "s + name);
+
+    first->set(track.loc());
+
     scopes_.pop();
     return first;
 }
@@ -733,91 +847,6 @@ void Parser::parse_mut() {
 
     scopes_.pop();
     scopes_.pop();
-}
-
-Lam* Parser::parse_lam(bool decl) {
-    // TODO .fn/.fun
-    auto track = tracker();
-    auto tok   = lex();
-    bool is_cn = tok.isa(Tok::Tag::K_cn) || tok.isa(Tok::Tag::K_con);
-    // bool is_fn    = tok.isa(Tok::Tag::K_fn) || tok.isa(Tok::Tag::K_fun);
-    auto prec     = is_cn ? Tok::Prec::Bot : Tok::Prec::Pi;
-    bool external = decl && accept(Tok::Tag::K_extern).has_value();
-    auto dbg      = decl ? parse_sym("mutable lambda") : Dbg{prev(), anonymous_};
-
-    auto outer = scopes_.curr();
-    scopes_.push();
-
-    std::deque<std::tuple<Pi*, Lam*, const Def*>> funs;
-    Lam* first = nullptr;
-    do {
-        const Def* filter = accept(Tok::Tag::T_bang) ? world().lit_tt() : nullptr;
-        bool implicit     = accept(Tok::Tag::T_dot).has_value();
-        auto dom_p        = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda", prec);
-        auto dom_t        = dom_p->type(world(), def2fields_);
-        auto pi           = world().mut_pi(world().type_infer_univ(), implicit)->set_dom(dom_t);
-        auto lam          = world().mut_lam(pi);
-        auto lam_var      = lam->var()->set(dom_p->loc(), dom_p->sym());
-
-        if (first == nullptr) {
-            first = lam;
-            lam->set(dbg.sym);
-            if (external) first->make_external();
-        }
-
-        dom_p->bind(scopes_, lam_var);
-
-        if (auto tok = accept(Tok::Tag::T_at)) {
-            if (filter) error(tok->loc(), "filter already specified via '!'");
-            if (accept(Tok::Tag::T_at)) {
-                filter = world().lit_tt();
-            } else {
-                expect(Tok::Tag::D_paren_l, "opening parenthesis of a filter");
-                filter = parse_expr("filter");
-                expect(Tok::Tag::D_paren_r, "closing parenthesis of a filter");
-            }
-        }
-
-        funs.emplace_back(std::tuple(pi, lam, filter));
-    } while (!ahead().isa(Tok::Tag::T_arrow) && !ahead().isa(Tok::Tag::T_assign) &&
-             !ahead().isa(Tok::Tag::T_semicolon));
-
-    auto codom = is_cn                     ? world().type_bot()
-               : accept(Tok::Tag::T_arrow) ? parse_expr("return type of a lambda", Tok::Prec::Arrow)
-                                           : world().mut_infer_type();
-    for (auto [pi, lam, _] : funs | std::ranges::views::reverse) {
-        // First, connect old codom to lam. Otherwise, scope will not find it.
-        pi->set_codom(codom);
-        Scope scope(lam);
-        ScopeRewriter rw(world(), scope);
-        rw.map(lam->var(), pi->var()->set(lam->var()->dbg()));
-
-        // Now update.
-        auto dom = pi->dom();
-        codom    = rw.rewrite(codom);
-        pi->reset({dom, codom});
-        codom = pi;
-    }
-
-    scopes_.bind(outer, dbg, first);
-
-    auto body = accept(Tok::Tag::T_assign) ? parse_decls("body of a lambda") : nullptr;
-    if (!body) {
-        if (!decl) error(prev(), "body of a lambda expression is mandatory");
-        if (auto [_, __, filter] = funs.back(); filter) error(prev(), "cannot specify filter of a lambda declaration");
-    }
-
-    for (auto [_, lam, filter] : funs | std::ranges::views::reverse) {
-        if (body) lam->set(filter ? filter : world().lit_ff(), body);
-        body = lam;
-    }
-
-    if (decl) expect(Tok::Tag::T_semicolon, "end of lambda");
-
-    first->set(track.loc());
-
-    scopes_.pop();
-    return first;
 }
 
 void Parser::parse_def(Dbg dbg /*= {}*/) {

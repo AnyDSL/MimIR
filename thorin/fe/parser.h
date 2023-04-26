@@ -30,7 +30,8 @@ class Parser {
 public:
     Parser(World& world)
         : world_(world)
-        , anonymous_(world.sym("_")) {}
+        , anonymous_(world.sym("_"))
+        , return_(world.sym("return")) {}
 
     World& world() { return world_; }
     Driver& driver() { return world().driver(); }
@@ -174,6 +175,7 @@ private:
     Scopes scopes_;
     Def2Fields def2fields_;
     Sym anonymous_;
+    Sym return_;
 };
 
 } // namespace thorin::fe
