@@ -54,8 +54,13 @@ public:
     /// @name Return Continuation
     /// @anchor return_continuation
     ///@{
-    const Pi* ret_pi() const;                       ///< Yields the last Pi::dom, if it is a Pi::isa_basicblock.
-    Ref ret_dom() const { return ret_pi()->dom(); } ///< Pi::dom%ain of Pi::ret_pi.
+
+    /// Yields the Pi::ret_pi() of @p d, if it is in fact a Pi.
+    static const Pi* ret_pi(Ref d) { return d->isa<Pi>() ? d->as<Pi>()->ret_pi() : nullptr; }
+    /// Yields the last Pi::dom, if it Pi::isa_basicblock.
+    const Pi* ret_pi() const;
+    /// Pi::dom%ain of Pi::ret_pi.
+    Ref ret_dom() const { return ret_pi()->dom(); }
     ///@}
 
     /// @name Setters
