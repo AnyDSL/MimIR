@@ -39,10 +39,10 @@ In addition the following keywords are *terminals*:
 | `.let`    | let expression                                            |
 | `.Pi`     | mutable thorin::Pi                                        |
 | `.con`    | [continuation](@ref thorin::Lam) (declaration)            |
-| `.fun`    | [function](@ref thorin::Lam) (declaration - TODO)         |
+| `.fun`    | [function](@ref thorin::Lam) (declaration)                |
 | `.lam`    | [lambda](@ref thorin::Lam) (declaration)                  |
 | `.cn`     | [continuation](@ref thorin::Lam) (expression)             |
-| `.fn`     | [function](@ref thorin::Lam) (expression - TODO)          |
+| `.fn`     | [function](@ref thorin::Lam) (expression)                 |
 | `.cn`     | [lambda](@ref thorin::Lam) (expression)                   |
 | `.Arr`    | mutable thorin::Arr                                       |
 | `.pack`   | mutable thorin::Pack                                      |
@@ -71,7 +71,7 @@ The following *terminals* comprise more complicated patterns that are specified 
 | Terminal      | Regular Expression                   | Comment                                                                                           |
 |---------------|--------------------------------------|---------------------------------------------------------------------------------------------------|
 | Sym           | sym                                  | symbol                                                                                            |
-| Ax            | `%` sym `.` sym ( `.` sym)?          | Axiom                                                                                             |
+| Ax            | `%` sym `.` sym (`.` sym)?           | Axiom                                                                                             |
 | L             | dec+                                 | unsigned decimal literal                                                                          |
 | L             | 0b bin+                              | unsigned binary literal                                                                           |
 | L             | 0o oct+                              | unsigned octal literal                                                                            |
@@ -144,21 +144,21 @@ The following tables comprise all production rules:
 
 ### Declarations
 
-| Nonterminal | Right-Hand Side                                                   | Comment                            | Thorin Class                |
-|-------------|-------------------------------------------------------------------|------------------------------------|-----------------------------|
-| d           | `.ax` Ax `:` e<sub>type</sub> `;`                                 | axiom                              | [Axiom](@ref thorin::Axiom) |
-| d           | `.let` p  `=` e `;`                                               | let                                | -                           |
-| d           | `.Pi` Sym ( `:` e<sub>type</sub> )? `,` e<sub>dom</sub> n         | Pi declaration                     | [Pi](@ref thorin::Pi)       |
-| d           | `.con` Sym p                       n                              | continuation declaration           | [Lam](@ref thorin::Lam)     |
-| d           | `.fun` Sym p `→` e<sub>codom</sub> n                              | function declaration               | [Lam](@ref thorin::Lam)     |
-| d           | `.lam` Sym p `→` e<sub>codom</sub> n                              | lambda declaration                 | [Lam](@ref thorin::Lam)     |
-| d           | `.Arr` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> v? n   | array declaration                  | [Arr](@ref thorin::Arr)     |
-| d           | `.pack` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> v? n  | pack declaration                   | [Pack](@ref thorin::Pack)   |
-| d           | `.Sigma` Sym ( `:` e<sub>type</sub> )? `,` L<sub>arity</sub> v? n | sigma declaration                  | [Sigma](@ref thorin::Sigma) |
-| d           | `.def` Sym n                                                      | mutable definition                 | mutables                    |
-| n           | `;` \| o                                                          | mutable definition                 | -                           |
-| o           | `=` de `;`                                                        | operand of definition              | -                           |
-| o           | `=` `{` e `,` ... `,` e  `}` `;`                                  | operands of definition<sup>s</sup> | -                           |
+| Nonterminal | Right-Hand Side                                                  | Comment                            | Thorin Class                |
+|-------------|------------------------------------------------------------------|------------------------------------|-----------------------------|
+| d           | `.ax` Ax `:` e<sub>type</sub> `;`                                | axiom                              | [Axiom](@ref thorin::Axiom) |
+| d           | `.let` p  `=` e `;`                                              | let                                | -                           |
+| d           | `.Pi` Sym (`:` e<sub>type</sub>)? `,` e<sub>dom</sub> n          | Pi declaration                     | [Pi](@ref thorin::Pi)       |
+| d           | `.lam` Sym (`.`? p)+ `→` e<sub>codom</sub> n                     | lambda declaration                 | [Lam](@ref thorin::Lam)     |
+| d           | `.con` Sym (`.`? p)+                       n                     | continuation declaration           | [Lam](@ref thorin::Lam)     |
+| d           | `.fun` Sym (`.`? p)+ `→` e<sub>ret</sub> n                       | function declaration               | [Lam](@ref thorin::Lam)     |
+| d           | `.Arr` Sym (`:` e<sub>type</sub> )? `,` e<sub>shape</sub> v? n   | array declaration                  | [Arr](@ref thorin::Arr)     |
+| d           | `.pack` Sym (`:` e<sub>type</sub> )? `,` e<sub>shape</sub> v? n  | pack declaration                   | [Pack](@ref thorin::Pack)   |
+| d           | `.Sigma` Sym (`:` e<sub>type</sub> )? `,` L<sub>arity</sub> v? n | sigma declaration                  | [Sigma](@ref thorin::Sigma) |
+| d           | `.def` Sym n                                                     | mutable definition                 | mutables                    |
+| n           | `;` \| o                                                         | mutable definition                 | -                           |
+| o           | `=` de `;`                                                       | operand of definition              | -                           |
+| o           | `=` `{` e `,` ... `,` e  `}` `;`                                 | operands of definition<sup>s</sup> | -                           |
 <sup>s</sup> opens new scope
 
 ### Patterns
@@ -201,51 +201,52 @@ This is particularly useful, when dealing with memory:
 .let ('mem, val) = %mem.load (mem, ptr);
 ```
 
-| Nonterminal | Right-Hand Side                                                    | Comment                 |
-|-------------|--------------------------------------------------------------------|-------------------------|
-| p           | ``'``? Sym (`:` e<sub>type</sub> )?                                | identifier `()`-pattern |
-| b           | (``'``? Sym `:`)? e<sub>type</sub>                                 | identifier `[]`-pattern |
-| p           | (``'``? Sym `::`)? `(` g `,` ... `,` g `)` (`:` e<sub>type</sub>)? | `()`-`()`-tuple pattern |
-| p           | (``'``? Sym `::`)? `[` b `,` ... `,` b `]` (`:` e<sub>type</sub>)? | `[]`-`()`-tuple pattern |
-| b           | (``'``? Sym `::`)? `[` b `,` ... `,` b `]` (`:` e<sub>type</sub>)? | `[]`-`[]`-tuple pattern |
-| g           | p                                                                  | group                   |
-| g           | Sym+ `:` e                                                         | group                   |
+| Nonterminal     | Right-Hand Side                                                    | Comment                 |
+|-----------------|--------------------------------------------------------------------|-------------------------|
+| p               | ``'``? Sym (`:` e<sub>type</sub> )?                                | identifier `()`-pattern |
+| b               | (``'``? Sym `:`)? e<sub>type</sub>                                 | identifier `[]`-pattern |
+| p               | (``'``? Sym `::`)? `(` g `,` ... `,` g `)` (`:` e<sub>type</sub>)? | `()`-`()`-tuple pattern |
+| p               | (``'``? Sym `::`)? `[` b `,` ... `,` b `]` (`:` e<sub>type</sub>)? | `[]`-`()`-tuple pattern |
+| b<sub>[ ]</sub> | (``'``? Sym `::`)? `[` b `,` ... `,` b `]` (`:` e<sub>type</sub>)? | `[]`-`[]`-tuple pattern |
+| g               | p                                                                  | group                   |
+| g               | Sym+ `:` e                                                         | group                   |
 
 
 ### Expressions
 
-| Nonterminal | Right-Hand Side                                                               | Comment                             | Thorin Class                    |
-|-------------|-------------------------------------------------------------------------------|-------------------------------------|---------------------------------|
-| de          | d\* e                                                                         | declaration expression              | -                               |
-| e           | `.Univ`                                                                       | universise: type of a type level    | [Univ](@ref thorin::Univ)       |
-| e           | `.Type` e                                                                     | type of level e                     | [Type](@ref thorin::Type)       |
-| e           | `*`                                                                           | alias for `.Type (0:.Univ)`         | [Type](@ref thorin::Type)       |
-| e           | `□`                                                                           | alias for `.Type (1:.Univ)`         | [Type](@ref thorin::Type)       |
-| e           | `.Nat`                                                                        | natural number                      | [Nat](@ref thorin::Nat)         |
-| e           | `.Idx`                                                                        | builtin of type `.Nat -> *`         | [Idx](@ref thorin::Idx)         |
-| e           | `.Bool`                                                                       | alias for `.Idx 2`                  | [Idx](@ref thorin::Idx)         |
-| e           | `{` de `}`                                                                    | block<sup>s</sup>                   | -                               |
-| e           | L `:` e<sub>type</sub>                                                        | literal                             | [Lit](@ref thorin::Lit)         |
-| e           | I<sub>n</sub>                                                                 | literal of type `.Idx n`            | [Lit](@ref thorin::Lit)         |
-| e           | `.ff`                                                                         | alias for `0_2`                     | [Lit](@ref thorin::Lit)         |
-| e           | `.tt`                                                                         | alias for `1_2`                     | [Lit](@ref thorin::Lit)         |
-| e           | ( `.bot` \| `.top` ) ( `:` e<sub>type</sub> )?                                | bottom/top                          | [TExt](@ref thorin::TExt)       |
-| e           | Sym                                                                           | identifier                          | -                               |
-| e           | Ax                                                                            | use of an axiom                     | -                               |
-| e           | e e                                                                           | application                         | [App](@ref thorin::App)         |
-| e           | Sym `:` e<sub>dom</sub> `→` e<sub>codom</sub> `.` e<sub>body</sub>            | lambda<sup>s</sup>                  | [Lam](@ref thorin::Lam)         |
-| d           | `.cn` Sym p                       `=` de                                      | continuation expression             | [Lam](@ref thorin::Lam)         |
-| d           | `.fn` Sym p `→` e<sub>codom</sub> `=` de                                      | function expression                 | [Lam](@ref thorin::Lam)         |
-| d           | `λ`   Sym p `→` e<sub>codom</sub> `=` de                                      | lambda expression                   | [Lam](@ref thorin::Lam)         |
-| e           | e<sub>dom</sub> `→` e<sub>codom</sub>                                         | function type                       | [Pi](@ref thorin::Pi)           |
-| e           | `Π` b `→` e<sub>codom</sub>                                                   | dependent function type<sup>s</sup> | [Pi](@ref thorin::Pi)           |
-| e           | e `#` Sym                                                                     | extract via field "Sym"             | [Extract](@ref thorin::Extract) |
-| e           | e `#` e<sub>index</sub>                                                       | extract                             | [Extract](@ref thorin::Extract) |
-| e           | `.ins` `(` e<sub>tuple</sub> `,` e<sub>index</sub> `,` e<sub>value</sub> ` )` | insert                              | [Insert](@ref thorin::Insert)   |
-| e           | `(` e<sub>0</sub> `,` ... `,` e<sub>n-1</sub>` )` ( `:` e<sub>type</sub> )?   | tuple                               | [Tuple](@ref thorin::Tuple)     |
-| e           | `[` b `,` ... `,` b `]`                                                       | sigma<sup>s</sup>                   | [Sigma](@ref thorin::Sigma)     |
-| e           | `‹` i e<sub>shape</sub> `;` e<sub>body</sub>`›`                               | pack<sup>s</sup>                    | [Pack](@ref thorin::Pack)       |
-| e           | `«` i e<sub>shape</sub> `;` e<sub>body</sub>`»`                               | array<sup>s</sup>                   | [Arr](@ref thorin::Arr)         |
+| Nonterminal | Right-Hand Side                                                               | Comment                                 | Thorin Class                    |
+|-------------|-------------------------------------------------------------------------------|-----------------------------------------|---------------------------------|
+| de          | d\* e                                                                         | declarations, expression                | -                               |
+| e           | `.Univ`                                                                       | universise: type of a type level        | [Univ](@ref thorin::Univ)       |
+| e           | `.Type` e                                                                     | type of level e                         | [Type](@ref thorin::Type)       |
+| e           | `*`                                                                           | alias for `.Type (0:.Univ)`             | [Type](@ref thorin::Type)       |
+| e           | `□`                                                                           | alias for `.Type (1:.Univ)`             | [Type](@ref thorin::Type)       |
+| e           | `.Nat`                                                                        | natural number                          | [Nat](@ref thorin::Nat)         |
+| e           | `.Idx`                                                                        | builtin of type `.Nat -> *`             | [Idx](@ref thorin::Idx)         |
+| e           | `.Bool`                                                                       | alias for `.Idx 2`                      | [Idx](@ref thorin::Idx)         |
+| e           | `{` de `}`                                                                    | block<sup>s</sup>                       | -                               |
+| e           | L (`:` e<sub>type</sub>)?                                                     | literal                                 | [Lit](@ref thorin::Lit)         |
+| e           | I<sub>n</sub>                                                                 | literal of type `.Idx n`                | [Lit](@ref thorin::Lit)         |
+| e           | `.ff`                                                                         | alias for `0_2`                         | [Lit](@ref thorin::Lit)         |
+| e           | `.tt`                                                                         | alias for `1_2`                         | [Lit](@ref thorin::Lit)         |
+| e           | (`.bot` \| `.top`) (`:` e<sub>type</sub>)?                                    | bottom/top                              | [TExt](@ref thorin::TExt)       |
+| e           | Sym                                                                           | identifier                              | -                               |
+| e           | Ax                                                                            | use of an axiom                         | -                               |
+| e           | e e                                                                           | application                             | [App](@ref thorin::App)         |
+| e           | `λ`   (`.`? p)+ (`→` e<sub>codom</sub>)? `=` de                               | lambda expression<sup>s</sup>           | [Lam](@ref thorin::Lam)         |
+| e           | `.cn` (`.`? p)+                          `=` de                               | continuation expression<sup>s</sup>     | [Lam](@ref thorin::Lam)         |
+| e           | `.fn` (`.`? p)+ (`→` e<sub>codom</sub>)? `=` de                               | function expression<sup>s</sup>         | [Lam](@ref thorin::Lam)         |
+| e           | e<sub>dom</sub> `→` e<sub>codom</sub>                                         | function type                           | [Pi](@ref thorin::Pi)           |
+| e           | `Π`   (`.`? b<sub>[ ]</sub>)+ `→` e<sub>codom</sub>                           | dependent function type<sup>s</sup>     | [Pi](@ref thorin::Pi)           |
+| e           | `.Cn` (`.`? b<sub>[ ]</sub>)+                                                 | continuation type<sup>s</sup>           | [Pi](@ref thorin::Pi)           |
+| e           | `.Fn` (`.`? b<sub>[ ]</sub>)+ `→` e<sub>codom</sub>                           | returning continuation type<sup>s</sup> | [Pi](@ref thorin::Pi)           |
+| e           | e `#` Sym                                                                     | extract via field "Sym"                 | [Extract](@ref thorin::Extract) |
+| e           | e `#` e<sub>index</sub>                                                       | extract                                 | [Extract](@ref thorin::Extract) |
+| e           | `.ins` `(` e<sub>tuple</sub> `,` e<sub>index</sub> `,` e<sub>value</sub> ` )` | insert                                  | [Insert](@ref thorin::Insert)   |
+| e           | `(` e<sub>0</sub> `,` ... `,` e<sub>n-1</sub>` )` (`:` e<sub>type</sub>)?     | tuple                                   | [Tuple](@ref thorin::Tuple)     |
+| e           | `[` b `,` ... `,` b `]`                                                       | sigma<sup>s</sup>                       | [Sigma](@ref thorin::Sigma)     |
+| e           | `‹` i e<sub>shape</sub> `;` e<sub>body</sub>`›`                               | pack<sup>s</sup>                        | [Pack](@ref thorin::Pack)       |
+| e           | `«` i e<sub>shape</sub> `;` e<sub>body</sub>`»`                               | array<sup>s</sup>                       | [Arr](@ref thorin::Arr)         |
 <sup>s</sup> opens new scope
 
 An elided type of
@@ -263,9 +264,9 @@ Expressions nesting is disambiguated according to the following precedence table
 | e `#` e              | extract                             | left-to-right |
 | e e                  | application                         | left-to-right |
 | `Π` Sym `:` e        | domain of a dependent function type | -             |
-| `.fun` Sym Sym `:` e | mutable funciton declaration        | -             |
+| `.fun` Sym Sym `:` e | mutable function declaration        | -             |
 | `.lam` Sym Sym `:` e | mutable continuation declaration    | -             |
-| `.fn` Sym `:` e      | mutable funciton expression         | -             |
+| `.fn` Sym `:` e      | mutable function expression         | -             |
 | `.lm` Sym `:` e      | mutable continuation expression     | -             |
 | e `→` e              | function type                       | right-to-left |
 
