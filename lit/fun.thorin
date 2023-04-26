@@ -1,5 +1,5 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin %s --output-ll %t.ll -o - | FileCheck %s
+// RUN: %thorin %s -o - | FileCheck %s
 
 .plugin core;
 
@@ -13,5 +13,9 @@
 .fun .extern main(mem: %mem.M, argc: I32, argv: Ptr (Ptr (.Idx 256))) -> [%mem.M, I32] = {
     foo((mem, 23:I32), .cn (mem: %mem.M, x: I32) = return (mem, x))
 };
+
+.fun .extern f.(T: *)(a: T, b: T) -> T = return a;
+.let K = .Cn [T: *][T, T];
+.let f2 = .fn .(T: *)(a: T, b: T) -> T = return a;
 
 // CHECK-DAG: return{{.*}}24

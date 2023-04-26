@@ -237,9 +237,9 @@ This is particularly useful, when dealing with memory:
 | e           | `.cn` (`.`? p)+                          `=` de                               | continuation expression<sup>s</sup>     | [Lam](@ref thorin::Lam)         |
 | e           | `.fn` (`.`? p)+ (`→` e<sub>codom</sub>)? `=` de                               | function expression<sup>s</sup>         | [Lam](@ref thorin::Lam)         |
 | e           | e<sub>dom</sub> `→` e<sub>codom</sub>                                         | function type                           | [Pi](@ref thorin::Pi)           |
-| e           | `Π`   (`.`? b<sub>[ ]</sub>)+ `→` e<sub>codom</sub>                           | dependent function type<sup>s</sup>     | [Pi](@ref thorin::Pi)           |
-| e           | `.Cn` (`.`? b<sub>[ ]</sub>)+                                                 | continuation type<sup>s</sup>           | [Pi](@ref thorin::Pi)           |
-| e           | `.Fn` (`.`? b<sub>[ ]</sub>)+ `→` e<sub>codom</sub>                           | returning continuation type<sup>s</sup> | [Pi](@ref thorin::Pi)           |
+| e           | `Π`   `.`? b (`.`? b<sub>[ ]</sub>)* `→` e<sub>codom</sub>                    | dependent function type<sup>s</sup>     | [Pi](@ref thorin::Pi)           |
+| e           | `.Cn` `.`? b (`.`? b<sub>[ ]</sub>)*                                          | continuation type<sup>s</sup>           | [Pi](@ref thorin::Pi)           |
+| e           | `.Fn` `.`? b (`.`? b<sub>[ ]</sub>)* `→` e<sub>codom</sub>                    | returning continuation type<sup>s</sup> | [Pi](@ref thorin::Pi)           |
 | e           | e `#` Sym                                                                     | extract via field "Sym"                 | [Extract](@ref thorin::Extract) |
 | e           | e `#` e<sub>index</sub>                                                       | extract                                 | [Extract](@ref thorin::Extract) |
 | e           | `.ins` `(` e<sub>tuple</sub> `,` e<sub>index</sub> `,` e<sub>value</sub> ` )` | insert                                  | [Insert](@ref thorin::Insert)   |
