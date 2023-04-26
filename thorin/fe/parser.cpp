@@ -850,7 +850,8 @@ void Parser::parse_ret() {
         expect(Tok::Tag::T_semicolon, "let expression");
         return world().app(cn, {arg, lam});
     } else {
-        error(prev(), "continuation of the ret expression is not a returning continuation but has type '{}'", cn->type());
+        error(prev(), "continuation of the ret expression is not a returning continuation but has type '{}'",
+              cn->type());
     }
 }
 
