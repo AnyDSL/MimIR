@@ -539,13 +539,13 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         // before emitting the index, as it might be a weird value for mem vars.
         if (match<mem::M>(extract->type())) return {};
 
-        auto v_idx = emit_unsafe(index);
-
         if (tuple->num_projs() == 2) {
             if (match<mem::M>(tuple->proj(2, 0_s)->type())) return v_tup;
             if (match<mem::M>(tuple->proj(2, 1_s)->type())) return v_tup;
         }
 
+        // Adjust index for mem in tuple if present.
+        auto v_idx = match<mem::M>(tuple->proj(0)->type()) ? std::to_string(Lit::as(index) - 1) : emit_unsafe(index);
         auto t_tup = convert(tuple->type());
         if (Lit::isa(index)) {
             assert(!v_tup.empty());

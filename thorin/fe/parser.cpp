@@ -360,10 +360,15 @@ Ref Parser::parse_type() {
 Ref Parser::parse_pi() {
     auto track = tracker();
     auto tok   = lex();
-    auto name  = tok.isa(Tok::Tag::T_Pi) ? "dependent function type"
-               : tok.isa(Tok::Tag::K_Cn) ? "continuation type"
-               : tok.isa(Tok::Tag::K_Fn) ? "returning continuation type"
-                                         : (unreachable(), nullptr);
+
+    std::string name;
+    switch (tok.tag()) {
+        case Tok::Tag::T_Pi: name = "dependent function type"; break;
+        case Tok::Tag::K_Cn: name = "continuation type"; break;
+        case Tok::Tag::K_Fn: name = "returning continuation type"; break;
+        default: unreachable();
+    }
+
     Pi* first  = nullptr;
     std::deque<Pi*> pis;
     scopes_.push();
@@ -415,28 +420,36 @@ Lam* Parser::parse_lam(bool decl) {
     auto tok      = lex();
     auto prec     = tok.isa(Tok::Tag::K_cn) || tok.isa(Tok::Tag::K_con) ? Tok::Prec::Bot : Tok::Prec::Pi;
     bool external = decl && accept(Tok::Tag::K_extern).has_value();
-    auto name     = tok.isa(Tok::Tag::K_lm)  ? "function expression"
-                  : tok.isa(Tok::Tag::K_cn)  ? "continuation expression"
-                  : tok.isa(Tok::Tag::K_fn)  ? "returning continuation expression"
-                  : tok.isa(Tok::Tag::K_lam) ? "function declaration"
-                  : tok.isa(Tok::Tag::K_con) ? "continuation declaration"
-                  : tok.isa(Tok::Tag::K_fun) ? "returning continuation declaration"
-                                             : (unreachable(), nullptr);
-    auto dbg      = decl ? parse_sym(name) : Dbg{prev(), anonymous_};
-    auto outer    = scopes_.curr();
+
+    std::string name;
+    // clang-format off
+    switch (tok.tag()) {
+        case Tok::Tag::K_lm:  name = "function expression";                break;
+        case Tok::Tag::K_cn:  name = "continuation expression";            break;
+        case Tok::Tag::K_fn:  name = "returning continuation expression";  break;
+        case Tok::Tag::K_lam: name = "function declaration";               break;
+        case Tok::Tag::K_con: name = "continuation declaration";           break;
+        case Tok::Tag::K_fun: name = "returning continuation declaration"; break;
+        default: unreachable();
+    }
+    // clang-format on
+
+    auto dbg   = decl ? parse_sym(name) : Dbg{prev(), anonymous_};
+    auto outer = scopes_.curr();
+
     std::unique_ptr<Ptrn> dom_p;
     scopes_.push();
     std::deque<std::tuple<Pi*, Lam*, const Def*>> funs;
     do {
+
         const Def* filter = accept(Tok::Tag::T_bang) ? world().lit_tt() : nullptr;
         bool implicit     = accept(Tok::Tag::T_dot).has_value();
         dom_p             = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a "s + name, prec);
         auto dom_t        = dom_p->type(world(), def2fields_);
         auto pi           = world().mut_pi(world().type_infer_univ(), implicit)->set_dom(dom_t);
         auto lam          = world().mut_lam(pi);
-        auto lam_var      = lam->var()->set(dom_p->loc(), dom_p->sym());
-
-        dom_p->bind(scopes_, lam_var);
+        auto var          = lam->var()->set(dom_p->loc(), dom_p->sym());
+        dom_p->bind(scopes_, var);
 
         if (auto tok = accept(Tok::Tag::T_at)) {
             if (filter) error(tok->loc(), "filter already specified via '!'");
@@ -456,28 +469,46 @@ Lam* Parser::parse_lam(bool decl) {
     Ref codom;
     switch (tok.tag()) {
         case Tok::Tag::K_lm:
-        case Tok::Tag::K_lam:
+        case Tok::Tag::K_lam: {
             codom = accept(Tok::Tag::T_arrow) ? parse_expr("return type of a "s + name, Tok::Prec::Arrow)
                                               : world().mut_infer_type();
             break;
+        }
         case Tok::Tag::K_cn:
         case Tok::Tag::K_con: codom = world().type_bot(); break;
         case Tok::Tag::K_fn:
         case Tok::Tag::K_fun: {
-            codom              = world().type_bot();
-            auto& [pi, lam, _] = funs.back();
+            auto& [pi, lam, filter] = funs.back();
 
+            codom          = world().type_bot();
             auto ret_track = tracker();
             auto ret       = accept(Tok::Tag::T_arrow) ? parse_expr("return type of a "s + name, Tok::Prec::Arrow)
                                                        : world().mut_infer_type();
-            auto ret_loc   = ret_track.loc();
+            auto ret_loc   = dom_p->loc() + ret_track.loc();
             auto last      = world().sigma({pi->dom(), world().cn(ret)});
-            pi->unset()->set_dom(last);
+            auto new_pi    = world().mut_pi(pi->type(), pi->is_implicit())->set(ret_loc)->set_dom(last);
+            auto new_lam   = world().mut_lam(new_pi);
+            auto new_var   = new_lam->var()->set(ret_loc);
 
-            lam          = world().mut_lam(pi);
-            auto lam_var = lam->var()->set(dom_p->loc() + ret_loc);
-            dom_p->bind(scopes_, lam_var->proj(2, 0), true);
-            scopes_.bind({ret_loc, return_}, lam_var->proj(2, 1)->set(Dbg{ret_loc, return_}));
+            if (filter) {
+                // Rewrite filter - it may still use the old var.
+                // First, connect old filter to lam. Otherwise, scope will not find it.
+                lam->set_filter(filter);
+                Scope scope(lam);
+
+                // Now rewrite old filter to use new_var.
+                ScopeRewriter rw(world(), scope);
+                rw.map(lam->var(), new_lam->var(2, 0)->set(lam->var()->dbg()));
+                auto new_filter = rw.rewrite(filter);
+                filter = new_filter;
+            }
+
+            lam->unset();
+            pi  = new_pi;
+            lam = new_lam;
+
+            dom_p->bind(scopes_, new_var->proj(2, 0), true);
+            scopes_.bind({ret_loc, return_}, new_var->proj(2, 1)->set(Dbg{ret_loc, return_}));
             break;
         }
         default: unreachable();

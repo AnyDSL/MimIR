@@ -1,0 +1,17 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin %s --output-ll %t.ll -o - | FileCheck %s
+
+.plugin core;
+
+.let _32 = 4294967296;
+.let I32 = .Idx _32;
+.let I64 = .Idx 0;
+.lam Ptr(T: *) -> * = %mem.Ptr (T, 0);
+
+.fun foo(mem: %mem.M, x: I32)@(%core.icmp.e (x, 23:I32)) -> [%mem.M, I32]  = return (mem, %core.wrap.add 0 (x, 1:I32));
+
+.fun .extern main(mem: %mem.M, argc: I32, argv: Ptr (Ptr (.Idx 256))) -> [%mem.M, I32] = {
+    foo((mem, 23:I32), .cn (mem: %mem.M, x: I32) = return (mem, x))
+};
+
+// CHECK-DAG: return{{.*}}24
