@@ -387,9 +387,7 @@ Ref Parser::parse_pi() {
             expect(Tok::Tag::T_arrow, name);
             codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
             break;
-        case Tok::Tag::K_Cn:
-            codom = world().type_bot();
-            break;
+        case Tok::Tag::K_Cn: codom = world().type_bot(); break;
         case Tok::Tag::K_Fn: {
             codom = world().type_bot();
             expect(Tok::Tag::T_arrow, name);
