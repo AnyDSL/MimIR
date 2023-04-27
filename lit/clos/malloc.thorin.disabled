@@ -33,5 +33,6 @@
     .let ('mem, func) = %mem.load (mem, lea);
     .let ('mem,  val) = %mem.load (mem, lea);
 
-    func((mem, 1:I32), .cn (mem: %mem.M, x: I32) = return (mem, x))
+    .ret ('mem, x) = func (mem, 1:I32);
+    return (mem, x))
 };

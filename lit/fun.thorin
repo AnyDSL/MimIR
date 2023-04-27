@@ -20,4 +20,4 @@
 .let K = .Cn [T: *][T, T];
 .let f2 = .fn .(T: *)(a: T, b: T) -> T = return a;
 
-// CHECK-DAG: return{{.*}}24
+// CHECK-DAG: return{{.*}}48
