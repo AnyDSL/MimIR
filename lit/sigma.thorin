@@ -1,0 +1,11 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin %s -o - | FileCheck %s
+
+.plugin math;
+
+.let _64 = (52, 11);
+.let F64 = %math.F _64;
+
+.Sigma Vec3: *, 3;
+.Sigma Vec3 = [x: F64, y: F64, z: F64];
+.lam .extern foo v: Vec3 -> F64 = v#y;
