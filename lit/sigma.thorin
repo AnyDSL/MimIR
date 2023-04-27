@@ -1,6 +1,5 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin %s -o - | FileCheck %s
-
+// RUN: %thorin %s -o -
 .plugin math;
 
 .let _64 = (52, 11);

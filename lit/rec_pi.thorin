@@ -6,7 +6,7 @@
 .ax %phase.phase2: []            -> %phase.Phase;
 .ax %phase.phase3: [.Nat, .Bool] -> %phase.Phase;
 
-.Pi PiPeline: *, %phase.Phase = PiPeline; // got the pun? XD 
+.Pi PiPeline: * = |~| %phase.Phase -> PiPeline; // got the pun? XD 
 // anyway, we probably want to have a nicer way to specify recursive function types ...
 
 .ax %phase.pipe: PiPeline;

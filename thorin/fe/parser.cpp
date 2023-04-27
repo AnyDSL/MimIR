@@ -904,11 +904,12 @@ void Parser::parse_pi_decl() {
             else
                 error(dbg.loc, "'{}' has not been declared as a mutable pi", dbg.sym);
         } else {
-            auto pi = world().mut_pi(type)->set(dbg);
+            pi = world().mut_pi(type)->set(dbg);
             scopes_.bind(dbg, pi);
         }
 
-        pi = parse_expr("definition of a pi declaration")->as_mut<Pi>(); // TODO
+        auto other = parse_expr("definition of a pi declaration")->as_mut<Pi>(); // TODO
+        pi->set(other->dom(), other->codom());
         pi->set<true>(track.loc());
     } else {
         auto pi = world().mut_pi(type)->set(dbg);

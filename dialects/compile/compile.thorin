@@ -23,9 +23,9 @@
 /// 
 /// Types for functions that accept an arbitrary number of phases and passes respectively.
 /// 
-.Pi Pipeline: □, %compile.Phase = Pipeline;
-.Pi PassList: □, %compile.Pass = PassList;
-.Pi CombinedPhase: □, %compile.Phase = CombinedPhase;
+.Pi Pipeline: □      = Π %compile.Phase -> Pipeline;
+.Pi PassList: □      = Π %compile.Pass  -> PassList;
+.Pi CombinedPhase: □ = Π %compile.Phase -> CombinedPhase;
 ///
 /// (This is a forward declaration for opt.thorin.)
 ///
