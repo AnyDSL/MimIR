@@ -139,7 +139,6 @@ In addition, the following comments are available:
 Thorin's grammar is defined as a [context-free grammar](https://en.wikipedia.org/wiki/Context-free_grammar) that consists of the *terminals* defined [above](#terminals) as well as the *nonterminals* and *productions* defined below.
 The start symbol is "m" (module).
 
-
 The following tables comprise all production rules:
 
 ### Module
@@ -152,21 +151,15 @@ The following tables comprise all production rules:
 
 ### Declarations
 
-| Nonterminal | Right-Hand Side                                                  | Comment                            | Thorin Class                |
-|-------------|------------------------------------------------------------------|------------------------------------|-----------------------------|
-| d           | `.ax` Ax `:` e<sub>type</sub> `;`                                | axiom                              | [Axiom](@ref thorin::Axiom) |
-| d           | `.let` p  `=` e `;`                                              | let                                | -                           |
-| d           | `.Pi` Sym (`:` e<sub>type</sub>)? `,` e<sub>dom</sub> n          | Pi declaration                     | [Pi](@ref thorin::Pi)       |
-| d           | `.lam` Sym (`.`? p)+ `→` e<sub>codom</sub> n                     | lambda declaration                 | [Lam](@ref thorin::Lam)     |
-| d           | `.con` Sym (`.`? p)+                       n                     | continuation declaration           | [Lam](@ref thorin::Lam)     |
-| d           | `.fun` Sym (`.`? p)+ `→` e<sub>ret</sub> n                       | function declaration               | [Lam](@ref thorin::Lam)     |
-| d           | `.Arr` Sym (`:` e<sub>type</sub> )? `,` e<sub>shape</sub> v? n   | array declaration                  | [Arr](@ref thorin::Arr)     |
-| d           | `.pack` Sym (`:` e<sub>type</sub> )? `,` e<sub>shape</sub> v? n  | pack declaration                   | [Pack](@ref thorin::Pack)   |
-| d           | `.Sigma` Sym (`:` e<sub>type</sub> )? `,` L<sub>arity</sub> v? n | sigma declaration                  | [Sigma](@ref thorin::Sigma) |
-| d           | `.def` Sym n                                                     | mutable definition                 | mutables                    |
-| n           | `;` \| o                                                         | mutable definition                 | -                           |
-| o           | `=` de `;`                                                       | operand of definition              | -                           |
-| o           | `=` `{` e `,` ... `,` e  `}` `;`                                 | operands of definition<sup>s</sup> | -                           |
+| Nonterminal | Right-Hand Side                                                                           | Comment                  | Thorin Class                |
+|-------------|-------------------------------------------------------------------------------------------|--------------------------|-----------------------------|
+| d           | `.ax` Ax `:` e<sub>type</sub> `;`                                                         | axiom                    | [Axiom](@ref thorin::Axiom) |
+| d           | `.let` p  `=` e `;`                                                                       | let                      | -                           |
+| d           | `.lam` Sym (`.`? p)+ `→` e<sub>codom</sub> ( `=` de)? `;`                                 | lambda declaration       | [Lam](@ref thorin::Lam)     |
+| d           | `.con` Sym (`.`? p)+                       ( `=` de)? `;`                                 | continuation declaration | [Lam](@ref thorin::Lam)     |
+| d           | `.fun` Sym (`.`? p)+ `→` e<sub>ret</sub>   ( `=` de)? `;`                                 | function declaration     | [Lam](@ref thorin::Lam)     |
+| d           | `.Pi` Sym (`:` e<sub>type</sub>)? (`=` e)? `;`                                            | Pi declaration           | [Pi](@ref thorin::Pi)       |
+| d           | `.Sigma` Sym (`:` e<sub>type</sub> )? (`,` L<sub>arity</sub>)? (`=` e<sub>[ ]</sub>)? `;` | sigma declaration        | [Sigma](@ref thorin::Sigma) |
 <sup>s</sup> opens new scope
 
 ### Patterns
