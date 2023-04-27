@@ -116,22 +116,21 @@ private:
     Ref parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
     Ref parse_primary_expr(std::string_view ctxt);
     Ref parse_infix_expr(Tracker, const Def* lhs, Tok::Prec = Tok::Prec::Bot);
-    Ref parse_extract(Tracker, const Def*, Tok::Prec);
+    Ref parse_extract_expr(Tracker, const Def*, Tok::Prec);
     ///@}
 
     /// @name parse primary exprs
     ///@{
-    Ref parse_arr();
-    Ref parse_pack();
-    Ref parse_block();
-    Ref parse_sigma();
-    Ref parse_tuple();
-    Ref parse_type();
-    Ref parse_pi();
-    Ref parse_lit();
-    Ref parse_var();
-    Ref parse_insert();
-    Ref parse_ret();
+    Ref parse_arr_expr();
+    Ref parse_pack_expr();
+    Ref parse_block_expr();
+    Ref parse_sigma_expr();
+    Ref parse_tuple_expr();
+    Ref parse_type_expr();
+    Ref parse_pi_expr();
+    Ref parse_lit_expr();
+    Ref parse_insert_expr();
+    Ref parse_ret_expr();
     Lam* parse_lam(bool decl = false);
     ///@}
 
@@ -146,12 +145,12 @@ private:
     /// @name parse decls
     ///@{
     Ref parse_decls(std::string_view ctxt);
-    void parse_ax();
-    void parse_let();
-    void parse_mut();
+    void parse_ax_decl();
+    void parse_let_decl();
+    void parse_mut_decl();
     /// If @p sym is **not** empty, this is an inline definition of @p sym,
     /// otherwise it's a standalone definition.
-    void parse_def(Dbg dbg = {});
+    void parse_def_decl(Dbg dbg = {});
     ///@}
 
     /// @name error messages

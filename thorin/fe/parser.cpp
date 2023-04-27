@@ -164,7 +164,7 @@ Ref Parser::parse_infix_expr(Tracker track, const Def* lhs, Tok::Prec p) {
     while (true) {
         // If operator in ahead has less left precedence: reduce (break).
         if (ahead().isa(Tag::T_extract)) {
-            if (auto extract = parse_extract(track, lhs, p))
+            if (auto extract = parse_extract_expr(track, lhs, p))
                 lhs = extract;
             else
                 break;
@@ -187,7 +187,7 @@ Ref Parser::parse_infix_expr(Tracker track, const Def* lhs, Tok::Prec p) {
     return lhs;
 }
 
-Ref Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
+Ref Parser::parse_extract_expr(Tracker track, const Def* lhs, Tok::Prec p) {
     auto [l, r] = Tok::prec(Tok::Prec::Extract);
     if (l < p) return nullptr;
     lex();
@@ -211,7 +211,7 @@ Ref Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
     return world().extract(lhs, rhs)->set(track.loc());
 }
 
-Ref Parser::parse_insert() {
+Ref Parser::parse_insert_expr() {
     eat(Tag::K_ins);
     auto track = tracker();
 
@@ -229,22 +229,21 @@ Ref Parser::parse_insert() {
 Ref Parser::parse_primary_expr(std::string_view ctxt) {
     // clang-format off
     switch (ahead().tag()) {
-        case Tag::D_quote_l: return parse_arr();
-        case Tag::D_angle_l: return parse_pack();
-        case Tag::D_brace_l: return parse_block();
-        case Tag::D_brckt_l: return parse_sigma();
-        case Tag::D_paren_l: return parse_tuple();
-        case Tag::K_Type:    return parse_type();
+        case Tag::D_quote_l: return parse_arr_expr();
+        case Tag::D_angle_l: return parse_pack_expr();
+        case Tag::D_brace_l: return parse_block_expr();
+        case Tag::D_brckt_l: return parse_sigma_expr();
+        case Tag::D_paren_l: return parse_tuple_expr();
+        case Tag::K_Type:    return parse_type_expr();
         case Tag::K_Univ:    lex(); return world().univ();
         case Tag::K_Bool:    lex(); return world().type_bool();
         case Tag::K_Idx:     lex(); return world().type_idx();
         case Tag::K_Nat:     lex(); return world().type_nat();
         case Tag::K_ff:      lex(); return world().lit_ff();
         case Tag::K_tt:      lex(); return world().lit_tt();
-        case Tag::T_at:      return parse_var();
         case Tag::K_Cn:
         case Tag::K_Fn:
-        case Tag::T_Pi:      return parse_pi();
+        case Tag::T_Pi:      return parse_pi_expr();
         case Tag::K_cn:
         case Tag::K_fn:
         case Tag::T_lm:      return parse_lam();
@@ -254,11 +253,11 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::T_top:
         case Tag::L_s:
         case Tag::L_u:
-        case Tag::L_r:       return parse_lit();
+        case Tag::L_r:       return parse_lit_expr();
         case Tag::M_id:      return scopes_.find(parse_sym());
         case Tag::M_i:       return lex().index();
-        case Tag::K_ins:     return parse_insert();
-        case Tag::K_ret:     return parse_ret();
+        case Tag::K_ins:     return parse_insert_expr();
+        case Tag::K_ret:     return parse_ret_expr();
         case Tag::M_ax:      return scopes_.find(lex().dbg());
         default:
             if (ctxt.empty()) return nullptr;
@@ -268,15 +267,7 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
     return nullptr;
 }
 
-Ref Parser::parse_var() {
-    eat(Tag::T_at);
-    auto dbg = parse_sym("variable");
-    auto mut = scopes_.find(dbg)->isa_mut();
-    if (!mut) error(prev(), "variable must reference a mutable");
-    return mut->var()->set(dbg);
-}
-
-Ref Parser::parse_arr() {
+Ref Parser::parse_arr_expr() {
     auto track = tracker();
     scopes_.push();
     eat(Tag::D_quote_l);
@@ -304,7 +295,7 @@ Ref Parser::parse_arr() {
     return world().arr(shape, body)->set(track.loc());
 }
 
-Ref Parser::parse_pack() {
+Ref Parser::parse_pack_expr() {
     // TODO This doesn't work. Rework this!
     auto track = tracker();
     scopes_.push();
@@ -330,7 +321,7 @@ Ref Parser::parse_pack() {
     return world().pack(shape, body)->set(track.loc());
 }
 
-Ref Parser::parse_block() {
+Ref Parser::parse_block_expr() {
     scopes_.push();
     eat(Tag::D_brace_l);
     auto res = parse_decls("block expression");
@@ -339,20 +330,20 @@ Ref Parser::parse_block() {
     return res;
 }
 
-Ref Parser::parse_sigma() {
+Ref Parser::parse_sigma_expr() {
     auto track = tracker();
     auto bndr  = parse_tuple_ptrn(track, false, anonymous_);
     return bndr->type(world(), def2fields_);
 }
 
-Ref Parser::parse_tuple() {
+Ref Parser::parse_tuple_expr() {
     auto track = tracker();
     DefVec ops;
     parse_list("tuple", Tag::D_paren_l, [&]() { ops.emplace_back(parse_expr("tuple element")); });
     return world().tuple(ops)->set(track.loc());
 }
 
-Ref Parser::parse_type() {
+Ref Parser::parse_type_expr() {
     auto track = tracker();
     eat(Tag::K_Type);
     auto [l, r] = Tok::prec(Tok::Prec::App);
@@ -360,7 +351,7 @@ Ref Parser::parse_type() {
     return world().type(level)->set(track.loc());
 }
 
-Ref Parser::parse_pi() {
+Ref Parser::parse_pi_expr() {
     auto track = tracker();
     auto tok   = lex();
 
@@ -555,7 +546,7 @@ Lam* Parser::parse_lam(bool decl) {
     return first;
 }
 
-Ref Parser::parse_ret() {
+Ref Parser::parse_ret_expr() {
     eat(Tag::K_ret);
     auto ptrn = parse_ptrn(Tag::D_paren_l, "binding pattern of a ret expression");
     expect(Tag::T_assign, "let expression");
@@ -575,7 +566,7 @@ Ref Parser::parse_ret() {
     error(prev(), "continuation of the ret expression is not a returning continuation but has type '{}'", cn->type());
 }
 
-Ref Parser::parse_lit() {
+Ref Parser::parse_lit_expr() {
     auto track  = tracker();
     auto lit    = lex();
     auto [_, r] = Tok::prec(Tok::Prec::Lit);
@@ -750,24 +741,24 @@ Ref Parser::parse_decls(std::string_view ctxt) {
     while (true) {
         // clang-format off
         switch (ahead().tag()) {
-            case Tag::T_semicolon: lex();           break; // eat up stray semicolons
-            case Tag::K_ax:        parse_ax();      break;
-            case Tag::K_let:       parse_let();     break;
+            case Tag::T_semicolon: lex();            break; // eat up stray semicolons
+            case Tag::K_ax:        parse_ax_decl();  break;
+            case Tag::K_let:       parse_let_decl(); break;
             case Tag::K_Sigma:
             case Tag::K_Arr:
             case Tag::K_pack:
-            case Tag::K_Pi:        parse_mut();     break;
+            case Tag::K_Pi:        parse_mut_decl(); break;
             case Tag::K_con:
             case Tag::K_fun:
-            case Tag::K_lam:       parse_lam(true); break;
-            case Tag::K_def:       parse_def();     break;
+            case Tag::K_lam:       parse_lam(true);  break;
+            case Tag::K_def:       parse_def_decl(); break;
             default:               return ctxt.empty() ? nullptr : parse_expr(ctxt);
         }
         // clang-format on
     }
 }
 
-void Parser::parse_ax() {
+void Parser::parse_ax_decl() {
     auto track = tracker();
     eat(Tag::K_ax);
     auto ax                 = expect(Tag::M_ax, "name of an axiom");
@@ -849,7 +840,7 @@ void Parser::parse_ax() {
     expect(Tag::T_semicolon, "end of an axiom");
 }
 
-void Parser::parse_let() {
+void Parser::parse_let_decl() {
     eat(Tag::K_let);
     auto ptrn = parse_ptrn(Tag::D_paren_l, "binding pattern of a let expression");
     expect(Tag::T_assign, "let expression");
@@ -858,7 +849,7 @@ void Parser::parse_let() {
     expect(Tag::T_semicolon, "let expression");
 }
 
-void Parser::parse_mut() {
+void Parser::parse_mut_decl() {
     auto track    = tracker();
     auto tag      = lex().tag();
     bool external = accept(Tag::K_extern).has_value();
@@ -895,7 +886,7 @@ void Parser::parse_mut() {
 
     scopes_.push();
     if (ahead().isa(Tag::T_assign))
-        parse_def(dbg);
+        parse_def_decl(dbg);
     else
         expect(Tag::T_semicolon, "end of a mutable");
 
@@ -903,7 +894,7 @@ void Parser::parse_mut() {
     scopes_.pop();
 }
 
-void Parser::parse_def(Dbg dbg /*= {}*/) {
+void Parser::parse_def_decl(Dbg dbg /*= {}*/) {
     if (!dbg.sym) {
         eat(Tag::K_def);
         dbg = parse_sym("mutable definition");
