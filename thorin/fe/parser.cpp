@@ -849,7 +849,7 @@ void Parser::parse_let_decl() {
 void Parser::parse_sigma_decl() {
     auto track = tracker();
     eat(Tag::K_Sigma);
-    auto dbg = parse_sym("sigma declaration");
+    auto dbg  = parse_sym("sigma declaration");
     auto type = accept(Tag::T_colon) ? parse_expr("type of a sigma declaration") : world().type();
 
     auto arity = std::optional<nat_t>{};
@@ -870,7 +870,7 @@ void Parser::parse_sigma_decl() {
             if (auto mut = def->isa_mut<Sigma>()) {
                 if (arity && arity != mut->as_lit_arity())
                     error(dbg.loc, "sigma '{}', redeclared with different arity '{}'; previous arity was '{}' here: {}",
-                            dbg.sym, *arity, mut->as_lit_arity(), mut->loc());
+                          dbg.sym, *arity, mut->as_lit_arity(), mut->loc());
                 sigma = mut;
             } else {
                 error(dbg.loc, "'{}' has not been declared as a mutable sigma", dbg.sym);
@@ -880,7 +880,7 @@ void Parser::parse_sigma_decl() {
         }
 
         auto ptrn = parse_tuple_ptrn(track, false, dbg.sym, sigma);
-        auto t = ptrn->type(world(), def2fields_);
+        auto t    = ptrn->type(world(), def2fields_);
         assert(t == sigma);
         sigma->set<true>(track.loc());
     } else {
@@ -893,17 +893,16 @@ void Parser::parse_sigma_decl() {
 void Parser::parse_pi_decl() {
     auto track = tracker();
     eat(Tag::K_Pi);
-    auto dbg = parse_sym("pi declaration");
+    auto dbg  = parse_sym("pi declaration");
     auto type = accept(Tag::T_colon) ? parse_expr("type of a pi declaration") : world().type();
 
     if (accept(Tag::T_assign)) {
         Pi* pi;
         if (auto def = scopes_.query(dbg)) {
-            if (auto mut = def->isa_mut<Pi>()) {
+            if (auto mut = def->isa_mut<Pi>())
                 pi = mut;
-            } else {
+            else
                 error(dbg.loc, "'{}' has not been declared as a mutable pi", dbg.sym);
-            }
         } else {
             auto pi = world().mut_pi(type)->set(dbg);
             scopes_.bind(dbg, pi);
