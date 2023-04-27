@@ -254,6 +254,45 @@ An elided type of
 * a bottom/top defaults to `*`,
 * a mutable defaults to `*`.
 
+### Functions \& Types
+
+The following table summarizes the different tokens used for functions declarations, expressions, and types:
+
+| Declaration | Expression     | Type                    |
+|-------------|----------------|-------------------------|
+| `.lam`      | `.lm` <br> `λ` | `Π` <br> <tt>\|~\|</tt> |
+| `.con`      | `.cn`          | `.Cn`                   |
+| `.fun`      | `.fn`          | `.Fn`                   |
+
+#### Declarations
+
+The following function *declarations* are all equivalent:
+```
+.lam f(T: *)((x y: T), return: T -> ⊥) -> ⊥ = return x;
+.con f(T: *)((x y: T), return: .Cn T)       = return x;
+.fun f(T: *) (x y: T)                       = return x;
+```
+
+#### Expressions
+
+The following function *expressions* are all equivalent.
+What is more, since they are bound by a *let declaration*, they have the exact same effect as the function *declarations* above:
+```
+.let f = .lm (T: *)((x y: T), return: T -> ⊥) -> ⊥ = return x;
+.let f = .cn (T: *)((x y: T), return: .Cn T)       = return x;
+.let f = .fn (T: *) (x y: T)                       = return x;
+```
+
+#### Function Types
+
+Finally, the following function types are all equivalent and denote the type of `f` above.
+```
+ Π [T:*][T, T][T -> ⊥] -> ⊥
+.Cn[T:*][T, T][.Cn T]
+.Fn[T:*][T, T] -> T
+```
+
+
 #### Precedence
 
 Expressions nesting is disambiguated according to the following precedence table (from strongest to weakest binding):

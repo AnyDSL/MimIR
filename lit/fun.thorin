@@ -16,8 +16,16 @@
     return (mem, %core.wrap.add 0 (x, y))
 };
 
-.fun .extern f.(T: *)(a: T, b: T) -> T = return a;
-.let K = .Cn [T: *][T, T];
-.let f2 = .fn .(T: *)(a: T, b: T) -> T = return a;
+.lam f1(T: *)((x y: T), return: T -> ⊥) -> ⊥ = return x;
+.con f2(T: *)((x y: T), return: .Cn T)       = return x;
+.fun f3(T: *) (x y: T)                       = return x;
+
+.let g1 = .lm (T: *)((x y: T), return: T -> ⊥) -> ⊥ = return x;
+.let g2 = .cn (T: *)((x y: T), return: .Cn T)       = return x;
+.let g3 = .fn (T: *) (x y: T)                       = return x;
+
+.let F1 = Π [T:*][T, T][T -> ⊥] -> ⊥;
+.let F2 =.Cn[T:*][T, T][.Cn T];
+.let F3 =.Fn[T:*][T, T] -> T;
 
 // CHECK-DAG: return{{.*}}48
