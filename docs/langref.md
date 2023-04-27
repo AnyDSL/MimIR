@@ -2,6 +2,20 @@
 
 [TOC]
 
+## Notation
+
+We use the following notation:
+
+| Notation        | Meaning                                         |
+|-----------------|-------------------------------------------------|
+| `a`             | literally the terminal token `a`                |
+| [`a``b`]        | matches `a` or `b`                              |
+| [`a`-`c`]       | matches `a`- `c`                                |
+| a\*             | zero or more repetitions of "a"                 |
+| a\+             | one or more repetitions of "a"                  |
+| a?              | "a" is optional                                 |
+| a `,` ... `,` a | `,`-separated list of zero or more "a" elements |
+
 ## Lexical Structure {#lex}
 
 Thorin files are [UTF-8](https://en.wikipedia.org/wiki/UTF-8) encoded and [lexed](https://en.wikipedia.org/wiki/Lexical_analysis) from left to right.
@@ -64,9 +78,9 @@ In addition the following keywords are *terminals*:
 
 All keywords start with a `.` to prevent name clashes with identifiers.
 
-#### Regular Expressions
+#### Other Terminals.
 
-The following *terminals* comprise more complicated patterns that are specified via [regular expressions](https://en.wikipedia.org/wiki/Regular_expression):
+The following *terminals* comprise more complicated patterns:
 
 | Terminal      | Regular Expression                   | Comment                                                                                           |
 |---------------|--------------------------------------|---------------------------------------------------------------------------------------------------|
@@ -123,13 +137,6 @@ In addition, the following comments are available:
 
 Thorin's grammar is defined as a [context-free grammar](https://en.wikipedia.org/wiki/Context-free_grammar) that consists of the *terminals* defined [above](#terminals) as well as the *nonterminals* and *productions* defined below.
 The start symbol is "m" (module).
-
-| Notation  | Meaning                                           |
-|-----------|---------------------------------------------------|
-| a, ..., a | comma separated list of zero or more "a" elements |
-| a\*       | zero or more repetitions of "a"                   |
-| a\+       | one or more repetitions of "a"                    |
-| (a)?      | "a" is optional                                   |
 
 
 The following tables comprise all production rules:
