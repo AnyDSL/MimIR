@@ -557,20 +557,17 @@ Lam* Parser::parse_lam(bool decl) {
 
 Ref Parser::parse_ret() {
     eat(Tag::K_ret);
-    auto ptrn = parse_ptrn(Tag::D_paren_l, "binding pattern of a let expression");
+    auto ptrn = parse_ptrn(Tag::D_paren_l, "binding pattern of a ret expression");
     expect(Tag::T_assign, "let expression");
 
-    Ref cn;
-    if (auto tok = accept(Tag::M_id))
-        cn = scopes_.find(tok->dbg());
-    else
-        cn = parse_expr("continuation callee of a ret expression");
+    auto cn = parse_expr("continuation expression of a ret expression");
+    expect(Tag::T_colon, "separator of a ret expression");
     if (auto ret_pi = Pi::ret_pi(cn->type())) {
         auto arg = parse_expr("argument of ret expression");
         expect(Tag::T_semicolon, "let expression");
         auto lam = world().mut_lam(ret_pi);
         ptrn->bind(scopes_, lam->var());
-        auto body = parse_decls("body of a XXX");
+        auto body = parse_decls("body of a ret expression");
         lam->set(false, body);
         return world().app(cn, {arg, lam});
     }

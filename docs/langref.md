@@ -50,14 +50,15 @@ In addition the following keywords are *terminals*:
 | Terminal  | Comment                                                   |
 |-----------|-----------------------------------------------------------|
 | `.ax`     | axiom                                                     |
-| `.let`    | let expression                                            |
-| `.Pi`     | mutable thorin::Pi                                        |
-| `.con`    | [continuation](@ref thorin::Lam) (declaration)            |
-| `.fun`    | [function](@ref thorin::Lam) (declaration)                |
-| `.lam`    | [lambda](@ref thorin::Lam) (declaration)                  |
-| `.cn`     | [continuation](@ref thorin::Lam) (expression)             |
-| `.fn`     | [function](@ref thorin::Lam) (expression)                 |
-| `.cn`     | [lambda](@ref thorin::Lam) (expression)                   |
+| `.Pi`     | mutable [Pi](@ref thorin::Pi) declaration                 |
+| `.let`    | let declaration                                           |
+| `.con`    | [continuation](@ref thorin::Lam) declaration              |
+| `.fun`    | [function](@ref thorin::Lam) declaration                  |
+| `.lam`    | [lambda](@ref thorin::Lam) declaration                    |
+| `.ret`    | ret expression                                            |
+| `.cn`     | [continuation](@ref thorin::Lam) expression               |
+| `.fn`     | [function](@ref thorin::Lam) expression                   |
+| `.cn`     | [lambda](@ref thorin::Lam) expression                     |
 | `.Arr`    | mutable thorin::Arr                                       |
 | `.pack`   | mutable thorin::Pack                                      |
 | `.Sigma`  | mutable thorin::Sigma                                     |
@@ -105,7 +106,7 @@ The following *terminals* comprise more complicated patterns:
 
 The previous table resorts to the following definitions as shorthand:
 
-| Name | Regular Expression                                         | Comment                                         |
+| Name | Definition                                                 | Comment                                         |
 |------|------------------------------------------------------------|-------------------------------------------------|
 | 0b   | `0` \[ `b``B` \]                                           | prefix for binary literals                      |
 | 0o   | `0` \[ `o``O` \]                                           | prefix for octal literals                       |
@@ -240,6 +241,7 @@ This is particularly useful, when dealing with memory:
 | e           | Sym                                                                           | identifier                              | -                               |
 | e           | Ax                                                                            | use of an axiom                         | -                               |
 | e           | e e                                                                           | application                             | [App](@ref thorin::App)         |
+| e           | `.ret` p `=` e `:` e `;` e                                                    | ret expresison                          | [App](@ref thorin::App)         |
 | e           | `λ`   (`.`? p)+ (`→` e<sub>codom</sub>)? `=` de                               | lambda expression<sup>s</sup>           | [Lam](@ref thorin::Lam)         |
 | e           | `.cn` (`.`? p)+                          `=` de                               | continuation expression<sup>s</sup>     | [Lam](@ref thorin::Lam)         |
 | e           | `.fn` (`.`? p)+ (`→` e<sub>codom</sub>)? `=` de                               | function expression<sup>s</sup>         | [Lam](@ref thorin::Lam)         |
@@ -260,6 +262,27 @@ An elided type of
 * a literal defaults to `.Nat`,
 * a bottom/top defaults to `*`,
 * a mutable defaults to `*`.
+
+#### Precedence
+
+Expressions nesting is disambiguated according to the following precedence table (from strongest to weakest binding):
+
+| Operator             | Description                         | Associativity |
+|----------------------|-------------------------------------|---------------|
+| L `:` e              | type ascription of a literal        | -             |
+| e `#` e              | extract                             | left-to-right |
+| e e                  | application                         | left-to-right |
+| `Π` Sym `:` e        | domain of a dependent function type | -             |
+| `.fun` Sym Sym `:` e | mutable function declaration        | -             |
+| `.lam` Sym Sym `:` e | mutable continuation declaration    | -             |
+| `.fn` Sym `:` e      | mutable function expression         | -             |
+| `.lm` Sym `:` e      | mutable continuation expression     | -             |
+| e `→` e              | function type                       | right-to-left |
+
+Note that the domain of a dependent function type binds slightly stronger than `→`.
+This has the effect that, e.g., `Π T: * → T → T` has the expected binding like this: (`Π T: *`) `→` (`T → T`).
+Otherwise, `→` would be consumed by the domain: `Π T:` (`* →` (`T → T`)) ↯.
+A similar situation occurs for a `.lam` declaration.
 
 ### Functions \& Types
 
@@ -290,6 +313,13 @@ What is more, since they are bound by a *let declaration*, they have the exact s
 .let f = .fn (T: *) (x y: T)                       = return x;
 ```
 
+#### Applications
+
+The following expressions for applying `f` are also equivalent:
+```
+f .Nat ((23, 42),.cn res: .Nat = use(res))
+.ret res = f .Nat : (23, 42); use(res)
+```
 #### Function Types
 
 Finally, the following function types are all equivalent and denote the type of `f` above.
@@ -298,28 +328,6 @@ Finally, the following function types are all equivalent and denote the type of 
 .Cn[T:*][T, T][.Cn T]
 .Fn[T:*][T, T] -> T
 ```
-
-
-#### Precedence
-
-Expressions nesting is disambiguated according to the following precedence table (from strongest to weakest binding):
-
-| Operator             | Description                         | Associativity |
-|----------------------|-------------------------------------|---------------|
-| L `:` e              | type ascription of a literal        | -             |
-| e `#` e              | extract                             | left-to-right |
-| e e                  | application                         | left-to-right |
-| `Π` Sym `:` e        | domain of a dependent function type | -             |
-| `.fun` Sym Sym `:` e | mutable function declaration        | -             |
-| `.lam` Sym Sym `:` e | mutable continuation declaration    | -             |
-| `.fn` Sym `:` e      | mutable function expression         | -             |
-| `.lm` Sym `:` e      | mutable continuation expression     | -             |
-| e `→` e              | function type                       | right-to-left |
-
-Note that the domain of a dependent function type binds slightly stronger than `→`.
-This has the effect that, e.g., `Π T: * → T → T` has the expected binding like this: (`Π T: *`) `→` (`T → T`).
-Otherwise, `→` would be consumed by the domain: `Π T:` (`* →` (`T → T`)) ↯.
-A similar situation occurs for a `.lam` declaration.
 
 ## Scoping
 
