@@ -139,7 +139,7 @@ private:
 
     /// Depending on @p tag, this parses a `()`-style (Tok::Tag::D_paren_l) or `[]`-style (Tok::Tag::D_brckt_l) Ptrn.
     std::unique_ptr<Ptrn> parse_ptrn(Tok::Tag tag, std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
-    std::unique_ptr<TuplePtrn> parse_tuple_ptrn(Tracker, bool, Sym);
+    std::unique_ptr<TuplePtrn> parse_tuple_ptrn(Tracker, bool rebind, Sym, Sigma* = nullptr);
     ///@}
 
     /// @name parse decls
@@ -147,10 +147,8 @@ private:
     Ref parse_decls(std::string_view ctxt);
     void parse_ax_decl();
     void parse_let_decl();
-    void parse_mut_decl();
-    /// If @p sym is **not** empty, this is an inline definition of @p sym,
-    /// otherwise it's a standalone definition.
-    void parse_def_decl(Dbg dbg = {});
+    void parse_sigma_decl();
+    void parse_pi_decl();
     ///@}
 
     /// @name error messages
