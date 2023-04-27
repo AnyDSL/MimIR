@@ -258,6 +258,7 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::M_id:      return scopes_.find(parse_sym());
         case Tag::M_i:       return lex().index();
         case Tag::K_ins:     return parse_insert();
+        case Tag::K_ret:     return parse_ret();
         case Tag::M_ax:      return scopes_.find(lex().dbg());
         default:
             if (ctxt.empty()) return nullptr;
@@ -552,6 +553,29 @@ Lam* Parser::parse_lam(bool decl) {
 
     scopes_.pop();
     return first;
+}
+
+Ref Parser::parse_ret() {
+    eat(Tag::K_ret);
+    auto ptrn = parse_ptrn(Tag::D_paren_l, "binding pattern of a let expression");
+    expect(Tag::T_assign, "let expression");
+
+    Ref cn;
+    if (auto tok = accept(Tag::M_id))
+        cn = scopes_.find(tok->dbg());
+    else
+        cn = parse_expr("continuation callee of a ret expression");
+    if (auto ret_pi = Pi::ret_pi(cn->type())) {
+        auto arg = parse_expr("argument of ret expression");
+        expect(Tag::T_semicolon, "let expression");
+        auto lam = world().mut_lam(ret_pi);
+        ptrn->bind(scopes_, lam->var());
+        auto body = parse_decls("body of a XXX");
+        lam->set(false, body);
+        return world().app(cn, {arg, lam});
+    }
+
+    error(prev(), "continuation of the ret expression is not a returning continuation but has type '{}'", cn->type());
 }
 
 Ref Parser::parse_lit() {

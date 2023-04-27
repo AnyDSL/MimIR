@@ -131,6 +131,7 @@ private:
     Ref parse_lit();
     Ref parse_var();
     Ref parse_insert();
+    Ref parse_ret();
     Lam* parse_lam(bool decl = false);
     ///@}
 
