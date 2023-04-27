@@ -464,15 +464,14 @@ Lam* Parser::parse_lam(bool decl) {
         }
 
         funs.emplace_back(std::tuple(pi, lam, filter));
-    } while (!ahead().isa(Tag::T_arrow) && !ahead().isa(Tag::T_assign) &&
-             !ahead().isa(Tag::T_semicolon));
+    } while (!ahead().isa(Tag::T_arrow) && !ahead().isa(Tag::T_assign) && !ahead().isa(Tag::T_semicolon));
 
     Ref codom;
     switch (tok.tag()) {
         case Tag::K_lm:
         case Tag::K_lam: {
             codom = accept(Tag::T_arrow) ? parse_expr("return type of a "s + name, Tok::Prec::Arrow)
-                                              : world().mut_infer_type();
+                                         : world().mut_infer_type();
             break;
         }
         case Tag::K_cn:
@@ -484,7 +483,7 @@ Lam* Parser::parse_lam(bool decl) {
             codom          = world().type_bot();
             auto ret_track = tracker();
             auto ret       = accept(Tag::T_arrow) ? parse_expr("return type of a "s + name, Tok::Prec::Arrow)
-                                                       : world().mut_infer_type();
+                                                  : world().mut_infer_type();
             auto ret_loc   = dom_p->loc() + ret_track.loc();
             auto last      = world().sigma({pi->dom(), world().cn(ret)});
             auto new_pi    = world().mut_pi(pi->type(), pi->is_implicit())->set(ret_loc)->set_dom(last);
