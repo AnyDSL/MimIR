@@ -224,7 +224,9 @@ std::optional<Tok> Lexer::parse_lit() {
             parse_digits(base);
         }
 
-        is_float |= parse_exp(base);
+        bool has_exp = parse_exp(base);
+        if (base == 16 && is_float && !has_exp) error(loc_, "hexadecimal floating constants require an exponent");
+        is_float |= has_exp;
     }
 
     if (sign && str_.empty()) {
@@ -257,11 +259,6 @@ bool Lexer::parse_exp(int base /*= 10*/) {
         if (!isdigit(ahead())) error(loc_, "exponent has no digits");
         parse_digits();
         return true;
-    }
-
-    if (base == 16) {
-        error(loc_, "hexadecimal floating constants require an exponent");
-        return {};
     }
     return false;
 }
