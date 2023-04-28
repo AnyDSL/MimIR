@@ -142,8 +142,8 @@ Operations</h1>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md118"></a>
 %direct.cps2ds</h2>
 <p >This axiom lets the user call a cps function in direct style. The function is not converted. Only the call site is changed.</p>
-<div class="fragment"><div class="line">.ax %direct.cps2ds: Π [T: *, U: *] -&gt; (.Cn [T, .Cn U]) -&gt; (T -&gt; U), normalize_cps2ds, 2;</div>
-<div class="line">.ax %direct.cps2ds_dep: Π [T: *, U: T -&gt; *] -&gt; (.Cn [t:T, .Cn ((U t))]) -&gt; (Π [t:T] -&gt; ((U t)));</div>
+<div class="fragment"><div class="line">.ax %direct.cps2ds: Π [T: *, U: *] -&gt; .Cn [T, .Cn U] -&gt; (T -&gt; U), normalize_cps2ds, 2;</div>
+<div class="line">.ax %direct.cps2ds_dep: Π [T: *, U: T -&gt; *] -&gt; .Cn [t: T, .Cn U t] -&gt; [Π [t:T] -&gt; U t], 2;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md119"></a>
 Passes and Phases</h1>
 <h2><a class="anchor" id="autotoc_md120"></a>

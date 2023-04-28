@@ -185,10 +185,12 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Converts direct style function to cps functions. </p>
-<p >To do so, for each (non-type-level) ds function a corresponding cps function is created: <code>f: Π a : A -&gt; B</code> <code>f_cps : cn[a:A, cn B]</code> Only the type signature of the function is changed and the body is wrapped in the newly added return continuation. (Technical detail: the arguments are substituted to fit the new function)</p>
+<p >To do so, for each (non-type-level) ds function a corresponding cps function is created: </p><div class="fragment"><div class="line">f:     Π a: A -&gt; B</div>
+<div class="line">f_cps: .Cn [a: A, .Cn B]</div>
+</div><!-- fragment --><p> Only the type signature of the function is changed and the body is wrapped in the newly added return continuation. (Technical detail: the arguments are substituted to fit the new function)</p>
 <p >In a second distinct but connected step, the call sites are converted: For a direct style call <code>f args</code>, the call to the cps function <code>cps2ds_dep ... f_cps args</code> is introduced. The underlying substitution is <code>f</code> -&gt; <code>cps2ds_dep ... f_cps</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ds2cps_8h_source.html#l00018">18</a> of file <a class="el" href="ds2cps_8h_source.html">ds2cps.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ds2cps_8h_source.html#l00020">20</a> of file <a class="el" href="ds2cps_8h_source.html">ds2cps.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="adcfb942a973e33175d7b9d4df21a2d79" name="adcfb942a973e33175d7b9d4df21a2d79"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adcfb942a973e33175d7b9d4df21a2d79">&#9670;&#160;</a></span>DS2CPS()</h2>
@@ -214,7 +216,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ds2cps_8h_source.html#l00020">20</a> of file <a class="el" href="ds2cps_8h_source.html">ds2cps.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ds2cps_8h_source.html#l00022">22</a> of file <a class="el" href="ds2cps_8h_source.html">ds2cps.h</a>.</p>
 
 </div>
 </div>
