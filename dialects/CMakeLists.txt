@@ -194,3 +194,13 @@ add_thorin_plugin(refly
         compile
     INSTALL
 )
+
+add_thorin_plugin(regex
+    SOURCES
+        regex/regex.h
+        regex/regex.cpp
+        regex/normalizers_regex.cpp
+    DEPENDS
+        compile
+    INSTALL
+)

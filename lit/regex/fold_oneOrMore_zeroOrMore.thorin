@@ -1,0 +1,13 @@
+// RUN: %thorin %s -o - | FileCheck %s
+
+.import mem;
+.plugin regex;
+
+.let i8 = .Idx 256;
+.let bool = .Idx 2;
+
+.con .extern fold_oneOrMore_zeroOrMore(mem: %mem.M, string: %mem.Ptr (i8, 0), return: .Cn [%mem.M, bool, %mem.Ptr (i8, 0)]) = {
+    .let pattern = %regex.quant.oneOrMore (%regex.quant.zeroOrMore (%regex.cls.d));
+    return (%regex.match (mem, pattern, string))
+    // CHECK: %regex.quant.zeroOrMore %regex.cls.d
+};

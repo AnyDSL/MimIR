@@ -1,0 +1,82 @@
+/// # The regex Plugin {#regex}
+///
+/// @see thorin::regex
+///
+/// [TOC]
+///
+/// A normalizing regex plugin
+///
+/// ## Dependencies
+///
+.import compile;
+.import mem;
+///
+/// ## Types
+///
+/// ### %regex.re
+///
+/// A regular expression.
+.ax %regex.re: *;
+
+/// ## Meta
+///
+/// ### %regex.conj
+/// 
+/// A sequence of %regex.re's, e.g. `\d\d\d` matching 3 digits:
+/// `%regex.conj (%regex.cls.d, %regex.cls.d, %regex.cls.d)
+///
+.ax %regex.conj: Π.[n: .Nat][<<n; %regex.re>>] -> %regex.re, normalize_conj;
+
+///
+/// ### %regex.disj
+///
+/// Match any of the sub expressions: `[0123456789]`
+///
+.ax %regex.disj: Π.[n: .Nat][<<n; %regex.re>>] -> %regex.re, normalize_disj;
+
+///
+/// ### %regex.group
+///
+/// A capture group
+///
+.ax %regex.group: Π.[n: .Nat][<<n; %regex.re>>] -> %regex.re, normalize_group;
+
+///
+/// ## Values
+///
+/// ### %regex.lit
+///
+/// Wraps a literal.
+///
+.ax %regex.lit: Π n:.Nat -> %regex.re;
+
+///
+/// ### %regex.cls.*
+/// 
+/// | Subtag | Matches |
+/// | ------ | ------- |
+/// | `d`    | digits [0-9]|
+/// | `D`    | No digits |
+/// | `w`    | word characters [a-zA-Z_0-9] |
+/// | `W`    | No word characters |
+/// | `s`    | whitespace [ \t\r\n] |
+/// | `S`    | No whitespace |
+/// | `any`  | Any character |
+.ax %regex.cls(d,D,w,W,s,S,any): %regex.re;
+
+/// ## Quantifiers
+///
+/// ### %regex.quant.*
+///
+.ax %regex.quant(zeroOrOne,zeroOrMore,oneOrMore): Π pattern: %regex.re -> %regex.re, normalize_quant;
+
+/// ## Apply regex
+///
+/// ### %regex.match
+///
+/// Matches a string against a %regex.re
+/// - %mem.M: mem object
+/// - pattern: the pattern to match
+/// - string: the text to match
+/// Returns: mem, bool: matched/not-matched, the matched string
+.ax %regex.match: Π [m: %mem.M, pattern: %regex.re, string: %mem.Ptr (.Idx 256, 0)] -> [%mem.M, .Idx 2, %mem.Ptr (.Idx 256, 0)];
