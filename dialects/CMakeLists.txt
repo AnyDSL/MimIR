@@ -201,6 +201,6 @@ add_thorin_plugin(regex
         regex/regex.cpp
         regex/normalizers_regex.cpp
     DEPENDS
-        compile
+        mem
     INSTALL
 )

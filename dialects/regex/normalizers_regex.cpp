@@ -80,6 +80,14 @@ bool compare_re(const Def* lhs, const Def* rhs) {
     return true;
 }
 
+void make_vector_unique(std::vector<const Def*>& args) {
+    std::stable_sort(args.begin(), args.end(), &compare_re);
+    {
+        auto newEnd = std::unique(args.begin(), args.end());
+        args.erase(newEnd, args.end());
+    }
+}
+
 void reduceLitsToClass(std::vector<const Def*>& args) {
     auto litBegin = args.begin();
     while (litBegin != args.end() && !thorin::match<lit>(*litBegin)) litBegin++;
@@ -135,22 +143,14 @@ void reduceLitsToClass(std::vector<const Def*>& args) {
     std::erase_if(args, [&toRemove](const Def* val) -> bool { return toRemove.contains(val); });
     std::copy(toInsert.begin(), toInsert.end(), std::back_inserter(args));
 
-    std::sort(args.begin(), args.end(), &compare_re);
-    {
-        auto newEnd = std::unique(args.begin(), args.end());
-        args.erase(newEnd, args.end());
-    }
+    make_vector_unique(args);
 }
 
 Ref normalize_disj(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
     if (arg->as_lit_arity() > 1) {
         auto newArgs = flatten_in_arg<disj>(arg);
-        std::sort(newArgs.begin(), newArgs.end(), &compare_re);
-        {
-            auto newEnd = std::unique(newArgs.begin(), newArgs.end());
-            newArgs.erase(newEnd, newArgs.end());
-        }
+        make_vector_unique(newArgs);
         reduceLitsToClass(newArgs);
 
         const Def* toRemove = nullptr;
