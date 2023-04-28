@@ -146,7 +146,7 @@ void ClosConv::rewrite_body(Lam* new_lam, Def2Def& subst) {
 
     auto filter = rewrite(new_fn->filter(), subst);
     auto body   = rewrite(new_fn->body(), subst);
-    new_fn->set(filter, body);
+    new_fn->reset({filter, body});
 }
 
 const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
@@ -295,7 +295,7 @@ ClosConv::Stub ClosConv::make_stub(const DefSet& fvs, Lam* old_lam, Def2Def& sub
             new_ext_lam->app(false, new_lam, clos_insert_env(env, new_ext_lam->var()));
             new_lam->set(old_lam->filter(), old_lam->body());
         } else {
-            new_ext_lam->set((const Def*)nullptr, (const Def*)nullptr);
+            new_ext_lam->unset();
             new_lam->app(false, new_ext_lam, clos_remove_env(new_lam->var()));
         }
     } else {

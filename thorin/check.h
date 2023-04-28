@@ -19,6 +19,7 @@ public:
     ///@{
     const Def* op() const { return Def::op(0); }
     Infer* set(const Def* op) { return Def::set(0, op)->as<Infer>(); }
+    Infer* reset(const Def* op) { return Def::reset(0, op)->as<Infer>(); }
     ///@}
 
     /// @name union-find

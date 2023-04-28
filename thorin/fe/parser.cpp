@@ -623,10 +623,15 @@ void Parser::parse_ax() {
         error(ax.loc(), "all declarations of axiom '{}' have to be function types if any is", ax);
     info.pi = type->isa<Pi>() != nullptr;
 
-    auto normalizer_name = accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom").sym : Sym();
-    if (!is_new && (info.normalizer && normalizer_name) && info.normalizer != normalizer_name)
+    Sym normalizer;
+    if (ahead().isa(Tok::Tag::T_comma) && ahead(1).isa(Tok::Tag::M_id)) {
+        lex();
+        normalizer = parse_sym("normalizer of an axiom").sym;
+    }
+
+    if (!is_new && (info.normalizer && normalizer) && info.normalizer != normalizer)
         error(ax.loc(), "all declarations of axiom '{}' must use the same normalizer name", ax);
-    info.normalizer = normalizer_name;
+    info.normalizer = normalizer;
 
     auto [curry, trip] = Axiom::infer_curry_and_trip(type);
 
@@ -727,10 +732,10 @@ Lam* Parser::parse_lam(bool decl) {
     auto outer = scopes_.curr();
     scopes_.push();
 
-    std::deque<std::pair<Pi*, Lam*>> funs;
+    std::deque<std::tuple<Pi*, Lam*, const Def*>> funs;
     Lam* first = nullptr;
     do {
-        const Def* filter = world().lit_bool(accept(Tok::Tag::T_bang).has_value());
+        const Def* filter = accept(Tok::Tag::T_bang) ? world().lit_tt() : nullptr;
         bool implicit     = accept(Tok::Tag::T_dot).has_value();
         auto dom_p        = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda", prec);
         auto dom_t        = dom_p->type(world(), def2fields_);
@@ -746,7 +751,8 @@ Lam* Parser::parse_lam(bool decl) {
 
         dom_p->bind(scopes_, lam_var);
 
-        if (accept(Tok::Tag::T_at)) {
+        if (auto tok = accept(Tok::Tag::T_at)) {
+            if (filter) error(tok->loc(), "filter already specified via '!'");
             if (accept(Tok::Tag::T_at)) {
                 filter = world().lit_tt();
             } else {
@@ -755,16 +761,15 @@ Lam* Parser::parse_lam(bool decl) {
                 expect(Tok::Tag::D_paren_r, "closing parenthesis of a filter");
             }
         }
-        lam->set_filter(filter);
 
-        funs.emplace_back(std::pair(pi, lam));
+        funs.emplace_back(std::tuple(pi, lam, filter));
     } while (!ahead().isa(Tok::Tag::T_arrow) && !ahead().isa(Tok::Tag::T_assign) &&
              !ahead().isa(Tok::Tag::T_semicolon));
 
     auto codom = is_cn                     ? world().type_bot()
                : accept(Tok::Tag::T_arrow) ? parse_expr("return type of a lambda", Tok::Prec::Arrow)
                                            : world().mut_infer_type();
-    for (auto [pi, lam] : funs | std::ranges::views::reverse) {
+    for (auto [pi, lam, _] : funs | std::ranges::views::reverse) {
         // First, connect old codom to lam. Otherwise, scope will not find it.
         pi->set_codom(codom);
         Scope scope(lam);
@@ -772,9 +777,9 @@ Lam* Parser::parse_lam(bool decl) {
         rw.map(lam->var(), pi->var()->set(lam->var()->dbg()));
 
         // Now update.
-        codom = rw.rewrite(codom);
-        pi->set_codom(codom);
-
+        auto dom = pi->dom();
+        codom    = rw.rewrite(codom);
+        pi->reset({dom, codom});
         codom = pi;
     }
 
@@ -783,12 +788,11 @@ Lam* Parser::parse_lam(bool decl) {
     auto body = accept(Tok::Tag::T_assign) ? parse_decls("body of a lambda") : nullptr;
     if (!body) {
         if (!decl) error(prev(), "body of a lambda expression is mandatory");
-        // TODO error message if filter is non .ff
-        funs.back().second->unset(0);
+        if (auto [_, __, filter] = funs.back(); filter) error(prev(), "cannot specify filter of a lambda declaration");
     }
 
-    for (auto [_, lam] : funs | std::ranges::views::reverse) {
-        lam->set_body(body);
+    for (auto [_, lam, filter] : funs | std::ranges::views::reverse) {
+        if (body) lam->set(filter ? filter : world().lit_ff(), body);
         body = lam;
     }
 

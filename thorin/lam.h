@@ -60,6 +60,7 @@ public:
 
     /// @name Setters
     ///@{
+    /// @see @ref set_ops "Setting Ops"
     Pi* set_dom(const Def* dom) { return Def::set(0, dom)->as<Pi>(); }
     Pi* set_dom(Defs doms);
     Pi* set_codom(const Def* codom) { return Def::set(1, codom)->as<Pi>(); }
@@ -95,7 +96,6 @@ public:
     ///@}
 
     /// @name dom
-    ///@{
     ///@{
     /// @see @ref proj
     Ref dom() const { return type()->dom(); }
@@ -138,14 +138,11 @@ public:
     /// lam1->app(true, f, arg);
     /// lam2->app(my_filter_def, f, arg);
     /// ```
+    /// @see @ref set_ops "Setting Ops"
     using Filter = std::variant<bool, const Def*>;
-    Lam* set(Defs ops) { return Def::set(ops)->as<Lam>(); }
-    Lam* set(Filter filter, const Def* body) {
-        set_filter(filter);
-        return set_body(body);
-    }
-    Lam* set_filter(Filter);
-    Lam* set_body(const Def* body) { return Def::set(1, body)->as<Lam>(); }
+    Lam* set(Filter filter, const Def* body) { return set_filter(filter)->set_body(body); }
+    Lam* set_filter(Filter);                                                ///< Set filter first.
+    Lam* set_body(const Def* body) { return Def::set(1, body)->as<Lam>(); } ///< Set body second.
     /// Set body to an App of @p callee and @p arg.
     Lam* app(Filter filter, const Def* callee, const Def* arg);
     /// Set body to an App of @p callee and @p args.
@@ -153,6 +150,7 @@ public:
     /// Set body to an App of `(f, t)#cond mem`.
     Lam* branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem);
     Lam* test(Filter filter, const Def* val, const Def* idx, const Def* match, const Def* clash, const Def* mem);
+    Lam* set(Defs ops) { return Def::set(ops)->as<Lam>(); }
     ///@}
 
     Lam* stub(World&, Ref) override;

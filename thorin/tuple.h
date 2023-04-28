@@ -16,6 +16,7 @@ private:
 public:
     /// @name Setters
     ///@{
+    /// @see @ref set_ops "Setting Ops"
     Sigma* set(size_t i, const Def* def) { return Def::set(i, def)->as<Sigma>(); }
     Sigma* set(Defs ops) { return Def::set(ops)->as<Sigma>(); }
     ///@}
@@ -56,6 +57,11 @@ public:
     ///@{
     const Def* shape() const { return op(0); }
     const Def* body() const { return op(1); }
+    ///@}
+
+    /// @name Setters
+    ///@{
+    /// @see @ref set_ops "Setting Ops"
     Arr* set_shape(const Def* shape) { return Def::set(0, shape)->as<Arr>(); }
     Arr* set_body(const Def* body) { return Def::set(1, body)->as<Arr>(); }
     ///@}
@@ -87,6 +93,11 @@ public:
     const Def* body() const { return op(0); }
     const Arr* type() const { return Def::type()->as<Arr>(); }
     const Def* shape() const { return type()->shape(); }
+    ///@}
+
+    /// @name Setters
+    ///@{
+    /// @see @ref set_ops "Setting Ops"
     Pack* set(const Def* body) { return Def::set(0, body)->as<Pack>(); }
     ///@}
 

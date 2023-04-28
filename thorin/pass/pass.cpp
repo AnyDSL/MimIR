@@ -30,7 +30,7 @@ void PassMan::pop_states(size_t undo) {
         for (size_t i = 0, e = curr_state().data.size(); i != e; ++i) passes_[i]->dealloc(curr_state().data[i]);
 
         if (undo != 0) // only reset if not final cleanup
-            curr_state().curr_mut->set(curr_state().old_ops);
+            curr_state().curr_mut->reset(curr_state().old_ops);
 
         states_.pop_back();
     }
@@ -51,7 +51,7 @@ void PassMan::run() {
     auto externals = std::vector(world().externals().begin(), world().externals().end());
     for (const auto& [_, mut] : externals) {
         analyzed(mut);
-        curr_state().stack.push(mut);
+        if (mut->is_set()) curr_state().stack.push(mut);
     }
 
     while (!curr_state().stack.empty()) {
@@ -65,7 +65,7 @@ void PassMan::run() {
             if (pass->inspect()) pass->enter();
 
         curr_mut_->world().DLOG("curr_mut: {} : {}", curr_mut_, curr_mut_->type());
-        for (size_t i = 0, e = curr_mut_->num_ops(); i != e; ++i) curr_mut_->set(i, rewrite(curr_mut_->op(i)));
+        for (size_t i = 0, e = curr_mut_->num_ops(); i != e; ++i) curr_mut_->reset(i, rewrite(curr_mut_->op(i)));
 
         world().VLOG("=== analyze ===");
         proxy_    = false;
@@ -133,7 +133,7 @@ undo_t PassMan::analyze(Ref def) {
     if (!def->dep() || analyzed(def)) {
         // do nothing
     } else if (auto mut = def->isa_mut()) {
-        curr_state().stack.push(mut);
+        if (mut->is_set()) curr_state().stack.push(mut);
     } else if (auto proxy = def->isa<Proxy>()) {
         proxy_ = true;
         undo   = passes_[proxy->pass()]->analyze(proxy);

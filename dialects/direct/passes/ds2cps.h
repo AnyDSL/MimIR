@@ -7,8 +7,10 @@ namespace thorin::direct {
 
 /// Converts direct style function to cps functions.
 /// To do so, for each (non-type-level) ds function a corresponding cps function is created:
-/// `f: Π a : A -> B`
-/// `f_cps : cn[a:A, cn B]`
+/// ```
+/// f:     Π a: A -> B
+/// f_cps: .Cn [a: A, .Cn B]
+/// ```
 /// Only the type signature of the function is changed and the body is wrapped in the newly added return continuation.
 /// (Technical detail: the arguments are substituted to fit the new function)
 ///

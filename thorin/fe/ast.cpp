@@ -41,11 +41,10 @@ const Def* TuplePtrn::type(World& world, Def2Fields& def2fields) const {
     if (std::ranges::all_of(ptrns_, [](auto&& b) { return b->is_anonymous(); }))
         return type_ = world.sigma(ops)->set(loc());
 
-    assert(ptrns().size() > 0);
-
+    assert(n > 0);
     auto type  = world.umax<Sort::Type>(ops);
     auto sigma = world.mut_sigma(type, n)->set(loc(), sym());
-    assert_emplace(def2fields, sigma, Array<Sym>(n, [&](size_t i) { return ptrn(i)->sym(); }));
+    assert_emplace(def2fields, sigma, Array<Sym>(n, [this](size_t i) { return ptrn(i)->sym(); }));
 
     sigma->set(0, ops[0]);
     for (size_t i = 1; i != n; ++i) {
@@ -55,7 +54,8 @@ const Def* TuplePtrn::type(World& world, Def2Fields& def2fields) const {
 
     thorin::Scope scope(sigma);
     ScopeRewriter rw(world, scope);
-    for (size_t i = 1; i != n; ++i) sigma->set(i, rw.rewrite(ops[i]));
+    sigma->reset(0, ops[0]);
+    for (size_t i = 1; i != n; ++i) sigma->reset(i, rw.rewrite(ops[i]));
 
     if (auto imm = sigma->immutabilize()) return type_ = imm;
 

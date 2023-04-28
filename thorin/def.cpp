@@ -236,9 +236,9 @@ const Def* Def::refine(size_t i, const Def* new_op) const {
  * Def
  */
 
-Sym Def::get_sym(const char* s) const { return world().sym(s); }
-Sym Def::get_sym(std::string_view s) const { return world().sym(s); }
-Sym Def::get_sym(std::string s) const { return world().sym(std::move(s)); }
+Sym Def::sym(const char* s) const { return world().sym(s); }
+Sym Def::sym(std::string_view s) const { return world().sym(s); }
+Sym Def::sym(std::string s) const { return world().sym(std::move(s)); }
 
 World& Def::world() const {
     if (isa<Univ>()) return *world_;
@@ -359,34 +359,48 @@ void Def::finalize() {
     }
 }
 
+// clang-format off
+Def* Def::  set(Defs ops) { assert(ops.size() == num_ops()); for (size_t i = 0, e = num_ops(); i != e; ++i)   set(i, ops[i]); return this; }
+Def* Def::reset(Defs ops) { assert(ops.size() == num_ops()); for (size_t i = 0, e = num_ops(); i != e; ++i) reset(i, ops[i]); return this; }
+// clang-format on
+
 Def* Def::set(size_t i, const Def* def) {
-    if (op(i) == def) return this;
-    if (op(i) != nullptr) unset(i);
+    assert(def && !op(i) && curr_op_ == i);
+#ifndef NDEBUG
+    curr_op_ = (curr_op_ + 1) % num_ops();
+#endif
+    ops_ptr()[i]  = def;
+    const auto& p = def->uses_.emplace(this, i);
+    assert_unused(p.second);
 
-    if (def != nullptr) {
-        assert(i < num_ops() && "index out of bounds");
-        ops_ptr()[i]  = def;
-        const auto& p = def->uses_.emplace(this, i);
-        assert_unused(p.second);
+    if (i == num_ops() - 1) {
+        check();
+        update();
+    }
 
-        // TODO check that others are set
-        if (i == num_ops() - 1) {
-            check();
-            update();
+    return this;
+}
+
+Def* Def::unset() {
+#ifndef NDEBUG
+    curr_op_ = 0;
+#endif
+    for (size_t i = 0, e = num_ops(); i != e; ++i) {
+        if (op(i))
+            unset(i);
+        else {
+            assert(std::all_of(ops_ptr() + i + 1, ops_ptr() + num_ops(), [](auto op) { return !op; }));
+            break;
         }
-    } else {
-        world().WLOG("You shouldn't invoke with nullptr: 'Def::set({}, nullptr)'", i);
     }
     return this;
 }
 
-void Def::unset(size_t i) {
-    assert(i < num_ops() && "index out of bounds");
-    auto def = op(i);
-    assert(def->uses_.contains(Use(this, i)));
-    def->uses_.erase(Use(this, i));
-    assert(!def->uses_.contains(Use(this, i)));
+Def* Def::unset(size_t i) {
+    assert(op(i) && op(i)->uses_.contains(Use(this, i)));
+    op(i)->uses_.erase(Use(this, i));
     ops_ptr()[i] = nullptr;
+    return this;
 }
 
 Def* Def::set_type(const Def* type) {
@@ -399,7 +413,6 @@ Def* Def::set_type(const Def* type) {
 void Def::unset_type() {
     assert(type_->uses_.contains(Use(this, Use::Type)));
     type_->uses_.erase(Use(this, Use::Type));
-    assert(!type_->uses_.contains(Use(this, Use::Type)));
     type_ = nullptr;
 }
 

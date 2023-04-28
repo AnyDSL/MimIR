@@ -24,8 +24,9 @@ void LowerTypedClos::start() {
         lvm_ = lvm;
         world().DLOG("in {} (lvm={}, lcm={})", lam, lvm_, lcm_);
         if (lam->is_set()) {
-            lam->set_filter(rewrite(lam->filter()));
-            lam->set_body(rewrite(lam->body()));
+            auto new_f = rewrite(lam->filter());
+            auto new_b = rewrite(lam->body());
+            lam->reset({new_f, new_b});
         }
     }
 }
@@ -46,9 +47,9 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
     }));
     if (Lam::isa_basicblock(lam) && adjust_bb_type) new_dom = insert_ret(new_dom, dummy_ret_->type());
     auto new_type = w.cn(new_dom);
-    auto new_lam  = lam->stub(w, new_type)->set(lam->sym());
+    auto new_lam  = lam->stub(w, new_type);
     w.DLOG("stub {} ~> {}", lam, new_lam);
-    new_lam->set(lam->filter(), lam->body());
+    if (lam->is_set()) new_lam->set(lam->filter(), lam->body());
     if (lam->is_external()) {
         lam->make_internal();
         new_lam->make_external();

@@ -168,19 +168,19 @@ THORIN_ENUM_OPERATORS(Dep)
 
 // clang-format off
 /// Use as mixin to declare setters for Def::loc \& Def::name using a *covariant* return type.
-#define THORIN_SETTERS_(T)                                                                                                  \
-public:                                                                                                                     \
-    template<bool Ow = false> const T* set(Loc l               ) const { if (Ow || !dbg_.loc) dbg_.loc = l;  return this; } \
-    template<bool Ow = false>       T* set(Loc l               )       { if (Ow || !dbg_.loc) dbg_.loc = l;  return this; } \
-    template<bool Ow = false> const T* set(       Sym s        ) const { if (Ow || !dbg_.sym) dbg_.sym = s;  return this; } \
-    template<bool Ow = false>       T* set(       Sym s        )       { if (Ow || !dbg_.sym) dbg_.sym = s;  return this; } \
-    template<bool Ow = false> const T* set(       std::string s) const {         set(get_sym(std::move(s))); return this; } \
-    template<bool Ow = false>       T* set(       std::string s)       {         set(get_sym(std::move(s))); return this; } \
-    template<bool Ow = false> const T* set(Loc l, Sym s        ) const { set(l); set(s);                     return this; } \
-    template<bool Ow = false>       T* set(Loc l, Sym s        )       { set(l); set(s);                     return this; } \
-    template<bool Ow = false> const T* set(Loc l, std::string s) const { set(l); set(get_sym(std::move(s))); return this; } \
-    template<bool Ow = false>       T* set(Loc l, std::string s)       { set(l); set(get_sym(std::move(s))); return this; } \
-    template<bool Ow = false> const T* set(Dbg d) const { set(d.loc, d.sym); return this; }                                 \
+#define THORIN_SETTERS_(T)                                                                                                 \
+public:                                                                                                                    \
+    template<bool Ow = false> const T* set(Loc l               ) const { if (Ow || !dbg_.loc) dbg_.loc = l; return this; } \
+    template<bool Ow = false>       T* set(Loc l               )       { if (Ow || !dbg_.loc) dbg_.loc = l; return this; } \
+    template<bool Ow = false> const T* set(       Sym s        ) const { if (Ow || !dbg_.sym) dbg_.sym = s; return this; } \
+    template<bool Ow = false>       T* set(       Sym s        )       { if (Ow || !dbg_.sym) dbg_.sym = s; return this; } \
+    template<bool Ow = false> const T* set(       std::string s) const {         set(sym(std::move(s))); return this; }    \
+    template<bool Ow = false>       T* set(       std::string s)       {         set(sym(std::move(s))); return this; }    \
+    template<bool Ow = false> const T* set(Loc l, Sym s        ) const { set(l); set(s);                 return this; }    \
+    template<bool Ow = false>       T* set(Loc l, Sym s        )       { set(l); set(s);                 return this; }    \
+    template<bool Ow = false> const T* set(Loc l, std::string s) const { set(l); set(sym(std::move(s))); return this; }    \
+    template<bool Ow = false>       T* set(Loc l, std::string s)       { set(l); set(sym(std::move(s))); return this; }    \
+    template<bool Ow = false> const T* set(Dbg d) const { set(d.loc, d.sym); return this; }                                \
     template<bool Ow = false>       T* set(Dbg d)       { set(d.loc, d.sym); return this; }
 // clang-format on
 
@@ -265,22 +265,28 @@ public:
     size_t num_ops() const { return num_ops_; }
     ///@}
 
-    /// @name set/unset ops (mutables only)
+    /// @name Setting Ops (Mutables Only)
+    /// @anchor set_ops
     ///@{
-    /// You are supposed to set operands from left to right.
-    /// You can change operands later on or even Def::unset them.
-    /// @warning But Thorin assumes that a mutable is "final" if its last operands is set.
-    /// So, don't set the last operand and leave the first one unset.
-    Def* set(size_t i, const Def* def);
-    Def* set(Defs ops) {
-        for (size_t i = 0, e = num_ops(); i != e; ++i) set(i, ops[i]);
-        return this;
-    }
-
-    void unset(size_t i);
-    void unset() {
-        for (size_t i = 0, e = num_ops(); i != e; ++i) unset(i);
-    }
+    /// You can set and change the Def::ops of a mutable after construction.
+    /// However, you have to obey the following rules:
+    /// 1. If Def::is_set() is ...
+    ///     1. ... `false`, [set](@ref Def::set) the [operands](@ref Def::ops) from
+    ///         * left (`i == 0`) to
+    ///         * right (`i == num_ops() - 1`).
+    ///     2. ... `true`, [reset](@ref Def::reset) the operands from left to right as in 1a.
+    /// 2. In addition, you can invoke Def::unset() at *any time* to start over with 1a:
+    /// ```
+    /// mut->unset()->set({a, b, c}); // This will always work, but should be your last resort.
+    /// ```
+    ///
+    /// Thorin assumes that a mutable is *final*, when its last operand is set.
+    /// Then, Def::check() will be invoked.
+    Def* set(size_t i, const Def* def);                                    ///< Successively   set from left to right.
+    Def* reset(size_t i, const Def* def) { return unset(i)->set(i, def); } ///< Successively reset from left to right.
+    Def* set(Defs ops);                                                    ///< Def::set @p ops all at once.
+    Def* reset(Defs ops);                                                  ///< Def::reset @p ops all at once.
+    Def* unset(); ///< Unsets all Def::ops; works even, if not set at all or partially.
     Def* set_type(const Def*);
     void unset_type();
 
@@ -489,39 +495,47 @@ public:
     ///@}
 
 protected:
+    /// @name Wrappers for World::sym
+    ///@{
+    /// These are here to have Def::set%ters inline without including `thorin/world.h`.
+    Sym sym(const char*) const;
+    Sym sym(std::string_view) const;
+    Sym sym(std::string) const;
+    ///@}
+
+private:
+    Def* unset(size_t i);
     const Def** ops_ptr() const {
         return reinterpret_cast<const Def**>(reinterpret_cast<char*>(const_cast<Def*>(this + 1)));
     }
     void finalize();
     bool equal(const Def* other) const;
 
+#ifndef NDEBUG
+    size_t curr_op_ = 0;
+#endif
+
+protected:
+    mutable Dbg dbg_;
     union {
         NormalizeFn normalizer_; ///< Axiom%s use this member to store their normalizer.
         const Axiom* axiom_;     /// Curried App%s of Axiom%s use this member to propagate the Axiom.
         mutable World* world_;
     };
-
-    /// @name Wrappers for World::sym
-    ///@{
-    /// These are here to have Def::set%ters inline without including `thorin/world.h`.
-    Sym get_sym(const char*) const;
-    Sym get_sym(std::string_view) const;
-    Sym get_sym(std::string) const;
-    ///@}
-
     flags_t flags_;
+    u8 curry_;
+    u8 trip_;
+
+private:
     uint8_t node_;
     bool mut_      : 1;
     bool external_ : 1;
     unsigned dep_  : 5;
     bool padding_  : 1;
-    u8 curry_;
-    u8 trip_;
     hash_t hash_;
     u32 gid_;
     u32 num_ops_;
     mutable Uses uses_;
-    mutable Dbg dbg_;
     const Def* type_;
 
     friend class World;
