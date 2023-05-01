@@ -307,7 +307,7 @@ public:
     /// Ascribes @p type to this tuple - needed for dependently typed and mutable Sigma%s.
     Ref tuple(Ref type, Defs ops);
     const Tuple* tuple() { return data_.tuple; } ///< the unit value of type `[]`
-    Ref tuple(Sym sym); ///< Converts @p sym to a tuple of type '«n; I8»'.
+    Ref tuple(Sym sym);                          ///< Converts @p sym to a tuple of type '«n; I8»'.
     ///@}
 
     /// @name Pack
