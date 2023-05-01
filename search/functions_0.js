@@ -1,8 +1,8 @@
 var searchData=
 [
   ['ac_0',['ac',['../classthorin_1_1World.html#a023c5a4536e5f204be98628f781b7913',1,'thorin::World::ac(Defs ops)'],['../classthorin_1_1World.html#a10c22edc7c87eab72864394721f9c01e',1,'thorin::World::ac(Ref type, Defs ops)']]],
-  ['accept_1',['accept',['../classthorin_1_1utf8_1_1Lexer.html#a1529c4a3eb02da85de1160f94079db93',1,'thorin::utf8::Lexer']]],
-  ['accept_5fif_2',['accept_if',['../classthorin_1_1utf8_1_1Lexer.html#a8501db85f043276bad22a6fb4e90df77',1,'thorin::utf8::Lexer']]],
+  ['accept_1',['accept',['../classthorin_1_1utf8_1_1Lexer.html#aad98aaeab92e0564b70811f5c37f9344',1,'thorin::utf8::Lexer']]],
+  ['accept_5fif_2',['accept_if',['../classthorin_1_1utf8_1_1Lexer.html#a7f8b21f6284ce65a9d369fcb764b4285',1,'thorin::utf8::Lexer']]],
   ['add_3',['add',['../classthorin_1_1PassMan.html#ac9820d74411d7c8462b6b055bbacea3c',1,'thorin::PassMan::add()'],['../classthorin_1_1Pipeline.html#a5aebd6ff23e4090ed5a1edb02fe7b824',1,'thorin::Pipeline::add()']]],
   ['add_5fimport_4',['add_import',['../classthorin_1_1Driver.html#a6801247588172d274cf3fb8cf73441bd',1,'thorin::Driver']]],
   ['add_5fpass_5',['add_pass',['../classthorin_1_1PipelineBuilder.html#a14747e807e83b7032f1116e5f8e3274f',1,'thorin::PipelineBuilder']]],

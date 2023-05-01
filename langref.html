@@ -390,9 +390,9 @@ Patterns</h2>
 <li><code>abc</code> to <code>(1, 2, 3)</code>.</li>
 </ul>
 <p >Here is another example: </p><div class="fragment"><div class="line">Π.Tas::[T: *, as: .Nat][%mem.M, %mem.Ptr Tas] -&gt; [%mem.M, T]</div>
-</div><!-- fragment --><p >Finally, you can put a <code>'</code> in front of an identifier of a <code>()</code>-style pattern to (potentially) rebind a name to a different value. This is particularly useful, when dealing with memory: </p><div class="fragment"><div class="line">.let (&#39;mem, ptr) = %mem.alloc (I32, 0) mem;</div>
-<div class="line">.let &#39;mem        = %mem.store (mem, ptr, 23:I32);</div>
-<div class="line">.let (&#39;mem, val) = %mem.load (mem, ptr);</div>
+</div><!-- fragment --><p >Finally, you can put a <code>`</code> in front of an identifier of a <code>()</code>-style pattern to (potentially) rebind a name to a different value. This is particularly useful, when dealing with memory: </p><div class="fragment"><div class="line">.let (`mem, ptr) = %mem.alloc (I32, 0) mem;</div>
+<div class="line">.let `mem        = %mem.store (mem, ptr, 23:I32);</div>
+<div class="line">.let (`mem, val) = %mem.load (mem, ptr);</div>
 </div><!-- fragment --><table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Nonterminal   </th><th class="markdownTableHeadNone">Right-Hand Side   </th><th class="markdownTableHeadNone">Comment    </th></tr>

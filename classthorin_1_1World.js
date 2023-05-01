@@ -133,6 +133,7 @@ var classthorin_1_1World =
     [ "tuple", "classthorin_1_1World.html#aab07faf7e542e9f83c32e7bc09ab4e73", null ],
     [ "tuple", "classthorin_1_1World.html#ad9f473a8720b1aa86afac4b27b401d9c", null ],
     [ "tuple", "classthorin_1_1World.html#a166b6bdf420d1ed769f2f02d9f53681f", null ],
+    [ "tuple", "classthorin_1_1World.html#a0c47c38f424ffe15056190c1fa0e401d", null ],
     [ "type", "classthorin_1_1World.html#a547396d2548b4e8ff9ce6d9bc4107263", null ],
     [ "type", "classthorin_1_1World.html#afca7fe4bfa5b9da3c938804c4226ece3", null ],
     [ "type_bool", "classthorin_1_1World.html#aaac3814465e3fe9219072a6cd98c7aab", null ],
