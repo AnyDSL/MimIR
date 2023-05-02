@@ -160,6 +160,8 @@ The following tables comprise all production rules:
 | d           | `.Sigma` Sym (`:` e<sub>type</sub> )? (`,` L<sub>arity</sub>)? (`=` b<sub>[ ]</sub>)? `;` | sigma declaration        | [Sigma](@ref thorin::Sigma) |
 <sup>s</sup> opens new scope
 
+An elided type of a `.Pi` or `.Sigma` declaration defaults to `*`.
+
 ### Patterns
 
 Patterns allow you to decompose a value into its components like in [Standard ML](https://en.wikibooks.org/wiki/Standard_ML_Programming/Types#Tuples) or other functional languages.
@@ -233,7 +235,7 @@ This is particularly useful, when dealing with memory:
 | e           | Sym                                                                           | identifier                              | -                               |
 | e           | Ax                                                                            | use of an axiom                         | -                               |
 | e           | e e                                                                           | application                             | [App](@ref thorin::App)         |
-| e           | `.ret` p `=` e `:` e `;` e                                                    | ret expresison                          | [App](@ref thorin::App)         |
+| e           | `.ret` p `=` e `$` e `;` de                                                   | ret expresison                          | [App](@ref thorin::App)         |
 | e           | `λ`   (`.`? p)+ (`→` e<sub>codom</sub>)? `=` de                               | lambda expression<sup>s</sup>           | [Lam](@ref thorin::Lam)         |
 | e           | `.cn` (`.`? p)+                          `=` de                               | continuation expression<sup>s</sup>     | [Lam](@ref thorin::Lam)         |
 | e           | `.fn` (`.`? p)+ (`→` e<sub>codom</sub>)? `=` de                               | function expression<sup>s</sup>         | [Lam](@ref thorin::Lam)         |
