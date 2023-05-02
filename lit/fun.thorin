@@ -11,8 +11,8 @@
 .fun foo(mem: %mem.M, x: I32)@(%core.icmp.e (x, 23:I32)) -> [%mem.M, I32]  = return (mem, %core.wrap.add 0 (x, 1:I32));
 
 .fun .extern main(mem: %mem.M, argc: I32, argv: Ptr (Ptr (.Idx 256))) -> [%mem.M, I32] = {
-    .ret ('mem, x) = foo : (mem, 23:I32); 
-    .ret ('mem, y) = foo : (mem, 23:I32); 
+    .ret (`mem, x) = foo $ (mem, 23:I32); 
+    .ret (`mem, y) = foo $ (mem, 23:I32); 
     return (mem, %core.wrap.add 0 (x, y))
 };
 
@@ -29,7 +29,7 @@
 .let F3 =.Fn[T:*][T, T] -> T;
 
 
-.let _ = .ret res = f1 .Nat : (23, 42); res;
+.let _ = .ret res = f1 .Nat $ (23, 42); res;
 .let _ = f1 .Nat ((23, 42), .cn res: .Nat = res);
 
 // CHECK-DAG: return{{.*}}48

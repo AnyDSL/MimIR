@@ -6,6 +6,8 @@ using namespace std::literals;
 
 namespace thorin::fe {
 
+using Tag = Tok::Tag;
+
 namespace {
 bool issign(char32_t i) { return i == '+' || i == '-'; }
 bool issubscsr(char32_t i) { return U'₀' <= i && i <= U'₉'; }
@@ -15,12 +17,12 @@ Lexer::Lexer(World& world, std::istream& istream, const fs::path* path /*= nullp
     : Super(istream, path)
     , world_(world)
     , md_(md) {
-#define CODE(t, str) keywords_[world.sym(str)] = Tok::Tag::t;
+#define CODE(t, str) keywords_[world.sym(str)] = Tag::t;
     THORIN_KEY(CODE)
 #undef CODE
 
 #define CODE(str, t) \
-    if (Tok::Tag::t != Tok::Tag::Nil) keywords_[world.sym(str)] = Tok::Tag::t;
+    if (Tag::t != Tag::Nil) keywords_[world.sym(str)] = Tag::t;
     THORIN_SUBST(CODE)
 #undef CODE
 
@@ -46,55 +48,56 @@ Tok Lexer::lex() {
         if (accept_if(isspace)) continue;
 #endif
         if (accept(utf8::Err)) error(loc_, "invalid UTF-8 character");
-        if (accept(utf8::EoF)) return tok(Tok::Tag::M_eof);
+        if (accept(utf8::EoF)) return tok(Tag::M_eof);
 
         // clang-format off
         // delimiters
-        if (accept( '(')) return tok(Tok::Tag::D_paren_l);
-        if (accept( ')')) return tok(Tok::Tag::D_paren_r);
-        if (accept( '[')) return tok(Tok::Tag::D_brckt_l);
-        if (accept( ']')) return tok(Tok::Tag::D_brckt_r);
-        if (accept( '{')) return tok(Tok::Tag::D_brace_l);
-        if (accept( '}')) return tok(Tok::Tag::D_brace_r);
-        if (accept(U'«')) return tok(Tok::Tag::D_quote_l);
-        if (accept(U'»')) return tok(Tok::Tag::D_quote_r);
-        if (accept(U'⟪')) return tok(Tok::Tag::D_quote_l);
-        if (accept(U'⟫')) return tok(Tok::Tag::D_quote_r);
-        if (accept(U'‹')) return tok(Tok::Tag::D_angle_l);
-        if (accept(U'›')) return tok(Tok::Tag::D_angle_r);
-        if (accept(U'⟨')) return tok(Tok::Tag::D_angle_l);
-        if (accept(U'⟩')) return tok(Tok::Tag::D_angle_r);
+        if (accept( '(')) return tok(Tag::D_paren_l);
+        if (accept( ')')) return tok(Tag::D_paren_r);
+        if (accept( '[')) return tok(Tag::D_brckt_l);
+        if (accept( ']')) return tok(Tag::D_brckt_r);
+        if (accept( '{')) return tok(Tag::D_brace_l);
+        if (accept( '}')) return tok(Tag::D_brace_r);
+        if (accept(U'«')) return tok(Tag::D_quote_l);
+        if (accept(U'»')) return tok(Tag::D_quote_r);
+        if (accept(U'⟪')) return tok(Tag::D_quote_l);
+        if (accept(U'⟫')) return tok(Tag::D_quote_r);
+        if (accept(U'‹')) return tok(Tag::D_angle_l);
+        if (accept(U'›')) return tok(Tag::D_angle_r);
+        if (accept(U'⟨')) return tok(Tag::D_angle_l);
+        if (accept(U'⟩')) return tok(Tag::D_angle_r);
         if (accept( '<')) {
-            if (accept( '<')) return tok(Tok::Tag::D_quote_l);
-            return tok(Tok::Tag::D_angle_l);
+            if (accept( '<')) return tok(Tag::D_quote_l);
+            return tok(Tag::D_angle_l);
         }
         if (accept( '>')) {
-            if (accept( '>')) return tok(Tok::Tag::D_quote_r);
-            return tok(Tok::Tag::D_angle_r);
+            if (accept( '>')) return tok(Tag::D_quote_r);
+            return tok(Tag::D_angle_r);
         }
         // further tokens
-        if (accept('\'')) return tok(Tok::Tag::T_apos);
-        if (accept(U'→')) return tok(Tok::Tag::T_arrow);
-        if (accept( '@')) return tok(Tok::Tag::T_at);
-        if (accept( '=')) return tok(Tok::Tag::T_assign);
-        if (accept( '!')) return tok(Tok::Tag::T_bang);
-        if (accept(U'⊥')) return tok(Tok::Tag::T_bot);
-        if (accept(U'⊤')) return tok(Tok::Tag::T_top);
-        if (accept(U'□')) return tok(Tok::Tag::T_box);
-        if (accept( ',')) return tok(Tok::Tag::T_comma);
-        if (accept( '#')) return tok(Tok::Tag::T_extract);
-        if (accept(U'λ')) return tok(Tok::Tag::T_lm);
-        if (accept(U'Π')) return tok(Tok::Tag::T_Pi);
-        if (accept( ';')) return tok(Tok::Tag::T_semicolon);
-        if (accept(U'★')) return tok(Tok::Tag::T_star);
-        if (accept( '*')) return tok(Tok::Tag::T_star);
+        if (accept('`'))  return tok(Tag::T_backtick);
+        if (accept(U'→')) return tok(Tag::T_arrow);
+        if (accept( '@')) return tok(Tag::T_at);
+        if (accept( '=')) return tok(Tag::T_assign);
+        if (accept( '!')) return tok(Tag::T_bang);
+        if (accept(U'⊥')) return tok(Tag::T_bot);
+        if (accept(U'⊤')) return tok(Tag::T_top);
+        if (accept(U'□')) return tok(Tag::T_box);
+        if (accept( ',')) return tok(Tag::T_comma);
+        if (accept( '$')) return tok(Tag::T_dollar);
+        if (accept( '#')) return tok(Tag::T_extract);
+        if (accept(U'λ')) return tok(Tag::T_lm);
+        if (accept(U'Π')) return tok(Tag::T_Pi);
+        if (accept( ';')) return tok(Tag::T_semicolon);
+        if (accept(U'★')) return tok(Tag::T_star);
+        if (accept( '*')) return tok(Tag::T_star);
         if (accept( ':')) {
-            if (accept( ':')) return tok(Tok::Tag::T_colon_colon);
-            return tok(Tok::Tag::T_colon);
+            if (accept( ':')) return tok(Tag::T_colon_colon);
+            return tok(Tag::T_colon);
         }
         if (accept( '|')) {
             if (accept('~')) {
-                if (accept('|')) return tok(Tok::Tag::T_Pi);
+                if (accept('|')) return tok(Tag::T_Pi);
             }
             error(loc_, "invalid input char '{}'; maybe you wanted to use '|~|'?", str_);
             continue;
@@ -102,7 +105,7 @@ Tok Lexer::lex() {
         // clang-format on
 
         if (accept('%')) {
-            if (lex_id()) return {loc(), Tok::Tag::M_ax, world().sym(str_)};
+            if (lex_id()) return {loc(), Tag::M_ax, world().sym(str_)};
             error(loc_, "invalid axiom name '{}'", str_);
         }
 
@@ -114,8 +117,8 @@ Tok Lexer::lex() {
                 assert(!cache_.has_value());
                 auto id_loc = loc();
                 ++id_loc.begin.col;
-                cache_.emplace(id_loc, Tok::Tag::M_id, world().sym(str_.substr(1)));
-                return {loc().anew_begin(), Tok::Tag::T_dot};
+                cache_.emplace(id_loc, Tag::M_id, world().sym(str_.substr(1)));
+                return {loc().anew_begin(), Tag::T_dot};
             }
 
             if (accept_if(isdigit)) {
@@ -124,10 +127,23 @@ Tok Lexer::lex() {
                 return {loc_, f64(strtod(str_.c_str(), nullptr))};
             }
 
-            return tok(Tok::Tag::T_dot);
+            return tok(Tag::T_dot);
         }
 
-        if (lex_id()) return {loc(), Tok::Tag::M_id, world().sym(str_)};
+        if (accept('\'')) {
+            auto c = lex_char();
+            if (accept('\'')) return {loc(), c};
+            error(loc_, "invalid character literal {}", str_);
+            continue;
+        }
+
+        if (accept('\"', false)) {
+            while (lex_char() != '"') {}
+            str_.pop_back(); // remove final '"'
+            return {loc_, Tag::M_str, world().sym(str_)};
+        }
+
+        if (lex_id()) return {loc(), Tag::M_id, world().sym(str_)};
 
         if (isdigit(ahead()) || issign(ahead())) {
             if (auto lit = parse_lit()) return *lit;
@@ -175,7 +191,7 @@ std::optional<Tok> Lexer::parse_lit() {
     if (accept('+', false)) {
         sign = false;
     } else if (accept('-', false)) {
-        if (accept('>')) return tok(Tok::Tag::T_arrow);
+        if (accept('>')) return tok(Tag::T_arrow);
         sign = true;
     }
 
@@ -224,7 +240,9 @@ std::optional<Tok> Lexer::parse_lit() {
             parse_digits(base);
         }
 
-        is_float |= parse_exp(base);
+        bool has_exp = parse_exp(base);
+        if (base == 16 && is_float && !has_exp) error(loc_, "hexadecimal floating constants require an exponent");
+        is_float |= has_exp;
     }
 
     if (sign && str_.empty()) {
@@ -258,14 +276,34 @@ bool Lexer::parse_exp(int base /*= 10*/) {
         parse_digits();
         return true;
     }
-
-    if (base == 16) {
-        error(loc_, "hexadecimal floating constants require an exponent");
-        return {};
-    }
     return false;
 }
 // clang-format on
+
+char8_t Lexer::lex_char() {
+    if (accept('\\', false)) {
+        // clang-format off
+        if (false) {}
+        else if (accept('\'', false)) str_ += '\'';
+        else if (accept('\\', false)) str_ += '\\';
+        else if (accept( '"', false)) str_ += '\"';
+        else if (accept( '0', false)) str_ += '\0';
+        else if (accept( 'a', false)) str_ += '\a';
+        else if (accept( 'b', false)) str_ += '\b';
+        else if (accept( 'f', false)) str_ += '\f';
+        else if (accept( 'n', false)) str_ += '\n';
+        else if (accept( 'r', false)) str_ += '\r';
+        else if (accept( 't', false)) str_ += '\t';
+        else if (accept( 'v', false)) str_ += '\v';
+        else error(loc_.anew_finis(), "invalid escape character '\\{}'", (char)ahead().c32);
+        // clang-format on
+        return str_.back();
+    }
+    auto c = next();
+    str_ += c;
+    if (isascii(c.c32)) return c.c32;
+    error(loc_, "invalid character '{}'", (char)c.c32);
+}
 
 void Lexer::eat_comments() {
     while (true) {

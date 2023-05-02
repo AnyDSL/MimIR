@@ -254,11 +254,13 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::L_s:
         case Tag::L_u:
         case Tag::L_r:       return parse_lit_expr();
-        case Tag::M_id:      return scopes_.find(parse_sym());
-        case Tag::M_i:       return lex().index();
         case Tag::K_ins:     return parse_insert_expr();
         case Tag::K_ret:     return parse_ret_expr();
         case Tag::M_ax:      return scopes_.find(lex().dbg());
+        case Tag::M_char:    return world().lit_int(8, lex().c8());
+        case Tag::M_idx:     return lex().index();
+        case Tag::M_id:      return scopes_.find(parse_sym());
+        case Tag::M_str:     return world().tuple(lex().sym())->set(prev());
         default:
             if (ctxt.empty()) return nullptr;
             syntax_err("primary expression", ctxt);
@@ -378,7 +380,7 @@ Ref Parser::parse_pi_expr() {
         pi->set(dom->dbg());
         dom->bind(scopes_, var);
         pis.emplace_back(pi);
-    } while (ahead().isa(Tag::T_dot) || ahead().isa(Tag::D_brckt_l) || ahead().isa(Tag::T_apos)
+    } while (ahead().isa(Tag::T_dot) || ahead().isa(Tag::D_brckt_l) || ahead().isa(Tag::T_backtick)
              || (ahead(0).isa(Tag::M_id) && ahead(1).isa(Tag::T_colon_colon)));
 
     Ref codom;
@@ -552,7 +554,7 @@ Ref Parser::parse_ret_expr() {
     expect(Tag::T_assign, "let expression");
 
     auto cn = parse_expr("continuation expression of a ret expression");
-    expect(Tag::T_colon, "separator of a ret expression");
+    expect(Tag::T_dollar, "separator of a ret expression");
     if (auto ret_pi = Pi::ret_pi(cn->type())) {
         auto arg = parse_expr("argument of ret expression");
         expect(Tag::T_semicolon, "let expression");
@@ -624,8 +626,8 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok
         return parse_tuple_ptrn(track, false, sym);
     }
 
-    auto apos   = accept(Tag::T_apos);
-    bool rebind = apos.has_value();
+    auto backtick = accept(Tag::T_backtick);
+    bool rebind   = backtick.has_value();
 
     if (ahead(0).isa(Tag::M_id)) {
         // p ->  s::(p, ..., p)
@@ -672,7 +674,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok
         }
     } else if (b) {
         // b ->  e    where e != id
-        if (apos) error(apos->loc(), "you can only prefix identifiers with apostrophe for rebinding");
+        if (backtick) error(backtick->loc(), "you can only prefix identifiers with backtick for rebinding");
         auto type = parse_expr(ctxt, prec);
         return std::make_unique<IdPtrn>(track.dbg(sym), rebind, type);
     } else if (!ctxt.empty()) {

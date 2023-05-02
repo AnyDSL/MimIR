@@ -52,10 +52,12 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
 
 #define THORIN_TOK(m)                   \
     /* misc */                          \
-    m(M_eof, "<eof>"       )            \
-    m(M_id,  "<identifier>")            \
-    m(M_ax,  "<axiom name>")            \
-    m(M_i,   "<index>"     )            \
+    m(M_eof,  "<eof>"       )           \
+    m(M_char, "<char>"      )           \
+    m(M_str,  "<string>"    )           \
+    m(M_id,   "<identifier>")           \
+    m(M_ax,   "<axiom name>")           \
+    m(M_idx,  "<index>"     )           \
     /* delimiters */                    \
     m(D_angle_l,    "‹")                \
     m(D_angle_r,    "›")                \
@@ -69,10 +71,10 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(D_quote_r,    "»")                \
     /* further tokens */                \
     m(T_Pi,         "Π")                \
-    m(T_apos,       "'")                \
     m(T_arrow,      "→")                \
     m(T_assign,     "=")                \
     m(T_at,         "@")                \
+    m(T_backtick,   "`")                \
     m(T_bang,       "!")                \
     m(T_bot,        "⊥")                \
     m(T_top,        "⊤")                \
@@ -80,6 +82,7 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(T_colon,      ":")                \
     m(T_colon_colon,"::")               \
     m(T_comma,      ",")                \
+    m(T_dollar,     "$")                \
     m(T_dot,        ".")                \
     m(T_extract,    "#")                \
     m(T_lm,         "λ")                \
@@ -144,11 +147,15 @@ public:
     Tok(Loc loc, Tag tag)
         : loc_(loc)
         , tag_(tag) {}
+    Tok(Loc loc, char8_t c8)
+        : loc_(loc)
+        , tag_(Tag::M_char)
+        , c8_(c8) {}
     Tok(Loc loc, Tag tag, Sym sym)
         : loc_(loc)
         , tag_(tag)
         , sym_(sym) {
-        assert(tag == Tag::M_id || tag == Tag::M_ax);
+        assert(tag == Tag::M_id || tag == Tag::M_ax || tag == Tag::M_str);
     }
     Tok(Loc loc, u64 u)
         : loc_(loc)
@@ -164,7 +171,7 @@ public:
         , u_(std::bit_cast<u64>(r)) {}
     Tok(Loc loc, const Def* index)
         : loc_(loc)
-        , tag_(Tag::M_i)
+        , tag_(Tag::M_idx)
         , index_(index) {}
 
     bool isa(Tag tag) const { return tag == tag_; }
@@ -172,9 +179,10 @@ public:
     Dbg dbg() const { return {loc(), sym()}; }
     Loc loc() const { return loc_; }
     // clang-format off
+    char8_t c8()       const { assert(isa(Tag::M_char)); return c8_; }
     u64 u()            const { assert(isa(Tag::L_u ) || isa(Tag::L_s) || isa(Tag::L_r)); return u_; }
-    Sym sym()          const { assert(isa(Tag::M_id) || isa(Tag::M_ax)); return sym_; }
-    const Def* index() const { assert(isa(Tag::M_i)); return index_; }
+    Sym sym()          const { assert(isa(Tag::M_ax) || isa(Tag::M_id) || isa(Tag::M_str)); return sym_; }
+    const Def* index() const { assert(isa(Tag::M_idx)); return index_; }
     // clang-format on
     friend std::ostream& operator<<(std::ostream&, Tok);
 
@@ -184,6 +192,7 @@ private:
     union {
         Sym sym_;
         u64 u_;
+        char8_t c8_;
         const Def* index_;
     };
 };
