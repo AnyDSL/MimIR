@@ -852,11 +852,13 @@ void Parser::parse_sigma_decl() {
         Def* decl;
         if (auto def = scopes_.query(dbg)) {
             decl = def->as_mut();
-            if (auto sigma = def->isa_mut<Sigma>(); sigma && arity && arity != sigma->as_lit_arity())
-                error(dbg.loc, "sigma '{}', redeclared with different arity '{}'; previous arity was '{}' here: {}",
-                          dbg.sym, *arity, sigma->as_lit_arity(), sigma->loc());
-            else if (!def->isa<Infer>())
+            if (auto sigma = def->isa_mut<Sigma>()) {
+                if (arity && arity != sigma->as_lit_arity())
+                    error(dbg.loc, "sigma '{}', redeclared with different arity '{}'; previous arity was '{}' here: {}",
+                            dbg.sym, *arity, sigma->as_lit_arity(), sigma->loc());
+            } else if (!def->isa<Infer>()) {
                 error(dbg.loc, "'{}' has not been declared as a mutable sigma", dbg.sym);
+            }
         } else {
             decl = mk_sigma();
         }
