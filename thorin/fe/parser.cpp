@@ -563,7 +563,7 @@ Ref Parser::parse_ret() {
     expect(Tag::T_assign, "let expression");
 
     auto cn = parse_expr("continuation expression of a ret expression");
-    expect(Tag::T_colon, "separator of a ret expression");
+    expect(Tag::T_dollar, "separator of a ret expression");
     if (auto ret_pi = Pi::ret_pi(cn->type())) {
         auto arg = parse_expr("argument of ret expression");
         expect(Tag::T_semicolon, "let expression");
