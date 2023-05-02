@@ -139,9 +139,7 @@ Tok Lexer::lex() {
         if (accept('\"', false)) {
             while (lex_char() != '"') {}
             str_.pop_back(); // remove final '"'
-            auto sym = world().sym(str_);
-            outln("{}", sym);
-            return {loc_, Tag::M_str, sym};
+            return {loc_, Tag::M_str, world().sym(str_)};
         }
 
         if (lex_id()) return {loc(), Tag::M_id, world().sym(str_)};
@@ -282,19 +280,23 @@ bool Lexer::parse_exp(int base /*= 10*/) {
 // clang-format on
 
 char8_t Lexer::lex_char() {
-    if (accept('\\')) {
-        if (accept('\'')) return '\'';
-        if (accept('\\')) return '\\';
-        if (accept('"')) return '\"';
-        if (accept('?')) return '\?';
-        if (accept('a')) return '\a';
-        if (accept('b')) return '\b';
-        if (accept('f')) return '\f';
-        if (accept('n')) return '\n';
-        if (accept('r')) return '\r';
-        if (accept('t')) return '\t';
-        if (accept('v')) return '\v';
-        error(loc_.anew_finis(), "invalid escape character '\\{}'", (char)ahead().c32);
+    if (accept('\\', false)) {
+        // clang-format off
+        if (false) {}
+        else if (accept('\'', false)) str_ += '\'';
+        else if (accept('\\', false)) str_ += '\\';
+        else if (accept( '"', false)) str_ += '\"';
+        else if (accept( '0', false)) str_ += '\0';
+        else if (accept( 'a', false)) str_ += '\a';
+        else if (accept( 'b', false)) str_ += '\b';
+        else if (accept( 'f', false)) str_ += '\f';
+        else if (accept( 'n', false)) str_ += '\n';
+        else if (accept( 'r', false)) str_ += '\r';
+        else if (accept( 't', false)) str_ += '\t';
+        else if (accept( 'v', false)) str_ += '\v';
+        else error(loc_.anew_finis(), "invalid escape character '\\{}'", (char)ahead().c32);
+        // clang-format on
+        return str_.back();
     }
     auto c = next();
     str_ += c;

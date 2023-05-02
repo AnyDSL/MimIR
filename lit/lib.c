@@ -9,7 +9,11 @@
 
 // #define printf(...) do {} while (0)
 
-void print_i32(int32_t i) { printf("%" PRId32 "\n", i); }
+void print_char(char c) { printf("%c", c); }
+void println_char(char c) { printf("%c\n", c); }
+void print_str(const char* s) { printf("%s", s); }
+void println_str(const char* s) { printf("%s\n", s); }
+void print_i32(int32_t i) { printf("%" PRId32, i); }
 void println_i32(int32_t i) { printf("%" PRId32 "\n", i); }
 void newline() { printf("\n"); }
 

@@ -1,6 +1,6 @@
 // RUN: rm -f %t.ll ; \
 // RUN: %thorin -p clos %s --output-ll %t.ll -o - 
-// RUN: clang %S/lib.c %t.ll -o %t -Wno-override-module
+// RUN: clang %S/../lib.c %t.ll -o %t -Wno-override-module
 // TODO: execute
 
 .plugin core;
