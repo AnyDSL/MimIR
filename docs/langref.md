@@ -81,43 +81,46 @@ All keywords start with a `.` to prevent name clashes with identifiers.
 
 The following *terminals* comprise more complicated patterns:
 
-| Terminal      | Regular Expression                   | Comment                                                                                           |
-|---------------|--------------------------------------|---------------------------------------------------------------------------------------------------|
-| Sym           | sym                                  | symbol                                                                                            |
-| Ax            | `%` sym `.` sym (`.` sym)?           | Axiom                                                                                             |
-| L             | dec+                                 | unsigned decimal literal                                                                          |
-| L             | 0b bin+                              | unsigned binary literal                                                                           |
-| L             | 0o oct+                              | unsigned octal literal                                                                            |
-| L             | 0x hex+                              | unsigned hexadecimal literal                                                                      |
-| L             | sign dec+                            | signed decimal literal                                                                            |
-| L             | sign 0b bin+                         | signed binary literal                                                                             |
-| L             | sign 0o oct+                         | signed octal literal                                                                              |
-| L             | sign 0x hex+                         | signed hexadecimal literal                                                                        |
-| L             | sign? dec+ eE sign dec+              | floating-point literal                                                                            |
-| L             | sign? dec+ `.` dec\* (eE sign dec+)? | floating-point literal                                                                            |
-| L             | sign? dec\* `.` dec+ (eE sign dec+)? | floating-point literal                                                                            |
-| L             | sign? 0x hex+ pP sign dec+           | [floating-point hexadecimal](https://en.cppreference.com/w/cpp/language/floating_literal) literal |
-| L             | sign? 0x hex+ `.` hex\* pP sign dec+ | [floating-point hexadecimal](https://en.cppreference.com/w/cpp/language/floating_literal) literal |
-| L             | sign? 0x hex\* `.` hex+ pP sign dec+ | [floating-point hexadecimal](https://en.cppreference.com/w/cpp/language/floating_literal) literal |
-| I<sub>n</sub> | dec+ sub+<sub>n</sub>                | index literal of type `.Idx n`                                                                    |
-| I<sub>n</sub> | dec+ `_` dec+<sub>n</sub>            | index literal of type `.Idx n`                                                                    |
+| Terminal      | Regular Expression                    | Comment                                                                                           |
+|---------------|---------------------------------------|---------------------------------------------------------------------------------------------------|
+| Sym           | sym                                   | symbol                                                                                            |
+| Ax            | `%` sym `.` sym (`.` sym)?            | Axiom                                                                                             |
+| L             | dec+                                  | unsigned decimal literal                                                                          |
+| L             | 0b bin+                               | unsigned binary literal                                                                           |
+| L             | 0o oct+                               | unsigned octal literal                                                                            |
+| L             | 0x hex+                               | unsigned hexadecimal literal                                                                      |
+| L             | sign dec+                             | signed decimal literal                                                                            |
+| L             | sign 0b bin+                          | signed binary literal                                                                             |
+| L             | sign 0o oct+                          | signed octal literal                                                                              |
+| L             | sign 0x hex+                          | signed hexadecimal literal                                                                        |
+| L             | sign? dec+ eE sign dec+               | floating-point literal                                                                            |
+| L             | sign? dec+ `.` dec\* (eE sign dec+)?  | floating-point literal                                                                            |
+| L             | sign? dec\* `.` dec+ (eE sign dec+)?  | floating-point literal                                                                            |
+| L             | sign? 0x hex+ pP sign dec+            | [floating-point hexadecimal](https://en.cppreference.com/w/cpp/language/floating_literal) literal |
+| L             | sign? 0x hex+ `.` hex\* pP sign dec+  | [floating-point hexadecimal](https://en.cppreference.com/w/cpp/language/floating_literal) literal |
+| L             | sign? 0x hex\* `.` hex+ pP sign dec+  | [floating-point hexadecimal](https://en.cppreference.com/w/cpp/language/floating_literal) literal |
+| I<sub>n</sub> | dec+ sub+<sub>n</sub>                 | index literal of type `.Idx n`                                                                    |
+| I<sub>n</sub> | dec+ `_` dec+<sub>n</sub>             | index literal of type `.Idx n`                                                                    |
+| C             | <tt>'</tt>(ascii \| esc)<tt>'</tt>    | character literal; *ascii* except `\` and <tt>'</tt>                                              |
+| S             | <tt>\"</tt>(ascii \| esc)*<tt>\"</tt> | string literal; *ascii* except `\` and <tt>"</tt>                                                 |
 
 The previous table resorts to the following definitions as shorthand:
 
-| Name | Definition                                                 | Comment                                         |
-|------|------------------------------------------------------------|-------------------------------------------------|
-| 0b   | `0` \[ `b``B` \]                                           | prefix for binary literals                      |
-| 0o   | `0` \[ `o``O` \]                                           | prefix for octal literals                       |
-| 0x   | `0` \[ `x``X` \]                                           | prefix for hexadecimal literals                 |
-| bin  | \[ `0``1` \]                                               | binary digit                                    |
-| oct  | \[ `0`-`7` \]                                              | octal digit                                     |
-| dec  | \[ `0`-`9` \]                                              | decimal digit                                   |
-| sub  | \[ `₀`-`₉` \]                                              | subscript digit (always decimal)                |
-| hex  | \[ `0`-`9``a`-`f``A`-`F` \]                                | hexadecimal digit                               |
-| eE   | \[ `e` `E` \]                                              | exponent in floating point literals             |
-| pP   | \[ `p` `P` \]                                              | exponent in floating point hexadecimal literals |
-| sign | \[ `+` `-` \]                                              |                                                 |
-| sym  | \[ `_``a`-`z``A`-`Z` \]\[ `.``_``0`-`9``a`-`z``A`-`Z` \]\* | symbol                                          |
+| Name | Definition                                                            | Comment                                         |
+|------|-----------------------------------------------------------------------|-------------------------------------------------|
+| 0b   | `0` \[ `b``B` \]                                                      | prefix for binary literals                      |
+| 0o   | `0` \[ `o``O` \]                                                      | prefix for octal literals                       |
+| 0x   | `0` \[ `x``X` \]                                                      | prefix for hexadecimal literals                 |
+| bin  | \[ `0``1` \]                                                          | binary digit                                    |
+| oct  | \[ `0`-`7` \]                                                         | octal digit                                     |
+| dec  | \[ `0`-`9` \]                                                         | decimal digit                                   |
+| sub  | \[ `₀`-`₉` \]                                                         | subscript digit (always decimal)                |
+| hex  | \[ `0`-`9``a`-`f``A`-`F` \]                                           | hexadecimal digit                               |
+| eE   | \[ `e` `E` \]                                                         | exponent in floating point literals             |
+| pP   | \[ `p` `P` \]                                                         | exponent in floating point hexadecimal literals |
+| sign | \[ `+` `-` \]                                                         |                                                 |
+| sym  | \[ `_``a`-`z``A`-`Z` \]\[ `.``_``0`-`9``a`-`z``A`-`Z` \]\*            | symbol                                          |
+| exc  | \[ <tt>\'</tt>`\"``\0``\a`<tt>\\b</tt>`\f``\n``\r`<tt>\\t</tt>`\v` \] | escape sequences                                |
 
 So, *sym* refers to the shorthand rule while *Sym* refers to the *terminal* that is identical to *sym*.
 However, the terminal *Ax* also uses the shorthand rule *sym*.
@@ -137,33 +140,43 @@ In addition, the following comments are available:
 Thorin's grammar is defined as a [context-free grammar](https://en.wikipedia.org/wiki/Context-free_grammar) that consists of the *terminals* defined [above](#terminals) as well as the *nonterminals* and *productions* defined below.
 The start symbol is "m" (module).
 
+The follwing tables summarizes the main nonterminals:
+
+| Nonterminal | Meaning                         |
+|-------------|---------------------------------|
+| m           | [module](@ref module)           |
+| d           | [declaration](@ref decl)        |
+| p           | `()`-style [pattern](@ref ptrn) |
+| b           | `[]`-style [pattern](@ref ptrn) |
+| e           | [expression](@ref expr)         |
+
 The following tables comprise all production rules:
 
-### Module
+### Module {#module}
 
-| Nonterminal | Right-Hand Side   | Comment | Thorin Class                |
-|-------------|-------------------|---------|-----------------------------|
-| m           | dep\* d\*         | module  | [World](@ref thorin::World) |
-| dep         | `.import` Sym `;` | import  |                             |
-| dep         | `.plugin` Sym `;` | plugin  |                             |
+| LHS | RHS               | Comment | Thorin Class                |
+|-----|-------------------|---------|-----------------------------|
+| m   | dep\* d\*         | module  | [World](@ref thorin::World) |
+| dep | `.import` Sym `;` | import  |                             |
+| dep | `.plugin` Sym `;` | plugin  |                             |
 
-### Declarations
+### Declarations {#decl}
 
-| Nonterminal | Right-Hand Side                                                                                                                                        | Comment                  | Thorin Class                |
-|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------|-----------------------------|
-| d           | `.let` p  `=` e `;`                                                                                                                                    | let                      | -                           |
-| d           | `.lam` Sym (`.`? p)+ `→` e<sub>codom</sub> ( `=` de)? `;`                                                                                              | lambda declaration       | [Lam](@ref thorin::Lam)     |
-| d           | `.con` Sym (`.`? p)+                       ( `=` de)? `;`                                                                                              | continuation declaration | [Lam](@ref thorin::Lam)     |
-| d           | `.fun` Sym (`.`? p)+ `→` e<sub>ret</sub>   ( `=` de)? `;`                                                                                              | function declaration     | [Lam](@ref thorin::Lam)     |
-| d           | `.Pi` Sym (`:` e<sub>type</sub>)? (`=` e)? `;`                                                                                                         | Pi declaration           | [Pi](@ref thorin::Pi)       |
-| d           | `.Sigma` Sym (`:` e<sub>type</sub> )? (`,` L<sub>arity</sub>)? (`=` b<sub>[ ]</sub>)? `;`                                                              | sigma declaration        | [Sigma](@ref thorin::Sigma) |
-| d           | `.ax` Ax `:` e<sub>type</sub> (`(` sub `,` ... `,` sub `)`)? <br> (`,` Sym<sub>normalizer</sub>)? (`,` L<sub>curry</sub>)? (`,` L<sub>trip</sub>)? `;` | axiom                    | [Axiom](@ref thorin::Axiom) |
-| sub         | Sym (`=` Sym `,` ... `,` Sym)?                                                                                                                         | subtag with aliases      |                             |
+| LHS | RHS                                                                                                                                                    | Comment                  | Thorin Class                |
+|-----|--------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------|-----------------------------|
+| d   | `.let` p  `=` e `;`                                                                                                                                    | let                      | -                           |
+| d   | `.lam` Sym (`.`? p)+ `→` e<sub>codom</sub> ( `=` de)? `;`                                                                                              | lambda declaration       | [Lam](@ref thorin::Lam)     |
+| d   | `.con` Sym (`.`? p)+                       ( `=` de)? `;`                                                                                              | continuation declaration | [Lam](@ref thorin::Lam)     |
+| d   | `.fun` Sym (`.`? p)+ `→` e<sub>ret</sub>   ( `=` de)? `;`                                                                                              | function declaration     | [Lam](@ref thorin::Lam)     |
+| d   | `.Pi` Sym (`:` e<sub>type</sub>)? (`=` e)? `;`                                                                                                         | Pi declaration           | [Pi](@ref thorin::Pi)       |
+| d   | `.Sigma` Sym (`:` e<sub>type</sub> )? (`,` L<sub>arity</sub>)? (`=` b<sub>[ ]</sub>)? `;`                                                              | sigma declaration        | [Sigma](@ref thorin::Sigma) |
+| d   | `.ax` Ax `:` e<sub>type</sub> (`(` sub `,` ... `,` sub `)`)? <br> (`,` Sym<sub>normalizer</sub>)? (`,` L<sub>curry</sub>)? (`,` L<sub>trip</sub>)? `;` | axiom                    | [Axiom](@ref thorin::Axiom) |
+| sub | Sym (`=` Sym `,` ... `,` Sym)?                                                                                                                         | subtag with aliases      |                             |
 <sup>s</sup> opens new scope
 
 An elided type of a `.Pi` or `.Sigma` declaration defaults to `*`.
 
-### Patterns
+### Patterns {#ptrn}
 
 Patterns allow you to decompose a value into its components like in [Standard ML](https://en.wikibooks.org/wiki/Standard_ML_Programming/Types#Tuples) or other functional languages.
 There are
@@ -203,56 +216,58 @@ This is particularly useful, when dealing with memory:
 .let (`mem, val) = %mem.load (mem, ptr);
 ```
 
-| Nonterminal     | Right-Hand Side                            | Comment                 |
-|-----------------|--------------------------------------------|-------------------------|
+| LHS             | RHS                                              | Comment                 |
+|-----------------|--------------------------------------------------|-------------------------|
 | p               | <tt>\`</tt>? Sym (`:` e<sub>type</sub> )?        | identifier `()`-pattern |
 | p               | (<tt>\`</tt>? Sym `::`)? `(` g `,` ... `,` g `)` | `()`-`()`-tuple pattern |
 | p               | (<tt>\`</tt>? Sym `::`)? b<sub>[ ]</sub>         | `[]`-`()`-tuple pattern |
-| g               | p                                          | group                   |
-| g               | Sym+ `:` e                                 | group                   |
+| g               | p                                                | group                   |
+| g               | Sym+ `:` e                                       | group                   |
 | b               | (<tt>\`</tt>? Sym `:`)? e<sub>type</sub>         | identifier `[]`-pattern |
 | b               | (<tt>\`</tt>? Sym `::`)? b<sub>[ ]</sub>         | `[]`-`[]`-tuple pattern |
-| b<sub>[ ]</sub> | `[` b `,` ... `,` b `]`                    | `[]`-tuple pattern      |
+| b<sub>[ ]</sub> | `[` b `,` ... `,` b `]`                          | `[]`-tuple pattern      |
 
 
-### Expressions
+### Expressions {#expr}
 
-| Nonterminal | Right-Hand Side                                                               | Comment                                 | Thorin Class                    |
-|-------------|-------------------------------------------------------------------------------|-----------------------------------------|---------------------------------|
-| de          | d\* e                                                                         | declarations, expression                | -                               |
-| e           | `.Univ`                                                                       | universise: type of a type level        | [Univ](@ref thorin::Univ)       |
-| e           | `.Type` e                                                                     | type of level e                         | [Type](@ref thorin::Type)       |
-| e           | `*`                                                                           | alias for `.Type (0:.Univ)`             | [Type](@ref thorin::Type)       |
-| e           | `□`                                                                           | alias for `.Type (1:.Univ)`             | [Type](@ref thorin::Type)       |
-| e           | `.Nat`                                                                        | natural number                          | [Nat](@ref thorin::Nat)         |
-| e           | `.Idx`                                                                        | builtin of type `.Nat → *`             | [Idx](@ref thorin::Idx)         |
-| e           | `.Bool`                                                                       | alias for `.Idx 2`                      | [Idx](@ref thorin::Idx)         |
-| e           | `{` de `}`                                                                    | block<sup>s</sup>                       | -                               |
-| e           | L (`:` e<sub>type</sub>)?                                                     | literal                                 | [Lit](@ref thorin::Lit)         |
-| e           | I<sub>n</sub>                                                                 | literal of type `.Idx n`                | [Lit](@ref thorin::Lit)         |
-| e           | `.ff`                                                                         | alias for `0_2`                         | [Lit](@ref thorin::Lit)         |
-| e           | `.tt`                                                                         | alias for `1_2`                         | [Lit](@ref thorin::Lit)         |
-| e           | (`.bot` \| `.top`) (`:` e<sub>type</sub>)?                                    | bottom/top                              | [TExt](@ref thorin::TExt)       |
-| e           | Sym                                                                           | identifier                              | -                               |
-| e           | Ax                                                                            | use of an axiom                         | -                               |
-| e           | e e                                                                           | application                             | [App](@ref thorin::App)         |
-| e           | `.ret` p `=` e `$` e `;` de                                                   | ret expresison                          | [App](@ref thorin::App)         |
-| e           | `λ`   (`.`? p)+ (`→` e<sub>codom</sub>)? `=` de                               | lambda expression<sup>s</sup>           | [Lam](@ref thorin::Lam)         |
-| e           | `.cn` (`.`? p)+                          `=` de                               | continuation expression<sup>s</sup>     | [Lam](@ref thorin::Lam)         |
-| e           | `.fn` (`.`? p)+ (`→` e<sub>codom</sub>)? `=` de                               | function expression<sup>s</sup>         | [Lam](@ref thorin::Lam)         |
-| e           | e<sub>dom</sub> `→` e<sub>codom</sub>                                         | function type                           | [Pi](@ref thorin::Pi)           |
-| e           | `Π`   `.`? b (`.`? b<sub>[ ]</sub>)* `→` e<sub>codom</sub>                    | dependent function type<sup>s</sup>     | [Pi](@ref thorin::Pi)           |
-| e           | `.Cn` `.`? b (`.`? b<sub>[ ]</sub>)*                                          | continuation type<sup>s</sup>           | [Pi](@ref thorin::Pi)           |
-| e           | `.Fn` `.`? b (`.`? b<sub>[ ]</sub>)* `→` e<sub>codom</sub>                    | returning continuation type<sup>s</sup> | [Pi](@ref thorin::Pi)           |
-| e           | e `#` Sym                                                                     | extract via field "Sym"                 | [Extract](@ref thorin::Extract) |
-| e           | e `#` e<sub>index</sub>                                                       | extract                                 | [Extract](@ref thorin::Extract) |
-| e           | `.ins` `(` e<sub>tuple</sub> `,` e<sub>index</sub> `,` e<sub>value</sub> ` )` | insert                                  | [Insert](@ref thorin::Insert)   |
-| e           | `(` e<sub>0</sub> `,` ... `,` e<sub>n-1</sub>` )` (`:` e<sub>type</sub>)?     | tuple                                   | [Tuple](@ref thorin::Tuple)     |
-| e           | `[` b `,` ... `,` b `]`                                                       | sigma<sup>s</sup>                       | [Sigma](@ref thorin::Sigma)     |
-| e           | `‹` s `;` e<sub>body</sub>`›`                                                 | pack<sup>s</sup>                        | [Pack](@ref thorin::Pack)       |
-| e           | `«` s `;` e<sub>body</sub>`»`                                                 | array<sup>s</sup>                       | [Arr](@ref thorin::Arr)         |
-| s           | e<sub>shape</sub>                                                             | shape                                   | -                               |
-| s           | Sym `:` e<sub>shape</sub>                                                     | parameterized shape                     | -                               |
+| LHS | RHS                                                                           | Comment                                 | Thorin Class                    |
+|-----|-------------------------------------------------------------------------------|-----------------------------------------|---------------------------------|
+| de  | d\* e                                                                         | declarations, expression                | -                               |
+| e   | `.Univ`                                                                       | universise: type of a type level        | [Univ](@ref thorin::Univ)       |
+| e   | `.Type` e                                                                     | type of level e                         | [Type](@ref thorin::Type)       |
+| e   | `*`                                                                           | alias for `.Type (0:.Univ)`             | [Type](@ref thorin::Type)       |
+| e   | `□`                                                                           | alias for `.Type (1:.Univ)`             | [Type](@ref thorin::Type)       |
+| e   | `.Nat`                                                                        | natural number                          | [Nat](@ref thorin::Nat)         |
+| e   | `.Idx`                                                                        | builtin of type `.Nat → *`              | [Idx](@ref thorin::Idx)         |
+| e   | `.Bool`                                                                       | alias for `.Idx 2`                      | [Idx](@ref thorin::Idx)         |
+| e   | `{` de `}`                                                                    | block<sup>s</sup>                       | -                               |
+| e   | L (`:` e<sub>type</sub>)?                                                     | literal                                 | [Lit](@ref thorin::Lit)         |
+| e   | I<sub>n</sub>                                                                 | literal of type `.Idx n`                | [Lit](@ref thorin::Lit)         |
+| e   | C                                                                             | character literal of type `.Idx 256`    | [Lit](@ref thorin::Lit)         |
+| e   | S                                                                             | string tuple of type `«n; .Idx 256»`    | [Tuple](@ref thorin::Tuple)     |
+| e   | `.ff`                                                                         | alias for `0_2`                         | [Lit](@ref thorin::Lit)         |
+| e   | `.tt`                                                                         | alias for `1_2`                         | [Lit](@ref thorin::Lit)         |
+| e   | (`.bot` \| `.top`) (`:` e<sub>type</sub>)?                                    | bottom/top                              | [TExt](@ref thorin::TExt)       |
+| e   | Sym                                                                           | identifier                              | -                               |
+| e   | Ax                                                                            | use of an axiom                         | -                               |
+| e   | e e                                                                           | application                             | [App](@ref thorin::App)         |
+| e   | `.ret` p `=` e `$` e `;` de                                                   | ret expresison                          | [App](@ref thorin::App)         |
+| e   | `λ`   (`.`? p)+ (`→` e<sub>codom</sub>)? `=` de                               | lambda expression<sup>s</sup>           | [Lam](@ref thorin::Lam)         |
+| e   | `.cn` (`.`? p)+                          `=` de                               | continuation expression<sup>s</sup>     | [Lam](@ref thorin::Lam)         |
+| e   | `.fn` (`.`? p)+ (`→` e<sub>codom</sub>)? `=` de                               | function expression<sup>s</sup>         | [Lam](@ref thorin::Lam)         |
+| e   | e<sub>dom</sub> `→` e<sub>codom</sub>                                         | function type                           | [Pi](@ref thorin::Pi)           |
+| e   | `Π`   `.`? b (`.`? b<sub>[ ]</sub>)\* `→` e<sub>codom</sub>                   | dependent function type<sup>s</sup>     | [Pi](@ref thorin::Pi)           |
+| e   | `.Cn` `.`? b (`.`? b<sub>[ ]</sub>)\*                                         | continuation type<sup>s</sup>           | [Pi](@ref thorin::Pi)           |
+| e   | `.Fn` `.`? b (`.`? b<sub>[ ]</sub>)\* `→` e<sub>codom</sub>                   | returning continuation type<sup>s</sup> | [Pi](@ref thorin::Pi)           |
+| e   | e `#` Sym                                                                     | extract via field "Sym"                 | [Extract](@ref thorin::Extract) |
+| e   | e `#` e<sub>index</sub>                                                       | extract                                 | [Extract](@ref thorin::Extract) |
+| e   | `.ins` `(` e<sub>tuple</sub> `,` e<sub>index</sub> `,` e<sub>value</sub> ` )` | insert                                  | [Insert](@ref thorin::Insert)   |
+| e   | `(` e<sub>0</sub> `,` ... `,` e<sub>n-1</sub>` )` (`:` e<sub>type</sub>)?     | tuple                                   | [Tuple](@ref thorin::Tuple)     |
+| e   | `[` b `,` ... `,` b `]`                                                       | sigma<sup>s</sup>                       | [Sigma](@ref thorin::Sigma)     |
+| e   | `‹` s `;` e<sub>body</sub>`›`                                                 | pack<sup>s</sup>                        | [Pack](@ref thorin::Pack)       |
+| e   | `«` s `;` e<sub>body</sub>`»`                                                 | array<sup>s</sup>                       | [Arr](@ref thorin::Arr)         |
+| s   | e<sub>shape</sub>                                                             | shape                                   | -                               |
+| s   | Sym `:` e<sub>shape</sub>                                                     | parameterized shape                     | -                               |
 <sup>s</sup> opens new scope
 
 An elided type of
@@ -277,12 +292,18 @@ Expressions nesting is disambiguated according to the following precedence table
 | e `→` e              | function type                       | right-to-left |
 
 @note The domain of a dependent function type binds slightly stronger than `→`.
-This has the effect that <br>
-`Π T: * → T → T` <br>
-has the expected binding like this <br>
-(`Π T: *`) `→` (`T → T`) <br>
-Otherwise, `→` would be consumed by the domain: <br>
-`Π T:` (`* →` (`T → T`)) ↯ <br>
+This has the effect that
+```
+Π T: * → T → T
+```
+has the expected binding like this:
+```
+(Π T: *) → (T → T)
+```
+Otherwise, `→` would be consumed by the domain:
+```
+Π T: (* → (T → T)) ↯
+```
 A similar situation occurs for a `.lam` declaration.
 
 ### Functions \& Types
@@ -344,8 +365,15 @@ Hence, using the symbol `_` will always result in a scoping error.
 
 ### Pis
 
-@note **Only** `Π x: e → e` introduces a new scope.
-`x: e → e` is a syntax error.
+@note **Only**
+```
+Π x: e → e
+```
+introduces a new scope whereas
+```
+x: e → e
+```
+is a syntax error.
 If the variable name of a Pi's domain is elided and the domain is a sigma, its elements will be imported into the Pi's scope to make these elements available in the Pi's codomain:
 ```
 Π [T: *, U: *] → [T, U]
