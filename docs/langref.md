@@ -193,12 +193,12 @@ Here is another example:
 Π.Tas::[T: *, as: .Nat][%mem.M, %mem.Ptr Tas] -> [%mem.M, T]
 ```
 
-Finally, you can put a ``'`` in front of an identifier of a `()`-style pattern to (potentially) rebind a name to a different value.
+Finally, you can put a <tt>\`</tt> in front of an identifier of a `()`-style pattern to (potentially) rebind a name to a different value.
 This is particularly useful, when dealing with memory:
 ```
-.let ('mem, ptr) = %mem.alloc (I32, 0) mem;
-.let 'mem        = %mem.store (mem, ptr, 23:I32);
-.let ('mem, val) = %mem.load (mem, ptr);
+.let (`mem, ptr) = %mem.alloc (I32, 0) mem;
+.let `mem        = %mem.store (mem, ptr, 23:I32);
+.let (`mem, val) = %mem.load (mem, ptr);
 ```
 
 | Nonterminal | Right-Hand Side                                                    | Comment                 |

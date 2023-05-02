@@ -9,10 +9,10 @@
 
 .let I32 = .Idx 4294967296;
 .con .extern main(mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), return: .Cn [%mem.M, I32]) = {
-    .let ('mem, ptr) = %mem.alloc (I32, 0) mem;
-    .let 'mem        = %mem.store (mem, ptr, argc);
-    .let ('mem, val) = %mem.load (mem, ptr);
-    .let 'mem        = %mem.free (mem, ptr);
+    .let (`mem, ptr) = %mem.alloc (I32, 0) mem;
+    .let `mem        = %mem.store (mem, ptr, argc);
+    .let (`mem, val) = %mem.load (mem, ptr);
+    .let `mem        = %mem.free (mem, ptr);
     return (mem, val)
 };
 
