@@ -239,12 +239,12 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::T_top:
         case Tag::L_s:
         case Tag::L_u:
-        case Tag::L_r:       return parse_lit_expr();
+        case Tag::L_f:       return parse_lit_expr();
+        case Tag::L_c:       return world().lit_int(8, lex().lit_c());
+        case Tag::L_i:       return lex().lit_i();
         case Tag::K_ins:     return parse_insert_expr();
         case Tag::K_ret:     return parse_ret_expr();
         case Tag::M_ax:      return scopes_.find(lex().dbg());
-        case Tag::M_char:    return world().lit_int(8, lex().c8());
-        case Tag::M_idx:     return lex().index();
         case Tag::M_id:      return scopes_.find(parse_sym());
         case Tag::M_str:     return world().tuple(lex().sym())->set(prev());
         default:
@@ -556,31 +556,31 @@ Ref Parser::parse_ret_expr() {
 
 Ref Parser::parse_lit_expr() {
     auto track  = tracker();
-    auto lit    = lex();
+    auto tok    = lex();
     auto [_, r] = Tok::prec(Tok::Prec::Lit);
 
     if (accept(Tag::T_colon)) {
         auto type = parse_expr("literal", r);
 
         // clang-format off
-        switch (lit.tag()) {
+        switch (tok.tag()) {
             case Tag::L_s:
             case Tag::L_u:
-            case Tag::L_r: break;
+            case Tag::L_f: break;
             case Tag::T_bot: return world().bot(type)->set(track.loc());
             case Tag::T_top: return world().top(type)->set(track.loc());
             default: unreachable();
         }
         // clang-format on
-        return world().lit(type, lit.u())->set(track.loc());
+        return world().lit(type, tok.lit_u())->set(track.loc());
     }
 
-    if (lit.tag() == Tag::T_bot) return world().bot(world().type())->set(track.loc());
-    if (lit.tag() == Tag::T_top) return world().top(world().type())->set(track.loc());
-    if (lit.tag() == Tag::L_s) error(prev(), ".Nat literal specified as signed but must be unsigned");
-    if (lit.tag() == Tag::L_r) error(prev(), ".Nat literal specified as floating-point but must be unsigned");
+    if (tok.tag() == Tag::T_bot) return world().bot(world().type())->set(track.loc());
+    if (tok.tag() == Tag::T_top) return world().top(world().type())->set(track.loc());
+    if (tok.tag() == Tag::L_s) error(prev(), ".Nat literal specified as signed but must be unsigned");
+    if (tok.tag() == Tag::L_f) error(prev(), ".Nat literal specified as floating-point but must be unsigned");
 
-    return world().lit_nat(lit.u())->set(track.loc());
+    return world().lit_nat(tok.lit_u())->set(track.loc());
 }
 
 /*
@@ -796,11 +796,11 @@ void Parser::parse_ax_decl() {
 
     if (accept(Tag::T_comma)) {
         auto c = expect(Tag::L_u, "curry counter for axiom");
-        if (c.u() > curry) error(c.loc(), "curry counter cannot be greater than {}", curry);
-        curry = c.u();
+        if (c.lit_u() > curry) error(c.loc(), "curry counter cannot be greater than {}", curry);
+        curry = c.lit_u();
     }
 
-    if (accept(Tag::T_comma)) trip = expect(Tag::L_u, "trip count for axiom").u();
+    if (accept(Tag::T_comma)) trip = expect(Tag::L_u, "trip count for axiom").lit_u();
 
     plugin_t p = *Axiom::mangle(plugin);
     tag_t t    = info.tag_id;
@@ -840,7 +840,7 @@ void Parser::parse_sigma_decl() {
     auto dbg   = parse_sym("sigma declaration");
     auto type  = accept(Tag::T_colon) ? parse_expr("type of a sigma declaration") : world().type();
     auto arity = std::optional<nat_t>{};
-    if (accept(Tag::T_comma)) arity = expect(Tag::L_u, "arity of a mutable Sigma").u();
+    if (accept(Tag::T_comma)) arity = expect(Tag::L_u, "arity of a mutable Sigma").lit_u();
 
     if (accept(Tag::T_assign)) {
         Def* decl;

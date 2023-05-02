@@ -8,6 +8,7 @@
 namespace thorin {
 
 class Def;
+class Lit;
 
 namespace fe {
 
@@ -43,49 +44,48 @@ namespace fe {
 constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
 #undef CODE
 
-#define THORIN_LIT(m)                   \
-    m(L_s,  "<signed integer literal>") \
-    m(L_u,  "<integer literal>")        \
-    m(L_r,  "<floating-point literal>") \
-
-#define THORIN_TOK(m)                   \
-    /* misc */                          \
-    m(M_eof,  "<eof>"       )           \
-    m(M_char, "<char>"      )           \
-    m(M_str,  "<string>"    )           \
-    m(M_id,   "<identifier>")           \
-    m(M_ax,   "<axiom name>")           \
-    m(M_idx,  "<index>"     )           \
-    /* delimiters */                    \
-    m(D_angle_l,    "‹")                \
-    m(D_angle_r,    "›")                \
-    m(D_brace_l,    "{")                \
-    m(D_brace_r,    "}")                \
-    m(D_brckt_l,    "[")                \
-    m(D_brckt_r,    "]")                \
-    m(D_paren_l,    "(")                \
-    m(D_paren_r,    ")")                \
-    m(D_quote_l,    "«")                \
-    m(D_quote_r,    "»")                \
-    /* further tokens */                \
-    m(T_Pi,         "Π")                \
-    m(T_arrow,      "→")                \
-    m(T_assign,     "=")                \
-    m(T_at,         "@")                \
-    m(T_backtick,   "`")                \
-    m(T_bang,       "!")                \
-    m(T_bot,        "⊥")                \
-    m(T_top,        "⊤")                \
-    m(T_box,        "□")                \
-    m(T_colon,      ":")                \
-    m(T_colon_colon,"::")               \
-    m(T_comma,      ",")                \
-    m(T_dollar,     "$")                \
-    m(T_dot,        ".")                \
-    m(T_extract,    "#")                \
-    m(T_lm,         "λ")                \
-    m(T_semicolon,  ";")                \
-    m(T_star,       "*")                \
+#define THORIN_TOK(m)                     \
+    /* literals */                        \
+    m(L_s, "<signed integer literal>") \
+    m(L_u, "<integer literal>"       ) \
+    m(L_i, "<index literal>"         ) \
+    m(L_f, "<floating-point literal>") \
+    m(L_c, "<char literal>"          ) \
+    /* misc */                            \
+    m(M_eof,  "<eof>"       )             \
+    m(M_id,   "<identifier>")             \
+    m(M_ax,   "<axiom name>")             \
+    m(M_str,  "<string>"    )             \
+    /* delimiters */                      \
+    m(D_angle_l,    "‹")                  \
+    m(D_angle_r,    "›")                  \
+    m(D_brace_l,    "{")                  \
+    m(D_brace_r,    "}")                  \
+    m(D_brckt_l,    "[")                  \
+    m(D_brckt_r,    "]")                  \
+    m(D_paren_l,    "(")                  \
+    m(D_paren_r,    ")")                  \
+    m(D_quote_l,    "«")                  \
+    m(D_quote_r,    "»")                  \
+    /* further tokens */                  \
+    m(T_Pi,         "Π")                  \
+    m(T_arrow,      "→")                  \
+    m(T_assign,     "=")                  \
+    m(T_at,         "@")                  \
+    m(T_backtick,   "`")                  \
+    m(T_bang,       "!")                  \
+    m(T_bot,        "⊥")                  \
+    m(T_top,        "⊤")                  \
+    m(T_box,        "□")                  \
+    m(T_colon,      ":")                  \
+    m(T_colon_colon,"::")                 \
+    m(T_comma,      ",")                  \
+    m(T_dollar,     "$")                  \
+    m(T_dot,        ".")                  \
+    m(T_extract,    "#")                  \
+    m(T_lm,         "λ")                  \
+    m(T_semicolon,  ";")                  \
+    m(T_star,       "*")                  \
 
 #define THORIN_SUBST(m)                 \
     m(".lm",     T_lm   )               \
@@ -130,7 +130,7 @@ public:
     ///@{
     enum class Tag {
 #define CODE(t, str) t,
-        THORIN_KEY(CODE) THORIN_LIT(CODE) THORIN_TOK(CODE)
+        THORIN_KEY(CODE) THORIN_TOK(CODE)
 #undef CODE
         Nil
     };
@@ -145,16 +145,10 @@ public:
     Tok(Loc loc, Tag tag)
         : loc_(loc)
         , tag_(tag) {}
-    Tok(Loc loc, char8_t c8)
+    Tok(Loc loc, char8_t c)
         : loc_(loc)
-        , tag_(Tag::M_char)
-        , c8_(c8) {}
-    Tok(Loc loc, Tag tag, Sym sym)
-        : loc_(loc)
-        , tag_(tag)
-        , sym_(sym) {
-        assert(tag == Tag::M_id || tag == Tag::M_ax || tag == Tag::M_str);
-    }
+        , tag_(Tag::L_c)
+        , c_(c) {}
     Tok(Loc loc, u64 u)
         : loc_(loc)
         , tag_(Tag::L_u)
@@ -163,24 +157,30 @@ public:
         : loc_(loc)
         , tag_(Tag::L_s)
         , u_(std::bit_cast<u64>(s)) {}
-    Tok(Loc loc, f64 r)
+    Tok(Loc loc, f64 f)
         : loc_(loc)
-        , tag_(Tag::L_r)
-        , u_(std::bit_cast<u64>(r)) {}
-    Tok(Loc loc, const Def* index)
+        , tag_(Tag::L_f)
+        , u_(std::bit_cast<u64>(f)) {}
+    Tok(Loc loc, const Lit* i)
         : loc_(loc)
-        , tag_(Tag::M_idx)
-        , index_(index) {}
+        , tag_(Tag::L_i)
+        , i_(i) {}
+    Tok(Loc loc, Tag tag, Sym sym)
+        : loc_(loc)
+        , tag_(tag)
+        , sym_(sym) {
+        assert(tag == Tag::M_id || tag == Tag::M_ax || tag == Tag::M_str);
+    }
 
     bool isa(Tag tag) const { return tag == tag_; }
     Tag tag() const { return tag_; }
     Dbg dbg() const { return {loc(), sym()}; }
     Loc loc() const { return loc_; }
     // clang-format off
-    char8_t c8()       const { assert(isa(Tag::M_char)); return c8_; }
-    u64 u()            const { assert(isa(Tag::L_u ) || isa(Tag::L_s) || isa(Tag::L_r)); return u_; }
-    Sym sym()          const { assert(isa(Tag::M_ax) || isa(Tag::M_id) || isa(Tag::M_str)); return sym_; }
-    const Def* index() const { assert(isa(Tag::M_idx)); return index_; }
+    const Lit* lit_i() const { assert(isa(Tag::L_i)); return i_; }
+    char8_t    lit_c() const { assert(isa(Tag::L_c)); return c_;   }
+    u64        lit_u() const { assert(isa(Tag::L_u ) || isa(Tag::L_s ) || isa(Tag::L_f  )); return u_;   }
+    Sym        sym()   const { assert(isa(Tag::M_ax) || isa(Tag::M_id) || isa(Tag::M_str)); return sym_; }
     // clang-format on
     friend std::ostream& operator<<(std::ostream&, Tok);
 
@@ -190,8 +190,8 @@ private:
     union {
         Sym sym_;
         u64 u_;
-        char8_t c8_;
-        const Def* index_;
+        char8_t c_;
+        const Lit* i_;
     };
 };
 
