@@ -671,7 +671,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok
     return nullptr;
 }
 
-std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, Sym sym, Sigma* sigma) {
+std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, Sym sym, Def* sigma) {
     auto delim_l = ahead().tag();
     bool p       = delim_l == Tag::D_paren_l;
     bool b       = delim_l == Tag::D_brckt_l;
@@ -843,34 +843,38 @@ void Parser::parse_sigma_decl() {
     auto arity = std::optional<nat_t>{};
     if (accept(Tag::T_comma)) arity = expect(Tag::L_u, "arity of a mutable Sigma").u();
 
-    auto mk_sigma = [&]() -> Sigma* {
-        if (arity) {
-            auto sigma = world().mut_sigma(type, *arity)->set(dbg);
-            scopes_.bind(dbg, sigma);
-            return sigma;
-        }
-        error(dbg.loc, "you need to specify arity for mutable sigma declaration and definition");
+    auto mk_sigma = [&]() -> Def* {
+        Def* res = arity ? (Def*)world().mut_sigma(type, *arity)->set(dbg) : (Def*)world().mut_infer(type);
+        scopes_.bind(dbg, res);
+        return res;
     };
 
     if (accept(Tag::T_assign)) {
-        Sigma* sigma;
+        Def* sigma;
         if (auto def = scopes_.query(dbg)) {
             if (auto mut = def->isa_mut<Sigma>()) {
                 if (arity && arity != mut->as_lit_arity())
                     error(dbg.loc, "sigma '{}', redeclared with different arity '{}'; previous arity was '{}' here: {}",
                           dbg.sym, *arity, mut->as_lit_arity(), mut->loc());
-                sigma = mut;
-            } else {
+            } else if (!def->isa<Infer>()) {
                 error(dbg.loc, "'{}' has not been declared as a mutable sigma", dbg.sym);
             }
+            sigma = def->as_mut();
         } else {
             sigma = mk_sigma();
         }
 
         auto ptrn = parse_tuple_ptrn(track, false, dbg.sym, sigma);
         auto t    = ptrn->type(world(), def2fields_);
-        assert(t == sigma);
-        sigma->set<true>(track.loc());
+        t->set<true>(track.loc());
+
+        if (auto infer = sigma->isa<Infer>()) {
+            assert(infer->op() == t);
+            infer->set<true>(track.loc());
+            scopes_.bind(dbg, t, true);
+        } else {
+            assert(t == sigma);
+        }
     } else {
         mk_sigma();
     }

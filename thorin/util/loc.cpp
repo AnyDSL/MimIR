@@ -13,7 +13,12 @@ std::ostream& operator<<(std::ostream& os, const Pos pos) {
 std::ostream& operator<<(std::ostream& os, const Loc loc) {
     if (loc) {
         os << (loc.path ? *loc.path : "<unknown file>") << ':' << loc.begin;
-        if (loc.begin != loc.finis) os << '-' << loc.finis;
+        if (loc.begin != loc.finis) {
+            if (loc.begin.row != loc.finis.row)
+                os << '-' << loc.finis;
+            else
+                os << '-' << loc.finis.col;
+        }
         return os;
     }
     return os << "<unknown location>";

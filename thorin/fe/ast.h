@@ -57,7 +57,7 @@ public:
 
 class TuplePtrn : public Ptrn {
 public:
-    TuplePtrn(Dbg dbg, bool rebind, Ptrns&& ptrns, const Def* type, std::vector<Infer*>&& infers, Sigma* sigma)
+    TuplePtrn(Dbg dbg, bool rebind, Ptrns&& ptrns, const Def* type, std::vector<Infer*>&& infers, Def* sigma)
         : Ptrn(dbg, rebind, type)
         , ptrns_(std::move(ptrns))
         , infers_(std::move(infers))
@@ -73,7 +73,7 @@ public:
 private:
     Ptrns ptrns_;
     std::vector<Infer*> infers_;
-    Sigma* sigma_ = nullptr;
+    Def* sigma_ = nullptr;
 };
 
 } // namespace fe

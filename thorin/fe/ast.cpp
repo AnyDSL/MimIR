@@ -47,8 +47,26 @@ const Def* TuplePtrn::type(World& world, Def2Fields& def2fields) const {
 
     assert(n > 0);
     auto type  = world.umax<Sort::Type>(ops);
-    bool mut   = sigma_;
-    auto sigma = sigma_ ? sigma_ : world.mut_sigma(type, n)->set(loc(), sym());
+
+    Sigma* sigma;
+    if (sigma_) {
+        if (auto s = sigma_->isa_mut<Sigma>())
+            sigma = s;
+        else {
+            sigma = world.mut_sigma(type, n)->set(loc(), sym());
+            if (auto infer = sigma_->isa<Infer>()) {
+                if (infer->is_set()) {
+                    if (infer->op() != sigma)
+                        error(infer->loc(), "inferred different sigma '{}' for '{}'", infer->op(), sigma);
+                } else {
+                    infer->set(sigma);
+                }
+            }
+        }
+    } else {
+        sigma = world.mut_sigma(type, n)->set(loc(), sym());
+    }
+
     assert_emplace(def2fields, sigma, Array<Sym>(n, [this](size_t i) { return ptrn(i)->sym(); }));
 
     sigma->set(0, ops[0]);
@@ -62,7 +80,7 @@ const Def* TuplePtrn::type(World& world, Def2Fields& def2fields) const {
     sigma->reset(0, ops[0]);
     for (size_t i = 1; i != n; ++i) sigma->reset(i, rw.rewrite(ops[i]));
 
-    if (!mut) {
+    if (!sigma_) {
         if (auto imm = sigma->immutabilize()) return type_ = imm;
     }
 
