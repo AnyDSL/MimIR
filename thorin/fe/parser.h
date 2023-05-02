@@ -127,7 +127,7 @@ private:
     Ref parse_sigma_expr();
     Ref parse_tuple_expr();
     Ref parse_type_expr();
-    Ref parse_pi_expr();
+    Pi* parse_pi_expr(Pi* = nullptr);
     Ref parse_lit_expr();
     Ref parse_insert_expr();
     Ref parse_ret_expr();

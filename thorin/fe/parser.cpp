@@ -339,7 +339,7 @@ Ref Parser::parse_type_expr() {
     return world().type(level)->set(track.loc());
 }
 
-Ref Parser::parse_pi_expr() {
+Pi* Parser::parse_pi_expr(Pi* outer) {
     auto track = tracker();
     auto tok   = lex();
 
@@ -359,11 +359,11 @@ Ref Parser::parse_pi_expr() {
         auto prec     = tok.isa(Tag::K_Cn) ? Tok::Prec::Bot : Tok::Prec::App;
         auto dom      = parse_ptrn(Tag::D_brckt_l, "domain of a "s + name, prec);
         auto dom_t    = dom->type(world(), def2fields_);
-        auto pi       = world().mut_pi(world().type_infer_univ(), implicit)->set_dom(dom_t);
+        auto pi       = (outer ? outer : world().mut_pi(world().type_infer_univ()))->set_dom(dom_t);
         auto var      = pi->var()->set(dom->sym());
         first         = first ? first : pi;
 
-        pi->set(dom->dbg());
+        pi->make_implicit(implicit)->set(dom->dbg());
         dom->bind(scopes_, var);
         pis.emplace_back(pi);
     } while (ahead().isa(Tag::T_dot) || ahead().isa(Tag::D_brckt_l) || ahead().isa(Tag::T_backtick)
@@ -842,16 +842,9 @@ void Parser::parse_sigma_decl() {
     auto arity = std::optional<nat_t>{};
     if (accept(Tag::T_comma)) arity = expect(Tag::L_u, "arity of a mutable Sigma").u();
 
-    auto mk_sigma = [&]() -> Def* {
-        Def* res = arity ? (Def*)world().mut_sigma(type, *arity)->set(dbg) : (Def*)world().mut_infer(type);
-        scopes_.bind(dbg, res);
-        return res;
-    };
-
     if (accept(Tag::T_assign)) {
         Def* decl;
         if (auto def = scopes_.query(dbg)) {
-            decl = def->as_mut();
             if (auto sigma = def->isa_mut<Sigma>()) {
                 if (arity && arity != sigma->as_lit_arity())
                     error(dbg.loc, "sigma '{}', redeclared with different arity '{}'; previous arity was '{}' here: {}",
@@ -859,8 +852,10 @@ void Parser::parse_sigma_decl() {
             } else if (!def->isa<Infer>()) {
                 error(dbg.loc, "'{}' has not been declared as a mutable sigma", dbg.sym);
             }
+            decl = def->as_mut();
         } else {
-            decl = mk_sigma();
+            decl = (arity ? (Def*)world().mut_sigma(type, *arity) : (Def*)world().mut_infer(type))->set(dbg);
+            scopes_.bind(dbg, decl);
         }
 
         auto ptrn = parse_tuple_ptrn(track, false, dbg.sym, decl);
@@ -875,7 +870,8 @@ void Parser::parse_sigma_decl() {
             assert(t == decl);
         }
     } else {
-        mk_sigma();
+        auto decl = (arity ? (Def*)world().mut_sigma(type, *arity) : (Def*)world().mut_infer(type))->set(dbg);
+        scopes_.bind(dbg, decl);
     }
 
     expect(Tag::T_semicolon, "end of a sigma declaration");
@@ -899,8 +895,11 @@ void Parser::parse_pi_decl() {
             scopes_.bind(dbg, pi);
         }
 
-        auto other = parse_expr("definition of a pi declaration")->as_mut<Pi>(); // TODO
-        pi->set(other->dom(), other->codom());
+        if (!ahead().isa(Tag::T_Pi) && !ahead().isa(Tag::K_Cn) && !ahead().isa(Tag::K_Fn))
+            syntax_err("pi expression",  "definition of a pi declaration");
+
+        auto other = parse_pi_expr(pi);
+        assert_unused(other == pi);
         pi->set<true>(track.loc());
     } else {
         auto pi = world().mut_pi(type)->set(dbg);
