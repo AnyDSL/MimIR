@@ -13,20 +13,6 @@
 #include "thorin/util/array.h"
 #include "thorin/util/sys.h"
 
-// clang-format off
-#define DECL                \
-         Tag::K_ax:    \
-    case Tag::K_Arr:   \
-    case Tag::K_Pi:    \
-    case Tag::K_Sigma: \
-    case Tag::K_con:   \
-    case Tag::K_def:   \
-    case Tag::K_fun:   \
-    case Tag::K_lam:   \
-    case Tag::K_let:   \
-    case Tag::K_pack:
-// clang-format on
-
 using namespace std::string_literals;
 
 namespace thorin::fe {
@@ -747,7 +733,7 @@ Ref Parser::parse_decls(std::string_view ctxt) {
             case Tag::K_ax:        parse_ax_decl();    break;
             case Tag::K_let:       parse_let_decl();   break;
             case Tag::K_Sigma:     parse_sigma_decl(); break;
-            case Tag::K_Pi:        parse_pi_decl();   break;
+            case Tag::K_Pi:        parse_pi_decl();    break;
             case Tag::K_con:
             case Tag::K_fun:
             case Tag::K_lam:       parse_lam(true);    break;

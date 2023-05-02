@@ -7,4 +7,6 @@
 
 .Sigma Vec3: *, 3;
 .Sigma Vec3 = [x: F64, y: F64, z: F64];
+.Sigma Vec2: *, 2 = [x: F64, y: F64];
 .lam .extern foo v: Vec3 -> F64 = v#y;
+.lam .extern var v: Vec2 -> F64 = v#y;
