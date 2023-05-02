@@ -848,7 +848,7 @@ void Parser::parse_sigma_decl() {
             if (auto sigma = def->isa_mut<Sigma>()) {
                 if (arity && arity != sigma->as_lit_arity())
                     error(dbg.loc, "sigma '{}', redeclared with different arity '{}'; previous arity was '{}' here: {}",
-                            dbg.sym, *arity, sigma->as_lit_arity(), sigma->loc());
+                          dbg.sym, *arity, sigma->as_lit_arity(), sigma->loc());
             } else if (!def->isa<Infer>()) {
                 error(dbg.loc, "'{}' has not been declared as a mutable sigma", dbg.sym);
             }
@@ -896,7 +896,7 @@ void Parser::parse_pi_decl() {
         }
 
         if (!ahead().isa(Tag::T_Pi) && !ahead().isa(Tag::K_Cn) && !ahead().isa(Tag::K_Fn))
-            syntax_err("pi expression",  "definition of a pi declaration");
+            syntax_err("pi expression", "definition of a pi declaration");
 
         auto other = parse_pi_expr(pi);
         assert_unused(other == pi);
