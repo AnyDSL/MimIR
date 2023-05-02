@@ -9,7 +9,7 @@ var searchData=
   ['gle_6',['Gle',['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eabb34545856373637e340eba75e51d06f',1,'thorin::core']]],
   ['gle_7',['gLE',['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea2be16bf3b205ad3e1cedf8f3e983d8f4',1,'thorin::core']]],
   ['gle_8',['gLe',['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eab94b516e2c692fc7b3b4f68d34fae6a1',1,'thorin::core']]],
-  ['gle_9',['glE',['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eaba9d3f7f019cb6d5f3165917d62aeace',1,'thorin::core']]],
-  ['gle_10',['gle',['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eab66873505577b501426d6678ce07095e',1,'thorin::core']]],
+  ['gle_9',['gle',['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eab66873505577b501426d6678ce07095e',1,'thorin::core']]],
+  ['gle_10',['glE',['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eaba9d3f7f019cb6d5f3165917d62aeace',1,'thorin::core']]],
   ['global_11',['Global',['../namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023abd8d7821a2fd1239acef09706db6bace',1,'thorin::Node::Global()'],['../namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3a4cc6684df7b4a92b1dec6fce3264fac8',1,'thorin::mem::Global()']]]
 ];
