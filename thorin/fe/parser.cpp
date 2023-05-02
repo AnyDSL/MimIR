@@ -252,12 +252,10 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::L_s:
         case Tok::Tag::L_u:
         case Tok::Tag::L_r:       return parse_lit();
+        case Tok::Tag::M_id:      return scopes_.find(parse_sym());
+        case Tok::Tag::M_i:       return lex().index();
         case Tok::Tag::K_ins:     return parse_insert();
         case Tok::Tag::M_ax:      return scopes_.find(lex().dbg());
-        case Tok::Tag::M_char:    return world().lit_int(8, lex().c8());
-        case Tok::Tag::M_id:      return scopes_.find(parse_sym());
-        case Tok::Tag::M_idx:     return lex().index();
-        case Tok::Tag::M_str:     return world().tuple(lex().sym())->set(prev());
         default:
             if (ctxt.empty()) return nullptr;
             syntax_err("primary expression", ctxt);
@@ -455,8 +453,8 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
         return parse_tuple_ptrn(track, false, sym);
     }
 
-    auto backtick = accept(Tok::Tag::T_backtick);
-    bool rebind   = backtick.has_value();
+    auto apos   = accept(Tok::Tag::T_apos);
+    bool rebind = apos.has_value();
 
     if (ahead(0).isa(Tok::Tag::M_id)) {
         // p ->  s::(p, ..., p)
@@ -500,7 +498,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
         }
     } else if (b) {
         // b ->  e    where e != id
-        if (backtick) error(backtick->loc(), "you can only prefix identifiers with backtick for rebinding");
+        if (apos) error(apos->loc(), "you can only prefix identifiers with apostrophe for rebinding");
         auto type = parse_expr(ctxt, prec);
         return std::make_unique<IdPtrn>(track.dbg(sym), rebind, type);
     } else if (!ctxt.empty()) {

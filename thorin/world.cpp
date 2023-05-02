@@ -259,12 +259,6 @@ Ref World::tuple(Ref type, Defs ops) {
     return unify<Tuple>(ops.size(), type, ops);
 }
 
-Ref World::tuple(Sym sym) {
-    DefVec defs;
-    std::ranges::transform(sym, std::back_inserter(defs), [this](auto c) { return lit_int(8, c); });
-    return tuple(defs);
-}
-
 Ref World::extract(Ref d, Ref index) {
     assert(d);
     if (index->isa<Tuple>()) {

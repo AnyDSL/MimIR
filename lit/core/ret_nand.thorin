@@ -22,6 +22,6 @@
     };
 
     .let argv_ptr_a = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)›, 0) (argv, 1:I32);
-    .let (`mem, val) = %mem.load (mem, argv_ptr_a);
+    .let ('mem, val) = %mem.load (mem, argv_ptr_a);
     atoi (mem, val, atoi_cont_a)
 };

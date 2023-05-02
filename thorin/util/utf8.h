@@ -88,20 +88,19 @@ protected:
         return result;
     }
 
-    /// Yields consumed Char if @p pred holds.
-    /// In this case, invoke @p next() and append to Lexer::str_ (if @p append is *true).
+    /// Yields `true` if @p pred holds.
+    /// In this case invoke @p next() and append to @p str_;
     template<class Pred>
-    std::optional<Char> accept_if(Pred pred, bool append = true) {
-        auto c = ahead();
-        if (pred(c)) {
-            if (append) str_ += c;
+    bool accept_if(Pred pred, bool append = true) {
+        if (pred(ahead())) {
+            if (append) str_ += ahead();
             next();
-            return c;
+            return true;
         }
-        return {};
+        return false;
     }
 
-    std::optional<Char> accept(char32_t val, bool append = true) {
+    bool accept(char32_t val, bool append = true) {
         return accept_if([val](char32_t p) { return p == val; }, append);
     }
 
