@@ -671,7 +671,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok
     return nullptr;
 }
 
-std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, Sym sym, Def* sigma) {
+std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, Sym sym, Def* decl) {
     auto delim_l = ahead().tag();
     bool p       = delim_l == Tag::D_paren_l;
     bool b       = delim_l == Tag::D_brckt_l;
@@ -718,7 +718,7 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
     scopes_.pop();
 
     // TODO parse type
-    return std::make_unique<TuplePtrn>(track.dbg(sym), rebind, std::move(ptrns), nullptr, std::move(infers), sigma);
+    return std::make_unique<TuplePtrn>(track.dbg(sym), rebind, std::move(ptrns), nullptr, std::move(infers), decl);
 }
 
 /*
@@ -837,9 +837,8 @@ void Parser::parse_let_decl() {
 void Parser::parse_sigma_decl() {
     auto track = tracker();
     eat(Tag::K_Sigma);
-    auto dbg  = parse_sym("sigma declaration");
-    auto type = accept(Tag::T_colon) ? parse_expr("type of a sigma declaration") : world().type();
-
+    auto dbg   = parse_sym("sigma declaration");
+    auto type  = accept(Tag::T_colon) ? parse_expr("type of a sigma declaration") : world().type();
     auto arity = std::optional<nat_t>{};
     if (accept(Tag::T_comma)) arity = expect(Tag::L_u, "arity of a mutable Sigma").u();
 
@@ -850,30 +849,28 @@ void Parser::parse_sigma_decl() {
     };
 
     if (accept(Tag::T_assign)) {
-        Def* sigma;
+        Def* decl;
         if (auto def = scopes_.query(dbg)) {
-            if (auto mut = def->isa_mut<Sigma>()) {
-                if (arity && arity != mut->as_lit_arity())
-                    error(dbg.loc, "sigma '{}', redeclared with different arity '{}'; previous arity was '{}' here: {}",
-                          dbg.sym, *arity, mut->as_lit_arity(), mut->loc());
-            } else if (!def->isa<Infer>()) {
+            decl = def->as_mut();
+            if (auto sigma = def->isa_mut<Sigma>(); sigma && arity && arity != sigma->as_lit_arity())
+                error(dbg.loc, "sigma '{}', redeclared with different arity '{}'; previous arity was '{}' here: {}",
+                          dbg.sym, *arity, sigma->as_lit_arity(), sigma->loc());
+            else if (!def->isa<Infer>())
                 error(dbg.loc, "'{}' has not been declared as a mutable sigma", dbg.sym);
-            }
-            sigma = def->as_mut();
         } else {
-            sigma = mk_sigma();
+            decl = mk_sigma();
         }
 
-        auto ptrn = parse_tuple_ptrn(track, false, dbg.sym, sigma);
+        auto ptrn = parse_tuple_ptrn(track, false, dbg.sym, decl);
         auto t    = ptrn->type(world(), def2fields_);
         t->set<true>(track.loc());
 
-        if (auto infer = sigma->isa<Infer>()) {
+        if (auto infer = decl->isa<Infer>()) {
             assert(infer->op() == t);
             infer->set<true>(track.loc());
-            scopes_.bind(dbg, t, true);
+            scopes_.bind(dbg, t, true); // rebind dbg to point to sigma instead of infer
         } else {
-            assert(t == sigma);
+            assert(t == decl);
         }
     } else {
         mk_sigma();

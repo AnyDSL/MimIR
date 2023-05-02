@@ -59,10 +59,8 @@ In addition the following keywords are *terminals*:
 | `.cn`     | [continuation](@ref thorin::Lam) expression               |
 | `.fn`     | [function](@ref thorin::Lam) expression                   |
 | `.cn`     | [lambda](@ref thorin::Lam) expression                     |
-| `.Arr`    | mutable thorin::Arr                                       |
-| `.pack`   | mutable thorin::Pack                                      |
 | `.Sigma`  | mutable thorin::Sigma                                     |
-| `.def`    | mutable definition                                        |
+| `.Pi`     | mutable thorin::Pi                                        |
 | `.extern` | marks mutable as external                                 |
 | `.ins`    | thorin::Insert expression                                 |
 | `.insert` | alias for `.ins`                                          |
@@ -159,7 +157,7 @@ The following tables comprise all production rules:
 | d           | `.con` Sym (`.`? p)+                       ( `=` de)? `;`                                 | continuation declaration | [Lam](@ref thorin::Lam)     |
 | d           | `.fun` Sym (`.`? p)+ `→` e<sub>ret</sub>   ( `=` de)? `;`                                 | function declaration     | [Lam](@ref thorin::Lam)     |
 | d           | `.Pi` Sym (`:` e<sub>type</sub>)? (`=` e)? `;`                                            | Pi declaration           | [Pi](@ref thorin::Pi)       |
-| d           | `.Sigma` Sym (`:` e<sub>type</sub> )? (`,` L<sub>arity</sub>)? (`=` e<sub>[ ]</sub>)? `;` | sigma declaration        | [Sigma](@ref thorin::Sigma) |
+| d           | `.Sigma` Sym (`:` e<sub>type</sub> )? (`,` L<sub>arity</sub>)? (`=` b<sub>[ ]</sub>)? `;` | sigma declaration        | [Sigma](@ref thorin::Sigma) |
 <sup>s</sup> opens new scope
 
 ### Patterns
@@ -202,15 +200,16 @@ This is particularly useful, when dealing with memory:
 .let (`mem, val) = %mem.load (mem, ptr);
 ```
 
-| Nonterminal     | Right-Hand Side                                                    | Comment                 |
-|-----------------|--------------------------------------------------------------------|-------------------------|
-| p               | ``'``? Sym (`:` e<sub>type</sub> )?                                | identifier `()`-pattern |
-| b               | (``'``? Sym `:`)? e<sub>type</sub>                                 | identifier `[]`-pattern |
-| p               | (``'``? Sym `::`)? `(` g `,` ... `,` g `)` (`:` e<sub>type</sub>)? | `()`-`()`-tuple pattern |
-| p               | (``'``? Sym `::`)? `[` b `,` ... `,` b `]` (`:` e<sub>type</sub>)? | `[]`-`()`-tuple pattern |
-| b<sub>[ ]</sub> | (``'``? Sym `::`)? `[` b `,` ... `,` b `]` (`:` e<sub>type</sub>)? | `[]`-`[]`-tuple pattern |
-| g               | p                                                                  | group                   |
-| g               | Sym+ `:` e                                                         | group                   |
+| Nonterminal     | Right-Hand Side                            | Comment                 |
+|-----------------|--------------------------------------------|-------------------------|
+| p               | ``'``? Sym (`:` e<sub>type</sub> )?        | identifier `()`-pattern |
+| p               | (``'``? Sym `::`)? `(` g `,` ... `,` g `)` | `()`-`()`-tuple pattern |
+| p               | (``'``? Sym `::`)? b<sub>[ ]</sub>         | `[]`-`()`-tuple pattern |
+| g               | p                                          | group                   |
+| g               | Sym+ `:` e                                 | group                   |
+| b               | (``'``? Sym `:`)? e<sub>type</sub>         | identifier `[]`-pattern |
+| b               | (``'``? Sym `::`)? b<sub>[ ]</sub>         | `[]`-`[]`-tuple pattern |
+| b<sub>[ ]</sub> | `[` b `,` ... `,` b `]`                    | `[]`-tuple pattern      |
 
 
 ### Expressions

@@ -41,7 +41,7 @@ const Def* TuplePtrn::type(World& world, Def2Fields& def2fields) const {
     auto ops = Array<const Def*>(n, [&](size_t i) { return ptrn(i)->type(world, def2fields); });
 
     if (std::ranges::all_of(ptrns_, [](auto&& b) { return b->is_anonymous(); })) {
-        if (sigma_) return type_ = sigma_->set(ops);
+        if (decl_) return type_ = decl_->set(ops);
         return type_ = world.sigma(ops)->set(loc());
     }
 
@@ -49,12 +49,12 @@ const Def* TuplePtrn::type(World& world, Def2Fields& def2fields) const {
     auto type  = world.umax<Sort::Type>(ops);
 
     Sigma* sigma;
-    if (sigma_) {
-        if (auto s = sigma_->isa_mut<Sigma>())
+    if (decl_) {
+        if (auto s = decl_->isa_mut<Sigma>())
             sigma = s;
         else {
             sigma = world.mut_sigma(type, n)->set(loc(), sym());
-            if (auto infer = sigma_->isa<Infer>()) {
+            if (auto infer = decl_->isa<Infer>()) {
                 if (infer->is_set()) {
                     if (infer->op() != sigma)
                         error(infer->loc(), "inferred different sigma '{}' for '{}'", infer->op(), sigma);
@@ -80,7 +80,7 @@ const Def* TuplePtrn::type(World& world, Def2Fields& def2fields) const {
     sigma->reset(0, ops[0]);
     for (size_t i = 1; i != n; ++i) sigma->reset(i, rw.rewrite(ops[i]));
 
-    if (!sigma_) {
+    if (!decl_) {
         if (auto imm = sigma->immutabilize()) return type_ = imm;
     }
 
