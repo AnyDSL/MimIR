@@ -143,21 +143,22 @@ The following tables comprise all production rules:
 
 | Nonterminal | Right-Hand Side   | Comment | Thorin Class                |
 |-------------|-------------------|---------|-----------------------------|
-| m           | l\* d\*           | module  | [World](@ref thorin::World) |
-| l           | `.import` Sym `;` | import  |                             |
-| l           | `.plugin` Sym `;` | plugin  |                             |
+| m           | dep\* d\*         | module  | [World](@ref thorin::World) |
+| dep         | `.import` Sym `;` | import  |                             |
+| dep         | `.plugin` Sym `;` | plugin  |                             |
 
 ### Declarations
 
-| Nonterminal | Right-Hand Side                                                                           | Comment                  | Thorin Class                |
-|-------------|-------------------------------------------------------------------------------------------|--------------------------|-----------------------------|
-| d           | `.ax` Ax `:` e<sub>type</sub> `;`                                                         | axiom                    | [Axiom](@ref thorin::Axiom) |
-| d           | `.let` p  `=` e `;`                                                                       | let                      | -                           |
-| d           | `.lam` Sym (`.`? p)+ `→` e<sub>codom</sub> ( `=` de)? `;`                                 | lambda declaration       | [Lam](@ref thorin::Lam)     |
-| d           | `.con` Sym (`.`? p)+                       ( `=` de)? `;`                                 | continuation declaration | [Lam](@ref thorin::Lam)     |
-| d           | `.fun` Sym (`.`? p)+ `→` e<sub>ret</sub>   ( `=` de)? `;`                                 | function declaration     | [Lam](@ref thorin::Lam)     |
-| d           | `.Pi` Sym (`:` e<sub>type</sub>)? (`=` e)? `;`                                            | Pi declaration           | [Pi](@ref thorin::Pi)       |
-| d           | `.Sigma` Sym (`:` e<sub>type</sub> )? (`,` L<sub>arity</sub>)? (`=` b<sub>[ ]</sub>)? `;` | sigma declaration        | [Sigma](@ref thorin::Sigma) |
+| Nonterminal | Right-Hand Side                                                                                                                                        | Comment                  | Thorin Class                |
+|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------|-----------------------------|
+| d           | `.let` p  `=` e `;`                                                                                                                                    | let                      | -                           |
+| d           | `.lam` Sym (`.`? p)+ `→` e<sub>codom</sub> ( `=` de)? `;`                                                                                              | lambda declaration       | [Lam](@ref thorin::Lam)     |
+| d           | `.con` Sym (`.`? p)+                       ( `=` de)? `;`                                                                                              | continuation declaration | [Lam](@ref thorin::Lam)     |
+| d           | `.fun` Sym (`.`? p)+ `→` e<sub>ret</sub>   ( `=` de)? `;`                                                                                              | function declaration     | [Lam](@ref thorin::Lam)     |
+| d           | `.Pi` Sym (`:` e<sub>type</sub>)? (`=` e)? `;`                                                                                                         | Pi declaration           | [Pi](@ref thorin::Pi)       |
+| d           | `.Sigma` Sym (`:` e<sub>type</sub> )? (`,` L<sub>arity</sub>)? (`=` b<sub>[ ]</sub>)? `;`                                                              | sigma declaration        | [Sigma](@ref thorin::Sigma) |
+| d           | `.ax` Ax `:` e<sub>type</sub> (`(` sub `,` ... `,` sub `)`)? <br> (`,` Sym<sub>normalizer</sub>)? (`,` L<sub>curry</sub>)? (`,` L<sub>trip</sub>)? `;` | axiom                    | [Axiom](@ref thorin::Axiom) |
+| sub         | Sym (`=` Sym `,` ... `,` Sym)?                                                                                                                         | subtag with aliases      |                             |
 <sup>s</sup> opens new scope
 
 An elided type of a `.Pi` or `.Sigma` declaration defaults to `*`.
@@ -174,7 +175,7 @@ The main difference is that
 * `[a, b, c]` means `[_: a, _: c, _: d]` while
 * `(a: A, b: B, c: C)` is the same as `[a: A, b: B, C: C]`.
 
-Note that you **can** switch from a `()`-style pattern to a `[]`-pattern but not vice versa.
+You **can** switch from a `()`-style pattern to a `[]`-pattern but not vice versa.
 For this reason there is no rule for a `()`-`[]`-pattern.
 What is more, `()`-style patterns allow for *groups*:
 * `(a b c: .Nat, d e: .Bool)` means `(a: .Nat, b: .Nat, c: .Nat, d: .Bool, e: .Bool)`.
@@ -191,7 +192,7 @@ This will bind
 
 Here is another example:
 ```
-Π.Tas::[T: *, as: .Nat][%mem.M, %mem.Ptr Tas] -> [%mem.M, T]
+Π.Tas::[T: *, as: .Nat][%mem.M, %mem.Ptr Tas] → [%mem.M, T]
 ```
 
 Finally, you can put a <tt>\`</tt> in front of an identifier of a `()`-style pattern to (potentially) rebind a name to a different value.
@@ -224,7 +225,7 @@ This is particularly useful, when dealing with memory:
 | e           | `*`                                                                           | alias for `.Type (0:.Univ)`             | [Type](@ref thorin::Type)       |
 | e           | `□`                                                                           | alias for `.Type (1:.Univ)`             | [Type](@ref thorin::Type)       |
 | e           | `.Nat`                                                                        | natural number                          | [Nat](@ref thorin::Nat)         |
-| e           | `.Idx`                                                                        | builtin of type `.Nat -> *`             | [Idx](@ref thorin::Idx)         |
+| e           | `.Idx`                                                                        | builtin of type `.Nat → *`             | [Idx](@ref thorin::Idx)         |
 | e           | `.Bool`                                                                       | alias for `.Idx 2`                      | [Idx](@ref thorin::Idx)         |
 | e           | `{` de `}`                                                                    | block<sup>s</sup>                       | -                               |
 | e           | L (`:` e<sub>type</sub>)?                                                     | literal                                 | [Lit](@ref thorin::Lit)         |
@@ -248,8 +249,10 @@ This is particularly useful, when dealing with memory:
 | e           | `.ins` `(` e<sub>tuple</sub> `,` e<sub>index</sub> `,` e<sub>value</sub> ` )` | insert                                  | [Insert](@ref thorin::Insert)   |
 | e           | `(` e<sub>0</sub> `,` ... `,` e<sub>n-1</sub>` )` (`:` e<sub>type</sub>)?     | tuple                                   | [Tuple](@ref thorin::Tuple)     |
 | e           | `[` b `,` ... `,` b `]`                                                       | sigma<sup>s</sup>                       | [Sigma](@ref thorin::Sigma)     |
-| e           | `‹` i e<sub>shape</sub> `;` e<sub>body</sub>`›`                               | pack<sup>s</sup>                        | [Pack](@ref thorin::Pack)       |
-| e           | `«` i e<sub>shape</sub> `;` e<sub>body</sub>`»`                               | array<sup>s</sup>                       | [Arr](@ref thorin::Arr)         |
+| e           | `‹` s `;` e<sub>body</sub>`›`                                                 | pack<sup>s</sup>                        | [Pack](@ref thorin::Pack)       |
+| e           | `«` s `;` e<sub>body</sub>`»`                                                 | array<sup>s</sup>                       | [Arr](@ref thorin::Arr)         |
+| s           | e<sub>shape</sub>                                                             | shape                                   | -                               |
+| s           | Sym `:` e<sub>shape</sub>                                                     | parameterized shape                     | -                               |
 <sup>s</sup> opens new scope
 
 An elided type of
@@ -267,15 +270,19 @@ Expressions nesting is disambiguated according to the following precedence table
 | e `#` e              | extract                             | left-to-right |
 | e e                  | application                         | left-to-right |
 | `Π` Sym `:` e        | domain of a dependent function type | -             |
-| `.fun` Sym Sym `:` e | mutable function declaration        | -             |
-| `.lam` Sym Sym `:` e | mutable continuation declaration    | -             |
-| `.fn` Sym `:` e      | mutable function expression         | -             |
-| `.lm` Sym `:` e      | mutable continuation expression     | -             |
+| `.fun` Sym Sym `:` e | function declaration                | -             |
+| `.lam` Sym Sym `:` e | lambda declaration                  | -             |
+| `.fn` Sym `:` e      | function expression                 | -             |
+| `λ` Sym `:` e        | lambda expression                   | -             |
 | e `→` e              | function type                       | right-to-left |
 
-Note that the domain of a dependent function type binds slightly stronger than `→`.
-This has the effect that, e.g., `Π T: * → T → T` has the expected binding like this: (`Π T: *`) `→` (`T → T`).
-Otherwise, `→` would be consumed by the domain: `Π T:` (`* →` (`T → T`)) ↯.
+@note The domain of a dependent function type binds slightly stronger than `→`.
+This has the effect that <br>
+`Π T: * → T → T` <br>
+has the expected binding like this <br>
+(`Π T: *`) `→` (`T → T`) <br>
+Otherwise, `→` would be consumed by the domain: <br>
+`Π T:` (`* →` (`T → T`)) ↯ <br>
 A similar situation occurs for a `.lam` declaration.
 
 ### Functions \& Types
@@ -284,7 +291,7 @@ The following table summarizes the different tokens used for functions declarati
 
 | Declaration | Expression     | Type                    |
 |-------------|----------------|-------------------------|
-| `.lam`      | `.lm` <br> `λ` | `Π` <br> <tt>\|~\|</tt> |
+| `.lam`      | `.lm` <br> `λ` | <tt>\|~\|</tt> <br> `Π` |
 | `.con`      | `.cn`          | `.Cn`                   |
 | `.fun`      | `.fn`          | `.Fn`                   |
 
@@ -292,9 +299,9 @@ The following table summarizes the different tokens used for functions declarati
 
 The following function *declarations* are all equivalent:
 ```
-.lam f(T: *)((x y: T), return: T -> ⊥) -> ⊥ = return x;
-.con f(T: *)((x y: T), return: .Cn T)       = return x;
-.fun f(T: *) (x y: T)                       = return x;
+.lam f(T: *)((x y: T), return: T → ⊥) → ⊥ = return x;
+.con f(T: *)((x y: T), return: .Cn T)     = return x;
+.fun f(T: *) (x y: T)                     = return x;
 ```
 
 #### Expressions
@@ -302,9 +309,10 @@ The following function *declarations* are all equivalent:
 The following function *expressions* are all equivalent.
 What is more, since they are bound by a *let declaration*, they have the exact same effect as the function *declarations* above:
 ```
-.let f = .lm (T: *)((x y: T), return: T -> ⊥) -> ⊥ = return x;
-.let f = .cn (T: *)((x y: T), return: .Cn T)       = return x;
-.let f = .fn (T: *) (x y: T)                       = return x;
+.let f =   λ (T: *)((x y: T), return: T → ⊥) → ⊥ = return x;
+.let f = .lm (T: *)((x y: T), return: T → ⊥) → ⊥ = return x;
+.let f = .cn (T: *)((x y: T), return: .Cn T)     = return x;
+.let f = .fn (T: *) (x y: T)                     = return x;
 ```
 
 #### Applications
@@ -312,15 +320,15 @@ What is more, since they are bound by a *let declaration*, they have the exact s
 The following expressions for applying `f` are also equivalent:
 ```
 f .Nat ((23, 42),.cn res: .Nat = use(res))
-.ret res = f .Nat : (23, 42); use(res)
+.ret res = f .Nat $ (23, 42); use(res)
 ```
 #### Function Types
 
 Finally, the following function types are all equivalent and denote the type of `f` above.
 ```
- Π [T:*][T, T][T -> ⊥] -> ⊥
-.Cn[T:*][T, T][.Cn T]
-.Fn[T:*][T, T] -> T
+ Π  [T:*][[T, T], T → ⊥] → ⊥
+.Cn [T:*][[T, T], .Cn T]
+.Fn [T:*] [T, T] → T
 ```
 
 ## Scoping
@@ -336,7 +344,7 @@ Hence, using the symbol `_` will always result in a scoping error.
 
 ### Pis
 
-Note that _only_ `Π x: e → e` introduces a new scope.
+@note **Only** `Π x: e → e` introduces a new scope.
 `x: e → e` is a syntax error.
 If the variable name of a Pi's domain is elided and the domain is a sigma, its elements will be imported into the Pi's scope to make these elements available in the Pi's codomain:
 ```
@@ -349,8 +357,9 @@ The names of axioms are special and live in a global namespace.
 
 ### Field Names of Sigmas
 
-Named elements of mutable sigmas are avaiable for extracts/inserts.
-These names take precedence over the usual scope.
+Named elements of mutable sigmas are available for extracts/inserts.
+
+@warning These names take precedence over the usual scope.
 In the following example, `i` refers to the first element `i` of `X` and **not** to the `i` introduced via `.let`:
 ```
 .let i = 1_2;
