@@ -28,17 +28,15 @@ void optimize(World& world) {
         }
     }
     // make all functions `[] -> Pipeline` internal
-    std::vector<Def*> make_internal;
-    for (auto ext : world.externals()) {
-        auto def = ext.second;
+    auto externals = world.externals(); // copy
+    for (auto [_, def] : externals) {
         if (auto lam = def->isa<Lam>(); lam && lam->num_doms() == 0) {
             if (*lam->codom()->sym() == "Pipeline") {
                 if (!compilation) compilation = lam;
-                make_internal.push_back(def);
+                def->make_internal();
             }
         }
     }
-    for (auto def : make_internal) def->make_internal();
     assert(compilation && "no compilation function found");
 
     // We found a compilation directive in the file and use it to build the compilation pipeline.
