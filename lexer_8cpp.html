@@ -112,8 +112,7 @@ $(document).ready(function(){initNavTree('lexer_8cpp.html',''); initResizable();
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle"><div class="title">lexer.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -137,15 +136,10 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a7d12cc9e30e6f91e9135feb7a67bb4df"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lexer_8cpp.html#a7d12cc9e30e6f91e9135feb7a67bb4df">CODE</a>(t,  str)&#160;&#160;&#160;keywords_[world.sym(str)] = Tag::t;</td></tr>
+<tr class="memitem:a7d12cc9e30e6f91e9135feb7a67bb4df"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lexer_8cpp.html#a7d12cc9e30e6f91e9135feb7a67bb4df">CODE</a>(t,  str)&#160;&#160;&#160;keywords_[world.sym(str)] = Tok::Tag::t;</td></tr>
 <tr class="separator:a7d12cc9e30e6f91e9135feb7a67bb4df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4735e0a8022984aa488607059a90351d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lexer_8cpp.html#a4735e0a8022984aa488607059a90351d">CODE</a>(str,  t)&#160;&#160;&#160;    if (Tag::t != Tag::Nil) keywords_[world.sym(str)] = Tag::t;</td></tr>
+<tr class="memitem:a4735e0a8022984aa488607059a90351d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lexer_8cpp.html#a4735e0a8022984aa488607059a90351d">CODE</a>(str,  t)&#160;&#160;&#160;    if (Tok::Tag::t != Tok::Tag::Nil) keywords_[world.sym(str)] = Tok::Tag::t;</td></tr>
 <tr class="separator:a4735e0a8022984aa488607059a90351d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a83749c567510b84e8a1153d13da9be39"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1fe.html#a83749c567510b84e8a1153d13da9be39">thorin::fe::Tag</a> = Tok::Tag</td></tr>
-<tr class="separator:a83749c567510b84e8a1153d13da9be39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a4735e0a8022984aa488607059a90351d" name="a4735e0a8022984aa488607059a90351d"></a>
@@ -169,7 +163,7 @@ Typedefs</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;    if (Tag::t != Tag::Nil) keywords_[world.sym(str)] = Tag::t;</td>
+          <td></td><td>&#160;&#160;&#160;    if (Tok::Tag::t != Tok::Tag::Nil) keywords_[world.sym(str)] = Tok::Tag::t;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -197,7 +191,7 @@ Typedefs</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;keywords_[world.sym(str)] = Tag::t;</td>
+          <td></td><td>&#160;&#160;&#160;keywords_[world.sym(str)] = Tok::Tag::t;</td>
         </tr>
       </table>
 </div><div class="memdoc">
