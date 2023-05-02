@@ -205,13 +205,13 @@ This is particularly useful, when dealing with memory:
 
 | Nonterminal     | Right-Hand Side                            | Comment                 |
 |-----------------|--------------------------------------------|-------------------------|
-| p               | ``'``? Sym (`:` e<sub>type</sub> )?        | identifier `()`-pattern |
-| p               | (``'``? Sym `::`)? `(` g `,` ... `,` g `)` | `()`-`()`-tuple pattern |
-| p               | (``'``? Sym `::`)? b<sub>[ ]</sub>         | `[]`-`()`-tuple pattern |
+| p               | <tt>\`</tt>? Sym (`:` e<sub>type</sub> )?        | identifier `()`-pattern |
+| p               | (<tt>\`</tt>? Sym `::`)? `(` g `,` ... `,` g `)` | `()`-`()`-tuple pattern |
+| p               | (<tt>\`</tt>? Sym `::`)? b<sub>[ ]</sub>         | `[]`-`()`-tuple pattern |
 | g               | p                                          | group                   |
 | g               | Sym+ `:` e                                 | group                   |
-| b               | (``'``? Sym `:`)? e<sub>type</sub>         | identifier `[]`-pattern |
-| b               | (``'``? Sym `::`)? b<sub>[ ]</sub>         | `[]`-`[]`-tuple pattern |
+| b               | (<tt>\`</tt>? Sym `:`)? e<sub>type</sub>         | identifier `[]`-pattern |
+| b               | (<tt>\`</tt>? Sym `::`)? b<sub>[ ]</sub>         | `[]`-`[]`-tuple pattern |
 | b<sub>[ ]</sub> | `[` b `,` ... `,` b `]`                    | `[]`-tuple pattern      |
 
 
