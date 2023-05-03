@@ -8,7 +8,7 @@
 .fun println_char[%mem.M, %core.I8] -> %mem.M;
 .fun print_str[%mem.M, %mem.Ptr0 «⊤:.Nat; %core.I8»] -> %mem.M;
 
-.con .extern main(mem: %mem.M, argc: %core.I32, argv: %mem.Ptr0 (%mem.Ptr0 %core.I8), return: .Cn [%mem.M, %core.I32]) =
+.fun .extern main(mem: %mem.M, argc: %core.I32, argv: %mem.Ptr0 (%mem.Ptr0 %core.I8)) -> [%mem.M, %core.I32] =
     .let (`mem, p1) = %mem.slot («15; %core.I8», 0) (mem, 0);
     .let  `mem      = %mem.store (mem, p1, "Hello, World!\n\0");
     .let p2         = %core.bitcast (%mem.Ptr0 «⊤:.Nat; %core.I8») p1;
