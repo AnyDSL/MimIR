@@ -18,7 +18,7 @@
 ///    ret (a*v)
 /// 
 .con pow ((a b: %core.I32), ret: .Cn %core.I32) = {
-    .con pow_then [] = ret (1:%core.I32);
+    .con pow_then [] = ret 1:%core.I32;
 
     .con pow_cont [v:%core.I32] = {
         .let m = %core.wrap.mul 0 (a,v);

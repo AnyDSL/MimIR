@@ -5,19 +5,17 @@
 .plugin math;
 .plugin autodiff;
 
-.let F32 = %math.F (23, 8);
-
-.con f [a:F32, ret: .Cn [F32]] = {
-    .let b = %ROp_add (0, 4294967296) (a, a);
+.con f [a:%math.F32, ret: .Cn %math.F32] = {
+    .let b = %ROp_add (0, %core.i32) (a, a);
     ret b
 };
 
-.con .extern main [mem : %mem.M, argc : %core.I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, F32]] = {
+.con .extern main [mem : %mem.M, argc : %core.I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, %math.F32]] = {
 
-    .con ret_cont r::[F32] = {
+    .con ret_cont r: %math.F32 = {
         return (mem, r)
     };
 
-    .let c = (43:F32);
+    .let c = 43:%math.F32;
     f (c,ret_cont)
 };

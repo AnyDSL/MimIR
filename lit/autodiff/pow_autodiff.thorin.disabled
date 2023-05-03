@@ -21,7 +21,7 @@
 ///    ret (a*v)
 /// 
 .con f [[a:%core.I32, b:%core.I32], ret: .Cn [%core.I32]] = {
-    .con pow_then [] = ret (1:%core.I32);
+    .con pow_then [] = ret 1:%core.I32;
 
     .con pow_cont [v:%core.I32] = {
         .let m = %core.wrap.mul (a,v);
@@ -47,7 +47,7 @@
             .let o  = %core.wrap.add 0 (sr, sp);
             return (mem, o)
         };
-        pb((1:%core.I32),pb_ret_cont)
+        pb(1:%core.I32,pb_ret_cont)
     };
 
     .let f_diff = %autodiff.ad (.Cn [[%core.I32,%core.I32],.Cn[%core.I32]]) f;
@@ -64,9 +64,9 @@
 };
 
 
-    // .let b = %Wrap_mul (0, 4294967296) (3:%core.I32, a);
+    // .let b = %Wrap_mul (0, %core.i32) (3:%core.I32, a);
 
-    // .let c = f (42:%core.I32);
+    // .let c = f 42:%core.I32;
     // return (mem, c)
 
 // CHECK-DAG: .con .extern main _{{[0-9_]+}}::[mem_[[memId:[_0-9]*]]: %mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((.Idx 256), 0), 0), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, (.Idx 4294967296)]] = {

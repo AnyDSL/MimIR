@@ -29,7 +29,7 @@
     _691940 s_691942
 };
 .con .extern main __691726::[mem_691743: %mem.M, (%core.I32), %mem.Ptr (%mem.Ptr ((%core.I8), 0), 0), return_691730: .Cn [%mem.M, (%core.I32)]] = {
-        .let _691708: [(%core.I32), .Cn [(%core.I32), .Cn «2; (%core.I32)»]] = %direct.cps2ds_dep («2; (%core.I32)», Uf_691618) (internal_diff_core_wrap_mul (0, 4294967296)) (2:(%core.I32), 42:(%core.I32));
+        .let _691708: [(%core.I32), .Cn [(%core.I32), .Cn «2; (%core.I32)»]] = %direct.cps2ds_dep («2; (%core.I32)», Uf_691618) (internal_diff_core_wrap_mul (0, %core.i32)) (2:(%core.I32), 42:(%core.I32));
     .con comp_tup_pb__cont_691717 _691882::[_691883: (%core.I32), _691945: (%core.I32)] = {
         .let _691796: (%core.I32) = %core.wrap.mul 0 (100:(%core.I32), _691708#0:(.Idx 2));
         .let _691884: (%core.I32) = %direct.cps2ds_dep ((%core.I32), Uf_691827) zero_pb_691875 _691883;

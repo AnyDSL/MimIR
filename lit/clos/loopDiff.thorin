@@ -203,7 +203,7 @@
             };
 
             .con yield [mem: %mem.M] = {
-                // loop_head( mem, %core.wrap.add (0, 4294967296) (i, 1:%core.I32) )
+                // loop_head( mem, %core.wrap.add (0, %core.i32) (i, 1:%core.I32) )
                 loop_head( mem, %core.wrap.add 0 (i, 1:%core.I32) )
             };
 

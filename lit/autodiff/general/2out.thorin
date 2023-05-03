@@ -20,11 +20,11 @@
             return (mem, d)
         };
         // pb((1:%core.I32,0:%core.I32),pb_ret_cont)
-        pb_ret_cont(1:%core.I32)
+        pb_ret_cont1:%core.I32
     };
 
     .let f_diff = f;
-    .let c = (42:%core.I32);
+    .let c = 42:%core.I32;
     f_diff (c,ret_cont)
 };
 

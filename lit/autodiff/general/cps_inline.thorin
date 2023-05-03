@@ -15,7 +15,7 @@
         return (mem, r)
     };
 
-    .let c = (42:%core.I32);
+    .let c = 42:%core.I32;
     f (c,ret_cont)
 };
 

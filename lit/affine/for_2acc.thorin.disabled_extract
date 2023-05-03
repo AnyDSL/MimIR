@@ -16,7 +16,7 @@
         .let b : %core.I32 = %core.wrap.sub 0 (i, acc#.tt);
         continue (a, b)
     };
-    %affine.For (4294967296, 2, (%core.I32, %core.I32)) (0:(%core.I32), argc, 1:(%core.I32), (0:(%core.I32), 0:(%core.I32)), for_body, for_exit)
+    %affine.For (%core.i32, 2, (%core.I32, %core.I32)) (0:(%core.I32), argc, 1:(%core.I32), (0:(%core.I32), 0:(%core.I32)), for_body, for_exit)
 };
 
 // CHECK-NOT: affine.for

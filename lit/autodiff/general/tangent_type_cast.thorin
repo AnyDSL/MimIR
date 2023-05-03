@@ -22,7 +22,7 @@
         ret_cont r2
     };
 
-    .let c = (43:%core.I32);
+    .let c = 43:%core.I32;
     f (c,ret_wrap)
 };
 

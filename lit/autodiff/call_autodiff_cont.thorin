@@ -29,12 +29,12 @@
             return (mem, d)
         };
         // return (mem, r)
-        pb((1:%core.I32),pb_ret_cont)
+        pb(1:%core.I32,pb_ret_cont)
     };
 
     .let f_diff = %autodiff.ad (.Cn [%core.I32,.Cn[%core.I32]]) f;
 
-    .let c = (42:%core.I32);
+    .let c = 42:%core.I32;
     f_diff (c,ret_cont)
 
 };

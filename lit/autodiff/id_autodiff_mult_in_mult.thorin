@@ -21,7 +21,7 @@
             .let o  = %core.wrap.add 0 (sr, sp);
             return (mem, o)
         };
-        pb((1:%core.I32),pb_ret_cont)
+        pb(1:%core.I32,pb_ret_cont)
     };
 
     .let f_diff = %autodiff.ad (.Cn [[%core.I32,%core.I32],.Cn[%core.I32]]) f;

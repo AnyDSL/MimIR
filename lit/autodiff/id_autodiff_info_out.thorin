@@ -18,13 +18,13 @@
             .let d = %core.wrap.add 0 (c, pr);
             return (mem, d)
         };
-        pb((1:%core.I32),pb_ret_cont)
+        pb(1:%core.I32,pb_ret_cont)
     };
 
     .let f_diff = %autodiff.ad (.Cn [%core.I32,.Cn[%core.I32]]) f;
     .let f_diff_cast = f_diff;
 
-    .let c = (43:%core.I32);
+    .let c = 43:%core.I32;
     f_diff_cast (c,ret_cont)
 };
 

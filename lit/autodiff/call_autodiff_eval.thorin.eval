@@ -16,20 +16,20 @@
     // ret_704202
     inner_mul_deriv_cps_704097
 };
-.con .extern main __704275::[mem_704293: %mem.M, (%core.I32), %mem.Ptr (%mem.Ptr ((%core.I8), 0), 0), return_704279: .Cn [%mem.M, (%core.I32)]] = {
-    .con main_cont_704240 _704246::[_704248: (%core.I32), _704267: .Cn [(%core.I32), .Cn «2; (%core.I32)»]] = {
-        .con main_cont_cont_704255 _704256::[_704331: (%core.I32), _704258: .Cn [(%core.I32), .Cn «2; (%core.I32)»]] = {
-            .con comp_tup_pb__cont_704270 _704314::[(%core.I32), _704315: (%core.I32)] = {
-                .let _704342: (%core.I32) = %core.wrap.mul 0 (100:(%core.I32), _704331);
-                .let _704347: (%core.I32) = %core.wrap.add 0 (_704315, _704342);
+.con .extern main __704275::[mem_704293: %mem.M, %core.I32, %mem.Ptr (%mem.Ptr ((%core.I8), 0), 0), return_704279: .Cn [%mem.M, %core.I32]] = {
+    .con main_cont_704240 _704246::[_704248: %core.I32, _704267: .Cn [%core.I32, .Cn «2; %core.I32»]] = {
+        .con main_cont_cont_704255 _704256::[_704331: %core.I32, _704258: .Cn [%core.I32, .Cn «2; %core.I32»]] = {
+            .con comp_tup_pb__cont_704270 _704314::[%core.I32, _704315: %core.I32] = {
+                .let _704342: %core.I32 = %core.wrap.mul 0 (100:%core.I32, _704331);
+                .let _704347: %core.I32 = %core.wrap.add 0 (_704315, _704342);
                 return_704279 (mem_704293, _704347)
             };
-            .con comp_tup_pb__cont_704265 _704268::[(%core.I32), _704269: (%core.I32)] = {
+            .con comp_tup_pb__cont_704265 _704268::[%core.I32, _704269: %core.I32] = {
                 _704267 (_704269, comp_tup_pb__cont_704270)
             };
-            _704258 (1:(%core.I32), comp_tup_pb__cont_704265)
+            _704258 (1:%core.I32, comp_tup_pb__cont_704265)
         };
-        internal_diff_core_wrap_mul_704027 (0, 4294967296) ((3:(%core.I32), _704248), main_cont_cont_704255)
+        internal_diff_core_wrap_mul_704027 (0, %core.i32) ((3:%core.I32, _704248), main_cont_cont_704255)
     };
-    internal_diff_core_wrap_mul_704027 (0, 4294967296) ((2:(%core.I32), 42:(%core.I32)), main_cont_704240)
+    internal_diff_core_wrap_mul_704027 (0, %core.i32) ((2:%core.I32, 42:%core.I32), main_cont_704240)
 };

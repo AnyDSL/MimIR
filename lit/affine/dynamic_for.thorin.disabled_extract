@@ -27,7 +27,7 @@
                     return (mem, acc#.ff)
                 };
 
-                %affine.For (4294967296, 2, (%core.I32, %core.I32)) (start, stop, step, (0:(%core.I32), 5:(%core.I32)), for_body, for_exit)
+                %affine.For (%core.i32, 2, (%core.I32, %core.I32)) (start, stop, step, (0:(%core.I32), 5:(%core.I32)), for_body, for_exit)
             };
             atoi (_19331#.ff, _19331#.tt, atoi_cont_step)
         };

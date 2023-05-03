@@ -12,7 +12,7 @@
 
 .con .extern main [mem : %mem.M, argc : %core.I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, %core.I32]] = {
     .let g = %direct.cps2ds (%core.I32,%core.I32) f;
-    .let c1 = g (38:%core.I32);
+    .let c1 = g 38:%core.I32;
     .let h = %direct.cps2ds (%core.I32,%core.I32) f;
     .let c2 = h (c1);
     return (mem, c2)

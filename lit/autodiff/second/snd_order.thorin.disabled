@@ -24,7 +24,7 @@
         .con pb_ret_cont [pr:%core.I32] = {
             ret pr
         };
-        pb((1:%core.I32),pb_ret_cont)
+        pb(1:%core.I32,pb_ret_cont)
     };
     .let g_diff = %autodiff.ad (.Cn [%core.I32,.Cn[%core.I32]]) g;
     g_diff (a,ret_cont)
@@ -39,13 +39,13 @@
             return (mem, d)
         };
         // return (mem, r)
-        pb((1:%core.I32),pb_ret_cont)
+        pb(1:%core.I32,pb_ret_cont)
     };
 
     .let f_diff = %autodiff.ad (.Cn [%core.I32,.Cn[%core.I32]]) f;
     .let f_diff_cast = f_diff;
 
-    .let c = (42:%core.I32);
+    .let c = 42:%core.I32;
     f_diff_cast (c,ret_cont)
 };
 
