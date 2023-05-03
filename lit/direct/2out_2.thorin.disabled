@@ -74,7 +74,7 @@ old var access
     .let _662479: [%core.I32, .Cn [%core.I32, .Cn «2; %core.I32»]] = %direct.cps2ds_dep («2; %core.I32», Uf_662379) eta_inner_mul_deriv_cps_662433 (3:%core.I32, 42:%core.I32);
     _662479#1:(.Idx 2) (_662484, comp_tup_pb__cont_662485)
 };
-.con .extern main __661876::[mem_661897: %mem.M, %core.I32, %mem.Ptr (%mem.Ptr ((%core.I8), 0), 0), return_661880: .Cn [%mem.M, %core.I32]] = {
+.con .extern main __661876::[mem_661897: %mem.M, %core.I32, %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return_661880: .Cn [%mem.M, %core.I32]] = {
     .let _662165: [%core.I32, .Cn [%core.I32, .Cn «2; %core.I32»]] = %direct.cps2ds_dep («2; %core.I32», Uf_662044) eta_inner_mul_deriv_cps_662100 (2:%core.I32, 42:%core.I32);
     .con comp_tup_pb__662008 _662168::[_662170: %core.I32, _662179: .Cn %core.I32] = {
         .con comp_tup_pb__cont_662177 _662245::[_662246: %core.I32, _662315: %core.I32] = {

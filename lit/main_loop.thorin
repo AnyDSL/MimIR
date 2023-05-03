@@ -6,19 +6,15 @@
 
 .plugin core;
 
-.fun .extern main(mem: %mem.M, argc: %core.I32, argv: %mem.Ptr0 (%mem.Ptr0 %core.I8)) -> [%mem.M, %core.I32] = {
-    .con loop(mem: %mem.M, i: %core.I32, acc: %core.I32) = {
-        .let cond: (.Idx 2) = %core.icmp.ul (i, argc);
-        .con body m: %mem.M = {
-            .let inc  = %core.wrap.add 0 (1:(%core.I32), i);
+.fun .extern main(mem: %mem.M, argc: %core.I32, argv: %mem.Ptr0 (%mem.Ptr0 %core.I8)) -> [%mem.M, %core.I32] =
+    .con loop(mem: %mem.M, i: %core.I32, acc: %core.I32) =
+        .let cond = %core.icmp.ul (i, argc);
+        .con body m: %mem.M =
+            .let inc  = %core.wrap.add 0 (1:%core.I32, i);
             .let acci = %core.wrap.add 0 (i, acc);
-            loop (m, inc, acci)
-        };
-        (.cn m: %mem.M = return (m, acc), body)#cond mem
-    };
-    loop (mem, 0:%core.I32, 0:%core.I32)
-};
-
+            loop (m, inc, acci);
+        (.cn m: %mem.M = return (m, acc), body)#cond mem;
+    loop (mem, 0:%core.I32, 0:%core.I32);
 
 // CHECK-DAG: .con .extern main _[[mainVarId:[0-9_]+]]::[_{{[0-9]+}}::[mem_[[memId:[0-9_]+]]: %mem.M, argc_[[argcId:[0-9_]+]]: .Idx 4294967296, %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0)], return_[[returnId:[0-9_]+]]: .Cn [%mem.M, .Idx 4294967296]]{{(@.*)?}}= {
 // CHECK-DAG: loop_[[loopId:[0-9_]+]] ({{.*}}, 0:(.Idx 4294967296), 0:(.Idx 4294967296))

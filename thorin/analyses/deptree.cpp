@@ -6,7 +6,7 @@ namespace thorin {
 
 namespace {
 void merge(VarSet& vars, VarSet&& other) { vars.insert(other.begin(), other.end()); }
-}
+} // namespace
 
 void DepTree::run() {
     for (const auto& [_, mut] : world().externals()) run(mut);
