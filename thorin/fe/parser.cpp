@@ -131,6 +131,11 @@ Dbg Parser::parse_id(std::string_view ctxt) {
     return {prev(), world().sym("<error>")};
 }
 
+Dbg Parser::parse_name(std::string_view ctxt) {
+    if (auto tok = accept(Tag::M_ext)) return tok->dbg();
+    return parse_id(ctxt);
+}
+
 Ref Parser::parse_type_ascr(std::string_view ctxt) {
     if (accept(Tag::T_colon)) return parse_expr(ctxt, Tok::Prec::Bot);
     if (ctxt.empty()) return nullptr;
@@ -344,11 +349,11 @@ Pi* Parser::parse_pi_expr(Pi* outer) {
     auto track = tracker();
     auto tok   = lex();
 
-    std::string name;
+    std::string entity;
     switch (tok.tag()) {
-        case Tag::T_Pi: name = "dependent function type"; break;
-        case Tag::K_Cn: name = "continuation type"; break;
-        case Tag::K_Fn: name = "returning continuation type"; break;
+        case Tag::T_Pi: entity = "dependent function type"; break;
+        case Tag::K_Cn: entity = "continuation type"; break;
+        case Tag::K_Fn: entity = "returning continuation type"; break;
         default: unreachable();
     }
 
@@ -358,7 +363,7 @@ Pi* Parser::parse_pi_expr(Pi* outer) {
     do {
         auto implicit = accept(Tag::T_dot).has_value();
         auto prec     = tok.isa(Tag::K_Cn) ? Tok::Prec::Bot : Tok::Prec::App;
-        auto dom      = parse_ptrn(Tag::D_brckt_l, "domain of a "s + name, prec);
+        auto dom      = parse_ptrn(Tag::D_brckt_l, "domain of a "s + entity, prec);
         auto dom_t    = dom->type(world(), def2fields_);
         auto pi       = (outer ? outer : world().mut_pi(world().type_infer_univ()))->set_dom(dom_t);
         auto var      = pi->var()->set(dom->sym());
@@ -373,12 +378,12 @@ Pi* Parser::parse_pi_expr(Pi* outer) {
     Ref codom;
     switch (tok.tag()) {
         case Tag::T_Pi:
-            expect(Tag::T_arrow, name);
+            expect(Tag::T_arrow, entity);
             codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
             break;
         case Tag::K_Cn: codom = world().type_bot(); break;
         case Tag::K_Fn: {
-            expect(Tag::T_arrow, name);
+            expect(Tag::T_arrow, entity);
             codom     = world().type_bot();
             auto ret  = parse_expr("domain of return continuation", Tok::Prec::Arrow);
             auto pi   = pis.back();
@@ -405,20 +410,20 @@ Lam* Parser::parse_lam(bool decl) {
     auto prec     = tok.isa(Tag::K_cn) || tok.isa(Tag::K_con) ? Tok::Prec::Bot : Tok::Prec::Pi;
     bool external = decl && accept(Tag::K_extern).has_value();
 
-    std::string name;
+    std::string entity;
     // clang-format off
     switch (tok.tag()) {
-        case Tag::T_lm:  name = "function expression";                break;
-        case Tag::K_cn:  name = "continuation expression";            break;
-        case Tag::K_fn:  name = "returning continuation expression";  break;
-        case Tag::K_lam: name = "function declaration";               break;
-        case Tag::K_con: name = "continuation declaration";           break;
-        case Tag::K_fun: name = "returning continuation declaration"; break;
+        case Tag::T_lm:  entity = "function expression";                break;
+        case Tag::K_cn:  entity = "continuation expression";            break;
+        case Tag::K_fn:  entity = "returning continuation expression";  break;
+        case Tag::K_lam: entity = "function declaration";               break;
+        case Tag::K_con: entity = "continuation declaration";           break;
+        case Tag::K_fun: entity = "returning continuation declaration"; break;
         default: unreachable();
     }
     // clang-format on
 
-    auto dbg   = decl ? parse_id(name) : Dbg{prev(), anonymous_};
+    auto dbg   = decl ? parse_name(entity) : Dbg{prev(), anonymous_};
     auto outer = scopes_.curr();
 
     std::unique_ptr<Ptrn> dom_p;
@@ -427,7 +432,7 @@ Lam* Parser::parse_lam(bool decl) {
     do {
         const Def* filter = accept(Tag::T_bang) ? world().lit_tt() : nullptr;
         bool implicit     = accept(Tag::T_dot).has_value();
-        dom_p             = parse_ptrn(Tag::D_paren_l, "domain pattern of a "s + name, prec);
+        dom_p             = parse_ptrn(Tag::D_paren_l, "domain pattern of a "s + entity, prec);
         auto dom_t        = dom_p->type(world(), def2fields_);
         auto pi           = world().mut_pi(world().type_infer_univ(), implicit)->set_dom(dom_t);
         auto lam          = world().mut_lam(pi);
@@ -452,7 +457,7 @@ Lam* Parser::parse_lam(bool decl) {
     switch (tok.tag()) {
         case Tag::T_lm:
         case Tag::K_lam: {
-            codom = accept(Tag::T_arrow) ? parse_expr("return type of a "s + name, Tok::Prec::Arrow)
+            codom = accept(Tag::T_arrow) ? parse_expr("return type of a "s + entity, Tok::Prec::Arrow)
                                          : world().mut_infer_type();
             break;
         }
@@ -464,7 +469,7 @@ Lam* Parser::parse_lam(bool decl) {
 
             codom          = world().type_bot();
             auto ret_track = tracker();
-            auto ret       = accept(Tag::T_arrow) ? parse_expr("return type of a "s + name, Tok::Prec::Arrow)
+            auto ret       = accept(Tag::T_arrow) ? parse_expr("return type of a "s + entity, Tok::Prec::Arrow)
                                                   : world().mut_infer_type();
             auto ret_loc   = dom_p->loc() + ret_track.loc();
             auto last      = world().sigma({pi->dom(), world().cn(ret)});
@@ -516,10 +521,10 @@ Lam* Parser::parse_lam(bool decl) {
 
     scopes_.bind(outer, dbg, first);
 
-    auto body = accept(Tag::T_assign) ? parse_decls("body of a "s + name) : nullptr;
+    auto body = accept(Tag::T_assign) ? parse_decls("body of a "s + entity) : nullptr;
     if (!body) {
-        if (!decl) error(prev(), "body of a {}", name);
-        if (auto [_, __, filter] = funs.back(); filter) error(prev(), "cannot specify filter of a {}", name);
+        if (!decl) error(prev(), "body of a {}", entity);
+        if (auto [_, __, filter] = funs.back(); filter) error(prev(), "cannot specify filter of a {}", entity);
     }
 
     for (auto [_, lam, filter] : funs | std::ranges::views::reverse) {
@@ -527,7 +532,7 @@ Lam* Parser::parse_lam(bool decl) {
         body = lam;
     }
 
-    if (decl) expect(Tag::T_semicolon, "end of "s + name);
+    if (decl) expect(Tag::T_semicolon, "end of "s + entity);
 
     first->set(track.loc());
 

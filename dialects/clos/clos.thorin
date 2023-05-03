@@ -11,10 +11,10 @@
 ///
 /// ## Operations related to longjmp
 ///
-.let BufPtr = %mem.Ptr ((.Idx 256), 0:.Nat);
-.ax %clos.alloc_jmpbuf: [[], %mem.M] -> [%mem.M, BufPtr];
-.ax %clos.setjmp: [%mem.M, BufPtr] -> [%mem.M, .Idx 4294967296];
-.ax %clos.longjmp: .Cn [%mem.M, BufPtr, .Idx 4294967296];
+.let %clos.BufPtr = %mem.Ptr ((.Idx 256), 0:.Nat);
+.ax %clos.alloc_jmpbuf: [[], %mem.M] -> [%mem.M, %clos.BufPtr];
+.ax %clos.setjmp: [%mem.M, %clos.BufPtr] -> [%mem.M, .Idx 4294967296];
+.ax %clos.longjmp: .Cn [%mem.M, %clos.BufPtr, .Idx 4294967296];
 ///
 /// ## Closure Attribute
 ///
