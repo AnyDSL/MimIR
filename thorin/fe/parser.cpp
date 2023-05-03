@@ -126,14 +126,16 @@ void Parser::parse_plugin() {
 }
 
 Dbg Parser::parse_id(std::string_view ctxt) {
-    if (auto id = accept(Tag::M_id)) return {id->dbg()};
+    if (auto id = accept(Tag::M_id)) return id->dbg();
     syntax_err("identifier", ctxt);
     return {prev(), world().sym("<error>")};
 }
 
 Dbg Parser::parse_name(std::string_view ctxt) {
     if (auto tok = accept(Tag::M_ext)) return tok->dbg();
-    return parse_id(ctxt);
+    if (auto tok = accept(Tag::M_id)) return tok->dbg();
+    syntax_err("identifier or extension name", ctxt);
+    return {prev(), world().sym("<error>")};
 }
 
 Ref Parser::parse_type_ascr(std::string_view ctxt) {
@@ -854,7 +856,7 @@ void Parser::parse_let_decl() {
 void Parser::parse_sigma_decl() {
     auto track = tracker();
     eat(Tag::K_Sigma);
-    auto dbg   = parse_id("sigma declaration");
+    auto dbg   = parse_name("sigma declaration");
     auto type  = accept(Tag::T_colon) ? parse_expr("type of a sigma declaration") : world().type();
     auto arity = std::optional<nat_t>{};
     if (accept(Tag::T_comma)) arity = expect(Tag::L_u, "arity of a mutable Sigma").lit_u();
@@ -897,7 +899,7 @@ void Parser::parse_sigma_decl() {
 void Parser::parse_pi_decl() {
     auto track = tracker();
     eat(Tag::K_Pi);
-    auto dbg  = parse_id("pi declaration");
+    auto dbg  = parse_name("pi declaration");
     auto type = accept(Tag::T_colon) ? parse_expr("type of a pi declaration") : world().type();
 
     if (accept(Tag::T_assign)) {

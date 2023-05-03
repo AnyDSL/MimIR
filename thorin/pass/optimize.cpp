@@ -31,7 +31,7 @@ void optimize(World& world) {
     auto externals = world.externals(); // copy
     for (auto [_, def] : externals) {
         if (auto lam = def->isa<Lam>(); lam && lam->num_doms() == 0) {
-            if (*lam->codom()->sym() == "Pipeline") {
+            if (*lam->codom()->sym() == "%compile.Pipeline") {
                 if (!compilation) compilation = lam;
                 def->make_internal();
             }

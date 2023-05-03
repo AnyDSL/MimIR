@@ -9,7 +9,7 @@
     f (⊤:%mem.M, argc,return)
 };
 
-.lam .extern _compile [] -> Pipeline =
+.lam .extern _compile [] -> %compile.Pipeline =
     %compile.pipe
         (%compile.single_pass_phase %compile.internal_cleanup_pass)
         // optimization_phase
