@@ -44,65 +44,65 @@ namespace fe {
 constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
 #undef CODE
 
-#define THORIN_TOK(m)                     \
-    /* literals */                        \
+#define THORIN_TOK(m)                  \
+    /* literals */                     \
     m(L_s, "<signed integer literal>") \
     m(L_u, "<integer literal>"       ) \
     m(L_i, "<index literal>"         ) \
     m(L_f, "<floating-point literal>") \
     m(L_c, "<char literal>"          ) \
-    /* misc */                            \
-    m(M_eof,  "<eof>"       )             \
-    m(M_id,   "<identifier>")             \
-    m(M_ax,   "<axiom name>")             \
-    m(M_str,  "<string>"    )             \
-    /* delimiters */                      \
-    m(D_angle_l,    "‹")                  \
-    m(D_angle_r,    "›")                  \
-    m(D_brace_l,    "{")                  \
-    m(D_brace_r,    "}")                  \
-    m(D_brckt_l,    "[")                  \
-    m(D_brckt_r,    "]")                  \
-    m(D_paren_l,    "(")                  \
-    m(D_paren_r,    ")")                  \
-    m(D_quote_l,    "«")                  \
-    m(D_quote_r,    "»")                  \
-    /* further tokens */                  \
-    m(T_Pi,         "Π")                  \
-    m(T_arrow,      "→")                  \
-    m(T_assign,     "=")                  \
-    m(T_at,         "@")                  \
-    m(T_backtick,   "`")                  \
-    m(T_bang,       "!")                  \
-    m(T_bot,        "⊥")                  \
-    m(T_top,        "⊤")                  \
-    m(T_box,        "□")                  \
-    m(T_colon,      ":")                  \
-    m(T_colon_colon,"::")                 \
-    m(T_comma,      ",")                  \
-    m(T_dollar,     "$")                  \
-    m(T_dot,        ".")                  \
-    m(T_extract,    "#")                  \
-    m(T_lm,         "λ")                  \
-    m(T_semicolon,  ";")                  \
-    m(T_star,       "*")                  \
+    /* misc */                         \
+    m(M_eof,  "<eof>"           )      \
+    m(M_id,   "<identifier>"    )      \
+    m(M_ext,  "<extension name>")      \
+    m(M_str,  "<string>"        )      \
+    /* delimiters */                   \
+    m(D_angle_l,    "‹")               \
+    m(D_angle_r,    "›")               \
+    m(D_brace_l,    "{")               \
+    m(D_brace_r,    "}")               \
+    m(D_brckt_l,    "[")               \
+    m(D_brckt_r,    "]")               \
+    m(D_paren_l,    "(")               \
+    m(D_paren_r,    ")")               \
+    m(D_quote_l,    "«")               \
+    m(D_quote_r,    "»")               \
+    /* further tokens */               \
+    m(T_Pi,         "Π")               \
+    m(T_arrow,      "→")               \
+    m(T_assign,     "=")               \
+    m(T_at,         "@")               \
+    m(T_backtick,   "`")               \
+    m(T_bang,       "!")               \
+    m(T_bot,        "⊥")               \
+    m(T_top,        "⊤")               \
+    m(T_box,        "□")               \
+    m(T_colon,      ":")               \
+    m(T_colon_colon,"::")              \
+    m(T_comma,      ",")               \
+    m(T_dollar,     "$")               \
+    m(T_dot,        ".")               \
+    m(T_extract,    "#")               \
+    m(T_lm,         "λ")               \
+    m(T_semicolon,  ";")               \
+    m(T_star,       "*")               \
 
-#define THORIN_SUBST(m)                 \
-    m(".lm",     T_lm   )               \
-    m(".bot",    T_bot  )               \
-    m(".top",    T_top  )               \
-    m(".insert", K_ins  )               \
+#define THORIN_SUBST(m)                \
+    m(".lm",     T_lm   )              \
+    m(".bot",    T_bot  )              \
+    m(".top",    T_top  )              \
+    m(".insert", K_ins  )              \
 
-#define THORIN_PREC(m)                  \
-    /* left     prec,    right  */      \
-    m(Nil,      Bot,     Nil     )      \
-    m(Nil,      Nil,     Nil     )      \
-    m(Lam,      Arrow,   Arrow   )      \
-    m(Nil,      Lam,     Pi      )      \
-    m(Nil,      Pi,      App     )      \
-    m(App,      App,     Extract )      \
-    m(Extract,  Extract, Lit     )      \
-    m(Nil,      Lit,     Lit     )      \
+#define THORIN_PREC(m)                 \
+    /* left     prec,    right  */     \
+    m(Nil,      Bot,     Nil     )     \
+    m(Nil,      Nil,     Nil     )     \
+    m(Lam,      Arrow,   Arrow   )     \
+    m(Nil,      Lam,     Pi      )     \
+    m(Nil,      Pi,      App     )     \
+    m(App,      App,     Extract )     \
+    m(Extract,  Extract, Lit     )     \
+    m(Nil,      Lit,     Lit     )     \
 
 class Tok {
 public:
@@ -169,7 +169,7 @@ public:
         : loc_(loc)
         , tag_(tag)
         , sym_(sym) {
-        assert(tag == Tag::M_id || tag == Tag::M_ax || tag == Tag::M_str);
+        assert(tag == Tag::M_id || tag == Tag::M_ext || tag == Tag::M_str);
     }
 
     bool isa(Tag tag) const { return tag == tag_; }
@@ -180,7 +180,7 @@ public:
     const Lit* lit_i() const { assert(isa(Tag::L_i)); return i_; }
     char8_t    lit_c() const { assert(isa(Tag::L_c)); return c_;   }
     u64        lit_u() const { assert(isa(Tag::L_u ) || isa(Tag::L_s ) || isa(Tag::L_f  )); return u_;   }
-    Sym        sym()   const { assert(isa(Tag::M_ax) || isa(Tag::M_id) || isa(Tag::M_str)); return sym_; }
+    Sym        sym()   const { assert(isa(Tag::M_ext) || isa(Tag::M_id) || isa(Tag::M_str)); return sym_; }
     // clang-format on
     friend std::ostream& operator<<(std::ostream&, Tok);
 

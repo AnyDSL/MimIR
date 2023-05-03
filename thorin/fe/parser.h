@@ -95,7 +95,8 @@ private:
     /// @name parse misc
     ///@{
     void parse_module();
-    Dbg parse_sym(std::string_view ctxt = {});
+    Dbg parse_id(std::string_view ctxt = {});
+    Dbg parse_name(std::string_view ctxt = {});
     void parse_import();
     void parse_plugin();
     Ref parse_type_ascr(std::string_view ctxt);

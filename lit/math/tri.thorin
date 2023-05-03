@@ -7,19 +7,12 @@
 .plugin mem;
 .plugin core;
 
-.let _32 = 4294967296;
-.let I32 = .Idx _32;
-.let f32 = (23,  8);
-.let f64 = (52, 11);
-.let F32 = %math.F f32;
-.let F64 = %math.F f64;
-
-.con .extern main [mem: %mem.M, argc: I32, argv: %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return: .Cn [%mem.M, I32]] = {
-    .let s   = %math.conv.u2f f32 argc;
-    .let d   = %math.conv.u2f f64 argc;
-    .let x   = %math.conv.f2f f64 (%math.tri.sin 0 s);
-    .let y   = %math.tri.atanh 0 (%math.arith.div 0 (d, 10.0:F64));
+.con .extern main [mem: %mem.M, argc: %core.I32, argv: %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return: .Cn [%mem.M, %core.I32]] = {
+    .let s   = %math.conv.u2f %math.f32 argc;
+    .let d   = %math.conv.u2f %math.f64 argc;
+    .let x   = %math.conv.f2f %math.f64 (%math.tri.sin 0 s);
+    .let y   = %math.tri.atanh 0 (%math.arith.div 0 (d, 10.0:%math.F64));
     .let z   = %math.pow 0 (x, y);
-    .let res = %math.arith.mul 0 (z, 100.0:F64);
-    return (mem, %math.conv.f2u _32 res)
+    .let res = %math.arith.mul 0 (z, 100.0:%math.F64);
+    return (mem, %math.conv.f2u %core.i32 res)
 };
