@@ -1,8 +1,7 @@
 // RUN: ! %thorin %s 2>&1 | FileCheck %s 
 
-.let I32 = .Idx  4294967296;
 .let F32 = %math.F (23, 8);
-.ax %foo.bar: .Cn [I32, F32];
+.ax %foo.bar: .Cn [%core.I32, F32];
 .let err = %foo.bar(23:F32, 42:%core.I32);
 
 // CHECK: error: cannot pass argument

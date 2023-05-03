@@ -10,9 +10,6 @@
 .plugin core;
 .plugin matrix;
 
-.let _32 = 4294967296;
-.let I32 = .Idx _32;
-.let R64 = %core.Real 64;
 
 // flat by scalerize
 // Mat (n,S,T) => Ptr(<S1...<Sn, T>...>) => T*
@@ -24,16 +21,16 @@
     [
         %mem.M, 
         m:.Nat, k:.Nat, l:.Nat, 
-        %matrix.Mat (2,(m, k),R64), %matrix.Mat (2,(k, l),R64)
+        %matrix.Mat (2,(m, k), %math.F64), %matrix.Mat (2,(k, l), %math.F64)
     ], 
-    return : .Cn [%mem.M, %matrix.Mat (2,(m, l),R64)]
+    return : .Cn [%mem.M, %matrix.Mat (2,(m, l), %math.F64)]
 ];
 
 .con .extern f [mem : %mem.M, 
     [k:.Nat, l:.Nat, m:.Nat],
-    M:%matrix.Mat (2,(m,k),R64),
-    N:%matrix.Mat (2,(k,l),R64),
-    return: .Cn[%mem.M, %matrix.Mat (2,(m,l),R64)]] = {
+    M:%matrix.Mat (2,(m,k), %math.F64),
+    N:%matrix.Mat (2,(k,l), %math.F64),
+    return: .Cn[%mem.M, %matrix.Mat (2,(m,l), %math.F64)]] = {
 
     .let (mem2,MN) = %matrix.prod (m,k,l,64) (mem,M,N);
 

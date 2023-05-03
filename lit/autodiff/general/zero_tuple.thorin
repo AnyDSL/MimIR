@@ -5,11 +5,10 @@
 .plugin direct;
 .plugin autodiff;
 
-.let I32 = %core.I32;
 
-.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, I32]] = {
+.con .extern main [mem : %mem.M, argc : %core.I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, %core.I32]] = {
 
-    .let t = %autodiff.zero [I32,I32];
+    .let t = %autodiff.zero [%core.I32,%core.I32];
     .let c = t#(0:(.Idx 2));
     return (mem,c)
 };

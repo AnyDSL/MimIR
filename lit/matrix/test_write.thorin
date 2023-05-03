@@ -6,13 +6,12 @@
 .plugin core;
 .plugin matrix;
 
-.let I32 = %core.I32;
-.let MT = (2, (2,4), I32);
+.let MT = (2, (2,4), %core.I32);
 
-.con print_int_matrix [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (⊤:.Nat,⊤:.Nat), I32), return : .Cn [%mem.M]];
+.con print_int_matrix [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (⊤:.Nat,⊤:.Nat), %core.I32), return : .Cn [%mem.M]];
 
-.con print_int_matrix_wrap [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (k,l), I32), return : .Cn [%mem.M]] = {
-    .let m2 = %core.bitcast (%matrix.Mat (2,(⊤:.Nat,⊤:.Nat),I32)) m;
+.con print_int_matrix_wrap [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (k,l), %core.I32), return : .Cn [%mem.M]] = {
+    .let m2 = %core.bitcast (%matrix.Mat (2,(⊤:.Nat,⊤:.Nat),%core.I32)) m;
     print_int_matrix(mem, k, l, m2, return)
 };
 

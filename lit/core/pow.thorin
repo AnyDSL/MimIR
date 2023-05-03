@@ -3,9 +3,6 @@
 
 .plugin core;
 
-.let _32 = 4294967296;
-.let I32 = .Idx _32;
-
 /// if b<=0:
 ///     1
 /// else
@@ -20,7 +17,7 @@
 /// cont(v):
 ///    ret (a*v)
 /// 
-.con pow ((a b: I32), ret: .Cn I32) = {
+.con pow ((a b: %core.I32), ret: .Cn %core.I32) = {
     .con pow_then [] = ret (1:%core.I32);
 
     .con pow_cont [v:%core.I32] = {
@@ -35,8 +32,8 @@
     ((pow_else, pow_then)#cmp) ()
 };
 
-.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, I32]] = {
-    .con ret_cont r::[I32] = return (mem, r);
+.con .extern main [mem : %mem.M, argc : %core.I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, %core.I32]] = {
+    .con ret_cont r::[%core.I32] = return (mem, r);
 
     .let c = (42:%core.I32, 2:%core.I32);
     pow (c,ret_cont)

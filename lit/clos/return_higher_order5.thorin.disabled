@@ -9,13 +9,11 @@ thorin: /dialects/clos/phase/clos_conv.cpp:64: const thorin::Def* thorin::clos::
 .plugin core;
 .plugin direct;
 
-.let i32 = %core.I32;
-.let i8 = %core.I8;
-.let pb_type = .Cn [%mem.M, .Cn [%mem.M, i32]];
+.let pb_type = .Cn [%mem.M, .Cn [%mem.M, %core.I32]];
 
-.con .extern main [mem: %mem.M, argc: i32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; %core.I8», 0)», 0), return : .Cn [%mem.M, i32]] = {
-    .con callback [mem: %mem.M, return2 : .Cn [%mem.M, i32]] = {
-        return (mem, 1:i32)
+.con .extern main [mem: %mem.M, argc: %core.I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; %core.I8», 0)», 0), return : .Cn [%mem.M, %core.I32]] = {
+    .con callback [mem: %mem.M, return2 : .Cn [%mem.M, %core.I32]] = {
+        return (mem, 1:%core.I32)
     };
 
     .let (alloc_pb_mem, pb_ptr) = %mem.malloc (pb_type, 0) (mem, 1);

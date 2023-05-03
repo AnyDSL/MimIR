@@ -11,7 +11,7 @@
 .let MT = (2, (2,4), %core.I32);
 
 .con .extern f [mem : %mem.M, v: %core.I32, return: .Cn[%mem.M, %core.I32]] = {
-    .let v2 = %core.wrap.add _32 0 (v, v);
+    .let v2 = %core.wrap.add %core.i32 0 (v, v);
     return (mem, v2)
 };
 

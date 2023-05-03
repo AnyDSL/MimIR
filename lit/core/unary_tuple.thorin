@@ -3,20 +3,17 @@
 
 .plugin core;
 
-.let _32 = 4294967296;
-.let I32 = .Idx _32;
-
 .con g ![
     n:.Nat,
     i:.Idx n,
-    t:<< n; [I32,I32]>>,
-    return:.Cn[I32]] = {
+    t:<< n; [%core.I32,%core.I32]>>,
+    return:.Cn[%core.I32]] = {
 
     return (t#i#(1:(.Idx 2)))
 };
 
 
-.con .extern f [return:.Cn[I32]] = {
+.con .extern f [return:.Cn[%core.I32]] = {
     g (
         1,
         (0:(.Idx 1)),

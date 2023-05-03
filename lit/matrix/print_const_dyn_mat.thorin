@@ -8,16 +8,14 @@
 .plugin core;
 .plugin matrix;
 
-.let _32 = 4294967296;
-.let I32 = .Idx _32;
 .let u8 = %core.I8;
 .let String = %mem.Ptr («⊤:.Nat; %core.I8», 0);
 
-.con atoi [%mem.M, String, .Cn [%mem.M, I32]];
-.con print_int_matrix [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (⊤:.Nat,⊤:.Nat), I32), return : .Cn [%mem.M]];
+.con atoi [%mem.M, String, .Cn [%mem.M, %core.I32]];
+.con print_int_matrix [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (⊤:.Nat,⊤:.Nat), %core.I32), return : .Cn [%mem.M]];
 
-.con print_int_matrix_wrap [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (k,l), I32), return : .Cn [%mem.M]] = {
-    .let m2 = %core.bitcast (%matrix.Mat (2,(⊤:.Nat,⊤:.Nat),I32)) m;
+.con print_int_matrix_wrap [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (k,l), %core.I32), return : .Cn [%mem.M]] = {
+    .let m2 = %core.bitcast (%matrix.Mat (2,(⊤:.Nat,⊤:.Nat),%core.I32)) m;
     print_int_matrix(mem, k, l, m2, return)
 };
 
@@ -25,17 +23,17 @@
     [k:.Nat, l:.Nat],
     return: .Cn[%mem.M]] = {
 
-    .let (mem2, M) = %matrix.constMat (2,(k,l),I32) (mem, 3:%core.I32);
-    // .let (mem2, N) = %matrix.constMat (2,(k,l),I32) (mem, 5:%core.I32);
+    .let (mem2, M) = %matrix.constMat (2,(k,l),%core.I32) (mem, 3:%core.I32);
+    // .let (mem2, N) = %matrix.constMat (2,(k,l),%core.I32) (mem, 5:%core.I32);
 
     print_int_matrix_wrap (mem2, k, l, M, return)
     // return mem2
 };
 
 .con .extern main [mem1 : %mem.M, 
-        argc : I32, 
+        argc : %core.I32, 
         argv : %mem.Ptr («⊤:.Nat; String», 0), // const char *argv[]
-        return : .Cn [%mem.M, I32]
+        return : .Cn [%mem.M, %core.I32]
     ] = {
 
     .con return_cont [mem: %mem.M] = {
@@ -48,8 +46,8 @@
     .let arg2_ptr = %mem.lea (⊤:.Nat, ‹⊤:.Nat; String›, 0) (argv, 2:%core.I32); // argv+2
     .let (mem3,arg2) = %mem.load (mem2, arg2_ptr); // argv[2]
 
-    .con atoi_cont_1 [mem : %mem.M, a : I32] = {
-        .con atoi_cont_2 [mem : %mem.M, b : I32] = {
+    .con atoi_cont_1 [mem : %mem.M, a : %core.I32] = {
+        .con atoi_cont_2 [mem : %mem.M, b : %core.I32] = {
             // return (mem, 42:%core.I32)
             .let a_nat = %core.bitcast .Nat a;
             .let b_nat = %core.bitcast .Nat b;

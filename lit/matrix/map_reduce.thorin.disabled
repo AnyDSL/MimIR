@@ -11,7 +11,7 @@
 };
 
 .lam .extern addition: [a:%core.I32, b:%core.I32] -> %core.I32 = {
-    %core.wrap.add _32 0 (a,b)
+    %core.wrap.add %core.i32 0 (a,b)
 };
 
 .con .extern f: [mem : %mem.M, 

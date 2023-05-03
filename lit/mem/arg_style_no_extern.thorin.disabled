@@ -6,7 +6,7 @@
 
 .plugin core;
 
-.let Tas = (I32, 0);
+.let Tas = (%core.I32, 0);
 
 .con f1 [mem: %mem.M, a: %core.I32, ret: .Cn [%mem.M, %core.I32]] = {
     ret (mem,a)

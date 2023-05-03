@@ -8,18 +8,11 @@
 .plugin core;
 .plugin matrix;
 
-.let _32 = 4294967296;
-.let I32 = .Idx _32;
-.let f32 = (23,  8);
-.let f64 = (52, 11);
-.let F32 = %math.F f32;
-.let F64 = %math.F f64;
-
 .con .extern f [mem : %mem.M, 
     [k:.Nat, l:.Nat, m:.Nat],
-    M:%matrix.Mat (2,(m,k),F64),
-    N:%matrix.Mat (2,(k,l),F64),
-    return: .Cn[%mem.M, %matrix.Mat (2,(m,l),F64)]] = {
+    M:%matrix.Mat (2,(m,k),%math.F64),
+    N:%matrix.Mat (2,(k,l),%math.F64),
+    return: .Cn[%mem.M, %matrix.Mat (2,(m,l),%math.F64)]] = {
 
     .let (mem2,MN) = %matrix.prod (m,k,l, f64) (mem,M,N);
 
