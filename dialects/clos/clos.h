@@ -14,14 +14,6 @@ inline Ref op_alloc_jumpbuf(Ref mem) {
 }
 ///@}
 
-/// @name %%clos.attr
-///@{
-inline Ref op(attr o, Ref def) {
-    World& w = def->world();
-    return w.app(w.app(w.annex(o), def->type()), def);
-}
-///@}
-
 /// @name Closures
 ///@{
 
