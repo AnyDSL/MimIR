@@ -161,14 +161,14 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
         // let ...
         // F (m'', a1', ..., (env_ptr, f'))
         for (size_t i = 0; i < new_def->num_ops(); i++)
-            if (new_def->op(i)->type() == mem::type_mem(w)) new_def = new_def->refine(i, lcm_);
+            if (new_def->op(i)->type() == w.annex<mem::M>()) new_def = new_def->refine(i, lcm_);
 
-        if (new_type == mem::type_mem(w)) { // :store
+        if (new_type == w.annex<mem::M>()) { // :store
             lcm_ = new_def;
             lvm_ = def;
         } else if (new_type->isa<Sigma>()) { // :alloc, :slot, ...
             for (size_t i = 0; i < new_type->num_ops(); i++) {
-                if (new_type->op(i) == mem::type_mem(w)) {
+                if (new_type->op(i) == w.annex<mem::M>()) {
                     lcm_ = w.extract(new_def, i);
                     lvm_ = w.extract(def, i);
                     break;

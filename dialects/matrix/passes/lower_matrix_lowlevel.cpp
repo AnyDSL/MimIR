@@ -71,7 +71,7 @@ Ref LowerMatrixLowLevel::rewrite_imm(Ref def) {
         auto arr_ty    = arr_ty_of_matrix_ty(S, T);
 
         auto addr_space = world().lit_nat_0();
-        auto ptr_ty     = world().app(world().ax<mem::Ptr>(), {arr_ty, addr_space});
+        auto ptr_ty     = world().call<mem::Ptr>(Defs{arr_ty, addr_space});
 
         return ptr_ty;
     } else if (auto init_ax = match<matrix::init>(def)) {

@@ -223,7 +223,7 @@ TEST(RestrictedDependentTypes, ll) {
     auto parser = fe::Parser(w);
     for (auto plugin : {"compile", "mem", "core", "math"}) parser.plugin(plugin);
 
-    auto mem_t  = mem::type_mem(w);
+    auto mem_t  = w.annex<mem::M>();
     auto i32_t  = w.type_int(32);
     auto argv_t = mem::type_ptr(mem::type_ptr(i32_t));
 

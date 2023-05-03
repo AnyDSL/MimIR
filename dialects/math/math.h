@@ -54,10 +54,9 @@ inline Ref mode(World& w, VMode m) {
 
 /// @name %%math.F
 ///@{
-inline const Axiom* type_f(World& w) { return w.ax<F>(); }
 inline Ref type_f(Ref pe) {
     World& w = pe->world();
-    return w.app(type_f(w), pe);
+    return w.app(w.annex<F>(), pe);
 }
 inline Ref type_f(World& w, nat_t p, nat_t e) {
     auto lp = w.lit_nat(p);

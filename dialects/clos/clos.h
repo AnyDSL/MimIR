@@ -10,23 +10,7 @@ namespace thorin::clos {
 ///@{
 inline Ref op_alloc_jumpbuf(Ref mem) {
     World& w = mem->world();
-    return w.app(w.ax<alloc_jmpbuf>(), {w.tuple(), mem});
-}
-///@}
-
-/// @name %%clos.setjmp
-///@{
-inline Ref op_setjmp(Ref mem, Ref buf) {
-    World& w = mem->world();
-    return w.app(w.ax<setjmp>(), {mem, buf});
-}
-///@}
-
-/// @name %%clos.longjmp
-///@{
-inline Ref op_longjmp(Ref mem, Ref buf, Ref id) {
-    World& w = mem->world();
-    return w.app(w.ax<longjmp>(), {mem, buf, id});
+    return w.app(w.annex<alloc_jmpbuf>(), {w.tuple(), mem});
 }
 ///@}
 
@@ -34,7 +18,7 @@ inline Ref op_longjmp(Ref mem, Ref buf, Ref id) {
 ///@{
 inline Ref op(attr o, Ref def) {
     World& w = def->world();
-    return w.app(w.app(w.ax(o), def->type()), def);
+    return w.app(w.app(w.annex(o), def->type()), def);
 }
 ///@}
 

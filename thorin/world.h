@@ -149,7 +149,7 @@ public:
 
     /// @name Manage Nodes
     ///@{
-    const auto& axioms() const { return move_.axioms; }
+    const auto& annexes() const { return move_.annexes; }
     const auto& externals() const { return move_.externals; }
     bool empty() { return move_.externals.empty(); }
     void make_external(Def* def, bool on) {
@@ -203,8 +203,9 @@ public:
     /// @name Axiom
     ///@{
     const Axiom* axiom(NormalizeFn n, u8 curry, u8 trip, Ref type, plugin_t p, tag_t t, sub_t s) {
-        auto ax                          = unify<Axiom>(0, n, curry, trip, type, p, t, s);
-        return move_.axioms[ax->flags()] = ax;
+        auto ax                    = unify<Axiom>(0, n, curry, trip, type, p, t, s);
+        move_.annexes[ax->flags()] = ax;
+        return ax;
     }
     const Axiom* axiom(Ref type, plugin_t p, tag_t t, sub_t s) { return axiom(nullptr, 0, 0, type, p, t, s); }
 
@@ -217,21 +218,21 @@ public:
     }
     const Axiom* axiom(Ref type) { return axiom(nullptr, 0, 0, type); } ///< See above.
 
-    /// Get Axiom from a plugin.
-    /// Use this to get an Axiom via Axiom::id.
+    /// Get annex from a plugin.
+    /// Use this to get an annex via Axiom::id.
     template<class Id>
-    const Axiom* ax(Id id) {
+    const Def* annex(Id id) {
         u64 flags = static_cast<u64>(id);
-        if (auto i = move_.axioms.find(flags); i != move_.axioms.end()) return i->second;
+        if (auto i = move_.annexes.find(flags); i != move_.annexes.end()) return i->second;
         error("Axiom with ID '{}' not found; demangled plugin name is '{}'", flags, Axiom::demangle(*this, flags));
     }
 
     /// Get Axiom from a plugin.
     /// Can be used to get an Axiom without sub-tags.
-    /// E.g. use `w.ax<mem::M>();` to get the `%mem.M` Axiom.
+    /// E.g. use `w.annex<mem::M>();` to get the `%mem.M` Axiom.
     template<axiom_without_subs id>
-    const Axiom* ax() {
-        return ax(Axiom::Base<id>);
+    const Def* annex() {
+        return annex(Axiom::Base<id>);
     }
     ///@}
 
@@ -440,8 +441,8 @@ public:
     }
 
     // clang-format off
-    template<class Id, class... Args> const Def* call(Id id, Args&&... args) { return call_(ax(id),   std::forward<Args>(args)...); }
-    template<class Id, class... Args> const Def* call(       Args&&... args) { return call_(ax<Id>(), std::forward<Args>(args)...); }
+    template<class Id, class... Args> const Def* call(Id id, Args&&... args) { return call_(annex(id),   std::forward<Args>(args)...); }
+    template<class Id, class... Args> const Def* call(       Args&&... args) { return call_(annex<Id>(), std::forward<Args>(args)...); }
     template<class T, class... Args> const Def* call_(Ref callee, T arg, Args&&... args) { return call_(iapp(callee, arg), std::forward<Args>(args)...); }
     template<class T> const Def* call_(Ref callee, T arg) { return iapp(callee, arg); }
     // clang-format on
@@ -603,7 +604,7 @@ private:
         Move(World&);
 
         std::unique_ptr<Checker> checker;
-        absl::btree_map<u64, const Axiom*> axioms;
+        absl::btree_map<u64, const Def*> annexes;
         absl::btree_map<Sym, Def*> externals;
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
         DefDefMap<DefArray> cache;
@@ -612,7 +613,7 @@ private:
             using std::swap;
             // clang-format off
             swap(m1.checker,   m2.checker);
-            swap(m1.axioms,    m2.axioms);
+            swap(m1.annexes,   m2.annexes);
             swap(m1.externals, m2.externals);
             swap(m1.defs,      m2.defs);
             swap(m1.cache,     m2.cache);

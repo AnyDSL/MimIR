@@ -42,7 +42,7 @@ inline Ref op_wminus(VMode m, Ref a) {
 ///@{
 inline Ref op(trait o, Ref type) {
     World& w = type->world();
-    return w.app(w.ax(o), type);
+    return w.app(w.annex(o), type);
 }
 ///@}
 
@@ -50,7 +50,7 @@ inline Ref op(trait o, Ref type) {
 ///@{
 inline Ref op(pe o, Ref def) {
     World& w = def->world();
-    return w.app(w.app(w.ax(o), def->type()), def);
+    return w.app(w.app(w.annex(o), def->type()), def);
 }
 ///@}
 

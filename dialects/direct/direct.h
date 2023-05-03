@@ -35,7 +35,7 @@ inline const Def* op_cps2ds_dep(const Def* f) {
     }
     Uf->set(true, rewritten_codom);
 
-    auto ax_app = world.app(world.ax<direct::cps2ds_dep>(), {T, Uf});
+    auto ax_app = world.app(world.annex<direct::cps2ds_dep>(), {T, Uf});
 
     world.DLOG("axiom app: {} : {}", ax_app, ax_app->type());
 

@@ -200,7 +200,7 @@ Ref AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
 
     world.DLOG("app pb of pack: {} : {}", app_pb, app_pb->type());
 
-    auto sumup = world.app(world.ax<sum>(), {aug_shape, f_arg_ty_diff});
+    auto sumup = world.app(world.annex<sum>(), {aug_shape, f_arg_ty_diff});
     world.DLOG("sumup: {} : {}", sumup, sumup->type());
 
     pb->app(true, pb->var(1), world.app(sumup, app_pb));

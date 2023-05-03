@@ -11,25 +11,23 @@ namespace thorin::mem {
 
 /// @name %%mem.M
 ///@{
-inline const Axiom* type_mem(World& w) { return w.ax<M>(); }
-
 /// Same as World::cn / World::pi but adds a `%%mem.M`-typed Var to each Pi.
 inline const Pi* cn_mem(Ref dom) {
     World& w = dom->world();
-    return w.cn({type_mem(w), dom});
+    return w.cn({w.annex<mem::M>(), dom});
 }
 inline const Pi* cn_mem_ret(Ref dom, Ref ret_dom) {
     World& w = dom->world();
-    return w.cn({type_mem(w), dom, cn_mem(ret_dom)});
+    return w.cn({w.annex<mem::M>(), dom, cn_mem(ret_dom)});
 }
 inline const Pi* pi_mem(Ref domain, Ref codomain) {
     World& w = domain->world();
-    auto d   = w.sigma({type_mem(w), domain});
-    return w.pi(d, w.sigma({type_mem(w), codomain}));
+    auto d   = w.sigma({w.annex<mem::M>(), domain});
+    return w.pi(d, w.sigma({w.annex<mem::M>(), codomain}));
 }
 inline const Pi* fn_mem(Ref domain, Ref codomain) {
     World& w = domain->world();
-    return w.cn({type_mem(w), domain, cn_mem(codomain)});
+    return w.cn({w.annex<mem::M>(), domain, cn_mem(codomain)});
 }
 
 /// Returns the (first) element of type mem::M from the given tuple.
@@ -115,10 +113,9 @@ enum class AddrSpace : nat_t {
     Constant = 4,
 };
 
-inline const Axiom* type_ptr(World& w) { return w.ax<Ptr>(); }
 inline const App* type_ptr(Ref pointee, Ref addr_space) {
     World& w = pointee->world();
-    return w.app(type_ptr(w), {pointee, addr_space})->as<App>();
+    return w.app(w.annex<mem::Ptr>(), {pointee, addr_space})->as<App>();
 }
 
 inline const App* type_ptr(Ref pointee, AddrSpace as = AddrSpace::Generic) {
@@ -133,7 +130,7 @@ inline Ref op_lea(Ref ptr, Ref index) {
     World& w                   = ptr->world();
     auto [pointee, addr_space] = force<Ptr>(ptr->type())->args<2>();
     auto Ts                    = tuple_of_types(pointee);
-    return w.app(w.app(w.ax<lea>(), {pointee->arity(), Ts, addr_space}), {ptr, index});
+    return w.app(w.app(w.annex<lea>(), {pointee->arity(), Ts, addr_space}), {ptr, index});
 }
 
 inline Ref op_lea_unsafe(Ref ptr, Ref i) {
@@ -148,7 +145,7 @@ inline Ref op_lea_unsafe(Ref ptr, u64 i) { return op_lea_unsafe(ptr, ptr->world(
 ///@{
 inline Ref op_remem(Ref mem) {
     World& w = mem->world();
-    return w.app(w.ax<remem>(), mem);
+    return w.app(w.annex<remem>(), mem);
 }
 ///@}
 
@@ -156,7 +153,7 @@ inline Ref op_remem(Ref mem) {
 ///@{
 inline Ref op_alloc(Ref type, Ref mem) {
     World& w = type->world();
-    return w.app(w.app(w.ax<alloc>(), {type, w.lit_nat_0()}), mem);
+    return w.app(w.app(w.annex<alloc>(), {type, w.lit_nat_0()}), mem);
 }
 ///@}
 
@@ -164,7 +161,7 @@ inline Ref op_alloc(Ref type, Ref mem) {
 ///@{
 inline Ref op_slot(Ref type, Ref mem) {
     World& w = type->world();
-    return w.app(w.app(w.ax<slot>(), {type, w.lit_nat_0()}), {mem, w.lit_nat(w.curr_gid())});
+    return w.app(w.app(w.annex<slot>(), {type, w.lit_nat_0()}), {mem, w.lit_nat(w.curr_gid())});
 }
 ///@}
 
@@ -173,7 +170,7 @@ inline Ref op_slot(Ref type, Ref mem) {
 inline Ref op_malloc(Ref type, Ref mem) {
     World& w  = type->world();
     auto size = w.call(core::trait::size, type);
-    return w.app(w.app(w.ax<malloc>(), {type, w.lit_nat_0()}), {mem, size});
+    return w.app(w.app(w.annex<malloc>(), {type, w.lit_nat_0()}), {mem, size});
 }
 ///@}
 
@@ -182,7 +179,7 @@ inline Ref op_malloc(Ref type, Ref mem) {
 inline Ref op_mslot(Ref type, Ref mem, Ref id) {
     World& w  = type->world();
     auto size = w.call(core::trait::size, type);
-    return w.app(w.app(w.ax<mslot>(), {type, w.lit_nat_0()}), {mem, size, id});
+    return w.app(w.app(w.annex<mslot>(), {type, w.lit_nat_0()}), {mem, size, id});
 }
 ///@}
 

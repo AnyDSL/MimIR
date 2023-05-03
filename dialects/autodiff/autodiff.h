@@ -17,7 +17,7 @@ inline const Def* op_ad(const Def* fun) {
     World& world = fun->world();
     // We rely on the normalized thorin convention that all arguments in functions are grouped.
     // `cn[[args], cont:=cn[returns]]`
-    return world.app(world.app(world.ax<ad>(), fun->type()), fun);
+    return world.app(world.app(world.annex<ad>(), fun->type()), fun);
 }
 ///@}
 
@@ -25,7 +25,7 @@ inline const Def* op_ad(const Def* fun) {
 ///@{
 inline const Def* op_zero(const Def* A) {
     World& world = A->world();
-    return world.app(world.ax<zero>(), A);
+    return world.app(world.annex<zero>(), A);
 }
 
 const Def* zero_def(const Def* T);

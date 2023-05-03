@@ -13,7 +13,7 @@ std::array<Ref, 3> split(Ref def) {
     auto j = 0;
     for (size_t i = 0; i < def->num_projs(); i++) {
         auto op = def->proj(i);
-        if (op == mem::type_mem(w) || op->type() == mem::type_mem(w))
+        if (op == w.annex<mem::M>() || op->type() == w.annex<mem::M>())
             mem = op;
         else if (i == Clos_Env_Param)
             env = op;
@@ -94,7 +94,7 @@ Lam* Clos2SJLJ::get_throw(Ref dom) {
         auto m2                = w.call<mem::store>(Defs{m1, r, var});
         rbuf                   = w.call<core::bitcast>(mem::type_ptr(mem::type_ptr(var->type())), rbuf);
         auto m3                = w.call<mem::store>(Defs{m2, rbuf, r});
-        tlam->set(false, op_longjmp(m3, jbuf, tag));
+        tlam->set(false, w.call<longjmp>(Defs{m3, jbuf, tag}));
         ignore_.emplace(tlam);
     }
     return tlam;
@@ -106,7 +106,7 @@ Lam* Clos2SJLJ::get_lpad(Lam* lam, Ref rb) {
     auto& lpad         = p->second;
     if (inserted || !lpad) {
         auto [_, env_type, dom] = split(lam->dom());
-        auto pi                 = w.cn(w.sigma({mem::type_mem(w), env_type}));
+        auto pi                 = w.cn(w.sigma({w.annex<mem::M>(), env_type}));
         lpad                    = w.mut_lam(pi)->set("lpad");
         auto [m, env, __]       = split(lpad->var());
         auto [m1, arg_ptr]      = w.call<mem::load>(Defs{m, rb})->projs<2>();
@@ -142,11 +142,11 @@ void Clos2SJLJ::enter() {
 
     auto body = curr_mut()->body()->as<App>();
 
-    auto branch_type = clos_type(w.cn(mem::type_mem(w)));
+    auto branch_type = clos_type(w.cn(w.annex<mem::M>()));
     auto branches    = DefVec(lam2tag_.size() + 1);
     {
         auto env             = w.tuple(body->args().skip_front());
-        auto new_callee      = w.mut_lam(w.cn({mem::type_mem(w), env->type()}))->set("sjlj_wrap");
+        auto new_callee      = w.mut_lam(w.cn({w.annex<mem::M>(), env->type()}))->set("sjlj_wrap");
         auto [m, env_var, _] = split(new_callee->var());
         auto new_args =
             DefArray(env->num_projs() + 1, [&](auto i) -> const Def* { return (i == 0) ? *m : env_var->proj(i - 1); });
@@ -160,8 +160,8 @@ void Clos2SJLJ::enter() {
     }
 
     auto m0 = body->arg(0);
-    assert(m0->type() == mem::type_mem(w));
-    auto [m1, tag] = op_setjmp(m0, cur_jbuf_)->projs<2>();
+    assert(m0->type() == w.annex<mem::M>());
+    auto [m1, tag] = w.call<setjmp>(Defs{m0, cur_jbuf_})->projs<2>();
     tag            = w.call(core::conv::s, branches.size(), tag);
     auto filter    = curr_mut()->filter();
     auto branch    = w.extract(w.tuple(branches), tag);

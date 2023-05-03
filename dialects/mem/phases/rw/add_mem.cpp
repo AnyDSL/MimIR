@@ -105,7 +105,7 @@ const Def* AddMem::rewrite_pi(const Pi* pi) {
     DefArray new_dom{dom->num_projs(), [&](size_t i) { return rewrite_type(dom->proj(i)); }};
     if (pi->num_doms() == 0 || !match<mem::M>(pi->dom(0_s))) {
         new_dom = DefArray{dom->num_projs() + 1,
-                           [&](size_t i) { return i == 0 ? mem::type_mem(world()) : new_dom[i - 1]; }};
+                           [&](size_t i) { return i == 0 ? world().annex<mem::M>() : new_dom[i - 1]; }};
     }
 
     return mem_rewritten_[pi] = world().pi(new_dom, pi->codom());
