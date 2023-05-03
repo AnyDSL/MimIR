@@ -391,7 +391,7 @@ public:
     ///@{
     /// Retrieve Var for *mutables*.
     /// @see @ref proj
-    const Var* var();
+    Ref var();
     THORIN_PROJ(var, )
     ///@}
 

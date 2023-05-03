@@ -183,7 +183,7 @@ public:
         else
             return type(lit_univ(level));
     }
-    const Var* var(Ref type, Def* mut) { return unify<Var>(1, type, mut); }
+    Ref var(Ref type, Def* mut);
     const Proxy* proxy(Ref type, Defs ops, u32 index, u32 tag) {
         return unify<Proxy>(ops.size(), type, ops, index, tag);
     }
@@ -351,6 +351,7 @@ public:
     const Lit* lit_nat_0() { return data_.lit_nat_0; }
     const Lit* lit_nat_1() { return data_.lit_nat_1; }
     const Lit* lit_nat_max() { return data_.lit_nat_max; }
+    const Lit* lit_0_1() { return data_.lit_0_1; }
     /// Constructs a Lit of type Idx of size @p size.
     /// @note `size = 0` means `2^64`.
     const Lit* lit_idx(nat_t size, u64 val) { return lit(type_idx(size), val); }
@@ -634,12 +635,13 @@ private:
         const Idx* type_idx;
         const Def* table_id;
         const Def* table_not;
-        std::array<const Lit*, 2> lit_bool;
+        const Lit* lit_univ_0;
+        const Lit* lit_univ_1;
         const Lit* lit_nat_0;
         const Lit* lit_nat_1;
         const Lit* lit_nat_max;
-        const Lit* lit_univ_0;
-        const Lit* lit_univ_1;
+        const Lit* lit_0_1;
+        std::array<const Lit*, 2> lit_bool;
         Lam* exit;
     } data_;
 

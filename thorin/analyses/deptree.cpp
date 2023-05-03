@@ -57,8 +57,8 @@ VarSet DepTree::run(Def* curr_mut, const Def* def) {
     } else {
         for (auto op : def->extended_ops()) merge(result, run(curr_mut, op));
 
-        if (auto var = curr_mut->var()) {
-            if (curr_mut == def) result.erase(var);
+        if (auto v = curr_mut->var()) {
+            if (auto var = v->isa<Var>(); var && curr_mut == def) result.erase(var);
         }
     }
 

@@ -286,7 +286,7 @@ const Def* Def::debug_suffix(std::string suffix) const {
 
 // clang-format off
 
-const Var* Def::var() {
+Ref Def::var() {
     auto& w = world();
 
     if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {
