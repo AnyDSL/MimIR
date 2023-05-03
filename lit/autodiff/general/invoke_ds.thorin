@@ -23,10 +23,10 @@
     };
     .let _535758: [%mem.M, «2; %core.I32»] = %direct.cps2ds (%mem.M, [%mem.M, «2; %core.I32»]) extract_pb_535733 mem_535757;
     .let _535793: [%mem.M, «2; %core.I32»] = %direct.cps2ds (%core.I32, [%mem.M, «2; %core.I32»]) extract_pb_535776 1:%core.I32;
-    .let _535797: %mem.M = %autodiff.add %mem.M (_535758#0:(.Idx 2), _535793#0:(.Idx 2));
-    .let _535843: «2; %core.I32» = %autodiff.add «2; %core.I32» (_535758#1:(.Idx 2), _535793#1:(.Idx 2));
-    .let _535879: %core.I32 = %core.wrap.mul 0 (100:%core.I32, _535843#0:(.Idx 2));
-    .let _535884: %core.I32 = %core.wrap.add 0 (_535843#1:(.Idx 2), _535879);
+    .let _535797: %mem.M = %autodiff.add (_535758#0:(.Idx 2), _535793#0_2);
+    .let _535843: «2; %core.I32» = %autodiff.add (_535758#1:(.Idx 2), _535793#1_2);
+    .let _535879: %core.I32 = %core.wrap.mul 0 (100:%core.I32, _535843#0_2);
+    .let _535884: %core.I32 = %core.wrap.add 0 (_535843#1_2, _535879);
     .let _535895: %core.I32 = %core.wrap.add 0 (430000:%core.I32, _535884);
     return_535681 (_535797, _535895)
 };

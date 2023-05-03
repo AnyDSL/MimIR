@@ -82,7 +82,7 @@ Ref AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
     }
     world.DLOG("found a closed function call {} : {}", lam, lam->type());
     // Some general function in the program needs to be differentiated.
-    auto aug_lam = op_ad(lam);
+    auto aug_lam = world.call<ad>(lam);
     // TODO: directly more association here? => partly inline op_autodiff
     world.DLOG("augmented function is {} : {}", aug_lam, aug_lam->type());
     return aug_lam;
@@ -116,7 +116,7 @@ Ref AutoDiffEval::augment_extract(const Extract* ext, Lam* f, Lam* f_diff) {
         auto pb_fun   = world.mut_lam(pb_ty)->set("extract_pb");
         world.DLOG("Pullback: {} : {}", pb_fun, pb_fun->type());
         auto pb_tangent = pb_fun->var(0_s)->set("s");
-        auto tuple_tan  = world.insert(op_zero(aug_tuple->type()), aug_index, pb_tangent)->set("tup_s");
+        auto tuple_tan  = world.insert(world.call<zero>(aug_tuple->type()), aug_index, pb_tangent)->set("tup_s");
         pb_fun->app(true, tuple_pb,
                     {
                         tuple_tan,

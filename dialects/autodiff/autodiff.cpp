@@ -44,7 +44,7 @@ const Def* zero_pullback(const Def* E, const Def* A) {
     auto pb_ty     = pullback_type(E, A);
     auto pb        = world.mut_lam(pb_ty)->set("zero_pb");
     world.DLOG("zero_pullback for {} resp. {} (-> {})", E, A, A_tangent);
-    pb->app(true, pb->var(1), op_zero(A_tangent));
+    pb->app(true, pb->var(1), world.call<zero>(A_tangent));
     return pb;
 }
 
