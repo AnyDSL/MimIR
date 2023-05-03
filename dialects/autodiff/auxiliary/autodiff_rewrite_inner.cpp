@@ -42,8 +42,8 @@ Ref AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
     }
     // TODO: better fix (another pass as analysis?)
     // TODO: handle open functions
-    if (Lam::isa_basicblock(lam) || lam->sym()->find("ret") != std::string::npos ||
-        lam->sym()->find("_cont") != std::string::npos) {
+    if (Lam::isa_basicblock(lam) || lam->sym()->find("ret") != std::string::npos
+        || lam->sym()->find("_cont") != std::string::npos) {
         // A open continuation behaves the same as return:
         // ```
         // cont: Cn[X]
@@ -370,7 +370,7 @@ Ref AutoDiffEval::augment_(Ref def, Lam* f, Lam* f_diff) {
         world.DLOG("axiom name: {}", ax->sym());
         world.DLOG("axiom function name: {}", diff_name);
 
-        auto diff_fun = world.lookup(world.sym(diff_name));
+        auto diff_fun = world.external(world.sym(diff_name));
         if (!diff_fun) {
             world.ELOG("derivation not found: {}", diff_name);
             auto expected_type = autodiff_type_fun(ax->type());

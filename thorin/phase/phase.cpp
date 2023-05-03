@@ -13,10 +13,7 @@ void Phase::run() {
 void RWPhase::start() {
     for (const auto& [_, ax] : world().axioms()) rewrite(ax);
     auto externals = world().externals();
-    for (const auto& [_, mut] : externals) {
-        mut->make_internal();
-        rewrite(mut)->as_mut()->make_external();
-    }
+    for (const auto& [_, mut] : externals) mut->transfer_external(rewrite(mut)->as_mut());
 }
 
 void FPPhase::start() {
@@ -33,7 +30,7 @@ void Cleanup::start() {
     Rewriter rewriter(new_world);
 
     for (const auto& [_, ax] : world().axioms()) rewriter.rewrite(ax);
-    for (const auto& [_, mut] : world().externals()) rewriter.rewrite(mut)->as_mut()->make_external();
+    for (const auto& [_, mut] : world().externals()) rewriter.rewrite(mut)->as_mut()->make_external(true);
 
     swap(world(), new_world);
 }

@@ -230,7 +230,7 @@ TEST(RestrictedDependentTypes, ll) {
     // Cn [mem, i32, ptr(ptr(i32, 0), 0) Cn [mem, i32]]
     auto main_t = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})});
     auto main   = w.mut_lam(main_t)->set("main");
-    main->make_external();
+    main->make_external(true);
 
     auto R = w.axiom(w.type())->set("R");
     auto W = w.axiom(w.type())->set("W");

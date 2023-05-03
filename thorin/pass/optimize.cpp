@@ -22,9 +22,9 @@ void optimize(World& world) {
                                   world.sym("_fallback_compile")};
     const Def* compilation     = nullptr;
     for (auto compilation_function : compilation_functions) {
-        if (auto compilation_ = world.lookup(compilation_function)) {
+        if (auto compilation_ = world.external(compilation_function)) {
             if (!compilation) compilation = compilation_;
-            compilation_->make_internal();
+            compilation_->make_external(false);
         }
     }
     // make all functions `[] -> Pipeline` internal
@@ -33,7 +33,7 @@ void optimize(World& world) {
         if (auto lam = def->isa<Lam>(); lam && lam->num_doms() == 0) {
             if (*lam->codom()->sym() == "%compile.Pipeline") {
                 if (!compilation) compilation = lam;
-                def->make_internal();
+                def->make_external(false);
             }
         }
     }

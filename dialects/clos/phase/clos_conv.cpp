@@ -184,8 +184,8 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
                     // assert(ret_lam && ret_lam->is_basicblock());
                     //  Note: This should be cont_lam's only occurance after η-expansion, so its okay to
                     //  put into the local subst only
-                    auto new_doms =
-                        DefArray(ret_lam->num_doms(), [&](auto i) { return rewrite(ret_lam->dom(i), subst); });
+                    auto new_doms
+                        = DefArray(ret_lam->num_doms(), [&](auto i) { return rewrite(ret_lam->dom(i), subst); });
                     auto new_lam   = ret_lam->stub(w, w.cn(new_doms));
                     subst[ret_lam] = new_lam;
                     if (ret_lam->is_set()) {
@@ -290,8 +290,7 @@ ClosConv::Stub ClosConv::make_stub(const DefSet& fvs, Lam* old_lam, Def2Def& sub
         auto new_ext_lam  = old_lam->stub(w, new_ext_type);
         w.DLOG("wrap ext lam: {} -> stub: {}, ext: {}", old_lam, new_lam, new_ext_lam);
         if (old_lam->is_set()) {
-            old_lam->make_internal();
-            new_ext_lam->make_external();
+            old_lam->transfer_external(new_ext_lam);
             new_ext_lam->app(false, new_lam, clos_insert_env(env, new_ext_lam->var()));
             new_lam->set(old_lam->filter(), old_lam->body());
         } else {

@@ -152,18 +152,17 @@ public:
     const auto& axioms() const { return move_.axioms; }
     const auto& externals() const { return move_.externals; }
     bool empty() { return move_.externals.empty(); }
-    void make_external(Def* def) {
-        assert(!def->external_);
-        def->external_ = true;
-        assert_emplace(move_.externals, def->sym(), def);
+    void make_external(Def* def, bool on) {
+        assert(!def->external_ == on);
+        def->external_ = on;
+        if (on)
+            assert_emplace(move_.externals, def->sym(), def);
+        else {
+            auto num = move_.externals.erase(def->sym());
+            assert(num == 1);
+        }
     }
-    void make_internal(Def* def) {
-        assert(def->external_);
-        def->external_ = false;
-        auto num       = move_.externals.erase(def->sym());
-        assert(num == 1);
-    }
-    Def* lookup(Sym name) { return thorin::lookup(move_.externals, name); }
+    Def* external(Sym name) { return thorin::lookup(move_.externals, name); }
     ///@}
 
     /// @name Univ, Type, Var, Proxy, Infer

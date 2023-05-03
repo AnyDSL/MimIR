@@ -505,7 +505,7 @@ Lam* Parser::parse_lam(bool decl) {
 
     auto [_, first, __] = funs.front();
     first->set(dbg.sym);
-    if (external) first->make_external();
+    if (external) first->make_external(true);
 
     for (auto [pi, lam, _] : funs | std::ranges::views::reverse) {
         // First, connect old codom to lam. Otherwise, scope will not find it.
