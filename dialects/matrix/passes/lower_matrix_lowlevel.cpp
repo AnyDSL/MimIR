@@ -54,7 +54,7 @@ Ref arr_ty_of_matrix_ty(Ref S, Ref T) {
     return arr_ty;
 }
 
-}
+} // namespace
 
 Ref LowerMatrixLowLevel::rewrite_imm(Ref def) {
     assert(!match<matrix::map_reduce>(def) && "map_reduce should have been lowered to for loops by now");
