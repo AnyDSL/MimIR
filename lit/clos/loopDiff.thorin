@@ -3,7 +3,7 @@
 
 .plugin core;
 
-.let i32 = .Idx 4294967296;
+.let i32 = %core.I32;
 .let i8 = %core.I8;
 .let void_ptr = %mem.Ptr («⊤:.Nat; []», 0);
 

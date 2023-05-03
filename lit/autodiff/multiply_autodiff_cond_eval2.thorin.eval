@@ -23,74 +23,74 @@
     };
     inner_mul_deriv_cps_635298
 };
-.lam Uf_635542 _635560: (.Idx 4294967296) → ★ = {
-    (.Idx 4294967296)
+.lam Uf_635542 _635560: (%core.I32) → ★ = {
+    (%core.I32)
 };
-.con zero_pb_635590 _635592::[(.Idx 4294967296), _635594: .Cn (.Idx 4294967296)] = {
-    .con _635591 _635595: (.Idx 4294967296) = {
+.con zero_pb_635590 _635592::[(%core.I32), _635594: .Cn (%core.I32)] = {
+    .con _635591 _635595: (%core.I32) = {
         _635594 _635595
     };
-    _635591 (0:(.Idx 4294967296))
+    _635591 (0:(%core.I32))
 };
-.lam Uf_635607 _635625: (.Idx 4294967296) → ★ = {
-    (.Idx 4294967296)
+.lam Uf_635607 _635625: (%core.I32) → ★ = {
+    (%core.I32)
 };
-.con eta_id_pb_635655 _635657::[s_635663: (.Idx 4294967296), _635659: .Cn (.Idx 4294967296)] = {
-    .con _635656 _635660: (.Idx 4294967296) = {
+.con eta_id_pb_635655 _635657::[s_635663: (%core.I32), _635659: .Cn (%core.I32)] = {
+    .con _635656 _635660: (%core.I32) = {
         _635659 _635660
     };
     _635656 s_635663
 };
-.con comp_tup_pb__635491 _635501::[_635503: (.Idx 4294967296), _635507: .Cn (.Idx 4294967296)] = {
-    .con _635505 _635508: (.Idx 4294967296) = {
+.con comp_tup_pb__635491 _635501::[_635503: (%core.I32), _635507: .Cn (%core.I32)] = {
+    .con _635505 _635508: (%core.I32) = {
         _635507 _635508
     };
-    .con comp_tup_pb__cont_635504 _635600::[_635601: (.Idx 4294967296), _635666: (.Idx 4294967296)] = {
-        .let _635602: (.Idx 4294967296) = %direct.cps2ds_dep ((.Idx 4294967296), Uf_635542) zero_pb_635590 _635601;
-        .let _635667: (.Idx 4294967296) = %direct.cps2ds_dep ((.Idx 4294967296), Uf_635607) eta_id_pb_635655 _635666;
-        .let _635672: (.Idx 4294967296) = %core.wrap.add 0 (_635602, _635667);
+    .con comp_tup_pb__cont_635504 _635600::[_635601: (%core.I32), _635666: (%core.I32)] = {
+        .let _635602: (%core.I32) = %direct.cps2ds_dep ((%core.I32), Uf_635542) zero_pb_635590 _635601;
+        .let _635667: (%core.I32) = %direct.cps2ds_dep ((%core.I32), Uf_635607) eta_id_pb_635655 _635666;
+        .let _635672: (%core.I32) = %core.wrap.add 0 (_635602, _635667);
         _635505 _635672
     };
-    .con comp_tup_pb__cont_635497 _635498::[(.Idx 4294967296), _635500: .Cn [(.Idx 4294967296), .Cn «2; (.Idx 4294967296)»]] = {
+    .con comp_tup_pb__cont_635497 _635498::[(%core.I32), _635500: .Cn [(%core.I32), .Cn «2; (%core.I32)»]] = {
         _635500 (_635503, comp_tup_pb__cont_635504)
     };
-    internal_diff_core_wrap_mul_635228 (0, 4294967296) ((2:(.Idx 4294967296), 42:(.Idx 4294967296)), comp_tup_pb__cont_635497)
+    internal_diff_core_wrap_mul_635228 (0, 4294967296) ((2:(%core.I32), 42:(%core.I32)), comp_tup_pb__cont_635497)
 };
-.lam Uf_635814 _635832: (.Idx 4294967296) → ★ = {
-    (.Idx 4294967296)
+.lam Uf_635814 _635832: (%core.I32) → ★ = {
+    (%core.I32)
 };
-.con zero_pb_635860 _635862::[(.Idx 4294967296), _635864: .Cn (.Idx 4294967296)] = {
-    .con _635861 _635865: (.Idx 4294967296) = {
+.con zero_pb_635860 _635862::[(%core.I32), _635864: .Cn (%core.I32)] = {
+    .con _635861 _635865: (%core.I32) = {
         _635864 _635865
     };
-    _635861 (0:(.Idx 4294967296))
+    _635861 (0:(%core.I32))
 };
-.lam Uf_635876 _635894: (.Idx 4294967296) → ★ = {
-    (.Idx 4294967296)
+.lam Uf_635876 _635894: (%core.I32) → ★ = {
+    (%core.I32)
 };
-.con eta_id_pb_635922 _635924::[s_635930: (.Idx 4294967296), _635926: .Cn (.Idx 4294967296)] = {
-    .con _635923 _635927: (.Idx 4294967296) = {
+.con eta_id_pb_635922 _635924::[s_635930: (%core.I32), _635926: .Cn (%core.I32)] = {
+    .con _635923 _635927: (%core.I32) = {
         _635926 _635927
     };
     _635923 s_635930
 };
-.con comp_tup_pb__635796 _635801::[_635803: (.Idx 4294967296), _635807: .Cn (.Idx 4294967296)] = {
-    .con _635805 _635808: (.Idx 4294967296) = {
+.con comp_tup_pb__635796 _635801::[_635803: (%core.I32), _635807: .Cn (%core.I32)] = {
+    .con _635805 _635808: (%core.I32) = {
         _635807 _635808
     };
-    .con comp_tup_pb__cont_635804 _635869::[_635870: (.Idx 4294967296), _635933: (.Idx 4294967296)] = {
-        .let _635871: (.Idx 4294967296) = %direct.cps2ds_dep ((.Idx 4294967296), Uf_635814) zero_pb_635860 _635870;
-        .let _635934: (.Idx 4294967296) = %direct.cps2ds_dep ((.Idx 4294967296), Uf_635876) eta_id_pb_635922 _635933;
-        .let _635939: (.Idx 4294967296) = %core.wrap.add 0 (_635871, _635934);
+    .con comp_tup_pb__cont_635804 _635869::[_635870: (%core.I32), _635933: (%core.I32)] = {
+        .let _635871: (%core.I32) = %direct.cps2ds_dep ((%core.I32), Uf_635814) zero_pb_635860 _635870;
+        .let _635934: (%core.I32) = %direct.cps2ds_dep ((%core.I32), Uf_635876) eta_id_pb_635922 _635933;
+        .let _635939: (%core.I32) = %core.wrap.add 0 (_635871, _635934);
         _635805 _635939
     };
-    .con comp_tup_pb__cont_635797 _635798::[(.Idx 4294967296), _635800: .Cn [(.Idx 4294967296), .Cn «2; (.Idx 4294967296)»]] = {
+    .con comp_tup_pb__cont_635797 _635798::[(%core.I32), _635800: .Cn [(%core.I32), .Cn «2; (%core.I32)»]] = {
         _635800 (_635803, comp_tup_pb__cont_635804)
     };
-    internal_diff_core_wrap_mul_635228 (0, 4294967296) ((3:(.Idx 4294967296), 42:(.Idx 4294967296)), comp_tup_pb__cont_635797)
+    internal_diff_core_wrap_mul_635228 (0, 4294967296) ((3:(%core.I32), 42:(%core.I32)), comp_tup_pb__cont_635797)
 };
-.lam Uf_636018 _636036: «2; (.Idx 4294967296)» → ★ = {
-    [(.Idx 2), .Cn [(.Idx 2), .Cn «2; (.Idx 4294967296)»]]
+.lam Uf_636018 _636036: «2; (%core.I32)» → ★ = {
+    [(.Idx 2), .Cn [(.Idx 2), .Cn «2; (%core.I32)»]]
 };
 // TODO: wrong w
 .lam internal_diff_core_icmp_xYgLE_636113 __636125: .Nat → .Cn [«2; .Idx __636125», .Cn [(.Idx 2), .Cn [(.Idx 2), .Cn «2; .Idx __636125»]]] = {
@@ -109,46 +109,46 @@
     };
     inner_cmp_636166
 };
-.con tup_pb_636268 _636270::[[], _636272: .Cn (.Idx 4294967296)] = {
-    .con _636269 _636273: (.Idx 4294967296) = {
+.con tup_pb_636268 _636270::[[], _636272: .Cn (%core.I32)] = {
+    .con _636269 _636273: (%core.I32) = {
         _636272 _636273
     };
-    _636269 (0:(.Idx 4294967296))
+    _636269 (0:(%core.I32))
 };
-.con .extern main __635710::[mem_635729: %mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((%core.I8), 0), 0), return_635714: .Cn [%mem.M, (.Idx 4294967296)]] = {
-    .con return_635709 _635715: [%mem.M, (.Idx 4294967296)] = {
+.con .extern main __635710::[mem_635729: %mem.M, (%core.I32), %mem.Ptr (%mem.Ptr ((%core.I8), 0), 0), return_635714: .Cn [%mem.M, (%core.I32)]] = {
+    .con return_635709 _635715: [%mem.M, (%core.I32)] = {
         return_635714 _635715
     };
-    .con ret_cont_635465 _635751: (.Idx 4294967296) = {
-        .con pb_ret_cont_635701 __635733: (.Idx 4294967296) = {
-            .let _635762: (.Idx 4294967296) = %core.wrap.mul 0 (100:(.Idx 4294967296), _635751);
-            .let _635767: (.Idx 4294967296) = %core.wrap.add 0 (__635733, _635762);
+    .con ret_cont_635465 _635751: (%core.I32) = {
+        .con pb_ret_cont_635701 __635733: (%core.I32) = {
+            .let _635762: (%core.I32) = %core.wrap.mul 0 (100:(%core.I32), _635751);
+            .let _635767: (%core.I32) = %core.wrap.add 0 (__635733, _635762);
             return_635709 (mem_635729, _635767)
         };
-        comp_tup_pb__635491 (1:(.Idx 4294967296), pb_ret_cont_635701)
+        comp_tup_pb__635491 (1:(%core.I32), pb_ret_cont_635701)
     };
-    .con aug_twice_cont_635453 _635774::[_635776: (.Idx 4294967296), .Cn [(.Idx 4294967296), .Cn «2; (.Idx 4294967296)»]] = {
+    .con aug_twice_cont_635453 _635774::[_635776: (%core.I32), .Cn [(%core.I32), .Cn «2; (%core.I32)»]] = {
         ret_cont_635465 _635776
     };
     // TODO: missing arg binder
-    .con aug_twice_635142 [.Cn[[], .Cn (.Idx 4294967296)]] = {
-        internal_diff_core_wrap_mul_635228 (0, 4294967296) ((2:(.Idx 4294967296), 42:(.Idx 4294967296)), aug_twice_cont_635453)
+    .con aug_twice_635142 [.Cn[[], .Cn (%core.I32)]] = {
+        internal_diff_core_wrap_mul_635228 (0, 4294967296) ((2:(%core.I32), 42:(%core.I32)), aug_twice_cont_635453)
     };
-    .con ret_cont_635795 _635947: (.Idx 4294967296) = {
-        .con pb_ret_cont_635945 __635946: (.Idx 4294967296) = {
-            .let _635958: (.Idx 4294967296) = %core.wrap.mul 0 (100:(.Idx 4294967296), _635947);
-            .let _635963: (.Idx 4294967296) = %core.wrap.add 0 (__635946, _635958);
+    .con ret_cont_635795 _635947: (%core.I32) = {
+        .con pb_ret_cont_635945 __635946: (%core.I32) = {
+            .let _635958: (%core.I32) = %core.wrap.mul 0 (100:(%core.I32), _635947);
+            .let _635963: (%core.I32) = %core.wrap.add 0 (__635946, _635958);
             return_635709 (mem_635729, _635963)
         };
-        comp_tup_pb__635796 (1:(.Idx 4294967296), pb_ret_cont_635945)
+        comp_tup_pb__635796 (1:(%core.I32), pb_ret_cont_635945)
     };
-    .con aug_thrice_cont_635794 _635970::[_635972: (.Idx 4294967296), .Cn [(.Idx 4294967296), .Cn «2; (.Idx 4294967296)»]] = {
+    .con aug_thrice_cont_635794 _635970::[_635972: (%core.I32), .Cn [(%core.I32), .Cn «2; (%core.I32)»]] = {
         ret_cont_635795 _635972
     };
     // TODO: missing arg binder
-    .con aug_thrice_635782 [.Cn[[], .Cn (.Idx 4294967296)]] = {
-        internal_diff_core_wrap_mul_635228 (0, 4294967296) ((3:(.Idx 4294967296), 42:(.Idx 4294967296)), aug_thrice_cont_635794)
+    .con aug_thrice_635782 [.Cn[[], .Cn (%core.I32)]] = {
+        internal_diff_core_wrap_mul_635228 (0, 4294967296) ((3:(%core.I32), 42:(%core.I32)), aug_thrice_cont_635794)
     };
-    .let _636262: [(.Idx 2), .Cn [(.Idx 2), .Cn «2; (.Idx 4294967296)»]] = %direct.cps2ds_dep («2; (.Idx 4294967296)», Uf_636018) (internal_diff_core_icmp_xYgLE_636113 4294967296) (42:(.Idx 4294967296), 5:(.Idx 4294967296));
+    .let _636262: [(.Idx 2), .Cn [(.Idx 2), .Cn «2; (%core.I32)»]] = %direct.cps2ds_dep («2; (%core.I32)», Uf_636018) (internal_diff_core_icmp_xYgLE_636113 4294967296) (42:(%core.I32), 5:(%core.I32));
     (aug_twice_635142, aug_thrice_635782)#(_636262#0:(.Idx 2)) tup_pb_636268
 };

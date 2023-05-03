@@ -5,7 +5,7 @@
 .import autodiff;
 .import mem;
 
-.let I32 = .Idx 4294967296;
+.let I32 = %core.I32;
 
 /// if b<=0:
 ///     1

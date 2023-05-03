@@ -4,16 +4,14 @@
 .plugin core;
 .plugin matrix;
 
-.con .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, .Idx 4294967296]] = {
-    .let I32 = .Idx 4294967296;
-    .let MT = (2, (3,3), I32);
+.con .extern main [mem : %mem.M, argc : %core.I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, %core.I32]] =
+    .let MT = (2, (3,3), %core.I32);
     .let c = 5:%core.I32;
     .let (mem1,m) = %matrix.constMat MT (mem,c);
     .let f = %matrix.read MT;
     // .let idx : «2; (.Idx 3)» = (0, 0);
-    .let idx = ‹2:.Nat; 0:(.Idx 3)›;
+    .let idx = ‹2; 0:(.Idx 3)›;
     .let (mem2,d) = %matrix.read MT (mem1,m, idx);
-    return (mem2, d)
-};
+    return (mem2, d);
 
 // CHECK-DAG: return{{.*}}5

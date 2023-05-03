@@ -1,14 +1,13 @@
 // RUN: %thorin %s -o -
 
 // If compiling this takes forever, there is some loophole that Thorin does sth 100000000 times.
-.import mem;
+.import core;
 
-.let I32 = .Idx 4294967296;
 .let size = 100000000;
 
-.cn .extern main [mem: %mem.M, argc: I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; %core.I8», 0)», 0), return : .Cn [%mem.M, I32]] = {
-    .let (alloc_mem, arr) = %mem.alloc (<<size; I32>>, 0) (mem);
-    .let lea = %mem.lea (size, <size; I32>, 0) (arr, 0_100);
+.cn .extern main [mem: %mem.M, argc: %core.I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; %core.I8», 0)», 0), return : .Cn [%mem.M, %core.I32]] = {
+    .let (alloc_mem, arr) = %mem.alloc (<<size; %core.I32>>, 0) (mem);
+    .let lea = %mem.lea (size, <size; %core.I32>, 0) (arr, 0_100);
     .let (load_mem, val) = %mem.load (alloc_mem, lea);
 
     return ( load_mem, 1:%core.I32 )

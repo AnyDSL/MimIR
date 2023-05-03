@@ -34,7 +34,7 @@
 
 .con .extern main [mem1 : %mem.M, 
         argc : I32, 
-        argv : %mem.Ptr («⊤:.Nat; String», 0:.Nat), // const char *argv[]
+        argv : %mem.Ptr («⊤:.Nat; String», 0), // const char *argv[]
         return : .Cn [%mem.M, I32]
     ] = {
 

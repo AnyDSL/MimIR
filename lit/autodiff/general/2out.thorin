@@ -4,7 +4,7 @@
 .plugin core;
 .plugin autodiff;
 
-.let I32 = .Idx 4294967296;
+.let I32 = %core.I32;
 
 .con f [a:%core.I32, ret: .Cn [I32,I32]] = {
     .let b = %core.wrap.mul 0 (2:%core.I32, a);

@@ -4,35 +4,33 @@
 .plugin core;
 .plugin matrix;
 
-.let _32 = 4294967296;
-.let I32 = .Idx _32;
-// .let MT = (2, (2,4), I32);
+// .let MT = (2, (2,4), %core.I32);
 
-.lam .extern identity: [a:%core.I32] -> I32 = {
+.lam .extern identity: [a:%core.I32] -> %core.I32 = {
     a
 };
 
-.lam .extern addition: [a:%core.I32, b:%core.I32] -> I32 = {
+.lam .extern addition: [a:%core.I32, b:%core.I32] -> %core.I32 = {
     %core.wrap.add _32 0 (a,b)
 };
 
 .con .extern f: [mem : %mem.M, 
     kl: «2: .Nat; .Nat»,
-    M:%matrix.Mat (2,kl,I32),
-    return: .Cn[%mem.M, %matrix.Mat (2,(kl#(1:(.Idx 2)),kl#(0:(.Idx 2))),I32)]] = {
+    M:%matrix.Mat (2,kl,%core.I32),
+    return: .Cn[%mem.M, %matrix.Mat (2,(kl#(1:(.Idx 2)),kl#(0:(.Idx 2))),%core.I32)]] = {
     .ff,
-    // .let v2 = %core.wrap.add (0:.Nat, 4294967296:.Nat) (v, v);
+    // .let v2 = %core.wrap.add (0, 4294967296) (v, v);
     .let (k,l) = kl;
-    // .let add = %core.wrap.add (0:.Nat, 4294967296:.Nat);
+    // .let add = %core.wrap.add (0, 4294967296);
 
 
     .let MT = M;
     .let MT2 = %matrix.map_reduce
         (
-            2, (l,k), I32,
+            2, (l,k), %core.I32,
             1,
             (2),
-            (I32),
+            (%core.I32),
             ((k,l))
         );
         // (

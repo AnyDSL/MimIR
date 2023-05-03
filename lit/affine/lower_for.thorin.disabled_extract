@@ -6,15 +6,15 @@
 
 .plugin affine;
 
-.con .extern main (mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, .Idx 4294967296]) = {
-    .con for_exit [acc : .Idx 4294967296] = {
+.con .extern main (mem : %mem.M, argc : %core.I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, %core.I32]) = {
+    .con for_exit [acc : %core.I32] = {
         return (mem, acc)
     };
 
-    .con for_body [i : .Idx 4294967296, acc : .Idx 4294967296, continue : .Cn [.Idx 4294967296]] = {
+    .con for_body [i : %core.I32, acc : %core.I32, continue : .Cn [%core.I32]] = {
         continue (%core.wrap.add 0 (i, acc))
     };
-    %affine.For (4294967296, 1, (.Idx 4294967296)) (0:(.Idx 4294967296), argc, 1:(.Idx 4294967296), (0:(.Idx 4294967296)), for_body, for_exit)
+    %affine.For (4294967296, 1, (%core.I32)) (0:(%core.I32), argc, 1:(%core.I32), (0:(%core.I32)), for_body, for_exit)
 };
 
 // CHECK-DAG: .con .extern main _[[mainVar:[0-9_]+]]::[mem_[[memVar:[0-9_]+]]: %mem.M, argc_[[argcId:[0-9_]+]]: .Idx 4294967296, %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return_[[returnId:[0-9_]+]]: .Cn [%mem.M, .Idx 4294967296]] {{(@.*)?}}= {

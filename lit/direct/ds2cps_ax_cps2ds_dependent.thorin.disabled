@@ -4,7 +4,7 @@
 .plugin core;
 .plugin direct;
 
-.let I32 = .Idx 4294967296;
+.let I32 = %core.I32;
 
 .con f [n:.Nat, return: .Cn (.Idx n)] = {
     .let b = (42:(.Idx n));

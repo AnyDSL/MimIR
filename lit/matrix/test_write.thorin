@@ -6,7 +6,7 @@
 .plugin core;
 .plugin matrix;
 
-.let I32 = .Idx 4294967296;
+.let I32 = %core.I32;
 .let MT = (2, (2,4), I32);
 
 .con print_int_matrix [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (⊤:.Nat,⊤:.Nat), I32), return : .Cn [%mem.M]];
@@ -18,7 +18,7 @@
 
 
 
-.con .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, .Idx 4294967296]] = {
+.con .extern main [mem : %mem.M, argc : %core.I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, %core.I32]] = {
     .con return_cont [mem:%mem.M] = return (mem, 0:%core.I32);
 
     .let c = argc;

@@ -9,7 +9,7 @@ thorin: /dialects/clos/phase/clos_conv.cpp:64: const thorin::Def* thorin::clos::
 .plugin core;
 .plugin direct;
 
-.let i32 = .Idx 4294967296;
+.let i32 = %core.I32;
 .let i8 = %core.I8;
 
 .con printInteger [mem: %mem.M, val: i32, return : .Cn [%mem.M]];

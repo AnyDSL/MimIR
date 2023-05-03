@@ -13,7 +13,7 @@
 2
 */
 
-.let I32 = .Idx 4294967296;
+.let I32 = %core.I32;
 
 .con g [a:%core.I32, ret: .Cn [I32]] = {
     .let b = %core.wrap.add 0 (3:%core.I32, a);

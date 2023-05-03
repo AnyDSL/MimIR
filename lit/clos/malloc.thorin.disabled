@@ -4,7 +4,7 @@
 
 .plugin core;
 
-.let I32 = .Idx 4294967296;
+.let I32 = %core.I32;
 .lam Ptr T: * = %mem.Ptr (T, 0);
 
 .fun f(mem: %mem.M, x: I32) -> [%mem.M, I32] = return (mem, %core.wrap.add 0 (x, 42:%core.I32));

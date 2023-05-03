@@ -5,7 +5,7 @@
 .plugin math;
 .plugin autodiff;
 
-.let I32 = .Idx 4294967296;
+.let I32 = %core.I32;
 .let F32 = %math.F (23, 8);
 
 .con f [a:F32, ret: .Cn [F32]] = {

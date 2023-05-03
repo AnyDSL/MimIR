@@ -55,7 +55,7 @@
 .con .extern e3 [[mem: %mem.M, [a: %core.I32, []]], ret: .Cn [%mem.M, %core.I32]] =
     ret (mem,a);
 
-.con .extern main [mem : %mem.M, argc : %core.I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, %core.I32]] =
+.con .extern main [mem : %mem.M, argc : %core.I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, %core.I32]] =
     .let (mem2,p) = %mem.alloc Tas mem;
     // .let mem3 = %mem.store Tas (mem2, p, argc);
 
