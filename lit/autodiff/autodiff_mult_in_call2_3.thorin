@@ -6,31 +6,31 @@
 
 .let I32 = .Idx 4294967296;
 
-.con snd [[a:I32, b:I32], ret: .Cn [I32]] = {
+.con snd [[a:%core.I32, b:%core.I32], ret: .Cn [I32]] = {
     ret (b)
 };
 
-.con f [[a:I32, b:I32], ret: .Cn [I32]] = {
+.con f [[a:%core.I32, b:%core.I32], ret: .Cn [I32]] = {
     snd((b,a),ret)
 };
 
-.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return : .Cn [%mem.M, I32]] = {
+.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, I32]] = {
 
-    .con ret_cont [r:I32,pb:.Cn[I32,.Cn[I32,I32]]] = {
-        .con pb_ret_cont [pr_a:I32,pr_b:I32] = {
-            .let sr = %core.wrap.mul 0 (10000:I32, r);
-            .let sa = %core.wrap.mul 0 (100:I32, pr_a);
+    .con ret_cont [r:%core.I32,pb:.Cn[I32,.Cn[I32,I32]]] = {
+        .con pb_ret_cont [pr_a:%core.I32,pr_b:%core.I32] = {
+            .let sr = %core.wrap.mul 0 (10000:%core.I32, r);
+            .let sa = %core.wrap.mul 0 (100:%core.I32, pr_a);
             .let sb = pr_b;
             .let sp = %core.wrap.add 0 (sa, sb);
             .let o  = %core.wrap.add 0 (sr, sp);
             return (mem, o)
         };
-        pb((1:I32),pb_ret_cont)
+        pb((1:%core.I32),pb_ret_cont)
     };
 
     .let f_diff = %autodiff.ad (.Cn [[I32,I32],.Cn[I32]]) f;
 
-    .let c = (42:I32,43:I32);
+    .let c = (42:%core.I32,43:%core.I32);
     f_diff (c,ret_cont)
 };
 

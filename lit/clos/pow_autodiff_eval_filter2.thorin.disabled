@@ -63,7 +63,7 @@ dialects/clos/phase/clos_conv.cpp:195: RW: pack tup_pb_745946_346616 ~> ([], tup
     };
     _746126 (0:(.Idx 4294967296), tup_s_746133#0:(.Idx 2))
 };
-.con .extern main __746011::[mem_746034: %mem.M, .Idx 4294967296, %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return_746015: .Cn [%mem.M, .Idx 4294967296]] @(0:(.Idx 2)) = {
+.con .extern main __746011::[mem_746034: %mem.M, .Idx 4294967296, %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return_746015: .Cn [%mem.M, .Idx 4294967296]] @(0:(.Idx 2)) = {
     .con return_746010 [_746016: [%mem.M, .Idx 4294967296]] @(0:(.Idx 2)) = {
         return_746015 _746016
     };

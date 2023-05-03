@@ -115,7 +115,7 @@
     };
     _636269 (0:(.Idx 4294967296))
 };
-.con .extern main __635710::[mem_635729: %mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((.Idx 256), 0), 0), return_635714: .Cn [%mem.M, (.Idx 4294967296)]] = {
+.con .extern main __635710::[mem_635729: %mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((%core.I8), 0), 0), return_635714: .Cn [%mem.M, (.Idx 4294967296)]] = {
     .con return_635709 _635715: [%mem.M, (.Idx 4294967296)] = {
         return_635714 _635715
     };

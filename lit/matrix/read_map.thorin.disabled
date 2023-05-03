@@ -25,8 +25,8 @@
 };
 
 
-.con .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, .Idx 4294967296]] = {
-    .let c = 5:I32;
+.con .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, .Idx 4294967296]] = {
+    .let c = 5:%core.I32;
     .let m = %matrix.constMat MT c;
     cont (mem, m, return)
 };
@@ -45,7 +45,7 @@
 .import core;
 
 
-.lam .extern main: .Cn [%mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((.Idx 256), 0:.Nat), 0:.Nat), .Cn [%mem.M, (.Idx 4294967296)]], @(_176473, _176505, _176510, _176465) = {
+.lam .extern main: .Cn [%mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((%core.I8), 0:.Nat), 0:.Nat), .Cn [%mem.M, (.Idx 4294967296)]], @(_176473, _176505, _176510, _176465) = {
     0:(.Idx 2),
 
     .lam _176460: .Cn [%mem.M, (.Idx 4294967296)], @(_176525, _176530) = {

@@ -64,8 +64,8 @@
     // return: .Cn[%mem.M, %matrix.Mat (2,(k,l),I32)]] = {
     return: .Cn[%mem.M]] = {
 
-    .let (mem2, M) = %matrix.constMat (2,(k,l),I32) (mem, 42:I32);
-    // .let (mem3, N) = %matrix.constMat (2,(m,l),I32) (mem2, 44:I32);
+    .let (mem2, M) = %matrix.constMat (2,(k,l),I32) (mem, 42:%core.I32);
+    // .let (mem3, N) = %matrix.constMat (2,(m,l),I32) (mem2, 44:%core.I32);
 
     .con cont [mem: %mem.M, N: %matrix.Mat (2,(l, k),I32)] = {
         return mem

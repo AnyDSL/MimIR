@@ -3,7 +3,7 @@
 .import debug;
 .import direct;
 .import mem;
-.con .extern main __635710_709387_636142::[mem_635729_709403_636158: %mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((.Idx 256), 0), 0), return_635714_709391_636146: .Cn [%mem.M, (.Idx 4294967296)]] = {
+.con .extern main __635710_709387_636142::[mem_635729_709403_636158: %mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((%core.I8), 0), 0), return_635714_709391_636146: .Cn [%mem.M, (.Idx 4294967296)]] = {
     .con return_635714_709391_636137 _636147: [%mem.M, (.Idx 4294967296)] = {
         return_635714_709391_636146 _636147
     };

@@ -13,8 +13,8 @@
     M:%matrix.Mat (2,(k,l),I32),
     return: .Cn[%mem.M, I32]] = {
 
-    .let two = %core.conv.u2u (k,_32) (2:I32);
-    .let three = %core.conv.u2u (l,_32) (3:I32);
+    .let two = %core.conv.u2u (k,_32) (2:%core.I32);
+    .let three = %core.conv.u2u (l,_32) (3:%core.I32);
 
     .let (mem2,a) = %matrix.read
         (2, (k,l), I32)

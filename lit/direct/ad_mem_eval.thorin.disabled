@@ -13,7 +13,7 @@
 .con comp_tup_pb__cont_691892_cont_cont_321850 _321954::[%mem.M, _321956: .Idx 4294967296] @(1:(.Idx 2)) = {
     return_690562_322234 (⊤:%mem.M, _321956)
 };
-.con .extern main __690558_320477::[mem_690876_320481: %mem.M, argc_691342_321701: .Idx 4294967296, %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return_690562_321471: .Cn [%mem.M, .Idx 4294967296]] @(0:(.Idx 2)) = {
+.con .extern main __690558_320477::[mem_690876_320481: %mem.M, argc_691342_321701: .Idx 4294967296, %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return_690562_321471: .Cn [%mem.M, .Idx 4294967296]] @(0:(.Idx 2)) = {
     .let _320484: [%mem.M, %mem.Ptr («100; .Idx 4294967296», 0)] = %mem.malloc («100; .Idx 4294967296», 0) (mem_690876_320481, 400);
     .let _320493: [%mem.M, %mem.Ptr («100; .Cn [.Idx 4294967296, .Cn [%mem.M, .Idx 4294967296]]», 0)] = %mem.malloc («100; .Cn [.Idx 4294967296, .Cn [%mem.M, .Idx 4294967296]]», 0) (_320484#0:(.Idx 2), 800);
     .let _320879: %mem.Ptr (.Cn [.Idx 4294967296, .Cn [%mem.M, .Idx 4294967296]], 0) = %mem.lea (100, ‹100; .Cn [.Idx 4294967296, .Cn [%mem.M, .Idx 4294967296]]›, 0) (_320493#1:(.Idx 2), 1:(.Idx 100));

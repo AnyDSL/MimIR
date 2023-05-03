@@ -17,7 +17,7 @@
     };
     _535777 (%autodiff.zero %mem.M, (0:(.Idx 4294967296), s_535787))
 };
-.con .extern main __535682::[mem_535757: %mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((.Idx 256), 0), 0), return_535686: .Cn [%mem.M, (.Idx 4294967296)]] = {
+.con .extern main __535682::[mem_535757: %mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((%core.I8), 0), 0), return_535686: .Cn [%mem.M, (.Idx 4294967296)]] = {
     .con return_535681 _535687: [%mem.M, (.Idx 4294967296)] = {
         return_535686 _535687
     };

@@ -16,7 +16,7 @@
     // ret_704202
     inner_mul_deriv_cps_704097
 };
-.con .extern main __704275::[mem_704293: %mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((.Idx 256), 0), 0), return_704279: .Cn [%mem.M, (.Idx 4294967296)]] = {
+.con .extern main __704275::[mem_704293: %mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((%core.I8), 0), 0), return_704279: .Cn [%mem.M, (.Idx 4294967296)]] = {
     .con main_cont_704240 _704246::[_704248: (.Idx 4294967296), _704267: .Cn [(.Idx 4294967296), .Cn «2; (.Idx 4294967296)»]] = {
         .con main_cont_cont_704255 _704256::[_704331: (.Idx 4294967296), _704258: .Cn [(.Idx 4294967296), .Cn «2; (.Idx 4294967296)»]] = {
             .con comp_tup_pb__cont_704270 _704314::[(.Idx 4294967296), _704315: (.Idx 4294967296)] = {

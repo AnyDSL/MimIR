@@ -98,7 +98,7 @@
     .let _662479: [(.Idx 4294967296), .Cn [(.Idx 4294967296), .Cn «2; (.Idx 4294967296)»]] = %direct.cps2ds_dep («2; (.Idx 4294967296)», Uf_662379) eta_inner_mul_deriv_cps_662433 (3:(.Idx 4294967296), 42:(.Idx 4294967296));
     _662479#1:(.Idx 2) (_662484, comp_tup_pb__cont_662485)
 };
-.con .extern main __661876::[mem_661897: %mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((.Idx 256), 0), 0), return_661880: .Cn [%mem.M, (.Idx 4294967296)]] = {
+.con .extern main __661876::[mem_661897: %mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((%core.I8), 0), 0), return_661880: .Cn [%mem.M, (.Idx 4294967296)]] = {
     .let _662165: [(.Idx 4294967296), .Cn [(.Idx 4294967296), .Cn «2; (.Idx 4294967296)»]] = %direct.cps2ds_dep («2; (.Idx 4294967296)», Uf_662044) eta_inner_mul_deriv_cps_662100 (2:(.Idx 4294967296), 42:(.Idx 4294967296));
     .con comp_tup_pb__662008 _662168::[_662170: (.Idx 4294967296), _662179: .Cn (.Idx 4294967296)] = {
         .con comp_tup_pb__cont_662177 _662245::[_662246: (.Idx 4294967296), _662315: (.Idx 4294967296)] = {

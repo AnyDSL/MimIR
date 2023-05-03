@@ -56,7 +56,7 @@
     // (aug_pow_else_745690_660849, aug_pow_then_745900_661112)#_661176 tup_pb_745946_661190
     // aug_pow_then_745900_661112 tup_pb_745946_661190
 };
-.con .extern main __746011_661274::[mem_746034_661291: %mem.M, .Idx 4294967296, %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return_746015_661278: .Cn [%mem.M, .Idx 4294967296]] @(0:(.Idx 2)) = {
+.con .extern main __746011_661274::[mem_746034_661291: %mem.M, .Idx 4294967296, %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return_746015_661278: .Cn [%mem.M, .Idx 4294967296]] @(0:(.Idx 2)) = {
     .con return_746015_661272[_661279: [%mem.M, .Idx 4294967296]]@(0:(.Idx 2)) = {
         return_746015_661278 _661279
     };

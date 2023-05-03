@@ -4,7 +4,7 @@
 
 .plugin core;
 
-.con .extern bitcast_bitcast(i : %mem.Ptr (.Idx 256, 0), return: .Cn .Idx 4294967296) = {
+.con .extern bitcast_bitcast(i : %mem.Ptr (%core.I8, 0), return: .Cn .Idx 4294967296) = {
     return (%core.bitcast (.Idx 4294967296) (%core.bitcast .Nat i))
 };
 

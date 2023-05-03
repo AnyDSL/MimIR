@@ -58,7 +58,7 @@
 .con zero_pb_692087 _692088::[%mem.M, _692090: .Cn [%mem.M, .Idx 4294967296]] @(1:(.Idx 2)) = {
     _692090 (⊥:%mem.M, 0:(.Idx 4294967296))
 };
-.con .extern main __690558::[mem_690876: %mem.M, argc_691342: .Idx 4294967296, %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return_690562: .Cn [%mem.M, .Idx 4294967296]] @(0:(.Idx 2)) = {
+.con .extern main __690558::[mem_690876: %mem.M, argc_691342: .Idx 4294967296, %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return_690562: .Cn [%mem.M, .Idx 4294967296]] @(0:(.Idx 2)) = {
     .let _691344: [.Idx 4294967296, .Cn [.Idx 4294967296, .Cn «2; .Idx 4294967296»]] = %direct.cps2ds_dep («2; .Idx 4294967296», Uf_691251) eta_inner_mul_deriv_cps_691294 (42:(.Idx 4294967296), argc_691342);
     //                                                                                 ^
     .con comp_tup_pb__691250 _691347::[_691349: .Idx 4294967296, _691358: .Cn [%mem.M, .Idx 4294967296]] @(1:(.Idx 2)) = {

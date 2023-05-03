@@ -4,10 +4,10 @@
 .plugin core;
 .plugin matrix;
 
-.con .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, .Idx 4294967296]] = {
+.con .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, .Idx 4294967296]] = {
     .let I32 = .Idx 4294967296;
     .let MT = (2, (3,3), I32);
-    .let c = 5:I32;
+    .let c = 5:%core.I32;
     .let (mem1,m) = %matrix.constMat MT (mem,c);
     .let f = %matrix.read MT;
     // .let idx : «2; (.Idx 3)» = (0, 0);

@@ -6,7 +6,7 @@
 
 .plugin affine;
 
-.con .extern main (mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return : .Cn [%mem.M, .Idx 4294967296]) = {
+.con .extern main (mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, .Idx 4294967296]) = {
     .con for_exit [acc : .Idx 4294967296] = {
         return (mem, acc)
     };

@@ -12,8 +12,8 @@
     return (mem, a)
 };
 
-.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return : .Cn [%mem.M, I32]] = {
-    f (mem, 42:I32, return)
+.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, I32]] = {
+    f (mem, 42:%core.I32, return)
 };
 
 .lam .extern _compile [] -> Pipeline = {
