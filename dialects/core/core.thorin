@@ -40,6 +40,21 @@
 ///
 /// ## Integer Operations
 ///
+/// Integer operations use `.Idx s` as type.
+/// This is per se neither signed nor unsigned.
+/// Instead, the operations themselves exhibit signed or unsigned behavior.
+///
+/// ### Mode
+///
+/// A common problem when dealing with integer operations is [overflow](https://en.wikipedia.org/wiki/Integer_overflow).
+/// All operations that may overflow have an additional parameter `m` - [mode](@ref thorin::core::Mode) - of type `.Nat` that determines the exact desired behavior in the case of an overflow.
+///
+/// ### %core.idx
+///
+/// Creates a literal of type `.Idx s` from `l` while obeying mode `m`.
+///
+.ax %core.idx: Π[s: .Nat][m: .Nat][l: .Nat] -> .Idx s, normalize_idx;
+///
 /// ### %core.bit1
 ///
 /// This *unary* bitwise operations offers all [4 possible operations](https://en.wikipedia.org/wiki/Truth_table#Unary_operations) as summarized in the following table:
@@ -51,7 +66,7 @@
 /// | id     | x | o | identity                     |
 /// | t      | x | x | always true                  |
 ///
-.ax %core.bit1(f, neg, id, t): Π.[s: .Nat][.Nat][.Idx s] -> .Idx s, normalize_bit1;
+.ax %core.bit1(f, neg, id, t): Π.[s: .Nat][m: .Nat][.Idx s] -> .Idx s, normalize_bit1;
 ///
 /// ### %core.bit2
 ///
@@ -78,7 +93,7 @@
 ///
 .ax %core.bit2( f,      nor, nciff, nfst, niff, nsnd, xor_, nand,
                 and_,  nxor,   snd,  iff,  fst, ciff,  or_,    t):
-    Π.[s: .Nat][.Nat][«2; .Idx s»] -> .Idx s , normalize_bit2;
+    Π.[s: .Nat][m: .Nat][«2; .Idx s»] -> .Idx s , normalize_bit2;
 ///
 /// ### %core.shr
 ///
@@ -93,7 +108,7 @@
 /// Integer operations that may overflow.
 /// You can specify the desired behavior in the case of an overflow with the curried argument just in front of the actual argument by providing a thorin::core::Mode as `.Nat`.
 ///
-.ax %core.wrap(add, sub, mul, shl): Π.[s: .Nat][.Nat][«2; .Idx s»] -> .Idx s, normalize_wrap;
+.ax %core.wrap(add, sub, mul, shl): Π.[s: .Nat][m: .Nat][«2; .Idx s»] -> .Idx s, normalize_wrap;
 ///
 /// ### %core.div
 ///
