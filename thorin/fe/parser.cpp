@@ -135,7 +135,10 @@ std::pair<Dbg, bool> Parser::parse_name(std::string_view ctxt) {
     if (auto tok = accept(Tag::M_anx)) return {tok->dbg(), true};
     if (auto tok = accept(Tag::M_id)) return {tok->dbg(), false};
     syntax_err("identifier or extension name", ctxt);
-    return {{prev(), world().sym("<error>")}, false};
+    return {
+        {prev(), world().sym("<error>")},
+        false
+    };
 }
 
 Ref Parser::parse_type_ascr(std::string_view ctxt) {
@@ -540,7 +543,7 @@ Lam* Parser::parse_lam(bool decl) {
 
     if (anx) {
         auto [plugin, _, __] = Axiom::split(world(), dbg.sym);
-        auto p = Axiom::mangle(plugin);
+        auto p               = Axiom::mangle(plugin);
         world().register_annex(*p | (200 << 8), first);
     }
 
