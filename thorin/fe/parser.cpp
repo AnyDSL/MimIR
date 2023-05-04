@@ -131,11 +131,11 @@ Dbg Parser::parse_id(std::string_view ctxt) {
     return {prev(), world().sym("<error>")};
 }
 
-Dbg Parser::parse_name(std::string_view ctxt) {
-    if (auto tok = accept(Tag::M_ext)) return tok->dbg();
-    if (auto tok = accept(Tag::M_id)) return tok->dbg();
+std::pair<Dbg, bool> Parser::parse_name(std::string_view ctxt) {
+    if (auto tok = accept(Tag::M_anx)) return {tok->dbg(), true};
+    if (auto tok = accept(Tag::M_id)) return {tok->dbg(), false};
     syntax_err("identifier or extension name", ctxt);
-    return {prev(), world().sym("<error>")};
+    return {{prev(), world().sym("<error>")}, false};
 }
 
 Ref Parser::parse_type_ascr(std::string_view ctxt) {
@@ -252,7 +252,7 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::L_i:       return lex().lit_i();
         case Tag::K_ins:     return parse_insert_expr();
         case Tag::K_ret:     return parse_ret_expr();
-        case Tag::M_ext:
+        case Tag::M_anx:
         case Tag::M_id:      return scopes_.find(lex().dbg());
         case Tag::M_str:     return world().tuple(lex().sym())->set(prev());
         default:
@@ -425,8 +425,8 @@ Lam* Parser::parse_lam(bool decl) {
     }
     // clang-format on
 
-    auto dbg   = decl ? parse_name(entity) : Dbg{prev(), anonymous_};
-    auto outer = scopes_.curr();
+    auto [dbg, anx] = decl ? parse_name(entity) : std::pair(Dbg{prev(), anonymous_}, false);
+    auto outer      = scopes_.curr();
 
     std::unique_ptr<Ptrn> dom_p;
     scopes_.push();
@@ -537,6 +537,12 @@ Lam* Parser::parse_lam(bool decl) {
     if (decl) expect(Tag::T_semicolon, "end of "s + entity);
 
     first->set(track.loc());
+
+    if (anx) {
+        auto [plugin, _, __] = Axiom::split(world(), dbg.sym);
+        auto p = Axiom::mangle(plugin);
+        world().register_annex(*p | (200 << 8), first);
+    }
 
     scopes_.pop();
     return first;
@@ -754,7 +760,7 @@ Ref Parser::parse_decls(std::string_view ctxt) {
 void Parser::parse_ax_decl() {
     auto track = tracker();
     eat(Tag::K_ax);
-    auto ax                 = expect(Tag::M_ext, "extension name of an axiom");
+    auto ax                 = expect(Tag::M_anx, "extension name of an axiom");
     auto [plugin, tag, sub] = Axiom::split(world(), ax.sym());
     auto&& [info, is_new]   = driver().axiom2info(ax.sym(), plugin, tag, ax.loc());
 
@@ -816,12 +822,14 @@ void Parser::parse_ax_decl() {
     if (new_subs.empty()) {
         auto norm  = driver().normalizer(p, t, 0);
         auto axiom = world().axiom(norm, curry, trip, type, p, t, 0)->set(ax.loc(), ax.sym());
+        world().register_annex(p | (flags_t(t) << 8_u64), axiom);
         scopes_.bind(ax.dbg(), axiom);
     } else {
         for (const auto& sub : new_subs) {
             auto name  = world().sym(*ax.sym() + "."s + *sub.front());
             auto norm  = driver().normalizer(p, t, s);
             auto axiom = world().axiom(norm, curry, trip, type, p, t, s)->set(track.loc(), name);
+            world().register_annex(p | (flags_t(t) << 8_u64) | flags_t(s), axiom);
             for (auto& alias : sub) {
                 auto sym = world().sym(*ax.sym() + "."s + *alias);
                 scopes_.bind({prev(), sym}, axiom);
@@ -837,7 +845,7 @@ void Parser::parse_let_decl() {
     eat(Tag::K_let);
 
     std::variant<std::unique_ptr<Ptrn>, Dbg> name;
-    if (auto tok = accept(Tag::M_ext))
+    if (auto tok = accept(Tag::M_anx))
         name = tok->dbg();
     else
         name = parse_ptrn(Tag::D_paren_l, "binding pattern of a let expression");
@@ -856,9 +864,9 @@ void Parser::parse_let_decl() {
 void Parser::parse_sigma_decl() {
     auto track = tracker();
     eat(Tag::K_Sigma);
-    auto dbg   = parse_name("sigma declaration");
-    auto type  = accept(Tag::T_colon) ? parse_expr("type of a sigma declaration") : world().type();
-    auto arity = std::optional<nat_t>{};
+    auto [dbg, anx] = parse_name("sigma declaration");
+    auto type       = accept(Tag::T_colon) ? parse_expr("type of a sigma declaration") : world().type();
+    auto arity      = std::optional<nat_t>{};
     if (accept(Tag::T_comma)) arity = expect(Tag::L_u, "arity of a mutable Sigma").lit_u();
 
     if (accept(Tag::T_assign)) {
@@ -899,8 +907,8 @@ void Parser::parse_sigma_decl() {
 void Parser::parse_pi_decl() {
     auto track = tracker();
     eat(Tag::K_Pi);
-    auto dbg  = parse_name("pi declaration");
-    auto type = accept(Tag::T_colon) ? parse_expr("type of a pi declaration") : world().type();
+    auto [dbg, anx] = parse_name("pi declaration");
+    auto type       = accept(Tag::T_colon) ? parse_expr("type of a pi declaration") : world().type();
 
     if (accept(Tag::T_assign)) {
         Pi* pi;

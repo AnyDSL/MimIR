@@ -92,6 +92,14 @@ Sym World::sym(const char* s) { return driver().sym(s); }
 Sym World::sym(std::string_view s) { return driver().sym(s); }
 Sym World::sym(std::string s) { return driver().sym(std::move(s)); }
 
+const Def* World::register_annex(flags_t f, const Def* def) {
+    auto plugin = Axiom::demangle(*this, f);
+    if (driver().is_loaded(plugin)) {
+        assert_emplace(move_.annexes, f, def);
+        return def;
+    }
+    return nullptr;
+}
 /*
  * factory methods
  */
