@@ -365,6 +365,19 @@ Ref normalize_bit2(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, callee, {a, b});
 }
 
+Ref normalize_idx(Ref type, Ref c, Ref arg) {
+    auto& world = type->world();
+    auto callee = c->as<App>();
+    if (auto i = Lit::isa(arg)) {
+        if (auto s = Lit::isa(Idx::size(type))) {
+            if (*i < *s) return world.lit_idx(*s, *i);
+            if (auto m = Lit::isa(callee->arg())) return *m ? world.bot(type) : world.lit_idx_mod(*s, *i);
+        }
+    }
+
+    return world.raw_app(type, c, arg);
+}
+
 template<shr id>
 Ref normalize_shr(Ref type, Ref c, Ref arg) {
     auto& world = type->world();

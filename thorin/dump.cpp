@@ -115,10 +115,12 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         return print(os, ".Nat");
     } else if (u->isa<Idx>()) {
         return print(os, ".Idx");
-    } else if (auto bot = u->isa<Bot>()) {
-        return print(os, "⊥:{}", bot->type());
+    } else if (auto ext = u->isa<Ext>()) {
+        auto x = ext->isa<Bot>() ? "⊥" : "⊤";
+        if (ext->type()->isa<Nat>()) return print(os, "{}:{}", x, ext->type());
+        return print(os, "{}:({})", x, ext->type());
     } else if (auto top = u->isa<Top>()) {
-        return print(os, "⊤:{}", top->type());
+        return print(os, "⊤:({})", top->type());
     } else if (auto axiom = u->isa<Axiom>()) {
         const auto name = axiom->sym();
         return print(os, "{}{}", name[0] == '%' ? "" : "%", name);
