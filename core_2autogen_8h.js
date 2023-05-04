@@ -82,6 +82,7 @@ var core_2autogen_8h =
       [ "XYGLE", "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6a8a869d0d1e0551d63fbaa835a8c5ca6b", null ],
       [ "t", "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6a2cd637f8af229640a38fe0daff901035", null ]
     ] ],
+    [ "idx", "core_2autogen_8h.html#a8f566cd97a467a213d96fa7a288c9ec7", null ],
     [ "nat", "core_2autogen_8h.html#a3102b1c3eb691e8bc7ac034dece1a92d", [
       [ "add", "core_2autogen_8h.html#ab1f42e21a4de8bd328e18b8006b9f74fa2417b496d526d2ad5b184798d2938924", null ],
       [ "mul", "core_2autogen_8h.html#ab1f42e21a4de8bd328e18b8006b9f74fa91608a3e04d4c29b574a36a550594d56", null ]
@@ -130,6 +131,7 @@ var core_2autogen_8h =
     [ "normalize_conv", "core_2autogen_8h.html#ab066c49453efb651a96eb6b077fbdc40", null ],
     [ "normalize_div", "core_2autogen_8h.html#a6bf3708433f042b01aaa3664e0cbbb43", null ],
     [ "normalize_icmp", "core_2autogen_8h.html#a72af36a9630f0c9843a6513fb2e46352", null ],
+    [ "normalize_idx", "core_2autogen_8h.html#adb50bfe5aa0912ebea4b9d3dc2be6a96", null ],
     [ "normalize_nat", "core_2autogen_8h.html#a58ec95ed7b754d9d52ee1f70432ca38b", null ],
     [ "normalize_ncmp", "core_2autogen_8h.html#a17687eab6b687d022fcb663fd8276045", null ],
     [ "normalize_pe", "core_2autogen_8h.html#a5608a720b60bf74c361fe4b2d0e92166", null ],

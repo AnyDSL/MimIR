@@ -8,6 +8,7 @@ var core_2normalizers_8cpp =
     [ "normalize_conv", "core_2normalizers_8cpp.html#ab066c49453efb651a96eb6b077fbdc40", null ],
     [ "normalize_div", "core_2normalizers_8cpp.html#a6bf3708433f042b01aaa3664e0cbbb43", null ],
     [ "normalize_icmp", "core_2normalizers_8cpp.html#a72af36a9630f0c9843a6513fb2e46352", null ],
+    [ "normalize_idx", "core_2normalizers_8cpp.html#adb50bfe5aa0912ebea4b9d3dc2be6a96", null ],
     [ "normalize_nat", "core_2normalizers_8cpp.html#a58ec95ed7b754d9d52ee1f70432ca38b", null ],
     [ "normalize_ncmp", "core_2normalizers_8cpp.html#a17687eab6b687d022fcb663fd8276045", null ],
     [ "normalize_pe", "core_2normalizers_8cpp.html#a5608a720b60bf74c361fe4b2d0e92166", null ],

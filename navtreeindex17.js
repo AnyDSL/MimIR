@@ -1,5 +1,8 @@
 var NAVTREEINDEX17 =
 {
+"math_8h.html#a024f494df950b4312faf11037c62ea2f":[6,0,2,7,1,3],
+"math_8h.html#a0720c335cebf20be41bf7155a54e53d8":[6,0,2,7,1,5],
+"math_8h.html#a1509dad25b104f8832d208e2585236ab":[6,0,2,7,1,23],
 "math_8h.html#a18b694cb90515d282f46b45201c5f917":[6,0,2,7,1,27],
 "math_8h.html#a1ed6aac0eaf04b293f0a89c066213349":[6,0,2,7,1,31],
 "math_8h.html#a27aa82675ad3fa0de81880efb6fd3b93":[6,0,2,7,1,30],
@@ -155,15 +158,15 @@ var NAVTREEINDEX17 =
 "mem_8h.html#adbc5b4c8c36dda6c9bb88afebf54ecfe":[6,0,2,9,3,12],
 "mem_8h.html#afd9c95a269d3c893c8fe1ae2dbfa1e59":[6,0,2,9,3,20],
 "mem_8h_source.html":[6,0,2,9,3],
-"namespacemembers.html":[3,1,0,0],
 "namespacemembers.html":[3,1,0],
+"namespacemembers.html":[3,1,0,0],
 "namespacemembers_b.html":[3,1,0,1],
 "namespacemembers_c.html":[3,1,0,2],
 "namespacemembers_d.html":[3,1,0,3],
 "namespacemembers_e.html":[3,1,0,4],
 "namespacemembers_enum.html":[3,1,4],
-"namespacemembers_eval.html":[3,1,5,0],
 "namespacemembers_eval.html":[3,1,5],
+"namespacemembers_eval.html":[3,1,5,0],
 "namespacemembers_eval_b.html":[3,1,5,1],
 "namespacemembers_eval_c.html":[3,1,5,2],
 "namespacemembers_eval_d.html":[3,1,5,3],
@@ -186,8 +189,8 @@ var NAVTREEINDEX17 =
 "namespacemembers_eval_v.html":[3,1,5,20],
 "namespacemembers_eval_x.html":[3,1,5,21],
 "namespacemembers_f.html":[3,1,0,5],
-"namespacemembers_func.html":[3,1,1],
 "namespacemembers_func.html":[3,1,1,0],
+"namespacemembers_func.html":[3,1,1],
 "namespacemembers_func_b.html":[3,1,1,1],
 "namespacemembers_func_c.html":[3,1,1,2],
 "namespacemembers_func_d.html":[3,1,1,3],
@@ -246,8 +249,5 @@ var NAVTREEINDEX17 =
 "namespacethorin.html#a15ce090292f7ca88b828d15baf109838":[3,0,0,168],
 "namespacethorin.html#a1a324749256f48b50d45d8eade7b3a27":[3,0,0,278],
 "namespacethorin.html#a1c686b5d4a914909b3433cae517ec294":[3,0,0,129],
-"namespacethorin.html#a1de4d5b631f17319d8e0fa712800fa14":[3,0,0,203],
-"namespacethorin.html#a1e961804cf2964efea4388ebe218f496":[3,0,0,286],
-"namespacethorin.html#a1fb0aa15b4f666015b8571bbac5a6d29":[3,0,0,256],
-"namespacethorin.html#a201860e453c60bc560e1db118924e35a":[3,0,0,304]
+"namespacethorin.html#a1de4d5b631f17319d8e0fa712800fa14":[3,0,0,203]
 };

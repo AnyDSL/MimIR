@@ -87,6 +87,7 @@ var namespacethorin =
         [ "XYGLE", "namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a8a869d0d1e0551d63fbaa835a8c5ca6b", null ],
         [ "t", "namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2cd637f8af229640a38fe0daff901035", null ]
       ] ],
+      [ "idx", "namespacethorin_1_1core.html#a8f566cd97a467a213d96fa7a288c9ec7", null ],
       [ "Mode", "namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493", [
         [ "none", "namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493a334c4a4c42fdb79d7ebc3e73b517e6f8", null ],
         [ "nsw", "namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493ac3768fe04ce22117d45f8d401c628de3", null ],
@@ -148,6 +149,7 @@ var namespacethorin =
       [ "normalize_conv", "namespacethorin_1_1core.html#ab066c49453efb651a96eb6b077fbdc40", null ],
       [ "normalize_div", "namespacethorin_1_1core.html#a6bf3708433f042b01aaa3664e0cbbb43", null ],
       [ "normalize_icmp", "namespacethorin_1_1core.html#a72af36a9630f0c9843a6513fb2e46352", null ],
+      [ "normalize_idx", "namespacethorin_1_1core.html#adb50bfe5aa0912ebea4b9d3dc2be6a96", null ],
       [ "normalize_nat", "namespacethorin_1_1core.html#a58ec95ed7b754d9d52ee1f70432ca38b", null ],
       [ "normalize_ncmp", "namespacethorin_1_1core.html#a17687eab6b687d022fcb663fd8276045", null ],
       [ "normalize_pe", "namespacethorin_1_1core.html#a5608a720b60bf74c361fe4b2d0e92166", null ],
