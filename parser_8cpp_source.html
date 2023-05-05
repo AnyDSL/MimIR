@@ -865,93 +865,92 @@ $(document).ready(function(){initNavTree('parser_8cpp_source.html',''); initResi
 <div class="line"><a id="l00750" name="l00750"></a><span class="lineno">  750</span>        <span class="keywordflow">if</span> (first == <span class="keyword">nullptr</span>) {</div>
 <div class="line"><a id="l00751" name="l00751"></a><span class="lineno">  751</span>            <a class="code hl_function" href="namespacethorin_1_1utf8.html#a30e913f3fce1e8c99a655cf021910bf7">first</a> = lam;</div>
 <div class="line"><a id="l00752" name="l00752"></a><span class="lineno">  752</span>            lam-&gt;set(<a class="code hl_enumeration" href="namespacethorin_1_1refly.html#ac062d21f6636a7927391d6c70c40ce70">dbg</a>.sym);</div>
-<div class="line"><a id="l00753" name="l00753"></a><span class="lineno">  753</span>            <span class="keywordflow">if</span> (external) <a class="code hl_function" href="namespacethorin_1_1utf8.html#a30e913f3fce1e8c99a655cf021910bf7">first</a>-&gt;make_external();</div>
-<div class="line"><a id="l00754" name="l00754"></a><span class="lineno">  754</span>        }</div>
-<div class="line"><a id="l00755" name="l00755"></a><span class="lineno">  755</span> </div>
-<div class="line"><a id="l00756" name="l00756"></a><span class="lineno">  756</span>        dom_p-&gt;bind(scopes_, lam_var);</div>
-<div class="line"><a id="l00757" name="l00757"></a><span class="lineno">  757</span> </div>
-<div class="line"><a id="l00758" name="l00758"></a><span class="lineno">  758</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> tok = accept(Tag::T_at)) {</div>
-<div class="line"><a id="l00759" name="l00759"></a><span class="lineno">  759</span>            <span class="keywordflow">if</span> (filter) <a class="code hl_function" href="namespacethorin.html#a1de4d5b631f17319d8e0fa712800fa14">error</a>(tok-&gt;loc(), <span class="stringliteral">&quot;filter already specified via &#39;!&#39;&quot;</span>);</div>
-<div class="line"><a id="l00760" name="l00760"></a><span class="lineno">  760</span>            <span class="keywordflow">if</span> (accept(Tag::T_at)) {</div>
-<div class="line"><a id="l00761" name="l00761"></a><span class="lineno">  761</span>                filter = <a class="code hl_function" href="classthorin_1_1fe_1_1Parser.html#a23b9b67be0d4349543916eba8db1a585">world</a>().<a class="code hl_function" href="classthorin_1_1World.html#ab657c8004ea1ef1da768ba7a50e2cf88">lit_tt</a>();</div>
-<div class="line"><a id="l00762" name="l00762"></a><span class="lineno">  762</span>            } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00763" name="l00763"></a><span class="lineno">  763</span>                expect(Tag::D_paren_l, <span class="stringliteral">&quot;opening parenthesis of a filter&quot;</span>);</div>
-<div class="line"><a id="l00764" name="l00764"></a><span class="lineno">  764</span>                filter = parse_expr(<span class="stringliteral">&quot;filter&quot;</span>);</div>
-<div class="line"><a id="l00765" name="l00765"></a><span class="lineno">  765</span>                expect(Tag::D_paren_r, <span class="stringliteral">&quot;closing parenthesis of a filter&quot;</span>);</div>
-<div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span>            }</div>
-<div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span>        }</div>
-<div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span> </div>
-<div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span>        funs.emplace_back(std::tuple(pi, lam, filter));</div>
-<div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span>    } <span class="keywordflow">while</span> (!ahead().isa(Tag::T_arrow) &amp;&amp; !ahead().isa(Tag::T_assign) &amp;&amp;</div>
-<div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span>             !ahead().isa(Tag::T_semicolon));</div>
-<div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span> </div>
-<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span>    <span class="keyword">auto</span> codom = is_cn                     ? <a class="code hl_function" href="classthorin_1_1fe_1_1Parser.html#a23b9b67be0d4349543916eba8db1a585">world</a>().<a class="code hl_function" href="classthorin_1_1World.html#aa705d360459ea5c30634a1e3e582ab18">type_bot</a>()</div>
-<div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span>               : accept(Tag::T_arrow) ? parse_expr(<span class="stringliteral">&quot;return type of a lambda&quot;</span>, Tok::Prec::Arrow)</div>
-<div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span>                                           : <a class="code hl_function" href="classthorin_1_1fe_1_1Parser.html#a23b9b67be0d4349543916eba8db1a585">world</a>().mut_infer_type();</div>
-<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> [pi, lam, _] : funs | std::ranges::views::reverse) {</div>
-<div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span>        <span class="comment">// First, connect old codom to lam. Otherwise, scope will not find it.</span></div>
-<div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span>        pi-&gt;set_codom(codom);</div>
-<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span>        Scope scope(lam);</div>
-<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span>        ScopeRewriter rw(<a class="code hl_function" href="classthorin_1_1fe_1_1Parser.html#a23b9b67be0d4349543916eba8db1a585">world</a>(), scope);</div>
-<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span>        rw.map(lam-&gt;var(), pi-&gt;var()-&gt;set(lam-&gt;var()-&gt;dbg()));</div>
-<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span> </div>
-<div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span>        <span class="comment">// Now update.</span></div>
-<div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span>        <span class="keyword">auto</span> dom = pi-&gt;dom();</div>
-<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span>        codom    = rw.rewrite(codom);</div>
-<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span>        pi-&gt;reset({dom, codom});</div>
-<div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span>        codom = pi;</div>
-<div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span>    }</div>
-<div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span> </div>
-<div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span>    scopes_.<a class="code hl_function" href="classthorin_1_1fe_1_1Scopes.html#a5aef029ca3a34a295a5911a1d1422ba1">bind</a>(outer, dbg, first);</div>
-<div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span> </div>
-<div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span>    <span class="keyword">auto</span> body = accept(Tag::T_assign) ? parse_decls(<span class="stringliteral">&quot;body of a lambda&quot;</span>) : nullptr;</div>
-<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span>    <span class="keywordflow">if</span> (!body) {</div>
-<div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span>        <span class="keywordflow">if</span> (!decl) <a class="code hl_function" href="namespacethorin.html#a1de4d5b631f17319d8e0fa712800fa14">error</a>(prev(), <span class="stringliteral">&quot;body of a lambda expression is mandatory&quot;</span>);</div>
-<div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> [_, __, filter] = funs.back(); filter) <a class="code hl_function" href="namespacethorin.html#a1de4d5b631f17319d8e0fa712800fa14">error</a>(prev(), <span class="stringliteral">&quot;cannot specify filter of a lambda declaration&quot;</span>);</div>
-<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span>    }</div>
-<div class="line"><a id="l00797" name="l00797"></a><span class="lineno">  797</span> </div>
-<div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> [_, lam, filter] : funs | std::ranges::views::reverse) {</div>
-<div class="line"><a id="l00799" name="l00799"></a><span class="lineno">  799</span>        <span class="keywordflow">if</span> (body) lam-&gt;set(filter ? filter : <a class="code hl_function" href="classthorin_1_1fe_1_1Parser.html#a23b9b67be0d4349543916eba8db1a585">world</a>().lit_ff(), body);</div>
-<div class="line"><a id="l00800" name="l00800"></a><span class="lineno">  800</span>        body = lam;</div>
-<div class="line"><a id="l00801" name="l00801"></a><span class="lineno">  801</span>    }</div>
-<div class="line"><a id="l00802" name="l00802"></a><span class="lineno">  802</span> </div>
-<div class="line"><a id="l00803" name="l00803"></a><span class="lineno">  803</span>    <span class="keywordflow">if</span> (decl) expect(Tag::T_semicolon, <span class="stringliteral">&quot;end of lambda&quot;</span>);</div>
-<div class="line"><a id="l00804" name="l00804"></a><span class="lineno">  804</span> </div>
-<div class="line"><a id="l00805" name="l00805"></a><span class="lineno">  805</span>    <a class="code hl_function" href="namespacethorin_1_1utf8.html#a30e913f3fce1e8c99a655cf021910bf7">first</a>-&gt;set(track.loc());</div>
-<div class="line"><a id="l00806" name="l00806"></a><span class="lineno">  806</span> </div>
-<div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span>    scopes_.<a class="code hl_function" href="classthorin_1_1fe_1_1Scopes.html#ab60385d699a5a71d9bdeefb40afe839b">pop</a>();</div>
-<div class="line"><a id="l00808" name="l00808"></a><span class="lineno">  808</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="namespacethorin_1_1utf8.html#a30e913f3fce1e8c99a655cf021910bf7">first</a>;</div>
-<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span>}</div>
-<div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span> </div>
-<div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span><span class="keywordtype">void</span> Parser::parse_def(Dbg dbg <span class="comment">/*= {}*/</span>) {</div>
-<div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>    <span class="keywordflow">if</span> (!<a class="code hl_enumeration" href="namespacethorin_1_1refly.html#ac062d21f6636a7927391d6c70c40ce70">dbg</a>.sym) {</div>
-<div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span>        eat(Tag::K_def);</div>
-<div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span>        <a class="code hl_enumeration" href="namespacethorin_1_1refly.html#ac062d21f6636a7927391d6c70c40ce70">dbg</a> = parse_sym(<span class="stringliteral">&quot;mutable definition&quot;</span>);</div>
-<div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span>    }</div>
-<div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span> </div>
-<div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span>    <span class="keyword">auto</span> mut = scopes_.<a class="code hl_function" href="classthorin_1_1fe_1_1Scopes.html#a724efe05900c16b286ce5492e205e85d">find</a>(dbg)-&gt;<a class="code hl_function" href="classthorin_1_1Def.html#af11b2eb1d65239b9e9f5ca1920742ddb">as_mut</a>();</div>
-<div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span>    expect(Tag::T_assign, <span class="stringliteral">&quot;mutable definition&quot;</span>);</div>
-<div class="line"><a id="l00819" name="l00819"></a><span class="lineno">  819</span> </div>
-<div class="line"><a id="l00820" name="l00820"></a><span class="lineno">  820</span>    <span class="keywordtype">size_t</span> i = mut-&gt;isa&lt;<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a5f71ccf180cb6f7fb169c8632cc66912">Arr</a>, <a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023acc524d86ec74bf18ee3f5a5ec4d36b6d">Pi</a>&gt;() ? 1 : 0; <span class="comment">// first dependend op</span></div>
-<div class="line"><a id="l00821" name="l00821"></a><span class="lineno">  821</span>    <span class="keywordtype">size_t</span> n = mut-&gt;num_ops();</div>
-<div class="line"><a id="l00822" name="l00822"></a><span class="lineno">  822</span> </div>
-<div class="line"><a id="l00823" name="l00823"></a><span class="lineno">  823</span>    <span class="keywordflow">if</span> (ahead().<a class="code hl_function" href="classthorin_1_1fe_1_1Tok.html#a24090cbe5e4bc59caa86ba90ea02c44c">isa</a>(Tag::D_brace_l)) {</div>
-<div class="line"><a id="l00824" name="l00824"></a><span class="lineno">  824</span>        scopes_.<a class="code hl_function" href="classthorin_1_1fe_1_1Scopes.html#a296a055b0407e4412e0581ad04e67942">push</a>();</div>
-<div class="line"><a id="l00825" name="l00825"></a><span class="lineno">  825</span>        parse_list(<span class="stringliteral">&quot;mutable definition&quot;</span>, Tag::D_brace_l, [&amp;]() {</div>
-<div class="line"><a id="l00826" name="l00826"></a><span class="lineno">  826</span>            <span class="keywordflow">if</span> (i == n) <a class="code hl_function" href="namespacethorin.html#a1de4d5b631f17319d8e0fa712800fa14">error</a>(prev(), <span class="stringliteral">&quot;too many operands&quot;</span>);</div>
-<div class="line"><a id="l00827" name="l00827"></a><span class="lineno">  827</span>            mut-&gt;set(i++, parse_decls(<span class="stringliteral">&quot;operand of a mutable&quot;</span>));</div>
-<div class="line"><a id="l00828" name="l00828"></a><span class="lineno">  828</span>        });</div>
-<div class="line"><a id="l00829" name="l00829"></a><span class="lineno">  829</span>        scopes_.<a class="code hl_function" href="classthorin_1_1fe_1_1Scopes.html#ab60385d699a5a71d9bdeefb40afe839b">pop</a>();</div>
-<div class="line"><a id="l00830" name="l00830"></a><span class="lineno">  830</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (n - i == 1) {</div>
-<div class="line"><a id="l00831" name="l00831"></a><span class="lineno">  831</span>        mut-&gt;set(i, parse_decls(<span class="stringliteral">&quot;operand of a mutable&quot;</span>));</div>
-<div class="line"><a id="l00832" name="l00832"></a><span class="lineno">  832</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00833" name="l00833"></a><span class="lineno">  833</span>        <a class="code hl_function" href="namespacethorin.html#a1de4d5b631f17319d8e0fa712800fa14">error</a>(prev(), <span class="stringliteral">&quot;expected operands for mutable definition&quot;</span>);</div>
-<div class="line"><a id="l00834" name="l00834"></a><span class="lineno">  834</span>    }</div>
-<div class="line"><a id="l00835" name="l00835"></a><span class="lineno">  835</span> </div>
-<div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span>    expect(Tag::T_semicolon, <span class="stringliteral">&quot;end of a mutable definition&quot;</span>);</div>
-<div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span>}</div>
-<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span> </div>
-<div class="line"><a id="l00839" name="l00839"></a><span class="lineno">  839</span>} <span class="comment">// namespace thorin::fe</span></div>
+<div class="line"><a id="l00753" name="l00753"></a><span class="lineno">  753</span>        }</div>
+<div class="line"><a id="l00754" name="l00754"></a><span class="lineno">  754</span> </div>
+<div class="line"><a id="l00755" name="l00755"></a><span class="lineno">  755</span>        dom_p-&gt;bind(scopes_, lam_var);</div>
+<div class="line"><a id="l00756" name="l00756"></a><span class="lineno">  756</span> </div>
+<div class="line"><a id="l00757" name="l00757"></a><span class="lineno">  757</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> tok = accept(Tag::T_at)) {</div>
+<div class="line"><a id="l00758" name="l00758"></a><span class="lineno">  758</span>            <span class="keywordflow">if</span> (filter) <a class="code hl_function" href="namespacethorin.html#a1de4d5b631f17319d8e0fa712800fa14">error</a>(tok-&gt;loc(), <span class="stringliteral">&quot;filter already specified via &#39;!&#39;&quot;</span>);</div>
+<div class="line"><a id="l00759" name="l00759"></a><span class="lineno">  759</span>            <span class="keywordflow">if</span> (accept(Tag::T_at)) {</div>
+<div class="line"><a id="l00760" name="l00760"></a><span class="lineno">  760</span>                filter = <a class="code hl_function" href="classthorin_1_1fe_1_1Parser.html#a23b9b67be0d4349543916eba8db1a585">world</a>().<a class="code hl_function" href="classthorin_1_1World.html#ab657c8004ea1ef1da768ba7a50e2cf88">lit_tt</a>();</div>
+<div class="line"><a id="l00761" name="l00761"></a><span class="lineno">  761</span>            } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00762" name="l00762"></a><span class="lineno">  762</span>                expect(Tag::D_paren_l, <span class="stringliteral">&quot;opening parenthesis of a filter&quot;</span>);</div>
+<div class="line"><a id="l00763" name="l00763"></a><span class="lineno">  763</span>                filter = parse_expr(<span class="stringliteral">&quot;filter&quot;</span>);</div>
+<div class="line"><a id="l00764" name="l00764"></a><span class="lineno">  764</span>                expect(Tag::D_paren_r, <span class="stringliteral">&quot;closing parenthesis of a filter&quot;</span>);</div>
+<div class="line"><a id="l00765" name="l00765"></a><span class="lineno">  765</span>            }</div>
+<div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span>        }</div>
+<div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span> </div>
+<div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span>        funs.emplace_back(std::tuple(pi, lam, filter));</div>
+<div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span>    } <span class="keywordflow">while</span> (!ahead().isa(Tag::T_arrow) &amp;&amp; !ahead().isa(Tag::T_assign) &amp;&amp; !ahead().isa(Tag::T_semicolon));</div>
+<div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span> </div>
+<div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span>    <span class="keyword">auto</span> codom = is_cn                ? <a class="code hl_function" href="classthorin_1_1fe_1_1Parser.html#a23b9b67be0d4349543916eba8db1a585">world</a>().<a class="code hl_function" href="classthorin_1_1World.html#aa705d360459ea5c30634a1e3e582ab18">type_bot</a>()</div>
+<div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span>               : accept(Tag::T_arrow) ? parse_expr(<span class="stringliteral">&quot;return type of a lambda&quot;</span>, Tok::Prec::Arrow)</div>
+<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span>                                      : <a class="code hl_function" href="classthorin_1_1fe_1_1Parser.html#a23b9b67be0d4349543916eba8db1a585">world</a>().mut_infer_type();</div>
+<div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> [pi, lam, _] : funs | std::ranges::views::reverse) {</div>
+<div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span>        <span class="comment">// First, connect old codom to lam. Otherwise, scope will not find it.</span></div>
+<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span>        pi-&gt;set_codom(codom);</div>
+<div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span>        Scope scope(lam);</div>
+<div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span>        ScopeRewriter rw(<a class="code hl_function" href="classthorin_1_1fe_1_1Parser.html#a23b9b67be0d4349543916eba8db1a585">world</a>(), scope);</div>
+<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span>        rw.map(lam-&gt;var(), pi-&gt;var()-&gt;set(lam-&gt;var()-&gt;dbg()));</div>
+<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span> </div>
+<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span>        <span class="comment">// Now update.</span></div>
+<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>        <span class="keyword">auto</span> dom = pi-&gt;dom();</div>
+<div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span>        codom    = rw.rewrite(codom);</div>
+<div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span>        pi-&gt;reset({dom, codom});</div>
+<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span>        codom = pi;</div>
+<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span>    }</div>
+<div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span> </div>
+<div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span>    scopes_.<a class="code hl_function" href="classthorin_1_1fe_1_1Scopes.html#a5aef029ca3a34a295a5911a1d1422ba1">bind</a>(outer, dbg, first);</div>
+<div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span>    <span class="keywordflow">if</span> (external) <a class="code hl_function" href="namespacethorin_1_1utf8.html#a30e913f3fce1e8c99a655cf021910bf7">first</a>-&gt;make_external();</div>
+<div class="line"><a id="l00790" name="l00790"></a><span class="lineno">  790</span> </div>
+<div class="line"><a id="l00791" name="l00791"></a><span class="lineno">  791</span>    <span class="keyword">auto</span> body = accept(Tag::T_assign) ? parse_decls(<span class="stringliteral">&quot;body of a lambda&quot;</span>) : nullptr;</div>
+<div class="line"><a id="l00792" name="l00792"></a><span class="lineno">  792</span>    <span class="keywordflow">if</span> (!body) {</div>
+<div class="line"><a id="l00793" name="l00793"></a><span class="lineno">  793</span>        <span class="keywordflow">if</span> (!decl) <a class="code hl_function" href="namespacethorin.html#a1de4d5b631f17319d8e0fa712800fa14">error</a>(prev(), <span class="stringliteral">&quot;body of a lambda expression is mandatory&quot;</span>);</div>
+<div class="line"><a id="l00794" name="l00794"></a><span class="lineno">  794</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> [_, __, filter] = funs.back(); filter) <a class="code hl_function" href="namespacethorin.html#a1de4d5b631f17319d8e0fa712800fa14">error</a>(prev(), <span class="stringliteral">&quot;cannot specify filter of a lambda declaration&quot;</span>);</div>
+<div class="line"><a id="l00795" name="l00795"></a><span class="lineno">  795</span>    }</div>
+<div class="line"><a id="l00796" name="l00796"></a><span class="lineno">  796</span> </div>
+<div class="line"><a id="l00797" name="l00797"></a><span class="lineno">  797</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> [_, lam, filter] : funs | std::ranges::views::reverse) {</div>
+<div class="line"><a id="l00798" name="l00798"></a><span class="lineno">  798</span>        <span class="keywordflow">if</span> (body) lam-&gt;set(filter ? filter : <a class="code hl_function" href="classthorin_1_1fe_1_1Parser.html#a23b9b67be0d4349543916eba8db1a585">world</a>().lit_ff(), body);</div>
+<div class="line"><a id="l00799" name="l00799"></a><span class="lineno">  799</span>        body = lam;</div>
+<div class="line"><a id="l00800" name="l00800"></a><span class="lineno">  800</span>    }</div>
+<div class="line"><a id="l00801" name="l00801"></a><span class="lineno">  801</span> </div>
+<div class="line"><a id="l00802" name="l00802"></a><span class="lineno">  802</span>    <span class="keywordflow">if</span> (decl) expect(Tag::T_semicolon, <span class="stringliteral">&quot;end of lambda&quot;</span>);</div>
+<div class="line"><a id="l00803" name="l00803"></a><span class="lineno">  803</span> </div>
+<div class="line"><a id="l00804" name="l00804"></a><span class="lineno">  804</span>    <a class="code hl_function" href="namespacethorin_1_1utf8.html#a30e913f3fce1e8c99a655cf021910bf7">first</a>-&gt;set(track.loc());</div>
+<div class="line"><a id="l00805" name="l00805"></a><span class="lineno">  805</span> </div>
+<div class="line"><a id="l00806" name="l00806"></a><span class="lineno">  806</span>    scopes_.<a class="code hl_function" href="classthorin_1_1fe_1_1Scopes.html#ab60385d699a5a71d9bdeefb40afe839b">pop</a>();</div>
+<div class="line"><a id="l00807" name="l00807"></a><span class="lineno">  807</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="namespacethorin_1_1utf8.html#a30e913f3fce1e8c99a655cf021910bf7">first</a>;</div>
+<div class="line"><a id="l00808" name="l00808"></a><span class="lineno">  808</span>}</div>
+<div class="line"><a id="l00809" name="l00809"></a><span class="lineno">  809</span> </div>
+<div class="line"><a id="l00810" name="l00810"></a><span class="lineno">  810</span><span class="keywordtype">void</span> Parser::parse_def(Dbg dbg <span class="comment">/*= {}*/</span>) {</div>
+<div class="line"><a id="l00811" name="l00811"></a><span class="lineno">  811</span>    <span class="keywordflow">if</span> (!<a class="code hl_enumeration" href="namespacethorin_1_1refly.html#ac062d21f6636a7927391d6c70c40ce70">dbg</a>.sym) {</div>
+<div class="line"><a id="l00812" name="l00812"></a><span class="lineno">  812</span>        eat(Tag::K_def);</div>
+<div class="line"><a id="l00813" name="l00813"></a><span class="lineno">  813</span>        <a class="code hl_enumeration" href="namespacethorin_1_1refly.html#ac062d21f6636a7927391d6c70c40ce70">dbg</a> = parse_sym(<span class="stringliteral">&quot;mutable definition&quot;</span>);</div>
+<div class="line"><a id="l00814" name="l00814"></a><span class="lineno">  814</span>    }</div>
+<div class="line"><a id="l00815" name="l00815"></a><span class="lineno">  815</span> </div>
+<div class="line"><a id="l00816" name="l00816"></a><span class="lineno">  816</span>    <span class="keyword">auto</span> mut = scopes_.<a class="code hl_function" href="classthorin_1_1fe_1_1Scopes.html#a724efe05900c16b286ce5492e205e85d">find</a>(dbg)-&gt;<a class="code hl_function" href="classthorin_1_1Def.html#af11b2eb1d65239b9e9f5ca1920742ddb">as_mut</a>();</div>
+<div class="line"><a id="l00817" name="l00817"></a><span class="lineno">  817</span>    expect(Tag::T_assign, <span class="stringliteral">&quot;mutable definition&quot;</span>);</div>
+<div class="line"><a id="l00818" name="l00818"></a><span class="lineno">  818</span> </div>
+<div class="line"><a id="l00819" name="l00819"></a><span class="lineno">  819</span>    <span class="keywordtype">size_t</span> i = mut-&gt;isa&lt;<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a5f71ccf180cb6f7fb169c8632cc66912">Arr</a>, <a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023acc524d86ec74bf18ee3f5a5ec4d36b6d">Pi</a>&gt;() ? 1 : 0; <span class="comment">// first dependend op</span></div>
+<div class="line"><a id="l00820" name="l00820"></a><span class="lineno">  820</span>    <span class="keywordtype">size_t</span> n = mut-&gt;num_ops();</div>
+<div class="line"><a id="l00821" name="l00821"></a><span class="lineno">  821</span> </div>
+<div class="line"><a id="l00822" name="l00822"></a><span class="lineno">  822</span>    <span class="keywordflow">if</span> (ahead().<a class="code hl_function" href="classthorin_1_1fe_1_1Tok.html#a24090cbe5e4bc59caa86ba90ea02c44c">isa</a>(Tag::D_brace_l)) {</div>
+<div class="line"><a id="l00823" name="l00823"></a><span class="lineno">  823</span>        scopes_.<a class="code hl_function" href="classthorin_1_1fe_1_1Scopes.html#a296a055b0407e4412e0581ad04e67942">push</a>();</div>
+<div class="line"><a id="l00824" name="l00824"></a><span class="lineno">  824</span>        parse_list(<span class="stringliteral">&quot;mutable definition&quot;</span>, Tag::D_brace_l, [&amp;]() {</div>
+<div class="line"><a id="l00825" name="l00825"></a><span class="lineno">  825</span>            <span class="keywordflow">if</span> (i == n) <a class="code hl_function" href="namespacethorin.html#a1de4d5b631f17319d8e0fa712800fa14">error</a>(prev(), <span class="stringliteral">&quot;too many operands&quot;</span>);</div>
+<div class="line"><a id="l00826" name="l00826"></a><span class="lineno">  826</span>            mut-&gt;set(i++, parse_decls(<span class="stringliteral">&quot;operand of a mutable&quot;</span>));</div>
+<div class="line"><a id="l00827" name="l00827"></a><span class="lineno">  827</span>        });</div>
+<div class="line"><a id="l00828" name="l00828"></a><span class="lineno">  828</span>        scopes_.<a class="code hl_function" href="classthorin_1_1fe_1_1Scopes.html#ab60385d699a5a71d9bdeefb40afe839b">pop</a>();</div>
+<div class="line"><a id="l00829" name="l00829"></a><span class="lineno">  829</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (n - i == 1) {</div>
+<div class="line"><a id="l00830" name="l00830"></a><span class="lineno">  830</span>        mut-&gt;set(i, parse_decls(<span class="stringliteral">&quot;operand of a mutable&quot;</span>));</div>
+<div class="line"><a id="l00831" name="l00831"></a><span class="lineno">  831</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00832" name="l00832"></a><span class="lineno">  832</span>        <a class="code hl_function" href="namespacethorin.html#a1de4d5b631f17319d8e0fa712800fa14">error</a>(prev(), <span class="stringliteral">&quot;expected operands for mutable definition&quot;</span>);</div>
+<div class="line"><a id="l00833" name="l00833"></a><span class="lineno">  833</span>    }</div>
+<div class="line"><a id="l00834" name="l00834"></a><span class="lineno">  834</span> </div>
+<div class="line"><a id="l00835" name="l00835"></a><span class="lineno">  835</span>    expect(Tag::T_semicolon, <span class="stringliteral">&quot;end of a mutable definition&quot;</span>);</div>
+<div class="line"><a id="l00836" name="l00836"></a><span class="lineno">  836</span>}</div>
+<div class="line"><a id="l00837" name="l00837"></a><span class="lineno">  837</span> </div>
+<div class="line"><a id="l00838" name="l00838"></a><span class="lineno">  838</span>} <span class="comment">// namespace thorin::fe</span></div>
 <div class="ttc" id="aarray_8h_html"><div class="ttname"><a href="array_8h.html">array.h</a></div></div>
 <div class="ttc" id="acheck_8h_html"><div class="ttname"><a href="check_8h.html">check.h</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Arr_html_a75e797b30ee19ff42cd7030b129df180"><div class="ttname"><a href="classthorin_1_1Arr.html#a75e797b30ee19ff42cd7030b129df180">thorin::Arr::set_shape</a></div><div class="ttdeci">Arr * set_shape(const Def *shape)</div><div class="ttdef"><b>Definition:</b> <a href="tuple_8h_source.html#l00065">tuple.h:65</a></div></div>
