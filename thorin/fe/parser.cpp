@@ -750,7 +750,6 @@ Lam* Parser::parse_lam(bool decl) {
         if (first == nullptr) {
             first = lam;
             lam->set(dbg.sym);
-            if (external) first->make_external();
         }
 
         dom_p->bind(scopes_, lam_var);
@@ -767,12 +766,11 @@ Lam* Parser::parse_lam(bool decl) {
         }
 
         funs.emplace_back(std::tuple(pi, lam, filter));
-    } while (!ahead().isa(Tag::T_arrow) && !ahead().isa(Tag::T_assign) &&
-             !ahead().isa(Tag::T_semicolon));
+    } while (!ahead().isa(Tag::T_arrow) && !ahead().isa(Tag::T_assign) && !ahead().isa(Tag::T_semicolon));
 
-    auto codom = is_cn                     ? world().type_bot()
+    auto codom = is_cn                ? world().type_bot()
                : accept(Tag::T_arrow) ? parse_expr("return type of a lambda", Tok::Prec::Arrow)
-                                           : world().mut_infer_type();
+                                      : world().mut_infer_type();
     for (auto [pi, lam, _] : funs | std::ranges::views::reverse) {
         // First, connect old codom to lam. Otherwise, scope will not find it.
         pi->set_codom(codom);
@@ -788,6 +786,7 @@ Lam* Parser::parse_lam(bool decl) {
     }
 
     scopes_.bind(outer, dbg, first);
+    if (external) first->make_external();
 
     auto body = accept(Tag::T_assign) ? parse_decls("body of a lambda") : nullptr;
     if (!body) {
