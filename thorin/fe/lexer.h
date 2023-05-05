@@ -42,6 +42,7 @@ private:
     }
 
     Tok tok(Tok::Tag tag) { return {loc(), tag}; }
+    Sym sym();
     bool lex_id();
     char8_t lex_char();
     std::optional<Tok> parse_lit();

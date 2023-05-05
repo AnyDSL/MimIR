@@ -4,25 +4,21 @@
 .plugin core;
 .plugin direct;
 
-.let _32 = 4294967296;
-.let I32 = .Idx _32;
-
 .lam f [n:.Nat, w:.Nat] -> .Cn[.Idx n, .Cn[.Idx n]] = {
     .con f_cont [a:(.Idx n), return: .Cn (.Idx n)] = {
-        .let b = %core.conv.u n (42:(.Idx _32));
+        .let b = %core.conv.u n 42:%core.I32;
         .let c = %core.wrap.add w (a,b);
         return c
     };
     f_cont
 };
 
-.lam U [a:I32] -> * = {
-    I32
+.lam U [a:%core.I32] -> * = {
+    %core.I32
 };
 
-.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return : .Cn [%mem.M, I32]] = {
-    .let n = _32;
-    .let c = %direct.cps2ds_dep (I32,U) (f (n, 0)) (5:(.Idx n));
+.con .extern main [mem : %mem.M, argc : %core.I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, %core.I32]] = {
+    .let c = %direct.cps2ds_dep (%core.I32,U) (f (%core.i32, 0)) 5:%core.I32;
     return (mem, c)
 };
 

@@ -59,7 +59,7 @@ Ref normalize_add(Ref type, Ref callee, Ref arg) {
         world.DLOG("add tuple");
         auto p = sig->num_ops(); // TODO: or num_projs
         DefArray ops(p, [&](size_t i) {
-            return world.app(world.app(world.ax<add>(), sig->op(i)), {a->proj(i), b->proj(i)});
+            return world.app(world.app(world.annex<add>(), sig->op(i)), {a->proj(i), b->proj(i)});
         });
         return world.tuple(ops);
     } else if (auto arr = T->isa<Arr>()) {
@@ -68,7 +68,7 @@ Ref normalize_add(Ref type, Ref callee, Ref arg) {
         auto pack      = world.mut_pack(T);
         auto body_type = arr->body();
         world.DLOG("body type {}", body_type);
-        pack->set(world.app(world.app(world.ax<add>(), body_type),
+        pack->set(world.app(world.app(world.annex<add>(), body_type),
                             {world.extract(a, pack->var()), world.extract(b, pack->var())}));
         world.DLOG("pack {}", pack);
         return pack;
@@ -96,10 +96,10 @@ Ref normalize_sum(Ref type, Ref callee, Ref arg) {
         auto val = lit->get<nat_t>();
         world.DLOG("val: {}", val);
         DefArray args = arg->projs(val);
-        auto sum      = world.app(world.ax<zero>(), T);
+        auto sum      = world.app(world.annex<zero>(), T);
         // This special case would also be handled by add zero
         if (val >= 1) sum = args[0];
-        for (size_t i = 1; i < val; ++i) sum = world.app(world.app(world.ax<add>(), T), {sum, args[i]});
+        for (size_t i = 1; i < val; ++i) sum = world.app(world.app(world.annex<add>(), T), {sum, args[i]});
         return sum;
     }
     assert(0);

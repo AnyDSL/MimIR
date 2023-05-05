@@ -223,14 +223,14 @@ TEST(RestrictedDependentTypes, ll) {
     auto parser = fe::Parser(w);
     for (auto plugin : {"compile", "mem", "core", "math"}) parser.plugin(plugin);
 
-    auto mem_t  = mem::type_mem(w);
+    auto mem_t  = w.annex<mem::M>();
     auto i32_t  = w.type_int(32);
     auto argv_t = mem::type_ptr(mem::type_ptr(i32_t));
 
     // Cn [mem, i32, ptr(ptr(i32, 0), 0) Cn [mem, i32]]
     auto main_t = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})});
     auto main   = w.mut_lam(main_t)->set("main");
-    main->make_external();
+    main->make_external(true);
 
     auto R = w.axiom(w.type())->set("R");
     auto W = w.axiom(w.type())->set("W");

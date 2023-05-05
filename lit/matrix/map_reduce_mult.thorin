@@ -4,11 +4,9 @@
 .plugin core;
 .plugin matrix;
 
-.let _32 = 4294967296;
-.let I32 = .Idx _32;
 // .let MT = (2, (2,4), I32);
 
-.con inner_fun [[mem:%mem.M, acc:I32, [a:I32, b:I32]], ret:.Cn[%mem.M,I32]] = {
+.con inner_fun [[mem:%mem.M, acc:%core.I32, [a:%core.I32, b:%core.I32]], ret:.Cn[%mem.M,%core.I32]] = {
     .let v = %core.wrap.mul 0 (a,b);
 
     // reduce op = addition
@@ -19,22 +17,22 @@
 
 .con .extern f [mem : %mem.M, 
     [k:.Nat, l:.Nat, m:.Nat],
-    M:%matrix.Mat (2,(k,m),I32),
-    N:%matrix.Mat (2,(m,l),I32),
-    return: .Cn[%mem.M, %matrix.Mat (2,(k,l),I32)]] = {
+    M:%matrix.Mat (2,(k,m),%core.I32),
+    N:%matrix.Mat (2,(m,l),%core.I32),
+    return: .Cn[%mem.M, %matrix.Mat (2,(k,l),%core.I32)]] = {
 
-    // .let (mem2, MN) = %matrix.constMat (2,(k,l),I32) (mem, 0:I32);
+    // .let (mem2, MN) = %matrix.constMat (2,(k,l),%core.I32) (mem, 0:%core.I32);
     .let (mem2,MN) = %matrix.map_reduce
         (
-            2, (k,l), I32,
+            2, (k,l), %core.I32,
             2,
             (2,2),
-            (I32,I32),
+            (%core.I32,%core.I32),
             ((k,m),(m,l))
         )
         (
             mem,
-            0:I32,
+            0:%core.I32,
             inner_fun,
             (
                 ((0,2),M),

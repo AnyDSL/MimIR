@@ -66,6 +66,7 @@ World::World(Driver* driver, const State& state)
     data_.top_nat     = insert<Top>(0, type_nat());
     data_.lit_nat_0   = lit_nat(0);
     data_.lit_nat_1   = lit_nat(1);
+    data_.lit_0_1     = lit_idx(1, 0);
     data_.type_bool   = type_idx(2);
     data_.lit_bool[0] = lit_idx(2, 0_u64);
     data_.lit_bool[1] = lit_idx(2, 1_u64);
@@ -138,6 +139,16 @@ Ref World::umax(DefArray ops) {
     auto ldef = lvl == level_t(-1) ? (const Def*)unify<UMax>(ops.size(), *this, ops) : lit_univ(lvl);
     std::ranges::sort(ops, [](auto op1, auto op2) { return op1->gid() < op2->gid(); });
     return sort == Sort::Univ ? ldef : type(ldef);
+}
+
+// TODO more thorough & consistent checks for singleton types
+
+Ref World::var(Ref type, Def* mut) {
+    if (auto s = Idx::size(type)) {
+        if (auto l = Lit::isa(s); l && l == 1) return lit_0_1();
+    }
+
+    return unify<Var>(1, type, mut);
 }
 
 Ref World::iapp(Ref callee, Ref arg) {
@@ -280,12 +291,19 @@ Ref World::extract(Ref d, Ref index) {
     Ref size = Idx::size(index->type());
     Ref type = d->unfold_type();
 
-    // mut sigmas can be 1-tuples
-    if (auto l = Lit::isa(size); l && *l == 1 && !d->type()->isa_mut<Sigma>()) return d;
+    if (auto l = Lit::isa(size); l && *l == 1) {
+        if (auto l = Lit::isa(index); !l || *l != 0) WLOG("unknown Idx of size 1: {}", index);
+        if (auto sigma = type->isa_mut<Sigma>(); sigma && sigma->num_ops() == 1) {
+            // mut sigmas can be 1-tuples; TODO mutables Arr?
+        } else {
+            return d;
+        }
+    }
+
     if (auto pack = d->isa_imm<Pack>()) return pack->body();
 
     if (!checker().equiv(type->arity(), size))
-        error(index, "index '{}' does not fit within arity '{}'", type->arity(), index);
+        error(index, "index '{}' does not fit within arity '{}'", index, type->arity());
 
     // extract(insert(x, index, val), index) -> val
     if (auto insert = d->isa<Insert>()) {
@@ -326,7 +344,7 @@ Ref World::insert(Ref d, Ref index, Ref val) {
     auto size = Idx::size(index->type());
 
     if (!checker().equiv(type->arity(), size))
-        error(index, "index '{}' does not fit within arity '{}'", type->arity(), index);
+        error(index, "index '{}' does not fit within arity '{}'", index, type->arity());
 
     if (auto index_lit = Lit::isa(index)) {
         auto target_type = type->proj(*index_lit);

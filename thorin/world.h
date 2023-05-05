@@ -149,21 +149,20 @@ public:
 
     /// @name Manage Nodes
     ///@{
-    const auto& axioms() const { return move_.axioms; }
+    const auto& annexes() const { return move_.annexes; }
     const auto& externals() const { return move_.externals; }
     bool empty() { return move_.externals.empty(); }
-    void make_external(Def* def) {
-        assert(!def->external_);
-        def->external_ = true;
-        assert_emplace(move_.externals, def->sym(), def);
+    void make_external(Def* def, bool on) {
+        assert(!def->external_ == on);
+        def->external_ = on;
+        if (on)
+            assert_emplace(move_.externals, def->sym(), def);
+        else {
+            auto num = move_.externals.erase(def->sym());
+            assert(num == 1);
+        }
     }
-    void make_internal(Def* def) {
-        assert(def->external_);
-        def->external_ = false;
-        auto num       = move_.externals.erase(def->sym());
-        assert(num == 1);
-    }
-    Def* lookup(Sym name) { return thorin::lookup(move_.externals, name); }
+    Def* external(Sym name) { return thorin::lookup(move_.externals, name); }
     ///@}
 
     /// @name Univ, Type, Var, Proxy, Infer
@@ -183,7 +182,7 @@ public:
         else
             return type(lit_univ(level));
     }
-    const Var* var(Ref type, Def* mut) { return unify<Var>(1, type, mut); }
+    Ref var(Ref type, Def* mut);
     const Proxy* proxy(Ref type, Defs ops, u32 index, u32 tag) {
         return unify<Proxy>(ops.size(), type, ops, index, tag);
     }
@@ -204,8 +203,9 @@ public:
     /// @name Axiom
     ///@{
     const Axiom* axiom(NormalizeFn n, u8 curry, u8 trip, Ref type, plugin_t p, tag_t t, sub_t s) {
-        auto ax                          = unify<Axiom>(0, n, curry, trip, type, p, t, s);
-        return move_.axioms[ax->flags()] = ax;
+        auto ax                    = unify<Axiom>(0, n, curry, trip, type, p, t, s);
+        move_.annexes[ax->flags()] = ax;
+        return ax;
     }
     const Axiom* axiom(Ref type, plugin_t p, tag_t t, sub_t s) { return axiom(nullptr, 0, 0, type, p, t, s); }
 
@@ -218,21 +218,21 @@ public:
     }
     const Axiom* axiom(Ref type) { return axiom(nullptr, 0, 0, type); } ///< See above.
 
-    /// Get Axiom from a plugin.
-    /// Use this to get an Axiom via Axiom::id.
+    /// Get annex from a plugin.
+    /// Use this to get an annex via Axiom::id.
     template<class Id>
-    const Axiom* ax(Id id) {
+    const Def* annex(Id id) {
         u64 flags = static_cast<u64>(id);
-        if (auto i = move_.axioms.find(flags); i != move_.axioms.end()) return i->second;
+        if (auto i = move_.annexes.find(flags); i != move_.annexes.end()) return i->second;
         error("Axiom with ID '{}' not found; demangled plugin name is '{}'", flags, Axiom::demangle(*this, flags));
     }
 
     /// Get Axiom from a plugin.
     /// Can be used to get an Axiom without sub-tags.
-    /// E.g. use `w.ax<mem::M>();` to get the `%mem.M` Axiom.
+    /// E.g. use `w.annex<mem::M>();` to get the `%mem.M` Axiom.
     template<axiom_without_subs id>
-    const Axiom* ax() {
-        return ax(Axiom::Base<id>);
+    const Def* annex() {
+        return annex(Axiom::Base<id>);
     }
     ///@}
 
@@ -351,6 +351,7 @@ public:
     const Lit* lit_nat_0() { return data_.lit_nat_0; }
     const Lit* lit_nat_1() { return data_.lit_nat_1; }
     const Lit* lit_nat_max() { return data_.lit_nat_max; }
+    const Lit* lit_0_1() { return data_.lit_0_1; }
     /// Constructs a Lit of type Idx of size @p size.
     /// @note `size = 0` means `2^64`.
     const Lit* lit_idx(nat_t size, u64 val) { return lit(type_idx(size), val); }
@@ -440,8 +441,8 @@ public:
     }
 
     // clang-format off
-    template<class Id, class... Args> const Def* call(Id id, Args&&... args) { return call_(ax(id),   std::forward<Args>(args)...); }
-    template<class Id, class... Args> const Def* call(       Args&&... args) { return call_(ax<Id>(), std::forward<Args>(args)...); }
+    template<class Id, class... Args> const Def* call(Id id, Args&&... args) { return call_(annex(id),   std::forward<Args>(args)...); }
+    template<class Id, class... Args> const Def* call(       Args&&... args) { return call_(annex<Id>(), std::forward<Args>(args)...); }
     template<class T, class... Args> const Def* call_(Ref callee, T arg, Args&&... args) { return call_(iapp(callee, arg), std::forward<Args>(args)...); }
     template<class T> const Def* call_(Ref callee, T arg) { return iapp(callee, arg); }
     // clang-format on
@@ -603,7 +604,7 @@ private:
         Move(World&);
 
         std::unique_ptr<Checker> checker;
-        absl::btree_map<u64, const Axiom*> axioms;
+        absl::btree_map<u64, const Def*> annexes;
         absl::btree_map<Sym, Def*> externals;
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
         DefDefMap<DefArray> cache;
@@ -612,7 +613,7 @@ private:
             using std::swap;
             // clang-format off
             swap(m1.checker,   m2.checker);
-            swap(m1.axioms,    m2.axioms);
+            swap(m1.annexes,   m2.annexes);
             swap(m1.externals, m2.externals);
             swap(m1.defs,      m2.defs);
             swap(m1.cache,     m2.cache);
@@ -634,12 +635,13 @@ private:
         const Idx* type_idx;
         const Def* table_id;
         const Def* table_not;
-        std::array<const Lit*, 2> lit_bool;
+        const Lit* lit_univ_0;
+        const Lit* lit_univ_1;
         const Lit* lit_nat_0;
         const Lit* lit_nat_1;
         const Lit* lit_nat_max;
-        const Lit* lit_univ_0;
-        const Lit* lit_univ_1;
+        const Lit* lit_0_1;
+        std::array<const Lit*, 2> lit_bool;
         Lam* exit;
     } data_;
 

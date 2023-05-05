@@ -43,7 +43,7 @@ public:
             lam2fscope_[wrapper] = scope(curr_mut());
             wrapper_.emplace(wrapper);
         }
-        return op(a, wrapper);
+        return world().call(a, wrapper);
     }
 
 private:

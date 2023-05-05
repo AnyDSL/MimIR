@@ -652,7 +652,7 @@ Ref normalize_zip(Ref type, Ref c, Ref arg) {
                     if (*lr == 1) {
                         return w.app(f, inner_args);
                     } else {
-                        auto app_zip = w.app(w.ax<zip>(), {w.lit_nat(*lr - 1), w.tuple(shapes.skip_front())});
+                        auto app_zip = w.app(w.annex<zip>(), {w.lit_nat(*lr - 1), w.tuple(shapes.skip_front())});
                         return w.app(w.app(app_zip, is_os), inner_args);
                     }
                 });

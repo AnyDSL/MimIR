@@ -35,8 +35,8 @@ public:
     Sym sym() const { return dbg_.sym; }
     bool rebind() const { return rebind_; }
     bool is_anonymous() const { return sym() == '_'; }
-    virtual void bind(Scopes&, const Def*) const       = 0;
-    virtual const Def* type(World&, Def2Fields&) const = 0;
+    virtual void bind(Scopes&, const Def*, bool rebind = false) const = 0;
+    virtual const Def* type(World&, Def2Fields&) const                = 0;
 
 protected:
     Dbg dbg_;
@@ -51,27 +51,29 @@ public:
     IdPtrn(Dbg dbg, bool rebind, const Def* type)
         : Ptrn(dbg, rebind, type) {}
 
-    void bind(Scopes&, const Def*) const override;
+    void bind(Scopes&, const Def*, bool rebind = false) const override;
     const Def* type(World&, Def2Fields&) const override;
 };
 
 class TuplePtrn : public Ptrn {
 public:
-    TuplePtrn(Dbg dbg, bool rebind, Ptrns&& ptrns, const Def* type, std::vector<Infer*>&& infers)
+    TuplePtrn(Dbg dbg, bool rebind, Ptrns&& ptrns, const Def* type, std::vector<Infer*>&& infers, Def* decl)
         : Ptrn(dbg, rebind, type)
         , ptrns_(std::move(ptrns))
-        , infers_(std::move(infers)) {}
+        , infers_(std::move(infers))
+        , decl_(decl) {}
 
     const Ptrns& ptrns() const { return ptrns_; }
     const Ptrn* ptrn(size_t i) const { return ptrns_[i].get(); }
     size_t num_ptrns() const { return ptrns().size(); }
 
-    void bind(Scopes&, const Def*) const override;
+    void bind(Scopes&, const Def*, bool rebind = false) const override;
     const Def* type(World&, Def2Fields&) const override;
 
 private:
     Ptrns ptrns_;
     std::vector<Infer*> infers_;
+    Def* decl_ = nullptr;
 };
 
 } // namespace fe

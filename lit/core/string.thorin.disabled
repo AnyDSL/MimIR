@@ -3,7 +3,7 @@
 
 .import core;
 
-.con .extern f [i :.Idx 256, return : .Cn .Idx 256] = {
+.con .extern f [i :%core.I8, return : .Cn %core.I8] = {
     .let s = "hello world";
-    return (42:(.Idx 256))
+    return (42:(%core.I8))
 };

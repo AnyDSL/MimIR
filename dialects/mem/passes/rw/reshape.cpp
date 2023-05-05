@@ -170,10 +170,7 @@ Lam* Reshape::reshape_lam(Lam* old_lam) {
     new_lam->unset();
     new_lam->set(true, new_body);
 
-    if (old_lam->is_external()) {
-        old_lam->make_internal();
-        new_lam->make_external();
-    }
+    if (old_lam->is_external()) old_lam->transfer_external(new_lam);
 
     world().DLOG("finished transforming: {} : {}", new_lam, new_ty);
     return new_lam;

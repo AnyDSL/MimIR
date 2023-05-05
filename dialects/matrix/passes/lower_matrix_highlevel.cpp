@@ -26,7 +26,7 @@ std::optional<Ref> internal_function_of_axiom(const Axiom* axiom, Ref meta_args,
     find_and_replace(name, "%", "");
     name = INTERNAL_PREFIX + name;
 
-    auto replacement = world.lookup(world.sym(name));
+    auto replacement = world.external(world.sym(name));
     if (replacement) {
         auto spec_fun = world.app(replacement, meta_args);
         auto ds_fun   = direct::op_cps2ds_dep(spec_fun);
@@ -47,7 +47,7 @@ Ref LowerMatrixHighLevelMapRed::rewrite_(Ref def) {
 
         auto w_lit = w->isa<Lit>();
 
-        auto ext_fun = world.lookup(world.sym("extern_matrix_prod"));
+        auto ext_fun = world.external(world.sym("extern_matrix_prod"));
         if (ext_fun && (w_lit && w_lit->get<u64>() == 64)) {
             auto ds_fun  = direct::op_cps2ds_dep(ext_fun);
             auto fun_app = world.app(ds_fun, {mem, m, k, l, M, N});

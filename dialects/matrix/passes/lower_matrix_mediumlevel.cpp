@@ -188,7 +188,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
 
         // create function `%mem.M -> [%mem.M, %matrix.Mat (n,S,T)]` to replace axiom call
 
-        auto mem_type = mem::type_mem(world);
+        auto mem_type = world.annex<mem::M>();
         auto fun_ty   = world.cn({mem_type, world.cn(map_reduce_ax->type())});
         world.DLOG("fun_ty = {}", fun_ty);
         auto fun = world.mut_lam(fun_ty)->set("mapRed");
@@ -226,7 +226,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
 
         // First create the output matrix.
         auto current_mem      = mem;
-        auto [mem2, init_mat] = world.app(world.ax<matrix::init>(), {n, S, T, current_mem})->projs<2>();
+        auto [mem2, init_mat] = world.app(world.annex<matrix::init>(), {n, S, T, current_mem})->projs<2>();
         current_mem           = mem2;
 
         // The function on where to continue -- return after all output loops.
@@ -267,7 +267,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
         world.DLOG("wb_matrix {} : {}", wb_matrix, wb_matrix->type());
 
         // Write back element to matrix. Set this as return after all inner loops.
-        auto write_back = world.mut_lam(world.cn({mem::type_mem(world), T}))->set("matrixWriteBack");
+        auto write_back = world.mut_lam(world.cn({world.annex<mem::M>(), T}))->set("matrixWriteBack");
         world.DLOG("write_back {} : {}", write_back, write_back->type());
         auto [wb_mem, element_final] = write_back->vars<2>();
 
@@ -282,7 +282,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
         world.DLOG("output tuple: {} : {}", output_it_tuple, output_it_tuple->type());
 
         auto [wb_mem2, written_matrix] = world
-                                             .app(world.app(world.ax<matrix::insert>(), {n, S, T}),
+                                             .app(world.app(world.annex<matrix::insert>(), {n, S, T}),
                                                   {wb_mem, wb_matrix, output_it_tuple, element_final})
                                              ->projs<2>();
 

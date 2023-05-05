@@ -42,8 +42,8 @@ Ref AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
     }
     // TODO: better fix (another pass as analysis?)
     // TODO: handle open functions
-    if (Lam::isa_basicblock(lam) || lam->sym()->find("ret") != std::string::npos ||
-        lam->sym()->find("_cont") != std::string::npos) {
+    if (Lam::isa_basicblock(lam) || lam->sym()->find("ret") != std::string::npos
+        || lam->sym()->find("_cont") != std::string::npos) {
         // A open continuation behaves the same as return:
         // ```
         // cont: Cn[X]
@@ -82,7 +82,7 @@ Ref AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
     }
     world.DLOG("found a closed function call {} : {}", lam, lam->type());
     // Some general function in the program needs to be differentiated.
-    auto aug_lam = op_ad(lam);
+    auto aug_lam = world.call<ad>(lam);
     // TODO: directly more association here? => partly inline op_autodiff
     world.DLOG("augmented function is {} : {}", aug_lam, aug_lam->type());
     return aug_lam;
@@ -116,7 +116,7 @@ Ref AutoDiffEval::augment_extract(const Extract* ext, Lam* f, Lam* f_diff) {
         auto pb_fun   = world.mut_lam(pb_ty)->set("extract_pb");
         world.DLOG("Pullback: {} : {}", pb_fun, pb_fun->type());
         auto pb_tangent = pb_fun->var(0_s)->set("s");
-        auto tuple_tan  = world.insert(op_zero(aug_tuple->type()), aug_index, pb_tangent)->set("tup_s");
+        auto tuple_tan  = world.insert(world.call<zero>(aug_tuple->type()), aug_index, pb_tangent)->set("tup_s");
         pb_fun->app(true, tuple_pb,
                     {
                         tuple_tan,
@@ -200,7 +200,7 @@ Ref AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
 
     world.DLOG("app pb of pack: {} : {}", app_pb, app_pb->type());
 
-    auto sumup = world.app(world.ax<sum>(), {aug_shape, f_arg_ty_diff});
+    auto sumup = world.app(world.annex<sum>(), {aug_shape, f_arg_ty_diff});
     world.DLOG("sumup: {} : {}", sumup, sumup->type());
 
     pb->app(true, pb->var(1), world.app(sumup, app_pb));
@@ -370,7 +370,7 @@ Ref AutoDiffEval::augment_(Ref def, Lam* f, Lam* f_diff) {
         world.DLOG("axiom name: {}", ax->sym());
         world.DLOG("axiom function name: {}", diff_name);
 
-        auto diff_fun = world.lookup(world.sym(diff_name));
+        auto diff_fun = world.external(world.sym(diff_name));
         if (!diff_fun) {
             world.ELOG("derivation not found: {}", diff_name);
             auto expected_type = autodiff_type_fun(ax->type());

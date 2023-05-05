@@ -15,17 +15,21 @@
 /// A floating-point type with `p` many bits as precision and `e` many bits as exponent.
 /// The sign bit is neither included in `p` nor in `e`.
 /// Thus, the total number of bits occupied by a value of this type is `p + e + 1`.
-/// Common types are:
-/// ```
-/// .let F16     = %math.F (10,  5);
-/// .let F32     = %math.F (23,  8);
-/// .let F64     = %math.F (52, 11);
-/// .let BF16    = %math.F ( 7,  8);
-/// .let NVTF32  = %math.F (10,  8); // actually 19 bits; aligns to 32 bit
-/// .let AMDFP24 = %math.F (16,  7);
-/// .let PXR24   = %math.F (15,  8);
-/// ```
 .ax %math.F: «2; .Nat» -> *;
+.let %math.f16     = (10,  5);
+.let %math.f32     = (23,  8);
+.let %math.f64     = (52, 11);
+.let %math.bf16    = ( 7,  8);
+.let %math.nvtf32  = (10,  8);
+.let %math.amdfp24 = (16,  7);
+.let %math.pxr24   = (15,  8);
+.let %math.F16     = %math.F %math.f16;
+.let %math.F32     = %math.F %math.f32;
+.let %math.F64     = %math.F %math.f64;
+.let %math.BF16    = %math.F %math.bf16;
+.let %math.NVTF32  = %math.F %math.nvtf32; // actually 19 bits; aligns to 32 bit
+.let %math.AMDFP24 = %math.F %math.amdfp24;
+.let %math.PXR24   = %math.F %math.pxr24;
 ///
 /// ## Numerical Operations
 ///

@@ -29,7 +29,7 @@ class LowerTypedClos : public Phase {
 public:
     LowerTypedClos(World& world)
         : Phase(world, "lower_typed_clos", true)
-        , dummy_ret_(world.bot(world.cn(mem::type_mem(world)))) {}
+        , dummy_ret_(world.bot(world.cn(world.annex<mem::M>()))) {}
 
     void start() override;
 

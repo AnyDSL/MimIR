@@ -89,15 +89,17 @@ const F_CFG& Scope::f_cfg() const { return cfa().f_cfg(); }
 const B_CFG& Scope::b_cfg() const { return cfa().b_cfg(); }
 
 bool Scope::is_free(Def* mut, const Def* def) {
-    if (auto var = mut->var()) {
-        // optimize common cases first
-        if (def->num_ops() == 0) return false;
-        if (var == def) return true;
-        for (auto v : var->mut()->vars())
-            if (var == v) return true;
+    if (auto v = mut->var()) {
+        if (auto var = v->isa<Var>()) {
+            // optimize common cases first
+            if (def->num_ops() == 0) return false;
+            if (var == def) return true;
+            for (auto v : var->mut()->vars())
+                if (var == v) return true;
 
-        Scope scope(mut);
-        return scope.bound(def);
+            Scope scope(mut);
+            return scope.bound(def);
+        }
     }
 
     return false;

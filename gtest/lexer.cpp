@@ -111,8 +111,8 @@ TEST_P(Real, sign) {
         Lexer lexer(w, is);
 
         auto tag = lexer.lex();
-        EXPECT_TRUE(tag.isa(Tok::Tag::L_r));
-        EXPECT_EQ(std::bit_cast<f64>(tag.u()), sign == 2 ? -r : r);
+        EXPECT_TRUE(tag.isa(Tok::Tag::L_f));
+        EXPECT_EQ(std::bit_cast<f64>(tag.lit_u()), sign == 2 ? -r : r);
     };
 
     check(  "2e+3",   2e+3); check(  "2E3",   2E3);

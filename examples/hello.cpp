@@ -18,7 +18,7 @@ int main(int, char**) {
         for (auto plugin : {"compile", "core"}) parser.plugin(plugin);
 
         // .Cn [%mem.M, I32, %mem.Ptr (I32, 0) .Cn [%mem.M, I32]]
-        auto mem_t  = mem::type_mem(world);
+        auto mem_t  = world.annex<mem::M>();
         auto i32_t  = world.type_int(32);
         auto argv_t = mem::type_ptr(mem::type_ptr(i32_t));
         auto ret_t  = world.cn({mem_t, i32_t});
@@ -27,7 +27,7 @@ int main(int, char**) {
 
         auto [mem, argc, argv, ret] = main->vars<4>();
         main->app(false, ret, {mem, argc});
-        main->make_external();
+        main->make_external(true);
 
         optimize(world);
         std::ofstream ofs("hello.ll");
