@@ -9,8 +9,8 @@
 .plugin core;
 .plugin math;
 // needed to access cps2ds
-.import direct;
-.import affine;
+.plugin direct;
+.plugin affine;
 ///
 /// ## Types
 ///
