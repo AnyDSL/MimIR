@@ -505,7 +505,6 @@ Lam* Parser::parse_lam(bool decl) {
 
     auto [_, first, __] = funs.front();
     first->set(dbg.sym);
-    if (external) first->make_external(true);
 
     for (auto [pi, lam, _] : funs | std::ranges::views::reverse) {
         // First, connect old codom to lam. Otherwise, scope will not find it.
@@ -522,6 +521,7 @@ Lam* Parser::parse_lam(bool decl) {
     }
 
     scopes_.bind(outer, dbg, first);
+    if (external) first->make_external(true);
 
     auto body = accept(Tag::T_assign) ? parse_decls("body of a "s + entity) : nullptr;
     if (!body) {

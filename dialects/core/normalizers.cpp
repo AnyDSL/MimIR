@@ -254,7 +254,7 @@ Ref normalize_icmp(Ref type, Ref c, Ref arg) {
     if (id == icmp::f) return world.lit_ff();
     if (id == icmp::t) return world.lit_tt();
     if (a == b) {
-        if (id == icmp::e) return world.lit_tt();
+        if (id & (icmp::e & 0xff)) return world.lit_tt();
         if (id == icmp::ne) return world.lit_ff();
     }
 
