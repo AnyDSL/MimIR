@@ -544,9 +544,9 @@ Lam* Parser::parse_lam(bool decl) {
     if (anx) {
         auto [plugin, tag, _]  = Annex::split(world(), dbg.sym);
         auto&& [annex, is_new] = driver().name2annex(dbg.sym, plugin, tag, {} /* TODO */);
-        plugin_t p = *Annex::mangle(plugin);
-        tag_t t    = annex.tag_id;
-        //sub_t s    = annex.subs.size();
+        plugin_t p             = *Annex::mangle(plugin);
+        tag_t t                = annex.tag_id;
+        // sub_t s    = annex.subs.size();
         world().register_annex(p | (t << 8), first);
     }
 
@@ -768,7 +768,7 @@ void Parser::parse_ax_decl() {
     eat(Tag::K_ax);
     auto ax                 = expect(Tag::M_anx, "extension name of an axiom");
     auto [plugin, tag, sub] = Annex::split(world(), ax.sym());
-    auto&& [annex, is_new]   = driver().name2annex(ax.sym(), plugin, tag, ax.loc());
+    auto&& [annex, is_new]  = driver().name2annex(ax.sym(), plugin, tag, ax.loc());
 
     if (!plugin) error(ax.loc(), "invalid axiom name '{}'", ax);
     if (sub) error(ax.loc(), "definition of axiom '{}' must not have sub in tag name", ax);
@@ -864,9 +864,9 @@ void Parser::parse_let_decl() {
 
         auto [plugin, tag, _]  = Annex::split(world(), dbg->sym);
         auto&& [annex, is_new] = driver().name2annex(dbg->sym, plugin, tag, {} /* TODO */);
-        plugin_t p = *Annex::mangle(plugin);
-        tag_t t    = annex.tag_id;
-        //sub_t s    = annex.subs.size();
+        plugin_t p             = *Annex::mangle(plugin);
+        tag_t t                = annex.tag_id;
+        // sub_t s    = annex.subs.size();
         world().register_annex(p | (t << 8), body);
     } else
         std::get<std::unique_ptr<Ptrn>>(name)->bind(scopes_, body);

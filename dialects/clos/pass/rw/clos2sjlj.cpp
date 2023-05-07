@@ -92,8 +92,8 @@ Lam* Clos2SJLJ::get_throw(Ref dom) {
         auto [jbuf, rbuf, tag] = env->projs<3>();
         auto [m1, r]           = mem::op_alloc(var->type(), m0)->projs<2>();
         auto m2                = w.call<mem::store>(Defs{m1, r, var});
-        rbuf                   = w.call<core::bitcast>(world().call<mem::Ptr0>(world().call<mem::Ptr0>(var->type())), rbuf);
-        auto m3                = w.call<mem::store>(Defs{m2, rbuf, r});
+        rbuf    = w.call<core::bitcast>(world().call<mem::Ptr0>(world().call<mem::Ptr0>(var->type())), rbuf);
+        auto m3 = w.call<mem::store>(Defs{m2, rbuf, r});
         tlam->set(false, w.call<longjmp>(Defs{m3, jbuf, tag}));
         ignore_.emplace(tlam);
     }

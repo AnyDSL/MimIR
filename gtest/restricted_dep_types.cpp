@@ -82,10 +82,11 @@ TEST(RestrictedDependentTypes, join_singleton) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
                 {
                     EXPECT_THROW( // float
-                        w.app(exp_lam, {w.annex<math::F32>(), R,
-                                        w.call<core::bitcast>(w.app(Exp, {w.vel(DT, w.annex<math::F32>()), w.vel(RW, R)}),
-                                                              w.lit(i32_t, 1000)),
-                                        w.mut_lam(w.cn(w.annex<math::F32>()))}),
+                        w.app(exp_lam,
+                              {w.annex<math::F32>(), R,
+                               w.call<core::bitcast>(w.app(Exp, {w.vel(DT, w.annex<math::F32>()), w.vel(RW, R)}),
+                                                     w.lit(i32_t, 1000)),
+                               w.mut_lam(w.cn(w.annex<math::F32>()))}),
                         std::logic_error);
                 },
                 "std::logic_error");
@@ -94,10 +95,11 @@ TEST(RestrictedDependentTypes, join_singleton) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
                 {
                     EXPECT_THROW( // float
-                        w.app(exp_lam, {w.annex<math::F32>(), W,
-                                        w.call<core::bitcast>(w.app(Exp, {w.vel(DT, w.annex<math::F32>()), w.vel(RW, W)}),
-                                                              w.lit(i32_t, 1000)),
-                                        w.mut_lam(w.cn(w.annex<math::F32>()))}),
+                        w.app(exp_lam,
+                              {w.annex<math::F32>(), W,
+                               w.call<core::bitcast>(w.app(Exp, {w.vel(DT, w.annex<math::F32>()), w.vel(RW, W)}),
+                                                     w.lit(i32_t, 1000)),
+                               w.mut_lam(w.cn(w.annex<math::F32>()))}),
                         std::logic_error);
                 },
                 "std::logic_error");
@@ -167,10 +169,11 @@ TEST(RestrictedDependentTypes, join_singleton) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
                 {
                     EXPECT_THROW( // float type error
-                        w.app(exp_lam, {w.annex<math::F32>(),
-                                        w.call<core::bitcast>(w.app(Exp, {w.vel(DT, w.annex<math::F32>()), w.vel(RW, R)}),
-                                                              w.lit(i32_t, 1000)),
-                                        w.mut_lam(w.cn(w.annex<math::F32>()))}),
+                        w.app(exp_lam,
+                              {w.annex<math::F32>(),
+                               w.call<core::bitcast>(w.app(Exp, {w.vel(DT, w.annex<math::F32>()), w.vel(RW, R)}),
+                                                     w.lit(i32_t, 1000)),
+                               w.mut_lam(w.cn(w.annex<math::F32>()))}),
                         std::logic_error);
                 },
                 "std::logic_error");
