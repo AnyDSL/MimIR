@@ -40,6 +40,9 @@
 /// Arithmetic operations.
 .ax %math.arith(add, sub, mul, div, rem):
     Π.[pe: «2; .Nat»][.Nat][«2; %math.F pe»] -> %math.F pe, normalize_arith;
+
+.lam %math.minus!.(pe: «2; .Nat»)!(m: .Nat)!(a: %math.F pe) -> %math.F pe =
+    %math.arith.sub m (0:(%math.F pe), a);
 ///
 /// ### %math.extrema
 ///
