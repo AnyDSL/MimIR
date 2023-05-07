@@ -14,6 +14,7 @@
 .let %core.i16 =     0x10000;
 .let %core.i32 = 0x100000000;
 .let %core.i64 = 0;
+
 .let %core.I8  = .Idx %core.i8;
 .let %core.I16 = .Idx %core.i16;
 .let %core.I32 = .Idx %core.i32;

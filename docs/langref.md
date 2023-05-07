@@ -6,15 +6,15 @@
 
 We use the following notation:
 
-| Notation        | Meaning                                         |
-|-----------------|-------------------------------------------------|
-| `a`             | literally the terminal token `a`                |
-| [`a``b`]        | matches `a` or `b`                              |
-| [`a`-`c`]       | matches `a`- `c`                                |
-| a\*             | zero or more repetitions of "a"                 |
-| a\+             | one or more repetitions of "a"                  |
-| a?              | "a" is optional                                 |
-| a `,` ... `,` a | `,`-separated list of zero or more "a" elements |
+| Notation        | Meaning                                                                                            |
+|-----------------|----------------------------------------------------------------------------------------------------|
+| `a`             | literally the terminal token `a`                                                                   |
+| [`a``b`]        | matches `a` or `b`                                                                                 |
+| [`a`-`c`]       | matches `a`- `c`                                                                                   |
+| a\*             | zero or more repetitions of "a"                                                                    |
+| a\+             | one or more repetitions of "a"                                                                     |
+| a?              | "a" is optional                                                                                    |
+| a `,` ... `,` a | `,`-separated list of zero or more "a" elements; may contain a trailing `,` at the end of the list |
 
 ## Lexical Structure {#lex}
 
