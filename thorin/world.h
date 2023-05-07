@@ -169,15 +169,15 @@ public:
     const Def* annex(Id id) {
         auto flags = static_cast<flags_t>(id);
         if (auto i = move_.annexes.find(flags); i != move_.annexes.end()) return i->second;
-        error("Axiom with ID '{}' not found; demangled plugin name is '{}'", flags, Axiom::demangle(*this, flags));
+        error("Axiom with ID '{}' not found; demangled plugin name is '{}'", flags, Annex::demangle(*this, flags));
     }
 
     /// Get Axiom from a plugin.
     /// Can be used to get an Axiom without sub-tags.
     /// E.g. use `w.annex<mem::M>();` to get the `%mem.M` Axiom.
-    template<axiom_without_subs id>
+    template<annex_without_subs id>
     const Def* annex() {
-        return annex(Axiom::Base<id>);
+        return annex(Annex::Base<id>);
     }
 
     const Def* register_annex(flags_t f, const Def*);
@@ -230,7 +230,7 @@ public:
     /// It uses the plugin Axiom::Global_Plugin and starts with `0` for Axiom::sub and counts up from there.
     /// The Axiom::tag is set to `0` and the Axiom::normalizer to `nullptr`.
     const Axiom* axiom(NormalizeFn n, u8 curry, u8 trip, Ref type) {
-        return axiom(n, curry, trip, type, Axiom::Global_Plugin, 0, state_.pod.curr_sub++);
+        return axiom(n, curry, trip, type, Annex::Global_Plugin, 0, state_.pod.curr_sub++);
     }
     const Axiom* axiom(Ref type) { return axiom(nullptr, 0, 0, type); } ///< See above.
     ///@}

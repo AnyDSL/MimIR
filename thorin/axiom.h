@@ -6,81 +6,18 @@
 
 namespace thorin {
 
-class Axiom : public Def {
-private:
-    Axiom(NormalizeFn, u8 curry, u8 trip, const Def* type, plugin_t, tag_t, sub_t);
+struct Annex {
+    Annex(Sym plugin, Sym tag, flags_t tag_id)
+        : plugin(plugin)
+        , tag(tag)
+        , tag_id(tag_id) {}
 
-public:
-    struct Info {
-        Info(Sym plugin, Sym tag, flags_t tag_id)
-            : plugin(plugin)
-            , tag(tag)
-            , tag_id(tag_id) {}
-
-        Sym plugin;
-        Sym tag;
-        flags_t tag_id;
-        std::deque<std::deque<Sym>> subs; ///< List of subs which is a list of aliases.
-        Sym normalizer;
-        bool pi = false;
-    };
-
-    /// @name Normalization
-    /// @anchor normalization
-    ///@{
-    /// For a curried App of an Axiom, you only want to trigger normalization at specific spots.
-    /// For this reason, Thorin maintains a Def::curry_ counter that each App decrements.
-    /// The Axiom::normalizer() will be triggered when Axiom::curry() becomes `0`.
-    /// These are also the spots that you can thorin::match/thorin::force/Match.
-    /// After that, the counter will be set to Axiom::trip().
-    /// E.g., let's say an Axiom has this type:
-    /// ```
-    /// A -> B -> C -> D -> E
-    ///           ^         |
-    ///           |         |
-    ///           +---------+
-    /// ```
-    /// Using an initial value as `5` for Axiom::curry and `3` as Axiom::trip has the effect that here
-    /// ```
-    /// x a b c1 d1 e1 c2 d2 e2 c3 d3 e3
-    /// ```
-    /// the Axiom::normalizer will be triggered after App'ing `e1`, `e2`, and `e3`.
-    NormalizeFn normalizer() const { return normalizer_; }
-    u8 curry() const { return curry_; }
-    u8 trip() const { return trip_; }
-
-    /// Yields currying counter of @p def.
-    /// @returns `{nullptr, 0, 0}` if no Axiom is present.
-    static std::tuple<const Axiom*, u8, u8> get(const Def* def);
-
-    static std::pair<u8, u8> infer_curry_and_trip(const Def* type);
-    static constexpr u8 Trip_End = u8(-1);
-    ///@}
-
-    /// @name Axiom Name
-    /// @anchor anatomy
-    ///@{
-    /// Anatomy of an Axiom name:
-    /// ```
-    /// %plugin.tag.sub
-    /// |  48   | 8 | 8 | <-- Number of bits per field.
-    /// ```
-    /// * Def::name() retrieves the full name as Sym.
-    /// * Def::flags() retrieves the full name as Axiom::mangle%d 64-bit integer.
-
-    /// Yields the `plugin` part of the name as integer.
-    /// It consists of 48 relevant bits that are returned in the highest 6 bytes of a 64-bit integer.
-    plugin_t plugin() const { return flags() & Global_Plugin; }
-
-    /// Yields the `tag` part of the name as integer.
-    tag_t tag() const { return tag_t((flags() & 0x0000'0000'0000'ff00_u64) >> 8_u64); }
-
-    /// Yields the `sub` part of the name as integer.
-    sub_t sub() const { return sub_t(flags() & 0x0000'0000'0000'00ff_u64); }
-
-    /// Includes Axiom::plugin() and Axiom::tag() but **not** Axiom::sub.
-    flags_t base() const { return flags() & ~0xff_u64; }
-    ///@}
+    Sym plugin;
+    Sym tag;
+    flags_t tag_id;
+    std::deque<std::deque<Sym>> subs; ///< List of subs which is a list of aliases.
+    Sym normalizer;
+    bool pi = false;
 
     /// @name Mangling Plugin Name
     ///@{
@@ -125,26 +62,89 @@ public:
     /// @see Axiom::base.
     template<class Id>
     static constexpr flags_t Base = flags_t(-1);
+    ///@}
+};
+
+class Axiom : public Def {
+private:
+    Axiom(NormalizeFn, u8 curry, u8 trip, const Def* type, plugin_t, tag_t, sub_t);
+
+public:
+    /// @name Normalization
+    /// @anchor normalization
+    ///@{
+    /// For a curried App of an Axiom, you only want to trigger normalization at specific spots.
+    /// For this reason, Thorin maintains a Def::curry_ counter that each App decrements.
+    /// The Axiom::normalizer() will be triggered when Axiom::curry() becomes `0`.
+    /// These are also the spots that you can thorin::match/thorin::force/Match.
+    /// After that, the counter will be set to Axiom::trip().
+    /// E.g., let's say an Axiom has this type:
+    /// ```
+    /// A -> B -> C -> D -> E
+    ///           ^         |
+    ///           |         |
+    ///           +---------+
+    /// ```
+    /// Using an initial value as `5` for Axiom::curry and `3` as Axiom::trip has the effect that here
+    /// ```
+    /// x a b c1 d1 e1 c2 d2 e2 c3 d3 e3
+    /// ```
+    /// the Axiom::normalizer will be triggered after App'ing `e1`, `e2`, and `e3`.
+    NormalizeFn normalizer() const { return normalizer_; }
+    u8 curry() const { return curry_; }
+    u8 trip() const { return trip_; }
+
+    /// Yields currying counter of @p def.
+    /// @returns `{nullptr, 0, 0}` if no Axiom is present.
+    static std::tuple<const Axiom*, u8, u8> get(const Def* def);
+
+    static std::pair<u8, u8> infer_curry_and_trip(const Def* type);
+    static constexpr u8 Trip_End = u8(-1);
+    ///@}
+
+    /// @name Annex Name
+    /// @anchor anatomy
+    ///@{
+    /// Anatomy of an Axiom name:
+    /// ```
+    /// %plugin.tag.sub
+    /// |  48   | 8 | 8 | <-- Number of bits per field.
+    /// ```
+    /// * Def::name() retrieves the full name as Sym.
+    /// * Def::flags() retrieves the full name as Axiom::mangle%d 64-bit integer.
+
+    /// Yields the `plugin` part of the name as integer.
+    /// It consists of 48 relevant bits that are returned in the highest 6 bytes of a 64-bit integer.
+    plugin_t plugin() const { return flags() & Annex::Global_Plugin; }
+
+    /// Yields the `tag` part of the name as integer.
+    tag_t tag() const { return tag_t((flags() & 0x0000'0000'0000'ff00_u64) >> 8_u64); }
+
+    /// Yields the `sub` part of the name as integer.
+    sub_t sub() const { return sub_t(flags() & 0x0000'0000'0000'00ff_u64); }
+
+    /// Includes Axiom::plugin() and Axiom::tag() but **not** Axiom::sub.
+    flags_t base() const { return flags() & ~0xff_u64; }
+    ///@}
 
     /// Type of Match::def_.
     template<class T>
     struct Match {
         using type = App;
     };
-    ///@}
 
     THORIN_DEF_MIXIN(Axiom)
 };
 
 // clang-format off
-template<class Id> concept axiom_with_subs    = Axiom::Num<Id> != 0;
-template<class Id> concept axiom_without_subs = Axiom::Num<Id> == 0;
+template<class Id> concept annex_with_subs    = Annex::Num<Id> != 0;
+template<class Id> concept annex_without_subs = Annex::Num<Id> == 0;
 // clang-format on
 
 template<class Id, class D>
 class Match {
-    static_assert(Axiom::Num<Id> != size_t(-1), "invalid number of sub tags");
-    static_assert(Axiom::Base<Id> != flags_t(-1), "invalid axiom base");
+    static_assert(Annex::Num<Id> != size_t(-1), "invalid number of sub tags");
+    static_assert(Annex::Base<Id> != flags_t(-1), "invalid axiom base");
 
 public:
     Match() = default;
@@ -181,7 +181,7 @@ template<class Id, bool DynCast = true>
 auto match(Ref def) {
     using D                = typename Axiom::Match<Id>::type;
     auto [axiom, curry, _] = Axiom::get(def);
-    bool cond              = axiom && curry == 0 && axiom->base() == Axiom::Base<Id>;
+    bool cond              = axiom && curry == 0 && axiom->base() == Annex::Base<Id>;
 
     if constexpr (DynCast) return cond ? Match<Id, D>(axiom, def->as<D>()) : Match<Id, D>();
     assert(cond && "assumed to be correct axiom");

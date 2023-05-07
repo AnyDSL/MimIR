@@ -63,9 +63,6 @@ inline Ref type_f(World& w, nat_t p, nat_t e) {
     auto le = w.lit_nat(e);
     return type_f(w.tuple({lp, le}));
 }
-inline Ref type_f16(World& w) { return type_f(w, 10, 5); }
-inline Ref type_f32(World& w) { return type_f(w, 23, 8); }
-inline Ref type_f64(World& w) { return type_f(w, 52, 11); }
 template<nat_t P, nat_t E>
 inline auto match_f(Ref def) {
     if (auto f_ty = match<F>(def)) {
@@ -93,19 +90,19 @@ inline std::optional<nat_t> isa_f(Ref def) {
 // clang-format off
 template<class R>
 const Lit* lit_f(World& w, R val) {
-    static_assert(std::is_floating_point<R>() || std::is_same<R, f16>());
+    static_assert(std::is_floating_point<R>() || std::is_same<R, thorin::f16>());
     if constexpr (false) {}
-    else if constexpr (sizeof(R) == 2) return w.lit(type_f16(w), thorin::bitcast<u16>(val));
-    else if constexpr (sizeof(R) == 4) return w.lit(type_f32(w), thorin::bitcast<u32>(val));
-    else if constexpr (sizeof(R) == 8) return w.lit(type_f64(w), thorin::bitcast<u64>(val));
+    else if constexpr (sizeof(R) == 2) return w.lit(w.annex<F16>(), thorin::bitcast<u16>(val));
+    else if constexpr (sizeof(R) == 4) return w.lit(w.annex<F32>(), thorin::bitcast<u32>(val));
+    else if constexpr (sizeof(R) == 8) return w.lit(w.annex<F64>(), thorin::bitcast<u64>(val));
     else unreachable();
 }
 
-inline const Lit* lit_f(World& w, nat_t width, f64 val) {
+inline const Lit* lit_f(World& w, nat_t width, thorin::f64 val) {
     switch (width) {
-        case 16: assert(f64(f16(f32(val))) == val && "loosing precision"); return lit_f(w, f16(f32(val)));
-        case 32: assert(f64(f32(   (val))) == val && "loosing precision"); return lit_f(w, f32(   (val)));
-        case 64: assert(f64(f64(   (val))) == val && "loosing precision"); return lit_f(w, f64(   (val)));
+        case 16: assert(thorin::f64(thorin::f16(thorin::f32(val))) == val && "loosing precision"); return lit_f(w, thorin::f16(thorin::f32(val)));
+        case 32: assert(thorin::f64(thorin::f32(           (val))) == val && "loosing precision"); return lit_f(w, thorin::f32(   (val)));
+        case 64: assert(thorin::f64(thorin::f64(           (val))) == val && "loosing precision"); return lit_f(w, thorin::f64(   (val)));
         default: unreachable();
     }
 }

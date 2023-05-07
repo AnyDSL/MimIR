@@ -112,16 +112,6 @@ enum class AddrSpace : nat_t {
     Shared   = 3,
     Constant = 4,
 };
-
-inline const App* type_ptr(Ref pointee, Ref addr_space) {
-    World& w = pointee->world();
-    return w.app(w.annex<mem::Ptr>(), {pointee, addr_space})->as<App>();
-}
-
-inline const App* type_ptr(Ref pointee, AddrSpace as = AddrSpace::Generic) {
-    World& w = pointee->world();
-    return type_ptr(pointee, w.lit_nat((nat_t)as));
-}
 ///@}
 
 /// @name %%mem.lea

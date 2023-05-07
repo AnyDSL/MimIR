@@ -172,7 +172,7 @@ Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref 
 template<class Id>
 Ref merge_cmps(std::array<std::array<u64, 2>, 2> tab, Ref a, Ref b) {
     static_assert(sizeof(sub_t) == 1, "if this ever changes, please adjust the logic below");
-    static constexpr size_t num_bits = std::bit_width(Axiom::Num<Id> - 1_u64);
+    static constexpr size_t num_bits = std::bit_width(Annex::Num<Id> - 1_u64);
 
     auto& world = a->world();
     auto a_cmp  = match<Id>(a);
@@ -190,7 +190,7 @@ Ref merge_cmps(std::array<std::array<u64, 2>, 2> tab, Ref a, Ref b) {
         if constexpr (std::is_same_v<Id, math::cmp>)
             return world.call(math::cmp(res), /*rmode*/ a_cmp->decurry()->arg(0), Defs{a_cmp->arg(0), a_cmp->arg(1)});
         else
-            return world.call(icmp(Axiom::Base<icmp> | res), Defs{a_cmp->arg(0), a_cmp->arg(1)});
+            return world.call(icmp(Annex::Base<icmp> | res), Defs{a_cmp->arg(0), a_cmp->arg(1)});
     }
 
     return nullptr;

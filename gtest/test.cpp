@@ -60,25 +60,25 @@ TEST(World, dependent_extract) {
     ASSERT_EQ(a->proj(2, 1)->type(), a->proj(2, 0_u64)); // type_of(a#1_2) == a#0_1
 }
 
-TEST(Axiom, mangle) {
+TEST(Annex, mangle) {
     Driver driver;
     World& w = driver.world();
 
-    EXPECT_EQ(Axiom::demangle(w, *Axiom::mangle(w.sym("test"))), w.sym("test"));
-    EXPECT_EQ(Axiom::demangle(w, *Axiom::mangle(w.sym("azAZ09_"))), w.sym("azAZ09_"));
-    EXPECT_EQ(Axiom::demangle(w, *Axiom::mangle(w.sym("01234567"))), w.sym("01234567"));
-    EXPECT_FALSE(Axiom::mangle(w.sym("012345678")));
-    EXPECT_FALSE(Axiom::mangle(w.sym("!")));
+    EXPECT_EQ(Annex::demangle(w, *Annex::mangle(w.sym("test"))), w.sym("test"));
+    EXPECT_EQ(Annex::demangle(w, *Annex::mangle(w.sym("azAZ09_"))), w.sym("azAZ09_"));
+    EXPECT_EQ(Annex::demangle(w, *Annex::mangle(w.sym("01234567"))), w.sym("01234567"));
+    EXPECT_FALSE(Annex::mangle(w.sym("012345678")));
+    EXPECT_FALSE(Annex::mangle(w.sym("!")));
     // Check whether lower 16 bits are properly ignored
-    EXPECT_EQ(Axiom::demangle(w, *Axiom::mangle(w.sym("test")) | 0xFF_u64), w.sym("test"));
-    EXPECT_EQ(Axiom::demangle(w, *Axiom::mangle(w.sym("01234567")) | 0xFF_u64), w.sym("01234567"));
+    EXPECT_EQ(Annex::demangle(w, *Annex::mangle(w.sym("test")) | 0xFF_u64), w.sym("test"));
+    EXPECT_EQ(Annex::demangle(w, *Annex::mangle(w.sym("01234567")) | 0xFF_u64), w.sym("01234567"));
 }
 
-TEST(Axiom, split) {
+TEST(Annex, split) {
     Driver driver;
     World& w = driver.world();
 
-    auto [plugin, group, tag] = Axiom::split(w, w.sym("%foo.bar.baz"));
+    auto [plugin, group, tag] = Annex::split(w, w.sym("%foo.bar.baz"));
     EXPECT_EQ(plugin, w.sym("foo"));
     EXPECT_EQ(group, w.sym("bar"));
     EXPECT_EQ(tag, w.sym("baz"));

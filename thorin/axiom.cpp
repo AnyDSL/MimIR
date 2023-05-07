@@ -6,6 +6,10 @@ using namespace std::literals;
 
 namespace thorin {
 
+/*
+ * Axiom
+ */
+
 Axiom::Axiom(NormalizeFn normalizer, u8 curry, u8 trip, const Def* type, plugin_t plugin, tag_t tag, sub_t sub)
     : Def(Node, type, Defs{}, plugin | (flags_t(tag) << 8_u64) | flags_t(sub)) {
     normalizer_ = normalizer;
@@ -43,7 +47,11 @@ std::tuple<const Axiom*, u8, u8> Axiom::get(const Def* def) {
     return {nullptr, 0, 0};
 }
 
-std::optional<plugin_t> Axiom::mangle(Sym s) {
+/*
+ * Annex
+ */
+
+std::optional<plugin_t> Annex::mangle(Sym s) {
     auto n = s->size();
     if (n > Max_Plugin_Size) return {};
 
@@ -71,7 +79,7 @@ std::optional<plugin_t> Axiom::mangle(Sym s) {
     return result << 16_u64;
 }
 
-Sym Axiom::demangle(World& world, plugin_t u) {
+Sym Annex::demangle(World& world, plugin_t u) {
     std::string result;
     for (size_t i = 0; i != Max_Plugin_Size; ++i) {
         u64 c = (u & 0xfc00000000000000_u64) >> 58_u64;
@@ -92,7 +100,7 @@ Sym Axiom::demangle(World& world, plugin_t u) {
     return world.sym(result);
 }
 
-std::array<Sym, 3> Axiom::split(World& world, Sym s) {
+std::array<Sym, 3> Annex::split(World& world, Sym s) {
     if (!s) return {};
     if (s[0] != '%') return {};
     auto sv = subview(s, 1);

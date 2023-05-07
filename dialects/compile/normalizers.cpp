@@ -8,10 +8,10 @@ Ref normalize_pass_phase(Ref type, Ref, Ref arg) {
     auto& world = type->world();
 
     auto [ax, _] = collect_args(arg);
-    if (ax->flags() != flags_t(Axiom::Base<pass_list>)) {
+    if (ax->flags() != flags_t(Annex::Base<pass_list>)) {
         // return world.raw_app(type, callee, arg);
         // TODO: remove when normalizers are fixed
-        if (ax->flags() == flags_t(Axiom::Base<combine_pass_list>)) {
+        if (ax->flags() == flags_t(Annex::Base<combine_pass_list>)) {
             auto arg_cpl = arg->as<App>();
             arg          = normalize_combine_pass_list(arg_cpl->type(), arg_cpl->callee(), arg_cpl->arg());
         } else {
@@ -20,7 +20,7 @@ Ref normalize_pass_phase(Ref type, Ref, Ref arg) {
     }
 
     auto [f_ax, pass_list_defs] = collect_args(arg);
-    assert(f_ax->flags() == flags_t(Axiom::Base<pass_list>));
+    assert(f_ax->flags() == flags_t(Annex::Base<pass_list>));
     auto n = pass_list_defs.size();
 
     return world.app(world.app(world.annex<passes_to_phase>(), world.lit_nat(n)), pass_list_defs);
@@ -31,7 +31,7 @@ Ref normalize_combined_phase(Ref type, Ref, Ref arg) {
     auto& world = type->world();
 
     auto [ax, phase_list_defs] = collect_args(arg);
-    assert(ax->flags() == flags_t(Axiom::Base<phase_list>));
+    assert(ax->flags() == flags_t(Annex::Base<phase_list>));
     auto n = phase_list_defs.size();
 
     return world.app(world.app(world.annex<phases_to_phase>(), world.lit_nat(n)), phase_list_defs);
@@ -52,7 +52,7 @@ Ref normalize_combine_pass_list(Ref type, Ref, Ref arg) {
 
     for (auto pass_list_def : pass_lists) {
         auto [ax, pass_list_defs] = collect_args(pass_list_def);
-        assert(ax->flags() == flags_t(Axiom::Base<pass_list>));
+        assert(ax->flags() == flags_t(Annex::Base<pass_list>));
         passes.insert(passes.end(), pass_list_defs.begin(), pass_list_defs.end());
     }
     Ref app_list = world.annex<pass_list>();

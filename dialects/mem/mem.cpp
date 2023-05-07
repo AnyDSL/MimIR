@@ -29,7 +29,7 @@ extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
                 register_pass<mem::alloc2malloc_pass, mem::Alloc2Malloc>(passes);
 
                 // TODO: generalize register_pass_with_arg
-                passes[flags_t(Axiom::Base<mem::copy_prop_pass>)] = [&](World& world, PipelineBuilder& builder,
+                passes[flags_t(Annex::Base<mem::copy_prop_pass>)] = [&](World& world, PipelineBuilder& builder,
                                                                         const Def* app) {
                     auto [br, ee, bb] = app->as<App>()->args<3>();
                     // TODO: let get_pass do the casts
@@ -39,10 +39,10 @@ extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
                     world.DLOG("registering copy_prop with br = {}, ee = {}, bb_only = {}", br, ee, bb_only);
                     builder.add_pass<mem::CopyProp>(app, br_pass, ee_pass, bb_only);
                 };
-                passes[flags_t(Axiom::Base<mem::reshape_pass>)] = [&](World&, PipelineBuilder& builder,
+                passes[flags_t(Annex::Base<mem::reshape_pass>)] = [&](World&, PipelineBuilder& builder,
                                                                       const Def* app) {
                     auto mode_ax = app->as<App>()->arg()->as<Axiom>();
-                    auto mode    = mode_ax->flags() == flags_t(Axiom::Base<mem::reshape_arg>) ? mem::Reshape::Arg
+                    auto mode    = mode_ax->flags() == flags_t(Annex::Base<mem::reshape_arg>) ? mem::Reshape::Arg
                                                                                               : mem::Reshape::Flat;
                     builder.add_pass<mem::Reshape>(app, mode);
                 };

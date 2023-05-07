@@ -82,10 +82,10 @@ TEST(RestrictedDependentTypes, join_singleton) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
                 {
                     EXPECT_THROW( // float
-                        w.app(exp_lam, {math::type_f32(w), R,
-                                        w.call<core::bitcast>(w.app(Exp, {w.vel(DT, math::type_f32(w)), w.vel(RW, R)}),
+                        w.app(exp_lam, {w.annex<math::F32>(), R,
+                                        w.call<core::bitcast>(w.app(Exp, {w.vel(DT, w.annex<math::F32>()), w.vel(RW, R)}),
                                                               w.lit(i32_t, 1000)),
-                                        w.mut_lam(w.cn(math::type_f32(w)))}),
+                                        w.mut_lam(w.cn(w.annex<math::F32>()))}),
                         std::logic_error);
                 },
                 "std::logic_error");
@@ -94,10 +94,10 @@ TEST(RestrictedDependentTypes, join_singleton) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
                 {
                     EXPECT_THROW( // float
-                        w.app(exp_lam, {math::type_f32(w), W,
-                                        w.call<core::bitcast>(w.app(Exp, {w.vel(DT, math::type_f32(w)), w.vel(RW, W)}),
+                        w.app(exp_lam, {w.annex<math::F32>(), W,
+                                        w.call<core::bitcast>(w.app(Exp, {w.vel(DT, w.annex<math::F32>()), w.vel(RW, W)}),
                                                               w.lit(i32_t, 1000)),
-                                        w.mut_lam(w.cn(math::type_f32(w)))}),
+                                        w.mut_lam(w.cn(w.annex<math::F32>()))}),
                         std::logic_error);
                 },
                 "std::logic_error");
@@ -167,10 +167,10 @@ TEST(RestrictedDependentTypes, join_singleton) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
                 {
                     EXPECT_THROW( // float type error
-                        w.app(exp_lam, {math::type_f32(w),
-                                        w.call<core::bitcast>(w.app(Exp, {w.vel(DT, math::type_f32(w)), w.vel(RW, R)}),
+                        w.app(exp_lam, {w.annex<math::F32>(),
+                                        w.call<core::bitcast>(w.app(Exp, {w.vel(DT, w.annex<math::F32>()), w.vel(RW, R)}),
                                                               w.lit(i32_t, 1000)),
-                                        w.mut_lam(w.cn(math::type_f32(w)))}),
+                                        w.mut_lam(w.cn(w.annex<math::F32>()))}),
                         std::logic_error);
                 },
                 "std::logic_error");
@@ -190,10 +190,10 @@ TEST(RestrictedDependentTypes, join_singleton) {
         });
         cases.emplace_back([](World& w, auto, auto W, auto Exp, auto exp_lam, auto DT, auto RW, auto, auto) {
             EXPECT_ANY_THROW( // float + W type error (note, the float is not yet what triggers the issue..)
-                w.app(exp_lam, {math::type_f32(w),
-                                w.call<core::bitcast>(w.app(Exp, {w.vel(DT, math::type_f32(w)), w.vel(RW, W)}),
-                                                      w.lit(math::type_f32(w), 1000)),
-                                w.mut_lam(w.cn(math::type_f32(w)))}));
+                w.app(exp_lam, {w.annex<math::F32>(),
+                                w.call<core::bitcast>(w.app(Exp, {w.vel(DT, w.annex<math::F32>()), w.vel(RW, W)}),
+                                                      w.lit(w.annex<math::F32>(), 1000)),
+                                w.mut_lam(w.cn(w.annex<math::F32>()))}));
         });
 
         for (auto&& test : cases) {
@@ -225,7 +225,7 @@ TEST(RestrictedDependentTypes, ll) {
 
     auto mem_t  = w.annex<mem::M>();
     auto i32_t  = w.type_int(32);
-    auto argv_t = mem::type_ptr(mem::type_ptr(i32_t));
+    auto argv_t = w.call<mem::Ptr0>(w.call<mem::Ptr0>(i32_t));
 
     // Cn [mem, i32, ptr(ptr(i32, 0), 0) Cn [mem, i32]]
     auto main_t = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})});
@@ -237,7 +237,7 @@ TEST(RestrictedDependentTypes, ll) {
 
     auto RW = w.join({w.singleton(R), w.singleton(W)})->set("RW");
 
-    auto DT     = w.join({w.singleton(i32_t), w.singleton(math::type_f32(w))})->set("DT");
+    auto DT     = w.join({w.singleton(i32_t), w.singleton(w.annex<math::F32>())})->set("DT");
     auto exp_pi = w.mut_pi(w.type<1>())->set_dom({DT, RW});
     exp_pi->set_codom(w.type());
 

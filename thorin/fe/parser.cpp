@@ -542,9 +542,12 @@ Lam* Parser::parse_lam(bool decl) {
     first->set(track.loc());
 
     if (anx) {
-        auto [plugin, _, __] = Axiom::split(world(), dbg.sym);
-        auto p               = Axiom::mangle(plugin);
-        world().register_annex(*p | (200 << 8), first);
+        auto [plugin, tag, _]  = Annex::split(world(), dbg.sym);
+        auto&& [annex, is_new] = driver().name2annex(dbg.sym, plugin, tag, {} /* TODO */);
+        plugin_t p = *Annex::mangle(plugin);
+        tag_t t    = annex.tag_id;
+        //sub_t s    = annex.subs.size();
+        world().register_annex(p | (t << 8), first);
     }
 
     scopes_.pop();
@@ -764,8 +767,8 @@ void Parser::parse_ax_decl() {
     auto track = tracker();
     eat(Tag::K_ax);
     auto ax                 = expect(Tag::M_anx, "extension name of an axiom");
-    auto [plugin, tag, sub] = Axiom::split(world(), ax.sym());
-    auto&& [info, is_new]   = driver().axiom2info(ax.sym(), plugin, tag, ax.loc());
+    auto [plugin, tag, sub] = Annex::split(world(), ax.sym());
+    auto&& [annex, is_new]   = driver().name2annex(ax.sym(), plugin, tag, ax.loc());
 
     if (!plugin) error(ax.loc(), "invalid axiom name '{}'", ax);
     if (sub) error(ax.loc(), "definition of axiom '{}' must not have sub in tag name", ax);
@@ -773,7 +776,7 @@ void Parser::parse_ax_decl() {
     // if (plugin != bootstrapper_.plugin()) {
     //  TODO
     //  error(ax.loc(), "axiom name `{}` implies a plugin name of `{}` but input file is named `{}`", ax,
-    //  info.plugin, lexer_.file());
+    //  annex.plugin, lexer_.file());
     //}
 
     std::deque<std::deque<Sym>> new_subs;
@@ -789,15 +792,15 @@ void Parser::parse_ax_decl() {
         });
     }
 
-    if (!is_new && new_subs.empty() && !info.subs.empty())
+    if (!is_new && new_subs.empty() && !annex.subs.empty())
         error(ax.loc(), "redeclaration of axiom '{}' without specifying new subs", ax);
-    else if (!is_new && !new_subs.empty() && info.subs.empty())
+    else if (!is_new && !new_subs.empty() && annex.subs.empty())
         error(ax.loc(), "cannot extend subs of axiom '{}' because it was declared as a subless axiom", ax);
 
     auto type = parse_type_ascr("type ascription of an axiom");
-    if (!is_new && info.pi != (type->isa<Pi>() != nullptr))
+    if (!is_new && annex.pi != (type->isa<Pi>() != nullptr))
         error(ax.loc(), "all declarations of axiom '{}' have to be function types if any is", ax);
-    info.pi = type->isa<Pi>() != nullptr;
+    annex.pi = type->isa<Pi>() != nullptr;
 
     Sym normalizer;
     if (ahead().isa(Tag::T_comma) && ahead(1).isa(Tag::M_id)) {
@@ -805,9 +808,9 @@ void Parser::parse_ax_decl() {
         normalizer = parse_id("normalizer of an axiom").sym;
     }
 
-    if (!is_new && (info.normalizer && normalizer) && info.normalizer != normalizer)
+    if (!is_new && (annex.normalizer && normalizer) && annex.normalizer != normalizer)
         error(ax.loc(), "all declarations of axiom '{}' must use the same normalizer name", ax);
-    info.normalizer = normalizer;
+    annex.normalizer = normalizer;
 
     auto [curry, trip] = Axiom::infer_curry_and_trip(type);
 
@@ -819,9 +822,9 @@ void Parser::parse_ax_decl() {
 
     if (accept(Tag::T_comma)) trip = expect(Tag::L_u, "trip count for axiom").lit_u();
 
-    plugin_t p = *Axiom::mangle(plugin);
-    tag_t t    = info.tag_id;
-    sub_t s    = info.subs.size();
+    plugin_t p = *Annex::mangle(plugin);
+    tag_t t    = annex.tag_id;
+    sub_t s    = annex.subs.size();
     if (new_subs.empty()) {
         auto norm  = driver().normalizer(p, t, 0);
         auto axiom = world().axiom(norm, curry, trip, type, p, t, 0)->set(ax.loc(), ax.sym());
@@ -839,7 +842,7 @@ void Parser::parse_ax_decl() {
             }
             ++s;
         }
-        info.subs.insert(info.subs.end(), new_subs.begin(), new_subs.end());
+        annex.subs.insert(annex.subs.end(), new_subs.begin(), new_subs.end());
     }
     expect(Tag::T_semicolon, "end of an axiom");
 }
@@ -856,9 +859,16 @@ void Parser::parse_let_decl() {
     expect(Tag::T_assign, "let expression");
     auto body = parse_expr("body of a let expression");
 
-    if (auto dbg = std::get_if<Dbg>(&name))
+    if (auto dbg = std::get_if<Dbg>(&name)) {
         scopes_.bind(*dbg, body);
-    else
+
+        auto [plugin, tag, _]  = Annex::split(world(), dbg->sym);
+        auto&& [annex, is_new] = driver().name2annex(dbg->sym, plugin, tag, {} /* TODO */);
+        plugin_t p = *Annex::mangle(plugin);
+        tag_t t    = annex.tag_id;
+        //sub_t s    = annex.subs.size();
+        world().register_annex(p | (t << 8), body);
+    } else
         std::get<std::unique_ptr<Ptrn>>(name)->bind(scopes_, body);
 
     expect(Tag::T_semicolon, "let expression");

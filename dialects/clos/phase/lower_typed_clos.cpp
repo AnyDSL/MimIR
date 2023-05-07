@@ -41,7 +41,7 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
             if (mode == Unbox)
                 return env_type();
             else if (mode == Box)
-                return mem::type_ptr(new_dom);
+                return world().call<mem::Ptr0>(new_dom);
         }
         return new_dom;
     }));

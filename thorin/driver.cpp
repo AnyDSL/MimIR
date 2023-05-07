@@ -87,12 +87,12 @@ void Driver::load(Sym name) {
     }
 }
 
-std::pair<Axiom::Info&, bool> Driver::axiom2info(Sym sym, Sym plugin, Sym tag, Loc loc) {
-    auto& infos = plugin2axiom_infos_[plugin];
-    if (infos.size() > std::numeric_limits<tag_t>::max())
+std::pair<Annex&, bool> Driver::name2annex(Sym sym, Sym plugin, Sym tag, Loc loc) {
+    auto& annexes = plugin2annexes_[plugin];
+    if (annexes.size() > std::numeric_limits<tag_t>::max())
         error(loc, "exceeded maxinum number of axioms in current plugin");
 
-    auto [it, is_new] = infos.emplace(sym, Axiom::Info{plugin, tag, infos.size()});
+    auto [it, is_new] = annexes.emplace(sym, Annex{plugin, tag, annexes.size()});
     return {it->second, is_new};
 }
 
