@@ -18,13 +18,15 @@
 .let %core.I16 = .Idx %core.i16;
 .let %core.I32 = .Idx %core.i32;
 .let %core.I64 = .Idx %core.i64;
+///
 /// ## Nat Operations
 ///
 /// ### %core.nat
 ///
-/// Standard arithmetic operations on `.Nat`s.
+/// Standard arithmetic operations on `.Nat`s. <br>
+/// `%%core.nat.sub (a, b)` yields `0`, if `a` < `b`.
 ///
-.ax %core.nat(add, mul): «2; .Nat» -> .Nat, normalize_nat;
+.ax %core.nat(add, sub, mul): «2; .Nat» -> .Nat, normalize_nat;
 ///
 /// ### %core.ncmp
 ///
@@ -45,7 +47,7 @@
 /// | `GLE`  | `t`   | x | x | x | always true      |
 ///
 .ax %core.ncmp(gle = f, glE =  e, gLe =  l, gLE = le,
-               Gle = g, GlE = ge, GLe = ne, GLE =  t): 
+               Gle = g, GlE = ge, GLe = ne, GLE =  t):
     «2; .Nat» -> .Bool, normalize_ncmp;
 ///
 /// ## Integer Operations

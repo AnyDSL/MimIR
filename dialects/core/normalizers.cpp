@@ -207,6 +207,7 @@ Ref normalize_nat(Ref type, Ref callee, Ref arg) {
         if (auto lb = Lit::isa(b)) {
             switch (id) {
                 case nat::add: return world.lit_nat(*la + *lb);
+                case nat::sub: return *la < *lb ? world.lit_nat_0() : world.lit_nat(*la - *lb);
                 case nat::mul: return world.lit_nat(*la * *lb);
             }
         }

@@ -579,6 +579,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         switch (nat.id()) {
             case core::nat::add: op = "add"; break;
+            case core::nat::sub: op = "sub"; break;
             case core::nat::mul: op = "mul"; break;
         }
 
