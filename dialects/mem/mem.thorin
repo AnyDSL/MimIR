@@ -13,7 +13,7 @@
 /// ### %mem.M {#memM}
 ///
 /// This type tracks all kind of side-effects.
-.ax %mem.M: *; 
+.ax %mem.M: *;
 ///
 /// ### %mem.Ptr
 ///
@@ -75,22 +75,22 @@
 ///
 /// ### %mem.lea
 ///
-/// Load effective address. 
+/// Load effective address.
 /// Performs address computation by offsetting the passed pointer with index `i`.
 .ax %mem.lea: Π [n: .Nat, Ts: «n; *», as: .Nat][%mem.Ptr(«j: n; Ts#j», as), i: .Idx n] -> %mem.Ptr(Ts#i, as), normalize_lea;
 ///
 /// ## Passes and Phases
-/// 
+///
 /// ### Misc
-/// 
+///
 /// Reshape mode enum.
 ///
 .ax %mem.reshape_mode: *;
 .ax %mem.reshape_flat: %mem.reshape_mode;
 .ax %mem.reshape_arg: %mem.reshape_mode;
-/// 
+///
 /// ### Passes
-/// 
+///
 /// SSA pass expects eta expansion as argument
 .ax %mem.ssa_pass: %compile.Pass -> %compile.Pass;
 /// Copy propagation expects beta reduction and eta expansion as argument.
@@ -99,9 +99,9 @@
 .ax %mem.alloc2malloc_pass: %compile.Pass;
 .ax %mem.reshape_pass: %mem.reshape_mode -> %compile.Pass;
 .ax %mem.add_mem_pass: %compile.Pass;
-/// 
+///
 /// ### Phases
-/// 
+///
 .let mem_opt_pass_list = {
     .let beta_red = %compile.beta_red_pass;
     .let eta_red  = %compile.eta_red_pass;
@@ -111,7 +111,7 @@
         eta_red
         eta_exp
         (%mem.ssa_pass eta_exp)
-        (%mem.copy_prop_pass (beta_red, eta_exp, 0:.Bool))
+        (%mem.copy_prop_pass (beta_red, eta_exp, .ff))
 };
 .let mem_opt_phase = {
     %compile.pass_phase mem_opt_pass_list

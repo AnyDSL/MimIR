@@ -20,7 +20,7 @@ public:
     Ref rewrite(Ref) override;
 
 private:
-    Ref void_ptr() { return world().call<mem::Ptr0>(world().type_int(8)); }
+    Ref void_ptr() { return world().annex<clos::BufPtr>(); }
     Ref jb_type() { return void_ptr(); }
     Ref rb_type() { return world().call<mem::Ptr0>(void_ptr()); }
     Ref tag_type() { return world().type_int(32); }

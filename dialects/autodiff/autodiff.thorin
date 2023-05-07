@@ -19,24 +19,24 @@
 /// ## Operations
 ///
 /// ### %autodiff.ad
-/// 
+///
 /// This axiom operates on functions and types.
 ///
 /// For function types the augmented type is computed: `(T -> U) => (T -> U × (U -> T))`
 .ax %autodiff.AD: * -> *, normalize_AD;
 /// On closed terms (functions, operators, ho arguments, registered axioms, etc.) the augmented term is returned.
 /// The augmented term `f'` returns the result together with the pullback.
-/// `autodiff f = f' = λ args. (f args, f*)` 
+/// `autodiff f = f' = λ args. (f args, f*)`
 .ax %autodiff.ad: Π.[T: *] -> T -> %autodiff.AD T, normalize_ad;
 ///
 /// ### %autodiff.zero
-/// 
+///
 /// Represents universal zero such that `(zero T) +_T t = t`.
 ///
 .ax %autodiff.zero: Π [T:*] -> T, normalize_zero;
 ///
 /// ### %autodiff.add
-/// 
+///
 /// A universal addition that consumes zeros and defaults to normal addition for scalar types.
 /// It lifts additions over types with structure and performs special casing for types with do not allow for addition.
 /// The sum construct performs addition over a list of terms.
@@ -46,16 +46,16 @@
 .ax %autodiff.sum: Π [n:.Nat,T:*] -> «n; T» -> T, normalize_sum;
 ///
 /// ## Passes and Phases
-/// 
+///
 /// ### Passes
-/// 
+///
 .ax %autodiff.ad_eval_pass: %compile.Pass;
 .ax %autodiff.ad_zero_pass: %compile.Pass;
 .ax %autodiff.ad_zero_cleanup_pass: %compile.Pass;
 .ax %autodiff.ad_ext_cleanup_pass: %compile.Pass;
-/// 
+///
 /// ### Phases
-/// 
+///
 .let ad_cleanup_phase = {
     %compile.phases_to_phase (⊤:.Nat)
         (
@@ -72,19 +72,19 @@
             ad_cleanup_phase
         )
 };
-/// 
+///
 /// ## Registered translations
-/// 
+///
 /// In this section, we define translations for axioms of other plugins.
 /// This best would be done using a register mechanism in a third plugin or at least in a separate file.
-/// 
+///
 /// The general concept is that a call to an axiom is replaced with a call to the augmented axiom.
 /// The augmented axiom needs a wrapper for meta arguments (HO-function).
 /// Appropiate cps2ds wrappers are introduced to handle that the augmented axioms are in cps where the original axioms were in ds.
 /// Example:
 /// ```
 /// mul' => args -> result*pullback
-/// call: r    = mul  (m,w) (a,b) 
+/// call: r    = mul  (m,w) (a,b)
 /// res : r,r* = mul' (m,w) (a,b)
 /// ```
 /// The types (with `Int` for `(Int w)`) are:
@@ -99,7 +99,7 @@
 /// mul'_cps : Π [m:.Nat,w:.Nat] -> cn[[Int,Int],cn[Int,   cn[Int,cn[Int,Int]]]]
 /// r,r* = (cps2ds (mul'_cps (m,w))) (a,b)
 /// ```
-/// 
+///
 /// The pullback is the derivative with respect to the input (weighted with the out tangent).
 /// For arithmetic operations, s is simply multiplied to each input tangent:
 /// `∂_i f(x1,...,xn) * s`
@@ -108,16 +108,16 @@
 /// This is a direct result from the chain composition with the partial pullback of a tuple.
 /// The tuple pullback transports the partial pullbacks of the operands and handles the sums.
 /// By its nature the pullback of a tuple needs to be a sum.
-/// 
+///
 /// ### %core.icmp.xYgLE (eq)
-/// 
+///
 /// The comparison pullback exists formally but is not used.
-/// 
-.con .extern internal_diff_core_icmp_xYgLE !.(s: .Nat)!(ab::(a b: .Idx s), ret: .Cn[.Idx 2, .Cn[.Idx 2, .Cn«2; .Idx s»]]) =
-    ret (%core.icmp.sle ab, .cn ![.Idx 2, pb_ret: .Cn«2; .Idx s»] = pb_ret ‹2; 0:(.Idx s)›);
+///
+.con .extern internal_diff_core_icmp_xYgLE !.(s: .Nat)!(ab::(a b: .Idx s), ret: .Cn[.Bool, .Cn[.Bool, .Cn«2; .Idx s»]]) =
+    ret (%core.icmp.sle ab, .cn ![.Bool, pb_ret: .Cn«2; .Idx s»] = pb_ret ‹2; 0:(.Idx s)›);
 ///
 /// ### %core.wrap.add
-/// 
+///
 /// s ↦ (s, s)
 ///
 .con .extern internal_diff_core_wrap_add !.(s: .Nat)!(m: .Nat)!(ab::(a b: .Idx s), ret: .Cn[.Idx s, .Cn[.Idx s, .Cn«2; .Idx s»]]) =
@@ -126,6 +126,6 @@
 /// ### %core.wrap.mul
 ///
 /// s ↦ (s*b, s*a)
-/// 
+///
 .con .extern internal_diff_core_wrap_mul !.(s: .Nat)!(m: .Nat)!(ab::(a b: .Idx s), ret: .Cn[.Idx s, .Cn[.Idx s, .Cn«2; .Idx s»]]) =
     ret (%core.wrap.mul m ab, .cn !(i: .Idx s, pb_ret: .Cn«2; .Idx s») = pb_ret (%core.wrap.mul m (i, b), %core.wrap.mul m (i, a)));

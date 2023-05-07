@@ -16,6 +16,7 @@
 /// The sign bit is neither included in `p` nor in `e`.
 /// Thus, the total number of bits occupied by a value of this type is `p + e + 1`.
 .ax %math.F: «2; .Nat» -> *;
+
 .let %math.f16     = (10,  5);
 .let %math.f32     = (23,  8);
 .let %math.f64     = (52, 11);
@@ -23,6 +24,7 @@
 .let %math.nvtf32  = (10,  8);
 .let %math.amdfp24 = (16,  7);
 .let %math.pxr24   = (15,  8);
+
 .let %math.F16     = %math.F %math.f16;
 .let %math.F32     = %math.F %math.f32;
 .let %math.F64     = %math.F %math.f64;
@@ -43,9 +45,9 @@
 ///
 /// Minimum and Maximum.
 ///     * `m`in or `M`ax
-///     * `i`: 
+///     * `i`:
 ///         Follows the behavior of libm’s fmin/fmax.
-///     
+///
 ///         If either operand is a NaN, returns the other non-NaN operand.
 ///         Returns NaN only if both operands are NaN.
 ///         The returned NaN is always quiet.
@@ -53,10 +55,10 @@
 ///         This means that `fmin(+/-0.0, +/-0.0)` could return either `-0.0` or `0.0`.
 ///     * `I`:
 ///         Follows the semantics of `minNum`/`maxNum` specified in the draft of IEEE 754-2018.
-///         
+///
 ///         If either operand is a NaN, returns NaN.
-///         Otherwise returns the lesser of the two arguments. 
-///         `-0.0` is considered to be less than `+0.0` for this intrinsic. 
+///         Otherwise returns the lesser of the two arguments.
+///         `-0.0` is considered to be less than `+0.0` for this intrinsic.
 ///
 /// | Subtag | Alias        | N | M |
 /// |--------|--------------|---|---|
@@ -66,7 +68,7 @@
 /// | `IM`   | `ieee754max` | x | x |
 ///
 .ax %math.extrema(im = fmin,       iM = fmax,
-                  Im = ieee754min, IM = ieee754max): 
+                  Im = ieee754min, IM = ieee754max):
     Π.[pe: «2; .Nat»][.Nat][«2; %math.F pe»] -> %math.F pe, normalize_extrema;
 ///
 /// ### %math.tri
@@ -149,7 +151,7 @@
 /// ### %math.gamma
 ///
 /// [Gamma function](https://en.wikipedia.org/wiki/Gamma_function) and its natural [logarithm](https://en.wikipedia.org/wiki/Gamma_function#The_log-gamma_function).
-/// 
+///
 /// | Name               | Meaning                             | Semantics                                                        |
 /// |--------------------|-------------------------------------|------------------------------------------------------------------|
 /// | ``%%math.gamma.t`` | gamma function                      | \f$\Gamma(x) = \int_0^\infty t^{x-1} e^{-t}\,dt\f$               |

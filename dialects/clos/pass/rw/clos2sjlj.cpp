@@ -1,5 +1,6 @@
 #include "dialects/clos/pass/rw/clos2sjlj.h"
 
+#include "dialects/clos/autogen.h"
 #include "dialects/core/core.h"
 
 namespace thorin::clos {
@@ -126,9 +127,8 @@ void Clos2SJLJ::enter() {
 
     {
         auto m0       = mem::mem_var(curr_mut());
-        auto [m1, jb] = op_alloc_jumpbuf(m0)->projs<2>();
+        auto [m1, jb] = w.call<clos::alloc_jmpbuf>(m0)->projs<2>();
         auto [m2, rb] = mem::op_slot(void_ptr(), m1)->projs<2>();
-
         auto new_args = curr_mut()->vars();
         new_args[0]   = m2;
         curr_mut()->reset(curr_mut()->reduce(w.tuple(new_args)));

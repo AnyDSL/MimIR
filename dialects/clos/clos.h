@@ -6,14 +6,6 @@
 
 namespace thorin::clos {
 
-/// @name %%clos.alloc_jmpbuf
-///@{
-inline Ref op_alloc_jumpbuf(Ref mem) {
-    World& w = mem->world();
-    return w.app(w.annex<alloc_jmpbuf>(), {w.tuple(), mem});
-}
-///@}
-
 /// @name Closures
 ///@{
 
@@ -38,8 +30,7 @@ public:
     Ref ret_var() { return fnc_as_lam()->ret_var(); }
     ///@}
 
-    operator bool() const { return def_ != nullptr; }
-
+    explicit operator bool() const { return def_ != nullptr; }
     operator const Tuple*() { return def_; }
 
     const Tuple* operator->() {
