@@ -10,8 +10,8 @@
 
 #include "thorin/axiom.h"
 #include "thorin/check.h"
-#include "thorin/config.h"
 #include "thorin/flags.h"
+#include "thorin/lam.h"
 #include "thorin/lattice.h"
 #include "thorin/tuple.h"
 
