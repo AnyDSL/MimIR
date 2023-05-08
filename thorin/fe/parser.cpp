@@ -766,18 +766,12 @@ Ref Parser::parse_decls(std::string_view ctxt) {
 void Parser::parse_ax_decl() {
     auto track = tracker();
     eat(Tag::K_ax);
-    auto ax                 = expect(Tag::M_anx, "extension name of an axiom");
-    auto [plugin, tag, sub] = Annex::split(world(), ax.sym());
-    auto&& [annex, is_new]  = driver().name2annex(ax.sym(), plugin, tag, ax.loc());
+    auto dbg                = expect(Tag::M_anx, "extension name of an axiom").dbg();
+    auto [plugin, tag, sub] = Annex::split(world(), dbg.sym);
+    auto&& [annex, is_new]  = driver().name2annex(dbg.sym, plugin, tag, dbg.loc);
 
-    if (!plugin) error(ax.loc(), "invalid axiom name '{}'", ax);
-    if (sub) error(ax.loc(), "definition of axiom '{}' must not have sub in tag name", ax);
-
-    // if (plugin != bootstrapper_.plugin()) {
-    //  TODO
-    //  error(ax.loc(), "axiom name `{}` implies a plugin name of `{}` but input file is named `{}`", ax,
-    //  annex.plugin, lexer_.file());
-    //}
+    if (!plugin) error(dbg.loc, "invalid axiom name '{}'", dbg.sym);
+    if (sub) error(dbg.loc, "definition of axiom '{}' must not have sub in tag name", dbg.sym);
 
     std::deque<std::deque<Sym>> new_subs;
     if (ahead().isa(Tag::D_paren_l)) {
@@ -793,13 +787,13 @@ void Parser::parse_ax_decl() {
     }
 
     if (!is_new && new_subs.empty() && !annex.subs.empty())
-        error(ax.loc(), "redeclaration of axiom '{}' without specifying new subs", ax);
+        error(dbg.loc, "redeclaration of axiom '{}' without specifying new subs", dbg.sym);
     else if (!is_new && !new_subs.empty() && annex.subs.empty())
-        error(ax.loc(), "cannot extend subs of axiom '{}' because it was declared as a subless axiom", ax);
+        error(dbg.loc, "cannot extend subs of axiom '{}' because it was declared as a subless axiom", dbg.sym);
 
     auto type = parse_type_ascr("type ascription of an axiom");
     if (!is_new && annex.pi != (type->isa<Pi>() != nullptr))
-        error(ax.loc(), "all declarations of axiom '{}' have to be function types if any is", ax);
+        error(dbg.loc, "all declarations of axiom '{}' have to be function types if any is", dbg.sym);
     annex.pi = type->isa<Pi>() != nullptr;
 
     Sym normalizer;
@@ -809,7 +803,7 @@ void Parser::parse_ax_decl() {
     }
 
     if (!is_new && (annex.normalizer && normalizer) && annex.normalizer != normalizer)
-        error(ax.loc(), "all declarations of axiom '{}' must use the same normalizer name", ax);
+        error(dbg.loc, "all declarations of axiom '{}' must use the same normalizer name", dbg.sym);
     annex.normalizer = normalizer;
 
     auto [curry, trip] = Axiom::infer_curry_and_trip(type);
@@ -827,17 +821,17 @@ void Parser::parse_ax_decl() {
     sub_t s    = annex.subs.size();
     if (new_subs.empty()) {
         auto norm  = driver().normalizer(p, t, 0);
-        auto axiom = world().axiom(norm, curry, trip, type, p, t, 0)->set(ax.loc(), ax.sym());
+        auto axiom = world().axiom(norm, curry, trip, type, p, t, 0)->set(dbg);
         world().register_annex(p | (flags_t(t) << 8_u64), axiom);
-        scopes_.bind(ax.dbg(), axiom);
+        scopes_.bind(dbg, axiom);
     } else {
         for (const auto& sub : new_subs) {
-            auto name  = world().sym(*ax.sym() + "."s + *sub.front());
+            auto name  = world().sym(*dbg.sym + "."s + *sub.front());
             auto norm  = driver().normalizer(p, t, s);
             auto axiom = world().axiom(norm, curry, trip, type, p, t, s)->set(track.loc(), name);
             world().register_annex(p | (flags_t(t) << 8_u64) | flags_t(s), axiom);
             for (auto& alias : sub) {
-                auto sym = world().sym(*ax.sym() + "."s + *alias);
+                auto sym = world().sym(*dbg.sym + "."s + *alias);
                 scopes_.bind({prev(), sym}, axiom);
             }
             ++s;
