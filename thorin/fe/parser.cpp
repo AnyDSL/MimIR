@@ -426,6 +426,7 @@ Pi* Parser::parse_pi_expr(Pi* outer) {
 }
 
 Lam* Parser::parse_lam(bool decl) {
+    // TODO mutual recursion (decl & define later)
     auto track    = tracker();
     auto tok      = lex();
     auto prec     = tok.isa(Tag::K_cn) || tok.isa(Tag::K_con) ? Tok::Prec::Bot : Tok::Prec::Pi;
