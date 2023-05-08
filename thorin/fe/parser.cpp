@@ -541,14 +541,7 @@ Lam* Parser::parse_lam(bool decl) {
 
     first->set(track.loc());
 
-    if (anx) {
-        auto [plugin, tag, _]  = Annex::split(world(), dbg.sym);
-        auto&& [annex, is_new] = driver().name2annex(dbg.sym, plugin, tag, {} /* TODO */);
-        plugin_t p             = *Annex::mangle(plugin);
-        tag_t t                = annex.tag_id;
-        // sub_t s    = annex.subs.size();
-        world().register_annex(p | (t << 8), first);
-    }
+    if (anx) register_annex(dbg, first);
 
     scopes_.pop();
     return first;
@@ -841,6 +834,22 @@ void Parser::parse_ax_decl() {
     expect(Tag::T_semicolon, "end of an axiom");
 }
 
+void Parser::register_annex(Dbg dbg, Ref def) {
+    auto [plugin, tag, sub] = Annex::split(world(), dbg.sym);
+    auto name               = world().sym(*plugin + "."s + *tag);
+    auto&& [annex, is_new]  = driver().name2annex(name, plugin, tag, dbg.loc);
+    plugin_t p              = *Annex::mangle(plugin);
+    tag_t t                 = annex.tag_id;
+    sub_t s                 = annex.subs.size();
+
+    if (sub) {
+        auto& aliases = annex.subs.emplace_back();
+        aliases.emplace_back(sub);
+    }
+
+    world().register_annex(p | (t << 8) | s, def);
+}
+
 void Parser::parse_let_decl() {
     eat(Tag::K_let);
 
@@ -855,13 +864,7 @@ void Parser::parse_let_decl() {
 
     if (auto dbg = std::get_if<Dbg>(&name)) {
         scopes_.bind(*dbg, body);
-
-        auto [plugin, tag, _]  = Annex::split(world(), dbg->sym);
-        auto&& [annex, is_new] = driver().name2annex(dbg->sym, plugin, tag, {} /* TODO */);
-        plugin_t p             = *Annex::mangle(plugin);
-        tag_t t                = annex.tag_id;
-        // sub_t s    = annex.subs.size();
-        world().register_annex(p | (t << 8), body);
+        register_annex(*dbg, body);
     } else
         std::get<std::unique_ptr<Ptrn>>(name)->bind(scopes_, body);
 

@@ -62,6 +62,11 @@
 /// A common problem when dealing with integer operations is [overflow](https://en.wikipedia.org/wiki/Integer_overflow).
 /// All operations that may overflow have an additional parameter `m` - [mode](@ref thorin::core::Mode) - of type `.Nat` that determines the exact desired behavior in the case of an overflow.
 ///
+.let %core.mode.us = 0b00; // wrap around - both signed and unsigned
+.let %core.mode.uS = 0b01; // no   signed wrap around
+.let %core.mode.Us = 0b10; // no unsigned wrap around
+.let %core.mode.US = 0b11; // no signed and unsigned wrap around
+///
 /// ### %core.idx
 ///
 /// Creates a literal of type `.Idx s` from `l` while obeying mode `m`.

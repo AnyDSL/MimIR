@@ -96,6 +96,7 @@ private:
     ///@{
     void parse_module();
     Dbg parse_id(std::string_view ctxt = {});
+    std::pair<Annex&, bool> parse_annex(std::string_view ctxt = {});
     std::pair<Dbg, bool> parse_name(std::string_view ctxt = {});
     void parse_import();
     void parse_plugin();
@@ -150,6 +151,7 @@ private:
     void parse_let_decl();
     void parse_sigma_decl();
     void parse_pi_decl();
+    void register_annex(Dbg, Ref);
     ///@}
 
     /// @name error messages
