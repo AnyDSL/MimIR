@@ -157,13 +157,17 @@
 ///
 /// ### %math.abs
 ///
-/// [Absolute value](https://en.wikipedia.org/wiki/Absolute_value) Returns absolute value of the provided value
+/// [Absolute value](https://en.wikipedia.org/wiki/Absolute_value) Returns absolute value of the provided floating point
 ///
 .ax %math.abs: Π.[pe: «2; .Nat»][.Nat][%math.F pe] -> %math.F pe, normalize_abs;
 ///
 /// ### %math.round
 ///
-/// [Rounding](https://en.wikipedia.org/wiki/Rounding) down, up, to nearby int or towards zero/truncating 
+/// Common rounding operations for floating points
+//// [Rounding down](https://en.wikipedia.org/wiki/Rounding#Rounding_down) (`f`loor)
+//// [Rounding up](https://en.wikipedia.org/wiki/Rounding#Rounding_up) (`c`eil)
+//// [Rounding to nearest int](https://en.wikipedia.org/wiki/Rounding#Rounding_to_the_nearest_integer) (`r`ound)
+//// [Rounding toward zero](https://en.wikipedia.org/wiki/Rounding#Rounding_toward_zero) (`t`runcate)
 ///
 /// | Name            | Meaning          | Semantics          |
 /// |-----------------|------------------|--------------------|
