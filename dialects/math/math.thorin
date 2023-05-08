@@ -121,14 +121,15 @@
 ///     * `L`ogarithm
 ///     * `B`ase 2 or natural
 ///
-/// | Subtag | Alias       | B | L | Meaning                 | Semantics      |
-/// |--------|-------------|---|---|-------------------------|----------------|
-/// | `bl`   | `exp`       | o | o | natural exponential     | \f$e^x\f$      |
-/// | `bL`   | `log`       | o | x | natural logarithm       | \f$\ln x\f$    |
-/// | `Bl`   | `exp2`, `b` | x | o | exponential with base 2 | \f$2^x\f$      |
-/// | `BL`   | `log2`      | x | x | logarithm with base 2   | \f$\log_2 x\f$ |
+/// | Subtag | Alias       | B | L | T | Meaning                 | Semantics       |
+/// |--------|-------------|---|---|---|-------------------------|-----------------|
+/// | `bl`   | `exp`       | o | o | o | natural exponential     | \f$e^x\f$       |
+/// | `bL`   | `log`       | o | x | o | natural logarithm       | \f$\ln x\f$     |
+/// | `Bl`   | `exp2`, `b` | x | o | o | exponential with base 2 | \f$2^x\f$       |
+/// | `BL`   | `log2`      | x | x | o | logarithm with base 2   | \f$\log_2 x\f$  |
+/// | `BLT`  | `log10`     | x | o | x | logarithm with base 10   | \f$log_{10} x\f$|
 ///
-.ax %math.exp(bl = exp, bL = log, Bl = exp2 = b, BL = log2):
+.ax %math.exp(bl = exp, bL = log, Bl = exp2 = b, BL = log2, BLT=log10):
     Π.[pe: «2; .Nat»][.Nat][%math.F pe] -> %math.F pe, normalize_exp;
 ///
 /// ### %math.er
@@ -152,6 +153,25 @@
 /// | ``%%math.gamma.l`` | natural logarithm of gamma function | \f$\ln \mid \int_0^\infty t^{x-1} e^{-t}\,dt \mid\f$ |
 ///
 .ax %math.gamma(t, l): Π.[pe: «2; .Nat»][.Nat][%math.F pe] -> %math.F pe, normalize_gamma;
+///
+/// ### %math.abs
+///
+/// [Absolute value] (https://en.wikipedia.org/wiki/Absolute_value) Returns absolute value of the provided value
+///
+.ax %math.abs: Π.[pe: «2; .Nat»][.Nat][%math.F pe] -> %math.F pe, normalize_abs;
+///
+/// ### %math.round
+///
+/// [Rounding down], [Rounding up], [Rounding to next integer] and [Rounding towards zero/Truncating] (https://en.wikipedia.org/wiki/Rounding) 
+///
+/// | Name            | Meaning          | Semantics          |
+/// |-----------------|------------------|--------------------|
+/// | `%%math.round.f`| floor round      | \f$\floor{x}\f$    |
+/// | `%%math.round.c`| ceil  round      | \f$\ceil{x}\f$     |
+/// | `%%math.round.r`| nearby int round | \f$\round{x}\f$    |
+/// | `%%math.round.t`| truncate round   | \f$\trunc{x}\f$    |
+///
+.ax %math.round(f,c,r,t): Π.[pe: «2; .Nat»][.Nat][%math.F pe] -> %math.F pe, normalize_round;
 ///
 /// ## Other Operations
 ///
