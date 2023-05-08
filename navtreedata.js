@@ -110,15 +110,15 @@ var NAVTREEINDEX =
 "core_2autogen_8h.html#a2037113e37e1d80005419b9f157fbf2b",
 "core_2normalizers_8cpp.html#a17687eab6b687d022fcb663fd8276045",
 "domtree_8h.html",
-"math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea5f71e9a601eddb735afe66f6f58dc6d9",
-"math_8h.html#a024f494df950b4312faf11037c62ea2f",
-"namespacethorin.html#a1e961804cf2964efea4388ebe218f496",
-"namespacethorin_1_1clos.html#a4a844e179839ad692329dee79b970238",
-"namespacethorin_1_1core.html#aa8b242642439ba61356618d88d0101b0",
-"namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58bad86cbfef3df7ac911f1d2605b4c1db41",
-"namespacethorin_1_1mem.html#a824466d0889f42ef915118f3bb09c782",
-"structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#a64b01c683e146fe246c8b19346fa6600",
-"tuple_8cpp.html#a4e087368518f24e3174721f3f993b20e"
+"math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea4237abb58fd06eb53c5c9f5f8289ade1",
+"math_2autogen_8h.html#afc02a39412a2c1f0df551c833cca1746",
+"namespacemembers_u.html",
+"namespacethorin_1_1autodiff.html#a70e498c2379dc6134a75385b61561590",
+"namespacethorin_1_1core.html#a93d7d300a2de35a61d5c1aa3a37488f2",
+"namespacethorin_1_1math.html#a33801e040219bb9351a85408671c4a27",
+"namespacethorin_1_1matrix.html#a0c165e50d5c34eb21a0f5c33c8955743",
+"reshape_8h.html",
+"structthorin_1_1utf8_1_1Lexer_1_1Char.html#ad1bf64e6f42056b4c1da51cda67d611c"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

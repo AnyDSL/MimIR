@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['h_0',['H',['../main_8cpp.html#a085744bf883a85c3fb7407874efa1d9da5008b1179f399a2273fd3f6a7fc3b292',1,'main.cpp']]],
-  ['h_1',['h',['../namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba611a5ed075e6a68e5c564630beda6946',1,'thorin::math']]],
+  ['h_0',['h',['../namespacethorin_1_1math.html#a3ce804e3dfaa4ffc4002611767d5e58ba611a5ed075e6a68e5c564630beda6946',1,'thorin::math']]],
+  ['h_1',['H',['../main_8cpp.html#a085744bf883a85c3fb7407874efa1d9da5008b1179f399a2273fd3f6a7fc3b292',1,'main.cpp']]],
   ['half_5fround_5fstyle_2',['HALF_ROUND_STYLE',['../types_8h.html#af470ed60568b3e7f4fde6092d22abbde',1,'types.h']]],
   ['half_5fround_5fties_5fto_5feven_3',['HALF_ROUND_TIES_TO_EVEN',['../types_8h.html#ab0c3c06432f0247f22594abe3df0ebfe',1,'types.h']]],
   ['handle_4',['Handle',['../structthorin_1_1Plugin.html#aae591752da76e65471bf51cc4acc1e06',1,'thorin::Plugin']]],

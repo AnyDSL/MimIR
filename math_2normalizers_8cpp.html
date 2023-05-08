@@ -137,6 +137,8 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:a48da5e6acc28b0cfe9f3402f29ae9a1c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="math_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c">CODE</a>(i)&#160;&#160;&#160;    case i: res = fold&lt;Id, i&gt;(la-&gt;get()); break;</td></tr>
+<tr class="separator:a48da5e6acc28b0cfe9f3402f29ae9a1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48da5e6acc28b0cfe9f3402f29ae9a1c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="math_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c">CODE</a>(i)&#160;&#160;&#160;    case i: res = fold&lt;Id, id, i&gt;(la-&gt;get()); break;</td></tr>
 <tr class="separator:a48da5e6acc28b0cfe9f3402f29ae9a1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48da5e6acc28b0cfe9f3402f29ae9a1c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="math_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c">CODE</a>(i)&#160;&#160;&#160;    case i: res = fold&lt;Id, id, i&gt;(la-&gt;get(), lb-&gt;get()); break;</td></tr>
@@ -185,10 +187,35 @@ Functions</h2></td></tr>
 <tr class="memitem:abb9921d1dbdfac714ed5f685137c8423"><td class="memTemplParams" colspan="2">template&lt;conv id&gt; </td></tr>
 <tr class="memitem:abb9921d1dbdfac714ed5f685137c8423"><td class="memTemplItemLeft" align="right" valign="top">Ref&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#abb9921d1dbdfac714ed5f685137c8423">thorin::math::normalize_conv</a> (Ref dst_t, Ref c, Ref x)</td></tr>
 <tr class="separator:abb9921d1dbdfac714ed5f685137c8423"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%math.abs</div></td></tr>
+<tr class="memitem:a5961f19229e6f9bffa25b282e991770e"><td class="memItemLeft" align="right" valign="top">Ref&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a5961f19229e6f9bffa25b282e991770e">thorin::math::normalize_abs</a> (Ref type, Ref c, Ref arg)</td></tr>
+<tr class="separator:a5961f19229e6f9bffa25b282e991770e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%math.round</div></td></tr>
+<tr class="memitem:a1f1d12b362143c19bae98bed8a0cb796"><td class="memTemplParams" colspan="2">template&lt;round id&gt; </td></tr>
+<tr class="memitem:a1f1d12b362143c19bae98bed8a0cb796"><td class="memTemplItemLeft" align="right" valign="top">Ref&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1math.html#a1f1d12b362143c19bae98bed8a0cb796">thorin::math::normalize_round</a> (Ref type, Ref c, Ref arg)</td></tr>
+<tr class="separator:a1f1d12b362143c19bae98bed8a0cb796"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a48da5e6acc28b0cfe9f3402f29ae9a1c" name="a48da5e6acc28b0cfe9f3402f29ae9a1c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48da5e6acc28b0cfe9f3402f29ae9a1c">&#9670;&#160;</a></span>CODE <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a48da5e6acc28b0cfe9f3402f29ae9a1c">&#9670;&#160;</a></span>CODE <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CODE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">i</td><td>)</td>
+          <td>&#160;&#160;&#160;    case i: res = fold&lt;Id, i&gt;(la-&gt;get()); break;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a48da5e6acc28b0cfe9f3402f29ae9a1c" name="a48da5e6acc28b0cfe9f3402f29ae9a1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48da5e6acc28b0cfe9f3402f29ae9a1c">&#9670;&#160;</a></span>CODE <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -206,7 +233,7 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a id="a48da5e6acc28b0cfe9f3402f29ae9a1c" name="a48da5e6acc28b0cfe9f3402f29ae9a1c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48da5e6acc28b0cfe9f3402f29ae9a1c">&#9670;&#160;</a></span>CODE <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a48da5e6acc28b0cfe9f3402f29ae9a1c">&#9670;&#160;</a></span>CODE <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

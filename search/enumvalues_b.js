@@ -10,5 +10,6 @@ var searchData=
   ['lit_7',['Lit',['../namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a8a318b95f9e4e08fd5b5cbcadcd93b7e',1,'thorin::Node']]],
   ['ll_8',['LL',['../main_8cpp.html#a085744bf883a85c3fb7407874efa1d9da11ea57bac296f79f8acbaf6fdf6bcc20',1,'main.cpp']]],
   ['log_9',['log',['../namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8feae9cf998d2c129918d6ac0913287090a5',1,'thorin::math']]],
-  ['log2_10',['log2',['../namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea6b0f54a2a201c4240bfc3ab831058832',1,'thorin::math']]]
+  ['log10_10',['log10',['../namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea0752a76f82ab85a655941aa6a2b8b40c',1,'thorin::math']]],
+  ['log2_11',['log2',['../namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea6b0f54a2a201c4240bfc3ab831058832',1,'thorin::math']]]
 ];

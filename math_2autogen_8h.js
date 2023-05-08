@@ -1,6 +1,7 @@
 var math_2autogen_8h =
 [
     [ "THORIN_math_NORMALIZER_IMPL", "math_2autogen_8h.html#a57be56a9ff18e5026bb27caff8f82257", null ],
+    [ "abs", "math_2autogen_8h.html#aff9178bb7d5010e4d0a09c5d23c779ff", null ],
     [ "arith", "math_2autogen_8h.html#aa313bc84ec271c77a5d5d1f6b3897ec4", [
       [ "add", "math_2autogen_8h.html#aa313bc84ec271c77a5d5d1f6b3897ec4a45de8c627f4c537dd05cfd3dab1a0a36", null ],
       [ "sub", "math_2autogen_8h.html#aa313bc84ec271c77a5d5d1f6b3897ec4a863f99016e8a7d80db237d49643f432c", null ],
@@ -54,15 +55,17 @@ var math_2autogen_8h =
       [ "fc", "math_2autogen_8h.html#a6dd8e88f4b0e547ae80c76780070119aa086bc53f36970b37e40ffc9d36fc30dc", null ]
     ] ],
     [ "exp", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fe", [
-      [ "bl", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fead9f2588c436d436d3f18a5dadac37efb", null ],
+      [ "Nl", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea40c821bca32ab0c71d418472469a0ff3", null ],
       [ "exp", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea5f71e9a601eddb735afe66f6f58dc6d9", null ],
-      [ "bL", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea5e258b8b92a1188b1fcf39d2467cc91d", null ],
+      [ "NL", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea1ad22ba67bb1f14823b937e735237fb1", null ],
       [ "log", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8feae9cf998d2c129918d6ac0913287090a5", null ],
       [ "Bl", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea4237abb58fd06eb53c5c9f5f8289ade1", null ],
       [ "exp2", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea4e9c84df80a6dd3be2eaf40f79b51dcf", null ],
       [ "b", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea142b727ea49fce05521e55d5137130a9", null ],
       [ "BL", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea38015fe0a0f89084d5c4301ba5dfcc85", null ],
-      [ "log2", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea6b0f54a2a201c4240bfc3ab831058832", null ]
+      [ "log2", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea6b0f54a2a201c4240bfc3ab831058832", null ],
+      [ "DL", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8feaf8136b9c85dcb54ce942003e881908bd", null ],
+      [ "log10", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea0752a76f82ab85a655941aa6a2b8b40c", null ]
     ] ],
     [ "extrema", "math_2autogen_8h.html#a774a066119a3684958cf3d8565ff52a8", [
       [ "im", "math_2autogen_8h.html#a774a066119a3684958cf3d8565ff52a8ad1c887896b48aa2a9c4e43d9a078af70", null ],
@@ -80,6 +83,12 @@ var math_2autogen_8h =
       [ "l", "math_2autogen_8h.html#ab58b0e0aa2975069c10eaf88cff49d5fab56bd84b4325cae0ff953569daeeecd6", null ]
     ] ],
     [ "pow", "math_2autogen_8h.html#a324add07f496847fd3381b0f642b5cec", null ],
+    [ "round", "math_2autogen_8h.html#a709876aa66f490fce569f65d0e35e59e", [
+      [ "f", "math_2autogen_8h.html#ab58b0e0aa2975069c10eaf88cff49d5fa90f68af5cf3a2df678258becc2d3f714", null ],
+      [ "c", "math_2autogen_8h.html#a709876aa66f490fce569f65d0e35e59eac0f826edc3198bf841bcc3e4121eb3d2", null ],
+      [ "r", "math_2autogen_8h.html#a709876aa66f490fce569f65d0e35e59eaf43a7cb46889460a4b77136eb492d73a", null ],
+      [ "t", "math_2autogen_8h.html#ab58b0e0aa2975069c10eaf88cff49d5fa015078298390da60594549c03f211240", null ]
+    ] ],
     [ "rt", "math_2autogen_8h.html#a2e71ce8f35522fa3a803797e930e5ddf", [
       [ "sq", "math_2autogen_8h.html#a2e71ce8f35522fa3a803797e930e5ddfa2adf7677d6630835f8e4cfc5fd6e4302", null ],
       [ "cb", "math_2autogen_8h.html#a2e71ce8f35522fa3a803797e930e5ddfa4b1b5a0f069db8df94c9d48ea823ed4d", null ]
@@ -116,6 +125,7 @@ var math_2autogen_8h =
       [ "atanh", "math_2autogen_8h.html#a3ce804e3dfaa4ffc4002611767d5e58bafc539a7a7715906f5b7c7db5d97b9bf9", null ],
       [ "AHFF", "math_2autogen_8h.html#a3ce804e3dfaa4ffc4002611767d5e58ba2acf183341e8c60e853c07e1aaf9d1f5", null ]
     ] ],
+    [ "normalize_abs", "math_2autogen_8h.html#a5961f19229e6f9bffa25b282e991770e", null ],
     [ "normalize_arith", "math_2autogen_8h.html#a043e8c60e23d31a6d663672eadee2bcf", null ],
     [ "normalize_cmp", "math_2autogen_8h.html#a72ac378d2391c5a54e7c6a60234beaa1", null ],
     [ "normalize_conv", "math_2autogen_8h.html#abb9921d1dbdfac714ed5f685137c8423", null ],
@@ -124,6 +134,7 @@ var math_2autogen_8h =
     [ "normalize_extrema", "math_2autogen_8h.html#a695cbd06a1231d289cac6603c2e79045", null ],
     [ "normalize_gamma", "math_2autogen_8h.html#ac8695d8e00a1c7308da513601f0aa79f", null ],
     [ "normalize_pow", "math_2autogen_8h.html#adb513511d10525c5acf25f5f64266929", null ],
+    [ "normalize_round", "math_2autogen_8h.html#a1f1d12b362143c19bae98bed8a0cb796", null ],
     [ "normalize_rt", "math_2autogen_8h.html#a2191c9079354097898b7df0ba218f883", null ],
     [ "normalize_tri", "math_2autogen_8h.html#a9f03f2cd6530e1ec131486e3d771a975", null ],
     [ "operator&", "math_2autogen_8h.html#ad202749c499c5d83cb251dd0fd5bde68", null ],
@@ -140,6 +151,8 @@ var math_2autogen_8h =
     [ "operator&", "math_2autogen_8h.html#a397f41af0e86d68b9528aabe5faaa591", null ],
     [ "operator&", "math_2autogen_8h.html#a9ba1fe1191a805c8074f3dc84d84316e", null ],
     [ "operator&", "math_2autogen_8h.html#af46bab38dae77929b905868c1704024f", null ],
+    [ "operator&", "math_2autogen_8h.html#a536ea499f068dc60048a9861a54021ba", null ],
+    [ "operator&", "math_2autogen_8h.html#ae075ce1a6769f5a067fbe1d84782c17b", null ],
     [ "operator&", "math_2autogen_8h.html#a042dbef37dcfd19ab876af679a31452d", null ],
     [ "operator&", "math_2autogen_8h.html#aca99cf8a411b6519e244370aba80d0ff", null ],
     [ "operator&", "math_2autogen_8h.html#af85abd07297876e4f2a31e060ed6aafd", null ],
@@ -149,6 +162,7 @@ var math_2autogen_8h =
     [ "operator&", "math_2autogen_8h.html#a53c0e397aa8d9610343cf7d26000228b", null ],
     [ "operator&", "math_2autogen_8h.html#ae2669b83bb73733d54e3f11bc0d45f58", null ],
     [ "operator&", "math_2autogen_8h.html#aba2f65333c8ae8c81eb818ea1748f0bb", null ],
+    [ "operator&", "math_2autogen_8h.html#a29bf754b850ff0a8f39e9993166211d2", null ],
     [ "operator&", "math_2autogen_8h.html#a566f994578ee4a9aa6c4b864416d0c69", null ],
     [ "operator&", "math_2autogen_8h.html#ab343cda01cc1f5d8962d9d7c47813679", null ],
     [ "operator&", "math_2autogen_8h.html#af60b1db1a4cd176643aa3f024ac785f6", null ],
@@ -160,6 +174,7 @@ var math_2autogen_8h =
     [ "operator<=>", "math_2autogen_8h.html#a507c67aee1aab2ba9f88341119c03ce6", null ],
     [ "operator<=>", "math_2autogen_8h.html#adf81bd316f3f85618f0e003cb017a56c", null ],
     [ "operator<=>", "math_2autogen_8h.html#a51aa9557d120d474e51616d17e6251c5", null ],
+    [ "operator<=>", "math_2autogen_8h.html#a9074e735e40b9e8b95895d6f460cf2e3", null ],
     [ "operator<=>", "math_2autogen_8h.html#a694dc069a21c97f6fba68ffe57759890", null ],
     [ "operator<=>", "math_2autogen_8h.html#a9eccdfdc9587fa10c847cb1ff2ad7f0d", null ],
     [ "operator<=>", "math_2autogen_8h.html#ab282693121455157e2c2e1b4163f648b", null ],
@@ -168,6 +183,7 @@ var math_2autogen_8h =
     [ "operator<=>", "math_2autogen_8h.html#a740dd56d019150f884b19cec7589b47b", null ],
     [ "operator<=>", "math_2autogen_8h.html#ae6dd80125a76f68db4e6a8988962817a", null ],
     [ "operator<=>", "math_2autogen_8h.html#a3cde384918574f88feef974c6bcec748", null ],
+    [ "operator<=>", "math_2autogen_8h.html#a7eb6fe75f4709855fbc6665d12e5e9e6", null ],
     [ "operator<=>", "math_2autogen_8h.html#a059cced26865dcc9e93d2cbc5a1a5b28", null ],
     [ "operator<=>", "math_2autogen_8h.html#a999275c0518a663819e78da7a92f8bb9", null ],
     [ "operator<=>", "math_2autogen_8h.html#ae0fca364c6bdeafab9cc497fafd5ae91", null ],
@@ -178,6 +194,7 @@ var math_2autogen_8h =
     [ "operator==", "math_2autogen_8h.html#a14e1f30b1bddab43678295f03fd86e40", null ],
     [ "operator==", "math_2autogen_8h.html#a3dafd7c436c91c7c294b75144d38d930", null ],
     [ "operator==", "math_2autogen_8h.html#a934adabacac6dfcf6696fcf53e558120", null ],
+    [ "operator==", "math_2autogen_8h.html#a8fd001d898517040a66beddd10e05759", null ],
     [ "operator==", "math_2autogen_8h.html#a8fb88bef1f7eb7f8d3fea207a148a612", null ],
     [ "operator==", "math_2autogen_8h.html#adf023995869bfbb52c5e0b268339040a", null ],
     [ "operator==", "math_2autogen_8h.html#a4946240e5e9d0a75dcf7a94996765d80", null ],
@@ -186,6 +203,7 @@ var math_2autogen_8h =
     [ "operator==", "math_2autogen_8h.html#a1cd3c109f1d393b0ea51dab8dc6b67ac", null ],
     [ "operator==", "math_2autogen_8h.html#a59acbb88b8273a3137c9b13550aa157c", null ],
     [ "operator==", "math_2autogen_8h.html#afc02a39412a2c1f0df551c833cca1746", null ],
+    [ "operator==", "math_2autogen_8h.html#aeb6e00f78b3932fc4bf17f5751e6e747", null ],
     [ "operator==", "math_2autogen_8h.html#a7d37311498a2fe54ff203d9da9d4ac75", null ],
     [ "operator==", "math_2autogen_8h.html#ada17b09142a3d9507ef0255cce4e5aad", null ],
     [ "operator==", "math_2autogen_8h.html#a9da34fe12ff7702b9b22c55e0d95c0db", null ],
@@ -203,6 +221,8 @@ var math_2autogen_8h =
     [ "operator^", "math_2autogen_8h.html#ab062e130e8c66faea270ab92f8b0b298", null ],
     [ "operator^", "math_2autogen_8h.html#ac1b6549b46b0f091efd638ba786735d4", null ],
     [ "operator^", "math_2autogen_8h.html#a19f8fed4d9a556bfb5e248ff8696547b", null ],
+    [ "operator^", "math_2autogen_8h.html#adbc7ad0c93f6755052f8c33d4ae820e7", null ],
+    [ "operator^", "math_2autogen_8h.html#ac94112771bfce7ce48818143099c6e8b", null ],
     [ "operator^", "math_2autogen_8h.html#a5343b6ad7a8a879f78bd296411756b84", null ],
     [ "operator^", "math_2autogen_8h.html#a67ebb99c41ebb7ea7c7fd374f89a35ea", null ],
     [ "operator^", "math_2autogen_8h.html#a0e6bb5aa6d95e0bd3f097a588186f495", null ],
@@ -212,6 +232,7 @@ var math_2autogen_8h =
     [ "operator^", "math_2autogen_8h.html#aa96c286bdfd79ea35265cf50b198e23e", null ],
     [ "operator^", "math_2autogen_8h.html#a27785d3011285ce9ace7215f5eb383e7", null ],
     [ "operator^", "math_2autogen_8h.html#a077bf34421aeb7a3b693bc51cea67ef8", null ],
+    [ "operator^", "math_2autogen_8h.html#a1cc16f001d9c783a1e01018726de8709", null ],
     [ "operator^", "math_2autogen_8h.html#a520a49d1da0246ab69c4e355a76a782f", null ],
     [ "operator^", "math_2autogen_8h.html#a901fbc7a5c17f03056ac2fcc60ad3c8a", null ],
     [ "operator^", "math_2autogen_8h.html#a103fd2cd8bab4b8f94c4434cdae1e2d1", null ],
@@ -230,6 +251,8 @@ var math_2autogen_8h =
     [ "operator|", "math_2autogen_8h.html#a5d6e24f5c29c1a22211924f734e93323", null ],
     [ "operator|", "math_2autogen_8h.html#ad8ab06600c293e3505aa37590d21524b", null ],
     [ "operator|", "math_2autogen_8h.html#ae44d392f6254999b34b268e7cb5bd8a6", null ],
+    [ "operator|", "math_2autogen_8h.html#a98f209cb3ee477d5c5a1bd6b31725eb5", null ],
+    [ "operator|", "math_2autogen_8h.html#a61d218600a2593abcdb3dec3cf467140", null ],
     [ "operator|", "math_2autogen_8h.html#a79c071d79d5170667a5423bde8360ad2", null ],
     [ "operator|", "math_2autogen_8h.html#abf61a48ddceca57f0e33ac924109eb55", null ],
     [ "operator|", "math_2autogen_8h.html#a7851586f60135c3d1f7d4db211672f98", null ],
@@ -239,6 +262,7 @@ var math_2autogen_8h =
     [ "operator|", "math_2autogen_8h.html#ac45532a5244988c49a692efa22da94a6", null ],
     [ "operator|", "math_2autogen_8h.html#afd775f03a4b36741b7b5d30bca213e27", null ],
     [ "operator|", "math_2autogen_8h.html#aadb5f1fbf25f5876cc39221e8c7de705", null ],
+    [ "operator|", "math_2autogen_8h.html#a0206b52917513ab3bae99ec042b57377", null ],
     [ "operator|", "math_2autogen_8h.html#a87e16e8eed9cdcb4203073adfe036881", null ],
     [ "operator|", "math_2autogen_8h.html#a26255fc909e3e8bd5aeee713924f5dc0", null ],
     [ "operator|", "math_2autogen_8h.html#a60eaf3af0b4c3e62ec019c4b55724895", null ],
