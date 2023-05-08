@@ -107,31 +107,30 @@ Res fold(u64 a, u64 b, [[maybe_unused]] bool nsw, [[maybe_unused]] bool nuw) {
 // Note that @p a and @p b are passed by reference as fold also commutes if possible.
 template<class Id, Id id>
 Ref fold(World& world, Ref type, const Def*& a, const Def*& b, Ref mode = {}) {
-    auto la = Lit::isa(a);
-    auto lb = Lit::isa(b);
-
     if (a->isa<Bot>() || b->isa<Bot>()) return world.bot(type);
 
-    if (la && lb) {
-        auto size  = Lit::as(Idx::size(a->type()));
-        auto width = Idx::size2bitwidth(size);
-        bool nsw = false, nuw = false;
-        if constexpr (std::is_same_v<Id, wrap>) {
-            auto m = mode ? Lit::as(mode) : 0_n;
-            nsw    = m & Mode::nsw;
-            nuw    = m & Mode::nuw;
-        }
+    if (auto la = Lit::isa(a)) {
+        if (auto lb = Lit::isa(b)) {
+            auto size  = Lit::as(Idx::size(a->type()));
+            auto width = Idx::size2bitwidth(size);
+            bool nsw = false, nuw = false;
+            if constexpr (std::is_same_v<Id, wrap>) {
+                auto m = mode ? Lit::as(mode) : 0_n;
+                nsw    = m & Mode::nsw;
+                nuw    = m & Mode::nuw;
+            }
 
-        Res res;
-        switch (width) {
+            Res res;
+            switch (width) {
 #define CODE(i) \
-    case i: res = fold<Id, id, i>(*la, *lb, nsw, nuw); break;
-            THORIN_1_8_16_32_64(CODE)
+        case i: res = fold<Id, id, i>(*la, *lb, nsw, nuw); break;
+                THORIN_1_8_16_32_64(CODE)
 #undef CODE
-            default: unreachable();
-        }
+                default: unreachable();
+            }
 
-        return res ? world.lit(type, *res) : world.bot(type);
+            return res ? world.lit(type, *res) : world.bot(type);
+        }
     }
 
     commute(id, a, b);
@@ -153,21 +152,23 @@ template<class Id>
 Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref b) {
     if (!is_associative(id)) return nullptr;
 
-    auto la = a->isa<Lit>();
-    auto xy = match<Id>(id, a);
-    auto zw = match<Id>(id, b);
-    auto lx = xy ? xy->arg(0)->template isa<Lit>() : nullptr;
-    auto lz = zw ? zw->arg(0)->template isa<Lit>() : nullptr;
-    auto y  = xy ? xy->arg(1) : nullptr;
-    auto w  = zw ? zw->arg(1) : nullptr;
+    if (auto xy = match<Id>(id, a)) {
+        if (auto zw = match<Id>(id, b)) {
+            auto la = a->isa<Lit>();
+            auto [x, y] = xy->template args<2>();
+            auto [z, w] = zw->template args<2>();
+            auto lx = Lit::isa(x);
+            auto lz = Lit::isa(z);
 
-    // if we reassociate, we have to forget about nsw/nuw
-    auto make_op = [&world, id](Ref a, Ref b) { return world.call(id, Mode::none, Defs{a, b}); };
+            // if we reassociate, we have to forget about nsw/nuw
+            auto make_op = [&world, id](Ref a, Ref b) { return world.call(id, Mode::none, Defs{a, b}); };
 
-    if (la && lz) return make_op(make_op(la, lz), w);             // (1)
-    if (lx && lz) return make_op(make_op(lx, lz), make_op(y, w)); // (2)
-    if (lz) return make_op(lz, make_op(a, w));                    // (3)
-    if (lx) return make_op(lx, make_op(y, b));                    // (4)
+            if (la && lz) return make_op(make_op(a, z), w);             // (1)
+            if (lx && lz) return make_op(make_op(x, z), make_op(y, w)); // (2)
+            if (lz) return make_op(z, make_op(a, w));                   // (3)
+            if (lx) return make_op(x, make_op(y, b));                   // (4)
+        }
+    }
 
     return nullptr;
 }
@@ -433,9 +434,7 @@ Ref normalize_wrap(Ref type, Ref c, Ref arg) {
                 case wrap::mul: return a;    // 0  * b -> 0
                 case wrap::shl: return a;    // 0 << b -> 0
             }
-        }
-
-        if (*la == 1) {
+        } else if (*la == 1) {
             switch (id) {
                 case wrap::add: break;
                 case wrap::sub: break;
