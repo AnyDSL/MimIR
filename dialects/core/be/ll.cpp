@@ -899,16 +899,10 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto a        = emit(exp->arg());
         auto t        = convert(exp->type());
         std::string f = "llvm.";
-        // clang-format off
-        switch (exp.id()) {
-            case math::exp::exp:  f += "exp" ; break;
-            case math::exp::exp2: f += "exp2"; break;
-            case math::exp::log:  f += "log" ; break;
-            case math::exp::log2: f += "log2"; break;
-            case math::exp::log10: f += "log10"; break;
-        }
-        // clang-format on
+        f += (exp.sub() & sub_t(math::exp::Lbb)) ? "log" : "exp";
+        f += (exp.sub() & sub_t(math::exp::lbB)) ? "2" : (exp.sub() & sub_t(math::exp::lBb)) ? "10" : "";
         f += llvm_suffix(exp->type());
+        // TODO doesn't work for exp10"
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
     } else if (auto er = match<math::er>(def)) {

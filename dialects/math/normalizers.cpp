@@ -56,12 +56,13 @@ Res fold(u64 a) {
         else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
     } else if constexpr (std::is_same_v<Id, exp>) {
         if constexpr (false) {}
-        else if constexpr (id == exp::exp ) return std::exp (x);
-        else if constexpr (id == exp::exp2) return std::exp2(x);
-        else if constexpr (id == exp::log ) return std::log (x);
-        else if constexpr (id == exp::log2) return std::log2(x);
+        else if constexpr (id == exp::exp  ) return std::exp  (x);
+        else if constexpr (id == exp::exp2 ) return std::exp2 (x);
+        else if constexpr (id == exp::exp10) return std::pow(T(10), x);
+        else if constexpr (id == exp::log  ) return std::log  (x);
+        else if constexpr (id == exp::log2 ) return std::log2 (x);
         else if constexpr (id == exp::log10) return std::log10(x);
-        else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
+        else unreachable();
     } else if constexpr (std::is_same_v<Id, er>) {
         if constexpr (false) {}
         else if constexpr (id == er::f ) return std::erf (x);

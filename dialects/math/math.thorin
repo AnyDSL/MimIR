@@ -128,18 +128,21 @@
 ///
 /// [Exponential function](https://en.wikipedia.org/wiki/Exponential_function) and [logarithm](https://en.wikipedia.org/wiki/Logarithm):
 ///     * `L`ogarithm
-///     * Base: `B`inary, `N`atural or `D`ecimal
+///     * `BB`: natural, binary, decimal, *unused*
 ///
-/// | Subtag | Alias       | B | L | Meaning                 | Semantics         |
-/// |--------|-------------|---|---|-------------------------|-------------------|
-/// | `Nl`   | `exp`       | N | o | natural exponential     | \f$e^x\f$         |
-/// | `NL`   | `log`       | N | x | natural logarithm       | \f$\ln x\f$       |
-/// | `Bl`   | `exp2`, `b` | B | o | exponential with base 2 | \f$2^x\f$         |
-/// | `BL`   | `log2`      | B | x | logarithm with base 2   | \f$\log_2 x\f$    |
-/// | `Dl`   |  *unused*   | D | o | *unused*                | *unused*          |
-/// | `DL`   | `log10`     | D | x | logarithm with base 10  | \f$\log_{10} x\f$ |
+/// | Subtag | Alias    | L | BB | Meaning                  | Semantics         |
+/// |--------|----------|---|----|--------------------------|-------------------|
+/// | `lbb`  | `exp`    | o | oo | natural exponential      | \f$e^x\f$         |
+/// | `lbB`  | `exp2`   | o | ox | exponential with base 2  | \f$2^x\f$         |
+/// | `lBb`  | `exp10`  | o | xo | exponential with base 10 | \f$10^x\f$        |
+/// | `lBB`  | *unused* | o | xx | -                        | *unused*          |
+/// | `Lbb`  | `log`    | x | oo | natural logarithm        | \f$\ln x\f$       |
+/// | `LbB`  | `log2`   | x | ox | logarithm with base 2    | \f$\log_2 x\f$    |
+/// | `LBb`  | `log10`  | x | xo | logarithm with base 10   | \f$\log_{10} x\f$ |
+/// | `LBB`  | *unused* | x | xx | -                        | *unused*          |
 ///
-.ax %math.exp(Nl = exp, NL = log, Bl = exp2 = b, BL = log2, DL=log10):
+.ax %math.exp(lbb = exp, lbB = exp2, lBb = exp10, lBB,
+              Lbb = log, LbB = log2, LBb = log10, LBB):
     Π.[pe: «2; .Nat»][.Nat][%math.F pe] -> %math.F pe, normalize_exp;
 ///
 /// ### %math.er
@@ -173,17 +176,17 @@
 /// ### %math.round
 ///
 /// Common rounding operations for floating points:
-/// * [Rounding down](https://en.wikipedia.org/wiki/Rounding#Rounding_down) (`f`loor)
-/// * [Rounding up](https://en.wikipedia.org/wiki/Rounding#Rounding_up) (`c`eil)
-/// * [Rounding to nearest int](https://en.wikipedia.org/wiki/Rounding#Rounding_to_the_nearest_integer) (`r`ound)
-/// * [Rounding toward zero](https://en.wikipedia.org/wiki/Rounding#Rounding_toward_zero) (`t`runcate)
+/// * `f`loor
+/// * `c`eil
+/// * `r`ound
+/// * `t`runcate
 ///
-/// | Name            | Meaning          | Semantics                |
-/// |-----------------|------------------|--------------------------|
-/// | `%%math.round.f`| floor round      | \f$\lfloor x \rfloor \f$ |
-/// | `%%math.round.c`| ceil  round      | \f$\lceil x \rceil \f$   |
-/// | `%%math.round.r`| nearby int round | \f$round (x)\f$          |
-/// | `%%math.round.t`| truncate round   | \f$trunc (x)\f$          |
+/// | Name            | Meaning                                                                                                     | Semantics                |
+/// |-----------------|-------------------------------------------------------------------------------------------------------------|--------------------------|
+/// | `%%math.round.f`| [round down](https://en.wikipedia.org/wiki/Rounding#Rounding_down)                                 | \f$\lfloor x \rfloor \f$ |
+/// | `%%math.round.c`| [round up](https://en.wikipedia.org/wiki/Rounding#Rounding_up)                                     | \f$\lceil x \rceil \f$   |
+/// | `%%math.round.r`| [round to nearest integer](https://en.wikipedia.org/wiki/Rounding#Rounding_to_the_nearest_integer)  | \f$round (x)\f$          |
+/// | `%%math.round.t`| [round towards zero](https://en.wikipedia.org/wiki/Rounding#Rounding_toward_zero)               | \f$trunc (x)\f$          |
 ///
 .ax %math.round(f,c,r,t): Π.[pe: «2; .Nat»][.Nat][%math.F pe] -> %math.F pe, normalize_round;
 ///
