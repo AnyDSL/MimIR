@@ -83,8 +83,8 @@ The following *terminals* comprise more complicated patterns:
 
 | Terminal      | Regular Expression                    | Comment                                                                                           |
 |---------------|---------------------------------------|---------------------------------------------------------------------------------------------------|
-| Sym           | sym                                   | symbol                                                                                            |
-| Ax            | `%` sym `.` sym (`.` sym)?            | Axiom                                                                                             |
+| S             | sym                                   | symbol                                                                                            |
+| A             | `%` sym `.` sym (`.` sym)?            | [Annex](@ref thorin::Annex) name                                                                  |
 | L             | dec+                                  | unsigned decimal literal                                                                          |
 | L             | 0b bin+                               | unsigned binary literal                                                                           |
 | L             | 0o oct+                               | unsigned octal literal                                                                            |
@@ -122,7 +122,7 @@ The previous table resorts to the following definitions as shorthand:
 | sym  | \[ `_``a`-`z``A`-`Z` \]\[ `.``_``0`-`9``a`-`z``A`-`Z` \]\*            | symbol                                          |
 | exc  | \[ <tt>\'</tt>`\"``\0``\a`<tt>\\b</tt>`\f``\n``\r`<tt>\\t</tt>`\v` \] | escape sequences                                |
 
-So, *sym* refers to the shorthand rule while *Sym* refers to the *terminal* that is identical to *sym*.
+So, *sym* refers to the shorthand rule while *S* refers to the *terminal* that is identical to *sym*.
 However, the terminal *Ax* also uses the shorthand rule *sym*.
 
 ### Comments
@@ -154,24 +154,25 @@ The following tables comprise all production rules:
 
 ### Module {#module}
 
-| LHS | RHS               | Comment | Thorin Class                |
-|-----|-------------------|---------|-----------------------------|
-| m   | dep\* d\*         | module  | [World](@ref thorin::World) |
-| dep | `.import` Sym `;` | import  |                             |
-| dep | `.plugin` Sym `;` | plugin  |                             |
+| LHS | RHS             | Comment | Thorin Class                |
+|-----|-----------------|---------|-----------------------------|
+| m   | dep\* d\*       | module  | [World](@ref thorin::World) |
+| dep | `.import` S `;` | import  |                             |
+| dep | `.plugin` S `;` | plugin  |                             |
 
 ### Declarations {#decl}
 
-| LHS | RHS                                                                                                                                                    | Comment                  | Thorin Class                |
-|-----|--------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------|-----------------------------|
-| d   | `.let` p  `=` e `;`                                                                                                                                    | let                      | -                           |
-| d   | `.lam` Sym (`.`? p)+ `→` e<sub>codom</sub> ( `=` de)? `;`                                                                                              | lambda declaration       | [Lam](@ref thorin::Lam)     |
-| d   | `.con` Sym (`.`? p)+                       ( `=` de)? `;`                                                                                              | continuation declaration | [Lam](@ref thorin::Lam)     |
-| d   | `.fun` Sym (`.`? p)+ `→` e<sub>ret</sub>   ( `=` de)? `;`                                                                                              | function declaration     | [Lam](@ref thorin::Lam)     |
-| d   | `.Pi` Sym (`:` e<sub>type</sub>)? (`=` e)? `;`                                                                                                         | Pi declaration           | [Pi](@ref thorin::Pi)       |
-| d   | `.Sigma` Sym (`:` e<sub>type</sub> )? (`,` L<sub>arity</sub>)? (`=` b<sub>[ ]</sub>)? `;`                                                              | sigma declaration        | [Sigma](@ref thorin::Sigma) |
-| d   | `.ax` Ax `:` e<sub>type</sub> (`(` sub `,` ... `,` sub `)`)? <br> (`,` Sym<sub>normalizer</sub>)? (`,` L<sub>curry</sub>)? (`,` L<sub>trip</sub>)? `;` | axiom                    | [Axiom](@ref thorin::Axiom) |
-| sub | Sym (`=` Sym `,` ... `,` Sym)?                                                                                                                         | subtag with aliases      |                             |
+| LHS | RHS                                                                                                                                                    | Comment                  | Thorin Class                                        |
+|-----|--------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------|-----------------------------------------------------|
+| d   | `.let`   (p \| A)  `=` e `;`                                                                                                                           | let                      | -                                                   |
+| d   | `.lam`   n (`.`? p)+ `→` e<sub>codom</sub> ( `=` de)? `;`                                                                                              | lambda declaration       | [Lam](@ref thorin::Lam)                             |
+| d   | `.con`   n (`.`? p)+                       ( `=` de)? `;`                                                                                              | continuation declaration | [Lam](@ref thorin::Lam)                             |
+| d   | `.fun`   n (`.`? p)+ `→` e<sub>ret</sub>   ( `=` de)? `;`                                                                                              | function declaration     | [Lam](@ref thorin::Lam)                             |
+| d   | `.Pi`    n (`:` e<sub>type</sub>)? (`=` e)? `;`                                                                                                        | Pi declaration           | [Pi](@ref thorin::Pi)                               |
+| d   | `.Sigma` n (`:` e<sub>type</sub> )? (`,` L<sub>arity</sub>)? (`=` b<sub>[ ]</sub>)? `;`                                                                | sigma declaration        | [Sigma](@ref thorin::Sigma)                         |
+| d   | `.ax`    A `:` e<sub>type</sub> (`(` sub `,` ... `,` sub `)`)? <br> (`,` S<sub>normalizer</sub>)? (`,` L<sub>curry</sub>)? (`,` L<sub>trip</sub>)? `;` | axiom                    | [Axiom](@ref thorin::Axiom)                         |
+| n   | S \| A                                                                                                                                                 | symbol or annex name     | [Sym](@ref thorin::Sym)/[Annex](@ref thorin::Annex) |
+| sub | S (`=` S `,` ... `,` S)?                                                                                                                               | subtag with aliases      |                                                     |
 <sup>s</sup> opens new scope
 
 An elided type of a `.Pi` or `.Sigma` declaration defaults to `*`.
@@ -218,13 +219,13 @@ This is particularly useful, when dealing with memory:
 
 | LHS             | RHS                                              | Comment                 |
 |-----------------|--------------------------------------------------|-------------------------|
-| p               | <tt>\`</tt>? Sym (`:` e<sub>type</sub> )?        | identifier `()`-pattern |
-| p               | (<tt>\`</tt>? Sym `::`)? `(` g `,` ... `,` g `)` | `()`-`()`-tuple pattern |
-| p               | (<tt>\`</tt>? Sym `::`)? b<sub>[ ]</sub>         | `[]`-`()`-tuple pattern |
+| p               | <tt>\`</tt>? S (`:` e<sub>type</sub> )?        | identifier `()`-pattern |
+| p               | (<tt>\`</tt>? S `::`)? `(` g `,` ... `,` g `)` | `()`-`()`-tuple pattern |
+| p               | (<tt>\`</tt>? S `::`)? b<sub>[ ]</sub>         | `[]`-`()`-tuple pattern |
 | g               | p                                                | group                   |
-| g               | Sym+ `:` e                                       | group                   |
-| b               | (<tt>\`</tt>? Sym `:`)? e<sub>type</sub>         | identifier `[]`-pattern |
-| b               | (<tt>\`</tt>? Sym `::`)? b<sub>[ ]</sub>         | `[]`-`[]`-tuple pattern |
+| g               | S+ `:` e                                       | group                   |
+| b               | (<tt>\`</tt>? S `:`)? e<sub>type</sub>         | identifier `[]`-pattern |
+| b               | (<tt>\`</tt>? S `::`)? b<sub>[ ]</sub>         | `[]`-`[]`-tuple pattern |
 | b<sub>[ ]</sub> | `[` b `,` ... `,` b `]`                          | `[]`-tuple pattern      |
 
 
@@ -248,8 +249,8 @@ This is particularly useful, when dealing with memory:
 | e   | `.ff`                                                                         | alias for `0_2`                         | [Lit](@ref thorin::Lit)         |
 | e   | `.tt`                                                                         | alias for `1_2`                         | [Lit](@ref thorin::Lit)         |
 | e   | (`.bot` \| `.top`) (`:` e<sub>type</sub>)?                                    | bottom/top                              | [TExt](@ref thorin::TExt)       |
-| e   | Sym                                                                           | identifier                              | -                               |
-| e   | Ax                                                                            | use of an axiom                         | -                               |
+| e   | S                                                                             | symbol                                  | [Sym](@ref thorin::Sym)         |
+| e   | A                                                                             | annex name                              | [Annex](@ref thorin::Annex)     |
 | e   | e e                                                                           | application                             | [App](@ref thorin::App)         |
 | e   | `.ret` p `=` e `$` e `;` de                                                   | ret expresison                          | [App](@ref thorin::App)         |
 | e   | `λ`   (`.`? p)+ (`→` e<sub>codom</sub>)? `=` de                               | lambda expression<sup>s</sup>           | [Lam](@ref thorin::Lam)         |
@@ -259,7 +260,7 @@ This is particularly useful, when dealing with memory:
 | e   | `Π`   `.`? b (`.`? b<sub>[ ]</sub>)\* `→` e<sub>codom</sub>                   | dependent function type<sup>s</sup>     | [Pi](@ref thorin::Pi)           |
 | e   | `.Cn` `.`? b (`.`? b<sub>[ ]</sub>)\*                                         | continuation type<sup>s</sup>           | [Pi](@ref thorin::Pi)           |
 | e   | `.Fn` `.`? b (`.`? b<sub>[ ]</sub>)\* `→` e<sub>codom</sub>                   | returning continuation type<sup>s</sup> | [Pi](@ref thorin::Pi)           |
-| e   | e `#` Sym                                                                     | extract via field "Sym"                 | [Extract](@ref thorin::Extract) |
+| e   | e `#` S                                                                       | extract via field "S"                   | [Extract](@ref thorin::Extract) |
 | e   | e `#` e<sub>index</sub>                                                       | extract                                 | [Extract](@ref thorin::Extract) |
 | e   | `.ins` `(` e<sub>tuple</sub> `,` e<sub>index</sub> `,` e<sub>value</sub> ` )` | insert                                  | [Insert](@ref thorin::Insert)   |
 | e   | `(` e<sub>0</sub> `,` ... `,` e<sub>n-1</sub>` )` (`:` e<sub>type</sub>)?     | tuple                                   | [Tuple](@ref thorin::Tuple)     |
@@ -267,7 +268,7 @@ This is particularly useful, when dealing with memory:
 | e   | `‹` s `;` e<sub>body</sub>`›`                                                 | pack<sup>s</sup>                        | [Pack](@ref thorin::Pack)       |
 | e   | `«` s `;` e<sub>body</sub>`»`                                                 | array<sup>s</sup>                       | [Arr](@ref thorin::Arr)         |
 | s   | e<sub>shape</sub>                                                             | shape                                   | -                               |
-| s   | Sym `:` e<sub>shape</sub>                                                     | parameterized shape                     | -                               |
+| s   | S `:` e<sub>shape</sub>                                                       | parameterized shape                     | -                               |
 <sup>s</sup> opens new scope
 
 An elided type of
@@ -279,17 +280,17 @@ An elided type of
 
 Expressions nesting is disambiguated according to the following precedence table (from strongest to weakest binding):
 
-| Operator             | Description                         | Associativity |
-|----------------------|-------------------------------------|---------------|
-| L `:` e              | type ascription of a literal        | -             |
-| e `#` e              | extract                             | left-to-right |
-| e e                  | application                         | left-to-right |
-| `Π` Sym `:` e        | domain of a dependent function type | -             |
-| `.fun` Sym Sym `:` e | function declaration                | -             |
-| `.lam` Sym Sym `:` e | lambda declaration                  | -             |
-| `.fn` Sym `:` e      | function expression                 | -             |
-| `λ` Sym `:` e        | lambda expression                   | -             |
-| e `→` e              | function type                       | right-to-left |
+| Operator   | Description                         | Associativity |
+|------------|-------------------------------------|---------------|
+| L `:` e    | type ascription of a literal        | -             |
+| e `#` e    | extract                             | left-to-right |
+| e e        | application                         | left-to-right |
+| `Π` b      | domain of a dependent function type | -             |
+| `.fun` n p | function declaration                | -             |
+| `.lam` n p | lambda declaration                  | -             |
+| `.fn` p    | function expression                 | -             |
+| `λ` p      | lambda expression                   | -             |
+| e `→` e    | function type                       | right-to-left |
 
 @note The domain of a dependent function type binds slightly stronger than `→`.
 This has the effect that
