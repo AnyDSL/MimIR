@@ -49,6 +49,7 @@ THORIN_EXPORT thorin::Plugin thorin_get_plugin();
 ///@}
 }
 
+/// Holds info about an entity defined within a Plugin (called *Annex*).
 struct Annex {
     Annex(Sym plugin, Sym tag, flags_t tag_id)
         : plugin(plugin)
