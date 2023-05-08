@@ -192,13 +192,14 @@ Ref merge_cmps(std::array<std::array<u64, 2>, 2> tab, Ref a, Ref b) {
         res >>= (7_u8 - u8(num_bits));
 
         if constexpr (std::is_same_v<Id, math::cmp>)
-            return world.call(math::cmp(res), /*rmode*/ a_cmp->decurry()->arg(0), Defs{a_cmp->arg(0), a_cmp->arg(1)});
+            return world.call(math::cmp(res), /*mode*/ a_cmp->decurry()->arg(), a_cmp->arg());
         else
-            return world.call(icmp(Annex::Base<icmp> | res), Defs{a_cmp->arg(0), a_cmp->arg(1)});
+            return world.call(icmp(Annex::Base<icmp> | res), a_cmp->arg());
     }
 
     return nullptr;
 }
+
 } // namespace
 
 template<nat id>

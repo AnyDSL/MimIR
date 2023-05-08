@@ -46,26 +46,11 @@ public:
     /// @name Annex Name
     /// @anchor anatomy
     ///@{
-    /// Anatomy of an Axiom name:
-    /// ```
-    /// %plugin.tag.sub
-    /// |  48   | 8 | 8 | <-- Number of bits per field.
-    /// ```
-    /// * Def::name() retrieves the full name as Sym.
-    /// * Def::flags() retrieves the full name as Axiom::mangle%d 64-bit integer.
-
-    /// Yields the `plugin` part of the name as integer.
-    /// It consists of 48 relevant bits that are returned in the highest 6 bytes of a 64-bit integer.
-    plugin_t plugin() const { return flags() & Annex::Global_Plugin; }
-
-    /// Yields the `tag` part of the name as integer.
-    tag_t tag() const { return tag_t((flags() & 0x0000'0000'0000'ff00_u64) >> 8_u64); }
-
-    /// Yields the `sub` part of the name as integer.
-    sub_t sub() const { return sub_t(flags() & 0x0000'0000'0000'00ff_u64); }
-
-    /// Includes Axiom::plugin() and Axiom::tag() but **not** Axiom::sub.
-    flags_t base() const { return flags() & ~0xff_u64; }
+    /// @see annex_name "Annex Name"
+    plugin_t plugin() const { return Annex::flags2plugin(flags()); }
+    tag_t tag() const { return Annex::flags2tag(flags()); }
+    sub_t sub() const { return Annex::flags2sub(flags()); }
+    flags_t base() const { return Annex::flags2base(flags()); }
     ///@}
 
     /// Type of Match::def_.
@@ -103,6 +88,7 @@ public:
 
     /// @name Axiom Name
     ///@{
+    /// @see annex_name "Annex Name"
     auto plugin() const { return axiom()->plugin(); } ///< @see Axiom::plugin.
     auto tag() const { return axiom()->tag(); }       ///< @see Axiom::tag.
     auto sub() const { return axiom()->sub(); }       ///< @see Axiom::sub.

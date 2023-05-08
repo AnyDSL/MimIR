@@ -95,6 +95,31 @@ struct Annex {
     static std::array<Sym, 3> split(World&, Sym);
     ///@}
 
+    /// @name Annex Name
+    /// @anchor annex_name
+    ///@{
+    /// Anatomy of an Annex name:
+    /// ```
+    /// %plugin.tag.sub
+    /// |  48   | 8 | 8 | <-- Number of bits per field.
+    /// ```
+    /// * Def::name() retrieves the full name as Sym.
+    /// * Def::flags() retrieves the full name as Axiom::mangle%d 64-bit integer.
+
+    /// Yields the `plugin` part of the name as integer.
+    /// It consists of 48 relevant bits that are returned in the highest 6 bytes of a 64-bit integer.
+    static plugin_t flags2plugin(flags_t f) { return f & Global_Plugin; }
+
+    /// Yields the `tag` part of the name as integer.
+    static tag_t flags2tag(flags_t f) { return tag_t((f & 0x0000'0000'0000'ff00_u64) >> 8_u64); }
+
+    /// Yields the `sub` part of the name as integer.
+    static sub_t flags2sub(flags_t f) { return sub_t(f & 0x0000'0000'0000'00ff_u64); }
+
+    /// Includes Axiom::plugin() and Axiom::tag() but **not** Axiom::sub.
+    static flags_t flags2base(flags_t f) { return f & ~0xff_u64; }
+    ///@}
+
     /// @name Helpers for Matching
     ///@{
     /// These are set via template specialization.
