@@ -141,6 +141,22 @@ std::pair<Dbg, bool> Parser::parse_name(std::string_view ctxt) {
     };
 }
 
+void Parser::register_annex(Dbg dbg, Ref def) {
+    auto [plugin, tag, sub] = Annex::split(world(), dbg.sym);
+    auto name               = world().sym("%"s + *plugin + "."s + *tag);
+    auto&& [annex, is_new]  = driver().name2annex(name, plugin, tag, dbg.loc);
+    plugin_t p              = *Annex::mangle(plugin);
+    tag_t t                 = annex.tag_id;
+    sub_t s                 = annex.subs.size();
+
+    if (sub) {
+        auto& aliases = annex.subs.emplace_back();
+        aliases.emplace_back(sub);
+    }
+
+    world().register_annex(p | (t << 8) | s, def);
+}
+
 Ref Parser::parse_type_ascr(std::string_view ctxt) {
     if (accept(Tag::T_colon)) return parse_expr(ctxt, Tok::Prec::Bot);
     if (ctxt.empty()) return nullptr;
@@ -538,10 +554,9 @@ Lam* Parser::parse_lam(bool decl) {
     }
 
     if (decl) expect(Tag::T_semicolon, "end of "s + entity);
+    if (anx) register_annex(dbg, first);
 
     first->set(track.loc());
-
-    if (anx) register_annex(dbg, first);
 
     scopes_.pop();
     return first;
@@ -764,7 +779,7 @@ void Parser::parse_ax_decl() {
     auto&& [annex, is_new]  = driver().name2annex(dbg.sym, plugin, tag, dbg.loc);
 
     if (!plugin) error(dbg.loc, "invalid axiom name '{}'", dbg.sym);
-    if (sub) error(dbg.loc, "definition of axiom '{}' must not have sub in tag name", dbg.sym);
+    if (sub) error(dbg.loc, "axiom '{}' must not have a subtag", dbg.sym);
 
     std::deque<std::deque<Sym>> new_subs;
     if (ahead().isa(Tag::D_paren_l)) {
@@ -786,7 +801,7 @@ void Parser::parse_ax_decl() {
 
     auto type = parse_type_ascr("type ascription of an axiom");
     if (!is_new && annex.pi != (type->isa<Pi>() != nullptr))
-        error(dbg.loc, "all declarations of axiom '{}' have to be function types if any is", dbg.sym);
+        error(dbg.loc, "all declarations of annex '{}' have to be function types if any is", dbg.sym);
     annex.pi = type->isa<Pi>() != nullptr;
 
     Sym normalizer;
@@ -834,22 +849,6 @@ void Parser::parse_ax_decl() {
     expect(Tag::T_semicolon, "end of an axiom");
 }
 
-void Parser::register_annex(Dbg dbg, Ref def) {
-    auto [plugin, tag, sub] = Annex::split(world(), dbg.sym);
-    auto name               = world().sym(*plugin + "."s + *tag);
-    auto&& [annex, is_new]  = driver().name2annex(name, plugin, tag, dbg.loc);
-    plugin_t p              = *Annex::mangle(plugin);
-    tag_t t                 = annex.tag_id;
-    sub_t s                 = annex.subs.size();
-
-    if (sub) {
-        auto& aliases = annex.subs.emplace_back();
-        aliases.emplace_back(sub);
-    }
-
-    world().register_annex(p | (t << 8) | s, def);
-}
-
 void Parser::parse_let_decl() {
     eat(Tag::K_let);
 
@@ -865,8 +864,9 @@ void Parser::parse_let_decl() {
     if (auto dbg = std::get_if<Dbg>(&name)) {
         scopes_.bind(*dbg, body);
         register_annex(*dbg, body);
-    } else
+    } else {
         std::get<std::unique_ptr<Ptrn>>(name)->bind(scopes_, body);
+    }
 
     expect(Tag::T_semicolon, "let expression");
 }
@@ -897,7 +897,10 @@ void Parser::parse_sigma_decl() {
 
         auto ptrn = parse_tuple_ptrn(track, false, dbg.sym, decl);
         auto t    = ptrn->type(world(), def2fields_);
+
+        assert(t->isa_mut<Sigma>());
         t->set<true>(track.loc());
+        if (anx) register_annex(dbg, t);
 
         if (auto infer = decl->isa<Infer>()) {
             assert(infer->op() == t);
@@ -931,6 +934,7 @@ void Parser::parse_pi_decl() {
             pi = world().mut_pi(type)->set(dbg);
             scopes_.bind(dbg, pi);
         }
+        if (anx) register_annex(dbg, pi);
 
         if (!ahead().isa(Tag::T_Pi) && !ahead().isa(Tag::K_Cn) && !ahead().isa(Tag::K_Fn))
             syntax_err("pi expression", "definition of a pi declaration");

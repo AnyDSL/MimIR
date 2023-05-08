@@ -101,6 +101,7 @@ private:
     void parse_import();
     void parse_plugin();
     Ref parse_type_ascr(std::string_view ctxt);
+    void register_annex(Dbg, Ref);
 
     template<class F>
     void parse_list(std::string ctxt, Tok::Tag delim_l, F f, Tok::Tag sep = Tok::Tag::T_comma) {
@@ -151,7 +152,6 @@ private:
     void parse_let_decl();
     void parse_sigma_decl();
     void parse_pi_decl();
-    void register_annex(Dbg, Ref);
     ///@}
 
     /// @name error messages
