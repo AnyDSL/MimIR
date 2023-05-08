@@ -123,7 +123,7 @@ The previous table resorts to the following definitions as shorthand:
 | exc  | \[ <tt>\'</tt>`\"``\0``\a`<tt>\\b</tt>`\f``\n``\r`<tt>\\t</tt>`\v` \] | escape sequences                                |
 
 So, *sym* refers to the shorthand rule while *S* refers to the *terminal* that is identical to *sym*.
-However, the terminal *Ax* also uses the shorthand rule *sym*.
+However, the terminal *A* also uses the shorthand rule *sym*.
 
 ### Comments
 
@@ -380,9 +380,9 @@ If the variable name of a Pi's domain is elided and the domain is a sigma, its e
 Π [T: *, U: *] → [T, U]
 ```
 
-### Axioms
+### Annex
 
-The names of axioms are special and live in a global namespace.
+Annex names are special and live in a global namespace.
 
 ### Field Names of Sigmas
 
