@@ -148,7 +148,7 @@ Ref fold(World& world, Ref type, const Def*& a, const Def*& b) {
             Res res;
             switch (width) {
 #define CODE(i) \
-        case i: res = fold<Id, id, i>(*la, *lb); break;
+    case i: res = fold<Id, id, i>(*la, *lb); break;
                 THORIN_16_32_64(CODE)
 #undef CODE
                 default: unreachable();
@@ -179,11 +179,11 @@ Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref 
 
     if (auto xy = match<Id>(id, a)) {
         if (auto zw = match<Id>(id, b)) {
-            auto la = Lit::isa(a);
+            auto la     = Lit::isa(a);
             auto [x, y] = xy->template args<2>();
             auto [z, w] = zw->template args<2>();
-            auto lx = Lit::isa(x);
-            auto lz = Lit::isa(z);
+            auto lx     = Lit::isa(x);
+            auto lz     = Lit::isa(z);
 
             std::function<Ref(Ref, Ref)> make_op;
 

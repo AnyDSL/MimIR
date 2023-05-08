@@ -123,7 +123,7 @@ Ref fold(World& world, Ref type, const Def*& a, const Def*& b, Ref mode = {}) {
             Res res;
             switch (width) {
 #define CODE(i) \
-        case i: res = fold<Id, id, i>(*la, *lb, nsw, nuw); break;
+    case i: res = fold<Id, id, i>(*la, *lb, nsw, nuw); break;
                 THORIN_1_8_16_32_64(CODE)
 #undef CODE
                 default: unreachable();
@@ -154,11 +154,11 @@ Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref 
 
     if (auto xy = match<Id>(id, a)) {
         if (auto zw = match<Id>(id, b)) {
-            auto la = a->isa<Lit>();
+            auto la     = a->isa<Lit>();
             auto [x, y] = xy->template args<2>();
             auto [z, w] = zw->template args<2>();
-            auto lx = Lit::isa(x);
-            auto lz = Lit::isa(z);
+            auto lx     = Lit::isa(x);
+            auto lz     = Lit::isa(z);
 
             // if we reassociate, we have to forget about nsw/nuw
             auto make_op = [&world, id](Ref a, Ref b) { return world.call(id, Mode::none, Defs{a, b}); };
