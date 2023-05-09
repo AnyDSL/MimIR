@@ -721,6 +721,7 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
 
     scopes_.push();
     parse_list("tuple pattern", delim_l, [&]() {
+        parse_decls({});
         auto track = tracker();
         if (!ptrns.empty()) ptrns.back()->bind(scopes_, infers.back());
 
@@ -908,8 +909,7 @@ void Parser::parse_sigma_decl() {
             scopes_.bind(dbg, decl);
         }
 
-        if (!ahead().isa(Tag::D_brckt_l))
-            syntax_err("sigma expression", "definition of a sigma declaration");
+        if (!ahead().isa(Tag::D_brckt_l)) syntax_err("sigma expression", "definition of a sigma declaration");
 
         auto ptrn = parse_tuple_ptrn(track, false, dbg.sym, decl);
         auto t    = ptrn->type(world(), def2fields_);

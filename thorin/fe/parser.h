@@ -147,6 +147,10 @@ private:
 
     /// @name parse decls
     ///@{
+
+    /// If @p ctxt ...
+    /// * ... empty: **Only** decls are parsed. @returns `nullptr`
+    /// * ... **non**-empty: Decls are parsed, then an expression. @returns expression.
     Ref parse_decls(std::string_view ctxt);
     void parse_ax_decl();
     void parse_let_decl();
