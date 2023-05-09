@@ -1,6 +1,4 @@
-// RUN: ! %thorin %s 2>&1 | FileCheck %s
-
+// RUN: not %thorin %s 2>&1 | FileCheck %s
 .Sigma F: *, 2;
 .Pi F: * = .Nat -> .Nat;
-
 // CHECK: error: 'F' has not been declared

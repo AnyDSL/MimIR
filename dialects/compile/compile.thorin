@@ -12,19 +12,19 @@
 ///
 /// ### %compile.Pass
 /// ### %compile.Phase
-/// 
+///
 /// Types for compilation passes and phases.
 ///
-.ax %compile.Pass: *; 
-.ax %compile.Phase: *; 
+.ax %compile.Pass:  *;
+.ax %compile.Phase: *;
 ///
 /// ### %compile.Pipeline
 /// ### %compile.PassList
-/// 
+///
 /// Types for functions that accept an arbitrary number of phases and passes respectively.
-/// 
-.Pi %compile.Pipeline: □      = Π %compile.Phase -> %compile.Pipeline;
-.Pi %compile.PassList: □      = Π %compile.Pass  -> %compile.PassList;
+///
+.Pi %compile.Pipeline:      □ = Π %compile.Phase -> %compile.Pipeline;
+.Pi %compile.PassList:      □ = Π %compile.Pass  -> %compile.PassList;
 .Pi %compile.CombinedPhase: □ = Π %compile.Phase -> %compile.CombinedPhase;
 ///
 /// (This is a forward declaration for opt.thorin.)
@@ -34,10 +34,10 @@
 /// ## Expressions
 ///
 /// ### Registered Plugins
-/// 
+///
 /// We expect the name in the tag before the `_` to be the name of the plugin (as given in `Plugin.plugin_name`).
 /// (This is a forward declaration for opt.thorin.)
-/// 
+///
 .ax %compile.core_plugin    : %compile.Plugin;
 .ax %compile.mem_plugin     : %compile.Plugin;
 .ax %compile.demo_plugin    : %compile.Plugin;
@@ -49,15 +49,15 @@
 .ax %compile.matrix_plugin  : %compile.Plugin;
 ///
 /// ### %opt.is_loaded
-/// 
+///
 /// Indicates whether a plugin is loaded.
 /// The normalizer will statically evaluate this expression to a constant boolean.
 /// TODO: find correct point (not at parsing but before compilation)
-/// 
+///
 // .ax %opt.is_loaded: %opt.Plugin -> .Bool;
-/// 
+///
 /// ### %compile.pipe
-/// 
+///
 /// Given n phases, returns the representation of a pipeline.
 ///
 .ax %compile.pipe: %compile.Pipeline;
@@ -65,13 +65,13 @@
 /// ## Passes and Phases
 ///
 /// ### %compile.debug_phase
-/// 
+///
 /// Given a log level, returns a phase that prints the externals (for log level >= 2).
 ///
 .ax %compile.debug_phase: .Nat -> %compile.Phase;
 ///
 /// ### %compile.pass_phase
-/// 
+///
 /// Given n passes, returns a phase that applies them in order.
 ///
 /// TODO: combine two pass_list
@@ -86,7 +86,7 @@
 .ax %compile.single_pass_phase: %compile.Pass -> %compile.Phase, normalize_single_pass_phase;
 ///
 /// ### %compile.combined_phase
-/// 
+///
 /// Given n phases, returns a phase that applies them in order.
 ///
 .ax %compile.phase_list: %compile.CombinedPhase;
@@ -95,7 +95,7 @@
 .ax %compile.phases_to_phase: Π [n:.Nat] -> «n; %compile.Phase» -> %compile.Phase;
 ///
 /// ### Passes
-/// 
+///
 /// Basic passes that are defined in the core of Thorin.
 ///
 .ax %compile.partial_eval_pass: %compile.Pass;
@@ -114,7 +114,7 @@
 .ax %compile.internal_cleanup_pass: %compile.Pass;
 ///
 /// ### Phases
-/// 
+///
 // TODO: allow functions by inlining them first
 .let optimization_pass_list = {
     .let eta_red = %compile.eta_red_pass;
@@ -130,9 +130,9 @@
 .let optimization_phase = {
     %compile.pass_phase optimization_pass_list
 };
-/// 
+///
 /// ### Pipelines
-/// 
+///
 .let default_core_pipeline = {
     .let nullptr = %compile.nullptr_pass;
     %compile.pipe
@@ -148,7 +148,7 @@
 .lam .extern _fallback_compile() -> %compile.Pipeline = default_core_pipeline;
 ///
 /// ### Dependent Passes and Phases
-/// 
+///
 .let empty_pass = %compile.nullptr_pass;
 .let empty_phase = %compile.passes_to_phase 0 ();
 .ax %compile.plugin_select: Π [T:*] -> %compile.Plugin -> T -> T -> T;

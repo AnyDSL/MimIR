@@ -426,7 +426,6 @@ Pi* Parser::parse_pi_expr(Pi* outer) {
 }
 
 Lam* Parser::parse_lam(bool decl) {
-    // TODO mutual recursion (decl & define later)
     auto track    = tracker();
     auto tok      = lex();
     auto prec     = tok.isa(Tag::K_cn) || tok.isa(Tag::K_con) ? Tok::Prec::Bot : Tok::Prec::Pi;
@@ -447,6 +446,8 @@ Lam* Parser::parse_lam(bool decl) {
 
     auto [dbg, anx] = decl ? parse_name(entity) : std::pair(Dbg{prev(), anonymous_}, false);
     auto outer      = scopes_.curr();
+
+    // if (auto def = scopes_.query(dbg)) {
 
     std::unique_ptr<Ptrn> dom_p;
     scopes_.push();
@@ -878,18 +879,19 @@ void Parser::parse_sigma_decl() {
     auto [dbg, anx] = parse_name("sigma declaration");
     auto type       = accept(Tag::T_colon) ? parse_expr("type of a sigma declaration") : world().type();
     auto arity      = std::optional<nat_t>{};
-    if (accept(Tag::T_comma)) arity = expect(Tag::L_u, "arity of a mutable Sigma").lit_u();
+    if (accept(Tag::T_comma)) arity = expect(Tag::L_u, "arity of a sigma").lit_u();
 
     if (accept(Tag::T_assign)) {
         Def* decl;
         if (auto def = scopes_.query(dbg)) {
-            if (auto sigma = def->isa_mut<Sigma>()) {
-                if (arity && arity != sigma->as_lit_arity())
-                    error(dbg.loc, "sigma '{}', redeclared with different arity '{}'; previous arity was '{}' here: {}",
-                          dbg.sym, *arity, sigma->as_lit_arity(), sigma->loc());
-            } else if (!def->isa<Infer>()) {
-                error(dbg.loc, "'{}' has not been declared as a mutable sigma", dbg.sym);
-            }
+            if ((!def->isa_mut<Sigma>() && !def->isa<Infer>()) || !def->isa_lit_arity())
+                error(dbg.loc, "'{}' has not been declared as a sigma", dbg.sym);
+            if (!world().checker().equiv(def->type(), type))
+                error(dbg.loc, "'{}' of type '{}' has been redeclared with a different type '{}'; here: {}", dbg.sym,
+                      def->type(), type, def->loc());
+            if (arity && *arity != def->as_lit_arity())
+                error(dbg.loc, "sigma '{}' redeclared with a different arity '{}'; previous arity was '{}' here: {}",
+                      dbg.sym, *arity, def->arity(), def->loc());
             decl = def->as_mut();
         } else {
             decl = (arity ? (Def*)world().mut_sigma(type, *arity) : (Def*)world().mut_infer(type))->set(dbg);
@@ -927,10 +929,14 @@ void Parser::parse_pi_decl() {
     if (accept(Tag::T_assign)) {
         Pi* pi;
         if (auto def = scopes_.query(dbg)) {
-            if (auto mut = def->isa_mut<Pi>())
+            if (auto mut = def->isa_mut<Pi>()) {
+                if (!world().checker().equiv(mut->type(), type))
+                    error(dbg.loc, "'{}' of type '{}' has been redeclared with a different type '{}'; here: {}",
+                          dbg.sym, mut->type(), type, mut->loc());
                 pi = mut;
-            else
-                error(dbg.loc, "'{}' has not been declared as a mutable pi", dbg.sym);
+            } else {
+                error(dbg.loc, "'{}' has not been declared as a pi", dbg.sym);
+            }
         } else {
             pi = world().mut_pi(type)->set(dbg);
             scopes_.bind(dbg, pi);

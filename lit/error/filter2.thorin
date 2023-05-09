@@ -1,0 +1,3 @@
+// RUN: not %thorin %s 2>&1 | FileCheck %s
+.lam f!() -> [];
+// CHECK: error: cannot specify filter of a function declaration

@@ -1,0 +1,4 @@
+// RUN: not %thorin %s 2>&1 | FileCheck %s
+.Pi F: □;
+.Pi F = .Nat -> .Nat;
+// CHECK: error: {{.*}}with a different type

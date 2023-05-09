@@ -1,6 +1,4 @@
-// RUN: ! %thorin %s 2>&1 | FileCheck %s 
-
+// RUN: not %thorin %s 2>&1 | FileCheck %s
 .lam .extern a() = ();
 .lam .extern a() = ();
-
 // CHECK: error: symbol 'a' already declared
