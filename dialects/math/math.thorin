@@ -232,8 +232,7 @@
 .ax %math.conv(s2f, u2f): Π.[ ss:     .Nat ][dpe: «2; .Nat»][   .Idx  ss] -> %math.F dpe, normalize_conv;
 .ax %math.conv(f2s, f2u): Π.[spe: «2; .Nat»][ ds:     .Nat ][%math.F spe] ->    .Idx  ds, normalize_conv;
 .ax %math.conv(f2f):      Π.[spe: «2; .Nat»][dpe: «2; .Nat»][%math.F spe] -> %math.F dpe, normalize_conv;
-
-
+///
 /// ### %math.slf
 /// [Standard logistic function](https://en.wikipedia.org/wiki/Logistic_function) of a floating point number (\f$slf(x) = \frac{1}{1+e^{-x}}\f$)
 ///
