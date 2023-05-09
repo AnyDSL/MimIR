@@ -254,7 +254,7 @@ Ref normalize_icmp(Ref type, Ref c, Ref arg) {
     if (id == icmp::f) return world.lit_ff();
     if (id == icmp::t) return world.lit_tt();
     if (a == b) {
-        if (id == icmp::e) return world.lit_tt();
+        if (id & (icmp::e & 0xff)) return world.lit_tt();
         if (id == icmp::ne) return world.lit_ff();
     }
 
@@ -363,6 +363,19 @@ Ref normalize_bit2(Ref type, Ref c, Ref arg) {
     if (auto res = reassociate<bit2>(id, world, callee, a, b)) return res;
 
     return world.raw_app(type, callee, {a, b});
+}
+
+Ref normalize_idx(Ref type, Ref c, Ref arg) {
+    auto& world = type->world();
+    auto callee = c->as<App>();
+    if (auto i = Lit::isa(arg)) {
+        if (auto s = Lit::isa(Idx::size(type))) {
+            if (*i < *s) return world.lit_idx(*s, *i);
+            if (auto m = Lit::isa(callee->arg())) return *m ? world.bot(type) : world.lit_idx_mod(*s, *i);
+        }
+    }
+
+    return world.raw_app(type, c, arg);
 }
 
 template<shr id>
