@@ -40,6 +40,7 @@ var classthorin_1_1Lam =
     [ "stub", "classthorin_1_1Lam.html#a0c84612b6c0e1ef6579c1a4dd70cf134", null ],
     [ "test", "classthorin_1_1Lam.html#a34c23d7f90d94f0833730ecf171ebbb7", null ],
     [ "type", "classthorin_1_1Lam.html#aac0491db119a7b3886a28a7736ed6fae", null ],
+    [ "unset", "classthorin_1_1Lam.html#a13fb398d0793694fe4345994ee658e5a", null ],
     [ "World", "classthorin_1_1Lam.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],
     [ "Node", "classthorin_1_1Lam.html#ae1c46e95c20fbe8755847a93ba0b5c72", null ]
 ];

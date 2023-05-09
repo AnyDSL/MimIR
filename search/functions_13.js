@@ -11,7 +11,7 @@ var searchData=
   ['unique_5fqueue_8',['unique_queue',['../classthorin_1_1unique__queue.html#a88c87fbc964625fc09245844a9e680d7',1,'thorin::unique_queue::unique_queue()=default'],['../classthorin_1_1unique__queue.html#a292a78863316276e6713cf2b5997dea6',1,'thorin::unique_queue::unique_queue(Set set)']]],
   ['univ_9',['univ',['../classthorin_1_1World.html#af5dccad9055934bc02d775b1744441e1',1,'thorin::World']]],
   ['unreachable_10',['unreachable',['../namespacethorin.html#a37d16cd32e773f40b5989147bd9bcbc9',1,'thorin']]],
-  ['unset_11',['unset',['../classthorin_1_1Def.html#aa2c3288f8797997c1c8e7767e64fdc9e',1,'thorin::Def']]],
+  ['unset_11',['unset',['../classthorin_1_1Sigma.html#a6bada145751162f308f20493d37d323e',1,'thorin::Sigma::unset()'],['../classthorin_1_1Arr.html#ac1b0529f378cdee98b4e5c839fde412c',1,'thorin::Arr::unset()'],['../classthorin_1_1Pack.html#ab53963e58af86b82658067cac7c42c94',1,'thorin::Pack::unset()'],['../classthorin_1_1Lam.html#a13fb398d0793694fe4345994ee658e5a',1,'thorin::Lam::unset()'],['../classthorin_1_1Pi.html#adc1221f720c030e38e312b341abdb0bf',1,'thorin::Pi::unset()'],['../classthorin_1_1Def.html#aa2c3288f8797997c1c8e7767e64fdc9e',1,'thorin::Def::unset()']]],
   ['unset_5ftype_12',['unset_type',['../classthorin_1_1Def.html#acadf49a1136933dd351dd5780c5ee96f',1,'thorin::Def']]],
   ['update_13',['update',['../classthorin_1_1Def.html#a2359d639c6e445bf85d4b7d4c5549b12',1,'thorin::Def']]],
   ['use_14',['Use',['../classthorin_1_1Use.html#a0d49bf17bfb4d916e5b655fcf1c1be95',1,'thorin::Use::Use()'],['../classthorin_1_1Use.html#ab04c9352606031636db45fe943262462',1,'thorin::Use::Use(const Def *def, size_t index)']]],

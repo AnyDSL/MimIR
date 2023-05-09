@@ -139,6 +139,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a53f3ba6335bc0aea1c63c0baaa7627d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55a1720eb092d5a84b590472ccb9e18b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structthorin_1_1Loc.html">Loc</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1Loc.html#a55a1720eb092d5a84b590472ccb9e18b">anew_finis</a> () const</td></tr>
 <tr class="separator:a55a1720eb092d5a84b590472ccb9e18b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab20d069236527af6254db50f74d4460e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structthorin_1_1Loc.html">Loc</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1Loc.html#ab20d069236527af6254db50f74d4460e">operator+</a> (<a class="el" href="structthorin_1_1Loc.html">Loc</a> loc) const</td></tr>
+<tr class="separator:ab20d069236527af6254db50f74d4460e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7825cf77a7c14204047cdd17076dba69"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1Loc.html#a7825cf77a7c14204047cdd17076dba69">operator bool</a> () const</td></tr>
 <tr class="separator:a7825cf77a7c14204047cdd17076dba69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa88ec4b8734526b19a9801f8d43b94c3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1Loc.html#aa88ec4b8734526b19a9801f8d43b94c3">operator==</a> (<a class="el" href="structthorin_1_1Loc.html">Loc</a> other) const</td></tr>
@@ -361,7 +363,7 @@ Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="loc_8h_source.html#l00048">48</a> of file <a class="el" href="loc_8h_source.html">loc.h</a>.</p>
 
-<p class="reference">References <a class="el" href="loc_8h_source.html#l00056">begin</a>, and <a class="el" href="loc_8h_source.html#l00055">path</a>.</p>
+<p class="reference">References <a class="el" href="loc_8h_source.html#l00057">begin</a>, and <a class="el" href="loc_8h_source.html#l00056">path</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="lexer_8cpp_source.html#l00034">thorin::fe::Lexer::lex()</a>.</p>
 
@@ -392,7 +394,7 @@ Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="loc_8h_source.html#l00049">49</a> of file <a class="el" href="loc_8h_source.html">loc.h</a>.</p>
 
-<p class="reference">References <a class="el" href="loc_8h_source.html#l00057">finis</a>, and <a class="el" href="loc_8h_source.html#l00055">path</a>.</p>
+<p class="reference">References <a class="el" href="loc_8h_source.html#l00058">finis</a>, and <a class="el" href="loc_8h_source.html#l00056">path</a>.</p>
 
 </div>
 </div>
@@ -438,9 +440,39 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="loc_8h_source.html#l00051">51</a> of file <a class="el" href="loc_8h_source.html">loc.h</a>.</p>
+
+<p class="reference">References <a class="el" href="loc_8h_source.html#l00057">begin</a>.</p>
+
+</div>
+</div>
+<a id="ab20d069236527af6254db50f74d4460e" name="ab20d069236527af6254db50f74d4460e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab20d069236527af6254db50f74d4460e">&#9670;&#160;</a></span>operator+()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structthorin_1_1Loc.html">Loc</a> thorin::Loc::operator+ </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structthorin_1_1Loc.html">Loc</a>&#160;</td>
+          <td class="paramname"><em>loc</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
 <p class="definition">Definition at line <a class="el" href="loc_8h_source.html#l00050">50</a> of file <a class="el" href="loc_8h_source.html">loc.h</a>.</p>
 
-<p class="reference">References <a class="el" href="loc_8h_source.html#l00056">begin</a>.</p>
+<p class="reference">References <a class="el" href="loc_8h_source.html#l00057">begin</a>, <a class="el" href="loc_8h_source.html#l00058">finis</a>, and <a class="el" href="loc_8h_source.html#l00056">path</a>.</p>
 
 </div>
 </div>
@@ -469,9 +501,9 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 <dl class="section note"><dt>Note</dt><dd><a class="el" href="structthorin_1_1Loc.html#ad3607e92eaeed907d628bf7c0ae02483">Loc::path</a> is only checked via pointer equality. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="loc_8h_source.html#l00052">52</a> of file <a class="el" href="loc_8h_source.html">loc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="loc_8h_source.html#l00053">53</a> of file <a class="el" href="loc_8h_source.html">loc.h</a>.</p>
 
-<p class="reference">References <a class="el" href="loc_8h_source.html#l00056">begin</a>, <a class="el" href="loc_8h_source.html#l00057">finis</a>, and <a class="el" href="loc_8h_source.html#l00055">path</a>.</p>
+<p class="reference">References <a class="el" href="loc_8h_source.html#l00057">begin</a>, <a class="el" href="loc_8h_source.html#l00058">finis</a>, and <a class="el" href="loc_8h_source.html#l00056">path</a>.</p>
 
 </div>
 </div>
@@ -488,9 +520,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="loc_8h_source.html#l00056">56</a> of file <a class="el" href="loc_8h_source.html">loc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="loc_8h_source.html#l00057">57</a> of file <a class="el" href="loc_8h_source.html">loc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="loc_8h_source.html#l00048">anew_begin()</a>, <a class="el" href="lexer_8cpp_source.html#l00034">thorin::fe::Lexer::lex()</a>, <a class="el" href="loc_8h_source.html#l00050">operator bool()</a>, <a class="el" href="loc_8cpp_source.html#l00013">thorin::operator&lt;&lt;()</a>, and <a class="el" href="loc_8h_source.html#l00052">operator==()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="loc_8h_source.html#l00048">anew_begin()</a>, <a class="el" href="lexer_8cpp_source.html#l00034">thorin::fe::Lexer::lex()</a>, <a class="el" href="loc_8h_source.html#l00051">operator bool()</a>, <a class="el" href="loc_8h_source.html#l00050">operator+()</a>, <a class="el" href="loc_8cpp_source.html#l00013">thorin::operator&lt;&lt;()</a>, and <a class="el" href="loc_8h_source.html#l00053">operator==()</a>.</p>
 
 </div>
 </div>
@@ -509,9 +541,9 @@ Public Attributes</h2></td></tr>
 <p>It's called <code>finis</code> because it refers to the <b>last</b> character within this <a class="el" href="structthorin_1_1Loc.html" title="Location in a File.">Loc</a>ation. </p>
 <p >In the STL the word <code>end</code> refers to the position of something that is one element <b>past</b> the end. </p>
 
-<p class="definition">Definition at line <a class="el" href="loc_8h_source.html#l00057">57</a> of file <a class="el" href="loc_8h_source.html">loc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="loc_8h_source.html#l00058">58</a> of file <a class="el" href="loc_8h_source.html">loc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="loc_8h_source.html#l00049">anew_finis()</a>, <a class="el" href="utf8_8h_source.html#l00069">thorin::utf8::Lexer&lt; Max_Ahead &gt;::next()</a>, <a class="el" href="loc_8cpp_source.html#l00013">thorin::operator&lt;&lt;()</a>, and <a class="el" href="loc_8h_source.html#l00052">operator==()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="loc_8h_source.html#l00049">anew_finis()</a>, <a class="el" href="utf8_8h_source.html#l00069">thorin::utf8::Lexer&lt; Max_Ahead &gt;::next()</a>, <a class="el" href="loc_8h_source.html#l00050">operator+()</a>, <a class="el" href="loc_8cpp_source.html#l00013">thorin::operator&lt;&lt;()</a>, and <a class="el" href="loc_8h_source.html#l00053">operator==()</a>.</p>
 
 </div>
 </div>
@@ -527,9 +559,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="loc_8h_source.html#l00055">55</a> of file <a class="el" href="loc_8h_source.html">loc.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="loc_8h_source.html#l00056">56</a> of file <a class="el" href="loc_8h_source.html">loc.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="loc_8h_source.html#l00048">anew_begin()</a>, <a class="el" href="loc_8h_source.html#l00049">anew_finis()</a>, <a class="el" href="lexer_8cpp_source.html#l00034">thorin::fe::Lexer::lex()</a>, <a class="el" href="loc_8cpp_source.html#l00013">thorin::operator&lt;&lt;()</a>, <a class="el" href="loc_8h_source.html#l00052">operator==()</a>, and <a class="el" href="lexer_8h_source.html#l00025">thorin::fe::Lexer::path()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="loc_8h_source.html#l00048">anew_begin()</a>, <a class="el" href="loc_8h_source.html#l00049">anew_finis()</a>, <a class="el" href="lexer_8cpp_source.html#l00034">thorin::fe::Lexer::lex()</a>, <a class="el" href="loc_8h_source.html#l00050">operator+()</a>, <a class="el" href="loc_8cpp_source.html#l00013">thorin::operator&lt;&lt;()</a>, <a class="el" href="loc_8h_source.html#l00053">operator==()</a>, and <a class="el" href="lexer_8h_source.html#l00025">thorin::fe::Lexer::path()</a>.</p>
 
 </div>
 </div>

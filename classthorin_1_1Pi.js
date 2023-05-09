@@ -28,10 +28,12 @@ var classthorin_1_1Pi =
     [ "rebuild", "classthorin_1_1Pi.html#a29864364fe84fc12fca4b9c836d4bba5", null ],
     [ "ret_dom", "classthorin_1_1Pi.html#a7922e6a461410952d359b95cfc772248", null ],
     [ "ret_pi", "classthorin_1_1Pi.html#adff22e3fb248795c8f8ca568e5619889", null ],
+    [ "ret_pi", "classthorin_1_1Pi.html#a34bd919f4978a204bd7235bd6c5d0f5d", null ],
     [ "set_codom", "classthorin_1_1Pi.html#a96b6e9b4f88c8c4fe9e9ccb05c731f23", null ],
     [ "set_dom", "classthorin_1_1Pi.html#a916737075d5ddb769683d9f9c300faff", null ],
     [ "set_dom", "classthorin_1_1Pi.html#ab231053458d250b44464adeeb09772bf", null ],
     [ "stub", "classthorin_1_1Pi.html#ab9ab74c1a1aedb98b7aed3a60015bb3c", null ],
+    [ "unset", "classthorin_1_1Pi.html#adc1221f720c030e38e312b341abdb0bf", null ],
     [ "World", "classthorin_1_1Pi.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],
     [ "Node", "classthorin_1_1Pi.html#a93b387e86c14fc0e418925d2c0eb01f8", null ]
 ];

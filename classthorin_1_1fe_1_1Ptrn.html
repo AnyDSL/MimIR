@@ -142,8 +142,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0c5712ecb56efe93231cd4a5498a3064"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae22c20d0d0c0bc4b9809bba5511faa46"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1fe_1_1Ptrn.html#ae22c20d0d0c0bc4b9809bba5511faa46">is_anonymous</a> () const</td></tr>
 <tr class="separator:ae22c20d0d0c0bc4b9809bba5511faa46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e3d701fad386e2a9186eea9fa34bcb2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1fe_1_1Ptrn.html#a4e3d701fad386e2a9186eea9fa34bcb2">bind</a> (<a class="el" href="classthorin_1_1fe_1_1Scopes.html">Scopes</a> &amp;, const <a class="el" href="classthorin_1_1Def.html">Def</a> *) const =0</td></tr>
-<tr class="separator:a4e3d701fad386e2a9186eea9fa34bcb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ca36ac299de6381851b8317a8174e6a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1fe_1_1Ptrn.html#a7ca36ac299de6381851b8317a8174e6a">bind</a> (<a class="el" href="classthorin_1_1fe_1_1Scopes.html">Scopes</a> &amp;, const <a class="el" href="classthorin_1_1Def.html">Def</a> *, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> <a class="el" href="classthorin_1_1fe_1_1Ptrn.html#a0c5712ecb56efe93231cd4a5498a3064">rebind</a>=false) const =0</td></tr>
+<tr class="separator:a7ca36ac299de6381851b8317a8174e6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a10758748d330cc70559480f0e6d1a2"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1fe_1_1Ptrn.html#a1a10758748d330cc70559480f0e6d1a2">type</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;, <a class="el" href="namespacethorin_1_1fe.html#a9556fb86dba0a9baa15b863c932a4f51">Def2Fields</a> &amp;) const =0</td></tr>
 <tr class="separator:a1a10758748d330cc70559480f0e6d1a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -232,8 +232,8 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4e3d701fad386e2a9186eea9fa34bcb2" name="a4e3d701fad386e2a9186eea9fa34bcb2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e3d701fad386e2a9186eea9fa34bcb2">&#9670;&#160;</a></span>bind()</h2>
+<a id="a7ca36ac299de6381851b8317a8174e6a" name="a7ca36ac299de6381851b8317a8174e6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ca36ac299de6381851b8317a8174e6a">&#9670;&#160;</a></span>bind()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -251,7 +251,13 @@ Protected Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
-          <td class="paramname">&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td>
+          <td class="paramname"><em>rebind</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -266,9 +272,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classthorin_1_1fe_1_1IdPtrn.html#a5bb80e239d5981c728871a7cb51931fe">thorin::fe::IdPtrn</a>, and <a class="el" href="classthorin_1_1fe_1_1TuplePtrn.html#ad0b7f5b764997dab142c21beca50a8fd">thorin::fe::TuplePtrn</a>.</p>
+<p>Implemented in <a class="el" href="classthorin_1_1fe_1_1IdPtrn.html#ade9fbbf5b0f5a6ba7124386577df6209">thorin::fe::IdPtrn</a>, and <a class="el" href="classthorin_1_1fe_1_1TuplePtrn.html#a19c44d6f2f7ebf65befa86d6fce0ec25">thorin::fe::TuplePtrn</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00018">thorin::fe::TuplePtrn::bind()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00020">thorin::fe::TuplePtrn::bind()</a>.</p>
 
 </div>
 </div>
@@ -299,7 +305,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="reference">References <a class="el" href="ast_8h_source.html#l00042">dbg_</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00016">thorin::fe::IdPtrn::bind()</a>, and <a class="el" href="ast_8cpp_source.html#l00018">thorin::fe::TuplePtrn::bind()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00016">thorin::fe::IdPtrn::bind()</a>, and <a class="el" href="ast_8cpp_source.html#l00020">thorin::fe::TuplePtrn::bind()</a>.</p>
 
 </div>
 </div>
@@ -357,9 +363,9 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00034">34</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
-<p class="reference">References <a class="el" href="ast_8h_source.html#l00042">dbg_</a>, and <a class="el" href="loc_8h_source.html#l00081">thorin::Dbg::loc</a>.</p>
+<p class="reference">References <a class="el" href="ast_8h_source.html#l00042">dbg_</a>, and <a class="el" href="loc_8h_source.html#l00082">thorin::Dbg::loc</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00018">thorin::fe::TuplePtrn::bind()</a>, <a class="el" href="ast_8cpp_source.html#l00030">thorin::fe::IdPtrn::type()</a>, and <a class="el" href="ast_8cpp_source.html#l00035">thorin::fe::TuplePtrn::type()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00020">thorin::fe::TuplePtrn::bind()</a>, <a class="el" href="ast_8cpp_source.html#l00032">thorin::fe::IdPtrn::type()</a>, and <a class="el" href="ast_8cpp_source.html#l00037">thorin::fe::TuplePtrn::type()</a>.</p>
 
 </div>
 </div>
@@ -390,7 +396,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="reference">References <a class="el" href="ast_8h_source.html#l00043">rebind_</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00016">thorin::fe::IdPtrn::bind()</a>, and <a class="el" href="ast_8cpp_source.html#l00018">thorin::fe::TuplePtrn::bind()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00016">thorin::fe::IdPtrn::bind()</a>, and <a class="el" href="ast_8cpp_source.html#l00020">thorin::fe::TuplePtrn::bind()</a>.</p>
 
 </div>
 </div>
@@ -419,9 +425,9 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00035">35</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
-<p class="reference">References <a class="el" href="ast_8h_source.html#l00042">dbg_</a>, and <a class="el" href="loc_8h_source.html#l00082">thorin::Dbg::sym</a>.</p>
+<p class="reference">References <a class="el" href="ast_8h_source.html#l00042">dbg_</a>, and <a class="el" href="loc_8h_source.html#l00083">thorin::Dbg::sym</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00018">thorin::fe::TuplePtrn::bind()</a>, <a class="el" href="ast_8h_source.html#l00037">is_anonymous()</a>, and <a class="el" href="ast_8cpp_source.html#l00035">thorin::fe::TuplePtrn::type()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00020">thorin::fe::TuplePtrn::bind()</a>, <a class="el" href="ast_8h_source.html#l00037">is_anonymous()</a>, and <a class="el" href="ast_8cpp_source.html#l00037">thorin::fe::TuplePtrn::type()</a>.</p>
 
 </div>
 </div>
@@ -461,7 +467,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Implemented in <a class="el" href="classthorin_1_1fe_1_1IdPtrn.html#a2c0bd6e095dec7ee4807f813efc3d7a3">thorin::fe::IdPtrn</a>, and <a class="el" href="classthorin_1_1fe_1_1TuplePtrn.html#a5714cc6c1a859a6130610645a0de47a8">thorin::fe::TuplePtrn</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00035">thorin::fe::TuplePtrn::type()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00037">thorin::fe::TuplePtrn::type()</a>.</p>
 
 </div>
 </div>
@@ -540,7 +546,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="ast_8h_source.html#l00044">44</a> of file <a class="el" href="ast_8h_source.html">ast.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00030">thorin::fe::IdPtrn::type()</a>, and <a class="el" href="ast_8cpp_source.html#l00035">thorin::fe::TuplePtrn::type()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00032">thorin::fe::IdPtrn::type()</a>, and <a class="el" href="ast_8cpp_source.html#l00037">thorin::fe::TuplePtrn::type()</a>.</p>
 
 </div>
 </div>

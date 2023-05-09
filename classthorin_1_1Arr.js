@@ -9,6 +9,7 @@ var classthorin_1_1Arr =
     [ "set_shape", "classthorin_1_1Arr.html#a75e797b30ee19ff42cd7030b129df180", null ],
     [ "shape", "classthorin_1_1Arr.html#a3a78e5ad52487c517e549b92b3d75090", null ],
     [ "stub", "classthorin_1_1Arr.html#a5c8fd0fe38abf0f648497dc91e35fc80", null ],
+    [ "unset", "classthorin_1_1Arr.html#ac1b0529f378cdee98b4e5c839fde412c", null ],
     [ "World", "classthorin_1_1Arr.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],
     [ "Node", "classthorin_1_1Arr.html#a2e988bc1d2651b159a3e56ecf72aaee7", null ]
 ];
