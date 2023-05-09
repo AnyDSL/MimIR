@@ -978,7 +978,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto a        = emit(round->arg());
         auto t        = convert(round->type());
         std::string f = "llvm.";
-        switch (round.id())   {
+        switch (round.id()) {
             case math::round::f: f += "floor"; break;
             case math::round::c: f += "ceil"; break;
             case math::round::r: f += "round"; break;

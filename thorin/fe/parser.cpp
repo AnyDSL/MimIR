@@ -13,20 +13,6 @@
 #include "thorin/util/array.h"
 #include "thorin/util/sys.h"
 
-// clang-format off
-#define DECL                \
-         Tag::K_ax:    \
-    case Tag::K_Arr:   \
-    case Tag::K_Pi:    \
-    case Tag::K_Sigma: \
-    case Tag::K_con:   \
-    case Tag::K_def:   \
-    case Tag::K_fun:   \
-    case Tag::K_lam:   \
-    case Tag::K_let:   \
-    case Tag::K_pack:
-// clang-format on
-
 using namespace std::string_literals;
 
 namespace thorin::fe {
@@ -164,7 +150,7 @@ Ref Parser::parse_infix_expr(Tracker track, const Def* lhs, Tok::Prec p) {
     while (true) {
         // If operator in ahead has less left precedence: reduce (break).
         if (ahead().isa(Tag::T_extract)) {
-            if (auto extract = parse_extract(track, lhs, p))
+            if (auto extract = parse_extract_expr(track, lhs, p))
                 lhs = extract;
             else
                 break;
@@ -187,7 +173,7 @@ Ref Parser::parse_infix_expr(Tracker track, const Def* lhs, Tok::Prec p) {
     return lhs;
 }
 
-Ref Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
+Ref Parser::parse_extract_expr(Tracker track, const Def* lhs, Tok::Prec p) {
     auto [l, r] = Tok::prec(Tok::Prec::Extract);
     if (l < p) return nullptr;
     lex();
@@ -211,7 +197,7 @@ Ref Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
     return world().extract(lhs, rhs)->set(track.loc());
 }
 
-Ref Parser::parse_insert() {
+Ref Parser::parse_insert_expr() {
     eat(Tag::K_ins);
     auto track = tracker();
 
@@ -229,22 +215,21 @@ Ref Parser::parse_insert() {
 Ref Parser::parse_primary_expr(std::string_view ctxt) {
     // clang-format off
     switch (ahead().tag()) {
-        case Tag::D_quote_l: return parse_arr();
-        case Tag::D_angle_l: return parse_pack();
-        case Tag::D_brace_l: return parse_block();
-        case Tag::D_brckt_l: return parse_sigma();
-        case Tag::D_paren_l: return parse_tuple();
-        case Tag::K_Type:    return parse_type();
+        case Tag::D_quote_l: return parse_arr_expr();
+        case Tag::D_angle_l: return parse_pack_expr();
+        case Tag::D_brace_l: return parse_block_expr();
+        case Tag::D_brckt_l: return parse_sigma_expr();
+        case Tag::D_paren_l: return parse_tuple_expr();
+        case Tag::K_Type:    return parse_type_expr();
         case Tag::K_Univ:    lex(); return world().univ();
         case Tag::K_Bool:    lex(); return world().type_bool();
         case Tag::K_Idx:     lex(); return world().type_idx();
         case Tag::K_Nat:     lex(); return world().type_nat();
         case Tag::K_ff:      lex(); return world().lit_ff();
         case Tag::K_tt:      lex(); return world().lit_tt();
-        case Tag::T_at:      return parse_var();
         case Tag::K_Cn:
         case Tag::K_Fn:
-        case Tag::T_Pi:      return parse_pi();
+        case Tag::T_Pi:      return parse_pi_expr();
         case Tag::K_cn:
         case Tag::K_fn:
         case Tag::T_lm:      return parse_lam();
@@ -254,9 +239,9 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::T_top:
         case Tag::L_s:
         case Tag::L_u:
-        case Tag::L_r:       return parse_lit();
-        case Tag::K_ins:     return parse_insert();
-        case Tag::K_ret:     return parse_ret();
+        case Tag::L_r:       return parse_lit_expr();
+        case Tag::K_ins:     return parse_insert_expr();
+        case Tag::K_ret:     return parse_ret_expr();
         case Tag::M_ax:      return scopes_.find(lex().dbg());
         case Tag::M_char:    return world().lit_int(8, lex().c8());
         case Tag::M_idx:     return lex().index();
@@ -270,15 +255,7 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
     return nullptr;
 }
 
-Ref Parser::parse_var() {
-    eat(Tag::T_at);
-    auto dbg = parse_sym("variable");
-    auto mut = scopes_.find(dbg)->isa_mut();
-    if (!mut) error(prev(), "variable must reference a mutable");
-    return mut->var()->set(dbg);
-}
-
-Ref Parser::parse_arr() {
+Ref Parser::parse_arr_expr() {
     auto track = tracker();
     scopes_.push();
     eat(Tag::D_quote_l);
@@ -306,7 +283,7 @@ Ref Parser::parse_arr() {
     return world().arr(shape, body)->set(track.loc());
 }
 
-Ref Parser::parse_pack() {
+Ref Parser::parse_pack_expr() {
     // TODO This doesn't work. Rework this!
     auto track = tracker();
     scopes_.push();
@@ -332,7 +309,7 @@ Ref Parser::parse_pack() {
     return world().pack(shape, body)->set(track.loc());
 }
 
-Ref Parser::parse_block() {
+Ref Parser::parse_block_expr() {
     scopes_.push();
     eat(Tag::D_brace_l);
     auto res = parse_decls("block expression");
@@ -341,20 +318,20 @@ Ref Parser::parse_block() {
     return res;
 }
 
-Ref Parser::parse_sigma() {
+Ref Parser::parse_sigma_expr() {
     auto track = tracker();
-    auto bndr  = parse_tuple_ptrn(track, false, anonymous_);
-    return bndr->type(world(), def2fields_);
+    auto ptrn  = parse_tuple_ptrn(track, false, anonymous_);
+    return ptrn->type(world(), def2fields_);
 }
 
-Ref Parser::parse_tuple() {
+Ref Parser::parse_tuple_expr() {
     auto track = tracker();
     DefVec ops;
     parse_list("tuple", Tag::D_paren_l, [&]() { ops.emplace_back(parse_expr("tuple element")); });
     return world().tuple(ops)->set(track.loc());
 }
 
-Ref Parser::parse_type() {
+Ref Parser::parse_type_expr() {
     auto track = tracker();
     eat(Tag::K_Type);
     auto [l, r] = Tok::prec(Tok::Prec::App);
@@ -362,7 +339,7 @@ Ref Parser::parse_type() {
     return world().type(level)->set(track.loc());
 }
 
-Ref Parser::parse_pi() {
+Pi* Parser::parse_pi_expr(Pi* outer) {
     auto track = tracker();
     auto tok   = lex();
 
@@ -382,11 +359,11 @@ Ref Parser::parse_pi() {
         auto prec     = tok.isa(Tag::K_Cn) ? Tok::Prec::Bot : Tok::Prec::App;
         auto dom      = parse_ptrn(Tag::D_brckt_l, "domain of a "s + name, prec);
         auto dom_t    = dom->type(world(), def2fields_);
-        auto pi       = world().mut_pi(world().type_infer_univ(), implicit)->set_dom(dom_t);
+        auto pi       = (outer ? outer : world().mut_pi(world().type_infer_univ()))->set_dom(dom_t);
         auto var      = pi->var()->set(dom->sym());
         first         = first ? first : pi;
 
-        pi->set(dom->dbg());
+        pi->make_implicit(implicit)->set(dom->dbg());
         dom->bind(scopes_, var);
         pis.emplace_back(pi);
     } while (ahead().isa(Tag::T_dot) || ahead().isa(Tag::D_brckt_l) || ahead().isa(Tag::T_backtick)
@@ -557,7 +534,7 @@ Lam* Parser::parse_lam(bool decl) {
     return first;
 }
 
-Ref Parser::parse_ret() {
+Ref Parser::parse_ret_expr() {
     eat(Tag::K_ret);
     auto ptrn = parse_ptrn(Tag::D_paren_l, "binding pattern of a ret expression");
     expect(Tag::T_assign, "let expression");
@@ -577,7 +554,7 @@ Ref Parser::parse_ret() {
     error(prev(), "continuation of the ret expression is not a returning continuation but has type '{}'", cn->type());
 }
 
-Ref Parser::parse_lit() {
+Ref Parser::parse_lit_expr() {
     auto track  = tracker();
     auto lit    = lex();
     auto [_, r] = Tok::prec(Tok::Prec::Lit);
@@ -694,7 +671,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok
     return nullptr;
 }
 
-std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, Sym sym) {
+std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, Sym sym, Def* decl) {
     auto delim_l = ahead().tag();
     bool p       = delim_l == Tag::D_paren_l;
     bool b       = delim_l == Tag::D_brckt_l;
@@ -741,7 +718,7 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
     scopes_.pop();
 
     // TODO parse type
-    return std::make_unique<TuplePtrn>(track.dbg(sym), rebind, std::move(ptrns), nullptr, std::move(infers));
+    return std::make_unique<TuplePtrn>(track.dbg(sym), rebind, std::move(ptrns), nullptr, std::move(infers), decl);
 }
 
 /*
@@ -752,24 +729,21 @@ Ref Parser::parse_decls(std::string_view ctxt) {
     while (true) {
         // clang-format off
         switch (ahead().tag()) {
-            case Tag::T_semicolon: lex();           break; // eat up stray semicolons
-            case Tag::K_ax:        parse_ax();      break;
-            case Tag::K_let:       parse_let();     break;
-            case Tag::K_Sigma:
-            case Tag::K_Arr:
-            case Tag::K_pack:
-            case Tag::K_Pi:        parse_mut();     break;
+            case Tag::T_semicolon: lex();              break; // eat up stray semicolons
+            case Tag::K_ax:        parse_ax_decl();    break;
+            case Tag::K_let:       parse_let_decl();   break;
+            case Tag::K_Sigma:     parse_sigma_decl(); break;
+            case Tag::K_Pi:        parse_pi_decl();    break;
             case Tag::K_con:
             case Tag::K_fun:
-            case Tag::K_lam:       parse_lam(true); break;
-            case Tag::K_def:       parse_def();     break;
+            case Tag::K_lam:       parse_lam(true);    break;
             default:               return ctxt.empty() ? nullptr : parse_expr(ctxt);
         }
         // clang-format on
     }
 }
 
-void Parser::parse_ax() {
+void Parser::parse_ax_decl() {
     auto track = tracker();
     eat(Tag::K_ax);
     auto ax                 = expect(Tag::M_ax, "name of an axiom");
@@ -851,7 +825,7 @@ void Parser::parse_ax() {
     expect(Tag::T_semicolon, "end of an axiom");
 }
 
-void Parser::parse_let() {
+void Parser::parse_let_decl() {
     eat(Tag::K_let);
     auto ptrn = parse_ptrn(Tag::D_paren_l, "binding pattern of a let expression");
     expect(Tag::T_assign, "let expression");
@@ -860,77 +834,79 @@ void Parser::parse_let() {
     expect(Tag::T_semicolon, "let expression");
 }
 
-void Parser::parse_mut() {
-    auto track    = tracker();
-    auto tag      = lex().tag();
-    bool external = accept(Tag::K_extern).has_value();
-    auto dbg      = parse_sym("mutable");
-    auto type     = accept(Tag::T_colon) ? parse_expr("type of a mutable") : world().type();
+void Parser::parse_sigma_decl() {
+    auto track = tracker();
+    eat(Tag::K_Sigma);
+    auto dbg   = parse_sym("sigma declaration");
+    auto type  = accept(Tag::T_colon) ? parse_expr("type of a sigma declaration") : world().type();
+    auto arity = std::optional<nat_t>{};
+    if (accept(Tag::T_comma)) arity = expect(Tag::L_u, "arity of a mutable Sigma").u();
 
-    Def* mut;
-    switch (tag) {
-        case Tag::K_Sigma: {
-            expect(Tag::T_comma, "mutable Sigma");
-            auto arity = expect(Tag::L_u, "arity of a mutable Sigma");
-            mut        = world().mut_sigma(type, arity.u())->set(dbg);
-            break;
+    if (accept(Tag::T_assign)) {
+        Def* decl;
+        if (auto def = scopes_.query(dbg)) {
+            if (auto sigma = def->isa_mut<Sigma>()) {
+                if (arity && arity != sigma->as_lit_arity())
+                    error(dbg.loc, "sigma '{}', redeclared with different arity '{}'; previous arity was '{}' here: {}",
+                          dbg.sym, *arity, sigma->as_lit_arity(), sigma->loc());
+            } else if (!def->isa<Infer>()) {
+                error(dbg.loc, "'{}' has not been declared as a mutable sigma", dbg.sym);
+            }
+            decl = def->as_mut();
+        } else {
+            decl = (arity ? (Def*)world().mut_sigma(type, *arity) : (Def*)world().mut_infer(type))->set(dbg);
+            scopes_.bind(dbg, decl);
         }
-        case Tag::K_Arr: {
-            expect(Tag::T_comma, "mutable array");
-            auto shape = parse_expr("shape of a mutable array");
-            mut        = world().mut_arr(type)->set(track.loc())->set_shape(shape);
-            break;
+
+        auto ptrn = parse_tuple_ptrn(track, false, dbg.sym, decl);
+        auto t    = ptrn->type(world(), def2fields_);
+        t->set<true>(track.loc());
+
+        if (auto infer = decl->isa<Infer>()) {
+            assert(infer->op() == t);
+            infer->set<true>(track.loc());
+            scopes_.bind(dbg, t, true); // rebind dbg to point to sigma instead of infer
+        } else {
+            assert(t == decl);
         }
-        case Tag::K_pack: mut = world().mut_pack(type)->set(dbg); break;
-        case Tag::K_Pi: {
-            expect(Tag::T_comma, "mutable Pi");
-            auto dom = parse_expr("domain of a mutable Pi");
-            mut      = world().mut_pi(type)->set(dbg)->set_dom(dom);
-            break;
-        }
-        default: unreachable();
+    } else {
+        auto decl = (arity ? (Def*)world().mut_sigma(type, *arity) : (Def*)world().mut_infer(type))->set(dbg);
+        scopes_.bind(dbg, decl);
     }
-    scopes_.bind(dbg, mut);
 
-    scopes_.push();
-    if (external) mut->make_external();
-
-    scopes_.push();
-    if (ahead().isa(Tag::T_assign))
-        parse_def(dbg);
-    else
-        expect(Tag::T_semicolon, "end of a mutable");
-
-    scopes_.pop();
-    scopes_.pop();
+    expect(Tag::T_semicolon, "end of a sigma declaration");
 }
 
-void Parser::parse_def(Dbg dbg /*= {}*/) {
-    if (!dbg.sym) {
-        eat(Tag::K_def);
-        dbg = parse_sym("mutable definition");
-    }
+void Parser::parse_pi_decl() {
+    auto track = tracker();
+    eat(Tag::K_Pi);
+    auto dbg  = parse_sym("pi declaration");
+    auto type = accept(Tag::T_colon) ? parse_expr("type of a pi declaration") : world().type();
 
-    auto mut = scopes_.find(dbg)->as_mut();
-    expect(Tag::T_assign, "mutable definition");
+    if (accept(Tag::T_assign)) {
+        Pi* pi;
+        if (auto def = scopes_.query(dbg)) {
+            if (auto mut = def->isa_mut<Pi>())
+                pi = mut;
+            else
+                error(dbg.loc, "'{}' has not been declared as a mutable pi", dbg.sym);
+        } else {
+            pi = world().mut_pi(type)->set(dbg);
+            scopes_.bind(dbg, pi);
+        }
 
-    size_t i = mut->isa<Arr, Pi>() ? 1 : 0; // first dependend op
-    size_t n = mut->num_ops();
+        if (!ahead().isa(Tag::T_Pi) && !ahead().isa(Tag::K_Cn) && !ahead().isa(Tag::K_Fn))
+            syntax_err("pi expression", "definition of a pi declaration");
 
-    if (ahead().isa(Tag::D_brace_l)) {
-        scopes_.push();
-        parse_list("mutable definition", Tag::D_brace_l, [&]() {
-            if (i == n) error(prev(), "too many operands");
-            mut->set(i++, parse_decls("operand of a mutable"));
-        });
-        scopes_.pop();
-    } else if (n - i == 1) {
-        mut->set(i, parse_decls("operand of a mutable"));
+        auto other = parse_pi_expr(pi);
+        assert_unused(other == pi);
+        pi->set<true>(track.loc());
     } else {
-        error(prev(), "expected operands for mutable definition");
+        auto pi = world().mut_pi(type)->set(dbg);
+        scopes_.bind(dbg, pi);
     }
 
-    expect(Tag::T_semicolon, "end of a mutable definition");
+    expect(Tag::T_semicolon, "end of a pi declaration");
 }
 
 } // namespace thorin::fe

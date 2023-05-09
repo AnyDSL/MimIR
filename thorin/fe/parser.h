@@ -116,22 +116,21 @@ private:
     Ref parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
     Ref parse_primary_expr(std::string_view ctxt);
     Ref parse_infix_expr(Tracker, const Def* lhs, Tok::Prec = Tok::Prec::Bot);
-    Ref parse_extract(Tracker, const Def*, Tok::Prec);
+    Ref parse_extract_expr(Tracker, const Def*, Tok::Prec);
     ///@}
 
     /// @name parse primary exprs
     ///@{
-    Ref parse_arr();
-    Ref parse_pack();
-    Ref parse_block();
-    Ref parse_sigma();
-    Ref parse_tuple();
-    Ref parse_type();
-    Ref parse_pi();
-    Ref parse_lit();
-    Ref parse_var();
-    Ref parse_insert();
-    Ref parse_ret();
+    Ref parse_arr_expr();
+    Ref parse_pack_expr();
+    Ref parse_block_expr();
+    Ref parse_sigma_expr();
+    Ref parse_tuple_expr();
+    Ref parse_type_expr();
+    Pi* parse_pi_expr(Pi* = nullptr);
+    Ref parse_lit_expr();
+    Ref parse_insert_expr();
+    Ref parse_ret_expr();
     Lam* parse_lam(bool decl = false);
     ///@}
 
@@ -140,18 +139,16 @@ private:
 
     /// Depending on @p tag, this parses a `()`-style (Tok::Tag::D_paren_l) or `[]`-style (Tok::Tag::D_brckt_l) Ptrn.
     std::unique_ptr<Ptrn> parse_ptrn(Tok::Tag tag, std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
-    std::unique_ptr<TuplePtrn> parse_tuple_ptrn(Tracker, bool, Sym);
+    std::unique_ptr<TuplePtrn> parse_tuple_ptrn(Tracker, bool rebind, Sym, Def* = nullptr);
     ///@}
 
     /// @name parse decls
     ///@{
     Ref parse_decls(std::string_view ctxt);
-    void parse_ax();
-    void parse_let();
-    void parse_mut();
-    /// If @p sym is **not** empty, this is an inline definition of @p sym,
-    /// otherwise it's a standalone definition.
-    void parse_def(Dbg dbg = {});
+    void parse_ax_decl();
+    void parse_let_decl();
+    void parse_sigma_decl();
+    void parse_pi_decl();
     ///@}
 
     /// @name error messages

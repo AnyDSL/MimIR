@@ -12,15 +12,16 @@ class Pi : public Def {
 protected:
     /// Constructor for an *immutable* Pi.
     Pi(const Def* type, const Def* dom, const Def* codom, bool implicit)
-        : Def(Node, type, {dom, codom}, implicit ? 1 : 0) {}
+        : Def(Node, type, {dom, codom}, (flags_t)implicit) {}
     /// Constructor for a *mut*able Pi.
     Pi(const Def* type, bool implicit)
         : Def(Node, type, 2, implicit ? 1 : 0) {}
 
 public:
-    /// @name Getters
+    /// @name Get/Set implicit
     ///@{
     bool is_implicit() const { return flags(); }
+    Pi* make_implicit(bool on) { return flags_ = (flags_t)on, this; }
     ///@}
 
     /// @name dom
@@ -66,9 +67,10 @@ public:
     /// @name Setters
     ///@{
     /// @see @ref set_ops "Setting Ops"
-    Pi* set_dom(const Def* dom) { return Def::set(0, dom)->as<Pi>(); }
+    Pi* set(Ref dom, Ref codom) { return set_dom(dom)->set_codom(codom); }
+    Pi* set_dom(Ref dom) { return Def::set(0, dom)->as<Pi>(); }
     Pi* set_dom(Defs doms);
-    Pi* set_codom(const Def* codom) { return Def::set(1, codom)->as<Pi>(); }
+    Pi* set_codom(Ref codom) { return Def::set(1, codom)->as<Pi>(); }
     Pi* unset() { return Def::unset()->as<Pi>(); }
     ///@}
 
