@@ -425,11 +425,11 @@ Pi* Parser::parse_pi_expr(Pi* outer) {
     return first;
 }
 
-Lam* Parser::parse_lam(bool decl) {
+Lam* Parser::parse_lam(bool is_decl) {
     auto track    = tracker();
     auto tok      = lex();
     auto prec     = tok.isa(Tag::K_cn) || tok.isa(Tag::K_con) ? Tok::Prec::Bot : Tok::Prec::Pi;
-    bool external = decl && accept(Tag::K_extern).has_value();
+    bool external = is_decl && accept(Tag::K_extern).has_value();
 
     std::string entity;
     // clang-format off
@@ -444,10 +444,17 @@ Lam* Parser::parse_lam(bool decl) {
     }
     // clang-format on
 
-    auto [dbg, anx] = decl ? parse_name(entity) : std::pair(Dbg{prev(), anonymous_}, false);
+    auto [dbg, anx] = is_decl ? parse_name(entity) : std::pair(Dbg{prev(), anonymous_}, false);
     auto outer      = scopes_.curr();
+    Lam* decl       = nullptr;
 
-    // if (auto def = scopes_.query(dbg)) {
+    if (auto def = scopes_.query(dbg)) {
+        if (auto lam = def->isa_mut<Lam>()) {
+            decl = lam;
+        } else {
+            error(dbg.loc, "'{}' has not been declared as a function", dbg.sym);
+        }
+    }
 
     std::unique_ptr<Ptrn> dom_p;
     scopes_.push();
@@ -458,8 +465,8 @@ Lam* Parser::parse_lam(bool decl) {
         dom_p             = parse_ptrn(Tag::D_paren_l, "domain pattern of a "s + entity, prec);
         auto dom_t        = dom_p->type(world(), def2fields_);
         auto pi           = world().mut_pi(world().type_infer_univ(), implicit)->set_dom(dom_t);
-        auto lam          = world().mut_lam(pi);
-        auto var          = lam->var()->set(dom_p->loc(), dom_p->sym());
+        auto lam          = (funs.empty() && decl) ? decl : world().mut_lam(pi);
+        auto var          = lam->var()->set<true>(dom_p->loc(), dom_p->sym());
         dom_p->bind(scopes_, var);
 
         if (auto tok = accept(Tag::T_at)) {
@@ -541,12 +548,12 @@ Lam* Parser::parse_lam(bool decl) {
         codom = pi;
     }
 
-    scopes_.bind(outer, dbg, first);
+    if (!decl) scopes_.bind(outer, dbg, first);
     if (external) first->make_external(true);
 
     auto body = accept(Tag::T_assign) ? parse_decls("body of a "s + entity) : nullptr;
     if (!body) {
-        if (!decl) error(prev(), "body of a {}", entity);
+        if (!is_decl) error(prev(), "body of a {}", entity);
         if (auto [_, __, filter] = funs.back(); filter) error(prev(), "cannot specify filter of a {}", entity);
     }
 
@@ -555,7 +562,7 @@ Lam* Parser::parse_lam(bool decl) {
         body = lam;
     }
 
-    if (decl) expect(Tag::T_semicolon, "end of "s + entity);
+    if (is_decl) expect(Tag::T_semicolon, "end of "s + entity);
     if (anx) register_annex(dbg, first);
 
     first->set(track.loc());
