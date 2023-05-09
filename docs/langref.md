@@ -318,15 +318,15 @@ What is more, since they are bound by a *let declaration*, they have the exact s
 The following expressions for applying `f` are also equivalent:
 ```
 f .Nat ((23, 42),.cn res: .Nat = use(res))
-.ret res = f .Nat : (23, 42); use(res)
+.ret res = f .Nat $ (23, 42); use(res)
 ```
 #### Function Types
 
 Finally, the following function types are all equivalent and denote the type of `f` above.
 ```
- Π [T:*][T, T][T -> ⊥] -> ⊥
-.Cn[T:*][T, T][.Cn T]
-.Fn[T:*][T, T] -> T
+ Π  [T:*][[T, T], T → ⊥] → ⊥
+.Cn [T:*][[T, T], .Cn T]
+.Fn [T:*] [T, T] → T
 ```
 
 ## Scoping
