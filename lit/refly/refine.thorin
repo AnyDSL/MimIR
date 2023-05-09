@@ -9,7 +9,7 @@
 .let _32 = 4294967296;
 .let I32 = .Idx _32;
 .let I64 = .Idx 0;
-.con .extern main [mem: %mem.M, argc: I32, argv: %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return: .Cn [%mem.M, I32]] = {
+.fun .extern main(mem: %mem.M, argc: I32, argv: %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0)) -> [%mem.M, I32] = {
     .let exp = %refly.reify <<4; .Nat>> (0, 1, 2, 3);
     .let new = %refly.refine (exp, 1, %refly.reify .Nat 42);
     .let tup = %refly.reflect <<4; .Nat>> new;

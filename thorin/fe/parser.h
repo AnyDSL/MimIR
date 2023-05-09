@@ -30,7 +30,8 @@ class Parser {
 public:
     Parser(World& world)
         : world_(world)
-        , anonymous_(world.sym("_")) {}
+        , anonymous_(world.sym("_"))
+        , return_(world.sym("return")) {}
 
     World& world() { return world_; }
     Driver& driver() { return world().driver(); }
@@ -120,7 +121,6 @@ private:
 
     /// @name parse primary exprs
     ///@{
-    Ref parse_Cn();
     Ref parse_arr();
     Ref parse_pack();
     Ref parse_block();
@@ -131,6 +131,7 @@ private:
     Ref parse_lit();
     Ref parse_var();
     Ref parse_insert();
+    Ref parse_ret();
     Lam* parse_lam(bool decl = false);
     ///@}
 
@@ -175,6 +176,7 @@ private:
     Scopes scopes_;
     Def2Fields def2fields_;
     Sym anonymous_;
+    Sym return_;
 };
 
 } // namespace thorin::fe

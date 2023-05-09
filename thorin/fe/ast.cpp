@@ -13,13 +13,15 @@ namespace thorin::fe {
  * bind
  */
 
-void IdPtrn::bind(Scopes& scopes, const Def* def) const { scopes.bind(dbg(), def, rebind()); }
+void IdPtrn::bind(Scopes& scopes, const Def* def, bool rebind) const {
+    scopes.bind(dbg(), def, rebind || this->rebind());
+}
 
-void TuplePtrn::bind(Scopes& scopes, const Def* def) const {
-    scopes.bind(dbg(), def, rebind());
+void TuplePtrn::bind(Scopes& scopes, const Def* def, bool rebind) const {
+    scopes.bind(dbg(), def, rebind || this->rebind());
     for (size_t i = 0, e = num_ptrns(); i != e; ++i) {
         auto proj = def->proj(e, i)->set(ptrn(i)->loc(), ptrn(i)->sym());
-        ptrn(i)->bind(scopes, proj);
+        ptrn(i)->bind(scopes, proj, rebind);
     }
 }
 

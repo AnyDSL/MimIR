@@ -54,8 +54,13 @@ public:
     /// @name Return Continuation
     /// @anchor return_continuation
     ///@{
-    const Pi* ret_pi() const;                       ///< Yields the last Pi::dom, if it is a Pi::isa_basicblock.
-    Ref ret_dom() const { return ret_pi()->dom(); } ///< Pi::dom%ain of Pi::ret_pi.
+
+    /// Yields the Pi::ret_pi() of @p d, if it is in fact a Pi.
+    static const Pi* ret_pi(Ref d) { return d->isa<Pi>() ? d->as<Pi>()->ret_pi() : nullptr; }
+    /// Yields the last Pi::dom, if it Pi::isa_basicblock.
+    const Pi* ret_pi() const;
+    /// Pi::dom%ain of Pi::ret_pi.
+    Ref ret_dom() const { return ret_pi()->dom(); }
     ///@}
 
     /// @name Setters
@@ -64,6 +69,7 @@ public:
     Pi* set_dom(const Def* dom) { return Def::set(0, dom)->as<Pi>(); }
     Pi* set_dom(Defs doms);
     Pi* set_codom(const Def* codom) { return Def::set(1, codom)->as<Pi>(); }
+    Pi* unset() { return Def::unset()->as<Pi>(); }
     ///@}
 
     /// @name Type Checking
@@ -151,6 +157,7 @@ public:
     Lam* branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem);
     Lam* test(Filter filter, const Def* val, const Def* idx, const Def* match, const Def* clash, const Def* mem);
     Lam* set(Defs ops) { return Def::set(ops)->as<Lam>(); }
+    Lam* unset() { return Def::unset()->as<Lam>(); }
     ///@}
 
     Lam* stub(World&, Ref) override;
