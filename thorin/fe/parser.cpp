@@ -134,7 +134,7 @@ Dbg Parser::parse_id(std::string_view ctxt) {
 std::pair<Dbg, bool> Parser::parse_name(std::string_view ctxt) {
     if (auto tok = accept(Tag::M_anx)) return {tok->dbg(), true};
     if (auto tok = accept(Tag::M_id)) return {tok->dbg(), false};
-    syntax_err("identifier or extension name", ctxt);
+    syntax_err("identifier or annex name", ctxt);
     return {
         {prev(), world().sym("<error>")},
         false
@@ -547,8 +547,10 @@ Lam* Parser::parse_lam(bool is_decl) {
         codom = pi;
     }
 
-    if (!decl) scopes_.bind(outer, dbg, first);
-    if (external) first->make_external(true);
+    if (!decl) {
+        scopes_.bind(outer, dbg, first);
+        if (external) first->make_external(true);
+    }
 
     auto body = accept(Tag::T_assign) ? parse_decls("body of a "s + entity) : nullptr;
     if (!body) {
@@ -782,7 +784,7 @@ Ref Parser::parse_decls(std::string_view ctxt) {
 void Parser::parse_ax_decl() {
     auto track = tracker();
     eat(Tag::K_ax);
-    auto dbg                = expect(Tag::M_anx, "extension name of an axiom").dbg();
+    auto dbg                = expect(Tag::M_anx, "annex name of an axiom").dbg();
     auto [plugin, tag, sub] = Annex::split(world(), dbg.sym);
     auto&& [annex, is_new]  = driver().name2annex(dbg.sym, plugin, tag, dbg.loc);
 
@@ -899,6 +901,8 @@ void Parser::parse_sigma_decl() {
                 error(dbg.loc, "sigma '{}' redeclared with a different arity '{}'; previous arity was '{}' here: {}",
                       dbg.sym, *arity, def->arity(), def->loc());
             decl = def->as_mut();
+            if (decl->is_set())
+                error(dbg.loc, "redefinition of '{}'; previous definition here: '{}'", dbg.sym, decl->loc());
         } else {
             decl = (arity ? (Def*)world().mut_sigma(type, *arity) : (Def*)world().mut_infer(type))->set(dbg);
             scopes_.bind(dbg, decl);
@@ -939,6 +943,8 @@ void Parser::parse_pi_decl() {
                 if (!world().checker().equiv(mut->type(), type))
                     error(dbg.loc, "'{}' of type '{}' has been redeclared with a different type '{}'; here: {}",
                           dbg.sym, mut->type(), type, mut->loc());
+                if (mut->is_set())
+                    error(dbg.loc, "redefinition of '{}'; previous definition here: '{}'", dbg.sym, mut->loc());
                 pi = mut;
             } else {
                 error(dbg.loc, "'{}' has not been declared as a pi", dbg.sym);

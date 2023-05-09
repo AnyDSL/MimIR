@@ -21,7 +21,7 @@ const Def* Scopes::query(Dbg dbg) const {
 const Def* Scopes::find(Dbg dbg) const {
     if (dbg.sym == '_') error(dbg.loc, "the symbol '_' is special and never binds to anything");
     if (auto res = query(dbg)) return res;
-    error(dbg.loc, "symbol '{}' not found", dbg.sym);
+    error(dbg.loc, "'{}' not found", dbg.sym);
 }
 
 void Scopes::bind(Scope* scope, Dbg dbg, const Def* def, bool rebind) {
@@ -32,7 +32,7 @@ void Scopes::bind(Scope* scope, Dbg dbg, const Def* def, bool rebind) {
         (*scope)[sym] = std::pair(loc, def);
     } else if (auto [i, ins] = scope->emplace(sym, std::pair(loc, def)); !ins) {
         auto prev = i->second.first;
-        error(loc, "symbol '{}' already declared in the current scope here: {}", sym, prev);
+        error(loc, "redeclaration of '{}'; previous declaration here: {}", sym, prev);
     }
 }
 
