@@ -232,3 +232,16 @@
 .ax %math.conv(s2f, u2f): Π.[ ss:     .Nat ][dpe: «2; .Nat»][   .Idx  ss] -> %math.F dpe, normalize_conv;
 .ax %math.conv(f2s, f2u): Π.[spe: «2; .Nat»][ ds:     .Nat ][%math.F spe] ->    .Idx  ds, normalize_conv;
 .ax %math.conv(f2f):      Π.[spe: «2; .Nat»][dpe: «2; .Nat»][%math.F spe] -> %math.F dpe, normalize_conv;
+///
+/// ### %math.slf
+/// [Standard logistic function](https://en.wikipedia.org/wiki/Logistic_function) of a floating point number (\f$slf(x) = \frac{1}{1+e^{-x}}\f$)
+///
+.lam %math.slf!.(pe : <<2; .Nat>>)!(m : .Nat)(x : %math.F pe) -> %math.F pe = %math.arith.div m ((%math.conv.f2f pe 1.0:(%math.F64)), %math.arith.add m ((%math.conv.f2f pe 1.0:(%math.F64)), %math.exp.exp m (%math.minus m x)));
+///
+/// ### %math.sgn 
+/// [Sign function](https://en.wikipedia.org/wiki/Sign_function) 
+.lam %math.sgn!.(pe : <<2; .Nat>>)!(m : .Nat)!(x : %math.F pe) -> %math.F pe = ((%math.conv.f2f pe -1.0:(%math.F64)), ((%math.conv.f2f pe 0.0:(%math.F64)), (%math.conv.f2f pe 1.0:(%math.F64)))#(%math.cmp.g m (x,(%math.conv.f2f pe 0.0:(%math.F64)))))#(%math.cmp.ge m (x, (%math.conv.f2f pe 0.0:(%math.F64))));
+///
+/// ### %math.rrt
+/// [Reciprocal](https://en.wikipedia.org/wiki/Multiplicative_inverse) of the [square root](https://en.wikipedia.org/wiki/Square_root) (\f$rrt(x) = \frac{1}{\sqrt{x}}\f$)
+.lam %math.rrt!.(pe : <<2; .Nat>>)!(m : .Nat)!(x : %math.F pe) -> %math.F pe = %math.arith.div m (%math.conv.f2f pe 1.0:(%math.F64), %math.rt.sq m x); 
