@@ -114,43 +114,43 @@ $(document).ready(function(){initNavTree('core.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md101">Dependencies</a></li>
-<li class="level1"><a href="#autotoc_md102">Nat Operations</a><ul><li class="level2"><a href="#autotoc_md103">%core.nat</a></li>
-<li class="level2"><a href="#autotoc_md104">%core.ncmp</a></li>
+<ul><li class="level1"><a href="#autotoc_md97">Dependencies</a></li>
+<li class="level1"><a href="#autotoc_md98">Nat Operations</a><ul><li class="level2"><a href="#autotoc_md99">%core.nat</a></li>
+<li class="level2"><a href="#autotoc_md100">%core.ncmp</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md105">Integer Operations</a><ul><li class="level2"><a href="#autotoc_md106">Mode</a></li>
-<li class="level2"><a href="#autotoc_md107">%core.idx</a></li>
-<li class="level2"><a href="#autotoc_md108">%core.bit1</a></li>
-<li class="level2"><a href="#autotoc_md109">%core.bit2</a></li>
-<li class="level2"><a href="#autotoc_md110">%core.shr</a></li>
-<li class="level2"><a href="#autotoc_md111">%core.wrap</a></li>
-<li class="level2"><a href="#autotoc_md112">%core.div</a></li>
-<li class="level2"><a href="#autotoc_md113">%core.icmp</a></li>
+<li class="level1"><a href="#autotoc_md101">Integer Operations</a><ul><li class="level2"><a href="#autotoc_md102">Mode</a></li>
+<li class="level2"><a href="#autotoc_md103">%core.idx</a></li>
+<li class="level2"><a href="#autotoc_md104">%core.bit1</a></li>
+<li class="level2"><a href="#autotoc_md105">%core.bit2</a></li>
+<li class="level2"><a href="#autotoc_md106">%core.shr</a></li>
+<li class="level2"><a href="#autotoc_md107">%core.wrap</a></li>
+<li class="level2"><a href="#autotoc_md108">%core.div</a></li>
+<li class="level2"><a href="#autotoc_md109">%core.icmp</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md114">Conversions</a><ul><li class="level2"><a href="#autotoc_md115">%core.conv</a></li>
-<li class="level2"><a href="#autotoc_md116">%core.bitcast</a></li>
+<li class="level1"><a href="#autotoc_md110">Conversions</a><ul><li class="level2"><a href="#autotoc_md111">%core.conv</a></li>
+<li class="level2"><a href="#autotoc_md112">%core.bitcast</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md117">Other Operations</a><ul><li class="level2"><a href="#autotoc_md118">%core.trait</a></li>
-<li class="level2"><a href="#autotoc_md119">%core.pe</a></li>
-<li class="level2"><a href="#autotoc_md120">%core.zip</a></li>
+<li class="level1"><a href="#autotoc_md113">Other Operations</a><ul><li class="level2"><a href="#autotoc_md114">%core.trait</a></li>
+<li class="level2"><a href="#autotoc_md115">%core.pe</a></li>
+<li class="level2"><a href="#autotoc_md116">%core.zip</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md_build_docs_dialects_core"></a> </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacethorin_1_1core.html" title="The core Plugin">thorin::core</a></dd></dl>
-<h1><a class="anchor" id="autotoc_md101"></a>
+<h1><a class="anchor" id="autotoc_md97"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">.plugin mem;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md102"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md98"></a>
 Nat Operations</h1>
-<h2><a class="anchor" id="autotoc_md103"></a>
+<h2><a class="anchor" id="autotoc_md99"></a>
 %core.nat</h2>
 <p >Standard arithmetic operations on <code>.Nat</code>s.</p>
 <div class="fragment"><div class="line">.ax %core.nat(add, mul): «2; .Nat» -&gt; .Nat, normalize_nat;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md104"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md100"></a>
 %core.ncmp</h2>
 <p >Nat comparison is made of 3 disjoint relations:</p><ul>
 <li><code>G</code>reater</li>
@@ -180,17 +180,17 @@ Nat Operations</h1>
 <div class="fragment"><div class="line">.ax %core.ncmp(gle = f, glE =  e, gLe =  l, gLE = le,</div>
 <div class="line">               Gle = g, GlE = ge, GLe = ne, GLE =  t): </div>
 <div class="line">    «2; .Nat» -&gt; .Bool, normalize_ncmp;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md105"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md101"></a>
 Integer Operations</h1>
 <p >Integer operations use <code>.Idx s</code> as type. This is per se neither signed nor unsigned. Instead, the operations themselves exhibit signed or unsigned behavior.</p>
-<h2><a class="anchor" id="autotoc_md106"></a>
+<h2><a class="anchor" id="autotoc_md102"></a>
 Mode</h2>
 <p >A common problem when dealing with integer operations is <a href="https://en.wikipedia.org/wiki/Integer_overflow">overflow</a>. All operations that may overflow have an additional parameter <code>m</code> - <a class="el" href="namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493">mode</a> - of type <code>.Nat</code> that determines the exact desired behavior in the case of an overflow.</p>
-<h2><a class="anchor" id="autotoc_md107"></a>
+<h2><a class="anchor" id="autotoc_md103"></a>
 %core.idx</h2>
 <p >Creates a literal of type <code>.Idx s</code> from <code>l</code> while obeying mode <code>m</code>.</p>
 <div class="fragment"><div class="line">.ax %core.idx: Π[s: .Nat][m: .Nat][l: .Nat] -&gt; .Idx s, normalize_idx;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md108"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md104"></a>
 %core.bit1</h2>
 <p >This <em>unary</em> bitwise operations offers all <a href="https://en.wikipedia.org/wiki/Truth_table#Unary_operations">4 possible operations</a> as summarized in the following table:</p>
 <table class="markdownTable">
@@ -206,7 +206,7 @@ Mode</h2>
 <td class="markdownTableBodyNone">t   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">always true   </td></tr>
 </table>
 <div class="fragment"><div class="line">.ax %core.bit1(f, neg, id, t): Π.[s: .Nat][m: .Nat][.Idx s] -&gt; .Idx s, normalize_bit1;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md109"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md105"></a>
 %core.bit2</h2>
 <p >This <em>binary</em> bitwise operations offers all <a href="https://en.wikipedia.org/wiki/Truth_table#Truth_table_for_all_binary_logical_operators">16 possible operations</a> as summarized in the following table:</p>
 <table class="markdownTable">
@@ -248,24 +248,24 @@ Mode</h2>
 <div class="fragment"><div class="line">.ax %core.bit2( f,      nor, nciff, nfst, niff, nsnd, xor_, nand,</div>
 <div class="line">                and_,  nxor,   snd,  iff,  fst, ciff,  or_,    t):</div>
 <div class="line">    Π.[s: .Nat][m: .Nat][«2; .Idx s»] -&gt; .Idx s , normalize_bit2;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md110"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md106"></a>
 %core.shr</h2>
 <p >Shift right:</p><ul>
 <li><a href="https://en.wikipedia.org/wiki/Arithmetic_shift"><code>a</code>rithmetic shift right</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Logical_shift"><code>l</code>ogical shift right</a></li>
 </ul>
 <div class="fragment"><div class="line">.ax %core.shr(a, l): Π.[s: .Nat][«2; .Idx s»] -&gt; .Idx s, normalize_shr;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md111"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md107"></a>
 %core.wrap</h2>
 <p >Integer operations that may overflow. You can specify the desired behavior in the case of an overflow with the curried argument just in front of the actual argument by providing a <a class="el" href="namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493">thorin::core::Mode</a> as <code>.Nat</code>.</p>
 <div class="fragment"><div class="line">.ax %core.wrap(add, sub, mul, shl): Π.[s: .Nat][m: .Nat][«2; .Idx s»] -&gt; .Idx s, normalize_wrap;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md112"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md108"></a>
 %core.div</h2>
 <p >Signed and unsigned Integer division/remainder.</p>
 <p >Division by zero is undefined behavior and thus a visible side effect. For this reason, these axioms expect a <code>%mem.M</code>.</p>
 <div class="fragment"><div class="line">.ax %core.div(sdiv, udiv, srem, urem):</div>
 <div class="line">    Π.[s: .Nat][%mem.M, .Idx s, .Idx s] -&gt; [%mem.M, .Idx s], normalize_div;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md113"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md109"></a>
 %core.icmp</h2>
 <p >Integer comparison is made of 5 disjoint relations:</p><ul>
 <li><code>X</code>: first operand plus, second minus</li>
@@ -379,28 +379,28 @@ Mode</h2>
 <div class="line">               XYgle,      XYglE,       XYgLe,      XYgLE,</div>
 <div class="line">               XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):</div>
 <div class="line">    Π.[s: .Nat][«2; .Idx s»] -&gt; .Bool , normalize_icmp;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md114"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md110"></a>
 Conversions</h1>
-<h2><a class="anchor" id="autotoc_md115"></a>
+<h2><a class="anchor" id="autotoc_md111"></a>
 %core.conv</h2>
 <p >Conversion between index types - both signed and unsigned - of different sizes.</p>
 <div class="fragment"><div class="line">.ax %core.conv(s, u): Π.[ss: .Nat][ds: .Nat][.Idx ss] -&gt; .Idx ds, normalize_conv;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md116"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md112"></a>
 %core.bitcast</h2>
 <p >Bitcast to reinterpret a value as another type. Can be used for pointer / integer conversions as well as integer / nat conversions.</p>
 <div class="fragment"><div class="line">.ax %core.bitcast: Π.[S: *][D: *][S] -&gt; D, normalize_bitcast;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md117"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md113"></a>
 Other Operations</h1>
-<h2><a class="anchor" id="autotoc_md118"></a>
+<h2><a class="anchor" id="autotoc_md114"></a>
 %core.trait</h2>
 <p >Yields the size or align of a type.</p>
 <div class="fragment"><div class="line">.ax %core.trait(size, align): * -&gt; .Nat, normalize_trait;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md119"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md115"></a>
 %core.pe</h2>
 <p >Steers the partial evaluator.</p>
 <div class="fragment"><div class="line">.ax %core.pe(hlt, run): Π [T: *][T] -&gt; T, normalize_pe;</div>
 <div class="line">.ax %core.pe(known): Π [T: *][T] -&gt; .Bool, normalize_pe;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md120"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md116"></a>
 %core.zip</h2>
 <p ><a href="https://en.wikipedia.org/wiki/Zipping_(computer_science)">Zips</a> several tensors.</p>
 <p ><b>Warning</b>: For now, not a better place for this and will be moved elsewhere. What is more, the signature will likely change in the future:</p><ul>

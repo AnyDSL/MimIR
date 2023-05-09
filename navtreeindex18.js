@@ -1,5 +1,11 @@
 var NAVTREEINDEX18 =
 {
+"namespacemembers_func_o.html":[3,1,1,12],
+"namespacemembers_func_p.html":[3,1,1,13],
+"namespacemembers_func_r.html":[3,1,1,14],
+"namespacemembers_func_s.html":[3,1,1,15],
+"namespacemembers_func_t.html":[3,1,1,16],
+"namespacemembers_func_u.html":[3,1,1,17],
 "namespacemembers_func_v.html":[3,1,1,18],
 "namespacemembers_func_z.html":[3,1,1,19],
 "namespacemembers_g.html":[3,1,0,6],
@@ -243,11 +249,5 @@ var NAVTREEINDEX18 =
 "namespacethorin.html#structthorin_1_1Dbg":[6,0,4,5,12,2],
 "namespacethorin.html#structthorin_1_1Flags":[6,0,4,15,0],
 "namespacethorin_1_1Node.html":[3,0,0,14],
-"namespacethorin_1_1affine.html":[3,0,0,0],
-"namespacethorin_1_1affine.html#a0372be693375257bfadf6679323e6a32":[3,0,0,0,3],
-"namespacethorin_1_1affine.html#a823856c7b7cdc269f5e411d11f65dda5":[3,0,0,0,5],
-"namespacethorin_1_1affine.html#ab25e8fc4730282641dede7d2137ed873":[3,0,0,0,2],
-"namespacethorin_1_1affine.html#ac2d8cd6eb455e02907e58647c538087f":[3,0,0,0,4],
-"namespacethorin_1_1affine.html#ae9bd5d8f8b435003df098cc8f09b30d6":[3,0,0,0,1],
-"namespacethorin_1_1autodiff.html":[3,0,0,1]
+"namespacethorin_1_1affine.html":[3,0,0,0]
 };

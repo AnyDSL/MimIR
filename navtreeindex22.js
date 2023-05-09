@@ -1,5 +1,11 @@
 var NAVTREEINDEX22 =
 {
+"namespacethorin_1_1math.html#af778a07750a31aa559b8f3a63dfad17a":[3,0,0,11,178],
+"namespacethorin_1_1math.html#af82ff64cbfa2d6cbf5e2ba59be65d41f":[3,0,0,11,46],
+"namespacethorin_1_1math.html#af85abd07297876e4f2a31e060ed6aafd":[3,0,0,11,56],
+"namespacethorin_1_1math.html#afc02a39412a2c1f0df551c833cca1746":[3,0,0,11,107],
+"namespacethorin_1_1math.html#afd775f03a4b36741b7b5d30bca213e27":[3,0,0,11,171],
+"namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4ca":[3,0,0,11,10],
 "namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa1e53eb7993b8fa102e59ad895d7acc68":[3,0,0,11,10,5],
 "namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa31d4541b8e926a24f0c9b835b68cfdf3":[3,0,0,11,10,11],
 "namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa334c4a4c42fdb79d7ebc3e73b517e6f8":[3,0,0,11,10,1],
@@ -164,7 +170,6 @@ var NAVTREEINDEX22 =
 "optimize_8h_source.html":[6,0,4,3,3],
 "pages.html":[],
 "parser_8cpp.html":[6,0,4,2,4],
-"parser_8cpp.html#ad5c7ca0181fea7823b37d06d5f61e9cd":[6,0,4,2,4,0],
 "parser_8cpp_source.html":[6,0,4,2,4],
 "parser_8h.html":[6,0,4,2,5],
 "parser_8h_source.html":[6,0,4,2,5],
@@ -244,10 +249,5 @@ var NAVTREEINDEX22 =
 "refly_2autogen_8h.html#af154d7d91d30c79a49922d90d58fa051":[6,0,0,1,0,11,0,11],
 "refly_2autogen_8h.html#afa476e9f86c2b64e71c53ba00c3ffda2":[6,0,0,1,0,11,0,17],
 "refly_2autogen_8h.html#afcc6281b421b982cbba6a5dbfdfa5dac":[6,0,0,1,0,11,0,21],
-"refly_2autogen_8h_source.html":[6,0,0,1,0,11,0],
-"refly_2normalizers_8cpp.html":[6,0,2,11,1],
-"refly_2normalizers_8cpp.html#a1d4c579f94fcac60eebde5c8593d9884":[6,0,2,11,1,0],
-"refly_2normalizers_8cpp.html#aa4f7164654473913f60f6fe9b7163b5f":[6,0,2,11,1,4],
-"refly_2normalizers_8cpp.html#aba788e6f901736144880c9710c082528":[6,0,2,11,1,1],
-"refly_2normalizers_8cpp.html#ad5191894f184796478f7f29b14decad4":[6,0,2,11,1,2]
+"refly_2autogen_8h_source.html":[6,0,0,1,0,11,0]
 };
