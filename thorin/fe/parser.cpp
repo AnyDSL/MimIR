@@ -449,11 +449,10 @@ Lam* Parser::parse_lam(bool is_decl) {
     Lam* decl       = nullptr;
 
     if (auto def = scopes_.query(dbg)) {
-        if (auto lam = def->isa_mut<Lam>()) {
+        if (auto lam = def->isa_mut<Lam>())
             decl = lam;
-        } else {
+        else
             error(dbg.loc, "'{}' has not been declared as a function", dbg.sym);
-        }
     }
 
     std::unique_ptr<Ptrn> dom_p;
