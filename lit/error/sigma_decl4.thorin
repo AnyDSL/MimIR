@@ -1,0 +1,3 @@
+// RUN: (! %thorin %s 2>&1) | FileCheck %s
+.Sigma S = {.Nat};
+// CHECK: error: {{.*}}expected{{.*}}while parsing
