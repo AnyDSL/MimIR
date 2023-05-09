@@ -60,6 +60,7 @@ Res fold(u64 a) {
         else if constexpr (id == exp::exp2) return std::exp2(x);
         else if constexpr (id == exp::log ) return std::log (x);
         else if constexpr (id == exp::log2) return std::log2(x);
+        else if constexpr (id == exp::log10) return std::log10(x);
         else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
     } else if constexpr (std::is_same_v<Id, er>) {
         if constexpr (false) {}
@@ -71,9 +72,49 @@ Res fold(u64 a) {
         else if constexpr (id == gamma::t) return std::tgamma(x);
         else if constexpr (id == gamma::l) return std::lgamma(x);
         else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
+    } else if constexpr (std::is_same_v<Id, round>) {
+        if constexpr (false) {}
+        else if constexpr (id == round::f) return  std::floor (x);
+        else if constexpr (id == round::c) return  std::ceil (x);
+        else if constexpr (id == round::r) return  std::round (x);
+        else if constexpr (id == round::t) return  std::trunc (x);
+        else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
     } else {
         []<bool flag = false>() { static_assert(flag, "missing tag"); }();
     }
+}
+
+template<class Id, nat_t w>
+Res fold(u64 a) {
+    using T = w2f<w>;
+    auto x = bitcast<T>(a);
+    if constexpr (std::is_same_v<Id, abs>) {
+        return std::abs(x);
+    } else {
+        []<bool flag = false>() { static_assert(flag, "missing tag"); }();
+    }
+}
+
+template<class Id>
+Ref fold(World& world, Ref type, const Def* a) {
+    if (a->isa<Bot>()) return world.bot(type);
+    auto la = a->isa<Lit>();
+
+    if (la) {
+        nat_t width = *isa_f(a->type());
+        Res res;
+        switch (width) {
+#define CODE(i) \
+    case i: res = fold<Id, i>(la->get()); break;
+            THORIN_16_32_64(CODE)
+#undef CODE
+            default: unreachable();
+        }
+
+        return world.lit(type, *res);
+    }
+
+    return nullptr;
 }
 
 template<class Id, Id id, nat_t w>
@@ -407,6 +448,19 @@ Ref normalize_conv(Ref dst_t, Ref c, Ref x) {
     }
 out:
     return world.raw_app(dst_t, callee, x);
+}
+
+Ref normalize_abs(Ref type, Ref c, Ref arg) {
+    auto& world = type->world();
+    if (auto lit = fold<abs>(world, type, arg)) return lit;
+    return world.raw_app(type, c, arg);
+}
+
+template<round id>
+Ref normalize_round(Ref type, Ref c, Ref arg) {
+    auto& world = type->world();
+    if (auto lit = fold<round, id>(world, type, arg)) return lit;
+    return world.raw_app(type, c, arg);
 }
 
 THORIN_math_NORMALIZER_IMPL

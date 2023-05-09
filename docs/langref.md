@@ -322,7 +322,7 @@ The following function *declarations* are all equivalent:
 ```
 .lam f(T: *)((x y: T), return: T → ⊥) → ⊥ = return x;
 .con f(T: *)((x y: T), return: .Cn T)     = return x;
-.fun f(T: *) (x y: T)                     = return x;
+.fun f(T: *) (x y: T) → T                 = return x;
 ```
 
 #### Expressions
@@ -333,7 +333,7 @@ What is more, since they are bound by a *let declaration*, they have the exact s
 .let f =   λ (T: *)((x y: T), return: T → ⊥) → ⊥ = return x;
 .let f = .lm (T: *)((x y: T), return: T → ⊥) → ⊥ = return x;
 .let f = .cn (T: *)((x y: T), return: .Cn T)     = return x;
-.let f = .fn (T: *) (x y: T)                     = return x;
+.let f = .fn (T: *) (x y: T) → T                 = return x;
 ```
 
 #### Applications

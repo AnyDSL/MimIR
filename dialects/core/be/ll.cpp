@@ -904,6 +904,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             case math::exp::exp2: f += "exp2"; break;
             case math::exp::log:  f += "log" ; break;
             case math::exp::log2: f += "log2"; break;
+            case math::exp::log10: f += "log10"; break;
         }
         // clang-format on
         f += llvm_suffix(exp->type());
@@ -966,6 +967,26 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "{} {} {} to {}", op, t_src, v_src, t_dst);
+    } else if (auto abs = match<math::abs>(def)) {
+        auto a        = emit(abs->arg());
+        auto t        = convert(abs->type());
+        std::string f = "llvm.fabs";
+        f += llvm_suffix(abs->type());
+        declare("{} @{}({})", t, f, t);
+        return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
+    } else if (auto round = match<math::round>(def)) {
+        auto a        = emit(round->arg());
+        auto t        = convert(round->type());
+        std::string f = "llvm.";
+        switch (round.id())   {
+            case math::round::f: f += "floor"; break;
+            case math::round::c: f += "ceil"; break;
+            case math::round::r: f += "round"; break;
+            case math::round::t: f += "trunc"; break;
+        }
+        f += llvm_suffix(round->type());
+        declare("{} @{}({})", t, f, t);
+        return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
     }
     error("unhandled def in LLVM backend: {} : {}", def, def->type());
 }
