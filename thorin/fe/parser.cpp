@@ -190,8 +190,9 @@ Ref Parser::parse_infix_expr(Tracker track, const Def* lhs, Tok::Prec p) {
         } else {
             auto [l, r] = Tok::prec(Tok::Prec::App);
             if (l < p) break;
+            bool is_explicit = accept(Tag::T_at).has_value();
             if (auto rhs = parse_expr({}, r)) // if we can parse an expression, it's an App
-                lhs = world().iapp(lhs, rhs)->set(track.loc());
+                lhs = (is_explicit ? world().app(lhs, rhs) : world().iapp(lhs, rhs))->set(track.loc());
             else
                 return lhs;
         }

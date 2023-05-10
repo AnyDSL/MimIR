@@ -734,6 +734,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             op = (src_size < dst_size) ? "zext" : "trunc";
         }
         return bb.assign(name, "{} {} {} to {}", op, t_src, v_src, t_dst);
+    } else if (auto m = match<mem::m>(def)) {
+        return {};
     } else if (auto lea = match<mem::lea>(def)) {
         auto [ptr, i]  = lea->args<2>();
         auto pointee   = force<mem::Ptr>(ptr->type())->arg(0);

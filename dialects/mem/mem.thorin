@@ -80,11 +80,12 @@
 /// Performs address computation by offsetting the passed pointer with index `i`.
 .ax %mem.lea: Π [n: .Nat, Ts: «n; *», as: .Nat][%mem.Ptr(«j: n; Ts#j», as), i: .Idx n] -> %mem.Ptr(Ts#i, as), normalize_lea;
 ///
-/// ### %mem.rm
+/// ### %mem.create/destroy
 ///
-/// Removes side effect and pretends that the side effect does not exists.
+/// Creates side effect out of thin or pretends that the side effect does not exists.
 /// @warning Use with caution since you completely remove the `%%mem.M` dependency.
-.ax %mem.rm: Π [n: .Nat, Ts: «n; *», R: *][[%mem.M, «i: n; Ts#i»] -> [%mem.M, R]] -> [«i: n; Ts#i» -> R], normalize_rm;
+.ax %mem.m:  %mem.M;
+.lam %mem.rm!.(R: *)!(mem: %mem.M, r: R) -> R = r;
 ///
 /// ## Passes and Phases
 ///
@@ -94,7 +95,7 @@
 ///
 .ax %mem.reshape_mode: *;
 .ax %mem.reshape_flat: %mem.reshape_mode;
-.ax %mem.reshape_arg: %mem.reshape_mode;
+.ax %mem.reshape_arg:  %mem.reshape_mode;
 ///
 /// ### Passes
 ///
@@ -120,13 +121,8 @@
         (%mem.ssa_pass eta_exp)
         (%mem.copy_prop_pass (beta_red, eta_exp, .ff))
 };
-.let mem_opt_phase = {
-    %compile.pass_phase mem_opt_pass_list
-};
-.let mem_prep_phase = {
-    %compile.passes_to_phase (⊤:.Nat)
-    (
+.let mem_opt_phase  = %compile.pass_phase mem_opt_pass_list;
+.let mem_prep_phase = %compile.passes_to_phase (⊤:.Nat) (
         %mem.remem_elim_pass,
         %mem.alloc2malloc_pass
-    )
-};
+    );
