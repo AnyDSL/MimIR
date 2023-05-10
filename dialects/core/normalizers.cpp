@@ -487,7 +487,7 @@ Ref normalize_div(Ref full_type, Ref c, Ref arg) {
     if (auto result = fold<div, id>(world, type, a, b)) return make_res(result);
 
     if (auto la = Lit::isa(a)) {
-        if (*la == 0) return a; // 0 / b -> 0 and 0 % b -> 0
+        if (*la == 0) return make_res(a); // 0 / b -> 0 and 0 % b -> 0
     }
 
     if (auto lb = Lit::isa(b)) {
