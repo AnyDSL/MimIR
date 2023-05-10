@@ -138,7 +138,7 @@
 /// For this reason, these axioms expect a `%%mem.M`.
 ///
 .ax %core.div(sdiv, udiv, srem, urem):
-    Π.[s: .Nat][%mem.M, .Idx s, .Idx s] -> [%mem.M, .Idx s], normalize_div;
+    Π.[s: .Nat][%mem.M, «2; .Idx s»] -> [%mem.M, .Idx s], normalize_div;
 ///
 /// ### %core.icmp
 ///
