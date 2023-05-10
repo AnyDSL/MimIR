@@ -24,25 +24,25 @@
 /// ```
 /// => a matrix is a dependend array
 ///
-.ax %matrix.Mat: Π [n: .Nat, S: «n; .Nat», T: *] -> *; 
+.ax %matrix.Mat: Π [n: .Nat, S: «n; .Nat», T: *] -> *;
 ///
 /// ## Operations
 ///
 /// ### %matrix.shape
-/// 
+///
 /// Extracts the size along the i-th dimension from the type.
 /// For a dependent matrix this is a simple projection to S(i).
 ///
 /// #### Normalization
 /// * resolve shape calls at construction by replacing them with the size argument
 ///
-.ax %matrix.shape:  Π [n: .Nat, S: «n; .Nat», T: *] -> [%matrix.Mat (n,S,T), i: .Idx n] -> .Nat, normalize_shape;
-/// 
+.ax %matrix.shape: Π nST::[n: .Nat, S: «n; .Nat», T: *] -> [%matrix.Mat nST, i: .Idx n] -> .Nat, normalize_shape;
+///
 /// ### %matrix.const
 ///
 /// a constant matrix
-.ax %matrix.constMat: Π [n: .Nat, S: «n; .Nat», T: *] -> [%mem.M,T] -> [%mem.M,%matrix.Mat (n,S,T)];
-/// 
+.ax %matrix.constMat: Π nST::[n: .Nat, S: «n; .Nat», T: *] -> [%mem.M,T] -> [%mem.M,%matrix.Mat nST];
+///
 /// ### %matrix.read
 ///
 /// read _ (mat, idx) : body_type
@@ -54,8 +54,8 @@
 /// * read(insert)
 /// * read(const)
 ///
-.ax %matrix.read: Π [n: .Nat, S: «n; .Nat», T: *] -> [%mem.M, %matrix.Mat (n,S,T), idx: «i: n; .Idx S#i»] -> [%mem.M,T], normalize_read;
-/// 
+.ax %matrix.read: Π nST::[n: .Nat, S: «n; .Nat», T: *] -> [%mem.M, %matrix.Mat nST, idx: «i: n; .Idx S#i»] -> [%mem.M, T], normalize_read;
+///
 /// ### %matrix.insert
 ///
 /// insert (dims, sizes, type) (mat, idx, val) : mat
@@ -67,7 +67,7 @@
 /// * with other inserts
 /// * with initialization
 ///
-.ax %matrix.insert: Π [n: .Nat, S: «n; .Nat», T: *] -> [%mem.M,%matrix.Mat (n,S,T), idx: «i: n; .Idx S#i», val: T] -> [%mem.M,%matrix.Mat (n,S,T)], normalize_insert;
+.ax %matrix.insert: Π nST::[n: .Nat, S: «n; .Nat», T: *] -> [%mem.M,%matrix.Mat nST, idx: «i: n; .Idx S#i», val: T] -> [%mem.M, %matrix.Mat nST], normalize_insert;
 ///
 /// ### %matrix.init
 ///
@@ -77,9 +77,9 @@
 /// ### High-level matrix operations
 ///
 // TODO: define alias: * fst, snd, split * zip = zipWith id
-.ax %matrix.prod:  Π [m: .Nat, k: .Nat, l: .Nat, [p: .Nat, e:.Nat]] -> 
+.ax %matrix.prod:  Π [m: .Nat, k: .Nat, l: .Nat, [p: .Nat, e:.Nat]] ->
     [%mem.M,%matrix.Mat (2,(m, k),%math.F (p,e)), %matrix.Mat (2,(k, l),%math.F (p,e))] -> [%mem.M,%matrix.Mat (2,(m, l),%math.F (p,e))], normalize_prod;
-.ax %matrix.transpose: Π [[k:.Nat, l:.Nat], T: *] -> 
+.ax %matrix.transpose: Π [[k:.Nat, l:.Nat], T: *] ->
     [%mem.M,%matrix.Mat (2,(k,l),T)] -> [%mem.M,%matrix.Mat (2,(l,k),T)], normalize_transpose;
 .ax %matrix.sum: Π [n: .Nat, S: «n; .Nat», [p:.Nat,e:.Nat]] -> [%mem.M,%matrix.Mat (n,S,%math.F (p,e))] -> [%mem.M,%math.F (p,e)];
 ///
@@ -113,14 +113,14 @@
 /// * `outer product i,j -> ij`
 /// TODO: introduce dummy values (zero, add, ...) in refly and use these
 /// dummy = has correct type but can not produce code (should always be eliminated)
-.ax %matrix.map_reduce: 
+.ax %matrix.map_reduce:
     // out shape depends on in shape but is complex
     Π [n: .Nat, S: «n; .Nat», T: *, // out shape
         m: .Nat, // number of inputs
         NI: «m; .Nat», // input dimensions
         TI: «m; *», // input types
         SI: «i:m; «NI#i; .Nat»» // input shapes
-    ] -> 
+    ] ->
     // main arguments
     [
         mem: %mem.M, // memory
@@ -129,7 +129,7 @@
         comb: .Cn[[%mem.M, T, «i: m; TI#i»],.Cn[%mem.M,T]], // inner combination
         // out_index not needed => always ij (0 ... n) for n dimensions
         input:
-            «i:m; 
+            «i:m;
                 [
                     «NI#i;.Nat»,
                     %matrix.Mat (NI#i,SI#i,TI#i)
@@ -141,16 +141,16 @@
 ///
 ///
 /// ## Unfolding functions
-/// 
+///
 /// ### product
-/// 
+///
 /// Follow the principle `ij <- ik,kj` (`out[i,j] = sum_k in1[i,k] * in2[k,j]`) by using mulplication as combination function and addition as reduction function.
-.lam .extern internal_mapRed_matrix_prod 
+.lam .extern internal_mapRed_matrix_prod
     ![m: .Nat, k: .Nat, l: .Nat, [p: .Nat, e:.Nat]] ->
     (.Cn[
         [%mem.M,%matrix.Mat (2,(m, k),%math.F (p,e)), %matrix.Mat (2,(k, l),%math.F (p,e))],
         .Cn[%mem.M,%matrix.Mat (2,(m, l),%math.F (p,e))]
-    ]) 
+    ])
     = {
     .let R = %math.F (p,e);
 
@@ -161,11 +161,11 @@
         .let new_acc = %math.arith.add 0 (acc,v);
         ret (mem, new_acc)
     };
-    .con inner_matrix_prod 
+    .con inner_matrix_prod
         ![
             [
                 mem:%mem.M,
-                M:%matrix.Mat (2,(m, k),R), 
+                M:%matrix.Mat (2,(m, k),R),
                 N: %matrix.Mat (2,(k, l),R)
             ],
             ret: .Cn[%mem.M,%matrix.Mat (2,(m, l),R)]
@@ -175,7 +175,7 @@
         .let zero_real = %math.conv.f2f (p,e) zero_64;
         ret (
             %matrix.map_reduce
-                (2, (m, l), R, 
+                (2, (m, l), R,
                     2,
                     (2, 2),
                     (R,R),
@@ -194,9 +194,9 @@
     };
     inner_matrix_prod
 };
-/// 
+///
 /// ### transpose
-/// 
+///
 /// Transpose a matrix by iterating the indices in swapped order.
 // TODO: check code for 1-matrix edge case
 // TODO: would this automatically be handled by read(transpose) ?
@@ -205,7 +205,7 @@
     (.Cn[
         [%mem.M,%matrix.Mat (2,(k, l),T)],
         .Cn[%mem.M,%matrix.Mat (2,(l, k),T)]
-    ]) 
+    ])
     = {
     .con transpose_comb [[mem:%mem.M, acc:T, [a:T]], ret:.Cn[%mem.M,T]] = {
         // We ignore the (zero) accumulator and just return the read value.
@@ -216,7 +216,7 @@
         ![
             [
                 mem:%mem.M,
-                M:%matrix.Mat (2,(k, l),T), 
+                M:%matrix.Mat (2,(k, l),T),
             ],
             ret: .Cn[%mem.M,%matrix.Mat (2,(l, k),T)]
         ]
@@ -225,7 +225,7 @@
         .let zero = (⊥:T);
         ret (
             %matrix.map_reduce
-                (2, (l, k), T, 
+                (2, (l, k), T,
                     1,
                     2,
                     T,
@@ -243,9 +243,9 @@
     };
     inner_matrix_transpose
 };
-/// 
+///
 /// ### sum
-/// 
+///
 /// Sums up all elements of a matrix and returns a scalar.
 //  TODO: test 0d matrix (edge cases in code)
 .lam .extern internal_mapRed_matrix_sum
@@ -253,7 +253,7 @@
     (.Cn[
         [%mem.M,%matrix.Mat (n,S,%math.F (p,e))],
         .Cn[%mem.M,%math.F (p,e)]
-    ]) 
+    ])
     = {
     .let R = %math.F (p,e);
     .con sum_comb [[mem:%mem.M, acc:R, [a:R]], ret:.Cn[%mem.M,R]] = {
@@ -264,7 +264,7 @@
         ![
             [
                 mem:%mem.M,
-                M:%matrix.Mat (n,S,R), 
+                M:%matrix.Mat (n,S,R),
             ],
             ret: .Cn[%mem.M,R]
         ]
@@ -280,7 +280,7 @@
             )
             >;
         .let (mem2, res) = %matrix.map_reduce
-                (1, (1), R, 
+                (1, (1), R,
                     1,
                     n,
                     R,
@@ -306,16 +306,16 @@
 
 ///
 /// ## Passes and Phases
-/// 
+///
 /// ### Passes
-/// 
+///
 .ax %matrix.lower_matrix_high_level_map_reduce: %compile.Pass;
 .ax %matrix.lower_matrix_medium_level: %compile.Pass;
 .ax %matrix.lower_matrix_low_level: %compile.Phase;
 .ax %matrix.internal_map_reduce_cleanup: %compile.Pass;
-/// 
+///
 /// ### Phases
-/// 
+///
 .let matrix_lower_phase = {
   %compile.phases_to_phase (⊤:.Nat)
     (
