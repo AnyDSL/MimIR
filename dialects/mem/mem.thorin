@@ -80,6 +80,12 @@
 /// Performs address computation by offsetting the passed pointer with index `i`.
 .ax %mem.lea: Π [n: .Nat, Ts: «n; *», as: .Nat][%mem.Ptr(«j: n; Ts#j», as), i: .Idx n] -> %mem.Ptr(Ts#i, as), normalize_lea;
 ///
+/// ### %mem.rm
+///
+/// Removes side effect and pretends that the side effect does not exists.
+/// @warning Use with caution since you completely remove the `%%mem.M` dependency.
+.ax %mem.rm: Π [n: .Nat, Ts: «n; *», R: *][[%mem.M, «i: n; Ts#i»] -> [%mem.M, R]] -> [«i: n; Ts#i» -> R], normalize_rm;
+///
 /// ## Passes and Phases
 ///
 /// ### Misc

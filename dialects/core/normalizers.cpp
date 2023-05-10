@@ -478,11 +478,12 @@ Ref normalize_wrap(Ref type, Ref c, Ref arg) {
 
 template<div id>
 Ref normalize_div(Ref full_type, Ref c, Ref arg) {
-    auto& world      = full_type->world();
-    auto callee      = c->as<App>();
-    auto [mem, a, b] = arg->projs<3>();
-    auto [_, type]   = full_type->projs<2>(); // peel off actual type
-    auto make_res    = [&, mem = mem](Ref res) { return world.tuple({mem, res}); };
+    auto& world    = full_type->world();
+    auto callee    = c->as<App>();
+    auto [mem, ab] = arg->projs<2>();
+    auto [a, b]    = ab->projs<2>();
+    auto [_, type] = full_type->projs<2>(); // peel off actual type
+    auto make_res  = [&, mem = mem](Ref res) { return world.tuple({mem, res}); };
 
     if (auto result = fold<div, id>(world, type, a, b)) return make_res(result);
 
@@ -512,7 +513,7 @@ Ref normalize_div(Ref full_type, Ref c, Ref arg) {
         }
     }
 
-    return world.raw_app(full_type, callee, {mem, a, b});
+    return world.raw_app(full_type, callee, arg);
 }
 
 template<conv id>
