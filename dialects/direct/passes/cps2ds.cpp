@@ -140,6 +140,8 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
         return def;
     }
 
+    if (def->isa<Global>()) return def;
+
     return def->rebuild(world(), def->type(), new_ops);
 }
 
