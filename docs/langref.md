@@ -121,7 +121,7 @@ The previous table resorts to the following definitions as shorthand:
 | pP   | \[ `p` `P` \]                                                         | exponent in floating point hexadecimal literals |
 | sign | \[ `+` `-` \]                                                         |                                                 |
 | sym  | \[ `_``a`-`z``A`-`Z` \]\[ `.``_``0`-`9``a`-`z``A`-`Z` \]\*            | symbol                                          |
-| exc  | \[ <tt>\'</tt>`\"``\0``\a`<tt>\\b</tt>`\f``\n``\r`<tt>\\t</tt>`\v` \] | escape sequences                                |
+| esc  | \[ <tt>\'</tt>`\"``\0``\a`<tt>\\b</tt>`\f``\n``\r`<tt>\\t</tt>`\v` \] | escape sequences                                |
 
 So, *sym* refers to the shorthand rule while *𝖨* refers to the *terminal* that is identical to *sym*.
 However, the terminal *A* also uses the shorthand rule *sym*.
