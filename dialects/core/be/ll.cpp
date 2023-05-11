@@ -65,6 +65,14 @@ const char* llvm_suffix(const Def* type) {
     }
     error("unsupported foating point type '{}'", type);
 }
+
+// [%mem.M, T] => T
+// TODO there may be more instances where we have to deal with this trickery
+Ref isa_mem_sigma_2(Ref type) {
+    if (auto sigma = type->isa<Sigma>())
+        if (sigma->num_ops() == 2 && match<mem::M>(sigma->op(0))) return sigma->op(1);
+    return {};
+}
 } // namespace
 
 struct BB {
@@ -181,20 +189,26 @@ std::string Emitter::convert(const Def* type) {
         assert(Pi::isa_returning(pi) && "should never have to convert type of BB");
         print(s, "{} (", convert_ret_pi(pi->ret_pi()));
 
-        auto doms = pi->doms();
-        for (auto sep = ""; auto dom : doms.skip_back()) {
-            if (match<mem::M>(dom)) continue;
-            s << sep << convert(dom);
-            sep = ", ";
+        if (auto t = isa_mem_sigma_2(pi->dom()))
+            s << convert(t);
+        else {
+            auto doms = pi->doms();
+            for (auto sep = ""; auto dom : doms.skip_back()) {
+                if (match<mem::M>(dom)) continue;
+                s << sep << convert(dom);
+                sep = ", ";
+            }
         }
-
         s << ")*";
+    } else if (auto t = isa_mem_sigma_2(type)) {
+        return convert(t);
     } else if (auto sigma = type->isa<Sigma>()) {
         if (sigma->isa_mut()) {
             name          = id(sigma);
             types_[sigma] = name;
             print(s, "{} = type", name);
         }
+
         print(s, "{{");
         for (auto sep = ""; auto t : sigma->ops()) {
             if (match<mem::M>(t)) continue;
@@ -441,6 +455,11 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     std::string op;
 
     auto emit_tuple = [&](const Def* tuple) {
+        if (isa_mem_sigma_2(tuple->type())) {
+            emit_unsafe(tuple->proj(2, 0));
+            return emit(tuple->proj(2, 1));
+        }
+
         if (is_const(tuple)) {
             bool is_array = tuple->type()->isa<Arr>();
 
@@ -523,44 +542,29 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto extract = def->isa<Extract>()) {
         auto tuple = extract->tuple();
         auto index = extract->index();
-
-#if 0
-        // TODO this was von closure-conv branch which I need to double-check
-        if (tuple->isa<Var>()) {
-            // computing the index may crash, so we bail out
-            assert(match<core::Mem>(extract->type()) && "only mem-var should not be mapped");
-            return {};
-        }
-#endif
-
         auto v_tup = emit_unsafe(tuple);
 
         // this exact location is important: after emitting the tuple -> ordering of mem ops
         // before emitting the index, as it might be a weird value for mem vars.
         if (match<mem::M>(extract->type())) return {};
 
-        if (tuple->num_projs() == 2) {
-            if (match<mem::M>(tuple->proj(2, 0_s)->type())) return v_tup;
-            if (match<mem::M>(tuple->proj(2, 1_s)->type())) return v_tup;
-        }
-
-        // Adjust index for mem in tuple if present.
-        auto v_idx = match<mem::M>(tuple->proj(0)->type()) ? std::to_string(Lit::as(index) - 1) : emit_unsafe(index);
         auto t_tup = convert(tuple->type());
-        if (Lit::isa(index)) {
-            assert(!v_tup.empty());
-            return bb.assign(name, "extractvalue {} {}, {}", t_tup, v_tup, v_idx);
-        } else {
-            auto t_elem     = convert(extract->type());
-            auto [v_i, t_i] = emit_gep_index(index);
-
-            print(lam2bb_[entry_].body().emplace_front(),
-                  "{}.alloca = alloca {} ; copy to alloca to emulate extract with store + gep + load", name, t_tup);
-            print(bb.body().emplace_back(), "store {} {}, {}* {}.alloca", t_tup, v_tup, t_tup, name);
-            print(bb.body().emplace_back(), "{}.gep = getelementptr inbounds {}, {}* {}.alloca, i64 0, {} {}", name,
-                  t_tup, t_tup, name, t_i, v_i);
-            return bb.assign(name, "load {}, {}* {}.gep", t_elem, t_elem, name);
+        if (auto li = Lit::isa(index)) {
+            if (isa_mem_sigma_2(tuple->type())) return v_tup;
+            // Adjust index, if mem is present.
+            auto v_i = match<mem::M>(tuple->proj(0)->type()) ? std::to_string(*li - 1) : std::to_string(*li);
+            return bb.assign(name, "extractvalue {} {}, {}", t_tup, v_tup, v_i);
         }
+
+        auto t_elem     = convert(extract->type());
+        auto [v_i, t_i] = emit_gep_index(index);
+
+        print(lam2bb_[entry_].body().emplace_front(),
+              "{}.alloca = alloca {} ; copy to alloca to emulate extract with store + gep + load", name, t_tup);
+        print(bb.body().emplace_back(), "store {} {}, {}* {}.alloca", t_tup, v_tup, t_tup, name);
+        print(bb.body().emplace_back(), "{}.gep = getelementptr inbounds {}, {}* {}.alloca, i64 0, {} {}", name, t_tup,
+              t_tup, name, t_i, v_i);
+        return bb.assign(name, "load {}, {}* {}.gep", t_elem, t_elem, name);
     } else if (auto insert = def->isa<Insert>()) {
         assert(!match<mem::M>(insert->tuple()->proj(0)->type()));
         auto v_tuple = emit(insert->tuple());

@@ -1,8 +1,7 @@
-// RUN: rm -f %t.ll ; \
-// RUN: %thorin --output-ll %t.ll %s 
+// RUN: rm -f %t.ll
+// RUN: %thorin --output-ll %t.ll %s
 // RUN: clang %S/lib.c %t.ll -o %t -Wno-override-module
 // RUN: %t | FileCheck %s
-
 .plugin core;
 
 .fun println_char[%mem.M, %core.I8] -> %mem.M;
@@ -15,6 +14,5 @@
     .ret `mem       = println_char $ (mem, 'x');
     .ret `mem       = print_str $ (mem, p2);
     return (mem, 0:%core.I32);
-
 // CHECK: x
 // CHECK: Hello, World!
