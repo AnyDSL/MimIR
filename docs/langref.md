@@ -50,8 +50,10 @@ In addition the following keywords are *terminals*:
 
 | Terminal  | Comment                                                   |
 |-----------|-----------------------------------------------------------|
+| `.module` | starts a module                                           |
+| `.import` | imports another Thorin file                               |
+| `.plugin` | like `.import` and additionally loads the compiler plugin |
 | `.ax`     | axiom                                                     |
-| `.Pi`     | mutable [Pi](@ref thorin::Pi) declaration                 |
 | `.let`    | let declaration                                           |
 | `.con`    | [continuation](@ref thorin::Lam) declaration              |
 | `.fun`    | [function](@ref thorin::Lam) declaration                  |
@@ -59,15 +61,12 @@ In addition the following keywords are *terminals*:
 | `.ret`    | ret expression                                            |
 | `.cn`     | [continuation](@ref thorin::Lam) expression               |
 | `.fn`     | [function](@ref thorin::Lam) expression                   |
-| `.cn`     | [lambda](@ref thorin::Lam) expression                     |
-| `.Sigma`  | thorin::Sigma declaration                                 |
-| `.Pi`     | thorin::Pi declaration                                    |
-| `.extern` | marks mutable as external                                 |
+| `.lm`     | [lambda](@ref thorin::Lam) expression                     |
+| `.Pi`     | [Pi](@ref thorin::Pi) declaration                         |
+| `.Sigma`  | [Sigma](@ref thorin::Sigma) declaration                   |
+| `.extern` | marks function as external                                |
 | `.ins`    | thorin::Insert expression                                 |
 | `.insert` | alias for `.ins`                                          |
-| `.module` | starts a module                                           |
-| `.import` | imports another Thorin file                               |
-| `.plugin` | like `.import` and additionally loads the compiler plugin |
 | `.Nat`    | thorin::Nat                                               |
 | `.Idx`    | thorin::Idx                                               |
 | `.Bool`   | alias for `.Idx 2`                                        |
@@ -180,6 +179,20 @@ The following tables comprise all production rules:
 ### Patterns {#ptrn}
 
 Patterns allow you to decompose a value into its components like in [Standard ML](https://en.wikibooks.org/wiki/Standard_ML_Programming/Types#Tuples) or other functional languages.
+
+| LHS             | RHS                                                    | Comment                             |
+|-----------------|--------------------------------------------------------|-------------------------------------|
+| p               | <tt>\`</tt>? 𝖨 (`:` e<sub>type</sub> )?                | identifier `()`-pattern             |
+| p               | (<tt>\`</tt>? 𝖨 `::`)? `(` d\* g `,` ... `,` d\* g `)` | `()`-`()`-tuple pattern<sup>s</sup> |
+| p               | (<tt>\`</tt>? 𝖨 `::`)? b<sub>[ ]</sub>                 | `[]`-`()`-tuple pattern             |
+| g               | p                                                      | group                               |
+| g               | 𝖨+ `:` e                                               | group                               |
+| b               | (<tt>\`</tt>? 𝖨 `:`)? e<sub>type</sub>                 | identifier `[]`-pattern             |
+| b               | (<tt>\`</tt>? 𝖨 `::`)? b<sub>[ ]</sub>                 | `[]`-`[]`-tuple pattern             |
+| b<sub>[ ]</sub> | `[` d\* b `,` ... `,` d\* b `]`                        | `[]`-tuple pattern<sup>s</sup>      |
+
+#### ()-style vs []-style
+
 There are
 * p: *parenthesis-style* patterns (`()`-style), and
 * b: *bracket-style patterns* (`[]`-style) .
@@ -191,6 +204,9 @@ The main difference is that
 
 You **can** switch from a `()`-style pattern to a `[]`-pattern but not vice versa.
 For this reason there is no rule for a `()`-`[]`-pattern.
+
+#### Groups
+
 What is more, `()`-style patterns allow for *groups*:
 * `(a b c: .Nat, d e: .Bool)` means `(a: .Nat, b: .Nat, c: .Nat, d: .Bool, e: .Bool)`.
 
@@ -209,6 +225,8 @@ Here is another example:
 Π.Tas::[T: *, as: .Nat][%mem.M, %mem.Ptr Tas] → [%mem.M, T]
 ```
 
+#### Rebind
+
 Finally, you can put a <tt>\`</tt> in front of an identifier of a `()`-style pattern to (potentially) rebind a name to a different value.
 This is particularly useful, when dealing with memory:
 ```
@@ -216,17 +234,6 @@ This is particularly useful, when dealing with memory:
 .let `mem        = %mem.store (mem, ptr, 23:I32);
 .let (`mem, val) = %mem.load (mem, ptr);
 ```
-
-| LHS             | RHS                                                    | Comment                             |
-|-----------------|--------------------------------------------------------|-------------------------------------|
-| p               | <tt>\`</tt>? 𝖨 (`:` e<sub>type</sub> )?                | identifier `()`-pattern             |
-| p               | (<tt>\`</tt>? 𝖨 `::`)? `(` d\* g `,` ... `,` d\* g `)` | `()`-`()`-tuple pattern<sup>s</sup> |
-| p               | (<tt>\`</tt>? 𝖨 `::`)? b<sub>[ ]</sub>                 | `[]`-`()`-tuple pattern             |
-| g               | p                                                      | group                               |
-| g               | 𝖨+ `:` e                                               | group                               |
-| b               | (<tt>\`</tt>? 𝖨 `:`)? e<sub>type</sub>                 | identifier `[]`-pattern             |
-| b               | (<tt>\`</tt>? 𝖨 `::`)? b<sub>[ ]</sub>                 | `[]`-`[]`-tuple pattern             |
-| b<sub>[ ]</sub> | `[` d\* b `,` ... `,` d\* b `]`                        | `[]`-tuple pattern<sup>s</sup>      |
 
 ### Expressions {#expr}
 
@@ -400,7 +407,8 @@ Annex names are special and live in a global namespace.
 
 Named elements of mutable sigmas are available for extracts/inserts.
 
-@warning These names take precedence over the usual scope.
+@note
+These names take precedence over the usual scope.
 In the following example, `i` refers to the first element `i` of `X` and **not** to the `i` introduced via `.let`:
 ```
 .let i = 1_2;
