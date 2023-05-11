@@ -202,6 +202,7 @@ Ref World::app(Ref callee, Ref arg) {
         error(arg, "cannot pass argument \n'{}' of type \n'{}' to \n'{}' of domain \n'{}'", arg, arg->type(), callee,
               pi->dom());
 
+    if (auto imm = callee->isa_imm<Lam>()) return imm->body();
     if (auto lam = callee->isa<Lam>(); lam && lam->is_set() && !lam->is_term()) return lam->reduce(arg).back();
 
     auto type = pi->reduce(arg).back();
