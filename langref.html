@@ -198,9 +198,13 @@ Keywords</h3>
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Terminal   </th><th class="markdownTableHeadNone">Comment    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>.ax</code>   </td><td class="markdownTableBodyNone">axiom    </td></tr>
+<td class="markdownTableBodyNone"><code>.module</code>   </td><td class="markdownTableBodyNone">starts a module    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>.Pi</code>   </td><td class="markdownTableBodyNone">mutable <a class="el" href="classthorin_1_1Pi.html">Pi</a> declaration    </td></tr>
+<td class="markdownTableBodyNone"><code>.import</code>   </td><td class="markdownTableBodyNone">imports another Thorin file    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>.plugin</code>   </td><td class="markdownTableBodyNone">like <code>.import</code> and additionally loads the compiler plugin    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>.ax</code>   </td><td class="markdownTableBodyNone">axiom    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>.let</code>   </td><td class="markdownTableBodyNone">let declaration    </td></tr>
 <tr class="markdownTableRowEven">
@@ -216,36 +220,30 @@ Keywords</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>.fn</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lam.html">function</a> expression    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>.cn</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lam.html">lambda</a> expression    </td></tr>
+<td class="markdownTableBodyNone"><code>.lm</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lam.html">lambda</a> expression    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>.Sigma</code>   </td><td class="markdownTableBodyNone">mutable <a class="el" href="classthorin_1_1Sigma.html" title="A dependent tuple type.">thorin::Sigma</a>    </td></tr>
+<td class="markdownTableBodyNone"><code>.Pi</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Pi.html">Pi</a> declaration    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>.Pi</code>   </td><td class="markdownTableBodyNone">mutable <a class="el" href="classthorin_1_1Pi.html" title="A dependent function type.">thorin::Pi</a>    </td></tr>
+<td class="markdownTableBodyNone"><code>.Sigma</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Sigma.html">Sigma</a> declaration    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>.extern</code>   </td><td class="markdownTableBodyNone">marks mutable as external    </td></tr>
+<td class="markdownTableBodyNone"><code>.extern</code>   </td><td class="markdownTableBodyNone">marks function as external    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>.ins</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Insert.html" title="Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple.">thorin::Insert</a> expression    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>.insert</code>   </td><td class="markdownTableBodyNone">alias for <code>.ins</code>    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>.module</code>   </td><td class="markdownTableBodyNone">starts a module    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>.import</code>   </td><td class="markdownTableBodyNone">imports another Thorin file    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>.plugin</code>   </td><td class="markdownTableBodyNone">like <code>.import</code> and additionally loads the compiler plugin    </td></tr>
-<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>.Nat</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Nat.html">thorin::Nat</a>    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>.Idx</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Idx.html" title="A built-in constant of type .Nat -&gt; *.">thorin::Idx</a>    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>.Bool</code>   </td><td class="markdownTableBodyNone">alias for <code>.Idx 2</code>    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>.ff</code>   </td><td class="markdownTableBodyNone">alias for <code>0₂</code>    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>.tt</code>   </td><td class="markdownTableBodyNone">alias for <code>1₂</code>    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>.Type</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Type.html">thorin::Type</a>    </td></tr>
+<td class="markdownTableBodyNone"><code>.tt</code>   </td><td class="markdownTableBodyNone">alias for <code>1₂</code>    </td></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>.Type</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Type.html">thorin::Type</a>    </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>.Univ</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Univ.html">thorin::Univ</a>   </td></tr>
 </table>
 <p >All keywords start with a <code>.</code> to prevent name clashes with identifiers.</p>
