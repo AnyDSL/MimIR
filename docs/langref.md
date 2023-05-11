@@ -49,8 +49,10 @@ In addition the following keywords are *terminals*:
 
 | Terminal  | Comment                                                   |
 |-----------|-----------------------------------------------------------|
+| `.module` | starts a module                                           |
+| `.import` | imports another Thorin file                               |
+| `.plugin` | like `.import` and additionally loads the compiler plugin |
 | `.ax`     | axiom                                                     |
-| `.Pi`     | mutable [Pi](@ref thorin::Pi) declaration                 |
 | `.let`    | let declaration                                           |
 | `.con`    | [continuation](@ref thorin::Lam) declaration              |
 | `.fun`    | [function](@ref thorin::Lam) declaration                  |
@@ -58,15 +60,12 @@ In addition the following keywords are *terminals*:
 | `.ret`    | ret expression                                            |
 | `.cn`     | [continuation](@ref thorin::Lam) expression               |
 | `.fn`     | [function](@ref thorin::Lam) expression                   |
-| `.cn`     | [lambda](@ref thorin::Lam) expression                     |
-| `.Sigma`  | mutable thorin::Sigma                                     |
-| `.Pi`     | mutable thorin::Pi                                        |
-| `.extern` | marks mutable as external                                 |
+| `.lm`     | [lambda](@ref thorin::Lam) expression                     |
+| `.Pi`     | [Pi](@ref thorin::Pi) declaration                         |
+| `.Sigma`  | [Sigma](@ref thorin::Sigma) declaration                   |
+| `.extern` | marks function as external                                |
 | `.ins`    | thorin::Insert expression                                 |
 | `.insert` | alias for `.ins`                                          |
-| `.module` | starts a module                                           |
-| `.import` | imports another Thorin file                               |
-| `.plugin` | like `.import` and additionally loads the compiler plugin |
 | `.Nat`    | thorin::Nat                                               |
 | `.Idx`    | thorin::Idx                                               |
 | `.Bool`   | alias for `.Idx 2`                                        |
