@@ -34,13 +34,13 @@ The [grammatical rules](#grammar) will directly reference these *primary [termin
 For example, the lexer doesn't care, if you use `⊥` or `.bot`.
 Both tokens are identified as `⊥`.
 
-| Primary Terminals           | Secondary Terminals                         | Comment                   |
-|-----------------------------|---------------------------------------------|---------------------------|
-| `(` `)` `[` `]` `{` `}`     |                                             | delimiters                |
-| `‹` `›` `«` `»`             | `<<` `>>` `<` `>`                           | UTF-8 delimiters          |
-| `→` `⊥` `⊤` `★` `□` `λ` `Π` | `->` `.bot` `.top` `*` `.lm` <tt>\|~\|</tt> | further UTF-8 tokens      |
-| `=` `,` `;` `.` `#` `:` `%` |                                             | further tokens            |
-| `<eof>`                     |                                             | marks the end of the file |
+| Primary Terminals               | Secondary Terminals                         | Comment                   |
+|---------------------------------|---------------------------------------------|---------------------------|
+| `(` `)` `[` `]` `{` `}`         |                                             | delimiters                |
+| `‹` `›` `«` `»`                 | `<<` `>>` `<` `>`                           | UTF-8 delimiters          |
+| `→` `⊥` `⊤` `★` `□` `λ` `Π`     | `->` `.bot` `.top` `*` `.lm` <tt>\|~\|</tt> | further UTF-8 tokens      |
+| `=` `,` `;` `.` `#` `:` `%` `@` |                                             | further tokens            |
+| `<eof>`                         |                                             | marks the end of the file |
 
 In addition you can use `⟨`, `⟩`, `⟪`, and `⟫` as an alternative for `‹`, `›`, `«`, and `»`.
 
@@ -270,17 +270,18 @@ This is particularly useful, when dealing with memory:
 
 #### Functions
 
-| LHS | RHS                                                         | Comment                                 | Thorin Class            |
-|-----|-------------------------------------------------------------|-----------------------------------------|-------------------------|
-| e   | e<sub>dom</sub> `→` e<sub>codom</sub>                       | function type                           | [Pi](@ref thorin::Pi)   |
-| e   | `Π`   `.`? b (`.`? b<sub>[ ]</sub>)\* `→` e<sub>codom</sub> | dependent function type<sup>s</sup>     | [Pi](@ref thorin::Pi)   |
-| e   | `.Cn` `.`? b (`.`? b<sub>[ ]</sub>)\*                       | continuation type<sup>s</sup>           | [Pi](@ref thorin::Pi)   |
-| e   | `.Fn` `.`? b (`.`? b<sub>[ ]</sub>)\* `→` e<sub>codom</sub> | returning continuation type<sup>s</sup> | [Pi](@ref thorin::Pi)   |
-| e   | `λ`   (`.`? p)+ (`→` e<sub>codom</sub>)? `=` d\* e          | lambda expression<sup>s</sup>           | [Lam](@ref thorin::Lam) |
-| e   | `.cn` (`.`? p)+                          `=` d\* e          | continuation expression<sup>s</sup>     | [Lam](@ref thorin::Lam) |
-| e   | `.fn` (`.`? p)+ (`→` e<sub>codom</sub>)? `=` d\* e          | function expression<sup>s</sup>         | [Lam](@ref thorin::Lam) |
-| e   | e e                                                         | application                             | [App](@ref thorin::App) |
-| e   | `.ret` p `=` e `$` e `;` d\* e                              | ret expresison                          | [App](@ref thorin::App) |
+| LHS | RHS                                                         | Comment                                        | Thorin Class            |
+|-----|-------------------------------------------------------------|------------------------------------------------|-------------------------|
+| e   | e<sub>dom</sub> `→` e<sub>codom</sub>                       | function type                                  | [Pi](@ref thorin::Pi)   |
+| e   | `Π`   `.`? b (`.`? b<sub>[ ]</sub>)\* `→` e<sub>codom</sub> | dependent function type<sup>s</sup>            | [Pi](@ref thorin::Pi)   |
+| e   | `.Cn` `.`? b (`.`? b<sub>[ ]</sub>)\*                       | continuation type<sup>s</sup>                  | [Pi](@ref thorin::Pi)   |
+| e   | `.Fn` `.`? b (`.`? b<sub>[ ]</sub>)\* `→` e<sub>codom</sub> | returning continuation type<sup>s</sup>        | [Pi](@ref thorin::Pi)   |
+| e   | `λ`   (`.`? p)+ (`→` e<sub>codom</sub>)? `=` d\* e          | lambda expression<sup>s</sup>                  | [Lam](@ref thorin::Lam) |
+| e   | `.cn` (`.`? p)+                          `=` d\* e          | continuation expression<sup>s</sup>            | [Lam](@ref thorin::Lam) |
+| e   | `.fn` (`.`? p)+ (`→` e<sub>codom</sub>)? `=` d\* e          | function expression<sup>s</sup>                | [Lam](@ref thorin::Lam) |
+| e   | e e                                                         | application                                    | [App](@ref thorin::App) |
+| e   | e `@` e                                                     | application making implicit arguments explicit | [App](@ref thorin::App) |
+| e   | `.ret` p `=` e `$` e `;` d\* e                              | ret expresison                                 | [App](@ref thorin::App) |
 
 #### Tuples
 
@@ -299,17 +300,18 @@ This is particularly useful, when dealing with memory:
 
 Expressions nesting is disambiguated according to the following precedence table (from strongest to weakest binding):
 
-| Operator   | Description                         | Associativity |
-|------------|-------------------------------------|---------------|
-| L `:` e    | type ascription of a literal        | -             |
-| e `#` e    | extract                             | left-to-right |
-| e e        | application                         | left-to-right |
-| `Π` b      | domain of a dependent function type | -             |
-| `.fun` n p | function declaration                | -             |
-| `.lam` n p | lambda declaration                  | -             |
-| `.fn` p    | function expression                 | -             |
-| `λ` p      | lambda expression                   | -             |
-| e `→` e    | function type                       | right-to-left |
+| Level | Operator   | Description                                    | Associativity |
+|-------|------------|------------------------------------------------|---------------|
+| 1     | L `:` e    | type ascription of a literal                   | -             |
+| 2     | e `#` e    | extract                                        | left-to-right |
+| 3     | e e        | application                                    | left-to-right |
+| 3     | e `@` e    | application making implicit arguments explicit | left-to-right |
+| 4     | `Π` b      | domain of a dependent function type            | -             |
+| 5     | `.fun` n p | function declaration                           | -             |
+| 5     | `.lam` n p | lambda declaration                             | -             |
+| 5     | `.fn` p    | function expression                            | -             |
+| 5     | `λ` p      | lambda expression                              | -             |
+| 6     | e `→` e    | function type                                  | right-to-left |
 
 @note The domain of a dependent function type binds slightly stronger than `→`.
 This has the effect that
@@ -363,6 +365,7 @@ The following expressions for applying `f` are also equivalent:
 f .Nat ((23, 42),.cn res: .Nat = use(res))
 .ret res = f .Nat $ (23, 42); use(res)
 ```
+
 ### Function Types
 
 Finally, the following function types are all equivalent and denote the type of `f` above.
