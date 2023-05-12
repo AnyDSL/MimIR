@@ -6,7 +6,7 @@ var searchData=
   ['scope_3',['Scope',['../classthorin_1_1Scope.html#a1c6b1b6b8394e9f5f8a5d6d99874e324',1,'thorin::Scope::Scope(const Scope &amp;)=delete'],['../classthorin_1_1Scope.html#ad242537b0a05480bfb15dbac4d211900',1,'thorin::Scope::Scope(Def *entry)']]],
   ['scope_4',['scope',['../classthorin_1_1clos_1_1ClosConvPrep.html#ab697e909609a7070023344d9a05d85ec',1,'thorin::clos::ClosConvPrep::scope()'],['../classthorin_1_1CFA.html#ab954b6513f675c18fe8cd6523c046a48',1,'thorin::CFA::scope()'],['../classthorin_1_1Scheduler.html#a3337cd18d5fe2a3a102a3fc2aa950059',1,'thorin::Scheduler::scope()'],['../classthorin_1_1ScopePhase.html#abff810010f44ad3c53ac2e74e9f2f308',1,'thorin::ScopePhase::scope()'],['../classthorin_1_1ScopeRewriter.html#a6eecb085d8bcccea5874451542d1a765',1,'thorin::ScopeRewriter::scope()']]],
   ['scopephase_5',['ScopePhase',['../classthorin_1_1ScopePhase.html#a7e4121deb0093a19946fd920743c4bc8',1,'thorin::ScopePhase']]],
-  ['scoperewriter_6',['ScopeRewriter',['../classthorin_1_1ScopeRewriter.html#aea90b2a111c66c7f32f5f921e38ec7d4',1,'thorin::ScopeRewriter']]],
+  ['scoperewriter_6',['ScopeRewriter',['../classthorin_1_1ScopeRewriter.html#a6716e3c2d17ea6d4b22417e13f75ec2c',1,'thorin::ScopeRewriter']]],
   ['scopes_7',['Scopes',['../classthorin_1_1fe_1_1Scopes.html#a501e60072aa501e37cf79e48d14e86fd',1,'thorin::fe::Scopes']]],
   ['scopes_8',['scopes',['../classthorin_1_1fe_1_1Parser.html#a22dfc33e06056dc35d7fc211502490ae',1,'thorin::fe::Parser']]],
   ['search_5fpaths_9',['search_paths',['../classthorin_1_1Driver.html#a5d932eb2868df04e7fa6da9481e38626',1,'thorin::Driver']]],

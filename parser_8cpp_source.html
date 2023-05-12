@@ -629,7 +629,7 @@ $(document).ready(function(){initNavTree('parser_8cpp_source.html',''); initResi
 <div class="line"><a id="l00514" name="l00514"></a><span class="lineno">  514</span>                Scope scope(lam);</div>
 <div class="line"><a id="l00515" name="l00515"></a><span class="lineno">  515</span> </div>
 <div class="line"><a id="l00516" name="l00516"></a><span class="lineno">  516</span>                <span class="comment">// Now rewrite old filter to use new_var.</span></div>
-<div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span>                ScopeRewriter rw(<a class="code hl_function" href="classthorin_1_1fe_1_1Parser.html#a23b9b67be0d4349543916eba8db1a585">world</a>(), scope);</div>
+<div class="line"><a id="l00517" name="l00517"></a><span class="lineno">  517</span>                ScopeRewriter rw(scope);</div>
 <div class="line"><a id="l00518" name="l00518"></a><span class="lineno">  518</span>                rw.map(lam-&gt;var(), new_lam-&gt;var(2, 0)-&gt;set(lam-&gt;var()-&gt;dbg()));</div>
 <div class="line"><a id="l00519" name="l00519"></a><span class="lineno">  519</span>                <span class="keyword">auto</span> new_filter = rw.rewrite(filter);</div>
 <div class="line"><a id="l00520" name="l00520"></a><span class="lineno">  520</span>                filter          = new_filter;</div>
@@ -653,7 +653,7 @@ $(document).ready(function(){initNavTree('parser_8cpp_source.html',''); initResi
 <div class="line"><a id="l00538" name="l00538"></a><span class="lineno">  538</span>        <span class="comment">// First, connect old codom to lam. Otherwise, scope will not find it.</span></div>
 <div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>        pi-&gt;set_codom(codom);</div>
 <div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>        Scope scope(lam);</div>
-<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span>        ScopeRewriter rw(<a class="code hl_function" href="classthorin_1_1fe_1_1Parser.html#a23b9b67be0d4349543916eba8db1a585">world</a>(), scope);</div>
+<div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span>        ScopeRewriter rw(scope);</div>
 <div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>        rw.map(lam-&gt;var(), pi-&gt;var()-&gt;set(lam-&gt;var()-&gt;dbg()));</div>
 <div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span> </div>
 <div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>        <span class="comment">// Now update.</span></div>

@@ -23,7 +23,7 @@ var searchData=
   ['scope_2ecpp_20',['scope.cpp',['../scope_8cpp.html',1,'']]],
   ['scope_2eh_21',['scope.h',['../scope_8h.html',1,'']]],
   ['scopephase_22',['ScopePhase',['../classthorin_1_1ScopePhase.html#a7e4121deb0093a19946fd920743c4bc8',1,'thorin::ScopePhase::ScopePhase()'],['../classthorin_1_1ScopePhase.html',1,'thorin::ScopePhase']]],
-  ['scoperewriter_23',['ScopeRewriter',['../classthorin_1_1ScopeRewriter.html#aea90b2a111c66c7f32f5f921e38ec7d4',1,'thorin::ScopeRewriter::ScopeRewriter()'],['../classthorin_1_1ScopeRewriter.html',1,'thorin::ScopeRewriter']]],
+  ['scoperewriter_23',['ScopeRewriter',['../classthorin_1_1ScopeRewriter.html#a6716e3c2d17ea6d4b22417e13f75ec2c',1,'thorin::ScopeRewriter::ScopeRewriter()'],['../classthorin_1_1ScopeRewriter.html',1,'thorin::ScopeRewriter']]],
   ['scopes_24',['Scopes',['../classthorin_1_1fe_1_1Scopes.html#a501e60072aa501e37cf79e48d14e86fd',1,'thorin::fe::Scopes']]],
   ['scopes_25',['scopes',['../classthorin_1_1fe_1_1Parser.html#a22dfc33e06056dc35d7fc211502490ae',1,'thorin::fe::Parser']]],
   ['scopes_26',['Scopes',['../classthorin_1_1fe_1_1Scopes.html',1,'thorin::fe']]],
