@@ -534,6 +534,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         unreachable();
     } else if (def->isa<Bot>()) {
         return "undef";
+    } else if (auto top = def->isa<Top>()) {
+        if (match<mem::M>(top->type())) return {};
+        // bail out to error below
     } else if (auto tuple = def->isa<Tuple>()) {
         return emit_tuple(tuple);
     } else if (auto pack = def->isa<Pack>()) {
@@ -738,8 +741,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             op = (src_size < dst_size) ? "zext" : "trunc";
         }
         return bb.assign(name, "{} {} {} to {}", op, t_src, v_src, t_dst);
-    } else if (auto m = match<mem::m>(def)) {
-        return {};
     } else if (auto lea = match<mem::lea>(def)) {
         auto [ptr, i]  = lea->args<2>();
         auto pointee   = force<mem::Ptr>(ptr->type())->arg(0);
