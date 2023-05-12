@@ -1,4 +1,4 @@
-// RUN: rm -f %t.ll ; \
+// RUN: rm -f %t.ll
 // RUN: %thorin -e thorin %s -e ll -o %t | FileCheck %s
 // RUN: clang %t.ll -o %t -Wno-override-module
 

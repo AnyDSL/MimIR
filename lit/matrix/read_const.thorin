@@ -1,4 +1,4 @@
-// RUN: rm -f %t.ll ; \
+// RUN: rm -f %t.ll
 // RUN: %thorin %s --output-ll %t.ll --output-thorin - | FileCheck %s
 
 .plugin core;

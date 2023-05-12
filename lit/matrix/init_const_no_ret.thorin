@@ -1,10 +1,10 @@
-// RUN: rm -f %t.ll ; \
+// RUN: rm -f %t.ll
 // RUN: %thorin -o - %s | FileCheck %s
 
 .plugin core;
 .plugin matrix;
 
-.con .extern f [mem : %mem.M, 
+.con .extern f [mem : %mem.M,
     [k:.Nat, l:.Nat],
     return: .Cn[%mem.M]] = {
 
