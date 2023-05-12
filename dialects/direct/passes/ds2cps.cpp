@@ -51,9 +51,9 @@ Ref DS2CPS::rewrite_lam(Lam* lam) {
     if (auto mut = ty->isa_mut()) {
         // replace ds dom var with cps sigma var (cps dom)
         Scope r_scope{mut};
-        auto dom_var         = mut->var();
-        auto cps_dom_var     = sigma->var(2, 0);
-        rewritten_codom      = thorin::rewrite(codom, dom_var, cps_dom_var, r_scope);
+        auto dom_var     = mut->var();
+        auto cps_dom_var = sigma->var(2, 0);
+        rewritten_codom  = thorin::rewrite(codom, dom_var, cps_dom_var, r_scope);
     } else {
         rewritten_codom = codom;
     }
