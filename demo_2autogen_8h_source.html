@@ -140,13 +140,13 @@ $(document).ready(function(){initNavTree('demo_2autogen_8h_source.html',''); ini
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="demo_2autogen_8h.html#a09abefcb29dc3f469584a7f7d43ec837">   26</a></span><span class="preprocessor">#define THORIN_demo_NORMALIZER_IMPL \</span></div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">    void register_normalizers(Normalizers&amp; normalizers) {\</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">        normalizers[flags_t(Axiom::Base&lt;constIdx&gt;)] = &amp;normalize_const; \</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">        normalizers[flags_t(Annex::Base&lt;constIdx&gt;)] = &amp;normalize_const; \</span></div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="preprocessor">    }</span></div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>} <span class="comment">// namespace demo</span></div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="preprocessor">#ifndef DOXYGEN </span><span class="comment">// don&#39;t include in Doxygen documentation</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">template</span>&lt;&gt; <span class="keyword">constexpr</span> <a class="code hl_typedef" href="namespacethorin.html#ae4dba9b3be2d9956cd3c0df92ba53dc2">flags_t</a> Axiom::Base&lt;demo::constIdx&gt; = 0x1463900000000000;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">template</span>&lt;&gt; <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> Axiom::Num&lt;demo::constIdx&gt; = 0;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">template</span>&lt;&gt; <span class="keyword">constexpr</span> <a class="code hl_typedef" href="namespacethorin.html#ae4dba9b3be2d9956cd3c0df92ba53dc2">flags_t</a> Annex::Base&lt;demo::constIdx&gt; = 0x1463900000000000;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keyword">template</span>&lt;&gt; <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> Annex::Num&lt;demo::constIdx&gt; = 0;</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>} <span class="comment">// namespace thorin</span></div>

@@ -14,15 +14,18 @@
 \_form#13=18x14:$\sqrt{x}$
 \_form#14=19x14:$\sqrt[3]{x}$
 \_form#15=11x9:$e^x$
-\_form#16=20x10:$\ln x$
-\_form#17=11x9:$2^x$
-\_form#18=33x14:$\log_2 x$
-\_form#19=36x14:$\log_{10} x$
-\_form#20=71x21:$\frac{2}{\sqrt\pi}\int_0^x e^{-t^2}\,dt$
-\_form#21=144x21:$\frac{2}{\sqrt\pi}\int_x^\infty e^{-t^2}\,dt = 1 - \textrm{erf}(x)$
-\_form#22=118x16:$\Gamma(x) = \int_0^\infty t^{x-1} e^{-t}\,dt$
-\_form#23=104x16:$\ln \mid \int_0^\infty t^{x-1} e^{-t}\,dt \mid$
-\_form#24=15x14:$\lfloor x \rfloor $
-\_form#25=15x14:$\lceil x \rceil $
-\_form#26=50x14:$round (x)$
-\_form#27=48x14:$trunc (x)$
+\_form#16=11x9:$2^x$
+\_form#17=18x9:$10^x$
+\_form#18=20x10:$\ln x$
+\_form#19=33x14:$\log_2 x$
+\_form#20=36x14:$\log_{10} x$
+\_form#21=71x21:$\frac{2}{\sqrt\pi}\int_0^x e^{-t^2}\,dt$
+\_form#22=144x21:$\frac{2}{\sqrt\pi}\int_x^\infty e^{-t^2}\,dt = 1 - \textrm{erf}(x)$
+\_form#23=118x16:$\Gamma(x) = \int_0^\infty t^{x-1} e^{-t}\,dt$
+\_form#24=104x16:$\ln \mid \int_0^\infty t^{x-1} e^{-t}\,dt \mid$
+\_form#25=15x14:$\lfloor x \rfloor $
+\_form#26=15x14:$\lceil x \rceil $
+\_form#27=50x14:$round (x)$
+\_form#28=48x14:$trunc (x)$
+\_form#29=83x18:$slf(x) = \frac{1}{1+e^{-x}}$
+\_form#30=66x19:$rrt(x) = \frac{1}{\sqrt{x}}$

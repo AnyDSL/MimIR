@@ -11,7 +11,7 @@ var searchData=
   ['d_5fquote_5fl_8',['D_quote_l',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a5be9fecd8fb8ece5f3217942ae9f6c4a',1,'thorin::fe::Tok']]],
   ['d_5fquote_5fr_9',['D_quote_r',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79add7e7307bb61b436ebfaff2f7f0e0e29',1,'thorin::fe::Tok']]],
   ['debug_10',['Debug',['../classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aaa603905470e2a5b8c13e96b579ef0dba',1,'thorin::Log']]],
-  ['div_11',['div',['../namespacethorin_1_1math.html#aa313bc84ec271c77a5d5d1f6b3897ec4afc1a284af4fda7948584dab673881dc0',1,'thorin::math']]],
-  ['dl_12',['DL',['../namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8feaf8136b9c85dcb54ce942003e881908bd',1,'thorin::math']]],
+  ['dec_11',['dec',['../namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea14562d3576d8c9e007498a314eeab037',1,'thorin::math']]],
+  ['div_12',['div',['../namespacethorin_1_1math.html#aa313bc84ec271c77a5d5d1f6b3897ec4afc1a284af4fda7948584dab673881dc0',1,'thorin::math']]],
   ['dot_13',['Dot',['../main_8cpp.html#a085744bf883a85c3fb7407874efa1d9daf7f834c597c60e7e59d272d3223742e7',1,'main.cpp']]]
 ];

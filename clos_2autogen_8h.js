@@ -10,6 +10,7 @@ var clos_2autogen_8h =
       [ "bot", "clos_2autogen_8h.html#a5c55a5bd62132e28b49915902ea0117aa62cbfe7c9edd7c5f14f4a83cd32a3bcd", null ]
     ] ],
     [ "branch_clos_pass", "clos_2autogen_8h.html#aef3b95c191f7a48e7e5e13d98a5b6ee4", null ],
+    [ "BufPtr", "clos_2autogen_8h.html#aae38c8a20476ed7b14dc7ecd06129979", null ],
     [ "clos2sjlj_pass", "clos_2autogen_8h.html#a2b43b9b0f0f249caec3e6b18c11ffb1c", null ],
     [ "clos_conv_pass", "clos_2autogen_8h.html#a490eb43f7a0b0221478f50630e80b707", null ],
     [ "clos_conv_prep_pass", "clos_2autogen_8h.html#a5cb61dac566533e52e49b976bf8d2247", null ],

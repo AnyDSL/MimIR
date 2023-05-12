@@ -116,7 +116,8 @@ $(document).ready(function(){initNavTree('core_2normalizers_8cpp.html',''); init
   <div class="headertitle"><div class="title">normalizers.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="core_8h_source.html">dialects/core/core.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &lt;optional&gt;</code><br />
+<code>#include &quot;<a class="el" href="core_8h_source.html">dialects/core/core.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="math_8h_source.html">dialects/math/math.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="mem_8h_source.html">dialects/mem/mem.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -138,7 +139,7 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a48da5e6acc28b0cfe9f3402f29ae9a1c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c">CODE</a>(i)&#160;&#160;&#160;    case i: res = fold&lt;Id, id, i&gt;(la-&gt;get(), lb-&gt;get(), nsw, nuw); break;</td></tr>
+<tr class="memitem:a48da5e6acc28b0cfe9f3402f29ae9a1c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c">CODE</a>(i)&#160;&#160;&#160;    case i: res = fold&lt;Id, id, i&gt;(*la, *lb, nsw, nuw); break;</td></tr>
 <tr class="separator:a48da5e6acc28b0cfe9f3402f29ae9a1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeaded74fae54146d0f196f3f31367c89"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>(S,  D)&#160;&#160;&#160;        else if (S == sw &amp;&amp; D == dw) return world.lit(d_t, w2s&lt;D&gt;(<a class="el" href="namespacethorin.html#a35ef19aa33b6c70ef2aca7bf23009527">thorin::bitcast</a>&lt;w2s&lt;S&gt;&gt;(*l)));</td></tr>
 <tr class="separator:aeaded74fae54146d0f196f3f31367c89"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -211,7 +212,7 @@ Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">i</td><td>)</td>
-          <td>&#160;&#160;&#160;    case i: res = fold&lt;Id, id, i&gt;(la-&gt;get(), lb-&gt;get(), nsw, nuw); break;</td>
+          <td>&#160;&#160;&#160;    case i: res = fold&lt;Id, id, i&gt;(*la, *lb, nsw, nuw); break;</td>
         </tr>
       </table>
 </div><div class="memdoc">

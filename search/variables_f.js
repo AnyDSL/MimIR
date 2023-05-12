@@ -1,8 +1,8 @@
 var searchData=
 [
   ['tab_0',['tab',['../classthorin_1_1Emitter.html#a970073a2e4b9447f3c146d6623360452',1,'thorin::Emitter']]],
-  ['tag_1',['tag',['../structthorin_1_1Axiom_1_1Info.html#a0028174a8a9b20f8503b679f61e65dd6',1,'thorin::Axiom::Info']]],
-  ['tag_5fid_2',['tag_id',['../structthorin_1_1Axiom_1_1Info.html#ae010357282cff1ae7435f2c2789d7503',1,'thorin::Axiom::Info']]],
+  ['tag_1',['tag',['../structthorin_1_1Annex.html#a16defcff0de03fbf3cce5c673c7724c6',1,'thorin::Annex']]],
+  ['tag_5fid_2',['tag_id',['../structthorin_1_1Annex.html#a1bd812b8d47396e100f5635accc0d9d8',1,'thorin::Annex']]],
   ['trace_5fgids_3',['trace_gids',['../namespacethorin.html#a0c6e11089999fb8349a4fbd2463578bb',1,'thorin::Flags']]],
   ['trip_5f_4',['trip_',['../classthorin_1_1Def.html#acd8ae8810314b2c77903a10ffdfcd385',1,'thorin::Def']]],
   ['trip_5fend_5',['Trip_End',['../classthorin_1_1Axiom.html#a2309a17fdc0233fae32e713576bbc7bb',1,'thorin::Axiom']]],

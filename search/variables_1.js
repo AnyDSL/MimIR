@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['base_0',['Base',['../classthorin_1_1Axiom.html#af31fe391efeb0efb46f15e7451b04221',1,'thorin::Axiom']]],
+  ['base_0',['Base',['../structthorin_1_1Annex.html#aaa757ae1b65dadaea28f8f5363d3f326',1,'thorin::Annex']]],
   ['begin_1',['begin',['../structthorin_1_1Loc.html#ad1fdf23d819fbbc0d01d0bcf3a728284',1,'thorin::Loc']]],
   ['bom_2',['BOM',['../namespacethorin_1_1utf8.html#ac779262d791a964e365ba7ff793aa0a5',1,'thorin::utf8']]],
   ['bootstrap_3',['bootstrap',['../namespacethorin.html#a25c781163b4489f90a9add51fbda2b96',1,'thorin::Flags']]],

@@ -232,6 +232,7 @@ lit Tests</h2>
 <p >Run the <a href="https://llvm.org/docs/CommandGuide/lit.html">lit</a> testsuite with: </p><div class="fragment"><div class="line">cmake --build build -t check</div>
 </div><!-- fragment --><p> You can manually invoke the lit tests like this and maybe filter for a specific test: </p><div class="fragment"><div class="line">cd lit</div>
 <div class="line">./lit ../build/lit -a --filter foo.thorin</div>
+</div><!-- fragment --><p> If your <code>build</code> directory, is in fact <code>../build/lit</code> you can use the <code>probe.sh</code> script: </p><div class="fragment"><div class="line">./probe.sh foo.thorin</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md11"></a>
 GoogleTest</h2>
 <p >Run the <a href="https://google.github.io/googletest/">GoogleTest</a> unit tests within the <code>build</code> folder with: </p><div class="fragment"><div class="line">ctest</div>

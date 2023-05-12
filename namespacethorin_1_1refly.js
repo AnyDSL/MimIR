@@ -30,6 +30,5 @@ var namespacethorin_1_1refly =
     [ "operator|", "namespacethorin_1_1refly.html#ac2a93436e4df65511d69502d281b3b6f", null ],
     [ "operator|", "namespacethorin_1_1refly.html#a0c96ba6f2b8d0f413d0c815ff37b4a9c", null ],
     [ "register_normalizers", "namespacethorin_1_1refly.html#a308b889d433339a153302adbe67339fe", null ],
-    [ "type_code", "namespacethorin_1_1refly.html#a2cf796606d851c9bab06caf5a2332170", null ],
     [ "Plugin_Id", "namespacethorin_1_1refly.html#a323a1d074b165a712a766e8da367dd11", null ]
 ];

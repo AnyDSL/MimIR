@@ -139,9 +139,9 @@ Namespaces</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:a48da5e6acc28b0cfe9f3402f29ae9a1c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="math_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c">CODE</a>(i)&#160;&#160;&#160;    case i: res = fold&lt;Id, i&gt;(la-&gt;get()); break;</td></tr>
 <tr class="separator:a48da5e6acc28b0cfe9f3402f29ae9a1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48da5e6acc28b0cfe9f3402f29ae9a1c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="math_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c">CODE</a>(i)&#160;&#160;&#160;    case i: res = fold&lt;Id, id, i&gt;(la-&gt;get()); break;</td></tr>
+<tr class="memitem:a48da5e6acc28b0cfe9f3402f29ae9a1c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="math_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c">CODE</a>(i)&#160;&#160;&#160;    case i: res = fold&lt;Id, id, i&gt;(*la); break;</td></tr>
 <tr class="separator:a48da5e6acc28b0cfe9f3402f29ae9a1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48da5e6acc28b0cfe9f3402f29ae9a1c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="math_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c">CODE</a>(i)&#160;&#160;&#160;    case i: res = fold&lt;Id, id, i&gt;(la-&gt;get(), lb-&gt;get()); break;</td></tr>
+<tr class="memitem:a48da5e6acc28b0cfe9f3402f29ae9a1c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="math_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c">CODE</a>(i)&#160;&#160;&#160;    case i: res = fold&lt;Id, id, i&gt;(*la, *lb); break;</td></tr>
 <tr class="separator:a48da5e6acc28b0cfe9f3402f29ae9a1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeaded74fae54146d0f196f3f31367c89"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="math_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>(S,  D)</td></tr>
 <tr class="separator:aeaded74fae54146d0f196f3f31367c89"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -225,7 +225,7 @@ Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">i</td><td>)</td>
-          <td>&#160;&#160;&#160;    case i: res = fold&lt;Id, id, i&gt;(la-&gt;get()); break;</td>
+          <td>&#160;&#160;&#160;    case i: res = fold&lt;Id, id, i&gt;(*la); break;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -243,7 +243,7 @@ Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname">i</td><td>)</td>
-          <td>&#160;&#160;&#160;    case i: res = fold&lt;Id, id, i&gt;(la-&gt;get(), lb-&gt;get()); break;</td>
+          <td>&#160;&#160;&#160;    case i: res = fold&lt;Id, id, i&gt;(*la, *lb); break;</td>
         </tr>
       </table>
 </div><div class="memdoc">

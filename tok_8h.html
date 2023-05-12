@@ -155,8 +155,6 @@ Macros</h2></td></tr>
 <tr class="separator:a92dceaeb9235c0acf0df67d690b439c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d12cc9e30e6f91e9135feb7a67bb4df"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tok_8h.html#a7d12cc9e30e6f91e9135feb7a67bb4df">CODE</a>(t,  str)&#160;&#160;&#160;+ <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>(1)</td></tr>
 <tr class="separator:a7d12cc9e30e6f91e9135feb7a67bb4df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afdaf67aed035a83636d672aae1505a32"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tok_8h.html#afdaf67aed035a83636d672aae1505a32">THORIN_LIT</a>(m)</td></tr>
-<tr class="separator:afdaf67aed035a83636d672aae1505a32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf85c215badfba27aee55c9cd3af719a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tok_8h.html#acf85c215badfba27aee55c9cd3af719a">THORIN_TOK</a>(m)</td></tr>
 <tr class="separator:acf85c215badfba27aee55c9cd3af719a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d2da954389db5acfc86380a482ee87d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tok_8h.html#a3d2da954389db5acfc86380a482ee87d">THORIN_SUBST</a>(m)</td></tr>
@@ -349,30 +347,7 @@ Variables</h2></td></tr>
 <div class="line">    m(K_tt,     <span class="stringliteral">&quot;.tt&quot;</span>    )             \</div>
 <div class="line">    m(K_ins,    <span class="stringliteral">&quot;.ins&quot;</span>   )             \</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00015">15</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
-
-</div>
-</div>
-<a id="afdaf67aed035a83636d672aae1505a32" name="afdaf67aed035a83636d672aae1505a32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afdaf67aed035a83636d672aae1505a32">&#9670;&#160;</a></span>THORIN_LIT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define THORIN_LIT</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">m</td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    m(L_s,  <span class="stringliteral">&quot;&lt;signed integer literal&gt;&quot;</span>) \</div>
-<div class="line">    m(L_u,  <span class="stringliteral">&quot;&lt;integer literal&gt;&quot;</span>)        \</div>
-<div class="line">    m(L_r,  <span class="stringliteral">&quot;&lt;floating-point literal&gt;&quot;</span>) \</div>
-</div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00046">46</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00016">16</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
@@ -391,15 +366,15 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <span class="comment">/* left     prec,    right  */</span>      \</div>
-<div class="line">    m(Nil,      Bot,     Nil     )      \</div>
-<div class="line">    m(Nil,      Nil,     Nil     )      \</div>
-<div class="line">    m(Lam,      Arrow,   Arrow   )      \</div>
-<div class="line">    m(Nil,      Lam,     Pi      )      \</div>
-<div class="line">    m(Nil,      Pi,      App     )      \</div>
-<div class="line">    m(App,      App,     Extract )      \</div>
-<div class="line">    m(Extract,  Extract, Lit     )      \</div>
-<div class="line">    m(Nil,      Lit,     Lit     )      \</div>
+<b>Value:</b><div class="fragment"><div class="line">    <span class="comment">/* left     prec,    right  */</span>     \</div>
+<div class="line">    m(Nil,      Bot,     Nil     )     \</div>
+<div class="line">    m(Nil,      Nil,     Nil     )     \</div>
+<div class="line">    m(Lam,      Arrow,   Arrow   )     \</div>
+<div class="line">    m(Nil,      Lam,     Pi      )     \</div>
+<div class="line">    m(Nil,      Pi,      App     )     \</div>
+<div class="line">    m(App,      App,     Extract )     \</div>
+<div class="line">    m(Extract,  Extract, Lit     )     \</div>
+<div class="line">    m(Nil,      Lit,     Lit     )     \</div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00096">96</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
@@ -420,10 +395,10 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    m(<span class="stringliteral">&quot;.lm&quot;</span>,     T_lm   )               \</div>
-<div class="line">    m(<span class="stringliteral">&quot;.bot&quot;</span>,    T_bot  )               \</div>
-<div class="line">    m(<span class="stringliteral">&quot;.top&quot;</span>,    T_top  )               \</div>
-<div class="line">    m(<span class="stringliteral">&quot;.insert&quot;</span>, K_ins  )               \</div>
+<b>Value:</b><div class="fragment"><div class="line">    m(<span class="stringliteral">&quot;.lm&quot;</span>,     T_lm   )              \</div>
+<div class="line">    m(<span class="stringliteral">&quot;.bot&quot;</span>,    T_bot  )              \</div>
+<div class="line">    m(<span class="stringliteral">&quot;.top&quot;</span>,    T_top  )              \</div>
+<div class="line">    m(<span class="stringliteral">&quot;.insert&quot;</span>, K_ins  )              \</div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00090">90</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
@@ -445,7 +420,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00051">51</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00047">47</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>

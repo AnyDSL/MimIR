@@ -156,6 +156,15 @@ Enumerations</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">%compile.Phase</div></td></tr>
 <tr class="memitem:a2eb4fd4839ed9cceae64c5ae22b9e366"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1compile.html#a2eb4fd4839ed9cceae64c5ae22b9e366">thorin::compile::Phase</a> : flags_t </td></tr>
 <tr class="separator:a2eb4fd4839ed9cceae64c5ae22b9e366"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%compile.Pipeline</div></td></tr>
+<tr class="memitem:a53b02b3d6ac3b0342763427b6dc43f1a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1compile.html#a53b02b3d6ac3b0342763427b6dc43f1a">thorin::compile::Pipeline</a> : flags_t </td></tr>
+<tr class="separator:a53b02b3d6ac3b0342763427b6dc43f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%compile.PassList</div></td></tr>
+<tr class="memitem:a23957967aacd7d214462917a8abed722"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1compile.html#a23957967aacd7d214462917a8abed722">thorin::compile::PassList</a> : flags_t </td></tr>
+<tr class="separator:a23957967aacd7d214462917a8abed722"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%compile.CombinedPhase</div></td></tr>
+<tr class="memitem:a14fb5a1ce14812da4569bf222f21a667"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1compile.html#a14fb5a1ce14812da4569bf222f21a667">thorin::compile::CombinedPhase</a> : flags_t </td></tr>
+<tr class="separator:a14fb5a1ce14812da4569bf222f21a667"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">%compile.Plugin</div></td></tr>
 <tr class="memitem:a63648e99f518e4fdfb5f3abe1af3f383"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1compile.html#a63648e99f518e4fdfb5f3abe1af3f383">thorin::compile::Plugin</a> : flags_t </td></tr>
 <tr class="separator:a63648e99f518e4fdfb5f3abe1af3f383"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -288,13 +297,13 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">    <span class="keywordtype">void</span> register_normalizers(Normalizers&amp; normalizers) {\</div>
-<div class="line">        normalizers[flags_t(Axiom::Base&lt;pass_phase&gt;)] = &amp;normalize_pass_phase; \</div>
-<div class="line">        normalizers[flags_t(Axiom::Base&lt;combine_pass_list&gt;)] = &amp;normalize_combine_pass_list; \</div>
-<div class="line">        normalizers[flags_t(Axiom::Base&lt;single_pass_phase&gt;)] = &amp;normalize_single_pass_phase; \</div>
-<div class="line">        normalizers[flags_t(Axiom::Base&lt;combined_phase&gt;)] = &amp;normalize_combined_phase; \</div>
+<div class="line">        normalizers[flags_t(Annex::Base&lt;pass_phase&gt;)] = &amp;normalize_pass_phase; \</div>
+<div class="line">        normalizers[flags_t(Annex::Base&lt;combine_pass_list&gt;)] = &amp;normalize_combine_pass_list; \</div>
+<div class="line">        normalizers[flags_t(Annex::Base&lt;single_pass_phase&gt;)] = &amp;normalize_single_pass_phase; \</div>
+<div class="line">        normalizers[flags_t(Annex::Base&lt;combined_phase&gt;)] = &amp;normalize_combined_phase; \</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00381">381</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="compile_2autogen_8h_source.html#l00414">414</a> of file <a class="el" href="compile_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>

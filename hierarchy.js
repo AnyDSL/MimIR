@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "thorin::Annex", "structthorin_1_1Annex.html", null ],
     [ "thorin::Array< T >", "classthorin_1_1Array.html", null ],
     [ "thorin::Array< const Def * >", "classthorin_1_1Array.html", null ],
     [ "thorin::Array< uint64_t >", "classthorin_1_1Array.html", null ],
@@ -39,7 +40,6 @@ var hierarchy =
     [ "thorin::IndexMap< Indexer, Key, Value >", "classthorin_1_1IndexMap.html", null ],
     [ "thorin::IndexMap< const thorin::CFNode * >", "classthorin_1_1IndexMap.html", null ],
     [ "thorin::IndexSet< Indexer, Key >", "classthorin_1_1IndexSet.html", null ],
-    [ "thorin::Axiom::Info", "structthorin_1_1Axiom_1_1Info.html", null ],
     [ "thorin::mem::SSAConstr::Info", "classthorin_1_1mem_1_1SSAConstr.html#structthorin_1_1mem_1_1SSAConstr_1_1Info", null ],
     [ "thorin::utf8::Lexer< Max_Ahead >", "classthorin_1_1utf8_1_1Lexer.html", null ],
     [ "thorin::utf8::Lexer< 3 >", "classthorin_1_1utf8_1_1Lexer.html", [
@@ -275,7 +275,6 @@ var hierarchy =
     [ "thorin::detail::w2u_< 8 >", null, null ],
     [ "thorin::World", "classthorin_1_1World.html", null ],
     [ "thorin::World::Arena::Zone", "structthorin_1_1World_1_1Arena_1_1Zone.html", null ],
-    [ "bool", "namespace_3globalScope_4.html#classbool", null ],
     [ "DefMap< std::string >", "namespace_3globalScope_4.html#classDefMap_3_01std_1_1string_01_4", null ],
     [ "DefMap< thorin::Type >", "namespace_3globalScope_4.html#classDefMap_3_01thorin_1_1Type_01_4", null ],
     [ "LamMap< BB >", "namespace_3globalScope_4.html#classLamMap_3_01BB_01_4", null ],

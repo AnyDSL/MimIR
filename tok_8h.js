@@ -6,7 +6,6 @@ var tok_8h =
     [ "CODE", "tok_8h.html#a7d12cc9e30e6f91e9135feb7a67bb4df", null ],
     [ "CODE", "tok_8h.html#a7d12cc9e30e6f91e9135feb7a67bb4df", null ],
     [ "THORIN_KEY", "tok_8h.html#a92dceaeb9235c0acf0df67d690b439c3", null ],
-    [ "THORIN_LIT", "tok_8h.html#afdaf67aed035a83636d672aae1505a32", null ],
     [ "THORIN_PREC", "tok_8h.html#ac29f384be3c6b33c3b9beded2bd1df1c", null ],
     [ "THORIN_SUBST", "tok_8h.html#a3d2da954389db5acfc86380a482ee87d", null ],
     [ "THORIN_TOK", "tok_8h.html#acf85c215badfba27aee55c9cd3af719a", null ],

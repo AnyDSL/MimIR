@@ -19,6 +19,7 @@ var namespacethorin_1_1clos =
       [ "bot", "namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aa62cbfe7c9edd7c5f14f4a83cd32a3bcd", null ]
     ] ],
     [ "branch_clos_pass", "namespacethorin_1_1clos.html#aef3b95c191f7a48e7e5e13d98a5b6ee4", null ],
+    [ "BufPtr", "namespacethorin_1_1clos.html#aae38c8a20476ed7b14dc7ecd06129979", null ],
     [ "clos2sjlj_pass", "namespacethorin_1_1clos.html#a2b43b9b0f0f249caec3e6b18c11ffb1c", null ],
     [ "clos_conv_pass", "namespacethorin_1_1clos.html#a490eb43f7a0b0221478f50630e80b707", null ],
     [ "clos_conv_prep_pass", "namespacethorin_1_1clos.html#a5cb61dac566533e52e49b976bf8d2247", null ],
@@ -45,10 +46,6 @@ var namespacethorin_1_1clos =
     [ "isa_clos_lit", "namespacethorin_1_1clos.html#ab4851fdbabcc33da21495e85c1bd3ebd", null ],
     [ "isa_clos_type", "namespacethorin_1_1clos.html#ab618d9d39a9cfa2874fede6d8081f0ea", null ],
     [ "normalize_clos", "namespacethorin_1_1clos.html#ac9f972eb39228514383964979ae688b1", null ],
-    [ "op", "namespacethorin_1_1clos.html#ac7327595c6d03afffbfb3a8102ec51b3", null ],
-    [ "op_alloc_jumpbuf", "namespacethorin_1_1clos.html#ab8d583f4e70049687d0a0d68d74e2c82", null ],
-    [ "op_longjmp", "namespacethorin_1_1clos.html#a5ff3653c042047355aab7ea27bb4816d", null ],
-    [ "op_setjmp", "namespacethorin_1_1clos.html#a5c2152edd12d1f69a1e32854f3b1e4d8", null ],
     [ "operator&", "namespacethorin_1_1clos.html#a16ac5f2963ce4acb56f91c7415d7e6b0", null ],
     [ "operator&", "namespacethorin_1_1clos.html#a626c847ac5b2dcc564dda92740186085", null ],
     [ "operator&", "namespacethorin_1_1clos.html#a71c8d0982a40a4d69d1ebc2167092d78", null ],

@@ -67,6 +67,7 @@ var annotated_dup =
         [ "Lexer", "classthorin_1_1utf8_1_1Lexer.html", "classthorin_1_1utf8_1_1Lexer" ]
       ] ],
       [ "Ac", "classthorin_1_1Ac.html", "classthorin_1_1Ac" ],
+      [ "Annex", "structthorin_1_1Annex.html", "structthorin_1_1Annex" ],
       [ "App", "classthorin_1_1App.html", "classthorin_1_1App" ],
       [ "Arr", "classthorin_1_1Arr.html", "classthorin_1_1Arr" ],
       [ "Array", "classthorin_1_1Array.html", "classthorin_1_1Array" ],

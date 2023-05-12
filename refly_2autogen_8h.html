@@ -215,9 +215,9 @@ Variables</h2></td></tr>
 <tr class="separator:afa476e9f86c2b64e71c53ba00c3ffda2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a11c973e5562a8ee1bca4edbf50179c"><td class="memItemLeft" align="right" valign="top">constexpr std::strong_ordering&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1refly.html#a9a11c973e5562a8ee1bca4edbf50179c">thorin::refly::operator&lt;=&gt;</a> (dbg x, std::underlying_type_t&lt; dbg &gt; y)</td></tr>
 <tr class="separator:a9a11c973e5562a8ee1bca4edbf50179c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d24118fd114c736a84cfc5db25e90fa"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1refly.html#a3d24118fd114c736a84cfc5db25e90fa">thorin::refly::operator==</a> (std::underlying_type_t&lt; dbg &gt; x, dbg y)</td></tr>
+<tr class="memitem:a3d24118fd114c736a84cfc5db25e90fa"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1refly.html#a3d24118fd114c736a84cfc5db25e90fa">thorin::refly::operator==</a> (std::underlying_type_t&lt; dbg &gt; x, dbg y)</td></tr>
 <tr class="separator:a3d24118fd114c736a84cfc5db25e90fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a885144631214f0efed9f20983355d191"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1refly.html#a885144631214f0efed9f20983355d191">thorin::refly::operator==</a> (dbg x, std::underlying_type_t&lt; dbg &gt; y)</td></tr>
+<tr class="memitem:a885144631214f0efed9f20983355d191"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1refly.html#a885144631214f0efed9f20983355d191">thorin::refly::operator==</a> (dbg x, std::underlying_type_t&lt; dbg &gt; y)</td></tr>
 <tr class="separator:a885144631214f0efed9f20983355d191"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d4c579f94fcac60eebde5c8593d9884"><td class="memTemplParams" colspan="2">template&lt;dbg id&gt; </td></tr>
 <tr class="memitem:a1d4c579f94fcac60eebde5c8593d9884"><td class="memTemplItemLeft" align="right" valign="top">Ref&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1refly.html#a1d4c579f94fcac60eebde5c8593d9884">thorin::refly::normalize_dbg</a> (Ref type, Ref callee, Ref arg)</td></tr>
@@ -242,12 +242,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">    <span class="keywordtype">void</span> register_normalizers(Normalizers&amp; normalizers) {\</div>
-<div class="line">        normalizers[flags_t(Axiom::Base&lt;reify&gt;)] = &amp;normalize_reify; \</div>
-<div class="line">        normalizers[flags_t(Axiom::Base&lt;reflect&gt;)] = &amp;normalize_reflect; \</div>
-<div class="line">        normalizers[flags_t(Axiom::Base&lt;gid&gt;)] = &amp;normalize_gid; \</div>
+<div class="line">        normalizers[flags_t(Annex::Base&lt;reify&gt;)] = &amp;normalize_reify; \</div>
+<div class="line">        normalizers[flags_t(Annex::Base&lt;reflect&gt;)] = &amp;normalize_reflect; \</div>
+<div class="line">        normalizers[flags_t(Annex::Base&lt;gid&gt;)] = &amp;normalize_gid; \</div>
 <div class="line">        normalizers[flags_t(dbg::tmp)] = &amp;normalize_dbg&lt;dbg::tmp&gt;; \</div>
 <div class="line">        normalizers[flags_t(dbg::perm)] = &amp;normalize_dbg&lt;dbg::perm&gt;; \</div>
-<div class="line">        normalizers[flags_t(Axiom::Base&lt;refine&gt;)] = &amp;normalize_refine; \</div>
+<div class="line">        normalizers[flags_t(Annex::Base&lt;refine&gt;)] = &amp;normalize_refine; \</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="refly_2autogen_8h_source.html#l00101">101</a> of file <a class="el" href="refly_2autogen_8h_source.html">autogen.h</a>.</p>

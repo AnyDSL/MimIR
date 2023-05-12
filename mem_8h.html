@@ -143,13 +143,27 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespacethorin_1_1mem"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="mem.html">The mem Plugin</a> <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr><td colspan="2"><div class="groupHeader">%mem.Ptr</div></td></tr>
+<tr class="memitem:ac7c84ab30ae0101f30a735201d430ec3"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3">thorin::mem::AddrSpace</a> : nat_t { <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3a8045a0a6c688b0635e3caccc408a1446">thorin::mem::Generic</a> = 0
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3a4cc6684df7b4a92b1dec6fce3264fac8">thorin::mem::Global</a> = 1
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3aa3e8ae43188ae76d38f414b2bdb0077b">thorin::mem::Texture</a> = 2
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3aa6156ea9d66fef24e87e841fbabf7cca">thorin::mem::Shared</a> = 3
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3acb17869fe51048b5a5c4c6106551a255">thorin::mem::Constant</a> = 4
+<br />
+ }</td></tr>
+<tr class="separator:ac7c84ab30ae0101f30a735201d430ec3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">%mem.M</div></td></tr>
-<tr class="memitem:a0246ffea30f87b7af8ef581b9aafbdb0"><td class="memItemLeft" align="right" valign="top">const Axiom *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1mem.html#a0246ffea30f87b7af8ef581b9aafbdb0">thorin::mem::type_mem</a> (World &amp;w)</td></tr>
-<tr class="separator:a0246ffea30f87b7af8ef581b9aafbdb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3d6dd1f6ed130ad2246c8326bb0b796"><td class="memItemLeft" align="right" valign="top">const Pi *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1mem.html#ab3d6dd1f6ed130ad2246c8326bb0b796">thorin::mem::cn_mem</a> (Ref dom)</td></tr>
-<tr class="memdesc:ab3d6dd1f6ed130ad2246c8326bb0b796"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as <a class="el" href="classthorin_1_1World.html#ada59fac911d8db2ace72a5c66a148525">World::cn</a> / <a class="el" href="classthorin_1_1World.html#a9f5ac503f9302dec6099e9781230723d">World::pi</a> but adds a <code>%mem.M</code>-typed <a class="el" href="classthorin_1_1Var.html">Var</a> to each <a class="el" href="classthorin_1_1Pi.html" title="A dependent function type.">Pi</a>.  <a href="namespacethorin_1_1mem.html#ab3d6dd1f6ed130ad2246c8326bb0b796">More...</a><br /></td></tr>
 <tr class="separator:ab3d6dd1f6ed130ad2246c8326bb0b796"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e880fbf261c490475e3af952afc8fde"><td class="memItemLeft" align="right" valign="top">const Pi *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1mem.html#a2e880fbf261c490475e3af952afc8fde">thorin::mem::cn_mem_ret</a> (Ref dom, Ref ret_dom)</td></tr>
 <tr class="separator:a2e880fbf261c490475e3af952afc8fde"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -194,27 +208,6 @@ Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">%mem.mslot</div></td></tr>
 <tr class="memitem:a9793552d8e2026d644e225f930dc09c0"><td class="memItemLeft" align="right" valign="top">Ref&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1mem.html#a9793552d8e2026d644e225f930dc09c0">thorin::mem::op_mslot</a> (Ref type, Ref mem, Ref id)</td></tr>
 <tr class="separator:a9793552d8e2026d644e225f930dc09c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader">%mem.Ptr</h2></td></tr>
-<tr class="memitem:ac7c84ab30ae0101f30a735201d430ec3"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3">thorin::mem::AddrSpace</a> : nat_t { <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3a8045a0a6c688b0635e3caccc408a1446">thorin::mem::Generic</a> = 0
-, <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3a4cc6684df7b4a92b1dec6fce3264fac8">thorin::mem::Global</a> = 1
-, <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3aa3e8ae43188ae76d38f414b2bdb0077b">thorin::mem::Texture</a> = 2
-, <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3aa6156ea9d66fef24e87e841fbabf7cca">thorin::mem::Shared</a> = 3
-, <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3acb17869fe51048b5a5c4c6106551a255">thorin::mem::Constant</a> = 4
-<br />
- }</td></tr>
-<tr class="separator:ac7c84ab30ae0101f30a735201d430ec3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a538c585266aeecfe400ba79cd77145ea"><td class="memItemLeft" align="right" valign="top">const Axiom *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1mem.html#a538c585266aeecfe400ba79cd77145ea">thorin::mem::type_ptr</a> (World &amp;w)</td></tr>
-<tr class="separator:a538c585266aeecfe400ba79cd77145ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd9c95a269d3c893c8fe1ae2dbfa1e59"><td class="memItemLeft" align="right" valign="top">const App *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1mem.html#afd9c95a269d3c893c8fe1ae2dbfa1e59">thorin::mem::type_ptr</a> (Ref pointee, Ref addr_space)</td></tr>
-<tr class="separator:afd9c95a269d3c893c8fe1ae2dbfa1e59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91a836c3e21c82a41e7e89d8cc6b7a1e"><td class="memItemLeft" align="right" valign="top">const App *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1mem.html#a91a836c3e21c82a41e7e89d8cc6b7a1e">thorin::mem::type_ptr</a> (Ref pointee, AddrSpace as=AddrSpace::Generic)</td></tr>
-<tr class="separator:a91a836c3e21c82a41e7e89d8cc6b7a1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

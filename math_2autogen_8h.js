@@ -2,6 +2,8 @@ var math_2autogen_8h =
 [
     [ "THORIN_math_NORMALIZER_IMPL", "math_2autogen_8h.html#a57be56a9ff18e5026bb27caff8f82257", null ],
     [ "abs", "math_2autogen_8h.html#aff9178bb7d5010e4d0a09c5d23c779ff", null ],
+    [ "amdfp24", "math_2autogen_8h.html#a453a96d7abda0509c47c4b6f51a55f53", null ],
+    [ "AMDFP24", "math_2autogen_8h.html#a634650788fa8931410bfa213b8548c8c", null ],
     [ "arith", "math_2autogen_8h.html#aa313bc84ec271c77a5d5d1f6b3897ec4", [
       [ "add", "math_2autogen_8h.html#aa313bc84ec271c77a5d5d1f6b3897ec4a45de8c627f4c537dd05cfd3dab1a0a36", null ],
       [ "sub", "math_2autogen_8h.html#aa313bc84ec271c77a5d5d1f6b3897ec4a863f99016e8a7d80db237d49643f432c", null ],
@@ -9,6 +11,8 @@ var math_2autogen_8h =
       [ "div", "math_2autogen_8h.html#aa313bc84ec271c77a5d5d1f6b3897ec4afc1a284af4fda7948584dab673881dc0", null ],
       [ "rem", "math_2autogen_8h.html#aa313bc84ec271c77a5d5d1f6b3897ec4ab1b8e1495d33858059c67fde581ebefc", null ]
     ] ],
+    [ "bf16", "math_2autogen_8h.html#a99623d8d35d6104a6c134f2005b37708", null ],
+    [ "BF16", "math_2autogen_8h.html#a563e20ae0d48d3a36fcb15bf7d85d887", null ],
     [ "cmp", "math_2autogen_8h.html#ab58b0e0aa2975069c10eaf88cff49d5f", [
       [ "ugle", "math_2autogen_8h.html#ab58b0e0aa2975069c10eaf88cff49d5faa8a4fa1f20051298cafecf2e0017b61e", null ],
       [ "f", "math_2autogen_8h.html#ab58b0e0aa2975069c10eaf88cff49d5fa90f68af5cf3a2df678258becc2d3f714", null ],
@@ -55,17 +59,22 @@ var math_2autogen_8h =
       [ "fc", "math_2autogen_8h.html#a6dd8e88f4b0e547ae80c76780070119aa086bc53f36970b37e40ffc9d36fc30dc", null ]
     ] ],
     [ "exp", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fe", [
-      [ "Nl", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea40c821bca32ab0c71d418472469a0ff3", null ],
+      [ "lbb", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea13508a7c0c56b9e5913625cd4780eb90", null ],
       [ "exp", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea5f71e9a601eddb735afe66f6f58dc6d9", null ],
-      [ "NL", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea1ad22ba67bb1f14823b937e735237fb1", null ],
-      [ "log", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8feae9cf998d2c129918d6ac0913287090a5", null ],
-      [ "Bl", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea4237abb58fd06eb53c5c9f5f8289ade1", null ],
+      [ "lbB", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fead25876582717ae1f1871b9c152324e72", null ],
       [ "exp2", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea4e9c84df80a6dd3be2eaf40f79b51dcf", null ],
-      [ "b", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea142b727ea49fce05521e55d5137130a9", null ],
-      [ "BL", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea38015fe0a0f89084d5c4301ba5dfcc85", null ],
+      [ "bin", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8feaf1a258685784af340ece5d74bf611007", null ],
+      [ "lBb", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea6700881a617bf8913c5878c1d2b1792d", null ],
+      [ "exp10", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea0764096ae797e9840a0919cde51e4bd5", null ],
+      [ "dec", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea14562d3576d8c9e007498a314eeab037", null ],
+      [ "lBB", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea4aa1e5bdcf8b792089185c86ecbb1633", null ],
+      [ "Lbb", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea2a00ffef3523c71c11c5d8e480677d26", null ],
+      [ "log", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8feae9cf998d2c129918d6ac0913287090a5", null ],
+      [ "LbB", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea5d08da4789df2e4e13a572069730740f", null ],
       [ "log2", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea6b0f54a2a201c4240bfc3ab831058832", null ],
-      [ "DL", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8feaf8136b9c85dcb54ce942003e881908bd", null ],
-      [ "log10", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea0752a76f82ab85a655941aa6a2b8b40c", null ]
+      [ "LBb", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea6ee7701f668263ebc711ec8a7f367469", null ],
+      [ "log10", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8fea0752a76f82ab85a655941aa6a2b8b40c", null ],
+      [ "LBB", "math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8feaeea56f158394dd5db331a83469ba90b7", null ]
     ] ],
     [ "extrema", "math_2autogen_8h.html#a774a066119a3684958cf3d8565ff52a8", [
       [ "im", "math_2autogen_8h.html#a774a066119a3684958cf3d8565ff52a8ad1c887896b48aa2a9c4e43d9a078af70", null ],
@@ -78,21 +87,35 @@ var math_2autogen_8h =
       [ "ieee754max", "math_2autogen_8h.html#a774a066119a3684958cf3d8565ff52a8a91c8847700cdefe83157d370d84e9082", null ]
     ] ],
     [ "F", "math_2autogen_8h.html#a9dcd63c8ff0e514ef5d45f52082e9444", null ],
+    [ "f16", "math_2autogen_8h.html#a12e4231131366f563745ee317769fd7d", null ],
+    [ "F16", "math_2autogen_8h.html#a8408efaf16525038dec328ce0bcb6a8d", null ],
+    [ "f32", "math_2autogen_8h.html#aaaa7ad52c70a143a1eceb56215cf4a25", null ],
+    [ "F32", "math_2autogen_8h.html#ae09a3752427e82022ede2cc92e60c82e", null ],
+    [ "f64", "math_2autogen_8h.html#ac04e795336e261f36870e9d9d3d84fee", null ],
+    [ "F64", "math_2autogen_8h.html#aaf46824b157c60c7e98d229b4efe1152", null ],
     [ "gamma", "math_2autogen_8h.html#a89cb7767a778d4204e26860588096530", [
       [ "t", "math_2autogen_8h.html#ab58b0e0aa2975069c10eaf88cff49d5fa015078298390da60594549c03f211240", null ],
       [ "l", "math_2autogen_8h.html#ab58b0e0aa2975069c10eaf88cff49d5fab56bd84b4325cae0ff953569daeeecd6", null ]
     ] ],
+    [ "minus", "math_2autogen_8h.html#a76330fcaa958a5c6e2f343af87b8a2a9", null ],
+    [ "nvtf32", "math_2autogen_8h.html#a2d16611bab5ec6878023df52ece09cdb", null ],
+    [ "NVTF32", "math_2autogen_8h.html#a59775d58804d99f74f2a3767dfd9a755", null ],
     [ "pow", "math_2autogen_8h.html#a324add07f496847fd3381b0f642b5cec", null ],
+    [ "pxr24", "math_2autogen_8h.html#a3b6efeedab6e47b7a3ffd1af362aee6d", null ],
+    [ "PXR24", "math_2autogen_8h.html#a3b257754248b0a8880ec1ea0b8568be4", null ],
     [ "round", "math_2autogen_8h.html#a709876aa66f490fce569f65d0e35e59e", [
       [ "f", "math_2autogen_8h.html#ab58b0e0aa2975069c10eaf88cff49d5fa90f68af5cf3a2df678258becc2d3f714", null ],
       [ "c", "math_2autogen_8h.html#a709876aa66f490fce569f65d0e35e59eac0f826edc3198bf841bcc3e4121eb3d2", null ],
       [ "r", "math_2autogen_8h.html#a709876aa66f490fce569f65d0e35e59eaf43a7cb46889460a4b77136eb492d73a", null ],
       [ "t", "math_2autogen_8h.html#ab58b0e0aa2975069c10eaf88cff49d5fa015078298390da60594549c03f211240", null ]
     ] ],
+    [ "rrt", "math_2autogen_8h.html#ad9ffecc76c8eb7d4a97dc096d629de9c", null ],
     [ "rt", "math_2autogen_8h.html#a2e71ce8f35522fa3a803797e930e5ddf", [
       [ "sq", "math_2autogen_8h.html#a2e71ce8f35522fa3a803797e930e5ddfa2adf7677d6630835f8e4cfc5fd6e4302", null ],
       [ "cb", "math_2autogen_8h.html#a2e71ce8f35522fa3a803797e930e5ddfa4b1b5a0f069db8df94c9d48ea823ed4d", null ]
     ] ],
+    [ "sgn", "math_2autogen_8h.html#a1cbf46188b8194ab74b8194540c7543a", null ],
+    [ "slf", "math_2autogen_8h.html#a40e97e033255dfe4ad995bcaaba9a614", null ],
     [ "tri", "math_2autogen_8h.html#a3ce804e3dfaa4ffc4002611767d5e58b", [
       [ "ahff", "math_2autogen_8h.html#a3ce804e3dfaa4ffc4002611767d5e58ba46d0554f214d3a2dec67777291c78b43", null ],
       [ "sin", "math_2autogen_8h.html#a3ce804e3dfaa4ffc4002611767d5e58ba5fb80f6231ed10a8f882cd7b8784d20b", null ],

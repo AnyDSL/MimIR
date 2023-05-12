@@ -18,10 +18,6 @@ var clos_8h =
     [ "ctype", "clos_8h.html#a62651f0a4bc50bb46df6e5089d88a4a9", null ],
     [ "isa_clos_lit", "clos_8h.html#ab4851fdbabcc33da21495e85c1bd3ebd", null ],
     [ "isa_clos_type", "clos_8h.html#ab618d9d39a9cfa2874fede6d8081f0ea", null ],
-    [ "op", "clos_8h.html#ac7327595c6d03afffbfb3a8102ec51b3", null ],
-    [ "op_alloc_jumpbuf", "clos_8h.html#ab8d583f4e70049687d0a0d68d74e2c82", null ],
-    [ "op_longjmp", "clos_8h.html#a5ff3653c042047355aab7ea27bb4816d", null ],
-    [ "op_setjmp", "clos_8h.html#a5c2152edd12d1f69a1e32854f3b1e4d8", null ],
     [ "shift_env", "clos_8h.html#a46b2a773e74be9e492162c7ae269a163", null ],
     [ "skip_env", "clos_8h.html#a0f2d253f8e6ad46b3e0dd8b73f6f63b5", null ],
     [ "Clos_Env_Param", "clos_8h.html#aef2b719a7074044446ad7efd00ed8d86", null ]

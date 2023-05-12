@@ -19,7 +19,6 @@ var namespacethorin_1_1matrix =
     [ "transpose", "namespacethorin_1_1matrix.html#ad63c17fbc408c546deb1f861ed540a10", null ],
     [ "counting_for", "namespacethorin_1_1matrix.html#a1e9655f096ec704d830d265bcc7ba032", null ],
     [ "get_max_index", "namespacethorin_1_1matrix.html#ab5a388cdfea023abde6f2d540fd4607e", null ],
-    [ "internal_function_of_axiom", "namespacethorin_1_1matrix.html#a1f69fb3e480eccec78794f1e64a73c9a", null ],
     [ "normalize_insert", "namespacethorin_1_1matrix.html#a7128b733df39e001801ec01193e589a1", null ],
     [ "normalize_map_reduce", "namespacethorin_1_1matrix.html#abc7cc5706a88d2ba98ba646e4494846b", null ],
     [ "normalize_prod", "namespacethorin_1_1matrix.html#a87baf1f738e5d2d12d2d46cdd44973a9", null ],

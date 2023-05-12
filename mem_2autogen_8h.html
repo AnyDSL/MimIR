@@ -153,9 +153,14 @@ Enumerations</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">%mem.M</div></td></tr>
 <tr class="memitem:abab7091b7bb05e14f8f9e7081981fb7c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1mem.html#abab7091b7bb05e14f8f9e7081981fb7c">thorin::mem::M</a> : flags_t </td></tr>
 <tr class="separator:abab7091b7bb05e14f8f9e7081981fb7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ccf9293b0a2125db03b065029d58cbe"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1mem.html#a7ccf9293b0a2125db03b065029d58cbe">thorin::mem::m</a> : flags_t </td></tr>
+<tr class="separator:a7ccf9293b0a2125db03b065029d58cbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">%mem.Ptr</div></td></tr>
 <tr class="memitem:a1e9242c771b97a95fe41b54fbe0385ab"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1mem.html#a1e9242c771b97a95fe41b54fbe0385ab">thorin::mem::Ptr</a> : flags_t </td></tr>
 <tr class="separator:a1e9242c771b97a95fe41b54fbe0385ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%mem.Ptr0</div></td></tr>
+<tr class="memitem:ab05fd1ac51371ea3ad809a2aa00722da"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1mem.html#ab05fd1ac51371ea3ad809a2aa00722da">thorin::mem::Ptr0</a> : flags_t </td></tr>
+<tr class="separator:ab05fd1ac51371ea3ad809a2aa00722da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">%mem.alloc</div></td></tr>
 <tr class="memitem:af4043e188d46c7390a04884c0785d51c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1mem.html#af4043e188d46c7390a04884c0785d51c">thorin::mem::alloc</a> : flags_t </td></tr>
 <tr class="separator:af4043e188d46c7390a04884c0785d51c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -171,6 +176,12 @@ Enumerations</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">%mem.mslot</div></td></tr>
 <tr class="memitem:a85840c980bb08ec14431b1f0eba6dd77"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1mem.html#a85840c980bb08ec14431b1f0eba6dd77">thorin::mem::mslot</a> : flags_t </td></tr>
 <tr class="separator:a85840c980bb08ec14431b1f0eba6dd77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%mem.ignore</div></td></tr>
+<tr class="memitem:a3a1ff4a8c2b60d12fb22268a9ccae923"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1mem.html#a3a1ff4a8c2b60d12fb22268a9ccae923">thorin::mem::ignore</a> : flags_t </td></tr>
+<tr class="separator:a3a1ff4a8c2b60d12fb22268a9ccae923"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%mem.rm</div></td></tr>
+<tr class="memitem:a9a419070174fddc230b2a73dbd4c35ea"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1mem.html#a9a419070174fddc230b2a73dbd4c35ea">thorin::mem::rm</a> : flags_t </td></tr>
+<tr class="separator:a9a419070174fddc230b2a73dbd4c35ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">%mem.reshape_mode</div></td></tr>
 <tr class="memitem:affc1a46761c307502488d6f536e233b4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1mem.html#affc1a46761c307502488d6f536e233b4">thorin::mem::reshape_mode</a> : flags_t </td></tr>
 <tr class="separator:affc1a46761c307502488d6f536e233b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -246,13 +257,13 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">    <span class="keywordtype">void</span> register_normalizers(Normalizers&amp; normalizers) {\</div>
-<div class="line">        normalizers[flags_t(Axiom::Base&lt;load&gt;)] = &amp;normalize_load; \</div>
-<div class="line">        normalizers[flags_t(Axiom::Base&lt;store&gt;)] = &amp;normalize_store; \</div>
-<div class="line">        normalizers[flags_t(Axiom::Base&lt;remem&gt;)] = &amp;normalize_remem; \</div>
-<div class="line">        normalizers[flags_t(Axiom::Base&lt;lea&gt;)] = &amp;normalize_lea; \</div>
+<div class="line">        normalizers[flags_t(Annex::Base&lt;load&gt;)] = &amp;normalize_load; \</div>
+<div class="line">        normalizers[flags_t(Annex::Base&lt;store&gt;)] = &amp;normalize_store; \</div>
+<div class="line">        normalizers[flags_t(Annex::Base&lt;remem&gt;)] = &amp;normalize_remem; \</div>
+<div class="line">        normalizers[flags_t(Annex::Base&lt;lea&gt;)] = &amp;normalize_lea; \</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="mem_2autogen_8h_source.html#l00238">238</a> of file <a class="el" href="mem_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_2autogen_8h_source.html#l00282">282</a> of file <a class="el" href="mem_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>

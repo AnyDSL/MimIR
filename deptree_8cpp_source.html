@@ -121,7 +121,7 @@ $(document).ready(function(){initNavTree('deptree_8cpp_source.html',''); initRes
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span>{</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keywordtype">void</span> <a class="code hl_function" href="namespacethorin.html#ae79b3c7a7656f77b147095feb289c019">merge</a>(<a class="code hl_typedef" href="namespacethorin.html#a229e892ca840ebda9ce60cfad90ae1b0">VarSet</a>&amp; vars, <a class="code hl_typedef" href="namespacethorin.html#a229e892ca840ebda9ce60cfad90ae1b0">VarSet</a>&amp;&amp; other) { vars.insert(other.begin(), other.end()); }</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>}</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>} <span class="comment">// namespace</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keywordtype">void</span> DepTree::run() {</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [_, mut] : <a class="code hl_function" href="classthorin_1_1DepTree.html#a40080f1b915a48360e182b2b525059c9">world</a>().externals()) run(mut);</div>
@@ -172,8 +172,8 @@ $(document).ready(function(){initNavTree('deptree_8cpp_source.html',''); initRes
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    } <span class="keywordflow">else</span> {</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> op : def-&gt;extended_ops()) <a class="code hl_function" href="namespacethorin.html#ae79b3c7a7656f77b147095feb289c019">merge</a>(result, run(curr_mut, op));</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> var = curr_mut-&gt;var()) {</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>            <span class="keywordflow">if</span> (curr_mut == def) result.erase(var);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> v = curr_mut-&gt;var()) {</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>            <span class="keywordflow">if</span> (<span class="keyword">auto</span> var = v-&gt;isa&lt;Var&gt;(); var &amp;&amp; curr_mut == def) result.erase(var);</div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        }</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    }</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>

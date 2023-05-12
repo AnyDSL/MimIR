@@ -117,7 +117,7 @@ $(document).ready(function(){initNavTree('axiom_8h.html',''); initResizable(); }
   <div class="headertitle"><div class="title">axiom.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="lam_8h_source.html">thorin/lam.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="plugin_8h_source.html">thorin/plugin.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="assert_8h_source.html">thorin/util/assert.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for axiom.h:</div>
@@ -138,8 +138,6 @@ This graph shows which files directly or indirectly include this file:</div>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Axiom.html">thorin::Axiom</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1Axiom_1_1Info.html">thorin::Axiom::Info</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:structthorin_1_1Axiom_1_1Match"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match">thorin::Axiom::Match&lt; T &gt;</a></td></tr>
 <tr class="memdesc:structthorin_1_1Axiom_1_1Match"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classthorin_1_1Type.html">Type</a> of Match::def_.  <a href="classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match">More...</a><br /></td></tr>
 <tr class="separator:structthorin_1_1Axiom_1_1Match"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -153,9 +151,9 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="concepts" name="concepts"></a>
 Concepts</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptthorin_1_1axiom__with__subs.html">thorin::axiom_with_subs</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptthorin_1_1annex__with__subs.html">thorin::annex_with_subs</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptthorin_1_1axiom__without__subs.html">thorin::axiom_without_subs</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">concept &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="conceptthorin_1_1annex__without__subs.html">thorin::annex_without_subs</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -163,10 +161,10 @@ Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">match/force</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><dl class="section see"><dt>See also</dt><dd><a class="el" href="dev.html#cast_axiom">Matching Axioms</a> </dd></dl>
 </div></td></tr>
-<tr class="memitem:a38ddc530ce32edb30248a9bb99c6c90d"><td class="memTemplParams" colspan="2">template&lt;class Id , <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> DynCast = true&gt; </td></tr>
+<tr class="memitem:a38ddc530ce32edb30248a9bb99c6c90d"><td class="memTemplParams" colspan="2">template&lt;class Id , bool DynCast = true&gt; </td></tr>
 <tr class="memitem:a38ddc530ce32edb30248a9bb99c6c90d"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a38ddc530ce32edb30248a9bb99c6c90d">thorin::match</a> (Ref def)</td></tr>
 <tr class="separator:a38ddc530ce32edb30248a9bb99c6c90d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9798f90bf61481c788b275e12135c06"><td class="memTemplParams" colspan="2">template&lt;class Id , <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> DynCast = true&gt; </td></tr>
+<tr class="memitem:ad9798f90bf61481c788b275e12135c06"><td class="memTemplParams" colspan="2">template&lt;class Id , bool DynCast = true&gt; </td></tr>
 <tr class="memitem:ad9798f90bf61481c788b275e12135c06"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ad9798f90bf61481c788b275e12135c06">thorin::match</a> (Id id, Ref def)</td></tr>
 <tr class="separator:ad9798f90bf61481c788b275e12135c06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73e99aec74e2e132591d174b75bb920b"><td class="memTemplParams" colspan="2">template&lt;class Id &gt; </td></tr>
@@ -177,10 +175,10 @@ Functions</h2></td></tr>
 <tr class="separator:ab44c7f88991518e191a0b6168e41d816"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">is_commutative/is_associative</div></td></tr>
 <tr class="memitem:ac6d11963ed59da6221500882f51215ac"><td class="memTemplParams" colspan="2">template&lt;class Id &gt; </td></tr>
-<tr class="memitem:ac6d11963ed59da6221500882f51215ac"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ac6d11963ed59da6221500882f51215ac">thorin::is_commutative</a> (Id)</td></tr>
+<tr class="memitem:ac6d11963ed59da6221500882f51215ac"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ac6d11963ed59da6221500882f51215ac">thorin::is_commutative</a> (Id)</td></tr>
 <tr class="separator:ac6d11963ed59da6221500882f51215ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4cccb6dae2ff7654bbb7ba358d0d6362"><td class="memTemplParams" colspan="2">template&lt;class Id &gt; </td></tr>
-<tr class="memitem:a4cccb6dae2ff7654bbb7ba358d0d6362"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a4cccb6dae2ff7654bbb7ba358d0d6362">thorin::is_associative</a> (Id id)</td></tr>
+<tr class="memitem:a4cccb6dae2ff7654bbb7ba358d0d6362"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a4cccb6dae2ff7654bbb7ba358d0d6362">thorin::is_associative</a> (Id id)</td></tr>
 <tr class="separator:a4cccb6dae2ff7654bbb7ba358d0d6362"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/><h2 class="groupheader">Class Documentation</h2>
@@ -198,7 +196,7 @@ Functions</h2></td></tr>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class T&gt;<br />
 struct thorin::Axiom::Match&lt; T &gt;</div><p ><a class="el" href="classthorin_1_1Type.html">Type</a> of Match::def_. </p>
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00131">131</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00058">58</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">

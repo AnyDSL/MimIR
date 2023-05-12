@@ -20,7 +20,7 @@ var math_8h =
     [ "is_commutative", "math_8h.html#a024f494df950b4312faf11037c62ea2f", null ],
     [ "is_commutative", "math_8h.html#a4b1fb225b164aa037424f43ccf0cdf04", null ],
     [ "isa_f", "math_8h.html#a0720c335cebf20be41bf7155a54e53d8", null ],
-    [ "lit_f", "math_8h.html#a5fef8dad5bbdbf1e1faff609f9664ad1", null ],
+    [ "lit_f", "math_8h.html#a3c7c541a304d373d9990d17938697672", null ],
     [ "lit_f", "math_8h.html#ab802bcd5a6ea5682c50d6329dc16712e", null ],
     [ "match_f", "math_8h.html#a2a7a8dd81270f15fe5b1294f487dece0", null ],
     [ "match_f16", "math_8h.html#a61a63c0051b11b77df7b2a6f0ac88af4", null ],
@@ -42,9 +42,5 @@ var math_8h =
     [ "operator|", "math_8h.html#a39a361b70da399599f47d05b7c8ffa24", null ],
     [ "operator|", "math_8h.html#a964a184fde158cda17aa29d64be44101", null ],
     [ "type_f", "math_8h.html#a18b694cb90515d282f46b45201c5f917", null ],
-    [ "type_f", "math_8h.html#ab020cfed6525f8cb9e433d6bd4120be1", null ],
-    [ "type_f", "math_8h.html#acaec2331d4803eb97a6f6df5f9c7a324", null ],
-    [ "type_f16", "math_8h.html#a27aa82675ad3fa0de81880efb6fd3b93", null ],
-    [ "type_f32", "math_8h.html#a1ed6aac0eaf04b293f0a89c066213349", null ],
-    [ "type_f64", "math_8h.html#a4f169f7740b304d08fa8af863a11b06f", null ]
+    [ "type_f", "math_8h.html#acaec2331d4803eb97a6f6df5f9c7a324", null ]
 ];

@@ -23,9 +23,5 @@ var mem_8h =
     [ "pi_mem", "mem_8h.html#a038498b369d9ce594e5f2a0b09a8e945", null ],
     [ "replace_mem", "mem_8h.html#a5aa2ac956b823057b63c3b49aa27012f", null ],
     [ "strip_mem", "mem_8h.html#acd226b7d1c8502907f767b255670bfc6", null ],
-    [ "strip_mem_ty", "mem_8h.html#a397370e30c40a54922fccdedda4be78c", null ],
-    [ "type_mem", "mem_8h.html#a0246ffea30f87b7af8ef581b9aafbdb0", null ],
-    [ "type_ptr", "mem_8h.html#a91a836c3e21c82a41e7e89d8cc6b7a1e", null ],
-    [ "type_ptr", "mem_8h.html#afd9c95a269d3c893c8fe1ae2dbfa1e59", null ],
-    [ "type_ptr", "mem_8h.html#a538c585266aeecfe400ba79cd77145ea", null ]
+    [ "strip_mem_ty", "mem_8h.html#a397370e30c40a54922fccdedda4be78c", null ]
 ];
