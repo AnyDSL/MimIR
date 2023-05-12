@@ -126,7 +126,10 @@ Ref fold(World& world, Ref type, const Def*& a, const Def*& b, Ref mode = {}) {
     case i: res = fold<Id, id, i>(*la, *lb, nsw, nuw); break;
                 THORIN_1_8_16_32_64(CODE)
 #undef CODE
-                default: unreachable();
+            default:
+                // TODO this is super rough but at least better than just bailing out
+                res = fold<Id, id, 64>(*la, *lb, false, false);
+                if (res && !std::is_same_v<Id, icmp>) *res %= size;
             }
 
             return res ? world.lit(type, *res) : world.bot(type);
