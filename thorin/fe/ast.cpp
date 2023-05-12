@@ -46,7 +46,7 @@ const Def* TuplePtrn::type(World& world, Def2Fields& def2fields) const {
     }
 
     assert(n > 0);
-    auto type  = world.umax<Sort::Type>(ops);
+    auto type = world.umax<Sort::Type>(ops);
 
     Sigma* sigma;
     if (decl_) {
