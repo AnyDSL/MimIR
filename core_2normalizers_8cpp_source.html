@@ -241,10 +241,10 @@ $(document).ready(function(){initNavTree('core_2normalizers_8cpp_source.html',''
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="preprocessor">    case i: res = fold&lt;Id, id, i&gt;(*la, *lb, nsw, nuw); break;</span></div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>                <a class="code hl_define" href="types_8h.html#abed9e2c94bf4ae298244734bda96b214">THORIN_1_8_16_32_64</a>(<a class="code hl_define" href="core_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c">CODE</a>)</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="preprocessor">#undef CODE</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>            <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                <span class="comment">// TODO this is super rough but at least better than just bailing out</span></div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>                res = fold&lt;Id, id, 64&gt;(*la, *lb, <span class="keyword">false</span>, <span class="keyword">false</span>);</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>                <span class="keywordflow">if</span> (res &amp;&amp; !std::is_same_v&lt;Id, icmp&gt;) *res %= <a class="code hl_enumvalue" href="namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbfab8b1ce69c3ef90d0c06c30009490d4de">size</a>;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>                <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                    <span class="comment">// TODO this is super rough but at least better than just bailing out</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>                    res = fold&lt;Id, id, 64&gt;(*la, *lb, <span class="keyword">false</span>, <span class="keyword">false</span>);</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>                    <span class="keywordflow">if</span> (res &amp;&amp; !std::is_same_v&lt;Id, icmp&gt;) *res %= <a class="code hl_enumvalue" href="namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbfab8b1ce69c3ef90d0c06c30009490d4de">size</a>;</div>
 <div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>            }</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>            <span class="keywordflow">return</span> res ? world.lit(type, *res) : world.bot(type);</div>
