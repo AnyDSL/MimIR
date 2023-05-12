@@ -159,7 +159,7 @@ public:
     void make_internal(Def* def) {
         assert(def->is_external());
         def->external_ = false;
-        auto num = move_.externals.erase(def->sym());
+        auto num       = move_.externals.erase(def->sym());
         assert_unused(num == 1);
     }
 
