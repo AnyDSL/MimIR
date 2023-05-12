@@ -44,7 +44,7 @@ const Def* zero_pullback(const Def* E, const Def* A) {
     auto pb_ty     = pullback_type(E, A);
     auto pb        = world.mut_lam(pb_ty)->set("zero_pb");
     world.DLOG("zero_pullback for {} resp. {} (-> {})", E, A, A_tangent);
-    pb->app(true, pb->var(1), op_zero(A_tangent));
+    pb->app(true, pb->var(1), world.call<zero>(A_tangent));
     return pb;
 }
 
@@ -142,7 +142,7 @@ const Def* zero_def(const Def* T) {
     if (auto arr = T->isa<Arr>()) {
         auto shape      = arr->shape();
         auto body       = arr->body();
-        auto inner_zero = world.app(world.ax<zero>(), body);
+        auto inner_zero = world.app(world.annex<zero>(), body);
         auto zero_arr   = world.pack(shape, inner_zero);
         world.DLOG("zero_def for array of shape {} with type {}", shape, body);
         world.DLOG("zero_arr: {}", zero_arr);
@@ -153,20 +153,20 @@ const Def* zero_def(const Def* T) {
         world.DLOG("zero_def for int is {}", zero);
         return zero;
     } else if (auto sig = T->isa<Sigma>()) {
-        DefArray ops(sig->ops(), [&](const Def* op) { return world.app(world.ax<zero>(), op); });
+        DefArray ops(sig->ops(), [&](const Def* op) { return world.app(world.annex<zero>(), op); });
         return world.tuple(ops);
     }
 
     // or return bot
     // or id => zero T
-    // return world.app(world.ax<zero>(), T);
+    // return world.app(world.annex<zero>(), T);
     return nullptr;
 }
 
 const Def* op_sum(const Def* T, DefArray defs) {
     // TODO: assert all are of type T
     auto& world = T->world();
-    return world.app(world.app(world.ax<sum>(), {world.lit_nat(defs.size()), T}), defs);
+    return world.app(world.app(world.annex<sum>(), {world.lit_nat(defs.size()), T}), defs);
 }
 
 } // namespace thorin::autodiff

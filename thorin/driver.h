@@ -69,10 +69,10 @@ public:
     auto backend(std::string_view name) { return lookup(backends_, name); }
     ///@}
 
-    /// @name Manage Axiom::Info
+    /// @name Manage Annex
     ///@{
-    const auto& plugin2axiom_infos(Sym plugin) { return plugin2axiom_infos_[plugin]; }
-    std::pair<Axiom::Info&, bool> axiom2info(Sym sym, Sym plugin, Sym tag, Loc loc);
+    const auto& plugin2annxes(Sym plugin) { return plugin2annexes_[plugin]; }
+    std::pair<Annex&, bool> name2annex(Sym sym, Sym plugin, Sym tag, Loc loc);
     ///@}
 
 private:
@@ -86,7 +86,7 @@ private:
     Passes passes_;
     Normalizers normalizers_;
     std::deque<std::pair<fs::path, Sym>> imports_;
-    SymMap<SymMap<Axiom::Info>> plugin2axiom_infos_;
+    SymMap<SymMap<Annex>> plugin2annexes_;
 };
 
 } // namespace thorin

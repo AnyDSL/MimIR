@@ -6,6 +6,8 @@
 #include <thorin/pass/optimize.h>
 #include <thorin/util/sys.h>
 
+#include "dialects/mem/autogen.h"
+
 using namespace thorin;
 
 int main(int, char**) {
@@ -18,9 +20,9 @@ int main(int, char**) {
         for (auto plugin : {"compile", "core"}) parser.plugin(plugin);
 
         // .Cn [%mem.M, I32, %mem.Ptr (I32, 0) .Cn [%mem.M, I32]]
-        auto mem_t  = mem::type_mem(world);
+        auto mem_t  = world.annex<mem::M>();
         auto i32_t  = world.type_int(32);
-        auto argv_t = mem::type_ptr(mem::type_ptr(i32_t));
+        auto argv_t = world.call<mem::Ptr0>(world.call<mem::Ptr0>(i32_t));
         auto ret_t  = world.cn({mem_t, i32_t});
         auto main_t = world.cn({mem_t, i32_t, argv_t, ret_t});
         auto main   = world.mut_lam(main_t)->set("main");

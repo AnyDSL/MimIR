@@ -95,10 +95,13 @@ private:
     /// @name parse misc
     ///@{
     void parse_module();
-    Dbg parse_sym(std::string_view ctxt = {});
+    Dbg parse_id(std::string_view ctxt = {});
+    std::pair<Annex&, bool> parse_annex(std::string_view ctxt = {});
+    std::pair<Dbg, bool> parse_name(std::string_view ctxt = {});
     void parse_import();
     void parse_plugin();
     Ref parse_type_ascr(std::string_view ctxt);
+    void register_annex(Dbg, Ref);
 
     template<class F>
     void parse_list(std::string ctxt, Tok::Tag delim_l, F f, Tok::Tag sep = Tok::Tag::T_comma) {
@@ -144,6 +147,10 @@ private:
 
     /// @name parse decls
     ///@{
+
+    /// If @p ctxt ...
+    /// * ... empty: **Only** decls are parsed. @returns `nullptr`
+    /// * ... **non**-empty: Decls are parsed, then an expression. @returns expression.
     Ref parse_decls(std::string_view ctxt);
     void parse_ax_decl();
     void parse_let_decl();

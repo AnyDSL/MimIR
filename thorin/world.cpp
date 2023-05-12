@@ -66,6 +66,7 @@ World::World(Driver* driver, const State& state)
     data_.top_nat     = insert<Top>(0, type_nat());
     data_.lit_nat_0   = lit_nat(0);
     data_.lit_nat_1   = lit_nat(1);
+    data_.lit_0_1     = lit_idx(1, 0);
     data_.type_bool   = type_idx(2);
     data_.lit_bool[0] = lit_idx(2, 0_u64);
     data_.lit_bool[1] = lit_idx(2, 1_u64);
@@ -91,6 +92,14 @@ Sym World::sym(const char* s) { return driver().sym(s); }
 Sym World::sym(std::string_view s) { return driver().sym(s); }
 Sym World::sym(std::string s) { return driver().sym(std::move(s)); }
 
+const Def* World::register_annex(flags_t f, const Def* def) {
+    auto plugin = Annex::demangle(*this, f);
+    if (driver().is_loaded(plugin)) {
+        assert_emplace(move_.annexes, f, def);
+        return def;
+    }
+    return nullptr;
+}
 /*
  * factory methods
  */
@@ -140,6 +149,16 @@ Ref World::umax(DefArray ops) {
     return sort == Sort::Univ ? ldef : type(ldef);
 }
 
+// TODO more thorough & consistent checks for singleton types
+
+Ref World::var(Ref type, Def* mut) {
+    if (auto s = Idx::size(type)) {
+        if (auto l = Lit::isa(s); l && l == 1) return lit_0_1();
+    }
+
+    return unify<Var>(1, type, mut);
+}
+
 Ref World::iapp(Ref callee, Ref arg) {
     while (auto pi = callee->type()->isa<Pi>()) {
         if (pi->is_implicit()) {
@@ -183,6 +202,7 @@ Ref World::app(Ref callee, Ref arg) {
         error(arg, "cannot pass argument \n'{}' of type \n'{}' to \n'{}' of domain \n'{}'", arg, arg->type(), callee,
               pi->dom());
 
+    if (auto imm = callee->isa_imm<Lam>()) return imm->body();
     if (auto lam = callee->isa<Lam>(); lam && lam->is_set() && !lam->is_term()) return lam->reduce(arg).back();
 
     auto type = pi->reduce(arg).back();
@@ -280,8 +300,15 @@ Ref World::extract(Ref d, Ref index) {
     Ref size = Idx::size(index->type());
     Ref type = d->unfold_type();
 
-    // mut sigmas can be 1-tuples
-    if (auto l = Lit::isa(size); l && *l == 1 && !d->type()->isa_mut<Sigma>()) return d;
+    if (auto l = Lit::isa(size); l && *l == 1) {
+        if (auto l = Lit::isa(index); !l || *l != 0) WLOG("unknown Idx of size 1: {}", index);
+        if (auto sigma = type->isa_mut<Sigma>(); sigma && sigma->num_ops() == 1) {
+            // mut sigmas can be 1-tuples; TODO mutables Arr?
+        } else {
+            return d;
+        }
+    }
+
     if (auto pack = d->isa_imm<Pack>()) return pack->body();
 
     if (!checker().equiv(type->arity(), size))

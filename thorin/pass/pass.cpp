@@ -48,7 +48,7 @@ void PassMan::run() {
 
     for (auto&& pass : passes_) pass->prepare();
 
-    auto externals = std::vector(world().externals().begin(), world().externals().end());
+    auto externals = world().externals();
     for (const auto& [_, mut] : externals) {
         analyzed(mut);
         if (mut->is_set()) curr_state().stack.push(mut);

@@ -10,18 +10,18 @@ void Scopes::pop() {
 }
 
 const Def* Scopes::query(Dbg dbg) const {
-    auto [loc, sym] = dbg;
-    if (sym == '_') error(loc, "the symbol '_' is special and never binds to anything");
+    if (dbg.sym == '_') return nullptr;
 
     for (auto& scope : scopes_ | std::ranges::views::reverse)
-        if (auto i = scope.find(sym); i != scope.end()) return i->second.second;
+        if (auto i = scope.find(dbg.sym); i != scope.end()) return i->second.second;
 
     return nullptr;
 }
 
 const Def* Scopes::find(Dbg dbg) const {
+    if (dbg.sym == '_') error(dbg.loc, "the symbol '_' is special and never binds to anything");
     if (auto res = query(dbg)) return res;
-    error(dbg.loc, "symbol '{}' not found", dbg.sym);
+    error(dbg.loc, "'{}' not found", dbg.sym);
 }
 
 void Scopes::bind(Scope* scope, Dbg dbg, const Def* def, bool rebind) {
@@ -32,7 +32,7 @@ void Scopes::bind(Scope* scope, Dbg dbg, const Def* def, bool rebind) {
         (*scope)[sym] = std::pair(loc, def);
     } else if (auto [i, ins] = scope->emplace(sym, std::pair(loc, def)); !ins) {
         auto prev = i->second.first;
-        error(loc, "symbol '{}' already declared in the current scope here: {}", sym, prev);
+        error(loc, "redeclaration of '{}'; previous declaration here: {}", sym, prev);
     }
 }
 

@@ -8,30 +8,28 @@
 .plugin core;
 .plugin matrix;
 
-.let _32 = 4294967296;
-.let I32 = .Idx _32;
-.let MT = (2, (2,4), I32);
+.let MT = (2, (2,4), %core.I32);
 
-.con .extern f [mem : %mem.M, v: I32, return: .Cn[%mem.M, I32]] = {
-    .let v2 = %core.wrap.add _32 0 (v, v);
+.con .extern f [mem : %mem.M, v: %core.I32, return: .Cn[%mem.M, %core.I32]] = {
+    .let v2 = %core.wrap.add %core.i32 0 (v, v);
     return (mem, v2)
 };
 
-.con cont [mem : %mem.M, m : (%matrix.Mat MT), return : .Cn [%mem.M, I32]] = {
-    .let m2 = map (2,(2,4),I32,I32) (m,f);
+.con cont [mem : %mem.M, m : (%matrix.Mat MT), return : .Cn [%mem.M, %core.I32]] = {
+    .let m2 = map (2,(2,4),%core.I32,%core.I32) (m,f);
     .let idx = (1:(.Idx 2),3:(.Idx 4));
     .let d = %matrix.read MT (m2, idx);
     return (mem, d)
 };
 
 
-.con .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, .Idx 4294967296]] = {
-    .let c = 5:I32;
+.con .extern main [mem : %mem.M, argc : %core.I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, %core.I32]] = {
+    .let c = 5:%core.I32;
     .let m = %matrix.constMat MT c;
     cont (mem, m, return)
 };
 
-// CHECK-DAG: main: .Cn [%mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((.Idx 256), 0:.Nat), 0:.Nat), .Cn [%mem.M, (.Idx 4294967296)]], @(_[[memId:[0-9]*]], _[[argcId:[0-9]*]], _{{[0-9]*}}, _[[returnId:[0-9]*]]) = {
+// CHECK-DAG: main: .Cn [%mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((.Idx 256), 0), 0), .Cn [%mem.M, (.Idx 4294967296)]], @(_[[memId:[0-9]*]], _[[argcId:[0-9]*]], _{{[0-9]*}}, _[[returnId:[0-9]*]]) = {
 // CHECK-DAG: _[[appId:[0-9]*]]: ⊥:★ = _[[returnEtaId:[0-9]*]] (_[[memId]], 5:(.Idx 4294967296));
 // CHECK-DAG: _[[appId]]
 
@@ -45,15 +43,15 @@
 .import core;
 
 
-.lam .extern main: .Cn [%mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((.Idx 256), 0:.Nat), 0:.Nat), .Cn [%mem.M, (.Idx 4294967296)]], @(_176473, _176505, _176510, _176465) = {
+.lam .extern main: .Cn [%mem.M, (%core.I32), %mem.Ptr (%mem.Ptr ((%core.I8), 0), 0), .Cn [%mem.M, (%core.I32)]], @(_176473, _176505, _176510, _176465) = {
     0:(.Idx 2),
 
-    .lam _176460: .Cn [%mem.M, (.Idx 4294967296)], @(_176525, _176530) = {
+    .lam _176460: .Cn [%mem.M, (%core.I32)], @(_176525, _176530) = {
         0:(.Idx 2),
         .let _176467: ⊥:★ = _176465 @_176460;
         _176467
     };
-    .let _176483: ⊥:★ = _176460 (_176473, 5:(.Idx 4294967296));
+    .let _176483: ⊥:★ = _176460 (_176473, 5:(%core.I32));
     _176483
 };
 */

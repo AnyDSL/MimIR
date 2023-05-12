@@ -21,7 +21,8 @@ public:
     /// @name Get/Set implicit
     ///@{
     bool is_implicit() const { return flags(); }
-    Pi* make_implicit(bool on) { return flags_ = (flags_t)on, this; }
+    Pi* make_implicit() { return flags_ = (flags_t) true, this; }
+    Pi* make_explicit() { return flags_ = (flags_t) false, this; }
     ///@}
 
     /// @name dom

@@ -105,14 +105,13 @@ Tok Lexer::lex() {
         // clang-format on
 
         if (accept('%')) {
-            if (lex_id()) return {loc(), Tag::M_ax, world().sym(str_)};
+            if (lex_id()) return {loc(), Tag::M_anx, sym()};
             error(loc_, "invalid axiom name '{}'", str_);
         }
 
         if (accept('.')) {
             if (lex_id()) {
-                auto sym = world().sym(str_);
-                if (auto i = keywords_.find(sym); i != keywords_.end()) return tok(i->second);
+                if (auto i = keywords_.find(sym()); i != keywords_.end()) return tok(i->second);
                 // Split non-keyword into T_dot and M_id; M_id goes into cache_ for next lex().
                 assert(!cache_.has_value());
                 auto id_loc = loc();
@@ -140,10 +139,10 @@ Tok Lexer::lex() {
         if (accept('\"', false)) {
             while (lex_char() != '"') {}
             str_.pop_back(); // remove final '"'
-            return {loc_, Tag::M_str, world().sym(str_)};
+            return {loc_, Tag::M_str, sym()};
         }
 
-        if (lex_id()) return {loc(), Tag::M_id, world().sym(str_)};
+        if (lex_id()) return {loc(), Tag::M_id, sym()};
 
         if (isdigit(ahead()) || issign(ahead())) {
             if (auto lit = parse_lit()) return *lit;
@@ -335,5 +334,7 @@ void Lexer::emit_md(bool start_of_file) {
     else
         md_fence();
 }
+
+Sym Lexer::sym() { return world().sym(str_); }
 
 } // namespace thorin::fe

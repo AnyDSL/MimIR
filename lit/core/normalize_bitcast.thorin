@@ -4,8 +4,8 @@
 
 .plugin core;
 
-.con .extern bitcast_bitcast(i : %mem.Ptr (.Idx 256, 0), return: .Cn .Idx 4294967296) = {
-    return (%core.bitcast (.Idx 4294967296) (%core.bitcast .Nat i))
+.con .extern bitcast_bitcast(i : %mem.Ptr (%core.I8, 0), return: .Cn %core.I32) = {
+    return (%core.bitcast (%core.I32) (%core.bitcast .Nat i))
 };
 
 // TODO parenthesis in output broken for bitcast

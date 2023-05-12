@@ -29,7 +29,7 @@ class LowerTypedClos : public Phase {
 public:
     LowerTypedClos(World& world)
         : Phase(world, "lower_typed_clos", true)
-        , dummy_ret_(world.bot(world.cn(mem::type_mem(world)))) {}
+        , dummy_ret_(world.bot(world.cn(world.annex<mem::M>()))) {}
 
     void start() override;
 
@@ -63,7 +63,7 @@ private:
     /// Pointer type used to represent environments
     const Def* env_type() {
         auto& w = world();
-        return mem::type_ptr(w.sigma());
+        return w.call<mem::Ptr0>(w.sigma());
     }
     ///@}
 

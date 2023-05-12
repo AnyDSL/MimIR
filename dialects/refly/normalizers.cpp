@@ -10,7 +10,7 @@ static_assert(sizeof(void*) <= sizeof(u64), "pointer doesn't fit into Lit");
 
 namespace {
 // The trick is that we simply "box" the pointer of @p def inside a Lit of type `%refly.Code`.
-Ref do_reify(const Def* def) { return def->world().lit(type_code(def->world()), reinterpret_cast<u64>(def)); }
+Ref do_reify(const Def* def) { return def->world().lit(def->world().annex<Code>(), reinterpret_cast<u64>(def)); }
 
 // And here we are doing the reverse to retrieve the original pointer again.
 const Def* do_reflect(const Def* def) { return reinterpret_cast<const Def*>(def->as<Lit>()->get()); }

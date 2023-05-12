@@ -104,8 +104,8 @@ const Def* AddMem::rewrite_pi(const Pi* pi) {
     auto dom = pi->dom();
     DefArray new_dom{dom->num_projs(), [&](size_t i) { return rewrite_type(dom->proj(i)); }};
     if (pi->num_doms() == 0 || !match<mem::M>(pi->dom(0_s))) {
-        new_dom =
-            DefArray{dom->num_projs() + 1, [&](size_t i) { return i == 0 ? mem::type_mem(world()) : new_dom[i - 1]; }};
+        new_dom = DefArray{dom->num_projs() + 1,
+                           [&](size_t i) { return i == 0 ? world().annex<mem::M>() : new_dom[i - 1]; }};
     }
 
     return mem_rewritten_[pi] = world().pi(new_dom, pi->codom());
@@ -174,10 +174,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
         auto body               = add_mem_to_lams(lam, lam->body());
         new_lam->unset()->set({filter, body});
 
-        if (lam != new_lam && lam->is_external()) {
-            lam->make_internal();
-            new_lam->make_external();
-        }
+        if (lam != new_lam && lam->is_external()) lam->transfer_external(new_lam);
         return new_lam;
     };
 
@@ -196,23 +193,23 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
 
         DefArray new_args{arg->type()->num_projs() + offset};
         for (int i = new_args.size() - 1; i >= 0; i--) {
-            new_args[i] =
-                i == 0 ? add_mem_to_lams(place, mem_for_lam(place)) : add_mem_to_lams(place, arg->proj(i - offset));
+            new_args[i]
+                = i == 0 ? add_mem_to_lams(place, mem_for_lam(place)) : add_mem_to_lams(place, arg->proj(i - offset));
         }
         return arg->world().tuple(new_args);
     };
 
     // call-site of a mutable lambda
     if (auto apped_mut = isa_apped_mut_lam_in_tuple(def); apped_mut.first) {
-        return mem_rewritten_[def] =
-                   rewrite_apped_mut_lam_in_tuple(def, std::move(rewrite_lam), std::move(rewrite_arg),
-                                                  [&](const Def* def) { return add_mem_to_lams(place, def); });
+        return mem_rewritten_[def]
+             = rewrite_apped_mut_lam_in_tuple(def, std::move(rewrite_lam), std::move(rewrite_arg),
+                                              [&](const Def* def) { return add_mem_to_lams(place, def); });
     }
 
     // call-site of a continuation
     if (auto app = def->isa<App>(); app && (app->callee()->dep() & Dep::Var)) {
-        return mem_rewritten_[def] =
-                   app->rebuild(world(), app->type(), {add_mem_to_lams(place, app->callee()), rewrite_arg(app->arg())});
+        return mem_rewritten_[def]
+             = app->rebuild(world(), app->type(), {add_mem_to_lams(place, app->callee()), rewrite_arg(app->arg())});
     }
 
     // call-site of an axiom (assuming mems are only in the final app..)
@@ -230,10 +227,10 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
                 new_args[i] = add_mem_to_lams(place, arg->proj(i));
             }
         }
-        auto rewritten = mem_rewritten_[def] =
-            app->rebuild(world(), app->type(),
-                         {add_mem_to_lams(place, app->callee()), world().tuple(new_args)->set(arg->dbg())})
-                ->set(app->dbg());
+        auto rewritten = mem_rewritten_[def]
+            = app->rebuild(world(), app->type(),
+                           {add_mem_to_lams(place, app->callee()), world().tuple(new_args)->set(arg->dbg())})
+                  ->set(app->dbg());
         if (match<mem::M>(rewritten->type())) {
             world().DLOG("memory from axiom {} : {}", rewritten, rewritten->type());
             val2mem_[place] = rewritten;
@@ -252,8 +249,8 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
         auto new_arg    = add_mem_to_lams(place, app->arg());
         if (app->callee()->type()->as<Pi>()->num_doms() + 1 == new_callee->type()->as<Pi>()->num_doms())
             new_arg = rewrite_arg(app->arg());
-        auto rewritten = mem_rewritten_[def] =
-            app->rebuild(world(), app->type(), {new_callee, new_arg})->set(app->dbg());
+        auto rewritten = mem_rewritten_[def]
+            = app->rebuild(world(), app->type(), {new_callee, new_arg})->set(app->dbg());
         if (match<mem::M>(rewritten->type())) {
             world().DLOG("memory from other {} : {}", rewritten, rewritten->type());
             val2mem_[place] = rewritten;

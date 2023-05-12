@@ -1,0 +1,4 @@
+// RUN: (! %thorin %s 2>&1) | FileCheck %s
+.Pi F = |~| .Nat -> .Nat;
+.Pi F = |~| .Nat -> .Nat;
+// CHECK: error: redefinition

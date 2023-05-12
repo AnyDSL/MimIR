@@ -78,13 +78,13 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
         }
         if (auto bb_lam = Lam::isa_mut_basicblock(op); bb_lam && from_outer_scope(bb_lam)) {
             w.DLOG("found BB from enclosing scope {}", op);
-            return refine(thorin::clos::op(attr::freeBB, op));
+            return refine(w.call(attr::freeBB, op));
         }
         if (isa_cont(app, arg, i)) {
             if (match<attr>(attr::ret, op) || isa_retvar(op)) {
                 return app;
             } else if (auto contlam = op->isa_mut<Lam>()) {
-                return refine(thorin::clos::op(attr::ret, contlam));
+                return refine(w.call(attr::ret, contlam));
             } else {
                 auto wrapper = eta_wrap(op, attr::ret)->set("eta_cont");
                 w.DLOG("eta expanded return cont: {} -> {}", op, wrapper);
@@ -95,7 +95,7 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
         if (!isa_callee_br(app, arg, i)) {
             if (auto bb_lam = Lam::isa_mut_basicblock(op)) {
                 w.DLOG("found firstclass use of BB: {}", bb_lam);
-                return refine(thorin::clos::op(attr::fstclassBB, bb_lam));
+                return refine(w.call(attr::fstclassBB, bb_lam));
             }
             // TODO: If EtaRed eta-reduces branches, we have to wrap them again!
             if (isa_retvar(op)) {

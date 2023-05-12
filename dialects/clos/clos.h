@@ -6,38 +6,6 @@
 
 namespace thorin::clos {
 
-/// @name %%clos.alloc_jmpbuf
-///@{
-inline Ref op_alloc_jumpbuf(Ref mem) {
-    World& w = mem->world();
-    return w.app(w.ax<alloc_jmpbuf>(), {w.tuple(), mem});
-}
-///@}
-
-/// @name %%clos.setjmp
-///@{
-inline Ref op_setjmp(Ref mem, Ref buf) {
-    World& w = mem->world();
-    return w.app(w.ax<setjmp>(), {mem, buf});
-}
-///@}
-
-/// @name %%clos.longjmp
-///@{
-inline Ref op_longjmp(Ref mem, Ref buf, Ref id) {
-    World& w = mem->world();
-    return w.app(w.ax<longjmp>(), {mem, buf, id});
-}
-///@}
-
-/// @name %%clos.attr
-///@{
-inline Ref op(attr o, Ref def) {
-    World& w = def->world();
-    return w.app(w.app(w.ax(o), def->type()), def);
-}
-///@}
-
 /// @name Closures
 ///@{
 
@@ -62,8 +30,7 @@ public:
     Ref ret_var() { return fnc_as_lam()->ret_var(); }
     ///@}
 
-    operator bool() const { return def_ != nullptr; }
-
+    explicit operator bool() const { return def_ != nullptr; }
     operator const Tuple*() { return def_; }
 
     const Tuple* operator->() {

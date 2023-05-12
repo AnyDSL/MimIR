@@ -56,12 +56,13 @@ Res fold(u64 a) {
         else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
     } else if constexpr (std::is_same_v<Id, exp>) {
         if constexpr (false) {}
-        else if constexpr (id == exp::exp ) return std::exp (x);
-        else if constexpr (id == exp::exp2) return std::exp2(x);
-        else if constexpr (id == exp::log ) return std::log (x);
-        else if constexpr (id == exp::log2) return std::log2(x);
+        else if constexpr (id == exp::exp  ) return std::exp  (x);
+        else if constexpr (id == exp::exp2 ) return std::exp2 (x);
+        else if constexpr (id == exp::exp10) return std::pow(T(10), x);
+        else if constexpr (id == exp::log  ) return std::log  (x);
+        else if constexpr (id == exp::log2 ) return std::log2 (x);
         else if constexpr (id == exp::log10) return std::log10(x);
-        else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
+        else unreachable();
     } else if constexpr (std::is_same_v<Id, er>) {
         if constexpr (false) {}
         else if constexpr (id == er::f ) return std::erf (x);
@@ -160,14 +161,13 @@ Res fold(u64 a, u64 b) {
 template<class Id, Id id>
 Ref fold(World& world, Ref type, const Def* a) {
     if (a->isa<Bot>()) return world.bot(type);
-    auto la = a->isa<Lit>();
 
-    if (la) {
+    if (auto la = Lit::isa(a)) {
         nat_t width = *isa_f(a->type());
         Res res;
         switch (width) {
 #define CODE(i) \
-    case i: res = fold<Id, id, i>(la->get()); break;
+    case i: res = fold<Id, id, i>(*la); break;
             THORIN_16_32_64(CODE)
 #undef CODE
             default: unreachable();
@@ -182,22 +182,22 @@ Ref fold(World& world, Ref type, const Def* a) {
 // Note that @p a and @p b are passed by reference as fold also commutes if possible.
 template<class Id, Id id>
 Ref fold(World& world, Ref type, const Def*& a, const Def*& b) {
-    auto la = a->isa<Lit>(), lb = b->isa<Lit>();
-
     if (a->isa<Bot>() || b->isa<Bot>()) return world.bot(type);
 
-    if (la && lb) {
-        nat_t width = *isa_f(a->type());
-        Res res;
-        switch (width) {
+    if (auto la = Lit::isa(a)) {
+        if (auto lb = Lit::isa(b)) {
+            nat_t width = *isa_f(a->type());
+            Res res;
+            switch (width) {
 #define CODE(i) \
-    case i: res = fold<Id, id, i>(la->get(), lb->get()); break;
-            THORIN_16_32_64(CODE)
+    case i: res = fold<Id, id, i>(*la, *lb); break;
+                THORIN_16_32_64(CODE)
 #undef CODE
-            default: unreachable();
-        }
+                default: unreachable();
+            }
 
-        return world.lit(type, *res);
+            return world.lit(type, *res);
+        }
     }
 
     commute(id, a, b);
@@ -219,35 +219,37 @@ template<class Id>
 Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref b) {
     if (!is_associative(id)) return nullptr;
 
-    auto la = a->isa<Lit>();
-    auto xy = match<Id>(id, a);
-    auto zw = match<Id>(id, b);
-    auto lx = xy ? xy->arg(0)->template isa<Lit>() : nullptr;
-    auto lz = zw ? zw->arg(0)->template isa<Lit>() : nullptr;
-    auto y  = xy ? xy->arg(1) : nullptr;
-    auto w  = zw ? zw->arg(1) : nullptr;
+    if (auto xy = match<Id>(id, a)) {
+        if (auto zw = match<Id>(id, b)) {
+            auto la     = Lit::isa(a);
+            auto [x, y] = xy->template args<2>();
+            auto [z, w] = zw->template args<2>();
+            auto lx     = Lit::isa(x);
+            auto lz     = Lit::isa(z);
 
-    std::function<Ref(Ref, Ref)> make_op;
+            std::function<Ref(Ref, Ref)> make_op;
 
-    // build mode for all new ops by using the least upper bound of all involved apps
-    auto mode       = (nat_t)Mode::bot;
-    auto check_mode = [&](const App* app) {
-        auto app_m = Lit::isa(app->arg(0));
-        if (!app_m || !(*app_m & Mode::reassoc)) return false;
-        mode &= *app_m; // least upper bound
-        return true;
-    };
+            // build mode for all new ops by using the least upper bound of all involved apps
+            auto mode       = (nat_t)Mode::bot;
+            auto check_mode = [&](const App* app) {
+                auto app_m = Lit::isa(app->arg(0));
+                if (!app_m || !(*app_m & Mode::reassoc)) return false;
+                mode &= *app_m; // least upper bound
+                return true;
+            };
 
-    if (!check_mode(ab)) return nullptr;
-    if (lx && !check_mode(xy->decurry())) return nullptr;
-    if (lz && !check_mode(zw->decurry())) return nullptr;
+            if (!check_mode(ab)) return nullptr;
+            if (lx && !check_mode(xy->decurry())) return nullptr;
+            if (lz && !check_mode(zw->decurry())) return nullptr;
 
-    make_op = [&](Ref a, Ref b) { return world.call(id, mode, Defs{a, b}); };
+            make_op = [&](Ref a, Ref b) { return world.call(id, mode, Defs{a, b}); };
 
-    if (la && lz) return make_op(make_op(la, lz), w);             // (1)
-    if (lx && lz) return make_op(make_op(lx, lz), make_op(y, w)); // (2)
-    if (lz) return make_op(lz, make_op(a, w));                    // (3)
-    if (lx) return make_op(lx, make_op(y, b));                    // (4)
+            if (la && lz) return make_op(make_op(a, z), w);             // (1)
+            if (lx && lz) return make_op(make_op(x, z), make_op(y, w)); // (2)
+            if (lz) return make_op(z, make_op(a, w));                   // (3)
+            if (lx) return make_op(x, make_op(y, b));                   // (4)
+        }
+    }
 
     return nullptr;
 }

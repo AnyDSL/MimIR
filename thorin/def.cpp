@@ -286,7 +286,7 @@ const Def* Def::debug_suffix(std::string suffix) const {
 
 // clang-format off
 
-const Var* Def::var() {
+Ref Def::var() {
     auto& w = world();
 
     if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {
@@ -338,8 +338,8 @@ std::optional<nat_t> Def::isa_lit_arity() const {
 bool Def::equal(const Def* other) const {
     if (isa<Univ>() || this->isa_mut() || other->isa_mut()) return this == other;
 
-    bool result = this->node() == other->node() && this->flags() == other->flags() &&
-                  this->num_ops() == other->num_ops() && this->type() == other->type();
+    bool result = this->node() == other->node() && this->flags() == other->flags()
+               && this->num_ops() == other->num_ops() && this->type() == other->type();
 
     for (size_t i = 0, e = num_ops(); result && i != e; ++i) result &= this->op(i) == other->op(i);
 
@@ -419,8 +419,8 @@ void Def::unset_type() {
 bool Def::is_set() const {
     if (num_ops() == 0) return true;
     bool result = ops().back();
-    assert((!result || std::ranges::all_of(ops().skip_back(), [](auto op) { return op; })) &&
-           "the last operand is set but others in front of it aren't");
+    assert((!result || std::ranges::all_of(ops().skip_back(), [](auto op) { return op; }))
+           && "the last operand is set but others in front of it aren't");
     return result;
 }
 

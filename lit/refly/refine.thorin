@@ -6,15 +6,12 @@
 .plugin core;
 .plugin refly;
 
-.let _32 = 4294967296;
-.let I32 = .Idx _32;
-.let I64 = .Idx 0;
-.fun .extern main(mem: %mem.M, argc: I32, argv: %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0)) -> [%mem.M, I32] = {
+.fun .extern main(mem: %mem.M, argc: %core.I32, argv: %mem.Ptr (%mem.Ptr (%core.I8, 0), 0)) -> [%mem.M, %core.I32] = {
     .let exp = %refly.reify <<4; .Nat>> (0, 1, 2, 3);
     .let new = %refly.refine (exp, 1, %refly.reify .Nat 42);
     .let tup = %refly.reflect <<4; .Nat>> new;
-    .let x   = %core.bitcast I64 tup#1_4;
-    return (mem, %core.conv.u _32 x)
+    .let x   = %core.bitcast %core.I64 tup#1_4;
+    return (mem, %core.conv.u %core.i32 x)
 };
 
 // CHECK-DAG: return{{.*}}42

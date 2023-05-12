@@ -68,7 +68,7 @@ Ref LowerTypedClosPrep::rewrite(Ref def) {
     if (auto closure = isa_clos_lit(def, false)) {
         auto fnc = closure.fnc();
         if (!match<attr>(fnc)) {
-            auto new_fnc = op(esc_.contains(fnc) ? attr::esc : attr::bot, fnc);
+            auto new_fnc = world().call(esc_.contains(fnc) ? attr::esc : attr::bot, fnc);
             return clos_pack(closure.env(), new_fnc, closure->type());
         }
     }

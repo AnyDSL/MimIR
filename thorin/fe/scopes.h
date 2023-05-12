@@ -10,6 +10,8 @@ class Def;
 
 namespace fe {
 
+class Ptrn;
+
 class Scopes {
 public:
     using Scope = SymMap<std::pair<Loc, const Def*>>;

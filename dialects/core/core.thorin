@@ -8,13 +8,28 @@
 ///
 .plugin mem;
 ///
+/// ## Types
+///
+.let %core.i1  =         0x1;
+.let %core.i8  =       0x100;
+.let %core.i16 =     0x10000;
+.let %core.i32 = 0x100000000;
+.let %core.i64 =           0;
+
+.let %core.I1  = .Idx %core.i1;
+.let %core.I8  = .Idx %core.i8;
+.let %core.I16 = .Idx %core.i16;
+.let %core.I32 = .Idx %core.i32;
+.let %core.I64 = .Idx %core.i64;
+///
 /// ## Nat Operations
 ///
 /// ### %core.nat
 ///
-/// Standard arithmetic operations on `.Nat`s.
+/// Standard arithmetic operations on `.Nat`s. <br>
+/// `%%core.nat.sub (a, b)` yields `0`, if `a` < `b`.
 ///
-.ax %core.nat(add, mul): «2; .Nat» -> .Nat, normalize_nat;
+.ax %core.nat(add, sub, mul): «2; .Nat» -> .Nat, normalize_nat;
 ///
 /// ### %core.ncmp
 ///
@@ -35,7 +50,7 @@
 /// | `GLE`  | `t`   | x | x | x | always true      |
 ///
 .ax %core.ncmp(gle = f, glE =  e, gLe =  l, gLE = le,
-               Gle = g, GlE = ge, GLe = ne, GLE =  t): 
+               Gle = g, GlE = ge, GLe = ne, GLE =  t):
     «2; .Nat» -> .Bool, normalize_ncmp;
 ///
 /// ## Integer Operations
@@ -48,6 +63,11 @@
 ///
 /// A common problem when dealing with integer operations is [overflow](https://en.wikipedia.org/wiki/Integer_overflow).
 /// All operations that may overflow have an additional parameter `m` - [mode](@ref thorin::core::Mode) - of type `.Nat` that determines the exact desired behavior in the case of an overflow.
+///
+.let %core.mode.us = 0b00; // wrap around - both signed and unsigned
+.let %core.mode.uS = 0b01; // no   signed wrap around
+.let %core.mode.Us = 0b10; // no unsigned wrap around
+.let %core.mode.US = 0b11; // no signed and unsigned wrap around
 ///
 /// ### %core.idx
 ///
@@ -109,16 +129,18 @@
 /// You can specify the desired behavior in the case of an overflow with the curried argument just in front of the actual argument by providing a thorin::core::Mode as `.Nat`.
 ///
 .ax %core.wrap(add, sub, mul, shl): Π.[s: .Nat][m: .Nat][«2; .Idx s»] -> .Idx s, normalize_wrap;
+
+.lam %core.minus!.(s: .Nat)!(m: .Nat)!(a: .Idx s) -> .Idx s = %core.wrap.sub m (0:(.Idx s), a);
 ///
 /// ### %core.div
 ///
 /// Signed and unsigned Integer division/remainder.
 ///
-/// Division by zero is undefined behavior and thus a visible side effect.
+/// @warning Division by zero is *undefined behavior* and thus a visible side effect.
 /// For this reason, these axioms expect a `%%mem.M`.
 ///
 .ax %core.div(sdiv, udiv, srem, urem):
-    Π.[s: .Nat][%mem.M, .Idx s, .Idx s] -> [%mem.M, .Idx s], normalize_div;
+    Π.[s: .Nat][%mem.M, «2; .Idx s»] -> [%mem.M, .Idx s], normalize_div;
 ///
 /// ### %core.icmp
 ///
