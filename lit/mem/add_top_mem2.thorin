@@ -1,4 +1,4 @@
-// RUN: rm -f %t.ll ; \
+// RUN: rm -f %t.ll
 // RUN: %thorin %s -o - | FileCheck %s
 
 .plugin core;
@@ -23,4 +23,4 @@
 // CHECK: [[hRetId]] ([[hMemId]], [[haId]])
 
 // CHECK: main {{[a-z0-9_:]*}}[[[memId:[a-z_0-9]*]]: %mem.M
-// CHECK: f ([[memId]], 
+// CHECK: f ([[memId]],

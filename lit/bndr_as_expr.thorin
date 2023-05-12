@@ -1,4 +1,4 @@
-// RUN: rm -f %t.ll ; \
+// RUN: rm -f %t.ll
 // RUN: %thorin %s
 
 .ax %foo.bar: [[.Nat, .Nat] -> .Nat];

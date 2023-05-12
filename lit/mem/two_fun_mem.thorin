@@ -1,5 +1,5 @@
-// RUN: rm -f %t.ll ; \
-// RUN: %thorin %s --output-ll %t.ll -o - 
+// RUN: rm -f %t.ll
+// RUN: %thorin %s --output-ll %t.ll -o -
 // RUN: clang %t.ll -o %t -Wno-override-module
 // RUN: %t; test $? -eq 5
 // RUN: %t 1; test $? -eq 7
@@ -33,7 +33,7 @@
 };
 
 .con .extern main [mem : %mem.M, argc : %core.I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, %core.I32]] = {
-    
+
     .let (mem2,p) = %mem.alloc Tas mem;
     .let mem3 = %mem.store (mem2, p, argc);
 
