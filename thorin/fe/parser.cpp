@@ -514,7 +514,7 @@ Lam* Parser::parse_lam(bool is_decl) {
                 Scope scope(lam);
 
                 // Now rewrite old filter to use new_var.
-                ScopeRewriter rw(world(), scope);
+                ScopeRewriter rw(scope);
                 rw.map(lam->var(), new_lam->var(2, 0)->set(lam->var()->dbg()));
                 auto new_filter = rw.rewrite(filter);
                 filter          = new_filter;
@@ -538,7 +538,7 @@ Lam* Parser::parse_lam(bool is_decl) {
         // First, connect old codom to lam. Otherwise, scope will not find it.
         pi->set_codom(codom);
         Scope scope(lam);
-        ScopeRewriter rw(world(), scope);
+        ScopeRewriter rw(scope);
         rw.map(lam->var(), pi->var()->set(lam->var()->dbg()));
 
         // Now update.

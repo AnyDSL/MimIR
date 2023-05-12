@@ -31,8 +31,8 @@ private:
 /// Stops rewriting when leaving the Scope.
 class ScopeRewriter : public Rewriter {
 public:
-    ScopeRewriter(World& world, const Scope& scope)
-        : Rewriter(world)
+    ScopeRewriter(const Scope& scope)
+        : Rewriter(scope.world())
         , scope_(scope) {}
 
     const Scope& scope() const { return scope_; }

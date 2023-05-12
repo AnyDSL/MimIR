@@ -45,7 +45,7 @@ Ref Rewriter::rewrite_mut(Def* old_mut) {
 }
 
 Ref rewrite(Ref def, Ref old_def, Ref new_def, const Scope& scope) {
-    ScopeRewriter rewriter(def->world(), scope);
+    ScopeRewriter rewriter(scope);
     rewriter.map(old_def, new_def);
     return rewriter.rewrite(def);
 }
@@ -58,7 +58,7 @@ Ref rewrite(Def* mut, Ref arg, size_t i) {
 }
 
 DefArray rewrite(Def* mut, Ref arg, const Scope& scope) {
-    ScopeRewriter rewriter(mut->world(), scope);
+    ScopeRewriter rewriter(scope);
     rewriter.map(mut->var(), arg);
     return DefArray(mut->num_ops(), [&](size_t i) { return rewriter.rewrite(mut->op(i)); });
 }
