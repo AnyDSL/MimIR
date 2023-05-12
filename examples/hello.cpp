@@ -29,7 +29,7 @@ int main(int, char**) {
 
         auto [mem, argc, argv, ret] = main->vars<4>();
         main->app(false, ret, {mem, argc});
-        main->make_external(true);
+        main->make_external();
 
         optimize(world);
         std::ofstream ofs("hello.ll");

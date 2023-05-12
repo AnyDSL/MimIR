@@ -424,7 +424,8 @@ bool Def::is_set() const {
     return result;
 }
 
-void Def::make_external(bool on) { return world().make_external(this, on); }
+void Def::make_external() { return world().make_external(this); }
+void Def::make_internal() { return world().make_internal(this); }
 
 std::string Def::unique_name() const { return *sym() + "_"s + std::to_string(gid()); }
 

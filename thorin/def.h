@@ -398,11 +398,9 @@ public:
     /// @name external
     ///@{
     bool is_external() const { return external_; }
-    void make_external(bool);
-    void transfer_external(Def* to) {
-        make_external(false);
-        to->make_external(true);
-    }
+    void make_external();
+    void make_internal();
+    void transfer_external(Def* to) { make_internal(), to->make_external(); }
     ///@}
 
     /// @name Casts

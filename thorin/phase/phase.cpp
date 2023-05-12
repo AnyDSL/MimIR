@@ -30,7 +30,7 @@ void Cleanup::start() {
     Rewriter rewriter(new_world);
 
     for (const auto& [f, def] : world().annexes()) new_world.register_annex(f, rewriter.rewrite(def));
-    for (const auto& [_, mut] : world().externals()) rewriter.rewrite(mut)->as_mut()->make_external(true);
+    for (const auto& [_, mut] : world().externals()) rewriter.rewrite(mut)->as_mut()->make_external();
 
     swap(world(), new_world);
 }

@@ -151,15 +151,16 @@ public:
     ///@{
     const auto& annexes() const { return move_.annexes; }
     const auto& externals() const { return move_.externals; }
-    void make_external(Def* def, bool on) {
-        assert(!def->external_ == on);
-        def->external_ = on;
-        if (on)
-            assert_emplace(move_.externals, def->sym(), def);
-        else {
-            auto num = move_.externals.erase(def->sym());
-            assert(num == 1);
-        }
+    void make_external(Def* def) {
+        assert(!def->is_external());
+        def->external_ = true;
+        assert_emplace(move_.externals, def->sym(), def);
+    }
+    void make_internal(Def* def) {
+        assert(def->is_external());
+        def->external_ = false;
+        auto num = move_.externals.erase(def->sym());
+        assert_unused(num == 1);
     }
 
     Def* external(Sym name) { return thorin::lookup(move_.externals, name); } ///< Lookup by @p name.

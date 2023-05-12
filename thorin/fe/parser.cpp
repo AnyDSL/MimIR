@@ -387,11 +387,11 @@ Pi* Parser::parse_pi_expr(Pi* outer) {
         auto prec     = tok.isa(Tag::K_Cn) ? Tok::Prec::Bot : Tok::Prec::App;
         auto dom      = parse_ptrn(Tag::D_brckt_l, "domain of a "s + entity, prec);
         auto dom_t    = dom->type(world(), def2fields_);
-        auto pi       = (outer ? outer : world().mut_pi(world().type_infer_univ()))->set_dom(dom_t);
+        auto pi       = (outer ? outer : world().mut_pi(world().type_infer_univ()))->set_dom(dom_t)->set(dom->dbg());
         auto var      = pi->var()->set(dom->sym());
         first         = first ? first : pi;
 
-        pi->make_implicit(implicit)->set(dom->dbg());
+        if (implicit) pi->make_implicit();
         dom->bind(scopes_, var);
         pis.emplace_back(pi);
     } while (ahead().isa(Tag::T_dot) || ahead().isa(Tag::D_brckt_l) || ahead().isa(Tag::T_backtick)
@@ -550,7 +550,7 @@ Lam* Parser::parse_lam(bool is_decl) {
 
     if (!decl) {
         scopes_.bind(outer, dbg, first);
-        if (external) first->make_external(true);
+        if (external) first->make_external();
     }
 
     auto body = accept(Tag::T_assign) ? parse_decls("body of a "s + entity) : nullptr;
