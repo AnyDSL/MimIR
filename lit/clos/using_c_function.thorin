@@ -1,8 +1,8 @@
-// RUN: rm -f %t.ll ; \
+// RUN: rm -f %t.ll
 // RUN: %thorin -p clos %s --output-ll %t.ll -o -
 
 
-// build a linked list/stack/for loop 
+// build a linked list/stack/for loop
 // in a for loop
 // first the integers are printed ascending
 // then the stack is called and should print them descending

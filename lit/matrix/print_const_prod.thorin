@@ -1,5 +1,5 @@
-// RUN: rm -f %t.ll ; \
-// RUN: %thorin -p affine -p direct -p clos -o - --output-ll %t.ll %s 
+// RUN: rm -f %t.ll
+// RUN: %thorin -p clos -o - --output-ll %t.ll %s
 // RUN: clang %S/../lib.c %t.ll -o %t -Wno-override-module
 // RUN: %t 2 3 | FileCheck %s
 
@@ -31,5 +31,5 @@
     .let (`mem, mP) = %matrix.prod (2,4,3, %math.f64) (mem, m1, m2);
     print_double_matrix_wrap (mem, 2, 3, mP, return_cont);
 
-// CHECK: 60.00, 60.00, 60.00, 
-// CHECK: 60.00, 60.00, 60.00, 
+// CHECK: 60.00, 60.00, 60.00,
+// CHECK: 60.00, 60.00, 60.00,

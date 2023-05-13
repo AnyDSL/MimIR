@@ -1,5 +1,5 @@
-// RUN: rm -f %t.ll ; \
-// RUN: %thorin -p clos %s --output-ll %t.ll -o - 
+// RUN: rm -f %t.ll
+// RUN: %thorin -p clos %s --output-ll %t.ll -o -
 
 .plugin core;
 

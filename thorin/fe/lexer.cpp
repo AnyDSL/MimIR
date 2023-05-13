@@ -105,7 +105,7 @@ Tok Lexer::lex() {
         // clang-format on
 
         if (accept('%')) {
-            if (lex_id()) return {loc(), Tag::M_ext, sym()};
+            if (lex_id()) return {loc(), Tag::M_anx, sym()};
             error(loc_, "invalid axiom name '{}'", str_);
         }
 

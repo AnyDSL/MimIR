@@ -21,20 +21,11 @@ THORIN_ENUM_OPERATORS(Mode)
 /// Give Mode as thorin::math::Mode, thorin::nat_t or Ref.
 using VMode = std::variant<Mode, nat_t, Ref>;
 
-/// thorin::math::VMode -> Ref.
+/// thorin::core::VMode -> Ref.
 inline Ref mode(World& w, VMode m) {
     if (auto def = std::get_if<Ref>(&m)) return *def;
     if (auto nat = std::get_if<nat_t>(&m)) return w.lit_nat(*nat);
     return w.lit_nat((nat_t)std::get<Mode>(m));
-}
-///@}
-
-/// @name %%core.wrap
-///@{
-inline Ref op_wminus(VMode m, Ref a) {
-    World& w = a->world();
-    auto s   = Lit::as(w.iinfer(a));
-    return w.call(wrap::sub, mode(w, m), Defs{w.lit_idx(s, 0), a});
 }
 ///@}
 
@@ -106,7 +97,7 @@ namespace thorin {
 /// @name is_commutative/is_associative
 ///@{
 // clang-format off
-constexpr bool is_commutative(core::nat    ) { return true; }
+constexpr bool is_commutative(core::nat  id) { return id == core::nat ::add || id == core::nat ::mul; }
 constexpr bool is_commutative(core::wrap id) { return id == core::wrap::add || id == core::wrap::mul; }
 constexpr bool is_commutative(core::ncmp id) { return id == core::ncmp::  e || id == core::ncmp:: ne; }
 constexpr bool is_commutative(core::icmp id) { return id == core::icmp::  e || id == core::icmp:: ne; }

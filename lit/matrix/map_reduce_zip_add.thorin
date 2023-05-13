@@ -1,4 +1,4 @@
-// RUN: rm -f %t.ll ; \
+// RUN: rm -f %t.ll
 // RUN: %thorin -o - %s  | FileCheck %s
 
 .plugin core;
@@ -15,7 +15,7 @@
     ret (mem, new_acc)
 };
 
-.con .extern f [mem : %mem.M, 
+.con .extern f [mem : %mem.M,
     [k:.Nat, l:.Nat],
     M:%matrix.Mat (2,(k,l),%core.I32),
     return: .Cn[%mem.M, %matrix.Mat (2,(k,l),%core.I32)]] = {

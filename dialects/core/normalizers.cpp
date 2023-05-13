@@ -1,3 +1,5 @@
+#include <optional>
+
 #include "dialects/core/core.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/mem.h"
@@ -105,30 +107,33 @@ Res fold(u64 a, u64 b, [[maybe_unused]] bool nsw, [[maybe_unused]] bool nuw) {
 // Note that @p a and @p b are passed by reference as fold also commutes if possible.
 template<class Id, Id id>
 Ref fold(World& world, Ref type, const Def*& a, const Def*& b, Ref mode = {}) {
-    auto la = a->isa<Lit>(), lb = b->isa<Lit>();
-
     if (a->isa<Bot>() || b->isa<Bot>()) return world.bot(type);
 
-    if (la && lb) {
-        auto size  = Lit::as(Idx::size(a->type()));
-        auto width = Idx::size2bitwidth(size);
-        bool nsw = false, nuw = false;
-        if constexpr (std::is_same_v<Id, wrap>) {
-            auto m = mode ? Lit::as(mode) : 0_n;
-            nsw    = m & Mode::nsw;
-            nuw    = m & Mode::nuw;
-        }
+    if (auto la = Lit::isa(a)) {
+        if (auto lb = Lit::isa(b)) {
+            auto size  = Lit::as(Idx::size(a->type()));
+            auto width = Idx::size2bitwidth(size);
+            bool nsw = false, nuw = false;
+            if constexpr (std::is_same_v<Id, wrap>) {
+                auto m = mode ? Lit::as(mode) : 0_n;
+                nsw    = m & Mode::nsw;
+                nuw    = m & Mode::nuw;
+            }
 
-        Res res;
-        switch (width) {
+            Res res;
+            switch (width) {
 #define CODE(i) \
-    case i: res = fold<Id, id, i>(la->get(), lb->get(), nsw, nuw); break;
-            THORIN_1_8_16_32_64(CODE)
+    case i: res = fold<Id, id, i>(*la, *lb, nsw, nuw); break;
+                THORIN_1_8_16_32_64(CODE)
 #undef CODE
-            default: unreachable();
-        }
+                default:
+                    // TODO this is super rough but at least better than just bailing out
+                    res = fold<Id, id, 64>(*la, *lb, false, false);
+                    if (res && !std::is_same_v<Id, icmp>) *res %= size;
+            }
 
-        return res ? world.lit(type, *res) : world.bot(type);
+            return res ? world.lit(type, *res) : world.bot(type);
+        }
     }
 
     commute(id, a, b);
@@ -150,21 +155,23 @@ template<class Id>
 Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref b) {
     if (!is_associative(id)) return nullptr;
 
-    auto la = a->isa<Lit>();
-    auto xy = match<Id>(id, a);
-    auto zw = match<Id>(id, b);
-    auto lx = xy ? xy->arg(0)->template isa<Lit>() : nullptr;
-    auto lz = zw ? zw->arg(0)->template isa<Lit>() : nullptr;
-    auto y  = xy ? xy->arg(1) : nullptr;
-    auto w  = zw ? zw->arg(1) : nullptr;
+    if (auto xy = match<Id>(id, a)) {
+        if (auto zw = match<Id>(id, b)) {
+            auto la     = a->isa<Lit>();
+            auto [x, y] = xy->template args<2>();
+            auto [z, w] = zw->template args<2>();
+            auto lx     = Lit::isa(x);
+            auto lz     = Lit::isa(z);
 
-    // if we reassociate, we have to forget about nsw/nuw
-    auto make_op = [&world, id](Ref a, Ref b) { return world.call(id, Mode::none, Defs{a, b}); };
+            // if we reassociate, we have to forget about nsw/nuw
+            auto make_op = [&world, id](Ref a, Ref b) { return world.call(id, Mode::none, Defs{a, b}); };
 
-    if (la && lz) return make_op(make_op(la, lz), w);             // (1)
-    if (lx && lz) return make_op(make_op(lx, lz), make_op(y, w)); // (2)
-    if (lz) return make_op(lz, make_op(a, w));                    // (3)
-    if (lx) return make_op(lx, make_op(y, b));                    // (4)
+            if (la && lz) return make_op(make_op(a, z), w);             // (1)
+            if (lx && lz) return make_op(make_op(x, z), make_op(y, w)); // (2)
+            if (lz) return make_op(z, make_op(a, w));                   // (3)
+            if (lx) return make_op(x, make_op(y, b));                   // (4)
+        }
+    }
 
     return nullptr;
 }
@@ -172,7 +179,7 @@ Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref 
 template<class Id>
 Ref merge_cmps(std::array<std::array<u64, 2>, 2> tab, Ref a, Ref b) {
     static_assert(sizeof(sub_t) == 1, "if this ever changes, please adjust the logic below");
-    static constexpr size_t num_bits = std::bit_width(Axiom::Num<Id> - 1_u64);
+    static constexpr size_t num_bits = std::bit_width(Annex::Num<Id> - 1_u64);
 
     auto& world = a->world();
     auto a_cmp  = match<Id>(a);
@@ -188,13 +195,14 @@ Ref merge_cmps(std::array<std::array<u64, 2>, 2> tab, Ref a, Ref b) {
         res >>= (7_u8 - u8(num_bits));
 
         if constexpr (std::is_same_v<Id, math::cmp>)
-            return world.call(math::cmp(res), /*rmode*/ a_cmp->decurry()->arg(0), Defs{a_cmp->arg(0), a_cmp->arg(1)});
+            return world.call(math::cmp(res), /*mode*/ a_cmp->decurry()->arg(), a_cmp->arg());
         else
-            return world.call(icmp(Axiom::Base<icmp> | res), Defs{a_cmp->arg(0), a_cmp->arg(1)});
+            return world.call(icmp(Annex::Base<icmp> | res), a_cmp->arg());
     }
 
     return nullptr;
 }
+
 } // namespace
 
 template<nat id>
@@ -207,6 +215,7 @@ Ref normalize_nat(Ref type, Ref callee, Ref arg) {
         if (auto lb = Lit::isa(b)) {
             switch (id) {
                 case nat::add: return world.lit_nat(*la + *lb);
+                case nat::sub: return *la < *lb ? world.lit_nat_0() : world.lit_nat(*la - *lb);
                 case nat::mul: return world.lit_nat(*la * *lb);
             }
         }
@@ -254,7 +263,7 @@ Ref normalize_icmp(Ref type, Ref c, Ref arg) {
     if (id == icmp::f) return world.lit_ff();
     if (id == icmp::t) return world.lit_tt();
     if (a == b) {
-        if (id == icmp::e) return world.lit_tt();
+        if (id & (icmp::e & 0xff)) return world.lit_tt();
         if (id == icmp::ne) return world.lit_ff();
     }
 
@@ -388,24 +397,22 @@ Ref normalize_shr(Ref type, Ref c, Ref arg) {
 
     if (auto result = fold<shr, id>(world, type, a, b)) return result;
 
-    if (auto la = a->isa<Lit>()) {
-        if (la == world.lit(type, 0)) {
-            switch (id) {
-                case shr::a: return la;
-                case shr::l: return la;
-            }
+    if (auto la = Lit::isa(a); la && *la == 0) {
+        switch (id) {
+            case shr::a: return a;
+            case shr::l: return a;
         }
     }
 
-    if (auto lb = b->isa<Lit>()) {
-        if (lb == world.lit(type, 0)) {
+    if (auto lb = Lit::isa(b)) {
+        if (ls && *lb > *ls) return world.bot(type);
+
+        if (*lb == 0) {
             switch (id) {
                 case shr::a: return a;
                 case shr::l: return a;
             }
         }
-
-        if (ls && lb->get() > *ls) return world.bot(type);
     }
 
     return world.raw_app(type, callee, {a, b});
@@ -423,17 +430,15 @@ Ref normalize_wrap(Ref type, Ref c, Ref arg) {
     if (auto result = fold<wrap, id>(world, type, a, b)) return result;
 
     // clang-format off
-    if (auto la = a->isa<Lit>()) {
-        if (la == world.lit(type, 0)) {
+    if (auto la = Lit::isa(a)) {
+        if (*la == 0) {
             switch (id) {
                 case wrap::add: return b;    // 0  + b -> b
                 case wrap::sub: break;
-                case wrap::mul: return la;   // 0  * b -> 0
-                case wrap::shl: return la;   // 0 << b -> 0
+                case wrap::mul: return a;    // 0  * b -> 0
+                case wrap::shl: return a;    // 0 << b -> 0
             }
-        }
-
-        if (la == world.lit(type, 1)) {
+        } else if (*la == 1) {
             switch (id) {
                 case wrap::add: break;
                 case wrap::sub: break;
@@ -443,8 +448,8 @@ Ref normalize_wrap(Ref type, Ref c, Ref arg) {
         }
     }
 
-    if (auto lb = b->isa<Lit>()) {
-        if (lb == world.lit(type, 0)) {
+    if (auto lb = Lit::isa(b)) {
+        if (*lb == 0) {
             switch (id) {
                 case wrap::sub: return a;    // a  - 0 -> a
                 case wrap::shl: return a;    // a >> 0 -> a
@@ -454,8 +459,8 @@ Ref normalize_wrap(Ref type, Ref c, Ref arg) {
         }
 
         if (id == wrap::sub)
-            return world.call(wrap::add, mode, Defs{a, world.lit_idx_mod(*ls, ~lb->get() + 1_u64)}); // a - lb -> a + (~lb + 1)
-        else if (id == wrap::shl && ls && lb->get() > *ls)
+            return world.call(wrap::add, mode, Defs{a, world.lit_idx_mod(*ls, ~*lb + 1_u64)}); // a - lb -> a + (~lb + 1)
+        else if (id == wrap::shl && ls && *lb > *ls)
             return world.bot(type);
     }
 
@@ -476,22 +481,23 @@ Ref normalize_wrap(Ref type, Ref c, Ref arg) {
 
 template<div id>
 Ref normalize_div(Ref full_type, Ref c, Ref arg) {
-    auto& world      = full_type->world();
-    auto callee      = c->as<App>();
-    auto [mem, a, b] = arg->projs<3>();
-    auto [_, type]   = full_type->projs<2>(); // peel off actual type
-    auto make_res    = [&, mem = mem](Ref res) { return world.tuple({mem, res}); };
+    auto& world    = full_type->world();
+    auto callee    = c->as<App>();
+    auto [mem, ab] = arg->projs<2>();
+    auto [a, b]    = ab->projs<2>();
+    auto [_, type] = full_type->projs<2>(); // peel off actual type
+    auto make_res  = [&, mem = mem](Ref res) { return world.tuple({mem, res}); };
 
     if (auto result = fold<div, id>(world, type, a, b)) return make_res(result);
 
-    if (auto la = a->isa<Lit>()) {
-        if (la == world.lit(type, 0)) return make_res(la); // 0 / b -> 0 and 0 % b -> 0
+    if (auto la = Lit::isa(a)) {
+        if (*la == 0) return make_res(a); // 0 / b -> 0 and 0 % b -> 0
     }
 
-    if (auto lb = b->isa<Lit>()) {
-        if (lb == world.lit(type, 0)) return make_res(world.bot(type)); // a / 0 -> ⊥ and a % 0 -> ⊥
+    if (auto lb = Lit::isa(b)) {
+        if (*lb == 0) return make_res(world.bot(type)); // a / 0 -> ⊥ and a % 0 -> ⊥
 
-        if (lb == world.lit(type, 1)) {
+        if (*lb == 1) {
             switch (id) {
                 case div::sdiv: return make_res(a);                  // a / 1 -> a
                 case div::udiv: return make_res(a);                  // a / 1 -> a
@@ -510,7 +516,7 @@ Ref normalize_div(Ref full_type, Ref c, Ref arg) {
         }
     }
 
-    return world.raw_app(full_type, callee, {mem, a, b});
+    return world.raw_app(full_type, callee, arg);
 }
 
 template<conv id>
@@ -564,9 +570,9 @@ Ref normalize_bitcast(Ref dst_t, Ref callee, Ref src) {
     if (auto other = match<bitcast>(src))
         return other->arg()->type() == dst_t ? other->arg() : world.call<bitcast>(dst_t, other->arg());
 
-    if (auto lit = src->isa<Lit>()) {
-        if (dst_t->isa<Nat>()) return world.lit(dst_t, lit->get());
-        if (Idx::size(dst_t)) return world.lit(dst_t, lit->get());
+    if (auto l = Lit::isa(src)) {
+        if (dst_t->isa<Nat>()) return world.lit(dst_t, *l);
+        if (Idx::size(dst_t)) return world.lit(dst_t, *l);
     }
 
     return world.raw_app(dst_t, callee, src);
@@ -614,7 +620,8 @@ Ref normalize_trait(Ref nat, Ref callee, Ref type) {
     } else if (auto arr = type->isa_imm<Arr>()) {
         auto align = op(trait::align, arr->body());
         if constexpr (id == trait::align) return align;
-        if (auto b = op(trait::size, arr->body())->isa<Lit>()) return world.call(nat::mul, Defs{arr->shape(), b});
+        auto b = op(trait::size, arr->body());
+        if (b->isa<Lit>()) return world.call(nat::mul, Defs{arr->shape(), b});
     } else if (auto join = type->isa<Join>()) {
         if (auto sigma = convert(join)) return core::op(id, sigma);
     }

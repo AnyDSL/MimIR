@@ -92,6 +92,14 @@ Sym World::sym(const char* s) { return driver().sym(s); }
 Sym World::sym(std::string_view s) { return driver().sym(s); }
 Sym World::sym(std::string s) { return driver().sym(std::move(s)); }
 
+const Def* World::register_annex(flags_t f, const Def* def) {
+    auto plugin = Annex::demangle(*this, f);
+    if (driver().is_loaded(plugin)) {
+        assert_emplace(move_.annexes, f, def);
+        return def;
+    }
+    return nullptr;
+}
 /*
  * factory methods
  */
@@ -194,6 +202,7 @@ Ref World::app(Ref callee, Ref arg) {
         error(arg, "cannot pass argument \n'{}' of type \n'{}' to \n'{}' of domain \n'{}'", arg, arg->type(), callee,
               pi->dom());
 
+    if (auto imm = callee->isa_imm<Lam>()) return imm->body();
     if (auto lam = callee->isa<Lam>(); lam && lam->is_set() && !lam->is_term()) return lam->reduce(arg).back();
 
     auto type = pi->reduce(arg).back();

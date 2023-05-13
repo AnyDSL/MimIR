@@ -1,4 +1,4 @@
-// RUN: rm -f %t.ll ; \
+// RUN: rm -f %t.ll
 // RUN: %thorin %s --output-ll %t.ll -o - | FileCheck %s
 
 .plugin core;
@@ -7,8 +7,8 @@
 ///     1
 /// else
 ///     a*pow(a,b-1)
-/// 
-/// pow(a,b,ret): 
+///
+/// pow(a,b,ret):
 ///     ((pow_else,pow_then)#cmp) ()
 /// then():
 ///    ret 1
@@ -16,7 +16,7 @@
 ///     pow(a,b-1,cont)
 /// cont(v):
 ///    ret (a*v)
-/// 
+///
 .con pow ((a b: %core.I32), ret: .Cn %core.I32) = {
     .con pow_then [] = ret 1:%core.I32;
 

@@ -52,10 +52,10 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(L_f, "<floating-point literal>") \
     m(L_c, "<char literal>"          ) \
     /* misc */                         \
-    m(M_eof,  "<eof>"           )      \
-    m(M_id,   "<identifier>"    )      \
-    m(M_ext,  "<extension name>")      \
-    m(M_str,  "<string>"        )      \
+    m(M_eof,  "<eof>"       )          \
+    m(M_id,   "<identifier>")          \
+    m(M_anx,  "<annex name>")          \
+    m(M_str,  "<string>"    )          \
     /* delimiters */                   \
     m(D_angle_l,    "‹")               \
     m(D_angle_r,    "›")               \
@@ -169,7 +169,7 @@ public:
         : loc_(loc)
         , tag_(tag)
         , sym_(sym) {
-        assert(tag == Tag::M_id || tag == Tag::M_ext || tag == Tag::M_str);
+        assert(tag == Tag::M_id || tag == Tag::M_anx || tag == Tag::M_str);
     }
 
     bool isa(Tag tag) const { return tag == tag_; }
@@ -180,7 +180,7 @@ public:
     const Lit* lit_i() const { assert(isa(Tag::L_i)); return i_; }
     char8_t    lit_c() const { assert(isa(Tag::L_c)); return c_;   }
     u64        lit_u() const { assert(isa(Tag::L_u ) || isa(Tag::L_s ) || isa(Tag::L_f  )); return u_;   }
-    Sym        sym()   const { assert(isa(Tag::M_ext) || isa(Tag::M_id) || isa(Tag::M_str)); return sym_; }
+    Sym        sym()   const { assert(isa(Tag::M_anx) || isa(Tag::M_id) || isa(Tag::M_str)); return sym_; }
     // clang-format on
     friend std::ostream& operator<<(std::ostream&, Tok);
 

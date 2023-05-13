@@ -1,5 +1,5 @@
-// RUN: rm -f %t.ll ; \
-// RUN: %thorin -p affine -p direct -p clos -p math -o - --output-ll %t.ll %s 
+// RUN: rm -f %t.ll
+// RUN: %thorin -p clos -p math -o - --output-ll %t.ll %s
 // RUN: clang %S/../lib.c %t.ll -o %t -Wno-override-module
 // RUN: %t 2 3 | FileCheck %s
 
@@ -28,7 +28,7 @@
 //     (.Cn[
 //         [mem:%mem.M],
 //         .Cn[%mem.M,%matrix.Mat (2,(m, l),%math.F (p,e))]
-//     ]) 
+//     ])
 //     = {
 //     .let R = %math.F (p,e);
 
@@ -52,7 +52,7 @@
 //         .let zero_real = %math.conv.f2f (p,e) zero_64;
 //         ret (
 //             %matrix.map_reduce
-//                 (2, (m, l), R, 
+//                 (2, (m, l), R,
 //                     0,
 //                     (),
 //                     (),

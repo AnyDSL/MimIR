@@ -63,7 +63,7 @@ private:
     /// Pointer type used to represent environments
     const Def* env_type() {
         auto& w = world();
-        return mem::type_ptr(w.sigma());
+        return w.call<mem::Ptr0>(w.sigma());
     }
     ///@}
 

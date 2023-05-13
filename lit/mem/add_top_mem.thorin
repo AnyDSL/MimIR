@@ -1,4 +1,4 @@
-// RUN: rm -f %t.ll ; \
+// RUN: rm -f %t.ll
 // RUN: %thorin %s -o - | FileCheck %s
 
 .plugin core;
@@ -16,4 +16,4 @@
         (%compile.single_pass_phase %mem.add_mem_pass);
 
 // CHECK: main {{[a-z0-9_:]*}}[[[memId:[a-z_0-9]*]]: %mem.M
-// CHECK: f ([[memId]], 
+// CHECK: f ([[memId]],

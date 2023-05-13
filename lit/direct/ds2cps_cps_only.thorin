@@ -1,4 +1,4 @@
-// RUN: rm -f %t.ll ; \
+// RUN: rm -f %t.ll
 // RUN: %thorin %s --output-ll %t.ll -o - | FileCheck %s
 
 // sanity check that the pass do not interfere with normal operation

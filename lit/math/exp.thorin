@@ -1,4 +1,4 @@
-// RUN: rm -f %t.ll ; \
+// RUN: rm -f %t.ll
 // RUN: %thorin %s --output-ll %t.ll
 // RUN: clang++ %t.ll -o %t -Wno-override-module
 // RUN: %t foo bar; test $? -eq 64

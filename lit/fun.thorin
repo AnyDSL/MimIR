@@ -1,4 +1,4 @@
-// RUN: rm -f %t.ll ; \
+// RUN: rm -f %t.ll
 // RUN: %thorin %s -o - | FileCheck %s
 
 .plugin core;
@@ -8,8 +8,8 @@
 .fun foo(mem: %mem.M, x: %core.I32)@(%core.icmp.e (x, 23:%core.I32)) -> [%mem.M, %core.I32]  = return (mem, %core.wrap.add 0 (x, 1:%core.I32));
 
 .fun .extern main(mem: %mem.M, argc: %core.I32, argv: Ptr (Ptr %core.I8)) -> [%mem.M, %core.I32] = {
-    .ret (`mem, x) = foo $ (mem, 23:%core.I32); 
-    .ret (`mem, y) = foo $ (mem, 23:%core.I32); 
+    .ret (`mem, x) = foo $ (mem, 23:%core.I32);
+    .ret (`mem, y) = foo $ (mem, 23:%core.I32);
     return (mem, %core.wrap.add 0 (x, y))
 };
 

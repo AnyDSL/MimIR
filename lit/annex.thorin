@@ -1,0 +1,10 @@
+// RUN: %thorin %s --output-h - --bootstrap | FileCheck %s
+
+.plugin math;
+
+.Sigma %annex.Vec3.xyz: *, 3 = [x: %math.F64, y: %math.F64, z: %math.F64];
+.Sigma %annex.Vec3.rgb: *, 3 = [r: %math.F64, g: %math.F64, w: %math.F64];
+.Pi    %annex.Vec3.rec: □ = Π %annex.Vec3.xyz -> %annex.Vec3.rec;
+.let   %annex.Vec3.zero = 0;
+
+// CHECK: zero = 0x8f3c66400000003

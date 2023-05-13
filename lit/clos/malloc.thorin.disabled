@@ -1,5 +1,5 @@
 // once this works, replace old malloc.thorin with this one
-// RUN: rm -f %t.ll ; \
+// RUN: rm -f %t.ll
 // RUN: %thorin -p clos %s --output-ll %t.ll -o - 
 
 .plugin core;

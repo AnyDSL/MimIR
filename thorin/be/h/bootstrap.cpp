@@ -17,13 +17,13 @@ void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
     tab.print(h, "/// @namespace thorin::{} @ref {} \n", plugin, plugin);
     tab.print(h, "namespace thorin {{\nnamespace {} {{\n\n", plugin);
 
-    plugin_t plugin_id = *Axiom::mangle(plugin);
+    plugin_t plugin_id = *Annex::mangle(plugin);
     std::vector<std::ostringstream> normalizers, outer_namespace;
 
     tab.print(h << std::hex, "static constexpr plugin_t Plugin_Id = 0x{};\n\n", plugin_id);
 
-    const auto& unordered_infos = driver.plugin2axiom_infos(plugin);
-    std::deque<std::pair<Sym, Axiom::Info>> infos(unordered_infos.begin(), unordered_infos.end());
+    const auto& unordered = driver.plugin2annxes(plugin);
+    std::deque<std::pair<Sym, Annex>> infos(unordered.begin(), unordered.end());
     std::ranges::sort(infos, [&](const auto& p1, const auto& p2) { return p1.second.tag_id < p2.second.tag_id; });
 
     // clang-format off
@@ -40,7 +40,7 @@ void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
         flags_t ax_id = plugin_id | (ax.tag_id << 8u);
 
         auto& os = outer_namespace.emplace_back();
-        print(os << std::hex, "template<> constexpr flags_t Axiom::Base<{}::{}> = 0x{};\n", plugin, ax.tag, ax_id);
+        print(os << std::hex, "template<> constexpr flags_t Annex::Base<{}::{}> = 0x{};\n", plugin, ax.tag, ax_id);
 
         if (auto& subs = ax.subs; !subs.empty()) {
             for (const auto& aliases : subs) {
@@ -54,13 +54,13 @@ void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
             }
         } else {
             if (ax.normalizer)
-                print(normalizers.emplace_back(), "normalizers[flags_t(Axiom::Base<{}>)] = &{};", ax.tag, ax.normalizer);
+                print(normalizers.emplace_back(), "normalizers[flags_t(Annex::Base<{}>)] = &{};", ax.tag, ax.normalizer);
         }
         --tab;
         tab.print(h, "}};\n\n");
 
         if (!ax.subs.empty()) tab.print(h, "THORIN_ENUM_OPERATORS({})\n", ax.tag);
-        print(outer_namespace.emplace_back(), "template<> constexpr size_t Axiom::Num<{}::{}> = {};\n", plugin, ax.tag, ax.subs.size());
+        print(outer_namespace.emplace_back(), "template<> constexpr size_t Annex::Num<{}::{}> = {};\n", plugin, ax.tag, ax.subs.size());
 
         if (ax.normalizer) {
             if (auto& subs = ax.subs; !subs.empty()) {

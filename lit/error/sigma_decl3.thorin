@@ -1,0 +1,4 @@
+// RUN: (! %thorin %s 2>&1) | FileCheck %s
+.Pi S: *;
+.Sigma S = [x: .Nat, .Nat];
+// CHECK: error: {{.*}}has not been declared as a sigma

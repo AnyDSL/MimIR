@@ -1,18 +1,18 @@
-// RUN: rm -f %t.ll ; \
+// RUN: rm -f %t.ll
 // RUN: %thorin %s --output-ll %t.ll -o -
 
 .import core;
 
-.ax %foo.Mat: Π [n: .Nat, S: «n; .Nat», T: *] -> *; 
+.ax %foo.Mat: Π [n: .Nat, S: «n; .Nat», T: *] -> *;
 
-.ax %foo.map_reduce: 
+.ax %foo.map_reduce:
     // out shape depends on in shape but is complex
     Π [n: .Nat, S: «n; .Nat», T: *, // out shape
         m: .Nat,                    // number of inputs
         NI: «m; .Nat»,              // input dimensions
         TI: «m; *»,                 // input types
         SI: «i:m; «NI#i; .Nat»»     // input shapes
-    ] -> 
+    ] ->
     // for completeness sake
     // main arguments
     [
@@ -21,7 +21,7 @@
         mul: «i: m; TI#i» ->T,                 // inner combination
         // out_index not needed => always ij (0 ... n) for n dimensions
         input:
-            «x:m; 
+            «x:m;
                 [
                     «NI#x;.Nat»,
                     %foo.Mat (NI#x,SI#x,TI#x)
@@ -30,7 +30,7 @@
     ] ->
     %foo.Mat (n,S,T);
 
-.let test = %foo.map_reduce 
+.let test = %foo.map_reduce
     (2,(4,3), %core.I32,
         2,
         (2,3),

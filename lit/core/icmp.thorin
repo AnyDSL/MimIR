@@ -1,0 +1,15 @@
+// RUN: %thorin %s -o - | FileCheck %s
+
+.plugin core;
+
+.lam .extern a(x: .Idx 23) = %core.icmp.e   (x, x);
+.lam .extern b(x: .Idx 23) = %core.icmp.ule (x, x);
+.lam .extern c(x: .Idx 23) = %core.icmp.ul  (x, x);
+.lam .extern d(x: .Idx 23) = %core.icmp.ne  (x, x);
+.lam .extern e(x: .Idx 23) = %core.icmp.ne  (x, 7_23);
+
+// CHECK-DAG: 1:(.Idx 2)
+// CHECK-DAG: 1:(.Idx 2)
+// CHECK-DAG: icmp
+// CHECK-DAG: 0:(.Idx 2)
+// CHECK-DAG: icmp

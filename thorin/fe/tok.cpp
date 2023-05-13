@@ -22,7 +22,7 @@ std::string_view Tok::tag2str(Tok::Tag tag) {
 /// @name std::ostream operator
 ///@{
 std::ostream& operator<<(std::ostream& os, Tok tok) {
-    if (tok.isa(Tok::Tag::M_ext) || tok.isa(Tok::Tag::M_id) || tok.isa(Tok::Tag::M_str)) return os << tok.sym();
+    if (tok.isa(Tok::Tag::M_anx) || tok.isa(Tok::Tag::M_id) || tok.isa(Tok::Tag::M_str)) return os << tok.sym();
     return os << Tok::tag2str(tok.tag());
 }
 ///@}

@@ -144,6 +144,10 @@ You can manually invoke the lit tests like this and maybe filter for a specific 
 cd lit
 ./lit ../build/lit -a --filter foo.thorin
 ```
+If your `build` directory, is in fact `../build/lit` you can use the `probe.sh` script:
+```sh
+./probe.sh foo.thorin
+```
 
 ### GoogleTest
 

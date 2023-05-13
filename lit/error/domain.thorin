@@ -1,8 +1,7 @@
-// RUN: ! %thorin %s 2>&1 | FileCheck %s 
-
+// RUN: (! %thorin %s 2>&1) | FileCheck %s
+.plugin core;
 .plugin math;
 
 .ax %foo.bar: .Cn [%core.I32, %math.F32];
 .let err = %foo.bar(23:%math.F32, 42:%core.I32);
-
 // CHECK: error: cannot pass argument

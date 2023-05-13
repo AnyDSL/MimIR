@@ -1,5 +1,6 @@
 #include "dialects/clos/pass/rw/clos2sjlj.h"
 
+#include "dialects/clos/autogen.h"
 #include "dialects/core/core.h"
 
 namespace thorin::clos {
@@ -92,8 +93,8 @@ Lam* Clos2SJLJ::get_throw(Ref dom) {
         auto [jbuf, rbuf, tag] = env->projs<3>();
         auto [m1, r]           = mem::op_alloc(var->type(), m0)->projs<2>();
         auto m2                = w.call<mem::store>(Defs{m1, r, var});
-        rbuf                   = w.call<core::bitcast>(mem::type_ptr(mem::type_ptr(var->type())), rbuf);
-        auto m3                = w.call<mem::store>(Defs{m2, rbuf, r});
+        rbuf    = w.call<core::bitcast>(world().call<mem::Ptr0>(world().call<mem::Ptr0>(var->type())), rbuf);
+        auto m3 = w.call<mem::store>(Defs{m2, rbuf, r});
         tlam->set(false, w.call<longjmp>(Defs{m3, jbuf, tag}));
         ignore_.emplace(tlam);
     }
@@ -110,7 +111,7 @@ Lam* Clos2SJLJ::get_lpad(Lam* lam, Ref rb) {
         lpad                    = w.mut_lam(pi)->set("lpad");
         auto [m, env, __]       = split(lpad->var());
         auto [m1, arg_ptr]      = w.call<mem::load>(Defs{m, rb})->projs<2>();
-        arg_ptr                 = w.call<core::bitcast>(mem::type_ptr(dom), arg_ptr);
+        arg_ptr                 = w.call<core::bitcast>(world().call<mem::Ptr0>(dom), arg_ptr);
         auto [m2, args]         = w.call<mem::load>(Defs{m1, arg_ptr})->projs<2>();
         auto full_args          = (lam->num_doms() == 3) ? rebuild(m2, env, {args}) : rebuild(m2, env, args->ops());
         lpad->app(false, lam, full_args);
@@ -126,9 +127,8 @@ void Clos2SJLJ::enter() {
 
     {
         auto m0       = mem::mem_var(curr_mut());
-        auto [m1, jb] = op_alloc_jumpbuf(m0)->projs<2>();
+        auto [m1, jb] = w.call<clos::alloc_jmpbuf>(m0)->projs<2>();
         auto [m2, rb] = mem::op_slot(void_ptr(), m1)->projs<2>();
-
         auto new_args = curr_mut()->vars();
         new_args[0]   = m2;
         curr_mut()->reset(curr_mut()->reduce(w.tuple(new_args)));

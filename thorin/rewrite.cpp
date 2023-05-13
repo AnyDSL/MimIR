@@ -17,6 +17,15 @@ Ref Rewriter::rewrite(Ref old_def) {
 }
 
 Ref Rewriter::rewrite_imm(Ref old_def) {
+    // Extracts are used as conditional branches: make sure that we don't rewrite unreachable stuff.
+    if (auto extract = old_def->isa<Extract>()) {
+        if (auto index = Lit::isa(rewrite(extract->index()))) {
+            if (auto tuple = extract->tuple()->isa<Tuple>()) return rewrite(tuple->op(*index));
+            if (auto pack = extract->tuple()->isa_imm<Pack>(); pack && pack->shape()->dep_const())
+                return rewrite(pack->body());
+        }
+    }
+
     auto new_type = rewrite(old_def->type());
     DefArray new_ops(old_def->num_ops(), [&](auto i) { return rewrite(old_def->op(i)); });
     return old_def->rebuild(world(), new_type, new_ops);
@@ -36,7 +45,7 @@ Ref Rewriter::rewrite_mut(Def* old_mut) {
 }
 
 Ref rewrite(Ref def, Ref old_def, Ref new_def, const Scope& scope) {
-    ScopeRewriter rewriter(def->world(), scope);
+    ScopeRewriter rewriter(scope);
     rewriter.map(old_def, new_def);
     return rewriter.rewrite(def);
 }
@@ -49,7 +58,7 @@ Ref rewrite(Def* mut, Ref arg, size_t i) {
 }
 
 DefArray rewrite(Def* mut, Ref arg, const Scope& scope) {
-    ScopeRewriter rewriter(mut->world(), scope);
+    ScopeRewriter rewriter(scope);
     rewriter.map(mut->var(), arg);
     return DefArray(mut->num_ops(), [&](size_t i) { return rewriter.rewrite(mut->op(i)); });
 }

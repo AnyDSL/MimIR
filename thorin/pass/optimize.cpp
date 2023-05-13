@@ -24,7 +24,7 @@ void optimize(World& world) {
     for (auto compilation_function : compilation_functions) {
         if (auto compilation_ = world.external(compilation_function)) {
             if (!compilation) compilation = compilation_;
-            compilation_->make_external(false);
+            compilation_->make_internal();
         }
     }
     // make all functions `[] -> Pipeline` internal
@@ -33,7 +33,7 @@ void optimize(World& world) {
         if (auto lam = def->isa<Lam>(); lam && lam->num_doms() == 0) {
             if (*lam->codom()->sym() == "%compile.Pipeline") {
                 if (!compilation) compilation = lam;
-                def->make_external(false);
+                def->make_internal();
             }
         }
     }

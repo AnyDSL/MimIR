@@ -46,7 +46,7 @@ const Def* TuplePtrn::type(World& world, Def2Fields& def2fields) const {
     }
 
     assert(n > 0);
-    auto type  = world.umax<Sort::Type>(ops);
+    auto type = world.umax<Sort::Type>(ops);
 
     Sigma* sigma;
     if (decl_) {
@@ -76,7 +76,7 @@ const Def* TuplePtrn::type(World& world, Def2Fields& def2fields) const {
     }
 
     thorin::Scope scope(sigma);
-    ScopeRewriter rw(world, scope);
+    ScopeRewriter rw(scope);
     sigma->reset(0, ops[0]);
     for (size_t i = 1; i != n; ++i) sigma->reset(i, rw.rewrite(ops[i]));
 
