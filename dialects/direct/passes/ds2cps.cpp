@@ -47,11 +47,16 @@ Ref DS2CPS::rewrite_lam(Lam* lam) {
     auto sigma = world().mut_sigma(2);
     sigma->set(0, dom);
 
-    // replace ds dom var with cps sigma var (cps dom)
-    Scope r_scope{ty->as_mut()};
-    auto dom_var         = ty->as_mut<Pi>()->var();
-    auto cps_dom_var     = sigma->var(2, 0);
-    auto rewritten_codom = thorin::rewrite(codom, dom_var, cps_dom_var, r_scope);
+    Ref rewritten_codom;
+    if (auto mut = ty->isa_mut()) {
+        // replace ds dom var with cps sigma var (cps dom)
+        Scope r_scope{mut};
+        auto dom_var     = mut->var();
+        auto cps_dom_var = sigma->var(2, 0);
+        rewritten_codom  = thorin::rewrite(codom, dom_var, cps_dom_var, r_scope);
+    } else {
+        rewritten_codom = codom;
+    }
     sigma->set(1, world().cn(rewritten_codom));
 
     world().DLOG("original codom: {}", codom);
