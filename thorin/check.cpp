@@ -73,7 +73,8 @@ bool Checker::equiv(Ref r1, Ref r2) {
     }
 
     assert(!i1 && !i2);
-    if (d1->gid() > d2->gid()) std::swap(d1, d2); // normalize
+    // normalize: Lit to right; then sort by gid
+    if ((d1->isa<Lit>() && !d2->isa<Lit>()) || (d1->gid() > d2->gid())) std::swap(d1, d2);
 
     if (auto [it, ins] = equiv_.emplace(std::pair(d1, d2), Equiv::Unknown); !ins) {
         switch (it->second) {
@@ -116,6 +117,15 @@ bool Checker::equiv_internal(Ref d1, Ref d2) {
                 if (!equiv(d1->proj(*a, i), d2->proj(*a, i))) return false;
             return true;
         }
+    }
+
+    if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Infer)) {
+        if (auto l = d2->isa<Lit>()) {
+            for (auto op : umax->ops()) {
+                if (auto infer = op->isa_mut<Infer>(); infer && !infer->is_set()) infer->set(l);
+            }
+        }
+        d1 = umax->rebuild(world(), umax->type(), umax->ops());
     }
 
     if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return false;
