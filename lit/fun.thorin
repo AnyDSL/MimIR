@@ -25,7 +25,7 @@
 .let F2 =.Cn[T:*][T, T][.Cn T];
 .let F3 =.Fn[T:*][T, T] -> T;
 
-.fun foo(cond: .Bool) -> .Nat =
+.fun bar(cond: .Bool) -> .Nat =
     .con t() =
         .ret res = f1 .Nat $ (23, 42);
         return res;
