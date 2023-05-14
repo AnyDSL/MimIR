@@ -121,9 +121,8 @@ bool Checker::equiv_internal(Ref d1, Ref d2) {
 
     if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Infer)) {
         if (auto l = d2->isa<Lit>()) {
-            for (auto op : umax->ops()) {
+            for (auto op : umax->ops())
                 if (auto infer = op->isa_mut<Infer>(); infer && !infer->is_set()) infer->set(l);
-            }
         }
         d1 = umax->rebuild(world(), umax->type(), umax->ops());
     }
