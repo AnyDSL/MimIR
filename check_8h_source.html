@@ -186,10 +186,11 @@ $(document).ready(function(){initNavTree('check_8h_source.html',''); initResizab
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <a class="code hl_friend" href="classthorin_1_1Infer.html#a7b4bcdf992c21ae83363f25df05b1d25">World</a>* world_;</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    DefDefMap&lt;Equiv&gt; equiv_;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    std::deque&lt;std::pair&lt;Def*, Def*&gt;&gt; vars_;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>};</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>} <span class="comment">// namespace thorin</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keyword">using </span>Vars = std::deque&lt;std::pair&lt;Def*, Def*&gt;&gt;;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    Vars vars_;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>};</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>} <span class="comment">// namespace thorin</span></div>
 <div class="ttc" id="aclassthorin_1_1Checker_html"><div class="ttname"><a href="classthorin_1_1Checker.html">thorin::Checker</a></div><div class="ttdef"><b>Definition:</b> <a href="check_8h_source.html#l00044">check.h:44</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Checker_html_a1f10a53ffc87e0cee5dd0007ff2edff6"><div class="ttname"><a href="classthorin_1_1Checker.html#a1f10a53ffc87e0cee5dd0007ff2edff6">thorin::Checker::world</a></div><div class="ttdeci">World &amp; world() const</div><div class="ttdef"><b>Definition:</b> <a href="check_8h_source.html#l00049">check.h:49</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Checker_html_a5a5b4f759ed1e67b34136689766e48fe"><div class="ttname"><a href="classthorin_1_1Checker.html#a5a5b4f759ed1e67b34136689766e48fe">thorin::Checker::swap</a></div><div class="ttdeci">static void swap(Checker &amp;c1, Checker &amp;c2)</div><div class="ttdef"><b>Definition:</b> <a href="check_8h_source.html#l00061">check.h:61</a></div></div>
