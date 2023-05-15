@@ -250,7 +250,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
             iterator[idx]               = world.call<core::bitcast>(world.type_idx(dim_nat_def), iter);
             auto [new_mem, new_mat]     = new_acc->projs<2>();
             acc                         = {new_mem, new_mat};
-            current_mut->set(false, for_call); // TODO correct filter?
+            current_mut->set(true, for_call);
             current_mut = body;
         }
 
@@ -307,7 +307,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
             iterator[idx]               = world.call<core::bitcast>(world.type_idx(dim_nat_def), iter);
             auto [new_mem, new_element] = new_acc->projs<2>();
             acc                         = {new_mem, new_element};
-            current_mut->set(false, for_call); // TODO
+            current_mut->set(true, for_call);
             current_mut = body;
         }
 
