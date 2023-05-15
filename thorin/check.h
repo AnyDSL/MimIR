@@ -71,7 +71,8 @@ private:
 
     World* world_;
     DefDefMap<Equiv> equiv_;
-    std::deque<std::pair<Def*, Def*>> vars_;
+    using Vars = std::deque<std::pair<Def*, Def*>>;
+    Vars vars_;
 };
 
 } // namespace thorin
