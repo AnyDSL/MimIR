@@ -6,7 +6,7 @@
 .plugin core;
 .plugin refly;
 
-.fun .extern main(mem: %mem.M, argc: %core.I32, argv: %mem.Ptr (%mem.Ptr (%core.I8, 0), 0)) -> [%mem.M, %core.I32] = {
+.fun .extern main(mem: %mem.M, argc: %core.I32, argv: %mem.Ptr (%mem.Ptr (%core.I8, 0), 0)): [%mem.M, %core.I32] = {
     .let exp = %refly.reify <<4; .Nat>> (0, 1, 2, 3);
     .let new = %refly.refine (exp, 1, %refly.reify .Nat 42);
     .let tup = %refly.reflect <<4; .Nat>> new;

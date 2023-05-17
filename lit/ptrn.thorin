@@ -2,6 +2,6 @@
 // RUN: %thorin %s --output-ll %t.ll -o -
 .plugin core;
 
-.lam PtrN(n: .Nat, T: *) -> * = (PtrN (%core.nat.sub (n, 1), %mem.Ptr0 T), T)#(%core.ncmp.e (n, 0));
+.lam PtrN(n: .Nat, T: *): * = (PtrN (%core.nat.sub (n, 1), %mem.Ptr0 T), T)#(%core.ncmp.e (n, 0));
 
-.fun .extern foo(mem: %mem.M, p: PtrN (4, %core.I32)) -> [%mem.M, PtrN (3, %core.I32)] = return (%mem.load (mem, p));
+.fun .extern foo(mem: %mem.M, p: PtrN (4, %core.I32)): [%mem.M, PtrN (3, %core.I32)] = return (%mem.load (mem, p));

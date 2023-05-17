@@ -145,55 +145,37 @@
 /// ### product
 ///
 /// Follow the principle `ij <- ik,kj` (`out[i,j] = sum_k in1[i,k] * in2[k,j]`) by using mulplication as combination function and addition as reduction function.
-.lam .extern internal_mapRed_matrix_prod
-    ![m: .Nat, k: .Nat, l: .Nat, [p: .Nat, e:.Nat]] ->
-    (.Cn[
-        [%mem.M,%matrix.Mat (2,(m, k),%math.F (p,e)), %matrix.Mat (2,(k, l),%math.F (p,e))],
-        .Cn[%mem.M,%matrix.Mat (2,(m, l),%math.F (p,e))]
-    ])
-    = {
-    .let R = %math.F (p,e);
+.lam .extern internal_mapRed_matrix_prod!(m k l: .Nat, pe: «2; .Nat»):
+        .Fn [%mem.M, %matrix.Mat (2, (m, k), %math.F pe), %matrix.Mat (2, (k, l), %math.F pe)] -> [%mem.M, %matrix.Mat (2, (m, l), %math.F pe)] =
+    .let R = %math.F pe;
 
-    .con prod_comb [[mem:%mem.M, acc:R, [a:R, b:R]], ret:.Cn[%mem.M,R]] = {
-        .let v = %math.arith.mul 0 (a,b);
+    .fun prod_comb(mem: %mem.M, acc: R, ab: «2; R»): [%mem.M, R] =
+        .let v       = %math.arith.mul 0 ab;
+        .let new_acc = %math.arith.add 0 (acc,v); // reduce op = addition
+        return (mem, new_acc);
 
-        // reduce op = addition
-        .let new_acc = %math.arith.add 0 (acc,v);
-        ret (mem, new_acc)
-    };
-    .con inner_matrix_prod
-        ![
-            [
-                mem:%mem.M,
-                M:%matrix.Mat (2,(m, k),R),
-                N: %matrix.Mat (2,(k, l),R)
-            ],
-            ret: .Cn[%mem.M,%matrix.Mat (2,(m, l),R)]
-        ]
-    = {
-        .let zero_64 = 0.0:(%math.F (52,11));
-        .let zero_real = %math.conv.f2f (p,e) zero_64;
-        ret (
+    .fn !(mem: %mem.M, M: %matrix.Mat (2,(m, k), R), N: %matrix.Mat (2,(k, l), R)):
+            [%mem.M, %matrix.Mat (2,(m, l), R)] =
+        .let zero_64   = 0.0:(%math.F (52,11));
+        .let zero_real = %math.conv.f2f pe zero_64;
+        return (
             %matrix.map_reduce
                 (2, (m, l), R,
                     2,
                     (2, 2),
-                    (R,R),
-                    ((m,k),(k,l))
+                    (R, R),
+                    ((m, k), (k, l))
                 )
                 (
                     mem,
                     zero_real,
                     prod_comb,
                     (
-                        ((0,2), M),
-                        ((2,1), N)
+                        ((0, 2), M),
+                        ((2, 1), N)
                     )
                 )
-        )
-    };
-    inner_matrix_prod
-};
+        );
 ///
 /// ### transpose
 ///
@@ -201,11 +183,11 @@
 // TODO: check code for 1-matrix edge case
 // TODO: would this automatically be handled by read(transpose) ?
 .lam .extern internal_mapRed_matrix_transpose
-    ![[k: .Nat, l: .Nat], T:*] ->
-    (.Cn[
+    ![[k: .Nat, l: .Nat], T:*]:
+    .Cn[
         [%mem.M,%matrix.Mat (2,(k, l),T)],
         .Cn[%mem.M,%matrix.Mat (2,(l, k),T)]
-    ])
+    ]
     = {
     .con transpose_comb [[mem:%mem.M, acc:T, [a:T]], ret:.Cn[%mem.M,T]] = {
         // We ignore the (zero) accumulator and just return the read value.
@@ -249,7 +231,7 @@
 /// Sums up all elements of a matrix and returns a scalar.
 //  TODO: test 0d matrix (edge cases in code)
 .lam .extern internal_mapRed_matrix_sum
-    ![n: .Nat, S: «n; .Nat», [p:.Nat,e:.Nat]] ->
+    ![n: .Nat, S: «n; .Nat», [p:.Nat,e:.Nat]]:
     (.Cn[
         [%mem.M,%matrix.Mat (n,S,%math.F (p,e))],
         .Cn[%mem.M,%math.F (p,e)]

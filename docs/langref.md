@@ -165,9 +165,9 @@ The following tables comprise all production rules:
 | LHS | RHS                                                                                                                                                  | Comment                              | Thorin Class                                        |
 |-----|------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|-----------------------------------------------------|
 | d   | `.let`   (p \| A)  `=` e `;`                                                                                                                         | let                                  | -                                                   |
-| d   | `.lam`   n (`.`? p)+ `→` e<sub>codom</sub> ( `=` d\* e)? `;`                                                                                         | lambda declaration<sup>s</sup>       | [Lam](@ref thorin::Lam)                             |
+| d   | `.lam`   n (`.`? p)+ (`:` e<sub>codom</sub>)? ( `=` d\* e)? `;`                                                                                      | lambda declaration<sup>s</sup>       | [Lam](@ref thorin::Lam)                             |
 | d   | `.con`   n (`.`? p)+                       ( `=` d\* e)? `;`                                                                                         | continuation declaration<sup>s</sup> | [Lam](@ref thorin::Lam)                             |
-| d   | `.fun`   n (`.`? p)+ `→` e<sub>ret</sub>   ( `=` d\* e)? `;`                                                                                         | function declaration<sup>s</sup>     | [Lam](@ref thorin::Lam)                             |
+| d   | `.fun`   n (`.`? p)+ (`:` e<sub>ret</sub>)?   ( `=` d\* e)? `;`                                                                                      | function declaration<sup>s</sup>     | [Lam](@ref thorin::Lam)                             |
 | d   | `.Pi`    n (`:` e<sub>type</sub>)? (`=` e)? `;`                                                                                                      | Pi declaration                       | [Pi](@ref thorin::Pi)                               |
 | d   | `.Sigma` n (`:` e<sub>type</sub> )? (`,` L<sub>arity</sub>)? (`=` b<sub>[ ]</sub>)? `;`                                                              | sigma declaration                    | [Sigma](@ref thorin::Sigma)                         |
 | d   | `.ax`    A `:` e<sub>type</sub> (`(` sa `,` ... `,` sa `)`)? <br> (`,` 𝖨<sub>normalizer</sub>)? (`,` L<sub>curry</sub>)? (`,` L<sub>trip</sub>)? `;` | axiom                                | [Axiom](@ref thorin::Axiom)                         |
@@ -270,18 +270,18 @@ This is particularly useful, when dealing with memory:
 
 #### Functions
 
-| LHS | RHS                                                         | Comment                                        | Thorin Class            |
-|-----|-------------------------------------------------------------|------------------------------------------------|-------------------------|
-| e   | e<sub>dom</sub> `→` e<sub>codom</sub>                       | function type                                  | [Pi](@ref thorin::Pi)   |
-| e   | `Π`   `.`? b (`.`? b<sub>[ ]</sub>)\* `→` e<sub>codom</sub> | dependent function type<sup>s</sup>            | [Pi](@ref thorin::Pi)   |
-| e   | `.Cn` `.`? b (`.`? b<sub>[ ]</sub>)\*                       | continuation type<sup>s</sup>                  | [Pi](@ref thorin::Pi)   |
-| e   | `.Fn` `.`? b (`.`? b<sub>[ ]</sub>)\* `→` e<sub>codom</sub> | returning continuation type<sup>s</sup>        | [Pi](@ref thorin::Pi)   |
-| e   | `λ`   (`.`? p)+ (`→` e<sub>codom</sub>)? `=` d\* e          | lambda expression<sup>s</sup>                  | [Lam](@ref thorin::Lam) |
-| e   | `.cn` (`.`? p)+                          `=` d\* e          | continuation expression<sup>s</sup>            | [Lam](@ref thorin::Lam) |
-| e   | `.fn` (`.`? p)+ (`→` e<sub>codom</sub>)? `=` d\* e          | function expression<sup>s</sup>                | [Lam](@ref thorin::Lam) |
-| e   | e e                                                         | application                                    | [App](@ref thorin::App) |
-| e   | e `@` e                                                     | application making implicit arguments explicit | [App](@ref thorin::App) |
-| e   | `.ret` p `=` e `$` e `;` d\* e                              | ret expresison                                 | [App](@ref thorin::App) |
+| LHS | RHS                                                            | Comment                                        | Thorin Class            |
+|-----|----------------------------------------------------------------|------------------------------------------------|-------------------------|
+| e   | e<sub>dom</sub> `→` e<sub>codom</sub>                          | function type                                  | [Pi](@ref thorin::Pi)   |
+| e   | `Π`   `.`? b (`.`? b<sub>[ ]</sub>)\* (`:` e<sub>codom</sub>)? | dependent function type<sup>s</sup>            | [Pi](@ref thorin::Pi)   |
+| e   | `.Cn` `.`? b (`.`? b<sub>[ ]</sub>)\*                          | continuation type<sup>s</sup>                  | [Pi](@ref thorin::Pi)   |
+| e   | `.Fn` `.`? b (`.`? b<sub>[ ]</sub>)\* (`:` e<sub>ret</sub>)?   | returning continuation type<sup>s</sup>        | [Pi](@ref thorin::Pi)   |
+| e   | `λ`   (`.`? p)+ (`→` e<sub>codom</sub>)? `=` d\* e             | lambda expression<sup>s</sup>                  | [Lam](@ref thorin::Lam) |
+| e   | `.cn` (`.`? p)+                          `=` d\* e             | continuation expression<sup>s</sup>            | [Lam](@ref thorin::Lam) |
+| e   | `.fn` (`.`? p)+ (`→` e<sub>codom</sub>)? `=` d\* e             | function expression<sup>s</sup>                | [Lam](@ref thorin::Lam) |
+| e   | e e                                                            | application                                    | [App](@ref thorin::App) |
+| e   | e `@` e                                                        | application making implicit arguments explicit | [App](@ref thorin::App) |
+| e   | `.ret` p `=` e `$` e `;` d\* e                                 | ret expresison                                 | [App](@ref thorin::App) |
 
 #### Tuples
 
@@ -307,11 +307,7 @@ Expressions nesting is disambiguated according to the following precedence table
 | 3     | e e        | application                                    | left-to-right |
 | 3     | e `@` e    | application making implicit arguments explicit | left-to-right |
 | 4     | `Π` b      | domain of a dependent function type            | -             |
-| 5     | `.fun` n p | function declaration                           | -             |
-| 5     | `.lam` n p | lambda declaration                             | -             |
-| 5     | `.fn` p    | function expression                            | -             |
-| 5     | `λ` p      | lambda expression                              | -             |
-| 6     | e `→` e    | function type                                  | right-to-left |
+| 5     | e `→` e    | function type                                  | right-to-left |
 
 @note The domain of a dependent function type binds slightly stronger than `→`.
 This has the effect that
@@ -326,7 +322,6 @@ Otherwise, `→` would be consumed by the domain:
 ```
 Π T: (* → (T → T)) ↯
 ```
-A similar situation occurs for a `.lam` declaration.
 
 ## Summary: Functions & Types
 
@@ -342,9 +337,9 @@ The following table summarizes the different tokens used for functions declarati
 
 The following function *declarations* are all equivalent:
 ```
-.lam f(T: *)((x y: T), return: T → ⊥) → ⊥ = return x;
-.con f(T: *)((x y: T), return: .Cn T)     = return x;
-.fun f(T: *) (x y: T) → T                 = return x;
+.lam f(T: *)((x y: T), return: T → ⊥): ⊥ = return x;
+.con f(T: *)((x y: T), return: .Cn T)    = return x;
+.fun f(T: *) (x y: T): T                 = return x;
 ```
 
 ### Expressions
@@ -352,10 +347,10 @@ The following function *declarations* are all equivalent:
 The following function *expressions* are all equivalent.
 What is more, since they are bound by a *let declaration*, they have the exact same effect as the function *declarations* above:
 ```
-.let f =   λ (T: *)((x y: T), return: T → ⊥) → ⊥ = return x;
-.let f = .lm (T: *)((x y: T), return: T → ⊥) → ⊥ = return x;
-.let f = .cn (T: *)((x y: T), return: .Cn T)     = return x;
-.let f = .fn (T: *) (x y: T) → T                 = return x;
+.let f =   λ (T: *)((x y: T), return: T → ⊥): ⊥ = return x;
+.let f = .lm (T: *)((x y: T), return: T → ⊥): ⊥ = return x;
+.let f = .cn (T: *)((x y: T), return: .Cn T)    = return x;
+.let f = .fn (T: *) (x y: T): T                 = return x;
 ```
 
 ### Applications

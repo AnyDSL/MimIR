@@ -6,7 +6,7 @@
 
 .plugin core;
 
-.fun .extern main(mem: %mem.M, argc: %core.I32, argv: %mem.Ptr0 (%mem.Ptr0 %core.I8)) -> [%mem.M, %core.I32] =
+.fun .extern main(mem: %mem.M, argc: %core.I32, argv: %mem.Ptr0 (%mem.Ptr0 %core.I8)): [%mem.M, %core.I32] =
     .con loop(mem: %mem.M, i: %core.I32, acc: %core.I32) =
         .let cond = %core.icmp.ul (i, argc);
         .con body m: %mem.M =

@@ -5,13 +5,10 @@
 .plugin direct;
 
 
-.lam f [a:%core.I32] -> %core.I32 = {
-    %core.wrap.add 0 (2:%core.I32, a)
-};
+.lam f(a :%core.I32): %core.I32 = %core.wrap.add 0 (2:%core.I32, a);
 
-.con .extern main [mem : %mem.M, argc : %core.I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, %core.I32]] = {
+.fun .extern main(mem: %mem.M, argc: %core.I32, argv: %mem.Ptr (%mem.Ptr (%core.I8, 0), 0)): [%mem.M, %core.I32] =
     .let c = f 40:%core.I32;
-    return (mem, c)
-};
+    return (mem, c);
 
 // CHECK-DAG: return{{.*}}42

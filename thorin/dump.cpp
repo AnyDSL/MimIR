@@ -262,7 +262,7 @@ void Dumper::dump(Lam* lam) {
     if (Lam::isa_cn(lam))
         tab.println(os, ".con {}{} {}@({}) = {{", external(lam), id(lam), ptrn, lam->filter());
     else
-        tab.println(os, ".lam {}{} {} → {} = {{", external(lam), id(lam), ptrn, lam->type()->codom());
+        tab.println(os, ".lam {}{} {}: {} = {{", external(lam), id(lam), ptrn, lam->type()->codom());
 
     ++tab;
     if (lam->is_set()) {
