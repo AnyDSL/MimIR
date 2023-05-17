@@ -10,10 +10,10 @@ old var access
 .import core;
 .import direct;
 .import mem;
-.lam Uf_661956 _661974: %core.I32 → ★ = {
+.lam Uf_661956 _661974: %core.I32: ★ = {
     %core.I32
 };
-.lam Uf_662044 _662062: «2; %core.I32» → ★ = {
+.lam Uf_662044 _662062: «2; %core.I32»: ★ = {
     [%core.I32, .Cn [%core.I32, .Cn «2; %core.I32»]]
 };
 .con eta_inner_mul_deriv_cps_662100 _662101::[__662109::[_662113: %core.I32, _662117: %core.I32], ret_662103: .Cn [%core.I32, .Cn [%core.I32, .Cn «2; %core.I32»]]] = {

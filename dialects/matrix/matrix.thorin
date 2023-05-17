@@ -146,7 +146,7 @@
 ///
 /// Follow the principle `ij <- ik,kj` (`out[i,j] = sum_k in1[i,k] * in2[k,j]`) by using mulplication as combination function and addition as reduction function.
 .lam .extern internal_mapRed_matrix_prod
-    ![m: .Nat, k: .Nat, l: .Nat, [p: .Nat, e:.Nat]] ->
+    ![m: .Nat, k: .Nat, l: .Nat, [p: .Nat, e:.Nat]]:
     (.Cn[
         [%mem.M,%matrix.Mat (2,(m, k),%math.F (p,e)), %matrix.Mat (2,(k, l),%math.F (p,e))],
         .Cn[%mem.M,%matrix.Mat (2,(m, l),%math.F (p,e))]
@@ -201,11 +201,11 @@
 // TODO: check code for 1-matrix edge case
 // TODO: would this automatically be handled by read(transpose) ?
 .lam .extern internal_mapRed_matrix_transpose
-    ![[k: .Nat, l: .Nat], T:*] ->
-    (.Cn[
+    ![[k: .Nat, l: .Nat], T:*]:
+    .Cn[
         [%mem.M,%matrix.Mat (2,(k, l),T)],
         .Cn[%mem.M,%matrix.Mat (2,(l, k),T)]
-    ])
+    ]
     = {
     .con transpose_comb [[mem:%mem.M, acc:T, [a:T]], ret:.Cn[%mem.M,T]] = {
         // We ignore the (zero) accumulator and just return the read value.
@@ -249,7 +249,7 @@
 /// Sums up all elements of a matrix and returns a scalar.
 //  TODO: test 0d matrix (edge cases in code)
 .lam .extern internal_mapRed_matrix_sum
-    ![n: .Nat, S: «n; .Nat», [p:.Nat,e:.Nat]] ->
+    ![n: .Nat, S: «n; .Nat», [p:.Nat,e:.Nat]]:
     (.Cn[
         [%mem.M,%matrix.Mat (n,S,%math.F (p,e))],
         .Cn[%mem.M,%math.F (p,e)]

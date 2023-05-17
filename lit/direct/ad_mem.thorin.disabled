@@ -4,10 +4,10 @@
 .plugin core;
 .plugin direct;
 
-.lam Uf_690595 _690612: %core.I32 → ★ = {
+.lam Uf_690595 _690612: %core.I32 : ★ = {
     [%mem.M, %core.I32]
 };
-.lam Uf_690659 _690676: «2; %core.I32» → ★ = {
+.lam Uf_690659 _690676: «2; %core.I32» : ★ = {
     [%core.I32, .Cn [%core.I32, .Cn «2; %core.I32»]]
 };
 .con eta_inner_mul_deriv_cps_690710 _690711::[__690716::[_690720: %core.I32, _690724: %core.I32], ret_690713: .Cn [%core.I32, .Cn [%core.I32, .Cn «2; %core.I32»]]] @(0:(.Idx 2)) = {
@@ -19,7 +19,7 @@
     .let _690727: %core.I32 = %core.wrap.mul %core.i32 0 __690716;
     ret_690713 (_690727, mul_pb_690728)
 };
-.lam Uf_691251 _691268: «2; %core.I32» → ★ = {
+.lam Uf_691251 _691268: «2; %core.I32» : ★ = {
     [%core.I32, .Cn [%core.I32, .Cn «2; %core.I32»]]
 };
 .con eta_inner_mul_deriv_cps_691294 _691295::[__691299::[_691303: %core.I32, _691307: %core.I32], ret_691297: .Cn [%core.I32, .Cn [%core.I32, .Cn «2; %core.I32»]]] @(0:(.Idx 2)) = {
@@ -31,28 +31,28 @@
     .let _691310: %core.I32 = %core.wrap.mul %core.i32 0 __691299;
     ret_691297 (_691310, mul_pb_691311)
 };
-.lam Uf_691363 _691380: %core.I32 → ★ = {
+.lam Uf_691363 _691380: %core.I32 : ★ = {
     [%mem.M, %core.I32]
 };
 .con zero_pb_691406 _691407::[%core.I32, _691409: .Cn [%mem.M, %core.I32]] @(1:(.Idx 2)) = {
     _691409 (⊥:%mem.M, 0:(%core.I32))
 };
-.lam Uf_691429 _691446: %core.I32 → ★ = {
+.lam Uf_691429 _691446: %core.I32 : ★ = {
     [%mem.M, %core.I32]
 };
 .con extract_pb_691470 _691471::[s_691476: %core.I32, _691473: .Cn [%mem.M, %core.I32]] @(1:(.Idx 2)) = {
     _691473 (⊥:%mem.M, s_691476)
 };
-.lam Uf_691899 _691916: %core.I32 → ★ = {
+.lam Uf_691899 _691916: %core.I32 : ★ = {
     [%mem.M, %core.I32]
 };
 .con zero_pb_691934 _691935::[%core.I32, _691937: .Cn [%mem.M, %core.I32]] @(1:(.Idx 2)) = {
     _691937 (⊥:%mem.M, 0:(%core.I32))
 };
-.lam Uf_691949 _691966: %core.I32 → ★ = {
+.lam Uf_691949 _691966: %core.I32 : ★ = {
     [%mem.M, %core.I32]
 };
-.lam Uf_692052 _692069: %mem.M → ★ = {
+.lam Uf_692052 _692069: %mem.M : ★ = {
     [%mem.M, %core.I32]
 };
 .con zero_pb_692087 _692088::[%mem.M, _692090: .Cn [%mem.M, %core.I32]] @(1:(.Idx 2)) = {
