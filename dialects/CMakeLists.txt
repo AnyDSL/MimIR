@@ -199,6 +199,8 @@ add_thorin_plugin(regex
     SOURCES
         regex/regex.h
         regex/regex.cpp
+        regex/passes/lower_regex.h
+        regex/passes/lower_regex.cpp
         regex/normalizers_regex.cpp
     DEPENDS
         mem

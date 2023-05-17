@@ -16,6 +16,7 @@
 .import direct;
 .import matrix;
 .import refly;
+.import regex;
 ///
 /// ## Passes, Phases, and Pipelines
 ///
@@ -46,6 +47,7 @@
             (%compile.single_pass_phase %autodiff.ad_zero_pass)
             )
         ))
+        (%compile.single_pass_phase (plugin_cond_pass (%compile.regex_plugin, %regex.lower_regex)))
         (plugin_cond_phase (%compile.direct_plugin, direct_phases))
         (plugin_cond_phase (%compile.matrix_plugin,
           %compile.combined_phase (%compile.phase_list

@@ -22,7 +22,7 @@ Ref normalize_quant(Ref type, Ref callee, Ref arg) {
     if constexpr (id == quant::oneOrMore) {
         // (\d?)+ and (\d*)+ == \d*
         if (auto zeroOrOne_app = thorin::match(quant::zeroOrOne, arg))
-            return world.app(world.ax<quant>(quant::zeroOrMore), zeroOrOne_app->arg());
+            return world.app(world.annex<quant>(quant::zeroOrMore), zeroOrOne_app->arg());
         else if (auto zeroOrMore_app = thorin::match(quant::zeroOrMore, arg))
             return arg;
     } else if constexpr (id == quant::zeroOrMore) {
@@ -33,7 +33,7 @@ Ref normalize_quant(Ref type, Ref callee, Ref arg) {
         if (auto zeroOrMore_app = thorin::match(quant::zeroOrMore, arg))
             return arg;
         else if (auto oneOrMore_app = thorin::match(quant::oneOrMore, arg))
-            return world.app(world.ax<quant>(quant::zeroOrMore), oneOrMore_app->arg());
+            return world.app(world.annex<quant>(quant::zeroOrMore), oneOrMore_app->arg());
     }
 
     return world.raw_app(type, callee, arg);
@@ -52,11 +52,12 @@ std::vector<const Def*> flatten_in_arg(Ref arg) {
     return newArgs;
 }
 
-Ref normalize_conj(Ref type, Ref, Ref arg) {
+Ref normalize_conj(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
+    world.DLOG("conj {}:{} ({})", type, callee, arg);
     if (arg->as_lit_arity() > 1) {
         auto&& newArgs = flatten_in_arg<conj>(arg);
-        return world.raw_app(type, world.app(world.ax<conj>(), world.lit_nat(newArgs.size())), world.tuple(newArgs));
+        return world.raw_app(type, world.app(world.annex<conj>(), world.lit_nat(newArgs.size())), world.tuple(newArgs));
     }
     return arg;
 }
@@ -114,7 +115,7 @@ void reduceLitsToClass(std::vector<const Def*>& args) {
         // d
         if (get(*it) == 48 /* 0 */ && matchSequence(it, 10)) {
             std::copy(it, it + 10, std::inserter(toRemove, toRemove.end()));
-            toInsert.push_back(world.ax(cls::d));
+            toInsert.push_back(world.annex(cls::d));
             hasDigit = true;
         }
 
@@ -126,7 +127,7 @@ void reduceLitsToClass(std::vector<const Def*>& args) {
             std::copy(capitalLettersIt, capitalLettersIt + 26, std::inserter(toRemove, toRemove.end()));
             std::copy(it, it + 26, std::inserter(toRemove, toRemove.end()));
             toRemove.insert(*underscoreIt);
-            toInsert.push_back(world.ax(cls::w));
+            toInsert.push_back(world.annex(cls::w));
         }
 
         // s
@@ -137,7 +138,7 @@ void reduceLitsToClass(std::vector<const Def*>& args) {
             toRemove.insert(*(tabLfIt + 1));
             toRemove.insert(*crIt);
             toRemove.insert(*it);
-            toInsert.push_back(world.ax(cls::s));
+            toInsert.push_back(world.annex(cls::s));
         }
     }
     std::erase_if(args, [&toRemove](const Def* val) -> bool { return toRemove.contains(val); });
@@ -159,14 +160,14 @@ Ref normalize_disj(Ref type, Ref callee, Ref arg) {
                 if (equals_any<cls::d, cls::D>(cls0, cls1) || equals_any<cls::w, cls::W>(cls0, cls1) ||
                     equals_any<cls::s, cls::S>(cls0, cls1))
                     // A || !A == True
-                    return world.ax(cls::any);
+                    return world.annex(cls::any);
                 else if (equals_any<cls::w, cls::d>(cls0, cls1))
                     // d is a subset of w
-                    toRemove = world.ax(cls::d);
+                    toRemove = world.annex(cls::d);
         std::erase(newArgs, toRemove);
 
         if (newArgs.size() > 1)
-            return world.raw_app(type, world.app(world.ax<disj>(), world.lit_nat(newArgs.size())),
+            return world.raw_app(type, world.app(world.annex<disj>(), world.lit_nat(newArgs.size())),
                                  world.tuple(newArgs));
         return newArgs.back();
     }
@@ -177,8 +178,14 @@ Ref normalize_group(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
     if (arg->as_lit_arity() > 1) {
         auto&& newArgs = flatten_in_arg<conj>(arg);
-        return world.raw_app(type, world.app(world.ax<group>(), world.lit_nat(newArgs.size())), world.tuple(newArgs));
+        return world.raw_app(type, world.app(world.annex<group>(), world.lit_nat(newArgs.size())), world.tuple(newArgs));
     }
+    return world.raw_app(type, callee, arg);
+}
+
+template <cls id>
+Ref normalize_cls(Ref type, Ref callee, Ref arg) {
+    auto &world = type->world();
     return world.raw_app(type, callee, arg);
 }
 
