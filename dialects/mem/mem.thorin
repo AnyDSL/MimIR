@@ -21,7 +21,7 @@
 /// At the moment, the *address space* is not really used and a placeholder for future work.
 .ax %mem.Ptr: [*, .Nat] -> *;
 
-.lam %mem.Ptr0 T: * -> * = %mem.Ptr (T, 0);
+.lam %mem.Ptr0 T: * : * = %mem.Ptr (T, 0);
 ///
 /// ## Operations w/ Side Effects
 ///
@@ -86,10 +86,10 @@
 /// @warning Use with caution since you completely remove the `%%mem.M` dependency.
 ///
 .let %mem.m = ⊤:%mem.M;
-.lam %mem.ignore!.(O: *)!(_: %mem.M, o: O) -> O = o;
+.lam %mem.ignore!.(O: *)!(_: %mem.M, o: O): O = o;
 .lam %mem.rm!(n: .Nat, Is: «n; *», O: *)
             !(f: [%mem.M, «i: n; Is#i»] -> [%mem.M, O])
-            !(is: «i: n; Is#i») -> O
+            !(is: «i: n; Is#i»): O
                 = %mem.ignore (f (%mem.m, is));
 ///
 /// ## Passes and Phases

@@ -73,7 +73,8 @@ bool Checker::equiv(Ref r1, Ref r2) {
     }
 
     assert(!i1 && !i2);
-    if (d1->gid() > d2->gid()) std::swap(d1, d2); // normalize
+    // normalize: Lit to right; then sort by gid
+    if ((d1->isa<Lit>() && !d2->isa<Lit>()) || (d1->gid() > d2->gid())) std::swap(d1, d2);
 
     if (auto [it, ins] = equiv_.emplace(std::pair(d1, d2), Equiv::Unknown); !ins) {
         switch (it->second) {
@@ -93,8 +94,19 @@ bool Checker::equiv_internal(Ref d1, Ref d2) {
     if (!equiv(d1->type(), d2->type())) return false;
     if (d1->isa<Top>() || d2->isa<Top>()) return equiv(d1->type(), d2->type());
 
+    struct Pop {
+        ~Pop() {
+            if (vars) vars->pop_back();
+        }
+
+        Vars* vars = nullptr;
+    } pop;
+
     if (auto n1 = d1->isa_mut()) {
-        if (auto n2 = d2->isa_mut()) vars_.emplace_back(n1, n2);
+        if (auto n2 = d2->isa_mut()) {
+            vars_.emplace_back(n1, n2);
+            pop.vars = &vars_; // make sure vars_ is popped again
+        }
     }
 
     if (d1->isa<Sigma, Arr>()) {
@@ -107,12 +119,28 @@ bool Checker::equiv_internal(Ref d1, Ref d2) {
         }
     }
 
+    if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Infer)) {
+        if (auto l = d2->isa<Lit>()) {
+            for (auto op : umax->ops())
+                if (auto infer = op->isa_mut<Infer>(); infer && !infer->is_set()) infer->set(l);
+        }
+        d1 = umax->rebuild(world(), umax->type(), umax->ops());
+    }
+
     if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return false;
 
-    if (auto var = d1->isa<Var>()) { // vars are equal if they appeared under the same binder
-        for (auto [n1, n2] : vars_)
-            if (var->mut() == n1) return d2->as<Var>()->mut() == n2;
-        // TODO what if Var is free?
+    if (auto var1 = d1->isa<Var>()) { // vars are equal if they appeared under the same binder
+        auto var2   = d2->as<Var>();
+        bool bound1 = false, bound2 = false;
+        for (auto [n1, n2] : vars_) {
+            if (var1->mut() == n1) {
+                bound1 = true;
+                return d2->as<Var>()->mut() == n2;
+            }
+            assert(var1->mut() != n2);
+            if (var2->mut() == n1 || var2->mut() == n2) bound2 = true;
+        }
+        if (!bound1 && !bound2) return true; // both var1 and var2 are free
         return false;
     }
 
@@ -185,19 +213,17 @@ void Sigma::check() {
 
 void Lam::check() {
     auto& w = world();
-    return; // TODO
     if (!w.checker().equiv(filter()->type(), w.type_bool()))
         error(filter(), "filter '{}' of lambda is of type '{}' but must be of type '.Bool'", filter(),
               filter()->type());
     if (!w.checker().equiv(body()->type(), codom()))
-        error(body(), "body '{}' of lambda is of type '{}' but its codomain is of type '{}'", body(), body()->type(),
-              codom());
+        error(body(), "body '{}' of lambda is of type \n'{}' but its codomain is of type \n'{}'", body(),
+              body()->type(), codom());
 }
 
 void Pi::check() {
     auto& w = world();
     auto t  = infer(dom(), codom());
-
     if (!w.checker().equiv(t, type()))
         error(type(), "declared sort '{}' of function type does not match inferred one '{}'", type(), t);
 }

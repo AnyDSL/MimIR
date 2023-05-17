@@ -145,7 +145,7 @@
         (%compile.single_pass_phase %compile.lam_spec_pass)
         (%compile.single_pass_phase %compile.ret_wrap_pass)
 };
-.lam .extern _fallback_compile() -> %compile.Pipeline = default_core_pipeline;
+.lam .extern _fallback_compile(): %compile.Pipeline = default_core_pipeline;
 ///
 /// ### Dependent Passes and Phases
 ///
@@ -154,6 +154,6 @@
 .ax %compile.plugin_select: Π [T:*] -> %compile.Plugin -> T -> T -> T;
 .let plugin_phase = %compile.plugin_select %compile.Phase;
 .let plugin_pass = %compile.plugin_select %compile.Pass;
-.lam plugin_cond_phase!(plugin: %compile.Plugin, phase: %compile.Phase) -> %compile.Phase = plugin_phase plugin phase empty_phase;
-.lam plugin_cond_pass!(plugin: %compile.Plugin, pass: %compile.Pass) -> %compile.Pass = plugin_pass plugin pass empty_pass;
+.lam plugin_cond_phase!(plugin: %compile.Plugin, phase: %compile.Phase): %compile.Phase = plugin_phase plugin phase empty_phase;
+.lam plugin_cond_pass!(plugin: %compile.Plugin, pass: %compile.Pass): %compile.Pass = plugin_pass plugin pass empty_pass;
 

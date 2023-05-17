@@ -3,21 +3,21 @@
 
 .plugin core;
 
-.lam Ptr(T: *) -> * = %mem.Ptr (T, 0);
+.lam Ptr(T: *): * = %mem.Ptr (T, 0);
 
-.fun foo(mem: %mem.M, x: %core.I32)@(%core.icmp.e (x, 23:%core.I32)) -> [%mem.M, %core.I32]  = return (mem, %core.wrap.add 0 (x, 1:%core.I32));
+.fun foo(mem: %mem.M, x: %core.I32)@(%core.icmp.e (x, 23:%core.I32)): [%mem.M, %core.I32] =
+    return (mem, %core.wrap.add 0 (x, 1:%core.I32));
 
-.fun .extern main(mem: %mem.M, argc: %core.I32, argv: Ptr (Ptr %core.I8)) -> [%mem.M, %core.I32] = {
+.fun .extern main(mem: %mem.M, argc: %core.I32, argv: Ptr (Ptr %core.I8)): [%mem.M, %core.I32] =
     .ret (`mem, x) = foo $ (mem, 23:%core.I32);
     .ret (`mem, y) = foo $ (mem, 23:%core.I32);
-    return (mem, %core.wrap.add 0 (x, y))
-};
+    return (mem, %core.wrap.add 0 (x, y));
 
-.lam f1(T: *)((x y: T), return: T -> ⊥) -> ⊥ = return x;
-.con f2(T: *)((x y: T), return: .Cn T)       = return x;
-.fun f3(T: *) (x y: T)                       = return x;
+.lam f1(T: *)((x y: T), return: T -> ⊥): ⊥ = return x;
+.con f2(T: *)((x y: T), return: .Cn T)     = return x;
+.fun f3(T: *) (x y: T)                     = return x;
 
-.let g1 = .lm (T: *)((x y: T), return: T -> ⊥) -> ⊥ = return x;
+.let g1 = .lm (T: *)((x y: T), return: T -> ⊥): ⊥ = return x;
 .let g2 = .cn (T: *)((x y: T), return: .Cn T)       = return x;
 .let g3 = .fn (T: *) (x y: T)                       = return x;
 
@@ -25,8 +25,12 @@
 .let F2 =.Cn[T:*][T, T][.Cn T];
 .let F3 =.Fn[T:*][T, T] -> T;
 
-
-.let _ = .ret res = f1 .Nat $ (23, 42); res;
-.let _ = f1 .Nat ((23, 42), .cn res: .Nat = res);
+.fun bar(cond: .Bool): .Nat =
+    .con t() =
+        .ret res = f1 .Nat $ (23, 42);
+        return res;
+    .con f() =
+        f1 .Nat ((23, 42), .cn res: .Nat = return res);
+    (f, t)#cond ();
 
 // CHECK-DAG: return{{.*}}48

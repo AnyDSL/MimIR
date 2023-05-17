@@ -4,7 +4,7 @@
 .plugin core;
 .plugin matrix;
 
-.lam ex_internal_mapRed_matrix_transpose![[k: .Nat, l: .Nat], T:*] -> .Cn[[%mem.M, %matrix.Mat (2,(k, l),T)], .Cn [%mem.M, %matrix.Mat (2,(l, k),T)] ] =
+.lam ex_internal_mapRed_matrix_transpose![[k: .Nat, l: .Nat], T:*]: .Cn[[%mem.M, %matrix.Mat (2,(k, l),T)], .Cn [%mem.M, %matrix.Mat (2,(l, k),T)] ] =
     // TODO: or use generalized addition function
     // ignore acc
     .con transpose_comb [[mem:%mem.M, acc:T, [a:T]], ret:.Cn[%mem.M,T]] = ret (mem, a);
