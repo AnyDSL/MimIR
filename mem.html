@@ -153,7 +153,7 @@ Types</h1>
 %mem.Ptr</h2>
 <p >Pointer type with <em>pointee</em> type <code>T</code> and <em>address space</em> <code>as</code>. At the moment, the <em>address space</em> is not really used and a placeholder for future work. </p><div class="fragment"><div class="line">.ax %mem.Ptr: [*, .Nat] -&gt; *;</div>
 <div class="line"> </div>
-<div class="line">.lam %mem.Ptr0 T: * -&gt; * = %mem.Ptr (T, 0);</div>
+<div class="line">.lam %mem.Ptr0 T: * : * = %mem.Ptr (T, 0);</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md176"></a>
 Operations w/ Side Effects</h1>
 <p >The following operations have side effects. For this reason, they consume a <code>%mem.M</code> and yield a new <code>%mem.M</code>.</p>
@@ -190,10 +190,10 @@ Operations w/o Side Effects</h1>
 %mem.create/destroy</h2>
 <p >Create side effect out of thin or pretend that the side effect does not exists. </p><dl class="section warning"><dt>Warning</dt><dd>Use with caution since you completely remove the <code>%mem.M</code> dependency.</dd></dl>
 <div class="fragment"><div class="line">.let %mem.m = ⊤:%mem.M;</div>
-<div class="line">.lam %mem.ignore!.(O: *)!(_: %mem.M, o: O) -&gt; O = o;</div>
+<div class="line">.lam %mem.ignore!.(O: *)!(_: %mem.M, o: O): O = o;</div>
 <div class="line">.lam %mem.rm!(n: .Nat, Is: «n; *», O: *)</div>
 <div class="line">            !(f: [%mem.M, «i: n; Is#i»] -&gt; [%mem.M, O])</div>
-<div class="line">            !(is: «i: n; Is#i») -&gt; O</div>
+<div class="line">            !(is: «i: n; Is#i»): O</div>
 <div class="line">                = %mem.ignore (f (%mem.m, is));</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md188"></a>
 Passes and Phases</h1>

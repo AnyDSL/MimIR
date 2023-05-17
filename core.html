@@ -279,7 +279,7 @@ Mode</h2>
 <p >Integer operations that may overflow. You can specify the desired behavior in the case of an overflow with the curried argument just in front of the actual argument by providing a <a class="el" href="namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493">thorin::core::Mode</a> as <code>.Nat</code>.</p>
 <div class="fragment"><div class="line">.ax %core.wrap(add, sub, mul, shl): Π.[s: .Nat][m: .Nat][«2; .Idx s»] -&gt; .Idx s, normalize_wrap;</div>
 <div class="line"> </div>
-<div class="line">.lam %core.minus!.(s: .Nat)!(m: .Nat)!(a: .Idx s) -&gt; .Idx s = %core.wrap.sub m (0:(.Idx s), a);</div>
+<div class="line">.lam %core.minus!.(s: .Nat)!(m: .Nat)!(a: .Idx s): .Idx s = %core.wrap.sub m (0:(.Idx s), a);</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md116"></a>
 %core.div</h2>
 <p >Signed and unsigned Integer division/remainder.</p>

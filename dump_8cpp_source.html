@@ -377,7 +377,7 @@ $(document).ready(function(){initNavTree('dump_8cpp_source.html',''); initResiza
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="classthorin_1_1Lam.html#a4d1886560bc7912259515b15163c28e5">Lam::isa_cn</a>(lam))</div>
 <div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>        tab.println(os, <span class="stringliteral">&quot;.con {}{} {}@({}) = {{&quot;</span>, external(lam), <span class="keywordtype">id</span>(lam), ptrn, lam-&gt;filter());</div>
 <div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>        tab.println(os, <span class="stringliteral">&quot;.lam {}{} {} → {} = {{&quot;</span>, external(lam), <span class="keywordtype">id</span>(lam), ptrn, lam-&gt;type()-&gt;codom());</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>        tab.println(os, <span class="stringliteral">&quot;.lam {}{} {}: {} = {{&quot;</span>, external(lam), <span class="keywordtype">id</span>(lam), ptrn, lam-&gt;type()-&gt;codom());</div>
 <div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span> </div>
 <div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    ++tab;</div>
 <div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>    <span class="keywordflow">if</span> (lam-&gt;is_set()) {</div>

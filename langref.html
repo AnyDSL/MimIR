@@ -385,11 +385,11 @@ Declarations</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">d   </td><td class="markdownTableBodyNone"><code>.let</code> (p | A) <code>=</code> e <code>;</code>   </td><td class="markdownTableBodyNone">let   </td><td class="markdownTableBodyNone">-    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">d   </td><td class="markdownTableBodyNone"><code>.lam</code> n (<code>.</code>? p)+ <code>→</code> e<sub>codom</sub> ( <code>=</code> d* e)? <code>;</code>   </td><td class="markdownTableBodyNone">lambda declaration<sup>s</sup>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lam.html">Lam</a>    </td></tr>
+<td class="markdownTableBodyNone">d   </td><td class="markdownTableBodyNone"><code>.lam</code> n (<code>.</code>? p)+ (<code>:</code> e<sub>codom</sub>)? ( <code>=</code> d* e)? <code>;</code>   </td><td class="markdownTableBodyNone">lambda declaration<sup>s</sup>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lam.html">Lam</a>    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">d   </td><td class="markdownTableBodyNone"><code>.con</code> n (<code>.</code>? p)+ ( <code>=</code> d* e)? <code>;</code>   </td><td class="markdownTableBodyNone">continuation declaration<sup>s</sup>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lam.html">Lam</a>    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">d   </td><td class="markdownTableBodyNone"><code>.fun</code> n (<code>.</code>? p)+ <code>→</code> e<sub>ret</sub> ( <code>=</code> d* e)? <code>;</code>   </td><td class="markdownTableBodyNone">function declaration<sup>s</sup>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lam.html">Lam</a>    </td></tr>
+<td class="markdownTableBodyNone">d   </td><td class="markdownTableBodyNone"><code>.fun</code> n (<code>.</code>? p)+ (<code>:</code> e<sub>ret</sub>)? ( <code>=</code> d* e)? <code>;</code>   </td><td class="markdownTableBodyNone">function declaration<sup>s</sup>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lam.html">Lam</a>    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">d   </td><td class="markdownTableBodyNone"><code>.Pi</code> n (<code>:</code> e<sub>type</sub>)? (<code>=</code> e)? <code>;</code>   </td><td class="markdownTableBodyNone">Pi declaration   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Pi.html">Pi</a>    </td></tr>
 <tr class="markdownTableRowEven">
@@ -517,11 +517,11 @@ Functions</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">e<sub>dom</sub> <code>→</code> e<sub>codom</sub>   </td><td class="markdownTableBodyNone">function type   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Pi.html">Pi</a>    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>Π</code> <code>.</code>? b (<code>.</code>? b<sub>[ ]</sub>)* <code>→</code> e<sub>codom</sub>   </td><td class="markdownTableBodyNone">dependent function type<sup>s</sup>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Pi.html">Pi</a>    </td></tr>
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>Π</code> <code>.</code>? b (<code>.</code>? b<sub>[ ]</sub>)* (<code>:</code> e<sub>codom</sub>)?   </td><td class="markdownTableBodyNone">dependent function type<sup>s</sup>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Pi.html">Pi</a>    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.Cn</code> <code>.</code>? b (<code>.</code>? b<sub>[ ]</sub>)*   </td><td class="markdownTableBodyNone">continuation type<sup>s</sup>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Pi.html">Pi</a>    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.Fn</code> <code>.</code>? b (<code>.</code>? b<sub>[ ]</sub>)* <code>→</code> e<sub>codom</sub>   </td><td class="markdownTableBodyNone">returning continuation type<sup>s</sup>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Pi.html">Pi</a>    </td></tr>
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.Fn</code> <code>.</code>? b (<code>.</code>? b<sub>[ ]</sub>)* (<code>:</code> e<sub>ret</sub>)?   </td><td class="markdownTableBodyNone">returning continuation type<sup>s</sup>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Pi.html">Pi</a>    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>λ</code> (<code>.</code>? p)+ (<code>→</code> e<sub>codom</sub>)? <code>=</code> d* e   </td><td class="markdownTableBodyNone">lambda expression<sup>s</sup>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lam.html">Lam</a>    </td></tr>
 <tr class="markdownTableRowEven">
@@ -574,20 +574,12 @@ Precedence</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">4   </td><td class="markdownTableBodyNone"><code>Π</code> b   </td><td class="markdownTableBodyNone">domain of a dependent function type   </td><td class="markdownTableBodyNone">-    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">5   </td><td class="markdownTableBodyNone"><code>.fun</code> n p   </td><td class="markdownTableBodyNone">function declaration   </td><td class="markdownTableBodyNone">-    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">5   </td><td class="markdownTableBodyNone"><code>.lam</code> n p   </td><td class="markdownTableBodyNone">lambda declaration   </td><td class="markdownTableBodyNone">-    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">5   </td><td class="markdownTableBodyNone"><code>.fn</code> p   </td><td class="markdownTableBodyNone">function expression   </td><td class="markdownTableBodyNone">-    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">5   </td><td class="markdownTableBodyNone"><code>λ</code> p   </td><td class="markdownTableBodyNone">lambda expression   </td><td class="markdownTableBodyNone">-    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">6   </td><td class="markdownTableBodyNone">e <code>→</code> e   </td><td class="markdownTableBodyNone">function type   </td><td class="markdownTableBodyNone">right-to-left   </td></tr>
+<td class="markdownTableBodyNone">5   </td><td class="markdownTableBodyNone">e <code>→</code> e   </td><td class="markdownTableBodyNone">function type   </td><td class="markdownTableBodyNone">right-to-left   </td></tr>
 </table>
 <dl class="section note"><dt>Note</dt><dd>The domain of a dependent function type binds slightly stronger than <code>→</code>. This has the effect that <div class="fragment"><div class="line">Π T: * → T → T</div>
 </div><!-- fragment --> has the expected binding like this: <div class="fragment"><div class="line">(Π T: *) → (T → T)</div>
 </div><!-- fragment --> Otherwise, <code>→</code> would be consumed by the domain: <div class="fragment"><div class="line">Π T: (* → (T → T)) ↯</div>
-</div><!-- fragment --> A similar situation occurs for a <code>.lam</code> declaration.</dd></dl>
+</div><!-- fragment --></dd></dl>
 <h1><a class="anchor" id="autotoc_md39"></a>
 Summary: Functions &amp; Types</h1>
 <p >The following table summarizes the different tokens used for functions declarations, expressions, and types:</p>
@@ -605,15 +597,15 @@ Summary: Functions &amp; Types</h1>
 </table>
 <h2><a class="anchor" id="autotoc_md40"></a>
 Declarations</h2>
-<p >The following function <em>declarations</em> are all equivalent: </p><div class="fragment"><div class="line">.lam f(T: *)((x y: T), return: T → ⊥) → ⊥ = return x;</div>
-<div class="line">.con f(T: *)((x y: T), return: .Cn T)     = return x;</div>
-<div class="line">.fun f(T: *) (x y: T) → T                 = return x;</div>
+<p >The following function <em>declarations</em> are all equivalent: </p><div class="fragment"><div class="line">.lam f(T: *)((x y: T), return: T → ⊥): ⊥ = return x;</div>
+<div class="line">.con f(T: *)((x y: T), return: .Cn T)    = return x;</div>
+<div class="line">.fun f(T: *) (x y: T): T                 = return x;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md41"></a>
 Expressions</h2>
-<p >The following function <em>expressions</em> are all equivalent. What is more, since they are bound by a <em>let declaration</em>, they have the exact same effect as the function <em>declarations</em> above: </p><div class="fragment"><div class="line">.let f =   λ (T: *)((x y: T), return: T → ⊥) → ⊥ = return x;</div>
-<div class="line">.let f = .lm (T: *)((x y: T), return: T → ⊥) → ⊥ = return x;</div>
-<div class="line">.let f = .cn (T: *)((x y: T), return: .Cn T)     = return x;</div>
-<div class="line">.let f = .fn (T: *) (x y: T) → T                 = return x;</div>
+<p >The following function <em>expressions</em> are all equivalent. What is more, since they are bound by a <em>let declaration</em>, they have the exact same effect as the function <em>declarations</em> above: </p><div class="fragment"><div class="line">.let f =   λ (T: *)((x y: T), return: T → ⊥): ⊥ = return x;</div>
+<div class="line">.let f = .lm (T: *)((x y: T), return: T → ⊥): ⊥ = return x;</div>
+<div class="line">.let f = .cn (T: *)((x y: T), return: .Cn T)    = return x;</div>
+<div class="line">.let f = .fn (T: *) (x y: T): T                 = return x;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md42"></a>
 Applications</h2>
 <p >The following expressions for applying <code>f</code> are also equivalent: </p><div class="fragment"><div class="line">f .Nat ((23, 42), .cn res: .Nat = use(res))</div>

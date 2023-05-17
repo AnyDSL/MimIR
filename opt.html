@@ -135,7 +135,7 @@ Dependencies</h1>
 Passes, Phases, and Pipelines</h1>
 <h2><a class="anchor" id="autotoc_md194"></a>
 Pipelines</h2>
-<div class="fragment"><div class="line">.lam .extern _default_compile [] -&gt; %compile.Pipeline = {</div>
+<div class="fragment"><div class="line">.lam .extern _default_compile []: %compile.Pipeline = {</div>
 <div class="line">    .let nullptr   = %compile.nullptr_pass;</div>
 <div class="line">    .let nullphase = %compile.single_pass_phase nullptr;</div>
 <div class="line">    %compile.pipe</div>
@@ -144,7 +144,7 @@ Pipelines</h2>
 <div class="line">        (%compile.single_pass_phase %compile.eta_red_pass)</div>
 <div class="line">        (%compile.single_pass_phase (%compile.tail_rec_elim_pass nullptr))</div>
 <div class="line">        // optimize</div>
-<div class="line">        (%compile.pass_phase </div>
+<div class="line">        (%compile.pass_phase</div>
 <div class="line">            (%compile.combine_pass_list (⊤:.Nat)</div>
 <div class="line">            (</div>
 <div class="line">                optimization_pass_list,</div>
@@ -172,7 +172,7 @@ Pipelines</h2>
 <div class="line">        (%compile.single_pass_phase %compile.lam_spec_pass)</div>
 <div class="line">        (plugin_cond_phase (%compile.autodiff_plugin, ad_cleanup_phase))</div>
 <div class="line">        // CodeGenPrep</div>
-<div class="line">        (%compile.pass_phase </div>
+<div class="line">        (%compile.pass_phase</div>
 <div class="line">            (%compile.combine_pass_list (⊤:.Nat)</div>
 <div class="line">            (</div>
 <div class="line">                %compile.pass_list</div>

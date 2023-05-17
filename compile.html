@@ -244,7 +244,7 @@ Pipelines</h2>
 <div class="line">        (%compile.single_pass_phase %compile.lam_spec_pass)</div>
 <div class="line">        (%compile.single_pass_phase %compile.ret_wrap_pass)</div>
 <div class="line">};</div>
-<div class="line">.lam .extern _fallback_compile() -&gt; %compile.Pipeline = default_core_pipeline;</div>
+<div class="line">.lam .extern _fallback_compile(): %compile.Pipeline = default_core_pipeline;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md103"></a>
 Dependent Passes and Phases</h2>
 <div class="fragment"><div class="line">.let empty_pass = %compile.nullptr_pass;</div>
@@ -252,8 +252,8 @@ Dependent Passes and Phases</h2>
 <div class="line">.ax %compile.plugin_select: Π [T:*] -&gt; %compile.Plugin -&gt; T -&gt; T -&gt; T;</div>
 <div class="line">.let plugin_phase = %compile.plugin_select %compile.Phase;</div>
 <div class="line">.let plugin_pass = %compile.plugin_select %compile.Pass;</div>
-<div class="line">.lam plugin_cond_phase!(plugin: %compile.Plugin, phase: %compile.Phase) -&gt; %compile.Phase = plugin_phase plugin phase empty_phase;</div>
-<div class="line">.lam plugin_cond_pass!(plugin: %compile.Plugin, pass: %compile.Pass) -&gt; %compile.Pass = plugin_pass plugin pass empty_pass;</div>
+<div class="line">.lam plugin_cond_phase!(plugin: %compile.Plugin, phase: %compile.Phase): %compile.Phase = plugin_phase plugin phase empty_phase;</div>
+<div class="line">.lam plugin_cond_pass!(plugin: %compile.Plugin, pass: %compile.Pass): %compile.Pass = plugin_pass plugin pass empty_pass;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
