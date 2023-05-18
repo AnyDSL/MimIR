@@ -86,7 +86,8 @@ Equiv Checker::equiv_(Ref r1, Ref r2) {
 
 Equiv Checker::equiv_internal(Ref d1, Ref d2) {
     auto res = equiv_(d1->type(), d2->type());
-    if (d1->isa<Top>() || d2->isa<Top>()) return meet(res, equiv_(d1->type(), d2->type()));
+    if (res == Equiv::No || d1->isa<Top>() || d2->isa<Top>()) return res;
+    res = meet(res, equiv_(d1->arity(), d2->arity()));
     if (res == Equiv::No) return Equiv::No;
 
     struct Pop {
@@ -104,18 +105,20 @@ Equiv Checker::equiv_internal(Ref d1, Ref d2) {
         }
     }
 
-    if (d1->isa<Sigma, Arr>()) {
-        res = meet(res, equiv_(d1->arity(), d2->arity()));
-        if (res == Equiv::No) return Equiv::No;
-
-        if (auto a = d1->isa_lit_arity()) {
-            for (size_t i = 0; i != a && res != Equiv::No; ++i)
+    if (auto sigma = d1->isa<Sigma>()) {
+        size_t a = sigma->num_ops();
+        for (size_t i = 0; i != a && res != Equiv::No; ++i)
+            res = meet(res, equiv_(d1->op(i), d2->proj(a, i)));
+        return res;
+    } else if (auto arr1 = d1->isa<Arr>()) {
+        // we've already checked arity above
+        if (auto arr2 = d2->isa<Arr>()) return meet(res, equiv_(arr1->body(), arr2->body()));
+        if (auto a = arr1->isa_lit_arity()) {
+            for (size_t i = 0; i != *a && res != Equiv::No; ++i)
                 res = meet(res, equiv_(d1->proj(*a, i), d2->proj(*a, i)));
             return res;
         }
-    }
-
-    if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Infer)) {
+    } else if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Infer)) {
         if (auto l = d2->isa<Lit>()) {
             for (auto op : umax->ops())
                 if (auto infer = op->isa_mut<Infer>(); infer && !infer->is_set()) infer->set(l);
