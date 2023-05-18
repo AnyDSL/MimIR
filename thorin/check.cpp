@@ -88,8 +88,8 @@ template<bool infer> bool Check::alpha_(Ref r1, Ref r2) {
 template<bool infer> bool Check::alpha_internal(Ref d1, Ref d2) {
     if (!alpha_<infer>(d1->type(), d2->type())) return false;
     if (d1->isa<Top>() || d2->isa<Top>()) return infer;
-    if (!alpha_<infer>(d1->arity(), d2->arity())) return false;
     if (!infer && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return false;
+    if (!alpha_<infer>(d1->arity(), d2->arity())) return false;
 
     struct Pop {
         ~Pop() {
@@ -106,17 +106,16 @@ template<bool infer> bool Check::alpha_internal(Ref d1, Ref d2) {
         }
     }
 
-    if (auto sigma = d1->isa<Sigma>()) {
-        size_t a = sigma->num_ops();
+    if (auto ts = d1->isa<Tuple, Sigma>()) {
+        size_t a = ts->num_ops();
         for (size_t i = 0; i != a; ++i)
-            if (!alpha_<infer>(d1->op(i), d2->proj(a, i))) return false;
+            if (!alpha_<infer>(ts->op(i), d2->proj(a, i))) return false;
         return true;
-    } else if (auto arr1 = d1->isa<Arr>()) {
-        // we've already checked arity above
-        if (auto arr2 = d2->isa<Arr>()) return alpha_<infer>(arr1->body(), arr2->body());
-        if (auto a = arr1->isa_lit_arity()) {
+    } else if (auto pa = d1->isa<Pack, Arr>()) {
+        if (pa->node() == d2->node()) return alpha_<infer>(pa->ops().back(), d2->ops().back());
+        if (auto a = pa->isa_lit_arity()) {
             for (size_t i = 0; i != *a; ++i)
-                if (alpha_<infer>(d1->proj(*a, i), d2->proj(*a, i))) return false;
+                if (alpha_<infer>(pa->proj(*a, i), d2->proj(*a, i))) return false;
             return true;
         }
     } else if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Infer)) {
