@@ -41,6 +41,16 @@ private:
     friend class Checker;
 };
 
+/// Result of Checker::equiv.
+enum class Equiv {
+    No, ///< Definitely **not** α-equivalent.
+    FV, ///< α-equivalent **modulo free variables** such as `λx.x+y` and `λx.x+z`.
+    Yes,///< **Definitely** α-equivalent.
+};
+
+inline Equiv meet(Equiv e1, Equiv e2) { return (Equiv)std::min((int)e1, (int)e2); }
+inline Equiv join(Equiv e1, Equiv e2) { return (Equiv)std::max((int)e1, (int)e2); }
+
 class Checker {
 public:
     Checker(World& world)
@@ -48,31 +58,30 @@ public:
 
     World& world() const { return *world_; }
 
-    /// Are @p d1 and @p d2 α-equivalent?
-    bool equiv(Ref d1, Ref d2);
+    /// Are @p d1 and @p d2 α-equivalent? @see Equiv.
+    Equiv equiv_(Ref d1, Ref d2);
 
     /// Can @p value be assigned to sth of @p type?
     /// @note This is different from `equiv(type, value->type())` since @p type may be dependent.
-    bool assignable(Ref type, Ref value);
+    Equiv assignable_(Ref type, Ref value);
 
-    /// Yields `defs.front()`, if all @p defs are α-equiv%alent and `nullptr` otherwise.
+    /// Yields `defs.front()`, if all @p defs are Equiv::Yes and `nullptr` otherwise.
     const Def* is_uniform(Defs defs);
 
-    static void swap(Checker& c1, Checker& c2) { std::swap(c1.world_, c2.world_); }
-
 private:
-    bool equiv_internal(Ref, Ref);
-
-    enum class Equiv {
-        Distinct,
-        Unknown,
-        Equiv,
-    };
+    Equiv equiv_internal(Ref, Ref);
 
     World* world_;
-    DefDefMap<Equiv> equiv_;
     using Vars = std::deque<std::pair<Def*, Def*>>;
     Vars vars_;
+    MutSet done_;
 };
+
+inline bool equiv(Ref d1, Ref d2) { return Checker(d1->world()).equiv_(d1, d2) != Equiv::No; }
+inline bool assignable(Ref type, Ref value) { return Checker(value->world()).assignable_(type, value) != Equiv::No; }
+inline const Def* is_uniform(Defs defs) {
+    if (defs.empty()) return nullptr;
+    return Checker(defs.front()->world()).is_uniform(defs);
+}
 
 } // namespace thorin

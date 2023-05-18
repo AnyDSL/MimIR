@@ -96,11 +96,6 @@ public:
     /// Retrive compile Flags.
     Flags& flags();
 
-    Checker& checker() {
-        assert(&move_.checker->world() == this);
-        return *move_.checker;
-    }
-
     Loc& emit_loc() { return state_.pod.loc; }
     ///@}
 
@@ -618,7 +613,6 @@ private:
             swap(m1.defs,      m2.defs);
             swap(m1.cache,     m2.cache);
             // clang-format on
-            Checker::swap(*m1.checker, *m2.checker);
         }
     } move_;
 

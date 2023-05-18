@@ -134,7 +134,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
         map(mut, new_mut);
         for (size_t i = 0; i < mut->num_ops(); i++)
             if (mut->op(i)) new_mut->set(i, rewrite(mut->op(i)));
-        if (!def->isa_mut<Global>() && Checker(w).equiv(mut, new_mut)) return map(mut, mut);
+        if (!def->isa_mut<Global>() && equiv(mut, new_mut)) return map(mut, mut);
         if (auto imm = new_mut->immutabilize()) return map(mut, imm);
         return new_mut;
     } else if (def->isa<Axiom>()) {

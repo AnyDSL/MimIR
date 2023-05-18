@@ -894,7 +894,7 @@ void Parser::parse_sigma_decl() {
         if (auto def = scopes_.query(dbg)) {
             if ((!def->isa_mut<Sigma>() && !def->isa<Infer>()) || !def->isa_lit_arity())
                 error(dbg.loc, "'{}' has not been declared as a sigma", dbg.sym);
-            if (!world().checker().equiv(def->type(), type))
+            if (!equiv(def->type(), type))
                 error(dbg.loc, "'{}' of type '{}' has been redeclared with a different type '{}'; here: {}", dbg.sym,
                       def->type(), type, def->loc());
             if (arity && *arity != def->as_lit_arity())
@@ -942,7 +942,7 @@ void Parser::parse_pi_decl() {
         Pi* pi;
         if (auto def = scopes_.query(dbg)) {
             if (auto mut = def->isa_mut<Pi>()) {
-                if (!world().checker().equiv(mut->type(), type))
+                if (!equiv(mut->type(), type))
                     error(dbg.loc, "'{}' of type '{}' has been redeclared with a different type '{}'; here: {}",
                           dbg.sym, mut->type(), type, mut->loc());
                 if (mut->is_set())

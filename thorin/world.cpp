@@ -168,7 +168,7 @@ Ref World::iapp(Ref callee, Ref arg) {
         } else {
             // resolve Infers now if possible before normalizers are run
             if (auto app = callee->isa<App>(); app && app->curry() == 1) {
-                checker().assignable(callee->type()->as<Pi>()->dom(), arg);
+                assignable(callee->type()->as<Pi>()->dom(), arg);
                 auto apps = decurry(app);
                 callee    = apps.front()->callee();
                 for (auto app : apps) callee = this->app(callee, Ref::refer(app->arg()));
@@ -193,12 +193,12 @@ Ref World::app(Ref callee, Ref arg) {
     // (a, b)#i arg     where a = A -> B; b = A -> B
     if (auto extract = callee->type()->isa<Extract>()) {
         if (auto tuple = extract->tuple()->isa<Tuple>()) {
-            if (auto uni = checker().is_uniform(tuple->ops())) pi = uni->isa<Pi>();
+            if (auto uni = is_uniform(tuple->ops())) pi = uni->isa<Pi>();
         }
     }
 
     if (!pi) error(callee, "called expression '{}' : '{}' is not of function type", callee, callee->type());
-    if (!checker().assignable(pi->dom(), arg))
+    if (!assignable(pi->dom(), arg))
         error(arg, "cannot pass argument \n'{}' of type \n'{}' to \n'{}' of domain \n'{}'", arg, arg->type(), callee,
               pi->dom());
 
@@ -237,7 +237,7 @@ Ref World::tuple(Defs ops) {
 
     auto sigma = infer_sigma(*this, ops);
     auto t     = tuple(sigma, ops);
-    if (!checker().assignable(sigma, t))
+    if (!assignable(sigma, t))
         error(t, "cannot assign tuple '{}' of type '{}' to incompatible tuple type '{}'", t, t->type(), sigma);
 
     return t;
@@ -311,7 +311,7 @@ Ref World::extract(Ref d, Ref index) {
 
     if (auto pack = d->isa_imm<Pack>()) return pack->body();
 
-    if (!checker().equiv(type->arity(), size))
+    if (!equiv(type->arity(), size))
         error(index, "index '{}' does not fit within arity '{}'", index, type->arity());
 
     // extract(insert(x, index, val), index) -> val
@@ -352,12 +352,12 @@ Ref World::insert(Ref d, Ref index, Ref val) {
     auto type = d->unfold_type();
     auto size = Idx::size(index->type());
 
-    if (!checker().equiv(type->arity(), size))
+    if (!equiv(type->arity(), size))
         error(index, "index '{}' does not fit within arity '{}'", index, type->arity());
 
     if (auto index_lit = Lit::isa(index)) {
         auto target_type = type->proj(*index_lit);
-        if (!checker().assignable(target_type, val))
+        if (!assignable(target_type, val))
             error(val, "value of type {} is not assignable to type {}", val->type(), target_type);
     }
 
@@ -518,7 +518,7 @@ Ref World::test(Ref value, Ref probe, Ref match, Ref clash) {
     assert(m_pi && c_pi);
     auto a = m_pi->dom()->isa_lit_arity();
     assert_unused(a && *a == 2);
-    assert(checker().equiv(m_pi->dom(2, 0_s), c_pi->dom()));
+    assert(equiv(m_pi->dom(2, 0_s), c_pi->dom()));
 
     auto codom = join({m_pi->codom(), c_pi->codom()});
     return unify<Test>(4, pi(c_pi->dom(), codom), value, probe, match, clash);
