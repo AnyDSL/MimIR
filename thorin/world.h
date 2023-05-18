@@ -160,8 +160,7 @@ public:
     Def* external(Sym name) { return thorin::lookup(move_.externals, name); } ///< Lookup by @p name.
 
     /// Lookup annex by Axiom::id.
-    template<class Id>
-    const Def* annex(Id id) {
+    template<class Id> const Def* annex(Id id) {
         auto flags = static_cast<flags_t>(id);
         if (auto i = move_.annexes.find(flags); i != move_.annexes.end()) return i->second;
         error("Axiom with ID '{}' not found; demangled plugin name is '{}'", flags, Annex::demangle(*this, flags));
@@ -170,10 +169,7 @@ public:
     /// Get Axiom from a plugin.
     /// Can be used to get an Axiom without sub-tags.
     /// E.g. use `w.annex<mem::M>();` to get the `%mem.M` Axiom.
-    template<annex_without_subs id>
-    const Def* annex() {
-        return annex(Annex::Base<id>);
-    }
+    template<annex_without_subs id> const Def* annex() { return annex(Annex::Base<id>); }
 
     const Def* register_annex(flags_t f, const Def*);
     ///@}
@@ -182,12 +178,10 @@ public:
     ///@{
     const Univ* univ() { return data_.univ; }
     Ref uinc(Ref op, level_t offset = 1);
-    template<Sort = Sort::Univ>
-    Ref umax(DefArray);
+    template<Sort = Sort::Univ> Ref umax(DefArray);
     const Type* type(Ref level);
     const Type* type_infer_univ() { return type(mut_infer_univ()); }
-    template<level_t level = 0>
-    const Type* type() {
+    template<level_t level = 0> const Type* type() {
         if constexpr (level == 0)
             return data_.type_0;
         else if constexpr (level == 1)
@@ -259,10 +253,8 @@ public:
     ///@{
     Ref app(Ref callee, Ref arg);
     Ref app(Ref callee, Defs args) { return app(callee, tuple(args)); }
-    template<bool Normalize = false>
-    Ref raw_app(Ref type, Ref callee, Ref arg);
-    template<bool Normalize = false>
-    Ref raw_app(Ref type, Ref callee, Defs args) {
+    template<bool Normalize = false> Ref raw_app(Ref type, Ref callee, Ref arg);
+    template<bool Normalize = false> Ref raw_app(Ref type, Ref callee, Defs args) {
         return raw_app<Normalize>(type, callee, tuple(args));
     }
     ///@}
@@ -271,10 +263,7 @@ public:
     ///@{
     Sigma* mut_sigma(Ref type, size_t size) { return insert<Sigma>(size, type, size); }
     /// A *mut*able Sigma of type @p level.
-    template<level_t level = 0>
-    Sigma* mut_sigma(size_t size) {
-        return mut_sigma(type<level>(), size);
-    }
+    template<level_t level = 0> Sigma* mut_sigma(size_t size) { return mut_sigma(type<level>(), size); }
     Ref sigma(Defs ops);
     const Sigma* sigma() { return data_.sigma; } ///< The unit type within Type 0.
     ///@}
@@ -282,10 +271,7 @@ public:
     /// @name Arr
     ///@{
     Arr* mut_arr(Ref type) { return insert<Arr>(2, type); }
-    template<level_t level = 0>
-    Arr* mut_arr() {
-        return mut_arr(type<level>());
-    }
+    template<level_t level = 0> Arr* mut_arr() { return mut_arr(type<level>()); }
     Ref arr(Ref shape, Ref body);
     Ref arr(Defs shape, Ref body);
     Ref arr(u64 n, Ref body) { return arr(lit_nat(n), body); }
@@ -350,8 +336,7 @@ public:
     /// @note `size = 0` means `2^64`.
     const Lit* lit_idx(nat_t size, u64 val) { return lit(type_idx(size), val); }
 
-    template<class I>
-    const Lit* lit_idx(I val) {
+    template<class I> const Lit* lit_idx(I val) {
         static_assert(std::is_integral<I>());
         return lit_idx(Idx::bitwidth2size(sizeof(I) * 8), val);
     }
@@ -462,8 +447,7 @@ public:
 private:
     /// @name Put into Sea of Nodes
     ///@{
-    template<class T, class... Args>
-    const T* unify(size_t num_ops, Args&&... args) {
+    template<class T, class... Args> const T* unify(size_t num_ops, Args&&... args) {
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
         if (auto loc = emit_loc()) def->set(loc);
         assert(!def->isa_mut());
@@ -490,8 +474,7 @@ private:
         return def;
     }
 
-    template<class T, class... Args>
-    T* insert(size_t num_ops, Args&&... args) {
+    template<class T, class... Args> T* insert(size_t num_ops, Args&&... args) {
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
         if (auto loc = emit_loc()) def->set(loc);
 #ifdef THORIN_ENABLE_CHECKS
@@ -529,8 +512,7 @@ private:
             ~Lock() {}
         };
 #endif
-        template<class T, class... Args>
-        T* allocate(size_t num_ops, Args&&... args) {
+        template<class T, class... Args> T* allocate(size_t num_ops, Args&&... args) {
             static_assert(sizeof(Def) == sizeof(T),
                           "you are not allowed to introduce any additional data in subclasses of Def");
             Lock lock;
@@ -553,8 +535,7 @@ private:
             return result;
         }
 
-        template<class T>
-        void deallocate(const T* def) {
+        template<class T> void deallocate(const T* def) {
             size_t num_bytes = num_bytes_of<T>(def->num_ops());
             num_bytes        = align(num_bytes);
             def->~T();
@@ -565,8 +546,7 @@ private:
 
         static constexpr size_t align(size_t n) { return (n + (sizeof(void*) - 1)) & ~(sizeof(void*) - 1); }
 
-        template<class T>
-        static constexpr size_t num_bytes_of(size_t num_ops) {
+        template<class T> static constexpr size_t num_bytes_of(size_t num_ops) {
             size_t result = sizeof(Def) + sizeof(void*) * num_ops;
             return align(result);
         }
