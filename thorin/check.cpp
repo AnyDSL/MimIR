@@ -46,8 +46,7 @@ const Def* Infer::find(const Def* def) {
  * Check
  */
 
-template<bool infer>
-bool Check::alpha_(Ref r1, Ref r2) {
+template<bool infer> bool Check::alpha_(Ref r1, Ref r2) {
     auto d1 = *r1; // find
     auto d2 = *r2; // find
 
@@ -86,8 +85,7 @@ bool Check::alpha_(Ref r1, Ref r2) {
     return alpha_internal<infer>(d1, d2);
 }
 
-template<bool infer>
-bool Check::alpha_internal(Ref d1, Ref d2) {
+template<bool infer> bool Check::alpha_internal(Ref d1, Ref d2) {
     if (!alpha_<infer>(d1->type(), d2->type())) return false;
     if (d1->isa<Top>() || d2->isa<Top>()) return infer;
     if (!alpha_<infer>(d1->arity(), d2->arity())) return false;

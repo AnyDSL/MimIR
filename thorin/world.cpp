@@ -115,8 +115,7 @@ Ref World::uinc(Ref op, level_t offset) {
     return unify<UInc>(1, op, offset);
 }
 
-template<Sort sort>
-Ref World::umax(DefArray ops) {
+template<Sort sort> Ref World::umax(DefArray ops) {
     level_t lvl = 0;
     for (auto& op : ops) {
         Ref r = op;
@@ -198,8 +197,7 @@ Ref World::app(Ref callee, Ref arg) {
     return raw_app<true>(type, callee, arg);
 }
 
-template<bool Normalize>
-Ref World::raw_app(Ref type, Ref callee, Ref arg) {
+template<bool Normalize> Ref World::raw_app(Ref type, Ref callee, Ref arg) {
     auto [axiom, curry, trip] = Axiom::get(callee);
     if (axiom) {
         curry = curry == 0 ? trip : curry;
@@ -298,7 +296,8 @@ Ref World::extract(Ref d, Ref index) {
 
     if (auto pack = d->isa_imm<Pack>()) return pack->body();
 
-    if (!Check::alpha(type->arity(), size)) error(index, "index '{}' does not fit within arity '{}'", index, type->arity());
+    if (!Check::alpha(type->arity(), size))
+        error(index, "index '{}' does not fit within arity '{}'", index, type->arity());
 
     // extract(insert(x, index, val), index) -> val
     if (auto insert = d->isa<Insert>()) {
@@ -338,7 +337,8 @@ Ref World::insert(Ref d, Ref index, Ref val) {
     auto type = d->unfold_type();
     auto size = Idx::size(index->type());
 
-    if (!Check::alpha(type->arity(), size)) error(index, "index '{}' does not fit within arity '{}'", index, type->arity());
+    if (!Check::alpha(type->arity(), size))
+        error(index, "index '{}' does not fit within arity '{}'", index, type->arity());
 
     if (auto index_lit = Lit::isa(index)) {
         auto target_type = type->proj(*index_lit);
@@ -443,16 +443,14 @@ const Lit* World::lit(Ref type, u64 val) {
  * set
  */
 
-template<bool Up>
-Ref World::ext(Ref type) {
+template<bool Up> Ref World::ext(Ref type) {
     if (auto arr = type->isa<Arr>()) return pack(arr->shape(), ext<Up>(arr->body()));
     if (auto sigma = type->isa<Sigma>())
         return tuple(sigma, DefArray(sigma->num_ops(), [&](size_t i) { return ext<Up>(sigma->op(i)); }));
     return unify<TExt<Up>>(0, type);
 }
 
-template<bool Up>
-Ref World::bound(Defs ops) {
+template<bool Up> Ref World::bound(Defs ops) {
     auto kind = umax<Sort::Type>(ops);
 
     // has ext<Up> value?
