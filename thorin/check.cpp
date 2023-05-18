@@ -43,11 +43,11 @@ const Def* Infer::find(const Def* def) {
 }
 
 /*
- * Checker
+ * Check
  */
 
-template<bool Check>
-bool Checker::equiv(Ref r1, Ref r2) {
+template<bool infer>
+bool Check::alpha_(Ref r1, Ref r2) {
     auto d1 = *r1; // find
     auto d2 = *r2; // find
 
@@ -59,7 +59,7 @@ bool Checker::equiv(Ref r1, Ref r2) {
 
     if ((!i1 && !d1->is_set()) || (!i2 && !d2->is_set())) return false;
 
-    if (Check) {
+    if (infer) {
         if (i1 && i2) {
             // union by rank
             if (i1->rank() < i2->rank()) std::swap(i1, i2); // make sure i1 is heavier or equal
@@ -83,15 +83,15 @@ bool Checker::equiv(Ref r1, Ref r2) {
 
     if (mut1 && !done_.emplace(mut1).second) return true;
     if (mut2 && !done_.emplace(mut2).second) return true;
-    return equiv_internal<Check>(d1, d2);
+    return alpha_internal<infer>(d1, d2);
 }
 
-template<bool Check>
-bool Checker::equiv_internal(Ref d1, Ref d2) {
-    if (!equiv<Check>(d1->type(), d2->type())) return false;
-    if (d1->isa<Top>() || d2->isa<Top>()) return Check;
-    if (!equiv<Check>(d1->arity(), d2->arity())) return false;
-    if (!Check && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return false;
+template<bool infer>
+bool Check::alpha_internal(Ref d1, Ref d2) {
+    if (!alpha_<infer>(d1->type(), d2->type())) return false;
+    if (d1->isa<Top>() || d2->isa<Top>()) return infer;
+    if (!alpha_<infer>(d1->arity(), d2->arity())) return false;
+    if (!infer && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return false;
 
     struct Pop {
         ~Pop() {
@@ -111,22 +111,21 @@ bool Checker::equiv_internal(Ref d1, Ref d2) {
     if (auto sigma = d1->isa<Sigma>()) {
         size_t a = sigma->num_ops();
         for (size_t i = 0; i != a; ++i)
-            if (!equiv<Check>(d1->op(i), d2->proj(a, i))) return false;
+            if (!alpha_<infer>(d1->op(i), d2->proj(a, i))) return false;
         return true;
     } else if (auto arr1 = d1->isa<Arr>()) {
         // we've already checked arity above
-        if (auto arr2 = d2->isa<Arr>()) return equiv<Check>(arr1->body(), arr2->body());
+        if (auto arr2 = d2->isa<Arr>()) return alpha_<infer>(arr1->body(), arr2->body());
         if (auto a = arr1->isa_lit_arity()) {
             for (size_t i = 0; i != *a; ++i)
-                if (equiv<Check>(d1->proj(*a, i), d2->proj(*a, i))) return false;
+                if (alpha_<infer>(d1->proj(*a, i), d2->proj(*a, i))) return false;
             return true;
         }
     } else if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Infer)) {
-        if (auto l = d2->isa<Lit>()) {
-            for (auto op : umax->ops())
-                if (auto infer = op->isa_mut<Infer>(); infer && !infer->is_set()) infer->set(l);
-        }
-        d1 = umax->rebuild(world(), umax->type(), umax->ops());
+        // .umax(a, ?) == x  =>  .umax(a, x)
+        for (auto op : umax->ops())
+            if (auto inf = op->isa_mut<Infer>(); inf && !inf->is_set()) inf->set(d2);
+        d1 = umax->rebuild(umax->world(), umax->type(), umax->ops());
     }
 
     if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return false;
@@ -145,49 +144,49 @@ bool Checker::equiv_internal(Ref d1, Ref d2) {
             if (var2->mut() == n1 || var2->mut() == n2) bound2 = true;
         }
         if (bound1 || bound2) return false;
-        return Check; // both var1 and var2 are free: ok, when Check%ing
+        return infer; // both var1 and var2 are free: ok, when check%ing
     }
 
     for (size_t i = 0, e = d1->num_ops(); i != e; ++i)
-        if (!equiv<Check>(d1->op(i), d2->op(i))) return false;
+        if (!alpha_<infer>(d1->op(i), d2->op(i))) return false;
     return true;
 }
 
-bool Checker::assignable(Ref type, Ref val) {
+bool Check::assignable_(Ref type, Ref val) {
     auto val_ty = Ref::refer(val->type());
     if (type == val_ty) return true;
 
-    if (auto infer = val->isa_mut<Infer>()) return equiv<true>(type, infer->type());
+    if (auto infer = val->isa_mut<Infer>()) return alpha_<true>(type, infer->type());
 
     if (auto sigma = type->isa<Sigma>()) {
-        if (!equiv<true>(type->arity(), val_ty->arity())) return false;
+        if (!alpha_<true>(type->arity(), val_ty->arity())) return false;
 
         size_t a = sigma->num_ops();
         auto red = sigma->reduce(val);
         for (size_t i = 0; i != a; ++i)
-            if (!assignable(red[i], val->proj(a, i))) return false;
+            if (!assignable_(red[i], val->proj(a, i))) return false;
         return true;
     } else if (auto arr = type->isa<Arr>()) {
-        if (!equiv<true>(type->arity(), val_ty->arity())) return false;
+        if (!alpha_<true>(type->arity(), val_ty->arity())) return false;
 
         if (auto a = Lit::isa(arr->arity())) {
             for (size_t i = 0; i != *a; ++i)
-                if (!assignable(arr->proj(*a, i), val->proj(*a, i))) return false;
+                if (!assignable_(arr->proj(*a, i), val->proj(*a, i))) return false;
             return true;
         }
     } else if (auto vel = val->isa<Vel>()) {
-        return assignable(type, vel->value());
+        return assignable_(type, vel->value());
     }
 
-    return equiv<true>(type, val_ty);
+    return alpha_<true>(type, val_ty);
 }
 
-const Def* is_uniform(Defs defs) {
+const Def* Check::is_uniform(Defs defs) {
     if (defs.empty()) return nullptr;
     auto first = defs.front();
     // outln("{}", first);
     for (size_t i = 1, e = defs.size(); i != e; ++i)
-        if (!equiv<false>(first, defs[i])) return nullptr;
+        if (!alpha<false>(first, defs[i])) return nullptr;
     // outln("{, } => {}", defs, first);
     return first;
 }
@@ -207,7 +206,8 @@ const Def* Pi::infer(const Def* dom, const Def* codom) {
 
 void Arr::check() {
     auto t = body()->unfold_type();
-    if (!equiv(t, type())) error(type(), "declared sort '{}' of array does not match inferred one '{}'", type(), t);
+    if (!Check::alpha(t, type()))
+        error(type(), "declared sort '{}' of array does not match inferred one '{}'", type(), t);
 }
 
 void Sigma::check() {
@@ -215,17 +215,17 @@ void Sigma::check() {
 }
 
 void Lam::check() {
-    if (!equiv(filter()->type(), world().type_bool()))
+    if (!Check::alpha(filter()->type(), world().type_bool()))
         error(filter(), "filter '{}' of lambda is of type '{}' but must be of type '.Bool'", filter(),
               filter()->type());
-    if (!equiv(body()->type(), codom()))
+    if (!Check::alpha(body()->type(), codom()))
         error(body(), "body '{}' of lambda is of type \n'{}' but its codomain is of type \n'{}'", body(),
               body()->type(), codom());
 }
 
 void Pi::check() {
     auto t = infer(dom(), codom());
-    if (!equiv(t, type()))
+    if (!Check::alpha(t, type()))
         error(type(), "declared sort '{}' of function type does not match inferred one '{}'", type(), t);
 }
 

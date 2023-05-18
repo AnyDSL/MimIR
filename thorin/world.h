@@ -20,7 +20,6 @@
 #include "thorin/util/sym.h"
 
 namespace thorin {
-class Checker;
 class Driver;
 
 /// The World represents the whole program and manages creation of Thorin nodes (Def%s).
@@ -596,9 +595,6 @@ private:
     };
 
     struct Move {
-        Move(World&);
-
-        std::unique_ptr<Checker> checker;
         absl::btree_map<flags_t, const Def*> annexes;
         absl::btree_map<Sym, Def*> externals;
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
@@ -607,7 +603,6 @@ private:
         friend void swap(Move& m1, Move& m2) {
             using std::swap;
             // clang-format off
-            swap(m1.checker,   m2.checker);
             swap(m1.annexes,   m2.annexes);
             swap(m1.externals, m2.externals);
             swap(m1.defs,      m2.defs);

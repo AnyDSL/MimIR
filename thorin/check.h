@@ -38,44 +38,40 @@ private:
     flags_t& rank() { return flags_; }
 
     THORIN_DEF_MIXIN(Infer)
-    friend class Checker;
+    friend class Check;
 };
 
-class Checker {
+class Check {
 public:
-    Checker(World& world)
-        : world_(&world) {}
-
-    World& world() const { return *world_; }
-
     /// Are @p d1 and @p d2 α-equivalent?
-    template<bool Check>
-    bool equiv(Ref d1, Ref d2);
+    /// * In @p infer mode, type inference is happening and Infer%s will be resolved, if possible.
+    ///     Also, two *free* but *different* Var%s **are** considered α-equivalent.
+    /// * When **not** in @p infer mode, no type inference is happening and Infer%s will not be touched.
+    ///     Two *free* but *different* Var%s are **not** considered α-equivalent.
+    template<bool infer = true>
+    static bool alpha(Ref d1, Ref d2) {
+        return Check().alpha_<infer>(d1, d2);
+    }
 
     /// Can @p value be assigned to sth of @p type?
-    /// @note This is different from `equiv(type, value->type())` since @p type may be dependent.
-    bool assignable(Ref type, Ref value);
+    /// @note This is different from `alpha(type, value->type())` since @p type may be dependent.
+    static bool assignable(Ref type, Ref value) { return Check().assignable_(type, value); }
+
+    /// Yields `defs.front()`, if all @p defs are α-equivalent (in **non**-`infer` mode), and `nullptr` otherwise.
+    static const Def* is_uniform(Defs defs);
 
 private:
     template<bool Check>
-    bool equiv_internal(Ref, Ref);
+    bool alpha_(Ref d1, Ref d2);
 
-    World* world_;
+    bool assignable_(Ref type, Ref value);
+
+    template<bool Check>
+    bool alpha_internal(Ref, Ref);
+
     using Vars = std::deque<std::pair<Def*, Def*>>;
     Vars vars_;
     MutSet done_;
 };
-
-template<bool Check = true>
-bool equiv(Ref d1, Ref d2) {
-    return Checker(d1->world()).equiv<Check>(d1, d2);
-}
-template<bool Check = true>
-bool assignable(Ref type, Ref value) {
-    return Checker(value->world()).assignable(type, value);
-}
-
-/// Yields `defs.front()`, if all @p defs are Equiv::Yes and `nullptr` otherwise.
-const Def* is_uniform(Defs defs);
 
 } // namespace thorin
