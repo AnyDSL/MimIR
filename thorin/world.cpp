@@ -190,13 +190,6 @@ Ref World::app(Ref callee, Ref arg) {
 
     auto pi = callee->type()->isa<Pi>();
 
-    // (a, b)#i arg     where a = A -> B; b = A -> B
-    if (auto extract = callee->type()->isa<Extract>()) {
-        if (auto tuple = extract->tuple()->isa<Tuple>()) {
-            if (auto uni = is_uniform(tuple->ops())) pi = uni->isa<Pi>();
-        }
-    }
-
     if (!pi) error(callee, "called expression '{}' : '{}' is not of function type", callee, callee->type());
     if (!assignable(pi->dom(), arg))
         error(arg, "cannot pass argument \n'{}' of type \n'{}' to \n'{}' of domain \n'{}'", arg, arg->type(), callee,
@@ -227,8 +220,7 @@ Ref World::sigma(Defs ops) {
     auto n = ops.size();
     if (n == 0) return sigma();
     if (n == 1) return ops[0];
-    auto front = ops.front();
-    if (std::ranges::all_of(ops.skip_front(), [front](auto op) { return front == op; })) return arr(n, front);
+    if (auto uni = is_uniform(ops)) return arr(n, uni);
     return unify<Sigma>(ops.size(), umax<Sort::Type>(ops), ops);
 }
 
@@ -250,8 +242,7 @@ Ref World::tuple(Ref type, Defs ops) {
     if (!type->isa_mut<Sigma>()) {
         if (n == 0) return tuple();
         if (n == 1) return ops[0];
-        auto front = ops.front();
-        if (std::ranges::all_of(ops.skip_front(), [front](auto op) { return front == op; })) return pack(n, front);
+        if (auto uni = is_uniform(ops)) return pack(n, uni);
     }
 
     if (n != 0) {

@@ -46,49 +46,52 @@ const Def* Infer::find(const Def* def) {
  * Checker
  */
 
-Equiv Checker::equiv_(Ref r1, Ref r2) {
+template<bool Check>
+bool Checker::equiv(Ref r1, Ref r2) {
     auto d1 = *r1; // find
     auto d2 = *r2; // find
 
-    if (d1 == d2) return Equiv::Yes;
-    if (!d1 || !d2) return Equiv::No;
+    if (d1 == d2) return true;
+    if (!d1 || !d2) return false;
 
     auto i1 = d1->isa_mut<Infer>();
     auto i2 = d2->isa_mut<Infer>();
 
-    if ((!i1 && !d1->is_set()) || (!i2 && !d2->is_set())) return Equiv::No;
+    if ((!i1 && !d1->is_set()) || (!i2 && !d2->is_set())) return false;
 
-    if (i1 && i2) {
-        // union by rank
-        if (i1->rank() < i2->rank()) std::swap(i1, i2); // make sure i1 is heavier or equal
-        i2->set(i1);                                    // make i1 new root
-        if (i1->rank() == i2->rank()) ++i1->rank();
-        return Equiv::Yes;
-    } else if (i1) {
-        i1->set(d2);
-        return Equiv::Yes;
-    } else if (i2) {
-        i2->set(d1);
-        return Equiv::Yes;
+    if (Check) {
+        if (i1 && i2) {
+            // union by rank
+            if (i1->rank() < i2->rank()) std::swap(i1, i2); // make sure i1 is heavier or equal
+            i2->set(i1);                                    // make i1 new root
+            if (i1->rank() == i2->rank()) ++i1->rank();
+            return true;
+        } else if (i1) {
+            i1->set(d2);
+            return true;
+        } else if (i2) {
+            i2->set(d1);
+            return true;
+        }
     }
 
-    assert(!i1 && !i2);
     // normalize: Lit to right; then sort by gid
     if ((d1->isa<Lit>() && !d2->isa<Lit>()) || (d1->gid() > d2->gid())) std::swap(d1, d2);
 
     auto mut1 = d1->isa_mut();
     auto mut2 = d2->isa_mut();
 
-    if (mut1 && !done_.emplace(mut1).second) return Equiv::Yes;
-    if (mut2 && !done_.emplace(mut2).second) return Equiv::Yes;
-    return equiv_internal(d1, d2);
+    if (mut1 && !done_.emplace(mut1).second) return true;
+    if (mut2 && !done_.emplace(mut2).second) return true;
+    return equiv_internal<Check>(d1, d2);
 }
 
-Equiv Checker::equiv_internal(Ref d1, Ref d2) {
-    auto res = equiv_(d1->type(), d2->type());
-    if (res == Equiv::No || d1->isa<Top>() || d2->isa<Top>()) return res;
-    res = meet(res, equiv_(d1->arity(), d2->arity()));
-    if (res == Equiv::No) return Equiv::No;
+template<bool Check>
+bool Checker::equiv_internal(Ref d1, Ref d2) {
+    if (!equiv<Check>(d1->type(), d2->type())) return false;
+    if (d1->isa<Top>() || d2->isa<Top>()) return Check;
+    if (!equiv<Check>(d1->arity(), d2->arity())) return false;
+    if (!Check && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return false;
 
     struct Pop {
         ~Pop() {
@@ -107,15 +110,18 @@ Equiv Checker::equiv_internal(Ref d1, Ref d2) {
 
     if (auto sigma = d1->isa<Sigma>()) {
         size_t a = sigma->num_ops();
-        for (size_t i = 0; i != a && res != Equiv::No; ++i) res = meet(res, equiv_(d1->op(i), d2->proj(a, i)));
-        return res;
+        for (size_t i = 0; i != a; ++i) {
+            if (!equiv<Check>(d1->op(i), d2->proj(a, i))) return false;
+        }
+        return true;
     } else if (auto arr1 = d1->isa<Arr>()) {
         // we've already checked arity above
-        if (auto arr2 = d2->isa<Arr>()) return meet(res, equiv_(arr1->body(), arr2->body()));
+        if (auto arr2 = d2->isa<Arr>()) return equiv<Check>(arr1->body(), arr2->body());
         if (auto a = arr1->isa_lit_arity()) {
-            for (size_t i = 0; i != *a && res != Equiv::No; ++i)
-                res = meet(res, equiv_(d1->proj(*a, i), d2->proj(*a, i)));
-            return res;
+            for (size_t i = 0; i != *a; ++i) {
+                if (equiv<Check>(d1->proj(*a, i), d2->proj(*a, i))) return false;
+            }
+            return true;
         }
     } else if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Infer)) {
         if (auto l = d2->isa<Lit>()) {
@@ -125,7 +131,7 @@ Equiv Checker::equiv_internal(Ref d1, Ref d2) {
         d1 = umax->rebuild(world(), umax->type(), umax->ops());
     }
 
-    if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return Equiv::No;
+    if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return false;
 
     if (auto var1 = d1->isa<Var>()) { // vars are equal if they appeared under the same binder
         auto var2   = d2->as<Var>();
@@ -135,59 +141,60 @@ Equiv Checker::equiv_internal(Ref d1, Ref d2) {
         for (auto [n1, n2] : vars_) {
             if (var1->mut() == n1) {
                 bound1 = true;
-                if (d2->as<Var>()->mut() != n2)
-                    return Equiv::No;
-                else
-                    return res;
+                return d2->as<Var>()->mut() == n2;
             }
             assert(var1->mut() != n2);
             if (var2->mut() == n1 || var2->mut() == n2) bound2 = true;
         }
-        if (bound1 || bound2) return Equiv::No;
-        return Equiv::FV; // both var1 and var2 are free
+        if (bound1 || bound2) return false;
+        return Check; // both var1 and var2 are free: ok, when Check%ing
     }
 
-    for (size_t i = 0, e = d1->num_ops(); i != e && res != Equiv::No; ++i)
-        res = meet(res, equiv_(d1->op(i), d2->op(i)));
-    return res;
+    for (size_t i = 0, e = d1->num_ops(); i != e; ++i)
+        if (!equiv<Check>(d1->op(i), d2->op(i))) return false;
+    return true;
 }
 
-Equiv Checker::assignable_(Ref type, Ref val) {
+bool Checker::assignable(Ref type, Ref val) {
     auto val_ty = Ref::refer(val->type());
-    if (type == val_ty) return Equiv::Yes;
+    if (type == val_ty) return true;
 
-    if (auto infer = val->isa_mut<Infer>()) return equiv_(type, infer->type());
+    if (auto infer = val->isa_mut<Infer>()) return equiv<true>(type, infer->type());
 
     if (auto sigma = type->isa<Sigma>()) {
-        if (equiv_(type->arity(), val_ty->arity()) == Equiv::No) return Equiv::No;
+        if (!equiv<true>(type->arity(), val_ty->arity())) return false;
 
         size_t a = sigma->num_ops();
         auto red = sigma->reduce(val);
-        auto res = Equiv::Yes;
-
-        for (size_t i = 0; i != a && res != Equiv::No; ++i) res = meet(res, assignable_(red[i], val->proj(a, i)));
-        return res;
+        for (size_t i = 0; i != a; ++i) {
+            if (!assignable(red[i], val->proj(a, i))) return false;
+        }
+        return true;
     } else if (auto arr = type->isa<Arr>()) {
-        if (equiv_(type->arity(), val_ty->arity()) == Equiv::No) return Equiv::No;
+        if (!equiv<true>(type->arity(), val_ty->arity())) return false;
 
         if (auto a = Lit::isa(arr->arity())) {
-            auto res = Equiv::Yes;
-            for (size_t i = 0; i != *a && res != Equiv::No; ++i)
-                res = meet(res, assignable_(arr->proj(*a, i), val->proj(*a, i)));
-            return res;
+            for (size_t i = 0; i != *a; ++i) {
+                if (!assignable(arr->proj(*a, i), val->proj(*a, i))) return false;
+            }
+            return true;
         }
     } else if (auto vel = val->isa<Vel>()) {
-        return assignable_(type, vel->value());
+        return assignable(type, vel->value());
     }
 
-    return equiv_(type, val_ty);
+    return equiv<true>(type, val_ty);
 }
 
-const Def* Checker::is_uniform(Defs defs) {
-    assert(!defs.empty());
+const Def* is_uniform(Defs defs) {
+    if (defs.empty()) return nullptr;
     auto first = defs.front();
-    auto ops   = defs.skip_front();
-    return std::ranges::all_of(ops, [&](auto op) { return equiv_(first, op) == Equiv::Yes; }) ? first : nullptr;
+    //outln("{}", first);
+    for (size_t i = 1, e = defs.size(); i != e; ++i) {
+        if (!equiv<false>(first, defs[i])) return nullptr;
+    }
+    //outln("{, } => {}", defs, first);
+    return first;
 }
 
 /*
