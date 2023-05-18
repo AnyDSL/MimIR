@@ -127,7 +127,7 @@ Equiv Checker::equiv_internal(Ref d1, Ref d2) {
 
     if (auto var1 = d1->isa<Var>()) { // vars are equal if they appeared under the same binder
         auto var2   = d2->as<Var>();
-        bool bound1 = false ;
+        bool bound1 = false;
         bool bound2 = false;
 
         for (auto [n1, n2] : vars_) {
@@ -163,8 +163,7 @@ Equiv Checker::assignable_(Ref type, Ref val) {
         auto red = sigma->reduce(val);
         auto res = Equiv::Yes;
 
-        for (size_t i = 0; i != a && res != Equiv::No; ++i)
-            res = meet(res, assignable_(red[i], val->proj(a, i)));
+        for (size_t i = 0; i != a && res != Equiv::No; ++i) res = meet(res, assignable_(red[i], val->proj(a, i)));
         return res;
     } else if (auto arr = type->isa<Arr>()) {
         if (equiv_(type->arity(), val_ty->arity()) == Equiv::No) return Equiv::No;
@@ -203,9 +202,8 @@ const Def* Pi::infer(const Def* dom, const Def* codom) {
  */
 
 void Arr::check() {
-    auto t  = body()->unfold_type();
-    if (!equiv(t, type()))
-        error(type(), "declared sort '{}' of array does not match inferred one '{}'", type(), t);
+    auto t = body()->unfold_type();
+    if (!equiv(t, type())) error(type(), "declared sort '{}' of array does not match inferred one '{}'", type(), t);
 }
 
 void Sigma::check() {
@@ -222,7 +220,7 @@ void Lam::check() {
 }
 
 void Pi::check() {
-    auto t  = infer(dom(), codom());
+    auto t = infer(dom(), codom());
     if (!equiv(t, type()))
         error(type(), "declared sort '{}' of function type does not match inferred one '{}'", type(), t);
 }

@@ -43,9 +43,9 @@ private:
 
 /// Result of Checker::equiv.
 enum class Equiv {
-    No, ///< Definitely **not** α-equivalent.
-    FV, ///< α-equivalent **modulo free variables** such as `λx.x+y` and `λx.x+z`.
-    Yes,///< **Definitely** α-equivalent.
+    No,  ///< Definitely **not** α-equivalent.
+    FV,  ///< α-equivalent **modulo free variables** such as `λx.x+y` and `λx.x+z`.
+    Yes, ///< **Definitely** α-equivalent.
 };
 
 inline Equiv meet(Equiv e1, Equiv e2) { return (Equiv)std::min((int)e1, (int)e2); }
