@@ -110,17 +110,15 @@ bool Checker::equiv_internal(Ref d1, Ref d2) {
 
     if (auto sigma = d1->isa<Sigma>()) {
         size_t a = sigma->num_ops();
-        for (size_t i = 0; i != a; ++i) {
+        for (size_t i = 0; i != a; ++i)
             if (!equiv<Check>(d1->op(i), d2->proj(a, i))) return false;
-        }
         return true;
     } else if (auto arr1 = d1->isa<Arr>()) {
         // we've already checked arity above
         if (auto arr2 = d2->isa<Arr>()) return equiv<Check>(arr1->body(), arr2->body());
         if (auto a = arr1->isa_lit_arity()) {
-            for (size_t i = 0; i != *a; ++i) {
+            for (size_t i = 0; i != *a; ++i)
                 if (equiv<Check>(d1->proj(*a, i), d2->proj(*a, i))) return false;
-            }
             return true;
         }
     } else if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Infer)) {
@@ -166,17 +164,15 @@ bool Checker::assignable(Ref type, Ref val) {
 
         size_t a = sigma->num_ops();
         auto red = sigma->reduce(val);
-        for (size_t i = 0; i != a; ++i) {
+        for (size_t i = 0; i != a; ++i)
             if (!assignable(red[i], val->proj(a, i))) return false;
-        }
         return true;
     } else if (auto arr = type->isa<Arr>()) {
         if (!equiv<true>(type->arity(), val_ty->arity())) return false;
 
         if (auto a = Lit::isa(arr->arity())) {
-            for (size_t i = 0; i != *a; ++i) {
+            for (size_t i = 0; i != *a; ++i)
                 if (!assignable(arr->proj(*a, i), val->proj(*a, i))) return false;
-            }
             return true;
         }
     } else if (auto vel = val->isa<Vel>()) {
@@ -189,11 +185,10 @@ bool Checker::assignable(Ref type, Ref val) {
 const Def* is_uniform(Defs defs) {
     if (defs.empty()) return nullptr;
     auto first = defs.front();
-    //outln("{}", first);
-    for (size_t i = 1, e = defs.size(); i != e; ++i) {
+    // outln("{}", first);
+    for (size_t i = 1, e = defs.size(); i != e; ++i)
         if (!equiv<false>(first, defs[i])) return nullptr;
-    }
-    //outln("{, } => {}", defs, first);
+    // outln("{, } => {}", defs, first);
     return first;
 }
 

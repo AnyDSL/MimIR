@@ -67,9 +67,13 @@ private:
 };
 
 template<bool Check = true>
-bool equiv(Ref d1, Ref d2) { return Checker(d1->world()).equiv<Check>(d1, d2); }
+bool equiv(Ref d1, Ref d2) {
+    return Checker(d1->world()).equiv<Check>(d1, d2);
+}
 template<bool Check = true>
-bool assignable(Ref type, Ref value) { return Checker(value->world()).assignable(type, value); }
+bool assignable(Ref type, Ref value) {
+    return Checker(value->world()).assignable(type, value);
+}
 
 /// Yields `defs.front()`, if all @p defs are Equiv::Yes and `nullptr` otherwise.
 const Def* is_uniform(Defs defs);
