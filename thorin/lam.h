@@ -78,7 +78,7 @@ public:
     /// @name Type Checking
     ///@{
     void check() override;
-    static const Def* infer(const Def* dom, const Def* codom);
+    static Ref infer(Ref dom, Ref codom);
     ///@}
 
     const Pi* immutabilize() override;

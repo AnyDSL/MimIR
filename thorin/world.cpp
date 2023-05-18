@@ -298,8 +298,7 @@ Ref World::extract(Ref d, Ref index) {
 
     if (auto pack = d->isa_imm<Pack>()) return pack->body();
 
-    if (!Check::alpha(type->arity(), size))
-        error(index, "index '{}' does not fit within arity '{}'", index, type->arity());
+    if (!Check::alpha(type->arity(), size)) error(index, "index '{}' does not fit within arity '{}'", index, type->arity());
 
     // extract(insert(x, index, val), index) -> val
     if (auto insert = d->isa<Insert>()) {
@@ -339,8 +338,7 @@ Ref World::insert(Ref d, Ref index, Ref val) {
     auto type = d->unfold_type();
     auto size = Idx::size(index->type());
 
-    if (!Check::alpha(type->arity(), size))
-        error(index, "index '{}' does not fit within arity '{}'", index, type->arity());
+    if (!Check::alpha(type->arity(), size)) error(index, "index '{}' does not fit within arity '{}'", index, type->arity());
 
     if (auto index_lit = Lit::isa(index)) {
         auto target_type = type->proj(*index_lit);

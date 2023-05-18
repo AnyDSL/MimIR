@@ -181,7 +181,7 @@ bool Check::assignable_(Ref type, Ref val) {
     return alpha_<true>(type, val_ty);
 }
 
-const Def* Check::is_uniform(Defs defs) {
+Ref Check::is_uniform(Defs defs) {
     if (defs.empty()) return nullptr;
     auto first = defs.front();
     // outln("{}", first);
@@ -192,16 +192,7 @@ const Def* Check::is_uniform(Defs defs) {
 }
 
 /*
- * infer
- */
-
-const Def* Pi::infer(const Def* dom, const Def* codom) {
-    auto& w = dom->world();
-    return w.umax<Sort::Kind>({dom->unfold_type(), codom->unfold_type()});
-}
-
-/*
- * check
+ * infer & check
  */
 
 void Arr::check() {
@@ -221,6 +212,11 @@ void Lam::check() {
     if (!Check::alpha(body()->type(), codom()))
         error(body(), "body '{}' of lambda is of type \n'{}' but its codomain is of type \n'{}'", body(),
               body()->type(), codom());
+}
+
+Ref Pi::infer(Ref dom, Ref codom) {
+    auto& w = dom->world();
+    return w.umax<Sort::Kind>({dom->unfold_type(), codom->unfold_type()});
 }
 
 void Pi::check() {
