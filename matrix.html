@@ -233,7 +233,8 @@ High-level matrix operations</h2>
 <li><code>dot matrix ij,ij -&gt;</code></li>
 <li><code>outer product i,j -&gt; ij</code> TODO: introduce dummy values (zero, add, ...) in refly and use these dummy = has correct type but can not produce code (should always be eliminated) <div class="fragment"><div class="line">.ax %matrix.map_reduce:</div>
 <div class="line">    // out shape depends on in shape but is complex</div>
-<div class="line">    Π [ n: .Nat, S: «n; .Nat», T: *, // out shape</div>
+<div class="line">    Π [</div>
+<div class="line">        n: .Nat, S: «n; .Nat», T: *, // out shape</div>
 <div class="line">        m: .Nat,                     // number of inputs</div>
 <div class="line">        NI: «m; .Nat»,               // input dimensions</div>
 <div class="line">        TI: «m; *»,                  // input types</div>
@@ -244,8 +245,8 @@ High-level matrix operations</h2>
 <div class="line">        // TODO: propagate change: no addition but instead take acc as argument (like mlir.linarith.generic)</div>
 <div class="line">        comb:   .Fn [%mem.M, T, «i: m; TI#i»] -&gt; [%mem.M, T], // inner combination</div>
 <div class="line">        // out_index not needed =&gt; always ij (0 ... n) for n dimensions</div>
-<div class="line">        input:  «i:m; [«NI#i;.Nat», %matrix.Mat (NI#i,SI#i,TI#i)]»</div>
-<div class="line">    ] -&gt; [%mem.M, %matrix.Mat (n,S,T)],</div>
+<div class="line">        input:  «i: m; [«NI#i; .Nat», %matrix.Mat (NI#i, SI#i, TI#i)]»</div>
+<div class="line">    ] -&gt; [%mem.M, %matrix.Mat (n, S, T)],</div>
 <div class="line">    normalize_map_reduce;</div>
 </div><!-- fragment --></li>
 </ul>
@@ -258,8 +259,7 @@ product</h2>
 <div class="line">                                                       N: %matrix.Mat (2, (k, l), %math.F pe))</div>
 <div class="line">                                        :[     %mem.M,    %matrix.Mat (2, (m, l), %math.F pe)] =</div>
 <div class="line">    .let R = %math.F pe;</div>
-<div class="line">    .let zero_64   = 0.0:%math.F64;</div>
-<div class="line">    .let zero_real = %math.conv.f2f pe zero_64;</div>
+<div class="line">    .let zero_real = %math.conv.f2f pe 0.0:%math.F64;</div>
 <div class="line">    return (</div>
 <div class="line">        %matrix.map_reduce</div>
 <div class="line">            (2, (m, l), R,</div>
@@ -286,7 +286,7 @@ transpose</h2>
 <div class="line">.fun .extern internal_mapRed_matrix_transpose!((k l: .Nat), T: *)</div>
 <div class="line">                                             !(mem: %mem.M, M: %matrix.Mat (2,(k, l),T)) :</div>
 <div class="line">                                              [     %mem.M,    %matrix.Mat (2,(l, k),T)] =</div>
-<div class="line">    .let zero = (⊥:T); // TODO: use generalized zero</div>
+<div class="line">    .let zero = ⊥:T; // TODO: use generalized zero</div>
 <div class="line">    return (</div>
 <div class="line">        %matrix.map_reduce</div>
 <div class="line">            (2, (l, k), T,</div>
