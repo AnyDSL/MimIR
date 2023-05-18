@@ -107,8 +107,7 @@ Equiv Checker::equiv_internal(Ref d1, Ref d2) {
 
     if (auto sigma = d1->isa<Sigma>()) {
         size_t a = sigma->num_ops();
-        for (size_t i = 0; i != a && res != Equiv::No; ++i)
-            res = meet(res, equiv_(d1->op(i), d2->proj(a, i)));
+        for (size_t i = 0; i != a && res != Equiv::No; ++i) res = meet(res, equiv_(d1->op(i), d2->proj(a, i)));
         return res;
     } else if (auto arr1 = d1->isa<Arr>()) {
         // we've already checked arity above
