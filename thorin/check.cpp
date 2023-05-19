@@ -181,10 +181,8 @@ bool Check::assignable_(Ref type, Ref val) {
 Ref Check::is_uniform(Defs defs) {
     if (defs.empty()) return nullptr;
     auto first = defs.front();
-    // outln("{}", first);
     for (size_t i = 1, e = defs.size(); i != e; ++i)
         if (!alpha<false>(first, defs[i])) return nullptr;
-    // outln("{, } => {}", defs, first);
     return first;
 }
 
