@@ -25,21 +25,8 @@ Pi* Pi::set_dom(Defs doms) { return Def::set(0, world().sigma(doms))->as<Pi>(); 
  * Lam
  */
 
-Lam* Lam::set_filter(Filter filter) {
-    const Def* f;
-    if (auto b = std::get_if<bool>(&filter))
-        f = world().lit_bool(*b);
-    else
-        f = std::get<const Def*>(filter);
-    return Def::set(0, f)->as<Lam>();
-}
-
-Lam* Lam::app(Filter f, const Def* callee, const Def* arg) {
-    assert(isa_mut() && !filter());
-    set_filter(f);
-    return set_body(world().app(callee, arg));
-}
-
+Lam* Lam::set_filter(Filter filter) { return Def::set(0, world().filter(filter))->as<Lam>(); }
+Lam* Lam::app(Filter f, const Def* callee, const Def* arg) { return set_filter(f)->set_body(world().app(callee, arg)); }
 Lam* Lam::app(Filter filter, const Def* callee, Defs args) { return app(filter, callee, world().tuple(args)); }
 
 Lam* Lam::branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem) {

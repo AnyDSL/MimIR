@@ -109,7 +109,7 @@ Ref Vel      ::rebuild(World& w, Ref t, Defs o) const { return w.vel(t, o[0])->s
 
 Ref Axiom    ::rebuild(World& w, Ref t, Defs ) const {
     if (&w != &world()) return w.axiom(normalizer(), curry(), trip(), t, plugin(), tag(), sub())->set(dbg());
-    assert(w.checker().equiv(t, type()));
+    assert(Check::alpha(t, type()));
     return this;
 }
 

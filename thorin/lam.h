@@ -78,7 +78,7 @@ public:
     /// @name Type Checking
     ///@{
     void check() override;
-    static const Def* infer(const Def* dom, const Def* codom);
+    static Ref infer(Ref dom, Ref codom);
     ///@}
 
     const Pi* immutabilize() override;
@@ -176,10 +176,9 @@ public:
 /// @name Lam
 ///@{
 /// GIDSet / GIDMap keyed by Lam::gid of `Lam*`.
-template<class To>
-using LamMap  = GIDMap<Lam*, To>;
-using LamSet  = GIDSet<Lam*>;
-using Lam2Lam = LamMap<Lam*>;
+template<class To> using LamMap = GIDMap<Lam*, To>;
+using LamSet                    = GIDSet<Lam*>;
+using Lam2Lam                   = LamMap<Lam*>;
 ///@}
 
 class App : public Def {
