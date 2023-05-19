@@ -332,7 +332,10 @@ std::ostream& operator<<(std::ostream& os, Ref ref) { return os << *ref; }
 /// This is usually `id(def)` unless it can be displayed Inline.
 std::ostream& operator<<(std::ostream& os, const Def* def) {
     if (def == nullptr) return os << "<nullptr>";
-    if (Inline(def)) return os << Inline(def);
+    if (Inline(def)) {
+        auto freezer = World::Freezer(def->world());
+        return os << Inline(def);
+    }
     return os << id(def);
 }
 

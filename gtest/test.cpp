@@ -204,3 +204,81 @@ TEST(Sym, cmp) {
     EXPECT_NE(b, 'a');
     EXPECT_EQ(b, 'b');
 }
+
+TEST(Check, alpha) {
+    Driver driver;
+    World& w = driver.world();
+    auto pi = w.pi(w.type_nat(), w.type_nat());
+
+    // λx.x
+    auto lxx = w.mut_lam(pi);
+    lxx->set(false, lxx->var());
+    // λy.y
+    auto lyy = w.mut_lam(pi);
+    lyy->set(false, lyy->var());
+    // λz.x
+    auto lzx = w.mut_lam(pi);
+    lzx->set(false, lxx->var());
+    // λw.y
+    auto lwy = w.mut_lam(pi);
+    lwy->set(false, lyy->var());
+    // λ_.x
+    auto l_x = w.lam(pi, false, lxx->var());
+    // λ_.y
+    auto l_y = w.lam(pi, false, lyy->var());
+    // λ_.0
+    auto l_0 = w.lam(pi, false, w.lit_nat_0());
+    // λ_.1
+    auto l_1 = w.lam(pi, false, w.lit_nat_1());
+
+    auto check = [](Ref l1, Ref l2, bool infer_res, bool non_infer_res) {
+        EXPECT_EQ(Check::alpha<true>(l1, l2), infer_res);
+        EXPECT_EQ(Check::alpha<true>(l2, l1), infer_res);
+        EXPECT_EQ(Check::alpha<false>(l1, l2), non_infer_res);
+        EXPECT_EQ(Check::alpha<false>(l2, l1), non_infer_res);
+    };
+
+    check(lxx, lxx, true, true);
+    check(lxx, lyy, true, true);
+    check(lxx, lzx, false, false);
+    check(lxx, lwy, false, false);
+    check(lxx, l_x, false, false);
+    check(lxx, l_y, false, false);
+    check(lxx, l_0, false, false);
+    check(lxx, l_1, false, false);
+
+    check(lyy, lyy, true, true);
+    check(lyy, lzx, false, false);
+    check(lyy, lwy, false, false);
+    check(lyy, l_x, false, false);
+    check(lyy, l_y, false, false);
+    check(lyy, l_0, false, false);
+    check(lyy, l_1, false, false);
+
+    check(lzx, lzx, true, true);
+    check(lzx, lwy, true, false);
+    check(lzx, l_x, true, true);
+    check(lzx, l_y, true, false);
+    check(lzx, l_0, false, false);
+    check(lzx, l_1, false, false);
+
+    check(lwy, lwy, true, true);
+    check(lwy, l_x, true, false);
+    check(lwy, l_y, true, true);
+    check(lwy, l_0, false, false);
+    check(lwy, l_1, false, false);
+
+    check(l_x, l_x, true, true);
+    check(l_x, l_y, true, false);
+    check(l_x, l_0, false, false);
+    check(l_x, l_1, false, false);
+
+    check(l_y, l_y, true, true);
+    check(l_y, l_0, false, false);
+    check(l_y, l_1, false, false);
+
+    check(l_0, l_0, true, true);
+    check(l_0, l_1, false, false);
+
+    check(l_1, l_1, true, true);
+}

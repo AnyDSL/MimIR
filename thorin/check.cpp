@@ -50,8 +50,15 @@ template<bool infer> bool Check::alpha_(Ref r1, Ref r2) {
     auto d1 = *r1; // find
     auto d2 = *r2; // find
 
-    if (d1 == d2) return true;
+    if (!d1 && !d2) return true;
     if (!d1 || !d2) return false;
+
+    if (!d1->has_dep(Dep::Var) && !d2->has_dep(Dep::Var) && d1 == d2) return true;
+    auto mut1 = d1->isa_mut();
+    auto mut2 = d2->isa_mut();
+    if (mut1 && mut2 && mut1 == mut2) return true;
+    if (mut1 && !done_.emplace(mut1).second) return true;
+    if (mut2 && !done_.emplace(mut2).second) return true;
 
     auto i1 = d1->isa_mut<Infer>();
     auto i2 = d2->isa_mut<Infer>();
@@ -77,11 +84,6 @@ template<bool infer> bool Check::alpha_(Ref r1, Ref r2) {
     // normalize: Lit to right; then sort by gid
     if ((d1->isa<Lit>() && !d2->isa<Lit>()) || (d1->gid() > d2->gid())) std::swap(d1, d2);
 
-    auto mut1 = d1->isa_mut();
-    auto mut2 = d2->isa_mut();
-
-    if (mut1 && !done_.emplace(mut1).second) return true;
-    if (mut2 && !done_.emplace(mut2).second) return true;
     return alpha_internal<infer>(d1, d2);
 }
 
@@ -91,20 +93,9 @@ template<bool infer> bool Check::alpha_internal(Ref d1, Ref d2) {
     if (!infer && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return false;
     if (!alpha_<infer>(d1->arity(), d2->arity())) return false;
 
-    struct Pop {
-        ~Pop() {
-            if (vars) vars->pop_back();
-        }
-
-        Vars* vars = nullptr;
-    } pop;
-
-    if (auto n1 = d1->isa_mut()) {
-        if (auto n2 = d2->isa_mut()) {
-            vars_.emplace_back(n1, n2);
-            pop.vars = &vars_; // make sure vars_ is popped again
-        }
-    }
+    // vars are equal if they appeared under the same binder
+    if (auto mut1 = d1->isa_mut()) assert_emplace(vars_, mut1, d2->isa_mut());
+    if (auto mut2 = d2->isa_mut()) assert_emplace(vars_, mut2, d1->isa_mut());
 
     if (auto ts = d1->isa<Tuple, Sigma>()) {
         size_t a = ts->num_ops();
@@ -127,21 +118,13 @@ template<bool infer> bool Check::alpha_internal(Ref d1, Ref d2) {
 
     if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return false;
 
-    if (auto var1 = d1->isa<Var>()) { // vars are equal if they appeared under the same binder
+    if (auto var1 = d1->isa<Var>()) {
         auto var2   = d2->as<Var>();
-        bool bound1 = false;
-        bool bound2 = false;
-
-        for (auto [n1, n2] : vars_) {
-            if (var1->mut() == n1) {
-                bound1 = true;
-                return d2->as<Var>()->mut() == n2;
-            }
-            assert(var1->mut() != n2);
-            if (var2->mut() == n1 || var2->mut() == n2) bound2 = true;
-        }
-        if (bound1 || bound2) return false;
-        return infer; // both var1 and var2 are free: ok, when check%ing
+        if (auto i = vars_.find(var1->mut()); i != vars_.end()) return i->second == var2->mut();
+        if (auto i = vars_.find(var2->mut()); i != vars_.end()) return false; // var2 is bound
+        // both var1 and var2 are free: OK, when they are the same or in infer mode
+        if (var1 == var2) return true;
+        return infer;
     }
 
     for (size_t i = 0, e = d1->num_ops(); i != e; ++i)

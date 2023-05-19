@@ -62,7 +62,7 @@ private:
     template<bool infer> bool alpha_internal(Ref, Ref);
     bool assignable_(Ref type, Ref value);
 
-    using Vars = std::deque<std::pair<Def*, Def*>>;
+    using Vars = MutMap<Def*>;
     Vars vars_;
     MutSet done_;
 };
