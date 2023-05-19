@@ -32,6 +32,16 @@ Ref lit_impl(Match<regex::lit, App> lit_app) {
     return world.app(world.annex<regex::match_lit>(), lit_app->arg());
 }
 
+Ref quant_impl(Match<regex::quant, App> quant_app) {
+    auto& world = quant_app->world();
+    switch (quant_app.id()) {
+        case quant::zeroOrOne: return world.annex<regex::match_zeroOrOne>();
+        case quant::zeroOrMore: return world.annex<regex::match_zeroOrMore>();
+        case quant::oneOrMore: return world.annex<regex::match_oneOrMore>();
+    }
+    return quant_app.axiom();
+}
+
 Ref conj_impl(Match<regex::conj, App> conj_app) {
     auto& world = conj_app->world();
     return world.annex<regex::match_conj>();
@@ -64,6 +74,8 @@ Ref rewrite_arg(Ref def, Ref n) {
         new_app = world.iapp(world.app(conj_impl(conj_app), n), rewrite_args(conj_app->arg(), n));
     if (auto disj_app = thorin::match<disj>(def))
         new_app = world.iapp(world.app(disj_impl(disj_app), n), rewrite_args(disj_app->arg(), n));
+    if (auto quant_app = thorin::match<quant>(def))
+        new_app = world.iapp(world.app(quant_impl(quant_app), n), rewrite_args(quant_app->arg(), n));
     return new_app;
 }
 
@@ -74,17 +86,20 @@ Ref LowerRegex::rewrite(Ref def) {
     const Def* new_app = def;
 
     if (auto app = def->isa<App>()) {
+        const auto n = app->arg();
+        // clang-format off
         if (auto cls_ax = thorin::match<cls>(app->callee()))
-            new_app
-                = world.app(wrap_in_cps2ds(world.app(cls_impl(cls_ax), app->callee()->as<App>()->arg())), app->arg());
-        if (auto conj_app = thorin::match<conj>(app->callee())) {
-            new_app = wrap_in_cps2ds(
-                world.app(world.iapp(conj_impl(conj_app), app->arg()), rewrite_args(conj_app->arg(), app->arg())));
+            new_app = wrap_in_cps2ds(world.app(cls_impl(cls_ax), n));
+        if (auto lit_app = thorin::match<lit>(app->callee()))
+            new_app = wrap_in_cps2ds(world.app(lit_impl(lit_app), n));
+        if (auto conj_app = thorin::match<conj>(app->callee()))
+            new_app = wrap_in_cps2ds(world.app(world.iapp(conj_impl(conj_app), n), rewrite_args(conj_app->arg(), n)));
+        if (auto disj_app = thorin::match<disj>(app->callee()))
+            new_app = wrap_in_cps2ds(world.app(world.iapp(disj_impl(disj_app), n), rewrite_args(disj_app->arg(), n)));
+        if (auto quant_app = thorin::match<quant>(app->callee())) {
+            new_app = wrap_in_cps2ds(world.app(world.iapp(quant_impl(quant_app), n), rewrite_args(quant_app->arg(), n)));
         }
-        if (auto disj_app = thorin::match<disj>(app->callee())) {
-            new_app = wrap_in_cps2ds(
-                world.app(world.iapp(disj_impl(disj_app), app->arg()), rewrite_args(disj_app->arg(), app->arg())));
-        }
+        // clang-format on
     }
 
     return new_app;
