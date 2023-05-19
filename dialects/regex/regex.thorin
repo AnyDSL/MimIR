@@ -19,7 +19,7 @@
 ///
 /// A regular expression matcher.
 .let RE = Π[n: .Nat][%mem.M, %mem.Ptr0 «n; %core.I8», .Idx n] -> [%mem.M, .Bool, .Idx n];
-.let CPS_RE = Π[n: .Nat] -> .Cn [[%mem.M, %mem.Ptr0 «n; %core.I8», .Idx n], .Cn[%mem.M, .Bool, .Idx n]];
+.lam CPS_RE![n: .Nat] = .Cn [[%mem.M, %mem.Ptr0 «n; %core.I8», .Idx n], .Cn[%mem.M, .Bool, .Idx n]];
 
 /// ## Meta
 ///
@@ -134,7 +134,7 @@
     .let new_pos = (pos, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)))#isnt_0;
     cont (mem, isnt_0, new_pos)
 };
-.con %regex.match_conj (num_subexpr: .Nat)(subexprs: <<num_subexpr; CPS_RE>>)(n: .Nat)((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
+.con %regex.match_conj (num_subexpr: .Nat)(n: .Nat)(subexprs: <<num_subexpr; (CPS_RE n)>>)((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
     .let num_subexpr_int = %core.bitcast %core.I64 num_subexpr;
     .let n_int = %core.bitcast %core.I64 n;
     .con exit_true ((mem: %mem.M, idx: .Idx num_subexpr, pos: .Idx n)) = {
@@ -160,7 +160,7 @@
             (exit_false, on_matched)#matched ((mem, idx, new_pos))
         };
 
-        subexprs#idx n ((mem, string, pos), subexpr_ret)
+        subexprs#idx ((mem, string, pos), subexpr_ret)
     };
     
     // todo %core.ncmp.le (num_subexpr, n)
