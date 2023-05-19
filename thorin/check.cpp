@@ -123,8 +123,7 @@ template<bool infer> bool Check::alpha_internal(Ref d1, Ref d2) {
         if (auto i = vars_.find(var1->mut()); i != vars_.end()) return i->second == var2->mut();
         if (auto i = vars_.find(var2->mut()); i != vars_.end()) return false; // var2 is bound
         // both var1 and var2 are free: OK, when they are the same or in infer mode
-        if (var1 == var2) return true;
-        return infer;
+        return var1 == var2 || infer;
     }
 
     for (size_t i = 0, e = d1->num_ops(); i != e; ++i)
