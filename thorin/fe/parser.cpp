@@ -731,10 +731,13 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
             expect(Tag::T_colon, "type ascription of an identifier group within a tuple pattern");
             auto type = parse_expr("type of an identifier group within a tuple pattern");
 
-            for (auto tok : sym_toks) {
+            for (size_t i = 0, e = sym_toks.size(); i != e; ++i) {
+                auto tok = sym_toks[i];
                 infers.emplace_back(world().mut_infer(type)->set(tok.dbg()));
                 ops.emplace_back(type);
-                ptrns.emplace_back(std::make_unique<IdPtrn>(tok.dbg(), false, type));
+                auto ptrn = std::make_unique<IdPtrn>(tok.dbg(), false, type);
+                if (i != e - 1) ptrn->bind(scopes_, infers.back()); // last element will be bound above
+                ptrns.emplace_back(std::move(ptrn));
             }
         } else {
             auto ptrn = parse_ptrn(delim_l, "element of a tuple pattern");
