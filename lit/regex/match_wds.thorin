@@ -14,7 +14,6 @@
 .let Top = ⊤:.Nat;
 
 .let re = %regex.conj 2 (%regex.cls.w, %regex.conj 2 (%regex.cls.d, %regex.cls.s));
-//.let re = %regex.cls.w;
 
 .con .extern main[mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), exit : .Cn [%mem.M, I32]] = {
     .con handle_match [mem: %mem.M, matched: .Bool, match: %mem.Ptr(«Top; I8», 0)] = {
@@ -25,7 +24,6 @@
     .con match_argument[mem: %mem.M, I32] = {
         .let arg1 = %mem.lea (Top, ‹Top; %mem.Ptr («⊤:.Nat; .Idx 256», 0)›, 0) (argv, 1:(.Idx 4294967296));;
         .let (`mem, to_match) = %mem.load (mem, arg1);
-        //regexmatch(mem, re, to_match, handle_match)
         .let (`mem, matched, pos) = re Top (mem, to_match, 0:(.Idx Top));
         exit (mem, %core.conv.u _32 matched)
     };

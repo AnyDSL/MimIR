@@ -19,7 +19,6 @@
 ///
 /// A regular expression matcher.
 .let RE = Π[n: .Nat][%mem.M, %mem.Ptr0 «n; %core.I8», .Idx n] -> [%mem.M, .Bool, .Idx n];
-.lam CPS_RE![n: .Nat] = .Cn [[%mem.M, %mem.Ptr0 «n; %core.I8», .Idx n], .Cn[%mem.M, .Bool, .Idx n]];
 
 /// ## Meta
 ///
@@ -29,7 +28,6 @@
 /// `%regex.conj (%regex.cls.d, %regex.cls.d, %regex.cls.d)
 ///
 .ax %regex.conj: Π[n: .Nat][<<n; RE>>] -> RE, normalize_conj, 2;
-//.ax %regex.conj: Π[A: RE, B: RE] -> RE, normalize_conj, 1;
 
 ///
 /// ### %regex.disj
@@ -52,7 +50,7 @@
 ///
 /// Wraps a literal.
 ///
-.ax %regex.lit: Π n:.Nat -> RE, normalize_lit, 1;
+.ax %regex.lit: Π val:%core.I8 -> RE, normalize_lit, 1;
 
 ///
 /// ### %regex.cls.*
@@ -77,6 +75,8 @@
 ///
 /// ## Implementation
 ///
+.lam CPS_RE![n: .Nat] = .Cn [[%mem.M, %mem.Ptr0 «n; %core.I8», .Idx n], .Cn[%mem.M, .Bool, .Idx n]];
+
 .con %regex.match_d!(n: .Nat)!((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
     .let ptr = %mem.lea (n, ‹n; %core.I8›, 0) (string, pos);
     .let (`mem, char) = %mem.load (mem, ptr);
@@ -135,6 +135,14 @@
     .let new_pos = (pos, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)))#isnt_0;
     cont (mem, isnt_0, new_pos)
 };
+.con %regex.match_lit!(lit:%core.I8)!(n: .Nat)!((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
+    .let ptr = %mem.lea (n, ‹n; %core.I8›, 0) (string, pos);
+    .let (`mem, char) = %mem.load (mem, ptr);
+    .let is_lit = %core.icmp.e (char, lit);
+
+    .let new_pos = (pos, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)))#is_lit;
+    cont (mem, is_lit, new_pos)
+};
 .con %regex.match_conj!(n: .Nat)!(A: (CPS_RE n), B: (CPS_RE n))((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
     .con exit_true!((mem: %mem.M, new_pos: .Idx n)) = {
         cont (mem, 1:.Bool, new_pos)
@@ -152,6 +160,27 @@
             B ((mem, string, new_pos), B_ret)
         };
         (exit_false, call_B)#matched (mem, new_pos)
+    };
+
+    A ((mem, string, pos), A_ret)
+};
+.con %regex.match_disj!(n: .Nat)!(A: (CPS_RE n), B: (CPS_RE n))((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
+    .con exit_true!((mem: %mem.M, new_pos: .Idx n)) = {
+        cont (mem, 1:.Bool, new_pos)
+    };
+
+    .con exit_false!((mem: %mem.M, new_pos: .Idx n)) = {
+        cont (mem, 0:.Bool, pos)
+    };
+
+    .con B_ret!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = {
+        (exit_false, exit_true)#matched (mem, new_pos)
+    };
+    .con A_ret!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = {
+        .con call_B!(mem:%mem.M, new_pos:.Idx n) = {
+            B ((mem, string, new_pos), B_ret)
+        };
+        (call_B, exit_true)#matched (mem, new_pos)
     };
 
     A ((mem, string, pos), A_ret)
