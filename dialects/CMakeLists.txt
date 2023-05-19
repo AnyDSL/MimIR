@@ -206,12 +206,12 @@ add_thorin_plugin(opt
         opt/opt.cpp
         opt/opt.h
     DEPENDS
-        affine;
-        autodiff;
-        clos;
-        direct;
-        matrix;
-        refly;
-        regex;
+        affine
+        autodiff
+        clos
+        direct
+        matrix
+        refly
+        regex
     INSTALL
 )
