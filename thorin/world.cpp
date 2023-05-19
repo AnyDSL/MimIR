@@ -115,7 +115,16 @@ Ref World::uinc(Ref op, level_t offset) {
     return unify<UInc>(1, op, offset);
 }
 
-template<Sort sort> Ref World::umax(DefArray ops) {
+template<Sort sort> Ref World::umax(Defs ops_) {
+    // consume nested umax
+    DefVec ops;
+    for (auto op : ops_) {
+        if (auto um = op->isa<UMax>())
+            ops.insert(ops.end(), um->ops().begin(), um->ops().end());
+        else
+            ops.emplace_back(op);
+    }
+
     level_t lvl = 0;
     for (auto& op : ops) {
         Ref r = op;
@@ -139,8 +148,15 @@ template<Sort sort> Ref World::umax(DefArray ops) {
             lvl = level_t(-1);
     }
 
-    auto ldef = lvl == level_t(-1) ? (const Def*)unify<UMax>(ops.size(), *this, ops) : lit_univ(lvl);
-    std::ranges::sort(ops, [](auto op1, auto op2) { return op1->gid() < op2->gid(); });
+    const Def* ldef;
+    if (lvl != level_t(-1))
+        ldef = lit_univ(lvl);
+    else {
+        std::ranges::sort(ops, [](auto op1, auto op2) { return op1->gid() < op2->gid(); });
+        ops.erase(std::unique(ops.begin(), ops.end()), ops.end());
+        ldef = unify<UMax>(ops.size(), *this, ops);
+    }
+
     return sort == Sort::Univ ? ldef : type(ldef);
 }
 
@@ -548,10 +564,10 @@ Ref World::gid2def(u32 gid) {
 #ifndef DOXYGEN
 template Ref World::raw_app<true>(Ref, Ref, Ref);
 template Ref World::raw_app<false>(Ref, Ref, Ref);
-template Ref World::umax<Sort::Term>(DefArray);
-template Ref World::umax<Sort::Type>(DefArray);
-template Ref World::umax<Sort::Kind>(DefArray);
-template Ref World::umax<Sort::Univ>(DefArray);
+template Ref World::umax<Sort::Term>(Defs);
+template Ref World::umax<Sort::Type>(Defs);
+template Ref World::umax<Sort::Kind>(Defs);
+template Ref World::umax<Sort::Univ>(Defs);
 template Ref World::ext<true>(Ref);
 template Ref World::ext<false>(Ref);
 template Ref World::bound<true>(Defs);

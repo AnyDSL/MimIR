@@ -178,7 +178,7 @@ public:
     ///@{
     const Univ* univ() { return data_.univ; }
     Ref uinc(Ref op, level_t offset = 1);
-    template<Sort = Sort::Univ> Ref umax(DefArray);
+    template<Sort = Sort::Univ> Ref umax(Defs);
     const Type* type(Ref level);
     const Type* type_infer_univ() { return type(mut_infer_univ()); }
     template<level_t level = 0> const Type* type() {

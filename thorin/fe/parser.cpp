@@ -496,30 +496,38 @@ Lam* Parser::parse_lam(bool is_decl) {
         case Tag::K_fun: {
             auto& [pi, lam, filter] = funs.back();
 
-            codom          = world().type_bot();
-            auto ret_track = tracker();
+            codom        = world().type_bot();
+            auto track   = tracker();
             auto ret     = accept(Tag::T_colon) ? parse_expr("return type of a "s + entity) : world().mut_infer_type();
-            auto ret_loc = dom_p->loc() + ret_track.loc();
-            auto last    = world().sigma({pi->dom(), world().cn(ret)});
-            auto new_pi  = world().mut_pi(pi->type(), pi->is_implicit())->set(ret_loc)->set_dom(last);
+            auto ret_loc = dom_p->loc() + track.loc();
+            //auto sort    = world().umax<Sort::Kind>({pi->dom()->type(), ret->type()});
+            auto sigma   = world().mut_sigma(2)->set(0, pi->dom());
+
+            // Fix wrong dependencies:
+            // Connect old filter to lam and ret to pi. Otherwise, scope will not find it.
+            // 1. ret depends on lam->var() instead of sigma->var(2, 0)
+            pi->set_codom(ret);
+            if (filter) lam->set_filter(filter);
+            Scope scope(lam);
+            ScopeRewriter rw(scope);
+            rw.map(lam->var(), sigma->var(2, 0));
+            sigma->set(1, world().cn({rw.rewrite(ret)}));
+
+            auto new_pi  = world().mut_pi(pi->type(), pi->is_implicit())->set(ret_loc)->set_dom(sigma);
             auto new_lam = world().mut_lam(new_pi);
             auto new_var = new_lam->var()->set(ret_loc);
 
             if (filter) {
-                // Rewrite filter - it may still use the old var.
-                // First, connect old filter to lam. Otherwise, scope will not find it.
-                lam->set_filter(filter);
-                Scope scope(lam);
-
-                // Now rewrite old filter to use new_var.
+                // 2. filter depends on lam->var() instead of new_lam->var(2, 0)
                 ScopeRewriter rw(scope);
                 rw.map(lam->var(), new_lam->var(2, 0)->set(lam->var()->dbg()));
                 auto new_filter = rw.rewrite(filter);
                 filter          = new_filter;
             }
 
+            pi->unset();
+            pi = new_pi;
             lam->unset();
-            pi  = new_pi;
             lam = new_lam;
 
             dom_p->bind(scopes_, new_var->proj(2, 0), true);

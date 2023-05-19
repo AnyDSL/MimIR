@@ -1,0 +1,27 @@
+// RUN: rm -f %t.ll
+// RUN: %thorin -o - %s | FileCheck %s
+
+.plugin core;
+.plugin matrix;
+
+.fun identity(mem: %mem.M, a: %core.I32): [%mem.M, %core.I32] = return (mem, a);
+.fun addition(mem: %mem.M, a b :%core.I32): [%mem.M, %core.I32] = return (mem, %core.wrap.add 0 (a,b));
+
+.fun .extern f(mem: %mem.M, k l: .Nat, M: %matrix.Mat (2, (k, l), %core.I32)): [%mem.M, %matrix.Mat (2, (l, k), %core.I32)] =
+    .let MT = %matrix.map_reduce
+        (
+            2, (l, k), %core.I32,
+            1,
+            2,
+            %core.I32,
+            (k, l)
+        )
+        (
+            mem,
+            0:%core.I32,
+            addition, //identity,
+            ((1, 0), M)
+        );
+    return MT;
+
+// CHECK-NOT: %matrix.

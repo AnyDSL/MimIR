@@ -84,8 +84,11 @@ template<bool infer> bool Check::alpha_(Ref r1, Ref r2) {
         }
     }
 
-    // normalize: Lit to right; then sort by gid
-    if ((d1->isa<Lit>() && !d2->isa<Lit>()) || (d1->gid() > d2->gid())) std::swap(d1, d2);
+    // normalize:
+    if ((d1->isa<Lit>() && !d2->isa<Lit>())      // Lit to right
+        || (!d1->isa<UMax>() && d2->isa<UMax>()) // UMax to left
+        || (d1->gid() > d2->gid()))              // smaller gid to left
+        std::swap(d1, d2);
 
     return alpha_internal<infer>(d1, d2);
 }
@@ -112,7 +115,7 @@ template<bool infer> bool Check::alpha_internal(Ref d1, Ref d2) {
                 if (alpha_<infer>(pa->proj(*a, i), d2->proj(*a, i))) return false;
             return true;
         }
-    } else if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Infer)) {
+    } else if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Infer) && !d2->isa<UMax>()) {
         // .umax(a, ?) == x  =>  .umax(a, x)
         for (auto op : umax->ops())
             if (auto inf = op->isa_mut<Infer>(); inf && !inf->is_set()) inf->set(d2);
