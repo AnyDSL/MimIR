@@ -53,6 +53,9 @@ template<bool infer> bool Check::alpha_(Ref r1, Ref r2) {
     if (!d1 && !d2) return true;
     if (!d1 || !d2) return false;
 
+    // It is only safe to check for pointer equality if there are no Vars involved.
+    // Otherwise, we have to look more thoroughly.
+    // Example: λx.x - λz.x
     if (!d1->has_dep(Dep::Var) && !d2->has_dep(Dep::Var) && d1 == d2) return true;
     auto mut1 = d1->isa_mut();
     auto mut2 = d2->isa_mut();
