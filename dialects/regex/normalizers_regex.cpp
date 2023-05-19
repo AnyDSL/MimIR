@@ -122,8 +122,8 @@ void reduceLitsToClass(std::vector<const Def*>& args) {
         // w
         if (get(*it) == 65 /* A */ && matchSequence(it, 26)) capitalLettersIt = it;
         if (get(*it) == 95 /* _ */) underscoreIt = it;
-        if (hasDigit && capitalLettersIt != args.end() && underscoreIt != args.end() && get(*it) == 97 /* A */ &&
-            matchSequence(it, 26)) {
+        if (hasDigit && capitalLettersIt != args.end() && underscoreIt != args.end()
+            && get(*it) == 97 /* A */ && matchSequence(it, 26)) {
             std::copy(capitalLettersIt, capitalLettersIt + 26, std::inserter(toRemove, toRemove.end()));
             std::copy(it, it + 26, std::inserter(toRemove, toRemove.end()));
             toRemove.insert(*underscoreIt);
@@ -157,8 +157,8 @@ Ref normalize_disj(Ref type, Ref callee, Ref arg) {
         const Def* toRemove = nullptr;
         for (const auto* cls0 : newArgs)
             for (const auto* cls1 : newArgs)
-                if (equals_any<cls::d, cls::D>(cls0, cls1) || equals_any<cls::w, cls::W>(cls0, cls1) ||
-                    equals_any<cls::s, cls::S>(cls0, cls1))
+                if (equals_any<cls::d, cls::D>(cls0, cls1) || equals_any<cls::w, cls::W>(cls0, cls1)
+                    || equals_any<cls::s, cls::S>(cls0, cls1))
                     // A || !A == True
                     return world.annex(cls::any);
                 else if (equals_any<cls::w, cls::d>(cls0, cls1))
@@ -178,14 +178,20 @@ Ref normalize_group(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
     if (arg->as_lit_arity() > 1) {
         auto&& newArgs = flatten_in_arg<conj>(arg);
-        return world.raw_app(type, world.app(world.annex<group>(), world.lit_nat(newArgs.size())), world.tuple(newArgs));
+        return world.raw_app(type, world.app(world.annex<group>(), world.lit_nat(newArgs.size())),
+                             world.tuple(newArgs));
     }
     return world.raw_app(type, callee, arg);
 }
 
-template <cls id>
+template<cls id>
 Ref normalize_cls(Ref type, Ref callee, Ref arg) {
-    auto &world = type->world();
+    auto& world = type->world();
+    return world.raw_app(type, callee, arg);
+}
+
+Ref normalize_lit(Ref type, Ref callee, Ref arg) {
+    auto& world = type->world();
     return world.raw_app(type, callee, arg);
 }
 

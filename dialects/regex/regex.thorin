@@ -51,7 +51,7 @@
 ///
 /// Wraps a literal.
 ///
-.ax %regex.lit: Π n:.Nat -> RE;
+.ax %regex.lit: Π n:.Nat -> RE, normalize_lit, 1;
 
 ///
 /// ### %regex.cls.*
@@ -65,7 +65,7 @@
 /// | `s`    | whitespace `[ \t\r\n]` |
 /// | `S`    | No whitespace |
 /// | `any`  | Any character |
-.ax %regex.cls(d,D,w,W,s,S,any): RE;//, normalize_cls, 0;
+.ax %regex.cls(d,D,w,W,s,S,any): RE, normalize_cls, 0;
 
 /// ## Quantifiers
 ///
