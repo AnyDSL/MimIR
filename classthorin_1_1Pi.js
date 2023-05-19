@@ -18,7 +18,7 @@ var classthorin_1_1Pi =
     [ "doms", "classthorin_1_1Pi.html#a392b8174657965c1c0b0080d01d0c43e", null ],
     [ "doms", "classthorin_1_1Pi.html#a6c638c70f59287eae2af3ed7f8558ccf", null ],
     [ "immutabilize", "classthorin_1_1Pi.html#a8dd35928d4315162100bc42f208472f9", null ],
-    [ "infer", "classthorin_1_1Pi.html#a2423d049a217234f9a74626b139117ad", null ],
+    [ "infer", "classthorin_1_1Pi.html#ac68bd43b6a39aa8cb86124afd59c1fbd", null ],
     [ "is_implicit", "classthorin_1_1Pi.html#a7965ff6428520c1cd804f9839bb381b0", null ],
     [ "isa_basicblock", "classthorin_1_1Pi.html#a1ae6cd03bceb1c5af6750b307fef9831", null ],
     [ "isa_cn", "classthorin_1_1Pi.html#a8bea1641f21e33341deedb3a4364dc40", null ],

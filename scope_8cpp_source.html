@@ -210,7 +210,7 @@ $(document).ready(function(){initNavTree('scope_8cpp_source.html',''); initResiz
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            <span class="keywordflow">if</span> (def-&gt;<a class="code hl_function" href="classthorin_1_1Def.html#a96e3d175d17912547aba1d116620f813">num_ops</a>() == 0) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            <span class="keywordflow">if</span> (var == def) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> v : var-&gt;mut()-&gt;vars())</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                <span class="keywordflow">if</span> (var == v) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                <span class="keywordflow">if</span> (v == def) <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>            <a class="code hl_class" href="classthorin_1_1Scope.html">Scope</a> scope(mut);</div>
 <div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>            <span class="keywordflow">return</span> scope.<a class="code hl_function" href="classthorin_1_1Scope.html#afe87447a90844ef7ccc95eff57ac4720">bound</a>(def);</div>
@@ -251,7 +251,7 @@ $(document).ready(function(){initNavTree('scope_8cpp_source.html',''); initResiz
 <div class="ttc" id="arewrite_8h_html"><div class="ttname"><a href="rewrite_8h.html">rewrite.h</a></div></div>
 <div class="ttc" id="aschedule_8h_html"><div class="ttname"><a href="schedule_8h.html">schedule.h</a></div></div>
 <div class="ttc" id="ascope_8h_html"><div class="ttname"><a href="scope_8h.html">scope.h</a></div></div>
-<div class="ttc" id="astructthorin_1_1World_1_1Freezer_html"><div class="ttname"><a href="structthorin_1_1World_1_1Freezer.html">thorin::World::Freezer</a></div><div class="ttdoc">Use to World::freeze and automatically unfreeze at the end of scope.</div><div class="ttdef"><b>Definition:</b> <a href="world_8h_source.html#l00129">world.h:129</a></div></div>
+<div class="ttc" id="astructthorin_1_1World_1_1Freezer_html"><div class="ttname"><a href="structthorin_1_1World_1_1Freezer.html">thorin::World::Freezer</a></div><div class="ttdoc">Use to World::freeze and automatically unfreeze at the end of scope.</div><div class="ttdef"><b>Definition:</b> <a href="world_8h_source.html#l00123">world.h:123</a></div></div>
 <div class="ttc" id="autil_8h_html"><div class="ttname"><a href="util_8h.html">util.h</a></div></div>
 <div class="ttc" id="aworld_8h_html"><div class="ttname"><a href="world_8h.html">world.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

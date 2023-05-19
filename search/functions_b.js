@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['lam_0',['lam',['../classthorin_1_1World.html#a8e2694d53f8d6691347e34ac80ac8f44',1,'thorin::World::lam(const Pi *pi, Ref body)'],['../classthorin_1_1World.html#a2c1d1b6b2823d125d28b3fc44386ffe2',1,'thorin::World::lam(const Pi *pi, Ref filter, Ref body)']]],
+  ['lam_0',['lam',['../classthorin_1_1World.html#afd47ffaf0f0dfad77354c3de76eb94f0',1,'thorin::World']]],
   ['lamspec_1',['LamSpec',['../classthorin_1_1LamSpec.html#a682ddf2646de9b1bec0dfc036cdff63a',1,'thorin::LamSpec']]],
   ['last_2',['last',['../classthorin_1_1Span.html#a1e7329b0e782e140583ba0a253a225e8',1,'thorin::Span::last()'],['../classthorin_1_1Array.html#a962dc092499a2b7eb5f6bf2e3dfb52cf',1,'thorin::Array::last()']]],
   ['late_3',['late',['../classthorin_1_1Scheduler.html#a428fbabff1d1d2794c6f7d3bf48025d2',1,'thorin::Scheduler']]],
@@ -18,7 +18,7 @@ var searchData=
   ['lit_5ff_15',['lit_f',['../namespacethorin_1_1math.html#ab802bcd5a6ea5682c50d6329dc16712e',1,'thorin::math::lit_f(World &amp;w, R val)'],['../namespacethorin_1_1math.html#a3c7c541a304d373d9990d17938697672',1,'thorin::math::lit_f(World &amp;w, nat_t width, thorin::f64 val)']]],
   ['lit_5fff_16',['lit_ff',['../classthorin_1_1World.html#adb4b657ad253bcbb0e49512ec501bccf',1,'thorin::World']]],
   ['lit_5fi_17',['lit_i',['../classthorin_1_1fe_1_1Tok.html#a5b3df02ca7d5bfc5426d0bf1c4292e3a',1,'thorin::fe::Tok']]],
-  ['lit_5fidx_18',['lit_idx',['../classthorin_1_1World.html#a88866a0a24e7030eb3386beab2d85a63',1,'thorin::World::lit_idx(I val)'],['../classthorin_1_1World.html#aa131931a75bc70482b1acc271aa599c6',1,'thorin::World::lit_idx(nat_t size, u64 val)']]],
+  ['lit_5fidx_18',['lit_idx',['../classthorin_1_1World.html#aa131931a75bc70482b1acc271aa599c6',1,'thorin::World::lit_idx(nat_t size, u64 val)'],['../classthorin_1_1World.html#a88866a0a24e7030eb3386beab2d85a63',1,'thorin::World::lit_idx(I val)']]],
   ['lit_5fidx_5fmod_19',['lit_idx_mod',['../classthorin_1_1World.html#aa85fa8603150b87220770205c4443e4c',1,'thorin::World']]],
   ['lit_5fint_20',['lit_int',['../classthorin_1_1World.html#a7f327c3578791e78ea1eaec5e5496423',1,'thorin::World']]],
   ['lit_5fnat_21',['lit_nat',['../classthorin_1_1World.html#ab95c67d25d2672493d6f6d822e235776',1,'thorin::World']]],
@@ -32,9 +32,9 @@ var searchData=
   ['lit_5funiv_5f1_29',['lit_univ_1',['../classthorin_1_1World.html#adc1e909d71e102ae69ec4e28d6628f12',1,'thorin::World']]],
   ['lnprint_30',['lnprint',['../classthorin_1_1Tab.html#aca529771d167c2e1ba539a41e06ad71c',1,'thorin::Tab']]],
   ['load_31',['load',['../classthorin_1_1Driver.html#aa3798846a66a913a6dd5c13b340181bd',1,'thorin::Driver::load(std::string name)'],['../classthorin_1_1Driver.html#a4a6dce5305058ea7173c665ee4e6d418',1,'thorin::Driver::load(Sym name)']]],
-  ['loc_32',['Loc',['../structthorin_1_1Loc.html#adba7460497350c76db0179bcbb6174aa',1,'thorin::Loc::Loc(const fs::path *path, Pos begin, Pos finis)'],['../structthorin_1_1Loc.html#a2801619c99a72f74d25ed4542a66be6b',1,'thorin::Loc::Loc()=default']]],
+  ['loc_32',['Loc',['../structthorin_1_1Loc.html#ac2ea00ed4f1038c20bddfc6a9d604721',1,'thorin::Loc::Loc(const fs::path *file, Pos pos)'],['../structthorin_1_1Loc.html#a2801619c99a72f74d25ed4542a66be6b',1,'thorin::Loc::Loc()=default'],['../structthorin_1_1Loc.html#adba7460497350c76db0179bcbb6174aa',1,'thorin::Loc::Loc(const fs::path *path, Pos begin, Pos finis)']]],
   ['loc_33',['loc',['../classthorin_1_1fe_1_1Tok.html#a711173d18041d0aecbee725796ae9322',1,'thorin::fe::Tok::loc()'],['../classthorin_1_1fe_1_1Lexer.html#aad3939a9b3826459683fb88bbfc42331',1,'thorin::fe::Lexer::loc()'],['../classthorin_1_1fe_1_1Ptrn.html#ae73b593e21ccd3ddf53484827a6592f1',1,'thorin::fe::Ptrn::loc()'],['../classthorin_1_1Def.html#aaa260e29035d724e0f5c4286b93c5f0d',1,'thorin::Def::loc()']]],
-  ['loc_34',['Loc',['../structthorin_1_1Loc.html#a80c33f2165592b503ce33dda4e780837',1,'thorin::Loc::Loc(Pos pos)'],['../structthorin_1_1Loc.html#a6e046213aa9303cf2ba78bfe21452430',1,'thorin::Loc::Loc(Pos begin, Pos finis)'],['../structthorin_1_1Loc.html#ac2ea00ed4f1038c20bddfc6a9d604721',1,'thorin::Loc::Loc(const fs::path *file, Pos pos)']]],
+  ['loc_34',['Loc',['../structthorin_1_1Loc.html#a80c33f2165592b503ce33dda4e780837',1,'thorin::Loc::Loc(Pos pos)'],['../structthorin_1_1Loc.html#a6e046213aa9303cf2ba78bfe21452430',1,'thorin::Loc::Loc(Pos begin, Pos finis)']]],
   ['log_35',['Log',['../classthorin_1_1Log.html#a50d1d8b499f1d1adb31581d8f62f3b8e',1,'thorin::Log']]],
   ['log_36',['log',['../classthorin_1_1Driver.html#a591d82f03685b27cbfd9e1ab549d3648',1,'thorin::Driver::log()'],['../classthorin_1_1Log.html#ae71c3bf4868ad20c8ee2dcef8c72813f',1,'thorin::Log::log(Level level, Loc loc, const char *fmt, Args &amp;&amp;... args) const'],['../classthorin_1_1Log.html#a70d6a9ca5238ae0a175ead16109e7f88',1,'thorin::Log::log(Level level, const char *file, uint16_t line, const char *fmt, Args &amp;&amp;... args)'],['../classthorin_1_1World.html#a44b545a88c58fda7f15606002ba6d073',1,'thorin::World::log()']]],
   ['lookup_37',['lookup',['../namespacethorin.html#a42a3bf6e82a9f72ff7df63dd4ca5299f',1,'thorin']]],

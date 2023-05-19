@@ -20,7 +20,7 @@ var hierarchy =
     [ "thorin::CFG< forward >", "classthorin_1_1CFG.html", null ],
     [ "thorin::CFNode", "classthorin_1_1CFNode.html", null ],
     [ "thorin::utf8::Lexer< Max_Ahead >::Char", "structthorin_1_1utf8_1_1Lexer_1_1Char.html", null ],
-    [ "thorin::Checker", "classthorin_1_1Checker.html", null ],
+    [ "thorin::Check", "classthorin_1_1Check.html", null ],
     [ "thorin::clos::ClosLit", "classthorin_1_1clos_1_1ClosLit.html", null ],
     [ "thorin::Dbg", "namespacethorin.html#structthorin_1_1Dbg", null ],
     [ "thorin::DefDefEq", "structthorin_1_1DefDefEq.html", null ],

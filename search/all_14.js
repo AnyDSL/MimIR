@@ -33,7 +33,7 @@ var searchData=
   ['ul_30',['ul',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a6c8aba67edd6027868826e3afb703cff',1,'thorin::core::ul()'],['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fabc298854e325a9c726bfeeb6f842d717',1,'thorin::math::ul()']]],
   ['ule_31',['ule',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6ac279edb2da92f8dc81a389f329f0dbf8',1,'thorin::core::ule()'],['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa7f50ccbd9de4f54d89bec8e9a071abc5',1,'thorin::math::ule()']]],
   ['umax_32',['UMax',['../classthorin_1_1UMax.html',1,'thorin::UMax'],['../namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a92dc8a43fbe7c390956a899a27b8b08d',1,'thorin::Node::UMax()']]],
-  ['umax_33',['umax',['../classthorin_1_1World.html#a3790c90d77e02fdfd32ee8c630bc5117',1,'thorin::World']]],
+  ['umax_33',['umax',['../classthorin_1_1World.html#acaa046375fb090bdd2a327321d25edbb',1,'thorin::World']]],
   ['undo_5fenter_34',['undo_enter',['../classthorin_1_1FPPass.html#ab4bdda21afb901a79270214318661273',1,'thorin::FPPass']]],
   ['undo_5ft_35',['undo_t',['../namespacethorin.html#aae49afdff4a29ba1d94c3fada6e7b32e',1,'thorin']]],
   ['undo_5fvisit_36',['undo_visit',['../classthorin_1_1FPPass.html#af9b3614b16092de61a561b66814af101',1,'thorin::FPPass']]],

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['f_5fcfg_0',['f_cfg',['../classthorin_1_1Scope.html#a2c8fbd2333af4d00bd701452f21f2369',1,'thorin::Scope::f_cfg()'],['../classthorin_1_1CFA.html#ae4a109ef76a97fb3ab65511cab7140df',1,'thorin::CFA::f_cfg()']]],
-  ['filter_1',['filter',['../classthorin_1_1Lam.html#a3b8963a2176e364581c384aaa3884012',1,'thorin::Lam']]],
+  ['filter_1',['filter',['../classthorin_1_1Lam.html#a3b8963a2176e364581c384aaa3884012',1,'thorin::Lam::filter()'],['../classthorin_1_1World.html#a6705dee75585b501d1128956ca0b0245',1,'thorin::World::filter()']]],
   ['finalize_2',['finalize',['../classthorin_1_1ll_1_1Emitter.html#a0eaa20953360e78a6705fc3e84fa5afa',1,'thorin::ll::Emitter::finalize()'],['../classthorin_1_1dot_1_1Emitter.html#a9cb407822cd201ea721b57435fc41444',1,'thorin::dot::Emitter::finalize()']]],
   ['find_3',['find',['../namespacethorin.html#aa0a62994b63462d082addeddb1c92029',1,'thorin::find(IndexMap&lt; Indexer, Key, Value * &gt; &amp;map, Key key)'],['../namespacethorin.html#a9ada650270dac66b3f87bca30593dc5e',1,'thorin::find(const IndexMap&lt; Indexer, Key, Value * &gt; &amp;map, Key key)'],['../classthorin_1_1fe_1_1Scopes.html#a724efe05900c16b286ce5492e205e85d',1,'thorin::fe::Scopes::find()'],['../classthorin_1_1Infer.html#a2360ebd60a14311cf8b6730835958b34',1,'thorin::Infer::find()'],['../classthorin_1_1Bound.html#aecf17a4b630b45614381bba2860b06ac',1,'thorin::Bound::find()']]],
   ['find_5fand_5freplace_4',['find_and_replace',['../namespacethorin.html#ae3eb00e4b86fdf94bee3c80beb4edefa',1,'thorin']]],

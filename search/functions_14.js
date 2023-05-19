@@ -1,7 +1,7 @@
 var searchData=
 [
   ['uinc_0',['uinc',['../classthorin_1_1World.html#a56453f209ac2c04024c050df70c66586',1,'thorin::World']]],
-  ['umax_1',['umax',['../classthorin_1_1World.html#a3790c90d77e02fdfd32ee8c630bc5117',1,'thorin::World']]],
+  ['umax_1',['umax',['../classthorin_1_1World.html#acaa046375fb090bdd2a327321d25edbb',1,'thorin::World']]],
   ['undo_5fenter_2',['undo_enter',['../classthorin_1_1FPPass.html#ab4bdda21afb901a79270214318661273',1,'thorin::FPPass']]],
   ['undo_5fvisit_3',['undo_visit',['../classthorin_1_1FPPass.html#af9b3614b16092de61a561b66814af101',1,'thorin::FPPass']]],
   ['unflatten_4',['unflatten',['../namespacethorin.html#a833e2a807b47e7f8a3c67fff75985c6f',1,'thorin::unflatten(const Def *def, const Def *type)'],['../namespacethorin.html#ac56ceb88d544f8808fb45ffddcea3b1a',1,'thorin::unflatten(Defs ops, const Def *type, bool flatten_muts=true)']]],

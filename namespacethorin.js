@@ -727,7 +727,7 @@ var namespacethorin =
     [ "CFA", "classthorin_1_1CFA.html", "classthorin_1_1CFA" ],
     [ "CFG", "classthorin_1_1CFG.html", "classthorin_1_1CFG" ],
     [ "CFNode", "classthorin_1_1CFNode.html", "classthorin_1_1CFNode" ],
-    [ "Checker", "classthorin_1_1Checker.html", "classthorin_1_1Checker" ],
+    [ "Check", "classthorin_1_1Check.html", "classthorin_1_1Check" ],
     [ "Cleanup", "classthorin_1_1Cleanup.html", "classthorin_1_1Cleanup" ],
     [ "Dbg", "namespacethorin.html#structthorin_1_1Dbg", "namespacethorin_structthorin_1_1Dbg_dup" ],
     [ "Def", "classthorin_1_1Def.html", "classthorin_1_1Def" ],

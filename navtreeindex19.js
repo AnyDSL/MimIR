@@ -1,13 +1,5 @@
 var NAVTREEINDEX19 =
 {
-"namespacethorin.html#ae06bba681d8d0c4022d03b1f20b5718a":[3,0,0,127],
-"namespacethorin.html#ae0e621eb1be011dcdfe11e5171fd7dd4":[3,0,0,215],
-"namespacethorin.html#ae0ec74d835ce935c637499bea15e74f2":[3,0,0,159],
-"namespacethorin.html#ae2b9a3abaa277c7852b0f465240b0dd7":[3,0,0,153],
-"namespacethorin.html#ae311e26ec0350fe3dbae561de879d594":[3,0,0,149],
-"namespacethorin.html#ae3eb00e4b86fdf94bee3c80beb4edefa":[3,0,0,208],
-"namespacethorin.html#ae4dba9b3be2d9956cd3c0df92ba53dc2":[3,0,0,143],
-"namespacethorin.html#ae6638e502eba2c4a1229a5a1af1cfb29":[3,0,0,174],
 "namespacethorin.html#ae683288c4230cd715c4179947ecd4772":[3,0,0,140],
 "namespacethorin.html#ae79b3c7a7656f77b147095feb289c019":[3,0,0,242],
 "namespacethorin.html#aea00f96e150831aba073fce80ce0080a":[3,0,0,308],
@@ -249,5 +241,13 @@ var NAVTREEINDEX19 =
 "namespacethorin_1_1core.html#a55cf18b70ac6535d67231006c6afc167":[3,0,0,4,35],
 "namespacethorin_1_1core.html#a5608a720b60bf74c361fe4b2d0e92166":[3,0,0,4,45],
 "namespacethorin_1_1core.html#a565b148c555453e77000a69d6049b415":[3,0,0,4,59],
-"namespacethorin_1_1core.html#a570b215acc8c30cf4af28b4cbfa534a0":[3,0,0,4,109]
+"namespacethorin_1_1core.html#a570b215acc8c30cf4af28b4cbfa534a0":[3,0,0,4,109],
+"namespacethorin_1_1core.html#a585b2ccaaab3aaf619cfee8622dded81":[3,0,0,4,46],
+"namespacethorin_1_1core.html#a58ec95ed7b754d9d52ee1f70432ca38b":[3,0,0,4,43],
+"namespacethorin_1_1core.html#a5a636f03600b08dcac41a8d2b167b837":[3,0,0,4,216],
+"namespacethorin_1_1core.html#a5ab175ba31efaa8fcbd24f2006fed164":[3,0,0,4,104],
+"namespacethorin_1_1core.html#a5b679ecdc4d6629ebb1c40d07aaca1b5":[3,0,0,4,101],
+"namespacethorin_1_1core.html#a5e7c0461c85888458491dfb7d2873632":[3,0,0,4,180],
+"namespacethorin_1_1core.html#a5ebd17b0e7849c5ed897622fcdb41fa9":[3,0,0,4,14],
+"namespacethorin_1_1core.html#a5fb5150dc0b01cfa20e7bb209ea49f6c":[3,0,0,4,129]
 };
