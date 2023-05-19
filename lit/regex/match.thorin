@@ -1,7 +1,7 @@
 // RUN: rm -f %t.ll ; \
 // RUN: %thorin %s -o - --output-ll %t.ll | FileCheck %s
 // RUN: clang %t.ll -o %t -Wno-override-module
-// RUN: %t g; test $? -eq 1
+// RUN: %t gg; test $? -eq 1
 
 .import mem;
 .import core;
@@ -11,14 +11,13 @@
 .let I8 = .Idx 256;
 .let _32 = 4294967296;
 .let I32 = .Idx _32;
-.let bool = .Idx 2;
 .let Top = ⊤:.Nat;
 
-.let re = %regex.conj 2 (%regex.cls.d, %regex.cls.d);
+.let re = %regex.conj 2 (%regex.cls.w, %regex.cls.w);
 //.let re = %regex.cls.w;
 
 .con .extern main[mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), exit : .Cn [%mem.M, I32]] = {
-    .con handle_match [mem: %mem.M, matched: bool, match: %mem.Ptr(«Top; I8», 0)] = {
+    .con handle_match [mem: %mem.M, matched: .Bool, match: %mem.Ptr(«Top; I8», 0)] = {
 
         exit (mem, %core.conv.u _32 matched)
     };
