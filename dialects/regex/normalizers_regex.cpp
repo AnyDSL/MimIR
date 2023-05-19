@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <iterator>
+#include <numeric>
 #include <vector>
 
 #include "thorin/axiom.h"
@@ -52,13 +53,23 @@ std::vector<const Def*> flatten_in_arg(Ref arg) {
     return newArgs;
 }
 
+template<class ConjOrDisj>
+Ref make_binary_tree(Ref type, DefArray args) {
+    assert(!args.empty());
+    auto& world = args.front()->world();
+    return std::accumulate(args.begin() + 1, args.end(), args.front(), [&type, &world](const Def* lhs, const Def* rhs) {
+        return world.raw_app(type, world.app(world.annex<ConjOrDisj>(), world.lit_nat(2)), world.tuple({lhs, rhs}));
+    });
+}
+
 Ref normalize_conj(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
     world.DLOG("conj {}:{} ({})", type, callee, arg);
-    if (arg->as_lit_arity() > 1) {
-        auto&& newArgs = flatten_in_arg<conj>(arg);
-        return world.raw_app(type, world.app(world.annex<conj>(), world.lit_nat(newArgs.size())), world.tuple(newArgs));
+    if (arg->as_lit_arity() > 2) {
+        auto flatArgs = flatten_in_arg<conj>(arg);
+        return make_binary_tree<conj>(type, flatArgs);
     }
+    if (arg->as_lit_arity() > 1) return world.raw_app(type, callee, arg);
     return arg;
 }
 

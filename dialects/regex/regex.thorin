@@ -29,6 +29,7 @@
 /// `%regex.conj (%regex.cls.d, %regex.cls.d, %regex.cls.d)
 ///
 .ax %regex.conj: Π[n: .Nat][<<n; RE>>] -> RE, normalize_conj, 2;
+//.ax %regex.conj: Π[A: RE, B: RE] -> RE, normalize_conj, 1;
 
 ///
 /// ### %regex.disj
@@ -76,7 +77,7 @@
 ///
 /// ## Implementation
 ///
-.con %regex.match_d(n: .Nat)((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
+.con %regex.match_d!(n: .Nat)!((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
     .let ptr = %mem.lea (n, ‹n; %core.I8›, 0) (string, pos);
     .let (`mem, char) = %mem.load (mem, ptr);
     .let is_digit = %core.bit2.and_ 0 (%core.icmp.uge (char, '0'),  %core.icmp.ule (char, '9'));
@@ -84,13 +85,13 @@
     .let new_pos = (pos, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)))#is_digit;
     cont (mem, is_digit, new_pos)
 };
-.con %regex.match_D(n: .Nat)((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
-    .con ret_inverted (mem: %mem.M, is_digit: .Bool, new_pos: .Idx n) = {
+.con %regex.match_D!(n: .Nat)!((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
+    .con ret_inverted!(mem: %mem.M, is_digit: .Bool, new_pos: .Idx n) = {
         cont (mem, %core.bit1.neg 0 is_digit, new_pos)
     };
     %regex.match_d n ((mem, string, pos), ret_inverted)
 };
-.con %regex.match_w(n: .Nat)((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
+.con %regex.match_w!(n: .Nat)!((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
     .let ptr = %mem.lea (n, ‹n; %core.I8›, 0) (string, pos);
     .let (`mem, char) = %mem.load (mem, ptr);
     .let is_upper_lit = %core.bit2.and_ 0 (%core.icmp.uge (char, 'A'),  %core.icmp.ule (char, 'Z'));
@@ -102,13 +103,13 @@
     .let new_pos = (pos, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)))#is_w;
     cont (mem, is_w, new_pos)
 };
-.con %regex.match_W(n: .Nat)((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
-    .con ret_inverted (mem: %mem.M, is_w: .Bool, new_pos: .Idx n) = {
+.con %regex.match_W!(n: .Nat)!((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
+    .con ret_inverted!(mem: %mem.M, is_w: .Bool, new_pos: .Idx n) = {
         cont (mem, %core.bit1.neg 0 is_w, new_pos)
     };
     %regex.match_w n ((mem, string, pos), ret_inverted)
 };
-.con %regex.match_s(n: .Nat)((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
+.con %regex.match_s!(n: .Nat)!((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
     .let ptr = %mem.lea (n, ‹n; %core.I8›, 0) (string, pos);
     .let (`mem, char) = %mem.load (mem, ptr);
     .let is_space = %core.icmp.e (char, ' ');
@@ -120,13 +121,13 @@
     .let new_pos = (pos, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)))#is_s;
     cont (mem, is_s, new_pos)
 };
-.con %regex.match_S(n: .Nat)((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
-    .con ret_inverted (mem: %mem.M, is_s: .Bool, new_pos: .Idx n) = {
+.con %regex.match_S!(n: .Nat)!((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
+    .con ret_inverted!(mem: %mem.M, is_s: .Bool, new_pos: .Idx n) = {
         cont (mem, %core.bit1.neg 0 is_s, new_pos)
     };
     %regex.match_s n ((mem, string, pos), ret_inverted)
 };
-.con %regex.match_any(n: .Nat)((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
+.con %regex.match_any!(n: .Nat)!((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
     .let ptr = %mem.lea (n, ‹n; %core.I8›, 0) (string, pos);
     .let (`mem, char) = %mem.load (mem, ptr);
     .let isnt_0 = %core.icmp.ne (char, '\0');
@@ -134,40 +135,27 @@
     .let new_pos = (pos, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)))#isnt_0;
     cont (mem, isnt_0, new_pos)
 };
-.con %regex.match_conj (num_subexpr: .Nat)(n: .Nat)(subexprs: <<num_subexpr; (CPS_RE n)>>)((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
-    .let num_subexpr_int = %core.bitcast %core.I64 num_subexpr;
-    .let n_int = %core.bitcast %core.I64 n;
-    .con exit_true ((mem: %mem.M, idx: .Idx num_subexpr, pos: .Idx n)) = {
-        cont (mem, 1:.Bool, pos)
+.con %regex.match_conj!(n: .Nat)!(A: (CPS_RE n), B: (CPS_RE n))((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
+    .con exit_true!((mem: %mem.M, new_pos: .Idx n)) = {
+        cont (mem, 1:.Bool, new_pos)
     };
 
-    .con exit_false ((mem: %mem.M, idx: .Idx num_subexpr, pos: .Idx n)) = {
+    .con exit_false!((mem: %mem.M, new_pos: .Idx n)) = {
         cont (mem, 0:.Bool, pos)
     };
 
-    .con iter ((mem: %mem.M, idx: .Idx num_subexpr, pos: .Idx n)) = {
-        .let idxprom = %core.conv.u n idx;
-        //.let offset_pos = %core.wrap.add 0 (pos, idxprom);
-
-        .con subexpr_ret(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = {
-            .con on_matched (mem: %mem.M, idx: .Idx num_subexpr, pos: .Idx n) = {
-                .let idx64 = %core.conv.u %core.i64 idx;
-                .let new_idx64 = %core.wrap.add 0 (idx64, 1:%core.I64);
-                .let done = %core.icmp.e (new_idx64, num_subexpr_int);
-                .let new_idx = %core.conv.u num_subexpr (new_idx64);
-                (iter, exit_true)#done ((mem, new_idx, new_pos))
-            };
-            (exit_false, on_matched)#matched ((mem, idx, new_pos))
-        };
-
-        subexprs#idx ((mem, string, pos), subexpr_ret)
+    .con B_ret!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = {
+        (exit_false, exit_true)#matched (mem, new_pos)
     };
-    
-    // todo %core.ncmp.le (num_subexpr, n)
-    // %direct.cps2ds ([%mem.M, .Idx num_subexpr, .Idx n], [%mem.M, .Bool, .Idx n]) iter (mem, 0:(.Idx num_subexpr), pos)
-    iter ((mem, 0:(.Idx num_subexpr), pos))
-};
+    .con A_ret!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = {
+        .con call_B!(mem:%mem.M, new_pos:.Idx n) = {
+            B ((mem, string, new_pos), B_ret)
+        };
+        (exit_false, call_B)#matched (mem, new_pos)
+    };
 
+    A ((mem, string, pos), A_ret)
+};
 /// ## Passes and Phases
 /// 
 /// ### Passes

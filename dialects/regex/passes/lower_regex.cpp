@@ -29,9 +29,7 @@ Ref cls_impl(Match<regex::cls, Axiom> cls_ax) {
 
 Ref conj_impl(Match<regex::conj, App> conj_app) {
     auto& world = conj_app->world();
-    world.DLOG("conj!! {}, {}, {}", conj_app, conj_app->callee(), conj_app->callee()->as<App>()->callee());
-
-    return world.app(world.annex<regex::match_conj>(), conj_app->callee()->as<App>()->arg());
+    return world.annex<regex::match_conj>();
 }
 
 Ref rewrite_args(Ref arg, Ref n) {

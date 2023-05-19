@@ -9,7 +9,7 @@
 .let Top = ⊤:.Nat;
 
 .con .extern flatten_conj(mem: %mem.M, string: %mem.Ptr (<<Top; %core.I8>>, 0), return: .Cn [%mem.M, .Bool, %core.I32]) = {
-    .let pattern = %regex.conj 3 (%regex.cls.w, %regex.conj 2 (%regex.cls.d, %regex.cls.w), %regex.cls.d);
+    .let pattern = %regex.conj 4 (%regex.cls.w, %regex.cls.d, %regex.cls.w, %regex.cls.d);
     return (pattern Top (mem, string, 0:%core.I32))
-    // CHECK: %regex.conj 4 (%regex.cls.w, %regex.cls.d, %regex.cls.w, %regex.cls.d)
+    // CHECK: %regex.conj 2 (%regex.conj 2 (%regex.conj 2 (%regex.cls.w, %regex.cls.d), %regex.cls.w), %regex.cls.d)
 };
