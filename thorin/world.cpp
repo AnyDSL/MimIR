@@ -118,12 +118,11 @@ Ref World::uinc(Ref op, level_t offset) {
 template<Sort sort> Ref World::umax(Defs ops_) {
     // consume nested umax
     DefVec ops;
-    for (auto op : ops_) {
+    for (auto op : ops_)
         if (auto um = op->isa<UMax>())
             ops.insert(ops.end(), um->ops().begin(), um->ops().end());
         else
             ops.emplace_back(op);
-    }
 
     level_t lvl = 0;
     for (auto& op : ops) {

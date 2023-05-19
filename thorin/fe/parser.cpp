@@ -500,7 +500,6 @@ Lam* Parser::parse_lam(bool is_decl) {
             auto track   = tracker();
             auto ret     = accept(Tag::T_colon) ? parse_expr("return type of a "s + entity) : world().mut_infer_type();
             auto ret_loc = dom_p->loc() + track.loc();
-            //auto sort    = world().umax<Sort::Kind>({pi->dom()->type(), ret->type()});
             auto sigma   = world().mut_sigma(2)->set(0, pi->dom());
 
             // Fix wrong dependencies:
