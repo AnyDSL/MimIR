@@ -208,7 +208,7 @@ TEST(Sym, cmp) {
 TEST(Check, alpha) {
     Driver driver;
     World& w = driver.world();
-    auto pi = w.pi(w.type_nat(), w.type_nat());
+    auto pi  = w.pi(w.type_nat(), w.type_nat());
 
     // λx.x
     auto lxx = w.mut_lam(pi);

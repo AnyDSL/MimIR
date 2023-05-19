@@ -78,8 +78,7 @@ private:
 };
 
 // TODO prec is currently broken
-template<bool L>
-struct LRPrec {
+template<bool L> struct LRPrec {
     LRPrec(const Def* l, const Def* r)
         : l(l)
         , r(r) {}

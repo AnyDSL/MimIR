@@ -119,7 +119,7 @@ template<bool infer> bool Check::alpha_internal(Ref d1, Ref d2) {
     if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return false;
 
     if (auto var1 = d1->isa<Var>()) {
-        auto var2   = d2->as<Var>();
+        auto var2 = d2->as<Var>();
         if (auto i = vars_.find(var1->mut()); i != vars_.end()) return i->second == var2->mut();
         if (auto i = vars_.find(var2->mut()); i != vars_.end()) return false; // var2 is bound
         // both var1 and var2 are free: OK, when they are the same or in infer mode
