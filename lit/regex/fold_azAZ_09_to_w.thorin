@@ -1,16 +1,18 @@
-// RUN: %thorin %s -o - | FileCheck %s
+// RUN: %thorin %s -o - -P %S | FileCheck %s
 
 .import mem;
 .plugin regex;
 
-.let i8 = .Idx 256;
-.let bool = .Idx 2;
+.import dont_compile.thorin;
 
-.con .extern disj(mem: %mem.M, string: %mem.Ptr (i8, 0), return: .Cn [%mem.M, bool, %mem.Ptr (i8, 0)]) = {
-    .let pattern = %regex.disj (%regex.lit 49, %regex.lit 48, %regex.lit 50, %regex.lit 51, %regex.lit 52, %regex.lit 53, %regex.lit 54, %regex.lit 55, %regex.lit 56, %regex.lit 57,
+.let i8 = .Idx 256;
+.let Top = ⊤:.Nat;
+
+.con .extern disj(mem: %mem.M, string: %mem.Ptr (<<Top; %core.I8>>, 0), return: .Cn [%mem.M, .Bool, %core.I32]) = {
+    .let pattern = %regex.disj 63 (%regex.lit 49, %regex.lit 48, %regex.lit 50, %regex.lit 51, %regex.lit 52, %regex.lit 53, %regex.lit 54, %regex.lit 55, %regex.lit 56, %regex.lit 57,
                     %regex.lit 65, %regex.lit 66, %regex.lit 67, %regex.lit 68, %regex.lit 69, %regex.lit 70, %regex.lit 71, %regex.lit 72, %regex.lit 73, %regex.lit 74, %regex.lit 75, %regex.lit 76, %regex.lit 77, %regex.lit 78, %regex.lit 79, %regex.lit 80, %regex.lit 81, %regex.lit 82, %regex.lit 83, %regex.lit 84, %regex.lit 85, %regex.lit 86, %regex.lit 87, %regex.lit 88, %regex.lit 89, %regex.lit 90,
                     %regex.lit 95,
                     %regex.lit 97, %regex.lit 98, %regex.lit 99, %regex.lit 100, %regex.lit 101, %regex.lit 102, %regex.lit 103, %regex.lit 104, %regex.lit 105, %regex.lit 106, %regex.lit 107, %regex.lit 108, %regex.lit 109, %regex.lit 110, %regex.lit 111, %regex.lit 112, %regex.lit 113, %regex.lit 114, %regex.lit 115, %regex.lit 116, %regex.lit 117, %regex.lit 118, %regex.lit 119, %regex.lit 120, %regex.lit 121, %regex.lit 122);
-    return (%regex.match (mem, pattern, string))
+    return (pattern Top (mem, string, 0:%core.I32))
     // CHECK: %regex.cls.w
 };
