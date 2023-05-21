@@ -112,7 +112,7 @@ template<bool infer> bool Check::alpha_internal(Ref d1, Ref d2) {
         if (pa->node() == d2->node()) return alpha_<infer>(pa->ops().back(), d2->ops().back());
         if (auto a = pa->isa_lit_arity()) {
             for (size_t i = 0; i != *a; ++i)
-                if (alpha_<infer>(pa->proj(*a, i), d2->proj(*a, i))) return false;
+                if (!alpha_<infer>(pa->proj(*a, i), d2->proj(*a, i))) return false;
             return true;
         }
     } else if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Infer) && !d2->isa<UMax>()) {
