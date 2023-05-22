@@ -283,7 +283,7 @@ Mode</h2>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md116"></a>
 %core.div</h2>
 <p >Signed and unsigned Integer division/remainder.</p>
-<dl class="section warning"><dt>Warning</dt><dd>Division by zero is <em>undefined behavior</em> and thus a visible side effect. For this reason, these axioms expect a <code>%mem.M</code>.</dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Division by zero is <em>undefined behavior</em> and a visible side effect. For this reason, these axioms expect a <code>%mem.M</code>.</dd></dl>
 <div class="fragment"><div class="line">.ax %core.div(sdiv, udiv, srem, urem):</div>
 <div class="line">    Π.[s: .Nat][%mem.M, «2; .Idx s»] -&gt; [%mem.M, .Idx s], normalize_div;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md117"></a>
