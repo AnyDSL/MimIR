@@ -64,7 +64,7 @@ There are two different kind of [Defs](@ref thorin::Def) in Thorin: *mutables* a
 
 Thorin provides different means to scrutinize [Defs](@ref thorin::Def).
 Usually, you will encounter a [Def](@ref thorin::Def) as [Ref](@ref thorin::Ref) which is just a wrapper for a `const Def*`.
-Its purpose is to resolve variables (called *[Infer](@ref thorin::Infer)s* in Thorin) that may pop up due to type inference.
+Its purpose is to resolve "holes" (called *[Infer](@ref thorin::Infer)s* in Thorin) that may pop up due to type inference.
 Matching built-ins, i.e. all subclasses of [Def](@ref thorin::Def), works differently than matching [Axiom](@ref thorin::Axiom)s.
 
 ### Upcast for Built-ins {#cast_builtin}

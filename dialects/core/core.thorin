@@ -136,7 +136,7 @@
 ///
 /// Signed and unsigned Integer division/remainder.
 ///
-/// @warning Division by zero is *undefined behavior* and thus a visible side effect.
+/// @warning Division by zero is *undefined behavior* and a visible side effect.
 /// For this reason, these axioms expect a `%%mem.M`.
 ///
 .ax %core.div(sdiv, udiv, srem, urem):
