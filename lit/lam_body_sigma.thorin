@@ -1,0 +1,7 @@
+// RUN: %thorin %s -o -
+.Sigma S = [
+    n: .Nat,
+    a: «n; .Nat»
+];
+
+.lam f(): S = (3, (0, 1, 2));

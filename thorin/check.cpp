@@ -192,7 +192,7 @@ void Lam::check() {
     if (!Check::alpha(filter()->type(), world().type_bool()))
         error(filter(), "filter '{}' of lambda is of type '{}' but must be of type '.Bool'", filter(),
               filter()->type());
-    if (!Check::alpha(body()->type(), codom()))
+    if (!Check::assignable(codom(), body()))
         error(body(), "body '{}' of lambda is of type \n'{}' but its codomain is of type \n'{}'", body(),
               body()->type(), codom());
 }
