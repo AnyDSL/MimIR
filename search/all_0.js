@@ -88,7 +88,7 @@ var searchData=
   ['arg_85',['Arg',['../classthorin_1_1mem_1_1Reshape.html#a12b75572fe61bad243711323d7028bfcad7afc3b9fcf71444e3112b0e62db99d3',1,'thorin::mem::Reshape']]],
   ['args_86',['args',['../classthorin_1_1App.html#ac1a092b94a41a38b5e467b2f55a474f0',1,'thorin::App::args(F f) const'],['../classthorin_1_1App.html#a01c21e2da9f2c6f4f53d47b3347c7062',1,'thorin::App::args() const'],['../classthorin_1_1App.html#ab3698d0fee0ba0e5db8b161165415ac3',1,'thorin::App::args(nat_t a, F f) const'],['../classthorin_1_1App.html#a196c285cf9420bf660024e50f4d3d272',1,'thorin::App::args(nat_t a) const']]],
   ['arith_87',['arith',['../namespacethorin_1_1math.html#aa313bc84ec271c77a5d5d1f6b3897ec4',1,'thorin::math']]],
-  ['arity_88',['arity',['../classthorin_1_1Def.html#a5077873bd4203c0ea099b044b0231d3d',1,'thorin::Def']]],
+  ['arity_88',['arity',['../classthorin_1_1Def.html#a141dd0a4acc004e3b6d70f64c6ca41b6',1,'thorin::Def']]],
   ['arr_89',['Arr',['../namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a5f71ccf180cb6f7fb169c8632cc66912',1,'thorin::Node']]],
   ['arr_90',['arr',['../classthorin_1_1World.html#a223f9d00e5f499e2b43a64e7ab389e6b',1,'thorin::World::arr(Span&lt; u64 &gt; shape, Ref body)'],['../classthorin_1_1World.html#ab89c4d4f6c3bfa1d2e5ad5bffa649d71',1,'thorin::World::arr(u64 n, Ref body)'],['../classthorin_1_1World.html#a3e1a67c419fd8fe5b6dfb61530ab4341',1,'thorin::World::arr(Defs shape, Ref body)'],['../classthorin_1_1World.html#abf102354cde498147c2a094691d1fbc5',1,'thorin::World::arr(Ref shape, Ref body)']]],
   ['arr_91',['Arr',['../classthorin_1_1Arr.html',1,'thorin']]],

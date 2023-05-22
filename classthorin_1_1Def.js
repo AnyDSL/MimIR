@@ -4,7 +4,7 @@ var classthorin_1_1Def =
     [ "Def", "classthorin_1_1Def.html#ad7f02aa1017c4d7d062ece5774b1e922", null ],
     [ "Def", "classthorin_1_1Def.html#ac5b1f7b142366dcefd3bd9f67254c2fb", null ],
     [ "~Def", "classthorin_1_1Def.html#a90ff289edea985bf55aa4b55c8f691e6", null ],
-    [ "arity", "classthorin_1_1Def.html#a5077873bd4203c0ea099b044b0231d3d", null ],
+    [ "arity", "classthorin_1_1Def.html#a141dd0a4acc004e3b6d70f64c6ca41b6", null ],
     [ "as_imm", "classthorin_1_1Def.html#a5be55faa597959d9cd802aad81c6b57a", null ],
     [ "as_lit_arity", "classthorin_1_1Def.html#a16d05019a1084e09ba37ca6eb14fc36d", null ],
     [ "as_mut", "classthorin_1_1Def.html#af11b2eb1d65239b9e9f5ca1920742ddb", null ],
