@@ -172,7 +172,7 @@ Ref World::var(Ref type, Def* mut) {
 Ref World::iapp(Ref callee, Ref arg) {
     while (auto pi = callee->type()->isa<Pi>()) {
         if (pi->is_implicit()) {
-            auto infer = mut_infer_entity();
+            auto infer = mut_infer(pi->dom());
             auto a     = app(callee, infer);
             callee     = a;
         } else {

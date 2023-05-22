@@ -319,7 +319,7 @@ bool Def::is_term() const {
     return false;
 }
 
-const Def* Def::arity() const {
+Ref Def::arity() const {
     if (auto sigma  = isa<Sigma>()) return world().lit_nat(sigma->num_ops());
     if (auto arr    = isa<Arr  >()) return arr->shape();
     if (auto t = type())            return t->arity();
