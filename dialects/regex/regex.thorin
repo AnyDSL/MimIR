@@ -53,6 +53,21 @@
 .ax %regex.lit: Π val:%core.I8 -> RE, normalize_lit, 1;
 
 ///
+/// ### %regex.range
+///
+/// Wraps a range of literals.
+/// Use: `%regex.range ('a', 'z')` to match all lower case letters.
+///
+.ax %regex.range: Π <<2; %core.I8>> -> RE, normalize_range, 1;
+
+///
+/// ### %regex.not
+///
+/// Do not match the parameter.
+///
+.ax %regex.not_: Π RE -> RE, normalize_not, 1;
+
+///
 /// ### %regex.cls.*
 /// 
 /// | Subtag | Matches |
@@ -77,6 +92,20 @@
 ///
 .lam CPS_RE![n: .Nat] = .Cn [[%mem.M, %mem.Ptr0 «n; %core.I8», .Idx n], .Cn[%mem.M, .Bool, .Idx n]];
 
+.con %regex.match_range!(lower:%core.I8, upper:%core.I8)!(n: .Nat)!((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
+    .let ptr = %mem.lea (n, ‹n; %core.I8›, 0) (string, pos);
+    .let (`mem, char) = %mem.load (mem, ptr);
+    .let is_digit = %core.bit2.and_ 0 (%core.icmp.uge (char, lower),  %core.icmp.ule (char, upper));
+    
+    .let new_pos = (pos, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)))#is_digit;
+    cont (mem, is_digit, new_pos)
+};
+.con %regex.match_not!(n: .Nat)!(inner: (CPS_RE n))((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
+    .con ret_inverted!(mem: %mem.M, is_digit: .Bool, new_pos: .Idx n) = {
+        cont (mem, %core.bit1.neg 0 is_digit, new_pos)
+    };
+    inner ((mem, string, pos), ret_inverted)
+};
 .con %regex.match_d!(n: .Nat)!((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
     .let ptr = %mem.lea (n, ‹n; %core.I8›, 0) (string, pos);
     .let (`mem, char) = %mem.load (mem, ptr);

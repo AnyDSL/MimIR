@@ -32,6 +32,16 @@ Ref lit_impl(Match<regex::lit, App> lit_app) {
     return world.app(world.annex<regex::match_lit>(), lit_app->arg());
 }
 
+Ref range_impl(Match<regex::range, App> range_app) {
+    auto& world = range_app->world();
+    return world.app(world.annex<regex::match_range>(), range_app->arg());
+}
+
+Ref not_impl(Match<regex::not_, App> not_app) {
+    auto& world = not_app->world();
+    return world.annex<regex::match_not>();
+}
+
 Ref quant_impl(Match<regex::quant, App> quant_app) {
     auto& world = quant_app->world();
     switch (quant_app.id()) {
@@ -70,6 +80,9 @@ Ref rewrite_arg(Ref def, Ref n) {
 
     if (auto cls_ax = thorin::match<cls>(def)) new_app = world.app(cls_impl(cls_ax), n);
     if (auto lit_app = thorin::match<lit>(def)) new_app = world.app(lit_impl(lit_app), n);
+    if (auto range_app = thorin::match<range>(def)) new_app = world.app(range_impl(range_app), n);
+    if (auto not_app = thorin::match<not_>(def))
+        new_app = world.iapp(world.app(not_impl(not_app), n), rewrite_args(not_app->arg(), n));
     if (auto conj_app = thorin::match<conj>(def))
         new_app = world.iapp(world.app(conj_impl(conj_app), n), rewrite_args(conj_app->arg(), n));
     if (auto disj_app = thorin::match<disj>(def))
@@ -92,6 +105,10 @@ Ref LowerRegex::rewrite(Ref def) {
             new_app = wrap_in_cps2ds(world.app(cls_impl(cls_ax), n));
         if (auto lit_app = thorin::match<lit>(app->callee()))
             new_app = wrap_in_cps2ds(world.app(lit_impl(lit_app), n));
+        if (auto range_app = thorin::match<range>(app->callee()))
+            new_app = wrap_in_cps2ds(world.app(range_impl(range_app), n));
+        if (auto not_app = thorin::match<not_>(app->callee()))
+            new_app = wrap_in_cps2ds(world.app(world.iapp(not_impl(not_app), n), rewrite_args(not_app->arg(), n)));
         if (auto conj_app = thorin::match<conj>(app->callee()))
             new_app = wrap_in_cps2ds(world.app(world.iapp(conj_impl(conj_app), n), rewrite_args(conj_app->arg(), n)));
         if (auto disj_app = thorin::match<disj>(app->callee()))
