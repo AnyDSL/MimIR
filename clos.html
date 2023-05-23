@@ -114,26 +114,26 @@ $(document).ready(function(){initNavTree('clos.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md82">Dependencies</a></li>
-<li class="level1"><a href="#autotoc_md83">Operations related to longjmp</a></li>
-<li class="level1"><a href="#autotoc_md84">Closure Attribute</a></li>
-<li class="level1"><a href="#autotoc_md85">Passes and Phases</a><ul><li class="level2"><a href="#autotoc_md86">Passes</a></li>
-<li class="level2"><a href="#autotoc_md87">Phases</a></li>
+<ul><li class="level1"><a href="#autotoc_md86">Dependencies</a></li>
+<li class="level1"><a href="#autotoc_md87">Operations related to longjmp</a></li>
+<li class="level1"><a href="#autotoc_md88">Closure Attribute</a></li>
+<li class="level1"><a href="#autotoc_md89">Passes and Phases</a><ul><li class="level2"><a href="#autotoc_md90">Passes</a></li>
+<li class="level2"><a href="#autotoc_md91">Phases</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md_build_docs_dialects_clos"></a> </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacethorin_1_1clos.html" title="The clos Plugin">thorin::clos</a></dd></dl>
-<h1><a class="anchor" id="autotoc_md82"></a>
+<h1><a class="anchor" id="autotoc_md86"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">.plugin core;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md83"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md87"></a>
 Operations related to longjmp</h1>
 <div class="fragment"><div class="line">.let %clos.BufPtr = %mem.Ptr0 %core.I8;</div>
 <div class="line">.ax %clos.alloc_jmpbuf: %mem.M -&gt; [%mem.M, %clos.BufPtr];</div>
 <div class="line">.ax %clos.setjmp: [%mem.M, %clos.BufPtr] -&gt; [%mem.M, %core.I32];</div>
 <div class="line">.ax %clos.longjmp: .Cn [%mem.M, %clos.BufPtr, %core.I32];</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md84"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md88"></a>
 Closure Attribute</h1>
 <p >Used internally to classify the use of differen Lambdas. <a class="el" href="classthorin_1_1clos_1_1ClosConvPrep.html">thorin::clos::ClosConvPrep</a> places these attributes:</p><ul>
 <li><code>ret</code>: returning lambda</li>
@@ -143,9 +143,9 @@ Closure Attribute</h1>
 <li><code>bot</code>: no special use</li>
 </ul>
 <div class="fragment"><div class="line">.ax %clos.attr(ret, freeBB, fstclassBB, esc, bot): Π.T: * -&gt; T -&gt; T, normalize_clos;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md85"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md89"></a>
 Passes and Phases</h1>
-<h2><a class="anchor" id="autotoc_md86"></a>
+<h2><a class="anchor" id="autotoc_md90"></a>
 Passes</h2>
 <div class="fragment"><div class="line">.ax %clos.clos_conv_prep_pass: %compile.Pass;</div>
 <div class="line">.ax %clos.clos_conv_pass: %compile.Pass;</div>
@@ -154,7 +154,7 @@ Passes</h2>
 <div class="line">.ax %clos.clos2sjlj_pass: %compile.Pass;</div>
 <div class="line">.ax %clos.lower_typed_clos_pass: %compile.Pass;</div>
 <div class="line">.ax %clos.eta_red_bool_pass: .Bool -&gt; %compile.Pass;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md87"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md91"></a>
 Phases</h2>
 <div class="fragment"><div class="line">.let clos_opt1_phase = {</div>
 <div class="line">  .let eta_red = %clos.eta_red_bool_pass .tt;</div>

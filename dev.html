@@ -131,8 +131,13 @@ $(document).ready(function(){initNavTree('dev.html',''); initResizable(); });
 </li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md25">Arity</a></li>
-<li class="level1"><a href="#autotoc_md26">Iterating over the Program</a></li>
+<li class="level1"><a href="#autotoc_md25">Working with Indices</a><ul><li class="level2"><a href="#autotoc_md26">Arity</a></li>
+<li class="level2"><a href="#autotoc_md27">Proj</a></li>
+<li class="level2"><a href="#autotoc_md28">Shape</a></li>
+<li class="level2"><a href="#autotoc_md29">Summary</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md30">Iterating over the Program</a></li>
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md_docs_dev"></a></p>
@@ -258,7 +263,7 @@ Upcast</h3>
 <div class="line">    <span class="comment">// asserts, if def is not a Sigma</span></div>
 <div class="line">    <span class="keyword">auto</span> sigma = def-&gt;<a class="code hl_function" href="classthorin_1_1Def.html#a5be55faa597959d9cd802aad81c6b57a">as_imm</a>&lt;<a class="code hl_class" href="classthorin_1_1Sigma.html">Sigma</a>&gt;();</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassthorin_1_1Def_html_a5be55faa597959d9cd802aad81c6b57a"><div class="ttname"><a href="classthorin_1_1Def.html#a5be55faa597959d9cd802aad81c6b57a">thorin::Def::as_imm</a></div><div class="ttdeci">const T * as_imm() const</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00395">def.h:395</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Def_html_a5be55faa597959d9cd802aad81c6b57a"><div class="ttname"><a href="classthorin_1_1Def.html#a5be55faa597959d9cd802aad81c6b57a">thorin::Def::as_imm</a></div><div class="ttdeci">const T * as_imm() const</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00396">def.h:396</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Ref_html"><div class="ttname"><a href="classthorin_1_1Ref.html">thorin::Ref</a></div><div class="ttdoc">Helper class to retrieve Infer::arg if present.</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00076">def.h:76</a></div></div>
 <div class="ttc" id="aclassthorin_1_1RuntimeCast_html_a9b3aab7e1699f26e91e8675de9c0b202"><div class="ttname"><a href="classthorin_1_1RuntimeCast.html#a9b3aab7e1699f26e91e8675de9c0b202">thorin::RuntimeCast::isa</a></div><div class="ttdeci">T * isa()</div><div class="ttdoc">dynamic_cast.</div><div class="ttdef"><b>Definition:</b> <a href="cast_8h_source.html#l00028">cast.h:28</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Sigma_html"><div class="ttname"><a href="classthorin_1_1Sigma.html">thorin::Sigma</a></div><div class="ttdoc">A dependent tuple type.</div><div class="ttdef"><b>Definition:</b> <a href="tuple_8h_source.html#l00009">tuple.h:9</a></div></div>
@@ -276,7 +281,7 @@ Upcast for Immutables</h3>
 <div class="line">    <span class="comment">// sigma of type &quot;const Sigma*&quot; and *must* be an immutable Sigma - otherwise, asserts</span></div>
 <div class="line">    <span class="keyword">auto</span> sigma = def-&gt;<a class="code hl_function" href="classthorin_1_1Def.html#a5be55faa597959d9cd802aad81c6b57a">as_imm</a>&lt;<a class="code hl_class" href="classthorin_1_1Sigma.html">Sigma</a>&gt;();</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassthorin_1_1Def_html_a85d0612116079567f2ba644ac3b37ac8"><div class="ttname"><a href="classthorin_1_1Def.html#a85d0612116079567f2ba644ac3b37ac8">thorin::Def::isa_imm</a></div><div class="ttdeci">const T * isa_imm() const</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00394">def.h:394</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Def_html_a85d0612116079567f2ba644ac3b37ac8"><div class="ttname"><a href="classthorin_1_1Def.html#a85d0612116079567f2ba644ac3b37ac8">thorin::Def::isa_imm</a></div><div class="ttdeci">const T * isa_imm() const</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00395">def.h:395</a></div></div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md19"></a>
 Upcast for Mutables</h3>
 <p ><a class="el" href="classthorin_1_1Def.html#aabf1066a0dbcaa6ec6f08877b86767e4">Def::isa_mut</a>/<a class="el" href="classthorin_1_1Def.html#af11b2eb1d65239b9e9f5ca1920742ddb">Def::as_mut</a> allows for an <em>upcast</em> and <b>only</b> matches <em>mutables</em>. By doing so, it removes the <code>const</code> qualifier and gives you access to the <b>non</b>-<code>const</code> methods that only make sense for <em>mutables</em>: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<a class="code hl_class" href="classthorin_1_1Ref.html">Ref</a> def) {</div>
@@ -296,8 +301,8 @@ Upcast for Mutables</h3>
 <div class="line">    <span class="comment">// Otherwise, an assert will fire.</span></div>
 <div class="line">    <span class="keyword">auto</span> lam = def-&gt;<a class="code hl_function" href="classthorin_1_1RuntimeCast.html#a909777be7f178004b0cca5ec68356c4c">as</a>&lt;<a class="code hl_class" href="classthorin_1_1Lam.html">Lam</a>&gt;();</div>
 <div class="line">}</div>
-<div class="ttc" id="aclassthorin_1_1Def_html_aabf1066a0dbcaa6ec6f08877b86767e4"><div class="ttname"><a href="classthorin_1_1Def.html#aabf1066a0dbcaa6ec6f08877b86767e4">thorin::Def::isa_mut</a></div><div class="ttdeci">T * isa_mut() const</div><div class="ttdoc">If this is *mut*able, it will cast constness away and perform a dynamic_cast to T.</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00400">def.h:400</a></div></div>
-<div class="ttc" id="aclassthorin_1_1Lam_html"><div class="ttname"><a href="classthorin_1_1Lam.html">thorin::Lam</a></div><div class="ttdoc">A function.</div><div class="ttdef"><b>Definition:</b> <a href="lam_8h_source.html#l00092">lam.h:92</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Def_html_aabf1066a0dbcaa6ec6f08877b86767e4"><div class="ttname"><a href="classthorin_1_1Def.html#aabf1066a0dbcaa6ec6f08877b86767e4">thorin::Def::isa_mut</a></div><div class="ttdeci">T * isa_mut() const</div><div class="ttdoc">If this is *mut*able, it will cast constness away and perform a dynamic_cast to T.</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00401">def.h:401</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Lam_html"><div class="ttname"><a href="classthorin_1_1Lam.html">thorin::Lam</a></div><div class="ttdoc">A function.</div><div class="ttdef"><b>Definition:</b> <a href="lam_8h_source.html#l00094">lam.h:94</a></div></div>
 <div class="ttc" id="aclassthorin_1_1RuntimeCast_html_a909777be7f178004b0cca5ec68356c4c"><div class="ttname"><a href="classthorin_1_1RuntimeCast.html#a909777be7f178004b0cca5ec68356c4c">thorin::RuntimeCast::as</a></div><div class="ttdeci">T * as()</div><div class="ttdoc">static_cast with debug check.</div><div class="ttdef"><b>Definition:</b> <a href="cast_8h_source.html#l00023">cast.h:23</a></div></div>
 </div><!-- fragment --><p> Checking via <a class="el" href="classthorin_1_1RuntimeCast.html#a9b3aab7e1699f26e91e8675de9c0b202">Def::isa</a>/<a class="el" href="classthorin_1_1RuntimeCast.html#a909777be7f178004b0cca5ec68356c4c">Def::as</a> a <code>Def*</code> has the same effect as using <a class="el" href="classthorin_1_1Def.html#aabf1066a0dbcaa6ec6f08877b86767e4">Def::isa_mut</a>/<a class="el" href="classthorin_1_1Def.html#af11b2eb1d65239b9e9f5ca1920742ddb">Def::isa_mut</a> since the scrutinee must be already a <em>mutable</em> due to the lack of the <code>const</code> qualifier: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<a class="code hl_class" href="classthorin_1_1Def.html">Def</a>* def) { <span class="comment">// note the lack of &quot;const&quot; here</span></div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> sigma = def-&gt;<a class="code hl_function" href="classthorin_1_1RuntimeCast.html#a9b3aab7e1699f26e91e8675de9c0b202">isa</a>&lt;<a class="code hl_class" href="classthorin_1_1Sigma.html">Sigma</a>&gt;()) {</div>
@@ -442,8 +447,30 @@ Summary</h3>
  <code>force(core::wrap::add, def)</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Match.html">Match</a><code>&lt;</code><a class="el" href="namespacethorin_1_1mem.html#adb2bf49c45c2574f69f55e237f3f2e8f">core::wrap</a>, <a class="el" href="classthorin_1_1App.html">App</a><code>&gt;</code>   </td><td class="markdownTableBodyNone"><code>%core.wrap.add s m (a, b)</code>   </td></tr>
 </table>
 <h1><a class="anchor" id="autotoc_md25"></a>
-Arity</h1>
-<p >There are several ways of retrieving the number of elements of something in Thorin. First of all, it is important to note that <code>x#0_1</code> = <code>x</code> - no matter what <code>x</code> is. For this reason, it is almost always a good idea to provide the arity when using <a class="el" href="classthorin_1_1Extract.html" title="Extracts from a Sigma or Array-typed Extract::tuple the element at position Extract::index.">thorin::Extract</a>, <a class="el" href="classthorin_1_1Def.html#af5a66d05737e701114113c2cfda9002d" title="Similar to World::extract while assuming an arity of a, but also works on Sigmas and Arrays.">thorin::Def::proj</a> or similar means. The following table summarizes these different ways.</p>
+Working with Indices</h1>
+<p >There are essentially <b>three</b> ways of retrieving the number of elements of something in Thorin.</p>
+<h2><a class="anchor" id="autotoc_md26"></a>
+Arity</h2>
+<p >This is the number of elements of to <a class="el" href="classthorin_1_1Extract.html">extract</a>/<a class="el" href="classthorin_1_1Insert.html">insert</a> a single element. Note that the number of elements may be unknown at compile time such as in <code>‹n; 0›</code>.</p>
+<h2><a class="anchor" id="autotoc_md27"></a>
+Proj</h2>
+<p ><a class="el" href="classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2" title="Yields Def::as_lit_arity(), if it is in fact a Lit, or 1 otherwise.">thorin::Def::num_projs</a> is the same as <a class="el" href="classthorin_1_1Def.html#a141dd0a4acc004e3b6d70f64c6ca41b6">thorin::Def::arity</a>, if the arity is a <a class="el" href="classthorin_1_1Lit.html">thorin::Lit</a>. Otherwise, it is simply <code>1</code>. This concept only exists in the C++-API to give the programmer the illusion to work with n-ary functions, e.g.: </p><div class="fragment"><div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> dom : pi-&gt;doms()) { <span class="comment">/*...*/</span> }</div>
+<div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> var : lam-&gt;vars()) { <span class="comment">/*...*/</span> }</div>
+</div><!-- fragment --><p> But in reality, all functions have exactly one domain and one codomain.</p>
+<p >See also:</p><ul>
+<li><a class="el" href="classthorin_1_1Def.html#proj">Def::proj</a></li>
+<li><a class="el" href="classthorin_1_1Def.html#var">Def::var</a></li>
+<li><a class="el" href="classthorin_1_1Pi.html#pi_dom">Pi::dom</a></li>
+<li><a class="el" href="classthorin_1_1Pi.html#pi_codom">Pi::codom</a></li>
+<li><a class="el" href="classthorin_1_1Lam.html#lam_dom">Lam::dom</a></li>
+<li><a class="el" href="classthorin_1_1Lam.html#lam_codom">Lam::codom</a></li>
+<li><a class="el" href="classthorin_1_1App.html#app_arg">App::arg</a></li>
+</ul>
+<h2><a class="anchor" id="autotoc_md28"></a>
+Shape</h2>
+<p >TODO</p>
+<h2><a class="anchor" id="autotoc_md29"></a>
+Summary</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Expression   </th><th class="markdownTableHeadNone">Class   </th><th class="markdownTableHeadNone"><a class="el" href="classthorin_1_1Def.html#a141dd0a4acc004e3b6d70f64c6ca41b6">artiy</a>   </th><th class="markdownTableHeadNone"><a class="el" href="classthorin_1_1Def.html#a3435dfa9281402d7c74e7a163ec0a6d8">isa_lit_artiy</a>   </th><th class="markdownTableHeadNone"><a class="el" href="classthorin_1_1Def.html#a16d05019a1084e09ba37ca6eb14fc36d">as_lit_artiy</a>   </th><th class="markdownTableHeadNone"><a class="el" href="classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2">num_projs</a>    </th></tr>
@@ -464,14 +491,7 @@ Arity</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>x: «n; .Nat»</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Var.html">Var</a>   </td><td class="markdownTableBodyNone"><code>n</code>   </td><td class="markdownTableBodyNone"><code>std::nullopt</code>   </td><td class="markdownTableBodyNone">asserts   </td><td class="markdownTableBodyNone"><code>1</code>   </td></tr>
 </table>
-<ul>
-<li>Use <a class="el" href="classthorin_1_1Def.html#a141dd0a4acc004e3b6d70f64c6ca41b6">thorin::Def::arity</a> &amp; friends for <a class="el" href="classthorin_1_1Extract.html" title="Extracts from a Sigma or Array-typed Extract::tuple the element at position Extract::index.">thorin::Extract</a>, <a class="el" href="classthorin_1_1Insert.html" title="Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple.">thorin::Insert</a>, etc.</li>
-<li>Use <a class="el" href="classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2" title="Yields Def::as_lit_arity(), if it is in fact a Lit, or 1 otherwise.">thorin::Def::num_projs</a> for <a class="el" href="classthorin_1_1Def.html#af5a66d05737e701114113c2cfda9002d" title="Similar to World::extract while assuming an arity of a, but also works on Sigmas and Arrays.">thorin::Def::proj</a>, <a class="el" href="classthorin_1_1Def.html#a22a6f98101cae5022aaa945031867e5c">thorin::Def::var</a>, <a class="el" href="classthorin_1_1App.html#a87f636308044d3ec0ee571f9d5658bc7">thorin::App::arg</a>, etc. Note that this concept only exist in the C++-API to give the programmer the illusion to work with n-ary functions: <div class="fragment"><div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> dom : pi-&gt;doms()) { <span class="comment">/*...*/</span> }</div>
-<div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> var : lam-&gt;vars()) { <span class="comment">/*...*/</span> }</div>
-</div><!-- fragment --> But in reality all function have exactly one domain and one codomain.</li>
-<li>See also <a class="el" href="classthorin_1_1Def.html#proj">proj</a>.</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md26"></a>
+<h1><a class="anchor" id="autotoc_md30"></a>
 Iterating over the Program</h1>
 <p >There are several ways of doing this. It depends on what exactly you want to achieve and how much structure you need during the traversal. The simplest way is to kick off with <a class="el" href="classthorin_1_1World.html#a5b40a0d582ba6e1b28bc50dc0ceb0840">World::externals</a> and recursively run over <a class="el" href="classthorin_1_1Def.html#a543cbdcb17d574373aa65244dcead8f8">Def::extended_ops</a> like this: </p><div class="fragment"><div class="line"><a class="code hl_typedef" href="namespacethorin.html#a7fddaff34d4e4927bc748c28b49eef46">DefSet</a> done;</div>
 <div class="line"><span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [_, mut] : world.externals())</div>
