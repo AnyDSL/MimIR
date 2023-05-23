@@ -106,56 +106,6 @@
     };
     inner ((mem, string, pos), ret_inverted)
 };
-.con %regex.match_d!(n: .Nat)!((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
-    .let ptr = %mem.lea (n, ‹n; %core.I8›, 0) (string, pos);
-    .let (`mem, char) = %mem.load (mem, ptr);
-    .let is_digit = %core.bit2.and_ 0 (%core.icmp.uge (char, '0'),  %core.icmp.ule (char, '9'));
-    
-    .let new_pos = (pos, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)))#is_digit;
-    cont (mem, is_digit, new_pos)
-};
-.con %regex.match_D!(n: .Nat)!((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
-    .con ret_inverted!(mem: %mem.M, is_digit: .Bool, new_pos: .Idx n) = {
-        cont (mem, %core.bit1.neg 0 is_digit, new_pos)
-    };
-    %regex.match_d n ((mem, string, pos), ret_inverted)
-};
-.con %regex.match_w!(n: .Nat)!((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
-    .let ptr = %mem.lea (n, ‹n; %core.I8›, 0) (string, pos);
-    .let (`mem, char) = %mem.load (mem, ptr);
-    .let is_upper_lit = %core.bit2.and_ 0 (%core.icmp.uge (char, 'A'),  %core.icmp.ule (char, 'Z'));
-    .let is_lower_lit = %core.bit2.and_ 0 (%core.icmp.uge (char, 'a'),  %core.icmp.ule (char, 'z'));
-    .let is_underscore = %core.icmp.e (char, '_');
-    .let is_digit = %core.bit2.and_ 0 (%core.icmp.uge (char, '0'),  %core.icmp.ule (char, '9'));
-    .let is_w = %core.bit2.or_ 0 (%core.bit2.or_ 0 (is_upper_lit, is_lower_lit), %core.bit2.or_ 0 (is_underscore, is_digit));
-    
-    .let new_pos = (pos, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)))#is_w;
-    cont (mem, is_w, new_pos)
-};
-.con %regex.match_W!(n: .Nat)!((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
-    .con ret_inverted!(mem: %mem.M, is_w: .Bool, new_pos: .Idx n) = {
-        cont (mem, %core.bit1.neg 0 is_w, new_pos)
-    };
-    %regex.match_w n ((mem, string, pos), ret_inverted)
-};
-.con %regex.match_s!(n: .Nat)!((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
-    .let ptr = %mem.lea (n, ‹n; %core.I8›, 0) (string, pos);
-    .let (`mem, char) = %mem.load (mem, ptr);
-    .let is_space = %core.icmp.e (char, ' ');
-    .let is_tab = %core.icmp.e (char, '\t');
-    .let is_nf = %core.icmp.e (char, '\n');
-    .let is_cr = %core.icmp.e (char, '\r');
-    .let is_s = %core.bit2.or_ 0 (%core.bit2.or_ 0 (is_space, is_tab), %core.bit2.or_ 0 (is_nf, is_cr));
-    
-    .let new_pos = (pos, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)))#is_s;
-    cont (mem, is_s, new_pos)
-};
-.con %regex.match_S!(n: .Nat)!((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
-    .con ret_inverted!(mem: %mem.M, is_s: .Bool, new_pos: .Idx n) = {
-        cont (mem, %core.bit1.neg 0 is_s, new_pos)
-    };
-    %regex.match_s n ((mem, string, pos), ret_inverted)
-};
 .con %regex.match_any!(n: .Nat)!((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
     .let ptr = %mem.lea (n, ‹n; %core.I8›, 0) (string, pos);
     .let (`mem, char) = %mem.load (mem, ptr);
@@ -163,14 +113,6 @@
 
     .let new_pos = (pos, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)))#isnt_0;
     cont (mem, isnt_0, new_pos)
-};
-.con %regex.match_lit!(lit:%core.I8)!(n: .Nat)!((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
-    .let ptr = %mem.lea (n, ‹n; %core.I8›, 0) (string, pos);
-    .let (`mem, char) = %mem.load (mem, ptr);
-    .let is_lit = %core.icmp.e (char, lit);
-
-    .let new_pos = (pos, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)))#is_lit;
-    cont (mem, is_lit, new_pos)
 };
 .con %regex.match_conj!(n: .Nat)!(A: (CPS_RE n), B: (CPS_RE n))((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
     .con exit_true!((mem: %mem.M, new_pos: .Idx n)) = {

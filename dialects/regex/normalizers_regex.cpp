@@ -95,16 +95,6 @@ bool equals_any(const Def* lhs, const Def* rhs) {
 }
 
 bool compare_re(const Def* lhs, const Def* rhs) {
-    auto lhs_lit = thorin::match<lit>(lhs);
-    auto rhs_lit = thorin::match<lit>(rhs);
-    if (lhs_lit) {
-        if (rhs_lit) return Lit::as(lhs_lit->arg()) < Lit::as(rhs_lit->arg());
-        // lits at the end
-        return false;
-    } else if (rhs_lit) {
-        // lits at the end
-        return true;
-    }
     auto lhs_range = thorin::match<range>(lhs);
     auto rhs_range = thorin::match<range>(rhs);
     if (lhs_range) {
@@ -146,49 +136,6 @@ auto get_range(const Def* rng) -> std::pair<nat_t, nat_t> {
     return {Lit::as<std::uint8_t>(rng_match->arg(0)), Lit::as<std::uint8_t>(rng_match->arg(1))};
 }
 
-void merge_lits_to_ranges(std::vector<const Def*>& args) {
-    auto rangesBegin = args.begin();
-    while (rangesBegin != args.end() && !thorin::match<range>(*rangesBegin)) rangesBegin++;
-    auto litBegin = args.begin();
-    while (litBegin != args.end() && !thorin::match<lit>(*litBegin)) litBegin++;
-    if (litBegin == args.end()) return;
-
-    std::set<const Def*> toRemove;
-    std::vector<std::pair<nat_t, nat_t>> oldRanges, newRanges;
-    if (rangesBegin != args.end()) std::transform(rangesBegin, litBegin, std::back_inserter(oldRanges), get_range);
-    auto& world = (*litBegin)->world();
-
-    auto get           = [](const Def* lt) { return Lit::as<std::uint8_t>(thorin::match<lit, false>(lt)->arg()); };
-    int last_seq_begin = -1, last_value = -1;
-    for (auto it = litBegin; it != args.end(); ++it) {
-        (*it)->world().DLOG("{}\n", get(*it));
-        const auto val = get(*it);
-        if (std::find_if(oldRanges.cbegin(), oldRanges.cend(), [val](auto rng) { return is_in_range(rng, val); })
-            != oldRanges.cend()) {
-            toRemove.insert(*it);
-        } else if (last_value + 1 == val) {
-            if (last_seq_begin == -1) {
-                toRemove.insert(*(it - 1));
-                last_seq_begin = last_value;
-            }
-            toRemove.insert(*it);
-        } else if (last_seq_begin != -1) {
-            toRemove.insert(*it);
-            newRanges.emplace_back(last_seq_begin, last_value);
-            last_seq_begin = -1;
-        }
-        last_value = val;
-    }
-    if (last_seq_begin != -1) newRanges.emplace_back(last_seq_begin, last_value);
-    std::erase_if(args, [&toRemove](const Def* val) -> bool { return toRemove.contains(val); });
-    std::transform(newRanges.begin(), newRanges.end(), std::back_inserter(args), [&world](auto rng) {
-        return world.app(world.annex<range>(),
-                         world.tuple({world.lit_int(8, rng.first), world.lit_int(8, rng.second)}));
-    });
-
-    make_vector_unique(args);
-}
-
 struct app_range {
     World& w;
     Ref operator()(std::pair<nat_t, nat_t> rng) {
@@ -200,14 +147,12 @@ void merge_ranges(std::vector<const Def*>& args) {
     auto rangesBegin = args.begin();
     while (rangesBegin != args.end() && !thorin::match<range>(*rangesBegin)) rangesBegin++;
     if (rangesBegin == args.end()) return;
-    auto litBegin = rangesBegin;
-    while (litBegin != args.end() && !thorin::match<lit>(*litBegin)) litBegin++;
 
     std::set<const Def*> toRemove;
     std::vector<std::pair<nat_t, nat_t>> oldRanges, newRanges;
     auto& world = (*rangesBegin)->world();
 
-    std::transform(rangesBegin, litBegin, std::back_inserter(oldRanges), get_range);
+    std::transform(rangesBegin, args.end(), std::back_inserter(oldRanges), get_range);
 
     for (auto it = oldRanges.begin(); it != oldRanges.end(); ++it) {
         auto current_range = *it;
@@ -224,115 +169,9 @@ void merge_ranges(std::vector<const Def*>& args) {
         for (auto dedup : deDuplicate) newRanges.erase(dedup);
         newRanges.push_back(std::move(current_range));
     }
-    // invalidates rangesBegin, litBegin
-    args.erase(rangesBegin, litBegin);
+    // invalidates rangesBegin
+    args.erase(rangesBegin, args.end());
     std::transform(newRanges.begin(), newRanges.end(), std::back_inserter(args), app_range{world});
-
-    make_vector_unique(args);
-}
-
-void reduceLitsToClass(std::vector<const Def*>& args) {
-    bool has_cls_d = false, has_cls_w = false, has_cls_s = false;
-    bool has_cls_D = false, has_cls_W = false, has_cls_S = false;
-
-    auto litBegin = args.begin();
-    while (litBegin != args.end() && !thorin::match<lit>(*litBegin)) {
-        if (auto cls_ax = match<cls>(*litBegin)) {
-            switch (cls_ax.id()) {
-                case cls::d: has_cls_d = true; break;
-                case cls::D: has_cls_D = true; break;
-                case cls::w: has_cls_w = true; break;
-                case cls::W: has_cls_W = true; break;
-                case cls::s: has_cls_s = true; break;
-                case cls::S: has_cls_S = true; break;
-                case cls::any: unreachable();
-            }
-        }
-        litBegin++;
-    }
-    if (litBegin == args.end()) return;
-
-    std::set<const Def*> toRemove;
-    std::vector<const Def*> toInsert;
-    auto& world = (*litBegin)->world();
-
-    auto get           = [](const Def* lt) { return Lit::as(thorin::match<lit, false>(lt)->arg()); };
-    auto matchSequence = [get, args_end = args.end()](auto it, int length) -> bool {
-        auto last = get(*it);
-        for (auto end = it + length; it != end; ++it) {
-            if (it == args_end) return false;
-            (*it)->world().DLOG("{}: {}", last, get(*it));
-            if (last++ != get(*it)) return false;
-        }
-        return true;
-    };
-    auto capitalLettersIt = args.end(), underscoreIt = args.end(), tabLfIt = args.end(), crIt = args.end();
-    bool hasDigit = has_cls_d;
-
-    for (auto it = litBegin; it != args.end(); ++it) {
-        (*it)->world().DLOG("{}\n", get(*it));
-        const auto val = get(*it);
-        // d
-        if (val >= 48 && val < 58) {
-            if (has_cls_d) {
-                toRemove.insert(*it);
-                continue;
-            }
-        } else if (has_cls_D) {
-            toRemove.insert(*it);
-            continue;
-        }
-
-        if (val == 48 /* 0 */ && matchSequence(it, 10)) {
-            std::copy(it, it + 10, std::inserter(toRemove, toRemove.end()));
-            toInsert.push_back(world.annex(cls::d));
-            hasDigit = true;
-        }
-
-        // w
-        if ((val >= 65 && val < 91) || (val >= 97 && val < 123) || val == 95) {
-            if (has_cls_w) {
-                toRemove.insert(*it);
-                continue;
-            }
-        } else if (has_cls_W) {
-            toRemove.insert(*it);
-            continue;
-        }
-
-        if (val == 65 /* A */ && matchSequence(it, 26)) capitalLettersIt = it;
-        if (val == 95 /* _ */) underscoreIt = it;
-        if (hasDigit && capitalLettersIt != args.end() && underscoreIt != args.end()
-            && val == 97 /* A */ && matchSequence(it, 26)) {
-            std::copy(capitalLettersIt, capitalLettersIt + 26, std::inserter(toRemove, toRemove.end()));
-            std::copy(it, it + 26, std::inserter(toRemove, toRemove.end()));
-            toRemove.insert(*underscoreIt);
-            toInsert.push_back(world.annex(cls::w));
-        }
-
-        // s
-        if (val == 9 || val == 10 || val == 13 || val == 32) {
-            if (has_cls_s) {
-                toRemove.insert(*it);
-                continue;
-            }
-        } else if (has_cls_S) {
-            toRemove.insert(*it);
-            continue;
-        }
-
-        if (val == 9 && get(*(it + 1)) == 10) tabLfIt = it;
-        if (val == 13) crIt = it;
-        if (val == 32 && tabLfIt != args.end() && crIt != args.end()) {
-            toRemove.insert(*tabLfIt);
-            toRemove.insert(*(tabLfIt + 1));
-            toRemove.insert(*crIt);
-            toRemove.insert(*it);
-            toInsert.push_back(world.annex(cls::s));
-        }
-    }
-    std::erase_if(args, [&toRemove](const Def* val) -> bool { return toRemove.contains(val); });
-    std::copy(toInsert.begin(), toInsert.end(), std::back_inserter(args));
 
     make_vector_unique(args);
 }
@@ -348,9 +187,7 @@ Ref normalize_disj(Ref type, Ref, Ref arg) {
         auto newArgs = flatten_in_arg<disj>(arg);
         if (contains_any(newArgs)) return world.annex(cls::any);
         make_vector_unique(newArgs);
-        // merge_lits_to_ranges(newArgs);
         merge_ranges(newArgs);
-        reduceLitsToClass(newArgs);
 
         const Def* toRemove = nullptr;
         for (const auto* cls0 : newArgs)
