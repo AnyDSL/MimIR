@@ -446,7 +446,7 @@ $(document).ready(function(){initNavTree('def_8h_source.html',''); initResizable
 <div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span><span class="comment">    /// auto [x, y]                  = def-&gt;projs&lt;2&gt;([](auto def) { return Lit::as(def); });</span></div>
 <div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span><span class="comment">    /// Array&lt;const Def*&gt; projs1     = def-&gt;projs(); // &quot;projs1&quot; has def-&gt;num_projs() many elements</span></div>
 <div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span><span class="comment">    /// Array&lt;const Def*&gt; projs2     = def-&gt;projs(n);// &quot;projs2&quot; has n elements - asserts if incorrect</span></div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span><span class="comment">    /// // same as above but applies Lit::as&lt;nat_t&gt;(op) to each element</span></div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span><span class="comment">    /// // same as above but applies Lit::as&lt;nat_t&gt;(def) to each element</span></div>
 <div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span><span class="comment">    /// Array&lt;const Lit*&gt; lits1      = def-&gt;projs(   [](auto def) { return Lit::as(def); });</span></div>
 <div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span><span class="comment">    /// Array&lt;const Lit*&gt; lits2      = def-&gt;projs(n, [](auto def) { return Lit::as(def); });</span></div>
 <div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span><span class="comment">    /// ```</span></div>

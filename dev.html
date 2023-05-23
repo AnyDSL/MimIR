@@ -131,7 +131,8 @@ $(document).ready(function(){initNavTree('dev.html',''); initResizable(); });
 </li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md25">Iterating over the Program</a></li>
+<li class="level1"><a href="#autotoc_md25">Arity</a></li>
+<li class="level1"><a href="#autotoc_md26">Iterating over the Program</a></li>
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md_docs_dev"></a></p>
@@ -441,6 +442,36 @@ Summary</h3>
  <code>force(core::wrap::add, def)</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Match.html">Match</a><code>&lt;</code><a class="el" href="namespacethorin_1_1mem.html#adb2bf49c45c2574f69f55e237f3f2e8f">core::wrap</a>, <a class="el" href="classthorin_1_1App.html">App</a><code>&gt;</code>   </td><td class="markdownTableBodyNone"><code>%core.wrap.add s m (a, b)</code>   </td></tr>
 </table>
 <h1><a class="anchor" id="autotoc_md25"></a>
+Arity</h1>
+<p >There are several ways of retrieving the number of elements of something in Thorin. First of all, it is important to note that <code>x#0_1</code> = <code>x</code> - no matter what <code>x</code> is. For this reason, it is almost always a good idea to provide the arity when using <a class="el" href="classthorin_1_1Extract.html" title="Extracts from a Sigma or Array-typed Extract::tuple the element at position Extract::index.">thorin::Extract</a>, <a class="el" href="classthorin_1_1Def.html#af5a66d05737e701114113c2cfda9002d" title="Similar to World::extract while assuming an arity of a, but also works on Sigmas and Arrays.">thorin::Def::proj</a> or similar means. The following table summarizes these different ways.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Expression   </th><th class="markdownTableHeadNone">Class   </th><th class="markdownTableHeadNone"><a class="el" href="classthorin_1_1Def.html#a141dd0a4acc004e3b6d70f64c6ca41b6">artiy</a>   </th><th class="markdownTableHeadNone"><a class="el" href="classthorin_1_1Def.html#a3435dfa9281402d7c74e7a163ec0a6d8">isa_lit_artiy</a>   </th><th class="markdownTableHeadNone"><a class="el" href="classthorin_1_1Def.html#a16d05019a1084e09ba37ca6eb14fc36d">as_lit_artiy</a>   </th><th class="markdownTableHeadNone"><a class="el" href="classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2">num_projs</a>    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>(0, 1, 2)</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Tuple.html">Tuple</a>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>‹3; 0›</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Pack.html">Pack</a>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>‹n; 0›</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Pack.html">Pack</a>   </td><td class="markdownTableBodyNone"><code>n</code>   </td><td class="markdownTableBodyNone"><code>std::nullopt</code>   </td><td class="markdownTableBodyNone">asserts   </td><td class="markdownTableBodyNone"><code>1</code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>[.Nat, .Bool, .Nat]</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Sigma.html">Sigma</a>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>«3; .Nat»</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Arr.html">Arr</a>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>«n; .Nat»</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Arr.html">Arr</a>   </td><td class="markdownTableBodyNone"><code>n</code>   </td><td class="markdownTableBodyNone"><code>std::nullopt</code>   </td><td class="markdownTableBodyNone">asserts   </td><td class="markdownTableBodyNone"><code>1</code>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>x: [.Nat, .Bool]</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Var.html">Var</a>   </td><td class="markdownTableBodyNone"><code>2</code>   </td><td class="markdownTableBodyNone"><code>2</code>   </td><td class="markdownTableBodyNone"><code>2</code>   </td><td class="markdownTableBodyNone"><code>2</code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>x: «n; .Nat»</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Var.html">Var</a>   </td><td class="markdownTableBodyNone"><code>n</code>   </td><td class="markdownTableBodyNone"><code>std::nullopt</code>   </td><td class="markdownTableBodyNone">asserts   </td><td class="markdownTableBodyNone"><code>1</code>   </td></tr>
+</table>
+<ul>
+<li>Use <a class="el" href="classthorin_1_1Def.html#a141dd0a4acc004e3b6d70f64c6ca41b6">thorin::Def::arity</a> &amp; friends for <a class="el" href="classthorin_1_1Extract.html" title="Extracts from a Sigma or Array-typed Extract::tuple the element at position Extract::index.">thorin::Extract</a>, <a class="el" href="classthorin_1_1Insert.html" title="Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple.">thorin::Insert</a>, etc.</li>
+<li>Use <a class="el" href="classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2" title="Yields Def::as_lit_arity(), if it is in fact a Lit, or 1 otherwise.">thorin::Def::num_projs</a> for <a class="el" href="classthorin_1_1Def.html#af5a66d05737e701114113c2cfda9002d" title="Similar to World::extract while assuming an arity of a, but also works on Sigmas and Arrays.">thorin::Def::proj</a>, <a class="el" href="classthorin_1_1Def.html#a22a6f98101cae5022aaa945031867e5c">thorin::Def::var</a>, <a class="el" href="classthorin_1_1App.html#a87f636308044d3ec0ee571f9d5658bc7">thorin::App::arg</a>, etc. Note that this concept only exist in the C++-API to give the programmer the illusion to work with n-ary functions: <div class="fragment"><div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> dom : pi-&gt;doms()) { <span class="comment">/*...*/</span> }</div>
+<div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> var : lam-&gt;vars()) { <span class="comment">/*...*/</span> }</div>
+</div><!-- fragment --> But in reality all function have exactly one domain and one codomain.</li>
+<li>See also <a class="el" href="classthorin_1_1Def.html#proj">proj</a>.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md26"></a>
 Iterating over the Program</h1>
 <p >There are several ways of doing this. It depends on what exactly you want to achieve and how much structure you need during the traversal. The simplest way is to kick off with <a class="el" href="classthorin_1_1World.html#a5b40a0d582ba6e1b28bc50dc0ceb0840">World::externals</a> and recursively run over <a class="el" href="classthorin_1_1Def.html#a543cbdcb17d574373aa65244dcead8f8">Def::extended_ops</a> like this: </p><div class="fragment"><div class="line"><a class="code hl_typedef" href="namespacethorin.html#a7fddaff34d4e4927bc748c28b49eef46">DefSet</a> done;</div>
 <div class="line"><span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [_, mut] : world.externals())</div>
