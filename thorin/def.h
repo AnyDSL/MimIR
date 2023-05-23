@@ -372,6 +372,7 @@ public:
     ///@}
 
     /// @name var
+    /// @anchor var
     ///@{
     /// Retrieve Var for *mutables*.
     /// @see @ref proj

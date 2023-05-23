@@ -26,6 +26,7 @@ public:
     ///@}
 
     /// @name dom
+    /// @anchor pi_dom
     ///@{
     /// @see @ref proj
     Ref dom() const { return op(0); }
@@ -33,6 +34,7 @@ public:
     ///@}
 
     /// @name codom
+    /// @anchor pi_codom
     ///@{
     /// @see @ref proj
     Ref codom() const { return op(1); }
@@ -105,6 +107,7 @@ public:
     ///@}
 
     /// @name dom
+    /// @anchor lam_dom
     ///@{
     /// @see @ref proj
     Ref dom() const { return type()->dom(); }
@@ -112,6 +115,7 @@ public:
     ///@}
 
     /// @name codom
+    /// @anchor lam_codom
     ///@{
     /// @see @ref proj
     Ref codom() const { return type()->codom(); }
@@ -199,6 +203,7 @@ public:
     ///@}
 
     /// @name arg
+    /// @anchor app_arg
     ///@{
     /// @see @ref proj
     const Def* arg() const { return op(1); }

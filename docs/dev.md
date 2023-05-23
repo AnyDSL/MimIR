@@ -282,9 +282,41 @@ The following table summarizes all important casts:
 | `match<core::wrap>(def)`      <br> `force<core::wrap>(def)`      | [Match](@ref thorin::Match)`<`[core::wrap](@ref thorin::mem.load), [App](@ref thorin::App)`>` | `%%core.wrap.??? s m (a, b)`    |
 | `match(core::wrap::add, def)` <br> `force(core::wrap::add, def)` | [Match](@ref thorin::Match)`<`[core::wrap](@ref thorin::mem.load), [App](@ref thorin::App)`>` | `%%core.wrap.add s m (a, b)`    |
 
-## Arity
+## Working with Indices
 
-There are several ways of retrieving the number of elements of something in Thorin.
+There are essentially **three** ways of retrieving the number of elements of something in Thorin.
+
+### Arity
+
+This is the number of elements of to [extract](@ref thorin::Extract)/[insert](@ref thorin::Insert) a single element.
+Note that the number of elements may be unknown at compile time such as in `‹n; 0›`.
+
+### Proj
+
+thorin::Def::num_projs is the same as thorin::Def::arity, if the arity is a thorin::Lit.
+Otherwise, it is simply `1`.
+This concept only exists in the C++-API to give the programmer the illusion to work with n-ary functions, e.g.:
+```cpp
+for (auto dom : pi->doms()) { /*...*/ }
+for (auto var : lam->vars()) { /*...*/ }
+```
+But in reality, all functions have exactly one domain and one codomain.
+
+See also:
+* @ref proj "Def::proj"
+* @ref var "Def::var"
+* @ref pi_dom "Pi::dom"
+* @ref pi_codom "Pi::codom"
+* @ref lam_dom "Lam::dom"
+* @ref lam_codom "Lam::codom"
+* @ref app_arg "App::arg"
+
+### Shape
+
+TODO
+
+### Summary
+
 First of all, it is important to note that `x#0_1` = `x` - no matter what `x` is.
 For this reason, it is almost always a good idea to provide the arity when using thorin::Extract, thorin::Def::proj or similar means.
 The following table summarizes these different ways.
@@ -300,14 +332,21 @@ The following table summarizes these different ways.
 | `x: [.Nat, .Bool]`    | [Var](@ref thorin::Var)     | `2`                              | `2`                                              | `2`                                            | `2`                                      |
 | `x: «n; .Nat»`        | [Var](@ref thorin::Var)     | `n`                              | `std::nullopt`                                   | asserts                                        | `1`                                      |
 
-* Use thorin::Def::arity & friends for thorin::Extract, thorin::Insert, etc.
-* Use thorin::Def::num_projs for thorin::Def::proj, thorin::Def::var, thorin::App::arg, etc.
-    Note that this concept only exist in the C++-API to give the programmer the illusion to work with n-ary functions:
+1. Use thorin::Def::arity & friends for thorin::Extract, thorin::Insert, etc.
+2. Use thorin::Def::num_projs for thorin::Def::proj, thorin::Def::var, thorin::App::arg, etc.
+    Note that this concept only exists in the C++-API to give the programmer the illusion to work with n-ary functions:
     ```cpp
     for (auto dom : pi->doms()) { /*...*/ }
     for (auto var : lam->vars()) { /*...*/ }
     ```
-    But in reality all function have exactly one domain and one codomain.
+    * @ref proj "Def::proj"
+    * @ref var "Def::var"
+    * @ref pi_dom "Pi::dom"
+    * @ref pi_codom "Pi::codom"
+    * @ref lam_dom "Lam::dom"
+    * @ref lam_codom "Lam::codom"
+    * @ref app_arg "App::arg"
+    But in reality, all functions have exactly one domain and one codomain.
 * See also @ref proj.
 
 ## Iterating over the Program
