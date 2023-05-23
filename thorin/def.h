@@ -331,7 +331,7 @@ public:
     /// auto [x, y]                  = def->projs<2>([](auto def) { return Lit::as(def); });
     /// Array<const Def*> projs1     = def->projs(); // "projs1" has def->num_projs() many elements
     /// Array<const Def*> projs2     = def->projs(n);// "projs2" has n elements - asserts if incorrect
-    /// // same as above but applies Lit::as<nat_t>(op) to each element
+    /// // same as above but applies Lit::as<nat_t>(def) to each element
     /// Array<const Lit*> lits1      = def->projs(   [](auto def) { return Lit::as(def); });
     /// Array<const Lit*> lits2      = def->projs(n, [](auto def) { return Lit::as(def); });
     /// ```

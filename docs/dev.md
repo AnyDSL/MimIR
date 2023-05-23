@@ -282,6 +282,34 @@ The following table summarizes all important casts:
 | `match<core::wrap>(def)`      <br> `force<core::wrap>(def)`      | [Match](@ref thorin::Match)`<`[core::wrap](@ref thorin::mem.load), [App](@ref thorin::App)`>` | `%%core.wrap.??? s m (a, b)`    |
 | `match(core::wrap::add, def)` <br> `force(core::wrap::add, def)` | [Match](@ref thorin::Match)`<`[core::wrap](@ref thorin::mem.load), [App](@ref thorin::App)`>` | `%%core.wrap.add s m (a, b)`    |
 
+## Arity
+
+There are several ways of retrieving the number of elements of something in Thorin.
+First of all, it is important to note that `x#0_1` = `x` - no matter what `x` is.
+For this reason, it is almost always a good idea to provide the arity when using thorin::Extract, thorin::Def::proj or similar means.
+The following table summarizes these different ways.
+
+| Expression            | Class                       | [artiy](@ref thorin::Def::arity) | [isa_lit_artiy](@ref thorin::Def::isa_lit_arity) | [as_lit_artiy](@ref thorin::Def::as_lit_arity) | [num_projs](@ref thorin::Def::num_projs) |
+|-----------------------|-----------------------------|----------------------------------|--------------------------------------------------|------------------------------------------------|------------------------------------------|
+| `(0, 1, 2)`           | [Tuple](@ref thorin::Tuple) | `3`                              | `3`                                              | `3`                                            | `3`                                      |
+| `‹3; 0›`              | [Pack](@ref thorin::Pack)   | `3`                              | `3`                                              | `3`                                            | `3`                                      |
+| `‹n; 0›`              | [Pack](@ref thorin::Pack)   | `n`                              | `std::nullopt`                                   | asserts                                        | `1`                                      |
+| `[.Nat, .Bool, .Nat]` | [Sigma](@ref thorin::Sigma) | `3`                              | `3`                                              | `3`                                            | `3`                                      |
+| `«3; .Nat»`           | [Arr](@ref thorin::Arr)     | `3`                              | `3`                                              | `3`                                            | `3`                                      |
+| `«n; .Nat»`           | [Arr](@ref thorin::Arr)     | `n`                              | `std::nullopt`                                   | asserts                                        | `1`                                      |
+| `x: [.Nat, .Bool]`    | [Var](@ref thorin::Var)     | `2`                              | `2`                                              | `2`                                            | `2`                                      |
+| `x: «n; .Nat»`        | [Var](@ref thorin::Var)     | `n`                              | `std::nullopt`                                   | asserts                                        | `1`                                      |
+
+* Use thorin::Def::arity & friends for thorin::Extract, thorin::Insert, etc.
+* Use thorin::Def::num_projs for thorin::Def::proj, thorin::Def::var, thorin::App::arg, etc.
+    Note that this concept only exist in the C++-API to give the programmer the illusion to work with n-ary functions:
+    ```cpp
+    for (auto dom : pi->doms()) { /*...*/ }
+    for (auto var : lam->vars()) { /*...*/ }
+    ```
+    But in reality all function have exactly one domain and one codomain.
+* See also @ref proj.
+
 ## Iterating over the Program
 
 There are several ways of doing this.
