@@ -317,10 +317,6 @@ TODO
 
 ### Summary
 
-First of all, it is important to note that `x#0_1` = `x` - no matter what `x` is.
-For this reason, it is almost always a good idea to provide the arity when using thorin::Extract, thorin::Def::proj or similar means.
-The following table summarizes these different ways.
-
 | Expression            | Class                       | [artiy](@ref thorin::Def::arity) | [isa_lit_artiy](@ref thorin::Def::isa_lit_arity) | [as_lit_artiy](@ref thorin::Def::as_lit_arity) | [num_projs](@ref thorin::Def::num_projs) |
 |-----------------------|-----------------------------|----------------------------------|--------------------------------------------------|------------------------------------------------|------------------------------------------|
 | `(0, 1, 2)`           | [Tuple](@ref thorin::Tuple) | `3`                              | `3`                                              | `3`                                            | `3`                                      |
@@ -331,23 +327,6 @@ The following table summarizes these different ways.
 | `«n; .Nat»`           | [Arr](@ref thorin::Arr)     | `n`                              | `std::nullopt`                                   | asserts                                        | `1`                                      |
 | `x: [.Nat, .Bool]`    | [Var](@ref thorin::Var)     | `2`                              | `2`                                              | `2`                                            | `2`                                      |
 | `x: «n; .Nat»`        | [Var](@ref thorin::Var)     | `n`                              | `std::nullopt`                                   | asserts                                        | `1`                                      |
-
-1. Use thorin::Def::arity & friends for thorin::Extract, thorin::Insert, etc.
-2. Use thorin::Def::num_projs for thorin::Def::proj, thorin::Def::var, thorin::App::arg, etc.
-    Note that this concept only exists in the C++-API to give the programmer the illusion to work with n-ary functions:
-    ```cpp
-    for (auto dom : pi->doms()) { /*...*/ }
-    for (auto var : lam->vars()) { /*...*/ }
-    ```
-    * @ref proj "Def::proj"
-    * @ref var "Def::var"
-    * @ref pi_dom "Pi::dom"
-    * @ref pi_codom "Pi::codom"
-    * @ref lam_dom "Lam::dom"
-    * @ref lam_codom "Lam::codom"
-    * @ref app_arg "App::arg"
-    But in reality, all functions have exactly one domain and one codomain.
-* See also @ref proj.
 
 ## Iterating over the Program
 
