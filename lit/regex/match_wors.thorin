@@ -31,4 +31,4 @@
     (exit, match_argument) # (%core.icmp.ug (argc, 1:I32)) (mem, 0:I32)
 };
 
-// CHECK-NOT: %regex.isa
+// CHECK-NOT: %regex.
