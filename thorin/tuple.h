@@ -101,6 +101,7 @@ public:
     ///@{
     /// @see @ref set_ops "Setting Ops"
     Pack* set(const Def* body) { return Def::set(0, body)->as<Pack>(); }
+    Pack* reset(const Def* body) { return unset()->set(body); }
     Pack* unset() { return Def::unset()->as<Pack>(); }
     ///@}
 
