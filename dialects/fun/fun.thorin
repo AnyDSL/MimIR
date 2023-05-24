@@ -19,15 +19,13 @@
 ///
 /// [Zips](https://en.wikipedia.org/wiki/Zipping_(computer_science)) several tensors.
 ///
-/// **Warning**: For now, not a better place for this and will be moved elsewhere.
-/// What is more, the signature will likely change in the future:
-/// * `r`: rank of the tensors to zip
-/// * `s`: shape of the tensors to zip
+/// * `r`:  rank of the tensors to zip
+/// * `s`:  shape of the tensors to zip
 /// * `ni`: number if inputs
 /// * `no`: number if outputs
 /// * `Is`: tuple with `ni` many elements that describe the element types of the inputs
 /// * `Os`: tuple with `no` many elements that describe the element types of the outputs
-/// * `f`: zipping function that expects an `ni`-tuple whose elements correspond to `Is` and yields an `no`-tuple whose element types correspond to `Os`
+/// * `f`:  zipping function that expects an `ni`-tuple whose elements correspond to `Is` and yields an `no`-tuple whose element types correspond to `Os`
 /// * `is`: the actual input tensors
 ///
 .ax %fun.zip: Π [r: .Nat, s: «r; .Nat», ni: .Nat, Is: «ni; *», no: .Nat, Os: «no; *»]
@@ -38,16 +36,29 @@
 ///
 /// [Zips](https://en.wikipedia.org/wiki/Zipping_(computer_science)) several tensors.
 ///
-/// **Warning**: For now, not a better place for this and will be moved elsewhere.
-/// What is more, the signature will likely change in the future:
-/// * `r`: rank of the tensors to zip
-/// * `s`: shape of the tensors to zip
+/// * `r`:  rank of the tensors to zip
+/// * `s`:  shape of the tensors to zip
 /// * `ni`: number if inputs
-/// * `no`: number if outputs
 /// * `Is`: tuple with `ni` many elements that describe the element types of the inputs
-/// * `Os`: tuple with `no` many elements that describe the element types of the outputs
-/// * `f`: zipping function that expects an `ni`-tuple whose elements correspond to `Is` and yields an `no`-tuple whose element types correspond to `Os`
+/// * `O`:  output type
+/// * `f`:  mapping function that expects an `ni`-tuple whose elements correspond to `Is` and yields an `O`
 /// * `is`: the actual input tensors
 ///
-//.ax %fun.zip: Π [r: .Nat, s: «r; .Nat», ni: .Nat, Is: «ni; *», no: .Nat, Os: «no; *»]
-                //[f: «i: ni; Is#i» -> «o: no; Os#o», is: «i: ni; «s; Is#i»»] -> «o: no; «s; Os#o»», normalize_zip;
+.ax %fun.map: Π [r: .Nat, s: «r; .Nat», ni: .Nat, Is: «ni; *», O: *]
+                [f: «i: ni; Is#i» -> O]
+                [is: «i: ni; «s; Is#i»»] -> «s; O», normalize_map;
+///
+/// ### %fun.reduce
+///
+/// [Reduces](https://en.wikipedia.org/wiki/Reduction_operator) several tensors.
+///
+/// * `r`:  rank of the tensors to zip
+/// * `s`:  shape of the tensors to zip
+/// * `ni`: number if inputs
+/// * `Is`: tuple with `ni` many elements that describe the element types of the inputs
+/// * `f`:  reduction function that expects TODO
+/// * `is`: the actual input tensors
+///
+.ax %fun.reduce: Π [r: .Nat, s: «r; .Nat», ni: .Nat, Is: «ni; *»]
+                   [f: «2; «i: ni; Is#i»» -> «i: ni; Is#i»]
+                   [is: «i: ni; «s; Is#i»»] -> «s; «i: ni; Is#i»», normalize_reduce;

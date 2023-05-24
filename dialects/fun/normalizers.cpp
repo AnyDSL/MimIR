@@ -26,14 +26,15 @@ Ref normalize_zip(Ref type, Ref c, Ref arg) {
             auto shapes = s->projs(*lr);
             auto s_n    = Lit::isa(shapes.front());
 
+            // recursively peel off and fold front dimension, if possible
             if (s_n) {
                 DefArray elems(*s_n, [&, f = f](size_t s_i) {
                     DefArray peel(args.size(), [&](size_t i) { return args[i]->proj(*s_n, s_i); });
                     if (*lr == 1) {
                         return w.app(f, peel);
                     } else {
-                        auto app_zip
-                            = w.app(w.annex<zip>(), {w.lit_nat(*lr - 1), w.tuple(shapes.skip_front()), ni, Is, no, Os});
+                        auto shape   = w.tuple(shapes.skip_front());
+                        auto app_zip = w.app(w.annex<zip>(), {w.lit_nat(*lr - 1), shape, ni, Is, no, Os});
                         return w.app(w.app(app_zip, f), peel);
                     }
                 });
@@ -42,6 +43,20 @@ Ref normalize_zip(Ref type, Ref c, Ref arg) {
         }
     }
 
+    return w.raw_app(type, callee, arg);
+}
+
+Ref normalize_map(Ref type, Ref c, Ref arg) {
+    auto& w     = type->world();
+    auto callee = c->as<App>();
+    // TODO
+    return w.raw_app(type, callee, arg);
+}
+
+Ref normalize_reduce(Ref type, Ref c, Ref arg) {
+    auto& w     = type->world();
+    auto callee = c->as<App>();
+    // TODO
     return w.raw_app(type, callee, arg);
 }
 
