@@ -10,8 +10,7 @@ namespace {
 
 // TODO move to normalize.h or so?
 // Swap Lit to left - or smaller gid, if no lit present.
-template<class Id>
-void commute(Id id, const Def*& a, const Def*& b) {
+template<class Id> void commute(Id id, const Def*& a, const Def*& b) {
     if (::thorin::is_commutative(id)) {
         if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>())) std::swap(a, b);
     }
@@ -105,8 +104,7 @@ Res fold(u64 a, u64 b, [[maybe_unused]] bool nsw, [[maybe_unused]] bool nuw) {
 // clang-format on
 
 // Note that @p a and @p b are passed by reference as fold also commutes if possible.
-template<class Id, Id id>
-Ref fold(World& world, Ref type, const Def*& a, const Def*& b, Ref mode = {}) {
+template<class Id, Id id> Ref fold(World& world, Ref type, const Def*& a, const Def*& b, Ref mode = {}) {
     if (a->isa<Bot>() || b->isa<Bot>()) return world.bot(type);
 
     if (auto la = Lit::isa(a)) {
@@ -151,8 +149,7 @@ Ref fold(World& world, Ref type, const Def*& a, const Def*& b, Ref mode = {}) {
 /// (3)      a    op (lz op w) ->  lz op (a op w)
 /// (4) (lx op y) op      b    ->  lx op (y op b)
 /// ```
-template<class Id>
-Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref b) {
+template<class Id> Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref b) {
     if (!is_associative(id)) return nullptr;
 
     if (auto xy = match<Id>(id, a)) {
@@ -176,8 +173,7 @@ Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref 
     return nullptr;
 }
 
-template<class Id>
-Ref merge_cmps(std::array<std::array<u64, 2>, 2> tab, Ref a, Ref b) {
+template<class Id> Ref merge_cmps(std::array<std::array<u64, 2>, 2> tab, Ref a, Ref b) {
     static_assert(sizeof(sub_t) == 1, "if this ever changes, please adjust the logic below");
     static constexpr size_t num_bits = std::bit_width(Annex::Num<Id> - 1_u64);
 
@@ -205,8 +201,7 @@ Ref merge_cmps(std::array<std::array<u64, 2>, 2> tab, Ref a, Ref b) {
 
 } // namespace
 
-template<nat id>
-Ref normalize_nat(Ref type, Ref callee, Ref arg) {
+template<nat id> Ref normalize_nat(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
     auto [a, b] = arg->projs<2>();
     commute(id, a, b);
@@ -224,8 +219,7 @@ Ref normalize_nat(Ref type, Ref callee, Ref arg) {
     return world.raw_app(type, callee, arg);
 }
 
-template<ncmp id>
-Ref normalize_ncmp(Ref type, Ref callee, Ref arg) {
+template<ncmp id> Ref normalize_ncmp(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
 
     if (id == ncmp::t) return world.lit_tt();
@@ -253,8 +247,7 @@ Ref normalize_ncmp(Ref type, Ref callee, Ref arg) {
     return world.raw_app(type, callee, arg);
 }
 
-template<icmp id>
-Ref normalize_icmp(Ref type, Ref c, Ref arg) {
+template<icmp id> Ref normalize_icmp(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -270,8 +263,7 @@ Ref normalize_icmp(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, callee, {a, b});
 }
 
-template<bit1 id>
-Ref normalize_bit1(Ref type, Ref c, Ref a) {
+template<bit1 id> Ref normalize_bit1(Ref type, Ref c, Ref a) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto s      = callee->decurry()->arg();
@@ -294,8 +286,7 @@ Ref normalize_bit1(Ref type, Ref c, Ref a) {
     return world.raw_app(type, callee, a);
 }
 
-template<bit2 id>
-Ref normalize_bit2(Ref type, Ref c, Ref arg) {
+template<bit2 id> Ref normalize_bit2(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -387,8 +378,7 @@ Ref normalize_idx(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, c, arg);
 }
 
-template<shr id>
-Ref normalize_shr(Ref type, Ref c, Ref arg) {
+template<shr id> Ref normalize_shr(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -418,8 +408,7 @@ Ref normalize_shr(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, callee, {a, b});
 }
 
-template<wrap id>
-Ref normalize_wrap(Ref type, Ref c, Ref arg) {
+template<wrap id> Ref normalize_wrap(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -479,8 +468,7 @@ Ref normalize_wrap(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, callee, {a, b});
 }
 
-template<div id>
-Ref normalize_div(Ref full_type, Ref c, Ref arg) {
+template<div id> Ref normalize_div(Ref full_type, Ref c, Ref arg) {
     auto& world    = full_type->world();
     auto callee    = c->as<App>();
     auto [mem, ab] = arg->projs<2>();
@@ -519,8 +507,7 @@ Ref normalize_div(Ref full_type, Ref c, Ref arg) {
     return world.raw_app(full_type, callee, arg);
 }
 
-template<conv id>
-Ref normalize_conv(Ref dst_t, Ref c, Ref x) {
+template<conv id> Ref normalize_conv(Ref dst_t, Ref c, Ref x) {
     auto& world = dst_t->world();
     auto callee = c->as<App>();
     auto s_t    = x->type()->as<App>();
@@ -582,8 +569,7 @@ Ref normalize_bitcast(Ref dst_t, Ref callee, Ref src) {
 // TODO in contrast to C, we might want to give singleton types like '.Idx 1' or '[]' a size of 0 and simply nuke each
 // and every occurance of these types in a later phase
 // TODO Pi and others
-template<trait id>
-Ref normalize_trait(Ref nat, Ref callee, Ref type) {
+template<trait id> Ref normalize_trait(Ref nat, Ref callee, Ref type) {
     auto& world = type->world();
     if (auto ptr = match<mem::Ptr>(type)) {
         return world.lit_nat(8);
@@ -630,49 +616,7 @@ out:
     return world.raw_app(nat, callee, type);
 }
 
-Ref normalize_zip(Ref type, Ref c, Ref arg) {
-    auto& w                    = type->world();
-    auto callee                = c->as<App>();
-    auto is_os                 = callee->arg();
-    auto [n_i, Is, n_o, Os, f] = is_os->projs<5>();
-    auto [r, s]                = callee->decurry()->args<2>();
-    auto lr                    = Lit::isa(r);
-    auto ls                    = Lit::isa(s);
-
-    // TODO commute
-    // TODO reassociate
-    // TODO more than one Os
-    // TODO select which Is/Os to zip
-
-    if (lr && ls && *lr == 1 && *ls == 1) return w.app(f, arg);
-
-    if (auto l_in = Lit::isa(n_i)) {
-        auto args = arg->projs(*l_in);
-
-        if (lr && std::ranges::all_of(args, [](Ref arg) { return arg->isa<Tuple, Pack>(); })) {
-            auto shapes = s->projs(*lr);
-            auto s_n    = Lit::isa(shapes.front());
-
-            if (s_n) {
-                DefArray elems(*s_n, [&, f = f](size_t s_i) {
-                    DefArray inner_args(args.size(), [&](size_t i) { return args[i]->proj(*s_n, s_i); });
-                    if (*lr == 1) {
-                        return w.app(f, inner_args);
-                    } else {
-                        auto app_zip = w.app(w.annex<zip>(), {w.lit_nat(*lr - 1), w.tuple(shapes.skip_front())});
-                        return w.app(w.app(app_zip, is_os), inner_args);
-                    }
-                });
-                return w.tuple(elems);
-            }
-        }
-    }
-
-    return w.raw_app(type, callee, arg);
-}
-
-template<pe id>
-Ref normalize_pe(Ref type, Ref callee, Ref arg) {
+template<pe id> Ref normalize_pe(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
 
     if constexpr (id == pe::known) {

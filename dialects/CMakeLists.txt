@@ -118,6 +118,16 @@ add_thorin_plugin(direct
     INSTALL
 )
 
+add_thorin_plugin(fun
+    SOURCES
+        fun/fun.cpp
+        fun/fun.h
+        fun/normalizers.cpp
+    DEPENDS
+        compile
+    INSTALL
+)
+
 add_thorin_plugin(math
     SOURCES
         math/math.cpp
