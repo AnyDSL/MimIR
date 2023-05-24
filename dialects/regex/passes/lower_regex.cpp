@@ -2,6 +2,8 @@
 
 #include "thorin/def.h"
 
+#include "thorin/util/assert.h"
+
 #include "dialects/core/core.h"
 #include "dialects/direct/direct.h"
 #include "dialects/mem/mem.h"
@@ -13,24 +15,12 @@ Ref rewrite_arg(Ref ref, Ref n);
 
 Ref wrap_in_cps2ds(Ref callee) { return direct::op_cps2ds_dep(callee); }
 
-Ref cls_impl(Match<regex::cls, Axiom> cls_ax) {
-    auto& world = cls_ax->world();
-    switch (cls_ax.id()) {
-        case cls::d: return world.annex<regex::match_d>();
-        case cls::D: return world.annex<regex::match_D>();
-        case cls::w: return world.annex<regex::match_w>();
-        case cls::W: return world.annex<regex::match_W>();
-        case cls::s: return world.annex<regex::match_s>();
-        case cls::S: return world.annex<regex::match_S>();
-        case cls::any: return world.annex<regex::match_any>();
-    }
-    return cls_ax.axiom();
+Ref any_impl(Match<regex::any, Axiom> any_ax) {
+    auto& world = any_ax->world();
+    return world.annex<regex::match_any>();
 }
 
-Ref lit_impl(Match<regex::lit, App> lit_app) {
-    auto& world = lit_app->world();
-    return world.app(world.annex<regex::match_lit>(), lit_app->arg());
-}
+Ref lit_impl(Match<regex::lit, App>) { unreachable(); }
 
 Ref range_impl(Match<regex::range, App> range_app) {
     auto& world = range_app->world();
@@ -78,7 +68,7 @@ Ref rewrite_arg(Ref def, Ref n) {
     auto& world        = def->world();
     const Def* new_app = def;
 
-    if (auto cls_ax = thorin::match<cls>(def)) new_app = world.app(cls_impl(cls_ax), n);
+    if (auto any_ax = thorin::match<any>(def)) new_app = world.app(any_impl(any_ax), n);
     if (auto lit_app = thorin::match<lit>(def)) new_app = world.app(lit_impl(lit_app), n);
     if (auto range_app = thorin::match<range>(def)) new_app = world.app(range_impl(range_app), n);
     if (auto not_app = thorin::match<not_>(def))
@@ -101,8 +91,8 @@ Ref LowerRegex::rewrite(Ref def) {
     if (auto app = def->isa<App>()) {
         const auto n = app->arg();
         // clang-format off
-        if (auto cls_ax = thorin::match<cls>(app->callee()))
-            new_app = wrap_in_cps2ds(world.app(cls_impl(cls_ax), n));
+        if (auto any_ax = thorin::match<any>(app->callee()))
+            new_app = wrap_in_cps2ds(world.app(any_impl(any_ax), n));
         if (auto lit_app = thorin::match<lit>(app->callee()))
             new_app = wrap_in_cps2ds(world.app(lit_impl(lit_app), n));
         if (auto range_app = thorin::match<range>(app->callee()))

@@ -180,19 +180,19 @@ Ref normalize_disj(Ref type, Ref, Ref arg) {
     auto& world = type->world();
     if (arg->as_lit_arity() > 1) {
         auto contains_any = [](auto args) {
-            return std::ranges::find_if(args, [](const Def* ax) -> bool { return thorin::match(cls::any, ax); })
+            return std::ranges::find_if(args, [](const Def* ax) -> bool { return thorin::match<any>(ax); })
                 != args.end();
         };
 
         auto newArgs = flatten_in_arg<disj>(arg);
-        if (contains_any(newArgs)) return world.annex(cls::any);
+        if (contains_any(newArgs)) return world.annex<any>();
         make_vector_unique(newArgs);
         merge_ranges(newArgs);
 
         const Def* toRemove = nullptr;
         for (const auto* cls0 : newArgs)
             for (const auto* cls1 : newArgs)
-                if (equals_any(cls0, cls1)) return world.annex(cls::any);
+                if (equals_any(cls0, cls1)) return world.annex<any>();
 
         std::erase(newArgs, toRemove);
 
@@ -214,29 +214,10 @@ Ref normalize_group(Ref type, Ref callee, Ref arg) {
     return world.raw_app(type, callee, arg);
 }
 
-template<cls id>
-Ref normalize_cls(Ref type, Ref callee, Ref arg) {
-    auto& world   = type->world();
-    auto make     = app_range{world};
-    auto make_not = [&](Ref arg) { return world.app(world.annex<not_>(), arg); };
-    auto make_w   = [&]() {
-        return world.app(world.app(world.annex<disj>(), world.lit_nat(3)),
-                           world.tuple({make({'0', '9'}), make({'a', 'z'}), make({'A', 'Z'}), make({'_', '_'})}));
-    };
-    auto make_s = [&]() {
-        return world.app(world.app(world.annex<disj>(), world.lit_nat(3)),
-                         world.tuple({make({9, 10}), make({13, 13}), make({32, 32})}));
-    };
-    switch (thorin::match<cls>(callee).id()) {
-        case cls::d: return make({'0', '9'});
-        case cls::D: return make_not(make({'0', '9'}));
-        case cls::w: return make_w();
-        case cls::W: return make_not(make_w());
-        case cls::s: return make_s();
-        case cls::S: return make_not(make_s());
-        case cls::any: return world.raw_app(type, callee, arg);
-    }
-    unreachable();
+Ref normalize_any(Ref type, Ref callee, Ref arg) {
+    auto& world = type->world();
+
+    return world.raw_app(type, callee, arg);
 }
 
 Ref normalize_lit(Ref type, Ref, Ref arg) {
