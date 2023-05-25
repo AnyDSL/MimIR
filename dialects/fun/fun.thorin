@@ -58,7 +58,9 @@
 /// * `Is`: tuple with `ni` many elements that describe the element types of the inputs
 /// * `f`:  reduction function that expects TODO
 /// * `is`: the actual input tensors
+/// * `init`: first value
 ///
 .ax %fun.reduce: Π [r: .Nat, s: «r; .Nat», ni: .Nat, Is: «ni; *»]
                    [f: «2; «i: ni; Is#i»» -> «i: ni; Is#i»]
-                   [is: «i: ni; «s; Is#i»»] -> «s; «i: ni; Is#i»», normalize_reduce;
+                   [is: «i: ni; «s; Is#i»», init: «i: ni; Is#i», dims: «r; .Bool»]
+                -> «i: ni; «‹j: r; (s#j, 1)#(dims#j)›; Is#i»», normalize_reduce;

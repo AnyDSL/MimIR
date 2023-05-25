@@ -14,4 +14,5 @@
 
 .let z = %fun.zip    (2, (2, 3), 2, ‹2; %core.I32›, 1, %core.I32) (%core.wrap.add 0) (a, b);
 .let m = %fun.map    (2, (2, 3), 2, ‹2; %core.I32›, %core.I32) (%core.wrap.add 0) (a, b);
-.let r = %fun.reduce (1, 3, 1, %core.I32) (%core.wrap.add 0) a#0_2;
+.let r = %fun.reduce (2, (2, 3), 1, %core.I32) (%core.wrap.add 0) (a, 0:%core.I32, (.tt, .ff));
+.let _ = %refly.dbg.tmp «3; %core.I32» r;
