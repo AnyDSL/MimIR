@@ -9,6 +9,7 @@ namespace thorin::refly {
 static_assert(sizeof(void*) <= sizeof(u64), "pointer doesn't fit into Lit");
 
 namespace {
+
 // The trick is that we simply "box" the pointer of @p def inside a Lit of type `%refly.Code`.
 Ref do_reify(const Def* def) {
     auto& world = def->world();
@@ -18,24 +19,29 @@ Ref do_reify(const Def* def) {
 // And here we are doing the reverse to retrieve the original pointer again.
 const Def* do_reflect(const Def* def) { return reinterpret_cast<const Def*>(def->as<Lit>()->get()); }
 
-void debug_print(const Def* def) {
+void debug_print(Ref lvl, Ref def) {
     auto& world = def->world();
-    world.DLOG("{}debug_print: {}{}", rang::fg::yellow, def, rang::fg::reset);
-    world.DLOG("def : {}", def);
-    world.DLOG("id  : {}", def->unique_name());
-    world.DLOG("type: {}", def->type());
-    world.DLOG("node: {}", def->node_name());
-    world.DLOG("ops : {}", def->num_ops());
-    world.DLOG("proj: {}", def->num_projs());
-    world.DLOG("eops: {}", def->num_extended_ops());
+    auto level  = Log::Level::Debug;
+    if (auto l = Lit::isa(lvl))
+        level = (nat_t)Log::Level::Error <= *l && *l <= (nat_t)Log::Level::Debug ? (Log::Level)*l : Log::Level::Debug;
+    world.log().log(level, __FILE__, __LINE__, "{}debug_print: {}{}", rang::fg::yellow, def, rang::fg::reset);
+    world.log().log(level, def->loc(), "def : {}", def);
+    world.log().log(level, def->loc(), "id  : {}", def->unique_name());
+    world.log().log(level, def->type()->loc(), "type: {}", def->type());
+    world.log().log(level, def->loc(), "node: {}", def->node_name());
+    world.log().log(level, def->loc(), "ops : {}", def->num_ops());
+    world.log().log(level, def->loc(), "proj: {}", def->num_projs());
+    world.log().log(level, def->loc(), "eops: {}", def->num_extended_ops());
 }
+
 } // namespace
 
 template<dbg id>
 Ref normalize_dbg(Ref type, Ref callee, Ref arg) {
     auto& world = arg->world();
-    debug_print(arg);
-    return id == dbg::perm ? world.raw_app(type, callee, arg) : arg;
+    auto [lvl, x] = arg->projs<2>();
+    debug_print(lvl, x);
+    return id == dbg::perm ? world.raw_app(type, callee, arg) : Ref(x);
 }
 
 Ref normalize_reify(Ref, Ref, Ref arg) { return do_reify(arg); }

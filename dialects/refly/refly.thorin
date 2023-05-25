@@ -40,7 +40,13 @@
 /// * `perm`: Permanently debugs at every construction.
 ///   Gets removed at codegen preparation in thorin::refly::RemoveDbgPerm.
 ///
-.ax %refly.dbg(tmp, perm): Π.[T: *][T] -> T, normalize_dbg;
+.let %refly.error   = 0;
+.let %refly.warn    = 1;
+.let %refly.info    = 2;
+.let %refly.verbose = 3;
+.let %refly.debug   = 4;
+
+.ax %refly.dbg(tmp, perm): Π.[T: *][.Nat, T] -> T, normalize_dbg;
 ///
 /// ## Manipulate
 ///
