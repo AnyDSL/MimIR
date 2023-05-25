@@ -36,9 +36,8 @@ void debug_print(Ref lvl, Ref def) {
 
 } // namespace
 
-template<dbg id>
-Ref normalize_dbg(Ref type, Ref callee, Ref arg) {
-    auto& world = arg->world();
+template<dbg id> Ref normalize_dbg(Ref type, Ref callee, Ref arg) {
+    auto& world   = arg->world();
     auto [lvl, x] = arg->projs<2>();
     debug_print(lvl, x);
     return id == dbg::perm ? world.raw_app(type, callee, arg) : Ref(x);
