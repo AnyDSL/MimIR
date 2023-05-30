@@ -20,6 +20,6 @@ var searchData=
   ['prod_17',['prod',['../namespacethorin_1_1matrix.html#a8ee21b2b952b605e18ff72a444b56262',1,'thorin::matrix']]],
   ['ptr_18',['Ptr',['../namespacethorin_1_1mem.html#a1e9242c771b97a95fe41b54fbe0385ab',1,'thorin::mem']]],
   ['ptr0_19',['Ptr0',['../namespacethorin_1_1mem.html#ab05fd1ac51371ea3ad809a2aa00722da',1,'thorin::mem']]],
-  ['pxr24_20',['pxr24',['../namespacethorin_1_1math.html#a3b6efeedab6e47b7a3ffd1af362aee6d',1,'thorin::math']]],
-  ['pxr24_21',['PXR24',['../namespacethorin_1_1math.html#a3b257754248b0a8880ec1ea0b8568be4',1,'thorin::math']]]
+  ['pxr24_20',['PXR24',['../namespacethorin_1_1math.html#a3b257754248b0a8880ec1ea0b8568be4',1,'thorin::math']]],
+  ['pxr24_21',['pxr24',['../namespacethorin_1_1math.html#a3b6efeedab6e47b7a3ffd1af362aee6d',1,'thorin::math']]]
 ];

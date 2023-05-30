@@ -126,6 +126,7 @@ var menudata={children:[
 {text:"r",url:"namespacemembers_enum.html#index_r"},
 {text:"s",url:"namespacemembers_enum.html#index_s"},
 {text:"t",url:"namespacemembers_enum.html#index_t"},
+{text:"v",url:"namespacemembers_enum.html#index_v"},
 {text:"w",url:"namespacemembers_enum.html#index_w"},
 {text:"z",url:"namespacemembers_enum.html#index_z"}]},
 {text:"Enumerator",url:"namespacemembers_eval.html",children:[

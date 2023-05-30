@@ -102,6 +102,6 @@ var searchData=
   ['ptrns_99',['Ptrns',['../namespacethorin_1_1fe.html#a42a193d43619ab8dde374ddc8b4fdd37',1,'thorin::fe']]],
   ['pullback_5ftype_100',['pullback_type',['../namespacethorin_1_1autodiff.html#a06f207047fafa881cc1cbf6fc4f42d0f',1,'thorin::autodiff']]],
   ['push_101',['push',['../classthorin_1_1fe_1_1Scopes.html#a296a055b0407e4412e0581ad04e67942',1,'thorin::fe::Scopes::push()'],['../classthorin_1_1unique__queue.html#a3bf8b02f709f6e80d7b1119341ec68c5',1,'thorin::unique_queue::push()'],['../classthorin_1_1unique__stack.html#a69738c049d6f032000deb25c56bbbf36',1,'thorin::unique_stack::push()']]],
-  ['pxr24_102',['pxr24',['../namespacethorin_1_1math.html#a3b6efeedab6e47b7a3ffd1af362aee6d',1,'thorin::math']]],
-  ['pxr24_103',['PXR24',['../namespacethorin_1_1math.html#a3b257754248b0a8880ec1ea0b8568be4',1,'thorin::math']]]
+  ['pxr24_102',['PXR24',['../namespacethorin_1_1math.html#a3b257754248b0a8880ec1ea0b8568be4',1,'thorin::math']]],
+  ['pxr24_103',['pxr24',['../namespacethorin_1_1math.html#a3b6efeedab6e47b7a3ffd1af362aee6d',1,'thorin::math']]]
 ];

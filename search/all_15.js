@@ -14,8 +14,9 @@ var searchData=
   ['vel_11',['vel',['../classthorin_1_1World.html#aa4db87b02fb5c8968a7fcd9c25780c03',1,'thorin::World']]],
   ['vel_12',['Vel',['../namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a8488f8c3464a90aa07238d6ae0bce35d',1,'thorin::Node']]],
   ['verbose_13',['Verbose',['../classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aad4a9fa383ab700c5bdd6f31cf7df0faf',1,'thorin::Log']]],
-  ['visit_14',['visit',['../classthorin_1_1ScopePhase.html#ab5d343426e274f0651af559ddb548880',1,'thorin::ScopePhase::visit()'],['../classthorin_1_1Emitter.html#acf85a272fcb781eff8982377732e561f',1,'thorin::Emitter::visit()'],['../classthorin_1_1mem_1_1AddMem.html#aff7ecd151b503845fdaecad247e2dc8d',1,'thorin::mem::AddMem::visit()'],['../namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c',1,'thorin::visit(IndexSet&lt; Indexer, Key &gt; &amp;set, const Key &amp;key)']]],
-  ['visit_5ffirst_15',['visit_first',['../namespacethorin.html#a02f88714441141b4cafcf80c5e49f554',1,'thorin']]],
-  ['vlog_16',['VLOG',['../log_8h.html#a35e71de09dfd64892a48e3f7c56c5619',1,'log.h']]],
-  ['vmode_17',['VMode',['../namespacethorin_1_1core.html#ae025337cbe07dc96616a07d6e4440859',1,'thorin::core::VMode()'],['../namespacethorin_1_1math.html#ab290edebb1dee9ec76cc6198c9c036a9',1,'thorin::math::VMode()']]]
+  ['verbose_14',['verbose',['../namespacethorin_1_1refly.html#ac9732b218bdc69670770b8496c5e0cc7',1,'thorin::refly']]],
+  ['visit_15',['visit',['../classthorin_1_1ScopePhase.html#ab5d343426e274f0651af559ddb548880',1,'thorin::ScopePhase::visit()'],['../classthorin_1_1Emitter.html#acf85a272fcb781eff8982377732e561f',1,'thorin::Emitter::visit()'],['../classthorin_1_1mem_1_1AddMem.html#aff7ecd151b503845fdaecad247e2dc8d',1,'thorin::mem::AddMem::visit()'],['../namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c',1,'thorin::visit(IndexSet&lt; Indexer, Key &gt; &amp;set, const Key &amp;key)']]],
+  ['visit_5ffirst_16',['visit_first',['../namespacethorin.html#a02f88714441141b4cafcf80c5e49f554',1,'thorin']]],
+  ['vlog_17',['VLOG',['../log_8h.html#a35e71de09dfd64892a48e3f7c56c5619',1,'log.h']]],
+  ['vmode_18',['VMode',['../namespacethorin_1_1core.html#ae025337cbe07dc96616a07d6e4440859',1,'thorin::core::VMode()'],['../namespacethorin_1_1math.html#ab290edebb1dee9ec76cc6198c9c036a9',1,'thorin::math::VMode()']]]
 ];
