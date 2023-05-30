@@ -43,12 +43,18 @@ private:
 
 class Check {
 public:
+    enum Mode {
+        Beta,  ///< Also check for β-equivalence.
+        Alpha, ///< TODO
+        Test,  ///< TODO
+    };
+
     /// Are d1 and d2 α-equivalent?
     /// * In @p infer mode, type inference is happening and Infer%s will be resolved, if possible.
     ///     Also, two *free* but *different* Var%s **are** considered α-equivalent.
     /// * When **not* in @p infer mode, no type inference is happening and Infer%s will not be touched.
     ///     Also, Two *free* but *different* Var%s are **not** considered α-equivalent.
-    template<bool infer = true> static bool alpha(Ref d1, Ref d2) { return Check().alpha_<infer>(d1, d2); }
+    template<Mode mode = Beta> static bool alpha(Ref d1, Ref d2) { return Check().alpha_<mode>(d1, d2); }
 
     /// Can @p value be assigned to sth of @p type?
     /// @note This is different from `equiv(type, value->type())` since @p type may be dependent.
@@ -58,8 +64,8 @@ public:
     static Ref is_uniform(Defs defs);
 
 private:
-    template<bool infer> bool alpha_(Ref d1, Ref d2);
-    template<bool infer> bool alpha_internal(Ref, Ref);
+    template<Mode mode> bool alpha_(Ref d1, Ref d2);
+    template<Mode mode> bool alpha_internal(Ref, Ref);
     bool assignable_(Ref type, Ref value);
 
     using Vars = MutMap<Def*>;

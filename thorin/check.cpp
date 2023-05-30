@@ -47,7 +47,7 @@ const Def* Infer::find(const Def* def) {
  * Check
  */
 
-template<bool infer> bool Check::alpha_(Ref r1, Ref r2) {
+template<Check::Mode mode> bool Check::alpha_(Ref r1, Ref r2) {
     auto d1 = *r1; // find
     auto d2 = *r2; // find
 
@@ -69,7 +69,7 @@ template<bool infer> bool Check::alpha_(Ref r1, Ref r2) {
 
     if ((!i1 && !d1->is_set()) || (!i2 && !d2->is_set())) return false;
 
-    if (infer) {
+    if (mode != Mode::Test) {
         if (i1 && i2) {
             // union by rank
             if (i1->rank() < i2->rank()) std::swap(i1, i2); // make sure i1 is heavier or equal
@@ -91,21 +91,21 @@ template<bool infer> bool Check::alpha_(Ref r1, Ref r2) {
         || (d1->gid() > d2->gid()))              // smaller gid to left
         std::swap(d1, d2);
 
-    auto result = alpha_internal<infer>(d1, d2);
-    if (infer && !result) {
+    auto result = alpha_internal<mode>(d1, d2);
+    if (mode == Beta && !result) {
         auto e1 = eval(d1);
         auto e2 = eval(d2);
-        return alpha<infer>(e1, e2);
+        return alpha<Alpha>(e1, e2);
     }
 
     return result;
 }
 
-template<bool infer> bool Check::alpha_internal(Ref d1, Ref d2) {
-    if (!alpha_<infer>(d1->type(), d2->type())) return false;
-    if (d1->isa<Top>() || d2->isa<Top>()) return infer;
-    if (!infer && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return false;
-    if (!alpha_<infer>(d1->arity(), d2->arity())) return false;
+template<Check::Mode mode> bool Check::alpha_internal(Ref d1, Ref d2) {
+    if (!alpha_<mode>(d1->type(), d2->type())) return false;
+    if (d1->isa<Top>() || d2->isa<Top>()) return mode != Mode::Test;
+    if (mode == Mode::Test && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return false;
+    if (!alpha_<mode>(d1->arity(), d2->arity())) return false;
 
     // vars are equal if they appeared under the same binder
     if (auto mut1 = d1->isa_mut()) assert_emplace(vars_, mut1, d2->isa_mut());
@@ -114,13 +114,13 @@ template<bool infer> bool Check::alpha_internal(Ref d1, Ref d2) {
     if (auto ts = d1->isa<Tuple, Sigma>()) {
         size_t a = ts->num_ops();
         for (size_t i = 0; i != a; ++i)
-            if (!alpha_<infer>(ts->op(i), d2->proj(a, i))) return false;
+            if (!alpha_<mode>(ts->op(i), d2->proj(a, i))) return false;
         return true;
     } else if (auto pa = d1->isa<Pack, Arr>()) {
-        if (pa->node() == d2->node()) return alpha_<infer>(pa->ops().back(), d2->ops().back());
+        if (pa->node() == d2->node()) return alpha_<mode>(pa->ops().back(), d2->ops().back());
         if (auto a = pa->isa_lit_arity()) {
             for (size_t i = 0; i != *a; ++i)
-                if (!alpha_<infer>(pa->proj(*a, i), d2->proj(*a, i))) return false;
+                if (!alpha_<mode>(pa->proj(*a, i), d2->proj(*a, i))) return false;
             return true;
         }
     } else if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Infer) && !d2->isa<UMax>()) {
@@ -139,11 +139,11 @@ template<bool infer> bool Check::alpha_internal(Ref d1, Ref d2) {
         if (auto i = vars_.find(var1->mut()); i != vars_.end()) return i->second == var2->mut();
         if (auto i = vars_.find(var2->mut()); i != vars_.end()) return false; // var2 is bound
         // both var1 and var2 are free: OK, when they are the same or in infer mode
-        return var1 == var2 || infer;
+        return var1 == var2 || mode != Mode::Test;
     }
 
     for (size_t i = 0, e = d1->num_ops(); i != e; ++i)
-        if (!alpha_<infer>(d1->op(i), d2->op(i))) return false;
+        if (!alpha_<mode>(d1->op(i), d2->op(i))) return false;
     return true;
 }
 
@@ -151,10 +151,10 @@ bool Check::assignable_(Ref type, Ref val) {
     auto val_ty = Ref::refer(val->type());
     if (type == val_ty) return true;
 
-    if (auto infer = val->isa_mut<Infer>()) return alpha_<true>(type, infer->type());
+    if (auto infer = val->isa_mut<Infer>()) return alpha_<Beta>(type, infer->type());
 
     if (auto sigma = type->isa<Sigma>()) {
-        if (!alpha_<true>(type->arity(), val_ty->arity())) return false;
+        if (!alpha_<Beta>(type->arity(), val_ty->arity())) return false;
 
         size_t a = sigma->num_ops();
         auto red = sigma->reduce(val);
@@ -162,7 +162,7 @@ bool Check::assignable_(Ref type, Ref val) {
             if (!assignable_(red[i], val->proj(a, i))) return false;
         return true;
     } else if (auto arr = type->isa<Arr>()) {
-        if (!alpha_<true>(type->arity(), val_ty->arity())) return false;
+        if (!alpha_<Beta>(type->arity(), val_ty->arity())) return false;
 
         if (auto a = Lit::isa(arr->arity())) {
             for (size_t i = 0; i != *a; ++i)
@@ -173,14 +173,14 @@ bool Check::assignable_(Ref type, Ref val) {
         return assignable_(type, vel->value());
     }
 
-    return alpha_<true>(type, val_ty);
+    return alpha_<Beta>(type, val_ty);
 }
 
 Ref Check::is_uniform(Defs defs) {
     if (defs.empty()) return nullptr;
     auto first = defs.front();
     for (size_t i = 1, e = defs.size(); i != e; ++i)
-        if (!alpha<false>(first, defs[i])) return nullptr;
+        if (!alpha<Test>(first, defs[i])) return nullptr;
     return first;
 }
 
