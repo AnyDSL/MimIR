@@ -312,24 +312,34 @@ Ref Parser::parse_arr_expr() {
 }
 
 Ref Parser::parse_pack_expr() {
-    // TODO This doesn't work. Rework this!
     auto track = tracker();
     scopes_.push();
     eat(Tag::D_angle_l);
 
-    const Def* shape;
-    // bool mut = false;
     if (ahead(0).isa(Tag::M_id) && ahead(1).isa(Tag::T_colon)) {
         auto id = eat(Tag::M_id);
         eat(Tag::T_colon);
 
-        shape      = parse_expr("shape of a pack");
+        auto shape = parse_expr("shape of a pack");
         auto infer = world().mut_infer(world().type_idx(shape))->set(id.sym());
         scopes_.bind(id.dbg(), infer);
-    } else {
-        shape = parse_expr("shape of a pack");
+
+        expect(Tag::T_semicolon, "pack");
+        auto body = parse_expr("body of a pack");
+        expect(Tag::D_angle_r, "closing delimiter of a pack");
+        scopes_.pop();
+
+        auto arr  = world().arr(shape, body->type());
+        auto pack = world().mut_pack(arr)->set(body);
+        auto var  = pack->var();
+        infer->set(var);
+        Scope scope(pack);
+        ScopeRewriter rw(scope);
+        rw.map(infer, var);
+        return pack->reset(rw.rewrite(pack->body()));
     }
 
+    auto shape = parse_expr("shape of a pack");
     expect(Tag::T_semicolon, "pack");
     auto body = parse_expr("body of a pack");
     expect(Tag::D_angle_r, "closing delimiter of a pack");

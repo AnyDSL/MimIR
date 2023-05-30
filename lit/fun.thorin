@@ -1,6 +1,4 @@
-// RUN: rm -f %t.ll
 // RUN: %thorin %s -o - | FileCheck %s
-
 .plugin core;
 
 .lam Ptr(T: *): * = %mem.Ptr (T, 0);
@@ -32,5 +30,4 @@
     .con f() =
         f1 .Nat ((23, 42), .cn res: .Nat = return res);
     (f, t)#cond ();
-
 // CHECK-DAG: return{{.*}}48
