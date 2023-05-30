@@ -1,5 +1,7 @@
 var NAVTREEINDEX15 =
 {
+"direct_2autogen_8h.html#aef82355824b02489f1f6633eb9a513d2":[6,0,0,1,0,6,0,7],
+"direct_2autogen_8h_source.html":[6,0,0,1,0,6,0],
 "direct_2normalizers_8cpp.html":[6,0,2,6,3],
 "direct_2normalizers_8cpp.html#a6beae5c3898aeca60a19475f4b124999":[6,0,2,6,3,0],
 "direct_2normalizers_8cpp_source.html":[6,0,2,6,3],
@@ -66,8 +68,8 @@ var NAVTREEINDEX15 =
 "files.html":[6,0],
 "flags_8h.html":[6,0,4,15],
 "flags_8h_source.html":[6,0,4,15],
-"functions.html":[5,3,0],
 "functions.html":[5,3,0,0],
+"functions.html":[5,3,0],
 "functions_b.html":[5,3,0,1],
 "functions_c.html":[5,3,0,2],
 "functions_d.html":[5,3,0,3],
@@ -75,8 +77,8 @@ var NAVTREEINDEX15 =
 "functions_enum.html":[5,3,4],
 "functions_eval.html":[5,3,5],
 "functions_f.html":[5,3,0,5],
-"functions_func.html":[5,3,1],
 "functions_func.html":[5,3,1,0],
+"functions_func.html":[5,3,1],
 "functions_func_b.html":[5,3,1,1],
 "functions_func_c.html":[5,3,1,2],
 "functions_func_d.html":[5,3,1,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX15 =
 "lower__matrix__highlevel_8h_source.html":[6,0,2,8,0,1],
 "lower__matrix__lowlevel_8cpp.html":[6,0,2,8,0,2],
 "lower__matrix__lowlevel_8cpp_source.html":[6,0,2,8,0,2],
-"lower__matrix__lowlevel_8h.html":[6,0,2,8,0,3],
-"lower__matrix__lowlevel_8h_source.html":[6,0,2,8,0,3],
-"lower__matrix__mediumlevel_8cpp.html":[6,0,2,8,0,4]
+"lower__matrix__lowlevel_8h.html":[6,0,2,8,0,3]
 };

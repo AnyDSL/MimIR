@@ -1,5 +1,7 @@
 var NAVTREEINDEX22 =
 {
+"namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa7f50ccbd9de4f54d89bec8e9a071abc5":[3,0,0,11,7,23],
+"namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa8195652010d24c76aad556f821b49254":[3,0,0,11,7,29],
 "namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa90413302ce0cc7a5e524998eaf24f9c7":[3,0,0,11,7,10],
 "namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa90f68af5cf3a2df678258becc2d3f714":[3,0,0,11,9,0],
 "namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa90f68af5cf3a2df678258becc2d3f714":[3,0,0,11,7,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX22 =
 "pages.html":[],
 "parser_8cpp.html":[6,0,4,2,4],
 "parser_8cpp_source.html":[6,0,4,2,4],
-"parser_8h.html":[6,0,4,2,5],
-"parser_8h_source.html":[6,0,4,2,5],
-"partial__eval_8cpp.html":[6,0,4,3,1,2]
+"parser_8h.html":[6,0,4,2,5]
 };

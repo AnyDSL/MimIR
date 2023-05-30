@@ -1,5 +1,7 @@
 var NAVTREEINDEX25 =
 {
+"usergroup0.html":[1],
+"usergroup1.html":[2],
 "utf8_8cpp.html":[6,0,4,5,21],
 "utf8_8cpp.html#a420279844f511969229c3af8d8f9435c":[6,0,4,5,21,1],
 "utf8_8cpp.html#a6920d66962b6221e75a9869c1f4da509":[6,0,4,5,21,2],

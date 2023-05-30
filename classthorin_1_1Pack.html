@@ -142,6 +142,8 @@ Public Member Functions</h2></td></tr>
 </div></td></tr>
 <tr class="memitem:a9cad058ba8112b5414baca044df2b309"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Pack.html">Pack</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pack.html#a9cad058ba8112b5414baca044df2b309">set</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *<a class="el" href="classthorin_1_1Pack.html#a933b8506e8b10dd3fea50ab8d62fa291">body</a>)</td></tr>
 <tr class="separator:a9cad058ba8112b5414baca044df2b309"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa57f743656375e638602601952a11695"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Pack.html">Pack</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pack.html#aa57f743656375e638602601952a11695">reset</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *<a class="el" href="classthorin_1_1Pack.html#a933b8506e8b10dd3fea50ab8d62fa291">body</a>)</td></tr>
+<tr class="separator:aa57f743656375e638602601952a11695"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab53963e58af86b82658067cac7c42c94"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Pack.html">Pack</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pack.html#ab53963e58af86b82658067cac7c42c94">unset</a> ()</td></tr>
 <tr class="separator:ab53963e58af86b82658067cac7c42c94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Rebuild</div></td></tr>
@@ -473,7 +475,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00251">thorin::Def::op()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00170">thorin::autodiff::AutoDiffEval::augment_pack()</a>, <a class="el" href="def_8cpp_source.html#l00177">immutabilize()</a>, <a class="el" href="mem_2normalizers_8cpp_source.html#l00039">thorin::mem::normalize_store()</a>, <a class="el" href="def_8cpp_source.html#l00196">reduce()</a>, and <a class="el" href="tuple_8h_source.html#l00103">set()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00170">thorin::autodiff::AutoDiffEval::augment_pack()</a>, <a class="el" href="def_8cpp_source.html#l00177">immutabilize()</a>, <a class="el" href="mem_2normalizers_8cpp_source.html#l00039">thorin::mem::normalize_store()</a>, <a class="el" href="def_8cpp_source.html#l00196">reduce()</a>, <a class="el" href="tuple_8h_source.html#l00104">reset()</a>, and <a class="el" href="tuple_8h_source.html#l00103">set()</a>.</p>
 
 </div>
 </div>
@@ -585,6 +587,36 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="aa57f743656375e638602601952a11695" name="aa57f743656375e638602601952a11695"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa57f743656375e638602601952a11695">&#9670;&#160;</a></span>reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1Pack.html">Pack</a> * thorin::Pack::reset </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00104">104</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
+
+<p class="reference">References <a class="el" href="tuple_8h_source.html#l00095">body()</a>, <a class="el" href="tuple_8h_source.html#l00103">set()</a>, and <a class="el" href="tuple_8h_source.html#l00105">unset()</a>.</p>
+
+</div>
+</div>
 <a id="a9cad058ba8112b5414baca044df2b309" name="a9cad058ba8112b5414baca044df2b309"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9cad058ba8112b5414baca044df2b309">&#9670;&#160;</a></span>set()</h2>
 
@@ -613,7 +645,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="reference">References <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="tuple_8h_source.html#l00095">body()</a>, and <a class="el" href="def_8cpp_source.html#l00366">thorin::Def::set()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00170">thorin::autodiff::AutoDiffEval::augment_pack()</a>, and <a class="el" href="def_8cpp_source.html#l00127">stub()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00170">thorin::autodiff::AutoDiffEval::augment_pack()</a>, <a class="el" href="tuple_8h_source.html#l00104">reset()</a>, and <a class="el" href="def_8cpp_source.html#l00127">stub()</a>.</p>
 
 </div>
 </div>
@@ -744,9 +776,11 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00104">104</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00105">105</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
 
 <p class="reference">References <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, and <a class="el" href="def_8cpp_source.html#l00383">thorin::Def::unset()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="tuple_8h_source.html#l00104">reset()</a>.</p>
 
 </div>
 </div>
@@ -771,7 +805,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00111">111</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tuple_8h_source.html#l00112">112</a> of file <a class="el" href="tuple_8h_source.html">tuple.h</a>.</p>
 
 </div>
 </div>
