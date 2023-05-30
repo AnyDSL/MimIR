@@ -1,5 +1,5 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin %s -o - --output-ll %t.ll | FileCheck %s
+// RUN: %thorin %s -o - --output-ll %t.ll --aggr-lam-spec | FileCheck %s
 // RUN: clang %t.ll -o %t -Wno-override-module
 // RUN: %t "g1 "; test $? -eq 1
 
@@ -7,6 +7,7 @@
 .import core;
 .plugin regex;
 .plugin direct;
+
 
 .let I8 = .Idx 256;
 .let _32 = 4294967296;

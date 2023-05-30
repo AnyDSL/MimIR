@@ -187,36 +187,37 @@
         cont (mem, 1:.Bool, new_pos)
     };
     .con match_zeroOrMore_ret(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = {
-        .con match_zeroOrMore_exit_true((mem: %mem.M, new_pos: .Idx n)) = {
+        .con match_zeroOrMore_iter((mem: %mem.M, new_pos: .Idx n)) = {
             sub ((mem, string, new_pos), match_zeroOrMore_ret)
         };
-        (match_zeroOrMore_exit_false, match_zeroOrMore_exit_true)#matched (mem, new_pos)
+        (match_zeroOrMore_exit_false, match_zeroOrMore_iter)#matched (mem, new_pos)
     };
 
     sub ((mem, string, pos), match_zeroOrMore_ret)
 };
 .con %regex.match_oneOrMore!(n: .Nat)!(sub: (CPS_RE n))((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
-    .con match_oneOrMore_ret(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = {
+    .con match_oneOrMore_exit_true!((mem: %mem.M, new_pos: .Idx n)) = {
+        cont (mem, 1:.Bool, new_pos)
+    };
+
+    .con match_oneOrMore_ret!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = {
         .con match_oneOrMore_iter!((mem: %mem.M, new_pos: .Idx n)) = {
             sub ((mem, string, new_pos), match_oneOrMore_ret)
-        };
-        .con match_oneOrMore_exit_true!((mem: %mem.M, new_pos: .Idx n)) = {
-            cont (mem, 1:.Bool, new_pos)
         };
         (match_oneOrMore_exit_true, match_oneOrMore_iter)#matched (mem, new_pos)
     };
 
-    .con match_oneOrMore_ret1!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = {
-        .con match_oneOrMore_continue!((mem: %mem.M, new_pos: .Idx n)) = {
+    .con match_oneOrMore_exit_false!((mem: %mem.M, new_pos: .Idx n)) = {
+        cont (mem, 0:.Bool, new_pos)
+    };
+    .con match_oneOrMore_ret0!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = {
+        .con match_oneOrMore_iter0!((mem: %mem.M, new_pos: .Idx n)) = {
             sub ((mem, string, new_pos), match_oneOrMore_ret)
         };
-        .con match_oneOrMore_exit_false!((mem: %mem.M, new_pos: .Idx n)) = {
-            cont (mem, 0:.Bool, new_pos)
-        };
-        (match_oneOrMore_exit_false, match_oneOrMore_continue)#matched (mem, new_pos)
+        (match_oneOrMore_exit_false, match_oneOrMore_iter0)#matched (mem, new_pos)
     };
 
-    sub ((mem, string, pos), match_oneOrMore_ret1)
+    sub ((mem, string, pos), match_oneOrMore_ret0)
 };
 
 /// ## Passes and Phases

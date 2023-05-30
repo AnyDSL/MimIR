@@ -1,0 +1,53 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin %s -o - --output-ll %t.ll --aggr-lam-spec | FileCheck %s
+// RUN: clang %t.ll -o %t -Wno-override-module
+// RUN: %t "test@cs.uni-saarland.de"; test $? -eq 0
+// RUN: %t "tester@test.de"; test $? -eq 0
+// RUN: %t "test@cs.uni-sb"; test $? -eq 3
+// RUN: %t "tester@test"; test $? -eq 11
+// RUN: %t "test.de"; test $? -eq 7
+// RUN: %t "cs.uni-sb.de"; test $? -eq 12
+
+.import mem;
+.import core;
+.plugin regex;
+.plugin direct;
+
+.let I8 = .Idx 256;
+.let _32 = 4294967296;
+.let I32 = .Idx _32;
+.let Top = ⊤:.Nat;
+
+// ^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*$
+.let letterOrDigit = %regex.disj 62 (%regex.lit '0',%regex.lit '1',%regex.lit '2',%regex.lit '3',%regex.lit '4',%regex.lit '5',%regex.lit '6',%regex.lit '7',%regex.lit '8',%regex.lit '9',
+    %regex.lit 'a',%regex.lit 'b',%regex.lit 'c',%regex.lit 'd',%regex.lit 'e',%regex.lit 'f',%regex.lit 'g',%regex.lit 'h',%regex.lit 'i',%regex.lit 'j',%regex.lit 'k',%regex.lit 'l',%regex.lit 'm',
+    %regex.lit 'n',%regex.lit 'o',%regex.lit 'p',%regex.lit 'q',%regex.lit 'r',%regex.lit 's',%regex.lit 't',%regex.lit 'u',%regex.lit 'v',%regex.lit 'w',%regex.lit 'x',%regex.lit 'y',%regex.lit 'z',
+    %regex.lit 'A',%regex.lit 'B',%regex.lit 'C',%regex.lit 'D',%regex.lit 'E',%regex.lit 'F',%regex.lit 'G',%regex.lit 'H',%regex.lit 'I',%regex.lit 'J',%regex.lit 'K',%regex.lit 'L',%regex.lit 'M',
+    %regex.lit 'N',%regex.lit 'O',%regex.lit 'P',%regex.lit 'Q',%regex.lit 'R',%regex.lit 'S',%regex.lit 'T',%regex.lit 'U',%regex.lit 'V',%regex.lit 'W',%regex.lit 'X',%regex.lit 'Y',%regex.lit 'Z'
+);
+.let letter = %regex.disj 52 (
+    %regex.lit 'a',%regex.lit 'b',%regex.lit 'c',%regex.lit 'd',%regex.lit 'e',%regex.lit 'f',%regex.lit 'g',%regex.lit 'h',%regex.lit 'i',%regex.lit 'j',%regex.lit 'k',%regex.lit 'l',%regex.lit 'm',
+    %regex.lit 'n',%regex.lit 'o',%regex.lit 'p',%regex.lit 'q',%regex.lit 'r',%regex.lit 's',%regex.lit 't',%regex.lit 'u',%regex.lit 'v',%regex.lit 'w',%regex.lit 'x',%regex.lit 'y',%regex.lit 'z',
+    %regex.lit 'A',%regex.lit 'B',%regex.lit 'C',%regex.lit 'D',%regex.lit 'E',%regex.lit 'F',%regex.lit 'G',%regex.lit 'H',%regex.lit 'I',%regex.lit 'J',%regex.lit 'K',%regex.lit 'L',%regex.lit 'M',
+    %regex.lit 'N',%regex.lit 'O',%regex.lit 'P',%regex.lit 'Q',%regex.lit 'R',%regex.lit 'S',%regex.lit 'T',%regex.lit 'U',%regex.lit 'V',%regex.lit 'W',%regex.lit 'X',%regex.lit 'Y',%regex.lit 'Z'
+);
+.let generalChars = %regex.disj 2 (%regex.cls.w, %regex.lit '-');
+.let re = %regex.conj 5 (%regex.quant.oneOrMore letterOrDigit, %regex.disj 2 (%regex.lit '.', %regex.quant.zeroOrMore generalChars), %regex.lit '@', %regex.quant.oneOrMore (%regex.conj 2 (%regex.quant.oneOrMore generalChars, %regex.lit '.')), %regex.quant.oneOrMore letter);
+
+.con strlen[%mem.M, %mem.Ptr («⊤:.Nat; %core.I8», 0), .Cn [%mem.M, %core.I32]];
+
+.con .extern main[mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), exit : .Cn [%mem.M, I32]] = {
+    .con match_argument[mem: %mem.M, I32] = {
+        .let arg1 = %mem.lea (Top, ‹Top; %mem.Ptr («⊤:.Nat; .Idx 256», 0)›, 0) (argv, 1:(.Idx 4294967296));;
+        .let (`mem, to_match) = %mem.load (mem, arg1);
+        .let (`mem, matched, pos) = re Top (mem, to_match, 0:(.Idx Top));
+        .con exit_me(mem: %mem.M, len: %core.I32) = {
+            exit (mem, %core.wrap.sub _32 (len, %core.conv.u _32 pos))
+        };
+        strlen(mem, to_match, exit_me)
+    };
+
+    (exit, match_argument) # (%core.icmp.ug (argc, 1:I32)) (mem, 0:I32)
+};
+
+// CHECK-NOT: %regex.
