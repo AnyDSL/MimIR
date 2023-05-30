@@ -23,7 +23,7 @@ public:
     virtual Ref rewrite_mut(Def*);
     ///@}
 
-private:
+protected:
     World& world_;
     Def2Def old2new_;
 };
@@ -58,6 +58,30 @@ public:
     }
 };
 
+class EvalRewriter : public Rewriter {
+public:
+    EvalRewriter(World& world)
+        : Rewriter(world) {}
+
+    Ref rewrite_imm(Ref def) override {
+        if (!def || def->dep_const()) return def;
+
+        if (auto var = def->isa<Var>()) {
+            if (auto i = old2new_.find(var->mut()); i != old2new_.end()) {
+                if (auto mut = i->second->isa_mut()) {
+                    if (auto new_var = mut->var()) return new_var;
+                }
+            }
+            return var;
+        } else if (auto app = def->isa<App>()) {
+            auto arg = rewrite(app->arg());
+            if (auto lam = app->callee()->isa_mut<Lam>(); lam && lam->is_set()) return lam->reduce(arg).back();
+        }
+
+        return Rewriter::rewrite_imm(def);
+    }
+};
+
 /// @name rewrite
 ///@{
 /// Rewrites @p def by mapping @p old_def to @p new_def while obeying @p scope.
@@ -74,6 +98,9 @@ DefArray rewrite(Def* mut, Ref arg);
 
 /// Same as above but uses @p scope as an optimization instead of computing a new Scope.
 DefArray rewrite(Def* mut, Ref arg, const Scope& scope);
+
+/// Evaluates @p def via call-by-value, left to right.
+Ref eval(Ref def);
 ///@}
 
 } // namespace thorin

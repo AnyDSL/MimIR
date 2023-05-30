@@ -1,5 +1,6 @@
 #include "thorin/check.h"
 
+#include "thorin/rewrite.h"
 #include "thorin/world.h"
 
 namespace thorin {
@@ -90,7 +91,14 @@ template<bool infer> bool Check::alpha_(Ref r1, Ref r2) {
         || (d1->gid() > d2->gid()))              // smaller gid to left
         std::swap(d1, d2);
 
-    return alpha_internal<infer>(d1, d2);
+    auto result = alpha_internal<infer>(d1, d2);
+    if (infer && !result) {
+        auto e1 = eval(d1);
+        auto e2 = eval(d2);
+        return alpha<infer>(e1, e2);
+    }
+
+    return result;
 }
 
 template<bool infer> bool Check::alpha_internal(Ref d1, Ref d2) {
@@ -122,7 +130,9 @@ template<bool infer> bool Check::alpha_internal(Ref d1, Ref d2) {
         d1 = umax->rebuild(umax->world(), umax->type(), umax->ops());
     }
 
-    if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return false;
+    auto f1 = d1->isa<Pi>() ? 0 : d1->flags(); // ignore implicit flag
+    auto f2 = d2->isa<Pi>() ? 0 : d2->flags();
+    if (d1->node() != d2->node() || f1 != f2 || d1->num_ops() != d2->num_ops()) return false;
 
     if (auto var1 = d1->isa<Var>()) {
         auto var2 = d2->as<Var>();

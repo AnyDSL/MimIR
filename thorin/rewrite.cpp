@@ -68,4 +68,9 @@ DefArray rewrite(Def* mut, Ref arg) {
     return rewrite(mut, arg, scope);
 }
 
+Ref eval(Ref def) {
+    EvalRewriter rw(def->world());
+    return rw.rewrite(def);
+}
+
 } // namespace thorin
