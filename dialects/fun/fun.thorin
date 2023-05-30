@@ -34,10 +34,10 @@
 ///
 /// ### %fun.map
 ///
-/// [Zips](https://en.wikipedia.org/wiki/Zipping_(computer_science)) several tensors.
+/// [Maps](https://en.wikipedia.org/wiki/Map_(higher-order_function)) several tensors.
 ///
-/// * `r`:  rank of the tensors to zip
-/// * `s`:  shape of the tensors to zip
+/// * `r`:  rank of the tensors to map
+/// * `s`:  shape of the tensors to map
 /// * `ni`: number if inputs
 /// * `Is`: tuple with `ni` many elements that describe the element types of the inputs
 /// * `O`:  output type
@@ -52,13 +52,14 @@
 ///
 /// [Reduces](https://en.wikipedia.org/wiki/Reduction_operator) several tensors.
 ///
-/// * `r`:  rank of the tensors to zip
-/// * `s`:  shape of the tensors to zip
-/// * `ni`: number if inputs
-/// * `Is`: tuple with `ni` many elements that describe the element types of the inputs
-/// * `f`:  reduction function that expects TODO
-/// * `is`: the actual input tensors
+/// * `r`:    rank of the tensors to zip
+/// * `s`:    shape of the tensors to zip
+/// * `ni`:   number if inputs
+/// * `Is`:   tuple with `ni` many elements that describe the element types of the inputs
+/// * `f`:    reduction function that expects a pair of `ni`-tuples whose elements correspond to `Is` and yields again such an `ni`-tuple
+/// * `is`:   the actual input tensors
 /// * `init`: first value
+/// * `dims`: Boolean mask vector of size `r` that indicates along which dimensions we want to reduce
 ///
 .ax %fun.reduce: Π [r: .Nat, s: «r; .Nat», ni: .Nat, Is: «ni; *»]
                    [f: «2; «i: ni; Is#i»» -> «i: ni; Is#i»]
