@@ -3,13 +3,8 @@
 #include <thorin/config.h>
 #include <thorin/pass/fp/beta_red.h>
 #include <thorin/pass/fp/eta_exp.h>
-#include <thorin/pass/fp/eta_red.h>
-#include <thorin/pass/fp/tail_rec_elim.h>
 #include <thorin/pass/pass.h>
 #include <thorin/pass/pipelinebuilder.h>
-#include <thorin/pass/rw/partial_eval.h>
-#include <thorin/pass/rw/ret_wrap.h>
-#include <thorin/pass/rw/scalarize.h>
 
 #include "dialects/mem/autogen.h"
 #include "dialects/mem/passes/fp/copy_prop.h"

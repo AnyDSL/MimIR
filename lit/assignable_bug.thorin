@@ -1,0 +1,20 @@
+// RUN: %thorin %s -o -
+.plugin math;
+.plugin mem;
+
+.lam my_add !.[pe: «2; .Nat»] !(a b: %math.F pe): %math.F pe = %math.arith.add 0 (a, b);
+
+.Sigma Num: □, 2 = [
+    T: *,
+    add: [T, T] -> T
+];
+
+.let F64 = (%math.F64, my_add @%math.f64);
+
+.ax %bug.Arr: Num -> *;
+
+.fun test [N: Num] [A: %bug.Arr N]: .Nat = return 0;
+
+.fun .extern stuff [mem: %mem.M, A: %bug.Arr F64]: %mem.M =
+    .ret _ = test F64 $ A;
+    return mem;

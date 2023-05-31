@@ -570,9 +570,15 @@ Lam* Parser::parse_lam(bool is_decl) {
         if (auto [_, __, filter] = funs.back(); filter) error(prev(), "cannot specify filter of a {}", entity);
     }
 
+    // filter defaults to .tt for everything except the actual continuation of con/cn/fun/fn; here we use .ff as default
+    bool last = true;
     for (auto [_, lam, filter] : funs | std::ranges::views::reverse) {
-        if (body) lam->set(filter ? filter : world().lit_ff(), body);
+        bool is_cn
+            = last
+           && (tok.tag() == Tag::K_con || tok.tag() == Tag::K_cn || tok.tag() == Tag::K_fun || tok.tag() == Tag::K_fn);
+        if (body) lam->set(filter ? filter : is_cn ? world().lit_ff() : world().lit_tt(), body);
         body = lam;
+        last = false;
     }
 
     if (is_decl) expect(Tag::T_semicolon, "end of "s + entity);
