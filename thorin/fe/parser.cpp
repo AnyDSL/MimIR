@@ -481,13 +481,9 @@ Lam* Parser::parse_lam(bool is_decl) {
 
         if (auto tok = accept(Tag::T_at)) {
             if (filter) error(tok->loc(), "filter already specified via '!'");
-            if (accept(Tag::T_at)) {
-                filter = world().lit_tt();
-            } else {
-                expect(Tag::D_paren_l, "opening parenthesis of a filter");
-                filter = parse_expr("filter");
-                expect(Tag::D_paren_r, "closing parenthesis of a filter");
-            }
+            expect(Tag::D_paren_l, "opening parenthesis of a filter");
+            filter = parse_expr("filter");
+            expect(Tag::D_paren_r, "closing parenthesis of a filter");
         }
 
         funs.emplace_back(std::tuple(pi, lam, filter));
