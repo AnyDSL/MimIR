@@ -130,7 +130,7 @@
 ///
 .ax %core.wrap(add, sub, mul, shl): Π.[s: .Nat][m: .Nat][«2; .Idx s»] -> .Idx s, normalize_wrap;
 
-.lam %core.minus!.(s: .Nat)!(m: .Nat)!(a: .Idx s): .Idx s = %core.wrap.sub m (0:(.Idx s), a);
+.lam %core.minus.(s: .Nat)(m: .Nat)(a: .Idx s): .Idx s = %core.wrap.sub m (0:(.Idx s), a);
 ///
 /// ### %core.div
 ///
