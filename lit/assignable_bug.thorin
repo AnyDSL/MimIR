@@ -2,7 +2,7 @@
 .plugin math;
 .plugin mem;
 
-.lam my_add !.[pe: «2; .Nat»] !(a b: %math.F pe): %math.F pe = %math.arith.add 0 (a, b);
+.lam my_add.(pe: «2; .Nat»)(a b: %math.F pe): %math.F pe = %math.arith.add 0 (a, b);
 
 .Sigma Num: □, 2 = [
     T: *,
