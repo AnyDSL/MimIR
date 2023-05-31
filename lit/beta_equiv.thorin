@@ -1,0 +1,23 @@
+// RUN: %thorin %s -o -
+.plugin core;
+.plugin math;
+.plugin mem;
+
+.Sigma Num: □, 2 = [T: *, add: [T, T] -> T];
+
+.lam my_add.(pe: «2; .Nat»)(a b: %math.F pe): %math.F pe = %math.arith.add 0 (a, b);
+.let F64 = (%math.F64, my_add @%math.f64);
+
+.ax %bug.Arr: Num -> *;
+
+.fun test [N: Num] [A: %bug.Arr N]: .Nat = return 0;
+
+.fun .extern stuff [mem: %mem.M, A: %bug.Arr F64]: %mem.M =
+    .ret _ = test F64 $ A;
+    return mem;
+
+.lam pow(a b: .Nat): .Nat =
+    (%core.nat.mul (a, pow (a, %core.nat.sub (b, 1))), 1)#(%core.ncmp.e (b, 0));
+
+.lam foo(a: «8; .Nat»): .Bool = .tt;
+.let _ = foo(‹pow (2, 3); 42›);
