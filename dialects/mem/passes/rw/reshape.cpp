@@ -138,7 +138,7 @@ Lam* Reshape::reshape_lam(Lam* old_lam) {
     auto new_ty = reshape_type(pi_ty)->as<Pi>();
 
     Lam* new_lam;
-    if (*old_lam->sym() != "main") { // TODO I don't this is correct. we should check for old_lam->is_external
+    if (*old_lam->sym() != "main") { // TODO I don't think this is correct. we should check for old_lam->is_external
         new_lam = old_lam->stub(world(), new_ty);
         new_lam->debug_suffix("_reshape");
         old2new_[old_lam] = new_lam;
@@ -168,7 +168,8 @@ Lam* Reshape::reshape_lam(Lam* old_lam) {
 
     auto new_body = rewrite_def(old_lam->body());
     new_lam->unset();
-    new_lam->set(true, new_body);
+    // true filter is causing probls in the new (partial) eval strategy
+    new_lam->set(false, new_body);
 
     if (old_lam->is_external()) old_lam->transfer_external(new_lam);
 

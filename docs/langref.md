@@ -337,20 +337,21 @@ The following table summarizes the different tokens used for functions declarati
 
 The following function *declarations* are all equivalent:
 ```
-.lam f(T: *)((x y: T), return: T → ⊥): ⊥ = return x;
-.con f(T: *)((x y: T), return: .Cn T)    = return x;
-.fun f(T: *) (x y: T): T                 = return x;
+.lam f(T: *)((x y: T), return: T → ⊥)@(.ff): ⊥ = return x;
+.con f(T: *)((x y: T), return: .Cn T)          = return x;
+.fun f(T: *) (x y: T): T                       = return x;
 ```
+Note that all partial evaluation filters default to `.tt` except for `.con`/`.cn`/`.fun`/`.fn`.
 
 ### Expressions
 
 The following function *expressions* are all equivalent.
 What is more, since they are bound by a *let declaration*, they have the exact same effect as the function *declarations* above:
 ```
-.let f =   λ (T: *)((x y: T), return: T → ⊥): ⊥ = return x;
-.let f = .lm (T: *)((x y: T), return: T → ⊥): ⊥ = return x;
-.let f = .cn (T: *)((x y: T), return: .Cn T)    = return x;
-.let f = .fn (T: *) (x y: T): T                 = return x;
+.let f =   λ (T: *)((x y: T), return: T → ⊥)@(.ff): ⊥ = return x;
+.let f = .lm (T: *)((x y: T), return: T → ⊥)      : ⊥ = return x;
+.let f = .cn (T: *)((x y: T), return: .Cn T)          = return x;
+.let f = .fn (T: *) (x y: T): T                       = return x;
 ```
 
 ### Applications
