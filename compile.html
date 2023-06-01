@@ -203,8 +203,7 @@ Passes and Phases</h1>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md105"></a>
 Passes</h2>
 <p >Basic passes that are defined in the core of Thorin.</p>
-<div class="fragment"><div class="line">.ax %compile.partial_eval_pass: %compile.Pass;</div>
-<div class="line">.ax %compile.beta_red_pass: %compile.Pass;</div>
+<div class="fragment"><div class="line">.ax %compile.beta_red_pass: %compile.Pass;</div>
 <div class="line">.ax %compile.eta_red_pass: %compile.Pass;</div>
 </div><!-- fragment --><p> Eta expansion expects an instance of eta reduction as argument. </p><div class="fragment"><div class="line">.ax %compile.eta_exp_pass: %compile.Pass -&gt; %compile.Pass;</div>
 </div><!-- fragment --><p> Scalerize expects an instance of eta expansion as argument. </p><div class="fragment"><div class="line">.ax %compile.scalerize_pass: %compile.Pass -&gt; %compile.Pass;</div>
@@ -220,7 +219,6 @@ Phases</h2>
 <div class="line">    .let eta_red = %compile.eta_red_pass;</div>
 <div class="line">    .let eta_exp = %compile.eta_exp_pass eta_red;</div>
 <div class="line">    %compile.pass_list</div>
-<div class="line">        %compile.partial_eval_pass</div>
 <div class="line">        %compile.beta_red_pass</div>
 <div class="line">        eta_red</div>
 <div class="line">        eta_exp</div>
@@ -252,8 +250,8 @@ Dependent Passes and Phases</h2>
 <div class="line">.ax %compile.plugin_select: Π [T:*] -&gt; %compile.Plugin -&gt; T -&gt; T -&gt; T;</div>
 <div class="line">.let plugin_phase = %compile.plugin_select %compile.Phase;</div>
 <div class="line">.let plugin_pass = %compile.plugin_select %compile.Pass;</div>
-<div class="line">.lam plugin_cond_phase!(plugin: %compile.Plugin, phase: %compile.Phase): %compile.Phase = plugin_phase plugin phase empty_phase;</div>
-<div class="line">.lam plugin_cond_pass!(plugin: %compile.Plugin, pass: %compile.Pass): %compile.Pass = plugin_pass plugin pass empty_pass;</div>
+<div class="line">.lam plugin_cond_phase(plugin: %compile.Plugin, phase: %compile.Phase): %compile.Phase = plugin_phase plugin phase empty_phase;</div>
+<div class="line">.lam plugin_cond_pass(plugin: %compile.Plugin, pass: %compile.Pass): %compile.Pass = plugin_pass plugin pass empty_pass;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

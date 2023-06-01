@@ -63,9 +63,6 @@ var hierarchy =
       [ "thorin::RWPass< LamSpec, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::LamSpec", "classthorin_1_1LamSpec.html", null ]
       ] ],
-      [ "thorin::RWPass< PartialEval, Def >", "classthorin_1_1RWPass.html", [
-        [ "thorin::PartialEval", "classthorin_1_1PartialEval.html", null ]
-      ] ],
       [ "thorin::RWPass< RetWrap, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::RetWrap", "classthorin_1_1RetWrap.html", null ]
       ] ],

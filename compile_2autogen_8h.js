@@ -19,7 +19,6 @@ var compile_2autogen_8h =
     [ "matrix_plugin", "compile_2autogen_8h.html#a60c43d8a43f0693594c12c4f53077153", null ],
     [ "mem_plugin", "compile_2autogen_8h.html#aa7ca59086050987ba2f34dd587c2f1cc", null ],
     [ "nullptr_pass", "compile_2autogen_8h.html#adf962e2b4aa79a8af2217f19c82fe3bf", null ],
-    [ "partial_eval_pass", "compile_2autogen_8h.html#a06381a9611392feb1e3886b30a86b1a8", null ],
     [ "Pass", "compile_2autogen_8h.html#a9062d9ce18afffd9fd0e33965405e1f4", null ],
     [ "pass_list", "compile_2autogen_8h.html#a2341fed003451b87084fc3f5243cbb76", null ],
     [ "pass_phase", "compile_2autogen_8h.html#ac63215ad1a8dc27c35bcd16a5b6d8c87", null ],

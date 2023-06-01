@@ -196,7 +196,11 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >The general idea of this pass/phase is to change the shape of signatures of functions. </p>
-<p >Example: <code>Cn[ [mem, A, B], C , ret]</code> Arg : <code>Cn[ [mem, [A, B , C]], ret]</code> (general <code>Cn[ [mem, args], ret]</code>) Flat : <code>Cn[ mem, A, B , C , ret]</code> (general <code>Cn[mem, ...args, ret]</code>) For convenience, we want Arg-style for optimizations. The invariant is that every closed function has at most one "real" argument and a return-continuation. If memory is present, the argument is a pair of memory and the remaining arguments. However, flat style is required for code generation. Especially in the closure conversion.</p>
+<ul>
+<li>Example: <code>Cn[ [mem, A, B], C , ret]</code></li>
+<li>Arg : <code>Cn[ [mem, [A, B , C]], ret]</code> (general <code>Cn[ [mem, args], ret]</code>)</li>
+<li>Flat : <code>Cn[ mem, A, B , C , ret]</code> (general <code>Cn[mem, ...args, ret]</code>) For convenience, we want Arg-style for optimizations. The invariant is that every closed function has at most one "real" argument and a return-continuation. If memory is present, the argument is a pair of memory and the remaining arguments. However, flat style is required for code generation. Especially in the closure conversion.</li>
+</ul>
 <p >The concept is to rewrite all signatures of functions with consistent reassociation of arguments. This change is propagated to (nested) applications. </p>
 
 <p class="definition">Definition at line <a class="el" href="reshape_8h_source.html#l00023">23</a> of file <a class="el" href="reshape_8h_source.html">reshape.h</a>.</p>

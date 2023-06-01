@@ -597,15 +597,16 @@ Summary: Functions &amp; Types</h1>
 </table>
 <h2><a class="anchor" id="autotoc_md45"></a>
 Declarations</h2>
-<p >The following function <em>declarations</em> are all equivalent: </p><div class="fragment"><div class="line">.lam f(T: *)((x y: T), return: T → ⊥): ⊥ = return x;</div>
-<div class="line">.con f(T: *)((x y: T), return: .Cn T)    = return x;</div>
-<div class="line">.fun f(T: *) (x y: T): T                 = return x;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md46"></a>
+<p >The following function <em>declarations</em> are all equivalent: </p><div class="fragment"><div class="line">.lam f(T: *)((x y: T), return: T → ⊥)@(.ff): ⊥ = return x;</div>
+<div class="line">.con f(T: *)((x y: T), return: .Cn T)          = return x;</div>
+<div class="line">.fun f(T: *) (x y: T): T                       = return x;</div>
+</div><!-- fragment --><p> Note that all partial evaluation filters default to <code>.tt</code> except for <code>.con</code>/<code>.cn</code>/<code>.fun</code>/<code>.fn</code>.</p>
+<h2><a class="anchor" id="autotoc_md46"></a>
 Expressions</h2>
-<p >The following function <em>expressions</em> are all equivalent. What is more, since they are bound by a <em>let declaration</em>, they have the exact same effect as the function <em>declarations</em> above: </p><div class="fragment"><div class="line">.let f =   λ (T: *)((x y: T), return: T → ⊥): ⊥ = return x;</div>
-<div class="line">.let f = .lm (T: *)((x y: T), return: T → ⊥): ⊥ = return x;</div>
-<div class="line">.let f = .cn (T: *)((x y: T), return: .Cn T)    = return x;</div>
-<div class="line">.let f = .fn (T: *) (x y: T): T                 = return x;</div>
+<p >The following function <em>expressions</em> are all equivalent. What is more, since they are bound by a <em>let declaration</em>, they have the exact same effect as the function <em>declarations</em> above: </p><div class="fragment"><div class="line">.let f =   λ (T: *)((x y: T), return: T → ⊥)@(.ff): ⊥ = return x;</div>
+<div class="line">.let f = .lm (T: *)((x y: T), return: T → ⊥)      : ⊥ = return x;</div>
+<div class="line">.let f = .cn (T: *)((x y: T), return: .Cn T)          = return x;</div>
+<div class="line">.let f = .fn (T: *) (x y: T): T                       = return x;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md47"></a>
 Applications</h2>
 <p >The following expressions for applying <code>f</code> are also equivalent: </p><div class="fragment"><div class="line">f .Nat ((23, 42), .cn res: .Nat = use(res))</div>

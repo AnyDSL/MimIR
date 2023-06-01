@@ -124,9 +124,9 @@ $(document).ready(function(){initNavTree('reshape_8h_source.html',''); initResiz
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="namespacethorin_1_1mem.html#ae147e7f025d7a0f837ebf7e1752d97ce">    9</a></span><span class="keyword">using </span><a class="code hl_typedef" href="namespacethorin_1_1mem.html#ae147e7f025d7a0f837ebf7e1752d97ce">DefQueue</a> = std::deque&lt;const Def*&gt;;</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"></span> </div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">/// The general idea of this pass/phase is to change the shape of signatures of functions.</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">/// Example: `Cn[ [mem,  A, B], C  , ret]`</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">/// Arg    : `Cn[ [mem, [A, B , C]], ret]` (general `Cn[ [mem, args], ret]`)</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">/// Flat   : `Cn[  mem,  A, B , C  , ret]` (general `Cn[mem, ...args, ret]`)</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">/// * Example: `Cn[ [mem,  A, B], C  , ret]`</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment">/// * Arg    : `Cn[ [mem, [A, B , C]], ret]` (general `Cn[ [mem, args], ret]`)</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">/// * Flat   : `Cn[  mem,  A, B , C  , ret]` (general `Cn[mem, ...args, ret]`)</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="comment">/// For convenience, we want Arg-style for optimizations.</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">/// The invariant is that every closed function has at most one &quot;real&quot; argument and a return-continuation.</span></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">/// If memory is present, the argument is a pair of memory and the remaining arguments.</span></div>

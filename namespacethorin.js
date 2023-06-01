@@ -768,7 +768,6 @@ var namespacethorin =
     [ "Match", "classthorin_1_1Match.html", "classthorin_1_1Match" ],
     [ "Nat", "classthorin_1_1Nat.html", "classthorin_1_1Nat" ],
     [ "Pack", "classthorin_1_1Pack.html", "classthorin_1_1Pack" ],
-    [ "PartialEval", "classthorin_1_1PartialEval.html", "classthorin_1_1PartialEval" ],
     [ "Pass", "classthorin_1_1Pass.html", "classthorin_1_1Pass" ],
     [ "PassMan", "classthorin_1_1PassMan.html", "classthorin_1_1PassMan" ],
     [ "PassManPhase", "classthorin_1_1PassManPhase.html", "classthorin_1_1PassManPhase" ],

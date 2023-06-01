@@ -168,7 +168,7 @@ Numerical Operations</h1>
 <p >Arithmetic operations. </p><div class="fragment"><div class="line">.ax %math.arith(add, sub, mul, div, rem):</div>
 <div class="line">    Π.[pe: «2; .Nat»][.Nat][«2; %math.F pe»] -&gt; %math.F pe, normalize_arith;</div>
 <div class="line"> </div>
-<div class="line">.lam %math.minus!.(pe: «2; .Nat»)!(m: .Nat)!(a: %math.F pe): %math.F pe =</div>
+<div class="line">.lam %math.minus .(pe: «2; .Nat»)(m: .Nat)(a: %math.F pe): %math.F pe =</div>
 <div class="line">    %math.arith.sub m (0:(%math.F pe), a);</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md143"></a>
 %math.extrema</h2>
@@ -399,15 +399,15 @@ Other Operations</h1>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md155"></a>
 %math.slf</h2>
 <p ><a href="https://en.wikipedia.org/wiki/Logistic_function">Standard logistic function</a> of a floating point number ( <picture><source srcset="form_29_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$slf(x) = \frac{1}{1+e^{-x}}$" src="form_29.png" width="83" height="18"/></picture>)</p>
-<div class="fragment"><div class="line">.lam %math.slf!.(pe : &lt;&lt;2; .Nat&gt;&gt;)!(m : .Nat)(x : %math.F pe): %math.F pe =</div>
+<div class="fragment"><div class="line">.lam %math.slf.(pe : &lt;&lt;2; .Nat&gt;&gt;)(m : .Nat)(x : %math.F pe): %math.F pe =</div>
 <div class="line">    %math.arith.div m ((%math.conv.f2f pe 1.0:(%math.F64)), %math.arith.add m ((%math.conv.f2f pe 1.0:(%math.F64)), %math.exp.exp m (%math.minus m x)));</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md156"></a>
 %math.sgn</h2>
-<p ><a href="https://en.wikipedia.org/wiki/Sign_function">Sign function</a> </p><div class="fragment"><div class="line">.lam %math.sgn!.(pe : &lt;&lt;2; .Nat&gt;&gt;)!(m : .Nat)!(x : %math.F pe): %math.F pe =</div>
+<p ><a href="https://en.wikipedia.org/wiki/Sign_function">Sign function</a> </p><div class="fragment"><div class="line">.lam %math.sgn.(pe : &lt;&lt;2; .Nat&gt;&gt;)(m : .Nat)(x : %math.F pe): %math.F pe =</div>
 <div class="line">    ((%math.conv.f2f pe -1.0:(%math.F64)), ((%math.conv.f2f pe 0.0:(%math.F64)), (%math.conv.f2f pe 1.0:(%math.F64)))#(%math.cmp.g m (x,(%math.conv.f2f pe 0.0:(%math.F64)))))#(%math.cmp.ge m (x, (%math.conv.f2f pe 0.0:(%math.F64))));</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md157"></a>
 %math.rrt</h2>
-<p ><a href="https://en.wikipedia.org/wiki/Multiplicative_inverse">Reciprocal</a> of the <a href="https://en.wikipedia.org/wiki/Square_root">square root</a> ( <picture><source srcset="form_30_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$rrt(x) = \frac{1}{\sqrt{x}}$" src="form_30.png" width="66" height="19"/></picture>) </p><div class="fragment"><div class="line">.lam %math.rrt!.(pe : &lt;&lt;2; .Nat&gt;&gt;)!(m : .Nat)!(x : %math.F pe): %math.F pe =</div>
+<p ><a href="https://en.wikipedia.org/wiki/Multiplicative_inverse">Reciprocal</a> of the <a href="https://en.wikipedia.org/wiki/Square_root">square root</a> ( <picture><source srcset="form_30_dark.png" media="(prefers-color-scheme: dark)"/><img class="formulaInl" alt="$rrt(x) = \frac{1}{\sqrt{x}}$" src="form_30.png" width="66" height="19"/></picture>) </p><div class="fragment"><div class="line">.lam %math.rrt.(pe : &lt;&lt;2; .Nat&gt;&gt;)(m : .Nat)(x : %math.F pe): %math.F pe =</div>
 <div class="line">    %math.arith.div m (%math.conv.f2f pe 1.0:(%math.F64), %math.rt.sq m x);</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
