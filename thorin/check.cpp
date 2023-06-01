@@ -4,6 +4,10 @@
 
 namespace thorin {
 
+namespace {
+template<class T> bool to_left(const Def* d1, const Def* d2) { return !d1->isa<T>() && d2->isa<T>(); }
+} // namespace
+
 /*
  * Infer
  */
@@ -54,8 +58,7 @@ template<bool infer> bool Check::alpha_(Ref r1, Ref r2) {
     if (!d1 || !d2) return false;
 
     // It is only safe to check for pointer equality if there are no Vars involved.
-    // Otherwise, we have to look more thoroughly.
-    // Example: λx.x - λz.x
+    // Otherwise, we have to look more thoroughly. Example: λx.x - λz.x
     if (!d1->has_dep(Dep::Var) && !d2->has_dep(Dep::Var) && d1 == d2) return true;
     auto mut1 = d1->isa_mut();
     auto mut2 = d2->isa_mut();
@@ -84,12 +87,6 @@ template<bool infer> bool Check::alpha_(Ref r1, Ref r2) {
         }
     }
 
-    // normalize:
-    if ((d1->isa<Lit>() && !d2->isa<Lit>())      // Lit to right
-        || (!d1->isa<UMax>() && d2->isa<UMax>()) // UMax to left
-        || (d1->gid() > d2->gid()))              // smaller gid to left
-        std::swap(d1, d2);
-
     return alpha_internal<infer>(d1, d2);
 }
 
@@ -98,6 +95,11 @@ template<bool infer> bool Check::alpha_internal(Ref d1, Ref d2) {
     if (d1->isa<Top>() || d2->isa<Top>()) return infer;
     if (!infer && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return false;
     if (!alpha_<infer>(d1->arity(), d2->arity())) return false;
+
+    // normalize:
+    if (to_left<Tuple>(d1, d2) || to_left<Pack>(d1, d2) || to_left<Sigma>(d1, d2) || to_left<Arr>(d1, d2)
+        || to_left<UMax>(d1, d2))
+        std::swap(d1, d2);
 
     // vars are equal if they appeared under the same binder
     if (auto mut1 = d1->isa_mut()) assert_emplace(vars_, mut1, d2->isa_mut());

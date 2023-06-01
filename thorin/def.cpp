@@ -212,20 +212,6 @@ DefArray Def::reduce(const Def* arg) {
     return cache[{this, arg}] = rewrite(this, arg);
 }
 
-const Def* Def::reduce_rec() const {
-    auto def = this;
-    while (auto app = def->isa<App>()) {
-        auto callee = app->callee()->reduce_rec();
-        if (callee->isa_mut()) {
-            def = callee->reduce(app->arg()).back();
-        } else {
-            def = callee != app->callee() ? world().app(callee, app->arg()) : app;
-            break;
-        }
-    }
-    return def;
-}
-
 const Def* Def::refine(size_t i, const Def* new_op) const {
     DefArray new_ops(ops());
     new_ops[i] = new_op;
@@ -253,7 +239,7 @@ const Def* Def::unfold_type() const {
         return nullptr;
     }
 
-    return type_->reduce_rec();
+    return type_;
 }
 
 std::string_view Def::node_name() const {
