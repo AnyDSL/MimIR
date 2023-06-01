@@ -52,7 +52,7 @@ public:
 
     /// Can @p value be assigned to sth of @p type?
     /// @note This is different from `equiv(type, value->type())` since @p type may be dependent.
-    static bool assignable(Ref type, Ref value) { return Check().assignable_(type, value); }
+    static bool assignable(Ref type, Ref value); // { return Check().assignable_(type, value); }
 
     /// Yields `defs.front()`, if all @p defs are Check::alpha-equivalent (`infer = false`) and `nullptr` otherwise.
     static Ref is_uniform(Defs defs);

@@ -1,5 +1,6 @@
 #include "thorin/check.h"
 
+#include "thorin/rewrite.h"
 #include "thorin/world.h"
 
 namespace thorin {
@@ -97,13 +98,36 @@ template<bool infer> bool Check::alpha_internal(Ref d1, Ref d2) {
     if (!alpha_<infer>(d1->arity(), d2->arity())) return false;
 
     // normalize:
-    if (to_left<Tuple>(d1, d2) || to_left<Pack>(d1, d2) || to_left<Sigma>(d1, d2) || to_left<Arr>(d1, d2)
-        || to_left<UMax>(d1, d2))
+    if (to_left<Extract>(d1, d2) || to_left<Tuple>(d1, d2) || to_left<Pack>(d1, d2) || to_left<Sigma>(d1, d2)
+        || to_left<Arr>(d1, d2) || to_left<UMax>(d1, d2))
         std::swap(d1, d2);
 
     // vars are equal if they appeared under the same binder
     if (auto mut1 = d1->isa_mut()) assert_emplace(vars_, mut1, d2->isa_mut());
     if (auto mut2 = d2->isa_mut()) assert_emplace(vars_, mut2, d1->isa_mut());
+
+    // explode infer to tuple
+    if (auto extract = d1->isa<Extract>(); extract && !d2->isa<Extract>()) {
+        if (auto inf = extract->tuple()->isa_mut<Infer>(); inf && !inf->is_set()) {
+            if (auto a = inf->type()->isa_lit_arity()) {
+                DefArray infers(*a);
+                auto& world = d1->world();
+                if (auto sigma = inf->type()->isa_mut<Sigma>(); sigma && *a >= 1 && sigma->var()) {
+                    Scope scope(sigma);
+                    ScopeRewriter rw(scope);
+                    infers[0] = world.mut_infer(sigma->op(0));
+                    for (size_t i = 1, e = *a; i != e; ++i) {
+                        rw.map(sigma->var(e, i - 1), infers[i - 1]);
+                        infers[i] = world.mut_infer(rw.rewrite(sigma->op(i)));
+                    }
+                } else {
+                    for (size_t i = 0, e = *a; i != e; ++i) infers[i] = world.mut_infer(inf->type()->proj(e, i));
+                }
+
+                inf->set(world.tuple(infers));
+            }
+        }
+    }
 
     if (auto ts = d1->isa<Tuple, Sigma>()) {
         size_t a = ts->num_ops();
@@ -137,6 +161,20 @@ template<bool infer> bool Check::alpha_internal(Ref d1, Ref d2) {
     for (size_t i = 0, e = d1->num_ops(); i != e; ++i)
         if (!alpha_<infer>(d1->op(i), d2->op(i))) return false;
     return true;
+}
+
+bool Check::assignable(Ref type, Ref value) {
+    if (Check().assignable_(type, value)) return true;
+
+    // try again by eliminating infers that have might have been resolved in the meantime
+    if (type->has_dep(Dep::Infer) || value->has_dep(Dep::Infer)) {
+        InferRewriter rw(value->world());
+        type  = rw.rewrite(type);
+        value = rw.rewrite(value);
+        return Check().assignable_(type, value);
+    }
+
+    return false;
 }
 
 bool Check::assignable_(Ref type, Ref val) {
