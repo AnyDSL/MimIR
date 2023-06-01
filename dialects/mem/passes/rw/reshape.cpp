@@ -138,12 +138,13 @@ Lam* Reshape::reshape_lam(Lam* old_lam) {
     auto new_ty = reshape_type(pi_ty)->as<Pi>();
 
     Lam* new_lam;
-    if (*old_lam->sym() != "main") { // TODO I don't think this is correct. we should check for old_lam->is_external
-        new_lam = old_lam->stub(world(), new_ty);
-        new_lam->debug_suffix("_reshape");
-        old2new_[old_lam] = new_lam;
-    } else {
+    if (*old_lam->sym() == "main") { 
         new_lam = old_lam;
+    } else {
+        new_lam = old_lam->stub(world(), new_ty);
+        if(!old_lam->is_external())
+            new_lam->debug_suffix("_reshape");
+        old2new_[old_lam] = new_lam;
     }
 
     world().DLOG("Reshape lam: {} : {}", old_lam, pi_ty);
