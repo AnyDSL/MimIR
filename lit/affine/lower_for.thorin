@@ -4,6 +4,7 @@
 // RUN: %t ; test $? -eq 0
 // RUN: %t 1 2 3 ; test $? -eq 6
 
+.plugin core;
 .plugin affine;
 
 .con .extern main (mem : %mem.M, argc : %core.I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, %core.I32]) = {
@@ -17,7 +18,7 @@
     %affine.For (%core.i32, 1, (%core.I32)) (0:(%core.I32), argc, 1:(%core.I32), (0:(%core.I32)), for_body, for_exit)
 };
 
-// CHECK-DAG: .con .extern main _[[mainVar:[0-9_]+]]::[mem_[[memVar:[0-9_]+]]: %mem.M, argc_[[argcId:[0-9_]+]]: .Idx 4294967296, %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return_[[returnId:[0-9_]+]]: .Cn [%mem.M, .Idx 4294967296]] {{(@.*)?}}= {
+// CHECK-DAG: .con .extern main _[[mainVar:[0-9_]+]]::[mem_[[memVar:[0-9_]+]]: %mem.M, argc_[[argcId:[0-9_]+]]: .Idx 4294967296, %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return_[[returnId:[0-9_]+]]: .Cn [%mem.M, .Idx 4294967296]]{{(@.*)?}}= {
 
 // CHECK-DAG: .con return_[[returnId:[0-9_]+]] _[[returnVarId:[0-9_]+]]: [%mem.M, .Idx 4294967296]
 
@@ -25,7 +26,7 @@
 // CHECK-DAG: _[[cmpId:[0-9_]+]]: .Idx 2 = %core.icmp.XygLe
 // CHECK-DAG: ([[falseId:[a-z0-9_]+]], for_body_[[bodyId:[0-9_]+]])#_[[cmpId]]
 
-// CHECK-DAG: .con for_body_[[bodyId]] 
+// CHECK-DAG: .con for_body_[[bodyId]]
 // CHECK-DAG: = %core.wrap.add
 // CHECK-DAG: = %core.wrap.add
 // CHECK-DAG: for_[[forId]]
