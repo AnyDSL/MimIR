@@ -23,13 +23,14 @@ public:
     Infer* unset() { return Def::unset()->as<Infer>(); }
     ///@}
 
-    /// @name union-find
-    ///@{
+    /// If unset, explode to Tuple.
+    /// @returns the new Tuple, or `nullptr` if unsuccessful.
+    Ref explode();
+
     /// [Union-Find](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) to unify Infer nodes.
     /// Def::flags is used to keep track of rank for
     /// [Union by rank](https://en.wikipedia.org/wiki/Disjoint-set_data_structure#Union_by_rank).
     static const Def* find(const Def*);
-    ///@}
 
     Infer* stub(World&, Ref) override;
 
@@ -43,12 +44,17 @@ private:
 
 class Check {
 public:
+    enum Mode {
+        Relaxed,
+        Strict,
+    };
+
     /// Are d1 and d2 α-equivalent?
-    /// * In @p infer mode, type inference is happening and Infer%s will be resolved, if possible.
+    /// * In Mode::Relaxed, type inference is happening and Infer%s will be resolved, if possible.
     ///     Also, two *free* but *different* Var%s **are** considered α-equivalent.
-    /// * When **not* in @p infer mode, no type inference is happening and Infer%s will not be touched.
+    /// * In Mode::Strict, no type inference is happening and Infer%s will not be touched.
     ///     Also, Two *free* but *different* Var%s are **not** considered α-equivalent.
-    template<bool infer = true> static bool alpha(Ref d1, Ref d2) { return Check().alpha_<infer>(d1, d2); }
+    template<Mode mode = Relaxed> static bool alpha(Ref d1, Ref d2) { return Check().alpha_<mode>(d1, d2); }
 
     /// Can @p value be assigned to sth of @p type?
     /// @note This is different from `equiv(type, value->type())` since @p type may be dependent.
@@ -58,8 +64,8 @@ public:
     static Ref is_uniform(Defs defs);
 
 private:
-    template<bool infer> bool alpha_(Ref d1, Ref d2);
-    template<bool infer> bool alpha_internal(Ref, Ref);
+    template<Mode> bool alpha_(Ref d1, Ref d2);
+    template<Mode> bool alpha_internal(Ref, Ref);
     bool assignable_(Ref type, Ref value);
 
     using Vars = MutMap<Def*>;
