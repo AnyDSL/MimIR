@@ -98,7 +98,6 @@
 ///
 /// Basic passes that are defined in the core of Thorin.
 ///
-.ax %compile.partial_eval_pass: %compile.Pass;
 .ax %compile.beta_red_pass: %compile.Pass;
 .ax %compile.eta_red_pass: %compile.Pass;
 /// Eta expansion expects an instance of eta reduction as argument.
@@ -120,7 +119,6 @@
     .let eta_red = %compile.eta_red_pass;
     .let eta_exp = %compile.eta_exp_pass eta_red;
     %compile.pass_list
-        %compile.partial_eval_pass
         %compile.beta_red_pass
         eta_red
         eta_exp
@@ -154,6 +152,5 @@
 .ax %compile.plugin_select: Π [T:*] -> %compile.Plugin -> T -> T -> T;
 .let plugin_phase = %compile.plugin_select %compile.Phase;
 .let plugin_pass = %compile.plugin_select %compile.Pass;
-.lam plugin_cond_phase!(plugin: %compile.Plugin, phase: %compile.Phase): %compile.Phase = plugin_phase plugin phase empty_phase;
-.lam plugin_cond_pass!(plugin: %compile.Plugin, pass: %compile.Pass): %compile.Pass = plugin_pass plugin pass empty_pass;
-
+.lam plugin_cond_phase(plugin: %compile.Plugin, phase: %compile.Phase): %compile.Phase = plugin_phase plugin phase empty_phase;
+.lam plugin_cond_pass(plugin: %compile.Plugin, pass: %compile.Pass): %compile.Pass = plugin_pass plugin pass empty_pass;

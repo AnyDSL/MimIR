@@ -105,7 +105,10 @@ Tok Lexer::lex() {
         // clang-format on
 
         if (accept('%')) {
-            if (lex_id()) return {loc(), Tag::M_anx, sym()};
+            if (lex_id()) {
+                auto loc = cache_trailing_dot();
+                return {loc, Tag::M_anx, sym()};
+            }
             error(loc_, "invalid axiom name '{}'", str_);
         }
 
@@ -142,7 +145,10 @@ Tok Lexer::lex() {
             return {loc_, Tag::M_str, sym()};
         }
 
-        if (lex_id()) return {loc(), Tag::M_id, sym()};
+        if (lex_id()) {
+            auto loc = cache_trailing_dot();
+            return {loc, Tag::M_id, sym()};
+        }
 
         if (isdigit(ahead()) || issign(ahead())) {
             if (auto lit = parse_lit()) return *lit;
@@ -172,6 +178,18 @@ Tok Lexer::lex() {
         error({loc_.path, ahead().pos}, "invalid input char '{}'", (char)ahead());
         next();
     }
+}
+
+// A trailing T_dot does not belong to an annex name or identifier and goes into cache_ for next lex().
+Loc Lexer::cache_trailing_dot() {
+    auto l = loc();
+    if (str_.back() == '.') {
+        str_.pop_back();
+        assert(!cache_.has_value());
+        cache_.emplace(l.anew_finis(), Tag::T_dot);
+        --l.finis.col;
+    }
+    return l;
 }
 
 bool Lexer::lex_id() {
