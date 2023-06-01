@@ -166,10 +166,10 @@ Lam* Reshape::reshape_lam(Lam* old_lam) {
     // TODO: Remove after testing.
     // old2new_[new_arg] = new_arg;
 
-    auto new_body = rewrite_def(old_lam->body());
+    auto new_body   = rewrite_def(old_lam->body());
+    auto new_filter = rewrite_def(old_lam->filter());
     new_lam->unset();
-    // true filter is causing probls in the new (partial) eval strategy
-    new_lam->set(false, new_body);
+    new_lam->set(new_filter, new_body);
 
     if (old_lam->is_external()) old_lam->transfer_external(new_lam);
 
