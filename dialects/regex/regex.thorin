@@ -109,8 +109,11 @@
     .let (`mem, char) = %mem.load (mem, ptr);
     .let in_range = %core.bit2.and_ 0 (%core.icmp.uge (char, lower),  %core.icmp.ule (char, upper));
     
-    .let new_pos = (pos, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)))#in_range;
-    cont (mem, in_range, new_pos)
+    .con if_true!() =
+        cont (mem, in_range, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)));
+    .con if_false!() =
+        cont (mem, in_range, pos);
+    (if_false, if_true)#in_range ()
 };
 .con %regex.match_not!(n: .Nat)!(inner: (CPS_RE n))((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
     .con match_not_ret_inverted!(mem: %mem.M, in_range: .Bool, new_pos: .Idx n) = {
@@ -123,8 +126,11 @@
     .let (`mem, char) = %mem.load (mem, ptr);
     .let isnt_0 = %core.icmp.ne (char, '\0');
 
-    .let new_pos = (pos, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)))#isnt_0;
-    cont (mem, isnt_0, new_pos)
+    .con if_true!() =
+        cont (mem, isnt_0, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)));
+    .con if_false!() =
+        cont (mem, isnt_0, pos);
+    (if_false, if_true)#isnt_0 ()
 };
 .con %regex.match_conj!(n: .Nat)!(A: (CPS_RE n), B: (CPS_RE n))((mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n), cont: .Cn[%mem.M, .Bool, .Idx n]) = {
     .con match_conj_exit_true!((mem: %mem.M, new_pos: .Idx n)) = {
