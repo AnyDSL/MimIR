@@ -89,6 +89,8 @@ private:
     const Def* def_ = nullptr;
 };
 
+using Refs        = Span<Ref>;
+using RefArray    = Array<Ref>;
 using NormalizeFn = Ref (*)(Ref, Ref, Ref);
 
 //------------------------------------------------------------------------------
