@@ -26,7 +26,7 @@ Ref op_lea_tuple(Ref arr, Ref tuple) {
     world.DLOG("op_lea_tuple arr {} : {}", arr, arr->type());
     auto n       = tuple->num_projs();
     auto element = arr;
-    for (size_t i = 0; i < n; ++i) element = world.call<mem::lea>(Defs{element, tuple->proj(n, i)});
+    for (size_t i = 0; i < n; ++i) element = mem::op_lea(element, tuple->proj(n, i));
     return element;
 }
 
