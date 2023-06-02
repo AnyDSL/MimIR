@@ -192,7 +192,7 @@ Ref World::iapp(Ref callee, Ref arg) {
 
 Ref World::app(Ref callee, Ref arg) {
     // TODO better place
-    Infer::eliminate(RefArray{callee, arg});
+    Infer::eliminate(Array<Ref*>{&callee, &arg});
 
     auto pi = callee->type()->isa<Pi>();
 

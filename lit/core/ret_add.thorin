@@ -14,12 +14,12 @@
                 return (mem, %core.wrap.add 0 (a, b))
         };
 
-        .let argv_ptr_b = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; %core.I8», 0)›, 0) (argv, 2:(%core.I32));
+        .let argv_ptr_b = %mem.lea_unsafe (argv, 2:(%core.I32));
         .let argv_load_b = %mem.load (mem, argv_ptr_b);
         atoi (argv_load_b#.ff, argv_load_b#.tt, atoi_cont_b)
     };
 
-    .let argv_ptr_a = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; %core.I8», 0)›, 0) (argv, 1:(%core.I32));
+    .let argv_ptr_a = %mem.lea_unsafe (argv, 1:(%core.I32));
     .let argv_load_a = %mem.load (mem, argv_ptr_a);
     atoi (argv_load_a#.ff, argv_load_a#.tt, atoi_cont_a)
 };

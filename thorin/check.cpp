@@ -72,6 +72,12 @@ Ref Infer::explode() {
     auto infers = DefArray(n);
     auto& w     = world();
 
+    if (auto arr = type()->isa_imm<Arr>(); arr && n > world().flags().infer_arr_threshold) {
+        auto pack = w.pack(arr->shape(), w.mut_infer(arr->body()));
+        set(pack);
+        return pack;
+    }
+
     if (auto sigma = type()->isa_mut<Sigma>(); sigma && n >= 1 && sigma->var()) {
         Scope scope(sigma);
         ScopeRewriter rw(scope);
@@ -89,12 +95,14 @@ Ref Infer::explode() {
     return tuple;
 }
 
-bool Infer::eliminate(RefArray refs) {
-    if (std::ranges::any_of(refs, [](auto def) { return def->has_dep(Dep::Infer); })) {
-        auto& world = refs.front()->world();
+bool Infer::eliminate(Array<Ref*> refs) {
+    if (std::ranges::any_of(refs, [](auto pref) { return (*pref)->has_dep(Dep::Infer); })) {
+        auto& world = (*refs.front())->world();
         InferRewriter rw(world);
-        for (size_t i = 0, e = refs.size(); i != e; ++i)
-            refs[i] = refs[i]->has_dep(Dep::Infer) ? rw.rewrite(refs[i]) : refs[i];
+        for (size_t i = 0, e = refs.size(); i != e; ++i) {
+            auto ref = *refs[i];
+            *refs[i] = ref->has_dep(Dep::Infer) ? rw.rewrite(ref) : ref;
+        }
         return true;
     }
     return false;
@@ -199,11 +207,9 @@ template<Check::Mode mode> bool Check::alpha_internal(Ref d1, Ref d2) {
 }
 
 bool Check::assignable(Ref type, Ref value) {
-    auto check = Check();
+    auto check = Check(true);
     if (check.assignable_(type, value)) return true;
-
-    if (!check.rerun() && Infer::eliminate(RefArray({type, value}))) return Check(true).assignable_(type, value);
-
+    if (check.rerun() && Infer::eliminate(Array<Ref*>({&type, &value}))) return Check().assignable_(type, value);
     return false;
 }
 

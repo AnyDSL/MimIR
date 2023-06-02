@@ -16,9 +16,9 @@
 .con .extern main __690558_320477::[mem_690876_320481: %mem.M, argc_691342_321701: %core.I32, %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return_690562_321471: .Cn [%mem.M, %core.I32]] @(0:(.Idx 2)) = {
     .let _320484: [%mem.M, %mem.Ptr («100; %core.I32», 0)] = %mem.malloc («100; %core.I32», 0) (mem_690876_320481, 400);
     .let _320493: [%mem.M, %mem.Ptr («100; .Cn [%core.I32, .Cn [%mem.M, %core.I32]]», 0)] = %mem.malloc («100; .Cn [%core.I32, .Cn [%mem.M, %core.I32]]», 0) (_320484#0:(.Idx 2), 800);
-    .let _320879: %mem.Ptr (.Cn [%core.I32, .Cn [%mem.M, %core.I32]], 0) = %mem.lea (100, ‹100; .Cn [%core.I32, .Cn [%mem.M, %core.I32]]›, 0) (_320493#1:(.Idx 2), 1:(.Idx 100));
+    .let _320879: %mem.Ptr (.Cn [%core.I32, .Cn [%mem.M, %core.I32]], 0) = %mem.lea (_320493#1:(.Idx 2), 1:(.Idx 100));
     .let _321799: %mem.M = %mem.store (.Cn [%core.I32, .Cn [%mem.M, %core.I32]], 0) (_320493#0:(.Idx 2), _320879, comp_tup_pb__691250_320895);
-    .let _321809: %mem.Ptr (%core.I32, 0) = %mem.lea (100, ‹100; %core.I32›, 0) (_320484#1:(.Idx 2), 1:(.Idx 100));
+    .let _321809: %mem.Ptr (%core.I32, 0) = %mem.lea (_320484#1:(.Idx 2), 1:(.Idx 100));
     .let _321816: %mem.M = %mem.store (%core.I32, 0) (_321799, _321809, _321428);
     .let _321824: [%mem.M, %core.I32] = %mem.load (%core.I32, 0) (_321816, _321809);
     .let _321834: [%mem.M, .Cn [%core.I32, .Cn [%mem.M, %core.I32]]] = %mem.load (.Cn [%core.I32, .Cn [%mem.M, %core.I32]], 0) (_321824#0:(.Idx 2), _320879);
