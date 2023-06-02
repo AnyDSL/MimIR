@@ -207,17 +207,18 @@ Ref normalize_disj(Ref type, Ref, Ref arg) {
         merge_ranges(newArgs);
 
         const Def* toRemove = nullptr;
-        for (const auto* cls0 : newArgs)
-            for (const auto* cls1 : newArgs) {
+        for (const auto* cls0 : newArgs) {
+            for (const auto* cls1 : newArgs)
                 if (equals_any(cls0, cls1)) return world.annex<any>();
-                if (auto not_rhs = thorin::match<not_>(cls1)) {
-                    if (auto disj_rhs = thorin::match<disj>(not_rhs->arg())) {
-                        auto rngs = flatten_in_arg<disj>(disj_rhs->arg());
-                        make_vector_unique(rngs);
-                        if (equals_any(newArgs, rngs)) return world.annex<any>();
-                    }
+
+            if (auto not_rhs = thorin::match<not_>(cls0)) {
+                if (auto disj_rhs = thorin::match<disj>(not_rhs->arg())) {
+                    auto rngs = flatten_in_arg<disj>(disj_rhs->arg());
+                    make_vector_unique(rngs);
+                    if (equals_any(newArgs, rngs)) return world.annex<any>();
                 }
             }
+        }
 
         std::erase(newArgs, toRemove);
 
