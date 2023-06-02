@@ -28,7 +28,7 @@ public:
     Ref explode();
 
     /// Eliminate Infer%s that have may have been resolved in the meantime by rebuilding.
-    static bool eliminate(RefArray);
+    static bool eliminate(Array<Ref*>);
 
     /// [Union-Find](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) to unify Infer nodes.
     /// Def::flags is used to keep track of rank for
@@ -51,17 +51,17 @@ public:
         : rerun_(rerun) {}
 
     enum Mode {
+        /// In Mode::Relaxed, type inference is happening and Infer%s will be resolved, if possible.
+        /// Also, two *free* but *different* Var%s **are** considered α-equivalent.
         Relaxed,
+        /// In Mode::Strict, no type inference is happening and Infer%s will not be touched.
+        /// Also, Two *free* but *different* Var%s are **not** considered α-equivalent.
         Strict,
     };
 
     bool rerun() const { return rerun_; }
 
     /// Are d1 and d2 α-equivalent?
-    /// * In Mode::Relaxed, type inference is happening and Infer%s will be resolved, if possible.
-    ///     Also, two *free* but *different* Var%s **are** considered α-equivalent.
-    /// * In Mode::Strict, no type inference is happening and Infer%s will not be touched.
-    ///     Also, Two *free* but *different* Var%s are **not** considered α-equivalent.
     template<Mode mode = Relaxed> static bool alpha(Ref d1, Ref d2) { return Check().alpha_<mode>(d1, d2); }
 
     /// Can @p value be assigned to sth of @p type?

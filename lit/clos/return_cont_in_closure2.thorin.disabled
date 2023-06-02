@@ -19,7 +19,7 @@ thorin: /dialects/clos/phase/clos_conv.cpp:64: const thorin::Def* thorin::clos::
 
     .let (alloc_pb_mem, pb_ptr) = %mem.malloc (pb_type, 0) (mem, 100);
     .let pb_arr = %core.bitcast %mem.Ptr («⊤:.Nat; pb_type», 0) pb_ptr;
-    .let lea_pb = %mem.lea (⊤:.Nat, <⊤:.Nat; pb_type>, 0) (pb_arr, 0:%core.I32);
+    .let lea_pb = %mem.lea (pb_arr, 0:%core.I32);
     .let store_pb = %mem.store (alloc_pb_mem, lea_pb, end);
 
     .con loop_head [mem: %mem.M, i : %core.I32] = {

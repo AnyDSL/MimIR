@@ -71,9 +71,9 @@
     };
     .let _690877: [%mem.M, %mem.Ptr («100; %core.I32», 0)] = %mem.alloc («100; %core.I32», 0) mem_690876;
     .let _pullback_alloc_690882: [%mem.M, %mem.Ptr («100; .Cn [%core.I32, .Cn [%mem.M, %core.I32]]», 0)] = %mem.malloc («100; .Cn [%core.I32, .Cn [%mem.M, %core.I32]]», 0) (_690877#0:(.Idx 2), 800);
-    .let pullback_lea_691249: %mem.Ptr (.Cn [%core.I32, .Cn [%mem.M, %core.I32]], 0) = %mem.lea (100, ‹100; .Cn [%core.I32, .Cn [%mem.M, %core.I32]]›, 0) (_pullback_alloc_690882#1:(.Idx 2), 1:(.Idx 100));
+    .let pullback_lea_691249: %mem.Ptr (.Cn [%core.I32, .Cn [%mem.M, %core.I32]], 0) = %mem.lea_unsafe (_pullback_alloc_690882#1:(.Idx 2), 1:(.Idx 100));
     .let _691499: %mem.M = %mem.store (_pullback_alloc_690882#0:(.Idx 2), pullback_lea_691249, comp_tup_pb__691250);
-    .let _691865: %mem.Ptr (%core.I32, 0) = %mem.lea (100, ‹100; %core.I32›, 0) (_690877#1:(.Idx 2), 1:(.Idx 100));
+    .let _691865: %mem.Ptr (%core.I32, 0) = %mem.lea_unsafe (_690877#1:(.Idx 2), 1:(.Idx 100));
     .let _691874: %mem.M = %mem.store (_691499, _691865, _691344#0:(.Idx 2));
     .let aug_load_691882: [%mem.M, %core.I32] = %mem.load (_691874, _691865);
     .let pullback_load_692016: [%mem.M, .Cn [%core.I32, .Cn [%mem.M, %core.I32]]] = %mem.load (aug_load_691882#0:(.Idx 2), pullback_lea_691249);
