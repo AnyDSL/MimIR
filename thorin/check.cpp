@@ -1,12 +1,28 @@
 #include "thorin/check.h"
 
+#include <algorithm>
+
 #include "thorin/rewrite.h"
 #include "thorin/world.h"
 
 namespace thorin {
 
 namespace {
+
+class InferRewriter : public Rewriter {
+public:
+    InferRewriter(World& world)
+        : Rewriter(world) {}
+
+    Ref rewrite(Ref old_def) override {
+        if (!old_def || old_def->isa_mut()) return old_def;
+        if (old_def->has_dep(Dep::Infer)) return Rewriter::rewrite(old_def);
+        return old_def;
+    }
+};
+
 template<class T> bool to_left(const Def* d1, const Def* d2) { return !d1->isa<T>() && d2->isa<T>(); }
+
 } // namespace
 
 /*
@@ -71,6 +87,17 @@ Ref Infer::explode() {
     auto tuple = w.tuple(infers);
     set(tuple);
     return tuple;
+}
+
+bool Infer::eliminate(RefArray refs) {
+    if (std::ranges::any_of(refs, [](auto def) { return def->has_dep(Dep::Infer); })) {
+        auto& world = refs.front()->world();
+        InferRewriter rw(world);
+        for (size_t i = 0, e = refs.size(); i != e; ++i)
+            refs[i] = refs[i]->has_dep(Dep::Infer) ? rw.rewrite(refs[i]) : refs[i];
+        return true;
+    }
+    return false;
 }
 
 /*
@@ -172,15 +199,10 @@ template<Check::Mode mode> bool Check::alpha_internal(Ref d1, Ref d2) {
 }
 
 bool Check::assignable(Ref type, Ref value) {
-    if (Check().assignable_(type, value)) return true;
+    auto check = Check();
+    if (check.assignable_(type, value)) return true;
 
-    // try again by eliminating infers that have might have been resolved in the meantime
-    if (type->has_dep(Dep::Infer) || value->has_dep(Dep::Infer)) {
-        InferRewriter rw(value->world());
-        type  = rw.rewrite(type);
-        value = rw.rewrite(value);
-        return Check().assignable_(type, value);
-    }
+    if (!check.rerun() && Infer::eliminate(RefArray({type, value}))) return Check(true).assignable_(type, value);
 
     return false;
 }

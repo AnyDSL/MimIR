@@ -27,6 +27,9 @@ public:
     /// @returns the new Tuple, or `nullptr` if unsuccessful.
     Ref explode();
 
+    /// Eliminate Infer%s that have may have been resolved in the meantime by rebuilding.
+    static bool eliminate(RefArray);
+
     /// [Union-Find](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) to unify Infer nodes.
     /// Def::flags is used to keep track of rank for
     /// [Union by rank](https://en.wikipedia.org/wiki/Disjoint-set_data_structure#Union_by_rank).
@@ -44,10 +47,15 @@ private:
 
 class Check {
 public:
+    explicit Check(bool rerun = false)
+        : rerun_(rerun) {}
+
     enum Mode {
         Relaxed,
         Strict,
     };
+
+    bool rerun() const { return rerun_; }
 
     /// Are d1 and d2 α-equivalent?
     /// * In Mode::Relaxed, type inference is happening and Infer%s will be resolved, if possible.
@@ -71,6 +79,7 @@ private:
     using Vars = MutMap<Def*>;
     Vars vars_;
     MutSet done_;
+    bool rerun_;
 };
 
 } // namespace thorin

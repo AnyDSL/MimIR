@@ -191,12 +191,8 @@ Ref World::iapp(Ref callee, Ref arg) {
 }
 
 Ref World::app(Ref callee, Ref arg) {
-    // try to eliminate Infers if present - TODO better place for this?
-    if (callee->has_dep(Dep::Infer) || arg->has_dep(Dep::Infer)) {
-        InferRewriter rw(*this);
-        callee = rw.rewrite(callee);
-        arg    = rw.rewrite(arg);
-    }
+    // TODO better place
+    Infer::eliminate(RefArray{callee, arg});
 
     auto pi = callee->type()->isa<Pi>();
 

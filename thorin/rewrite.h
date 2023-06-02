@@ -46,18 +46,6 @@ private:
     const Scope& scope_;
 };
 
-class InferRewriter : public Rewriter {
-public:
-    InferRewriter(World& world)
-        : Rewriter(world) {}
-
-    Ref rewrite(Ref old_def) override {
-        if (!old_def || old_def->isa_mut()) return old_def;
-        if (old_def->has_dep(Dep::Infer)) return Rewriter::rewrite(old_def);
-        return old_def;
-    }
-};
-
 /// @name rewrite
 ///@{
 /// Rewrites @p def by mapping @p old_def to @p new_def while obeying @p scope.
