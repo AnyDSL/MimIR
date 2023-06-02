@@ -114,23 +114,6 @@ enum class AddrSpace : nat_t {
 };
 ///@}
 
-/// @name %%mem.lea
-///@{
-inline Ref op_lea(Ref ptr, Ref index) {
-    World& w                   = ptr->world();
-    auto [pointee, addr_space] = force<Ptr>(ptr->type())->args<2>();
-    auto Ts                    = tuple_of_types(pointee);
-    return w.app(w.app(w.annex<lea>(), {pointee->arity(), Ts, addr_space}), {ptr, index});
-}
-
-inline Ref op_lea_unsafe(Ref ptr, Ref i) {
-    World& w = ptr->world();
-    return op_lea(ptr, w.call(core::conv::u, force<Ptr>(ptr->type())->arg(0)->arity(), i));
-}
-
-inline Ref op_lea_unsafe(Ref ptr, u64 i) { return op_lea_unsafe(ptr, ptr->world().lit_int(64, i)); }
-///@}
-
 /// @name %%mem.remem
 ///@{
 inline Ref op_remem(Ref mem) {
