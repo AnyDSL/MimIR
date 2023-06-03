@@ -209,12 +209,12 @@ template<Check::Mode mode> bool Check::alpha_internal(Ref d1, Ref d2) {
 bool Check::assignable(Ref type, Ref value) {
     auto check = Check(true);
     if (check.assignable_(type, value)) return true;
-    if (check.rerun() && Infer::eliminate(Array<Ref*>({&type, &value}))) return Check().assignable_(type, value);
+    if (check.rerun() && Infer::eliminate(Array<Ref*>{&type, &value})) return Check().assignable_(type, value);
     return false;
 }
 
 bool Check::assignable_(Ref type, Ref val) {
-    auto val_ty = Ref::refer(val->type());
+    auto val_ty = Ref::refer(val->unfold_type());
     if (type == val_ty) return true;
 
     if (auto infer = val->isa_mut<Infer>()) return alpha_<Relaxed>(type, infer->type());
@@ -282,6 +282,11 @@ void Pi::check() {
     auto t = infer(dom(), codom());
     if (!Check::alpha(t, type()))
         error(type(), "declared sort '{}' of function type does not match inferred one '{}'", type(), t);
+}
+
+void Infer::check() {
+    if (!Check::assignable(type(), op()))
+        error(type(), "cannot assign '{}' of type '{}' to Infer of type '{}'", op(), op()->type(), type());
 }
 
 } // namespace thorin

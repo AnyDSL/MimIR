@@ -36,6 +36,7 @@ public:
     static const Def* find(const Def*);
 
     Infer* stub(World&, Ref) override;
+    void check() override;
 
 private:
     flags_t rank() const { return flags(); }

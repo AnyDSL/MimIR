@@ -295,7 +295,7 @@ Ref Parser::parse_arr_expr() {
         eat(Tag::T_colon);
 
         auto shape = parse_expr("shape of an array");
-        auto type  = world().mut_infer_univ();
+        auto type  = world().mut_infer_type();
         arr        = world().mut_arr(type)->set_shape(shape);
         scopes_.bind(id.dbg(), arr->var()->set(id.dbg()));
     } else {
