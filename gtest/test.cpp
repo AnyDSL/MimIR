@@ -282,3 +282,30 @@ TEST(Check, alpha) {
 
     check(l_1, l_1, true, true);
 }
+
+TEST(Infer, eliminate) {
+    Driver driver;
+    World& w = driver.world();
+    // (((i1, i2), j2), k2)
+    //   |--j1--|
+    //  |-----k1-----|
+    auto i1 = w.mut_infer(w.type_nat());
+    auto i2 = w.mut_infer(w.type_nat());
+    auto j1 = w.mut_infer(w.arr(2, w.type_nat()));
+    auto j2 = w.mut_infer(w.type_nat());
+    auto k1 = w.mut_infer(w.sigma({w.arr(2, w.type_nat()), w.type_nat()}));
+    auto k2 = w.mut_infer(w.type_nat());
+    auto ti = w.tuple({i1, i2});
+    auto tj = w.tuple({j1, j2});
+    auto x  = w.extract(w.extract(k1, 2, 0), 2, 0);
+
+    i1->set(w.lit_nat(0));
+    i2->set(w.lit_nat(1));
+    j1->set(ti);
+    j2->set(w.lit_nat(2));
+    k1->set(tj);
+    k2->set(w.lit_nat(3));
+    Infer::eliminate(Array<Ref*>{&x});
+
+    ASSERT_EQ(x, w.lit_nat_0());
+}
