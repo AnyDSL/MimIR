@@ -22,6 +22,7 @@ namespace thorin {
 namespace {
 
 Def* isa_decl(const Def* def) {
+    if (def->isa<Infer>()) return nullptr;
     if (auto mut = def->isa_mut()) {
         if (mut->is_external() || mut->isa<Lam>() || (mut->sym() && mut->sym() != '_')) return mut;
     }

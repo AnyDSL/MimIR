@@ -115,9 +115,7 @@ bool Infer::eliminate(Array<Ref*> refs) {
 template<Check::Mode mode> bool Check::alpha_(Ref r1, Ref r2) {
     auto d1 = *r1; // find
     auto d2 = *r2; // find
-
-    if (!d1 && !d2) return true;
-    if (!d1 || !d2) return false;
+    assert(d1 && d2);
 
     // It is only safe to check for pointer equality if there are no Vars involved.
     // Otherwise, we have to look more thoroughly. Example: λx.x - λz.x
@@ -149,19 +147,25 @@ template<Check::Mode mode> bool Check::alpha_(Ref r1, Ref r2) {
         }
     }
 
+    // normalize:
+    if (to_left<Extract>(d1, d2) || to_left<Tuple>(d1, d2) || to_left<Pack>(d1, d2) || to_left<Sigma>(d1, d2)
+        || to_left<Arr>(d1, d2) || to_left<UMax>(d1, d2) || to_left<Type>(d1, d2) || to_left<Univ>(d1, d2))
+        std::swap(d1, d2);
+
     return alpha_internal<mode>(d1, d2);
 }
 
 template<Check::Mode mode> bool Check::alpha_internal(Ref d1, Ref d2) {
+    if (d1->isa<Univ>()) return d2->isa<Univ>();
+    if (auto type1 = d1->isa<Type>()) {
+        if (auto type2 = d2->isa<Type>()) return alpha_<mode>(type1->level(), type2->level());
+        return false;
+    }
+
     if (!alpha_<mode>(d1->type(), d2->type())) return false;
     if (d1->isa<Top>() || d2->isa<Top>()) return mode == Relaxed;
     if (mode != Relaxed && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return false;
     if (!alpha_<mode>(d1->arity(), d2->arity())) return false;
-
-    // normalize:
-    if (to_left<Extract>(d1, d2) || to_left<Tuple>(d1, d2) || to_left<Pack>(d1, d2) || to_left<Sigma>(d1, d2)
-        || to_left<Arr>(d1, d2) || to_left<UMax>(d1, d2))
-        std::swap(d1, d2);
 
     // vars are equal if they appeared under the same binder
     if (auto mut1 = d1->isa_mut()) assert_emplace(vars_, mut1, d2->isa_mut());
