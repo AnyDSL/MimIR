@@ -44,6 +44,7 @@ private:
 
     THORIN_DEF_MIXIN(Infer)
     friend class Check;
+    friend class Check2;
 };
 
 class Check {
@@ -80,6 +81,36 @@ private:
     using Vars = MutMap<Def*>;
     Vars vars_;
     MutSet done_;
+    bool rerun_;
+};
+
+class Check2 {
+public:
+    Check2(World& world)
+        : world_(world) {}
+
+    static constexpr std::pair<Ref, Ref> False = {{}, {}};
+    /// Are d1 and d2 α-equivalent?
+    static std::pair<Ref, Ref> alpha(Ref d1, Ref d2) { return Check2(d1->world()).alpha_(d1, d2); }
+
+#if 0
+    /// Can @p value be assigned to sth of @p type?
+    /// @note This is different from `equiv(type, value->type())` since @p type may be dependent.
+    static bool assignable(Ref type, Ref value) { return Check2().assignable_(type, value); }
+#endif
+
+    World& world() { return world_; }
+
+private:
+    std::pair<Ref, Ref> alpha_(Ref d1, Ref d2);
+    std::pair<Ref, Ref> alpha_internal(Ref, Ref);
+    // bool assignable_(Ref type, Ref value);
+
+    using Vars = MutMap<Def*>;
+    World& world_;
+    Vars vars_;
+    MutSet done_;
+    DefMap<std::pair<Ref, Ref>> old2new_;
     bool rerun_;
 };
 

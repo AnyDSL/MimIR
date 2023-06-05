@@ -23,6 +23,13 @@ public:
 
 template<class T> bool to_left(const Def* d1, const Def* d2) { return !d1->isa<T>() && d2->isa<T>(); }
 
+void update(Ref& def, Defs ops) {
+    if (auto mut = def->isa_mut())
+        mut->reset(ops);
+    else
+        def = def->rebuild(def->world(), def->type(), ops);
+}
+
 } // namespace
 
 /*
@@ -253,6 +260,156 @@ Ref Check::is_uniform(Defs defs) {
         if (!alpha<Strict>(first, defs[i])) return nullptr;
     return first;
 }
+
+//------------------------------------------------------------------------------
+
+std::pair<Ref, Ref> Check2::alpha_(Ref r1, Ref r2) {
+    auto d1 = *r1; // find
+    auto d2 = *r2; // find
+    assert(d1 && d2);
+
+    // It is only safe to check for pointer equality if there are no Vars involved.
+    // Otherwise, we have to look more thoroughly. Example: λx.x - λz.x
+    if (d1 == d2) {
+        if ((!d1->has_dep(Dep::Var) && !d2->has_dep(Dep::Var)) || (d1->isa_mut() && d2->isa_mut())) return {d1, d2};
+    }
+
+    if (d1->isa<Univ>()) return False;
+
+    if (auto type1 = d1->isa<Type>()) {
+        if (auto type2 = d2->isa<Type>()) {
+            auto [lvl1, lvl2] = alpha_(type1->level(), type2->level());
+            if (lvl1) return {world().type(lvl1), world().type(lvl2)};
+        }
+        return False;
+    }
+
+    if (auto i = old2new_.find(d1); i != old2new_.end()) return i->second;
+
+    auto i1 = d1->isa_mut<Infer>();
+    auto i2 = d2->isa_mut<Infer>();
+
+    if ((!i1 && !d1->is_set()) || (!i2 && !d2->is_set())) return False;
+
+    if (i1 && i2) {
+        // union by rank
+        if (i1->rank() < i2->rank()) std::swap(i1, i2); // make sure i1 is heavier or equal
+        i2->set(i1);                                    // make i1 new root
+        if (i1->rank() == i2->rank()) ++i1->rank();
+        return {i2, i2};
+    } else if (i1) {
+        i1->set(d2);
+        return {d2, d2};
+    } else if (i2) {
+        i2->set(d1);
+        return {d1, d1};
+    }
+
+    auto res     = alpha_internal(d1, d2);
+    old2new_[d1] = res;
+    return res;
+}
+
+std::pair<Ref, Ref> Check2::alpha_internal(Ref d1, Ref d2) {
+    {
+        auto [t1, t2] = alpha_(d1->type(), d2->type());
+        if (!t1) return False;
+        assert(t1 == t2);
+    }
+
+    if (d1->isa<Top>()) return {d2, d2};
+    if (d2->isa<Top>()) return {d1, d1};
+
+    {
+        auto [a1, a2] = alpha_(d1->arity(), d2->arity());
+        if (!a1) return False;
+        assert(a1 == a2);
+    }
+
+    // if (mode != Relaxed && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return false;
+
+    // vars are equal if they appeared under the same binder
+    if (auto mut1 = d1->isa_mut()) assert_emplace(vars_, mut1, d2->isa_mut());
+    if (auto mut2 = d2->isa_mut()) assert_emplace(vars_, mut2, d1->isa_mut());
+
+#if 0
+    if (auto ts = d1->isa<Tuple, Sigma>()) {
+        size_t a = ts->num_ops();
+        for (size_t i = 0; i != a; ++i)
+            if (!alpha_(ts->op(i), d2->proj(a, i))) return false;
+        return true;
+    } else if (auto pa = d1->isa<Pack, Arr>()) {
+        if (pa->node() == d2->node()) return alpha_(pa->ops().back(), d2->ops().back());
+        if (auto a = pa->isa_lit_arity()) {
+            for (size_t i = 0; i != *a; ++i)
+                if (!alpha_(pa->proj(*a, i), d2->proj(*a, i))) return false;
+            return true;
+        }
+    } else if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Infer) && !d2->isa<UMax>()) {
+        // .umax(a, ?) == x  =>  .umax(a, x)
+        for (auto op : umax->ops())
+            if (auto inf = op->isa_mut<Infer>(); inf && !inf->is_set()) inf->set(d2);
+        d1 = umax->rebuild(umax->world(), umax->type(), umax->ops());
+    }
+#endif
+
+    if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return False;
+
+#if 0
+    if (auto var1 = d1->isa<Var>()) {
+        auto var2 = d2->as<Var>();
+        if (auto i = vars_.find(var1->mut()); i != vars_.end()) return i->second == var2->mut();
+        if (auto i = vars_.find(var2->mut()); i != vars_.end()) return false; // var2 is bound
+        // both var1 and var2 are free: OK, when they in Mode::Relaxed
+        //return var1 == var2 || mode == Relaxed;
+        return var1 == var2 || true;
+    }
+#endif
+
+    size_t n = d1->num_ops();
+    DefArray new_ops1(n), new_ops2(n);
+
+    for (size_t i = 0; i != n; ++i) std::tie(new_ops1[i], new_ops2[i]) = alpha_(d1->op(i), d2->op(i));
+
+    update(d1, new_ops1);
+    update(d2, new_ops2);
+
+    return {d1, d2};
+}
+
+#if 0
+
+bool Check2::assignable_(Ref type, Ref val) {
+    auto val_ty = Ref::refer(val->unfold_type());
+    if (type == val_ty) return true;
+
+    if (auto infer = val->isa_mut<Infer>()) return alpha_(type, infer->type());
+
+    if (auto sigma = type->isa<Sigma>()) {
+        if (!alpha_(type->arity(), val_ty->arity())) return false;
+
+        size_t a = sigma->num_ops();
+        auto red = sigma->reduce(val);
+        for (size_t i = 0; i != a; ++i)
+            if (!assignable_(red[i], val->proj(a, i))) return false;
+        return true;
+    } else if (auto arr = type->isa<Arr>()) {
+        if (!alpha_(type->arity(), val_ty->arity())) return false;
+
+        if (auto a = Lit::isa(arr->arity())) {
+            for (size_t i = 0; i != *a; ++i)
+                if (!assignable_(arr->proj(*a, i), val->proj(*a, i))) return false;
+            return true;
+        }
+    } else if (auto vel = val->isa<Vel>()) {
+        return assignable_(type, vel->value());
+    }
+
+    return alpha_(type, val_ty);
+}
+#endif
+
+//------------------------------------------------------------------------------
 
 /*
  * infer & check
