@@ -35,9 +35,10 @@
 // (?:
 // (?:[a-zA-Z0-9]*[_\-]+[a-zA-Z0-9])*
 // [a-zA-Z0-9]+\.)*
+// [a-zA-Z]
 // [a-zA-Z]+
 // $
-// ==> [a-zA-Z0-9](?:[a-zA-Z0-9]*[._\-]+[a-zA-Z0-9])*[a-zA-Z0-9]*@[a-zA-Z0-9](?:[a-zA-Z0-9]*[_\-]+[a-zA-Z0-9])*[a-zA-Z0-9]*\.(?:(?:[a-zA-Z0-9]*[_\-]+[a-zA-Z0-9])*[a-zA-Z0-9]+\.)*[a-zA-Z]+$
+// ==> [a-zA-Z0-9](?:[a-zA-Z0-9]*[._\-]+[a-zA-Z0-9])*[a-zA-Z0-9]*@[a-zA-Z0-9](?:[a-zA-Z0-9]*[_\-]+[a-zA-Z0-9])*[a-zA-Z0-9]*\.(?:(?:[a-zA-Z0-9]*[_\-]+[a-zA-Z0-9])*[a-zA-Z0-9]+\.)*[a-zA-Z][a-zA-Z]+$
 .let letterOrDigit = %regex.disj 62 (%regex.lit '0',%regex.lit '1',%regex.lit '2',%regex.lit '3',%regex.lit '4',%regex.lit '5',%regex.lit '6',%regex.lit '7',%regex.lit '8',%regex.lit '9',
     %regex.lit 'a',%regex.lit 'b',%regex.lit 'c',%regex.lit 'd',%regex.lit 'e',%regex.lit 'f',%regex.lit 'g',%regex.lit 'h',%regex.lit 'i',%regex.lit 'j',%regex.lit 'k',%regex.lit 'l',%regex.lit 'm',
     %regex.lit 'n',%regex.lit 'o',%regex.lit 'p',%regex.lit 'q',%regex.lit 'r',%regex.lit 's',%regex.lit 't',%regex.lit 'u',%regex.lit 'v',%regex.lit 'w',%regex.lit 'x',%regex.lit 'y',%regex.lit 'z',

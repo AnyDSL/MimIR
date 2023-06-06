@@ -88,12 +88,13 @@ bool compare_re(const Def* lhs, const Def* rhs) {
     if (lhs_range) {
         // sort ranges by increasing lower bound
         if (rhs_range) return Lit::as(lhs_range->arg()->proj(0)) < Lit::as(rhs_range->arg()->proj(0));
-        // ranges just before the lits
+        // ranges to the end
         return false;
     } else if (rhs_range) {
-        // ranges just before the lits
+        // ranges to the end
         return true;
     }
+    // keep
     return true;
 }
 
@@ -235,26 +236,10 @@ Ref normalize_disj(Ref type, Ref, Ref arg) {
     return arg;
 }
 
-Ref normalize_group(Ref type, Ref callee, Ref arg) {
-    auto& world = type->world();
-    if (arg->as_lit_arity() > 1) {
-        auto&& newArgs = flatten_in_arg<conj>(arg);
-        return world.raw_app(type, world.app(world.annex<group>(), world.lit_nat(newArgs.size())),
-                             world.tuple(newArgs));
-    }
-    return world.raw_app(type, callee, arg);
-}
-
 Ref normalize_any(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
 
     return world.raw_app(type, callee, arg);
-}
-
-Ref normalize_lit(Ref type, Ref, Ref arg) {
-    auto& world = type->world();
-
-    return world.app(world.annex<range>(), world.tuple({arg, arg}));
 }
 
 Ref normalize_range(Ref type, Ref callee, Ref arg) {

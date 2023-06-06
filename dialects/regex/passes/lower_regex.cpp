@@ -20,8 +20,6 @@ Ref any_impl(Match<regex::any, Axiom> any_ax) {
     return world.annex<regex::match_any>();
 }
 
-Ref lit_impl(Match<regex::lit, App>) { unreachable(); }
-
 Ref range_impl(Match<regex::range, App> range_app) {
     auto& world = range_app->world();
     return world.app(world.annex<regex::match_range>(), range_app->arg());
@@ -69,7 +67,6 @@ Ref rewrite_arg(Ref def, Ref n) {
     const Def* new_app = def;
 
     if (auto any_ax = thorin::match<any>(def)) new_app = world.app(any_impl(any_ax), n);
-    if (auto lit_app = thorin::match<lit>(def)) new_app = world.app(lit_impl(lit_app), n);
     if (auto range_app = thorin::match<range>(def)) new_app = world.app(range_impl(range_app), n);
     if (auto not_app = thorin::match<not_>(def))
         new_app = world.iapp(world.app(not_impl(not_app), n), rewrite_args(not_app->arg(), n));
@@ -93,8 +90,6 @@ Ref LowerRegex::rewrite(Ref def) {
         // clang-format off
         if (auto any_ax = thorin::match<any>(app->callee()))
             new_app = wrap_in_cps2ds(world.app(any_impl(any_ax), n));
-        if (auto lit_app = thorin::match<lit>(app->callee()))
-            new_app = wrap_in_cps2ds(world.app(lit_impl(lit_app), n));
         if (auto range_app = thorin::match<range>(app->callee()))
             new_app = wrap_in_cps2ds(world.app(range_impl(range_app), n));
         if (auto not_app = thorin::match<not_>(app->callee()))
