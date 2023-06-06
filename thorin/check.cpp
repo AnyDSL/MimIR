@@ -140,10 +140,15 @@ template<Check::Mode mode> bool Check::alpha_(Ref r1, Ref r2) {
 
     if (mode == Relaxed) {
         if (i1 && i2) {
-            // union by rank
-            if (i1->rank() < i2->rank()) std::swap(i1, i2); // make sure i1 is heavier or equal
-            i2->set(i1);                                    // make i1 new root
-            if (i1->rank() == i2->rank()) ++i1->rank();
+            // union by rank: attach the lighter node to the heavier one
+            if (i1->rank() < i2->rank())
+                i1->set(i2);
+            else if (i2->rank() < i1->rank())
+                i2->set(i1);
+            else {
+                i1->set(i2);
+                ++i2->rank();
+            }
             return true;
         } else if (i1) {
             i1->set(d2);
