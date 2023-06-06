@@ -1,0 +1,34 @@
+// RUN: rm -f %t.ll
+// RUN: %thorin %s --output-ll %t.ll -o -
+// RUN: clang %t.ll -o %t -Wno-override-module
+.plugin core;
+.plugin math;
+.plugin affine;
+.plugin mem;
+
+.con .extern test[mem: %mem.M, a: %mem.Ptr(<<3; %math.F32>>, 0), b: %mem.Ptr(<<6;%math.F32>>, 0), return: .Cn %mem.M] = {
+    .let (`mem, t1) = %mem.load(mem, a);
+    .let t2         = <6; 0x00000000:%math.F32>;
+
+    .con exit _207467::[_207731: %math.F (23, 8), _207735: %math.F (23, 8), _207739: %math.F (23, 8), _207743: %math.F (23, 8), _207747: %math.F (23, 8), _207751: %math.F (23, 8)] = {
+        .let `mem = %mem.store(mem, b, _207467);
+        return mem
+    };
+
+    .let outer_loop = %affine.For(2, 1, <<6; %math.F32>>);
+    .con outer_body[iter: .Idx 2, acc: <<6; %math.F32>>, yield: .Cn <<6; %math.F32>>] = {
+        .let inner_for = %affine.For(3, 1, <<6; %math.F32>>);
+        .con inner_body [iter2: .Idx 3, acc2: <<6; %math.F32>>, yield2 : .Cn <<6; %math.F32>>] = {
+            .let idx_outer = %core.bitcast .Nat iter;
+            .let idx_inner = %core.bitcast .Nat iter2;
+            .let idx_flat  = %core.nat.add(idx_inner, %core.nat.mul(idx_outer, 3));
+            .let out_index = %core.idx 6 0 idx_flat;
+            .let element = t1#iter2;
+            yield2 .insert(acc2, out_index, element)
+        };
+        .let exit_inner = yield;
+        inner_for(0_3, 1_3, 2_3, acc, inner_body, exit_inner)
+    };
+    .let outer_exit = exit;
+    outer_loop(0_2, 1_2, 1_2, t2, outer_body, outer_exit)
+};
