@@ -26,6 +26,7 @@ public:
     ///@}
 
     /// @name dom
+    /// @anchor pi_dom
     ///@{
     /// @see @ref proj
     Ref dom() const { return op(0); }
@@ -33,6 +34,7 @@ public:
     ///@}
 
     /// @name codom
+    /// @anchor pi_codom
     ///@{
     /// @see @ref proj
     Ref codom() const { return op(1); }
@@ -78,7 +80,7 @@ public:
     /// @name Type Checking
     ///@{
     void check() override;
-    static const Def* infer(const Def* dom, const Def* codom);
+    static Ref infer(Ref dom, Ref codom);
     ///@}
 
     const Pi* immutabilize() override;
@@ -105,6 +107,7 @@ public:
     ///@}
 
     /// @name dom
+    /// @anchor lam_dom
     ///@{
     /// @see @ref proj
     Ref dom() const { return type()->dom(); }
@@ -112,6 +115,7 @@ public:
     ///@}
 
     /// @name codom
+    /// @anchor lam_codom
     ///@{
     /// @see @ref proj
     Ref codom() const { return type()->codom(); }
@@ -176,10 +180,9 @@ public:
 /// @name Lam
 ///@{
 /// GIDSet / GIDMap keyed by Lam::gid of `Lam*`.
-template<class To>
-using LamMap  = GIDMap<Lam*, To>;
-using LamSet  = GIDSet<Lam*>;
-using Lam2Lam = LamMap<Lam*>;
+template<class To> using LamMap = GIDMap<Lam*, To>;
+using LamSet                    = GIDSet<Lam*>;
+using Lam2Lam                   = LamMap<Lam*>;
 ///@}
 
 class App : public Def {
@@ -200,6 +203,7 @@ public:
     ///@}
 
     /// @name arg
+    /// @anchor app_arg
     ///@{
     /// @see @ref proj
     const Def* arg() const { return op(1); }

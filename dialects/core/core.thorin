@@ -130,13 +130,13 @@
 ///
 .ax %core.wrap(add, sub, mul, shl): Π.[s: .Nat][m: .Nat][«2; .Idx s»] -> .Idx s, normalize_wrap;
 
-.lam %core.minus!.(s: .Nat)!(m: .Nat)!(a: .Idx s): .Idx s = %core.wrap.sub m (0:(.Idx s), a);
+.lam %core.minus.(s: .Nat)(m: .Nat)(a: .Idx s): .Idx s = %core.wrap.sub m (0:(.Idx s), a);
 ///
 /// ### %core.div
 ///
 /// Signed and unsigned Integer division/remainder.
 ///
-/// @warning Division by zero is *undefined behavior* and thus a visible side effect.
+/// @warning Division by zero is *undefined behavior* and a visible side effect.
 /// For this reason, these axioms expect a `%%mem.M`.
 ///
 .ax %core.div(sdiv, udiv, srem, urem):

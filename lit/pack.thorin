@@ -1,0 +1,5 @@
+// RUN: %thorin %s -o - | FileCheck %s
+.plugin core;
+
+.lam .extern f(): «3; .Nat» = ‹i: 3; %core.nat.add (1, %core.bitcast .Nat i)›;
+// CHECK-DAG: (1, 2, 3)

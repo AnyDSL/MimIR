@@ -9,7 +9,6 @@
 #include "thorin/pass/fp/tail_rec_elim.h"
 #include "thorin/pass/pipelinebuilder.h"
 #include "thorin/pass/rw/lam_spec.h"
-#include "thorin/pass/rw/partial_eval.h"
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
 
@@ -70,7 +69,6 @@ extern "C" THORIN_EXPORT thorin::Plugin thorin_get_plugin() {
                     passes, flags_t(Annex::Base<thorin::compile::nullptr_pass>),
                     [](World&, PipelineBuilder& builder, const Def* def) { builder.def2pass(def, nullptr); });
 
-                register_pass<compile::partial_eval_pass, PartialEval>(passes);
                 register_pass<compile::beta_red_pass, BetaRed>(passes);
                 register_pass<compile::eta_red_pass, EtaRed>(passes);
 

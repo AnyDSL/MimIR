@@ -227,7 +227,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         w.DLOG("RW: mut {}", mut);
         auto new_mut = rewrite_mut(mut, new_type, subst);
         // Try to reduce the amount of muts that are created
-        if (!mut->isa_mut<Global>() && Checker(w).equiv(mut, new_mut)) return map(mut);
+        if (!mut->isa_mut<Global>() && Check::alpha(mut, new_mut)) return map(mut);
         if (auto imm = new_mut->immutabilize()) return map(imm);
         return map(new_mut);
     } else {

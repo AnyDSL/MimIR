@@ -63,8 +63,6 @@ add_library(libthorin
     pass/fp/tail_rec_elim.h
     pass/rw/lam_spec.cpp
     pass/rw/lam_spec.h
-    pass/rw/partial_eval.cpp
-    pass/rw/partial_eval.h
     pass/rw/ret_wrap.cpp
     pass/rw/ret_wrap.h
     pass/rw/scalarize.cpp

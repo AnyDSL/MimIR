@@ -64,7 +64,7 @@ There are two different kind of [Defs](@ref thorin::Def) in Thorin: *mutables* a
 
 Thorin provides different means to scrutinize [Defs](@ref thorin::Def).
 Usually, you will encounter a [Def](@ref thorin::Def) as [Ref](@ref thorin::Ref) which is just a wrapper for a `const Def*`.
-Its purpose is to resolve variables (called *[Infer](@ref thorin::Infer)s* in Thorin) that may pop up due to type inference.
+Its purpose is to resolve "holes" (called *[Infer](@ref thorin::Infer)s* in Thorin) that may pop up due to type inference.
 Matching built-ins, i.e. all subclasses of [Def](@ref thorin::Def), works differently than matching [Axiom](@ref thorin::Axiom)s.
 
 ### Upcast for Built-ins {#cast_builtin}
@@ -281,6 +281,52 @@ The following table summarizes all important casts:
 | `match<mem::load>(def)`       <br> `force<mem::load>(def)`       | [Match](@ref thorin::Match)`<`[mem::load](@ref thorin::mem.load), [App](@ref thorin::App)`>`  | `%%mem.load (T, as) (mem, ptr)` |
 | `match<core::wrap>(def)`      <br> `force<core::wrap>(def)`      | [Match](@ref thorin::Match)`<`[core::wrap](@ref thorin::mem.load), [App](@ref thorin::App)`>` | `%%core.wrap.??? s m (a, b)`    |
 | `match(core::wrap::add, def)` <br> `force(core::wrap::add, def)` | [Match](@ref thorin::Match)`<`[core::wrap](@ref thorin::mem.load), [App](@ref thorin::App)`>` | `%%core.wrap.add s m (a, b)`    |
+
+## Working with Indices
+
+There are essentially **three** ways of retrieving the number of elements of something in Thorin.
+
+### Arity
+
+This is the number of elements of to [extract](@ref thorin::Extract)/[insert](@ref thorin::Insert) a single element.
+Note that the number of elements may be unknown at compile time such as in `‹n; 0›`.
+
+### Proj
+
+thorin::Def::num_projs is the same as thorin::Def::arity, if the arity is a thorin::Lit.
+Otherwise, it is simply `1`.
+This concept only exists in the C++-API to give the programmer the illusion to work with n-ary functions, e.g.:
+```cpp
+for (auto dom : pi->doms()) { /*...*/ }
+for (auto var : lam->vars()) { /*...*/ }
+```
+But in reality, all functions have exactly one domain and one codomain.
+
+See also:
+* @ref proj "Def::proj"
+* @ref var "Def::var"
+* @ref pi_dom "Pi::dom"
+* @ref pi_codom "Pi::codom"
+* @ref lam_dom "Lam::dom"
+* @ref lam_codom "Lam::codom"
+* @ref app_arg "App::arg"
+
+### Shape
+
+TODO
+
+### Summary
+
+| Expression            | Class                       | [artiy](@ref thorin::Def::arity) | [isa_lit_artiy](@ref thorin::Def::isa_lit_arity) | [as_lit_artiy](@ref thorin::Def::as_lit_arity) | [num_projs](@ref thorin::Def::num_projs) |
+|-----------------------|-----------------------------|----------------------------------|--------------------------------------------------|------------------------------------------------|------------------------------------------|
+| `(0, 1, 2)`           | [Tuple](@ref thorin::Tuple) | `3`                              | `3`                                              | `3`                                            | `3`                                      |
+| `‹3; 0›`              | [Pack](@ref thorin::Pack)   | `3`                              | `3`                                              | `3`                                            | `3`                                      |
+| `‹n; 0›`              | [Pack](@ref thorin::Pack)   | `n`                              | `std::nullopt`                                   | asserts                                        | `1`                                      |
+| `[.Nat, .Bool, .Nat]` | [Sigma](@ref thorin::Sigma) | `3`                              | `3`                                              | `3`                                            | `3`                                      |
+| `«3; .Nat»`           | [Arr](@ref thorin::Arr)     | `3`                              | `3`                                              | `3`                                            | `3`                                      |
+| `«n; .Nat»`           | [Arr](@ref thorin::Arr)     | `n`                              | `std::nullopt`                                   | asserts                                        | `1`                                      |
+| `x: [.Nat, .Bool]`    | [Var](@ref thorin::Var)     | `2`                              | `2`                                              | `2`                                            | `2`                                      |
+| `x: «n; .Nat»`        | [Var](@ref thorin::Var)     | `n`                              | `std::nullopt`                                   | asserts                                        | `1`                                      |
 
 ## Iterating over the Program
 

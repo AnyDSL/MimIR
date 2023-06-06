@@ -312,24 +312,34 @@ Ref Parser::parse_arr_expr() {
 }
 
 Ref Parser::parse_pack_expr() {
-    // TODO This doesn't work. Rework this!
     auto track = tracker();
     scopes_.push();
     eat(Tag::D_angle_l);
 
-    const Def* shape;
-    // bool mut = false;
     if (ahead(0).isa(Tag::M_id) && ahead(1).isa(Tag::T_colon)) {
         auto id = eat(Tag::M_id);
         eat(Tag::T_colon);
 
-        shape      = parse_expr("shape of a pack");
+        auto shape = parse_expr("shape of a pack");
         auto infer = world().mut_infer(world().type_idx(shape))->set(id.sym());
         scopes_.bind(id.dbg(), infer);
-    } else {
-        shape = parse_expr("shape of a pack");
+
+        expect(Tag::T_semicolon, "pack");
+        auto body = parse_expr("body of a pack");
+        expect(Tag::D_angle_r, "closing delimiter of a pack");
+        scopes_.pop();
+
+        auto arr  = world().arr(shape, body->type());
+        auto pack = world().mut_pack(arr)->set(body);
+        auto var  = pack->var();
+        infer->set(var);
+        Scope scope(pack);
+        ScopeRewriter rw(scope);
+        rw.map(infer, var);
+        return pack->reset(rw.rewrite(pack->body()));
     }
 
+    auto shape = parse_expr("shape of a pack");
     expect(Tag::T_semicolon, "pack");
     auto body = parse_expr("body of a pack");
     expect(Tag::D_angle_r, "closing delimiter of a pack");
@@ -471,13 +481,9 @@ Lam* Parser::parse_lam(bool is_decl) {
 
         if (auto tok = accept(Tag::T_at)) {
             if (filter) error(tok->loc(), "filter already specified via '!'");
-            if (accept(Tag::T_at)) {
-                filter = world().lit_tt();
-            } else {
-                expect(Tag::D_paren_l, "opening parenthesis of a filter");
-                filter = parse_expr("filter");
-                expect(Tag::D_paren_r, "closing parenthesis of a filter");
-            }
+            expect(Tag::D_paren_l, "opening parenthesis of a filter");
+            filter = parse_expr("filter");
+            expect(Tag::D_paren_r, "closing parenthesis of a filter");
         }
 
         funs.emplace_back(std::tuple(pi, lam, filter));
@@ -496,30 +502,37 @@ Lam* Parser::parse_lam(bool is_decl) {
         case Tag::K_fun: {
             auto& [pi, lam, filter] = funs.back();
 
-            codom          = world().type_bot();
-            auto ret_track = tracker();
+            codom        = world().type_bot();
+            auto track   = tracker();
             auto ret     = accept(Tag::T_colon) ? parse_expr("return type of a "s + entity) : world().mut_infer_type();
-            auto ret_loc = dom_p->loc() + ret_track.loc();
-            auto last    = world().sigma({pi->dom(), world().cn(ret)});
-            auto new_pi  = world().mut_pi(pi->type(), pi->is_implicit())->set(ret_loc)->set_dom(last);
+            auto ret_loc = dom_p->loc() + track.loc();
+            auto sigma   = world().mut_sigma(2)->set(0, pi->dom());
+
+            // Fix wrong dependencies:
+            // Connect old filter to lam and ret to pi. Otherwise, scope will not find it.
+            // 1. ret depends on lam->var() instead of sigma->var(2, 0)
+            pi->set_codom(ret);
+            if (filter) lam->set_filter(filter);
+            Scope scope(lam);
+            ScopeRewriter rw(scope);
+            rw.map(lam->var(), sigma->var(2, 0));
+            sigma->set(1, world().cn({rw.rewrite(ret)}));
+
+            auto new_pi  = world().mut_pi(pi->type(), pi->is_implicit())->set(ret_loc)->set_dom(sigma);
             auto new_lam = world().mut_lam(new_pi);
             auto new_var = new_lam->var()->set(ret_loc);
 
             if (filter) {
-                // Rewrite filter - it may still use the old var.
-                // First, connect old filter to lam. Otherwise, scope will not find it.
-                lam->set_filter(filter);
-                Scope scope(lam);
-
-                // Now rewrite old filter to use new_var.
+                // 2. filter depends on lam->var() instead of new_lam->var(2, 0)
                 ScopeRewriter rw(scope);
                 rw.map(lam->var(), new_lam->var(2, 0)->set(lam->var()->dbg()));
                 auto new_filter = rw.rewrite(filter);
                 filter          = new_filter;
             }
 
+            pi->unset();
+            pi = new_pi;
             lam->unset();
-            pi  = new_pi;
             lam = new_lam;
 
             dom_p->bind(scopes_, new_var->proj(2, 0), true);
@@ -557,9 +570,15 @@ Lam* Parser::parse_lam(bool is_decl) {
         if (auto [_, __, filter] = funs.back(); filter) error(prev(), "cannot specify filter of a {}", entity);
     }
 
+    // filter defaults to .tt for everything except the actual continuation of con/cn/fun/fn; here we use .ff as default
+    bool last = true;
     for (auto [_, lam, filter] : funs | std::ranges::views::reverse) {
-        if (body) lam->set(filter ? filter : world().lit_ff(), body);
+        bool is_cn
+            = last
+           && (tok.tag() == Tag::K_con || tok.tag() == Tag::K_cn || tok.tag() == Tag::K_fun || tok.tag() == Tag::K_fn);
+        if (body) lam->set(filter ? filter : is_cn ? world().lit_ff() : world().lit_tt(), body);
         body = lam;
+        last = false;
     }
 
     if (is_decl) expect(Tag::T_semicolon, "end of "s + entity);
@@ -731,10 +750,13 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
             expect(Tag::T_colon, "type ascription of an identifier group within a tuple pattern");
             auto type = parse_expr("type of an identifier group within a tuple pattern");
 
-            for (auto tok : sym_toks) {
+            for (size_t i = 0, e = sym_toks.size(); i != e; ++i) {
+                auto tok = sym_toks[i];
                 infers.emplace_back(world().mut_infer(type)->set(tok.dbg()));
                 ops.emplace_back(type);
-                ptrns.emplace_back(std::make_unique<IdPtrn>(tok.dbg(), false, type));
+                auto ptrn = std::make_unique<IdPtrn>(tok.dbg(), false, type);
+                if (i != e - 1) ptrn->bind(scopes_, infers.back()); // last element will be bound above
+                ptrns.emplace_back(std::move(ptrn));
             }
         } else {
             auto ptrn = parse_ptrn(delim_l, "element of a tuple pattern");
@@ -894,7 +916,7 @@ void Parser::parse_sigma_decl() {
         if (auto def = scopes_.query(dbg)) {
             if ((!def->isa_mut<Sigma>() && !def->isa<Infer>()) || !def->isa_lit_arity())
                 error(dbg.loc, "'{}' has not been declared as a sigma", dbg.sym);
-            if (!world().checker().equiv(def->type(), type))
+            if (!Check::alpha(def->type(), type))
                 error(dbg.loc, "'{}' of type '{}' has been redeclared with a different type '{}'; here: {}", dbg.sym,
                       def->type(), type, def->loc());
             if (arity && *arity != def->as_lit_arity())
@@ -942,7 +964,7 @@ void Parser::parse_pi_decl() {
         Pi* pi;
         if (auto def = scopes_.query(dbg)) {
             if (auto mut = def->isa_mut<Pi>()) {
-                if (!world().checker().equiv(mut->type(), type))
+                if (!Check::alpha(mut->type(), type))
                     error(dbg.loc, "'{}' of type '{}' has been redeclared with a different type '{}'; here: {}",
                           dbg.sym, mut->type(), type, mut->loc());
                 if (mut->is_set())

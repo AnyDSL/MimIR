@@ -32,9 +32,9 @@ Use the following coding conventions:
 * Capitalize the group name unless it is directly named after a method
 
 For all the other minute details like indentation width etc. use [clang-format](https://clang.llvm.org/docs/ClangFormat.html) and the provided `.clang-format` file in the root of the repository.
-In order to run `clang-format` automatically on all changed files, switch to the provided pre-commit hook:
+In order to run `clang-format` automatically on all changed files, switch to the provided [pre-commit](https://pre-commit.com/] hook:
 ```sh
-git config --local core.hooksPath .githooks/
+pre-commit install
 ```
 Note that you can [disable clang-format for a piece of code](https://clang.llvm.org/docs/ClangFormatStyleOptions.html#disabling-formatting-on-a-piece-of-code).
 In addition, you might want to check out plugins like the [Vim integration](https://clang.llvm.org/docs/ClangFormat.html#vim-integration).

@@ -6,9 +6,9 @@ namespace thorin::refly {
 
 Ref RemoveDbgPerm::rewrite(Ref def) {
     if (auto dbg_perm = match(dbg::perm, def)) {
-        auto e = dbg_perm->arg();
-        world().DLOG("dbg_perm: {}", e);
-        return e;
+        auto [lvl, x] = dbg_perm->args<2>();
+        world().DLOG("dbg_perm: {}", x);
+        return x;
     }
 
     return def;

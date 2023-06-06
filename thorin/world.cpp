@@ -46,13 +46,9 @@ const Def* infer_sigma(World& world, Defs ops) {
 bool World::Arena::Lock::guard_ = false;
 #endif
 
-World::Move::Move(World& world)
-    : checker(std::make_unique<Checker>(world)) {}
-
 World::World(Driver* driver, const State& state)
     : driver_(driver)
-    , state_(state)
-    , move_(*this) {
+    , state_(state) {
     data_.univ        = insert<Univ>(0, *this);
     data_.lit_univ_0  = lit_univ(0);
     data_.lit_univ_1  = lit_univ(1);
@@ -119,8 +115,15 @@ Ref World::uinc(Ref op, level_t offset) {
     return unify<UInc>(1, op, offset);
 }
 
-template<Sort sort>
-Ref World::umax(DefArray ops) {
+template<Sort sort> Ref World::umax(Defs ops_) {
+    // consume nested umax
+    DefVec ops;
+    for (auto op : ops_)
+        if (auto um = op->isa<UMax>())
+            ops.insert(ops.end(), um->ops().begin(), um->ops().end());
+        else
+            ops.emplace_back(op);
+
     level_t lvl = 0;
     for (auto& op : ops) {
         Ref r = op;
@@ -144,8 +147,15 @@ Ref World::umax(DefArray ops) {
             lvl = level_t(-1);
     }
 
-    auto ldef = lvl == level_t(-1) ? (const Def*)unify<UMax>(ops.size(), *this, ops) : lit_univ(lvl);
-    std::ranges::sort(ops, [](auto op1, auto op2) { return op1->gid() < op2->gid(); });
+    const Def* ldef;
+    if (lvl != level_t(-1))
+        ldef = lit_univ(lvl);
+    else {
+        std::ranges::sort(ops, [](auto op1, auto op2) { return op1->gid() < op2->gid(); });
+        ops.erase(std::unique(ops.begin(), ops.end()), ops.end());
+        ldef = unify<UMax>(ops.size(), *this, ops);
+    }
+
     return sort == Sort::Univ ? ldef : type(ldef);
 }
 
@@ -162,13 +172,13 @@ Ref World::var(Ref type, Def* mut) {
 Ref World::iapp(Ref callee, Ref arg) {
     while (auto pi = callee->type()->isa<Pi>()) {
         if (pi->is_implicit()) {
-            auto infer = mut_infer_entity();
+            auto infer = mut_infer(pi->dom());
             auto a     = app(callee, infer);
             callee     = a;
         } else {
             // resolve Infers now if possible before normalizers are run
             if (auto app = callee->isa<App>(); app && app->curry() == 1) {
-                checker().assignable(callee->type()->as<Pi>()->dom(), arg);
+                Check::assignable(callee->type()->as<Pi>()->dom(), arg);
                 auto apps = decurry(app);
                 callee    = apps.front()->callee();
                 for (auto app : apps) callee = this->app(callee, Ref::refer(app->arg()));
@@ -190,27 +200,27 @@ Ref World::app(Ref callee, Ref arg) {
 
     auto pi = callee->type()->isa<Pi>();
 
-    // (a, b)#i arg     where a = A -> B; b = A -> B
-    if (auto extract = callee->type()->isa<Extract>()) {
-        if (auto tuple = extract->tuple()->isa<Tuple>()) {
-            if (auto uni = checker().is_uniform(tuple->ops())) pi = uni->isa<Pi>();
-        }
-    }
-
     if (!pi) error(callee, "called expression '{}' : '{}' is not of function type", callee, callee->type());
-    if (!checker().assignable(pi->dom(), arg))
+    if (!Check::assignable(pi->dom(), arg))
         error(arg, "cannot pass argument \n'{}' of type \n'{}' to \n'{}' of domain \n'{}'", arg, arg->type(), callee,
               pi->dom());
 
     if (auto imm = callee->isa_imm<Lam>()) return imm->body();
-    if (auto lam = callee->isa<Lam>(); lam && lam->is_set() && !lam->is_term()) return lam->reduce(arg).back();
+    if (auto lam = callee->isa_mut<Lam>(); lam && lam->is_set() && lam->filter() != lit_ff()) {
+        Scope scope(lam);
+        ScopeRewriter rw(scope);
+        rw.map(lam->var(), arg);
+        if (rw.rewrite(lam->filter()) == lit_tt()) {
+            DLOG("partial evaluate: {} ({})", lam, arg);
+            return rw.rewrite(lam->body());
+        }
+    }
 
     auto type = pi->reduce(arg).back();
     return raw_app<true>(type, callee, arg);
 }
 
-template<bool Normalize>
-Ref World::raw_app(Ref type, Ref callee, Ref arg) {
+template<bool Normalize> Ref World::raw_app(Ref type, Ref callee, Ref arg) {
     auto [axiom, curry, trip] = Axiom::get(callee);
     if (axiom) {
         curry = curry == 0 ? trip : curry;
@@ -227,8 +237,7 @@ Ref World::sigma(Defs ops) {
     auto n = ops.size();
     if (n == 0) return sigma();
     if (n == 1) return ops[0];
-    auto front = ops.front();
-    if (std::ranges::all_of(ops.skip_front(), [front](auto op) { return front == op; })) return arr(n, front);
+    if (auto uni = Check::is_uniform(ops)) return arr(n, uni);
     return unify<Sigma>(ops.size(), umax<Sort::Type>(ops), ops);
 }
 
@@ -237,7 +246,7 @@ Ref World::tuple(Defs ops) {
 
     auto sigma = infer_sigma(*this, ops);
     auto t     = tuple(sigma, ops);
-    if (!checker().assignable(sigma, t))
+    if (!Check::assignable(sigma, t))
         error(t, "cannot assign tuple '{}' of type '{}' to incompatible tuple type '{}'", t, t->type(), sigma);
 
     return t;
@@ -250,8 +259,7 @@ Ref World::tuple(Ref type, Defs ops) {
     if (!type->isa_mut<Sigma>()) {
         if (n == 0) return tuple();
         if (n == 1) return ops[0];
-        auto front = ops.front();
-        if (std::ranges::all_of(ops.skip_front(), [front](auto op) { return front == op; })) return pack(n, front);
+        if (auto uni = Check::is_uniform(ops)) return pack(n, uni);
     }
 
     if (n != 0) {
@@ -311,7 +319,7 @@ Ref World::extract(Ref d, Ref index) {
 
     if (auto pack = d->isa_imm<Pack>()) return pack->body();
 
-    if (!checker().equiv(type->arity(), size))
+    if (!Check::alpha(type->arity(), size))
         error(index, "index '{}' does not fit within arity '{}'", index, type->arity());
 
     // extract(insert(x, index, val), index) -> val
@@ -352,12 +360,12 @@ Ref World::insert(Ref d, Ref index, Ref val) {
     auto type = d->unfold_type();
     auto size = Idx::size(index->type());
 
-    if (!checker().equiv(type->arity(), size))
+    if (!Check::alpha(type->arity(), size))
         error(index, "index '{}' does not fit within arity '{}'", index, type->arity());
 
     if (auto index_lit = Lit::isa(index)) {
         auto target_type = type->proj(*index_lit);
-        if (!checker().assignable(target_type, val))
+        if (!Check::assignable(target_type, val))
             error(val, "value of type {} is not assignable to type {}", val->type(), target_type);
     }
 
@@ -458,16 +466,14 @@ const Lit* World::lit(Ref type, u64 val) {
  * set
  */
 
-template<bool Up>
-Ref World::ext(Ref type) {
+template<bool Up> Ref World::ext(Ref type) {
     if (auto arr = type->isa<Arr>()) return pack(arr->shape(), ext<Up>(arr->body()));
     if (auto sigma = type->isa<Sigma>())
         return tuple(sigma, DefArray(sigma->num_ops(), [&](size_t i) { return ext<Up>(sigma->op(i)); }));
     return unify<TExt<Up>>(0, type);
 }
 
-template<bool Up>
-Ref World::bound(Defs ops) {
+template<bool Up> Ref World::bound(Defs ops) {
     auto kind = umax<Sort::Type>(ops);
 
     // has ext<Up> value?
@@ -518,7 +524,7 @@ Ref World::test(Ref value, Ref probe, Ref match, Ref clash) {
     assert(m_pi && c_pi);
     auto a = m_pi->dom()->isa_lit_arity();
     assert_unused(a && *a == 2);
-    assert(checker().equiv(m_pi->dom(2, 0_s), c_pi->dom()));
+    assert(Check::alpha(m_pi->dom(2, 0_s), c_pi->dom()));
 
     auto codom = join({m_pi->codom(), c_pi->codom()});
     return unify<Test>(4, pi(c_pi->dom(), codom), value, probe, match, clash);
@@ -565,10 +571,10 @@ Ref World::gid2def(u32 gid) {
 #ifndef DOXYGEN
 template Ref World::raw_app<true>(Ref, Ref, Ref);
 template Ref World::raw_app<false>(Ref, Ref, Ref);
-template Ref World::umax<Sort::Term>(DefArray);
-template Ref World::umax<Sort::Type>(DefArray);
-template Ref World::umax<Sort::Kind>(DefArray);
-template Ref World::umax<Sort::Univ>(DefArray);
+template Ref World::umax<Sort::Term>(Defs);
+template Ref World::umax<Sort::Type>(Defs);
+template Ref World::umax<Sort::Kind>(Defs);
+template Ref World::umax<Sort::Univ>(Defs);
 template Ref World::ext<true>(Ref);
 template Ref World::ext<false>(Ref);
 template Ref World::bound<true>(Defs);

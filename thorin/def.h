@@ -47,30 +47,27 @@ class World;
 /// @name Def
 ///@{
 /// GIDSet / GIDMap keyed by Def::gid of `conset Def*`.
-template<class To>
-using DefMap   = GIDMap<const Def*, To>;
-using DefSet   = GIDSet<const Def*>;
-using Def2Def  = DefMap<const Def*>;
-using Defs     = Span<const Def*>;
-using DefArray = Array<const Def*>;
+template<class To> using DefMap = GIDMap<const Def*, To>;
+using DefSet                    = GIDSet<const Def*>;
+using Def2Def                   = DefMap<const Def*>;
+using Defs                      = Span<const Def*>;
+using DefArray                  = Array<const Def*>;
 ///@}
 
 /// @name Def (Mutable)
 ///@{
 /// GIDSet / GIDMap keyed by Def::gid of `Def*`.
-template<class To>
-using MutMap  = GIDMap<Def*, To>;
-using MutSet  = GIDSet<Def*>;
-using Mut2Mut = MutMap<Def*>;
+template<class To> using MutMap = GIDMap<Def*, To>;
+using MutSet                    = GIDSet<Def*>;
+using Mut2Mut                   = MutMap<Def*>;
 ///@}
 
 /// @name Var
 ///@{
 /// GIDSet / GIDMap keyed by Var::gid of `const Var*`.
-template<class To>
-using VarMap  = GIDMap<const Var*, To>;
-using VarSet  = GIDSet<const Var*>;
-using Var2Var = VarMap<const Var*>;
+template<class To> using VarMap = GIDMap<const Var*, To>;
+using VarSet                    = GIDSet<const Var*>;
+using Var2Var                   = VarMap<const Var*>;
 ///@{
 
 //------------------------------------------------------------------------------
@@ -148,22 +145,13 @@ THORIN_ENUM_OPERATORS(Dep)
 ///@}
 
 /// Use as mixin to wrap all kind of Def::proj and Def::projs variants.
-#define THORIN_PROJ(NAME, CONST)                                                  \
-    nat_t num_##NAME##s() CONST { return ((const Def*)NAME())->num_projs(); }     \
-    Ref NAME(nat_t a, nat_t i) CONST { return ((const Def*)NAME())->proj(a, i); } \
-    Ref NAME(nat_t i) CONST { return ((const Def*)NAME())->proj(i); }             \
-    template<nat_t A = -1_s, class F>                                             \
-    auto NAME##s(F f) CONST {                                                     \
-        return ((const Def*)NAME())->projs<A, F>(f);                              \
-    }                                                                             \
-    template<nat_t A = -1_s>                                                      \
-    auto NAME##s() CONST {                                                        \
-        return ((const Def*)NAME())->projs<A>();                                  \
-    }                                                                             \
-    template<class F>                                                             \
-    auto NAME##s(nat_t a, F f) CONST {                                            \
-        return ((const Def*)NAME())->projs<F>(a, f);                              \
-    }                                                                             \
+#define THORIN_PROJ(NAME, CONST)                                                                               \
+    nat_t num_##NAME##s() CONST { return ((const Def*)NAME())->num_projs(); }                                  \
+    Ref NAME(nat_t a, nat_t i) CONST { return ((const Def*)NAME())->proj(a, i); }                              \
+    Ref NAME(nat_t i) CONST { return ((const Def*)NAME())->proj(i); }                                          \
+    template<nat_t A = -1_s, class F> auto NAME##s(F f) CONST { return ((const Def*)NAME())->projs<A, F>(f); } \
+    template<nat_t A = -1_s> auto NAME##s() CONST { return ((const Def*)NAME())->projs<A>(); }                 \
+    template<class F> auto NAME##s(nat_t a, F f) CONST { return ((const Def*)NAME())->projs<F>(a, f); }        \
     auto NAME##s(nat_t a) CONST { return ((const Def*)NAME())->projs(a); }
 
 // clang-format off
@@ -243,7 +231,7 @@ public:
 
     /// @name arity
     ///@{
-    const Def* arity() const;
+    Ref arity() const;
     std::optional<nat_t> isa_lit_arity() const;
     nat_t as_lit_arity() const {
         auto a = isa_lit_arity();
@@ -254,8 +242,7 @@ public:
 
     /// @name ops
     ///@{
-    template<size_t N = -1_s>
-    auto ops() const {
+    template<size_t N = -1_s> auto ops() const {
         if constexpr (N == -1_s)
             return Defs(num_ops_, ops_ptr());
         else
@@ -344,7 +331,7 @@ public:
     /// auto [x, y]                  = def->projs<2>([](auto def) { return Lit::as(def); });
     /// Array<const Def*> projs1     = def->projs(); // "projs1" has def->num_projs() many elements
     /// Array<const Def*> projs2     = def->projs(n);// "projs2" has n elements - asserts if incorrect
-    /// // same as above but applies Lit::as<nat_t>(op) to each element
+    /// // same as above but applies Lit::as<nat_t>(def) to each element
     /// Array<const Lit*> lits1      = def->projs(   [](auto def) { return Lit::as(def); });
     /// Array<const Lit*> lits2      = def->projs(n, [](auto def) { return Lit::as(def); });
     /// ```
@@ -360,8 +347,7 @@ public:
 
     /// Splits this Def via Def::proj%ections into an Array (if `A == -1_s`) or `std::array` (otherwise).
     /// Applies @p f to each element.
-    template<nat_t A = -1_s, class F>
-    auto projs(F f) const {
+    template<nat_t A = -1_s, class F> auto projs(F f) const {
         using R = std::decay_t<decltype(f(this))>;
         if constexpr (A == -1_s) {
             return projs(num_projs(), f);
@@ -373,13 +359,11 @@ public:
         }
     }
 
-    template<class F>
-    auto projs(nat_t a, F f) const {
+    template<class F> auto projs(nat_t a, F f) const {
         using R = std::decay_t<decltype(f(this))>;
         return Array<R>(a, [&](nat_t i) { return f(proj(a, i)); });
     }
-    template<nat_t A = -1_s>
-    auto projs() const {
+    template<nat_t A = -1_s> auto projs() const {
         return projs<A>([](const Def* def) { return def; });
     }
     auto projs(nat_t a) const {
@@ -388,6 +372,7 @@ public:
     ///@}
 
     /// @name var
+    /// @anchor var
     ///@{
     /// Retrieve Var for *mutables*.
     /// @see @ref proj
@@ -413,8 +398,7 @@ public:
     // clang-format on
 
     /// If `this` is *mut*able, it will cast `const`ness away and perform a `dynamic_cast` to @p T.
-    template<class T = Def, bool invert = false>
-    T* isa_mut() const {
+    template<class T = Def, bool invert = false> T* isa_mut() const {
         if constexpr (std::is_same<T, Def>::value)
             return mut_ ^ invert ? const_cast<Def*>(this) : nullptr;
         else
@@ -422,8 +406,7 @@ public:
     }
 
     /// Asserts that `this` is a *mutable*, casts `const`ness away and performs a `static_cast` to @p T.
-    template<class T = Def, bool invert = false>
-    T* as_mut() const {
+    template<class T = Def, bool invert = false> T* as_mut() const {
         assert(mut_ ^ invert);
         if constexpr (std::is_same<T, Def>::value)
             return const_cast<Def*>(this);
@@ -575,9 +558,8 @@ struct DefDefEq {
     bool operator()(DefDef p1, DefDef p2) const { return p1 == p2; }
 };
 
-template<class To>
-using DefDefMap = absl::flat_hash_map<DefDef, To, DefDefHash, DefDefEq>;
-using DefDefSet = absl::flat_hash_set<DefDef, DefDefHash, DefDefEq>;
+template<class To> using DefDefMap = absl::flat_hash_map<DefDef, To, DefDefHash, DefDefEq>;
+using DefDefSet                    = absl::flat_hash_set<DefDef, DefDefHash, DefDefEq>;
 ///@}
 
 class Var : public Def {
@@ -646,8 +628,7 @@ private:
 public:
     /// @name Get actual Constant
     ///@{
-    template<class T = flags_t>
-    T get() const {
+    template<class T = flags_t> T get() const {
         static_assert(sizeof(T) <= 8);
         return bitcast<T>(flags_);
     }
@@ -659,16 +640,12 @@ public:
     /// @name Casts
     ///@{
     /// @see @ref cast_lit
-    template<class T = nat_t>
-    static std::optional<T> isa(Ref def) {
+    template<class T = nat_t> static std::optional<T> isa(Ref def) {
         if (!def) return {};
         if (auto lit = def->isa<Lit>()) return lit->get<T>();
         return {};
     }
-    template<class T = nat_t>
-    static T as(Ref def) {
-        return def->as<Lit>()->get<T>();
-    }
+    template<class T = nat_t> static T as(Ref def) { return def->as<Lit>()->get<T>(); }
     ///@}
 
     THORIN_DEF_MIXIN(Lit)

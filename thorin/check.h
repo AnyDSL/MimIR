@@ -38,41 +38,33 @@ private:
     flags_t& rank() { return flags_; }
 
     THORIN_DEF_MIXIN(Infer)
-    friend class Checker;
+    friend class Check;
 };
 
-class Checker {
+class Check {
 public:
-    Checker(World& world)
-        : world_(&world) {}
-
-    World& world() const { return *world_; }
-
-    /// Are @p d1 and @p d2 α-equivalent?
-    bool equiv(Ref d1, Ref d2);
+    /// Are d1 and d2 α-equivalent?
+    /// * In @p infer mode, type inference is happening and Infer%s will be resolved, if possible.
+    ///     Also, two *free* but *different* Var%s **are** considered α-equivalent.
+    /// * When **not* in @p infer mode, no type inference is happening and Infer%s will not be touched.
+    ///     Also, Two *free* but *different* Var%s are **not** considered α-equivalent.
+    template<bool infer = true> static bool alpha(Ref d1, Ref d2) { return Check().alpha_<infer>(d1, d2); }
 
     /// Can @p value be assigned to sth of @p type?
     /// @note This is different from `equiv(type, value->type())` since @p type may be dependent.
-    bool assignable(Ref type, Ref value);
+    static bool assignable(Ref type, Ref value) { return Check().assignable_(type, value); }
 
-    /// Yields `defs.front()`, if all @p defs are α-equiv%alent and `nullptr` otherwise.
-    const Def* is_uniform(Defs defs);
-
-    static void swap(Checker& c1, Checker& c2) { std::swap(c1.world_, c2.world_); }
+    /// Yields `defs.front()`, if all @p defs are Check::alpha-equivalent (`infer = false`) and `nullptr` otherwise.
+    static Ref is_uniform(Defs defs);
 
 private:
-    bool equiv_internal(Ref, Ref);
+    template<bool infer> bool alpha_(Ref d1, Ref d2);
+    template<bool infer> bool alpha_internal(Ref, Ref);
+    bool assignable_(Ref type, Ref value);
 
-    enum class Equiv {
-        Distinct,
-        Unknown,
-        Equiv,
-    };
-
-    World* world_;
-    DefDefMap<Equiv> equiv_;
-    using Vars = std::deque<std::pair<Def*, Def*>>;
+    using Vars = MutMap<Def*>;
     Vars vars_;
+    MutSet done_;
 };
 
 } // namespace thorin
