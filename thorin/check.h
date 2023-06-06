@@ -89,9 +89,10 @@ public:
     Check2(World& world)
         : world_(world) {}
 
-    static constexpr std::pair<Ref, Ref> False = {{}, {}};
+    using Pair                  = std::pair<Ref, Ref>;
+    static constexpr Pair False = {{}, {}};
     /// Are d1 and d2 α-equivalent?
-    static std::pair<Ref, Ref> alpha(Ref d1, Ref d2) { return Check2(d1->world()).alpha_(d1, d2); }
+    static Pair alpha(Ref d1, Ref d2) { return Check2(d1->world()).alpha_(d1, d2); }
 
 #if 0
     /// Can @p value be assigned to sth of @p type?
@@ -102,15 +103,13 @@ public:
     World& world() { return world_; }
 
 private:
-    std::pair<Ref, Ref> alpha_(Ref d1, Ref d2);
-    std::pair<Ref, Ref> alpha_internal(Ref, Ref);
+    Pair alpha_(Ref d1, Ref d2);
+    Pair alpha_internal(Ref, Ref);
+    std::optional<Pair> alpha_internal(Ref, Ref, bool);
     // bool assignable_(Ref type, Ref value);
 
-    using Vars = MutMap<Def*>;
     World& world_;
-    Vars vars_;
-    MutSet done_;
-    DefMap<std::pair<Ref, Ref>> old2new_;
+    DefMap<Pair> old2new_;
     bool rerun_;
 };
 

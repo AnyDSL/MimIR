@@ -222,20 +222,22 @@ TEST(Check, alpha) {
     // λw.y
     auto lwy = w.mut_lam(pi);
     lwy->set(false, lyy->var());
-    // λ_.x
-    auto l_x = w.lam(pi, false, lxx->var());
-    // λ_.y
-    auto l_y = w.lam(pi, false, lyy->var());
-    // λ_.0
-    auto l_0 = w.lam(pi, false, w.lit_nat_0());
-    // λ_.1
-    auto l_1 = w.lam(pi, false, w.lit_nat_1());
+    auto l_x = w.lam(pi, false, lxx->var());             // λ_.x
+    auto l_y = w.lam(pi, false, lyy->var());             // λ_.y
+    auto l_0 = w.lam(pi, false, w.lit_nat_0());          // λ_.0
+    auto l_1 = w.lam(pi, false, w.lit_nat_1());          // λ_.1
+    auto m_x = w.mut_lam(pi)->set(false, lxx->var());    // λ_.x
+    auto m_y = w.mut_lam(pi)->set(false, lyy->var());    // λ_.y
+    auto m_0 = w.mut_lam(pi)->set(false, w.lit_nat_0()); // λ_.0
+    auto m_1 = w.mut_lam(pi)->set(false, w.lit_nat_1()); // λ_.1
 
     auto check = [](Ref l1, Ref l2, bool infer_res, bool non_infer_res) {
         EXPECT_EQ(Check::alpha<Check::Relaxed>(l1, l2), infer_res);
         EXPECT_EQ(Check::alpha<Check::Relaxed>(l2, l1), infer_res);
         EXPECT_EQ(Check::alpha<Check::Strict>(l1, l2), non_infer_res);
         EXPECT_EQ(Check::alpha<Check::Strict>(l2, l1), non_infer_res);
+        EXPECT_TRUE(!infer_res || Check2::alpha(l1, l2) != Check2::False);
+        EXPECT_TRUE(!infer_res || Check2::alpha(l2, l1) != Check2::False);
     };
 
     check(lxx, lxx, true, true);
@@ -246,6 +248,10 @@ TEST(Check, alpha) {
     check(lxx, l_y, false, false);
     check(lxx, l_0, false, false);
     check(lxx, l_1, false, false);
+    check(lxx, m_x, false, false);
+    check(lxx, m_y, false, false);
+    check(lxx, m_0, false, false);
+    check(lxx, m_1, false, false);
 
     check(lyy, lyy, true, true);
     check(lyy, lzx, false, false);
@@ -254,6 +260,10 @@ TEST(Check, alpha) {
     check(lyy, l_y, false, false);
     check(lyy, l_0, false, false);
     check(lyy, l_1, false, false);
+    check(lyy, m_x, false, false);
+    check(lyy, m_y, false, false);
+    check(lyy, m_0, false, false);
+    check(lyy, m_1, false, false);
 
     check(lzx, lzx, true, true);
     check(lzx, lwy, true, false);
@@ -261,26 +271,44 @@ TEST(Check, alpha) {
     check(lzx, l_y, true, false);
     check(lzx, l_0, false, false);
     check(lzx, l_1, false, false);
+    check(lzx, m_x, true, true);
+    check(lzx, m_y, true, false);
+    check(lzx, m_0, false, false);
+    check(lzx, m_1, false, false);
 
     check(lwy, lwy, true, true);
     check(lwy, l_x, true, false);
     check(lwy, l_y, true, true);
     check(lwy, l_0, false, false);
     check(lwy, l_1, false, false);
+    check(lwy, m_x, true, false);
+    check(lwy, m_y, true, true);
+    check(lwy, m_0, false, false);
+    check(lwy, m_1, false, false);
 
     check(l_x, l_x, true, true);
     check(l_x, l_y, true, false);
     check(l_x, l_0, false, false);
     check(l_x, l_1, false, false);
+    check(l_x, m_x, true, true);
+    check(l_x, m_y, true, false);
+    check(l_x, m_0, false, false);
+    check(l_x, m_1, false, false);
 
     check(l_y, l_y, true, true);
     check(l_y, l_0, false, false);
     check(l_y, l_1, false, false);
+    check(l_y, m_y, true, true);
+    check(l_y, m_0, false, false);
+    check(l_y, m_1, false, false);
 
     check(l_0, l_0, true, true);
     check(l_0, l_1, false, false);
+    check(l_0, m_0, true, true);
+    check(l_0, m_1, false, false);
 
     check(l_1, l_1, true, true);
+    check(l_1, m_1, true, true);
 }
 
 TEST(Infer, eliminate) {
