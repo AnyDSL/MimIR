@@ -51,7 +51,7 @@
 ///
 /// Wraps a literal.
 ///
-.lam %regex.lit[val:%core.I8] = %regex.range (val, val);
+.lam %regex.lit(val:%core.I8) = %regex.range (val, val);
 
 ///
 /// ### %regex.not

@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "thorin/axiom.h"
+#include "thorin/def.h"
 #include "thorin/tuple.h"
 #include "thorin/world.h"
 
@@ -17,8 +18,7 @@
 
 namespace thorin::regex {
 
-template<quant id>
-Ref normalize_quant(Ref type, Ref callee, Ref arg) {
+template<quant id> Ref normalize_quant(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
 
     // quantifiers are idempotent
@@ -44,8 +44,7 @@ Ref normalize_quant(Ref type, Ref callee, Ref arg) {
     return world.raw_app(type, callee, arg);
 }
 
-template<class ConjOrDisj>
-void flatten_in_arg(Ref arg, std::vector<const Def*>& newArgs) {
+template<class ConjOrDisj> void flatten_in_arg(Ref arg, std::vector<const Def*>& newArgs) {
     for (const auto* proj : arg->projs()) {
         // flatten conjs in conjs / disj in disjs
         if (auto seq_app = thorin::match<ConjOrDisj>(proj))
@@ -55,15 +54,13 @@ void flatten_in_arg(Ref arg, std::vector<const Def*>& newArgs) {
     }
 }
 
-template<class ConjOrDisj>
-std::vector<const Def*> flatten_in_arg(Ref arg) {
+template<class ConjOrDisj> std::vector<const Def*> flatten_in_arg(Ref arg) {
     std::vector<const Def*> newArgs;
     flatten_in_arg<ConjOrDisj>(arg, newArgs);
     return newArgs;
 }
 
-template<class ConjOrDisj>
-Ref make_binary_tree(Ref type, DefArray args) {
+template<class ConjOrDisj> Ref make_binary_tree(Ref type, DefArray args) {
     assert(!args.empty());
     auto& world = args.front()->world();
     return std::accumulate(args.begin() + 1, args.end(), args.front(), [&type, &world](const Def* lhs, const Def* rhs) {
@@ -169,8 +166,7 @@ void merge_ranges(std::vector<const Def*>& args) {
     make_vector_unique(args);
 }
 
-template<cls A, cls B>
-bool equals_any(const Def* cls0, const Def* cls1) {
+template<cls A, cls B> bool equals_any(const Def* cls0, const Def* cls1) {
     return (thorin::match(A, cls0) && thorin::match(B, cls1)) || (thorin::match(A, cls1) && thorin::match(B, cls0));
 }
 
@@ -246,8 +242,9 @@ Ref normalize_range(Ref type, Ref callee, Ref arg) {
     auto& world     = type->world();
     auto [lhs, rhs] = arg->projs<2>();
 
-    if (lhs->as<Lit>()->get() > rhs->as<Lit>()->get())
-        error(arg->dbg().loc, "%regex.range parameters in broken order: {} must be smaller than {}", lhs, rhs);
+    if (!lhs->isa<Var>() && !rhs->isa<Var>()) // before first PE.
+        if (lhs->as<Lit>()->get() > rhs->as<Lit>()->get())
+            error(arg->dbg().loc, "%regex.range parameters in broken order: {} must be smaller than {}", lhs, rhs);
 
     return world.raw_app(type, callee, arg);
 }
