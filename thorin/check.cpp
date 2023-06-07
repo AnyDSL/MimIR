@@ -272,20 +272,15 @@ Check2::Pair Check2::alpha_(Ref r1, Ref r2) {
         if ((!d1->has_dep(Dep::Var) && !d2->has_dep(Dep::Var)) || (d1->isa_mut() && d2->isa_mut())) return {d1, d2};
     }
 
-    if (d1->isa<Univ>()) return False;
-
-    if (auto type1 = d1->isa<Type>()) {
-        if (auto type2 = d2->isa<Type>()) {
-            auto [lvl1, lvl2] = alpha_(type1->level(), type2->level());
-            if (lvl1) return {world().type(lvl1), world().type(lvl2)};
-        }
+    if (d1->isa<Univ>()) {
+        if (d2->isa<Univ>()) return {d1, d2};
         return False;
     }
 
     auto [it2, ins2] = old2new_.emplace(d2, Pair{d2, d1});
     auto [it1, ins1] = old2new_.emplace(d1, Pair{d1, d2});
     assert(d1 == d2 || !(ins1 ^ ins2));
-    if (ins1) return it1->second;
+    if (!ins1) return it1->second;
 
     auto i1 = d1->isa_mut<Infer>();
     auto i2 = d2->isa_mut<Infer>();
@@ -311,6 +306,14 @@ Check2::Pair Check2::alpha_(Ref r1, Ref r2) {
         return {d1, d1};
     }
 
+    if (auto type1 = d1->isa<Type>()) {
+        if (auto type2 = d2->isa<Type>()) {
+            auto [lvl1, lvl2] = alpha_(type1->level(), type2->level());
+            if (lvl1) return {world().type(lvl1), world().type(lvl2)};
+        }
+        return False;
+    }
+
     if (!d1->is_set() || !d2->is_set()) return False;
 
     auto res = alpha_internal(d1, d2);
@@ -321,20 +324,10 @@ Check2::Pair Check2::alpha_(Ref r1, Ref r2) {
 }
 
 Check2::Pair Check2::alpha_internal(Ref d1, Ref d2) {
-    {
-        auto [t1, t2] = alpha_(d1->type(), d2->type());
-        if (!t1) return False;
-        assert(t1 == t2);
-    }
-
+    if (alpha_(d1->type(), d2->type()) == False) return False;
     if (d1->isa<Top>()) return {d2, d2};
     if (d2->isa<Top>()) return {d1, d1};
-
-    {
-        auto [a1, a2] = alpha_(d1->arity(), d2->arity());
-        if (!a1) return False;
-        assert(a1 == a2);
-    }
+    if (alpha_(d1->arity(), d2->arity()) == False) return False;
 
     // if (mode != Relaxed && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return false;
 
@@ -404,15 +397,23 @@ std::optional<Check2::Pair> Check2::alpha_internal(Ref d1, Ref d2, bool /*swap*/
                 {s1, s2}
             };
         }
+    } else if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Infer)) {
+        if (auto l = d2->isa<Lit>()) {
+            // .umax(a, ?) =α l  =>  .umax(a, l)
+            size_t n = umax->num_ops();
+            DefArray new_ops(n);
+            for (size_t i = 0; i != n; ++i) {
+                if (auto inf = umax->op(i)->isa_mut<Infer>(); inf && !inf->is_set()) {
+                    inf->set(l);
+                    new_ops[i] = l;
+                } else {
+                    new_ops[i] = umax->op(i);
+                }
+            }
+            d1 = umax->rebuild(umax->world(), umax->type(), umax->ops());
+            return alpha_(d1, l);
+        }
     }
-#if 0
-    else if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Infer) && !d2->isa<UMax>()) {
-        // .umax(a, ?) == x  =>  .umax(a, x)
-        for (auto op : umax->ops())
-            if (auto inf = op->isa_mut<Infer>(); inf && !inf->is_set()) inf->set(d2);
-        d1 = umax->rebuild(umax->world(), umax->type(), umax->ops());
-    }
-#endif
 
     return {};
 }
@@ -457,7 +458,7 @@ bool Check2::assignable_(Ref type, Ref val) {
 
 void Arr::check() {
     auto t = body()->unfold_type();
-    if (!Check::alpha(t, type()))
+    if (Check2::alpha(t, type()) == Check2::False)
         error(type(), "declared sort '{}' of array does not match inferred one '{}'", type(), t);
 }
 
@@ -466,7 +467,7 @@ void Sigma::check() {
 }
 
 void Lam::check() {
-    if (!Check::alpha(filter()->type(), world().type_bool()))
+    if (Check2::alpha(filter()->type(), world().type_bool()) == Check2::False)
         error(filter(), "filter '{}' of lambda is of type '{}' but must be of type '.Bool'", filter(),
               filter()->type());
     if (!Check::assignable(codom(), body()))
@@ -481,7 +482,7 @@ Ref Pi::infer(Ref dom, Ref codom) {
 
 void Pi::check() {
     auto t = infer(dom(), codom());
-    if (!Check::alpha(t, type()))
+    if (Check2::alpha(t, type()) == Check2::False)
         error(type(), "declared sort '{}' of function type does not match inferred one '{}'", type(), t);
 }
 
