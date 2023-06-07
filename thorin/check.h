@@ -94,11 +94,9 @@ public:
     /// Are d1 and d2 α-equivalent?
     static Pair alpha(Ref d1, Ref d2) { return Check2(d1->world()).alpha_(d1, d2); }
 
-#if 0
     /// Can @p value be assigned to sth of @p type?
     /// @note This is different from `equiv(type, value->type())` since @p type may be dependent.
-    static bool assignable(Ref type, Ref value) { return Check2().assignable_(type, value); }
-#endif
+    static Pair assignable(Ref type, Ref value) { return Check2(value->world()).assignable_(type, value); }
 
     World& world() { return world_; }
 
@@ -106,7 +104,7 @@ private:
     Pair alpha_(Ref d1, Ref d2);
     Pair alpha_internal(Ref, Ref);
     std::optional<Pair> alpha_internal(Ref, Ref, bool);
-    // bool assignable_(Ref type, Ref value);
+    Pair assignable_(Ref type, Ref value);
 
     World& world_;
     DefMap<Pair> old2new_;

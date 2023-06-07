@@ -368,8 +368,16 @@ Ref World::insert(Ref d, Ref index, Ref val) {
     if (auto l = Lit::isa(size); l && *l == 1)
         return tuple(d, {val}); // d could be mut - that's why the tuple ctor is needed
 
+    if (auto infer = d->isa_mut<Infer>()) {
+        if (auto tuple = infer->explode()) d = tuple;
+    }
+
     // insert((a, b, c, d), 2, x) -> (a, b, x, d)
-    if (auto t = d->isa<Tuple>()) return t->refine(Lit::as(index), val);
+    if (auto t = d->isa<Tuple>()) {
+        auto i = Lit::as(index);
+        if (auto infer = t->op(i)->isa_mut<Infer>(); infer && !infer->is_set()) infer->set(val);
+        return t->refine(i, val);
+    }
 
     // insert(‹4; x›, 2, y) -> (x, x, y, x)
     if (auto pack = d->isa<Pack>()) {

@@ -271,11 +271,7 @@ Check2::Pair Check2::alpha_(Ref r1, Ref r2) {
     if (d1 == d2) {
         if ((!d1->has_dep(Dep::Var) && !d2->has_dep(Dep::Var)) || (d1->isa_mut() && d2->isa_mut())) return {d1, d2};
     }
-
-    if (d1->isa<Univ>()) {
-        if (d2->isa<Univ>()) return {d1, d2};
-        return False;
-    }
+    if (d1->isa<Univ>()) return False;
 
     auto [it2, ins2] = old2new_.emplace(d2, Pair{d2, d1});
     auto [it1, ins1] = old2new_.emplace(d1, Pair{d1, d2});
@@ -306,14 +302,6 @@ Check2::Pair Check2::alpha_(Ref r1, Ref r2) {
         return {d1, d1};
     }
 
-    if (auto type1 = d1->isa<Type>()) {
-        if (auto type2 = d2->isa<Type>()) {
-            auto [lvl1, lvl2] = alpha_(type1->level(), type2->level());
-            if (lvl1) return {world().type(lvl1), world().type(lvl2)};
-        }
-        return False;
-    }
-
     if (!d1->is_set() || !d2->is_set()) return False;
 
     auto res = alpha_internal(d1, d2);
@@ -324,6 +312,14 @@ Check2::Pair Check2::alpha_(Ref r1, Ref r2) {
 }
 
 Check2::Pair Check2::alpha_internal(Ref d1, Ref d2) {
+    if (auto type1 = d1->isa<Type>()) {
+        if (auto type2 = d2->isa<Type>()) {
+            auto [lvl1, lvl2] = alpha_(type1->level(), type2->level());
+            if (lvl1) return {world().type(lvl1), world().type(lvl2)};
+        }
+        return False;
+    }
+
     if (alpha_(d1->type(), d2->type()) == False) return False;
     if (d1->isa<Top>()) return {d2, d2};
     if (d2->isa<Top>()) return {d1, d1};
@@ -413,34 +409,46 @@ std::optional<Check2::Pair> Check2::alpha_internal(Ref d1, Ref d2, bool /*swap*/
             d1 = umax->rebuild(umax->world(), umax->type(), umax->ops());
             return alpha_(d1, l);
         }
+    } else if (auto extract = d1->isa<Extract>(); extract && !d2->isa<Extract>()) {
+        auto tuple        = extract->tuple();
+        auto index        = extract->index();
+        auto ins          = world().insert(tuple, index, d2);
+        auto [tup1, tup2] = alpha_(tuple, ins);
+        assert(tup1 == tup2);
+        if (!tup1) return False;
+        auto new_ex = world().extract(tup1, index);
+        return {
+            {new_ex, new_ex}
+        };
     }
 
     return {};
 }
 
-#if 0
-
-bool Check2::assignable_(Ref type, Ref val) {
+Check2::Pair Check2::assignable_(Ref type, Ref val) {
     auto val_ty = Ref::refer(val->unfold_type());
-    if (type == val_ty) return true;
+    if (type == val_ty) return {type, val};
 
-    if (auto infer = val->isa_mut<Infer>()) return alpha_(type, infer->type());
+    if (auto infer = val->isa_mut<Infer>()) {
+        if (auto [ty, _] = alpha_(type, infer->type()); ty) return {ty, val};
+        return False;
+    }
 
     if (auto sigma = type->isa<Sigma>()) {
-        if (!alpha_(type->arity(), val_ty->arity())) return false;
+        if (alpha_(type->arity(), val_ty->arity()) == False) return False;
 
         size_t a = sigma->num_ops();
         auto red = sigma->reduce(val);
         for (size_t i = 0; i != a; ++i)
-            if (!assignable_(red[i], val->proj(a, i))) return false;
-        return true;
+            if (assignable_(red[i], val->proj(a, i)) == False) return False;
+        return {type, val};
     } else if (auto arr = type->isa<Arr>()) {
-        if (!alpha_(type->arity(), val_ty->arity())) return false;
+        if (alpha_(type->arity(), val_ty->arity()) == False) return False;
 
         if (auto a = Lit::isa(arr->arity())) {
             for (size_t i = 0; i != *a; ++i)
-                if (!assignable_(arr->proj(*a, i), val->proj(*a, i))) return false;
-            return true;
+                if (assignable_(arr->proj(*a, i), val->proj(*a, i)) == False) return False;
+            return {type, val};
         }
     } else if (auto vel = val->isa<Vel>()) {
         return assignable_(type, vel->value());
@@ -448,7 +456,6 @@ bool Check2::assignable_(Ref type, Ref val) {
 
     return alpha_(type, val_ty);
 }
-#endif
 
 //------------------------------------------------------------------------------
 
@@ -470,7 +477,7 @@ void Lam::check() {
     if (Check2::alpha(filter()->type(), world().type_bool()) == Check2::False)
         error(filter(), "filter '{}' of lambda is of type '{}' but must be of type '.Bool'", filter(),
               filter()->type());
-    if (!Check::assignable(codom(), body()))
+    if (Check2::assignable(codom(), body()) == Check2::False)
         error(body(), "body '{}' of lambda is of type \n'{}' but its codomain is of type \n'{}'", body(),
               body()->type(), codom());
 }
