@@ -26,6 +26,7 @@ public:
     /// If unset, explode to Tuple.
     /// @returns the new Tuple, or `nullptr` if unsuccessful.
     Ref explode();
+    static Ref explode2(Ref);
 
     /// Eliminate Infer%s that have may have been resolved in the meantime by rebuilding.
     static bool eliminate(Array<Ref*>);

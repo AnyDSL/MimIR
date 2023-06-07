@@ -170,6 +170,8 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         auto op = bound->isa<Join>() ? "∪" : "∩";
         if (auto mut = u->isa_mut()) print(os, "{}{}: {}", op, mut->unique_name(), mut->type());
         return print(os, "{}({, })", op, bound->ops());
+    } else if (auto infer = u->isa<Infer>()) {
+        return print(os, "?{}:({})", infer->gid(), infer->type());
     }
 
     // other

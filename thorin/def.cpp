@@ -427,11 +427,11 @@ const Def* Def::proj(nat_t a, nat_t i) const {
         return op(i);
     } else if (auto arr = isa<Arr>()) {
         if (arr->arity()->isa<Top>()) return arr->body();
-        return arr->reduce(w.lit_idx(arr->as_lit_arity(), i));
+        return arr->reduce(w.lit_idx(a, i));
     } else if (auto pack = isa<Pack>()) {
         if (pack->arity()->isa<Top>()) return pack->body();
         assert(!w.is_frozen() && "TODO");
-        return pack->reduce(w.lit_idx(pack->as_lit_arity(), i));
+        return pack->reduce(w.lit_idx(a, i));
     }
 
     if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {

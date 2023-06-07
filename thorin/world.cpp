@@ -178,7 +178,7 @@ Ref World::iapp(Ref callee, Ref arg) {
         } else {
             // resolve Infers now if possible before normalizers are run
             if (auto app = callee->isa<App>(); app && app->curry() == 1) {
-                Check::assignable(callee->type()->as<Pi>()->dom(), arg);
+                Check2::assignable(callee->type()->as<Pi>()->dom(), arg);
                 auto apps = decurry(app);
                 callee    = apps.front()->callee();
                 for (auto app : apps) callee = this->app(callee, Ref::refer(app->arg()));
@@ -197,7 +197,7 @@ Ref World::app(Ref callee, Ref arg) {
     auto pi = callee->type()->isa<Pi>();
 
     if (!pi) error(callee, "called expression '{}' : '{}' is not of function type", callee, callee->type());
-    if (!Check::assignable(pi->dom(), arg))
+    if (Check2::assignable(pi->dom(), arg) == Check2::False)
         error(arg, "cannot pass argument \n'{}' of type \n'{}' to \n'{}' of domain \n'{}'", arg, arg->type(), callee,
               pi->dom());
 
@@ -242,7 +242,7 @@ Ref World::tuple(Defs ops) {
 
     auto sigma = infer_sigma(*this, ops);
     auto t     = tuple(sigma, ops);
-    if (!Check::assignable(sigma, t))
+    if (Check2::assignable(sigma, t) == Check2::False)
         error(t, "cannot assign tuple '{}' of type '{}' to incompatible tuple type '{}'", t, t->type(), sigma);
 
     return t;
@@ -315,7 +315,7 @@ Ref World::extract(Ref d, Ref index) {
 
     if (auto pack = d->isa_imm<Pack>()) return pack->body();
 
-    if (!Check::alpha(type->arity(), size))
+    if (Check2::alpha(type->arity(), size) == Check2::False)
         error(index, "index '{}' does not fit within arity '{}'", index, type->arity());
 
     // extract(insert(x, index, val), index) -> val
@@ -356,12 +356,12 @@ Ref World::insert(Ref d, Ref index, Ref val) {
     auto type = d->unfold_type();
     auto size = Idx::size(index->type());
 
-    if (!Check::alpha(type->arity(), size))
+    if (Check2::alpha(type->arity(), size) == Check2::False)
         error(index, "index '{}' does not fit within arity '{}'", index, type->arity());
 
     if (auto index_lit = Lit::isa(index)) {
         auto target_type = type->proj(*index_lit);
-        if (!Check::assignable(target_type, val))
+        if (Check2::assignable(target_type, val) == Check2::False)
             error(val, "value of type {} is not assignable to type {}", val->type(), target_type);
     }
 
@@ -528,7 +528,7 @@ Ref World::test(Ref value, Ref probe, Ref match, Ref clash) {
     assert(m_pi && c_pi);
     auto a = m_pi->dom()->isa_lit_arity();
     assert_unused(a && *a == 2);
-    assert(Check::alpha(m_pi->dom(2, 0_s), c_pi->dom()));
+    assert(Check2::alpha(m_pi->dom(2, 0_s), c_pi->dom()) != Check2::False);
 
     auto codom = join({m_pi->codom(), c_pi->codom()});
     return unify<Test>(4, pi(c_pi->dom(), codom), value, probe, match, clash);

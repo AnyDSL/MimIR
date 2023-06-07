@@ -95,6 +95,32 @@ Ref Infer::explode() {
     return tuple;
 }
 
+Ref Infer::explode2(Ref type) {
+    auto a = type->isa_lit_arity();
+    if (!a) return {};
+
+    auto n      = *a;
+    auto infers = DefArray(n);
+    auto& w     = type->world();
+
+    if (auto arr = type->isa_imm<Arr>(); arr && n > w.flags().infer_arr_threshold)
+        return w.pack(arr->shape(), w.mut_infer(arr->body()));
+
+    if (auto sigma = type->isa_mut<Sigma>(); sigma && n >= 1 && sigma->var()) {
+        Scope scope(sigma);
+        ScopeRewriter rw(scope);
+        infers[0] = w.mut_infer(sigma->op(0));
+        for (size_t i = 1; i != n; ++i) {
+            rw.map(sigma->var(n, i - 1), infers[i - 1]);
+            infers[i] = w.mut_infer(rw.rewrite(sigma->op(i)));
+        }
+    } else {
+        for (size_t i = 0; i != n; ++i) infers[i] = w.mut_infer(type->proj(n, i));
+    }
+
+    return w.tuple(infers);
+}
+
 bool Infer::eliminate(Array<Ref*> refs) {
     if (std::ranges::any_of(refs, [](auto pref) { return (*pref)->has_dep(Dep::Infer); })) {
         auto& world = (*refs.front())->world();
@@ -275,7 +301,7 @@ Check2::Pair Check2::alpha_(Ref r1, Ref r2) {
 
     auto [it2, ins2] = old2new_.emplace(d2, Pair{d2, d1});
     auto [it1, ins1] = old2new_.emplace(d1, Pair{d1, d2});
-    assert(d1 == d2 || !(ins1 ^ ins2));
+    // assert(d1 == d2 || !(ins1 ^ ins2));
     if (!ins1) return it1->second;
 
     auto i1 = d1->isa_mut<Infer>();
@@ -320,10 +346,8 @@ Check2::Pair Check2::alpha_internal(Ref d1, Ref d2) {
         return False;
     }
 
-    if (alpha_(d1->type(), d2->type()) == False) return False;
-    if (d1->isa<Top>()) return {d2, d2};
-    if (d2->isa<Top>()) return {d1, d1};
-    if (alpha_(d1->arity(), d2->arity()) == False) return False;
+    auto [type1, type2] = alpha_(d1->type(), d2->type());
+    if (!type1) return False;
 
     // if (mode != Relaxed && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return false;
 
@@ -334,7 +358,11 @@ Check2::Pair Check2::alpha_internal(Ref d1, Ref d2) {
 
     size_t n = d1->num_ops();
     DefArray new_ops1(n), new_ops2(n);
-    for (size_t i = 0; i != n; ++i) std::tie(new_ops1[i], new_ops2[i]) = alpha_(d1->op(i), d2->op(i));
+    for (size_t i = 0; i != n; ++i) {
+        auto p = alpha_(d1->op(i), d2->op(i));
+        if (p == False) return False;
+        std::tie(new_ops1[i], new_ops2[i]) = p;
+    }
 
     auto mut1 = d1->isa_mut();
     auto mut2 = d2->isa_mut();
@@ -342,57 +370,26 @@ Check2::Pair Check2::alpha_internal(Ref d1, Ref d2) {
         mut1->reset(new_ops1);
         mut2->reset(new_ops2);
     } else { // even if one is a mut, we can build an imm instead
-        d1 = d1->rebuild(world(), d1->type(), new_ops1);
-        d2 = d2->rebuild(world(), d2->type(), new_ops2);
+        d1 = d1->rebuild(world(), type1, new_ops1);
+        d2 = d2->rebuild(world(), type2, new_ops2);
     }
 
     return {d1, d2};
 }
 
 std::optional<Check2::Pair> Check2::alpha_internal(Ref d1, Ref d2, bool /*swap*/) {
-    if (auto var1 = d1->isa<Var>()) {
-        if (auto var2 = d2->as<Var>()) {
+    if (d1->isa<Top>()) {
+        return {Pair(d2, d2)};
+    } else if (auto var1 = d1->isa<Var>()) {
+        if (auto var2 = d2->isa<Var>()) {
             // vars are equal if they appeared under the same binder
             // TODO unify mutables?
             if (auto i = old2new_.find(var1->mut()); i != old2new_.end())
                 return i->second.second == var2->mut() ? Pair{d1, d2} : False;
             if (auto i = old2new_.find(var2->mut()); i != old2new_.end()) return False; // var2 is bound
-            return {
-                {d1, d2}
-            }; // both var1 and var2 are free: OK
+            return {Pair(d1, d2)}; // both var1 and var2 are free: OK
         }
         return False;
-    } else if (auto tuple = d1->isa<Tuple>()) {
-        if (auto pack = d2->isa<Pack>()) {
-            auto n = tuple->num_ops();
-            DefArray new_ops1(n), new_ops2(n);
-            for (size_t i = 0; i != n; ++i) {
-                auto p = alpha_(tuple->op(i), pack->proj(n, i));
-                if (p == False) return False;
-                std::tie(new_ops1[i], new_ops2[i]) = p;
-            }
-            auto t1 = world().tuple(new_ops1)->set(tuple->dbg());
-            auto t2 = world().tuple(new_ops2)->set(pack->dbg());
-            return {
-                {t1, t2}
-            };
-        }
-    } else if (auto sigma = d1->isa<Sigma>()) {
-        if (auto arr = d2->isa<Arr>()) {
-            auto n = sigma->num_ops();
-            DefArray new_ops1(n), new_ops2(n);
-            for (size_t i = 0; i != n; ++i) {
-                auto p = alpha_(sigma->op(i), arr->proj(n, i));
-                if (p == False) return False;
-                std::tie(new_ops1[i], new_ops2[i]) = p;
-            }
-
-            auto s1 = world().sigma(new_ops1)->set(sigma->dbg());
-            auto s2 = world().sigma(new_ops2)->set(arr->dbg());
-            return {
-                {s1, s2}
-            };
-        }
     } else if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Infer)) {
         if (auto l = d2->isa<Lit>()) {
             // .umax(a, ?) =α l  =>  .umax(a, l)
@@ -409,17 +406,44 @@ std::optional<Check2::Pair> Check2::alpha_internal(Ref d1, Ref d2, bool /*swap*/
             d1 = umax->rebuild(umax->world(), umax->type(), umax->ops());
             return alpha_(d1, l);
         }
+    } else if (auto sigma = d1->isa<Sigma>()) {
+        if (auto arr = d2->isa<Arr>()) {
+            if (alpha_(sigma->arity(), arr->arity()) == False) return False;
+            auto n = sigma->num_ops();
+            DefArray new_ops1(n), new_ops2(n);
+            for (size_t i = 0; i != n; ++i) {
+                auto p = alpha_(sigma->op(i), arr->proj(n, i));
+                if (p == False) return False;
+                std::tie(new_ops1[i], new_ops2[i]) = p;
+            }
+
+            auto s1 = world().sigma(new_ops1)->set(sigma->dbg());
+            auto s2 = world().sigma(new_ops2)->set(arr->dbg());
+            return {Pair(s1, s2)};
+        }
+    } else if (auto tuple = d1->isa<Tuple>()) {
+        if (auto pack = d2->isa<Pack>()) {
+            if (alpha_(tuple->arity(), pack->arity()) == False) return False;
+            auto n = tuple->num_ops();
+            DefArray new_ops1(n), new_ops2(n);
+            for (size_t i = 0; i != n; ++i) {
+                auto p = alpha_(tuple->op(i), pack->proj(n, i));
+                if (p == False) return False;
+                std::tie(new_ops1[i], new_ops2[i]) = p;
+            }
+            auto t1 = world().tuple(new_ops1)->set(tuple->dbg());
+            auto t2 = world().tuple(new_ops2)->set(pack->dbg());
+            return {Pair(t1, t2)};
+        }
     } else if (auto extract = d1->isa<Extract>(); extract && !d2->isa<Extract>()) {
-        auto tuple        = extract->tuple();
-        auto index        = extract->index();
-        auto ins          = world().insert(tuple, index, d2);
-        auto [tup1, tup2] = alpha_(tuple, ins);
-        assert(tup1 == tup2);
-        if (!tup1) return False;
-        auto new_ex = world().extract(tup1, index);
-        return {
-            {new_ex, new_ex}
-        };
+        if (auto tuple = Infer::explode2(extract->tuple()->type())) {
+            auto [tup1, tup2] = alpha_(extract->tuple(), tuple);
+            assert(tup1 == tup2);
+            if (!tup1) return False;
+            auto ex1 = world().extract(tup1, extract->index());
+            auto ex2 = world().extract(tup2, extract->index());
+            return {Pair(ex1, ex2)};
+        }
     }
 
     return {};

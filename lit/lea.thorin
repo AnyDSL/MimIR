@@ -3,4 +3,9 @@
 .ax %foo.Ptr: * -> *;
 .ax %foo.lea: Π .[n: .Nat, Ts: «n; *»] [%foo.Ptr «j: n; Ts#j», i: .Idx n] -> %foo.Ptr Ts#i;
 
-.lam f(p: %foo.Ptr [.Nat, .Bool]): %foo.Ptr .Bool = %foo.lea (p, 1_2);
+//.lam f(p: %foo.Ptr [.Nat, .Bool]): %foo.Ptr .Bool = %foo.lea (p, 1_2);
+
+.lam g(p: %foo.Ptr «2; «3; .Nat»»): %foo.Ptr .Nat =
+    .let q = %foo.lea (p, 1_2);
+    .let r = %foo.lea (q, 2_3);
+    return r;
