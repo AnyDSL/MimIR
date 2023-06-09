@@ -490,9 +490,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     };
 
     if (def->isa<Var>()) {
-        // if (match<mem::M>(def->type())) return {};
-        // return emit_tuple(def);
-        return {};
+        auto ts = def->type()->projs();
+        if (std::ranges::any_of(ts, [](auto t) { return match<mem::M>(t); })) return {};
+        return emit_tuple(def);
     }
 
     auto emit_gep_index = [&](const Def* index) {
@@ -572,12 +572,24 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         return bb.assign(name, "load {}, {}* {}.gep", t_elem, t_elem, name);
     } else if (auto insert = def->isa<Insert>()) {
         assert(!match<mem::M>(insert->tuple()->proj(0)->type()));
-        auto v_tuple = emit(insert->tuple());
-        auto v_index = emit(insert->index());
-        auto v_value = emit(insert->value());
-        auto t_tuple = convert(insert->tuple()->type());
-        auto t_value = convert(insert->value()->type());
-        return bb.assign(name, "insertvalue {} {}, {} {}, {}", t_tuple, v_tuple, t_value, v_value, v_index);
+        auto t_tup = convert(insert->tuple()->type());
+        auto t_val = convert(insert->value()->type());
+        auto v_tup = emit(insert->tuple());
+        auto v_val = emit(insert->value());
+        if (auto idx = Lit::isa(insert->index())) {
+            auto v_idx = emit(insert->index());
+            return bb.assign(name, "insertvalue {} {}, {} {}, {}", t_tup, v_tup, t_val, v_val, v_idx);
+        } else {
+            auto t_elem     = convert(insert->value()->type());
+            auto [v_i, t_i] = emit_gep_index(insert->index());
+            print(lam2bb_[entry_].body().emplace_front(),
+                  "{}.alloca = alloca {} ; copy to alloca to emulate insert with store + gep + load", name, t_tup);
+            print(bb.body().emplace_back(), "store {} {}, {}* {}.alloca", t_tup, v_tup, t_tup, name);
+            print(bb.body().emplace_back(), "{}.gep = getelementptr inbounds {}, {}* {}.alloca, i64 0, {} {}", name,
+                  t_tup, t_tup, name, t_i, v_i);
+            print(bb.body().emplace_back(), "store {} {}, {}* {}.gep", t_val, v_val, t_val, name);
+            return bb.assign(name, "load {}, {}* {}.alloca", t_tup, t_tup, name);
+        }
     } else if (auto global = def->isa<Global>()) {
         auto v_init                = emit(global->init());
         auto [pointee, addr_space] = force<mem::Ptr>(global->type())->args<2>();
