@@ -243,8 +243,7 @@ Ref normalize_range(Ref type, Ref callee, Ref arg) {
     auto [lhs, rhs] = arg->projs<2>();
 
     if (!lhs->isa<Var>() && !rhs->isa<Var>()) // before first PE.
-        if (lhs->as<Lit>()->get() > rhs->as<Lit>()->get())
-            error(arg->dbg().loc, "%regex.range parameters in broken order: {} must be smaller than {}", lhs, rhs);
+        if (lhs->as<Lit>()->get() > rhs->as<Lit>()->get()) return world.raw_app(type, callee, world.tuple({rhs, lhs}));
 
     return world.raw_app(type, callee, arg);
 }
