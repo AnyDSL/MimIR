@@ -1,0 +1,7 @@
+// RUN: rm -f %t.ll
+// RUN: %thorin %s --output-ll %t.ll -o -
+// RUN: clang -c %t.ll -o %t -Wno-override-module
+.plugin core;
+
+.fun .extern test(a: «3; %core.I32»): «3; %core.I32» =
+    return .ins(a, 1_3, 23:%core.I32);

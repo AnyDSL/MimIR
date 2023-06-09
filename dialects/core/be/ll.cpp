@@ -84,14 +84,12 @@ struct BB {
     std::deque<std::ostringstream>& body() { return parts[1]; }
     std::deque<std::ostringstream>& tail() { return parts[2]; }
 
-    template<class... Args>
-    std::string assign(std::string_view name, const char* s, Args&&... args) {
+    template<class... Args> std::string assign(std::string_view name, const char* s, Args&&... args) {
         print(print(body().emplace_back(), "{} = ", name), s, std::forward<Args&&>(args)...);
         return std::string(name);
     }
 
-    template<class... Args>
-    void tail(const char* s, Args&&... args) {
+    template<class... Args> void tail(const char* s, Args&&... args) {
         print(tail().emplace_back(), s, std::forward<Args&&>(args)...);
     }
 
@@ -121,8 +119,7 @@ public:
     void prepare(Lam*, std::string_view);
     void finalize(const Scope&);
 
-    template<class... Args>
-    void declare(const char* s, Args&&... args) {
+    template<class... Args> void declare(const char* s, Args&&... args) {
         std::ostringstream decl;
         print(decl << "declare ", s, std::forward<Args&&>(args)...);
         decls_.emplace(decl.str());
@@ -448,7 +445,6 @@ void Emitter::emit_epilogue(Lam* lam) {
 }
 
 std::string Emitter::emit_bb(BB& bb, const Def* def) {
-    if (def->isa<Var>()) return {};
     if (auto lam = def->isa<Lam>()) return id(lam);
 
     auto name = id(def);
@@ -492,6 +488,12 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
         return prev;
     };
+
+    if (def->isa<Var>()) {
+        // if (match<mem::M>(def->type())) return {};
+        // return emit_tuple(def);
+        return {};
+    }
 
     auto emit_gep_index = [&](const Def* index) {
         auto v_i = emit(index);
@@ -608,6 +610,12 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "{} i64 {}, {}", op, a, b);
+    } else if (auto idx = match<core::idx>(def)) {
+        auto x = emit(idx->arg());
+        auto s = *Idx::size2bitwidth(Idx::size(idx->type()));
+        auto t = convert(idx->type());
+        if (s < 64) return bb.assign(name, "trunc i64 {} to {}", x, t);
+        return x;
     } else if (auto bit1 = match<core::bit1>(def)) {
         assert(bit1.id() == core::bit1::neg);
         auto x = emit(bit1->arg());
