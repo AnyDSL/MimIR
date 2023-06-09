@@ -887,9 +887,10 @@ void Parser::parse_let_decl() {
 
     std::variant<std::unique_ptr<Ptrn>, Dbg> name;
     Ref type;
-    if (auto tok = accept(Tag::M_anx))
+    if (auto tok = accept(Tag::M_anx)) {
         name = tok->dbg();
-    else {
+        type = parse_type_ascr();
+    } else {
         auto ptrn = parse_ptrn(Tag::D_paren_l, "binding pattern of a let declaration");
         type      = ptrn->type(world(), def2fields_);
         name      = std::move(ptrn);
