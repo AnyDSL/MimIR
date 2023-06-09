@@ -176,6 +176,7 @@ Ref World::iapp(Ref callee, Ref arg) {
             auto a     = app(callee, infer);
             callee     = a;
         } else {
+#if 0
             // resolve Infers now if possible before normalizers are run
             if (auto app = callee->isa<App>(); app && app->curry() == 1) {
                 Check2::assignable(callee->type()->as<Pi>()->dom(), arg);
@@ -183,6 +184,7 @@ Ref World::iapp(Ref callee, Ref arg) {
                 callee    = apps.front()->callee();
                 for (auto app : apps) callee = this->app(callee, Ref::refer(app->arg()));
             }
+#endif
             break;
         }
     }
@@ -191,13 +193,10 @@ Ref World::iapp(Ref callee, Ref arg) {
 }
 
 Ref World::app(Ref callee, Ref arg) {
-    // TODO better place
-    Infer::eliminate(Array<Ref*>{&callee, &arg});
-
     auto pi = callee->type()->isa<Pi>();
-
     if (!pi) error(callee, "called expression '{}' : '{}' is not of function type", callee, callee->type());
-    if (Check2::assignable(pi->dom(), arg) == Check2::False)
+    auto [dom, iarg] = Check2::assignable(pi->dom(), arg);
+    if (!dom)
         error(arg, "cannot pass argument \n'{}' of type \n'{}' to \n'{}' of domain \n'{}'", arg, arg->type(), callee,
               pi->dom());
 
@@ -205,15 +204,15 @@ Ref World::app(Ref callee, Ref arg) {
     if (auto lam = callee->isa_mut<Lam>(); lam && lam->is_set() && lam->filter() != lit_ff()) {
         Scope scope(lam);
         ScopeRewriter rw(scope);
-        rw.map(lam->var(), arg);
+        rw.map(lam->var(), iarg);
         if (rw.rewrite(lam->filter()) == lit_tt()) {
-            DLOG("partial evaluate: {} ({})", lam, arg);
+            DLOG("partial evaluate: {} ({})", lam, iarg);
             return rw.rewrite(lam->body());
         }
     }
 
-    auto type = pi->reduce(arg).back();
-    return raw_app<true>(type, callee, arg);
+    auto type = pi->reduce(iarg).back();
+    return raw_app<true>(type, callee, iarg);
 }
 
 template<bool Normalize> Ref World::raw_app(Ref type, Ref callee, Ref arg) {
@@ -368,16 +367,8 @@ Ref World::insert(Ref d, Ref index, Ref val) {
     if (auto l = Lit::isa(size); l && *l == 1)
         return tuple(d, {val}); // d could be mut - that's why the tuple ctor is needed
 
-    if (auto infer = d->isa_mut<Infer>()) {
-        if (auto tuple = infer->explode()) d = tuple;
-    }
-
     // insert((a, b, c, d), 2, x) -> (a, b, x, d)
-    if (auto t = d->isa<Tuple>()) {
-        auto i = Lit::as(index);
-        if (auto infer = t->op(i)->isa_mut<Infer>(); infer && !infer->is_set()) infer->set(val);
-        return t->refine(i, val);
-    }
+    if (auto t = d->isa<Tuple>()) return t->refine(Lit::as(index), val);
 
     // insert(‹4; x›, 2, y) -> (x, x, y, x)
     if (auto pack = d->isa<Pack>()) {

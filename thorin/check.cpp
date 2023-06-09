@@ -287,6 +287,13 @@ Ref Check::is_uniform(Defs defs) {
 
 //------------------------------------------------------------------------------
 
+#ifdef THORIN_ENABLE_CHECKS
+Check2::Pair Check2::fail() {
+    if (world().flags().break_on_alpha_unequal) breakpoint();
+    return False;
+}
+#endif
+
 Check2::Pair Check2::alpha_(Ref r1, Ref r2) {
     auto d1 = *r1; // find
     auto d2 = *r2; // find
@@ -297,12 +304,14 @@ Check2::Pair Check2::alpha_(Ref r1, Ref r2) {
     if (d1 == d2) {
         if ((!d1->has_dep(Dep::Var) && !d2->has_dep(Dep::Var)) || (d1->isa_mut() && d2->isa_mut())) return {d1, d2};
     }
-    if (d1->isa<Univ>()) return False;
+    if (d1->isa<Univ>()) return fail();
 
-    auto [it2, ins2] = old2new_.emplace(d2, Pair{d2, d1});
-    auto [it1, ins1] = old2new_.emplace(d1, Pair{d1, d2});
-    // assert(d1 == d2 || !(ins1 ^ ins2));
-    if (!ins1) return it1->second;
+#if 0
+    if (!d1->isa<Type>() && !d2->isa<Type>()) {
+        auto [type1, type2] = alpha_(d1->type(), d2->type());
+        if (!type1) return fail();
+    }
+#endif
 
     auto i1 = d1->isa_mut<Infer>();
     auto i2 = d2->isa_mut<Infer>();
@@ -328,10 +337,15 @@ Check2::Pair Check2::alpha_(Ref r1, Ref r2) {
         return {d1, d1};
     }
 
-    if (!d1->is_set() || !d2->is_set()) return False;
+    if (!d1->is_set() || !d2->is_set()) return fail();
+
+    auto [it2, ins2] = old2new_.emplace(d2, Pair{d2, d1});
+    auto [it1, ins1] = old2new_.emplace(d1, Pair{d1, d2});
+    // assert(d1 == d2 || !(ins1 ^ ins2));
+    if (!ins1) return it1->second;
 
     auto res = alpha_internal(d1, d2);
-    if (res == False) return False;
+    if (res == False) return fail();
     old2new_[d1] = res;
     old2new_[d2] = Pair{res.second, res.first};
     return res;
@@ -343,24 +357,24 @@ Check2::Pair Check2::alpha_internal(Ref d1, Ref d2) {
             auto [lvl1, lvl2] = alpha_(type1->level(), type2->level());
             if (lvl1) return {world().type(lvl1), world().type(lvl2)};
         }
-        return False;
+        return fail();
     }
 
     auto [type1, type2] = alpha_(d1->type(), d2->type());
-    if (!type1) return False;
+    if (!type1) return fail();
 
     // if (mode != Relaxed && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return false;
 
     if (auto p = alpha_internal(d1, d2, false)) return *p;
     if (auto p = alpha_internal(d2, d1, true)) return {p->second, p->first};
 
-    if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return False;
+    if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return fail();
 
     size_t n = d1->num_ops();
     DefArray new_ops1(n), new_ops2(n);
     for (size_t i = 0; i != n; ++i) {
         auto p = alpha_(d1->op(i), d2->op(i));
-        if (p == False) return False;
+        if (p == False) return fail();
         std::tie(new_ops1[i], new_ops2[i]) = p;
     }
 
@@ -385,11 +399,11 @@ std::optional<Check2::Pair> Check2::alpha_internal(Ref d1, Ref d2, bool /*swap*/
             // vars are equal if they appeared under the same binder
             // TODO unify mutables?
             if (auto i = old2new_.find(var1->mut()); i != old2new_.end())
-                return i->second.second == var2->mut() ? Pair{d1, d2} : False;
-            if (auto i = old2new_.find(var2->mut()); i != old2new_.end()) return False; // var2 is bound
+                return i->second.second == var2->mut() ? Pair{d1, d2} : fail();
+            if (auto i = old2new_.find(var2->mut()); i != old2new_.end()) return fail(); // var2 is bound
             return {Pair(d1, d2)}; // both var1 and var2 are free: OK
         }
-        return False;
+        return fail();
     } else if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Infer)) {
         if (auto l = d2->isa<Lit>()) {
             // .umax(a, ?) =α l  =>  .umax(a, l)
@@ -408,12 +422,12 @@ std::optional<Check2::Pair> Check2::alpha_internal(Ref d1, Ref d2, bool /*swap*/
         }
     } else if (auto sigma = d1->isa<Sigma>()) {
         if (auto arr = d2->isa<Arr>()) {
-            if (alpha_(sigma->arity(), arr->arity()) == False) return False;
+            if (alpha_(sigma->arity(), arr->arity()) == False) return fail();
             auto n = sigma->num_ops();
             DefArray new_ops1(n), new_ops2(n);
             for (size_t i = 0; i != n; ++i) {
                 auto p = alpha_(sigma->op(i), arr->proj(n, i));
-                if (p == False) return False;
+                if (p == False) return fail();
                 std::tie(new_ops1[i], new_ops2[i]) = p;
             }
 
@@ -423,12 +437,12 @@ std::optional<Check2::Pair> Check2::alpha_internal(Ref d1, Ref d2, bool /*swap*/
         }
     } else if (auto tuple = d1->isa<Tuple>()) {
         if (auto pack = d2->isa<Pack>()) {
-            if (alpha_(tuple->arity(), pack->arity()) == False) return False;
+            if (alpha_(tuple->arity(), pack->arity()) == False) return fail();
             auto n = tuple->num_ops();
             DefArray new_ops1(n), new_ops2(n);
             for (size_t i = 0; i != n; ++i) {
                 auto p = alpha_(tuple->op(i), pack->proj(n, i));
-                if (p == False) return False;
+                if (p == False) return fail();
                 std::tie(new_ops1[i], new_ops2[i]) = p;
             }
             auto t1 = world().tuple(new_ops1)->set(tuple->dbg());
@@ -436,13 +450,20 @@ std::optional<Check2::Pair> Check2::alpha_internal(Ref d1, Ref d2, bool /*swap*/
             return {Pair(t1, t2)};
         }
     } else if (auto extract = d1->isa<Extract>(); extract && !d2->isa<Extract>()) {
-        if (auto tuple = Infer::explode2(extract->tuple()->type())) {
-            auto [tup1, tup2] = alpha_(extract->tuple(), tuple);
-            assert(tup1 == tup2);
-            if (!tup1) return False;
-            auto ex1 = world().extract(tup1, extract->index());
-            auto ex2 = world().extract(tup2, extract->index());
-            return {Pair(ex1, ex2)};
+        if (auto idx = Lit::isa_idx(extract->index())) {
+            auto [n, i] = *idx;
+            if (auto infer = extract->tuple()->isa_mut<Infer>()) {
+                auto tuple          = infer->is_set() ? Ref(infer->op()) : infer->explode();
+                auto [elem1, elem2] = alpha_(tuple->proj(n, i), d2);
+                assert(elem1 == elem2);
+                if (!elem1) return fail();
+                return {Pair(elem1, elem1)};
+            } else {
+                outln("TODO");
+            }
+        } else {
+            // TODO arr explode
+            outln("TODO arr explode");
         }
     }
 
@@ -455,30 +476,32 @@ Check2::Pair Check2::assignable_(Ref type, Ref val) {
 
     if (auto infer = val->isa_mut<Infer>()) {
         if (auto [ty, _] = alpha_(type, infer->type()); ty) return {ty, val};
-        return False;
+        return fail();
     }
 
     if (auto sigma = type->isa<Sigma>()) {
-        if (alpha_(type->arity(), val_ty->arity()) == False) return False;
+        if (alpha_(type->arity(), val_ty->arity()) == False) return fail();
 
         size_t a = sigma->num_ops();
         auto red = sigma->reduce(val);
         for (size_t i = 0; i != a; ++i)
-            if (assignable_(red[i], val->proj(a, i)) == False) return False;
+            if (assignable_(red[i], val->proj(a, i)) == False) return fail();
         return {type, val};
     } else if (auto arr = type->isa<Arr>()) {
-        if (alpha_(type->arity(), val_ty->arity()) == False) return False;
+        if (alpha_(type->arity(), val_ty->arity()) == False) return fail();
 
         if (auto a = Lit::isa(arr->arity())) {
             for (size_t i = 0; i != *a; ++i)
-                if (assignable_(arr->proj(*a, i), val->proj(*a, i)) == False) return False;
+                if (assignable_(arr->proj(*a, i), val->proj(*a, i)) == False) return fail();
             return {type, val};
         }
     } else if (auto vel = val->isa<Vel>()) {
         return assignable_(type, vel->value());
     }
 
-    return alpha_(type, val_ty);
+    auto [t, _] = alpha_(type, val_ty);
+    if (!t) return fail();
+    return {t, val};
 }
 
 //------------------------------------------------------------------------------
@@ -518,7 +541,7 @@ void Pi::check() {
 }
 
 void Infer::check() {
-    if (!Check::assignable(type(), op()))
+    if (!world().is_frozen() && !Check::assignable(type(), op()))
         error(type(), "cannot assign '{}' of type '{}' to Infer of type '{}'", op(), op()->type(), type());
 }
 

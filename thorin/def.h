@@ -617,6 +617,36 @@ public:
     THORIN_DEF_MIXIN(Type)
 };
 
+class Nat : public Def {
+private:
+    Nat(World& world);
+
+    THORIN_DEF_MIXIN(Nat)
+};
+
+/// A built-in constant of type `.Nat -> *`.
+class Idx : public Def {
+private:
+    Idx(const Def* type)
+        : Def(Node, type, Defs{}, 0) {}
+
+public:
+    /// Checks if @p def is a `.Idx s` and returns `s` or `nullptr` otherwise.
+    /// @see Lit::isa_idx
+    static Ref size(Ref def);
+
+    /// @name Convert between Idx::size and bitwidth and vice versa
+    ///@{
+    // clang-format off
+    static constexpr nat_t bitwidth2size(nat_t n) { assert(n != 0); return n == 64 ? 0 : (1_n << n); }
+    static constexpr nat_t size2bitwidth(nat_t n) { return n == 0 ? 64 : std::bit_width(n - 1_n); }
+    // clang-format on
+    static std::optional<nat_t> size2bitwidth(const Def* size);
+    ///@}
+
+    THORIN_DEF_MIXIN(Idx)
+};
+
 class Lit : public Def {
 private:
     Lit(const Def* type, flags_t val)
@@ -643,38 +673,18 @@ public:
         return {};
     }
     template<class T = nat_t> static T as(Ref def) { return def->as<Lit>()->get<T>(); }
+
+    /// Yields `{n, i}`, if @p def is a Lit%eral `i:(.Idx n)`.
+    static std::optional<std::pair<nat_t, nat_t>> isa_idx(Ref def) {
+        if (auto l = def->isa<Lit>())
+            return {
+                {Lit::as(Idx::size(l->type())), l->get()}
+            };
+        return {};
+    }
     ///@}
 
     THORIN_DEF_MIXIN(Lit)
-};
-
-class Nat : public Def {
-private:
-    Nat(World& world);
-
-    THORIN_DEF_MIXIN(Nat)
-};
-
-/// A built-in constant of type `.Nat -> *`.
-class Idx : public Def {
-private:
-    Idx(const Def* type)
-        : Def(Node, type, Defs{}, 0) {}
-
-public:
-    /// Checks if @p def is a `.Idx s` and returns `s` or `nullptr` otherwise.
-    static Ref size(Ref def);
-
-    /// @name Convert between Idx::size and bitwidth and vice versa
-    ///@{
-    // clang-format off
-    static constexpr nat_t bitwidth2size(nat_t n) { assert(n != 0); return n == 64 ? 0 : (1_n << n); }
-    static constexpr nat_t size2bitwidth(nat_t n) { return n == 0 ? 64 : std::bit_width(n - 1_n); }
-    // clang-format on
-    static std::optional<nat_t> size2bitwidth(const Def* size);
-    ///@}
-
-    THORIN_DEF_MIXIN(Idx)
 };
 
 class Proxy : public Def {

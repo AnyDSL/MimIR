@@ -92,6 +92,12 @@ public:
 
     using Pair                  = std::pair<Ref, Ref>;
     static constexpr Pair False = {{}, {}};
+#ifdef THORIN_ENABLE_CHECKS
+    Pair fail();
+#else
+    Pair fail() { return False; }
+#endif
+
     /// Are d1 and d2 α-equivalent?
     static Pair alpha(Ref d1, Ref d2) { return Check2(d1->world()).alpha_(d1, d2); }
 
