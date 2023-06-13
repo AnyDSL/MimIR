@@ -692,11 +692,67 @@ Variables</h2></td></tr>
 <tr class="memitem:a72af36a9630f0c9843a6513fb2e46352"><td class="memTemplItemLeft" align="right" valign="top">Ref&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a72af36a9630f0c9843a6513fb2e46352">thorin::core::normalize_icmp</a> (Ref type, Ref c, Ref arg)</td></tr>
 <tr class="separator:a72af36a9630f0c9843a6513fb2e46352"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">%core.extrema</h2></td></tr>
+<tr class="memitem:a01372f515ca7da8160c66b047a4103b7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">thorin::core::extrema</a> : flags_t { <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a1ac0a3a23ae36ff1c00249aaa4782bb3">thorin::core::sm</a> = 0x1104c60000001500
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a21ad3648a245f5d311739d04ce6f93ee">thorin::core::umin</a> = sm
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a114658b2ec08d7c6019240fdba7a6b92">thorin::core::sM</a> = 0x1104c60000001501
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a84626215d281a1930e3170745de74315">thorin::core::umax</a> = sM
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a35ef05805dc6b48df77d6c17d7adb4f9">thorin::core::Sm</a> = 0x1104c60000001502
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a44365c4a0fad9f96ef8e41be3b66b07e">thorin::core::smin</a> = Sm
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a955e463456e9dab6023df3b6f36fe708">thorin::core::SM</a> = 0x1104c60000001503
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7adb6b44ba3f3424038ed7083cb23a4910">thorin::core::smax</a> = SM
+<br />
+ }</td></tr>
+<tr class="separator:a01372f515ca7da8160c66b047a4103b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb28d2b2370164abf0889e34329f5ac0"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#acb28d2b2370164abf0889e34329f5ac0">thorin::core::operator&amp;</a> (extrema x, extrema y)</td></tr>
+<tr class="separator:acb28d2b2370164abf0889e34329f5ac0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ce81b83247623a977e4082bfa3d45d5"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a1ce81b83247623a977e4082bfa3d45d5">thorin::core::operator&amp;</a> (std::underlying_type_t&lt; extrema &gt; x, extrema y)</td></tr>
+<tr class="separator:a1ce81b83247623a977e4082bfa3d45d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15b869049a8bb09ecfcea91598ddb54d"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a15b869049a8bb09ecfcea91598ddb54d">thorin::core::operator&amp;</a> (extrema x, std::underlying_type_t&lt; extrema &gt; y)</td></tr>
+<tr class="separator:a15b869049a8bb09ecfcea91598ddb54d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a612870f1cfc706a0ba1b0e32dea6cdf1"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a612870f1cfc706a0ba1b0e32dea6cdf1">thorin::core::operator|</a> (extrema x, extrema y)</td></tr>
+<tr class="separator:a612870f1cfc706a0ba1b0e32dea6cdf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac30e648018fa4b80b7a578843b0a06b3"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#ac30e648018fa4b80b7a578843b0a06b3">thorin::core::operator|</a> (std::underlying_type_t&lt; extrema &gt; x, extrema y)</td></tr>
+<tr class="separator:ac30e648018fa4b80b7a578843b0a06b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b977a34c61f0cdd7ee586ee00acfca6"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a1b977a34c61f0cdd7ee586ee00acfca6">thorin::core::operator|</a> (extrema x, std::underlying_type_t&lt; extrema &gt; y)</td></tr>
+<tr class="separator:a1b977a34c61f0cdd7ee586ee00acfca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad56af9666d53b47eb78024f640e6f610"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#ad56af9666d53b47eb78024f640e6f610">thorin::core::operator^</a> (extrema x, extrema y)</td></tr>
+<tr class="separator:ad56af9666d53b47eb78024f640e6f610"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadb2a1192ad0eef226929323b23247ae"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#aadb2a1192ad0eef226929323b23247ae">thorin::core::operator^</a> (std::underlying_type_t&lt; extrema &gt; x, extrema y)</td></tr>
+<tr class="separator:aadb2a1192ad0eef226929323b23247ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a246ab7588782d8ecae1b24fe262554f2"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a246ab7588782d8ecae1b24fe262554f2">thorin::core::operator^</a> (extrema x, std::underlying_type_t&lt; extrema &gt; y)</td></tr>
+<tr class="separator:a246ab7588782d8ecae1b24fe262554f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0dfb5f7941c9348650846cf2537f4c18"><td class="memItemLeft" align="right" valign="top">constexpr std::strong_ordering&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a0dfb5f7941c9348650846cf2537f4c18">thorin::core::operator&lt;=&gt;</a> (std::underlying_type_t&lt; extrema &gt; x, extrema y)</td></tr>
+<tr class="separator:a0dfb5f7941c9348650846cf2537f4c18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15f27a1702a56ab605d440637598a5af"><td class="memItemLeft" align="right" valign="top">constexpr std::strong_ordering&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a15f27a1702a56ab605d440637598a5af">thorin::core::operator&lt;=&gt;</a> (extrema x, std::underlying_type_t&lt; extrema &gt; y)</td></tr>
+<tr class="separator:a15f27a1702a56ab605d440637598a5af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99f566b3685c9d7626efc1e4fff29b98"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a99f566b3685c9d7626efc1e4fff29b98">thorin::core::operator==</a> (std::underlying_type_t&lt; extrema &gt; x, extrema y)</td></tr>
+<tr class="separator:a99f566b3685c9d7626efc1e4fff29b98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc728050aa807977b4d136fee1e4fa9c"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#acc728050aa807977b4d136fee1e4fa9c">thorin::core::operator==</a> (extrema x, std::underlying_type_t&lt; extrema &gt; y)</td></tr>
+<tr class="separator:acc728050aa807977b4d136fee1e4fa9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a195ecce9d1ec840314a397a8a67685"><td class="memTemplParams" colspan="2">template&lt;extrema id&gt; </td></tr>
+<tr class="memitem:a6a195ecce9d1ec840314a397a8a67685"><td class="memTemplItemLeft" align="right" valign="top">Ref&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a6a195ecce9d1ec840314a397a8a67685">thorin::core::normalize_extrema</a> (Ref type, Ref c, Ref arg)</td></tr>
+<tr class="separator:a6a195ecce9d1ec840314a397a8a67685"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">%core.abs</h2></td></tr>
+<tr class="memitem:a614d899a6e7a463a6b7cd33736002518"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a614d899a6e7a463a6b7cd33736002518">thorin::core::abs</a> : flags_t </td></tr>
+<tr class="separator:a614d899a6e7a463a6b7cd33736002518"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a709f56a2d209d10576ecfe2e4b81a3b0"><td class="memItemLeft" align="right" valign="top">Ref&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a709f56a2d209d10576ecfe2e4b81a3b0">thorin::core::normalize_abs</a> (Ref type, Ref c, Ref arg)</td></tr>
+<tr class="separator:a709f56a2d209d10576ecfe2e4b81a3b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%core.conv</h2></td></tr>
 <tr class="memitem:a016fae77d6f5857b429ceb5b433c4937"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937">thorin::core::conv</a> : flags_t { <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937aa1f7876be8b2419af003e22a537fa0a8">thorin::core::s</a> = 0x1104c60000001500
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937aa1f7876be8b2419af003e22a537fa0a8">thorin::core::s</a> = 0x1104c60000001700
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937a8d8cf81d2813f24f7b83199532c38a53">thorin::core::u</a> = 0x1104c60000001501
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937a8d8cf81d2813f24f7b83199532c38a53">thorin::core::u</a> = 0x1104c60000001701
 <br />
  }</td></tr>
 <tr class="separator:a016fae77d6f5857b429ceb5b433c4937"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -738,9 +794,9 @@ Variables</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%core.trait</h2></td></tr>
 <tr class="memitem:aa0072b0cc07c0996ceb3516d925c5fbf"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbf">thorin::core::trait</a> : flags_t { <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbfab8b1ce69c3ef90d0c06c30009490d4de">thorin::core::size</a> = 0x1104c60000001700
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbfab8b1ce69c3ef90d0c06c30009490d4de">thorin::core::size</a> = 0x1104c60000001900
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbfa62ac19ce1cbaf53f8d88ce15a29f03a8">thorin::core::align</a> = 0x1104c60000001701
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbfa62ac19ce1cbaf53f8d88ce15a29f03a8">thorin::core::align</a> = 0x1104c60000001901
 <br />
  }</td></tr>
 <tr class="separator:aa0072b0cc07c0996ceb3516d925c5fbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -776,11 +832,11 @@ Variables</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%core.pe</h2></td></tr>
 <tr class="memitem:a9b3426ae9489ca2217b83a20c38d254a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254a">thorin::core::pe</a> : flags_t { <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aa3d4e5f853ce392452ab1815f961ea93a">thorin::core::hlt</a> = 0x1104c60000001800
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aa3d4e5f853ce392452ab1815f961ea93a">thorin::core::hlt</a> = 0x1104c60000001a00
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aa90341f808c05c33292c8c707be0c807d">thorin::core::run</a> = 0x1104c60000001801
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aa90341f808c05c33292c8c707be0c807d">thorin::core::run</a> = 0x1104c60000001a01
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aa16b4c02b986c1c384ebffc8cb89c57a6">thorin::core::known</a> = 0x1104c60000001802
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aa16b4c02b986c1c384ebffc8cb89c57a6">thorin::core::known</a> = 0x1104c60000001a02
 <br />
  }</td></tr>
 <tr class="separator:a9b3426ae9489ca2217b83a20c38d254a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -833,7 +889,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00452">452</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00487">487</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>

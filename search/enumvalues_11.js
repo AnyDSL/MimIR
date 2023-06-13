@@ -15,9 +15,15 @@ var searchData=
   ['sl_12',['sl',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aae0da9a49cbad73b6038ecb611600659',1,'thorin::core']]],
   ['sle_13',['sle',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6adf5c25f46ecccb55de65f7531899181a',1,'thorin::core']]],
   ['sloxy_14',['Sloxy',['../classthorin_1_1mem_1_1SSAConstr.html#a62ff42dc3a809de61d1f102c843c30a6af063dc6bc3d5932e9e2c622b78754004',1,'thorin::mem::SSAConstr']]],
-  ['snd_15',['snd',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a84de5b8685ab073b3badaef636d2415f',1,'thorin::core']]],
-  ['space_16',['Space',['../namespacethorin.html#abb917bebc699083d990fc4592abcc50ead511f8439ecde36647437fbba67a4394',1,'thorin']]],
-  ['sq_17',['sq',['../namespacethorin_1_1math.html#a2e71ce8f35522fa3a803797e930e5ddfa2adf7677d6630835f8e4cfc5fd6e4302',1,'thorin::math']]],
-  ['srem_18',['srem',['../namespacethorin_1_1core.html#abaf61e089dbdb52b9c30b4b166f8309eaed1e432f525397a1c7d61ff78e04ea18',1,'thorin::core']]],
-  ['sub_19',['sub',['../namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa193e02f4738a79289afb4dc9ce15b343',1,'thorin::core::sub()'],['../namespacethorin_1_1math.html#aa313bc84ec271c77a5d5d1f6b3897ec4a863f99016e8a7d80db237d49643f432c',1,'thorin::math::sub()']]]
+  ['sm_15',['SM',['../namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a955e463456e9dab6023df3b6f36fe708',1,'thorin::core']]],
+  ['sm_16',['sM',['../namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a114658b2ec08d7c6019240fdba7a6b92',1,'thorin::core']]],
+  ['sm_17',['Sm',['../namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a35ef05805dc6b48df77d6c17d7adb4f9',1,'thorin::core']]],
+  ['sm_18',['sm',['../namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a1ac0a3a23ae36ff1c00249aaa4782bb3',1,'thorin::core']]],
+  ['smax_19',['smax',['../namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7adb6b44ba3f3424038ed7083cb23a4910',1,'thorin::core']]],
+  ['smin_20',['smin',['../namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a44365c4a0fad9f96ef8e41be3b66b07e',1,'thorin::core']]],
+  ['snd_21',['snd',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a84de5b8685ab073b3badaef636d2415f',1,'thorin::core']]],
+  ['space_22',['Space',['../namespacethorin.html#abb917bebc699083d990fc4592abcc50ead511f8439ecde36647437fbba67a4394',1,'thorin']]],
+  ['sq_23',['sq',['../namespacethorin_1_1math.html#a2e71ce8f35522fa3a803797e930e5ddfa2adf7677d6630835f8e4cfc5fd6e4302',1,'thorin::math']]],
+  ['srem_24',['srem',['../namespacethorin_1_1core.html#abaf61e089dbdb52b9c30b4b166f8309eaed1e432f525397a1c7d61ff78e04ea18',1,'thorin::core']]],
+  ['sub_25',['sub',['../namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa193e02f4738a79289afb4dc9ce15b343',1,'thorin::core::sub()'],['../namespacethorin_1_1math.html#aa313bc84ec271c77a5d5d1f6b3897ec4a863f99016e8a7d80db237d49643f432c',1,'thorin::math::sub()']]]
 ];

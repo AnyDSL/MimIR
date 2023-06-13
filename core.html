@@ -128,15 +128,17 @@ $(document).ready(function(){initNavTree('core.html',''); initResizable(); });
 <li class="level2"><a href="#autotoc_md120">%core.wrap</a></li>
 <li class="level2"><a href="#autotoc_md121">%core.div</a></li>
 <li class="level2"><a href="#autotoc_md122">%core.icmp</a></li>
+<li class="level2"><a href="#autotoc_md123">%core.extrema</a></li>
+<li class="level2"><a href="#autotoc_md124">%core.abs</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md123">Conversions</a><ul><li class="level2"><a href="#autotoc_md124">%core.conv</a></li>
-<li class="level2"><a href="#autotoc_md125">%core.bitcast</a></li>
+<li class="level1"><a href="#autotoc_md125">Conversions</a><ul><li class="level2"><a href="#autotoc_md126">%core.conv</a></li>
+<li class="level2"><a href="#autotoc_md127">%core.bitcast</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md126">Other Operations</a><ul><li class="level2"><a href="#autotoc_md127">%core.trait</a></li>
-<li class="level2"><a href="#autotoc_md128">%core.pe</a></li>
-<li class="level2"><a href="#autotoc_md129">%core.zip</a></li>
+<li class="level1"><a href="#autotoc_md128">Other Operations</a><ul><li class="level2"><a href="#autotoc_md129">%core.trait</a></li>
+<li class="level2"><a href="#autotoc_md130">%core.pe</a></li>
+<li class="level2"><a href="#autotoc_md131">%core.zip</a></li>
 </ul>
 </li>
 </ul>
@@ -400,28 +402,40 @@ Mode</h2>
 <div class="line">               XYgle,      XYglE,       XYgLe,      XYgLE,</div>
 <div class="line">               XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):</div>
 <div class="line">    Π.[s: .Nat][«2; .Idx s»] -&gt; .Bool , normalize_icmp;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md123"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md123"></a>
+%core.extrema</h2>
+<p >Minimum and Maximum of two Integers</p><ul>
+<li>un<code>s</code>igned or <code>S</code>igned</li>
+<li><code>m</code>inimum or <code>M</code>aximum</li>
+</ul>
+<div class="fragment"><div class="line">.ax %core.extrema(sm=umin, sM=umax, Sm=smin, SM=smax): Π.[s:.Nat][.Idx s,.Idx s] -&gt; .Idx s, normalize_extrema;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md124"></a>
+%core.abs</h2>
+<p >Absolute value of an int</p>
+<dl class="section warning"><dt>Warning</dt><dd>Computing the absolute value of an Integer with the lowest possible value leads to <em>undefined behavior</em>, which is why this axiom expects a <code>%mem.M</code></dd></dl>
+<div class="fragment"><div class="line">.ax %core.abs: Π.[s:.Nat][%mem.M, .Idx s] -&gt; [%mem.M, .Idx s], normalize_abs;</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md125"></a>
 Conversions</h1>
-<h2><a class="anchor" id="autotoc_md124"></a>
+<h2><a class="anchor" id="autotoc_md126"></a>
 %core.conv</h2>
 <p >Conversion between index types - both signed and unsigned - of different sizes.</p>
 <div class="fragment"><div class="line">.ax %core.conv(s, u): Π.[ss: .Nat][ds: .Nat][.Idx ss] -&gt; .Idx ds, normalize_conv;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md125"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md127"></a>
 %core.bitcast</h2>
 <p >Bitcast to reinterpret a value as another type. Can be used for pointer / integer conversions as well as integer / nat conversions.</p>
 <div class="fragment"><div class="line">.ax %core.bitcast: Π.[S: *][D: *][S] -&gt; D, normalize_bitcast;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md126"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md128"></a>
 Other Operations</h1>
-<h2><a class="anchor" id="autotoc_md127"></a>
+<h2><a class="anchor" id="autotoc_md129"></a>
 %core.trait</h2>
 <p >Yields the size or align of a type.</p>
 <div class="fragment"><div class="line">.ax %core.trait(size, align): * -&gt; .Nat, normalize_trait;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md128"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md130"></a>
 %core.pe</h2>
 <p >Steers the partial evaluator.</p>
 <div class="fragment"><div class="line">.ax %core.pe(hlt, run): Π [T: *][T] -&gt; T, normalize_pe;</div>
 <div class="line">.ax %core.pe(known): Π [T: *][T] -&gt; .Bool, normalize_pe;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md129"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md131"></a>
 %core.zip</h2>
 <p ><a href="https://en.wikipedia.org/wiki/Zipping_(computer_science)">Zips</a> several tensors.</p>
 <p ><b>Warning</b>: For now, not a better place for this and will be moved elsewhere. What is more, the signature will likely change in the future:</p><ul>

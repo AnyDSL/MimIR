@@ -107,19 +107,19 @@ var NAVTREEINDEX =
 "classthorin_1_1clos_1_1ClosConvPrep.html#a643058a72aede3579e6ecda742c5efec",
 "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a20a8dfb26fc5c23a0575d0b1ad1ac3b3",
 "classthorin_1_1unique__queue.html#a292a78863316276e6713cf2b5997dea6",
-"core_2autogen_8h.html#a220cf7973f2499cd2673c19c662bc8b7",
-"core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6a8a869d0d1e0551d63fbaa835a8c5ca6b",
-"direct_8cpp_source.html",
-"lower__typed__clos_8cpp_source.html",
-"math_2autogen_8h.html#abeba8bac21519db5fd4b3970b1d1ede9",
-"namespacemembers_eval_o.html",
-"namespacethorin.html#aee9a9527f1c9bf4d1cb2a9ecaecc6cb9",
-"namespacethorin_1_1core.html#a672e39c03f5c2b7a4e3eb7a04f5d10ba",
-"namespacethorin_1_1dl.html#aa7026fc7143db82fe92f2eae107a1027",
-"namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fab56bd84b4325cae0ff953569daeeecd6",
-"phase_8cpp.html",
-"structthorin_1_1Loc.html#ac2ea00ed4f1038c20bddfc6a9d604721",
-"utf8_8h.html#a52719151c16151f7d70287c5ce19aac5"
+"core_2autogen_8h.html#a189edce3f6eb1f605a24082aa2966805",
+"core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6a2617461720290be8740985537e6e1bfd",
+"dir_d575a71d4f8bc31a950e4fe3dc546eef.html",
+"log_8h.html#a16e6a53bea50271aa28355f071f7df6b",
+"math_2autogen_8h.html#ab58b0e0aa2975069c10eaf88cff49d5fa40cb03db644ff4a37367abcc150c5938",
+"mem_8h.html#ac7c84ab30ae0101f30a735201d430ec3aa3e8ae43188ae76d38f414b2bdb0077b",
+"namespacethorin.html#acf896db08a5279cdb1f61589607f055b",
+"namespacethorin_1_1core.html#a34ebaedb0956f16c949acc7ffea1d70a",
+"namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a50390ce22d9c7daef48173185eeb6d7a",
+"namespacethorin_1_1math.html#a97ac4236a0e9fd6d024922b851a684f6",
+"namespacethorin_1_1refly.html#ac062d21f6636a7927391d6c70c40ce70a16ca9cd5187dcd8ed6e91cb703f5c183",
+"structthorin_1_1DefDefEq.html#abfc9a7edb20f8c414e331b97daefaf4d",
+"types_8h.html#a5024a58893375511eb80b8d9a545e5d2"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

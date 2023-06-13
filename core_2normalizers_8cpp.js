@@ -1,12 +1,15 @@
 var core_2normalizers_8cpp =
 [
     [ "CODE", "core_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c", null ],
+    [ "CODE", "core_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c", null ],
     [ "M", "core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89", null ],
+    [ "normalize_abs", "core_2normalizers_8cpp.html#a709f56a2d209d10576ecfe2e4b81a3b0", null ],
     [ "normalize_bit1", "core_2normalizers_8cpp.html#adfbfef621aa0342ee7e98be7636dbbef", null ],
     [ "normalize_bit2", "core_2normalizers_8cpp.html#a34ebaedb0956f16c949acc7ffea1d70a", null ],
     [ "normalize_bitcast", "core_2normalizers_8cpp.html#ac2dda5ba0299d2f51e5af69b260fbddb", null ],
     [ "normalize_conv", "core_2normalizers_8cpp.html#ab066c49453efb651a96eb6b077fbdc40", null ],
     [ "normalize_div", "core_2normalizers_8cpp.html#a6bf3708433f042b01aaa3664e0cbbb43", null ],
+    [ "normalize_extrema", "core_2normalizers_8cpp.html#a6a195ecce9d1ec840314a397a8a67685", null ],
     [ "normalize_icmp", "core_2normalizers_8cpp.html#a72af36a9630f0c9843a6513fb2e46352", null ],
     [ "normalize_idx", "core_2normalizers_8cpp.html#adb50bfe5aa0912ebea4b9d3dc2be6a96", null ],
     [ "normalize_nat", "core_2normalizers_8cpp.html#a58ec95ed7b754d9d52ee1f70432ca38b", null ],

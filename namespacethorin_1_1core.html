@@ -730,11 +730,67 @@ Variables</h2></td></tr>
 <tr class="memitem:af1990480a56cb4da0cae6e3bb90ebe19"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#af1990480a56cb4da0cae6e3bb90ebe19">operator==</a> (<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6">icmp</a> x, std::underlying_type_t&lt; <a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6">icmp</a> &gt; y)</td></tr>
 <tr class="separator:af1990480a56cb4da0cae6e3bb90ebe19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">%core.extrema</h2></td></tr>
+<tr class="memitem:a01372f515ca7da8160c66b047a4103b7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> : flags_t { <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a1ac0a3a23ae36ff1c00249aaa4782bb3">sm</a> = 0x1104c60000001500
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a21ad3648a245f5d311739d04ce6f93ee">umin</a> = sm
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a114658b2ec08d7c6019240fdba7a6b92">sM</a> = 0x1104c60000001501
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a84626215d281a1930e3170745de74315">umax</a> = sM
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a35ef05805dc6b48df77d6c17d7adb4f9">Sm</a> = 0x1104c60000001502
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a44365c4a0fad9f96ef8e41be3b66b07e">smin</a> = Sm
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a955e463456e9dab6023df3b6f36fe708">SM</a> = 0x1104c60000001503
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7adb6b44ba3f3424038ed7083cb23a4910">smax</a> = SM
+<br />
+ }</td></tr>
+<tr class="separator:a01372f515ca7da8160c66b047a4103b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a195ecce9d1ec840314a397a8a67685"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> id&gt; </td></tr>
+<tr class="memitem:a6a195ecce9d1ec840314a397a8a67685"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a6a195ecce9d1ec840314a397a8a67685">normalize_extrema</a> (<a class="el" href="classthorin_1_1Ref.html">Ref</a> type, <a class="el" href="classthorin_1_1Ref.html">Ref</a> c, <a class="el" href="classthorin_1_1Ref.html">Ref</a> arg)</td></tr>
+<tr class="separator:a6a195ecce9d1ec840314a397a8a67685"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb28d2b2370164abf0889e34329f5ac0"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#acb28d2b2370164abf0889e34329f5ac0">operator&amp;</a> (<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> x, <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> y)</td></tr>
+<tr class="separator:acb28d2b2370164abf0889e34329f5ac0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ce81b83247623a977e4082bfa3d45d5"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a1ce81b83247623a977e4082bfa3d45d5">operator&amp;</a> (std::underlying_type_t&lt; <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> &gt; x, <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> y)</td></tr>
+<tr class="separator:a1ce81b83247623a977e4082bfa3d45d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15b869049a8bb09ecfcea91598ddb54d"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a15b869049a8bb09ecfcea91598ddb54d">operator&amp;</a> (<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> x, std::underlying_type_t&lt; <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> &gt; y)</td></tr>
+<tr class="separator:a15b869049a8bb09ecfcea91598ddb54d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a612870f1cfc706a0ba1b0e32dea6cdf1"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a612870f1cfc706a0ba1b0e32dea6cdf1">operator|</a> (<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> x, <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> y)</td></tr>
+<tr class="separator:a612870f1cfc706a0ba1b0e32dea6cdf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac30e648018fa4b80b7a578843b0a06b3"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#ac30e648018fa4b80b7a578843b0a06b3">operator|</a> (std::underlying_type_t&lt; <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> &gt; x, <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> y)</td></tr>
+<tr class="separator:ac30e648018fa4b80b7a578843b0a06b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b977a34c61f0cdd7ee586ee00acfca6"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a1b977a34c61f0cdd7ee586ee00acfca6">operator|</a> (<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> x, std::underlying_type_t&lt; <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> &gt; y)</td></tr>
+<tr class="separator:a1b977a34c61f0cdd7ee586ee00acfca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad56af9666d53b47eb78024f640e6f610"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#ad56af9666d53b47eb78024f640e6f610">operator^</a> (<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> x, <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> y)</td></tr>
+<tr class="separator:ad56af9666d53b47eb78024f640e6f610"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadb2a1192ad0eef226929323b23247ae"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#aadb2a1192ad0eef226929323b23247ae">operator^</a> (std::underlying_type_t&lt; <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> &gt; x, <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> y)</td></tr>
+<tr class="separator:aadb2a1192ad0eef226929323b23247ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a246ab7588782d8ecae1b24fe262554f2"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a246ab7588782d8ecae1b24fe262554f2">operator^</a> (<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> x, std::underlying_type_t&lt; <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> &gt; y)</td></tr>
+<tr class="separator:a246ab7588782d8ecae1b24fe262554f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0dfb5f7941c9348650846cf2537f4c18"><td class="memItemLeft" align="right" valign="top">constexpr std::strong_ordering&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a0dfb5f7941c9348650846cf2537f4c18">operator&lt;=&gt;</a> (std::underlying_type_t&lt; <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> &gt; x, <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> y)</td></tr>
+<tr class="separator:a0dfb5f7941c9348650846cf2537f4c18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15f27a1702a56ab605d440637598a5af"><td class="memItemLeft" align="right" valign="top">constexpr std::strong_ordering&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a15f27a1702a56ab605d440637598a5af">operator&lt;=&gt;</a> (<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> x, std::underlying_type_t&lt; <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> &gt; y)</td></tr>
+<tr class="separator:a15f27a1702a56ab605d440637598a5af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99f566b3685c9d7626efc1e4fff29b98"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a99f566b3685c9d7626efc1e4fff29b98">operator==</a> (std::underlying_type_t&lt; <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> &gt; x, <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> y)</td></tr>
+<tr class="separator:a99f566b3685c9d7626efc1e4fff29b98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc728050aa807977b4d136fee1e4fa9c"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#acc728050aa807977b4d136fee1e4fa9c">operator==</a> (<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> x, std::underlying_type_t&lt; <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> &gt; y)</td></tr>
+<tr class="separator:acc728050aa807977b4d136fee1e4fa9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">%core.abs</h2></td></tr>
+<tr class="memitem:a614d899a6e7a463a6b7cd33736002518"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a614d899a6e7a463a6b7cd33736002518">abs</a> : flags_t </td></tr>
+<tr class="separator:a614d899a6e7a463a6b7cd33736002518"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a709f56a2d209d10576ecfe2e4b81a3b0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a709f56a2d209d10576ecfe2e4b81a3b0">normalize_abs</a> (<a class="el" href="classthorin_1_1Ref.html">Ref</a> type, <a class="el" href="classthorin_1_1Ref.html">Ref</a> c, <a class="el" href="classthorin_1_1Ref.html">Ref</a> arg)</td></tr>
+<tr class="separator:a709f56a2d209d10576ecfe2e4b81a3b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%core.conv</h2></td></tr>
 <tr class="memitem:a016fae77d6f5857b429ceb5b433c4937"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937">conv</a> : flags_t { <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937aa1f7876be8b2419af003e22a537fa0a8">s</a> = 0x1104c60000001500
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937aa1f7876be8b2419af003e22a537fa0a8">s</a> = 0x1104c60000001700
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937a8d8cf81d2813f24f7b83199532c38a53">u</a> = 0x1104c60000001501
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937a8d8cf81d2813f24f7b83199532c38a53">u</a> = 0x1104c60000001701
 <br />
  }</td></tr>
 <tr class="separator:a016fae77d6f5857b429ceb5b433c4937"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -776,9 +832,9 @@ Variables</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%core.trait</h2></td></tr>
 <tr class="memitem:aa0072b0cc07c0996ceb3516d925c5fbf"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbf">trait</a> : flags_t { <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbfab8b1ce69c3ef90d0c06c30009490d4de">size</a> = 0x1104c60000001700
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbfab8b1ce69c3ef90d0c06c30009490d4de">size</a> = 0x1104c60000001900
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbfa62ac19ce1cbaf53f8d88ce15a29f03a8">align</a> = 0x1104c60000001701
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbfa62ac19ce1cbaf53f8d88ce15a29f03a8">align</a> = 0x1104c60000001901
 <br />
  }</td></tr>
 <tr class="separator:aa0072b0cc07c0996ceb3516d925c5fbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -816,11 +872,11 @@ Variables</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%core.pe</h2></td></tr>
 <tr class="memitem:a9b3426ae9489ca2217b83a20c38d254a"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254a">pe</a> : flags_t { <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aa3d4e5f853ce392452ab1815f961ea93a">hlt</a> = 0x1104c60000001800
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aa3d4e5f853ce392452ab1815f961ea93a">hlt</a> = 0x1104c60000001a00
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aa90341f808c05c33292c8c707be0c807d">run</a> = 0x1104c60000001801
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aa90341f808c05c33292c8c707be0c807d">run</a> = 0x1104c60000001a01
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aa16b4c02b986c1c384ebffc8cb89c57a6">known</a> = 0x1104c60000001802
+&#160;&#160;<a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aa16b4c02b986c1c384ebffc8cb89c57a6">known</a> = 0x1104c60000001a02
 <br />
  }</td></tr>
 <tr class="separator:a9b3426ae9489ca2217b83a20c38d254a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -884,6 +940,22 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a614d899a6e7a463a6b7cd33736002518" name="a614d899a6e7a463a6b7cd33736002518"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a614d899a6e7a463a6b7cd33736002518">&#9670;&#160;</a></span>abs</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespacethorin_1_1core.html#a614d899a6e7a463a6b7cd33736002518">thorin::core::abs</a> : <a class="el" href="namespacethorin.html#ae4dba9b3be2d9956cd3c0df92ba53dc2">flags_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00400">400</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+
+</div>
+</div>
 <a id="a60b6d2484fb68ef9ce568db15502e349" name="a60b6d2484fb68ef9ce568db15502e349"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a60b6d2484fb68ef9ce568db15502e349">&#9670;&#160;</a></span>bit1</h2>
 
@@ -952,7 +1024,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00394">394</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00429">429</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
@@ -972,7 +1044,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a016fae77d6f5857b429ceb5b433c4937a8d8cf81d2813f24f7b83199532c38a53" name="a016fae77d6f5857b429ceb5b433c4937a8d8cf81d2813f24f7b83199532c38a53"></a>u&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00377">377</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00412">412</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
@@ -995,6 +1067,32 @@ Variables</h2></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00299">299</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+
+</div>
+</div>
+<a id="a01372f515ca7da8160c66b047a4103b7" name="a01372f515ca7da8160c66b047a4103b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01372f515ca7da8160c66b047a4103b7">&#9670;&#160;</a></span>extrema</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">thorin::core::extrema</a> : <a class="el" href="namespacethorin.html#ae4dba9b3be2d9956cd3c0df92ba53dc2">flags_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a01372f515ca7da8160c66b047a4103b7a1ac0a3a23ae36ff1c00249aaa4782bb3" name="a01372f515ca7da8160c66b047a4103b7a1ac0a3a23ae36ff1c00249aaa4782bb3"></a>sm&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a01372f515ca7da8160c66b047a4103b7a21ad3648a245f5d311739d04ce6f93ee" name="a01372f515ca7da8160c66b047a4103b7a21ad3648a245f5d311739d04ce6f93ee"></a>umin&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a01372f515ca7da8160c66b047a4103b7a114658b2ec08d7c6019240fdba7a6b92" name="a01372f515ca7da8160c66b047a4103b7a114658b2ec08d7c6019240fdba7a6b92"></a>sM&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a01372f515ca7da8160c66b047a4103b7a84626215d281a1930e3170745de74315" name="a01372f515ca7da8160c66b047a4103b7a84626215d281a1930e3170745de74315"></a>umax&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a01372f515ca7da8160c66b047a4103b7a35ef05805dc6b48df77d6c17d7adb4f9" name="a01372f515ca7da8160c66b047a4103b7a35ef05805dc6b48df77d6c17d7adb4f9"></a>Sm&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a01372f515ca7da8160c66b047a4103b7a44365c4a0fad9f96ef8e41be3b66b07e" name="a01372f515ca7da8160c66b047a4103b7a44365c4a0fad9f96ef8e41be3b66b07e"></a>smin&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a01372f515ca7da8160c66b047a4103b7a955e463456e9dab6023df3b6f36fe708" name="a01372f515ca7da8160c66b047a4103b7a955e463456e9dab6023df3b6f36fe708"></a>SM&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a01372f515ca7da8160c66b047a4103b7adb6b44ba3f3424038ed7083cb23a4910" name="a01372f515ca7da8160c66b047a4103b7adb6b44ba3f3424038ed7083cb23a4910"></a>smax&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00377">377</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
@@ -1378,7 +1476,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="a9b3426ae9489ca2217b83a20c38d254aa16b4c02b986c1c384ebffc8cb89c57a6" name="a9b3426ae9489ca2217b83a20c38d254aa16b4c02b986c1c384ebffc8cb89c57a6"></a>known&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00423">423</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00458">458</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
@@ -1418,7 +1516,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="aa0072b0cc07c0996ceb3516d925c5fbfa62ac19ce1cbaf53f8d88ce15a29f03a8" name="aa0072b0cc07c0996ceb3516d925c5fbfa62ac19ce1cbaf53f8d88ce15a29f03a8"></a>align&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00406">406</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00441">441</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
@@ -1456,7 +1554,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00441">441</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00476">476</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
@@ -1511,9 +1609,9 @@ template&lt;bool up&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="core_8cpp_source.html#l00018">18</a> of file <a class="el" href="core_8cpp_source.html">core.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00256">a</a>, <a class="el" href="core_2autogen_8h_source.html#l00411">align</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00252">thorin::Def::num_ops()</a>, <a class="el" href="core_8h_source.html#l00034">op()</a>, <a class="el" href="def_8h_source.html#l00245">thorin::Def::ops()</a>, <a class="el" href="core_2autogen_8h_source.html#l00381">s</a>, <a class="el" href="core_2autogen_8h_source.html#l00410">size</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00256">a</a>, <a class="el" href="core_2autogen_8h_source.html#l00446">align</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00252">thorin::Def::num_ops()</a>, <a class="el" href="core_8h_source.html#l00034">op()</a>, <a class="el" href="def_8h_source.html#l00245">thorin::Def::ops()</a>, <a class="el" href="core_2autogen_8h_source.html#l00416">s</a>, <a class="el" href="core_2autogen_8h_source.html#l00445">size</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="core_8h_source.html#l00090">convert()</a>, and <a class="el" href="core_2normalizers_8cpp_source.html#l00585">normalize_trait()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="core_8h_source.html#l00090">convert()</a>, and <a class="el" href="core_2normalizers_8cpp_source.html#l00647">normalize_trait()</a>.</p>
 
 </div>
 </div>
@@ -1553,7 +1651,7 @@ template&lt;bool up&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="core_8h_source.html#l00062">62</a> of file <a class="el" href="core_8h_source.html">core.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp_source.html#l00321">thorin::Def::arity()</a>, <a class="el" href="world_8h_source.html#l00426">thorin::World::call()</a>, <a class="el" href="world_8cpp_source.html#l00296">thorin::World::extract()</a>, <a class="el" href="core_2autogen_8h_source.html#l00382">u</a>, <a class="el" href="def_8cpp_source.html#l00249">thorin::Def::unfold_type()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00321">thorin::Def::arity()</a>, <a class="el" href="world_8h_source.html#l00426">thorin::World::call()</a>, <a class="el" href="world_8cpp_source.html#l00296">thorin::World::extract()</a>, <a class="el" href="core_2autogen_8h_source.html#l00417">u</a>, <a class="el" href="def_8cpp_source.html#l00249">thorin::Def::unfold_type()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="core_8h_source.html#l00066">extract_unsafe()</a>.</p>
 
@@ -1641,7 +1739,7 @@ template&lt;bool up&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="core_8h_source.html#l00074">74</a> of file <a class="el" href="core_8h_source.html">core.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp_source.html#l00321">thorin::Def::arity()</a>, <a class="el" href="world_8h_source.html#l00426">thorin::World::call()</a>, <a class="el" href="world_8cpp_source.html#l00359">thorin::World::insert()</a>, <a class="el" href="core_2autogen_8h_source.html#l00382">u</a>, <a class="el" href="def_8cpp_source.html#l00249">thorin::Def::unfold_type()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00321">thorin::Def::arity()</a>, <a class="el" href="world_8h_source.html#l00426">thorin::World::call()</a>, <a class="el" href="world_8cpp_source.html#l00359">thorin::World::insert()</a>, <a class="el" href="core_2autogen_8h_source.html#l00417">u</a>, <a class="el" href="def_8cpp_source.html#l00249">thorin::Def::unfold_type()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="core_8h_source.html#l00078">insert_unsafe()</a>.</p>
 
@@ -1721,7 +1819,7 @@ template&lt;bool up&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="core_8h_source.html#l00052">52</a> of file <a class="el" href="core_8h_source.html">core.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="core_2normalizers_8cpp_source.html#l00297">normalize_bit2()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="core_2normalizers_8cpp_source.html#l00359">normalize_bit2()</a>.</p>
 
 </div>
 </div>
@@ -1765,6 +1863,42 @@ template&lt;bool up&gt; </div>
 
 </div>
 </div>
+<a id="a709f56a2d209d10576ecfe2e4b81a3b0" name="a709f56a2d209d10576ecfe2e4b81a3b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a709f56a2d209d10576ecfe2e4b81a3b0">&#9670;&#160;</a></span>normalize_abs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1Ref.html">Ref</a> thorin::core::normalize_abs </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td>
+          <td class="paramname"><em>arg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00322">322</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+
+</div>
+</div>
 <a id="adfbfef621aa0342ee7e98be7636dbbef" name="adfbfef621aa0342ee7e98be7636dbbef"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adfbfef621aa0342ee7e98be7636dbbef">&#9670;&#160;</a></span>normalize_bit1()</h2>
 
@@ -1799,9 +1933,9 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#a60b6d2484fb68ef9ce
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00273">273</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00335">335</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00256">a</a>, <a class="el" href="core_2autogen_8h_source.html#l00208">id</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="core_2autogen_8h_source.html#l00207">neg</a>, <a class="el" href="core_2autogen_8h_source.html#l00381">s</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00256">a</a>, <a class="el" href="core_2autogen_8h_source.html#l00208">id</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="core_2autogen_8h_source.html#l00207">neg</a>, <a class="el" href="core_2autogen_8h_source.html#l00416">s</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -1839,9 +1973,9 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00297">297</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00359">359</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00256">a</a>, <a class="el" href="core_2autogen_8h_source.html#l00233">and_</a>, <a class="el" href="core_2autogen_8h_source.html#l00238">ciff</a>, <a class="el" href="core_2autogen_8h_source.html#l00237">fst</a>, <a class="el" href="core_2autogen_8h_source.html#l00236">iff</a>, <a class="el" href="core_8h_source.html#l00100">thorin::is_commutative()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="core_8h_source.html#l00052">make_truth_table()</a>, <a class="el" href="core_2autogen_8h_source.html#l00232">nand</a>, <a class="el" href="core_2autogen_8h_source.html#l00227">nciff</a>, <a class="el" href="core_2autogen_8h_source.html#l00207">neg</a>, <a class="el" href="core_2autogen_8h_source.html#l00228">nfst</a>, <a class="el" href="core_2autogen_8h_source.html#l00229">niff</a>, <a class="el" href="core_2autogen_8h_source.html#l00226">nor</a>, <a class="el" href="core_2autogen_8h_source.html#l00230">nsnd</a>, <a class="el" href="core_2autogen_8h_source.html#l00234">nxor</a>, <a class="el" href="core_2autogen_8h_source.html#l00239">or_</a>, <a class="el" href="def_8h_source.html#l00350">thorin::Def::projs()</a>, <a class="el" href="core_2autogen_8h_source.html#l00381">s</a>, <a class="el" href="core_2autogen_8h_source.html#l00235">snd</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>, and <a class="el" href="core_2autogen_8h_source.html#l00231">xor_</a>.</p>
+<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00256">a</a>, <a class="el" href="core_2autogen_8h_source.html#l00233">and_</a>, <a class="el" href="core_2autogen_8h_source.html#l00238">ciff</a>, <a class="el" href="core_2autogen_8h_source.html#l00237">fst</a>, <a class="el" href="core_2autogen_8h_source.html#l00236">iff</a>, <a class="el" href="core_8h_source.html#l00100">thorin::is_commutative()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="core_8h_source.html#l00052">make_truth_table()</a>, <a class="el" href="core_2autogen_8h_source.html#l00232">nand</a>, <a class="el" href="core_2autogen_8h_source.html#l00227">nciff</a>, <a class="el" href="core_2autogen_8h_source.html#l00207">neg</a>, <a class="el" href="core_2autogen_8h_source.html#l00228">nfst</a>, <a class="el" href="core_2autogen_8h_source.html#l00229">niff</a>, <a class="el" href="core_2autogen_8h_source.html#l00226">nor</a>, <a class="el" href="core_2autogen_8h_source.html#l00230">nsnd</a>, <a class="el" href="core_2autogen_8h_source.html#l00234">nxor</a>, <a class="el" href="core_2autogen_8h_source.html#l00239">or_</a>, <a class="el" href="def_8h_source.html#l00350">thorin::Def::projs()</a>, <a class="el" href="core_2autogen_8h_source.html#l00416">s</a>, <a class="el" href="core_2autogen_8h_source.html#l00235">snd</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>, and <a class="el" href="core_2autogen_8h_source.html#l00231">xor_</a>.</p>
 
 </div>
 </div>
@@ -1877,9 +2011,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00562">562</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="core_2autogen_8h_source.html#l00152">l</a>, <a class="el" href="def_8cpp_source.html#l00467">thorin::Idx::size()</a>, <a class="el" href="def_8h_source.html#l00225">thorin::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00624">624</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
 </div>
 </div>
@@ -1917,9 +2049,9 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#a016fae77d6f5857b42
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00522">522</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00584">584</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="lam_8h_source.html#l00209">thorin::App::arg()</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="core_2autogen_8h_source.html#l00152">l</a>, <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>, <a class="el" href="core_2autogen_8h_source.html#l00381">s</a>, <a class="el" href="def_8h_source.html#l00675">thorin::Idx::size2bitwidth()</a>, <a class="el" href="def_8h_source.html#l00225">thorin::Def::type()</a>, <a class="el" href="core_2autogen_8h_source.html#l00382">u</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="lam_8h_source.html#l00209">thorin::App::arg()</a>, <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="core_2autogen_8h_source.html#l00152">l</a>, <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a>, <a class="el" href="core_2autogen_8h_source.html#l00416">s</a>, <a class="el" href="def_8h_source.html#l00675">thorin::Idx::size2bitwidth()</a>, <a class="el" href="def_8h_source.html#l00225">thorin::Def::type()</a>, <a class="el" href="core_2autogen_8h_source.html#l00417">u</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -1957,9 +2089,49 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#abaf61e089dbdb52b9c
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00482">482</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00544">544</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00256">a</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00350">thorin::Def::projs()</a>, <a class="el" href="core_2autogen_8h_source.html#l00303">sdiv</a>, <a class="el" href="core_2autogen_8h_source.html#l00305">srem</a>, <a class="el" href="core_2autogen_8h_source.html#l00304">udiv</a>, <a class="el" href="core_2autogen_8h_source.html#l00306">urem</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+
+</div>
+</div>
+<a id="a6a195ecce9d1ec840314a397a8a67685" name="a6a195ecce9d1ec840314a397a8a67685"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a195ecce9d1ec840314a397a8a67685">&#9670;&#160;</a></span>normalize_extrema()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> id&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1Ref.html">Ref</a> thorin::core::normalize_extrema </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td>
+          <td class="paramname"><em>arg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00314">314</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00256">a</a>, <a class="el" href="def_8h_source.html#l00350">thorin::Def::projs()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -1997,7 +2169,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00256">256</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00297">297</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00256">a</a>, <a class="el" href="core_2autogen_8h_source.html#l00150">e</a>, <a class="el" href="core_2autogen_8h_source.html#l00148">f</a>, <a class="el" href="core_2autogen_8h_source.html#l00160">ne</a>, <a class="el" href="def_8h_source.html#l00350">thorin::Def::projs()</a>, <a class="el" href="core_2autogen_8h_source.html#l00162">t</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
@@ -2035,9 +2207,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#afab2045241ef2b508a
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00376">376</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="core_2autogen_8h_source.html#l00381">s</a>, <a class="el" href="def_8cpp_source.html#l00467">thorin::Idx::size()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00438">438</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
 </div>
 </div>
@@ -2075,7 +2245,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#a3102b1c3eb691e8bc7
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00208">208</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00249">249</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00256">a</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00350">thorin::Def::projs()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
@@ -2115,7 +2285,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#a7551e53258352c5714
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00227">227</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00268">268</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00256">a</a>, <a class="el" href="core_2autogen_8h_source.html#l00156">g</a>, <a class="el" href="core_2autogen_8h_source.html#l00158">ge</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="core_2autogen_8h_source.html#l00154">le</a>, <a class="el" href="world_8h_source.html#l00358">thorin::World::lit_tt()</a>, <a class="el" href="def_8h_source.html#l00350">thorin::Def::projs()</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
@@ -2155,9 +2325,9 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#a9b3426ae9489ca2217
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00674">674</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00736">736</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00320">thorin::Def::dep_const()</a>, <a class="el" href="core_2autogen_8h_source.html#l00427">hlt</a>, <a class="el" href="core_2autogen_8h_source.html#l00429">known</a>, <a class="el" href="world_8h_source.html#l00357">thorin::World::lit_ff()</a>, <a class="el" href="axiom_8h_source.html#l00108">thorin::match()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00320">thorin::Def::dep_const()</a>, <a class="el" href="core_2autogen_8h_source.html#l00462">hlt</a>, <a class="el" href="core_2autogen_8h_source.html#l00464">known</a>, <a class="el" href="world_8h_source.html#l00357">thorin::World::lit_ff()</a>, <a class="el" href="axiom_8h_source.html#l00108">thorin::match()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -2195,9 +2365,9 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ae493f33140e983cf79
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00390">390</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00452">452</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00256">a</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="core_2autogen_8h_source.html#l00152">l</a>, <a class="el" href="def_8h_source.html#l00350">thorin::Def::projs()</a>, <a class="el" href="core_2autogen_8h_source.html#l00381">s</a>, <a class="el" href="def_8cpp_source.html#l00467">thorin::Idx::size()</a>, <a class="el" href="def_8h_source.html#l00225">thorin::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00256">a</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="core_2autogen_8h_source.html#l00152">l</a>, <a class="el" href="def_8h_source.html#l00350">thorin::Def::projs()</a>, <a class="el" href="core_2autogen_8h_source.html#l00416">s</a>, <a class="el" href="def_8cpp_source.html#l00467">thorin::Idx::size()</a>, <a class="el" href="def_8h_source.html#l00225">thorin::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -2235,9 +2405,9 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#aa0072b0cc07c0996ce
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00585">585</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00647">647</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00256">a</a>, <a class="el" href="core_2autogen_8h_source.html#l00411">align</a>, <a class="el" href="core_8cpp_source.html#l00018">convert()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="math_8h_source.html#l00079">thorin::math::isa_f()</a>, <a class="el" href="def_8h_source.html#l00395">thorin::Def::isa_imm()</a>, <a class="el" href="world_8h_source.html#l00333">thorin::World::lit_nat()</a>, <a class="el" href="core_8h_source.html#l00034">op()</a>, <a class="el" href="def_8h_source.html#l00245">thorin::Def::ops()</a>, <a class="el" href="util_8h_source.html#l00052">thorin::pad()</a>, <a class="el" href="core_2autogen_8h_source.html#l00381">s</a>, <a class="el" href="core_2autogen_8h_source.html#l00410">size</a>, <a class="el" href="def_8cpp_source.html#l00467">thorin::Idx::size()</a>, <a class="el" href="def_8h_source.html#l00675">thorin::Idx::size2bitwidth()</a>, <a class="el" href="core_2autogen_8h_source.html#l00162">t</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00256">a</a>, <a class="el" href="core_2autogen_8h_source.html#l00446">align</a>, <a class="el" href="core_8cpp_source.html#l00018">convert()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="math_8h_source.html#l00079">thorin::math::isa_f()</a>, <a class="el" href="def_8h_source.html#l00395">thorin::Def::isa_imm()</a>, <a class="el" href="world_8h_source.html#l00333">thorin::World::lit_nat()</a>, <a class="el" href="core_8h_source.html#l00034">op()</a>, <a class="el" href="def_8h_source.html#l00245">thorin::Def::ops()</a>, <a class="el" href="util_8h_source.html#l00052">thorin::pad()</a>, <a class="el" href="core_2autogen_8h_source.html#l00416">s</a>, <a class="el" href="core_2autogen_8h_source.html#l00445">size</a>, <a class="el" href="def_8cpp_source.html#l00467">thorin::Idx::size()</a>, <a class="el" href="def_8h_source.html#l00675">thorin::Idx::size2bitwidth()</a>, <a class="el" href="core_2autogen_8h_source.html#l00162">t</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -2275,9 +2445,9 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00421">421</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00483">483</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00256">a</a>, <a class="el" href="core_2autogen_8h_source.html#l00129">add</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="core_2autogen_8h_source.html#l00131">mul</a>, <a class="el" href="def_8h_source.html#l00350">thorin::Def::projs()</a>, <a class="el" href="core_2autogen_8h_source.html#l00381">s</a>, <a class="el" href="core_2autogen_8h_source.html#l00276">shl</a>, <a class="el" href="def_8cpp_source.html#l00467">thorin::Idx::size()</a>, <a class="el" href="core_2autogen_8h_source.html#l00130">sub</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00256">a</a>, <a class="el" href="core_2autogen_8h_source.html#l00129">add</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="core_2autogen_8h_source.html#l00131">mul</a>, <a class="el" href="def_8h_source.html#l00350">thorin::Def::projs()</a>, <a class="el" href="core_2autogen_8h_source.html#l00416">s</a>, <a class="el" href="core_2autogen_8h_source.html#l00276">shl</a>, <a class="el" href="def_8cpp_source.html#l00467">thorin::Idx::size()</a>, <a class="el" href="core_2autogen_8h_source.html#l00130">sub</a>, <a class="el" href="assert_8h_source.html#l00021">thorin::unreachable()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -2313,9 +2483,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00632">632</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="lam_8h_source.html#l00209">thorin::App::arg()</a>, <a class="el" href="core_2autogen_8h_source.html#l00148">f</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; Def &gt;::isa()</a>, <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00350">thorin::Def::projs()</a>, <a class="el" href="core_2autogen_8h_source.html#l00381">s</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00694">694</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
 </div>
 </div>
@@ -2397,12 +2565,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 
 <p class="reference">References <a class="el" href="world_8h_source.html#l00163">thorin::World::annex()</a>, <a class="el" href="world_8cpp_source.html#l00193">thorin::World::app()</a>, and <a class="el" href="def_8cpp_source.html#l00243">thorin::Def::world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="core_8cpp_source.html#l00018">convert()</a>, and <a class="el" href="core_2normalizers_8cpp_source.html#l00585">normalize_trait()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="core_8cpp_source.html#l00018">convert()</a>, and <a class="el" href="core_2normalizers_8cpp_source.html#l00647">normalize_trait()</a>.</p>
 
 </div>
 </div>
 <a id="aee0761b0bfd76db1247273adfe706603" name="aee0761b0bfd76db1247273adfe706603"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee0761b0bfd76db1247273adfe706603">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[1/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aee0761b0bfd76db1247273adfe706603">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[1/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2440,7 +2608,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a19f817a152da0b4a2e442b303c141913" name="a19f817a152da0b4a2e442b303c141913"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19f817a152da0b4a2e442b303c141913">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[2/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a19f817a152da0b4a2e442b303c141913">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[2/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2478,7 +2646,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a189edce3f6eb1f605a24082aa2966805" name="a189edce3f6eb1f605a24082aa2966805"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a189edce3f6eb1f605a24082aa2966805">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[3/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a189edce3f6eb1f605a24082aa2966805">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[3/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2516,7 +2684,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="ac8205499153e40afe3ec2a74a4b851d9" name="ac8205499153e40afe3ec2a74a4b851d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac8205499153e40afe3ec2a74a4b851d9">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[4/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8205499153e40afe3ec2a74a4b851d9">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[4/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2554,7 +2722,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="af13f4eb31ff75337971dbe18374c97eb" name="af13f4eb31ff75337971dbe18374c97eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af13f4eb31ff75337971dbe18374c97eb">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[5/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af13f4eb31ff75337971dbe18374c97eb">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[5/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2587,12 +2755,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00385">385</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00420">420</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="ad2e944d2a36324bd3d72ad18aa782a3d" name="ad2e944d2a36324bd3d72ad18aa782a3d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad2e944d2a36324bd3d72ad18aa782a3d">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[6/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2e944d2a36324bd3d72ad18aa782a3d">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[6/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2625,12 +2793,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00385">385</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00420">420</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="a0f5e906855d9f05069405929ac4e26c8" name="a0f5e906855d9f05069405929ac4e26c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f5e906855d9f05069405929ac4e26c8">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[7/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f5e906855d9f05069405929ac4e26c8">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[7/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2668,7 +2836,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a565b148c555453e77000a69d6049b415" name="a565b148c555453e77000a69d6049b415"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a565b148c555453e77000a69d6049b415">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[8/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a565b148c555453e77000a69d6049b415">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[8/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2705,8 +2873,84 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 
 </div>
 </div>
+<a id="acb28d2b2370164abf0889e34329f5ac0" name="acb28d2b2370164abf0889e34329f5ac0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb28d2b2370164abf0889e34329f5ac0">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[9/42]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto thorin::core::operator&amp; </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a>&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a>&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00391">391</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+
+</div>
+</div>
+<a id="a15b869049a8bb09ecfcea91598ddb54d" name="a15b869049a8bb09ecfcea91598ddb54d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15b869049a8bb09ecfcea91598ddb54d">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[10/42]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto thorin::core::operator&amp; </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a>&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::underlying_type_t&lt; <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> &gt;&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00391">391</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+
+</div>
+</div>
 <a id="aa07eccf02a8151531fe0f9a5bd338d48" name="aa07eccf02a8151531fe0f9a5bd338d48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa07eccf02a8151531fe0f9a5bd338d48">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[9/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa07eccf02a8151531fe0f9a5bd338d48">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[11/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2744,7 +2988,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a2b4a081a01bde0bf4f8ad3d9cd9622a5" name="a2b4a081a01bde0bf4f8ad3d9cd9622a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b4a081a01bde0bf4f8ad3d9cd9622a5">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[10/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b4a081a01bde0bf4f8ad3d9cd9622a5">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[12/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2782,7 +3026,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a646ea38c6689ae6b5eefd95a9654743c" name="a646ea38c6689ae6b5eefd95a9654743c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a646ea38c6689ae6b5eefd95a9654743c">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[11/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a646ea38c6689ae6b5eefd95a9654743c">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[13/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2820,7 +3064,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a28bcd1b4070999e92b1fe8c67e364e32" name="a28bcd1b4070999e92b1fe8c67e364e32"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a28bcd1b4070999e92b1fe8c67e364e32">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[12/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a28bcd1b4070999e92b1fe8c67e364e32">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[14/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2858,7 +3102,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a174728d0639681f1e81c1985b5bd80fd" name="a174728d0639681f1e81c1985b5bd80fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a174728d0639681f1e81c1985b5bd80fd">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[13/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a174728d0639681f1e81c1985b5bd80fd">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[15/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2896,7 +3140,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a90ae04742f2f5a64ee7de7764e55a581" name="a90ae04742f2f5a64ee7de7764e55a581"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90ae04742f2f5a64ee7de7764e55a581">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[14/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a90ae04742f2f5a64ee7de7764e55a581">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[16/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2934,7 +3178,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a97ff1ed9ac0f0bb357b5ae4f88bb1dff" name="a97ff1ed9ac0f0bb357b5ae4f88bb1dff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a97ff1ed9ac0f0bb357b5ae4f88bb1dff">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[15/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a97ff1ed9ac0f0bb357b5ae4f88bb1dff">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[17/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2972,7 +3216,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a0ad1a928c2c6df3dd3c13af208ee1ee0" name="a0ad1a928c2c6df3dd3c13af208ee1ee0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ad1a928c2c6df3dd3c13af208ee1ee0">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[16/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ad1a928c2c6df3dd3c13af208ee1ee0">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[18/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3010,7 +3254,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="af55462da16c6391d16beebbb45f3e818" name="af55462da16c6391d16beebbb45f3e818"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af55462da16c6391d16beebbb45f3e818">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[17/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af55462da16c6391d16beebbb45f3e818">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[19/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3048,7 +3292,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a229f519b3de882df5a27e57e5b9e117d" name="a229f519b3de882df5a27e57e5b9e117d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a229f519b3de882df5a27e57e5b9e117d">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[18/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a229f519b3de882df5a27e57e5b9e117d">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[20/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3086,7 +3330,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a9fc7dfc926533d0aef0d28989d033f95" name="a9fc7dfc926533d0aef0d28989d033f95"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9fc7dfc926533d0aef0d28989d033f95">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[19/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fc7dfc926533d0aef0d28989d033f95">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[21/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3119,12 +3363,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00432">432</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00467">467</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="a876bdca4266c5eb46e8d729c304d0c25" name="a876bdca4266c5eb46e8d729c304d0c25"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a876bdca4266c5eb46e8d729c304d0c25">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[20/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a876bdca4266c5eb46e8d729c304d0c25">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[22/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3157,12 +3401,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00432">432</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00467">467</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="a220cf7973f2499cd2673c19c662bc8b7" name="a220cf7973f2499cd2673c19c662bc8b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a220cf7973f2499cd2673c19c662bc8b7">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[21/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a220cf7973f2499cd2673c19c662bc8b7">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[23/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3200,7 +3444,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="aa6c0d4f564873257a54dc1d10c1c8dfd" name="aa6c0d4f564873257a54dc1d10c1c8dfd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa6c0d4f564873257a54dc1d10c1c8dfd">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[22/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6c0d4f564873257a54dc1d10c1c8dfd">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[24/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3238,7 +3482,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="aaa2e89dc326ece03fe4cc848955faefa" name="aaa2e89dc326ece03fe4cc848955faefa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa2e89dc326ece03fe4cc848955faefa">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[23/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa2e89dc326ece03fe4cc848955faefa">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[25/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3276,7 +3520,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="aa1e85a975864a3e2bf0d40b1f22e17d1" name="aa1e85a975864a3e2bf0d40b1f22e17d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1e85a975864a3e2bf0d40b1f22e17d1">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[24/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1e85a975864a3e2bf0d40b1f22e17d1">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[26/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3314,7 +3558,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a26c1c609b9d6d019ef1a79f5a190a000" name="a26c1c609b9d6d019ef1a79f5a190a000"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26c1c609b9d6d019ef1a79f5a190a000">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[25/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a26c1c609b9d6d019ef1a79f5a190a000">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[27/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3347,12 +3591,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00385">385</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00420">420</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="aa8b242642439ba61356618d88d0101b0" name="aa8b242642439ba61356618d88d0101b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa8b242642439ba61356618d88d0101b0">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[26/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8b242642439ba61356618d88d0101b0">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[28/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3389,8 +3633,46 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 
 </div>
 </div>
+<a id="a1ce81b83247623a977e4082bfa3d45d5" name="a1ce81b83247623a977e4082bfa3d45d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ce81b83247623a977e4082bfa3d45d5">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[29/42]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto thorin::core::operator&amp; </td>
+          <td>(</td>
+          <td class="paramtype">std::underlying_type_t&lt; <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> &gt;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a>&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00391">391</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+
+</div>
+</div>
 <a id="a7b00d5b5dbfb962936e4c01adbfbfe42" name="a7b00d5b5dbfb962936e4c01adbfbfe42"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b00d5b5dbfb962936e4c01adbfbfe42">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[27/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b00d5b5dbfb962936e4c01adbfbfe42">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[30/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3428,7 +3710,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="aa3305ae564c1db4f73fcc59a5e90ca04" name="aa3305ae564c1db4f73fcc59a5e90ca04"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa3305ae564c1db4f73fcc59a5e90ca04">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[28/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3305ae564c1db4f73fcc59a5e90ca04">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[31/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3466,7 +3748,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a0616dd08762ef4ffe9fc20c760962a93" name="a0616dd08762ef4ffe9fc20c760962a93"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0616dd08762ef4ffe9fc20c760962a93">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[29/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0616dd08762ef4ffe9fc20c760962a93">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[32/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3504,7 +3786,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="aef0bcaaba2027b488b8e0ee440ba14d9" name="aef0bcaaba2027b488b8e0ee440ba14d9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aef0bcaaba2027b488b8e0ee440ba14d9">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[30/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aef0bcaaba2027b488b8e0ee440ba14d9">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[33/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3542,7 +3824,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a7362cc094807e3a245d1493d1767c1d1" name="a7362cc094807e3a245d1493d1767c1d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7362cc094807e3a245d1493d1767c1d1">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[31/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7362cc094807e3a245d1493d1767c1d1">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[34/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3580,7 +3862,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a9d2fc21eab99f8d25c417254840f4da1" name="a9d2fc21eab99f8d25c417254840f4da1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d2fc21eab99f8d25c417254840f4da1">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[32/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d2fc21eab99f8d25c417254840f4da1">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[35/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3613,12 +3895,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00432">432</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00467">467</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="ad15506fcfe67ae4ee8a36469dfe14d4b" name="ad15506fcfe67ae4ee8a36469dfe14d4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad15506fcfe67ae4ee8a36469dfe14d4b">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[33/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad15506fcfe67ae4ee8a36469dfe14d4b">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[36/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3656,7 +3938,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="ab620981c5299a9076442e5b78d395a83" name="ab620981c5299a9076442e5b78d395a83"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab620981c5299a9076442e5b78d395a83">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[34/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab620981c5299a9076442e5b78d395a83">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[37/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3689,12 +3971,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00414">414</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00449">449</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="a4256bfa479f5b615f23d48a3f2a83689" name="a4256bfa479f5b615f23d48a3f2a83689"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4256bfa479f5b615f23d48a3f2a83689">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[35/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4256bfa479f5b615f23d48a3f2a83689">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[38/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3732,7 +4014,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a7d511b361d3c3193ee0812b12bcf4879" name="a7d511b361d3c3193ee0812b12bcf4879"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d511b361d3c3193ee0812b12bcf4879">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[36/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d511b361d3c3193ee0812b12bcf4879">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[39/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3765,12 +4047,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00414">414</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00449">449</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="a2f4d8c258fa82333fe1d4889a51ce5c6" name="a2f4d8c258fa82333fe1d4889a51ce5c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f4d8c258fa82333fe1d4889a51ce5c6">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[37/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f4d8c258fa82333fe1d4889a51ce5c6">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[40/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3803,12 +4085,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00414">414</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00449">449</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="aea5df2f606f4d567d8ce27177b59a414" name="aea5df2f606f4d567d8ce27177b59a414"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aea5df2f606f4d567d8ce27177b59a414">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[38/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aea5df2f606f4d567d8ce27177b59a414">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[41/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3846,7 +4128,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a2268488ffe972ac06dd0326350a777a9" name="a2268488ffe972ac06dd0326350a777a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2268488ffe972ac06dd0326350a777a9">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[39/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2268488ffe972ac06dd0326350a777a9">&#9670;&#160;</a></span>operator&amp;() <span class="overload">[42/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3884,7 +4166,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a0b143a2b4fa6262627e741ac215f0391" name="a0b143a2b4fa6262627e741ac215f0391"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b143a2b4fa6262627e741ac215f0391">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[1/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b143a2b4fa6262627e741ac215f0391">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[1/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3922,7 +4204,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a4c8643cb819b640670fc22441f6c002d" name="a4c8643cb819b640670fc22441f6c002d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4c8643cb819b640670fc22441f6c002d">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[2/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c8643cb819b640670fc22441f6c002d">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[2/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3960,7 +4242,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="acae2e824cccd4bcde466a063b7736383" name="acae2e824cccd4bcde466a063b7736383"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acae2e824cccd4bcde466a063b7736383">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[3/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#acae2e824cccd4bcde466a063b7736383">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[3/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3993,12 +4275,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00385">385</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00420">420</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="a2df114e20dfd2b28ceecfdcea06e4ad7" name="a2df114e20dfd2b28ceecfdcea06e4ad7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2df114e20dfd2b28ceecfdcea06e4ad7">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[4/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2df114e20dfd2b28ceecfdcea06e4ad7">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[4/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4035,8 +4317,46 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 
 </div>
 </div>
+<a id="a15f27a1702a56ab605d440637598a5af" name="a15f27a1702a56ab605d440637598a5af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15f27a1702a56ab605d440637598a5af">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[5/28]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr std::strong_ordering thorin::core::operator&lt;=&gt; </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a>&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::underlying_type_t&lt; <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> &gt;&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00391">391</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+
+</div>
+</div>
 <a id="a972e12241d7fc003640430c8a20ede1d" name="a972e12241d7fc003640430c8a20ede1d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a972e12241d7fc003640430c8a20ede1d">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[5/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a972e12241d7fc003640430c8a20ede1d">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[6/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4074,7 +4394,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="aa298d4579009e80d8eb4f02a834eccd3" name="aa298d4579009e80d8eb4f02a834eccd3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa298d4579009e80d8eb4f02a834eccd3">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[6/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa298d4579009e80d8eb4f02a834eccd3">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[7/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4112,7 +4432,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a97652d606d3cf90b6cbed312ae6e592e" name="a97652d606d3cf90b6cbed312ae6e592e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a97652d606d3cf90b6cbed312ae6e592e">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[7/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a97652d606d3cf90b6cbed312ae6e592e">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[8/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4150,7 +4470,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a54113c9390400755ad17fc6ec16b9dec" name="a54113c9390400755ad17fc6ec16b9dec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a54113c9390400755ad17fc6ec16b9dec">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[8/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a54113c9390400755ad17fc6ec16b9dec">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[9/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4188,7 +4508,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="aa0a1b10b110563416b4dec70d6b55045" name="aa0a1b10b110563416b4dec70d6b55045"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0a1b10b110563416b4dec70d6b55045">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[9/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0a1b10b110563416b4dec70d6b55045">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[10/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4226,7 +4546,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a33d7c781d1179ad82a2297b30ef7337f" name="a33d7c781d1179ad82a2297b30ef7337f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33d7c781d1179ad82a2297b30ef7337f">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[10/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a33d7c781d1179ad82a2297b30ef7337f">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[11/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4259,12 +4579,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00432">432</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00467">467</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="a5b679ecdc4d6629ebb1c40d07aaca1b5" name="a5b679ecdc4d6629ebb1c40d07aaca1b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b679ecdc4d6629ebb1c40d07aaca1b5">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[11/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b679ecdc4d6629ebb1c40d07aaca1b5">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[12/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4302,7 +4622,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="aab44893374081de729fbb30eb2ce332b" name="aab44893374081de729fbb30eb2ce332b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab44893374081de729fbb30eb2ce332b">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[12/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aab44893374081de729fbb30eb2ce332b">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[13/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4340,7 +4660,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a026ec9d9a42ba7b6fa85096cb663231e" name="a026ec9d9a42ba7b6fa85096cb663231e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a026ec9d9a42ba7b6fa85096cb663231e">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[13/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a026ec9d9a42ba7b6fa85096cb663231e">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[14/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4378,7 +4698,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a5ab175ba31efaa8fcbd24f2006fed164" name="a5ab175ba31efaa8fcbd24f2006fed164"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ab175ba31efaa8fcbd24f2006fed164">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[14/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ab175ba31efaa8fcbd24f2006fed164">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[15/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4411,12 +4731,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00385">385</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00420">420</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="abf29bbf282f2298537939abd1e738ede" name="abf29bbf282f2298537939abd1e738ede"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf29bbf282f2298537939abd1e738ede">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[15/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abf29bbf282f2298537939abd1e738ede">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[16/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4453,8 +4773,46 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 
 </div>
 </div>
+<a id="a0dfb5f7941c9348650846cf2537f4c18" name="a0dfb5f7941c9348650846cf2537f4c18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0dfb5f7941c9348650846cf2537f4c18">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[17/28]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr std::strong_ordering thorin::core::operator&lt;=&gt; </td>
+          <td>(</td>
+          <td class="paramtype">std::underlying_type_t&lt; <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> &gt;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a>&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00391">391</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+
+</div>
+</div>
 <a id="ad1b9dc75434288e8886f69e7f5cd3b49" name="ad1b9dc75434288e8886f69e7f5cd3b49"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad1b9dc75434288e8886f69e7f5cd3b49">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[16/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1b9dc75434288e8886f69e7f5cd3b49">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[18/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4492,7 +4850,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a3beb08e31672a2c815eff73c0623cead" name="a3beb08e31672a2c815eff73c0623cead"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3beb08e31672a2c815eff73c0623cead">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[17/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3beb08e31672a2c815eff73c0623cead">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[19/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4530,7 +4888,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a28256613f85b10cafe0ca3cdd4cede09" name="a28256613f85b10cafe0ca3cdd4cede09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a28256613f85b10cafe0ca3cdd4cede09">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[18/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a28256613f85b10cafe0ca3cdd4cede09">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[20/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4568,7 +4926,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a570b215acc8c30cf4af28b4cbfa534a0" name="a570b215acc8c30cf4af28b4cbfa534a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a570b215acc8c30cf4af28b4cbfa534a0">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[19/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a570b215acc8c30cf4af28b4cbfa534a0">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[21/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4606,7 +4964,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a0b66379f06f0dc8ee6df24aac1ccdb78" name="a0b66379f06f0dc8ee6df24aac1ccdb78"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b66379f06f0dc8ee6df24aac1ccdb78">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[20/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b66379f06f0dc8ee6df24aac1ccdb78">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[22/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4644,7 +5002,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="af1fd79bd2e66eb8d072db3390cb266c4" name="af1fd79bd2e66eb8d072db3390cb266c4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af1fd79bd2e66eb8d072db3390cb266c4">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[21/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af1fd79bd2e66eb8d072db3390cb266c4">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[23/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4677,12 +5035,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00432">432</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00467">467</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="a1da77cb7a207072ee33df6c823e343b9" name="a1da77cb7a207072ee33df6c823e343b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1da77cb7a207072ee33df6c823e343b9">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[22/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1da77cb7a207072ee33df6c823e343b9">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[24/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4720,7 +5078,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a86cee42c31935fc2cb5b33ccb436403d" name="a86cee42c31935fc2cb5b33ccb436403d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a86cee42c31935fc2cb5b33ccb436403d">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[23/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a86cee42c31935fc2cb5b33ccb436403d">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[25/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4753,12 +5111,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00414">414</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00449">449</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="abe55808dba7917f6ea0b279b1a1a8cee" name="abe55808dba7917f6ea0b279b1a1a8cee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abe55808dba7917f6ea0b279b1a1a8cee">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[24/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abe55808dba7917f6ea0b279b1a1a8cee">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[26/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4796,7 +5154,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a272c1ec9d8e9ad749ee044222441e88c" name="a272c1ec9d8e9ad749ee044222441e88c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a272c1ec9d8e9ad749ee044222441e88c">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[25/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a272c1ec9d8e9ad749ee044222441e88c">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[27/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4829,12 +5187,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00414">414</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00449">449</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="aaa2c9f375f730220f2d1c1c950900b0d" name="aaa2c9f375f730220f2d1c1c950900b0d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa2c9f375f730220f2d1c1c950900b0d">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[26/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa2c9f375f730220f2d1c1c950900b0d">&#9670;&#160;</a></span>operator&lt;=&gt;() <span class="overload">[28/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4872,7 +5230,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a12c2d95d1e527b413605797343fb1dca" name="a12c2d95d1e527b413605797343fb1dca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12c2d95d1e527b413605797343fb1dca">&#9670;&#160;</a></span>operator==() <span class="overload">[1/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a12c2d95d1e527b413605797343fb1dca">&#9670;&#160;</a></span>operator==() <span class="overload">[1/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4910,7 +5268,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="ad1b5736579e51f868258efabfa156b47" name="ad1b5736579e51f868258efabfa156b47"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad1b5736579e51f868258efabfa156b47">&#9670;&#160;</a></span>operator==() <span class="overload">[2/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1b5736579e51f868258efabfa156b47">&#9670;&#160;</a></span>operator==() <span class="overload">[2/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4948,7 +5306,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a9b60c7ea5bc21b1966ecb3c4ca254c4c" name="a9b60c7ea5bc21b1966ecb3c4ca254c4c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b60c7ea5bc21b1966ecb3c4ca254c4c">&#9670;&#160;</a></span>operator==() <span class="overload">[3/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b60c7ea5bc21b1966ecb3c4ca254c4c">&#9670;&#160;</a></span>operator==() <span class="overload">[3/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4981,12 +5339,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00385">385</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00420">420</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="acd46902f7242a72d8a9181b7a2e06e2a" name="acd46902f7242a72d8a9181b7a2e06e2a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd46902f7242a72d8a9181b7a2e06e2a">&#9670;&#160;</a></span>operator==() <span class="overload">[4/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#acd46902f7242a72d8a9181b7a2e06e2a">&#9670;&#160;</a></span>operator==() <span class="overload">[4/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5023,8 +5381,46 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 
 </div>
 </div>
+<a id="acc728050aa807977b4d136fee1e4fa9c" name="acc728050aa807977b4d136fee1e4fa9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc728050aa807977b4d136fee1e4fa9c">&#9670;&#160;</a></span>operator==() <span class="overload">[5/28]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool thorin::core::operator== </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a>&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::underlying_type_t&lt; <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> &gt;&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00391">391</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+
+</div>
+</div>
 <a id="af1990480a56cb4da0cae6e3bb90ebe19" name="af1990480a56cb4da0cae6e3bb90ebe19"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af1990480a56cb4da0cae6e3bb90ebe19">&#9670;&#160;</a></span>operator==() <span class="overload">[5/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af1990480a56cb4da0cae6e3bb90ebe19">&#9670;&#160;</a></span>operator==() <span class="overload">[6/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5062,7 +5458,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a37683ea2621e3cec570bf6144f5e5531" name="a37683ea2621e3cec570bf6144f5e5531"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37683ea2621e3cec570bf6144f5e5531">&#9670;&#160;</a></span>operator==() <span class="overload">[6/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a37683ea2621e3cec570bf6144f5e5531">&#9670;&#160;</a></span>operator==() <span class="overload">[7/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5100,7 +5496,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a1d2ca2683912d8b5266ff646a3f9f55c" name="a1d2ca2683912d8b5266ff646a3f9f55c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1d2ca2683912d8b5266ff646a3f9f55c">&#9670;&#160;</a></span>operator==() <span class="overload">[7/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d2ca2683912d8b5266ff646a3f9f55c">&#9670;&#160;</a></span>operator==() <span class="overload">[8/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5138,7 +5534,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="ac515150e079709192ff559bfca7a884c" name="ac515150e079709192ff559bfca7a884c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac515150e079709192ff559bfca7a884c">&#9670;&#160;</a></span>operator==() <span class="overload">[8/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac515150e079709192ff559bfca7a884c">&#9670;&#160;</a></span>operator==() <span class="overload">[9/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5176,7 +5572,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="af42d66ef2afafcc8101e0ae2e3dfae68" name="af42d66ef2afafcc8101e0ae2e3dfae68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af42d66ef2afafcc8101e0ae2e3dfae68">&#9670;&#160;</a></span>operator==() <span class="overload">[9/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af42d66ef2afafcc8101e0ae2e3dfae68">&#9670;&#160;</a></span>operator==() <span class="overload">[10/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5214,7 +5610,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="aba56d3878080418954a14d30233de733" name="aba56d3878080418954a14d30233de733"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba56d3878080418954a14d30233de733">&#9670;&#160;</a></span>operator==() <span class="overload">[10/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aba56d3878080418954a14d30233de733">&#9670;&#160;</a></span>operator==() <span class="overload">[11/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5247,12 +5643,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00432">432</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00467">467</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="aebf4ea604fbb068ca17817b73ce05ee1" name="aebf4ea604fbb068ca17817b73ce05ee1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aebf4ea604fbb068ca17817b73ce05ee1">&#9670;&#160;</a></span>operator==() <span class="overload">[11/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aebf4ea604fbb068ca17817b73ce05ee1">&#9670;&#160;</a></span>operator==() <span class="overload">[12/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5290,7 +5686,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a0bd6aee517abd39c4af99a151065d0af" name="a0bd6aee517abd39c4af99a151065d0af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0bd6aee517abd39c4af99a151065d0af">&#9670;&#160;</a></span>operator==() <span class="overload">[12/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0bd6aee517abd39c4af99a151065d0af">&#9670;&#160;</a></span>operator==() <span class="overload">[13/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5328,7 +5724,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a5fb5150dc0b01cfa20e7bb209ea49f6c" name="a5fb5150dc0b01cfa20e7bb209ea49f6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5fb5150dc0b01cfa20e7bb209ea49f6c">&#9670;&#160;</a></span>operator==() <span class="overload">[13/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fb5150dc0b01cfa20e7bb209ea49f6c">&#9670;&#160;</a></span>operator==() <span class="overload">[14/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5366,7 +5762,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a34c77864f1c99b493e04751034cc7429" name="a34c77864f1c99b493e04751034cc7429"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a34c77864f1c99b493e04751034cc7429">&#9670;&#160;</a></span>operator==() <span class="overload">[14/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a34c77864f1c99b493e04751034cc7429">&#9670;&#160;</a></span>operator==() <span class="overload">[15/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5399,12 +5795,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00385">385</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00420">420</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="a4d4beaa9d6312a4391c26e303fa55407" name="a4d4beaa9d6312a4391c26e303fa55407"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d4beaa9d6312a4391c26e303fa55407">&#9670;&#160;</a></span>operator==() <span class="overload">[15/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d4beaa9d6312a4391c26e303fa55407">&#9670;&#160;</a></span>operator==() <span class="overload">[16/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5441,8 +5837,46 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 
 </div>
 </div>
+<a id="a99f566b3685c9d7626efc1e4fff29b98" name="a99f566b3685c9d7626efc1e4fff29b98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99f566b3685c9d7626efc1e4fff29b98">&#9670;&#160;</a></span>operator==() <span class="overload">[17/28]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool thorin::core::operator== </td>
+          <td>(</td>
+          <td class="paramtype">std::underlying_type_t&lt; <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> &gt;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a>&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00391">391</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+
+</div>
+</div>
 <a id="ac661c434637e7f8bdeffef89d2b491c5" name="ac661c434637e7f8bdeffef89d2b491c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac661c434637e7f8bdeffef89d2b491c5">&#9670;&#160;</a></span>operator==() <span class="overload">[16/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac661c434637e7f8bdeffef89d2b491c5">&#9670;&#160;</a></span>operator==() <span class="overload">[18/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5480,7 +5914,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a8da741f695e7672966d55bc10452503e" name="a8da741f695e7672966d55bc10452503e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8da741f695e7672966d55bc10452503e">&#9670;&#160;</a></span>operator==() <span class="overload">[17/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8da741f695e7672966d55bc10452503e">&#9670;&#160;</a></span>operator==() <span class="overload">[19/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5518,7 +5952,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a77ea72973892500f93dda9901ec89204" name="a77ea72973892500f93dda9901ec89204"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a77ea72973892500f93dda9901ec89204">&#9670;&#160;</a></span>operator==() <span class="overload">[18/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a77ea72973892500f93dda9901ec89204">&#9670;&#160;</a></span>operator==() <span class="overload">[20/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5556,7 +5990,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a3ac445744039e9f196bbff6083c0767c" name="a3ac445744039e9f196bbff6083c0767c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ac445744039e9f196bbff6083c0767c">&#9670;&#160;</a></span>operator==() <span class="overload">[19/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ac445744039e9f196bbff6083c0767c">&#9670;&#160;</a></span>operator==() <span class="overload">[21/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5594,7 +6028,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a10959d266cf0e0026d9c23557118752c" name="a10959d266cf0e0026d9c23557118752c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a10959d266cf0e0026d9c23557118752c">&#9670;&#160;</a></span>operator==() <span class="overload">[20/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a10959d266cf0e0026d9c23557118752c">&#9670;&#160;</a></span>operator==() <span class="overload">[22/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5632,7 +6066,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a41de67780f5303bdf86004d5d4e625cd" name="a41de67780f5303bdf86004d5d4e625cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a41de67780f5303bdf86004d5d4e625cd">&#9670;&#160;</a></span>operator==() <span class="overload">[21/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a41de67780f5303bdf86004d5d4e625cd">&#9670;&#160;</a></span>operator==() <span class="overload">[23/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5665,12 +6099,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00432">432</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00467">467</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="ab744f47dd7539ccc08604903675b7a1f" name="ab744f47dd7539ccc08604903675b7a1f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab744f47dd7539ccc08604903675b7a1f">&#9670;&#160;</a></span>operator==() <span class="overload">[22/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab744f47dd7539ccc08604903675b7a1f">&#9670;&#160;</a></span>operator==() <span class="overload">[24/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5708,7 +6142,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a89ac6b4dee10a369ad5ad85009310d99" name="a89ac6b4dee10a369ad5ad85009310d99"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89ac6b4dee10a369ad5ad85009310d99">&#9670;&#160;</a></span>operator==() <span class="overload">[23/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a89ac6b4dee10a369ad5ad85009310d99">&#9670;&#160;</a></span>operator==() <span class="overload">[25/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5741,12 +6175,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00414">414</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00449">449</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="a09345b67685a1825a2ff4ff6d00f0940" name="a09345b67685a1825a2ff4ff6d00f0940"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a09345b67685a1825a2ff4ff6d00f0940">&#9670;&#160;</a></span>operator==() <span class="overload">[24/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a09345b67685a1825a2ff4ff6d00f0940">&#9670;&#160;</a></span>operator==() <span class="overload">[26/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5784,7 +6218,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a1b76157785fae68eeb3237a8e030c8db" name="a1b76157785fae68eeb3237a8e030c8db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b76157785fae68eeb3237a8e030c8db">&#9670;&#160;</a></span>operator==() <span class="overload">[25/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b76157785fae68eeb3237a8e030c8db">&#9670;&#160;</a></span>operator==() <span class="overload">[27/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5817,12 +6251,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00414">414</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00449">449</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="a866695aed77934443d8e30f87aa6724c" name="a866695aed77934443d8e30f87aa6724c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a866695aed77934443d8e30f87aa6724c">&#9670;&#160;</a></span>operator==() <span class="overload">[26/26]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a866695aed77934443d8e30f87aa6724c">&#9670;&#160;</a></span>operator==() <span class="overload">[28/28]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5860,7 +6294,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a65482bcd3662ea51ee08da312591557a" name="a65482bcd3662ea51ee08da312591557a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a65482bcd3662ea51ee08da312591557a">&#9670;&#160;</a></span>operator^() <span class="overload">[1/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a65482bcd3662ea51ee08da312591557a">&#9670;&#160;</a></span>operator^() <span class="overload">[1/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5898,7 +6332,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a26fc123f727dad5ab880e88584dc857b" name="a26fc123f727dad5ab880e88584dc857b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26fc123f727dad5ab880e88584dc857b">&#9670;&#160;</a></span>operator^() <span class="overload">[2/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a26fc123f727dad5ab880e88584dc857b">&#9670;&#160;</a></span>operator^() <span class="overload">[2/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5936,7 +6370,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a387630c70d8668e86074e74da1feb8c1" name="a387630c70d8668e86074e74da1feb8c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a387630c70d8668e86074e74da1feb8c1">&#9670;&#160;</a></span>operator^() <span class="overload">[3/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a387630c70d8668e86074e74da1feb8c1">&#9670;&#160;</a></span>operator^() <span class="overload">[3/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5974,7 +6408,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a2e6ee23ee740c5d1d8d6160f8bc0c4d1" name="a2e6ee23ee740c5d1d8d6160f8bc0c4d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e6ee23ee740c5d1d8d6160f8bc0c4d1">&#9670;&#160;</a></span>operator^() <span class="overload">[4/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e6ee23ee740c5d1d8d6160f8bc0c4d1">&#9670;&#160;</a></span>operator^() <span class="overload">[4/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6012,7 +6446,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="af0fce056ac72859cfd25a2e707ffefda" name="af0fce056ac72859cfd25a2e707ffefda"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af0fce056ac72859cfd25a2e707ffefda">&#9670;&#160;</a></span>operator^() <span class="overload">[5/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af0fce056ac72859cfd25a2e707ffefda">&#9670;&#160;</a></span>operator^() <span class="overload">[5/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6045,12 +6479,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00385">385</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00420">420</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="abf53547c599ea65ca8e57121f958f214" name="abf53547c599ea65ca8e57121f958f214"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf53547c599ea65ca8e57121f958f214">&#9670;&#160;</a></span>operator^() <span class="overload">[6/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abf53547c599ea65ca8e57121f958f214">&#9670;&#160;</a></span>operator^() <span class="overload">[6/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6083,12 +6517,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00385">385</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00420">420</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="ac093e99e006c6c8987a7206d32cb74f4" name="ac093e99e006c6c8987a7206d32cb74f4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac093e99e006c6c8987a7206d32cb74f4">&#9670;&#160;</a></span>operator^() <span class="overload">[7/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac093e99e006c6c8987a7206d32cb74f4">&#9670;&#160;</a></span>operator^() <span class="overload">[7/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6126,7 +6560,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a64c1d18e88cd3293650d913ca2e526e0" name="a64c1d18e88cd3293650d913ca2e526e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a64c1d18e88cd3293650d913ca2e526e0">&#9670;&#160;</a></span>operator^() <span class="overload">[8/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a64c1d18e88cd3293650d913ca2e526e0">&#9670;&#160;</a></span>operator^() <span class="overload">[8/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6163,8 +6597,84 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 
 </div>
 </div>
+<a id="ad56af9666d53b47eb78024f640e6f610" name="ad56af9666d53b47eb78024f640e6f610"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad56af9666d53b47eb78024f640e6f610">&#9670;&#160;</a></span>operator^() <span class="overload">[9/42]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto thorin::core::operator^ </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a>&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a>&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00391">391</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+
+</div>
+</div>
+<a id="a246ab7588782d8ecae1b24fe262554f2" name="a246ab7588782d8ecae1b24fe262554f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a246ab7588782d8ecae1b24fe262554f2">&#9670;&#160;</a></span>operator^() <span class="overload">[10/42]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto thorin::core::operator^ </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a>&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::underlying_type_t&lt; <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> &gt;&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00391">391</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+
+</div>
+</div>
 <a id="afaccb7ce3a7fdd91e4b7dbd5e82b8723" name="afaccb7ce3a7fdd91e4b7dbd5e82b8723"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afaccb7ce3a7fdd91e4b7dbd5e82b8723">&#9670;&#160;</a></span>operator^() <span class="overload">[9/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afaccb7ce3a7fdd91e4b7dbd5e82b8723">&#9670;&#160;</a></span>operator^() <span class="overload">[11/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6202,7 +6712,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a1e09b29d988e820bcc7360f3ce4274fe" name="a1e09b29d988e820bcc7360f3ce4274fe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e09b29d988e820bcc7360f3ce4274fe">&#9670;&#160;</a></span>operator^() <span class="overload">[10/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e09b29d988e820bcc7360f3ce4274fe">&#9670;&#160;</a></span>operator^() <span class="overload">[12/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6240,7 +6750,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a8e0b4a4e42422b0baedf8336529fe2b3" name="a8e0b4a4e42422b0baedf8336529fe2b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e0b4a4e42422b0baedf8336529fe2b3">&#9670;&#160;</a></span>operator^() <span class="overload">[11/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e0b4a4e42422b0baedf8336529fe2b3">&#9670;&#160;</a></span>operator^() <span class="overload">[13/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6278,7 +6788,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a520845c1cb35544a5a0312f9cabbaaf8" name="a520845c1cb35544a5a0312f9cabbaaf8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a520845c1cb35544a5a0312f9cabbaaf8">&#9670;&#160;</a></span>operator^() <span class="overload">[12/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a520845c1cb35544a5a0312f9cabbaaf8">&#9670;&#160;</a></span>operator^() <span class="overload">[14/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6316,7 +6826,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="ae6bb00a644034178dc4bf92351a0bbe3" name="ae6bb00a644034178dc4bf92351a0bbe3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae6bb00a644034178dc4bf92351a0bbe3">&#9670;&#160;</a></span>operator^() <span class="overload">[13/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6bb00a644034178dc4bf92351a0bbe3">&#9670;&#160;</a></span>operator^() <span class="overload">[15/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6354,7 +6864,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a463e54ed50168ac0004f139072978a39" name="a463e54ed50168ac0004f139072978a39"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a463e54ed50168ac0004f139072978a39">&#9670;&#160;</a></span>operator^() <span class="overload">[14/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a463e54ed50168ac0004f139072978a39">&#9670;&#160;</a></span>operator^() <span class="overload">[16/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6392,7 +6902,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="ae69467345e39ef835cb83fbae2f65616" name="ae69467345e39ef835cb83fbae2f65616"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae69467345e39ef835cb83fbae2f65616">&#9670;&#160;</a></span>operator^() <span class="overload">[15/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae69467345e39ef835cb83fbae2f65616">&#9670;&#160;</a></span>operator^() <span class="overload">[17/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6430,7 +6940,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a0c5b74b1d3937baa8cb0af18739ccbea" name="a0c5b74b1d3937baa8cb0af18739ccbea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c5b74b1d3937baa8cb0af18739ccbea">&#9670;&#160;</a></span>operator^() <span class="overload">[16/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c5b74b1d3937baa8cb0af18739ccbea">&#9670;&#160;</a></span>operator^() <span class="overload">[18/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6468,7 +6978,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a3e90e22d43217b8487b256b1b9777452" name="a3e90e22d43217b8487b256b1b9777452"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3e90e22d43217b8487b256b1b9777452">&#9670;&#160;</a></span>operator^() <span class="overload">[17/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e90e22d43217b8487b256b1b9777452">&#9670;&#160;</a></span>operator^() <span class="overload">[19/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6506,7 +7016,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a6c338e303bacbd8c58718161f7599f7c" name="a6c338e303bacbd8c58718161f7599f7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c338e303bacbd8c58718161f7599f7c">&#9670;&#160;</a></span>operator^() <span class="overload">[18/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c338e303bacbd8c58718161f7599f7c">&#9670;&#160;</a></span>operator^() <span class="overload">[20/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6544,7 +7054,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a2079eef426201fc56b60cabfa743f434" name="a2079eef426201fc56b60cabfa743f434"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2079eef426201fc56b60cabfa743f434">&#9670;&#160;</a></span>operator^() <span class="overload">[19/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2079eef426201fc56b60cabfa743f434">&#9670;&#160;</a></span>operator^() <span class="overload">[21/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6577,12 +7087,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00432">432</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00467">467</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="abc30e8e29611a6fc0ba9e67dcec87c88" name="abc30e8e29611a6fc0ba9e67dcec87c88"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abc30e8e29611a6fc0ba9e67dcec87c88">&#9670;&#160;</a></span>operator^() <span class="overload">[20/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abc30e8e29611a6fc0ba9e67dcec87c88">&#9670;&#160;</a></span>operator^() <span class="overload">[22/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6615,12 +7125,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00432">432</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00467">467</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="aa4d97603330e65b9615526cad831ad73" name="aa4d97603330e65b9615526cad831ad73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4d97603330e65b9615526cad831ad73">&#9670;&#160;</a></span>operator^() <span class="overload">[21/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4d97603330e65b9615526cad831ad73">&#9670;&#160;</a></span>operator^() <span class="overload">[23/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6658,7 +7168,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a217a840fc5eb09568c8d121d6870d224" name="a217a840fc5eb09568c8d121d6870d224"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a217a840fc5eb09568c8d121d6870d224">&#9670;&#160;</a></span>operator^() <span class="overload">[22/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a217a840fc5eb09568c8d121d6870d224">&#9670;&#160;</a></span>operator^() <span class="overload">[24/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6696,7 +7206,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="ab4201eadaca72ab9cd25d3c8a50be832" name="ab4201eadaca72ab9cd25d3c8a50be832"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4201eadaca72ab9cd25d3c8a50be832">&#9670;&#160;</a></span>operator^() <span class="overload">[23/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4201eadaca72ab9cd25d3c8a50be832">&#9670;&#160;</a></span>operator^() <span class="overload">[25/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6734,7 +7244,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="af44a9dcb554c61b11195d524e056f3a1" name="af44a9dcb554c61b11195d524e056f3a1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af44a9dcb554c61b11195d524e056f3a1">&#9670;&#160;</a></span>operator^() <span class="overload">[24/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af44a9dcb554c61b11195d524e056f3a1">&#9670;&#160;</a></span>operator^() <span class="overload">[26/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6772,7 +7282,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="ae4b90206010aa86ebd2ac74932a03ba8" name="ae4b90206010aa86ebd2ac74932a03ba8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae4b90206010aa86ebd2ac74932a03ba8">&#9670;&#160;</a></span>operator^() <span class="overload">[25/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4b90206010aa86ebd2ac74932a03ba8">&#9670;&#160;</a></span>operator^() <span class="overload">[27/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6805,12 +7315,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00385">385</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00420">420</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="af9db4a67fd3bee0852ad1f93fed5fc21" name="af9db4a67fd3bee0852ad1f93fed5fc21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af9db4a67fd3bee0852ad1f93fed5fc21">&#9670;&#160;</a></span>operator^() <span class="overload">[26/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af9db4a67fd3bee0852ad1f93fed5fc21">&#9670;&#160;</a></span>operator^() <span class="overload">[28/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6847,8 +7357,46 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 
 </div>
 </div>
+<a id="aadb2a1192ad0eef226929323b23247ae" name="aadb2a1192ad0eef226929323b23247ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadb2a1192ad0eef226929323b23247ae">&#9670;&#160;</a></span>operator^() <span class="overload">[29/42]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto thorin::core::operator^ </td>
+          <td>(</td>
+          <td class="paramtype">std::underlying_type_t&lt; <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> &gt;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a>&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00391">391</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+
+</div>
+</div>
 <a id="a41b2a21e6593426683930863f59a4b70" name="a41b2a21e6593426683930863f59a4b70"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a41b2a21e6593426683930863f59a4b70">&#9670;&#160;</a></span>operator^() <span class="overload">[27/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a41b2a21e6593426683930863f59a4b70">&#9670;&#160;</a></span>operator^() <span class="overload">[30/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6886,7 +7434,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="ac501fbd8580a4100fe141faa0139e137" name="ac501fbd8580a4100fe141faa0139e137"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac501fbd8580a4100fe141faa0139e137">&#9670;&#160;</a></span>operator^() <span class="overload">[28/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac501fbd8580a4100fe141faa0139e137">&#9670;&#160;</a></span>operator^() <span class="overload">[31/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6924,7 +7472,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a0b2d916e22d4846d8c73db7c0d55b678" name="a0b2d916e22d4846d8c73db7c0d55b678"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b2d916e22d4846d8c73db7c0d55b678">&#9670;&#160;</a></span>operator^() <span class="overload">[29/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b2d916e22d4846d8c73db7c0d55b678">&#9670;&#160;</a></span>operator^() <span class="overload">[32/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -6962,7 +7510,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a4ee6d49b9f732a00b026c1f16d08e34d" name="a4ee6d49b9f732a00b026c1f16d08e34d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ee6d49b9f732a00b026c1f16d08e34d">&#9670;&#160;</a></span>operator^() <span class="overload">[30/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ee6d49b9f732a00b026c1f16d08e34d">&#9670;&#160;</a></span>operator^() <span class="overload">[33/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7000,7 +7548,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="af63a022cb485cc9fdeb7f0f1b6eb8aaa" name="af63a022cb485cc9fdeb7f0f1b6eb8aaa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af63a022cb485cc9fdeb7f0f1b6eb8aaa">&#9670;&#160;</a></span>operator^() <span class="overload">[31/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af63a022cb485cc9fdeb7f0f1b6eb8aaa">&#9670;&#160;</a></span>operator^() <span class="overload">[34/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7038,7 +7586,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="af4c5395f112776e06bae4f4bdd2bd79e" name="af4c5395f112776e06bae4f4bdd2bd79e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4c5395f112776e06bae4f4bdd2bd79e">&#9670;&#160;</a></span>operator^() <span class="overload">[32/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af4c5395f112776e06bae4f4bdd2bd79e">&#9670;&#160;</a></span>operator^() <span class="overload">[35/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7071,12 +7619,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00432">432</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00467">467</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="a519a2dff21fd0b6d54aaf74f639bda58" name="a519a2dff21fd0b6d54aaf74f639bda58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a519a2dff21fd0b6d54aaf74f639bda58">&#9670;&#160;</a></span>operator^() <span class="overload">[33/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a519a2dff21fd0b6d54aaf74f639bda58">&#9670;&#160;</a></span>operator^() <span class="overload">[36/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7114,7 +7662,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="ad3c3d1b574bc1c41703eeb3562d73604" name="ad3c3d1b574bc1c41703eeb3562d73604"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3c3d1b574bc1c41703eeb3562d73604">&#9670;&#160;</a></span>operator^() <span class="overload">[34/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3c3d1b574bc1c41703eeb3562d73604">&#9670;&#160;</a></span>operator^() <span class="overload">[37/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7147,12 +7695,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00414">414</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00449">449</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="afd67903f118e8908f24f73b9ca169403" name="afd67903f118e8908f24f73b9ca169403"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd67903f118e8908f24f73b9ca169403">&#9670;&#160;</a></span>operator^() <span class="overload">[35/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afd67903f118e8908f24f73b9ca169403">&#9670;&#160;</a></span>operator^() <span class="overload">[38/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7190,7 +7738,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="ab7064adc62f0918f65e895ff25b96ed5" name="ab7064adc62f0918f65e895ff25b96ed5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab7064adc62f0918f65e895ff25b96ed5">&#9670;&#160;</a></span>operator^() <span class="overload">[36/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7064adc62f0918f65e895ff25b96ed5">&#9670;&#160;</a></span>operator^() <span class="overload">[39/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7223,12 +7771,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00414">414</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00449">449</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="a93d7d300a2de35a61d5c1aa3a37488f2" name="a93d7d300a2de35a61d5c1aa3a37488f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a93d7d300a2de35a61d5c1aa3a37488f2">&#9670;&#160;</a></span>operator^() <span class="overload">[37/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a93d7d300a2de35a61d5c1aa3a37488f2">&#9670;&#160;</a></span>operator^() <span class="overload">[40/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7261,12 +7809,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00414">414</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00449">449</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="a5e7c0461c85888458491dfb7d2873632" name="a5e7c0461c85888458491dfb7d2873632"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e7c0461c85888458491dfb7d2873632">&#9670;&#160;</a></span>operator^() <span class="overload">[38/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e7c0461c85888458491dfb7d2873632">&#9670;&#160;</a></span>operator^() <span class="overload">[41/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7304,7 +7852,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a886aef67cc4acecaee1ebb8dad8ffad9" name="a886aef67cc4acecaee1ebb8dad8ffad9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a886aef67cc4acecaee1ebb8dad8ffad9">&#9670;&#160;</a></span>operator^() <span class="overload">[39/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a886aef67cc4acecaee1ebb8dad8ffad9">&#9670;&#160;</a></span>operator^() <span class="overload">[42/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7342,7 +7890,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a9559fcb656c090a3bd25d14000fc8b25" name="a9559fcb656c090a3bd25d14000fc8b25"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9559fcb656c090a3bd25d14000fc8b25">&#9670;&#160;</a></span>operator|() <span class="overload">[1/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9559fcb656c090a3bd25d14000fc8b25">&#9670;&#160;</a></span>operator|() <span class="overload">[1/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7380,7 +7928,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a3ae1de0ad259df6ee484520f07da73c4" name="a3ae1de0ad259df6ee484520f07da73c4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ae1de0ad259df6ee484520f07da73c4">&#9670;&#160;</a></span>operator|() <span class="overload">[2/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ae1de0ad259df6ee484520f07da73c4">&#9670;&#160;</a></span>operator|() <span class="overload">[2/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7418,7 +7966,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a8f4c8e0fce073c84cc002c7dda59f4c5" name="a8f4c8e0fce073c84cc002c7dda59f4c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f4c8e0fce073c84cc002c7dda59f4c5">&#9670;&#160;</a></span>operator|() <span class="overload">[3/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f4c8e0fce073c84cc002c7dda59f4c5">&#9670;&#160;</a></span>operator|() <span class="overload">[3/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7456,7 +8004,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="aed00d2524e1683554cff153e521c5da8" name="aed00d2524e1683554cff153e521c5da8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aed00d2524e1683554cff153e521c5da8">&#9670;&#160;</a></span>operator|() <span class="overload">[4/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aed00d2524e1683554cff153e521c5da8">&#9670;&#160;</a></span>operator|() <span class="overload">[4/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7494,7 +8042,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="aa06e66f908d5e2096b01d1fa33a41d78" name="aa06e66f908d5e2096b01d1fa33a41d78"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa06e66f908d5e2096b01d1fa33a41d78">&#9670;&#160;</a></span>operator|() <span class="overload">[5/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa06e66f908d5e2096b01d1fa33a41d78">&#9670;&#160;</a></span>operator|() <span class="overload">[5/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7527,12 +8075,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00385">385</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00420">420</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="ae5126eb24f934af7d330891147ba64fe" name="ae5126eb24f934af7d330891147ba64fe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5126eb24f934af7d330891147ba64fe">&#9670;&#160;</a></span>operator|() <span class="overload">[6/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5126eb24f934af7d330891147ba64fe">&#9670;&#160;</a></span>operator|() <span class="overload">[6/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7565,12 +8113,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00385">385</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00420">420</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="aee1bfc536ef81a6ee62a9445798770fd" name="aee1bfc536ef81a6ee62a9445798770fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee1bfc536ef81a6ee62a9445798770fd">&#9670;&#160;</a></span>operator|() <span class="overload">[7/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aee1bfc536ef81a6ee62a9445798770fd">&#9670;&#160;</a></span>operator|() <span class="overload">[7/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7608,7 +8156,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a34cd4530b8ed4909d693ed576a978d72" name="a34cd4530b8ed4909d693ed576a978d72"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a34cd4530b8ed4909d693ed576a978d72">&#9670;&#160;</a></span>operator|() <span class="overload">[8/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a34cd4530b8ed4909d693ed576a978d72">&#9670;&#160;</a></span>operator|() <span class="overload">[8/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7645,8 +8193,84 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 
 </div>
 </div>
+<a id="a612870f1cfc706a0ba1b0e32dea6cdf1" name="a612870f1cfc706a0ba1b0e32dea6cdf1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a612870f1cfc706a0ba1b0e32dea6cdf1">&#9670;&#160;</a></span>operator|() <span class="overload">[9/42]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto thorin::core::operator| </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a>&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a>&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00391">391</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+
+</div>
+</div>
+<a id="a1b977a34c61f0cdd7ee586ee00acfca6" name="a1b977a34c61f0cdd7ee586ee00acfca6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b977a34c61f0cdd7ee586ee00acfca6">&#9670;&#160;</a></span>operator|() <span class="overload">[10/42]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto thorin::core::operator| </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a>&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::underlying_type_t&lt; <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> &gt;&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00391">391</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+
+</div>
+</div>
 <a id="a3fd0786422c4ab826ae5208cd06b7e4a" name="a3fd0786422c4ab826ae5208cd06b7e4a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3fd0786422c4ab826ae5208cd06b7e4a">&#9670;&#160;</a></span>operator|() <span class="overload">[9/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fd0786422c4ab826ae5208cd06b7e4a">&#9670;&#160;</a></span>operator|() <span class="overload">[11/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7684,7 +8308,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a82b17c19dfb83c85706d1443a1f81fef" name="a82b17c19dfb83c85706d1443a1f81fef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a82b17c19dfb83c85706d1443a1f81fef">&#9670;&#160;</a></span>operator|() <span class="overload">[10/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a82b17c19dfb83c85706d1443a1f81fef">&#9670;&#160;</a></span>operator|() <span class="overload">[12/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7722,7 +8346,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="ab03726a08eac878a42b39bdbda0e279d" name="ab03726a08eac878a42b39bdbda0e279d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab03726a08eac878a42b39bdbda0e279d">&#9670;&#160;</a></span>operator|() <span class="overload">[11/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab03726a08eac878a42b39bdbda0e279d">&#9670;&#160;</a></span>operator|() <span class="overload">[13/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7760,7 +8384,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a9e04a59e5f0b6793b2ccc371778842fb" name="a9e04a59e5f0b6793b2ccc371778842fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e04a59e5f0b6793b2ccc371778842fb">&#9670;&#160;</a></span>operator|() <span class="overload">[12/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e04a59e5f0b6793b2ccc371778842fb">&#9670;&#160;</a></span>operator|() <span class="overload">[14/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7798,7 +8422,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a32103f95db402624db3dec3aa8c74d1f" name="a32103f95db402624db3dec3aa8c74d1f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32103f95db402624db3dec3aa8c74d1f">&#9670;&#160;</a></span>operator|() <span class="overload">[13/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a32103f95db402624db3dec3aa8c74d1f">&#9670;&#160;</a></span>operator|() <span class="overload">[15/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7836,7 +8460,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="aa67dcf509f1d2e6a5a2704dc2954f94e" name="aa67dcf509f1d2e6a5a2704dc2954f94e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa67dcf509f1d2e6a5a2704dc2954f94e">&#9670;&#160;</a></span>operator|() <span class="overload">[14/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa67dcf509f1d2e6a5a2704dc2954f94e">&#9670;&#160;</a></span>operator|() <span class="overload">[16/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7874,7 +8498,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a331ffc5008d71773b2ae4155d2984391" name="a331ffc5008d71773b2ae4155d2984391"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a331ffc5008d71773b2ae4155d2984391">&#9670;&#160;</a></span>operator|() <span class="overload">[15/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a331ffc5008d71773b2ae4155d2984391">&#9670;&#160;</a></span>operator|() <span class="overload">[17/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7912,7 +8536,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a1c802d1a8b26d8569b9b818e16dc9d98" name="a1c802d1a8b26d8569b9b818e16dc9d98"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1c802d1a8b26d8569b9b818e16dc9d98">&#9670;&#160;</a></span>operator|() <span class="overload">[16/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c802d1a8b26d8569b9b818e16dc9d98">&#9670;&#160;</a></span>operator|() <span class="overload">[18/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7950,7 +8574,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a393de08f6b3082b61e988fe4bdf72ca5" name="a393de08f6b3082b61e988fe4bdf72ca5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a393de08f6b3082b61e988fe4bdf72ca5">&#9670;&#160;</a></span>operator|() <span class="overload">[17/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a393de08f6b3082b61e988fe4bdf72ca5">&#9670;&#160;</a></span>operator|() <span class="overload">[19/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7988,7 +8612,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a9c158bbb822c5b858f47827eacfa1735" name="a9c158bbb822c5b858f47827eacfa1735"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c158bbb822c5b858f47827eacfa1735">&#9670;&#160;</a></span>operator|() <span class="overload">[18/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c158bbb822c5b858f47827eacfa1735">&#9670;&#160;</a></span>operator|() <span class="overload">[20/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8026,7 +8650,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a2dbcc336780e42deb33fa187185b7c02" name="a2dbcc336780e42deb33fa187185b7c02"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2dbcc336780e42deb33fa187185b7c02">&#9670;&#160;</a></span>operator|() <span class="overload">[19/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2dbcc336780e42deb33fa187185b7c02">&#9670;&#160;</a></span>operator|() <span class="overload">[21/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8059,12 +8683,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00432">432</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00467">467</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="a204b0b1827f4ae5476f2664da920cc97" name="a204b0b1827f4ae5476f2664da920cc97"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a204b0b1827f4ae5476f2664da920cc97">&#9670;&#160;</a></span>operator|() <span class="overload">[20/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a204b0b1827f4ae5476f2664da920cc97">&#9670;&#160;</a></span>operator|() <span class="overload">[22/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8097,12 +8721,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00432">432</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00467">467</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="a417a0a09bc6dae43d145116dffcd3da0" name="a417a0a09bc6dae43d145116dffcd3da0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a417a0a09bc6dae43d145116dffcd3da0">&#9670;&#160;</a></span>operator|() <span class="overload">[21/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a417a0a09bc6dae43d145116dffcd3da0">&#9670;&#160;</a></span>operator|() <span class="overload">[23/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8140,7 +8764,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a2037113e37e1d80005419b9f157fbf2b" name="a2037113e37e1d80005419b9f157fbf2b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2037113e37e1d80005419b9f157fbf2b">&#9670;&#160;</a></span>operator|() <span class="overload">[22/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2037113e37e1d80005419b9f157fbf2b">&#9670;&#160;</a></span>operator|() <span class="overload">[24/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8178,7 +8802,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="abaf6a8d5dab40495bff4e50cd31f3026" name="abaf6a8d5dab40495bff4e50cd31f3026"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abaf6a8d5dab40495bff4e50cd31f3026">&#9670;&#160;</a></span>operator|() <span class="overload">[23/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abaf6a8d5dab40495bff4e50cd31f3026">&#9670;&#160;</a></span>operator|() <span class="overload">[25/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8216,7 +8840,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a1b1c2f94d57f616037b6b8fa81a9245f" name="a1b1c2f94d57f616037b6b8fa81a9245f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b1c2f94d57f616037b6b8fa81a9245f">&#9670;&#160;</a></span>operator|() <span class="overload">[24/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b1c2f94d57f616037b6b8fa81a9245f">&#9670;&#160;</a></span>operator|() <span class="overload">[26/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8254,7 +8878,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a7e1609f5395b0c77eaec8e4d6dfb80ec" name="a7e1609f5395b0c77eaec8e4d6dfb80ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e1609f5395b0c77eaec8e4d6dfb80ec">&#9670;&#160;</a></span>operator|() <span class="overload">[25/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e1609f5395b0c77eaec8e4d6dfb80ec">&#9670;&#160;</a></span>operator|() <span class="overload">[27/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8287,12 +8911,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00385">385</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00420">420</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="a2013193e8532343cf85753d6aecc8882" name="a2013193e8532343cf85753d6aecc8882"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2013193e8532343cf85753d6aecc8882">&#9670;&#160;</a></span>operator|() <span class="overload">[26/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2013193e8532343cf85753d6aecc8882">&#9670;&#160;</a></span>operator|() <span class="overload">[28/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8329,8 +8953,46 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 
 </div>
 </div>
+<a id="ac30e648018fa4b80b7a578843b0a06b3" name="ac30e648018fa4b80b7a578843b0a06b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac30e648018fa4b80b7a578843b0a06b3">&#9670;&#160;</a></span>operator|() <span class="overload">[29/42]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto thorin::core::operator| </td>
+          <td>(</td>
+          <td class="paramtype">std::underlying_type_t&lt; <a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a> &gt;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7">extrema</a>&#160;</td>
+          <td class="paramname"><em>y</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00391">391</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+
+</div>
+</div>
 <a id="afae343e6e0a381f511e698ce25c7aae6" name="afae343e6e0a381f511e698ce25c7aae6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afae343e6e0a381f511e698ce25c7aae6">&#9670;&#160;</a></span>operator|() <span class="overload">[27/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afae343e6e0a381f511e698ce25c7aae6">&#9670;&#160;</a></span>operator|() <span class="overload">[30/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8368,7 +9030,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="aa2e190ca6bbe38fff406fd3cbbd61649" name="aa2e190ca6bbe38fff406fd3cbbd61649"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa2e190ca6bbe38fff406fd3cbbd61649">&#9670;&#160;</a></span>operator|() <span class="overload">[28/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2e190ca6bbe38fff406fd3cbbd61649">&#9670;&#160;</a></span>operator|() <span class="overload">[31/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8406,7 +9068,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a213f37a2d4025716ed99e18d2340f838" name="a213f37a2d4025716ed99e18d2340f838"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a213f37a2d4025716ed99e18d2340f838">&#9670;&#160;</a></span>operator|() <span class="overload">[29/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a213f37a2d4025716ed99e18d2340f838">&#9670;&#160;</a></span>operator|() <span class="overload">[32/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8444,7 +9106,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a9a3971cecadfa1ec98ba1417f6d3d061" name="a9a3971cecadfa1ec98ba1417f6d3d061"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a3971cecadfa1ec98ba1417f6d3d061">&#9670;&#160;</a></span>operator|() <span class="overload">[30/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a3971cecadfa1ec98ba1417f6d3d061">&#9670;&#160;</a></span>operator|() <span class="overload">[33/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8482,7 +9144,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="aaefa18d2563cb63183dfdfd461526b3d" name="aaefa18d2563cb63183dfdfd461526b3d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaefa18d2563cb63183dfdfd461526b3d">&#9670;&#160;</a></span>operator|() <span class="overload">[31/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aaefa18d2563cb63183dfdfd461526b3d">&#9670;&#160;</a></span>operator|() <span class="overload">[34/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8520,7 +9182,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a17b4e483e463f6c46378b93241eeafc4" name="a17b4e483e463f6c46378b93241eeafc4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a17b4e483e463f6c46378b93241eeafc4">&#9670;&#160;</a></span>operator|() <span class="overload">[32/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a17b4e483e463f6c46378b93241eeafc4">&#9670;&#160;</a></span>operator|() <span class="overload">[35/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8553,12 +9215,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00432">432</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00467">467</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="ae4906d64e0d5ea551608d8133ad997a0" name="ae4906d64e0d5ea551608d8133ad997a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae4906d64e0d5ea551608d8133ad997a0">&#9670;&#160;</a></span>operator|() <span class="overload">[33/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4906d64e0d5ea551608d8133ad997a0">&#9670;&#160;</a></span>operator|() <span class="overload">[36/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8596,7 +9258,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a75033b591247cf62ba6c887ddf9a098f" name="a75033b591247cf62ba6c887ddf9a098f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a75033b591247cf62ba6c887ddf9a098f">&#9670;&#160;</a></span>operator|() <span class="overload">[34/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a75033b591247cf62ba6c887ddf9a098f">&#9670;&#160;</a></span>operator|() <span class="overload">[37/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8629,12 +9291,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00414">414</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00449">449</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="a5a636f03600b08dcac41a8d2b167b837" name="a5a636f03600b08dcac41a8d2b167b837"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a636f03600b08dcac41a8d2b167b837">&#9670;&#160;</a></span>operator|() <span class="overload">[35/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a636f03600b08dcac41a8d2b167b837">&#9670;&#160;</a></span>operator|() <span class="overload">[38/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8672,7 +9334,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="ae562a682218abb6c2ec128a851733d45" name="ae562a682218abb6c2ec128a851733d45"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae562a682218abb6c2ec128a851733d45">&#9670;&#160;</a></span>operator|() <span class="overload">[36/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae562a682218abb6c2ec128a851733d45">&#9670;&#160;</a></span>operator|() <span class="overload">[39/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8705,12 +9367,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00414">414</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00449">449</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="a22f94ee3b1cefc4546b4760a44a0b9fb" name="a22f94ee3b1cefc4546b4760a44a0b9fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a22f94ee3b1cefc4546b4760a44a0b9fb">&#9670;&#160;</a></span>operator|() <span class="overload">[37/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a22f94ee3b1cefc4546b4760a44a0b9fb">&#9670;&#160;</a></span>operator|() <span class="overload">[40/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8743,12 +9405,12 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00414">414</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2autogen_8h_source.html#l00449">449</a> of file <a class="el" href="core_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>
 <a id="a16c2c46d608d591d42e7c060acc9d479" name="a16c2c46d608d591d42e7c060acc9d479"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16c2c46d608d591d42e7c060acc9d479">&#9670;&#160;</a></span>operator|() <span class="overload">[38/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a16c2c46d608d591d42e7c060acc9d479">&#9670;&#160;</a></span>operator|() <span class="overload">[41/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8786,7 +9448,7 @@ template&lt;<a class="el" href="namespacethorin_1_1core.html#ab1f42e21a4de8bd328
 </div>
 </div>
 <a id="a101b940acc5702f07840beb990c2fe78" name="a101b940acc5702f07840beb990c2fe78"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a101b940acc5702f07840beb990c2fe78">&#9670;&#160;</a></span>operator|() <span class="overload">[39/39]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a101b940acc5702f07840beb990c2fe78">&#9670;&#160;</a></span>operator|() <span class="overload">[42/42]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

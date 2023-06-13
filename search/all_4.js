@@ -57,5 +57,5 @@ var searchData=
   ['extract_54',['extract',['../classthorin_1_1World.html#aa589e154cb6fd00699311c3951ca90ad',1,'thorin::World::extract(Ref d, Ref i)'],['../classthorin_1_1World.html#a28110454a2646f21118d344b9e886ab2',1,'thorin::World::extract(Ref d, u64 a, u64 i)'],['../classthorin_1_1World.html#a18ea4c38c79548d2b0673e9afbb133f0',1,'thorin::World::extract(Ref d, u64 i)']]],
   ['extract_55',['Extract',['../namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a257bf2499ed2c21151ca373f7c4c0307',1,'thorin::Node::Extract()'],['../classthorin_1_1Extract.html',1,'thorin::Extract']]],
   ['extract_5funsafe_56',['extract_unsafe',['../namespacethorin_1_1core.html#ade5d8b9acff8ccf41c5d442cb3a2b43b',1,'thorin::core::extract_unsafe(Ref d, Ref i)'],['../namespacethorin_1_1core.html#a2d37b2d949f034ee2030fc23a5c69467',1,'thorin::core::extract_unsafe(Ref d, u64 i)']]],
-  ['extrema_57',['extrema',['../namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8',1,'thorin::math']]]
+  ['extrema_57',['extrema',['../namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7',1,'thorin::core::extrema()'],['../namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8',1,'thorin::math::extrema()']]]
 ];
