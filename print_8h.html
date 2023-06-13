@@ -179,7 +179,7 @@ Functions</h2></td></tr>
 </div><!-- fragment --></li>
 <li>There is also a variant to pass <code>os</code> to the function, if you don't have easy access to it: <div class="fragment"><div class="line">print(os, <span class="stringliteral">&quot;int: {}, fun: {}, float: {}&quot;</span>, 23, [&amp;](<span class="keyword">auto</span>&amp; os) { os &lt;&lt; <span class="stringliteral">&quot;hey :)&quot;</span>}, 42.f);</div>
 </div><!-- fragment --></li>
-<li>You can put a <code>std::ranges::range</code> as argument. This will output a list - using the given specifier as seperator. Each element <code>elem</code> of the range will be output via <code>os &lt;&lt; elem</code>: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {0, 1, 2, 3};</div>
+<li>You can put a <code>std::ranges::range</code> as argument. This will output a list - using the given specifier as separator. Each element <code>elem</code> of the range will be output via <code>os &lt;&lt; elem</code>: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {0, 1, 2, 3};</div>
 <div class="line">print(os, <span class="stringliteral">&quot;v: {, }&quot;</span>, v);</div>
 </div><!-- fragment --></li>
 <li>If you have a <code>std::ranges::range</code> that needs to be formatted in a more complicated way, bundle it with an Elem: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {3, 2, 1, 0};</div>
@@ -189,6 +189,9 @@ Functions</h2></td></tr>
 <li>You again have the option to pass <code>os</code> to the bundled function: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {3, 2, 1, 0};</div>
 <div class="line"><span class="keywordtype">size_t</span> i = 0;</div>
 <div class="line">print(os, <span class="stringliteral">&quot;v: {, }&quot;</span>, Elem(v, [&amp;](<span class="keyword">auto</span>&amp; os, <span class="keyword">auto</span> elem) { print(os, <span class="stringliteral">&quot;{}: {}&quot;</span>, i++, elem); }));</div>
+<div class="line">* Use `{{` or `}}` to literally output `{` or `{`:</div>
+<div class="line"><a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(os, <span class="stringliteral">&quot;{{{}}}&quot;</span>, 23); <span class="comment">// &quot;{23}&quot;</span></div>
+<div class="ttc" id="anamespacethorin_html_a7dae34cc4eb75fe0cf5a914431353c8c"><div class="ttname"><a href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">thorin::print</a></div><div class="ttdeci">std::ostream &amp; print(std::ostream &amp;os, const char *s)</div><div class="ttdoc">Base case.</div><div class="ttdef"><b>Definition:</b> <a href="print_8cpp_source.html#l00005">print.cpp:5</a></div></div>
 </div><!-- fragment --> <dl class="section see"><dt>See also</dt><dd>Tab </dd></dl>
 </li>
 </ul>
@@ -244,7 +247,7 @@ Functions</h2></td></tr>
 <div class="line">            }                                                           \</div>
 <div class="line">        } <span class="keywordflow">while</span> (<span class="keyword">false</span>)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00159">159</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00161">161</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
 </div>
 </div>

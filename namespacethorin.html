@@ -663,7 +663,7 @@ Functions</h2></td></tr>
 </div><!-- fragment --></li>
 <li>There is also a variant to pass <code>os</code> to the function, if you don't have easy access to it: <div class="fragment"><div class="line"><a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(os, <span class="stringliteral">&quot;int: {}, fun: {}, float: {}&quot;</span>, 23, [&amp;](<span class="keyword">auto</span>&amp; os) { os &lt;&lt; <span class="stringliteral">&quot;hey :)&quot;</span>}, 42.f);</div>
 </div><!-- fragment --></li>
-<li>You can put a <code>std::ranges::range</code> as argument. This will output a list - using the given specifier as seperator. Each element <code>elem</code> of the range will be output via <code>os &lt;&lt; elem</code>: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {0, 1, 2, 3};</div>
+<li>You can put a <code>std::ranges::range</code> as argument. This will output a list - using the given specifier as separator. Each element <code>elem</code> of the range will be output via <code>os &lt;&lt; elem</code>: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {0, 1, 2, 3};</div>
 <div class="line"><a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(os, <span class="stringliteral">&quot;v: {, }&quot;</span>, v);</div>
 </div><!-- fragment --></li>
 <li>If you have a <code>std::ranges::range</code> that needs to be formatted in a more complicated way, bundle it with an <a class="el" href="structthorin_1_1Elem.html" title="Use with print to output complicated std::ranges::ranges.">Elem</a>: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {3, 2, 1, 0};</div>
@@ -673,6 +673,8 @@ Functions</h2></td></tr>
 <li>You again have the option to pass <code>os</code> to the bundled function: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {3, 2, 1, 0};</div>
 <div class="line"><span class="keywordtype">size_t</span> i = 0;</div>
 <div class="line"><a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(os, <span class="stringliteral">&quot;v: {, }&quot;</span>, Elem(v, [&amp;](<span class="keyword">auto</span>&amp; os, <span class="keyword">auto</span> elem) { <a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(os, <span class="stringliteral">&quot;{}: {}&quot;</span>, i++, elem); }));</div>
+<div class="line">* Use `{{` or `}}` to literally output `{` or `{`:</div>
+<div class="line"><a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(os, <span class="stringliteral">&quot;{{{}}}&quot;</span>, 23); <span class="comment">// &quot;{23}&quot;</span></div>
 </div><!-- fragment --> <dl class="section see"><dt>See also</dt><dd><a class="el" href="classthorin_1_1Tab.html" title="Keeps track of indentation level.">Tab</a> </dd></dl>
 </li>
 </ul>
@@ -2421,7 +2423,7 @@ template&lt;class D , class S &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="bootstrap_8cpp_source.html#l00011">11</a> of file <a class="el" href="bootstrap_8cpp_source.html">bootstrap.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="plugin_8cpp_source.html#l00009">thorin::Annex::mangle()</a>, <a class="el" href="driver_8h_source.html#l00074">thorin::Driver::plugin2annxes()</a>, <a class="el" href="print_8cpp_source.html#l00005">print()</a>, and <a class="el" href="print_8h_source.html#l00199">thorin::Tab::print()</a>.</p>
+<p class="reference">References <a class="el" href="plugin_8cpp_source.html#l00009">thorin::Annex::mangle()</a>, <a class="el" href="driver_8h_source.html#l00074">thorin::Driver::plugin2annxes()</a>, <a class="el" href="print_8cpp_source.html#l00005">print()</a>, and <a class="el" href="print_8h_source.html#l00201">thorin::Tab::print()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00025">main()</a>, and <a class="el" href="parser_8cpp_source.html#l00104">thorin::fe::Parser::plugin()</a>.</p>
 
@@ -2684,11 +2686,11 @@ template&lt;class... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00175">175</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00177">177</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8h_source.html#l00141">fmt()</a>, and <a class="el" href="print_8cpp_source.html#l00005">print()</a>.</p>
+<p class="reference">References <a class="el" href="print_8h_source.html#l00143">fmt()</a>, and <a class="el" href="print_8cpp_source.html#l00005">print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="print_8h_source.html#l00177">errln()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="print_8h_source.html#l00179">errln()</a>.</p>
 
 </div>
 </div>
@@ -2720,9 +2722,9 @@ template&lt;class... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00177">177</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00179">179</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8h_source.html#l00175">errf()</a>, and <a class="el" href="print_8h_source.html#l00141">fmt()</a>.</p>
+<p class="reference">References <a class="el" href="print_8h_source.html#l00177">errf()</a>, and <a class="el" href="print_8h_source.html#l00143">fmt()</a>.</p>
 
 </div>
 </div>
@@ -2756,9 +2758,9 @@ template&lt;class T  = std::logic_error, class... Args&gt; </div>
 
 <p>Wraps <a class="el" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c" title="Base case.">thorin::print</a> to throw <code>T</code> with a formatted message. </p>
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00149">149</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00151">151</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8h_source.html#l00141">fmt()</a>, and <a class="el" href="print_8cpp_source.html#l00005">print()</a>.</p>
+<p class="reference">References <a class="el" href="print_8h_source.html#l00143">fmt()</a>, and <a class="el" href="print_8cpp_source.html#l00005">print()</a>.</p>
 
 </div>
 </div>
@@ -2798,7 +2800,7 @@ template&lt;class T  = std::logic_error, class... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00538">538</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00538">error()</a>, <a class="el" href="print_8h_source.html#l00141">fmt()</a>, and <a class="el" href="def_8h_source.html#l00421">thorin::Def::loc()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00538">error()</a>, <a class="el" href="print_8h_source.html#l00143">fmt()</a>, and <a class="el" href="def_8h_source.html#l00421">thorin::Def::loc()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00163">thorin::World::annex()</a>, <a class="el" href="world_8cpp_source.html#l00193">thorin::World::app()</a>, <a class="el" href="world_8cpp_source.html#l00396">thorin::World::arr()</a>, <a class="el" href="scopes_8cpp_source.html#l00027">thorin::fe::Scopes::bind()</a>, <a class="el" href="check_8cpp_source.html#l00205">thorin::Pi::check()</a>, <a class="el" href="check_8cpp_source.html#l00191">thorin::Lam::check()</a>, <a class="el" href="check_8cpp_source.html#l00181">thorin::Arr::check()</a>, <a class="el" href="dl_8cpp_source.html#l00063">thorin::dl::close()</a>, <a class="el" href="ll_8cpp_source.html#l01019">thorin::ll::compile_and_run()</a>, <a class="el" href="ll_8cpp_source.html#l00450">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="def_8h_source.html#l00538">error()</a>, <a class="el" href="sys_8cpp_source.html#l00055">thorin::sys::exec()</a>, <a class="el" href="world_8cpp_source.html#l00296">thorin::World::extract()</a>, <a class="el" href="scopes_8cpp_source.html#l00021">thorin::fe::Scopes::find()</a>, <a class="el" href="dl_8cpp_source.html#l00044">thorin::dl::get()</a>, <a class="el" href="parser_8cpp_source.html#l00089">thorin::fe::Parser::import()</a>, <a class="el" href="world_8cpp_source.html#l00359">thorin::World::insert()</a>, <a class="el" href="lexer_8cpp_source.html#l00034">thorin::fe::Lexer::lex()</a>, <a class="el" href="world_8cpp_source.html#l00453">thorin::World::lit()</a>, <a class="el" href="driver_8cpp_source.html#l00053">thorin::Driver::load()</a>, <a class="el" href="main_8cpp_source.html#l00025">main()</a>, <a class="el" href="driver_8cpp_source.html#l00090">thorin::Driver::name2annex()</a>, <a class="el" href="dl_8cpp_source.html#l00025">thorin::dl::open()</a>, <a class="el" href="optimize_8cpp_source.html#l00019">optimize()</a>, <a class="el" href="world_8cpp_source.html#l00423">thorin::World::pack()</a>, <a class="el" href="world_8cpp_source.html#l00244">thorin::World::tuple()</a>, <a class="el" href="world_8cpp_source.html#l00103">thorin::World::type()</a>, <a class="el" href="ast_8cpp_source.html#l00037">thorin::fe::TuplePtrn::type()</a>, <a class="el" href="world_8cpp_source.html#l00110">thorin::World::uinc()</a>, and <a class="el" href="world_8cpp_source.html#l00118">thorin::World::umax()</a>.</p>
 
@@ -2840,7 +2842,7 @@ template&lt;class T  = std::logic_error, class... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="loc_8h_source.html#l00067">67</a> of file <a class="el" href="loc_8h_source.html">loc.h</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8h_source.html#l00141">fmt()</a>, and <a class="el" href="print_8cpp_source.html#l00005">print()</a>.</p>
+<p class="reference">References <a class="el" href="print_8h_source.html#l00143">fmt()</a>, and <a class="el" href="print_8cpp_source.html#l00005">print()</a>.</p>
 
 </div>
 </div>
@@ -3074,11 +3076,11 @@ template&lt;class... Args&gt; </div>
 
 <p>Wraps <a class="el" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c" title="Base case.">thorin::print</a> to output a formatted <code>std:string</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00141">141</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00143">143</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
 <p class="reference">References <a class="el" href="print_8cpp_source.html#l00005">print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l01011">thorin::ll::compile()</a>, <a class="el" href="print_8h_source.html#l00175">errf()</a>, <a class="el" href="print_8h_source.html#l00177">errln()</a>, <a class="el" href="def_8h_source.html#l00538">error()</a>, <a class="el" href="log_8h_source.html#l00049">thorin::Log::log()</a>, <a class="el" href="print_8h_source.html#l00174">outf()</a>, and <a class="el" href="print_8h_source.html#l00176">outln()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l01011">thorin::ll::compile()</a>, <a class="el" href="print_8h_source.html#l00177">errf()</a>, <a class="el" href="print_8h_source.html#l00179">errln()</a>, <a class="el" href="def_8h_source.html#l00538">error()</a>, <a class="el" href="log_8h_source.html#l00049">thorin::Log::log()</a>, <a class="el" href="print_8h_source.html#l00176">outf()</a>, and <a class="el" href="print_8h_source.html#l00178">outln()</a>.</p>
 
 </div>
 </div>
@@ -5520,11 +5522,11 @@ template&lt;class... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00174">174</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00176">176</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8h_source.html#l00141">fmt()</a>, and <a class="el" href="print_8cpp_source.html#l00005">print()</a>.</p>
+<p class="reference">References <a class="el" href="print_8h_source.html#l00143">fmt()</a>, and <a class="el" href="print_8cpp_source.html#l00005">print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="print_8h_source.html#l00176">outln()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="print_8h_source.html#l00178">outln()</a>.</p>
 
 </div>
 </div>
@@ -5556,9 +5558,9 @@ template&lt;class... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00176">176</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00178">178</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8h_source.html#l00141">fmt()</a>, and <a class="el" href="print_8h_source.html#l00174">outf()</a>.</p>
+<p class="reference">References <a class="el" href="print_8h_source.html#l00143">fmt()</a>, and <a class="el" href="print_8h_source.html#l00176">outf()</a>.</p>
 
 </div>
 </div>
@@ -5680,7 +5682,7 @@ template&lt;class S &gt; </div>
 
 <p class="reference">References <a class="el" href="assert_8h_source.html#l00021">unreachable()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00088">thorin::ll::BB::assign()</a>, <a class="el" href="bootstrap_8cpp_source.html#l00011">bootstrap()</a>, <a class="el" href="ll_8cpp_source.html#l00125">thorin::ll::Emitter::declare()</a>, <a class="el" href="dump_8cpp_source.html#l00377">thorin::World::dump()</a>, <a class="el" href="ll_8cpp_source.html#l00450">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="dot_8cpp_source.html#l00084">thorin::dot::Emitter::emit_bb()</a>, <a class="el" href="ll_8cpp_source.html#l00311">thorin::ll::Emitter::emit_epilogue()</a>, <a class="el" href="dot_8cpp_source.html#l00071">thorin::dot::Emitter::emit_epilogue()</a>, <a class="el" href="ll_8cpp_source.html#l00250">thorin::ll::Emitter::emit_imported()</a>, <a class="el" href="dot_8cpp_source.html#l00067">thorin::dot::Emitter::emit_imported()</a>, <a class="el" href="print_8h_source.html#l00175">errf()</a>, <a class="el" href="loc_8h_source.html#l00067">error()</a>, <a class="el" href="ll_8cpp_source.html#l00282">thorin::ll::Emitter::finalize()</a>, <a class="el" href="print_8h_source.html#l00141">fmt()</a>, <a class="el" href="log_8h_source.html#l00049">thorin::Log::log()</a>, <a class="el" href="looptree_8cpp_source.html#l00211">operator&lt;&lt;()</a>, <a class="el" href="print_8h_source.html#l00174">outf()</a>, <a class="el" href="ll_8cpp_source.html#l00264">thorin::ll::Emitter::prepare()</a>, <a class="el" href="print_8h_source.html#l00199">thorin::Tab::print()</a>, <a class="el" href="print_8h_source.html#l00094">print()</a>, and <a class="el" href="ll_8cpp_source.html#l00094">thorin::ll::BB::tail()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00088">thorin::ll::BB::assign()</a>, <a class="el" href="bootstrap_8cpp_source.html#l00011">bootstrap()</a>, <a class="el" href="ll_8cpp_source.html#l00125">thorin::ll::Emitter::declare()</a>, <a class="el" href="dump_8cpp_source.html#l00377">thorin::World::dump()</a>, <a class="el" href="ll_8cpp_source.html#l00450">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="dot_8cpp_source.html#l00084">thorin::dot::Emitter::emit_bb()</a>, <a class="el" href="ll_8cpp_source.html#l00311">thorin::ll::Emitter::emit_epilogue()</a>, <a class="el" href="dot_8cpp_source.html#l00071">thorin::dot::Emitter::emit_epilogue()</a>, <a class="el" href="ll_8cpp_source.html#l00250">thorin::ll::Emitter::emit_imported()</a>, <a class="el" href="dot_8cpp_source.html#l00067">thorin::dot::Emitter::emit_imported()</a>, <a class="el" href="print_8h_source.html#l00177">errf()</a>, <a class="el" href="loc_8h_source.html#l00067">error()</a>, <a class="el" href="ll_8cpp_source.html#l00282">thorin::ll::Emitter::finalize()</a>, <a class="el" href="print_8h_source.html#l00143">fmt()</a>, <a class="el" href="log_8h_source.html#l00049">thorin::Log::log()</a>, <a class="el" href="looptree_8cpp_source.html#l00211">operator&lt;&lt;()</a>, <a class="el" href="print_8h_source.html#l00176">outf()</a>, <a class="el" href="ll_8cpp_source.html#l00264">thorin::ll::Emitter::prepare()</a>, <a class="el" href="print_8h_source.html#l00201">thorin::Tab::print()</a>, <a class="el" href="print_8h_source.html#l00096">print()</a>, and <a class="el" href="ll_8cpp_source.html#l00094">thorin::ll::BB::tail()</a>.</p>
 
 </div>
 </div>
@@ -5724,7 +5726,7 @@ template&lt;class T , class... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00094">94</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00096">96</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
 <p class="reference">References <a class="el" href="print_8cpp_source.html#l00005">print()</a>, and <a class="el" href="assert_8h_source.html#l00021">unreachable()</a>.</p>
 
