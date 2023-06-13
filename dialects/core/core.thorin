@@ -215,6 +215,21 @@
                XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):
     Π.[s: .Nat][«2; .Idx s»] -> .Bool , normalize_icmp;
 ///
+/// ### %core.extrema
+///
+/// Minimum and Maximum of two Integers
+///     * un`s`igned or `S`igned
+///     * `m`inimum or `M`aximum
+///
+.ax %core.extrema(sm=umin, sM=umax, Sm=smin, SM=smax): Π.[s:.Nat][.Idx s,.Idx s] -> .Idx s, normalize_extrema;
+///
+/// ### %core.abs
+///
+/// Absolute value of an int
+///
+///
+.ax %core.abs: Π.[s:.Nat][%mem.M, .Idx s] -> [%mem.M, .Idx s], normalize_abs;
+///
 /// ## Conversions
 ///
 /// ### %core.conv
