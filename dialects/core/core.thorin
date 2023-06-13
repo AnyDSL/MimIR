@@ -227,6 +227,7 @@
 ///
 /// Absolute value of an int
 ///
+/// @warning Computing the absolute value of an Integer with the lowest possible value leads to *undefined behavior*, which is why this axiom expects a `%%mem.M`
 ///
 .ax %core.abs: Π.[s:.Nat][%mem.M, .Idx s] -> [%mem.M, .Idx s], normalize_abs;
 ///
