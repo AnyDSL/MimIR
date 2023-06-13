@@ -98,6 +98,12 @@ Res fold(u64 a, u64 b, [[maybe_unused]] bool nsw, [[maybe_unused]] bool nuw) {
         res |= ((id & icmp::xygLe) != icmp::f) && u < v && !pm;
         res |= ((id & icmp::xyglE) != icmp::f) && u == v;
         return res;
+    } else if constexpr (std::is_same_v<Id, extrema>) {
+        if constexpr (false) {}
+        else if(id == extrema::sm) return std::min(u, v);
+        else if(id == extrema::Sm) return std::min(s, t);
+        else if(id == extrema::sM) return std::max(u, v);
+        else if(id == extrema::SM) return std::max(s, t);
     } else {
         []<bool flag = false>() { static_assert(flag, "missing tag"); }();
     }
@@ -137,6 +143,42 @@ Ref fold(World& world, Ref type, const Def*& a, const Def*& b, Ref mode = {}) {
     }
 
     commute(id, a, b);
+    return nullptr;
+}
+
+template<class Id, nat_t w>
+Res fold(u64 a, [[maybe_unused]] bool nsw, [[maybe_unused]] bool nuw) {
+    using ST = w2s<w>;
+    auto s = thorin::bitcast<ST>(a);
+
+    if constexpr (std::is_same_v<Id, abs>) {
+       return std::abs(s);
+    } else {
+        []<bool flag = false>() { static_assert(flag, "missing tag"); }();
+    }
+}
+
+template<class Id>
+Ref fold(World& world, Ref type, const Def*& a) {
+    if (a->isa<Bot>()) return world.bot(type);
+
+    if (auto la = Lit::isa(a)) {
+        auto size  = Lit::as(Idx::size(a->type()));
+        auto width = Idx::size2bitwidth(size);
+        bool nsw = false, nuw = false;
+        Res res;
+            switch (width) {
+#define CODE(i) \
+    case i: res = fold<Id, i>(*la, nsw, nuw); break;
+                THORIN_1_8_16_32_64(CODE)
+#undef CODE
+                default:
+                    res = fold<Id, 64>(*la, false, false);
+                    if (res && !std::is_same_v<Id, icmp>) *res %= size;
+            }
+
+            return res ? world.lit(type, *res) : world.bot(type);
+    }
     return nullptr;
 }
 
@@ -268,6 +310,27 @@ Ref normalize_icmp(Ref type, Ref c, Ref arg) {
     }
 
     return world.raw_app(type, callee, {a, b});
+}
+
+template<extrema id>
+Ref normalize_extrema(Ref type, Ref c, Ref arg) {
+    auto& world      = type->world();
+    auto callee      = c->as<App>();
+    auto [a, b] = arg->projs<2>();
+    if (auto result = fold<extrema, id>(world, type, a, b)) return result;
+    return world.raw_app(type, callee, {a, b});
+}
+
+Ref normalize_abs(Ref type, Ref c, Ref arg) {
+    auto& world           = type->world();
+    auto callee           = c->as<App>();
+    auto [mem, a]         = arg->projs<2>();
+    auto [_, actual_type] = type->projs<2>();
+    auto make_res  = [&, mem = mem](Ref res) { return world.tuple({mem, res}); };
+
+
+    if (auto result = fold<abs>(world, actual_type, a)) return make_res(result);
+    return world.raw_app(type, callee, arg);
 }
 
 template<bit1 id>
