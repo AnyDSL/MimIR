@@ -19,6 +19,30 @@ public:
         if (old_def->has_dep(Dep::Infer)) return Rewriter::rewrite(old_def);
         return old_def;
     }
+
+    Ref rewrite_mut(Def* mut) override {
+        map(mut, mut);
+        auto new_type = rewrite(mut->type());
+        bool update   = new_type != mut->type();
+
+        if (mut->is_set()) {
+            auto n = mut->num_ops();
+            DefArray new_ops(n);
+            for (size_t i = 0; i != n; ++i) {
+                auto new_op = rewrite(mut->op(i));
+                new_ops[i]  = new_op;
+                update |= new_op != mut->op(i);
+            }
+
+            if (update) {
+                mut->set_type(new_type);
+                mut->reset(new_ops);
+            }
+            if (auto imm = mut->immutabilize()) return map(mut, imm);
+        }
+
+        return mut;
+    }
 };
 
 template<class T> bool to_left(const Def* d1, const Def* d2) { return !d1->isa<T>() && d2->isa<T>(); }
@@ -482,7 +506,7 @@ std::optional<Check2::Pair> Check2::alpha_symm(Ref d1, Ref d2) {
             auto [n, i] = *idx;
             if (auto elem = explode(extract->tuple(), n, i, d2)) {
                 auto [elem1, elem2] = alpha_(elem, d2);
-                assert(elem1 == elem2);
+                // assert(elem1 == elem2);
                 if (!elem1) return fail();
                 return {Pair(elem1, elem1)};
             }

@@ -193,6 +193,7 @@ Ref World::iapp(Ref callee, Ref arg) {
 }
 
 Ref World::app(Ref callee, Ref arg) {
+    Infer::eliminate(Array<Ref*>{&callee, &arg});
     auto pi = callee->type()->isa<Pi>();
     if (!pi) error(callee, "called expression '{}' : '{}' is not of function type", callee, callee->type());
     auto [dom, iarg] = Check2::assignable(pi->dom(), arg);
