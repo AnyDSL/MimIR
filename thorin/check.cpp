@@ -44,6 +44,7 @@ const Def* Infer::find(const Def* def) {
 
     assert((!res->isa<Infer>() || res != res->op(0)) && "an Infer shouldn't point to itself");
 
+#if 0
     // If we have an Infer as operand, try to get rid of it now.
     // TODO why does this not work?
     // if (res->isa_imm() && res->has_dep(Dep::Infer)) {
@@ -59,6 +60,7 @@ const Def* Infer::find(const Def* def) {
 
         if (update) return res->rebuild(res->world(), new_type, new_ops);
     }
+#endif
 
     return res;
 }
@@ -365,8 +367,34 @@ Check2::Pair Check2::alpha_internal(Ref d1, Ref d2) {
 
     // if (mode != Relaxed && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return false;
 
-    if (auto p = alpha_internal(d1, d2, false)) return *p;
-    if (auto p = alpha_internal(d2, d1, true)) return {p->second, p->first};
+    if (auto arr = d1->isa_mut<Arr>()) {
+        auto [a1, a2] = alpha_(arr->arity(), d2->arity());
+        if (auto a = Lit::isa(a1)) {
+            if (Scope::is_free(arr, arr->body()))
+                d1 = world().sigma(DefArray(*a, [&](size_t i) { return arr->reduce(world().lit_idx(*a, i)); }));
+            else
+                d1 = world().arr(arr->shape(), arr->body());
+        }
+    }
+
+    if (auto arr = d2->isa_mut<Arr>()) {
+        auto [a1, a2] = alpha_(arr->arity(), d2->arity());
+        if (auto a = Lit::isa(a2)) {
+            if (Scope::is_free(arr, arr->body()))
+                d2 = world().sigma(DefArray(*a, [&](size_t i) { return arr->reduce(world().lit_idx(*a, i)); }));
+            else
+                d2 = world().arr(arr->shape(), arr->body());
+        }
+    }
+
+    if (auto mut1 = d1->isa_mut(); mut1 && d2->isa_imm()) {
+        if (auto imm1 = mut1->immutabilize()) return alpha_(imm1, d2);
+    } else if (auto mut2 = d2->isa_mut()) {
+        if (auto imm2 = mut2->immutabilize()) return alpha_(d1, imm2);
+    }
+
+    if (auto p = alpha_symm(d1, d2)) return *p;
+    if (auto p = alpha_symm(d2, d1)) return {p->second, p->first};
 
     if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return fail();
 
@@ -391,7 +419,7 @@ Check2::Pair Check2::alpha_internal(Ref d1, Ref d2) {
     return {d1, d2};
 }
 
-std::optional<Check2::Pair> Check2::alpha_internal(Ref d1, Ref d2, bool /*swap*/) {
+std::optional<Check2::Pair> Check2::alpha_symm(Ref d1, Ref d2) {
     if (d1->isa<Top>()) {
         return {Pair(d2, d2)};
     } else if (auto var1 = d1->isa<Var>()) {
@@ -452,18 +480,35 @@ std::optional<Check2::Pair> Check2::alpha_internal(Ref d1, Ref d2, bool /*swap*/
     } else if (auto extract = d1->isa<Extract>(); extract && !d2->isa<Extract>()) {
         if (auto idx = Lit::isa_idx(extract->index())) {
             auto [n, i] = *idx;
-            if (auto infer = extract->tuple()->isa_mut<Infer>()) {
-                auto tuple          = infer->is_set() ? Ref(infer->op()) : infer->explode();
-                auto [elem1, elem2] = alpha_(tuple->proj(n, i), d2);
+            if (auto elem = explode(extract->tuple(), n, i, d2)) {
+                auto [elem1, elem2] = alpha_(elem, d2);
                 assert(elem1 == elem2);
                 if (!elem1) return fail();
                 return {Pair(elem1, elem1)};
-            } else {
-                outln("TODO");
             }
         } else {
             // TODO arr explode
             outln("TODO arr explode");
+        }
+    }
+
+    return {};
+}
+
+Ref Check2::explode(Ref tuple, nat_t n, nat_t i, Ref value) {
+    // outln("in: {} -- {}_{}", tuple, i, n);
+    if (auto infer = tuple->isa_mut<Infer>()) tuple = infer->explode();
+
+    if (auto tup = tuple->isa<Tuple>()) {
+        assert(tup->num_ops() == n);
+        // outln("out: {}", tup->op(i));
+        return tup->op(i);
+    } else if (auto extract = tuple->isa<Extract>(); extract && !value->isa<Extract>()) {
+        if (auto idx = Lit::isa_idx(extract->index())) {
+            auto [n, i] = *idx;
+            auto res    = explode(extract->tuple(), n, i, value);
+            // outln("out: {}", tuple->op(i));
+            return res;
         }
     }
 

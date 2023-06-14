@@ -110,8 +110,10 @@ public:
 private:
     Pair alpha_(Ref d1, Ref d2);
     Pair alpha_internal(Ref, Ref);
-    std::optional<Pair> alpha_internal(Ref, Ref, bool);
+    std::optional<Pair> alpha_symm(Ref, Ref);
     Pair assignable_(Ref type, Ref value);
+    // Pair proj(Ref tuple, nat_t, nat_t, Ref value);
+    Ref explode(Ref tuple, nat_t, nat_t, Ref value);
 
     World& world_;
     DefMap<Pair> old2new_;
