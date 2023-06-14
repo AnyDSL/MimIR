@@ -176,15 +176,6 @@ Ref World::iapp(Ref callee, Ref arg) {
             auto a     = app(callee, infer);
             callee     = a;
         } else {
-#if 0
-            // resolve Infers now if possible before normalizers are run
-            if (auto app = callee->isa<App>(); app && app->curry() == 1) {
-                Check2::assignable(callee->type()->as<Pi>()->dom(), arg);
-                auto apps = decurry(app);
-                callee    = apps.front()->callee();
-                for (auto app : apps) callee = this->app(callee, Ref::refer(app->arg()));
-            }
-#endif
             break;
         }
     }
