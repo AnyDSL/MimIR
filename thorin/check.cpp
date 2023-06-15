@@ -15,7 +15,7 @@ public:
         : Rewriter(world) {}
 
     Ref rewrite(Ref old_def) override {
-        if (!old_def || old_def->isa_mut() || !old_def->has_dep(Dep::Infer)) return old_def;
+        if (!old_def || !Infer::should_eliminate(old_def)) return old_def;
         return Rewriter::rewrite(old_def);
     }
 };
@@ -79,7 +79,7 @@ Ref Infer::explode() {
 }
 
 bool Infer::eliminate(Array<Ref*> refs) {
-    if (std::ranges::any_of(refs, [](auto pref) { return (*pref)->has_dep(Dep::Infer); })) {
+    if (std::ranges::any_of(refs, [](auto pref) { return should_eliminate(*pref); })) {
         auto& world = (*refs.front())->world();
         InferRewriter rw(world);
         for (size_t i = 0, e = refs.size(); i != e; ++i) {

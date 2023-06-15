@@ -29,7 +29,9 @@ public:
     static Ref explode2(Ref);
 
     /// Eliminate Infer%s that have may have been resolved in the meantime by rebuilding.
+    /// @returns `true`, if one of the arguements was in fact updated.
     static bool eliminate(Array<Ref*>);
+    static bool should_eliminate(Ref def) { return def->isa_imm() && def->has_dep(Dep::Infer); }
 
     /// [Union-Find](https://en.wikipedia.org/wiki/Disjoint-set_data_structure) to unify Infer nodes.
     /// Def::flags is used to keep track of rank for
