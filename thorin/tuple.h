@@ -56,8 +56,8 @@ private:
 public:
     /// @name ops
     ///@{
-    const Def* shape() const { return op(0); }
-    const Def* body() const { return op(1); }
+    Ref shape() const { return op(0); }
+    Ref body() const { return op(1); }
     ///@}
 
     /// @name Setters
@@ -92,9 +92,9 @@ private:
 public:
     /// @name ops
     ///@{
-    const Def* body() const { return op(0); }
+    Ref body() const { return op(0); }
     const Arr* type() const { return Def::type()->as<Arr>(); }
-    const Def* shape() const { return type()->shape(); }
+    Ref shape() const { return type()->shape(); }
     ///@}
 
     /// @name Setters
@@ -121,8 +121,8 @@ private:
 public:
     /// @name ops
     ///@{
-    const Def* tuple() const { return op(0); }
-    const Def* index() const { return op(1); }
+    Ref tuple() const { return op(0); }
+    Ref index() const { return op(1); }
     ///@}
 
     THORIN_DEF_MIXIN(Extract)
@@ -140,9 +140,9 @@ private:
 public:
     /// @name ops
     ///@{
-    const Def* tuple() const { return op(0); }
-    const Def* index() const { return op(1); }
-    const Def* value() const { return op(2); }
+    Ref tuple() const { return op(0); }
+    Ref index() const { return op(1); }
+    Ref value() const { return op(2); }
     ///@}
 
     THORIN_DEF_MIXIN(Insert)

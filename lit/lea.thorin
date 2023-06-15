@@ -1,7 +1,8 @@
 // remove when we have ported %mem.lea to use type inference
 // RUN: %thorin %s -o -
 .ax %foo.Ptr: * -> *;
-.ax %foo.lea: Π .[n: .Nat, Ts: «n; *»] [%foo.Ptr «j: n; Ts#j», i: .Idx n] -> %foo.Ptr Ts#i;
+.ax %foo.lea:  Π.[n: .Nat,               Ts: «n; *»] [%foo.Ptr «j: n; Ts#j»,  i:        .Idx n   ] -> %foo.Ptr Ts#i;
+.ax %foo.lea2: Π.[r: .Nat, s: «r; .Nat», Ts: «s; *»] [%foo.Ptr «j: s; Ts#j», is: «i: r; .Idx s#i»] -> %foo.Ptr Ts#is;
 
 .lam f(p: %foo.Ptr [.Nat, .Bool]): %foo.Ptr .Nat = %foo.lea (p, 0_2);
 
