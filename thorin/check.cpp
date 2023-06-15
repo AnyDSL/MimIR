@@ -15,33 +15,8 @@ public:
         : Rewriter(world) {}
 
     Ref rewrite(Ref old_def) override {
-        if (!old_def || old_def->isa_mut()) return old_def;
-        if (old_def->has_dep(Dep::Infer)) return Rewriter::rewrite(old_def);
-        return old_def;
-    }
-
-    Ref rewrite_mut(Def* mut) override {
-        map(mut, mut);
-        auto new_type = rewrite(mut->type());
-        bool update   = new_type != mut->type();
-
-        if (mut->is_set()) {
-            auto n = mut->num_ops();
-            DefArray new_ops(n);
-            for (size_t i = 0; i != n; ++i) {
-                auto new_op = rewrite(mut->op(i));
-                new_ops[i]  = new_op;
-                update |= new_op != mut->op(i);
-            }
-
-            if (update) {
-                mut->set_type(new_type);
-                mut->reset(new_ops);
-            }
-            if (auto imm = mut->immutabilize()) return map(mut, imm);
-        }
-
-        return mut;
+        if (!old_def || old_def->isa_mut() || !old_def->has_dep(Dep::Infer)) return old_def;
+        return Rewriter::rewrite(old_def);
     }
 };
 
@@ -101,32 +76,6 @@ Ref Infer::explode() {
     auto tuple = w.tuple(infers);
     set(tuple);
     return tuple;
-}
-
-Ref Infer::explode2(Ref type) {
-    auto a = type->isa_lit_arity();
-    if (!a) return {};
-
-    auto n      = *a;
-    auto infers = DefArray(n);
-    auto& w     = type->world();
-
-    if (auto arr = type->isa_imm<Arr>(); arr && n > w.flags().infer_arr_threshold)
-        return w.pack(arr->shape(), w.mut_infer(arr->body()));
-
-    if (auto sigma = type->isa_mut<Sigma>(); sigma && n >= 1 && sigma->var()) {
-        Scope scope(sigma);
-        ScopeRewriter rw(scope);
-        infers[0] = w.mut_infer(sigma->op(0));
-        for (size_t i = 1; i != n; ++i) {
-            rw.map(sigma->var(n, i - 1), infers[i - 1]);
-            infers[i] = w.mut_infer(rw.rewrite(sigma->op(i)));
-        }
-    } else {
-        for (size_t i = 0; i != n; ++i) infers[i] = w.mut_infer(type->proj(n, i));
-    }
-
-    return w.tuple(infers);
 }
 
 bool Infer::eliminate(Array<Ref*> refs) {
@@ -314,6 +263,26 @@ Check2::Pair Check2::alpha_(Ref r1, Ref r2) {
     }
     if (d1->isa<Univ>()) return fail();
 
+    if (auto arr = d1->isa_mut<Arr>()) {
+        auto [a1, a2] = alpha_(arr->arity(), d2->arity());
+        if (auto a = Lit::isa(a1)) {
+            if (Scope::is_free(arr, arr->body()))
+                d1 = world().sigma(DefArray(*a, [&](size_t i) { return arr->reduce(world().lit_idx(*a, i)); }));
+            else
+                d1 = world().arr(arr->shape(), arr->body());
+        }
+    }
+
+    if (auto arr = d2->isa_mut<Arr>()) {
+        auto [a1, a2] = alpha_(arr->arity(), d2->arity());
+        if (auto a = Lit::isa(a2)) {
+            if (Scope::is_free(arr, arr->body()))
+                d2 = world().sigma(DefArray(*a, [&](size_t i) { return arr->reduce(world().lit_idx(*a, i)); }));
+            else
+                d2 = world().arr(arr->shape(), arr->body());
+        }
+    }
+
 #if 0
     if (!d1->isa<Type>() && !d2->isa<Type>()) {
         auto [type1, type2] = alpha_(d1->type(), d2->type());
@@ -372,26 +341,6 @@ Check2::Pair Check2::alpha_internal(Ref d1, Ref d2) {
     if (!type1) return fail();
 
     // if (mode != Relaxed && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return false;
-
-    if (auto arr = d1->isa_mut<Arr>()) {
-        auto [a1, a2] = alpha_(arr->arity(), d2->arity());
-        if (auto a = Lit::isa(a1)) {
-            if (Scope::is_free(arr, arr->body()))
-                d1 = world().sigma(DefArray(*a, [&](size_t i) { return arr->reduce(world().lit_idx(*a, i)); }));
-            else
-                d1 = world().arr(arr->shape(), arr->body());
-        }
-    }
-
-    if (auto arr = d2->isa_mut<Arr>()) {
-        auto [a1, a2] = alpha_(arr->arity(), d2->arity());
-        if (auto a = Lit::isa(a2)) {
-            if (Scope::is_free(arr, arr->body()))
-                d2 = world().sigma(DefArray(*a, [&](size_t i) { return arr->reduce(world().lit_idx(*a, i)); }));
-            else
-                d2 = world().arr(arr->shape(), arr->body());
-        }
-    }
 
     if (auto mut1 = d1->isa_mut(); mut1 && d2->isa_imm()) {
         if (auto imm1 = mut1->immutabilize()) return alpha_(imm1, d2);
