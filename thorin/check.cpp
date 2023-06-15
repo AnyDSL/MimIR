@@ -283,13 +283,6 @@ Check2::Pair Check2::alpha_(Ref r1, Ref r2) {
         }
     }
 
-#if 0
-    if (!d1->isa<Type>() && !d2->isa<Type>()) {
-        auto [type1, type2] = alpha_(d1->type(), d2->type());
-        if (!type1) return fail();
-    }
-#endif
-
     auto i1 = d1->isa_mut<Infer>();
     auto i2 = d2->isa_mut<Infer>();
 
@@ -541,8 +534,10 @@ void Pi::check() {
 }
 
 void Infer::check() {
-    if (!world().is_frozen() && !Check::assignable(type(), op()))
-        error(type(), "cannot assign '{}' of type '{}' to Infer of type '{}'", op(), op()->type(), type());
+    // TODO We can't really check Infers while we are already checking stuff.
+    // This is causing some recursive headaches.
+    // if (!world().is_frozen() && !Check::assignable(type(), op()))
+    // error(type(), "cannot assign '{}' of type '{}' to Infer of type '{}'", op(), op()->type(), type());
 }
 
 } // namespace thorin
