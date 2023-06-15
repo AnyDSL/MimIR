@@ -7,7 +7,6 @@
 namespace thorin {
 
 Ref Rewriter::rewrite(Ref old_def) {
-    if (!old_def) return nullptr;
     if (old_def->isa<Univ>()) return world().univ();
     if (auto i = old2new_.find(old_def); i != old2new_.end()) return i->second;
     if (auto old_mut = old_def->isa_mut()) return rewrite_mut(old_mut);
@@ -26,7 +25,7 @@ Ref Rewriter::rewrite_imm(Ref old_def) {
         }
     }
 
-    auto new_type = rewrite(old_def->type());
+    auto new_type = old_def->isa<Type>() ? nullptr : rewrite(old_def->type());
     DefArray new_ops(old_def->num_ops(), [&](auto i) { return rewrite(old_def->op(i)); });
     return old_def->rebuild(world(), new_type, new_ops);
 }

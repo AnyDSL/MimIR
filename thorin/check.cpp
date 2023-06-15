@@ -15,8 +15,8 @@ public:
         : Rewriter(world) {}
 
     Ref rewrite(Ref old_def) override {
-        if (!old_def || !Infer::should_eliminate(old_def)) return old_def;
-        return Rewriter::rewrite(old_def);
+        if (Infer::should_eliminate(old_def)) return Rewriter::rewrite(old_def);
+        return old_def;
     }
 };
 

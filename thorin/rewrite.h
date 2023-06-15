@@ -38,9 +38,7 @@ public:
     const Scope& scope() const { return scope_; }
 
     Ref rewrite(Ref old_def) override {
-        if (!old_def) return nullptr;
-        if ((old_def->isa_imm() && old_def->has_dep(Dep::Infer)) || scope_.bound(old_def))
-            return Rewriter::rewrite(old_def);
+        if (Infer::should_eliminate(old_def) || scope_.bound(old_def)) return Rewriter::rewrite(old_def);
         return old_def;
     }
 
