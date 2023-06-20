@@ -1,0 +1,47 @@
+// RUN: %thorin %s -o -
+.plugin core;
+.plugin fun;
+.plugin refly;
+
+//.ax %fun.zip2:
+//    Π [r: .Nat]
+//     .[s: «r; .Nat», ni: .Nat, Is: «ni; *», no: .Nat, Os: «no; *»]
+//      [f: «i: ni; Is#i» -> «o: no; Os#o»]
+//      [is: «i: ni; «s; Is#i»»]
+//    → «o: no; «s; Os#o»»,
+//    normalize_zip;
+.ax %fun.zip:
+    Π.[r: .Nat, s: «r; .Nat», ni: .Nat, Is: «ni; *», no: .Nat, Os: «no; *»]
+      [f: «i: ni; Is#i» -> «o: no; Os#o»]
+      [is: «i: ni; «s; Is#i»»]
+    → «o: no; «s; Os#o»»,
+    normalize_zip;
+
+.ax %fun.map:
+    Π.[r: .Nat, s: «r; .Nat», ni: .Nat, Is: «ni; *», O: *]
+      [f: «i: ni; Is#i» -> O]
+      [is: «i: ni; «s; Is#i»»]
+    → «s; O»,
+    normalize_map;
+
+.ax %fun.reduce:
+    Π.[r: .Nat, s: «r; .Nat», ni: .Nat, Is: «ni; *»]
+      [f: «2; «i: ni; Is#i»» -> «i: ni; Is#i»]
+      [is: «i: ni; «s; Is#i»», init: «i: ni; Is#i», dims: «r; .Bool»]
+    → «i: ni; «‹j: r; (s#j, 1)#(dims#j)›; Is#i»»,
+    normalize_reduce;
+
+.let a = (
+    (0:%core.I32, 1:%core.I32,  2:%core.I32),
+    (3:%core.I32, 4:%core.I32,  5:%core.I32)
+);
+.let b = (
+    (6:%core.I32,  7:%core.I32,  8:%core.I32),
+    (9:%core.I32, 10:%core.I32, 11:%core.I32)
+);
+
+//.let z = %fun.zip2 2 (%core.wrap.add @ %core.i32 0) (a, b);
+.let z = %fun.zip    (%core.wrap.add @ %core.i32 0) (a, b);
+//.let m = %fun.map    (%core.wrap.add @ %core.i32 0) (a, b);
+//.let r = %fun.reduce (%core.wrap.add @ %core.i32 0) (a, 0:%core.I32, (.tt, .ff));
+//.let _ = %refly.dbg.tmp (%refly.info, r);
