@@ -359,12 +359,13 @@ Ref World::extract(Ref d, Ref index) {
 Ref World::insert(Ref d, Ref index, Ref val) {
     auto type = d->unfold_type();
     auto size = Idx::size(index->type());
+    auto lidx = Lit::isa(index);
 
     if (!Check::alpha(type->arity(), size))
         error(index, "index '{}' does not fit within arity '{}'", index, type->arity());
 
-    if (auto index_lit = Lit::isa(index)) {
-        auto target_type = type->proj(*index_lit);
+    if (lidx) {
+        auto target_type = type->proj(*lidx);
         if (!Check::assignable(target_type, val))
             error(val, "value of type {} is not assignable to type {}", val->type(), target_type);
     }
@@ -373,7 +374,7 @@ Ref World::insert(Ref d, Ref index, Ref val) {
         return tuple(d, {val}); // d could be mut - that's why the tuple ctor is needed
 
     // insert((a, b, c, d), 2, x) -> (a, b, x, d)
-    if (auto t = d->isa<Tuple>()) return t->refine(Lit::as(index), val);
+    if (auto t = d->isa<Tuple>(); t && lidx) return t->refine(*lidx, val);
 
     // insert(‹4; x›, 2, y) -> (x, x, y, x)
     if (auto pack = d->isa<Pack>()) {
