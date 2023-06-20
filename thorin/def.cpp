@@ -272,14 +272,14 @@ const Def* Def::debug_suffix(std::string suffix) const {
 
 // clang-format off
 
-Ref val_nat2type_idx(World& world, Ref shape) {
+Ref shape2type(World& world, Ref shape) {
     if (shape->type()->isa<Nat>()) return world.type_idx(shape); // x: .Nat       => .Idx x
     if (auto sigma = shape->type()->isa<Sigma>()) {              // x: [Nat, Nat] => [.Idx x#0_1, .Idx x#0_2]
         auto n = sigma->num_ops();
-        return world.sigma(DefArray(n, [&](size_t i) { return val_nat2type_idx(world, shape->proj(n, i)); }));
+        return world.sigma(DefArray(n, [&](size_t i) { return shape2type(world, shape->proj(n, i)); }));
     } else if (auto old_arr = shape->type()->isa_imm<Arr>()) {   // x: «n; .Nat»  => «i: n; .Idx x#i»
         auto new_arr = world.mut_arr(old_arr->type())->set_shape(old_arr->shape());
-        return new_arr->set_body(val_nat2type_idx(world, world.extract(shape, new_arr->var())));
+        return new_arr->set_body(shape2type(world, world.extract(shape, new_arr->var())));
     } else if (/*auto arr = */shape->type()->isa_mut<Arr>()) {
         assert(false && "TODO");
     }
@@ -300,8 +300,8 @@ Ref Def::var() {
     if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam);
     if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi);
     if (auto sig  = isa<Sigma>()) return w.var(sig,         sig);
-    if (auto arr  = isa<Arr  >()) return w.var(val_nat2type_idx(w, arr ->shape()), arr );
-    if (auto pack = isa<Pack >()) return w.var(val_nat2type_idx(w, pack->shape()), pack);
+    if (auto arr  = isa<Arr  >()) return w.var(shape2type(w, arr ->shape()), arr );
+    if (auto pack = isa<Pack >()) return w.var(shape2type(w, pack->shape()), pack);
     if (isa<Bound >()) return w.var(this, this);
     if (isa<Infer >()) return nullptr;
     if (isa<Global>()) return nullptr;

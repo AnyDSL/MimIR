@@ -314,8 +314,8 @@ Check2::Pair Check2::alpha_(Ref r1, Ref r2) {
 
     if (!d1->is_set() || !d2->is_set()) return fail();
 
-    auto [it1, ins1] = old2new_.emplace(d1, Pair{d1, d2});
     /*auto [it2, ins2] =*/old2new_.emplace(d2, Pair{d2, d1});
+    auto [it1, ins1] = old2new_.emplace(d1, Pair{d1, d2});
     // assert(d1 == d2 || !(ins1 ^ ins2));
     if (!ins1) return it1->second;
 
