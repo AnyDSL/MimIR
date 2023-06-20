@@ -212,20 +212,6 @@ DefArray Def::reduce(const Def* arg) {
     return cache[{this, arg}] = rewrite(this, arg);
 }
 
-const Def* Def::reduce_rec() const {
-    auto def = this;
-    while (auto app = def->isa<App>()) {
-        auto callee = app->callee()->reduce_rec();
-        if (callee->isa_mut()) {
-            def = callee->reduce(app->arg()).back();
-        } else {
-            def = callee != app->callee() ? world().app(callee, app->arg()) : app;
-            break;
-        }
-    }
-    return def;
-}
-
 const Def* Def::refine(size_t i, const Def* new_op) const {
     DefArray new_ops(ops());
     new_ops[i] = new_op;
@@ -253,7 +239,7 @@ const Def* Def::unfold_type() const {
         return nullptr;
     }
 
-    return type_->reduce_rec();
+    return type_;
 }
 
 std::string_view Def::node_name() const {
@@ -286,6 +272,20 @@ const Def* Def::debug_suffix(std::string suffix) const {
 
 // clang-format off
 
+Ref shape2type(World& world, Ref shape) {
+    if (shape->type()->isa<Nat>()) return world.type_idx(shape); // x: .Nat       => .Idx x
+    if (auto sigma = shape->type()->isa<Sigma>()) {              // x: [Nat, Nat] => [.Idx x#0_1, .Idx x#0_2]
+        auto n = sigma->num_ops();
+        return world.sigma(DefArray(n, [&](size_t i) { return shape2type(world, shape->proj(n, i)); }));
+    } else if (auto old_arr = shape->type()->isa_imm<Arr>()) {   // x: «n; .Nat»  => «i: n; .Idx x#i»
+        auto new_arr = world.mut_arr(old_arr->type())->set_shape(old_arr->shape());
+        return new_arr->set_body(shape2type(world, world.extract(shape, new_arr->var())));
+    } else if (/*auto arr = */shape->type()->isa_mut<Arr>()) {
+        assert(false && "TODO");
+    }
+    return {};
+}
+
 Ref Def::var() {
     auto& w = world();
 
@@ -300,8 +300,8 @@ Ref Def::var() {
     if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam);
     if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi);
     if (auto sig  = isa<Sigma>()) return w.var(sig,         sig);
-    if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->shape()), arr ); // TODO shapes like (2, 3)
-    if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->shape()), pack); // TODO shapes like (2, 3)
+    if (auto arr  = isa<Arr  >()) return w.var(shape2type(w, arr ->shape()), arr );
+    if (auto pack = isa<Pack >()) return w.var(shape2type(w, pack->shape()), pack);
     if (isa<Bound >()) return w.var(this, this);
     if (isa<Infer >()) return nullptr;
     if (isa<Global>()) return nullptr;
@@ -441,11 +441,11 @@ const Def* Def::proj(nat_t a, nat_t i) const {
         return op(i);
     } else if (auto arr = isa<Arr>()) {
         if (arr->arity()->isa<Top>()) return arr->body();
-        return arr->reduce(w.lit_idx(arr->as_lit_arity(), i));
+        return arr->reduce(w.lit_idx(a, i));
     } else if (auto pack = isa<Pack>()) {
         if (pack->arity()->isa<Top>()) return pack->body();
         assert(!w.is_frozen() && "TODO");
-        return pack->reduce(w.lit_idx(pack->as_lit_arity(), i));
+        return pack->reduce(w.lit_idx(a, i));
     }
 
     if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {
