@@ -377,10 +377,10 @@ Ref World::insert(Ref d, Ref index, Ref val) {
     if (auto t = d->isa<Tuple>(); t && lidx) return t->refine(*lidx, val);
 
     // insert(‹4; x›, 2, y) -> (x, x, y, x)
-    if (auto pack = d->isa<Pack>()) {
+    if (auto pack = d->isa<Pack>(); pack && lidx) {
         if (auto a = pack->isa_lit_arity()) {
             DefArray new_ops(*a, pack->body());
-            new_ops[Lit::as(index)] = val;
+            new_ops[*lidx] = val;
             return tuple(type, new_ops);
         }
     }
