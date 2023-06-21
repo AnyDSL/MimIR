@@ -223,7 +223,7 @@ public:
 
     /// Yields the **raw** type of this Def, i.e. maybe `nullptr`. @see Def::unfold_type.
     const Def* type() const { return type_; }
-    /// Yields the type of this Def and unfolds it if necessary. @see Def::type, Def::reduce_rec.
+    /// Yields the type of this Def and builds a new `.Type (UInc n)` if necessary.
     const Def* unfold_type() const;
     /// Yields `true` if `this:T` and `T:(.Type 0)`.
     bool is_term() const;
@@ -457,10 +457,6 @@ public:
     /// Rewrites Def::ops by substituting `this` mutable's Var with @p arg.
     DefArray reduce(const Def* arg) const;
     DefArray reduce(const Def* arg);
-
-    /// Transitively Def::reduce Lam%s, if `this` is an App.
-    /// @returns the reduced body.
-    const Def* reduce_rec() const;
     ///@}
 
     /// @name Type Checking
