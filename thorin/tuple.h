@@ -93,8 +93,7 @@ public:
     /// @name ops
     ///@{
     const Def* body() const { return op(0); }
-    const Arr* type() const { return Def::type()->as<Arr>(); }
-    const Def* shape() const { return type()->shape(); }
+    const Def* shape() const;
     ///@}
 
     /// @name Setters
