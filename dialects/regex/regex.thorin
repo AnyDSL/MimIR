@@ -1,0 +1,191 @@
+/// # The regex Plugin {#regex}
+///
+/// @see thorin::regex
+///
+/// [TOC]
+///
+/// A normalizing regex plugin
+///
+/// ## Dependencies
+///
+.import core;
+.import mem;
+.import compile;
+.plugin direct;
+///
+/// ## Types
+///
+/// ### RE
+///
+/// A regular expression matcher.
+.let RE = Π[n: .Nat][%mem.M, %mem.Ptr0 «n; %core.I8», .Idx n] -> [%mem.M, .Bool, .Idx n];
+
+/// ## Meta
+///
+/// ### %regex.conj
+/// 
+/// A sequence of RE's, e.g. `\d\d\d` matching 3 digits:
+/// `%regex.conj (%regex.cls.d, %regex.cls.d, %regex.cls.d)
+///
+.ax %regex.conj: Π[n: .Nat][<<n; RE>>] -> RE, normalize_conj, 2;
+
+///
+/// ### %regex.disj
+///
+/// Match any of the sub expressions: `[0123456789]`
+///
+.ax %regex.disj: Π[n: .Nat][<<n; RE>>] -> RE, normalize_disj, 2;
+
+///
+/// ## Values
+///
+/// ### %regex.range
+///
+/// Wraps a range of literals.
+/// Use: `%regex.range ('a', 'z')` to match all lower case letters.
+///
+.ax %regex.range: Π <<2; %core.I8>> -> RE, normalize_range, 1;
+
+///
+/// ### %regex.lit
+///
+/// Wraps a literal.
+///
+.lam %regex.lit(val:%core.I8) = %regex.range (val, val);
+
+///
+/// ### %regex.not
+///
+/// Do not match the parameter.
+///
+.ax %regex.not_: Π RE -> RE, normalize_not, 1;
+
+///
+/// ### %regex.cls.*
+/// 
+/// | Subtag | Matches |
+/// | ------ | ------- |
+/// | `d`    | digits `[0-9]`|
+/// | `D`    | No digits |
+/// | `w`    | word characters `[a-zA-Z_0-9]` |
+/// | `W`    | No word characters |
+/// | `s`    | whitespace `[ \t\r\n]` |
+/// | `S`    | No whitespace |
+///
+.let %regex.cls.d = %regex.range ('0', '9');
+.let %regex.cls.D = %regex.not_ %regex.cls.d;
+.let %regex.cls.w = %regex.disj 4 (%regex.range ('0', '9'), %regex.range ('a', 'z'), %regex.range ('A', 'Z'), %regex.lit '_');
+.let %regex.cls.W = %regex.not_ %regex.cls.w;
+.let %regex.cls.s = %regex.disj 3 (%regex.range (9:%core.I8, 10:%core.I8), %regex.lit 13:%core.I8, %regex.lit 32:%core.I8);
+.let %regex.cls.S = %regex.not_ %regex.cls.s;
+
+///
+/// ### %regex.any
+///
+/// Match any character.
+///
+.ax %regex.any: RE, normalize_any, 0;
+
+/// ## Quantifiers
+///
+/// ### %regex.quant.*
+///
+.ax %regex.quant(optional,star,plus): Π RE -> RE, normalize_quant, 1;
+
+///
+/// ## Implementation
+///
+.lam CPS_RE[n: .Nat] = .Cn [[%mem.M, %mem.Ptr0 «n; %core.I8», .Idx n], .Cn[%mem.M, .Bool, .Idx n]];
+
+.fun %regex.match_range(lower:%core.I8, upper:%core.I8)(n: .Nat)(mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n) : [%mem.M, .Bool, .Idx n] = {
+    .let ptr = %mem.lea (n, ‹n; %core.I8›, 0) (string, pos);
+    .let (`mem, char) = %mem.load (mem, ptr);
+    .let in_range = %core.bit2.and_ 0 (%core.icmp.uge (char, lower),  %core.icmp.ule (char, upper));
+    
+    .con if_tt() = return (mem, in_range, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)));
+    .con if_ff() = return (mem, in_range, pos);
+    (if_ff, if_tt)#in_range ()
+};
+.fun %regex.match_not(n: .Nat)(inner: (CPS_RE n))(mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n): [%mem.M, .Bool, .Idx n] = {
+    .con match_not_ret_inverted!(mem: %mem.M, in_range: .Bool, new_pos: .Idx n) = return (mem, %core.bit1.neg 0 in_range, new_pos);
+    inner ((mem, string, pos), match_not_ret_inverted)
+};
+.fun %regex.match_any(n: .Nat)(mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n): [%mem.M, .Bool, .Idx n] = {
+    .let ptr = %mem.lea (n, ‹n; %core.I8›, 0) (string, pos);
+    .let (`mem, char) = %mem.load (mem, ptr);
+    .let isnt_0 = %core.icmp.ne (char, '\0');
+
+    .con if_tt() = return (mem, isnt_0, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)));
+    .con if_ff() = return (mem, isnt_0, pos);
+    (if_ff, if_tt)#isnt_0 ()
+};
+.fun %regex.match_conj(n: .Nat)(A: (CPS_RE n), B: (CPS_RE n))(mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n): [%mem.M, .Bool, .Idx n] = {
+    .con match_conj_exit_true!(mem: %mem.M, new_pos: .Idx n) = return (mem, 1:.Bool, new_pos);
+
+    .con match_conj_exit_false!(mem: %mem.M, new_pos: .Idx n) = return (mem, 0:.Bool, pos);
+
+    .con match_conj_B_ret!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = (match_conj_exit_false, match_conj_exit_true)#matched (mem, new_pos);
+
+    .con match_conj_A_ret!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = {
+        .con match_conj_call_B!(mem:%mem.M, new_pos:.Idx n) = B ((mem, string, new_pos), match_conj_B_ret);
+
+        (match_conj_exit_false, match_conj_call_B)#matched (mem, new_pos)
+    };
+
+    A ((mem, string, pos), match_conj_A_ret)
+};
+.fun %regex.match_disj(n: .Nat)(A: (CPS_RE n), B: (CPS_RE n))(mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n): [%mem.M, .Bool, .Idx n] = {
+    .con match_disj_exit_true!(mem: %mem.M, new_pos: .Idx n) = return (mem, 1:.Bool, new_pos);
+
+    .con match_disj_exit_false!(mem: %mem.M, new_pos: .Idx n) = return (mem, 0:.Bool, pos);
+
+    .con match_disj_B_ret!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = (match_disj_exit_false, match_disj_exit_true)#matched (mem, new_pos);
+
+    .con match_disj_A_ret!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = {
+        .con match_disj_call_B!(mem:%mem.M, new_pos:.Idx n) = B ((mem, string, new_pos), match_disj_B_ret);
+        (match_disj_call_B, match_disj_exit_true)#matched (mem, new_pos)
+    };
+
+    A ((mem, string, pos), match_disj_A_ret)
+};
+.fun %regex.match_optional(n: .Nat)(sub: (CPS_RE n))(mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n): [%mem.M, .Bool, .Idx n] = {
+    .con match_optional_exit_true!(mem: %mem.M, new_pos: .Idx n) = return (mem, 1:.Bool, new_pos);
+
+    .con match_optional_exit_false!(mem: %mem.M, new_pos: .Idx n) = return (mem, 1:.Bool, pos);
+    .con match_optional_ret!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = (match_optional_exit_false, match_optional_exit_true)#matched (mem, new_pos);
+
+    sub ((mem, string, pos), match_optional_ret)
+};
+.fun %regex.match_star(n: .Nat)(sub: (CPS_RE n))(mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n): [%mem.M, .Bool, .Idx n] = {
+    .con match_star_exit_false(mem: %mem.M, new_pos: .Idx n) = return (mem, 1:.Bool, new_pos);
+    .con match_star_ret(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = {
+        .con match_star_iter(mem: %mem.M, new_pos: .Idx n) = sub ((mem, string, new_pos), match_star_ret);
+
+        (match_star_exit_false, match_star_iter)#matched (mem, new_pos)
+    };
+
+    sub ((mem, string, pos), match_star_ret)
+};
+.fun %regex.match_plus(n: .Nat)(sub: (CPS_RE n))(mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n): [%mem.M, .Bool, .Idx n] = {
+    .con match_plus_exit_true!(mem: %mem.M, new_pos: .Idx n) = return (mem, 1:.Bool, new_pos);
+
+    .con match_plus_ret!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = {
+        .con match_plus_iter!(mem: %mem.M, new_pos: .Idx n) = sub ((mem, string, new_pos), match_plus_ret);
+        (match_plus_exit_true, match_plus_iter)#matched (mem, new_pos)
+    };
+
+    .con match_plus_exit_false!(mem: %mem.M, new_pos: .Idx n) = return (mem, 0:.Bool, new_pos);
+    .con match_plus_ret0!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = {
+        .con match_plus_iter0!(mem: %mem.M, new_pos: .Idx n) = sub ((mem, string, new_pos), match_plus_ret);
+        (match_plus_exit_false, match_plus_iter0)#matched (mem, new_pos)
+    };
+
+    sub ((mem, string, pos), match_plus_ret0)
+};
+
+/// ## Passes and Phases
+/// 
+/// ### Passes
+/// 
+.ax %regex.lower_regex: %compile.Pass;
+

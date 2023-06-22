@@ -46,6 +46,7 @@
 .ax %compile.clos_plugin    : %compile.Plugin;
 .ax %compile.direct_plugin  : %compile.Plugin;
 .ax %compile.refly_plugin   : %compile.Plugin;
+.ax %compile.regex_plugin   : %compile.Plugin;
 .ax %compile.matrix_plugin  : %compile.Plugin;
 ///
 /// ### %opt.is_loaded
