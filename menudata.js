@@ -41,8 +41,9 @@ var menudata={children:[
 {text:"math",url:"math.html"},
 {text:"matrix",url:"matrix.html"},
 {text:"mem",url:"mem.html"},
-{text:"opt",url:"opt.html"},
-{text:"refly",url:"refly.html"}]},
+{text:"refly",url:"refly.html"},
+{text:"regex",url:"regex.html"},
+{text:"opt",url:"opt.html"}]},
 {text:"Namespaces",url:"namespaces.html",children:[
 {text:"Namespace List",url:"namespaces.html"},
 {text:"Namespace Members",url:"namespacemembers.html",children:[
@@ -63,6 +64,7 @@ var menudata={children:[
 {text:"n",url:"namespacemembers_n.html#index_n"},
 {text:"o",url:"namespacemembers_o.html#index_o"},
 {text:"p",url:"namespacemembers_p.html#index_p"},
+{text:"q",url:"namespacemembers_q.html#index_q"},
 {text:"r",url:"namespacemembers_r.html#index_r"},
 {text:"s",url:"namespacemembers_s.html#index_s"},
 {text:"t",url:"namespacemembers_t.html#index_t"},
@@ -123,6 +125,7 @@ var menudata={children:[
 {text:"m",url:"namespacemembers_enum.html#index_m"},
 {text:"n",url:"namespacemembers_enum.html#index_n"},
 {text:"p",url:"namespacemembers_enum.html#index_p"},
+{text:"q",url:"namespacemembers_enum.html#index_q"},
 {text:"r",url:"namespacemembers_enum.html#index_r"},
 {text:"s",url:"namespacemembers_enum.html#index_s"},
 {text:"t",url:"namespacemembers_enum.html#index_t"},
@@ -151,6 +154,7 @@ var menudata={children:[
 {text:"t",url:"namespacemembers_eval_t.html#index_t"},
 {text:"u",url:"namespacemembers_eval_u.html#index_u"},
 {text:"v",url:"namespacemembers_eval_v.html#index_v"},
+{text:"w",url:"namespacemembers_eval_w.html#index_w"},
 {text:"x",url:"namespacemembers_eval_x.html#index_x"}]}]}]},
 {text:"Concepts",url:"concepts.html"},
 {text:"Classes",url:"annotated.html",children:[

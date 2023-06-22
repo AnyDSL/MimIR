@@ -3,6 +3,9 @@ var classthorin_1_1Axiom =
     [ "Match", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match", [
       [ "type", "classthorin_1_1Axiom.html#a90bea664417af17801b73ee688147b7d", null ]
     ] ],
+    [ "Match< regex::any >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01regex_1_1any_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#ada9662236af225e5cbdc30a022aff6d0", null ]
+    ] ],
     [ "base", "classthorin_1_1Axiom.html#a5cd2576283c1b9f1a29901e82b6a7f56", null ],
     [ "curry", "classthorin_1_1Axiom.html#a3702d9483f034b85ff45ccafbed0d968", null ],
     [ "get", "classthorin_1_1Axiom.html#a397ef6552758050898c2a25c1001fd53", null ],

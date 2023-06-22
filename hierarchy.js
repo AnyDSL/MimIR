@@ -1,6 +1,7 @@
 var hierarchy =
 [
     [ "thorin::Annex", "structthorin_1_1Annex.html", null ],
+    [ "thorin::regex::app_range", "structthorin_1_1regex_1_1app__range.html", null ],
     [ "thorin::Array< T >", "classthorin_1_1Array.html", null ],
     [ "thorin::Array< const Def * >", "classthorin_1_1Array.html", null ],
     [ "thorin::Array< uint64_t >", "classthorin_1_1Array.html", null ],
@@ -52,6 +53,7 @@ var hierarchy =
     [ "thorin::LoopTreeBuilder< forward >", "classthorin_1_1LoopTreeBuilder.html", null ],
     [ "thorin::Axiom::Match< T >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match", null ],
     [ "thorin::Match< Id, D >", "classthorin_1_1Match.html", null ],
+    [ "thorin::Axiom::Match< regex::any >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01regex_1_1any_01_4", null ],
     [ "thorin::fe::Parser", "classthorin_1_1fe_1_1Parser.html", null ],
     [ "thorin::Pass", "classthorin_1_1Pass.html", [
       [ "thorin::RWPass< DebugDump, Lam >", "classthorin_1_1RWPass.html", [
@@ -132,6 +134,9 @@ var hierarchy =
       [ "thorin::RWPass< SSAConstr, Lam >", "classthorin_1_1RWPass.html", null ],
       [ "thorin::RWPass< RemoveDbgPerm, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::refly::RemoveDbgPerm", "classthorin_1_1refly_1_1RemoveDbgPerm.html", null ]
+      ] ],
+      [ "thorin::RWPass< LowerRegex, Lam >", "classthorin_1_1RWPass.html", [
+        [ "thorin::regex::LowerRegex", "classthorin_1_1regex_1_1LowerRegex.html", null ]
       ] ],
       [ "thorin::RWPass< P, N >", "classthorin_1_1RWPass.html", [
         [ "thorin::FPPass< BetaRed, Def >", "classthorin_1_1FPPass.html", [

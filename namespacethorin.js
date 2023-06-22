@@ -731,6 +731,7 @@ var namespacethorin =
       [ "Plugin_Id", "namespacethorin_1_1opt.html#ac98fef23b0390a2cd059bde9b1174720", null ]
     ] ],
     [ "refly", "namespacethorin_1_1refly.html", "namespacethorin_1_1refly" ],
+    [ "regex", "namespacethorin_1_1regex.html", "namespacethorin_1_1regex" ],
     [ "sys", "namespacethorin_1_1sys.html", [
       [ "exec", "namespacethorin_1_1sys.html#ac4dd1156a86eb6db52f2cd93fec5a962", null ],
       [ "find_cmd", "namespacethorin_1_1sys.html#a2eda434a3eb1dcbf48dd570d8d2f7733", null ],

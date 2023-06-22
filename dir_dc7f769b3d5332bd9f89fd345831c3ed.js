@@ -11,5 +11,6 @@ var dir_dc7f769b3d5332bd9f89fd345831c3ed =
     [ "matrix", "dir_af2bd8e28dcdf08ddd03448d17e029e1.html", "dir_af2bd8e28dcdf08ddd03448d17e029e1" ],
     [ "mem", "dir_f4f507027349df35d55005177e6b6800.html", "dir_f4f507027349df35d55005177e6b6800" ],
     [ "opt", "dir_b3b1e4a5112c3f9c81c669cfbdc18911.html", "dir_b3b1e4a5112c3f9c81c669cfbdc18911" ],
-    [ "refly", "dir_6f55f125f3d97d2fd2dc99187db03e52.html", "dir_6f55f125f3d97d2fd2dc99187db03e52" ]
+    [ "refly", "dir_6f55f125f3d97d2fd2dc99187db03e52.html", "dir_6f55f125f3d97d2fd2dc99187db03e52" ],
+    [ "regex", "dir_8913a235bb4f43697549ba55f049b2aa.html", "dir_8913a235bb4f43697549ba55f049b2aa" ]
 ];

@@ -6,6 +6,7 @@ var searchData=
   ['demo_5fplugin_3',['demo_plugin',['../namespacethorin_1_1compile.html#ae073a548eae78f854f2f8edaf5b6fb76',1,'thorin::compile']]],
   ['dep_4',['Dep',['../namespacethorin.html#a55a6c38c7e5330a05b17f8134f60264a',1,'thorin']]],
   ['direct_5fplugin_5',['direct_plugin',['../namespacethorin_1_1compile.html#a496accd56afb4c2cbb935f09f252698b',1,'thorin::compile']]],
-  ['div_6',['div',['../namespacethorin_1_1core.html#abaf61e089dbdb52b9c30b4b166f8309e',1,'thorin::core']]],
-  ['ds2cps_5fpass_7',['ds2cps_pass',['../namespacethorin_1_1direct.html#a8cc0c014f61d83c03a0b057803b46a71',1,'thorin::direct']]]
+  ['disj_6',['disj',['../namespacethorin_1_1regex.html#a312eb6dc4d7c11752634400c1819ff7d',1,'thorin::regex']]],
+  ['div_7',['div',['../namespacethorin_1_1core.html#abaf61e089dbdb52b9c30b4b166f8309e',1,'thorin::core']]],
+  ['ds2cps_5fpass_8',['ds2cps_pass',['../namespacethorin_1_1direct.html#a8cc0c014f61d83c03a0b057803b46a71',1,'thorin::direct']]]
 ];

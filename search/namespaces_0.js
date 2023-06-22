@@ -17,7 +17,8 @@ var searchData=
   ['node_14',['Node',['../namespacethorin_1_1Node.html',1,'thorin']]],
   ['opt_15',['opt',['../namespacethorin_1_1opt.html',1,'thorin']]],
   ['refly_16',['refly',['../namespacethorin_1_1refly.html',1,'thorin']]],
-  ['sys_17',['sys',['../namespacethorin_1_1sys.html',1,'thorin']]],
-  ['thorin_18',['thorin',['../namespacethorin.html',1,'']]],
-  ['utf8_19',['utf8',['../namespacethorin_1_1utf8.html',1,'thorin']]]
+  ['regex_17',['regex',['../namespacethorin_1_1regex.html',1,'thorin']]],
+  ['sys_18',['sys',['../namespacethorin_1_1sys.html',1,'thorin']]],
+  ['thorin_19',['thorin',['../namespacethorin.html',1,'']]],
+  ['utf8_20',['utf8',['../namespacethorin_1_1utf8.html',1,'thorin']]]
 ];

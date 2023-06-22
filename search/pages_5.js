@@ -11,5 +11,6 @@ var searchData=
   ['the_20matrix_20dialect_8',['The matrix Dialect',['../matrix.html',1,'']]],
   ['the_20mem_20plugin_9',['The mem Plugin',['../mem.html',1,'']]],
   ['the_20opt_20plugin_10',['The opt Plugin',['../opt.html',1,'']]],
-  ['the_20refly_20plugin_11',['The refly Plugin',['../refly.html',1,'']]]
+  ['the_20refly_20plugin_11',['The refly Plugin',['../refly.html',1,'']]],
+  ['the_20regex_20plugin_12',['The regex Plugin',['../regex.html',1,'']]]
 ];

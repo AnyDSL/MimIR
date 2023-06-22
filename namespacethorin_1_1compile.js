@@ -33,6 +33,7 @@ var namespacethorin_1_1compile =
     [ "Plugin", "namespacethorin_1_1compile.html#a63648e99f518e4fdfb5f3abe1af3f383", null ],
     [ "plugin_select", "namespacethorin_1_1compile.html#a5ddee3ee70a5907fbdc80b00e0fb283c", null ],
     [ "refly_plugin", "namespacethorin_1_1compile.html#ae7c68bd8307c1a4e51ffa246b62fd481", null ],
+    [ "regex_plugin", "namespacethorin_1_1compile.html#abaccaef94688e1428d02469b73068fb6", null ],
     [ "ret_wrap_pass", "namespacethorin_1_1compile.html#a314770b00ed2e4fb14bc35e90e5d6c2e", null ],
     [ "scalerize_pass", "namespacethorin_1_1compile.html#a4b9517ee17f15e9abcbbc56c43649135", null ],
     [ "single_pass_phase", "namespacethorin_1_1compile.html#a89bed055f9b4723254ff9abd8ee2a9f6", null ],

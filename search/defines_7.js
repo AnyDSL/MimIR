@@ -22,13 +22,14 @@ var searchData=
   ['thorin_5fprec_19',['THORIN_PREC',['../tok_8h.html#ac29f384be3c6b33c3b9beded2bd1df1c',1,'tok.h']]],
   ['thorin_5fproj_20',['THORIN_PROJ',['../def_8h.html#adf5d1a62a53cfba7b0dcd4caac0090ab',1,'def.h']]],
   ['thorin_5frefly_5fnormalizer_5fimpl_21',['THORIN_refly_NORMALIZER_IMPL',['../refly_2autogen_8h.html#abd362ca8bc57725552b7356e62d844f8',1,'autogen.h']]],
-  ['thorin_5fsetters_22',['THORIN_SETTERS',['../def_8h.html#a57527d868675a8ac8b24717d6fa05d77',1,'def.h']]],
-  ['thorin_5fsetters_5f_23',['THORIN_SETTERS_',['../def_8h.html#a2e88d501015a917e5422345e14273cfa',1,'def.h']]],
-  ['thorin_5fsubst_24',['THORIN_SUBST',['../tok_8h.html#a3d2da954389db5acfc86380a482ee87d',1,'tok.h']]],
-  ['thorin_5ftok_25',['THORIN_TOK',['../tok_8h.html#acf85c215badfba27aee55c9cd3af719a',1,'tok.h']]],
-  ['thorin_5fver_26',['THORIN_VER',['../config_8h.html#a48b9ff022258626cefa56e95d52941bd',1,'config.h']]],
-  ['thorin_5fver_5fmajor_27',['THORIN_VER_MAJOR',['../config_8h.html#a830951cda9629cd907315983cbf0e15d',1,'config.h']]],
-  ['thorin_5fver_5fminor_28',['THORIN_VER_MINOR',['../config_8h.html#ac361714e1cf657af3c1548540cb854a9',1,'config.h']]],
-  ['thorin_5fver_5fpatch_29',['THORIN_VER_PATCH',['../config_8h.html#a159f9e5e5276f57eaad549908e37f742',1,'config.h']]],
-  ['thorin_5fwhich_30',['THORIN_WHICH',['../sys_8h.html#a8c190e94eb07b7ca90ecd8e07bf04ff8',1,'sys.h']]]
+  ['thorin_5fregex_5fnormalizer_5fimpl_22',['THORIN_regex_NORMALIZER_IMPL',['../regex_2autogen_8h.html#ac06da902d63bae5068d85ab02f063c9f',1,'autogen.h']]],
+  ['thorin_5fsetters_23',['THORIN_SETTERS',['../def_8h.html#a57527d868675a8ac8b24717d6fa05d77',1,'def.h']]],
+  ['thorin_5fsetters_5f_24',['THORIN_SETTERS_',['../def_8h.html#a2e88d501015a917e5422345e14273cfa',1,'def.h']]],
+  ['thorin_5fsubst_25',['THORIN_SUBST',['../tok_8h.html#a3d2da954389db5acfc86380a482ee87d',1,'tok.h']]],
+  ['thorin_5ftok_26',['THORIN_TOK',['../tok_8h.html#acf85c215badfba27aee55c9cd3af719a',1,'tok.h']]],
+  ['thorin_5fver_27',['THORIN_VER',['../config_8h.html#a48b9ff022258626cefa56e95d52941bd',1,'config.h']]],
+  ['thorin_5fver_5fmajor_28',['THORIN_VER_MAJOR',['../config_8h.html#a830951cda9629cd907315983cbf0e15d',1,'config.h']]],
+  ['thorin_5fver_5fminor_29',['THORIN_VER_MINOR',['../config_8h.html#ac361714e1cf657af3c1548540cb854a9',1,'config.h']]],
+  ['thorin_5fver_5fpatch_30',['THORIN_VER_PATCH',['../config_8h.html#a159f9e5e5276f57eaad549908e37f742',1,'config.h']]],
+  ['thorin_5fwhich_31',['THORIN_WHICH',['../sys_8h.html#a8c190e94eb07b7ca90ecd8e07bf04ff8',1,'sys.h']]]
 ];

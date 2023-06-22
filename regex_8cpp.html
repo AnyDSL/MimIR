@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.5"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: thorin/pass -&gt; rw Relation</title>
+<title>Thorin: dialects/regex/regex.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -84,7 +84,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('dir_02386abad8cd81366000917a379dc307.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('regex_8cpp.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -109,13 +109,63 @@ $(document).ready(function(){initNavTree('dir_02386abad8cd81366000917a379dc307.h
 </div>
 </div>
 
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Functions</a>  </div>
+  <div class="headertitle"><div class="title">regex.cpp File Reference</div></div>
+</div><!--header-->
 <div class="contents">
-<h3>pass &rarr; rw Relation</h3><table class="dirtab"><tr class="dirtab"><th class="dirtab">File in thorin/pass</th><th class="dirtab">Includes file in thorin/pass/rw</th></tr><tr class="dirtab"><td class="dirtab"><a class="el" href="optimize_8cpp.html">optimize.cpp</a></td><td class="dirtab"><a class="el" href="lam__spec_8h.html">lam_spec.h</a></td></tr><tr class="dirtab"><td class="dirtab"><a class="el" href="optimize_8cpp.html">optimize.cpp</a></td><td class="dirtab"><a class="el" href="ret__wrap_8h.html">ret_wrap.h</a></td></tr><tr class="dirtab"><td class="dirtab"><a class="el" href="optimize_8cpp.html">optimize.cpp</a></td><td class="dirtab"><a class="el" href="scalarize_8h.html">scalarize.h</a></td></tr><tr class="dirtab"><td class="dirtab"><a class="el" href="pipelinebuilder_8cpp.html">pipelinebuilder.cpp</a></td><td class="dirtab"><a class="el" href="ret__wrap_8h.html">ret_wrap.h</a></td></tr><tr class="dirtab"><td class="dirtab"><a class="el" href="pipelinebuilder_8cpp.html">pipelinebuilder.cpp</a></td><td class="dirtab"><a class="el" href="scalarize_8h.html">scalarize.h</a></td></tr></table></div><!-- contents -->
+<div class="textblock"><code>#include &quot;<a class="el" href="regex_8h_source.html">dialects/regex/regex.h</a>&quot;</code><br />
+<code>#include &lt;<a class="el" href="pass_8h_source.html">thorin/pass/pass.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="plugin_8h_source.html">thorin/plugin.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="pipelinebuilder_8h_source.html">thorin/pass/pipelinebuilder.h</a>&gt;</code><br />
+<code>#include &quot;<a class="el" href="lower__regex_8h_source.html">dialects/regex/passes/lower_regex.h</a>&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for regex.cpp:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="regex_8cpp__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+</div>
+<p><a href="regex_8cpp_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a2b0c506ec13141b704c0aea991f89b55"><td class="memItemLeft" align="right" valign="top"><a class="el" href="config_8h.html#a479c17cabac34a4216996c05ffa7e071">THORIN_EXPORT</a> <a class="el" href="structthorin_1_1Plugin.html">Plugin</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="regex_8cpp.html#a2b0c506ec13141b704c0aea991f89b55">thorin_get_plugin</a> ()</td></tr>
+<tr class="memdesc:a2b0c506ec13141b704c0aea991f89b55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Heart of this Plugin.  <a href="regex_8cpp.html#a2b0c506ec13141b704c0aea991f89b55">More...</a><br /></td></tr>
+<tr class="separator:a2b0c506ec13141b704c0aea991f89b55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a2b0c506ec13141b704c0aea991f89b55" name="a2b0c506ec13141b704c0aea991f89b55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b0c506ec13141b704c0aea991f89b55">&#9670;&#160;</a></span>thorin_get_plugin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="config_8h.html#a479c17cabac34a4216996c05ffa7e071">THORIN_EXPORT</a> <a class="el" href="structthorin_1_1Plugin.html">Plugin</a> thorin_get_plugin </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Heart of this Plugin. </p>
+<p >Registers Passes in the different optimization Phases as well as normalizers for the Axioms. </p>
+
+<p class="definition">Definition at line <a class="el" href="regex_8cpp_source.html#l00014">14</a> of file <a class="el" href="regex_8cpp_source.html">regex.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="namespacethorin_1_1regex.html#aa562ed47ee69375dc7d74b21528d135c">thorin::regex::register_normalizers()</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_c4168c80b7484587a21dc92c326c695e.html">thorin</a></li><li class="navelem"><a class="el" href="dir_02386abad8cd81366000917a379dc307.html">pass</a></li>
+    <li class="navelem"><a class="el" href="dir_dc7f769b3d5332bd9f89fd345831c3ed.html">dialects</a></li><li class="navelem"><a class="el" href="dir_8913a235bb4f43697549ba55f049b2aa.html">regex</a></li><li class="navelem"><a class="el" href="regex_8cpp.html">regex.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
   </ul>
 </div>

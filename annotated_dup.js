@@ -63,6 +63,10 @@ var annotated_dup =
       [ "refly", "namespacethorin_1_1refly.html", [
         [ "RemoveDbgPerm", "classthorin_1_1refly_1_1RemoveDbgPerm.html", "classthorin_1_1refly_1_1RemoveDbgPerm" ]
       ] ],
+      [ "regex", "namespacethorin_1_1regex.html", [
+        [ "app_range", "structthorin_1_1regex_1_1app__range.html", "structthorin_1_1regex_1_1app__range" ],
+        [ "LowerRegex", "classthorin_1_1regex_1_1LowerRegex.html", "classthorin_1_1regex_1_1LowerRegex" ]
+      ] ],
       [ "utf8", "namespacethorin_1_1utf8.html", [
         [ "Lexer", "classthorin_1_1utf8_1_1Lexer.html", "classthorin_1_1utf8_1_1Lexer" ]
       ] ],
