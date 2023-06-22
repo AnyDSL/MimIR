@@ -96,8 +96,13 @@ template<bool infer> bool Check::alpha_(Ref r1, Ref r2) {
     auto mut1 = d1->isa_mut();
     auto mut2 = d2->isa_mut();
     if (mut1 && mut2 && mut1 == mut2) return true;
-    if (mut1 && !done_.emplace(mut1).second) return true;
-    if (mut2 && !done_.emplace(mut2).second) return true;
+
+    if (mut1) {
+        if (auto [i, ins] = done_.emplace(mut1, d2); !ins) return i->second == d2;
+    }
+    if (mut2) {
+        if (auto [i, ins] = done_.emplace(mut2, d1); !ins) return i->second == d1;
+    }
 
     auto i1 = d1->isa_mut<Infer>();
     auto i2 = d2->isa_mut<Infer>();

@@ -78,7 +78,7 @@ private:
     World& world_;
     using Vars = MutMap<Def*>;
     Vars vars_;
-    MutSet done_;
+    MutMap<Ref> done_;
 };
 
 } // namespace thorin
