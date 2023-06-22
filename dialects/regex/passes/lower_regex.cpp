@@ -33,9 +33,9 @@ Ref not_impl(Match<regex::not_, App> not_app) {
 Ref quant_impl(Match<regex::quant, App> quant_app) {
     auto& world = quant_app->world();
     switch (quant_app.id()) {
-        case quant::zeroOrOne: return world.annex<regex::match_zeroOrOne>();
-        case quant::zeroOrMore: return world.annex<regex::match_zeroOrMore>();
-        case quant::oneOrMore: return world.annex<regex::match_oneOrMore>();
+        case quant::optional: return world.annex<regex::match_optional>();
+        case quant::star: return world.annex<regex::match_star>();
+        case quant::plus: return world.annex<regex::match_plus>();
     }
     return quant_app.axiom();
 }
@@ -53,10 +53,10 @@ Ref disj_impl(Match<regex::disj, App> disj_app) {
 Ref rewrite_args(Ref arg, Ref n) {
     if (arg->as_lit_arity() > 1) {
         auto args = arg->projs();
-        std::vector<const Def*> newArgs;
-        newArgs.reserve(arg->as_lit_arity());
-        for (auto sub_arg : args) newArgs.push_back(rewrite_arg(sub_arg, n));
-        return arg->world().tuple(newArgs);
+        std::vector<const Def*> new_args;
+        new_args.reserve(arg->as_lit_arity());
+        for (auto sub_arg : args) new_args.push_back(rewrite_arg(sub_arg, n));
+        return arg->world().tuple(new_args);
     } else {
         return rewrite_arg(arg, n);
     }

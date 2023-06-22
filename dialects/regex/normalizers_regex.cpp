@@ -24,40 +24,40 @@ template<quant id> Ref normalize_quant(Ref type, Ref callee, Ref arg) {
     // quantifiers are idempotent
     if (thorin::match(id, arg)) return arg;
 
-    if constexpr (id == quant::oneOrMore) {
+    if constexpr (id == quant::plus) {
         // (\d?)+ and (\d*)+ == \d*
-        if (auto zeroOrOne_app = thorin::match(quant::zeroOrOne, arg))
-            return world.app(world.annex<quant>(quant::zeroOrMore), zeroOrOne_app->arg());
-        else if (auto zeroOrMore_app = thorin::match(quant::zeroOrMore, arg))
+        if (auto optional_app = thorin::match(quant::optional, arg))
+            return world.app(world.annex<quant>(quant::star), optional_app->arg());
+        else if (auto star_app = thorin::match(quant::star, arg))
             return arg;
-    } else if constexpr (id == quant::zeroOrMore) {
+    } else if constexpr (id == quant::star) {
         // (\d?)* and (\d+)* == \d*
         if (auto quant_app = thorin::match<quant>(arg)) return world.app(callee, quant_app->arg());
-    } else if constexpr (id == quant::zeroOrOne) {
+    } else if constexpr (id == quant::optional) {
         // (\d*)? and (\d+)? == \d*
-        if (auto zeroOrMore_app = thorin::match(quant::zeroOrMore, arg))
+        if (auto star_app = thorin::match(quant::star, arg))
             return arg;
-        else if (auto oneOrMore_app = thorin::match(quant::oneOrMore, arg))
-            return world.app(world.annex<quant>(quant::zeroOrMore), oneOrMore_app->arg());
+        else if (auto plus_app = thorin::match(quant::plus, arg))
+            return world.app(world.annex<quant>(quant::star), plus_app->arg());
     }
 
     return world.raw_app(type, callee, arg);
 }
 
-template<class ConjOrDisj> void flatten_in_arg(Ref arg, std::vector<const Def*>& newArgs) {
+template<class ConjOrDisj> void flatten_in_arg(Ref arg, std::vector<const Def*>& new_args) {
     for (const auto* proj : arg->projs()) {
         // flatten conjs in conjs / disj in disjs
         if (auto seq_app = thorin::match<ConjOrDisj>(proj))
-            flatten_in_arg<ConjOrDisj>(seq_app->arg(), newArgs);
+            flatten_in_arg<ConjOrDisj>(seq_app->arg(), new_args);
         else
-            newArgs.push_back(proj);
+            new_args.push_back(proj);
     }
 }
 
 template<class ConjOrDisj> std::vector<const Def*> flatten_in_arg(Ref arg) {
-    std::vector<const Def*> newArgs;
-    flatten_in_arg<ConjOrDisj>(arg, newArgs);
-    return newArgs;
+    std::vector<const Def*> new_args;
+    flatten_in_arg<ConjOrDisj>(arg, new_args);
+    return new_args;
 }
 
 template<class ConjOrDisj> Ref make_binary_tree(Ref type, DefArray args) {
@@ -72,8 +72,8 @@ Ref normalize_conj(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
     world.DLOG("conj {}:{} ({})", type, callee, arg);
     if (arg->as_lit_arity() > 2) {
-        auto flatArgs = flatten_in_arg<conj>(arg);
-        return make_binary_tree<conj>(type, flatArgs);
+        auto flat_args = flatten_in_arg<conj>(arg);
+        return make_binary_tree<conj>(type, flat_args);
     }
     if (arg->as_lit_arity() > 1) return world.raw_app(type, callee, arg);
     return arg;
@@ -98,8 +98,8 @@ bool compare_re(const Def* lhs, const Def* rhs) {
 void make_vector_unique(std::vector<const Def*>& args) {
     std::stable_sort(args.begin(), args.end(), &compare_re);
     {
-        auto newEnd = std::unique(args.begin(), args.end());
-        args.erase(newEnd, args.end());
+        auto new_end = std::unique(args.begin(), args.end());
+        args.erase(new_end, args.end());
     }
 }
 
@@ -129,39 +129,39 @@ struct app_range {
 };
 
 void merge_ranges(std::vector<const Def*>& args) {
-    auto rangesBegin = args.begin();
-    while (rangesBegin != args.end() && !thorin::match<range>(*rangesBegin)) rangesBegin++;
-    if (rangesBegin == args.end()) return;
+    auto ranges_begin = args.begin();
+    while (ranges_begin != args.end() && !thorin::match<range>(*ranges_begin)) ranges_begin++;
+    if (ranges_begin == args.end()) return;
 
-    std::set<const Def*> toRemove;
-    std::vector<std::pair<nat_t, nat_t>> oldRanges, newRanges;
-    auto& world = (*rangesBegin)->world();
+    std::set<const Def*> to_remove;
+    std::vector<std::pair<nat_t, nat_t>> old_ranges, new_ranges;
+    auto& world = (*ranges_begin)->world();
 
-    std::transform(rangesBegin, args.end(), std::back_inserter(oldRanges), get_range);
+    std::transform(ranges_begin, args.end(), std::back_inserter(old_ranges), get_range);
 
-    for (auto it = oldRanges.begin(); it != oldRanges.end(); ++it) {
+    for (auto it = old_ranges.begin(); it != old_ranges.end(); ++it) {
         auto current_range = *it;
         world.DLOG("old range: {}-{}", current_range.first, current_range.second);
-        for (auto inner = it + 1; inner != oldRanges.end(); ++inner)
+        for (auto inner = it + 1; inner != old_ranges.end(); ++inner)
             if (auto merged = merge_ranges(current_range, *inner)) current_range = *merged;
 
-        std::vector<std::vector<std::pair<nat_t, nat_t>>::iterator> deDuplicate;
-        for (auto inner = newRanges.begin(); inner != newRanges.end(); ++inner) {
+        std::vector<std::vector<std::pair<nat_t, nat_t>>::iterator> de_duplicate;
+        for (auto inner = new_ranges.begin(); inner != new_ranges.end(); ++inner) {
             if (auto merged = merge_ranges(current_range, *inner)) {
                 current_range = *merged;
-                deDuplicate.push_back(inner);
+                de_duplicate.push_back(inner);
             }
         }
-        for (auto dedup : deDuplicate) {
+        for (auto dedup : de_duplicate) {
             world.DLOG("dedup {}-{}", current_range.first, current_range.second);
-            newRanges.erase(dedup);
+            new_ranges.erase(dedup);
         }
         world.DLOG("new range: {}-{}", current_range.first, current_range.second);
-        newRanges.push_back(std::move(current_range));
+        new_ranges.push_back(std::move(current_range));
     }
-    // invalidates rangesBegin
-    args.erase(rangesBegin, args.end());
-    std::transform(newRanges.begin(), newRanges.end(), std::back_inserter(args), app_range{world});
+    // invalidates ranges_begin
+    args.erase(ranges_begin, args.end());
+    std::transform(new_ranges.begin(), new_ranges.end(), std::back_inserter(args), app_range{world});
 
     make_vector_unique(args);
 }
@@ -198,34 +198,34 @@ Ref normalize_disj(Ref type, Ref, Ref arg) {
                 != args.end();
         };
 
-        auto newArgs = flatten_in_arg<disj>(arg);
-        if (contains_any(newArgs)) return world.annex<any>();
-        make_vector_unique(newArgs);
-        merge_ranges(newArgs);
+        auto new_args = flatten_in_arg<disj>(arg);
+        if (contains_any(new_args)) return world.annex<any>();
+        make_vector_unique(new_args);
+        merge_ranges(new_args);
 
-        const Def* toRemove = nullptr;
-        for (const auto* cls0 : newArgs) {
-            for (const auto* cls1 : newArgs)
+        const Def* to_remove = nullptr;
+        for (const auto* cls0 : new_args) {
+            for (const auto* cls1 : new_args)
                 if (equals_any(cls0, cls1)) return world.annex<any>();
 
             if (auto not_rhs = thorin::match<not_>(cls0)) {
                 if (auto disj_rhs = thorin::match<disj>(not_rhs->arg())) {
                     auto rngs = flatten_in_arg<disj>(disj_rhs->arg());
                     make_vector_unique(rngs);
-                    if (equals_any(newArgs, rngs)) return world.annex<any>();
+                    if (equals_any(new_args, rngs)) return world.annex<any>();
                 }
             }
         }
 
-        std::erase(newArgs, toRemove);
+        std::erase(new_args, to_remove);
 
-        for (const auto* sth : newArgs) world.DLOG("final ranges {}", sth);
+        for (const auto* sth : new_args) world.DLOG("final ranges {}", sth);
 
-        const Def* retval = newArgs.back();
-        if (newArgs.size() > 2)
-            retval = make_binary_tree<disj>(type, newArgs);
-        else if (newArgs.size() > 1)
-            retval = world.raw_app(type, world.app(world.annex<disj>(), world.lit_nat(2)), world.tuple(newArgs));
+        const Def* retval = new_args.back();
+        if (new_args.size() > 2)
+            retval = make_binary_tree<disj>(type, new_args);
+        else if (new_args.size() > 1)
+            retval = world.raw_app(type, world.app(world.annex<disj>(), world.lit_nat(2)), world.tuple(new_args));
         world.DLOG("disj app: {}", retval);
         return retval;
     }
