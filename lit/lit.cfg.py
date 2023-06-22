@@ -13,3 +13,6 @@ config.substitutions.append(('%thorin', config.thorin))
 
 # inhert env vars..
 config.environment = os.environ
+
+config.available_features.add("always")
+

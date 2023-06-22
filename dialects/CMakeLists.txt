@@ -171,16 +171,6 @@ add_thorin_plugin(mem
     INSTALL
 )
 
-add_thorin_plugin(opt
-    SOURCES
-        opt/opt.cpp
-        opt/opt.h
-    DEPENDS
-        compile
-        mem
-        core
-    INSTALL
-)
 
 add_thorin_plugin(refly
     SOURCES
@@ -192,5 +182,36 @@ add_thorin_plugin(refly
         refly/normalizers.cpp
     DEPENDS
         compile
+    INSTALL
+)
+
+add_thorin_plugin(regex
+    SOURCES
+        regex/regex.h
+        regex/regex.cpp
+        regex/passes/lower_regex.h
+        regex/passes/lower_regex.cpp
+        regex/normalizers_regex.cpp
+    DEPENDS
+        mem
+        core
+        direct
+        compile
+    INSTALL
+)
+
+
+add_thorin_plugin(opt
+    SOURCES
+        opt/opt.cpp
+        opt/opt.h
+    DEPENDS
+        affine
+        autodiff
+        clos
+        direct
+        matrix
+        refly
+        regex
     INSTALL
 )
