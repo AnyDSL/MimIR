@@ -239,15 +239,15 @@ This is particularly useful, when dealing with memory:
 
 #### Kinds & Builtin Types
 
-| LHS | RHS       | Comment                          | Thorin Class              |
-|-----|-----------|----------------------------------|---------------------------|
-| e   | `.Univ`   | universise: type of a type level | [Univ](@ref thorin::Univ) |
-| e   | `.Type` e | type of level e                  | [Type](@ref thorin::Type) |
-| e   | `*`       | alias for `.Type (0:.Univ)`      | [Type](@ref thorin::Type) |
-| e   | `□`       | alias for `.Type (1:.Univ)`      | [Type](@ref thorin::Type) |
-| e   | `.Nat`    | natural number                   | [Nat](@ref thorin::Nat)   |
-| e   | `.Idx`    | builtin of type `.Nat → *`       | [Idx](@ref thorin::Idx)   |
-| e   | `.Bool`   | alias for `.Idx 2`               | [Idx](@ref thorin::Idx)   |
+| LHS | RHS       | Comment                        | Thorin Class              |
+|-----|-----------|--------------------------------|---------------------------|
+| e   | `.Univ`   | universe: type of a type level | [Univ](@ref thorin::Univ) |
+| e   | `.Type` e | type of level e                | [Type](@ref thorin::Type) |
+| e   | `*`       | alias for `.Type (0:.Univ)`    | [Type](@ref thorin::Type) |
+| e   | `□`       | alias for `.Type (1:.Univ)`    | [Type](@ref thorin::Type) |
+| e   | `.Nat`    | natural number                 | [Nat](@ref thorin::Nat)   |
+| e   | `.Idx`    | builtin of type `.Nat → *`     | [Idx](@ref thorin::Idx)   |
+| e   | `.Bool`   | alias for `.Idx 2`             | [Idx](@ref thorin::Idx)   |
 
 #### Literals & Co.
 
