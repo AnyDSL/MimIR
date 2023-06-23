@@ -100,11 +100,10 @@ private:
     std::pair<Dbg, bool> parse_name(std::string_view ctxt = {});
     void parse_import();
     void parse_plugin();
-    Ref parse_type_ascr(std::string_view ctxt);
+    Ref parse_type_ascr(std::string_view ctxt = {});
     void register_annex(Dbg, Ref);
 
-    template<class F>
-    void parse_list(std::string ctxt, Tok::Tag delim_l, F f, Tok::Tag sep = Tok::Tag::T_comma) {
+    template<class F> void parse_list(std::string ctxt, Tok::Tag delim_l, F f, Tok::Tag sep = Tok::Tag::T_comma) {
         expect(delim_l, ctxt);
         auto delim_r = Tok::delim_l2r(delim_l);
         if (!ahead().isa(delim_r)) {

@@ -84,14 +84,12 @@ struct BB {
     std::deque<std::ostringstream>& body() { return parts[1]; }
     std::deque<std::ostringstream>& tail() { return parts[2]; }
 
-    template<class... Args>
-    std::string assign(std::string_view name, const char* s, Args&&... args) {
+    template<class... Args> std::string assign(std::string_view name, const char* s, Args&&... args) {
         print(print(body().emplace_back(), "{} = ", name), s, std::forward<Args&&>(args)...);
         return std::string(name);
     }
 
-    template<class... Args>
-    void tail(const char* s, Args&&... args) {
+    template<class... Args> void tail(const char* s, Args&&... args) {
         print(tail().emplace_back(), s, std::forward<Args&&>(args)...);
     }
 
@@ -121,8 +119,7 @@ public:
     void prepare(Lam*, std::string_view);
     void finalize(const Scope&);
 
-    template<class... Args>
-    void declare(const char* s, Args&&... args) {
+    template<class... Args> void declare(const char* s, Args&&... args) {
         std::ostringstream decl;
         print(decl << "declare ", s, std::forward<Args&&>(args)...);
         decls_.emplace(decl.str());
@@ -448,7 +445,6 @@ void Emitter::emit_epilogue(Lam* lam) {
 }
 
 std::string Emitter::emit_bb(BB& bb, const Def* def) {
-    if (def->isa<Var>()) return {};
     if (auto lam = def->isa<Lam>()) return id(lam);
 
     auto name = id(def);
@@ -492,6 +488,12 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
         return prev;
     };
+
+    if (def->isa<Var>()) {
+        auto ts = def->type()->projs();
+        if (std::ranges::any_of(ts, [](auto t) { return match<mem::M>(t); })) return {};
+        return emit_tuple(def);
+    }
 
     auto emit_gep_index = [&](const Def* index) {
         auto v_i = emit(index);
@@ -570,12 +572,24 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         return bb.assign(name, "load {}, {}* {}.gep", t_elem, t_elem, name);
     } else if (auto insert = def->isa<Insert>()) {
         assert(!match<mem::M>(insert->tuple()->proj(0)->type()));
-        auto v_tuple = emit(insert->tuple());
-        auto v_index = emit(insert->index());
-        auto v_value = emit(insert->value());
-        auto t_tuple = convert(insert->tuple()->type());
-        auto t_value = convert(insert->value()->type());
-        return bb.assign(name, "insertvalue {} {}, {} {}, {}", t_tuple, v_tuple, t_value, v_value, v_index);
+        auto t_tup = convert(insert->tuple()->type());
+        auto t_val = convert(insert->value()->type());
+        auto v_tup = emit(insert->tuple());
+        auto v_val = emit(insert->value());
+        if (auto idx = Lit::isa(insert->index())) {
+            auto v_idx = emit(insert->index());
+            return bb.assign(name, "insertvalue {} {}, {} {}, {}", t_tup, v_tup, t_val, v_val, v_idx);
+        } else {
+            auto t_elem     = convert(insert->value()->type());
+            auto [v_i, t_i] = emit_gep_index(insert->index());
+            print(lam2bb_[entry_].body().emplace_front(),
+                  "{}.alloca = alloca {} ; copy to alloca to emulate insert with store + gep + load", name, t_tup);
+            print(bb.body().emplace_back(), "store {} {}, {}* {}.alloca", t_tup, v_tup, t_tup, name);
+            print(bb.body().emplace_back(), "{}.gep = getelementptr inbounds {}, {}* {}.alloca, i64 0, {} {}", name,
+                  t_tup, t_tup, name, t_i, v_i);
+            print(bb.body().emplace_back(), "store {} {}, {}* {}.gep", t_val, v_val, t_val, name);
+            return bb.assign(name, "load {}, {}* {}.alloca", t_tup, t_tup, name);
+        }
     } else if (auto global = def->isa<Global>()) {
         auto v_init                = emit(global->init());
         auto [pointee, addr_space] = force<mem::Ptr>(global->type())->args<2>();
@@ -608,6 +622,12 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "{} i64 {}, {}", op, a, b);
+    } else if (auto idx = match<core::idx>(def)) {
+        auto x = emit(idx->arg());
+        auto s = *Idx::size2bitwidth(Idx::size(idx->type()));
+        auto t = convert(idx->type());
+        if (s < 64) return bb.assign(name, "trunc i64 {} to {}", x, t);
+        return x;
     } else if (auto bit1 = match<core::bit1>(def)) {
         assert(bit1.id() == core::bit1::neg);
         auto x = emit(bit1->arg());
@@ -696,6 +716,28 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
+    } else if (auto extr = match<core::extrema>(def)) {
+        auto [x, y] = extr->args<2>();
+        auto t      = convert(x->type());
+        auto a      = emit(x);
+        auto b      = emit(y);
+        std::string f = "llvm.";
+        switch(extr.id()) {
+            case core::extrema::Sm: f += "smin."; break;
+            case core::extrema::SM: f += "smax."; break;
+            case core::extrema::sm: f += "umin."; break;
+            case core::extrema::sM: f += "umax."; break;
+        }
+        f += t;
+        declare("{} @{}({}, {})", t, f, t, t);
+        return bb.assign(name, "tail call {} @{}({} {}, {} {})", t, f, t, a, t, b);
+    } else if (auto abs = match<core::abs>(def)) {
+        auto [m,x] = abs->args<2>();
+        auto t = convert(x->type());
+        auto a = emit(x);
+        std::string f = "llvm.abs." + t;
+        declare("{} @{}({}, {})", t, f, t, "i1");
+        return bb.assign(name, "tail call {} @{}({} {}, {} {})", t, f, t, a, "i1", "1");
     } else if (auto conv = match<core::conv>(def)) {
         auto v_src = emit(conv->arg());
         auto t_src = convert(conv->arg()->type());

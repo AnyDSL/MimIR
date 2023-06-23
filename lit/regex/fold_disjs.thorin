@@ -1,0 +1,15 @@
+// RUN: %thorin %s -o - -P %S | FileCheck %s
+
+.import mem;
+.plugin regex;
+
+.import dont_compile.thorin;
+
+.let i8 = .Idx 256;
+.let Top = ⊤:.Nat;
+
+.con .extern disj(mem: %mem.M, string: %mem.Ptr (<<Top; %core.I8>>, 0), return: .Cn [%mem.M, .Bool, %core.I32]) = {
+    .let pattern = %regex.conj 3 (%regex.disj 2 (%regex.cls.d, %regex.cls.D), %regex.disj 2 (%regex.cls.w, %regex.cls.W), %regex.disj 2 (%regex.cls.s, %regex.cls.S));
+    return (pattern Top (mem, string, 0:%core.I32))
+    // CHECK: %regex.conj 2 (%regex.conj 2 ‹2; %regex.any›, %regex.any)
+};

@@ -52,8 +52,9 @@ private:
 
 class Check {
 public:
-    explicit Check(bool rerun = false)
-        : rerun_(rerun) {}
+    explicit Check(World& world, bool rerun = false)
+        : world_(world)
+        , rerun_(rerun) {}
 
     enum Mode {
         /// In Mode::Relaxed, type inference is happening and Infer%s will be resolved, if possible.
@@ -64,26 +65,33 @@ public:
         Strict,
     };
 
+    World& world() { return world_; }
     bool rerun() const { return rerun_; }
 
     /// Are d1 and d2 α-equivalent?
-    template<Mode mode = Relaxed> static bool alpha(Ref d1, Ref d2) { return Check().alpha_<mode>(d1, d2); }
+    template<Mode mode = Relaxed> static bool alpha(Ref d1, Ref d2) { return Check(d1->world()).alpha_<mode>(d1, d2); }
 
     /// Can @p value be assigned to sth of @p type?
     /// @note This is different from `equiv(type, value->type())` since @p type may be dependent.
-    static bool assignable(Ref type, Ref value); // { return Check().assignable_(type, value); }
+    static bool assignable(Ref type, Ref value);
 
     /// Yields `defs.front()`, if all @p defs are Check::alpha-equivalent (`infer = false`) and `nullptr` otherwise.
     static Ref is_uniform(Defs defs);
 
 private:
+#ifdef THORIN_ENABLE_CHECKS
+    template<Mode> bool fail();
+#else
+    template<Mode> bool fail() { return false; }
+#endif
     template<Mode> bool alpha_(Ref d1, Ref d2);
     template<Mode> bool alpha_internal(Ref, Ref);
     bool assignable_(Ref type, Ref value);
 
+    World& world_;
     using Vars = MutMap<Def*>;
     Vars vars_;
-    MutSet done_;
+    MutMap<Ref> done_;
     bool rerun_;
 };
 

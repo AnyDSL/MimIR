@@ -57,7 +57,7 @@ bool match2nd(std::ostream& os, const char* next, const char*& s, const char c);
 /// print(os, "int: {}, fun: {}, float: {}", 23, [&](auto& os) { os << "hey :)"}, 42.f);
 /// ```
 /// * You can put a `std::ranges::range` as argument.
-/// This will output a list - using the given specifier as seperator.
+/// This will output a list - using the given specifier as separator.
 /// Each element `elem` of the range will be output via `os << elem`:
 /// ```
 /// std::vector<int> v = {0, 1, 2, 3};
@@ -74,6 +74,8 @@ bool match2nd(std::ostream& os, const char* next, const char*& s, const char c);
 /// std::vector<int> v = {3, 2, 1, 0};
 /// size_t i = 0;
 /// print(os, "v: {, }", Elem(v, [&](auto& os, auto elem) { print(os, "{}: {}", i++, elem); }));
+/// * Use `{{` or `}}` to literally output `{` or `{`:
+/// print(os, "{{{}}}", 23); // "{23}"
 /// ```
 /// @see Tab
 

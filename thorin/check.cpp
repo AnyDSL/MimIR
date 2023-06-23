@@ -15,12 +15,7 @@ public:
         : Rewriter(world) {}
 
     Ref rewrite(Ref old_def) override {
-        if (Infer::should_eliminate(old_def)) {
-            // outln("{}", old_def->node_name());
-            // old_def->dump();
-            // outln("---");
-            return Rewriter::rewrite(old_def);
-        }
+        if (Infer::should_eliminate(old_def)) return Rewriter::rewrite(old_def);
         return old_def;
     }
 };
@@ -100,6 +95,13 @@ bool Infer::eliminate(Array<Ref*> refs) {
  * Check
  */
 
+#ifdef THORIN_ENABLE_CHECKS
+template<Check::Mode mode> bool Check::fail() {
+    if (mode == Mode::Relaxed && world().flags().break_on_alpha_unequal) breakpoint();
+    return false;
+}
+#endif
+
 template<Check::Mode mode> bool Check::alpha_(Ref r1, Ref r2) {
     auto d1 = *r1; // find
     auto d2 = *r2; // find
@@ -111,13 +113,18 @@ template<Check::Mode mode> bool Check::alpha_(Ref r1, Ref r2) {
     auto mut1 = d1->isa_mut();
     auto mut2 = d2->isa_mut();
     if (mut1 && mut2 && mut1 == mut2) return true;
-    if (mut1 && !done_.emplace(mut1).second) return true;
-    if (mut2 && !done_.emplace(mut2).second) return true;
+
+    if (mut1) {
+        if (auto [i, ins] = done_.emplace(mut1, d2); !ins) return i->second == d2;
+    }
+    if (mut2) {
+        if (auto [i, ins] = done_.emplace(mut2, d1); !ins) return i->second == d1;
+    }
 
     auto i1 = d1->isa_mut<Infer>();
     auto i2 = d2->isa_mut<Infer>();
 
-    if ((!i1 && !d1->is_set()) || (!i2 && !d2->is_set())) return false;
+    if ((!i1 && !d1->is_set()) || (!i2 && !d2->is_set())) return fail<mode>();
 
     if (mode == Relaxed) {
         if (i1 && i2) {
@@ -152,13 +159,13 @@ template<Check::Mode mode> bool Check::alpha_internal(Ref d1, Ref d2) {
     if (d1->isa<Univ>()) return d2->isa<Univ>();
     if (auto type1 = d1->isa<Type>()) {
         if (auto type2 = d2->isa<Type>()) return alpha_<mode>(type1->level(), type2->level());
-        return false;
+        return fail<mode>();
     }
 
-    if (!alpha_<mode>(d1->type(), d2->type())) return false;
+    if (!alpha_<mode>(d1->type(), d2->type())) return fail<mode>();
     if (d1->isa<Top>() || d2->isa<Top>()) return mode == Relaxed;
-    if (mode != Relaxed && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return false;
-    if (!alpha_<mode>(d1->arity(), d2->arity())) return false;
+    if (mode != Relaxed && (d1->isa_mut<Infer>() || d2->isa_mut<Infer>())) return fail<mode>();
+    if (!alpha_<mode>(d1->arity(), d2->arity())) return fail<mode>();
 
     // vars are equal if they appeared under the same binder
     if (auto mut1 = d1->isa_mut()) assert_emplace(vars_, mut1, d2->isa_mut());
@@ -172,42 +179,43 @@ template<Check::Mode mode> bool Check::alpha_internal(Ref d1, Ref d2) {
     if (auto ts = d1->isa<Tuple, Sigma>()) {
         size_t a = ts->num_ops();
         for (size_t i = 0; i != a; ++i)
-            if (!alpha_<mode>(ts->op(i), d2->proj(a, i))) return false;
+            if (!alpha_<mode>(ts->op(i), d2->proj(a, i))) return fail<mode>();
         return true;
     } else if (auto pa = d1->isa<Pack, Arr>()) {
         if (pa->node() == d2->node()) return alpha_<mode>(pa->ops().back(), d2->ops().back());
         if (auto a = pa->isa_lit_arity()) {
             for (size_t i = 0; i != *a; ++i)
-                if (!alpha_<mode>(pa->proj(*a, i), d2->proj(*a, i))) return false;
+                if (!alpha_<mode>(pa->proj(*a, i), d2->proj(*a, i))) return fail<mode>();
             return true;
         }
     } else if (auto umax = d1->isa<UMax>(); umax && umax->has_dep(Dep::Infer) && !d2->isa<UMax>()) {
         // .umax(a, ?) == x  =>  .umax(a, x)
         for (auto op : umax->ops())
             if (auto inf = op->isa_mut<Infer>(); inf && !inf->is_set()) inf->set(d2);
-        d1 = umax->rebuild(umax->world(), umax->type(), umax->ops());
+        d1 = umax->rebuild(world(), umax->type(), umax->ops());
     }
 
-    if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return false;
+    if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return fail<mode>();
 
     if (auto var1 = d1->isa<Var>()) {
         auto var2 = d2->as<Var>();
         if (auto i = vars_.find(var1->mut()); i != vars_.end()) return i->second == var2->mut();
-        if (auto i = vars_.find(var2->mut()); i != vars_.end()) return false; // var2 is bound
+        if (auto i = vars_.find(var2->mut()); i != vars_.end()) return fail<mode>(); // var2 is bound
         // both var1 and var2 are free: OK, when they in Mode::Relaxed
         return var1 == var2 || mode == Relaxed;
     }
 
     for (size_t i = 0, e = d1->num_ops(); i != e; ++i)
-        if (!alpha_<mode>(d1->op(i), d2->op(i))) return false;
+        if (!alpha_<mode>(d1->op(i), d2->op(i))) return fail<mode>();
     return true;
 }
 
 bool Check::assignable(Ref type, Ref value) {
-    auto check = Check(true);
+    auto& world = type->world();
+    auto check  = Check(world, true);
     if (check.assignable_(type, value)) return true;
-    if (check.rerun() && Infer::eliminate(Array<Ref*>{&type, &value})) return Check().assignable_(type, value);
-    return false;
+    if (check.rerun() && Infer::eliminate(Array<Ref*>{&type, &value})) return Check(world).assignable_(type, value);
+    return Check(world).fail<Relaxed>();
 }
 
 bool Check::assignable_(Ref type, Ref val) {
@@ -217,19 +225,19 @@ bool Check::assignable_(Ref type, Ref val) {
     if (auto infer = val->isa_mut<Infer>()) return alpha_<Relaxed>(type, infer->type());
 
     if (auto sigma = type->isa<Sigma>()) {
-        if (!alpha_<Relaxed>(type->arity(), val_ty->arity())) return false;
+        if (!alpha_<Relaxed>(type->arity(), val_ty->arity())) return fail<Relaxed>();
 
         size_t a = sigma->num_ops();
         auto red = sigma->reduce(val);
         for (size_t i = 0; i != a; ++i)
-            if (!assignable_(red[i], val->proj(a, i))) return false;
+            if (!assignable_(red[i], val->proj(a, i))) return fail<Relaxed>();
         return true;
     } else if (auto arr = type->isa<Arr>()) {
-        if (!alpha_<Relaxed>(type->arity(), val_ty->arity())) return false;
+        if (!alpha_<Relaxed>(type->arity(), val_ty->arity())) return fail<Relaxed>();
 
         if (auto a = Lit::isa(arr->arity())) {
             for (size_t i = 0; i != *a; ++i)
-                if (!assignable_(arr->proj(*a, i), val->proj(*a, i))) return false;
+                if (!assignable_(arr->proj(*a, i), val->proj(*a, i))) return fail<Relaxed>();
             return true;
         }
     } else if (auto vel = val->isa<Vel>()) {
@@ -398,7 +406,7 @@ std::optional<Check2::Pair> Check2::alpha_symm(Ref d1, Ref d2) {
                     new_ops[i] = umax->op(i);
                 }
             }
-            d1 = umax->rebuild(umax->world(), umax->type(), umax->ops());
+            d1 = umax->rebuild(world(), umax->type(), umax->ops());
             return alpha_(d1, l);
         }
     } else if (auto sigma = d1->isa<Sigma>()) {

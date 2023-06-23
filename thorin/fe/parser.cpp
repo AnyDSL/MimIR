@@ -882,25 +882,35 @@ void Parser::parse_ax_decl() {
 }
 
 void Parser::parse_let_decl() {
+    auto track = tracker();
     eat(Tag::K_let);
 
     std::variant<std::unique_ptr<Ptrn>, Dbg> name;
-    if (auto tok = accept(Tag::M_anx))
+    Ref type;
+    if (auto tok = accept(Tag::M_anx)) {
         name = tok->dbg();
-    else
-        name = parse_ptrn(Tag::D_paren_l, "binding pattern of a let expression");
-
-    expect(Tag::T_assign, "let expression");
-    auto body = parse_expr("body of a let expression");
-
-    if (auto dbg = std::get_if<Dbg>(&name)) {
-        scopes_.bind(*dbg, body);
-        register_annex(*dbg, body);
+        type = parse_type_ascr();
     } else {
-        std::get<std::unique_ptr<Ptrn>>(name)->bind(scopes_, body);
+        auto ptrn = parse_ptrn(Tag::D_paren_l, "binding pattern of a let declaration");
+        type      = ptrn->type(world(), def2fields_);
+        name      = std::move(ptrn);
     }
 
-    expect(Tag::T_semicolon, "let expression");
+    expect(Tag::T_assign, "let");
+    auto value = parse_expr("value of a let declaration");
+
+    if (type && !Check::assignable(type, value))
+        error(track.loc(), "cannot assign value `{}` of type `{}` to its declared type `{}` in a let declaration",
+              value, value->type(), type);
+
+    if (auto dbg = std::get_if<Dbg>(&name)) {
+        scopes_.bind(*dbg, value);
+        register_annex(*dbg, value);
+    } else {
+        std::get<std::unique_ptr<Ptrn>>(name)->bind(scopes_, value);
+    }
+
+    expect(Tag::T_semicolon, "let declaration");
 }
 
 void Parser::parse_sigma_decl() {

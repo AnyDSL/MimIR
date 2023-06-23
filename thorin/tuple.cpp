@@ -9,6 +9,12 @@
 
 namespace thorin {
 
+Ref Pack::shape() const {
+    if (auto arr = type()->isa<Arr>()) return arr->shape();
+    if (type() == world().sigma()) return world().lit_nat_0();
+    return world().lit_nat_1();
+}
+
 namespace {
 bool should_flatten(const Def* def) { return (def->is_term() ? def->type() : def)->isa<Sigma, Arr>(); }
 

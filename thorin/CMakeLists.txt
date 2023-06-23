@@ -127,5 +127,5 @@ endif()
 
 install(TARGETS libthorin EXPORT install_exports INCLUDES DESTINATION include)
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} DESTINATION include FILES_MATCHING PATTERN "*.h")
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/config.h DESTINATION include/thorin)
+install(FILES ${CMAKE_BINARY_DIR}/include/thorin/config.h DESTINATION include/thorin)
 install(FILES ${PROJECT_SOURCE_DIR}/modules/half/include/half.hpp DESTINATION include)
