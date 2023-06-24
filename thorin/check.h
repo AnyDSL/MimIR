@@ -23,7 +23,7 @@ public:
     Infer* unset() { return Def::unset()->as<Infer>(); }
     ///@}
 
-    /// Eliminate Infer%s that have may have been resolved in the meantime by rebuilding.
+    /// Eliminate Infer%s that may have been resolved in the meantime by rebuilding.
     /// @returns `true`, if one of the arguements was in fact updated.
     static bool eliminate(Array<Ref*>);
     static bool should_eliminate(Ref def) { return def->isa_imm() && def->has_dep(Dep::Infer); }
