@@ -1,0 +1,6 @@
+// RUN: %thorin %s -o -
+.Sigma Triple: □, 3 = [T: *, U: *, V: *];
+
+.ax %bug.Box: Triple -> *;
+.ax %bug.test: Π [n: .Nat] [Ss: «n; Triple», X: Triple] -> %bug.Box X;
+.lam l3 [S: Triple]: %bug.Box S = %bug.test 3 ((S, S, S), S);
