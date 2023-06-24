@@ -55,7 +55,6 @@ var classthorin_1_1Def =
     [ "rebuild", "classthorin_1_1Def.html#aa4b459f1761e0ea7ddb9ec3629882cd7", null ],
     [ "reduce", "classthorin_1_1Def.html#ab663941c6c9d300778e98b6d05d2af9a", null ],
     [ "reduce", "classthorin_1_1Def.html#a161ef8f8df446d49f85f94844a118aa2", null ],
-    [ "reduce_rec", "classthorin_1_1Def.html#aa6e4f7e30889bb5fdda61f235a5e40b9", null ],
     [ "refine", "classthorin_1_1Def.html#a21a604f6ac783871af333a53b5520303", null ],
     [ "reset", "classthorin_1_1Def.html#a5ae4559a560c6bee9270168eeca7749e", null ],
     [ "reset", "classthorin_1_1Def.html#a0e3cbf7363fa2d5ac978ae0e1bc5b9cc", null ],

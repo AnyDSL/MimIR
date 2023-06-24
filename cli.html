@@ -122,7 +122,7 @@ $(document).ready(function(){initNavTree('cli.html',''); initResizable(); });
 <h1><a class="anchor" id="autotoc_md0"></a>
 Usage</h1>
 <div class="fragment"><div class="line">USAGE:</div>
-<div class="line">  <a class="code hl_namespace" href="namespacethorin.html">thorin</a> [-?|-h|--help] [-v|--version] [-l|--list-search-paths] [-c|--clang &lt;clang&gt;] [-p|--plugin &lt;plugin&gt;] [-P|--plugin-path &lt;path&gt;] [-V|--verbose] [-O|--optimize &lt;level&gt;] [--output-dot &lt;file&gt;] [--output-h &lt;file&gt;] [--output-ll &lt;file&gt;] [--output-md &lt;file&gt;] [-o|--output-thorin &lt;file&gt;] [--bootstrap] [--dump-gid &lt;level&gt;] [--dump-recursive] [--aggr-lam-spec] [-b|--break &lt;gid&gt;] [--reeval-breakpoints] [--<span class="keywordflow">break</span>-on-error] [--<span class="keywordflow">break</span>-on-warn] [--trace-gids] [&lt;file&gt;]</div>
+<div class="line">  <a class="code hl_namespace" href="namespacethorin.html">thorin</a> [-?|-h|--help] [-v|--version] [-l|--list-search-paths] [-c|--clang &lt;clang&gt;] [-p|--plugin &lt;plugin&gt;] [-P|--plugin-path &lt;path&gt;] [-V|--verbose] [-O|--optimize &lt;level&gt;] [--output-dot &lt;file&gt;] [--output-h &lt;file&gt;] [--output-ll &lt;file&gt;] [--output-md &lt;file&gt;] [-o|--output-thorin &lt;file&gt;] [--bootstrap] [--dump-gid &lt;level&gt;] [--dump-recursive] [--aggr-lam-spec] [-b|--break &lt;gid&gt;] [--reeval-breakpoints] [--<span class="keywordflow">break</span>-on-alpha-unequal] [--<span class="keywordflow">break</span>-on-error] [--<span class="keywordflow">break</span>-on-warn] [--trace-gids] [&lt;file&gt;]</div>
 <div class="line"> </div>
 <div class="line">Display usage information.</div>
 <div class="line"> </div>
@@ -148,6 +148,8 @@ Usage</h1>
 <div class="line"><span class="stringliteral">  --aggr-lam-spec         Overrides LamSpec behavior to follow recursive calls.</span></div>
 <div class="line"><span class="stringliteral">  -b, --break &lt;gid&gt;       *Triggers breakpoint upon construction of node with global id &lt;gid&gt;. Useful when running in a debugger.</span></div>
 <div class="line"><span class="stringliteral">  --reeval-breakpoints    *Triggers breakpoint even upon unfying a node that has already been built.</span></div>
+<div class="line"><span class="stringliteral">  --break-on-alpha-unequal</span></div>
+<div class="line"><span class="stringliteral">                          *Triggers breakpoint as soon as two expressions turn out to be not alpha-equivalent.</span></div>
 <div class="line"><span class="stringliteral">  --break-on-error        *Triggers breakpoint on ELOG.</span></div>
 <div class="line"><span class="stringliteral">  --break-on-warn         *Triggers breakpoint on WLOG.</span></div>
 <div class="line"><span class="stringliteral">  --trace-gids            *Output gids during World::unify/insert.</span></div>

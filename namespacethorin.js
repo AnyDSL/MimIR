@@ -783,7 +783,6 @@ var namespacethorin =
     [ "IndexMap", "classthorin_1_1IndexMap.html", "classthorin_1_1IndexMap" ],
     [ "IndexSet", "classthorin_1_1IndexSet.html", "classthorin_1_1IndexSet" ],
     [ "Infer", "classthorin_1_1Infer.html", "classthorin_1_1Infer" ],
-    [ "InferRewriter", "classthorin_1_1InferRewriter.html", "classthorin_1_1InferRewriter" ],
     [ "Insert", "classthorin_1_1Insert.html", "classthorin_1_1Insert" ],
     [ "Lam", "classthorin_1_1Lam.html", "classthorin_1_1Lam" ],
     [ "LamSpec", "classthorin_1_1LamSpec.html", "classthorin_1_1LamSpec" ],

@@ -111,6 +111,7 @@ $(document).ready(function(){initNavTree('classthorin_1_1Infer.html',''); initRe
 
 <div class="header">
   <div class="summary">
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classthorin_1_1Infer-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">thorin::Infer Class Reference</div></div>
@@ -162,7 +163,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aa7ad6f240ca55e9056230ce136c67c90 inherit pub_methods_classthorin_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields the <b>raw</b> type of this <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a>, i.e. maybe <code>nullptr</code>.  <a href="classthorin_1_1Def.html#aa7ad6f240ca55e9056230ce136c67c90">More...</a><br /></td></tr>
 <tr class="separator:aa7ad6f240ca55e9056230ce136c67c90 inherit pub_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb0d70b94a20ed10f7385a3c6f9ccd8e inherit pub_methods_classthorin_1_1Def"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#adb0d70b94a20ed10f7385a3c6f9ccd8e">unfold_type</a> () const</td></tr>
-<tr class="memdesc:adb0d70b94a20ed10f7385a3c6f9ccd8e inherit pub_methods_classthorin_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields the type of this <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a> and unfolds it if necessary.  <a href="classthorin_1_1Def.html#adb0d70b94a20ed10f7385a3c6f9ccd8e">More...</a><br /></td></tr>
+<tr class="memdesc:adb0d70b94a20ed10f7385a3c6f9ccd8e inherit pub_methods_classthorin_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields the type of this <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a> and builds a new <code>.<a class="el" href="classthorin_1_1Type.html">Type</a> (<a class="el" href="classthorin_1_1UInc.html">UInc</a> n)</code> if necessary.  <a href="classthorin_1_1Def.html#adb0d70b94a20ed10f7385a3c6f9ccd8e">More...</a><br /></td></tr>
 <tr class="separator:adb0d70b94a20ed10f7385a3c6f9ccd8e inherit pub_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab01f9bc2b2b3b74d99f032a0979e1338 inherit pub_methods_classthorin_1_1Def"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#ab01f9bc2b2b3b74d99f032a0979e1338">is_term</a> () const</td></tr>
 <tr class="memdesc:ab01f9bc2b2b3b74d99f032a0979e1338 inherit pub_methods_classthorin_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields <code>true</code> if <code>this:T</code> and <code>T:(.<a class="el" href="classthorin_1_1Type.html">Type</a> 0)</code>.  <a href="classthorin_1_1Def.html#ab01f9bc2b2b3b74d99f032a0979e1338">More...</a><br /></td></tr>
@@ -353,9 +354,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a161ef8f8df446d49f85f94844a118aa2 inherit pub_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab663941c6c9d300778e98b6d05d2af9a inherit pub_methods_classthorin_1_1Def"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a81c6780cfdf58e5be888c4c16c68476d">DefArray</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#ab663941c6c9d300778e98b6d05d2af9a">reduce</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *arg)</td></tr>
 <tr class="separator:ab663941c6c9d300778e98b6d05d2af9a inherit pub_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6e4f7e30889bb5fdda61f235a5e40b9 inherit pub_methods_classthorin_1_1Def"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#aa6e4f7e30889bb5fdda61f235a5e40b9">reduce_rec</a> () const</td></tr>
-<tr class="memdesc:aa6e4f7e30889bb5fdda61f235a5e40b9 inherit pub_methods_classthorin_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transitively <a class="el" href="classthorin_1_1Def.html#a161ef8f8df446d49f85f94844a118aa2" title="Rewrites Def::ops by substituting this mutable&#39;s Var with arg.">Def::reduce</a> <a class="el" href="classthorin_1_1Lam.html" title="A function.">Lam</a>s, if <code>this</code> is an <a class="el" href="classthorin_1_1App.html">App</a>.  <a href="classthorin_1_1Def.html#aa6e4f7e30889bb5fdda61f235a5e40b9">More...</a><br /></td></tr>
-<tr class="separator:aa6e4f7e30889bb5fdda61f235a5e40b9 inherit pub_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af22b8109e5e8237a42f377094e9549d7 inherit pub_methods_classthorin_1_1Def"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#af22b8109e5e8237a42f377094e9549d7">check</a> ()</td></tr>
 <tr class="separator:af22b8109e5e8237a42f377094e9549d7 inherit pub_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adeb490fdb674323acba48da1ffb28787 inherit pub_methods_classthorin_1_1Def"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#adeb490fdb674323acba48da1ffb28787">dump</a> () const</td></tr>
@@ -390,11 +388,13 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr><td colspan="2"><div class="groupHeader">union-find</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p ><a href="https://en.wikipedia.org/wiki/Disjoint-set_data_structure">Union-Find</a> to unify <a class="el" href="classthorin_1_1Infer.html" title="This node is a hole in the IR that is inferred by its context later on.">Infer</a> nodes.</p>
-<p ><a class="el" href="classthorin_1_1Def.html#ae5ea4e372acd23fa84ffef357a781084">Def::flags</a> is used to keep track of rank for <a href="https://en.wikipedia.org/wiki/Disjoint-set_data_structure#Union_by_rank">Union by rank</a>. </p>
-</div></td></tr>
+<tr class="memitem:a7ff01479befe6088ceff8b37c6e5a530"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Infer.html#a7ff01479befe6088ceff8b37c6e5a530">eliminate</a> (<a class="el" href="classthorin_1_1Array.html">Array</a>&lt; <a class="el" href="classthorin_1_1Ref.html">Ref</a> * &gt;)</td></tr>
+<tr class="memdesc:a7ff01479befe6088ceff8b37c6e5a530"><td class="mdescLeft">&#160;</td><td class="mdescRight">Eliminate <a class="el" href="classthorin_1_1Infer.html" title="This node is a hole in the IR that is inferred by its context later on.">Infer</a>s that may have been resolved in the meantime by rebuilding.  <a href="classthorin_1_1Infer.html#a7ff01479befe6088ceff8b37c6e5a530">More...</a><br /></td></tr>
+<tr class="separator:a7ff01479befe6088ceff8b37c6e5a530"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa18e214b457bd2d96115114dbfffefe5"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Infer.html#aa18e214b457bd2d96115114dbfffefe5">should_eliminate</a> (<a class="el" href="classthorin_1_1Ref.html">Ref</a> def)</td></tr>
+<tr class="separator:aa18e214b457bd2d96115114dbfffefe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2360ebd60a14311cf8b6730835958b34"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Infer.html#a2360ebd60a14311cf8b6730835958b34">find</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *)</td></tr>
+<tr class="memdesc:a2360ebd60a14311cf8b6730835958b34"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a href="https://en.wikipedia.org/wiki/Disjoint-set_data_structure">Union-Find</a> to unify <a class="el" href="classthorin_1_1Infer.html" title="This node is a hole in the IR that is inferred by its context later on.">Infer</a> nodes.  <a href="classthorin_1_1Infer.html#a2360ebd60a14311cf8b6730835958b34">More...</a><br /></td></tr>
 <tr class="separator:a2360ebd60a14311cf8b6730835958b34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
@@ -448,6 +448,41 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00012">12</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7ff01479befe6088ceff8b37c6e5a530" name="a7ff01479befe6088ceff8b37c6e5a530"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ff01479befe6088ceff8b37c6e5a530">&#9670;&#160;</a></span>eliminate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool thorin::Infer::eliminate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1Array.html">Array</a>&lt; <a class="el" href="classthorin_1_1Ref.html">Ref</a> * &gt;&#160;</td>
+          <td class="paramname"><em>refs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Eliminate <a class="el" href="classthorin_1_1Infer.html" title="This node is a hole in the IR that is inferred by its context later on.">Infer</a>s that may have been resolved in the meantime by rebuilding. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code>, if one of the arguements was in fact updated. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00062">62</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="array_8h_source.html#l00322">thorin::Array&lt; T &gt;::front()</a>, <a class="el" href="namespacethorin.html#a55a6c38c7e5330a05b17f8134f60264aa442b0d534b230e2f2c9b562974652f79">thorin::Infer</a>, <a class="el" href="check_8h_source.html#l00029">should_eliminate()</a>, <a class="el" href="array_8h_source.html#l00300">thorin::Array&lt; T &gt;::size()</a>, and <a class="el" href="def_8cpp_source.html#l00229">thorin::Def::world()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00193">thorin::World::app()</a>.</p>
+
+</div>
+</div>
 <a id="a2360ebd60a14311cf8b6730835958b34" name="a2360ebd60a14311cf8b6730835958b34"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2360ebd60a14311cf8b6730835958b34">&#9670;&#160;</a></span>find()</h2>
 
@@ -472,11 +507,14 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00013">13</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
+<p><a href="https://en.wikipedia.org/wiki/Disjoint-set_data_structure">Union-Find</a> to unify <a class="el" href="classthorin_1_1Infer.html" title="This node is a hole in the IR that is inferred by its context later on.">Infer</a> nodes. </p>
+<p ><a class="el" href="classthorin_1_1Def.html#ae5ea4e372acd23fa84ffef357a781084">Def::flags</a> is used to keep track of rank for <a href="https://en.wikipedia.org/wiki/Disjoint-set_data_structure#Union_by_rank">Union by rank</a>. </p>
 
-<p class="reference">References <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00401">thorin::Def::isa_mut()</a>, <a class="el" href="check_8h_source.html#l00020">op()</a>, <a class="el" href="def_8h_source.html#l00251">thorin::Def::op()</a>, <a class="el" href="check_8cpp_source.html#l00011">thorin::Ref::refer()</a>, <a class="el" href="def_8h_source.html#l00273">thorin::Def::reset()</a>, and <a class="el" href="def_8h_source.html#l00281">thorin::Def::update()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00029">29</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00011">thorin::Ref::refer()</a>.</p>
+<p class="reference">References <a class="el" href="cast_8h_source.html#l00028">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00401">thorin::Def::isa_mut()</a>, <a class="el" href="check_8h_source.html#l00020">op()</a>, <a class="el" href="def_8h_source.html#l00251">thorin::Def::op()</a>, <a class="el" href="check_8cpp_source.html#l00027">thorin::Ref::refer()</a>, <a class="el" href="def_8h_source.html#l00273">thorin::Def::reset()</a>, and <a class="el" href="def_8h_source.html#l00281">thorin::Def::update()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00027">thorin::Ref::refer()</a>.</p>
 
 </div>
 </div>
@@ -507,7 +545,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00251">thorin::Def::op()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00013">find()</a>, <a class="el" href="check_8h_source.html#l00022">reset()</a>, and <a class="el" href="check_8h_source.html#l00021">set()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00029">find()</a>, <a class="el" href="check_8h_source.html#l00022">reset()</a>, and <a class="el" href="check_8h_source.html#l00021">set()</a>.</p>
 
 </div>
 </div>
@@ -617,9 +655,41 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00021">21</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
 
-<p class="reference">References <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="check_8h_source.html#l00020">op()</a>, and <a class="el" href="def_8cpp_source.html#l00366">thorin::Def::set()</a>.</p>
+<p class="reference">References <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, <a class="el" href="check_8h_source.html#l00020">op()</a>, and <a class="el" href="def_8cpp_source.html#l00352">thorin::Def::set()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00032">thorin::fe::IdPtrn::type()</a>.</p>
+
+</div>
+</div>
+<a id="aa18e214b457bd2d96115114dbfffefe5" name="aa18e214b457bd2d96115114dbfffefe5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa18e214b457bd2d96115114dbfffefe5">&#9670;&#160;</a></span>should_eliminate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool thorin::Infer::should_eliminate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td>
+          <td class="paramname"><em>def</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00029">29</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
+
+<p class="reference">References <a class="el" href="def_8h_source.html#l00318">thorin::Def::has_dep()</a>, <a class="el" href="namespacethorin.html#a55a6c38c7e5330a05b17f8134f60264aa442b0d534b230e2f2c9b562974652f79">thorin::Infer</a>, and <a class="el" href="def_8h_source.html#l00395">thorin::Def::isa_imm()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00062">eliminate()</a>, and <a class="el" href="rewrite_8h_source.html#l00040">thorin::ScopeRewriter::rewrite()</a>.</p>
 
 </div>
 </div>
@@ -688,7 +758,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00023">23</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
 
-<p class="reference">References <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, and <a class="el" href="def_8cpp_source.html#l00383">thorin::Def::unset()</a>.</p>
+<p class="reference">References <a class="el" href="cast_8h_source.html#l00023">thorin::RuntimeCast&lt; B &gt;::as()</a>, and <a class="el" href="def_8cpp_source.html#l00369">thorin::Def::unset()</a>.</p>
 
 </div>
 </div>
@@ -713,7 +783,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00040">40</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="check_8h_source.html#l00042">42</a> of file <a class="el" href="check_8h_source.html">check.h</a>.</p>
 
 </div>
 </div>

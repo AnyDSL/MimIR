@@ -196,7 +196,6 @@ var hierarchy =
     [ "thorin::BitSet::reference", "classthorin_1_1BitSet_1_1reference.html", null ],
     [ "thorin::IndexSet< Indexer, Key >::reference", "classthorin_1_1IndexSet_1_1reference.html", null ],
     [ "thorin::Rewriter", "classthorin_1_1Rewriter.html", [
-      [ "thorin::InferRewriter", "classthorin_1_1InferRewriter.html", null ],
       [ "thorin::RWPhase", "classthorin_1_1RWPhase.html", null ],
       [ "thorin::ScopeRewriter", "classthorin_1_1ScopeRewriter.html", null ]
     ] ],
