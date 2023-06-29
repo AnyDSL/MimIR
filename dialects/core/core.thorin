@@ -259,7 +259,7 @@
 /// Steers the partial evaluator.
 ///
 .ax %core.pe(hlt, run): Π [T: *][T] -> T, normalize_pe;
-.ax %core.pe(known): Π [T: *][T] -> .Bool, normalize_pe;
+.ax %core.pe(known): Π.[T: *][T] -> .Bool, normalize_pe;
 ///
 /// ### %core.zip
 ///

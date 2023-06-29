@@ -84,8 +84,7 @@ inline Ref insert_unsafe(Ref d, u64 i, Ref val) {
 /// @name Convert TBound to Sigma
 ///@{
 /// This is WIP.
-template<bool up>
-const Sigma* convert(const TBound<up>* b);
+template<bool up> const Sigma* convert(const TBound<up>* b);
 
 inline const Sigma* convert(const Bound* b) { return b->isa<Join>() ? convert(b->as<Join>()) : convert(b->as<Meet>()); }
 ///@}
@@ -98,8 +97,8 @@ namespace thorin {
 ///@{
 // clang-format off
 constexpr bool is_commutative(core::nat  id) { return id == core::nat ::add || id == core::nat ::mul; }
-constexpr bool is_commutative(core::wrap id) { return id == core::wrap::add || id == core::wrap::mul; }
 constexpr bool is_commutative(core::ncmp id) { return id == core::ncmp::  e || id == core::ncmp:: ne; }
+constexpr bool is_commutative(core::wrap id) { return id == core::wrap::add || id == core::wrap::mul; }
 constexpr bool is_commutative(core::icmp id) { return id == core::icmp::  e || id == core::icmp:: ne; }
 // clang-format off
 

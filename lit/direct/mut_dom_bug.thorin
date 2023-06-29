@@ -4,7 +4,7 @@
 .lam ForBody [n: .Nat] = [%mem.M, .Idx n] -> %mem.M;
 
 .lam For .[n: .Nat] [start: .Idx n, end: .Idx n] [mem: %mem.M] [it: ForBody n]: %mem.M = {
-    .lam loop [mem: %mem.M, i: .Idx n] @(%core.pe.known (.Idx n) i) : [%mem.M, .Idx n] = {
+    .lam loop [mem: %mem.M, i: .Idx n] @(%core.pe.known i) : [%mem.M, .Idx n] = {
         .let `mem = it (mem, i);
 
         .let j   = %core.wrap.add 0 (i, %core.idx n 0 1);
