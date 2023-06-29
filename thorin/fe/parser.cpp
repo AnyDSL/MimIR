@@ -366,7 +366,9 @@ Ref Parser::parse_tuple_expr() {
     auto track = tracker();
     DefVec ops;
     parse_list("tuple", Tag::D_paren_l, [&]() { ops.emplace_back(parse_expr("tuple element")); });
-    return world().tuple(ops)->set(track.loc());
+    auto ascr = accept(Tag::T_colon) ? parse_expr("type ascription of a tuple") : nullptr;
+
+    return (ascr ? world().tuple(ascr, ops) : world().tuple(ops))->set(track.loc());
 }
 
 Ref Parser::parse_type_expr() {

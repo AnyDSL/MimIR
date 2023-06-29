@@ -1,0 +1,21 @@
+// RUN: %thorin %s -o -
+.plugin core;
+.plugin mem;
+
+.Sigma Num: □, 2 = [T: *, _0: T]; // could be anything
+.Sigma Shp: *, 2 = [D: [.Nat, .Nat], N: Num];
+.let I64: Num = (%core.I64, 0:%core.I64):Num;
+.ax %bug.Mat: Shp -> *;
+
+.ax %bug.matmul: Π [m: .Nat, n: .Nat, o: .Nat] [N: Num]
+    [X: %bug.Mat ((m, n), N), Y: %bug.Mat ((n, o), N)] -> %bug.Mat ((m, o), N);
+
+.fun .extern main [mem: %mem.M,
+        pX: %mem.Ptr0 (%bug.Mat ((3, 4), I64)),
+        pY: %mem.Ptr0 (%bug.Mat ((4, 5), I64)),
+        pZ: %mem.Ptr0 (%bug.Mat ((3, 5), I64))]: %mem.M =
+    .let (`mem, X) = %mem.load (mem, pX);
+    .let (`mem, Y) = %mem.load (mem, pY);
+    .let Z = %bug.matmul (3, 4, 5) I64 (X, Y);
+    .let `mem = %mem.store (mem, pZ, Z);
+    return mem;
