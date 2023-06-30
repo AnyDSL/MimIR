@@ -548,17 +548,12 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto tuple = extract->tuple();
         auto index = extract->index();
 
-        world().VLOG("emit extract from tupl: {}, ex type: {}, tuple type: {}", extract, extract->type(),
-                     tuple->type());
         // use select when extracting from 2-element integral tuples
         // literal indices would be normalized away already, if it was possible
         // As they aren't they likely depend on a var, which is implemented as array -> need extractvalue
         if (auto app = extract->type()->isa<App>();
             app && app->callee()->isa<Idx>() && !index->isa<Lit>() && tuple->type()->isa<Arr>()) {
             if (auto arity = tuple->type()->isa_lit_arity(); arity && *arity == 2) {
-                world().VLOG("emit extract from integral tupl: {}, ex type: {}, tuple type: {}", extract,
-                             extract->type(), tuple->type());
-
                 auto t                = convert(extract->type());
                 auto [elem_a, elem_b] = tuple->projs<2>([&](auto e) { return emit_unsafe(e); });
 
