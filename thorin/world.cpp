@@ -366,7 +366,7 @@ Ref World::insert(Ref d, Ref index, Ref val) {
     }
 
     if (auto l = Lit::isa(size); l && *l == 1) return val;
-    return tuple_(d, {val}); // d could be mut - that's why the tuple ctor is needed
+    // return tuple_(d, {val}); // d could be mut - that's why the tuple ctor is needed
 
     // insert((a, b, c, d), 2, x) -> (a, b, x, d)
     if (auto t = d->isa<Tuple>(); t && lidx) return t->refine(*lidx, val);
