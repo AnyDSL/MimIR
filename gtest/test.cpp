@@ -45,7 +45,7 @@ TEST(World, simplify_one_tuple) {
     type->set(Defs{w.type_nat(), w.type_nat()});
     ASSERT_EQ(type, w.sigma({type})) << "constant fold [mut] -> mut";
 
-    auto v = w.tuple(type, {w.lit_idx(42), w.lit_idx(1337)});
+    auto v = w.tuple({w.lit_idx(42), w.lit_idx(1337)});
     ASSERT_EQ(v, w.tuple({v})) << "constant fold ({42, 1337}) -> {42, 1337}";
 }
 

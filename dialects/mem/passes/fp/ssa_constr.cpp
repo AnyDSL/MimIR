@@ -125,7 +125,7 @@ Ref SSAConstr::mem2phi(const App* app, Lam* mem_lam) {
         auto traxy = proxy(phi_lam->var()->type(), traxy_ops, Traxy);
 
         DefArray new_vars(num_mem_vars, [&](size_t i) { return traxy->proj(i); });
-        phi_lam->set(mem_lam->reduce(world().tuple(mem_lam->dom(), new_vars)));
+        phi_lam->set(mem_lam->reduce(world().tuple(new_vars)));
     } else {
         world().DLOG("reuse phi_lam '{}'", phi_lam);
     }

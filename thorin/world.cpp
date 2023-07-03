@@ -239,14 +239,15 @@ Ref World::tuple(Defs ops) {
     if (ops.size() == 1) return ops[0];
 
     auto sigma = infer_sigma(*this, ops);
-    auto t     = tuple(sigma, ops);
+    auto t     = tuple_(sigma, ops);
     if (!Check::assignable(sigma, t))
         error(t, "cannot assign tuple '{}' of type '{}' to incompatible tuple type '{}'", t, t->type(), sigma);
 
     return t;
 }
 
-Ref World::tuple(Ref type, Defs ops) {
+Ref World::tuple_(Ref type, Defs ops) {
+    assert(type->isa_imm());
     // TODO type-check type vs inferred type
 
     auto n = ops.size();
@@ -364,8 +365,8 @@ Ref World::insert(Ref d, Ref index, Ref val) {
             error(val, "value of type {} is not assignable to type {}", val->type(), target_type);
     }
 
-    if (auto l = Lit::isa(size); l && *l == 1)
-        return tuple(d, {val}); // d could be mut - that's why the tuple ctor is needed
+    if (auto l = Lit::isa(size); l && *l == 1) return val;
+    return tuple_(d, {val}); // d could be mut - that's why the tuple ctor is needed
 
     // insert((a, b, c, d), 2, x) -> (a, b, x, d)
     if (auto t = d->isa<Tuple>(); t && lidx) return t->refine(*lidx, val);
@@ -375,7 +376,7 @@ Ref World::insert(Ref d, Ref index, Ref val) {
         if (auto a = pack->isa_lit_arity()) {
             DefArray new_ops(*a, pack->body());
             new_ops[*lidx] = val;
-            return tuple(type, new_ops);
+            return tuple_(type, new_ops);
         }
     }
 
@@ -464,7 +465,7 @@ const Lit* World::lit(Ref type, u64 val) {
 template<bool Up> Ref World::ext(Ref type) {
     if (auto arr = type->isa<Arr>()) return pack(arr->shape(), ext<Up>(arr->body()));
     if (auto sigma = type->isa<Sigma>())
-        return tuple(sigma, DefArray(sigma->num_ops(), [&](size_t i) { return ext<Up>(sigma->op(i)); }));
+        return tuple_(sigma, DefArray(sigma->num_ops(), [&](size_t i) { return ext<Up>(sigma->op(i)); }));
     return unify<TExt<Up>>(0, type);
 }
 

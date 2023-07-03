@@ -84,11 +84,11 @@ Ref clos_pack(Ref env, Ref lam, Ref ct) {
     auto pi = lam->type()->as<Pi>();
     assert(env->type() == pi->dom(Clos_Env_Param));
     ct = (ct) ? ct : clos_type(w.cn(clos_remove_env(pi->dom())));
-    return w.tuple(ct, {env->type(), lam, env})->isa<Tuple>();
+    return w.tuple({env->type(), lam, env})->isa<Tuple>();
 }
 
 std::tuple<Ref, Ref, Ref> clos_unpack(Ref c) {
-    assert(c && isa_clos_type(c->type()));
+    assert(c); // && isa_clos_type(c->type()));
     // auto& w       = c->world();
     // auto env_type = c->proj(0_u64);
     // // auto pi       = clos_type_to_pi(c->type(), env_type);

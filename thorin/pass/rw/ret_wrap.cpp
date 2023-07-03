@@ -14,7 +14,7 @@ void RetWrap::enter() {
     auto new_vars = curr_mut()->vars();
     assert(new_vars.back() == ret_var && "we assume that the last element is the ret_var");
     new_vars.back() = ret_cont;
-    auto new_var    = world().tuple(curr_mut()->dom(), new_vars);
+    auto new_var    = world().tuple(new_vars);
     curr_mut()->reset(curr_mut()->reduce(new_var));
 }
 

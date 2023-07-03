@@ -101,7 +101,7 @@ Ref Sigma    ::rebuild(World& w, Ref  , Defs o) const { return w.sigma(o)       
 Ref Singleton::rebuild(World& w, Ref  , Defs o) const { return w.singleton(o[0])              ->set(dbg()); }
 Ref Type     ::rebuild(World& w, Ref  , Defs o) const { return w.type(o[0])                   ->set(dbg()); }
 Ref Test     ::rebuild(World& w, Ref  , Defs o) const { return w.test(o[0], o[1], o[2], o[3]) ->set(dbg()); }
-Ref Tuple    ::rebuild(World& w, Ref t, Defs o) const { return w.tuple(t, o)                  ->set(dbg()); }
+Ref Tuple    ::rebuild(World& w, Ref  , Defs o) const { return w.tuple(o)                     ->set(dbg()); }
 Ref UInc     ::rebuild(World& w, Ref  , Defs o) const { return w.uinc(o[0], offset())         ->set(dbg()); }
 Ref UMax     ::rebuild(World& w, Ref  , Defs o) const { return w.umax(o)                      ->set(dbg()); }
 Ref Var      ::rebuild(World& w, Ref t, Defs o) const { return w.var(t, o[0]->as_mut())       ->set(dbg()); }

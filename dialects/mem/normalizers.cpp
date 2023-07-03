@@ -23,8 +23,7 @@ Ref normalize_load(Ref type, Ref callee, Ref arg) {
     if (ptr->isa<Bot>()) return world.tuple({mem, world.bot(type->as<Sigma>()->op(1))});
 
     // loading an empty tuple can only result in an empty tuple
-    if (auto sigma = pointee->isa<Sigma>(); sigma && sigma->num_ops() == 0)
-        return world.tuple({mem, world.tuple(sigma->type(), {})});
+    if (auto sigma = pointee->isa<Sigma>(); sigma && sigma->num_ops() == 0) return world.tuple({mem, world.tuple()});
 
     return world.raw_app(type, callee, {mem, ptr});
 }

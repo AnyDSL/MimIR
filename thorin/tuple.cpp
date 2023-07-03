@@ -28,7 +28,7 @@ const Def* unflatten(Defs defs, const Def* type, size_t& j, bool flatten_muts) {
     if (auto a = type->isa_lit_arity(); flatten_muts == mut_val_or_typ(type) && a && *a != 1) {
         auto& world = type->world();
         DefArray ops(*a, [&](size_t i) { return unflatten(defs, type->proj(*a, i), j, flatten_muts); });
-        return world.tuple(type, ops);
+        return world.tuple(ops);
     }
 
     return defs[j++];
@@ -59,7 +59,7 @@ const Def* flatten(const Def* def) {
     if (!should_flatten(def)) return def;
     DefVec ops;
     flatten(ops, def);
-    return def->is_term() ? def->world().tuple(def->type(), ops) : def->world().sigma(ops);
+    return def->is_term() ? def->world().tuple(ops) : def->world().sigma(ops);
 }
 
 const Def* unflatten(Defs defs, const Def* type, bool flatten_muts) {
