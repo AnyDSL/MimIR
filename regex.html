@@ -217,9 +217,7 @@ Implementation</h1>
 <div class="line">    .let (`mem, char) = %mem.load (mem, ptr);</div>
 <div class="line">    .let in_range = %core.bit2.and_ 0 (%core.icmp.uge (char, lower),  %core.icmp.ule (char, upper));</div>
 <div class="line">    </div>
-<div class="line">    .con if_tt() = return (mem, in_range, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)));</div>
-<div class="line">    .con if_ff() = return (mem, in_range, pos);</div>
-<div class="line">    (if_ff, if_tt)#in_range ()</div>
+<div class="line">    return (mem, in_range, (pos, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)))#in_range)</div>
 <div class="line">};</div>
 <div class="line">.fun %regex.match_not(n: .Nat)(inner: (CPS_RE n))(mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n): [%mem.M, .Bool, .Idx n] = {</div>
 <div class="line">    .con match_not_ret_inverted!(mem: %mem.M, in_range: .Bool, new_pos: .Idx n) = return (mem, %core.bit1.neg 0 in_range, new_pos);</div>
@@ -230,69 +228,52 @@ Implementation</h1>
 <div class="line">    .let (`mem, char) = %mem.load (mem, ptr);</div>
 <div class="line">    .let isnt_0 = %core.icmp.ne (char, &#39;\0&#39;);</div>
 <div class="line"> </div>
-<div class="line">    .con if_tt() = return (mem, isnt_0, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)));</div>
-<div class="line">    .con if_ff() = return (mem, isnt_0, pos);</div>
-<div class="line">    (if_ff, if_tt)#isnt_0 ()</div>
+<div class="line">    return (mem, isnt_0, (pos, %core.conv.u n (%core.wrap.add 0 (%core.conv.u %core.i32 pos, 1:%core.I32)))#isnt_0)</div>
 <div class="line">};</div>
 <div class="line">.fun %regex.match_conj(n: .Nat)(A: (CPS_RE n), B: (CPS_RE n))(mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n): [%mem.M, .Bool, .Idx n] = {</div>
-<div class="line">    .con match_conj_exit_true!(mem: %mem.M, new_pos: .Idx n) = return (mem, 1:.Bool, new_pos);</div>
-<div class="line"> </div>
-<div class="line">    .con match_conj_exit_false!(mem: %mem.M, new_pos: .Idx n) = return (mem, 0:.Bool, pos);</div>
-<div class="line"> </div>
-<div class="line">    .con match_conj_B_ret!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = (match_conj_exit_false, match_conj_exit_true)#matched (mem, new_pos);</div>
+<div class="line">    .con match_conj_B_ret!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = return (mem, matched, (pos, new_pos)#matched);</div>
 <div class="line"> </div>
 <div class="line">    .con match_conj_A_ret!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = {</div>
-<div class="line">        .con match_conj_call_B!(mem:%mem.M, new_pos:.Idx n) = B ((mem, string, new_pos), match_conj_B_ret);</div>
+<div class="line">        .con match_conj_call_B!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = B ((mem, string, new_pos), match_conj_B_ret);</div>
 <div class="line"> </div>
-<div class="line">        (match_conj_exit_false, match_conj_call_B)#matched (mem, new_pos)</div>
+<div class="line">        (return, match_conj_call_B)#matched (mem, matched, (pos, new_pos)#matched)</div>
 <div class="line">    };</div>
 <div class="line"> </div>
 <div class="line">    A ((mem, string, pos), match_conj_A_ret)</div>
 <div class="line">};</div>
 <div class="line">.fun %regex.match_disj(n: .Nat)(A: (CPS_RE n), B: (CPS_RE n))(mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n): [%mem.M, .Bool, .Idx n] = {</div>
-<div class="line">    .con match_disj_exit_true!(mem: %mem.M, new_pos: .Idx n) = return (mem, 1:.Bool, new_pos);</div>
-<div class="line"> </div>
-<div class="line">    .con match_disj_exit_false!(mem: %mem.M, new_pos: .Idx n) = return (mem, 0:.Bool, pos);</div>
-<div class="line"> </div>
-<div class="line">    .con match_disj_B_ret!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = (match_disj_exit_false, match_disj_exit_true)#matched (mem, new_pos);</div>
+<div class="line">    .con match_disj_B_ret!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = return (mem, matched, (pos, new_pos)#matched);</div>
 <div class="line"> </div>
 <div class="line">    .con match_disj_A_ret!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = {</div>
-<div class="line">        .con match_disj_call_B!(mem:%mem.M, new_pos:.Idx n) = B ((mem, string, new_pos), match_disj_B_ret);</div>
-<div class="line">        (match_disj_call_B, match_disj_exit_true)#matched (mem, new_pos)</div>
+<div class="line">        .con match_disj_call_B!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = B ((mem, string, new_pos), match_disj_B_ret);</div>
+<div class="line">        (match_disj_call_B, return)#matched (mem, matched, new_pos)</div>
 <div class="line">    };</div>
 <div class="line"> </div>
 <div class="line">    A ((mem, string, pos), match_disj_A_ret)</div>
 <div class="line">};</div>
 <div class="line">.fun %regex.match_optional(n: .Nat)(sub: (CPS_RE n))(mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n): [%mem.M, .Bool, .Idx n] = {</div>
-<div class="line">    .con match_optional_exit_true!(mem: %mem.M, new_pos: .Idx n) = return (mem, 1:.Bool, new_pos);</div>
-<div class="line"> </div>
-<div class="line">    .con match_optional_exit_false!(mem: %mem.M, new_pos: .Idx n) = return (mem, 1:.Bool, pos);</div>
-<div class="line">    .con match_optional_ret!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = (match_optional_exit_false, match_optional_exit_true)#matched (mem, new_pos);</div>
+<div class="line">    .con match_optional_ret!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = return (mem, 1:.Bool, new_pos);</div>
 <div class="line"> </div>
 <div class="line">    sub ((mem, string, pos), match_optional_ret)</div>
 <div class="line">};</div>
 <div class="line">.fun %regex.match_star(n: .Nat)(sub: (CPS_RE n))(mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n): [%mem.M, .Bool, .Idx n] = {</div>
-<div class="line">    .con match_star_exit_false(mem: %mem.M, new_pos: .Idx n) = return (mem, 1:.Bool, new_pos);</div>
 <div class="line">    .con match_star_ret(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = {</div>
-<div class="line">        .con match_star_iter(mem: %mem.M, new_pos: .Idx n) = sub ((mem, string, new_pos), match_star_ret);</div>
+<div class="line">        .con match_star_iter(mem: %mem.M, matched:.Bool, new_pos: .Idx n) = sub ((mem, string, new_pos), match_star_ret);</div>
 <div class="line"> </div>
-<div class="line">        (match_star_exit_false, match_star_iter)#matched (mem, new_pos)</div>
+<div class="line">        (return, match_star_iter)#matched (mem, 1:.Bool, new_pos)</div>
 <div class="line">    };</div>
 <div class="line"> </div>
 <div class="line">    sub ((mem, string, pos), match_star_ret)</div>
 <div class="line">};</div>
 <div class="line">.fun %regex.match_plus(n: .Nat)(sub: (CPS_RE n))(mem: %mem.M, string: %mem.Ptr0 «n; %core.I8», pos: .Idx n): [%mem.M, .Bool, .Idx n] = {</div>
-<div class="line">    .con match_plus_exit_true!(mem: %mem.M, new_pos: .Idx n) = return (mem, 1:.Bool, new_pos);</div>
-<div class="line"> </div>
 <div class="line">    .con match_plus_ret!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = {</div>
-<div class="line">        .con match_plus_iter!(mem: %mem.M, new_pos: .Idx n) = sub ((mem, string, new_pos), match_plus_ret);</div>
-<div class="line">        (match_plus_exit_true, match_plus_iter)#matched (mem, new_pos)</div>
+<div class="line">        .con match_plus_iter!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = sub ((mem, string, new_pos), match_plus_ret);</div>
+<div class="line">        (return, match_plus_iter)#matched (mem, 1:.Bool, new_pos)</div>
 <div class="line">    };</div>
 <div class="line"> </div>
-<div class="line">    .con match_plus_exit_false!(mem: %mem.M, new_pos: .Idx n) = return (mem, 0:.Bool, new_pos);</div>
 <div class="line">    .con match_plus_ret0!(mem:%mem.M, matched:.Bool, new_pos:.Idx n) = {</div>
-<div class="line">        .con match_plus_iter0!(mem: %mem.M, new_pos: .Idx n) = sub ((mem, string, new_pos), match_plus_ret);</div>
-<div class="line">        (match_plus_exit_false, match_plus_iter0)#matched (mem, new_pos)</div>
+<div class="line">        .con match_plus_iter0!(mem: %mem.M, matched:.Bool, new_pos: .Idx n) = sub ((mem, string, new_pos), match_plus_ret);</div>
+<div class="line">        (return, match_plus_iter0)#matched (mem, matched, new_pos)</div>
 <div class="line">    };</div>
 <div class="line"> </div>
 <div class="line">    sub ((mem, string, pos), match_plus_ret0)</div>
