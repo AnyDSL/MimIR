@@ -131,7 +131,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
 
     if (auto tuple = def->isa<Tuple>()) {
         DefArray elements(tuple->ops(), [&](const Def* op) { return rewrite_body(op); });
-        return world().tuple(elements)->set(tuple->dbg());
+        return world().tuple(def->type(), elements)->set(tuple->dbg());
     }
 
     DefArray new_ops{def->ops(), [&](const Def* op) { return rewrite_body(op); }};

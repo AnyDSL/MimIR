@@ -9,14 +9,16 @@
 
 namespace thorin {
 
-const Def* Pack::shape() const {
-    if (auto arr = type()->isa<Arr>()) return arr->shape();
-    if (type() == world().sigma()) return world().lit_nat_0();
-    return world().lit_nat_1();
-}
-
 namespace {
-bool should_flatten(const Def* def) { return (def->is_term() ? def->type() : def)->isa<Sigma, Arr>(); }
+bool should_flatten(nat_t threshold, const Def* def) {
+    auto type = (def->is_term() ? def->type() : def);
+    if (type->isa<Sigma>()) return true;
+    if (auto arr = type->isa<Arr>()) {
+        if (auto a = arr->isa_lit_arity(); a && *a > threshold) return false;
+        return true;
+    }
+    return false;
+}
 
 bool mut_val_or_typ(const Def* def) {
     auto typ = def->is_term() ? def->type() : def;
@@ -35,6 +37,12 @@ const Def* unflatten(Defs defs, const Def* type, size_t& j, bool flatten_muts) {
 }
 } // namespace
 
+const Def* Pack::shape() const {
+    if (auto arr = type()->isa<Arr>()) return arr->shape();
+    if (type() == world().sigma()) return world().lit_nat_0();
+    return world().lit_nat_1();
+}
+
 bool is_unit(const Def* def) { return def->type() == def->world().sigma(); }
 
 std::string tuple2str(const Def* def) {
@@ -44,10 +52,11 @@ std::string tuple2str(const Def* def) {
     return std::string(array.begin(), array.end());
 }
 
-size_t flatten(DefVec& ops, const Def* def, bool flatten_muts) {
-    if (auto a = def->isa_lit_arity(); a && *a != 1 && should_flatten(def) && flatten_muts == mut_val_or_typ(def)) {
+size_t flatten(nat_t threshold, DefVec& ops, const Def* def, bool flatten_muts) {
+    if (auto a = def->isa_lit_arity();
+        a && *a != 1 && should_flatten(threshold, def) && flatten_muts == mut_val_or_typ(def)) {
         auto n = 0;
-        for (size_t i = 0; i != *a; ++i) n += flatten(ops, def->proj(*a, i), flatten_muts);
+        for (size_t i = 0; i != *a; ++i) n += flatten(threshold, ops, def->proj(*a, i), flatten_muts);
         return n;
     } else {
         ops.emplace_back(def);
@@ -55,10 +64,10 @@ size_t flatten(DefVec& ops, const Def* def, bool flatten_muts) {
     }
 }
 
-const Def* flatten(const Def* def) {
-    if (!should_flatten(def)) return def;
+const Def* flatten(nat_t threshold, const Def* def) {
+    if (!should_flatten(threshold, def)) return def;
     DefVec ops;
-    flatten(ops, def);
+    flatten(threshold, ops, def);
     return def->is_term() ? def->world().tuple(def->type(), ops) : def->world().sigma(ops);
 }
 

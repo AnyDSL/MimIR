@@ -77,7 +77,16 @@ extern "C" THORIN_EXPORT thorin::Plugin thorin_get_plugin() {
                 register_pass<compile::internal_cleanup_pass, compile::InternalCleanup>(passes);
 
                 register_pass_with_arg<compile::eta_exp_pass, EtaExp, EtaRed>(passes);
-                register_pass_with_arg<compile::scalerize_pass, Scalerize, EtaExp>(passes);
+
+                passes[flags_t(Annex::Base<compile::scalerize_pass>)]
+                    = [&](World& world, PipelineBuilder& builder, const Def* app) {
+                          auto [eta_exp, scalerize_threshold] = app->as<App>()->args<2>();
+                          auto ee                             = (EtaExp*)builder.pass(eta_exp);
+                          auto threshold                      = scalerize_threshold->as<Lit>()->get();
+                          world.DLOG("registering Scalerize with ee = {}, scalerize_threshold = {}", ee, threshold);
+                          builder.add_pass<Scalerize>(app, ee, threshold);
+                      };
+
                 register_pass_with_arg<compile::tail_rec_elim_pass, TailRecElim, EtaRed>(passes);
             },
             nullptr};

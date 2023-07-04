@@ -153,9 +153,9 @@ bool is_unit(const Def*);
 std::string tuple2str(const Def*);
 
 /// Flattens a sigma/array/pack/tuple.
-const Def* flatten(const Def* def);
+const Def* flatten(nat_t threshold, const Def* def);
 /// Same as unflatten, but uses the operands of a flattened pack/tuple directly.
-size_t flatten(DefVec& ops, const Def* def, bool flatten_sigmas = true);
+size_t flatten(nat_t threshold, DefVec& ops, const Def* def, bool flatten_sigmas = true);
 
 /// Applies the reverse transformation on a pack/tuple, given the original type.
 const Def* unflatten(const Def* def, const Def* type);
