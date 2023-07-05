@@ -44,7 +44,7 @@ Lam* Scalerize::make_scalar(Ref def) {
     world().DLOG("type {} ~> {}", tup_lam->type(), pi);
     auto new_vars = world().tuple(DefArray(tup_lam->num_doms(), [&](auto i) {
         auto tuple = DefArray(arg_sz.at(i), [&](auto) { return sca_lam->var(n++); });
-        return unflatten(tuple, tup_lam->dom(i), false);
+        return unflatten(threshold_, tuple, tup_lam->dom(i), false);
     }));
     sca_lam->set(tup_lam->reduce(new_vars));
     tup2sca_[sca_lam] = sca_lam;

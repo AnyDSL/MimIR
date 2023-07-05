@@ -25,11 +25,11 @@ bool mut_val_or_typ(const Def* def) {
     return typ->isa_mut();
 }
 
-const Def* unflatten(Defs defs, const Def* type, size_t& j, bool flatten_muts) {
+const Def* unflatten(nat_t threshold, Defs defs, const Def* type, size_t& j, bool flatten_muts) {
     if (!defs.empty() && defs[0]->type() == type) return defs[j++];
-    if (auto a = type->isa_lit_arity(); flatten_muts == mut_val_or_typ(type) && a && *a != 1) {
+    if (auto a = type->isa_lit_arity(); flatten_muts == mut_val_or_typ(type) && a && *a != 1 && a <= threshold) {
         auto& world = type->world();
-        DefArray ops(*a, [&](size_t i) { return unflatten(defs, type->proj(*a, i), j, flatten_muts); });
+        DefArray ops(*a, [&](size_t i) { return unflatten(threshold, defs, type->proj(*a, i), j, flatten_muts); });
         return world.tuple(type, ops);
     }
 
@@ -71,14 +71,16 @@ const Def* flatten(nat_t threshold, const Def* def) {
     return def->is_term() ? def->world().tuple(def->type(), ops) : def->world().sigma(ops);
 }
 
-const Def* unflatten(Defs defs, const Def* type, bool flatten_muts) {
+const Def* unflatten(nat_t threshold, Defs defs, const Def* type, bool flatten_muts) {
     size_t j = 0;
-    auto def = unflatten(defs, type, j, flatten_muts);
+    auto def = unflatten(threshold, defs, type, j, flatten_muts);
     assert(j == defs.size());
     return def;
 }
 
-const Def* unflatten(const Def* def, const Def* type) { return unflatten(def->projs(Lit::as(def->arity())), type); }
+const Def* unflatten(nat_t threshold, const Def* def, const Def* type) {
+    return unflatten(threshold, def->projs(Lit::as(def->arity())), type);
+}
 
 DefArray merge(const Def* def, Defs defs) {
     return DefArray(defs.size() + 1, [&](auto i) { return i == 0 ? def : defs[i - 1]; });
