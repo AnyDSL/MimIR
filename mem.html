@@ -206,7 +206,7 @@ Misc</h2>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md197"></a>
 Passes</h2>
 <p >SSA pass expects eta expansion as argument </p><div class="fragment"><div class="line">.ax %mem.ssa_pass: %compile.Pass -&gt; %compile.Pass;</div>
-</div><!-- fragment --><p> Copy propagation expects beta reduction and eta expansion as argument. </p><div class="fragment"><div class="line">.ax %mem.copy_prop_pass: [%compile.Pass,%compile.Pass, .Bool] -&gt; %compile.Pass;</div>
+</div><!-- fragment --><p> Copy propagation expects beta reduction and eta expansion as argument. </p><div class="fragment"><div class="line">.ax %mem.copy_prop_pass: [%compile.Pass, %compile.Pass, .Bool] -&gt; %compile.Pass;</div>
 <div class="line">.ax %mem.remem_elim_pass: %compile.Pass;</div>
 <div class="line">.ax %mem.alloc2malloc_pass: %compile.Pass;</div>
 <div class="line">.ax %mem.reshape_pass: %mem.reshape_mode -&gt; %compile.Pass;</div>

@@ -1,5 +1,7 @@
 var NAVTREEINDEX24 =
 {
+"refly_8cpp.html":[6,0,2,11,2],
+"refly_8cpp.html#a2b0c506ec13141b704c0aea991f89b55":[6,0,2,11,2,0],
 "refly_8cpp_source.html":[6,0,2,11,2],
 "refly_8h.html":[6,0,2,11,3],
 "refly_8h_source.html":[6,0,2,11,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX24 =
 "structthorin_1_1Loc.html#adba7460497350c76db0179bcbb6174aa":[5,0,0,60,1],
 "structthorin_1_1Plugin.html":[3,0,0,83],
 "structthorin_1_1Plugin.html":[5,0,0,76],
-"structthorin_1_1Plugin.html#a558a4271a9951f27ba9ec56b06e1d391":[3,0,0,83,1],
-"structthorin_1_1Plugin.html#a558a4271a9951f27ba9ec56b06e1d391":[5,0,0,76,1],
-"structthorin_1_1Plugin.html#a72102c6b1390838f8ea6339d244f35cf":[3,0,0,83,2]
+"structthorin_1_1Plugin.html#a558a4271a9951f27ba9ec56b06e1d391":[3,0,0,83,1]
 };

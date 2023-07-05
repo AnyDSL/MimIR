@@ -141,7 +141,7 @@ Pipelines</h2>
 <div class="line">    .let nullphase = %compile.single_pass_phase nullptr;</div>
 <div class="line">    %compile.pipe</div>
 <div class="line">        nullphase</div>
-<div class="line">        (%compile.single_pass_phase (%compile.scalerize_pass nullptr))</div>
+<div class="line">        (%compile.single_pass_phase (%compile.scalerize_pass (nullptr, %compile.scalerize_threshold)))</div>
 <div class="line">        (%compile.single_pass_phase %compile.eta_red_pass)</div>
 <div class="line">        (%compile.single_pass_phase (%compile.tail_rec_elim_pass nullptr))</div>
 <div class="line">        (%compile.single_pass_phase (plugin_cond_pass (%compile.regex_plugin, %regex.lower_regex)))</div>

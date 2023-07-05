@@ -13,7 +13,7 @@ var searchData=
   ['flags2plugin_10',['flags2plugin',['../structthorin_1_1Annex.html#a7b1b4c3668746983a0a834d869b1e82d',1,'thorin::Annex']]],
   ['flags2sub_11',['flags2sub',['../structthorin_1_1Annex.html#a3aa497c5dbfedc2f0d927e6cf677ddf3',1,'thorin::Annex']]],
   ['flags2tag_12',['flags2tag',['../structthorin_1_1Annex.html#a3915f0a137d9c22959ac4407ac2691aa',1,'thorin::Annex']]],
-  ['flatten_13',['flatten',['../namespacethorin.html#a4e087368518f24e3174721f3f993b20e',1,'thorin::flatten(const Def *def)'],['../namespacethorin.html#a9eda30a2f713580e14731ab17fef67e9',1,'thorin::flatten(DefVec &amp;ops, const Def *def, bool flatten_sigmas=true)']]],
+  ['flatten_13',['flatten',['../namespacethorin.html#a8514d4d03a0d597b86d179618623313c',1,'thorin::flatten(nat_t threshold, const Def *def)'],['../namespacethorin.html#a2e276dbb0f2187fc85b7f4acaff9ec87',1,'thorin::flatten(nat_t threshold, DefVec &amp;ops, const Def *def, bool flatten_sigmas=true)']]],
   ['flatten_5fin_5farg_14',['flatten_in_arg',['../namespacethorin_1_1regex.html#a534b698a277fa1fe49f7ec6820898024',1,'thorin::regex::flatten_in_arg(Ref arg)'],['../namespacethorin_1_1regex.html#a3d9e2888261de732a5e89f06a25d802b',1,'thorin::regex::flatten_in_arg(Ref arg, std::vector&lt; const Def * &gt; &amp;new_args)']]],
   ['fmt_15',['fmt',['../namespacethorin.html#ac2a988f71a64a048c61d5a2238269ea8',1,'thorin']]],
   ['fn_5ffor_16',['fn_for',['../namespacethorin_1_1affine.html#a0372be693375257bfadf6679323e6a32',1,'thorin::affine']]],

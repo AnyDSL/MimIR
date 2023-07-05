@@ -36,6 +36,7 @@ var namespacethorin_1_1compile =
     [ "regex_plugin", "namespacethorin_1_1compile.html#abaccaef94688e1428d02469b73068fb6", null ],
     [ "ret_wrap_pass", "namespacethorin_1_1compile.html#a314770b00ed2e4fb14bc35e90e5d6c2e", null ],
     [ "scalerize_pass", "namespacethorin_1_1compile.html#a4b9517ee17f15e9abcbbc56c43649135", null ],
+    [ "scalerize_threshold", "namespacethorin_1_1compile.html#a84bb6a9679477205fa3284b1ad198466", null ],
     [ "single_pass_phase", "namespacethorin_1_1compile.html#a89bed055f9b4723254ff9abd8ee2a9f6", null ],
     [ "tail_rec_elim_pass", "namespacethorin_1_1compile.html#aae2eb0cf8bf7d68762b817c05719f516", null ],
     [ "handle_optimization_part", "namespacethorin_1_1compile.html#ab9d6fe0292fc41b301db8a6581556aae", null ],

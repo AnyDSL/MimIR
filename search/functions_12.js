@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['scalerize_0',['Scalerize',['../classthorin_1_1Scalerize.html#a2ecdf7f702b7a629ac8e7c7cf70e6e78',1,'thorin::Scalerize']]],
+  ['scalerize_0',['Scalerize',['../classthorin_1_1Scalerize.html#a07eef86fcc73f42b0321b883c1e48af5',1,'thorin::Scalerize']]],
   ['schedule_1',['schedule',['../classthorin_1_1Scheduler.html#ae34866f1ec7f244a07e46f060ca66a70',1,'thorin::Scheduler']]],
   ['scheduler_2',['Scheduler',['../classthorin_1_1Scheduler.html#aea097a0893dca330de7a5713bbcbe937',1,'thorin::Scheduler::Scheduler()=default'],['../classthorin_1_1Scheduler.html#a637466e564bdec5a37e310fb142db773',1,'thorin::Scheduler::Scheduler(const Scope &amp;)']]],
   ['scope_3',['Scope',['../classthorin_1_1Scope.html#a1c6b1b6b8394e9f5f8a5d6d99874e324',1,'thorin::Scope::Scope(const Scope &amp;)=delete'],['../classthorin_1_1Scope.html#ad242537b0a05480bfb15dbac4d211900',1,'thorin::Scope::Scope(Def *entry)']]],
@@ -34,8 +34,8 @@ var searchData=
   ['split_31',['split',['../structthorin_1_1Annex.html#ab97190a59471397c708e7285b37d6bea',1,'thorin::Annex']]],
   ['ssaconstr_32',['SSAConstr',['../classthorin_1_1mem_1_1SSAConstr.html#a17bc6800dcd2f38e4394c88867aa436d',1,'thorin::mem::SSAConstr']]],
   ['start_33',['start',['../classthorin_1_1RWPhase.html#a727c87dd752778b5581ce430e2556d20',1,'thorin::RWPhase::start()'],['../classthorin_1_1ScopePhase.html#a0b997b4bc7d423ea3d3f2de798980c7b',1,'thorin::ScopePhase::start()'],['../classthorin_1_1Pipeline.html#a67260a4e6747b1d552705f3bd0c6d5ce',1,'thorin::Pipeline::start()'],['../classthorin_1_1PassManPhase.html#a15599d23e4b687c7faf85ea25acfba77',1,'thorin::PassManPhase::start()'],['../classthorin_1_1PassPhase.html#ada97763a90d95af3f4efbe01b77462af',1,'thorin::PassPhase::start()'],['../classthorin_1_1FPPhase.html#a636532f9a99d241556983fb5978cc5bc',1,'thorin::FPPhase::start()'],['../classthorin_1_1Cleanup.html#ac18066c965f6402b835ac9a08ef15a69',1,'thorin::Cleanup::start()'],['../classthorin_1_1Phase.html#a205f687060888dc825ee521c99534426',1,'thorin::Phase::start()'],['../classthorin_1_1ll_1_1Emitter.html#a86630701b9016f1594c1875d5e58b5b7',1,'thorin::ll::Emitter::start()'],['../classthorin_1_1clos_1_1LowerTypedClos.html#a9f623099ec5ce381c2c593dd5e8b60b6',1,'thorin::clos::LowerTypedClos::start()'],['../classthorin_1_1clos_1_1ClosConv.html#ad3ff75baadc69c188669a56230b0b3bc',1,'thorin::clos::ClosConv::start()']]],
-  ['state_34',['State',['../structthorin_1_1World_1_1State.html#a77ba724f87e9b5fcafbe62e36f909273',1,'thorin::World::State']]],
-  ['state_35',['state',['../classthorin_1_1World.html#a68e6bd99780f54b97d3463611cf233e8',1,'thorin::World']]],
+  ['state_34',['state',['../classthorin_1_1World.html#a68e6bd99780f54b97d3463611cf233e8',1,'thorin::World']]],
+  ['state_35',['State',['../structthorin_1_1World_1_1State.html#a77ba724f87e9b5fcafbe62e36f909273',1,'thorin::World::State']]],
   ['states_36',['states',['../classthorin_1_1FPPass.html#aa34d0e1bfb9ccc1c56c8fc291c19905d',1,'thorin::FPPass::states() const'],['../classthorin_1_1FPPass.html#aec19110c9b35d32e8025737d4b2ae61f',1,'thorin::FPPass::states()']]],
   ['stream_37',['stream',['../classthorin_1_1Def.html#acb49c075ec55594c36356062152104b2',1,'thorin::Def']]],
   ['strip_5fmem_38',['strip_mem',['../namespacethorin_1_1mem.html#acd226b7d1c8502907f767b255670bfc6',1,'thorin::mem']]],
