@@ -743,19 +743,53 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
         auto track = tracker();
         if (!ptrns.empty()) ptrns.back()->bind(scopes_, infers.back());
 
-        if (p && ahead(0).isa(Tag::M_id) && ahead(1).isa(Tag::M_id)) {
-            std::vector<Tok> sym_toks;
+        std::vector<Tok> sym_toks;
+        if (ahead(0).isa(Tag::M_id) && !ahead(1).isa(Tag::T_colon_colon))
             while (auto tok = accept(Tag::M_id)) sym_toks.emplace_back(*tok);
 
-            expect(Tag::T_colon, "type ascription of an identifier group within a tuple pattern");
-            auto type = parse_expr("type of an identifier group within a tuple pattern");
+        if (!sym_toks.empty()) {
+            if (accept(Tag::T_colon)) { // identifier group: x y x: T
+                auto type = parse_expr("type of an identifier group within a tuple pattern");
 
-            for (size_t i = 0, e = sym_toks.size(); i != e; ++i) {
-                auto tok = sym_toks[i];
-                infers.emplace_back(world().mut_infer(type)->set(tok.dbg()));
+                for (size_t i = 0, e = sym_toks.size(); i != e; ++i) {
+                    auto tok = sym_toks[i];
+                    infers.emplace_back(world().mut_infer(type)->set(tok.dbg()));
+                    ops.emplace_back(type);
+                    auto ptrn = std::make_unique<IdPtrn>(tok.dbg(), false, type);
+                    if (i != e - 1) ptrn->bind(scopes_, infers.back()); // last element will be bound above
+                    ptrns.emplace_back(std::move(ptrn));
+                }
+            } else if (sym_toks.size() == 1) { // just "x"
+                auto ptrn
+                    = p ? std::make_unique<IdPtrn>(sym_toks.front().dbg(), false, nullptr)
+                        : std::make_unique<IdPtrn>(track.dbg(anonymous_), false, scopes_.find(sym_toks.front().dbg()));
+                auto type = ptrn->type(world(), def2fields_);
+
+                if (b) {
+                    // If we are able to parse more stuff, we got an expression instead of just a binder.
+                    if (auto expr = parse_infix_expr(track, type); expr != type) {
+                        ptrn = std::make_unique<IdPtrn>(track.dbg(anonymous_), false, expr);
+                        type = ptrn->type(world(), def2fields_);
+                    }
+                }
+
+                infers.emplace_back(world().mut_infer(type)->set(ptrn->sym()));
                 ops.emplace_back(type);
-                auto ptrn = std::make_unique<IdPtrn>(tok.dbg(), false, type);
-                if (i != e - 1) ptrn->bind(scopes_, infers.back()); // last element will be bound above
+                ptrns.emplace_back(std::move(ptrn));
+            } else {
+                // "x y z" is a curried app and maybe the prefix of a longer type expression
+                auto lhs = scopes_.find(sym_toks.front().dbg());
+                for (auto sym_tok : sym_toks | std::views::drop(1)) {
+                    auto rhs = scopes_.find(sym_tok.dbg());
+                    lhs      = world().iapp(lhs, rhs)->set(lhs->loc() + sym_tok.loc());
+                }
+                auto [_, r] = Tok::prec(Tok::Prec::App);
+                auto expr   = parse_infix_expr(track, lhs, r);
+                auto ptrn   = std::make_unique<IdPtrn>(track.dbg(anonymous_), false, expr);
+                auto type   = ptrn->type(world(), def2fields_);
+
+                infers.emplace_back(world().mut_infer(type)->set(ptrn->sym()));
+                ops.emplace_back(type);
                 ptrns.emplace_back(std::move(ptrn));
             }
         } else {
