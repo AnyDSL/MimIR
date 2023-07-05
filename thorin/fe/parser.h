@@ -116,7 +116,6 @@ private:
     /// @name parse exprs
     ///@{
     Ref parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
-    Ref parse_bin_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
     Ref parse_primary_expr(std::string_view ctxt);
     Ref parse_infix_expr(Tracker, const Def* lhs, Tok::Prec = Tok::Prec::Bot);
     Ref parse_extract_expr(Tracker, const Def*, Tok::Prec);
