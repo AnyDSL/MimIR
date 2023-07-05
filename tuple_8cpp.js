@@ -9,6 +9,6 @@ var tuple_8cpp =
     [ "merge_tuple", "tuple_8cpp.html#a51e00c5b59d67f48d2b918497cacf0df", null ],
     [ "tuple2str", "tuple_8cpp.html#aea00f96e150831aba073fce80ce0080a", null ],
     [ "tuple_of_types", "tuple_8cpp.html#a2e821dbd8d71be74d75909239d6816b3", null ],
-    [ "unflatten", "tuple_8cpp.html#a833e2a807b47e7f8a3c67fff75985c6f", null ],
-    [ "unflatten", "tuple_8cpp.html#ac56ceb88d544f8808fb45ffddcea3b1a", null ]
+    [ "unflatten", "tuple_8cpp.html#ac63e48fe82287c488d2d6b462c0d394f", null ],
+    [ "unflatten", "tuple_8cpp.html#a4d7e2263dcfa0a96a717a246ae6445f8", null ]
 ];

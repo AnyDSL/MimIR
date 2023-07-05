@@ -39,7 +39,7 @@ var searchData=
   ['undo_5ft_36',['undo_t',['../namespacethorin.html#aae49afdff4a29ba1d94c3fada6e7b32e',1,'thorin']]],
   ['undo_5fvisit_37',['undo_visit',['../classthorin_1_1FPPass.html#af9b3614b16092de61a561b66814af101',1,'thorin::FPPass']]],
   ['une_38',['une',['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa8195652010d24c76aad556f821b49254',1,'thorin::math']]],
-  ['unflatten_39',['unflatten',['../namespacethorin.html#ac56ceb88d544f8808fb45ffddcea3b1a',1,'thorin::unflatten(Defs ops, const Def *type, bool flatten_muts=true)'],['../namespacethorin.html#a833e2a807b47e7f8a3c67fff75985c6f',1,'thorin::unflatten(const Def *def, const Def *type)']]],
+  ['unflatten_39',['unflatten',['../namespacethorin.html#a4d7e2263dcfa0a96a717a246ae6445f8',1,'thorin::unflatten(nat_t threshold, Defs ops, const Def *type, bool flatten_muts=true)'],['../namespacethorin.html#ac63e48fe82287c488d2d6b462c0d394f',1,'thorin::unflatten(nat_t threshold, const Def *def, const Def *type)']]],
   ['unfold_5ftype_40',['unfold_type',['../classthorin_1_1Def.html#adb0d70b94a20ed10f7385a3c6f9ccd8e',1,'thorin::Def']]],
   ['unique_5fname_41',['unique_name',['../classthorin_1_1Def.html#a3ac75e1e0ee7e47c4c348a11f05bca8d',1,'thorin::Def']]],
   ['unique_5fqueue_42',['unique_queue',['../classthorin_1_1unique__queue.html',1,'thorin::unique_queue&lt; Set &gt;'],['../classthorin_1_1unique__queue.html#a292a78863316276e6713cf2b5997dea6',1,'thorin::unique_queue::unique_queue(Set set)'],['../classthorin_1_1unique__queue.html#a88c87fbc964625fc09245844a9e680d7',1,'thorin::unique_queue::unique_queue()=default']]],

@@ -4,7 +4,7 @@ var searchData=
   ['umax_1',['umax',['../classthorin_1_1World.html#acaa046375fb090bdd2a327321d25edbb',1,'thorin::World']]],
   ['undo_5fenter_2',['undo_enter',['../classthorin_1_1FPPass.html#ab4bdda21afb901a79270214318661273',1,'thorin::FPPass']]],
   ['undo_5fvisit_3',['undo_visit',['../classthorin_1_1FPPass.html#af9b3614b16092de61a561b66814af101',1,'thorin::FPPass']]],
-  ['unflatten_4',['unflatten',['../namespacethorin.html#a833e2a807b47e7f8a3c67fff75985c6f',1,'thorin::unflatten(const Def *def, const Def *type)'],['../namespacethorin.html#ac56ceb88d544f8808fb45ffddcea3b1a',1,'thorin::unflatten(Defs ops, const Def *type, bool flatten_muts=true)']]],
+  ['unflatten_4',['unflatten',['../namespacethorin.html#ac63e48fe82287c488d2d6b462c0d394f',1,'thorin::unflatten(nat_t threshold, const Def *def, const Def *type)'],['../namespacethorin.html#a4d7e2263dcfa0a96a717a246ae6445f8',1,'thorin::unflatten(nat_t threshold, Defs ops, const Def *type, bool flatten_muts=true)']]],
   ['unfold_5ftype_5',['unfold_type',['../classthorin_1_1Def.html#adb0d70b94a20ed10f7385a3c6f9ccd8e',1,'thorin::Def']]],
   ['unique_5fname_6',['unique_name',['../classthorin_1_1Def.html#a3ac75e1e0ee7e47c4c348a11f05bca8d',1,'thorin::Def']]],
   ['unique_5fqueue_7',['unique_queue',['../classthorin_1_1unique__queue.html#a88c87fbc964625fc09245844a9e680d7',1,'thorin::unique_queue::unique_queue()=default'],['../classthorin_1_1unique__queue.html#a292a78863316276e6713cf2b5997dea6',1,'thorin::unique_queue::unique_queue(Set set)']]],
