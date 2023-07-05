@@ -103,8 +103,9 @@
 .ax %compile.eta_red_pass: %compile.Pass;
 /// Eta expansion expects an instance of eta reduction as argument.
 .ax %compile.eta_exp_pass: %compile.Pass -> %compile.Pass;
-/// Scalerize expects an instance of eta expansion as argument.
-.ax %compile.scalerize_pass: %compile.Pass -> %compile.Pass;
+/// Scalerize expects an instance of eta expansion as argument and a threshold where scalarize should stop.
+.ax %compile.scalerize_pass: [%compile.Pass, .Nat] -> %compile.Pass;
+.let %compile.scalerize_threshold = 32;
 /// Tail recursion elimination expects an instance of eta reduction as argument.
 .ax %compile.tail_rec_elim_pass: %compile.Pass -> %compile.Pass;
 .ax %compile.lam_spec_pass: %compile.Pass;
@@ -123,7 +124,7 @@
         %compile.beta_red_pass
         eta_red
         eta_exp
-        (%compile.scalerize_pass eta_exp)
+        (%compile.scalerize_pass (eta_exp, %compile.scalerize_threshold))
         (%compile.tail_rec_elim_pass eta_red)
 };
 .let optimization_phase = {
@@ -136,7 +137,7 @@
     .let nullptr = %compile.nullptr_pass;
     %compile.pipe
         (%compile.single_pass_phase nullptr)
-        (%compile.single_pass_phase (%compile.scalerize_pass nullptr))
+        (%compile.single_pass_phase (%compile.scalerize_pass (nullptr, %compile.scalerize_threshold)))
         (%compile.single_pass_phase %compile.eta_red_pass)
         (%compile.single_pass_phase (%compile.tail_rec_elim_pass nullptr))
         optimization_phase

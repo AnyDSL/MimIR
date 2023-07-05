@@ -30,7 +30,7 @@ Lam* Scalerize::make_scalar(Ref def) {
     auto arg_sz = std::vector<size_t>();
     bool todo   = false;
     for (size_t i = 0, e = tup_lam->num_doms(); i != e; ++i) {
-        auto n = flatten(types, tup_lam->dom(i), false);
+        auto n = flatten(threshold_, types, tup_lam->dom(i), false);
         arg_sz.push_back(n);
         todo |= n != 1 || types.back() != tup_lam->dom(i);
     }
@@ -63,8 +63,9 @@ Ref Scalerize::rewrite(Ref def) {
 
         } else if (auto proj = sca_callee->isa<Extract>()) {
             auto tuple = proj->tuple()->isa<Tuple>();
-            if (tuple && std::all_of(tuple->ops().begin(), tuple->ops().end(),
-                                     [&](Ref op) { return should_expand(op->isa_mut<Lam>()); })) {
+            if (tuple && std::all_of(tuple->ops().begin(), tuple->ops().end(), [&](Ref op) {
+                    return should_expand(op->isa_mut<Lam>());
+                })) {
                 auto new_tuple = w.tuple(DefArray(tuple->num_ops(), [&](auto i) { return make_scalar(tuple->op(i)); }));
                 sca_callee     = w.extract(new_tuple, proj->index());
                 w.DLOG("Expand tuple: {, } ~> {, }", tuple->ops(), new_tuple->ops());
@@ -73,7 +74,7 @@ Ref Scalerize::rewrite(Ref def) {
 
         if (sca_callee != app->callee()) {
             auto new_args = DefVec();
-            flatten(new_args, app->arg(), false);
+            flatten(threshold_, new_args, app->arg(), false);
             return world().app(sca_callee, new_args);
         }
     }
