@@ -17,12 +17,13 @@
 ///
 /// ### RE
 ///
+/// Char & String
 .let Char = %core.I8;
 .lam Str(n: .Nat): * = %mem.Ptr0 «n; Char»;
 /// A regular expression matcher.
-.lam Res(n: .Nat): * = [%mem.M, .Bool, .Idx n];
-.let RE = Π[n: .Nat][%mem.M, Str n, .Idx n] -> Res n;
+.lam Res (n: .Nat): * = [%mem.M, .Bool, .Idx n];
 .lam FnRE(n: .Nat): * = .Fn [%mem.M, Str n, .Idx n] -> Res n;
+.let RE = Π[n: .Nat][%mem.M, Str n, .Idx n] -> Res n;
 ///
 /// ## Meta
 ///
@@ -32,14 +33,12 @@
 /// `%regex.conj (%regex.cls.d, %regex.cls.d, %regex.cls.d)
 ///
 .ax %regex.conj: Π[n: .Nat][«n; RE»] -> RE, normalize_conj, 2;
-
 ///
 /// ### %regex.disj
 ///
 /// Match any of the sub expressions: `[0123456789]`
 ///
 .ax %regex.disj: Π[n: .Nat][«n; RE»] -> RE, normalize_disj, 2;
-
 ///
 /// ## Values
 ///
@@ -48,7 +47,7 @@
 /// Wraps a range of literals.
 /// Use: `%regex.range ('a', 'z')` to match all lower case letters.
 ///
-.ax %regex.range: Π <<2; %core.I8>> -> RE, normalize_range, 1;
+.ax %regex.range: «2; Char» -> RE, normalize_range, 1;
 ///
 /// ### %regex.lit
 ///
@@ -60,8 +59,7 @@
 ///
 /// Do not match the parameter.
 ///
-.ax %regex.not_: Π RE -> RE, normalize_not, 1;
-
+.ax %regex.not_: RE -> RE, normalize_not, 1;
 ///
 /// ### %regex.cls.*
 ///
@@ -91,7 +89,7 @@
 ///
 /// ### %regex.quant.*
 ///
-.ax %regex.quant(optional,star,plus): Π RE -> RE, normalize_quant, 1;
+.ax %regex.quant(optional,star,plus): RE -> RE, normalize_quant, 1;
 ///
 /// ## Implementation
 ///
@@ -144,7 +142,6 @@
     .con match_plus_ret0!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) =
         .con match_plus_iter0!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = sub ((mem, string, new_pos), match_plus_ret);
         (return, match_plus_iter0)#matched (mem, matched, new_pos);
-
     sub ((mem, string, pos), match_plus_ret0);
 ///
 /// ## Passes and Phases

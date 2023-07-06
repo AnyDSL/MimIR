@@ -68,8 +68,9 @@
 .let %core.mode.uS = 0b01; // no   signed wrap around
 .let %core.mode.Us = 0b10; // no unsigned wrap around
 .let %core.mode.US = 0b11; // no signed and unsigned wrap around
-.let %core.mode.nuw = %core.mode.Us;
-.let %core.mode.nsw = %core.mode.uS;
+.let %core.mode.nuw  = %core.mode.Us;
+.let %core.mode.nsw  = %core.mode.uS;
+.let %core.mode.nusw = %core.mode.US;
 ///
 /// ### %core.idx
 ///
