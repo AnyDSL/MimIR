@@ -23,7 +23,7 @@
 .lam Res(n: .Nat): * = [%mem.M, .Bool, .Idx n];
 .let RE = Π[n: .Nat][%mem.M, Str n, .Idx n] -> Res n;
 .lam FnRE(n: .Nat): * = .Fn [%mem.M, Str n, .Idx n] -> Res n;
-
+///
 /// ## Meta
 ///
 /// ### %regex.conj
@@ -49,14 +49,12 @@
 /// Use: `%regex.range ('a', 'z')` to match all lower case letters.
 ///
 .ax %regex.range: Π <<2; %core.I8>> -> RE, normalize_range, 1;
-
 ///
 /// ### %regex.lit
 ///
 /// Wraps a literal.
 ///
 .lam %regex.lit(val: Char) = %regex.range (val, val);
-
 ///
 /// ### %regex.not
 ///
@@ -82,24 +80,21 @@
 .let %regex.cls.W = %regex.not_ %regex.cls.w;
 .let %regex.cls.s = %regex.disj 3 (%regex.range ('\t', '\n'), %regex.lit '\r', %regex.lit ' ');
 .let %regex.cls.S = %regex.not_ %regex.cls.s;
-
 ///
 /// ### %regex.any
 ///
 /// Match any character.
 ///
 .ax %regex.any: RE, normalize_any, 0;
-
+///
 /// ## Quantifiers
 ///
 /// ### %regex.quant.*
 ///
 .ax %regex.quant(optional,star,plus): Π RE -> RE, normalize_quant, 1;
-
 ///
 /// ## Implementation
 ///
-
 .fun %regex.match_range(lower upper: Char)(n: .Nat)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
     .let ptr          = %mem.lea (n, ‹n; Char›, 0) (string, pos);
     .let (`mem, char) = %mem.load (mem, ptr);
@@ -146,13 +141,12 @@
     .con match_plus_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) =
         .con match_plus_iter!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = sub ((mem, string, new_pos), match_plus_ret);
         (return, match_plus_iter)#matched (mem, .tt, new_pos);
-
     .con match_plus_ret0!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) =
         .con match_plus_iter0!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = sub ((mem, string, new_pos), match_plus_ret);
         (return, match_plus_iter0)#matched (mem, matched, new_pos);
 
     sub ((mem, string, pos), match_plus_ret0);
-
+///
 /// ## Passes and Phases
 ///
 /// ### Passes
