@@ -22,7 +22,7 @@ Ref any_impl(Match<regex::any, Axiom> any_ax) {
 
 Ref range_impl(Match<regex::range, App> range_app) {
     auto& world = range_app->world();
-    return world.app(world.annex<regex::match_range>(), range_app->arg());
+    return world.call<regex::match_range>(range_app->arg());
 }
 
 Ref not_impl(Match<regex::not_, App> not_app) {
