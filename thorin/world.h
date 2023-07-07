@@ -311,9 +311,9 @@ public:
     Ref extract(Ref d, u64 a, u64 i) { return extract(d, lit_idx(a, i)); }
     Ref extract(Ref d, u64 i) { return extract(d, d->as_lit_arity(), i); }
 
-    /// Builds `(f, t)cond`.
-    /// **Note** that select expects @p t as first argument and @p f as second one.
-    Ref select(Ref t, Ref f, Ref cond) { return extract(tuple({f, t}), cond); }
+    /// Builds `(f, t)#cond`.
+    /// @note Expects @p cond as first, @p t as second, and @p f as third argument.
+    Ref select(Ref cond, Ref t, Ref f) { return extract(tuple({f, t}), cond); }
     ///@}
 
     /// @name Insert
