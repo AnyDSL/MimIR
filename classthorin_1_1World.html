@@ -353,9 +353,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a28110454a2646f21118d344b9e886ab2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18ea4c38c79548d2b0673e9afbb133f0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a18ea4c38c79548d2b0673e9afbb133f0">extract</a> (<a class="el" href="classthorin_1_1Ref.html">Ref</a> d, <a class="el" href="namespacethorin.html#a22aa1b457904ccc13d8473ab38003efd">u64</a> i)</td></tr>
 <tr class="separator:a18ea4c38c79548d2b0673e9afbb133f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d012e37ecbac55dcb5f50b61b01f7a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a5d012e37ecbac55dcb5f50b61b01f7a4">select</a> (<a class="el" href="classthorin_1_1Ref.html">Ref</a> t, <a class="el" href="classthorin_1_1Ref.html">Ref</a> f, <a class="el" href="classthorin_1_1Ref.html">Ref</a> cond)</td></tr>
-<tr class="memdesc:a5d012e37ecbac55dcb5f50b61b01f7a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds <code>(f, t)cond</code>.  <a href="classthorin_1_1World.html#a5d012e37ecbac55dcb5f50b61b01f7a4">More...</a><br /></td></tr>
-<tr class="separator:a5d012e37ecbac55dcb5f50b61b01f7a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2583fd9ac12b67b051cf4521cf6daec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#ab2583fd9ac12b67b051cf4521cf6daec">select</a> (<a class="el" href="classthorin_1_1Ref.html">Ref</a> cond, <a class="el" href="classthorin_1_1Ref.html">Ref</a> t, <a class="el" href="classthorin_1_1Ref.html">Ref</a> f)</td></tr>
+<tr class="memdesc:ab2583fd9ac12b67b051cf4521cf6daec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds <code>(f, t)#cond</code>.  <a href="classthorin_1_1World.html#ab2583fd9ac12b67b051cf4521cf6daec">More...</a><br /></td></tr>
+<tr class="separator:ab2583fd9ac12b67b051cf4521cf6daec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Insert</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacethorin_1_1core.html#a45b83d9dd141bf070a6f3f02fc010dc5">core::insert_unsafe</a> </dd></dl>
 </div></td></tr>
@@ -4525,8 +4525,8 @@ template&lt;bool Normalize&gt; </div>
 
 </div>
 </div>
-<a id="a5d012e37ecbac55dcb5f50b61b01f7a4" name="a5d012e37ecbac55dcb5f50b61b01f7a4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d012e37ecbac55dcb5f50b61b01f7a4">&#9670;&#160;</a></span>select()</h2>
+<a id="ab2583fd9ac12b67b051cf4521cf6daec" name="ab2583fd9ac12b67b051cf4521cf6daec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2583fd9ac12b67b051cf4521cf6daec">&#9670;&#160;</a></span>select()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4538,19 +4538,19 @@ template&lt;bool Normalize&gt; </div>
           <td class="memname"><a class="el" href="classthorin_1_1Ref.html">Ref</a> thorin::World::select </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td>
+          <td class="paramname"><em>cond</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td>
           <td class="paramname"><em>t</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td>
-          <td class="paramname"><em>f</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td>
-          <td class="paramname"><em>cond</em>&#160;</td>
+          <td class="paramname"><em>f</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -4565,8 +4565,8 @@ template&lt;bool Normalize&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Builds <code>(f, t)cond</code>. </p>
-<p ><b>Note</b> that select expects <code>t</code> as first argument and <code>f</code> as second one. </p>
+<p>Builds <code>(f, t)#cond</code>. </p>
+<dl class="section note"><dt>Note</dt><dd>Expects <code>cond</code> as first, <code>t</code> as second, and <code>f</code> as third argument. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00316">316</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
