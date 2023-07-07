@@ -207,6 +207,9 @@ Mode</h2>
 <div class="line">.let %core.mode.uS = 0b01; // no   signed wrap around</div>
 <div class="line">.let %core.mode.Us = 0b10; // no unsigned wrap around</div>
 <div class="line">.let %core.mode.US = 0b11; // no signed and unsigned wrap around</div>
+<div class="line">.let %core.mode.nuw  = %core.mode.Us;</div>
+<div class="line">.let %core.mode.nsw  = %core.mode.uS;</div>
+<div class="line">.let %core.mode.nusw = %core.mode.US;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md116"></a>
 %core.idx</h2>
 <p >Creates a literal of type <code>.Idx s</code> from <code>l</code> while obeying mode <code>m</code>.</p>

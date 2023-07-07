@@ -109,7 +109,10 @@ var core_2autogen_8h =
       [ "us", "core_2autogen_8h.html#a9560903c6caf317c161b54117e2e2679a76b761431d3aabad438731d4130873ca", null ],
       [ "uS", "core_2autogen_8h.html#a9560903c6caf317c161b54117e2e2679afb1a4d3d2c018b782c4e47f21437a5a3", null ],
       [ "Us", "core_2autogen_8h.html#a9560903c6caf317c161b54117e2e2679a159c911baca190deedb58620c6cc4575", null ],
-      [ "US", "core_2autogen_8h.html#a9560903c6caf317c161b54117e2e2679a6b5d035d9a68f47920e20ae4bb41819e", null ]
+      [ "US", "core_2autogen_8h.html#a9560903c6caf317c161b54117e2e2679a6b5d035d9a68f47920e20ae4bb41819e", null ],
+      [ "nuw", "core_2autogen_8h.html#a9560903c6caf317c161b54117e2e2679a6402074467372da6601927f3cf6023e7", null ],
+      [ "nsw", "core_2autogen_8h.html#a9560903c6caf317c161b54117e2e2679aecf1322b1dbfad3fb96bdd08d25ad086", null ],
+      [ "nusw", "core_2autogen_8h.html#a9560903c6caf317c161b54117e2e2679a4738a31591e2dd101c07d45842d97b50", null ]
     ] ],
     [ "nat", "core_2autogen_8h.html#a3102b1c3eb691e8bc7ac034dece1a92d", [
       [ "add", "core_2autogen_8h.html#ab1f42e21a4de8bd328e18b8006b9f74fa2417b496d526d2ad5b184798d2938924", null ],

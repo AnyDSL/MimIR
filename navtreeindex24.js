@@ -1,5 +1,11 @@
 var NAVTREEINDEX24 =
 {
+"refly_2normalizers_8cpp.html#a1d4c579f94fcac60eebde5c8593d9884":[6,0,2,11,1,0],
+"refly_2normalizers_8cpp.html#aa4f7164654473913f60f6fe9b7163b5f":[6,0,2,11,1,4],
+"refly_2normalizers_8cpp.html#aba788e6f901736144880c9710c082528":[6,0,2,11,1,1],
+"refly_2normalizers_8cpp.html#ad5191894f184796478f7f29b14decad4":[6,0,2,11,1,2],
+"refly_2normalizers_8cpp.html#af154d7d91d30c79a49922d90d58fa051":[6,0,2,11,1,3],
+"refly_2normalizers_8cpp_source.html":[6,0,2,11,1],
 "refly_8cpp.html":[6,0,2,11,2],
 "refly_8cpp.html#a2b0c506ec13141b704c0aea991f89b55":[6,0,2,11,2,0],
 "refly_8cpp_source.html":[6,0,2,11,2],
@@ -243,11 +249,5 @@ var NAVTREEINDEX24 =
 "structthorin_1_1Loc.html#ac2ea00ed4f1038c20bddfc6a9d604721":[3,0,0,67,2],
 "structthorin_1_1Loc.html#ad1fdf23d819fbbc0d01d0bcf3a728284":[3,0,0,67,11],
 "structthorin_1_1Loc.html#ad1fdf23d819fbbc0d01d0bcf3a728284":[5,0,0,60,11],
-"structthorin_1_1Loc.html#ad3607e92eaeed907d628bf7c0ae02483":[3,0,0,67,13],
-"structthorin_1_1Loc.html#ad3607e92eaeed907d628bf7c0ae02483":[5,0,0,60,13],
-"structthorin_1_1Loc.html#adba7460497350c76db0179bcbb6174aa":[3,0,0,67,1],
-"structthorin_1_1Loc.html#adba7460497350c76db0179bcbb6174aa":[5,0,0,60,1],
-"structthorin_1_1Plugin.html":[3,0,0,83],
-"structthorin_1_1Plugin.html":[5,0,0,76],
-"structthorin_1_1Plugin.html#a558a4271a9951f27ba9ec56b06e1d391":[3,0,0,83,1]
+"structthorin_1_1Loc.html#ad3607e92eaeed907d628bf7c0ae02483":[3,0,0,67,13]
 };

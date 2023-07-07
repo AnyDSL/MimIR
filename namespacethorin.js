@@ -114,7 +114,10 @@ var namespacethorin =
         [ "us", "namespacethorin_1_1core.html#a9560903c6caf317c161b54117e2e2679a76b761431d3aabad438731d4130873ca", null ],
         [ "uS", "namespacethorin_1_1core.html#a9560903c6caf317c161b54117e2e2679afb1a4d3d2c018b782c4e47f21437a5a3", null ],
         [ "Us", "namespacethorin_1_1core.html#a9560903c6caf317c161b54117e2e2679a159c911baca190deedb58620c6cc4575", null ],
-        [ "US", "namespacethorin_1_1core.html#a9560903c6caf317c161b54117e2e2679a6b5d035d9a68f47920e20ae4bb41819e", null ]
+        [ "US", "namespacethorin_1_1core.html#a9560903c6caf317c161b54117e2e2679a6b5d035d9a68f47920e20ae4bb41819e", null ],
+        [ "nuw", "namespacethorin_1_1core.html#a9560903c6caf317c161b54117e2e2679a6402074467372da6601927f3cf6023e7", null ],
+        [ "nsw", "namespacethorin_1_1core.html#a9560903c6caf317c161b54117e2e2679aecf1322b1dbfad3fb96bdd08d25ad086", null ],
+        [ "nusw", "namespacethorin_1_1core.html#a9560903c6caf317c161b54117e2e2679a4738a31591e2dd101c07d45842d97b50", null ]
       ] ],
       [ "Mode", "namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493", [
         [ "none", "namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493a334c4a4c42fdb79d7ebc3e73b517e6f8", null ],
