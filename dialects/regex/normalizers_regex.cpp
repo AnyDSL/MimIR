@@ -27,7 +27,7 @@ template<quant id> Ref normalize_quant(Ref type, Ref callee, Ref arg) {
     if constexpr (id == quant::plus) {
         // (\d?)+ and (\d*)+ == \d*
         if (auto optional_app = thorin::match(quant::optional, arg))
-            return world.app(world.annex<quant>(quant::star), optional_app->arg());
+            return world.call(quant::star, optional_app->arg());
         else if (auto star_app = thorin::match(quant::star, arg))
             return arg;
     } else if constexpr (id == quant::star) {
@@ -38,7 +38,7 @@ template<quant id> Ref normalize_quant(Ref type, Ref callee, Ref arg) {
         if (auto star_app = thorin::match(quant::star, arg))
             return arg;
         else if (auto plus_app = thorin::match(quant::plus, arg))
-            return world.app(world.annex<quant>(quant::star), plus_app->arg());
+            return world.call(quant::star, plus_app->arg());
     }
 
     return world.raw_app(type, callee, arg);
@@ -64,7 +64,7 @@ template<class ConjOrDisj> Ref make_binary_tree(Ref type, DefArray args) {
     assert(!args.empty());
     auto& world = args.front()->world();
     return std::accumulate(args.begin() + 1, args.end(), args.front(), [&type, &world](const Def* lhs, const Def* rhs) {
-        return world.raw_app(type, world.app(world.annex<ConjOrDisj>(), world.lit_nat(2)), world.tuple({lhs, rhs}));
+        return world.raw_app(type, world.call<ConjOrDisj>(world.lit_nat(2)), world.tuple({lhs, rhs}));
     });
 }
 
@@ -124,7 +124,7 @@ auto get_range(const Def* rng) -> std::pair<nat_t, nat_t> {
 struct app_range {
     World& w;
     Ref operator()(std::pair<nat_t, nat_t> rng) {
-        return w.app(w.annex<range>(), w.tuple({w.lit_int(8, rng.first), w.lit_int(8, rng.second)}));
+        return w.call<range>(Defs{w.lit_int(8, rng.first), w.lit_int(8, rng.second)});
     }
 };
 
@@ -218,14 +218,13 @@ Ref normalize_disj(Ref type, Ref, Ref arg) {
         }
 
         std::erase(new_args, to_remove);
-
-        for (const auto* sth : new_args) world.DLOG("final ranges {}", sth);
+        world.DLOG("final ranges {, }", new_args);
 
         const Def* retval = new_args.back();
         if (new_args.size() > 2)
             retval = make_binary_tree<disj>(type, new_args);
         else if (new_args.size() > 1)
-            retval = world.raw_app(type, world.app(world.annex<disj>(), world.lit_nat(2)), world.tuple(new_args));
+            retval = world.raw_app(type, world.call<disj>(world.lit_nat(2)), new_args);
         world.DLOG("disj app: {}", retval);
         return retval;
     }
