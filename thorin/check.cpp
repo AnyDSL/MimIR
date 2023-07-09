@@ -96,6 +96,9 @@ template<bool infer> bool Check::alpha_(Ref r1, Ref r2) {
     auto mut1 = d1->isa_mut();
     auto mut2 = d2->isa_mut();
     if (mut1 && mut2 && mut1 == mut2) return true;
+    // Globals are HACKs and require additionaly HACKs:
+    // Unless they are pointer equal (above) always consider them unequal.
+    if (d1->isa<Global>() || d2->isa<Global>()) return false;
 
     if (mut1) {
         if (auto [i, ins] = done_.emplace(mut1, d2); !ins) return i->second == d2;
