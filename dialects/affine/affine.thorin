@@ -12,23 +12,23 @@
 ///
 /// ### %affine.For
 ///
-/// This operation ranges from (including) `start` to (excluding) `stop` using `step` as stride.
+/// This operation ranges from (including) `begin` to (excluding) `end` using `step` as stride.
 /// In addition, this loop manages `n` loop accumulators whose initial values `init` must be given.
-/// Each iteration the given `body` is invoked which receives 
+/// Each iteration the given `body` is invoked which receives
 /// * the current iteration index, and
 /// * the current values of the loop accumulators `acc`, and
 /// * a `yield` continuation to prematurely continue with the next iteration.
 ///
 /// After termination of the loop `exit` is invoked.
 .ax %affine.For: Π [m: .Nat , n: .Nat , Ts: «n; *»] ->
-    .Cn [start: .Idx m, stop: .Idx m, step: .Idx m, init: «i: n; Ts#i»,
-        body: .Cn [iter: .Idx m, acc: «i: n; Ts#i», yield: .Cn [«i: n; Ts#i»]], 
+    .Cn [begin: .Idx m, end: .Idx m, step: .Idx m, init: «i: n; Ts#i»,
+        body: .Cn [iter: .Idx m, acc: «i: n; Ts#i», yield: .Cn [«i: n; Ts#i»]],
         exit: .Cn [«i: n; Ts#i»]];
 ///
 /// ## Passes and Phases
 ///
 /// ### %affine.lower_for_pass
-/// 
+///
 /// Loweres the %affine.For operation to recursive function calls.
-/// 
+///
 .ax %affine.lower_for_pass: %compile.Pass;
