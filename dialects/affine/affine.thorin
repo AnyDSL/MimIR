@@ -20,10 +20,12 @@
 /// * a `yield` continuation to prematurely continue with the next iteration.
 ///
 /// After termination of the loop `exit` is invoked.
-.ax %affine.For: Π [m: .Nat , n: .Nat , Ts: «n; *»] ->
-    .Cn [begin: .Idx m, end: .Idx m, step: .Idx m, init: «i: n; Ts#i»,
-        body: .Cn [iter: .Idx m, acc: «i: n; Ts#i», yield: .Cn [«i: n; Ts#i»]],
-        exit: .Cn [«i: n; Ts#i»]];
+.ax %affine.For:
+    .Cn [m: .Nat , n: .Nat , Ts: «n; *»]
+        [begin: .Idx m, end: .Idx m, step: .Idx m, init: «i: n; Ts#i»,
+            body: .Cn [iter: .Idx m, acc: «i: n; Ts#i», yield: .Cn [«i: n; Ts#i»]],
+            exit: .Cn [«i: n; Ts#i»]
+        ];
 ///
 /// ## Passes and Phases
 ///
