@@ -6,7 +6,7 @@
 namespace thorin::affine {
 
 /// Lowers the for axiom to actual control flow in CPS.
-/// It basically mimics this impl:
+/// It basically mimics this implementation:
 /// ```
 /// .con %affine.For_impl
 ///     (m: .Nat , n: .Nat , Ts: «n; *»)
@@ -15,8 +15,9 @@ namespace thorin::affine {
 ///             exit: .Cn [«i: n; Ts#i»]
 ///     ) =
 ///     .con head(iter: .Idx m, acc: «i: n; Ts#i») =
-///         .let `iter = %core.wrap.add 0 (iter, step);
-///         .con new_body() = body (iter, acc, .cn acc: «i: n; Ts#i» = head (iter, acc));
+///         .con new_body() = body (iter, acc, .cn acc: «i: n; Ts#i» =
+///             .let `iter = %core.wrap.add %core.mode.nsuw (iter, step);
+///             head (iter, acc));
 ///         .con new_exit() = exit (acc);
 ///         (new_exit, new_body)#(%core.icmp.ul (iter, end)) ();
 ///     head(begin, init);
