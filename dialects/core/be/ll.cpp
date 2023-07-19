@@ -573,7 +573,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             if (isa_mem_sigma_2(tuple->type())) return v_tup;
             // Adjust index, if mem is present.
             auto v_i = match<mem::M>(tuple->proj(0)->type()) ? std::to_string(*li - 1) : std::to_string(*li);
-            return bb.assign(name, "extractvalue {} {}, {} ; XXX", t_tup, v_tup, v_i);
+            return bb.assign(name, "extractvalue {} {}, {}", t_tup, v_tup, v_i);
         }
 
         auto t_elem     = convert(extract->type());

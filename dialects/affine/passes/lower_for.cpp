@@ -33,7 +33,7 @@ Ref LowerFor::rewrite(Ref def) {
         auto new_yield  = world().mut_lam(world().cn(init->type()))->set("yield_");
         iter            = w.call(core::wrap::add, core::Mode::nusw, Defs{iter, step});
         auto cmp        = w.call(core::icmp::ul, Defs{iter, end});
-        auto iter_acc   = merge_tuple(iter, accs);
+        auto iter_acc   = merge_tuple(iter, new_yield->vars());
         auto begin_init = merge_tuple(begin, init->projs());
 
         head_lam->branch(false, cmp, new_body, new_exit, mem_phi);
