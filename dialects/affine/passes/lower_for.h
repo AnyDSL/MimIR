@@ -15,7 +15,7 @@ namespace thorin::affine {
 ///             exit: .Cn [«i: n; Ts#i»]
 ///     ) =
 ///     .con head(iter: .Idx m, acc: «i: n; Ts#i») =
-///         .let `iter = %core.wrap.add %core.mode.nusw (iter, step);
+///         .let `iter = %core.wrap.add 0 (iter, step);
 ///         .con new_body() = body (iter, acc, .cn acc: «i: n; Ts#i» = head (iter, acc));
 ///         .con new_exit() = exit (acc);
 ///         (new_exit, new_body)#(%core.icmp.ul (iter, end)) ();

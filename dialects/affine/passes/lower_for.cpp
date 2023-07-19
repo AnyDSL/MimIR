@@ -28,12 +28,12 @@ Ref LowerFor::rewrite(Ref def) {
         auto acc        = world().tuple(accs);
         auto mem_phi    = mem::mem_var(head_lam);
         auto bb_type    = world().cn(mem_phi ? mem_phi->type() : world().sigma());
-        auto new_body   = world().mut_lam(bb_type)->set("body_");
-        auto new_exit   = world().mut_lam(bb_type)->set("exit_");
-        auto new_yield  = world().mut_lam(world().cn(init->type()))->set("yield_");
-        iter            = w.call(core::wrap::add, core::Mode::nusw, Defs{iter, step});
+        auto new_body   = world().mut_lam(bb_type)->set("new_body");
+        auto new_exit   = world().mut_lam(bb_type)->set("new_exit");
+        auto new_yield  = world().mut_lam(world().cn(init->type()))->set("new_yield");
         auto cmp        = w.call(core::icmp::ul, Defs{iter, end});
-        auto iter_acc   = merge_tuple(iter, new_yield->vars());
+        auto new_iter   = w.call(core::wrap::add, 0, Defs{iter, step});
+        auto iter_acc   = merge_tuple(new_iter, new_yield->vars());
         auto begin_init = merge_tuple(begin, init->projs());
 
         head_lam->branch(false, cmp, new_body, new_exit, mem_phi);
