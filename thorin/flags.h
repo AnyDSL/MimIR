@@ -1,12 +1,15 @@
 #pragma once
 
+#include <cstdint>
+
 #include "thorin/config.h"
 
 namespace thorin {
 
 // Compiler switches that must be saved and looked up in later phases of compilation.
 struct Flags {
-    int dump_gid               = 0;
+    uint32_t dump_gid          = 0;
+    uint64_t proj_threshhold   = 32;
     bool dump_recursive        = false;
     bool disable_type_checking = false; // TODO implement this flag
     bool bootstrap             = false;
