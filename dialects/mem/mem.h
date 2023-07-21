@@ -33,13 +33,14 @@ inline const Pi* fn_mem(Ref domain, Ref codomain) {
 /// Returns the (first) element of type mem::M from the given tuple.
 inline Ref mem_def(Ref def) {
     if (match<mem::M>(def->type())) return def;
+    if (def->type()->isa<Arr>()) return {}; // don't look into possibly gigantic arrays
 
     if (def->num_projs() > 1) {
         for (auto proj : def->projs())
             if (auto mem = mem_def(proj)) return mem;
     }
 
-    return nullptr;
+    return {};
 }
 
 /// Returns the memory argument of a function if it has one.
