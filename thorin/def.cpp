@@ -416,7 +416,7 @@ void Def::make_internal() { return world().make_internal(this); }
 std::string Def::unique_name() const { return *sym() + "_"s + std::to_string(gid()); }
 
 nat_t Def::num_tprojs() const {
-    if (auto a = isa_lit_arity(); a && *a < world().flags().proj_threshhold) return *a;
+    if (auto a = isa_lit_arity(); a && *a < world().flags().scalerize_threshold) return *a;
     return 1;
 }
 

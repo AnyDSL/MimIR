@@ -18,10 +18,9 @@ class EtaExp;
 /// It will not flatten mutable @p Sigma%s or @p Arr%ays.
 class Scalerize : public RWPass<Scalerize, Lam> {
 public:
-    Scalerize(PassMan& man, EtaExp* eta_exp, nat_t threshold)
+    Scalerize(PassMan& man, EtaExp* eta_exp)
         : RWPass(man, "scalerize")
-        , eta_exp_(eta_exp)
-        , threshold_(threshold) {}
+        , eta_exp_(eta_exp) {}
 
     Ref rewrite(Ref) override;
 
@@ -30,7 +29,6 @@ private:
     Lam* make_scalar(Ref def);
 
     EtaExp* eta_exp_;
-    nat_t threshold_;
     Lam2Lam tup2sca_;
 };
 
