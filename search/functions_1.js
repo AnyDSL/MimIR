@@ -20,7 +20,7 @@ var searchData=
   ['bound_17',['Bound',['../classthorin_1_1Bound.html#a3c819ce3a5f7df9c6a5d44ce4e8352e2',1,'thorin::Bound']]],
   ['bound_18',['bound',['../classthorin_1_1World.html#a3bfde98db8f0643e158231697726b6b9',1,'thorin::World::bound()'],['../classthorin_1_1Scope.html#ab36494ecdcd1afb09ec0f01ea0daec30',1,'thorin::Scope::bound() const'],['../classthorin_1_1Scope.html#afe87447a90844ef7ccc95eff57ac4720',1,'thorin::Scope::bound(const Def *def) const']]],
   ['bound_19',['Bound',['../classthorin_1_1Bound.html#a30d966f932843bab9f6820e62ac285cb',1,'thorin::Bound']]],
-  ['branch_20',['branch',['../classthorin_1_1Lam.html#a2ac6b806b02f915be7544a1379a49304',1,'thorin::Lam']]],
+  ['branch_20',['branch',['../classthorin_1_1Lam.html#ae8e4a0b3c6fcce5d2999397320eea3a9',1,'thorin::Lam']]],
   ['branchcloselim_21',['BranchClosElim',['../classthorin_1_1clos_1_1BranchClosElim.html#a746d1c1513afab92b721d0ab6f08ce69',1,'thorin::clos::BranchClosElim']]],
   ['breakpoint_22',['breakpoint',['../classthorin_1_1World.html#aba9760cc112bc8dd65856ab947f94fc2',1,'thorin::World::breakpoint()'],['../namespacethorin.html#a7ec2df0cc38989e607e76de0491ef48b',1,'thorin::breakpoint()']]],
   ['breakpoints_23',['breakpoints',['../classthorin_1_1World.html#a53652952660ab5ef701d68dc6d666243',1,'thorin::World']]]

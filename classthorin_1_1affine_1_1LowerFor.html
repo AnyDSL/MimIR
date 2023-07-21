@@ -185,8 +185,24 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Lowers the for axiom to actual control flow in CPS. </p>
+<p >It basically mimics this implementation: </p><div class="fragment"><div class="line">.con %affine.For_impl</div>
+<div class="line">    (m: .<a class="code hl_class" href="classthorin_1_1Nat.html">Nat</a> , n: .<a class="code hl_class" href="classthorin_1_1Nat.html">Nat</a> , Ts: «n; *»)</div>
+<div class="line">    (begin: .<a class="code hl_class" href="classthorin_1_1Idx.html">Idx</a> m, end: .<a class="code hl_class" href="classthorin_1_1Idx.html">Idx</a> m, step: .<a class="code hl_class" href="classthorin_1_1Idx.html">Idx</a> m, init: «i: n; Ts#i»,</div>
+<div class="line">            body: .Cn [iter: .Idx m, acc: «i: n; Ts#i», yield: .Cn [«i: n; Ts#i»]],</div>
+<div class="line">            exit: .Cn [«i: n; Ts#i»]</div>
+<div class="line">    ) =</div>
+<div class="line">    .con head(iter: .<a class="code hl_class" href="classthorin_1_1Idx.html">Idx</a> m, acc: «i: n; Ts#i») =</div>
+<div class="line">        .con new_body() = body (iter, acc, .cn acc: «i: n; Ts#i» =</div>
+<div class="line">            .let `iter = %core.wrap.add %core.mode.nsuw (iter, step);</div>
+<div class="line">            head (iter, acc));</div>
+<div class="line">        .con new_exit() = exit (acc);</div>
+<div class="line">        (new_exit, new_body)#(%core.icmp.ul (iter, end)) ();</div>
+<div class="line">    head(begin, init);</div>
+<div class="ttc" id="aclassthorin_1_1Idx_html"><div class="ttname"><a href="classthorin_1_1Idx.html">thorin::Idx</a></div><div class="ttdoc">A built-in constant of type .Nat -&gt; *.</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00658">def.h:658</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Nat_html"><div class="ttname"><a href="classthorin_1_1Nat.html">thorin::Nat</a></div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00650">def.h:650</a></div></div>
+</div><!-- fragment --><p> However, we merge <code>init</code>/<code>acc</code> into the signature, as it may contain a <code>mem</code>. In this case we have to equip <code>new_body</code>/<code>new_exit</code> with a <code>mem</code> as well. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>We probably want to have phases which fix such things so we don't have to do this in C++. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="lower__for_8h_source.html#l00009">9</a> of file <a class="el" href="lower__for_8h_source.html">lower_for.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lower__for_8h_source.html#l00028">28</a> of file <a class="el" href="lower__for_8h_source.html">lower_for.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a1ccb326f60d9381a8ecd8af8ebb94ced" name="a1ccb326f60d9381a8ecd8af8ebb94ced"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1ccb326f60d9381a8ecd8af8ebb94ced">&#9670;&#160;</a></span>LowerFor()</h2>
@@ -212,7 +228,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lower__for_8h_source.html#l00011">11</a> of file <a class="el" href="lower__for_8h_source.html">lower_for.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lower__for_8h_source.html#l00030">30</a> of file <a class="el" href="lower__for_8h_source.html">lower_for.h</a>.</p>
 
 </div>
 </div>
@@ -243,9 +259,9 @@ Public Member Functions</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classthorin_1_1Pass.html#aaff9e8035d221f0b950990efee302c70">thorin::Pass</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="lower__for_8cpp_source.html#l00010">10</a> of file <a class="el" href="lower__for_8cpp_source.html">lower_for.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lower__for_8cpp_source.html#l00011">11</a> of file <a class="el" href="lower__for_8cpp_source.html">lower_for.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00129">thorin::core::add</a>, <a class="el" href="pass_8h_source.html#l00234">thorin::RWPass&lt; LowerFor, Lam &gt;::curr_mut()</a>, <a class="el" href="lam_8h_source.html#l00033">thorin::Pi::doms()</a>, <a class="el" href="lam_8h_source.html#l00156">thorin::Lam::set()</a>, <a class="el" href="def_8cpp_source.html#l00126">thorin::Lam::stub()</a>, <a class="el" href="core_2autogen_8h_source.html#l00350">thorin::core::ul</a>, <a class="el" href="def_8cpp_source.html#l00274">thorin::Def::var()</a>, <a class="el" href="def_8h_source.html#l00380">thorin::Def::vars()</a>, and <a class="el" href="pass_8h_source.html#l00308">thorin::Pass::world()</a>.</p>
+<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00129">thorin::core::add</a>, <a class="el" href="world_8cpp_source.html#l00193">thorin::World::app()</a>, <a class="el" href="world_8h_source.html#l00426">thorin::World::call()</a>, <a class="el" href="world_8h_source.html#l00239">thorin::World::cn()</a>, <a class="el" href="pass_8h_source.html#l00234">thorin::RWPass&lt; LowerFor, Lam &gt;::curr_mut()</a>, <a class="el" href="def_8h_source.html#l00401">thorin::Def::isa_mut()</a>, <a class="el" href="mem_8h_source.html#l00046">thorin::mem::mem_var()</a>, <a class="el" href="tuple_8cpp_source.html#l00096">thorin::merge_sigma()</a>, <a class="el" href="tuple_8cpp_source.html#l00101">thorin::merge_tuple()</a>, <a class="el" href="world_8h_source.html#l00251">thorin::World::mut_lam()</a>, <a class="el" href="namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493a7eb3133ffe6a944d4cf7cfe6d8e5ca54">thorin::core::nusw</a>, <a class="el" href="lam_8h_source.html#l00156">thorin::Lam::set()</a>, <a class="el" href="world_8cpp_source.html#l00238">thorin::World::tuple()</a>, <a class="el" href="core_2autogen_8h_source.html#l00350">thorin::core::ul</a>, <a class="el" href="def_8h_source.html#l00380">thorin::Def::vars()</a>, and <a class="el" href="pass_8h_source.html#l00308">thorin::Pass::world()</a>.</p>
 
 </div>
 </div>

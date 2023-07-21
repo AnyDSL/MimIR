@@ -38,7 +38,7 @@ var searchData=
   ['bound_35',['Bound',['../classthorin_1_1Bound.html#a3c819ce3a5f7df9c6a5d44ce4e8352e2',1,'thorin::Bound::Bound(node_t node, const Def *type, size_t size)'],['../classthorin_1_1Bound.html#a30d966f932843bab9f6820e62ac285cb',1,'thorin::Bound::Bound(node_t node, const Def *type, Defs ops)']]],
   ['bound_36',['bound',['../classthorin_1_1Scope.html#afe87447a90844ef7ccc95eff57ac4720',1,'thorin::Scope::bound(const Def *def) const'],['../classthorin_1_1Scope.html#ab36494ecdcd1afb09ec0f01ea0daec30',1,'thorin::Scope::bound() const'],['../classthorin_1_1World.html#a3bfde98db8f0643e158231697726b6b9',1,'thorin::World::bound()']]],
   ['bound_37',['Bound',['../classthorin_1_1Bound.html',1,'thorin']]],
-  ['branch_38',['branch',['../classthorin_1_1Lam.html#a2ac6b806b02f915be7544a1379a49304',1,'thorin::Lam']]],
+  ['branch_38',['branch',['../classthorin_1_1Lam.html#ae8e4a0b3c6fcce5d2999397320eea3a9',1,'thorin::Lam']]],
   ['branch_5fclos_5felim_2ecpp_39',['branch_clos_elim.cpp',['../branch__clos__elim_8cpp.html',1,'']]],
   ['branch_5fclos_5felim_2eh_40',['branch_clos_elim.h',['../branch__clos__elim_8h.html',1,'']]],
   ['branch_5fclos_5fpass_41',['branch_clos_pass',['../namespacethorin_1_1clos.html#aef3b95c191f7a48e7e5e13d98a5b6ee4',1,'thorin::clos']]],

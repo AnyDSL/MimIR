@@ -4,7 +4,8 @@ var core_8h =
     [ "Mode", "core_8h.html#af4b6ec81c99cf0437d00e76854e45493", [
       [ "none", "core_8h.html#af4b6ec81c99cf0437d00e76854e45493a334c4a4c42fdb79d7ebc3e73b517e6f8", null ],
       [ "nsw", "core_8h.html#af4b6ec81c99cf0437d00e76854e45493ac3768fe04ce22117d45f8d401c628de3", null ],
-      [ "nuw", "core_8h.html#af4b6ec81c99cf0437d00e76854e45493a1cb6ecf47d175b4055a768fee5f76e97", null ]
+      [ "nuw", "core_8h.html#af4b6ec81c99cf0437d00e76854e45493a1cb6ecf47d175b4055a768fee5f76e97", null ],
+      [ "nusw", "core_8h.html#af4b6ec81c99cf0437d00e76854e45493a7eb3133ffe6a944d4cf7cfe6d8e5ca54", null ]
     ] ],
     [ "convert", "core_8h.html#ac9ec87b1bccd45a5f0303029090374e5", null ],
     [ "convert", "core_8h.html#a672e39c03f5c2b7a4e3eb7a04f5d10ba", null ],

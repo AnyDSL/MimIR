@@ -131,15 +131,17 @@ Dependencies</h1>
 Operations</h1>
 <h2><a class="anchor" id="autotoc_md70"></a>
 %affine.For</h2>
-<p >This operation ranges from (including) <code>start</code> to (excluding) <code>stop</code> using <code>step</code> as stride. In addition, this loop manages <code>n</code> loop accumulators whose initial values <code>init</code> must be given. Each iteration the given <code>body</code> is invoked which receives</p><ul>
+<p >This operation ranges from (including) <code>begin</code> to (excluding) <code>end</code> using <code>step</code> as stride. In addition, this loop manages <code>n</code> loop accumulators whose initial values <code>init</code> must be given. Each iteration the given <code>body</code> is invoked which receives</p><ul>
 <li>the current iteration index, and</li>
 <li>the current values of the loop accumulators <code>acc</code>, and</li>
 <li>a <code>yield</code> continuation to prematurely continue with the next iteration.</li>
 </ul>
-<p >After termination of the loop <code>exit</code> is invoked. </p><div class="fragment"><div class="line">.ax %affine.For: Π [m: .Nat , n: .Nat , Ts: «n; *»] -&gt;</div>
-<div class="line">    .Cn [start: .Idx m, stop: .Idx m, step: .Idx m, init: «i: n; Ts#i»,</div>
-<div class="line">        body: .Cn [iter: .Idx m, acc: «i: n; Ts#i», yield: .Cn [«i: n; Ts#i»]], </div>
-<div class="line">        exit: .Cn [«i: n; Ts#i»]];</div>
+<p >After termination of the loop <code>exit</code> is invoked. </p><div class="fragment"><div class="line">.ax %affine.For:</div>
+<div class="line">    .Cn [m: .Nat , n: .Nat , Ts: «n; *»]</div>
+<div class="line">        [begin: .Idx m, end: .Idx m, step: .Idx m, init: «i: n; Ts#i»,</div>
+<div class="line">            body: .Cn [iter: .Idx m, acc: «i: n; Ts#i», yield: .Cn [«i: n; Ts#i»]],</div>
+<div class="line">            exit: .Cn [«i: n; Ts#i»]</div>
+<div class="line">        ];</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md71"></a>
 Passes and Phases</h1>
 <h2><a class="anchor" id="autotoc_md72"></a>

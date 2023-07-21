@@ -122,7 +122,8 @@ var namespacethorin =
       [ "Mode", "namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493", [
         [ "none", "namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493a334c4a4c42fdb79d7ebc3e73b517e6f8", null ],
         [ "nsw", "namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493ac3768fe04ce22117d45f8d401c628de3", null ],
-        [ "nuw", "namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493a1cb6ecf47d175b4055a768fee5f76e97", null ]
+        [ "nuw", "namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493a1cb6ecf47d175b4055a768fee5f76e97", null ],
+        [ "nusw", "namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493a7eb3133ffe6a944d4cf7cfe6d8e5ca54", null ]
       ] ],
       [ "nat", "namespacethorin_1_1core.html#a3102b1c3eb691e8bc7ac034dece1a92d", [
         [ "add", "namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa2417b496d526d2ad5b184798d2938924", null ],

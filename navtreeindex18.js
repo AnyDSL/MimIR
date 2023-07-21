@@ -1,5 +1,6 @@
 var NAVTREEINDEX18 =
 {
+"mem_2normalizers_8cpp_source.html":[6,0,2,9,4],
 "mem_8cpp.html":[6,0,2,9,2],
 "mem_8cpp.html#a2b0c506ec13141b704c0aea991f89b55":[6,0,2,9,2,0],
 "mem_8cpp_source.html":[6,0,2,9,2],
@@ -60,8 +61,8 @@ var NAVTREEINDEX18 =
 "namespacemembers_eval_w.html":[3,1,5,21],
 "namespacemembers_eval_x.html":[3,1,5,22],
 "namespacemembers_f.html":[3,1,0,5],
-"namespacemembers_func.html":[3,1,1,0],
 "namespacemembers_func.html":[3,1,1],
+"namespacemembers_func.html":[3,1,1,0],
 "namespacemembers_func_b.html":[3,1,1,1],
 "namespacemembers_func_c.html":[3,1,1,2],
 "namespacemembers_func_d.html":[3,1,1,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX18 =
 "namespacethorin.html#ab31c89d6a2afc9d7693f7fbdd992c7fe":[3,0,0,290],
 "namespacethorin.html#ab44c7f88991518e191a0b6168e41d816":[3,0,0,211],
 "namespacethorin.html#ab492d5bf259b9311be082f83c78b6a77":[3,0,0,257],
-"namespacethorin.html#ab6c106c44c8584cd4bdb99b75b915c38":[3,0,0,133],
-"namespacethorin.html#ab7cf30e0d2fba0f84ac3551302ad776d":[6,0,4,15,0,4]
+"namespacethorin.html#ab6c106c44c8584cd4bdb99b75b915c38":[3,0,0,133]
 };

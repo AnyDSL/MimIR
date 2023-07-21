@@ -121,7 +121,7 @@ var searchData=
   ['num_5fsuccs_118',['num_succs',['../classthorin_1_1CFG.html#aff3e017f448a2f3c0203939ebc794052',1,'thorin::CFG::num_succs(const CFNode *n) const'],['../classthorin_1_1CFG.html#a0333e04684f6d938e9822865aedb8ae2',1,'thorin::CFG::num_succs(Def *mut) const']]],
   ['num_5fuses_119',['num_uses',['../classthorin_1_1Def.html#ac3de60bf9485ec1a2adc35ff9742b725',1,'thorin::Def']]],
   ['num_5fvars_120',['num_vars',['../classthorin_1_1Def.html#a23a7c2d6b85662ea07d653f6b2caadf7',1,'thorin::Def']]],
-  ['nusw_121',['nusw',['../namespacethorin_1_1core.html#a9560903c6caf317c161b54117e2e2679a4738a31591e2dd101c07d45842d97b50',1,'thorin::core']]],
+  ['nusw_121',['nusw',['../namespacethorin_1_1core.html#a9560903c6caf317c161b54117e2e2679a4738a31591e2dd101c07d45842d97b50',1,'thorin::core::nusw()'],['../namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493a7eb3133ffe6a944d4cf7cfe6d8e5ca54',1,'thorin::core::nusw()']]],
   ['nuw_122',['nuw',['../namespacethorin_1_1core.html#a9560903c6caf317c161b54117e2e2679a6402074467372da6601927f3cf6023e7',1,'thorin::core::nuw()'],['../namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493a1cb6ecf47d175b4055a768fee5f76e97',1,'thorin::core::nuw()']]],
   ['nvtf32_123',['NVTF32',['../namespacethorin_1_1math.html#a59775d58804d99f74f2a3767dfd9a755',1,'thorin::math']]],
   ['nvtf32_124',['nvtf32',['../namespacethorin_1_1math.html#a2d16611bab5ec6878023df52ece09cdb',1,'thorin::math']]],
