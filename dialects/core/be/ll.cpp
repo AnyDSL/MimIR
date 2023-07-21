@@ -732,12 +732,12 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto extr = match<core::extrema>(def)) {
-        auto [x, y] = extr->args<2>();
-        auto t      = convert(x->type());
-        auto a      = emit(x);
-        auto b      = emit(y);
+        auto [x, y]   = extr->args<2>();
+        auto t        = convert(x->type());
+        auto a        = emit(x);
+        auto b        = emit(y);
         std::string f = "llvm.";
-        switch(extr.id()) {
+        switch (extr.id()) {
             case core::extrema::Sm: f += "smin."; break;
             case core::extrema::SM: f += "smax."; break;
             case core::extrema::sm: f += "umin."; break;
@@ -747,9 +747,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         declare("{} @{}({}, {})", t, f, t, t);
         return bb.assign(name, "tail call {} @{}({} {}, {} {})", t, f, t, a, t, b);
     } else if (auto abs = match<core::abs>(def)) {
-        auto [m,x] = abs->args<2>();
-        auto t = convert(x->type());
-        auto a = emit(x);
+        auto [m, x]   = abs->args<2>();
+        auto t        = convert(x->type());
+        auto a        = emit(x);
         std::string f = "llvm.abs." + t;
         declare("{} @{}({}, {})", t, f, t, "i1");
         return bb.assign(name, "tail call {} @{}({} {}, {} {})", t, f, t, a, "i1", "1");
