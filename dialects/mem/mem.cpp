@@ -13,6 +13,7 @@
 #include "dialects/mem/passes/rw/remem_elim.h"
 #include "dialects/mem/passes/rw/reshape.h"
 #include "dialects/mem/phases/add_mem.h"
+#include "dialects/mem/phases/ssa_destr.h"
 
 using namespace thorin;
 
@@ -42,6 +43,7 @@ extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
                           builder.add_pass<mem::Reshape>(app, mode);
                       };
                 register_pass<mem::add_mem_pass, mem::AddMemWrapper>(passes);
+                register_phase<mem::ssa_destr_phase, mem::SSADestr>(passes);
             },
             nullptr};
 }

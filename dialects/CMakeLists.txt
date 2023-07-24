@@ -161,6 +161,8 @@ add_thorin_plugin(mem
         mem/passes/rw/reshape.h
         mem/phases/add_mem.cpp
         mem/phases/add_mem.h
+        mem/phases/ssa_destr.cpp
+        mem/phases/ssa_destr.h
     DEPENDS
         compile
     HEADER_DEPENDS
