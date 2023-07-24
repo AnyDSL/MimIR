@@ -13,9 +13,6 @@
 #include "dialects/clos/pass/rw/clos_conv_prep.h"
 #include "dialects/clos/pass/rw/phase_wrapper.h"
 #include "dialects/mem/mem.h"
-#include "dialects/mem/passes/fp/copy_prop.h"
-#include "dialects/mem/passes/rw/reshape.h"
-#include "dialects/mem/phases/rw/add_mem.h"
 #include "dialects/refly/passes/debug_dump.h"
 
 using namespace thorin;
