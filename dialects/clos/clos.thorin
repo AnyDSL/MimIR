@@ -32,7 +32,6 @@
 /// ### Passes
 ///
 .ax %clos.clos_conv_prep_pass: %compile.Pass;
-.ax %clos.clos_conv_pass: %compile.Pass;
 .ax %clos.branch_clos_pass: %compile.Pass;
 .ax %clos.lower_typed_clos_prep_pass: %compile.Pass;
 .ax %clos.clos2sjlj_pass: %compile.Pass;
@@ -41,6 +40,8 @@
 ///
 /// ### Phases
 ///
+.ax %clos.clos_conv_phase: %compile.Phase;
+
 .let clos_opt1_phase = {
   .let eta_red = %clos.eta_red_bool_pass .tt;
   .let eta_exp = %compile.eta_exp_pass eta_red;
@@ -71,7 +72,7 @@
             %mem.add_mem_phase
             (%compile.single_pass_phase %clos.clos_conv_prep_pass)
             (%compile.single_pass_phase (%compile.eta_exp_pass nullptr))
-            (%compile.single_pass_phase %clos.clos_conv_pass)
+            %clos.clos_conv_phase
             clos_opt1_phase
             clos_opt2_phase
             (%compile.single_pass_phase %clos.lower_typed_clos_pass)

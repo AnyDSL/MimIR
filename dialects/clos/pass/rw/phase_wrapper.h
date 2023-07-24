@@ -8,14 +8,6 @@
 
 namespace thorin::clos {
 
-class ClosConvWrapper : public RWPass<ClosConvWrapper, Lam> {
-public:
-    ClosConvWrapper(PassMan& man)
-        : RWPass(man, "clos_conv") {}
-
-    void prepare() override { clos::ClosConv(world()).run(); }
-};
-
 class LowerTypedClosWrapper : public RWPass<LowerTypedClosWrapper, Lam> {
 public:
     LowerTypedClosWrapper(PassMan& man)
@@ -24,4 +16,4 @@ public:
     void prepare() override { clos::LowerTypedClos(world()).run(); }
 };
 
-}
+} // namespace thorin::clos
