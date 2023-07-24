@@ -6,7 +6,7 @@
 #include <thorin/pass/pipelinebuilder.h>
 #include <thorin/rewrite.h>
 
-#include "dialects/affine/passes/lower_for.h"
+#include "dialects/affine/pass/lower_for.h"
 
 using namespace thorin;
 

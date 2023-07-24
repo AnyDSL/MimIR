@@ -4,10 +4,10 @@
 #include <thorin/pass/pass.h>
 #include <thorin/pass/pipelinebuilder.h>
 
-#include "dialects/autodiff/passes/autodiff_eval.h"
-#include "dialects/autodiff/passes/autodiff_zero.h"
-#include "dialects/autodiff/passes/autodiff_zero_cleanup.h"
-#include "dialects/compile/passes/internal_cleanup.h"
+#include "dialects/autodiff/pass/autodiff_eval.h"
+#include "dialects/autodiff/pass/autodiff_zero.h"
+#include "dialects/autodiff/pass/autodiff_zero_cleanup.h"
+#include "dialects/compile/pass/internal_cleanup.h"
 #include "dialects/mem/mem.h"
 
 using namespace std::literals;

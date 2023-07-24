@@ -13,8 +13,8 @@
 #include "thorin/pass/rw/scalarize.h"
 
 #include "dialects/compile/autogen.h"
-#include "dialects/compile/passes/debug_print.h"
-#include "dialects/compile/passes/internal_cleanup.h"
+#include "dialects/compile/pass/debug_print.h"
+#include "dialects/compile/pass/internal_cleanup.h"
 
 using namespace thorin;
 

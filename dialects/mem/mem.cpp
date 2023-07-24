@@ -7,13 +7,13 @@
 #include <thorin/pass/pipelinebuilder.h>
 
 #include "dialects/mem/autogen.h"
-#include "dialects/mem/passes/fp/copy_prop.h"
-#include "dialects/mem/passes/fp/ssa_constr.h"
-#include "dialects/mem/passes/rw/alloc2malloc.h"
-#include "dialects/mem/passes/rw/remem_elim.h"
-#include "dialects/mem/passes/rw/reshape.h"
-#include "dialects/mem/phases/add_mem.h"
-#include "dialects/mem/phases/ssa_destr.h"
+#include "dialects/mem/pass/fp/copy_prop.h"
+#include "dialects/mem/pass/fp/ssa_constr.h"
+#include "dialects/mem/pass/rw/alloc2malloc.h"
+#include "dialects/mem/pass/rw/remem_elim.h"
+#include "dialects/mem/pass/rw/reshape.h"
+#include "dialects/mem/phase/add_mem.h"
+#include "dialects/mem/phase/ssa_destr.h"
 
 using namespace thorin;
 

@@ -11,9 +11,9 @@
 #include "dialects/clos/pass/rw/branch_clos_elim.h"
 #include "dialects/clos/pass/rw/clos2sjlj.h"
 #include "dialects/clos/pass/rw/clos_conv_prep.h"
-#include "dialects/clos/pass/rw/phase_wrapper.h"
+#include "dialects/clos/phase/phase_wrapper.h"
 #include "dialects/mem/mem.h"
-#include "dialects/refly/passes/debug_dump.h"
+#include "dialects/refly/pass/debug_dump.h"
 
 using namespace thorin;
 

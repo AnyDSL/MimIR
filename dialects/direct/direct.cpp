@@ -3,8 +3,8 @@
 #include <thorin/pass/pipelinebuilder.h>
 #include <thorin/plugin.h>
 
-#include "dialects/direct/passes/cps2ds.h"
-#include "dialects/direct/passes/ds2cps.h"
+#include "dialects/direct/pass/cps2ds.h"
+#include "dialects/direct/pass/ds2cps.h"
 
 using namespace thorin;
 
