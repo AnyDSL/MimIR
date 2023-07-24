@@ -101,7 +101,7 @@ struct Annex {
     /// Anatomy of an Annex name:
     /// ```
     /// %plugin.tag.sub
-    /// |  48   | 8 | 8 | <-- Number of bits per field.
+    /// |  48  | 8 | 8 | <-- Number of bits per field.
     /// ```
     /// * Def::name() retrieves the full name as Sym.
     /// * Def::flags() retrieves the full name as Axiom::mangle%d 64-bit integer.
@@ -125,12 +125,10 @@ struct Annex {
     /// These are set via template specialization.
 
     /// Number of Axiom::sub%tags.
-    template<class Id>
-    static constexpr size_t Num = size_t(-1);
+    template<class Id> static constexpr size_t Num = size_t(-1);
 
     /// @see Axiom::base.
-    template<class Id>
-    static constexpr flags_t Base = flags_t(-1);
+    template<class Id> static constexpr flags_t Base = flags_t(-1);
     ///@}
 };
 

@@ -347,11 +347,12 @@ void Emitter::emit_epilogue(Lam* lam) {
             // each callees type should agree with the argument type (should be checked by type checking).
             // Especially, the number of vars should be the number of arguments.
             // TODO: does not hold for complex arguments that are not tuples.
-            assert(callee->num_vars() == app->num_args());
-            for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
+            assert(callee->num_tvars() == app->num_targs());
+            size_t n = callee->num_tvars();
+            for (size_t i = 0; i != n; ++i) {
                 // emits the arguments one by one (TODO: handle together like before)
-                if (auto arg = emit_unsafe(app->arg(i)); !arg.empty()) {
-                    auto phi = callee->var(i);
+                if (auto arg = emit_unsafe(app->arg(n, i)); !arg.empty()) {
+                    auto phi = callee->var(n, i);
                     assert(!match<mem::M>(phi->type()));
                     lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
                     locals_[phi] = id(phi);
@@ -373,9 +374,10 @@ void Emitter::emit_epilogue(Lam* lam) {
     } else if (app->callee()->isa<Bot>()) {
         return bb.tail("ret ; bottom: unreachable");
     } else if (auto callee = Lam::isa_mut_basicblock(app->callee())) { // ordinary jump
-        for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
-            if (auto arg = emit_unsafe(app->arg(i)); !arg.empty()) {
-                auto phi = callee->var(i);
+        size_t n = callee->num_tvars();
+        for (size_t i = 0; i != n; ++i) {
+            if (auto arg = emit_unsafe(app->arg(n, i)); !arg.empty()) {
+                auto phi = callee->var(n, i);
                 assert(!match<mem::M>(phi->type()));
                 lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
                 locals_[phi] = id(phi);
@@ -547,6 +549,21 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto extract = def->isa<Extract>()) {
         auto tuple = extract->tuple();
         auto index = extract->index();
+
+        // use select when extracting from 2-element integral tuples
+        // literal indices would be normalized away already, if it was possible
+        // As they aren't they likely depend on a var, which is implemented as array -> need extractvalue
+        if (auto app = extract->type()->isa<App>();
+            app && app->callee()->isa<Idx>() && !index->isa<Lit>() && tuple->type()->isa<Arr>()) {
+            if (auto arity = tuple->type()->isa_lit_arity(); arity && *arity == 2) {
+                auto t                = convert(extract->type());
+                auto [elem_a, elem_b] = tuple->projs<2>([&](auto e) { return emit_unsafe(e); });
+
+                return bb.assign(name, "select {} {}, {} {}, {} {}", convert(index->type()), emit(index), t, elem_b, t,
+                                 elem_a);
+            }
+        }
+
         auto v_tup = emit_unsafe(tuple);
 
         // this exact location is important: after emitting the tuple -> ordering of mem ops
@@ -717,12 +734,12 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto extr = match<core::extrema>(def)) {
-        auto [x, y] = extr->args<2>();
-        auto t      = convert(x->type());
-        auto a      = emit(x);
-        auto b      = emit(y);
+        auto [x, y]   = extr->args<2>();
+        auto t        = convert(x->type());
+        auto a        = emit(x);
+        auto b        = emit(y);
         std::string f = "llvm.";
-        switch(extr.id()) {
+        switch (extr.id()) {
             case core::extrema::Sm: f += "smin."; break;
             case core::extrema::SM: f += "smax."; break;
             case core::extrema::sm: f += "umin."; break;
@@ -732,9 +749,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         declare("{} @{}({}, {})", t, f, t, t);
         return bb.assign(name, "tail call {} @{}({} {}, {} {})", t, f, t, a, t, b);
     } else if (auto abs = match<core::abs>(def)) {
-        auto [m,x] = abs->args<2>();
-        auto t = convert(x->type());
-        auto a = emit(x);
+        auto [m, x]   = abs->args<2>();
+        auto t        = convert(x->type());
+        auto a        = emit(x);
         std::string f = "llvm.abs." + t;
         declare("{} @{}({}, {})", t, f, t, "i1");
         return bb.assign(name, "tail call {} @{}({} {}, {} {})", t, f, t, a, "i1", "1");

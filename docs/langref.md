@@ -180,16 +180,15 @@ The following tables comprise all production rules:
 
 Patterns allow you to decompose a value into its components like in [Standard ML](https://en.wikibooks.org/wiki/Standard_ML_Programming/Types#Tuples) or other functional languages.
 
-| LHS             | RHS                                                    | Comment                             |
-|-----------------|--------------------------------------------------------|-------------------------------------|
-| p               | <tt>\`</tt>? 𝖨 (`:` e<sub>type</sub> )?                | identifier `()`-pattern             |
-| p               | (<tt>\`</tt>? 𝖨 `::`)? `(` d\* g `,` ... `,` d\* g `)` | `()`-`()`-tuple pattern<sup>s</sup> |
-| p               | (<tt>\`</tt>? 𝖨 `::`)? b<sub>[ ]</sub>                 | `[]`-`()`-tuple pattern             |
-| g               | p                                                      | group                               |
-| g               | 𝖨+ `:` e                                               | group                               |
-| b               | (<tt>\`</tt>? 𝖨 `:`)? e<sub>type</sub>                 | identifier `[]`-pattern             |
-| b               | (<tt>\`</tt>? 𝖨 `::`)? b<sub>[ ]</sub>                 | `[]`-`[]`-tuple pattern             |
-| b<sub>[ ]</sub> | `[` d\* b `,` ... `,` d\* b `]`                        | `[]`-tuple pattern<sup>s</sup>      |
+| LHS             | RHS                                                                  | Comment                             |
+|-----------------|----------------------------------------------------------------------|-------------------------------------|
+| p               | <tt>\`</tt>? 𝖨 (`:` e<sub>type</sub> )?                              | identifier `()`-pattern             |
+| p               | (<tt>\`</tt>? 𝖨 `::`)? `(` d\* (p \| g) `,` ... `,` d\* (p \| g) `)` | `()`-`()`-tuple pattern<sup>s</sup> |
+| p               | (<tt>\`</tt>? 𝖨 `::`)? b<sub>[ ]</sub>                               | `[]`-`()`-tuple pattern             |
+| b               | (<tt>\`</tt>? 𝖨 `:`)? e<sub>type</sub>                               | identifier `[]`-pattern             |
+| b               | (<tt>\`</tt>? 𝖨 `::`)? b<sub>[ ]</sub>                               | `[]`-`[]`-tuple pattern             |
+| b<sub>[ ]</sub> | `[` d\* (b \| g) `,` ... `,` d\* (b \| g) `]`                        | `[]`-tuple pattern<sup>s</sup>      |
+| g               | 𝖨+ `:` e                                                             | group                               |
 
 #### ()-style vs []-style
 
@@ -207,8 +206,9 @@ For this reason there is no rule for a `()`-`[]`-pattern.
 
 #### Groups
 
-What is more, `()`-style patterns allow for *groups*:
+Tuple patterns allow for *groups*:
 * `(a b c: .Nat, d e: .Bool)` means `(a: .Nat, b: .Nat, c: .Nat, d: .Bool, e: .Bool)`.
+* `[a b c: .Nat, d e: .Bool]` means `[a: .Nat, b: .Nat, c: .Nat, d: .Bool, e: .Bool]`.
 
 You can introduce an optional name for the whole tuple pattern:
 ```

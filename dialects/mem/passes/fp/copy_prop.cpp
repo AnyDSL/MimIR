@@ -11,7 +11,7 @@ Ref CopyProp::rewrite(Ref def) {
     auto [app, var_lam] = isa_apped_mut_lam(def);
     if (!isa_workable(var_lam) || (bb_only_ && Lam::isa_returning(var_lam))) return def;
 
-    auto n = app->num_args();
+    auto n = app->num_targs();
     if (n == 0) return app;
 
     auto [it, _] = lam2info_.emplace(var_lam, std::tuple(Lattices(n), (Lam*)nullptr, DefArray(n)));
@@ -28,20 +28,20 @@ Ref CopyProp::rewrite(Ref def) {
         switch (lattice[i]) {
             case Lattice::Dead: break;
             case Lattice::Prop:
-                if (app->arg(i)->has_dep(Dep::Proxy)) {
+                if (app->arg(n, i)->has_dep(Dep::Proxy)) {
                     world().DLOG("found proxy within app: {}@{} - wait till proxy is gone", var_lam, app);
                     return app;
                 } else if (args[i] == nullptr) {
-                    args[i] = app->arg(i);
-                } else if (args[i] != app->arg(i)) {
+                    args[i] = app->arg(n, i);
+                } else if (args[i] != app->arg(n, i)) {
                     appxy_ops.emplace_back(world().lit_nat(i));
                 } else {
-                    assert(args[i] == app->arg(i));
+                    assert(args[i] == app->arg(n, i));
                 }
                 break;
             case Lattice::Keep:
-                new_doms.emplace_back(var_lam->var(i)->type());
-                new_args.emplace_back(app->arg(i));
+                new_doms.emplace_back(var_lam->var(n, i)->type());
+                new_args.emplace_back(app->arg(n, i));
                 break;
             default: unreachable();
         }
@@ -71,7 +71,7 @@ Ref CopyProp::rewrite(Ref def) {
         size_t j = 0;
         DefArray new_vars(n, [&, prop_lam = prop_lam](size_t i) -> Ref {
             switch (lattice[i]) {
-                case Lattice::Dead: return proxy(var_lam->var(i)->type(), {var_lam, world().lit_nat(i)}, Varxy);
+                case Lattice::Dead: return proxy(var_lam->var(n, i)->type(), {var_lam, world().lit_nat(i)}, Varxy);
                 case Lattice::Prop: return args[i];
                 case Lattice::Keep: return prop_lam->var(j++);
                 default: unreachable();

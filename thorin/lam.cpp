@@ -30,7 +30,7 @@ Lam* Lam::app(Filter f, const Def* callee, const Def* arg) { return set_filter(f
 Lam* Lam::app(Filter filter, const Def* callee, Defs args) { return app(filter, callee, world().tuple(args)); }
 
 Lam* Lam::branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem) {
-    return app(filter, world().select(t, f, cond), mem);
+    return app(filter, world().select(cond, t, f), mem ? mem : world().tuple());
 }
 
 Lam* Lam::test(Filter filter, const Def* value, const Def* index, const Def* match, const Def* clash, const Def* mem) {

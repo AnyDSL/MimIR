@@ -9,14 +9,16 @@
 
 namespace thorin {
 
-const Def* Pack::shape() const {
-    if (auto arr = type()->isa<Arr>()) return arr->shape();
-    if (type() == world().sigma()) return world().lit_nat_0();
-    return world().lit_nat_1();
-}
-
 namespace {
-bool should_flatten(const Def* def) { return (def->is_term() ? def->type() : def)->isa<Sigma, Arr>(); }
+bool should_flatten(const Def* def) {
+    auto type = (def->is_term() ? def->type() : def);
+    if (type->isa<Sigma>()) return true;
+    if (auto arr = type->isa<Arr>()) {
+        if (auto a = arr->isa_lit_arity(); a && *a > def->world().flags().scalerize_threshold) return false;
+        return true;
+    }
+    return false;
+}
 
 bool mut_val_or_typ(const Def* def) {
     auto typ = def->is_term() ? def->type() : def;
@@ -25,7 +27,8 @@ bool mut_val_or_typ(const Def* def) {
 
 const Def* unflatten(Defs defs, const Def* type, size_t& j, bool flatten_muts) {
     if (!defs.empty() && defs[0]->type() == type) return defs[j++];
-    if (auto a = type->isa_lit_arity(); flatten_muts == mut_val_or_typ(type) && a && *a != 1) {
+    if (auto a = type->isa_lit_arity();
+        flatten_muts == mut_val_or_typ(type) && a && *a != 1 && a <= type->world().flags().scalerize_threshold) {
         auto& world = type->world();
         DefArray ops(*a, [&](size_t i) { return unflatten(defs, type->proj(*a, i), j, flatten_muts); });
         return world.tuple(ops);
@@ -34,6 +37,12 @@ const Def* unflatten(Defs defs, const Def* type, size_t& j, bool flatten_muts) {
     return defs[j++];
 }
 } // namespace
+
+const Def* Pack::shape() const {
+    if (auto arr = type()->isa<Arr>()) return arr->shape();
+    if (type() == world().sigma()) return world().lit_nat_0();
+    return world().lit_nat_1();
+}
 
 bool is_unit(const Def* def) { return def->type() == def->world().sigma(); }
 

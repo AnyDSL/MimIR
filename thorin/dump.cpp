@@ -287,7 +287,7 @@ void Dumper::dump_ptrn(const Def* def, const Def* type) {
     if (!def) {
         os << type;
     } else {
-        auto projs = def->projs();
+        auto projs = def->tprojs();
         if (projs.size() == 1 || std::ranges::all_of(projs, [](auto def) { return !def; })) {
             print(os, "{}: {}", def->unique_name(), type);
         } else {

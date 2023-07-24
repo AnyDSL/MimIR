@@ -63,8 +63,9 @@ Ref Scalerize::rewrite(Ref def) {
 
         } else if (auto proj = sca_callee->isa<Extract>()) {
             auto tuple = proj->tuple()->isa<Tuple>();
-            if (tuple && std::all_of(tuple->ops().begin(), tuple->ops().end(),
-                                     [&](Ref op) { return should_expand(op->isa_mut<Lam>()); })) {
+            if (tuple && std::all_of(tuple->ops().begin(), tuple->ops().end(), [&](Ref op) {
+                    return should_expand(op->isa_mut<Lam>());
+                })) {
                 auto new_tuple = w.tuple(DefArray(tuple->num_ops(), [&](auto i) { return make_scalar(tuple->op(i)); }));
                 sca_callee     = w.extract(new_tuple, proj->index());
                 w.DLOG("Expand tuple: {, } ~> {, }", tuple->ops(), new_tuple->ops());
