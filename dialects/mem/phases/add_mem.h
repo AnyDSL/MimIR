@@ -31,12 +31,4 @@ private:
     Def2Def mem_rewritten_;
 };
 
-class AddMemWrapper : public RWPass<AddMemWrapper, Lam> {
-public:
-    AddMemWrapper(PassMan& man)
-        : RWPass(man, "add_mem") {}
-
-    void prepare() override { mem::AddMem(world()).run(); }
-};
-
 } // namespace thorin::mem

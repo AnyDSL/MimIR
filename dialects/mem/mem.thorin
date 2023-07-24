@@ -111,8 +111,11 @@
 .ax %mem.remem_elim_pass:   %compile.Pass;
 .ax %mem.alloc2malloc_pass: %compile.Pass;
 .ax %mem.reshape_pass:      %mem.reshape_mode -> %compile.Pass;
-.ax %mem.add_mem_pass:      %compile.Pass;
-.ax %mem.ssa_destr_phase:   %compile.Phase;
+///
+/// ### Phases
+///
+.ax %mem.add_mem_phase:   %compile.Phase;
+.ax %mem.ssa_destr_phase: %compile.Phase;
 ///
 /// ### Phases
 ///

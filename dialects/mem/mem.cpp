@@ -42,7 +42,7 @@ extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
                                                                                                     : mem::Reshape::Flat;
                           builder.add_pass<mem::Reshape>(app, mode);
                       };
-                register_pass<mem::add_mem_pass, mem::AddMemWrapper>(passes);
+                register_phase<mem::add_mem_phase, mem::AddMem>(passes);
                 register_phase<mem::ssa_destr_phase, mem::SSADestr>(passes);
             },
             nullptr};
