@@ -147,10 +147,14 @@ THORIN_ENUM_OPERATORS(Dep)
 /// Use as mixin to wrap all kind of Def::proj and Def::projs variants.
 #define THORIN_PROJ(NAME, CONST)                                                                               \
     nat_t num_##NAME##s() CONST { return ((const Def*)NAME())->num_projs(); }                                  \
+    nat_t num_t##NAME##s() CONST { return ((const Def*)NAME())->num_tprojs(); }                                \
     Ref NAME(nat_t a, nat_t i) CONST { return ((const Def*)NAME())->proj(a, i); }                              \
     Ref NAME(nat_t i) CONST { return ((const Def*)NAME())->proj(i); }                                          \
+    Ref t##NAME(nat_t i) CONST { return ((const Def*)NAME())->tproj(i); }                                      \
     template<nat_t A = -1_s, class F> auto NAME##s(F f) CONST { return ((const Def*)NAME())->projs<A, F>(f); } \
+    template<class F> auto t##NAME##s(F f) CONST { return ((const Def*)NAME())->tprojs<F>(f); }                \
     template<nat_t A = -1_s> auto NAME##s() CONST { return ((const Def*)NAME())->projs<A>(); }                 \
+    auto t##NAME##s() CONST { return ((const Def*)NAME())->tprojs(); }                                         \
     template<class F> auto NAME##s(nat_t a, F f) CONST { return ((const Def*)NAME())->projs<F>(a, f); }        \
     auto NAME##s(nat_t a) CONST { return ((const Def*)NAME())->projs(a); }
 
@@ -338,18 +342,19 @@ public:
 
     /// Yields Def::as_lit_arity(), if it is in fact a Lit, or `1` otherwise.
     nat_t num_projs() const { return isa_lit_arity().value_or(1); }
+    nat_t num_tprojs() const;
 
     /// Similar to World::extract while assuming an arity of @p a, but also works on Sigma%s and Arr%ays.
     const Def* proj(nat_t a, nat_t i) const;
 
-    /// Same as above but takes Def::num_projs as arity.
-    const Def* proj(nat_t i) const { return proj(num_projs(), i); }
+    const Def* proj(nat_t i) const { return proj(num_projs(), i); }   /// As above but takes Def::num_projs as arity.
+    const Def* tproj(nat_t i) const { return proj(num_tprojs(), i); } /// As above but takes Def::num_tprojs.
 
-    /// Splits this Def via Def::proj%ections into an Array (if `A == -1_s`) or `std::array` (otherwise).
+    /// Splits this Def via Def::proj%ections into an Array (if `A == -1_n`) or `std::array` (otherwise).
     /// Applies @p f to each element.
-    template<nat_t A = -1_s, class F> auto projs(F f) const {
+    template<nat_t A = -1_n, class F> auto projs(F f) const {
         using R = std::decay_t<decltype(f(this))>;
-        if constexpr (A == -1_s) {
+        if constexpr (A == -1_n) {
             return projs(num_projs(), f);
         } else {
             assert(A == as_lit_arity());
@@ -359,12 +364,17 @@ public:
         }
     }
 
+    template<class F> auto tprojs(F f) const { return projs(num_tprojs(), f); }
+
     template<class F> auto projs(nat_t a, F f) const {
         using R = std::decay_t<decltype(f(this))>;
         return Array<R>(a, [&](nat_t i) { return f(proj(a, i)); });
     }
-    template<nat_t A = -1_s> auto projs() const {
+    template<nat_t A = -1_n> auto projs() const {
         return projs<A>([](const Def* def) { return def; });
+    }
+    auto tprojs() const {
+        return tprojs([](const Def* def) { return def; });
     }
     auto projs(nat_t a) const {
         return projs(a, [](const Def* def) { return def; });

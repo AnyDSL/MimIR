@@ -30,7 +30,7 @@ Lam* Scalerize::make_scalar(Ref def) {
     auto arg_sz = std::vector<size_t>();
     bool todo   = false;
     for (size_t i = 0, e = tup_lam->num_doms(); i != e; ++i) {
-        auto n = flatten(threshold_, types, tup_lam->dom(i), false);
+        auto n = flatten(types, tup_lam->dom(i), false);
         arg_sz.push_back(n);
         todo |= n != 1 || types.back() != tup_lam->dom(i);
     }
@@ -44,7 +44,7 @@ Lam* Scalerize::make_scalar(Ref def) {
     world().DLOG("type {} ~> {}", tup_lam->type(), pi);
     auto new_vars = world().tuple(DefArray(tup_lam->num_doms(), [&](auto i) {
         auto tuple = DefArray(arg_sz.at(i), [&](auto) { return sca_lam->var(n++); });
-        return unflatten(threshold_, tuple, tup_lam->dom(i), false);
+        return unflatten(tuple, tup_lam->dom(i), false);
     }));
     sca_lam->set(tup_lam->reduce(new_vars));
     tup2sca_[sca_lam] = sca_lam;
@@ -74,7 +74,7 @@ Ref Scalerize::rewrite(Ref def) {
 
         if (sca_callee != app->callee()) {
             auto new_args = DefVec();
-            flatten(threshold_, new_args, app->arg(), false);
+            flatten(new_args, app->arg(), false);
             return world().app(sca_callee, new_args);
         }
     }

@@ -347,11 +347,12 @@ void Emitter::emit_epilogue(Lam* lam) {
             // each callees type should agree with the argument type (should be checked by type checking).
             // Especially, the number of vars should be the number of arguments.
             // TODO: does not hold for complex arguments that are not tuples.
-            assert(callee->num_vars() == app->num_args());
-            for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
+            assert(callee->num_tvars() == app->num_targs());
+            size_t n = callee->num_tvars();
+            for (size_t i = 0; i != n; ++i) {
                 // emits the arguments one by one (TODO: handle together like before)
-                if (auto arg = emit_unsafe(app->arg(i)); !arg.empty()) {
-                    auto phi = callee->var(i);
+                if (auto arg = emit_unsafe(app->arg(n, i)); !arg.empty()) {
+                    auto phi = callee->var(n, i);
                     assert(!match<mem::M>(phi->type()));
                     lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
                     locals_[phi] = id(phi);
@@ -373,9 +374,10 @@ void Emitter::emit_epilogue(Lam* lam) {
     } else if (app->callee()->isa<Bot>()) {
         return bb.tail("ret ; bottom: unreachable");
     } else if (auto callee = Lam::isa_mut_basicblock(app->callee())) { // ordinary jump
-        for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
-            if (auto arg = emit_unsafe(app->arg(i)); !arg.empty()) {
-                auto phi = callee->var(i);
+        size_t n = callee->num_tvars();
+        for (size_t i = 0; i != n; ++i) {
+            if (auto arg = emit_unsafe(app->arg(n, i)); !arg.empty()) {
+                auto phi = callee->var(n, i);
                 assert(!match<mem::M>(phi->type()));
                 lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
                 locals_[phi] = id(phi);
