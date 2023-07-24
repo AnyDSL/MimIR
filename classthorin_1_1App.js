@@ -13,7 +13,11 @@ var classthorin_1_1App =
     [ "curry", "classthorin_1_1App.html#a862f2603e42ed9b1e906a2c9ccf51e10", null ],
     [ "decurry", "classthorin_1_1App.html#a53a3f213bce08f36aa352ceebe3e2518", null ],
     [ "num_args", "classthorin_1_1App.html#acad8c1fc93ee53c9a0c98861e20ef9f7", null ],
+    [ "num_targs", "classthorin_1_1App.html#a6311eeeb21fea1825f8e72bcf4d9074d", null ],
     [ "rebuild", "classthorin_1_1App.html#a8dcc4780f1b5143ffbcffefef72913c2", null ],
+    [ "targ", "classthorin_1_1App.html#a074ba6f6d7d0007184e6e4ba3ada0d1e", null ],
+    [ "targs", "classthorin_1_1App.html#a6605b18cab8da09e807259754d620a74", null ],
+    [ "targs", "classthorin_1_1App.html#a6e3c9ae2a9923a40ca8bd28ae866edeb", null ],
     [ "trip", "classthorin_1_1App.html#a9fc9de1d57c694f5c8fa3c85a8f5d09e", null ],
     [ "World", "classthorin_1_1App.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],
     [ "Node", "classthorin_1_1App.html#a2c406c2a66f0654cf986fa0da6dacd89", null ]

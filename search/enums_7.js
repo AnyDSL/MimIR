@@ -2,8 +2,8 @@ var searchData=
 [
   ['i1_0',['i1',['../namespacethorin_1_1core.html#a93191f7570b76900507e609e630c6849',1,'thorin::core']]],
   ['i1_1',['I1',['../namespacethorin_1_1core.html#aaff0f4c07e4c9423ab2bac7b0a69695b',1,'thorin::core']]],
-  ['i16_2',['I16',['../namespacethorin_1_1core.html#a89e6604d02c3c8a4f4c3d208e4286e91',1,'thorin::core']]],
-  ['i16_3',['i16',['../namespacethorin_1_1core.html#ac1fc2a26f8291d6c447c865356c30052',1,'thorin::core']]],
+  ['i16_2',['i16',['../namespacethorin_1_1core.html#ac1fc2a26f8291d6c447c865356c30052',1,'thorin::core']]],
+  ['i16_3',['I16',['../namespacethorin_1_1core.html#a89e6604d02c3c8a4f4c3d208e4286e91',1,'thorin::core']]],
   ['i32_4',['i32',['../namespacethorin_1_1core.html#af25e3f1f26d7671e2766c757ee3a205c',1,'thorin::core']]],
   ['i32_5',['I32',['../namespacethorin_1_1core.html#ac72694b06b1cbd1e7101e1c848a1a8b2',1,'thorin::core']]],
   ['i64_6',['i64',['../namespacethorin_1_1core.html#a7e9d968ed56bd8645446779f123555c0',1,'thorin::core']]],

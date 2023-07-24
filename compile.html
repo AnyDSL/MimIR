@@ -207,8 +207,7 @@ Passes</h2>
 <div class="fragment"><div class="line">.ax %compile.beta_red_pass: %compile.Pass;</div>
 <div class="line">.ax %compile.eta_red_pass: %compile.Pass;</div>
 </div><!-- fragment --><p> Eta expansion expects an instance of eta reduction as argument. </p><div class="fragment"><div class="line">.ax %compile.eta_exp_pass: %compile.Pass -&gt; %compile.Pass;</div>
-</div><!-- fragment --><p> Scalerize expects an instance of eta expansion as argument and a threshold where scalarize should stop. </p><div class="fragment"><div class="line">.ax %compile.scalerize_pass: [%compile.Pass, .Nat] -&gt; %compile.Pass;</div>
-<div class="line">.let %compile.scalerize_threshold = 32;</div>
+</div><!-- fragment --><p> Scalerize expects an instance of eta expansion as argument. </p><div class="fragment"><div class="line">.ax %compile.scalerize_pass: %compile.Pass -&gt; %compile.Pass;</div>
 </div><!-- fragment --><p> Tail recursion elimination expects an instance of eta reduction as argument. </p><div class="fragment"><div class="line">.ax %compile.tail_rec_elim_pass: %compile.Pass -&gt; %compile.Pass;</div>
 <div class="line">.ax %compile.lam_spec_pass: %compile.Pass;</div>
 <div class="line">.ax %compile.ret_wrap_pass: %compile.Pass;</div>
@@ -224,7 +223,7 @@ Phases</h2>
 <div class="line">        %compile.beta_red_pass</div>
 <div class="line">        eta_red</div>
 <div class="line">        eta_exp</div>
-<div class="line">        (%compile.scalerize_pass (eta_exp, %compile.scalerize_threshold))</div>
+<div class="line">        (%compile.scalerize_pass eta_exp)</div>
 <div class="line">        (%compile.tail_rec_elim_pass eta_red)</div>
 <div class="line">};</div>
 <div class="line">.let optimization_phase = {</div>
@@ -236,7 +235,7 @@ Pipelines</h2>
 <div class="line">    .let nullptr = %compile.nullptr_pass;</div>
 <div class="line">    %compile.pipe</div>
 <div class="line">        (%compile.single_pass_phase nullptr)</div>
-<div class="line">        (%compile.single_pass_phase (%compile.scalerize_pass (nullptr, %compile.scalerize_threshold)))</div>
+<div class="line">        (%compile.single_pass_phase (%compile.scalerize_pass nullptr))</div>
 <div class="line">        (%compile.single_pass_phase %compile.eta_red_pass)</div>
 <div class="line">        (%compile.single_pass_phase (%compile.tail_rec_elim_pass nullptr))</div>
 <div class="line">        optimization_phase</div>

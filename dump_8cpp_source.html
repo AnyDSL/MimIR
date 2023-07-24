@@ -402,7 +402,7 @@ $(document).ready(function(){initNavTree('dump_8cpp_source.html',''); initResiza
 <div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    <span class="keywordflow">if</span> (!def) {</div>
 <div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>        os &lt;&lt; type;</div>
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>        <span class="keyword">auto</span> projs = def-&gt;projs();</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>        <span class="keyword">auto</span> projs = def-&gt;tprojs();</div>
 <div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>        <span class="keywordflow">if</span> (projs.size() == 1 || std::ranges::all_of(projs, [](<span class="keyword">auto</span> def) { return !def; })) {</div>
 <div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>            <a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(os, <span class="stringliteral">&quot;{}: {}&quot;</span>, def-&gt;unique_name(), type);</div>
 <div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>        } <span class="keywordflow">else</span> {</div>
@@ -527,7 +527,7 @@ $(document).ready(function(){initNavTree('dump_8cpp_source.html',''); initResiza
 <div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span> </div>
 <div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>} <span class="comment">// namespace thorin</span></div>
 <div class="ttc" id="aassert_8h_html"><div class="ttname"><a href="assert_8h.html">assert.h</a></div></div>
-<div class="ttc" id="aclassthorin_1_1Def_html"><div class="ttname"><a href="classthorin_1_1Def.html">thorin::Def</a></div><div class="ttdoc">Base class for all Defs.</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00199">def.h:199</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Def_html"><div class="ttname"><a href="classthorin_1_1Def.html">thorin::Def</a></div><div class="ttdoc">Base class for all Defs.</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00203">def.h:203</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Def_html_a7805eeac4955c9e68103f794c765654c"><div class="ttname"><a href="classthorin_1_1Def.html#a7805eeac4955c9e68103f794c765654c">thorin::Def::write</a></div><div class="ttdeci">void write(int max) const</div><div class="ttdef"><b>Definition:</b> <a href="dump_8cpp_source.html#l00368">dump.cpp:368</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Def_html_acb49c075ec55594c36356062152104b2"><div class="ttname"><a href="classthorin_1_1Def.html#acb49c075ec55594c36356062152104b2">thorin::Def::stream</a></div><div class="ttdeci">std::ostream &amp; stream(std::ostream &amp;, int max) const</div><div class="ttdef"><b>Definition:</b> <a href="dump_8cpp_source.html#l00341">dump.cpp:341</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Def_html_adeb490fdb674323acba48da1ffb28787"><div class="ttname"><a href="classthorin_1_1Def.html#adeb490fdb674323acba48da1ffb28787">thorin::Def::dump</a></div><div class="ttdeci">void dump() const</div><div class="ttdef"><b>Definition:</b> <a href="dump_8cpp_source.html#l00360">dump.cpp:360</a></div></div>

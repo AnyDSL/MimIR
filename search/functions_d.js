@@ -27,7 +27,7 @@ var searchData=
   ['normalize_5fcombined_5fphase_24',['normalize_combined_phase',['../namespacethorin_1_1compile.html#aa1ec74e97c09aa6292ce99495789dcda',1,'thorin::compile']]],
   ['normalize_5fconj_25',['normalize_conj',['../namespacethorin_1_1regex.html#ac1bb35e3841f87cc017dafa026afb25e',1,'thorin::regex']]],
   ['normalize_5fconst_26',['normalize_const',['../namespacethorin_1_1demo.html#abe988eb5b115ee74f25754ee8f3fabe4',1,'thorin::demo']]],
-  ['normalize_5fconv_27',['normalize_conv',['../namespacethorin_1_1math.html#abb9921d1dbdfac714ed5f685137c8423',1,'thorin::math::normalize_conv()'],['../namespacethorin_1_1core.html#ab066c49453efb651a96eb6b077fbdc40',1,'thorin::core::normalize_conv()']]],
+  ['normalize_5fconv_27',['normalize_conv',['../namespacethorin_1_1core.html#ab066c49453efb651a96eb6b077fbdc40',1,'thorin::core::normalize_conv()'],['../namespacethorin_1_1math.html#abb9921d1dbdfac714ed5f685137c8423',1,'thorin::math::normalize_conv()']]],
   ['normalize_5fcps2ds_28',['normalize_cps2ds',['../namespacethorin_1_1direct.html#a6beae5c3898aeca60a19475f4b124999',1,'thorin::direct']]],
   ['normalize_5fdbg_29',['normalize_dbg',['../namespacethorin_1_1refly.html#a1d4c579f94fcac60eebde5c8593d9884',1,'thorin::refly']]],
   ['normalize_5fdisj_30',['normalize_disj',['../namespacethorin_1_1regex.html#a10aa18cea355fc4b947ec8b2455a4020',1,'thorin::regex']]],
@@ -81,10 +81,15 @@ var searchData=
   ['num_5fextended_5fops_78',['num_extended_ops',['../classthorin_1_1Def.html#a3ebe9d99ce68d3f011d3d1f8a0c09626',1,'thorin::Def']]],
   ['num_5fops_79',['num_ops',['../classthorin_1_1Def.html#a96e3d175d17912547aba1d116620f813',1,'thorin::Def']]],
   ['num_5fpartial_5fops_80',['num_partial_ops',['../classthorin_1_1Def.html#a6cbd92e35bf3c1dce0355d9e2344843b',1,'thorin::Def']]],
-  ['num_5fpreds_81',['num_preds',['../classthorin_1_1CFG.html#aa832903ceb0c9d92dcdf40a3d27cfaeb',1,'thorin::CFG::num_preds(const CFNode *n) const'],['../classthorin_1_1CFG.html#ad21abbf52b30ab643418cd1a4d65adb2',1,'thorin::CFG::num_preds(Def *mut) const']]],
+  ['num_5fpreds_81',['num_preds',['../classthorin_1_1CFG.html#ad21abbf52b30ab643418cd1a4d65adb2',1,'thorin::CFG::num_preds(Def *mut) const'],['../classthorin_1_1CFG.html#aa832903ceb0c9d92dcdf40a3d27cfaeb',1,'thorin::CFG::num_preds(const CFNode *n) const']]],
   ['num_5fprojs_82',['num_projs',['../classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2',1,'thorin::Def']]],
   ['num_5fptrns_83',['num_ptrns',['../classthorin_1_1fe_1_1TuplePtrn.html#aa92dbcd67c75c7ebc3c753272b5c52aa',1,'thorin::fe::TuplePtrn']]],
   ['num_5fsuccs_84',['num_succs',['../classthorin_1_1CFG.html#a0333e04684f6d938e9822865aedb8ae2',1,'thorin::CFG::num_succs(Def *mut) const'],['../classthorin_1_1CFG.html#aff3e017f448a2f3c0203939ebc794052',1,'thorin::CFG::num_succs(const CFNode *n) const']]],
-  ['num_5fuses_85',['num_uses',['../classthorin_1_1Def.html#ac3de60bf9485ec1a2adc35ff9742b725',1,'thorin::Def']]],
-  ['num_5fvars_86',['num_vars',['../classthorin_1_1Def.html#a23a7c2d6b85662ea07d653f6b2caadf7',1,'thorin::Def']]]
+  ['num_5ftargs_85',['num_targs',['../classthorin_1_1App.html#a6311eeeb21fea1825f8e72bcf4d9074d',1,'thorin::App']]],
+  ['num_5ftcodoms_86',['num_tcodoms',['../classthorin_1_1Lam.html#a593e0eee93b58f6f3b4169f905b751c6',1,'thorin::Lam::num_tcodoms()'],['../classthorin_1_1Pi.html#adda670479c55b9e0578c3a2b258abfa5',1,'thorin::Pi::num_tcodoms()']]],
+  ['num_5ftdoms_87',['num_tdoms',['../classthorin_1_1Lam.html#aa92200bf772275df371ecb3b60678e96',1,'thorin::Lam::num_tdoms()'],['../classthorin_1_1Pi.html#a8cb0f30bcab9b8ba8b6d6633fb790c03',1,'thorin::Pi::num_tdoms()']]],
+  ['num_5ftprojs_88',['num_tprojs',['../classthorin_1_1Def.html#af23ae4652b58ef23a9977f3fbd61ea0e',1,'thorin::Def']]],
+  ['num_5ftvars_89',['num_tvars',['../classthorin_1_1Def.html#a917e2a1c33e9484fe00b02ec1094f545',1,'thorin::Def']]],
+  ['num_5fuses_90',['num_uses',['../classthorin_1_1Def.html#ac3de60bf9485ec1a2adc35ff9742b725',1,'thorin::Def']]],
+  ['num_5fvars_91',['num_vars',['../classthorin_1_1Def.html#a23a7c2d6b85662ea07d653f6b2caadf7',1,'thorin::Def']]]
 ];

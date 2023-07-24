@@ -35,7 +35,6 @@ var compile_2autogen_8h =
     [ "regex_plugin", "compile_2autogen_8h.html#abaccaef94688e1428d02469b73068fb6", null ],
     [ "ret_wrap_pass", "compile_2autogen_8h.html#a314770b00ed2e4fb14bc35e90e5d6c2e", null ],
     [ "scalerize_pass", "compile_2autogen_8h.html#a4b9517ee17f15e9abcbbc56c43649135", null ],
-    [ "scalerize_threshold", "compile_2autogen_8h.html#a84bb6a9679477205fa3284b1ad198466", null ],
     [ "single_pass_phase", "compile_2autogen_8h.html#a89bed055f9b4723254ff9abd8ee2a9f6", null ],
     [ "tail_rec_elim_pass", "compile_2autogen_8h.html#aae2eb0cf8bf7d68762b817c05719f516", null ],
     [ "normalize_combine_pass_list", "compile_2autogen_8h.html#a6ac886137f32456559503c9f8788ad01", null ],

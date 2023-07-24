@@ -6,8 +6,9 @@ var namespacethorin_structthorin_1_1Flags_dup =
     [ "break_on_error", "namespacethorin.html#a9f679a1d3230929247554f1d0654370f", null ],
     [ "break_on_warn", "namespacethorin.html#ab7cf30e0d2fba0f84ac3551302ad776d", null ],
     [ "disable_type_checking", "namespacethorin.html#a9dae967222e630976c345b2388dee738", null ],
-    [ "dump_gid", "namespacethorin.html#a0a8b060eec2807f90e96b0ccd90a49ff", null ],
+    [ "dump_gid", "namespacethorin.html#aeda5d38402870bf4dc9aa93f4ed37caa", null ],
     [ "dump_recursive", "namespacethorin.html#a6e4da59c65d1ac682dfd77fe310a289e", null ],
     [ "reeval_breakpoints", "namespacethorin.html#abd14b901c908b3d92b9200a298a5ba18", null ],
+    [ "scalerize_threshold", "namespacethorin.html#a55084cdf38b8061963ebe4da5355d718", null ],
     [ "trace_gids", "namespacethorin.html#a0c6e11089999fb8349a4fbd2463578bb", null ]
 ];
