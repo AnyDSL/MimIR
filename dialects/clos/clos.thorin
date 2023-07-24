@@ -68,7 +68,7 @@
             (%compile.single_pass_phase nullptr)
             optimization_phase
             (%compile.single_pass_phase (%mem.reshape_pass %mem.reshape_flat))
-            (%compile.single_pass_phase %mem.add_mem_pass)
+            %mem.add_mem_phase
             (%compile.single_pass_phase %clos.clos_conv_prep_pass)
             (%compile.single_pass_phase (%compile.eta_exp_pass nullptr))
             (%compile.single_pass_phase %clos.clos_conv_pass)
