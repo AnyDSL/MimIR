@@ -15,6 +15,8 @@ const Def* insert_ret(const Def* def, const Def* ret) {
 } // namespace
 
 void LowerTypedClos::start() {
+    dummy_ret_ = world().bot(world().cn(world().annex<mem::M>()));
+
     auto externals = std::vector(world().externals().begin(), world().externals().end());
     for (auto [_, n] : externals) rewrite(n);
     while (!worklist_.empty()) {

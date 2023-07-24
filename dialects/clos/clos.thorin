@@ -35,12 +35,12 @@
 .ax %clos.branch_clos_pass: %compile.Pass;
 .ax %clos.lower_typed_clos_prep_pass: %compile.Pass;
 .ax %clos.clos2sjlj_pass: %compile.Pass;
-.ax %clos.lower_typed_clos_pass: %compile.Pass;
 .ax %clos.eta_red_bool_pass: .Bool -> %compile.Pass;
 ///
 /// ### Phases
 ///
-.ax %clos.clos_conv_phase: %compile.Phase;
+.ax %clos.clos_conv_phase:        %compile.Phase;
+.ax %clos.lower_typed_clos_phase: %compile.Phase;
 
 .let clos_opt1_phase = {
   .let eta_red = %clos.eta_red_bool_pass .tt;
@@ -75,6 +75,6 @@
             %clos.clos_conv_phase
             clos_opt1_phase
             clos_opt2_phase
-            (%compile.single_pass_phase %clos.lower_typed_clos_pass)
+            %clos.lower_typed_clos_phase
         )
 };

@@ -51,7 +51,6 @@ add_thorin_plugin(clos
         clos/pass/rw/clos2sjlj.h
         clos/pass/rw/clos_conv_prep.cpp
         clos/pass/rw/clos_conv_prep.h
-        clos/pass/rw/phase_wrapper.h
         clos/phase/clos_conv.cpp
         clos/phase/clos_conv.h
         clos/phase/lower_typed_clos.cpp

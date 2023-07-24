@@ -70,7 +70,7 @@ private:
     Def2Def old2new_;
     StubQueue worklist_;
 
-    const Def* const dummy_ret_; //< dummy return continuation
+    const Def* dummy_ret_ = nullptr; //< dummy return continuation
 
     /// @name memory-tokens
     ///@{

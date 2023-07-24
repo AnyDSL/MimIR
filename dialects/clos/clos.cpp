@@ -11,7 +11,8 @@
 #include "dialects/clos/pass/rw/branch_clos_elim.h"
 #include "dialects/clos/pass/rw/clos2sjlj.h"
 #include "dialects/clos/pass/rw/clos_conv_prep.h"
-#include "dialects/clos/pass/rw/phase_wrapper.h"
+#include "dialects/clos/phase/clos_conv.h"
+#include "dialects/clos/phase/lower_typed_clos.h"
 
 using namespace thorin;
 
@@ -23,7 +24,7 @@ extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
                 register_pass<clos::branch_clos_pass, clos::BranchClosElim>(passes);
                 register_pass<clos::lower_typed_clos_prep_pass, clos::LowerTypedClosPrep>(passes);
                 register_pass<clos::clos2sjlj_pass, clos::Clos2SJLJ>(passes);
-                register_pass<clos::lower_typed_clos_pass, clos::LowerTypedClosWrapper>(passes);
+                register_phase<clos::lower_typed_clos_phase, clos::LowerTypedClos>(passes);
                 // TODO:; remove after ho_codegen merge
                 passes[flags_t(Annex::Base<clos::eta_red_bool_pass>)] = [&](World&, PipelineBuilder& builder, Ref app) {
                     auto bb      = app->as<App>()->arg();
