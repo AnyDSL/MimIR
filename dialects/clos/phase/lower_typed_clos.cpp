@@ -15,6 +15,7 @@ const Def* insert_ret(const Def* def, const Def* ret) {
 } // namespace
 
 void LowerTypedClos::start() {
+    // TODO put into c'tor - doesn't work right now, because world becomes invalid
     dummy_ret_ = world().bot(world().cn(world().annex<mem::M>()));
 
     auto externals = std::vector(world().externals().begin(), world().externals().end());

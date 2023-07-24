@@ -20,10 +20,10 @@ extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
     return {"clos", [](Normalizers& normalizers) { clos::register_normalizers(normalizers); },
             [](Passes& passes) {
                 register_pass<clos::clos_conv_prep_pass, clos::ClosConvPrep>(passes, nullptr);
-                register_phase<clos::clos_conv_phase, clos::ClosConv>(passes);
                 register_pass<clos::branch_clos_pass, clos::BranchClosElim>(passes);
                 register_pass<clos::lower_typed_clos_prep_pass, clos::LowerTypedClosPrep>(passes);
                 register_pass<clos::clos2sjlj_pass, clos::Clos2SJLJ>(passes);
+                register_phase<clos::clos_conv_phase, clos::ClosConv>(passes);
                 register_phase<clos::lower_typed_clos_phase, clos::LowerTypedClos>(passes);
                 // TODO:; remove after ho_codegen merge
                 passes[flags_t(Annex::Base<clos::eta_red_bool_pass>)] = [&](World&, PipelineBuilder& builder, Ref app) {
