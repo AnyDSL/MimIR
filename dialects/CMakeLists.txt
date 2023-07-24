@@ -56,9 +56,6 @@ add_thorin_plugin(clos
         clos/phase/clos_conv.h
         clos/phase/lower_typed_clos.cpp
         clos/phase/lower_typed_clos.h
-        mem/passes/fp/copy_prop.cpp
-        mem/passes/rw/reshape.cpp
-        mem/phases/rw/add_mem.cpp
     DEPENDS
         mem
         affine
