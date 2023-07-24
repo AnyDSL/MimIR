@@ -1,4 +1,4 @@
-#include "dialects/refly/passes/remove_perm.h"
+#include "dialects/refly/pass/remove_perm.h"
 
 #include "dialects/refly/refly.h"
 

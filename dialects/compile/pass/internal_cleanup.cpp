@@ -1,4 +1,4 @@
-#include "dialects/compile/passes/internal_cleanup.h"
+#include "dialects/compile/pass/internal_cleanup.h"
 
 #include <iostream>
 

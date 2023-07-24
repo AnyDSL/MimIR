@@ -1,4 +1,4 @@
-#include "dialects/matrix/passes/lower_matrix_lowlevel.h"
+#include "dialects/matrix/pass/lower_matrix_lowlevel.h"
 
 #include <cassert>
 

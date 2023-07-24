@@ -1,4 +1,4 @@
-#include "dialects/mem/passes/rw/reshape.h"
+#include "dialects/mem/pass/rw/reshape.h"
 
 #include <functional>
 #include <sstream>
@@ -138,12 +138,11 @@ Lam* Reshape::reshape_lam(Lam* old_lam) {
     auto new_ty = reshape_type(pi_ty)->as<Pi>();
 
     Lam* new_lam;
-    if (*old_lam->sym() == "main") { 
+    if (*old_lam->sym() == "main") {
         new_lam = old_lam;
     } else {
         new_lam = old_lam->stub(world(), new_ty);
-        if(!old_lam->is_external())
-            new_lam->debug_suffix("_reshape");
+        if (!old_lam->is_external()) new_lam->debug_suffix("_reshape");
         old2new_[old_lam] = new_lam;
     }
 

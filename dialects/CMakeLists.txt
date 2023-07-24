@@ -5,8 +5,8 @@ add_thorin_plugin(affine
     SOURCES
         affine/affine.cpp
         affine/affine.h
-        affine/passes/lower_for.cpp
-        affine/passes/lower_for.h
+        affine/pass/lower_for.cpp
+        affine/pass/lower_for.h
     DEPENDS
         mem
         core
@@ -17,16 +17,16 @@ add_thorin_plugin(autodiff
     SOURCES
         autodiff/autodiff.cpp
         autodiff/autodiff.h
-        autodiff/passes/autodiff_eval.cpp
-        autodiff/passes/autodiff_eval.h
-        autodiff/passes/autodiff_zero.cpp
-        autodiff/passes/autodiff_zero.h
-        autodiff/passes/autodiff_zero_cleanup.cpp
-        autodiff/passes/autodiff_zero_cleanup.h
+        autodiff/pass/autodiff_eval.cpp
+        autodiff/pass/autodiff_eval.h
+        autodiff/pass/autodiff_zero.cpp
+        autodiff/pass/autodiff_zero.h
+        autodiff/pass/autodiff_zero_cleanup.cpp
+        autodiff/pass/autodiff_zero_cleanup.h
         autodiff/auxiliary/autodiff_rewrite_inner.cpp
         autodiff/auxiliary/autodiff_rewrite_toplevel.cpp
         autodiff/normalizers.cpp
-        compile/passes/internal_cleanup.cpp
+        compile/pass/internal_cleanup.cpp
     DEPENDS
         mem
         core
@@ -56,9 +56,6 @@ add_thorin_plugin(clos
         clos/phase/clos_conv.h
         clos/phase/lower_typed_clos.cpp
         clos/phase/lower_typed_clos.h
-        mem/passes/fp/copy_prop.cpp
-        mem/passes/rw/reshape.cpp
-        mem/phases/rw/add_mem.cpp
     DEPENDS
         mem
         affine
@@ -72,10 +69,10 @@ add_thorin_plugin(compile
         compile/compile.cpp
         compile/compile.h
         compile/normalizers.cpp
-        compile/passes/debug_print.cpp
-        compile/passes/debug_print.h
-        compile/passes/internal_cleanup.cpp
-        compile/passes/internal_cleanup.h
+        compile/pass/debug_print.cpp
+        compile/pass/debug_print.h
+        compile/pass/internal_cleanup.cpp
+        compile/pass/internal_cleanup.h
     INSTALL
 )
 
@@ -108,10 +105,10 @@ add_thorin_plugin(direct
     SOURCES
         direct/direct.cpp
         direct/direct.h
-        direct/passes/ds2cps.cpp
-        direct/passes/ds2cps.h
-        direct/passes/cps2ds.cpp
-        direct/passes/cps2ds.h
+        direct/pass/ds2cps.cpp
+        direct/pass/ds2cps.h
+        direct/pass/cps2ds.cpp
+        direct/pass/cps2ds.h
         direct/normalizers.cpp
     DEPENDS
         compile
@@ -131,13 +128,13 @@ add_thorin_plugin(matrix
         matrix/matrix.cpp
         matrix/matrix.h
         matrix/normalizers.cpp
-        matrix/passes/lower_matrix_highlevel.cpp
-        matrix/passes/lower_matrix_highlevel.h
-        matrix/passes/lower_matrix_mediumlevel.cpp
-        matrix/passes/lower_matrix_mediumlevel.h
-        matrix/passes/lower_matrix_lowlevel.cpp
-        matrix/passes/lower_matrix_lowlevel.h
-        compile/passes/internal_cleanup.cpp
+        matrix/pass/lower_matrix_highlevel.cpp
+        matrix/pass/lower_matrix_highlevel.h
+        matrix/pass/lower_matrix_mediumlevel.cpp
+        matrix/pass/lower_matrix_mediumlevel.h
+        matrix/pass/lower_matrix_lowlevel.cpp
+        matrix/pass/lower_matrix_lowlevel.h
+        compile/pass/internal_cleanup.cpp
     DEPENDS
         refly
         direct
@@ -152,18 +149,18 @@ add_thorin_plugin(mem
         mem/mem.cpp
         mem/mem.h
         mem/normalizers.cpp
-        mem/passes/fp/copy_prop.cpp
-        mem/passes/fp/copy_prop.h
-        mem/passes/fp/ssa_constr.cpp
-        mem/passes/fp/ssa_constr.h
-        mem/passes/rw/alloc2malloc.cpp
-        mem/passes/rw/alloc2malloc.h
-        mem/passes/rw/remem_elim.cpp
-        mem/passes/rw/remem_elim.h
-        mem/passes/rw/reshape.cpp
-        mem/passes/rw/reshape.h
-        mem/phases/rw/add_mem.cpp
-        mem/phases/rw/add_mem.h
+        mem/pass/fp/copy_prop.cpp
+        mem/pass/fp/copy_prop.h
+        mem/pass/fp/ssa_constr.cpp
+        mem/pass/fp/ssa_constr.h
+        mem/pass/rw/alloc2malloc.cpp
+        mem/pass/rw/alloc2malloc.h
+        mem/pass/rw/remem_elim.cpp
+        mem/pass/rw/remem_elim.h
+        mem/pass/rw/reshape.cpp
+        mem/pass/rw/reshape.h
+        mem/phase/add_mem.cpp
+        mem/phase/add_mem.h
     DEPENDS
         compile
     HEADER_DEPENDS
@@ -176,9 +173,9 @@ add_thorin_plugin(refly
     SOURCES
         refly/refly.h
         refly/refly.cpp
-        refly/passes/remove_perm.h
-        refly/passes/remove_perm.cpp
-        refly/passes/debug_dump.h
+        refly/pass/remove_perm.h
+        refly/pass/remove_perm.cpp
+        refly/pass/debug_dump.h
         refly/normalizers.cpp
     DEPENDS
         compile
@@ -189,8 +186,8 @@ add_thorin_plugin(regex
     SOURCES
         regex/regex.h
         regex/regex.cpp
-        regex/passes/lower_regex.h
-        regex/passes/lower_regex.cpp
+        regex/pass/lower_regex.h
+        regex/pass/lower_regex.cpp
         regex/normalizers_regex.cpp
     DEPENDS
         mem

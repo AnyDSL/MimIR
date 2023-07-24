@@ -35,8 +35,7 @@ std::pair<const App*, Array<Lam*>> isa_apped_mut_lam_in_tuple(const Def* def) {
 }
 
 // @pre isa_apped_mut_lam_in_tuple(def) valid
-template<class F, class H>
-const Def* rewrite_mut_lam_in_tuple(const Def* def, F&& rewrite, H&& rewrite_idx) {
+template<class F, class H> const Def* rewrite_mut_lam_in_tuple(const Def* def, F&& rewrite, H&& rewrite_idx) {
     auto& w = def->world();
     if (auto mut = def->isa_mut<Lam>()) return std::forward<F>(rewrite)(mut);
 

@@ -1,4 +1,4 @@
-#include "dialects/autodiff/passes/autodiff_zero_cleanup.h"
+#include "dialects/autodiff/pass/autodiff_zero_cleanup.h"
 
 #include <iostream>
 

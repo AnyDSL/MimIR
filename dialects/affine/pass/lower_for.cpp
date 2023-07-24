@@ -1,4 +1,4 @@
-#include "dialects/affine/passes/lower_for.h"
+#include "dialects/affine/pass/lower_for.h"
 
 #include <thorin/lam.h>
 #include <thorin/tuple.h>

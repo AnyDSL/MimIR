@@ -1,4 +1,4 @@
-#include "dialects/autodiff/passes/autodiff_zero.h"
+#include "dialects/autodiff/pass/autodiff_zero.h"
 
 #include <iostream>
 

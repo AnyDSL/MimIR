@@ -1,4 +1,4 @@
-#include "dialects/regex/passes/lower_regex.h"
+#include "dialects/regex/pass/lower_regex.h"
 
 #include "thorin/def.h"
 

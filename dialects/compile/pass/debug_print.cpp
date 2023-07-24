@@ -1,4 +1,4 @@
-#include "dialects/compile/passes/debug_print.h"
+#include "dialects/compile/pass/debug_print.h"
 
 #include <thorin/lam.h>
 

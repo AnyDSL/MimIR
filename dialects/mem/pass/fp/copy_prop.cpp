@@ -1,4 +1,4 @@
-#include "dialects/mem/passes/fp/copy_prop.h"
+#include "dialects/mem/pass/fp/copy_prop.h"
 
 #include "thorin/pass/fp/beta_red.h"
 #include "thorin/pass/fp/eta_exp.h"

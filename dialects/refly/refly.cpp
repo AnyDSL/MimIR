@@ -4,7 +4,7 @@
 #include <thorin/pass/pass.h>
 #include <thorin/pass/pipelinebuilder.h>
 
-#include "dialects/refly/passes/remove_perm.h"
+#include "dialects/refly/pass/remove_perm.h"
 
 using namespace thorin;
 

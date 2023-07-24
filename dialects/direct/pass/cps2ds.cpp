@@ -1,4 +1,4 @@
-#include "dialects/direct/passes/cps2ds.h"
+#include "dialects/direct/pass/cps2ds.h"
 
 #include <iostream>
 

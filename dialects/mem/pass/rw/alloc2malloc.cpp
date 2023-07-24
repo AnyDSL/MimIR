@@ -1,4 +1,4 @@
-#include "dialects/mem/passes/rw/alloc2malloc.h"
+#include "dialects/mem/pass/rw/alloc2malloc.h"
 
 #include "dialects/mem/mem.h"
 

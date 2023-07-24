@@ -4,10 +4,10 @@
 #include <thorin/pass/pass.h>
 #include <thorin/plugin.h>
 
-#include "dialects/compile/passes/internal_cleanup.h"
-#include "dialects/matrix/passes/lower_matrix_highlevel.h"
-#include "dialects/matrix/passes/lower_matrix_lowlevel.h"
-#include "dialects/matrix/passes/lower_matrix_mediumlevel.h"
+#include "dialects/compile/pass/internal_cleanup.h"
+#include "dialects/matrix/pass/lower_matrix_highlevel.h"
+#include "dialects/matrix/pass/lower_matrix_lowlevel.h"
+#include "dialects/matrix/pass/lower_matrix_mediumlevel.h"
 #include "dialects/refly/refly.h"
 
 using namespace thorin;

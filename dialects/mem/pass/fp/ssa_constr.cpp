@@ -1,4 +1,4 @@
-#include "dialects/mem/passes/fp/ssa_constr.h"
+#include "dialects/mem/pass/fp/ssa_constr.h"
 
 #include "thorin/pass/fp/eta_exp.h"
 

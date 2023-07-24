@@ -1,4 +1,4 @@
-#include "dialects/matrix/passes/lower_matrix_mediumlevel.h"
+#include "dialects/matrix/pass/lower_matrix_mediumlevel.h"
 
 #include <iostream>
 

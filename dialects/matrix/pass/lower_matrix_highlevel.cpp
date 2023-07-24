@@ -1,4 +1,4 @@
-#include "dialects/matrix/passes/lower_matrix_highlevel.h"
+#include "dialects/matrix/pass/lower_matrix_highlevel.h"
 
 #include <iostream>
 
@@ -30,7 +30,7 @@ std::optional<Ref> internal_function_of_axiom(const Axiom* axiom, Ref meta_args,
     return std::nullopt;
 }
 
-}
+} // namespace
 
 Ref LowerMatrixHighLevelMapRed::rewrite(Ref def) {
     if (auto i = rewritten.find(def); i != rewritten.end()) return i->second;
