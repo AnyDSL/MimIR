@@ -23,7 +23,7 @@ Ref normalize_pass_phase(Ref type, Ref, Ref arg) {
     assert(f_ax->flags() == flags_t(Annex::Base<pass_list>));
     auto n = pass_list_defs.size();
 
-    return world.app(world.app(world.annex<passes_to_phase>(), world.lit_nat(n)), pass_list_defs);
+    return world.call<passes_to_phase>(n, pass_list_defs);
 }
 
 /// `combined_phase (phase_list phase1 ... phasen)` -> `phases_to_phase n (phase1, ..., phasen)`
@@ -34,14 +34,11 @@ Ref normalize_combined_phase(Ref type, Ref, Ref arg) {
     assert(ax->flags() == flags_t(Annex::Base<phase_list>));
     auto n = phase_list_defs.size();
 
-    return world.app(world.app(world.annex<phases_to_phase>(), world.lit_nat(n)), phase_list_defs);
+    return world.call<phases_to_phase>(n, phase_list_defs);
 }
 
 /// `single_pass_phase pass` -> `passes_to_phase 1 pass`
-Ref normalize_single_pass_phase(Ref type, Ref, Ref arg) {
-    auto& world = type->world();
-    return world.app(world.app(world.annex<passes_to_phase>(), world.lit_nat_1()), arg);
-}
+Ref normalize_single_pass_phase(Ref type, Ref, Ref arg) { return type->world().call<passes_to_phase>(1, arg); }
 
 /// `combine_pass_list K (pass_list pass11 ... pass1N) ... (pass_list passK1 ... passKM) = pass_list pass11 ... p1N ...
 /// passK1 ... passKM`
