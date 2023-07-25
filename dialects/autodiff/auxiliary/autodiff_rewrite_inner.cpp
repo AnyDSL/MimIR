@@ -6,7 +6,7 @@
 #include "thorin/util/assert.h"
 
 #include "dialects/autodiff/autodiff.h"
-#include "dialects/autodiff/passes/autodiff_eval.h"
+#include "dialects/autodiff/pass/autodiff_eval.h"
 #include "dialects/core/core.h"
 #include "dialects/direct/direct.h"
 

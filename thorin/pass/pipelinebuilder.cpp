@@ -13,11 +13,6 @@
 #include "thorin/pass/rw/scalarize.h"
 #include "thorin/phase/phase.h"
 
-#include "dialects/mem/passes/fp/copy_prop.h"
-#include "dialects/mem/passes/fp/ssa_constr.h"
-#include "dialects/mem/passes/rw/alloc2malloc.h"
-#include "dialects/mem/passes/rw/remem_elim.h"
-
 namespace thorin {
 
 void PipelineBuilder::def2pass(const Def* def, Pass* p) {

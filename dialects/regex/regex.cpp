@@ -1,11 +1,10 @@
 #include "dialects/regex/regex.h"
 
 #include <thorin/pass/pass.h>
+#include <thorin/pass/pipelinebuilder.h>
 #include <thorin/plugin.h>
 
-#include <thorin/pass/pipelinebuilder.h>
-
-#include "dialects/regex/passes/lower_regex.h"
+#include "dialects/regex/pass/lower_regex.h"
 
 using namespace thorin;
 

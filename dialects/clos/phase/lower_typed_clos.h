@@ -28,8 +28,7 @@ namespace thorin::clos {
 class LowerTypedClos : public Phase {
 public:
     LowerTypedClos(World& world)
-        : Phase(world, "lower_typed_clos", true)
-        , dummy_ret_(world.bot(world.cn(world.annex<mem::M>()))) {}
+        : Phase(world, "lower_typed_clos", true) {}
 
     void start() override;
 
@@ -70,7 +69,7 @@ private:
     Def2Def old2new_;
     StubQueue worklist_;
 
-    const Def* const dummy_ret_; //< dummy return continuation
+    const Def* dummy_ret_ = nullptr; //< dummy return continuation
 
     /// @name memory-tokens
     ///@{
