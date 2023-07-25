@@ -53,7 +53,6 @@ add_thorin_plugin(clos
         clos/pass/rw/clos_conv_prep.h
         clos/phase/clos_conv.cpp
         clos/phase/clos_conv.h
-        clos/phase/phase_wrapper.h
         clos/phase/lower_typed_clos.cpp
         clos/phase/lower_typed_clos.h
     DEPENDS
