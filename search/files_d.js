@@ -7,7 +7,7 @@ var searchData=
   ['regex_2ecpp_4',['regex.cpp',['../regex_8cpp.html',1,'']]],
   ['regex_2eh_5',['regex.h',['../regex_8h.html',1,'']]],
   ['regex_2emd_6',['regex.md',['../regex_8md.html',1,'']]],
-  ['remem_5felim_2ecpp_7',['remem_elim.cpp',['../thorin_2pass_2rw_2remem__elim_8cpp.html',1,'(Global Namespace)'],['../dialects_2mem_2passes_2rw_2remem__elim_8cpp.html',1,'(Global Namespace)']]],
+  ['remem_5felim_2ecpp_7',['remem_elim.cpp',['../thorin_2pass_2rw_2remem__elim_8cpp.html',1,'(Global Namespace)'],['../dialects_2mem_2pass_2rw_2remem__elim_8cpp.html',1,'(Global Namespace)']]],
   ['remem_5felim_2eh_8',['remem_elim.h',['../remem__elim_8h.html',1,'']]],
   ['remove_5fperm_2ecpp_9',['remove_perm.cpp',['../remove__perm_8cpp.html',1,'']]],
   ['remove_5fperm_2eh_10',['remove_perm.h',['../remove__perm_8h.html',1,'']]],

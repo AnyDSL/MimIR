@@ -1,7 +1,7 @@
 var mem_2autogen_8h =
 [
     [ "THORIN_mem_NORMALIZER_IMPL", "mem_2autogen_8h.html#aad05e4016c65ad57be606950cefa7140", null ],
-    [ "add_mem_pass", "mem_2autogen_8h.html#a37fb23a096de274a1800c8329167619c", null ],
+    [ "add_mem_phase", "mem_2autogen_8h.html#aa7ca1bd1a4a6396244ab569439ff6ea6", null ],
     [ "alloc", "mem_2autogen_8h.html#af4043e188d46c7390a04884c0785d51c", null ],
     [ "alloc2malloc_pass", "mem_2autogen_8h.html#ad889ac67c2a213fdc191c1a69df167b8", null ],
     [ "copy_prop_pass", "mem_2autogen_8h.html#ae0adbeb17f968059495d11f1d74868c4", null ],

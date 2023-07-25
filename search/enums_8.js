@@ -12,6 +12,6 @@ var searchData=
   ['lower_5fmatrix_5flow_5flevel_9',['lower_matrix_low_level',['../namespacethorin_1_1matrix.html#a5d8628323ac037e80fdd61f8f0a4b361',1,'thorin::matrix']]],
   ['lower_5fmatrix_5fmedium_5flevel_10',['lower_matrix_medium_level',['../namespacethorin_1_1matrix.html#ac48c36e3797f85700b9cfa9d85f39c49',1,'thorin::matrix']]],
   ['lower_5fregex_11',['lower_regex',['../namespacethorin_1_1regex.html#add9ee22397e1616d0309146c04b9a2e1',1,'thorin::regex']]],
-  ['lower_5ftyped_5fclos_5fpass_12',['lower_typed_clos_pass',['../namespacethorin_1_1clos.html#ab52d3894a6198408374175b6fed51a48',1,'thorin::clos']]],
+  ['lower_5ftyped_5fclos_5fphase_12',['lower_typed_clos_phase',['../namespacethorin_1_1clos.html#a165927aa7fe6bfc92728273adf4127ba',1,'thorin::clos']]],
   ['lower_5ftyped_5fclos_5fprep_5fpass_13',['lower_typed_clos_prep_pass',['../namespacethorin_1_1clos.html#a1b7c65a97fcd27aead23ea5bbf794653',1,'thorin::clos']]]
 ];

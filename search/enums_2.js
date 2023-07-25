@@ -1,7 +1,7 @@
 var searchData=
 [
   ['clos2sjlj_5fpass_0',['clos2sjlj_pass',['../namespacethorin_1_1clos.html#a2b43b9b0f0f249caec3e6b18c11ffb1c',1,'thorin::clos']]],
-  ['clos_5fconv_5fpass_1',['clos_conv_pass',['../namespacethorin_1_1clos.html#a490eb43f7a0b0221478f50630e80b707',1,'thorin::clos']]],
+  ['clos_5fconv_5fphase_1',['clos_conv_phase',['../namespacethorin_1_1clos.html#a02da91bfb3d89201e282b538b6c65b35',1,'thorin::clos']]],
   ['clos_5fconv_5fprep_5fpass_2',['clos_conv_prep_pass',['../namespacethorin_1_1clos.html#a5cb61dac566533e52e49b976bf8d2247',1,'thorin::clos']]],
   ['clos_5fplugin_3',['clos_plugin',['../namespacethorin_1_1compile.html#a011810fb3777a7aa3416b93a84f6d411',1,'thorin::compile']]],
   ['cls_4',['cls',['../namespacethorin_1_1regex.html#a8c7a401db4442fe8a7fdae0160c89f51',1,'thorin::regex']]],

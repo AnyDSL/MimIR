@@ -1,14 +1,13 @@
 var namespacethorin_1_1mem =
 [
     [ "AddMem", "classthorin_1_1mem_1_1AddMem.html", "classthorin_1_1mem_1_1AddMem" ],
-    [ "AddMemWrapper", "classthorin_1_1mem_1_1AddMemWrapper.html", "classthorin_1_1mem_1_1AddMemWrapper" ],
     [ "Alloc2Malloc", "classthorin_1_1mem_1_1Alloc2Malloc.html", "classthorin_1_1mem_1_1Alloc2Malloc" ],
     [ "CopyProp", "classthorin_1_1mem_1_1CopyProp.html", "classthorin_1_1mem_1_1CopyProp" ],
     [ "RememElim", "classthorin_1_1mem_1_1RememElim.html", "classthorin_1_1mem_1_1RememElim" ],
     [ "Reshape", "classthorin_1_1mem_1_1Reshape.html", "classthorin_1_1mem_1_1Reshape" ],
     [ "SSAConstr", "classthorin_1_1mem_1_1SSAConstr.html", "classthorin_1_1mem_1_1SSAConstr" ],
     [ "DefQueue", "namespacethorin_1_1mem.html#ae147e7f025d7a0f837ebf7e1752d97ce", null ],
-    [ "add_mem_pass", "namespacethorin_1_1mem.html#a37fb23a096de274a1800c8329167619c", null ],
+    [ "add_mem_phase", "namespacethorin_1_1mem.html#aa7ca1bd1a4a6396244ab569439ff6ea6", null ],
     [ "AddrSpace", "namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3", [
       [ "Generic", "namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3a8045a0a6c688b0635e3caccc408a1446", null ],
       [ "Global", "namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3a4cc6684df7b4a92b1dec6fce3264fac8", null ],

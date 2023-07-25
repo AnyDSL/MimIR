@@ -17,6 +17,5 @@ var searchData=
   ['lowermatrixmediumlevel_14',['LowerMatrixMediumLevel',['../classthorin_1_1matrix_1_1LowerMatrixMediumLevel.html',1,'thorin::matrix']]],
   ['lowerregex_15',['LowerRegex',['../classthorin_1_1regex_1_1LowerRegex.html',1,'thorin::regex']]],
   ['lowertypedclos_16',['LowerTypedClos',['../classthorin_1_1clos_1_1LowerTypedClos.html',1,'thorin::clos']]],
-  ['lowertypedclosprep_17',['LowerTypedClosPrep',['../classthorin_1_1clos_1_1LowerTypedClosPrep.html',1,'thorin::clos']]],
-  ['lowertypedcloswrapper_18',['LowerTypedClosWrapper',['../classthorin_1_1clos_1_1LowerTypedClosWrapper.html',1,'thorin::clos']]]
+  ['lowertypedclosprep_17',['LowerTypedClosPrep',['../classthorin_1_1clos_1_1LowerTypedClosPrep.html',1,'thorin::clos']]]
 ];

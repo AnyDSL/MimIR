@@ -8,7 +8,7 @@ var searchData=
   ['ad_5fzero_5fcleanup_5fpass_5',['ad_zero_cleanup_pass',['../namespacethorin_1_1autodiff.html#a26d7f2c0898e592b451903ecc52fb1d8',1,'thorin::autodiff']]],
   ['ad_5fzero_5fpass_6',['ad_zero_pass',['../namespacethorin_1_1autodiff.html#a1912043d907a1881a4c09dfcc332b6cb',1,'thorin::autodiff']]],
   ['add_7',['add',['../namespacethorin_1_1autodiff.html#a401c1924abe6294a7a98d2318c21289c',1,'thorin::autodiff']]],
-  ['add_5fmem_5fpass_8',['add_mem_pass',['../namespacethorin_1_1mem.html#a37fb23a096de274a1800c8329167619c',1,'thorin::mem']]],
+  ['add_5fmem_5fphase_8',['add_mem_phase',['../namespacethorin_1_1mem.html#aa7ca1bd1a4a6396244ab569439ff6ea6',1,'thorin::mem']]],
   ['addrspace_9',['AddrSpace',['../namespacethorin_1_1mem.html#ac7c84ab30ae0101f30a735201d430ec3',1,'thorin::mem']]],
   ['affine_5fplugin_10',['affine_plugin',['../namespacethorin_1_1compile.html#aa784009ea73e4eb42e743f08d07ce4c9',1,'thorin::compile']]],
   ['alloc_11',['alloc',['../namespacethorin_1_1mem.html#af4043e188d46c7390a04884c0785d51c',1,'thorin::mem']]],

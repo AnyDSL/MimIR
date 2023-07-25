@@ -93,13 +93,7 @@ var hierarchy =
       [ "thorin::RWPass< ClosConvPrep, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::clos::ClosConvPrep", "classthorin_1_1clos_1_1ClosConvPrep.html", null ]
       ] ],
-      [ "thorin::RWPass< ClosConvWrapper, Lam >", "classthorin_1_1RWPass.html", [
-        [ "thorin::clos::ClosConvWrapper", "classthorin_1_1clos_1_1ClosConvWrapper.html", null ]
-      ] ],
       [ "thorin::RWPass< LowerTypedClosPrep, Lam >", "classthorin_1_1RWPass.html", null ],
-      [ "thorin::RWPass< LowerTypedClosWrapper, Lam >", "classthorin_1_1RWPass.html", [
-        [ "thorin::clos::LowerTypedClosWrapper", "classthorin_1_1clos_1_1LowerTypedClosWrapper.html", null ]
-      ] ],
       [ "thorin::RWPass< DebugPrint, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::compile::DebugPrint", "classthorin_1_1compile_1_1DebugPrint.html", null ]
       ] ],
@@ -117,9 +111,6 @@ var hierarchy =
       ] ],
       [ "thorin::RWPass< LowerMatrixMediumLevel, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::matrix::LowerMatrixMediumLevel", "classthorin_1_1matrix_1_1LowerMatrixMediumLevel.html", null ]
-      ] ],
-      [ "thorin::RWPass< AddMemWrapper, Lam >", "classthorin_1_1RWPass.html", [
-        [ "thorin::mem::AddMemWrapper", "classthorin_1_1mem_1_1AddMemWrapper.html", null ]
       ] ],
       [ "thorin::RWPass< Alloc2Malloc, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::mem::Alloc2Malloc", "classthorin_1_1mem_1_1Alloc2Malloc.html", null ]

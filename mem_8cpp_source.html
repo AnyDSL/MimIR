@@ -122,12 +122,12 @@ $(document).ready(function(){initNavTree('mem_8cpp_source.html',''); initResizab
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;<a class="code" href="pipelinebuilder_8h.html">thorin/pass/pipelinebuilder.h</a>&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="mem_2autogen_8h.html">dialects/mem/autogen.h</a>&quot;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="copy__prop_8h.html">dialects/mem/passes/fp/copy_prop.h</a>&quot;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="ssa__constr_8h.html">dialects/mem/passes/fp/ssa_constr.h</a>&quot;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="alloc2malloc_8h.html">dialects/mem/passes/rw/alloc2malloc.h</a>&quot;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="remem__elim_8h.html">dialects/mem/passes/rw/remem_elim.h</a>&quot;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="reshape_8h.html">dialects/mem/passes/rw/reshape.h</a>&quot;</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="add__mem_8h.html">dialects/mem/phases/rw/add_mem.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="copy__prop_8h.html">dialects/mem/pass/fp/copy_prop.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="ssa__constr_8h.html">dialects/mem/pass/fp/ssa_constr.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="alloc2malloc_8h.html">dialects/mem/pass/rw/alloc2malloc.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="remem__elim_8h.html">dialects/mem/pass/rw/remem_elim.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="reshape_8h.html">dialects/mem/pass/rw/reshape.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="add__mem_8h.html">dialects/mem/phase/add_mem.h</a>&quot;</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacethorin.html">thorin</a>;</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
@@ -156,7 +156,7 @@ $(document).ready(function(){initNavTree('mem_8cpp_source.html',''); initResizab
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                                                                                                    : <a class="code hl_enumvalue" href="classthorin_1_1mem_1_1Reshape.html#a12b75572fe61bad243711323d7028bfcaa9689c0a5f55405e25f6856296a97859">mem::Reshape::Flat</a>;</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                          builder.add_pass&lt;<a class="code hl_class" href="classthorin_1_1mem_1_1Reshape.html">mem::Reshape</a>&gt;(app, mode);</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>                      };</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                register_pass&lt;mem::add_mem_pass, mem::AddMemWrapper&gt;(passes);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                register_phase&lt;mem::add_mem_phase, mem::AddMem&gt;(passes);</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>            },</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>            <span class="keyword">nullptr</span>};</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>}</div>
