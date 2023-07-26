@@ -152,6 +152,8 @@ add_thorin_plugin(mem
         mem/pass/fp/copy_prop.h
         mem/pass/fp/ssa_constr.cpp
         mem/pass/fp/ssa_constr.h
+        mem/pass/fp/ssa_destr.cpp
+        mem/pass/fp/ssa_destr.h
         mem/pass/rw/alloc2malloc.cpp
         mem/pass/rw/alloc2malloc.h
         mem/pass/rw/remem_elim.cpp
@@ -160,8 +162,6 @@ add_thorin_plugin(mem
         mem/pass/rw/reshape.h
         mem/phase/add_mem.cpp
         mem/phase/add_mem.h
-        mem/phase/ssa_destr.cpp
-        mem/phase/ssa_destr.h
     DEPENDS
         compile
     HEADER_DEPENDS

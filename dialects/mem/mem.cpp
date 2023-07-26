@@ -9,11 +9,11 @@
 #include "dialects/mem/autogen.h"
 #include "dialects/mem/pass/fp/copy_prop.h"
 #include "dialects/mem/pass/fp/ssa_constr.h"
+#include "dialects/mem/pass/fp/ssa_destr.h"
 #include "dialects/mem/pass/rw/alloc2malloc.h"
 #include "dialects/mem/pass/rw/remem_elim.h"
 #include "dialects/mem/pass/rw/reshape.h"
 #include "dialects/mem/phase/add_mem.h"
-#include "dialects/mem/phase/ssa_destr.h"
 
 using namespace thorin;
 
@@ -21,6 +21,7 @@ extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
     return {"mem", [](Normalizers& normalizers) { mem::register_normalizers(normalizers); },
             [](Passes& passes) {
                 register_pass_with_arg<mem::ssa_constr_pass, mem::SSAConstr, EtaExp>(passes);
+                register_pass<mem::ssa_destr_pass, mem::SSADestr>(passes);
                 register_pass<mem::remem_elim_pass, mem::RememElim>(passes);
                 register_pass<mem::alloc2malloc_pass, mem::Alloc2Malloc>(passes);
 
@@ -43,7 +44,6 @@ extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
                           builder.add_pass<mem::Reshape>(app, mode);
                       };
                 register_phase<mem::add_mem_phase, mem::AddMem>(passes);
-                register_phase<mem::ssa_destr_phase, mem::SSADestr>(passes);
             },
             nullptr};
 }

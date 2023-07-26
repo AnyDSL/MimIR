@@ -73,5 +73,5 @@
                 (plugin_cond_pass (%compile.refly_plugin, %refly.remove_dbg_perm_pass))
             ))
         )
-        %mem.ssa_destr_phase
+        (%compile.single_pass_phase %mem.ssa_destr_pass)
 };

@@ -106,6 +106,7 @@
 ///
 /// SSA pass expects eta expansion as argument
 .ax %mem.ssa_constr_pass:   %compile.Pass -> %compile.Pass;
+.ax %mem.ssa_destr_pass:    %compile.Pass;
 /// Copy propagation expects beta reduction and eta expansion as argument.
 .ax %mem.copy_prop_pass:    [%compile.Pass, %compile.Pass, .Bool] -> %compile.Pass;
 .ax %mem.remem_elim_pass:   %compile.Pass;
@@ -115,7 +116,6 @@
 /// ### Phases
 ///
 .ax %mem.add_mem_phase:   %compile.Phase;
-.ax %mem.ssa_destr_phase: %compile.Phase;
 
 .let mem_opt_pass_list = {
     .let beta_red = %compile.beta_red_pass;
