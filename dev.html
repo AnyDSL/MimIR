@@ -132,12 +132,14 @@ $(document).ready(function(){initNavTree('dev.html',''); initResizable(); });
 </ul>
 </li>
 <li class="level1"><a href="#autotoc_md25">Working with Indices</a><ul><li class="level2"><a href="#autotoc_md26">Arity</a></li>
-<li class="level2"><a href="#autotoc_md27">Proj</a></li>
-<li class="level2"><a href="#autotoc_md28">Shape</a></li>
-<li class="level2"><a href="#autotoc_md29">Summary</a></li>
+<li class="level2"><a href="#autotoc_md27">Proj</a><ul><li class="level3"><a href="#autotoc_md28">Thresholded Variants</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md30">Iterating over the Program</a></li>
+<li class="level2"><a href="#autotoc_md29">Shape</a></li>
+<li class="level2"><a href="#autotoc_md30">Summary</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md31">Iterating over the Program</a></li>
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md_docs_dev"></a></p>
@@ -457,7 +459,10 @@ Proj</h2>
 <p ><a class="el" href="classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2" title="Yields Def::as_lit_arity(), if it is in fact a Lit, or 1 otherwise.">thorin::Def::num_projs</a> is the same as <a class="el" href="classthorin_1_1Def.html#a141dd0a4acc004e3b6d70f64c6ca41b6">thorin::Def::arity</a>, if the arity is a <a class="el" href="classthorin_1_1Lit.html">thorin::Lit</a>. Otherwise, it is simply <code>1</code>. This concept only exists in the C++-API to give the programmer the illusion to work with n-ary functions, e.g.: </p><div class="fragment"><div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> dom : pi-&gt;doms()) { <span class="comment">/*...*/</span> }</div>
 <div class="line"><span class="keywordflow">for</span> (<span class="keyword">auto</span> var : lam-&gt;vars()) { <span class="comment">/*...*/</span> }</div>
 </div><!-- fragment --><p> But in reality, all functions have exactly one domain and one codomain.</p>
-<p >See also:</p><ul>
+<h3><a class="anchor" id="autotoc_md28"></a>
+Thresholded Variants</h3>
+<p >In additition, there are thresholded variants available that are prefixed with a <code>t</code> and take <a class="el" href="namespacethorin.html#a55084cdf38b8061963ebe4da5355d718">thorin::Flags::scalerize_threshold</a> (<code>--scalerize-threshold</code>) into account. The method <a class="el" href="classthorin_1_1Def.html#af23ae4652b58ef23a9977f3fbd61ea0e" title="As above but yields 1, if Flags::scalerize_threshold is exceeded.">thorin::Def::num_tprojs</a> returns the same as <a class="el" href="classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2" title="Yields Def::as_lit_arity(), if it is in fact a Lit, or 1 otherwise.">thorin::Def::num_projs</a>, but will simply yield <code>1</code>, if the arity exceeds the threshold. <a class="el" href="classthorin_1_1Def.html#afb2b97202a41f14ad4dc1ef643d9d72d" title="As above but takes Def::num_tprojs.">thorin::Def::tproj</a>, <a class="el" href="classthorin_1_1Def.html#a2c5905ad72787c5b3d731e305633595d">thorin::Def::tprojs</a>, <a class="el" href="classthorin_1_1Def.html#af363fa58e2bffd5718d2eb2e32d8e004">thorin::Lam::tvars</a>, etc. work accordingly.</p>
+<p ><b>See also:</b></p><ul>
 <li><a class="el" href="classthorin_1_1Def.html#proj">Def::proj</a></li>
 <li><a class="el" href="classthorin_1_1Def.html#var">Def::var</a></li>
 <li><a class="el" href="classthorin_1_1Pi.html#pi_dom">Pi::dom</a></li>
@@ -466,32 +471,33 @@ Proj</h2>
 <li><a class="el" href="classthorin_1_1Lam.html#lam_codom">Lam::codom</a></li>
 <li><a class="el" href="classthorin_1_1App.html#app_arg">App::arg</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md28"></a>
+<h2><a class="anchor" id="autotoc_md29"></a>
 Shape</h2>
 <p >TODO</p>
-<h2><a class="anchor" id="autotoc_md29"></a>
+<h2><a class="anchor" id="autotoc_md30"></a>
 Summary</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Expression   </th><th class="markdownTableHeadNone">Class   </th><th class="markdownTableHeadNone"><a class="el" href="classthorin_1_1Def.html#a141dd0a4acc004e3b6d70f64c6ca41b6">artiy</a>   </th><th class="markdownTableHeadNone"><a class="el" href="classthorin_1_1Def.html#a3435dfa9281402d7c74e7a163ec0a6d8">isa_lit_artiy</a>   </th><th class="markdownTableHeadNone"><a class="el" href="classthorin_1_1Def.html#a16d05019a1084e09ba37ca6eb14fc36d">as_lit_artiy</a>   </th><th class="markdownTableHeadNone"><a class="el" href="classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2">num_projs</a>    </th></tr>
+<th class="markdownTableHeadNone">Expression   </th><th class="markdownTableHeadNone">Class   </th><th class="markdownTableHeadNone"><a class="el" href="classthorin_1_1Def.html#a141dd0a4acc004e3b6d70f64c6ca41b6">artiy</a>   </th><th class="markdownTableHeadNone"><a class="el" href="classthorin_1_1Def.html#a3435dfa9281402d7c74e7a163ec0a6d8">isa_lit_artiy</a>   </th><th class="markdownTableHeadNone"><a class="el" href="classthorin_1_1Def.html#a16d05019a1084e09ba37ca6eb14fc36d">as_lit_artiy</a>   </th><th class="markdownTableHeadNone"><a class="el" href="classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2">num_projs</a>   </th><th class="markdownTableHeadNone"><a class="el" href="classthorin_1_1Def.html#af23ae4652b58ef23a9977f3fbd61ea0e">num_tprojs</a>    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>(0, 1, 2)</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Tuple.html">Tuple</a>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>    </td></tr>
+<td class="markdownTableBodyNone"><code>(0, 1, 2)</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Tuple.html">Tuple</a>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>‹3; 0›</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Pack.html">Pack</a>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>    </td></tr>
+<td class="markdownTableBodyNone"><code>‹3; 0›</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Pack.html">Pack</a>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>‹n; 0›</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Pack.html">Pack</a>   </td><td class="markdownTableBodyNone"><code>n</code>   </td><td class="markdownTableBodyNone"><code>std::nullopt</code>   </td><td class="markdownTableBodyNone">asserts   </td><td class="markdownTableBodyNone"><code>1</code>    </td></tr>
+<td class="markdownTableBodyNone"><code>‹n; 0›</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Pack.html">Pack</a>   </td><td class="markdownTableBodyNone"><code>n</code>   </td><td class="markdownTableBodyNone"><code>std::nullopt</code>   </td><td class="markdownTableBodyNone">asserts   </td><td class="markdownTableBodyNone"><code>1</code>   </td><td class="markdownTableBodyNone"><code>1</code>    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>[.Nat, .Bool, .Nat]</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Sigma.html">Sigma</a>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>    </td></tr>
+<td class="markdownTableBodyNone"><code>[.Nat, .Bool, .Nat]</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Sigma.html">Sigma</a>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>«3; .Nat»</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Arr.html">Arr</a>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>    </td></tr>
+<td class="markdownTableBodyNone"><code>«3; .Nat»</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Arr.html">Arr</a>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>   </td><td class="markdownTableBodyNone"><code>3</code>    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>«n; .Nat»</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Arr.html">Arr</a>   </td><td class="markdownTableBodyNone"><code>n</code>   </td><td class="markdownTableBodyNone"><code>std::nullopt</code>   </td><td class="markdownTableBodyNone">asserts   </td><td class="markdownTableBodyNone"><code>1</code>    </td></tr>
+<td class="markdownTableBodyNone"><code>«n; .Nat»</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Arr.html">Arr</a>   </td><td class="markdownTableBodyNone"><code>n</code>   </td><td class="markdownTableBodyNone"><code>std::nullopt</code>   </td><td class="markdownTableBodyNone">asserts   </td><td class="markdownTableBodyNone"><code>1</code>   </td><td class="markdownTableBodyNone"><code>1</code>    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>x: [.Nat, .Bool]</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Var.html">Var</a>   </td><td class="markdownTableBodyNone"><code>2</code>   </td><td class="markdownTableBodyNone"><code>2</code>   </td><td class="markdownTableBodyNone"><code>2</code>   </td><td class="markdownTableBodyNone"><code>2</code>    </td></tr>
+<td class="markdownTableBodyNone"><code>x: [.Nat, .Bool]</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Var.html">Var</a>   </td><td class="markdownTableBodyNone"><code>2</code>   </td><td class="markdownTableBodyNone"><code>2</code>   </td><td class="markdownTableBodyNone"><code>2</code>   </td><td class="markdownTableBodyNone"><code>2</code>   </td><td class="markdownTableBodyNone"><code>2</code>    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>x: «n; .Nat»</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Var.html">Var</a>   </td><td class="markdownTableBodyNone"><code>n</code>   </td><td class="markdownTableBodyNone"><code>std::nullopt</code>   </td><td class="markdownTableBodyNone">asserts   </td><td class="markdownTableBodyNone"><code>1</code>   </td></tr>
+<td class="markdownTableBodyNone"><code>‹32; 0›</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Pack.html">Pack</a>   </td><td class="markdownTableBodyNone"><code>32</code>   </td><td class="markdownTableBodyNone"><code>32</code>   </td><td class="markdownTableBodyNone"><code>32</code>   </td><td class="markdownTableBodyNone"><code>32</code>   </td><td class="markdownTableBodyNone"><code>1</code>   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md30"></a>
+<p >The last line assumes <a class="el" href="namespacethorin.html#a55084cdf38b8061963ebe4da5355d718">thorin::Flags::scalerize_threshold</a> = 32.</p>
+<h1><a class="anchor" id="autotoc_md31"></a>
 Iterating over the Program</h1>
 <p >There are several ways of doing this. It depends on what exactly you want to achieve and how much structure you need during the traversal. The simplest way is to kick off with <a class="el" href="classthorin_1_1World.html#a5b40a0d582ba6e1b28bc50dc0ceb0840">World::externals</a> and recursively run over <a class="el" href="classthorin_1_1Def.html#a543cbdcb17d574373aa65244dcead8f8">Def::extended_ops</a> like this: </p><div class="fragment"><div class="line"><a class="code hl_typedef" href="namespacethorin.html#a7fddaff34d4e4927bc748c28b49eef46">DefSet</a> done;</div>
 <div class="line"><span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [_, mut] : world.externals())</div>

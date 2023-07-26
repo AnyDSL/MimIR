@@ -114,72 +114,72 @@ $(document).ready(function(){initNavTree('regex.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md214">Dependencies</a></li>
-<li class="level1"><a href="#autotoc_md215">Types</a><ul><li class="level2"><a href="#autotoc_md216">RE</a></li>
+<ul><li class="level1"><a href="#autotoc_md215">Dependencies</a></li>
+<li class="level1"><a href="#autotoc_md216">Types</a><ul><li class="level2"><a href="#autotoc_md217">RE</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md217">Meta</a><ul><li class="level2"><a href="#autotoc_md218">%regex.conj</a></li>
-<li class="level2"><a href="#autotoc_md219">%regex.disj</a></li>
+<li class="level1"><a href="#autotoc_md218">Meta</a><ul><li class="level2"><a href="#autotoc_md219">%regex.conj</a></li>
+<li class="level2"><a href="#autotoc_md220">%regex.disj</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md220">Values</a><ul><li class="level2"><a href="#autotoc_md221">%regex.range</a></li>
-<li class="level2"><a href="#autotoc_md222">%regex.lit</a></li>
-<li class="level2"><a href="#autotoc_md223">%regex.not</a></li>
-<li class="level2"><a href="#autotoc_md224">%regex.cls.*</a></li>
-<li class="level2"><a href="#autotoc_md225">%regex.any</a></li>
+<li class="level1"><a href="#autotoc_md221">Values</a><ul><li class="level2"><a href="#autotoc_md222">%regex.range</a></li>
+<li class="level2"><a href="#autotoc_md223">%regex.lit</a></li>
+<li class="level2"><a href="#autotoc_md224">%regex.not</a></li>
+<li class="level2"><a href="#autotoc_md225">%regex.cls.*</a></li>
+<li class="level2"><a href="#autotoc_md226">%regex.any</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md226">Quantifiers</a><ul><li class="level2"><a href="#autotoc_md227">%regex.quant.*</a></li>
+<li class="level1"><a href="#autotoc_md227">Quantifiers</a><ul><li class="level2"><a href="#autotoc_md228">%regex.quant.*</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md228">Implementation</a></li>
-<li class="level1"><a href="#autotoc_md229">Passes and Phases</a><ul><li class="level2"><a href="#autotoc_md230">Passes</a></li>
+<li class="level1"><a href="#autotoc_md229">Implementation</a></li>
+<li class="level1"><a href="#autotoc_md230">Passes and Phases</a><ul><li class="level2"><a href="#autotoc_md231">Passes</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md_build_docs_dialects_regex"></a> </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacethorin_1_1regex.html" title="The regex Plugin">thorin::regex</a></dd></dl>
 <p>A normalizing regex plugin</p>
-<h1><a class="anchor" id="autotoc_md214"></a>
+<h1><a class="anchor" id="autotoc_md215"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">.import compile;</div>
 <div class="line">.plugin core;</div>
 <div class="line">.plugin mem;</div>
 <div class="line">.plugin direct;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md215"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md216"></a>
 Types</h1>
-<h2><a class="anchor" id="autotoc_md216"></a>
+<h2><a class="anchor" id="autotoc_md217"></a>
 RE</h2>
 <p >Char &amp; String </p><div class="fragment"><div class="line">.let Char = %core.I8;</div>
 <div class="line">.lam Str(n: .Nat): * = %mem.Ptr0 «n; Char»;</div>
 </div><!-- fragment --><p> A regular expression matcher. </p><div class="fragment"><div class="line">.lam Res (n: .Nat): * = [%mem.M, .Bool, .Idx n];</div>
 <div class="line">.lam FnRE(n: .Nat): * = .Fn [%mem.M, Str n, .Idx n] -&gt; Res n;</div>
 <div class="line">.let RE = Π[n: .Nat][%mem.M, Str n, .Idx n] -&gt; Res n;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md217"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md218"></a>
 Meta</h1>
-<h2><a class="anchor" id="autotoc_md218"></a>
+<h2><a class="anchor" id="autotoc_md219"></a>
 %regex.conj</h2>
 <p >A sequence of RE's, e.g. <code>\d\d\d</code> matching 3 digits: `regex.conj (regex.cls.d, regex.cls.d, regex.cls.d)</p>
 <div class="fragment"><div class="line">.ax %regex.conj: Π[n: .Nat][«n; RE»] -&gt; RE, normalize_conj, 2;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md219"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md220"></a>
 %regex.disj</h2>
 <p >Match any of the sub expressions: <code>[0123456789]</code></p>
 <div class="fragment"><div class="line">.ax %regex.disj: Π[n: .Nat][«n; RE»] -&gt; RE, normalize_disj, 2;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md220"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md221"></a>
 Values</h1>
-<h2><a class="anchor" id="autotoc_md221"></a>
+<h2><a class="anchor" id="autotoc_md222"></a>
 %regex.range</h2>
 <p >Wraps a range of literals. Use: &lsquo;regex.range ('a&rsquo;, 'z')` to match all lower case letters.</p>
 <div class="fragment"><div class="line">.ax %regex.range: «2; Char» -&gt; RE, normalize_range, 1;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md222"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md223"></a>
 %regex.lit</h2>
 <p >Wraps a literal.</p>
 <div class="fragment"><div class="line">.lam %regex.lit(val: Char) = %regex.range (val, val);</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md223"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md224"></a>
 %regex.not</h2>
 <p >Do not match the parameter.</p>
 <div class="fragment"><div class="line">.ax %regex.not_: RE -&gt; RE, normalize_not, 1;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md224"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md225"></a>
 %regex.cls.*</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -203,16 +203,16 @@ Values</h1>
 <div class="line">.let %regex.cls.W = %regex.not_ %regex.cls.w;</div>
 <div class="line">.let %regex.cls.s = %regex.disj 3 (%regex.range (&#39;\t&#39;, &#39;\n&#39;), %regex.lit &#39;\r&#39;, %regex.lit &#39; &#39;);</div>
 <div class="line">.let %regex.cls.S = %regex.not_ %regex.cls.s;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md225"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md226"></a>
 %regex.any</h2>
 <p >Match any character.</p>
 <div class="fragment"><div class="line">.ax %regex.any: RE, normalize_any, 0;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md226"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md227"></a>
 Quantifiers</h1>
-<h2><a class="anchor" id="autotoc_md227"></a>
+<h2><a class="anchor" id="autotoc_md228"></a>
 %regex.quant.*</h2>
 <div class="fragment"><div class="line">.ax %regex.quant(optional,star,plus): RE -&gt; RE, normalize_quant, 1;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md228"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md229"></a>
 Implementation</h1>
 <div class="fragment"><div class="line">.fun %regex.match_range(lower upper: Char)(n: .Nat)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =</div>
 <div class="line">    .let ptr          = %mem.lea (n, ‹n; Char›, 0) (string, pos);</div>
@@ -264,9 +264,9 @@ Implementation</h1>
 <div class="line">        .con match_plus_iter0!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = sub ((mem, string, new_pos), match_plus_ret);</div>
 <div class="line">        (return, match_plus_iter0)#matched (mem, matched, new_pos);</div>
 <div class="line">    sub ((mem, string, pos), match_plus_ret0);</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md229"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md230"></a>
 Passes and Phases</h1>
-<h2><a class="anchor" id="autotoc_md230"></a>
+<h2><a class="anchor" id="autotoc_md231"></a>
 Passes</h2>
 <div class="fragment"><div class="line">.ax %regex.lower_regex: %compile.Pass;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
