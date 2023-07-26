@@ -6,7 +6,8 @@
 
 namespace thorin {
 
-// Compiler switches that must be saved and looked up in later phases of compilation.
+/// Compiler switches that must be saved and looked up in later phases of compilation.
+/// @see @ref cli
 struct Flags {
     uint32_t dump_gid            = 0;
     uint64_t scalerize_threshold = 32;

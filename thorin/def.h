@@ -342,13 +342,13 @@ public:
 
     /// Yields Def::as_lit_arity(), if it is in fact a Lit, or `1` otherwise.
     nat_t num_projs() const { return isa_lit_arity().value_or(1); }
-    nat_t num_tprojs() const;
+    nat_t num_tprojs() const; ///< As above but yields 1, if Flags::scalerize_threshold is exceeded.
 
     /// Similar to World::extract while assuming an arity of @p a, but also works on Sigma%s and Arr%ays.
     const Def* proj(nat_t a, nat_t i) const;
 
-    const Def* proj(nat_t i) const { return proj(num_projs(), i); }   /// As above but takes Def::num_projs as arity.
-    const Def* tproj(nat_t i) const { return proj(num_tprojs(), i); } /// As above but takes Def::num_tprojs.
+    const Def* proj(nat_t i) const { return proj(num_projs(), i); }   ///< As above but takes Def::num_projs as arity.
+    const Def* tproj(nat_t i) const { return proj(num_tprojs(), i); } ///< As above but takes Def::num_tprojs.
 
     /// Splits this Def via Def::proj%ections into an Array (if `A == -1_n`) or `std::array` (otherwise).
     /// Applies @p f to each element.
