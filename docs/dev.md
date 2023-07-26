@@ -302,7 +302,13 @@ for (auto var : lam->vars()) { /*...*/ }
 ```
 But in reality, all functions have exactly one domain and one codomain.
 
-See also:
+#### Thresholded Variants
+
+In additition, there are thresholded variants available that are prefixed with a `t` and take thorin::Flags::scalerize_threshold (`--scalerize-threshold`) into account.
+The method thorin::Def::num_tprojs returns the same as thorin::Def::num_projs, but will simply yield `1`, if the arity exceeds the threshold.
+thorin::Def::tproj, thorin::Def::tprojs, thorin::Lam::tvars, etc. work accordingly.
+
+**See also:**
 * @ref proj "Def::proj"
 * @ref var "Def::var"
 * @ref pi_dom "Pi::dom"
@@ -317,16 +323,18 @@ TODO
 
 ### Summary
 
-| Expression            | Class                       | [artiy](@ref thorin::Def::arity) | [isa_lit_artiy](@ref thorin::Def::isa_lit_arity) | [as_lit_artiy](@ref thorin::Def::as_lit_arity) | [num_projs](@ref thorin::Def::num_projs) |
-|-----------------------|-----------------------------|----------------------------------|--------------------------------------------------|------------------------------------------------|------------------------------------------|
-| `(0, 1, 2)`           | [Tuple](@ref thorin::Tuple) | `3`                              | `3`                                              | `3`                                            | `3`                                      |
-| `‹3; 0›`              | [Pack](@ref thorin::Pack)   | `3`                              | `3`                                              | `3`                                            | `3`                                      |
-| `‹n; 0›`              | [Pack](@ref thorin::Pack)   | `n`                              | `std::nullopt`                                   | asserts                                        | `1`                                      |
-| `[.Nat, .Bool, .Nat]` | [Sigma](@ref thorin::Sigma) | `3`                              | `3`                                              | `3`                                            | `3`                                      |
-| `«3; .Nat»`           | [Arr](@ref thorin::Arr)     | `3`                              | `3`                                              | `3`                                            | `3`                                      |
-| `«n; .Nat»`           | [Arr](@ref thorin::Arr)     | `n`                              | `std::nullopt`                                   | asserts                                        | `1`                                      |
-| `x: [.Nat, .Bool]`    | [Var](@ref thorin::Var)     | `2`                              | `2`                                              | `2`                                            | `2`                                      |
-| `x: «n; .Nat»`        | [Var](@ref thorin::Var)     | `n`                              | `std::nullopt`                                   | asserts                                        | `1`                                      |
+| Expression            | Class                       | [artiy](@ref thorin::Def::arity) | [isa_lit_artiy](@ref thorin::Def::isa_lit_arity) | [as_lit_artiy](@ref thorin::Def::as_lit_arity) | [num_projs](@ref thorin::Def::num_projs) |[num_tprojs](@ref thorin::Def::num_tprojs) |
+|-----------------------|-----------------------------|----------------------------------|--------------------------------------------------|------------------------------------------------|------------------------------------------|-------------------------------------------|
+| `(0, 1, 2)`           | [Tuple](@ref thorin::Tuple) | `3`                              | `3`                                              | `3`                                            | `3`                                      |`3`                                        |
+| `‹3; 0›`              | [Pack](@ref thorin::Pack)   | `3`                              | `3`                                              | `3`                                            | `3`                                      |`3`                                        |
+| `‹n; 0›`              | [Pack](@ref thorin::Pack)   | `n`                              | `std::nullopt`                                   | asserts                                        | `1`                                      |`1`                                        |
+| `[.Nat, .Bool, .Nat]` | [Sigma](@ref thorin::Sigma) | `3`                              | `3`                                              | `3`                                            | `3`                                      |`3`                                        |
+| `«3; .Nat»`           | [Arr](@ref thorin::Arr)     | `3`                              | `3`                                              | `3`                                            | `3`                                      |`3`                                        |
+| `«n; .Nat»`           | [Arr](@ref thorin::Arr)     | `n`                              | `std::nullopt`                                   | asserts                                        | `1`                                      |`1`                                        |
+| `x: [.Nat, .Bool]`    | [Var](@ref thorin::Var)     | `2`                              | `2`                                              | `2`                                            | `2`                                      |`2`                                        |
+| `‹32; 0›`             | [Pack](@ref thorin::Pack)   | `32`                             | `32`                                             | `32`                                           | `32`                                     |`1`                                        |
+
+The last line assumes thorin::Flags::scalerize_threshold = 32.
 
 ## Iterating over the Program
 

@@ -32,7 +32,7 @@ Use the following coding conventions:
 * Capitalize the group name unless it is directly named after a method
 
 For all the other minute details like indentation width etc. use [clang-format](https://clang.llvm.org/docs/ClangFormat.html) and the provided `.clang-format` file in the root of the repository.
-In order to run `clang-format` automatically on all changed files, switch to the provided [pre-commit](https://pre-commit.com/] hook:
+In order to run `clang-format` automatically on all changed files, switch to the provided [pre-commit](https://pre-commit.com/) hook:
 ```sh
 pre-commit install
 ```

@@ -1,4 +1,4 @@
-set(CLI_HELP ${CMAKE_CURRENT_BINARY_DIR}/cli-help.inc)
+set(CLI_HELP ${CMAKE_CURRENT_BINARY_DIR}/cli-help.sh)
 
 add_custom_command(
     OUTPUT ${CLI_HELP}

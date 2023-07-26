@@ -4,7 +4,7 @@
 
 ## Usage
 
-\include "cli-help.inc"
+\include "cli-help.sh"
 
 In addition, you can specify more search paths using the environment variable `THORIN_PLUGIN_PATH`.
 Thorin will look for plugins in this priority:
@@ -22,10 +22,10 @@ Thorin will look for plugins in this priority:
     * `-VV` corresponds to thorin::Log::Level::Info.
     * `-VVV` corresponds to thorin::Log::Level::Verbose.
     * `-VVVV` corresponds to thorin::Log::Level::Debug. This output only exists in a Debug build of Thorin.
-
 * You can trigger a breakpoint upon construction of a thorin::Def with a specific global id.
 
     For example, this will trigger a breakpoint if the thorin::Def with [global id](@ref thorin::Def::gid) `4223` is being created:
     ```
     thorin -b 4223 in.thorin
     ```
+* You can also trigger a breakpoint at some other very specific places like when a check for alpha equivalence fails via `--break-on-alpha-unequal`.
