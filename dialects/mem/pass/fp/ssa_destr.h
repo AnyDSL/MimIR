@@ -9,7 +9,7 @@ public:
     SSADestr(PassMan& man)
         : FPPass(man, "ssa_destr") {}
 
-    using Data = GIDNodeMap<Lam*, int>;
+    using Data = DefMap<int>;
 
 private:
     /// @name PassMan hooks
@@ -20,6 +20,9 @@ private:
     undo_t analyze(const Proxy*) override;
     undo_t analyze(Ref) override;
     ///@}
+    ///
+
+    Ref mem_;
 };
 
 } // namespace thorin::mem

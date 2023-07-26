@@ -6,8 +6,7 @@
 namespace thorin::mem {
 
 /// This phase adds mems to all lambdas and continuations.
-/// It's primarily to be used as preparation for other phases
-/// that rely on all continuations having a mem.
+/// It's primarily used as preparation for other phases that rely on all continuations having a mem.
 class AddMem : public ScopePhase {
 public:
     AddMem(World& world)

@@ -1,8 +1,14 @@
 #include "dialects/mem/pass/fp/ssa_destr.h"
 
+#include "dialects/mem/mem.h"
+
 namespace thorin::mem {
 
-void SSADestr::enter() { world().ILOG("hi!"); }
+void SSADestr::enter() {
+    for (auto var : curr_mut()->vars())
+        if (match<mem::M>(var->type())) mem_ = var;
+    // world().ILOG("hi!: {}, {}", curr_mut(),
+}
 
 Ref SSADestr::rewrite(const Proxy* proxy) { return proxy; }
 
