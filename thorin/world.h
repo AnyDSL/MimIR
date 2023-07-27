@@ -80,9 +80,9 @@ public:
     /// @name Getters/Setters
     ///@{
     const State& state() const { return state_; }
-
     const Driver& driver() const { return *driver_; }
     Driver& driver() { return *driver_; }
+    const Flags& flags() const; ///< Retrive compile Flags.
 
     Sym name() const { return state_.pod.name; }
     void set(Sym name) { state_.pod.name = name; }
@@ -91,9 +91,6 @@ public:
     /// Manage global identifier - a unique number for each Def.
     u32 curr_gid() const { return state_.pod.curr_gid; }
     u32 next_gid() { return ++state_.pod.curr_gid; }
-
-    /// Retrive compile Flags.
-    Flags& flags();
 
     Loc& emit_loc() { return state_.pod.loc; }
     ///@}

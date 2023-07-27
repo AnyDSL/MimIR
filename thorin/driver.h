@@ -21,6 +21,7 @@ public:
     /// @name Getters
     ///@{
     Flags& flags() { return flags_; }
+    const Flags& flags() const { return flags_; }
     Log& log() { return log_; }
     World& world() { return world_; }
     ///@}

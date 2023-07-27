@@ -82,7 +82,7 @@ World::~World() {
  */
 
 Log& World::log() { return driver().log(); }
-Flags& World::flags() { return driver().flags(); }
+const Flags& World::flags() const { return driver().flags(); }
 
 Sym World::sym(const char* s) { return driver().sym(s); }
 Sym World::sym(std::string_view s) { return driver().sym(s); }

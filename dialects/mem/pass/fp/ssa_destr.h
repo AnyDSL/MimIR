@@ -15,14 +15,19 @@ private:
     /// @name PassMan hooks
     ///@{
     void enter() override;
-    Ref rewrite(const Proxy*) override;
     Ref rewrite(Ref) override;
+    Ref rewrite(const Proxy*) override;
     undo_t analyze(const Proxy*) override;
     undo_t analyze(Ref) override;
     ///@}
     ///
 
+    bool should_destruct(Ref) const;
+
+    Ref phi2mem(const App*, Lam*);
+
     Ref mem_;
+    LamMap<std::pair<Lam*, DefVec>> phi2mem_;
 };
 
 } // namespace thorin::mem
