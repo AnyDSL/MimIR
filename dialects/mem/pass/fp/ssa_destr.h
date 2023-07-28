@@ -9,7 +9,7 @@ public:
     SSADestr(PassMan& man)
         : FPPass(man, "ssa_destr") {}
 
-    using Data = DefMap<int>;
+    using Data = GIDNodeMap<Lam*, DefMap<uint32_t>>;
 
 private:
     /// @name PassMan hooks
@@ -27,7 +27,7 @@ private:
     Ref phi2mem(const App*, Lam*);
 
     Ref mem_;
-    LamMap<std::pair<Lam*, DefVec>> phi2mem_;
+    Lam2Lam phi2mem_;
 };
 
 } // namespace thorin::mem
