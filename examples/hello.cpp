@@ -6,8 +6,6 @@
 #include <thorin/pass/optimize.h>
 #include <thorin/util/sys.h>
 
-#include "dialects/mem/autogen.h"
-
 using namespace thorin;
 
 int main(int, char**) {
