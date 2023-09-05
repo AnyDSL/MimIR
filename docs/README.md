@@ -100,4 +100,4 @@ In addition to the provided submodules:
 * While Thorin emits [LLVM](https://llvm.org/), it does *not* link against LLVM.
 
     Simply toss the emitted `*.ll` file to your system's LLVM toolchain.
-    But techincally, you don't need LLVM.
+    But technically, you don't need LLVM.
