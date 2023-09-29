@@ -1,5 +1,12 @@
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
+
 project(Thorin VERSION 1.9.0)
+
+include(CMakePackageConfigHelpers)
+include(GNUInstallDirs)
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+include(Thorin)
 
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build." FORCE)
@@ -42,9 +49,6 @@ else()
     add_compile_options(-Wall -Wextra)
 endif()
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
-include(Thorin)
-
 set(ABSL_PROPAGATE_CXX_STD ON)
 set(ABSL_USE_EXTERNAL_GOOGLETEST ON)
 set(ABSL_ENABLE_INSTALL ON)
@@ -85,24 +89,22 @@ if(THORIN_BUILD_DOCS)
     endif()
 endif()
 
-include(CMakePackageConfigHelpers)
-
 write_basic_package_version_file(
     "${PROJECT_BINARY_DIR}/thorin-config-version.cmake"
     VERSION ${Thorin_VERSION}
     COMPATIBILITY SameMajorVersion)
 
-set(THORIN_CMAKE_INSTALL_DIR lib/cmake/thorin)
+set(THORIN_CMAKE_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/thorin")
 
 install(
     FILES cmake/Thorin.cmake
-    DESTINATION "${THORIN_CMAKE_INSTALL_DIR}")
+    DESTINATION ${THORIN_CMAKE_INSTALL_DIR})
 
 install(
-    EXPORT install_exports
+    EXPORT thorin_exports
     FILE thorin-targets.cmake
     NAMESPACE thorin::
-    DESTINATION "${THORIN_CMAKE_INSTALL_DIR}")
+    DESTINATION ${THORIN_CMAKE_INSTALL_DIR})
 
 configure_package_config_file(
     "${PROJECT_SOURCE_DIR}/cmake/thorin-config.cmake.in"

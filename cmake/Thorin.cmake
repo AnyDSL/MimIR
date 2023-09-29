@@ -132,10 +132,25 @@ function(add_thorin_plugin)
     )
 
     if(${PARSED_INSTALL})
-        install(TARGETS thorin_${PLUGIN} EXPORT install_exports LIBRARY DESTINATION lib/thorin RUNTIME DESTINATION lib/thorin INCLUDES DESTINATION include)
-        install(FILES ${THORIN_FILE_LIB_DIR} DESTINATION lib/thorin)
-        install(FILES ${PLUGIN_H} DESTINATION include/dialects/${PLUGIN})
-        install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN} DESTINATION include/dialects FILES_MATCHING PATTERN *.h)
+        install(
+            TARGETS thorin_${PLUGIN}
+            EXPORT thorin_exports
+            LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}/thorin"
+            RUNTIME DESTINATION "${CMAKE_INSTALL_LIBDIR}/thorin"
+            INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+
+        install(
+            FILES ${THORIN_FILE_LIB_DIR}
+            DESTINATION lib/thorin)
+
+        install(
+            FILES ${PLUGIN_H}
+            DESTINATION "include/dialects/${PLUGIN}")
+
+        install(
+            DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN} "
+            DESTINATION include/dialects
+            FILES_MATCHING PATTERN *.h)
     endif()
     if(TARGET thorin_all_plugins)
         add_dependencies(thorin_all_plugins thorin_${PLUGIN})

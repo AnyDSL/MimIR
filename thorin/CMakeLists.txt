@@ -97,10 +97,9 @@ add_library(libthorin
 
 set_target_properties(libthorin PROPERTIES PREFIX "")
 
-get_target_property(libthorin_HEADERS libthorin SOURCES)
-list(FILTER libthorin_HEADERS INCLUDE REGEX ".*\.h")
-
-configure_file(config.h.in ${CMAKE_BINARY_DIR}/include/thorin/config.h)
+configure_file(
+    config.h.in
+    "${CMAKE_BINARY_DIR}/include/thorin/config.h")
 
 target_include_directories(libthorin
     PUBLIC
@@ -125,7 +124,19 @@ if(MSVC AND BUILD_SHARED_LIBS)
     target_compile_definitions(libthorin PUBLIC ABSL_CONSUME_DLL)
 endif()
 
-install(TARGETS libthorin EXPORT install_exports INCLUDES DESTINATION include)
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} DESTINATION include FILES_MATCHING PATTERN "*.h")
-install(FILES ${CMAKE_BINARY_DIR}/include/thorin/config.h DESTINATION include/thorin)
-install(FILES ${PROJECT_SOURCE_DIR}/modules/half/include/half.hpp DESTINATION include)
+install(
+    TARGETS libthorin
+    EXPORT thorin_exports
+    INCLUDES DESTINATION include)
+
+install(
+    DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    DESTINATION include FILES_MATCHING PATTERN "*.h")
+
+install(
+    FILES "${CMAKE_BINARY_DIR}/include/thorin/config.h"
+    DESTINATION include/thorin)
+
+install(
+    FILES "${PROJECT_SOURCE_DIR}/modules/half/include/half.hpp"
+    DESTINATION include)

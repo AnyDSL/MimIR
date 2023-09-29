@@ -4,7 +4,7 @@ add_custom_command(
     OUTPUT ${CLI_HELP}
     COMMAND thorin --help > ${CLI_HELP}
     DEPENDS thorin
-    COMMENT "Generating help text of Thorin's CLI"
+    COMMENT "Generating help text of Thorin's CLI")
 
 set(DOXYFILE        "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile")
 set(DOXY_LAYOUT     "${CMAKE_CURRENT_BINARY_DIR}/DoxygenLayout.xml")
