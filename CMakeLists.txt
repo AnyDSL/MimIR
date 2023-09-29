@@ -17,9 +17,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
 option(BUILD_SHARED_LIBS           "Build shared libraries." ON)
 option(THORIN_BUILD_DOCS           "If ON, Thorin will build the documentation (requires Doxygen)." OFF)
@@ -42,7 +42,7 @@ else()
     add_compile_options(-Wall -Wextra)
 endif()
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 include(Thorin)
 
 set(ABSL_PROPAGATE_CXX_STD ON)
@@ -90,22 +90,26 @@ include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
     "${PROJECT_BINARY_DIR}/thorin-config-version.cmake"
     VERSION ${Thorin_VERSION}
-    COMPATIBILITY SameMajorVersion
-)
+    COMPATIBILITY SameMajorVersion)
 
 set(THORIN_CMAKE_INSTALL_DIR lib/cmake/thorin)
 
-install(FILES cmake/Thorin.cmake DESTINATION ${THORIN_CMAKE_INSTALL_DIR})
-install(EXPORT install_exports FILE "thorin-targets.cmake" NAMESPACE thorin:: DESTINATION ${THORIN_CMAKE_INSTALL_DIR})
+install(
+    FILES cmake/Thorin.cmake
+    DESTINATION "${THORIN_CMAKE_INSTALL_DIR}")
+
+install(
+    EXPORT install_exports
+    FILE thorin-targets.cmake
+    NAMESPACE thorin::
+    DESTINATION "${THORIN_CMAKE_INSTALL_DIR}")
 
 configure_package_config_file(
-    ${PROJECT_SOURCE_DIR}/cmake/thorin-config.cmake.in
-    ${PROJECT_BINARY_DIR}/thorin-config.cmake
-    INSTALL_DESTINATION ${THORIN_CMAKE_INSTALL_DIR}
-)
+    "${PROJECT_SOURCE_DIR}/cmake/thorin-config.cmake.in"
+    "${PROJECT_BINARY_DIR}/thorin-config.cmake"
+    INSTALL_DESTINATION ${THORIN_CMAKE_INSTALL_DIR})
 
 install(FILES
-  ${PROJECT_BINARY_DIR}/thorin-config.cmake
-  ${PROJECT_BINARY_DIR}/thorin-config-version.cmake
-  DESTINATION ${THORIN_CMAKE_INSTALL_DIR}
-)
+    "${PROJECT_BINARY_DIR}/thorin-config.cmake"
+    "${PROJECT_BINARY_DIR}/thorin-config-version.cmake"
+    DESTINATION "${THORIN_CMAKE_INSTALL_DIR}")
