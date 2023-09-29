@@ -94,13 +94,17 @@ add_library(libthorin
     util/utf8.h
     util/util.h
 )
-
 set_target_properties(libthorin PROPERTIES PREFIX "")
+target_compile_features(libthorin PUBLIC cxx_std_${CMAKE_CXX_STANDARD}) # make property public.
+
+if(MSVC AND BUILD_SHARED_LIBS)
+    target_compile_definitions(libthorin PUBLIC ABSL_CONSUME_DLL)
+endif()
 
 configure_file(
     config.h.in
-    "${CMAKE_BINARY_DIR}/include/thorin/config.h")
-
+    "${CMAKE_BINARY_DIR}/include/thorin/config.h"
+)
 target_include_directories(libthorin
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/>     # for config.h
@@ -108,7 +112,6 @@ target_include_directories(libthorin
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../modules/half/include>
         $<INSTALL_INTERFACE:include>
 )
-
 target_link_libraries(libthorin
     PUBLIC
         absl::btree
@@ -117,26 +120,20 @@ target_link_libraries(libthorin
         rang
         ${CMAKE_DL_LIBS}
 )
-
-target_compile_features(libthorin PUBLIC cxx_std_${CMAKE_CXX_STANDARD}) # make property public.
-
-if(MSVC AND BUILD_SHARED_LIBS)
-    target_compile_definitions(libthorin PUBLIC ABSL_CONSUME_DLL)
-endif()
-
 install(
     TARGETS libthorin
     EXPORT thorin_exports
-    INCLUDES DESTINATION include)
-
+    INCLUDES DESTINATION include
+)
 install(
     DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-    DESTINATION include FILES_MATCHING PATTERN "*.h")
-
+    DESTINATION include FILES_MATCHING PATTERN "*.h"
+)
 install(
     FILES "${CMAKE_BINARY_DIR}/include/thorin/config.h"
-    DESTINATION include/thorin)
-
+    DESTINATION include/thorin
+)
 install(
     FILES "${CMAKE_CURRENT_SOURCE_DIR}/../modules/half/include/half.hpp"
-    DESTINATION include)
+    DESTINATION include
+)

@@ -92,26 +92,27 @@ endif()
 write_basic_package_version_file(
     "${CMAKE_CURRENT_BINARY_DIR}/thorin-config-version.cmake"
     VERSION ${Thorin_VERSION}
-    COMPATIBILITY SameMajorVersion)
-
+    COMPATIBILITY SameMajorVersion
+)
 set(THORIN_CMAKE_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/thorin")
 
 install(
     FILES cmake/Thorin.cmake
-    DESTINATION ${THORIN_CMAKE_INSTALL_DIR})
-
+    DESTINATION ${THORIN_CMAKE_INSTALL_DIR}
+)
 install(
     EXPORT thorin_exports
     FILE thorin-targets.cmake
     NAMESPACE thorin::
-    DESTINATION ${THORIN_CMAKE_INSTALL_DIR})
-
+    DESTINATION ${THORIN_CMAKE_INSTALL_DIR}
+)
 configure_package_config_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/thorin-config.cmake.in"
     "${CMAKE_CURRENT_BINARY_DIR}/thorin-config.cmake"
-    INSTALL_DESTINATION ${THORIN_CMAKE_INSTALL_DIR})
-
+    INSTALL_DESTINATION ${THORIN_CMAKE_INSTALL_DIR}
+)
 install(FILES
     "${CMAKE_CURRENT_BINARY_DIR}/thorin-config.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/thorin-config-version.cmake"
-    DESTINATION "${THORIN_CMAKE_INSTALL_DIR}")
+    DESTINATION "${THORIN_CMAKE_INSTALL_DIR}"
+)
