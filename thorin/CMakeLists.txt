@@ -104,8 +104,8 @@ configure_file(
 target_include_directories(libthorin
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/> # for config.h
-        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/>       # for thorin/*
-        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/modules/half/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/>       # for thorin/*
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/modules/half/include>
         $<INSTALL_INTERFACE:include>
 )
 
@@ -138,5 +138,5 @@ install(
     DESTINATION include/thorin)
 
 install(
-    FILES "${PROJECT_SOURCE_DIR}/modules/half/include/half.hpp"
+    FILES "${CMAKE_CURRENT_SOURCE_DIR}/modules/half/include/half.hpp"
     DESTINATION include)
