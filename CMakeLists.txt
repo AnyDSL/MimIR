@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 project(Thorin VERSION 1.9.0)
 
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type (default Debug)" FORCE)
+    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build." FORCE)
+    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
 if(MSVC)
@@ -44,15 +45,6 @@ endif()
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 include(Thorin)
 
-find_program(MEMORYCHECK_COMMAND valgrind)
-set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1") # needs to be BEFORE "include(CTest)"
-include(CTest)
-if(BUILD_TESTING AND THORIN_BUILD_TESTING)
-    include(GoogleTest)
-    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-    add_subdirectory(modules/googletest EXCLUDE_FROM_ALL)
-endif()
-
 set(ABSL_PROPAGATE_CXX_STD ON)
 set(ABSL_USE_EXTERNAL_GOOGLETEST ON)
 set(ABSL_ENABLE_INSTALL ON)
@@ -73,7 +65,15 @@ if(THORIN_BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
 
-if(BUILD_TESTING AND THORIN_BUILD_TESTING)
+if((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR THORIN_BUILD_TESTING) AND BUILD_TESTING)
+    find_program(MEMORYCHECK_COMMAND valgrind)
+    set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1") # needs to be BEFORE "include(CTest)"
+    include(CTest)
+
+    include(GoogleTest)
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    add_subdirectory(modules/googletest EXCLUDE_FROM_ALL)
+
     add_subdirectory(gtest)
     add_subdirectory(lit)
 endif()
