@@ -11,10 +11,10 @@ set(DOXY_LAYOUT     "${CMAKE_CURRENT_BINARY_DIR}/DoxygenLayout.xml")
 set(DOXY_INDEX_HTML "${CMAKE_CURRENT_BINARY_DIR}/html/index.html")
 set(DOXY_EXTRA_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/cli.md"
-    "${CMAKE_CURRENT_SOURCE_DIR}/coding."md
+    "${CMAKE_CURRENT_SOURCE_DIR}/coding.md"
     "${CMAKE_CURRENT_SOURCE_DIR}/dev.md"
-    "${CMAKE_CURRENT_SOURCE_DIR}/langref".md
-    "${CMAKE_CURRENT_SOURCE_DIR}/passes.m"d
+    "${CMAKE_CURRENT_SOURCE_DIR}/langref.md"
+    "${CMAKE_CURRENT_SOURCE_DIR}/passes.md"
     "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
 
 string(REPLACE ";" " " DOXY_EXTRA_FILES_CONFIG "${DOXY_EXTRA_FILES}")
