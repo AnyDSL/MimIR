@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 
 project(Thorin VERSION 1.9.0)
 
+include(CMakeDependentOption)
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 
@@ -31,8 +32,6 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 option(BUILD_SHARED_LIBS           "Build shared libraries." ON)
 option(THORIN_BUILD_DOCS           "If ON, Thorin will build the documentation (requires Doxygen)." OFF)
 option(THORIN_BUILD_EXAMPLES       "If ON, Thorin will build examples." OFF)
-option(THORIN_BUILD_TESTING        "If ON, Thorin will build all of Thorin's own tests." OFF)
-option(THORIN_LIT_WITH_VALGRIND    "If ON, the Thorin CLI in the lit tests will be run under valgrind." OFF)
 option(THORIN_INSTALL_DEPENDENCIES "If ON, Thorin's dependencies will be installed alongside Thorin (use when not installing globally)." OFF)
 
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}; shared libs: ${BUILD_SHARED_LIBS}")
@@ -47,6 +46,21 @@ if(WIN32)
     add_compile_definitions(NOMINMAX) # prevents windows.h defining min/max macros
 else()
     add_compile_options(-Wall -Wextra)
+endif()
+
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+    find_program(MEMORYCHECK_COMMAND valgrind)
+    set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1")
+    option(BUILD_TESTING "Build lit and unit tests." OFF) # needs to be BEFORE "include(CTest)"
+    include(CTest)
+    cmake_dependent_option(THORIN_LIT_WITH_VALGRIND "If ON, the Thorin CLI in the lit tests will be run under valgrind." OFF "BUILD_TESTING" OFF)
+    if(BUILD_TESTING)
+        include(GoogleTest)
+        set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+        add_subdirectory(modules/googletest EXCLUDE_FROM_ALL)
+        add_subdirectory(gtest)
+        add_subdirectory(lit)
+    endif()
 endif()
 
 set(ABSL_PROPAGATE_CXX_STD ON)
@@ -67,19 +81,6 @@ add_subdirectory(dialects)
 
 if(THORIN_BUILD_EXAMPLES)
     add_subdirectory(examples)
-endif()
-
-if((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME OR THORIN_BUILD_TESTING) AND BUILD_TESTING)
-    find_program(MEMORYCHECK_COMMAND valgrind)
-    set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1") # needs to be BEFORE "include(CTest)"
-    include(CTest)
-
-    include(GoogleTest)
-    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-    add_subdirectory(modules/googletest EXCLUDE_FROM_ALL)
-
-    add_subdirectory(gtest)
-    add_subdirectory(lit)
 endif()
 
 if(THORIN_BUILD_DOCS)

@@ -26,7 +26,7 @@ jobs:
           override_cache_key: mac-latest-ccache-${{matrix.build-type}}
 
       - name: Configure
-        run: CC=gcc-11 CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DTHORIN_BUILD_TESTING=ON -DTHORIN_BUILD_EXAMPLES=ON -DPython3_ROOT_DIR=$(dirname $(which python3))
+        run: CC=gcc-11 CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DBUILD_TESTING=ON -DTHORIN_BUILD_EXAMPLES=ON -DPython3_ROOT_DIR=$(dirname $(which python3))
 
       - name: Cache LLVM and Clang
         id: cache-llvm

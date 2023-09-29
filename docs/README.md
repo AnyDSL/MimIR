@@ -86,9 +86,9 @@ cmake --build build -j $(nproc) -t install
 |-------------------------|------------------------------------------|--------------|---------------------------------------------------------------------------------------|
 | `CMAKE_BUILD_TYPE`      | `Debug` \| `Release` \| `RelWithDebInfo` | `Debug`      | Build type.                                                                           |
 | `CMAKE_INSTALL_PREFIX`  |                                          | `/usr/local` | Install prefix.                                                                       |
-| `THORIN_BUILD_DOCS`     | `ON` \| `OFF`                            | `OFF`        | If `ON`, Thorin will build the documentation <br> (requires Doxygen).                 |
-| `THORIN_BUILD_EXAMPLES` | `ON` \| `OFF`                            | `OFF`        | If `ON`, Thorin will build the examples.                                              |
-| `THORIN_BUILD_TESTING`  | `ON` \| `OFF`                            | `OFF`        | If `ON` **and** `BUILD_TESTING` is `ON`, Thorin will build all of Thorin's own tests. |
+| `THORIN_BUILD_DOCS`     | `ON` \| `OFF`                            | `OFF`        | If `ON`, build the documentation <br> (requires Doxygen).                             |
+| `THORIN_BUILD_EXAMPLES` | `ON` \| `OFF`                            | `OFF`        | If `ON`, build the examples.                                                          |
+| `BUILD_TESTING`         | `ON` \| `OFF`                            | `OFF`        | If `ON`, build all unit and lit tests.                                                |
 | `THORIN_ENABLE_CHECKS`  | `ON` \| `OFF`                            | `ON`         | If `ON`, enables expensive runtime checks <br> (requires `CMAKE_BUILD_TYPE=Debug`).   |
 
 ## Dependencies
