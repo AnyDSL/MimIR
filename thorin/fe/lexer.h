@@ -11,8 +11,8 @@
 namespace thorin {
 class World;
 
-class Lexer : public fe::Lexer<3> {
-    using Super = fe::Lexer<3>;
+class Lexer : public fe::Lexer<3, Lexer> {
+    using Super = fe::Lexer<3, Lexer>;
 
 public:
     /// Creates a lexer to read Thorin files (see [Lexical Structure](@ref lex)).
@@ -25,12 +25,6 @@ public:
     Tok lex();
 
 private:
-    /// Invoke before assembling the next token.
-    void begin() {
-        loc_.begin = peek_;
-        str_.clear();
-    }
-
     char32_t next() {
         auto res = Super::next();
         if (md_ && out_) {
@@ -65,6 +59,8 @@ private:
     bool out_ = true;
     fe::SymMap<Tok::Tag> keywords_;
     std::optional<Tok> cache_ = std::nullopt;
+
+    friend class fe::Lexer<3, Lexer>;
 };
 
 } // namespace thorin
