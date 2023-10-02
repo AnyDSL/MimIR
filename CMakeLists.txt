@@ -104,8 +104,7 @@ configure_package_config_file(
     INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/thorin"
 )
 install(
-    EXPORT thorin_exports
-    FILE thorin-targets.cmake
+    EXPORT thorin-targets
     NAMESPACE thorin::
     DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/thorin"
 )
