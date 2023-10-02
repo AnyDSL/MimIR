@@ -43,7 +43,7 @@ const Def* infer_sigma(World& world, Defs ops) {
  */
 
 #if (!defined(_MSC_VER) && defined(NDEBUG))
-bool World::Arena::Lock::guard_ = false;
+bool World::Lock::guard_ = false;
 #endif
 
 World::World(Driver* driver, const State& state)
