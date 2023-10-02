@@ -236,5 +236,5 @@ containing the axiom declarations.
     header to be up-to-date.
 - `INSTALL`: Specify, if the plugin description, plugin and headers shall
     be installed with `make install`.
-    To export the targets, the export name `install_exports` has to be
+    To export the targets, the export name `thorin-targets` has to be
     exported accordingly (see [install(EXPORT ..)](https://cmake.org/cmake/help/latest/command/install.html#export))

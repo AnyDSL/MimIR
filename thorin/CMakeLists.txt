@@ -122,7 +122,7 @@ target_link_libraries(libthorin
 )
 install(
     TARGETS libthorin
-    EXPORT thorin_exports
+    EXPORT thorin-targets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
