@@ -162,17 +162,17 @@ The following tables comprise all production rules:
 
 ### Declarations {#decl}
 
-| LHS | RHS                                                                                                                                                  | Comment                              | Thorin Class                                        |
-|-----|------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|-----------------------------------------------------|
-| d   | `.let`   (p \| A)  `=` e `;`                                                                                                                         | let                                  | -                                                   |
-| d   | `.lam`   n (`.`? p)+ (`:` e<sub>codom</sub>)? ( `=` d\* e)? `;`                                                                                      | lambda declaration<sup>s</sup>       | [Lam](@ref thorin::Lam)                             |
-| d   | `.con`   n (`.`? p)+                       ( `=` d\* e)? `;`                                                                                         | continuation declaration<sup>s</sup> | [Lam](@ref thorin::Lam)                             |
-| d   | `.fun`   n (`.`? p)+ (`:` e<sub>ret</sub>)?   ( `=` d\* e)? `;`                                                                                      | function declaration<sup>s</sup>     | [Lam](@ref thorin::Lam)                             |
-| d   | `.Pi`    n (`:` e<sub>type</sub>)? (`=` e)? `;`                                                                                                      | Pi declaration                       | [Pi](@ref thorin::Pi)                               |
-| d   | `.Sigma` n (`:` e<sub>type</sub> )? (`,` L<sub>arity</sub>)? (`=` b<sub>[ ]</sub>)? `;`                                                              | sigma declaration                    | [Sigma](@ref thorin::Sigma)                         |
-| d   | `.ax`    A `:` e<sub>type</sub> (`(` sa `,` ... `,` sa `)`)? <br> (`,` 𝖨<sub>normalizer</sub>)? (`,` L<sub>curry</sub>)? (`,` L<sub>trip</sub>)? `;` | axiom                                | [Axiom](@ref thorin::Axiom)                         |
-| n   | 𝖨 \| A                                                                                                                                               | identifier or annex name             | [Sym](@ref thorin::Sym)/[Annex](@ref thorin::Annex) |
-| sa  | 𝖨 (`=` 𝖨 `,` ... `,` 𝖨)?                                                                                                                             | subtag with aliases                  |                                                     |
+| LHS | RHS                                                                                                                                                  | Comment                              | Thorin Class                          |
+|-----|------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|---------------------------------------|
+| d   | `.let`   (p \| A)  `=` e `;`                                                                                                                         | let                                  | -                                     |
+| d   | `.lam`   n (`.`? p)+ (`:` e<sub>codom</sub>)? ( `=` d\* e)? `;`                                                                                      | lambda declaration<sup>s</sup>       | [Lam](@ref thorin::Lam)               |
+| d   | `.con`   n (`.`? p)+                       ( `=` d\* e)? `;`                                                                                         | continuation declaration<sup>s</sup> | [Lam](@ref thorin::Lam)               |
+| d   | `.fun`   n (`.`? p)+ (`:` e<sub>ret</sub>)?   ( `=` d\* e)? `;`                                                                                      | function declaration<sup>s</sup>     | [Lam](@ref thorin::Lam)               |
+| d   | `.Pi`    n (`:` e<sub>type</sub>)? (`=` e)? `;`                                                                                                      | Pi declaration                       | [Pi](@ref thorin::Pi)                 |
+| d   | `.Sigma` n (`:` e<sub>type</sub> )? (`,` L<sub>arity</sub>)? (`=` b<sub>[ ]</sub>)? `;`                                                              | sigma declaration                    | [Sigma](@ref thorin::Sigma)           |
+| d   | `.ax`    A `:` e<sub>type</sub> (`(` sa `,` ... `,` sa `)`)? <br> (`,` 𝖨<sub>normalizer</sub>)? (`,` L<sub>curry</sub>)? (`,` L<sub>trip</sub>)? `;` | axiom                                | [Axiom](@ref thorin::Axiom)           |
+| n   | 𝖨 \| A                                                                                                                                               | identifier or annex name             | `fe::Sym`/[Annex](@ref thorin::Annex) |
+| sa  | 𝖨 (`=` 𝖨 `,` ... `,` 𝖨)?                                                                                                                             | subtag with aliases                  |                                       |
 
 @note An elided type of a `.Pi` or `.Sigma` declaration defaults to `*`.
 
@@ -251,18 +251,18 @@ This is particularly useful, when dealing with memory:
 
 #### Literals & Co.
 
-| LHS | RHS                         | Comment                              | Thorin Class                                        |
-|-----|-----------------------------|--------------------------------------|-----------------------------------------------------|
-| e   | L (`:` e<sub>type</sub>)?   | literal                              | [Lit](@ref thorin::Lit)                             |
-| e   | X<sub>n</sub>               | literal of type `.Idx n`             | [Lit](@ref thorin::Lit)                             |
-| e   | `.ff`                       | alias for `0_2`                      | [Lit](@ref thorin::Lit)                             |
-| e   | `.tt`                       | alias for `1_2`                      | [Lit](@ref thorin::Lit)                             |
-| e   | C                           | character literal of type `.Idx 256` | [Lit](@ref thorin::Lit)                             |
-| e   | S                           | string tuple of type `«n; .Idx 256»` | [Tuple](@ref thorin::Tuple)                         |
-| e   | `⊥` (`:` e<sub>type</sub>)? | bottom                               | [Bot](@ref thorin::Bot)                             |
-| e   | `⊤` (`:` e<sub>type</sub>)? | top                                  | [Top](@ref thorin::Top)                             |
-| e   | n                           | identifier or annex name             | [Sym](@ref thorin::Sym)/[Annex](@ref thorin::Annex) |
-| e   | `{` d\* e `}`               | block<sup>s</sup>                    | -                                                   |
+| LHS | RHS                         | Comment                              | Thorin Class                          |
+|-----|-----------------------------|--------------------------------------|---------------------------------------|
+| e   | L (`:` e<sub>type</sub>)?   | literal                              | [Lit](@ref thorin::Lit)               |
+| e   | X<sub>n</sub>               | literal of type `.Idx n`             | [Lit](@ref thorin::Lit)               |
+| e   | `.ff`                       | alias for `0_2`                      | [Lit](@ref thorin::Lit)               |
+| e   | `.tt`                       | alias for `1_2`                      | [Lit](@ref thorin::Lit)               |
+| e   | C                           | character literal of type `.Idx 256` | [Lit](@ref thorin::Lit)               |
+| e   | S                           | string tuple of type `«n; .Idx 256»` | [Tuple](@ref thorin::Tuple)           |
+| e   | `⊥` (`:` e<sub>type</sub>)? | bottom                               | [Bot](@ref thorin::Bot)               |
+| e   | `⊤` (`:` e<sub>type</sub>)? | top                                  | [Top](@ref thorin::Top)               |
+| e   | n                           | identifier or annex name             | `fe::Sym`/[Annex](@ref thorin::Annex) |
+| e   | `{` d\* e `}`               | block<sup>s</sup>                    | -                                     |
 
 @note An elided type of
 * a literal defaults to `.Nat`,
