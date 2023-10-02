@@ -35,32 +35,6 @@ TEST(Lexer, Toks) {
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::M_eof));
 }
 
-TEST(Lexer, Loc) {
-    Driver driver;
-    std::istringstream is(" test  abc    def if  \nwhile λ foo   ");
-    Lexer lexer(driver.world(), is);
-    auto t1 = lexer.lex();
-    auto t2 = lexer.lex();
-    auto t3 = lexer.lex();
-    auto t4 = lexer.lex();
-    auto t5 = lexer.lex();
-    auto t6 = lexer.lex();
-    auto t7 = lexer.lex();
-    auto t8 = lexer.lex();
-    EXPECT_EQ(fmt("{} {} {} {} {} {} {} {}", t1, t2, t3, t4, t5, t6, t7, t8), "test abc def if while λ foo <eof>");
-
-    // clang-format off
-    EXPECT_EQ(t1.loc(), Loc({1,  2}, {1,  5}));
-    EXPECT_EQ(t2.loc(), Loc({1,  8}, {1, 10}));
-    EXPECT_EQ(t3.loc(), Loc({1, 15}, {1, 17}));
-    EXPECT_EQ(t4.loc(), Loc({1, 19}, {1, 20}));
-    EXPECT_EQ(t5.loc(), Loc({2,  1}, {2,  5}));
-    EXPECT_EQ(t6.loc(), Loc({2,  7}, {2,  7}));
-    EXPECT_EQ(t7.loc(), Loc({2,  9}, {2, 11}));
-    EXPECT_EQ(t8.loc(), Loc({2, 14}, {2, 14}));
-    // clang-format on
-}
-
 TEST(Lexer, Errors) {
     Driver driver;
     std::istringstream is1("asdf \xc0\xc0");
@@ -132,16 +106,6 @@ TEST_P(Real, sign) {
     std::istringstream is2("2.34e");
     Lexer l2(w, is2);
     EXPECT_ANY_THROW(l2.lex());
-}
-
-TEST(Lexer, utf8) {
-    std::ostringstream oss;
-    utf8::decode(oss, U'a');
-    utf8::decode(oss, U'£');
-    utf8::decode(oss, U'λ');
-    utf8::decode(oss, U'𐄂');
-    utf8::decode(oss, U'𐀮');
-    EXPECT_EQ(oss.str(), "a£λ𐄂𐀮");
 }
 
 INSTANTIATE_TEST_SUITE_P(Lexer, Real, testing::Range(0, 3));

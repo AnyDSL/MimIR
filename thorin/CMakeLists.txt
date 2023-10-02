@@ -87,8 +87,6 @@ add_library(libthorin
     util/sys.cpp
     util/sys.h
     util/types.h
-    util/utf8.cpp
-    util/utf8.h
     util/util.h
 )
 set_target_properties(libthorin PROPERTIES PREFIX "")

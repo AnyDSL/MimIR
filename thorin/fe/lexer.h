@@ -4,14 +4,15 @@
 
 #include <absl/container/flat_hash_map.h>
 
+#include <fe/lexer.h>
+
 #include "thorin/fe/tok.h"
-#include "thorin/util/utf8.h"
 
 namespace thorin {
 class World;
 
-class Lexer : public utf8::Lexer<3> {
-    using Super = utf8::Lexer<3>;
+class Lexer : public fe::Lexer<3> {
+    using Super = fe::Lexer<3>;
 
 public:
     /// Creates a lexer to read Thorin files (see [Lexical Structure](@ref lex)).
@@ -24,14 +25,20 @@ public:
     Tok lex();
 
 private:
-    Char next() override {
+    /// Invoke before assembling the next token.
+    void begin() {
+        loc_.begin = peek_;
+        str_.clear();
+    }
+
+    char32_t next() {
         auto res = Super::next();
         if (md_ && out_) {
-            if (res.c32 == utf8::EoF) {
+            if (res == fe::utf8::EoF) {
                 *md_ << "\n```\n";
                 out_ = false;
-            } else if (res.c32 != utf8::Err) {
-                bool success = utf8::decode(*md_, res.c32);
+            } else if (res) {
+                bool success = fe::utf8::encode(*md_, res);
                 assert_unused(success);
             }
         }
@@ -47,7 +54,7 @@ private:
     void parse_digits(int base = 10);
     bool parse_exp(int base = 10);
     void eat_comments();
-    bool start_md() const { return ahead(0).c32 == '/' && ahead(1).c32 == '/' && ahead(2).c32 == '/'; }
+    bool start_md() const { return ahead(0) == '/' && ahead(1) == '/' && ahead(2) == '/'; }
     void emit_md(bool start_of_file = false);
     void md_fence() {
         if (md_) *md_ << "```\n";
