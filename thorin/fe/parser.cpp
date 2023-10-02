@@ -26,7 +26,7 @@ using Tag = Tok::Tag;
 
 Tok Parser::lex() {
     auto result = ahead();
-    prev()      = result.loc();
+    prev_       = result.loc();
     for (size_t i = 0; i < Max_Ahead - 1; ++i) ahead(i) = ahead(i + 1);
     ahead(Max_Ahead - 1) = lexer().lex();
     return result;
@@ -91,13 +91,13 @@ void Parser::import(std::istream& is, const fs::path* path, std::ostream* md) {
     if (!is) error("cannot read file '{}'", *path);
 
     lexers_.emplace(world(), is, path, md);
-    auto state = state_;
+    auto state = std::pair(prev_, ahead_);
 
     for (size_t i = 0; i != Max_Ahead; ++i) ahead(i) = lexer().lex();
-    prev() = Loc(path, {1, 1});
+    prev_ = Loc(path, {1, 1});
 
     parse_module();
-    state_ = state;
+    std::tie(prev_, ahead_) = state;
     lexers_.pop();
 }
 
@@ -128,7 +128,7 @@ void Parser::parse_plugin() {
 Dbg Parser::parse_id(std::string_view ctxt) {
     if (auto id = accept(Tag::M_id)) return id->dbg();
     syntax_err("identifier", ctxt);
-    return {prev(), world().sym("<error>")};
+    return {prev_, world().sym("<error>")};
 }
 
 std::pair<Dbg, bool> Parser::parse_name(std::string_view ctxt) {
@@ -136,7 +136,7 @@ std::pair<Dbg, bool> Parser::parse_name(std::string_view ctxt) {
     if (auto tok = accept(Tag::M_id)) return {tok->dbg(), false};
     syntax_err("identifier or annex name", ctxt);
     return {
-        {prev(), world().sym("<error>")},
+        {prev_, world().sym("<error>")},
         false
     };
 }
@@ -274,7 +274,7 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::K_ret:     return parse_ret_expr();
         case Tag::M_anx:
         case Tag::M_id:      return scopes_.find(lex().dbg());
-        case Tag::M_str:     return world().tuple(lex().sym())->set(prev());
+        case Tag::M_str:     return world().tuple(lex().sym())->set(prev_);
         default:
             if (ctxt.empty()) return nullptr;
             syntax_err("primary expression", ctxt);
@@ -455,7 +455,7 @@ Lam* Parser::parse_lam(bool is_decl) {
     }
     // clang-format on
 
-    auto [dbg, anx] = is_decl ? parse_name(entity) : std::pair(Dbg{prev(), anonymous_}, false);
+    auto [dbg, anx] = is_decl ? parse_name(entity) : std::pair(Dbg{prev_, anonymous_}, false);
     auto outer      = scopes_.curr();
     Lam* decl       = nullptr;
 
@@ -566,8 +566,8 @@ Lam* Parser::parse_lam(bool is_decl) {
 
     auto body = accept(Tag::T_assign) ? parse_decls("body of a "s + entity) : nullptr;
     if (!body) {
-        if (!is_decl) error(prev(), "body of a {}", entity);
-        if (auto [_, __, filter] = funs.back(); filter) error(prev(), "cannot specify filter of a {}", entity);
+        if (!is_decl) error(prev_, "body of a {}", entity);
+        if (auto [_, __, filter] = funs.back(); filter) error(prev_, "cannot specify filter of a {}", entity);
     }
 
     // filter defaults to .tt for everything except the actual continuation of con/cn/fun/fn; here we use .ff as default
@@ -607,7 +607,7 @@ Ref Parser::parse_ret_expr() {
         return world().app(cn, {arg, lam});
     }
 
-    error(prev(), "continuation of the ret expression is not a returning continuation but has type '{}'", cn->type());
+    error(prev_, "continuation of the ret expression is not a returning continuation but has type '{}'", cn->type());
 }
 
 Ref Parser::parse_lit_expr() {
@@ -633,8 +633,8 @@ Ref Parser::parse_lit_expr() {
 
     if (tok.tag() == Tag::T_bot) return world().bot(world().type())->set(track.loc());
     if (tok.tag() == Tag::T_top) return world().top(world().type())->set(track.loc());
-    if (tok.tag() == Tag::L_s) error(prev(), ".Nat literal specified as signed but must be unsigned");
-    if (tok.tag() == Tag::L_f) error(prev(), ".Nat literal specified as floating-point but must be unsigned");
+    if (tok.tag() == Tag::L_s) error(prev_, ".Nat literal specified as signed but must be unsigned");
+    if (tok.tag() == Tag::L_f) error(prev_, ".Nat literal specified as floating-point but must be unsigned");
 
     return world().lit_nat(tok.lit_u())->set(track.loc());
 }
@@ -883,7 +883,7 @@ void Parser::parse_ax_decl() {
             world().register_annex(p | (flags_t(t) << 8_u64) | flags_t(s), axiom);
             for (auto& alias : sub) {
                 auto sym = world().sym(*dbg.sym + "."s + *alias);
-                scopes_.bind({prev(), sym}, axiom);
+                scopes_.bind({prev_, sym}, axiom);
             }
             ++s;
         }

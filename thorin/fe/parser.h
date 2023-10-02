@@ -1,5 +1,7 @@
 #pragma once
 
+#include <fe/parser.h>
+
 #include "thorin/driver.h"
 
 #include "thorin/fe/ast.h"
@@ -26,7 +28,7 @@ namespace thorin {
 ///
 ///      * If default argument is **elided** we have the same behavior as in 1.
 ///      * If default argument is **provided** we have the same behavior as in 2.
-class Parser {
+class Parser : public fe::Parser<Tok, Tok::Tag, 2, Parser> {
 public:
     Parser(World& world)
         : world_(world)
@@ -50,15 +52,13 @@ private:
             : parser_(parser)
             , pos_(pos) {}
 
-        Loc loc() const { return {parser_.prev().path, pos_, parser_.prev().finis}; }
+        Loc loc() const { return {parser_.prev_.path, pos_, parser_.prev_.finis}; }
         Dbg dbg(Sym sym) const { return {loc(), sym}; }
 
     private:
         Parser& parser_;
         Pos pos_;
     };
-
-    Loc& prev() { return state_.prev; }
 
     /// Factory method to build a Parser::Tracker.
     Tracker tracker() { return Tracker(*this, ahead().loc().begin); }
@@ -69,7 +69,7 @@ private:
     /// Get lookahead.
     Tok& ahead(size_t i = 0) {
         assert(i < Max_Ahead);
-        return state_.ahead[i];
+        return ahead_[i];
     }
 
     Lexer& lexer() { return lexers_.top(); }
@@ -172,10 +172,7 @@ private:
 
     World& world_;
     std::stack<Lexer> lexers_;
-    struct {
-        Loc prev;
-        Ahead ahead; ///< SLL look ahead
-    } state_;
+    Ahead ahead_; ///< SLL look ahead
     Scopes scopes_;
     Def2Fields def2fields_;
     Sym anonymous_;
