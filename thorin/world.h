@@ -5,6 +5,8 @@
 #include <string_view>
 #include <type_traits>
 
+#include <fe/arena.h>
+
 #include <absl/container/btree_map.h>
 #include <absl/container/btree_set.h>
 
@@ -451,7 +453,7 @@ private:
     /// @name Put into Sea of Nodes
     ///@{
     template<class T, class... Args> const T* unify(size_t num_ops, Args&&... args) {
-        auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
+        auto def = allocate<T>(num_ops, std::forward<Args&&>(args)...);
         if (auto loc = emit_loc()) def->set(loc);
         assert(!def->isa_mut());
 #ifdef THORIN_ENABLE_CHECKS
@@ -461,13 +463,13 @@ private:
         if (is_frozen()) {
             --state_.pod.curr_gid;
             auto i = move_.defs.find(def);
-            arena_.deallocate<T>(def);
+            deallocate<T>(def);
             if (i != move_.defs.end()) return static_cast<const T*>(*i);
             return nullptr;
         }
 
         if (auto [i, ins] = move_.defs.emplace(def); !ins) {
-            arena_.deallocate<T>(def);
+            deallocate<T>(def);
             return static_cast<const T*>(*i);
         }
 #ifdef THORIN_ENABLE_CHECKS
@@ -478,7 +480,7 @@ private:
     }
 
     template<class T, class... Args> T* insert(size_t num_ops, Args&&... args) {
-        auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
+        auto def = allocate<T>(num_ops, std::forward<Args&&>(args)...);
         if (auto loc = emit_loc()) def->set(loc);
 #ifdef THORIN_ENABLE_CHECKS
         if (flags().trace_gids) outln("{}: {} - {}", def->node_name(), def->gid(), def->flags());
@@ -487,87 +489,41 @@ private:
         assert_emplace(move_.defs, def);
         return def;
     }
+
+#if (!defined(_MSC_VER) && defined(NDEBUG))
+    struct Lock {
+        Lock() { assert((guard_ = !guard_) && "you are not allowed to recursively invoke allocate"); }
+        ~Lock() { guard_ = !guard_; }
+        static bool guard_;
+    };
+#else
+    struct Lock {
+        ~Lock() {}
+    };
+#endif
+
+    template<class T, class... Args> T* allocate(size_t num_ops, Args&&... args) {
+        static_assert(sizeof(Def) == sizeof(T),
+                        "you are not allowed to introduce any additional data in subclasses of Def");
+        Lock lock;
+        auto ptr = arena_.allocate(num_bytes_of<T>(num_ops));
+        auto res = new (ptr) T(std::forward<Args&&>(args)...);
+        assert(res->num_ops() == num_ops);
+        return res;
+    }
+
+    template<class T> void deallocate(const T* def) {
+        size_t n = num_bytes_of<T>(def->num_ops());
+        def->~T();
+        arena_.deallocate(n);
+    }
+
+    template<class T> static constexpr size_t num_bytes_of(size_t num_ops) { return sizeof(Def) + sizeof(void*) * num_ops; }
     ///@}
 
     Driver* driver_;
     State state_;
-
-    class Arena {
-    public:
-        Arena()
-            : root_(new Zone) // don't use 'new Zone()' - we keep the allocated Zone uninitialized
-            , curr_(root_.get()) {}
-
-        struct Zone {
-            static const size_t Size = 1024 * 1024 - sizeof(std::unique_ptr<int>); // 1MB - sizeof(next)
-            char buffer[Size];
-            std::unique_ptr<Zone> next;
-        };
-
-#if (!defined(_MSC_VER) && defined(NDEBUG))
-        struct Lock {
-            Lock() { assert((guard_ = !guard_) && "you are not allowed to recursively invoke allocate"); }
-            ~Lock() { guard_ = !guard_; }
-            static bool guard_;
-        };
-#else
-        struct Lock {
-            ~Lock() {}
-        };
-#endif
-        template<class T, class... Args> T* allocate(size_t num_ops, Args&&... args) {
-            static_assert(sizeof(Def) == sizeof(T),
-                          "you are not allowed to introduce any additional data in subclasses of Def");
-            Lock lock;
-            size_t num_bytes = num_bytes_of<T>(num_ops);
-            num_bytes        = align(num_bytes);
-            assert(num_bytes < Zone::Size);
-
-            if (index_ + num_bytes >= Zone::Size) {
-                auto zone = new Zone;
-                curr_->next.reset(zone);
-                curr_  = zone;
-                index_ = 0;
-            }
-
-            auto result = new (curr_->buffer + index_) T(std::forward<Args&&>(args)...);
-            assert(result->num_ops() == num_ops);
-            index_ += num_bytes;
-            assert(index_ % alignof(T) == 0);
-
-            return result;
-        }
-
-        template<class T> void deallocate(const T* def) {
-            size_t num_bytes = num_bytes_of<T>(def->num_ops());
-            num_bytes        = align(num_bytes);
-            def->~T();
-            if (ptrdiff_t(index_ - num_bytes) > 0) // don't care otherwise
-                index_ -= num_bytes;
-            assert(index_ % alignof(T) == 0);
-        }
-
-        static constexpr size_t align(size_t n) { return (n + (sizeof(void*) - 1)) & ~(sizeof(void*) - 1); }
-
-        template<class T> static constexpr size_t num_bytes_of(size_t num_ops) {
-            size_t result = sizeof(Def) + sizeof(void*) * num_ops;
-            return align(result);
-        }
-
-        friend void swap(Arena& a1, Arena& a2) {
-            using std::swap;
-            // clang-format off
-            swap(a1.root_,  a2.root_);
-            swap(a1.curr_,  a2.curr_);
-            swap(a1.index_, a2.index_);
-            // clang-format on
-        }
-
-    private:
-        std::unique_ptr<Zone> root_;
-        Zone* curr_;
-        size_t index_ = 0;
-    } arena_;
+    fe::Arena<> arena_;
 
     struct SeaHash {
         size_t operator()(const Def* def) const { return def->hash(); };
