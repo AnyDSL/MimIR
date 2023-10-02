@@ -72,7 +72,6 @@ add_library(libthorin
     util/array.h
     util/bitset.cpp
     util/bitset.h
-    util/cast.h
     util/dl.cpp
     util/dl.h
     util/hash.cpp
