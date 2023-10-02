@@ -1,6 +1,6 @@
-#include "thorin/util/loc.h"
+#include "thorin/util/dbg.h"
 
-namespace thorin {
+namespace fe {
 
 std::ostream& operator<<(std::ostream& os, const Pos pos) {
     if (pos.row) {
@@ -24,7 +24,4 @@ std::ostream& operator<<(std::ostream& os, const Loc loc) {
     return os << "<unknown location>";
 }
 
-void Pos::dump() { std::cout << *this << std::endl; }
-void Loc::dump() { std::cout << *this << std::endl; }
-
-} // namespace thorin
+} // namespace fe

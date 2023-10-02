@@ -2,8 +2,7 @@
 
 #include <fe/assert.h>
 
-#include "thorin/util/loc.h"
-#include "thorin/util/sym.h"
+#include "thorin/util/dbg.h"
 #include "thorin/util/types.h"
 
 namespace thorin {

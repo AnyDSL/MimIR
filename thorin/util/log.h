@@ -5,7 +5,7 @@
 
 #include "thorin/flags.h"
 
-#include "thorin/util/loc.h"
+#include "thorin/util/dbg.h"
 
 namespace thorin {
 

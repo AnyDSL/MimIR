@@ -72,19 +72,18 @@ add_library(libthorin
     util/array.h
     util/bitset.cpp
     util/bitset.h
+    util/dbg.cpp
+    util/dbg.h
     util/dl.cpp
     util/dl.h
     util/hash.cpp
     util/hash.h
     util/indexmap.h
     util/indexset.h
-    util/loc.cpp
-    util/loc.h
     util/log.cpp
     util/log.h
     util/print.cpp
     util/print.h
-    util/sym.h
     util/sys.cpp
     util/sys.h
     util/types.h

@@ -11,7 +11,6 @@
 #include "thorin/tuple.h"
 #include "thorin/world.h"
 
-#include "thorin/util/loc.h"
 #include "thorin/util/log.h"
 
 #include "dialects/regex/autogen.h"

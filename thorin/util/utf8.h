@@ -4,7 +4,7 @@
 #include <istream>
 #include <optional>
 
-#include "thorin/util/loc.h"
+#include "thorin/util/dbg.h"
 #include "thorin/util/types.h"
 
 namespace thorin::utf8 {

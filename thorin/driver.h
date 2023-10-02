@@ -14,7 +14,7 @@ namespace thorin {
 
 /// Some "global" variables needed all over the place.
 /// Well, there are not really global - that's the point of this class.
-class Driver : public SymPool {
+class Driver : public fe::SymPool {
 public:
     Driver();
 
@@ -86,7 +86,7 @@ private:
     Passes passes_;
     Normalizers normalizers_;
     std::deque<std::pair<fs::path, Sym>> imports_;
-    SymMap<SymMap<Annex>> plugin2annexes_;
+    fe::SymMap<fe::SymMap<Annex>> plugin2annexes_;
 };
 
 } // namespace thorin

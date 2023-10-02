@@ -2,7 +2,7 @@
 
 #include <ostream>
 
-#include "thorin/util/sym.h"
+#include "thorin/util/dbg.h"
 
 namespace thorin {
 

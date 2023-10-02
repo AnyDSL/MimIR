@@ -17,7 +17,7 @@
 
 #include "thorin/util/hash.h"
 #include "thorin/util/log.h"
-#include "thorin/util/sym.h"
+#include "thorin/util/dbg.h"
 
 namespace thorin {
 class Driver;

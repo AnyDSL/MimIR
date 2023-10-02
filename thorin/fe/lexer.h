@@ -56,7 +56,7 @@ private:
     World& world_;
     std::ostream* md_;
     bool out_ = true;
-    SymMap<Tok::Tag> keywords_;
+    fe::SymMap<Tok::Tag> keywords_;
     std::optional<Tok> cache_ = std::nullopt;
 };
 
