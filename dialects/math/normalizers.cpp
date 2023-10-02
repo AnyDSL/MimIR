@@ -8,8 +8,7 @@ namespace {
 
 // TODO move to normalize.h or so?
 // Swap Lit to left - or smaller gid, if no lit present.
-template<class Id>
-void commute(Id id, const Def*& a, const Def*& b) {
+template<class Id> void commute(Id id, const Def*& a, const Def*& b) {
     if (::thorin::is_commutative(id)) {
         if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>())) std::swap(a, b);
     }
@@ -48,7 +47,7 @@ Res fold(u64 a) {
         else if constexpr (id == tri::asinh) return asinh(x);
         else if constexpr (id == tri::acosh) return acosh(x);
         else if constexpr (id == tri::atanh) return atanh(x);
-        else unreachable();
+        else fe::unreachable();
     } else if constexpr (std::is_same_v<Id, rt>) {
         if constexpr (false) {}
         else if constexpr (id == rt::sq) return std::sqrt(x);
@@ -62,7 +61,7 @@ Res fold(u64 a) {
         else if constexpr (id == exp::log  ) return std::log  (x);
         else if constexpr (id == exp::log2 ) return std::log2 (x);
         else if constexpr (id == exp::log10) return std::log10(x);
-        else unreachable();
+        else fe::unreachable();
     } else if constexpr (std::is_same_v<Id, er>) {
         if constexpr (false) {}
         else if constexpr (id == er::f ) return std::erf (x);
@@ -109,7 +108,7 @@ Ref fold(World& world, Ref type, const Def* a) {
     case i: res = fold<Id, i>(la->get()); break;
             THORIN_16_32_64(CODE)
 #undef CODE
-            default: unreachable();
+            default: fe::unreachable();
         }
 
         return world.lit(type, *res);
@@ -158,8 +157,7 @@ Res fold(u64 a, u64 b) {
 }
 // clang-format on
 
-template<class Id, Id id>
-Ref fold(World& world, Ref type, const Def* a) {
+template<class Id, Id id> Ref fold(World& world, Ref type, const Def* a) {
     if (a->isa<Bot>()) return world.bot(type);
 
     if (auto la = Lit::isa(a)) {
@@ -170,7 +168,7 @@ Ref fold(World& world, Ref type, const Def* a) {
     case i: res = fold<Id, id, i>(*la); break;
             THORIN_16_32_64(CODE)
 #undef CODE
-            default: unreachable();
+            default: fe::unreachable();
         }
 
         return world.lit(type, *res);
@@ -180,8 +178,7 @@ Ref fold(World& world, Ref type, const Def* a) {
 }
 
 // Note that @p a and @p b are passed by reference as fold also commutes if possible.
-template<class Id, Id id>
-Ref fold(World& world, Ref type, const Def*& a, const Def*& b) {
+template<class Id, Id id> Ref fold(World& world, Ref type, const Def*& a, const Def*& b) {
     if (a->isa<Bot>() || b->isa<Bot>()) return world.bot(type);
 
     if (auto la = Lit::isa(a)) {
@@ -193,7 +190,7 @@ Ref fold(World& world, Ref type, const Def*& a, const Def*& b) {
     case i: res = fold<Id, id, i>(*la, *lb); break;
                 THORIN_16_32_64(CODE)
 #undef CODE
-                default: unreachable();
+                default: fe::unreachable();
             }
 
             return world.lit(type, *res);
@@ -215,8 +212,7 @@ Ref fold(World& world, Ref type, const Def*& a, const Def*& b) {
 /// (3)      a    op (lz op w) ->  lz op (a op w)
 /// (4) (lx op y) op      b    ->  lx op (y op b)
 /// ```
-template<class Id>
-Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref b) {
+template<class Id> Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref b) {
     if (!is_associative(id)) return nullptr;
 
     if (auto xy = match<Id>(id, a)) {
@@ -254,8 +250,7 @@ Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref 
     return nullptr;
 }
 
-template<class Id, Id id, nat_t sw, nat_t dw>
-Res fold(u64 a) {
+template<class Id, Id id, nat_t sw, nat_t dw> Res fold(u64 a) {
     using S = std::conditional_t<id == conv::s2f, w2s<sw>, std::conditional_t<id == conv::u2f, w2u<sw>, w2f<sw>>>;
     using D = std::conditional_t<id == conv::f2s, w2s<dw>, std::conditional_t<id == conv::f2u, w2u<dw>, w2f<dw>>>;
     return D(bitcast<S>(a));
@@ -263,8 +258,7 @@ Res fold(u64 a) {
 
 } // namespace
 
-template<arith id>
-Ref normalize_arith(Ref type, Ref c, Ref arg) {
+template<arith id> Ref normalize_arith(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -305,7 +299,7 @@ Ref normalize_arith(Ref type, Ref c, Ref arg) {
                     case arith::sub: return a;  // a - 0 -> a
                     case arith::div: break;
                     case arith::rem: break;
-                    default: unreachable();
+                    default: fe::unreachable();
                     // add, mul are commutative, the literal has been normalized to the left
                 }
             }
@@ -328,8 +322,7 @@ Ref normalize_arith(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, callee, {a, b});
 }
 
-template<extrema id>
-Ref normalize_extrema(Ref type, Ref c, Ref arg) {
+template<extrema id> Ref normalize_extrema(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -349,8 +342,7 @@ Ref normalize_extrema(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, c, arg);
 }
 
-template<tri id>
-Ref normalize_tri(Ref type, Ref c, Ref arg) {
+template<tri id> Ref normalize_tri(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
     if (auto lit = fold<tri, id>(world, type, arg)) return lit;
     return world.raw_app(type, c, arg);
@@ -363,36 +355,31 @@ Ref normalize_pow(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, c, arg);
 }
 
-template<rt id>
-Ref normalize_rt(Ref type, Ref c, Ref arg) {
+template<rt id> Ref normalize_rt(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
     if (auto lit = fold<rt, id>(world, type, arg)) return lit;
     return world.raw_app(type, c, arg);
 }
 
-template<exp id>
-Ref normalize_exp(Ref type, Ref c, Ref arg) {
+template<exp id> Ref normalize_exp(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
     if (auto lit = fold<exp, id>(world, type, arg)) return lit;
     return world.raw_app(type, c, arg);
 }
 
-template<er id>
-Ref normalize_er(Ref type, Ref c, Ref arg) {
+template<er id> Ref normalize_er(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
     if (auto lit = fold<er, id>(world, type, arg)) return lit;
     return world.raw_app(type, c, arg);
 }
 
-template<gamma id>
-Ref normalize_gamma(Ref type, Ref c, Ref arg) {
+template<gamma id> Ref normalize_gamma(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
     if (auto lit = fold<gamma, id>(world, type, arg)) return lit;
     return world.raw_app(type, c, arg);
 }
 
-template<cmp id>
-Ref normalize_cmp(Ref type, Ref c, Ref arg) {
+template<cmp id> Ref normalize_cmp(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
@@ -404,8 +391,7 @@ Ref normalize_cmp(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, callee, {a, b});
 }
 
-template<conv id>
-Ref normalize_conv(Ref dst_t, Ref c, Ref x) {
+template<conv id> Ref normalize_conv(Ref dst_t, Ref c, Ref x) {
     auto& world = dst_t->world();
     auto callee = c->as<App>();
     auto s_t    = x->type()->as<App>();
@@ -443,7 +429,7 @@ Ref normalize_conv(Ref dst_t, Ref c, Ref x) {
             M(32,  1) M(32,  8) M(32, 16) M(32, 32) M(32, 64)
             M(64,  1) M(64,  8) M(64, 16) M(64, 32) M(64, 64)
 
-            else unreachable();
+            else fe::unreachable();
             // clang-format on
             return world.lit(d_t, *res);
         }
@@ -458,8 +444,7 @@ Ref normalize_abs(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, c, arg);
 }
 
-template<round id>
-Ref normalize_round(Ref type, Ref c, Ref arg) {
+template<round id> Ref normalize_round(Ref type, Ref c, Ref arg) {
     auto& world = type->world();
     if (auto lit = fold<round, id>(world, type, arg)) return lit;
     return world.raw_app(type, c, arg);

@@ -171,7 +171,7 @@ std::string Emitter::convert(const Def* type) {
             case 16: return types_[type] = "half";
             case 32: return types_[type] = "float";
             case 64: return types_[type] = "double";
-            default: unreachable();
+            default: fe::unreachable();
         }
     } else if (auto ptr = match<mem::Ptr>(type)) {
         auto [pointee, addr_space] = ptr->args<2>();
@@ -214,7 +214,7 @@ std::string Emitter::convert(const Def* type) {
         }
         print(s, "}}");
     } else {
-        unreachable();
+        fe::unreachable();
     }
 
     if (name.empty()) return types_[type] = s.str();
@@ -529,13 +529,13 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                     break;
                 }
                 case 64: hex = lit->get<u64>(); break;
-                default: unreachable();
+                default: fe::unreachable();
             }
 
             s << "0x" << std::setfill('0') << std::setw(16) << std::right << std::hex << hex;
             return s.str();
         }
-        unreachable();
+        fe::unreachable();
     } else if (def->isa<Bot>()) {
         return "undef";
     } else if (auto top = def->isa<Top>()) {
@@ -635,7 +635,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             case core::ncmp::l:  op += "ult"; break;
             case core::ncmp::le: op += "ule"; break;
             // clang-format on
-            default: unreachable();
+            default: fe::unreachable();
         }
 
         return bb.assign(name, "{} i64 {}, {}", op, a, b);
@@ -667,7 +667,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             case core::bit2:: iff: return bb.assign(name, "and {} {}, {}", neg(a), b);
             case core::bit2::niff: return bb.assign(name, "or  {} {}, {}", neg(a), b);
             // clang-format on
-            default: unreachable();
+            default: fe::unreachable();
         }
     } else if (auto shr = match<core::shr>(def)) {
         auto [a, b] = shr->args<2>([this](auto def) { return emit(def); });
@@ -729,7 +729,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             case core::icmp::ul:  op += "ult"; break;
             case core::icmp::ule: op += "ule"; break;
             // clang-format on
-            default: unreachable();
+            default: fe::unreachable();
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
@@ -922,7 +922,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 case math::tri::cos: f += "cos"; break;
                 case math::tri::tan: f += "tan"; break;
                 case math::tri::ahFF: error("this axiom is supposed to be unused");
-                default: unreachable();
+                default: fe::unreachable();
             }
 
             if (tri.sub() & sub_t(math::tri::h)) f += "h";
@@ -1008,7 +1008,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             case math::cmp::uge: op += "uge"; break;
             case math::cmp::une: op += "une"; break;
             // clang-format on
-            default: unreachable();
+            default: fe::unreachable();
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);

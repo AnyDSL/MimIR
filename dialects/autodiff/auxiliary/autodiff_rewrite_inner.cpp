@@ -3,8 +3,6 @@
 
 #include "thorin/tuple.h"
 
-#include "thorin/util/assert.h"
-
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/autodiff/pass/autodiff_eval.h"
 #include "dialects/core/core.h"

@@ -9,7 +9,6 @@
 
 using namespace std::literals;
 using namespace thorin;
-using namespace thorin::fe;
 
 TEST(Lexer, Toks) {
     Driver driver;
@@ -104,7 +103,7 @@ TEST_P(Real, sign) {
             case 0: break;
             case 1: s.insert(0, "+"sv); break;
             case 2: s.insert(0, "-"sv); break;
-            default: unreachable();
+            default: fe::unreachable();
         }
 
         std::istringstream is(s);

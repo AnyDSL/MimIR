@@ -130,7 +130,7 @@ int main(int argc, char** argv) {
 
         auto path = fs::path(input);
         world.set(path.filename().replace_extension().string());
-        auto parser = fe::Parser(world);
+        auto parser = Parser(world);
         parser.import(input, os[Md]);
 
         if (flags.bootstrap) {

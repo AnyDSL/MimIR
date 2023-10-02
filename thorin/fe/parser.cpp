@@ -16,7 +16,7 @@
 
 using namespace std::string_literals;
 
-namespace thorin::fe {
+namespace thorin {
 
 using Tag = Tok::Tag;
 
@@ -386,7 +386,7 @@ Pi* Parser::parse_pi_expr(Pi* outer) {
         case Tag::T_Pi: entity = "dependent function type"; break;
         case Tag::K_Cn: entity = "continuation type"; break;
         case Tag::K_Fn: entity = "returning continuation type"; break;
-        default: unreachable();
+        default: fe::unreachable();
     }
 
     Pi* first = nullptr;
@@ -423,7 +423,7 @@ Pi* Parser::parse_pi_expr(Pi* outer) {
             pi->unset()->set_dom(last);
             break;
         }
-        default: unreachable();
+        default: fe::unreachable();
     }
 
     for (auto pi : pis | std::ranges::views::reverse) {
@@ -451,7 +451,7 @@ Lam* Parser::parse_lam(bool is_decl) {
         case Tag::K_lam: entity = "function declaration";               break;
         case Tag::K_con: entity = "continuation declaration";           break;
         case Tag::K_fun: entity = "returning continuation declaration"; break;
-        default: unreachable();
+        default: fe::unreachable();
     }
     // clang-format on
 
@@ -539,7 +539,7 @@ Lam* Parser::parse_lam(bool is_decl) {
             scopes_.bind({ret_loc, return_}, new_var->proj(2, 1)->set(Dbg{ret_loc, return_}));
             break;
         }
-        default: unreachable();
+        default: fe::unreachable();
     }
 
     auto [_, first, __] = funs.front();
@@ -625,7 +625,7 @@ Ref Parser::parse_lit_expr() {
             case Tag::L_f: break;
             case Tag::T_bot: return world().bot(type)->set(track.loc());
             case Tag::T_top: return world().top(type)->set(track.loc());
-            default: unreachable();
+            default: fe::unreachable();
         }
         // clang-format on
         return world().lit(type, tok.lit_u())->set(track.loc());
@@ -1014,4 +1014,4 @@ void Parser::parse_pi_decl() {
     expect(Tag::T_semicolon, "end of a pi declaration");
 }
 
-} // namespace thorin::fe
+} // namespace thorin

@@ -81,8 +81,8 @@ UMax::UMax(World& world, Defs ops)
  * rebuild
  */
 
-Ref Infer    ::rebuild(World&,   Ref,   Defs  ) const { unreachable(); }
-Ref Global   ::rebuild(World&,   Ref,   Defs  ) const { unreachable(); }
+Ref Infer    ::rebuild(World&,   Ref,   Defs  ) const { fe::unreachable(); }
+Ref Global   ::rebuild(World&,   Ref,   Defs  ) const { fe::unreachable(); }
 Ref Idx      ::rebuild(World& w, Ref  , Defs  ) const { return w.type_idx(); }
 Ref Nat      ::rebuild(World& w, Ref  , Defs  ) const { return w.type_nat(); }
 Ref Univ     ::rebuild(World& w, Ref  , Defs  ) const { return w.univ(); }
@@ -129,7 +129,7 @@ Pi*     Pi    ::stub(World& w, Ref t) { return w.mut_pi   (t, is_implicit()) ->s
 Sigma*  Sigma ::stub(World& w, Ref t) { return w.mut_sigma(t, num_ops())     ->set(dbg()); }
 
 template<bool up> TBound<up>* TBound<up>::stub(World& w, Ref t) { return w.mut_bound<up>(t, num_ops()); }
-template<bool up> TExt  <up>* TExt  <up>::stub(World&  , Ref  ) { unreachable(); }
+template<bool up> TExt  <up>* TExt  <up>::stub(World&  , Ref  ) { fe::unreachable(); }
 
 /*
  * instantiate templates
@@ -248,7 +248,7 @@ std::string_view Def::node_name() const {
     case Node::op: return #abbr;
         THORIN_NODE(CODE)
 #undef CODE
-        default: unreachable();
+        default: fe::unreachable();
     }
 }
 
@@ -291,7 +291,7 @@ Ref Def::var() {
     if (isa<Bound >()) return w.var(this, this);
     if (isa<Infer >()) return nullptr;
     if (isa<Global>()) return nullptr;
-    unreachable();
+    fe::unreachable();
 }
 
 bool Def::is_term() const {

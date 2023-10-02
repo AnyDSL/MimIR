@@ -77,7 +77,7 @@ bool Infer::eliminate(Array<Ref*> refs) {
 
 #ifdef THORIN_ENABLE_CHECKS
 template<bool infer> bool Check::fail() {
-    if (infer && world().flags().break_on_alpha_unequal) breakpoint();
+    if (infer && world().flags().break_on_alpha_unequal) fe::breakpoint();
     return false;
 }
 #endif

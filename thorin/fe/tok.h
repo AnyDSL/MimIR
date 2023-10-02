@@ -1,6 +1,7 @@
 #pragma once
 
-#include "thorin/util/assert.h"
+#include <fe/assert.h>
+
 #include "thorin/util/loc.h"
 #include "thorin/util/sym.h"
 #include "thorin/util/types.h"
@@ -9,8 +10,6 @@ namespace thorin {
 
 class Def;
 class Lit;
-
-namespace fe {
 
 // clang-format off
 #define THORIN_KEY(m)                  \
@@ -118,7 +117,7 @@ public:
         switch (p) {
 #define CODE(l, p, r) \
             case Prec::p: return {Prec::l, Prec::r};
-            default:      unreachable();
+            default:      fe::unreachable();
         THORIN_PREC(CODE)
 #undef CODE
         }
@@ -195,5 +194,4 @@ private:
     };
 };
 
-} // namespace fe
 } // namespace thorin

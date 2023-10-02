@@ -7,9 +7,6 @@
 namespace thorin {
 
 class Def;
-
-namespace fe {
-
 class Ptrn;
 
 class Scopes {
@@ -31,5 +28,4 @@ private:
     std::deque<Scope> scopes_;
 };
 
-} // namespace fe
 } // namespace thorin

@@ -293,7 +293,7 @@ template<ncmp id> Ref normalize_ncmp(Ref type, Ref callee, Ref arg) {
                 case ncmp::le: return world.lit_nat(*la <= *lb);
                 case ncmp::g : return world.lit_nat(*la >  *lb);
                 case ncmp::ge: return world.lit_nat(*la >= *lb);
-                default: unreachable();
+                default: fe::unreachable();
             }
             // clang-format on
         }
@@ -349,7 +349,7 @@ template<bit1 id> Ref normalize_bit1(Ref type, Ref c, Ref a) {
         switch (id) {
             case bit1::f: return world.lit_idx(*ls, 0);
             case bit1::t: return world.lit_idx(*ls, *ls - 1_u64);
-            case bit1::id: unreachable();
+            case bit1::id: fe::unreachable();
             default: break;
         }
 
@@ -400,7 +400,7 @@ template<bit2 id> Ref normalize_bit2(Ref type, Ref c, Ref arg) {
             case bit2::nxor: return world.lit_idx_mod(*ls, ~(*la ^  *lb));
             case bit2:: iff: return world.lit_idx_mod(*ls, ~ *la |  *lb);
             case bit2::niff: return world.lit_idx    (*ls,   *la & ~*lb);
-            default: unreachable();
+            default: fe::unreachable();
         }
     }
 
@@ -516,7 +516,7 @@ template<wrap id> Ref normalize_wrap(Ref type, Ref c, Ref arg) {
             switch (id) {
                 case wrap::sub: return a;    // a  - 0 -> a
                 case wrap::shl: return a;    // a >> 0 -> a
-                default: unreachable();
+                default: fe::unreachable();
                 // add, mul are commutative, the literal has been normalized to the left
             }
         }
@@ -656,7 +656,7 @@ template<trait id> Ref normalize_trait(Ref nat, Ref callee, Ref type) {
             case 16: return world.lit_nat(2);
             case 32: return world.lit_nat(4);
             case 64: return world.lit_nat(8);
-            default: unreachable();
+            default: fe::unreachable();
         }
     } else if (type->isa<Sigma>() || type->isa<Meet>()) {
         u64 offset = 0;

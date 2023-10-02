@@ -70,7 +70,6 @@ add_library(libthorin
     phase/phase.cpp
     phase/phase.h
     util/array.h
-    util/assert.h
     util/bitset.cpp
     util/bitset.h
     util/cast.h
@@ -117,8 +116,7 @@ target_link_libraries(libthorin
         absl::btree
         absl::flat_hash_map absl::flat_hash_set
         absl::node_hash_map absl::node_hash_set
-        rang
-        ${CMAKE_DL_LIBS}
+        fe rang ${CMAKE_DL_LIBS}
 )
 install(
     TARGETS libthorin

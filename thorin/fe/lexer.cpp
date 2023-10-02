@@ -4,7 +4,7 @@
 
 using namespace std::literals;
 
-namespace thorin::fe {
+namespace thorin {
 
 using Tag = Tok::Tag;
 
@@ -281,7 +281,7 @@ void Lexer::parse_digits(int base /*= 10*/) {
         case  8: while (accept_if([](int i) { return '0' <= i && i <= '7'; })) {} break;
         case 10: while (accept_if(isdigit)) {} break;
         case 16: while (accept_if(isxdigit)) {} break;
-        default: unreachable();
+        default: fe::unreachable();
     }
 };
 
@@ -355,4 +355,4 @@ void Lexer::emit_md(bool start_of_file) {
 
 Sym Lexer::sym() { return world().sym(str_); }
 
-} // namespace thorin::fe
+} // namespace thorin

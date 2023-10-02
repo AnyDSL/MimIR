@@ -43,7 +43,7 @@ Ref CopyProp::rewrite(Ref def) {
                 new_doms.emplace_back(var_lam->var(n, i)->type());
                 new_args.emplace_back(app->arg(n, i));
                 break;
-            default: unreachable();
+            default: fe::unreachable();
         }
     }
 
@@ -74,7 +74,7 @@ Ref CopyProp::rewrite(Ref def) {
                 case Lattice::Dead: return proxy(var_lam->var(n, i)->type(), {var_lam, world().lit_nat(i)}, Varxy);
                 case Lattice::Prop: return args[i];
                 case Lattice::Keep: return prop_lam->var(j++);
-                default: unreachable();
+                default: fe::unreachable();
             }
         });
 

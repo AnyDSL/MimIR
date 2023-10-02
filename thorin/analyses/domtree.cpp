@@ -2,8 +2,7 @@
 
 namespace thorin {
 
-template<bool forward>
-void DomTreeBase<forward>::create() {
+template<bool forward> void DomTreeBase<forward>::create() {
     // Cooper et al, 2001. A Simple, Fast Dominance Algorithm. http://www.cs.rice.edu/~keith/EMBED/dom.pdf
     idoms_[cfg().entry()] = cfg().entry();
 
@@ -15,7 +14,7 @@ void DomTreeBase<forward>::create() {
                 goto outer_loop;
             }
         }
-        unreachable();
+        fe::unreachable();
 outer_loop:;
     }
 
@@ -37,8 +36,7 @@ outer_loop:;
     for (auto n : cfg().reverse_post_order().skip_front()) children_[idom(n)].push_back(n);
 }
 
-template<bool forward>
-void DomTreeBase<forward>::depth(const CFNode* n, int i) {
+template<bool forward> void DomTreeBase<forward>::depth(const CFNode* n, int i) {
     depth_[n] = i;
     for (auto child : children(n)) depth(child, i + 1);
 }

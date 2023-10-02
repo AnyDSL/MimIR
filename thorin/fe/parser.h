@@ -6,7 +6,7 @@
 #include "thorin/fe/lexer.h"
 #include "thorin/fe/scopes.h"
 
-namespace thorin::fe {
+namespace thorin {
 
 /// Parses Thorin code into the provided World.
 ///
@@ -182,4 +182,4 @@ private:
     Sym return_;
 };
 
-} // namespace thorin::fe
+} // namespace thorin

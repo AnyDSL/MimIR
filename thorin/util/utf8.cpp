@@ -1,6 +1,6 @@
 #include "thorin/util/utf8.h"
 
-#include "thorin/util/assert.h"
+#include <fe/assert.h>
 
 namespace thorin::utf8 {
 

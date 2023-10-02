@@ -14,7 +14,7 @@ int main(int, char**) {
         auto& world = driver.world();
         driver.log().set(&std::cerr).set(Log::Level::Debug);
 
-        auto parser = fe::Parser(world);
+        auto parser = Parser(world);
         for (auto plugin : {"compile", "core"}) parser.plugin(plugin);
 
         // .Cn [%mem.M, I32, %mem.Ptr (I32, 0) .Cn [%mem.M, I32]]

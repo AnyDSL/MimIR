@@ -1,8 +1,8 @@
 #pragma once
 
-#include "thorin/plugin.h"
+#include <fe/assert.h>
 
-#include "thorin/util/assert.h"
+#include "thorin/plugin.h"
 
 namespace thorin {
 
@@ -54,8 +54,7 @@ public:
     ///@}
 
     /// Type of Match::def_.
-    template<class T>
-    struct Match {
+    template<class T> struct Match {
         using type = App;
     };
 
@@ -67,8 +66,7 @@ template<class Id> concept annex_with_subs    = Annex::Num<Id> != 0;
 template<class Id> concept annex_without_subs = Annex::Num<Id> == 0;
 // clang-format on
 
-template<class Id, class D>
-class Match {
+template<class Id, class D> class Match {
     static_assert(Annex::Num<Id> != size_t(-1), "invalid number of sub tags");
     static_assert(Annex::Base<Id> != flags_t(-1), "invalid axiom base");
 
@@ -104,8 +102,7 @@ private:
 /// @name match/force
 ///@{
 /// @see @ref cast_axiom
-template<class Id, bool DynCast = true>
-auto match(Ref def) {
+template<class Id, bool DynCast = true> auto match(Ref def) {
     using D                = typename Axiom::Match<Id>::type;
     auto [axiom, curry, _] = Axiom::get(def);
     bool cond              = axiom && curry == 0 && axiom->base() == Annex::Base<Id>;
@@ -115,8 +112,7 @@ auto match(Ref def) {
     return Match<Id, D>(axiom, def->as<D>());
 }
 
-template<class Id, bool DynCast = true>
-auto match(Id id, Ref def) {
+template<class Id, bool DynCast = true> auto match(Id id, Ref def) {
     using D                = typename Axiom::Match<Id>::type;
     auto [axiom, curry, _] = Axiom::get(def);
     bool cond              = axiom && curry == 0 && axiom->flags() == (flags_t)id;

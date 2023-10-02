@@ -2,8 +2,6 @@
 
 #include "thorin/def.h"
 
-#include "thorin/util/assert.h"
-
 #include "dialects/core/core.h"
 #include "dialects/direct/direct.h"
 #include "dialects/mem/mem.h"

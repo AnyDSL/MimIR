@@ -240,7 +240,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
             return map(def->rebuild(w, new_type, new_ops));
     }
 
-    thorin::unreachable();
+    fe::unreachable();
 }
 
 Def* ClosConv::rewrite_mut(Def* mut, const Def* new_type, Def2Def& subst) {

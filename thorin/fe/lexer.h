@@ -9,9 +9,6 @@
 
 namespace thorin {
 class World;
-}
-
-namespace thorin::fe {
 
 class Lexer : public utf8::Lexer<3> {
     using Super = utf8::Lexer<3>;
@@ -63,4 +60,4 @@ private:
     std::optional<Tok> cache_ = std::nullopt;
 };
 
-} // namespace thorin::fe
+} // namespace thorin

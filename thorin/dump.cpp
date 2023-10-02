@@ -1,10 +1,11 @@
 #include <fstream>
 
+#include <fe/assert.h>
+
 #include "thorin/driver.h"
 
 #include "thorin/analyses/deptree.h"
 #include "thorin/fe/tok.h"
-#include "thorin/util/assert.h"
 #include "thorin/util/util.h"
 
 using namespace std::literals;
@@ -89,10 +90,10 @@ private:
 
     friend std::ostream& operator<<(std::ostream& os, const LRPrec& p) {
         if constexpr (L) {
-            if (Inline(p.l) && fe::Tok::prec(fe::Tok::prec(p.r))[0] > fe::Tok::prec(p.r)) return print(os, "({})", p.l);
+            if (Inline(p.l) && Tok::prec(Tok::prec(p.r))[0] > Tok::prec(p.r)) return print(os, "({})", p.l);
             return print(os, "{}", p.l);
         } else {
-            if (Inline(p.r) && fe::Tok::prec(p.l) > fe::Tok::prec(fe::Tok::prec(p.l))[1]) return print(os, "({})", p.r);
+            if (Inline(p.r) && Tok::prec(p.l) > Tok::prec(Tok::prec(p.l))[1]) return print(os, "({})", p.r);
             return print(os, "{}", p.r);
         }
     }
@@ -215,7 +216,7 @@ void Dumper::dump(Def* mut) {
         if (def->isa<Arr>()) return ".Arr";
         if (def->isa<Pack>()) return ".pack";
         if (def->isa<Pi>()) return ".Pi";
-        unreachable();
+        fe::unreachable();
     };
 
     auto mut_op0 = [&](const Def* def) -> std::ostream& {
@@ -223,7 +224,7 @@ void Dumper::dump(Def* mut) {
         if (auto arr = def->isa<Arr>()) return print(os, ", {}", arr->shape());
         if (auto pack = def->isa<Pack>()) return print(os, ", {}", pack->shape());
         if (auto pi = def->isa<Pi>()) return print(os, ", {}", pi->dom());
-        unreachable();
+        fe::unreachable();
     };
 
     if (!mut->is_set()) {

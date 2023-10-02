@@ -3,6 +3,8 @@
 #include <optional>
 #include <vector>
 
+#include <fe/assert.h>
+
 #include "thorin/config.h"
 
 #include "thorin/util/array.h"
@@ -453,7 +455,7 @@ public:
 
     /// @name Rebuild
     ///@{
-    virtual Def* stub(World&, Ref) { unreachable(); }
+    virtual Def* stub(World&, Ref) { fe::unreachable(); }
 
     /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
     virtual Ref rebuild(World& w, Ref type, Defs ops) const = 0;

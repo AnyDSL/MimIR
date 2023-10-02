@@ -7,7 +7,7 @@
 
 #include "thorin/fe/scopes.h"
 
-namespace thorin::fe {
+namespace thorin {
 
 /*
  * bind
@@ -87,4 +87,4 @@ const Def* TuplePtrn::type(World& world, Def2Fields& def2fields) const {
     return type_ = sigma;
 }
 
-} // namespace thorin::fe
+} // namespace thorin

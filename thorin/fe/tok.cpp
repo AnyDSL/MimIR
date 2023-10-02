@@ -1,11 +1,11 @@
 #include "thorin/fe/tok.h"
 
+#include <fe/assert.h>
+
 #include "thorin/lam.h"
 #include "thorin/tuple.h"
 
-#include "thorin/util/assert.h"
-
-namespace thorin::fe {
+namespace thorin {
 
 std::string_view Tok::tag2str(Tok::Tag tag) {
     switch (tag) {
@@ -14,9 +14,9 @@ std::string_view Tok::tag2str(Tok::Tag tag) {
         THORIN_KEY(CODE)
         THORIN_TOK(CODE)
 #undef CODE
-        case Tag::Nil: unreachable();
+        case Tag::Nil: fe::unreachable();
     }
-    unreachable();
+    fe::unreachable();
 }
 
 /// @name std::ostream operator
@@ -28,13 +28,13 @@ std::ostream& operator<<(std::ostream& os, Tok tok) {
 ///@}
 
 // clang-format off
-fe::Tok::Prec Tok::prec(const Def* def) {
-    if (def->isa<Pi     >()) return fe::Tok::Prec::Arrow;
-    if (def->isa<App    >()) return fe::Tok::Prec::App;
-    if (def->isa<Extract>()) return fe::Tok::Prec::Extract;
-    if (def->isa<Lit    >()) return fe::Tok::Prec::Lit;
-    return fe::Tok::Prec::Bot;
+Tok::Prec Tok::prec(const Def* def) {
+    if (def->isa<Pi     >()) return Tok::Prec::Arrow;
+    if (def->isa<App    >()) return Tok::Prec::App;
+    if (def->isa<Extract>()) return Tok::Prec::Extract;
+    if (def->isa<Lit    >()) return Tok::Prec::Lit;
+    return Tok::Prec::Bot;
 }
 // clang-format on
 
-} // namespace thorin::fe
+} // namespace thorin

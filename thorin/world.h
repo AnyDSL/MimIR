@@ -456,7 +456,7 @@ private:
         assert(!def->isa_mut());
 #ifdef THORIN_ENABLE_CHECKS
         if (flags().trace_gids) outln("{}: {} - {}", def->node_name(), def->gid(), def->flags());
-        if (flags().reeval_breakpoints && breakpoints().contains(def->gid())) thorin::breakpoint();
+        if (flags().reeval_breakpoints && breakpoints().contains(def->gid())) fe::breakpoint();
 #endif
         if (is_frozen()) {
             --state_.pod.curr_gid;
@@ -471,7 +471,7 @@ private:
             return static_cast<const T*>(*i);
         }
 #ifdef THORIN_ENABLE_CHECKS
-        if (!flags().reeval_breakpoints && breakpoints().contains(def->gid())) thorin::breakpoint();
+        if (!flags().reeval_breakpoints && breakpoints().contains(def->gid())) fe::breakpoint();
 #endif
         def->finalize();
         return def;
@@ -482,7 +482,7 @@ private:
         if (auto loc = emit_loc()) def->set(loc);
 #ifdef THORIN_ENABLE_CHECKS
         if (flags().trace_gids) outln("{}: {} - {}", def->node_name(), def->gid(), def->flags());
-        if (breakpoints().contains(def->gid())) thorin::breakpoint();
+        if (breakpoints().contains(def->gid())) fe::breakpoint();
 #endif
         assert_emplace(move_.defs, def);
         return def;
