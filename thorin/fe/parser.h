@@ -49,7 +49,7 @@ private:
 
     /// @name get next token
     ///@{
-    Lexer& lexer() { return lexers_.top(); }
+    Lexer& lexer() { return *lexer_; }
 
     /// Parser::lex Parser::ahead() which must be a @p tag.
     /// Issue err%or with @p ctxt otherwise.
@@ -132,7 +132,7 @@ private:
     ///@}
 
     World& world_;
-    std::stack<Lexer> lexers_;
+    Lexer* lexer_ = nullptr;
     Scopes scopes_;
     Def2Fields def2fields_;
     Sym anonymous_;

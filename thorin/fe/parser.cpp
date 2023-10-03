@@ -77,15 +77,12 @@ void Parser::import(std::istream& is, const fs::path* path, std::ostream* md) {
     world().VLOG("reading: {}", path ? path->string() : "<unknown file>"s);
     if (!is) error("cannot read file '{}'", *path);
 
-    lexers_.emplace(world(), is, path, md);
-    auto state = std::pair(prev_, ahead_);
-
-    init();
-    prev_ = Loc(path, {1, 1});
-
+    auto state = std::tuple(prev_, ahead_, lexer_);
+    auto lexer = Lexer(world(), is, path, md);
+    lexer_     = &lexer;
+    init(path);
     parse_module();
-    std::tie(prev_, ahead_) = state;
-    lexers_.pop();
+    std::tie(prev_, ahead_, lexer_) = state;
 }
 
 void Parser::plugin(fs::path path) {
