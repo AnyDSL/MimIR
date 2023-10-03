@@ -27,8 +27,7 @@ using Tag = Tok::Tag;
 Tok Parser::lex() {
     auto result = ahead();
     prev_       = result.loc();
-    for (size_t i = 0; i < Max_Ahead - 1; ++i) ahead(i) = ahead(i + 1);
-    ahead(Max_Ahead - 1) = lexer().lex();
+    ahead_.put(lexer().lex());
     return result;
 }
 
@@ -93,7 +92,8 @@ void Parser::import(std::istream& is, const fs::path* path, std::ostream* md) {
     lexers_.emplace(world(), is, path, md);
     auto state = std::pair(prev_, ahead_);
 
-    for (size_t i = 0; i != Max_Ahead; ++i) ahead(i) = lexer().lex();
+    ahead_.reset();
+    for (size_t i = 0; i != Look_Ahead; ++i) ahead(i) = lexer().lex();
     prev_ = Loc(path, {1, 1});
 
     parse_module();

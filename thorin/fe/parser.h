@@ -10,6 +10,8 @@
 
 namespace thorin {
 
+constexpr size_t Look_Ahead = 2;
+
 /// Parses Thorin code into the provided World.
 ///
 /// The logic behind the various parse methods is as follows:
@@ -28,7 +30,7 @@ namespace thorin {
 ///
 ///      * If default argument is **elided** we have the same behavior as in 1.
 ///      * If default argument is **provided** we have the same behavior as in 2.
-class Parser : public fe::Parser<Tok, Tok::Tag, 2, Parser> {
+class Parser : public fe::Parser<Tok, Tok::Tag, Look_Ahead, Parser> {
 public:
     Parser(World& world)
         : world_(world)
@@ -66,12 +68,6 @@ private:
 
     /// @name get next token
     ///@{
-    /// Get lookahead.
-    Tok& ahead(size_t i = 0) {
-        assert(i < Max_Ahead);
-        return ahead_[i];
-    }
-
     Lexer& lexer() { return lexers_.top(); }
     bool main() const { return lexers_.size() == 1; }
 
@@ -167,12 +163,8 @@ private:
     [[noreturn]] void syntax_err(std::string_view what, std::string_view ctxt) { syntax_err(what, ahead(), ctxt); }
     ///@}
 
-    static constexpr size_t Max_Ahead = 2; ///< maximum lookahead
-    using Ahead                       = std::array<Tok, Max_Ahead>;
-
     World& world_;
     std::stack<Lexer> lexers_;
-    Ahead ahead_; ///< SLL look ahead
     Scopes scopes_;
     Def2Fields def2fields_;
     Sym anonymous_;
