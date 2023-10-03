@@ -47,7 +47,7 @@ Tok Lexer::lex() {
         if (accept_if(isspace)) continue;
 #endif
         if (accept(0)) error(loc_, "invalid UTF-8 character");
-        if (accept(fe::utf8::EoF)) return tok(Tag::M_eof);
+        if (accept(fe::utf8::EoF)) return tok(Tag::EoF);
 
         // clang-format off
         // delimiters

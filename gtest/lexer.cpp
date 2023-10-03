@@ -32,7 +32,7 @@ TEST(Lexer, Toks) {
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::K_Pi));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_lm));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_Pi));
-    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::M_eof));
+    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::EoF));
 }
 
 TEST(Lexer, Errors) {
@@ -61,7 +61,7 @@ TEST(Lexer, Eof) {
     std::istringstream is("");
 
     Lexer lexer(driver.world(), is);
-    for (int i = 0; i < 10; i++) EXPECT_TRUE(lexer.lex().isa(Tok::Tag::M_eof));
+    for (int i = 0; i < 10; i++) EXPECT_TRUE(lexer.lex().isa(Tok::Tag::EoF));
 }
 
 class Real : public testing::TestWithParam<int> {};

@@ -34,7 +34,7 @@ void Parser::parse_module() {
             break;
 
     parse_decls({});
-    expect(Tag::M_eof, "module");
+    expect(Tag::EoF, "module");
 };
 
 void Parser::import(fs::path name, std::ostream* md) {

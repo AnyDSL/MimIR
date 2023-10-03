@@ -43,6 +43,7 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
 #undef CODE
 
 #define THORIN_TOK(m)                  \
+    m(EoF, "<end of file>")            \
     /* literals */                     \
     m(L_s, "<signed integer literal>") \
     m(L_u, "<integer literal>"       ) \
@@ -50,7 +51,6 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(L_f, "<floating-point literal>") \
     m(L_c, "<char literal>"          ) \
     /* misc */                         \
-    m(M_eof,  "<eof>"       )          \
     m(M_id,   "<identifier>")          \
     m(M_anx,  "<annex name>")          \
     m(M_str,  "<string>"    )          \
