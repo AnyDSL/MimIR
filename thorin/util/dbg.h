@@ -10,16 +10,6 @@
 
 #include "thorin/util/print.h"
 
-namespace fe {
-
-/// @name std::ostream operator
-///@{
-std::ostream& operator<<(std::ostream&, const Pos);
-std::ostream& operator<<(std::ostream&, const Loc);
-///@}
-
-}
-
 namespace thorin {
 
 namespace fs = std::filesystem;
