@@ -24,18 +24,6 @@ using Tag = Tok::Tag;
  * helpers
  */
 
-Tok Parser::lex() {
-    auto result = ahead();
-    prev_       = result.loc();
-    ahead_.put(lexer().lex());
-    return result;
-}
-
-std::optional<Tok> Parser::accept(Tag tag) {
-    if (tag != ahead().tag()) return {};
-    return lex();
-}
-
 Tok Parser::expect(Tag tag, std::string_view ctxt) {
     if (ahead().tag() == tag) return lex();
 
@@ -92,8 +80,7 @@ void Parser::import(std::istream& is, const fs::path* path, std::ostream* md) {
     lexers_.emplace(world(), is, path, md);
     auto state = std::pair(prev_, ahead_);
 
-    ahead_.reset();
-    for (size_t i = 0; i != Look_Ahead; ++i) ahead(i) = lexer().lex();
+    init();
     prev_ = Loc(path, {1, 1});
 
     parse_module();
@@ -699,7 +686,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok
             sym = eat(Tag::M_id).sym();
             eat(Tag::T_colon);
             auto type = parse_expr(ctxt, prec);
-            return std::make_unique<IdPtrn>(track.dbg(sym), rebind, type);
+            return std::make_unique<IdPtrn>(dbg(track, sym), rebind, type);
         } else {
             // p ->  s                  b ->    e    where e == id
             // p -> 's
@@ -707,18 +694,18 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok
                 // p ->  s
                 // p -> 's
                 sym = eat(Tag::M_id).sym();
-                return std::make_unique<IdPtrn>(track.dbg(sym), rebind, nullptr);
+                return std::make_unique<IdPtrn>(dbg(track, sym), rebind, nullptr);
             } else {
                 // b ->    e    where e == id
                 auto type = parse_expr(ctxt, prec);
-                return std::make_unique<IdPtrn>(track.dbg(sym), rebind, type);
+                return std::make_unique<IdPtrn>(dbg(track, sym), rebind, type);
             }
         }
     } else if (b) {
         // b ->  e    where e != id
         if (backtick) error(backtick->loc(), "you can only prefix identifiers with backtick for rebinding");
         auto type = parse_expr(ctxt, prec);
-        return std::make_unique<IdPtrn>(track.dbg(sym), rebind, type);
+        return std::make_unique<IdPtrn>(dbg(track, sym), rebind, type);
     } else if (!ctxt.empty()) {
         // p -> ↯
         syntax_err("pattern", ctxt);
@@ -770,14 +757,14 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
             }
             auto [_, r] = Tok::prec(Tok::Prec::App);
             auto expr   = parse_infix_expr(track, lhs, r);
-            ptrn        = std::make_unique<IdPtrn>(track.dbg(anonymous_), false, expr);
+            ptrn        = std::make_unique<IdPtrn>(dbg(track, anonymous_), false, expr);
         } else {
             ptrn      = parse_ptrn(delim_l, "element of a tuple pattern");
             auto type = ptrn->type(world(), def2fields_);
 
             if (b) { // If we are able to parse more stuff, we got an expression instead of just a binder.
                 if (auto expr = parse_infix_expr(track, type); expr != type)
-                    ptrn = std::make_unique<IdPtrn>(track.dbg(anonymous_), false, expr);
+                    ptrn = std::make_unique<IdPtrn>(dbg(track, anonymous_), false, expr);
             }
         }
 
@@ -789,7 +776,7 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
     scopes_.pop();
 
     // TODO parse type
-    return std::make_unique<TuplePtrn>(track.dbg(sym), rebind, std::move(ptrns), nullptr, std::move(infers), decl);
+    return std::make_unique<TuplePtrn>(dbg(track, sym), rebind, std::move(ptrns), nullptr, std::move(infers), decl);
 }
 
 /*

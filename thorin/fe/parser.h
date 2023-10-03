@@ -45,47 +45,15 @@ public:
     const Scopes& scopes() const { return scopes_; }
 
 private:
-    /// @name Tracker
-    ///@{
-    /// Trick to easily keep track of Loc%ations.
-    class Tracker {
-    public:
-        Tracker(Parser& parser, const Pos& pos)
-            : parser_(parser)
-            , pos_(pos) {}
-
-        Loc loc() const { return {parser_.prev_.path, pos_, parser_.prev_.finis}; }
-        Dbg dbg(Sym sym) const { return {loc(), sym}; }
-
-    private:
-        Parser& parser_;
-        Pos pos_;
-    };
-
-    /// Factory method to build a Parser::Tracker.
-    Tracker tracker() { return Tracker(*this, ahead().loc().begin); }
-    ///@}
+    Dbg dbg(const Tracker& tracker, Sym sym) const { return {tracker.loc(), sym}; }
 
     /// @name get next token
     ///@{
     Lexer& lexer() { return lexers_.top(); }
-    bool main() const { return lexers_.size() == 1; }
-
-    /// Invoke Lexer to retrieve next Tok%en.
-    Tok lex();
-
-    /// If Parser::ahead() is a @p tag, Parser::lex(), and return `true`.
-    std::optional<Tok> accept(Tok::Tag tag);
 
     /// Parser::lex Parser::ahead() which must be a @p tag.
     /// Issue err%or with @p ctxt otherwise.
     Tok expect(Tok::Tag tag, std::string_view ctxt);
-
-    /// Consume Parser::ahead which must be a @p tag; asserts otherwise.
-    Tok eat([[maybe_unused]] Tok::Tag tag) {
-        assert(tag == ahead().tag() && "internal parser error");
-        return lex();
-    }
     ///@}
 
     /// @name parse misc
@@ -169,6 +137,8 @@ private:
     Def2Fields def2fields_;
     Sym anonymous_;
     Sym return_;
+
+    friend class fe::Parser<Tok, Tok::Tag, Look_Ahead, Parser>;
 };
 
 } // namespace thorin
