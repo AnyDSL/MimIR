@@ -46,15 +46,7 @@ public:
 
 private:
     Dbg dbg(const Tracker& tracker, Sym sym) const { return {tracker.loc(), sym}; }
-
-    /// @name get next token
-    ///@{
     Lexer& lexer() { return *lexer_; }
-
-    /// Parser::lex Parser::ahead() which must be a @p tag.
-    /// Issue err%or with @p ctxt otherwise.
-    Tok expect(Tok::Tag tag, std::string_view ctxt);
-    ///@}
 
     /// @name parse misc
     ///@{
@@ -125,10 +117,18 @@ private:
     ///@{
     /// Issue an error message of the form:
     /// "expected \<what\>, got '\<tok>\' while parsing \<ctxt\>"
-    [[noreturn]] void syntax_err(std::string_view what, const Tok& tok, std::string_view ctxt);
+    [[noreturn]] void syntax_err(std::string_view what, const Tok& tok, std::string_view ctxt) {
+        error(tok.loc(), "expected {}, got '{}' while parsing {}", what, tok, ctxt);
+    }
 
     /// Same above but uses @p ahead() as @p tok.
     [[noreturn]] void syntax_err(std::string_view what, std::string_view ctxt) { syntax_err(what, ahead(), ctxt); }
+
+    [[noreturn]] void syntax_err(Tok::Tag tag, std::string_view ctxt) {
+        std::string msg("'");
+        msg.append(Tok::tag2str(tag)).append("'");
+        syntax_err(msg, ctxt);
+    }
     ///@}
 
     World& world_;

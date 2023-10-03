@@ -21,23 +21,6 @@ namespace thorin {
 using Tag = Tok::Tag;
 
 /*
- * helpers
- */
-
-Tok Parser::expect(Tag tag, std::string_view ctxt) {
-    if (ahead().tag() == tag) return lex();
-
-    std::string msg("'");
-    msg.append(Tok::tag2str(tag)).append("'");
-    syntax_err(msg, ctxt);
-    return {};
-}
-
-void Parser::syntax_err(std::string_view what, const Tok& tok, std::string_view ctxt) {
-    error(tok.loc(), "expected {}, got '{}' while parsing {}", what, tok, ctxt);
-}
-
-/*
  * entry points
  */
 
