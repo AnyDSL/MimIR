@@ -30,9 +30,10 @@ jobs:
 
       - name: Configure
         run: |
-          CXX="/usr/local/opt/llvm/bin/clang++" \
+          CC="/usr/local/opt/llvm@16/bin/clang" \
+          CXX="/usr/local/opt/llvm@16/bin/clang++" \
           CXXFLAGS="-stdlib=libc++ -fexperimental-library" \
-          LDFLAGS="-L/usr/local/opt/llvm/lib/c++ -Wl,-rpath,/usr/local/opt/llvm/lib/c++" \
+          LDFLAGS="-L/usr/local/opt/llvm@16/lib/c++ -Wl,-rpath,/usr/local/opt/llvm@16/lib/c++" \
           cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DBUILD_TESTING=ON -DTHORIN_BUILD_EXAMPLES=ON -DPython3_ROOT_DIR=$(dirname $(which python3))
 
       - name: Cache LLVM and Clang
