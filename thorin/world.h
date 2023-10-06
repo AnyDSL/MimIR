@@ -5,10 +5,9 @@
 #include <string_view>
 #include <type_traits>
 
-#include <fe/arena.h>
-
 #include <absl/container/btree_map.h>
 #include <absl/container/btree_set.h>
+#include <fe/arena.h>
 
 #include "thorin/axiom.h"
 #include "thorin/check.h"
@@ -17,9 +16,9 @@
 #include "thorin/lattice.h"
 #include "thorin/tuple.h"
 
+#include "thorin/util/dbg.h"
 #include "thorin/util/hash.h"
 #include "thorin/util/log.h"
-#include "thorin/util/dbg.h"
 
 namespace thorin {
 class Driver;
@@ -453,7 +452,8 @@ private:
     /// @name Put into Sea of Nodes
     ///@{
     template<class T, class... Args> const T* unify(size_t num_ops, Args&&... args) {
-        auto def = allocate<T>(num_ops, std::forward<Args&&>(args)...);
+        auto state = arena_.state();
+        auto def   = allocate<T>(num_ops, std::forward<Args&&>(args)...);
         if (auto loc = emit_loc()) def->set(loc);
         assert(!def->isa_mut());
 #ifdef THORIN_ENABLE_CHECKS
@@ -463,13 +463,13 @@ private:
         if (is_frozen()) {
             --state_.pod.curr_gid;
             auto i = move_.defs.find(def);
-            deallocate<T>(def);
+            deallocate<T>(state, def);
             if (i != move_.defs.end()) return static_cast<const T*>(*i);
             return nullptr;
         }
 
         if (auto [i, ins] = move_.defs.emplace(def); !ins) {
-            deallocate<T>(def);
+            deallocate<T>(state, def);
             return static_cast<const T*>(*i);
         }
 #ifdef THORIN_ENABLE_CHECKS
@@ -477,6 +477,11 @@ private:
 #endif
         def->finalize();
         return def;
+    }
+
+    template<class T> void deallocate(fe::Arena::State state, const T* ptr) {
+        ptr->~T();
+        arena_.deallocate(state);
     }
 
     template<class T, class... Args> T* insert(size_t num_ops, Args&&... args) {
@@ -504,26 +509,20 @@ private:
 
     template<class T, class... Args> T* allocate(size_t num_ops, Args&&... args) {
         static_assert(sizeof(Def) == sizeof(T),
-                        "you are not allowed to introduce any additional data in subclasses of Def");
+                      "you are not allowed to introduce any additional data in subclasses of Def");
         Lock lock;
-        auto ptr = arena_.allocate(num_bytes_of<T>(num_ops));
-        auto res = new (ptr) T(std::forward<Args&&>(args)...);
+        arena_.align(alignof(T));
+        size_t num_bytes = sizeof(Def) + sizeof(void*) * num_ops;
+        auto ptr         = arena_.allocate(num_bytes);
+        auto res         = new (ptr) T(std::forward<Args&&>(args)...);
         assert(res->num_ops() == num_ops);
         return res;
     }
-
-    template<class T> void deallocate(const T* def) {
-        size_t n = num_bytes_of<T>(def->num_ops());
-        def->~T();
-        arena_.deallocate(n);
-    }
-
-    template<class T> static constexpr size_t num_bytes_of(size_t num_ops) { return sizeof(Def) + sizeof(void*) * num_ops; }
     ///@}
 
     Driver* driver_;
     State state_;
-    fe::Arena<> arena_;
+    fe::Arena arena_;
 
     struct SeaHash {
         size_t operator()(const Def* def) const { return def->hash(); };
