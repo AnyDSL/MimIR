@@ -25,8 +25,16 @@ jobs:
           ccache_options: max_size=500M
           override_cache_key: mac-latest-ccache-${{matrix.build-type}}
 
+      - name: Install LLVM and Clang
+        run: brew install llvm@16
+
       - name: Configure
-        run: CC=gcc-11 CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DBUILD_TESTING=ON -DTHORIN_BUILD_EXAMPLES=ON -DPython3_ROOT_DIR=$(dirname $(which python3))
+        run: |
+          CXX="/usr/local/opt/llvm/bin/clang" \
+          CXX="/usr/local/opt/llvm/bin/clang++" \
+          CXXFLAGS="-stdlib=libc++ -fexperimental-library" \
+          LDFLAGS="-L/usr/local/opt/llvm/lib/c++ -Wl,-rpath,/usr/local/opt/llvm/lib/c++" \
+          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DBUILD_TESTING=ON -DTHORIN_BUILD_EXAMPLES=ON -DPython3_ROOT_DIR=$(dirname $(which python3))
 
       - name: Cache LLVM and Clang
         id: cache-llvm
@@ -51,7 +59,7 @@ jobs:
           file: FileCheck-x86_64-mac
           path: ${{github.workspace}}/bin
           token: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - name: Install LIT
         run: |
           python3 -m pip install lit psutil
