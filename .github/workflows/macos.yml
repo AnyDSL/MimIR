@@ -30,7 +30,7 @@ jobs:
 
       - name: Configure
         run: |
-          CXX="/usr/local/opt/llvm/bin/clang" \
+          CC="/usr/local/opt/llvm/bin/clang" \
           CXX="/usr/local/opt/llvm/bin/clang++" \
           CXXFLAGS="-stdlib=libc++ -fexperimental-library" \
           LDFLAGS="-L/usr/local/opt/llvm/lib/c++ -Wl,-rpath,/usr/local/opt/llvm/lib/c++" \

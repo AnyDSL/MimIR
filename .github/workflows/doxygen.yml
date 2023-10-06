@@ -18,11 +18,11 @@ jobs:
 
     - name: Install newest g++, graphviz, texlive
       run: |
-        sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test 
+        sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install g++-11 graphviz texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
+        sudo apt-get install g++-13 graphviz texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
 
-        export CXX=g++-11
+        export CXX=g++-13
 
     - name: Install Doxygen
       run: |
@@ -38,7 +38,7 @@ jobs:
         mv ghostscript-10.0.0-linux-x86_64/gs-1000-linux-x86_64 ${HOME}/.local/bin/gs
 
     - name: Configure
-      run: CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Debug -DTHORIN_BUILD_DOCS=ON -DDOXYGEN_EXECUTABLE=${{github.workspace}}/doxygen-1.9.5/bin/doxygen
+      run: CXX=g++-13 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Debug -DTHORIN_BUILD_DOCS=ON -DDOXYGEN_EXECUTABLE=${{github.workspace}}/doxygen-1.9.5/bin/doxygen
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build -v --target docs
