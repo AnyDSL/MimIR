@@ -110,7 +110,7 @@ std::pair<Dbg, bool> Parser::parse_name(std::string_view ctxt) {
 
 void Parser::register_annex(Dbg dbg, Ref def) {
     auto [plugin, tag, sub] = Annex::split(world(), dbg.sym);
-    auto name               = world().sym("%"s + *plugin + "."s + *tag);
+    auto name               = world().sym("%"s + plugin.str() + "."s + tag.str());
     auto&& [annex, is_new]  = driver().name2annex(name, plugin, tag, dbg.loc);
     plugin_t p              = *Annex::mangle(plugin);
     tag_t t                 = annex.tag_id;
@@ -659,7 +659,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok
             if (ahead().isa(Tag::D_paren_l) || ahead().isa(Tag::D_brckt_l))
                 return parse_tuple_ptrn(track, rebind, sym);
             else
-                syntax_err("tuple pattern after '" + *sym + "::'", ctxt);
+                syntax_err("tuple pattern after '" + sym.str() + "::'", ctxt);
         } else if (ahead(1).isa(Tag::T_colon)) {
             // p ->  s: e               b ->  s: e
             // p -> 's: e               b -> 's: e
@@ -844,12 +844,12 @@ void Parser::parse_ax_decl() {
         scopes_.bind(dbg, axiom);
     } else {
         for (const auto& sub : new_subs) {
-            auto name  = world().sym(*dbg.sym + "."s + *sub.front());
+            auto name  = world().sym(dbg.sym.str() + "."s + sub.front().str());
             auto norm  = driver().normalizer(p, t, s);
             auto axiom = world().axiom(norm, curry, trip, type, p, t, s)->set(track.loc(), name);
             world().register_annex(p | (flags_t(t) << 8_u64) | flags_t(s), axiom);
             for (auto& alias : sub) {
-                auto sym = world().sym(*dbg.sym + "."s + *alias);
+                auto sym = world().sym(dbg.sym.str() + "."s + alias.str());
                 scopes_.bind({prev_, sym}, axiom);
             }
             ++s;

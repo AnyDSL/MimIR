@@ -9,7 +9,7 @@ Ref AutoDiffEval::derive_(Ref def) {
     auto lam    = def->as_mut<Lam>(); // TODO check if mutable
     world.DLOG("Derive lambda: {}", def);
     auto deriv_ty = autodiff_type_fun_pi(lam->type());
-    auto deriv    = world.mut_lam(deriv_ty)->set(*lam->sym() + "_deriv");
+    auto deriv    = world.mut_lam(deriv_ty)->set(lam->sym().str() + "_deriv");
 
     // We first pre-register the derivatives.
     // This knowledge is needed for recursion.

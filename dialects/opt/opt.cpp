@@ -22,10 +22,10 @@ extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
                     auto else_phase   = args[3];
                     auto name         = plugin_axiom->sym();                        // name has the form %opt.tag
                     auto [_, tag, __] = Annex::split(world, name);                  // where tag = [plugin]_plugin
-                    auto plugin       = driver.sym(tag->substr(0, tag->find('_'))); // we want to extract the plugin
-                    bool is_loaded    = driver.is_loaded(plugin);
+                    auto plugin       = tag.view().substr(0, tag.view().find('_')); // we want to extract the plugin
+                    bool is_loaded    = driver.is_loaded(driver.sym(plugin));
 
-                    assert(tag->find('_') != std::string_view::npos && "plugin_phase: invalid plugin name");
+                    assert(tag.view().find('_') != std::string_view::npos && "plugin_phase: invalid plugin name");
                     world.DLOG("plugin_phase for: {}", plugin_axiom->sym());
                     world.DLOG("plugin: {}", plugin);
                     world.DLOG("contained: {}", is_loaded);

@@ -86,7 +86,7 @@ Flags& World::flags() { return driver().flags(); }
 
 Sym World::sym(const char* s) { return driver().sym(s); }
 Sym World::sym(std::string_view s) { return driver().sym(s); }
-Sym World::sym(std::string s) { return driver().sym(std::move(s)); }
+Sym World::sym(const std::string& s) { return driver().sym(s); }
 
 const Def* World::register_annex(flags_t f, const Def* def) {
     auto plugin = Annex::demangle(*this, f);
@@ -528,7 +528,7 @@ Ref World::test(Ref value, Ref probe, Ref match, Ref clash) {
 Ref World::singleton(Ref inner_type) { return unify<Singleton>(1, this->type<1>(), inner_type); }
 
 Sym World::append_suffix(Sym symbol, std::string suffix) {
-    auto name = *symbol;
+    auto name = symbol.str();
 
     auto pos = name.find(suffix);
     if (pos != std::string::npos) {

@@ -15,8 +15,8 @@ namespace thorin::matrix {
 namespace {
 
 std::optional<Ref> internal_function_of_axiom(const Axiom* axiom, Ref meta_args, Ref args) {
-    auto& world      = axiom->world();
-    std::string name = *axiom->sym();
+    auto& world = axiom->world();
+    auto name   = axiom->sym().str();
     find_and_replace(name, ".", "_");
     find_and_replace(name, "%", "");
     name = INTERNAL_PREFIX + name;

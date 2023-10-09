@@ -103,7 +103,7 @@ public:
     ///@{
     Sym sym(std::string_view);
     Sym sym(const char*);
-    Sym sym(std::string);
+    Sym sym(const std::string&);
     /// Appends a @p suffix or an increasing number if the suffix already exists.
     Sym append_suffix(Sym name, std::string suffix);
     ///@}

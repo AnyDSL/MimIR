@@ -30,7 +30,7 @@ Def* isa_decl(const Def* def) {
 }
 
 std::string id(const Def* def) {
-    if (def->is_external() || (!def->is_set() && def->isa<Lam>())) return def->sym();
+    if (def->is_external() || (!def->is_set() && def->isa<Lam>())) return def->sym().str();
     return def->unique_name();
 }
 

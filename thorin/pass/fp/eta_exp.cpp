@@ -42,7 +42,7 @@ Ref EtaExp::rewrite(Ref def) {
 Lam* EtaExp::eta_exp(Lam* lam) {
     auto exp = lam->stub(world(), lam->type());
     exp2orig_.emplace(exp, lam);
-    exp->debug_suffix("eta_"s + *lam->sym());
+    exp->debug_suffix("eta_"s + lam->sym().str());
     exp->app(false, lam, exp->var());
     if (eta_red_) eta_red_->mark_irreducible(exp);
     return exp;

@@ -40,8 +40,8 @@ Ref AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
     }
     // TODO: better fix (another pass as analysis?)
     // TODO: handle open functions
-    if (Lam::isa_basicblock(lam) || lam->sym()->find("ret") != std::string::npos
-        || lam->sym()->find("_cont") != std::string::npos) {
+    if (Lam::isa_basicblock(lam) || lam->sym().view().find("ret") != std::string::npos
+        || lam->sym().view().find("_cont") != std::string::npos) {
         // A open continuation behaves the same as return:
         // ```
         // cont: Cn[X]
@@ -58,7 +58,7 @@ Ref AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
         world.DLOG("pb type is {}", pb_ty);
         auto aug_ty = world.cn({aug_dom, pb_ty});
         world.DLOG("augmented type is {}", aug_ty);
-        auto aug_lam              = world.mut_lam(aug_ty)->set("aug_"s + *lam->sym());
+        auto aug_lam              = world.mut_lam(aug_ty)->set("aug_"s + lam->sym().str());
         auto aug_var              = aug_lam->var((nat_t)0);
         augmented[lam->var()]     = aug_var;
         augmented[lam]            = aug_lam; // TODO: only one of these two
@@ -361,7 +361,7 @@ Ref AutoDiffEval::augment_(Ref def, Lam* f, Lam* f_diff) {
         world.DLOG("Augment axiom: {} : {}", ax, ax->type());
         world.DLOG("axiom curry: {}", ax->curry());
         world.DLOG("axiom flags: {}", ax->flags());
-        std::string diff_name = ax->sym();
+        auto diff_name = ax->sym().str();
         find_and_replace(diff_name, ".", "_");
         find_and_replace(diff_name, "%", "");
         diff_name = "internal_diff_" + diff_name;

@@ -56,7 +56,7 @@ public:
     /// Otherwise, "name", "libthorin_name.so" (Linux, Mac), "thorin_name.dll" (Win)
     /// are searched for in Driver::search_paths().
     void load(Sym name);
-    void load(std::string name) { return load(sym(std::move(name))); }
+    void load(const std::string& name) { return load(sym(name)); }
     bool is_loaded(Sym sym) const { return lookup(plugins_, sym); }
     ///@}
 

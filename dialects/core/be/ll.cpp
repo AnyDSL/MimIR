@@ -147,7 +147,7 @@ std::string Emitter::id(const Def* def, bool force_bb /*= false*/) const {
     if (auto lam = def->isa_mut<Lam>(); lam && !force_bb) {
         if (lam->type()->ret_pi()) {
             if (lam->is_external() || !lam->is_set())
-                return "@"s + *lam->sym(); // TODO or use is_internal or sth like that?
+                return "@"s + lam->sym().str(); // TODO or use is_internal or sth like that?
             return "@"s + lam->unique_name();
         }
     }

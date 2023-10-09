@@ -260,12 +260,12 @@ Defs Def::extended_ops() const {
 
 #ifndef NDEBUG
 const Def* Def::debug_prefix(std::string prefix) const {
-    dbg_.sym = world().sym(prefix + *sym());
+    dbg_.sym = world().sym(prefix + sym().str());
     return this;
 }
 
 const Def* Def::debug_suffix(std::string suffix) const {
-    dbg_.sym = world().sym(*sym() + suffix);
+    dbg_.sym = world().sym(sym().str() + suffix);
     return this;
 }
 #endif
@@ -413,7 +413,7 @@ bool Def::is_set() const {
 void Def::make_external() { return world().make_external(this); }
 void Def::make_internal() { return world().make_internal(this); }
 
-std::string Def::unique_name() const { return *sym() + "_"s + std::to_string(gid()); }
+std::string Def::unique_name() const { return sym().str() + "_"s + std::to_string(gid()); }
 
 nat_t Def::num_tprojs() const {
     if (auto a = isa_lit_arity(); a && *a < world().flags().scalerize_threshold) return *a;
