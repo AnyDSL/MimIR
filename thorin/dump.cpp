@@ -407,7 +407,7 @@ void World::write(const char* file) {
 }
 
 void World::write() {
-    auto file = std::string(name()) + ".thorin"s;
+    auto file = name().str() + ".thorin"s;
     write(file.c_str());
 }
 
