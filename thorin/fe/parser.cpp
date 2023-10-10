@@ -82,14 +82,14 @@ void Parser::parse_import() {
     eat(Tag::K_import);
     auto name = expect(Tag::M_id, "import name");
     expect(Tag::T_semicolon, "end of import");
-    import(*name.sym());
+    import(name.sym().view());
 }
 
 void Parser::parse_plugin() {
     eat(Tag::K_plugin);
     auto name = expect(Tag::M_id, "plugin name");
     expect(Tag::T_semicolon, "end of import");
-    plugin(*name.sym());
+    plugin(name.sym().view());
 }
 
 Dbg Parser::parse_id(std::string_view ctxt) {
