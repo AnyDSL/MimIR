@@ -42,7 +42,7 @@ jobs:
           repository: "fodinabor/FileCheckBuild"
           latest: true
           fileName: FileCheck-x86_64-mac
-          out-file-path:: bin
+          out-file-path: bin
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install LIT
