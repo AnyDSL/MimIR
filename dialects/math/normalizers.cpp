@@ -1,5 +1,7 @@
 #include <type_traits>
 
+#include <cmath>
+
 #include "dialects/math/math.h"
 
 namespace thorin::math {
