@@ -36,28 +36,13 @@ jobs:
           LDFLAGS="-L/usr/local/opt/llvm@16/lib/c++ -Wl,-rpath,/usr/local/opt/llvm@16/lib/c++" \
           cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DBUILD_TESTING=ON -DTHORIN_BUILD_EXAMPLES=ON -DPython3_ROOT_DIR=$(dirname $(which python3))
 
-      - name: Cache LLVM and Clang
-        id: cache-llvm
-        uses: actions/cache@v3
-        with:
-          path: |
-            ./llvm
-          key: llvm-14.0.0-mac
-
-      - name: Install LLVM and Clang
-        uses: KyleMayes/install-llvm-action@v1.6.0
-        with:
-          version: "14.0.0"
-          cached: ${{ steps.cache-llvm.outputs.cache-hit }}
-
       - name: Install FileCheck
-        uses: i3h/download-release-asset@v1
+        uses: robinraju/release-downloader@v1.8
         with:
-          owner: fodinabor
-          repo: FileCheckBuild
-          tag: latest
-          file: FileCheck-x86_64-mac
-          path: ${{github.workspace}}/bin
+          repository: "fodinabor/FileCheckBuild"
+          latest: true
+          fileName: FileCheck-x86_64-mac
+          out-file-path:: bin
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install LIT
