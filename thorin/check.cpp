@@ -252,4 +252,9 @@ void Pi::check() {
         error(type(), "declared sort '{}' of function type does not match inferred one '{}'", type(), t);
 }
 
+#ifndef DOXYGEN
+template bool Check::alpha_<true>(Ref, Ref);
+template bool Check::alpha_<false>(Ref, Ref);
+#endif
+
 } // namespace thorin
