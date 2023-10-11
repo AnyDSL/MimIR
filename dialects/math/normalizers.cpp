@@ -1,7 +1,5 @@
 #include <type_traits>
 
-#include <cmath>
-
 #include "dialects/math/math.h"
 
 namespace thorin::math {
@@ -147,8 +145,9 @@ Res fold(u64 a, u64 b) {
     } else if constexpr (std::is_same_v<Id, pow>) {
         return std::pow(a, b);
     } else if constexpr (std::is_same_v<Id, cmp>) {
+        using std::isunordered;
         bool res = false;
-        res |= ((id & cmp::u) != cmp::f) && std::isunordered(x, y);
+        res |= ((id & cmp::u) != cmp::f) && isunordered(x, y);
         res |= ((id & cmp::g) != cmp::f) && x > y;
         res |= ((id & cmp::l) != cmp::f) && x < y;
         res |= ((id & cmp::e) != cmp::f) && x == y;
