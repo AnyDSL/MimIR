@@ -21,7 +21,7 @@
 .let Char = %core.I8;
 .lam Str(n: .Nat): * = %mem.Ptr0 «n; Char»;
 /// A regular expression matcher.
-.lam Res (n: .Nat): * = [%mem.M, .Bool, .Idx n];
+.lam Res (n: .Nat): * = [%mem.M, matched: .Bool, .Idx n];
 .lam FnRE(n: .Nat): * = .Fn [%mem.M, Str n, .Idx n] -> Res n;
 .let RE = Π[n: .Nat][%mem.M, Str n, .Idx n] -> Res n;
 ///
@@ -93,56 +93,188 @@
 ///
 /// ## Implementation
 ///
-.fun %regex.match_range(lower upper: Char)(n: .Nat)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
-    .let ptr          = %mem.lea (n, ‹n; Char›, 0) (string, pos);
-    .let (`mem, char) = %mem.load (mem, ptr);
-    .let in_range     = %core.bit2.and_ 0 (%core.icmp.uge (char, lower),  %core.icmp.ule (char, upper));
-    .let pos_1        = %core.wrap.add %core.mode.nuw (pos, %core.idx n %core.mode.nuw 1);
-    return (mem, in_range, (pos, pos_1)#in_range);
+.lam CnRE(n: .Nat): * = .Cn [accept reject: .Cn [%mem.M, .Idx n]][%mem.M, Str n, .Idx n];
 
-.fun %regex.match_not(n: .Nat)(inner: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
-    .con match_not_ret_inverted!(mem: %mem.M, in_range: .Bool, new_pos: .Idx n) = return (mem, %core.bit1.neg 0 in_range, new_pos);
+// .fun %regex.match_empty(n: .Nat)!(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
+//     return (mem, .tt, pos);
+
+// .fun %regex.match_range(lower upper: Char)(n: .Nat)(next: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
+//     .let ptr          = %mem.lea (n, ‹n; Char›, 0) (string, pos);
+//     .let (`mem, char) = %mem.load (mem, ptr);
+//     .let in_range     = %core.bit2.and_ 0 (%core.icmp.uge (char, lower),  %core.icmp.ule (char, upper));
+//     .let pos_1        = %core.wrap.add %core.mode.nuw (pos, %core.idx n %core.mode.nuw 1);
+
+//     .con match_next!(mem: %mem.M, matched: .Bool, pos: .Idx n) =
+//         next ((mem, string, pos), return);
+//     (return, match_next)#in_range (mem, in_range, (pos, pos_1)#in_range);
+
+.fun %regex.match_not(n: .Nat)(next: FnRE n)(inner: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
+    .con match_next!(mem: %mem.M, matched: .Bool, pos: .Idx n) =
+        next ((mem, string, pos), return);
+    .con match_not_ret_inverted!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) =
+        .let inv_matched = %core.bit1.neg 0 matched;
+        (return, match_next)#inv_matched (mem, inv_matched, new_pos);
     inner ((mem, string, pos), match_not_ret_inverted);
 
-.fun %regex.match_any(n: .Nat)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
+.fun %regex.match_any(n: .Nat)(next: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
     .let ptr          = %mem.lea (n, ‹n; Char›, 0) (string, pos);
     .let (`mem, char) = %mem.load (mem, ptr);
     .let isnt_0       = %core.icmp.ne (char, '\0');
     .let pos_1        = %core.wrap.add %core.mode.nuw (pos, %core.idx n %core.mode.nuw 1);
-    return (mem, isnt_0, (pos, pos_1)#isnt_0);
 
-.fun %regex.match_conj(n: .Nat)(A B: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
-    .con match_conj_B_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = return (mem, matched, (pos, new_pos)#matched);
-    .con match_conj_A_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) =
-        .con match_conj_call_B!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = B ((mem, string, new_pos), match_conj_B_ret);
-        (return, match_conj_call_B)#matched (mem, matched, (pos, new_pos)#matched);
-    A ((mem, string, pos), match_conj_A_ret);
+    .con match_next!(mem: %mem.M, matched: .Bool, pos: .Idx n) =
+        next ((mem, string, pos), return);
+    (return, match_next)#isnt_0 (mem, isnt_0, (pos, pos_1)#isnt_0);
 
-.fun %regex.match_disj(n: .Nat)(A B: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
-    .con match_disj_B_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = return (mem, matched, (pos, new_pos)#matched);
+// .fun %regex.match_conj(n: .Nat)(A B: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
+//     .con match_conj_B_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = return (mem, matched, (pos, new_pos)#matched);
+//     .con match_conj_A_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) =
+//         .con match_conj_call_B!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = B ((mem, string, new_pos), match_conj_B_ret);
+//         (return, match_conj_call_B)#matched (mem, matched, (pos, new_pos)#matched);
+//     A ((mem, string, pos), match_conj_A_ret);
+
+.fun %regex.match_disj(n: .Nat)(next: FnRE n)(A B: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
+    .con match_next!(call_next: .Cn[%mem.M, matched: .Bool, .Idx n])(mem: %mem.M, matched: .Bool, pos: .Idx n) =
+        next ((mem, string, pos), call_next);
+    .con match_disj_B_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = (return, match_next (return))#matched (mem, matched, (pos, new_pos)#matched);
     .con match_disj_A_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) =
         .con match_disj_call_B!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = B ((mem, string, new_pos), match_disj_B_ret);
-        (match_disj_call_B, return)#matched (mem, matched, new_pos);
+        .con match_next_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = (match_disj_call_B, return)#matched (mem, matched, new_pos);
+        (match_disj_call_B, match_next match_next_ret)#matched (mem, matched, new_pos);
     A ((mem, string, pos), match_disj_A_ret);
 
-.fun %regex.match_optional(n: .Nat)(sub: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
-    .con match_optional_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = return (mem, .tt, new_pos);
+.fun %regex.match_optional(n: .Nat)(next: FnRE n)(sub: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
+    .con match_optional_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = next ((mem, string, new_pos), return);
     sub ((mem, string, pos), match_optional_ret);
 
-.fun %regex.match_star(n: .Nat)(sub: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
-    .con match_star_ret(mem: %mem.M, matched: .Bool, new_pos: .Idx n) =
-        .con match_star_iter(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = sub ((mem, string, new_pos), match_star_ret);
-        (return, match_star_iter)#matched (mem, .tt, new_pos);
-    sub ((mem, string, pos), match_star_ret);
+// .fun %regex.match_star(n: .Nat)(next: FnRE n)(sub: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
+//     .con match_next!(mem: %mem.M, matched: .Bool, pos: .Idx n) =
+//         next ((mem, string, pos), return);
+//     .con match_star_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) =
+//         .con match_star_iter!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = %regex.match_star n next sub ((mem, string, new_pos), match_star_ret);
+//         (match_next, match_star_iter)#matched (mem, matched, new_pos);
+//     sub ((mem, string, pos), match_star_ret);
 
-.fun %regex.match_plus(n: .Nat)(sub: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
-    .con match_plus_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) =
-        .con match_plus_iter!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = sub ((mem, string, new_pos), match_plus_ret);
-        (return, match_plus_iter)#matched (mem, .tt, new_pos);
-    .con match_plus_ret0!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) =
-        .con match_plus_iter0!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = sub ((mem, string, new_pos), match_plus_ret);
-        (return, match_plus_iter0)#matched (mem, matched, new_pos);
-    sub ((mem, string, pos), match_plus_ret0);
+// .fun %regex.match_plus(n: .Nat)(next: FnRE n)(sub: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
+//     .con recurser(mem: %mem.M, pos: .Idx n, cont: .Cn (Res n)) =
+//         .con recurse_ret!(mem: %mem.M, matched: .Bool, pos: .Idx n) =
+//             .con match_next!(mem: %mem.M, matched: .Bool, pos: .Idx n) =
+//                 next ((mem, string, pos), cont);
+//             (match_next, cont)#matched (mem, matched, pos);
+//         .con match_plus_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) =
+//             .con match_plus_iter!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = recurser (mem, new_pos, recurse_ret);
+//             (cont, match_plus_iter)#matched (mem, matched, new_pos);
+//         sub ((mem, string, pos), match_plus_ret);
+//     recurser(mem, pos, return);
+
+.con %regex.match_empty(n: .Nat)(accept reject: .Cn [%mem.M, .Idx n])!(mem: %mem.M, string: Str n, pos: .Idx n) =
+    accept (mem, pos);
+
+.con %regex.match_range(lower upper: Char)(n: .Nat)(next: CnRE n)(accept reject: .Cn [%mem.M, .Idx n])(mem: %mem.M, string: Str n, pos: .Idx n) =
+    .let ptr          = %mem.lea (n, ‹n; Char›, 0) (string, pos);
+    .let (`mem, char) = %mem.load (mem, ptr);
+    .let in_range     = %core.bit2.and_ 0 (%core.icmp.uge (char, lower),  %core.icmp.ule (char, upper));
+    .let pos_1        = %core.wrap.add %core.mode.nuw (pos, %core.idx n %core.mode.nuw 1);
+
+    .con match_next!(mem: %mem.M, pos: .Idx n) =
+        next (accept, reject) (mem, string, pos);
+    (reject, match_next)#in_range (mem, (pos, pos_1)#in_range);
+
+// .con %regex.match_star(n: .Nat)(next: CnRE n)(sub: CnRE n)(accept reject: .Cn [%mem.M, .Idx n])(mem: %mem.M, string: Str n, pos: .Idx n) =
+//     .con match_next!(mem: %mem.M, pos: .Idx n) =
+//         next (accept, reject) (mem, string, pos);
+//     .con match_plus_iter!(mem: %mem.M, new_pos: .Idx n) = %regex.match_star n next sub (accept, match_next) (mem, string, new_pos);
+//     sub (match_plus_iter, reject) ((mem, string, pos));
+
+// .con %regex.match_plus(n: .Nat)(next: CnRE n)(sub: CnRE n)(accept reject: .Cn [%mem.M, .Idx n])(mem: %mem.M, string: Str n, pos: .Idx n) =
+//     .con match_next!(mem: %mem.M, pos: .Idx n) =
+//         next (accept, reject) (mem, string, pos);
+//     .con match_plus_iter!(mem: %mem.M, new_pos: .Idx n) = %regex.match_plus n next sub (accept, match_next) (mem, string, new_pos);
+//     sub (match_plus_iter, reject) ((mem, string, pos));
+
+.lam Stack(size: .Nat, n: .Nat): * = [%mem.Ptr0 «size; .Idx n», .Idx size];
+
+.fun alloc_stack(size n: .Nat)(mem: %mem.M): [%mem.M, Stack (size,n)] =
+    .let (`mem, ptr) = %mem.alloc (<<size; .Idx n>>, 0) mem;
+    return (mem, (ptr, 0:(.Idx size)));
+
+.fun push_back(size n: .Nat)(mem: %mem.M, stack: Stack (size,n), diff: .Idx n): [%mem.M, Stack (size,n)] =
+    .let (stack_p, offset) = stack;
+    .let ptr   = %mem.lea (size, <size; .Idx n>, 0) (stack_p, offset);
+    .let `mem  = %mem.store (mem, ptr, diff);
+    .let pos_1 = %core.wrap.add %core.mode.nuw (offset, %core.conv.u size 1:%core.I64);
+    return (mem, (stack_p, pos_1));
+
+.fun pop_back(size n: .Nat)(mem: %mem.M, stack: Stack (size,n)): [%mem.M, Stack (size,n), .Idx n] =
+    .let (stack_p, offset) = stack;
+    .let pos_1        = %core.wrap.sub 0 (offset, %core.conv.u size 1:%core.I64);
+    .let ptr          = %mem.lea (size, <size; .Idx n>, 0) (stack_p, pos_1);
+    .let (`mem, diff) = %mem.load (mem, ptr);
+    return (mem, (stack_p, pos_1), diff);
+
+.fun empty(size n: .Nat)(stack: Stack (size,n)): [.Bool] =
+    .let (stack_p, offset) = stack;
+    .let is_empty = %core.icmp.e (offset, 0:(.Idx size));
+    return (is_empty);
+
+.con print_i32 [mem: %mem.M, i: %core.I32, return : .Cn [%mem.M]];
+.con println_i32 [mem: %mem.M, i: %core.I32, return : .Cn [%mem.M]];
+.con println_str [mem: %mem.M, str: Str (⊤:.Nat), return : .Cn [%mem.M]];
+
+.con %regex.match_star(n: .Nat)(next: CnRE n)(sub: CnRE n)(accept reject: .Cn [%mem.M, .Idx n])(mem: %mem.M, string: Str n, pos: .Idx n) =
+    .let stack_size = 1024;
+    .con alloced(mem: %mem.M, stack: Stack (stack_size,n)) =
+        .con free_accept(mem: %mem.M, stack: Stack (stack_size,n), pos: .Idx n) =
+            accept(%mem.free (mem, stack#0:.Bool), pos);
+        .con free_reject(mem: %mem.M, stack: Stack (stack_size,n), pos: .Idx n) =
+            reject(%mem.free (mem, stack#0:.Bool), pos);
+
+        .con next_loop(mem: %mem.M, next_pos: .Idx n, stack: Stack (stack_size, n)) =
+            .let (stack_p, offset) = stack;
+            .con next_matched!(mem: %mem.M, pos: .Idx n) =
+            free_accept (mem, stack, pos);
+            .con next_not_matched(mem: %mem.M, pos: .Idx n) =
+                .con popped(mem: %mem.M, stack: Stack (stack_size, n), backtracked_pos: .Idx n) =
+                    next_loop (mem, backtracked_pos, stack);
+                .con one_more_try(mem: %mem.M, stack: Stack (stack_size, n), pos: .Idx n) =
+                    pop_back (stack_size, n) ((mem, stack), popped);
+                .con is_empty(yn:.Bool) =
+                    (one_more_try, free_reject)#yn (mem, stack, pos);
+
+                empty (stack_size,n) (stack, is_empty);
+            .con printed_offset(mem: %mem.M) =
+                next (next_matched, next_not_matched) (mem, string, next_pos);
+            .con printed(mem: %mem.M) =
+                println_i32 (mem, %core.conv.u %core.i32 next_pos, printed_offset);
+            print_i32 (mem, %core.conv.u %core.i32 offset, printed);
+
+        .con loop(mem: %mem.M, pos: .Idx n, stack: Stack (stack_size, n)) =
+            .con pushed(mem: %mem.M, stack: Stack (stack_size, n)) =
+                .con not_matched!(mem: %mem.M, new_pos: .Idx n) =
+                    .con printed(mem: %mem.M) =
+                        next_loop(mem, new_pos, stack);
+                    println_i32 (mem, 999999:%core.I32, printed);
+            
+                .con matched!(mem: %mem.M, new_pos: .Idx n) =
+                    loop (mem, new_pos, stack);
+                sub (matched, not_matched) ((mem, string, pos));
+        
+            .con printed_offset(mem: %mem.M) =
+                push_back (stack_size, n) ((mem, stack, pos), pushed);
+            .con printed(mem: %mem.M) =
+                println_i32 (mem, %core.conv.u %core.i32 pos, printed_offset);
+            .let (stack_p, offset) = stack;
+            print_i32 (mem, %core.conv.u %core.i32 offset, printed);
+
+        loop (mem, pos, stack);
+    
+    alloc_stack (stack_size, n) (mem, alloced);
+
+.con %regex.match_plus(n: .Nat)(next: CnRE n)(sub: CnRE n)(accept reject: .Cn [%mem.M, .Idx n])(mem: %mem.M, string: Str n, pos: .Idx n) =
+    .con first_matched!(mem: %mem.M, first_pos: .Idx n) =
+        %regex.match_star n next sub (accept, reject) (mem, string, first_pos);
+    sub (first_matched, reject) ((mem, string, pos));
+
 ///
 /// ## Passes and Phases
 ///

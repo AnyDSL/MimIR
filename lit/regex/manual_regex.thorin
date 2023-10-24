@@ -1,0 +1,36 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin %s -o - --output-ll %t.ll | FileCheck %s
+// RUN: clang %t.ll -o %t -Wno-override-module %S/../lib.c
+// RUN: %t "aa"; test $? -eq 0
+// RUN: %t "abcaa"; test $? -eq 1
+// RUN: %t "a"; test $? -eq 0
+
+.import mem;
+.import core;
+.plugin regex;
+.plugin direct;
+
+.let I8 = .Idx 256;
+.let _32 = 4294967296;
+.let I32 = .Idx _32;
+.let Top = ⊤:.Nat;
+
+// .let re = %regex.conj 2 (%regex.quant.plus  %regex.cls.w, %regex.lit 'a');
+
+.con .extern main[mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), exit : .Cn [%mem.M, I32]] = {
+    .con accept [mem:%mem.M, .Idx Top] = exit (mem, 1:I32);
+    .con reject [mem:%mem.M, .Idx Top] = exit (mem, 0:I32);
+
+    .con match_argument[mem: %mem.M, I32] = {
+        .let arg1 = %mem.lea (Top, ‹Top; %mem.Ptr («⊤:.Nat; .Idx 256», 0)›, 0) (argv, 1:I32);;
+        .let (`mem, to_match) = %mem.load (mem, arg1);
+        // .let (`mem, matched, pos) = re Top (mem, to_match, 0:(.Idx Top));
+        %regex.match_plus Top (%regex.match_range ('a','a') Top (%regex.match_range ('a','a') Top (%regex.match_empty Top))) (%regex.match_range ('a','z') Top (%regex.match_empty Top)) (accept, reject) (mem, to_match, 0:(.Idx Top))
+
+        // exit (mem, %core.conv.u _32 matched)
+    };
+
+    (exit, match_argument) # (%core.icmp.ug (argc, 1:I32)) (mem, 0:I32)
+};
+
+// CHECK-NOT: %regex.
