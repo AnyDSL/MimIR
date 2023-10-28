@@ -187,6 +187,17 @@ add_thorin_plugin(regex
         regex/regex.cpp
         regex/pass/lower_regex.h
         regex/pass/lower_regex.cpp
+        regex/pass/nfa.h
+        regex/pass/nfa.cpp
+        regex/pass/dfa.h
+        regex/pass/dfa.cpp
+        regex/pass/dfamin.h
+        regex/pass/dfamin.cpp
+        regex/pass/automaton.h
+        regex/pass/regex2nfa.h
+        regex/pass/regex2nfa.cpp
+        regex/pass/nfa2dfa.h
+        regex/pass/nfa2dfa.cpp
         regex/normalizers_regex.cpp
     DEPENDS
         mem
