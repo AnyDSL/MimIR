@@ -91,59 +91,6 @@
 ///
 .ax %regex.quant(optional,star,plus): RE -> RE, normalize_quant, 1;
 ///
-/// ## Implementation
-///
-.fun %regex.match_range(lower upper: Char)(n: .Nat)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
-    .let ptr          = %mem.lea (n, ‹n; Char›, 0) (string, pos);
-    .let (`mem, char) = %mem.load (mem, ptr);
-    .let in_range     = %core.bit2.and_ 0 (%core.icmp.uge (char, lower),  %core.icmp.ule (char, upper));
-    .let pos_1        = %core.wrap.add %core.mode.nuw (pos, %core.idx n %core.mode.nuw 1);
-    return (mem, in_range, (pos, pos_1)#in_range);
-
-.fun %regex.match_not(n: .Nat)(inner: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
-    .con match_not_ret_inverted!(mem: %mem.M, in_range: .Bool, new_pos: .Idx n) = return (mem, %core.bit1.neg 0 in_range, new_pos);
-    inner ((mem, string, pos), match_not_ret_inverted);
-
-.fun %regex.match_any(n: .Nat)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
-    .let ptr          = %mem.lea (n, ‹n; Char›, 0) (string, pos);
-    .let (`mem, char) = %mem.load (mem, ptr);
-    .let isnt_0       = %core.icmp.ne (char, '\0');
-    .let pos_1        = %core.wrap.add %core.mode.nuw (pos, %core.idx n %core.mode.nuw 1);
-    return (mem, isnt_0, (pos, pos_1)#isnt_0);
-
-.fun %regex.match_conj(n: .Nat)(A B: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
-    .con match_conj_B_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = return (mem, matched, (pos, new_pos)#matched);
-    .con match_conj_A_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) =
-        .con match_conj_call_B!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = B ((mem, string, new_pos), match_conj_B_ret);
-        (return, match_conj_call_B)#matched (mem, matched, (pos, new_pos)#matched);
-    A ((mem, string, pos), match_conj_A_ret);
-
-.fun %regex.match_disj(n: .Nat)(A B: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
-    .con match_disj_B_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = return (mem, matched, (pos, new_pos)#matched);
-    .con match_disj_A_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) =
-        .con match_disj_call_B!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = B ((mem, string, new_pos), match_disj_B_ret);
-        (match_disj_call_B, return)#matched (mem, matched, new_pos);
-    A ((mem, string, pos), match_disj_A_ret);
-
-.fun %regex.match_optional(n: .Nat)(sub: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
-    .con match_optional_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = return (mem, .tt, new_pos);
-    sub ((mem, string, pos), match_optional_ret);
-
-.fun %regex.match_star(n: .Nat)(sub: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
-    .con match_star_ret(mem: %mem.M, matched: .Bool, new_pos: .Idx n) =
-        .con match_star_iter(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = sub ((mem, string, new_pos), match_star_ret);
-        (return, match_star_iter)#matched (mem, .tt, new_pos);
-    sub ((mem, string, pos), match_star_ret);
-
-.fun %regex.match_plus(n: .Nat)(sub: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =
-    .con match_plus_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) =
-        .con match_plus_iter!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = sub ((mem, string, new_pos), match_plus_ret);
-        (return, match_plus_iter)#matched (mem, .tt, new_pos);
-    .con match_plus_ret0!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) =
-        .con match_plus_iter0!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = sub ((mem, string, new_pos), match_plus_ret);
-        (return, match_plus_iter0)#matched (mem, matched, new_pos);
-    sub ((mem, string, pos), match_plus_ret0);
-///
 /// ## Passes and Phases
 ///
 /// ### Passes
