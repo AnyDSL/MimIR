@@ -52,6 +52,7 @@ std::vector<std::set<const DFANode*>> hopcroft(const std::set<const DFANode*>& r
     std::vector<std::set<const DFANode*>> P = {F, reachableStates - F};
     std::vector<std::set<const DFANode*>> W = {F, reachableStates - F};
 
+    std::vector<std::set<const DFANode*>> newP;
     while (!W.empty()) {
 #if 0
         std::cout << "P: ";
@@ -63,18 +64,18 @@ std::vector<std::set<const DFANode*>> hopcroft(const std::set<const DFANode*>& r
         W.pop_back();
         for (auto c : alphabet) {
             std::set<const DFANode*> X{};
-            for (auto state : reachableStates) {
+            for (const auto* state : reachableStates) {
                 state->for_transitions([&](auto c_, auto to) {
                     if (c_ == c && A.contains(to)) X.insert(state);
                 });
             }
-            for (auto Y : P) {
+            newP.clear();
+            for (const auto& Y : P) {
                 auto YnX = Y * X;
                 auto Y_X = Y - X;
                 if (!YnX.empty() && !Y_X.empty()) {
-                    P.erase(std::find(P.begin(), P.end(), Y));
-                    P.push_back(YnX);
-                    P.push_back(Y_X);
+                    newP.push_back(YnX);
+                    newP.push_back(Y_X);
                     if (auto YWit = std::find(W.begin(), W.end(), Y); YWit != W.end()) {
                         W.erase(YWit);
                         W.push_back(YnX);
@@ -85,8 +86,9 @@ std::vector<std::set<const DFANode*>> hopcroft(const std::set<const DFANode*>& r
                         else
                             W.push_back(Y_X);
                     }
-                }
+                } else newP.push_back(Y);
             }
+            std::swap(P, newP);
         }
     }
 
