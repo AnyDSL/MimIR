@@ -76,7 +76,7 @@
         .let (`mem, to_match) = %mem.load (mem, arg1);
         .let (`mem, matched, pos) = re Top (mem, to_match, 0:(.Idx Top));
         .con exit_me(mem: %mem.M, len: %core.I32) = {
-            exit (mem, (%core.idx _32 0 -1, %core.wrap.sub _32 (len, %core.conv.u _32 pos))#matched)
+            exit (mem, (%core.idx _32 0 255, %core.wrap.sub _32 (len, %core.conv.u _32 pos))#matched)
         };
         strlen(mem, to_match, exit_me)
     };
