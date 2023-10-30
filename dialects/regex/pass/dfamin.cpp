@@ -18,22 +18,6 @@ void printSet(const std::set<const DFANode*>& set) {
 }
 #endif
 
-// get reachable states
-std::set<const DFANode*> get_reachable_states(const DFA& dfa) {
-    std::set<const DFANode*> reachableStates;
-    std::vector<const DFANode*> workList;
-    workList.push_back(dfa.get_start());
-    while (!workList.empty()) {
-        auto state = workList.back();
-        workList.pop_back();
-        reachableStates.insert(state);
-        state->for_transitions([&](auto, auto to) {
-            if (!reachableStates.contains(to)) workList.push_back(to);
-        });
-    }
-    return reachableStates;
-}
-
 std::set<const DFANode*> get_accepting_states(const std::set<const DFANode*>& reachableStates) {
     std::set<const DFANode*> acceptingStates;
     for (auto state : reachableStates)
@@ -113,7 +97,7 @@ std::vector<std::set<const DFANode*>> hopcroft(const std::set<const DFANode*>& r
 
 namespace thorin::automaton {
 std::unique_ptr<DFA> minimize_dfa(const DFA& dfa) {
-    const auto reachableStates = get_reachable_states(dfa);
+    const auto reachableStates = dfa.get_reachable_states();
 
     const auto P = hopcroft(reachableStates);
 

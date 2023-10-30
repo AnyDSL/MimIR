@@ -27,7 +27,7 @@ void NFANode::dump() const {
         else if (c == NFA::SpecialTransitons::ANY)
             return ".";
         else
-            return {1, static_cast<char>(c)};
+            return {static_cast<char>(c)};
     };
 
     if (this->is_accepting()) std::cout << "  \"" << this << "\" [shape=doublecircle];\n";

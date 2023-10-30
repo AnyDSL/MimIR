@@ -7,11 +7,13 @@
 // RUN: %t "test@a.test.de"; test $? -eq 0
 // RUN: %t "test.b@a.test.de"; test $? -eq 0
 // RUN: %t "joachim..b@a.test.de"; test $? -eq 0
-// RUN: %t "test@cs.uni-sb"; test $? -eq 3
-// RUN: %t "tester@test"; test $? -eq 11
-// RUN: %t "test.de"; test $? -eq 7
-// RUN: %t "cs.uni-sb.de"; test $? -eq 12
-// RUN: %t "test@.a.test.de"; test $? -eq 15
+// RUN: %t "test@cs.uni-sb"; test $? -eq 255
+// RUN: %t "tester@test"; test $? -eq 255
+// RUN: %t "test.de"; test $? -eq 255
+// RUN: %t "cs.uni-sb.de"; test $? -eq 255
+// RUN: %t "test@.a.test.de"; test $? -eq 255
+// RUN: %t "a@a.de#a"; test $? -eq 2
+// RUN: %t "a@a.de/a"; test $? -eq 2
 
 
 .import mem;
@@ -74,7 +76,7 @@
         .let (`mem, to_match) = %mem.load (mem, arg1);
         .let (`mem, matched, pos) = re Top (mem, to_match, 0:(.Idx Top));
         .con exit_me(mem: %mem.M, len: %core.I32) = {
-            exit (mem, %core.wrap.sub _32 (len, %core.conv.u _32 pos))
+            exit (mem, (%core.idx _32 0 -1, %core.wrap.sub _32 (len, %core.conv.u _32 pos))#matched)
         };
         strlen(mem, to_match, exit_me)
     };

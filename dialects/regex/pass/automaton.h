@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <list>
+#include <set>
 #include <unordered_map>
 #include <vector>
 
@@ -25,12 +26,26 @@ public:
 
     const NodeType* get_start() const { return start_; }
 
-    void dump() const {
-        std::cout << "digraph beep {\n";
+    std::set<const NodeType*> get_reachable_states() const {
+        std::set<const NodeType*> reachableStates;
+        std::vector<const NodeType*> workList;
+        workList.push_back(get_start());
+        while (!workList.empty()) {
+            auto state = workList.back();
+            workList.pop_back();
+            reachableStates.insert(state);
+            state->for_transitions([&](auto, auto to) {
+                if (!reachableStates.contains(to)) workList.push_back(to);
+            });
+        }
+        return reachableStates;
+    }
+
+    void dump(std::string_view name = "automaton") const {
+        std::cout << "digraph " << name << " {\n";
         std::cout << "  start -> \"" << start_ << "\";\n";
 
-        for (auto& node : nodes_) {
-            node.dump();}
+        for (auto& node : nodes_) node.dump();
         std::cout << "}\n";
     }
 

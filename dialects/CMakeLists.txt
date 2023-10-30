@@ -185,6 +185,9 @@ add_thorin_plugin(regex
     SOURCES
         regex/regex.h
         regex/regex.cpp
+        regex/range_helper.h
+        regex/range_helper.cpp
+        regex/normalizers_regex.cpp
         regex/pass/lower_regex.h
         regex/pass/lower_regex.cpp
         regex/pass/nfa.h
@@ -198,7 +201,8 @@ add_thorin_plugin(regex
         regex/pass/regex2nfa.cpp
         regex/pass/nfa2dfa.h
         regex/pass/nfa2dfa.cpp
-        regex/normalizers_regex.cpp
+        regex/pass/dfa2matcher.h
+        regex/pass/dfa2matcher.cpp
     DEPENDS
         mem
         core

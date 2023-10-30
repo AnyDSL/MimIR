@@ -8,11 +8,11 @@
 #include "thorin/fe/parser.h"
 
 #include "dialects/regex/autogen.h"
-#include "dialects/regex/pass/nfa.h"
 #include "dialects/regex/pass/dfa.h"
-#include "dialects/regex/pass/regex2nfa.h"
-#include "dialects/regex/pass/nfa2dfa.h"
 #include "dialects/regex/pass/dfamin.h"
+#include "dialects/regex/pass/nfa.h"
+#include "dialects/regex/pass/nfa2dfa.h"
+#include "dialects/regex/pass/regex2nfa.h"
 #include "dialects/regex/regex.h"
 
 using namespace thorin::automaton;
@@ -174,9 +174,10 @@ TEST(Automaton, Regex2NFAAorBplusA) {
     for (auto plugin : {"compile", "mem", "core", "math", "regex"}) parser.plugin(plugin);
 
     auto pattern = w.call<regex::conj>(
-        2, w.tuple({w.call(regex::quant::plus, w.call<regex::disj>(2, w.tuple({w.call<regex::lit>(w.lit_idx(256, 'a')),
+        2,
+        w.tuple({w.call(regex::quant::plus, w.call<regex::disj>(2, w.tuple({w.call<regex::lit>(w.lit_idx(256, 'a')),
                                                                             w.call<regex::lit>(w.lit_idx(256, 'b'))}))),
-                    w.call<regex::lit>(w.lit_idx(256, 'a'))})); // (a & b)
+                 w.call<regex::lit>(w.lit_idx(256, 'a'))})); // (a & b)
     pattern->dump(10);
     auto nfa = regex::regex2nfa(pattern);
     nfa->dump();
@@ -186,6 +187,25 @@ TEST(Automaton, Regex2NFAAorBplusA) {
     minimize_dfa(*dfa)->dump();
 }
 
+TEST(Automaton, Regex2NFA1or5or9) {
+    Driver driver;
+    World& w    = driver.world();
+    auto parser = fe::Parser(w);
+    for (auto plugin : {"compile", "mem", "core", "math", "regex"}) parser.plugin(plugin);
+
+    // %regex.disj 2 (%regex.disj 2 (%regex.range ‹2; 49:(.Idx 256)›, %regex.range ‹2; 53:(.Idx 256)›), %regex.range ‹2; 57:(.Idx 256)›)
+    auto pattern = w.call<regex::disj>(
+        2, w.tuple({w.call<regex::disj>(
+        2, w.tuple({w.call<regex::lit>(w.lit_idx(256, '1')),
+                    w.call<regex::lit>(w.lit_idx(256, '5'))})), w.call<regex::lit>(w.lit_idx(256, '9'))})); // (a & b)
+    pattern->dump(10);
+    auto nfa = regex::regex2nfa(pattern);
+    nfa->dump();
+
+    auto dfa = nfa2dfa(*nfa);
+    dfa->dump();
+    minimize_dfa(*dfa)->dump();
+}
 
 TEST(Automaton, DFA) {
     auto dfa   = std::make_unique<DFA>();
@@ -236,7 +256,6 @@ TEST(Automaton, DFAMin) {
     stateE->add_transition(stateE, 'b');
     stateE->add_transition(stateD, 'a');
 
-
     EXPECT_EQ(dfa->get_start(), start);
     EXPECT_FALSE(start->is_accepting());
     EXPECT_TRUE(stateD->is_accepting());
@@ -263,7 +282,7 @@ TEST(Automaton, DFAMin) {
 
     auto min_stateC = min_stateB->get_transition('a');
     EXPECT_EQ(min_stateB->get_transition('b'), min_stateB);
-    
+
     EXPECT_TRUE(min_stateC->is_accepting());
     EXPECT_EQ(min_stateC->get_transition('a'), min_stateC);
     EXPECT_EQ(min_stateC->get_transition('b'), min_stateB);
