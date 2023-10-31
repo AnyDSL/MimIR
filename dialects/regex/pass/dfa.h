@@ -2,8 +2,9 @@
 
 #include <cstdint>
 
-#include <unordered_map>
 #include <vector>
+
+#include <absl/container/flat_hash_map.h>
 
 #include "dialects/regex/pass/automaton.h"
 
@@ -31,7 +32,7 @@ public:
     void dump() const;
 
 private:
-    std::unordered_map<std::uint16_t, const DFANode*> transitions_;
+    absl::flat_hash_map<std::uint16_t, const DFANode*> transitions_;
     bool accepting_ = false;
 };
 

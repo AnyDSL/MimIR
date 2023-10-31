@@ -5,6 +5,8 @@
 #include <memory>
 #include <set>
 
+#include <absl/container/flat_hash_map.h>
+
 #include "dialects/regex/pass/dfa.h"
 
 using namespace thorin::automaton;
@@ -105,7 +107,7 @@ std::unique_ptr<DFA> minimize_dfa(const DFA& dfa) {
     const auto P = hopcroft(reachableStates);
 
     auto minDfa = std::make_unique<DFA>();
-    std::unordered_map<const DFANode*, DFANode*> dfaStates;
+    absl::flat_hash_map<const DFANode*, DFANode*> dfaStates;
     for (auto& X : P) {
         auto state = minDfa->add_state();
         for (auto x : X) {
