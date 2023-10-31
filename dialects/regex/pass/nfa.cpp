@@ -33,7 +33,8 @@ void NFANode::dump() const {
     if (this->is_accepting()) std::cout << "  \"" << this << "\" [shape=doublecircle];\n";
 
     for (auto& [c, tos] : transitions_)
-        for (auto to : tos) std::cout << "  \"" << this << "\" -> \"" << to << "\" [label=\"" << print_char(c) << "\"];\n";
+        for (auto to : tos)
+            std::cout << "  \"" << this << "\" -> \"" << to << "\" [label=\"" << print_char(c) << "\"];\n";
 }
 
 namespace thorin::automaton {

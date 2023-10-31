@@ -86,7 +86,8 @@ std::vector<std::set<const DFANode*>> hopcroft(const std::set<const DFANode*>& r
                         else
                             W.push_back(Y_X);
                     }
-                } else newP.push_back(Y);
+                } else
+                    newP.push_back(Y);
             }
             std::swap(P, newP);
         }

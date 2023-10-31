@@ -16,23 +16,16 @@ public:
     std::vector<const NFANode*> get_transitions(std::uint16_t c) const;
 
     // F: void(const NFANode*)
-    template <class F>
-    void for_transitions(F&& f, std::uint16_t c) const {
-        if(auto it = transitions_.find(c); it != transitions_.end()) {
-            for (const auto& to : it->second)
-                std::forward<F>(f)(to);
-        }
-    }
-    
-    // F: void(std::uint16_t, const NFANode*)
-    template <class F>
-    void for_transitions(F&& f) const {
-        for (auto &[c, tos] : transitions_) {
-            for (const auto& to : tos)
-                std::forward<F>(f)(c, to);
-        }
+    template<class F> void for_transitions(F&& f, std::uint16_t c) const {
+        if (auto it = transitions_.find(c); it != transitions_.end())
+            for (const auto& to : it->second) std::forward<F>(f)(to);
     }
 
+    // F: void(std::uint16_t, const NFANode*)
+    template<class F> void for_transitions(F&& f) const {
+        for (auto& [c, tos] : transitions_)
+            for (const auto& to : tos) std::forward<F>(f)(c, to);
+    }
 
     bool is_accepting() const { return accepting_; }
     void set_accepting(bool accepting) { accepting_ = accepting; }
@@ -54,7 +47,7 @@ public:
 
     enum SpecialTransitons : std::uint16_t {
         EPSILON = 0x8001,
-        ANY = 0x8002,
+        ANY     = 0x8002,
     };
 };
 

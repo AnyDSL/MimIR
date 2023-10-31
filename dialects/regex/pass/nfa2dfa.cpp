@@ -11,18 +11,14 @@ namespace thorin::automaton {
 std::set<const NFANode*> epsilonClosure(const std::set<const NFANode*>& states) {
     std::set<const NFANode*> closure;
     std::queue<const NFANode*> stateQueue;
-    for (const auto& state : states) {
-        stateQueue.push(state);
-    }
+    for (const auto& state : states) stateQueue.push(state);
     while (!stateQueue.empty()) {
         auto currentState = stateQueue.front();
         stateQueue.pop();
         closure.insert(currentState);
         currentState->for_transitions([&](auto c, auto to) {
             if (c == NFA::SpecialTransitons::EPSILON) {
-                if (closure.find(to) == closure.end()) {
-                    stateQueue.push(to);
-                }
+                if (closure.find(to) == closure.end()) stateQueue.push(to);
             }
         });
     }
@@ -47,14 +43,13 @@ std::unique_ptr<DFA> nfa2dfa(const NFA& nfa) {
         auto currentDfaState = dfaStates[currentState];
         std::map<std::uint16_t, std::set<const NFANode*>> nextStates;
         // calculate next states
-        for (auto &nfaState : currentState) {
+        for (auto& nfaState : currentState) {
             nfaState->for_transitions([&](auto c, auto to) {
                 if (c == NFA::SpecialTransitons::EPSILON) return;
-                if (nextStates.find(c) == nextStates.end()) {
+                if (nextStates.find(c) == nextStates.end())
                     nextStates.emplace(c, std::set<const NFANode*>{to});
-                } else {
+                else
                     nextStates[c].insert(to);
-                }
             });
         }
         // add new states for unknown next states

@@ -4,6 +4,6 @@
 
 namespace thorin {
 namespace regex {
-    std::unique_ptr<automaton::NFA> regex2nfa(Ref regex);
+std::unique_ptr<automaton::NFA> regex2nfa(Ref regex);
 }
-}
+} // namespace thorin
