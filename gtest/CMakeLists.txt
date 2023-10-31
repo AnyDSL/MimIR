@@ -21,6 +21,8 @@ add_executable(thorin-regex-gtest
     ../dialects/regex/pass/dfamin.cpp
 )
 target_link_libraries(thorin-regex-gtest gtest_main libthorin)
+gtest_discover_tests (thorin-regex-gtest TEST_PREFIX "thorin-regex-gtest." DISCOVERY_TIMEOUT 60)
+
 add_dependencies(thorin-regex-gtest thorin_clos thorin_core thorin_compile thorin_math thorin_mem)
 target_include_directories(thorin-regex-gtest PRIVATE ${CMAKE_BINARY_DIR}/include)
 
