@@ -1,0 +1,84 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin %s -o - --output-ll %t.ll | FileCheck %s
+// RUN: clang %t.ll -o %t -Wno-override-module %S/../lib.c
+// RUN: %t "aa"; test $? -eq 1
+// RUN: %t "abbaa"; test $? -eq 1
+// RUN: %t "a"; test $? -eq 0
+
+.import mem;
+.import core;
+.plugin regex;
+.plugin direct;
+
+.let I8 = .Idx 256;
+.let _32 = 4294967296;
+.let I32 = .Idx _32;
+.let Top = ⊤:.Nat;
+
+// matches (a|b)+a
+
+.con .extern main[mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), exit : .Cn [%mem.M, I32]] = {
+    .con accept [mem:%mem.M, I32] = exit (mem, 1:I32);
+    .con reject [mem:%mem.M, .Idx Top] = exit (mem, 0:I32);
+
+    .con match_argument[mem: %mem.M, I32] = {
+        .let arg1 = %mem.lea (Top, ‹Top; %mem.Ptr («⊤:.Nat; .Idx 256», 0)›, 0) (argv, 1:I32);
+        .let (`mem, to_match) = %mem.load (mem, arg1);
+
+        .con error(mem: %mem.M, i : I32) = reject (mem, 0:I32);
+
+        .con state1(mem: %mem.M, i : I32);
+        .con state2(mem: %mem.M, i : I32);
+
+
+        .con start(mem: %mem.M, i : I32) = 
+            .let ptr = %mem.lea (Top, <⊤:.Nat; .Idx 256>, 0) (to_match, i);
+            .let (`mem, c) = %mem.load (mem, ptr);
+            .let new_i = %core.wrap.add %core.mode.nuw (i, 1:I32);
+
+            .con not_end(mem: %mem.M, i : I32) = 
+                .let is_match_a_or_b = %core.bit2.or_ 2 (%core.icmp.e (c, 'a'), %core.icmp.e (c, 'b'));
+                (error, state1)#is_match_a_or_b (mem, i);
+
+            .let is_end = %core.icmp.e (c, 0:I8);
+            (not_end, error)#is_end (mem, new_i);
+
+        .con state1(mem: %mem.M, i : I32) =
+            .let ptr = %mem.lea (Top, <Top; .Idx 256>, 0) (to_match, i);
+            .let (`mem, c) = %mem.load (mem, ptr);
+            .let new_i = %core.wrap.add %core.mode.nuw (i, 1:I32);
+
+            .con not_a(mem: %mem.M, i : I32) = 
+                .let is_match_b = %core.icmp.e (c, 'b');
+                (error, state1)#is_match_b (mem, i);
+
+            .con not_end(mem: %mem.M, i : I32) = 
+                .let is_match_a = %core.icmp.e (c, 'a');
+                (not_a, state2)#is_match_a (mem, i);
+
+            .let is_end = %core.icmp.e (c, 0:I8);
+            (not_end, error)#is_end (mem, new_i);
+
+        .con state2(mem: %mem.M, i : I32) =
+            .let ptr = %mem.lea (Top, <Top; .Idx 256>, 0) (to_match, i);
+            .let (`mem, c) = %mem.load (mem, ptr);
+            .let new_i = %core.wrap.add %core.mode.nuw (i, 1:I32);
+
+            .con not_a(mem: %mem.M, i : I32) = 
+                .let is_match_b = %core.icmp.e (c, 'b');
+                (error, state1)#is_match_b (mem, i);
+
+            .con not_end(mem: %mem.M, i : I32) = 
+                .let is_match_a = %core.icmp.e (c, 'a');
+                (not_a, state2)#is_match_a (mem, i);
+
+            .let is_end = %core.icmp.e (c, 0:I8);
+            (not_end, accept)#is_end (mem, new_i);
+
+        start(mem, 0:I32)
+    };
+
+    (exit, match_argument) # (%core.icmp.ug (argc, 1:I32)) (mem, 0:I32)
+};
+
+// CHECK-NOT: %regex.

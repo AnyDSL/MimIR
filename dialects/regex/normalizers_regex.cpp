@@ -13,7 +13,7 @@
 
 #include "thorin/util/log.h"
 
-#include "dialects/regex/autogen.h"
+#include "dialects/regex/range_helper.h"
 #include "dialects/regex/regex.h"
 
 namespace thorin::regex {
@@ -103,15 +103,6 @@ void make_vector_unique(std::vector<const Def*>& args) {
     }
 }
 
-std::optional<std::pair<nat_t, nat_t>> merge_ranges(std::pair<nat_t, nat_t> a, std::pair<nat_t, nat_t> b) {
-    if (!(a.second + 1 < b.first || b.second + 1 < a.first)) {
-        return {
-            {std::min(a.first, b.first), std::max(a.second, b.second)}
-        };
-    }
-    return {};
-}
-
 bool is_in_range(std::pair<nat_t, nat_t> range, nat_t needle) {
     return needle >= range.first && needle <= range.second;
 }
@@ -134,31 +125,13 @@ void merge_ranges(std::vector<const Def*>& args) {
     if (ranges_begin == args.end()) return;
 
     std::set<const Def*> to_remove;
-    std::vector<std::pair<nat_t, nat_t>> old_ranges, new_ranges;
+    std::vector<std::pair<nat_t, nat_t>> old_ranges;
     auto& world = (*ranges_begin)->world();
 
     std::transform(ranges_begin, args.end(), std::back_inserter(old_ranges), get_range);
 
-    for (auto it = old_ranges.begin(); it != old_ranges.end(); ++it) {
-        auto current_range = *it;
-        world.DLOG("old range: {}-{}", current_range.first, current_range.second);
-        for (auto inner = it + 1; inner != old_ranges.end(); ++inner)
-            if (auto merged = merge_ranges(current_range, *inner)) current_range = *merged;
+    auto new_ranges = merge_ranges(world, old_ranges);
 
-        std::vector<std::vector<std::pair<nat_t, nat_t>>::iterator> de_duplicate;
-        for (auto inner = new_ranges.begin(); inner != new_ranges.end(); ++inner) {
-            if (auto merged = merge_ranges(current_range, *inner)) {
-                current_range = *merged;
-                de_duplicate.push_back(inner);
-            }
-        }
-        for (auto dedup : de_duplicate) {
-            world.DLOG("dedup {}-{}", current_range.first, current_range.second);
-            new_ranges.erase(dedup);
-        }
-        world.DLOG("new range: {}-{}", current_range.first, current_range.second);
-        new_ranges.push_back(std::move(current_range));
-    }
     // invalidates ranges_begin
     args.erase(ranges_begin, args.end());
     std::transform(new_ranges.begin(), new_ranges.end(), std::back_inserter(args), app_range{world});
