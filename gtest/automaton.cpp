@@ -7,7 +7,6 @@
 
 #include "thorin/fe/parser.h"
 
-#include "dialects/regex/autogen.h"
 #include "dialects/regex/pass/dfa.h"
 #include "dialects/regex/pass/dfamin.h"
 #include "dialects/regex/pass/nfa.h"
