@@ -9,7 +9,8 @@ var searchData=
   ['slf_6',['slf',['../namespacethorin_1_1math.html#a40e97e033255dfe4ad995bcaaba9a614',1,'thorin::math']]],
   ['slot_7',['slot',['../namespacethorin_1_1mem.html#aaac8560242f619f5ac359bba09f7fd36',1,'thorin::mem']]],
   ['sort_8',['Sort',['../namespacethorin.html#abb917bebc699083d990fc4592abcc50e',1,'thorin']]],
-  ['ssa_5fpass_9',['ssa_pass',['../namespacethorin_1_1mem.html#a8be47c9305483da00ce77e6a3bd2855f',1,'thorin::mem']]],
-  ['store_10',['store',['../namespacethorin_1_1mem.html#aedbbb7c918acd521287b625ed1ae1b42',1,'thorin::mem']]],
-  ['sum_11',['sum',['../namespacethorin_1_1autodiff.html#aca240fd39eb8b23acfd9fc5691cb2d2e',1,'thorin::autodiff::sum()'],['../namespacethorin_1_1matrix.html#a145673d51fccbfe62fb8486b219434e8',1,'thorin::matrix::sum()']]]
+  ['specialtransitons_9',['SpecialTransitons',['../classthorin_1_1automaton_1_1DFA.html#a38878177f4fe46b61a2ce579a6e125ff',1,'thorin::automaton::DFA::SpecialTransitons()'],['../classthorin_1_1automaton_1_1NFA.html#a40e9d71e061a9d7d6b3d72fb4574c582',1,'thorin::automaton::NFA::SpecialTransitons()']]],
+  ['ssa_5fpass_10',['ssa_pass',['../namespacethorin_1_1mem.html#a8be47c9305483da00ce77e6a3bd2855f',1,'thorin::mem']]],
+  ['store_11',['store',['../namespacethorin_1_1mem.html#aedbbb7c918acd521287b625ed1ae1b42',1,'thorin::mem']]],
+  ['sum_12',['sum',['../namespacethorin_1_1autodiff.html#aca240fd39eb8b23acfd9fc5691cb2d2e',1,'thorin::autodiff::sum()'],['../namespacethorin_1_1matrix.html#a145673d51fccbfe62fb8486b219434e8',1,'thorin::matrix::sum()']]]
 ];

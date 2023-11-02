@@ -132,8 +132,7 @@ $(document).ready(function(){initNavTree('regex.html',''); initResizable(); });
 <li class="level1"><a href="#autotoc_md227">Quantifiers</a><ul><li class="level2"><a href="#autotoc_md228">%regex.quant.*</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md229">Implementation</a></li>
-<li class="level1"><a href="#autotoc_md230">Passes and Phases</a><ul><li class="level2"><a href="#autotoc_md231">Passes</a></li>
+<li class="level1"><a href="#autotoc_md229">Passes and Phases</a><ul><li class="level2"><a href="#autotoc_md230">Passes</a></li>
 </ul>
 </li>
 </ul>
@@ -213,60 +212,8 @@ Quantifiers</h1>
 %regex.quant.*</h2>
 <div class="fragment"><div class="line">.ax %regex.quant(optional,star,plus): RE -&gt; RE, normalize_quant, 1;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md229"></a>
-Implementation</h1>
-<div class="fragment"><div class="line">.fun %regex.match_range(lower upper: Char)(n: .Nat)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =</div>
-<div class="line">    .let ptr          = %mem.lea (n, ‹n; Char›, 0) (string, pos);</div>
-<div class="line">    .let (`mem, char) = %mem.load (mem, ptr);</div>
-<div class="line">    .let in_range     = %core.bit2.and_ 0 (%core.icmp.uge (char, lower),  %core.icmp.ule (char, upper));</div>
-<div class="line">    .let pos_1        = %core.wrap.add %core.mode.nuw (pos, %core.idx n %core.mode.nuw 1);</div>
-<div class="line">    return (mem, in_range, (pos, pos_1)#in_range);</div>
-<div class="line"> </div>
-<div class="line">.fun %regex.match_not(n: .Nat)(inner: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =</div>
-<div class="line">    .con match_not_ret_inverted!(mem: %mem.M, in_range: .Bool, new_pos: .Idx n) = return (mem, %core.bit1.neg 0 in_range, new_pos);</div>
-<div class="line">    inner ((mem, string, pos), match_not_ret_inverted);</div>
-<div class="line"> </div>
-<div class="line">.fun %regex.match_any(n: .Nat)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =</div>
-<div class="line">    .let ptr          = %mem.lea (n, ‹n; Char›, 0) (string, pos);</div>
-<div class="line">    .let (`mem, char) = %mem.load (mem, ptr);</div>
-<div class="line">    .let isnt_0       = %core.icmp.ne (char, &#39;\0&#39;);</div>
-<div class="line">    .let pos_1        = %core.wrap.add %core.mode.nuw (pos, %core.idx n %core.mode.nuw 1);</div>
-<div class="line">    return (mem, isnt_0, (pos, pos_1)#isnt_0);</div>
-<div class="line"> </div>
-<div class="line">.fun %regex.match_conj(n: .Nat)(A B: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =</div>
-<div class="line">    .con match_conj_B_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = return (mem, matched, (pos, new_pos)#matched);</div>
-<div class="line">    .con match_conj_A_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) =</div>
-<div class="line">        .con match_conj_call_B!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = B ((mem, string, new_pos), match_conj_B_ret);</div>
-<div class="line">        (return, match_conj_call_B)#matched (mem, matched, (pos, new_pos)#matched);</div>
-<div class="line">    A ((mem, string, pos), match_conj_A_ret);</div>
-<div class="line"> </div>
-<div class="line">.fun %regex.match_disj(n: .Nat)(A B: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =</div>
-<div class="line">    .con match_disj_B_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = return (mem, matched, (pos, new_pos)#matched);</div>
-<div class="line">    .con match_disj_A_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) =</div>
-<div class="line">        .con match_disj_call_B!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = B ((mem, string, new_pos), match_disj_B_ret);</div>
-<div class="line">        (match_disj_call_B, return)#matched (mem, matched, new_pos);</div>
-<div class="line">    A ((mem, string, pos), match_disj_A_ret);</div>
-<div class="line"> </div>
-<div class="line">.fun %regex.match_optional(n: .Nat)(sub: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =</div>
-<div class="line">    .con match_optional_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = return (mem, .tt, new_pos);</div>
-<div class="line">    sub ((mem, string, pos), match_optional_ret);</div>
-<div class="line"> </div>
-<div class="line">.fun %regex.match_star(n: .Nat)(sub: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =</div>
-<div class="line">    .con match_star_ret(mem: %mem.M, matched: .Bool, new_pos: .Idx n) =</div>
-<div class="line">        .con match_star_iter(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = sub ((mem, string, new_pos), match_star_ret);</div>
-<div class="line">        (return, match_star_iter)#matched (mem, .tt, new_pos);</div>
-<div class="line">    sub ((mem, string, pos), match_star_ret);</div>
-<div class="line"> </div>
-<div class="line">.fun %regex.match_plus(n: .Nat)(sub: FnRE n)(mem: %mem.M, string: Str n, pos: .Idx n): Res n =</div>
-<div class="line">    .con match_plus_ret!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) =</div>
-<div class="line">        .con match_plus_iter!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = sub ((mem, string, new_pos), match_plus_ret);</div>
-<div class="line">        (return, match_plus_iter)#matched (mem, .tt, new_pos);</div>
-<div class="line">    .con match_plus_ret0!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) =</div>
-<div class="line">        .con match_plus_iter0!(mem: %mem.M, matched: .Bool, new_pos: .Idx n) = sub ((mem, string, new_pos), match_plus_ret);</div>
-<div class="line">        (return, match_plus_iter0)#matched (mem, matched, new_pos);</div>
-<div class="line">    sub ((mem, string, pos), match_plus_ret0);</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md230"></a>
 Passes and Phases</h1>
-<h2><a class="anchor" id="autotoc_md231"></a>
+<h2><a class="anchor" id="autotoc_md230"></a>
 Passes</h2>
 <div class="fragment"><div class="line">.ax %regex.lower_regex: %compile.Pass;</div>
 </div><!-- fragment --> </div></div><!-- contents -->

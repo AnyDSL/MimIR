@@ -2,6 +2,7 @@ var namespacethorin =
 [
     [ "affine", "namespacethorin_1_1affine.html", "namespacethorin_1_1affine" ],
     [ "autodiff", "namespacethorin_1_1autodiff.html", "namespacethorin_1_1autodiff" ],
+    [ "automaton", "namespacethorin_1_1automaton.html", "namespacethorin_1_1automaton" ],
     [ "clos", "namespacethorin_1_1clos.html", "namespacethorin_1_1clos" ],
     [ "compile", "namespacethorin_1_1compile.html", "namespacethorin_1_1compile" ],
     [ "core", "namespacethorin_1_1core.html", [

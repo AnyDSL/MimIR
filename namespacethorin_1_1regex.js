@@ -15,14 +15,6 @@ var namespacethorin_1_1regex =
     [ "disj", "namespacethorin_1_1regex.html#a312eb6dc4d7c11752634400c1819ff7d", null ],
     [ "lit", "namespacethorin_1_1regex.html#aa829232b8ba96a9d8214bb4e7bd5acb4", null ],
     [ "lower_regex", "namespacethorin_1_1regex.html#add9ee22397e1616d0309146c04b9a2e1", null ],
-    [ "match_any", "namespacethorin_1_1regex.html#a20f767cd2b81f32cb619980730e10292", null ],
-    [ "match_conj", "namespacethorin_1_1regex.html#a26a1370204f624074433da1f2070910b", null ],
-    [ "match_disj", "namespacethorin_1_1regex.html#abc3fcfa93d764fa088cfd341b7458730", null ],
-    [ "match_not", "namespacethorin_1_1regex.html#ac31c09e8c787c120e0f49d4840c2d48d", null ],
-    [ "match_optional", "namespacethorin_1_1regex.html#adb6f78ffdd29deddecbe71a7abbbce92", null ],
-    [ "match_plus", "namespacethorin_1_1regex.html#a10ee472e69773449c59418d1ffc07fb0", null ],
-    [ "match_range", "namespacethorin_1_1regex.html#a946a1971137900e89bf97416d9f6fe96", null ],
-    [ "match_star", "namespacethorin_1_1regex.html#a952ce0d9fc2396ca912331cd219cc010", null ],
     [ "not_", "namespacethorin_1_1regex.html#ae04c2d2fd534547ae634ca4586ac118c", null ],
     [ "quant", "namespacethorin_1_1regex.html#aee8365376d8e42f63aa4ad6fd366cabc", [
       [ "optional", "namespacethorin_1_1regex.html#aee8365376d8e42f63aa4ad6fd366cabca50a5671aecf8ecf461fb8c990569e0ba", null ],
@@ -31,6 +23,7 @@ var namespacethorin_1_1regex =
     ] ],
     [ "range", "namespacethorin_1_1regex.html#ad4b111148fd16a75108976e5d2d0d2ce", null ],
     [ "compare_re", "namespacethorin_1_1regex.html#af7312ca0a336c95f5eb9f7b57bc98242", null ],
+    [ "dfa2matcher", "namespacethorin_1_1regex.html#a43281c60975459a341b1628ff9507403", null ],
     [ "equals_any", "namespacethorin_1_1regex.html#a636d7254bea9c9126b6a33a94731245e", null ],
     [ "equals_any", "namespacethorin_1_1regex.html#ab10de7b790e74f0409773a9d640792cc", null ],
     [ "equals_any", "namespacethorin_1_1regex.html#ac9914f15b0a4cc6f9beb43f60c91a682", null ],
@@ -42,6 +35,7 @@ var namespacethorin_1_1regex =
     [ "make_vector_unique", "namespacethorin_1_1regex.html#a627ab740195e88059f07fd0e920f94b9", null ],
     [ "merge_ranges", "namespacethorin_1_1regex.html#aecb785dd22fd67ef5ac29e188fbf68fa", null ],
     [ "merge_ranges", "namespacethorin_1_1regex.html#afb1f0e532431e0761b42e8aab40757dd", null ],
+    [ "merge_ranges", "namespacethorin_1_1regex.html#a2c0ec2af99951c358ed93ad9db6845c5", null ],
     [ "normalize_any", "namespacethorin_1_1regex.html#a0bdef50f804549980af782aea6411719", null ],
     [ "normalize_conj", "namespacethorin_1_1regex.html#ac1bb35e3841f87cc017dafa026afb25e", null ],
     [ "normalize_disj", "namespacethorin_1_1regex.html#a10aa18cea355fc4b947ec8b2455a4020", null ],
@@ -74,6 +68,7 @@ var namespacethorin_1_1regex =
     [ "operator|", "namespacethorin_1_1regex.html#a841f508345439e40c5b636f306f04332", null ],
     [ "operator|", "namespacethorin_1_1regex.html#aed736d9eb626874ddb282a77c4c1a507", null ],
     [ "operator|", "namespacethorin_1_1regex.html#a222eba53cc73d36c203a9ca2c71d7442", null ],
+    [ "regex2nfa", "namespacethorin_1_1regex.html#a2131a5283cad4006df8fd3b0898aae14", null ],
     [ "register_normalizers", "namespacethorin_1_1regex.html#aa562ed47ee69375dc7d74b21528d135c", null ],
     [ "Plugin_Id", "namespacethorin_1_1regex.html#a8770edb765189de8bdf2eac3981f5130", null ]
 ];

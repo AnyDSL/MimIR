@@ -9,6 +9,13 @@ var annotated_dup =
         [ "AutoDiffZero", "classthorin_1_1autodiff_1_1AutoDiffZero.html", "classthorin_1_1autodiff_1_1AutoDiffZero" ],
         [ "AutoDiffZeroCleanup", "classthorin_1_1autodiff_1_1AutoDiffZeroCleanup.html", "classthorin_1_1autodiff_1_1AutoDiffZeroCleanup" ]
       ] ],
+      [ "automaton", "namespacethorin_1_1automaton.html", [
+        [ "AutomatonBase", "classthorin_1_1automaton_1_1AutomatonBase.html", "classthorin_1_1automaton_1_1AutomatonBase" ],
+        [ "DFA", "classthorin_1_1automaton_1_1DFA.html", "classthorin_1_1automaton_1_1DFA" ],
+        [ "DFANode", "classthorin_1_1automaton_1_1DFANode.html", "classthorin_1_1automaton_1_1DFANode" ],
+        [ "NFA", "classthorin_1_1automaton_1_1NFA.html", "classthorin_1_1automaton_1_1NFA" ],
+        [ "NFANode", "classthorin_1_1automaton_1_1NFANode.html", "classthorin_1_1automaton_1_1NFANode" ]
+      ] ],
       [ "clos", "namespacethorin_1_1clos.html", [
         [ "BranchClosElim", "classthorin_1_1clos_1_1BranchClosElim.html", "classthorin_1_1clos_1_1BranchClosElim" ],
         [ "Clos2SJLJ", "classthorin_1_1clos_1_1Clos2SJLJ.html", "classthorin_1_1clos_1_1Clos2SJLJ" ],

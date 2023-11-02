@@ -14,6 +14,13 @@ var hierarchy =
     [ "thorin::ArrayStorage< uint64_t, std::is_trivial< uint64_t >::value ? 5 :0 >", "classthorin_1_1ArrayStorage.html", null ],
     [ "thorin::ArrayStorage< Value, std::is_trivial< Value >::value ? 5 :0 >", "classthorin_1_1ArrayStorage.html", null ],
     [ "thorin::ArrayStorage< void *, std::is_trivial< void * >::value ? 5 :0 >", "classthorin_1_1ArrayStorage.html", null ],
+    [ "thorin::automaton::AutomatonBase< NodeType >", "classthorin_1_1automaton_1_1AutomatonBase.html", null ],
+    [ "thorin::automaton::AutomatonBase< DFANode >", "classthorin_1_1automaton_1_1AutomatonBase.html", [
+      [ "thorin::automaton::DFA", "classthorin_1_1automaton_1_1DFA.html", null ]
+    ] ],
+    [ "thorin::automaton::AutomatonBase< NFANode >", "classthorin_1_1automaton_1_1AutomatonBase.html", [
+      [ "thorin::automaton::NFA", "classthorin_1_1automaton_1_1NFA.html", null ]
+    ] ],
     [ "thorin::dot::BB", "namespacethorin_1_1dot.html#classthorin_1_1dot_1_1BB", null ],
     [ "thorin::ll::BB", "structthorin_1_1ll_1_1BB.html", null ],
     [ "thorin::BitSet", "classthorin_1_1BitSet.html", null ],
@@ -28,6 +35,7 @@ var hierarchy =
     [ "thorin::DefDefHash", "structthorin_1_1DefDefHash.html", null ],
     [ "thorin::DepNode", "classthorin_1_1DepNode.html", null ],
     [ "thorin::DepTree", "classthorin_1_1DepTree.html", null ],
+    [ "thorin::automaton::DFANode", "classthorin_1_1automaton_1_1DFANode.html", null ],
     [ "thorin::DomFrontierBase< forward >", "classthorin_1_1DomFrontierBase.html", null ],
     [ "thorin::DomTreeBase< forward >", "classthorin_1_1DomTreeBase.html", null ],
     [ "thorin::Elem< R, F >", "structthorin_1_1Elem.html", null ],
@@ -54,6 +62,7 @@ var hierarchy =
     [ "thorin::Axiom::Match< T >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match", null ],
     [ "thorin::Match< Id, D >", "classthorin_1_1Match.html", null ],
     [ "thorin::Axiom::Match< regex::any >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01regex_1_1any_01_4", null ],
+    [ "thorin::automaton::NFANode", "classthorin_1_1automaton_1_1NFANode.html", null ],
     [ "thorin::fe::Parser", "classthorin_1_1fe_1_1Parser.html", null ],
     [ "thorin::Pass", "classthorin_1_1Pass.html", [
       [ "thorin::RWPass< DebugDump, Lam >", "classthorin_1_1RWPass.html", [
@@ -270,5 +279,7 @@ var hierarchy =
     [ "DefMap< std::string >", "namespace_3globalScope_4.html#classDefMap_3_01std_1_1string_01_4", null ],
     [ "DefMap< thorin::Type >", "namespace_3globalScope_4.html#classDefMap_3_01thorin_1_1Type_01_4", null ],
     [ "LamMap< BB >", "namespace_3globalScope_4.html#classLamMap_3_01BB_01_4", null ],
+    [ "list< DFANode >", "namespace_3globalScope_4.html#classstd_1_1list_3_01DFANode_01_4", null ],
+    [ "list< NFANode >", "namespace_3globalScope_4.html#classstd_1_1list_3_01NFANode_01_4", null ],
     [ "size_t", "namespace_3globalScope_4.html#classsize__t", null ]
 ];

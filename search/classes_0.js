@@ -22,5 +22,8 @@ var searchData=
   ['autodiffeval_19',['AutoDiffEval',['../classthorin_1_1autodiff_1_1AutoDiffEval.html',1,'thorin::autodiff']]],
   ['autodiffzero_20',['AutoDiffZero',['../classthorin_1_1autodiff_1_1AutoDiffZero.html',1,'thorin::autodiff']]],
   ['autodiffzerocleanup_21',['AutoDiffZeroCleanup',['../classthorin_1_1autodiff_1_1AutoDiffZeroCleanup.html',1,'thorin::autodiff']]],
-  ['axiom_22',['Axiom',['../classthorin_1_1Axiom.html',1,'thorin']]]
+  ['automatonbase_22',['AutomatonBase',['../classthorin_1_1automaton_1_1AutomatonBase.html',1,'thorin::automaton']]],
+  ['automatonbase_3c_20dfanode_20_3e_23',['AutomatonBase&lt; DFANode &gt;',['../classthorin_1_1automaton_1_1AutomatonBase.html',1,'thorin::automaton']]],
+  ['automatonbase_3c_20nfanode_20_3e_24',['AutomatonBase&lt; NFANode &gt;',['../classthorin_1_1automaton_1_1AutomatonBase.html',1,'thorin::automaton']]],
+  ['axiom_25',['Axiom',['../classthorin_1_1Axiom.html',1,'thorin']]]
 ];
