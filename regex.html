@@ -158,7 +158,7 @@ RE</h2>
 Meta</h1>
 <h2><a class="anchor" id="autotoc_md219"></a>
 %regex.conj</h2>
-<p >A sequence of RE's, e.g. <code>\d\d\d</code> matching 3 digits: `regex.conj (regex.cls.d, regex.cls.d, regex.cls.d)</p>
+<p >A sequence of RE's, e.g. <code>\d\d\d</code> matching 3 digits: <code>%regex.conj (%regex.cls.d, %regex.cls.d, %regex.cls.d)</code></p>
 <div class="fragment"><div class="line">.ax %regex.conj: Π[n: .Nat][«n; RE»] -&gt; RE, normalize_conj, 2;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md220"></a>
 %regex.disj</h2>
@@ -168,7 +168,7 @@ Meta</h1>
 Values</h1>
 <h2><a class="anchor" id="autotoc_md222"></a>
 %regex.range</h2>
-<p >Wraps a range of literals. Use: &lsquo;regex.range ('a&rsquo;, 'z')` to match all lower case letters.</p>
+<p >Wraps a range of literals. Use: &lsquo;%regex.range ('a&rsquo;, 'z')` to match all lower case letters.</p>
 <div class="fragment"><div class="line">.ax %regex.range: «2; Char» -&gt; RE, normalize_range, 1;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md223"></a>
 %regex.lit</h2>
