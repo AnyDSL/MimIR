@@ -27,8 +27,6 @@ using namespace thorin;
 // Note, since the DFA stores the transitions as chars, not ranges, we have to merge the transitions to ranges first
 // (cf. transitions_to_ranges)
 
-#define DEBUG_PRINT 0
-
 namespace {
 std::string state_to_name(const automaton::DFANode* state) {
     std::stringstream ss;
@@ -93,9 +91,8 @@ create_check_match_transitions_from(Ref c, const automaton::DFANode* state) {
 
 namespace thorin::regex {
 Ref dfa2matcher(World& w, const automaton::DFA& dfa, Ref n) {
-#if DEBUG_PRINT
-    dfa.dump("dfa_to_match");
-#endif
+    w.DLOG("dfa to match: {}", dfa);
+
     auto states = dfa.get_reachable_states();
     absl::flat_hash_map<const automaton::DFANode*, Lam*> state2matcher;
 

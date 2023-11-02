@@ -12,7 +12,10 @@ void DFANode::add_transition(const DFANode* to, std::uint16_t c) { transitions_[
 
 const DFANode* DFANode::get_transition(std::uint16_t c) const { return lookup(transitions_, c); }
 
-void DFANode::dump() const {
+namespace thorin::automaton {
+template class AutomatonBase<DFANode>;
+
+std::ostream& operator<<(std::ostream& os, const DFANode& node) {
     auto print_char = [](std::uint16_t c) -> std::string {
         if (c == DFA::SpecialTransitons::ANY)
             return ".";
@@ -20,12 +23,10 @@ void DFANode::dump() const {
             return {static_cast<char>(c)};
     };
 
-    if (this->is_accepting()) std::cout << "  \"" << this << "\" [shape=doublecircle];\n";
+    if (node.is_accepting()) os << "  \"" << &node << "\" [shape=doublecircle];\n";
 
-    for (auto& [c, to] : transitions_)
-        std::cout << "  \"" << this << "\" -> \"" << to << "\" [label=\"" << print_char(c) << "\"];\n";
+    for (auto& [c, to] : node.transitions_)
+        std::cout << "  \"" << &node << "\" -> \"" << to << "\" [label=\"" << print_char(c) << "\"];\n";
+    return os;
 }
-
-namespace thorin::automaton {
-template class AutomatonBase<DFANode>;
-}
+} // namespace thorin::automaton

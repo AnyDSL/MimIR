@@ -31,7 +31,7 @@ public:
     bool is_accepting() const { return accepting_; }
     void set_accepting(bool accepting) { accepting_ = accepting; }
 
-    void dump() const;
+    friend std::ostream& operator<<(std::ostream& os, const NFANode& node);
 
 private:
     absl::flat_hash_map<std::uint16_t, std::vector<const NFANode*>> transitions_;

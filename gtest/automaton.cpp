@@ -164,7 +164,7 @@ TEST(Automaton, Regex2NFA) {
         2, w.tuple({w.call<regex::lit>(w.lit_idx(256, 'a')), w.call<regex::lit>(w.lit_idx(256, 'b'))})); // (a & b)
     pattern->dump(10);
     auto nfa = regex::regex2nfa(pattern);
-    nfa->dump();
+    std::cout << *nfa;
 }
 
 TEST(Automaton, Regex2NFAAorBplusA) {
@@ -180,11 +180,11 @@ TEST(Automaton, Regex2NFAAorBplusA) {
                  w.call<regex::lit>(w.lit_idx(256, 'a'))})); // (a & b)
     pattern->dump(10);
     auto nfa = regex::regex2nfa(pattern);
-    nfa->dump();
+    std::cout << *nfa;
 
     auto dfa = nfa2dfa(*nfa);
-    dfa->dump();
-    minimize_dfa(*dfa)->dump();
+    std::cout << *dfa;
+    std::cout << *minimize_dfa(*dfa);
 }
 
 TEST(Automaton, Regex2NFA1or5or9) {
@@ -200,11 +200,11 @@ TEST(Automaton, Regex2NFA1or5or9) {
                     w.call<regex::lit>(w.lit_idx(256, '5'))})), w.call<regex::lit>(w.lit_idx(256, '9'))})); // (a & b)
     pattern->dump(10);
     auto nfa = regex::regex2nfa(pattern);
-    nfa->dump();
+    std::cout << *nfa;
 
     auto dfa = nfa2dfa(*nfa);
-    dfa->dump();
-    minimize_dfa(*dfa)->dump();
+    std::cout << *dfa;
+    std::cout << *minimize_dfa(*dfa);
 }
 
 TEST(Automaton, DFA) {
@@ -231,8 +231,8 @@ TEST(Automaton, DFA) {
     EXPECT_EQ(third->get_transition('a'), third);
     EXPECT_EQ(third->get_transition('b'), second);
 
-    dfa->dump();
-    minimize_dfa(*dfa)->dump();
+    std::cout << *dfa;
+    std::cout << *minimize_dfa(*dfa);
 }
 
 TEST(Automaton, DFAMin) {
@@ -270,9 +270,9 @@ TEST(Automaton, DFAMin) {
     EXPECT_EQ(stateE->get_transition('a'), stateD);
     EXPECT_EQ(stateE->get_transition('b'), stateE);
 
-    dfa->dump();
+    std::cout << *dfa;
     auto min_dfa = minimize_dfa(*dfa);
-    min_dfa->dump();
+    std::cout << *min_dfa;
 
     auto min_start = min_dfa->get_start();
     EXPECT_FALSE(min_start->is_accepting());

@@ -29,7 +29,7 @@ public:
     bool is_accepting() const { return accepting_; }
     void set_accepting(bool accepting) { accepting_ = accepting; }
 
-    void dump() const;
+    friend std::ostream& operator<<(std::ostream& os, const DFANode& node);
 
 private:
     absl::flat_hash_map<std::uint16_t, const DFANode*> transitions_;

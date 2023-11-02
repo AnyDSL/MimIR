@@ -11,6 +11,9 @@
 namespace thorin {
 namespace automaton {
 
+class DFANode;
+class NFANode;
+
 template<class NodeType> class AutomatonBase {
 public:
     AutomatonBase()                                = default;
@@ -41,12 +44,18 @@ public:
         return reachableStates;
     }
 
-    void dump(std::string_view name = "automaton") const {
-        std::cout << "digraph " << name << " {\n";
-        std::cout << "  start -> \"" << start_ << "\";\n";
+    friend std::ostream& operator<<(std::ostream& os, const AutomatonBase& automaton) {
+        if constexpr(std::is_same_v<NodeType, DFANode>)
+            os << "digraph dfa {\n";
+        else if constexpr(std::is_same_v<NodeType, NFANode>)
+            os << "digraph nfa {\n";
+        else
+            os << "digraph automaton {\n";
+        os << "  start -> \"" << automaton.start_ << "\";\n";
 
-        for (auto& node : nodes_) node.dump();
-        std::cout << "}\n";
+        for (auto& node : automaton.nodes_) os << node;
+        os << "}\n";
+        return os;
     }
 
 private:

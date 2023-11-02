@@ -20,7 +20,10 @@ std::vector<const NFANode*> NFANode::get_transitions(std::uint16_t c) const {
         return {};
 }
 
-void NFANode::dump() const {
+namespace thorin::automaton {
+template class AutomatonBase<NFANode>;
+
+std::ostream& operator<<(std::ostream& os, const NFANode& node) {
     auto print_char = [](std::uint16_t c) -> std::string {
         if (c == NFA::SpecialTransitons::EPSILON)
             return "ε";
@@ -30,13 +33,11 @@ void NFANode::dump() const {
             return {static_cast<char>(c)};
     };
 
-    if (this->is_accepting()) std::cout << "  \"" << this << "\" [shape=doublecircle];\n";
+    if (node.is_accepting()) os << "  \"" << &node << "\" [shape=doublecircle];\n";
 
-    for (auto& [c, tos] : transitions_)
-        for (auto to : tos)
-            std::cout << "  \"" << this << "\" -> \"" << to << "\" [label=\"" << print_char(c) << "\"];\n";
+    for (auto& [c, tos] : node.transitions_)
+        for (auto to : tos) os << "  \"" << &node << "\" -> \"" << to << "\" [label=\"" << print_char(c) << "\"];\n";
+    return os;
 }
 
-namespace thorin::automaton {
-template class AutomatonBase<NFANode>;
-}
+} // namespace thorin::automaton
