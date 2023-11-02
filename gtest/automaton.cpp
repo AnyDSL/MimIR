@@ -157,7 +157,7 @@ using namespace thorin;
 TEST(Automaton, Regex2NFA) {
     Driver driver;
     World& w    = driver.world();
-    auto parser = fe::Parser(w);
+    auto parser = Parser(w);
     for (auto plugin : {"compile", "mem", "core", "math", "regex"}) parser.plugin(plugin);
 
     auto pattern = w.call<regex::conj>(
@@ -170,7 +170,7 @@ TEST(Automaton, Regex2NFA) {
 TEST(Automaton, Regex2NFAAorBplusA) {
     Driver driver;
     World& w    = driver.world();
-    auto parser = fe::Parser(w);
+    auto parser = Parser(w);
     for (auto plugin : {"compile", "mem", "core", "math", "regex"}) parser.plugin(plugin);
 
     auto pattern = w.call<regex::conj>(
@@ -190,14 +190,15 @@ TEST(Automaton, Regex2NFAAorBplusA) {
 TEST(Automaton, Regex2NFA1or5or9) {
     Driver driver;
     World& w    = driver.world();
-    auto parser = fe::Parser(w);
+    auto parser = Parser(w);
     for (auto plugin : {"compile", "mem", "core", "math", "regex"}) parser.plugin(plugin);
 
-    // %regex.disj 2 (%regex.disj 2 (%regex.range ‹2; 49:(.Idx 256)›, %regex.range ‹2; 53:(.Idx 256)›), %regex.range ‹2; 57:(.Idx 256)›)
-    auto pattern = w.call<regex::disj>(
-        2, w.tuple({w.call<regex::disj>(
-        2, w.tuple({w.call<regex::lit>(w.lit_idx(256, '1')),
-                    w.call<regex::lit>(w.lit_idx(256, '5'))})), w.call<regex::lit>(w.lit_idx(256, '9'))})); // (a & b)
+    // %regex.disj 2 (%regex.disj 2 (%regex.range ‹2; 49:(.Idx 256)›, %regex.range ‹2; 53:(.Idx 256)›), %regex.range ‹2;
+    // 57:(.Idx 256)›)
+    auto pattern
+        = w.call<regex::disj>(2, w.tuple({w.call<regex::disj>(2, w.tuple({w.call<regex::lit>(w.lit_idx(256, '1')),
+                                                                          w.call<regex::lit>(w.lit_idx(256, '5'))})),
+                                          w.call<regex::lit>(w.lit_idx(256, '9'))})); // (a & b)
     pattern->dump(10);
     auto nfa = regex::regex2nfa(pattern);
     std::cout << *nfa;
