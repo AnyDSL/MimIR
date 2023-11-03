@@ -27,7 +27,6 @@ var hierarchy =
     [ "thorin::CFA", "classthorin_1_1CFA.html", null ],
     [ "thorin::CFG< forward >", "classthorin_1_1CFG.html", null ],
     [ "thorin::CFNode", "classthorin_1_1CFNode.html", null ],
-    [ "thorin::utf8::Lexer< Max_Ahead >::Char", "structthorin_1_1utf8_1_1Lexer_1_1Char.html", null ],
     [ "thorin::Check", "classthorin_1_1Check.html", null ],
     [ "thorin::clos::ClosLit", "classthorin_1_1clos_1_1ClosLit.html", null ],
     [ "thorin::Dbg", "namespacethorin.html#structthorin_1_1Dbg", null ],
@@ -50,12 +49,9 @@ var hierarchy =
     [ "thorin::IndexMap< const thorin::CFNode * >", "classthorin_1_1IndexMap.html", null ],
     [ "thorin::IndexSet< Indexer, Key >", "classthorin_1_1IndexSet.html", null ],
     [ "thorin::mem::SSAConstr::Info", "classthorin_1_1mem_1_1SSAConstr.html#structthorin_1_1mem_1_1SSAConstr_1_1Info", null ],
-    [ "thorin::utf8::Lexer< Max_Ahead >", "classthorin_1_1utf8_1_1Lexer.html", null ],
-    [ "thorin::utf8::Lexer< 3 >", "classthorin_1_1utf8_1_1Lexer.html", [
-      [ "thorin::fe::Lexer", "classthorin_1_1fe_1_1Lexer.html", null ]
+    [ "fe::Lexer", null, [
+      [ "thorin::Lexer", "classthorin_1_1Lexer.html", null ]
     ] ],
-    [ "thorin::Loc", "structthorin_1_1Loc.html", null ],
-    [ "thorin::World::Arena::Lock", "structthorin_1_1World_1_1Arena_1_1Lock.html", null ],
     [ "thorin::Log", "classthorin_1_1Log.html", null ],
     [ "thorin::LoopTree< forward >", "classthorin_1_1LoopTree.html", null ],
     [ "thorin::LoopTreeBuilder< forward >", "classthorin_1_1LoopTreeBuilder.html", null ],
@@ -63,7 +59,9 @@ var hierarchy =
     [ "thorin::Match< Id, D >", "classthorin_1_1Match.html", null ],
     [ "thorin::Axiom::Match< regex::any >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01regex_1_1any_01_4", null ],
     [ "thorin::automaton::NFANode", "classthorin_1_1automaton_1_1NFANode.html", null ],
-    [ "thorin::fe::Parser", "classthorin_1_1fe_1_1Parser.html", null ],
+    [ "fe::Parser", null, [
+      [ "thorin::Parser", "classthorin_1_1Parser.html", null ]
+    ] ],
     [ "thorin::Pass", "classthorin_1_1Pass.html", [
       [ "thorin::RWPass< DebugDump, Lam >", "classthorin_1_1RWPass.html", [
         [ "DebugDump", "classDebugDump.html", null ]
@@ -187,10 +185,9 @@ var hierarchy =
     [ "thorin::PipelineBuilder", "classthorin_1_1PipelineBuilder.html", null ],
     [ "thorin::Plugin", "structthorin_1_1Plugin.html", null ],
     [ "thorin::World::State::POD", "structthorin_1_1World_1_1State.html#structthorin_1_1World_1_1State_1_1POD", null ],
-    [ "thorin::Pos", "structthorin_1_1Pos.html", null ],
-    [ "thorin::fe::Ptrn", "classthorin_1_1fe_1_1Ptrn.html", [
-      [ "thorin::fe::IdPtrn", "classthorin_1_1fe_1_1IdPtrn.html", null ],
-      [ "thorin::fe::TuplePtrn", "classthorin_1_1fe_1_1TuplePtrn.html", null ]
+    [ "thorin::Ptrn", "classthorin_1_1Ptrn.html", [
+      [ "thorin::IdPtrn", "classthorin_1_1IdPtrn.html", null ],
+      [ "thorin::TuplePtrn", "classthorin_1_1TuplePtrn.html", null ]
     ] ],
     [ "thorin::Ref", "classthorin_1_1Ref.html", null ],
     [ "thorin::BitSet::reference", "classthorin_1_1BitSet_1_1reference.html", null ],
@@ -199,14 +196,7 @@ var hierarchy =
       [ "thorin::RWPhase", "classthorin_1_1RWPhase.html", null ],
       [ "thorin::ScopeRewriter", "classthorin_1_1ScopeRewriter.html", null ]
     ] ],
-    [ "thorin::RuntimeCast< B >", "classthorin_1_1RuntimeCast.html", null ],
-    [ "thorin::RuntimeCast< Base >", "classthorin_1_1RuntimeCast.html", [
-      [ "thorin::LoopTree< forward >::Base", "classthorin_1_1LoopTree_1_1Base.html", [
-        [ "thorin::LoopTree< forward >::Head", "classthorin_1_1LoopTree_1_1Head.html", null ],
-        [ "thorin::LoopTree< forward >::Leaf", "classthorin_1_1LoopTree_1_1Leaf.html", null ]
-      ] ]
-    ] ],
-    [ "thorin::RuntimeCast< Def >", "classthorin_1_1RuntimeCast.html", [
+    [ "fe::RuntimeCast", null, [
       [ "thorin::Def", "classthorin_1_1Def.html", [
         [ "thorin::Ac", "classthorin_1_1Ac.html", null ],
         [ "thorin::App", "classthorin_1_1App.html", null ],
@@ -240,19 +230,22 @@ var hierarchy =
         [ "thorin::Univ", "classthorin_1_1Univ.html", null ],
         [ "thorin::Var", "classthorin_1_1Var.html", null ],
         [ "thorin::Vel", "classthorin_1_1Vel.html", null ]
+      ] ],
+      [ "thorin::LoopTree< forward >::Base", "classthorin_1_1LoopTree_1_1Base.html", [
+        [ "thorin::LoopTree< forward >::Head", "classthorin_1_1LoopTree_1_1Head.html", null ],
+        [ "thorin::LoopTree< forward >::Leaf", "classthorin_1_1LoopTree_1_1Leaf.html", null ]
       ] ]
     ] ],
     [ "thorin::Scheduler", "classthorin_1_1Scheduler.html", null ],
     [ "thorin::Scope", "classthorin_1_1Scope.html", null ],
-    [ "thorin::fe::Scopes", "classthorin_1_1fe_1_1Scopes.html", null ],
+    [ "thorin::Scopes", "classthorin_1_1Scopes.html", null ],
     [ "thorin::Span< T >", "classthorin_1_1Span.html", null ],
     [ "thorin::World::State", "structthorin_1_1World_1_1State.html", null ],
-    [ "thorin::Sym", "classthorin_1_1Sym.html", null ],
-    [ "thorin::SymPool", "classthorin_1_1SymPool.html", [
+    [ "fe::SymPool", null, [
       [ "thorin::Driver", "classthorin_1_1Driver.html", null ]
     ] ],
     [ "thorin::Tab", "classthorin_1_1Tab.html", null ],
-    [ "thorin::fe::Tok", "classthorin_1_1fe_1_1Tok.html", null ],
+    [ "thorin::Tok", "classthorin_1_1Tok.html", null ],
     [ "thorin::unique_queue< Set >", "classthorin_1_1unique__queue.html", null ],
     [ "thorin::unique_stack< Set >", "classthorin_1_1unique__stack.html", null ],
     [ "thorin::Use", "classthorin_1_1Use.html", null ],
@@ -275,7 +268,6 @@ var hierarchy =
     [ "thorin::detail::w2u_< 64 >", null, null ],
     [ "thorin::detail::w2u_< 8 >", null, null ],
     [ "thorin::World", "classthorin_1_1World.html", null ],
-    [ "thorin::World::Arena::Zone", "structthorin_1_1World_1_1Arena_1_1Zone.html", null ],
     [ "DefMap< std::string >", "namespace_3globalScope_4.html#classDefMap_3_01std_1_1string_01_4", null ],
     [ "DefMap< thorin::Type >", "namespace_3globalScope_4.html#classDefMap_3_01thorin_1_1Type_01_4", null ],
     [ "LamMap< BB >", "namespace_3globalScope_4.html#classLamMap_3_01BB_01_4", null ],

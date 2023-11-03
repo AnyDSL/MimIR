@@ -15,10 +15,10 @@ var searchData=
   ['plugin_5fselect_12',['plugin_select',['../namespacethorin_1_1compile.html#a5ddee3ee70a5907fbdc80b00e0fb283c',1,'thorin::compile']]],
   ['pos_13',['Pos',['../classthorin_1_1EtaExp.html#a156b61a8e9d0843a3e598adb259c7abd',1,'thorin::EtaExp']]],
   ['pow_14',['pow',['../namespacethorin_1_1math.html#a324add07f496847fd3381b0f642b5cec',1,'thorin::math']]],
-  ['prec_15',['Prec',['../classthorin_1_1fe_1_1Tok.html#a5a4207be68a5850473177397df2e34fa',1,'thorin::fe::Tok']]],
+  ['prec_15',['Prec',['../classthorin_1_1Tok.html#afdc0f701e0b635d379f16d20957532a2',1,'thorin::Tok']]],
   ['prod_16',['prod',['../namespacethorin_1_1matrix.html#a8ee21b2b952b605e18ff72a444b56262',1,'thorin::matrix']]],
   ['ptr_17',['Ptr',['../namespacethorin_1_1mem.html#a1e9242c771b97a95fe41b54fbe0385ab',1,'thorin::mem']]],
   ['ptr0_18',['Ptr0',['../namespacethorin_1_1mem.html#ab05fd1ac51371ea3ad809a2aa00722da',1,'thorin::mem']]],
-  ['pxr24_19',['PXR24',['../namespacethorin_1_1math.html#a3b257754248b0a8880ec1ea0b8568be4',1,'thorin::math']]],
-  ['pxr24_20',['pxr24',['../namespacethorin_1_1math.html#a3b6efeedab6e47b7a3ffd1af362aee6d',1,'thorin::math']]]
+  ['pxr24_19',['pxr24',['../namespacethorin_1_1math.html#a3b6efeedab6e47b7a3ffd1af362aee6d',1,'thorin::math']]],
+  ['pxr24_20',['PXR24',['../namespacethorin_1_1math.html#a3b257754248b0a8880ec1ea0b8568be4',1,'thorin::math']]]
 ];

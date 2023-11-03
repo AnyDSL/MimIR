@@ -9,7 +9,5 @@ var world_8h =
       [ "loc", "structthorin_1_1World_1_1State.html#af3aeb3115c071d23a6c3e18f47999a18", null ],
       [ "name", "structthorin_1_1World_1_1State.html#ac2e78fc95ef288ab5c96e37b42981cf5", null ]
     ] ],
-    [ "thorin::World::Freezer", "structthorin_1_1World_1_1Freezer.html", "structthorin_1_1World_1_1Freezer" ],
-    [ "thorin::World::Arena::Zone", "structthorin_1_1World_1_1Arena_1_1Zone.html", "structthorin_1_1World_1_1Arena_1_1Zone" ],
-    [ "thorin::World::Arena::Lock", "structthorin_1_1World_1_1Arena_1_1Lock.html", "structthorin_1_1World_1_1Arena_1_1Lock" ]
+    [ "thorin::World::Freezer", "structthorin_1_1World_1_1Freezer.html", "structthorin_1_1World_1_1Freezer" ]
 ];

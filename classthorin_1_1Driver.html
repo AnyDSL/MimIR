@@ -124,7 +124,7 @@ $(document).ready(function(){initNavTree('classthorin_1_1Driver.html',''); initR
 <div class="dynheader">
 Inheritance diagram for thorin::Driver:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classthorin_1_1Driver__inherit__graph.svg" width="136" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classthorin_1_1Driver__inherit__graph.svg" width="119" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -157,23 +157,23 @@ Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupText"><p >This is a list of pairs where each pair contains:</p>
 <ol type="1">
 <li>The <code>fs::path</code> used during import,</li>
-<li>The name as <a class="el" href="classthorin_1_1Sym.html" title="A Symbol just wraps a const std::string*, so pass Sym itself around as value.">Sym</a>bol used in the <code>.import</code> directive or in Parser::import. </li>
+<li>The name as Symbol used in the <code>.import</code> directive or in <a class="el" href="classthorin_1_1Parser.html#aba11ff73b9fe5e733082696fd0e0d59b">Parser::import</a>. </li>
 </ol>
 </div></td></tr>
 <tr class="memitem:ab6875290daccd8d68ded17969a361714"><td class="memItemLeft" align="right" valign="top">const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#ab6875290daccd8d68ded17969a361714">imports</a> ()</td></tr>
 <tr class="separator:ab6875290daccd8d68ded17969a361714"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6801247588172d274cf3fb8cf73441bd"><td class="memItemLeft" align="right" valign="top">const fs::path *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#a6801247588172d274cf3fb8cf73441bd">add_import</a> (fs::path, <a class="el" href="classthorin_1_1Sym.html">Sym</a>)</td></tr>
-<tr class="memdesc:a6801247588172d274cf3fb8cf73441bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields a <code>fs::path*</code> if not already added that you can use in <a class="el" href="structthorin_1_1Loc.html" title="Location in a File.">Loc</a>ation; returns <code>nullptr</code> otherwise.  <a href="classthorin_1_1Driver.html#a6801247588172d274cf3fb8cf73441bd">More...</a><br /></td></tr>
+<tr class="memitem:a6801247588172d274cf3fb8cf73441bd"><td class="memItemLeft" align="right" valign="top">const fs::path *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#a6801247588172d274cf3fb8cf73441bd">add_import</a> (fs::path, Sym)</td></tr>
+<tr class="memdesc:a6801247588172d274cf3fb8cf73441bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields a <code>fs::path*</code> if not already added that you can use in Location; returns <code>nullptr</code> otherwise.  <a href="classthorin_1_1Driver.html#a6801247588172d274cf3fb8cf73441bd">More...</a><br /></td></tr>
 <tr class="separator:a6801247588172d274cf3fb8cf73441bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Load Plugin</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p >Finds and loads a shared object file that implements the Thorin <a class="el" href="structthorin_1_1Plugin.html" title="Basic info and registration function pointer to be returned from a specific plugin.">Plugin</a> <code>name</code>.</p>
 <p >If <em>name</em> is an absolute path to a <code>.so</code>/<code>.dll</code> file, this is used. Otherwise, "name", "libthorin_name.so" (Linux, Mac), "thorin_name.dll" (Win) are searched for in <a class="el" href="classthorin_1_1Driver.html#a5d932eb2868df04e7fa6da9481e38626">Driver::search_paths()</a>. </p>
 </div></td></tr>
-<tr class="memitem:a4a6dce5305058ea7173c665ee4e6d418"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#a4a6dce5305058ea7173c665ee4e6d418">load</a> (<a class="el" href="classthorin_1_1Sym.html">Sym</a> name)</td></tr>
+<tr class="memitem:a4a6dce5305058ea7173c665ee4e6d418"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#a4a6dce5305058ea7173c665ee4e6d418">load</a> (Sym name)</td></tr>
 <tr class="separator:a4a6dce5305058ea7173c665ee4e6d418"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3798846a66a913a6dd5c13b340181bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#aa3798846a66a913a6dd5c13b340181bd">load</a> (std::string name)</td></tr>
-<tr class="separator:aa3798846a66a913a6dd5c13b340181bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b6979427703e0812fc67c8f20589e75"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#a7b6979427703e0812fc67c8f20589e75">is_loaded</a> (<a class="el" href="classthorin_1_1Sym.html">Sym</a> <a class="el" href="classthorin_1_1SymPool.html#aa99023728b86d1989eb48b62d893f1f7">sym</a>) const</td></tr>
+<tr class="memitem:a3f1c5966b47bbaabd3e2d5cf67e8f403"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#a3f1c5966b47bbaabd3e2d5cf67e8f403">load</a> (const std::string &amp;name)</td></tr>
+<tr class="separator:a3f1c5966b47bbaabd3e2d5cf67e8f403"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b6979427703e0812fc67c8f20589e75"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#a7b6979427703e0812fc67c8f20589e75">is_loaded</a> (Sym sym) const</td></tr>
 <tr class="separator:a7b6979427703e0812fc67c8f20589e75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Manage Plugins</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p >All these lookups yield <code>nullptr</code> if the key has not been found. </p>
@@ -187,23 +187,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa6cbf574516649c25fc161aad036e295"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#aa6cbf574516649c25fc161aad036e295">backend</a> (std::string_view name)</td></tr>
 <tr class="separator:aa6cbf574516649c25fc161aad036e295"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Manage Annex</div></td></tr>
-<tr class="memitem:a383db117321ea975bdf32a50b2de2eab"><td class="memItemLeft" align="right" valign="top">const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#a383db117321ea975bdf32a50b2de2eab">plugin2annxes</a> (<a class="el" href="classthorin_1_1Sym.html">Sym</a> plugin)</td></tr>
+<tr class="memitem:a383db117321ea975bdf32a50b2de2eab"><td class="memItemLeft" align="right" valign="top">const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#a383db117321ea975bdf32a50b2de2eab">plugin2annxes</a> (Sym plugin)</td></tr>
 <tr class="separator:a383db117321ea975bdf32a50b2de2eab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a178ae9fc7b622e5c475d273c6aeac1b3"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="structthorin_1_1Annex.html">Annex</a> &amp;, bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#a178ae9fc7b622e5c475d273c6aeac1b3">name2annex</a> (<a class="el" href="classthorin_1_1Sym.html">Sym</a> <a class="el" href="classthorin_1_1SymPool.html#aa99023728b86d1989eb48b62d893f1f7">sym</a>, <a class="el" href="classthorin_1_1Sym.html">Sym</a> plugin, <a class="el" href="classthorin_1_1Sym.html">Sym</a> tag, <a class="el" href="structthorin_1_1Loc.html">Loc</a> loc)</td></tr>
+<tr class="memitem:a178ae9fc7b622e5c475d273c6aeac1b3"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="structthorin_1_1Annex.html">Annex</a> &amp;, bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#a178ae9fc7b622e5c475d273c6aeac1b3">name2annex</a> (Sym sym, Sym plugin, Sym tag, Loc loc)</td></tr>
 <tr class="separator:a178ae9fc7b622e5c475d273c6aeac1b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classthorin_1_1SymPool"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classthorin_1_1SymPool')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classthorin_1_1SymPool.html">thorin::SymPool</a></td></tr>
-<tr class="memitem:a37abcc34be2ffc513fec76259d521da9 inherit pub_methods_classthorin_1_1SymPool"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1SymPool.html#a37abcc34be2ffc513fec76259d521da9">SymPool</a> ()=default</td></tr>
-<tr class="separator:a37abcc34be2ffc513fec76259d521da9 inherit pub_methods_classthorin_1_1SymPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb3020bd83b01e16164b6d5a9ccfd188 inherit pub_methods_classthorin_1_1SymPool"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1SymPool.html#aeb3020bd83b01e16164b6d5a9ccfd188">SymPool</a> (const <a class="el" href="classthorin_1_1SymPool.html">SymPool</a> &amp;)=delete</td></tr>
-<tr class="separator:aeb3020bd83b01e16164b6d5a9ccfd188 inherit pub_methods_classthorin_1_1SymPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83c6fef8edd741814dc8410b7f5ee300 inherit pub_methods_classthorin_1_1SymPool"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1SymPool.html#a83c6fef8edd741814dc8410b7f5ee300">SymPool</a> (<a class="el" href="classthorin_1_1SymPool.html">SymPool</a> &amp;&amp;other)</td></tr>
-<tr class="separator:a83c6fef8edd741814dc8410b7f5ee300 inherit pub_methods_classthorin_1_1SymPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa99023728b86d1989eb48b62d893f1f7 inherit pub_methods_classthorin_1_1SymPool"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Sym.html">Sym</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1SymPool.html#aa99023728b86d1989eb48b62d893f1f7">sym</a> (std::string_view s)</td></tr>
-<tr class="separator:aa99023728b86d1989eb48b62d893f1f7 inherit pub_methods_classthorin_1_1SymPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2cc2097a5a477c192528c66581c3993 inherit pub_methods_classthorin_1_1SymPool"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Sym.html">Sym</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1SymPool.html#ad2cc2097a5a477c192528c66581c3993">sym</a> (const char *s)</td></tr>
-<tr class="separator:ad2cc2097a5a477c192528c66581c3993 inherit pub_methods_classthorin_1_1SymPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9329008efaee96bb32fd6c8adac737a7 inherit pub_methods_classthorin_1_1SymPool"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Sym.html">Sym</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1SymPool.html#a9329008efaee96bb32fd6c8adac737a7">sym</a> (std::string s)</td></tr>
-<tr class="separator:a9329008efaee96bb32fd6c8adac737a7 inherit pub_methods_classthorin_1_1SymPool"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Some "global" variables needed all over the place. </p>
@@ -248,7 +235,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classthorin_1_1Sym.html">Sym</a>&#160;</td>
+          <td class="paramtype">Sym&#160;</td>
           <td class="paramname"><em>sym</em>&#160;</td>
         </tr>
         <tr>
@@ -259,11 +246,9 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Yields a <code>fs::path*</code> if not already added that you can use in <a class="el" href="structthorin_1_1Loc.html" title="Location in a File.">Loc</a>ation; returns <code>nullptr</code> otherwise. </p>
+<p>Yields a <code>fs::path*</code> if not already added that you can use in Location; returns <code>nullptr</code> otherwise. </p>
 
 <p class="definition">Definition at line <a class="el" href="driver_8cpp_source.html#l00045">45</a> of file <a class="el" href="driver_8cpp_source.html">driver.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="sym_8h_source.html#l00095">thorin::SymPool::sym()</a>.</p>
 
 </div>
 </div>
@@ -323,7 +308,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00069">69</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
 
-<p class="reference">References <a class="el" href="util_8h_source.html#l00100">thorin::lookup()</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00093">thorin::lookup()</a>.</p>
 
 </div>
 </div>
@@ -395,7 +380,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">bool thorin::Driver::is_loaded </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classthorin_1_1Sym.html">Sym</a>&#160;</td>
+          <td class="paramtype">Sym&#160;</td>
           <td class="paramname"><em>sym</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -409,14 +394,14 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00060">60</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
 
-<p class="reference">References <a class="el" href="util_8h_source.html#l00100">thorin::lookup()</a>, and <a class="el" href="sym_8h_source.html#l00095">thorin::SymPool::sym()</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00093">thorin::lookup()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="driver_8cpp_source.html#l00053">load()</a>.</p>
 
 </div>
 </div>
-<a id="aa3798846a66a913a6dd5c13b340181bd" name="aa3798846a66a913a6dd5c13b340181bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa3798846a66a913a6dd5c13b340181bd">&#9670;&#160;</a></span>load() <span class="overload">[1/2]</span></h2>
+<a id="a3f1c5966b47bbaabd3e2d5cf67e8f403" name="a3f1c5966b47bbaabd3e2d5cf67e8f403"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f1c5966b47bbaabd3e2d5cf67e8f403">&#9670;&#160;</a></span>load() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -427,7 +412,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void thorin::Driver::load </td>
           <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>name</em></td><td>)</td>
           <td></td>
         </tr>
@@ -441,7 +426,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00059">59</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
 
-<p class="reference">References <a class="el" href="driver_8h_source.html#l00059">load()</a>, and <a class="el" href="sym_8h_source.html#l00095">thorin::SymPool::sym()</a>.</p>
+<p class="reference">References <a class="el" href="driver_8h_source.html#l00059">load()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="driver_8h_source.html#l00059">load()</a>.</p>
 
@@ -456,7 +441,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void thorin::Driver::load </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classthorin_1_1Sym.html">Sym</a>&#160;</td>
+          <td class="paramtype">Sym&#160;</td>
           <td class="paramname"><em>name</em></td><td>)</td>
           <td></td>
         </tr>
@@ -465,9 +450,9 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="driver_8cpp_source.html#l00053">53</a> of file <a class="el" href="driver_8cpp_source.html">driver.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="util_8h_source.html#l00110">thorin::assert_emplace()</a>, <a class="el" href="dl_8cpp_source.html#l00063">thorin::dl::close()</a>, <a class="el" href="def_8h_source.html#l00544">thorin::error()</a>, <a class="el" href="dl_8cpp_source.html#l00044">thorin::dl::get()</a>, <a class="el" href="log_8h_source.html#l00088">ILOG</a>, <a class="el" href="driver_8h_source.html#l00060">is_loaded()</a>, <a class="el" href="dl_8cpp_source.html#l00025">thorin::dl::open()</a>, <a class="el" href="driver_8h_source.html#l00036">search_paths()</a>, <a class="el" href="namespacethorin.html#a3cc8a1ed7b039e8a6bfccdbcb9514633">thorin::thorin_get_plugin()</a>, and <a class="el" href="log_8h_source.html#l00087">WLOG</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00102">thorin::assert_emplace()</a>, <a class="el" href="dl_8cpp_source.html#l00063">thorin::dl::close()</a>, <a class="el" href="def_8h_source.html#l00546">thorin::error()</a>, <a class="el" href="dl_8cpp_source.html#l00044">thorin::dl::get()</a>, <a class="el" href="log_8h_source.html#l00086">ILOG</a>, <a class="el" href="driver_8h_source.html#l00060">is_loaded()</a>, <a class="el" href="dl_8cpp_source.html#l00025">thorin::dl::open()</a>, <a class="el" href="driver_8h_source.html#l00036">search_paths()</a>, <a class="el" href="namespacethorin.html#a3cc8a1ed7b039e8a6bfccdbcb9514633">thorin::thorin_get_plugin()</a>, and <a class="el" href="log_8h_source.html#l00085">WLOG</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="parser_8cpp_source.html#l00104">thorin::fe::Parser::plugin()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="parser_8cpp_source.html#l00071">thorin::Parser::plugin()</a>.</p>
 
 </div>
 </div>
@@ -509,25 +494,25 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">std::pair&lt; <a class="el" href="structthorin_1_1Annex.html">Annex</a> &amp;, bool &gt; thorin::Driver::name2annex </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classthorin_1_1Sym.html">Sym</a>&#160;</td>
+          <td class="paramtype">Sym&#160;</td>
           <td class="paramname"><em>sym</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classthorin_1_1Sym.html">Sym</a>&#160;</td>
+          <td class="paramtype">Sym&#160;</td>
           <td class="paramname"><em>plugin</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="classthorin_1_1Sym.html">Sym</a>&#160;</td>
+          <td class="paramtype">Sym&#160;</td>
           <td class="paramname"><em>tag</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structthorin_1_1Loc.html">Loc</a>&#160;</td>
+          <td class="paramtype">Loc&#160;</td>
           <td class="paramname"><em>loc</em>&#160;</td>
         </tr>
         <tr>
@@ -538,9 +523,9 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="driver_8cpp_source.html#l00090">90</a> of file <a class="el" href="driver_8cpp_source.html">driver.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver_8cpp_source.html#l00091">91</a> of file <a class="el" href="driver_8cpp_source.html">driver.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00544">thorin::error()</a>, and <a class="el" href="sym_8h_source.html#l00095">thorin::SymPool::sym()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00546">thorin::error()</a>.</p>
 
 </div>
 </div>
@@ -570,7 +555,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00067">67</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
 
-<p class="reference">References <a class="el" href="driver_8h_source.html#l00023">flags()</a>, and <a class="el" href="util_8h_source.html#l00100">thorin::lookup()</a>.</p>
+<p class="reference">References <a class="el" href="driver_8h_source.html#l00023">flags()</a>, and <a class="el" href="util_8h_source.html#l00093">thorin::lookup()</a>.</p>
 
 </div>
 </div>
@@ -648,7 +633,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00066">66</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
 
-<p class="reference">References <a class="el" href="driver_8h_source.html#l00023">flags()</a>, and <a class="el" href="util_8h_source.html#l00100">thorin::lookup()</a>.</p>
+<p class="reference">References <a class="el" href="driver_8h_source.html#l00023">flags()</a>, and <a class="el" href="util_8h_source.html#l00093">thorin::lookup()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="optimize_8cpp_source.html#l00019">thorin::optimize()</a>.</p>
 
@@ -666,7 +651,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">const auto &amp; thorin::Driver::plugin2annxes </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classthorin_1_1Sym.html">Sym</a>&#160;</td>
+          <td class="paramtype">Sym&#160;</td>
           <td class="paramname"><em>plugin</em></td><td>)</td>
           <td></td>
         </tr>

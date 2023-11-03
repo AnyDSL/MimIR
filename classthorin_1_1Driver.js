@@ -7,7 +7,7 @@ var classthorin_1_1Driver =
     [ "flags", "classthorin_1_1Driver.html#a844fdfa5c5e75e96d6f92072c395a859", null ],
     [ "imports", "classthorin_1_1Driver.html#ab6875290daccd8d68ded17969a361714", null ],
     [ "is_loaded", "classthorin_1_1Driver.html#a7b6979427703e0812fc67c8f20589e75", null ],
-    [ "load", "classthorin_1_1Driver.html#aa3798846a66a913a6dd5c13b340181bd", null ],
+    [ "load", "classthorin_1_1Driver.html#a3f1c5966b47bbaabd3e2d5cf67e8f403", null ],
     [ "load", "classthorin_1_1Driver.html#a4a6dce5305058ea7173c665ee4e6d418", null ],
     [ "log", "classthorin_1_1Driver.html#a591d82f03685b27cbfd9e1ab549d3648", null ],
     [ "name2annex", "classthorin_1_1Driver.html#a178ae9fc7b622e5c475d273c6aeac1b3", null ],

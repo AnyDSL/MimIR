@@ -121,10 +121,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a974cb548b7ca48762ca7ee40e30b37b8"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dl.html#a974cb548b7ca48762ca7ee40e30b37b8">extension</a> ()</td></tr>
 <tr class="memdesc:a974cb548b7ca48762ca7ee40e30b37b8"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>".dll"</code> or <code>".so"</code>  <a href="namespacethorin_1_1dl.html#a974cb548b7ca48762ca7ee40e30b37b8">More...</a><br /></td></tr>
 <tr class="separator:a974cb548b7ca48762ca7ee40e30b37b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53dbb43985f05a46b12161ec7523c528"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dl.html#a53dbb43985f05a46b12161ec7523c528">open</a> (const std::string &amp;file)</td></tr>
-<tr class="separator:a53dbb43985f05a46b12161ec7523c528"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58750a888f128e15b49e86b418596eab"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dl.html#a58750a888f128e15b49e86b418596eab">get</a> (void *handle, const std::string &amp;symbol)</td></tr>
-<tr class="separator:a58750a888f128e15b49e86b418596eab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97e500272d3139f731974bce7f3e9cda"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dl.html#a97e500272d3139f731974bce7f3e9cda">open</a> (const char *file)</td></tr>
+<tr class="separator:a97e500272d3139f731974bce7f3e9cda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2d5f03a475912a8f543b366301727be"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dl.html#ad2d5f03a475912a8f543b366301727be">get</a> (void *handle, const char *symbol)</td></tr>
+<tr class="separator:ad2d5f03a475912a8f543b366301727be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7026fc7143db82fe92f2eae107a1027"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dl.html#aa7026fc7143db82fe92f2eae107a1027">close</a> (void *handle)</td></tr>
 <tr class="separator:aa7026fc7143db82fe92f2eae107a1027"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -147,7 +147,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="dl_8cpp_source.html#l00063">63</a> of file <a class="el" href="dl_8cpp_source.html">dl.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00544">thorin::error()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00546">thorin::error()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="driver_8cpp_source.html#l00053">thorin::Driver::load()</a>.</p>
 
@@ -174,8 +174,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a58750a888f128e15b49e86b418596eab" name="a58750a888f128e15b49e86b418596eab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a58750a888f128e15b49e86b418596eab">&#9670;&#160;</a></span>get()</h2>
+<a id="ad2d5f03a475912a8f543b366301727be" name="ad2d5f03a475912a8f543b366301727be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2d5f03a475912a8f543b366301727be">&#9670;&#160;</a></span>get()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -189,7 +189,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>symbol</em>&#160;</td>
         </tr>
         <tr>
@@ -202,14 +202,14 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="dl_8cpp_source.html#l00044">44</a> of file <a class="el" href="dl_8cpp_source.html">dl.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00544">thorin::error()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00546">thorin::error()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="driver_8cpp_source.html#l00053">thorin::Driver::load()</a>.</p>
 
 </div>
 </div>
-<a id="a53dbb43985f05a46b12161ec7523c528" name="a53dbb43985f05a46b12161ec7523c528"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53dbb43985f05a46b12161ec7523c528">&#9670;&#160;</a></span>open()</h2>
+<a id="a97e500272d3139f731974bce7f3e9cda" name="a97e500272d3139f731974bce7f3e9cda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97e500272d3139f731974bce7f3e9cda">&#9670;&#160;</a></span>open()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -217,7 +217,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void * thorin::dl::open </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>file</em></td><td>)</td>
           <td></td>
         </tr>
@@ -226,7 +226,7 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="dl_8cpp_source.html#l00025">25</a> of file <a class="el" href="dl_8cpp_source.html">dl.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00544">thorin::error()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00546">thorin::error()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="driver_8cpp_source.html#l00053">thorin::Driver::load()</a>.</p>
 

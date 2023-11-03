@@ -1,9 +1,14 @@
 var searchData=
 [
-  ['handle_5foptimization_5fpart_0',['handle_optimization_part',['../namespacethorin_1_1compile.html#ab9d6fe0292fc41b301db8a6581556aae',1,'thorin::compile']]],
-  ['has_5fdep_1',['has_dep',['../classthorin_1_1Def.html#a6f83b02a5c70f718b9d81a33971ab4bb',1,'thorin::Def::has_dep(Dep d) const'],['../classthorin_1_1Def.html#a98c2a0f38df2a1a4cf47cf529127fab0',1,'thorin::Def::has_dep(unsigned u) const']]],
-  ['hash_2',['hash',['../classthorin_1_1Def.html#ae387f672716d0aecd825f27d48f13e9e',1,'thorin::Def::hash()'],['../namespacethorin.html#ae0e621eb1be011dcdfe11e5171fd7dd4',1,'thorin::hash(const char *s)'],['../namespacethorin.html#a333d04a40eeb7f22675a906e6cbc00af',1,'thorin::hash(std::string_view s)']]],
-  ['hash_5fbegin_3',['hash_begin',['../namespacethorin.html#a45953d358ff771ff89168ecc274b7d2b',1,'thorin::hash_begin(T val)'],['../namespacethorin.html#a25e65e2898328d7df97d05cbe8263220',1,'thorin::hash_begin()']]],
-  ['hash_5fcombine_4',['hash_combine',['../namespacethorin.html#a3e8bff0379df3f8e717e43f3c1aad22f',1,'thorin::hash_combine(hash_t seed, T v)'],['../namespacethorin.html#acf896db08a5279cdb1f61589607f055b',1,'thorin::hash_combine(hash_t seed, T *val)'],['../namespacethorin.html#afa8ec846210cd2e5bff23fc963021ca7',1,'thorin::hash_combine(hash_t seed, T val, Args &amp;&amp;... args)']]],
-  ['head_5',['head',['../structthorin_1_1ll_1_1BB.html#ab6c05d26f3078afff39a6cb5da9d33b2',1,'thorin::ll::BB']]]
+  ['get_0',['get',['../classthorin_1_1clos_1_1ClosLit.html#a108df5d7e4d2dd26970d1b2b44dbd9b5',1,'thorin::clos::ClosLit::get()'],['../classthorin_1_1Axiom.html#a397ef6552758050898c2a25c1001fd53',1,'thorin::Axiom::get()'],['../classthorin_1_1Lit.html#abf185284f04c1b1aba69cc7e02c8e1ae',1,'thorin::Lit::get()'],['../classthorin_1_1Bound.html#a678ea9bfe29f48a6a891eafb5f8da722',1,'thorin::Bound::get()'],['../namespacethorin_1_1dl.html#ad2d5f03a475912a8f543b366301727be',1,'thorin::dl::get()']]],
+  ['get_5fmax_5findex_1',['get_max_index',['../namespacethorin_1_1matrix.html#ab5a388cdfea023abde6f2d540fd4607e',1,'thorin::matrix']]],
+  ['get_5frange_2',['get_range',['../namespacethorin_1_1regex.html#a5c085822966276e4772b1fe5652c215a',1,'thorin::regex']]],
+  ['get_5freachable_5fstates_3',['get_reachable_states',['../classthorin_1_1automaton_1_1AutomatonBase.html#a9e160adb5b3bf6b8d8a60d01b5bfa3dd',1,'thorin::automaton::AutomatonBase']]],
+  ['get_5fsign_4',['get_sign',['../namespacethorin.html#ac76b51109303662a47f30fa874337254',1,'thorin']]],
+  ['get_5fstart_5',['get_start',['../classthorin_1_1automaton_1_1AutomatonBase.html#a6584c1423c695b23409ff08465efc207',1,'thorin::automaton::AutomatonBase']]],
+  ['get_5ftransition_6',['get_transition',['../classthorin_1_1automaton_1_1DFANode.html#a4ab0ad73fff967d822e8e70491ecb0f0',1,'thorin::automaton::DFANode']]],
+  ['get_5ftransitions_7',['get_transitions',['../classthorin_1_1automaton_1_1NFANode.html#ac2e1d60c6842e353f36175fda6952e12',1,'thorin::automaton::NFANode']]],
+  ['gid_8',['gid',['../classthorin_1_1CFNode.html#ad1b21de5e0cadae309a8343cf43376e6',1,'thorin::CFNode::gid()'],['../classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb',1,'thorin::Def::gid()']]],
+  ['gid2def_9',['gid2def',['../classthorin_1_1World.html#a50e487785b278535becdb5d7e2b124ab',1,'thorin::World']]],
+  ['global_10',['global',['../classthorin_1_1World.html#a2dafc82653baa01a772c49d3c7ed1030',1,'thorin::World']]]
 ];
