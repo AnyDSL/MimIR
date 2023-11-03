@@ -22,9 +22,9 @@ std::string_view extension() {
 #endif
 }
 
-void* open(const std::string& file) {
+void* open(const char* file) {
 #ifdef _WIN32
-    if (HMODULE handle = LoadLibraryA(file.c_str())) {
+    if (HMODULE handle = LoadLibraryA(file)) {
         return static_cast<void*>(handle);
     } else {
         error("could not load plugin '{}' due to error '{}'\n"
@@ -32,7 +32,7 @@ void* open(const std::string& file) {
               file, GetLastError());
     }
 #else
-    if (void* handle = dlopen(file.c_str(), RTLD_NOW))
+    if (void* handle = dlopen(file, RTLD_NOW))
         return handle;
     else if (auto err = dlerror())
         error("could not load plugin '{}' due to error '{}'\n", file, err);
@@ -41,9 +41,9 @@ void* open(const std::string& file) {
 #endif
 }
 
-void* get(void* handle, const std::string& symbol) {
+void* get(void* handle, const char* symbol) {
 #ifdef _WIN32
-    if (auto addr = GetProcAddress(static_cast<HMODULE>(handle), symbol.c_str())) {
+    if (auto addr = GetProcAddress(static_cast<HMODULE>(handle), symbol)) {
         return reinterpret_cast<void*>(addr);
     } else {
         error("could not find symbol '{}' in plugin due to error '{}'\n"
@@ -52,7 +52,7 @@ void* get(void* handle, const std::string& symbol) {
     }
 #else
     dlerror(); // clear error state
-    void* addr = dlsym(handle, symbol.c_str());
+    void* addr = dlsym(handle, symbol);
     if (auto err = dlerror())
         error("could not find symbol '{}' in plugin due to error '{}' \n", symbol, err);
     else

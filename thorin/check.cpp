@@ -77,7 +77,7 @@ bool Infer::eliminate(Array<Ref*> refs) {
 
 #ifdef THORIN_ENABLE_CHECKS
 template<bool infer> bool Check::fail() {
-    if (infer && world().flags().break_on_alpha_unequal) breakpoint();
+    if (infer && world().flags().break_on_alpha_unequal) fe::breakpoint();
     return false;
 }
 #endif
@@ -251,5 +251,10 @@ void Pi::check() {
     if (!Check::alpha(t, type()))
         error(type(), "declared sort '{}' of function type does not match inferred one '{}'", type(), t);
 }
+
+#ifndef DOXYGEN
+template bool Check::alpha_<true>(Ref, Ref);
+template bool Check::alpha_<false>(Ref, Ref);
+#endif
 
 } // namespace thorin

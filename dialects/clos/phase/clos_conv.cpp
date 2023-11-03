@@ -136,7 +136,7 @@ void ClosConv::rewrite_body(Lam* new_lam, Def2Def& subst) {
     } else {
         for (size_t i = 0; i < num_fvs; i++) {
             auto fv  = env->op(i);
-            auto sym = w.sym("fv_"s + (fv->sym() ? *fv->sym() : std::to_string(i)));
+            auto sym = w.sym("fv_"s + (fv->sym() ? fv->sym().str() : std::to_string(i)));
             subst.emplace(fv, env_param->proj(i)->set(sym));
         }
     }
@@ -240,7 +240,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
             return map(def->rebuild(w, new_type, new_ops));
     }
 
-    thorin::unreachable();
+    fe::unreachable();
 }
 
 Def* ClosConv::rewrite_mut(Def* mut, const Def* new_type, Def2Def& subst) {

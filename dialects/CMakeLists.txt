@@ -12,7 +12,6 @@ add_thorin_plugin(affine
         core
     INSTALL
 )
-
 add_thorin_plugin(autodiff
     SOURCES
         autodiff/autodiff.cpp
@@ -37,7 +36,6 @@ add_thorin_plugin(autodiff
         mem
     INSTALL
 )
-
 add_thorin_plugin(clos
     SOURCES
         clos/clos.cpp
@@ -62,7 +60,6 @@ add_thorin_plugin(clos
         core
     INSTALL
 )
-
 add_thorin_plugin(compile
     SOURCES
         compile/compile.cpp
@@ -74,7 +71,6 @@ add_thorin_plugin(compile
         compile/pass/internal_cleanup.h
     INSTALL
 )
-
 add_thorin_plugin(core
     SOURCES
         core/core.cpp
@@ -89,7 +85,6 @@ add_thorin_plugin(core
         clos
     INSTALL
 )
-
 add_thorin_plugin(demo
     SOURCES
         demo/demo.cpp
@@ -99,7 +94,6 @@ add_thorin_plugin(demo
         compile
     INSTALL
 )
-
 add_thorin_plugin(direct
     SOURCES
         direct/direct.cpp
@@ -166,8 +160,6 @@ add_thorin_plugin(mem
         core
     INSTALL
 )
-
-
 add_thorin_plugin(refly
     SOURCES
         refly/refly.h
@@ -180,7 +172,6 @@ add_thorin_plugin(refly
         compile
     INSTALL
 )
-
 add_thorin_plugin(regex
     SOURCES
         regex/regex.h
@@ -210,8 +201,6 @@ add_thorin_plugin(regex
         compile
     INSTALL
 )
-
-
 add_thorin_plugin(opt
     SOURCES
         opt/opt.cpp

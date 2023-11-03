@@ -2,9 +2,10 @@
 
 #include <vector>
 
+#include <fe/cast.h>
+
 #include "thorin/analyses/cfg.h"
 #include "thorin/util/array.h"
-#include "thorin/util/cast.h"
 
 namespace thorin {
 
@@ -24,7 +25,7 @@ public:
     /// The header CFNode%s are the set of CFNode%s not dominated by any other CFNode within the loop.
     /// The root node is a LoopTree::Head without any CFNode%s but further children and `depth_ -1`.
     /// Thus, the forest is pooled into a tree.
-    class Base : public RuntimeCast<Base> {
+    class Base : public fe::RuntimeCast<Base> {
     public:
         Base(Head* parent, int depth, const std::vector<const CFNode*>&);
         virtual ~Base() = default;

@@ -1,16 +1,14 @@
 #pragma once
 
-#include "thorin/util/assert.h"
-#include "thorin/util/loc.h"
-#include "thorin/util/sym.h"
+#include <fe/assert.h>
+
+#include "thorin/util/dbg.h"
 #include "thorin/util/types.h"
 
 namespace thorin {
 
 class Def;
 class Lit;
-
-namespace fe {
 
 // clang-format off
 #define THORIN_KEY(m)                  \
@@ -45,6 +43,7 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
 #undef CODE
 
 #define THORIN_TOK(m)                  \
+    m(EoF, "<end of file>")            \
     /* literals */                     \
     m(L_s, "<signed integer literal>") \
     m(L_u, "<integer literal>"       ) \
@@ -52,7 +51,6 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(L_f, "<floating-point literal>") \
     m(L_c, "<char literal>"          ) \
     /* misc */                         \
-    m(M_eof,  "<eof>"       )          \
     m(M_id,   "<identifier>")          \
     m(M_anx,  "<annex name>")          \
     m(M_str,  "<string>"    )          \
@@ -118,7 +116,7 @@ public:
         switch (p) {
 #define CODE(l, p, r) \
             case Prec::p: return {Prec::l, Prec::r};
-            default:      unreachable();
+            default:      fe::unreachable();
         THORIN_PREC(CODE)
 #undef CODE
         }
@@ -195,5 +193,4 @@ private:
     };
 };
 
-} // namespace fe
 } // namespace thorin

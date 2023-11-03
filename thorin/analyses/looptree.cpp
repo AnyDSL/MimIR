@@ -28,8 +28,7 @@ enum {
 };
 } // namespace
 
-template<bool forward>
-class LoopTreeBuilder {
+template<bool forward> class LoopTreeBuilder {
 public:
     using Base = typename LoopTree<forward>::Base;
     using Leaf = typename LoopTree<forward>::Leaf;
@@ -104,8 +103,7 @@ private:
     std::vector<const CFNode*> stack_;
 };
 
-template<bool forward>
-void LoopTreeBuilder<forward>::build() {
+template<bool forward> void LoopTreeBuilder<forward>::build() {
     for (const auto& n : cfg().reverse_post_order()) // clear all flags
         states_[n] = 0;
 
@@ -114,8 +112,7 @@ void LoopTreeBuilder<forward>::build() {
     recurse(head, {cfg().entry()}, 1);
 }
 
-template<bool forward>
-void LoopTreeBuilder<forward>::recurse(Head* parent, Span<const CFNode*> heads, int depth) {
+template<bool forward> void LoopTreeBuilder<forward>::recurse(Head* parent, Span<const CFNode*> heads, int depth) {
     size_t curr_new_child = 0;
     for (const auto& head : heads) {
         set_.clear();
@@ -207,12 +204,11 @@ LoopTree<forward>::LoopTree(const CFG<forward>& cfg)
 
 /// @name std::ostream operator
 ///@{
-template<bool forward>
-std::ostream& operator<<(std::ostream& os, const typename LoopTree<forward>::Base* n) {
+template<bool forward> std::ostream& operator<<(std::ostream& os, const typename LoopTree<forward>::Base* n) {
     using LT = LoopTree<forward>;
     if (auto l = n->template isa<typename LT::Leaf>()) return print(os, "<{} | dfs: {}", l->cf_node(), l->index());
     if (auto h = n->template isa<typename LT::Head>()) return print(os, "[{, }]", h->cf_nodes());
-    unreachable();
+    fe::unreachable();
 }
 ///@}
 

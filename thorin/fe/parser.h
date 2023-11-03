@@ -1,12 +1,16 @@
 #pragma once
 
+#include <fe/parser.h>
+
 #include "thorin/driver.h"
 
 #include "thorin/fe/ast.h"
 #include "thorin/fe/lexer.h"
 #include "thorin/fe/scopes.h"
 
-namespace thorin::fe {
+namespace thorin {
+
+constexpr size_t Look_Ahead = 2;
 
 /// Parses Thorin code into the provided World.
 ///
@@ -26,7 +30,7 @@ namespace thorin::fe {
 ///
 ///      * If default argument is **elided** we have the same behavior as in 1.
 ///      * If default argument is **provided** we have the same behavior as in 2.
-class Parser {
+class Parser : public fe::Parser<Tok, Tok::Tag, Look_Ahead, Parser> {
 public:
     Parser(World& world)
         : world_(world)
@@ -41,56 +45,8 @@ public:
     const Scopes& scopes() const { return scopes_; }
 
 private:
-    /// @name Tracker
-    ///@{
-    /// Trick to easily keep track of Loc%ations.
-    class Tracker {
-    public:
-        Tracker(Parser& parser, const Pos& pos)
-            : parser_(parser)
-            , pos_(pos) {}
-
-        Loc loc() const { return {parser_.prev().path, pos_, parser_.prev().finis}; }
-        Dbg dbg(Sym sym) const { return {loc(), sym}; }
-
-    private:
-        Parser& parser_;
-        Pos pos_;
-    };
-
-    Loc& prev() { return state_.prev; }
-
-    /// Factory method to build a Parser::Tracker.
-    Tracker tracker() { return Tracker(*this, ahead().loc().begin); }
-    ///@}
-
-    /// @name get next token
-    ///@{
-    /// Get lookahead.
-    Tok& ahead(size_t i = 0) {
-        assert(i < Max_Ahead);
-        return state_.ahead[i];
-    }
-
-    Lexer& lexer() { return lexers_.top(); }
-    bool main() const { return lexers_.size() == 1; }
-
-    /// Invoke Lexer to retrieve next Tok%en.
-    Tok lex();
-
-    /// If Parser::ahead() is a @p tag, Parser::lex(), and return `true`.
-    std::optional<Tok> accept(Tok::Tag tag);
-
-    /// Parser::lex Parser::ahead() which must be a @p tag.
-    /// Issue err%or with @p ctxt otherwise.
-    Tok expect(Tok::Tag tag, std::string_view ctxt);
-
-    /// Consume Parser::ahead which must be a @p tag; asserts otherwise.
-    Tok eat([[maybe_unused]] Tok::Tag tag) {
-        assert(tag == ahead().tag() && "internal parser error");
-        return lex();
-    }
-    ///@}
+    Dbg dbg(const Tracker& tracker, Sym sym) const { return {tracker.loc(), sym}; }
+    Lexer& lexer() { return *lexer_; }
 
     /// @name parse misc
     ///@{
@@ -161,25 +117,28 @@ private:
     ///@{
     /// Issue an error message of the form:
     /// "expected \<what\>, got '\<tok>\' while parsing \<ctxt\>"
-    [[noreturn]] void syntax_err(std::string_view what, const Tok& tok, std::string_view ctxt);
+    [[noreturn]] void syntax_err(std::string_view what, const Tok& tok, std::string_view ctxt) {
+        error(tok.loc(), "expected {}, got '{}' while parsing {}", what, tok, ctxt);
+    }
 
     /// Same above but uses @p ahead() as @p tok.
     [[noreturn]] void syntax_err(std::string_view what, std::string_view ctxt) { syntax_err(what, ahead(), ctxt); }
+
+    [[noreturn]] void syntax_err(Tok::Tag tag, std::string_view ctxt) {
+        std::string msg("'");
+        msg.append(Tok::tag2str(tag)).append("'");
+        syntax_err(msg, ctxt);
+    }
     ///@}
 
-    static constexpr size_t Max_Ahead = 2; ///< maximum lookahead
-    using Ahead                       = std::array<Tok, Max_Ahead>;
-
     World& world_;
-    std::stack<Lexer> lexers_;
-    struct {
-        Loc prev;
-        Ahead ahead; ///< SLL look ahead
-    } state_;
+    Lexer* lexer_ = nullptr;
     Scopes scopes_;
     Def2Fields def2fields_;
     Sym anonymous_;
     Sym return_;
+
+    friend class fe::Parser<Tok, Tok::Tag, Look_Ahead, Parser>;
 };
 
-} // namespace thorin::fe
+} // namespace thorin

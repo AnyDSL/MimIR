@@ -13,8 +13,6 @@ class Infer;
 class Sigma;
 class World;
 
-namespace fe {
-
 class Scopes;
 using Def2Fields = DefMap<Array<Sym>>;
 
@@ -76,5 +74,4 @@ private:
     Def* decl_ = nullptr;
 };
 
-} // namespace fe
 } // namespace thorin

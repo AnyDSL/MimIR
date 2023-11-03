@@ -8,7 +8,7 @@ on:
 jobs:
   build-and-test:
     name: Build and test ${{matrix.build-type}} mode
-    runs-on: macos-11
+    runs-on: macos-latest
     strategy:
       matrix:
         build-type: [Debug, Release]
@@ -25,33 +25,26 @@ jobs:
           ccache_options: max_size=500M
           override_cache_key: mac-latest-ccache-${{matrix.build-type}}
 
-      - name: Configure
-        run: CC=gcc-11 CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DTHORIN_BUILD_TESTING=ON -DTHORIN_BUILD_EXAMPLES=ON -DPython3_ROOT_DIR=$(dirname $(which python3))
-
-      - name: Cache LLVM and Clang
-        id: cache-llvm
-        uses: actions/cache@v3
-        with:
-          path: |
-            ./llvm
-          key: llvm-14.0.0-mac
-
       - name: Install LLVM and Clang
-        uses: KyleMayes/install-llvm-action@v1.6.0
-        with:
-          version: "14.0.0"
-          cached: ${{ steps.cache-llvm.outputs.cache-hit }}
+        run: brew install llvm@16
+
+      - name: Configure
+        run: |
+          CC="/usr/local/opt/llvm@16/bin/clang" \
+          CXX="/usr/local/opt/llvm@16/bin/clang++" \
+          CXXFLAGS="-stdlib=libc++ -fexperimental-library" \
+          LDFLAGS="-L/usr/local/opt/llvm@16/lib/c++ -Wl,-rpath,/usr/local/opt/llvm@16/lib/c++" \
+          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DBUILD_TESTING=ON -DTHORIN_BUILD_EXAMPLES=ON -DPython3_ROOT_DIR=$(dirname $(which python3))
 
       - name: Install FileCheck
-        uses: i3h/download-release-asset@v1
+        uses: robinraju/release-downloader@v1.8
         with:
-          owner: fodinabor
-          repo: FileCheckBuild
-          tag: latest
-          file: FileCheck-x86_64-mac
-          path: ${{github.workspace}}/bin
+          repository: "fodinabor/FileCheckBuild"
+          latest: true
+          fileName: FileCheck-x86_64-mac
+          out-file-path: bin
           token: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - name: Install LIT
         run: |
           python3 -m pip install lit psutil

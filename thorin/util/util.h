@@ -9,8 +9,8 @@
 #include <absl/container/flat_hash_set.h>
 #include <absl/container/node_hash_map.h>
 #include <absl/container/node_hash_set.h>
+#include <fe/assert.h>
 
-#include "thorin/util/assert.h"
 #include "thorin/util/hash.h"
 
 namespace thorin {
@@ -18,14 +18,12 @@ namespace thorin {
 /// @name Utility Functions
 ///@{
 
-template<class This, class T>
-inline T& lazy_init(const This* self, std::unique_ptr<T>& ptr) {
+template<class This, class T> inline T& lazy_init(const This* self, std::unique_ptr<T>& ptr) {
     return *(ptr ? ptr : ptr = std::make_unique<T>(*self));
 }
 
 /// A bitcast from @p src of type @p S to @p D.
-template<class D, class S>
-inline D bitcast(const S& src) {
+template<class D, class S> inline D bitcast(const S& src) {
     D dst;
     auto s = reinterpret_cast<const void*>(&src);
     auto d = reinterpret_cast<void*>(&dst);
@@ -39,8 +37,7 @@ inline D bitcast(const S& src) {
     return dst;
 }
 
-template<class T>
-bool get_sign(T val) {
+template<class T> bool get_sign(T val) {
     static_assert(std::is_integral<T>(), "get_sign only supported for signed and unsigned integer types");
     if constexpr (std::is_signed<T>())
         return val < 0;
@@ -58,8 +55,7 @@ inline u64 pad(u64 offset, u64 align) {
 
 /// @name Algorithms
 ///@{
-template<class I, class T, class Cmp>
-I binary_find(I begin, I end, T val, Cmp cmp) {
+template<class I, class T, class Cmp> I binary_find(I begin, I end, T val, Cmp cmp) {
     auto i = std::lower_bound(begin, end, val, cmp);
     return (i != end && !(cmp(val, *i))) ? i : end;
 }
@@ -79,15 +75,13 @@ inline void find_and_replace(std::string& str, std::string_view what, std::strin
 
 /// @name Helpers for Containers
 ///@{
-template<class S>
-auto pop(S& s) -> decltype(s.top(), typename S::value_type()) {
+template<class S> auto pop(S& s) -> decltype(s.top(), typename S::value_type()) {
     auto val = s.top();
     s.pop();
     return val;
 }
 
-template<class Q>
-auto pop(Q& q) -> decltype(q.front(), typename Q::value_type()) {
+template<class Q> auto pop(Q& q) -> decltype(q.front(), typename Q::value_type()) {
     auto val = q.front();
     q.pop();
     return val;
@@ -96,8 +90,7 @@ auto pop(Q& q) -> decltype(q.front(), typename Q::value_type()) {
 /// Yields pointer to element (or the element itself if it is already a pointer), if found and `nullptr` otherwise.
 /// @warning If the element is **not** already a pointer, this lookup will simply take the address of this element.
 /// This means that, e.g., a rehash of an `absl::flat_hash_map` will invalidate this pointer.
-template<class C, class K>
-auto lookup(const C& container, const K& key) {
+template<class C, class K> auto lookup(const C& container, const K& key) {
     auto i = container.find(key);
     if constexpr (std::is_pointer_v<typename C::mapped_type>)
         return i != container.end() ? i->second : nullptr;
@@ -106,16 +99,14 @@ auto lookup(const C& container, const K& key) {
 }
 
 /// Invokes `emplace` on @p container, asserts that insertion actually happened, and returns the iterator.
-template<class C, class... Args>
-auto assert_emplace(C& container, Args&&... args) {
+template<class C, class... Args> auto assert_emplace(C& container, Args&&... args) {
     auto [i, ins] = container.emplace(std::forward<Args&&>(args)...);
     assert_unused(ins);
     return i;
 }
 ///@}
 
-template<class Set>
-class unique_stack {
+template<class Set> class unique_stack {
 public:
     using T = typename std::remove_reference_t<Set>::value_type;
 
@@ -140,8 +131,7 @@ private:
     std::stack<T> stack_;
 };
 
-template<class Set>
-class unique_queue {
+template<class Set> class unique_queue {
 public:
     using T = typename std::remove_reference_t<Set>::value_type;
 
@@ -171,18 +161,15 @@ private:
     std::queue<T> queue_;
 };
 
-template<class T>
-struct GIDHash {
+template<class T> struct GIDHash {
     size_t operator()(T p) const { return murmur3(p->gid()); };
 };
 
-template<class T>
-struct GIDEq {
+template<class T> struct GIDEq {
     bool operator()(T a, T b) const { return a->gid() == b->gid(); }
 };
 
-template<class T>
-struct GIDLt {
+template<class T> struct GIDLt {
     bool operator()(T a, T b) const { return a->gid() < b->gid(); }
 };
 

@@ -2,14 +2,14 @@
 
 #include <bit>
 
-#include "thorin/util/assert.h"
+#include <fe/assert.h>
 
 namespace thorin {
 
 namespace {
 inline uint64_t begin_mask(uint64_t i) { return -1_u64 << (i % 64_u64); }
 inline uint64_t end_mask(uint64_t i) { return ~begin_mask(i); }
-}
+} // namespace
 
 void BitSet::dealloc() const {
     if (num_words_ != 1) delete[] words_;
@@ -24,9 +24,8 @@ size_t BitSet::count() const {
 
 bool BitSet::operator==(const BitSet& other) const {
     auto n = std::min(this->num_words(), other.num_words());
-    for (size_t i = 0; i != n; ++i) {
+    for (size_t i = 0; i != n; ++i)
         if (this->words()[i] != other.words()[i]) return false;
-    }
 
     const uint64_t* w;
     size_t m;
@@ -38,9 +37,8 @@ bool BitSet::operator==(const BitSet& other) const {
         m = other.num_words();
     }
 
-    for (size_t i = n; i != m; ++i) {
+    for (size_t i = n; i != m; ++i)
         if (w[i] != 0) return false;
-    }
 
     return true;
 }
@@ -93,8 +91,8 @@ void BitSet::ensure_capacity(size_t i) const {
     size_t num_new_words = (i + 64_s) / 64_s;
     if (num_new_words > num_words_) {
         num_new_words = std::bit_ceil(num_new_words);
-        assert(num_new_words >= num_words_ * 2_s &&
-               "num_new_words must be a power of two at least twice of num_words_");
+        assert(num_new_words >= num_words_ * 2_s
+               && "num_new_words must be a power of two at least twice of num_words_");
         uint64_t* new_words = new uint64_t[num_new_words];
 
         // copy over and fill rest with zero

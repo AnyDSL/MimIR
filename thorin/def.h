@@ -3,12 +3,14 @@
 #include <optional>
 #include <vector>
 
+#include <fe/assert.h>
+#include <fe/cast.h>
+
 #include "thorin/config.h"
 
 #include "thorin/util/array.h"
-#include "thorin/util/cast.h"
 #include "thorin/util/hash.h"
-#include "thorin/util/loc.h"
+#include "thorin/util/dbg.h"
 #include "thorin/util/print.h"
 #include "thorin/util/util.h"
 
@@ -200,7 +202,7 @@ private:                                           \
 /// ```
 /// @attention This means that any subclass of Def **must not** introduce additional members.
 /// @see @ref mut
-class Def : public RuntimeCast<Def> {
+class Def : public fe::RuntimeCast<Def> {
 private:
     Def& operator=(const Def&) = delete;
     Def(const Def&)            = delete;
@@ -453,7 +455,7 @@ public:
 
     /// @name Rebuild
     ///@{
-    virtual Def* stub(World&, Ref) { unreachable(); }
+    virtual Def* stub(World&, Ref) { fe::unreachable(); }
 
     /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
     virtual Ref rebuild(World& w, Ref type, Defs ops) const = 0;

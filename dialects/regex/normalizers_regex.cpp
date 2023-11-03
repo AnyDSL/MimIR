@@ -4,13 +4,13 @@
 #include <ranges>
 #include <vector>
 
+#include <fe/assert.h>
+
 #include "thorin/axiom.h"
 #include "thorin/def.h"
 #include "thorin/tuple.h"
 #include "thorin/world.h"
 
-#include "thorin/util/assert.h"
-#include "thorin/util/loc.h"
 #include "thorin/util/log.h"
 
 #include "dialects/regex/range_helper.h"

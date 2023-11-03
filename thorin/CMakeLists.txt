@@ -70,62 +70,67 @@ add_library(libthorin
     phase/phase.cpp
     phase/phase.h
     util/array.h
-    util/assert.h
     util/bitset.cpp
     util/bitset.h
-    util/cast.h
+    util/dbg.cpp
+    util/dbg.h
     util/dl.cpp
     util/dl.h
     util/hash.cpp
     util/hash.h
     util/indexmap.h
     util/indexset.h
-    util/loc.cpp
-    util/loc.h
     util/log.cpp
     util/log.h
     util/print.cpp
     util/print.h
-    util/sym.h
     util/sys.cpp
     util/sys.h
     util/types.h
-    util/utf8.cpp
-    util/utf8.h
     util/util.h
 )
-
 set_target_properties(libthorin PROPERTIES PREFIX "")
-
-get_target_property(libthorin_HEADERS libthorin SOURCES)
-list(FILTER libthorin_HEADERS INCLUDE REGEX ".*\.h")
-
-configure_file(config.h.in ${CMAKE_BINARY_DIR}/include/thorin/config.h)
-
-target_include_directories(libthorin
-    PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/> # for config.h
-        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/>       # for thorin/*
-        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/modules/half/include>
-        $<INSTALL_INTERFACE:include>
-)
-
-target_link_libraries(libthorin
-    PUBLIC
-        absl::btree
-        absl::flat_hash_map absl::flat_hash_set
-        absl::node_hash_map absl::node_hash_set
-        rang
-        ${CMAKE_DL_LIBS}
-)
-
 target_compile_features(libthorin PUBLIC cxx_std_${CMAKE_CXX_STANDARD}) # make property public.
 
 if(MSVC AND BUILD_SHARED_LIBS)
     target_compile_definitions(libthorin PUBLIC ABSL_CONSUME_DLL)
 endif()
 
-install(TARGETS libthorin EXPORT install_exports INCLUDES DESTINATION include)
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} DESTINATION include FILES_MATCHING PATTERN "*.h")
-install(FILES ${CMAKE_BINARY_DIR}/include/thorin/config.h DESTINATION include/thorin)
-install(FILES ${PROJECT_SOURCE_DIR}/modules/half/include/half.hpp DESTINATION include)
+configure_file(
+    config.h.in
+    "${CMAKE_BINARY_DIR}/include/thorin/config.h"
+)
+target_include_directories(libthorin
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include/>     # for config.h
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>   # for thorin/*
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../external/half/include>
+        $<INSTALL_INTERFACE:include>
+)
+target_link_libraries(libthorin
+    PUBLIC
+        absl::btree
+        absl::flat_hash_map absl::flat_hash_set
+        absl::node_hash_map absl::node_hash_set
+        fe rang ${CMAKE_DL_LIBS}
+)
+install(
+    TARGETS libthorin
+    EXPORT thorin-targets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+install(
+    DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    DESTINATION include FILES_MATCHING PATTERN "*.h"
+)
+install(
+    FILES "${CMAKE_BINARY_DIR}/include/thorin/config.h"
+    DESTINATION include/thorin
+)
+install(
+    FILES "${CMAKE_CURRENT_SOURCE_DIR}/../external/half/include/half.hpp"
+    DESTINATION include
+)

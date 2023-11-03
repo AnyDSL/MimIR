@@ -14,7 +14,7 @@ namespace thorin {
 
 /// Some "global" variables needed all over the place.
 /// Well, there are not really global - that's the point of this class.
-class Driver : public SymPool {
+class Driver : public fe::SymPool {
 public:
     Driver();
 
@@ -56,7 +56,7 @@ public:
     /// Otherwise, "name", "libthorin_name.so" (Linux, Mac), "thorin_name.dll" (Win)
     /// are searched for in Driver::search_paths().
     void load(Sym name);
-    void load(std::string name) { return load(sym(std::move(name))); }
+    void load(const std::string& name) { return load(sym(name)); }
     bool is_loaded(Sym sym) const { return lookup(plugins_, sym); }
     ///@}
 
@@ -86,7 +86,7 @@ private:
     Passes passes_;
     Normalizers normalizers_;
     std::deque<std::pair<fs::path, Sym>> imports_;
-    SymMap<SymMap<Annex>> plugin2annexes_;
+    fe::SymMap<fe::SymMap<Annex>> plugin2annexes_;
 };
 
 } // namespace thorin

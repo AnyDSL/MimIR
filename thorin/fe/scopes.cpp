@@ -2,7 +2,7 @@
 
 #include "thorin/world.h"
 
-namespace thorin::fe {
+namespace thorin {
 
 void Scopes::pop() {
     assert(!scopes_.empty());
@@ -36,4 +36,4 @@ void Scopes::bind(Scope* scope, Dbg dbg, const Def* def, bool rebind) {
     }
 }
 
-} // namespace thorin::fe
+} // namespace thorin

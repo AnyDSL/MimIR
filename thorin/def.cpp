@@ -81,8 +81,8 @@ UMax::UMax(World& world, Defs ops)
  * rebuild
  */
 
-Ref Infer    ::rebuild(World&,   Ref,   Defs  ) const { unreachable(); }
-Ref Global   ::rebuild(World&,   Ref,   Defs  ) const { unreachable(); }
+Ref Infer    ::rebuild(World&,   Ref,   Defs  ) const { fe::unreachable(); }
+Ref Global   ::rebuild(World&,   Ref,   Defs  ) const { fe::unreachable(); }
 Ref Idx      ::rebuild(World& w, Ref  , Defs  ) const { return w.type_idx(); }
 Ref Nat      ::rebuild(World& w, Ref  , Defs  ) const { return w.type_nat(); }
 Ref Univ     ::rebuild(World& w, Ref  , Defs  ) const { return w.univ(); }
@@ -129,7 +129,7 @@ Pi*     Pi    ::stub(World& w, Ref t) { return w.mut_pi   (t, is_implicit()) ->s
 Sigma*  Sigma ::stub(World& w, Ref t) { return w.mut_sigma(t, num_ops())     ->set(dbg()); }
 
 template<bool up> TBound<up>* TBound<up>::stub(World& w, Ref t) { return w.mut_bound<up>(t, num_ops()); }
-template<bool up> TExt  <up>* TExt  <up>::stub(World&  , Ref  ) { unreachable(); }
+template<bool up> TExt  <up>* TExt  <up>::stub(World&  , Ref  ) { fe::unreachable(); }
 
 /*
  * instantiate templates
@@ -248,7 +248,7 @@ std::string_view Def::node_name() const {
     case Node::op: return #abbr;
         THORIN_NODE(CODE)
 #undef CODE
-        default: unreachable();
+        default: fe::unreachable();
     }
 }
 
@@ -260,12 +260,12 @@ Defs Def::extended_ops() const {
 
 #ifndef NDEBUG
 const Def* Def::debug_prefix(std::string prefix) const {
-    dbg_.sym = world().sym(prefix + *sym());
+    dbg_.sym = world().sym(prefix + sym().str());
     return this;
 }
 
 const Def* Def::debug_suffix(std::string suffix) const {
-    dbg_.sym = world().sym(*sym() + suffix);
+    dbg_.sym = world().sym(sym().str() + suffix);
     return this;
 }
 #endif
@@ -291,7 +291,7 @@ Ref Def::var() {
     if (isa<Bound >()) return w.var(this, this);
     if (isa<Infer >()) return nullptr;
     if (isa<Global>()) return nullptr;
-    unreachable();
+    fe::unreachable();
 }
 
 bool Def::is_term() const {
@@ -413,7 +413,7 @@ bool Def::is_set() const {
 void Def::make_external() { return world().make_external(this); }
 void Def::make_internal() { return world().make_internal(this); }
 
-std::string Def::unique_name() const { return *sym() + "_"s + std::to_string(gid()); }
+std::string Def::unique_name() const { return sym().str() + "_"s + std::to_string(gid()); }
 
 nat_t Def::num_tprojs() const {
     if (auto a = isa_lit_arity(); a && *a < world().flags().scalerize_threshold) return *a;

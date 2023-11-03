@@ -16,39 +16,9 @@
 
 using namespace std::string_literals;
 
-namespace thorin::fe {
+namespace thorin {
 
 using Tag = Tok::Tag;
-
-/*
- * helpers
- */
-
-Tok Parser::lex() {
-    auto result = ahead();
-    prev()      = result.loc();
-    for (size_t i = 0; i < Max_Ahead - 1; ++i) ahead(i) = ahead(i + 1);
-    ahead(Max_Ahead - 1) = lexer().lex();
-    return result;
-}
-
-std::optional<Tok> Parser::accept(Tag tag) {
-    if (tag != ahead().tag()) return {};
-    return lex();
-}
-
-Tok Parser::expect(Tag tag, std::string_view ctxt) {
-    if (ahead().tag() == tag) return lex();
-
-    std::string msg("'");
-    msg.append(Tok::tag2str(tag)).append("'");
-    syntax_err(msg, ctxt);
-    return {};
-}
-
-void Parser::syntax_err(std::string_view what, const Tok& tok, std::string_view ctxt) {
-    error(tok.loc(), "expected {}, got '{}' while parsing {}", what, tok, ctxt);
-}
 
 /*
  * entry points
@@ -64,7 +34,7 @@ void Parser::parse_module() {
             break;
 
     parse_decls({});
-    expect(Tag::M_eof, "module");
+    expect(Tag::EoF, "module");
 };
 
 void Parser::import(fs::path name, std::ostream* md) {
@@ -90,15 +60,12 @@ void Parser::import(std::istream& is, const fs::path* path, std::ostream* md) {
     world().VLOG("reading: {}", path ? path->string() : "<unknown file>"s);
     if (!is) error("cannot read file '{}'", *path);
 
-    lexers_.emplace(world(), is, path, md);
-    auto state = state_;
-
-    for (size_t i = 0; i != Max_Ahead; ++i) ahead(i) = lexer().lex();
-    prev() = Loc(path, {1, 1});
-
+    auto state = std::tuple(prev_, ahead_, lexer_);
+    auto lexer = Lexer(world(), is, path, md);
+    lexer_     = &lexer;
+    init(path);
     parse_module();
-    state_ = state;
-    lexers_.pop();
+    std::tie(prev_, ahead_, lexer_) = state;
 }
 
 void Parser::plugin(fs::path path) {
@@ -115,20 +82,20 @@ void Parser::parse_import() {
     eat(Tag::K_import);
     auto name = expect(Tag::M_id, "import name");
     expect(Tag::T_semicolon, "end of import");
-    import(*name.sym());
+    import(name.sym().view());
 }
 
 void Parser::parse_plugin() {
     eat(Tag::K_plugin);
     auto name = expect(Tag::M_id, "plugin name");
     expect(Tag::T_semicolon, "end of import");
-    plugin(*name.sym());
+    plugin(name.sym().view());
 }
 
 Dbg Parser::parse_id(std::string_view ctxt) {
     if (auto id = accept(Tag::M_id)) return id->dbg();
     syntax_err("identifier", ctxt);
-    return {prev(), world().sym("<error>")};
+    return {prev_, world().sym("<error>")};
 }
 
 std::pair<Dbg, bool> Parser::parse_name(std::string_view ctxt) {
@@ -136,14 +103,14 @@ std::pair<Dbg, bool> Parser::parse_name(std::string_view ctxt) {
     if (auto tok = accept(Tag::M_id)) return {tok->dbg(), false};
     syntax_err("identifier or annex name", ctxt);
     return {
-        {prev(), world().sym("<error>")},
+        {prev_, world().sym("<error>")},
         false
     };
 }
 
 void Parser::register_annex(Dbg dbg, Ref def) {
     auto [plugin, tag, sub] = Annex::split(world(), dbg.sym);
-    auto name               = world().sym("%"s + *plugin + "."s + *tag);
+    auto name               = world().sym("%"s + plugin.str() + "."s + tag.str());
     auto&& [annex, is_new]  = driver().name2annex(name, plugin, tag, dbg.loc);
     plugin_t p              = *Annex::mangle(plugin);
     tag_t t                 = annex.tag_id;
@@ -274,7 +241,7 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::K_ret:     return parse_ret_expr();
         case Tag::M_anx:
         case Tag::M_id:      return scopes_.find(lex().dbg());
-        case Tag::M_str:     return world().tuple(lex().sym())->set(prev());
+        case Tag::M_str:     return world().tuple(lex().sym())->set(prev_);
         default:
             if (ctxt.empty()) return nullptr;
             syntax_err("primary expression", ctxt);
@@ -386,7 +353,7 @@ Pi* Parser::parse_pi_expr(Pi* outer) {
         case Tag::T_Pi: entity = "dependent function type"; break;
         case Tag::K_Cn: entity = "continuation type"; break;
         case Tag::K_Fn: entity = "returning continuation type"; break;
-        default: unreachable();
+        default: fe::unreachable();
     }
 
     Pi* first = nullptr;
@@ -423,7 +390,7 @@ Pi* Parser::parse_pi_expr(Pi* outer) {
             pi->unset()->set_dom(last);
             break;
         }
-        default: unreachable();
+        default: fe::unreachable();
     }
 
     for (auto pi : pis | std::ranges::views::reverse) {
@@ -451,11 +418,11 @@ Lam* Parser::parse_lam(bool is_decl) {
         case Tag::K_lam: entity = "function declaration";               break;
         case Tag::K_con: entity = "continuation declaration";           break;
         case Tag::K_fun: entity = "returning continuation declaration"; break;
-        default: unreachable();
+        default: fe::unreachable();
     }
     // clang-format on
 
-    auto [dbg, anx] = is_decl ? parse_name(entity) : std::pair(Dbg{prev(), anonymous_}, false);
+    auto [dbg, anx] = is_decl ? parse_name(entity) : std::pair(Dbg{prev_, anonymous_}, false);
     auto outer      = scopes_.curr();
     Lam* decl       = nullptr;
 
@@ -539,7 +506,7 @@ Lam* Parser::parse_lam(bool is_decl) {
             scopes_.bind({ret_loc, return_}, new_var->proj(2, 1)->set(Dbg{ret_loc, return_}));
             break;
         }
-        default: unreachable();
+        default: fe::unreachable();
     }
 
     auto [_, first, __] = funs.front();
@@ -566,8 +533,8 @@ Lam* Parser::parse_lam(bool is_decl) {
 
     auto body = accept(Tag::T_assign) ? parse_decls("body of a "s + entity) : nullptr;
     if (!body) {
-        if (!is_decl) error(prev(), "body of a {}", entity);
-        if (auto [_, __, filter] = funs.back(); filter) error(prev(), "cannot specify filter of a {}", entity);
+        if (!is_decl) error(prev_, "body of a {}", entity);
+        if (auto [_, __, filter] = funs.back(); filter) error(prev_, "cannot specify filter of a {}", entity);
     }
 
     // filter defaults to .tt for everything except the actual continuation of con/cn/fun/fn; here we use .ff as default
@@ -607,7 +574,7 @@ Ref Parser::parse_ret_expr() {
         return world().app(cn, {arg, lam});
     }
 
-    error(prev(), "continuation of the ret expression is not a returning continuation but has type '{}'", cn->type());
+    error(prev_, "continuation of the ret expression is not a returning continuation but has type '{}'", cn->type());
 }
 
 Ref Parser::parse_lit_expr() {
@@ -625,7 +592,7 @@ Ref Parser::parse_lit_expr() {
             case Tag::L_f: break;
             case Tag::T_bot: return world().bot(type)->set(track.loc());
             case Tag::T_top: return world().top(type)->set(track.loc());
-            default: unreachable();
+            default: fe::unreachable();
         }
         // clang-format on
         return world().lit(type, tok.lit_u())->set(track.loc());
@@ -633,8 +600,8 @@ Ref Parser::parse_lit_expr() {
 
     if (tok.tag() == Tag::T_bot) return world().bot(world().type())->set(track.loc());
     if (tok.tag() == Tag::T_top) return world().top(world().type())->set(track.loc());
-    if (tok.tag() == Tag::L_s) error(prev(), ".Nat literal specified as signed but must be unsigned");
-    if (tok.tag() == Tag::L_f) error(prev(), ".Nat literal specified as floating-point but must be unsigned");
+    if (tok.tag() == Tag::L_s) error(prev_, ".Nat literal specified as signed but must be unsigned");
+    if (tok.tag() == Tag::L_f) error(prev_, ".Nat literal specified as floating-point but must be unsigned");
 
     return world().lit_nat(tok.lit_u())->set(track.loc());
 }
@@ -692,14 +659,14 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok
             if (ahead().isa(Tag::D_paren_l) || ahead().isa(Tag::D_brckt_l))
                 return parse_tuple_ptrn(track, rebind, sym);
             else
-                syntax_err("tuple pattern after '" + *sym + "::'", ctxt);
+                syntax_err("tuple pattern after '" + sym.str() + "::'", ctxt);
         } else if (ahead(1).isa(Tag::T_colon)) {
             // p ->  s: e               b ->  s: e
             // p -> 's: e               b -> 's: e
             sym = eat(Tag::M_id).sym();
             eat(Tag::T_colon);
             auto type = parse_expr(ctxt, prec);
-            return std::make_unique<IdPtrn>(track.dbg(sym), rebind, type);
+            return std::make_unique<IdPtrn>(dbg(track, sym), rebind, type);
         } else {
             // p ->  s                  b ->    e    where e == id
             // p -> 's
@@ -707,18 +674,18 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok
                 // p ->  s
                 // p -> 's
                 sym = eat(Tag::M_id).sym();
-                return std::make_unique<IdPtrn>(track.dbg(sym), rebind, nullptr);
+                return std::make_unique<IdPtrn>(dbg(track, sym), rebind, nullptr);
             } else {
                 // b ->    e    where e == id
                 auto type = parse_expr(ctxt, prec);
-                return std::make_unique<IdPtrn>(track.dbg(sym), rebind, type);
+                return std::make_unique<IdPtrn>(dbg(track, sym), rebind, type);
             }
         }
     } else if (b) {
         // b ->  e    where e != id
         if (backtick) error(backtick->loc(), "you can only prefix identifiers with backtick for rebinding");
         auto type = parse_expr(ctxt, prec);
-        return std::make_unique<IdPtrn>(track.dbg(sym), rebind, type);
+        return std::make_unique<IdPtrn>(dbg(track, sym), rebind, type);
     } else if (!ctxt.empty()) {
         // p -> ↯
         syntax_err("pattern", ctxt);
@@ -770,14 +737,14 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
             }
             auto [_, r] = Tok::prec(Tok::Prec::App);
             auto expr   = parse_infix_expr(track, lhs, r);
-            ptrn        = std::make_unique<IdPtrn>(track.dbg(anonymous_), false, expr);
+            ptrn        = std::make_unique<IdPtrn>(dbg(track, anonymous_), false, expr);
         } else {
             ptrn      = parse_ptrn(delim_l, "element of a tuple pattern");
             auto type = ptrn->type(world(), def2fields_);
 
             if (b) { // If we are able to parse more stuff, we got an expression instead of just a binder.
                 if (auto expr = parse_infix_expr(track, type); expr != type)
-                    ptrn = std::make_unique<IdPtrn>(track.dbg(anonymous_), false, expr);
+                    ptrn = std::make_unique<IdPtrn>(dbg(track, anonymous_), false, expr);
             }
         }
 
@@ -789,7 +756,7 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
     scopes_.pop();
 
     // TODO parse type
-    return std::make_unique<TuplePtrn>(track.dbg(sym), rebind, std::move(ptrns), nullptr, std::move(infers), decl);
+    return std::make_unique<TuplePtrn>(dbg(track, sym), rebind, std::move(ptrns), nullptr, std::move(infers), decl);
 }
 
 /*
@@ -877,13 +844,13 @@ void Parser::parse_ax_decl() {
         scopes_.bind(dbg, axiom);
     } else {
         for (const auto& sub : new_subs) {
-            auto name  = world().sym(*dbg.sym + "."s + *sub.front());
+            auto name  = world().sym(dbg.sym.str() + "."s + sub.front().str());
             auto norm  = driver().normalizer(p, t, s);
             auto axiom = world().axiom(norm, curry, trip, type, p, t, s)->set(track.loc(), name);
             world().register_annex(p | (flags_t(t) << 8_u64) | flags_t(s), axiom);
             for (auto& alias : sub) {
-                auto sym = world().sym(*dbg.sym + "."s + *alias);
-                scopes_.bind({prev(), sym}, axiom);
+                auto sym = world().sym(dbg.sym.str() + "."s + alias.str());
+                scopes_.bind({prev_, sym}, axiom);
             }
             ++s;
         }
@@ -1014,4 +981,4 @@ void Parser::parse_pi_decl() {
     expect(Tag::T_semicolon, "end of a pi declaration");
 }
 
-} // namespace thorin::fe
+} // namespace thorin

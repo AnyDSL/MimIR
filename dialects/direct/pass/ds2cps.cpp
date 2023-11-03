@@ -65,7 +65,7 @@ Ref DS2CPS::rewrite_lam(Lam* lam) {
     auto cps_ty = world().cn(sigma);
     world().DLOG("cps type: {}", cps_ty);
 
-    auto cps_lam = world().mut_lam(cps_ty)->set(*lam->sym() + "_cps");
+    auto cps_lam = world().mut_lam(cps_ty)->set(lam->sym().str() + "_cps");
 
     // rewrite vars of new function
     // calls handled separately

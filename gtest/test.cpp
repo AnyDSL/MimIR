@@ -17,7 +17,7 @@ using namespace thorin;
 TEST(Zip, fold) {
     Driver driver;
     World& w    = driver.world();
-    auto parser = fe::Parser(w);
+    auto parser = Parser(w);
 
     std::istringstream iss(".plugin core;"
                            ".let _32 = 4294967296;"
@@ -87,7 +87,7 @@ TEST(Annex, split) {
 TEST(trait, idx) {
     Driver driver;
     World& w    = driver.world();
-    auto parser = fe::Parser(w);
+    auto parser = Parser(w);
     parser.plugin("core");
 
     EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'0000'00FF_n))), 1);

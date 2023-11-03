@@ -2,19 +2,16 @@
 
 #include <deque>
 
-#include "thorin/util/loc.h"
+#include "thorin/util/dbg.h"
 
 namespace thorin {
 
 class Def;
-
-namespace fe {
-
 class Ptrn;
 
 class Scopes {
 public:
-    using Scope = SymMap<std::pair<Loc, const Def*>>;
+    using Scope = fe::SymMap<std::pair<Loc, const Def*>>;
 
     Scopes() { push(); /* root scope */ }
 
@@ -31,5 +28,4 @@ private:
     std::deque<Scope> scopes_;
 };
 
-} // namespace fe
 } // namespace thorin

@@ -7,7 +7,7 @@ using namespace std::literals;
 namespace thorin {
 
 std::optional<plugin_t> Annex::mangle(Sym s) {
-    auto n = s->size();
+    auto n = s.size();
     if (n > Max_Plugin_Size) return {};
 
     u64 result = 0;

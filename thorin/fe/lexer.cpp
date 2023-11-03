@@ -4,14 +4,10 @@
 
 using namespace std::literals;
 
-namespace thorin::fe {
+namespace thorin {
 
-using Tag = Tok::Tag;
-
-namespace {
-bool issign(char32_t i) { return i == '+' || i == '-'; }
-bool issubscsr(char32_t i) { return U'₀' <= i && i <= U'₉'; }
-} // namespace
+namespace utf8 = fe::utf8;
+using Tag      = Tok::Tag;
 
 Lexer::Lexer(World& world, std::istream& istream, const fs::path* path /*= nullptr*/, std::ostream* md /*= nullptr*/)
     : Super(istream, path)
@@ -39,16 +35,11 @@ Tok Lexer::lex() {
             return *cache;
         }
 
-        loc_.begin = ahead().pos;
-        str_.clear();
+        start();
 
-#if defined(_WIN32) && !defined(NDEBUG) // isspace asserts otherwise
-        if (accept_if([](int c) { return (c & ~0xFF) == 0 ? isspace(c) : false; })) continue;
-#else
-        if (accept_if(isspace)) continue;
-#endif
-        if (accept(utf8::Err)) error(loc_, "invalid UTF-8 character");
-        if (accept(utf8::EoF)) return tok(Tag::M_eof);
+        if (accept(utf8::EoF)) return tok(Tag::EoF);
+        if (accept(utf8::isspace)) continue;
+        if (accept(utf8::Null)) error(loc_, "invalid UTF-8 character");
 
         // clang-format off
         // delimiters
@@ -123,7 +114,7 @@ Tok Lexer::lex() {
                 return {loc().anew_begin(), Tag::T_dot};
             }
 
-            if (accept_if(isdigit)) {
+            if (accept(utf8::isdigit)) {
                 parse_digits();
                 parse_exp();
                 return {loc_, f64(strtod(str_.c_str(), nullptr))};
@@ -139,7 +130,7 @@ Tok Lexer::lex() {
             continue;
         }
 
-        if (accept('\"', false)) {
+        if (accept<Append::Off>('\"')) {
             while (lex_char() != '"') {}
             str_.pop_back(); // remove final '"'
             return {loc_, Tag::M_str, sym()};
@@ -150,7 +141,7 @@ Tok Lexer::lex() {
             return {loc, Tag::M_id, sym()};
         }
 
-        if (isdigit(ahead()) || issign(ahead())) {
+        if (utf8::isdigit(ahead()) || utf8::any('+', '-')(ahead())) {
             if (auto lit = parse_lit()) return *lit;
             continue;
         }
@@ -171,11 +162,11 @@ Tok Lexer::lex() {
                 continue;
             }
 
-            error({loc_.path, ahead().pos}, "invalid input char '/'; maybe you wanted to start a comment?");
+            error({loc_.path, peek_}, "invalid input char '/'; maybe you wanted to start a comment?");
             continue;
         }
 
-        error({loc_.path, ahead().pos}, "invalid input char '{}'", (char)ahead());
+        error({loc_.path, peek_}, "invalid input char '{}'", utf8::Char32(ahead()));
         next();
     }
 }
@@ -193,8 +184,8 @@ Loc Lexer::cache_trailing_dot() {
 }
 
 bool Lexer::lex_id() {
-    if (accept_if([](int i) { return i == '_' || isalpha(i); })) {
-        while (accept_if([](int i) { return i == '_' || i == '.' || isalnum(i); })) {}
+    if (accept([](char32_t c) { return c == '_' || utf8::isalpha(c); })) {
+        while (accept([](char32_t c) { return c == '_' || c == '.' || utf8::isalnum(c); })) {}
         return true;
     }
     return false;
@@ -205,39 +196,36 @@ std::optional<Tok> Lexer::parse_lit() {
     int base = 10;
     std::optional<bool> sign;
 
-    if (accept('+', false)) {
+    if (accept<Append::Off>('+')) {
         sign = false;
-    } else if (accept('-', false)) {
+    } else if (accept<Append::Off>('-')) {
         if (accept('>')) return tok(Tag::T_arrow);
         sign = true;
     }
 
     // prefix starting with '0'
-    if (accept('0', false)) {
-        if      (accept('b', false)) base =  2;
-        else if (accept('B', false)) base =  2;
-        else if (accept('o', false)) base =  8;
-        else if (accept('O', false)) base =  8;
-        else if (accept('x', false)) base = 16;
-        else if (accept('X', false)) base = 16;
+    if (accept<Append::Off>('0')) {
+        if      (accept<Append::Off>('b')) base =  2;
+        else if (accept<Append::Off>('B')) base =  2;
+        else if (accept<Append::Off>('o')) base =  8;
+        else if (accept<Append::Off>('O')) base =  8;
+        else if (accept<Append::Off>('x')) base = 16;
+        else if (accept<Append::Off>('X')) base = 16;
     }
 
     parse_digits(base);
 
     if (!sign && base == 10) {
-        if (issubscsr(ahead())) {
+        if (utf8::isrange(ahead(), U'₀', U'₉')) {
             auto i = strtoull(str_.c_str(), nullptr, 10);
             std::string mod;
-            while (issubscsr(ahead())) {
-                mod += ahead() - U'₀' + '0';
-                next();
-            }
+            while (utf8::isrange(ahead(), U'₀', U'₉')) mod += next() - U'₀' + '0';
             auto m = strtoull(mod.c_str(), nullptr, 10);
             return Tok{loc_, world().lit_idx_mod(m, i)};
-        } else if (accept('_', false)) {
+        } else if (accept<Append::Off>('_')) {
             auto i = strtoull(str_.c_str(), nullptr, 10);
             str_.clear();
-            if (accept_if(isdigit)) {
+            if (accept(utf8::isdigit)) {
                 parse_digits(10);
                 auto m = strtoull(str_.c_str(), nullptr, 10);
                 return Tok{loc_, world().lit_idx_mod(m, i)};
@@ -277,19 +265,24 @@ std::optional<Tok> Lexer::parse_lit() {
 
 void Lexer::parse_digits(int base /*= 10*/) {
     switch (base) {
-        case  2: while (accept_if([](int i) { return '0' <= i && i <= '1'; })) {} break;
-        case  8: while (accept_if([](int i) { return '0' <= i && i <= '7'; })) {} break;
-        case 10: while (accept_if(isdigit)) {} break;
-        case 16: while (accept_if(isxdigit)) {} break;
-        default: unreachable();
+        // clang-format off
+        case  2: while (accept(utf8::isbdigit)) {} break;
+        case  8: while (accept(utf8::isodigit)) {} break;
+        case 10: while (accept(utf8::isdigit))  {} break;
+        case 16: while (accept(utf8::isxdigit)) {} break;
+        // clang-format on
+        default: fe::unreachable();
     }
 };
 
+template<class... T> inline auto _any(T... args) {
+    return [=](char32_t c) { return utf8::any(c, args...); };
+}
+
 bool Lexer::parse_exp(int base /*= 10*/) {
-    if (accept_if(base == 10 ? [](int i) { return i == 'e' || i == 'E'; }
-                             : [](int i) { return i == 'p' || i == 'P'; })) {
-        accept_if(issign);
-        if (!isdigit(ahead())) error(loc_, "exponent has no digits");
+    if (accept(base == 10 ? utf8::any('e', 'E') : utf8::any('p', 'P'))) {
+        accept(utf8::any('+', '-'));
+        if (!utf8::isdigit(ahead())) error(loc_, "exponent has no digits");
         parse_digits();
         return true;
     }
@@ -298,28 +291,28 @@ bool Lexer::parse_exp(int base /*= 10*/) {
 // clang-format on
 
 char8_t Lexer::lex_char() {
-    if (accept('\\', false)) {
+    if (accept<Append::Off>('\\')) {
         // clang-format off
         if (false) {}
-        else if (accept('\'', false)) str_ += '\'';
-        else if (accept('\\', false)) str_ += '\\';
-        else if (accept( '"', false)) str_ += '\"';
-        else if (accept( '0', false)) str_ += '\0';
-        else if (accept( 'a', false)) str_ += '\a';
-        else if (accept( 'b', false)) str_ += '\b';
-        else if (accept( 'f', false)) str_ += '\f';
-        else if (accept( 'n', false)) str_ += '\n';
-        else if (accept( 'r', false)) str_ += '\r';
-        else if (accept( 't', false)) str_ += '\t';
-        else if (accept( 'v', false)) str_ += '\v';
-        else error(loc_.anew_finis(), "invalid escape character '\\{}'", (char)ahead().c32);
+        else if (accept<Append::Off>('\'')) str_ += '\'';
+        else if (accept<Append::Off>('\\')) str_ += '\\';
+        else if (accept<Append::Off>( '"')) str_ += '\"';
+        else if (accept<Append::Off>( '0')) str_ += '\0';
+        else if (accept<Append::Off>( 'a')) str_ += '\a';
+        else if (accept<Append::Off>( 'b')) str_ += '\b';
+        else if (accept<Append::Off>( 'f')) str_ += '\f';
+        else if (accept<Append::Off>( 'n')) str_ += '\n';
+        else if (accept<Append::Off>( 'r')) str_ += '\r';
+        else if (accept<Append::Off>( 't')) str_ += '\t';
+        else if (accept<Append::Off>( 'v')) str_ += '\v';
+        else error(loc_.anew_finis(), "invalid escape character '\\{}'", (char)ahead());
         // clang-format on
         return str_.back();
     }
     auto c = next();
     str_ += c;
-    if (isascii(c.c32)) return c.c32;
-    error(loc_, "invalid character '{}'", (char)c.c32);
+    if (utf8::isascii(c)) return c;
+    error(loc_, "invalid character '{}'", (char)c);
 }
 
 void Lexer::eat_comments() {
@@ -355,4 +348,4 @@ void Lexer::emit_md(bool start_of_file) {
 
 Sym Lexer::sym() { return world().sym(str_); }
 
-} // namespace thorin::fe
+} // namespace thorin

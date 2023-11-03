@@ -59,7 +59,8 @@ void Driver::load(Sym name) {
     }
 
     Plugin::Handle handle{nullptr, dl::close};
-    if (auto path = fs::path{*name}; path.is_absolute() && fs::is_regular_file(path)) handle.reset(dl::open(*name));
+    if (auto path = fs::path{name.view()}; path.is_absolute() && fs::is_regular_file(path))
+        handle.reset(dl::open(name));
     if (!handle) {
         for (const auto& path : search_paths()) {
             for (auto name_variants = get_plugin_name_variants(name); const auto& name_variant : name_variants) {
@@ -67,7 +68,7 @@ void Driver::load(Sym name) {
                 std::error_code ignore;
                 if (bool reg_file = fs::is_regular_file(full_path, ignore); reg_file && !ignore) {
                     auto path_str = full_path.string();
-                    if (handle.reset(dl::open(path_str)); handle) break;
+                    if (handle.reset(dl::open(path_str.c_str())); handle) break;
                 }
             }
             if (handle) break;

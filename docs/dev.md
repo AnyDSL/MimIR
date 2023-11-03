@@ -75,7 +75,7 @@ Methods beginning with
 
 #### Upcast
 
-[Def::isa](@ref thorin::RuntimeCast::isa)/[Def::as](@ref thorin::RuntimeCast::as) allows for an *upcast* that matches both *mutables* and *immutables*:
+`Def::isa`/`Def::as` allows for an *upcast* that matches both *mutables* and *immutables*:
 ```cpp
 void foo(Ref def) {
     if (auto sigma = def->isa<Sigma>()) {
@@ -129,7 +129,7 @@ void foo(Ref def) {
     auto lam = def->as<Lam>();
 }
 ```
-Checking via [Def::isa](@ref thorin::RuntimeCast::isa)/[Def::as](@ref thorin::RuntimeCast::as) a `Def*` has the same effect as using [Def::isa_mut](@ref thorin::Def::isa_mut)/[Def::isa_mut](@ref thorin::Def::as_mut) since the scrutinee must be already a *mutable* due to the lack of the `const` qualifier:
+Checking via `Def::isa`/`Def::as` a `Def*` has the same effect as using [Def::isa_mut](@ref thorin::Def::isa_mut)/[Def::isa_mut](@ref thorin::Def::as_mut) since the scrutinee must be already a *mutable* due to the lack of the `const` qualifier:
 ```cpp
 void foo(Def* def) { // note the lack of "const" here
     if (auto sigma = def->isa<Sigma>()) {

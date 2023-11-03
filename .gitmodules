@@ -1,18 +1,21 @@
 [submodule "abseil-cpp"]
-	path = modules/abseil-cpp
+	path = external/abseil-cpp
 	url = ../../abseil/abseil-cpp
 [submodule "doxygen-awesome-css"]
-	path = modules/doxygen-awesome-css
+	path = external/doxygen-awesome-css
 	url = ../../jothepro/doxygen-awesome-css.git
+[submodule "fe"]
+	path = external/fe
+	url = ../../leissa/fe.git
 [submodule "googletest"]
-	path = modules/googletest
+	path = external/googletest
 	url = ../../google/googletest.git
 [submodule "half"]
-	path = modules/half
+	path = external/half
 	url = ../../AnyDSL/half.git
 [submodule "lyra"]
-	path = modules/lyra
+	path = external/lyra
 	url = ../../bfgroup/lyra.git
-[submodule "modules/rang"]
-	path = modules/rang
+[submodule "rang"]
+	path = external/rang
 	url = ../../agauniyal/rang.git

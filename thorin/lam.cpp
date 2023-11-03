@@ -75,8 +75,8 @@ const Def* compose_cn(const Def* f, const Def* g) {
     auto H     = world.cn({A, world.cn(C)});
     auto Hcont = world.cn(B);
 
-    auto h     = world.mut_lam(H)->set("comp_"s + *f->sym() + "_"s + *g->sym());
-    auto hcont = world.mut_lam(Hcont)->set("comp_"s + *f->sym() + "_"s + *g->sym() + "_cont"s);
+    auto h     = world.mut_lam(H)->set("comp_"s + f->sym().str() + "_"s + g->sym().str());
+    auto hcont = world.mut_lam(Hcont)->set("comp_"s + f->sym().str() + "_"s + g->sym().str() + "_cont"s);
 
     h->app(true, g, {h->var((nat_t)0), hcont});
 

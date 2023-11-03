@@ -30,7 +30,7 @@ TEST(RestrictedDependentTypes, join_singleton) {
     auto test_on_world = [](auto test) {
         Driver driver;
         World& w    = driver.world();
-        auto parser = fe::Parser(w);
+        auto parser = Parser(w);
         for (auto plugin : {"compile", "mem", "core", "math"}) parser.plugin(plugin);
 
         auto i32_t = w.type_int(32);
@@ -223,7 +223,7 @@ TEST(RestrictedDependentTypes, join_singleton) {
 TEST(RestrictedDependentTypes, ll) {
     Driver driver;
     World& w    = driver.world();
-    auto parser = fe::Parser(w);
+    auto parser = Parser(w);
     for (auto plugin : {"compile", "mem", "core", "math"}) parser.plugin(plugin);
 
     auto mem_t  = w.annex<mem::M>();

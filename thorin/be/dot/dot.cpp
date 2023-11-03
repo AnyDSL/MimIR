@@ -82,7 +82,7 @@ void Emitter::emit_epilogue(Lam* lam) {
 }
 
 std::string Emitter::emit_bb(BB&, const Def* def) {
-    if (auto lam = def->isa<Lam>()) return lam->sym();
+    if (auto lam = def->isa<Lam>()) return lam->sym().str();
 
     print(ostream_, "\"{}:{}\" [label=\"", def->node_name(), def->unique_name());
     stream_def_(ostream_, def);
@@ -104,7 +104,7 @@ std::string Emitter::prepare(const Scope& scope) {
 
     emit_cluster_start(ostream_, lam);
 
-    return lam->sym();
+    return lam->sym().str();
 }
 
 void Emitter::finalize(const Scope&) { ostream_ << "}\n"; }
