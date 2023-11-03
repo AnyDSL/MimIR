@@ -12,7 +12,7 @@ using namespace thorin;
 
 TEST(Lexer, Toks) {
     Driver driver;
-    std::istringstream is("{ } ( ) [ ] ‹ › « » : , . .lam .Pi λ Π");
+    std::istringstream is("{ } ( ) [ ] ‹ › « » : , . .lam .Pi λ Π 23₀₁₂₃₄₅₆₇₈₉");
     Lexer lexer(driver.world(), is);
 
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_brace_l));
@@ -32,7 +32,10 @@ TEST(Lexer, Toks) {
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::K_Pi));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_lm));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_Pi));
+    auto tok = lexer.lex();
+    EXPECT_TRUE(tok.isa(Tok::Tag::L_i));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::EoF));
+    EXPECT_EQ(tok.lit_i(), driver.world().lit_idx(123456789, 23));
 }
 
 TEST(Lexer, Errors) {

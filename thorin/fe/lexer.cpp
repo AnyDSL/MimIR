@@ -9,10 +9,6 @@ namespace thorin {
 namespace utf8 = fe::utf8;
 using Tag      = Tok::Tag;
 
-namespace {
-bool issubscsr(char32_t i) { return U'₀' <= i && i <= U'₉'; }
-} // namespace
-
 Lexer::Lexer(World& world, std::istream& istream, const fs::path* path /*= nullptr*/, std::ostream* md /*= nullptr*/)
     : Super(istream, path)
     , world_(world)
@@ -42,7 +38,7 @@ Tok Lexer::lex() {
         start();
 
         if (accept(utf8::EoF)) return tok(Tag::EoF);
-        if (accept_if(utf8::isspace)) continue;
+        if (accept(utf8::isspace)) continue;
         if (accept(utf8::Null)) error(loc_, "invalid UTF-8 character");
 
         // clang-format off
@@ -118,7 +114,7 @@ Tok Lexer::lex() {
                 return {loc().anew_begin(), Tag::T_dot};
             }
 
-            if (accept_if(utf8::isdigit)) {
+            if (accept(utf8::isdigit)) {
                 parse_digits();
                 parse_exp();
                 return {loc_, f64(strtod(str_.c_str(), nullptr))};
@@ -188,8 +184,8 @@ Loc Lexer::cache_trailing_dot() {
 }
 
 bool Lexer::lex_id() {
-    if (accept_if([](char32_t c) { return c == '_' || utf8::isalpha(c); })) {
-        while (accept_if([](char32_t c) { return c == '_' || c == '.' || utf8::isalnum(c); })) {}
+    if (accept([](char32_t c) { return c == '_' || utf8::isalpha(c); })) {
+        while (accept([](char32_t c) { return c == '_' || c == '.' || utf8::isalnum(c); })) {}
         return true;
     }
     return false;
@@ -220,19 +216,16 @@ std::optional<Tok> Lexer::parse_lit() {
     parse_digits(base);
 
     if (!sign && base == 10) {
-        if (issubscsr(ahead())) {
+        if (utf8::isrange(ahead(), U'₀', U'₉')) {
             auto i = strtoull(str_.c_str(), nullptr, 10);
             std::string mod;
-            while (issubscsr(ahead())) {
-                mod += ahead() - U'₀' + '0';
-                next();
-            }
+            while (utf8::isrange(ahead(), U'₀', U'₉')) mod += next() - U'₀' + '0';
             auto m = strtoull(mod.c_str(), nullptr, 10);
             return Tok{loc_, world().lit_idx_mod(m, i)};
         } else if (accept<Append::Off>('_')) {
             auto i = strtoull(str_.c_str(), nullptr, 10);
             str_.clear();
-            if (accept_if(utf8::isdigit)) {
+            if (accept(utf8::isdigit)) {
                 parse_digits(10);
                 auto m = strtoull(str_.c_str(), nullptr, 10);
                 return Tok{loc_, world().lit_idx_mod(m, i)};
@@ -273,10 +266,10 @@ std::optional<Tok> Lexer::parse_lit() {
 void Lexer::parse_digits(int base /*= 10*/) {
     switch (base) {
         // clang-format off
-        case  2: while (accept_if(utf8::isbdigit)) {} break;
-        case  8: while (accept_if(utf8::isodigit)) {} break;
-        case 10: while (accept_if(utf8::isdigit))  {} break;
-        case 16: while (accept_if(utf8::isxdigit)) {} break;
+        case  2: while (accept(utf8::isbdigit)) {} break;
+        case  8: while (accept(utf8::isodigit)) {} break;
+        case 10: while (accept(utf8::isdigit))  {} break;
+        case 16: while (accept(utf8::isxdigit)) {} break;
         // clang-format on
         default: fe::unreachable();
     }
@@ -287,8 +280,8 @@ template<class... T> inline auto _any(T... args) {
 }
 
 bool Lexer::parse_exp(int base /*= 10*/) {
-    if (accept_if(base == 10 ? utf8::any('e', 'E') : utf8::any('p', 'P'))) {
-        accept_if(utf8::any('+', '-'));
+    if (accept(base == 10 ? utf8::any('e', 'E') : utf8::any('p', 'P'))) {
+        accept(utf8::any('+', '-'));
         if (!utf8::isdigit(ahead())) error(loc_, "exponent has no digits");
         parse_digits();
         return true;
