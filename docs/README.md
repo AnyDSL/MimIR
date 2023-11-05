@@ -55,7 +55,6 @@ git clone --recurse-submodules https://github.com/AnyDSL/thorin2.git
 Then, build with:
 ```
 cd thorin2
-mkdir build
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
 cmake --build build -j $(nproc)
 ```
