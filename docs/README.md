@@ -81,7 +81,7 @@ cmake --build build -j $(nproc) -t install
 
 ## Dependencies
 
-In addition to the provided submodules:
+In addition to the provided [submodules](https://github.com/AnyDSL/thorin2/tree/master/external):
 
 * Recent version of [CMake](https://cmake.org/)
 * A C++20-compatible C++ compiler.
