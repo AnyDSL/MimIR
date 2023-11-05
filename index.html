@@ -142,7 +142,6 @@ Building</h1>
 <p >If you have a <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh">GitHub account setup with SSH</a>, just do this: </p><div class="fragment"><div class="line">git clone --recurse-submodules git@github.com:AnyDSL/thorin2.git</div>
 </div><!-- fragment --><p> Otherwise, clone via HTTPS: </p><div class="fragment"><div class="line">git clone --recurse-submodules https://github.com/AnyDSL/thorin2.git</div>
 </div><!-- fragment --><p> Then, build with: </p><div class="fragment"><div class="line">cd thorin2</div>
-<div class="line">mkdir build</div>
 <div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug</div>
 <div class="line">cmake --build build -j $(nproc)</div>
 </div><!-- fragment --><p> For a <code>Release</code> build simply use <code>-DCMAKE_BUILD_TYPE=Release</code>.</p>
@@ -172,7 +171,7 @@ Build Switches</h2>
 </table>
 <h1><a class="anchor" id="autotoc_md68"></a>
 Dependencies</h1>
-<p >In addition to the provided submodules:</p>
+<p >In addition to the provided <a href="https://github.com/AnyDSL/thorin2/tree/master/external">submodules</a>:</p>
 <ul>
 <li>Recent version of <a href="https://cmake.org/">CMake</a></li>
 <li>A C++20-compatible C++ compiler.</li>
