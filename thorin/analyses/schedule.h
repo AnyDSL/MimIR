@@ -13,11 +13,11 @@ public:
     ///@{
     Scheduler() = default;
     explicit Scheduler(const Scope&);
+    Scheduler(const Scheduler&) = delete;
     Scheduler(Scheduler&& other) noexcept
         : Scheduler() {
         swap(*this, other);
     }
-
     Scheduler& operator=(Scheduler other) noexcept { return swap(*this, other), *this; }
     ///@}
 

@@ -33,6 +33,7 @@ public:
     IndexMap(const Indexer& indexer, const I begin, const I end)
         : indexer_(indexer)
         , array_(begin, end) {}
+    IndexMap& operator=(IndexMap other) noexcept { return swap(*this, other), *this; }
 
     const Indexer& indexer() const { return indexer_; }
     size_t capacity() const { return array_.size(); }

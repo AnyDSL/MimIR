@@ -37,10 +37,7 @@ public:
     Span(const Span<T>& ref)
         : size_(ref.size_)
         , ptr_(ref.ptr_) {}
-    Span(Span&& array) noexcept
-        : Span() {
-        swap(*this, array);
-    }
+    Span(Span&& span) noexcept = default;
     Span(size_t size, const T* ptr)
         : size_(size)
         , ptr_(ptr) {}
@@ -196,9 +193,7 @@ template<typename T> struct ArrayStorage<T, 0> {
 public:
     /// @name Constructor, Destructor & Assignment
     ///@{
-    ArrayStorage() noexcept
-        : size_(0)
-        , ptr_(nullptr) {}
+    ArrayStorage() noexcept = default;
     ArrayStorage(size_t size)
         : size_(size)
         , ptr_(new T[size]) {}
@@ -227,8 +222,8 @@ public:
     }
 
 private:
-    size_t size_;
-    T* ptr_;
+    size_t size_ = 0;
+    T* ptr_      = nullptr;
 };
 
 //------------------------------------------------------------------------------
