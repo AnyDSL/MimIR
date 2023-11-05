@@ -4,14 +4,22 @@
 
 namespace thorin {
 
-template<bool>
-class DomTreeBase;
+template<bool> class DomTreeBase;
 using DomTree = DomTreeBase<true>;
 
 class Scheduler {
 public:
+    /// @name Construction
+    ///@{
     Scheduler() = default;
     explicit Scheduler(const Scope&);
+    Scheduler(Scheduler&& other) noexcept
+        : Scheduler() {
+        swap(*this, other);
+    }
+
+    Scheduler& operator=(Scheduler other) noexcept { return swap(*this, other), *this; }
+    ///@}
 
     /// @name Getters
     ///@{
@@ -40,7 +48,7 @@ public:
     static Schedule schedule(const Scope&);
     ///@}
 
-    friend void swap(Scheduler& s1, Scheduler& s2) {
+    friend void swap(Scheduler& s1, Scheduler& s2) noexcept {
         using std::swap;
         swap(s1.scope_, s2.scope_);
         swap(s1.cfg_, s2.cfg_);

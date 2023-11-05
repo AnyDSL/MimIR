@@ -14,8 +14,7 @@
 
 namespace thorin {
 
-template<class T>
-class Array;
+template<class T> class Array;
 
 //------------------------------------------------------------------------------
 
@@ -24,18 +23,24 @@ class Array;
 /// Span does **not** own the data and, thus, does not destroy any data.
 /// Likewise, you must be carefull to not destroy data a Span is pointing to.
 /// Note that you can often construct a Span inline with an initializer_list: `foo(arg1, {elem1, elem2, elem3}, arg3)`.
-template<class T>
-class Span {
+template<class T> class Span {
 public:
     using value_type             = T;
     using const_iterator         = const T*;
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
-    /// @name constructor, destructor & assignment
+    /// @name Constructor, Destructor & Assignment
     ///@{
-    Span()
+    Span() noexcept
         : size_(0)
         , ptr_(nullptr) {}
+    Span(const Span<T>& ref)
+        : size_(ref.size_)
+        , ptr_(ref.ptr_) {}
+    Span(Span&& array) noexcept
+        : Span() {
+        swap(*this, array);
+    }
     Span(size_t size, const T* ptr)
         : size_(size)
         , ptr_(ptr) {}
@@ -43,9 +48,6 @@ public:
     Span(const T (&ptr)[N])
         : size_(N)
         , ptr_(ptr) {}
-    Span(const Span<T>& ref)
-        : size_(ref.size_)
-        , ptr_(ref.ptr_) {}
     Span(const Array<T>& array)
         : size_(array.size())
         , ptr_(array.begin()) {}
@@ -59,22 +61,7 @@ public:
     Span(const std::vector<T>& vector)
         : size_(vector.size())
         , ptr_(vector.data()) {}
-    Span(Span&& array)
-        : Span() {
-        swap(*this, array);
-    }
-
-    Span& operator=(Span other) {
-        swap(*this, other);
-        return *this;
-    }
-    template<size_t N>
-    std::array<T, N> to_array() const {
-        assert(size() == N);
-        std::array<T, N> result;
-        std::ranges::copy(*this, result.begin());
-        return result;
-    }
+    Span& operator=(Span other) noexcept { return swap(*this, other), *this; }
     ///@}
 
     /// @name size
@@ -123,17 +110,23 @@ public:
 
     /// @name relational operators
     ///@{
-    template<class Other>
-    bool operator==(const Other& other) const {
+    template<class Other> bool operator==(const Other& other) const {
         return this->size() == other.size() && std::equal(begin(), end(), other.begin());
     }
-    template<class Other>
-    bool operator!=(const Other& other) const {
+    template<class Other> bool operator!=(const Other& other) const {
         return this->size() != other.size() || !std::equal(begin(), end(), other.begin());
     }
     ///@}
 
-    friend void swap(Span<T>& a1, Span<T>& a2) {
+    /// Convert to `std::array`.
+    template<size_t N> std::array<T, N> to_array() const {
+        assert(size() == N);
+        std::array<T, N> result;
+        std::ranges::copy(*this, result.begin());
+        return result;
+    }
+
+    friend void swap(Span<T>& a1, Span<T>& a2) noexcept {
         using std::swap;
         swap(a1.size_, a2.size_);
         swap(a1.ptr_, a2.ptr_);
@@ -146,13 +139,14 @@ private:
 
 //------------------------------------------------------------------------------
 
-template<typename T, size_t StackSize>
-class ArrayStorage {
+template<typename T, size_t StackSize> class ArrayStorage {
     // Unions only work with trivial types.
     static_assert(std::is_trivial<T>::value, "Stack based array storage is only available for trivial types");
 
 public:
-    ArrayStorage()
+    /// @name Constructor, Destructor & Assignment
+    ///@{
+    ArrayStorage() noexcept
         : size_(0)
         , stack_(true) {}
     ArrayStorage(size_t size) {
@@ -160,31 +154,33 @@ public:
         stack_ = size <= StackSize;
         if (!stack_) data_.ptr = new T[size]();
     }
-    ArrayStorage(ArrayStorage&& other)
-        : size_(other.size_)
-        , stack_(other.stack_)
-        , data_(std::move(other.data_)) {
-        other.stack_ = true;
-        other.size_  = 0;
+    ArrayStorage(ArrayStorage&& other) noexcept
+        : ArrayStorage() {
+        swap(*this, other);
     }
-
     ~ArrayStorage() {
         if (!stack_) delete[] data_.ptr;
     }
+    ArrayStorage& operator=(ArrayStorage other) noexcept { return swap(*this, other), *this; }
+    ///@}
 
+    /// @name Getters
+    ///@{
     size_t size() const { return size_; }
     void shrink(size_t new_size) { size_ = new_size; }
     T* data() { return stack_ ? data_.elems : data_.ptr; }
     const T* data() const { return stack_ ? data_.elems : data_.ptr; }
+    ///@}
 
-    friend void swap(ArrayStorage& a, ArrayStorage& b) {
+    friend void swap(ArrayStorage& a, ArrayStorage& b) noexcept {
+        using std::swap;
         auto size  = a.size_;
         a.size_    = b.size_;
         b.size_    = size;
         auto stack = a.stack_;
         a.stack_   = b.stack_;
         b.stack_   = stack;
-        std::swap(a.data_, b.data_);
+        swap(a.data_, b.data_);
     }
 
 private:
@@ -196,31 +192,38 @@ private:
     } data_;
 };
 
-template<typename T>
-struct ArrayStorage<T, 0> {
+template<typename T> struct ArrayStorage<T, 0> {
 public:
-    ArrayStorage()
+    /// @name Constructor, Destructor & Assignment
+    ///@{
+    ArrayStorage() noexcept
         : size_(0)
         , ptr_(nullptr) {}
     ArrayStorage(size_t size)
         : size_(size)
         , ptr_(new T[size]) {}
-    ArrayStorage(ArrayStorage&& other)
-        : size_(std::move(other.size_))
-        , ptr_(std::move(other.ptr_)) {
-        other.ptr_  = nullptr;
-        other.size_ = 0;
+    ArrayStorage(ArrayStorage&& other) noexcept
+        : ArrayStorage() {
+        swap(*this, other);
     }
     ~ArrayStorage() { delete[] ptr_; }
+    ArrayStorage& operator=(ArrayStorage other) noexcept { return swap(*this, other), *this; }
+    ///@}
 
+    /// @name Getters
+    ///@{
     size_t size() const { return size_; }
     void shrink(size_t new_size) { size_ = new_size; }
     T* data() { return ptr_; }
     const T* data() const { return ptr_; }
+    ///@}
 
-    friend void swap(ArrayStorage& a, ArrayStorage& b) {
-        std::swap(a.size_, b.size_);
-        std::swap(a.ptr_, b.ptr_);
+    friend void swap(ArrayStorage& a, ArrayStorage& b) noexcept {
+        using std::swap;
+        // clang-format off
+        swap(a.size_, b.size_);
+        swap(a.ptr_,  b.ptr_);
+        // clang-format on
     }
 
 private:
@@ -236,8 +239,7 @@ private:
 /// * In contrast to std::vector, Array cannot grow dynamically.
 ///   An Array may Array::shrink, however.
 ///   But once shrunk, there is no way back.
-template<class T>
-class Array {
+template<class T> class Array {
 public:
     using value_type             = T;
     using iterator               = T*;
@@ -245,10 +247,18 @@ public:
     using reverse_iterator       = std::reverse_iterator<iterator>;
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
-    /// @name constructor, destructor & assignment
+    /// @name Constructor, Destructor & Assignment
     ///@{
-    Array()
+    Array() noexcept
         : storage_(0) {}
+    Array(const Array& other)
+        : storage_(other.size()) {
+        std::ranges::copy(other, begin());
+    }
+    Array(Array&& other) noexcept
+        : Array() {
+        swap(*this, other);
+    }
     explicit Array(size_t size)
         : storage_(size) {
         for (auto& elem : *this) new (&elem) T();
@@ -260,12 +270,6 @@ public:
     Array(Span<T> ref)
         : storage_(ref.size()) {
         std::ranges::copy(ref, begin());
-    }
-    Array(Array&& other)
-        : storage_(std::move(other.storage_)) {}
-    Array(const Array& other)
-        : storage_(other.size()) {
-        std::ranges::copy(other, begin());
     }
     Array(const std::vector<T>& other)
         : storage_(other.size()) {
@@ -288,11 +292,7 @@ public:
         : storage_(ref.size()) {
         for (size_t i = 0, e = ref.size(); i != e; ++i) (*this)[i] = f(ref[i]);
     }
-
-    Array& operator=(Array other) {
-        swap(*this, other);
-        return *this;
-    }
+    Array& operator=(Array other) noexcept { return swap(*this, other), *this; }
     ///@}
 
     /// @name size
@@ -364,10 +364,7 @@ public:
     /// @name convert
     ///@{
     Span<T> ref() const { return Span<T>(size(), data()); }
-    template<size_t N>
-    std::array<T, N> to_array() const {
-        return ref().template to_array<N>();
-    }
+    template<size_t N> std::array<T, N> to_array() const { return ref().template to_array<N>(); }
     ///@}
 
     /// @name relational operators
@@ -376,7 +373,10 @@ public:
     bool operator!=(const Array other) const { return Span<T>(*this) != Span<T>(other); }
     ///@}
 
-    friend void swap(Array& a, Array& b) { swap(a.storage_, b.storage_); }
+    friend void swap(Array& a, Array& b) noexcept {
+        using std::swap;
+        swap(a.storage_, b.storage_);
+    }
 
 private:
     ArrayStorage<T, std::is_trivial<T>::value ? 5 : 0> storage_;
@@ -384,31 +384,27 @@ private:
 
 /// @name Array/ArrayRef Helpers
 ///@{
-template<class T, class U>
-auto concat(const T& a, const U& b) -> Array<typename T::value_type> {
+template<class T, class U> auto concat(const T& a, const U& b) -> Array<typename T::value_type> {
     Array<typename T::value_type> result(a.size() + b.size());
     std::ranges::copy(b, std::ranges::copy(a, result.begin()));
     return result;
 }
 
-template<class T>
-auto concat(const T& val, Span<T> a) -> Array<T> {
+template<class T> auto concat(const T& val, Span<T> a) -> Array<T> {
     Array<T> result(a.size() + 1);
     std::ranges::copy(a, result.begin() + 1);
     result.front() = val;
     return result;
 }
 
-template<class T>
-auto concat(Span<T> a, const T& val) -> Array<T> {
+template<class T> auto concat(Span<T> a, const T& val) -> Array<T> {
     Array<T> result(a.size() + 1);
     std::ranges::copy(a, result.begin());
     result.back() = val;
     return result;
 }
 
-template<class T>
-Array<typename T::value_type> make_array(const T& container) {
+template<class T> Array<typename T::value_type> make_array(const T& container) {
     return Array<typename T::value_type>(container.begin(), container.end());
 }
 ///@}
