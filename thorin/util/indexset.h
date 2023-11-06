@@ -4,8 +4,7 @@
 
 namespace thorin {
 
-template<class Indexer, class Key>
-class IndexSet {
+template<class Indexer, class Key> class IndexSet {
 public:
     class reference {
     private:
@@ -14,7 +13,7 @@ public:
             , pos_(pos) {}
 
     public:
-        reference operator=(bool b) {
+        reference operator=(bool b) noexcept {
             if (b)
                 word_ |= uint64_t(1) << pos_;
             else
@@ -38,20 +37,19 @@ public:
     IndexSet(const Indexer& indexer)
         : indexer_(indexer)
         , bits_((capacity() + 63u) / 64u) {}
-    IndexSet(IndexSet&& other)
-        : IndexSet(indexer) {
-        swap(*this, other);
-    }
     IndexSet(const IndexSet& other)
         : indexer_(other.indexer())
         , bits_(other.bits_) {}
+    IndexSet(IndexSet&& other) noexcept
+        : indexer_(std::move(other.indexer_))
+        , bits_(std::move(other.bits_)) {}
+    IndexSet& operator=(IndexSet other) noexcept { return swap(*this, other), *this; }
 
     const Indexer& indexer() const { return indexer_; }
     size_t capacity() const { return indexer().size(); }
     size_t next(size_t pos = 0) {
-        for (size_t i = pos, e = capacity(); i != e; ++i) {
+        for (size_t i = pos, e = capacity(); i != e; ++i)
             if (bits_[i]) return i;
-        }
         return pos;
     }
     reference operator[](Key key) {
@@ -62,8 +60,7 @@ public:
     bool operator[](Key key) const { return (*const_cast<IndexSet<Indexer, Key>*>(this))[key]; }
 
     /// Depending on @p flag this method either inserts (true) or removes (false) @p key and returns true if successful.
-    template<bool flag>
-    bool set(Key key) {
+    template<bool flag> bool set(Key key) {
         auto ref = (*this)[key];
         auto old = ref.word();
         ref      = flag;
@@ -74,8 +71,7 @@ public:
     bool contains(Key key) const { return (*this)[key]; }
     void clear() { std::ranges::fill(bits_, 0u); }
 
-    template<class Op>
-    IndexSet& transform(const IndexSet& other, Op op) {
+    template<class Op> IndexSet& transform(const IndexSet& other, Op op) {
         assert(this->size() == other.size());
         for (size_t i = 0, e = capacity(); i != e; ++i) this->bits_[i] = op(this->bits_[i], other.bits_[i]);
         return *this;
@@ -83,11 +79,7 @@ public:
     IndexSet& operator&=(const IndexSet& other) { return transform(other, std::bit_and<uint64_t>()); }
     IndexSet& operator|=(const IndexSet& other) { return transform(other, std::bit_or<uint64_t>()); }
     IndexSet& operator^=(const IndexSet& other) { return transform(other, std::bit_xor<uint64_t>()); }
-    IndexSet& operator=(IndexSet other) {
-        swap(*this, other);
-        return *this;
-    }
-    friend void swap(IndexSet& set1, IndexSet& set2) {
+    friend void swap(IndexSet& set1, IndexSet& set2) noexcept {
         using std::swap;
         assert(&set1.indexer() == &set2.indexer());
         swap(set1.bits_, set2.bits_);
@@ -100,13 +92,9 @@ private:
 
 /// @name IndexSet visit
 ///@{
-template<class Indexer, class Key>
-bool visit(IndexSet<Indexer, Key>& set, const Key& key) {
-    return !set.insert(key);
-}
+template<class Indexer, class Key> bool visit(IndexSet<Indexer, Key>& set, const Key& key) { return !set.insert(key); }
 
-template<class Indexer, class Key>
-void visit_first(IndexSet<Indexer, Key>& set, const Key& key) {
+template<class Indexer, class Key> void visit_first(IndexSet<Indexer, Key>& set, const Key& key) {
     assert(!set.contains(key));
     visit(set, key);
 }

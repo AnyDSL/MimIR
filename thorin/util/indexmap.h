@@ -6,26 +6,23 @@
 
 namespace thorin {
 
-template<class Indexer, class Key, class Value>
-class IndexMap {
+template<class Indexer, class Key, class Value> class IndexMap {
 private:
-    template<class T>
-    struct IsValidPred {
+    template<class T> struct IsValidPred {
         static bool is_valid(T) { return true; }
     };
 
-    template<class T>
-    struct IsValidPred<T*> {
+    template<class T> struct IsValidPred<T*> {
         static bool is_valid(T* value) { return value != nullptr; }
     };
 
 public:
-    IndexMap(IndexMap&& other)
-        : indexer_(std::move(other.indexer_))
-        , array_(std::move(other.array_)) {}
     IndexMap(const IndexMap& other)
         : indexer_(other.indexer_)
         , array_(other.array_) {}
+    IndexMap(IndexMap&& other) noexcept
+        : indexer_(std::move(other.indexer_))
+        , array_(std::move(other.array_)) {}
     IndexMap(const Indexer& indexer, const Value& value = Value())
         : indexer_(indexer)
         , array_(indexer.size(), value) {}
@@ -36,6 +33,7 @@ public:
     IndexMap(const Indexer& indexer, const I begin, const I end)
         : indexer_(indexer)
         , array_(begin, end) {}
+    IndexMap& operator=(IndexMap other) noexcept { return swap(*this, other), *this; }
 
     const Indexer& indexer() const { return indexer_; }
     size_t capacity() const { return array_.size(); }
@@ -53,7 +51,7 @@ public:
     auto begin() const { return std::views::filter(array_, IsValidPred<Value>::is_valid).begin(); }
     auto end() const { return std::views::filter(array_, IsValidPred<Value>::is_valid).end(); }
 
-    friend void swap(IndexMap& map1, IndexMap& map2) {
+    friend void swap(IndexMap& map1, IndexMap& map2) noexcept {
         using std::swap;
         swap(map1.indexer_, map2.indexer_);
         swap(map1.array_, map2.array_);
@@ -66,8 +64,7 @@ private:
 
 /// @name IndexMap find
 ///@{
-template<class Indexer, class Key, class Value>
-inline Value* find(IndexMap<Indexer, Key, Value*>& map, Key key) {
+template<class Indexer, class Key, class Value> inline Value* find(IndexMap<Indexer, Key, Value*>& map, Key key) {
     auto i = map.indexer().index(key);
     return i != size_t(-1) ? map.array()[i] : nullptr;
 }

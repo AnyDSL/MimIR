@@ -9,8 +9,8 @@
 #include "thorin/config.h"
 
 #include "thorin/util/array.h"
-#include "thorin/util/hash.h"
 #include "thorin/util/dbg.h"
+#include "thorin/util/hash.h"
 #include "thorin/util/print.h"
 #include "thorin/util/util.h"
 
@@ -530,7 +530,7 @@ private:
     const Def* type_;
 
     friend class World;
-    friend void swap(World&, World&);
+    friend void swap(World&, World&) noexcept;
 };
 
 /// @name std::ostream operator

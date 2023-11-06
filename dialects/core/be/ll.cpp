@@ -76,9 +76,10 @@ Ref isa_mem_sigma_2(Ref type) {
 } // namespace
 
 struct BB {
-    BB()          = default;
-    BB(const BB&) = delete;
-    BB(BB&& other) { swap(*this, other); }
+    BB()                    = default;
+    BB(const BB&)           = delete;
+    BB(BB&& other) noexcept = default;
+    BB& operator=(BB other) noexcept { return swap(*this, other), *this; }
 
     std::deque<std::ostringstream>& head() { return parts[0]; }
     std::deque<std::ostringstream>& body() { return parts[1]; }
@@ -93,7 +94,7 @@ struct BB {
         print(tail().emplace_back(), s, std::forward<Args&&>(args)...);
     }
 
-    friend void swap(BB& a, BB& b) {
+    friend void swap(BB& a, BB& b) noexcept {
         using std::swap;
         swap(a.phis, b.phis);
         swap(a.parts, b.parts);

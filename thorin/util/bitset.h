@@ -17,7 +17,7 @@ public:
             , index_(index) {}
 
     public:
-        reference operator=(bool b) {
+        reference operator=(bool b) noexcept {
             uint64_t mask = 1_u64 << index();
             if (b)
                 word() |= mask;
@@ -40,7 +40,7 @@ public:
 
     /// @name constructor, destructor & assignment
     ///@{
-    BitSet()
+    BitSet() noexcept
         : word_(0)
         , num_words_(1) {}
     BitSet(const BitSet& other)
@@ -49,19 +49,12 @@ public:
         std::copy_n(other.words(), other.num_words(), words());
         padding = other.padding;
     }
-    BitSet(BitSet&& other)
-        : words_(std::move(other.words_))
-        , num_words_(std::move(other.num_words_))
-        , padding(other.padding) {
-        other.words_ = nullptr;
-    }
-
-    ~BitSet() { dealloc(); }
-
-    BitSet& operator=(BitSet other) {
+    BitSet(BitSet&& other) noexcept
+        : BitSet() {
         swap(*this, other);
-        return *this;
     }
+    ~BitSet() { dealloc(); }
+    BitSet& operator=(BitSet other) noexcept { return swap(*this, other), *this; }
     ///@}
 
     /// @name get, set, clear, toggle, and test bits
@@ -147,17 +140,18 @@ public:
     /// number of bits set
     size_t count() const;
 
-    void friend swap(BitSet& b1, BitSet& b2) {
+    void friend swap(BitSet& b1, BitSet& b2) noexcept {
         using std::swap;
+        // clang-format off
         swap(b1.num_words_, b2.num_words_);
-        swap(b1.words_, b2.words_);
-        swap(b1.padding, b2.padding);
+        swap(b1.words_,     b2.words_);
+        swap(b1.padding,    b2.padding);
+        // clang-format on
     }
 
 private:
     void ensure_capacity(size_t num_bits) const;
-    template<class F>
-    BitSet& op_assign(const BitSet& other) {
+    template<class F> BitSet& op_assign(const BitSet& other) {
         if (this->num_words() < other.num_words()) this->ensure_capacity(other.num_bits() - 1);
         auto this_words  = this->words();
         auto other_words = other.words();

@@ -51,12 +51,10 @@ public:
 #ifdef THORIN_ENABLE_CHECKS
         absl::flat_hash_set<uint32_t> breakpoints;
 #endif
-        friend void swap(State& s1, State& s2) {
+        friend void swap(State& s1, State& s2) noexcept {
             using std::swap;
             assert((!s1.pod.loc || !s2.pod.loc) && "Why is emit_loc() still set?");
-            // clang-format off
-            swap(s1.pod,                s2.pod);
-            // clang-format on
+            swap(s1.pod, s2.pod);
 #ifdef THORIN_ENABLE_CHECKS
             swap(s1.breakpoints, s2.breakpoints);
 #endif
@@ -65,12 +63,12 @@ public:
 
     /// @name C'tor and D'tor
     ///@{
-    World& operator=(const World&) = delete;
+    World& operator=(World) = delete;
 
     /// Inherits the @p state into the new World.
     explicit World(Driver*);
     World(Driver*, const State&);
-    World(World&& other)
+    World(World&& other) noexcept
         : World(&other.driver(), other.state()) {
         swap(*this, other);
     }
@@ -538,7 +536,7 @@ private:
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
         DefDefMap<DefArray> cache;
 
-        friend void swap(Move& m1, Move& m2) {
+        friend void swap(Move& m1, Move& m2) noexcept {
             using std::swap;
             // clang-format off
             swap(m1.annexes,   m2.annexes);
@@ -572,7 +570,7 @@ private:
         Lam* exit;
     } data_;
 
-    friend void swap(World& w1, World& w2) {
+    friend void swap(World& w1, World& w2) noexcept {
         using std::swap;
         // clang-format off
         swap(w1.state_, w2.state_);
