@@ -105,7 +105,7 @@ var classthorin_1_1Def =
     [ "world", "classthorin_1_1Def.html#affc2d40fbec3022f7b253bd14358dfe2", null ],
     [ "write", "classthorin_1_1Def.html#a7805eeac4955c9e68103f794c765654c", null ],
     [ "write", "classthorin_1_1Def.html#a2ac6e86b54450ae058bbe7a14502c08b", null ],
-    [ "swap", "classthorin_1_1Def.html#ac16087b25da85305adb283de20b2342d", null ],
+    [ "swap", "classthorin_1_1Def.html#ae16c8c2c19642966d124bec1c3f498fa", null ],
     [ "World", "classthorin_1_1Def.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],
     [ "curry_", "classthorin_1_1Def.html#a25c07a3d0f997a3c5ea1b3642149e56b", null ],
     [ "dbg_", "classthorin_1_1Def.html#ace7ad2fa3ba86e85c4c9bafc49e4d500", null ],

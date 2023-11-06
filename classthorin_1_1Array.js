@@ -5,12 +5,12 @@ var classthorin_1_1Array =
     [ "iterator", "classthorin_1_1Array.html#adccaeb8835d1b969fbfeb99ad52d2e90", null ],
     [ "reverse_iterator", "classthorin_1_1Array.html#ac2bc8756d6c189e980f499433f765768", null ],
     [ "value_type", "classthorin_1_1Array.html#a3acd40945fc313d10a23b7e2a93a7cab", null ],
-    [ "Array", "classthorin_1_1Array.html#ac7d5a0edd198466a0ef7fbada962ea41", null ],
+    [ "Array", "classthorin_1_1Array.html#ad3932d51f538cdc8eabb9563ee4d0c88", null ],
+    [ "Array", "classthorin_1_1Array.html#af834db5e9ad07e28ed3b3c6d61ac26e3", null ],
+    [ "Array", "classthorin_1_1Array.html#a45842f90c19581d52ec68afe10fd02ee", null ],
     [ "Array", "classthorin_1_1Array.html#a30343be6711bf184fce349173d0da0d2", null ],
     [ "Array", "classthorin_1_1Array.html#a611c61a5d3417425d4c939fde08eae0e", null ],
     [ "Array", "classthorin_1_1Array.html#afb1ecdfb150448819a8f298bb5ae9ed5", null ],
-    [ "Array", "classthorin_1_1Array.html#ab2164194c5a0fe5c96a90fd8d649c63f", null ],
-    [ "Array", "classthorin_1_1Array.html#af834db5e9ad07e28ed3b3c6d61ac26e3", null ],
     [ "Array", "classthorin_1_1Array.html#a178934d0b9cf7b277638d0babf6f62f5", null ],
     [ "Array", "classthorin_1_1Array.html#a16e33a75ad26349d64dd57a31b1f0cd9", null ],
     [ "Array", "classthorin_1_1Array.html#ac3f2e4603169ada57b5358f075e11827", null ],
@@ -30,7 +30,7 @@ var classthorin_1_1Array =
     [ "front", "classthorin_1_1Array.html#aa820fca7c6f7c785f1bfa18786a8ff68", null ],
     [ "last", "classthorin_1_1Array.html#a962dc092499a2b7eb5f6bf2e3dfb52cf", null ],
     [ "operator!=", "classthorin_1_1Array.html#acdd993b597ff7034109ee747d518a923", null ],
-    [ "operator=", "classthorin_1_1Array.html#aa276c25a8dbd7cae28b0991001fde9c7", null ],
+    [ "operator=", "classthorin_1_1Array.html#ab89188f131ecf5a36ea8a9e7a70a1b44", null ],
     [ "operator==", "classthorin_1_1Array.html#a9bf1058e1f2d63b3854d68917e6b7dff", null ],
     [ "operator[]", "classthorin_1_1Array.html#a4ee20002c7ed1418465654a03f38874a", null ],
     [ "operator[]", "classthorin_1_1Array.html#ae677bad2c04c234dc0ef60069e6436ce", null ],
@@ -44,5 +44,5 @@ var classthorin_1_1Array =
     [ "skip_back", "classthorin_1_1Array.html#a18dba53d1d7de7f1d123bc823ce89b6b", null ],
     [ "skip_front", "classthorin_1_1Array.html#af7266e85f7f778ece4e9656bed6d1a7f", null ],
     [ "to_array", "classthorin_1_1Array.html#ae19d03f56c03a2138438cf8180d828d6", null ],
-    [ "swap", "classthorin_1_1Array.html#ad8f888963f8bc4939796defba4791cb0", null ]
+    [ "swap", "classthorin_1_1Array.html#aed8ab293700940b8c83b7f3ee546e46a", null ]
 ];

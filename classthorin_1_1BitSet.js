@@ -1,9 +1,9 @@
 var classthorin_1_1BitSet =
 [
     [ "reference", "classthorin_1_1BitSet_1_1reference.html", "classthorin_1_1BitSet_1_1reference" ],
-    [ "BitSet", "classthorin_1_1BitSet.html#a4d9b7c65114ef8ce8c379bfaf3da4763", null ],
+    [ "BitSet", "classthorin_1_1BitSet.html#afe0d1623eec6c5512487d653136496b8", null ],
     [ "BitSet", "classthorin_1_1BitSet.html#ad6abf7b3a05e68de0f71a34ac2ec6453", null ],
-    [ "BitSet", "classthorin_1_1BitSet.html#ad9c6977c68542836923ae8fef53b08b0", null ],
+    [ "BitSet", "classthorin_1_1BitSet.html#aca344a7ccbd690766b2c1599fed4d381", null ],
     [ "~BitSet", "classthorin_1_1BitSet.html#a5891a4a749eae534bc71794dad82927e", null ],
     [ "any", "classthorin_1_1BitSet.html#a37e3c01d012b9dcf9a69da8d4402d451", null ],
     [ "any_begin", "classthorin_1_1BitSet.html#a78e6246158dccd7b87fab72a9b63cab3", null ],
@@ -19,7 +19,7 @@ var classthorin_1_1BitSet =
     [ "operator!=", "classthorin_1_1BitSet.html#a3d90e2107dabde640563c3a8d5061d8d", null ],
     [ "operator&", "classthorin_1_1BitSet.html#a9a1fa671864701c84bb8c8d78ee7fe45", null ],
     [ "operator&=", "classthorin_1_1BitSet.html#ab1028a82a44baedf40497d9548ca902e", null ],
-    [ "operator=", "classthorin_1_1BitSet.html#a53f32af61086d0d32d264f2570e271f9", null ],
+    [ "operator=", "classthorin_1_1BitSet.html#a80892f2221222646fab15369d71f14c7", null ],
     [ "operator==", "classthorin_1_1BitSet.html#a338c99db52d2c7ee4833b4f61ed25b64", null ],
     [ "operator>>", "classthorin_1_1BitSet.html#ac07866bab0ffb60398e958bf0a917a88", null ],
     [ "operator>>=", "classthorin_1_1BitSet.html#a74d0960a2b180504c083b2b7ae5db6bb", null ],
@@ -30,7 +30,7 @@ var classthorin_1_1BitSet =
     [ "operator|", "classthorin_1_1BitSet.html#ab8968c2cfc782bff388c2c11ff6a1cdd", null ],
     [ "operator|=", "classthorin_1_1BitSet.html#a0d955a767695513d5e79a80fd572c274", null ],
     [ "set", "classthorin_1_1BitSet.html#a86e136e60f2f6c72a405a3954527855d", null ],
-    [ "swap", "classthorin_1_1BitSet.html#aa577861df219851e6060c6fa2aa376d8", null ],
+    [ "swap", "classthorin_1_1BitSet.html#a2e02193ddae9e62b73a070a5c0347982", null ],
     [ "test", "classthorin_1_1BitSet.html#acc6f1bd3dcd42788c929dfd4b0a7b307", null ],
     [ "toggle", "classthorin_1_1BitSet.html#a3fa2a5baa32ff8550f56f84bf3af37ae", null ],
     [ "padding", "classthorin_1_1BitSet.html#afb9ccf935ed0e0ce3b3229ed00a6321d", null ]
