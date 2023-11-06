@@ -31,13 +31,9 @@ public:
 
     /// @name Constructor, Destructor & Assignment
     ///@{
-    Span() noexcept
-        : size_(0)
-        , ptr_(nullptr) {}
-    Span(const Span<T>& ref)
-        : size_(ref.size_)
-        , ptr_(ref.ptr_) {}
-    Span(Span&& span) noexcept = default;
+    Span() noexcept               = default;
+    Span(const Span<T>&) noexcept = default;
+    Span(Span&& span) noexcept    = default;
     Span(size_t size, const T* ptr)
         : size_(size)
         , ptr_(ptr) {}
@@ -130,8 +126,8 @@ public:
     }
 
 private:
-    size_t size_;
-    const T* ptr_;
+    size_t size_  = 0;
+    const T* ptr_ = nullptr;
 };
 
 //------------------------------------------------------------------------------

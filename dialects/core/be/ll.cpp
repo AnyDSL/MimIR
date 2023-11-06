@@ -76,12 +76,9 @@ Ref isa_mem_sigma_2(Ref type) {
 } // namespace
 
 struct BB {
-    BB()          = default;
-    BB(const BB&) = delete;
-    BB(BB&& other) noexcept
-        : BB() {
-        swap(*this, other);
-    }
+    BB()                    = default;
+    BB(const BB&)           = delete;
+    BB(BB&& other) noexcept = default;
     BB& operator=(BB other) noexcept { return swap(*this, other), *this; }
 
     std::deque<std::ostringstream>& head() { return parts[0]; }
