@@ -10,6 +10,6 @@
 
 .con .extern flatten_disj(mem: %mem.M, string: %mem.Ptr (<<Top; %core.I8>>, 0), return: .Cn [%mem.M, .Bool, %core.I32]) = {
     .let pattern = %regex.disj 3 (%regex.cls.w, %regex.disj 2 (%regex.cls.d, %regex.cls.s), %regex.cls.d);
-    return (pattern Top (mem, string, 0:%core.I32))
+    return (pattern (mem, string, 0:%core.I32))
     // CHECK: %regex.disj 2 (%regex.disj 2 (%regex.disj 2 (%regex.disj 2 (%regex.disj 2 (%regex.disj 2 (%regex.range (9:(.Idx 256), 10:(.Idx 256)), %regex.range ‹2; 13:(.Idx 256)›), %regex.range ‹2; 32:(.Idx 256)›), %regex.range (48:(.Idx 256), 57:(.Idx 256))), %regex.range (65:(.Idx 256), 90:(.Idx 256))), %regex.range ‹2; 95:(.Idx 256)›), %regex.range (97:(.Idx 256), 122:(.Idx 256)))
 };

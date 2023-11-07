@@ -25,7 +25,7 @@
     .con match_argument[mem: %mem.M, I32] = {
         .let arg1 = %mem.lea (Top, ‹Top; %mem.Ptr («⊤:.Nat; .Idx 256», 0)›, 0) (argv, 1:(.Idx 4294967296));;
         .let (`mem, to_match) = %mem.load (mem, arg1);
-        .let (`mem, matched, pos) = re Top (mem, to_match, 0:(.Idx Top));
+        .let (`mem, matched, pos) = re (mem, to_match, 0:(.Idx Top));
         exit (mem, %core.conv.u _32 matched)
     };
 
