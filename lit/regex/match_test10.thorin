@@ -18,7 +18,7 @@
 
 .con .extern main[mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), exit : .Cn [%mem.M, I32]] = {
     .fun match(len: .Nat)(mem: %mem.M, str: %mem.Ptr0 <<len; Char>>): [%mem.M, .Bool] =
-        .let (`mem, matched, pos) = pattern len (mem, str, 0:(.Idx len));
+        .let (`mem, matched, pos) = pattern (mem, str, 0:(.Idx len));
         .let end = %core.idx len 0 (%core.nat.sub (len, 1));
         return (mem, %core.bit2.and_ 0 (%core.icmp.e (pos, end), matched));
 
