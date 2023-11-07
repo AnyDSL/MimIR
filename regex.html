@@ -152,7 +152,7 @@ RE</h2>
 <p >Char &amp; String </p><div class="fragment"><div class="line">.let Char = %core.I8;</div>
 <div class="line">.lam Str(n: .Nat): * = %mem.Ptr0 «n; Char»;</div>
 </div><!-- fragment --><p> A regular expression matcher. </p><div class="fragment"><div class="line">.lam Res (n: .Nat): * = [%mem.M, .Bool, .Idx n];</div>
-<div class="line">.let RE = Π[n: .Nat][%mem.M, Str n, .Idx n] -&gt; Res n;</div>
+<div class="line">.let RE = Π.[n: .Nat][%mem.M, Str n, .Idx n] -&gt; Res n;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md218"></a>
 Meta</h1>
 <h2><a class="anchor" id="autotoc_md219"></a>
