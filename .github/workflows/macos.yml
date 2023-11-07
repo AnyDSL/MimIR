@@ -35,6 +35,7 @@ jobs:
           CXXFLAGS="-stdlib=libc++ -fexperimental-library" \
           LDFLAGS="-L/usr/local/opt/llvm@16/lib/c++ -Wl,-rpath,/usr/local/opt/llvm@16/lib/c++" \
           cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DBUILD_TESTING=ON -DTHORIN_BUILD_EXAMPLES=ON -DPython3_ROOT_DIR=$(dirname $(which python3))
+          grep -oP "_Python3_EXECUTABLE(:INTERNAL)?=\K[a-zA-Z0-9/.]+$" CMakeCache.txt | sed -e "s/.*/THORIN_PYTHON=\0/" >> $GITHUB_ENV
 
       - name: Install FileCheck
         uses: robinraju/release-downloader@v1.8
@@ -47,7 +48,7 @@ jobs:
 
       - name: Install LIT
         run: |
-          python3 -m pip install lit psutil
+          ${THORIN_PYTHON} -m pip install lit psutil
           ln -s ${{github.workspace}}/bin/FileCheck-x86_64-mac ${{github.workspace}}/bin/FileCheck
           chmod +x ${{github.workspace}}/bin/FileCheck
 
