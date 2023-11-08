@@ -29,10 +29,10 @@ Ref LowerRegex::rewrite(Ref def) {
             || match<regex::range>(callee) || match<regex::any>(callee) || match<quant>(callee)) {
             const auto n = app->arg();
             auto nfa     = regex::regex2nfa(callee);
-            def->world().DLOG("nfa: {}", nfa);
+            def->world().DLOG("nfa: {}", *nfa);
             
             auto dfa = automaton::nfa2dfa(*nfa);
-            def->world().DLOG("dfa: {}", dfa);
+            def->world().DLOG("dfa: {}", *dfa);
 
             auto min_dfa = automaton::minimize_dfa(*dfa);
             new_app      = wrap_in_cps2ds(regex::dfa2matcher(def->world(), *min_dfa, n));

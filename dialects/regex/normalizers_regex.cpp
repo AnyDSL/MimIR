@@ -130,7 +130,7 @@ void merge_ranges(std::vector<const Def*>& args) {
 
     std::transform(ranges_begin, args.end(), std::back_inserter(old_ranges), get_range);
 
-    auto new_ranges = merge_ranges(world, old_ranges);
+    auto new_ranges = merge_ranges(old_ranges, [&world](auto&&... args) { world.DLOG(std::forward<decltype(args)>(args)...); });
 
     // invalidates ranges_begin
     args.erase(ranges_begin, args.end());

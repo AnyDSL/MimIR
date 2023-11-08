@@ -67,6 +67,10 @@ std::unique_ptr<DFA> nfa2dfa(const NFA& nfa) {
         for (auto& nfaState : state) {
             if (nfaState->is_accepting()) {
                 dfaState->set_accepting(true);
+            }
+            if (nfaState->is_erroring()) {
+                dfaState->set_accepting(false);
+                dfaState->set_erroring(true);
                 break;
             }
         }

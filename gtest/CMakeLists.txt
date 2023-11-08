@@ -19,6 +19,7 @@ add_executable(thorin-regex-gtest
     ../dialects/regex/pass/regex2nfa.cpp
     ../dialects/regex/pass/nfa2dfa.cpp
     ../dialects/regex/pass/dfamin.cpp
+    ../dialects/regex/pass/dfa2matcher.cpp
 )
 target_link_libraries(thorin-regex-gtest gtest_main libthorin)
 gtest_discover_tests (thorin-regex-gtest TEST_PREFIX "thorin-regex-gtest." DISCOVERY_TIMEOUT 60)

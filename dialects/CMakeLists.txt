@@ -177,7 +177,6 @@ add_thorin_plugin(regex
         regex/regex.h
         regex/regex.cpp
         regex/range_helper.h
-        regex/range_helper.cpp
         regex/normalizers_regex.cpp
         regex/pass/lower_regex.h
         regex/pass/lower_regex.cpp
