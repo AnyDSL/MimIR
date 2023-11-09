@@ -12,7 +12,6 @@ var normalizers__regex_8cpp =
     [ "make_binary_tree", "normalizers__regex_8cpp.html#abfab6a7b30f513f76513af5ae1777456", null ],
     [ "make_vector_unique", "normalizers__regex_8cpp.html#a627ab740195e88059f07fd0e920f94b9", null ],
     [ "merge_ranges", "normalizers__regex_8cpp.html#afb1f0e532431e0761b42e8aab40757dd", null ],
-    [ "normalize_any", "normalizers__regex_8cpp.html#a0bdef50f804549980af782aea6411719", null ],
     [ "normalize_conj", "normalizers__regex_8cpp.html#ac1bb35e3841f87cc017dafa026afb25e", null ],
     [ "normalize_disj", "normalizers__regex_8cpp.html#a10aa18cea355fc4b947ec8b2455a4020", null ],
     [ "normalize_not", "normalizers__regex_8cpp.html#a8bac011fd173d591245594369c6acd98", null ],

@@ -153,6 +153,9 @@ Enumerations</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">%regex.lit</div></td></tr>
 <tr class="memitem:aa829232b8ba96a9d8214bb4e7bd5acb4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1regex.html#aa829232b8ba96a9d8214bb4e7bd5acb4">thorin::regex::lit</a> : flags_t </td></tr>
 <tr class="separator:aa829232b8ba96a9d8214bb4e7bd5acb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">%regex.any</div></td></tr>
+<tr class="memitem:a7d932619965fc0a1559517e516c00054"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1regex.html#a7d932619965fc0a1559517e516c00054">thorin::regex::any</a> : flags_t </td></tr>
+<tr class="separator:a7d932619965fc0a1559517e516c00054"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">%regex.lower_regex</div></td></tr>
 <tr class="memitem:add9ee22397e1616d0309146c04b9a2e1"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1regex.html#add9ee22397e1616d0309146c04b9a2e1">thorin::regex::lower_regex</a> : flags_t </td></tr>
 <tr class="separator:add9ee22397e1616d0309146c04b9a2e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -234,12 +237,6 @@ Variables</h2></td></tr>
 <tr class="memitem:ac7f994b11ac05b6e85ca2640fb1aeea8"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1regex.html#ac7f994b11ac05b6e85ca2640fb1aeea8">thorin::regex::operator==</a> (cls x, std::underlying_type_t&lt; cls &gt; y)</td></tr>
 <tr class="separator:ac7f994b11ac05b6e85ca2640fb1aeea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader">%regex.any</h2></td></tr>
-<tr class="memitem:a7d932619965fc0a1559517e516c00054"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1regex.html#a7d932619965fc0a1559517e516c00054">thorin::regex::any</a> : flags_t </td></tr>
-<tr class="separator:a7d932619965fc0a1559517e516c00054"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0bdef50f804549980af782aea6411719"><td class="memItemLeft" align="right" valign="top">Ref&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1regex.html#a0bdef50f804549980af782aea6411719">thorin::regex::normalize_any</a> (Ref type, Ref callee, Ref arg)</td></tr>
-<tr class="separator:a0bdef50f804549980af782aea6411719"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">%regex.quant</h2></td></tr>
 <tr class="memitem:aee8365376d8e42f63aa4ad6fd366cabc"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1regex.html#aee8365376d8e42f63aa4ad6fd366cabc">thorin::regex::quant</a> : flags_t { <br />
 &#160;&#160;<a class="el" href="namespacethorin_1_1regex.html#aee8365376d8e42f63aa4ad6fd366cabca50a5671aecf8ecf461fb8c990569e0ba">thorin::regex::optional</a> = 0x4c62066400000700
@@ -297,13 +294,12 @@ Variables</h2></td></tr>
 <div class="line">        normalizers[flags_t(Annex::Base&lt;disj&gt;)] = &amp;normalize_disj; \</div>
 <div class="line">        normalizers[flags_t(Annex::Base&lt;range&gt;)] = &amp;normalize_range; \</div>
 <div class="line">        normalizers[flags_t(Annex::Base&lt;not_&gt;)] = &amp;normalize_not; \</div>
-<div class="line">        normalizers[flags_t(Annex::Base&lt;any&gt;)] = &amp;normalize_any; \</div>
 <div class="line">        normalizers[flags_t(quant::optional)] = &amp;normalize_quant&lt;quant::optional&gt;; \</div>
 <div class="line">        normalizers[flags_t(quant::star)] = &amp;normalize_quant&lt;quant::star&gt;; \</div>
 <div class="line">        normalizers[flags_t(quant::plus)] = &amp;normalize_quant&lt;quant::plus&gt;; \</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="regex_2autogen_8h_source.html#l00132">132</a> of file <a class="el" href="regex_2autogen_8h_source.html">autogen.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="regex_2autogen_8h_source.html#l00131">131</a> of file <a class="el" href="regex_2autogen_8h_source.html">autogen.h</a>.</p>
 
 </div>
 </div>

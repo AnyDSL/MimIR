@@ -21,7 +21,6 @@ var regex_2autogen_8h =
       [ "plus", "regex_2autogen_8h.html#aee8365376d8e42f63aa4ad6fd366cabcad1bc66d9ac56350dd96e3120bacdba06", null ]
     ] ],
     [ "range", "regex_2autogen_8h.html#ad4b111148fd16a75108976e5d2d0d2ce", null ],
-    [ "normalize_any", "regex_2autogen_8h.html#a0bdef50f804549980af782aea6411719", null ],
     [ "normalize_conj", "regex_2autogen_8h.html#ac1bb35e3841f87cc017dafa026afb25e", null ],
     [ "normalize_disj", "regex_2autogen_8h.html#a10aa18cea355fc4b947ec8b2455a4020", null ],
     [ "normalize_not", "regex_2autogen_8h.html#a8bac011fd173d591245594369c6acd98", null ],

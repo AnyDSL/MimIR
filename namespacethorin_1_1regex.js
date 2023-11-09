@@ -36,7 +36,6 @@ var namespacethorin_1_1regex =
     [ "merge_ranges", "namespacethorin_1_1regex.html#aecb785dd22fd67ef5ac29e188fbf68fa", null ],
     [ "merge_ranges", "namespacethorin_1_1regex.html#afb1f0e532431e0761b42e8aab40757dd", null ],
     [ "merge_ranges", "namespacethorin_1_1regex.html#a2c0ec2af99951c358ed93ad9db6845c5", null ],
-    [ "normalize_any", "namespacethorin_1_1regex.html#a0bdef50f804549980af782aea6411719", null ],
     [ "normalize_conj", "namespacethorin_1_1regex.html#ac1bb35e3841f87cc017dafa026afb25e", null ],
     [ "normalize_disj", "namespacethorin_1_1regex.html#a10aa18cea355fc4b947ec8b2455a4020", null ],
     [ "normalize_not", "namespacethorin_1_1regex.html#a8bac011fd173d591245594369c6acd98", null ],
