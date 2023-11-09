@@ -204,12 +204,6 @@ Ref normalize_disj(Ref type, Ref, Ref arg) {
     return arg;
 }
 
-Ref normalize_any(Ref type, Ref callee, Ref arg) {
-    auto& world = type->world();
-
-    return world.raw_app(type, callee, arg);
-}
-
 Ref normalize_range(Ref type, Ref callee, Ref arg) {
     auto& world     = type->world();
     auto [lhs, rhs] = arg->projs<2>();
