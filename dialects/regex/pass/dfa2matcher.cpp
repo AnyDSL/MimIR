@@ -46,22 +46,22 @@ transitions_to_ranges(World& w, const automaton::DFANode* state) {
         else
             state2ranges[next_state].emplace_back(transition, transition);
     });
-    std::pair<nat_t, nat_t> any_range{automaton::DFA::SpecialTransitons::ANY, automaton::DFA::SpecialTransitons::ANY};
+    std::pair<nat_t, nat_t> any_range{0, 255};
     for (auto& [state, ranges] : state2ranges) {
         if (std::find(ranges.cbegin(), ranges.cend(), any_range) != ranges.cend()) {
             ranges = {any_range};
             continue;
         }
 
-        std::sort(ranges.begin(), ranges.end(), [](auto a, auto b) { return a.first < b.first; });
-        ranges = regex::merge_ranges(w, ranges);
+        std::sort(ranges.begin(), ranges.end(), regex::RangeCompare{});
+        ranges = regex::merge_ranges(ranges, [&w](auto&&... args) { w.DLOG(std::forward<decltype(args)>(args)...); });
     }
     return state2ranges;
 }
 
 Ref match_range(Ref c, nat_t lo, nat_t hi) {
     World& w = c->world();
-    if (lo == automaton::DFA::SpecialTransitons::ANY) return w.lit_tt();
+    if (lo == 0 && hi == 255) return w.lit_tt();
 
     // .let in_range     = %core.bit2.and_ 0 (%core.icmp.uge (char, lower),  %core.icmp.ule (char, upper));
     auto below_hi = w.call(core::icmp::ule, w.tuple({c, w.lit_idx(256, hi)}));
@@ -137,7 +137,13 @@ Ref dfa2matcher(World& w, const automaton::DFA& dfa, Ref n) {
     }
 
     for (auto [state, lam] : state2matcher) {
-        auto [mem, i]  = lam->vars<2>();
+        auto [mem, i] = lam->vars<2>();
+
+        if (state->is_erroring()) {
+            lam->app(true, error, {mem, i});
+            continue;
+        }
+
         auto lea       = w.call<mem::lea>(w.tuple({n, w.pack(n, w.type_idx(256)), w.lit_nat(0)}), w.tuple({string, i}));
         auto [mem2, c] = w.call<mem::load>(w.tuple({mem, lea}))->projs<2>();
 

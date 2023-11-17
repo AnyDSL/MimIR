@@ -27,6 +27,13 @@ std::set<const DFANode*> get_accepting_states(const std::set<const DFANode*>& re
     return acceptingStates;
 }
 
+std::set<const DFANode*> get_erroring_states(const std::set<const DFANode*>& reachableStates) {
+    std::set<const DFANode*> erroringStates;
+    for (auto state : reachableStates)
+        if (state->is_erroring()) erroringStates.insert(state);
+    return erroringStates;
+}
+
 std::set<std::uint16_t> get_alphabet(const std::set<const DFANode*>& reachableStates) {
     std::set<std::uint16_t> alphabet;
     for (auto state : reachableStates) state->for_transitions([&](auto c, auto) { alphabet.insert(c); });
@@ -50,9 +57,12 @@ std::vector<std::set<const DFANode*>> hopcroft(const std::set<const DFANode*>& r
     const auto alphabet = get_alphabet(reachableStates);
 
     const auto F = get_accepting_states(reachableStates);
+    const auto E = get_erroring_states(reachableStates);
 
-    std::vector<std::set<const DFANode*>> P = {F, reachableStates - F};
-    std::vector<std::set<const DFANode*>> W = {F, reachableStates - F};
+    assert((F * E).empty() && "F and E must be disjoint");
+
+    std::vector<std::set<const DFANode*>> P = {F, E, reachableStates - F - E};
+    std::vector<std::set<const DFANode*>> W = {F, E, reachableStates - F - E};
 
     std::vector<std::set<const DFANode*>> newP;
     while (!W.empty()) {
@@ -112,6 +122,7 @@ std::unique_ptr<DFA> minimize_dfa(const DFA& dfa) {
         auto state = minDfa->add_state();
         for (auto x : X) {
             if (x->is_accepting()) state->set_accepting(true);
+            if (x->is_erroring()) state->set_erroring(true);
             dfaStates.emplace(x, state);
         }
     }
