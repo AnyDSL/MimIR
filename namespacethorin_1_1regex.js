@@ -2,6 +2,7 @@ var namespacethorin_1_1regex =
 [
     [ "app_range", "structthorin_1_1regex_1_1app__range.html", "structthorin_1_1regex_1_1app__range" ],
     [ "LowerRegex", "classthorin_1_1regex_1_1LowerRegex.html", "classthorin_1_1regex_1_1LowerRegex" ],
+    [ "RangeCompare", "structthorin_1_1regex_1_1RangeCompare.html", "structthorin_1_1regex_1_1RangeCompare" ],
     [ "any", "namespacethorin_1_1regex.html#a7d932619965fc0a1559517e516c00054", null ],
     [ "cls", "namespacethorin_1_1regex.html#a8c7a401db4442fe8a7fdae0160c89f51", [
       [ "d", "namespacethorin_1_1regex.html#a8c7a401db4442fe8a7fdae0160c89f51af05ca8d9e7fc46efded757924edbd07e", null ],
@@ -33,9 +34,10 @@ var namespacethorin_1_1regex =
     [ "is_in_range", "namespacethorin_1_1regex.html#a865414ad4850962c4469f4bb23e81ce1", null ],
     [ "make_binary_tree", "namespacethorin_1_1regex.html#abfab6a7b30f513f76513af5ae1777456", null ],
     [ "make_vector_unique", "namespacethorin_1_1regex.html#a627ab740195e88059f07fd0e920f94b9", null ],
-    [ "merge_ranges", "namespacethorin_1_1regex.html#aecb785dd22fd67ef5ac29e188fbf68fa", null ],
+    [ "merge_ranges", "namespacethorin_1_1regex.html#af38de6edaa662e237c10a0c94c73ea80", null ],
+    [ "merge_ranges", "namespacethorin_1_1regex.html#a8bae50dc1132e26cdd43f5b4c3ce2972", null ],
+    [ "merge_ranges", "namespacethorin_1_1regex.html#a17ec03d50f3ac022ccb2d97ae130b743", null ],
     [ "merge_ranges", "namespacethorin_1_1regex.html#afb1f0e532431e0761b42e8aab40757dd", null ],
-    [ "merge_ranges", "namespacethorin_1_1regex.html#a2c0ec2af99951c358ed93ad9db6845c5", null ],
     [ "normalize_conj", "namespacethorin_1_1regex.html#ac1bb35e3841f87cc017dafa026afb25e", null ],
     [ "normalize_disj", "namespacethorin_1_1regex.html#a10aa18cea355fc4b947ec8b2455a4020", null ],
     [ "normalize_not", "namespacethorin_1_1regex.html#a8bac011fd173d591245594369c6acd98", null ],

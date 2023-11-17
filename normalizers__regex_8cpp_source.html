@@ -245,7 +245,7 @@ $(document).ready(function(){initNavTree('normalizers__regex_8cpp_source.html','
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    std::transform(ranges_begin, args.end(), std::back_inserter(old_ranges), <a class="code hl_function" href="namespacethorin_1_1regex.html#a5c085822966276e4772b1fe5652c215a">get_range</a>);</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keyword">auto</span> new_ranges = <a class="code hl_function" href="namespacethorin_1_1regex.html#afb1f0e532431e0761b42e8aab40757dd">merge_ranges</a>(world, old_ranges);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keyword">auto</span> new_ranges = <a class="code hl_function" href="namespacethorin_1_1regex.html#afb1f0e532431e0761b42e8aab40757dd">merge_ranges</a>(old_ranges, [&amp;world](<span class="keyword">auto</span>&amp;&amp;... args) { world.DLOG(std::forward&lt;<span class="keyword">decltype</span>(args)&gt;(args)...); });</div>
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    <span class="comment">// invalidates ranges_begin</span></div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    args.erase(ranges_begin, args.end());</div>

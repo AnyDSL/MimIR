@@ -120,12 +120,60 @@ $(document).ready(function(){initNavTree('range__helper_8h_source.html',''); ini
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="world_8h.html">thorin/world.h</a>&quot;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin_1_1regex.html">thorin::regex</a> {</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>std::vector&lt;std::pair&lt;nat_t, nat_t&gt;&gt; <a class="code hl_function" href="namespacethorin_1_1regex.html#afb1f0e532431e0761b42e8aab40757dd">merge_ranges</a>(World&amp; <a class="code hl_enumvalue" href="namespacethorin_1_1regex.html#a8c7a401db4442fe8a7fdae0160c89f51a5efb65f7d142ffe729c91d91c802708d">w</a>, <span class="keyword">const</span> std::vector&lt;std::pair&lt;nat_t, nat_t&gt;&gt;&amp; old_ranges);</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>} <span class="comment">// namespace thorin::regex</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="structthorin_1_1regex_1_1RangeCompare.html">    9</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structthorin_1_1regex_1_1RangeCompare.html">RangeCompare</a> {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="structthorin_1_1regex_1_1RangeCompare.html#a014bc73111760426ff00cc0da19a9bac">   10</a></span>    <span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="structthorin_1_1regex_1_1RangeCompare.html#a014bc73111760426ff00cc0da19a9bac">operator()</a>(<span class="keyword">const</span> std::pair&lt;nat_t, nat_t&gt;&amp; a, <span class="keyword">const</span> std::pair&lt;nat_t, nat_t&gt;&amp; b) <span class="keyword">const</span> <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>        <span class="keywordflow">return</span> a.first &lt; b.first;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    }</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>};</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="namespacethorin_1_1regex.html#a17ec03d50f3ac022ccb2d97ae130b743">   15</a></span><span class="keyword">inline</span> std::optional&lt;std::pair&lt;nat_t, nat_t&gt;&gt; <a class="code hl_function" href="namespacethorin_1_1regex.html#afb1f0e532431e0761b42e8aab40757dd">merge_ranges</a>(std::pair&lt;nat_t, nat_t&gt; a,</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>                                                           std::pair&lt;nat_t, nat_t&gt; b) <span class="keyword">noexcept</span> {</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keywordflow">if</span> (!(a.second + 1 &lt; b.first || b.second + 1 &lt; a.first)) {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        <span class="keywordflow">return</span> {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            {std::min(a.first, b.first), std::max(a.second, b.second)}</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        };</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    }</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordflow">return</span> {};</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>}</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">// precondition: ranges are sorted by increasing lower bound</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> LogF&gt;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="namespacethorin_1_1regex.html#a8bae50dc1132e26cdd43f5b4c3ce2972">   27</a></span>std::vector&lt;std::pair&lt;nat_t, nat_t&gt;&gt; <a class="code hl_function" href="namespacethorin_1_1regex.html#afb1f0e532431e0761b42e8aab40757dd">merge_ranges</a>(<span class="keyword">const</span> std::vector&lt;std::pair&lt;nat_t, nat_t&gt;&gt;&amp; old_ranges, LogF&amp;&amp; log) {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    std::vector&lt;std::pair&lt;nat_t, nat_t&gt;&gt; new_ranges;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> it = old_ranges.begin(); it != old_ranges.end(); ++it) {</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        <span class="keyword">auto</span> current_range = *it;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        log(<span class="stringliteral">&quot;old range: {}-{}&quot;</span>, current_range.first, current_range.second);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> inner = it + 1; inner != old_ranges.end(); ++inner)</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>            <span class="keywordflow">if</span> (<span class="keyword">auto</span> merged = <a class="code hl_function" href="namespacethorin_1_1regex.html#afb1f0e532431e0761b42e8aab40757dd">merge_ranges</a>(current_range, *inner)) current_range = *merged;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        std::vector&lt;std::vector&lt;std::pair&lt;nat_t, nat_t&gt;&gt;::iterator&gt; de_duplicate;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> inner = new_ranges.begin(); inner != new_ranges.end(); ++inner) {</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>            <span class="keywordflow">if</span> (<span class="keyword">auto</span> merged = <a class="code hl_function" href="namespacethorin_1_1regex.html#afb1f0e532431e0761b42e8aab40757dd">merge_ranges</a>(current_range, *inner)) {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>                current_range = *merged;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                de_duplicate.push_back(inner);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            }</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        }</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> dedup : de_duplicate) {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>            log(<span class="stringliteral">&quot;dedup {}-{}&quot;</span>, current_range.first, current_range.second);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>            new_ranges.erase(dedup);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        }</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        log(<span class="stringliteral">&quot;new range: {}-{}&quot;</span>, current_range.first, current_range.second);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        new_ranges.push_back(std::move(current_range));</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    }</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordflow">return</span> new_ranges;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>}</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">// precondition: ranges are sorted by increasing lower bound</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="namespacethorin_1_1regex.html#af38de6edaa662e237c10a0c94c73ea80">   53</a></span><span class="keyword">inline</span> std::vector&lt;std::pair&lt;nat_t, nat_t&gt;&gt; <a class="code hl_function" href="namespacethorin_1_1regex.html#afb1f0e532431e0761b42e8aab40757dd">merge_ranges</a>(<span class="keyword">const</span> std::vector&lt;std::pair&lt;nat_t, nat_t&gt;&gt;&amp; old_ranges) {</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="namespacethorin_1_1regex.html#afb1f0e532431e0761b42e8aab40757dd">merge_ranges</a>(old_ranges, [](<span class="keyword">auto</span>&amp;&amp;...) {});</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>} <span class="comment">// namespace thorin::regex</span></div>
 <div class="ttc" id="anamespacethorin_1_1regex_html"><div class="ttname"><a href="namespacethorin_1_1regex.html">thorin::regex</a></div><div class="ttdoc">The regex Plugin</div><div class="ttdef"><b>Definition:</b> <a href="normalizers__regex_8cpp_source.html#l00019">normalizers_regex.cpp:19</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1regex_html_a8c7a401db4442fe8a7fdae0160c89f51a5efb65f7d142ffe729c91d91c802708d"><div class="ttname"><a href="namespacethorin_1_1regex.html#a8c7a401db4442fe8a7fdae0160c89f51a5efb65f7d142ffe729c91d91c802708d">thorin::regex::w</a></div><div class="ttdeci">@ w</div><div class="ttdef"><b>Definition:</b> <a href="regex_2autogen_8h_source.html#l00080">autogen.h:80</a></div></div>
 <div class="ttc" id="anamespacethorin_1_1regex_html_afb1f0e532431e0761b42e8aab40757dd"><div class="ttname"><a href="namespacethorin_1_1regex.html#afb1f0e532431e0761b42e8aab40757dd">thorin::regex::merge_ranges</a></div><div class="ttdeci">void merge_ranges(std::vector&lt; const Def * &gt; &amp;args)</div><div class="ttdef"><b>Definition:</b> <a href="normalizers__regex_8cpp_source.html#l00122">normalizers_regex.cpp:122</a></div></div>
+<div class="ttc" id="astructthorin_1_1regex_1_1RangeCompare_html"><div class="ttname"><a href="structthorin_1_1regex_1_1RangeCompare.html">thorin::regex::RangeCompare</a></div><div class="ttdef"><b>Definition:</b> <a href="range__helper_8h_source.html#l00009">range_helper.h:9</a></div></div>
+<div class="ttc" id="astructthorin_1_1regex_1_1RangeCompare_html_a014bc73111760426ff00cc0da19a9bac"><div class="ttname"><a href="structthorin_1_1regex_1_1RangeCompare.html#a014bc73111760426ff00cc0da19a9bac">thorin::regex::RangeCompare::operator()</a></div><div class="ttdeci">bool operator()(const std::pair&lt; nat_t, nat_t &gt; &amp;a, const std::pair&lt; nat_t, nat_t &gt; &amp;b) const noexcept</div><div class="ttdef"><b>Definition:</b> <a href="range__helper_8h_source.html#l00010">range_helper.h:10</a></div></div>
 <div class="ttc" id="aworld_8h_html"><div class="ttname"><a href="world_8h.html">world.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

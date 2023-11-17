@@ -189,6 +189,7 @@ var hierarchy =
       [ "thorin::IdPtrn", "classthorin_1_1IdPtrn.html", null ],
       [ "thorin::TuplePtrn", "classthorin_1_1TuplePtrn.html", null ]
     ] ],
+    [ "thorin::regex::RangeCompare", "structthorin_1_1regex_1_1RangeCompare.html", null ],
     [ "thorin::Ref", "classthorin_1_1Ref.html", null ],
     [ "thorin::BitSet::reference", "classthorin_1_1BitSet_1_1reference.html", null ],
     [ "thorin::IndexSet< Indexer, Key >::reference", "classthorin_1_1IndexSet_1_1reference.html", null ],

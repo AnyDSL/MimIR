@@ -133,10 +133,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aab1ab8b3027c5e08db9a2974d7a164c7"><td class="memTemplParams" colspan="2">template&lt;class F &gt; </td></tr>
 <tr class="memitem:aab1ab8b3027c5e08db9a2974d7a164c7"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1automaton_1_1DFANode.html#aab1ab8b3027c5e08db9a2974d7a164c7">for_transitions</a> (F &amp;&amp;f) const</td></tr>
 <tr class="separator:aab1ab8b3027c5e08db9a2974d7a164c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5fda4ec635e134acb75a0e9a29f2b3c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1automaton_1_1DFANode.html#ab5fda4ec635e134acb75a0e9a29f2b3c">is_accepting</a> () const</td></tr>
-<tr class="separator:ab5fda4ec635e134acb75a0e9a29f2b3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd457cad5521d545aa29a39ece960c87"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1automaton_1_1DFANode.html#acd457cad5521d545aa29a39ece960c87">set_accepting</a> (bool accepting)</td></tr>
-<tr class="separator:acd457cad5521d545aa29a39ece960c87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13b4dc6ae58065108d06cf9c2c693f60"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1automaton_1_1DFANode.html#a13b4dc6ae58065108d06cf9c2c693f60">is_accepting</a> () const noexcept</td></tr>
+<tr class="separator:a13b4dc6ae58065108d06cf9c2c693f60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6eb55f19d24db544a119dc299a45c48"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1automaton_1_1DFANode.html#ab6eb55f19d24db544a119dc299a45c48">set_accepting</a> (bool accepting) noexcept</td></tr>
+<tr class="separator:ab6eb55f19d24db544a119dc299a45c48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bc193fb9e1a286cbe2513ea7ea4013f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1automaton_1_1DFANode.html#a8bc193fb9e1a286cbe2513ea7ea4013f">is_erroring</a> () const noexcept</td></tr>
+<tr class="separator:a8bc193fb9e1a286cbe2513ea7ea4013f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab14ee39431ea79be288cd76711493100"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1automaton_1_1DFANode.html#ab14ee39431ea79be288cd76711493100">set_erroring</a> (bool erroring) noexcept</td></tr>
+<tr class="separator:ab14ee39431ea79be288cd76711493100"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -194,7 +198,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dfa_8cpp_source.html#l00011">11</a> of file <a class="el" href="dfa_8cpp_source.html">dfa.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dfa_8cpp_source.html#l00015">15</a> of file <a class="el" href="dfa_8cpp_source.html">dfa.cpp</a>.</p>
 
 </div>
 </div>
@@ -224,7 +228,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00025">25</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00026">26</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
 
 </div>
 </div>
@@ -284,14 +288,14 @@ template&lt;class F &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dfa_8cpp_source.html#l00013">13</a> of file <a class="el" href="dfa_8cpp_source.html">dfa.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dfa_8cpp_source.html#l00017">17</a> of file <a class="el" href="dfa_8cpp_source.html">dfa.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="util_8h_source.html#l00093">thorin::lookup()</a>.</p>
 
 </div>
 </div>
-<a id="ab5fda4ec635e134acb75a0e9a29f2b3c" name="ab5fda4ec635e134acb75a0e9a29f2b3c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5fda4ec635e134acb75a0e9a29f2b3c">&#9670;&#160;</a></span>is_accepting()</h2>
+<a id="a13b4dc6ae58065108d06cf9c2c693f60" name="a13b4dc6ae58065108d06cf9c2c693f60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13b4dc6ae58065108d06cf9c2c693f60">&#9670;&#160;</a></span>is_accepting()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -308,17 +312,44 @@ template&lt;class F &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00029">29</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00031">31</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
 
 </div>
 </div>
-<a id="acd457cad5521d545aa29a39ece960c87" name="acd457cad5521d545aa29a39ece960c87"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd457cad5521d545aa29a39ece960c87">&#9670;&#160;</a></span>set_accepting()</h2>
+<a id="a8bc193fb9e1a286cbe2513ea7ea4013f" name="a8bc193fb9e1a286cbe2513ea7ea4013f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bc193fb9e1a286cbe2513ea7ea4013f">&#9670;&#160;</a></span>is_erroring()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool thorin::automaton::DFANode::is_erroring </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00037">37</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
+
+</div>
+</div>
+<a id="ab6eb55f19d24db544a119dc299a45c48" name="ab6eb55f19d24db544a119dc299a45c48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6eb55f19d24db544a119dc299a45c48">&#9670;&#160;</a></span>set_accepting()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -336,12 +367,40 @@ template&lt;class F &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00030">30</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00032">32</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
+
+</div>
+</div>
+<a id="ab14ee39431ea79be288cd76711493100" name="ab14ee39431ea79be288cd76711493100"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab14ee39431ea79be288cd76711493100">&#9670;&#160;</a></span>set_erroring()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void thorin::automaton::DFANode::set_erroring </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>erroring</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dfa_8h_source.html#l00038">38</a> of file <a class="el" href="dfa_8h_source.html">dfa.h</a>.</p>
 
 </div>
 </div>

@@ -137,6 +137,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:adc5c2feedac6d343661c7f2e697bd556"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a100d415f4f5ea5b2230a1ce74a1e2577"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1automaton_1_1NFANode.html#a100d415f4f5ea5b2230a1ce74a1e2577">set_accepting</a> (bool accepting)</td></tr>
 <tr class="separator:a100d415f4f5ea5b2230a1ce74a1e2577"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7340a08c12726ba613a6e8f4c59f663"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1automaton_1_1NFANode.html#ad7340a08c12726ba613a6e8f4c59f663">is_erroring</a> () const noexcept</td></tr>
+<tr class="separator:ad7340a08c12726ba613a6e8f4c59f663"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a399febc280b496fd382b128be674b027"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1automaton_1_1NFANode.html#a399febc280b496fd382b128be674b027">set_erroring</a> (bool erroring) noexcept</td></tr>
+<tr class="separator:a399febc280b496fd382b128be674b027"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -194,7 +198,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nfa_8cpp_source.html#l00009">9</a> of file <a class="el" href="nfa_8cpp_source.html">nfa.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nfa_8cpp_source.html#l00012">12</a> of file <a class="el" href="nfa_8cpp_source.html">nfa.cpp</a>.</p>
 
 </div>
 </div>
@@ -224,7 +228,7 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nfa_8h_source.html#l00026">26</a> of file <a class="el" href="nfa_8h_source.html">nfa.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nfa_8h_source.html#l00027">27</a> of file <a class="el" href="nfa_8h_source.html">nfa.h</a>.</p>
 
 </div>
 </div>
@@ -284,7 +288,7 @@ template&lt;class F &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nfa_8cpp_source.html#l00016">16</a> of file <a class="el" href="nfa_8cpp_source.html">nfa.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nfa_8cpp_source.html#l00019">19</a> of file <a class="el" href="nfa_8cpp_source.html">nfa.cpp</a>.</p>
 
 </div>
 </div>
@@ -311,7 +315,34 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nfa_8h_source.html#l00031">31</a> of file <a class="el" href="nfa_8h_source.html">nfa.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nfa_8h_source.html#l00033">33</a> of file <a class="el" href="nfa_8h_source.html">nfa.h</a>.</p>
+
+</div>
+</div>
+<a id="ad7340a08c12726ba613a6e8f4c59f663" name="ad7340a08c12726ba613a6e8f4c59f663"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7340a08c12726ba613a6e8f4c59f663">&#9670;&#160;</a></span>is_erroring()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool thorin::automaton::NFANode::is_erroring </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nfa_8h_source.html#l00039">39</a> of file <a class="el" href="nfa_8h_source.html">nfa.h</a>.</p>
 
 </div>
 </div>
@@ -339,7 +370,35 @@ template&lt;class F &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="nfa_8h_source.html#l00032">32</a> of file <a class="el" href="nfa_8h_source.html">nfa.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="nfa_8h_source.html#l00034">34</a> of file <a class="el" href="nfa_8h_source.html">nfa.h</a>.</p>
+
+</div>
+</div>
+<a id="a399febc280b496fd382b128be674b027" name="a399febc280b496fd382b128be674b027"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a399febc280b496fd382b128be674b027">&#9670;&#160;</a></span>set_erroring()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void thorin::automaton::NFANode::set_erroring </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>erroring</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="nfa_8h_source.html#l00040">40</a> of file <a class="el" href="nfa_8h_source.html">nfa.h</a>.</p>
 
 </div>
 </div>

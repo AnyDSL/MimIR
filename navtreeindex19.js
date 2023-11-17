@@ -1,5 +1,10 @@
 var NAVTREEINDEX19 =
 {
+"namespacethorin.html#a758e8ee1110137e5998563c4f2ae5a86":[3,0,0,187],
+"namespacethorin.html#a76438d3d8f2823c15edaf4754c733a91":[3,0,0,140],
+"namespacethorin.html#a77d68202e47f9dfe90870a8e53f45fa5":[3,0,0,266],
+"namespacethorin.html#a790538bc68a2e08c788ee7666933c60b":[3,0,0,124],
+"namespacethorin.html#a7907156065ecc2f7a8ad6d0c4b48752d":[3,0,0,128],
 "namespacethorin.html#a794d305b1d0e0e61a04faa72c5e91897":[3,0,0,265],
 "namespacethorin.html#a79e278c20d96a1b195018a8417e9702b":[3,0,0,250],
 "namespacethorin.html#a79fff1449ba1eaecead8f607520f8574":[3,0,0,137],
@@ -169,6 +174,7 @@ var NAVTREEINDEX19 =
 "namespacethorin_1_1automaton.html#a5e2831df602c4a3594247d2fd1879b95":[3,0,0,2,6],
 "namespacethorin_1_1automaton.html#a8b1d70fce1af0cc3811385656b023c9b":[3,0,0,2,7],
 "namespacethorin_1_1automaton.html#ac3ea1b940bbc3a411e8ca6e7585c8284":[3,0,0,2,10],
+"namespacethorin_1_1automaton.html#ae4046544f3cd4d36a5138145885d3635":[3,0,0,2,11],
 "namespacethorin_1_1automaton.html#ae9269d171ceff2a9e65736ba1cdbdc18":[3,0,0,2,9],
 "namespacethorin_1_1clos.html":[3,0,0,3],
 "namespacethorin_1_1clos.html#a02da91bfb3d89201e282b538b6c65b35":[3,0,0,3,13],
@@ -243,11 +249,5 @@ var NAVTREEINDEX19 =
 "namespacethorin_1_1compile.html#a50e77f5991d28290b0fa3ee7e0c61123":[3,0,0,4,7],
 "namespacethorin_1_1compile.html#a53b02b3d6ac3b0342763427b6dc43f1a":[3,0,0,4,29],
 "namespacethorin_1_1compile.html#a5ddee3ee70a5907fbdc80b00e0fb283c":[3,0,0,4,31],
-"namespacethorin_1_1compile.html#a60c43d8a43f0693594c12c4f53077153":[3,0,0,4,17],
-"namespacethorin_1_1compile.html#a63648e99f518e4fdfb5f3abe1af3f383":[3,0,0,4,30],
-"namespacethorin_1_1compile.html#a65f2332cfc72ed416ad4335aa7c1c4bb":[3,0,0,4,15],
-"namespacethorin_1_1compile.html#a6ac886137f32456559503c9f8788ad01":[3,0,0,4,39],
-"namespacethorin_1_1compile.html#a89bed055f9b4723254ff9abd8ee2a9f6":[3,0,0,4,36],
-"namespacethorin_1_1compile.html#a9062d9ce18afffd9fd0e33965405e1f4":[3,0,0,4,20],
-"namespacethorin_1_1compile.html#a9aebdf34d0284b713c32514cffa31617":[3,0,0,4,27]
+"namespacethorin_1_1compile.html#a60c43d8a43f0693594c12c4f53077153":[3,0,0,4,17]
 };

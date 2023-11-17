@@ -60,7 +60,8 @@ var annotated_dup =
       ] ],
       [ "regex", "namespacethorin_1_1regex.html", [
         [ "app_range", "structthorin_1_1regex_1_1app__range.html", "structthorin_1_1regex_1_1app__range" ],
-        [ "LowerRegex", "classthorin_1_1regex_1_1LowerRegex.html", "classthorin_1_1regex_1_1LowerRegex" ]
+        [ "LowerRegex", "classthorin_1_1regex_1_1LowerRegex.html", "classthorin_1_1regex_1_1LowerRegex" ],
+        [ "RangeCompare", "structthorin_1_1regex_1_1RangeCompare.html", "structthorin_1_1regex_1_1RangeCompare" ]
       ] ],
       [ "Ac", "classthorin_1_1Ac.html", "classthorin_1_1Ac" ],
       [ "Annex", "structthorin_1_1Annex.html", "structthorin_1_1Annex" ],

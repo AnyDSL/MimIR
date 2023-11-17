@@ -10,5 +10,6 @@ var namespacethorin_1_1automaton =
     [ "minimize_dfa", "namespacethorin_1_1automaton.html#a8b1d70fce1af0cc3811385656b023c9b", null ],
     [ "nfa2dfa", "namespacethorin_1_1automaton.html#a5d8446006e47ced95eccc7d5c617604e", null ],
     [ "operator<<", "namespacethorin_1_1automaton.html#ae9269d171ceff2a9e65736ba1cdbdc18", null ],
-    [ "operator<<", "namespacethorin_1_1automaton.html#ac3ea1b940bbc3a411e8ca6e7585c8284", null ]
+    [ "operator<<", "namespacethorin_1_1automaton.html#ac3ea1b940bbc3a411e8ca6e7585c8284", null ],
+    [ "print_node", "namespacethorin_1_1automaton.html#ae4046544f3cd4d36a5138145885d3635", null ]
 ];

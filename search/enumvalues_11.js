@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['s_0',['S',['../namespacethorin_1_1regex.html#a8c7a401db4442fe8a7fdae0160c89f51a5e1cfbc7007586122677974f56e31a8c',1,'thorin::regex']]],
-  ['s_1',['s',['../namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937aa1f7876be8b2419af003e22a537fa0a8',1,'thorin::core::s()'],['../namespacethorin_1_1regex.html#a8c7a401db4442fe8a7fdae0160c89f51a0c07077b42209b963382a6ce76980255',1,'thorin::regex::s()']]],
+  ['s_0',['s',['../namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937aa1f7876be8b2419af003e22a537fa0a8',1,'thorin::core::s()'],['../namespacethorin_1_1regex.html#a8c7a401db4442fe8a7fdae0160c89f51a0c07077b42209b963382a6ce76980255',1,'thorin::regex::s()']]],
+  ['s_1',['S',['../namespacethorin_1_1regex.html#a8c7a401db4442fe8a7fdae0160c89f51a5e1cfbc7007586122677974f56e31a8c',1,'thorin::regex']]],
   ['s2f_2',['s2f',['../namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2da773617e49009ca6b1da12f8fdf1fdca2',1,'thorin::math']]],
   ['sdiv_3',['sdiv',['../namespacethorin_1_1core.html#abaf61e089dbdb52b9c30b4b166f8309eabdddcd82353d94f5472752cb7811f41b',1,'thorin::core']]],
   ['sg_4',['sg',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6ac2129b994edbcb7c094693bc64465413',1,'thorin::core']]],
@@ -16,9 +16,9 @@ var searchData=
   ['sl_13',['sl',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aae0da9a49cbad73b6038ecb611600659',1,'thorin::core']]],
   ['sle_14',['sle',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6adf5c25f46ecccb55de65f7531899181a',1,'thorin::core']]],
   ['sloxy_15',['Sloxy',['../classthorin_1_1mem_1_1SSAConstr.html#a62ff42dc3a809de61d1f102c843c30a6af063dc6bc3d5932e9e2c622b78754004',1,'thorin::mem::SSAConstr']]],
-  ['sm_16',['sm',['../namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a1ac0a3a23ae36ff1c00249aaa4782bb3',1,'thorin::core']]],
-  ['sm_17',['Sm',['../namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a35ef05805dc6b48df77d6c17d7adb4f9',1,'thorin::core']]],
-  ['sm_18',['SM',['../namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a955e463456e9dab6023df3b6f36fe708',1,'thorin::core']]],
+  ['sm_16',['SM',['../namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a955e463456e9dab6023df3b6f36fe708',1,'thorin::core']]],
+  ['sm_17',['sm',['../namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a1ac0a3a23ae36ff1c00249aaa4782bb3',1,'thorin::core']]],
+  ['sm_18',['Sm',['../namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a35ef05805dc6b48df77d6c17d7adb4f9',1,'thorin::core']]],
   ['sm_19',['sM',['../namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a114658b2ec08d7c6019240fdba7a6b92',1,'thorin::core']]],
   ['smax_20',['smax',['../namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7adb6b44ba3f3424038ed7083cb23a4910',1,'thorin::core']]],
   ['smin_21',['smin',['../namespacethorin_1_1core.html#a01372f515ca7da8160c66b047a4103b7a44365c4a0fad9f96ef8e41be3b66b07e',1,'thorin::core']]],
