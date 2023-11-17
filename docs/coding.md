@@ -137,7 +137,7 @@ In VS Code you can do so by adding the following to the `launch.json` configurat
 
 Run the [lit](https://llvm.org/docs/CommandGuide/lit.html) testsuite with:
 ```sh
-cmake --build build -t check
+cmake --build build -t lit
 ```
 You can manually invoke the lit tests like this and maybe filter for a specific test:
 ```sh
