@@ -8,7 +8,7 @@ on:
 jobs:
   build-and-test:
     name: Build and test ${{matrix.build-type}} mode
-    runs-on: macos-latest
+    runs-on: macos-13
     strategy:
       matrix:
         build-type: [Debug, Release]
@@ -23,7 +23,7 @@ jobs:
         uses: Chocobo1/setup-ccache-action@v1
         with:
           ccache_options: max_size=500M
-          override_cache_key: mac-latest-ccache-${{matrix.build-type}}
+          override_cache_key: mac-13-ccache-${{matrix.build-type}}
 
       - name: Install LLVM and Clang
         run: brew install llvm@16
