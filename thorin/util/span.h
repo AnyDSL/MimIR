@@ -13,7 +13,7 @@ concept Vectorlike = requires(Vec vec) {
 };
 
 /// This is a thin wrapper for `std::span<T, N>` with the following additional features:
-/// * Constructor with std::initializer_list list (C++26 will get this ...)
+/// * Constructor with `std::initializer_list` (C++26 will get this ...)
 /// * Constructor for any compatible Vectorlike argument
 /// * rsubspan (reverse subspan)
 /// * structured binding, if `N != std::dynamic_extent:`
@@ -80,6 +80,8 @@ public:
             return {Base::data(), Base::size() - i};
     }
     ///@}
+
+    friend void swap(Span& s1, Span& s2) { s1.swap(s2); }
 };
 
 template<class T, size_t N = std::dynamic_extent> using View = Span<const T, N>;
