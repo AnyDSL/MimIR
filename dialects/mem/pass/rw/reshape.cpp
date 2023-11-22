@@ -227,7 +227,7 @@ const Def* Reshape::reshape_type(const Def* T) {
 const Def* Reshape::reshape(std::vector<const Def*>& defs, const Def* T, const Def* mem) {
     auto& world = T->world();
     if (should_flatten(T)) {
-        DefArray tuples(T->projs(), [&](auto P) { return reshape(defs, P, mem); });
+        auto tuples = T->projs([&](auto P) { return reshape(defs, P, mem); });
         return world.tuple(tuples);
     } else {
         const Def* def;

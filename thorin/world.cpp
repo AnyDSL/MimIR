@@ -405,7 +405,7 @@ Ref World::arr(Ref shape, Ref body) {
     }
 
     // «(a, b, c); body» -> «a; «(b, c); body»»
-    if (auto tuple = shape->isa<Tuple>()) return arr(tuple->ops().front(), arr(tuple->ops().skip_front(), body));
+    if (auto tuple = shape->isa<Tuple>()) return arr(tuple->ops().front(), arr(tuple->ops().subspan(1), body));
 
     // «<n; x>; body» -> «x; «<n-1, x>; body»»
     if (auto p = shape->isa<Pack>()) {
@@ -424,7 +424,7 @@ Ref World::pack(Ref shape, Ref body) {
     }
 
     // <(a, b, c); body> -> <a; «(b, c); body>>
-    if (auto tuple = shape->isa<Tuple>()) return pack(tuple->ops().front(), pack(tuple->ops().skip_front(), body));
+    if (auto tuple = shape->isa<Tuple>()) return pack(tuple->ops().front(), pack(tuple->ops().subspan(1), body));
 
     // <<n; x>; body> -> <x; <<n-1, x>; body>>
     if (auto p = shape->isa<Pack>()) {
@@ -437,12 +437,12 @@ Ref World::pack(Ref shape, Ref body) {
 
 Ref World::arr(Defs shape, Ref body) {
     if (shape.empty()) return body;
-    return arr(shape.skip_back(), arr(shape.back(), body));
+    return arr(shape.rsubspan(1), arr(shape.back(), body));
 }
 
 Ref World::pack(Defs shape, Ref body) {
     if (shape.empty()) return body;
-    return pack(shape.skip_back(), pack(shape.back(), body));
+    return pack(shape.rsubspan(1), pack(shape.back(), body));
 }
 
 const Lit* World::lit(Ref type, u64 val) {

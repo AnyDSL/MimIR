@@ -104,7 +104,7 @@ undo_t CopyProp::analyze(const Proxy* proxy) {
         }
     } else {
         assert(proxy->tag() == Appxy);
-        for (auto ops = proxy->ops(); auto op : ops.skip_front()) {
+        for (auto ops = proxy->ops(); auto op : ops.subspan(1)) {
             auto i = Lit::as(op);
             if (auto& l = lattice[i]; l != Lattice::Keep) {
                 l = Lattice::Keep;

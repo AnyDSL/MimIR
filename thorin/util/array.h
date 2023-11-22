@@ -9,12 +9,58 @@
 #include <initializer_list>
 #include <iterator>
 #include <ranges>
+#include <span>
 #include <type_traits>
 #include <vector>
 
 namespace thorin {
 
 template<class T> class Array;
+
+template<class T, size_t N = std::dynamic_extent> class span : public std::span<T, N> {
+public:
+    using Base = std::span<T, N>;
+    using Base::Base;
+
+    span(std::initializer_list<T> init)
+        : Base(std::begin(init), std::ranges::distance(init)) {}
+    constexpr span(typename Base::pointer p)
+        : Base(p, N) {}
+
+    // template<size_t I, size_t N = std::dynamic_extent>
+    // constexpr std::span<Base::element_type, E [> see below <]> subspan() const;
+    constexpr auto rsubspan(size_t i, size_t n = std::dynamic_extent) const {
+        auto count = n == std::dynamic_extent ? Base::size() - i : n;
+        return subspan(Base::size() - (i + count), count);
+    }
+    constexpr auto subspan(size_t i, size_t n = std::dynamic_extent) const {
+        auto res = Base::subspan(i, n);
+        return span(res.data(), res.size());
+    }
+
+    template<size_t I> constexpr decltype(auto) get() { return (Base::operator[](I)); }
+};
+
+/// @name Deduction Guides
+///@{
+template<class I, class E> span(I, E) -> span<std::remove_reference_t<std::iter_reference_t<I>>>;
+template<class T, size_t N> span(T (&)[N]) -> span<T, N>;
+template<class T, size_t N> span(std::array<T, N>&) -> span<T, N>;
+template<class T, size_t N> span(const std::array<T, N>&) -> span<const T, N>;
+template<class R> span(R&&) -> span<std::remove_reference_t<std::ranges::range_reference_t<R>>>;
+///@}
+
+} // namespace thorin
+
+namespace std {
+template<class T, size_t N> struct tuple_size<thorin::span<T, N>> : std::integral_constant<size_t, N> {};
+
+template<size_t I, class T, size_t N> struct tuple_element<I, thorin::span<T, N>> {
+    using type = typename thorin::span<T, N>::reference;
+};
+} // namespace std
+
+namespace thorin {
 
 //------------------------------------------------------------------------------
 
@@ -34,7 +80,7 @@ public:
     Span() noexcept               = default;
     Span(const Span<T>&) noexcept = default;
     Span(Span&& span) noexcept    = default;
-    Span(size_t size, const T* ptr)
+    Span(const T* ptr, size_t size)
         : size_(size)
         , ptr_(ptr) {}
     template<size_t N>
@@ -89,15 +135,15 @@ public:
 
     /// @name slice
     ///@{
-    Span<T> skip_front(size_t num = 1) const { return Span<T>(size() - num, ptr_ + num); }
-    Span<T> skip_back(size_t num = 1) const { return Span<T>(size() - num, ptr_); }
+    Span<T> skip_front(size_t num = 1) const { return Span<T>(ptr_ + num, size() - num); }
+    Span<T> skip_back(size_t num = 1) const { return Span<T>(ptr_, size() - num); }
     Span<T> first(size_t num = 1) const {
         assert(num <= size());
-        return Span<T>(num, ptr_);
+        return Span<T>(ptr_, num);
     }
     Span<T> last(size_t num = 1) const {
         assert(num <= size());
-        return Span<T>(num, ptr_ + size() - num);
+        return Span<T>(ptr_ + size() - num, num);
     }
     ///@}
 
@@ -258,6 +304,14 @@ public:
         : storage_(size) {
         std::ranges::fill(*this, val);
     }
+    Array(span<T> ref)
+        : storage_(ref.size()) {
+        std::ranges::copy(ref, begin());
+    }
+    Array(span<const T> ref)
+        : storage_(ref.size()) {
+        std::ranges::copy(ref, begin());
+    }
     Array(Span<T> ref)
         : storage_(ref.size()) {
         std::ranges::copy(ref, begin());
@@ -279,7 +333,8 @@ public:
         : storage_(size) {
         for (size_t i = 0; i != size; ++i) (*this)[i] = f(i);
     }
-    Array(Span<T> ref, std::function<T(T)> f)
+    template<class U, class F>
+    Array(span<U> ref, F f)
         : storage_(ref.size()) {
         for (size_t i = 0, e = ref.size(); i != e; ++i) (*this)[i] = f(ref[i]);
     }
@@ -340,15 +395,15 @@ public:
 
     /// @name slice
     ///@{
-    Span<T> skip_front(size_t num = 1) const { return Span<T>(size() - num, data() + num); }
-    Span<T> skip_back(size_t num = 1) const { return Span<T>(size() - num, data()); }
+    Span<T> skip_front(size_t num = 1) const { return Span<T>(data() + num, size() - num); }
+    Span<T> skip_back(size_t num = 1) const { return Span<T>(data(), size() - num); }
     Span<T> first(size_t num = 1) const {
         assert(num <= size());
-        return Span<T>(num, data());
+        return Span<T>(data(), num);
     }
     Span<T> last(size_t num = 1) const {
         assert(num <= size());
-        return Span<T>(num, data() + size() - num);
+        return Span<T>(data() + size() - num, num);
     }
     ///@}
 

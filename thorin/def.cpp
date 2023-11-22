@@ -255,7 +255,7 @@ std::string_view Def::node_name() const {
 Defs Def::extended_ops() const {
     if (isa<Type>() || isa<Univ>()) return Defs();
     assert(type());
-    return Defs((is_set() ? num_ops_ : 0) + 1, ops_ptr() - 1);
+    return Defs(ops_ptr() - 1, (is_set() ? num_ops_ : 0) + 1);
 }
 
 #ifndef NDEBUG
@@ -405,7 +405,7 @@ void Def::unset_type() {
 bool Def::is_set() const {
     if (num_ops() == 0) return true;
     bool result = ops().back();
-    assert((!result || std::ranges::all_of(ops().skip_back(), [](auto op) { return op; }))
+    assert((!result || std::ranges::all_of(ops().rsubspan(1), [](auto op) { return op; }))
            && "the last operand is set but others in front of it aren't");
     return result;
 }

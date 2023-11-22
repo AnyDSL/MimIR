@@ -133,10 +133,10 @@ Ref AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
     auto& world = tup->world();
 
     // TODO: should use ops instead?
-    DefArray aug_ops(tup->projs(), [&](Ref op) { return augment(op, f, f_diff); });
+    auto aug_ops = tup->projs([&](Ref op) -> const Def* { return augment(op, f, f_diff); });
     auto aug_tup = world.tuple(aug_ops);
 
-    DefArray pbs(aug_ops, [&](Ref op) { return partial_pullback[op]; });
+    DefArray pbs(Defs(aug_ops), [&](Ref op) { return partial_pullback[op]; });
     world.DLOG("tuple pbs {,}", pbs);
     // shadow pb = tuple of pbs
     auto shadow_pb           = world.tuple(pbs);
