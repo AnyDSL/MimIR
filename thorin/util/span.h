@@ -31,19 +31,19 @@ public:
     /// @name Constructors
     ///@{
     using Base::Base;
-    Span(std::span<T, N> span)
-        : Base(span) {}
-    Span(std::initializer_list<T> list)
+    constexpr Span(std::initializer_list<T> list)
         : Base(std::begin(list), std::ranges::distance(list)) {}
+    constexpr Span(std::span<T, N> span)
+        : Base(span) {}
     template<Vectorlike Vec>
     requires(std::is_same_v<typename Vec::value_type, T>)
-    Span(Vec& vec)
+    constexpr Span(Vec& vec)
         : Base(vec.data(), vec.size()) {}
     template<Vectorlike Vec>
     requires(std::is_same_v<std::add_const_t<typename Vec::value_type>, std::add_const_t<T>>)
-    Span(const Vec& vec)
+    constexpr Span(const Vec& vec)
         : Base(vec.data(), vec.size()) {}
-    constexpr Span(typename Base::pointer p)
+    constexpr explicit Span(typename Base::pointer p)
         : Base(p, N) {}
     ///@}
 
@@ -73,11 +73,11 @@ public:
     constexpr Span<T, n != std::dynamic_extent ? n : (N != std::dynamic_extent ? N - i : std::dynamic_extent)>
     rsubspan() const {
         if constexpr (n != std::dynamic_extent)
-            return {Base::data() + Base::size() - i - n}; // size: n
+            return Span{Base::data() + Base::size() - i - n}; // size: n
         else if constexpr (N != std::dynamic_extent)
-            return {Base::data()}; // size: N - i
+            return Span{Base::data()}; // size: N - i
         else
-            return {Base::data(), Base::size() - i};
+            return Span{Base::data(), Base::size() - i};
     }
     ///@}
 

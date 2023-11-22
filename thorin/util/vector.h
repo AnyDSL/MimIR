@@ -18,15 +18,14 @@ template<class R, class S> bool equal(R range1, S range2) {
 }
 
 template<class T, class F, size_t N = Default_Inlined_Size<T>> absl::InlinedVector<T, N> vector(size_t size, F f) {
-    absl::InlinedVector<T, N> result(size);
+    auto result = absl::InlinedVector<T, N>(size);
     for (size_t i = 0; i != size; ++i) result[i] = f(i);
     return result;
 }
 
-template<class T, std::ranges::range R, class F, size_t N = Default_Inlined_Size<T>>
-absl::InlinedVector<T, N> vector(const R& range, F f) {
-    absl::InlinedVector<T, N> result(std::distance(range.begin(), range.end()));
-    auto ri = range.begin();
+template<class T, std::ranges::range R, class F, size_t N = Default_Inlined_Size<T>> auto vector(const R& range, F f) {
+    auto result = absl::InlinedVector<T, N>(std::ranges::distance(range));
+    auto ri     = std::ranges::begin(range);
     for (size_t i = 0; i != result.size(); ++i, ++ri) result[i] = f(*ri);
     return result;
 }
