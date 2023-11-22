@@ -60,7 +60,7 @@ template<class ConjOrDisj> DefVec flatten_in_arg(Ref arg) {
     return new_args;
 }
 
-template<class ConjOrDisj> Ref make_binary_tree(Ref type, DefVec args) {
+template<class ConjOrDisj> Ref make_binary_tree(Ref type, Defs args) {
     assert(!args.empty());
     auto& world = args.front()->world();
     return std::accumulate(args.begin() + 1, args.end(), args.front(), [&type, &world](const Def* lhs, const Def* rhs) {
