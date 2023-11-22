@@ -229,7 +229,7 @@ VS Code</h2>
 Tests</h1>
 <h2><a class="anchor" id="autotoc_md10"></a>
 lit Tests</h2>
-<p >Run the <a href="https://llvm.org/docs/CommandGuide/lit.html">lit</a> testsuite with: </p><div class="fragment"><div class="line">cmake --build build -t check</div>
+<p >Run the <a href="https://llvm.org/docs/CommandGuide/lit.html">lit</a> testsuite with: </p><div class="fragment"><div class="line">cmake --build build -t lit</div>
 </div><!-- fragment --><p> You can manually invoke the lit tests like this and maybe filter for a specific test: </p><div class="fragment"><div class="line">cd lit</div>
 <div class="line">./lit ../build/lit -a --filter foo.thorin</div>
 </div><!-- fragment --><p> If your <code>build</code> directory, is in fact <code>../build/lit</code> you can use the <code>probe.sh</code> script: </p><div class="fragment"><div class="line">./probe.sh foo.thorin</div>
