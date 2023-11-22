@@ -51,7 +51,7 @@ inline Ref replace_mem(Ref mem, Ref arg) {
     // TODO: maybe use rebuild instead?
     if (arg->num_projs() > 1) {
         auto& w = mem->world();
-        return w.tuple(DefArray(arg->num_projs(), [&](auto i) { return replace_mem(mem, arg->proj(i)); }));
+        return w.tuple(vector<const Def*>(arg->num_projs(), [&](auto i) { return replace_mem(mem, arg->proj(i)); }));
     }
 
     if (match<mem::M>(arg->type())) return mem;

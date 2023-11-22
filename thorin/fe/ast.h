@@ -14,7 +14,7 @@ class Sigma;
 class World;
 
 class Scopes;
-using Def2Fields = DefMap<Array<Sym>>;
+using Def2Fields = DefMap<Vector<Sym>>;
 
 /*
  * Pattern

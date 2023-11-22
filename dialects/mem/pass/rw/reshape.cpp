@@ -16,7 +16,6 @@ namespace thorin::mem {
 namespace {
 
 bool is_mem_ty(const Def* T) { return match<mem::M>(T); }
-DefArray vec2array(const std::vector<const Def*>& vec) { return DefArray(vec.begin(), vec.end()); }
 
 // TODO merge with should_flatten from tuple.*
 bool should_flatten(const Def* T) {
@@ -118,10 +117,10 @@ const Def* Reshape::rewrite_def_(const Def* def) {
         world().DLOG("into lam {} : {}", new_lam, new_lam->type());
         return new_lam;
     } else if (auto tuple = def->isa<Tuple>()) {
-        DefArray elements(tuple->ops(), [&](const Def* op) { return rewrite_def(op); });
+        auto elements = vector<const Def*>(tuple->ops(), [&](auto op) { return rewrite_def(op); });
         return world().tuple(elements);
     } else {
-        auto new_ops = DefArray(def->num_ops(), [&](auto i) { return rewrite_def(def->op(i)); });
+        auto new_ops = vector<const Def*>(def->num_ops(), [&](auto i) { return rewrite_def(def->op(i)); });
         // Warning: if the new_type is not correct, inconcistencies will arise.
         auto new_type = rewrite_def(def->type());
         auto new_def  = def->rebuild(world(), new_type, new_ops);
@@ -196,7 +195,7 @@ const Def* Reshape::reshape_type(const Def* T) {
             new_types.erase(std::remove_if(new_types.begin(), new_types.end(), is_mem_ty), new_types.end());
             // readd mem in the front
             if (mem) new_types.insert(new_types.begin(), mem);
-            auto reshaped_type = world().sigma(vec2array(new_types));
+            auto reshaped_type = world().sigma(new_types);
             return reshaped_type;
         } else {
             if (new_types.size() == 0) return world().sigma();
@@ -214,7 +213,7 @@ const Def* Reshape::reshape_type(const Def* T) {
                 new_types.pop_back();
             }
             // Create the arg form `[[mem,args],ret]`
-            const Def* args = world().sigma(vec2array(new_types));
+            const Def* args = world().sigma(new_types);
             if (mem) args = world().sigma({mem, args});
             if (ret) args = world().sigma({args, ret});
             return args;
@@ -280,7 +279,7 @@ const Def* Reshape::reshape(const Def* def) {
             flat_defs.end());
         // insert mem
         if (mem) flat_defs.insert(flat_defs.begin(), mem);
-        return world().tuple(vec2array(flat_defs));
+        return world().tuple(flat_defs);
     } else {
         // arg style
         // [[mem,args],ret]
@@ -297,7 +296,7 @@ const Def* Reshape::reshape(const Def* def) {
             ret = flat_defs.back();
             flat_defs.pop_back();
         }
-        const Def* args = world().tuple(vec2array(flat_defs));
+        const Def* args = world().tuple(flat_defs);
         if (mem) args = world().tuple({mem, args});
         if (ret) args = world().tuple({args, ret});
         return args;

@@ -44,7 +44,7 @@ template<quant id> Ref normalize_quant(Ref type, Ref callee, Ref arg) {
     return world.raw_app(type, callee, arg);
 }
 
-template<class ConjOrDisj> void flatten_in_arg(Ref arg, std::vector<const Def*>& new_args) {
+template<class ConjOrDisj> void flatten_in_arg(Ref arg, DefVec& new_args) {
     for (const auto* proj : arg->projs()) {
         // flatten conjs in conjs / disj in disjs
         if (auto seq_app = thorin::match<ConjOrDisj>(proj))
@@ -54,13 +54,13 @@ template<class ConjOrDisj> void flatten_in_arg(Ref arg, std::vector<const Def*>&
     }
 }
 
-template<class ConjOrDisj> std::vector<const Def*> flatten_in_arg(Ref arg) {
-    std::vector<const Def*> new_args;
+template<class ConjOrDisj> DefVec flatten_in_arg(Ref arg) {
+    DefVec new_args;
     flatten_in_arg<ConjOrDisj>(arg, new_args);
     return new_args;
 }
 
-template<class ConjOrDisj> Ref make_binary_tree(Ref type, DefArray args) {
+template<class ConjOrDisj> Ref make_binary_tree(Ref type, DefVec args) {
     assert(!args.empty());
     auto& world = args.front()->world();
     return std::accumulate(args.begin() + 1, args.end(), args.front(), [&type, &world](const Def* lhs, const Def* rhs) {
@@ -95,7 +95,7 @@ bool compare_re(const Def* lhs, const Def* rhs) {
     return true;
 }
 
-void make_vector_unique(std::vector<const Def*>& args) {
+void make_vector_unique(DefVec& args) {
     std::stable_sort(args.begin(), args.end(), &compare_re);
     {
         auto new_end = std::unique(args.begin(), args.end());
@@ -119,18 +119,19 @@ struct app_range {
     }
 };
 
-void merge_ranges(std::vector<const Def*>& args) {
+void merge_ranges(DefVec& args) {
     auto ranges_begin = args.begin();
     while (ranges_begin != args.end() && !thorin::match<range>(*ranges_begin)) ranges_begin++;
     if (ranges_begin == args.end()) return;
 
     std::set<const Def*> to_remove;
-    std::vector<std::pair<nat_t, nat_t>> old_ranges;
+    Vector<std::pair<nat_t, nat_t>> old_ranges;
     auto& world = (*ranges_begin)->world();
 
     std::transform(ranges_begin, args.end(), std::back_inserter(old_ranges), get_range);
 
-    auto new_ranges = merge_ranges(old_ranges, [&world](auto&&... args) { world.DLOG(std::forward<decltype(args)>(args)...); });
+    auto new_ranges
+        = merge_ranges(old_ranges, [&world](auto&&... args) { world.DLOG(std::forward<decltype(args)>(args)...); });
 
     // invalidates ranges_begin
     args.erase(ranges_begin, args.end());
@@ -155,8 +156,8 @@ bool equals_any(const Def* lhs, const Def* rhs) {
     return check_arg_equiv(lhs, rhs) || check_arg_equiv(rhs, lhs);
 }
 
-bool equals_any(const std::vector<const Def*>& lhs, const std::vector<const Def*>& rhs) {
-    std::vector<std::pair<nat_t, nat_t>> lhs_ranges, rhs_ranges;
+bool equals_any(Defs lhs, Defs rhs) {
+    Vector<std::pair<nat_t, nat_t>> lhs_ranges, rhs_ranges;
     auto only_ranges = std::ranges::views::filter([](auto d) { return match<range>(d); });
     std::ranges::transform(lhs | only_ranges, std::back_inserter(lhs_ranges), get_range);
     std::ranges::transform(rhs | only_ranges, std::back_inserter(rhs_ranges), get_range);
@@ -190,7 +191,7 @@ Ref normalize_disj(Ref type, Ref, Ref arg) {
             }
         }
 
-        std::erase(new_args, to_remove);
+        erase(new_args, to_remove);
         world.DLOG("final ranges {, }", new_args);
 
         const Def* retval = new_args.back();

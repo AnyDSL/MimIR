@@ -3,6 +3,8 @@
 #include "thorin/phase/phase.h"
 #include "thorin/util/util.h"
 
+#include "absl/container/fixed_array.h"
+
 namespace thorin {
 
 Pass::Pass(PassMan& man, std::string_view name)
@@ -17,9 +19,9 @@ void PassMan::push_state() {
         // copy over from prev_state to curr_state
         auto&& prev_state      = states_[states_.size() - 2];
         curr_state().curr_mut  = prev_state.stack.top();
-        curr_state().old_ops   = curr_state().curr_mut->ops();
         curr_state().stack     = prev_state.stack;
         curr_state().mut2visit = prev_state.mut2visit;
+        curr_state().old_ops.assign(curr_state().curr_mut->ops().begin(), curr_state().curr_mut->ops().end());
 
         for (size_t i = 0; i != passes().size(); ++i) curr_state().data[i] = passes_[i]->copy(prev_state.data[i]);
     }
@@ -104,8 +106,8 @@ Ref PassMan::rewrite(Ref old_def) {
     }
 
     auto new_type = old_def->type() ? rewrite(old_def->type()) : nullptr;
-
-    DefArray new_ops(old_def->num_ops(), [&](size_t i) { return rewrite(old_def->op(i)); });
+    auto new_ops  = absl::FixedArray<const Def*>(old_def->num_ops());
+    for (size_t i = 0, e = old_def->num_ops(); i != e; ++i) new_ops[i] = rewrite(old_def->op(i));
     auto new_def = old_def->rebuild(world(), new_type, new_ops);
 
     if (auto proxy = new_def->isa<Proxy>()) {
@@ -139,7 +141,6 @@ undo_t PassMan::analyze(Ref def) {
         undo   = passes_[proxy->pass()]->analyze(proxy);
     } else {
         auto var = def->isa<Var>();
-
         if (!var)
             for (auto op : def->extended_ops()) undo = std::min(undo, analyze(op));
 

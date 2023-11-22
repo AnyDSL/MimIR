@@ -3,10 +3,10 @@
 #include <vector>
 
 #include "thorin/analyses/scope.h"
-#include "thorin/util/array.h"
 #include "thorin/util/indexmap.h"
 #include "thorin/util/indexset.h"
 #include "thorin/util/print.h"
+#include "thorin/util/span.h"
 
 namespace thorin {
 

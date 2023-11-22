@@ -5,7 +5,6 @@
 #include <fe/cast.h>
 
 #include "thorin/analyses/cfg.h"
-#include "thorin/util/array.h"
 
 namespace thorin {
 

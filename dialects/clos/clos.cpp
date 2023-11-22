@@ -99,7 +99,7 @@ Ref clos_apply(Ref closure, Ref args) {
     auto& w           = closure->world();
     auto [_, fn, env] = clos_unpack(closure);
     auto pi           = fn->type()->as<Pi>();
-    return w.app(fn, DefArray(pi->num_doms(), [&](auto i) { return clos_insert_env(i, env, args); }));
+    return w.app(fn, vector<const Def*>(pi->num_doms(), [&](auto i) { return clos_insert_env(i, env, args); }));
 }
 
 /*
@@ -144,8 +144,8 @@ Ref ctype(World& w, Defs doms, Ref env_type) {
         sigma->set(2_u64, sigma->var(0_u64));
         return sigma;
     }
-    return w.cn(DefArray(doms.size() + 1,
-                         [&](auto i) { return clos_insert_env(i, env_type, [&](auto j) { return doms[j]; }); }));
+    return w.cn(vector<const Def*>(
+        doms.size() + 1, [&](auto i) { return clos_insert_env(i, env_type, [&](auto j) { return doms[j]; }); }));
 }
 
 } // namespace thorin::clos

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "thorin/util/array.h"
+#include "thorin/util/vector.h"
 
 namespace thorin {
 
@@ -87,7 +87,7 @@ public:
 
 private:
     const Indexer& indexer_;
-    Array<uint64_t> bits_;
+    Vector<uint64_t> bits_;
 };
 
 /// @name IndexSet visit

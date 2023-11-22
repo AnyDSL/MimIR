@@ -10,9 +10,9 @@ namespace thorin::mem {
 
 namespace {
 
-std::pair<const App*, Array<Lam*>> isa_apped_mut_lam_in_tuple(const Def* def) {
+std::pair<const App*, Vector<Lam*>> isa_apped_mut_lam_in_tuple(const Def* def) {
     if (auto app = def->isa<App>()) {
-        std::vector<Lam*> lams;
+        Vector<Lam*> lams;
         std::deque<const Def*> wl;
         wl.push_back(app->callee());
         while (!wl.empty()) {
@@ -41,9 +41,9 @@ template<class F, class H> const Def* rewrite_mut_lam_in_tuple(const Def* def, F
 
     auto extract = def->as<Extract>();
     auto tuple   = extract->tuple()->as<Tuple>();
-    DefArray new_ops{tuple->ops(), [&](const Def* op) {
-                         return rewrite_mut_lam_in_tuple(op, std::forward<F>(rewrite), std::forward<H>(rewrite_idx));
-                     }};
+    auto new_ops = vector<const Def*>(tuple->ops(), [&](const Def* op) {
+        return rewrite_mut_lam_in_tuple(op, std::forward<F>(rewrite), std::forward<H>(rewrite_idx));
+    });
     return w.extract(w.tuple(new_ops), rewrite_idx(extract->index()));
 }
 
@@ -93,18 +93,18 @@ const Def* AddMem::rewrite_type(const Def* type) {
 
     if (auto it = mem_rewritten_.find(type); it != mem_rewritten_.end()) return it->second;
 
-    DefArray new_ops{type->num_ops(), [&](size_t i) { return rewrite_type(type->op(i)); }};
+    auto new_ops = vector<const Def*>(type->num_ops(), [&](size_t i) { return rewrite_type(type->op(i)); });
     return mem_rewritten_[type] = type->rebuild(world(), type->type(), new_ops);
 }
 
 const Def* AddMem::rewrite_pi(const Pi* pi) {
     if (auto it = mem_rewritten_.find(pi); it != mem_rewritten_.end()) return it->second;
 
-    auto dom = pi->dom();
-    DefArray new_dom{dom->num_projs(), [&](size_t i) { return rewrite_type(dom->proj(i)); }};
+    auto dom     = pi->dom();
+    auto new_dom = vector<const Def*>(dom->num_projs(), [&](size_t i) { return rewrite_type(dom->proj(i)); });
     if (pi->num_doms() == 0 || !match<mem::M>(pi->dom(0_s))) {
-        new_dom = DefArray{dom->num_projs() + 1,
-                           [&](size_t i) { return i == 0 ? world().annex<mem::M>() : new_dom[i - 1]; }};
+        new_dom = vector<const Def*>(dom->num_projs() + 1,
+                                     [&](size_t i) { return i == 0 ? world().annex<mem::M>() : new_dom[i - 1]; });
     }
 
     return mem_rewritten_[pi] = world().pi(new_dom, pi->codom());
@@ -190,7 +190,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
             add_mem_to_lams(place, arg->proj(0));
         }
 
-        DefArray new_args{arg->type()->num_projs() + offset};
+        DefVec new_args{arg->type()->num_projs() + offset};
         for (int i = new_args.size() - 1; i >= 0; i--) {
             new_args[i]
                 = i == 0 ? add_mem_to_lams(place, mem_for_lam(place)) : add_mem_to_lams(place, arg->proj(i - offset));
@@ -215,7 +215,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
     // assume all "negative" curry depths are fully applied axioms, so we do not want to rewrite those here..
     if (auto app = def->isa<App>(); app && app->axiom() && app->curry() ^ 0x8000) {
         auto arg = app->arg();
-        DefArray new_args(arg->num_projs());
+        DefVec new_args(arg->num_projs());
         for (int i = new_args.size() - 1; i >= 0; i--) {
             // replace memory operand with followed mem
             if (match<mem::M>(arg->proj(i)->type())) {
@@ -262,14 +262,14 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
         return rewritten;
     }
 
-    DefArray new_ops{def->ops(), [&](const Def* op) {
-                         if (match<mem::M>(op->type())) {
-                             // depth-first, follow the mems
-                             add_mem_to_lams(place, op);
-                             return add_mem_to_lams(place, mem_for_lam(place));
-                         }
-                         return add_mem_to_lams(place, op);
-                     }};
+    auto new_ops = vector<const Def*>(def->ops(), [&](const Def* op) {
+        if (match<mem::M>(op->type())) {
+            // depth-first, follow the mems
+            add_mem_to_lams(place, op);
+            return add_mem_to_lams(place, mem_for_lam(place));
+        }
+        return add_mem_to_lams(place, op);
+    });
 
     auto tmp = mem_rewritten_[def] = def->rebuild(world(), rewrite_type(def->type()), new_ops)->set(def->dbg());
     // if (match<mem::M>(tmp->type())) {

@@ -278,7 +278,7 @@ public:
     Ref arr(Defs shape, Ref body);
     Ref arr(u64 n, Ref body) { return arr(lit_nat(n), body); }
     Ref arr(View<u64> shape, Ref body) {
-        return arr(DefArray(shape.size(), [&](size_t i) { return lit_nat(shape[i]); }), body);
+        return arr(vector<const Def*>(shape.size(), [&](size_t i) { return lit_nat(shape[i]); }), body);
     }
     Ref arr_unsafe(Ref body) { return arr(top_nat(), body); }
     ///@}
@@ -299,7 +299,7 @@ public:
     Ref pack(Defs shape, Ref body);
     Ref pack(u64 n, Ref body) { return pack(lit_nat(n), body); }
     Ref pack(View<u64> shape, Ref body) {
-        return pack(DefArray(shape.size(), [&](auto i) { return lit_nat(shape[i]); }), body);
+        return pack(vector<const Def*>(shape.size(), [&](auto i) { return lit_nat(shape[i]); }), body);
     }
     ///@}
 
@@ -534,7 +534,7 @@ private:
         absl::btree_map<flags_t, const Def*> annexes;
         absl::btree_map<Sym, Def*> externals;
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
-        DefDefMap<DefArray> cache;
+        DefDefMap<DefVec> cache;
 
         friend void swap(Move& m1, Move& m2) noexcept {
             using std::swap;
@@ -584,7 +584,7 @@ private:
         assert(&w2.univ()->world() == &w2);
     }
 
-    friend DefArray Def::reduce(const Def*);
+    friend DefVec Def::reduce(const Def*);
 };
 
 } // namespace thorin

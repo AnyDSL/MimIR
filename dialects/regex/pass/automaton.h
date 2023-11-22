@@ -36,7 +36,7 @@ public:
 
     std::set<const NodeType*> get_reachable_states() const {
         std::set<const NodeType*> reachableStates;
-        std::vector<const NodeType*> workList;
+        Vector<const NodeType*> workList;
         workList.push_back(get_start());
         while (!workList.empty()) {
             auto state = workList.back();
@@ -73,10 +73,10 @@ std::ostream& print_node(std::ostream& os, const NodeType& node, PrintCharF&& pr
     if (node.is_accepting()) os << "  \"" << &node << "\" [shape=doublecircle];\n";
     if (node.is_erroring()) os << "  \"" << &node << "\" [shape=square];\n";
 
-    absl::flat_hash_map<const NodeType*, std::vector<std::pair<nat_t, nat_t>>> node2transitions;
+    absl::flat_hash_map<const NodeType*, Vector<std::pair<nat_t, nat_t>>> node2transitions;
     node.for_transitions([&](auto c, auto to) {
         if (!node2transitions.contains(to))
-            node2transitions.emplace(to, std::vector<std::pair<nat_t, nat_t>>{
+            node2transitions.emplace(to, Vector<std::pair<nat_t, nat_t>>{
                                              std::pair<nat_t, nat_t>{c, c}
             });
         else

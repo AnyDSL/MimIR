@@ -11,7 +11,6 @@
 #include "thorin/driver.h"
 #include "thorin/rewrite.h"
 
-#include "thorin/util/array.h"
 #include "thorin/util/sys.h"
 
 using namespace std::string_literals;

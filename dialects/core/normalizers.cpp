@@ -714,12 +714,13 @@ Ref normalize_zip(Ref type, Ref c, Ref arg) {
             auto s_n    = Lit::isa(shapes.front());
 
             if (s_n) {
-                DefArray elems(*s_n, [&, f = f](size_t s_i) {
-                    DefArray inner_args(args.size(), [&](size_t i) { return args[i]->proj(*s_n, s_i); });
+                auto elems = vector<const Def*>(*s_n, [&, f = f](size_t s_i) {
+                    auto inner_args
+                        = vector<const Def*>(args.size(), [&](size_t i) { return args[i]->proj(*s_n, s_i); });
                     if (*lr == 1) {
                         return w.app(f, inner_args);
                     } else {
-                        auto app_zip = w.app(w.annex<zip>(), {w.lit_nat(*lr - 1), w.tuple(shapes.skip_front())});
+                        auto app_zip = w.app(w.annex<zip>(), {w.lit_nat(*lr - 1), w.tuple(Span(shapes).subspan(1))});
                         return w.app(w.app(app_zip, is_os), inner_args);
                     }
                 });

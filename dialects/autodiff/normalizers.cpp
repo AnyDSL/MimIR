@@ -57,8 +57,8 @@ Ref normalize_add(Ref type, Ref callee, Ref arg) {
     // A value level match would be harder as a tuple might in reality be a var or extract
     if (auto sig = T->isa<Sigma>()) {
         world.DLOG("add tuple");
-        auto p = sig->num_ops(); // TODO: or num_projs
-        DefArray ops(p, [&](size_t i) {
+        auto p   = sig->num_ops(); // TODO: or num_projs
+        auto ops = vector<const Def*>(p, [&](size_t i) {
             return world.app(world.app(world.annex<add>(), sig->op(i)), {a->proj(i), b->proj(i)});
         });
         return world.tuple(ops);
@@ -95,8 +95,8 @@ Ref normalize_sum(Ref type, Ref callee, Ref arg) {
     if (auto lit = count->isa<Lit>()) {
         auto val = lit->get<nat_t>();
         world.DLOG("val: {}", val);
-        DefArray args = arg->projs(val);
-        auto sum      = world.app(world.annex<zero>(), T);
+        auto args = arg->projs(val);
+        auto sum  = world.app(world.annex<zero>(), T);
         // This special case would also be handled by add zero
         if (val >= 1) sum = args[0];
         for (size_t i = 1; i < val; ++i) sum = world.app(world.app(world.annex<add>(), T), {sum, args[i]});

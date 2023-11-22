@@ -25,7 +25,7 @@ inline const Def* op_for(World& w,
                          Defs inits,
                          Ref body,
                          Ref brk) {
-    DefArray types(inits.size(), [&](size_t i) { return inits[i]->type(); });
+    auto types = vector<const Def*>(inits.size(), [&](size_t i) { return inits[i]->type(); });
     return w.app(fn_for(w, types), {begin, end, step, w.tuple(inits), body, brk});
 }
 // clang-format on

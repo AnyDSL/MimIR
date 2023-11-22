@@ -34,7 +34,7 @@ private:
     /// ```
     enum Lattice : u8 { Dead, Prop, Keep };
     enum : u32 { Varxy, Appxy };
-    using Lattices = Array<Lattice>;
+    using Lattices = Vector<Lattice>;
 
     /// @name PassMan hooks
     ///@{
@@ -44,7 +44,7 @@ private:
 
     BetaRed* beta_red_;
     EtaExp* eta_exp_;
-    LamMap<std::tuple<Lattices, Lam*, DefArray>> lam2info_;
+    LamMap<std::tuple<Lattices, Lam*, DefVec>> lam2info_;
     const bool bb_only_;
 };
 

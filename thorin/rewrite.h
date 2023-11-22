@@ -58,10 +58,10 @@ Ref rewrite(Def* mut, Ref arg, size_t i);
 Ref rewrite(Def* mut, Ref arg, size_t i, const Scope& scope);
 
 /// Rewrites @p mut's ops by substituting @p mut's @p Var with @p arg while obeying @p mut's @p scope.
-DefArray rewrite(Def* mut, Ref arg);
+DefVec rewrite(Def* mut, Ref arg);
 
 /// Same as above but uses @p scope as an optimization instead of computing a new Scope.
-DefArray rewrite(Def* mut, Ref arg, const Scope& scope);
+DefVec rewrite(Def* mut, Ref arg, const Scope& scope);
 ///@}
 
 } // namespace thorin

@@ -168,7 +168,7 @@ const Def* Arr::immutabilize() {
     auto& w = world();
     if (auto n = Lit::isa(shape())) {
         if (Scope::is_free(this, body()))
-            return w.sigma(DefArray(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
+            return w.sigma(vector<const Def*>(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
         return w.arr(shape(), body());
     }
     return nullptr;
@@ -178,7 +178,7 @@ const Def* Pack::immutabilize() {
     auto& w = world();
     if (auto n = Lit::isa(shape())) {
         if (Scope::is_free(this, body()))
-            return w.tuple(DefArray(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
+            return w.tuple(vector<const Def*>(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
         return w.pack(shape(), body());
     }
     return nullptr;
@@ -200,12 +200,12 @@ const Def* Pack::reduce(const Def* arg) const {
 
 ///@}
 
-DefArray Def::reduce(const Def* arg) const {
+DefVec Def::reduce(const Def* arg) const {
     if (auto mut = isa_mut()) return mut->reduce(arg);
-    return ops();
+    return DefVec(ops().begin(), ops().end());
 }
 
-DefArray Def::reduce(const Def* arg) {
+DefVec Def::reduce(const Def* arg) {
     auto& cache = world().move_.cache;
     if (auto i = cache.find({this, arg}); i != cache.end()) return i->second;
 
@@ -213,7 +213,7 @@ DefArray Def::reduce(const Def* arg) {
 }
 
 const Def* Def::refine(size_t i, const Def* new_op) const {
-    DefArray new_ops(ops());
+    DefVec new_ops(ops().begin(), ops().end());
     new_ops[i] = new_op;
     return rebuild(world(), type(), new_ops);
 }

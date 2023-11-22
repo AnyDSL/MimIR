@@ -8,11 +8,12 @@
 
 #include "thorin/config.h"
 
-#include "thorin/util/array.h"
 #include "thorin/util/dbg.h"
 #include "thorin/util/hash.h"
 #include "thorin/util/print.h"
+#include "thorin/util/span.h"
 #include "thorin/util/util.h"
+#include "thorin/util/vector.h"
 
 // clang-format off
 #define THORIN_NODE(m)                                                        \
@@ -53,7 +54,7 @@ template<class To> using DefMap = GIDMap<const Def*, To>;
 using DefSet                    = GIDSet<const Def*>;
 using Def2Def                   = DefMap<const Def*>;
 using Defs                      = View<const Def*>;
-using DefArray                  = Array<const Def*>;
+using DefVec                    = absl::InlinedVector<const Def*, 4>;
 ///@}
 
 /// @name Def (Mutable)
@@ -367,7 +368,7 @@ public:
 
     template<class F> auto projs(nat_t a, F f) const {
         using R = std::decay_t<decltype(f(this))>;
-        return Array<R>(a, [&](nat_t i) { return f(proj(a, i)); });
+        return vector<R>(a, [&](nat_t i) { return f(proj(a, i)); });
     }
     template<nat_t A = -1_n> auto projs() const {
         return projs<A>([](const Def* def) { return def; });
@@ -464,8 +465,8 @@ public:
     const Def* refine(size_t i, const Def* new_op) const;
 
     /// Rewrites Def::ops by substituting `this` mutable's Var with @p arg.
-    DefArray reduce(const Def* arg) const;
-    DefArray reduce(const Def* arg);
+    DefVec reduce(const Def* arg) const;
+    DefVec reduce(const Def* arg);
     ///@}
 
     /// @name Type Checking
@@ -548,7 +549,6 @@ template<class T = std::logic_error, class... Args>
 /// @name DefDef
 ///@{
 using DefDef = std::tuple<const Def*, const Def*>;
-using DefVec = std::vector<const Def*>;
 
 struct DefDefHash {
     hash_t operator()(DefDef pair) const {

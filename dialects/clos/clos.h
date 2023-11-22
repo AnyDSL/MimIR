@@ -76,8 +76,7 @@ inline Ref apply_closure(Ref closure, Defs args) {
 
 // TODO: rename this
 /// Checks is def is the variable of a mut of type N.
-template<class N>
-std::tuple<const Extract*, N*> ca_isa_var(Ref def) {
+template<class N> std::tuple<const Extract*, N*> ca_isa_var(Ref def) {
     if (auto proj = def->isa<Extract>()) {
         if (auto var = proj->tuple()->isa<Var>(); var && var->mut()->isa<N>())
             return std::tuple(proj, var->mut()->as<N>());
@@ -123,8 +122,9 @@ inline Ref clos_insert_env(size_t i, Ref env, Ref a) {
 }
 
 inline Ref clos_insert_env(Ref env, Ref tup_or_sig) {
-    auto& w      = tup_or_sig->world();
-    auto new_ops = DefArray(tup_or_sig->num_projs() + 1, [&](auto i) { return clos_insert_env(i, env, tup_or_sig); });
+    auto& w = tup_or_sig->world();
+    auto new_ops
+        = vector<const Def*>(tup_or_sig->num_projs() + 1, [&](auto i) { return clos_insert_env(i, env, tup_or_sig); });
     return (tup_or_sig->isa<Sigma>()) ? w.sigma(new_ops) : w.tuple(new_ops);
 }
 
@@ -133,8 +133,9 @@ inline Ref clos_remove_env(size_t i, Ref def) {
     return clos_remove_env(i, [&](auto i) { return def->proj(i); });
 }
 inline Ref clos_remove_env(Ref tup_or_sig) {
-    auto& w      = tup_or_sig->world();
-    auto new_ops = DefArray(tup_or_sig->num_projs() - 1, [&](auto i) { return clos_remove_env(i, tup_or_sig); });
+    auto& w = tup_or_sig->world();
+    auto new_ops
+        = vector<const Def*>(tup_or_sig->num_projs() - 1, [&](auto i) { return clos_remove_env(i, tup_or_sig); });
     return (tup_or_sig->isa<Sigma>()) ? w.sigma(new_ops) : w.tuple(new_ops);
 }
 

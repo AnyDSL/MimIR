@@ -14,7 +14,7 @@ Ref CopyProp::rewrite(Ref def) {
     auto n = app->num_targs();
     if (n == 0) return app;
 
-    auto [it, _] = lam2info_.emplace(var_lam, std::tuple(Lattices(n), (Lam*)nullptr, DefArray(n)));
+    auto [it, _]                        = lam2info_.emplace(var_lam, std::tuple(Lattices(n), (Lam*)nullptr, DefVec(n)));
     auto& [lattice, prop_lam, old_args] = it->second;
 
     if (mem::mem_var(var_lam)) lattice[0] = Lattice::Keep;
@@ -68,8 +68,8 @@ Ref CopyProp::rewrite(Ref def) {
         if (beta_red_) beta_red_->keep(prop_lam);
         if (eta_exp_) eta_exp_->new2old(prop_lam, var_lam);
 
-        size_t j = 0;
-        DefArray new_vars(n, [&, prop_lam = prop_lam](size_t i) -> Ref {
+        size_t j      = 0;
+        auto new_vars = vector<const Def*>(n, [&, prop_lam = prop_lam](size_t i) -> Ref {
             switch (lattice[i]) {
                 case Lattice::Dead: return proxy(var_lam->var(n, i)->type(), {var_lam, world().lit_nat(i)}, Varxy);
                 case Lattice::Prop: return args[i];
@@ -86,7 +86,7 @@ Ref CopyProp::rewrite(Ref def) {
 
     // Don't optimize again. Also, keep this line here at the very bottom as this invalidates all references.
     Lam* key = prop_lam; // prop_lam is a Lam*& which might get invalidated by the very insertion happening next.
-    lam2info_.insert_or_assign(key, std::tuple(Lattices(new_doms.size(), Lattice::Keep), (Lam*)nullptr, DefArray()));
+    lam2info_.insert_or_assign(key, std::tuple(Lattices(new_doms.size(), Lattice::Keep), (Lam*)nullptr, DefVec()));
     return res;
 }
 

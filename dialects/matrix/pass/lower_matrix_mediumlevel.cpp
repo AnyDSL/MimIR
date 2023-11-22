@@ -21,7 +21,7 @@ Ref LowerMatrixMediumLevel::rewrite(Ref def) {
     return rewritten[def];
 }
 
-std::pair<Lam*, Ref> counting_for(Ref bound, DefArray acc, Ref exit, const char* name = "for_body") {
+std::pair<Lam*, Ref> counting_for(Ref bound, DefVec acc, Ref exit, const char* name = "for_body") {
     auto& world = bound->world();
     auto acc_ty = world.tuple(acc)->type();
     auto body   = world
@@ -234,7 +234,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
         auto current_mut = fun;
 
         // Each of the outer loops contains the memory and matrix as accumulator (in an inner monad).
-        DefArray acc = {current_mem, init_mat};
+        DefVec acc = {current_mem, init_mat};
 
         for (auto idx : out_indices) {
             char for_name[32];
@@ -271,14 +271,14 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
         world.DLOG("write_back {} : {}", write_back, write_back->type());
         auto [wb_mem, element_final] = write_back->vars<2>();
 
-        DefArray output_iterators((size_t)n_nat, [&](u64 i) {
+        auto output_iterators = vector<const Def*>((size_t)n_nat, [&](u64 i) {
             auto idx = out_indices[i];
             if (idx != i) world.ELOG("output indices must be consecutive 0..n-1 but {} != {}", idx, i);
             assert(idx == i && "output indices must be consecutive 0..n-1");
             auto iter_idx_def = iterator[idx];
             return iter_idx_def;
         });
-        auto output_it_tuple = world.tuple(output_iterators);
+        auto output_it_tuple  = world.tuple(output_iterators);
         world.DLOG("output tuple: {} : {}", output_it_tuple, output_it_tuple->type());
 
         auto [wb_mem2, written_matrix] = world
@@ -318,7 +318,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
         element_acc = acc[1];
 
         // Read element from input matrix.
-        DefArray input_elements((size_t)m_nat);
+        DefVec input_elements((size_t)m_nat);
         for (u64 i = 0; i < m_nat; i++) {
             // TODO: case m_nat == 1
             auto input_i                       = inputs->proj(m_nat, i);
@@ -326,14 +326,14 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
 
             world.DLOG("input matrix {} is {} : {}", i, input_matrix, input_matrix->type());
 
-            auto indices = input_idx_tup->projs(n_input[i]);
-            DefArray input_iterators(n_input[i], [&](u64 j) {
+            auto indices         = input_idx_tup->projs(n_input[i]);
+            auto input_iterators = vector<const Def*>(n_input[i], [&](u64 j) {
                 auto idx     = indices[j];
                 auto idx_lit = idx->as<Lit>()->get<u64>();
                 world.DLOG("  idx {} {} = {}", i, j, idx_lit);
                 return iterator[idx_lit];
             });
-            auto input_it_tuple = world.tuple(input_iterators);
+            auto input_it_tuple  = world.tuple(input_iterators);
 
             auto read_entry = op_read(current_mem, input_matrix, input_it_tuple);
             world.DLOG("read_entry {} : {}", read_entry, read_entry->type());

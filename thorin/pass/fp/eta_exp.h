@@ -58,7 +58,7 @@ private:
     LamSet expand_;
     Lam2Lam exp2orig_;
     Lam2Lam new2old_;
-    DefMap<Array<const Def*>> def2new_ops_;
+    DefMap<DefVec> def2new_ops_;
 };
 
 } // namespace thorin

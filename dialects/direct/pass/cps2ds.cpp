@@ -130,11 +130,11 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
     if (def->isa<Var>()) return def;
 
     if (auto tuple = def->isa<Tuple>()) {
-        DefArray elements(tuple->ops(), [&](auto op) { return rewrite_body(op); });
+        auto elements = vector<const Def*>(tuple->ops(), [&](auto op) { return rewrite_body(op); });
         return world().tuple(def->type(), elements)->set(tuple->dbg());
     }
 
-    DefArray new_ops{def->ops(), [&](auto op) { return rewrite_body(op); }};
+    auto new_ops = vector<const Def*>(def->ops(), [&](auto op) { return rewrite_body(op); });
     world().DLOG("def {} : {} [{}]", def, def->type(), def->node_name());
 
     if (def->isa<Infer>()) {
