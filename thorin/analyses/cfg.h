@@ -48,8 +48,7 @@ private:
     mutable CFNodes succs_;
 
     friend class CFA;
-    template<bool>
-    friend class CFG;
+    template<bool> friend class CFG;
 };
 
 /// @name std::ostream operator
@@ -103,8 +102,7 @@ private:
     mutable std::unique_ptr<const F_CFG> f_cfg_;
     mutable std::unique_ptr<const B_CFG> b_cfg_;
 
-    template<bool>
-    friend class CFG;
+    template<bool> friend class CFG;
 };
 
 //------------------------------------------------------------------------------
@@ -115,12 +113,10 @@ private:
 /// * `true` means a conventional CFG.
 /// * `false* means that all edges in this CFG are reversed.
 /// Thus, a [dominance analysis](DomTreeBase), for example, becomes a post-dominance analysis.
-template<bool forward>
-class CFG {
+template<bool forward> class CFG {
 public:
-    template<class Value>
-    using Map = IndexMap<CFG<forward>, const CFNode*, Value>;
-    using Set = IndexSet<CFG<forward>, const CFNode*>;
+    template<class Value> using Map = IndexMap<CFG<forward>, const CFNode*, Value>;
+    using Set                       = IndexSet<CFG<forward>, const CFNode*>;
 
     CFG(const CFG&)     = delete;
     CFG& operator=(CFG) = delete;
@@ -140,7 +136,7 @@ public:
     const CFNode* entry() const { return forward ? cfa().entry() : cfa().exit(); }
     const CFNode* exit() const { return forward ? cfa().exit() : cfa().entry(); }
 
-    Span<const CFNode*> reverse_post_order() const { return rpo_.array(); }
+    View<const CFNode*> reverse_post_order() const { return rpo_.array(); }
     auto post_order() const { return std::views::reverse(rpo_.array()); }
     /// Maps from reverse post-order index to CFNode.
     const CFNode* reverse_post_order(size_t i) const { return rpo_.array()[i]; }

@@ -277,7 +277,7 @@ public:
     Ref arr(Ref shape, Ref body);
     Ref arr(Defs shape, Ref body);
     Ref arr(u64 n, Ref body) { return arr(lit_nat(n), body); }
-    Ref arr(Span<u64> shape, Ref body) {
+    Ref arr(View<u64> shape, Ref body) {
         return arr(DefArray(shape.size(), [&](size_t i) { return lit_nat(shape[i]); }), body);
     }
     Ref arr_unsafe(Ref body) { return arr(top_nat(), body); }
@@ -298,7 +298,7 @@ public:
     Ref pack(Ref arity, Ref body);
     Ref pack(Defs shape, Ref body);
     Ref pack(u64 n, Ref body) { return pack(lit_nat(n), body); }
-    Ref pack(Span<u64> shape, Ref body) {
+    Ref pack(View<u64> shape, Ref body) {
         return pack(DefArray(shape.size(), [&](auto i) { return lit_nat(shape[i]); }), body);
     }
     ///@}

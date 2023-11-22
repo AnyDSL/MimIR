@@ -17,164 +17,116 @@ namespace thorin {
 
 template<class T> class Array;
 
-template<class T, size_t N = std::dynamic_extent> class span : public std::span<T, N> {
+/// Something which behaves like `std::vector` or `std::array`.
+template<class Vec>
+concept Vectorlike = requires(Vec vec) {
+    typename Vec::value_type;
+    vec.size();
+    vec.data();
+};
+
+/// This is a thin wrapper for `std::span<T, N>` with the following additional features:
+/// * Constructor with std::initializer_list list (C++26 will get this ...)
+/// * Constructor for any compatible Vectorlike argument
+/// * rsubspan (reverse subspan)
+/// * structured binding, if `N ! std::dynamic_extent:
+/// ```
+/// Span<int, 3> span = /*...*/;
+/// auto& [a, b, c] = span;
+/// b = 23;
+/// ```
+template<class T, size_t N = std::dynamic_extent> class Span : public std::span<T, N> {
 public:
     using Base = std::span<T, N>;
+
+    /// @name Constructors
+    ///@{
     using Base::Base;
-
-    span(std::initializer_list<T> init)
-        : Base(std::begin(init), std::ranges::distance(init)) {}
-    constexpr span(typename Base::pointer p)
+    Span(std::span<T, N> span)
+        : Base(span) {}
+    Span(std::initializer_list<T> list)
+        : Base(std::begin(list), std::ranges::distance(list)) {}
+    template<Vectorlike Vec>
+    requires(std::is_same_v<typename Vec::value_type, T>)
+    Span(Vec& vec)
+        : Base(vec.data(), vec.size()) {}
+    template<Vectorlike Vec>
+    requires(std::is_same_v<std::add_const_t<typename Vec::value_type>, std::add_const_t<T>>)
+    Span(const Vec& vec)
+        : Base(vec.data(), vec.size()) {}
+    constexpr Span(typename Base::pointer p)
         : Base(p, N) {}
+    ///@}
 
-    // template<size_t I, size_t N = std::dynamic_extent>
-    // constexpr std::span<Base::element_type, E [> see below <]> subspan() const;
-    constexpr auto rsubspan(size_t i, size_t n = std::dynamic_extent) const {
-        auto count = n == std::dynamic_extent ? Base::size() - i : n;
-        return subspan(Base::size() - (i + count), count);
+    /// @name subspan
+    ///@{
+    /// Wrappers for `std::span::subspan` that return a `thorin::Span`.
+    constexpr Span<T, std::dynamic_extent> subspan(size_t i, size_t n = std::dynamic_extent) const {
+        return Base::subspan(i, n);
     }
-    constexpr auto subspan(size_t i, size_t n = std::dynamic_extent) const {
-        auto res = Base::subspan(i, n);
-        return span(res.data(), res.size());
+    constexpr Span<T, std::dynamic_extent> rsubspan(size_t i, size_t n = std::dynamic_extent) const {
+        return n != std::dynamic_extent ? subspan(Base::size() - i - n, n) : subspan(0, Base::size() - i);
+    }
+    ///@}
+
+    /// @name rsubspan
+    ///@{
+    /// Similar to Span::subspan but in *reverse*:
+    /// `span.rsubspan(3, 5)` removes the last 3 elements and while picking 5 elements onwards from there.
+    /// E.g.: If `span` points to `0, 1, 2, 3, 4, 5, 6, 7, 8, 9`, then the result will point to `2, 3, 4, 5, 6`.
+    template<size_t i, size_t n = std::dynamic_extent>
+    constexpr Span<T, n != std::dynamic_extent ? n : (N != std::dynamic_extent ? N - i : std::dynamic_extent)>
+    subspan() const {
+        return Base::template subspan<i, n>();
     }
 
-    template<size_t I> constexpr decltype(auto) get() { return (Base::operator[](I)); }
+    template<size_t i, size_t n = std::dynamic_extent>
+    constexpr Span<T, n != std::dynamic_extent ? n : (N != std::dynamic_extent ? N - i : std::dynamic_extent)>
+    rsubspan() const {
+        if constexpr (n != std::dynamic_extent)
+            return {Base::data() + Base::size() - i - n}; // size: n
+        else if constexpr (N != std::dynamic_extent)
+            return {Base::data()}; // size: N - i
+        else
+            return {Base::data(), Base::size() - i};
+    }
+    ///@}
 };
+
+template<class T, size_t N = std::dynamic_extent> using View = Span<const T, N>;
 
 /// @name Deduction Guides
 ///@{
-template<class I, class E> span(I, E) -> span<std::remove_reference_t<std::iter_reference_t<I>>>;
-template<class T, size_t N> span(T (&)[N]) -> span<T, N>;
-template<class T, size_t N> span(std::array<T, N>&) -> span<T, N>;
-template<class T, size_t N> span(const std::array<T, N>&) -> span<const T, N>;
-template<class R> span(R&&) -> span<std::remove_reference_t<std::ranges::range_reference_t<R>>>;
+template<class I, class E> Span(I, E) -> Span<std::remove_reference_t<std::iter_reference_t<I>>>;
+template<class T, size_t N> Span(T (&)[N]) -> Span<T, N>;
+template<class T, size_t N> Span(std::array<T, N>&) -> Span<T, N>;
+template<class T, size_t N> Span(const std::array<T, N>&) -> Span<const T, N>;
+template<class R> Span(R&&) -> Span<std::remove_reference_t<std::ranges::range_reference_t<R>>>;
+template<Vectorlike Vec> Span(Vec&) -> Span<typename Vec::value_type, std::dynamic_extent>;
+template<Vectorlike Vec> Span(const Vec&) -> Span<const typename Vec::value_type, std::dynamic_extent>;
 ///@}
 
 } // namespace thorin
 
 namespace std {
-template<class T, size_t N> struct tuple_size<thorin::span<T, N>> : std::integral_constant<size_t, N> {};
+template<class T, size_t N> struct tuple_size<thorin::Span<T, N>> : std::integral_constant<size_t, N> {};
 
-template<size_t I, class T, size_t N> struct tuple_element<I, thorin::span<T, N>> {
-    using type = typename thorin::span<T, N>::reference;
+template<size_t I, class T, size_t N> struct tuple_element<I, thorin::Span<T, N>> {
+    using type = typename thorin::Span<T, N>::reference;
 };
+
+template<size_t I, class T, size_t N> constexpr decltype(auto) get(thorin::Span<T, N> span) { return (span[I]); }
 } // namespace std
 
 namespace thorin {
 
-//------------------------------------------------------------------------------
-
-/// A container-like wrapper for an array.
-/// The array may either stem from a C array, a `std::vector`, a `std::initializer_list`, an Array or another Span.
-/// Span does **not** own the data and, thus, does not destroy any data.
-/// Likewise, you must be carefull to not destroy data a Span is pointing to.
-/// Note that you can often construct a Span inline with an initializer_list: `foo(arg1, {elem1, elem2, elem3}, arg3)`.
-template<class T> class Span {
-public:
-    using value_type             = T;
-    using const_iterator         = const T*;
-    using const_reverse_iterator = std::reverse_iterator<const_iterator>;
-
-    /// @name Constructor, Destructor & Assignment
-    ///@{
-    Span() noexcept               = default;
-    Span(const Span<T>&) noexcept = default;
-    Span(Span&& span) noexcept    = default;
-    Span(const T* ptr, size_t size)
-        : size_(size)
-        , ptr_(ptr) {}
-    template<size_t N>
-    Span(const T (&ptr)[N])
-        : size_(N)
-        , ptr_(ptr) {}
-    Span(const Array<T>& array)
-        : size_(array.size())
-        , ptr_(array.begin()) {}
-    template<size_t N>
-    Span(const std::array<T, N>& array)
-        : size_(N)
-        , ptr_(array.data()) {}
-    Span(std::initializer_list<T> list)
-        : size_(std::ranges::distance(list))
-        , ptr_(std::begin(list)) {}
-    Span(const std::vector<T>& vector)
-        : size_(vector.size())
-        , ptr_(vector.data()) {}
-    Span& operator=(Span other) noexcept { return swap(*this, other), *this; }
-    ///@}
-
-    /// @name size
-    ///@{
-    size_t size() const { return size_; }
-    bool empty() const { return size_ == 0; }
-    ///@}
-
-    /// @name begin/end iterators
-    ///@{
-    const_iterator begin() const { return ptr_; }
-    const_iterator end() const { return ptr_ + size_; }
-    const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
-    const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
-    ///@}
-
-    /// @name access
-    ///@{
-    const T& operator[](size_t i) const {
-        assert(i < size() && "index out of bounds");
-        return *(ptr_ + i);
-    }
-    T const& front() const {
-        assert(!empty());
-        return ptr_[0];
-    }
-    T const& back() const {
-        assert(!empty());
-        return ptr_[size_ - 1];
-    }
-    ///@}
-
-    /// @name slice
-    ///@{
-    Span<T> skip_front(size_t num = 1) const { return Span<T>(ptr_ + num, size() - num); }
-    Span<T> skip_back(size_t num = 1) const { return Span<T>(ptr_, size() - num); }
-    Span<T> first(size_t num = 1) const {
-        assert(num <= size());
-        return Span<T>(ptr_, num);
-    }
-    Span<T> last(size_t num = 1) const {
-        assert(num <= size());
-        return Span<T>(ptr_ + size() - num, num);
-    }
-    ///@}
-
-    /// @name relational operators
-    ///@{
-    template<class Other> bool operator==(const Other& other) const {
-        return this->size() == other.size() && std::equal(begin(), end(), other.begin());
-    }
-    template<class Other> bool operator!=(const Other& other) const {
-        return this->size() != other.size() || !std::equal(begin(), end(), other.begin());
-    }
-    ///@}
-
-    /// Convert to `std::array`.
-    template<size_t N> std::array<T, N> to_array() const {
-        assert(size() == N);
-        std::array<T, N> result;
-        std::ranges::copy(*this, result.begin());
-        return result;
-    }
-
-    friend void swap(Span<T>& a1, Span<T>& a2) noexcept {
-        using std::swap;
-        swap(a1.size_, a2.size_);
-        swap(a1.ptr_, a2.ptr_);
-    }
-
-private:
-    size_t size_  = 0;
-    const T* ptr_ = nullptr;
-};
+template<class R, class S> bool equal(R range1, S range2) {
+    if (range1.size() != range2.size()) return false;
+    auto j = range2.begin();
+    for (auto i = range1.begin(), e = range1.end(); i != e; ++i, ++j)
+        if (*i != *j) return false;
+    return true;
+}
 
 //------------------------------------------------------------------------------
 
@@ -304,15 +256,11 @@ public:
         : storage_(size) {
         std::ranges::fill(*this, val);
     }
-    Array(span<T> ref)
-        : storage_(ref.size()) {
-        std::ranges::copy(ref, begin());
-    }
-    Array(span<const T> ref)
-        : storage_(ref.size()) {
-        std::ranges::copy(ref, begin());
-    }
     Array(Span<T> ref)
+        : storage_(ref.size()) {
+        std::ranges::copy(ref, begin());
+    }
+    Array(View<T> ref)
         : storage_(ref.size()) {
         std::ranges::copy(ref, begin());
     }
@@ -334,7 +282,7 @@ public:
         for (size_t i = 0; i != size; ++i) (*this)[i] = f(i);
     }
     template<class U, class F>
-    Array(span<U> ref, F f)
+    Array(Span<U> ref, F f)
         : storage_(ref.size()) {
         for (size_t i = 0, e = ref.size(); i != e; ++i) (*this)[i] = f(ref[i]);
     }
@@ -395,28 +343,21 @@ public:
 
     /// @name slice
     ///@{
-    Span<T> skip_front(size_t num = 1) const { return Span<T>(data() + num, size() - num); }
-    Span<T> skip_back(size_t num = 1) const { return Span<T>(data(), size() - num); }
-    Span<T> first(size_t num = 1) const {
+    View<T> skip_front(size_t num = 1) const { return View<T>(data() + num, size() - num); }
+    View<T> skip_back(size_t num = 1) const { return View<T>(data(), size() - num); }
+    View<T> first(size_t num = 1) const {
         assert(num <= size());
-        return Span<T>(data(), num);
+        return View<T>(data(), num);
     }
     Span<T> last(size_t num = 1) const {
         assert(num <= size());
-        return Span<T>(data() + size() - num, num);
+        return View<T>(data() + size() - num, num);
     }
     ///@}
 
     /// @name convert
     ///@{
-    Span<T> ref() const { return Span<T>(size(), data()); }
-    template<size_t N> std::array<T, N> to_array() const { return ref().template to_array<N>(); }
-    ///@}
-
-    /// @name relational operators
-    ///@{
-    bool operator==(const Array other) const { return Span<T>(*this) == Span<T>(other); }
-    bool operator!=(const Array other) const { return Span<T>(*this) != Span<T>(other); }
+    View<T> ref() const { return View<T>(size(), data()); }
     ///@}
 
     friend void swap(Array& a, Array& b) noexcept {

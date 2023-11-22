@@ -7,7 +7,7 @@ template<bool forward> void DomTreeBase<forward>::create() {
     idoms_[cfg().entry()] = cfg().entry();
 
     // all idoms different from entry are set to their first found dominating pred
-    for (auto n : cfg().reverse_post_order().skip_front()) {
+    for (auto n : cfg().reverse_post_order().subspan(1)) {
         for (auto pred : cfg().preds(n)) {
             if (cfg().index(pred) < cfg().index(n)) {
                 idoms_[n] = pred;
@@ -21,7 +21,7 @@ outer_loop:;
     for (bool todo = true; todo;) {
         todo = false;
 
-        for (auto n : cfg().reverse_post_order().skip_front()) {
+        for (auto n : cfg().reverse_post_order().subspan(1)) {
             const CFNode* new_idom = nullptr;
             for (auto pred : cfg().preds(n)) new_idom = new_idom ? least_common_ancestor(new_idom, pred) : pred;
 
@@ -33,7 +33,7 @@ outer_loop:;
         }
     }
 
-    for (auto n : cfg().reverse_post_order().skip_front()) children_[idom(n)].push_back(n);
+    for (auto n : cfg().reverse_post_order().subspan(1)) children_[idom(n)].push_back(n);
 }
 
 template<bool forward> void DomTreeBase<forward>::depth(const CFNode* n, int i) {

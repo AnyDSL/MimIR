@@ -91,7 +91,7 @@ private:
         return counter;
     }
 
-    void recurse(Head* parent, Span<const CFNode*> heads, int depth);
+    void recurse(Head* parent, View<const CFNode*> heads, int depth);
     int walk_scc(const CFNode* cur, Head* parent, int depth, int scc_counter);
 
 private:
@@ -112,7 +112,7 @@ template<bool forward> void LoopTreeBuilder<forward>::build() {
     recurse(head, {cfg().entry()}, 1);
 }
 
-template<bool forward> void LoopTreeBuilder<forward>::recurse(Head* parent, Span<const CFNode*> heads, int depth) {
+template<bool forward> void LoopTreeBuilder<forward>::recurse(Head* parent, View<const CFNode*> heads, int depth) {
     size_t curr_new_child = 0;
     for (const auto& head : heads) {
         set_.clear();

@@ -9,14 +9,12 @@
 
 namespace thorin {
 
-template<bool>
-class LoopTreeBuilder;
+template<bool> class LoopTreeBuilder;
 
 /// Calculates a loop nesting forest rooted at LoopTree::root_.
 /// The implementation uses Steensgard's algorithm.
 /// Check out G. Ramalingam, "On Loops, Dominators, and Dominance Frontiers", 1999, for more information.
-template<bool forward>
-class LoopTree {
+template<bool forward> class LoopTree {
 public:
     class Head;
 
@@ -32,7 +30,7 @@ public:
 
         int depth() const { return depth_; }
         const Head* parent() const { return parent_; }
-        Span<const CFNode*> cf_nodes() const { return cf_nodes_; }
+        View<const CFNode*> cf_nodes() const { return cf_nodes_; }
         size_t num_cf_nodes() const { return cf_nodes().size(); }
 
     protected:
@@ -48,7 +46,7 @@ public:
             : Base(parent, depth, cf_nodes) {}
 
     public:
-        Span<std::unique_ptr<Base>> children() const { return children_; }
+        View<std::unique_ptr<Base>> children() const { return children_; }
         const Base* child(size_t i) const { return children_[i].get(); }
         size_t num_children() const { return children().size(); }
         bool is_root() const { return Base::parent_ == 0; }
@@ -91,17 +89,15 @@ public:
 private:
     static void get_nodes(std::vector<const Base*>& nodes, const Base* node) {
         nodes.push_back(node);
-        if (auto head = node->template isa<Head>()) {
+        if (auto head = node->template isa<Head>())
             for (const auto& child : head->children()) get_nodes(nodes, child.get());
-        }
     }
 
     const CFG<forward>& cfg_;
     typename CFG<forward>::template Map<Leaf*> leaves_;
     std::unique_ptr<Head> root_;
 
-    template<bool f>
-    friend std::ostream& operator<<(std::ostream&, const typename LoopTree<f>::Base*);
+    template<bool f> friend std::ostream& operator<<(std::ostream&, const typename LoopTree<f>::Base*);
     friend class LoopTreeBuilder<forward>;
 };
 

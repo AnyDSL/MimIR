@@ -52,7 +52,7 @@ class World;
 template<class To> using DefMap = GIDMap<const Def*, To>;
 using DefSet                    = GIDSet<const Def*>;
 using Def2Def                   = DefMap<const Def*>;
-using Defs                      = span<const Def* const>;
+using Defs                      = View<const Def*>;
 using DefArray                  = Array<const Def*>;
 ///@}
 
@@ -250,7 +250,7 @@ public:
 
     /// @name ops
     ///@{
-    template<size_t N = std::dynamic_extent> auto ops() const { return span<const Def* const, N>(ops_ptr(), num_ops_); }
+    template<size_t N = std::dynamic_extent> auto ops() const { return View<const Def*, N>(ops_ptr(), num_ops_); }
     const Def* op(size_t i) const { return ops()[i]; }
     size_t num_ops() const { return num_ops_; }
     ///@}
