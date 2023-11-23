@@ -521,7 +521,7 @@ template<wrap id> Ref normalize_wrap(Ref type, Ref c, Ref arg) {
             }
         }
 
-        if (id == wrap::sub)
+        if (auto lm = Lit::isa(mode); lm && *lm != 0 && id == wrap::sub)
             return world.call(wrap::add, mode, Defs{a, world.lit_idx_mod(*ls, ~*lb + 1_u64)}); // a - lb -> a + (~lb + 1)
         else if (id == wrap::shl && ls && *lb > *ls)
             return world.bot(type);
