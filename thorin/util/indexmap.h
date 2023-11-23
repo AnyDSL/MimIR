@@ -2,7 +2,6 @@
 
 #include <ranges>
 
-#include "thorin/util/span.h"
 #include "thorin/util/vector.h"
 
 namespace thorin {
