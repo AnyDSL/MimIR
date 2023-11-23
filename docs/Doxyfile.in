@@ -919,7 +919,6 @@ WARN_LOGFILE           =
 
 INPUT                  = cli \
                          cmake \
-                         plug \
                          docs \
                          thorin \
                          @DOXY_EXTRA_FILES_CONFIG@ \
@@ -1060,7 +1059,6 @@ EXCLUDE_SYMBOLS        = detail::* \
 # command).
 
 EXAMPLE_PATH           = thorin \
-                         plug \
                          examples \
                          @CMAKE_CURRENT_BINARY_DIR@
 
