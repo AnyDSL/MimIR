@@ -54,7 +54,7 @@ void Driver::load(Sym name) {
     ILOG("loading plugin: '{}'", name);
 
     if (is_loaded(name)) {
-        WLOG("plugin '{}' already loaded", name);
+        WLOG("thorin/plugin '{}' already loaded", name);
         return;
     }
 
@@ -84,7 +84,7 @@ void Driver::load(Sym name) {
         if (auto reg = info.register_normalizers) reg(normalizers_);
         if (auto reg = info.register_backends) reg(backends_);
     } else {
-        error("plugin has no 'thorin_get_plugin()'");
+        error("thorin/plugin has no 'thorin_get_plugin()'");
     }
 }
 

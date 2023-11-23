@@ -51,8 +51,8 @@ struct Inline {
     Inline(const Def* def)
         : Inline(def, def->world().flags().dump_gid) {}
 
-    const Def* operator->() const { return def_; };
-    const Def* operator*() const { return def_; };
+    const Def* operator->() const { return def_; }
+    const Def* operator*() const { return def_; }
     explicit operator bool() const {
         if (def_->dep_const()) return true;
 
@@ -388,7 +388,7 @@ void World::dump(std::ostream& os) {
         auto dumper = Dumper(os, &dep);
 
         for (auto [_, name] : driver().imports())
-            print(os, ".{} {};\n", driver().is_loaded(name) ? "plugin" : "import", name);
+            print(os, ".{} {};\n", driver().is_loaded(name) ? "thorin/plugin" : "import", name);
         dumper.recurse(dep.root());
     }
 

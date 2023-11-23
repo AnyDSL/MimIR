@@ -81,7 +81,6 @@ else()
 endif()
 add_subdirectory(thorin)
 add_subdirectory(cli)
-add_subdirectory(plug)
 
 if(THORIN_BUILD_EXAMPLES)
     add_subdirectory(examples)

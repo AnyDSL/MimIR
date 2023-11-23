@@ -63,7 +63,7 @@ function(add_thorin_plugin)
     )
 
     set(THORIN_LIB_DIR ${CMAKE_BINARY_DIR}/lib/thorin)
-    set(PLUGINS_INCLUDE_DIR ${CMAKE_BINARY_DIR}/include/plug/)
+    set(PLUGINS_INCLUDE_DIR ${CMAKE_BINARY_DIR}/include/thorin/plug/)
 
     list(TRANSFORM PARSED_DEPENDS        PREPEND ${THORIN_LIB_DIR}/ OUTPUT_VARIABLE DEPENDS_THORIN_FILES)
     list(TRANSFORM DEPENDS_THORIN_FILES   APPEND .thorin)

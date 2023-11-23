@@ -14,8 +14,9 @@ void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
     tab.print(h, "#include \"thorin/axiom.h\"\n"
                  "#include \"thorin/plugin.h\"\n\n");
 
-    tab.print(h, "/// @namespace thorin::{} @ref {} \n", plugin, plugin);
-    tab.print(h, "namespace thorin {{\nnamespace {} {{\n\n", plugin);
+    tab.print(h, "/// @namespace thorin::plug::{} @ref {} \n", plugin, plugin);
+    tab.print(h, "namespace thorin {{\n");
+    tab.print(h, "namespace plug::{} {{\n\n", plugin);
 
     plugin_t plugin_id = *Annex::mangle(plugin);
     std::vector<std::ostringstream> normalizers, outer_namespace;
@@ -40,7 +41,7 @@ void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
         flags_t ax_id = plugin_id | (ax.tag_id << 8u);
 
         auto& os = outer_namespace.emplace_back();
-        print(os << std::hex, "template<> constexpr flags_t Annex::Base<{}::{}> = 0x{};\n", plugin, ax.tag, ax_id);
+        print(os << std::hex, "template<> constexpr flags_t Annex::Base<plug::{}::{}> = 0x{};\n", plugin, ax.tag, ax_id);
 
         if (auto& subs = ax.subs; !subs.empty()) {
             for (const auto& aliases : subs) {
@@ -60,7 +61,7 @@ void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
         tab.print(h, "}};\n\n");
 
         if (!ax.subs.empty()) tab.print(h, "THORIN_ENUM_OPERATORS({})\n", ax.tag);
-        print(outer_namespace.emplace_back(), "template<> constexpr size_t Annex::Num<{}::{}> = {};\n", plugin, ax.tag, ax.subs.size());
+        print(outer_namespace.emplace_back(), "template<> constexpr size_t Annex::Num<plug::{}::{}> = {};\n", plugin, ax.tag, ax.subs.size());
 
         if (ax.normalizer) {
             if (auto& subs = ax.subs; !subs.empty()) {
@@ -85,7 +86,7 @@ void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
         --tab;
     }
 
-    tab.print(h, "}} // namespace {}\n\n", plugin);
+    tab.print(h, "}} // namespace plug::{}\n\n", plugin);
 
     tab.print(h, "#ifndef DOXYGEN // don't include in Doxygen documentation\n");
     for (const auto& line : outer_namespace) tab.print(h, "{}", line.str());
@@ -94,7 +95,7 @@ void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
     // emit helpers for non-function axiom
     for (const auto& [tag, ax] : infos) {
         if (ax.pi || ax.plugin != plugin) continue; // from function or other plugin?
-        tab.print(h, "template<> struct Axiom::Match<{}::{}> {{ using type = Axiom; }};\n", ax.plugin, ax.tag);
+        tab.print(h, "template<> struct Axiom::Match<plug::{}::{}> {{ using type = Axiom; }};\n", ax.plugin, ax.tag);
     }
 
     tab.print(h, "#endif\n");

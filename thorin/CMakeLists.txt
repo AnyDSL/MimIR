@@ -1,3 +1,5 @@
+add_subdirectory(plug)
+
 add_library(libthorin
     axiom.cpp
     axiom.h

@@ -6,14 +6,13 @@
 #include "thorin/world.h"
 
 #include "thorin/fe/parser.h"
-
-#include "plug/regex/pass/dfa.h"
-#include "plug/regex/pass/dfa2matcher.h"
-#include "plug/regex/pass/dfamin.h"
-#include "plug/regex/pass/nfa.h"
-#include "plug/regex/pass/nfa2dfa.h"
-#include "plug/regex/pass/regex2nfa.h"
-#include "plug/regex/regex.h"
+#include "thorin/plug/regex/pass/dfa.h"
+#include "thorin/plug/regex/pass/dfa2matcher.h"
+#include "thorin/plug/regex/pass/dfamin.h"
+#include "thorin/plug/regex/pass/nfa.h"
+#include "thorin/plug/regex/pass/nfa2dfa.h"
+#include "thorin/plug/regex/pass/regex2nfa.h"
+#include "thorin/plug/regex/regex.h"
 
 using namespace thorin::automaton;
 

@@ -16,13 +16,13 @@
 #include "thorin/pass/optimize.h"
 #include "thorin/pass/pass.h"
 #include "thorin/pass/pipelinebuilder.h"
-
-#include "plug/compile/compile.h"
-#include "plug/core/core.h"
-#include "plug/math/math.h"
-#include "plug/mem/mem.h"
+#include "thorin/plug/compile/compile.h"
+#include "thorin/plug/core/core.h"
+#include "thorin/plug/math/math.h"
+#include "thorin/plug/mem/mem.h"
 
 using namespace thorin;
+using namespace thorin::plug;
 
 // TODO can we port this to lit testing?
 

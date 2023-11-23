@@ -8,11 +8,12 @@
 #include "thorin/rewrite.h"
 
 #include "thorin/fe/parser.h"
+#include "thorin/plug/core/core.h"
 
 #include "helpers.h"
-#include "plug/core/core.h"
 
 using namespace thorin;
+using namespace thorin::plug;
 
 TEST(Zip, fold) {
     Driver driver;

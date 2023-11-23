@@ -34,7 +34,7 @@ void Parser::parse_module() {
 
     parse_decls({});
     expect(Tag::EoF, "module");
-};
+}
 
 void Parser::import(fs::path name, std::ostream* md) {
     world().VLOG("import: {}", name);
@@ -86,7 +86,7 @@ void Parser::parse_import() {
 
 void Parser::parse_plugin() {
     eat(Tag::K_plugin);
-    auto name = expect(Tag::M_id, "plugin name");
+    auto name = expect(Tag::M_id, "thorin/plugin name");
     expect(Tag::T_semicolon, "end of import");
     plugin(name.sym().view());
 }
