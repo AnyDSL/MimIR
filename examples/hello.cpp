@@ -1,6 +1,6 @@
 #include <fstream>
 
-#include <dialects/mem/mem.h>
+#include <plug/mem/mem.h>
 #include <thorin/driver.h>
 #include <thorin/fe/parser.h>
 #include <thorin/pass/optimize.h>

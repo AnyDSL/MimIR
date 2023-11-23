@@ -23,7 +23,7 @@ add_thorin_plugin(<name>
 The `<name>` is expected to be the name of the plugin. This means, there
 should be (relative to your CMakeLists.txt) a file `<name>/<name>.thorin`
 containing the axiom declarations.
-This will generate a header `dialects/<name>/autogen.h` that can be used in normalizers
+This will generate a header `plug/<name>/autogen.h` that can be used in normalizers
 and passes to identify the axioms.
 
 - `SOURCES`: The values to the `SOURCES` argument are the source files used
@@ -63,7 +63,7 @@ function(add_thorin_plugin)
     )
 
     set(THORIN_LIB_DIR ${CMAKE_BINARY_DIR}/lib/thorin)
-    set(PLUGINS_INCLUDE_DIR ${CMAKE_BINARY_DIR}/include/dialects/)
+    set(PLUGINS_INCLUDE_DIR ${CMAKE_BINARY_DIR}/include/plug/)
 
     list(TRANSFORM PARSED_DEPENDS        PREPEND ${THORIN_LIB_DIR}/ OUTPUT_VARIABLE DEPENDS_THORIN_FILES)
     list(TRANSFORM DEPENDS_THORIN_FILES   APPEND .thorin)
@@ -76,7 +76,7 @@ function(add_thorin_plugin)
     set(THORIN_FILE         ${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN}/${PLUGIN}.thorin)
     set(THORIN_FILE_LIB_DIR ${THORIN_LIB_DIR}/${PLUGIN}.thorin)
     set(PLUGIN_H            ${PLUGINS_INCLUDE_DIR}${PLUGIN}/autogen.h)
-    set(PLUGIN_MD           ${CMAKE_BINARY_DIR}/docs/dialects/${PLUGIN}.md)
+    set(PLUGIN_MD           ${CMAKE_BINARY_DIR}/docs/plug/${PLUGIN}.md)
 
     list(APPEND THORIN_PLUGIN_LIST "${PLUGIN}")
     string(APPEND THORIN_PLUGIN_LAYOUT "<tab type=\"user\" url=\"@ref ${PLUGIN}\" title=\"${PLUGIN}\"/>")
@@ -95,7 +95,7 @@ function(add_thorin_plugin)
     add_custom_target(internal_thorin_${PLUGIN}_thorin DEPENDS ${THORIN_FILE_LIB_DIR})
 
     file(MAKE_DIRECTORY ${PLUGINS_INCLUDE_DIR}${PLUGIN})
-    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/docs/dialects/)
+    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/docs/plug/)
 
     add_custom_command(
         OUTPUT ${PLUGIN_MD} ${PLUGIN_H}
@@ -127,7 +127,7 @@ function(add_thorin_plugin)
 
     target_include_directories(thorin_${PLUGIN}
         PUBLIC
-            $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include> # dialects/${PLUGIN}/autogen.h
+            $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include> # plug/${PLUGIN}/autogen.h
             $<INSTALL_INTERFACE:include>
     )
 
@@ -145,11 +145,11 @@ function(add_thorin_plugin)
 
         install(
             FILES ${PLUGIN_H}
-            DESTINATION "include/dialects/${PLUGIN}")
+            DESTINATION "include/plug/${PLUGIN}")
 
         install(
             DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${PLUGIN} "
-            DESTINATION include/dialects
+            DESTINATION include/plug
             FILES_MATCHING PATTERN *.h)
     endif()
     if(TARGET thorin_all_plugins)

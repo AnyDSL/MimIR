@@ -36,12 +36,12 @@ The main hook to the [PassMan](@ref thorin::PassMan), is the [rewrite](@ref thor
 As an example, let's have a look at the [Alloc2Malloc](@ref thorin::mem::Alloc2Malloc) pass.
 It rewrites `alloc`/`slot` calls into their more verbose siblings `malloc`/`mslot` that make the size of the alloc'ed type explicit:
 This is `alloc2malloc.h`:
-\include "dialects/mem/pass/rw/alloc2malloc.h"
+\include "plug/mem/pass/rw/alloc2malloc.h"
 
 The actual `rewrite` simply inspects the current `def`.
 If this happens to be a `alloc`/`slot`, it will simply return the more explicit counterpart.
 This is `alloc2malloc.cpp`:
-\include "dialects/mem/pass/rw/alloc2malloc.cpp"
+\include "plug/mem/pass/rw/alloc2malloc.cpp"
 
 ## Fixed-Point Pass
 

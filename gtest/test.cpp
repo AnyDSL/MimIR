@@ -9,8 +9,8 @@
 
 #include "thorin/fe/parser.h"
 
-#include "dialects/core/core.h"
 #include "helpers.h"
+#include "plug/core/core.h"
 
 using namespace thorin;
 

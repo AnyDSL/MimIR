@@ -17,10 +17,10 @@
 #include "thorin/pass/pass.h"
 #include "thorin/pass/pipelinebuilder.h"
 
-#include "dialects/compile/compile.h"
-#include "dialects/core/core.h"
-#include "dialects/math/math.h"
-#include "dialects/mem/mem.h"
+#include "plug/compile/compile.h"
+#include "plug/core/core.h"
+#include "plug/math/math.h"
+#include "plug/mem/mem.h"
 
 using namespace thorin;
 
