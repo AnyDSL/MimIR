@@ -3,7 +3,6 @@
 #include <iostream>
 #include <type_traits>
 
-#include <bits/ranges_base.h>
 #include <thorin/lam.h>
 
 #include "dialects/direct/autogen.h"
