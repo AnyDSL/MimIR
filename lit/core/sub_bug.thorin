@@ -1,0 +1,17 @@
+// RUN: rm -f %t.ll
+// RUN: %thorin %s -o - | FileCheck %s
+// see https://github.com/AnyDSL/thorin2/issues/253
+
+.plugin core;
+
+.fun .extern f(a: %core.I8): «4; %core.I8» = {
+    return (%core.wrap.sub 0               (a, 1:%core.I8),
+            %core.wrap.sub %core.mode.nsw  (a, 1:%core.I8),
+            %core.wrap.sub %core.mode.nuw  (a, 1:%core.I8),
+            %core.wrap.sub %core.mode.nusw (a, 1:%core.I8))
+};
+
+// CHECK-DAG: %core.wrap.add 256 0 (255:(.Idx 256), a_{{[0-9]+}});
+// CHECK-DAG: %core.wrap.sub 256 1 (a_{{[0-9]+}}, 1:(.Idx 256));
+// CHECK-DAG: %core.wrap.sub 256 2 (a_{{[0-9]+}}, 1:(.Idx 256));
+// CHECK-DAG: %core.wrap.sub 256 3 (a_{{[0-9]+}}, 1:(.Idx 256));
