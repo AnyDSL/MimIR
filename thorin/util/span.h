@@ -31,7 +31,7 @@ public:
     /// @name Constructors
     ///@{
     using Base::Base;
-    constexpr Span(std::initializer_list<T> list)
+    Span(std::initializer_list<T> list)
         : Base(std::begin(list), std::ranges::distance(list)) {}
     constexpr Span(std::span<T, N> span)
         : Base(span) {}
