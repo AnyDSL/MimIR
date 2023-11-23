@@ -9,9 +9,9 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 100)">
 <title>thorin/pass/rw/ret_wrap.h</title>
 <!-- Node1 -->
-<g id="node1" class="node">
+<g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title=" ">
 <polygon fill="#999999" stroke="#666666" points="381.5,-96 279.5,-96 279.5,-66 381.5,-66 381.5,-96"/>
 <text text-anchor="start" x="287.5" y="-84" font-family="Helvetica,sans-Serif" font-size="10.00">thorin/pass/rw/ret</text>
 <text text-anchor="middle" x="330.5" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">_wrap.h</text>
@@ -19,54 +19,63 @@
 </g>
 </g>
 <!-- Node2 -->
-<g id="node2" class="node">
+<g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="compile_8cpp.html" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="compile_8cpp.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="159,-24.5 0,-24.5 0,-5.5 159,-5.5 159,-24.5"/>
 <text text-anchor="middle" x="79.5" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">dialects/compile/compile.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node2 -->
-<g id="edge1" class="edge">
+<g id="edge1_Node000001_Node000002" class="edge">
 <title>Node1&#45;&gt;Node2</title>
+<g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M269.5,-64.45C220.24,-51.89 152.78,-34.68 112.91,-24.52"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="268.85,-67.89 279.4,-66.97 270.58,-61.11 268.85,-67.89"/>
+</a>
+</g>
 </g>
 <!-- Node3 -->
-<g id="node3" class="node">
+<g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="optimize_8cpp.html" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="optimize_8cpp.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="314,-24.5 177,-24.5 177,-5.5 314,-5.5 314,-24.5"/>
 <text text-anchor="middle" x="245.5" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin/pass/optimize.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node3 -->
-<g id="edge2" class="edge">
+<g id="edge2_Node000001_Node000003" class="edge">
 <title>Node1&#45;&gt;Node3</title>
+<g id="a_edge2_Node000001_Node000003"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M303.39,-59.58C287.83,-47.87 269.1,-33.77 257.25,-24.84"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="301.54,-62.58 311.64,-65.8 305.75,-56.99 301.54,-62.58"/>
+</a>
+</g>
 </g>
 <!-- Node4 -->
-<g id="node4" class="node">
+<g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="pipelinebuilder_8cpp.html" target="_top" xlink:title=" ">
+<g id="a_Node000004"><a xlink:href="pipelinebuilder_8cpp.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="498.5,-24.5 332.5,-24.5 332.5,-5.5 498.5,-5.5 498.5,-24.5"/>
 <text text-anchor="middle" x="415.5" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin/pass/pipelinebuilder.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node4 -->
-<g id="edge3" class="edge">
+<g id="edge3_Node000001_Node000004" class="edge">
 <title>Node1&#45;&gt;Node4</title>
+<g id="a_edge3_Node000001_Node000004"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M357.61,-59.58C373.17,-47.87 391.9,-33.77 403.75,-24.84"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="355.25,-56.99 349.36,-65.8 359.46,-62.58 355.25,-56.99"/>
+</a>
+</g>
 </g>
 <!-- Node5 -->
-<g id="node5" class="node">
+<g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="ret__wrap_8cpp.html" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="ret__wrap_8cpp.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="618.5,-30 516.5,-30 516.5,0 618.5,0 618.5,-30"/>
 <text text-anchor="start" x="524.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">thorin/pass/rw/ret</text>
 <text text-anchor="middle" x="567.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_wrap.cpp</text>
@@ -74,10 +83,13 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node5 -->
-<g id="edge4" class="edge">
+<g id="edge4_Node000001_Node000005" class="edge">
 <title>Node1&#45;&gt;Node5</title>
+<g id="a_edge4_Node000001_Node000005"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M391.74,-63.46C430.44,-53.01 479.88,-39.66 516.46,-29.78"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="390.38,-60.21 381.63,-66.19 392.2,-66.96 390.38,-60.21"/>
+</a>
+</g>
 </g>
 </g>
 </svg>

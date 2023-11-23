@@ -6,12 +6,22 @@
 <!-- Title: dialects/mem/phase/add_mem.h Pages: 1 -->
 <svg width="274pt" height="104pt"
  viewBox="0.00 0.00 274.00 104.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<svg id="main" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" onload="init(evt)">
+<style type="text/css"><![CDATA[
+.node, .edge {opacity: 0.7;}
+.node.selected, .edge.selected {opacity: 1;}
+.edge:hover path { stroke: red; }
+.edge:hover polygon { stroke: red; fill: red; }
+]]></style>
+<script type="application/ecmascript" xlink:href="svg.min.js"/>
+<svg id="graph" class="graph">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 100)">
 <title>dialects/mem/phase/add_mem.h</title>
 <!-- Node1 -->
-<g id="node1" class="node">
+<g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title=" ">
 <polygon fill="#999999" stroke="#666666" points="195,-96 79,-96 79,-66 195,-66 195,-96"/>
 <text text-anchor="start" x="87" y="-84" font-family="Helvetica,sans-Serif" font-size="10.00">dialects/mem/phase</text>
 <text text-anchor="middle" x="137" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">/add_mem.h</text>
@@ -19,24 +29,27 @@
 </g>
 </g>
 <!-- Node2 -->
-<g id="node2" class="node">
+<g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="mem_8cpp.html" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="mem_8cpp.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="132,-24.5 0,-24.5 0,-5.5 132,-5.5 132,-24.5"/>
 <text text-anchor="middle" x="66" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">dialects/mem/mem.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node2 -->
-<g id="edge1" class="edge">
+<g id="edge1_Node000001_Node000002" class="edge">
 <title>Node1&#45;&gt;Node2</title>
+<g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M113.63,-58.93C100.78,-47.35 85.53,-33.61 75.81,-24.84"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="111.47,-61.7 121.24,-65.8 116.16,-56.5 111.47,-61.7"/>
+</a>
+</g>
 </g>
 <!-- Node3 -->
-<g id="node3" class="node">
+<g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="add__mem_8cpp.html" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="add__mem_8cpp.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="266,-30 150,-30 150,0 266,0 266,-30"/>
 <text text-anchor="start" x="158" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">dialects/mem/phase</text>
 <text text-anchor="middle" x="208" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">/add_mem.cpp</text>
@@ -44,10 +57,28 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node3 -->
-<g id="edge2" class="edge">
+<g id="edge2_Node000001_Node000003" class="edge">
 <title>Node1&#45;&gt;Node3</title>
+<g id="a_edge2_Node000001_Node000003"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M160.38,-58.92C170.85,-49.49 182.92,-38.61 192.29,-30.16"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="157.84,-56.5 152.76,-65.8 162.53,-61.7 157.84,-56.5"/>
+</a>
 </g>
 </g>
+</g>
+</svg>
+</svg>
+
+<style type='text/css'>
+<![CDATA[
+[data-mouse-over-selected='false'] { opacity: 0.7; }
+[data-mouse-over-selected='true']  { opacity: 1.0; }
+]]>
+</style>
+<script type="application/ecmascript"><![CDATA[
+document.addEventListener('DOMContentLoaded', (event) => {
+  highlightEdges();
+  highlightAdjacentNodes();
+});
+]]></script>
 </svg>

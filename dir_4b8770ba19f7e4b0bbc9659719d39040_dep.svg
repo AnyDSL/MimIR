@@ -5,52 +5,52 @@
  -->
 <!-- Title: build/include/dialects Pages: 1 -->
 <!--zoomable 126 -->
+
 <svg id="main" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" onload="init(evt)">
 <style type="text/css"><![CDATA[
+.node, .edge {opacity: 0.7;}
+.node.selected, .edge.selected {opacity: 1;}
 .edge:hover path { stroke: red; }
 .edge:hover polygon { stroke: red; fill: red; }
 ]]></style>
-<script type="text/javascript"><![CDATA[
-var edges = document.getElementsByTagName('g');
-if (edges && edges.length) {
-  for (var i=0;i<edges.length;i++) {
-    if (edges[i].id.substr(0,4)=='edge') {
-      edges[i].setAttribute('class','edge');
-    }
-  }
-}
-]]></script>
-        <defs>
-                <circle id="rim" cx="0" cy="0" r="7"/>
-                <circle id="rim2" cx="0" cy="0" r="3.5"/>
-                <g id="zoomPlus">
-                        <use xlink:href="#rim" fill="#404040">
-                                <set attributeName="fill" to="#808080" begin="zoomplus.mouseover" end="zoomplus.mouseout"/>
-                        </use>
-                        <path d="M-4,0h8M0,-4v8" fill="none" stroke="white" stroke-width="1.5" pointer-events="none"/>
-                </g>
-                <g id="zoomMin">
-                        <use xlink:href="#rim" fill="#404040">
-                                <set attributeName="fill" to="#808080" begin="zoomminus.mouseover" end="zoomminus.mouseout"/>
-                        </use>
-                        <path d="M-4,0h8" fill="none" stroke="white" stroke-width="1.5" pointer-events="none"/>
-                </g>
-                <g id="dirArrow">
-                        <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
-                </g>
-               <g id="resetDef">
-                       <use xlink:href="#rim2" fill="#404040">
-                               <set attributeName="fill" to="#808080" begin="reset.mouseover" end="reset.mouseout"/>
-                       </use>
-               </g>
-        </defs>
 
-<script type="text/javascript">
+<defs>
+  <circle id="rim" cx="0" cy="0" r="7"/>
+  <circle id="rim2" cx="0" cy="0" r="3.5"/>
+  <g id="zoomPlus">
+    <use xlink:href="#rim" fill="#404040"><set attributeName="fill" to="#808080" begin="zoomplus.mouseover" end="zoomplus.mouseout"/></use>
+    <path d="M-4,0h8M0,-4v8" fill="none" stroke="white" stroke-width="1.5" pointer-events="none"/>
+  </g>
+  <g id="zoomMin">
+    <use xlink:href="#rim" fill="#404040"><set attributeName="fill" to="#808080" begin="zoomminus.mouseover" end="zoomminus.mouseout"/></use>
+    <path d="M-4,0h8" fill="none" stroke="white" stroke-width="1.5" pointer-events="none"/>
+  </g>
+  <g id="arrowUp" transform="translate(30 24)">
+    <use xlink:href="#rim"/>
+    <path pointer-events="none" fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
+  </g>
+  <g id="arrowRight" transform="rotate(90) translate(36 -43)">
+    <use xlink:href="#rim"/>
+    <path pointer-events="none" fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
+  </g>
+  <g id="arrowDown" transform="rotate(180) translate(-30 -48)">
+    <use xlink:href="#rim"/>
+    <path pointer-events="none" fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
+  </g>
+  <g id="arrowLeft" transform="rotate(270) translate(-36 17)">
+    <use xlink:href="#rim"/>
+    <path pointer-events="none" fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
+  </g>
+  <g id="resetDef">
+    <use xlink:href="#rim2" fill="#404040"><set attributeName="fill" to="#808080" begin="reset.mouseover" end="reset.mouseout"/></use>
+  </g>
+</defs>
+<script type="application/ecmascript">
 var viewWidth = 910;
 var viewHeight = 126;
 var sectionId = 'dynsection-0';
 </script>
-<script xlink:href="svgpan.js"/>
+<script type="application/ecmascript" xlink:href="svg.min.js"/>
 <svg id="graph" class="graph">
 <g id="viewport">
 <title>build/include/dialects</title>
@@ -95,8 +95,11 @@ var sectionId = 'dynsection-0';
 <!-- dir_9286322b93aa3ef7f3c32d87ea2f0595&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e -->
 <g id="edge1" class="edge">
 <title>dir_9286322b93aa3ef7f3c32d87ea2f0595&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e</title>
+<g id="a_edge1"><a xlink:href="dir_000000_000061.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M773.93,-55.92C768.13,-50.34 759.81,-43.5 751,-40.03 693.99,-17.58 510.36,-12.81 434.87,-11.8"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="434.59,-8.3 424.55,-11.68 434.51,-15.3 434.59,-8.3"/>
+</a>
+</g>
 <g id="a_edge1&#45;headlabel"><a xlink:href="dir_000000_000061.html" target="_top" xlink:title="2">
 <text text-anchor="middle" x="438.22" y="-3" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">2</text>
 </a>
@@ -114,8 +117,11 @@ var sectionId = 'dynsection-0';
 <!-- dir_e491a11f5b07c85d8992f3d223cf1c08&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e -->
 <g id="edge2" class="edge">
 <title>dir_e491a11f5b07c85d8992f3d223cf1c08&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e</title>
+<g id="a_edge2"><a xlink:href="dir_000003_000061.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M705.35,-55.99C698.5,-50.44 688.8,-43.61 679,-40.03 634.89,-23.92 498.22,-15.85 434.86,-12.89"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="434.79,-9.38 424.64,-12.43 434.47,-16.38 434.79,-9.38"/>
+</a>
+</g>
 <g id="a_edge2&#45;headlabel"><a xlink:href="dir_000003_000061.html" target="_top" xlink:title="2">
 <text text-anchor="middle" x="438.5" y="-4.21" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">2</text>
 </a>
@@ -133,8 +139,11 @@ var sectionId = 'dynsection-0';
 <!-- dir_4fea51a4e3805b32f020b76fa7ac6c31&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e -->
 <g id="edge3" class="edge">
 <title>dir_4fea51a4e3805b32f020b76fa7ac6c31&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e</title>
+<g id="a_edge3"><a xlink:href="dir_000010_000061.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M644.92,-55.8C639.95,-50.32 632.82,-43.63 625,-40.03 591.85,-24.75 488.11,-16.58 434.62,-13.29"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="434.82,-9.8 424.63,-12.7 434.4,-16.78 434.82,-9.8"/>
+</a>
+</g>
 <g id="a_edge3&#45;headlabel"><a xlink:href="dir_000010_000061.html" target="_top" xlink:title="2">
 <text text-anchor="middle" x="438.57" y="-4.68" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">2</text>
 </a>
@@ -152,8 +161,11 @@ var sectionId = 'dynsection-0';
 <!-- dir_f3d3547d28d138caabf7ff3cb52e4f36&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e -->
 <g id="edge4" class="edge">
 <title>dir_f3d3547d28d138caabf7ff3cb52e4f36&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e</title>
+<g id="a_edge4"><a xlink:href="dir_000012_000061.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M577.31,-55.79C570.25,-50.45 560.56,-43.92 551,-40.03 512.93,-24.51 465.89,-17.32 434.97,-14.07"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="435.04,-10.56 424.75,-13.08 434.36,-17.53 435.04,-10.56"/>
+</a>
+</g>
 <g id="a_edge4&#45;headlabel"><a xlink:href="dir_000012_000061.html" target="_top" xlink:title="2">
 <text text-anchor="middle" x="438.89" y="-5.58" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">2</text>
 </a>
@@ -171,8 +183,11 @@ var sectionId = 'dynsection-0';
 <!-- dir_34bfe2063d65b9d749da9463709903df&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e -->
 <g id="edge5" class="edge">
 <title>dir_34bfe2063d65b9d749da9463709903df&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e</title>
+<g id="a_edge5"><a xlink:href="dir_000014_000061.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M514.9,-55.77C509.66,-50.56 502.45,-44.18 495,-40.03 476.29,-29.61 453.29,-22.52 434.85,-18.02"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="435.39,-14.55 424.86,-15.72 433.82,-21.37 435.39,-14.55"/>
+</a>
+</g>
 <g id="a_edge5&#45;headlabel"><a xlink:href="dir_000014_000061.html" target="_top" xlink:title="2">
 <text text-anchor="middle" x="439.53" y="-10.09" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">2</text>
 </a>
@@ -190,8 +205,11 @@ var sectionId = 'dynsection-0';
 <!-- dir_2e4367678b59cb90f0f8cc5a0dbc70fa&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e -->
 <g id="edge6" class="edge">
 <title>dir_2e4367678b59cb90f0f8cc5a0dbc70fa&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e</title>
+<g id="a_edge6"><a xlink:href="dir_000016_000061.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M454.04,-56.01C444.87,-48.18 431.06,-36.37 419.97,-26.89"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="422.02,-24.03 412.14,-20.2 417.47,-29.36 422.02,-24.03"/>
+</a>
+</g>
 <g id="a_edge6&#45;headlabel"><a xlink:href="dir_000016_000061.html" target="_top" xlink:title="2">
 <text text-anchor="middle" x="426.6" y="-21.71" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">2</text>
 </a>
@@ -209,8 +227,11 @@ var sectionId = 'dynsection-0';
 <!-- dir_80746e965e0f886a9aa50e95efaf45c9&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e -->
 <g id="edge7" class="edge">
 <title>dir_80746e965e0f886a9aa50e95efaf45c9&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e</title>
+<g id="a_edge7"><a xlink:href="dir_000021_000061.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M402,-55.78C402,-48.83 402,-38.87 402,-30.16"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="405.5,-30.12 402,-20.12 398.5,-30.12 405.5,-30.12"/>
+</a>
+</g>
 <g id="a_edge7&#45;headlabel"><a xlink:href="dir_000021_000061.html" target="_top" xlink:title="2">
 <text text-anchor="middle" x="408.34" y="-31.21" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">2</text>
 </a>
@@ -228,8 +249,11 @@ var sectionId = 'dynsection-0';
 <!-- dir_c0d50df951438bde77c2dac75a324f36&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e -->
 <g id="edge8" class="edge">
 <title>dir_c0d50df951438bde77c2dac75a324f36&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e</title>
+<g id="a_edge8"><a xlink:href="dir_000032_000061.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M350.8,-56.01C359.82,-48.18 373.41,-36.37 384.32,-26.89"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="386.77,-29.4 392.02,-20.2 382.18,-24.11 386.77,-29.4"/>
+</a>
+</g>
 <g id="a_edge8&#45;headlabel"><a xlink:href="dir_000032_000061.html" target="_top" xlink:title="2">
 <text text-anchor="middle" x="385.92" y="-31.4" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">2</text>
 </a>
@@ -247,8 +271,11 @@ var sectionId = 'dynsection-0';
 <!-- dir_9fc67f7893aaa4cc443b229e106af2c3&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e -->
 <g id="edge9" class="edge">
 <title>dir_9fc67f7893aaa4cc443b229e106af2c3&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e</title>
+<g id="a_edge9"><a xlink:href="dir_000034_000061.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M287.16,-55.88C293.64,-50.7 302.41,-44.32 311,-40.03 329.44,-30.8 351.48,-23.8 369.25,-19.05"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="370.34,-22.39 379.16,-16.52 368.6,-15.61 370.34,-22.39"/>
+</a>
+</g>
 <g id="a_edge9&#45;headlabel"><a xlink:href="dir_000034_000061.html" target="_top" xlink:title="2">
 <text text-anchor="middle" x="367.56" y="-23.53" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">2</text>
 </a>
@@ -266,8 +293,11 @@ var sectionId = 'dynsection-0';
 <!-- dir_ec892acb8df8da37504494c241407fe1&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e -->
 <g id="edge10" class="edge">
 <title>dir_ec892acb8df8da37504494c241407fe1&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e</title>
+<g id="a_edge10"><a xlink:href="dir_000036_000061.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M221.44,-55.95C227.28,-50.54 235.5,-43.86 244,-40.03 284.7,-21.68 336.32,-15.13 369.26,-12.8"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="369.5,-16.3 379.26,-12.19 369.07,-9.31 369.5,-16.3"/>
+</a>
+</g>
 <g id="a_edge10&#45;headlabel"><a xlink:href="dir_000036_000061.html" target="_top" xlink:title="2">
 <text text-anchor="middle" x="366.09" y="-16.85" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">2</text>
 </a>
@@ -285,8 +315,11 @@ var sectionId = 'dynsection-0';
 <!-- dir_50d79fc898b8bbe7dfdde7c185e765d0&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e -->
 <g id="edge11" class="edge">
 <title>dir_50d79fc898b8bbe7dfdde7c185e765d0&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e</title>
+<g id="a_edge11"><a xlink:href="dir_000038_000061.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M164.43,-55.81C168.98,-50.33 175.57,-43.64 183,-40.03 215.1,-24.43 316.34,-16.44 369.17,-13.25"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="369.59,-16.73 379.37,-12.66 369.18,-9.74 369.59,-16.73"/>
+</a>
+</g>
 <g id="a_edge11&#45;headlabel"><a xlink:href="dir_000038_000061.html" target="_top" xlink:title="2">
 <text text-anchor="middle" x="366.16" y="-17.27" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">2</text>
 </a>
@@ -304,8 +337,11 @@ var sectionId = 'dynsection-0';
 <!-- dir_19cab0e9bb43ad8baa77bddca19ab0c8&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e -->
 <g id="edge12" class="edge">
 <title>dir_19cab0e9bb43ad8baa77bddca19ab0c8&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e</title>
+<g id="a_edge12"><a xlink:href="dir_000053_000061.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M112.38,-55.74C117.55,-50.24 124.95,-43.55 133,-40.03 174.69,-21.8 307.41,-14.84 369.45,-12.53"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="369.61,-16.03 379.48,-12.17 369.36,-9.03 369.61,-16.03"/>
+</a>
+</g>
 <g id="a_edge12&#45;headlabel"><a xlink:href="dir_000053_000061.html" target="_top" xlink:title="2">
 <text text-anchor="middle" x="366.11" y="-16.49" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">2</text>
 </a>
@@ -323,8 +359,11 @@ var sectionId = 'dynsection-0';
 <!-- dir_c1a37a303498a9acc15dd5cda38ef0d8&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e -->
 <g id="edge13" class="edge">
 <title>dir_c1a37a303498a9acc15dd5cda38ef0d8&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e</title>
+<g id="a_edge13"><a xlink:href="dir_000055_000061.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M54.08,-55.94C59.88,-50.37 68.2,-43.52 77,-40.03 129.45,-19.19 297.16,-13.52 368.92,-12.04"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="369.25,-15.53 379.18,-11.84 369.12,-8.53 369.25,-15.53"/>
+</a>
+</g>
 <g id="a_edge13&#45;headlabel"><a xlink:href="dir_000055_000061.html" target="_top" xlink:title="2">
 <text text-anchor="middle" x="365.71" y="-15.94" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">2</text>
 </a>
@@ -332,45 +371,39 @@ var sectionId = 'dynsection-0';
 </g>
 </g>
 </svg>
-        <g id="navigator" transform="translate(0 0)" fill="#404254">
-                <rect fill="#f2f5e9" fill-opacity="0.5" stroke="#606060" stroke-width=".5" x="0" y="0" width="60" height="60"/>
-                <use id="zoomplus" xlink:href="#zoomPlus" x="17" y="9" onmousedown="handleZoom(evt,'in')"/>
-                <use id="zoomminus" xlink:href="#zoomMin" x="42" y="9" onmousedown="handleZoom(evt,'out')"/>
-                <use id="reset" xlink:href="#resetDef" x="30" y="36" onmousedown="handleReset()"/>
-                <g id="arrowUp" xlink:href="#dirArrow" transform="translate(30 24)" onmousedown="handlePan(0,-1)">
-                  <use xlink:href="#rim" fill="#404040">
-                        <set attributeName="fill" to="#808080" begin="arrowUp.mouseover" end="arrowUp.mouseout"/>
-                  </use>
-                  <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
-                </g>
-                <g id="arrowRight" xlink:href="#dirArrow" transform="rotate(90) translate(36 -43)" onmousedown="handlePan(1,0)">
-                  <use xlink:href="#rim" fill="#404040">
-                        <set attributeName="fill" to="#808080" begin="arrowRight.mouseover" end="arrowRight.mouseout"/>
-                  </use>
-                  <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
-                </g>
-                <g id="arrowDown" xlink:href="#dirArrow" transform="rotate(180) translate(-30 -48)" onmousedown="handlePan(0,1)">
-                  <use xlink:href="#rim" fill="#404040">
-                        <set attributeName="fill" to="#808080" begin="arrowDown.mouseover" end="arrowDown.mouseout"/>
-                  </use>
-                  <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
-                </g>
-                <g id="arrowLeft" xlink:href="#dirArrow" transform="rotate(270) translate(-36 17)" onmousedown="handlePan(-1,0)">
-                  <use xlink:href="#rim" fill="#404040">
-                        <set attributeName="fill" to="#808080" begin="arrowLeft.mouseover" end="arrowLeft.mouseout"/>
-                  </use>
-                  <path fill="none" stroke="white" stroke-width="1.5" d="M0,-3.0v7 M-2.5,-0.5L0,-3.0L2.5,-0.5"/>
-                </g>
-        </g>
-        <svg viewBox="0 0 15 15" width="100%" height="30px" preserveAspectRatio="xMaxYMin meet">
-         <g id="arrow_out" transform="scale(0.3 0.3)">
-          <a xlink:href="dir_4b8770ba19f7e4b0bbc9659719d39040_dep_org.svg" target="_base">
-           <rect id="button" ry="5" rx="5" y="6" x="6" height="38" width="38"
-                fill="#f2f5e9" fill-opacity="0.5" stroke="#606060" stroke-width="1.0"/>
-           <path id="arrow"
-             d="M 11.500037,31.436501 C 11.940474,20.09759 22.043105,11.32322 32.158766,21.979434 L 37.068811,17.246167 C 37.068811,17.246167 37.088388,32 37.088388,32 L 22.160133,31.978069 C 22.160133,31.978069 26.997745,27.140456 26.997745,27.140456 C 18.528582,18.264221 13.291696,25.230495 11.500037,31.436501 z"
-             style="fill:#404040;"/>
-          </a>
-         </g>
-        </svg>
+
+<g id="navigator" transform="translate(0 0)" fill="#404254">
+  <rect fill="#f2f5e9" fill-opacity="0.5" stroke="#606060" stroke-width=".5" x="0" y="0" width="60" height="60"/>
+  <use id="zoomplus" xlink:href="#zoomPlus" x="17" y="9" onmousedown="handleZoom(evt,'in')"/>
+  <use id="zoomminus" xlink:href="#zoomMin" x="42" y="9" onmousedown="handleZoom(evt,'out')"/>
+  <use id="reset" xlink:href="#resetDef" x="30" y="36" onmousedown="handleReset()"/>
+   <use id="arrowup" xlink:href="#arrowUp" x="0" y="0" onmousedown="handlePan(0,-1)"/>
+  <use id="arrowright" xlink:href="#arrowRight" x="0" y="0" onmousedown="handlePan(1,0)"/>
+  <use id="arrowdown" xlink:href="#arrowDown" x="0" y="0" onmousedown="handlePan(0,1)"/>
+  <use id="arrowleft" xlink:href="#arrowLeft" x="0" y="0" onmousedown="handlePan(-1,0)"/>
+</g>
+<svg viewBox="0 0 15 15" width="100%" height="30px" preserveAspectRatio="xMaxYMin meet">
+ <g id="arrow_out" transform="scale(0.3 0.3)">
+  <a xlink:href="dir_4b8770ba19f7e4b0bbc9659719d39040_dep_org.svg" target="_base">
+   <rect id="button" ry="5" rx="5" y="6" x="6" height="38" width="38"
+        fill="#f2f5e9" fill-opacity="0.5" stroke="#606060" stroke-width="1.0"/>
+   <path id="arrow"
+     d="M 11.500037,31.436501 C 11.940474,20.09759 22.043105,11.32322 32.158766,21.979434 L 37.068811,17.246167 C 37.068811,17.246167 37.088388,32 37.088388,32 L 22.160133,31.978069 C 22.160133,31.978069 26.997745,27.140456 26.997745,27.140456 C 18.528582,18.264221 13.291696,25.230495 11.500037,31.436501 z"
+     style="fill:#404040;"/>
+  </a>
+ </g>
+</svg>
+
+<style type='text/css'>
+<![CDATA[
+[data-mouse-over-selected='false'] { opacity: 0.7; }
+[data-mouse-over-selected='true']  { opacity: 1.0; }
+]]>
+</style>
+<script type="application/ecmascript"><![CDATA[
+document.addEventListener('DOMContentLoaded', (event) => {
+  highlightEdges();
+  highlightAdjacentNodes();
+});
+]]></script>
 </svg>

@@ -6,21 +6,31 @@
 <!-- Title: dialects/regex/regex.h Pages: 1 -->
 <svg width="477pt" height="159pt"
  viewBox="0.00 0.00 476.50 159.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<svg id="main" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" onload="init(evt)">
+<style type="text/css"><![CDATA[
+.node, .edge {opacity: 0.7;}
+.node.selected, .edge.selected {opacity: 1;}
+.edge:hover path { stroke: red; }
+.edge:hover polygon { stroke: red; fill: red; }
+]]></style>
+<script type="application/ecmascript" xlink:href="svg.min.js"/>
+<svg id="graph" class="graph">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 155)">
 <title>dialects/regex/regex.h</title>
 <!-- Node1 -->
-<g id="node1" class="node">
+<g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title=" ">
 <polygon fill="#999999" stroke="#666666" points="278.5,-151 153.5,-151 153.5,-132 278.5,-132 278.5,-151"/>
 <text text-anchor="middle" x="216" y="-139" font-family="Helvetica,sans-Serif" font-size="10.00">dialects/regex/regex.h</text>
 </a>
 </g>
 </g>
 <!-- Node2 -->
-<g id="node2" class="node">
+<g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="normalizers__regex_8cpp.html" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="normalizers__regex_8cpp.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="146,-96 0,-96 0,-66 146,-66 146,-96"/>
 <text text-anchor="start" x="8" y="-84" font-family="Helvetica,sans-Serif" font-size="10.00">dialects/regex/normalizers</text>
 <text text-anchor="middle" x="73" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">_regex.cpp</text>
@@ -28,15 +38,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node2 -->
-<g id="edge1" class="edge">
+<g id="edge1_Node000001_Node000002" class="edge">
 <title>Node1&#45;&gt;Node2</title>
+<g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M185.95,-128.21C163,-118.82 131.34,-105.87 107.38,-96.06"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="184.63,-131.45 195.21,-131.99 187.28,-124.97 184.63,-131.45"/>
+</a>
+</g>
 </g>
 <!-- Node3 -->
-<g id="node3" class="node">
+<g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="lower__regex_8cpp.html" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="lower__regex_8cpp.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="229.5,-30 118.5,-30 118.5,0 229.5,0 229.5,-30"/>
 <text text-anchor="start" x="126.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">dialects/regex/pass</text>
 <text text-anchor="middle" x="174" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">/lower_regex.cpp</text>
@@ -44,15 +57,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node3 -->
-<g id="edge2" class="edge">
+<g id="edge2_Node000001_Node000003" class="edge">
 <title>Node1&#45;&gt;Node3</title>
+<g id="a_edge2_Node000001_Node000003"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M206.3,-123.07C202.1,-115.01 197.38,-105.2 194,-96 185.76,-73.56 179.76,-46.35 176.58,-30.15"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="203.22,-124.74 211.05,-131.88 209.38,-121.42 203.22,-124.74"/>
+</a>
+</g>
 </g>
 <!-- Node4 -->
-<g id="node4" class="node">
+<g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="regex2nfa_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000004"><a xlink:href="regex2nfa_8h.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="313.5,-96 202.5,-96 202.5,-66 313.5,-66 313.5,-96"/>
 <text text-anchor="start" x="210.5" y="-84" font-family="Helvetica,sans-Serif" font-size="10.00">dialects/regex/pass</text>
 <text text-anchor="middle" x="258" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">/regex2nfa.h</text>
@@ -60,36 +76,45 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node4 -->
-<g id="edge3" class="edge">
+<g id="edge3_Node000001_Node000004" class="edge">
 <title>Node1&#45;&gt;Node4</title>
+<g id="a_edge3_Node000001_Node000004"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M228.13,-123.61C234.38,-114.89 241.93,-104.39 247.87,-96.11"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="225.19,-121.7 222.2,-131.87 230.87,-125.79 225.19,-121.7"/>
+</a>
+</g>
 </g>
 <!-- Node6 -->
-<g id="node6" class="node">
+<g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_node6"><a xlink:href="regex_8cpp.html" target="_top" xlink:title=" ">
+<g id="a_Node000006"><a xlink:href="regex_8cpp.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="468.5,-90.5 331.5,-90.5 331.5,-71.5 468.5,-71.5 468.5,-90.5"/>
 <text text-anchor="middle" x="400" y="-78.5" font-family="Helvetica,sans-Serif" font-size="10.00">dialects/regex/regex.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node6 -->
-<g id="edge6" class="edge">
+<g id="edge6_Node000001_Node000006" class="edge">
 <title>Node1&#45;&gt;Node6</title>
+<g id="a_edge6_Node000001_Node000006"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M252.29,-128.96C287.88,-117.65 341.31,-100.66 373.21,-90.52"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="251.22,-125.63 242.76,-131.99 253.35,-132.3 251.22,-125.63"/>
+</a>
+</g>
 </g>
 <!-- Node4&#45;&gt;Node3 -->
-<g id="edge4" class="edge">
+<g id="edge4_Node000004_Node000003" class="edge">
 <title>Node4&#45;&gt;Node3</title>
+<g id="a_edge4_Node000004_Node000003"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M231.06,-59.48C218.51,-49.91 203.89,-38.77 192.59,-30.16"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="229.28,-62.52 239.36,-65.8 233.52,-56.95 229.28,-62.52"/>
+</a>
+</g>
 </g>
 <!-- Node5 -->
-<g id="node5" class="node">
+<g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="regex2nfa_8cpp.html" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="regex2nfa_8cpp.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="358.5,-30 247.5,-30 247.5,0 358.5,0 358.5,-30"/>
 <text text-anchor="start" x="255.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">dialects/regex/pass</text>
 <text text-anchor="middle" x="303" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">/regex2nfa.cpp</text>
@@ -97,10 +122,28 @@
 </g>
 </g>
 <!-- Node4&#45;&gt;Node5 -->
-<g id="edge5" class="edge">
+<g id="edge5_Node000004_Node000005" class="edge">
 <title>Node4&#45;&gt;Node5</title>
+<g id="a_edge5_Node000004_Node000005"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M273.8,-57.53C280.2,-48.43 287.39,-38.19 293.04,-30.16"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="270.88,-55.6 267.99,-65.8 276.6,-59.63 270.88,-55.6"/>
+</a>
 </g>
 </g>
+</g>
+</svg>
+</svg>
+
+<style type='text/css'>
+<![CDATA[
+[data-mouse-over-selected='false'] { opacity: 0.7; }
+[data-mouse-over-selected='true']  { opacity: 1.0; }
+]]>
+</style>
+<script type="application/ecmascript"><![CDATA[
+document.addEventListener('DOMContentLoaded', (event) => {
+  highlightEdges();
+  highlightAdjacentNodes();
+});
+]]></script>
 </svg>

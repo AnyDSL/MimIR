@@ -13,7 +13,7 @@ var searchData=
   ['conj_10',['conj',['../namespacethorin_1_1regex.html#a6b810b8ed46269d0f24a15bbf97b41b8',1,'thorin::regex']]],
   ['constidx_11',['constIdx',['../namespacethorin_1_1demo.html#a47ac0f1b8414b61332e12f3d6161a32c',1,'thorin::demo']]],
   ['constmat_12',['constMat',['../namespacethorin_1_1matrix.html#a47e24cd2f5c1721d3cd278b92424a3e0',1,'thorin::matrix']]],
-  ['conv_13',['conv',['../namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937',1,'thorin::core::conv()'],['../namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2d',1,'thorin::math::conv()']]],
+  ['conv_13',['conv',['../namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937',1,'thorin::core::conv'],['../namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2d',1,'thorin::math::conv']]],
   ['copy_5fprop_5fpass_14',['copy_prop_pass',['../namespacethorin_1_1mem.html#ae0adbeb17f968059495d11f1d74868c4',1,'thorin::mem']]],
   ['core_5fplugin_15',['core_plugin',['../namespacethorin_1_1compile.html#a105a98ea80804ccfbd08942946a2c7d3',1,'thorin::compile']]],
   ['cps2ds_16',['cps2ds',['../namespacethorin_1_1direct.html#a697c05faf3136b21532651cc276f2794',1,'thorin::direct']]],

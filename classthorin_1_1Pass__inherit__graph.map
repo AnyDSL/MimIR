@@ -1,51 +1,128 @@
 <map id="thorin::Pass" name="thorin::Pass">
-<area shape="rect" id="node1" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="5,1085,103,1111"/>
-<area shape="rect" id="node2" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="569,545,788,585"/>
-<area shape="rect" id="node4" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="582,989,775,1029"/>
-<area shape="rect" id="node5" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="587,466,770,506"/>
-<area shape="rect" id="node6" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="587,922,771,962"/>
-<area shape="rect" id="node7" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="580,1130,777,1170"/>
-<area shape="rect" id="node9" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="581,93,776,133"/>
-<area shape="rect" id="node11" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="580,773,777,813"/>
-<area shape="rect" id="node13" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="572,1054,785,1094"/>
-<area shape="rect" id="node14" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="580,22,777,62"/>
-<area shape="rect" id="node16" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="585,171,772,211"/>
-<area shape="rect" id="node18" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="585,851,772,891"/>
-<area shape="rect" id="node20" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="585,265,772,305"/>
-<area shape="rect" id="node22" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="575,619,782,659"/>
-<area shape="rect" id="node24" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="580,695,777,735"/>
-<area shape="rect" id="node26" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="581,2190,776,2230"/>
-<area shape="rect" id="node28" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="573,1373,784,1413"/>
-<area shape="rect" id="node29" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="573,1722,784,1762"/>
-<area shape="rect" id="node31" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="587,2029,771,2069"/>
-<area shape="rect" id="node33" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="584,1589,773,1629"/>
-<area shape="rect" id="node35" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="584,2103,773,2143"/>
-<area shape="rect" id="node37" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="571,2298,786,2338"/>
-<area shape="rect" id="node39" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="571,1282,786,1322"/>
-<area shape="rect" id="node41" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="568,1514,789,1554"/>
-<area shape="rect" id="node43" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="579,362,779,402"/>
-<area shape="rect" id="node44" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="569,1959,788,1999"/>
-<area shape="rect" id="node45" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="581,1199,776,1239"/>
-<area shape="rect" id="node46" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="575,1893,782,1933"/>
-<area shape="rect" id="node47" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="571,1441,786,1481"/>
-<area shape="rect" id="node48" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="569,1827,788,1867"/>
-<area shape="rect" id="node49" href="$classthorin_1_1RWPass.html" title="Inherit from this class if your Pass does not need state and a fixed&#45;point iteration." alt="" coords="152,1145,327,1171"/>
-<area shape="rect" id="node3" href="$classDebugDump.html" title="A pass that just dumps the world." alt="" coords="892,552,995,577"/>
-<area shape="rect" id="node8" href="$classthorin_1_1LamSpec.html" title=" " alt="" coords="880,1137,1007,1163"/>
-<area shape="rect" id="node10" href="$classthorin_1_1RetWrap.html" title=" " alt="" coords="881,100,1005,125"/>
-<area shape="rect" id="node12" href="$classthorin_1_1Scalerize.html" title="Perform Scalarization (= Argument simplification), i.e.:" alt="" coords="880,780,1007,805"/>
-<area shape="rect" id="node15" href="$classthorin_1_1affine_1_1LowerFor.html" title="Lowers the for axiom to actual control flow in CPS." alt="" coords="857,29,1029,55"/>
-<area shape="rect" id="node17" href="$classthorin_1_1autodiff_1_1AutoDiffEval.html" title="This pass is the heart of AD." alt="" coords="840,179,1047,204"/>
-<area shape="rect" id="node19" href="$classthorin_1_1autodiff_1_1AutoDiffZero.html" title="Replaces calls to the zero axioms with actual zeros." alt="" coords="839,859,1048,884"/>
-<area shape="rect" id="node21" href="$classthorin_1_1autodiff_1_1AutoDiffZeroCleanup.html" title="Replaces remaining zeros (not resolvable) with ⊥." alt="" coords="854,265,1033,305"/>
-<area shape="rect" id="node23" href="$classthorin_1_1clos_1_1BranchClosElim.html" title=" " alt="" coords="841,627,1045,652"/>
-<area shape="rect" id="node25" href="$classthorin_1_1clos_1_1Clos2SJLJ.html" title=" " alt="" coords="863,703,1024,728"/>
-<area shape="rect" id="node27" href="$classthorin_1_1clos_1_1ClosConvPrep.html" title=" " alt="" coords="847,2197,1039,2223"/>
-<area shape="rect" id="node30" href="$classthorin_1_1compile_1_1DebugPrint.html" title=" " alt="" coords="843,1729,1043,1755"/>
-<area shape="rect" id="node32" href="$classthorin_1_1compile_1_1InternalCleanup.html" title=" " alt="" coords="854,2029,1033,2069"/>
-<area shape="rect" id="node34" href="$classthorin_1_1direct_1_1CPS2DS.html" title="This is the second part of ds2cps." alt="" coords="861,1596,1025,1621"/>
-<area shape="rect" id="node36" href="$classthorin_1_1direct_1_1DS2CPS.html" title="Converts direct style function to cps functions." alt="" coords="861,2111,1025,2136"/>
-<area shape="rect" id="node38" href="$classthorin_1_1matrix_1_1LowerMatrixHighLevelMapRed.html" title="Resolves lowering of high level operations into medium/other high&#45;level operations." alt="" coords="843,2298,1043,2338"/>
-<area shape="rect" id="node40" href="$classthorin_1_1matrix_1_1LowerMatrixMediumLevel.html" title="In this step, we lower map_reduce operations into affine for loops making the iteration scheme explic..." alt="" coords="843,1282,1043,1322"/>
-<area shape="rect" id="node42" href="$classthorin_1_1mem_1_1Alloc2Malloc.html" title=" " alt="" coords="847,1521,1040,1547"/>
+<area shape="rect" id="Node000001" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="5,1085,103,1111"/>
+<area shape="rect" id="Node000002" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="569,545,788,585"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="55,1071,65,970,85,832,113,696,130,642,150,603,193,551,235,517,285,495,350,474,405,458,450,449,495,452,545,474,556,484,559,495,563,506,570,516,590,530,613,542,610,547,587,535,566,520,558,508,554,497,551,487,543,479,493,458,450,454,406,463,351,479,287,500,238,522,197,555,154,606,135,644,118,697,90,833,71,971,60,1071"/>
+<area shape="rect" id="Node000004" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="582,989,775,1029"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="76,1073,110,1044,151,1016,203,987,246,969,292,957,350,946,449,928,493,930,545,946,554,952,559,959,570,972,599,986,596,991,566,976,554,962,550,956,543,951,492,935,450,933,351,951,293,962,248,974,206,992,153,1020,113,1048,80,1077"/>
+<area shape="rect" id="Node000005" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="587,466,770,506"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="54,1071,63,956,80,795,93,711,109,635,128,570,150,524,190,473,231,433,275,403,321,383,370,373,424,372,482,379,545,395,558,402,570,412,648,463,645,468,566,416,555,407,543,400,481,385,423,377,371,378,322,388,277,408,235,437,194,477,154,527,132,572,114,636,98,712,86,795,68,957,59,1072"/>
+<area shape="rect" id="Node000006" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="587,922,771,962"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="66,1072,101,1019,124,991,150,965,200,926,243,901,289,883,350,867,405,854,450,845,494,848,545,868,555,875,559,884,563,893,570,901,603,919,600,924,566,905,558,896,554,887,550,879,543,872,493,853,450,851,406,859,351,872,291,888,245,906,203,931,154,969,128,994,105,1023,71,1075"/>
+<area shape="rect" id="Node000007" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="580,1130,777,1170"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="116,1090,201,1086,308,1085,426,1089,544,1103,588,1114,629,1127,627,1132,587,1119,544,1108,426,1095,308,1090,201,1091,117,1096"/>
+<area shape="rect" id="Node000009" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="581,93,776,133"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="54,1071,64,883,84,601,97,459,113,332,130,236,140,203,150,182,191,133,232,97,275,73,321,58,369,51,422,51,545,66,623,90,622,95,543,71,422,56,370,56,322,63,277,78,235,102,194,137,154,185,145,205,135,237,118,333,102,459,89,601,69,883,59,1071"/>
+<area shape="rect" id="Node000011" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="580,773,777,813"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="56,1071,66,1022,83,959,111,892,129,860,150,831,195,782,237,751,286,729,350,710,404,695,450,686,494,690,545,710,555,718,559,728,563,737,570,745,613,770,610,775,566,749,558,739,554,730,551,722,543,715,493,695,450,692,406,700,351,715,288,734,240,755,198,786,154,834,133,863,116,895,88,961,71,1023,62,1072"/>
+<area shape="rect" id="Node000013" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="572,1054,785,1094"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="94,1077,126,1066,241,1031,334,1008,380,1003,428,1004,482,1011,545,1025,558,1031,569,1038,605,1051,603,1056,567,1043,555,1036,543,1030,481,1016,428,1009,380,1008,335,1013,243,1036,128,1071,96,1082"/>
+<area shape="rect" id="Node000014" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="580,22,777,62"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="53,1071,61,867,78,558,91,402,107,264,126,159,138,124,150,101,196,61,249,33,308,15,369,5,430,3,489,5,593,19,592,24,489,10,430,8,369,11,309,20,251,38,199,66,154,105,142,126,132,161,112,265,96,403,83,559,66,867,59,1071"/>
+<area shape="rect" id="Node000016" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="585,171,772,211"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="52,1071,53,910,64,669,76,544,93,427,117,330,133,292,150,262,190,213,231,177,275,152,320,137,369,130,422,130,544,145,589,155,630,169,628,174,587,160,544,150,422,135,369,135,321,142,277,157,235,181,194,217,154,265,137,294,123,332,99,428,81,544,70,670,59,910,58,1071"/>
+<area shape="rect" id="Node000018" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="585,851,772,891"/>
+<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="60,1071,92,990,117,944,150,901,197,856,239,827,287,807,350,789,405,774,450,766,494,769,545,789,555,797,559,806,563,814,570,822,615,849,613,853,566,827,558,817,554,808,551,800,543,793,493,774,450,771,406,779,351,794,289,812,242,832,200,860,154,905,122,947,97,992,65,1073"/>
+<area shape="rect" id="Node000020" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="585,265,772,305"/>
+<area shape="poly" id="edge19_Node000001_Node000020" title=" " alt="" coords="53,1071,57,925,70,710,82,598,99,494,121,407,135,373,150,346,190,296,231,258,274,231,320,214,369,206,422,205,481,212,545,223,598,240,644,262,641,267,596,245,543,228,480,217,422,211,369,211,321,219,276,236,234,262,193,299,154,349,139,375,126,409,104,495,87,598,75,710,62,925,58,1072"/>
+<area shape="rect" id="Node000022" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="575,619,782,659"/>
+<area shape="poly" id="edge21_Node000001_Node000022" title=" " alt="" coords="52,1071,54,998,67,896,79,840,96,784,119,730,150,680,193,629,235,596,285,573,350,553,405,536,450,527,495,531,545,553,555,563,559,574,562,585,570,595,607,617,604,621,566,598,558,587,554,575,551,566,543,557,493,536,450,533,406,542,351,558,287,578,238,600,197,632,154,683,124,732,101,786,84,842,72,897,60,998,57,1071"/>
+<area shape="rect" id="Node000024" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="580,695,777,735"/>
+<area shape="poly" id="edge23_Node000001_Node000024" title=" " alt="" coords="54,1071,60,1010,75,928,104,839,124,796,150,756,194,705,236,673,285,651,350,631,404,615,450,607,494,611,545,632,555,640,559,650,563,660,570,669,610,693,607,697,566,673,558,663,554,652,551,643,543,636,493,616,450,612,406,621,351,636,287,656,239,678,197,709,154,759,129,798,109,841,81,929,65,1011,59,1071"/>
+<area shape="rect" id="Node000026" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="581,2190,776,2230"/>
+<area shape="poly" id="edge25_Node000001_Node000026" title=" " alt="" coords="58,1124,64,1353,79,1704,92,1884,108,2042,129,2162,141,2203,154,2227,197,2269,239,2297,283,2314,328,2321,375,2320,427,2312,543,2283,573,2273,602,2259,650,2228,653,2232,605,2263,575,2278,545,2288,428,2317,376,2325,327,2326,281,2319,237,2302,193,2273,150,2230,136,2205,124,2164,103,2043,87,1884,74,1705,59,1353,53,1124"/>
+<area shape="rect" id="Node000028" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="573,1373,784,1413"/>
+<area shape="poly" id="edge27_Node000001_Node000028" title=" " alt="" coords="59,1124,66,1179,81,1249,109,1324,129,1358,154,1389,185,1413,229,1435,283,1454,343,1469,403,1479,459,1483,507,1479,543,1468,551,1459,554,1449,557,1438,566,1427,593,1410,595,1415,570,1430,562,1440,559,1451,555,1462,545,1472,508,1484,459,1488,402,1484,341,1474,282,1459,227,1439,182,1417,150,1393,125,1361,105,1326,76,1251,61,1180,54,1125"/>
+<area shape="rect" id="Node000029" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="573,1722,784,1762"/>
+<area shape="poly" id="edge28_Node000001_Node000029" title=" " alt="" coords="58,1124,61,1255,74,1441,86,1537,103,1624,125,1695,139,1722,154,1743,179,1764,206,1782,235,1795,265,1805,331,1815,398,1814,464,1805,527,1792,628,1759,629,1765,528,1797,465,1811,398,1819,330,1820,264,1810,233,1800,203,1786,175,1769,150,1746,134,1725,120,1697,97,1626,80,1538,68,1442,56,1255,53,1124"/>
+<area shape="rect" id="Node000031" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="587,2029,771,2069"/>
+<area shape="poly" id="edge30_Node000001_Node000031" title=" " alt="" coords="59,1124,67,1320,85,1612,98,1760,114,1891,133,1990,143,2023,154,2043,184,2066,227,2086,281,2102,339,2114,399,2121,456,2124,506,2120,543,2111,555,2101,566,2089,612,2066,615,2071,570,2093,558,2105,545,2116,506,2126,456,2129,399,2127,339,2119,279,2107,225,2091,181,2070,150,2046,138,2025,128,1991,109,1892,93,1761,80,1613,62,1320,54,1125"/>
+<area shape="rect" id="Node000033" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="584,1589,773,1629"/>
+<area shape="poly" id="edge32_Node000001_Node000033" title=" " alt="" coords="59,1124,67,1233,84,1386,96,1463,112,1534,131,1592,154,1632,197,1676,240,1707,284,1727,329,1738,376,1740,428,1734,483,1721,543,1703,577,1688,608,1668,657,1627,660,1631,611,1673,579,1693,545,1708,484,1727,428,1739,377,1745,328,1743,282,1732,237,1712,194,1680,150,1635,126,1595,107,1536,91,1464,78,1386,62,1234,54,1124"/>
+<area shape="rect" id="Node000035" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="584,2103,773,2143"/>
+<area shape="poly" id="edge34_Node000001_Node000035" title=" " alt="" coords="59,1124,66,1333,84,1649,96,1810,112,1952,132,2060,143,2096,154,2118,196,2161,239,2192,282,2212,327,2222,375,2223,426,2218,543,2190,555,2184,567,2176,634,2141,636,2146,569,2180,558,2188,545,2195,427,2223,375,2229,327,2227,280,2217,236,2197,193,2165,150,2121,138,2098,126,2061,107,1952,91,1810,78,1650,61,1333,53,1124"/>
+<area shape="rect" id="Node000037" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="571,2298,786,2338"/>
+<area shape="poly" id="edge36_Node000001_Node000037" title=" " alt="" coords="58,1124,60,1374,71,1761,82,1957,99,2130,110,2202,123,2260,138,2302,154,2327,180,2346,209,2362,270,2382,336,2390,403,2389,468,2380,529,2366,627,2335,629,2340,531,2371,469,2385,403,2394,336,2395,269,2387,206,2366,177,2350,150,2330,133,2305,118,2261,105,2203,94,2131,77,1958,65,1761,54,1374,53,1124"/>
+<area shape="rect" id="Node000039" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="571,1282,786,1322"/>
+<area shape="poly" id="edge38_Node000001_Node000039" title=" " alt="" coords="65,1123,76,1161,95,1206,121,1253,154,1295,200,1335,243,1359,290,1374,351,1389,406,1402,450,1410,492,1407,543,1389,550,1383,555,1376,566,1359,597,1337,629,1320,631,1324,600,1341,570,1362,559,1379,554,1387,545,1394,494,1412,450,1415,405,1407,350,1394,288,1380,241,1364,197,1339,150,1298,116,1256,90,1208,71,1162,59,1125"/>
+<area shape="rect" id="Node000041" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="568,1514,789,1554"/>
+<area shape="poly" id="edge40_Node000001_Node000041" title=" " alt="" coords="60,1124,70,1218,89,1347,117,1471,134,1519,154,1552,184,1576,228,1598,283,1616,342,1631,403,1640,459,1642,507,1638,543,1625,552,1615,554,1603,557,1589,566,1575,601,1552,604,1556,570,1578,562,1591,560,1604,556,1617,545,1629,509,1643,459,1648,402,1645,341,1636,281,1621,226,1602,181,1580,150,1556,129,1521,111,1472,83,1348,65,1219,55,1124"/>
+<area shape="rect" id="Node000043" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="579,362,779,402"/>
+<area shape="poly" id="edge42_Node000001_Node000043" title=" " alt="" coords="54,1071,60,940,76,752,89,655,105,565,125,489,150,435,189,383,230,343,273,313,319,293,369,282,422,281,481,288,545,302,645,360,642,364,543,307,480,293,422,286,369,288,321,298,276,317,233,347,193,387,154,438,130,491,110,566,94,655,81,753,65,941,59,1071"/>
+<area shape="rect" id="Node000044" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="569,1959,788,1999"/>
+<area shape="poly" id="edge43_Node000001_Node000044" title=" " alt="" coords="59,1124,68,1307,87,1578,100,1715,116,1836,134,1928,144,1958,154,1976,184,1998,227,2016,281,2030,339,2039,399,2044,456,2045,505,2041,543,2033,555,2024,567,2014,606,1997,608,2002,569,2019,558,2029,545,2038,506,2046,456,2050,399,2049,339,2044,280,2035,226,2021,181,2003,150,1980,139,1960,129,1929,110,1837,95,1716,82,1579,63,1307,54,1124"/>
+<area shape="rect" id="Node000046" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="581,1199,776,1239"/>
+<area shape="poly" id="edge44_Node000001_Node000046" title=" " alt="" coords="79,1119,125,1161,189,1212,266,1261,308,1281,351,1295,405,1310,449,1317,492,1314,543,1295,550,1290,554,1283,566,1268,593,1251,621,1237,623,1242,596,1255,570,1272,559,1287,554,1294,545,1300,493,1319,449,1322,404,1315,350,1300,306,1286,264,1266,186,1217,121,1165,76,1123"/>
+<area shape="rect" id="Node000048" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="575,1893,782,1933"/>
+<area shape="poly" id="edge45_Node000001_Node000048" title=" " alt="" coords="59,1124,69,1293,88,1539,101,1663,117,1772,134,1853,144,1880,154,1896,199,1934,242,1957,285,1968,329,1970,376,1966,426,1958,544,1939,599,1930,600,1935,544,1944,427,1963,377,1971,330,1976,285,1973,240,1962,196,1938,150,1900,139,1883,129,1855,112,1772,96,1664,83,1540,64,1293,54,1124"/>
+<area shape="rect" id="Node000049" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="571,1441,786,1481"/>
+<area shape="poly" id="edge46_Node000001_Node000049" title=" " alt="" coords="57,1124,59,1192,71,1285,83,1334,100,1383,124,1429,154,1471,184,1494,229,1516,283,1535,342,1550,403,1560,459,1563,507,1559,543,1546,551,1537,554,1526,557,1513,566,1500,601,1478,603,1483,570,1504,562,1515,560,1527,556,1540,545,1551,508,1564,459,1568,402,1565,341,1555,281,1540,227,1521,181,1499,150,1474,119,1432,95,1385,78,1336,66,1285,54,1193,52,1124"/>
+<area shape="rect" id="Node000051" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="569,1827,788,1867"/>
+<area shape="poly" id="edge47_Node000001_Node000051" title=" " alt="" coords="57,1124,57,1269,67,1480,79,1588,96,1687,121,1767,136,1797,154,1820,199,1857,242,1879,285,1889,329,1890,426,1876,482,1867,544,1861,569,1859,569,1864,544,1866,482,1872,427,1881,330,1895,285,1894,241,1884,196,1861,150,1824,132,1800,116,1769,91,1688,73,1589,62,1480,52,1269,52,1124"/>
+<area shape="rect" id="Node000053" href="$classthorin_1_1RWPass.html" title="Inherit from this class if your Pass does not need state and a fixed&#45;point iteration." alt="" coords="152,1145,327,1171"/>
+<area shape="poly" id="edge48_Node000001_Node000053" title=" " alt="" coords="108,1112,200,1143,198,1148,106,1117"/>
+<area shape="rect" id="Node000003" href="$classDebugDump.html" title="A pass that just dumps the world." alt="" coords="892,552,995,577"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="802,562,892,562,892,567,802,567"/>
+<area shape="rect" id="Node000008" href="$classthorin_1_1LamSpec.html" title=" " alt="" coords="880,1137,1007,1163"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="791,1147,880,1147,880,1153,791,1153"/>
+<area shape="rect" id="Node000010" href="$classthorin_1_1RetWrap.html" title=" " alt="" coords="881,100,1005,125"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="790,110,881,110,881,115,790,115"/>
+<area shape="rect" id="Node000012" href="$classthorin_1_1Scalerize.html" title="Perform Scalarization (= Argument simplification), i.e.:" alt="" coords="880,780,1007,805"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="791,790,880,790,880,795,791,795"/>
+<area shape="rect" id="Node000015" href="$classthorin_1_1affine_1_1LowerFor.html" title="Lowers the for axiom to actual control flow in CPS." alt="" coords="857,29,1029,55"/>
+<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="791,39,857,39,857,45,791,45"/>
+<area shape="rect" id="Node000017" href="$classthorin_1_1autodiff_1_1AutoDiffEval.html" title="This pass is the heart of AD." alt="" coords="840,179,1047,204"/>
+<area shape="poly" id="edge16_Node000016_Node000017" title=" " alt="" coords="786,189,840,189,840,194,786,194"/>
+<area shape="rect" id="Node000019" href="$classthorin_1_1autodiff_1_1AutoDiffZero.html" title="Replaces calls to the zero axioms with actual zeros." alt="" coords="839,859,1048,884"/>
+<area shape="poly" id="edge18_Node000018_Node000019" title=" " alt="" coords="786,869,839,869,839,874,786,874"/>
+<area shape="rect" id="Node000021" href="$classthorin_1_1autodiff_1_1AutoDiffZeroCleanup.html" title="Replaces remaining zeros (not resolvable) with ⊥." alt="" coords="854,265,1033,305"/>
+<area shape="poly" id="edge20_Node000020_Node000021" title=" " alt="" coords="786,282,854,282,854,287,786,287"/>
+<area shape="rect" id="Node000023" href="$classthorin_1_1clos_1_1BranchClosElim.html" title=" " alt="" coords="841,627,1045,652"/>
+<area shape="poly" id="edge22_Node000022_Node000023" title=" " alt="" coords="796,637,841,637,841,642,796,642"/>
+<area shape="rect" id="Node000025" href="$classthorin_1_1clos_1_1Clos2SJLJ.html" title=" " alt="" coords="863,703,1024,728"/>
+<area shape="poly" id="edge24_Node000024_Node000025" title=" " alt="" coords="791,713,862,713,862,718,791,718"/>
+<area shape="rect" id="Node000027" href="$classthorin_1_1clos_1_1ClosConvPrep.html" title=" " alt="" coords="847,2197,1039,2223"/>
+<area shape="poly" id="edge26_Node000026_Node000027" title=" " alt="" coords="790,2207,847,2207,847,2213,790,2213"/>
+<area shape="rect" id="Node000030" href="$classthorin_1_1compile_1_1DebugPrint.html" title=" " alt="" coords="843,1729,1043,1755"/>
+<area shape="poly" id="edge29_Node000029_Node000030" title=" " alt="" coords="798,1739,843,1739,843,1745,798,1745"/>
+<area shape="rect" id="Node000032" href="$classthorin_1_1compile_1_1InternalCleanup.html" title=" " alt="" coords="854,2029,1033,2069"/>
+<area shape="poly" id="edge31_Node000031_Node000032" title=" " alt="" coords="784,2046,854,2046,854,2051,784,2051"/>
+<area shape="rect" id="Node000034" href="$classthorin_1_1direct_1_1CPS2DS.html" title="This is the second part of ds2cps." alt="" coords="861,1596,1025,1621"/>
+<area shape="poly" id="edge33_Node000033_Node000034" title=" " alt="" coords="787,1606,861,1606,861,1611,787,1611"/>
+<area shape="rect" id="Node000036" href="$classthorin_1_1direct_1_1DS2CPS.html" title="Converts direct style function to cps functions." alt="" coords="861,2111,1025,2136"/>
+<area shape="poly" id="edge35_Node000035_Node000036" title=" " alt="" coords="787,2121,861,2121,861,2126,787,2126"/>
+<area shape="rect" id="Node000038" href="$classthorin_1_1matrix_1_1LowerMatrixHighLevelMapRed.html" title="Resolves lowering of high level operations into medium/other high&#45;level operations." alt="" coords="843,2298,1043,2338"/>
+<area shape="poly" id="edge37_Node000037_Node000038" title=" " alt="" coords="800,2315,843,2315,843,2321,800,2321"/>
+<area shape="rect" id="Node000040" href="$classthorin_1_1matrix_1_1LowerMatrixMediumLevel.html" title="In this step, we lower map_reduce operations into affine for loops making the iteration scheme explic..." alt="" coords="843,1282,1043,1322"/>
+<area shape="poly" id="edge39_Node000039_Node000040" title=" " alt="" coords="800,1299,843,1299,843,1305,800,1305"/>
+<area shape="rect" id="Node000042" href="$classthorin_1_1mem_1_1Alloc2Malloc.html" title=" " alt="" coords="847,1521,1040,1547"/>
+<area shape="poly" id="edge41_Node000041_Node000042" title=" " alt="" coords="803,1531,847,1531,847,1537,803,1537"/>
+<area shape="poly" id="edge49_Node000053_Node000002" title=" " alt="" coords="239,1131,248,1016,266,858,281,777,299,704,321,644,334,621,349,604,372,586,398,571,454,553,513,545,569,546,569,551,513,551,455,558,400,576,375,590,353,608,339,624,326,646,304,705,286,778,272,858,253,1017,245,1131"/>
+<area shape="poly" id="edge50_Node000053_Node000004" title=" " alt="" coords="264,1134,303,1106,350,1079,408,1057,468,1040,581,1017,582,1023,470,1045,409,1062,352,1084,306,1110,267,1138"/>
+<area shape="poly" id="edge51_Node000053_Node000005" title=" " alt="" coords="239,1131,245,1003,261,821,275,728,294,643,318,573,333,547,349,527,374,507,402,491,433,480,464,473,528,466,587,469,587,474,528,472,465,478,434,485,404,496,377,511,353,530,337,550,323,575,299,644,280,729,267,821,250,1004,244,1132"/>
+<area shape="poly" id="edge52_Node000053_Node000006" title=" " alt="" coords="250,1131,287,1067,315,1033,349,1005,407,976,468,957,530,946,586,940,587,945,531,951,470,962,409,981,352,1009,319,1037,292,1070,254,1134"/>
+<area shape="poly" id="edge53_Node000053_Node000007" title=" " alt="" coords="341,1163,351,1163,447,1166,544,1163,580,1160,580,1166,544,1169,447,1172,351,1169,340,1168"/>
+<area shape="poly" id="edge54_Node000053_Node000009" title=" " alt="" coords="239,1131,250,933,272,634,287,482,305,349,325,247,337,212,349,191,364,178,386,167,444,147,513,132,580,121,581,127,514,138,446,152,388,172,367,182,353,194,341,214,330,248,310,350,293,483,278,634,256,933,245,1132"/>
+<area shape="poly" id="edge55_Node000053_Node000011" title=" " alt="" coords="239,1131,245,1072,262,994,276,953,295,914,319,878,349,846,374,828,402,814,462,794,523,784,580,782,580,787,523,790,463,799,404,819,377,833,352,851,323,881,299,917,281,955,267,996,250,1072,244,1132"/>
+<area shape="poly" id="edge56_Node000053_Node000013" title=" " alt="" coords="320,1140,573,1091,574,1096,321,1145"/>
+<area shape="poly" id="edge57_Node000053_Node000014" title=" " alt="" coords="239,1131,249,918,269,594,284,429,302,284,324,173,336,135,349,112,372,90,399,73,458,49,520,36,580,33,580,38,521,42,459,54,401,77,375,94,353,115,340,138,329,174,308,284,290,430,275,594,254,918,244,1131"/>
+<area shape="poly" id="edge58_Node000053_Node000016" title=" " alt="" coords="237,1131,237,960,241,836,248,701,261,567,281,443,294,389,310,341,328,301,349,271,365,258,387,246,447,227,516,211,585,200,585,205,517,216,448,232,389,251,368,262,353,274,333,304,315,343,300,390,286,444,266,567,253,702,246,836,243,960,243,1131"/>
+<area shape="poly" id="edge59_Node000053_Node000018" title=" " alt="" coords="243,1131,254,1086,274,1030,305,974,325,948,349,926,376,909,405,895,466,876,528,866,585,863,585,868,528,871,467,881,407,900,378,914,352,931,329,952,309,977,279,1032,259,1087,248,1132"/>
+<area shape="poly" id="edge60_Node000053_Node000020" title=" " alt="" coords="238,1131,241,977,255,750,269,632,288,524,314,435,330,400,349,373,365,360,387,348,447,327,516,309,585,296,586,301,517,315,448,332,389,353,368,365,353,377,335,403,319,437,293,525,274,633,260,750,246,977,243,1131"/>
+<area shape="poly" id="edge61_Node000053_Node000022" title=" " alt="" coords="240,1131,251,1032,272,896,287,828,304,767,325,716,349,683,373,664,400,649,458,631,518,623,575,623,575,628,519,628,459,636,402,654,376,668,353,686,329,719,309,768,292,830,277,897,257,1032,246,1132"/>
+<area shape="poly" id="edge62_Node000053_Node000024" title=" " alt="" coords="242,1131,255,1048,278,937,309,832,328,791,349,764,374,745,401,730,461,711,522,702,580,702,580,707,523,708,462,716,404,735,377,750,353,768,333,794,314,834,283,938,261,1049,247,1132"/>
+<area shape="poly" id="edge63_Node000053_Node000026" title=" " alt="" coords="244,1184,254,1391,275,1703,290,1860,308,1999,329,2105,340,2139,353,2160,376,2180,402,2195,431,2207,461,2215,522,2222,581,2222,581,2227,522,2228,460,2220,429,2212,400,2200,373,2184,349,2164,336,2142,324,2106,302,2000,284,1861,269,1703,249,1391,239,1184"/>
+<area shape="poly" id="edge64_Node000053_Node000028" title=" " alt="" coords="252,1183,266,1217,288,1256,316,1295,352,1328,404,1355,461,1374,519,1385,574,1391,573,1396,518,1390,460,1379,402,1360,349,1332,312,1299,283,1259,262,1219,247,1185"/>
+<area shape="poly" id="edge65_Node000053_Node000029" title=" " alt="" coords="246,1184,258,1285,279,1422,294,1492,311,1555,331,1606,353,1641,375,1662,401,1680,457,1707,517,1725,574,1734,573,1740,515,1730,455,1712,398,1685,372,1666,349,1645,326,1609,306,1556,289,1493,274,1423,252,1286,241,1185"/>
+<area shape="poly" id="edge66_Node000053_Node000031" title=" " alt="" coords="245,1184,257,1361,280,1622,295,1752,313,1868,332,1954,342,1983,353,2000,377,2020,404,2036,433,2047,464,2055,527,2062,586,2060,586,2065,527,2067,463,2060,431,2052,401,2040,374,2024,349,2004,337,1985,327,1956,307,1869,290,1753,275,1622,252,1361,240,1184"/>
+<area shape="poly" id="edge67_Node000053_Node000033" title=" " alt="" coords="247,1184,260,1271,282,1386,297,1444,313,1495,332,1537,353,1564,377,1582,405,1596,464,1614,526,1620,584,1619,584,1625,526,1626,463,1619,403,1601,374,1587,349,1568,327,1539,308,1497,291,1445,277,1387,254,1272,241,1185"/>
+<area shape="poly" id="edge68_Node000053_Node000035" title=" " alt="" coords="245,1184,255,1376,277,1663,292,1807,310,1935,330,2031,341,2063,353,2081,376,2101,403,2116,432,2127,462,2134,525,2140,584,2137,584,2142,525,2145,462,2139,430,2132,401,2121,373,2105,349,2085,336,2065,325,2032,304,1936,287,1808,272,1663,250,1376,239,1184"/>
+<area shape="poly" id="edge69_Node000053_Node000037" title=" " alt="" coords="244,1184,253,1408,272,1751,287,1925,305,2079,327,2195,340,2234,353,2258,375,2277,399,2293,455,2314,514,2324,571,2326,571,2332,513,2330,453,2319,397,2298,371,2281,349,2261,335,2236,322,2197,300,2080,282,1926,267,1751,247,1408,239,1184"/>
+<area shape="poly" id="edge70_Node000053_Node000039" title=" " alt="" coords="263,1179,302,1214,352,1245,406,1265,463,1279,571,1295,571,1300,462,1285,404,1270,349,1250,299,1218,260,1183"/>
+<area shape="poly" id="edge71_Node000053_Node000041" title=" " alt="" coords="243,1184,248,1247,263,1330,277,1373,296,1415,321,1454,352,1486,376,1503,401,1516,456,1534,513,1542,568,1543,568,1549,513,1548,455,1539,399,1521,373,1508,349,1491,317,1457,291,1418,272,1375,258,1331,243,1248,238,1184"/>
+<area shape="poly" id="edge72_Node000053_Node000043" title=" " alt="" coords="238,1131,243,990,258,784,272,679,291,582,316,502,331,471,349,448,364,436,386,426,444,409,511,396,578,387,579,393,512,401,445,414,388,431,367,441,353,452,336,474,321,504,296,583,277,679,263,785,248,990,244,1131"/>
+<area shape="poly" id="edge73_Node000053_Node000044" title=" " alt="" coords="243,1184,246,1334,260,1554,273,1668,293,1772,319,1857,335,1889,353,1913,367,1924,387,1933,440,1949,504,1961,569,1969,569,1974,504,1966,439,1954,385,1938,364,1928,349,1917,330,1892,314,1859,287,1773,268,1669,254,1555,241,1335,238,1184"/>
+<area shape="poly" id="edge74_Node000053_Node000046" title=" " alt="" coords="292,1172,351,1187,471,1204,581,1213,581,1218,470,1209,350,1192,290,1177"/>
+<area shape="poly" id="edge75_Node000053_Node000048" title=" " alt="" coords="244,1184,249,1319,266,1515,280,1615,299,1707,323,1782,337,1810,353,1832,367,1843,388,1854,443,1872,509,1887,576,1898,575,1903,508,1892,442,1877,386,1859,364,1848,349,1836,332,1813,318,1784,293,1708,275,1616,261,1515,244,1320,239,1184"/>
+<area shape="poly" id="edge76_Node000053_Node000049" title=" " alt="" coords="246,1184,256,1233,275,1295,289,1327,306,1358,327,1385,352,1409,403,1438,459,1456,516,1465,571,1467,571,1472,516,1470,458,1461,401,1443,349,1413,323,1389,302,1361,284,1329,270,1297,251,1235,241,1185"/>
+<area shape="poly" id="edge77_Node000053_Node000051" title=" " alt="" coords="245,1184,253,1304,272,1474,286,1561,304,1640,327,1705,339,1730,352,1749,384,1765,444,1785,593,1824,592,1830,443,1790,382,1770,349,1753,334,1733,322,1708,299,1642,281,1562,267,1475,248,1305,239,1185"/>
 </map>

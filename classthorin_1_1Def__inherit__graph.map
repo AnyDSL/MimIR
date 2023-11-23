@@ -1,34 +1,65 @@
 <map id="thorin::Def" name="thorin::Def">
-<area shape="rect" id="node1" title="Base class for all Defs." alt="" coords="233,672,324,697"/>
-<area shape="rect" id="node3" href="$classthorin_1_1Ac.html" title="Constructs a Meet value." alt="" coords="395,5,479,31"/>
-<area shape="rect" id="node4" href="$classthorin_1_1App.html" title=" " alt="" coords="390,55,483,80"/>
-<area shape="rect" id="node5" href="$classthorin_1_1Arr.html" title="A (possibly paramterized) Array." alt="" coords="393,104,480,129"/>
-<area shape="rect" id="node6" href="$classthorin_1_1Axiom.html" title=" " alt="" coords="381,153,492,179"/>
-<area shape="rect" id="node7" href="$classthorin_1_1Bound.html" title="Common base for TBound." alt="" coords="382,203,491,228"/>
-<area shape="rect" id="node9" href="$classthorin_1_1Ext.html" title="Common base for TExtremum." alt="" coords="392,252,481,277"/>
-<area shape="rect" id="node11" href="$classthorin_1_1Extract.html" title="Extracts from a Sigma or Array&#45;typed Extract::tuple the element at position Extract::index." alt="" coords="379,301,494,327"/>
-<area shape="rect" id="node12" href="$classthorin_1_1Global.html" title=" " alt="" coords="381,351,492,376"/>
-<area shape="rect" id="node13" href="$classthorin_1_1Idx.html" title="A built&#45;in constant of type .Nat &#45;&gt; *." alt="" coords="393,400,481,425"/>
-<area shape="rect" id="node14" href="$classthorin_1_1Infer.html" title="This node is a hole in the IR that is inferred by its context later on." alt="" coords="387,449,486,475"/>
-<area shape="rect" id="node15" href="$classthorin_1_1Insert.html" title="Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple." alt="" coords="384,499,489,524"/>
-<area shape="rect" id="node16" href="$classthorin_1_1Lam.html" title="A function." alt="" coords="389,548,485,573"/>
-<area shape="rect" id="node17" href="$classthorin_1_1Lit.html" title=" " alt="" coords="395,597,479,623"/>
-<area shape="rect" id="node18" href="$classthorin_1_1Nat.html" title=" " alt="" coords="391,647,482,672"/>
-<area shape="rect" id="node19" href="$classthorin_1_1Pack.html" title="A (possibly paramterized) Tuple." alt="" coords="387,696,486,721"/>
-<area shape="rect" id="node20" href="$classthorin_1_1Pi.html" title="A dependent function type." alt="" coords="397,745,477,771"/>
-<area shape="rect" id="node21" href="$classthorin_1_1Pick.html" title="Picks the aspect of a Meet [value](Pick::value) by its [type](Def::type)." alt="" coords="389,795,484,820"/>
-<area shape="rect" id="node22" href="$classthorin_1_1Proxy.html" title=" " alt="" coords="384,844,489,869"/>
-<area shape="rect" id="node23" href="$classthorin_1_1Sigma.html" title="A dependent tuple type." alt="" coords="382,893,491,919"/>
-<area shape="rect" id="node24" href="$classthorin_1_1Singleton.html" title="A singleton wraps a type into a higher order type." alt="" coords="372,943,501,968"/>
-<area shape="rect" id="node25" href="$classthorin_1_1Test.html" title="Test whether Test::value currently holds type Test::probe:" alt="" coords="389,992,484,1017"/>
-<area shape="rect" id="node26" href="$classthorin_1_1Tuple.html" title="Data constructor for a Sigma." alt="" coords="385,1041,488,1067"/>
-<area shape="rect" id="node27" href="$classthorin_1_1Type.html" title=" " alt="" coords="387,1091,486,1116"/>
-<area shape="rect" id="node28" href="$classthorin_1_1UInc.html" title=" " alt="" coords="388,1140,485,1165"/>
-<area shape="rect" id="node29" href="$classthorin_1_1UMax.html" title=" " alt="" coords="383,1189,490,1215"/>
-<area shape="rect" id="node30" href="$classthorin_1_1Univ.html" title=" " alt="" coords="387,1239,486,1264"/>
-<area shape="rect" id="node31" href="$classthorin_1_1Var.html" title=" " alt="" coords="392,1288,481,1313"/>
-<area shape="rect" id="node32" href="$classthorin_1_1Vel.html" title="Constructs a Join value." alt="" coords="393,1337,481,1363"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,672,185,697"/>
-<area shape="rect" id="node8" href="$classthorin_1_1TBound.html" title="Specific Bound depending on Up." alt="" coords="549,203,715,228"/>
-<area shape="rect" id="node10" href="$classthorin_1_1TExt.html" title="Extremum. Either Top (Up) or Bottom." alt="" coords="559,252,705,277"/>
+<area shape="rect" id="Node000001" title="Base class for all Defs." alt="" coords="233,672,324,697"/>
+<area shape="rect" id="Node000003" href="$classthorin_1_1Ac.html" title="Constructs a Meet value." alt="" coords="395,5,479,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="278,658,282,529,295,346,307,251,323,165,344,92,356,64,370,42,393,25,396,29,374,45,361,66,349,94,328,166,312,252,301,346,287,529,283,658"/>
+<area shape="rect" id="Node000004" href="$classthorin_1_1App.html" title=" " alt="" coords="390,55,483,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="278,658,284,538,298,370,310,283,326,203,345,137,370,91,388,77,392,81,374,94,350,139,331,205,315,284,304,370,289,538,283,658"/>
+<area shape="rect" id="Node000005" href="$classthorin_1_1Arr.html" title="A (possibly paramterized) Array." alt="" coords="393,104,480,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="278,658,285,548,301,394,313,315,328,242,347,182,370,140,392,124,395,129,374,144,352,185,333,244,318,316,306,394,291,548,284,658"/>
+<area shape="rect" id="Node000006" href="$classthorin_1_1Axiom.html" title=" " alt="" coords="381,153,492,179"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="279,658,287,557,304,417,316,346,331,281,349,227,370,190,386,177,389,181,374,193,354,230,336,283,321,347,309,418,293,557,284,658"/>
+<area shape="rect" id="Node000007" href="$classthorin_1_1Bound.html" title="Common base for TBound." alt="" coords="382,203,491,228"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="280,658,289,566,307,441,334,320,350,273,370,239,386,226,389,230,374,242,355,275,339,322,312,442,295,566,285,658"/>
+<area shape="rect" id="Node000009" href="$classthorin_1_1Ext.html" title="Common base for TExtremum." alt="" coords="392,252,481,277"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="280,658,291,575,310,465,336,359,352,318,370,288,390,274,393,278,374,292,357,320,342,361,315,466,297,575,286,658"/>
+<area shape="rect" id="Node000011" href="$classthorin_1_1Extract.html" title="Extracts from a Sigma or Array&#45;typed Extract::tuple the element at position Extract::index." alt="" coords="379,301,494,327"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="277,658,280,595,292,510,304,464,320,419,342,376,370,337,387,325,390,329,374,341,346,379,325,421,309,466,297,511,285,595,282,658"/>
+<area shape="rect" id="Node000012" href="$classthorin_1_1Global.html" title=" " alt="" coords="381,351,492,376"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="278,658,284,602,298,531,310,492,325,455,345,419,370,387,387,374,390,378,374,391,350,422,330,457,315,494,303,532,289,603,284,658"/>
+<area shape="rect" id="Node000013" href="$classthorin_1_1Idx.html" title="A built&#45;in constant of type .Nat &#45;&gt; *." alt="" coords="393,400,481,425"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="280,658,288,611,304,552,331,491,349,462,370,436,391,422,394,426,374,440,353,465,335,493,309,554,294,612,285,658"/>
+<area shape="rect" id="Node000014" href="$classthorin_1_1Infer.html" title="This node is a hole in the IR that is inferred by its context later on." alt="" coords="387,449,486,475"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="283,657,294,620,311,574,336,527,370,485,389,473,392,477,374,489,341,530,316,576,299,621,288,659"/>
+<area shape="rect" id="Node000015" href="$classthorin_1_1Insert.html" title="Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple." alt="" coords="384,499,489,524"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="287,658,319,597,342,564,370,535,391,522,394,526,374,539,346,567,323,600,292,661"/>
+<area shape="rect" id="Node000016" href="$classthorin_1_1Lam.html" title="A function." alt="" coords="389,548,485,573"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="296,659,328,621,370,584,395,571,397,576,374,588,332,625,300,662"/>
+<area shape="rect" id="Node000017" href="$classthorin_1_1Lit.html" title=" " alt="" coords="395,597,479,623"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="312,663,371,633,400,620,403,625,373,638,315,668"/>
+<area shape="rect" id="Node000018" href="$classthorin_1_1Nat.html" title=" " alt="" coords="391,647,482,672"/>
+<area shape="poly" id="edge17_Node000001_Node000018" title=" " alt="" coords="337,673,391,664,392,669,338,678"/>
+<area shape="rect" id="Node000019" href="$classthorin_1_1Pack.html" title="A (possibly paramterized) Tuple." alt="" coords="387,696,486,721"/>
+<area shape="poly" id="edge18_Node000001_Node000019" title=" " alt="" coords="338,691,388,699,387,704,337,696"/>
+<area shape="rect" id="Node000020" href="$classthorin_1_1Pi.html" title="A dependent function type." alt="" coords="397,745,477,771"/>
+<area shape="poly" id="edge19_Node000001_Node000020" title=" " alt="" coords="315,702,373,732,400,743,398,748,371,736,312,706"/>
+<area shape="rect" id="Node000021" href="$classthorin_1_1Pick.html" title="Picks the aspect of a Meet [value](Pick::value) by its [type](Def::type)." alt="" coords="389,795,484,820"/>
+<area shape="poly" id="edge20_Node000001_Node000021" title=" " alt="" coords="300,707,332,745,374,781,394,792,392,797,370,786,328,749,295,711"/>
+<area shape="rect" id="Node000022" href="$classthorin_1_1Proxy.html" title=" " alt="" coords="384,844,489,869"/>
+<area shape="poly" id="edge21_Node000001_Node000022" title=" " alt="" coords="292,709,323,770,346,802,374,831,392,842,389,846,370,835,342,806,318,772,287,711"/>
+<area shape="rect" id="Node000023" href="$classthorin_1_1Sigma.html" title="A dependent tuple type." alt="" coords="382,893,491,919"/>
+<area shape="poly" id="edge22_Node000001_Node000023" title=" " alt="" coords="288,711,299,748,316,793,341,840,374,880,390,891,387,895,370,884,336,843,311,796,294,750,283,712"/>
+<area shape="rect" id="Node000024" href="$classthorin_1_1Singleton.html" title="A singleton wraps a type into a higher order type." alt="" coords="372,943,501,968"/>
+<area shape="poly" id="edge23_Node000001_Node000024" title=" " alt="" coords="285,710,293,757,309,815,335,876,353,904,374,929,389,940,386,945,370,933,348,908,330,879,304,817,288,758,280,711"/>
+<area shape="rect" id="Node000025" href="$classthorin_1_1Test.html" title="Test whether Test::value currently holds type Test::probe:" alt="" coords="389,992,484,1017"/>
+<area shape="poly" id="edge24_Node000001_Node000025" title=" " alt="" coords="283,711,289,766,303,838,314,876,330,913,349,948,374,979,391,991,388,995,370,983,345,951,325,915,309,877,298,839,283,767,278,712"/>
+<area shape="rect" id="Node000026" href="$classthorin_1_1Tuple.html" title="Data constructor for a Sigma." alt="" coords="385,1041,488,1067"/>
+<area shape="poly" id="edge25_Node000001_Node000026" title=" " alt="" coords="282,711,285,774,297,859,308,904,324,949,346,991,374,1028,388,1039,385,1043,370,1032,342,993,319,951,303,906,291,860,279,775,277,711"/>
+<area shape="rect" id="Node000027" href="$classthorin_1_1Type.html" title=" " alt="" coords="387,1091,486,1116"/>
+<area shape="poly" id="edge26_Node000001_Node000027" title=" " alt="" coords="286,711,297,794,315,904,341,1009,357,1050,374,1078,389,1089,385,1093,370,1081,352,1052,336,1010,310,905,291,795,280,712"/>
+<area shape="rect" id="Node000028" href="$classthorin_1_1UInc.html" title=" " alt="" coords="388,1140,485,1165"/>
+<area shape="poly" id="edge27_Node000001_Node000028" title=" " alt="" coords="285,711,294,803,312,928,339,1048,355,1095,374,1127,389,1139,386,1143,370,1130,350,1097,333,1049,307,929,289,804,280,711"/>
+<area shape="rect" id="Node000029" href="$classthorin_1_1UMax.html" title=" " alt="" coords="383,1189,490,1215"/>
+<area shape="poly" id="edge28_Node000001_Node000029" title=" " alt="" coords="284,711,292,812,309,951,321,1022,336,1087,353,1140,374,1176,387,1187,384,1191,370,1180,349,1142,331,1088,316,1023,304,952,287,813,279,711"/>
+<area shape="rect" id="Node000030" href="$classthorin_1_1Univ.html" title=" " alt="" coords="387,1239,486,1264"/>
+<area shape="poly" id="edge29_Node000001_Node000030" title=" " alt="" coords="284,711,291,822,306,975,318,1054,333,1126,352,1185,374,1226,388,1237,385,1241,370,1229,347,1187,328,1127,313,1055,301,976,285,822,278,711"/>
+<area shape="rect" id="Node000031" href="$classthorin_1_1Var.html" title=" " alt="" coords="392,1288,481,1313"/>
+<area shape="poly" id="edge30_Node000001_Node000031" title=" " alt="" coords="283,711,289,831,303,999,315,1086,330,1165,350,1230,361,1256,374,1275,393,1289,390,1293,370,1278,357,1258,345,1232,325,1166,310,1087,298,1000,283,831,278,712"/>
+<area shape="rect" id="Node000032" href="$classthorin_1_1Vel.html" title="Constructs a Join value." alt="" coords="393,1337,481,1363"/>
+<area shape="poly" id="edge31_Node000001_Node000032" title=" " alt="" coords="283,712,287,840,300,1023,312,1117,328,1204,348,1275,361,1303,374,1324,394,1339,391,1343,370,1328,356,1306,343,1277,323,1205,307,1118,295,1024,282,840,278,712"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,672,185,697"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,682,233,682,233,687,199,687"/>
+<area shape="rect" id="Node000008" href="$classthorin_1_1TBound.html" title="Specific Bound depending on Up." alt="" coords="549,203,715,228"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="505,213,549,213,549,218,505,218"/>
+<area shape="rect" id="Node000010" href="$classthorin_1_1TExt.html" title="Extremum. Either Top (Up) or Bottom." alt="" coords="559,252,705,277"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="495,262,559,262,559,267,495,267"/>
 </map>

@@ -2,7 +2,7 @@ var searchData=
 [
   ['rangecompare_0',['RangeCompare',['../structthorin_1_1regex_1_1RangeCompare.html',1,'thorin::regex']]],
   ['ref_1',['Ref',['../classthorin_1_1Ref.html',1,'thorin']]],
-  ['reference_2',['reference',['../classthorin_1_1BitSet_1_1reference.html',1,'thorin::BitSet::reference'],['../classthorin_1_1IndexSet_1_1reference.html',1,'thorin::IndexSet&lt; Indexer, Key &gt;::reference']]],
+  ['reference_2',['reference',['../classthorin_1_1IndexSet_1_1reference.html',1,'thorin::IndexSet&lt; Indexer, Key &gt;::reference'],['../classthorin_1_1BitSet_1_1reference.html',1,'thorin::BitSet::reference']]],
   ['rememelim_3',['RememElim',['../classthorin_1_1mem_1_1RememElim.html',1,'thorin::mem']]],
   ['removedbgperm_4',['RemoveDbgPerm',['../classthorin_1_1refly_1_1RemoveDbgPerm.html',1,'thorin::refly']]],
   ['reshape_5',['Reshape',['../classthorin_1_1mem_1_1Reshape.html',1,'thorin::mem']]],

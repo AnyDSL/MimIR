@@ -6,6 +6,16 @@
 <!-- Title: dialects/clos Pages: 1 -->
 <svg width="265pt" height="196pt"
  viewBox="0.00 0.00 264.50 196.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<svg id="main" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" onload="init(evt)">
+<style type="text/css"><![CDATA[
+.node, .edge {opacity: 0.7;}
+.node.selected, .edge.selected {opacity: 1;}
+.edge:hover path { stroke: red; }
+.edge:hover polygon { stroke: red; fill: red; }
+]]></style>
+<script type="application/ecmascript" xlink:href="svg.min.js"/>
+<svg id="graph" class="graph">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 192)">
 <title>dialects/clos</title>
 <g id="clust1" class="cluster">
@@ -58,8 +68,11 @@
 <!-- dir_ebf961b2aa11f825fdc6e62bccf2cd25&#45;&gt;dir_3f1b6b218438912357615aa72d3bb6e7 -->
 <g id="edge1" class="edge">
 <title>dir_ebf961b2aa11f825fdc6e62bccf2cd25&#45;&gt;dir_3f1b6b218438912357615aa72d3bb6e7</title>
+<g id="a_edge1"><a xlink:href="dir_000011_000042.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M96.88,-125.98C87.56,-118.15 73.53,-106.34 62.26,-96.86"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="64.21,-93.93 54.31,-90.17 59.71,-99.29 64.21,-93.93"/>
+</a>
+</g>
 <g id="a_edge1&#45;headlabel"><a xlink:href="dir_000011_000042.html" target="_top" xlink:title="4">
 <text text-anchor="middle" x="68.79" y="-91.57" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">4</text>
 </a>
@@ -77,8 +90,11 @@
 <!-- dir_ebf961b2aa11f825fdc6e62bccf2cd25&#45;&gt;dir_5b681d64d621c20b41ecae9f8f0b8bb2 -->
 <g id="edge3" class="edge">
 <title>dir_ebf961b2aa11f825fdc6e62bccf2cd25&#45;&gt;dir_5b681d64d621c20b41ecae9f8f0b8bb2</title>
+<g id="a_edge3"><a xlink:href="dir_000011_000050.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M106.67,-125.75C106.41,-118.8 106.03,-108.85 105.7,-100.13"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="109.2,-99.95 105.32,-90.09 102.2,-100.21 109.2,-99.95"/>
+</a>
+</g>
 <g id="a_edge3&#45;headlabel"><a xlink:href="dir_000011_000050.html" target="_top" xlink:title="2">
 <text text-anchor="middle" x="112.17" y="-100.93" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">2</text>
 </a>
@@ -96,8 +112,11 @@
 <!-- dir_ebf961b2aa11f825fdc6e62bccf2cd25&#45;&gt;dir_4fef79e7177ba769987a8da36c892c5f -->
 <g id="edge2" class="edge">
 <title>dir_ebf961b2aa11f825fdc6e62bccf2cd25&#45;&gt;dir_4fef79e7177ba769987a8da36c892c5f</title>
+<g id="a_edge2"><a xlink:href="dir_000011_000008.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M113.18,-125.77C119.39,-116.89 129.15,-102.67 137,-90 146.37,-74.87 156.3,-57.23 163.35,-44.38"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="166.61,-45.71 168.32,-35.25 160.46,-42.36 166.61,-45.71"/>
+</a>
+</g>
 <g id="a_edge2&#45;headlabel"><a xlink:href="dir_000011_000008.html" target="_top" xlink:title="6">
 <text text-anchor="middle" x="167.38" y="-47.72" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">6</text>
 </a>
@@ -115,8 +134,11 @@
 <!-- dir_ebf961b2aa11f825fdc6e62bccf2cd25&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e -->
 <g id="edge4" class="edge">
 <title>dir_ebf961b2aa11f825fdc6e62bccf2cd25&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e</title>
+<g id="a_edge4"><a xlink:href="dir_000011_000061.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M117.39,-125.66C138.99,-107.3 188.95,-64.81 215.93,-41.87"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="218.47,-44.3 223.82,-35.16 213.93,-38.97 218.47,-44.3"/>
+</a>
+</g>
 <g id="a_edge4&#45;headlabel"><a xlink:href="dir_000011_000061.html" target="_top" xlink:title="20">
 <text text-anchor="middle" x="217.57" y="-46.29" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">20</text>
 </a>
@@ -125,8 +147,11 @@
 <!-- dir_3f1b6b218438912357615aa72d3bb6e7&#45;&gt;dir_f4f507027349df35d55005177e6b6800 -->
 <g id="edge7" class="edge">
 <title>dir_3f1b6b218438912357615aa72d3bb6e7&#45;&gt;dir_f4f507027349df35d55005177e6b6800</title>
+<g id="a_edge7"><a xlink:href="dir_000042_000037.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M53.48,-70.98C62.2,-63.15 75.34,-51.34 85.9,-41.86"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="88.25,-44.46 93.35,-35.17 83.57,-39.25 88.25,-44.46"/>
+</a>
+</g>
 <g id="a_edge7&#45;headlabel"><a xlink:href="dir_000042_000037.html" target="_top" xlink:title="2">
 <text text-anchor="middle" x="87.47" y="-46.47" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">2</text>
 </a>
@@ -135,8 +160,11 @@
 <!-- dir_3f1b6b218438912357615aa72d3bb6e7&#45;&gt;dir_c418730755777f3d7ae8c6bca9740a18 -->
 <g id="edge8" class="edge">
 <title>dir_3f1b6b218438912357615aa72d3bb6e7&#45;&gt;dir_c418730755777f3d7ae8c6bca9740a18</title>
+<g id="a_edge8"><a xlink:href="dir_000042_000015.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M44,-70.75C44,-63.8 44,-53.85 44,-45.13"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="47.5,-45.09 44,-35.09 40.5,-45.09 47.5,-45.09"/>
+</a>
+</g>
 <g id="a_edge8&#45;headlabel"><a xlink:href="dir_000042_000015.html" target="_top" xlink:title="1">
 <text text-anchor="middle" x="50.34" y="-46.18" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">1</text>
 </a>
@@ -145,8 +173,11 @@
 <!-- dir_3f1b6b218438912357615aa72d3bb6e7&#45;&gt;dir_4fef79e7177ba769987a8da36c892c5f -->
 <g id="edge5" class="edge">
 <title>dir_3f1b6b218438912357615aa72d3bb6e7&#45;&gt;dir_4fef79e7177ba769987a8da36c892c5f</title>
+<g id="a_edge5"><a xlink:href="dir_000042_000008.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M57.91,-70.96C62.61,-68.24 67.95,-65.34 73,-63 85.68,-57.13 118.25,-45.47 142.81,-36.9"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="144.13,-40.14 152.42,-33.55 141.83,-33.53 144.13,-40.14"/>
+</a>
+</g>
 <g id="a_edge5&#45;headlabel"><a xlink:href="dir_000042_000008.html" target="_top" xlink:title="2">
 <text text-anchor="middle" x="141.66" y="-41.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">2</text>
 </a>
@@ -155,8 +186,11 @@
 <!-- dir_3f1b6b218438912357615aa72d3bb6e7&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e -->
 <g id="edge6" class="edge">
 <title>dir_3f1b6b218438912357615aa72d3bb6e7&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e</title>
+<g id="a_edge6"><a xlink:href="dir_000042_000061.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M57.15,-70.89C61.98,-68.04 67.59,-65.07 73,-63 125.3,-43.03 143.65,-48.37 201.34,-35.24"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="202.43,-38.58 211.35,-32.87 200.81,-31.77 202.43,-38.58"/>
+</a>
+</g>
 <g id="a_edge6&#45;headlabel"><a xlink:href="dir_000042_000061.html" target="_top" xlink:title="8">
 <text text-anchor="middle" x="199.58" y="-39.67" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">8</text>
 </a>
@@ -165,8 +199,11 @@
 <!-- dir_5b681d64d621c20b41ecae9f8f0b8bb2&#45;&gt;dir_f4f507027349df35d55005177e6b6800 -->
 <g id="edge11" class="edge">
 <title>dir_5b681d64d621c20b41ecae9f8f0b8bb2&#45;&gt;dir_f4f507027349df35d55005177e6b6800</title>
+<g id="a_edge11"><a xlink:href="dir_000050_000037.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M104.67,-70.75C104.41,-63.8 104.03,-53.85 103.7,-45.13"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="107.2,-44.95 103.32,-35.09 100.2,-45.21 107.2,-44.95"/>
+</a>
+</g>
 <g id="a_edge11&#45;headlabel"><a xlink:href="dir_000050_000037.html" target="_top" xlink:title="2">
 <text text-anchor="middle" x="110.17" y="-45.93" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">2</text>
 </a>
@@ -175,8 +212,11 @@
 <!-- dir_5b681d64d621c20b41ecae9f8f0b8bb2&#45;&gt;dir_4fef79e7177ba769987a8da36c892c5f -->
 <g id="edge9" class="edge">
 <title>dir_5b681d64d621c20b41ecae9f8f0b8bb2&#45;&gt;dir_4fef79e7177ba769987a8da36c892c5f</title>
+<g id="a_edge9"><a xlink:href="dir_000050_000008.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M115.93,-70.98C126.08,-63.07 141.42,-51.11 153.65,-41.58"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="156.14,-44.08 161.88,-35.17 151.84,-38.56 156.14,-44.08"/>
+</a>
+</g>
 <g id="a_edge9&#45;headlabel"><a xlink:href="dir_000050_000008.html" target="_top" xlink:title="2">
 <text text-anchor="middle" x="155.05" y="-46.03" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">2</text>
 </a>
@@ -185,12 +225,30 @@
 <!-- dir_5b681d64d621c20b41ecae9f8f0b8bb2&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e -->
 <g id="edge10" class="edge">
 <title>dir_5b681d64d621c20b41ecae9f8f0b8bb2&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e</title>
+<g id="a_edge10"><a xlink:href="dir_000050_000061.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M125.73,-70.98C146.76,-62.34 179.55,-48.87 203.54,-39.02"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="204.98,-42.21 212.9,-35.17 202.32,-35.73 204.98,-42.21"/>
+</a>
+</g>
 <g id="a_edge10&#45;headlabel"><a xlink:href="dir_000050_000061.html" target="_top" xlink:title="6">
 <text text-anchor="middle" x="202.73" y="-43.7" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">6</text>
 </a>
 </g>
 </g>
 </g>
+</svg>
+</svg>
+
+<style type='text/css'>
+<![CDATA[
+[data-mouse-over-selected='false'] { opacity: 0.7; }
+[data-mouse-over-selected='true']  { opacity: 1.0; }
+]]>
+</style>
+<script type="application/ecmascript"><![CDATA[
+document.addEventListener('DOMContentLoaded', (event) => {
+  highlightEdges();
+  highlightAdjacentNodes();
+});
+]]></script>
 </svg>

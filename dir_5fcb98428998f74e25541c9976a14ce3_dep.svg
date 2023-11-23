@@ -6,6 +6,16 @@
 <!-- Title: dialects/mem/pass Pages: 1 -->
 <svg width="190pt" height="125pt"
  viewBox="0.00 0.00 190.00 125.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<svg id="main" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" onload="init(evt)">
+<style type="text/css"><![CDATA[
+.node, .edge {opacity: 0.7;}
+.node.selected, .edge.selected {opacity: 1;}
+.edge:hover path { stroke: red; }
+.edge:hover polygon { stroke: red; fill: red; }
+]]></style>
+<script type="application/ecmascript" xlink:href="svg.min.js"/>
+<svg id="graph" class="graph">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 121)">
 <title>dialects/mem/pass</title>
 <g id="clust1" class="cluster">
@@ -49,8 +59,11 @@
 <!-- dir_85d375e52d7561d0bf0df9714051473e&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e -->
 <g id="edge1" class="edge">
 <title>dir_85d375e52d7561d0bf0df9714051473e&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e</title>
+<g id="a_edge1"><a xlink:href="dir_000028_000061.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M82.04,-54.75C78.79,-47.57 74.08,-37.18 70.05,-28.27"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="73.2,-26.75 65.89,-19.09 66.83,-29.64 73.2,-26.75"/>
+</a>
+</g>
 <g id="a_edge1&#45;headlabel"><a xlink:href="dir_000028_000061.html" target="_top" xlink:title="5">
 <text text-anchor="middle" x="77.27" y="-26.36" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">5</text>
 </a>
@@ -68,12 +81,30 @@
 <!-- dir_5f33e4e5ddc1428f279c868d04bf4519&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e -->
 <g id="edge2" class="edge">
 <title>dir_5f33e4e5ddc1428f279c868d04bf4519&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e</title>
+<g id="a_edge2"><a xlink:href="dir_000058_000061.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M42.8,-54.75C45.91,-47.57 50.42,-37.18 54.29,-28.27"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="57.5,-29.66 58.27,-19.09 51.08,-26.87 57.5,-29.66"/>
+</a>
+</g>
 <g id="a_edge2&#45;headlabel"><a xlink:href="dir_000058_000061.html" target="_top" xlink:title="7">
 <text text-anchor="middle" x="58.68" y="-31.58" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">7</text>
 </a>
 </g>
 </g>
 </g>
+</svg>
+</svg>
+
+<style type='text/css'>
+<![CDATA[
+[data-mouse-over-selected='false'] { opacity: 0.7; }
+[data-mouse-over-selected='true']  { opacity: 1.0; }
+]]>
+</style>
+<script type="application/ecmascript"><![CDATA[
+document.addEventListener('DOMContentLoaded', (event) => {
+  highlightEdges();
+  highlightAdjacentNodes();
+});
+]]></script>
 </svg>

@@ -9,18 +9,18 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 155)">
 <title>thorin/analyses/schedule.h</title>
 <!-- Node1 -->
-<g id="node1" class="node">
+<g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title=" ">
 <polygon fill="#999999" stroke="#666666" points="372.5,-151 225.5,-151 225.5,-132 372.5,-132 372.5,-151"/>
 <text text-anchor="middle" x="299" y="-139" font-family="Helvetica,sans-Serif" font-size="10.00">thorin/analyses/schedule.h</text>
 </a>
 </g>
 </g>
 <!-- Node2 -->
-<g id="node2" class="node">
+<g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="add__mem_8cpp.html" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="add__mem_8cpp.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="116,-30 0,-30 0,0 116,0 116,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">dialects/mem/phase</text>
 <text text-anchor="middle" x="58" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">/add_mem.cpp</text>
@@ -28,15 +28,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node2 -->
-<g id="edge1" class="edge">
+<g id="edge1_Node000001_Node000002" class="edge">
 <title>Node1&#45;&gt;Node2</title>
+<g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M215.25,-133.08C160.93,-126.55 96.74,-115.05 77,-96 59.13,-78.75 56.77,-47.99 57.1,-30.06"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="214.93,-136.57 225.26,-134.24 215.73,-129.61 214.93,-136.57"/>
+</a>
+</g>
 </g>
 <!-- Node3 -->
-<g id="node3" class="node">
+<g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="add__mem_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="add__mem_8h.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="202,-96 86,-96 86,-66 202,-66 202,-96"/>
 <text text-anchor="start" x="94" y="-84" font-family="Helvetica,sans-Serif" font-size="10.00">dialects/mem/phase</text>
 <text text-anchor="middle" x="144" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">/add_mem.h</text>
@@ -44,106 +47,130 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node3 -->
-<g id="edge2" class="edge">
+<g id="edge2_Node000001_Node000003" class="edge">
 <title>Node1&#45;&gt;Node3</title>
+<g id="a_edge2_Node000001_Node000003"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M267.09,-128.46C242.16,-119.05 207.47,-105.95 181.26,-96.06"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="265.87,-131.74 276.46,-131.99 268.34,-125.19 265.87,-131.74"/>
+</a>
+</g>
 </g>
 <!-- Node5 -->
-<g id="node5" class="node">
+<g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="schedule_8cpp.html" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="schedule_8cpp.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="378,-90.5 220,-90.5 220,-71.5 378,-71.5 378,-90.5"/>
 <text text-anchor="middle" x="299" y="-78.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin/analyses/schedule.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node5 -->
-<g id="edge5" class="edge">
+<g id="edge5_Node000001_Node000005" class="edge">
 <title>Node1&#45;&gt;Node5</title>
+<g id="a_edge5_Node000001_Node000005"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M299,-121.66C299,-111.24 299,-98.8 299,-90.67"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="295.5,-121.87 299,-131.87 302.5,-121.87 295.5,-121.87"/>
+</a>
+</g>
 </g>
 <!-- Node6 -->
-<g id="node6" class="node">
+<g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_node6"><a xlink:href="scope_8cpp.html" target="_top" xlink:title=" ">
+<g id="a_Node000006"><a xlink:href="scope_8cpp.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="539.5,-90.5 396.5,-90.5 396.5,-71.5 539.5,-71.5 539.5,-90.5"/>
 <text text-anchor="middle" x="468" y="-78.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin/analyses/scope.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node6 -->
-<g id="edge6" class="edge">
+<g id="edge6_Node000001_Node000006" class="edge">
 <title>Node1&#45;&gt;Node6</title>
+<g id="a_edge6_Node000001_Node000006"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M333.17,-128.67C365.86,-117.36 414.35,-100.57 443.4,-90.52"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="331.88,-125.41 323.57,-131.99 334.17,-132.03 331.88,-125.41"/>
+</a>
+</g>
 </g>
 <!-- Node7 -->
-<g id="node7" class="node">
+<g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_node7"><a xlink:href="emitter_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000007"><a xlink:href="emitter_8h.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="664.5,-90.5 557.5,-90.5 557.5,-71.5 664.5,-71.5 664.5,-90.5"/>
 <text text-anchor="middle" x="611" y="-78.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin/be/emitter.h</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node7 -->
-<g id="edge7" class="edge">
+<g id="edge7_Node000001_Node000007" class="edge">
 <title>Node1&#45;&gt;Node7</title>
+<g id="a_edge7_Node000001_Node000007"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M360.98,-130.28C411.66,-121.73 485.12,-108.89 549,-96 557.22,-94.34 566.02,-92.43 574.34,-90.57"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="360.12,-126.88 350.84,-131.99 361.28,-133.78 360.12,-126.88"/>
+</a>
+</g>
 </g>
 <!-- Node3&#45;&gt;Node2 -->
-<g id="edge4" class="edge">
+<g id="edge4_Node000003_Node000002" class="edge">
 <title>Node3&#45;&gt;Node2</title>
+<g id="a_edge4_Node000003_Node000002"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M116.79,-59.75C103.86,-50.13 88.71,-38.86 77.03,-30.16"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="114.8,-62.63 124.91,-65.8 118.98,-57.02 114.8,-62.63"/>
+</a>
+</g>
 </g>
 <!-- Node4 -->
-<g id="node4" class="node">
+<g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="mem_8cpp.html" target="_top" xlink:title=" ">
+<g id="a_Node000004"><a xlink:href="mem_8cpp.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="266,-24.5 134,-24.5 134,-5.5 266,-5.5 266,-24.5"/>
 <text text-anchor="middle" x="200" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">dialects/mem/mem.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node4 -->
-<g id="edge3" class="edge">
+<g id="edge3_Node000003_Node000004" class="edge">
 <title>Node3&#45;&gt;Node4</title>
+<g id="a_edge3_Node000003_Node000004"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M163.3,-57.94C173.24,-46.58 184.81,-33.36 192.26,-24.84"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="160.38,-55.97 156.43,-65.8 165.65,-60.58 160.38,-55.97"/>
+</a>
+</g>
 </g>
 <!-- Node8 -->
-<g id="node8" class="node">
+<g id="Node000008" class="node">
 <title>Node8</title>
-<g id="a_node8"><a xlink:href="ll_8cpp.html" target="_top" xlink:title=" ">
+<g id="a_Node000008"><a xlink:href="ll_8cpp.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="602.5,-24.5 479.5,-24.5 479.5,-5.5 602.5,-5.5 602.5,-24.5"/>
 <text text-anchor="middle" x="541" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">dialects/core/be/ll.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node7&#45;&gt;Node8 -->
-<g id="edge8" class="edge">
+<g id="edge8_Node000007_Node000008" class="edge">
 <title>Node7&#45;&gt;Node8</title>
+<g id="a_edge8_Node000007_Node000008"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M593.86,-64.33C580.31,-51.94 561.87,-35.09 550.74,-24.91"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="591.82,-67.2 601.56,-71.37 596.54,-62.04 591.82,-67.2"/>
+</a>
+</g>
 </g>
 <!-- Node9 -->
-<g id="node9" class="node">
+<g id="Node000009" class="node">
 <title>Node9</title>
-<g id="a_node9"><a xlink:href="dot_8cpp.html" target="_top" xlink:title=" ">
+<g id="a_Node000009"><a xlink:href="dot_8cpp.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="739,-24.5 621,-24.5 621,-5.5 739,-5.5 739,-24.5"/>
 <text text-anchor="middle" x="680" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin/be/dot/dot.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node7&#45;&gt;Node9 -->
-<g id="edge9" class="edge">
+<g id="edge9_Node000007_Node000009" class="edge">
 <title>Node7&#45;&gt;Node9</title>
+<g id="a_edge9_Node000007_Node000009"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M627.89,-64.33C641.25,-51.94 659.42,-35.09 670.4,-24.91"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="625.26,-62 620.31,-71.37 630.02,-67.13 625.26,-62"/>
+</a>
+</g>
 </g>
 </g>
 </svg>

@@ -9,33 +9,36 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 1118.5)">
 <title>Graphical Class Hierarchy</title>
 <!-- Node0 -->
-<g id="node1" class="node">
+<g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_node1"><a xlink:title=" ">
+<g id="a_Node000000"><a xlink:title=" ">
 <polygon fill="#e0e0e0" stroke="#999999" points="95,-334.5 0,-334.5 0,-315.5 95,-315.5 95,-334.5"/>
 <text text-anchor="middle" x="47.5" y="-322.5" font-family="Helvetica,sans-Serif" font-size="10.00">fe::RuntimeCast</text>
 </a>
 </g>
 </g>
 <!-- Node1 -->
-<g id="node2" class="node">
+<g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_node2"><a xlink:href="classthorin_1_1Def.html" target="_top" xlink:title="Base class for all Defs.">
+<g id="a_Node000001"><a xlink:href="classthorin_1_1Def.html" target="_top" xlink:title="Base class for all Defs.">
 <polygon fill="white" stroke="#666666" points="236.5,-596.5 168.5,-596.5 168.5,-577.5 236.5,-577.5 236.5,-596.5"/>
 <text text-anchor="middle" x="202.5" y="-584.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Def</text>
 </a>
 </g>
 </g>
 <!-- Node0&#45;&gt;Node1 -->
-<g id="edge1" class="edge">
+<g id="edge10_Node000000_Node000001" class="edge">
 <title>Node0&#45;&gt;Node1</title>
+<g id="a_edge10_Node000000_Node000001"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M59.22,-343.36C89.2,-394.69 173.19,-538.52 195.82,-577.28"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="62.19,-341.51 54.13,-334.64 56.15,-345.04 62.19,-341.51"/>
+</a>
+</g>
 </g>
 <!-- Node32 -->
-<g id="node33" class="node">
+<g id="Node000032" class="node">
 <title>Node32</title>
-<g id="a_node33"><a xlink:href="classthorin_1_1LoopTree_1_1Base.html" target="_top" xlink:title="Represents a node of a loop nesting forest.">
+<g id="a_Node000032"><a xlink:href="classthorin_1_1LoopTree_1_1Base.html" target="_top" xlink:title="Represents a node of a loop nesting forest.">
 <polygon fill="white" stroke="#666666" points="274,-78 131,-78 131,-48 274,-48 274,-78"/>
 <text text-anchor="start" x="139" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::LoopTree&lt; forward</text>
 <text text-anchor="middle" x="202.5" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00"> &gt;::Base</text>
@@ -43,465 +46,558 @@
 </g>
 </g>
 <!-- Node0&#45;&gt;Node32 -->
-<g id="edge32" class="edge">
+<g id="edge41_Node000000_Node000032" class="edge">
 <title>Node0&#45;&gt;Node32</title>
+<g id="a_edge41_Node000000_Node000032"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M59.34,-306.43C88.13,-257.13 166.1,-123.63 192.57,-78.3"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="56.15,-304.96 54.13,-315.36 62.19,-308.49 56.15,-304.96"/>
+</a>
+</g>
 </g>
 <!-- Node2 -->
-<g id="node3" class="node">
+<g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_node3"><a xlink:href="classthorin_1_1Ac.html" target="_top" xlink:title="Constructs a Meet value.">
+<g id="a_Node000002"><a xlink:href="classthorin_1_1Ac.html" target="_top" xlink:title="Constructs a Meet value.">
 <polygon fill="white" stroke="#666666" points="413,-1114.5 350,-1114.5 350,-1095.5 413,-1095.5 413,-1114.5"/>
 <text text-anchor="middle" x="381.5" y="-1102.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Ac</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node2 -->
-<g id="edge2" class="edge">
+<g id="edge11_Node000001_Node000002" class="edge">
 <title>Node1&#45;&gt;Node2</title>
+<g id="a_edge11_Node000001_Node000002"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M204.98,-606.75C211.64,-690.56 241.59,-1015.79 310,-1087 320.24,-1097.66 335.84,-1102.33 349.77,-1104.27"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="208.45,-606.28 204.19,-596.58 201.47,-606.82 208.45,-606.28"/>
+</a>
+</g>
 </g>
 <!-- Node3 -->
-<g id="node4" class="node">
+<g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_node4"><a xlink:href="classthorin_1_1App.html" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="classthorin_1_1App.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="416.5,-1077.5 346.5,-1077.5 346.5,-1058.5 416.5,-1058.5 416.5,-1077.5"/>
 <text text-anchor="middle" x="381.5" y="-1065.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::App</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node3 -->
-<g id="edge3" class="edge">
+<g id="edge12_Node000001_Node000003" class="edge">
 <title>Node1&#45;&gt;Node3</title>
+<g id="a_edge12_Node000001_Node000003"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M205.34,-606.8C213.18,-686.78 246.29,-984.75 310,-1050 319.44,-1059.67 333.31,-1064.4 346.25,-1066.63"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="208.81,-606.26 204.37,-596.64 201.84,-606.93 208.81,-606.26"/>
+</a>
+</g>
 </g>
 <!-- Node4 -->
-<g id="node5" class="node">
+<g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_node5"><a xlink:href="classthorin_1_1Arr.html" target="_top" xlink:title="A (possibly paramterized) Array.">
+<g id="a_Node000004"><a xlink:href="classthorin_1_1Arr.html" target="_top" xlink:title="A (possibly paramterized) Array.">
 <polygon fill="white" stroke="#666666" points="414,-1040.5 349,-1040.5 349,-1021.5 414,-1021.5 414,-1040.5"/>
 <text text-anchor="middle" x="381.5" y="-1028.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Arr</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node4 -->
-<g id="edge4" class="edge">
+<g id="edge13_Node000001_Node000004" class="edge">
 <title>Node1&#45;&gt;Node4</title>
+<g id="a_edge13_Node000001_Node000004"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M205.75,-606.66C214.8,-682.36 250.93,-953.63 310,-1013 320.16,-1023.21 335.25,-1027.89 348.87,-1029.95"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="209.21,-606.13 204.57,-596.61 202.26,-606.95 209.21,-606.13"/>
+</a>
+</g>
 </g>
 <!-- Node5 -->
-<g id="node6" class="node">
+<g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_node6"><a xlink:href="classthorin_1_1Axiom.html" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="classthorin_1_1Axiom.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="423,-1003.5 340,-1003.5 340,-984.5 423,-984.5 423,-1003.5"/>
 <text text-anchor="middle" x="381.5" y="-991.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Axiom</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node5 -->
-<g id="edge5" class="edge">
+<g id="edge14_Node000001_Node000005" class="edge">
 <title>Node1&#45;&gt;Node5</title>
+<g id="a_edge14_Node000001_Node000005"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M206.27,-606.78C216.67,-678.38 255.61,-922.54 310,-976 318.02,-983.88 328.98,-988.46 339.87,-991.08"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="209.72,-606.24 204.85,-596.83 202.79,-607.23 209.72,-606.24"/>
+</a>
+</g>
 </g>
 <!-- Node6 -->
-<g id="node7" class="node">
+<g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_node7"><a xlink:href="classthorin_1_1Bound.html" target="_top" xlink:title="Common base for TBound.">
+<g id="a_Node000006"><a xlink:href="classthorin_1_1Bound.html" target="_top" xlink:title="Common base for TBound.">
 <polygon fill="white" stroke="#666666" points="422.5,-966.5 340.5,-966.5 340.5,-947.5 422.5,-947.5 422.5,-966.5"/>
 <text text-anchor="middle" x="381.5" y="-954.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Bound</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node6 -->
-<g id="edge6" class="edge">
+<g id="edge15_Node000001_Node000006" class="edge">
 <title>Node1&#45;&gt;Node6</title>
+<g id="a_edge15_Node000001_Node000006"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M203.19,-606.83C203.4,-666.44 212.49,-845.67 310,-939 318.21,-946.86 329.37,-951.42 340.37,-954.03"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="206.69,-606.58 203.25,-596.56 199.69,-606.54 206.69,-606.58"/>
+</a>
+</g>
 </g>
 <!-- Node8 -->
-<g id="node9" class="node">
+<g id="Node000008" class="node">
 <title>Node8</title>
-<g id="a_node9"><a xlink:href="classthorin_1_1Ext.html" target="_top" xlink:title="Common base for TExtremum.">
+<g id="a_Node000008"><a xlink:href="classthorin_1_1Ext.html" target="_top" xlink:title="Common base for TExtremum.">
 <polygon fill="white" stroke="#666666" points="415,-929.5 348,-929.5 348,-910.5 415,-910.5 415,-929.5"/>
 <text text-anchor="middle" x="381.5" y="-917.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Ext</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node8 -->
-<g id="edge8" class="edge">
+<g id="edge17_Node000001_Node000008" class="edge">
 <title>Node1&#45;&gt;Node8</title>
+<g id="a_edge17_Node000001_Node000008"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M204.09,-606.81C206.85,-662 222.4,-818.82 310,-901 320.17,-910.54 334.62,-915.39 347.79,-917.82"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="207.58,-606.49 203.68,-596.64 200.59,-606.78 207.58,-606.49"/>
+</a>
+</g>
 </g>
 <!-- Node10 -->
-<g id="node11" class="node">
+<g id="Node000010" class="node">
 <title>Node10</title>
-<g id="a_node11"><a xlink:href="classthorin_1_1Extract.html" target="_top" xlink:title="Extracts from a Sigma or Array&#45;typed Extract::tuple the element at position Extract::index.">
+<g id="a_Node000010"><a xlink:href="classthorin_1_1Extract.html" target="_top" xlink:title="Extracts from a Sigma or Array&#45;typed Extract::tuple the element at position Extract::index.">
 <polygon fill="white" stroke="#666666" points="424.5,-892.5 338.5,-892.5 338.5,-873.5 424.5,-873.5 424.5,-892.5"/>
 <text text-anchor="middle" x="381.5" y="-880.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Extract</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node10 -->
-<g id="edge10" class="edge">
+<g id="edge19_Node000001_Node000010" class="edge">
 <title>Node1&#45;&gt;Node10</title>
+<g id="a_edge19_Node000001_Node000010"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M205.12,-606.81C210.34,-657.55 231.35,-793.12 310,-864 317.82,-871.04 327.97,-875.52 338.13,-878.35"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="208.58,-606.21 204.16,-596.57 201.61,-606.86 208.58,-606.21"/>
+</a>
+</g>
 </g>
 <!-- Node11 -->
-<g id="node12" class="node">
+<g id="Node000011" class="node">
 <title>Node11</title>
-<g id="a_node12"><a xlink:href="classthorin_1_1Global.html" target="_top" xlink:title=" ">
+<g id="a_Node000011"><a xlink:href="classthorin_1_1Global.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="423,-855.5 340,-855.5 340,-836.5 423,-836.5 423,-855.5"/>
 <text text-anchor="middle" x="381.5" y="-843.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Global</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node11 -->
-<g id="edge11" class="edge">
+<g id="edge20_Node000001_Node000011" class="edge">
 <title>Node1&#45;&gt;Node11</title>
+<g id="a_edge20_Node000001_Node000011"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M206.39,-606.61C214.21,-652.43 240.1,-767.14 310,-827 318.38,-834.17 329.2,-838.67 339.84,-841.47"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="209.82,-605.84 204.78,-596.52 202.9,-606.95 209.82,-605.84"/>
+</a>
+</g>
 </g>
 <!-- Node12 -->
-<g id="node13" class="node">
+<g id="Node000012" class="node">
 <title>Node12</title>
-<g id="a_node13"><a xlink:href="classthorin_1_1Idx.html" target="_top" xlink:title="A built&#45;in constant of type .Nat &#45;&gt; *.">
+<g id="a_Node000012"><a xlink:href="classthorin_1_1Idx.html" target="_top" xlink:title="A built&#45;in constant of type .Nat &#45;&gt; *.">
 <polygon fill="white" stroke="#666666" points="414.5,-818.5 348.5,-818.5 348.5,-799.5 414.5,-799.5 414.5,-818.5"/>
 <text text-anchor="middle" x="381.5" y="-806.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Idx</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node12 -->
-<g id="edge12" class="edge">
+<g id="edge21_Node000001_Node000012" class="edge">
 <title>Node1&#45;&gt;Node12</title>
+<g id="a_edge21_Node000001_Node000012"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M208.12,-606.6C218.75,-647.25 248.83,-740.99 310,-790 320.88,-798.72 335.43,-803.45 348.48,-806.02"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="211.5,-605.69 205.68,-596.84 204.71,-607.39 211.5,-605.69"/>
+</a>
+</g>
 </g>
 <!-- Node13 -->
-<g id="node14" class="node">
+<g id="Node000013" class="node">
 <title>Node13</title>
-<g id="a_node14"><a xlink:href="classthorin_1_1Infer.html" target="_top" xlink:title="This node is a hole in the IR that is inferred by its context later on.">
+<g id="a_Node000013"><a xlink:href="classthorin_1_1Infer.html" target="_top" xlink:title="This node is a hole in the IR that is inferred by its context later on.">
 <polygon fill="white" stroke="#666666" points="418.5,-781.5 344.5,-781.5 344.5,-762.5 418.5,-762.5 418.5,-781.5"/>
 <text text-anchor="middle" x="381.5" y="-769.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Infer</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node13 -->
-<g id="edge13" class="edge">
+<g id="edge22_Node000001_Node000013" class="edge">
 <title>Node1&#45;&gt;Node13</title>
+<g id="a_edge22_Node000001_Node000013"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M210.36,-606.08C223.84,-640.81 257.16,-714.33 310,-753 319.92,-760.26 332.45,-764.75 344.18,-767.52"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="213.6,-604.76 206.81,-596.63 207.05,-607.22 213.6,-604.76"/>
+</a>
+</g>
 </g>
 <!-- Node14 -->
-<g id="node15" class="node">
+<g id="Node000014" class="node">
 <title>Node14</title>
-<g id="a_node15"><a xlink:href="classthorin_1_1Insert.html" target="_top" xlink:title="Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple.">
+<g id="a_Node000014"><a xlink:href="classthorin_1_1Insert.html" target="_top" xlink:title="Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple.">
 <polygon fill="white" stroke="#666666" points="421,-744.5 342,-744.5 342,-725.5 421,-725.5 421,-744.5"/>
 <text text-anchor="middle" x="381.5" y="-732.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Insert</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node14 -->
-<g id="edge14" class="edge">
+<g id="edge23_Node000001_Node000014" class="edge">
 <title>Node1&#45;&gt;Node14</title>
+<g id="a_edge23_Node000001_Node000014"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M213.78,-605.71C230.29,-633.98 265.44,-687.31 310,-716 319.49,-722.11 330.9,-726.26 341.75,-729.09"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="216.72,-603.8 208.73,-596.84 210.63,-607.26 216.72,-603.8"/>
+</a>
+</g>
 </g>
 <!-- Node15 -->
-<g id="node16" class="node">
+<g id="Node000015" class="node">
 <title>Node15</title>
-<g id="a_node16"><a xlink:href="classthorin_1_1Lam.html" target="_top" xlink:title="A function.">
+<g id="a_Node000015"><a xlink:href="classthorin_1_1Lam.html" target="_top" xlink:title="A function.">
 <polygon fill="white" stroke="#666666" points="417.5,-707.5 345.5,-707.5 345.5,-688.5 417.5,-688.5 417.5,-707.5"/>
 <text text-anchor="middle" x="381.5" y="-695.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Lam</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node15 -->
-<g id="edge15" class="edge">
+<g id="edge24_Node000001_Node000015" class="edge">
 <title>Node1&#45;&gt;Node15</title>
+<g id="a_edge24_Node000001_Node000015"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M218.63,-604.12C237.86,-624.84 273.04,-659.39 310,-679 320.86,-684.76 333.61,-688.89 345.26,-691.79"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="221.17,-601.7 211.85,-596.67 215.99,-606.42 221.17,-601.7"/>
+</a>
+</g>
 </g>
 <!-- Node16 -->
-<g id="node17" class="node">
+<g id="Node000016" class="node">
 <title>Node16</title>
-<g id="a_node17"><a xlink:href="classthorin_1_1Lit.html" target="_top" xlink:title=" ">
+<g id="a_Node000016"><a xlink:href="classthorin_1_1Lit.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="413,-670.5 350,-670.5 350,-651.5 413,-651.5 413,-670.5"/>
 <text text-anchor="middle" x="381.5" y="-658.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Lit</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node16 -->
-<g id="edge16" class="edge">
+<g id="edge25_Node000001_Node000016" class="edge">
 <title>Node1&#45;&gt;Node16</title>
+<g id="a_edge25_Node000001_Node000016"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M228.26,-601.72C249.41,-613.81 280.93,-630.73 310,-642 322.76,-646.95 337.31,-651.11 349.85,-654.26"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="230,-598.68 219.6,-596.7 226.5,-604.74 230,-598.68"/>
+</a>
+</g>
 </g>
 <!-- Node17 -->
-<g id="node18" class="node">
+<g id="Node000017" class="node">
 <title>Node17</title>
-<g id="a_node18"><a xlink:href="classthorin_1_1Nat.html" target="_top" xlink:title=" ">
+<g id="a_Node000017"><a xlink:href="classthorin_1_1Nat.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="415.5,-633.5 347.5,-633.5 347.5,-614.5 415.5,-614.5 415.5,-633.5"/>
 <text text-anchor="middle" x="381.5" y="-621.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Nat</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node17 -->
-<g id="edge17" class="edge">
+<g id="edge26_Node000001_Node000017" class="edge">
 <title>Node1&#45;&gt;Node17</title>
+<g id="a_edge26_Node000001_Node000017"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M246.89,-596.07C277.89,-602.55 318.97,-611.14 347.36,-617.07"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="247.3,-592.58 236.79,-593.96 245.86,-599.43 247.3,-592.58"/>
+</a>
+</g>
 </g>
 <!-- Node18 -->
-<g id="node19" class="node">
+<g id="Node000018" class="node">
 <title>Node18</title>
-<g id="a_node19"><a xlink:href="classthorin_1_1Pack.html" target="_top" xlink:title="A (possibly paramterized) Tuple.">
+<g id="a_Node000018"><a xlink:href="classthorin_1_1Pack.html" target="_top" xlink:title="A (possibly paramterized) Tuple.">
 <polygon fill="white" stroke="#666666" points="418.5,-596.5 344.5,-596.5 344.5,-577.5 418.5,-577.5 418.5,-596.5"/>
 <text text-anchor="middle" x="381.5" y="-584.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Pack</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node18 -->
-<g id="edge18" class="edge">
+<g id="edge27_Node000001_Node000018" class="edge">
 <title>Node1&#45;&gt;Node18</title>
+<g id="a_edge27_Node000001_Node000018"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M246.95,-587C276.85,-587 316.11,-587 344.31,-587"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="246.79,-583.5 236.79,-587 246.79,-590.5 246.79,-583.5"/>
+</a>
+</g>
 </g>
 <!-- Node19 -->
-<g id="node20" class="node">
+<g id="Node000019" class="node">
 <title>Node19</title>
-<g id="a_node20"><a xlink:href="classthorin_1_1Pi.html" target="_top" xlink:title="A dependent function type.">
+<g id="a_Node000019"><a xlink:href="classthorin_1_1Pi.html" target="_top" xlink:title="A dependent function type.">
 <polygon fill="white" stroke="#666666" points="411.5,-559.5 351.5,-559.5 351.5,-540.5 411.5,-540.5 411.5,-559.5"/>
 <text text-anchor="middle" x="381.5" y="-547.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Pi</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node19 -->
-<g id="edge19" class="edge">
+<g id="edge28_Node000001_Node000019" class="edge">
 <title>Node1&#45;&gt;Node19</title>
+<g id="a_edge28_Node000001_Node000019"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M246.93,-577.92C279.46,-571.12 323.06,-562.01 351.46,-556.07"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="245.86,-574.57 236.79,-580.04 247.3,-581.42 245.86,-574.57"/>
+</a>
+</g>
 </g>
 <!-- Node20 -->
-<g id="node21" class="node">
+<g id="Node000020" class="node">
 <title>Node20</title>
-<g id="a_node21"><a xlink:href="classthorin_1_1Pick.html" target="_top" xlink:title="Picks the aspect of a Meet [value](Pick::value) by its [type](Def::type).">
+<g id="a_Node000020"><a xlink:href="classthorin_1_1Pick.html" target="_top" xlink:title="Picks the aspect of a Meet [value](Pick::value) by its [type](Def::type).">
 <polygon fill="white" stroke="#666666" points="417,-522.5 346,-522.5 346,-503.5 417,-503.5 417,-522.5"/>
 <text text-anchor="middle" x="381.5" y="-510.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Pick</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node20 -->
-<g id="edge20" class="edge">
+<g id="edge29_Node000001_Node000020" class="edge">
 <title>Node1&#45;&gt;Node20</title>
+<g id="a_edge29_Node000001_Node000020"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M227.45,-572.32C248.55,-559.9 280.45,-542.36 310,-531 321.44,-526.6 334.33,-522.95 345.93,-520.12"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="225.63,-569.33 218.84,-577.46 229.22,-575.34 225.63,-569.33"/>
+</a>
+</g>
 </g>
 <!-- Node21 -->
-<g id="node22" class="node">
+<g id="Node000021" class="node">
 <title>Node21</title>
-<g id="a_node22"><a xlink:href="classthorin_1_1Proxy.html" target="_top" xlink:title=" ">
+<g id="a_Node000021"><a xlink:href="classthorin_1_1Proxy.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="421,-485.5 342,-485.5 342,-466.5 421,-466.5 421,-485.5"/>
 <text text-anchor="middle" x="381.5" y="-473.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Proxy</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node21 -->
-<g id="edge21" class="edge">
+<g id="edge30_Node000001_Node000021" class="edge">
 <title>Node1&#45;&gt;Node21</title>
+<g id="a_edge30_Node000001_Node000021"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M218.25,-569.93C237.34,-548.93 272.59,-513.66 310,-494 319.84,-488.83 331.25,-485.09 341.98,-482.4"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="215.58,-567.67 211.54,-577.47 220.81,-572.33 215.58,-567.67"/>
+</a>
+</g>
 </g>
 <!-- Node22 -->
-<g id="node23" class="node">
+<g id="Node000022" class="node">
 <title>Node22</title>
-<g id="a_node23"><a xlink:href="classthorin_1_1Sigma.html" target="_top" xlink:title="A dependent tuple type.">
+<g id="a_Node000022"><a xlink:href="classthorin_1_1Sigma.html" target="_top" xlink:title="A dependent tuple type.">
 <polygon fill="white" stroke="#666666" points="422.5,-448.5 340.5,-448.5 340.5,-429.5 422.5,-429.5 422.5,-448.5"/>
 <text text-anchor="middle" x="381.5" y="-436.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Sigma</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node22 -->
-<g id="edge22" class="edge">
+<g id="edge31_Node000001_Node000022" class="edge">
 <title>Node1&#45;&gt;Node22</title>
+<g id="a_edge31_Node000001_Node000022"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M213.45,-568.49C229.75,-540.01 264.88,-485.75 310,-457 319.06,-451.23 329.87,-447.31 340.28,-444.64"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="210.3,-566.96 208.49,-577.4 216.41,-570.37 210.3,-566.96"/>
+</a>
+</g>
 </g>
 <!-- Node23 -->
-<g id="node24" class="node">
+<g id="Node000023" class="node">
 <title>Node23</title>
-<g id="a_node24"><a xlink:href="classthorin_1_1Singleton.html" target="_top" xlink:title="A singleton wraps a type into a higher order type.">
+<g id="a_Node000023"><a xlink:href="classthorin_1_1Singleton.html" target="_top" xlink:title="A singleton wraps a type into a higher order type.">
 <polygon fill="white" stroke="#666666" points="430,-411.5 333,-411.5 333,-392.5 430,-392.5 430,-411.5"/>
 <text text-anchor="middle" x="381.5" y="-399.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Singleton</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node23 -->
-<g id="edge23" class="edge">
+<g id="edge32_Node000001_Node000023" class="edge">
 <title>Node1&#45;&gt;Node23</title>
+<g id="a_edge32_Node000001_Node000023"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M210.28,-567.74C223.62,-532.69 256.73,-458.55 310,-420 316.75,-415.11 324.71,-411.55 332.8,-408.95"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="206.93,-566.68 206.77,-577.28 213.5,-569.1 206.93,-566.68"/>
+</a>
+</g>
 </g>
 <!-- Node24 -->
-<g id="node25" class="node">
+<g id="Node000024" class="node">
 <title>Node24</title>
-<g id="a_node25"><a xlink:href="classthorin_1_1Test.html" target="_top" xlink:title="Test whether Test::value currently holds type Test::probe:">
+<g id="a_Node000024"><a xlink:href="classthorin_1_1Test.html" target="_top" xlink:title="Test whether Test::value currently holds type Test::probe:">
 <polygon fill="white" stroke="#666666" points="417,-374.5 346,-374.5 346,-355.5 417,-355.5 417,-374.5"/>
 <text text-anchor="middle" x="381.5" y="-362.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Test</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node24 -->
-<g id="edge24" class="edge">
+<g id="edge33_Node000001_Node000024" class="edge">
 <title>Node1&#45;&gt;Node24</title>
+<g id="a_edge33_Node000001_Node000024"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M208.04,-567.24C218.51,-526.27 248.32,-431.85 310,-383 320.2,-374.92 333.6,-370.43 345.98,-367.95"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="204.61,-566.54 205.64,-577.08 211.41,-568.2 204.61,-566.54"/>
+</a>
+</g>
 </g>
 <!-- Node25 -->
-<g id="node26" class="node">
+<g id="Node000025" class="node">
 <title>Node25</title>
-<g id="a_node26"><a xlink:href="classthorin_1_1Tuple.html" target="_top" xlink:title="Data constructor for a Sigma.">
+<g id="a_Node000025"><a xlink:href="classthorin_1_1Tuple.html" target="_top" xlink:title="Data constructor for a Sigma.">
 <polygon fill="white" stroke="#666666" points="420,-337.5 343,-337.5 343,-318.5 420,-318.5 420,-337.5"/>
 <text text-anchor="middle" x="381.5" y="-325.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Tuple</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node25 -->
-<g id="edge25" class="edge">
+<g id="edge34_Node000001_Node000025" class="edge">
 <title>Node1&#45;&gt;Node25</title>
+<g id="a_edge34_Node000001_Node000025"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M206.31,-567.25C213.96,-521.11 239.5,-405.66 310,-346 319.16,-338.25 331.23,-333.77 342.79,-331.2"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="202.81,-566.99 204.74,-577.41 209.73,-568.06 202.81,-566.99"/>
+</a>
+</g>
 </g>
 <!-- Node26 -->
-<g id="node27" class="node">
+<g id="Node000026" class="node">
 <title>Node26</title>
-<g id="a_node27"><a xlink:href="classthorin_1_1Type.html" target="_top" xlink:title=" ">
+<g id="a_Node000026"><a xlink:href="classthorin_1_1Type.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="418.5,-300.5 344.5,-300.5 344.5,-281.5 418.5,-281.5 418.5,-300.5"/>
 <text text-anchor="middle" x="381.5" y="-288.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Type</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node26 -->
-<g id="edge26" class="edge">
+<g id="edge35_Node000001_Node000026" class="edge">
 <title>Node1&#45;&gt;Node26</title>
+<g id="a_edge35_Node000001_Node000026"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M205.01,-567.38C209.99,-516.57 230.51,-379.77 310,-309 319.43,-300.6 332.26,-296.02 344.38,-293.55"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="201.52,-567.09 204.12,-577.36 208.49,-567.71 201.52,-567.09"/>
+</a>
+</g>
 </g>
 <!-- Node27 -->
-<g id="node28" class="node">
+<g id="Node000027" class="node">
 <title>Node27</title>
-<g id="a_node28"><a xlink:href="classthorin_1_1UInc.html" target="_top" xlink:title=" ">
+<g id="a_Node000027"><a xlink:href="classthorin_1_1UInc.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="418,-263.5 345,-263.5 345,-244.5 418,-244.5 418,-263.5"/>
 <text text-anchor="middle" x="381.5" y="-251.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::UInc</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node27 -->
-<g id="edge27" class="edge">
+<g id="edge36_Node000001_Node000027" class="edge">
 <title>Node1&#45;&gt;Node27</title>
+<g id="a_edge36_Node000001_Node000027"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M204.01,-567.07C206.57,-511.55 221.65,-353.88 310,-272 319.45,-263.24 332.56,-258.61 344.92,-256.2"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="200.51,-567.18 203.64,-577.3 207.5,-567.43 200.51,-567.18"/>
+</a>
+</g>
 </g>
 <!-- Node28 -->
-<g id="node29" class="node">
+<g id="Node000028" class="node">
 <title>Node28</title>
-<g id="a_node29"><a xlink:href="classthorin_1_1UMax.html" target="_top" xlink:title=" ">
+<g id="a_Node000028"><a xlink:href="classthorin_1_1UMax.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="421.5,-226.5 341.5,-226.5 341.5,-207.5 421.5,-207.5 421.5,-226.5"/>
 <text text-anchor="middle" x="381.5" y="-214.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::UMax</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node28 -->
-<g id="edge28" class="edge">
+<g id="edge37_Node000001_Node000028" class="edge">
 <title>Node1&#45;&gt;Node28</title>
+<g id="a_edge37_Node000001_Node000028"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M203.19,-567.17C203.4,-507.56 212.49,-328.33 310,-235 318.49,-226.88 330.11,-222.28 341.47,-219.72"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="199.69,-567.46 203.25,-577.44 206.69,-567.42 199.69,-567.46"/>
+</a>
+</g>
 </g>
 <!-- Node29 -->
-<g id="node30" class="node">
+<g id="Node000029" class="node">
 <title>Node29</title>
-<g id="a_node30"><a xlink:href="classthorin_1_1Univ.html" target="_top" xlink:title=" ">
+<g id="a_Node000029"><a xlink:href="classthorin_1_1Univ.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="418.5,-189.5 344.5,-189.5 344.5,-170.5 418.5,-170.5 418.5,-189.5"/>
 <text text-anchor="middle" x="381.5" y="-177.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Univ</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node29 -->
-<g id="edge29" class="edge">
+<g id="edge38_Node000001_Node000029" class="edge">
 <title>Node1&#45;&gt;Node29</title>
+<g id="a_edge38_Node000001_Node000029"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M206.27,-567.22C216.67,-495.62 255.61,-251.46 310,-198 319.1,-189.06 331.99,-184.37 344.27,-181.97"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="202.79,-566.77 204.85,-577.17 209.72,-567.76 202.79,-566.77"/>
+</a>
+</g>
 </g>
 <!-- Node30 -->
-<g id="node31" class="node">
+<g id="Node000030" class="node">
 <title>Node30</title>
-<g id="a_node31"><a xlink:href="classthorin_1_1Var.html" target="_top" xlink:title=" ">
+<g id="a_Node000030"><a xlink:href="classthorin_1_1Var.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="415,-152.5 348,-152.5 348,-133.5 415,-133.5 415,-152.5"/>
 <text text-anchor="middle" x="381.5" y="-140.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Var</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node30 -->
-<g id="edge30" class="edge">
+<g id="edge39_Node000001_Node000030" class="edge">
 <title>Node1&#45;&gt;Node30</title>
+<g id="a_edge39_Node000001_Node000030"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M205.75,-567.34C214.8,-491.64 250.93,-220.37 310,-161 319.89,-151.06 334.46,-146.36 347.79,-144.22"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="202.26,-567.05 204.57,-577.39 209.21,-567.87 202.26,-567.05"/>
+</a>
+</g>
 </g>
 <!-- Node31 -->
-<g id="node32" class="node">
+<g id="Node000031" class="node">
 <title>Node31</title>
-<g id="a_node32"><a xlink:href="classthorin_1_1Vel.html" target="_top" xlink:title="Constructs a Join value.">
+<g id="a_Node000031"><a xlink:href="classthorin_1_1Vel.html" target="_top" xlink:title="Constructs a Join value.">
 <polygon fill="white" stroke="#666666" points="414.5,-115.5 348.5,-115.5 348.5,-96.5 414.5,-96.5 414.5,-115.5"/>
 <text text-anchor="middle" x="381.5" y="-103.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Vel</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node31 -->
-<g id="edge31" class="edge">
+<g id="edge40_Node000001_Node000031" class="edge">
 <title>Node1&#45;&gt;Node31</title>
+<g id="a_edge40_Node000001_Node000031"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M205.34,-567.2C213.18,-487.22 246.29,-189.25 310,-124 319.97,-113.79 334.88,-109.08 348.42,-107.01"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="201.84,-567.07 204.37,-577.36 208.81,-567.74 201.84,-567.07"/>
+</a>
+</g>
 </g>
 <!-- Node7 -->
-<g id="node8" class="node">
+<g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_node8"><a xlink:href="classthorin_1_1TBound.html" target="_top" xlink:title="Specific Bound depending on Up.">
+<g id="a_Node000007"><a xlink:href="classthorin_1_1TBound.html" target="_top" xlink:title="Specific Bound depending on Up.">
 <polygon fill="white" stroke="#666666" points="613,-966.5 489,-966.5 489,-947.5 613,-947.5 613,-966.5"/>
 <text text-anchor="middle" x="551" y="-954.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::TBound&lt; Up &gt;</text>
 </a>
 </g>
 </g>
 <!-- Node6&#45;&gt;Node7 -->
-<g id="edge7" class="edge">
+<g id="edge16_Node000006_Node000007" class="edge">
 <title>Node6&#45;&gt;Node7</title>
+<g id="a_edge16_Node000006_Node000007"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M432.72,-957C450.4,-957 470.46,-957 488.93,-957"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="432.62,-953.5 422.62,-957 432.62,-960.5 432.62,-953.5"/>
+</a>
+</g>
 </g>
 <!-- Node9 -->
-<g id="node10" class="node">
+<g id="Node000009" class="node">
 <title>Node9</title>
-<g id="a_node10"><a xlink:href="classthorin_1_1TExt.html" target="_top" xlink:title="Extremum. Either Top (Up) or Bottom.">
+<g id="a_Node000009"><a xlink:href="classthorin_1_1TExt.html" target="_top" xlink:title="Extremum. Either Top (Up) or Bottom.">
 <polygon fill="white" stroke="#666666" points="605.5,-929.5 496.5,-929.5 496.5,-910.5 605.5,-910.5 605.5,-929.5"/>
 <text text-anchor="middle" x="551" y="-917.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::TExt&lt; Up &gt;</text>
 </a>
 </g>
 </g>
 <!-- Node8&#45;&gt;Node9 -->
-<g id="edge9" class="edge">
+<g id="edge18_Node000008_Node000009" class="edge">
 <title>Node8&#45;&gt;Node9</title>
+<g id="a_edge18_Node000008_Node000009"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M425.37,-920C446.97,-920 473.36,-920 496.29,-920"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="425.19,-916.5 415.19,-920 425.19,-923.5 425.19,-916.5"/>
+</a>
+</g>
 </g>
 <!-- Node33 -->
-<g id="node34" class="node">
+<g id="Node000033" class="node">
 <title>Node33</title>
-<g id="a_node34"><a xlink:href="classthorin_1_1LoopTree_1_1Head.html" target="_top" xlink:title="A Head owns further nodes as children.">
+<g id="a_Node000033"><a xlink:href="classthorin_1_1LoopTree_1_1Head.html" target="_top" xlink:title="A Head owns further nodes as children.">
 <polygon fill="white" stroke="#666666" points="453,-78 310,-78 310,-48 453,-48 453,-78"/>
 <text text-anchor="start" x="318" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::LoopTree&lt; forward</text>
 <text text-anchor="middle" x="381.5" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00"> &gt;::Head</text>
@@ -509,15 +605,18 @@
 </g>
 </g>
 <!-- Node32&#45;&gt;Node33 -->
-<g id="edge33" class="edge">
+<g id="edge42_Node000032_Node000033" class="edge">
 <title>Node32&#45;&gt;Node33</title>
+<g id="a_edge42_Node000032_Node000033"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M284.49,-63C292.97,-63 301.54,-63 309.89,-63"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="284.22,-59.5 274.22,-63 284.22,-66.5 284.22,-59.5"/>
+</a>
+</g>
 </g>
 <!-- Node34 -->
-<g id="node35" class="node">
+<g id="Node000034" class="node">
 <title>Node34</title>
-<g id="a_node35"><a xlink:href="classthorin_1_1LoopTree_1_1Leaf.html" target="_top" xlink:title="A Leaf only holds a single CFNode and does not have any children.">
+<g id="a_Node000034"><a xlink:href="classthorin_1_1LoopTree_1_1Leaf.html" target="_top" xlink:title="A Leaf only holds a single CFNode and does not have any children.">
 <polygon fill="white" stroke="#666666" points="453,-30 310,-30 310,0 453,0 453,-30"/>
 <text text-anchor="start" x="318" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::LoopTree&lt; forward</text>
 <text text-anchor="middle" x="381.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00"> &gt;::Leaf</text>
@@ -525,10 +624,13 @@
 </g>
 </g>
 <!-- Node32&#45;&gt;Node34 -->
-<g id="edge34" class="edge">
+<g id="edge43_Node000032_Node000034" class="edge">
 <title>Node32&#45;&gt;Node34</title>
+<g id="a_edge43_Node000032_Node000034"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M268.84,-45.28C287.35,-40.26 307.32,-34.85 325.18,-30"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="267.75,-41.95 259.02,-47.94 269.59,-48.7 267.75,-41.95"/>
+</a>
+</g>
 </g>
 </g>
 </svg>

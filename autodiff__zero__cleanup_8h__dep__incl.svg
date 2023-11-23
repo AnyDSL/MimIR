@@ -6,12 +6,22 @@
 <!-- Title: dialects/autodiff/pass/autodiff_zero_cleanup.h Pages: 1 -->
 <svg width="330pt" height="104pt"
  viewBox="0.00 0.00 329.50 104.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<svg id="main" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" onload="init(evt)">
+<style type="text/css"><![CDATA[
+.node, .edge {opacity: 0.7;}
+.node.selected, .edge.selected {opacity: 1;}
+.edge:hover path { stroke: red; }
+.edge:hover polygon { stroke: red; fill: red; }
+]]></style>
+<script type="application/ecmascript" xlink:href="svg.min.js"/>
+<svg id="graph" class="graph">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 100)">
 <title>dialects/autodiff/pass/autodiff_zero_cleanup.h</title>
 <!-- Node1 -->
-<g id="node1" class="node">
+<g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title=" ">
 <polygon fill="#999999" stroke="#666666" points="231,-96 95,-96 95,-66 231,-66 231,-96"/>
 <text text-anchor="start" x="103" y="-84" font-family="Helvetica,sans-Serif" font-size="10.00">dialects/autodiff/pass</text>
 <text text-anchor="middle" x="163" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">/autodiff_zero_cleanup.h</text>
@@ -19,24 +29,27 @@
 </g>
 </g>
 <!-- Node2 -->
-<g id="node2" class="node">
+<g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="autodiff_8cpp.html" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="autodiff_8cpp.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="156,-24.5 0,-24.5 0,-5.5 156,-5.5 156,-24.5"/>
 <text text-anchor="middle" x="78" y="-12.5" font-family="Helvetica,sans-Serif" font-size="10.00">dialects/autodiff/autodiff.cpp</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node2 -->
-<g id="edge1" class="edge">
+<g id="edge1_Node000001_Node000002" class="edge">
 <title>Node1&#45;&gt;Node2</title>
+<g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M135.89,-59.58C120.33,-47.87 101.6,-33.77 89.75,-24.84"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="134.04,-62.58 144.14,-65.8 138.25,-56.99 134.04,-62.58"/>
+</a>
+</g>
 </g>
 <!-- Node3 -->
-<g id="node3" class="node">
+<g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="autodiff__zero__cleanup_8cpp.html" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="autodiff__zero__cleanup_8cpp.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="321.5,-30 174.5,-30 174.5,0 321.5,0 321.5,-30"/>
 <text text-anchor="start" x="182.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">dialects/autodiff/pass</text>
 <text text-anchor="middle" x="248" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">/autodiff_zero_cleanup.cpp</text>
@@ -44,10 +57,28 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node3 -->
-<g id="edge2" class="edge">
+<g id="edge2_Node000001_Node000003" class="edge">
 <title>Node1&#45;&gt;Node3</title>
+<g id="a_edge2_Node000001_Node000003"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M189.89,-59.75C202.67,-50.13 217.64,-38.86 229.19,-30.16"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="187.75,-56.99 181.86,-65.8 191.96,-62.58 187.75,-56.99"/>
+</a>
 </g>
 </g>
+</g>
+</svg>
+</svg>
+
+<style type='text/css'>
+<![CDATA[
+[data-mouse-over-selected='false'] { opacity: 0.7; }
+[data-mouse-over-selected='true']  { opacity: 1.0; }
+]]>
+</style>
+<script type="application/ecmascript"><![CDATA[
+document.addEventListener('DOMContentLoaded', (event) => {
+  highlightEdges();
+  highlightAdjacentNodes();
+});
+]]></script>
 </svg>

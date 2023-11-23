@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['data_0',['Data',['../classthorin_1_1mem_1_1SSAConstr.html#a852075104e7f9c647372c2a2eca41958',1,'thorin::mem::SSAConstr::Data()'],['../classthorin_1_1BetaRed.html#a4b9bd0a49bb0f7f2c078bf22eb4b4140',1,'thorin::BetaRed::Data()'],['../classthorin_1_1EtaExp.html#aebcfee1cdce37b4a88dc59e1fce54b84',1,'thorin::EtaExp::Data()'],['../classthorin_1_1EtaRed.html#a664e6bedb7586ec35b84b6064bf58c0b',1,'thorin::EtaRed::Data()'],['../classthorin_1_1FPPass.html#adf424bdb0ad497b5b46c020ac6c34363',1,'thorin::FPPass::Data()'],['../classthorin_1_1mem_1_1CopyProp.html#ac2ed364ac4e9cd94e631d51a4759d5b7',1,'thorin::mem::CopyProp::Data()']]],
+  ['data_0',['data',['../classthorin_1_1mem_1_1SSAConstr.html#a852075104e7f9c647372c2a2eca41958',1,'thorin::mem::SSAConstr::Data'],['../classthorin_1_1BetaRed.html#a4b9bd0a49bb0f7f2c078bf22eb4b4140',1,'thorin::BetaRed::Data'],['../classthorin_1_1EtaExp.html#aebcfee1cdce37b4a88dc59e1fce54b84',1,'thorin::EtaExp::Data'],['../classthorin_1_1EtaRed.html#a664e6bedb7586ec35b84b6064bf58c0b',1,'thorin::EtaRed::Data'],['../classthorin_1_1FPPass.html#adf424bdb0ad497b5b46c020ac6c34363',1,'thorin::FPPass::Data'],['../classthorin_1_1mem_1_1CopyProp.html#ac2ed364ac4e9cd94e631d51a4759d5b7',1,'thorin::mem::CopyProp::Data']]],
   ['def2def_1',['Def2Def',['../namespacethorin.html#a7907156065ecc2f7a8ad6d0c4b48752d',1,'thorin']]],
   ['def2fields_2',['Def2Fields',['../namespacethorin.html#accdf24c5bd5ff1bd07900174862398bb',1,'thorin']]],
   ['defdef_3',['DefDef',['../namespacethorin.html#a1c686b5d4a914909b3433cae517ec294',1,'thorin']]],

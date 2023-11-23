@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['e_0',['e',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2617461720290be8740985537e6e1bfd',1,'thorin::core::e()'],['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fae3d34eae2d815c0b27ec6caf0bdb2707',1,'thorin::math::e()']]],
+  ['e_0',['e',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2617461720290be8740985537e6e1bfd',1,'thorin::core::e'],['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fae3d34eae2d815c0b27ec6caf0bdb2707',1,'thorin::math::e']]],
   ['eof_1',['EoF',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aff6620b605642fc8a70795b0ff429afc',1,'thorin::Tok']]],
   ['epsilon_2',['EPSILON',['../classthorin_1_1automaton_1_1NFA.html#a40e9d71e061a9d7d6b3d72fb4574c582a51530ab7fcbe9515244d86a2f8de3917',1,'thorin::automaton::NFA']]],
   ['error_3',['Error',['../classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa902b0d55fddef6f8d651fe1035b7d4bd',1,'thorin::Log']]],

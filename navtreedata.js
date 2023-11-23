@@ -25,13 +25,7 @@
 var NAVTREE =
 [
   [ "Thorin", "index.html", [
-    [ "Introduction", "index.html", [
-      [ "Building", "index.html#autotoc_md65", [
-        [ "Install", "index.html#autotoc_md66", null ],
-        [ "Build Switches", "index.html#autotoc_md67", null ]
-      ] ],
-      [ "Dependencies", "index.html#autotoc_md68", null ]
-    ] ],
+    [ "Introduction", "index.html", "index" ],
     [ "Documentation", "usergroup0.html", [
       [ "Command-Line Reference", "cli.html", null ],
       [ "Language Reference", "langref.html", null ],
@@ -77,7 +71,7 @@ var NAVTREE =
         [ "Typedefs", "functions_type.html", null ],
         [ "Enumerations", "functions_enum.html", null ],
         [ "Enumerator", "functions_eval.html", null ],
-        [ "Related Functions", "functions_rela.html", null ]
+        [ "Related Symbols", "functions_rela.html", null ]
       ] ]
     ] ],
     [ "Files", "files.html", [
@@ -97,30 +91,30 @@ var NAVTREEINDEX =
 [
 "add__mem_8cpp.html",
 "classthorin_1_1Axiom.html#ada9662236af225e5cbdc30a022aff6d0",
-"classthorin_1_1Def.html#a28a58b31b9ac433ef1d257e13261c57c",
-"classthorin_1_1Driver.html",
-"classthorin_1_1IndexSet.html#a6f998927823164840c08109f8b7a3a9c",
-"classthorin_1_1LoopTree.html#a0da4823e67b8a40afeafa71f2c3c05a3",
-"classthorin_1_1Pi.html#a0caee25c60855f23844bd8e4f94dd8ec",
-"classthorin_1_1Scheduler.html#ac327f6bf1e80d3aeb499b27892e89589",
-"classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a2abb8fa797d7276621a13c4a80726f8d",
-"classthorin_1_1Vel.html#a45fa6c35d6e120c7bc9b146780c07e4f",
-"classthorin_1_1World.html#acd6d1c460395a0cfe7648bff5e456a75",
-"classthorin_1_1clos_1_1ClosLit.html#aaaeaea4724db39a322f4d523c667c030",
-"clos_2autogen_8h.html#ab4e2702acfbe14c56bc38803308aae1f",
-"core_2autogen_8h.html#a70895f76bd16fdb3db2c75dd1fd38978a9989c0fe0d3c40b4184f53f612ce350d",
-"core_8h.html#a28bcd1b4070999e92b1fe8c67e364e32",
-"dot_8cpp.html#a7bfdd9ee50f8c646fcd11211c81d663c",
-"math_2autogen_8h.html#a00e74d198c086fe1fb880c87ea3bb8feaeea56f158394dd5db331a83469ba90b7",
-"math_2autogen_8h.html#af32d365294fd26d985b245e595bf5e92",
-"namespacemembers_h.html",
-"namespacethorin.html#afff921d77b031717b42e5b701d92d0e5",
-"namespacethorin_1_1core.html#a5fb5150dc0b01cfa20e7bb209ea49f6c",
-"namespacethorin_1_1core.html#afaccb7ce3a7fdd91e4b7dbd5e82b8723",
-"namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa3a1488279d989dc356dc95e7e36468f7",
-"namespacethorin_1_1regex.html#a8c7a401db4442fe8a7fdae0160c89f51a0c07077b42209b963382a6ce76980255",
-"regex_2autogen_8h.html#afb180532bc1af2920ed0a31b8dbad2f1",
-"sys_8h.html#ac4dd1156a86eb6db52f2cd93fec5a962"
+"classthorin_1_1Def.html#a23a7c2d6b85662ea07d653f6b2caadf7",
+"classthorin_1_1DomTreeBase.html#aa4d83a0bfc8ac237e29bb47e330f4390",
+"classthorin_1_1IndexMap.html#aa34f6f4febc42c33e9ccd190b326a597",
+"classthorin_1_1Log.html#ae0e23980758024c193506f0e3cd53de6",
+"classthorin_1_1Phase.html#a205f687060888dc825ee521c99534426",
+"classthorin_1_1Scalerize.html#a3cd68d747d5226eff8f2f72da5e3ca15",
+"classthorin_1_1Tok.html#a19c39bff433502a76f4a480612433eee",
+"classthorin_1_1Var.html#a7b4bcdf992c21ae83363f25df05b1d25",
+"classthorin_1_1World.html#ab73ab54ae387bee661eec51133bdccb9",
+"classthorin_1_1clos_1_1ClosConvPrep.html#a643058a72aede3579e6ecda742c5efec",
+"classthorin_1_1unique__stack.html#a69738c049d6f032000deb25c56bbbf36",
+"core_2autogen_8h.html#a3beb08e31672a2c815eff73c0623cead",
+"core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6aba077e40c621337d35d1021bd9eb62de",
+"direct.html",
+"lower__matrix__lowlevel_8h.html",
+"math_2autogen_8h.html#ab58b0e0aa2975069c10eaf88cff49d5fabc298854e325a9c726bfeeb6f842d717",
+"namespacemembers_eval_b.html",
+"namespacethorin.html#ad56e33ae995f3dc833c281c3945c335d",
+"namespacethorin_1_1core.html#a2dbcc336780e42deb33fa187185b7c02",
+"namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2023fd5d4e7d81d38b7539ac2e697d34",
+"namespacethorin_1_1math.html#a901fbc7a5c17f03056ac2fcc60ad3c8a",
+"namespacethorin_1_1refly.html#aa208ad3e46dba11754599f34b54e0161",
+"regex_2autogen_8h.html#a312eb6dc4d7c11752634400c1819ff7d",
+"structthorin_1_1ll_1_1BB.html#a02ae1bd1d78aca140fc1e26ba383ce7b"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['coding_20_26_20debugging_0',['Coding &amp; Debugging',['../coding.html',1,'']]],
-  ['command_2dline_20reference_1',['Command-Line Reference',['../cli.html',1,'']]]
+  ['affine_20plugin_0',['The affine Plugin',['../affine.html',1,'']]],
+  ['automatic_20differentiation_20plugin_1',['The automatic differentiation Plugin',['../autodiff.html',1,'']]]
 ];

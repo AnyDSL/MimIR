@@ -6,6 +6,16 @@
 <!-- Title: dialects/clos/pass/rw Pages: 1 -->
 <svg width="229pt" height="117pt"
  viewBox="0.00 0.00 228.50 117.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<svg id="main" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" onload="init(evt)">
+<style type="text/css"><![CDATA[
+.node, .edge {opacity: 0.7;}
+.node.selected, .edge.selected {opacity: 1;}
+.edge:hover path { stroke: red; }
+.edge:hover polygon { stroke: red; fill: red; }
+]]></style>
+<script type="application/ecmascript" xlink:href="svg.min.js"/>
+<svg id="graph" class="graph">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 113)">
 <title>dialects/clos/pass/rw</title>
 <g id="clust1" class="cluster">
@@ -37,8 +47,11 @@
 <!-- dir_ecaaef70fb869f05c92ff221843df4be&#45;&gt;dir_4fef79e7177ba769987a8da36c892c5f -->
 <g id="edge1" class="edge">
 <title>dir_ecaaef70fb869f05c92ff221843df4be&#45;&gt;dir_4fef79e7177ba769987a8da36c892c5f</title>
+<g id="a_edge1"><a xlink:href="dir_000057_000008.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M96.88,-54.98C82.64,-46.69 60.75,-33.94 44.05,-24.22"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="45.79,-21.18 35.39,-19.17 42.27,-27.23 45.79,-21.18"/>
+</a>
+</g>
 <g id="a_edge1&#45;headlabel"><a xlink:href="dir_000057_000008.html" target="_top" xlink:title="1">
 <text text-anchor="middle" x="50.32" y="-18.03" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">1</text>
 </a>
@@ -56,8 +69,11 @@
 <!-- dir_ecaaef70fb869f05c92ff221843df4be&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e -->
 <g id="edge2" class="edge">
 <title>dir_ecaaef70fb869f05c92ff221843df4be&#45;&gt;dir_c4168c80b7484587a21dc92c326c695e</title>
+<g id="a_edge2"><a xlink:href="dir_000057_000061.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M106.55,-54.75C102.44,-47.49 96.47,-36.95 91.4,-27.98"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="94.33,-26.07 86.36,-19.09 88.24,-29.52 94.33,-26.07"/>
+</a>
+</g>
 <g id="a_edge2&#45;headlabel"><a xlink:href="dir_000057_000061.html" target="_top" xlink:title="6">
 <text text-anchor="middle" x="98.58" y="-25.3" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">6</text>
 </a>
@@ -75,8 +91,11 @@
 <!-- dir_ecaaef70fb869f05c92ff221843df4be&#45;&gt;dir_c418730755777f3d7ae8c6bca9740a18 -->
 <g id="edge3" class="edge">
 <title>dir_ecaaef70fb869f05c92ff221843df4be&#45;&gt;dir_c418730755777f3d7ae8c6bca9740a18</title>
+<g id="a_edge3"><a xlink:href="dir_000057_000015.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M116.45,-54.75C120.56,-47.49 126.53,-36.95 131.6,-27.98"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="134.76,-29.52 136.64,-19.09 128.67,-26.07 134.76,-29.52"/>
+</a>
+</g>
 <g id="a_edge3&#45;headlabel"><a xlink:href="dir_000057_000015.html" target="_top" xlink:title="1">
 <text text-anchor="middle" x="135.46" y="-31.54" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">1</text>
 </a>
@@ -94,12 +113,30 @@
 <!-- dir_ecaaef70fb869f05c92ff221843df4be&#45;&gt;dir_f4f507027349df35d55005177e6b6800 -->
 <g id="edge4" class="edge">
 <title>dir_ecaaef70fb869f05c92ff221843df4be&#45;&gt;dir_f4f507027349df35d55005177e6b6800</title>
+<g id="a_edge4"><a xlink:href="dir_000057_000037.html" target="_top">
 <path fill="none" stroke="#63b8ff" d="M125.64,-54.98C139.29,-46.77 160.19,-34.18 176.28,-24.49"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="178.34,-27.33 185.1,-19.17 174.73,-21.33 178.34,-27.33"/>
+</a>
+</g>
 <g id="a_edge4&#45;headlabel"><a xlink:href="dir_000057_000037.html" target="_top" xlink:title="1">
 <text text-anchor="middle" x="176.73" y="-29.11" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#63b8ff">1</text>
 </a>
 </g>
 </g>
 </g>
+</svg>
+</svg>
+
+<style type='text/css'>
+<![CDATA[
+[data-mouse-over-selected='false'] { opacity: 0.7; }
+[data-mouse-over-selected='true']  { opacity: 1.0; }
+]]>
+</style>
+<script type="application/ecmascript"><![CDATA[
+document.addEventListener('DOMContentLoaded', (event) => {
+  highlightEdges();
+  highlightAdjacentNodes();
+});
+]]></script>
 </svg>

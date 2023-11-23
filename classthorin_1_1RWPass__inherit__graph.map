@@ -1,51 +1,106 @@
 <map id="thorin::RWPass&lt; P, N &gt;" name="thorin::RWPass&lt; P, N &gt;">
-<area shape="rect" id="node1" title="Inherit from this class if your Pass does not need state and a fixed&#45;point iteration." alt="" coords="152,1274,327,1300"/>
-<area shape="rect" id="node3" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="1005,68,1191,108"/>
-<area shape="rect" id="node5" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="1009,134,1187,174"/>
-<area shape="rect" id="node7" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="1009,266,1187,306"/>
-<area shape="rect" id="node9" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="995,378,1201,418"/>
-<area shape="rect" id="node11" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="995,199,1201,239"/>
-<area shape="rect" id="node13" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="1001,460,1195,500"/>
-<area shape="rect" id="node15" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="998,560,1198,600"/>
-<area shape="rect" id="node17" href="$classthorin_1_1FPPass.html" title="Inherit from this class using CRTP, if you do need a Pass with a state and a fixed&#45;point." alt="" coords="594,353,763,378"/>
-<area shape="rect" id="node18" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="569,627,788,667"/>
-<area shape="rect" id="node20" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="582,691,775,731"/>
-<area shape="rect" id="node21" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="587,755,770,795"/>
-<area shape="rect" id="node22" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="587,819,771,859"/>
-<area shape="rect" id="node23" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="580,883,777,923"/>
-<area shape="rect" id="node25" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="581,947,776,987"/>
-<area shape="rect" id="node27" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="580,1011,777,1051"/>
-<area shape="rect" id="node28" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="572,1075,785,1115"/>
-<area shape="rect" id="node29" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="580,1139,777,1179"/>
-<area shape="rect" id="node30" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="585,1203,772,1243"/>
-<area shape="rect" id="node31" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="585,1267,772,1307"/>
-<area shape="rect" id="node32" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="585,1331,772,1371"/>
-<area shape="rect" id="node33" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="575,1395,782,1435"/>
-<area shape="rect" id="node34" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="580,1459,777,1499"/>
-<area shape="rect" id="node35" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="581,1523,776,1563"/>
-<area shape="rect" id="node36" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="573,1587,784,1627"/>
-<area shape="rect" id="node37" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="573,1651,784,1691"/>
-<area shape="rect" id="node38" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="587,1715,771,1755"/>
-<area shape="rect" id="node39" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="584,1779,773,1819"/>
-<area shape="rect" id="node40" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="584,1843,773,1883"/>
-<area shape="rect" id="node41" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="571,1907,786,1947"/>
-<area shape="rect" id="node42" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="571,1971,786,2011"/>
-<area shape="rect" id="node43" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="568,2035,789,2075"/>
-<area shape="rect" id="node44" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="579,2099,779,2139"/>
-<area shape="rect" id="node45" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="569,2163,788,2203"/>
-<area shape="rect" id="node46" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="581,2227,776,2267"/>
-<area shape="rect" id="node47" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="575,2291,782,2331"/>
-<area shape="rect" id="node48" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="571,2355,786,2395"/>
-<area shape="rect" id="node49" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="569,2419,788,2459"/>
-<area shape="rect" id="node2" href="$classthorin_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="5,1274,103,1300"/>
-<area shape="rect" id="node4" href="$classthorin_1_1BetaRed.html" title="Optimistically performs β&#45;reduction (aka inlining)." alt="" coords="1279,76,1401,101"/>
-<area shape="rect" id="node6" href="$classthorin_1_1EtaExp.html" title="Performs η&#45;expansion: f &#45;&gt; λx.f x, if f is a Lam with more than one user and does not appear in calle..." alt="" coords="1283,141,1397,166"/>
-<area shape="rect" id="node8" href="$classthorin_1_1EtaRed.html" title="Performs η&#45;reduction." alt="" coords="1283,273,1397,298"/>
-<area shape="rect" id="node10" href="$classthorin_1_1TailRecElim.html" title=" " alt="" coords="1269,385,1411,410"/>
-<area shape="rect" id="node12" href="$classthorin_1_1clos_1_1LowerTypedClosPrep.html" title=" " alt="" coords="1251,199,1429,239"/>
-<area shape="rect" id="node14" href="$classthorin_1_1mem_1_1CopyProp.html" title="This FPPass is similar to sparse conditional constant propagation (SCCP)." alt="" coords="1254,468,1426,493"/>
-<area shape="rect" id="node16" href="$classthorin_1_1mem_1_1SSAConstr.html" title="SSA construction algorithm that promotes slots, loads, and stores to SSA values." alt="" coords="1251,568,1429,593"/>
-<area shape="rect" id="node19" href="$classDebugDump.html" title="A pass that just dumps the world." alt="" coords="1047,634,1149,660"/>
-<area shape="rect" id="node24" href="$classthorin_1_1LamSpec.html" title=" " alt="" coords="1035,890,1161,916"/>
-<area shape="rect" id="node26" href="$classthorin_1_1RetWrap.html" title=" " alt="" coords="1036,954,1160,980"/>
+<area shape="rect" id="Node000001" title="Inherit from this class if your Pass does not need state and a fixed&#45;point iteration." alt="" coords="152,1274,327,1300"/>
+<area shape="rect" id="Node000003" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="1005,68,1191,108"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="239,1260,248,1029,269,671,283,489,302,327,323,204,335,161,348,135,382,98,420,69,461,46,506,28,553,16,602,8,702,4,801,11,894,27,975,47,1040,66,1038,71,974,52,893,32,800,17,702,9,602,13,554,21,508,33,464,51,423,73,386,102,353,138,340,163,328,205,307,328,289,489,274,672,253,1029,244,1261"/>
+<area shape="rect" id="Node000005" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="1009,134,1187,174"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="239,1261,250,1046,272,718,287,551,305,403,325,290,336,251,348,227,381,188,413,155,446,127,479,105,513,88,548,75,621,61,699,60,782,70,971,107,996,118,1032,131,1031,136,994,123,970,112,781,75,699,65,622,66,550,80,516,93,482,110,449,132,417,159,385,191,353,230,341,253,330,291,310,404,292,552,277,718,255,1046,244,1261"/>
+<area shape="rect" id="Node000007" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="1009,266,1187,306"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="237,1260,238,1088,241,964,249,828,262,693,282,569,295,514,310,465,328,425,349,395,381,361,418,333,457,309,499,290,588,262,681,247,773,243,861,246,941,254,1009,264,1008,269,941,259,861,251,773,248,681,252,589,267,501,295,460,314,421,337,385,365,353,398,333,428,315,467,300,515,287,570,267,694,254,829,246,964,243,1088,243,1260"/>
+<area shape="rect" id="Node000009" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="995,378,1201,418"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="238,1260,239,1107,243,1000,251,883,265,768,285,662,312,576,329,543,349,518,371,502,400,489,471,473,556,466,648,465,832,468,910,466,970,456,1055,415,1058,420,971,461,910,471,832,474,648,471,556,471,471,478,401,494,374,507,353,522,334,546,317,578,290,663,270,768,257,884,249,1000,244,1108,243,1260"/>
+<area shape="rect" id="Node000011" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="995,199,1201,239"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="239,1261,251,1062,274,763,289,611,307,477,327,375,337,339,348,317,381,279,414,246,447,220,480,198,514,181,549,169,621,155,698,154,781,161,971,186,1028,196,1027,202,970,191,780,166,697,159,621,161,550,174,516,186,483,203,450,224,418,250,385,282,353,320,342,341,332,376,312,478,295,612,279,763,257,1062,245,1261"/>
+<area shape="rect" id="Node000013" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="1001,460,1195,500"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="238,1260,241,1117,255,911,269,805,288,708,314,630,331,600,349,577,386,546,423,523,459,508,494,499,530,496,565,497,636,509,710,527,789,543,875,548,921,544,970,535,1018,518,1061,498,1063,503,1020,523,971,540,922,549,875,553,789,548,709,532,635,515,564,503,530,501,495,505,460,513,425,528,389,550,353,581,335,602,319,632,293,710,274,806,260,911,246,1118,243,1260"/>
+<area shape="rect" id="Node000015" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="998,560,1198,600"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="238,1260,242,1123,256,926,270,825,289,734,315,660,331,631,349,610,383,596,444,586,620,575,822,573,998,575,998,580,822,578,620,580,445,591,385,601,352,614,335,634,320,662,294,735,275,826,262,927,247,1123,243,1260"/>
+<area shape="rect" id="Node000017" href="$classthorin_1_1FPPass.html" title="Inherit from this class using CRTP, if you do need a Pass with a state and a fixed&#45;point." alt="" coords="594,353,763,378"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="238,1260,240,1098,253,858,266,733,286,618,313,523,329,486,349,457,374,433,402,413,433,398,466,385,532,370,594,363,594,368,533,375,467,390,435,402,405,418,377,437,353,461,334,488,318,525,291,619,271,734,258,858,245,1099,243,1260"/>
+<area shape="rect" id="Node000018" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="569,627,788,667"/>
+<area shape="poly" id="edge24_Node000001_Node000018" title=" " alt="" coords="239,1260,246,1138,264,967,278,880,297,800,320,735,334,710,349,692,372,673,398,658,454,639,513,631,569,630,569,635,513,636,455,644,400,663,375,677,353,695,338,713,325,738,302,802,283,881,269,968,251,1139,244,1260"/>
+<area shape="rect" id="Node000020" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="582,691,775,731"/>
+<area shape="poly" id="edge26_Node000001_Node000020" title=" " alt="" coords="240,1260,248,1149,268,995,282,917,300,847,322,789,335,767,349,750,365,740,388,731,446,719,515,712,582,708,582,714,515,717,447,724,389,736,368,744,352,754,339,770,327,791,305,848,287,918,273,996,254,1149,245,1260"/>
+<area shape="rect" id="Node000021" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="587,755,770,795"/>
+<area shape="poly" id="edge27_Node000001_Node000021" title=" " alt="" coords="240,1260,250,1159,271,1020,285,951,303,888,324,836,349,802,366,792,390,784,450,774,519,769,587,769,587,774,520,775,450,779,391,789,368,797,352,806,329,839,308,889,290,952,276,1021,256,1159,245,1261"/>
+<area shape="rect" id="Node000022" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="587,819,771,859"/>
+<area shape="poly" id="edge28_Node000001_Node000022" title=" " alt="" coords="241,1260,254,1171,276,1054,290,995,307,942,327,899,349,870,375,852,404,838,465,821,528,817,587,820,586,825,528,822,466,827,405,843,378,856,353,874,331,902,312,944,296,997,281,1055,259,1172,246,1261"/>
+<area shape="rect" id="Node000023" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="580,883,777,923"/>
+<area shape="poly" id="edge29_Node000001_Node000023" title=" " alt="" coords="238,1260,242,1196,257,1111,271,1066,291,1022,316,982,349,948,374,930,402,915,462,897,523,889,580,889,580,894,523,894,463,902,404,920,377,934,352,952,321,985,295,1024,276,1067,263,1112,247,1196,243,1261"/>
+<area shape="rect" id="Node000025" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="581,947,776,987"/>
+<area shape="poly" id="edge31_Node000001_Node000025" title=" " alt="" coords="240,1260,247,1205,265,1135,279,1098,297,1063,321,1031,349,1003,366,994,389,986,448,975,581,965,581,970,448,980,390,991,368,999,352,1008,325,1034,302,1066,284,1100,270,1136,252,1206,245,1261"/>
+<area shape="rect" id="Node000027" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="580,1011,777,1051"/>
+<area shape="poly" id="edge33_Node000001_Node000027" title=" " alt="" coords="244,1260,256,1219,277,1169,307,1119,327,1097,349,1078,404,1049,463,1032,524,1023,580,1021,580,1026,524,1028,465,1037,406,1054,352,1082,331,1101,312,1122,282,1171,261,1221,249,1262"/>
+<area shape="rect" id="Node000029" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="572,1075,785,1115"/>
+<area shape="poly" id="edge34_Node000001_Node000029" title=" " alt="" coords="252,1261,290,1205,318,1176,349,1153,403,1127,460,1110,518,1099,571,1094,572,1099,519,1105,462,1115,405,1132,352,1157,321,1180,294,1209,256,1264"/>
+<area shape="rect" id="Node000030" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="580,1139,777,1179"/>
+<area shape="poly" id="edge35_Node000001_Node000030" title=" " alt="" coords="268,1264,306,1240,350,1219,408,1200,468,1185,579,1166,580,1171,469,1190,409,1205,352,1224,308,1245,271,1268"/>
+<area shape="rect" id="Node000032" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="585,1203,772,1243"/>
+<area shape="poly" id="edge36_Node000001_Node000032" title=" " alt="" coords="321,1269,350,1264,585,1232,586,1237,351,1270,322,1274"/>
+<area shape="rect" id="Node000034" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="585,1267,772,1307"/>
+<area shape="poly" id="edge37_Node000001_Node000034" title=" " alt="" coords="340,1284,585,1284,585,1290,340,1290"/>
+<area shape="rect" id="Node000036" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="585,1331,772,1371"/>
+<area shape="poly" id="edge38_Node000001_Node000036" title=" " alt="" coords="288,1301,351,1319,473,1337,585,1345,585,1351,472,1342,350,1324,286,1307"/>
+<area shape="rect" id="Node000038" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="575,1395,782,1435"/>
+<area shape="poly" id="edge39_Node000001_Node000038" title=" " alt="" coords="266,1307,305,1336,352,1362,407,1380,466,1394,576,1408,575,1414,465,1399,406,1386,350,1367,302,1341,263,1311"/>
+<area shape="rect" id="Node000040" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="580,1459,777,1499"/>
+<area shape="poly" id="edge40_Node000001_Node000040" title=" " alt="" coords="255,1310,293,1370,320,1400,352,1425,407,1450,466,1466,525,1475,580,1479,580,1484,525,1481,465,1471,405,1455,349,1429,316,1404,288,1373,250,1313"/>
+<area shape="rect" id="Node000042" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="581,1523,776,1563"/>
+<area shape="poly" id="edge41_Node000001_Node000042" title=" " alt="" coords="249,1312,260,1354,281,1405,311,1456,330,1478,352,1497,406,1525,465,1541,525,1549,581,1550,581,1555,525,1554,464,1547,404,1530,349,1501,326,1482,307,1459,276,1408,255,1356,243,1314"/>
+<area shape="rect" id="Node000044" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="573,1587,784,1627"/>
+<area shape="poly" id="edge42_Node000001_Node000044" title=" " alt="" coords="244,1313,250,1372,267,1446,280,1485,299,1522,323,1556,352,1583,377,1599,404,1611,462,1625,521,1628,577,1624,577,1630,521,1633,461,1630,402,1616,375,1604,349,1588,319,1559,294,1525,275,1487,261,1448,245,1373,239,1314"/>
+<area shape="rect" id="Node000045" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="573,1651,784,1691"/>
+<area shape="poly" id="edge43_Node000001_Node000045" title=" " alt="" coords="247,1313,261,1391,285,1493,315,1589,333,1624,352,1648,378,1664,406,1677,466,1691,527,1693,585,1688,585,1694,527,1699,465,1696,404,1682,375,1669,349,1652,329,1627,310,1591,279,1494,256,1392,242,1314"/>
+<area shape="rect" id="Node000047" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="587,1715,771,1755"/>
+<area shape="poly" id="edge44_Node000001_Node000047" title=" " alt="" coords="246,1313,257,1407,278,1534,292,1597,309,1653,330,1699,352,1728,381,1746,413,1758,447,1766,482,1768,551,1764,612,1752,613,1758,552,1770,482,1774,447,1771,412,1763,379,1751,349,1732,325,1701,304,1655,287,1598,272,1535,252,1408,240,1313"/>
+<area shape="rect" id="Node000049" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="584,1779,773,1819"/>
+<area shape="poly" id="edge45_Node000001_Node000049" title=" " alt="" coords="245,1313,254,1419,273,1564,288,1637,305,1703,327,1755,339,1775,352,1789,381,1808,412,1820,446,1828,481,1831,549,1828,610,1816,611,1822,550,1833,481,1837,445,1833,411,1826,378,1812,349,1793,335,1778,322,1758,300,1704,282,1638,268,1565,249,1420,240,1314"/>
+<area shape="rect" id="Node000051" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="584,1843,773,1883"/>
+<area shape="poly" id="edge46_Node000001_Node000051" title=" " alt="" coords="244,1313,251,1431,269,1595,283,1678,301,1753,324,1813,338,1835,352,1852,368,1861,390,1867,449,1874,517,1874,584,1870,584,1875,517,1879,448,1879,389,1872,366,1865,349,1856,334,1839,320,1815,296,1754,278,1679,264,1596,246,1431,239,1314"/>
+<area shape="rect" id="Node000053" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="571,1907,786,1947"/>
+<area shape="poly" id="edge47_Node000001_Node000053" title=" " alt="" coords="244,1313,249,1441,265,1622,279,1715,298,1798,322,1865,337,1891,352,1909,367,1918,388,1925,442,1933,506,1935,571,1933,571,1938,506,1940,442,1938,386,1930,365,1923,349,1913,332,1894,317,1868,293,1800,274,1715,260,1623,244,1441,238,1313"/>
+<area shape="rect" id="Node000055" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="571,1971,786,2011"/>
+<area shape="poly" id="edge48_Node000001_Node000055" title=" " alt="" coords="243,1313,247,1452,261,1651,275,1753,294,1846,320,1920,335,1948,352,1969,379,1988,408,2002,440,2011,472,2016,539,2016,599,2008,600,2014,539,2022,472,2021,439,2016,406,2007,376,1993,349,1973,331,1951,315,1923,289,1847,270,1754,256,1651,242,1452,238,1313"/>
+<area shape="rect" id="Node000057" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="568,2035,789,2075"/>
+<area shape="poly" id="edge49_Node000001_Node000057" title=" " alt="" coords="243,1313,244,1464,248,1570,256,1684,270,1797,290,1900,302,1944,317,1983,334,2014,352,2037,380,2057,410,2070,442,2079,476,2083,544,2082,605,2072,606,2078,544,2087,476,2089,441,2084,408,2075,377,2061,349,2041,329,2017,312,1985,297,1946,284,1901,265,1798,251,1684,243,1570,239,1464,238,1313"/>
+<area shape="rect" id="Node000059" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="579,2099,779,2139"/>
+<area shape="poly" id="edge50_Node000001_Node000059" title=" " alt="" coords="245,1313,257,1486,280,1739,295,1866,312,1977,332,2061,342,2088,353,2104,380,2124,411,2137,444,2146,478,2150,547,2147,609,2136,610,2142,548,2152,478,2155,443,2151,409,2142,377,2128,349,2107,337,2090,327,2062,307,1978,289,1867,274,1740,252,1487,240,1314"/>
+<area shape="rect" id="Node000060" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="569,2163,788,2203"/>
+<area shape="poly" id="edge51_Node000001_Node000060" title=" " alt="" coords="245,1313,255,1499,277,1773,292,1911,310,2032,330,2123,341,2153,353,2170,380,2190,412,2204,445,2212,480,2216,550,2212,612,2200,613,2206,551,2218,480,2221,445,2218,410,2209,378,2195,349,2174,336,2156,325,2125,304,2033,287,1912,272,1774,250,1499,239,1314"/>
+<area shape="rect" id="Node000062" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="581,2227,776,2267"/>
+<area shape="poly" id="edge52_Node000001_Node000062" title=" " alt="" coords="244,1313,254,1510,275,1806,290,1955,307,2086,329,2185,340,2217,353,2236,381,2256,412,2270,446,2278,481,2281,551,2277,613,2264,614,2270,552,2282,481,2286,445,2283,410,2275,378,2261,349,2239,336,2219,323,2186,302,2087,284,1956,269,1806,249,1510,239,1313"/>
+<area shape="rect" id="Node000064" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="575,2291,782,2331"/>
+<area shape="poly" id="edge53_Node000001_Node000064" title=" " alt="" coords="244,1313,253,1523,272,1839,287,2000,305,2140,327,2246,339,2281,353,2301,381,2321,413,2335,447,2343,482,2346,553,2341,615,2328,616,2334,554,2347,482,2351,446,2348,411,2340,378,2326,349,2305,335,2283,322,2248,300,2141,282,2000,267,1840,247,1523,239,1314"/>
+<area shape="rect" id="Node000065" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="571,2355,786,2395"/>
+<area shape="poly" id="edge54_Node000001_Node000065" title=" " alt="" coords="244,1314,252,1535,270,1873,285,2044,303,2194,326,2308,339,2345,353,2366,381,2387,413,2400,447,2408,483,2411,554,2406,616,2392,617,2398,555,2411,483,2416,447,2414,411,2406,378,2391,349,2370,334,2347,321,2309,298,2195,279,2044,265,1873,246,1535,239,1314"/>
+<area shape="rect" id="Node000067" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="569,2419,788,2459"/>
+<area shape="poly" id="edge55_Node000001_Node000067" title=" " alt="" coords="244,1314,250,1547,268,1906,282,2088,301,2248,324,2369,338,2409,353,2432,381,2452,413,2466,448,2473,484,2476,555,2470,617,2456,619,2462,556,2476,484,2481,447,2479,412,2471,378,2457,349,2435,333,2411,319,2370,295,2249,277,2089,263,1906,245,1547,238,1314"/>
+<area shape="rect" id="Node000002" href="$classthorin_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="5,1274,103,1300"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,1284,152,1284,152,1290,116,1290"/>
+<area shape="rect" id="Node000004" href="$classthorin_1_1BetaRed.html" title="Optimistically performs β&#45;reduction (aka inlining)." alt="" coords="1279,76,1401,101"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="1205,86,1279,86,1279,91,1205,91"/>
+<area shape="rect" id="Node000006" href="$classthorin_1_1EtaExp.html" title="Performs η&#45;expansion: f &#45;&gt; λx.f x, if f is a Lam with more than one user and does not appear in calle..." alt="" coords="1283,141,1397,166"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="1200,151,1283,151,1283,156,1200,156"/>
+<area shape="rect" id="Node000008" href="$classthorin_1_1EtaRed.html" title="Performs η&#45;reduction." alt="" coords="1283,273,1397,298"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="1201,283,1282,283,1282,288,1201,288"/>
+<area shape="rect" id="Node000010" href="$classthorin_1_1TailRecElim.html" title=" " alt="" coords="1269,385,1411,410"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="1215,395,1269,395,1269,400,1215,400"/>
+<area shape="rect" id="Node000012" href="$classthorin_1_1clos_1_1LowerTypedClosPrep.html" title=" " alt="" coords="1251,199,1429,239"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="1214,216,1251,216,1251,222,1214,222"/>
+<area shape="rect" id="Node000014" href="$classthorin_1_1mem_1_1CopyProp.html" title="This FPPass is similar to sparse conditional constant propagation (SCCP)." alt="" coords="1254,468,1426,493"/>
+<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="1209,478,1254,478,1254,483,1209,483"/>
+<area shape="rect" id="Node000016" href="$classthorin_1_1mem_1_1SSAConstr.html" title="SSA construction algorithm that promotes slots, loads, and stores to SSA values." alt="" coords="1251,568,1429,593"/>
+<area shape="poly" id="edge15_Node000015_Node000016" title=" " alt="" coords="1212,578,1251,578,1251,583,1212,583"/>
+<area shape="poly" id="edge17_Node000017_Node000003" title=" " alt="" coords="686,339,704,298,730,248,766,197,788,174,812,154,857,128,907,110,957,97,1004,90,1005,95,958,103,908,115,860,133,815,158,791,178,770,200,735,251,708,300,691,341"/>
+<area shape="poly" id="edge18_Node000017_Node000005" title=" " alt="" coords="696,340,744,285,776,256,812,231,860,207,911,189,1008,164,1010,169,913,194,862,212,815,236,780,260,748,289,700,344"/>
+<area shape="poly" id="edge19_Node000017_Node000007" title=" " alt="" coords="777,363,871,356,970,339,1017,323,1059,303,1061,308,1019,328,971,344,872,362,778,368"/>
+<area shape="poly" id="edge20_Node000017_Node000009" title=" " alt="" coords="763,378,814,384,994,394,994,399,813,390,762,383"/>
+<area shape="poly" id="edge21_Node000017_Node000011" title=" " alt="" coords="729,346,970,260,994,251,1035,237,1037,242,996,256,972,265,731,351"/>
+<area shape="poly" id="edge22_Node000017_Node000013" title=" " alt="" coords="723,381,814,414,910,439,1001,459,999,465,908,444,813,419,721,386"/>
+<area shape="poly" id="edge23_Node000017_Node000015" title=" " alt="" coords="704,386,753,429,815,473,867,500,922,523,1024,558,1022,563,920,528,865,504,812,477,749,433,700,390"/>
+<area shape="rect" id="Node000019" href="$classDebugDump.html" title="A pass that just dumps the world." alt="" coords="1047,634,1149,660"/>
+<area shape="poly" id="edge25_Node000018_Node000019" title=" " alt="" coords="802,644,1046,644,1046,650,802,650"/>
+<area shape="rect" id="Node000024" href="$classthorin_1_1LamSpec.html" title=" " alt="" coords="1035,890,1161,916"/>
+<area shape="poly" id="edge30_Node000023_Node000024" title=" " alt="" coords="791,900,1034,900,1034,906,791,906"/>
+<area shape="rect" id="Node000026" href="$classthorin_1_1RetWrap.html" title=" " alt="" coords="1036,954,1160,980"/>
+<area shape="poly" id="edge32_Node000025_Node000026" title=" " alt="" coords="790,964,1036,964,1036,970,790,970"/>
 </map>

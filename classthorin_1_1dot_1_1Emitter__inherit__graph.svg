@@ -6,21 +6,31 @@
 <!-- Title: thorin::dot::Emitter Pages: 1 -->
 <svg width="223pt" height="305pt"
  viewBox="0.00 0.00 223.00 305.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<svg id="main" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" onload="init(evt)">
+<style type="text/css"><![CDATA[
+.node, .edge {opacity: 0.7;}
+.node.selected, .edge.selected {opacity: 1;}
+.edge:hover path { stroke: red; }
+.edge:hover polygon { stroke: red; fill: red; }
+]]></style>
+<script type="application/ecmascript" xlink:href="svg.min.js"/>
+<svg id="graph" class="graph">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 301)">
 <title>thorin::dot::Emitter</title>
 <!-- Node1 -->
-<g id="node1" class="node">
+<g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title=" ">
 <polygon fill="#999999" stroke="#666666" points="113.5,-19 4.5,-19 4.5,0 113.5,0 113.5,-19"/>
 <text text-anchor="middle" x="59" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::dot::Emitter</text>
 </a>
 </g>
 </g>
 <!-- Node2 -->
-<g id="node2" class="node">
+<g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="classthorin_1_1Emitter.html" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="classthorin_1_1Emitter.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="115.5,-97 2.5,-97 2.5,-56 115.5,-56 115.5,-97"/>
 <text text-anchor="start" x="10.5" y="-85" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Emitter&lt; std</text>
 <text text-anchor="start" x="10.5" y="-74" font-family="Helvetica,sans-Serif" font-size="10.00">::string, std::string,</text>
@@ -29,30 +39,36 @@
 </g>
 </g>
 <!-- Node2&#45;&gt;Node1 -->
-<g id="edge1" class="edge">
+<g id="edge1_Node000001_Node000002" class="edge">
 <title>Node2&#45;&gt;Node1</title>
+<g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M59,-45.76C59,-36.06 59,-26.02 59,-19.15"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="55.5,-46 59,-56 62.5,-46 55.5,-46"/>
+</a>
+</g>
 </g>
 <!-- Node3 -->
-<g id="node3" class="node">
+<g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="classthorin_1_1ScopePhase.html" target="_top" xlink:title="Transitively visits all reachable Scopes in World that do not have free variables.">
+<g id="a_Node000003"><a xlink:href="classthorin_1_1ScopePhase.html" target="_top" xlink:title="Transitively visits all reachable Scopes in World that do not have free variables.">
 <polygon fill="white" stroke="#666666" points="110,-241 0,-241 0,-222 110,-222 110,-241"/>
 <text text-anchor="middle" x="55" y="-229" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::ScopePhase</text>
 </a>
 </g>
 </g>
 <!-- Node3&#45;&gt;Node2 -->
-<g id="edge2" class="edge">
+<g id="edge2_Node000002_Node000003" class="edge">
 <title>Node3&#45;&gt;Node2</title>
+<g id="a_edge2_Node000002_Node000003"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M55.49,-211.77C56.25,-182.63 57.71,-126.72 58.49,-97.07"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="51.99,-211.75 55.23,-221.84 58.99,-211.93 51.99,-211.75"/>
+</a>
+</g>
 </g>
 <!-- Node5 -->
-<g id="node5" class="node">
+<g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="classthorin_1_1Emitter.html" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="classthorin_1_1Emitter.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="199,-185 71,-185 71,-155 199,-155 199,-185"/>
 <text text-anchor="start" x="79" y="-173" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Emitter&lt; Value,</text>
 <text text-anchor="middle" x="135" y="-162" font-family="Helvetica,sans-Serif" font-size="10.00"> Type, BB, Child &gt;</text>
@@ -60,33 +76,57 @@
 </g>
 </g>
 <!-- Node3&#45;&gt;Node5 -->
-<g id="edge5" class="edge">
+<g id="edge5_Node000005_Node000003" class="edge">
 <title>Node3&#45;&gt;Node5</title>
+<g id="a_edge5_Node000005_Node000003"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M74.54,-215.97C87.21,-206.55 103.62,-194.34 116.15,-185.02"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="72.4,-213.2 66.46,-221.98 76.57,-218.82 72.4,-213.2"/>
+</a>
+</g>
 </g>
 <!-- Node4 -->
-<g id="node4" class="node">
+<g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="classthorin_1_1Phase.html" target="_top" xlink:title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">
+<g id="a_Node000004"><a xlink:href="classthorin_1_1Phase.html" target="_top" xlink:title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">
 <polygon fill="white" stroke="#666666" points="95,-297 15,-297 15,-278 95,-278 95,-297"/>
 <text text-anchor="middle" x="55" y="-285" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Phase</text>
 </a>
 </g>
 </g>
 <!-- Node4&#45;&gt;Node3 -->
-<g id="edge3" class="edge">
+<g id="edge3_Node000003_Node000004" class="edge">
 <title>Node4&#45;&gt;Node3</title>
+<g id="a_edge3_Node000003_Node000004"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M55,-267.3C55,-258.41 55,-248.28 55,-241.25"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="51.5,-267.58 55,-277.58 58.5,-267.58 51.5,-267.58"/>
+</a>
+</g>
 </g>
 <!-- Node5&#45;&gt;Node2 -->
-<g id="edge4" class="edge">
+<g id="edge4_Node000002_Node000005" class="edge">
 <title>Node5&#45;&gt;Node2</title>
+<g id="a_edge4_Node000002_Node000005"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M116.58,-146.83C103.98,-131.66 87.43,-111.73 75.3,-97.13"/>
 <polygon fill="orange" stroke="orange" points="114.04,-149.25 123.12,-154.7 119.43,-144.77 114.04,-149.25"/>
-<text text-anchor="start" x="108" y="-129" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; std::string, std</text>
-<text text-anchor="middle" x="161.5" y="-118" font-family="Helvetica,sans-Serif" font-size="10.00">::string, BB, Emitter &gt;</text>
+</a>
+</g>
+<text text-anchor="start" x="108" y="-129" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; std::string, std</text>
+<text text-anchor="middle" x="161.5" y="-118" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">::string, BB, Emitter &gt;</text>
 </g>
 </g>
+</svg>
+</svg>
+
+<style type='text/css'>
+<![CDATA[
+[data-mouse-over-selected='false'] { opacity: 0.7; }
+[data-mouse-over-selected='true']  { opacity: 1.0; }
+]]>
+</style>
+<script type="application/ecmascript"><![CDATA[
+document.addEventListener('DOMContentLoaded', (event) => {
+  highlightEdges();
+  highlightAdjacentNodes();
+});
+]]></script>
 </svg>

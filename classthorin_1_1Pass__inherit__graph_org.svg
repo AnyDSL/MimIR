@@ -9,18 +9,18 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 1795.3)">
 <title>thorin::Pass</title>
 <!-- Node1 -->
-<g id="node1" class="node">
+<g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_node1"><a xlink:title="All Passes that want to be registered in the PassMan must implement this interface.">
+<g id="a_Node000001"><a xlink:title="All Passes that want to be registered in the PassMan must implement this interface.">
 <polygon fill="#999999" stroke="#666666" points="73,-981.42 0,-981.42 0,-962.42 73,-962.42 73,-981.42"/>
 <text text-anchor="middle" x="36.5" y="-969.42" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Pass</text>
 </a>
 </g>
 </g>
 <!-- Node2 -->
-<g id="node2" class="node">
+<g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="587,-1386.92 423,-1386.92 423,-1356.92 587,-1356.92 587,-1386.92"/>
 <text text-anchor="start" x="431" y="-1374.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; DebugDump,</text>
 <text text-anchor="middle" x="505" y="-1363.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Lam &gt;</text>
@@ -28,15 +28,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node2 -->
-<g id="edge1" class="edge">
+<g id="edge1_Node000001_Node000002" class="edge">
 <title>Node1&#45;&gt;Node2</title>
+<g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M39.23,-991.99C45.46,-1060.59 68.64,-1284.58 110,-1341.92 156.08,-1405.81 183.43,-1415.68 259,-1437.92 320.82,-1456.11 348.15,-1470.07 404,-1437.92 417.81,-1429.97 410.07,-1417.47 422,-1406.92 431.39,-1398.61 443.05,-1392.06 454.6,-1386.98"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="42.69,-991.36 38.32,-981.71 35.71,-991.98 42.69,-991.36"/>
+</a>
+</g>
 </g>
 <!-- Node4 -->
-<g id="node4" class="node">
+<g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000004"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="577.5,-1053.92 432.5,-1053.92 432.5,-1023.92 577.5,-1023.92 577.5,-1053.92"/>
 <text text-anchor="start" x="440.5" y="-1041.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; BetaRed,</text>
 <text text-anchor="middle" x="505" y="-1030.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Def &gt;</text>
@@ -44,15 +47,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node4 -->
-<g id="edge3" class="edge">
+<g id="edge3_Node000001_Node000004" class="edge">
 <title>Node1&#45;&gt;Node4</title>
+<g id="a_edge3_Node000001_Node000004"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M54.33,-988.84C68.25,-1002.06 89.06,-1020.11 110,-1031.92 171.09,-1066.38 189.85,-1072.2 259,-1083.92 322.54,-1094.69 344.8,-1109.38 404,-1083.92 414.69,-1079.32 412.14,-1071.1 422,-1064.92 428.83,-1060.64 436.43,-1057 444.17,-1053.94"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="56.59,-986.16 46.98,-981.7 51.71,-991.18 56.59,-986.16"/>
+</a>
+</g>
 </g>
 <!-- Node5 -->
-<g id="node5" class="node">
+<g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_node5"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="573.5,-1445.92 436.5,-1445.92 436.5,-1415.92 573.5,-1415.92 573.5,-1445.92"/>
 <text text-anchor="start" x="444.5" y="-1433.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; EtaExp,</text>
 <text text-anchor="middle" x="505" y="-1422.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Lam &gt;</text>
@@ -60,15 +66,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node5 -->
-<g id="edge4" class="edge">
+<g id="edge4_Node000001_Node000005" class="edge">
 <title>Node1&#45;&gt;Node5</title>
+<g id="a_edge4_Node000001_Node000005"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M38.62,-991.71C43.19,-1066.78 62.53,-1333.07 110,-1400.92 188.79,-1513.55 272.44,-1536.75 404,-1496.92 413.2,-1494.13 413.98,-1490.23 422,-1484.92 441.89,-1471.74 464.55,-1456.82 481,-1446.01"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="42.11,-991.49 38.03,-981.72 35.12,-991.91 42.11,-991.49"/>
+</a>
+</g>
 </g>
 <!-- Node6 -->
-<g id="node6" class="node">
+<g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_node6"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000006"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="574,-1103.92 436,-1103.92 436,-1073.92 574,-1073.92 574,-1103.92"/>
 <text text-anchor="start" x="444" y="-1091.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; EtaRed,</text>
 <text text-anchor="middle" x="505" y="-1080.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Def &gt;</text>
@@ -76,15 +85,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node6 -->
-<g id="edge5" class="edge">
+<g id="edge5_Node000001_Node000006" class="edge">
 <title>Node1&#45;&gt;Node6</title>
+<g id="a_edge5_Node000001_Node000006"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M47.39,-990.21C59.7,-1011.6 82.51,-1047.01 110,-1069.92 166.65,-1117.13 187.16,-1126.27 259,-1142.92 321.78,-1157.47 346.64,-1172.3 404,-1142.92 416.19,-1136.68 411.05,-1126.13 422,-1117.92 429.49,-1112.3 438.16,-1107.71 447,-1103.96"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="50.43,-988.48 42.49,-981.46 44.32,-991.9 50.43,-988.48"/>
+</a>
+</g>
 </g>
 <!-- Node7 -->
-<g id="node7" class="node">
+<g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_node7"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000007"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="579,-947.92 431,-947.92 431,-917.92 579,-917.92 579,-947.92"/>
 <text text-anchor="start" x="439" y="-935.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; LamSpec,</text>
 <text text-anchor="middle" x="505" y="-924.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Lam &gt;</text>
@@ -92,15 +104,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node7 -->
-<g id="edge6" class="edge">
+<g id="edge6_Node000001_Node000007" class="edge">
 <title>Node1&#45;&gt;Node7</title>
+<g id="a_edge6_Node000001_Node000007"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M83.42,-975.57C153.23,-980.14 290.01,-985.2 404,-965.92 425.45,-962.29 448.57,-954.9 467.17,-948.04"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="83.42,-972.06 73.21,-974.88 82.94,-979.05 83.42,-972.06"/>
+</a>
+</g>
 </g>
 <!-- Node9 -->
-<g id="node9" class="node">
+<g id="Node000009" class="node">
 <title>Node9</title>
-<g id="a_node9"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000009"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="578,-1725.92 432,-1725.92 432,-1695.92 578,-1695.92 578,-1725.92"/>
 <text text-anchor="start" x="440" y="-1713.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; RetWrap,</text>
 <text text-anchor="middle" x="505" y="-1702.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Lam &gt;</text>
@@ -108,15 +123,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node9 -->
-<g id="edge8" class="edge">
+<g id="edge8_Node000001_Node000009" class="edge">
 <title>Node1&#45;&gt;Node9</title>
+<g id="a_edge8_Node000001_Node000009"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M38.41,-991.82C43.47,-1098.82 69.32,-1602.85 110,-1657.92 190.89,-1767.43 269.58,-1765.52 404,-1743.92 415.6,-1742.05 440.75,-1733.75 462.92,-1725.93"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="41.9,-991.58 37.94,-981.75 34.91,-991.9 41.9,-991.58"/>
+</a>
+</g>
 </g>
 <!-- Node11 -->
-<g id="node11" class="node">
+<g id="Node000011" class="node">
 <title>Node11</title>
-<g id="a_node11"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000011"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="579,-1215.92 431,-1215.92 431,-1185.92 579,-1185.92 579,-1215.92"/>
 <text text-anchor="start" x="439" y="-1203.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; Scalerize,</text>
 <text text-anchor="middle" x="505" y="-1192.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Lam &gt;</text>
@@ -124,15 +142,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node11 -->
-<g id="edge10" class="edge">
+<g id="edge10_Node000001_Node000011" class="edge">
 <title>Node1&#45;&gt;Node11</title>
+<g id="a_edge10_Node000001_Node000011"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M40.24,-991.67C46.44,-1030.07 64.71,-1115.87 110,-1170.92 159.15,-1230.67 184.47,-1240.16 259,-1260.92 321.08,-1278.21 346.92,-1290.83 404,-1260.92 416.45,-1254.4 411.06,-1243.75 422,-1234.92 431.59,-1227.17 443.2,-1220.95 454.62,-1216.05"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="43.69,-991.12 38.74,-981.76 36.77,-992.17 43.69,-991.12"/>
+</a>
+</g>
 </g>
 <!-- Node13 -->
-<g id="node13" class="node">
+<g id="Node000013" class="node">
 <title>Node13</title>
-<g id="a_node13"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000013"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="585,-1004.92 425,-1004.92 425,-974.92 585,-974.92 585,-1004.92"/>
 <text text-anchor="start" x="433" y="-992.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; TailRecElim,</text>
 <text text-anchor="middle" x="505" y="-981.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Lam &gt;</text>
@@ -140,15 +161,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node13 -->
-<g id="edge12" class="edge">
+<g id="edge12_Node000001_Node000013" class="edge">
 <title>Node1&#45;&gt;Node13</title>
+<g id="a_edge12_Node000001_Node000013"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M67.22,-985.42C74.86,-988.53 83.14,-991.61 91,-993.92 225.1,-1033.4 268.68,-1059.98 404,-1024.92 412.86,-1022.62 413.58,-1018.5 422,-1014.92 430.49,-1011.31 439.68,-1007.99 448.73,-1005.02"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="68.55,-982.18 57.97,-981.51 65.82,-988.63 68.55,-982.18"/>
+</a>
+</g>
 </g>
 <!-- Node14 -->
-<g id="node14" class="node">
+<g id="Node000014" class="node">
 <title>Node14</title>
-<g id="a_node14"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000014"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="579,-1778.92 431,-1778.92 431,-1748.92 579,-1748.92 579,-1778.92"/>
 <text text-anchor="start" x="439" y="-1766.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; LowerFor,</text>
 <text text-anchor="middle" x="505" y="-1755.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Lam &gt;</text>
@@ -156,15 +180,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node14 -->
-<g id="edge13" class="edge">
+<g id="edge13_Node000001_Node000014" class="edge">
 <title>Node1&#45;&gt;Node14</title>
+<g id="a_edge13_Node000001_Node000014"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M38.06,-991.91C41.39,-1105.07 60.23,-1662.11 110,-1717.92 191.93,-1809.79 351.54,-1795.79 440.4,-1778.98"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="41.55,-991.5 37.76,-981.61 34.55,-991.7 41.55,-991.5"/>
+</a>
+</g>
 </g>
 <!-- Node16 -->
-<g id="node16" class="node">
+<g id="Node000016" class="node">
 <title>Node16</title>
-<g id="a_node16"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000016"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="575,-1666.92 435,-1666.92 435,-1636.92 575,-1636.92 575,-1666.92"/>
 <text text-anchor="start" x="443" y="-1654.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; AutoDiff</text>
 <text text-anchor="middle" x="505" y="-1643.92" font-family="Helvetica,sans-Serif" font-size="10.00">Eval, Lam &gt;</text>
@@ -172,15 +199,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node16 -->
-<g id="edge15" class="edge">
+<g id="edge15_Node000001_Node000016" class="edge">
 <title>Node1&#45;&gt;Node16</title>
+<g id="a_edge15_Node000001_Node000016"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M37.26,-991.8C36.49,-1087.24 37.47,-1497.92 110,-1597.92 190,-1708.23 269.46,-1706.54 404,-1684.92 425.66,-1681.44 448.99,-1673.97 467.66,-1667.02"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="40.76,-991.8 37.36,-981.76 33.76,-991.73 40.76,-991.8"/>
+</a>
+</g>
 </g>
 <!-- Node18 -->
-<g id="node18" class="node">
+<g id="Node000018" class="node">
 <title>Node18</title>
-<g id="a_node18"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000018"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="575,-1156.92 435,-1156.92 435,-1126.92 575,-1126.92 575,-1156.92"/>
 <text text-anchor="start" x="443" y="-1144.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; AutoDiff</text>
 <text text-anchor="middle" x="505" y="-1133.92" font-family="Helvetica,sans-Serif" font-size="10.00">Zero, Lam &gt;</text>
@@ -188,15 +218,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node18 -->
-<g id="edge17" class="edge">
+<g id="edge17_Node000001_Node000018" class="edge">
 <title>Node1&#45;&gt;Node18</title>
+<g id="a_edge17_Node000001_Node000018"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M43.05,-991.37C52.51,-1021.59 74.26,-1080.25 110,-1117.92 162.33,-1173.06 185.47,-1182.62 259,-1201.92 321.33,-1218.28 346.64,-1231.3 404,-1201.92 416.19,-1195.68 411.31,-1185.48 422,-1176.92 432.15,-1168.79 444.47,-1162.23 456.44,-1157.08"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="46.35,-990.18 40.12,-981.61 39.65,-992.2 46.35,-990.18"/>
+</a>
+</g>
 </g>
 <!-- Node20 -->
-<g id="node20" class="node">
+<g id="Node000020" class="node">
 <title>Node20</title>
-<g id="a_node20"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000020"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="575,-1596.92 435,-1596.92 435,-1566.92 575,-1566.92 575,-1596.92"/>
 <text text-anchor="start" x="443" y="-1584.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; AutoDiff</text>
 <text text-anchor="middle" x="505" y="-1573.92" font-family="Helvetica,sans-Serif" font-size="10.00">ZeroCleanup, Lam &gt;</text>
@@ -204,15 +237,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node20 -->
-<g id="edge19" class="edge">
+<g id="edge19_Node000001_Node000020" class="edge">
 <title>Node1&#45;&gt;Node20</title>
+<g id="a_edge19_Node000001_Node000020"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M37.65,-991.66C38.67,-1080.69 46.72,-1444.38 110,-1534.92 188.35,-1647.04 270.14,-1654.07 404,-1625.92 430.36,-1620.38 458.24,-1607.44 477.85,-1597.03"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="41.15,-991.55 37.55,-981.58 34.15,-991.62 41.15,-991.55"/>
+</a>
+</g>
 </g>
 <!-- Node22 -->
-<g id="node22" class="node">
+<g id="Node000022" class="node">
 <title>Node22</title>
-<g id="a_node22"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000022"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="582.5,-1330.92 427.5,-1330.92 427.5,-1300.92 582.5,-1300.92 582.5,-1330.92"/>
 <text text-anchor="start" x="435.5" y="-1318.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; BranchClos</text>
 <text text-anchor="middle" x="505" y="-1307.92" font-family="Helvetica,sans-Serif" font-size="10.00">Elim, Lam &gt;</text>
@@ -220,15 +256,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node22 -->
-<g id="edge21" class="edge">
+<g id="edge21_Node000001_Node000022" class="edge">
 <title>Node1&#45;&gt;Node22</title>
+<g id="a_edge21_Node000001_Node000022"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M36.99,-991.75C36.62,-1044.58 42.18,-1191.02 110,-1283.92 156.31,-1347.35 183.6,-1356.93 259,-1378.92 320.87,-1396.96 348.15,-1411.07 404,-1378.92 417.81,-1370.97 409.9,-1358.28 422,-1347.92 430.12,-1340.96 439.94,-1335.41 449.91,-1331.03"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="40.49,-991.74 37.14,-981.69 33.49,-991.64 40.49,-991.74"/>
+</a>
+</g>
 </g>
 <!-- Node24 -->
-<g id="node24" class="node">
+<g id="Node000024" class="node">
 <title>Node24</title>
-<g id="a_node24"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000024"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="579,-1273.92 431,-1273.92 431,-1243.92 579,-1243.92 579,-1273.92"/>
 <text text-anchor="start" x="439" y="-1261.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; Clos2SJLJ,</text>
 <text text-anchor="middle" x="505" y="-1250.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Lam &gt;</text>
@@ -236,15 +275,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node24 -->
-<g id="edge23" class="edge">
+<g id="edge23_Node000001_Node000024" class="edge">
 <title>Node1&#45;&gt;Node24</title>
+<g id="a_edge23_Node000001_Node000024"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M38.4,-991.96C41.41,-1037.99 54.4,-1153 110,-1226.92 156.93,-1289.3 183.96,-1298.42 259,-1319.92 320.95,-1337.67 347.44,-1350.8 404,-1319.92 416.98,-1312.83 410.6,-1301.35 422,-1291.92 430.87,-1284.58 441.58,-1278.71 452.29,-1274.08"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="41.89,-991.59 37.83,-981.81 34.9,-991.99 41.89,-991.59"/>
+</a>
+</g>
 </g>
 <!-- Node26 -->
-<g id="node26" class="node">
+<g id="Node000026" class="node">
 <title>Node26</title>
-<g id="a_node26"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000026"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="578,-152.92 432,-152.92 432,-122.92 578,-122.92 578,-152.92"/>
 <text text-anchor="start" x="440" y="-140.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; ClosConv</text>
 <text text-anchor="middle" x="505" y="-129.92" font-family="Helvetica,sans-Serif" font-size="10.00">Prep, Lam &gt;</text>
@@ -252,15 +294,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node26 -->
-<g id="edge25" class="edge">
+<g id="edge25_Node000001_Node000026" class="edge">
 <title>Node1&#45;&gt;Node26</title>
+<g id="a_edge25_Node000001_Node000026"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M37.81,-952.3C39.9,-831.21 53.64,-188.36 110,-123.92 196.94,-24.52 276.35,-47.09 404,-80.92 434.52,-89.01 465.46,-108.82 484.67,-122.81"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="34.31,-952.3 37.64,-962.36 41.31,-952.42 34.31,-952.3"/>
+</a>
+</g>
 </g>
 <!-- Node28 -->
-<g id="node28" class="node">
+<g id="Node000028" class="node">
 <title>Node28</title>
-<g id="a_node28"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000028"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="584,-765.92 426,-765.92 426,-735.92 584,-735.92 584,-765.92"/>
 <text text-anchor="start" x="434" y="-753.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; LowerTyped</text>
 <text text-anchor="middle" x="505" y="-742.92" font-family="Helvetica,sans-Serif" font-size="10.00">ClosPrep, Lam &gt;</text>
@@ -268,15 +313,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node28 -->
-<g id="edge27" class="edge">
+<g id="edge27_Node000001_Node000028" class="edge">
 <title>Node1&#45;&gt;Node28</title>
+<g id="a_edge27_Node000001_Node000028"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M38.57,-951.99C41.9,-909.63 55.41,-809.81 110,-751.92 155.72,-703.44 346.25,-659.67 404,-692.92 417.81,-700.87 409.63,-713.88 422,-723.92 427.82,-728.64 434.5,-732.55 441.47,-735.78"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="35.07,-951.9 37.89,-962.11 42.06,-952.37 35.07,-951.9"/>
+</a>
+</g>
 </g>
 <!-- Node29 -->
-<g id="node29" class="node">
+<g id="Node000029" class="node">
 <title>Node29</title>
-<g id="a_node29"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000029"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="584,-503.92 426,-503.92 426,-473.92 584,-473.92 584,-503.92"/>
 <text text-anchor="start" x="434" y="-491.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; DebugPrint,</text>
 <text text-anchor="middle" x="505" y="-480.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Lam &gt;</text>
@@ -284,15 +332,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node29 -->
-<g id="edge28" class="edge">
+<g id="edge28_Node000001_Node000029" class="edge">
 <title>Node1&#45;&gt;Node29</title>
+<g id="a_edge28_Node000001_Node000029"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M37.51,-952.18C37.99,-869.81 44.14,-554.73 110,-486.92 204.48,-389.64 388.92,-444.23 467.32,-473.81"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="34.01,-952.19 37.48,-962.2 41.01,-952.22 34.01,-952.19"/>
+</a>
+</g>
 </g>
 <!-- Node31 -->
-<g id="node31" class="node">
+<g id="Node000031" class="node">
 <title>Node31</title>
-<g id="a_node31"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000031"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="574,-273.92 436,-273.92 436,-243.92 574,-243.92 574,-273.92"/>
 <text text-anchor="start" x="444" y="-261.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; Internal</text>
 <text text-anchor="middle" x="505" y="-250.92" font-family="Helvetica,sans-Serif" font-size="10.00">Cleanup, Lam &gt;</text>
@@ -300,15 +351,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node31 -->
-<g id="edge30" class="edge">
+<g id="edge30_Node000001_Node000031" class="edge">
 <title>Node1&#45;&gt;Node31</title>
+<g id="a_edge30_Node000001_Node000031"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M38.19,-951.89C42.13,-842.03 63.4,-315.46 110,-261.92 153.56,-211.87 342.35,-185.41 404,-209.92 414.23,-213.98 412.7,-221.03 422,-226.92 432.46,-233.54 444.51,-239.18 456.09,-243.79"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="34.68,-952.08 37.82,-962.2 41.67,-952.33 34.68,-952.08"/>
+</a>
+</g>
 </g>
 <!-- Node33 -->
-<g id="node33" class="node">
+<g id="Node000033" class="node">
 <title>Node33</title>
-<g id="a_node33"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000033"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="576,-603.92 434,-603.92 434,-573.92 576,-573.92 576,-603.92"/>
 <text text-anchor="start" x="442" y="-591.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; CPS2DS,</text>
 <text text-anchor="middle" x="505" y="-580.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Lam &gt;</text>
@@ -316,15 +370,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node33 -->
-<g id="edge32" class="edge">
+<g id="edge32_Node000001_Node000033" class="edge">
 <title>Node1&#45;&gt;Node33</title>
+<g id="a_edge32_Node000001_Node000033"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M38.45,-952.16C42.34,-879.51 59.28,-628.4 110,-569.92 197.05,-469.56 277.7,-474.72 404,-515.92 438.94,-527.32 471.82,-556.06 489.8,-573.89"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="34.95,-952.06 37.94,-962.23 41.94,-952.42 34.95,-952.06"/>
+</a>
+</g>
 </g>
 <!-- Node35 -->
-<g id="node35" class="node">
+<g id="Node000035" class="node">
 <title>Node35</title>
-<g id="a_node35"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000035"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="576,-217.92 434,-217.92 434,-187.92 576,-187.92 576,-217.92"/>
 <text text-anchor="start" x="442" y="-205.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; DS2CPS,</text>
 <text text-anchor="middle" x="505" y="-194.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Lam &gt;</text>
@@ -332,15 +389,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node35 -->
-<g id="edge34" class="edge">
+<g id="edge34_Node000001_Node000035" class="edge">
 <title>Node1&#45;&gt;Node35</title>
+<g id="a_edge34_Node000001_Node000035"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M38.04,-952.15C41.36,-837.84 60.41,-264.72 110,-205.92 195.71,-104.3 276.04,-114.91 404,-150.92 413.03,-153.46 413.8,-157.37 422,-161.92 438.29,-170.95 456.82,-180.29 472.13,-187.77"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="34.54,-952.16 37.76,-962.26 41.54,-952.36 34.54,-952.16"/>
+</a>
+</g>
 </g>
 <!-- Node37 -->
-<g id="node37" class="node">
+<g id="Node000037" class="node">
 <title>Node37</title>
-<g id="a_node37"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000037"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="585.5,-71.92 424.5,-71.92 424.5,-41.92 585.5,-41.92 585.5,-71.92"/>
 <text text-anchor="start" x="432.5" y="-59.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; LowerMatrix</text>
 <text text-anchor="middle" x="505" y="-48.92" font-family="Helvetica,sans-Serif" font-size="10.00">HighLevelMapRed, Lam &gt;</text>
@@ -348,15 +408,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node37 -->
-<g id="edge36" class="edge">
+<g id="edge36_Node000001_Node000037" class="edge">
 <title>Node1&#45;&gt;Node37</title>
+<g id="a_edge36_Node000001_Node000037"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M37.42,-951.94C37.15,-822.81 38.85,-109.61 110,-48.92 212.54,38.55 390.58,-13.34 467.2,-41.9"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="33.93,-952.3 37.45,-962.29 40.93,-952.28 33.93,-952.3"/>
+</a>
+</g>
 </g>
 <!-- Node39 -->
-<g id="node39" class="node">
+<g id="Node000039" class="node">
 <title>Node39</title>
-<g id="a_node39"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000039"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="585.5,-833.92 424.5,-833.92 424.5,-803.92 585.5,-803.92 585.5,-833.92"/>
 <text text-anchor="start" x="432.5" y="-821.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; LowerMatrix</text>
 <text text-anchor="middle" x="505" y="-810.92" font-family="Helvetica,sans-Serif" font-size="10.00">MediumLevel, Lam &gt;</text>
@@ -364,15 +427,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node39 -->
-<g id="edge38" class="edge">
+<g id="edge38_Node000001_Node000039" class="edge">
 <title>Node1&#45;&gt;Node39</title>
+<g id="a_edge38_Node000001_Node000039"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M42.51,-952.22C51.32,-921.1 72.34,-860.27 110,-822.92 162.08,-771.26 187.45,-768.09 259,-751.92 321.86,-737.71 346.07,-723.69 404,-751.92 415.67,-757.6 412.07,-766.56 422,-774.92 435.84,-786.57 453.27,-796.45 468.49,-803.88"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="39.03,-951.67 39.8,-962.24 45.79,-953.5 39.03,-951.67"/>
+</a>
+</g>
 </g>
 <!-- Node41 -->
-<g id="node41" class="node">
+<g id="Node000041" class="node">
 <title>Node41</title>
-<g id="a_node41"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000041"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="588,-659.92 422,-659.92 422,-629.92 588,-629.92 588,-659.92"/>
 <text text-anchor="start" x="430" y="-647.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; Alloc2Malloc,</text>
 <text text-anchor="middle" x="505" y="-636.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Lam &gt;</text>
@@ -380,15 +446,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node41 -->
-<g id="edge40" class="edge">
+<g id="edge40_Node000001_Node000041" class="edge">
 <title>Node1&#45;&gt;Node41</title>
+<g id="a_edge40_Node000001_Node000041"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M39.15,-952.25C45.01,-886.97 66.77,-678.83 110,-629.92 154.02,-580.12 347.83,-539.38 404,-574.92 419.79,-584.91 408.33,-600.18 422,-612.92 429.49,-619.9 438.68,-625.42 448.16,-629.76"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="35.65,-952.13 38.27,-962.4 42.62,-952.74 35.65,-952.13"/>
+</a>
+</g>
 </g>
 <!-- Node43 -->
-<g id="node43" class="node">
+<g id="Node000043" class="node">
 <title>Node43</title>
-<g id="a_node43"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000043"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="580,-1523.92 430,-1523.92 430,-1493.92 580,-1493.92 580,-1523.92"/>
 <text text-anchor="start" x="438" y="-1511.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; CopyProp,</text>
 <text text-anchor="middle" x="505" y="-1500.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Lam &gt;</text>
@@ -396,15 +465,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node43 -->
-<g id="edge42" class="edge">
+<g id="edge42_Node000001_Node000043" class="edge">
 <title>Node1&#45;&gt;Node43</title>
+<g id="a_edge42_Node000001_Node000043"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M38.16,-992.04C41.22,-1074.75 56.2,-1387.9 110,-1467.92 186.93,-1582.34 270.86,-1602.74 404,-1566.92 408.11,-1565.81 450.61,-1540.75 478.87,-1523.93"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="41.64,-991.44 37.79,-981.57 34.65,-991.68 41.64,-991.44"/>
+</a>
+</g>
 </g>
 <!-- Node44 -->
-<g id="node44" class="node">
+<g id="Node000044" class="node">
 <title>Node44</title>
-<g id="a_node44"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000044"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="#fff0f0" stroke="red" points="587,-325.92 423,-325.92 423,-295.92 587,-295.92 587,-325.92"/>
 <text text-anchor="start" x="431" y="-313.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; RememElim,</text>
 <text text-anchor="middle" x="505" y="-302.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Lam &gt;</text>
@@ -412,15 +484,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node44 -->
-<g id="edge43" class="edge">
+<g id="edge43_Node000001_Node000044" class="edge">
 <title>Node1&#45;&gt;Node44</title>
+<g id="a_edge43_Node000001_Node000044"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M38.3,-952.31C42.75,-847.95 65.8,-360.7 110,-311.92 154.33,-262.99 341.55,-247.49 404,-268.92 413.59,-272.21 413.08,-278.1 422,-282.92 431.13,-287.85 441.3,-292.16 451.28,-295.82"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="34.8,-952.25 37.88,-962.39 41.8,-952.54 34.8,-952.25"/>
+</a>
+</g>
 </g>
 <!-- Node46 -->
-<g id="node45" class="node">
+<g id="Node000046" class="node">
 <title>Node46</title>
-<g id="a_node45"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000046"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="#fff0f0" stroke="red" points="578,-895.92 432,-895.92 432,-865.92 578,-865.92 578,-895.92"/>
 <text text-anchor="start" x="440" y="-883.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; Reshape,</text>
 <text text-anchor="middle" x="505" y="-872.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Lam &gt;</text>
@@ -428,15 +503,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node46 -->
-<g id="edge44" class="edge">
+<g id="edge44_Node000001_Node000046" class="edge">
 <title>Node1&#45;&gt;Node46</title>
+<g id="a_edge44_Node000001_Node000046"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M54.17,-954.64C88.53,-920.48 171.43,-845.61 259,-821.92 321.21,-805.09 345.45,-794.99 404,-821.92 415.17,-827.06 412.2,-835.5 422,-842.92 434.13,-852.11 448.85,-859.79 462.44,-865.78"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="51.41,-952.45 46.86,-962.02 56.38,-957.37 51.41,-952.45"/>
+</a>
+</g>
 </g>
 <!-- Node48 -->
-<g id="node46" class="node">
+<g id="Node000048" class="node">
 <title>Node48</title>
-<g id="a_node46"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000048"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="582.5,-375.92 427.5,-375.92 427.5,-345.92 582.5,-345.92 582.5,-375.92"/>
 <text text-anchor="start" x="435.5" y="-363.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; SSAConstr,</text>
 <text text-anchor="middle" x="505" y="-352.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Lam &gt;</text>
@@ -444,15 +522,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node48 -->
-<g id="edge45" class="edge">
+<g id="edge45_Node000001_Node000048" class="edge">
 <title>Node1&#45;&gt;Node48</title>
+<g id="a_edge45_Node000001_Node000048"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M38.45,-952.19C43.38,-853.19 67.57,-413.7 110,-371.92 203.68,-279.65 273.28,-324.71 404,-338.92 417.7,-340.41 432.26,-343.01 445.92,-345.92"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="34.94,-952.14 37.95,-962.3 41.94,-952.48 34.94,-952.14"/>
+</a>
+</g>
 </g>
 <!-- Node49 -->
-<g id="node47" class="node">
+<g id="Node000049" class="node">
 <title>Node49</title>
-<g id="a_node47"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000049"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="#fff0f0" stroke="red" points="585.5,-714.92 424.5,-714.92 424.5,-684.92 585.5,-684.92 585.5,-714.92"/>
 <text text-anchor="start" x="432.5" y="-702.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; RemoveDbg</text>
 <text text-anchor="middle" x="505" y="-691.92" font-family="Helvetica,sans-Serif" font-size="10.00">Perm, Lam &gt;</text>
@@ -460,15 +541,18 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node49 -->
-<g id="edge46" class="edge">
+<g id="edge46_Node000001_Node000049" class="edge">
 <title>Node1&#45;&gt;Node49</title>
+<g id="a_edge46_Node000001_Node000049"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M36.79,-952.1C36.1,-901.84 41.19,-767.97 110,-690.92 154.33,-641.28 347.19,-599.25 404,-633.92 418.93,-643.03 408.95,-657.27 422,-668.92 429.38,-675.51 438.3,-680.75 447.5,-684.9"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="33.3,-952.34 37.04,-962.25 40.3,-952.17 33.3,-952.34"/>
+</a>
+</g>
 </g>
 <!-- Node51 -->
-<g id="node48" class="node">
+<g id="Node000051" class="node">
 <title>Node51</title>
-<g id="a_node48"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_Node000051"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
 <polygon fill="#fff0f0" stroke="red" points="587,-424.92 423,-424.92 423,-394.92 587,-394.92 587,-424.92"/>
 <text text-anchor="start" x="431" y="-412.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; LowerRegex,</text>
 <text text-anchor="middle" x="505" y="-401.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Lam &gt;</text>
@@ -476,135 +560,162 @@
 </g>
 </g>
 <!-- Node1&#45;&gt;Node51 -->
-<g id="edge47" class="edge">
+<g id="edge47_Node000001_Node000051" class="edge">
 <title>Node1&#45;&gt;Node51</title>
+<g id="a_edge47_Node000001_Node000051"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M37.05,-952.29C35.48,-863.85 33.87,-503.54 110,-428.92 203.83,-336.94 272.84,-390.08 404,-397.92 410.11,-398.28 416.42,-398.77 422.75,-399.35"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="33.55,-952.38 37.25,-962.3 40.55,-952.24 33.55,-952.38"/>
+</a>
+</g>
 </g>
 <!-- Node53 -->
-<g id="node49" class="node">
+<g id="Node000053" class="node">
 <title>Node53</title>
-<g id="a_node49"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title="Inherit from this class if your Pass does not need state and a fixed&#45;point iteration.">
+<g id="a_Node000053"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title="Inherit from this class if your Pass does not need state and a fixed&#45;point iteration.">
 <polygon fill="#fff0f0" stroke="red" points="241,-936.42 110,-936.42 110,-917.42 241,-917.42 241,-936.42"/>
 <text text-anchor="middle" x="175.5" y="-924.42" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; P, N &gt;</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node53 -->
-<g id="edge48" class="edge">
+<g id="edge48_Node000001_Node000053" class="edge">
 <title>Node1&#45;&gt;Node53</title>
+<g id="a_edge48_Node000001_Node000053"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M76.26,-959.19C98.26,-951.96 125.34,-943.07 145.49,-936.45"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="74.96,-955.93 66.55,-962.38 77.15,-962.58 74.96,-955.93"/>
+</a>
+</g>
 </g>
 <!-- Node3 -->
-<g id="node3" class="node">
+<g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="classDebugDump.html" target="_top" xlink:title="A pass that just dumps the world.">
+<g id="a_Node000003"><a xlink:href="classDebugDump.html" target="_top" xlink:title="A pass that just dumps the world.">
 <polygon fill="white" stroke="#666666" points="742,-1381.42 665,-1381.42 665,-1362.42 742,-1362.42 742,-1381.42"/>
 <text text-anchor="middle" x="703.5" y="-1369.42" font-family="Helvetica,sans-Serif" font-size="10.00">DebugDump</text>
 </a>
 </g>
 </g>
 <!-- Node2&#45;&gt;Node3 -->
-<g id="edge2" class="edge">
+<g id="edge2_Node000002_Node000003" class="edge">
 <title>Node2&#45;&gt;Node3</title>
+<g id="a_edge2_Node000002_Node000003"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M597.23,-1371.92C621.1,-1371.92 645.52,-1371.92 664.82,-1371.92"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="597.06,-1368.42 587.06,-1371.92 597.06,-1375.42 597.06,-1368.42"/>
+</a>
+</g>
 </g>
 <!-- Node8 -->
-<g id="node8" class="node">
+<g id="Node000008" class="node">
 <title>Node8</title>
-<g id="a_node8"><a xlink:href="classthorin_1_1LamSpec.html" target="_top" xlink:title=" ">
+<g id="a_Node000008"><a xlink:href="classthorin_1_1LamSpec.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="751,-942.42 656,-942.42 656,-923.42 751,-923.42 751,-942.42"/>
 <text text-anchor="middle" x="703.5" y="-930.42" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::LamSpec</text>
 </a>
 </g>
 </g>
 <!-- Node7&#45;&gt;Node8 -->
-<g id="edge7" class="edge">
+<g id="edge7_Node000007_Node000008" class="edge">
 <title>Node7&#45;&gt;Node8</title>
+<g id="a_edge7_Node000007_Node000008"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M589.19,-932.92C611.97,-932.92 635.85,-932.92 655.78,-932.92"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="589.17,-929.42 579.17,-932.92 589.17,-936.42 589.17,-929.42"/>
+</a>
+</g>
 </g>
 <!-- Node10 -->
-<g id="node10" class="node">
+<g id="Node000010" class="node">
 <title>Node10</title>
-<g id="a_node10"><a xlink:href="classthorin_1_1RetWrap.html" target="_top" xlink:title=" ">
+<g id="a_Node000010"><a xlink:href="classthorin_1_1RetWrap.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="750,-1720.42 657,-1720.42 657,-1701.42 750,-1701.42 750,-1720.42"/>
 <text text-anchor="middle" x="703.5" y="-1708.42" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RetWrap</text>
 </a>
 </g>
 </g>
 <!-- Node9&#45;&gt;Node10 -->
-<g id="edge9" class="edge">
+<g id="edge9_Node000009_Node000010" class="edge">
 <title>Node9&#45;&gt;Node10</title>
+<g id="a_edge9_Node000009_Node000010"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M588.34,-1710.92C611.72,-1710.92 636.34,-1710.92 656.71,-1710.92"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="588.05,-1707.42 578.05,-1710.92 588.05,-1714.42 588.05,-1707.42"/>
+</a>
+</g>
 </g>
 <!-- Node12 -->
-<g id="node12" class="node">
+<g id="Node000012" class="node">
 <title>Node12</title>
-<g id="a_node12"><a xlink:href="classthorin_1_1Scalerize.html" target="_top" xlink:title="Perform Scalarization (= Argument simplification), i.e.:">
+<g id="a_Node000012"><a xlink:href="classthorin_1_1Scalerize.html" target="_top" xlink:title="Perform Scalarization (= Argument simplification), i.e.:">
 <polygon fill="white" stroke="#666666" points="751,-1210.42 656,-1210.42 656,-1191.42 751,-1191.42 751,-1210.42"/>
 <text text-anchor="middle" x="703.5" y="-1198.42" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Scalerize</text>
 </a>
 </g>
 </g>
 <!-- Node11&#45;&gt;Node12 -->
-<g id="edge11" class="edge">
+<g id="edge11_Node000011_Node000012" class="edge">
 <title>Node11&#45;&gt;Node12</title>
+<g id="a_edge11_Node000011_Node000012"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M589.19,-1200.92C611.97,-1200.92 635.85,-1200.92 655.78,-1200.92"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="589.17,-1197.42 579.17,-1200.92 589.17,-1204.42 589.17,-1197.42"/>
+</a>
+</g>
 </g>
 <!-- Node15 -->
-<g id="node15" class="node">
+<g id="Node000015" class="node">
 <title>Node15</title>
-<g id="a_node15"><a xlink:href="classthorin_1_1affine_1_1LowerFor.html" target="_top" xlink:title="Lowers the for axiom to actual control flow in CPS.">
+<g id="a_Node000015"><a xlink:href="classthorin_1_1affine_1_1LowerFor.html" target="_top" xlink:title="Lowers the for axiom to actual control flow in CPS.">
 <polygon fill="white" stroke="#666666" points="768,-1773.42 639,-1773.42 639,-1754.42 768,-1754.42 768,-1773.42"/>
 <text text-anchor="middle" x="703.5" y="-1761.42" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::affine::LowerFor</text>
 </a>
 </g>
 </g>
 <!-- Node14&#45;&gt;Node15 -->
-<g id="edge14" class="edge">
+<g id="edge14_Node000014_Node000015" class="edge">
 <title>Node14&#45;&gt;Node15</title>
+<g id="a_edge14_Node000014_Node000015"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M589.41,-1763.92C606,-1763.92 623.16,-1763.92 638.96,-1763.92"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="589.17,-1760.42 579.17,-1763.92 589.17,-1767.42 589.17,-1760.42"/>
+</a>
+</g>
 </g>
 <!-- Node17 -->
-<g id="node17" class="node">
+<g id="Node000017" class="node">
 <title>Node17</title>
-<g id="a_node17"><a xlink:href="classthorin_1_1autodiff_1_1AutoDiffEval.html" target="_top" xlink:title="This pass is the heart of AD.">
+<g id="a_Node000017"><a xlink:href="classthorin_1_1autodiff_1_1AutoDiffEval.html" target="_top" xlink:title="This pass is the heart of AD.">
 <polygon fill="white" stroke="#666666" points="781,-1661.42 626,-1661.42 626,-1642.42 781,-1642.42 781,-1661.42"/>
 <text text-anchor="middle" x="703.5" y="-1649.42" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::autodiff::AutoDiffEval</text>
 </a>
 </g>
 </g>
 <!-- Node16&#45;&gt;Node17 -->
-<g id="edge16" class="edge">
+<g id="edge16_Node000016_Node000017" class="edge">
 <title>Node16&#45;&gt;Node17</title>
+<g id="a_edge16_Node000016_Node000017"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M585.17,-1651.92C598.63,-1651.92 612.58,-1651.92 625.96,-1651.92"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="585,-1648.42 575,-1651.92 585,-1655.42 585,-1648.42"/>
+</a>
+</g>
 </g>
 <!-- Node19 -->
-<g id="node19" class="node">
+<g id="Node000019" class="node">
 <title>Node19</title>
-<g id="a_node19"><a xlink:href="classthorin_1_1autodiff_1_1AutoDiffZero.html" target="_top" xlink:title="Replaces calls to the zero axioms with actual zeros.">
+<g id="a_Node000019"><a xlink:href="classthorin_1_1autodiff_1_1AutoDiffZero.html" target="_top" xlink:title="Replaces calls to the zero axioms with actual zeros.">
 <polygon fill="white" stroke="#666666" points="782,-1151.42 625,-1151.42 625,-1132.42 782,-1132.42 782,-1151.42"/>
 <text text-anchor="middle" x="703.5" y="-1139.42" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::autodiff::AutoDiffZero</text>
 </a>
 </g>
 </g>
 <!-- Node18&#45;&gt;Node19 -->
-<g id="edge18" class="edge">
+<g id="edge18_Node000018_Node000019" class="edge">
 <title>Node18&#45;&gt;Node19</title>
+<g id="a_edge18_Node000018_Node000019"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M585.36,-1141.92C598.41,-1141.92 611.93,-1141.92 624.94,-1141.92"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="585,-1138.42 575,-1141.92 585,-1145.42 585,-1138.42"/>
+</a>
+</g>
 </g>
 <!-- Node21 -->
-<g id="node21" class="node">
+<g id="Node000021" class="node">
 <title>Node21</title>
-<g id="a_node21"><a xlink:href="classthorin_1_1autodiff_1_1AutoDiffZeroCleanup.html" target="_top" xlink:title="Replaces remaining zeros (not resolvable) with ⊥.">
+<g id="a_Node000021"><a xlink:href="classthorin_1_1autodiff_1_1AutoDiffZeroCleanup.html" target="_top" xlink:title="Replaces remaining zeros (not resolvable) with ⊥.">
 <polygon fill="white" stroke="#666666" points="770.5,-1596.92 636.5,-1596.92 636.5,-1566.92 770.5,-1566.92 770.5,-1596.92"/>
 <text text-anchor="start" x="644.5" y="-1584.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::autodiff::AutoDiff</text>
 <text text-anchor="middle" x="703.5" y="-1573.92" font-family="Helvetica,sans-Serif" font-size="10.00">ZeroCleanup</text>
@@ -612,75 +723,90 @@
 </g>
 </g>
 <!-- Node20&#45;&gt;Node21 -->
-<g id="edge20" class="edge">
+<g id="edge20_Node000020_Node000021" class="edge">
 <title>Node20&#45;&gt;Node21</title>
+<g id="a_edge20_Node000020_Node000021"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M585.4,-1581.92C602.3,-1581.92 619.97,-1581.92 636.31,-1581.92"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="585,-1578.42 575,-1581.92 585,-1585.42 585,-1578.42"/>
+</a>
+</g>
 </g>
 <!-- Node23 -->
-<g id="node23" class="node">
+<g id="Node000023" class="node">
 <title>Node23</title>
-<g id="a_node23"><a xlink:href="classthorin_1_1clos_1_1BranchClosElim.html" target="_top" xlink:title=" ">
+<g id="a_Node000023"><a xlink:href="classthorin_1_1clos_1_1BranchClosElim.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="780,-1325.42 627,-1325.42 627,-1306.42 780,-1306.42 780,-1325.42"/>
 <text text-anchor="middle" x="703.5" y="-1313.42" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::clos::BranchClosElim</text>
 </a>
 </g>
 </g>
 <!-- Node22&#45;&gt;Node23 -->
-<g id="edge22" class="edge">
+<g id="edge22_Node000022_Node000023" class="edge">
 <title>Node22&#45;&gt;Node23</title>
+<g id="a_edge22_Node000022_Node000023"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M592.86,-1315.92C604.18,-1315.92 615.7,-1315.92 626.82,-1315.92"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="592.53,-1312.42 582.53,-1315.92 592.53,-1319.42 592.53,-1312.42"/>
+</a>
+</g>
 </g>
 <!-- Node25 -->
-<g id="node25" class="node">
+<g id="Node000025" class="node">
 <title>Node25</title>
-<g id="a_node25"><a xlink:href="classthorin_1_1clos_1_1Clos2SJLJ.html" target="_top" xlink:title=" ">
+<g id="a_Node000025"><a xlink:href="classthorin_1_1clos_1_1Clos2SJLJ.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="764,-1268.42 643,-1268.42 643,-1249.42 764,-1249.42 764,-1268.42"/>
 <text text-anchor="middle" x="703.5" y="-1256.42" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::clos::Clos2SJLJ</text>
 </a>
 </g>
 </g>
 <!-- Node24&#45;&gt;Node25 -->
-<g id="edge24" class="edge">
+<g id="edge24_Node000024_Node000025" class="edge">
 <title>Node24&#45;&gt;Node25</title>
+<g id="a_edge24_Node000024_Node000025"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M589.34,-1258.92C607.29,-1258.92 625.91,-1258.92 642.74,-1258.92"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="589.17,-1255.42 579.17,-1258.92 589.17,-1262.42 589.17,-1255.42"/>
+</a>
+</g>
 </g>
 <!-- Node27 -->
-<g id="node27" class="node">
+<g id="Node000027" class="node">
 <title>Node27</title>
-<g id="a_node27"><a xlink:href="classthorin_1_1clos_1_1ClosConvPrep.html" target="_top" xlink:title=" ">
+<g id="a_Node000027"><a xlink:href="classthorin_1_1clos_1_1ClosConvPrep.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="775.5,-147.42 631.5,-147.42 631.5,-128.42 775.5,-128.42 775.5,-147.42"/>
 <text text-anchor="middle" x="703.5" y="-135.42" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::clos::ClosConvPrep</text>
 </a>
 </g>
 </g>
 <!-- Node26&#45;&gt;Node27 -->
-<g id="edge26" class="edge">
+<g id="edge26_Node000026_Node000027" class="edge">
 <title>Node26&#45;&gt;Node27</title>
+<g id="a_edge26_Node000026_Node000027"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M588.38,-137.92C602.69,-137.92 617.46,-137.92 631.44,-137.92"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="588.05,-134.42 578.05,-137.92 588.05,-141.42 588.05,-134.42"/>
+</a>
+</g>
 </g>
 <!-- Node30 -->
-<g id="node30" class="node">
+<g id="Node000030" class="node">
 <title>Node30</title>
-<g id="a_node30"><a xlink:href="classthorin_1_1compile_1_1DebugPrint.html" target="_top" xlink:title=" ">
+<g id="a_Node000030"><a xlink:href="classthorin_1_1compile_1_1DebugPrint.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="778.5,-498.42 628.5,-498.42 628.5,-479.42 778.5,-479.42 778.5,-498.42"/>
 <text text-anchor="middle" x="703.5" y="-486.42" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::compile::DebugPrint</text>
 </a>
 </g>
 </g>
 <!-- Node29&#45;&gt;Node30 -->
-<g id="edge29" class="edge">
+<g id="edge29_Node000029_Node000030" class="edge">
 <title>Node29&#45;&gt;Node30</title>
+<g id="a_edge29_Node000029_Node000030"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M594.54,-488.92C605.85,-488.92 617.33,-488.92 628.38,-488.92"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="594.23,-485.42 584.23,-488.92 594.23,-492.42 594.23,-485.42"/>
+</a>
+</g>
 </g>
 <!-- Node32 -->
-<g id="node32" class="node">
+<g id="Node000032" class="node">
 <title>Node32</title>
-<g id="a_node32"><a xlink:href="classthorin_1_1compile_1_1InternalCleanup.html" target="_top" xlink:title=" ">
+<g id="a_Node000032"><a xlink:href="classthorin_1_1compile_1_1InternalCleanup.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="770.5,-273.92 636.5,-273.92 636.5,-243.92 770.5,-243.92 770.5,-273.92"/>
 <text text-anchor="start" x="644.5" y="-261.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::compile::Internal</text>
 <text text-anchor="middle" x="703.5" y="-250.92" font-family="Helvetica,sans-Serif" font-size="10.00">Cleanup</text>
@@ -688,45 +814,54 @@
 </g>
 </g>
 <!-- Node31&#45;&gt;Node32 -->
-<g id="edge31" class="edge">
+<g id="edge31_Node000031_Node000032" class="edge">
 <title>Node31&#45;&gt;Node32</title>
+<g id="a_edge31_Node000031_Node000032"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M584.24,-258.92C601.53,-258.92 619.68,-258.92 636.43,-258.92"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="584.17,-255.42 574.17,-258.92 584.17,-262.42 584.17,-255.42"/>
+</a>
+</g>
 </g>
 <!-- Node34 -->
-<g id="node34" class="node">
+<g id="Node000034" class="node">
 <title>Node34</title>
-<g id="a_node34"><a xlink:href="classthorin_1_1direct_1_1CPS2DS.html" target="_top" xlink:title="This is the second part of ds2cps.">
+<g id="a_Node000034"><a xlink:href="classthorin_1_1direct_1_1CPS2DS.html" target="_top" xlink:title="This is the second part of ds2cps.">
 <polygon fill="white" stroke="#666666" points="765,-598.42 642,-598.42 642,-579.42 765,-579.42 765,-598.42"/>
 <text text-anchor="middle" x="703.5" y="-586.42" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::direct::CPS2DS</text>
 </a>
 </g>
 </g>
 <!-- Node33&#45;&gt;Node34 -->
-<g id="edge33" class="edge">
+<g id="edge33_Node000033_Node000034" class="edge">
 <title>Node33&#45;&gt;Node34</title>
+<g id="a_edge33_Node000033_Node000034"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M586.31,-588.92C604.87,-588.92 624.31,-588.92 641.86,-588.92"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="586.11,-585.42 576.11,-588.92 586.11,-592.42 586.11,-585.42"/>
+</a>
+</g>
 </g>
 <!-- Node36 -->
-<g id="node36" class="node">
+<g id="Node000036" class="node">
 <title>Node36</title>
-<g id="a_node36"><a xlink:href="classthorin_1_1direct_1_1DS2CPS.html" target="_top" xlink:title="Converts direct style function to cps functions.">
+<g id="a_Node000036"><a xlink:href="classthorin_1_1direct_1_1DS2CPS.html" target="_top" xlink:title="Converts direct style function to cps functions.">
 <polygon fill="white" stroke="#666666" points="765,-212.42 642,-212.42 642,-193.42 765,-193.42 765,-212.42"/>
 <text text-anchor="middle" x="703.5" y="-200.42" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::direct::DS2CPS</text>
 </a>
 </g>
 </g>
 <!-- Node35&#45;&gt;Node36 -->
-<g id="edge35" class="edge">
+<g id="edge35_Node000035_Node000036" class="edge">
 <title>Node35&#45;&gt;Node36</title>
+<g id="a_edge35_Node000035_Node000036"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M586.31,-202.92C604.87,-202.92 624.31,-202.92 641.86,-202.92"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="586.11,-199.42 576.11,-202.92 586.11,-206.42 586.11,-199.42"/>
+</a>
+</g>
 </g>
 <!-- Node38 -->
-<g id="node38" class="node">
+<g id="Node000038" class="node">
 <title>Node38</title>
-<g id="a_node38"><a xlink:href="classthorin_1_1matrix_1_1LowerMatrixHighLevelMapRed.html" target="_top" xlink:title="Resolves lowering of high level operations into medium/other high&#45;level operations.">
+<g id="a_Node000038"><a xlink:href="classthorin_1_1matrix_1_1LowerMatrixHighLevelMapRed.html" target="_top" xlink:title="Resolves lowering of high level operations into medium/other high&#45;level operations.">
 <polygon fill="white" stroke="#666666" points="778.5,-71.92 628.5,-71.92 628.5,-41.92 778.5,-41.92 778.5,-71.92"/>
 <text text-anchor="start" x="636.5" y="-59.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::matrix::LowerMatrix</text>
 <text text-anchor="middle" x="703.5" y="-48.92" font-family="Helvetica,sans-Serif" font-size="10.00">HighLevelMapRed</text>
@@ -734,15 +869,18 @@
 </g>
 </g>
 <!-- Node37&#45;&gt;Node38 -->
-<g id="edge37" class="edge">
+<g id="edge37_Node000037_Node000038" class="edge">
 <title>Node37&#45;&gt;Node38</title>
+<g id="a_edge37_Node000037_Node000038"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M595.66,-56.92C606.63,-56.92 617.75,-56.92 628.46,-56.92"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="595.64,-53.42 585.64,-56.92 595.64,-60.42 595.64,-53.42"/>
+</a>
+</g>
 </g>
 <!-- Node40 -->
-<g id="node40" class="node">
+<g id="Node000040" class="node">
 <title>Node40</title>
-<g id="a_node40"><a xlink:href="classthorin_1_1matrix_1_1LowerMatrixMediumLevel.html" target="_top" xlink:title="In this step, we lower map_reduce operations into affine for loops making the iteration scheme explic...">
+<g id="a_Node000040"><a xlink:href="classthorin_1_1matrix_1_1LowerMatrixMediumLevel.html" target="_top" xlink:title="In this step, we lower map_reduce operations into affine for loops making the iteration scheme explic...">
 <polygon fill="white" stroke="#666666" points="778.5,-833.92 628.5,-833.92 628.5,-803.92 778.5,-803.92 778.5,-833.92"/>
 <text text-anchor="start" x="636.5" y="-821.92" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::matrix::LowerMatrix</text>
 <text text-anchor="middle" x="703.5" y="-810.92" font-family="Helvetica,sans-Serif" font-size="10.00">MediumLevel</text>
@@ -750,233 +888,326 @@
 </g>
 </g>
 <!-- Node39&#45;&gt;Node40 -->
-<g id="edge39" class="edge">
+<g id="edge39_Node000039_Node000040" class="edge">
 <title>Node39&#45;&gt;Node40</title>
+<g id="a_edge39_Node000039_Node000040"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M595.66,-818.92C606.63,-818.92 617.75,-818.92 628.46,-818.92"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="595.64,-815.42 585.64,-818.92 595.64,-822.42 595.64,-815.42"/>
+</a>
+</g>
 </g>
 <!-- Node42 -->
-<g id="node42" class="node">
+<g id="Node000042" class="node">
 <title>Node42</title>
-<g id="a_node42"><a xlink:href="classthorin_1_1mem_1_1Alloc2Malloc.html" target="_top" xlink:title=" ">
+<g id="a_Node000042"><a xlink:href="classthorin_1_1mem_1_1Alloc2Malloc.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="776,-654.42 631,-654.42 631,-635.42 776,-635.42 776,-654.42"/>
 <text text-anchor="middle" x="703.5" y="-642.42" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::mem::Alloc2Malloc</text>
 </a>
 </g>
 </g>
 <!-- Node41&#45;&gt;Node42 -->
-<g id="edge41" class="edge">
+<g id="edge41_Node000041_Node000042" class="edge">
 <title>Node41&#45;&gt;Node42</title>
+<g id="a_edge41_Node000041_Node000042"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M598.24,-644.92C609.22,-644.92 620.31,-644.92 630.94,-644.92"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="598.2,-641.42 588.2,-644.92 598.2,-648.42 598.2,-641.42"/>
+</a>
+</g>
 </g>
 <!-- Node53&#45;&gt;Node2 -->
-<g id="edge49" class="edge">
+<g id="edge49_Node000053_Node000002" class="edge">
 <title>Node53&#45;&gt;Node2</title>
+<g id="a_edge49_Node000053_Node000002"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M177.5,-947.15C181.69,-1022.63 200.34,-1286.27 259,-1340.92 302.14,-1381.1 369.61,-1387.06 422.84,-1383.97"/>
 <polygon fill="orange" stroke="orange" points="180.98,-946.51 176.95,-936.71 173.98,-946.88 180.98,-946.51"/>
-<text text-anchor="middle" x="331.5" y="-1386.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; DebugDump, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-1386.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; DebugDump, Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node4 -->
-<g id="edge50" class="edge">
+<g id="edge50_Node000053_Node000004" class="edge">
 <title>Node53&#45;&gt;Node4</title>
+<g id="a_edge50_Node000053_Node000004"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M195.4,-943.15C211.35,-956.03 235.32,-973.55 259,-983.92 314.61,-1008.27 382.21,-1022.4 432.3,-1030.23"/>
 <polygon fill="orange" stroke="orange" points="197.35,-940.22 187.41,-936.54 192.89,-945.61 197.35,-940.22"/>
-<text text-anchor="middle" x="331.5" y="-1027.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; BetaRed, Def &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-1027.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; BetaRed, Def &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node5 -->
-<g id="edge51" class="edge">
+<g id="edge51_Node000053_Node000005" class="edge">
 <title>Node53&#45;&gt;Node5</title>
+<g id="a_edge51_Node000053_Node000005"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M176.96,-946.74C179.29,-1028.11 192.43,-1335.17 259,-1398.92 305.39,-1443.35 381.34,-1446.75 436.4,-1441.92"/>
 <polygon fill="orange" stroke="orange" points="180.45,-946.33 176.69,-936.43 173.46,-946.52 180.45,-946.33"/>
-<text text-anchor="middle" x="331.5" y="-1445.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; EtaExp, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-1445.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; EtaExp, Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node6 -->
-<g id="edge52" class="edge">
+<g id="edge52_Node000053_Node000006" class="edge">
 <title>Node53&#45;&gt;Node6</title>
+<g id="a_edge52_Node000053_Node000006"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M184.94,-946.09C197.3,-971.78 222.84,-1016.81 259,-1039.92 312.09,-1073.85 383.8,-1085.05 435.92,-1088.39"/>
 <polygon fill="orange" stroke="orange" points="187.97,-944.29 180.59,-936.68 181.61,-947.23 187.97,-944.29"/>
-<text text-anchor="middle" x="331.5" y="-1086.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; EtaRed, Def &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-1086.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; EtaRed, Def &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node7 -->
-<g id="edge53" class="edge">
+<g id="edge53_Node000053_Node000007" class="edge">
 <title>Node53&#45;&gt;Node7</title>
+<g id="a_edge53_Node000053_Node000007"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M251.36,-921.24C253.93,-921.12 256.49,-921.01 259,-920.92 323.4,-918.58 339.67,-917.07 404,-920.92 412.73,-921.44 421.86,-922.22 430.91,-923.13"/>
 <polygon fill="orange" stroke="orange" points="251.13,-917.74 241.33,-921.76 251.49,-924.73 251.13,-917.74"/>
-<text text-anchor="middle" x="331.5" y="-923.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; LamSpec, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-923.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; LamSpec, Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node9 -->
-<g id="edge54" class="edge">
+<g id="edge54_Node000053_Node000009" class="edge">
 <title>Node53&#45;&gt;Node9</title>
+<g id="a_edge54_Node000053_Node000009"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M177.42,-946.66C182.73,-1057.19 211,-1596.42 259,-1650.92 281.61,-1676.59 367.89,-1693.28 431.69,-1702.38"/>
 <polygon fill="orange" stroke="orange" points="180.91,-946.4 176.94,-936.57 173.92,-946.73 180.91,-946.4"/>
-<text text-anchor="middle" x="331.5" y="-1699.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; RetWrap, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-1699.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; RetWrap, Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node11 -->
-<g id="edge55" class="edge">
+<g id="edge55_Node000053_Node000011" class="edge">
 <title>Node53&#45;&gt;Node11</title>
+<g id="a_edge55_Node000053_Node000011"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M177.18,-946.8C179.89,-992.16 193.26,-1103.61 259,-1158.92 306.3,-1198.72 377.38,-1207.13 430.82,-1206.81"/>
 <polygon fill="orange" stroke="orange" points="180.68,-946.59 176.7,-936.77 173.69,-946.93 180.68,-946.59"/>
-<text text-anchor="middle" x="331.5" y="-1208.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; Scalerize, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-1208.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; Scalerize, Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node13 -->
-<g id="edge56" class="edge">
+<g id="edge56_Node000053_Node000013" class="edge">
 <title>Node53&#45;&gt;Node13</title>
+<g id="a_edge56_Node000053_Node000013"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M236.21,-938.41C289.48,-948.65 367.8,-963.72 426,-974.91"/>
 <polygon fill="orange" stroke="orange" points="236.72,-934.94 226.24,-936.49 235.4,-941.81 236.72,-934.94"/>
-<text text-anchor="middle" x="331.5" y="-971.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; TailRecElim, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-971.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; TailRecElim, Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node14 -->
-<g id="edge57" class="edge">
+<g id="edge57_Node000053_Node000014" class="edge">
 <title>Node53&#45;&gt;Node14</title>
+<g id="a_edge57_Node000053_Node000014"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M177.23,-946.81C181.64,-1063.03 206.49,-1651.17 259,-1709.92 301.45,-1757.41 375.36,-1768.26 430.93,-1768.84"/>
 <polygon fill="orange" stroke="orange" points="180.71,-946.41 176.84,-936.54 173.72,-946.67 180.71,-946.41"/>
-<text text-anchor="middle" x="331.5" y="-1769.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; LowerFor, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-1769.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; LowerFor, Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node16 -->
-<g id="edge58" class="edge">
+<g id="edge58_Node000053_Node000016" class="edge">
 <title>Node53&#45;&gt;Node16</title>
+<g id="a_edge58_Node000053_Node000016"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M176.07,-946.74C174.32,-1046.43 171.54,-1492.24 259,-1590.92 282.08,-1616.96 370.75,-1634.16 434.78,-1643.47"/>
 <polygon fill="orange" stroke="orange" points="179.57,-946.63 176.27,-936.57 172.57,-946.5 179.57,-946.63"/>
-<text text-anchor="middle" x="331.5" y="-1640.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; AutoDiffEval, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-1640.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; AutoDiffEval, Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node18 -->
-<g id="edge59" class="edge">
+<g id="edge59_Node000053_Node000018" class="edge">
 <title>Node53&#45;&gt;Node18</title>
+<g id="a_edge59_Node000053_Node000018"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M179.88,-946.52C187.23,-982.86 208.29,-1060.48 259,-1098.92 309.24,-1137.01 381.87,-1145.64 435,-1146.02"/>
 <polygon fill="orange" stroke="orange" points="183.31,-945.83 178.02,-936.66 176.43,-947.13 183.31,-945.83"/>
-<text text-anchor="middle" x="331.5" y="-1146.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; AutoDiffZero, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-1146.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; AutoDiffZero, Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node20 -->
-<g id="edge60" class="edge">
+<g id="edge60_Node000053_Node000020" class="edge">
 <title>Node53&#45;&gt;Node20</title>
+<g id="a_edge60_Node000053_Node000020"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M176.48,-946.97C176.79,-1039.8 182.71,-1426.91 259,-1513.92 282.1,-1540.26 370.76,-1560.08 434.79,-1571.34"/>
 <polygon fill="orange" stroke="orange" points="179.98,-946.72 176.46,-936.72 172.98,-946.73 179.98,-946.72"/>
-<text text-anchor="start" x="271.5" y="-1578.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; AutoDiffZeroCleanup,</text>
-<text text-anchor="middle" x="331.5" y="-1567.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="start" x="271.5" y="-1578.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; AutoDiffZeroCleanup,</text>
+<text text-anchor="middle" x="331.5" y="-1567.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node22 -->
-<g id="edge61" class="edge">
+<g id="edge61_Node000053_Node000022" class="edge">
 <title>Node53&#45;&gt;Node22</title>
+<g id="a_edge61_Node000053_Node000022"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M178.22,-946.83C184.5,-1014.78 208.54,-1235.83 259,-1281.92 303.79,-1322.83 373.74,-1328.94 427.45,-1326.21"/>
 <polygon fill="orange" stroke="orange" points="181.68,-946.29 177.3,-936.64 174.71,-946.91 181.68,-946.29"/>
-<text text-anchor="middle" x="331.5" y="-1328.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; BranchClosElim, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-1328.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; BranchClosElim, Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node24 -->
-<g id="edge62" class="edge">
+<g id="edge62_Node000053_Node000024" class="edge">
 <title>Node53&#45;&gt;Node24</title>
+<g id="a_edge62_Node000053_Node000024"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M179.21,-946.42C187.88,-1005.95 216.9,-1183.58 259,-1220.92 305.37,-1262.05 377.09,-1268.93 430.98,-1267.08"/>
 <polygon fill="orange" stroke="orange" points="182.66,-945.85 177.79,-936.45 175.73,-946.84 182.66,-945.85"/>
-<text text-anchor="middle" x="331.5" y="-1269.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; Clos2SJLJ, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-1269.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; Clos2SJLJ, Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node26 -->
-<g id="edge63" class="edge">
+<g id="edge63_Node000053_Node000026" class="edge">
 <title>Node53&#45;&gt;Node26</title>
+<g id="a_edge63_Node000053_Node000026"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M177.25,-907.04C181.72,-793.32 206.5,-228.39 259,-173.92 302.71,-128.57 376.63,-123.34 431.86,-127.15"/>
 <polygon fill="orange" stroke="orange" points="173.74,-907.25 176.85,-917.37 180.73,-907.52 173.74,-907.25"/>
-<text text-anchor="middle" x="331.5" y="-176.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; ClosConvPrep, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-176.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; ClosConvPrep, Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node28 -->
-<g id="edge64" class="edge">
+<g id="edge64_Node000053_Node000028" class="edge">
 <title>Node53&#45;&gt;Node28</title>
+<g id="a_edge64_Node000053_Node000028"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M183.2,-907.51C194.21,-878.68 219,-825.03 259,-797.92 308.03,-764.69 374.59,-753.55 425.96,-750.38"/>
 <polygon fill="orange" stroke="orange" points="179.79,-906.65 179.65,-917.24 186.36,-909.05 179.79,-906.65"/>
-<text text-anchor="start" x="272.5" y="-811.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; LowerTypedClosPrep,</text>
-<text text-anchor="middle" x="331.5" y="-800.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="start" x="272.5" y="-811.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; LowerTypedClosPrep,</text>
+<text text-anchor="middle" x="331.5" y="-800.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node29 -->
-<g id="edge65" class="edge">
+<g id="edge65_Node000053_Node000029" class="edge">
 <title>Node53&#45;&gt;Node29</title>
+<g id="a_edge65_Node000053_Node000029"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M178.42,-906.79C185.36,-838.06 211.29,-614.12 259,-562.92 301.71,-517.09 371.7,-499.29 425.96,-492.55"/>
 <polygon fill="orange" stroke="orange" points="174.9,-906.8 177.4,-917.1 181.87,-907.49 174.9,-906.8"/>
-<text text-anchor="middle" x="331.5" y="-565.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; DebugPrint, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-565.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; DebugPrint, Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node31 -->
-<g id="edge66" class="edge">
+<g id="edge66_Node000053_Node000031" class="edge">
 <title>Node53&#45;&gt;Node31</title>
+<g id="a_edge66_Node000053_Node000031"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M177.67,-907.1C183.92,-804.72 214.66,-338.81 259,-293.92 304.22,-248.14 380.37,-243.95 435.79,-248.35"/>
 <polygon fill="orange" stroke="orange" points="174.17,-907.08 177.06,-917.27 181.16,-907.5 174.17,-907.08"/>
-<text text-anchor="start" x="284" y="-307.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; InternalCleanup,</text>
-<text text-anchor="middle" x="331.5" y="-296.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="start" x="284" y="-307.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; InternalCleanup,</text>
+<text text-anchor="middle" x="331.5" y="-296.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node33 -->
-<g id="edge67" class="edge">
+<g id="edge67_Node000053_Node000033" class="edge">
 <title>Node53&#45;&gt;Node33</title>
+<g id="a_edge67_Node000053_Node000033"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M178.99,-907C187.13,-845.34 214.94,-659.46 259,-620.92 306.3,-579.54 379.7,-575.04 433.83,-578.77"/>
 <polygon fill="orange" stroke="orange" points="175.47,-906.93 177.67,-917.3 182.41,-907.83 175.47,-906.93"/>
-<text text-anchor="middle" x="331.5" y="-623.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; CPS2DS, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-623.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; CPS2DS, Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node35 -->
-<g id="edge68" class="edge">
+<g id="edge68_Node000053_Node000035" class="edge">
 <title>Node53&#45;&gt;Node35</title>
+<g id="a_edge68_Node000053_Node000035"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M177.41,-907.24C182.61,-799.31 209.94,-282.16 259,-232.92 303.77,-187.99 378.66,-184.99 433.88,-190.44"/>
 <polygon fill="orange" stroke="orange" points="173.91,-907.21 176.93,-917.37 180.9,-907.55 173.91,-907.21"/>
-<text text-anchor="middle" x="331.5" y="-235.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; DS2CPS, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-235.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; DS2CPS, Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node37 -->
-<g id="edge69" class="edge">
+<g id="edge69_Node000053_Node000037" class="edge">
 <title>Node53&#45;&gt;Node37</title>
+<g id="a_edge69_Node000053_Node000037"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M177.08,-907.04C180.73,-787.01 202.42,-162.1 259,-100.92 300.15,-56.42 369.75,-47.47 424.27,-48.48"/>
 <polygon fill="orange" stroke="orange" points="173.57,-907.21 176.77,-917.31 180.57,-907.42 173.57,-907.21"/>
-<text text-anchor="start" x="259" y="-114.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; LowerMatrixHighLevelMap</text>
-<text text-anchor="middle" x="331.5" y="-103.92" font-family="Helvetica,sans-Serif" font-size="10.00">Red, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="start" x="259" y="-114.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; LowerMatrixHighLevelMap</text>
+<text text-anchor="middle" x="331.5" y="-103.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">Red, Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node39 -->
-<g id="edge70" class="edge">
+<g id="edge70_Node000053_Node000039" class="edge">
 <title>Node53&#45;&gt;Node39</title>
+<g id="a_edge70_Node000053_Node000039"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M192.22,-909.86C207.65,-894.25 232.65,-871.81 259,-859.92 311.08,-836.41 374.88,-826.26 424.32,-821.93"/>
 <polygon fill="orange" stroke="orange" points="189.46,-907.68 185.06,-917.31 194.51,-912.52 189.46,-907.68"/>
-<text text-anchor="start" x="259" y="-873.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; LowerMatrixMediumLevel,</text>
-<text text-anchor="middle" x="331.5" y="-862.92" font-family="Helvetica,sans-Serif" font-size="10.00"> Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="start" x="259" y="-873.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; LowerMatrixMediumLevel,</text>
+<text text-anchor="middle" x="331.5" y="-862.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node41 -->
-<g id="edge71" class="edge">
+<g id="edge71_Node000053_Node000041" class="edge">
 <title>Node53&#45;&gt;Node41</title>
+<g id="a_edge71_Node000053_Node000041"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M176.53,-907.18C177.78,-859.54 188.1,-737.89 259,-678.92 303.74,-641.71 369.75,-634.37 421.99,-635.7"/>
 <polygon fill="orange" stroke="orange" points="173.03,-907.32 176.38,-917.37 180.03,-907.43 173.03,-907.32"/>
-<text text-anchor="middle" x="331.5" y="-681.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; Alloc2Malloc, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-681.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; Alloc2Malloc, Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node43 -->
-<g id="edge72" class="edge">
+<g id="edge72_Node000053_Node000043" class="edge">
 <title>Node53&#45;&gt;Node43</title>
+<g id="a_edge72_Node000053_Node000043"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M176.68,-946.8C177.89,-1034.1 187.2,-1382.35 259,-1457.92 282.12,-1482.25 366.57,-1495.79 429.9,-1502.7"/>
 <polygon fill="orange" stroke="orange" points="180.18,-946.63 176.56,-936.67 173.18,-946.71 180.18,-946.63"/>
-<text text-anchor="middle" x="331.5" y="-1501.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; CopyProp, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-1501.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; CopyProp, Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node44 -->
-<g id="edge73" class="edge">
+<g id="edge73_Node000053_Node000044" class="edge">
 <title>Node53&#45;&gt;Node44</title>
+<g id="a_edge73_Node000053_Node000044"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M176.44,-907.1C176.57,-816.19 181.83,-439.99 259,-358.92 281.23,-335.57 360.34,-323.15 422.73,-316.84"/>
 <polygon fill="orange" stroke="orange" points="172.94,-907.37 176.44,-917.36 179.94,-907.36 172.94,-907.37"/>
-<text text-anchor="middle" x="331.5" y="-361.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; RememElim, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-361.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; RememElim, Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node46 -->
-<g id="edge74" class="edge">
+<g id="edge74_Node000053_Node000046" class="edge">
 <title>Node53&#45;&gt;Node46</title>
+<g id="a_edge74_Node000053_Node000046"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M214.16,-914.3C228.11,-910.07 244.14,-905.72 259,-902.92 316.6,-892.06 382.86,-886.52 431.94,-883.72"/>
 <polygon fill="orange" stroke="orange" points="212.93,-911.01 204.43,-917.33 215.02,-917.7 212.93,-911.01"/>
-<text text-anchor="middle" x="331.5" y="-905.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; Reshape, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-905.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; Reshape, Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node48 -->
-<g id="edge75" class="edge">
+<g id="edge75_Node000053_Node000048" class="edge">
 <title>Node53&#45;&gt;Node48</title>
+<g id="a_edge75_Node000053_Node000048"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M176.89,-907.18C178.99,-822.72 191.45,-492.74 259,-419.92 281.69,-395.46 364.29,-379.21 427.37,-370.06"/>
 <polygon fill="orange" stroke="orange" points="173.39,-907.14 176.67,-917.22 180.39,-907.3 173.39,-907.14"/>
-<text text-anchor="middle" x="331.5" y="-422.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; SSAConstr, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-422.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; SSAConstr, Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node49 -->
-<g id="edge76" class="edge">
+<g id="edge76_Node000053_Node000049" class="edge">
 <title>Node53&#45;&gt;Node49</title>
+<g id="a_edge76_Node000053_Node000049"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M178.83,-907.09C184.6,-867.7 203.36,-779.71 259,-736.92 305.63,-701.06 372.36,-692.95 424.4,-693.18"/>
 <polygon fill="orange" stroke="orange" points="175.36,-906.67 177.51,-917.04 182.3,-907.59 175.36,-906.67"/>
-<text text-anchor="middle" x="331.5" y="-739.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; RemoveDbgPerm, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-739.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; RemoveDbgPerm, Lam &gt;</text>
 </g>
 <!-- Node53&#45;&gt;Node51 -->
-<g id="edge77" class="edge">
+<g id="edge77_Node000053_Node000051" class="edge">
 <title>Node53&#45;&gt;Node51</title>
+<g id="a_edge77_Node000053_Node000051"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M177.49,-907.01C181.75,-829.11 201.04,-546.14 259,-481.92 271.4,-468.18 371.88,-441.72 440.25,-424.99"/>
 <polygon fill="orange" stroke="orange" points="173.98,-907.16 176.95,-917.33 180.97,-907.52 173.98,-907.16"/>
-<text text-anchor="middle" x="331.5" y="-484.92" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; LowerRegex, Lam &gt;</text>
+</a>
+</g>
+<text text-anchor="middle" x="331.5" y="-484.92" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; LowerRegex, Lam &gt;</text>
 </g>
 </g>
 </svg>
