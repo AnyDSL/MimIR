@@ -54,7 +54,7 @@ template<class To> using DefMap = GIDMap<const Def*, To>;
 using DefSet                    = GIDSet<const Def*>;
 using Def2Def                   = DefMap<const Def*>;
 using Defs                      = View<const Def*>;
-using DefVec                    = absl::InlinedVector<const Def*, 4>;
+using DefVec                    = Vector<const Def*>;
 ///@}
 
 /// @name Def (Mutable)
