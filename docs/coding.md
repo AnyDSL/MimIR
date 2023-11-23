@@ -180,17 +180,17 @@ In addition, you may find it helpful to turn assertion failures into debugger br
 
 ## Third-Party Plugins
 
-After installing Thorin, third-party plugins just need to find the `thorin` package:
+After installing Thorin, third-party plugins just need to find the `thorin` package to use your plugin `foo`:
 ```cmake
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
-project(plugin)
+project(foo)
 
 find_package(thorin)
 
-add_thorin_plugin(plugin
+add_thorin_plugin(foo
     SOURCES
-        dialect/plugin.h
-        dialect/plugin.cpp
+        thorin/plug/foo/foo.h
+        thorin/plug/foo/foo.cpp
 )
 ```
 Use
