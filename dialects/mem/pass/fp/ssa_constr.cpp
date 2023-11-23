@@ -124,7 +124,7 @@ Ref SSAConstr::mem2phi(const App* app, Lam* mem_lam) {
         }
         auto traxy = proxy(phi_lam->var()->type(), traxy_ops, Traxy);
 
-        auto new_vars = vector<const Def*>(num_mem_vars, [&](size_t i) { return traxy->proj(i); });
+        auto new_vars = DefVec(num_mem_vars, [&](size_t i) { return traxy->proj(i); });
         phi_lam->set(mem_lam->reduce(world().tuple(mem_lam->dom(), new_vars)));
     } else {
         world().DLOG("reuse phi_lam '{}'", phi_lam);
@@ -133,7 +133,7 @@ Ref SSAConstr::mem2phi(const App* app, Lam* mem_lam) {
     world().DLOG("mem_lam => phi_lam: '{}': '{}' => '{}': '{}'", mem_lam, mem_lam->type()->dom(), phi_lam,
                  phi_lam->dom());
     auto sloxy = sloxys.begin();
-    auto args  = vector<const Def*>(num_phis, [&](auto) { return get_val(curr_mut(), *sloxy++); });
+    auto args  = DefVec(num_phis, [&](auto) { return get_val(curr_mut(), *sloxy++); });
     return world().app(phi_lam, merge_tuple(app->arg(), args));
 }
 

@@ -136,7 +136,7 @@ Ref AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
     auto aug_ops = tup->projs([&](Ref op) -> const Def* { return augment(op, f, f_diff); });
     auto aug_tup = world.tuple(aug_ops);
 
-    auto pbs = vector<const Def*>(Defs(aug_ops), [&](Ref op) { return partial_pullback[op]; });
+    auto pbs = DefVec(Defs(aug_ops), [&](Ref op) { return partial_pullback[op]; });
     world.DLOG("tuple pbs {,}", pbs);
     // shadow pb = tuple of pbs
     auto shadow_pb           = world.tuple(pbs);
@@ -155,7 +155,7 @@ Ref AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
 
     auto pb_tangent = pb->var(0_s)->set("tup_s");
 
-    auto tangents = vector<const Def*>(
+    auto tangents = DefVec(
         pbs.size(), [&](nat_t i) { return world.app(direct::op_cps2ds_dep(pbs[i]), world.extract(pb_tangent, i)); });
     pb->app(true, pb->var(1),
             // summed up tangents

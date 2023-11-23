@@ -136,7 +136,7 @@ public:
     const CFNode* entry() const { return forward ? cfa().entry() : cfa().exit(); }
     const CFNode* exit() const { return forward ? cfa().exit() : cfa().entry(); }
 
-    View<const CFNode*> reverse_post_order() const { return rpo_.array(); }
+    auto reverse_post_order() const { return rpo_.array().view(); }
     auto post_order() const { return std::views::reverse(rpo_.array()); }
     /// Maps from reverse post-order index to CFNode.
     const CFNode* reverse_post_order(size_t i) const { return rpo_.array()[i]; }

@@ -32,7 +32,7 @@ std::array<Ref, 3> split(Ref def) {
 
 Ref rebuild(Ref mem, Ref env, Defs remaining) {
     auto& w      = mem->world();
-    auto new_ops = vector<const Def*>(remaining.size() + 2, [&](auto i) -> const Def* {
+    auto new_ops = DefVec(remaining.size() + 2, [&](auto i) -> const Def* {
         static_assert(Clos_Env_Param == 1);
         if (i == 0) return mem;
         if (i == 1) return env;
@@ -145,11 +145,10 @@ void Clos2SJLJ::enter() {
     auto branch_type = clos_type(w.cn(w.annex<mem::M>()));
     auto branches    = DefVec(lam2tag_.size() + 1);
     {
-        auto env             = w.tuple(View<const Def*>(body->args()).subspan(1));
+        auto env             = w.tuple(body->args().view().subspan(1));
         auto new_callee      = w.mut_lam(w.cn({w.annex<mem::M>(), env->type()}))->set("sjlj_wrap");
         auto [m, env_var, _] = split(new_callee->var());
-        auto new_args        = vector<const Def*>(env->num_projs() + 1,
-                                           [&](auto i) -> const Def* { return (i == 0) ? *m : env_var->proj(i - 1); });
+        auto new_args = DefVec(env->num_projs() + 1, [&](size_t i) { return (i == 0) ? *m : env_var->proj(i - 1); });
         new_callee->app(false, body->callee(), new_args);
         branches[0] = clos_pack(env, new_callee, branch_type);
     }

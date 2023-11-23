@@ -69,7 +69,7 @@ Ref CopyProp::rewrite(Ref def) {
         if (eta_exp_) eta_exp_->new2old(prop_lam, var_lam);
 
         size_t j      = 0;
-        auto new_vars = vector<const Def*>(n, [&, prop_lam = prop_lam](size_t i) -> Ref {
+        auto new_vars = DefVec(n, [&, prop_lam = prop_lam](size_t i) -> Ref {
             switch (lattice[i]) {
                 case Lattice::Dead: return proxy(var_lam->var(n, i)->type(), {var_lam, world().lit_nat(i)}, Varxy);
                 case Lattice::Prop: return args[i];

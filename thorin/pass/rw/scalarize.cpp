@@ -42,8 +42,8 @@ Lam* Scalerize::make_scalar(Ref def) {
     if (eta_exp_) eta_exp_->new2old(sca_lam, tup_lam);
     size_t n = 0;
     world().DLOG("type {} ~> {}", tup_lam->type(), pi);
-    auto new_vars = world().tuple(vector<const Def*>(tup_lam->num_doms(), [&](auto i) {
-        auto tuple = vector<const Def*>(arg_sz.at(i), [&](auto) { return sca_lam->var(n++); });
+    auto new_vars = world().tuple(DefVec(tup_lam->num_doms(), [&](auto i) {
+        auto tuple = DefVec(arg_sz.at(i), [&](auto) { return sca_lam->var(n++); });
         return unflatten(tuple, tup_lam->dom(i), false);
     }));
     sca_lam->set(tup_lam->reduce(new_vars));
@@ -66,9 +66,8 @@ Ref Scalerize::rewrite(Ref def) {
             if (tuple && std::all_of(tuple->ops().begin(), tuple->ops().end(), [&](Ref op) {
                     return should_expand(op->isa_mut<Lam>());
                 })) {
-                auto new_tuple
-                    = w.tuple(vector<const Def*>(tuple->num_ops(), [&](auto i) { return make_scalar(tuple->op(i)); }));
-                sca_callee = w.extract(new_tuple, proj->index());
+                auto new_tuple = w.tuple(DefVec(tuple->num_ops(), [&](auto i) { return make_scalar(tuple->op(i)); }));
+                sca_callee     = w.extract(new_tuple, proj->index());
                 w.DLOG("Expand tuple: {, } ~> {, }", tuple->ops(), new_tuple->ops());
             }
         }

@@ -1,7 +1,9 @@
 #include "dialects/direct/pass/cps2ds.h"
 
 #include <iostream>
+#include <type_traits>
 
+#include <bits/ranges_base.h>
 #include <thorin/lam.h>
 
 #include "dialects/direct/autogen.h"
@@ -130,11 +132,11 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
     if (def->isa<Var>()) return def;
 
     if (auto tuple = def->isa<Tuple>()) {
-        auto elements = vector<const Def*>(tuple->ops(), [&](auto op) { return rewrite_body(op); });
+        auto elements = DefVec(tuple->ops(), [&](const Def* op) { return rewrite_body(op); });
         return world().tuple(def->type(), elements)->set(tuple->dbg());
     }
 
-    auto new_ops = vector<const Def*>(def->ops(), [&](auto op) { return rewrite_body(op); });
+    auto new_ops = DefVec(def->ops(), [&](const Def* op) { return rewrite_body(op); });
     world().DLOG("def {} : {} [{}]", def, def->type(), def->node_name());
 
     if (def->isa<Infer>()) {

@@ -35,12 +35,10 @@ public:
         : Base(std::begin(init), std::ranges::distance(init)) {}
     constexpr Span(std::span<T, N> span) noexcept
         : Base(span) {}
-    template<Vectorlike Vec>
-    requires(std::is_same_v<typename Vec::value_type, T>)
+    template<Vectorlike Vec> requires(std::is_same_v<typename Vec::value_type, T>)
     explicit(N != std::dynamic_extent) constexpr Span(Vec& vec)
         : Base(vec.data(), vec.size()) {}
-    template<Vectorlike Vec>
-    requires(std::is_same_v<std::add_const_t<typename Vec::value_type>, std::add_const_t<T>>)
+    template<Vectorlike Vec> requires(std::is_same_v<std::add_const_t<typename Vec::value_type>, std::add_const_t<T>>)
     explicit(N != std::dynamic_extent) constexpr Span(const Vec& vec)
         : Base(vec.data(), vec.size()) {}
     constexpr explicit Span(typename Base::pointer p)
@@ -82,9 +80,9 @@ public:
             return Span<T, std::dynamic_extent>(Base::data(), Base::size() - i);
     }
     ///@}
-
-    friend void swap(Span& s1, Span& s2) { s1.swap(s2); }
 };
+
+static_assert(std::ranges::contiguous_range<Span<int>>);
 
 template<class T, size_t N = std::dynamic_extent> using View = Span<const T, N>;
 

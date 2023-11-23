@@ -11,7 +11,7 @@ Ref TailRecElim::rewrite(Ref def) {
             auto [rec, loop] = i->second;
             auto args        = app->args();
             if (auto ret_var = rec->ret_var(); app->args().back() == ret_var)
-                return world().app(loop, Span(args).rsubspan(1));
+                return world().app(loop, args.view().rsubspan(1));
             else
                 return world().app(rec, args);
         }
@@ -27,7 +27,7 @@ undo_t TailRecElim::analyze(Ref def) {
                 auto& [rec, loop] = i->second;
                 rec               = old->stub(world(), old->type());
                 auto doms         = rec->doms();
-                auto loop_dom     = Span(doms).rsubspan(1);
+                auto loop_dom     = doms.view().rsubspan(1);
                 loop              = rec->stub(world(), world().cn(loop_dom));
                 world().DLOG("old {} -> (rec: {}, loop: {})", old, rec, loop);
 

@@ -124,7 +124,7 @@ const Def* autodiff_type_fun(const Def* ty) {
     }
     if (auto sig = ty->isa<Sigma>()) {
         // TODO: mut sigma
-        auto ops = vector<const Def*>(sig->ops(), [&](const Def* op) { return autodiff_type_fun(op); });
+        auto ops = DefVec(sig->ops(), [&](const Def* op) { return autodiff_type_fun(op); });
         world.DLOG("ops: {,}", ops);
         return world.sigma(ops);
     }
@@ -153,7 +153,7 @@ const Def* zero_def(const Def* T) {
         world.DLOG("zero_def for int is {}", zero);
         return zero;
     } else if (auto sig = T->isa<Sigma>()) {
-        auto ops = vector<const Def*>(sig->ops(), [&](const Def* op) { return world.app(world.annex<zero>(), op); });
+        auto ops = DefVec(sig->ops(), [&](const Def* op) { return world.app(world.annex<zero>(), op); });
         return world.tuple(ops);
     }
 

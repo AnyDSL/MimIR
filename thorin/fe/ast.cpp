@@ -38,7 +38,7 @@ const Def* TuplePtrn::type(World& world, Def2Fields& def2fields) const {
     if (type_) return type_;
 
     auto n   = num_ptrns();
-    auto ops = vector<const Def*>(n, [&](size_t i) { return ptrn(i)->type(world, def2fields); });
+    auto ops = DefVec(n, [&](size_t i) { return ptrn(i)->type(world, def2fields); });
 
     if (std::ranges::all_of(ptrns_, [](auto&& b) { return b->is_anonymous(); })) {
         if (decl_) return type_ = decl_->set(ops);
@@ -67,7 +67,7 @@ const Def* TuplePtrn::type(World& world, Def2Fields& def2fields) const {
         sigma = world.mut_sigma(type, n)->set(loc(), sym());
     }
 
-    assert_emplace(def2fields, sigma, vector<Sym>(n, [this](size_t i) { return ptrn(i)->sym(); }));
+    assert_emplace(def2fields, sigma, Vector<Sym>(n, [this](size_t i) { return ptrn(i)->sym(); }));
 
     sigma->set(0, ops[0]);
     for (size_t i = 1; i != n; ++i) {

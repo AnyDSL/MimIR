@@ -106,7 +106,7 @@ Ref PassMan::rewrite(Ref old_def) {
     }
 
     auto new_type = old_def->type() ? rewrite(old_def->type()) : nullptr;
-    auto new_ops  = absl::FixedArray<const Def*>(old_def->num_ops());
+    auto new_ops  = Vector<const Def*>(old_def->num_ops());
     for (size_t i = 0, e = old_def->num_ops(); i != e; ++i) new_ops[i] = rewrite(old_def->op(i));
     auto new_def = old_def->rebuild(world(), new_type, new_ops);
 

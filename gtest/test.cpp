@@ -115,7 +115,7 @@ TEST(Axiom, curry) {
     Driver driver;
     World& w = driver.world();
 
-    auto n   = vector<const Def*>(11, [&w](size_t i) { return w.lit_nat(i); });
+    auto n   = DefVec(11, [&w](size_t i) { return w.lit_nat(i); });
     auto nat = w.type_nat();
 
     {

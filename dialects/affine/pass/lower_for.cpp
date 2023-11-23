@@ -43,7 +43,7 @@ Ref LowerFor::rewrite(Ref def) {
         auto head_lam  = world().mut_lam(world().cn(merge_s(world(), begin->type(), init->type(), mem)))->set("head");
         auto phis      = head_lam->vars();
         auto iter      = phis.front();
-        auto acc       = world().tuple(Span(phis).subspan(1));
+        auto acc       = world().tuple(phis.view().subspan(1));
         mem            = mem::mem_var(head_lam);
         auto bb_type   = world().cn(mem ? mem->type() : world().sigma());
         auto new_body  = world().mut_lam(bb_type)->set("new_body");

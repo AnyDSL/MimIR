@@ -168,7 +168,7 @@ const Def* Arr::immutabilize() {
     auto& w = world();
     if (auto n = Lit::isa(shape())) {
         if (Scope::is_free(this, body()))
-            return w.sigma(vector<const Def*>(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
+            return w.sigma(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
         return w.arr(shape(), body());
     }
     return nullptr;
@@ -178,7 +178,7 @@ const Def* Pack::immutabilize() {
     auto& w = world();
     if (auto n = Lit::isa(shape())) {
         if (Scope::is_free(this, body()))
-            return w.tuple(vector<const Def*>(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
+            return w.tuple(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
         return w.pack(shape(), body());
     }
     return nullptr;

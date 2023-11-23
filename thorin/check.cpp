@@ -47,7 +47,7 @@ const Def* Infer::find(const Def* def) {
         auto new_type = Ref::refer(res->type());
         bool update   = new_type != res->type();
 
-        auto new_ops = vector<const Def*>(res->num_ops(), [res, &update](size_t i) {
+        auto new_ops = DefVec(res->num_ops(), [res, &update](size_t i) {
             auto r = Ref::refer(res->op(i));
             update |= r != res->op(i);
             return r;

@@ -89,12 +89,12 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
         absl::flat_hash_map<u64, Ref> dims;         // idx ↦ nat (size bound = dimension)
         absl::flat_hash_map<u64, Ref> raw_iterator; // idx ↦ I32
         absl::flat_hash_map<u64, Ref> iterator;     // idx ↦ %Idx (S/NI#i)
-        std::vector<u64> out_indices;               // output indices 0..n-1
-        std::vector<u64> in_indices;                // input indices ≥ n
+        Vector<u64> out_indices;                    // output indices 0..n-1
+        Vector<u64> in_indices;                     // input indices ≥ n
 
-        std::vector<Ref> output_dims;                    // i<n ↦ nat (dimension S#i)
-        std::vector<std::vector<const Def*>> input_dims; // i<m ↦ j<NI#i ↦ nat (dimension SI#i#j)
-        std::vector<u64> n_input;                        // i<m ↦ nat (number of dimensions of SI#i)
+        Vector<Ref> output_dims;               // i<n ↦ nat (dimension S#i)
+        Vector<Vector<const Def*>> input_dims; // i<m ↦ j<NI#i ↦ nat (dimension SI#i#j)
+        Vector<u64> n_input;                   // i<m ↦ nat (number of dimensions of SI#i)
 
         auto n_lit = n->isa<Lit>();
         auto m_lit = m->isa<Lit>();
@@ -128,7 +128,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
             u64 ni_nat = *ni_lit;
             world.DLOG("  dims({i}) = {}", i, ni_nat);
             auto SI_i = SI->proj(m_nat, i);
-            std::vector<const Def*> input_dims_i;
+            Vector<const Def*> input_dims_i;
             for (u64 j = 0; j < ni_nat; ++j) {
                 auto dim = SI_i->proj(ni_nat, j);
                 world.DLOG("    dim {} {} = {}", i, j, dim);
@@ -271,7 +271,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
         world.DLOG("write_back {} : {}", write_back, write_back->type());
         auto [wb_mem, element_final] = write_back->vars<2>();
 
-        auto output_iterators = vector<const Def*>((size_t)n_nat, [&](u64 i) {
+        auto output_iterators = DefVec((size_t)n_nat, [&](u64 i) {
             auto idx = out_indices[i];
             if (idx != i) world.ELOG("output indices must be consecutive 0..n-1 but {} != {}", idx, i);
             assert(idx == i && "output indices must be consecutive 0..n-1");
@@ -327,7 +327,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
             world.DLOG("input matrix {} is {} : {}", i, input_matrix, input_matrix->type());
 
             auto indices         = input_idx_tup->projs(n_input[i]);
-            auto input_iterators = vector<const Def*>(n_input[i], [&](u64 j) {
+            auto input_iterators = DefVec(n_input[i], [&](u64 j) {
                 auto idx     = indices[j];
                 auto idx_lit = idx->as<Lit>()->get<u64>();
                 world.DLOG("  idx {} {} = {}", i, j, idx_lit);

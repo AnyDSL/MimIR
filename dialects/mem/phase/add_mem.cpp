@@ -41,7 +41,7 @@ template<class F, class H> const Def* rewrite_mut_lam_in_tuple(const Def* def, F
 
     auto extract = def->as<Extract>();
     auto tuple   = extract->tuple()->as<Tuple>();
-    auto new_ops = vector<const Def*>(tuple->ops(), [&](const Def* op) {
+    auto new_ops = DefVec(tuple->ops(), [&](const Def* op) {
         return rewrite_mut_lam_in_tuple(op, std::forward<F>(rewrite), std::forward<H>(rewrite_idx));
     });
     return w.extract(w.tuple(new_ops), rewrite_idx(extract->index()));
@@ -93,7 +93,7 @@ const Def* AddMem::rewrite_type(const Def* type) {
 
     if (auto it = mem_rewritten_.find(type); it != mem_rewritten_.end()) return it->second;
 
-    auto new_ops = vector<const Def*>(type->num_ops(), [&](size_t i) { return rewrite_type(type->op(i)); });
+    auto new_ops                = DefVec(type->num_ops(), [&](size_t i) { return rewrite_type(type->op(i)); });
     return mem_rewritten_[type] = type->rebuild(world(), type->type(), new_ops);
 }
 
@@ -101,10 +101,10 @@ const Def* AddMem::rewrite_pi(const Pi* pi) {
     if (auto it = mem_rewritten_.find(pi); it != mem_rewritten_.end()) return it->second;
 
     auto dom     = pi->dom();
-    auto new_dom = vector<const Def*>(dom->num_projs(), [&](size_t i) { return rewrite_type(dom->proj(i)); });
+    auto new_dom = DefVec(dom->num_projs(), [&](size_t i) { return rewrite_type(dom->proj(i)); });
     if (pi->num_doms() == 0 || !match<mem::M>(pi->dom(0_s))) {
-        new_dom = vector<const Def*>(dom->num_projs() + 1,
-                                     [&](size_t i) { return i == 0 ? world().annex<mem::M>() : new_dom[i - 1]; });
+        new_dom
+            = DefVec(dom->num_projs() + 1, [&](size_t i) { return i == 0 ? world().annex<mem::M>() : new_dom[i - 1]; });
     }
 
     return mem_rewritten_[pi] = world().pi(new_dom, pi->codom());
@@ -262,7 +262,7 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
         return rewritten;
     }
 
-    auto new_ops = vector<const Def*>(def->ops(), [&](const Def* op) {
+    auto new_ops = DefVec(def->ops(), [&](const Def* op) {
         if (match<mem::M>(op->type())) {
             // depth-first, follow the mems
             add_mem_to_lams(place, op);

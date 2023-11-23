@@ -290,11 +290,11 @@ Ref World::extract(Ref d, Ref index) {
     assert(d);
     if (index->isa<Tuple>()) {
         auto n   = index->num_ops();
-        auto idx = vector<const Def*>(n, [&](size_t i) { return index->op(i); });
-        auto ops = vector<const Def*>(n, [&](size_t i) { return d->proj(n, Lit::as(idx[i])); });
+        auto idx = DefVec(n, [&](size_t i) { return index->op(i); });
+        auto ops = DefVec(n, [&](size_t i) { return d->proj(n, Lit::as(idx[i])); });
         return tuple(ops);
     } else if (index->isa<Pack>()) {
-        auto ops = vector<const Def*>(index->as_lit_arity(), [&](size_t) { return extract(d, index->ops().back()); });
+        auto ops = DefVec(index->as_lit_arity(), [&](size_t) { return extract(d, index->ops().back()); });
         return tuple(ops);
     }
 
@@ -398,7 +398,7 @@ Ref World::arr(Ref shape, Ref body) {
     // «(a, b)#i; T» -> («a, T», <b, T»)#i
     if (auto ex = shape->isa<Extract>()) {
         if (auto tup = ex->tuple()->isa<Tuple>()) {
-            auto arrs = vector<const Def*>(tup->num_ops(), [&](size_t i) { return arr(tup->op(i), body); });
+            auto arrs = DefVec(tup->num_ops(), [&](size_t i) { return arr(tup->op(i), body); });
             return extract(tuple(arrs), ex->index());
         }
     }
@@ -463,7 +463,7 @@ const Lit* World::lit(Ref type, u64 val) {
 template<bool Up> Ref World::ext(Ref type) {
     if (auto arr = type->isa<Arr>()) return pack(arr->shape(), ext<Up>(arr->body()));
     if (auto sigma = type->isa<Sigma>())
-        return tuple(sigma, vector<const Def*>(sigma->num_ops(), [&](size_t i) { return ext<Up>(sigma->op(i)); }));
+        return tuple(sigma, DefVec(sigma->num_ops(), [&](size_t i) { return ext<Up>(sigma->op(i)); }));
     return unify<TExt<Up>>(0, type);
 }
 
@@ -493,7 +493,7 @@ template<bool Up> Ref World::bound(Defs ops) {
 
 Ref World::ac(Ref type, Defs ops) {
     if (type->isa<Meet>()) {
-        auto types = vector<const Def*>(ops.size(), [&](size_t i) { return ops[i]->type(); });
+        auto types = DefVec(ops.size(), [&](size_t i) { return ops[i]->type(); });
         return unify<Ac>(ops.size(), meet(types), ops);
     }
 

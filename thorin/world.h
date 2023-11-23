@@ -278,7 +278,7 @@ public:
     Ref arr(Defs shape, Ref body);
     Ref arr(u64 n, Ref body) { return arr(lit_nat(n), body); }
     Ref arr(View<u64> shape, Ref body) {
-        return arr(vector<const Def*>(shape.size(), [&](size_t i) { return lit_nat(shape[i]); }), body);
+        return arr(DefVec(shape.size(), [&](size_t i) { return lit_nat(shape[i]); }), body);
     }
     Ref arr_unsafe(Ref body) { return arr(top_nat(), body); }
     ///@}
@@ -299,7 +299,7 @@ public:
     Ref pack(Defs shape, Ref body);
     Ref pack(u64 n, Ref body) { return pack(lit_nat(n), body); }
     Ref pack(View<u64> shape, Ref body) {
-        return pack(vector<const Def*>(shape.size(), [&](auto i) { return lit_nat(shape[i]); }), body);
+        return pack(DefVec(shape.size(), [&](auto i) { return lit_nat(shape[i]); }), body);
     }
     ///@}
 
@@ -415,9 +415,7 @@ public:
     Ref iapp(Ref callee, Defs args) { return iapp(callee, tuple(args)); }
     Ref iapp(Ref callee, nat_t arg) { return iapp(callee, lit_nat(arg)); }
     template<class E>
-    Ref iapp(Ref callee, E arg)
-    requires std::is_enum_v<E> && std::is_same_v<std::underlying_type_t<E>, nat_t>
-    {
+    Ref iapp(Ref callee, E arg) requires std::is_enum_v<E> && std::is_same_v<std::underlying_type_t<E>, nat_t> {
         return iapp(callee, lit_nat((nat_t)arg));
     }
 

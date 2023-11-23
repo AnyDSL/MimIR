@@ -58,7 +58,7 @@ Ref normalize_add(Ref type, Ref callee, Ref arg) {
     if (auto sig = T->isa<Sigma>()) {
         world.DLOG("add tuple");
         auto p   = sig->num_ops(); // TODO: or num_projs
-        auto ops = vector<const Def*>(p, [&](size_t i) {
+        auto ops = DefVec(p, [&](size_t i) {
             return world.app(world.app(world.annex<add>(), sig->op(i)), {a->proj(i), b->proj(i)});
         });
         return world.tuple(ops);

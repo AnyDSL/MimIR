@@ -37,8 +37,8 @@ bool should_flatten(const Def* T) {
 }
 
 // TODO merge with tuple.*
-std::vector<const Def*> flatten_ty(const Def* T) {
-    std::vector<const Def*> types;
+Vector<const Def*> flatten_ty(const Def* T) {
+    Vector<const Def*> types;
     if (should_flatten(T)) {
         for (auto P : T->projs()) {
             auto inner_types = flatten_ty(P);
@@ -51,8 +51,8 @@ std::vector<const Def*> flatten_ty(const Def* T) {
 }
 
 // TODO try to remove code duplication with flatten_ty
-std::vector<const Def*> flatten_def(const Def* def) {
-    std::vector<const Def*> defs;
+Vector<const Def*> flatten_def(const Def* def) {
+    Vector<const Def*> defs;
     if (should_flatten(def->type())) {
         for (auto P : def->projs()) {
             auto inner_defs = flatten_def(P);
@@ -117,10 +117,10 @@ const Def* Reshape::rewrite_def_(const Def* def) {
         world().DLOG("into lam {} : {}", new_lam, new_lam->type());
         return new_lam;
     } else if (auto tuple = def->isa<Tuple>()) {
-        auto elements = vector<const Def*>(tuple->ops(), [&](auto op) { return rewrite_def(op); });
+        auto elements = DefVec(tuple->ops(), [&](const Def* op) { return rewrite_def(op); });
         return world().tuple(elements);
     } else {
-        auto new_ops = vector<const Def*>(def->num_ops(), [&](auto i) { return rewrite_def(def->op(i)); });
+        auto new_ops = DefVec(def->num_ops(), [&](auto i) { return rewrite_def(def->op(i)); });
         // Warning: if the new_type is not correct, inconcistencies will arise.
         auto new_type = rewrite_def(def->type());
         auto new_def  = def->rebuild(world(), new_type, new_ops);
@@ -183,9 +183,8 @@ const Def* Reshape::reshape_type(const Def* T) {
         return world().pi(new_dom, new_cod);
     } else if (auto sigma = T->isa<Sigma>()) {
         auto flat_types = flatten_ty(sigma);
-        std::vector<const Def*> new_types(flat_types.size());
-        std::transform(flat_types.begin(), flat_types.end(), new_types.begin(),
-                       [&](auto T) { return reshape_type(T); });
+        auto new_types  = Vector<const Def*>(flat_types.size());
+        std::ranges::transform(flat_types, new_types.begin(), [&](auto T) { return reshape_type(T); });
         if (mode_ == Mode::Flat) {
             const Def* mem = nullptr;
             // find mem
@@ -223,7 +222,7 @@ const Def* Reshape::reshape_type(const Def* T) {
     }
 }
 
-const Def* Reshape::reshape(std::vector<const Def*>& defs, const Def* T, const Def* mem) {
+const Def* Reshape::reshape(Vector<const Def*>& defs, const Def* T, const Def* mem) {
     auto& world = T->world();
     if (should_flatten(T)) {
         auto tuples = T->projs([&](auto P) { return reshape(defs, P, mem); });

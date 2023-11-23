@@ -11,7 +11,6 @@
 #include "thorin/util/dbg.h"
 #include "thorin/util/hash.h"
 #include "thorin/util/print.h"
-#include "thorin/util/span.h"
 #include "thorin/util/util.h"
 #include "thorin/util/vector.h"
 
@@ -368,7 +367,7 @@ public:
 
     template<class F> auto projs(nat_t a, F f) const {
         using R = std::decay_t<decltype(f(this))>;
-        return vector<R>(a, [&](nat_t i) { return f(proj(a, i)); });
+        return Vector<R>(a, [&](nat_t i) { return f(proj(a, i)); });
     }
     template<nat_t A = -1_n> auto projs() const {
         return projs<A>([](const Def* def) { return def; });
