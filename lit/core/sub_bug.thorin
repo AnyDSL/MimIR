@@ -11,7 +11,7 @@
             %core.wrap.sub %core.mode.nusw (a, 1:%core.I8))
 };
 
-// CHECK-DAG: %core.wrap.sub 256 0 (a_{{[0-9]+}}, 1:(.Idx 256));
-// CHECK-DAG: %core.wrap.add 256 2 (255:(.Idx 256), a_{{[0-9]+}});
-// CHECK-DAG  %core.wrap.add 256 1 (255:(.Idx 256), a_{{[0-9]+}});
-// CHECK-DAG  %core.wrap.add 256 3 (255:(.Idx 256), a_{{[0-9]+}});
+// CHECK-DAG: %core.wrap.add 256 0 (255:(.Idx 256), a_{{[0-9]+}});
+// CHECK-DAG: %core.wrap.sub 256 1 (a_{{[0-9]+}}, 1:(.Idx 256));
+// CHECK-DAG: %core.wrap.sub 256 2 (a_{{[0-9]+}}, 1:(.Idx 256));
+// CHECK-DAG: %core.wrap.sub 256 3 (a_{{[0-9]+}}, 1:(.Idx 256));
