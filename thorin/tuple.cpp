@@ -30,7 +30,7 @@ const Def* unflatten(Defs defs, const Def* type, size_t& j, bool flatten_muts) {
     if (auto a = type->isa_lit_arity();
         flatten_muts == mut_val_or_typ(type) && a && *a != 1 && a <= type->world().flags().scalerize_threshold) {
         auto& world = type->world();
-        DefArray ops(*a, [&](size_t i) { return unflatten(defs, type->proj(*a, i), j, flatten_muts); });
+        auto ops    = DefVec(*a, [&](size_t i) { return unflatten(defs, type->proj(*a, i), j, flatten_muts); });
         return world.tuple(type, ops);
     }
 
@@ -80,12 +80,12 @@ const Def* unflatten(Defs defs, const Def* type, bool flatten_muts) {
 
 const Def* unflatten(const Def* def, const Def* type) { return unflatten(def->projs(Lit::as(def->arity())), type); }
 
-DefArray merge(const Def* def, Defs defs) {
-    return DefArray(defs.size() + 1, [&](auto i) { return i == 0 ? def : defs[i - 1]; });
+DefVec merge(const Def* def, Defs defs) {
+    return DefVec(defs.size() + 1, [&](auto i) { return i == 0 ? def : defs[i - 1]; });
 }
 
-DefArray merge(Defs a, Defs b) {
-    DefArray result(a.size() + b.size());
+DefVec merge(Defs a, Defs b) {
+    DefVec result(a.size() + b.size());
     auto [_, o] = std::ranges::copy(a, result.begin());
     std::ranges::copy(b, o);
     return result;
@@ -99,8 +99,8 @@ const Def* merge_sigma(const Def* def, Defs defs) {
 const Def* merge_tuple(const Def* def, Defs defs) {
     auto& w = def->world();
     if (auto sigma = def->type()->isa_imm<Sigma>()) {
-        auto a = sigma->num_ops();
-        DefArray tuple(a, [&](auto i) { return w.extract(def, a, i); });
+        auto a     = sigma->num_ops();
+        auto tuple = DefVec(a, [&](auto i) { return w.extract(def, a, i); });
         return w.tuple(merge(tuple, defs));
     }
 

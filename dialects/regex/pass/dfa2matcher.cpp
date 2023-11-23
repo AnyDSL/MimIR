@@ -34,13 +34,12 @@ std::string state_to_name(const automaton::DFANode* state) {
     return ss.str();
 }
 
-// std::vector<std::pair<nat_t, nat_t>> merge_ranges(World& w, const std::vector<std::pair<nat_t, nat_t>>& old_ranges);
-absl::flat_hash_map<const automaton::DFANode*, std::vector<std::pair<nat_t, nat_t>>>
+absl::flat_hash_map<const automaton::DFANode*, Vector<std::pair<nat_t, nat_t>>>
 transitions_to_ranges(World& w, const automaton::DFANode* state) {
-    absl::flat_hash_map<const automaton::DFANode*, std::vector<std::pair<nat_t, nat_t>>> state2ranges;
+    absl::flat_hash_map<const automaton::DFANode*, Vector<std::pair<nat_t, nat_t>>> state2ranges;
     state->for_transitions([&](std::uint16_t transition, const automaton::DFANode* next_state) {
         if (!state2ranges.contains(next_state))
-            state2ranges.emplace(next_state, std::vector<std::pair<nat_t, nat_t>>{
+            state2ranges.emplace(next_state, Vector<std::pair<nat_t, nat_t>>{
                                                  {transition, transition}
             });
         else

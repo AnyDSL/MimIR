@@ -19,7 +19,7 @@ const Def* zero_pullback(const Def* E, const Def* A);
 
 /// @name %%autodiff.sum
 ///@{
-const Def* op_sum(const Def* T, DefArray defs);
+const Def* op_sum(const Def* T, Defs);
 ///@}
 
 /// @name Helpers

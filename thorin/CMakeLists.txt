@@ -69,7 +69,6 @@ add_library(libthorin
     pass/rw/scalarize.h
     phase/phase.cpp
     phase/phase.h
-    util/array.h
     util/bitset.cpp
     util/bitset.h
     util/dbg.cpp
@@ -84,10 +83,12 @@ add_library(libthorin
     util/log.h
     util/print.cpp
     util/print.h
+    util/span.h
     util/sys.cpp
     util/sys.h
     util/types.h
     util/util.h
+    util/vector.h
 )
 set_target_properties(libthorin PROPERTIES PREFIX "")
 target_compile_features(libthorin PUBLIC cxx_std_${CMAKE_CXX_STANDARD}) # make property public.
@@ -112,6 +113,8 @@ target_link_libraries(libthorin
         absl::btree
         absl::flat_hash_map absl::flat_hash_set
         absl::node_hash_map absl::node_hash_set
+        absl::fixed_array
+        absl::inlined_vector
         fe rang ${CMAKE_DL_LIBS}
 )
 install(

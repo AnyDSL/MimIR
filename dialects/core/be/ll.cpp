@@ -191,7 +191,7 @@ std::string Emitter::convert(const Def* type) {
             s << convert(t);
         else {
             auto doms = pi->doms();
-            for (auto sep = ""; auto dom : doms.skip_back()) {
+            for (auto sep = ""; auto dom : doms.view().rsubspan(1)) {
                 if (match<mem::M>(dom)) continue;
                 s << sep << convert(dom);
                 sep = ", ";
@@ -250,7 +250,7 @@ void Emitter::emit_imported(Lam* lam) {
     print(func_decls_, "declare {} {}(", convert_ret_pi(lam->type()->ret_pi()), id(lam));
 
     auto doms = lam->doms();
-    for (auto sep = ""; auto dom : doms.skip_back()) {
+    for (auto sep = ""; auto dom : doms.view().rsubspan(1)) {
         if (match<mem::M>(dom)) continue;
         print(func_decls_, "{}{}", sep, convert(dom));
         sep = ", ";
@@ -265,7 +265,7 @@ std::string Emitter::prepare(const Scope& scope) {
     print(func_impls_, "define {} {}(", convert_ret_pi(lam->type()->ret_pi()), id(lam));
 
     auto vars = lam->vars();
-    for (auto sep = ""; auto var : vars.skip_back()) {
+    for (auto sep = ""; auto var : vars.view().rsubspan(1)) {
         if (match<mem::M>(var->type())) continue;
         auto name    = id(var);
         locals_[var] = name;
@@ -399,7 +399,7 @@ void Emitter::emit_epilogue(Lam* lam) {
 
         std::vector<std::string> args;
         auto app_args = app->args();
-        for (auto arg : app_args.skip_back())
+        for (auto arg : app_args.view().rsubspan(1))
             if (auto v_arg = emit_unsafe(arg); !v_arg.empty()) args.emplace_back(convert(arg->type()) + " " + v_arg);
 
         if (app->args().back()->isa<Bot>()) {
@@ -412,8 +412,8 @@ void Emitter::emit_epilogue(Lam* lam) {
         auto ret_lam    = app->args().back()->as_mut<Lam>();
         size_t num_vars = ret_lam->num_vars();
         size_t n        = 0;
-        Array<const Def*> values(num_vars);
-        Array<const Def*> types(num_vars);
+        DefVec values(num_vars);
+        DefVec types(num_vars);
         for (auto var : ret_lam->vars()) {
             if (match<mem::M>(var->type())) continue;
             values[n] = var;

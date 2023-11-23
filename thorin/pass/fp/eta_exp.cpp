@@ -21,7 +21,9 @@ Ref EtaExp::rewrite(Ref def) {
     if (std::ranges::none_of(def->ops(), [](Ref def) { return def->isa<Lam>(); })) return def;
     if (auto n = lookup(old2new(), def)) return n;
 
-    auto& [_, new_ops] = *def2new_ops_.emplace(def, def->ops()).first;
+    auto [i, ins] = def2new_ops_.emplace(def, DefVec{});
+    auto& new_ops = i->second;
+    if (ins) new_ops.assign(def->ops().begin(), def->ops().end());
 
     for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
         if (auto lam = def->op(i)->isa_mut<Lam>(); lam && lam->is_set()) {

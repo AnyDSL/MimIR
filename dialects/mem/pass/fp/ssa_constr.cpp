@@ -115,7 +115,7 @@ Ref SSAConstr::mem2phi(const App* app, Lam* mem_lam) {
         world().DLOG("new phi_lam '{}'", phi_lam);
 
         auto num_mem_vars = mem_lam->num_vars();
-        DefArray traxy_ops(2 * num_phis + 1);
+        DefVec traxy_ops(2 * num_phis + 1);
         traxy_ops[0] = phi_lam->var();
         for (size_t i = 0; auto sloxy : sloxys) {
             traxy_ops[2 * i + 1] = sloxy;
@@ -124,7 +124,7 @@ Ref SSAConstr::mem2phi(const App* app, Lam* mem_lam) {
         }
         auto traxy = proxy(phi_lam->var()->type(), traxy_ops, Traxy);
 
-        DefArray new_vars(num_mem_vars, [&](size_t i) { return traxy->proj(i); });
+        auto new_vars = DefVec(num_mem_vars, [&](size_t i) { return traxy->proj(i); });
         phi_lam->set(mem_lam->reduce(world().tuple(mem_lam->dom(), new_vars)));
     } else {
         world().DLOG("reuse phi_lam '{}'", phi_lam);
@@ -133,7 +133,7 @@ Ref SSAConstr::mem2phi(const App* app, Lam* mem_lam) {
     world().DLOG("mem_lam => phi_lam: '{}': '{}' => '{}': '{}'", mem_lam, mem_lam->type()->dom(), phi_lam,
                  phi_lam->dom());
     auto sloxy = sloxys.begin();
-    DefArray args(num_phis, [&](auto) { return get_val(curr_mut(), *sloxy++); });
+    auto args  = DefVec(num_phis, [&](auto) { return get_val(curr_mut(), *sloxy++); });
     return world().app(phi_lam, merge_tuple(app->arg(), args));
 }
 

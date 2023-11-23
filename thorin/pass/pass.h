@@ -123,8 +123,7 @@ public:
 
     /// Add a pass to this PassMan.
     /// If a pass of the same class has been added already, returns the earlier added instance.
-    template<class P, class... Args>
-    P* add(Args&&... args) {
+    template<class P, class... Args> P* add(Args&&... args) {
         auto key = std::type_index(typeid(P));
         if (auto it = registry_.find(key); it != registry_.end()) return static_cast<P*>(it->second);
         auto p   = std::make_unique<P>(*this, std::forward<Args>(args)...);
@@ -136,8 +135,7 @@ public:
     }
 
     /// Runs a single Pass.
-    template<class P, class... Args>
-    static void run(World& world, Args&&... args) {
+    template<class P, class... Args> static void run(World& world, Args&&... args) {
         PassMan man(world);
         man.add<P>(std::forward<Args>(args)...);
         man.run();
@@ -156,10 +154,10 @@ private:
             : data(num) {}
 
         Def* curr_mut = nullptr;
-        DefArray old_ops;
+        DefVec old_ops;
         std::stack<Def*> stack;
         MutMap<undo_t> mut2visit;
-        Array<void*> data;
+        Vector<void*> data;
         Def2Def old2new;
         DefSet analyzed;
     };
@@ -213,13 +211,11 @@ private:
     bool fixed_point_ = false;
     bool proxy_       = false;
 
-    template<class P, class N>
-    friend class FPPass;
+    template<class P, class N> friend class FPPass;
 };
 
 /// Inherit from this class if your Pass does **not** need state and a fixed-point iteration.
-template<class P, class N>
-class RWPass : public Pass {
+template<class P, class N> class RWPass : public Pass {
 public:
     RWPass(PassMan& man, std::string_view name)
         : Pass(man, name) {}
@@ -241,8 +237,7 @@ public:
 
 /// Inherit from this class using [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern),
 /// if you **do** need a Pass with a state and a fixed-point.
-template<class P, class N>
-class FPPass : public RWPass<P, N> {
+template<class P, class N> class FPPass : public RWPass<P, N> {
 public:
     using Super = RWPass<P, N>;
     using Data  = std::tuple<>; ///< Default.
@@ -261,20 +256,11 @@ protected:
         assert(!states().empty());
         return *static_cast<typename P::Data*>(states().back().data[Super::index()]);
     }
-    template<size_t I>
-    auto& data() {
-        return std::get<I>(data());
-    }
+    template<size_t I> auto& data() { return std::get<I>(data()); }
     /// Use this for your convenience if `P::Data` is a map.
-    template<class K>
-    auto& data(const K& key) {
-        return data()[key];
-    }
+    template<class K> auto& data(const K& key) { return data()[key]; }
     /// Use this for your convenience if `P::Data<I>` is a map.
-    template<size_t I, class K>
-    auto& data(const K& key) {
-        return data<I>()[key];
-    }
+    template<size_t I, class K> auto& data(const K& key) { return data<I>()[key]; }
     ///@}
 
     /// @name undo

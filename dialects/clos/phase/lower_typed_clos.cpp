@@ -8,7 +8,7 @@ namespace thorin::clos {
 
 namespace {
 const Def* insert_ret(const Def* def, const Def* ret) {
-    auto new_ops = DefArray(def->num_projs() + 1, [&](auto i) { return (i == def->num_projs()) ? ret : def->proj(i); });
+    auto new_ops = DefVec(def->num_projs() + 1, [&](auto i) { return (i == def->num_projs()) ? ret : def->proj(i); });
     auto& w      = def->world();
     return def->is_term() ? w.tuple(new_ops) : w.sigma(new_ops);
 }
@@ -38,7 +38,7 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
     assert(lam && "make_stub: not a lam");
     if (auto i = old2new_.find(lam); i != old2new_.end() && i->second->isa_mut<Lam>()) return i->second->as_mut<Lam>();
     auto& w      = world();
-    auto new_dom = w.sigma(Array<const Def*>(lam->num_doms(), [&](auto i) -> const Def* {
+    auto new_dom = w.sigma(DefVec(lam->num_doms(), [&](auto i) -> const Def* {
         auto new_dom = rewrite(lam->dom(i));
         if (i == Clos_Env_Param) {
             if (mode == Unbox)
@@ -64,7 +64,7 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
     } else if (mode == Unbox) {
         env = w.call<core::bitcast>(lam->dom(Clos_Env_Param), env)->set("unboxed_env");
     }
-    auto new_args = w.tuple(Array<const Def*>(lam->num_doms(), [&](auto i) {
+    auto new_args = w.tuple(DefVec(lam->num_doms(), [&](auto i) {
         return (i == Clos_Env_Param) ? env : (lam->var(i) == mem::mem_var(lam)) ? lcm : *new_lam->var(i);
     }));
     assert(new_args->num_projs() == lam->num_doms());
@@ -143,7 +143,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
     } else if (def->isa<Axiom>()) {
         return def;
     } else {
-        auto new_ops = Array<const Def*>(def->num_ops(), [&](auto i) { return rewrite(def->op(i)); });
+        auto new_ops = DefVec(def->num_ops(), [&](auto i) { return rewrite(def->op(i)); });
 
         if (auto app = def->isa<App>()) {
             // Add dummy retcont to first-class BB

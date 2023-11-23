@@ -48,7 +48,7 @@ private:
     // This generalized version of reshape transforms def to match the shape of target.
     const Def* reshape(const Def* def, const Def* target);
     /// Reconstructs the target type by taking defs out of the queue.
-    const Def* reshape(std::vector<const Def*>& def, const Def* target, const Def* mem);
+    const Def* reshape(DefVec&, const Def* target, const Def* mem);
 
     /// Keeps track of the replacements.
     Def2Def old2new_;

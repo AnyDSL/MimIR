@@ -47,7 +47,7 @@ const Def* Infer::find(const Def* def) {
         auto new_type = Ref::refer(res->type());
         bool update   = new_type != res->type();
 
-        auto new_ops = DefArray(res->num_ops(), [res, &update](size_t i) {
+        auto new_ops = DefVec(res->num_ops(), [res, &update](size_t i) {
             auto r = Ref::refer(res->op(i));
             update |= r != res->op(i);
             return r;
@@ -59,7 +59,7 @@ const Def* Infer::find(const Def* def) {
     return res;
 }
 
-bool Infer::eliminate(Array<Ref*> refs) {
+bool Infer::eliminate(Vector<Ref*> refs) {
     if (std::ranges::any_of(refs, [](auto pref) { return should_eliminate(*pref); })) {
         auto& world = (*refs.front())->world();
         InferRewriter rw(world);

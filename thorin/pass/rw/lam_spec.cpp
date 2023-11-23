@@ -47,7 +47,7 @@ Ref LamSpec::rewrite(Ref def) {
     auto skip     = old_lam->ret_var() && is_top_level(old_lam);
     auto old_doms = old_lam->doms();
 
-    for (auto dom : old_doms.skip_back(skip))
+    for (auto dom : old_doms.view().rsubspan(skip))
         if (!dom->isa<Pi>()) new_doms.emplace_back(dom);
 
     if (skip) new_doms.emplace_back(old_lam->doms().back());

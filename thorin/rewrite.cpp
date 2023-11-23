@@ -4,6 +4,10 @@
 
 #include "thorin/analyses/scope.h"
 
+#include "absl/container/fixed_array.h"
+
+// Don't use fancy C++-lambdas; it's way to annoying stepping through this in a debugger.
+
 namespace thorin {
 
 Ref Rewriter::rewrite(Ref old_def) {
@@ -26,7 +30,8 @@ Ref Rewriter::rewrite_imm(Ref old_def) {
     }
 
     auto new_type = old_def->isa<Type>() ? nullptr : rewrite(old_def->type());
-    DefArray new_ops(old_def->num_ops(), [&](auto i) { return rewrite(old_def->op(i)); });
+    auto new_ops  = absl::FixedArray<const Def*>(old_def->num_ops());
+    for (size_t i = 0, e = new_ops.size(); i != e; ++i) new_ops[i] = rewrite(old_def->op(i));
     return old_def->rebuild(world(), new_type, new_ops);
 }
 
@@ -56,13 +61,15 @@ Ref rewrite(Def* mut, Ref arg, size_t i) {
     return rewrite(mut, arg, i, scope);
 }
 
-DefArray rewrite(Def* mut, Ref arg, const Scope& scope) {
+DefVec rewrite(Def* mut, Ref arg, const Scope& scope) {
     ScopeRewriter rewriter(scope);
     rewriter.map(mut->var(), arg);
-    return DefArray(mut->num_ops(), [&](size_t i) { return rewriter.rewrite(mut->op(i)); });
+    DefVec result(mut->num_ops());
+    for (size_t i = 0, e = result.size(); i != e; ++i) result[i] = rewriter.rewrite(mut->op(i));
+    return result;
 }
 
-DefArray rewrite(Def* mut, Ref arg) {
+DefVec rewrite(Def* mut, Ref arg) {
     Scope scope(mut);
     return rewrite(mut, arg, scope);
 }

@@ -124,7 +124,7 @@ const Def* autodiff_type_fun(const Def* ty) {
     }
     if (auto sig = ty->isa<Sigma>()) {
         // TODO: mut sigma
-        DefArray ops(sig->ops(), [&](const Def* op) { return autodiff_type_fun(op); });
+        auto ops = DefVec(sig->ops(), [&](const Def* op) { return autodiff_type_fun(op); });
         world.DLOG("ops: {,}", ops);
         return world.sigma(ops);
     }
@@ -153,7 +153,7 @@ const Def* zero_def(const Def* T) {
         world.DLOG("zero_def for int is {}", zero);
         return zero;
     } else if (auto sig = T->isa<Sigma>()) {
-        DefArray ops(sig->ops(), [&](const Def* op) { return world.app(world.annex<zero>(), op); });
+        auto ops = DefVec(sig->ops(), [&](const Def* op) { return world.app(world.annex<zero>(), op); });
         return world.tuple(ops);
     }
 
@@ -163,7 +163,7 @@ const Def* zero_def(const Def* T) {
     return nullptr;
 }
 
-const Def* op_sum(const Def* T, DefArray defs) {
+const Def* op_sum(const Def* T, Defs defs) {
     // TODO: assert all are of type T
     auto& world = T->world();
     return world.app(world.app(world.annex<sum>(), {world.lit_nat(defs.size()), T}), defs);

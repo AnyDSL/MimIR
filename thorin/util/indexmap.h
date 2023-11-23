@@ -2,7 +2,7 @@
 
 #include <ranges>
 
-#include "thorin/util/array.h"
+#include "thorin/util/vector.h"
 
 namespace thorin {
 
@@ -26,7 +26,7 @@ public:
     IndexMap(const Indexer& indexer, const Value& value = Value())
         : indexer_(indexer)
         , array_(indexer.size(), value) {}
-    IndexMap(const Indexer& indexer, Span<Value> array)
+    IndexMap(const Indexer& indexer, View<Value> array)
         : indexer_(indexer)
         , array_(array) {}
     template<class I>
@@ -43,8 +43,8 @@ public:
         return array_[i];
     }
     const Value& operator[](Key key) const { return const_cast<IndexMap*>(this)->operator[](key); }
-    Array<Value>& array() { return array_; }
-    const Array<Value>& array() const { return array_; }
+    auto& array() { return array_; }
+    const auto& array() const { return array_; }
     Value& array(size_t i) { return array_[i]; }
     const Value& array(size_t i) const { return array_[i]; }
 
@@ -59,7 +59,7 @@ public:
 
 private:
     const Indexer& indexer_;
-    Array<Value> array_;
+    Vector<Value> array_;
 };
 
 /// @name IndexMap find

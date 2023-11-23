@@ -18,7 +18,7 @@
 
 using namespace thorin;
 
-void add_phases(DefVec& phases, World& world, Passes& passes, PipelineBuilder& builder) {
+void add_phases(Defs phases, World& world, Passes& passes, PipelineBuilder& builder) {
     for (auto phase : phases) compile::handle_optimization_part(phase, world, passes, builder);
 }
 

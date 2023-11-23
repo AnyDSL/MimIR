@@ -17,7 +17,6 @@
 #include "thorin/rewrite.h"
 
 #include "thorin/analyses/scope.h"
-#include "thorin/util/array.h"
 #include "thorin/util/util.h"
 
 namespace thorin {
@@ -32,7 +31,7 @@ bool is_shape(Ref s) {
 }
 
 const Def* infer_sigma(World& world, Defs ops) {
-    DefArray elems(ops.size());
+    DefVec elems(ops.size());
     for (size_t i = 0, e = ops.size(); i != e; ++i) elems[i] = ops[i]->type();
     return world.sigma(elems);
 }
@@ -191,7 +190,7 @@ Ref World::iapp(Ref callee, Ref arg) {
 }
 
 Ref World::app(Ref callee, Ref arg) {
-    Infer::eliminate(Array<Ref*>{&callee, &arg});
+    Infer::eliminate(Vector<Ref*>{&callee, &arg});
     auto pi = callee->type()->isa<Pi>();
 
     if (!pi) error(callee, "called expression '{}' : '{}' is not of function type", callee, callee->type());
@@ -290,12 +289,12 @@ Ref World::tuple(Sym sym) {
 Ref World::extract(Ref d, Ref index) {
     assert(d);
     if (index->isa<Tuple>()) {
-        auto n = index->num_ops();
-        DefArray idx(n, [&](size_t i) { return index->op(i); });
-        DefArray ops(n, [&](size_t i) { return d->proj(n, Lit::as(idx[i])); });
+        auto n   = index->num_ops();
+        auto idx = DefVec(n, [&](size_t i) { return index->op(i); });
+        auto ops = DefVec(n, [&](size_t i) { return d->proj(n, Lit::as(idx[i])); });
         return tuple(ops);
     } else if (index->isa<Pack>()) {
-        DefArray ops(index->as_lit_arity(), [&](size_t) { return extract(d, index->ops().back()); });
+        auto ops = DefVec(index->as_lit_arity(), [&](size_t) { return extract(d, index->ops().back()); });
         return tuple(ops);
     }
 
@@ -373,7 +372,7 @@ Ref World::insert(Ref d, Ref index, Ref val) {
     // insert(‹4; x›, 2, y) -> (x, x, y, x)
     if (auto pack = d->isa<Pack>(); pack && lidx) {
         if (auto a = pack->isa_lit_arity(); a && *a < flags().scalerize_threshold) {
-            DefArray new_ops(*a, pack->body());
+            auto new_ops   = DefVec(*a, pack->body());
             new_ops[*lidx] = val;
             return tuple(type, new_ops);
         }
@@ -399,13 +398,13 @@ Ref World::arr(Ref shape, Ref body) {
     // «(a, b)#i; T» -> («a, T», <b, T»)#i
     if (auto ex = shape->isa<Extract>()) {
         if (auto tup = ex->tuple()->isa<Tuple>()) {
-            DefArray arrs(tup->num_ops(), [&](size_t i) { return arr(tup->op(i), body); });
+            auto arrs = DefVec(tup->num_ops(), [&](size_t i) { return arr(tup->op(i), body); });
             return extract(tuple(arrs), ex->index());
         }
     }
 
     // «(a, b, c); body» -> «a; «(b, c); body»»
-    if (auto tuple = shape->isa<Tuple>()) return arr(tuple->ops().front(), arr(tuple->ops().skip_front(), body));
+    if (auto tuple = shape->isa<Tuple>()) return arr(tuple->ops().front(), arr(tuple->ops().subspan(1), body));
 
     // «<n; x>; body» -> «x; «<n-1, x>; body»»
     if (auto p = shape->isa<Pack>()) {
@@ -424,7 +423,7 @@ Ref World::pack(Ref shape, Ref body) {
     }
 
     // <(a, b, c); body> -> <a; «(b, c); body>>
-    if (auto tuple = shape->isa<Tuple>()) return pack(tuple->ops().front(), pack(tuple->ops().skip_front(), body));
+    if (auto tuple = shape->isa<Tuple>()) return pack(tuple->ops().front(), pack(tuple->ops().subspan(1), body));
 
     // <<n; x>; body> -> <x; <<n-1, x>; body>>
     if (auto p = shape->isa<Pack>()) {
@@ -437,12 +436,12 @@ Ref World::pack(Ref shape, Ref body) {
 
 Ref World::arr(Defs shape, Ref body) {
     if (shape.empty()) return body;
-    return arr(shape.skip_back(), arr(shape.back(), body));
+    return arr(shape.rsubspan(1), arr(shape.back(), body));
 }
 
 Ref World::pack(Defs shape, Ref body) {
     if (shape.empty()) return body;
-    return pack(shape.skip_back(), pack(shape.back(), body));
+    return pack(shape.rsubspan(1), pack(shape.back(), body));
 }
 
 const Lit* World::lit(Ref type, u64 val) {
@@ -464,7 +463,7 @@ const Lit* World::lit(Ref type, u64 val) {
 template<bool Up> Ref World::ext(Ref type) {
     if (auto arr = type->isa<Arr>()) return pack(arr->shape(), ext<Up>(arr->body()));
     if (auto sigma = type->isa<Sigma>())
-        return tuple(sigma, DefArray(sigma->num_ops(), [&](size_t i) { return ext<Up>(sigma->op(i)); }));
+        return tuple(sigma, DefVec(sigma->num_ops(), [&](size_t i) { return ext<Up>(sigma->op(i)); }));
     return unify<TExt<Up>>(0, type);
 }
 
@@ -476,13 +475,13 @@ template<bool Up> Ref World::bound(Defs ops) {
         return ext<Up>(kind);
 
     // ignore: ext<!Up>
-    DefArray cpy(ops);
+    DefVec cpy(ops.begin(), ops.end());
     auto [_, end] = std::ranges::copy_if(ops, cpy.begin(), [&](Ref op) { return !op->isa<Ext>(); });
 
     // sort and remove duplicates
     std::sort(cpy.begin(), end, GIDLt<const Def*>());
     end = std::unique(cpy.begin(), end);
-    cpy.shrink(std::distance(cpy.begin(), end));
+    cpy.resize(std::distance(cpy.begin(), end));
 
     if (cpy.size() == 0) return ext<!Up>(kind);
     if (cpy.size() == 1) return cpy[0];
@@ -494,7 +493,7 @@ template<bool Up> Ref World::bound(Defs ops) {
 
 Ref World::ac(Ref type, Defs ops) {
     if (type->isa<Meet>()) {
-        DefArray types(ops.size(), [&](size_t i) { return ops[i]->type(); });
+        auto types = DefVec(ops.size(), [&](size_t i) { return ops[i]->type(); });
         return unify<Ac>(ops.size(), meet(types), ops);
     }
 

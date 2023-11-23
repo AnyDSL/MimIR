@@ -9,10 +9,11 @@ Ref TailRecElim::rewrite(Ref def) {
     if (auto [app, old] = isa_apped_mut_lam(def); old) {
         if (auto i = old2rec_loop_.find(old); i != old2rec_loop_.end()) {
             auto [rec, loop] = i->second;
+            auto args        = app->args();
             if (auto ret_var = rec->ret_var(); app->args().back() == ret_var)
-                return world().app(loop, app->args().skip_back());
+                return world().app(loop, args.view().rsubspan(1));
             else
-                return world().app(rec, app->args());
+                return world().app(rec, args);
         }
     }
 
@@ -26,7 +27,7 @@ undo_t TailRecElim::analyze(Ref def) {
                 auto& [rec, loop] = i->second;
                 rec               = old->stub(world(), old->type());
                 auto doms         = rec->doms();
-                auto loop_dom     = doms.skip_back();
+                auto loop_dom     = doms.view().rsubspan(1);
                 loop              = rec->stub(world(), world().cn(loop_dom));
                 world().DLOG("old {} -> (rec: {}, loop: {})", old, rec, loop);
 

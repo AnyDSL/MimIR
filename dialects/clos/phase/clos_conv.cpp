@@ -105,7 +105,7 @@ DefSet& FreeDefAna::run(Lam* lam) {
  */
 
 void ClosConv::start() {
-    auto externals = std::vector(world().externals().begin(), world().externals().end());
+    auto externals = Vector(world().externals().begin(), world().externals().end());
     auto subst     = Def2Def();
     for (auto [_, ext_def] : externals) rewrite(ext_def, subst);
     while (!worklist_.empty()) {
@@ -141,7 +141,7 @@ void ClosConv::rewrite_body(Lam* new_lam, Def2Def& subst) {
         }
     }
 
-    auto params = w.tuple(DefArray(old_fn->num_doms(), [&](auto i) { return new_lam->var(skip_env(i)); }));
+    auto params = w.tuple(DefVec(old_fn->num_doms(), [&](auto i) { return new_lam->var(skip_env(i)); }));
     subst.emplace(old_fn->var(), params);
 
     auto filter = rewrite(new_fn->filter(), subst);
@@ -185,7 +185,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
                     //  Note: This should be cont_lam's only occurance after η-expansion, so its okay to
                     //  put into the local subst only
                     auto new_doms
-                        = DefArray(ret_lam->num_doms(), [&](auto i) { return rewrite(ret_lam->dom(i), subst); });
+                        = DefVec(ret_lam->num_doms(), [&](auto i) { return rewrite(ret_lam->dom(i), subst); });
                     auto new_lam   = ret_lam->stub(w, w.cn(new_doms));
                     subst[ret_lam] = new_lam;
                     if (ret_lam->is_set()) {
@@ -231,7 +231,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         if (auto imm = new_mut->immutabilize()) return map(imm);
         return map(new_mut);
     } else {
-        auto new_ops = DefArray(def->num_ops(), [&](auto i) { return rewrite(def->op(i), subst); });
+        auto new_ops = DefVec(def->num_ops(), [&](auto i) { return rewrite(def->op(i), subst); });
         if (auto app = def->isa<App>(); app && new_ops[0]->type()->isa<Sigma>())
             return map(clos_apply(new_ops[0], new_ops[1]));
         else if (def->isa<Axiom>())
@@ -254,14 +254,14 @@ Def* ClosConv::rewrite_mut(Def* mut, const Def* new_type, Def2Def& subst) {
 
 const Pi* ClosConv::rewrite_type_cn(const Pi* pi, Def2Def& subst) {
     assert(Pi::isa_basicblock(pi));
-    auto new_ops = DefArray(pi->num_doms(), [&](auto i) { return rewrite(pi->dom(i), subst); });
+    auto new_ops = DefVec(pi->num_doms(), [&](auto i) { return rewrite(pi->dom(i), subst); });
     return world().cn(new_ops);
 }
 
 const Def* ClosConv::type_clos(const Pi* pi, Def2Def& subst, const Def* env_type) {
     if (auto i = glob_muts_.find(pi); i != glob_muts_.end() && !env_type) return i->second;
     auto& w       = world();
-    auto new_doms = DefArray(pi->num_doms(), [&](auto i) {
+    auto new_doms = DefVec(pi->num_doms(), [&](auto i) {
         return (i == pi->num_doms() - 1 && Pi::isa_returning(pi)) ? rewrite_type_cn(pi->ret_pi(), subst)
                                                                   : rewrite(pi->dom(i), subst);
     });
@@ -277,7 +277,7 @@ const Def* ClosConv::type_clos(const Pi* pi, Def2Def& subst, const Def* env_type
 
 ClosConv::Stub ClosConv::make_stub(const DefSet& fvs, Lam* old_lam, Def2Def& subst) {
     auto& w          = world();
-    auto env         = w.tuple(DefArray(fvs.begin(), fvs.end()));
+    auto env         = w.tuple(DefVec(fvs.begin(), fvs.end()));
     auto num_fvs     = fvs.size();
     auto env_type    = rewrite(env->type(), subst);
     auto new_fn_type = type_clos(old_lam->type(), subst, env_type)->as<Pi>();

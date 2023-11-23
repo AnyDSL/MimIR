@@ -1,6 +1,7 @@
 #include "dialects/direct/pass/cps2ds.h"
 
 #include <iostream>
+#include <type_traits>
 
 #include <thorin/lam.h>
 
@@ -130,11 +131,11 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
     if (def->isa<Var>()) return def;
 
     if (auto tuple = def->isa<Tuple>()) {
-        DefArray elements(tuple->ops(), [&](const Def* op) { return rewrite_body(op); });
+        auto elements = DefVec(tuple->ops(), [&](const Def* op) { return rewrite_body(op); });
         return world().tuple(def->type(), elements)->set(tuple->dbg());
     }
 
-    DefArray new_ops{def->ops(), [&](const Def* op) { return rewrite_body(op); }};
+    auto new_ops = DefVec(def->ops(), [&](const Def* op) { return rewrite_body(op); });
     world().DLOG("def {} : {} [{}]", def, def->type(), def->node_name());
 
     if (def->isa<Infer>()) {

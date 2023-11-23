@@ -168,7 +168,7 @@ const Def* Arr::immutabilize() {
     auto& w = world();
     if (auto n = Lit::isa(shape())) {
         if (Scope::is_free(this, body()))
-            return w.sigma(DefArray(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
+            return w.sigma(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
         return w.arr(shape(), body());
     }
     return nullptr;
@@ -178,7 +178,7 @@ const Def* Pack::immutabilize() {
     auto& w = world();
     if (auto n = Lit::isa(shape())) {
         if (Scope::is_free(this, body()))
-            return w.tuple(DefArray(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
+            return w.tuple(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
         return w.pack(shape(), body());
     }
     return nullptr;
@@ -200,12 +200,12 @@ const Def* Pack::reduce(const Def* arg) const {
 
 ///@}
 
-DefArray Def::reduce(const Def* arg) const {
+DefVec Def::reduce(const Def* arg) const {
     if (auto mut = isa_mut()) return mut->reduce(arg);
-    return ops();
+    return DefVec(ops().begin(), ops().end());
 }
 
-DefArray Def::reduce(const Def* arg) {
+DefVec Def::reduce(const Def* arg) {
     auto& cache = world().move_.cache;
     if (auto i = cache.find({this, arg}); i != cache.end()) return i->second;
 
@@ -213,7 +213,7 @@ DefArray Def::reduce(const Def* arg) {
 }
 
 const Def* Def::refine(size_t i, const Def* new_op) const {
-    DefArray new_ops(ops());
+    DefVec new_ops(ops().begin(), ops().end());
     new_ops[i] = new_op;
     return rebuild(world(), type(), new_ops);
 }
@@ -255,7 +255,7 @@ std::string_view Def::node_name() const {
 Defs Def::extended_ops() const {
     if (isa<Type>() || isa<Univ>()) return Defs();
     assert(type());
-    return Defs((is_set() ? num_ops_ : 0) + 1, ops_ptr() - 1);
+    return Defs(ops_ptr() - 1, (is_set() ? num_ops_ : 0) + 1);
 }
 
 #ifndef NDEBUG
@@ -405,7 +405,7 @@ void Def::unset_type() {
 bool Def::is_set() const {
     if (num_ops() == 0) return true;
     bool result = ops().back();
-    assert((!result || std::ranges::all_of(ops().skip_back(), [](auto op) { return op; }))
+    assert((!result || std::ranges::all_of(ops().rsubspan(1), [](auto op) { return op; }))
            && "the last operand is set but others in front of it aren't");
     return result;
 }
