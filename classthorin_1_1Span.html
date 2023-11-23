@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.5"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: thorin::Span&lt; T &gt; Class Template Reference</title>
+<title>Thorin: thorin::Span&lt; T, N &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -112,446 +112,271 @@ $(document).ready(function(){initNavTree('classthorin_1_1Span.html',''); initRes
 <div class="header">
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
-<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classthorin_1_1Span-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">thorin::Span&lt; T &gt; Class Template Reference</div></div>
+  <div class="headertitle"><div class="title">thorin::Span&lt; T, N &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>A container-like wrapper for an array.  
+<p>This is a thin wrapper for <code>std::span&lt;T, N&gt;</code> with the following additional features:  
  <a href="classthorin_1_1Span.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="array_8h_source.html">thorin/util/array.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="span_8h_source.html">thorin/util/span.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for thorin::Span&lt; T, N &gt;:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classthorin_1_1Span__inherit__graph.svg" width="167" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a473626c504006ff8c951f6bd312c7581"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a473626c504006ff8c951f6bd312c7581">value_type</a> = T</td></tr>
-<tr class="separator:a473626c504006ff8c951f6bd312c7581"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f71d5516d44436fafc403d7f75745f2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a1f71d5516d44436fafc403d7f75745f2">const_iterator</a> = const T *</td></tr>
-<tr class="separator:a1f71d5516d44436fafc403d7f75745f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68183669677b2bd39b7e9252386e2681"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a68183669677b2bd39b7e9252386e2681">const_reverse_iterator</a> = std::reverse_iterator&lt; <a class="el" href="classthorin_1_1Span.html#a1f71d5516d44436fafc403d7f75745f2">const_iterator</a> &gt;</td></tr>
-<tr class="separator:a68183669677b2bd39b7e9252386e2681"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9032d2f48a89ee31a705f43a94d6bbff"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a9032d2f48a89ee31a705f43a94d6bbff">Base</a> = std::span&lt; T, N &gt;</td></tr>
+<tr class="separator:a9032d2f48a89ee31a705f43a94d6bbff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae0abe79e4644792ea60102298bfd2b15"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> N&gt; </td></tr>
-<tr class="memitem:ae0abe79e4644792ea60102298bfd2b15"><td class="memTemplItemLeft" align="right" valign="top">std::array&lt; T, N &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#ae0abe79e4644792ea60102298bfd2b15">to_array</a> () const</td></tr>
-<tr class="memdesc:ae0abe79e4644792ea60102298bfd2b15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert to <code>std::array</code>.  <a href="classthorin_1_1Span.html#ae0abe79e4644792ea60102298bfd2b15">More...</a><br /></td></tr>
-<tr class="separator:ae0abe79e4644792ea60102298bfd2b15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Constructor, Destructor &amp; Assignment</div></td></tr>
-<tr class="memitem:affc0b021474fa4bbcc93ef1cc8e30279"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#affc0b021474fa4bbcc93ef1cc8e30279">Span</a> () noexcept=default</td></tr>
-<tr class="separator:affc0b021474fa4bbcc93ef1cc8e30279"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f46b424583889ba6781a7480f07c242"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a9f46b424583889ba6781a7480f07c242">Span</a> (const <a class="el" href="classthorin_1_1Span.html">Span</a>&lt; T &gt; &amp;) noexcept=default</td></tr>
-<tr class="separator:a9f46b424583889ba6781a7480f07c242"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24db046ec6637a80de018314e9a3cb75"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a24db046ec6637a80de018314e9a3cb75">Span</a> (<a class="el" href="classthorin_1_1Span.html">Span</a> &amp;&amp;span) noexcept=default</td></tr>
-<tr class="separator:a24db046ec6637a80de018314e9a3cb75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af941ca271be559f1b01bf9a852b612b9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#af941ca271be559f1b01bf9a852b612b9">Span</a> (<a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> <a class="el" href="classthorin_1_1Span.html#aa5a0547ec48aad3651f3e8552526ffa6">size</a>, const T *ptr)</td></tr>
-<tr class="separator:af941ca271be559f1b01bf9a852b612b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59e417c006074e3fc499a813bf2a4410"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> N&gt; </td></tr>
-<tr class="memitem:a59e417c006074e3fc499a813bf2a4410"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a59e417c006074e3fc499a813bf2a4410">Span</a> (const T(&amp;ptr)[N])</td></tr>
-<tr class="separator:a59e417c006074e3fc499a813bf2a4410"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f7bf7df2faf99befbb9c271a4f48a7c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a8f7bf7df2faf99befbb9c271a4f48a7c">Span</a> (const <a class="el" href="classthorin_1_1Array.html">Array</a>&lt; T &gt; &amp;array)</td></tr>
-<tr class="separator:a8f7bf7df2faf99befbb9c271a4f48a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89c66c9826cdd56925e72279f19bc677"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> N&gt; </td></tr>
-<tr class="memitem:a89c66c9826cdd56925e72279f19bc677"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a89c66c9826cdd56925e72279f19bc677">Span</a> (const std::array&lt; T, N &gt; &amp;array)</td></tr>
-<tr class="separator:a89c66c9826cdd56925e72279f19bc677"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a858fed2833a87a5e14751fe082a8f6e1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a858fed2833a87a5e14751fe082a8f6e1">Span</a> (std::initializer_list&lt; T &gt; list)</td></tr>
-<tr class="separator:a858fed2833a87a5e14751fe082a8f6e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0514371241961b47dd050daf843b6ef2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a0514371241961b47dd050daf843b6ef2">Span</a> (const std::vector&lt; T &gt; &amp;vector)</td></tr>
-<tr class="separator:a0514371241961b47dd050daf843b6ef2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad623bcddd22ba7f9e7c907bcb8b204da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Span.html">Span</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#ad623bcddd22ba7f9e7c907bcb8b204da">operator=</a> (<a class="el" href="classthorin_1_1Span.html">Span</a> other) noexcept</td></tr>
-<tr class="separator:ad623bcddd22ba7f9e7c907bcb8b204da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">size</div></td></tr>
-<tr class="memitem:aa5a0547ec48aad3651f3e8552526ffa6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#aa5a0547ec48aad3651f3e8552526ffa6">size</a> () const</td></tr>
-<tr class="separator:aa5a0547ec48aad3651f3e8552526ffa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab110bf02d1b0adaf7511d2b428f46859"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#ab110bf02d1b0adaf7511d2b428f46859">empty</a> () const</td></tr>
-<tr class="separator:ab110bf02d1b0adaf7511d2b428f46859"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">begin/end iterators</div></td></tr>
-<tr class="memitem:a06ae51c5bb2655da495ca14904e2e493"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Span.html#a1f71d5516d44436fafc403d7f75745f2">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a06ae51c5bb2655da495ca14904e2e493">begin</a> () const</td></tr>
-<tr class="separator:a06ae51c5bb2655da495ca14904e2e493"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a921b2d7298048741d8ef5289d23ba023"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Span.html#a1f71d5516d44436fafc403d7f75745f2">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a921b2d7298048741d8ef5289d23ba023">end</a> () const</td></tr>
-<tr class="separator:a921b2d7298048741d8ef5289d23ba023"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0e49cbd857a3371c3c3a272bfa63275"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Span.html#a68183669677b2bd39b7e9252386e2681">const_reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#ad0e49cbd857a3371c3c3a272bfa63275">rbegin</a> () const</td></tr>
-<tr class="separator:ad0e49cbd857a3371c3c3a272bfa63275"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a7e48d1f7a14cd714fa9873fe4b5886"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Span.html#a68183669677b2bd39b7e9252386e2681">const_reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a7a7e48d1f7a14cd714fa9873fe4b5886">rend</a> () const</td></tr>
-<tr class="separator:a7a7e48d1f7a14cd714fa9873fe4b5886"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">access</div></td></tr>
-<tr class="memitem:a1199f1e9b53bd7c38127bc833d31e10c"><td class="memItemLeft" align="right" valign="top">const T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a1199f1e9b53bd7c38127bc833d31e10c">operator[]</a> (<a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> i) const</td></tr>
-<tr class="separator:a1199f1e9b53bd7c38127bc833d31e10c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90dba53efb6ff6c9a1f9887985d39541"><td class="memItemLeft" align="right" valign="top">T const &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a90dba53efb6ff6c9a1f9887985d39541">front</a> () const</td></tr>
-<tr class="separator:a90dba53efb6ff6c9a1f9887985d39541"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10258d40c37ed0b0d54a1f67e9a91fe5"><td class="memItemLeft" align="right" valign="top">T const &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a10258d40c37ed0b0d54a1f67e9a91fe5">back</a> () const</td></tr>
-<tr class="separator:a10258d40c37ed0b0d54a1f67e9a91fe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">slice</div></td></tr>
-<tr class="memitem:a4fb8a96d999fc4c578b204b5934a8e6c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Span.html">Span</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a4fb8a96d999fc4c578b204b5934a8e6c">skip_front</a> (<a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> num=1) const</td></tr>
-<tr class="separator:a4fb8a96d999fc4c578b204b5934a8e6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79fbccc8ac93a9268efaacb9e8574fa6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Span.html">Span</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a79fbccc8ac93a9268efaacb9e8574fa6">skip_back</a> (<a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> num=1) const</td></tr>
-<tr class="separator:a79fbccc8ac93a9268efaacb9e8574fa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c7991b365a38d6fd4b091d6085de4d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Span.html">Span</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a4c7991b365a38d6fd4b091d6085de4d2">first</a> (<a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> num=1) const</td></tr>
-<tr class="separator:a4c7991b365a38d6fd4b091d6085de4d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e7329b0e782e140583ba0a253a225e8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Span.html">Span</a>&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a1e7329b0e782e140583ba0a253a225e8">last</a> (<a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> num=1) const</td></tr>
-<tr class="separator:a1e7329b0e782e140583ba0a253a225e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">relational operators</div></td></tr>
-<tr class="memitem:ad605a07e6bc7aad9888423840218d536"><td class="memTemplParams" colspan="2">template&lt;class Other &gt; </td></tr>
-<tr class="memitem:ad605a07e6bc7aad9888423840218d536"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#ad605a07e6bc7aad9888423840218d536">operator==</a> (const Other &amp;other) const</td></tr>
-<tr class="separator:ad605a07e6bc7aad9888423840218d536"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfbf8287eb3d0106bd5df704ba03136c"><td class="memTemplParams" colspan="2">template&lt;class Other &gt; </td></tr>
-<tr class="memitem:adfbf8287eb3d0106bd5df704ba03136c"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#adfbf8287eb3d0106bd5df704ba03136c">operator!=</a> (const Other &amp;other) const</td></tr>
-<tr class="separator:adfbf8287eb3d0106bd5df704ba03136c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Constructors</div></td></tr>
+<tr class="memitem:ae5f2fe3ea28653503ac489466b242e74"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#ae5f2fe3ea28653503ac489466b242e74">explicit</a> (N !=std::dynamic_extent) const expr <a class="el" href="classthorin_1_1Span.html">Span</a>(std</td></tr>
+<tr class="separator:ae5f2fe3ea28653503ac489466b242e74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96223307db47b52907fe467a40e0ec5b"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a96223307db47b52907fe467a40e0ec5b">Span</a> (std::span&lt; T, N &gt; span) noexcept</td></tr>
+<tr class="separator:a96223307db47b52907fe467a40e0ec5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a47c5456a752fa9f61263354db7378e"><td class="memTemplParams" colspan="2">template&lt;Vectorlike Vec&gt; <br />
+requires (std::is_same_v&lt;typename Vec::value_type, T&gt;)</td></tr>
+<tr class="memitem:a2a47c5456a752fa9f61263354db7378e"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a2a47c5456a752fa9f61263354db7378e">explicit</a> (N !=std::dynamic_extent) const expr <a class="el" href="classthorin_1_1Span.html">Span</a>(Vec &amp;vec)</td></tr>
+<tr class="separator:a2a47c5456a752fa9f61263354db7378e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a550896efb2773f09c9af9205cbbc527b"><td class="memTemplParams" colspan="2">template&lt;Vectorlike Vec&gt; <br />
+requires (std::is_same_v&lt;std::add_const_t&lt;typename Vec::value_type&gt;, std::add_const_t&lt;T&gt;&gt;)</td></tr>
+<tr class="memitem:a550896efb2773f09c9af9205cbbc527b"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a550896efb2773f09c9af9205cbbc527b">explicit</a> (N !=std::dynamic_extent) const expr <a class="el" href="classthorin_1_1Span.html">Span</a>(const Vec &amp;vec)</td></tr>
+<tr class="separator:a550896efb2773f09c9af9205cbbc527b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a865a97118fbd96956a59f8181dbaebad"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a865a97118fbd96956a59f8181dbaebad">Span</a> (typename Base::pointer p)</td></tr>
+<tr class="separator:a865a97118fbd96956a59f8181dbaebad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">subspan</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p >Wrappers for <code>std::span::subspan</code> that return a <code><a class="el" href="classthorin_1_1Span.html" title="This is a thin wrapper for std::span&lt;T, N&gt; with the following additional features:">thorin::Span</a></code>. </p>
+</div></td></tr>
+<tr class="memitem:aff3891634b0df9e0cfc7d946ec396bc6"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classthorin_1_1Span.html">Span</a>&lt; T, std::dynamic_extent &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#aff3891634b0df9e0cfc7d946ec396bc6">subspan</a> (size_t i, size_t n=std::dynamic_extent) const</td></tr>
+<tr class="separator:aff3891634b0df9e0cfc7d946ec396bc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff6fc4a6380b4a37b8e94396a205b072"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classthorin_1_1Span.html">Span</a>&lt; T, std::dynamic_extent &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#aff6fc4a6380b4a37b8e94396a205b072">rsubspan</a> (size_t i, size_t n=std::dynamic_extent) const</td></tr>
+<tr class="separator:aff6fc4a6380b4a37b8e94396a205b072"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">rsubspan</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p >Similar to <a class="el" href="classthorin_1_1Span.html#aff3891634b0df9e0cfc7d946ec396bc6">Span::subspan</a> but in <em>reverse</em>: <code>span.rsubspan(3, 5)</code> removes the last 3 elements and while picking 5 elements onwards from there.</p>
+<p >E.g.: If <code>span</code> points to <code>0, 1, 2, 3, 4, 5, 6, 7, 8, 9</code>, then the result will point to <code>2, 3, 4, 5, 6</code>. </p>
+</div></td></tr>
+<tr class="memitem:a92075819e6a5a5f50a211e59dab9e0e9"><td class="memTemplParams" colspan="2">template&lt;size_t i, size_t n = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:a92075819e6a5a5f50a211e59dab9e0e9"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classthorin_1_1Span.html">Span</a>&lt; T, n !=std::dynamic_extent ? n :(N !=std::dynamic_extent ? N - i :std::dynamic_extent)&gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a92075819e6a5a5f50a211e59dab9e0e9">subspan</a> () const</td></tr>
+<tr class="separator:a92075819e6a5a5f50a211e59dab9e0e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a6315115ebb3fb03d54833ee9ee642b"><td class="memTemplParams" colspan="2">template&lt;size_t i, size_t n = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:a9a6315115ebb3fb03d54833ee9ee642b"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classthorin_1_1Span.html">Span</a>&lt; T, n !=std::dynamic_extent ? n :(N !=std::dynamic_extent ? N - i :std::dynamic_extent)&gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Span.html#a9a6315115ebb3fb03d54833ee9ee642b">rsubspan</a> () const</td></tr>
+<tr class="separator:a9a6315115ebb3fb03d54833ee9ee642b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;class T&gt;<br />
-class thorin::Span&lt; T &gt;</div><p >A container-like wrapper for an array. </p>
-<p >The array may either stem from a C array, a <code>std::vector</code>, a <code>std::initializer_list</code>, an <a class="el" href="classthorin_1_1Array.html" title="A container for an array, either heap-allocated or stack allocated.">Array</a> or another <a class="el" href="classthorin_1_1Span.html" title="A container-like wrapper for an array.">Span</a>. <a class="el" href="classthorin_1_1Span.html" title="A container-like wrapper for an array.">Span</a> does <b>not</b> own the data and, thus, does not destroy any data. Likewise, you must be carefull to not destroy data a <a class="el" href="classthorin_1_1Span.html" title="A container-like wrapper for an array.">Span</a> is pointing to. Note that you can often construct a <a class="el" href="classthorin_1_1Span.html" title="A container-like wrapper for an array.">Span</a> inline with an initializer_list: <code>foo(arg1, {elem1, elem2, elem3}, arg3)</code>. </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;class T, size_t N = std::dynamic_extent&gt;<br />
+class thorin::Span&lt; T, N &gt;</div><p >This is a thin wrapper for <code>std::span&lt;T, N&gt;</code> with the following additional features: </p>
+<ul>
+<li>Constructor with <code>std::initializer_list</code> (C++26 will get this ...)</li>
+<li>Constructor for any compatible Vectorlike argument</li>
+<li>rsubspan (reverse subspan)</li>
+<li>structured binding, if <code>N != std::dynamic_extent:</code> <div class="fragment"><div class="line"><span class="keywordtype">void</span> f(<a class="code hl_class" href="classthorin_1_1Span.html">Span&lt;int, 3&gt;</a> span) {</div>
+<div class="line">    <span class="keyword">auto</span>&amp; [a, b, c] = span;</div>
+<div class="line">    b = 23;</div>
+<div class="line">    <span class="comment">// ...</span></div>
+<div class="line">}</div>
+<div class="ttc" id="aclassthorin_1_1Span_html"><div class="ttname"><a href="classthorin_1_1Span.html">thorin::Span</a></div><div class="ttdoc">This is a thin wrapper for std::span&lt;T, N&gt; with the following additional features:</div><div class="ttdef"><b>Definition:</b> <a href="span_8h_source.html#l00027">span.h:27</a></div></div>
+</div><!-- fragment --> </li>
+</ul>
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00026">26</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00027">27</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a1f71d5516d44436fafc403d7f75745f2" name="a1f71d5516d44436fafc403d7f75745f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f71d5516d44436fafc403d7f75745f2">&#9670;&#160;</a></span>const_iterator</h2>
+<a id="a9032d2f48a89ee31a705f43a94d6bbff" name="a9032d2f48a89ee31a705f43a94d6bbff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9032d2f48a89ee31a705f43a94d6bbff">&#9670;&#160;</a></span>Base</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
+template&lt;class T , size_t N = std::dynamic_extent&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::const_iterator =  const T*</td>
+          <td class="memname">using <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T, N &gt;::Base =  std::span&lt;T, N&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00029">29</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
-
-</div>
-</div>
-<a id="a68183669677b2bd39b7e9252386e2681" name="a68183669677b2bd39b7e9252386e2681"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68183669677b2bd39b7e9252386e2681">&#9670;&#160;</a></span>const_reverse_iterator</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::const_reverse_iterator =  std::reverse_iterator&lt;<a class="el" href="classthorin_1_1Span.html#a1f71d5516d44436fafc403d7f75745f2">const_iterator</a>&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00030">30</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
-
-</div>
-</div>
-<a id="a473626c504006ff8c951f6bd312c7581" name="a473626c504006ff8c951f6bd312c7581"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a473626c504006ff8c951f6bd312c7581">&#9670;&#160;</a></span>value_type</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::value_type =  T</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00028">28</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00029">29</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="affc0b021474fa4bbcc93ef1cc8e30279" name="affc0b021474fa4bbcc93ef1cc8e30279"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#affc0b021474fa4bbcc93ef1cc8e30279">&#9670;&#160;</a></span>Span() <span class="overload">[1/9]</span></h2>
+<a id="a96223307db47b52907fe467a40e0ec5b" name="a96223307db47b52907fe467a40e0ec5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96223307db47b52907fe467a40e0ec5b">&#9670;&#160;</a></span>Span() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
+template&lt;class T , size_t N = std::dynamic_extent&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::Span </td>
+          <td class="memname">constexpr <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T, N &gt;::Span </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a9f46b424583889ba6781a7480f07c242" name="a9f46b424583889ba6781a7480f07c242"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9f46b424583889ba6781a7480f07c242">&#9670;&#160;</a></span>Span() <span class="overload">[2/9]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::Span </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classthorin_1_1Span.html">Span</a>&lt; T &gt; &amp;&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a24db046ec6637a80de018314e9a3cb75" name="a24db046ec6637a80de018314e9a3cb75"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24db046ec6637a80de018314e9a3cb75">&#9670;&#160;</a></span>Span() <span class="overload">[3/9]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::Span </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classthorin_1_1Span.html">Span</a>&lt; T &gt; &amp;&amp;&#160;</td>
+          <td class="paramtype">std::span&lt; T, N &gt;&#160;</td>
           <td class="paramname"><em>span</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">default</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00036">36</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+
 </div>
 </div>
-<a id="af941ca271be559f1b01bf9a852b612b9" name="af941ca271be559f1b01bf9a852b612b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af941ca271be559f1b01bf9a852b612b9">&#9670;&#160;</a></span>Span() <span class="overload">[4/9]</span></h2>
+<a id="a865a97118fbd96956a59f8181dbaebad" name="a865a97118fbd96956a59f8181dbaebad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a865a97118fbd96956a59f8181dbaebad">&#9670;&#160;</a></span>Span() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
+template&lt;class T , size_t N = std::dynamic_extent&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::Span </td>
+          <td class="memname">constexpr <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T, N &gt;::Span </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td>
-          <td class="paramname"><em>size</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const T *&#160;</td>
-          <td class="paramname"><em>ptr</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00037">37</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
-
-</div>
-</div>
-<a id="a59e417c006074e3fc499a813bf2a4410" name="a59e417c006074e3fc499a813bf2a4410"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59e417c006074e3fc499a813bf2a4410">&#9670;&#160;</a></span>Span() <span class="overload">[5/9]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<div class="memtemplate">
-template&lt;<a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> N&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::Span </td>
-          <td>(</td>
-          <td class="paramtype">const T(&amp;)&#160;</td>
-          <td class="paramname"><em>ptr</em>[N]</td><td>)</td>
+          <td class="paramtype">typename Base::pointer&#160;</td>
+          <td class="paramname"><em>p</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00041">41</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
-
-</div>
-</div>
-<a id="a8f7bf7df2faf99befbb9c271a4f48a7c" name="a8f7bf7df2faf99befbb9c271a4f48a7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f7bf7df2faf99befbb9c271a4f48a7c">&#9670;&#160;</a></span>Span() <span class="overload">[6/9]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::Span </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classthorin_1_1Array.html">Array</a>&lt; T &gt; &amp;&#160;</td>
-          <td class="paramname"><em>array</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00044">44</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
-
-</div>
-</div>
-<a id="a89c66c9826cdd56925e72279f19bc677" name="a89c66c9826cdd56925e72279f19bc677"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89c66c9826cdd56925e72279f19bc677">&#9670;&#160;</a></span>Span() <span class="overload">[7/9]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<div class="memtemplate">
-template&lt;<a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> N&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::Span </td>
-          <td>(</td>
-          <td class="paramtype">const std::array&lt; T, N &gt; &amp;&#160;</td>
-          <td class="paramname"><em>array</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00048">48</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
-
-</div>
-</div>
-<a id="a858fed2833a87a5e14751fe082a8f6e1" name="a858fed2833a87a5e14751fe082a8f6e1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a858fed2833a87a5e14751fe082a8f6e1">&#9670;&#160;</a></span>Span() <span class="overload">[8/9]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::Span </td>
-          <td>(</td>
-          <td class="paramtype">std::initializer_list&lt; T &gt;&#160;</td>
-          <td class="paramname"><em>list</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00051">51</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
-
-</div>
-</div>
-<a id="a0514371241961b47dd050daf843b6ef2" name="a0514371241961b47dd050daf843b6ef2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0514371241961b47dd050daf843b6ef2">&#9670;&#160;</a></span>Span() <span class="overload">[9/9]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::Span </td>
-          <td>(</td>
-          <td class="paramtype">const std::vector&lt; T &gt; &amp;&#160;</td>
-          <td class="paramname"><em>vector</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00054">54</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00044">44</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a10258d40c37ed0b0d54a1f67e9a91fe5" name="a10258d40c37ed0b0d54a1f67e9a91fe5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a10258d40c37ed0b0d54a1f67e9a91fe5">&#9670;&#160;</a></span>back()</h2>
+<a id="a550896efb2773f09c9af9205cbbc527b" name="a550896efb2773f09c9af9205cbbc527b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a550896efb2773f09c9af9205cbbc527b">&#9670;&#160;</a></span>explicit() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
+template&lt;class T , size_t N = std::dynamic_extent&gt; </div>
+<div class="memtemplate">
+template&lt;Vectorlike Vec&gt; <br />
+requires (std::is_same_v&lt;std::add_const_t&lt;typename Vec::value_type&gt;, std::add_const_t&lt;T&gt;&gt;)</div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">T const  &amp; <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::back </td>
+          <td class="memname"><a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T, N &gt;::explicit </td>
+          <td>(</td>
+          <td class="paramtype">N !&#160;</td>
+          <td class="paramname"> = <code>std::dynamic_extent</code></td><td>)</td>
+          <td> const &amp;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00042">42</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+
+</div>
+</div>
+<a id="ae5f2fe3ea28653503ac489466b242e74" name="ae5f2fe3ea28653503ac489466b242e74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5f2fe3ea28653503ac489466b242e74">&#9670;&#160;</a></span>explicit() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , size_t N = std::dynamic_extent&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T, N &gt;::explicit </td>
+          <td>(</td>
+          <td class="paramtype">N !&#160;</td>
+          <td class="paramname"> = <code>std::dynamic_extent</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00034">34</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+
+</div>
+</div>
+<a id="a2a47c5456a752fa9f61263354db7378e" name="a2a47c5456a752fa9f61263354db7378e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a47c5456a752fa9f61263354db7378e">&#9670;&#160;</a></span>explicit() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , size_t N = std::dynamic_extent&gt; </div>
+<div class="memtemplate">
+template&lt;Vectorlike Vec&gt; <br />
+requires (std::is_same_v&lt;typename Vec::value_type, T&gt;)</div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T, N &gt;::explicit </td>
+          <td>(</td>
+          <td class="paramtype">N !&#160;</td>
+          <td class="paramname"> = <code>std::dynamic_extent</code></td><td>)</td>
+          <td> const &amp;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00039">39</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+
+</div>
+</div>
+<a id="a9a6315115ebb3fb03d54833ee9ee642b" name="a9a6315115ebb3fb03d54833ee9ee642b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a6315115ebb3fb03d54833ee9ee642b">&#9670;&#160;</a></span>rsubspan() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , size_t N = std::dynamic_extent&gt; </div>
+<div class="memtemplate">
+template&lt;size_t i, size_t n = std::dynamic_extent&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="classthorin_1_1Span.html">Span</a>&lt; T, n !=std::dynamic_extent ? n :(N !=std::dynamic_extent ? N - i :std::dynamic_extent)&gt; <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T, N &gt;::rsubspan </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -559,352 +384,72 @@ template&lt;class T &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00084">84</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
-
-<p class="reference">References <a class="el" href="array_8h_source.html#l00063">thorin::Span&lt; T &gt;::empty()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00074">74</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
 </div>
 </div>
-<a id="a06ae51c5bb2655da495ca14904e2e493" name="a06ae51c5bb2655da495ca14904e2e493"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a06ae51c5bb2655da495ca14904e2e493">&#9670;&#160;</a></span>begin()</h2>
+<a id="aff6fc4a6380b4a37b8e94396a205b072" name="aff6fc4a6380b4a37b8e94396a205b072"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff6fc4a6380b4a37b8e94396a205b072">&#9670;&#160;</a></span>rsubspan() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
+template&lt;class T , size_t N = std::dynamic_extent&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Span.html#a1f71d5516d44436fafc403d7f75745f2">const_iterator</a> <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::begin </td>
+          <td class="memname">constexpr <a class="el" href="classthorin_1_1Span.html">Span</a>&lt; T, std::dynamic_extent &gt; <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T, N &gt;::rsubspan </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
         </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00068">68</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="array_8h_source.html#l00109">thorin::Span&lt; T &gt;::operator!=()</a>, <a class="el" href="array_8h_source.html#l00106">thorin::Span&lt; T &gt;::operator==()</a>, and <a class="el" href="array_8h_source.html#l00071">thorin::Span&lt; T &gt;::rend()</a>.</p>
-
-</div>
-</div>
-<a id="ab110bf02d1b0adaf7511d2b428f46859" name="ab110bf02d1b0adaf7511d2b428f46859"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab110bf02d1b0adaf7511d2b428f46859">&#9670;&#160;</a></span>empty()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::empty </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00063">63</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="array_8h_source.html#l00084">thorin::Span&lt; T &gt;::back()</a>, <a class="el" href="array_8h_source.html#l00080">thorin::Span&lt; T &gt;::front()</a>, and <a class="el" href="check_8cpp_source.html#l00213">thorin::Check::is_uniform()</a>.</p>
-
-</div>
-</div>
-<a id="a921b2d7298048741d8ef5289d23ba023" name="a921b2d7298048741d8ef5289d23ba023"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a921b2d7298048741d8ef5289d23ba023">&#9670;&#160;</a></span>end()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Span.html#a1f71d5516d44436fafc403d7f75745f2">const_iterator</a> <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::end </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00069">69</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="array_8h_source.html#l00109">thorin::Span&lt; T &gt;::operator!=()</a>, <a class="el" href="array_8h_source.html#l00106">thorin::Span&lt; T &gt;::operator==()</a>, and <a class="el" href="array_8h_source.html#l00070">thorin::Span&lt; T &gt;::rbegin()</a>.</p>
-
-</div>
-</div>
-<a id="a4c7991b365a38d6fd4b091d6085de4d2" name="a4c7991b365a38d6fd4b091d6085de4d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4c7991b365a38d6fd4b091d6085de4d2">&#9670;&#160;</a></span>first()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Span.html">Span</a>&lt; T &gt; <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::first </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td>
-          <td class="paramname"><em>num</em> = <code>1</code></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00094">94</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
-
-<p class="reference">References <a class="el" href="array_8h_source.html#l00062">thorin::Span&lt; T &gt;::size()</a>.</p>
-
-</div>
-</div>
-<a id="a90dba53efb6ff6c9a1f9887985d39541" name="a90dba53efb6ff6c9a1f9887985d39541"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90dba53efb6ff6c9a1f9887985d39541">&#9670;&#160;</a></span>front()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">T const  &amp; <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::front </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00080">80</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
-
-<p class="reference">References <a class="el" href="array_8h_source.html#l00063">thorin::Span&lt; T &gt;::empty()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00213">thorin::Check::is_uniform()</a>.</p>
-
-</div>
-</div>
-<a id="a1e7329b0e782e140583ba0a253a225e8" name="a1e7329b0e782e140583ba0a253a225e8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e7329b0e782e140583ba0a253a225e8">&#9670;&#160;</a></span>last()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Span.html">Span</a>&lt; T &gt; <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::last </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td>
-          <td class="paramname"><em>num</em> = <code>1</code></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00098">98</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
-
-<p class="reference">References <a class="el" href="array_8h_source.html#l00062">thorin::Span&lt; T &gt;::size()</a>.</p>
-
-</div>
-</div>
-<a id="adfbf8287eb3d0106bd5df704ba03136c" name="adfbf8287eb3d0106bd5df704ba03136c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adfbf8287eb3d0106bd5df704ba03136c">&#9670;&#160;</a></span>operator!=()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<div class="memtemplate">
-template&lt;class Other &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::operator!= </td>
-          <td>(</td>
-          <td class="paramtype">const Other &amp;&#160;</td>
-          <td class="paramname"><em>other</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00109">109</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
-
-<p class="reference">References <a class="el" href="array_8h_source.html#l00068">thorin::Span&lt; T &gt;::begin()</a>, <a class="el" href="array_8h_source.html#l00069">thorin::Span&lt; T &gt;::end()</a>, and <a class="el" href="array_8h_source.html#l00062">thorin::Span&lt; T &gt;::size()</a>.</p>
-
-</div>
-</div>
-<a id="ad623bcddd22ba7f9e7c907bcb8b204da" name="ad623bcddd22ba7f9e7c907bcb8b204da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad623bcddd22ba7f9e7c907bcb8b204da">&#9670;&#160;</a></span>operator=()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Span.html">Span</a> &amp; <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::operator= </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classthorin_1_1Span.html">Span</a>&lt; T &gt;&#160;</td>
-          <td class="paramname"><em>other</em></td><td>)</td>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em> = <code>std::dynamic_extent</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">noexcept</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00057">57</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00056">56</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
-<p class="reference">References <a class="el" href="array_8h_source.html#l00122">thorin::Span&lt; T &gt;::swap</a>.</p>
+<p class="reference">References <a class="el" href="span_8h_source.html#l00068">thorin::Span&lt; T, N &gt;::subspan()</a>.</p>
 
 </div>
 </div>
-<a id="ad605a07e6bc7aad9888423840218d536" name="ad605a07e6bc7aad9888423840218d536"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad605a07e6bc7aad9888423840218d536">&#9670;&#160;</a></span>operator==()</h2>
+<a id="a92075819e6a5a5f50a211e59dab9e0e9" name="a92075819e6a5a5f50a211e59dab9e0e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92075819e6a5a5f50a211e59dab9e0e9">&#9670;&#160;</a></span>subspan() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
+template&lt;class T , size_t N = std::dynamic_extent&gt; </div>
 <div class="memtemplate">
-template&lt;class Other &gt; </div>
+template&lt;size_t i, size_t n = std::dynamic_extent&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::operator== </td>
-          <td>(</td>
-          <td class="paramtype">const Other &amp;&#160;</td>
-          <td class="paramname"><em>other</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00106">106</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
-
-<p class="reference">References <a class="el" href="array_8h_source.html#l00068">thorin::Span&lt; T &gt;::begin()</a>, <a class="el" href="array_8h_source.html#l00069">thorin::Span&lt; T &gt;::end()</a>, and <a class="el" href="array_8h_source.html#l00062">thorin::Span&lt; T &gt;::size()</a>.</p>
-
-</div>
-</div>
-<a id="a1199f1e9b53bd7c38127bc833d31e10c" name="a1199f1e9b53bd7c38127bc833d31e10c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1199f1e9b53bd7c38127bc833d31e10c">&#9670;&#160;</a></span>operator[]()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const T &amp; <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::operator[] </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td>
-          <td class="paramname"><em>i</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00076">76</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
-
-<p class="reference">References <a class="el" href="array_8h_source.html#l00062">thorin::Span&lt; T &gt;::size()</a>.</p>
-
-</div>
-</div>
-<a id="ad0e49cbd857a3371c3c3a272bfa63275" name="ad0e49cbd857a3371c3c3a272bfa63275"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad0e49cbd857a3371c3c3a272bfa63275">&#9670;&#160;</a></span>rbegin()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Span.html#a68183669677b2bd39b7e9252386e2681">const_reverse_iterator</a> <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::rbegin </td>
+          <td class="memname">constexpr <a class="el" href="classthorin_1_1Span.html">Span</a>&lt; T, n !=std::dynamic_extent ? n :(N !=std::dynamic_extent ? N - i :std::dynamic_extent)&gt; <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T, N &gt;::subspan </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -912,180 +457,59 @@ template&lt;class T &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00070">70</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00068">68</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
-<p class="reference">References <a class="el" href="array_8h_source.html#l00069">thorin::Span&lt; T &gt;::end()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="span_8h_source.html#l00056">thorin::Span&lt; T, N &gt;::rsubspan()</a>.</p>
 
 </div>
 </div>
-<a id="a7a7e48d1f7a14cd714fa9873fe4b5886" name="a7a7e48d1f7a14cd714fa9873fe4b5886"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a7e48d1f7a14cd714fa9873fe4b5886">&#9670;&#160;</a></span>rend()</h2>
+<a id="aff3891634b0df9e0cfc7d946ec396bc6" name="aff3891634b0df9e0cfc7d946ec396bc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff3891634b0df9e0cfc7d946ec396bc6">&#9670;&#160;</a></span>subspan() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;class T &gt; </div>
+template&lt;class T , size_t N = std::dynamic_extent&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Span.html#a68183669677b2bd39b7e9252386e2681">const_reverse_iterator</a> <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::rend </td>
+          <td class="memname">constexpr <a class="el" href="classthorin_1_1Span.html">Span</a>&lt; T, std::dynamic_extent &gt; <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T, N &gt;::subspan </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
         </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00071">71</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
-
-<p class="reference">References <a class="el" href="array_8h_source.html#l00068">thorin::Span&lt; T &gt;::begin()</a>.</p>
-
-</div>
-</div>
-<a id="aa5a0547ec48aad3651f3e8552526ffa6" name="aa5a0547ec48aad3651f3e8552526ffa6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa5a0547ec48aad3651f3e8552526ffa6">&#9670;&#160;</a></span>size()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::size </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em> = <code>std::dynamic_extent</code>&#160;</td>
         </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00062">62</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00495">thorin::World::ac()</a>, <a class="el" href="clos_8cpp_source.html#l00139">thorin::clos::ctype()</a>, <a class="el" href="array_8h_source.html#l00094">thorin::Span&lt; T &gt;::first()</a>, <a class="el" href="check_8cpp_source.html#l00213">thorin::Check::is_uniform()</a>, <a class="el" href="array_8h_source.html#l00098">thorin::Span&lt; T &gt;::last()</a>, <a class="el" href="tuple_8cpp_source.html#l00083">thorin::merge()</a>, <a class="el" href="def_8h_source.html#l00301">thorin::Def::num_extended_ops()</a>, <a class="el" href="def_8h_source.html#l00311">thorin::Def::num_partial_ops()</a>, <a class="el" href="affine_8h_source.html#l00021">thorin::affine::op_for()</a>, <a class="el" href="array_8h_source.html#l00109">thorin::Span&lt; T &gt;::operator!=()</a>, <a class="el" href="array_8h_source.html#l00106">thorin::Span&lt; T &gt;::operator==()</a>, <a class="el" href="array_8h_source.html#l00076">thorin::Span&lt; T &gt;::operator[]()</a>, <a class="el" href="world_8h_source.html#l00192">thorin::World::proxy()</a>, <a class="el" href="world_8cpp_source.html#l00230">thorin::World::sigma()</a>, <a class="el" href="array_8h_source.html#l00093">thorin::Span&lt; T &gt;::skip_back()</a>, <a class="el" href="array_8h_source.html#l00092">thorin::Span&lt; T &gt;::skip_front()</a>, <a class="el" href="array_8h_source.html#l00115">thorin::Span&lt; T &gt;::to_array()</a>, <a class="el" href="world_8cpp_source.html#l00238">thorin::World::tuple()</a>, and <a class="el" href="tuple_8cpp_source.html#l00074">thorin::unflatten()</a>.</p>
-
-</div>
-</div>
-<a id="a79fbccc8ac93a9268efaacb9e8574fa6" name="a79fbccc8ac93a9268efaacb9e8574fa6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a79fbccc8ac93a9268efaacb9e8574fa6">&#9670;&#160;</a></span>skip_back()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Span.html">Span</a>&lt; T &gt; <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::skip_back </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td>
-          <td class="paramname"><em>num</em> = <code>1</code></td><td>)</td>
-          <td> const</td>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00093">93</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
-
-<p class="reference">References <a class="el" href="array_8h_source.html#l00062">thorin::Span&lt; T &gt;::size()</a>.</p>
-
-</div>
-</div>
-<a id="a4fb8a96d999fc4c578b204b5934a8e6c" name="a4fb8a96d999fc4c578b204b5934a8e6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4fb8a96d999fc4c578b204b5934a8e6c">&#9670;&#160;</a></span>skip_front()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Span.html">Span</a>&lt; T &gt; <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::skip_front </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td>
-          <td class="paramname"><em>num</em> = <code>1</code></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00092">92</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
-
-<p class="reference">References <a class="el" href="array_8h_source.html#l00062">thorin::Span&lt; T &gt;::size()</a>.</p>
-
-</div>
-</div>
-<a id="ae0abe79e4644792ea60102298bfd2b15" name="ae0abe79e4644792ea60102298bfd2b15"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae0abe79e4644792ea60102298bfd2b15">&#9670;&#160;</a></span>to_array()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<div class="memtemplate">
-template&lt;<a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> N&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::array&lt; T, N &gt; <a class="el" href="classthorin_1_1Span.html">thorin::Span</a>&lt; T &gt;::to_array </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Convert to <code>std::array</code>. </p>
-
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00115">115</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
-
-<p class="reference">References <a class="el" href="array_8h_source.html#l00062">thorin::Span&lt; T &gt;::size()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00053">53</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>thorin/util/<a class="el" href="array_8h_source.html">array.h</a></li>
+<li>thorin/util/<a class="el" href="span_8h_source.html">span.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

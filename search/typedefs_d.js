@@ -1,12 +1,10 @@
 var searchData=
 [
-  ['s16_0',['s16',['../namespacethorin.html#a104d78a6244c650db16518f3a6238b20',1,'thorin']]],
-  ['s32_1',['s32',['../namespacethorin.html#a912ad8ed42c2f6fe731351938aad6021',1,'thorin']]],
-  ['s64_2',['s64',['../namespacethorin.html#a8eded40f472d8b97b1e697f554c3573a',1,'thorin']]],
-  ['s8_3',['s8',['../namespacethorin.html#ab0f99eb12483ec616d52dd577f7ae546',1,'thorin']]],
-  ['schedule_4',['Schedule',['../classthorin_1_1Scheduler.html#a664f1796c2e2d83b7ffa2e5be4199446',1,'thorin::Scheduler']]],
-  ['scope_5',['Scope',['../classthorin_1_1Scopes.html#a7c5ad193ec002610bf8369fd8e281639',1,'thorin::Scopes']]],
-  ['set_6',['Set',['../classthorin_1_1CFG.html#a5627c508042392a0bdad6a46e7326804',1,'thorin::CFG']]],
-  ['sub_5ft_7',['sub_t',['../namespacethorin.html#a15ce090292f7ca88b828d15baf109838',1,'thorin']]],
-  ['super_8',['Super',['../classthorin_1_1ll_1_1Emitter.html#abd8c55ae877a2be9af0a6cf53ee2bde9',1,'thorin::ll::Emitter::Super()'],['../classthorin_1_1dot_1_1Emitter.html#a8e1c4f882defe272daeda6cce3c2fe75',1,'thorin::dot::Emitter::Super()'],['../classthorin_1_1FPPass.html#a0942944069a8b0603e1e3e4309c1541c',1,'thorin::FPPass::Super()']]]
+  ['u1_0',['u1',['../namespacethorin.html#aa540ae7ab9303fdd42fd43309ab1f465',1,'thorin']]],
+  ['u16_1',['u16',['../namespacethorin.html#a9689480ababad9d91947881b6c5da5e8',1,'thorin']]],
+  ['u32_2',['u32',['../namespacethorin.html#a80a833cf2f0cd4eb44a795cc30a83450',1,'thorin']]],
+  ['u64_3',['u64',['../namespacethorin.html#a22aa1b457904ccc13d8473ab38003efd',1,'thorin']]],
+  ['u8_4',['u8',['../namespacethorin.html#ad56e33ae995f3dc833c281c3945c335d',1,'thorin']]],
+  ['undo_5ft_5',['undo_t',['../namespacethorin.html#aae49afdff4a29ba1d94c3fada6e7b32e',1,'thorin']]],
+  ['uses_6',['Uses',['../namespacethorin.html#a39c45420c934930021cbf0784f2ce5a6',1,'thorin']]]
 ];

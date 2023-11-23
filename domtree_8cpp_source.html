@@ -122,7 +122,7 @@ $(document).ready(function(){initNavTree('domtree_8cpp_source.html',''); initRes
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    idoms_[cfg().entry()] = cfg().entry();</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <span class="comment">// all idoms different from entry are set to their first found dominating pred</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> n : cfg().reverse_post_order().skip_front()) {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> n : cfg().reverse_post_order().subspan(1)) {</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> pred : cfg().preds(n)) {</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>            <span class="keywordflow">if</span> (cfg().index(pred) &lt; cfg().index(n)) {</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>                idoms_[n] = pred;</div>
@@ -136,7 +136,7 @@ $(document).ready(function(){initNavTree('domtree_8cpp_source.html',''); initRes
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keywordflow">for</span> (<span class="keywordtype">bool</span> todo = <span class="keyword">true</span>; todo;) {</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        todo = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> n : cfg().reverse_post_order().skip_front()) {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> n : cfg().reverse_post_order().subspan(1)) {</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>            <span class="keyword">const</span> CFNode* new_idom = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> pred : cfg().preds(n)) new_idom = new_idom ? least_common_ancestor(new_idom, pred) : pred;</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
@@ -148,7 +148,7 @@ $(document).ready(function(){initNavTree('domtree_8cpp_source.html',''); initRes
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        }</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    }</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> n : cfg().reverse_post_order().skip_front()) children_[idom(n)].push_back(n);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> n : cfg().reverse_post_order().subspan(1)) children_[idom(n)].push_back(n);</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>}</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> forward&gt; <span class="keywordtype">void</span> <a class="code hl_function" href="classthorin_1_1DomTreeBase.html#a8feb50e769af2702cc0c171d0ee9b353">DomTreeBase&lt;forward&gt;::depth</a>(<span class="keyword">const</span> CFNode* n, <span class="keywordtype">int</span> i) {</div>

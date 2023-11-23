@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['iterator_0',['iterator',['../classthorin_1_1Array.html#adccaeb8835d1b969fbfeb99ad52d2e90',1,'thorin::Array']]]
+  ['join_0',['Join',['../namespacethorin.html#ae311e26ec0350fe3dbae561de879d594',1,'thorin']]]
 ];

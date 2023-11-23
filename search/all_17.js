@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['w_0',['W',['../namespacethorin_1_1regex.html#a8c7a401db4442fe8a7fdae0160c89f51abb576b2b2802c53b89d9cdd6924d254c',1,'thorin::regex']]],
-  ['w_1',['w',['../structthorin_1_1regex_1_1app__range.html#a988afc948256ec1c8462e04ddeaad777',1,'thorin::regex::app_range::w()'],['../namespacethorin_1_1regex.html#a8c7a401db4442fe8a7fdae0160c89f51a5efb65f7d142ffe729c91d91c802708d',1,'thorin::regex::w()']]],
+  ['w_0',['w',['../namespacethorin_1_1regex.html#a8c7a401db4442fe8a7fdae0160c89f51a5efb65f7d142ffe729c91d91c802708d',1,'thorin::regex::w()'],['../structthorin_1_1regex_1_1app__range.html#a988afc948256ec1c8462e04ddeaad777',1,'thorin::regex::app_range::w()']]],
+  ['w_1',['W',['../namespacethorin_1_1regex.html#a8c7a401db4442fe8a7fdae0160c89f51abb576b2b2802c53b89d9cdd6924d254c',1,'thorin::regex']]],
   ['w2f_2',['w2f',['../namespacethorin.html#acc6f5a1f24c7e5e539d81c4d5670c153',1,'thorin']]],
   ['w2s_3',['w2s',['../namespacethorin.html#a3f00b268822519192e4c657e28393ed1',1,'thorin']]],
   ['w2u_4',['w2u',['../namespacethorin.html#a758e8ee1110137e5998563c4f2ae5a86',1,'thorin']]],

@@ -2,18 +2,6 @@ var hierarchy =
 [
     [ "thorin::Annex", "structthorin_1_1Annex.html", null ],
     [ "thorin::regex::app_range", "structthorin_1_1regex_1_1app__range.html", null ],
-    [ "thorin::Array< T >", "classthorin_1_1Array.html", null ],
-    [ "thorin::Array< const Def * >", "classthorin_1_1Array.html", null ],
-    [ "thorin::Array< uint64_t >", "classthorin_1_1Array.html", null ],
-    [ "thorin::Array< Value >", "classthorin_1_1Array.html", null ],
-    [ "thorin::Array< void * >", "classthorin_1_1Array.html", null ],
-    [ "thorin::ArrayStorage< T, StackSize >", "classthorin_1_1ArrayStorage.html", null ],
-    [ "thorin::ArrayStorage< const Def *, std::is_trivial< const Def * >::value ? 5 :0 >", "classthorin_1_1ArrayStorage.html", null ],
-    [ "thorin::ArrayStorage< T, 0 >", "structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html", null ],
-    [ "thorin::ArrayStorage< T, std::is_trivial< T >::value ? 5 :0 >", "classthorin_1_1ArrayStorage.html", null ],
-    [ "thorin::ArrayStorage< uint64_t, std::is_trivial< uint64_t >::value ? 5 :0 >", "classthorin_1_1ArrayStorage.html", null ],
-    [ "thorin::ArrayStorage< Value, std::is_trivial< Value >::value ? 5 :0 >", "classthorin_1_1ArrayStorage.html", null ],
-    [ "thorin::ArrayStorage< void *, std::is_trivial< void * >::value ? 5 :0 >", "classthorin_1_1ArrayStorage.html", null ],
     [ "thorin::automaton::AutomatonBase< NodeType >", "classthorin_1_1automaton_1_1AutomatonBase.html", null ],
     [ "thorin::automaton::AutomatonBase< DFANode >", "classthorin_1_1automaton_1_1AutomatonBase.html", [
       [ "thorin::automaton::DFA", "classthorin_1_1automaton_1_1DFA.html", null ]
@@ -49,6 +37,18 @@ var hierarchy =
     [ "thorin::IndexMap< const thorin::CFNode * >", "classthorin_1_1IndexMap.html", null ],
     [ "thorin::IndexSet< Indexer, Key >", "classthorin_1_1IndexSet.html", null ],
     [ "thorin::mem::SSAConstr::Info", "classthorin_1_1mem_1_1SSAConstr.html#structthorin_1_1mem_1_1SSAConstr_1_1Info", null ],
+    [ "absl::InlinedVector", null, [
+      [ "thorin::Vector< Value >", "classthorin_1_1Vector.html", null ],
+      [ "thorin::Vector< uint64_t >", "classthorin_1_1Vector.html", null ],
+      [ "thorin::Vector< const thorin::CFNode * >", "classthorin_1_1Vector.html", null ],
+      [ "thorin::Vector< std::unique_ptr< thorin::LoopTree::Base > >", "classthorin_1_1Vector.html", null ],
+      [ "thorin::Vector< const Def * >", "classthorin_1_1Vector.html", null ],
+      [ "thorin::Vector< void * >", "classthorin_1_1Vector.html", null ],
+      [ "thorin::Vector< T, N, A >", "classthorin_1_1Vector.html", null ]
+    ] ],
+    [ "std::integral_constant", null, [
+      [ "std::tuple_size< thorin::Span< T, N > >", "structstd_1_1tuple__size_3_01thorin_1_1Span_3_01T_00_01N_01_4_01_4.html", null ]
+    ] ],
     [ "fe::Lexer", null, [
       [ "thorin::Lexer", "classthorin_1_1Lexer.html", null ]
     ] ],
@@ -240,13 +240,16 @@ var hierarchy =
     [ "thorin::Scheduler", "classthorin_1_1Scheduler.html", null ],
     [ "thorin::Scope", "classthorin_1_1Scope.html", null ],
     [ "thorin::Scopes", "classthorin_1_1Scopes.html", null ],
-    [ "thorin::Span< T >", "classthorin_1_1Span.html", null ],
+    [ "std::span", null, [
+      [ "thorin::Span< T, N >", "classthorin_1_1Span.html", null ]
+    ] ],
     [ "thorin::World::State", "structthorin_1_1World_1_1State.html", null ],
     [ "fe::SymPool", null, [
       [ "thorin::Driver", "classthorin_1_1Driver.html", null ]
     ] ],
     [ "thorin::Tab", "classthorin_1_1Tab.html", null ],
     [ "thorin::Tok", "classthorin_1_1Tok.html", null ],
+    [ "std::tuple_element< I, thorin::Span< T, N > >", "namespacestd.html#structstd_1_1tuple__element_3_01I_00_01thorin_1_1Span_3_01T_00_01N_01_4_01_4", null ],
     [ "thorin::unique_queue< Set >", "classthorin_1_1unique__queue.html", null ],
     [ "thorin::unique_stack< Set >", "classthorin_1_1unique__stack.html", null ],
     [ "thorin::Use", "classthorin_1_1Use.html", null ],
@@ -273,6 +276,5 @@ var hierarchy =
     [ "DefMap< thorin::Type >", "namespace_3globalScope_4.html#classDefMap_3_01thorin_1_1Type_01_4", null ],
     [ "LamMap< BB >", "namespace_3globalScope_4.html#classLamMap_3_01BB_01_4", null ],
     [ "list< DFANode >", "namespace_3globalScope_4.html#classstd_1_1list_3_01DFANode_01_4", null ],
-    [ "list< NFANode >", "namespace_3globalScope_4.html#classstd_1_1list_3_01NFANode_01_4", null ],
-    [ "size_t", "namespace_3globalScope_4.html#classsize__t", null ]
+    [ "list< NFANode >", "namespace_3globalScope_4.html#classstd_1_1list_3_01NFANode_01_4", null ]
 ];

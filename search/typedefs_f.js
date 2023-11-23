@@ -1,10 +1,6 @@
 var searchData=
 [
-  ['u1_0',['u1',['../namespacethorin.html#aa540ae7ab9303fdd42fd43309ab1f465',1,'thorin']]],
-  ['u16_1',['u16',['../namespacethorin.html#a9689480ababad9d91947881b6c5da5e8',1,'thorin']]],
-  ['u32_2',['u32',['../namespacethorin.html#a80a833cf2f0cd4eb44a795cc30a83450',1,'thorin']]],
-  ['u64_3',['u64',['../namespacethorin.html#a22aa1b457904ccc13d8473ab38003efd',1,'thorin']]],
-  ['u8_4',['u8',['../namespacethorin.html#ad56e33ae995f3dc833c281c3945c335d',1,'thorin']]],
-  ['undo_5ft_5',['undo_t',['../namespacethorin.html#aae49afdff4a29ba1d94c3fada6e7b32e',1,'thorin']]],
-  ['uses_6',['Uses',['../namespacethorin.html#a39c45420c934930021cbf0784f2ce5a6',1,'thorin']]]
+  ['w2f_0',['w2f',['../namespacethorin.html#acc6f5a1f24c7e5e539d81c4d5670c153',1,'thorin']]],
+  ['w2s_1',['w2s',['../namespacethorin.html#a3f00b268822519192e4c657e28393ed1',1,'thorin']]],
+  ['w2u_2',['w2u',['../namespacethorin.html#a758e8ee1110137e5998563c4f2ae5a86',1,'thorin']]]
 ];

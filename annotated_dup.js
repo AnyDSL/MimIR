@@ -1,5 +1,9 @@
 var annotated_dup =
 [
+    [ "std", "namespacestd.html", [
+      [ "tuple_element< I, thorin::Span< T, N > >", "namespacestd.html#structstd_1_1tuple__element_3_01I_00_01thorin_1_1Span_3_01T_00_01N_01_4_01_4", "namespacestd_structstd_1_1tuple__element_3_01I_00_01thorin_1_1Span_3_01T_00_01N_01_4_01_4_dup" ],
+      [ "tuple_size< thorin::Span< T, N > >", "structstd_1_1tuple__size_3_01thorin_1_1Span_3_01T_00_01N_01_4_01_4.html", null ]
+    ] ],
     [ "thorin", "namespacethorin.html", [
       [ "affine", "namespacethorin_1_1affine.html", [
         [ "LowerFor", "classthorin_1_1affine_1_1LowerFor.html", "classthorin_1_1affine_1_1LowerFor" ]
@@ -67,9 +71,6 @@ var annotated_dup =
       [ "Annex", "structthorin_1_1Annex.html", "structthorin_1_1Annex" ],
       [ "App", "classthorin_1_1App.html", "classthorin_1_1App" ],
       [ "Arr", "classthorin_1_1Arr.html", "classthorin_1_1Arr" ],
-      [ "Array", "classthorin_1_1Array.html", "classthorin_1_1Array" ],
-      [ "ArrayStorage", "classthorin_1_1ArrayStorage.html", "classthorin_1_1ArrayStorage" ],
-      [ "ArrayStorage< T, 0 >", "structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html", "structthorin_1_1ArrayStorage_3_01T_00_010_01_4" ],
       [ "Axiom", "classthorin_1_1Axiom.html", "classthorin_1_1Axiom" ],
       [ "BetaRed", "classthorin_1_1BetaRed.html", "classthorin_1_1BetaRed" ],
       [ "BitSet", "classthorin_1_1BitSet.html", "classthorin_1_1BitSet" ],
@@ -163,6 +164,7 @@ var annotated_dup =
       [ "UseEq", "structthorin_1_1UseEq.html", "structthorin_1_1UseEq" ],
       [ "UseHash", "structthorin_1_1UseHash.html", "structthorin_1_1UseHash" ],
       [ "Var", "classthorin_1_1Var.html", "classthorin_1_1Var" ],
+      [ "Vector", "classthorin_1_1Vector.html", "classthorin_1_1Vector" ],
       [ "Vel", "classthorin_1_1Vel.html", "classthorin_1_1Vel" ],
       [ "World", "classthorin_1_1World.html", "classthorin_1_1World" ]
     ] ],

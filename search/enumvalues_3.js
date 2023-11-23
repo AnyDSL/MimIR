@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['d_0',['d',['../namespacethorin_1_1regex.html#a8c7a401db4442fe8a7fdae0160c89f51af05ca8d9e7fc46efded757924edbd07e',1,'thorin::regex']]],
-  ['d_1',['D',['../namespacethorin_1_1regex.html#a8c7a401db4442fe8a7fdae0160c89f51ac39cd234393f948db09f2d0ff025d569',1,'thorin::regex']]],
+  ['d_0',['D',['../namespacethorin_1_1regex.html#a8c7a401db4442fe8a7fdae0160c89f51ac39cd234393f948db09f2d0ff025d569',1,'thorin::regex']]],
+  ['d_1',['d',['../namespacethorin_1_1regex.html#a8c7a401db4442fe8a7fdae0160c89f51af05ca8d9e7fc46efded757924edbd07e',1,'thorin::regex']]],
   ['d_5fangle_5fl_2',['D_angle_l',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a9d7c25a7ee8d79c920901fb0b4bae0b6',1,'thorin::Tok']]],
   ['d_5fangle_5fr_3',['D_angle_r',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aecbf83ec5b71cc1fabb68b9b29602913',1,'thorin::Tok']]],
   ['d_5fbrace_5fl_4',['D_brace_l',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038af85fb01799db87e4794e759cd80ab24a',1,'thorin::Tok']]],

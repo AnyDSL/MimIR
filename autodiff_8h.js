@@ -3,7 +3,7 @@ var autodiff_8h =
     [ "autodiff_type_fun", "autodiff_8h.html#ad0de34cfcb9b0717e5a46ab1196ae9b9", null ],
     [ "autodiff_type_fun_pi", "autodiff_8h.html#a8f4a41e00718e35126f7d7c1129ec1a7", null ],
     [ "id_pullback", "autodiff_8h.html#a4edeeeca7c04f18b1bdf6fb6565b2c2c", null ],
-    [ "op_sum", "autodiff_8h.html#a1d80794fc7152a0c80498cce438159ca", null ],
+    [ "op_sum", "autodiff_8h.html#a97f78ee44429b1bb6732c6b7dd5fdc5b", null ],
     [ "pullback_type", "autodiff_8h.html#a06f207047fafa881cc1cbf6fc4f42d0f", null ],
     [ "tangent_type_fun", "autodiff_8h.html#a0183a16e3a07c4937c9aa7822923bde2", null ],
     [ "zero_def", "autodiff_8h.html#a0625c818ce50225081948f7520171b53", null ],

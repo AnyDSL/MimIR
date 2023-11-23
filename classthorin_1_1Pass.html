@@ -143,7 +143,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a785e44e89a73b844706c412a37a40359"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb4b3c1b2145f77898fd1d0c056315e2"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#adb4b3c1b2145f77898fd1d0c056315e2">name</a> () const</td></tr>
 <tr class="separator:adb4b3c1b2145f77898fd1d0c056315e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63f5c69818c98b9c04b9090b955c1a08"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a63f5c69818c98b9c04b9090b955c1a08">index</a> () const</td></tr>
+<tr class="memitem:a63f5c69818c98b9c04b9090b955c1a08"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a63f5c69818c98b9c04b9090b955c1a08">index</a> () const</td></tr>
 <tr class="separator:a63f5c69818c98b9c04b9090b955c1a08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Rewrite Hook for the PassMan</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p >Rewrites an <em>immutable</em> <code>def</code> within <a class="el" href="classthorin_1_1PassMan.html#ad9712c78145a1f4ec54a5ef70d3878e4">PassMan::curr_mut</a>.</p>
@@ -178,7 +178,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a27582b2658d607143385376e34913dc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoked <b>once</b> before entering the main rewrite loop.  <a href="classthorin_1_1Pass.html#a27582b2658d607143385376e34913dc6">More...</a><br /></td></tr>
 <tr class="separator:a27582b2658d607143385376e34913dc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">proxy</div></td></tr>
-<tr class="memitem:ae559ab3c18887d4e6f74f59e1e63c88b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Proxy.html">Proxy</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#ae559ab3c18887d4e6f74f59e1e63c88b">proxy</a> (<a class="el" href="classthorin_1_1Ref.html">Ref</a> type, <a class="el" href="namespacethorin.html#ab6c106c44c8584cd4bdb99b75b915c38">Defs</a> ops, <a class="el" href="namespacethorin.html#a80a833cf2f0cd4eb44a795cc30a83450">u32</a> tag=0)</td></tr>
+<tr class="memitem:ae559ab3c18887d4e6f74f59e1e63c88b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Proxy.html">Proxy</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#ae559ab3c18887d4e6f74f59e1e63c88b">proxy</a> (<a class="el" href="classthorin_1_1Ref.html">Ref</a> type, <a class="el" href="namespacethorin.html#a58d1c803d0b62c1168cdd460cd9dd3c1">Defs</a> ops, <a class="el" href="namespacethorin.html#a80a833cf2f0cd4eb44a795cc30a83450">u32</a> tag=0)</td></tr>
 <tr class="separator:ae559ab3c18887d4e6f74f59e1e63c88b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a540e41ee5051b61b1175975a096b5e02"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Proxy.html">Proxy</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a540e41ee5051b61b1175975a096b5e02">isa_proxy</a> (<a class="el" href="classthorin_1_1Ref.html">Ref</a> def, <a class="el" href="namespacethorin.html#a80a833cf2f0cd4eb44a795cc30a83450">u32</a> tag=0)</td></tr>
 <tr class="memdesc:a540e41ee5051b61b1175975a096b5e02"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classthorin_1_1Check.html">Check</a> whether given <code>def</code> is a <a class="el" href="classthorin_1_1Proxy.html">Proxy</a> whose <a class="el" href="classthorin_1_1Proxy.html#a93a4ac4b94eae555d07b63702e1ae092" title="IPass::index within PassMan.">Proxy::pass</a> matches this <a class="el" href="classthorin_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>'s <code>IPass::index</code>.  <a href="classthorin_1_1Pass.html#a540e41ee5051b61b1175975a096b5e02">More...</a><br /></td></tr>
@@ -235,7 +235,7 @@ Private Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8cpp_source.html#l00008">8</a> of file <a class="el" href="pass_8cpp_source.html">pass.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8cpp_source.html#l00010">10</a> of file <a class="el" href="pass_8cpp_source.html">pass.cpp</a>.</p>
 
 </div>
 </div>
@@ -420,7 +420,7 @@ Private Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00082">82</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00033">index()</a>, <a class="el" href="def_8h_source.html#l00699">thorin::Proxy::pass()</a>, <a class="el" href="pass_8h_source.html#l00075">proxy()</a>, and <a class="el" href="def_8h_source.html#l00700">thorin::Proxy::tag()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00033">index()</a>, <a class="el" href="def_8h_source.html#l00695">thorin::Proxy::pass()</a>, <a class="el" href="pass_8h_source.html#l00075">proxy()</a>, and <a class="el" href="def_8h_source.html#l00696">thorin::Proxy::tag()</a>.</p>
 
 </div>
 </div>
@@ -555,7 +555,7 @@ Private Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> thorin::Pass::index </td>
+          <td class="memname">size_t thorin::Pass::index </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -570,7 +570,7 @@ Private Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00033">33</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00082">as_proxy()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00319">thorin::autodiff::AutoDiffEval::augment_()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00089">thorin::autodiff::AutoDiffEval::augment_extract()</a>, <a class="el" href="pass_8h_source.html#l00260">thorin::FPPass&lt; P, N &gt;::data()</a>, <a class="el" href="pass_8h_source.html#l00077">isa_proxy()</a>, <a class="el" href="pass_8h_source.html#l00075">proxy()</a>, and <a class="el" href="branch__clos__elim_8cpp_source.html#l00027">thorin::clos::BranchClosElim::rewrite()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00082">as_proxy()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00319">thorin::autodiff::AutoDiffEval::augment_()</a>, <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00089">thorin::autodiff::AutoDiffEval::augment_extract()</a>, <a class="el" href="pass_8h_source.html#l00255">thorin::FPPass&lt; P, N &gt;::data()</a>, <a class="el" href="pass_8h_source.html#l00077">isa_proxy()</a>, <a class="el" href="pass_8h_source.html#l00075">proxy()</a>, and <a class="el" href="branch__clos__elim_8cpp_source.html#l00027">thorin::clos::BranchClosElim::rewrite()</a>.</p>
 
 </div>
 </div>
@@ -641,7 +641,7 @@ Private Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00077">77</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00033">index()</a>, <a class="el" href="def_8h_source.html#l00699">thorin::Proxy::pass()</a>, <a class="el" href="pass_8h_source.html#l00075">proxy()</a>, and <a class="el" href="def_8h_source.html#l00700">thorin::Proxy::tag()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00033">index()</a>, <a class="el" href="def_8h_source.html#l00695">thorin::Proxy::pass()</a>, <a class="el" href="pass_8h_source.html#l00075">proxy()</a>, and <a class="el" href="def_8h_source.html#l00696">thorin::Proxy::tag()</a>.</p>
 
 </div>
 </div>
@@ -670,7 +670,7 @@ Private Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00030">30</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00234">thorin::RWPass&lt; P, N &gt;::curr_mut()</a>, <a class="el" href="pass_8h_source.html#l00282">thorin::FPPass&lt; P, N &gt;::curr_undo()</a>, <a class="el" href="pass_8h_source.html#l00227">thorin::RWPass&lt; P, N &gt;::inspect()</a>, <a class="el" href="pass_8h_source.html#l00258">thorin::FPPass&lt; P, N &gt;::states()</a>, <a class="el" href="pass_8h_source.html#l00285">thorin::FPPass&lt; P, N &gt;::undo_visit()</a>, and <a class="el" href="pass_8h_source.html#l00308">world()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00230">thorin::RWPass&lt; P, N &gt;::curr_mut()</a>, <a class="el" href="pass_8h_source.html#l00268">thorin::FPPass&lt; P, N &gt;::curr_undo()</a>, <a class="el" href="pass_8h_source.html#l00223">thorin::RWPass&lt; P, N &gt;::inspect()</a>, <a class="el" href="pass_8h_source.html#l00253">thorin::FPPass&lt; P, N &gt;::states()</a>, <a class="el" href="pass_8h_source.html#l00271">thorin::FPPass&lt; P, N &gt;::undo_visit()</a>, and <a class="el" href="pass_8h_source.html#l00294">world()</a>.</p>
 
 </div>
 </div>
@@ -777,7 +777,7 @@ Private Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="namespacethorin.html#ab6c106c44c8584cd4bdb99b75b915c38">Defs</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacethorin.html#a58d1c803d0b62c1168cdd460cd9dd3c1">Defs</a>&#160;</td>
           <td class="paramname"><em>ops</em>, </td>
         </tr>
         <tr>
@@ -801,7 +801,7 @@ Private Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00075">75</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00033">index()</a>, <a class="el" href="world_8h_source.html#l00192">thorin::World::proxy()</a>, and <a class="el" href="pass_8h_source.html#l00308">world()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00033">index()</a>, <a class="el" href="world_8h_source.html#l00192">thorin::World::proxy()</a>, and <a class="el" href="pass_8h_source.html#l00294">world()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00082">as_proxy()</a>, <a class="el" href="pass_8h_source.html#l00077">isa_proxy()</a>, <a class="el" href="eta__exp_8h_source.html#l00021">thorin::EtaExp::proxy()</a>, and <a class="el" href="pass_8h_source.html#l00042">rewrite()</a>.</p>
 
@@ -918,7 +918,7 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00308">308</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00294">294</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 <p class="reference">References <a class="el" href="pass_8h_source.html#l00030">man()</a>, and <a class="el" href="pass_8h_source.html#l00114">thorin::PassMan::world()</a>.</p>
 

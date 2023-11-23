@@ -21,7 +21,7 @@ var classthorin_1_1CFG =
     [ "post_order", "classthorin_1_1CFG.html#a74587d3884b790d3235a9e809cfe3005", null ],
     [ "preds", "classthorin_1_1CFG.html#a4be7bf931bf9471d78c464c9d3559f3b", null ],
     [ "preds", "classthorin_1_1CFG.html#aed1485126844e098510dc7fbe7d3b0fe", null ],
-    [ "reverse_post_order", "classthorin_1_1CFG.html#a3369684af10800291469668ea83aa149", null ],
+    [ "reverse_post_order", "classthorin_1_1CFG.html#a4bdfaa58e0030d946812f786ce7e6748", null ],
     [ "reverse_post_order", "classthorin_1_1CFG.html#a1052107167a3b5a18f6b4cb98aa3ddf5", null ],
     [ "size", "classthorin_1_1CFG.html#a41c9bca42fc6c1986e17e9508c7c69be", null ],
     [ "succs", "classthorin_1_1CFG.html#ada7df7890bc4099a7b87e0c63b9ce975", null ],

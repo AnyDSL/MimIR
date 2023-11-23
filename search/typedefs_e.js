@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['t_0',['T',['../classthorin_1_1unique__stack.html#a87015b5531d6fb3a120dcee49766ef42',1,'thorin::unique_stack::T()'],['../classthorin_1_1unique__queue.html#a8a1b5bd4fe99341c3523d34095152523',1,'thorin::unique_queue::T()']]],
-  ['tag_1',['Tag',['../namespacethorin.html#a81327ce3568dc9d06b3644a13bb8f2e4',1,'thorin']]],
-  ['tag_5ft_2',['tag_t',['../namespacethorin.html#ad6f0807de74648433d98df664cbb79ba',1,'thorin']]],
-  ['top_3',['Top',['../namespacethorin.html#ae6638e502eba2c4a1229a5a1af1cfb29',1,'thorin']]],
-  ['type_4',['type',['../classthorin_1_1Axiom.html#ada9662236af225e5cbdc30a022aff6d0',1,'thorin::Axiom::Match&lt; regex::any &gt;::type()'],['../classthorin_1_1Axiom.html#a90bea664417af17801b73ee688147b7d',1,'thorin::Axiom::Match::type()']]]
+  ['var2var_0',['Var2Var',['../namespacethorin.html#a574519644134310f7123469cf121d0a2',1,'thorin']]],
+  ['varmap_1',['VarMap',['../namespacethorin.html#af280f2e34b689af6206dfb9756aa1df5',1,'thorin']]],
+  ['varset_2',['VarSet',['../namespacethorin.html#a229e892ca840ebda9ce60cfad90ae1b0',1,'thorin']]],
+  ['view_3',['View',['../namespacethorin.html#abb7f0a4e0380f065701fb37100b8e222',1,'thorin']]],
+  ['vmode_4',['VMode',['../namespacethorin_1_1core.html#ae025337cbe07dc96616a07d6e4440859',1,'thorin::core::VMode()'],['../namespacethorin_1_1math.html#ab290edebb1dee9ec76cc6198c9c036a9',1,'thorin::math::VMode()']]]
 ];
