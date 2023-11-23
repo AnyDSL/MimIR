@@ -30,7 +30,7 @@ Ref Rewriter::rewrite_imm(Ref old_def) {
     }
 
     auto new_type = old_def->isa<Type>() ? nullptr : rewrite(old_def->type());
-    auto new_ops  = Vector<const Def*>(old_def->num_ops());
+    auto new_ops  = absl::FixedArray<const Def*>(old_def->num_ops());
     for (size_t i = 0, e = new_ops.size(); i != e; ++i) new_ops[i] = rewrite(old_def->op(i));
     return old_def->rebuild(world(), new_type, new_ops);
 }

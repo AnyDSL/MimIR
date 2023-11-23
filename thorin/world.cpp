@@ -372,7 +372,7 @@ Ref World::insert(Ref d, Ref index, Ref val) {
     // insert(‹4; x›, 2, y) -> (x, x, y, x)
     if (auto pack = d->isa<Pack>(); pack && lidx) {
         if (auto a = pack->isa_lit_arity(); a && *a < flags().scalerize_threshold) {
-            auto new_ops   = Vector<const Def*>(*a, pack->body());
+            auto new_ops   = DefVec(*a, pack->body());
             new_ops[*lidx] = val;
             return tuple(type, new_ops);
         }

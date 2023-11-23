@@ -92,9 +92,9 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
         Vector<u64> out_indices;                    // output indices 0..n-1
         Vector<u64> in_indices;                     // input indices ≥ n
 
-        Vector<Ref> output_dims;               // i<n ↦ nat (dimension S#i)
-        Vector<Vector<const Def*>> input_dims; // i<m ↦ j<NI#i ↦ nat (dimension SI#i#j)
-        Vector<u64> n_input;                   // i<m ↦ nat (number of dimensions of SI#i)
+        Vector<Ref> output_dims;   // i<n ↦ nat (dimension S#i)
+        Vector<DefVec> input_dims; // i<m ↦ j<NI#i ↦ nat (dimension SI#i#j)
+        Vector<u64> n_input;       // i<m ↦ nat (number of dimensions of SI#i)
 
         auto n_lit = n->isa<Lit>();
         auto m_lit = m->isa<Lit>();
@@ -128,7 +128,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
             u64 ni_nat = *ni_lit;
             world.DLOG("  dims({i}) = {}", i, ni_nat);
             auto SI_i = SI->proj(m_nat, i);
-            Vector<const Def*> input_dims_i;
+            DefVec input_dims_i;
             for (u64 j = 0; j < ni_nat; ++j) {
                 auto dim = SI_i->proj(ni_nat, j);
                 world.DLOG("    dim {} {} = {}", i, j, dim);

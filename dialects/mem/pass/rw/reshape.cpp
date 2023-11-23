@@ -37,8 +37,8 @@ bool should_flatten(const Def* T) {
 }
 
 // TODO merge with tuple.*
-Vector<const Def*> flatten_ty(const Def* T) {
-    Vector<const Def*> types;
+DefVec flatten_ty(const Def* T) {
+    DefVec types;
     if (should_flatten(T)) {
         for (auto P : T->projs()) {
             auto inner_types = flatten_ty(P);
@@ -51,8 +51,8 @@ Vector<const Def*> flatten_ty(const Def* T) {
 }
 
 // TODO try to remove code duplication with flatten_ty
-Vector<const Def*> flatten_def(const Def* def) {
-    Vector<const Def*> defs;
+DefVec flatten_def(const Def* def) {
+    DefVec defs;
     if (should_flatten(def->type())) {
         for (auto P : def->projs()) {
             auto inner_defs = flatten_def(P);
@@ -183,7 +183,7 @@ const Def* Reshape::reshape_type(const Def* T) {
         return world().pi(new_dom, new_cod);
     } else if (auto sigma = T->isa<Sigma>()) {
         auto flat_types = flatten_ty(sigma);
-        auto new_types  = Vector<const Def*>(flat_types.size());
+        auto new_types  = DefVec(flat_types.size());
         std::ranges::transform(flat_types, new_types.begin(), [&](auto T) { return reshape_type(T); });
         if (mode_ == Mode::Flat) {
             const Def* mem = nullptr;
@@ -222,7 +222,7 @@ const Def* Reshape::reshape_type(const Def* T) {
     }
 }
 
-const Def* Reshape::reshape(Vector<const Def*>& defs, const Def* T, const Def* mem) {
+const Def* Reshape::reshape(DefVec& defs, const Def* T, const Def* mem) {
     auto& world = T->world();
     if (should_flatten(T)) {
         auto tuples = T->projs([&](auto P) { return reshape(defs, P, mem); });
