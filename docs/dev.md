@@ -207,7 +207,7 @@ This will yield a [Match](@ref thorin::Match)`<Id, D>` which just wraps a `const
 `Id` is the `enum` of the corresponding `tag` of the [matched Axiom](@ref anatomy).
 Usually, `D` will be an [App](@ref thorin::App) because most [Axiom](@ref thorin::Axiom)s inhabit a [function type](@ref thorin::Pi).
 Otherwise, it may wrap a [Def](@ref thorin::Def) or other subclasses of it.
-For instance, [match](@ref thorin::match)ing `%%mem.M` yields [Match](@ref thorin::Match)`<`[mem::M](@ref thorin::mem::M), [Def](@ref thorin::Def)`>`.
+For instance, [match](@ref thorin::match)ing `%%mem.M` yields [Match](@ref thorin::Match)`<`[mem::M](@ref thorin::plug::mem::M), [Def](@ref thorin::Def)`>`.
 
 By default, Thorin assumes that the magic of an [Axiom](@ref thorin::Axiom) happens when applying the final argument to a curried [Axiom](@ref thorin::Axiom).
 For example, [match](@ref thorin::match)ing a `%%mem.load` will only trigger for the final [App](@ref thorin::App) of the curried call
@@ -276,11 +276,11 @@ void foo(Ref def) {
 
 The following table summarizes all important casts:
 
-| `dynamic_cast`                <br> `static_cast`                 | Returns                                                                                       | If `def` is a ...               |
-|------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|---------------------------------|
-| `match<mem::load>(def)`       <br> `force<mem::load>(def)`       | [Match](@ref thorin::Match)`<`[mem::load](@ref thorin::mem.load), [App](@ref thorin::App)`>`  | `%%mem.load (T, as) (mem, ptr)` |
-| `match<core::wrap>(def)`      <br> `force<core::wrap>(def)`      | [Match](@ref thorin::Match)`<`[core::wrap](@ref thorin::mem.load), [App](@ref thorin::App)`>` | `%%core.wrap.??? s m (a, b)`    |
-| `match(core::wrap::add, def)` <br> `force(core::wrap::add, def)` | [Match](@ref thorin::Match)`<`[core::wrap](@ref thorin::mem.load), [App](@ref thorin::App)`>` | `%%core.wrap.add s m (a, b)`    |
+| `dynamic_cast`                <br> `static_cast`                 | Returns                                                                                             | If `def` is a ...               |
+|------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|---------------------------------|
+| `match<mem::load>(def)`       <br> `force<mem::load>(def)`       | [Match](@ref thorin::Match)`<`[mem::load](@ref thorin::plug::mem.load), [App](@ref thorin::App)`>`  | `%%mem.load (T, as) (mem, ptr)` |
+| `match<core::wrap>(def)`      <br> `force<core::wrap>(def)`      | [Match](@ref thorin::Match)`<`[core::wrap](@ref thorin::plug::mem.load), [App](@ref thorin::App)`>` | `%%core.wrap.??? s m (a, b)`    |
+| `match(core::wrap::add, def)` <br> `force(core::wrap::add, def)` | [Match](@ref thorin::Match)`<`[core::wrap](@ref thorin::plug::mem.load), [App](@ref thorin::App)`>` | `%%core.wrap.add s m (a, b)`    |
 
 ## Working with Indices
 
