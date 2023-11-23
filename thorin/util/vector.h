@@ -1,7 +1,6 @@
 #pragma once
 
 #include <absl/container/inlined_vector.h>
-#include <bits/ranges_base.h>
 
 #include "thorin/util/span.h"
 
