@@ -8,6 +8,10 @@ namespace thorin {
 
 template<class T> static constexpr size_t Default_Inlined_Size = std::max((size_t)1, 4 * sizeof(size_t) / sizeof(T));
 
+/// This is a thin wrapper for [`absl::InlinedVector<T, N,
+/// A>`](https://github.com/abseil/abseil-cpp/blob/master/absl/container/inlined_vector.h) which in turn is a drop-in
+/// replacement for [`std::vector<T, A>`](https://en.cppreference.com/w/cpp/container/vector). In addition, there are
+/// generator-like/lambda-based constructors and conversions to Span available.
 template<class T, size_t N = Default_Inlined_Size<T>, class A = std::allocator<T>>
 class Vector : public absl::InlinedVector<T, N, A> {
 public:

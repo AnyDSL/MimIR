@@ -12,7 +12,8 @@ concept Vectorlike = requires(Vec vec) {
     vec.data();
 };
 
-/// This is a thin wrapper for `std::span<T, N>` with the following additional features:
+/// This is a thin wrapper for [`std::span<T, N>`](https://en.cppreference.com/w/cpp/container/span)
+/// with the following additional features:
 /// * Constructor with `std::initializer_list` (C++26 will get this ...)
 /// * Constructor for any compatible Vectorlike argument
 /// * rsubspan (reverse subspan)
