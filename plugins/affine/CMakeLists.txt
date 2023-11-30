@@ -5,8 +5,7 @@ add_thorin_plugin(affine
     HEADERS
         include/thorin/plug/affine/affine.h
         include/thorin/plug/affine/pass/lower_for.h
-    INTERFACES
-        core
-        mem
+    INTERFACE
+        thorin_interface_core
     INSTALL
 )

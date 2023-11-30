@@ -6,9 +6,9 @@ add_thorin_plugin(core
     HEADERS
         include/thorin/plug/core/core.h
         include/thorin/plug/core/be/ll.h
-    INTERFACES
-        clos
-        math
-        mem
+    INTERFACE
+        thorin_interface_clos
+        thorin_interface_mem
+        thorin_interface_math
     INSTALL
 )

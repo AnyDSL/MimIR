@@ -20,9 +20,8 @@ add_thorin_plugin(regex
         include/thorin/plug/regex/pass/dfa2matcher.h
         include/thorin/plug/regex/pass/lower_regex.h
         include/thorin/plug/regex/pass/regex2nfa.h
-    INTERFACES
-        core
-        direct
-        mem
+    INTERFACE
+        thorin_interface_core
+        thorin_interface_direct
     INSTALL
 )

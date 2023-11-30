@@ -1,9 +1,4 @@
 add_executable(hello hello.cpp)
-target_link_libraries(hello
-    PRIVATE
-        libthorin
-        thorin_interface_mem
-)
+target_link_libraries(hello PRIVATE thorin_interface_mem)
 set_target_properties(hello PROPERTIES INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/examples")
-add_dependencies(hello thorin_compile thorin_core)
 install(TARGETS hello EXPORT thorin-targets)

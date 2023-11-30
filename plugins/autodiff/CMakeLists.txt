@@ -13,11 +13,9 @@ add_thorin_plugin(autodiff
         include/thorin/plug/autodiff/pass/autodiff_eval.h
         include/thorin/plug/autodiff/pass/autodiff_zero.h
         include/thorin/plug/autodiff/pass/autodiff_zero_cleanup.h
-    INTERFACES
-        affine
-        compile
-        core
-        direct
-        mem
+    INTERFACE
+        thorin_interface_affine
+        thorin_interface_compile
+        thorin_interface_direct
     INSTALL
 )

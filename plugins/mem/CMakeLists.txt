@@ -16,7 +16,7 @@ add_thorin_plugin(mem
         include/thorin/plug/mem/pass/reshape.h
         include/thorin/plug/mem/pass/ssa_constr.h
         include/thorin/plug/mem/phase/add_mem.h
-    INTERFACES
-        core
+    INTERFACE
+        thorin_interface_core
     INSTALL
 )

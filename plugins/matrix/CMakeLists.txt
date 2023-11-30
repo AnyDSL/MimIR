@@ -11,11 +11,9 @@ add_thorin_plugin(matrix
         include/thorin/plug/matrix/pass/lower_matrix_highlevel.h
         include/thorin/plug/matrix/pass/lower_matrix_mediumlevel.h
         include/thorin/plug/matrix/pass/lower_matrix_lowlevel.h
-    INTERFACES
-        affine
-        compile
-        core
-        direct
-        mem
+    INTERFACE
+        thorin_interface_affine
+        thorin_interface_compile
+        thorin_interface_direct
     INSTALL
 )

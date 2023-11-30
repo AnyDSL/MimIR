@@ -16,8 +16,7 @@ add_thorin_plugin(clos
         include/thorin/plug/clos/pass/lower_typed_clos_prep.h
         include/thorin/plug/clos/phase/clos_conv.h
         include/thorin/plug/clos/phase/lower_typed_clos.h
-    INTERFACES
-        core
-        mem
+    INTERFACE
+        thorin_interface_core
     INSTALL
 )

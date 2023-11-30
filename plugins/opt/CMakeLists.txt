@@ -3,7 +3,7 @@ add_thorin_plugin(opt
         src/thorin/plug/opt/opt.cpp
     HEADERS
         include/thorin/plug/opt/opt.h
-    INTERFACES
-        compile
+    INTERFACE
+        thorin_interface_compile
     INSTALL
 )
