@@ -81,6 +81,7 @@ UMax::UMax(World& world, Defs ops)
  * rebuild
  */
 
+#ifndef DOXYGEN // TODO Doxygen doesn't expand THORIN_DEF_MIXIN
 Ref Infer    ::rebuild(World&,   Ref,   Defs  ) const { fe::unreachable(); }
 Ref Global   ::rebuild(World&,   Ref,   Defs  ) const { fe::unreachable(); }
 Ref Idx      ::rebuild(World& w, Ref  , Defs  ) const { return w.type_idx(); }
@@ -115,6 +116,7 @@ Ref Axiom    ::rebuild(World& w, Ref t, Defs ) const {
 
 template<bool up> Ref TExt  <up>::rebuild(World& w, Ref t, Defs  ) const { return w.ext  <up>(t)->set(dbg()); }
 template<bool up> Ref TBound<up>::rebuild(World& w, Ref  , Defs o) const { return w.bound<up>(o)->set(dbg()); }
+#endif
 
 /*
  * stub
