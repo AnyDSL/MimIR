@@ -4,9 +4,10 @@
 
 namespace thorin::plug::db {
 
-Ref normalize_const(Ref type, Ref, Ref arg) {
+Ref normalize_step(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
-    return world.lit(world.type_idx(arg), 42);
+    std::cout << "hello" << std::endl;
+    return world.raw_app(type, callee, arg);
 }
 
 THORIN_db_NORMALIZER_IMPL

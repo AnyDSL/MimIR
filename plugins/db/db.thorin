@@ -1,14 +1,62 @@
 /// # The db Plugin {#db}
 ///
+/// A database plugin.
+///
 /// @see thorin::db
 ///
 /// [TOC]
 ///
-/// A database plugin
+/// ## Dependencies
 ///
-/// ## Operations
+.plugin mem;
 ///
-/// ### %db.const
 ///
-/// The 42 constant, evaluated using a normalizer
-.ax %db.const_idx: Π n: .Nat -> .Idx n, normalize_const;
+/// ## Bag
+///
+.ax  %db.Bag: Π[n: .Nat, Ts: «n; *»] -> *;
+.lam %db.BagPtr nTs::(n: .Nat, Ts: «n; *»): * = %mem.Ptr0 (%db.Bag nTs);
+.lam %db.TupPtr(n: .Nat, Ts: «n; *»): * = %mem.Ptr0 «i: n; Ts#i»;
+
+.ax %db.bag_create: .Fn nTs::[n: .Nat, Ts: «n; *»][%mem.M] -> [%mem.M, %db.BagPtr nTs];
+.ax %db.bag_insert: .Fn nTs::[n: .Nat, Ts: «n; *»][%mem.M, %db.BagPtr nTs, %db.TupPtr nTs] -> %mem.M;
+///
+/// ## Cons & Prod
+///
+
+.Sigma %db.InFi: * = [
+    nTs: [n: .Nat, Ts:  «n; *»],
+    init: .Fn %mem.M -> %mem.M,
+    fin:  .Fn %mem.M -> %mem.M,
+];
+
+.Sigma %db.Cons: * = [
+    infi: %db.InFi,
+    step: .Fn [%mem.M, %db.TupPtr infi#nTs] -> %mem.M,
+];
+
+.Sigma %db.Prod: * = [
+    infi: %db.InFi,
+    run: .Fn [%mem.M, %db.BagPtr infi#nTs] -> %mem.M,
+];
+
+.fun empty!(mem: %mem.M): %mem.M = return mem;
+
+.ax %db.select_step: Π[cons: %db.Cons][.Fn [%mem.M, %db.TupPtr cons#infi#nTs] -> [%mem.M, .Bool]]
+    -> [.Fn [%mem.M, %db.TupPtr cons#infi#nTs] -> %mem.M], normalize_step;
+
+//.lam %db.sel_cons(cons: %db.Cons, pred: .Fn [%mem.M, %db.TupPtr cons#infi#nTsl]): %db.Cons =
+    //(cons#n, cons#Ts, empty, empty, %db.select_step cons pred);
+
+.ax %db.sel_cons:  Π[cons: %db.Cons][.Fn [%mem.M, %db.TupPtr cons#infi#nTs] -> [%mem.M, .Bool]] -> %db.Cons;
+.ax %db.top_cons:  Π[n: .Nat, Ts: «n; *»] -> %db.Cons;
+.ax %db.scan_prod: Π[cons: %db.Cons][.Fn [%mem.M, %db.BagPtr cons#infi#nTs] -> %mem.M] -> %db.Prod;
+
+///
+/// ## %db.scan
+///
+
+//
+//.ax %db.top_step:
+//    .Fn [n: .Nat][Ts: «n; *»]
+//        [%mem.M, %mem.Ptr0 «i: n; Ts#i»]
+//     -> %mem.M;
