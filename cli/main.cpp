@@ -49,7 +49,7 @@ int main(int argc, char** argv) {
             | lyra::opt(show_version                          )["-v"]["--version"               ]("Display version info and exit.")
             | lyra::opt(list_search_paths                     )["-l"]["--list-search-paths"     ]("List search paths in order and exit.")
             | lyra::opt(clang,          "clang"               )["-c"]["--clang"                 ]("Path to clang executable (default: '" THORIN_WHICH " clang').")
-            | lyra::opt(plugins,        "thorin/plugin"              )["-p"]["--plugin"                ]("Dynamically load plugin.")
+            | lyra::opt(plugins,        "plugin"              )["-p"]["--plugin"                ]("Dynamically load plugin.")
             | lyra::opt(search_paths,   "path"                )["-P"]["--plugin-path"           ]("Path to search for plugins.")
             | lyra::opt(inc_verbose                           )["-V"]["--verbose"               ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
             | lyra::opt(opt,            "level"               )["-O"]["--optimize"              ]("Optimization level (default: 2).")
