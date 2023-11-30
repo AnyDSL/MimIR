@@ -1,7 +1,7 @@
 #pragma once
 
-#include "thorin/axiom.h"
-#include "thorin/world.h"
+#include <thorin/axiom.h>
+#include <thorin/world.h>
 
 #include "thorin/plug/math/autogen.h"
 

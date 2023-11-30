@@ -1,8 +1,9 @@
 #include <optional>
 
+#include <thorin/plug/math/math.h>
+#include <thorin/plug/mem/mem.h>
+
 #include "thorin/plug/core/core.h"
-#include "thorin/plug/math/math.h"
-#include "thorin/plug/mem/mem.h"
 
 namespace thorin::plug::core {
 
