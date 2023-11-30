@@ -1,0 +1,14 @@
+/// # The db Plugin {#db}
+///
+/// @see thorin::db
+///
+/// [TOC]
+///
+/// A database plugin
+///
+/// ## Operations
+///
+/// ### %db.const
+///
+/// The 42 constant, evaluated using a normalizer
+.ax %db.const_idx: Π n: .Nat -> .Idx n, normalize_const;
