@@ -1,28 +1,59 @@
-add_executable(thorin-gtest
-    helpers.cpp
-    helpers.h
-    lexer.cpp
-    test.cpp
-    restricted_dep_types.cpp
+add_executable(thorin-gtest)
+target_sources(thorin-gtest
+    PRIVATE
+        helpers.cpp
+        lexer.cpp
+        test.cpp
+        restricted_dep_types.cpp
+        helpers.h
+)
+target_link_libraries(thorin-gtest
+    PRIVATE
+        gtest_main
+        thorin_interface_core
+        thorin_interface_compile
+        thorin_interface_math
+        thorin_interface_mem
+)
+add_dependencies(thorin-gtest
+    thorin_clos
+    thorin_core
+    thorin_compile
+    thorin_math
+    thorin_mem
+)
+gtest_discover_tests(thorin-gtest
+    TEST_PREFIX "thorin."
+    DISCOVERY_TIMEOUT 60
 )
 
-target_link_libraries(thorin-gtest gtest_main libthorin)
-gtest_discover_tests (thorin-gtest TEST_PREFIX "thorin." DISCOVERY_TIMEOUT 60)
-
-add_dependencies(thorin-gtest thorin_clos thorin_core thorin_compile thorin_math thorin_mem)
-target_include_directories(thorin-gtest PRIVATE ${CMAKE_BINARY_DIR}/include)
-
-add_executable(thorin-regex-gtest
-    automaton.cpp
-    ../thorin/plug/regex/pass/nfa.cpp
-    ../thorin/plug/regex/pass/dfa.cpp
-    ../thorin/plug/regex/pass/regex2nfa.cpp
-    ../thorin/plug/regex/pass/nfa2dfa.cpp
-    ../thorin/plug/regex/pass/dfamin.cpp
-    ../thorin/plug/regex/pass/dfa2matcher.cpp
+add_executable(thorin-regex-gtest)
+target_sources(thorin-regex-gtest
+    PRIVATE
+        automaton.cpp
+        ../plugins/regex/src/thorin/plug/regex/automaton/nfa.cpp
+        ../plugins/regex/src/thorin/plug/regex/automaton/dfa.cpp
+        ../plugins/regex/src/thorin/plug/regex/automaton/nfa2dfa.cpp
+        ../plugins/regex/src/thorin/plug/regex/automaton/dfamin.cpp
+        ../plugins/regex/src/thorin/plug/regex/pass/regex2nfa.cpp
+        ../plugins/regex/src/thorin/plug/regex/pass/dfa2matcher.cpp
 )
-target_link_libraries(thorin-regex-gtest gtest_main libthorin)
-gtest_discover_tests (thorin-regex-gtest TEST_PREFIX "thorin-regex-gtest." DISCOVERY_TIMEOUT 60)
-
-add_dependencies(thorin-regex-gtest thorin_clos thorin_core thorin_compile thorin_math thorin_mem thorin_regex)
-target_include_directories(thorin-regex-gtest PRIVATE ${CMAKE_BINARY_DIR}/include)
+target_link_libraries(thorin-regex-gtest
+    PRIVATE
+        gtest_main
+        thorin_interface_core
+        thorin_interface_mem
+        thorin_interface_regex
+)
+add_dependencies(thorin-regex-gtest
+    thorin_clos
+    thorin_core
+    thorin_compile
+    thorin_math
+    thorin_mem
+    thorin_regex
+)
+gtest_discover_tests(thorin-regex-gtest
+    TEST_PREFIX "thorin-regex-gtest."
+    DISCOVERY_TIMEOUT 60
+)

@@ -2,17 +2,17 @@
 
 #include <gtest/gtest.h>
 
-#include "thorin/driver.h"
-#include "thorin/world.h"
+#include <thorin/world.h>
 
-#include "thorin/fe/parser.h"
-#include "thorin/plug/regex/pass/dfa.h"
-#include "thorin/plug/regex/pass/dfa2matcher.h"
-#include "thorin/plug/regex/pass/dfamin.h"
-#include "thorin/plug/regex/pass/nfa.h"
-#include "thorin/plug/regex/pass/nfa2dfa.h"
-#include "thorin/plug/regex/pass/regex2nfa.h"
-#include "thorin/plug/regex/regex.h"
+#include <thorin/fe/parser.h>
+
+#include <thorin/plug/regex/automaton/dfa.h>
+#include <thorin/plug/regex/automaton/dfamin.h>
+#include <thorin/plug/regex/automaton/nfa.h>
+#include <thorin/plug/regex/automaton/nfa2dfa.h>
+#include <thorin/plug/regex/pass/dfa2matcher.h>
+#include <thorin/plug/regex/pass/regex2nfa.h>
+#include <thorin/plug/regex/regex.h>
 
 using namespace thorin::automaton;
 

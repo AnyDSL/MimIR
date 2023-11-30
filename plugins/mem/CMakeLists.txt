@@ -1,0 +1,22 @@
+add_thorin_plugin(mem
+    SOURCES
+        src/thorin/plug/mem/mem.cpp
+        src/thorin/plug/mem/normalizers.cpp
+        src/thorin/plug/mem/pass/alloc2malloc.cpp
+        src/thorin/plug/mem/pass/copy_prop.cpp
+        src/thorin/plug/mem/pass/remem_elim.cpp
+        src/thorin/plug/mem/pass/reshape.cpp
+        src/thorin/plug/mem/pass/ssa_constr.cpp
+        src/thorin/plug/mem/phase/add_mem.cpp
+    HEADERS
+        include/thorin/plug/mem/mem.h
+        include/thorin/plug/mem/pass/alloc2malloc.h
+        include/thorin/plug/mem/pass/copy_prop.h
+        include/thorin/plug/mem/pass/remem_elim.h
+        include/thorin/plug/mem/pass/reshape.h
+        include/thorin/plug/mem/pass/ssa_constr.h
+        include/thorin/plug/mem/phase/add_mem.h
+    INTERFACES
+        core
+    INSTALL
+)

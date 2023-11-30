@@ -6,20 +6,18 @@
 #include <gtest/gtest-spi.h>
 #include <gtest/gtest.h>
 
-#include "thorin/def.h"
-#include "thorin/driver.h"
+#include <thorin/fe/parser.h>
+#include <thorin/pass/beta_red.h>
+#include <thorin/pass/eta_exp.h>
+#include <thorin/pass/eta_red.h>
+#include <thorin/pass/optimize.h>
+#include <thorin/pass/pass.h>
+#include <thorin/pass/pipelinebuilder.h>
 
-#include "thorin/fe/parser.h"
-#include "thorin/pass/fp/beta_red.h"
-#include "thorin/pass/fp/eta_exp.h"
-#include "thorin/pass/fp/eta_red.h"
-#include "thorin/pass/optimize.h"
-#include "thorin/pass/pass.h"
-#include "thorin/pass/pipelinebuilder.h"
-#include "thorin/plug/compile/compile.h"
-#include "thorin/plug/core/core.h"
-#include "thorin/plug/math/math.h"
-#include "thorin/plug/mem/mem.h"
+#include <thorin/plug/compile/compile.h>
+#include <thorin/plug/core/core.h>
+#include <thorin/plug/math/math.h>
+#include <thorin/plug/mem/mem.h>
 
 using namespace thorin;
 using namespace thorin::plug;

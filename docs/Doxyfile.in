@@ -193,7 +193,8 @@ STRIP_FROM_PATH        = .
 # specify the list of include paths that are normally passed to the compiler
 # using the -I flag.
 
-STRIP_FROM_INC_PATH    = .
+STRIP_FROM_INC_PATH    = include \
+                        @STRIP_FROM_INC_PATH@
 
 # If the SHORT_NAMES tag is set to YES, doxygen will generate much shorter (but
 # less readable) file names. This can be useful is your file systems doesn't
@@ -946,7 +947,9 @@ WARN_LOGFILE           =
 INPUT                  = cli \
                          cmake \
                          docs \
-                         thorin \
+                         include \
+                         src \
+                         plugins \
                          @DOXY_EXTRA_FILES_CONFIG@ \
                          @CMAKE_CURRENT_BINARY_DIR@/../include \
                          @CMAKE_CURRENT_BINARY_DIR@/../docs/plug
@@ -1081,7 +1084,8 @@ EXCLUDE_SYMBOLS        = detail::* \
 # that contain example code fragments that are included (see the \include
 # command).
 
-EXAMPLE_PATH           = thorin \
+EXAMPLE_PATH           = include \
+                         src \
                          examples \
                          @CMAKE_CURRENT_BINARY_DIR@
 

@@ -1,11 +1,11 @@
-#include "thorin/fe/lexer.h"
-
 #include <sstream>
 #include <string>
 
 #include <gtest/gtest.h>
 
-#include "thorin/driver.h"
+#include <thorin/driver.h>
+
+#include <thorin/fe/lexer.h>
 
 using namespace std::literals;
 using namespace thorin;

@@ -1,0 +1,14 @@
+add_thorin_plugin(core
+    SOURCES
+        src/thorin/plug/core/core.cpp
+        src/thorin/plug/core/normalizers.cpp
+        src/thorin/plug/core/be/ll.cpp
+    HEADERS
+        include/thorin/plug/core/core.h
+        include/thorin/plug/core/be/ll.h
+    INTERFACES
+        clos
+        math
+        mem
+    INSTALL
+)

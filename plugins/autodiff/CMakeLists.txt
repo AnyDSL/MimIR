@@ -1,0 +1,23 @@
+add_thorin_plugin(autodiff
+    SOURCES
+        src/thorin/plug/autodiff/autodiff.cpp
+        src/thorin/plug/autodiff/pass/autodiff_eval.cpp
+        src/thorin/plug/autodiff/pass/autodiff_zero.cpp
+        src/thorin/plug/autodiff/pass/autodiff_zero_cleanup.cpp
+        src/thorin/plug/autodiff/auxiliary/autodiff_rewrite_inner.cpp
+        src/thorin/plug/autodiff/auxiliary/autodiff_rewrite_toplevel.cpp
+        src/thorin/plug/autodiff/normalizers.cpp
+        ../compile/src/thorin/plug/compile/pass/internal_cleanup.cpp # hack
+    HEADERS
+        include/thorin/plug/autodiff/autodiff.h
+        include/thorin/plug/autodiff/pass/autodiff_eval.h
+        include/thorin/plug/autodiff/pass/autodiff_zero.h
+        include/thorin/plug/autodiff/pass/autodiff_zero_cleanup.h
+    INTERFACES
+        affine
+        compile
+        core
+        direct
+        mem
+    INSTALL
+)

@@ -4,11 +4,12 @@
 #include <ranges>
 #include <sstream>
 
-#include "thorin/driver.h"
-#include "thorin/rewrite.h"
+#include <thorin/driver.h>
+#include <thorin/rewrite.h>
 
-#include "thorin/fe/parser.h"
-#include "thorin/plug/core/core.h"
+#include <thorin/fe/parser.h>
+
+#include <thorin/plug/core/core.h>
 
 #include "helpers.h"
 

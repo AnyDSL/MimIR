@@ -209,7 +209,6 @@ Registers a new Thorin plugin.
 add_thorin_plugin(<name>
     [SOURCES <source>...]
     [DEPENDS <other_plugin_name>...]
-    [HEADER_DEPENDS <other_plugin_name>...]
     [INSTALL])
 ```
 

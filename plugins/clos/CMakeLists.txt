@@ -1,0 +1,23 @@
+add_thorin_plugin(clos
+    SOURCES
+        src/thorin/plug/clos/clos.cpp
+        src/thorin/plug/clos/normalizers.cpp
+        src/thorin/plug/clos/pass/branch_clos_elim.cpp
+        src/thorin/plug/clos/pass/clos2sjlj.cpp
+        src/thorin/plug/clos/pass/clos_conv_prep.cpp
+        src/thorin/plug/clos/pass/lower_typed_clos_prep.cpp
+        src/thorin/plug/clos/phase/clos_conv.cpp
+        src/thorin/plug/clos/phase/lower_typed_clos.cpp
+    HEADERS
+        include/thorin/plug/clos/clos.h
+        include/thorin/plug/clos/pass/branch_clos_elim.h
+        include/thorin/plug/clos/pass/clos2sjlj.h
+        include/thorin/plug/clos/pass/clos_conv_prep.h
+        include/thorin/plug/clos/pass/lower_typed_clos_prep.h
+        include/thorin/plug/clos/phase/clos_conv.h
+        include/thorin/plug/clos/phase/lower_typed_clos.h
+    INTERFACES
+        core
+        mem
+    INSTALL
+)

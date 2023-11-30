@@ -1,0 +1,21 @@
+add_thorin_plugin(matrix
+    SOURCES
+        src/thorin/plug/matrix/matrix.cpp
+        src/thorin/plug/matrix/normalizers.cpp
+        src/thorin/plug/matrix/pass/lower_matrix_highlevel.cpp
+        src/thorin/plug/matrix/pass/lower_matrix_mediumlevel.cpp
+        src/thorin/plug/matrix/pass/lower_matrix_lowlevel.cpp
+        ../compile/src/thorin/plug/compile/pass/internal_cleanup.cpp # hack
+    HEADERS
+        include/thorin/plug/matrix/matrix.h
+        include/thorin/plug/matrix/pass/lower_matrix_highlevel.h
+        include/thorin/plug/matrix/pass/lower_matrix_mediumlevel.h
+        include/thorin/plug/matrix/pass/lower_matrix_lowlevel.h
+    INTERFACES
+        affine
+        compile
+        core
+        direct
+        mem
+    INSTALL
+)
