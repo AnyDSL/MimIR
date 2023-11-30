@@ -1,0 +1,19 @@
+.plugin core;
+.plugin db;
+.plugin math;
+
+.fun .extern main(mem: %mem.M): [%mem.M, %core.I32] =
+    .let T = [%core.I32, %math.F64, .Bool];
+    .let t = (%core.I32, %math.F64, .Bool);
+    .let t3 = (3, (%core.I32, %math.F64, .Bool));
+
+    .let (`mem, ptr) = %mem.slot (T, 0) (mem, 0);
+    // store sth to ptr
+    .ret (`mem, bag) = %db.bag_create t3 $ mem;
+    .ret `mem        = %db.bag_insert t3 $ (mem, bag, ptr);
+
+    .let top  = %db.top_cons t3;
+    .let sel  = %db.sel_cons  top .fn(mem: %mem.M, ptr: %db.TupPtr top#infi#nTs): [%mem.M, .Bool] = return (mem, .tt);
+    .let scan = %db.scan_prod sel .fn(mem: %mem.M, ptr: %db.BagPtr sel#infi#nTs): %mem.M = return mem;
+
+    return (mem, 0:%core.I32);
