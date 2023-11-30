@@ -1,10 +1,12 @@
 #include <fstream>
 
 #include <thorin/driver.h>
+
 #include <thorin/fe/parser.h>
 #include <thorin/pass/optimize.h>
-#include <thorin/plug/mem/mem.h>
 #include <thorin/util/sys.h>
+
+#include <thorin/plug/mem/mem.h>
 
 using namespace thorin;
 using namespace thorin::plug;
