@@ -6,59 +6,6 @@ if(NOT THORIN_TARGET_NAMESPACE)
     set(THORIN_TARGET_NAMESPACE "")
 endif()
 
-#[=======================================================================[
-add_thorin_plugin
--------------------
-
-Registers a new Thorin plugin.
-
-```
-add_thorin_plugin(<plugin_name>
-    [SOURCES <source>...]
-    [HEADERS <header>...]
-    [PRIVATE <private_item>...]
-    [INTERFACE <interface_item>...]
-    [PUBLIC <public_item>...]
-    [INSTALL])
-```
-
-The `<plugin_name>` is expected to be the name of the plugin. This means, there
-should be (relative to your CMakeLists.txt) a file `<plugin_name>.thorin`
-containing the axiom declarations. This will generate a header
-`plug/<plugin_name>/autogen.h` that can be used in normalizers and passes to
-identify the axioms. The command will create three targets:
-
-1. `thorin_internal_<plugin_name>`: This is an internal target to bootstrap the
-    plugin, i.e. generate the header etc.
-2. `thorin_interface_<plugin_name>`: This is a header-only `INTERFACE` library
-    that consists of all `<header>` files. It "links" via `INTERFACE` with all
-    `<interface_item>` targets. This means everybody who links to
-    `thorin_interface_<plugin_name>` will also have access to the include
-    directories of these targets. In addition, `thorin_interface_<plugin_name>`
-    depends on `thorin_internal_<plugin_name>`.
-3. `thorin_<plugin_name>`: This is the actual `MODULE` library and conists of
-    all `<source>` files and links `PUBLIC` to `thorin_interface_<plugin_name>`.
-    Thus, all sources will have access to the headers of
-    `thorin_interface_<plugin_name>` and to all other targets specified via
-    `INTERFACE`. Furthermore, you can specify additional `public_item` targets that
-    the module should link against as `PUBLIC`. Finally, you can specify additional
-    `<private_item>` build dependencies.
-
-The `<source>` files are used to build the loadable plugin containing
-normalizers, passes and backends. One of the source files must export the
-`thorin_get_plugin` function. Custom properties can be specified in the
-`CMakeLists.txt` file, e.g. adding include paths is done with
-`target_include_directories(thorin_<plugin_name> <path>...)`.
-
-- `INSTALL`: Specify, if the plugin description, plugin and headers shall
-    be installed with `make install`.
-    To export the targets, the export name `thorin-targets` has to be
-    exported accordingly (see
-    [install(EXPORT ..)](https://cmake.org/cmake/help/latest/command/install.html#export))
-
-
-## Note: a copy of this text is in `docs/coding.md`. Please update!
-#]=======================================================================]
 function(add_thorin_plugin)
     set(PLUGIN ${ARGV0})
     list(SUBLIST ARGV 1 -1 UNPARSED)
