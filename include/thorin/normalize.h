@@ -1,6 +1,6 @@
 #pragma once
 
-#include <thorin/util/util.h>
+#include "thorin/def.h"
 
 namespace thorin {
 
@@ -19,5 +19,12 @@ public:
 private:
     std::optional<u64> data_;
 };
+
+// Swap Lit to left - or smaller Def::gid, if no lit present.
+inline void commute(bool commutative, const Def*& a, const Def*& b) {
+    if (commutative) {
+        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>())) std::swap(a, b);
+    }
+}
 
 } // namespace thorin

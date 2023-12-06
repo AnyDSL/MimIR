@@ -11,14 +11,6 @@ namespace thorin::plug::core {
 
 namespace {
 
-// TODO move to normalize.h or so?
-// Swap Lit to left - or smaller gid, if no lit present.
-template<class Id> void commute(Id id, const Def*& a, const Def*& b) {
-    if (::thorin::is_commutative(id)) {
-        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>())) std::swap(a, b);
-    }
-}
-
 /*
  * Fold
  */
@@ -119,7 +111,7 @@ template<class Id, Id id> Ref fold(World& world, Ref type, const Def*& a, const 
         }
     }
 
-    commute(id, a, b);
+    commute(::thorin::is_commutative(id), a, b);
     return nullptr;
 }
 
@@ -189,7 +181,7 @@ template<class Id> Ref merge_cmps(std::array<std::array<u64, 2>, 2> tab, Ref a, 
 template<nat id> Ref normalize_nat(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
     auto [a, b] = arg->projs<2>();
-    commute(id, a, b);
+    commute(is_commutative(id), a, b);
     auto la = Lit::isa(a);
     auto lb = Lit::isa(b);
 
@@ -225,7 +217,7 @@ template<ncmp id> Ref normalize_ncmp(Ref type, Ref callee, Ref arg) {
     if (id == ncmp::f) return world.lit_ff();
 
     auto [a, b] = arg->projs<2>();
-    commute(id, a, b);
+    commute(is_commutative(id), a, b);
 
     if (auto la = Lit::isa(a)) {
         if (auto lb = Lit::isa(b)) {
@@ -301,7 +293,7 @@ template<bit2 id> Ref normalize_bit2(Ref type, Ref c, Ref arg) {
     auto ls     = Lit::isa(s);
     // TODO cope with wrap around
 
-    commute(id, a, b);
+    commute(is_commutative(id), a, b);
 
     auto tab = make_truth_table(id);
     if (auto res = merge_cmps<icmp>(tab, a, b)) return res;

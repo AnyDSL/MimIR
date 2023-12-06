@@ -7,14 +7,6 @@ namespace thorin::plug::mem {
 
 namespace {
 
-// TODO move to normalize.h or so?
-// Swap Lit to left - or smaller gid, if no lit present.
-template<class Id> void commute(Id id, const Def*& a, const Def*& b) {
-    if (::thorin::is_commutative(id)) {
-        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>())) std::swap(a, b);
-    }
-}
-
 // clang-format off
 template<class Id, Id id, nat_t w>
 Res fold(u64 a, u64 b) {
@@ -62,7 +54,7 @@ template<class Id, Id id> Ref fold(World& world, Ref type, const Def*& a, const 
         }
     }
 
-    commute(id, a, b);
+    commute(::thorin::is_commutative(id), a, b);
     return nullptr;
 }
 
