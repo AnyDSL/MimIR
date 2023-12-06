@@ -1,32 +1,10 @@
-#include <type_traits>
+#include <thorin/normalize.h>
 
 #include "thorin/plug/math/math.h"
 
 namespace thorin::plug::math {
 
 namespace {
-
-// TODO move to normalize.h or so?
-// Swap Lit to left - or smaller gid, if no lit present.
-template<class Id> void commute(Id id, const Def*& a, const Def*& b) {
-    if (::thorin::is_commutative(id)) {
-        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>())) std::swap(a, b);
-    }
-}
-
-class Res {
-public:
-    Res() = default;
-    template<class T>
-    Res(T val)
-        : data_(bitcast<u64>(val)) {}
-
-    constexpr const u64& operator*() const& { return data_; }
-    constexpr u64& operator*() & { return data_; }
-
-private:
-    u64 data_;
-};
 
 // clang-format off
 template<class Id, Id id, nat_t w>
@@ -198,7 +176,7 @@ template<class Id, Id id> Ref fold(World& world, Ref type, const Def*& a, const 
         }
     }
 
-    commute(id, a, b);
+    if (is_commutative(id)) commute(a, b);
     return nullptr;
 }
 
