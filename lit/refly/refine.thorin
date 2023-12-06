@@ -4,6 +4,7 @@
 // RUN: %t ; test $? -eq 42
 
 .plugin core;
+.plugin mem;
 .plugin refly;
 
 .fun .extern main(mem: %mem.M, argc: %core.I32, argv: %mem.Ptr (%mem.Ptr (%core.I8, 0), 0)): [%mem.M, %core.I32] = {

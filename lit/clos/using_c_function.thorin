@@ -9,6 +9,7 @@
 // the functions are stored and loaded in between each iteration
 
 .plugin core;
+.plugin mem;
 .plugin direct;
 
 .let pb_type = .Cn [%mem.M];

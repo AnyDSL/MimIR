@@ -3,6 +3,7 @@
 
 .plugin core;
 .plugin direct;
+.plugin mem;
 
 .let pb_type = .Cn [%mem.M, .Cn [%mem.M]];
 

@@ -4,6 +4,7 @@
 // a chain of cps calls followed by a direct call
 
 .plugin core;
+.plugin mem;
 .plugin direct;
 
 

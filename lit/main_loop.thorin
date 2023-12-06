@@ -5,6 +5,7 @@
 // RUN: %t 1 2 3 ; test $? -eq 6
 
 .plugin core;
+.plugin mem;
 
 .fun .extern main(mem: %mem.M, argc: %core.I32, argv: %mem.Ptr0 (%mem.Ptr0 %core.I8)): [%mem.M, %core.I32] =
     .con loop(mem: %mem.M, i: %core.I32, acc: %core.I32) =

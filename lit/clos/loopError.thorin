@@ -2,6 +2,7 @@
 // RUN: %thorin -p clos %s --output-ll %t.ll -o -
 
 .plugin core;
+.plugin mem;
 
 .con printInteger [mem: %mem.M, val: %core.I32, return : .Cn [%mem.M]];
 

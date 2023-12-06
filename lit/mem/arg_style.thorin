@@ -4,6 +4,7 @@
 // TODO: add filecheck
 
 .plugin core;
+.plugin mem;
 
 .let Tas = (%core.I32, 0);
 
@@ -15,7 +16,7 @@
 .con .extern f1 [mem: %mem.M, a: %core.I32, ret: .Cn [%mem.M, %core.I32]] =
     ret (mem,a);
 
-.con .extern f2 [[mem: %mem.M, a: %core.I32], ret: .Cn [%mem.M, %core.I32]] = 
+.con .extern f2 [[mem: %mem.M, a: %core.I32], ret: .Cn [%mem.M, %core.I32]] =
     ret (mem,a);
 
 .con .extern g1 [mem: %mem.M, a: %core.I32, b:%core.I32, ret: .Cn [%mem.M, %core.I32]] =

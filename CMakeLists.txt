@@ -139,6 +139,7 @@ target_sources(libthorin
             include/thorin/driver.h
             include/thorin/lam.h
             include/thorin/lattice.h
+            include/thorin/normalize.h
             include/thorin/rewrite.h
             include/thorin/tuple.h
             include/thorin/world.h

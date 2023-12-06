@@ -4,6 +4,7 @@
 // RUN: %t 3 10 ; test $? -eq 13
 
 .plugin core;
+.plugin mem;
 
 .con atoi [%mem.M, %mem.Ptr («⊤:.Nat; %core.I8», 0), .Cn [%mem.M, %core.I32]];
 

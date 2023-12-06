@@ -72,6 +72,24 @@
 /// `id` has to be provided an unique id.
 .ax %mem.mslot: Π Tas::[*, .Nat][%mem.M, size: .Nat, id: .Nat] -> [%mem.M, %mem.Ptr Tas];
 ///
+/// ### %mem.div
+///
+/// Signed and unsigned Integer division/remainder.
+///
+/// @warning Division by zero is *undefined behavior* and a visible side effect.
+/// For this reason, these axioms expect a `%%mem.M`.
+///
+.ax %mem.div(sdiv, udiv, srem, urem):
+    Π.[s: .Nat][%mem.M, «2; .Idx s»] -> [%mem.M, .Idx s], normalize_div;
+///
+/// ### %mem.abs
+///
+/// Absolute value of an int
+///
+/// @warning Computing the absolute value of an Integer with the lowest possible value leads to *undefined behavior*, which is why this axiom expects a `%%mem.M`
+///
+.ax %mem.abs: Π.[s:.Nat][%mem.M, .Idx s] -> [%mem.M, .Idx s], normalize_abs;
+///
 /// ## Operations w/o Side Effects
 ///
 /// ### %mem.lea

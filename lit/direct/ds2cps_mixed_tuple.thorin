@@ -4,6 +4,7 @@
 // test a cps call to a function that contains a direct call
 
 .plugin core;
+.plugin mem;
 .plugin direct;
 
 .lam f [a:%core.I32]: [%core.I32, %core.I32] =

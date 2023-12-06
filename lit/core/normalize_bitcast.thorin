@@ -3,6 +3,7 @@
 // RUN: clang -c %t.ll -o %t -Wno-override-module
 
 .plugin core;
+.plugin mem;
 
 .con .extern bitcast_bitcast(i : %mem.Ptr (%core.I8, 0), return: .Cn %core.I32) = {
     return (%core.bitcast (%core.I32) (%core.bitcast .Nat i))

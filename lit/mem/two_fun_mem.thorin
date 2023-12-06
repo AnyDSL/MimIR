@@ -6,6 +6,7 @@
 // RUN: %t 1 2; test $? -eq 9
 
 .plugin core;
+.plugin mem;
 
 .let Tas = (%core.I32, 0);
 

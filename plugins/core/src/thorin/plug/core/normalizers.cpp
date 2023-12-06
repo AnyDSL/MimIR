@@ -1,5 +1,7 @@
 #include <optional>
 
+#include <thorin/normalize.h>
+
 #include <thorin/plug/math/math.h>
 #include <thorin/plug/mem/mem.h>
 
@@ -20,22 +22,6 @@ template<class Id> void commute(Id id, const Def*& a, const Def*& b) {
 /*
  * Fold
  */
-
-class Res {
-public:
-    Res()
-        : data_{} {}
-    template<class T>
-    Res(T val)
-        : data_(thorin::bitcast<u64>(val)) {}
-
-    constexpr const u64& operator*() const& { return *data_; }
-    constexpr u64& operator*() & { return *data_; }
-    explicit operator bool() const { return data_.has_value(); }
-
-private:
-    std::optional<u64> data_;
-};
 
 // clang-format off
 // See https://stackoverflow.com/a/64354296 for static_assert trick below.
@@ -79,14 +65,6 @@ Res fold(u64 a, u64 b, [[maybe_unused]] bool nsw, [[maybe_unused]] bool nuw) {
         if constexpr (false) {}
         else if constexpr (id == shr::a) return s >> t;
         else if constexpr (id == shr::l) return u >> v;
-        else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
-    } else if constexpr (std::is_same_v<Id, div>) {
-        if (b == 0) return {};
-        if constexpr (false) {}
-        else if constexpr (id == div::sdiv) return s / t;
-        else if constexpr (id == div::udiv) return u / v;
-        else if constexpr (id == div::srem) return s % t;
-        else if constexpr (id == div::urem) return u % v;
         else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
     } else if constexpr (std::is_same_v<Id, icmp>) {
         bool res = false;
@@ -142,41 +120,6 @@ template<class Id, Id id> Ref fold(World& world, Ref type, const Def*& a, const 
     }
 
     commute(id, a, b);
-    return nullptr;
-}
-
-template<class Id, nat_t w> Res fold(u64 a, [[maybe_unused]] bool nsw, [[maybe_unused]] bool nuw) {
-    using ST = w2s<w>;
-    auto s   = thorin::bitcast<ST>(a);
-
-    if constexpr (std::is_same_v<Id, abs>) {
-        return std::abs(s);
-    } else {
-        []<bool flag = false>() { static_assert(flag, "missing tag"); }
-        ();
-    }
-}
-
-template<class Id> Ref fold(World& world, Ref type, const Def*& a) {
-    if (a->isa<Bot>()) return world.bot(type);
-
-    if (auto la = Lit::isa(a)) {
-        auto size  = Lit::as(Idx::size(a->type()));
-        auto width = Idx::size2bitwidth(size);
-        bool nsw = false, nuw = false;
-        Res res;
-        switch (width) {
-#define CODE(i) \
-    case i: res = fold<Id, i>(*la, nsw, nuw); break;
-            THORIN_1_8_16_32_64(CODE)
-#undef CODE
-            default:
-                res = fold<Id, 64>(*la, false, false);
-                if (res && !std::is_same_v<Id, icmp>) *res %= size;
-        }
-
-        return res ? world.lit(type, *res) : world.bot(type);
-    }
     return nullptr;
 }
 
@@ -325,17 +268,6 @@ template<extrema id> Ref normalize_extrema(Ref type, Ref c, Ref arg) {
     auto [a, b] = arg->projs<2>();
     if (auto result = fold<extrema, id>(world, type, a, b)) return result;
     return world.raw_app(type, callee, {a, b});
-}
-
-Ref normalize_abs(Ref type, Ref c, Ref arg) {
-    auto& world           = type->world();
-    auto callee           = c->as<App>();
-    auto [mem, a]         = arg->projs<2>();
-    auto [_, actual_type] = type->projs<2>();
-    auto make_res         = [&, mem = mem](Ref res) { return world.tuple({mem, res}); };
-
-    if (auto result = fold<abs>(world, actual_type, a)) return make_res(result);
-    return world.raw_app(type, callee, arg);
 }
 
 template<bit1 id> Ref normalize_bit1(Ref type, Ref c, Ref a) {
@@ -541,45 +473,6 @@ template<wrap id> Ref normalize_wrap(Ref type, Ref c, Ref arg) {
     if (auto res = reassociate<wrap>(id, world, callee, a, b)) return res;
 
     return world.raw_app(type, callee, {a, b});
-}
-
-template<div id> Ref normalize_div(Ref full_type, Ref c, Ref arg) {
-    auto& world    = full_type->world();
-    auto callee    = c->as<App>();
-    auto [mem, ab] = arg->projs<2>();
-    auto [a, b]    = ab->projs<2>();
-    auto [_, type] = full_type->projs<2>(); // peel off actual type
-    auto make_res  = [&, mem = mem](Ref res) { return world.tuple({mem, res}); };
-
-    if (auto result = fold<div, id>(world, type, a, b)) return make_res(result);
-
-    if (auto la = Lit::isa(a)) {
-        if (*la == 0) return make_res(a); // 0 / b -> 0 and 0 % b -> 0
-    }
-
-    if (auto lb = Lit::isa(b)) {
-        if (*lb == 0) return make_res(world.bot(type)); // a / 0 -> ⊥ and a % 0 -> ⊥
-
-        if (*lb == 1) {
-            switch (id) {
-                case div::sdiv: return make_res(a);                  // a / 1 -> a
-                case div::udiv: return make_res(a);                  // a / 1 -> a
-                case div::srem: return make_res(world.lit(type, 0)); // a % 1 -> 0
-                case div::urem: return make_res(world.lit(type, 0)); // a % 1 -> 0
-            }
-        }
-    }
-
-    if (a == b) {
-        switch (id) {
-            case div::sdiv: return make_res(world.lit(type, 1)); // a / a -> 1
-            case div::udiv: return make_res(world.lit(type, 1)); // a / a -> 1
-            case div::srem: return make_res(world.lit(type, 0)); // a % a -> 0
-            case div::urem: return make_res(world.lit(type, 0)); // a % a -> 0
-        }
-    }
-
-    return world.raw_app(full_type, callee, arg);
 }
 
 template<conv id> Ref normalize_conv(Ref dst_t, Ref c, Ref x) {

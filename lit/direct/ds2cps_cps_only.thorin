@@ -4,6 +4,7 @@
 // sanity check that the pass do not interfere with normal operation
 
 .plugin core;
+.plugin mem;
 .plugin direct;
 
 .con h [mem : %mem.M, a : %core.I32, return : .Cn [%mem.M, %core.I32]] =

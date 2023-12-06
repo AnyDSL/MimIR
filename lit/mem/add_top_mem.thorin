@@ -2,6 +2,7 @@
 // RUN: %thorin %s -o - | FileCheck %s
 
 .plugin core;
+.plugin mem;
 
 .con .extern f [mem: %mem.M, a: %core.I32, ret: .Cn [%mem.M, %core.I32]] = ret (mem, a);
 

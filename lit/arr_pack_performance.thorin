@@ -1,6 +1,7 @@
 // RUN: %thorin %s -o -
 
 // If compiling this takes forever, there is some loophole that Thorin does sth 100000000 times.
+.plugin mem;
 .plugin core;
 
 .let size = 100000000;

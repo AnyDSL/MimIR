@@ -704,22 +704,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         if (mode & core::Mode::nsw) op += " nsw";
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
-    } else if (auto div = match<core::div>(def)) {
-        auto [m, xy] = div->args<2>();
-        auto [x, y]  = xy->projs<2>();
-        auto t       = convert(x->type());
-        emit_unsafe(m);
-        auto a = emit(x);
-        auto b = emit(y);
-
-        switch (div.id()) {
-            case core::div::sdiv: op = "sdiv"; break;
-            case core::div::udiv: op = "udiv"; break;
-            case core::div::srem: op = "srem"; break;
-            case core::div::urem: op = "urem"; break;
-        }
-
-        return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto icmp = match<core::icmp>(def)) {
         auto [a, b] = icmp->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(icmp->arg(0)->type());
@@ -757,13 +741,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         f += t;
         declare("{} @{}({}, {})", t, f, t, t);
         return bb.assign(name, "tail call {} @{}({} {}, {} {})", t, f, t, a, t, b);
-    } else if (auto abs = match<core::abs>(def)) {
-        auto [m, x]   = abs->args<2>();
-        auto t        = convert(x->type());
-        auto a        = emit(x);
-        std::string f = "llvm.abs." + t;
-        declare("{} @{}({}, {})", t, f, t, "i1");
-        return bb.assign(name, "tail call {} @{}({} {}, {} {})", t, f, t, a, "i1", "1");
     } else if (auto conv = match<core::conv>(def)) {
         auto v_src = emit(conv->arg());
         auto t_src = convert(conv->arg()->type());
@@ -809,6 +786,29 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             op = (src_size < dst_size) ? "zext" : "trunc";
         }
         return bb.assign(name, "{} {} {} to {}", op, t_src, v_src, t_dst);
+    } else if (auto div = match<mem::div>(def)) {
+        auto [m, xy] = div->args<2>();
+        auto [x, y]  = xy->projs<2>();
+        auto t       = convert(x->type());
+        emit_unsafe(m);
+        auto a = emit(x);
+        auto b = emit(y);
+
+        switch (div.id()) {
+            case mem::div::sdiv: op = "sdiv"; break;
+            case mem::div::udiv: op = "udiv"; break;
+            case mem::div::srem: op = "srem"; break;
+            case mem::div::urem: op = "urem"; break;
+        }
+
+        return bb.assign(name, "{} {} {}, {}", op, t, a, b);
+    } else if (auto abs = match<mem::abs>(def)) {
+        auto [m, x]   = abs->args<2>();
+        auto t        = convert(x->type());
+        auto a        = emit(x);
+        std::string f = "llvm.abs." + t;
+        declare("{} @{}({}, {})", t, f, t, "i1");
+        return bb.assign(name, "tail call {} @{}({} {}, {} {})", t, f, t, a, "i1", "1");
     } else if (auto lea = match<mem::lea>(def)) {
         auto [ptr, i]  = lea->args<2>();
         auto pointee   = force<mem::Ptr>(ptr->type())->arg(0);

@@ -1,5 +1,6 @@
 // RUN: %thorin %s -p direct -o -
 .plugin core;
+.plugin mem;
 
 .lam ForBody [n: .Nat] = [%mem.M, .Idx n] -> %mem.M;
 

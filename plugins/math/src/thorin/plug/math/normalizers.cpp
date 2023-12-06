@@ -1,4 +1,4 @@
-#include <type_traits>
+#include <thorin/normalize.h>
 
 #include "thorin/plug/math/math.h"
 
@@ -13,20 +13,6 @@ template<class Id> void commute(Id id, const Def*& a, const Def*& b) {
         if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>())) std::swap(a, b);
     }
 }
-
-class Res {
-public:
-    Res() = default;
-    template<class T>
-    Res(T val)
-        : data_(bitcast<u64>(val)) {}
-
-    constexpr const u64& operator*() const& { return data_; }
-    constexpr u64& operator*() & { return data_; }
-
-private:
-    u64 data_;
-};
 
 // clang-format off
 template<class Id, Id id, nat_t w>

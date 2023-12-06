@@ -2,6 +2,7 @@
 // RUN: %thorin %s -o -
 
 .plugin core;
+.plugin mem;
 
 .Sigma %foo.Shape: □, 3 = [n: .Nat, S: «n; .Nat», T: *];
 .ax %foo.len: %foo.Shape -> .Nat, normalize_len;

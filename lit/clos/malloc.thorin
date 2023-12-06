@@ -2,7 +2,7 @@
 // RUN: %thorin -p clos %s --output-ll %t.ll -o -
 
 .plugin core;
-
+.plugin mem;
 
 .con f [mem: %mem.M, x: %core.I32, return: .Cn [%mem.M, %core.I32]] = return (mem, %core.wrap.add 0 (x, 42:%core.I32));
 .con g [mem: %mem.M, x: %core.I32, return: .Cn [%mem.M, %core.I32]] = return (mem, 1:%core.I32);

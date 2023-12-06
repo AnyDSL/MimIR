@@ -2,6 +2,7 @@
 // RUN: %thorin %s --output-ll %t.ll -o - | FileCheck %s
 
 .plugin core;
+.plugin mem;
 .plugin direct;
 
 .lam f(n: .Nat, w: .Nat): .Fn .Idx n -> .Idx n =

@@ -2,6 +2,7 @@
 // RUN: %thorin %s --output-ll %t.ll
 // RUN: clang %t.ll -S -emit-llvm -Wno-override-module -o -
 .plugin core;
+.plugin mem;
 
 .fun .extern f ab::(a b: %core.I32): %core.I32 =
-    return (%mem.rm (2, ‹2; %core.I32›, %core.I32) (%core.div.sdiv @ %core.i32) ab);
+    return (%mem.rm (2, ‹2; %core.I32›, %core.I32) (%mem.div.sdiv @ %core.i32) ab);

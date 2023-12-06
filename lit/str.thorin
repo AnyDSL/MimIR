@@ -3,6 +3,7 @@
 // RUN: clang %S/lib.c %t.ll -o %t -Wno-override-module
 // RUN: %t | FileCheck %s
 .plugin core;
+.plugin mem;
 
 .fun println_char[%mem.M, %core.I8]: %mem.M;
 .fun print_str[%mem.M, %mem.Ptr0 «⊤:.Nat; %core.I8»]: %mem.M;

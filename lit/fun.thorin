@@ -1,5 +1,6 @@
 // RUN: %thorin %s -o - | FileCheck %s
 .plugin core;
+.plugin mem;
 
 .lam Ptr(T: *): * = %mem.Ptr (T, 0);
 

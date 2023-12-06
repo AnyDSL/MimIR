@@ -2,7 +2,7 @@
 // RUN: %thorin %s --output-ll %t.ll -o - | FileCheck %s
 
 .plugin core;
-
+.plugin mem;
 
 .lam f [a:%core.I32]: %core.I32 =
     %core.wrap.mul 0 (2:%core.I32, a);

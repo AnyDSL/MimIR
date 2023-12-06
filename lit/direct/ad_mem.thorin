@@ -2,6 +2,7 @@
 // RUN: %thorin %s -o - | FileCheck %s
 
 .plugin core;
+.plugin mem;
 .plugin direct;
 
 .lam Uf_690595(_690612: %core.I32): ★ = [%mem.M, %core.I32];

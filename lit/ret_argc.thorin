@@ -5,7 +5,8 @@
 // RUN: %t 1 2 3 ; test $? -eq 4
 // RUN: %t a b c d e f ; test $? -eq 7
 
-.import core;
+.plugin core;
+.plugin mem;
 
 .con .extern main(mem: %mem.M, argc: %core.I32, argv: %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return: .Cn [%mem.M, %core.I32]) = return (mem, argc);
 
