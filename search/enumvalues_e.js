@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['o_0',['o',['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa40cb03db644ff4a37367abcc150c5938',1,'thorin::math']]],
-  ['optional_1',['optional',['../namespacethorin_1_1regex.html#aee8365376d8e42f63aa4ad6fd366cabca50a5671aecf8ecf461fb8c990569e0ba',1,'thorin::regex']]],
-  ['or_5f_2',['or_',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978abfd7ad9ece5000d003f6c156c3b8f9cc',1,'thorin::core']]]
+  ['o_0',['o',['../namespacethorin_1_1plug_1_1math.html#a94f956d597c0f1a1b692f442afd41221a0ae29b18788cede9dab0b3eed444ea84',1,'thorin::plug::math']]],
+  ['optional_1',['optional',['../namespacethorin_1_1plug_1_1regex.html#aaed81693b807595ac7b0e034a62700d0ab689f4aa55cee188325d543e47048022',1,'thorin::plug::regex']]],
+  ['or_5f_2',['or_',['../namespacethorin_1_1plug_1_1core.html#a4b25761ed6fb2e589d833a7851461130ac23af357c3d19f5a9229a1e6f0d682d6',1,'thorin::plug::core']]]
 ];

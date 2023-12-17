@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['zero_5fdef_0',['zero_def',['../namespacethorin_1_1autodiff.html#a0625c818ce50225081948f7520171b53',1,'thorin::autodiff']]],
-  ['zero_5fint_1',['zero_int',['../namespacethorin_1_1matrix.html#a84327b5a3e33d99ead1cfc3dd09b77c3',1,'thorin::matrix']]],
-  ['zero_5fpullback_2',['zero_pullback',['../namespacethorin_1_1autodiff.html#a425ac0b0201ca7273b6cceede10692fd',1,'thorin::autodiff']]]
+  ['zero_5fdef_0',['zero_def',['../namespacethorin_1_1plug_1_1autodiff.html#a6f003bde951c94ea2aa9b613baf668e7',1,'thorin::plug::autodiff']]],
+  ['zero_5fint_1',['zero_int',['../namespacethorin_1_1plug_1_1matrix.html#a5db7d7572d25582a784aec85835066c0',1,'thorin::plug::matrix']]],
+  ['zero_5fpullback_2',['zero_pullback',['../namespacethorin_1_1plug_1_1autodiff.html#a9b2fb80b5a945371337b35af2f237584',1,'thorin::plug::autodiff']]]
 ];

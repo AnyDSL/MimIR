@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: thorin/util/dl.cpp Source File</title>
+<title>Thorin: src/thorin/util/dl.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -132,8 +132,7 @@ $(document).ready(function(){initNavTree('dl_8cpp_source.html',''); initResizabl
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#    include &lt;dlfcn.h&gt;</span></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="foldopen" id="foldopen00015" data-start="{" data-end="}">
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="namespacethorin_1_1dl.html">   15</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin_1_1dl.html">thorin::dl</a> {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin_1_1dl.html">thorin::dl</a> {</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="foldopen" id="foldopen00017" data-start="{" data-end="}">
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="namespacethorin_1_1dl.html#a974cb548b7ca48762ca7ee40e30b37b8">   17</a></span>std::string_view <a class="code hl_function" href="namespacethorin_1_1dl.html#a974cb548b7ca48762ca7ee40e30b37b8">extension</a>() {</div>
@@ -146,7 +145,7 @@ $(document).ready(function(){initNavTree('dl_8cpp_source.html',''); initResizabl
 </div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
 <div class="foldopen" id="foldopen00025" data-start="{" data-end="}">
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="namespacethorin_1_1dl.html#a97e500272d3139f731974bce7f3e9cda">   25</a></span><span class="keywordtype">void</span>* <a class="code hl_function" href="namespacethorin_1_1dl.html#a97e500272d3139f731974bce7f3e9cda">open</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* file) {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="namespacethorin_1_1dl.html#a1eec4b2aa8b02ce48c612a2ba96ad6d5">   25</a></span><span class="keywordtype">void</span>* <a class="code hl_function" href="namespacethorin_1_1dl.html#a1eec4b2aa8b02ce48c612a2ba96ad6d5">open</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* file) {</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#ifdef _WIN32</span></div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordflow">if</span> (HMODULE handle = LoadLibraryA(file)) {</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(handle);</div>
@@ -167,7 +166,7 @@ $(document).ready(function(){initNavTree('dl_8cpp_source.html',''); initResizabl
 </div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
 <div class="foldopen" id="foldopen00044" data-start="{" data-end="}">
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="namespacethorin_1_1dl.html#ad2d5f03a475912a8f543b366301727be">   44</a></span><span class="keywordtype">void</span>* <a class="code hl_function" href="namespacethorin_1_1dl.html#ad2d5f03a475912a8f543b366301727be">get</a>(<span class="keywordtype">void</span>* handle, <span class="keyword">const</span> <span class="keywordtype">char</span>* symbol) {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="namespacethorin_1_1dl.html#af539d6e872c753f49ee829dcb9f46f58">   44</a></span><span class="keywordtype">void</span>* <a class="code hl_function" href="namespacethorin_1_1dl.html#af539d6e872c753f49ee829dcb9f46f58">get</a>(<span class="keywordtype">void</span>* handle, <span class="keyword">const</span> <span class="keywordtype">char</span>* symbol) {</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#ifdef _WIN32</span></div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> addr = GetProcAddress(<span class="keyword">static_cast&lt;</span>HMODULE<span class="keyword">&gt;</span>(handle), symbol)) {</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">void</span>*<span class="keyword">&gt;</span>(addr);</div>
@@ -198,13 +197,12 @@ $(document).ready(function(){initNavTree('dl_8cpp_source.html',''); initResizabl
 </div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>} <span class="comment">// namespace thorin::dl</span></div>
-</div>
 <div class="ttc" id="adl_8h_html"><div class="ttname"><a href="dl_8h.html">dl.h</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1dl_html"><div class="ttname"><a href="namespacethorin_1_1dl.html">thorin::dl</a></div><div class="ttdef"><b>Definition</b> <a href="dl_8cpp_source.html#l00015">dl.cpp:15</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1dl_html"><div class="ttname"><a href="namespacethorin_1_1dl.html">thorin::dl</a></div><div class="ttdef"><b>Definition</b> <a href="dl_8h_source.html#l00006">dl.h:6</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1dl_html_a1eec4b2aa8b02ce48c612a2ba96ad6d5"><div class="ttname"><a href="namespacethorin_1_1dl.html#a1eec4b2aa8b02ce48c612a2ba96ad6d5">thorin::dl::open</a></div><div class="ttdeci">void * open(const char *filename)</div><div class="ttdef"><b>Definition</b> <a href="dl_8cpp_source.html#l00025">dl.cpp:25</a></div></div>
 <div class="ttc" id="anamespacethorin_1_1dl_html_a974cb548b7ca48762ca7ee40e30b37b8"><div class="ttname"><a href="namespacethorin_1_1dl.html#a974cb548b7ca48762ca7ee40e30b37b8">thorin::dl::extension</a></div><div class="ttdeci">std::string_view extension()</div><div class="ttdoc">&quot;.dll&quot; or &quot;.so&quot;</div><div class="ttdef"><b>Definition</b> <a href="dl_8cpp_source.html#l00017">dl.cpp:17</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1dl_html_a97e500272d3139f731974bce7f3e9cda"><div class="ttname"><a href="namespacethorin_1_1dl.html#a97e500272d3139f731974bce7f3e9cda">thorin::dl::open</a></div><div class="ttdeci">void * open(const char *file)</div><div class="ttdef"><b>Definition</b> <a href="dl_8cpp_source.html#l00025">dl.cpp:25</a></div></div>
 <div class="ttc" id="anamespacethorin_1_1dl_html_aa7026fc7143db82fe92f2eae107a1027"><div class="ttname"><a href="namespacethorin_1_1dl.html#aa7026fc7143db82fe92f2eae107a1027">thorin::dl::close</a></div><div class="ttdeci">void close(void *handle)</div><div class="ttdef"><b>Definition</b> <a href="dl_8cpp_source.html#l00063">dl.cpp:63</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1dl_html_ad2d5f03a475912a8f543b366301727be"><div class="ttname"><a href="namespacethorin_1_1dl.html#ad2d5f03a475912a8f543b366301727be">thorin::dl::get</a></div><div class="ttdeci">void * get(void *handle, const char *symbol)</div><div class="ttdef"><b>Definition</b> <a href="dl_8cpp_source.html#l00044">dl.cpp:44</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1dl_html_af539d6e872c753f49ee829dcb9f46f58"><div class="ttname"><a href="namespacethorin_1_1dl.html#af539d6e872c753f49ee829dcb9f46f58">thorin::dl::get</a></div><div class="ttdeci">void * get(void *handle, const char *symbol_name)</div><div class="ttdef"><b>Definition</b> <a href="dl_8cpp_source.html#l00044">dl.cpp:44</a></div></div>
 <div class="ttc" id="anamespacethorin_html_a1de4d5b631f17319d8e0fa712800fa14"><div class="ttname"><a href="namespacethorin.html#a1de4d5b631f17319d8e0fa712800fa14">thorin::error</a></div><div class="ttdeci">void error(const Def *def, const char *fmt, Args &amp;&amp;... args)</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00543">def.h:543</a></div></div>
 <div class="ttc" id="aprint_8h_html"><div class="ttname"><a href="print_8h.html">print.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -212,7 +210,7 @@ $(document).ready(function(){initNavTree('dl_8cpp_source.html',''); initResizabl
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_c4168c80b7484587a21dc92c326c695e.html">thorin</a></li><li class="navelem"><a class="el" href="dir_af13e0a143b7ca68f7428894b6ff07d9.html">util</a></li><li class="navelem"><a class="el" href="dl_8cpp.html">dl.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_6a7c4bb7c40f97e4d670d167d69dfc05.html">thorin</a></li><li class="navelem"><a class="el" href="dir_b4c1616413e32b88824b4ffdc9da0708.html">util</a></li><li class="navelem"><a class="el" href="dl_8cpp.html">dl.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

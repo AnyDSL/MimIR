@@ -135,12 +135,16 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:acd545f2b14786e73e995e7df438c4baf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c578ccba933e48400f4b98aaaaf2c6a" id="r_a9c578ccba933e48400f4b98aaaaf2c6a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Driver.html">Driver</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Parser.html#a9c578ccba933e48400f4b98aaaaf2c6a">driver</a> ()</td></tr>
 <tr class="separator:a9c578ccba933e48400f4b98aaaaf2c6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba11ff73b9fe5e733082696fd0e0d59b" id="r_aba11ff73b9fe5e733082696fd0e0d59b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Parser.html#aba11ff73b9fe5e733082696fd0e0d59b">import</a> (fs::path, std::ostream *md=nullptr)</td></tr>
-<tr class="separator:aba11ff73b9fe5e733082696fd0e0d59b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb31f9479ec4fa9a04afed877e9c8e81" id="r_aeb31f9479ec4fa9a04afed877e9c8e81"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Parser.html#aeb31f9479ec4fa9a04afed877e9c8e81">import</a> (std::string_view sv)</td></tr>
+<tr class="separator:aeb31f9479ec4fa9a04afed877e9c8e81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59223557209c9424ba5bab1f5e805d8e" id="r_a59223557209c9424ba5bab1f5e805d8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Parser.html#a59223557209c9424ba5bab1f5e805d8e">import</a> (Sym, std::ostream *md=nullptr)</td></tr>
+<tr class="separator:a59223557209c9424ba5bab1f5e805d8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5225280e564b689cd86f5937ac02ae7" id="r_ad5225280e564b689cd86f5937ac02ae7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Parser.html#ad5225280e564b689cd86f5937ac02ae7">import</a> (std::istream &amp;, const fs::path *=nullptr, std::ostream *md=nullptr)</td></tr>
 <tr class="separator:ad5225280e564b689cd86f5937ac02ae7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8743b80eb8d0196bbae627556b8b8f6e" id="r_a8743b80eb8d0196bbae627556b8b8f6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Parser.html#a8743b80eb8d0196bbae627556b8b8f6e">plugin</a> (fs::path)</td></tr>
-<tr class="separator:a8743b80eb8d0196bbae627556b8b8f6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64a11878718490d9da7ce32098870a00" id="r_a64a11878718490d9da7ce32098870a00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Parser.html#a64a11878718490d9da7ce32098870a00">plugin</a> (Sym)</td></tr>
+<tr class="separator:a64a11878718490d9da7ce32098870a00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa77ca63ab0f4aa2d3346eccf360c6d54" id="r_aa77ca63ab0f4aa2d3346eccf360c6d54"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Parser.html#aa77ca63ab0f4aa2d3346eccf360c6d54">plugin</a> (const char *name)</td></tr>
+<tr class="separator:aa77ca63ab0f4aa2d3346eccf360c6d54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0345e1e9dd5ee6054f487212d53d1f02" id="r_a0345e1e9dd5ee6054f487212d53d1f02"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Scopes.html">Scopes</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Parser.html#a0345e1e9dd5ee6054f487212d53d1f02">scopes</a> () const</td></tr>
 <tr class="separator:a0345e1e9dd5ee6054f487212d53d1f02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -218,44 +222,12 @@ Public Member Functions</h2></td></tr>
 
 <p class="reference">References <a class="el" href="world_8h_source.html#l00083">thorin::World::driver()</a>, and <a class="el" href="parser_8h_source.html#l00040">world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="parser_8cpp_source.html#l00039">import()</a>, and <a class="el" href="parser_8cpp_source.html#l00070">plugin()</a>.</p>
-
-</div>
-</div>
-<a id="aba11ff73b9fe5e733082696fd0e0d59b" name="aba11ff73b9fe5e733082696fd0e0d59b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba11ff73b9fe5e733082696fd0e0d59b">&#9670;&#160;</a></span>import() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void thorin::Parser::import </td>
-          <td>(</td>
-          <td class="paramtype">fs::path&#160;</td>
-          <td class="paramname"><em>name</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::ostream *&#160;</td>
-          <td class="paramname"><em>md</em> = <code>nullptr</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="parser_8cpp_source.html#l00039">39</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="driver_8cpp_source.html#l00045">thorin::Driver::add_import()</a>, <a class="el" href="parser_8h_source.html#l00041">driver()</a>, <a class="el" href="driver_8h_source.html#l00036">thorin::Driver::search_paths()</a>, and <a class="el" href="parser_8h_source.html#l00040">world()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="parser_8h_source.html#l00042">import()</a>, <a class="el" href="parser_8cpp_source.html#l00039">import()</a>, <a class="el" href="parser_8h_source.html#l00046">plugin()</a>, and <a class="el" href="parser_8cpp_source.html#l00072">plugin()</a>.</p>
 
 </div>
 </div>
 <a id="ad5225280e564b689cd86f5937ac02ae7" name="ad5225280e564b689cd86f5937ac02ae7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad5225280e564b689cd86f5937ac02ae7">&#9670;&#160;</a></span>import() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5225280e564b689cd86f5937ac02ae7">&#9670;&#160;</a></span>import() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -286,14 +258,108 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="parser_8cpp_source.html#l00058">58</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="parser_8cpp_source.html#l00060">60</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00543">thorin::error()</a>, and <a class="el" href="parser_8h_source.html#l00040">world()</a>.</p>
 
 </div>
 </div>
-<a id="a8743b80eb8d0196bbae627556b8b8f6e" name="a8743b80eb8d0196bbae627556b8b8f6e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8743b80eb8d0196bbae627556b8b8f6e">&#9670;&#160;</a></span>plugin()</h2>
+<a id="aeb31f9479ec4fa9a04afed877e9c8e81" name="aeb31f9479ec4fa9a04afed877e9c8e81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb31f9479ec4fa9a04afed877e9c8e81">&#9670;&#160;</a></span>import() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void thorin::Parser::import </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>sv</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="parser_8h_source.html#l00042">42</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
+
+<p class="reference">References <a class="el" href="parser_8h_source.html#l00041">driver()</a>.</p>
+
+</div>
+</div>
+<a id="a59223557209c9424ba5bab1f5e805d8e" name="a59223557209c9424ba5bab1f5e805d8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59223557209c9424ba5bab1f5e805d8e">&#9670;&#160;</a></span>import() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void thorin::Parser::import </td>
+          <td>(</td>
+          <td class="paramtype">Sym&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::ostream *&#160;</td>
+          <td class="paramname"><em>md</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="parser_8cpp_source.html#l00039">39</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="driver_8cpp_source.html#l00045">thorin::Driver::add_import()</a>, <a class="el" href="parser_8h_source.html#l00041">driver()</a>, <a class="el" href="driver_8h_source.html#l00036">thorin::Driver::search_paths()</a>, and <a class="el" href="parser_8h_source.html#l00040">world()</a>.</p>
+
+</div>
+</div>
+<a id="aa77ca63ab0f4aa2d3346eccf360c6d54" name="aa77ca63ab0f4aa2d3346eccf360c6d54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa77ca63ab0f4aa2d3346eccf360c6d54">&#9670;&#160;</a></span>plugin() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void thorin::Parser::plugin </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="parser_8h_source.html#l00046">46</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
+
+<p class="reference">References <a class="el" href="parser_8h_source.html#l00041">driver()</a>, and <a class="el" href="parser_8h_source.html#l00046">plugin()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="parser_8h_source.html#l00046">plugin()</a>.</p>
+
+</div>
+</div>
+<a id="a64a11878718490d9da7ce32098870a00" name="a64a11878718490d9da7ce32098870a00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64a11878718490d9da7ce32098870a00">&#9670;&#160;</a></span>plugin() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -301,14 +367,14 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">void thorin::Parser::plugin </td>
           <td>(</td>
-          <td class="paramtype">fs::path&#160;</td>
-          <td class="paramname"><em>path</em></td><td>)</td>
+          <td class="paramtype">Sym&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="parser_8cpp_source.html#l00070">70</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="parser_8cpp_source.html#l00072">72</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="bootstrap_8cpp_source.html#l00011">thorin::bootstrap()</a>, <a class="el" href="parser_8h_source.html#l00041">driver()</a>, and <a class="el" href="driver_8cpp_source.html#l00053">thorin::Driver::load()</a>.</p>
 
@@ -337,7 +403,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="parser_8h_source.html#l00045">45</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="parser_8h_source.html#l00047">47</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
 
 </div>
 </div>
@@ -366,13 +432,13 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="parser_8h_source.html#l00040">40</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="parser_8h_source.html#l00041">driver()</a>, <a class="el" href="parser_8cpp_source.html#l00039">import()</a>, and <a class="el" href="parser_8cpp_source.html#l00058">import()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="parser_8h_source.html#l00041">driver()</a>, <a class="el" href="parser_8cpp_source.html#l00060">import()</a>, and <a class="el" href="parser_8cpp_source.html#l00039">import()</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>thorin/fe/<a class="el" href="parser_8h_source.html">parser.h</a></li>
-<li>thorin/fe/<a class="el" href="parser_8cpp_source.html">parser.cpp</a></li>
+<li>include/thorin/fe/<a class="el" href="parser_8h_source.html">parser.h</a></li>
+<li>src/thorin/fe/<a class="el" href="parser_8cpp_source.html">parser.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

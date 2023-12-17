@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: thorin/util/hash.cpp Source File</title>
+<title>Thorin: src/thorin/util/hash.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -123,7 +123,7 @@ $(document).ready(function(){initNavTree('hash_8cpp_source.html',''); initResiza
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin.html">thorin</a> {</div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
 <div class="foldopen" id="foldopen00005" data-start="{" data-end="}">
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="namespacethorin.html#ae0e621eb1be011dcdfe11e5171fd7dd4">    5</a></span><a class="code hl_typedef" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> <a class="code hl_function" href="namespacethorin.html#ae0e621eb1be011dcdfe11e5171fd7dd4">hash</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* s) {</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="namespacethorin.html#a86322df808081f7c9c3cf8c38404ec8d">    5</a></span><a class="code hl_typedef" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> <a class="code hl_function" href="namespacethorin.html#a86322df808081f7c9c3cf8c38404ec8d">hash</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* s) {</div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>    <a class="code hl_typedef" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> seed = <a class="code hl_function" href="namespacethorin.html#a25e65e2898328d7df97d05cbe8263220">thorin::hash_begin</a>();</div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keywordtype">char</span>* p = s; *p != <span class="charliteral">&#39;\0&#39;</span>; ++p) seed = <a class="code hl_function" href="namespacethorin.html#a3e8bff0379df3f8e717e43f3c1aad22f">thorin::hash_combine</a>(seed, *p);</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <span class="keywordflow">return</span> seed;</div>
@@ -131,7 +131,7 @@ $(document).ready(function(){initNavTree('hash_8cpp_source.html',''); initResiza
 </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 <div class="foldopen" id="foldopen00011" data-start="{" data-end="}">
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="namespacethorin.html#a333d04a40eeb7f22675a906e6cbc00af">   11</a></span><a class="code hl_typedef" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> <a class="code hl_function" href="namespacethorin.html#ae0e621eb1be011dcdfe11e5171fd7dd4">hash</a>(std::string_view s) {</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="namespacethorin.html#a774ff60ac8ff95df4c7d8af646e6cd3a">   11</a></span><a class="code hl_typedef" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> <a class="code hl_function" href="namespacethorin.html#a86322df808081f7c9c3cf8c38404ec8d">hash</a>(std::string_view s) {</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <a class="code hl_typedef" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> seed = <a class="code hl_function" href="namespacethorin.html#a25e65e2898328d7df97d05cbe8263220">thorin::hash_begin</a>(s.size());</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> c : s) seed = <a class="code hl_function" href="namespacethorin.html#a3e8bff0379df3f8e717e43f3c1aad22f">thorin::hash_combine</a>(seed, c);</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keywordflow">return</span> seed;</div>
@@ -140,17 +140,17 @@ $(document).ready(function(){initNavTree('hash_8cpp_source.html',''); initResiza
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>} <span class="comment">// namespace thorin</span></div>
 <div class="ttc" id="ahash_8h_html"><div class="ttname"><a href="hash_8h.html">hash.h</a></div></div>
-<div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition</b> <a href="affine_8h_source.html#l00007">affine.h:7</a></div></div>
-<div class="ttc" id="anamespacethorin_html_a25e65e2898328d7df97d05cbe8263220"><div class="ttname"><a href="namespacethorin.html#a25e65e2898328d7df97d05cbe8263220">thorin::hash_begin</a></div><div class="ttdeci">hash_t hash_begin()</div><div class="ttdef"><b>Definition</b> <a href="hash_8h_source.html#l00111">hash.h:111</a></div></div>
-<div class="ttc" id="anamespacethorin_html_a3e8bff0379df3f8e717e43f3c1aad22f"><div class="ttname"><a href="namespacethorin.html#a3e8bff0379df3f8e717e43f3c1aad22f">thorin::hash_combine</a></div><div class="ttdeci">hash_t hash_combine(hash_t seed, T v)</div><div class="ttdoc">Returns a new hash by combining the hash seed with val.</div><div class="ttdef"><b>Definition</b> <a href="hash_8h_source.html#l00084">hash.h:84</a></div></div>
+<div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition</b> <a href="cfg_8h_source.html#l00011">cfg.h:11</a></div></div>
+<div class="ttc" id="anamespacethorin_html_a25e65e2898328d7df97d05cbe8263220"><div class="ttname"><a href="namespacethorin.html#a25e65e2898328d7df97d05cbe8263220">thorin::hash_begin</a></div><div class="ttdeci">hash_t hash_begin()</div><div class="ttdef"><b>Definition</b> <a href="hash_8h_source.html#l00103">hash.h:103</a></div></div>
+<div class="ttc" id="anamespacethorin_html_a3e8bff0379df3f8e717e43f3c1aad22f"><div class="ttname"><a href="namespacethorin.html#a3e8bff0379df3f8e717e43f3c1aad22f">thorin::hash_combine</a></div><div class="ttdeci">hash_t hash_combine(hash_t seed, T v)</div><div class="ttdoc">Returns a new hash by combining the hash seed with val.</div><div class="ttdef"><b>Definition</b> <a href="hash_8h_source.html#l00083">hash.h:83</a></div></div>
 <div class="ttc" id="anamespacethorin_html_a63fc98b747386959626beff8195c9910"><div class="ttname"><a href="namespacethorin.html#a63fc98b747386959626beff8195c9910">thorin::hash_t</a></div><div class="ttdeci">uint32_t hash_t</div><div class="ttdef"><b>Definition</b> <a href="hash_8h_source.html#l00009">hash.h:9</a></div></div>
-<div class="ttc" id="anamespacethorin_html_ae0e621eb1be011dcdfe11e5171fd7dd4"><div class="ttname"><a href="namespacethorin.html#ae0e621eb1be011dcdfe11e5171fd7dd4">thorin::hash</a></div><div class="ttdeci">hash_t hash(const char *s)</div><div class="ttdef"><b>Definition</b> <a href="hash_8cpp_source.html#l00005">hash.cpp:5</a></div></div>
+<div class="ttc" id="anamespacethorin_html_a86322df808081f7c9c3cf8c38404ec8d"><div class="ttname"><a href="namespacethorin.html#a86322df808081f7c9c3cf8c38404ec8d">thorin::hash</a></div><div class="ttdeci">hash_t hash(const char *)</div><div class="ttdef"><b>Definition</b> <a href="hash_8cpp_source.html#l00005">hash.cpp:5</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_c4168c80b7484587a21dc92c326c695e.html">thorin</a></li><li class="navelem"><a class="el" href="dir_af13e0a143b7ca68f7428894b6ff07d9.html">util</a></li><li class="navelem"><a class="el" href="hash_8cpp.html">hash.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_6a7c4bb7c40f97e4d670d167d69dfc05.html">thorin</a></li><li class="navelem"><a class="el" href="dir_b4c1616413e32b88824b4ffdc9da0708.html">util</a></li><li class="navelem"><a class="el" href="hash_8cpp.html">hash.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

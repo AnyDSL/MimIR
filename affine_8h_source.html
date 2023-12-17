@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: dialects/affine/affine.h Source File</title>
+<title>Thorin: plugins/affine/include/thorin/plug/affine/affine.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -122,18 +122,18 @@ $(document).ready(function(){initNavTree('affine_8h_source.html',''); initResiza
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="world_8h.html">thorin/world.h</a>&quot;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="affine_2autogen_8h.html">dialects/affine/autogen.h</a>&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="affine_2autogen_8h.html">thorin/plug/affine/autogen.h</a>&quot;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="foldopen" id="foldopen00007" data-start="{" data-end="}">
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespacethorin.html">    7</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin_1_1affine.html">thorin::affine</a> {</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespacethorin_1_1plug.html">    7</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin_1_1plug_1_1affine.html">thorin::plug::affine</a> {</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"></span> </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment">/// @name %%affine.For</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">///@{</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">/// Returns the affine_for axiom applied with \a params.</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">/// See documentation for %affine.For axiom in @ref affine.</span></div>
 <div class="foldopen" id="foldopen00013" data-start="{" data-end="}">
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="namespacethorin_1_1affine.html#a0372be693375257bfadf6679323e6a32">   13</a></span><span class="comment"></span><span class="keyword">inline</span> <span class="keyword">const</span> <a class="code hl_class" href="classthorin_1_1Def.html">Def</a>* <a class="code hl_function" href="namespacethorin_1_1affine.html#a0372be693375257bfadf6679323e6a32">fn_for</a>(<a class="code hl_class" href="classthorin_1_1World.html">World</a>&amp; w, <a class="code hl_class" href="classthorin_1_1Span.html">Defs</a> params) {</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keywordflow">return</span> w.app(w.annex&lt;<a class="code hl_enumeration" href="namespacethorin_1_1affine.html#ae9bd5d8f8b435003df098cc8f09b30d6">affine::For</a>&gt;(),</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="namespacethorin_1_1plug_1_1affine.html#a688c7ef38dcb451a6edcec456e448da4">   13</a></span><span class="comment"></span><span class="keyword">inline</span> <span class="keyword">const</span> <a class="code hl_class" href="classthorin_1_1Def.html">Def</a>* <a class="code hl_function" href="namespacethorin_1_1plug_1_1affine.html#a688c7ef38dcb451a6edcec456e448da4">fn_for</a>(<a class="code hl_class" href="classthorin_1_1World.html">World</a>&amp; w, <a class="code hl_class" href="classthorin_1_1Span.html">Defs</a> params) {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keywordflow">return</span> w.app(w.annex&lt;<a class="code hl_enumeration" href="namespacethorin_1_1plug_1_1affine.html#a845c692f9cb802f58b277ded69bfe419">affine::For</a>&gt;(),</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                 {w.lit_nat(Idx::bitwidth2size(32)), w.lit_nat(params.size()), w.tuple(params)});</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>}</div>
 </div>
@@ -142,7 +142,7 @@ $(document).ready(function(){initNavTree('affine_8h_source.html',''); initResiza
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">/// See documentation for %affine.For axiom in @ref affine.</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"></span><span class="comment">// clang-format off</span></div>
 <div class="foldopen" id="foldopen00021" data-start="{" data-end="}">
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="namespacethorin_1_1affine.html#ac2d8cd6eb455e02907e58647c538087f">   21</a></span><span class="keyword">inline</span> <span class="keyword">const</span> <a class="code hl_class" href="classthorin_1_1Def.html">Def</a>* <a class="code hl_function" href="namespacethorin_1_1affine.html#ac2d8cd6eb455e02907e58647c538087f">op_for</a>(<a class="code hl_class" href="classthorin_1_1World.html">World</a>&amp; w,</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="namespacethorin_1_1plug_1_1affine.html#a316e689acfd7eecbfd74fe1c33e711ab">   21</a></span><span class="keyword">inline</span> <span class="keyword">const</span> <a class="code hl_class" href="classthorin_1_1Def.html">Def</a>* <a class="code hl_function" href="namespacethorin_1_1plug_1_1affine.html#a316e689acfd7eecbfd74fe1c33e711ab">op_for</a>(<a class="code hl_class" href="classthorin_1_1World.html">World</a>&amp; w,</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>                         <a class="code hl_class" href="classthorin_1_1Ref.html">Ref</a> begin,</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                         <a class="code hl_class" href="classthorin_1_1Ref.html">Ref</a> end,</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>                         <a class="code hl_class" href="classthorin_1_1Ref.html">Ref</a> step,</div>
@@ -150,23 +150,23 @@ $(document).ready(function(){initNavTree('affine_8h_source.html',''); initResiza
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                         <a class="code hl_class" href="classthorin_1_1Ref.html">Ref</a> body,</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>                         <a class="code hl_class" href="classthorin_1_1Ref.html">Ref</a> brk) {</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keyword">auto</span> types = <a class="code hl_typedef" href="namespacethorin.html#ae25f90393961e232cf46315fdfff9c18">DefVec</a>(inits.size(), [&amp;](<span class="keywordtype">size_t</span> i) { return inits[i]-&gt;type(); });</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordflow">return</span> w.app(<a class="code hl_function" href="namespacethorin_1_1affine.html#a0372be693375257bfadf6679323e6a32">fn_for</a>(w, types), {begin, end, step, w.tuple(inits), body, brk});</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordflow">return</span> w.app(<a class="code hl_function" href="namespacethorin_1_1plug_1_1affine.html#a688c7ef38dcb451a6edcec456e448da4">fn_for</a>(w, types), {begin, end, step, w.tuple(inits), body, brk});</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>}</div>
 </div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">// clang-format on</span><span class="comment"></span></div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">///@}</span></div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment"></span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>} <span class="comment">// namespace thorin::affine</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>} <span class="comment">// namespace thorin::plug::affine</span></div>
 </div>
 <div class="ttc" id="aaffine_2autogen_8h_html"><div class="ttname"><a href="affine_2autogen_8h.html">autogen.h</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Def_html"><div class="ttname"><a href="classthorin_1_1Def.html">thorin::Def</a></div><div class="ttdoc">Base class for all Defs.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00207">def.h:207</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Ref_html"><div class="ttname"><a href="classthorin_1_1Ref.html">thorin::Ref</a></div><div class="ttdoc">Helper class to retrieve Infer::arg if present.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00078">def.h:78</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Span_html"><div class="ttname"><a href="classthorin_1_1Span.html">thorin::Span</a></div><div class="ttdoc">This is a thin wrapper for std::span&lt;T, N&gt; with the following additional features:</div><div class="ttdef"><b>Definition</b> <a href="span_8h_source.html#l00028">span.h:28</a></div></div>
 <div class="ttc" id="aclassthorin_1_1World_html"><div class="ttname"><a href="classthorin_1_1World.html">thorin::World</a></div><div class="ttdoc">The World represents the whole program and manages creation of Thorin nodes (Defs).</div><div class="ttdef"><b>Definition</b> <a href="world_8h_source.html#l00035">world.h:35</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1affine_html"><div class="ttname"><a href="namespacethorin_1_1affine.html">thorin::affine</a></div><div class="ttdoc">The affine Plugin</div><div class="ttdef"><b>Definition</b> <a href="affine_8h_source.html#l00007">affine.h:7</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1affine_html_a0372be693375257bfadf6679323e6a32"><div class="ttname"><a href="namespacethorin_1_1affine.html#a0372be693375257bfadf6679323e6a32">thorin::affine::fn_for</a></div><div class="ttdeci">const Def * fn_for(World &amp;w, Defs params)</div><div class="ttdef"><b>Definition</b> <a href="affine_8h_source.html#l00013">affine.h:13</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1affine_html_ac2d8cd6eb455e02907e58647c538087f"><div class="ttname"><a href="namespacethorin_1_1affine.html#ac2d8cd6eb455e02907e58647c538087f">thorin::affine::op_for</a></div><div class="ttdeci">const Def * op_for(World &amp;w, Ref begin, Ref end, Ref step, Defs inits, Ref body, Ref brk)</div><div class="ttdoc">Returns a fully applied affine_for axiom.</div><div class="ttdef"><b>Definition</b> <a href="affine_8h_source.html#l00021">affine.h:21</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1affine_html_ae9bd5d8f8b435003df098cc8f09b30d6"><div class="ttname"><a href="namespacethorin_1_1affine.html#ae9bd5d8f8b435003df098cc8f09b30d6">thorin::affine::For</a></div><div class="ttdeci">For</div><div class="ttdef"><b>Definition</b> <a href="affine_2autogen_8h_source.html#l00015">autogen.h:15</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1plug_1_1affine_html"><div class="ttname"><a href="namespacethorin_1_1plug_1_1affine.html">thorin::plug::affine</a></div><div class="ttdoc">The affine Plugin</div><div class="ttdef"><b>Definition</b> <a href="affine_8h_source.html#l00007">affine.h:7</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1plug_1_1affine_html_a316e689acfd7eecbfd74fe1c33e711ab"><div class="ttname"><a href="namespacethorin_1_1plug_1_1affine.html#a316e689acfd7eecbfd74fe1c33e711ab">thorin::plug::affine::op_for</a></div><div class="ttdeci">const Def * op_for(World &amp;w, Ref begin, Ref end, Ref step, Defs inits, Ref body, Ref brk)</div><div class="ttdoc">Returns a fully applied affine_for axiom.</div><div class="ttdef"><b>Definition</b> <a href="affine_8h_source.html#l00021">affine.h:21</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1plug_1_1affine_html_a688c7ef38dcb451a6edcec456e448da4"><div class="ttname"><a href="namespacethorin_1_1plug_1_1affine.html#a688c7ef38dcb451a6edcec456e448da4">thorin::plug::affine::fn_for</a></div><div class="ttdeci">const Def * fn_for(World &amp;w, Defs params)</div><div class="ttdef"><b>Definition</b> <a href="affine_8h_source.html#l00013">affine.h:13</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1plug_1_1affine_html_a845c692f9cb802f58b277ded69bfe419"><div class="ttname"><a href="namespacethorin_1_1plug_1_1affine.html#a845c692f9cb802f58b277ded69bfe419">thorin::plug::affine::For</a></div><div class="ttdeci">For</div><div class="ttdef"><b>Definition</b> <a href="affine_2autogen_8h_source.html#l00015">autogen.h:15</a></div></div>
 <div class="ttc" id="anamespacethorin_html_ae25f90393961e232cf46315fdfff9c18"><div class="ttname"><a href="namespacethorin.html#ae25f90393961e232cf46315fdfff9c18">thorin::DefVec</a></div><div class="ttdeci">Vector&lt; const Def * &gt; DefVec</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00056">def.h:56</a></div></div>
 <div class="ttc" id="aworld_8h_html"><div class="ttname"><a href="world_8h.html">world.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -174,7 +174,7 @@ $(document).ready(function(){initNavTree('affine_8h_source.html',''); initResiza
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_dc7f769b3d5332bd9f89fd345831c3ed.html">dialects</a></li><li class="navelem"><a class="el" href="dir_a4e6014a65dac395128c61005a1a2d46.html">affine</a></li><li class="navelem"><a class="el" href="affine_8h.html">affine.h</a></li>
+    <li class="navelem"><a class="el" href="dir_38c8d24aef3972a7f87b834274e76e31.html">plugins</a></li><li class="navelem"><a class="el" href="dir_793074ef6e4d0b3a0968f64fe8500756.html">affine</a></li><li class="navelem"><a class="el" href="dir_769279dfba39b54abf70de2a54318d08.html">include</a></li><li class="navelem"><a class="el" href="dir_1278d84e66d78ba9560ab321983e3b76.html">thorin</a></li><li class="navelem"><a class="el" href="dir_fa27fa4ccbb768cf4ce7c7b2d4a34e53.html">plug</a></li><li class="navelem"><a class="el" href="dir_dd5da3ebfaa278026d699d1f3b6b3716.html">affine</a></li><li class="navelem"><a class="el" href="affine_8h.html">affine.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

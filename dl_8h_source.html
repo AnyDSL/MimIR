@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: thorin/util/dl.h Source File</title>
+<title>Thorin: include/thorin/util/dl.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -123,26 +123,28 @@ $(document).ready(function(){initNavTree('dl_8h_source.html',''); initResizable(
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin_1_1dl.html">thorin::dl</a> {</div>
+<div class="foldopen" id="foldopen00006" data-start="{" data-end="}">
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="namespacethorin_1_1dl.html">    6</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin_1_1dl.html">thorin::dl</a> {</div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>std::string_view <a class="code hl_function" href="namespacethorin_1_1dl.html#a974cb548b7ca48762ca7ee40e30b37b8">extension</a>(); <span class="comment">///&lt; `&quot;.dll&quot;` or `&quot;.so&quot;`</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keywordtype">void</span>* <a class="code hl_function" href="namespacethorin_1_1dl.html#a97e500272d3139f731974bce7f3e9cda">open</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename);</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keywordtype">void</span>* <a class="code hl_function" href="namespacethorin_1_1dl.html#ad2d5f03a475912a8f543b366301727be">get</a>(<span class="keywordtype">void</span>* handle, <span class="keyword">const</span> <span class="keywordtype">char</span>* symbol_name);</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keywordtype">void</span>* <a class="code hl_function" href="namespacethorin_1_1dl.html#a1eec4b2aa8b02ce48c612a2ba96ad6d5">open</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename);</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keywordtype">void</span>* <a class="code hl_function" href="namespacethorin_1_1dl.html#af539d6e872c753f49ee829dcb9f46f58">get</a>(<span class="keywordtype">void</span>* handle, <span class="keyword">const</span> <span class="keywordtype">char</span>* symbol_name);</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keywordtype">void</span> <a class="code hl_function" href="namespacethorin_1_1dl.html#aa7026fc7143db82fe92f2eae107a1027">close</a>(<span class="keywordtype">void</span>* handle);</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>} <span class="comment">// namespace thorin::dl</span></div>
-<div class="ttc" id="anamespacethorin_1_1dl_html"><div class="ttname"><a href="namespacethorin_1_1dl.html">thorin::dl</a></div><div class="ttdef"><b>Definition</b> <a href="dl_8cpp_source.html#l00015">dl.cpp:15</a></div></div>
+</div>
+<div class="ttc" id="anamespacethorin_1_1dl_html"><div class="ttname"><a href="namespacethorin_1_1dl.html">thorin::dl</a></div><div class="ttdef"><b>Definition</b> <a href="dl_8h_source.html#l00006">dl.h:6</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1dl_html_a1eec4b2aa8b02ce48c612a2ba96ad6d5"><div class="ttname"><a href="namespacethorin_1_1dl.html#a1eec4b2aa8b02ce48c612a2ba96ad6d5">thorin::dl::open</a></div><div class="ttdeci">void * open(const char *filename)</div><div class="ttdef"><b>Definition</b> <a href="dl_8cpp_source.html#l00025">dl.cpp:25</a></div></div>
 <div class="ttc" id="anamespacethorin_1_1dl_html_a974cb548b7ca48762ca7ee40e30b37b8"><div class="ttname"><a href="namespacethorin_1_1dl.html#a974cb548b7ca48762ca7ee40e30b37b8">thorin::dl::extension</a></div><div class="ttdeci">std::string_view extension()</div><div class="ttdoc">&quot;.dll&quot; or &quot;.so&quot;</div><div class="ttdef"><b>Definition</b> <a href="dl_8cpp_source.html#l00017">dl.cpp:17</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1dl_html_a97e500272d3139f731974bce7f3e9cda"><div class="ttname"><a href="namespacethorin_1_1dl.html#a97e500272d3139f731974bce7f3e9cda">thorin::dl::open</a></div><div class="ttdeci">void * open(const char *file)</div><div class="ttdef"><b>Definition</b> <a href="dl_8cpp_source.html#l00025">dl.cpp:25</a></div></div>
 <div class="ttc" id="anamespacethorin_1_1dl_html_aa7026fc7143db82fe92f2eae107a1027"><div class="ttname"><a href="namespacethorin_1_1dl.html#aa7026fc7143db82fe92f2eae107a1027">thorin::dl::close</a></div><div class="ttdeci">void close(void *handle)</div><div class="ttdef"><b>Definition</b> <a href="dl_8cpp_source.html#l00063">dl.cpp:63</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1dl_html_ad2d5f03a475912a8f543b366301727be"><div class="ttname"><a href="namespacethorin_1_1dl.html#ad2d5f03a475912a8f543b366301727be">thorin::dl::get</a></div><div class="ttdeci">void * get(void *handle, const char *symbol)</div><div class="ttdef"><b>Definition</b> <a href="dl_8cpp_source.html#l00044">dl.cpp:44</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1dl_html_af539d6e872c753f49ee829dcb9f46f58"><div class="ttname"><a href="namespacethorin_1_1dl.html#af539d6e872c753f49ee829dcb9f46f58">thorin::dl::get</a></div><div class="ttdeci">void * get(void *handle, const char *symbol_name)</div><div class="ttdef"><b>Definition</b> <a href="dl_8cpp_source.html#l00044">dl.cpp:44</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_c4168c80b7484587a21dc92c326c695e.html">thorin</a></li><li class="navelem"><a class="el" href="dir_af13e0a143b7ca68f7428894b6ff07d9.html">util</a></li><li class="navelem"><a class="el" href="dl_8h.html">dl.h</a></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_a9446755a1c96c6cd3ab4facf95dc5bb.html">thorin</a></li><li class="navelem"><a class="el" href="dir_9d0d17bba5e0872ac28e0c05e18d5775.html">util</a></li><li class="navelem"><a class="el" href="dl_8h.html">dl.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

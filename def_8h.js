@@ -56,19 +56,6 @@ var def_8h =
       [ "Level", "def_8h.html#abb917bebc699083d990fc4592abcc50eaa0db49ba470c1c9ae2128c3470339153", null ]
     ] ],
     [ "error", "def_8h.html#a1de4d5b631f17319d8e0fa712800fa14", null ],
-    [ "operator&", "def_8h.html#a77d68202e47f9dfe90870a8e53f45fa5", null ],
-    [ "operator&", "def_8h.html#aee9a9527f1c9bf4d1cb2a9ecaecc6cb9", null ],
-    [ "operator&", "def_8h.html#aef207c965365237a7985f6ae0f16ba0e", null ],
     [ "operator<<", "def_8h.html#a95f0f301a18bbb510ecfbdffaaa70376", null ],
-    [ "operator<<", "def_8h.html#a2a31cdc1f3cb66759ad44e6052b4b575", null ],
-    [ "operator<=>", "def_8h.html#a8849245660ba451e624583f0dfb52fc1", null ],
-    [ "operator<=>", "def_8h.html#a584fc0649dcac8e5a6e7cff44bee9a2c", null ],
-    [ "operator==", "def_8h.html#ab1f08291e9cd69771b71c438399e4549", null ],
-    [ "operator==", "def_8h.html#a1a324749256f48b50d45d8eade7b3a27", null ],
-    [ "operator^", "def_8h.html#adf7983eb0a2130b76c4f95a0db3d2a33", null ],
-    [ "operator^", "def_8h.html#a0ec7e6cad9af4c1657598661b22ab7ed", null ],
-    [ "operator^", "def_8h.html#a9865683241a11a66d74ca9cf9fcf3360", null ],
-    [ "operator|", "def_8h.html#a5dd4e0d6f59919aad7b2fa2f9f04b45d", null ],
-    [ "operator|", "def_8h.html#a2496a38ddd3f35fd787fca7f9b2907f9", null ],
-    [ "operator|", "def_8h.html#aa8ff2edb9d332c5f52eb198111d90361", null ]
+    [ "operator<<", "def_8h.html#a2a31cdc1f3cb66759ad44e6052b4b575", null ]
 ];

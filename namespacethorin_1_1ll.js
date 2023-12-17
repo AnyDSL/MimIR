@@ -2,8 +2,8 @@ var namespacethorin_1_1ll =
 [
     [ "BB", "structthorin_1_1ll_1_1BB.html", "structthorin_1_1ll_1_1BB" ],
     [ "Emitter", "classthorin_1_1ll_1_1Emitter.html", "classthorin_1_1ll_1_1Emitter" ],
-    [ "compile", "namespacethorin_1_1ll.html#aa7729bb12e2e6ec7d0f2e34af12838bb", null ],
-    [ "compile", "namespacethorin_1_1ll.html#a709e16be24f45303689dbe7b7575fc12", null ],
-    [ "compile_and_run", "namespacethorin_1_1ll.html#af25d6d9d636f8feb823248a6c09d02b9", null ],
-    [ "emit", "namespacethorin_1_1ll.html#a65f81261af8998285d3076ad85a8f9e5", null ]
+    [ "compile", "namespacethorin_1_1ll.html#a6ea2132dcf249895695a25bc3be549e3", null ],
+    [ "compile", "namespacethorin_1_1ll.html#ac285c42de18fa530f604ad897db03665", null ],
+    [ "compile_and_run", "namespacethorin_1_1ll.html#a57a43d4bd4898dd4fe5976cc706e381a", null ],
+    [ "emit", "namespacethorin_1_1ll.html#a4e758a9292f45789110f143dadbea24f", null ]
 ];

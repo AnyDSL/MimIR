@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: dialects/matrix/matrix.h File Reference</title>
+<title>Thorin: plugins/matrix/include/thorin/plug/matrix/matrix.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -117,10 +117,9 @@ $(document).ready(function(){initNavTree('matrix_8h.html',''); initResizable(); 
   <div class="headertitle"><div class="title">matrix.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="pipelinebuilder_8h_source.html">thorin/pass/pipelinebuilder.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="world_8h_source.html">thorin/world.h</a>&gt;</code><br />
-<code>#include &quot;<a class="el" href="matrix_2autogen_8h_source.html">dialects/matrix/autogen.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="mem_8h_source.html">dialects/mem/mem.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="world_8h_source.html">thorin/world.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="pipelinebuilder_8h_source.html">thorin/pass/pipelinebuilder.h</a>&gt;</code><br />
+<code>#include &quot;<a class="el" href="matrix_2autogen_8h_source.html">thorin/plug/matrix/autogen.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for matrix.h:</div>
 <div class="dyncontent">
@@ -129,7 +128,7 @@ Include dependency graph for matrix.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="matrix_8h__dep__incl.svg" width="100%" height="393"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="matrix_8h__dep__incl.svg" width="100%" height="415"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div>
 <p><a href="matrix_8h_source.html">Go to the source code of this file.</a></p>
@@ -138,8 +137,10 @@ This graph shows which files directly or indirectly include this file:</div>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacethorin" id="r_namespacethorin"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html">thorin</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacethorin_1_1matrix" id="r_namespacethorin_1_1matrix"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1matrix.html">thorin::matrix</a></td></tr>
-<tr class="memdesc:namespacethorin_1_1matrix"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="matrix.html">The matrix Dialect</a> <br /></td></tr>
+<tr class="memitem:namespacethorin_1_1plug" id="r_namespacethorin_1_1plug"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1plug.html">thorin::plug</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacethorin_1_1plug_1_1matrix" id="r_namespacethorin_1_1plug_1_1matrix"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1plug_1_1matrix.html">thorin::plug::matrix</a></td></tr>
+<tr class="memdesc:namespacethorin_1_1plug_1_1matrix"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="matrix.html">The matrix Plugin</a> <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -149,11 +150,11 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a84327b5a3e33d99ead1cfc3dd09b77c3" id="r_a84327b5a3e33d99ead1cfc3dd09b77c3"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1matrix.html#a84327b5a3e33d99ead1cfc3dd09b77c3">thorin::matrix::zero_int</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;w, <a class="el" href="classthorin_1_1Ref.html">Ref</a> n, <a class="el" href="classthorin_1_1Ref.html">Ref</a> S, <a class="el" href="classthorin_1_1Ref.html">Ref</a> mem, <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> m)</td></tr>
-<tr class="memdesc:a84327b5a3e33d99ead1cfc3dd09b77c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">mat.zero: Π [n: .<a class="el" href="classthorin_1_1Nat.html">Nat</a>, S: «n; .Nat», m: .<a class="el" href="classthorin_1_1Nat.html">Nat</a>] -&gt; mat.Mat (n,S,(.<a class="el" href="classthorin_1_1Idx.html" title="A built-in constant of type .Nat -&gt; *.">Idx</a> m));  <br /></td></tr>
-<tr class="separator:a84327b5a3e33d99ead1cfc3dd09b77c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40a39a623bc03e242cfbd5da3369d6b8" id="r_a40a39a623bc03e242cfbd5da3369d6b8"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1matrix.html#a40a39a623bc03e242cfbd5da3369d6b8">thorin::matrix::op_read</a> (<a class="el" href="classthorin_1_1Ref.html">Ref</a> mem, <a class="el" href="classthorin_1_1Ref.html">Ref</a> matrix, <a class="el" href="classthorin_1_1Ref.html">Ref</a> idx)</td></tr>
-<tr class="separator:a40a39a623bc03e242cfbd5da3369d6b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5db7d7572d25582a784aec85835066c0" id="r_a5db7d7572d25582a784aec85835066c0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1plug_1_1matrix.html#a5db7d7572d25582a784aec85835066c0">thorin::plug::matrix::zero_int</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;w, <a class="el" href="classthorin_1_1Ref.html">Ref</a> n, <a class="el" href="classthorin_1_1Ref.html">Ref</a> S, <a class="el" href="classthorin_1_1Ref.html">Ref</a> mem, <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> m)</td></tr>
+<tr class="memdesc:a5db7d7572d25582a784aec85835066c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">mat.zero: Π [n: .<a class="el" href="classthorin_1_1Nat.html">Nat</a>, S: «n; .Nat», m: .<a class="el" href="classthorin_1_1Nat.html">Nat</a>] -&gt; mat.Mat (n,S,(.<a class="el" href="classthorin_1_1Idx.html" title="A built-in constant of type .Nat -&gt; *.">Idx</a> m));  <br /></td></tr>
+<tr class="separator:a5db7d7572d25582a784aec85835066c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4fc5e0a96114355e08987f0f639ae15" id="r_ad4fc5e0a96114355e08987f0f639ae15"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1plug_1_1matrix.html#ad4fc5e0a96114355e08987f0f639ae15">thorin::plug::matrix::op_read</a> (<a class="el" href="classthorin_1_1Ref.html">Ref</a> mem, <a class="el" href="classthorin_1_1Ref.html">Ref</a> matrix, <a class="el" href="classthorin_1_1Ref.html">Ref</a> idx)</td></tr>
+<tr class="separator:ad4fc5e0a96114355e08987f0f639ae15"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a076f90e3d41ff22230a75a561d43d116" name="a076f90e3d41ff22230a75a561d43d116"></a>
@@ -177,7 +178,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_dc7f769b3d5332bd9f89fd345831c3ed.html">dialects</a></li><li class="navelem"><a class="el" href="dir_af2bd8e28dcdf08ddd03448d17e029e1.html">matrix</a></li><li class="navelem"><a class="el" href="matrix_8h.html">matrix.h</a></li>
+    <li class="navelem"><a class="el" href="dir_38c8d24aef3972a7f87b834274e76e31.html">plugins</a></li><li class="navelem"><a class="el" href="dir_2d53d98a8eca37a9db4aacd1e0389b06.html">matrix</a></li><li class="navelem"><a class="el" href="dir_210f71158b20ae9a214079ea7d0b63b6.html">include</a></li><li class="navelem"><a class="el" href="dir_a097c6ded5083dcb23897101f7fc6f94.html">thorin</a></li><li class="navelem"><a class="el" href="dir_9b237461405580af908e88d1738ba0c7.html">plug</a></li><li class="navelem"><a class="el" href="dir_d8e0f16b33924982e2acfda4ca8c8ba4.html">matrix</a></li><li class="navelem"><a class="el" href="matrix_8h.html">matrix.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

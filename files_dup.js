@@ -2,7 +2,8 @@ var files_dup =
 [
     [ "build", "dir_4fef79e7177ba769987a8da36c892c5f.html", "dir_4fef79e7177ba769987a8da36c892c5f" ],
     [ "cli", "dir_2990d7c532eb7441b74916b8f5365141.html", "dir_2990d7c532eb7441b74916b8f5365141" ],
-    [ "dialects", "dir_dc7f769b3d5332bd9f89fd345831c3ed.html", "dir_dc7f769b3d5332bd9f89fd345831c3ed" ],
     [ "docs", "dir_49e56c817e5e54854c35e136979f97ca.html", null ],
-    [ "thorin", "dir_c4168c80b7484587a21dc92c326c695e.html", "dir_c4168c80b7484587a21dc92c326c695e" ]
+    [ "include", "dir_d44c64559bbebec7f509842c48db8b23.html", "dir_d44c64559bbebec7f509842c48db8b23" ],
+    [ "plugins", "dir_38c8d24aef3972a7f87b834274e76e31.html", "dir_38c8d24aef3972a7f87b834274e76e31" ],
+    [ "src", "dir_68267d1309a1af8e8297ef4c3efbcdba.html", "dir_68267d1309a1af8e8297ef4c3efbcdba" ]
 ];

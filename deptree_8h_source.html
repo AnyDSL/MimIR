@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: thorin/analyses/deptree.h Source File</title>
+<title>Thorin: include/thorin/analyses/deptree.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -168,7 +168,7 @@ $(document).ready(function(){initNavTree('deptree_8h_source.html',''); initResiz
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    }</div>
 </div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classthorin_1_1DepTree.html#a40080f1b915a48360e182b2b525059c9">   44</a></span>    <a class="code hl_class" href="classthorin_1_1World.html">World</a>&amp; <a class="code hl_function" href="classthorin_1_1DepTree.html#a40080f1b915a48360e182b2b525059c9">world</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> world_; };</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classthorin_1_1DepTree.html#a40080f1b915a48360e182b2b525059c9">   44</a></span>    <a class="code hl_class" href="classthorin_1_1World.html">World</a>&amp; <a class="code hl_function" href="classthorin_1_1DepTree.html#a40080f1b915a48360e182b2b525059c9">world</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> world_; }</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classthorin_1_1DepTree.html#a80404f985151b68186ef3a12fb56fd9a">   45</a></span>    <span class="keyword">const</span> <a class="code hl_class" href="classthorin_1_1DepNode.html">DepNode</a>* <a class="code hl_function" href="classthorin_1_1DepTree.html#a80404f985151b68186ef3a12fb56fd9a">root</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> root_.get(); }</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classthorin_1_1DepTree.html#a16e2014d6cd98e1d059cfc8878d74b67">   46</a></span>    <span class="keyword">const</span> <a class="code hl_class" href="classthorin_1_1DepNode.html">DepNode</a>* <a class="code hl_function" href="classthorin_1_1DepTree.html#a16e2014d6cd98e1d059cfc8878d74b67">mut2node</a>(<a class="code hl_class" href="classthorin_1_1Def.html">Def</a>* mut)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> mut2node_.find(mut)-&gt;second.get(); }</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classthorin_1_1DepTree.html#a62f4d7ed09ceb27f0346e091c1117867">depends</a>(<a class="code hl_class" href="classthorin_1_1Def.html">Def</a>* a, <a class="code hl_class" href="classthorin_1_1Def.html">Def</a>* b) <span class="keyword">const</span>; <span class="comment">///&lt; Does @p a depend on @p b?</span></div>
@@ -204,7 +204,7 @@ $(document).ready(function(){initNavTree('deptree_8h_source.html',''); initResiz
 <div class="ttc" id="aclassthorin_1_1World_html"><div class="ttname"><a href="classthorin_1_1World.html">thorin::World</a></div><div class="ttdoc">The World represents the whole program and manages creation of Thorin nodes (Defs).</div><div class="ttdef"><b>Definition</b> <a href="world_8h_source.html#l00035">world.h:35</a></div></div>
 <div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
 <div class="ttc" id="anamespacestd_html"><div class="ttname"><a href="namespacestd.html">std</a></div><div class="ttdef"><b>Definition</b> <a href="span_8h_source.html#l00103">span.h:103</a></div></div>
-<div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition</b> <a href="affine_8h_source.html#l00007">affine.h:7</a></div></div>
+<div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition</b> <a href="cfg_8h_source.html#l00011">cfg.h:11</a></div></div>
 <div class="ttc" id="anamespacethorin_html_a224fc7612589a582a48dbb6167ef3e14"><div class="ttname"><a href="namespacethorin.html#a224fc7612589a582a48dbb6167ef3e14">thorin::MutMap</a></div><div class="ttdeci">GIDMap&lt; Def *, To &gt; MutMap</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00062">def.h:62</a></div></div>
 <div class="ttc" id="anamespacethorin_html_a229e892ca840ebda9ce60cfad90ae1b0"><div class="ttname"><a href="namespacethorin.html#a229e892ca840ebda9ce60cfad90ae1b0">thorin::VarSet</a></div><div class="ttdeci">GIDSet&lt; const Var * &gt; VarSet</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00071">def.h:71</a></div></div>
 <div class="ttc" id="anamespacethorin_html_ad6fd3e5738182c43950e6e22607a7cd6"><div class="ttname"><a href="namespacethorin.html#ad6fd3e5738182c43950e6e22607a7cd6">thorin::DefMap</a></div><div class="ttdeci">GIDMap&lt; const Def *, To &gt; DefMap</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00052">def.h:52</a></div></div>
@@ -213,7 +213,7 @@ $(document).ready(function(){initNavTree('deptree_8h_source.html',''); initResiz
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_c4168c80b7484587a21dc92c326c695e.html">thorin</a></li><li class="navelem"><a class="el" href="dir_91cc3e6bd7c42aaa24383bdfa6f52de6.html">analyses</a></li><li class="navelem"><a class="el" href="deptree_8h.html">deptree.h</a></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_a9446755a1c96c6cd3ab4facf95dc5bb.html">thorin</a></li><li class="navelem"><a class="el" href="dir_415ecc0aa3d56438d57b9a8dc30205f2.html">analyses</a></li><li class="navelem"><a class="el" href="deptree_8h.html">deptree.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

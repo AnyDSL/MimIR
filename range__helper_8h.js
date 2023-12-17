@@ -1,7 +1,7 @@
 var range__helper_8h =
 [
-    [ "thorin::regex::RangeCompare", "structthorin_1_1regex_1_1RangeCompare.html", "structthorin_1_1regex_1_1RangeCompare" ],
-    [ "merge_ranges", "range__helper_8h.html#aec4c2f7fec80852be4f15c275bb006c4", null ],
-    [ "merge_ranges", "range__helper_8h.html#a272d61d0d4b7fd4d8f24b932dd4f8952", null ],
-    [ "merge_ranges", "range__helper_8h.html#a17ec03d50f3ac022ccb2d97ae130b743", null ]
+    [ "thorin::plug::regex::RangeCompare", "structthorin_1_1plug_1_1regex_1_1RangeCompare.html", "structthorin_1_1plug_1_1regex_1_1RangeCompare" ],
+    [ "merge_ranges", "range__helper_8h.html#a4de487c94acf28665015b6f9e39e25fa", null ],
+    [ "merge_ranges", "range__helper_8h.html#a666035e72c916c54b91808bab418a8cc", null ],
+    [ "merge_ranges", "range__helper_8h.html#a892e1c1800cd10811fceb9ff5d259053", null ]
 ];

@@ -4,6 +4,7 @@ var classthorin_1_1Tok =
       [ "CODE", "classthorin_1_1Tok.html#afdc0f701e0b635d379f16d20957532a2ac33c416c5a910b3bbaf131a69df0f93c", null ]
     ] ],
     [ "Tag", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038", [
+      [ "Nil", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a4da8b7eb2c3f2007cf8238334401ef51", null ],
       [ "CODE", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a8e8e97f0a5efc333f823cf9417d32d3f", null ],
       [ "K_module", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ab47f1334f10c60f51233f889228de333", null ],
       [ "K_import", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a86d887ab52987c7cae217900a37da7c0", null ],
@@ -66,8 +67,7 @@ var classthorin_1_1Tok =
       [ "T_extract", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ad494648389b32437ec4c60490cc61341", null ],
       [ "T_lm", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aef24a45c736c5c5aca00490b376cc0ae", null ],
       [ "T_semicolon", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038adab652135089c23c5b48db9b0d22754d", null ],
-      [ "T_star", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038adffb83ae407bb72e9b9ac7f79028bb7e", null ],
-      [ "Nil", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a4da8b7eb2c3f2007cf8238334401ef51", null ]
+      [ "T_star", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038adffb83ae407bb72e9b9ac7f79028bb7e", null ]
     ] ],
     [ "Tok", "classthorin_1_1Tok.html#ab96cbe83a40186a1becbf1e99bb33c5b", null ],
     [ "Tok", "classthorin_1_1Tok.html#a197b6cd7caa11b685f2c0f64323cb3b4", null ],
@@ -84,6 +84,7 @@ var classthorin_1_1Tok =
     [ "lit_i", "classthorin_1_1Tok.html#a8bd7e8be23976213a756265b75cbc4cd", null ],
     [ "lit_u", "classthorin_1_1Tok.html#a23ea1f6d91a9bb68c90f49f526963d18", null ],
     [ "loc", "classthorin_1_1Tok.html#a6e45a93b5e96f909166e338ce3f48060", null ],
+    [ "operator bool", "classthorin_1_1Tok.html#a9b6c21a29541b3ec8383f0ba94296f0a", null ],
     [ "prec", "classthorin_1_1Tok.html#add852666dfa647529fbdc8311ffc5a4b", null ],
     [ "prec", "classthorin_1_1Tok.html#ad2768e55bdeb1f61cad9cd0794e43ff0", null ],
     [ "sym", "classthorin_1_1Tok.html#a237307d0c79f2a973e0a624b050de445", null ],

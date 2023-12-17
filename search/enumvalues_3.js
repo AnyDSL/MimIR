@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['d_0',['d',['../namespacethorin_1_1regex.html#a8c7a401db4442fe8a7fdae0160c89f51ac39cd234393f948db09f2d0ff025d569',1,'thorin::regex::D'],['../namespacethorin_1_1regex.html#a8c7a401db4442fe8a7fdae0160c89f51af05ca8d9e7fc46efded757924edbd07e',1,'thorin::regex::d']]],
+  ['d_0',['d',['../namespacethorin_1_1plug_1_1regex.html#a4fa69f360d13c15835d1af06c89bb025a94e2736e61209acb49b3d9ac68b8d31f',1,'thorin::plug::regex::d'],['../namespacethorin_1_1plug_1_1regex.html#a4fa69f360d13c15835d1af06c89bb025a2415c231a72fa3c0bba4a466a8f21687',1,'thorin::plug::regex::D']]],
   ['d_5fangle_5fl_1',['D_angle_l',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a9d7c25a7ee8d79c920901fb0b4bae0b6',1,'thorin::Tok']]],
   ['d_5fangle_5fr_2',['D_angle_r',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aecbf83ec5b71cc1fabb68b9b29602913',1,'thorin::Tok']]],
   ['d_5fbrace_5fl_3',['D_brace_l',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038af85fb01799db87e4794e759cd80ab24a',1,'thorin::Tok']]],
@@ -12,7 +12,6 @@ var searchData=
   ['d_5fquote_5fl_9',['D_quote_l',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a5be9fecd8fb8ece5f3217942ae9f6c4a',1,'thorin::Tok']]],
   ['d_5fquote_5fr_10',['D_quote_r',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038add7e7307bb61b436ebfaff2f7f0e0e29',1,'thorin::Tok']]],
   ['debug_11',['Debug',['../classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aaa603905470e2a5b8c13e96b579ef0dba',1,'thorin::Log']]],
-  ['dec_12',['dec',['../namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea14562d3576d8c9e007498a314eeab037',1,'thorin::math']]],
-  ['div_13',['div',['../namespacethorin_1_1math.html#aa313bc84ec271c77a5d5d1f6b3897ec4afc1a284af4fda7948584dab673881dc0',1,'thorin::math']]],
-  ['dot_14',['Dot',['../main_8cpp.html#a085744bf883a85c3fb7407874efa1d9daf7f834c597c60e7e59d272d3223742e7',1,'main.cpp']]]
+  ['dec_12',['dec',['../namespacethorin_1_1plug_1_1math.html#a9b36249af53fb8f2c7bd02d9dab7e3bba8c69b9f57f48ca0cbee43b547c1ee86b',1,'thorin::plug::math']]],
+  ['div_13',['div',['../namespacethorin_1_1plug_1_1math.html#a983d38d030406f04d4a3cd1e13b14bb0a8ad1629b8221e3388658c55a56344a0d',1,'thorin::plug::math']]]
 ];

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: thorin/util/dbg.h Source File</title>
+<title>Thorin: include/thorin/util/dbg.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -122,58 +122,56 @@ $(document).ready(function(){initNavTree('dbg_8h_source.html',''); initResizable
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;filesystem&gt;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;fe/loc.h&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;fe/sym.h&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;absl/container/flat_hash_map.h&gt;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;absl/container/flat_hash_set.h&gt;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="print_8h.html">thorin/util/print.h</a>&quot;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin.html">thorin</a> {</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">namespace </span>fs = std::filesystem;</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">using </span>fe::Loc;</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">using </span>fe::Pos;</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">using </span>fe::Sym;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"></span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">/// @name Formatted Output</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">///@{</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">/// Prefixes error message with `&lt;location&gt;: error: `.</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"></span><span class="keyword">template</span>&lt;<span class="keyword">class </span>T = std::logic_error, <span class="keyword">class</span>... Args&gt;</div>
-<div class="foldopen" id="foldopen00025" data-start="{" data-end="}">
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="namespacethorin.html#abdc406072b98cd1578653354cfaabf27">   25</a></span>[[noreturn]] <span class="keywordtype">void</span> <a class="code hl_function" href="namespacethorin.html#a1de4d5b631f17319d8e0fa712800fa14">error</a>(Loc loc, <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="namespacethorin.html#ac2a988f71a64a048c61d5a2238269ea8">fmt</a>, Args&amp;&amp;... args) {</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    std::ostringstream o;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(o, <span class="stringliteral">&quot;{}: error: &quot;</span>, loc);</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(o, <a class="code hl_function" href="namespacethorin.html#ac2a988f71a64a048c61d5a2238269ea8">fmt</a>, std::forward&lt;Args&amp;&amp;&gt;(args)...);</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordflow">throw</span> T(o.str());</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>}<span class="comment"></span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;absl/container/flat_hash_map.h&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;absl/container/flat_hash_set.h&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;fe/loc.h&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;fe/sym.h&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="print_8h.html">thorin/util/print.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin.html">thorin</a> {</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">namespace </span>fs = std::filesystem;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">using </span>fe::Loc;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">using </span>fe::Pos;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">using </span>fe::Sym;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"></span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment">/// @name Formatted Output</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">///@{</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">/// Prefixes error message with `&lt;location&gt;: error: `.</span></div>
+<div class="foldopen" id="foldopen00023" data-start="{" data-end="}">
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="namespacethorin.html#abdc406072b98cd1578653354cfaabf27">   23</a></span><span class="comment"></span><span class="keyword">template</span>&lt;<span class="keyword">class </span>T = std::logic_error, <span class="keyword">class</span>... Args&gt; [[noreturn]] <span class="keywordtype">void</span> <a class="code hl_function" href="namespacethorin.html#a1de4d5b631f17319d8e0fa712800fa14">error</a>(Loc loc, <span class="keyword">const</span> <span class="keywordtype">char</span>* <a class="code hl_function" href="namespacethorin.html#ac2a988f71a64a048c61d5a2238269ea8">fmt</a>, Args&amp;&amp;... args) {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    std::ostringstream o;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(o, <span class="stringliteral">&quot;{}: error: &quot;</span>, loc);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(o, <a class="code hl_function" href="namespacethorin.html#ac2a988f71a64a048c61d5a2238269ea8">fmt</a>, std::forward&lt;Args&amp;&amp;&gt;(args)...);</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordflow">throw</span> T(o.str());</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>}<span class="comment"></span></div>
 </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">///@}</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"></span> </div>
-<div class="foldopen" id="foldopen00033" data-start="{" data-end="};">
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="namespacethorin.html">   33</a></span><span class="keyword">struct </span><a class="code hl_struct" href="namespacethorin.html#structthorin_1_1Dbg">Dbg</a> {</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="namespacethorin.html#a96022b27bb7fb157611fe3bf78c6fe5f">   34</a></span>    Loc <a class="code hl_variable" href="namespacethorin.html#a96022b27bb7fb157611fe3bf78c6fe5f">loc</a>;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="namespacethorin.html#adf7e4c784857fc3ee4087bc01398f73f">   35</a></span>    Sym <a class="code hl_variable" href="namespacethorin.html#adf7e4c784857fc3ee4087bc01398f73f">sym</a>;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>};</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment">///@}</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment"></span> </div>
+<div class="foldopen" id="foldopen00031" data-start="{" data-end="};">
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="namespacethorin.html">   31</a></span><span class="keyword">struct </span><a class="code hl_struct" href="namespacethorin.html#structthorin_1_1Dbg">Dbg</a> {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="namespacethorin.html#a96022b27bb7fb157611fe3bf78c6fe5f">   32</a></span>    Loc <a class="code hl_variable" href="namespacethorin.html#a96022b27bb7fb157611fe3bf78c6fe5f">loc</a>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="namespacethorin.html#adf7e4c784857fc3ee4087bc01398f73f">   33</a></span>    Sym <a class="code hl_variable" href="namespacethorin.html#adf7e4c784857fc3ee4087bc01398f73f">sym</a>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>};</div>
 </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>} <span class="comment">// namespace thorin</span></div>
-<div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition</b> <a href="affine_8h_source.html#l00007">affine.h:7</a></div></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>} <span class="comment">// namespace thorin</span></div>
+<div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition</b> <a href="cfg_8h_source.html#l00011">cfg.h:11</a></div></div>
 <div class="ttc" id="anamespacethorin_html_a1de4d5b631f17319d8e0fa712800fa14"><div class="ttname"><a href="namespacethorin.html#a1de4d5b631f17319d8e0fa712800fa14">thorin::error</a></div><div class="ttdeci">void error(const Def *def, const char *fmt, Args &amp;&amp;... args)</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00543">def.h:543</a></div></div>
 <div class="ttc" id="anamespacethorin_html_a7dae34cc4eb75fe0cf5a914431353c8c"><div class="ttname"><a href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">thorin::print</a></div><div class="ttdeci">std::ostream &amp; print(std::ostream &amp;os, const char *s)</div><div class="ttdoc">Base case.</div><div class="ttdef"><b>Definition</b> <a href="print_8cpp_source.html#l00005">print.cpp:5</a></div></div>
-<div class="ttc" id="anamespacethorin_html_a96022b27bb7fb157611fe3bf78c6fe5f"><div class="ttname"><a href="namespacethorin.html#a96022b27bb7fb157611fe3bf78c6fe5f">thorin::Dbg::loc</a></div><div class="ttdeci">Loc loc</div><div class="ttdef"><b>Definition</b> <a href="dbg_8h_source.html#l00034">dbg.h:34</a></div></div>
+<div class="ttc" id="anamespacethorin_html_a96022b27bb7fb157611fe3bf78c6fe5f"><div class="ttname"><a href="namespacethorin.html#a96022b27bb7fb157611fe3bf78c6fe5f">thorin::Dbg::loc</a></div><div class="ttdeci">Loc loc</div><div class="ttdef"><b>Definition</b> <a href="dbg_8h_source.html#l00032">dbg.h:32</a></div></div>
 <div class="ttc" id="anamespacethorin_html_ac2a988f71a64a048c61d5a2238269ea8"><div class="ttname"><a href="namespacethorin.html#ac2a988f71a64a048c61d5a2238269ea8">thorin::fmt</a></div><div class="ttdeci">std::string fmt(const char *s, Args &amp;&amp;... args)</div><div class="ttdoc">Wraps thorin::print to output a formatted std:string.</div><div class="ttdef"><b>Definition</b> <a href="print_8h_source.html#l00139">print.h:139</a></div></div>
-<div class="ttc" id="anamespacethorin_html_adf7e4c784857fc3ee4087bc01398f73f"><div class="ttname"><a href="namespacethorin.html#adf7e4c784857fc3ee4087bc01398f73f">thorin::Dbg::sym</a></div><div class="ttdeci">Sym sym</div><div class="ttdef"><b>Definition</b> <a href="dbg_8h_source.html#l00035">dbg.h:35</a></div></div>
-<div class="ttc" id="anamespacethorin_html_structthorin_1_1Dbg"><div class="ttname"><a href="namespacethorin.html#structthorin_1_1Dbg">thorin::Dbg</a></div><div class="ttdef"><b>Definition</b> <a href="dbg_8h_source.html#l00033">dbg.h:33</a></div></div>
+<div class="ttc" id="anamespacethorin_html_adf7e4c784857fc3ee4087bc01398f73f"><div class="ttname"><a href="namespacethorin.html#adf7e4c784857fc3ee4087bc01398f73f">thorin::Dbg::sym</a></div><div class="ttdeci">Sym sym</div><div class="ttdef"><b>Definition</b> <a href="dbg_8h_source.html#l00033">dbg.h:33</a></div></div>
+<div class="ttc" id="anamespacethorin_html_structthorin_1_1Dbg"><div class="ttname"><a href="namespacethorin.html#structthorin_1_1Dbg">thorin::Dbg</a></div><div class="ttdef"><b>Definition</b> <a href="dbg_8h_source.html#l00031">dbg.h:31</a></div></div>
 <div class="ttc" id="aprint_8h_html"><div class="ttname"><a href="print_8h.html">print.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_c4168c80b7484587a21dc92c326c695e.html">thorin</a></li><li class="navelem"><a class="el" href="dir_af13e0a143b7ca68f7428894b6ff07d9.html">util</a></li><li class="navelem"><a class="el" href="dbg_8h.html">dbg.h</a></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_a9446755a1c96c6cd3ab4facf95dc5bb.html">thorin</a></li><li class="navelem"><a class="el" href="dir_9d0d17bba5e0872ac28e0c05e18d5775.html">util</a></li><li class="navelem"><a class="el" href="dbg_8h.html">dbg.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

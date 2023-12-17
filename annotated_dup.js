@@ -5,38 +5,12 @@ var annotated_dup =
       [ "tuple_size< thorin::Span< T, N > >", "structstd_1_1tuple__size_3_01thorin_1_1Span_3_01T_00_01N_01_4_01_4.html", null ]
     ] ],
     [ "thorin", "namespacethorin.html", [
-      [ "affine", "namespacethorin_1_1affine.html", [
-        [ "LowerFor", "classthorin_1_1affine_1_1LowerFor.html", "classthorin_1_1affine_1_1LowerFor" ]
-      ] ],
-      [ "autodiff", "namespacethorin_1_1autodiff.html", [
-        [ "AutoDiffEval", "classthorin_1_1autodiff_1_1AutoDiffEval.html", "classthorin_1_1autodiff_1_1AutoDiffEval" ],
-        [ "AutoDiffZero", "classthorin_1_1autodiff_1_1AutoDiffZero.html", "classthorin_1_1autodiff_1_1AutoDiffZero" ],
-        [ "AutoDiffZeroCleanup", "classthorin_1_1autodiff_1_1AutoDiffZeroCleanup.html", "classthorin_1_1autodiff_1_1AutoDiffZeroCleanup" ]
-      ] ],
       [ "automaton", "namespacethorin_1_1automaton.html", [
         [ "AutomatonBase", "classthorin_1_1automaton_1_1AutomatonBase.html", "classthorin_1_1automaton_1_1AutomatonBase" ],
         [ "DFA", "classthorin_1_1automaton_1_1DFA.html", "classthorin_1_1automaton_1_1DFA" ],
         [ "DFANode", "classthorin_1_1automaton_1_1DFANode.html", "classthorin_1_1automaton_1_1DFANode" ],
         [ "NFA", "classthorin_1_1automaton_1_1NFA.html", "classthorin_1_1automaton_1_1NFA" ],
         [ "NFANode", "classthorin_1_1automaton_1_1NFANode.html", "classthorin_1_1automaton_1_1NFANode" ]
-      ] ],
-      [ "clos", "namespacethorin_1_1clos.html", [
-        [ "BranchClosElim", "classthorin_1_1clos_1_1BranchClosElim.html", "classthorin_1_1clos_1_1BranchClosElim" ],
-        [ "Clos2SJLJ", "classthorin_1_1clos_1_1Clos2SJLJ.html", "classthorin_1_1clos_1_1Clos2SJLJ" ],
-        [ "ClosConv", "classthorin_1_1clos_1_1ClosConv.html", "classthorin_1_1clos_1_1ClosConv" ],
-        [ "ClosConvPrep", "classthorin_1_1clos_1_1ClosConvPrep.html", "classthorin_1_1clos_1_1ClosConvPrep" ],
-        [ "ClosLit", "classthorin_1_1clos_1_1ClosLit.html", "classthorin_1_1clos_1_1ClosLit" ],
-        [ "FreeDefAna", "classthorin_1_1clos_1_1FreeDefAna.html", "classthorin_1_1clos_1_1FreeDefAna" ],
-        [ "LowerTypedClos", "classthorin_1_1clos_1_1LowerTypedClos.html", "classthorin_1_1clos_1_1LowerTypedClos" ],
-        [ "LowerTypedClosPrep", "classthorin_1_1clos_1_1LowerTypedClosPrep.html", "classthorin_1_1clos_1_1LowerTypedClosPrep" ]
-      ] ],
-      [ "compile", "namespacethorin_1_1compile.html", [
-        [ "DebugPrint", "classthorin_1_1compile_1_1DebugPrint.html", "classthorin_1_1compile_1_1DebugPrint" ],
-        [ "InternalCleanup", "classthorin_1_1compile_1_1InternalCleanup.html", "classthorin_1_1compile_1_1InternalCleanup" ]
-      ] ],
-      [ "direct", "namespacethorin_1_1direct.html", [
-        [ "CPS2DS", "classthorin_1_1direct_1_1CPS2DS.html", "classthorin_1_1direct_1_1CPS2DS" ],
-        [ "DS2CPS", "classthorin_1_1direct_1_1DS2CPS.html", "classthorin_1_1direct_1_1DS2CPS" ]
       ] ],
       [ "dot", "namespacethorin_1_1dot.html", [
         [ "BB", "namespacethorin_1_1dot.html#classthorin_1_1dot_1_1BB", null ],
@@ -46,28 +20,56 @@ var annotated_dup =
         [ "BB", "structthorin_1_1ll_1_1BB.html", "structthorin_1_1ll_1_1BB" ],
         [ "Emitter", "classthorin_1_1ll_1_1Emitter.html", "classthorin_1_1ll_1_1Emitter" ]
       ] ],
-      [ "matrix", "namespacethorin_1_1matrix.html", [
-        [ "LowerMatrixHighLevelMapRed", "classthorin_1_1matrix_1_1LowerMatrixHighLevelMapRed.html", "classthorin_1_1matrix_1_1LowerMatrixHighLevelMapRed" ],
-        [ "LowerMatrixLowLevel", "classthorin_1_1matrix_1_1LowerMatrixLowLevel.html", "classthorin_1_1matrix_1_1LowerMatrixLowLevel" ],
-        [ "LowerMatrixMediumLevel", "classthorin_1_1matrix_1_1LowerMatrixMediumLevel.html", "classthorin_1_1matrix_1_1LowerMatrixMediumLevel" ]
+      [ "plug", "namespacethorin_1_1plug.html", [
+        [ "affine", "namespacethorin_1_1plug_1_1affine.html", [
+          [ "LowerFor", "classthorin_1_1plug_1_1affine_1_1LowerFor.html", "classthorin_1_1plug_1_1affine_1_1LowerFor" ]
+        ] ],
+        [ "autodiff", "namespacethorin_1_1plug_1_1autodiff.html", [
+          [ "AutoDiffEval", "classthorin_1_1plug_1_1autodiff_1_1AutoDiffEval.html", "classthorin_1_1plug_1_1autodiff_1_1AutoDiffEval" ],
+          [ "AutoDiffZero", "classthorin_1_1plug_1_1autodiff_1_1AutoDiffZero.html", "classthorin_1_1plug_1_1autodiff_1_1AutoDiffZero" ],
+          [ "AutoDiffZeroCleanup", "classthorin_1_1plug_1_1autodiff_1_1AutoDiffZeroCleanup.html", "classthorin_1_1plug_1_1autodiff_1_1AutoDiffZeroCleanup" ]
+        ] ],
+        [ "clos", "namespacethorin_1_1plug_1_1clos.html", [
+          [ "BranchClosElim", "classthorin_1_1plug_1_1clos_1_1BranchClosElim.html", "classthorin_1_1plug_1_1clos_1_1BranchClosElim" ],
+          [ "Clos2SJLJ", "classthorin_1_1plug_1_1clos_1_1Clos2SJLJ.html", "classthorin_1_1plug_1_1clos_1_1Clos2SJLJ" ],
+          [ "ClosConv", "classthorin_1_1plug_1_1clos_1_1ClosConv.html", "classthorin_1_1plug_1_1clos_1_1ClosConv" ],
+          [ "ClosConvPrep", "classthorin_1_1plug_1_1clos_1_1ClosConvPrep.html", "classthorin_1_1plug_1_1clos_1_1ClosConvPrep" ],
+          [ "ClosLit", "classthorin_1_1plug_1_1clos_1_1ClosLit.html", "classthorin_1_1plug_1_1clos_1_1ClosLit" ],
+          [ "FreeDefAna", "classthorin_1_1plug_1_1clos_1_1FreeDefAna.html", "classthorin_1_1plug_1_1clos_1_1FreeDefAna" ],
+          [ "LowerTypedClos", "classthorin_1_1plug_1_1clos_1_1LowerTypedClos.html", "classthorin_1_1plug_1_1clos_1_1LowerTypedClos" ],
+          [ "LowerTypedClosPrep", "classthorin_1_1plug_1_1clos_1_1LowerTypedClosPrep.html", "classthorin_1_1plug_1_1clos_1_1LowerTypedClosPrep" ]
+        ] ],
+        [ "compile", "namespacethorin_1_1plug_1_1compile.html", [
+          [ "DebugPrint", "classthorin_1_1plug_1_1compile_1_1DebugPrint.html", "classthorin_1_1plug_1_1compile_1_1DebugPrint" ],
+          [ "InternalCleanup", "classthorin_1_1plug_1_1compile_1_1InternalCleanup.html", "classthorin_1_1plug_1_1compile_1_1InternalCleanup" ]
+        ] ],
+        [ "direct", "namespacethorin_1_1plug_1_1direct.html", [
+          [ "CPS2DS", "classthorin_1_1plug_1_1direct_1_1CPS2DS.html", "classthorin_1_1plug_1_1direct_1_1CPS2DS" ],
+          [ "DS2CPS", "classthorin_1_1plug_1_1direct_1_1DS2CPS.html", "classthorin_1_1plug_1_1direct_1_1DS2CPS" ]
+        ] ],
+        [ "matrix", "namespacethorin_1_1plug_1_1matrix.html", [
+          [ "LowerMatrixHighLevelMapRed", "classthorin_1_1plug_1_1matrix_1_1LowerMatrixHighLevelMapRed.html", "classthorin_1_1plug_1_1matrix_1_1LowerMatrixHighLevelMapRed" ],
+          [ "LowerMatrixLowLevel", "classthorin_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html", "classthorin_1_1plug_1_1matrix_1_1LowerMatrixLowLevel" ],
+          [ "LowerMatrixMediumLevel", "classthorin_1_1plug_1_1matrix_1_1LowerMatrixMediumLevel.html", "classthorin_1_1plug_1_1matrix_1_1LowerMatrixMediumLevel" ]
+        ] ],
+        [ "mem", "namespacethorin_1_1plug_1_1mem.html", [
+          [ "AddMem", "classthorin_1_1plug_1_1mem_1_1AddMem.html", "classthorin_1_1plug_1_1mem_1_1AddMem" ],
+          [ "Alloc2Malloc", "classthorin_1_1plug_1_1mem_1_1Alloc2Malloc.html", "classthorin_1_1plug_1_1mem_1_1Alloc2Malloc" ],
+          [ "CopyProp", "classthorin_1_1plug_1_1mem_1_1CopyProp.html", "classthorin_1_1plug_1_1mem_1_1CopyProp" ],
+          [ "RememElim", "classthorin_1_1plug_1_1mem_1_1RememElim.html", "classthorin_1_1plug_1_1mem_1_1RememElim" ],
+          [ "Reshape", "classthorin_1_1plug_1_1mem_1_1Reshape.html", "classthorin_1_1plug_1_1mem_1_1Reshape" ],
+          [ "SSAConstr", "classthorin_1_1plug_1_1mem_1_1SSAConstr.html", "classthorin_1_1plug_1_1mem_1_1SSAConstr" ]
+        ] ],
+        [ "refly", "namespacethorin_1_1plug_1_1refly.html", [
+          [ "RemoveDbgPerm", "classthorin_1_1plug_1_1refly_1_1RemoveDbgPerm.html", "classthorin_1_1plug_1_1refly_1_1RemoveDbgPerm" ]
+        ] ],
+        [ "regex", "namespacethorin_1_1plug_1_1regex.html", [
+          [ "app_range", "structthorin_1_1plug_1_1regex_1_1app__range.html", "structthorin_1_1plug_1_1regex_1_1app__range" ],
+          [ "LowerRegex", "classthorin_1_1plug_1_1regex_1_1LowerRegex.html", "classthorin_1_1plug_1_1regex_1_1LowerRegex" ],
+          [ "RangeCompare", "structthorin_1_1plug_1_1regex_1_1RangeCompare.html", "structthorin_1_1plug_1_1regex_1_1RangeCompare" ]
+        ] ]
       ] ],
-      [ "mem", "namespacethorin_1_1mem.html", [
-        [ "AddMem", "classthorin_1_1mem_1_1AddMem.html", "classthorin_1_1mem_1_1AddMem" ],
-        [ "Alloc2Malloc", "classthorin_1_1mem_1_1Alloc2Malloc.html", "classthorin_1_1mem_1_1Alloc2Malloc" ],
-        [ "CopyProp", "classthorin_1_1mem_1_1CopyProp.html", "classthorin_1_1mem_1_1CopyProp" ],
-        [ "RememElim", "classthorin_1_1mem_1_1RememElim.html", "classthorin_1_1mem_1_1RememElim" ],
-        [ "Reshape", "classthorin_1_1mem_1_1Reshape.html", "classthorin_1_1mem_1_1Reshape" ],
-        [ "SSAConstr", "classthorin_1_1mem_1_1SSAConstr.html", "classthorin_1_1mem_1_1SSAConstr" ]
-      ] ],
-      [ "refly", "namespacethorin_1_1refly.html", [
-        [ "RemoveDbgPerm", "classthorin_1_1refly_1_1RemoveDbgPerm.html", "classthorin_1_1refly_1_1RemoveDbgPerm" ]
-      ] ],
-      [ "regex", "namespacethorin_1_1regex.html", [
-        [ "app_range", "structthorin_1_1regex_1_1app__range.html", "structthorin_1_1regex_1_1app__range" ],
-        [ "LowerRegex", "classthorin_1_1regex_1_1LowerRegex.html", "classthorin_1_1regex_1_1LowerRegex" ],
-        [ "RangeCompare", "structthorin_1_1regex_1_1RangeCompare.html", "structthorin_1_1regex_1_1RangeCompare" ]
-      ] ],
-      [ "Ac", "classthorin_1_1Ac.html", "classthorin_1_1Ac" ],
+      [ "Ac", "classthorin_1_1Ac.html", null ],
       [ "Annex", "structthorin_1_1Annex.html", "structthorin_1_1Annex" ],
       [ "App", "classthorin_1_1App.html", "classthorin_1_1App" ],
       [ "Arr", "classthorin_1_1Arr.html", "classthorin_1_1Arr" ],
@@ -152,7 +154,7 @@ var annotated_dup =
       [ "Test", "classthorin_1_1Test.html", "classthorin_1_1Test" ],
       [ "TExt", "classthorin_1_1TExt.html", "classthorin_1_1TExt" ],
       [ "Tok", "classthorin_1_1Tok.html", "classthorin_1_1Tok" ],
-      [ "Tuple", "classthorin_1_1Tuple.html", "classthorin_1_1Tuple" ],
+      [ "Tuple", "classthorin_1_1Tuple.html", null ],
       [ "TuplePtrn", "classthorin_1_1TuplePtrn.html", "classthorin_1_1TuplePtrn" ],
       [ "Type", "classthorin_1_1Type.html", "classthorin_1_1Type" ],
       [ "UInc", "classthorin_1_1UInc.html", "classthorin_1_1UInc" ],

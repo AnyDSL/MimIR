@@ -9,6 +9,6 @@ var searchData=
   ['sigma_6',['Sigma',['../classthorin_1_1Sigma.html',1,'thorin']]],
   ['singleton_7',['Singleton',['../classthorin_1_1Singleton.html',1,'thorin']]],
   ['span_8',['Span',['../classthorin_1_1Span.html',1,'thorin']]],
-  ['ssaconstr_9',['SSAConstr',['../classthorin_1_1mem_1_1SSAConstr.html',1,'thorin::mem']]],
+  ['ssaconstr_9',['SSAConstr',['../classthorin_1_1plug_1_1mem_1_1SSAConstr.html',1,'thorin::plug::mem']]],
   ['state_10',['State',['../structthorin_1_1World_1_1State.html',1,'thorin::World']]]
 ];

@@ -111,7 +111,6 @@ $(document).ready(function(){initNavTree('main_8cpp.html',''); initResizable(); 
 
 <div class="header">
   <div class="summary">
-<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">main.cpp File Reference</div></div>
 </div><!--header-->
@@ -121,6 +120,7 @@ $(document).ready(function(){initNavTree('main_8cpp.html',''); initResizable(); 
 <code>#include &lt;fstream&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
 <code>#include &lt;lyra/lyra.hpp&gt;</code><br />
+<code>#include &lt;stdexcept&gt;</code><br />
 <code>#include &quot;<a class="el" href="config_8h_source.html">thorin/config.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="driver_8h_source.html">thorin/driver.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="dot_8h_source.html">thorin/be/dot/dot.h</a>&quot;</code><br />
@@ -139,54 +139,11 @@ Include dependency graph for main.cpp:</div>
 </div>
 <p><a href="main_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:a085744bf883a85c3fb7407874efa1d9d" id="r_a085744bf883a85c3fb7407874efa1d9d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8cpp.html#a085744bf883a85c3fb7407874efa1d9d">Backends</a> { <br />
-&#160;&#160;<a class="el" href="main_8cpp.html#a085744bf883a85c3fb7407874efa1d9daf7f834c597c60e7e59d272d3223742e7">Dot</a>
-, <br />
-&#160;&#160;<a class="el" href="main_8cpp.html#a085744bf883a85c3fb7407874efa1d9da5008b1179f399a2273fd3f6a7fc3b292">H</a>
-, <br />
-&#160;&#160;<a class="el" href="main_8cpp.html#a085744bf883a85c3fb7407874efa1d9da11ea57bac296f79f8acbaf6fdf6bcc20">LL</a>
-, <br />
-&#160;&#160;<a class="el" href="main_8cpp.html#a085744bf883a85c3fb7407874efa1d9da83f6a976a3bd2fcba277536df8c6d8ee">Md</a>
-, <br />
-&#160;&#160;<a class="el" href="main_8cpp.html#a085744bf883a85c3fb7407874efa1d9da6d99a9536a344e5d61838ab160cc17ba">Thorin</a>
-, <br />
-&#160;&#160;<a class="el" href="main_8cpp.html#a085744bf883a85c3fb7407874efa1d9da894ff1b9ab1ff14efbfff100c0752be4">Num_Backends</a>
-<br />
- }</td></tr>
-<tr class="separator:a085744bf883a85c3fb7407874efa1d9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a3c04138a5bfe5d72780bb7e82a18e627" id="r_a3c04138a5bfe5d72780bb7e82a18e627"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a> (int argc, char **argv)</td></tr>
 <tr class="separator:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="a085744bf883a85c3fb7407874efa1d9d" name="a085744bf883a85c3fb7407874efa1d9d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a085744bf883a85c3fb7407874efa1d9d">&#9670;&#160;</a></span>Backends</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="main_8cpp.html#a085744bf883a85c3fb7407874efa1d9d">Backends</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a085744bf883a85c3fb7407874efa1d9daf7f834c597c60e7e59d272d3223742e7" name="a085744bf883a85c3fb7407874efa1d9daf7f834c597c60e7e59d272d3223742e7"></a>Dot&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a085744bf883a85c3fb7407874efa1d9da5008b1179f399a2273fd3f6a7fc3b292" name="a085744bf883a85c3fb7407874efa1d9da5008b1179f399a2273fd3f6a7fc3b292"></a>H&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a085744bf883a85c3fb7407874efa1d9da11ea57bac296f79f8acbaf6fdf6bcc20" name="a085744bf883a85c3fb7407874efa1d9da11ea57bac296f79f8acbaf6fdf6bcc20"></a>LL&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a085744bf883a85c3fb7407874efa1d9da83f6a976a3bd2fcba277536df8c6d8ee" name="a085744bf883a85c3fb7407874efa1d9da83f6a976a3bd2fcba277536df8c6d8ee"></a>Md&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a085744bf883a85c3fb7407874efa1d9da6d99a9536a344e5d61838ab160cc17ba" name="a085744bf883a85c3fb7407874efa1d9da6d99a9536a344e5d61838ab160cc17ba"></a>Thorin&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a085744bf883a85c3fb7407874efa1d9da894ff1b9ab1ff14efbfff100c0752be4" name="a085744bf883a85c3fb7407874efa1d9da894ff1b9ab1ff14efbfff100c0752be4"></a>Num_Backends&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-<p class="definition">Definition at line <a class="el" href="main_8cpp_source.html#l00023">23</a> of file <a class="el" href="main_8cpp_source.html">main.cpp</a>.</p>
-
-</div>
-</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a3c04138a5bfe5d72780bb7e82a18e627" name="a3c04138a5bfe5d72780bb7e82a18e627"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3c04138a5bfe5d72780bb7e82a18e627">&#9670;&#160;</a></span>main()</h2>
@@ -214,9 +171,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="main_8cpp_source.html#l00025">25</a> of file <a class="el" href="main_8cpp_source.html">main.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="main_8cpp_source.html#l00024">24</a> of file <a class="el" href="main_8cpp_source.html">main.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="bootstrap_8cpp_source.html#l00011">thorin::bootstrap()</a>, <a class="el" href="world_8cpp_source.html#l00555">thorin::World::breakpoint()</a>, <a class="el" href="main_8cpp_source.html#l00023">Dot</a>, <a class="el" href="dump_8cpp_source.html#l00378">thorin::World::dump()</a>, <a class="el" href="dot_8cpp_source.html#l00062">thorin::dot::emit()</a>, <a class="el" href="def_8h_source.html#l00543">thorin::error()</a>, <a class="el" href="sys_8cpp_source.html#l00064">thorin::sys::find_cmd()</a>, <a class="el" href="driver_8h_source.html#l00023">thorin::Driver::flags()</a>, <a class="el" href="main_8cpp_source.html#l00023">H</a>, <a class="el" href="main_8cpp_source.html#l00023">LL</a>, <a class="el" href="main_8cpp_source.html#l00023">Md</a>, <a class="el" href="main_8cpp_source.html#l00023">Num_Backends</a>, <a class="el" href="optimize_8cpp_source.html#l00019">thorin::optimize()</a>, <a class="el" href="world_8h_source.html#l00087">thorin::World::set()</a>, <a class="el" href="world_8cpp_source.html#l00087">thorin::World::sym()</a>, <a class="el" href="main_8cpp_source.html#l00023">Thorin</a>, <a class="el" href="config_8h_source.html#l00003">THORIN_ENABLE_CHECKS</a>, <a class="el" href="config_8h_source.html#l00005">THORIN_VER</a>, and <a class="el" href="sys_8h_source.html#l00010">THORIN_WHICH</a>.</p>
+<p class="reference">References <a class="el" href="bootstrap_8cpp_source.html#l00011">thorin::bootstrap()</a>, <a class="el" href="world_8cpp_source.html#l00555">thorin::World::breakpoint()</a>, <a class="el" href="dump_8cpp_source.html#l00378">thorin::World::dump()</a>, <a class="el" href="dot_8cpp_source.html#l00062">thorin::dot::emit()</a>, <a class="el" href="def_8h_source.html#l00543">thorin::error()</a>, <a class="el" href="sys_8cpp_source.html#l00064">thorin::sys::find_cmd()</a>, <a class="el" href="driver_8h_source.html#l00023">thorin::Driver::flags()</a>, <a class="el" href="optimize_8cpp_source.html#l00019">thorin::optimize()</a>, <a class="el" href="world_8h_source.html#l00087">thorin::World::set()</a>, <a class="el" href="world_8cpp_source.html#l00087">thorin::World::sym()</a>, <a class="el" href="config_8h_source.html#l00003">THORIN_ENABLE_CHECKS</a>, <a class="el" href="config_8h_source.html#l00005">THORIN_VER</a>, and <a class="el" href="sys_8h_source.html#l00010">THORIN_WHICH</a>.</p>
 
 </div>
 </div>

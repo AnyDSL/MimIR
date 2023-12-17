@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: thorin/pass/pipelinebuilder.cpp Source File</title>
+<title>Thorin: src/thorin/pass/pipelinebuilder.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -124,13 +124,13 @@ $(document).ready(function(){initNavTree('pipelinebuilder_8cpp_source.html','');
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="lattice_8h.html">thorin/lattice.h</a>&quot;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="plugin_8h.html">thorin/plugin.h</a>&quot;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="beta__red_8h.html">thorin/pass/fp/beta_red.h</a>&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="eta__exp_8h.html">thorin/pass/fp/eta_exp.h</a>&quot;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="eta__red_8h.html">thorin/pass/fp/eta_red.h</a>&quot;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="tail__rec__elim_8h.html">thorin/pass/fp/tail_rec_elim.h</a>&quot;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="pass_8h.html">thorin/pass/pass.h</a>&quot;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="ret__wrap_8h.html">thorin/pass/rw/ret_wrap.h</a>&quot;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="scalarize_8h.html">thorin/pass/rw/scalarize.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="beta__red_8h.html">thorin/pass/beta_red.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="eta__exp_8h.html">thorin/pass/eta_exp.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="eta__red_8h.html">thorin/pass/eta_red.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="pass_8h.html">thorin/pass/pass.h</a>&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="ret__wrap_8h.html">thorin/pass/ret_wrap.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="scalarize_8h.html">thorin/pass/scalarize.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="tail__rec__elim_8h.html">thorin/pass/tail_rec_elim.h</a>&quot;</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="phase_8h.html">thorin/phase/phase.h</a>&quot;</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin.html">thorin</a> {</div>
@@ -158,8 +158,8 @@ $(document).ready(function(){initNavTree('pipelinebuilder_8cpp_source.html','');
 <div class="ttc" id="abeta__red_8h_html"><div class="ttname"><a href="beta__red_8h.html">beta_red.h</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Def_html"><div class="ttname"><a href="classthorin_1_1Def.html">thorin::Def</a></div><div class="ttdoc">Base class for all Defs.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00207">def.h:207</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Def_html_a7c90241b5fd5ad8fb3bc1eca810b4deb"><div class="ttname"><a href="classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb">thorin::Def::gid</a></div><div class="ttdeci">u32 gid() const</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00223">def.h:223</a></div></div>
-<div class="ttc" id="aclassthorin_1_1Def_html_affc2d40fbec3022f7b253bd14358dfe2"><div class="ttname"><a href="classthorin_1_1Def.html#affc2d40fbec3022f7b253bd14358dfe2">thorin::Def::world</a></div><div class="ttdeci">World &amp; world() const</div><div class="ttdef"><b>Definition</b> <a href="def_8cpp_source.html#l00229">def.cpp:229</a></div></div>
-<div class="ttc" id="aclassthorin_1_1PassManPhase_html"><div class="ttname"><a href="classthorin_1_1PassManPhase.html">thorin::PassManPhase</a></div><div class="ttdoc">Wraps a PassMan pipeline as a Phase.</div><div class="ttdef"><b>Definition</b> <a href="phase_8h_source.html#l00102">phase.h:102</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Def_html_affc2d40fbec3022f7b253bd14358dfe2"><div class="ttname"><a href="classthorin_1_1Def.html#affc2d40fbec3022f7b253bd14358dfe2">thorin::Def::world</a></div><div class="ttdeci">World &amp; world() const</div><div class="ttdef"><b>Definition</b> <a href="def_8cpp_source.html#l00231">def.cpp:231</a></div></div>
+<div class="ttc" id="aclassthorin_1_1PassManPhase_html"><div class="ttname"><a href="classthorin_1_1PassManPhase.html">thorin::PassManPhase</a></div><div class="ttdoc">Wraps a PassMan pipeline as a Phase.</div><div class="ttdef"><b>Definition</b> <a href="phase_8h_source.html#l00100">phase.h:100</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Pass_html"><div class="ttname"><a href="classthorin_1_1Pass.html">thorin::Pass</a></div><div class="ttdoc">All Passes that want to be registered in the PassMan must implement this interface.</div><div class="ttdef"><b>Definition</b> <a href="pass_8h_source.html#l00022">pass.h:22</a></div></div>
 <div class="ttc" id="aclassthorin_1_1PipelineBuilder_html_a8d9d9f2ceba7e011f52694ab13bfbca7"><div class="ttname"><a href="classthorin_1_1PipelineBuilder.html#a8d9d9f2ceba7e011f52694ab13bfbca7">thorin::PipelineBuilder::begin_pass_phase</a></div><div class="ttdeci">void begin_pass_phase()</div><div class="ttdef"><b>Definition</b> <a href="pipelinebuilder_8cpp_source.html#l00024">pipelinebuilder.cpp:24</a></div></div>
 <div class="ttc" id="aclassthorin_1_1PipelineBuilder_html_a9f048bac1341a966e39219d53a03f56b"><div class="ttname"><a href="classthorin_1_1PipelineBuilder.html#a9f048bac1341a966e39219d53a03f56b">thorin::PipelineBuilder::end_pass_phase</a></div><div class="ttdeci">void end_pass_phase()</div><div class="ttdef"><b>Definition</b> <a href="pipelinebuilder_8cpp_source.html#l00025">pipelinebuilder.cpp:25</a></div></div>
@@ -170,7 +170,7 @@ $(document).ready(function(){initNavTree('pipelinebuilder_8cpp_source.html','');
 <div class="ttc" id="aeta__exp_8h_html"><div class="ttname"><a href="eta__exp_8h.html">eta_exp.h</a></div></div>
 <div class="ttc" id="aeta__red_8h_html"><div class="ttname"><a href="eta__red_8h.html">eta_red.h</a></div></div>
 <div class="ttc" id="alattice_8h_html"><div class="ttname"><a href="lattice_8h.html">lattice.h</a></div></div>
-<div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition</b> <a href="affine_8h_source.html#l00007">affine.h:7</a></div></div>
+<div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition</b> <a href="cfg_8h_source.html#l00011">cfg.h:11</a></div></div>
 <div class="ttc" id="apass_8h_html"><div class="ttname"><a href="pass_8h.html">pass.h</a></div></div>
 <div class="ttc" id="aphase_8h_html"><div class="ttname"><a href="phase_8h.html">phase.h</a></div></div>
 <div class="ttc" id="apipelinebuilder_8h_html"><div class="ttname"><a href="pipelinebuilder_8h.html">pipelinebuilder.h</a></div></div>
@@ -183,7 +183,7 @@ $(document).ready(function(){initNavTree('pipelinebuilder_8cpp_source.html','');
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_c4168c80b7484587a21dc92c326c695e.html">thorin</a></li><li class="navelem"><a class="el" href="dir_02386abad8cd81366000917a379dc307.html">pass</a></li><li class="navelem"><a class="el" href="pipelinebuilder_8cpp.html">pipelinebuilder.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_6a7c4bb7c40f97e4d670d167d69dfc05.html">thorin</a></li><li class="navelem"><a class="el" href="dir_1ec7729e689b089adde9e24519056c3b.html">pass</a></li><li class="navelem"><a class="el" href="pipelinebuilder_8cpp.html">pipelinebuilder.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: dialects/mem/mem.cpp File Reference</title>
+<title>Thorin: plugins/mem/src/thorin/plug/mem/mem.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -115,19 +115,19 @@ $(document).ready(function(){initNavTree('mem_8cpp.html',''); initResizable(); }
   <div class="headertitle"><div class="title">mem.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="mem_8h_source.html">dialects/mem/mem.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="mem_8h_source.html">thorin/plug/mem/mem.h</a>&quot;</code><br />
 <code>#include &lt;<a class="el" href="config_8h_source.html">thorin/config.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="beta__red_8h_source.html">thorin/pass/fp/beta_red.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="eta__exp_8h_source.html">thorin/pass/fp/eta_exp.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="beta__red_8h_source.html">thorin/pass/beta_red.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="eta__exp_8h_source.html">thorin/pass/eta_exp.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="pass_8h_source.html">thorin/pass/pass.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="pipelinebuilder_8h_source.html">thorin/pass/pipelinebuilder.h</a>&gt;</code><br />
-<code>#include &quot;<a class="el" href="mem_2autogen_8h_source.html">dialects/mem/autogen.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="copy__prop_8h_source.html">dialects/mem/pass/fp/copy_prop.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="ssa__constr_8h_source.html">dialects/mem/pass/fp/ssa_constr.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="alloc2malloc_8h_source.html">dialects/mem/pass/rw/alloc2malloc.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="remem__elim_8h_source.html">dialects/mem/pass/rw/remem_elim.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="reshape_8h_source.html">dialects/mem/pass/rw/reshape.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="add__mem_8h_source.html">dialects/mem/phase/add_mem.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="mem_2autogen_8h_source.html">thorin/plug/mem/autogen.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="alloc2malloc_8h_source.html">thorin/plug/mem/pass/alloc2malloc.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="copy__prop_8h_source.html">thorin/plug/mem/pass/copy_prop.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="remem__elim_8h_source.html">thorin/plug/mem/pass/remem_elim.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="reshape_8h_source.html">thorin/plug/mem/pass/reshape.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ssa__constr_8h_source.html">thorin/plug/mem/pass/ssa_constr.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="add__mem_8h_source.html">thorin/plug/mem/phase/add_mem.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for mem.cpp:</div>
 <div class="dyncontent">
@@ -157,9 +157,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mem_8cpp_source.html#l00019">19</a> of file <a class="el" href="mem_8cpp_source.html">mem.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mem_8cpp_source.html#l00021">21</a> of file <a class="el" href="mem_8cpp_source.html">mem.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="reshape_8h_source.html#l00025">thorin::mem::Reshape::Arg</a>, <a class="el" href="plugin_8h_source.html#l00131">thorin::Annex::Base</a>, <a class="el" href="reshape_8h_source.html#l00025">thorin::mem::Reshape::Flat</a>, and <a class="el" href="namespacethorin_1_1mem.html#a18ce435a82c6dd1841de54648994d037">thorin::mem::register_normalizers()</a>.</p>
+<p class="reference">References <a class="el" href="reshape_8h_source.html#l00025">thorin::plug::mem::Reshape::Arg</a>, <a class="el" href="plugin_8h_source.html#l00131">thorin::Annex::Base</a>, <a class="el" href="reshape_8h_source.html#l00025">thorin::plug::mem::Reshape::Flat</a>, and <a class="el" href="namespacethorin_1_1plug_1_1mem.html#aed44bb746e73f7731dc8078f7dc2eb1b">thorin::plug::mem::register_normalizers()</a>.</p>
 
 </div>
 </div>
@@ -168,7 +168,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_dc7f769b3d5332bd9f89fd345831c3ed.html">dialects</a></li><li class="navelem"><a class="el" href="dir_f4f507027349df35d55005177e6b6800.html">mem</a></li><li class="navelem"><a class="el" href="mem_8cpp.html">mem.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_38c8d24aef3972a7f87b834274e76e31.html">plugins</a></li><li class="navelem"><a class="el" href="dir_cedbad42e133b8f715c15648fd5a31ef.html">mem</a></li><li class="navelem"><a class="el" href="dir_881b57bcd69d17e977d395bc81d8f846.html">src</a></li><li class="navelem"><a class="el" href="dir_b98cfd3a98e2729263a52231f8c9c848.html">thorin</a></li><li class="navelem"><a class="el" href="dir_aba8272bfc4627bf0c7aeaa53794fa4d.html">plug</a></li><li class="navelem"><a class="el" href="dir_60f3533f2d97f688396c33af48a14c50.html">mem</a></li><li class="navelem"><a class="el" href="mem_8cpp.html">mem.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

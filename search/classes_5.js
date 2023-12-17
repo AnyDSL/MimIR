@@ -11,6 +11,6 @@ var searchData=
   ['fppass_3c_20ssaconstr_2c_20lam_20_3e_8',['FPPass&lt; SSAConstr, Lam &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
   ['fppass_3c_20tailrecelim_2c_20lam_20_3e_9',['FPPass&lt; TailRecElim, Lam &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
   ['fpphase_10',['FPPhase',['../classthorin_1_1FPPhase.html',1,'thorin']]],
-  ['freedefana_11',['FreeDefAna',['../classthorin_1_1clos_1_1FreeDefAna.html',1,'thorin::clos']]],
+  ['freedefana_11',['FreeDefAna',['../classthorin_1_1plug_1_1clos_1_1FreeDefAna.html',1,'thorin::plug::clos']]],
   ['freezer_12',['Freezer',['../structthorin_1_1World_1_1Freezer.html',1,'thorin::World']]]
 ];

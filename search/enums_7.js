@@ -1,16 +1,16 @@
 var searchData=
 [
-  ['i1_0',['i1',['../namespacethorin_1_1core.html#aaff0f4c07e4c9423ab2bac7b0a69695b',1,'thorin::core::I1'],['../namespacethorin_1_1core.html#a93191f7570b76900507e609e630c6849',1,'thorin::core::i1']]],
-  ['i16_1',['i16',['../namespacethorin_1_1core.html#ac1fc2a26f8291d6c447c865356c30052',1,'thorin::core::i16'],['../namespacethorin_1_1core.html#a89e6604d02c3c8a4f4c3d208e4286e91',1,'thorin::core::I16']]],
-  ['i32_2',['i32',['../namespacethorin_1_1core.html#af25e3f1f26d7671e2766c757ee3a205c',1,'thorin::core::i32'],['../namespacethorin_1_1core.html#ac72694b06b1cbd1e7101e1c848a1a8b2',1,'thorin::core::I32']]],
-  ['i64_3',['i64',['../namespacethorin_1_1core.html#a7e9d968ed56bd8645446779f123555c0',1,'thorin::core::i64'],['../namespacethorin_1_1core.html#a85da3d4a18c4346dbaadb96690d86208',1,'thorin::core::I64']]],
-  ['i8_4',['i8',['../namespacethorin_1_1core.html#a8f9fe2ed5bcb76e9a61e4a9cf4b8d276',1,'thorin::core::I8'],['../namespacethorin_1_1core.html#a5ebd17b0e7849c5ed897622fcdb41fa9',1,'thorin::core::i8']]],
-  ['icmp_5',['icmp',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6',1,'thorin::core']]],
-  ['idx_6',['idx',['../namespacethorin_1_1core.html#a8f566cd97a467a213d96fa7a288c9ec7',1,'thorin::core']]],
-  ['ignore_7',['ignore',['../namespacethorin_1_1mem.html#a3a1ff4a8c2b60d12fb22268a9ccae923',1,'thorin::mem']]],
-  ['info_8',['info',['../namespacethorin_1_1refly.html#a908feebb848657645e5d4a64997a7a57',1,'thorin::refly']]],
-  ['init_9',['init',['../namespacethorin_1_1matrix.html#a49383f01ca28f27a24a799952681393f',1,'thorin::matrix']]],
-  ['insert_10',['insert',['../namespacethorin_1_1matrix.html#abf7bbf3668df561af27d8b224e3ee33c',1,'thorin::matrix']]],
-  ['internal_5fcleanup_5fpass_11',['internal_cleanup_pass',['../namespacethorin_1_1compile.html#a65f2332cfc72ed416ad4335aa7c1c4bb',1,'thorin::compile']]],
-  ['internal_5fmap_5freduce_5fcleanup_12',['internal_map_reduce_cleanup',['../namespacethorin_1_1matrix.html#a16168e39eacc252a7e17796ab5ce8771',1,'thorin::matrix']]]
+  ['i1_0',['i1',['../namespacethorin_1_1plug_1_1core.html#a5517f6ecb2e930c44ffb51bc49864445',1,'thorin::plug::core::i1'],['../namespacethorin_1_1plug_1_1core.html#a54ff9a1646ae4d39e2cc40a141ec1e58',1,'thorin::plug::core::I1']]],
+  ['i16_1',['i16',['../namespacethorin_1_1plug_1_1core.html#aa52ed1589dc265e8431b64c905f1fa74',1,'thorin::plug::core::i16'],['../namespacethorin_1_1plug_1_1core.html#a3dc482336d18f6969453a0d58b358a53',1,'thorin::plug::core::I16']]],
+  ['i32_2',['i32',['../namespacethorin_1_1plug_1_1core.html#aa639503d9662a971a2919212f0969265',1,'thorin::plug::core::I32'],['../namespacethorin_1_1plug_1_1core.html#a77abfd0fa0fe5ac7956bb9380cbcc38b',1,'thorin::plug::core::i32']]],
+  ['i64_3',['i64',['../namespacethorin_1_1plug_1_1core.html#ae41a92dafc548f39a9e2cefec73b1ea1',1,'thorin::plug::core::I64'],['../namespacethorin_1_1plug_1_1core.html#acfd430caaf37a8050002d4a0fdeac047',1,'thorin::plug::core::i64']]],
+  ['i8_4',['i8',['../namespacethorin_1_1plug_1_1core.html#a616dfe8cce1292035ebd269eab626606',1,'thorin::plug::core::I8'],['../namespacethorin_1_1plug_1_1core.html#a855bab202830dd0e4119a106f515569e',1,'thorin::plug::core::i8']]],
+  ['icmp_5',['icmp',['../namespacethorin_1_1plug_1_1core.html#a7e0776b8ac284bab91c95d8b9eabe0cb',1,'thorin::plug::core']]],
+  ['idx_6',['idx',['../namespacethorin_1_1plug_1_1core.html#a9a302225a1313b1035c14af482ecc2ae',1,'thorin::plug::core']]],
+  ['ignore_7',['ignore',['../namespacethorin_1_1plug_1_1mem.html#a1defad80fb4bd6a97ad84df1be5080da',1,'thorin::plug::mem']]],
+  ['info_8',['info',['../namespacethorin_1_1plug_1_1refly.html#aa8be84bc87f93b9edd9821550fc07460',1,'thorin::plug::refly']]],
+  ['init_9',['init',['../namespacethorin_1_1plug_1_1matrix.html#a111969a88f9181008e6137ae6d28d6a7',1,'thorin::plug::matrix']]],
+  ['insert_10',['insert',['../namespacethorin_1_1plug_1_1matrix.html#ab3ae70ab686d3b43d1211de769781203',1,'thorin::plug::matrix']]],
+  ['internal_5fcleanup_5fpass_11',['internal_cleanup_pass',['../namespacethorin_1_1plug_1_1compile.html#ad1b0214cf121334b2a3e7ffceecfdc96',1,'thorin::plug::compile']]],
+  ['internal_5fmap_5freduce_5fcleanup_12',['internal_map_reduce_cleanup',['../namespacethorin_1_1plug_1_1matrix.html#ae71eb84fed7f4d4d5deda2683cca3ac8',1,'thorin::plug::matrix']]]
 ];

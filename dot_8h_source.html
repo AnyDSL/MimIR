@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: thorin/be/dot/dot.h Source File</title>
+<title>Thorin: include/thorin/be/dot/dot.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -127,21 +127,25 @@ $(document).ready(function(){initNavTree('dot_8h_source.html',''); initResizable
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">class </span>World;</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">class </span>Def;</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">namespace </span>dot {</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keywordtype">void</span> <a class="code hl_function" href="namespacethorin_1_1dot.html#a7bfdd9ee50f8c646fcd11211c81d663c">default_stream_def</a>(std::ostream&amp;, <span class="keyword">const</span> Def*);</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keywordtype">void</span> <a class="code hl_function" href="namespacethorin_1_1dot.html#a0accd07b6689c0d7eafd53273e630a3b">emit</a>(World&amp; w, std::ostream&amp; s, std::function&lt;<span class="keywordtype">void</span>(std::ostream&amp;, <span class="keyword">const</span> Def*)&gt; stream_def = <a class="code hl_function" href="namespacethorin_1_1dot.html#a7bfdd9ee50f8c646fcd11211c81d663c">default_stream_def</a>);</div>
+<div class="foldopen" id="foldopen00010" data-start="{" data-end="}">
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="namespacethorin_1_1dot.html">   10</a></span><span class="keyword">namespace </span>dot {</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keywordtype">void</span> <a class="code hl_function" href="namespacethorin_1_1dot.html#a439056158556f4bc3d5b0bdb0e6665e3">default_stream_def</a>(std::ostream&amp;, <span class="keyword">const</span> <a class="code hl_class" href="classthorin_1_1Def.html">Def</a>*);</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keywordtype">void</span> <a class="code hl_function" href="namespacethorin_1_1dot.html#a71ee1e2a855805ec3c4fcad7518be1f5">emit</a>(<a class="code hl_class" href="classthorin_1_1World.html">World</a>&amp; w, std::ostream&amp; s, std::function&lt;<span class="keywordtype">void</span>(std::ostream&amp;, <span class="keyword">const</span> <a class="code hl_class" href="classthorin_1_1Def.html">Def</a>*)&gt; stream_def = <a class="code hl_function" href="namespacethorin_1_1dot.html#a439056158556f4bc3d5b0bdb0e6665e3">default_stream_def</a>);</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>} <span class="comment">// namespace dot</span></div>
+</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>} <span class="comment">// namespace thorin</span></div>
-<div class="ttc" id="anamespacethorin_1_1dot_html_a0accd07b6689c0d7eafd53273e630a3b"><div class="ttname"><a href="namespacethorin_1_1dot.html#a0accd07b6689c0d7eafd53273e630a3b">thorin::dot::emit</a></div><div class="ttdeci">void emit(World &amp;w, std::ostream &amp;s, std::function&lt; void(std::ostream &amp;, const Def *)&gt; stream_def)</div><div class="ttdef"><b>Definition</b> <a href="dot_8cpp_source.html#l00062">dot.cpp:62</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1dot_html_a7bfdd9ee50f8c646fcd11211c81d663c"><div class="ttname"><a href="namespacethorin_1_1dot.html#a7bfdd9ee50f8c646fcd11211c81d663c">thorin::dot::default_stream_def</a></div><div class="ttdeci">void default_stream_def(std::ostream &amp;s, const Def *def)</div><div class="ttdef"><b>Definition</b> <a href="dot_8cpp_source.html#l00060">dot.cpp:60</a></div></div>
-<div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition</b> <a href="affine_8h_source.html#l00007">affine.h:7</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Def_html"><div class="ttname"><a href="classthorin_1_1Def.html">thorin::Def</a></div><div class="ttdoc">Base class for all Defs.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00207">def.h:207</a></div></div>
+<div class="ttc" id="aclassthorin_1_1World_html"><div class="ttname"><a href="classthorin_1_1World.html">thorin::World</a></div><div class="ttdoc">The World represents the whole program and manages creation of Thorin nodes (Defs).</div><div class="ttdef"><b>Definition</b> <a href="world_8h_source.html#l00035">world.h:35</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1dot_html_a439056158556f4bc3d5b0bdb0e6665e3"><div class="ttname"><a href="namespacethorin_1_1dot.html#a439056158556f4bc3d5b0bdb0e6665e3">thorin::dot::default_stream_def</a></div><div class="ttdeci">void default_stream_def(std::ostream &amp;, const Def *)</div><div class="ttdef"><b>Definition</b> <a href="dot_8cpp_source.html#l00060">dot.cpp:60</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1dot_html_a71ee1e2a855805ec3c4fcad7518be1f5"><div class="ttname"><a href="namespacethorin_1_1dot.html#a71ee1e2a855805ec3c4fcad7518be1f5">thorin::dot::emit</a></div><div class="ttdeci">void emit(World &amp;w, std::ostream &amp;s, std::function&lt; void(std::ostream &amp;, const Def *)&gt; stream_def=default_stream_def)</div><div class="ttdef"><b>Definition</b> <a href="dot_8cpp_source.html#l00062">dot.cpp:62</a></div></div>
+<div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition</b> <a href="cfg_8h_source.html#l00011">cfg.h:11</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_c4168c80b7484587a21dc92c326c695e.html">thorin</a></li><li class="navelem"><a class="el" href="dir_e925b2e9311ea88d6ed8c8d868701100.html">be</a></li><li class="navelem"><a class="el" href="dir_a37a9f8c5bad72f148d9470d4f595cea.html">dot</a></li><li class="navelem"><a class="el" href="dot_8h.html">dot.h</a></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_a9446755a1c96c6cd3ab4facf95dc5bb.html">thorin</a></li><li class="navelem"><a class="el" href="dir_37ffc749b0ec5c2c32e16878698964a9.html">be</a></li><li class="navelem"><a class="el" href="dir_3c5277d895e766f70cc282de468b9e70.html">dot</a></li><li class="navelem"><a class="el" href="dot_8h.html">dot.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

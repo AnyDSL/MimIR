@@ -1,3 +1,37 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classthorin_1_1mem_1_1SSAConstr.html#structthorin_1_1mem_1_1SSAConstr_1_1Info" title=" " alt="" coords="5,5,184,45"/>
+<area shape="rect" id="Node000000" href="$classthorin_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases." alt="" coords="13,209,120,234"/>
+<area shape="rect" id="Node000001" href="$classthorin_1_1Cleanup.html" title="Removes unreachable and dead code by rebuilding the whole World into a new one and swapping afterward..." alt="" coords="203,134,324,159"/>
+<area shape="poly" id="edge116_Node000000_Node000001" title=" " alt="" coords="103,200,175,168,210,157,212,162,177,173,105,205"/>
+<area shape="rect" id="Node000002" href="$classthorin_1_1PassManPhase.html" title="Wraps a PassMan pipeline as a Phase." alt="" coords="181,183,345,209"/>
+<area shape="poly" id="edge117_Node000000_Node000002" title=" " alt="" coords="134,210,181,204,181,209,134,215"/>
+<area shape="rect" id="Node000003" href="$classthorin_1_1PassPhase.html" title="Wraps a Pass as a Phase." alt="" coords="176,233,351,258"/>
+<area shape="poly" id="edge118_Node000000_Node000003" title=" " alt="" coords="134,227,176,232,175,237,134,232"/>
+<area shape="rect" id="Node000004" href="$classthorin_1_1Pipeline.html" title="Organizes several Phases as a pipeline." alt="" coords="203,282,323,307"/>
+<area shape="poly" id="edge119_Node000000_Node000004" title=" " alt="" coords="108,238,177,267,216,279,214,285,175,272,106,243"/>
+<area shape="rect" id="Node000005" href="$classthorin_1_1RWPhase.html" title="Visits the current Phase::world and constructs a new RWPhase::world along the way." alt="" coords="199,431,328,457"/>
+<area shape="poly" id="edge120_Node000000_Node000005" title=" " alt="" coords="86,244,125,302,178,368,214,402,247,429,243,433,210,406,174,371,121,306,81,247"/>
+<area shape="rect" id="Node000010" href="$classthorin_1_1ScopePhase.html" title="Transitively visits all reachable Scopes in World that do not have free variables." alt="" coords="190,331,337,357"/>
+<area shape="poly" id="edge123_Node000000_Node000010" title=" " alt="" coords="90,243,128,280,177,316,207,329,204,334,175,321,125,285,86,246"/>
+<area shape="rect" id="Node000016" href="$classthorin_1_1plug_1_1clos_1_1ClosConv.html" title="Performs typed closure conversion." alt="" coords="198,5,329,45"/>
+<area shape="poly" id="edge129_Node000000_Node000016" title=" " alt="" coords="76,194,113,126,141,88,174,55,197,42,199,46,178,59,145,92,118,129,81,197"/>
+<area shape="rect" id="Node000017" href="$classthorin_1_1plug_1_1clos_1_1LowerTypedClos.html" title="This pass lowers typed closures to untyped closures." alt="" coords="196,69,331,109"/>
+<area shape="poly" id="edge130_Node000000_Node000017" title=" " alt="" coords="86,196,125,157,175,119,198,107,200,112,177,124,128,161,90,200"/>
+<area shape="rect" id="Node000006" href="$classthorin_1_1FPPhase.html" title="Like a RWPhase but starts with a fixed&#45;point loop of FPPhase::analyze beforehand." alt="" coords="423,431,546,457"/>
+<area shape="poly" id="edge121_Node000005_Node000006" title=" " alt="" coords="342,441,423,441,423,447,342,447"/>
+<area shape="rect" id="Node000007" href="$classthorin_1_1plug_1_1matrix_1_1LowerMatrixLowLevel.html" title="In this phase, we lower all matrix operations and types to the low&#45;level representation using pointer..." alt="" coords="399,481,571,521"/>
+<area shape="poly" id="edge122_Node000005_Node000007" title=" " alt="" coords="327,458,408,479,406,484,326,463"/>
+<area shape="rect" id="Node000011" href="$classthorin_1_1Emitter.html" title=" " alt="" coords="409,353,560,407"/>
+<area shape="poly" id="edge124_Node000010_Node000011" title=" " alt="" coords="351,355,410,365,409,370,350,361"/>
+<area shape="rect" id="Node000014" href="$classthorin_1_1Emitter.html" title=" " alt="" coords="399,224,570,264"/>
+<area shape="poly" id="edge127_Node000010_Node000014" title=" " alt="" coords="333,324,349,316,363,306,373,296,383,285,397,274,421,262,423,267,400,278,386,289,377,299,367,310,352,321,335,329"/>
+<area shape="rect" id="Node000015" href="$classthorin_1_1plug_1_1mem_1_1AddMem.html" title="This phase adds mems to all lambdas and continuations." alt="" coords="411,288,558,328"/>
+<area shape="poly" id="edge128_Node000010_Node000015" title=" " alt="" coords="350,327,411,317,412,323,351,332"/>
+<area shape="rect" id="Node000012" href="$classthorin_1_1dot_1_1Emitter.html" title=" " alt="" coords="619,343,764,369"/>
+<area shape="poly" id="edge125_Node000011_Node000012" title=" " alt="" coords="573,367,618,362,619,367,574,372"/>
+<area shape="rect" id="Node000013" href="$classthorin_1_1ll_1_1Emitter.html" title=" " alt="" coords="625,393,757,418"/>
+<area shape="poly" id="edge126_Node000011_Node000013" title=" " alt="" coords="574,388,625,395,625,400,573,394"/>
+<area shape="rect" id="Node000008" href="$classthorin_1_1Rewriter.html" title="Recurseivly rewrites part of a program into the provided World." alt="" coords="5,455,128,481"/>
+<area shape="poly" id="edge131_Node000008_Node000005" title=" " alt="" coords="141,456,198,449,199,455,142,462"/>
+<area shape="rect" id="Node000009" href="$classthorin_1_1ScopeRewriter.html" title="Stops rewriting when leaving the Scope." alt="" coords="182,481,345,506"/>
+<area shape="poly" id="edge132_Node000008_Node000009" title=" " alt="" coords="142,475,182,480,181,485,141,480"/>
 </map>

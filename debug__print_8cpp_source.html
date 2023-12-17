@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: dialects/compile/pass/debug_print.cpp Source File</title>
+<title>Thorin: plugins/compile/src/thorin/plug/compile/pass/debug_print.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -118,34 +118,34 @@ $(document).ready(function(){initNavTree('debug__print_8cpp_source.html',''); in
   <div class="headertitle"><div class="title">debug_print.cpp</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="debug__print_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="debug__print_8h.html">dialects/compile/pass/debug_print.h</a>&quot;</span></div>
+<a href="debug__print_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="debug__print_8h.html">thorin/plug/compile/pass/debug_print.h</a>&quot;</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;<a class="code" href="lam_8h.html">thorin/lam.h</a>&gt;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="compile_8h.html">dialects/compile/compile.h</a>&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="compile_8h.html">thorin/plug/compile/compile.h</a>&quot;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin_1_1compile.html">thorin::compile</a> {</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin_1_1plug_1_1compile.html">thorin::plug::compile</a> {</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="foldopen" id="foldopen00009" data-start="{" data-end="}">
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="classthorin_1_1compile_1_1DebugPrint.html#a3654ae35e740c411e79b7c1f2f0c7e9d">    9</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classthorin_1_1compile_1_1DebugPrint.html#a3654ae35e740c411e79b7c1f2f0c7e9d">DebugPrint::enter</a>() {</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="classthorin_1_1plug_1_1compile_1_1DebugPrint.html#a2564129611e4d21f6ec3b4c31bd3c0dd">    9</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classthorin_1_1plug_1_1compile_1_1DebugPrint.html#a2564129611e4d21f6ec3b4c31bd3c0dd">DebugPrint::enter</a>() {</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <span class="keywordflow">if</span> (level &gt;= 2) <a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>().DLOG(<span class="stringliteral">&quot;L{}: enter {}&quot;</span>, level, <a class="code hl_function" href="classthorin_1_1RWPass.html#adc83b52a5ff07c39cd5628019e84f8ae">curr_mut</a>());</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>}</div>
 </div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>} <span class="comment">// namespace thorin::compile</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>} <span class="comment">// namespace thorin::plug::compile</span></div>
 <div class="ttc" id="aclassthorin_1_1Pass_html_aa3292e2b8dbc86e2664e2bbe934d75e7"><div class="ttname"><a href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">thorin::Pass::world</a></div><div class="ttdeci">World &amp; world()</div><div class="ttdef"><b>Definition</b> <a href="pass_8h_source.html#l00294">pass.h:294</a></div></div>
 <div class="ttc" id="aclassthorin_1_1RWPass_html_adc83b52a5ff07c39cd5628019e84f8ae"><div class="ttname"><a href="classthorin_1_1RWPass.html#adc83b52a5ff07c39cd5628019e84f8ae">thorin::RWPass&lt; DebugPrint, Lam &gt;::curr_mut</a></div><div class="ttdeci">Lam * curr_mut() const</div><div class="ttdef"><b>Definition</b> <a href="pass_8h_source.html#l00230">pass.h:230</a></div></div>
-<div class="ttc" id="aclassthorin_1_1compile_1_1DebugPrint_html_a3654ae35e740c411e79b7c1f2f0c7e9d"><div class="ttname"><a href="classthorin_1_1compile_1_1DebugPrint.html#a3654ae35e740c411e79b7c1f2f0c7e9d">thorin::compile::DebugPrint::enter</a></div><div class="ttdeci">void enter() override</div><div class="ttdoc">Invoked just before Pass::rewriteing PassMan::curr_mut's body.</div><div class="ttdef"><b>Definition</b> <a href="debug__print_8cpp_source.html#l00009">debug_print.cpp:9</a></div></div>
+<div class="ttc" id="aclassthorin_1_1plug_1_1compile_1_1DebugPrint_html_a2564129611e4d21f6ec3b4c31bd3c0dd"><div class="ttname"><a href="classthorin_1_1plug_1_1compile_1_1DebugPrint.html#a2564129611e4d21f6ec3b4c31bd3c0dd">thorin::plug::compile::DebugPrint::enter</a></div><div class="ttdeci">void enter() override</div><div class="ttdoc">Invoked just before Pass::rewriteing PassMan::curr_mut's body.</div><div class="ttdef"><b>Definition</b> <a href="debug__print_8cpp_source.html#l00009">debug_print.cpp:9</a></div></div>
 <div class="ttc" id="acompile_8h_html"><div class="ttname"><a href="compile_8h.html">compile.h</a></div></div>
 <div class="ttc" id="adebug__print_8h_html"><div class="ttname"><a href="debug__print_8h.html">debug_print.h</a></div></div>
 <div class="ttc" id="alam_8h_html"><div class="ttname"><a href="lam_8h.html">lam.h</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1compile_html"><div class="ttname"><a href="namespacethorin_1_1compile.html">thorin::compile</a></div><div class="ttdoc">The compile Plugin</div><div class="ttdef"><b>Definition</b> <a href="compile_8h_source.html#l00009">compile.h:9</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1plug_1_1compile_html"><div class="ttname"><a href="namespacethorin_1_1plug_1_1compile.html">thorin::plug::compile</a></div><div class="ttdoc">The compile Plugin</div><div class="ttdef"><b>Definition</b> <a href="compile_8h_source.html#l00009">compile.h:9</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_dc7f769b3d5332bd9f89fd345831c3ed.html">dialects</a></li><li class="navelem"><a class="el" href="dir_42bdbf33e20351db7d207667d77ec2dc.html">compile</a></li><li class="navelem"><a class="el" href="dir_5e200f14b84b734f6df4ee65c4bdde3e.html">pass</a></li><li class="navelem"><a class="el" href="debug__print_8cpp.html">debug_print.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_38c8d24aef3972a7f87b834274e76e31.html">plugins</a></li><li class="navelem"><a class="el" href="dir_3f9b7b28a3eefae0da924a729ee7b941.html">compile</a></li><li class="navelem"><a class="el" href="dir_f060957f233b5980aa942cf2d0f3ab3f.html">src</a></li><li class="navelem"><a class="el" href="dir_ddc51a7346628be24562cd7939c21e3f.html">thorin</a></li><li class="navelem"><a class="el" href="dir_1268efc19a163e7c14fcff5ceaa98eff.html">plug</a></li><li class="navelem"><a class="el" href="dir_59a0c887e6fbf8dcc076ecccdce5cf4c.html">compile</a></li><li class="navelem"><a class="el" href="dir_9499f4da259ad0f6d81073b4dcb04cee.html">pass</a></li><li class="navelem"><a class="el" href="debug__print_8cpp.html">debug_print.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

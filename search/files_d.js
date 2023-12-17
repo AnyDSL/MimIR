@@ -10,7 +10,7 @@ var searchData=
   ['regex_2emd_7',['regex.md',['../regex_8md.html',1,'']]],
   ['regex2nfa_2ecpp_8',['regex2nfa.cpp',['../regex2nfa_8cpp.html',1,'']]],
   ['regex2nfa_2eh_9',['regex2nfa.h',['../regex2nfa_8h.html',1,'']]],
-  ['remem_5felim_2ecpp_10',['remem_elim.cpp',['../thorin_2pass_2rw_2remem__elim_8cpp.html',1,'(Global Namespace)'],['../dialects_2mem_2pass_2rw_2remem__elim_8cpp.html',1,'(Global Namespace)']]],
+  ['remem_5felim_2ecpp_10',['remem_elim.cpp',['../src_2thorin_2pass_2remem__elim_8cpp.html',1,'(Global Namespace)'],['../plugins_2mem_2src_2thorin_2plug_2mem_2pass_2remem__elim_8cpp.html',1,'(Global Namespace)']]],
   ['remem_5felim_2eh_11',['remem_elim.h',['../remem__elim_8h.html',1,'']]],
   ['remove_5fperm_2ecpp_12',['remove_perm.cpp',['../remove__perm_8cpp.html',1,'']]],
   ['remove_5fperm_2eh_13',['remove_perm.h',['../remove__perm_8h.html',1,'']]],

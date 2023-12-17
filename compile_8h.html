@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: dialects/compile/compile.h File Reference</title>
+<title>Thorin: plugins/compile/include/thorin/plug/compile/compile.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -118,7 +118,7 @@ $(document).ready(function(){initNavTree('compile_8h.html',''); initResizable();
 <div class="contents">
 <div class="textblock"><code>#include &lt;<a class="el" href="world_8h_source.html">thorin/world.h</a>&gt;</code><br />
 <code>#include &quot;<a class="el" href="pipelinebuilder_8h_source.html">thorin/pass/pipelinebuilder.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="compile_2autogen_8h_source.html">dialects/compile/autogen.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="compile_2autogen_8h_source.html">thorin/plug/compile/autogen.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for compile.h:</div>
 <div class="dyncontent">
@@ -127,7 +127,7 @@ Include dependency graph for compile.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="compile_8h__dep__incl.svg" width="100%" height="393"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="compile_8h__dep__incl.svg" width="100%" height="415"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div>
 <p><a href="compile_8h_source.html">Go to the source code of this file.</a></p>
@@ -136,21 +136,23 @@ This graph shows which files directly or indirectly include this file:</div>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacethorin" id="r_namespacethorin"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html">thorin</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacethorin_1_1compile" id="r_namespacethorin_1_1compile"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1compile.html">thorin::compile</a></td></tr>
-<tr class="memdesc:namespacethorin_1_1compile"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="compile.html">The compile Plugin</a> <br /></td></tr>
+<tr class="memitem:namespacethorin_1_1plug" id="r_namespacethorin_1_1plug"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1plug.html">thorin::plug</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacethorin_1_1plug_1_1compile" id="r_namespacethorin_1_1plug_1_1compile"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1plug_1_1compile.html">thorin::plug::compile</a></td></tr>
+<tr class="memdesc:namespacethorin_1_1plug_1_1compile"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="compile.html">The compile Plugin</a> <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ab9d6fe0292fc41b301db8a6581556aae" id="r_ab9d6fe0292fc41b301db8a6581556aae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1compile.html#ab9d6fe0292fc41b301db8a6581556aae">thorin::compile::handle_optimization_part</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *part, <a class="el" href="classthorin_1_1World.html">World</a> &amp;world, <a class="el" href="namespacethorin.html#a334ff18080cd42969f863f22ec82694c">Passes</a> &amp;passes, <a class="el" href="classthorin_1_1PipelineBuilder.html">PipelineBuilder</a> &amp;builder)</td></tr>
-<tr class="separator:ab9d6fe0292fc41b301db8a6581556aae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9841e603ac5923cb6aa2c1cfc4bd4885" id="r_a9841e603ac5923cb6aa2c1cfc4bd4885"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1plug_1_1compile.html#a9841e603ac5923cb6aa2c1cfc4bd4885">thorin::plug::compile::handle_optimization_part</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *part, <a class="el" href="classthorin_1_1World.html">World</a> &amp;world, <a class="el" href="namespacethorin.html#a334ff18080cd42969f863f22ec82694c">Passes</a> &amp;passes, <a class="el" href="classthorin_1_1PipelineBuilder.html">PipelineBuilder</a> &amp;builder)</td></tr>
+<tr class="separator:a9841e603ac5923cb6aa2c1cfc4bd4885"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_dc7f769b3d5332bd9f89fd345831c3ed.html">dialects</a></li><li class="navelem"><a class="el" href="dir_42bdbf33e20351db7d207667d77ec2dc.html">compile</a></li><li class="navelem"><a class="el" href="compile_8h.html">compile.h</a></li>
+    <li class="navelem"><a class="el" href="dir_38c8d24aef3972a7f87b834274e76e31.html">plugins</a></li><li class="navelem"><a class="el" href="dir_3f9b7b28a3eefae0da924a729ee7b941.html">compile</a></li><li class="navelem"><a class="el" href="dir_5c320ced0a401e8193fda7414bf6f850.html">include</a></li><li class="navelem"><a class="el" href="dir_e0440e35e913ceac0523ce9355b45948.html">thorin</a></li><li class="navelem"><a class="el" href="dir_6726aaa61dc79ebffe4ba23b70fec322.html">plug</a></li><li class="navelem"><a class="el" href="dir_ab743c72eabb628d171d40caed49b194.html">compile</a></li><li class="navelem"><a class="el" href="compile_8h.html">compile.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

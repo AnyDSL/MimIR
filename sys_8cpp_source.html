@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: thorin/util/sys.cpp Source File</title>
+<title>Thorin: src/thorin/util/sys.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -142,8 +142,7 @@ $(document).ready(function(){initNavTree('sys_8cpp_source.html',''); initResizab
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="keyword">using namespace </span>std::string_literals;</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="foldopen" id="foldopen00025" data-start="{" data-end="}">
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="namespacethorin_1_1sys.html">   25</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin_1_1sys.html">thorin::sys</a> {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin_1_1sys.html">thorin::sys</a> {</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
 <div class="foldopen" id="foldopen00027" data-start="{" data-end="}">
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="namespacethorin_1_1sys.html#a488b79cdd1c20430809790046dd7f917">   27</a></span>std::optional&lt;fs::path&gt; <a class="code hl_function" href="namespacethorin_1_1sys.html#a488b79cdd1c20430809790046dd7f917">path_to_curr_exe</a>() {</div>
@@ -187,7 +186,7 @@ $(document).ready(function(){initNavTree('sys_8cpp_source.html',''); initResizab
 </div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
 <div class="foldopen" id="foldopen00064" data-start="{" data-end="}">
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="namespacethorin_1_1sys.html#a2eda434a3eb1dcbf48dd570d8d2f7733">   64</a></span>std::string <a class="code hl_function" href="namespacethorin_1_1sys.html#a2eda434a3eb1dcbf48dd570d8d2f7733">find_cmd</a>(std::string cmd) {</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="namespacethorin_1_1sys.html#a0e81a3b16e49d06b5fea2835e48eeac6">   64</a></span>std::string <a class="code hl_function" href="namespacethorin_1_1sys.html#a0e81a3b16e49d06b5fea2835e48eeac6">find_cmd</a>(std::string cmd) {</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keyword">auto</span> out = <a class="code hl_function" href="namespacethorin_1_1sys.html#ac4dd1156a86eb6db52f2cd93fec5a962">exec</a>(<a class="code hl_define" href="sys_8h.html#a8c190e94eb07b7ca90ecd8e07bf04ff8">THORIN_WHICH</a> <span class="stringliteral">&quot; &quot;</span>s + cmd);</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> it = out.find(<span class="charliteral">&#39;\n&#39;</span>); it != std::string::npos) out.erase(it);</div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordflow">return</span> out;</div>
@@ -214,13 +213,12 @@ $(document).ready(function(){initNavTree('sys_8cpp_source.html',''); initResizab
 </div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>} <span class="comment">// namespace thorin::sys</span></div>
-</div>
-<div class="ttc" id="anamespacethorin_1_1sys_html"><div class="ttname"><a href="namespacethorin_1_1sys.html">thorin::sys</a></div><div class="ttdef"><b>Definition</b> <a href="sys_8cpp_source.html#l00025">sys.cpp:25</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1sys_html_a2eda434a3eb1dcbf48dd570d8d2f7733"><div class="ttname"><a href="namespacethorin_1_1sys.html#a2eda434a3eb1dcbf48dd570d8d2f7733">thorin::sys::find_cmd</a></div><div class="ttdeci">std::string find_cmd(std::string cmd)</div><div class="ttdef"><b>Definition</b> <a href="sys_8cpp_source.html#l00064">sys.cpp:64</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1sys_html"><div class="ttname"><a href="namespacethorin_1_1sys.html">thorin::sys</a></div><div class="ttdef"><b>Definition</b> <a href="sys_8h_source.html#l00017">sys.h:17</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1sys_html_a0e81a3b16e49d06b5fea2835e48eeac6"><div class="ttname"><a href="namespacethorin_1_1sys.html#a0e81a3b16e49d06b5fea2835e48eeac6">thorin::sys::find_cmd</a></div><div class="ttdeci">std::string find_cmd(std::string)</div><div class="ttdef"><b>Definition</b> <a href="sys_8cpp_source.html#l00064">sys.cpp:64</a></div></div>
 <div class="ttc" id="anamespacethorin_1_1sys_html_a488b79cdd1c20430809790046dd7f917"><div class="ttname"><a href="namespacethorin_1_1sys.html#a488b79cdd1c20430809790046dd7f917">thorin::sys::path_to_curr_exe</a></div><div class="ttdeci">std::optional&lt; fs::path &gt; path_to_curr_exe()</div><div class="ttdoc">Yields std::nullopt if an error occurred.</div><div class="ttdef"><b>Definition</b> <a href="sys_8cpp_source.html#l00027">sys.cpp:27</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1sys_html_a932508f0d5bde98eb7127e4f2533776f"><div class="ttname"><a href="namespacethorin_1_1sys.html#a932508f0d5bde98eb7127e4f2533776f">thorin::sys::system</a></div><div class="ttdeci">int system(std::string cmd)</div><div class="ttdoc">Wraps std::system and makes the return value usable.</div><div class="ttdef"><b>Definition</b> <a href="sys_8cpp_source.html#l00070">sys.cpp:70</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1sys_html_a932508f0d5bde98eb7127e4f2533776f"><div class="ttname"><a href="namespacethorin_1_1sys.html#a932508f0d5bde98eb7127e4f2533776f">thorin::sys::system</a></div><div class="ttdeci">int system(std::string)</div><div class="ttdoc">Wraps std::system and makes the return value usable.</div><div class="ttdef"><b>Definition</b> <a href="sys_8cpp_source.html#l00070">sys.cpp:70</a></div></div>
 <div class="ttc" id="anamespacethorin_1_1sys_html_ac4dd1156a86eb6db52f2cd93fec5a962"><div class="ttname"><a href="namespacethorin_1_1sys.html#ac4dd1156a86eb6db52f2cd93fec5a962">thorin::sys::exec</a></div><div class="ttdeci">std::string exec(std::string cmd)</div><div class="ttdoc">Executes command cmd.</div><div class="ttdef"><b>Definition</b> <a href="sys_8cpp_source.html#l00055">sys.cpp:55</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1sys_html_ac7f063860c3477d428af8c6387ef38ee"><div class="ttname"><a href="namespacethorin_1_1sys.html#ac7f063860c3477d428af8c6387ef38ee">thorin::sys::run</a></div><div class="ttdeci">int run(std::string cmd, std::string args)</div><div class="ttdoc">Wraps sys::system and puts .exe at the back (Windows) and ./ at the front (otherwise) of cmd.</div><div class="ttdef"><b>Definition</b> <a href="sys_8cpp_source.html#l00076">sys.cpp:76</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1sys_html_ac7f063860c3477d428af8c6387ef38ee"><div class="ttname"><a href="namespacethorin_1_1sys.html#ac7f063860c3477d428af8c6387ef38ee">thorin::sys::run</a></div><div class="ttdeci">int run(std::string cmd, std::string args={})</div><div class="ttdoc">Wraps sys::system and puts .exe at the back (Windows) and ./ at the front (otherwise) of cmd.</div><div class="ttdef"><b>Definition</b> <a href="sys_8cpp_source.html#l00076">sys.cpp:76</a></div></div>
 <div class="ttc" id="anamespacethorin_html_a1de4d5b631f17319d8e0fa712800fa14"><div class="ttname"><a href="namespacethorin.html#a1de4d5b631f17319d8e0fa712800fa14">thorin::error</a></div><div class="ttdeci">void error(const Def *def, const char *fmt, Args &amp;&amp;... args)</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00543">def.h:543</a></div></div>
 <div class="ttc" id="aprint_8h_html"><div class="ttname"><a href="print_8h.html">print.h</a></div></div>
 <div class="ttc" id="asys_8h_html"><div class="ttname"><a href="sys_8h.html">sys.h</a></div></div>
@@ -230,7 +228,7 @@ $(document).ready(function(){initNavTree('sys_8cpp_source.html',''); initResizab
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_c4168c80b7484587a21dc92c326c695e.html">thorin</a></li><li class="navelem"><a class="el" href="dir_af13e0a143b7ca68f7428894b6ff07d9.html">util</a></li><li class="navelem"><a class="el" href="sys_8cpp.html">sys.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_6a7c4bb7c40f97e4d670d167d69dfc05.html">thorin</a></li><li class="navelem"><a class="el" href="dir_b4c1616413e32b88824b4ffdc9da0708.html">util</a></li><li class="navelem"><a class="el" href="sys_8cpp.html">sys.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

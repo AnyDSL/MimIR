@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: dialects/direct/direct.cpp Source File</title>
+<title>Thorin: plugins/direct/src/thorin/plug/direct/direct.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -118,34 +118,37 @@ $(document).ready(function(){initNavTree('direct_8cpp_source.html',''); initResi
   <div class="headertitle"><div class="title">direct.cpp</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="direct_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="direct_8h.html">dialects/direct/direct.h</a>&quot;</span></div>
+<a href="direct_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="direct_8h.html">thorin/plug/direct/direct.h</a>&quot;</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;<a class="code" href="pipelinebuilder_8h.html">thorin/pass/pipelinebuilder.h</a>&gt;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;<a class="code" href="plugin_8h.html">thorin/plugin.h</a>&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="cps2ds_8h.html">dialects/direct/pass/cps2ds.h</a>&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="ds2cps_8h.html">dialects/direct/pass/ds2cps.h</a>&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacethorin.html">thorin</a>;</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="foldopen" id="foldopen00011" data-start="{" data-end="}">
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="direct_8cpp.html#a2b0c506ec13141b704c0aea991f89b55">   11</a></span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> <a class="code hl_define" href="config_8h.html#a479c17cabac34a4216996c05ffa7e071">THORIN_EXPORT</a> <a class="code hl_struct" href="structthorin_1_1Plugin.html">Plugin</a> <a class="code hl_function" href="direct_8cpp.html#a2b0c506ec13141b704c0aea991f89b55">thorin_get_plugin</a>() {</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="keywordflow">return</span> {<span class="stringliteral">&quot;direct&quot;</span>, [](<a class="code hl_typedef" href="namespacethorin.html#a6ad6eaa1c542646fa592d10b05676464">Normalizers</a>&amp; normalizers) { <a class="code hl_function" href="namespacethorin_1_1direct.html#acc07303a8181af1620758514f7c1329f">direct::register_normalizers</a>(normalizers); },</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>            [](<a class="code hl_typedef" href="namespacethorin.html#a334ff18080cd42969f863f22ec82694c">Passes</a>&amp; passes) {</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>                register_pass&lt;direct::ds2cps_pass, direct::DS2CPS&gt;(passes);</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                register_pass&lt;direct::cps2ds_pass, direct::CPS2DS&gt;(passes);</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>            },</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>            <span class="keyword">nullptr</span>};</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>}</div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;<a class="code" href="plugin_8h.html">thorin/plugin.h</a>&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;<a class="code" href="pipelinebuilder_8h.html">thorin/pass/pipelinebuilder.h</a>&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="cps2ds_8h.html">thorin/plug/direct/pass/cps2ds.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="ds2cps_8h.html">thorin/plug/direct/pass/ds2cps.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacethorin.html">thorin</a>;</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacethorin_1_1plug.html">thorin::plug</a>;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="foldopen" id="foldopen00013" data-start="{" data-end="}">
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="direct_8cpp.html#a2b0c506ec13141b704c0aea991f89b55">   13</a></span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> <a class="code hl_define" href="config_8h.html#a479c17cabac34a4216996c05ffa7e071">THORIN_EXPORT</a> <a class="code hl_struct" href="structthorin_1_1Plugin.html">Plugin</a> <a class="code hl_function" href="namespacethorin.html#a3cc8a1ed7b039e8a6bfccdbcb9514633">thorin_get_plugin</a>() {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keywordflow">return</span> {<span class="stringliteral">&quot;direct&quot;</span>, [](<a class="code hl_typedef" href="namespacethorin.html#a6ad6eaa1c542646fa592d10b05676464">Normalizers</a>&amp; normalizers) { <a class="code hl_function" href="namespacethorin_1_1plug_1_1direct.html#a0fe9c855c9924d5cea268b836ac4ae33">direct::register_normalizers</a>(normalizers); },</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>            [](<a class="code hl_typedef" href="namespacethorin.html#a334ff18080cd42969f863f22ec82694c">Passes</a>&amp; passes) {</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>                register_pass&lt;direct::ds2cps_pass, direct::DS2CPS&gt;(passes);</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>                register_pass&lt;direct::cps2ds_pass, direct::CPS2DS&gt;(passes);</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>            },</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>            <span class="keyword">nullptr</span>};</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>}</div>
 </div>
 <div class="ttc" id="aconfig_8h_html_a479c17cabac34a4216996c05ffa7e071"><div class="ttname"><a href="config_8h.html#a479c17cabac34a4216996c05ffa7e071">THORIN_EXPORT</a></div><div class="ttdeci">#define THORIN_EXPORT</div><div class="ttdef"><b>Definition</b> <a href="config_8h_source.html#l00015">config.h:15</a></div></div>
 <div class="ttc" id="acps2ds_8h_html"><div class="ttname"><a href="cps2ds_8h.html">cps2ds.h</a></div></div>
-<div class="ttc" id="adirect_8cpp_html_a2b0c506ec13141b704c0aea991f89b55"><div class="ttname"><a href="direct_8cpp.html#a2b0c506ec13141b704c0aea991f89b55">thorin_get_plugin</a></div><div class="ttdeci">THORIN_EXPORT Plugin thorin_get_plugin()</div><div class="ttdef"><b>Definition</b> <a href="direct_8cpp_source.html#l00011">direct.cpp:11</a></div></div>
 <div class="ttc" id="adirect_8h_html"><div class="ttname"><a href="direct_8h.html">direct.h</a></div></div>
 <div class="ttc" id="ads2cps_8h_html"><div class="ttname"><a href="ds2cps_8h.html">ds2cps.h</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1direct_html_acc07303a8181af1620758514f7c1329f"><div class="ttname"><a href="namespacethorin_1_1direct.html#acc07303a8181af1620758514f7c1329f">thorin::direct::register_normalizers</a></div><div class="ttdeci">void register_normalizers(Normalizers &amp;normalizers)</div></div>
-<div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition</b> <a href="affine_8h_source.html#l00007">affine.h:7</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1plug_1_1direct_html_a0fe9c855c9924d5cea268b836ac4ae33"><div class="ttname"><a href="namespacethorin_1_1plug_1_1direct.html#a0fe9c855c9924d5cea268b836ac4ae33">thorin::plug::direct::register_normalizers</a></div><div class="ttdeci">void register_normalizers(Normalizers &amp;normalizers)</div></div>
+<div class="ttc" id="anamespacethorin_1_1plug_html"><div class="ttname"><a href="namespacethorin_1_1plug.html">thorin::plug</a></div><div class="ttdef"><b>Definition</b> <a href="affine_8h_source.html#l00007">affine.h:7</a></div></div>
+<div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition</b> <a href="cfg_8h_source.html#l00011">cfg.h:11</a></div></div>
 <div class="ttc" id="anamespacethorin_html_a334ff18080cd42969f863f22ec82694c"><div class="ttname"><a href="namespacethorin.html#a334ff18080cd42969f863f22ec82694c">thorin::Passes</a></div><div class="ttdeci">absl::flat_hash_map&lt; flags_t, std::function&lt; void(World &amp;, PipelineBuilder &amp;, const Def *)&gt; &gt; Passes</div><div class="ttdoc">axiom ↦ (pipeline part) × (axiom application) → ()   The function should inspect Application to const...</div><div class="ttdef"><b>Definition</b> <a href="plugin_8h_source.html#l00022">plugin.h:22</a></div></div>
+<div class="ttc" id="anamespacethorin_html_a3cc8a1ed7b039e8a6bfccdbcb9514633"><div class="ttname"><a href="namespacethorin.html#a3cc8a1ed7b039e8a6bfccdbcb9514633">thorin::thorin_get_plugin</a></div><div class="ttdeci">THORIN_EXPORT thorin::Plugin thorin_get_plugin()</div><div class="ttdoc">To be implemented and exported by a plugin.</div></div>
 <div class="ttc" id="anamespacethorin_html_a6ad6eaa1c542646fa592d10b05676464"><div class="ttname"><a href="namespacethorin.html#a6ad6eaa1c542646fa592d10b05676464">thorin::Normalizers</a></div><div class="ttdeci">absl::flat_hash_map&lt; flags_t, NormalizeFn &gt; Normalizers</div><div class="ttdef"><b>Definition</b> <a href="plugin_8h_source.html#l00019">plugin.h:19</a></div></div>
 <div class="ttc" id="apipelinebuilder_8h_html"><div class="ttname"><a href="pipelinebuilder_8h.html">pipelinebuilder.h</a></div></div>
 <div class="ttc" id="aplugin_8h_html"><div class="ttname"><a href="plugin_8h.html">plugin.h</a></div></div>
@@ -155,7 +158,7 @@ $(document).ready(function(){initNavTree('direct_8cpp_source.html',''); initResi
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_dc7f769b3d5332bd9f89fd345831c3ed.html">dialects</a></li><li class="navelem"><a class="el" href="dir_b377f326e5c4fac904997f328f2dc43f.html">direct</a></li><li class="navelem"><a class="el" href="direct_8cpp.html">direct.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_38c8d24aef3972a7f87b834274e76e31.html">plugins</a></li><li class="navelem"><a class="el" href="dir_45d0a97eae78e2385da7d721351ecbde.html">direct</a></li><li class="navelem"><a class="el" href="dir_02419e393b985860cd4c7da5b233e922.html">src</a></li><li class="navelem"><a class="el" href="dir_bf9e1b94cfdd2ad625e5fbb19d25227c.html">thorin</a></li><li class="navelem"><a class="el" href="dir_8282037bd54d91f2ab37dc0199370b56.html">plug</a></li><li class="navelem"><a class="el" href="dir_7779cdab97e879b922276f76a67c4354.html">direct</a></li><li class="navelem"><a class="el" href="direct_8cpp.html">direct.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

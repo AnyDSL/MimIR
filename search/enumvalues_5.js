@@ -1,16 +1,16 @@
 var searchData=
 [
-  ['f_0',['f',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aa6d4ae7d990ff7dbfef99471f1bd5622',1,'thorin::core::f'],['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa90f68af5cf3a2df678258becc2d3f714',1,'thorin::math::f']]],
-  ['f2f_1',['f2f',['../namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2da7b39587020327361b25edf8fdae94209',1,'thorin::math']]],
-  ['f2s_2',['f2s',['../namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2da64cc4f23df17159f168885fa9dcb812c',1,'thorin::math']]],
-  ['f2u_3',['f2u',['../namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2da8c1b96a13f7c1435ca95fb36566ed661',1,'thorin::math']]],
-  ['fast_4',['fast',['../namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caa31d4541b8e926a24f0c9b835b68cfdf3',1,'thorin::math']]],
-  ['fc_5',['fc',['../namespacethorin_1_1math.html#a6dd8e88f4b0e547ae80c76780070119aa086bc53f36970b37e40ffc9d36fc30dc',1,'thorin::math']]],
-  ['finite_6',['finite',['../namespacethorin_1_1math.html#aff01396947cc8f294f10ddaec9e8d4caaf08d9f9dd085b62425e34097fc724a5f',1,'thorin::math']]],
-  ['flat_7',['Flat',['../classthorin_1_1mem_1_1Reshape.html#a12b75572fe61bad243711323d7028bfcaa9689c0a5f55405e25f6856296a97859',1,'thorin::mem::Reshape']]],
-  ['fmax_8',['fmax',['../namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8a1856bed17bf34ba61fa943ce45662127',1,'thorin::math']]],
-  ['fmin_9',['fmin',['../namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8af9be911bfd79f024a23cf7be7c140486',1,'thorin::math']]],
-  ['freebb_10',['freeBB',['../namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aa41c68aab2d3953208b97078072629aca',1,'thorin::clos']]],
-  ['fst_11',['fst',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978af9d9bbc137d1c4cfaa560b6c8dfcba63',1,'thorin::core']]],
-  ['fstclassbb_12',['fstclassBB',['../namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aaa9bc4a35eab517f46c7ef38e0f52d880',1,'thorin::clos']]]
+  ['f_0',['f',['../namespacethorin_1_1plug_1_1core.html#a7e0776b8ac284bab91c95d8b9eabe0cba5ccc75a837dac078740af258424346f1',1,'thorin::plug::core::f'],['../namespacethorin_1_1plug_1_1math.html#a94f956d597c0f1a1b692f442afd41221a1e27b0f78ed3f9275f6158f9723526d4',1,'thorin::plug::math::f']]],
+  ['f2f_1',['f2f',['../namespacethorin_1_1plug_1_1math.html#a7c45b821c0e1af5f59ef26a47a1a70d8afe54cc9382cd4fd8c32a620dfd924257',1,'thorin::plug::math']]],
+  ['f2s_2',['f2s',['../namespacethorin_1_1plug_1_1math.html#a7c45b821c0e1af5f59ef26a47a1a70d8a460a0a80d45e5aadbfdc45c8ce22de59',1,'thorin::plug::math']]],
+  ['f2u_3',['f2u',['../namespacethorin_1_1plug_1_1math.html#a7c45b821c0e1af5f59ef26a47a1a70d8a8757d4796e8069a6ebf0c3360ead2908',1,'thorin::plug::math']]],
+  ['fast_4',['fast',['../namespacethorin_1_1plug_1_1math.html#a6fa926bce3b4fdca73a35a3e9ccf12d9a31d4541b8e926a24f0c9b835b68cfdf3',1,'thorin::plug::math']]],
+  ['fc_5',['fc',['../namespacethorin_1_1plug_1_1math.html#a5cd90c42c7375d245c0883fa249df572a9e074af864bfe9eebe4242726b1c2479',1,'thorin::plug::math']]],
+  ['finite_6',['finite',['../namespacethorin_1_1plug_1_1math.html#a6fa926bce3b4fdca73a35a3e9ccf12d9af08d9f9dd085b62425e34097fc724a5f',1,'thorin::plug::math']]],
+  ['flat_7',['Flat',['../classthorin_1_1plug_1_1mem_1_1Reshape.html#a9297a1ea1196468624170c615b9d3c45adaf2671826ea81045b633629218d31c1',1,'thorin::plug::mem::Reshape']]],
+  ['fmax_8',['fmax',['../namespacethorin_1_1plug_1_1math.html#af0b1fb2d5a55b633386dadda35ea2b63a1ef382ab578b17f2f0af0f611059e9dc',1,'thorin::plug::math']]],
+  ['fmin_9',['fmin',['../namespacethorin_1_1plug_1_1math.html#af0b1fb2d5a55b633386dadda35ea2b63abd50057b67139b1865590363dd700b15',1,'thorin::plug::math']]],
+  ['freebb_10',['freeBB',['../namespacethorin_1_1plug_1_1clos.html#a668300dd7c0eb61c93af85d06eb5cc00a99176af0227e072802b75d94869f1b61',1,'thorin::plug::clos']]],
+  ['fst_11',['fst',['../namespacethorin_1_1plug_1_1core.html#a4b25761ed6fb2e589d833a7851461130aabf118b15e64528334ad269b3d566bcf',1,'thorin::plug::core']]],
+  ['fstclassbb_12',['fstclassBB',['../namespacethorin_1_1plug_1_1clos.html#a668300dd7c0eb61c93af85d06eb5cc00afbbba8434f1401ceb8c3c3118cf8c406',1,'thorin::plug::clos']]]
 ];

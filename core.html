@@ -143,7 +143,7 @@ $(document).ready(function(){initNavTree('core.html',''); initResizable(); });
 </li>
 </ul>
 </div>
-<div class="textblock"><dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacethorin_1_1core.html" title="The core Plugin">thorin::core</a></dd></dl>
+<div class="textblock"><dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacethorin_1_1plug_1_1core.html" title="The core Plugin">thorin::plug::core</a></dd></dl>
 <h1><a class="anchor" id="autotoc_md110"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">.plugin mem;</div>
@@ -202,7 +202,7 @@ Integer Operations</h1>
 <p>Integer operations use <code>.Idx s</code> as type. This is per se neither signed nor unsigned. Instead, the operations themselves exhibit signed or unsigned behavior.</p>
 <h2><a class="anchor" id="autotoc_md116"></a>
 Mode</h2>
-<p>A common problem when dealing with integer operations is <a href="https://en.wikipedia.org/wiki/Integer_overflow">overflow</a>. All operations that may overflow have an additional parameter <code>m</code> - <a class="el" href="namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493">mode</a> - of type <code>.Nat</code> that determines the exact desired behavior in the case of an overflow.</p>
+<p>A common problem when dealing with integer operations is <a href="https://en.wikipedia.org/wiki/Integer_overflow">overflow</a>. All operations that may overflow have an additional parameter <code>m</code> - <a class="el" href="namespacethorin_1_1plug_1_1core.html#a7d3dda6234f135451515ff19d035578b">mode</a> - of type <code>.Nat</code> that determines the exact desired behavior in the case of an overflow.</p>
 <div class="fragment"><div class="line">.let %core.mode.us = 0b00; // wrap around - both signed and unsigned</div>
 <div class="line">.let %core.mode.uS = 0b01; // no   signed wrap around</div>
 <div class="line">.let %core.mode.Us = 0b10; // no unsigned wrap around</div>
@@ -281,7 +281,7 @@ Mode</h2>
 <div class="fragment"><div class="line">.ax %core.shr(a, l): Π.[s: .Nat][«2; .Idx s»] -&gt; .Idx s, normalize_shr;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md121"></a>
 %core.wrap</h2>
-<p>Integer operations that may overflow. You can specify the desired behavior in the case of an overflow with the curried argument just in front of the actual argument by providing a <a class="el" href="namespacethorin_1_1core.html#af4b6ec81c99cf0437d00e76854e45493">thorin::core::Mode</a> as <code>.Nat</code>.</p>
+<p>Integer operations that may overflow. You can specify the desired behavior in the case of an overflow with the curried argument just in front of the actual argument by providing a <a class="el" href="namespacethorin_1_1plug_1_1core.html#a7d3dda6234f135451515ff19d035578b">thorin::plug::core::Mode</a> as <code>.Nat</code>.</p>
 <div class="fragment"><div class="line">.ax %core.wrap(add, sub, mul, shl): Π.[s: .Nat][m: .Nat][«2; .Idx s»] -&gt; .Idx s, normalize_wrap;</div>
 <div class="line"> </div>
 <div class="line">.lam %core.minus.(s: .Nat)(m: .Nat)(a: .Idx s): .Idx s = %core.wrap.sub m (0:(.Idx s), a);</div>

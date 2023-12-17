@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['gamma_0',['gamma',['../namespacethorin_1_1math.html#a89cb7767a778d4204e26860588096530',1,'thorin::math']]],
-  ['gid_1',['gid',['../namespacethorin_1_1refly.html#ab1ac37f5bc566fdbf0493a720d3791df',1,'thorin::refly']]]
+  ['gamma_0',['gamma',['../namespacethorin_1_1plug_1_1math.html#af1ff66f68fc4be09943379b6239fa003',1,'thorin::plug::math']]],
+  ['gid_1',['gid',['../namespacethorin_1_1plug_1_1refly.html#aad6dc180305d41462097a8bcb41e27d0',1,'thorin::plug::refly']]]
 ];

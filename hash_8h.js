@@ -2,8 +2,8 @@ var hash_8h =
 [
     [ "thorin::FNV1", "structthorin_1_1FNV1.html", "structthorin_1_1FNV1" ],
     [ "hash_t", "hash_8h.html#a63fc98b747386959626beff8195c9910", null ],
-    [ "hash", "hash_8h.html#ae0e621eb1be011dcdfe11e5171fd7dd4", null ],
-    [ "hash", "hash_8h.html#a333d04a40eeb7f22675a906e6cbc00af", null ],
+    [ "hash", "hash_8h.html#a86322df808081f7c9c3cf8c38404ec8d", null ],
+    [ "hash", "hash_8h.html#a774ff60ac8ff95df4c7d8af646e6cd3a", null ],
     [ "hash_begin", "hash_8h.html#a25e65e2898328d7df97d05cbe8263220", null ],
     [ "hash_begin", "hash_8h.html#a45953d358ff771ff89168ecc274b7d2b", null ],
     [ "hash_combine", "hash_8h.html#acf896db08a5279cdb1f61589607f055b", null ],

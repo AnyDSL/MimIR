@@ -1,11 +1,11 @@
 var searchData=
 [
-  ['rangecompare_0',['RangeCompare',['../structthorin_1_1regex_1_1RangeCompare.html',1,'thorin::regex']]],
+  ['rangecompare_0',['RangeCompare',['../structthorin_1_1plug_1_1regex_1_1RangeCompare.html',1,'thorin::plug::regex']]],
   ['ref_1',['Ref',['../classthorin_1_1Ref.html',1,'thorin']]],
   ['reference_2',['reference',['../classthorin_1_1IndexSet_1_1reference.html',1,'thorin::IndexSet&lt; Indexer, Key &gt;::reference'],['../classthorin_1_1BitSet_1_1reference.html',1,'thorin::BitSet::reference']]],
-  ['rememelim_3',['RememElim',['../classthorin_1_1mem_1_1RememElim.html',1,'thorin::mem']]],
-  ['removedbgperm_4',['RemoveDbgPerm',['../classthorin_1_1refly_1_1RemoveDbgPerm.html',1,'thorin::refly']]],
-  ['reshape_5',['Reshape',['../classthorin_1_1mem_1_1Reshape.html',1,'thorin::mem']]],
+  ['rememelim_3',['RememElim',['../classthorin_1_1plug_1_1mem_1_1RememElim.html',1,'thorin::plug::mem']]],
+  ['removedbgperm_4',['RemoveDbgPerm',['../classthorin_1_1plug_1_1refly_1_1RemoveDbgPerm.html',1,'thorin::plug::refly']]],
+  ['reshape_5',['Reshape',['../classthorin_1_1plug_1_1mem_1_1Reshape.html',1,'thorin::plug::mem']]],
   ['retwrap_6',['RetWrap',['../classthorin_1_1RetWrap.html',1,'thorin']]],
   ['rewriter_7',['Rewriter',['../classthorin_1_1Rewriter.html',1,'thorin']]],
   ['rwpass_8',['RWPass',['../classthorin_1_1RWPass.html',1,'thorin']]],

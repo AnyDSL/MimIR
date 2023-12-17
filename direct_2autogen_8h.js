@@ -1,11 +1,11 @@
 var direct_2autogen_8h =
 [
     [ "THORIN_direct_NORMALIZER_IMPL", "direct_2autogen_8h.html#aec7fea367abcc1c061d9fd335c1fc498", null ],
-    [ "cps2ds", "direct_2autogen_8h.html#a697c05faf3136b21532651cc276f2794", null ],
-    [ "cps2ds_dep", "direct_2autogen_8h.html#a1efc4793431921a101ffe359ce204139", null ],
-    [ "cps2ds_pass", "direct_2autogen_8h.html#a337c53d1909c5f4a253fa6b6104b2277", null ],
-    [ "ds2cps_pass", "direct_2autogen_8h.html#a8cc0c014f61d83c03a0b057803b46a71", null ],
-    [ "normalize_cps2ds", "direct_2autogen_8h.html#a6beae5c3898aeca60a19475f4b124999", null ],
-    [ "register_normalizers", "direct_2autogen_8h.html#acc07303a8181af1620758514f7c1329f", null ],
-    [ "Plugin_Id", "direct_2autogen_8h.html#aef82355824b02489f1f6633eb9a513d2", null ]
+    [ "cps2ds", "direct_2autogen_8h.html#abc08b53a63baa12855d93852c25ac9a0", null ],
+    [ "cps2ds_dep", "direct_2autogen_8h.html#af32935116f0fe0a411a9b2c920011f61", null ],
+    [ "cps2ds_pass", "direct_2autogen_8h.html#a9690d83580fe041e57d7dd6b81f62181", null ],
+    [ "ds2cps_pass", "direct_2autogen_8h.html#a5c0996608d9fc741b6c60c11b044c277", null ],
+    [ "normalize_cps2ds", "direct_2autogen_8h.html#ada3c9a2c7d332e04e52503ece988553a", null ],
+    [ "register_normalizers", "direct_2autogen_8h.html#a0fe9c855c9924d5cea268b836ac4ae33", null ],
+    [ "Plugin_Id", "direct_2autogen_8h.html#a7fcf9f456010216202e2a860ff1a2d47", null ]
 ];

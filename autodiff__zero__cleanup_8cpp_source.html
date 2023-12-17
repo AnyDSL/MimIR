@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: dialects/autodiff/pass/autodiff_zero_cleanup.cpp Source File</title>
+<title>Thorin: plugins/autodiff/src/thorin/plug/autodiff/pass/autodiff_zero_cleanup.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -118,21 +118,21 @@ $(document).ready(function(){initNavTree('autodiff__zero__cleanup_8cpp_source.ht
   <div class="headertitle"><div class="title">autodiff_zero_cleanup.cpp</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="autodiff__zero__cleanup_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="autodiff__zero__cleanup_8h.html">dialects/autodiff/pass/autodiff_zero_cleanup.h</a>&quot;</span></div>
+<a href="autodiff__zero__cleanup_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="autodiff__zero__cleanup_8h.html">thorin/plug/autodiff/pass/autodiff_zero_cleanup.h</a>&quot;</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;<a class="code" href="lam_8h.html">thorin/lam.h</a>&gt;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="affine_8h.html">dialects/affine/affine.h</a>&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="autodiff_8h.html">dialects/autodiff/autodiff.h</a>&quot;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="core_8h.html">dialects/core/core.h</a>&quot;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="mem_8h.html">dialects/mem/mem.h</a>&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="affine_8h.html">thorin/plug/affine/affine.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;<a class="code" href="autodiff_8h.html">thorin/plug/autodiff/autodiff.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="core_8h.html">thorin/plug/core/core.h</a>&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="mem_8h.html">thorin/plug/mem/mem.h</a>&quot;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin_1_1autodiff.html">thorin::autodiff</a> {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin_1_1plug_1_1autodiff.html">thorin::plug::autodiff</a> {</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
 <div class="foldopen" id="foldopen00014" data-start="{" data-end="}">
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="classthorin_1_1autodiff_1_1AutoDiffZeroCleanup.html#a18aad32276e4f06a030bd2d5815e5d4d">   14</a></span><a class="code hl_class" href="classthorin_1_1Ref.html">Ref</a> <a class="code hl_function" href="classthorin_1_1autodiff_1_1AutoDiffZeroCleanup.html#a18aad32276e4f06a030bd2d5815e5d4d">AutoDiffZeroCleanup::rewrite</a>(<a class="code hl_class" href="classthorin_1_1Ref.html">Ref</a> def) {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="classthorin_1_1plug_1_1autodiff_1_1AutoDiffZeroCleanup.html#a593ffcfb84bce86726791300a1844738">   14</a></span><a class="code hl_class" href="classthorin_1_1Ref.html">Ref</a> <a class="code hl_function" href="classthorin_1_1plug_1_1autodiff_1_1AutoDiffZeroCleanup.html#a593ffcfb84bce86726791300a1844738">AutoDiffZeroCleanup::rewrite</a>(<a class="code hl_class" href="classthorin_1_1Ref.html">Ref</a> def) {</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="comment">// Ideally this code segment is never reached.</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="comment">// (all zeros are resolved before)</span></div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> zero_app = match&lt;zero&gt;(def); zero_app) {</div>
@@ -149,24 +149,24 @@ $(document).ready(function(){initNavTree('autodiff__zero__cleanup_8cpp_source.ht
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>}</div>
 </div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>} <span class="comment">// namespace thorin::autodiff</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>} <span class="comment">// namespace thorin::plug::autodiff</span></div>
 <div class="ttc" id="aaffine_8h_html"><div class="ttname"><a href="affine_8h.html">affine.h</a></div></div>
 <div class="ttc" id="aautodiff_8h_html"><div class="ttname"><a href="autodiff_8h.html">autodiff.h</a></div></div>
 <div class="ttc" id="aautodiff__zero__cleanup_8h_html"><div class="ttname"><a href="autodiff__zero__cleanup_8h.html">autodiff_zero_cleanup.h</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Pass_html_aa3292e2b8dbc86e2664e2bbe934d75e7"><div class="ttname"><a href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">thorin::Pass::world</a></div><div class="ttdeci">World &amp; world()</div><div class="ttdef"><b>Definition</b> <a href="pass_8h_source.html#l00294">pass.h:294</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Ref_html"><div class="ttname"><a href="classthorin_1_1Ref.html">thorin::Ref</a></div><div class="ttdoc">Helper class to retrieve Infer::arg if present.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00078">def.h:78</a></div></div>
 <div class="ttc" id="aclassthorin_1_1World_html_ac7587d20b280b8ecf4801861a64f8876"><div class="ttname"><a href="classthorin_1_1World.html#ac7587d20b280b8ecf4801861a64f8876">thorin::World::bot</a></div><div class="ttdeci">Ref bot(Ref type)</div><div class="ttdef"><b>Definition</b> <a href="world_8h_source.html#l00365">world.h:365</a></div></div>
-<div class="ttc" id="aclassthorin_1_1autodiff_1_1AutoDiffZeroCleanup_html_a18aad32276e4f06a030bd2d5815e5d4d"><div class="ttname"><a href="classthorin_1_1autodiff_1_1AutoDiffZeroCleanup.html#a18aad32276e4f06a030bd2d5815e5d4d">thorin::autodiff::AutoDiffZeroCleanup::rewrite</a></div><div class="ttdeci">Ref rewrite(Ref) override</div><div class="ttdef"><b>Definition</b> <a href="autodiff__zero__cleanup_8cpp_source.html#l00014">autodiff_zero_cleanup.cpp:14</a></div></div>
+<div class="ttc" id="aclassthorin_1_1plug_1_1autodiff_1_1AutoDiffZeroCleanup_html_a593ffcfb84bce86726791300a1844738"><div class="ttname"><a href="classthorin_1_1plug_1_1autodiff_1_1AutoDiffZeroCleanup.html#a593ffcfb84bce86726791300a1844738">thorin::plug::autodiff::AutoDiffZeroCleanup::rewrite</a></div><div class="ttdeci">Ref rewrite(Ref) override</div><div class="ttdef"><b>Definition</b> <a href="autodiff__zero__cleanup_8cpp_source.html#l00014">autodiff_zero_cleanup.cpp:14</a></div></div>
 <div class="ttc" id="acore_8h_html"><div class="ttname"><a href="core_8h.html">core.h</a></div></div>
 <div class="ttc" id="alam_8h_html"><div class="ttname"><a href="lam_8h.html">lam.h</a></div></div>
 <div class="ttc" id="amem_8h_html"><div class="ttname"><a href="mem_8h.html">mem.h</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1autodiff_html"><div class="ttname"><a href="namespacethorin_1_1autodiff.html">thorin::autodiff</a></div><div class="ttdoc">The automatic differentiation Plugin</div><div class="ttdef"><b>Definition</b> <a href="autodiff_8cpp_source.html#l00027">autodiff.cpp:27</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1plug_1_1autodiff_html"><div class="ttname"><a href="namespacethorin_1_1plug_1_1autodiff.html">thorin::plug::autodiff</a></div><div class="ttdoc">The automatic differentiation Plugin</div><div class="ttdef"><b>Definition</b> <a href="autodiff_8h_source.html#l00007">autodiff.h:7</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_dc7f769b3d5332bd9f89fd345831c3ed.html">dialects</a></li><li class="navelem"><a class="el" href="dir_d48aecfc60f0aa488eca52d8766e62ae.html">autodiff</a></li><li class="navelem"><a class="el" href="dir_eedbf94864013894543bfe393ec1e363.html">pass</a></li><li class="navelem"><a class="el" href="autodiff__zero__cleanup_8cpp.html">autodiff_zero_cleanup.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_38c8d24aef3972a7f87b834274e76e31.html">plugins</a></li><li class="navelem"><a class="el" href="dir_b0cfb681a13727832db63c7690c9c697.html">autodiff</a></li><li class="navelem"><a class="el" href="dir_ffa4eb0d5e833fdf904b51fc63b28f17.html">src</a></li><li class="navelem"><a class="el" href="dir_be4d1a7e448ca2e17e738f473e4aaa09.html">thorin</a></li><li class="navelem"><a class="el" href="dir_b4ae45215aed47fedfe29e9391b0d6b9.html">plug</a></li><li class="navelem"><a class="el" href="dir_0a1537a46a931a34af202d973bd85d47.html">autodiff</a></li><li class="navelem"><a class="el" href="dir_fee724bc649090eef754e83b296c8c4f.html">pass</a></li><li class="navelem"><a class="el" href="autodiff__zero__cleanup_8cpp.html">autodiff_zero_cleanup.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

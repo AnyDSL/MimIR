@@ -1,12 +1,12 @@
 var searchData=
 [
-  ['e_0',['e',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2617461720290be8740985537e6e1bfd',1,'thorin::core::e'],['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fae3d34eae2d815c0b27ec6caf0bdb2707',1,'thorin::math::e']]],
+  ['e_0',['e',['../namespacethorin_1_1plug_1_1core.html#a7e0776b8ac284bab91c95d8b9eabe0cba119e94e5a73dcd457b2a72d0dcab2d5f',1,'thorin::plug::core::e'],['../namespacethorin_1_1plug_1_1math.html#a94f956d597c0f1a1b692f442afd41221a1e3a46d5dd0c43d2357a92016affd71d',1,'thorin::plug::math::e']]],
   ['eof_1',['EoF',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aff6620b605642fc8a70795b0ff429afc',1,'thorin::Tok']]],
   ['epsilon_2',['EPSILON',['../classthorin_1_1automaton_1_1NFA.html#a40e9d71e061a9d7d6b3d72fb4574c582a51530ab7fcbe9515244d86a2f8de3917',1,'thorin::automaton::NFA']]],
   ['error_3',['Error',['../classthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa902b0d55fddef6f8d651fe1035b7d4bd',1,'thorin::Log']]],
-  ['esc_4',['esc',['../namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aae72e01c6fef7ed23073407bbe451993c',1,'thorin::clos']]],
-  ['exp_5',['exp',['../namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea5f71e9a601eddb735afe66f6f58dc6d9',1,'thorin::math']]],
-  ['exp10_6',['exp10',['../namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea0764096ae797e9840a0919cde51e4bd5',1,'thorin::math']]],
-  ['exp2_7',['exp2',['../namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea4e9c84df80a6dd3be2eaf40f79b51dcf',1,'thorin::math']]],
-  ['extract_8',['Extract',['../namespacethorin_1_1Node.html#aa68fef075db159e1626cb89e0874e023a257bf2499ed2c21151ca373f7c4c0307',1,'thorin::Node']]]
+  ['esc_4',['esc',['../namespacethorin_1_1plug_1_1clos.html#a668300dd7c0eb61c93af85d06eb5cc00a2bd016855adb2b0a8f1c7042b144d2e2',1,'thorin::plug::clos']]],
+  ['exp_5',['exp',['../namespacethorin_1_1plug_1_1math.html#a9b36249af53fb8f2c7bd02d9dab7e3bbad62abce725c050e7523a33175fb49b17',1,'thorin::plug::math']]],
+  ['exp10_6',['exp10',['../namespacethorin_1_1plug_1_1math.html#a9b36249af53fb8f2c7bd02d9dab7e3bba029cb5884dd3ea3cb93e58c2fba5daa2',1,'thorin::plug::math']]],
+  ['exp2_7',['exp2',['../namespacethorin_1_1plug_1_1math.html#a9b36249af53fb8f2c7bd02d9dab7e3bbad36c40f2a517d76db6222416d275ae12',1,'thorin::plug::math']]],
+  ['extract_8',['Extract',['../namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a257bf2499ed2c21151ca373f7c4c0307',1,'thorin::Node']]]
 ];
