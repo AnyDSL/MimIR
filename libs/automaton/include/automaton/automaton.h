@@ -8,18 +8,15 @@
 #include <unordered_map>
 #include <vector>
 
-#include "thorin/util/types.h"
-
-#include "thorin/plug/regex/range_helper.h"
-
 #include "absl/container/flat_hash_map.h"
+#include "automaton/range_helper.h"
 
-namespace thorin::automaton {
-
-namespace regex = plug::regex;
+namespace automaton {
 
 class DFANode;
 class NFANode;
+
+using U64U64 = std::pair<std::uint64_t, std::uint64_t>;
 
 template<class NodeType> class AutomatonBase {
 public:
@@ -38,7 +35,7 @@ public:
 
     std::set<const NodeType*> get_reachable_states() const {
         std::set<const NodeType*> reachableStates;
-        Vector<const NodeType*> workList;
+        std::vector<const NodeType*> workList;
         workList.push_back(get_start());
         while (!workList.empty()) {
             auto state = workList.back();
@@ -75,19 +72,19 @@ std::ostream& print_node(std::ostream& os, const NodeType& node, PrintCharF&& pr
     if (node.is_accepting()) os << "  \"" << &node << "\" [shape=doublecircle];\n";
     if (node.is_erroring()) os << "  \"" << &node << "\" [shape=square];\n";
 
-    absl::flat_hash_map<const NodeType*, Vector<std::pair<nat_t, nat_t>>> node2transitions;
+    absl::flat_hash_map<const NodeType*, std::vector<U64U64>> node2transitions;
     node.for_transitions([&](auto c, auto to) {
         if (!node2transitions.contains(to))
-            node2transitions.emplace(to, Vector<std::pair<nat_t, nat_t>>{
-                                             std::pair<nat_t, nat_t>{c, c}
+            node2transitions.emplace(to, std::vector<U64U64>{
+                                             U64U64{c, c}
             });
         else
             node2transitions[to].push_back({c, c});
     });
 
     for (auto& [to, ranges] : node2transitions) {
-        std::sort(ranges.begin(), ranges.end(), regex::RangeCompare{});
-        ranges = regex::merge_ranges(ranges);
+        std::sort(ranges.begin(), ranges.end(), RangeCompare{});
+        ranges = merge_ranges(ranges);
         for (auto& [lo, hi] : ranges) {
             os << "  \"" << &node << "\" -> \"" << to << "\" [label=\"" << std::forward<PrintCharF>(print_char)(lo);
             if (lo != hi) os << "-" << std::forward<PrintCharF>(print_char)(hi);
@@ -100,4 +97,4 @@ std::ostream& print_node(std::ostream& os, const NodeType& node, PrintCharF&& pr
     return os;
 }
 
-} // namespace thorin::automaton
+} // namespace automaton

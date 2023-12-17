@@ -31,19 +31,14 @@ add_executable(thorin-regex-gtest)
 target_sources(thorin-regex-gtest
     PRIVATE
         automaton.cpp
-        ../plugins/regex/src/thorin/plug/regex/automaton/nfa.cpp
-        ../plugins/regex/src/thorin/plug/regex/automaton/dfa.cpp
-        ../plugins/regex/src/thorin/plug/regex/automaton/nfa2dfa.cpp
-        ../plugins/regex/src/thorin/plug/regex/automaton/dfamin.cpp
-        ../plugins/regex/src/thorin/plug/regex/pass/regex2nfa.cpp
-        ../plugins/regex/src/thorin/plug/regex/pass/dfa2matcher.cpp
 )
 target_link_libraries(thorin-regex-gtest
     PRIVATE
-        gtest_main
         thorin_interface_core
         thorin_interface_mem
-        thorin_interface_regex
+        gtest_main
+        automaton
+        thorin_regex
 )
 add_dependencies(thorin-regex-gtest
     thorin_clos

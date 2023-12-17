@@ -4,6 +4,7 @@
 #include <ranges>
 #include <vector>
 
+#include <automaton/range_helper.h>
 #include <fe/assert.h>
 
 #include "thorin/axiom.h"
@@ -13,7 +14,6 @@
 
 #include "thorin/util/log.h"
 
-#include "thorin/plug/regex/range_helper.h"
 #include "thorin/plug/regex/regex.h"
 
 namespace thorin::plug::regex {
@@ -130,8 +130,8 @@ void merge_ranges(DefVec& args) {
 
     std::transform(ranges_begin, args.end(), std::back_inserter(old_ranges), get_range);
 
-    auto new_ranges
-        = merge_ranges(old_ranges, [&world](auto&&... args) { world.DLOG(std::forward<decltype(args)>(args)...); });
+    auto new_ranges = automaton::merge_ranges(
+        old_ranges, [&world](auto&&... args) { world.DLOG(std::forward<decltype(args)>(args)...); });
 
     // invalidates ranges_begin
     args.erase(ranges_begin, args.end());

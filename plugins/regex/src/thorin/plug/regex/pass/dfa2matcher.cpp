@@ -4,12 +4,11 @@
 #include <sstream>
 
 #include <absl/container/flat_hash_map.h>
+#include <automaton/dfa.h>
+#include <automaton/range_helper.h>
 
 #include <thorin/plug/core/core.h>
 #include <thorin/plug/mem/mem.h>
-
-#include "thorin/plug/regex/automaton/dfa.h"
-#include "thorin/plug/regex/range_helper.h"
 
 using namespace thorin;
 
@@ -55,8 +54,9 @@ transitions_to_ranges(World& w, const automaton::DFANode* state) {
             continue;
         }
 
-        std::sort(ranges.begin(), ranges.end(), regex::RangeCompare{});
-        ranges = regex::merge_ranges(ranges, [&w](auto&&... args) { w.DLOG(std::forward<decltype(args)>(args)...); });
+        std::sort(ranges.begin(), ranges.end(), automaton::RangeCompare{});
+        ranges
+            = automaton::merge_ranges(ranges, [&w](auto&&... args) { w.DLOG(std::forward<decltype(args)>(args)...); });
     }
     return state2ranges;
 }

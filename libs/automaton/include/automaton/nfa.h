@@ -6,9 +6,9 @@
 
 #include <absl/container/flat_hash_map.h>
 
-#include "thorin/plug/regex/automaton/automaton.h"
+#include "automaton/automaton.h"
 
-namespace thorin::automaton {
+namespace automaton {
 class NFANode {
 public:
     NFANode() = default;
@@ -63,4 +63,4 @@ public:
     };
 };
 
-} // namespace thorin::automaton
+} // namespace automaton

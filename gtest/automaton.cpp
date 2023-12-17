@@ -1,20 +1,21 @@
 #include <memory>
 
+#include <automaton/dfa.h>
+#include <automaton/dfamin.h>
+#include <automaton/nfa.h>
+#include <automaton/nfa2dfa.h>
 #include <gtest/gtest.h>
 
 #include <thorin/world.h>
 
 #include <thorin/fe/parser.h>
 
-#include <thorin/plug/regex/automaton/dfa.h>
-#include <thorin/plug/regex/automaton/dfamin.h>
-#include <thorin/plug/regex/automaton/nfa.h>
-#include <thorin/plug/regex/automaton/nfa2dfa.h>
 #include <thorin/plug/regex/pass/dfa2matcher.h>
 #include <thorin/plug/regex/pass/regex2nfa.h>
 #include <thorin/plug/regex/regex.h>
 
-using namespace thorin::automaton;
+using namespace automaton;
+namespace regex = thorin::plug::regex;
 
 TEST(Automaton, NFA) {
     auto nfa   = std::make_unique<NFA>();

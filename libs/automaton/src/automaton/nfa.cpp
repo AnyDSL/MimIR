@@ -1,11 +1,9 @@
-#include "thorin/plug/regex/automaton/nfa.h"
+#include "automaton/nfa.h"
 
-#include <thorin/util/types.h>
+#include "automaton/automaton.h"
+#include "automaton/range_helper.h"
 
-#include "thorin/plug/regex/automaton/automaton.h"
-#include "thorin/plug/regex/range_helper.h"
-
-namespace thorin::automaton {
+namespace automaton {
 
 void NFANode::add_transition(const NFANode* to, std::uint16_t c) {
     if (auto it = transitions_.find(c); it != transitions_.end())
@@ -37,4 +35,4 @@ std::ostream& operator<<(std::ostream& os, const NFANode& node) {
     return print_node(os, node, std::move(print_char));
 }
 
-} // namespace thorin::automaton
+} // namespace automaton

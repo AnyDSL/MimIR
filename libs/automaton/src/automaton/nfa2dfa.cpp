@@ -1,11 +1,11 @@
-#include "thorin/plug/regex/automaton/nfa2dfa.h"
+#include "automaton/nfa2dfa.h"
 
 #include <map>
 #include <queue>
 #include <set>
 #include <unordered_map>
 
-namespace thorin::automaton {
+namespace automaton {
 
 // calculate epsilon closure of a set of states
 std::set<const NFANode*> epsilonClosure(const std::set<const NFANode*>& states) {
@@ -76,4 +76,4 @@ std::unique_ptr<DFA> nfa2dfa(const NFA& nfa) {
     return dfa;
 }
 
-} // namespace thorin::automaton
+} // namespace automaton

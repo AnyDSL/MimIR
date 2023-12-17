@@ -15,13 +15,6 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
-if(MSVC)
-    set(CMAKE_CXX_STANDARD 23) # /std:c++latest - unlocks non-stable c++20 features
-    add_compile_options(/utf-8 /wd4146 /wd4245)
-else()
-    set(CMAKE_CXX_STANDARD 20) # -std=c++20 for everyone else
-endif()
-
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
@@ -182,10 +175,15 @@ target_sources(libthorin
 )
 
 set_target_properties(libthorin PROPERTIES PREFIX "")
-target_compile_features(libthorin PUBLIC cxx_std_${CMAKE_CXX_STANDARD}) # make property public.
 
-if(MSVC AND BUILD_SHARED_LIBS)
-    target_compile_definitions(libthorin PUBLIC ABSL_CONSUME_DLL)
+if(MSVC)
+    target_compile_features(libthorin PUBLIC cxx_std_23) # /std:c++latest - unlocks non-stable c++20 features
+    target_compile_options(libthorin PUBLIC /utf-8 /wd4146 /wd4245)
+    if(BUILD_SHARED_LIBS)
+        target_compile_definitions(libthorin PUBLIC ABSL_CONSUME_DLL)
+    endif()
+else()
+    target_compile_features(libthorin PUBLIC cxx_std_20)
 endif()
 
 configure_file(
@@ -227,6 +225,7 @@ install(
 )
 
 add_subdirectory(cli)
+add_subdirectory(libs)
 add_subdirectory(plugins)
 
 if(THORIN_BUILD_EXAMPLES)

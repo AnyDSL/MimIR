@@ -93,12 +93,13 @@ function(add_thorin_plugin)
     target_sources(thorin_${PLUGIN}
         PRIVATE
             ${PARSED_SOURCES}
-            ${PARSED_PRIVATE}
     )
     target_link_libraries(thorin_${PLUGIN}
         PUBLIC
             thorin_interface_${PLUGIN}
             ${PARSED_PUBLIC}
+        PRIVATE
+            ${PARSED_PRIVATE}
     )
     set_target_properties(thorin_${PLUGIN}
         PROPERTIES

@@ -2,10 +2,10 @@
 
 #include <numeric>
 
+#include <automaton/nfa.h>
+
 #include <thorin/lam.h>
 #include <thorin/world.h>
-
-#include "thorin/plug/regex/automaton/nfa.h"
 
 using namespace thorin;
 
