@@ -135,6 +135,7 @@ var annotated_dup =
       [ "Proxy", "classthorin_1_1Proxy.html", "classthorin_1_1Proxy" ],
       [ "Ptrn", "classthorin_1_1Ptrn.html", "classthorin_1_1Ptrn" ],
       [ "Ref", "classthorin_1_1Ref.html", "classthorin_1_1Ref" ],
+      [ "Res", "classthorin_1_1Res.html", "classthorin_1_1Res" ],
       [ "RetWrap", "classthorin_1_1RetWrap.html", "classthorin_1_1RetWrap" ],
       [ "Rewriter", "classthorin_1_1Rewriter.html", "classthorin_1_1Rewriter" ],
       [ "RWPass", "classthorin_1_1RWPass.html", "classthorin_1_1RWPass" ],

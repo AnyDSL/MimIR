@@ -13,7 +13,7 @@ var searchData=
   ['alloc_10',['alloc',['../namespacethorin_1_1plug_1_1mem.html#a23d781d49e79d289cbc8f9b43e56fcb3',1,'thorin::plug::mem']]],
   ['alloc2malloc_5fpass_11',['alloc2malloc_pass',['../namespacethorin_1_1plug_1_1mem.html#a255e2e1dc9a2aa971f195aca2361b1f0',1,'thorin::plug::mem']]],
   ['alloc_5fjmpbuf_12',['alloc_jmpbuf',['../namespacethorin_1_1plug_1_1clos.html#ac17b77794870ae7a99808d6fdd088d50',1,'thorin::plug::clos']]],
-  ['amdfp24_13',['amdfp24',['../namespacethorin_1_1plug_1_1math.html#a65b58d5cad2d69314d19894aee830330',1,'thorin::plug::math::AMDFP24'],['../namespacethorin_1_1plug_1_1math.html#a336f206261c804474f59310f4d06e0b0',1,'thorin::plug::math::amdfp24']]],
+  ['amdfp24_13',['amdfp24',['../namespacethorin_1_1plug_1_1math.html#a336f206261c804474f59310f4d06e0b0',1,'thorin::plug::math::amdfp24'],['../namespacethorin_1_1plug_1_1math.html#a65b58d5cad2d69314d19894aee830330',1,'thorin::plug::math::AMDFP24']]],
   ['any_14',['any',['../namespacethorin_1_1plug_1_1regex.html#a9b040285b1ea13ebacc08391467cf20b',1,'thorin::plug::regex']]],
   ['arith_15',['arith',['../namespacethorin_1_1plug_1_1math.html#a983d38d030406f04d4a3cd1e13b14bb0',1,'thorin::plug::math']]],
   ['attr_16',['attr',['../namespacethorin_1_1plug_1_1clos.html#a668300dd7c0eb61c93af85d06eb5cc00',1,'thorin::plug::clos']]],

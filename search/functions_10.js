@@ -15,7 +15,7 @@ var searchData=
   ['path_5fto_5fcurr_5fexe_12',['path_to_curr_exe',['../namespacethorin_1_1sys.html#a488b79cdd1c20430809790046dd7f917',1,'thorin::sys']]],
   ['phase_13',['Phase',['../classthorin_1_1Phase.html#a898fe8f4abc69dd9528949da3bfca3e6',1,'thorin::Phase']]],
   ['phases_14',['phases',['../classthorin_1_1Pipeline.html#a17fc8872ccbb3939302be78b2ed2c5fd',1,'thorin::Pipeline']]],
-  ['pi_15',['pi',['../classthorin_1_1World.html#a4271c4a5320c0a18251b31637e244c35',1,'thorin::World::pi()'],['../classthorin_1_1Pi.html#a41b46207813ca3e09075539d97ab4853',1,'thorin::Pi::Pi(const Def *type, const Def *dom, const Def *codom, bool implicit)'],['../classthorin_1_1Pi.html#adedf3104674bd63835167df29c84a993',1,'thorin::Pi::Pi(const Def *type, bool implicit)'],['../classthorin_1_1World.html#a9f5ac503f9302dec6099e9781230723d',1,'thorin::World::pi()']]],
+  ['pi_15',['pi',['../classthorin_1_1Pi.html#adedf3104674bd63835167df29c84a993',1,'thorin::Pi::Pi()'],['../classthorin_1_1World.html#a9f5ac503f9302dec6099e9781230723d',1,'thorin::World::pi(Ref dom, Ref codom, bool implicit=false)'],['../classthorin_1_1World.html#a4271c4a5320c0a18251b31637e244c35',1,'thorin::World::pi(Defs dom, Ref codom, bool implicit=false)'],['../classthorin_1_1Pi.html#a41b46207813ca3e09075539d97ab4853',1,'thorin::Pi::Pi()']]],
   ['pi_5fmem_16',['pi_mem',['../namespacethorin_1_1plug_1_1mem.html#a72015a11be8cbb0f7c39b62efb823d6a',1,'thorin::plug::mem']]],
   ['pick_17',['pick',['../classthorin_1_1World.html#a8555c0b6ad2b35fda5702d80f7729cf8',1,'thorin::World']]],
   ['pipeline_18',['Pipeline',['../classthorin_1_1Pipeline.html#af13993dbec07d9a1c450f59f69935a23',1,'thorin::Pipeline']]],

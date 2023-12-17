@@ -13,6 +13,7 @@ var dir_a9446755a1c96c6cd3ab4facf95dc5bb =
     [ "flags.h", "flags_8h.html", "flags_8h" ],
     [ "lam.h", "lam_8h.html", "lam_8h" ],
     [ "lattice.h", "lattice_8h.html", "lattice_8h" ],
+    [ "normalize.h", "normalize_8h.html", "normalize_8h" ],
     [ "plugin.h", "plugin_8h.html", "plugin_8h" ],
     [ "rewrite.h", "rewrite_8h.html", "rewrite_8h" ],
     [ "tuple.h", "tuple_8h.html", "tuple_8h" ],

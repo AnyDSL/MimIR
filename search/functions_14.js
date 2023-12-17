@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['tab_0',['tab',['../classthorin_1_1Tab.html#a90e3e6f9586f056b9ad97c0dfc97b35f',1,'thorin::Tab::Tab(std::string_view tab={&quot;    &quot;}, size_t indent=0)'],['../classthorin_1_1Tab.html#ac89b5f96935cc8a6eed9ebd32cbf594a',1,'thorin::Tab::tab() const']]],
+  ['tab_0',['tab',['../classthorin_1_1Tab.html#ac89b5f96935cc8a6eed9ebd32cbf594a',1,'thorin::Tab::tab() const'],['../classthorin_1_1Tab.html#a90e3e6f9586f056b9ad97c0dfc97b35f',1,'thorin::Tab::Tab(std::string_view tab={&quot;    &quot;}, size_t indent=0)']]],
   ['tag_1',['tag',['../classthorin_1_1Axiom.html#a52fbe82684065787e1a12f483a93e534',1,'thorin::Axiom::tag()'],['../classthorin_1_1Match.html#aae7ddefa2552123253175c154fe1840c',1,'thorin::Match::tag()'],['../classthorin_1_1Proxy.html#a33449d4206d2c4ecd374b12afe4e2959',1,'thorin::Proxy::tag()'],['../classthorin_1_1Tok.html#ae16ac33a4d82cddfdb1ecf0f0e40489b',1,'thorin::Tok::tag() const']]],
   ['tag2str_2',['tag2str',['../classthorin_1_1Tok.html#a722601fad046ebe11dfcdc29ee675a6c',1,'thorin::Tok']]],
   ['tail_3',['tail',['../structthorin_1_1ll_1_1BB.html#a68f2d2cbdaea0a815c52b4533c59e03a',1,'thorin::ll::BB::tail()'],['../structthorin_1_1ll_1_1BB.html#a3b03c198eb00e5b6e231295e732f1720',1,'thorin::ll::BB::tail(const char *s, Args &amp;&amp;... args)']]],
