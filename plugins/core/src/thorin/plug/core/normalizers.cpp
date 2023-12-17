@@ -1,4 +1,4 @@
-#include <optional>
+#include <thorin/normalize.h>
 
 #include <thorin/plug/math/math.h>
 #include <thorin/plug/mem/mem.h>
@@ -8,34 +8,6 @@
 namespace thorin::plug::core {
 
 namespace {
-
-// TODO move to normalize.h or so?
-// Swap Lit to left - or smaller gid, if no lit present.
-template<class Id> void commute(Id id, const Def*& a, const Def*& b) {
-    if (::thorin::is_commutative(id)) {
-        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>())) std::swap(a, b);
-    }
-}
-
-/*
- * Fold
- */
-
-class Res {
-public:
-    Res()
-        : data_{} {}
-    template<class T>
-    Res(T val)
-        : data_(thorin::bitcast<u64>(val)) {}
-
-    constexpr const u64& operator*() const& { return *data_; }
-    constexpr u64& operator*() & { return *data_; }
-    explicit operator bool() const { return data_.has_value(); }
-
-private:
-    std::optional<u64> data_;
-};
 
 // clang-format off
 // See https://stackoverflow.com/a/64354296 for static_assert trick below.
@@ -141,7 +113,7 @@ template<class Id, Id id> Ref fold(World& world, Ref type, const Def*& a, const 
         }
     }
 
-    commute(id, a, b);
+    if (::thorin::is_commutative(id)) commute(a, b);
     return nullptr;
 }
 
@@ -246,7 +218,7 @@ template<class Id> Ref merge_cmps(std::array<std::array<u64, 2>, 2> tab, Ref a, 
 template<nat id> Ref normalize_nat(Ref type, Ref callee, Ref arg) {
     auto& world = type->world();
     auto [a, b] = arg->projs<2>();
-    commute(id, a, b);
+    if (is_commutative(id)) commute(a, b);
     auto la = Lit::isa(a);
     auto lb = Lit::isa(b);
 
@@ -282,7 +254,7 @@ template<ncmp id> Ref normalize_ncmp(Ref type, Ref callee, Ref arg) {
     if (id == ncmp::f) return world.lit_ff();
 
     auto [a, b] = arg->projs<2>();
-    commute(id, a, b);
+    if (is_commutative(id)) commute(a, b);
 
     if (auto la = Lit::isa(a)) {
         if (auto lb = Lit::isa(b)) {
@@ -369,7 +341,7 @@ template<bit2 id> Ref normalize_bit2(Ref type, Ref c, Ref arg) {
     auto ls     = Lit::isa(s);
     // TODO cope with wrap around
 
-    commute(id, a, b);
+    if (is_commutative(id)) commute(a, b);
 
     auto tab = make_truth_table(id);
     if (auto res = merge_cmps<icmp>(tab, a, b)) return res;
