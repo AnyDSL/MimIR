@@ -1,9 +1,10 @@
-cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.25 FATAL_ERROR)
 
 project(Thorin VERSION 1.9.0)
 
 include(CMakeDependentOption)
 include(CMakePackageConfigHelpers)
+include(CMakePrintHelpers)
 include(GNUInstallDirs)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
@@ -79,9 +80,154 @@ else()
     add_subdirectory(external/lyra)
     add_subdirectory(external/rang)
 endif()
-add_subdirectory(thorin)
+
+add_library(libthorin)
+target_sources(libthorin
+    PRIVATE
+        src/thorin/axiom.cpp
+        src/thorin/check.cpp
+        src/thorin/def.cpp
+        src/thorin/plugin.cpp
+        src/thorin/dump.cpp
+        src/thorin/driver.cpp
+        src/thorin/lam.cpp
+        src/thorin/lattice.cpp
+        src/thorin/rewrite.cpp
+        src/thorin/tuple.cpp
+        src/thorin/world.cpp
+        src/thorin/analyses/cfg.cpp
+        src/thorin/analyses/deptree.cpp
+        src/thorin/analyses/domfrontier.cpp
+        src/thorin/analyses/domtree.cpp
+        src/thorin/analyses/looptree.cpp
+        src/thorin/analyses/schedule.cpp
+        src/thorin/analyses/scope.cpp
+        src/thorin/be/dot/dot.cpp
+        src/thorin/be/h/bootstrap.cpp
+        src/thorin/fe/ast.cpp
+        src/thorin/fe/lexer.cpp
+        src/thorin/fe/parser.cpp
+        src/thorin/fe/scopes.cpp
+        src/thorin/fe/tok.cpp
+        src/thorin/pass/beta_red.cpp
+        src/thorin/pass/eta_exp.cpp
+        src/thorin/pass/eta_red.cpp
+        src/thorin/pass/lam_spec.cpp
+        src/thorin/pass/optimize.cpp
+        src/thorin/pass/pass.cpp
+        src/thorin/pass/pipelinebuilder.cpp
+        src/thorin/pass/ret_wrap.cpp
+        src/thorin/pass/scalarize.cpp
+        src/thorin/pass/tail_rec_elim.cpp
+        src/thorin/phase/phase.cpp
+        src/thorin/util/bitset.cpp
+        src/thorin/util/dbg.cpp
+        src/thorin/util/dl.cpp
+        src/thorin/util/hash.cpp
+        src/thorin/util/log.cpp
+        src/thorin/util/print.cpp
+        src/thorin/util/sys.cpp
+    PUBLIC
+        FILE_SET libthorin_headers
+        BASE_DIRS include
+        TYPE HEADERS
+        FILES
+            include/thorin/axiom.h
+            include/thorin/check.h
+            include/thorin/def.h
+            include/thorin/plugin.h
+            include/thorin/driver.h
+            include/thorin/lam.h
+            include/thorin/lattice.h
+            include/thorin/rewrite.h
+            include/thorin/tuple.h
+            include/thorin/world.h
+            include/thorin/analyses/cfg.h
+            include/thorin/analyses/deptree.h
+            include/thorin/analyses/domfrontier.h
+            include/thorin/analyses/domtree.h
+            include/thorin/analyses/looptree.h
+            include/thorin/analyses/schedule.h
+            include/thorin/analyses/scope.h
+            include/thorin/be/dot/dot.h
+            include/thorin/be/emitter.h
+            include/thorin/be/h/bootstrap.h
+            include/thorin/fe/ast.h
+            include/thorin/fe/lexer.h
+            include/thorin/fe/parser.h
+            include/thorin/fe/scopes.h
+            include/thorin/fe/tok.h
+            include/thorin/pass/beta_red.h
+            include/thorin/pass/eta_exp.h
+            include/thorin/pass/eta_red.h
+            include/thorin/pass/lam_spec.h
+            include/thorin/pass/pipelinebuilder.h
+            include/thorin/pass/ret_wrap.h
+            include/thorin/pass/scalarize.h
+            include/thorin/pass/tail_rec_elim.h
+            include/thorin/phase/phase.h
+            include/thorin/util/bitset.h
+            include/thorin/util/dbg.h
+            include/thorin/util/dl.h
+            include/thorin/util/hash.h
+            include/thorin/util/indexmap.h
+            include/thorin/util/indexset.h
+            include/thorin/util/log.h
+            include/thorin/util/print.h
+            include/thorin/util/span.h
+            include/thorin/util/sys.h
+            include/thorin/util/types.h
+            include/thorin/util/util.h
+            include/thorin/util/vector.h
+)
+
+set_target_properties(libthorin PROPERTIES PREFIX "")
+target_compile_features(libthorin PUBLIC cxx_std_${CMAKE_CXX_STANDARD}) # make property public.
+
+if(MSVC AND BUILD_SHARED_LIBS)
+    target_compile_definitions(libthorin PUBLIC ABSL_CONSUME_DLL)
+endif()
+
+configure_file(
+    include/thorin/config.h.in
+    "${CMAKE_BINARY_DIR}/include/thorin/config.h"
+)
+target_include_directories(libthorin
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include> # for config.h
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/external/half/include>
+)
+target_link_libraries(libthorin
+    PUBLIC
+        absl::btree
+        absl::fixed_array
+        absl::inlined_vector
+        absl::flat_hash_map absl::flat_hash_set
+        absl::node_hash_map absl::node_hash_set
+        fe
+        rang
+        ${CMAKE_DL_LIBS}
+)
+install(
+    TARGETS libthorin
+    EXPORT thorin-targets
+    FILE_SET libthorin_headers
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+install(
+    FILES "${CMAKE_BINARY_DIR}/include/thorin/config.h"
+    DESTINATION include/thorin
+)
+install(
+    FILES "${CMAKE_CURRENT_SOURCE_DIR}/../external/half/include/half.hpp"
+    DESTINATION include
+)
+
 add_subdirectory(cli)
-add_subdirectory(dialects)
+add_subdirectory(plugins)
 
 if(THORIN_BUILD_EXAMPLES)
     add_subdirectory(examples)

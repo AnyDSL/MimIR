@@ -1,9 +1,9 @@
 // RUN: rm -f %t.ll
-// RUN: %thorin -p clos %s --output-ll %t.ll -o - 
+// RUN: %thorin -p clos %s --output-ll %t.ll -o -
 
 /*
 TODO: investigate and open error
-dialects/clos/phase/clos_conv.cpp:195: RW: pack tup_pb_745946_661190_346866 ~> ([], tup_pb_745946_661190_349225, ()):closure_type_348631 : closure_type_348631
+plug/clos/phase/clos_conv.cpp:195: RW: pack tup_pb_745946_661190_346866 ~> ([], tup_pb_745946_661190_349225, ()):closure_type_348631 : closure_type_348631
 :4294967295: error: cannot pass argument '([], ((%core.I32, aug_pow_else_745690_660849_348794, _660885_348489):closure_type_348677, ([], aug_pow_then_745900_661112_348955, ()):closure_type_349031)#_349156#2:(.Idx 3))' of type '[★, ((%core.I32, aug_pow_else_745690_660849_348794, _660885_348489):closure_type_348677, ([], aug_pow_then_745900_661112_348955, ()):closure_type_349031)#_349156#0:(.Idx 3)]' to '((%core.I32, aug_pow_else_745690_660849_348794, _660885_348489):closure_type_348677, ([], aug_pow_then_745900_661112_348955, ()):closure_type_349031)#_349156#1:(.Idx 3)' of domain '[closure_type_348631, ((%core.I32, aug_pow_else_745690_660849_348794, _660885_348489):closure_type_348677, ([], aug_pow_then_745900_661112_348955, ()):closure_type_349031)#_349156#0:(.Idx 3)]'
 */
 

@@ -1,0 +1,80 @@
+/// # The clos Plugin {#clos}
+///
+/// @see thorin::plug::clos
+///
+/// [TOC]
+///
+/// ## Dependencies
+///
+.plugin core;
+///
+/// ## Operations related to longjmp
+///
+.let %clos.BufPtr = %mem.Ptr0 %core.I8;
+.ax %clos.alloc_jmpbuf: %mem.M -> [%mem.M, %clos.BufPtr];
+.ax %clos.setjmp: [%mem.M, %clos.BufPtr] -> [%mem.M, %core.I32];
+.ax %clos.longjmp: .Cn [%mem.M, %clos.BufPtr, %core.I32];
+///
+/// ## Closure Attribute
+///
+/// Used internally to classify the use of differen Lambdas.
+/// thorin::plug::clos::ClosConvPrep places these attributes:
+///     * `ret`: returning lambda
+///     * `freeBB`: ordinary basic block (see thorin::Lam::is_basicblock())
+///     * `fstclassBB`: basic block that is passed around
+///     * `esc`: lambda that escapes its parent scope
+///     * `bot`: no special use
+///
+.ax %clos.attr(ret, freeBB, fstclassBB, esc, bot): Π.[T: *][T] -> T, normalize_clos;
+///
+/// ## Passes and Phases
+///
+/// ### Passes
+///
+.ax %clos.clos_conv_prep_pass: %compile.Pass;
+.ax %clos.branch_clos_pass: %compile.Pass;
+.ax %clos.lower_typed_clos_prep_pass: %compile.Pass;
+.ax %clos.clos2sjlj_pass: %compile.Pass;
+.ax %clos.eta_red_bool_pass: .Bool -> %compile.Pass;
+///
+/// ### Phases
+///
+.ax %clos.clos_conv_phase:        %compile.Phase;
+.ax %clos.lower_typed_clos_phase: %compile.Phase;
+
+.let clos_opt1_phase = {
+  .let eta_red = %clos.eta_red_bool_pass .tt;
+  .let eta_exp = %compile.eta_exp_pass eta_red;
+  %compile.pass_phase (%compile.pass_list
+      eta_red
+      eta_exp
+      (%compile.scalerize_pass eta_exp)
+  )
+};
+.let clos_opt2_phase = {
+  .let nullptr = %compile.nullptr_pass;
+  %compile.pass_phase (%compile.pass_list
+      nullptr
+      (%compile.scalerize_pass nullptr)
+      %clos.branch_clos_pass
+      (%mem.copy_prop_pass (nullptr, nullptr, .tt))
+      %clos.lower_typed_clos_prep_pass
+      %clos.clos2sjlj_pass
+  )
+};
+.let clos_phases = {
+  .let nullptr = %compile.nullptr_pass;
+    %compile.combined_phase
+        (%compile.phase_list
+            (%compile.single_pass_phase nullptr)
+            optimization_phase
+            (%compile.single_pass_phase (%mem.reshape_pass %mem.reshape_flat))
+            %mem.add_mem_phase
+            (%compile.single_pass_phase %clos.clos_conv_prep_pass)
+            (%compile.single_pass_phase (%compile.eta_exp_pass nullptr))
+            %clos.clos_conv_phase
+            clos_opt1_phase
+            clos_opt2_phase
+            %clos.lower_typed_clos_phase
+        )
+};

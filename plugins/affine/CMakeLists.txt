@@ -1,0 +1,11 @@
+add_thorin_plugin(affine
+    SOURCES
+        src/thorin/plug/affine/affine.cpp
+        src/thorin/plug/affine/pass/lower_for.cpp
+    HEADERS
+        include/thorin/plug/affine/affine.h
+        include/thorin/plug/affine/pass/lower_for.h
+    INTERFACE
+        thorin_interface_core
+    INSTALL
+)

@@ -2,18 +2,17 @@
 
 #include <gtest/gtest.h>
 
-#include "thorin/driver.h"
-#include "thorin/world.h"
+#include <thorin/world.h>
 
-#include "thorin/fe/parser.h"
+#include <thorin/fe/parser.h>
 
-#include "dialects/regex/pass/dfa.h"
-#include "dialects/regex/pass/dfa2matcher.h"
-#include "dialects/regex/pass/dfamin.h"
-#include "dialects/regex/pass/nfa.h"
-#include "dialects/regex/pass/nfa2dfa.h"
-#include "dialects/regex/pass/regex2nfa.h"
-#include "dialects/regex/regex.h"
+#include <thorin/plug/regex/automaton/dfa.h>
+#include <thorin/plug/regex/automaton/dfamin.h>
+#include <thorin/plug/regex/automaton/nfa.h>
+#include <thorin/plug/regex/automaton/nfa2dfa.h>
+#include <thorin/plug/regex/pass/dfa2matcher.h>
+#include <thorin/plug/regex/pass/regex2nfa.h>
+#include <thorin/plug/regex/regex.h>
 
 using namespace thorin::automaton;
 
@@ -236,7 +235,8 @@ TEST(Automaton, Regex2NFANotwds) {
     for (auto plugin : {"compile", "mem", "core", "math", "regex"}) parser.plugin(plugin);
 
     // %regex.not_ (%regex.conj 3 (%regex.cls.w, %regex.cls.d, %regex.cls.s))
-    auto pattern = w.call<regex::not_>(w.call<regex::conj>(3, w.tuple({w.annex(regex::cls::w), w.annex(regex::cls::d), w.annex(regex::cls::s)})));
+    auto pattern = w.call<regex::not_>(
+        w.call<regex::conj>(3, w.tuple({w.annex(regex::cls::w), w.annex(regex::cls::d), w.annex(regex::cls::s)})));
     pattern->dump(10);
     auto nfa = regex::regex2nfa(pattern);
     std::cout << *nfa;

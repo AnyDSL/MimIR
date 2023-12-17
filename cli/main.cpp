@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <lyra/lyra.hpp>
+#include <stdexcept>
 
 #include "thorin/config.h"
 #include "thorin/driver.h"
@@ -20,9 +21,9 @@
 using namespace thorin;
 using namespace std::literals;
 
-enum Backends { Dot, H, LL, Md, Thorin, Num_Backends };
-
 int main(int argc, char** argv) {
+    enum Backends { D, Dot, H, LL, Md, Thorin, Num_Backends };
+
     try {
         static const auto version = "thorin command-line utility version " THORIN_VER "\n";
 
@@ -52,6 +53,7 @@ int main(int argc, char** argv) {
             | lyra::opt(search_paths,   "path"                )["-P"]["--plugin-path"           ]("Path to search for plugins.")
             | lyra::opt(inc_verbose                           )["-V"]["--verbose"               ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
             | lyra::opt(opt,            "level"               )["-O"]["--optimize"              ]("Optimization level (default: 2).")
+            | lyra::opt(output[D     ], "file"                )      ["--output-d"              ]("Emits dependency file containing a rule suitable for 'make' describing the dependencies of the source file (requires --output-h).")
             | lyra::opt(output[Dot   ], "file"                )      ["--output-dot"            ]("Emits the Thorin program as a graph using Graphviz' DOT language.")
             | lyra::opt(output[H     ], "file"                )      ["--output-h"              ]("Emits a header file to be used to interface with a plugin in C++.")
             | lyra::opt(output[LL    ], "file"                )      ["--output-ll"             ]("Compiles the Thorin program to LLVM.")
@@ -131,7 +133,21 @@ int main(int argc, char** argv) {
         auto path = fs::path(input);
         world.set(path.filename().replace_extension().string());
         auto parser = Parser(world);
-        parser.import(input, os[Md]);
+        parser.import(driver.sym(input), os[Md]);
+
+        if (auto dep = os[D]) {
+            if (auto autogen_h = output[H]; !autogen_h.empty()) {
+                *dep << autogen_h << ": ";
+                assert(!driver.imports().empty());
+                for (auto sep = ""; const auto& [path, _] : driver.imports() | std::views::drop(1)) {
+                    *dep << sep << path;
+                    sep = " \\\n ";
+                }
+            } else {
+                throw std::invalid_argument("error: --output-d requires --output-h");
+            }
+            *dep << std::endl;
+        }
 
         if (flags.bootstrap) {
             if (auto h = os[H])

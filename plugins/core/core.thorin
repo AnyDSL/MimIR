@@ -1,0 +1,284 @@
+/// # The core Plugin {#core}
+///
+/// @see thorin::plug::core
+///
+/// [TOC]
+///
+/// ## Dependencies
+///
+.plugin mem;
+///
+/// ## Types
+///
+.let %core.i1  =         0x1;
+.let %core.i8  =       0x100;
+.let %core.i16 =     0x10000;
+.let %core.i32 = 0x100000000;
+.let %core.i64 =           0;
+
+.let %core.I1  = .Idx %core.i1;
+.let %core.I8  = .Idx %core.i8;
+.let %core.I16 = .Idx %core.i16;
+.let %core.I32 = .Idx %core.i32;
+.let %core.I64 = .Idx %core.i64;
+///
+/// ## Nat Operations
+///
+/// ### %core.nat
+///
+/// Standard arithmetic operations on `.Nat`s. <br>
+/// `%%core.nat.sub (a, b)` yields `0`, if `a` < `b`.
+///
+.ax %core.nat(add, sub, mul): «2; .Nat» -> .Nat, normalize_nat;
+///
+/// ### %core.ncmp
+///
+/// Nat comparison is made of 3 disjoint relations:
+///     * `G`reater
+///     * `L`ess
+///     * `E`qual
+///
+/// | Subtag | Alias | G | L | E | Meaning          |
+/// |--------|-------|---|---|---|------------------|
+/// | `gle`  | `f`   | o | o | o | always false     |
+/// | `glE`  | `e`   | o | o | x | equal            |
+/// | `gLe`  | `l`   | o | x | o | less             |
+/// | `gLE`  | `le`  | o | x | x | less or equal    |
+/// | `Gle`  | `g`   | x | o | o | greater          |
+/// | `GlE`  | `ge`  | x | o | x | greater or equal |
+/// | `GLe`  | `ne`  | x | x | o | not equal        |
+/// | `GLE`  | `t`   | x | x | x | always true      |
+///
+.ax %core.ncmp(gle = f, glE =  e, gLe =  l, gLE = le,
+               Gle = g, GlE = ge, GLe = ne, GLE =  t):
+    «2; .Nat» -> .Bool, normalize_ncmp;
+///
+/// ## Integer Operations
+///
+/// Integer operations use `.Idx s` as type.
+/// This is per se neither signed nor unsigned.
+/// Instead, the operations themselves exhibit signed or unsigned behavior.
+///
+/// ### Mode
+///
+/// A common problem when dealing with integer operations is [overflow](https://en.wikipedia.org/wiki/Integer_overflow).
+/// All operations that may overflow have an additional parameter `m` - [mode](@ref thorin::plug::core::Mode) - of type `.Nat` that determines the exact desired behavior in the case of an overflow.
+///
+.let %core.mode.us = 0b00; // wrap around - both signed and unsigned
+.let %core.mode.uS = 0b01; // no   signed wrap around
+.let %core.mode.Us = 0b10; // no unsigned wrap around
+.let %core.mode.US = 0b11; // no signed and unsigned wrap around
+.let %core.mode.nuw  = %core.mode.Us;
+.let %core.mode.nsw  = %core.mode.uS;
+.let %core.mode.nusw = %core.mode.US;
+///
+/// ### %core.idx
+///
+/// Creates a literal of type `.Idx s` from `l` while obeying mode `m`.
+///
+.ax %core.idx: Π[s: .Nat][m: .Nat][l: .Nat] -> .Idx s, normalize_idx;
+///
+/// ### %core.bit1
+///
+/// This *unary* bitwise operations offers all [4 possible operations](https://en.wikipedia.org/wiki/Truth_table#Unary_operations) as summarized in the following table:
+///
+/// | Subtag | A | a | Comment                      |
+/// |--------|---|---|------------------------------|
+/// | f      | o | o | always false                 |
+/// | neg    | o | x | negate                       |
+/// | id     | x | o | identity                     |
+/// | t      | x | x | always true                  |
+///
+.ax %core.bit1(f, neg, id, t): Π.[s: .Nat][m: .Nat][.Idx s] -> .Idx s, normalize_bit1;
+///
+/// ### %core.bit2
+///
+/// This *binary* bitwise operations offers all [16 possible operations](https://en.wikipedia.org/wiki/Truth_table#Truth_table_for_all_binary_logical_operators) as summarized in the following table:
+///
+/// | Subtag | AB | Ab | aB | ab | Comment                      |
+/// |--------|----|----|----|----|------------------------------|
+/// | f      |  o |  o |  o |  o | always false                 |
+/// | nor    |  o |  o |  o |  x | not or                       |
+/// | nciff  |  o |  o |  x |  o | not converse implication     |
+/// | nfst   |  o |  o |  x |  x | not first argument           |
+/// | niff   |  o |  x |  o |  o | not implication              |
+/// | nsnd   |  o |  x |  o |  x | not second argument          |
+/// | xor_   |  o |  x |  x |  o | exclusive or                 |
+/// | nand   |  o |  x |  x |  x | not and                      |
+/// | and_   |  x |  o |  o |  o | and                          |
+/// | nxor   |  x |  o |  o |  x | not exclusive or             |
+/// | snd    |  x |  o |  x |  o | second argument              |
+/// | iff    |  x |  o |  x |  x | implication (if and only if) |
+/// | fst    |  x |  x |  o |  o | first argument               |
+/// | ciff   |  x |  x |  o |  x | converse implication         |
+/// | or_    |  x |  x |  x |  o | or                           |
+/// | t      |  x |  x |  x |  x | always true                  |
+///
+.ax %core.bit2( f,      nor, nciff, nfst, niff, nsnd, xor_, nand,
+                and_,  nxor,   snd,  iff,  fst, ciff,  or_,    t):
+    Π.[s: .Nat][m: .Nat][«2; .Idx s»] -> .Idx s , normalize_bit2;
+///
+/// ### %core.shr
+///
+/// Shift right:
+///     * [`a`rithmetic shift right](https://en.wikipedia.org/wiki/Arithmetic_shift)
+///     * [`l`ogical shift right](https://en.wikipedia.org/wiki/Logical_shift)
+///
+.ax %core.shr(a, l): Π.[s: .Nat][«2; .Idx s»] -> .Idx s, normalize_shr;
+///
+/// ### %core.wrap
+///
+/// Integer operations that may overflow.
+/// You can specify the desired behavior in the case of an overflow with the curried argument just in front of the actual argument by providing a thorin::plug::core::Mode as `.Nat`.
+///
+.ax %core.wrap(add, sub, mul, shl): Π.[s: .Nat][m: .Nat][«2; .Idx s»] -> .Idx s, normalize_wrap;
+
+.lam %core.minus.(s: .Nat)(m: .Nat)(a: .Idx s): .Idx s = %core.wrap.sub m (0:(.Idx s), a);
+///
+/// ### %core.div
+///
+/// Signed and unsigned Integer division/remainder.
+///
+/// @warning Division by zero is *undefined behavior* and a visible side effect.
+/// For this reason, these axioms expect a `%%mem.M`.
+///
+.ax %core.div(sdiv, udiv, srem, urem):
+    Π.[s: .Nat][%mem.M, «2; .Idx s»] -> [%mem.M, .Idx s], normalize_div;
+///
+/// ### %core.icmp
+///
+/// Integer comparison is made of 5 disjoint relations:
+///     * `X`: first operand plus, second minus
+///     * `Y`: first operand minus, second plus
+///     * `G`: greater with same sign
+///     * `L`: less with same sign
+///     * `E`: equal
+///
+/// Here is the complete picture for `%%core.icmp.xygle x, y` for 3 bit wide integers:
+///
+/// |        | x        |        |       |       |       | y     |       |       |       |       |
+/// |--------|----------|--------|-------|-------|-------|-------|-------|-------|-------|-------|
+/// | binary |          |        |  000  |  001  |  010  |  011  |  100  |  101  |  110  |  111  |
+/// |        | unsigned |        |  0    |  1    |  2    |  3    |   4   |   5   |   6   |   7   |
+/// |        |          | signed |  0    |  1    |  2    |  3    |  -4   |  -3   |  -2   |  -1   |
+/// |  000   |  0       |   0    | `E`   | `L`   | `L`   | `L`   | `X`   | `X`   |  `X`  |  `X`  |
+/// |  001   |  1       |   1    | `G`   | `E`   | `L`   | `L`   | `X`   | `X`   |  `X`  |  `X`  |
+/// |  010   |  2       |   2    | `G`   | `G`   | `E`   | `L`   | `X`   | `X`   |  `X`  |  `X`  |
+/// |  011   |  3       |   3    | `G`   | `G`   | `G`   | `E`   | `X`   | `X`   |  `X`  |  `X`  |
+/// |  100   |  4       |  -4    | `Y`   | `Y`   | `Y`   | `Y`   | `E`   | `L`   |  `L`  |  `L`  |
+/// |  101   |  5       |  -3    | `Y`   | `Y`   | `Y`   | `Y`   | `G`   | `E`   |  `L`  |  `L`  |
+/// |  110   |  6       |  -2    | `Y`   | `Y`   | `Y`   | `Y`   | `G`   | `G`   |  `E`  |  `L`  |
+/// |  111   |  7       |  -1    | `Y`   | `Y`   | `Y`   | `Y`   | `G`   | `G`   |  `G`  |  `E`  |
+///
+/// And here is the overview of all possible combinations of relations.
+/// Note the aliases you can use for the common integer comparisions front-ends typically want to use:
+///
+/// | Subtag  | Alias  | X | Y | G | L | E | Meaning                                         |
+/// |---------|--------|---|---|---|---|---|-------------------------------------------------|
+/// | `xygle` |  `f`   | o | o | o | o | o | always false                                    |
+/// | `xyglE` |  `e`   | o | o | o | o | x | equal                                           |
+/// | `xygLe` |        | o | o | o | x | o | less (same sign)                                |
+/// | `xyglE` |        | o | o | o | x | x | less or equal                                   |
+/// | `xyGle` |        | o | o | x | o | o | greater (same sign)                             |
+/// | `xyGlE` |        | o | o | x | o | x | greater or equal                                |
+/// | `xyGLe` |        | o | o | x | x | o | greater or less                                 |
+/// | `xyGLE` |        | o | o | x | x | x | greater or less or equal == same sign           |
+/// | `xYgle` |        | o | x | o | o | o | minus plus                                      |
+/// | `xYglE` |        | o | x | o | o | x | minus plus or equal                             |
+/// | `xYgLe` |  `sl`  | o | x | o | x | o | signed less                                     |
+/// | `xYglE` |  `sle` | o | x | o | x | x | signed less or equal                            |
+/// | `xYGle` |  `ug`  | o | x | x | o | o | unsigned greater                                |
+/// | `xYGlE` |  `uge` | o | x | x | o | x | unsigned greater or equal                       |
+/// | `xYGLe` |        | o | x | x | x | o | minus plus or greater or less                   |
+/// | `xYGLE` |        | o | x | x | x | x | not plus minus                                  |
+/// | `Xygle` |        | x | o | o | o | o | plus minus                                      |
+/// | `XyglE` |        | x | o | o | o | x | plus minus or equal                             |
+/// | `XygLe` |  `ul`  | x | o | o | x | o | unsigned less                                   |
+/// | `XyglE` |  `ule` | x | o | o | x | x | unsigned less or equal                          |
+/// | `XyGle` |  `sg`  | x | o | x | o | o | signed greater                                  |
+/// | `XyGlE` |  `sge` | x | o | x | o | x | signed greater or equal                         |
+/// | `XyGLe` |        | x | o | x | x | o | greater or less or plus minus                   |
+/// | `XyGLE` |        | x | o | x | x | x | not minus plus                                  |
+/// | `XYgle` |        | x | x | o | o | o | different sign                                  |
+/// | `XYglE` |        | x | x | o | o | x | different sign or equal                         |
+/// | `XYgLe` |        | x | x | o | x | o | signed or unsigned less                         |
+/// | `XYglE` |        | x | x | o | x | x | signed or unsigned less or equal == not greater |
+/// | `XYGle` |        | x | x | x | o | o | signed or unsigned greater                      |
+/// | `XYGlE` |        | x | x | x | o | x | signed or unsigned greater or equal == not less |
+/// | `XYGLe` |  `ne`  | x | x | x | x | o | not equal                                       |
+/// | `XYGLE` |  `t`   | x | x | x | x | x | always true                                     |
+///
+.ax %core.icmp(xygle = f,  xyglE = e,   xygLe,      xygLE,
+               xyGle,      xyGlE,       xyGLe,      xyGLE,
+               xYgle,      xYglE,       xYgLe = sl, xYgLE = sle,
+               xYGle = ug, xYGlE = uge, xYGLe,      xYGLE,
+               Xygle,      XyglE,       XygLe = ul, XygLE = ule,
+               XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,
+               XYgle,      XYglE,       XYgLe,      XYgLE,
+               XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):
+    Π.[s: .Nat][«2; .Idx s»] -> .Bool , normalize_icmp;
+///
+/// ### %core.extrema
+///
+/// Minimum and Maximum of two Integers
+///     * un`s`igned or `S`igned
+///     * `m`inimum or `M`aximum
+///
+.ax %core.extrema(sm=umin, sM=umax, Sm=smin, SM=smax): Π.[s:.Nat][.Idx s,.Idx s] -> .Idx s, normalize_extrema;
+///
+/// ### %core.abs
+///
+/// Absolute value of an int
+///
+/// @warning Computing the absolute value of an Integer with the lowest possible value leads to *undefined behavior*, which is why this axiom expects a `%%mem.M`
+///
+.ax %core.abs: Π.[s:.Nat][%mem.M, .Idx s] -> [%mem.M, .Idx s], normalize_abs;
+///
+/// ## Conversions
+///
+/// ### %core.conv
+///
+/// Conversion between index types - both signed and unsigned - of different sizes.
+///
+.ax %core.conv(s, u): Π.[ss: .Nat][ds: .Nat][.Idx ss] -> .Idx ds, normalize_conv;
+///
+/// ### %core.bitcast
+///
+/// Bitcast to reinterpret a value as another type.
+/// Can be used for pointer / integer conversions as well as integer / nat conversions.
+///
+.ax %core.bitcast: Π.[S: *][D: *][S] -> D, normalize_bitcast;
+///
+/// ## Other Operations
+///
+/// ### %core.trait
+///
+/// Yields the size or align of a type.
+///
+.ax %core.trait(size, align): * -> .Nat, normalize_trait;
+///
+/// ### %core.pe
+///
+/// Steers the partial evaluator.
+///
+.ax %core.pe(hlt, run): Π [T: *][T] -> T, normalize_pe;
+.ax %core.pe(known): Π.[T: *][T] -> .Bool, normalize_pe;
+///
+/// ### %core.zip
+///
+/// [Zips](https://en.wikipedia.org/wiki/Zipping_(computer_science)) several tensors.
+///
+/// **Warning**: For now, not a better place for this and will be moved elsewhere.
+/// What is more, the signature will likely change in the future:
+/// * `r`: rank of the tensors to zip
+/// * `s`: shape of the tensors to zip
+/// * `n_i`: number if inputs
+/// * `n_o`: number if outputs
+/// * `Is`: tuple with `n_i` many elements that describe the element types of the inputs
+/// * `Os`: tuple with `n_o` many elements that describe the element types of the outputs
+/// * `f`: zipping function that expects an `n_i`-tuple whose elements correspond to `Is` and yields an `n_o`-tuple whose element types correspond to `Os`
+/// * `is`: the actual input tensors
+///
+.ax %core.zip: Π [r: .Nat, s: «r; .Nat»]
+                 [n_i: .Nat, Is: «n_i; *», n_o: .Nat, Os: «n_o; *», f: «i: n_i; Is#i» -> «o: n_o; Os#o»]
+                 [is: «i: n_i; «s; Is#i»»] -> «o: n_o; «s; Os#o»», normalize_zip;

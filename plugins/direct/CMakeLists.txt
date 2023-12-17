@@ -1,0 +1,12 @@
+add_thorin_plugin(direct
+    SOURCES
+        src/thorin/plug/direct/direct.cpp
+        src/thorin/plug/direct/pass/ds2cps.cpp
+        src/thorin/plug/direct/pass/cps2ds.cpp
+        src/thorin/plug/direct/normalizers.cpp
+    HEADERS
+        include/thorin/plug/direct/direct.h
+        include/thorin/plug/direct/pass/ds2cps.h
+        include/thorin/plug/direct/pass/cps2ds.h
+    INSTALL
+)

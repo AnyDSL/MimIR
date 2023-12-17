@@ -193,7 +193,8 @@ STRIP_FROM_PATH        = .
 # specify the list of include paths that are normally passed to the compiler
 # using the -I flag.
 
-STRIP_FROM_INC_PATH    = .
+STRIP_FROM_INC_PATH    = include \
+                         @PLUGIN_INC_PATHS@
 
 # If the SHORT_NAMES tag is set to YES, doxygen will generate much shorter (but
 # less readable) file names. This can be useful is your file systems doesn't
@@ -945,12 +946,13 @@ WARN_LOGFILE           =
 
 INPUT                  = cli \
                          cmake \
-                         dialects \
                          docs \
-                         thorin \
+                         include \
+                         src \
+                         plugins \
                          @DOXY_EXTRA_FILES_CONFIG@ \
                          @CMAKE_CURRENT_BINARY_DIR@/../include \
-                         @CMAKE_CURRENT_BINARY_DIR@/../docs/dialects
+                         @CMAKE_CURRENT_BINARY_DIR@/../docs/plug
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -1082,10 +1084,12 @@ EXCLUDE_SYMBOLS        = detail::* \
 # that contain example code fragments that are included (see the \include
 # command).
 
-EXAMPLE_PATH           = thorin \
-                         dialects \
+EXAMPLE_PATH           = include \
+                         src \
                          examples \
-                         @CMAKE_CURRENT_BINARY_DIR@
+                         @CMAKE_CURRENT_BINARY_DIR@ \
+                         @PLUGIN_INC_PATHS@ \
+                         @PLUGIN_SRC_PATHS@
 
 # If the value of the EXAMPLE_PATH tag contains directories, you can use the
 # EXAMPLE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp and
@@ -2389,7 +2393,7 @@ SEARCH_INCLUDES        = YES
 INCLUDE_PATH           = . \
                          @DOXY_EXTRA_FILES_CONFIG@ \
                          @CMAKE_CURRENT_BINARY_DIR@/../include \
-                         @CMAKE_CURRENT_BINARY_DIR@/../docs/dialects
+                         @CMAKE_CURRENT_BINARY_DIR@/../docs/plug
 
 # You can use the INCLUDE_FILE_PATTERNS tag to specify one or more wildcard
 # patterns (like *.h and *.hpp) to filter out the header-files in the

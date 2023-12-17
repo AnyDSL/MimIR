@@ -16,7 +16,7 @@ The solution is to handle the open functions similar to continuations.
 
 ### `simple_real.thorin`
 
-The `real` type needs a dialect.
+The `real` type needs a plugin.
 
 
 ## Second Order
@@ -31,4 +31,3 @@ Error at call of function.
 
 ### `.thorin`
 Pi types as arguments to HO axioms (CPS2DS) are not translated.
-

@@ -4,15 +4,17 @@
 #include <ranges>
 #include <sstream>
 
-#include "thorin/driver.h"
-#include "thorin/rewrite.h"
+#include <thorin/driver.h>
+#include <thorin/rewrite.h>
 
-#include "thorin/fe/parser.h"
+#include <thorin/fe/parser.h>
 
-#include "dialects/core/core.h"
+#include <thorin/plug/core/core.h>
+
 #include "helpers.h"
 
 using namespace thorin;
+using namespace thorin::plug;
 
 TEST(Zip, fold) {
     Driver driver;
