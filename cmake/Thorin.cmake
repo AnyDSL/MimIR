@@ -112,7 +112,7 @@ function(add_thorin_plugin)
             PREFIX "lib" # always use "lib" as prefix regardless of OS/compiler
             LIBRARY_OUTPUT_DIRECTORY ${LIB_DIR_PLUG}
             RUNTIME_OUTPUT_DIRECTORY ${LIB_DIR_PLUG} # place for a dll in a SHARED thorin plugin
-            #POSITION_INDEPENDENT_CODE ON
+            POSITION_INDEPENDENT_CODE ON
     )
 
     #
