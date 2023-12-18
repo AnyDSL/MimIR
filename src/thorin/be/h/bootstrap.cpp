@@ -11,8 +11,23 @@ namespace thorin {
 void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
     Tab tab;
     tab.print(h, "#pragma once\n\n");
-    tab.print(h, "#include \"thorin/axiom.h\"\n"
-                 "#include \"thorin/plugin.h\"\n\n");
+    tab.print(h, "#include <thorin/axiom.h>\n"
+                 "#include <thorin/plugin.h>\n\n");
+    tab.print(h,
+              "#ifdef thorin_{}_EXPORTS\n"
+              "    #ifdef _MSC_VER\n"
+              "        #define THORIN_{}_API __declspec(dllexport)\n"
+              "    #else\n"
+              "        #define THORIN_{}_API __attribute__ ((visibility (\"default\")))\n"
+              "    #endif\n"
+              "#else\n"
+              "    #ifdef _MSC_VER\n"
+              "        #define THORIN_{}_API __declspec(dllimport)\n"
+              "    #else\n"
+              "        #define THORIN_{}_API \n"
+              "    #endif\n"
+              "#endif\n\n",
+              plugin, plugin, plugin, plugin, plugin);
 
     tab.print(h, "/// @namespace thorin::plug::{} @ref {} \n", plugin, plugin);
     tab.print(h, "namespace thorin {{\n");

@@ -111,6 +111,7 @@ function(add_thorin_plugin)
             WINDOWS_EXPORT_ALL_SYMBOLS OFF
             PREFIX "lib" # always use "lib" as prefix regardless of OS/compiler
             LIBRARY_OUTPUT_DIRECTORY ${LIB_DIR_PLUG}
+            #POSITION_INDEPENDENT_CODE ON
     )
 
     #
