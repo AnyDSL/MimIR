@@ -11,7 +11,7 @@ function(add_thorin_plugin)
     cmake_parse_arguments(
         PARSE_ARGV 1                                # skip first arg
         PARSED                                      # prefix of output variables
-        "INSTALL"                                   # options
+        "SHARED;INSTALL"                            # options
         ""                                          # one-value keywords (none)
         "HEADERS;SOURCES;PUBLIC;PRIVATE;INTERFACE"  # multi-value keywords
     )
@@ -88,7 +88,11 @@ function(add_thorin_plugin)
     #
     # thorin_plugin
     #
-    add_library(thorin_${PLUGIN} MODULE)
+    if(${PARSED_SHARED})
+        add_library(thorin_${PLUGIN} SHARED)
+    else()
+        add_library(thorin_${PLUGIN} MODULE)
+    endif()
     target_sources(thorin_${PLUGIN}
         PRIVATE
             ${PARSED_SOURCES}

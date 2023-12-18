@@ -1,4 +1,5 @@
 add_thorin_plugin(regex
+    SHARED
     SOURCES
         src/thorin/plug/regex/normalizers.cpp
         src/thorin/plug/regex/regex.cpp
