@@ -7,13 +7,13 @@
 
 namespace automaton {
 
-using U64U64 = std::pair<std::uint64_t, std::uint64_t>;
+using u64u64 = std::pair<std::uint64_t, std::uint64_t>;
 
 struct RangeCompare {
-    inline bool operator()(const U64U64& a, const U64U64& b) const noexcept { return a.first < b.first; }
+    inline bool operator()(const u64u64& a, const u64u64& b) const noexcept { return a.first < b.first; }
 };
 
-inline std::optional<U64U64> merge_ranges(U64U64 a, U64U64 b) noexcept {
+inline std::optional<u64u64> merge_ranges(u64u64 a, u64u64 b) noexcept {
     if (!(a.second + 1 < b.first || b.second + 1 < a.first)) {
         return {
             {std::min(a.first, b.first), std::max(a.second, b.second)}

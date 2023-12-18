@@ -34,18 +34,13 @@ target_sources(thorin-regex-gtest
 )
 target_link_libraries(thorin-regex-gtest
     PRIVATE
-        thorin_interface_core
-        thorin_interface_mem
         gtest_main
         thorin_regex
 )
 add_dependencies(thorin-regex-gtest
     thorin_clos
-    thorin_core
     thorin_compile
     thorin_math
-    thorin_mem
-    thorin_regex
 )
 gtest_discover_tests(thorin-regex-gtest
     TEST_PREFIX "thorin-regex-gtest."

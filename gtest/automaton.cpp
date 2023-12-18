@@ -15,6 +15,7 @@
 #include <thorin/plug/regex/regex.h>
 
 using namespace automaton;
+using namespace thorin;
 namespace regex = thorin::plug::regex;
 
 TEST(Automaton, NFA) {
@@ -153,7 +154,6 @@ TEST(Automaton, NFAAorBplusA) {
     EXPECT_EQ(states[13]->get_transitions('b'), empty);
 }
 
-using namespace thorin;
 TEST(Automaton, Regex2NFA) {
     Driver driver;
     World& w    = driver.world();

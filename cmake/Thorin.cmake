@@ -8,13 +8,12 @@ endif()
 
 function(add_thorin_plugin)
     set(PLUGIN ${ARGV0})
-    list(SUBLIST ARGV 1 -1 UNPARSED)
     cmake_parse_arguments(
+        PARSE_ARGV 1                                # skip first arg
         PARSED                                      # prefix of output variables
-        "INSTALL"                                   # list of names of the boolean arguments (only defined ones will be true)
-        "THORIN"                                    # list of names of mono-valued arguments
-        "HEADERS;SOURCES;PUBLIC;PRIVATE;INTERFACE"  # list of names of multi-valued arguments (output variables are lists)
-        ${UNPARSED}                                 # arguments of the function to parse, here we take the all original ones
+        "INSTALL"                                   # options
+        ""                                          # one-value keywords (none)
+        "HEADERS;SOURCES;PUBLIC;PRIVATE;INTERFACE"  # multi-value keywords
     )
 
     list(TRANSFORM PARSED_INTERFACES PREPEND thorin_interface_ OUTPUT_VARIABLE INTERFACES)
