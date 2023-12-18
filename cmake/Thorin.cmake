@@ -121,6 +121,7 @@ function(add_thorin_plugin)
             EXPORT thorin-targets
             FILE_SET thorin_headers_${PLUGIN}
             LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}/thorin"
+            ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}/thorin"
             RUNTIME DESTINATION "${CMAKE_INSTALL_LIBDIR}/thorin"
             INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
         )

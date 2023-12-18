@@ -23,7 +23,7 @@ target_link_libraries(automaton
 )
 install(
     TARGETS automaton
-    EXPORT automaton-targets
+    EXPORT thorin-targets
     FILE_SET automaton_headers
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
