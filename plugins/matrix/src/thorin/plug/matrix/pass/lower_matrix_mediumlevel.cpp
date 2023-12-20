@@ -12,6 +12,8 @@
 #include "thorin/plug/matrix/matrix.h"
 #include "thorin/plug/mem/mem.h"
 
+using namespace std::string_literals;
+
 namespace thorin::plug::matrix {
 
 Ref LowerMatrixMediumLevel::rewrite(Ref def) {
@@ -237,9 +239,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
         DefVec acc = {current_mem, init_mat};
 
         for (auto idx : out_indices) {
-            char for_name[32];
-            sprintf(for_name, "forOut_%lu", idx);
-
+            auto for_name    = world.sym("forIn_"s + std::to_string(idx));
             auto dim_nat_def = dims[idx];
             auto dim         = world.call<core::bitcast>(world.type_int(32), dim_nat_def);
 
@@ -294,9 +294,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
 
         // TODO this is copy&paste code from above
         for (auto idx : in_indices) {
-            char for_name[32];
-            sprintf(for_name, "forIn_%lu", idx);
-
+            auto for_name    = world.sym("forIn_"s + std::to_string(idx));
             auto dim_nat_def = dims[idx];
             auto dim         = world.call<core::bitcast>(world.type_int(32), dim_nat_def);
 
