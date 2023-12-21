@@ -15,19 +15,11 @@ void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
                  "#include <thorin/plugin.h>\n\n");
     tab.print(h,
               "#ifdef thorin_{}_EXPORTS\n"
-              "    #ifdef _MSC_VER\n"
-              "        #define THORIN_{}_API __declspec(dllexport)\n"
-              "    #else\n"
-              "        #define THORIN_{}_API __attribute__ ((visibility (\"default\")))\n"
-              "    #endif\n"
+              "    #define THORIN_{}_API THORIN_EXPORT\n"
               "#else\n"
-              "    #ifdef _MSC_VER\n"
-              "        #define THORIN_{}_API __declspec(dllimport)\n"
-              "    #else\n"
-              "        #define THORIN_{}_API \n"
-              "    #endif\n"
+              "    #define THORIN_{}_API THORIN_IMPORT\n"
               "#endif\n\n",
-              plugin, plugin, plugin, plugin, plugin);
+              plugin, plugin, plugin);
 
     tab.print(h, "/// @namespace thorin::plug::{} @ref {} \n", plugin, plugin);
     tab.print(h, "namespace thorin {{\n");

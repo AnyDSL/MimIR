@@ -11,6 +11,8 @@
 
 #ifdef _MSC_VER
 #define THORIN_EXPORT __declspec(dllexport)
+#define THORIN_IMPORT __declspec(dllimport)
 #else
 #define THORIN_EXPORT __attribute__((visibility("default")))
+#define THORIN_IMPORT
 #endif
