@@ -385,6 +385,7 @@ Ref AutoDiffEval::augment_(Ref def, Lam* f, Lam* f_diff) {
     world.ELOG("did not expect to augment: {} : {}", def, def->type());
     world.ELOG("node: {}", def->node_name());
     assert(false && "augment not implemented on this def");
+    fe::unreachable();
 }
 
 } // namespace thorin::plug::autodiff
