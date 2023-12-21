@@ -18,13 +18,12 @@ function(add_thorin_plugin)
 
     list(TRANSFORM PARSED_INTERFACES PREPEND thorin_interface_ OUTPUT_VARIABLE INTERFACES)
 
-    set(INCLUDE_DIR_PLUG ${CMAKE_BINARY_DIR}/include/thorin/plug/${PLUGIN})
-    set(LIB_DIR_PLUG     ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/thorin)
-
-    set(PLUGIN_THORIN ${CMAKE_CURRENT_LIST_DIR}/${PLUGIN}.thorin)
-    set(PLUGIN_MD     ${CMAKE_BINARY_DIR}/docs/plug/${PLUGIN}.md)
-    set(PLUGIN_D      ${CMAKE_BINARY_DIR}/deps/${PLUGIN}.d)
-    set(AUTOGEN_H     ${INCLUDE_DIR_PLUG}/autogen.h)
+    set(PLUGIN_THORIN       ${CMAKE_CURRENT_LIST_DIR}/${PLUGIN}.thorin)
+    set(OUT_PLUGIN_THORIN   ${THORIN_LIBRARY_OUTPUT_DIRECTORY}/${PLUGIN}.thorin)
+    set(INCLUDE_DIR_PLUG    ${CMAKE_BINARY_DIR}/include/thorin/plug/${PLUGIN})
+    set(PLUGIN_MD           ${CMAKE_BINARY_DIR}/docs/plug/${PLUGIN}.md)
+    set(PLUGIN_D            ${CMAKE_BINARY_DIR}/deps/${PLUGIN}.d)
+    set(AUTOGEN_H           ${INCLUDE_DIR_PLUG}/autogen.h)
 
     file(MAKE_DIRECTORY ${INCLUDE_DIR_PLUG})
     file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/deps)
@@ -43,17 +42,17 @@ function(add_thorin_plugin)
         VERBATIM
     )
     add_custom_command(
-        OUTPUT  ${LIB_DIR_PLUG}/${PLUGIN}.thorin
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${PLUGIN_THORIN} ${LIB_DIR_PLUG}/${PLUGIN}.thorin
+        OUTPUT  ${OUT_PLUGIN_THORIN}
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${PLUGIN_THORIN} ${OUT_PLUGIN_THORIN}
         DEPENDS ${PLUGIN_THORIN}
-        COMMENT "Copy '${PLUGIN_THORIN}' to '${LIB_DIR_PLUG}.${PLUGIN}.thorin'"
+        COMMENT "Copy '${PLUGIN_THORIN}' to '${OUT_PLUGIN_THORIN}'"
     )
     add_custom_target(thorin_internal_${PLUGIN}
         DEPENDS
             ${AUTOGEN_H}
             ${PLUGIN_D}
             ${PLUGIN_MD}
-            ${LIB_DIR_PLUG}/${PLUGIN}.thorin
+            ${OUT_PLUGIN_THORIN}
     )
 
     list(APPEND THORIN_PLUGIN_LIST "${PLUGIN}")
@@ -109,10 +108,9 @@ function(add_thorin_plugin)
             CXX_VISIBILITY_PRESET hidden
             VISIBILITY_INLINES_HIDDEN 1
             WINDOWS_EXPORT_ALL_SYMBOLS OFF
-            PREFIX "lib" # always use "lib" as prefix regardless of OS/compiler
-            LIBRARY_OUTPUT_DIRECTORY ${LIB_DIR_PLUG}
-            RUNTIME_OUTPUT_DIRECTORY ${LIB_DIR_PLUG} # place for a dll in a SHARED thorin plugin
-            #POSITION_INDEPENDENT_CODE ON
+            PREFIX "lib"                                                # always use "lib" as prefix regardless of OS/compiler
+            LIBRARY_OUTPUT_DIRECTORY ${THORIN_LIBRARY_OUTPUT_DIRECTORY}
+            RUNTIME_OUTPUT_DIRECTORY ${THORIN_LIBRARY_OUTPUT_DIRECTORY} # place for a dll in a SHARED thorin plugin
     )
 
     #
