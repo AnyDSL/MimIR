@@ -14,14 +14,6 @@
 
 namespace thorin::dl {
 
-std::string_view extension() {
-#ifdef _WIN32
-    return ".dll";
-#else
-    return ".so";
-#endif
-}
-
 void* open(const char* file) {
 #ifdef _WIN32
     if (HMODULE handle = LoadLibraryA(file)) {
