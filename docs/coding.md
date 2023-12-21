@@ -262,6 +262,15 @@ The command will create three targets:
 
         Finally, you can specify additional `<private-item>` build dependencies.
 
+    * `SHARED`
+
+        You can opt via the this flag to build a `SHARED` library instead of a `MODULE`.
+        This allows to not only load the plugin dynamically but also to link against it as usual.
+        Note that the default [visibility](https://gcc.gnu.org/wiki/Visibility) of a plugin's shared library is *hidden*.
+        For this reason, you have to mark functions that you want to export with `THORIN_<plugin-name>_API` in the header.
+        @warning The shared library lies in `lib/thorin` and you have to point the `PATH` enviroment variable to this location on Windows.
+        Otherwise the executable will not be able to locate the `dll`.
+
 * `INSTALL`
 
     Specify, if the plugin description, plugin and headers shall be installed with `make install`.
