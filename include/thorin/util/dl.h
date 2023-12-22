@@ -6,9 +6,9 @@
 namespace thorin::dl {
 
 static constexpr auto extensions = {
-#ifdef _WIN32
+#if defined(_WIN32)
     "dll" // Windows
-#elif defined(__APPLE__) && defined(__MACH_)
+#elif defined(__APPLE__)
     "so", "dylib", // MacOs
 #else
     "so" // Linux, etc
