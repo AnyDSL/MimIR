@@ -15,7 +15,5 @@ add_thorin_plugin(regex
         automaton
         thorin_interface_core
         thorin_interface_direct
-    PUBLIC
-        automaton
     INSTALL
 )
