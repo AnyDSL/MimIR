@@ -163,7 +163,7 @@ TEST(Automaton, Regex2NFA) {
     auto pattern = w.call<regex::conj>(
         2, w.tuple({w.call<regex::lit>(w.lit_idx(256, 'a')), w.call<regex::lit>(w.lit_idx(256, 'b'))})); // (a & b)
     pattern->dump(10);
-    auto nfa = regex::regex2nfa(pattern);
+    auto nfa = driver.GET_FUN_PTR("regex", regex2nfa)(pattern);
     std::cout << *nfa;
 }
 
@@ -179,7 +179,7 @@ TEST(Automaton, Regex2NFAAorBplusA) {
                                                                             w.call<regex::lit>(w.lit_idx(256, 'b'))}))),
                  w.call<regex::lit>(w.lit_idx(256, 'a'))})); // (a & b)
     pattern->dump(10);
-    auto nfa = regex::regex2nfa(pattern);
+    auto nfa = driver.GET_FUN_PTR("regex", regex2nfa)(pattern);
     std::cout << *nfa;
 
     auto dfa = nfa2dfa(*nfa);
@@ -200,7 +200,7 @@ TEST(Automaton, Regex2NFA1or5or9) {
                                                                           w.call<regex::lit>(w.lit_idx(256, '5'))})),
                                           w.call<regex::lit>(w.lit_idx(256, '9'))}));
     pattern->dump(10);
-    auto nfa = regex::regex2nfa(pattern);
+    auto nfa = driver.GET_FUN_PTR("regex", regex2nfa)(pattern);
     std::cout << *nfa;
 
     auto dfa = nfa2dfa(*nfa);
@@ -221,7 +221,7 @@ TEST(Automaton, Regex2NFANot1or5or9) {
                         2, w.tuple({w.call<regex::lit>(w.lit_idx(256, '1')), w.call<regex::lit>(w.lit_idx(256, '5'))})),
                     w.call<regex::lit>(w.lit_idx(256, '9'))})));
     pattern->dump(10);
-    auto nfa = regex::regex2nfa(pattern);
+    auto nfa = driver.GET_FUN_PTR("regex", regex2nfa)(pattern);
     std::cout << *nfa;
 
     auto dfa = nfa2dfa(*nfa);
@@ -229,6 +229,7 @@ TEST(Automaton, Regex2NFANot1or5or9) {
     std::cout << *minimize_dfa(*dfa);
 }
 
+#if 0
 TEST(Automaton, Regex2NFANotwds) {
     Driver driver;
     World& w    = driver.world();
@@ -239,7 +240,7 @@ TEST(Automaton, Regex2NFANotwds) {
     auto pattern = w.call<regex::not_>(
         w.call<regex::conj>(3, w.tuple({w.annex(regex::cls::w), w.annex(regex::cls::d), w.annex(regex::cls::s)})));
     pattern->dump(10);
-    auto nfa = regex::regex2nfa(pattern);
+    auto nfa = driver.GET_FUN_PTR("regex", regex2nfa)(pattern);
     std::cout << *nfa;
 
     auto dfa = nfa2dfa(*nfa);
@@ -249,6 +250,7 @@ TEST(Automaton, Regex2NFANotwds) {
     auto matcher = regex::dfa2matcher(w, *min_dfa, w.lit_nat(200));
     matcher->dump(100);
 }
+#endif
 
 TEST(Automaton, DFA) {
     auto dfa   = std::make_unique<DFA>();

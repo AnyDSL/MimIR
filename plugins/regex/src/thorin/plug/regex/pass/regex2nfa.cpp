@@ -86,7 +86,7 @@ private:
 
 } // namespace
 
-std::unique_ptr<automaton::NFA> regex2nfa(Ref regex) {
+extern "C" std::unique_ptr<automaton::NFA> THORIN_EXPORT regex2nfa(Ref regex) {
     Regex2NfaConverter converter;
     converter.convert(regex);
     return converter.nfa();

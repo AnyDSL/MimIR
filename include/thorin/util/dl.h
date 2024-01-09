@@ -5,15 +5,12 @@
 
 namespace thorin::dl {
 
-static constexpr auto extensions = {
+static constexpr auto extension =
 #if defined(_WIN32)
-    "dll" // Windows
-#elif defined(__APPLE__)
-    "so", "dylib", // MacOs
+    "dll";
 #else
-    "so" // Linux, etc
+    "so";
 #endif
-};
 
 void* open(const char* filename);
 void* get(void* handle, const char* symbol_name);

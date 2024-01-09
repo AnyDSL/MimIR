@@ -11,7 +11,7 @@ function(add_thorin_plugin)
     cmake_parse_arguments(
         PARSE_ARGV 1                                # skip first arg
         PARSED                                      # prefix of output variables
-        "SHARED;INSTALL"                            # options
+        "INSTALL"                                   # options
         ""                                          # one-value keywords (none)
         "HEADERS;SOURCES;PUBLIC;PRIVATE;INTERFACE"  # multi-value keywords
     )
@@ -87,11 +87,7 @@ function(add_thorin_plugin)
     #
     # thorin_plugin
     #
-    if(${PARSED_SHARED})
-        add_library(thorin_${PLUGIN} SHARED)
-    else()
-        add_library(thorin_${PLUGIN} MODULE)
-    endif()
+    add_library(thorin_${PLUGIN} MODULE)
     target_sources(thorin_${PLUGIN}
         PRIVATE
             ${PARSED_SOURCES}
@@ -110,7 +106,6 @@ function(add_thorin_plugin)
             WINDOWS_EXPORT_ALL_SYMBOLS OFF
             PREFIX "lib"                                                # always use "lib" as prefix regardless of OS/compiler
             LIBRARY_OUTPUT_DIRECTORY ${THORIN_LIBRARY_OUTPUT_DIRECTORY}
-            RUNTIME_OUTPUT_DIRECTORY ${THORIN_LIBRARY_OUTPUT_DIRECTORY} # place for a dll in a SHARED thorin plugin
     )
 
     #
