@@ -4,6 +4,8 @@
 
 #include "thorin/plug/regex/regex.h"
 
+/// You can dl::get this function.
+/// @returns a raw pointer to automanton::NFA; use thorin::regex::regex2nfa to pack it into a `std::unique_ptr`.
 extern "C" THORIN_EXPORT automaton::NFA* regex2nfa(thorin::Ref regex);
 
 namespace thorin::plug::regex {

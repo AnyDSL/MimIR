@@ -10,7 +10,6 @@
 
 #include <thorin/fe/parser.h>
 
-#include <thorin/plug/regex/pass/dfa2matcher.h>
 #include <thorin/plug/regex/pass/regex2nfa.h>
 #include <thorin/plug/regex/regex.h>
 

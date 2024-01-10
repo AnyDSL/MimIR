@@ -35,7 +35,8 @@ target_sources(thorin-regex-gtest
 target_link_libraries(thorin-regex-gtest
     PRIVATE
         gtest_main
-        thorin_regex
+        automaton
+        thorin_interface_regex
 )
 add_dependencies(thorin-regex-gtest
     thorin_clos
