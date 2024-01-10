@@ -4,6 +4,5 @@
 
 #include "thorin/plug/regex/regex.h"
 
-namespace thorin::plug::regex {
-Ref dfa2matcher(World& w, const automaton::DFA& dfa, Ref n);
-} // namespace thorin::plug::regex
+/// You can dl::get this function.
+extern "C" THORIN_EXPORT const thorin::Def* dfa2matcher(thorin::World&, const automaton::DFA&, thorin::Ref);

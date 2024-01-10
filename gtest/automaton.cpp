@@ -13,6 +13,8 @@
 #include <thorin/plug/regex/pass/regex2nfa.h>
 #include <thorin/plug/regex/regex.h>
 
+#include "thorin/plug/regex/pass/dfa2matcher.h"
+
 using namespace automaton;
 using namespace thorin;
 namespace regex = thorin::plug::regex;
@@ -228,7 +230,6 @@ TEST(Automaton, Regex2NFANot1or5or9) {
     std::cout << *minimize_dfa(*dfa);
 }
 
-#if 0
 TEST(Automaton, Regex2NFANotwds) {
     Driver driver;
     World& w    = driver.world();
@@ -246,10 +247,9 @@ TEST(Automaton, Regex2NFANotwds) {
     std::cout << *dfa;
     auto min_dfa = minimize_dfa(*dfa);
     std::cout << *min_dfa;
-    auto matcher = regex::dfa2matcher(w, *min_dfa, w.lit_nat(200));
+    auto matcher = driver.GET_FUN_PTR("regex", dfa2matcher)(w, *min_dfa, w.lit_nat(200));
     matcher->dump(100);
 }
-#endif
 
 TEST(Automaton, DFA) {
     auto dfa   = std::make_unique<DFA>();

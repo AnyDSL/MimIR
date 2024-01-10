@@ -36,7 +36,7 @@ Ref LowerRegex::rewrite(Ref def) {
             def->world().DLOG("dfa: {}", *dfa);
 
             auto min_dfa = automaton::minimize_dfa(*dfa);
-            new_app      = wrap_in_cps2ds(regex::dfa2matcher(def->world(), *min_dfa, n));
+            new_app      = wrap_in_cps2ds(dfa2matcher(def->world(), *min_dfa, n));
         }
     }
 

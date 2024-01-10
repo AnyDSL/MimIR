@@ -28,6 +28,7 @@ using namespace thorin;
 namespace {
 
 namespace core  = plug::core;
+namespace mem   = plug::mem;
 namespace regex = plug::regex;
 
 std::string state_to_name(const automaton::DFANode* state) {
@@ -91,8 +92,7 @@ create_check_match_transitions_from(Ref c, const automaton::DFANode* state) {
 
 } // namespace
 
-namespace thorin::plug::regex {
-Ref dfa2matcher(World& w, const automaton::DFA& dfa, Ref n) {
+extern "C" const Def* dfa2matcher(World& w, const automaton::DFA& dfa, Ref n) {
     w.DLOG("dfa to match: {}", dfa);
 
     auto states = dfa.get_reachable_states();
@@ -176,5 +176,3 @@ Ref dfa2matcher(World& w, const automaton::DFA& dfa, Ref n) {
     matcher->app(false, state2matcher[dfa.get_start()], {mem, pos});
     return matcher;
 }
-
-} // namespace thorin::plug::regex
