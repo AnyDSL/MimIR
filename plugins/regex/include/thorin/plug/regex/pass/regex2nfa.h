@@ -4,4 +4,14 @@
 
 #include "thorin/plug/regex/regex.h"
 
-extern "C" std::unique_ptr<automaton::NFA> THORIN_EXPORT regex2nfa(thorin::Ref regex);
+extern "C" THORIN_EXPORT automaton::NFA* regex2nfa(thorin::Ref regex);
+
+namespace thorin::plug::regex {
+
+std::unique_ptr<automaton::NFA> regex2nfa(Ref regex);
+
+inline std::unique_ptr<automaton::NFA> regex2nfa(decltype(::regex2nfa)* fptr, Ref regex) {
+    return std::unique_ptr<automaton::NFA>(fptr(regex), std::default_delete<automaton::NFA>());
+}
+
+} // namespace thorin::plug::regex
