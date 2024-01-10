@@ -129,8 +129,10 @@ std::unique_ptr<DFA> minimize_dfa(const DFA& dfa) {
     }
     minDfa->set_start(dfaStates[dfa.get_start()]);
     for (auto& X : P) {
-        auto state = dfaStates[*X.begin()];
-        for (auto x : X) x->for_transitions([&](auto c, auto to) { state->add_transition(dfaStates[to], c); });
+        if (!X.empty()) {
+            auto state = dfaStates[*X.begin()];
+            for (auto x : X) x->for_transitions([&](auto c, auto to) { state->add_transition(dfaStates[to], c); });
+        }
     }
     return minDfa;
 }
