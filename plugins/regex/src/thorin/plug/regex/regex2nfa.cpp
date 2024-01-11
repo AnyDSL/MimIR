@@ -1,4 +1,4 @@
-#include "thorin/plug/regex/pass/regex2nfa.h"
+#include "thorin/plug/regex/regex2nfa.h"
 
 #include <numeric>
 

@@ -11,9 +11,9 @@
 #include <thorin/plug/mem/mem.h>
 
 #include "thorin/plug/regex/autogen.h"
-#include "thorin/plug/regex/pass/dfa2matcher.h"
-#include "thorin/plug/regex/pass/regex2nfa.h"
+#include "thorin/plug/regex/dfa2matcher.h"
 #include "thorin/plug/regex/regex.h"
+#include "thorin/plug/regex/regex2nfa.h"
 
 namespace thorin::plug::regex {
 

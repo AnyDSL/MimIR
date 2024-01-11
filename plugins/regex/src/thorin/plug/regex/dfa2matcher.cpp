@@ -1,4 +1,4 @@
-#include "thorin/plug/regex/pass/dfa2matcher.h"
+#include "thorin/plug/regex/dfa2matcher.h"
 
 #include <algorithm>
 #include <sstream>
