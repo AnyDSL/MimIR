@@ -18,6 +18,8 @@ set(THORIN_PLUGINS
 
 list(TRANSFORM THORIN_PLUGINS PREPEND "thorin_internal_" OUTPUT_VARIABLE THORIN_INTERNAL_PLUGINS)
 
+include(Thorin) # include *after* THORIN_INTERNAL_PLUGINS has been defined
+
 foreach(PLUGIN ${THORIN_PLUGINS})
     add_subdirectory(${PLUGIN})
 endforeach()
