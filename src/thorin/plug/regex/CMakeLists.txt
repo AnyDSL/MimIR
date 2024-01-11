@@ -1,0 +1,11 @@
+add_thorin_plugin(regex
+    SOURCES
+        normalizers.cpp
+        dfa2matcher.cpp
+        regex.cpp
+        regex2nfa.cpp
+        pass/lower_regex.cpp
+    PRIVATE
+        automaton
+    INSTALL
+)

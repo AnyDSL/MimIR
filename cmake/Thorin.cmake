@@ -16,8 +16,6 @@ function(add_thorin_plugin)
         "HEADERS;SOURCES;PUBLIC;PRIVATE;INTERFACE"  # multi-value keywords
     )
 
-    list(TRANSFORM PARSED_INTERFACES PREPEND thorin_interface_ OUTPUT_VARIABLE INTERFACES)
-
     set(PLUGIN_THORIN       ${CMAKE_CURRENT_LIST_DIR}/${PLUGIN}.thorin)
     set(OUT_PLUGIN_THORIN   ${THORIN_LIBRARY_OUTPUT_DIRECTORY}/${PLUGIN}.thorin)
     set(INCLUDE_DIR_PLUG    ${CMAKE_BINARY_DIR}/include/thorin/plug/${PLUGIN})
@@ -63,48 +61,27 @@ function(add_thorin_plugin)
     SET(THORIN_PLUGIN_LAYOUT "${THORIN_PLUGIN_LAYOUT}" CACHE INTERNAL "THORIN_PLUGIN_LAYOUT")
 
     #
-    # thorin_interface_plugin
-    #
-    add_library(thorin_interface_${PLUGIN} INTERFACE)
-    add_dependencies(thorin_interface_${PLUGIN} thorin_internal_${PLUGIN})
-    target_sources(thorin_interface_${PLUGIN}
-        INTERFACE
-            FILE_SET thorin_headers_${PLUGIN}
-            TYPE HEADERS
-            BASE_DIRS
-                ${CMAKE_CURRENT_LIST_DIR}/include
-                ${CMAKE_BINARY_DIR}/include
-            FILES
-                ${AUTOGEN_H}        # the generated header of this plugin
-                ${PARSED_HEADERS}   # original headers passed to add_thorin_plugin
-    )
-    target_link_libraries(thorin_interface_${PLUGIN}
-        INTERFACE
-            ${PARSED_INTERFACE}
-            libthorin
-    )
-
-    #
     # thorin_plugin
     #
     add_library(thorin_${PLUGIN} MODULE)
+    add_dependencies(thorin_${PLUGIN} thorin_internal_${PLUGIN})
     target_sources(thorin_${PLUGIN}
         PRIVATE
             ${PARSED_SOURCES}
     )
     target_link_libraries(thorin_${PLUGIN}
         PUBLIC
-            thorin_interface_${PLUGIN}
             ${PARSED_PUBLIC}
         PRIVATE
             ${PARSED_PRIVATE}
+            libthorin
     )
     set_target_properties(thorin_${PLUGIN}
         PROPERTIES
             CXX_VISIBILITY_PRESET hidden
             VISIBILITY_INLINES_HIDDEN 1
             WINDOWS_EXPORT_ALL_SYMBOLS OFF
-            PREFIX "lib"                                                # always use "lib" as prefix regardless of OS/compiler
+            PREFIX "lib" # always use "lib" as prefix regardless of OS/compiler
             LIBRARY_OUTPUT_DIRECTORY ${THORIN_LIBRARY_OUTPUT_DIRECTORY}
     )
 
@@ -114,7 +91,6 @@ function(add_thorin_plugin)
     if(${PARSED_INSTALL})
         install(
             TARGETS
-                thorin_interface_${PLUGIN}
                 thorin_${PLUGIN}
             EXPORT thorin-targets
             FILE_SET thorin_headers_${PLUGIN}
