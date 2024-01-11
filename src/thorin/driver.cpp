@@ -11,7 +11,7 @@ namespace {
 std::vector<fs::path> get_plugin_name_variants(std::string_view name) {
     std::vector<fs::path> names;
     names.push_back(name); // if the user gives "libthorin_foo.so"
-    names.push_back(fmt("libthorin_{}{}", name, dl::extension()));
+    names.push_back(fmt("libthorin_{}.{}", name, dl::extension));
     return names;
 }
 } // namespace
@@ -58,7 +58,7 @@ void Driver::load(Sym name) {
         return;
     }
 
-    Plugin::Handle handle{nullptr, dl::close};
+    auto handle = Plugin::Handle{nullptr, dl::close};
     if (auto path = fs::path{name.view()}; path.is_absolute() && fs::is_regular_file(path))
         handle.reset(dl::open(name));
     if (!handle) {
@@ -86,6 +86,11 @@ void Driver::load(Sym name) {
     } else {
         error("thorin/plugin has no 'thorin_get_plugin()'");
     }
+}
+
+void* Driver::get_fun_ptr(Sym plugin, const char* name) {
+    if (auto handle = lookup(plugins_, plugin)) return dl::get(handle->get(), name);
+    return nullptr;
 }
 
 std::pair<Annex&, bool> Driver::name2annex(Sym sym, Sym plugin, Sym tag, Loc loc) {

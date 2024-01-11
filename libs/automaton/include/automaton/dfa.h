@@ -6,9 +6,10 @@
 
 #include <absl/container/flat_hash_map.h>
 
-#include "thorin/plug/regex/automaton/automaton.h"
+#include "automaton/automaton.h"
 
-namespace thorin::automaton {
+namespace automaton {
+
 class DFANode {
 public:
     DFANode() = default;
@@ -59,4 +60,6 @@ public:
     enum SpecialTransitons : std::uint16_t {};
 };
 
-} // namespace thorin::automaton
+template<class To> using DFAMap = absl::flat_hash_map<const DFANode*, To>;
+
+} // namespace automaton

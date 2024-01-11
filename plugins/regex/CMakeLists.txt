@@ -1,26 +1,17 @@
 add_thorin_plugin(regex
     SOURCES
         src/thorin/plug/regex/normalizers.cpp
+        src/thorin/plug/regex/dfa2matcher.cpp
         src/thorin/plug/regex/regex.cpp
-        src/thorin/plug/regex/automaton/dfa.cpp
-        src/thorin/plug/regex/automaton/dfamin.cpp
-        src/thorin/plug/regex/automaton/nfa.cpp
-        src/thorin/plug/regex/automaton/nfa2dfa.cpp
-        src/thorin/plug/regex/pass/dfa2matcher.cpp
+        src/thorin/plug/regex/regex2nfa.cpp
         src/thorin/plug/regex/pass/lower_regex.cpp
-        src/thorin/plug/regex/pass/regex2nfa.cpp
     HEADERS
+        include/thorin/plug/regex/dfa2matcher.h
         include/thorin/plug/regex/regex.h
-        include/thorin/plug/regex/range_helper.h
-        include/thorin/plug/regex/automaton/automaton.h
-        include/thorin/plug/regex/automaton/dfa.h
-        include/thorin/plug/regex/automaton/dfamin.h
-        include/thorin/plug/regex/automaton/nfa.h
-        include/thorin/plug/regex/automaton/nfa2dfa.h
-        include/thorin/plug/regex/pass/dfa2matcher.h
+        include/thorin/plug/regex/regex2nfa.h
         include/thorin/plug/regex/pass/lower_regex.h
-        include/thorin/plug/regex/pass/regex2nfa.h
     INTERFACE
+        automaton
         thorin_interface_core
         thorin_interface_direct
     INSTALL

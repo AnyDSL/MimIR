@@ -6,4 +6,5 @@ namespace thorin {
 template<> struct Axiom::Match<plug::regex::any> {
     using type = Axiom;
 };
+
 } // namespace thorin

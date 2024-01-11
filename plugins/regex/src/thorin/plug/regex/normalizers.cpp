@@ -4,6 +4,7 @@
 #include <ranges>
 #include <vector>
 
+#include <automaton/range_helper.h>
 #include <fe/assert.h>
 
 #include "thorin/axiom.h"
@@ -13,8 +14,10 @@
 
 #include "thorin/util/log.h"
 
-#include "thorin/plug/regex/range_helper.h"
 #include "thorin/plug/regex/regex.h"
+
+using Range  = automaton::Range;
+using Ranges = thorin::Vector<Range>;
 
 namespace thorin::plug::regex {
 
@@ -103,20 +106,16 @@ void make_vector_unique(DefVec& args) {
     }
 }
 
-bool is_in_range(std::pair<nat_t, nat_t> range, nat_t needle) {
-    return needle >= range.first && needle <= range.second;
-}
+bool is_in_range(Range range, nat_t needle) { return needle >= range.first && needle <= range.second; }
 
-auto get_range(const Def* rng) -> std::pair<nat_t, nat_t> {
+auto get_range(const Def* rng) -> Range {
     auto rng_match = thorin::match<range, false>(rng);
     return {Lit::as<std::uint8_t>(rng_match->arg(0)), Lit::as<std::uint8_t>(rng_match->arg(1))};
 }
 
 struct app_range {
     World& w;
-    Ref operator()(std::pair<nat_t, nat_t> rng) {
-        return w.call<range>(Defs{w.lit_int(8, rng.first), w.lit_int(8, rng.second)});
-    }
+    Ref operator()(Range rng) { return w.call<range>(Defs{w.lit_int(8, rng.first), w.lit_int(8, rng.second)}); }
 };
 
 void merge_ranges(DefVec& args) {
@@ -125,13 +124,13 @@ void merge_ranges(DefVec& args) {
     if (ranges_begin == args.end()) return;
 
     std::set<const Def*> to_remove;
-    Vector<std::pair<nat_t, nat_t>> old_ranges;
+    Ranges old_ranges;
     auto& world = (*ranges_begin)->world();
 
     std::transform(ranges_begin, args.end(), std::back_inserter(old_ranges), get_range);
 
-    auto new_ranges
-        = merge_ranges(old_ranges, [&world](auto&&... args) { world.DLOG(std::forward<decltype(args)>(args)...); });
+    auto new_ranges = automaton::merge_ranges(
+        old_ranges, [&world](auto&&... args) { world.DLOG(std::forward<decltype(args)>(args)...); });
 
     // invalidates ranges_begin
     args.erase(ranges_begin, args.end());
@@ -157,7 +156,7 @@ bool equals_any(const Def* lhs, const Def* rhs) {
 }
 
 bool equals_any(Defs lhs, Defs rhs) {
-    Vector<std::pair<nat_t, nat_t>> lhs_ranges, rhs_ranges;
+    Ranges lhs_ranges, rhs_ranges;
     auto only_ranges = std::ranges::views::filter([](auto d) { return match<range>(d); });
     std::ranges::transform(lhs | only_ranges, std::back_inserter(lhs_ranges), get_range);
     std::ranges::transform(rhs | only_ranges, std::back_inserter(rhs_ranges), get_range);

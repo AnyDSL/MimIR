@@ -1,5 +1,9 @@
 #include "thorin/plug/regex/pass/lower_regex.h"
 
+#include <automaton/dfa.h>
+#include <automaton/dfamin.h>
+#include <automaton/nfa2dfa.h>
+
 #include <thorin/def.h>
 
 #include <thorin/plug/core/core.h>
@@ -7,17 +11,13 @@
 #include <thorin/plug/mem/mem.h>
 
 #include "thorin/plug/regex/autogen.h"
-#include "thorin/plug/regex/automaton/dfa.h"
-#include "thorin/plug/regex/automaton/dfamin.h"
-#include "thorin/plug/regex/automaton/nfa2dfa.h"
-#include "thorin/plug/regex/pass/dfa2matcher.h"
-#include "thorin/plug/regex/pass/regex2nfa.h"
+#include "thorin/plug/regex/dfa2matcher.h"
 #include "thorin/plug/regex/regex.h"
+#include "thorin/plug/regex/regex2nfa.h"
 
 namespace thorin::plug::regex {
 
 namespace {
-
 Ref wrap_in_cps2ds(Ref callee) { return direct::op_cps2ds_dep(callee); }
 } // namespace
 
@@ -36,7 +36,7 @@ Ref LowerRegex::rewrite(Ref def) {
             def->world().DLOG("dfa: {}", *dfa);
 
             auto min_dfa = automaton::minimize_dfa(*dfa);
-            new_app      = wrap_in_cps2ds(regex::dfa2matcher(def->world(), *min_dfa, n));
+            new_app      = wrap_in_cps2ds(dfa2matcher(def->world(), *min_dfa, n));
         }
     }
 

@@ -58,6 +58,13 @@ public:
     void load(Sym name);
     void load(const std::string& name) { return load(sym(name)); }
     bool is_loaded(Sym sym) const { return lookup(plugins_, sym); }
+    void* get_fun_ptr(Sym plugin, const char* name);
+    template<class F> auto get_fun_ptr(Sym plugin, const char* name) {
+        return reinterpret_cast<F*>(get_fun_ptr(plugin, name));
+    }
+    template<class F> auto get_fun_ptr(const char* plugin, const char* name) {
+        return get_fun_ptr<F>(sym(plugin), name);
+    }
     ///@}
 
     /// @name Manage Plugins
@@ -76,17 +83,20 @@ public:
     ///@}
 
 private:
+    // This must go *first* so plugins will be unloaded *last* in the d'tor; otherwise funny things might happen ...
+    absl::node_hash_map<Sym, Plugin::Handle> plugins_;
     Flags flags_;
     Log log_;
     World world_;
     std::list<fs::path> search_paths_;
     std::list<fs::path>::iterator insert_ = search_paths_.end();
-    absl::node_hash_map<Sym, Plugin::Handle> plugins_;
     Backends backends_;
     Passes passes_;
     Normalizers normalizers_;
     std::deque<std::pair<fs::path, Sym>> imports_;
     fe::SymMap<fe::SymMap<Annex>> plugin2annexes_;
 };
+
+#define GET_FUN_PTR(plugin, f) get_fun_ptr<decltype(f)>(plugin, #f)
 
 } // namespace thorin

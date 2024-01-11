@@ -11,8 +11,8 @@ namespace thorin {
 void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
     Tab tab;
     tab.print(h, "#pragma once\n\n");
-    tab.print(h, "#include \"thorin/axiom.h\"\n"
-                 "#include \"thorin/plugin.h\"\n\n");
+    tab.print(h, "#include <thorin/axiom.h>\n"
+                 "#include <thorin/plugin.h>\n\n");
 
     tab.print(h, "/// @namespace thorin::plug::{} @ref {} \n", plugin, plugin);
     tab.print(h, "namespace thorin {{\n");

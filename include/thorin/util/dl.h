@@ -5,7 +5,12 @@
 
 namespace thorin::dl {
 
-std::string_view extension(); ///< `".dll"` or `".so"`
+static constexpr auto extension =
+#if defined(_WIN32)
+    "dll";
+#else
+    "so";
+#endif
 
 void* open(const char* filename);
 void* get(void* handle, const char* symbol_name);

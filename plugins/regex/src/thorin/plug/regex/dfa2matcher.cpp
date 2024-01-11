@@ -1,17 +1,20 @@
-#include "thorin/plug/regex/pass/dfa2matcher.h"
+#include "thorin/plug/regex/dfa2matcher.h"
 
 #include <algorithm>
 #include <sstream>
 
 #include <absl/container/flat_hash_map.h>
+#include <automaton/dfa.h>
+#include <automaton/range_helper.h>
 
 #include <thorin/plug/core/core.h>
 #include <thorin/plug/mem/mem.h>
 
-#include "thorin/plug/regex/automaton/dfa.h"
-#include "thorin/plug/regex/range_helper.h"
-
 using namespace thorin;
+using namespace automaton;
+
+using Range  = automaton::Range;
+using Ranges = Vector<Range>;
 
 // nomenclature:
 // c is the character from the string we want to match
@@ -28,35 +31,34 @@ using namespace thorin;
 
 namespace {
 
-namespace core  = plug::core;
-namespace regex = plug::regex;
+namespace core = plug::core;
+namespace mem  = plug::mem;
 
-std::string state_to_name(const automaton::DFANode* state) {
+std::string state_to_name(const DFANode* state) {
     std::stringstream ss;
     ss << "state_" << state;
     return ss.str();
 }
 
-absl::flat_hash_map<const automaton::DFANode*, Vector<std::pair<nat_t, nat_t>>>
-transitions_to_ranges(World& w, const automaton::DFANode* state) {
-    absl::flat_hash_map<const automaton::DFANode*, Vector<std::pair<nat_t, nat_t>>> state2ranges;
-    state->for_transitions([&](std::uint16_t transition, const automaton::DFANode* next_state) {
+DFAMap<Ranges> transitions_to_ranges(World& w, const DFANode* state) {
+    DFAMap<Ranges> state2ranges;
+    state->for_transitions([&](std::uint16_t transition, const DFANode* next_state) {
         if (!state2ranges.contains(next_state))
-            state2ranges.emplace(next_state, Vector<std::pair<nat_t, nat_t>>{
+            state2ranges.emplace(next_state, Ranges{
                                                  {transition, transition}
             });
         else
             state2ranges[next_state].emplace_back(transition, transition);
     });
-    std::pair<nat_t, nat_t> any_range{0, 255};
+    Range any_range{0, 255};
     for (auto& [state, ranges] : state2ranges) {
         if (std::find(ranges.cbegin(), ranges.cend(), any_range) != ranges.cend()) {
             ranges = {any_range};
             continue;
         }
 
-        std::sort(ranges.begin(), ranges.end(), regex::RangeCompare{});
-        ranges = regex::merge_ranges(ranges, [&w](auto&&... args) { w.DLOG(std::forward<decltype(args)>(args)...); });
+        std::sort(ranges.begin(), ranges.end(), RangeCompare{});
+        ranges = merge_ranges(ranges, [&w](auto&&... args) { w.DLOG(std::forward<decltype(args)>(args)...); });
     }
     return state2ranges;
 }
@@ -71,10 +73,9 @@ Ref match_range(Ref c, nat_t lo, nat_t hi) {
     return w.call(core::bit2::and_, w.lit_nat(2), w.tuple({below_hi, above_lo}));
 }
 
-absl::flat_hash_map<const automaton::DFANode*, Ref>
-create_check_match_transitions_from(Ref c, const automaton::DFANode* state) {
+DFAMap<Ref> create_check_match_transitions_from(Ref c, const DFANode* state) {
     World& w = c->world();
-    absl::flat_hash_map<const automaton::DFANode*, Ref> state2check;
+    DFAMap<Ref> state2check;
 
     auto state2ranges = transitions_to_ranges(w, state);
 
@@ -91,12 +92,11 @@ create_check_match_transitions_from(Ref c, const automaton::DFANode* state) {
 
 } // namespace
 
-namespace thorin::plug::regex {
-Ref dfa2matcher(World& w, const automaton::DFA& dfa, Ref n) {
+extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, Ref n) {
     w.DLOG("dfa to match: {}", dfa);
 
     auto states = dfa.get_reachable_states();
-    absl::flat_hash_map<const automaton::DFANode*, Lam*> state2matcher;
+    DFAMap<Lam*> state2matcher;
 
     // ((mem: %mem.M, string: Str n, pos: .Idx n), .Cn [%mem.M, .Bool, .Idx n])
     auto matcher_con  = w.cn(w.sigma({w.annex<mem::M>(), w.type_bool(), w.type_idx(n)}));
@@ -129,7 +129,7 @@ Ref dfa2matcher(World& w, const automaton::DFA& dfa, Ref n) {
         accept->app(false, exit, {mem, w.lit_tt(), pos});
     }
 
-    auto exiting = [error, accept](const automaton::DFANode* state) { return state->is_accepting() ? accept : error; };
+    auto exiting = [error, accept](const DFANode* state) { return state->is_accepting() ? accept : error; };
 
     const auto Pi = w.cn(w.sigma({w.annex<mem::M>(), w.type_idx(n)}));
     for (auto state : states) {
@@ -176,5 +176,3 @@ Ref dfa2matcher(World& w, const automaton::DFA& dfa, Ref n) {
     matcher->app(false, state2matcher[dfa.get_start()], {mem, pos});
     return matcher;
 }
-
-} // namespace thorin::plug::regex

@@ -1,24 +1,20 @@
-#include "thorin/plug/regex/automaton/dfa.h"
+#include "automaton/dfa.h"
 
 #include <absl/container/flat_hash_map.h>
 
-#include <thorin/def.h>
+#include "automaton/automaton.h"
+#include "automaton/range_helper.h"
 
-#include <thorin/util/util.h>
-
-#include "thorin/plug/regex/automaton/automaton.h"
-#include "thorin/plug/regex/range_helper.h"
-
-using namespace thorin::automaton;
+namespace automaton {
 
 void DFANode::add_transition(const DFANode* to, std::uint16_t c) { transitions_[c] = to; }
 
 const DFANode* DFANode::get_transition(std::uint16_t c) const {
     if (erroring_) return nullptr;
-    return lookup(transitions_, c);
+    if (auto i = transitions_.find(c); i != transitions_.end()) return i->second;
+    return nullptr;
 }
 
-namespace thorin::automaton {
 template class AutomatonBase<DFANode>;
 
 std::ostream& operator<<(std::ostream& os, const DFANode& node) {
@@ -28,4 +24,5 @@ std::ostream& operator<<(std::ostream& os, const DFANode& node) {
     };
     return print_node(os, node, print_char);
 }
-} // namespace thorin::automaton
+
+} // namespace automaton

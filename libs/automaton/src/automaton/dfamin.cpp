@@ -1,4 +1,4 @@
-#include "thorin/plug/regex/automaton/dfamin.h"
+#include "automaton/dfamin.h"
 
 #include <algorithm>
 #include <map>
@@ -7,9 +7,9 @@
 
 #include <absl/container/flat_hash_map.h>
 
-#include "thorin/plug/regex/automaton/dfa.h"
+#include "automaton/dfa.h"
 
-using namespace thorin::automaton;
+using namespace automaton;
 
 namespace {
 #if 0
@@ -110,7 +110,8 @@ std::vector<std::set<const DFANode*>> hopcroft(const std::set<const DFANode*>& r
 
 } // namespace
 
-namespace thorin::automaton {
+namespace automaton {
+
 std::unique_ptr<DFA> minimize_dfa(const DFA& dfa) {
     const auto reachableStates = dfa.get_reachable_states();
 
@@ -128,9 +129,12 @@ std::unique_ptr<DFA> minimize_dfa(const DFA& dfa) {
     }
     minDfa->set_start(dfaStates[dfa.get_start()]);
     for (auto& X : P) {
-        auto state = dfaStates[*X.begin()];
-        for (auto x : X) x->for_transitions([&](auto c, auto to) { state->add_transition(dfaStates[to], c); });
+        if (!X.empty()) {
+            auto state = dfaStates[*X.begin()];
+            for (auto x : X) x->for_transitions([&](auto c, auto to) { state->add_transition(dfaStates[to], c); });
+        }
     }
     return minDfa;
 }
-} // namespace thorin::automaton
+
+} // namespace automaton

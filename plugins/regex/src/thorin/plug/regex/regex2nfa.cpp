@@ -1,11 +1,11 @@
-#include "thorin/plug/regex/pass/regex2nfa.h"
+#include "thorin/plug/regex/regex2nfa.h"
 
 #include <numeric>
 
+#include <automaton/nfa.h>
+
 #include <thorin/lam.h>
 #include <thorin/world.h>
-
-#include "thorin/plug/regex/automaton/nfa.h"
 
 using namespace thorin;
 
@@ -93,3 +93,5 @@ std::unique_ptr<automaton::NFA> regex2nfa(Ref regex) {
 }
 
 } // namespace thorin::plug::regex
+
+extern "C" automaton::NFA* regex2nfa(Ref regex) { return thorin::plug::regex::regex2nfa(regex).release(); }
