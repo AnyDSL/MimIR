@@ -64,7 +64,7 @@ function(add_thorin_plugin)
     # thorin_plugin
     #
     add_library(thorin_${PLUGIN} MODULE)
-    add_dependencies(thorin_${PLUGIN} thorin_internal_${PLUGIN})
+    add_dependencies(thorin_${PLUGIN} ${THORIN_INTERNAL_PLUGINS})
     target_sources(thorin_${PLUGIN}
         PRIVATE
             ${PARSED_SOURCES}
@@ -91,7 +91,6 @@ function(add_thorin_plugin)
             TARGETS
                 thorin_${PLUGIN}
             EXPORT thorin-targets
-            FILE_SET thorin_headers_${PLUGIN}
             LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}/thorin"
             ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}/thorin"
             RUNTIME DESTINATION "${CMAKE_INSTALL_LIBDIR}/thorin"

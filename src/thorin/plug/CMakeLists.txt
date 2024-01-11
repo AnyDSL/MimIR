@@ -1,16 +1,23 @@
-# must be registered before `add_thorin_plugin` calls
-add_custom_target(thorin_all_plugins)
+add_custom_target(thorin_all_plugins) # must be registered before `add_thorin_plugin` calls
 
-add_subdirectory(affine)
-add_subdirectory(autodiff)
-add_subdirectory(clos)
-add_subdirectory(compile)
-add_subdirectory(core)
-add_subdirectory(demo)
-add_subdirectory(direct)
-add_subdirectory(math)
-add_subdirectory(matrix)
-add_subdirectory(mem)
-add_subdirectory(opt)
-add_subdirectory(refly)
-add_subdirectory(regex)
+set(THORIN_PLUGINS
+    affine
+    autodiff
+    clos
+    compile
+    core
+    demo
+    direct
+    math
+    matrix
+    mem
+    opt
+    refly
+    regex
+)
+
+list(TRANSFORM THORIN_PLUGINS PREPEND "thorin_internal_" OUTPUT_VARIABLE THORIN_INTERNAL_PLUGINS)
+
+foreach(PLUGIN ${THORIN_PLUGINS})
+    add_subdirectory(${PLUGIN})
+endforeach()

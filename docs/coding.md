@@ -229,7 +229,7 @@ The command will create two targets:
 
 3. `thorin_<plugin-name>`
 
-    This is the actual `MODULE` [library](https://cmake.org/cmake/help/latest/command/add_library.html) and depends on `thorin_internal_<plugin-name>`.
+    This is the actual `MODULE` [library](https://cmake.org/cmake/help/latest/command/add_library.html).
 
     * `SOURCES`
 
