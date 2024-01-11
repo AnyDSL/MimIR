@@ -113,6 +113,7 @@ $(document).ready(function(){initNavTree('regex_2src_2thorin_2plug_2regex_2norma
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">normalizers.cpp File Reference</div></div>
 </div><!--header-->
@@ -122,13 +123,13 @@ $(document).ready(function(){initNavTree('regex_2src_2thorin_2plug_2regex_2norma
 <code>#include &lt;numeric&gt;</code><br />
 <code>#include &lt;ranges&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
+<code>#include &lt;automaton/range_helper.h&gt;</code><br />
 <code>#include &lt;fe/assert.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="axiom_8h_source.html">thorin/axiom.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="def_8h_source.html">thorin/def.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="tuple_8h_source.html">thorin/tuple.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="world_8h_source.html">thorin/world.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="log_8h_source.html">thorin/util/log.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="range__helper_8h_source.html">thorin/plug/regex/range_helper.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="regex_8h_source.html">thorin/plug/regex/regex.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for normalizers.cpp:</div>
@@ -153,6 +154,13 @@ Namespaces</h2></td></tr>
 <tr class="memdesc:namespacethorin_1_1plug_1_1regex"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="regex.html">The regex Plugin</a> <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a929a326a16b0a4c9d2e277325e556017" id="r_a929a326a16b0a4c9d2e277325e556017"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="regex_2src_2thorin_2plug_2regex_2normalizers_8cpp.html#a929a326a16b0a4c9d2e277325e556017">Range</a> = automaton::Range</td></tr>
+<tr class="separator:a929a326a16b0a4c9d2e277325e556017"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc811f157da434d30e2236cc4cdaa46a" id="r_abc811f157da434d30e2236cc4cdaa46a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="regex_2src_2thorin_2plug_2regex_2normalizers_8cpp.html#abc811f157da434d30e2236cc4cdaa46a">Ranges</a> = <a class="el" href="classthorin_1_1Vector.html">thorin::Vector</a>&lt; <a class="el" href="dfa2matcher_8cpp.html#a929a326a16b0a4c9d2e277325e556017">Range</a> &gt;</td></tr>
+<tr class="separator:abc811f157da434d30e2236cc4cdaa46a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a19f23ae90db876d8f9ede4d30f435e7f" id="r_a19f23ae90db876d8f9ede4d30f435e7f"><td class="memTemplParams" colspan="2">template&lt;class ConjOrDisj &gt; </td></tr>
@@ -168,10 +176,10 @@ Functions</h2></td></tr>
 <tr class="separator:a5b8e27f39f1e5972cc0331839e9657fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d970b3555db69fd8ea85b4d2cdc39ea" id="r_a8d970b3555db69fd8ea85b4d2cdc39ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1plug_1_1regex.html#a8d970b3555db69fd8ea85b4d2cdc39ea">thorin::plug::regex::make_vector_unique</a> (<a class="el" href="namespacethorin.html#ae25f90393961e232cf46315fdfff9c18">DefVec</a> &amp;args)</td></tr>
 <tr class="separator:a8d970b3555db69fd8ea85b4d2cdc39ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec3ec8bdcb1d0868b5ac2b5cd170f745" id="r_aec3ec8bdcb1d0868b5ac2b5cd170f745"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1plug_1_1regex.html#aec3ec8bdcb1d0868b5ac2b5cd170f745">thorin::plug::regex::is_in_range</a> (std::pair&lt; <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a>, <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> &gt; <a class="el" href="namespacethorin_1_1plug_1_1regex.html#aa6649c0f673ac1180da499f6e47f0cee">range</a>, <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> needle)</td></tr>
-<tr class="separator:aec3ec8bdcb1d0868b5ac2b5cd170f745"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b4c7edeb40928855f9a692eee847bf3" id="r_a7b4c7edeb40928855f9a692eee847bf3"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1plug_1_1regex.html#a7b4c7edeb40928855f9a692eee847bf3">thorin::plug::regex::get_range</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *rng) -&gt; std::pair&lt; <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a>, <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> &gt;</td></tr>
-<tr class="separator:a7b4c7edeb40928855f9a692eee847bf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e8c0051fd004593629e60ec1604b9c6" id="r_a7e8c0051fd004593629e60ec1604b9c6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1plug_1_1regex.html#a7e8c0051fd004593629e60ec1604b9c6">thorin::plug::regex::is_in_range</a> (<a class="el" href="dfa2matcher_8cpp.html#a929a326a16b0a4c9d2e277325e556017">Range</a> <a class="el" href="namespacethorin_1_1plug_1_1regex.html#aa6649c0f673ac1180da499f6e47f0cee">range</a>, <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> needle)</td></tr>
+<tr class="separator:a7e8c0051fd004593629e60ec1604b9c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83edf33417082db864d63e0512aae4e5" id="r_a83edf33417082db864d63e0512aae4e5"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1plug_1_1regex.html#a83edf33417082db864d63e0512aae4e5">thorin::plug::regex::get_range</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *rng) -&gt; <a class="el" href="dfa2matcher_8cpp.html#a929a326a16b0a4c9d2e277325e556017">Range</a></td></tr>
+<tr class="separator:a83edf33417082db864d63e0512aae4e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f55b271a8e89f741b4f66bfd8de4a06" id="r_a4f55b271a8e89f741b4f66bfd8de4a06"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1plug_1_1regex.html#a4f55b271a8e89f741b4f66bfd8de4a06">thorin::plug::regex::merge_ranges</a> (<a class="el" href="namespacethorin.html#ae25f90393961e232cf46315fdfff9c18">DefVec</a> &amp;args)</td></tr>
 <tr class="separator:a4f55b271a8e89f741b4f66bfd8de4a06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38ed731d5404c95930aaaccee3ad6ed5" id="r_a38ed731d5404c95930aaaccee3ad6ed5"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacethorin_1_1plug_1_1regex.html#a4fa69f360d13c15835d1af06c89bb025">cls</a> A, <a class="el" href="namespacethorin_1_1plug_1_1regex.html#a4fa69f360d13c15835d1af06c89bb025">cls</a> B&gt; </td></tr>
@@ -198,6 +206,39 @@ Functions</h2></td></tr>
 <tr class="memitem:a7edb7a1d906cd3206d401b4fbfc06045" id="r_a7edb7a1d906cd3206d401b4fbfc06045"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1plug_1_1regex.html#a7edb7a1d906cd3206d401b4fbfc06045">thorin::plug::regex::normalize_not</a> (<a class="el" href="classthorin_1_1Ref.html">Ref</a> type, <a class="el" href="classthorin_1_1Ref.html">Ref</a> callee, <a class="el" href="classthorin_1_1Ref.html">Ref</a> arg)</td></tr>
 <tr class="separator:a7edb7a1d906cd3206d401b4fbfc06045"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="a929a326a16b0a4c9d2e277325e556017" name="a929a326a16b0a4c9d2e277325e556017"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a929a326a16b0a4c9d2e277325e556017">&#9670;&#160;</a></span>Range</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="dfa2matcher_8cpp.html#a929a326a16b0a4c9d2e277325e556017">Range</a> =  automaton::Range</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="regex_2src_2thorin_2plug_2regex_2normalizers_8cpp_source.html#l00019">19</a> of file <a class="el" href="regex_2src_2thorin_2plug_2regex_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+
+</div>
+</div>
+<a id="abc811f157da434d30e2236cc4cdaa46a" name="abc811f157da434d30e2236cc4cdaa46a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc811f157da434d30e2236cc4cdaa46a">&#9670;&#160;</a></span>Ranges</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="dfa2matcher_8cpp.html#a9ff3b970b6c517a4075f8071ffac2e5a">Ranges</a> =  <a class="el" href="classthorin_1_1Vector.html">thorin::Vector</a>&lt;<a class="el" href="dfa2matcher_8cpp.html#a929a326a16b0a4c9d2e277325e556017">Range</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="regex_2src_2thorin_2plug_2regex_2normalizers_8cpp_source.html#l00020">20</a> of file <a class="el" href="regex_2src_2thorin_2plug_2regex_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

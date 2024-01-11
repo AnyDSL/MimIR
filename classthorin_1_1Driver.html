@@ -174,6 +174,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3f1c5966b47bbaabd3e2d5cf67e8f403"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b6979427703e0812fc67c8f20589e75" id="r_a7b6979427703e0812fc67c8f20589e75"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#a7b6979427703e0812fc67c8f20589e75">is_loaded</a> (Sym sym) const</td></tr>
 <tr class="separator:a7b6979427703e0812fc67c8f20589e75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c93d0448bb5b2c276b6c8a3567a0208" id="r_a2c93d0448bb5b2c276b6c8a3567a0208"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#a2c93d0448bb5b2c276b6c8a3567a0208">get_fun_ptr</a> (Sym plugin, const char *name)</td></tr>
+<tr class="separator:a2c93d0448bb5b2c276b6c8a3567a0208"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff1196ae6675f4460752e11e4f3d7e8d" id="r_aff1196ae6675f4460752e11e4f3d7e8d"><td class="memTemplParams" colspan="2">template&lt;class F &gt; </td></tr>
+<tr class="memitem:aff1196ae6675f4460752e11e4f3d7e8d"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#aff1196ae6675f4460752e11e4f3d7e8d">get_fun_ptr</a> (Sym plugin, const char *name)</td></tr>
+<tr class="separator:aff1196ae6675f4460752e11e4f3d7e8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03ada7d4dcfde9db63c76f0883bb67ac" id="r_a03ada7d4dcfde9db63c76f0883bb67ac"><td class="memTemplParams" colspan="2">template&lt;class F &gt; </td></tr>
+<tr class="memitem:a03ada7d4dcfde9db63c76f0883bb67ac"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Driver.html#a03ada7d4dcfde9db63c76f0883bb67ac">get_fun_ptr</a> (const char *plugin, const char *name)</td></tr>
+<tr class="separator:a03ada7d4dcfde9db63c76f0883bb67ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Manage Plugins</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>All these lookups yield <code>nullptr</code> if the key has not been found. </p>
 </div></td></tr>
@@ -307,7 +315,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00069">69</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00076">76</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
 
 <p class="reference">References <a class="el" href="util_8h_source.html#l00093">thorin::lookup()</a>.</p>
 
@@ -338,7 +346,123 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00023">23</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00084">thorin::World::flags()</a>, <a class="el" href="main_8cpp_source.html#l00024">main()</a>, <a class="el" href="driver_8h_source.html#l00067">normalizer()</a>, and <a class="el" href="driver_8h_source.html#l00066">pass()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00084">thorin::World::flags()</a>, <a class="el" href="main_8cpp_source.html#l00024">main()</a>, <a class="el" href="driver_8h_source.html#l00074">normalizer()</a>, and <a class="el" href="driver_8h_source.html#l00073">pass()</a>.</p>
+
+</div>
+</div>
+<a id="a03ada7d4dcfde9db63c76f0883bb67ac" name="a03ada7d4dcfde9db63c76f0883bb67ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03ada7d4dcfde9db63c76f0883bb67ac">&#9670;&#160;</a></span>get_fun_ptr() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class F &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto thorin::Driver::get_fun_ptr </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>plugin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00065">65</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
+
+</div>
+</div>
+<a id="a2c93d0448bb5b2c276b6c8a3567a0208" name="a2c93d0448bb5b2c276b6c8a3567a0208"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c93d0448bb5b2c276b6c8a3567a0208">&#9670;&#160;</a></span>get_fun_ptr() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void * thorin::Driver::get_fun_ptr </td>
+          <td>(</td>
+          <td class="paramtype">Sym&#160;</td>
+          <td class="paramname"><em>plugin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="driver_8cpp_source.html#l00091">91</a> of file <a class="el" href="driver_8cpp_source.html">driver.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="dl_8cpp_source.html#l00036">thorin::dl::get()</a>, and <a class="el" href="util_8h_source.html#l00093">thorin::lookup()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="driver_8h_source.html#l00062">get_fun_ptr()</a>.</p>
+
+</div>
+</div>
+<a id="aff1196ae6675f4460752e11e4f3d7e8d" name="aff1196ae6675f4460752e11e4f3d7e8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff1196ae6675f4460752e11e4f3d7e8d">&#9670;&#160;</a></span>get_fun_ptr() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class F &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto thorin::Driver::get_fun_ptr </td>
+          <td>(</td>
+          <td class="paramtype">Sym&#160;</td>
+          <td class="paramname"><em>plugin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00062">62</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
+
+<p class="reference">References <a class="el" href="driver_8cpp_source.html#l00091">get_fun_ptr()</a>.</p>
 
 </div>
 </div>
@@ -453,7 +577,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="driver_8cpp_source.html#l00053">53</a> of file <a class="el" href="driver_8cpp_source.html">driver.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="util_8h_source.html#l00102">thorin::assert_emplace()</a>, <a class="el" href="dl_8cpp_source.html#l00063">thorin::dl::close()</a>, <a class="el" href="def_8h_source.html#l00543">thorin::error()</a>, <a class="el" href="dl_8cpp_source.html#l00044">thorin::dl::get()</a>, <a class="el" href="log_8h_source.html#l00086">ILOG</a>, <a class="el" href="driver_8h_source.html#l00060">is_loaded()</a>, <a class="el" href="dl_8cpp_source.html#l00025">thorin::dl::open()</a>, <a class="el" href="driver_8h_source.html#l00036">search_paths()</a>, <a class="el" href="namespacethorin.html#a3cc8a1ed7b039e8a6bfccdbcb9514633">thorin::thorin_get_plugin()</a>, and <a class="el" href="log_8h_source.html#l00085">WLOG</a>.</p>
+<p class="reference">References <a class="el" href="util_8h_source.html#l00102">thorin::assert_emplace()</a>, <a class="el" href="dl_8cpp_source.html#l00055">thorin::dl::close()</a>, <a class="el" href="def_8h_source.html#l00543">thorin::error()</a>, <a class="el" href="dl_8cpp_source.html#l00036">thorin::dl::get()</a>, <a class="el" href="log_8h_source.html#l00086">ILOG</a>, <a class="el" href="driver_8h_source.html#l00060">is_loaded()</a>, <a class="el" href="dl_8cpp_source.html#l00017">thorin::dl::open()</a>, <a class="el" href="driver_8h_source.html#l00036">search_paths()</a>, <a class="el" href="namespacethorin.html#a3cc8a1ed7b039e8a6bfccdbcb9514633">thorin::thorin_get_plugin()</a>, and <a class="el" href="log_8h_source.html#l00085">WLOG</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="parser_8cpp_source.html#l00072">thorin::Parser::plugin()</a>.</p>
 
@@ -526,7 +650,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="driver_8cpp_source.html#l00091">91</a> of file <a class="el" href="driver_8cpp_source.html">driver.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver_8cpp_source.html#l00096">96</a> of file <a class="el" href="driver_8cpp_source.html">driver.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00543">thorin::error()</a>.</p>
 
@@ -556,7 +680,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00067">67</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00074">74</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
 
 <p class="reference">References <a class="el" href="driver_8h_source.html#l00023">flags()</a>, and <a class="el" href="util_8h_source.html#l00093">thorin::lookup()</a>.</p>
 
@@ -602,11 +726,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00068">68</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00075">75</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
 
-<p class="reference">References <a class="el" href="driver_8h_source.html#l00068">normalizer()</a>.</p>
+<p class="reference">References <a class="el" href="driver_8h_source.html#l00075">normalizer()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="driver_8h_source.html#l00068">normalizer()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="driver_8h_source.html#l00075">normalizer()</a>.</p>
 
 </div>
 </div>
@@ -634,7 +758,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00066">66</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00073">73</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
 
 <p class="reference">References <a class="el" href="driver_8h_source.html#l00023">flags()</a>, and <a class="el" href="util_8h_source.html#l00093">thorin::lookup()</a>.</p>
 
@@ -666,7 +790,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00074">74</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="driver_8h_source.html#l00081">81</a> of file <a class="el" href="driver_8h_source.html">driver.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="bootstrap_8cpp_source.html#l00011">thorin::bootstrap()</a>.</p>
 

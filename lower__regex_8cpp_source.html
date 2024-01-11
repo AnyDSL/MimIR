@@ -120,24 +120,24 @@ $(document).ready(function(){initNavTree('lower__regex_8cpp_source.html',''); in
 <div class="contents">
 <a href="lower__regex_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="lower__regex_8h.html">thorin/plug/regex/pass/lower_regex.h</a>&quot;</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;<a class="code" href="def_8h.html">thorin/def.h</a>&gt;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;<a class="code" href="core_8h.html">thorin/plug/core/core.h</a>&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;<a class="code" href="direct_8h.html">thorin/plug/direct/direct.h</a>&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;<a class="code" href="mem_8h.html">thorin/plug/mem/mem.h</a>&gt;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;automaton/dfa.h&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;automaton/dfamin.h&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;automaton/nfa2dfa.h&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;<a class="code" href="def_8h.html">thorin/def.h</a>&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;<a class="code" href="regex_2autogen_8h.html">thorin/plug/regex/autogen.h</a>&quot;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="dfa_8h.html">thorin/plug/regex/automaton/dfa.h</a>&quot;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="dfamin_8h.html">thorin/plug/regex/automaton/dfamin.h</a>&quot;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="nfa2dfa_8h.html">thorin/plug/regex/automaton/nfa2dfa.h</a>&quot;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="dfa2matcher_8h.html">thorin/plug/regex/pass/dfa2matcher.h</a>&quot;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="regex2nfa_8h.html">thorin/plug/regex/pass/regex2nfa.h</a>&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;<a class="code" href="core_8h.html">thorin/plug/core/core.h</a>&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;<a class="code" href="direct_8h.html">thorin/plug/direct/direct.h</a>&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;<a class="code" href="mem_8h.html">thorin/plug/mem/mem.h</a>&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="regex_2autogen_8h.html">thorin/plug/regex/autogen.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="dfa2matcher_8h.html">thorin/plug/regex/dfa2matcher.h</a>&quot;</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="regex_8h.html">thorin/plug/regex/regex.h</a>&quot;</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin_1_1plug_1_1regex.html">thorin::plug::regex</a> {</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">namespace </span>{</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="regex2nfa_8h.html">thorin/plug/regex/regex2nfa.h</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin_1_1plug_1_1regex.html">thorin::plug::regex</a> {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">namespace </span>{</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>Ref wrap_in_cps2ds(Ref callee) { <span class="keywordflow">return</span> <a class="code hl_function" href="namespacethorin_1_1plug_1_1direct.html#a9a56573df7cfebdfde8d08c82d23d677">direct::op_cps2ds_dep</a>(callee); }</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>} <span class="comment">// namespace</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
@@ -153,11 +153,11 @@ $(document).ready(function(){initNavTree('lower__regex_8cpp_source.html',''); in
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>            <span class="keyword">auto</span> nfa     = <a class="code hl_function" href="namespacethorin_1_1plug_1_1regex.html#a88f759485137165f8113f06d3c40a86c">regex2nfa</a>(callee);</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>            def-&gt;<a class="code hl_function" href="classthorin_1_1Def.html#affc2d40fbec3022f7b253bd14358dfe2">world</a>().DLOG(<span class="stringliteral">&quot;nfa: {}&quot;</span>, *nfa);</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>            <span class="keyword">auto</span> dfa = <a class="code hl_function" href="namespacethorin_1_1automaton.html#a5d8446006e47ced95eccc7d5c617604e">automaton::nfa2dfa</a>(*nfa);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>            <span class="keyword">auto</span> dfa = automaton::nfa2dfa(*nfa);</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>            def-&gt;<a class="code hl_function" href="classthorin_1_1Def.html#affc2d40fbec3022f7b253bd14358dfe2">world</a>().DLOG(<span class="stringliteral">&quot;dfa: {}&quot;</span>, *dfa);</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            <span class="keyword">auto</span> min_dfa = <a class="code hl_function" href="namespacethorin_1_1automaton.html#a8b1d70fce1af0cc3811385656b023c9b">automaton::minimize_dfa</a>(*dfa);</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            new_app      = wrap_in_cps2ds(<a class="code hl_function" href="namespacethorin_1_1plug_1_1regex.html#a8bc2078d859f62759f09a89c039cee91">regex::dfa2matcher</a>(def-&gt;<a class="code hl_function" href="classthorin_1_1Def.html#affc2d40fbec3022f7b253bd14358dfe2">world</a>(), *min_dfa, n));</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            <span class="keyword">auto</span> min_dfa = automaton::minimize_dfa(*dfa);</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            new_app      = wrap_in_cps2ds(<a class="code hl_function" href="dfa2matcher_8h.html#a86f7a4e93e5991813ed2c39cf23b36b4">dfa2matcher</a>(def-&gt;<a class="code hl_function" href="classthorin_1_1Def.html#affc2d40fbec3022f7b253bd14358dfe2">world</a>(), *min_dfa, n));</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        }</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    }</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
@@ -174,18 +174,13 @@ $(document).ready(function(){initNavTree('lower__regex_8cpp_source.html',''); in
 <div class="ttc" id="acore_8h_html"><div class="ttname"><a href="core_8h.html">core.h</a></div></div>
 <div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
 <div class="ttc" id="adfa2matcher_8h_html"><div class="ttname"><a href="dfa2matcher_8h.html">dfa2matcher.h</a></div></div>
-<div class="ttc" id="adfa_8h_html"><div class="ttname"><a href="dfa_8h.html">dfa.h</a></div></div>
-<div class="ttc" id="adfamin_8h_html"><div class="ttname"><a href="dfamin_8h.html">dfamin.h</a></div></div>
+<div class="ttc" id="adfa2matcher_8h_html_a86f7a4e93e5991813ed2c39cf23b36b4"><div class="ttname"><a href="dfa2matcher_8h.html#a86f7a4e93e5991813ed2c39cf23b36b4">dfa2matcher</a></div><div class="ttdeci">THORIN_EXPORT const thorin::Def * dfa2matcher(thorin::World &amp;, const automaton::DFA &amp;, thorin::Ref)</div><div class="ttdoc">You can dl::get this function.</div></div>
 <div class="ttc" id="adirect_8h_html"><div class="ttname"><a href="direct_8h.html">direct.h</a></div></div>
 <div class="ttc" id="alower__regex_8h_html"><div class="ttname"><a href="lower__regex_8h.html">lower_regex.h</a></div></div>
 <div class="ttc" id="amem_8h_html"><div class="ttname"><a href="mem_8h.html">mem.h</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1automaton_html_a5d8446006e47ced95eccc7d5c617604e"><div class="ttname"><a href="namespacethorin_1_1automaton.html#a5d8446006e47ced95eccc7d5c617604e">thorin::automaton::nfa2dfa</a></div><div class="ttdeci">std::unique_ptr&lt; DFA &gt; nfa2dfa(const NFA &amp;nfa)</div><div class="ttdef"><b>Definition</b> <a href="nfa2dfa_8cpp_source.html#l00033">nfa2dfa.cpp:33</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1automaton_html_a8b1d70fce1af0cc3811385656b023c9b"><div class="ttname"><a href="namespacethorin_1_1automaton.html#a8b1d70fce1af0cc3811385656b023c9b">thorin::automaton::minimize_dfa</a></div><div class="ttdeci">std::unique_ptr&lt; DFA &gt; minimize_dfa(const DFA &amp;dfa)</div><div class="ttdef"><b>Definition</b> <a href="dfamin_8cpp_source.html#l00114">dfamin.cpp:114</a></div></div>
 <div class="ttc" id="anamespacethorin_1_1plug_1_1direct_html_a9a56573df7cfebdfde8d08c82d23d677"><div class="ttname"><a href="namespacethorin_1_1plug_1_1direct.html#a9a56573df7cfebdfde8d08c82d23d677">thorin::plug::direct::op_cps2ds_dep</a></div><div class="ttdeci">const Def * op_cps2ds_dep(const Def *f)</div><div class="ttdef"><b>Definition</b> <a href="direct_8h_source.html#l00013">direct.h:13</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1plug_1_1regex_html"><div class="ttname"><a href="namespacethorin_1_1plug_1_1regex.html">thorin::plug::regex</a></div><div class="ttdoc">The regex Plugin</div><div class="ttdef"><b>Definition</b> <a href="dfa2matcher_8h_source.html#l00007">dfa2matcher.h:7</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1plug_1_1regex_html"><div class="ttname"><a href="namespacethorin_1_1plug_1_1regex.html">thorin::plug::regex</a></div><div class="ttdoc">The regex Plugin</div><div class="ttdef"><b>Definition</b> <a href="lower__regex_8h_source.html#l00005">lower_regex.h:5</a></div></div>
 <div class="ttc" id="anamespacethorin_1_1plug_1_1regex_html_a88f759485137165f8113f06d3c40a86c"><div class="ttname"><a href="namespacethorin_1_1plug_1_1regex.html#a88f759485137165f8113f06d3c40a86c">thorin::plug::regex::regex2nfa</a></div><div class="ttdeci">std::unique_ptr&lt; automaton::NFA &gt; regex2nfa(Ref regex)</div><div class="ttdef"><b>Definition</b> <a href="regex2nfa_8cpp_source.html#l00089">regex2nfa.cpp:89</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1plug_1_1regex_html_a8bc2078d859f62759f09a89c039cee91"><div class="ttname"><a href="namespacethorin_1_1plug_1_1regex.html#a8bc2078d859f62759f09a89c039cee91">thorin::plug::regex::dfa2matcher</a></div><div class="ttdeci">Ref dfa2matcher(World &amp;w, const automaton::DFA &amp;dfa, Ref n)</div><div class="ttdef"><b>Definition</b> <a href="dfa2matcher_8cpp_source.html#l00095">dfa2matcher.cpp:95</a></div></div>
-<div class="ttc" id="anfa2dfa_8h_html"><div class="ttname"><a href="nfa2dfa_8h.html">nfa2dfa.h</a></div></div>
 <div class="ttc" id="aregex2nfa_8h_html"><div class="ttname"><a href="regex2nfa_8h.html">regex2nfa.h</a></div></div>
 <div class="ttc" id="aregex_2autogen_8h_html"><div class="ttname"><a href="regex_2autogen_8h.html">autogen.h</a></div></div>
 <div class="ttc" id="aregex_8h_html"><div class="ttname"><a href="regex_8h.html">regex.h</a></div></div>

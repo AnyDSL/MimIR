@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: plugins/regex/src/thorin/plug/regex/pass/dfa2matcher.cpp File Reference</title>
+<title>Thorin: plugins/regex/src/thorin/plug/regex/dfa2matcher.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -111,19 +111,19 @@ $(document).ready(function(){initNavTree('dfa2matcher_8cpp.html',''); initResiza
 
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">dfa2matcher.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="dfa2matcher_8h_source.html">thorin/plug/regex/pass/dfa2matcher.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="dfa2matcher_8h_source.html">thorin/plug/regex/dfa2matcher.h</a>&quot;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;sstream&gt;</code><br />
 <code>#include &lt;absl/container/flat_hash_map.h&gt;</code><br />
+<code>#include &lt;automaton/dfa.h&gt;</code><br />
+<code>#include &lt;automaton/range_helper.h&gt;</code><br />
 <code>#include &lt;<a class="el" href="core_8h_source.html">thorin/plug/core/core.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="mem_8h_source.html">thorin/plug/mem/mem.h</a>&gt;</code><br />
-<code>#include &quot;<a class="el" href="dfa_8h_source.html">thorin/plug/regex/automaton/dfa.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="range__helper_8h_source.html">thorin/plug/regex/range_helper.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for dfa2matcher.cpp:</div>
 <div class="dyncontent">
@@ -132,27 +132,96 @@ Include dependency graph for dfa2matcher.cpp:</div>
 </div>
 <p><a href="dfa2matcher_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
-Namespaces</h2></td></tr>
-<tr class="memitem:namespacethorin" id="r_namespacethorin"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html">thorin</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacethorin_1_1plug" id="r_namespacethorin_1_1plug"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1plug.html">thorin::plug</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacethorin_1_1plug_1_1regex" id="r_namespacethorin_1_1plug_1_1regex"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1plug_1_1regex.html">thorin::plug::regex</a></td></tr>
-<tr class="memdesc:namespacethorin_1_1plug_1_1regex"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="regex.html">The regex Plugin</a> <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a929a326a16b0a4c9d2e277325e556017" id="r_a929a326a16b0a4c9d2e277325e556017"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dfa2matcher_8cpp.html#a929a326a16b0a4c9d2e277325e556017">Range</a> = automaton::Range</td></tr>
+<tr class="separator:a929a326a16b0a4c9d2e277325e556017"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ff3b970b6c517a4075f8071ffac2e5a" id="r_a9ff3b970b6c517a4075f8071ffac2e5a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dfa2matcher_8cpp.html#a9ff3b970b6c517a4075f8071ffac2e5a">Ranges</a> = <a class="el" href="classthorin_1_1Vector.html">Vector</a>&lt; <a class="el" href="dfa2matcher_8cpp.html#a929a326a16b0a4c9d2e277325e556017">Range</a> &gt;</td></tr>
+<tr class="separator:a9ff3b970b6c517a4075f8071ffac2e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a8bc2078d859f62759f09a89c039cee91" id="r_a8bc2078d859f62759f09a89c039cee91"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1plug_1_1regex.html#a8bc2078d859f62759f09a89c039cee91">thorin::plug::regex::dfa2matcher</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;<a class="el" href="namespacethorin_1_1plug_1_1regex.html#a4fa69f360d13c15835d1af06c89bb025abad36bdf0b4663a7156a45c27f491800">w</a>, const <a class="el" href="classthorin_1_1automaton_1_1DFA.html">automaton::DFA</a> &amp;dfa, <a class="el" href="classthorin_1_1Ref.html">Ref</a> n)</td></tr>
-<tr class="separator:a8bc2078d859f62759f09a89c039cee91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39507cdaa298481617eeda783bf1ad36" id="r_a39507cdaa298481617eeda783bf1ad36"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dfa2matcher_8cpp.html#a39507cdaa298481617eeda783bf1ad36">dfa2matcher</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;w, const DFA &amp;dfa, <a class="el" href="classthorin_1_1Ref.html">Ref</a> n)</td></tr>
+<tr class="separator:a39507cdaa298481617eeda783bf1ad36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="a929a326a16b0a4c9d2e277325e556017" name="a929a326a16b0a4c9d2e277325e556017"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a929a326a16b0a4c9d2e277325e556017">&#9670;&#160;</a></span>Range</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="dfa2matcher_8cpp.html#a929a326a16b0a4c9d2e277325e556017">Range</a> =  automaton::Range</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dfa2matcher_8cpp_source.html#l00016">16</a> of file <a class="el" href="dfa2matcher_8cpp_source.html">dfa2matcher.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a9ff3b970b6c517a4075f8071ffac2e5a" name="a9ff3b970b6c517a4075f8071ffac2e5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ff3b970b6c517a4075f8071ffac2e5a">&#9670;&#160;</a></span>Ranges</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="dfa2matcher_8cpp.html#a9ff3b970b6c517a4075f8071ffac2e5a">Ranges</a> =  <a class="el" href="classthorin_1_1Vector.html">Vector</a>&lt;<a class="el" href="dfa2matcher_8cpp.html#a929a326a16b0a4c9d2e277325e556017">Range</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dfa2matcher_8cpp_source.html#l00017">17</a> of file <a class="el" href="dfa2matcher_8cpp_source.html">dfa2matcher.cpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a39507cdaa298481617eeda783bf1ad36" name="a39507cdaa298481617eeda783bf1ad36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39507cdaa298481617eeda783bf1ad36">&#9670;&#160;</a></span>dfa2matcher()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classthorin_1_1Def.html">Def</a> * dfa2matcher </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const DFA &amp;&#160;</td>
+          <td class="paramname"><em>dfa</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dfa2matcher_8cpp_source.html#l00095">95</a> of file <a class="el" href="dfa2matcher_8cpp_source.html">dfa2matcher.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="def_8h_source.html#l00543">thorin::error()</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_38c8d24aef3972a7f87b834274e76e31.html">plugins</a></li><li class="navelem"><a class="el" href="dir_653db1a8967a984455d151fd23b82bee.html">regex</a></li><li class="navelem"><a class="el" href="dir_c85624908c155567564756c4a3023a1a.html">src</a></li><li class="navelem"><a class="el" href="dir_6b85df1feb3af7f029e07d8b58de70df.html">thorin</a></li><li class="navelem"><a class="el" href="dir_91145aef34df84b311ff7323d92d4b31.html">plug</a></li><li class="navelem"><a class="el" href="dir_60d98b97d446600e1e01eda956dfce57.html">regex</a></li><li class="navelem"><a class="el" href="dir_f06f9ac08b1b19ccc911943b8a0ee47b.html">pass</a></li><li class="navelem"><a class="el" href="dfa2matcher_8cpp.html">dfa2matcher.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_38c8d24aef3972a7f87b834274e76e31.html">plugins</a></li><li class="navelem"><a class="el" href="dir_653db1a8967a984455d151fd23b82bee.html">regex</a></li><li class="navelem"><a class="el" href="dir_c85624908c155567564756c4a3023a1a.html">src</a></li><li class="navelem"><a class="el" href="dir_6b85df1feb3af7f029e07d8b58de70df.html">thorin</a></li><li class="navelem"><a class="el" href="dir_91145aef34df84b311ff7323d92d4b31.html">plug</a></li><li class="navelem"><a class="el" href="dir_60d98b97d446600e1e01eda956dfce57.html">regex</a></li><li class="navelem"><a class="el" href="dfa2matcher_8cpp.html">dfa2matcher.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

@@ -5,13 +5,6 @@ var annotated_dup =
       [ "tuple_size< thorin::Span< T, N > >", "structstd_1_1tuple__size_3_01thorin_1_1Span_3_01T_00_01N_01_4_01_4.html", null ]
     ] ],
     [ "thorin", "namespacethorin.html", [
-      [ "automaton", "namespacethorin_1_1automaton.html", [
-        [ "AutomatonBase", "classthorin_1_1automaton_1_1AutomatonBase.html", "classthorin_1_1automaton_1_1AutomatonBase" ],
-        [ "DFA", "classthorin_1_1automaton_1_1DFA.html", "classthorin_1_1automaton_1_1DFA" ],
-        [ "DFANode", "classthorin_1_1automaton_1_1DFANode.html", "classthorin_1_1automaton_1_1DFANode" ],
-        [ "NFA", "classthorin_1_1automaton_1_1NFA.html", "classthorin_1_1automaton_1_1NFA" ],
-        [ "NFANode", "classthorin_1_1automaton_1_1NFANode.html", "classthorin_1_1automaton_1_1NFANode" ]
-      ] ],
       [ "dot", "namespacethorin_1_1dot.html", [
         [ "BB", "namespacethorin_1_1dot.html#classthorin_1_1dot_1_1BB", null ],
         [ "Emitter", "classthorin_1_1dot_1_1Emitter.html", "classthorin_1_1dot_1_1Emitter" ]
@@ -65,8 +58,7 @@ var annotated_dup =
         ] ],
         [ "regex", "namespacethorin_1_1plug_1_1regex.html", [
           [ "app_range", "structthorin_1_1plug_1_1regex_1_1app__range.html", "structthorin_1_1plug_1_1regex_1_1app__range" ],
-          [ "LowerRegex", "classthorin_1_1plug_1_1regex_1_1LowerRegex.html", "classthorin_1_1plug_1_1regex_1_1LowerRegex" ],
-          [ "RangeCompare", "structthorin_1_1plug_1_1regex_1_1RangeCompare.html", "structthorin_1_1plug_1_1regex_1_1RangeCompare" ]
+          [ "LowerRegex", "classthorin_1_1plug_1_1regex_1_1LowerRegex.html", "classthorin_1_1plug_1_1regex_1_1LowerRegex" ]
         ] ]
       ] ],
       [ "Ac", "classthorin_1_1Ac.html", null ],

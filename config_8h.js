@@ -2,6 +2,7 @@ var config_8h =
 [
     [ "THORIN_ENABLE_CHECKS", "config_8h.html#ae68f424d43042d6f69a7e4a7fb88b7f3", null ],
     [ "THORIN_EXPORT", "config_8h.html#a479c17cabac34a4216996c05ffa7e071", null ],
+    [ "THORIN_IMPORT", "config_8h.html#ad5e0a524e9955c62d59933b8f87de374", null ],
     [ "THORIN_INSTALL_PREFIX", "config_8h.html#a22b17da0e6ab793e577fc023f0931fad", null ],
     [ "THORIN_VER", "config_8h.html#a48b9ff022258626cefa56e95d52941bd", null ],
     [ "THORIN_VER_MAJOR", "config_8h.html#a830951cda9629cd907315983cbf0e15d", null ],

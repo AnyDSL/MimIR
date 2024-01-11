@@ -79,6 +79,7 @@ var NAVTREE =
       [ "File Members", "globals.html", [
         [ "All", "globals.html", null ],
         [ "Functions", "globals_func.html", null ],
+        [ "Typedefs", "globals_type.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
     ] ]
@@ -88,28 +89,27 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "add__mem_8cpp.html",
-"classthorin_1_1BitSet.html#a539cd51f054c4e18e24f7d7438cb19ce",
-"classthorin_1_1Def.html#a6f406100fe49181de598b25e7db86802",
-"classthorin_1_1Emitter.html#a1b2cc456783e5646710c356e39007335",
-"classthorin_1_1IndexSet_1_1reference.html#a8d69407b62d6c65b58d6aa2e805df7be",
-"classthorin_1_1Nat.html",
-"classthorin_1_1Ptrn.html#a23a227174293865bc787c4cc17d0842c",
-"classthorin_1_1TBound.html#aaec6dcc7921f904fedea3350b2842407",
-"classthorin_1_1TuplePtrn.html#a8bbb785a7c314849a8c44e2daef2af34",
-"classthorin_1_1World.html#a8a967d54dd855289fc22067ff022b62b",
-"classthorin_1_1dot_1_1Emitter.html#ab39035b208a23eb8c830eba6b4ae4f27",
-"classthorin_1_1plug_1_1mem_1_1SSAConstr.html",
-"core_2autogen_8h.html#a4b25761ed6fb2e589d833a7851461130a047cc82abaefe4fdf55d03a2ea28243d",
-"demo_2autogen_8h.html",
-"dl_8h.html#a1eec4b2aa8b02ce48c612a2ba96ad6d5",
-"math_2autogen_8h.html#a0c790be7cddab436c92b6d1d97d252a8a11c8a5a3d1900be08a6bad5019a9ab75",
-"mem_2autogen_8h.html#a255e2e1dc9a2aa971f195aca2361b1f0",
-"namespacethorin.html#a9165ec577f7679ea2bec538390a0c484",
-"namespacethorin_1_1plug_1_1core.html",
-"namespacethorin_1_1plug_1_1math.html#a6fa926bce3b4fdca73a35a3e9ccf12d9a83ad537246c68235c2ff05142fd9c91c",
-"namespacethorin_1_1plug_1_1regex.html#a88f759485137165f8113f06d3c40a86c",
-"span_8h.html",
-"types_8h.html#a31d63af589b908d3c86842e24f045b9f"
+"classthorin_1_1BitSet.html#a61550b593b98cd4da283808a938890f7",
+"classthorin_1_1Def.html#a76c2aa6b2909a84ada5e69343cb9a93d",
+"classthorin_1_1Emitter.html#a018f9adb9376238128cce4669d89d4bd",
+"classthorin_1_1IndexSet_1_1reference.html#a52bf9f61e0ef808090a65e9b38b45fad",
+"classthorin_1_1Match.html#acd7bf0b3bc070ada86c41cf156bfc171",
+"classthorin_1_1Ptrn.html#a22deacf8659298bdc5ae2db6ff7592b9",
+"classthorin_1_1TBound.html#a9016e2d457e60291aa6f3ea46c49cf06",
+"classthorin_1_1TuplePtrn.html#a44bd0bc6b2ba6c06d8bd633abbcd6450",
+"classthorin_1_1World.html#a8a23141b3e08b7c5ef23fb5a7a52920c",
+"classthorin_1_1plug_1_1clos_1_1Clos2SJLJ.html#a472fd502f9d34c6071721d8b82a28838",
+"clos_2autogen_8h.html#a46ed6916bc1e8a5953976fcb97444c4e",
+"core_2autogen_8h.html#a7e0776b8ac284bab91c95d8b9eabe0cba9a798a37fd2e6aee74df9af1a79d17b8",
+"dir_4fef79e7177ba769987a8da36c892c5f.html",
+"functions_n.html",
+"math_2autogen_8h.html#a94f956d597c0f1a1b692f442afd41221abd1541a798ea0da70ad7e752f508a990",
+"namespacemembers_eval_v.html",
+"namespacethorin.html#af141911fca6aed350c7fb53ffcfa20a5",
+"namespacethorin_1_1plug_1_1core.html#a7e0776b8ac284bab91c95d8b9eabe0cba5ccc75a837dac078740af258424346f1",
+"namespacethorin_1_1plug_1_1math.html#ad6a1d8ea9aa774d46e5752bc24100a50",
+"refly_2autogen_8h.html#a70f6aff555560291d2f0bc64258b482e",
+"structthorin_1_1World_1_1Freezer.html#a1ae93854a3c0acf2114ceca36622b708"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

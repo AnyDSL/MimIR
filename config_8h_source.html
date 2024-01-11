@@ -131,9 +131,11 @@ $(document).ready(function(){initNavTree('config_8h_source.html',''); initResiza
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#ifdef _MSC_VER</span></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#define THORIN_EXPORT __declspec(dllexport)</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="config_8h.html#a479c17cabac34a4216996c05ffa7e071">   15</a></span><span class="preprocessor">#define THORIN_EXPORT __attribute__((visibility(&quot;default&quot;)))</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#define THORIN_IMPORT __declspec(dllimport)</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="config_8h.html#a479c17cabac34a4216996c05ffa7e071">   16</a></span><span class="preprocessor">#define THORIN_EXPORT __attribute__((visibility(&quot;default&quot;)))</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="config_8h.html#ad5e0a524e9955c62d59933b8f87de374">   17</a></span><span class="preprocessor">#define THORIN_IMPORT</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

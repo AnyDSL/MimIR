@@ -1,11 +1,10 @@
 var namespacethorin =
 [
-    [ "automaton", "namespacethorin_1_1automaton.html", "namespacethorin_1_1automaton" ],
     [ "dl", "namespacethorin_1_1dl.html", [
       [ "close", "namespacethorin_1_1dl.html#aa7026fc7143db82fe92f2eae107a1027", null ],
-      [ "extension", "namespacethorin_1_1dl.html#a974cb548b7ca48762ca7ee40e30b37b8", null ],
       [ "get", "namespacethorin_1_1dl.html#af539d6e872c753f49ee829dcb9f46f58", null ],
-      [ "open", "namespacethorin_1_1dl.html#a1eec4b2aa8b02ce48c612a2ba96ad6d5", null ]
+      [ "open", "namespacethorin_1_1dl.html#a1eec4b2aa8b02ce48c612a2ba96ad6d5", null ],
+      [ "extension", "namespacethorin_1_1dl.html#a9a7004ccce51cd628cf4287d703773e2", null ]
     ] ],
     [ "dot", "namespacethorin_1_1dot.html", "namespacethorin_1_1dot" ],
     [ "ll", "namespacethorin_1_1ll.html", "namespacethorin_1_1ll" ],

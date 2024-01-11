@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: plugins/regex/include/thorin/plug/regex/pass/dfa2matcher.h Source File</title>
+<title>Thorin: plugins/regex/include/thorin/plug/regex/dfa2matcher.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -120,29 +120,24 @@ $(document).ready(function(){initNavTree('dfa2matcher_8h_source.html',''); initR
 <div class="contents">
 <a href="dfa2matcher_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;<a class="code" href="world_8h.html">thorin/world.h</a>&gt;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;automaton/dfa.h&gt;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="dfa_8h.html">thorin/plug/regex/automaton/dfa.h</a>&quot;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="foldopen" id="foldopen00007" data-start="{" data-end="}">
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="namespacethorin_1_1plug_1_1regex.html">    7</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin_1_1plug_1_1regex.html">thorin::plug::regex</a> {</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><a class="code hl_class" href="classthorin_1_1Ref.html">Ref</a> <a class="code hl_function" href="namespacethorin_1_1plug_1_1regex.html#a8bc2078d859f62759f09a89c039cee91">dfa2matcher</a>(<a class="code hl_class" href="classthorin_1_1World.html">World</a>&amp; <a class="code hl_enumvalue" href="namespacethorin_1_1plug_1_1regex.html#a4fa69f360d13c15835d1af06c89bb025abad36bdf0b4663a7156a45c27f491800">w</a>, <span class="keyword">const</span> <a class="code hl_class" href="classthorin_1_1automaton_1_1DFA.html">automaton::DFA</a>&amp; dfa, <a class="code hl_class" href="classthorin_1_1Ref.html">Ref</a> n);</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>} <span class="comment">// namespace thorin::plug::regex</span></div>
-</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="regex_8h.html">thorin/plug/regex/regex.h</a>&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"></span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">/// You can dl::get this function.</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="dfa2matcher_8h.html#a86f7a4e93e5991813ed2c39cf23b36b4">    8</a></span><span class="comment"></span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> <a class="code hl_define" href="config_8h.html#a479c17cabac34a4216996c05ffa7e071">THORIN_EXPORT</a> <span class="keyword">const</span> <a class="code hl_class" href="classthorin_1_1Def.html">thorin::Def</a>* <a class="code hl_function" href="dfa2matcher_8h.html#a86f7a4e93e5991813ed2c39cf23b36b4">dfa2matcher</a>(<a class="code hl_class" href="classthorin_1_1World.html">thorin::World</a>&amp;, <span class="keyword">const</span> automaton::DFA&amp;, <a class="code hl_class" href="classthorin_1_1Ref.html">thorin::Ref</a>);</div>
+<div class="ttc" id="aclassthorin_1_1Def_html"><div class="ttname"><a href="classthorin_1_1Def.html">thorin::Def</a></div><div class="ttdoc">Base class for all Defs.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00207">def.h:207</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Ref_html"><div class="ttname"><a href="classthorin_1_1Ref.html">thorin::Ref</a></div><div class="ttdoc">Helper class to retrieve Infer::arg if present.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00078">def.h:78</a></div></div>
 <div class="ttc" id="aclassthorin_1_1World_html"><div class="ttname"><a href="classthorin_1_1World.html">thorin::World</a></div><div class="ttdoc">The World represents the whole program and manages creation of Thorin nodes (Defs).</div><div class="ttdef"><b>Definition</b> <a href="world_8h_source.html#l00035">world.h:35</a></div></div>
-<div class="ttc" id="aclassthorin_1_1automaton_1_1DFA_html"><div class="ttname"><a href="classthorin_1_1automaton_1_1DFA.html">thorin::automaton::DFA</a></div><div class="ttdef"><b>Definition</b> <a href="dfa_8h_source.html#l00053">dfa.h:53</a></div></div>
-<div class="ttc" id="adfa_8h_html"><div class="ttname"><a href="dfa_8h.html">dfa.h</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1plug_1_1regex_html"><div class="ttname"><a href="namespacethorin_1_1plug_1_1regex.html">thorin::plug::regex</a></div><div class="ttdoc">The regex Plugin</div><div class="ttdef"><b>Definition</b> <a href="dfa2matcher_8h_source.html#l00007">dfa2matcher.h:7</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1plug_1_1regex_html_a4fa69f360d13c15835d1af06c89bb025abad36bdf0b4663a7156a45c27f491800"><div class="ttname"><a href="namespacethorin_1_1plug_1_1regex.html#a4fa69f360d13c15835d1af06c89bb025abad36bdf0b4663a7156a45c27f491800">thorin::plug::regex::w</a></div><div class="ttdeci">@ w</div><div class="ttdef"><b>Definition</b> <a href="regex_2autogen_8h_source.html#l00080">autogen.h:80</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1plug_1_1regex_html_a8bc2078d859f62759f09a89c039cee91"><div class="ttname"><a href="namespacethorin_1_1plug_1_1regex.html#a8bc2078d859f62759f09a89c039cee91">thorin::plug::regex::dfa2matcher</a></div><div class="ttdeci">Ref dfa2matcher(World &amp;w, const automaton::DFA &amp;dfa, Ref n)</div><div class="ttdef"><b>Definition</b> <a href="dfa2matcher_8cpp_source.html#l00095">dfa2matcher.cpp:95</a></div></div>
-<div class="ttc" id="aworld_8h_html"><div class="ttname"><a href="world_8h.html">world.h</a></div></div>
+<div class="ttc" id="aconfig_8h_html_a479c17cabac34a4216996c05ffa7e071"><div class="ttname"><a href="config_8h.html#a479c17cabac34a4216996c05ffa7e071">THORIN_EXPORT</a></div><div class="ttdeci">#define THORIN_EXPORT</div><div class="ttdef"><b>Definition</b> <a href="config_8h_source.html#l00016">config.h:16</a></div></div>
+<div class="ttc" id="adfa2matcher_8h_html_a86f7a4e93e5991813ed2c39cf23b36b4"><div class="ttname"><a href="dfa2matcher_8h.html#a86f7a4e93e5991813ed2c39cf23b36b4">dfa2matcher</a></div><div class="ttdeci">THORIN_EXPORT const thorin::Def * dfa2matcher(thorin::World &amp;, const automaton::DFA &amp;, thorin::Ref)</div><div class="ttdoc">You can dl::get this function.</div></div>
+<div class="ttc" id="aregex_8h_html"><div class="ttname"><a href="regex_8h.html">regex.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_38c8d24aef3972a7f87b834274e76e31.html">plugins</a></li><li class="navelem"><a class="el" href="dir_653db1a8967a984455d151fd23b82bee.html">regex</a></li><li class="navelem"><a class="el" href="dir_7f4094b6248fd07287066a82f22216f7.html">include</a></li><li class="navelem"><a class="el" href="dir_76a0fd41eeca668ef1de3c1a80a8d7a6.html">thorin</a></li><li class="navelem"><a class="el" href="dir_36b34e3361aa123bc10796f02e33fb1f.html">plug</a></li><li class="navelem"><a class="el" href="dir_cee877460e335e0b3a15f54c682e07a3.html">regex</a></li><li class="navelem"><a class="el" href="dir_49b330af30c691285533e26621be87bc.html">pass</a></li><li class="navelem"><a class="el" href="dfa2matcher_8h.html">dfa2matcher.h</a></li>
+    <li class="navelem"><a class="el" href="dir_38c8d24aef3972a7f87b834274e76e31.html">plugins</a></li><li class="navelem"><a class="el" href="dir_653db1a8967a984455d151fd23b82bee.html">regex</a></li><li class="navelem"><a class="el" href="dir_7f4094b6248fd07287066a82f22216f7.html">include</a></li><li class="navelem"><a class="el" href="dir_76a0fd41eeca668ef1de3c1a80a8d7a6.html">thorin</a></li><li class="navelem"><a class="el" href="dir_36b34e3361aa123bc10796f02e33fb1f.html">plug</a></li><li class="navelem"><a class="el" href="dir_cee877460e335e0b3a15f54c682e07a3.html">regex</a></li><li class="navelem"><a class="el" href="dfa2matcher_8h.html">dfa2matcher.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

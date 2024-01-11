@@ -10,8 +10,5 @@ var searchData=
   ['autodiffeval_7',['AutoDiffEval',['../classthorin_1_1plug_1_1autodiff_1_1AutoDiffEval.html',1,'thorin::plug::autodiff']]],
   ['autodiffzero_8',['AutoDiffZero',['../classthorin_1_1plug_1_1autodiff_1_1AutoDiffZero.html',1,'thorin::plug::autodiff']]],
   ['autodiffzerocleanup_9',['AutoDiffZeroCleanup',['../classthorin_1_1plug_1_1autodiff_1_1AutoDiffZeroCleanup.html',1,'thorin::plug::autodiff']]],
-  ['automatonbase_10',['AutomatonBase',['../classthorin_1_1automaton_1_1AutomatonBase.html',1,'thorin::automaton']]],
-  ['automatonbase_3c_20dfanode_20_3e_11',['AutomatonBase&lt; DFANode &gt;',['../classthorin_1_1automaton_1_1AutomatonBase.html',1,'thorin::automaton']]],
-  ['automatonbase_3c_20nfanode_20_3e_12',['AutomatonBase&lt; NFANode &gt;',['../classthorin_1_1automaton_1_1AutomatonBase.html',1,'thorin::automaton']]],
-  ['axiom_13',['Axiom',['../classthorin_1_1Axiom.html',1,'thorin']]]
+  ['axiom_10',['Axiom',['../classthorin_1_1Axiom.html',1,'thorin']]]
 ];

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: plugins/regex/include/thorin/plug/regex/pass/regex2nfa.h File Reference</title>
+<title>Thorin: plugins/regex/include/thorin/plug/regex/regex2nfa.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -116,7 +116,7 @@ $(document).ready(function(){initNavTree('regex2nfa_8h.html',''); initResizable(
   <div class="headertitle"><div class="title">regex2nfa.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="nfa_8h_source.html">thorin/plug/regex/automaton/nfa.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &lt;automaton/nfa.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="regex_8h_source.html">thorin/plug/regex/regex.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for regex2nfa.h:</div>
@@ -126,7 +126,7 @@ Include dependency graph for regex2nfa.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="regex2nfa_8h__dep__incl.svg" width="438" height="168"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="regex2nfa_8h__dep__incl.svg" width="403" height="154"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="regex2nfa_8h_source.html">Go to the source code of this file.</a></p>
@@ -143,15 +143,46 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a88f759485137165f8113f06d3c40a86c" id="r_a88f759485137165f8113f06d3c40a86c"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classthorin_1_1automaton_1_1NFA.html">automaton::NFA</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1plug_1_1regex.html#a88f759485137165f8113f06d3c40a86c">thorin::plug::regex::regex2nfa</a> (<a class="el" href="classthorin_1_1Ref.html">Ref</a> regex)</td></tr>
+<tr class="memitem:a703b230096d8100c2668e27569a4c723" id="r_a703b230096d8100c2668e27569a4c723"><td class="memItemLeft" align="right" valign="top"><a class="el" href="config_8h.html#a479c17cabac34a4216996c05ffa7e071">THORIN_EXPORT</a> automaton::NFA *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="regex2nfa_8h.html#a703b230096d8100c2668e27569a4c723">regex2nfa</a> (<a class="el" href="classthorin_1_1Ref.html">thorin::Ref</a> regex)</td></tr>
+<tr class="memdesc:a703b230096d8100c2668e27569a4c723"><td class="mdescLeft">&#160;</td><td class="mdescRight">You can dl::get this function.  <br /></td></tr>
+<tr class="separator:a703b230096d8100c2668e27569a4c723"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88f759485137165f8113f06d3c40a86c" id="r_a88f759485137165f8113f06d3c40a86c"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; automaton::NFA &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1plug_1_1regex.html#a88f759485137165f8113f06d3c40a86c">thorin::plug::regex::regex2nfa</a> (<a class="el" href="classthorin_1_1Ref.html">Ref</a> regex)</td></tr>
 <tr class="separator:a88f759485137165f8113f06d3c40a86c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f28ff765da012e73b6ffc200820a60a" id="r_a1f28ff765da012e73b6ffc200820a60a"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; automaton::NFA &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1plug_1_1regex.html#a1f28ff765da012e73b6ffc200820a60a">thorin::plug::regex::regex2nfa</a> (decltype(::regex2nfa) *fptr, <a class="el" href="classthorin_1_1Ref.html">Ref</a> regex)</td></tr>
+<tr class="separator:a1f28ff765da012e73b6ffc200820a60a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a703b230096d8100c2668e27569a4c723" name="a703b230096d8100c2668e27569a4c723"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a703b230096d8100c2668e27569a4c723">&#9670;&#160;</a></span>regex2nfa()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="config_8h.html#a479c17cabac34a4216996c05ffa7e071">THORIN_EXPORT</a> automaton::NFA * regex2nfa </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1Ref.html">thorin::Ref</a>&#160;</td>
+          <td class="paramname"><em>regex</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>You can dl::get this function. </p>
+<dl class="section return"><dt>Returns</dt><dd>a raw pointer to automanton::NFA; use thorin::regex::regex2nfa to pack it into a <code>std::unique_ptr</code>. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="regex2nfa_8cpp_source.html#l00097">97</a> of file <a class="el" href="regex2nfa_8cpp_source.html">regex2nfa.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="regex2nfa_8cpp_source.html#l00089">thorin::plug::regex::regex2nfa()</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_38c8d24aef3972a7f87b834274e76e31.html">plugins</a></li><li class="navelem"><a class="el" href="dir_653db1a8967a984455d151fd23b82bee.html">regex</a></li><li class="navelem"><a class="el" href="dir_7f4094b6248fd07287066a82f22216f7.html">include</a></li><li class="navelem"><a class="el" href="dir_76a0fd41eeca668ef1de3c1a80a8d7a6.html">thorin</a></li><li class="navelem"><a class="el" href="dir_36b34e3361aa123bc10796f02e33fb1f.html">plug</a></li><li class="navelem"><a class="el" href="dir_cee877460e335e0b3a15f54c682e07a3.html">regex</a></li><li class="navelem"><a class="el" href="dir_49b330af30c691285533e26621be87bc.html">pass</a></li><li class="navelem"><a class="el" href="regex2nfa_8h.html">regex2nfa.h</a></li>
+    <li class="navelem"><a class="el" href="dir_38c8d24aef3972a7f87b834274e76e31.html">plugins</a></li><li class="navelem"><a class="el" href="dir_653db1a8967a984455d151fd23b82bee.html">regex</a></li><li class="navelem"><a class="el" href="dir_7f4094b6248fd07287066a82f22216f7.html">include</a></li><li class="navelem"><a class="el" href="dir_76a0fd41eeca668ef1de3c1a80a8d7a6.html">thorin</a></li><li class="navelem"><a class="el" href="dir_36b34e3361aa123bc10796f02e33fb1f.html">plug</a></li><li class="navelem"><a class="el" href="dir_cee877460e335e0b3a15f54c682e07a3.html">regex</a></li><li class="navelem"><a class="el" href="regex2nfa_8h.html">regex2nfa.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

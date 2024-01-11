@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['w_0',['w',['../structthorin_1_1plug_1_1regex_1_1app__range.html#a47cb7651b016108cbad3c9a81df89c2d',1,'thorin::plug::regex::app_range::w'],['../namespacethorin_1_1plug_1_1regex.html#a4fa69f360d13c15835d1af06c89bb025a123611b18dfc573259ce0c3ab1caf775',1,'thorin::plug::regex::W'],['../namespacethorin_1_1plug_1_1regex.html#a4fa69f360d13c15835d1af06c89bb025abad36bdf0b4663a7156a45c27f491800',1,'thorin::plug::regex::w']]],
+  ['w_0',['w',['../structthorin_1_1plug_1_1regex_1_1app__range.html#a47cb7651b016108cbad3c9a81df89c2d',1,'thorin::plug::regex::app_range::w'],['../namespacethorin_1_1plug_1_1regex.html#a4fa69f360d13c15835d1af06c89bb025abad36bdf0b4663a7156a45c27f491800',1,'thorin::plug::regex::w'],['../namespacethorin_1_1plug_1_1regex.html#a4fa69f360d13c15835d1af06c89bb025a123611b18dfc573259ce0c3ab1caf775',1,'thorin::plug::regex::W']]],
   ['w_20o_20side_20effects_1',['Operations w/o Side Effects',['../mem.html#autotoc_md193',1,'']]],
   ['w_20o_20subtags_2',['w/o Subtags',['../dev.html#autotoc_md22',1,'']]],
   ['w_20side_20effects_3',['Operations w/ Side Effects',['../mem.html#autotoc_md184',1,'']]],
