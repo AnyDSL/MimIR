@@ -9,11 +9,11 @@ endif()
 function(add_thorin_plugin)
     set(PLUGIN ${ARGV0})
     cmake_parse_arguments(
-        PARSE_ARGV 1                                # skip first arg
-        PARSED                                      # prefix of output variables
-        "INSTALL"                                   # options
-        ""                                          # one-value keywords (none)
-        "HEADERS;SOURCES;PUBLIC;PRIVATE;INTERFACE"  # multi-value keywords
+        PARSE_ARGV 1        # skip first arg
+        PARSED              # prefix of output variables
+        "INSTALL"           # options
+        ""                  # one-value keywords (none)
+        "SOURCES;PRIVATE"   # multi-value keywords
     )
 
     set(PLUGIN_THORIN       ${CMAKE_CURRENT_LIST_DIR}/${PLUGIN}.thorin)
@@ -70,8 +70,6 @@ function(add_thorin_plugin)
             ${PARSED_SOURCES}
     )
     target_link_libraries(thorin_${PLUGIN}
-        PUBLIC
-            ${PARSED_PUBLIC}
         PRIVATE
             ${PARSED_PRIVATE}
             libthorin
