@@ -70,11 +70,11 @@ std::ostream& print_node(std::ostream& os, const NodeType& node, PrintCharF&& pr
     if (node.is_accepting()) os << "  \"" << &node << "\" [shape=doublecircle];\n";
     if (node.is_erroring()) os << "  \"" << &node << "\" [shape=square];\n";
 
-    absl::flat_hash_map<const NodeType*, std::vector<u64u64>> node2transitions;
+    absl::flat_hash_map<const NodeType*, std::vector<Range>> node2transitions;
     node.for_transitions([&](auto c, auto to) {
         if (!node2transitions.contains(to))
-            node2transitions.emplace(to, std::vector<u64u64>{
-                                             u64u64{c, c}
+            node2transitions.emplace(to, std::vector<Range>{
+                                             Range{c, c}
             });
         else
             node2transitions[to].push_back({c, c});

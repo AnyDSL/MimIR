@@ -60,4 +60,6 @@ public:
     enum SpecialTransitons : std::uint16_t {};
 };
 
+template<class To> using DFAMap = absl::flat_hash_map<const DFANode*, To>;
+
 } // namespace automaton
