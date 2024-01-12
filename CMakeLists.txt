@@ -74,23 +74,6 @@ else()
     add_subdirectory(external/rang)
 endif()
 
-#install(
-#    TARGETS libthorin
-#    EXPORT thorin-targets
-#    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-#    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-#    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-#    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-#)
-#install(
-#    FILES "${CMAKE_BINARY_DIR}/include/thorin/config.h"
-#    DESTINATION include/thorin
-#)
-#install(
-#    FILES "${CMAKE_CURRENT_SOURCE_DIR}/../external/half/include/half.hpp"
-#    DESTINATION include
-#)
-
 add_subdirectory(src)
 
 if(THORIN_BUILD_EXAMPLES)
@@ -115,9 +98,16 @@ configure_package_config_file(
     INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/thorin"
 )
 install(
+    TARGETS libthorin
     EXPORT thorin-targets
-    NAMESPACE thorin::
-    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/thorin"
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+install(
+    FILES "${PROJECT_SOURCE_DIR}/external/half/include/half.hpp"
+    DESTINATION include
 )
 install(
     FILES
@@ -126,4 +116,9 @@ install(
         "${CMAKE_CURRENT_BINARY_DIR}/thorin-config-version.cmake"
     DESTINATION
         "${CMAKE_INSTALL_LIBDIR}/cmake/thorin"
+)
+install(
+    EXPORT thorin-targets
+    NAMESPACE thorin::
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/thorin"
 )

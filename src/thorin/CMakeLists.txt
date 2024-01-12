@@ -67,6 +67,7 @@ target_include_directories(libthorin
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/external/half/include>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include> # for config.h
+        $<INSTALL_INTERFACE:include>
 )
 target_link_libraries(libthorin
     PUBLIC
@@ -79,9 +80,14 @@ target_link_libraries(libthorin
         rang
         ${CMAKE_DL_LIBS}
 )
+
 install(
     FILES "${CMAKE_BINARY_DIR}/include/thorin/config.h"
     DESTINATION include/thorin
+)
+install(
+    DIRECTORY ${PROJECT_SOURCE_DIR}/include/thorin
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
 add_subdirectory(cli)

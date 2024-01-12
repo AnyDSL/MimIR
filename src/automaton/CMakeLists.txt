@@ -15,6 +15,7 @@ target_link_libraries(automaton
     PUBLIC
         absl::flat_hash_map absl::flat_hash_set
 )
+
 install(
     TARGETS automaton
     EXPORT thorin-targets
@@ -22,4 +23,8 @@ install(
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+install(
+    DIRECTORY ${PROJECT_SOURCE_DIR}/include/automaton
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
