@@ -64,7 +64,7 @@ function(add_thorin_plugin)
     # thorin_plugin
     #
     add_library(thorin_${PLUGIN} MODULE)
-    add_dependencies(thorin_${PLUGIN} ${THORIN_INTERNAL_PLUGINS})
+    add_dependencies(thorin_${PLUGIN} thorin_internal_${PLUGIN})
     target_sources(thorin_${PLUGIN}
         PRIVATE
             ${PARSED_SOURCES}
