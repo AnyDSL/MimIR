@@ -16,6 +16,7 @@ function(add_thorin_plugin)
         "SOURCES;PRIVATE"   # multi-value keywords
     )
 
+    set(THORIN_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib/thorin")
     set(PLUGIN_THORIN       ${CMAKE_CURRENT_LIST_DIR}/${PLUGIN}.thorin)
     set(OUT_PLUGIN_THORIN   ${THORIN_LIBRARY_OUTPUT_DIRECTORY}/${PLUGIN}.thorin)
     set(INCLUDE_DIR_PLUG    ${CMAKE_BINARY_DIR}/include/thorin/plug/${PLUGIN})
@@ -69,10 +70,14 @@ function(add_thorin_plugin)
         PRIVATE
             ${PARSED_SOURCES}
     )
+    target_include_directories(thorin_${PLUGIN}
+        PUBLIC
+            $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include> # for autogen.h
+    )
     target_link_libraries(thorin_${PLUGIN}
         PRIVATE
             ${PARSED_PRIVATE}
-            libthorin
+            ${THORIN_TARGET_NAMESPACE}libthorin
     )
     set_target_properties(thorin_${PLUGIN}
         PROPERTIES
@@ -97,7 +102,7 @@ function(add_thorin_plugin)
             INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
         )
         install(
-            FILES ${LIB_DIR_PLUGIN_THORIN}
+            FILES ${CMAKE_BINARY_DIR}/lib/thorin/${PLUGIN}.thorin
             DESTINATION lib/thorin
         )
         install(
