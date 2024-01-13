@@ -32,14 +32,16 @@ output=$(echo "$output" | tail -n $lines)
 output=${output//$current_dir/\$PWD}
 
 # get current branch and repository url
+remote=$(git config --get remote.origin.url)
 branch=$(git rev-parse --abbrev-ref HEAD)
-url=$(git config --get remote.origin.url)
+commit=$(git rev-parse HEAD)
 
 echo "<details>"
 echo "<summary>Information</summary>"
 echo ""
-echo "Branch: $branch"
-echo "Repository: $url"
+echo "remote: $remote"
+echo "branch: $branch"
+echo "commit: $commit"
 echo ""
 echo "Call: \`$command\`"
 echo ""
