@@ -22,9 +22,12 @@ function(add_thorin_plugin)
     set(PLUGIN_D            ${CMAKE_BINARY_DIR}/deps/${PLUGIN}.d)
     set(AUTOGEN_H           ${CMAKE_BINARY_DIR}/include/thorin/plug/${PLUGIN}/autogen.h)
 
-    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/docs/plug/)
-    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/deps)
-    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/include/thorin/plug/${PLUGIN})
+    file(
+        MAKE_DIRECTORY
+            ${CMAKE_BINARY_DIR}/docs/plug/
+            ${CMAKE_BINARY_DIR}/deps
+            ${CMAKE_BINARY_DIR}/include/thorin/plug/${PLUGIN}
+    )
 
     add_custom_command(
         OUTPUT
@@ -94,18 +97,18 @@ function(add_thorin_plugin)
             TARGETS
                 thorin_${PLUGIN}
             EXPORT thorin-targets
-            LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}/thorin"
-            ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}/thorin"
-            RUNTIME DESTINATION "${CMAKE_INSTALL_LIBDIR}/thorin"
-            INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/thorin
+            ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/thorin
+            RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}/thorin
+            INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
         )
         install(
             FILES ${CMAKE_BINARY_DIR}/lib/thorin/${PLUGIN}.thorin
-            DESTINATION lib/thorin
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}/thorin
         )
         install(
             FILES ${AUTOGEN_H}
-            DESTINATION "include/plug/${PLUGIN}"
+            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/plug/${PLUGIN}
         )
     endif()
 endfunction()

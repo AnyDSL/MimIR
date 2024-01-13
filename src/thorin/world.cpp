@@ -1,20 +1,10 @@
 #include "thorin/world.h"
 
-#include "thorin/tuple.h"
-
-// for colored output
-#ifdef _WIN32
-#    include <io.h>
-#    define isatty _isatty
-#    define fileno _fileno
-#else
-#    include <unistd.h>
-#endif
-
 #include "thorin/check.h"
 #include "thorin/def.h"
 #include "thorin/driver.h"
 #include "thorin/rewrite.h"
+#include "thorin/tuple.h"
 
 #include "thorin/analyses/scope.h"
 #include "thorin/util/util.h"

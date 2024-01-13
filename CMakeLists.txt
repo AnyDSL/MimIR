@@ -115,10 +115,10 @@ install(
         "${CMAKE_CURRENT_BINARY_DIR}/thorin-config.cmake"
         "${CMAKE_CURRENT_BINARY_DIR}/thorin-config-version.cmake"
     DESTINATION
-        "${CMAKE_INSTALL_LIBDIR}/cmake/thorin"
+        ${CMAKE_INSTALL_LIBDIR}/cmake/thorin
 )
 install(
     EXPORT thorin-targets
     NAMESPACE thorin::
-    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/thorin"
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/thorin
 )
