@@ -34,3 +34,8 @@ gtest_discover_tests(thorin-regex-gtest
     TEST_PREFIX "thorin-regex-gtest."
     DISCOVERY_TIMEOUT 60
 )
+
+add_dependencies(thorin_all
+    thorin-gtest
+    thorin-regex-gtest
+)

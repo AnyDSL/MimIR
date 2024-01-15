@@ -25,3 +25,5 @@ foreach(PLUGIN ${THORIN_PLUGINS})
     add_dependencies(thorin_all_plugins thorin_${PLUGIN})
     add_dependencies(thorin_${PLUGIN} ${THORIN_INTERNAL_PLUGINS})
 endforeach()
+
+add_dependencies(thorin_all thorin_all_plugins)

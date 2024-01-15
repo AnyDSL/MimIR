@@ -40,3 +40,5 @@ add_custom_target(docs
         ${DOXY_INDEX_HTML}
         ${INTERNAL_LIST}
 )
+
+add_dependencies(thorin_all docs)

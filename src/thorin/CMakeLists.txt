@@ -92,3 +92,5 @@ install(
 
 add_subdirectory(cli)
 add_subdirectory(plug)
+
+add_dependencies(thorin_all libthorin)
