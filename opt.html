@@ -114,15 +114,15 @@ $(document).ready(function(){initNavTree('opt.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md200">Dependencies</a></li>
-<li class="level1"><a href="#autotoc_md201">Passes, Phases, and Pipelines</a><ul><li class="level2"><a href="#autotoc_md202">Pipelines</a></li>
+<ul><li class="level1"><a href="#autotoc_md201">Dependencies</a></li>
+<li class="level1"><a href="#autotoc_md202">Passes, Phases, and Pipelines</a><ul><li class="level2"><a href="#autotoc_md203">Pipelines</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="textblock"><dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacethorin_1_1plug_1_1opt.html" title="The opt Plugin">thorin::plug::opt</a></dd></dl>
 <p>Manages the default compilation pipeline of Thorin programs using plugins.</p>
-<h1><a class="anchor" id="autotoc_md200"></a>
+<h1><a class="anchor" id="autotoc_md201"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">.import core; // includes mem, compile (and avoids clashing re-import)</div>
 </div><!-- fragment --><p> supported plugins with passes </p><div class="fragment"><div class="line">.import affine;</div>
@@ -132,9 +132,9 @@ Dependencies</h1>
 <div class="line">.import matrix;</div>
 <div class="line">.import refly;</div>
 <div class="line">.import regex;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md201"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md202"></a>
 Passes, Phases, and Pipelines</h1>
-<h2><a class="anchor" id="autotoc_md202"></a>
+<h2><a class="anchor" id="autotoc_md203"></a>
 Pipelines</h2>
 <div class="fragment"><div class="line">.lam .extern _default_compile []: %compile.Pipeline = {</div>
 <div class="line">    .let nullptr   = %compile.nullptr_pass;</div>

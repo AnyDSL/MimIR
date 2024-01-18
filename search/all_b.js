@@ -24,8 +24,8 @@ var searchData=
   ['k_5ftype_21',['K_Type',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a99c9443b98ae3d0847fdcd64f6600e25',1,'thorin::Tok']]],
   ['k_5funiv_22',['K_Univ',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a49b3d477647d73a29f5821aad9819448',1,'thorin::Tok']]],
   ['keep_23',['keep',['../classthorin_1_1BetaRed.html#a256524bd29ecf0fefeed14c65e037c91',1,'thorin::BetaRed']]],
-  ['keywords_24',['Keywords',['../langref.html#autotoc_md34',1,'']]],
+  ['keywords_24',['Keywords',['../langref.html#autotoc_md35',1,'']]],
   ['kind_25',['Kind',['../namespacethorin.html#abb917bebc699083d990fc4592abcc50ead626102cfc2416a570fc0dc582a9b771',1,'thorin']]],
-  ['kinds_20builtin_20types_26',['Kinds &amp; Builtin Types',['../langref.html#autotoc_md40',1,'']]],
+  ['kinds_20builtin_20types_26',['Kinds &amp; Builtin Types',['../langref.html#autotoc_md41',1,'']]],
   ['known_27',['known',['../namespacethorin_1_1plug_1_1core.html#a34883ef48fb26b0e45efa488f550ca56abbac63297a1fb6b412d30b8080a7c951',1,'thorin::plug::core']]]
 ];

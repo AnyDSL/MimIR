@@ -1,7 +1,7 @@
 var searchData=
 [
   ['g_0',['g',['../namespacethorin_1_1plug_1_1math.html#a94f956d597c0f1a1b692f442afd41221a0ba7b5419d3c7d499b8e8bb8e00fe561',1,'thorin::plug::math::g'],['../namespacethorin_1_1plug_1_1core.html#a57f61f9d87ae94317b2a0f2006f314fea719c8b037af4f890b9e0215cf5105e35',1,'thorin::plug::core::g']]],
-  ['gamma_1',['gamma',['../math.html#autotoc_md152',1,'math.gamma'],['../namespacethorin_1_1plug_1_1math.html#af1ff66f68fc4be09943379b6239fa003',1,'thorin::plug::math::gamma']]],
+  ['gamma_1',['gamma',['../math.html#autotoc_md153',1,'math.gamma'],['../namespacethorin_1_1plug_1_1math.html#af1ff66f68fc4be09943379b6239fa003',1,'thorin::plug::math::gamma']]],
   ['gdb_2',['Valgrind &amp; GDB',['../coding.html#autotoc_md8',1,'']]],
   ['ge_3',['ge',['../namespacethorin_1_1plug_1_1math.html#a94f956d597c0f1a1b692f442afd41221a857e8c64865c60ac557070fb10076aca',1,'thorin::plug::math::ge'],['../namespacethorin_1_1plug_1_1core.html#a57f61f9d87ae94317b2a0f2006f314fea63ecae5b1b8d3df80f5e75b656cb4904',1,'thorin::plug::core::ge']]],
   ['generic_4',['Generic',['../namespacethorin_1_1plug_1_1mem.html#a847dad901f29bb2b314821fcc3be6a40a8045a0a6c688b0635e3caccc408a1446',1,'thorin::plug::mem']]],
@@ -14,7 +14,7 @@ var searchData=
   ['get_5fstart_11',['get_start',['../classautomaton_1_1AutomatonBase.html#a5ee7463fbfa2f071ea1deb56490ba8d5',1,'automaton::AutomatonBase']]],
   ['get_5ftransition_12',['get_transition',['../classautomaton_1_1DFANode.html#ac39d84714ae15c34eada796af0e8fe4e',1,'automaton::DFANode']]],
   ['get_5ftransitions_13',['get_transitions',['../classautomaton_1_1NFANode.html#aeb92436243d93c1aad1bc3ac4c4b1adf',1,'automaton::NFANode']]],
-  ['gid_14',['gid',['../refly.html#autotoc_md209',1,'refly.gid'],['../classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb',1,'thorin::Def::gid()'],['../classthorin_1_1CFNode.html#ad1b21de5e0cadae309a8343cf43376e6',1,'thorin::CFNode::gid()'],['../namespacethorin_1_1plug_1_1refly.html#aad6dc180305d41462097a8bcb41e27d0',1,'thorin::plug::refly::gid']]],
+  ['gid_14',['gid',['../refly.html#autotoc_md210',1,'refly.gid'],['../classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb',1,'thorin::Def::gid()'],['../classthorin_1_1CFNode.html#ad1b21de5e0cadae309a8343cf43376e6',1,'thorin::CFNode::gid()'],['../namespacethorin_1_1plug_1_1refly.html#aad6dc180305d41462097a8bcb41e27d0',1,'thorin::plug::refly::gid']]],
   ['gid2def_15',['gid2def',['../classthorin_1_1World.html#a50e487785b278535becdb5d7e2b124ab',1,'thorin::World']]],
   ['gideq_16',['GIDEq',['../structthorin_1_1GIDEq.html',1,'thorin']]],
   ['gidhash_17',['GIDHash',['../structthorin_1_1GIDHash.html',1,'thorin']]],
@@ -29,6 +29,6 @@ var searchData=
   ['globals_5f_26',['globals_',['../classthorin_1_1Emitter.html#ae6996cbfe877290dc33a25c67a5e3cee',1,'thorin::Emitter']]],
   ['googletest_27',['GoogleTest',['../coding.html#autotoc_md11',1,'']]],
   ['grammar_28',['Grammar',['../langref.html#grammar',1,'']]],
-  ['groups_29',['Groups',['../langref.html#autotoc_md38',1,'']]],
+  ['groups_29',['Groups',['../langref.html#autotoc_md39',1,'']]],
   ['guide_30',['Developer Guide',['../dev.html',1,'']]]
 ];
