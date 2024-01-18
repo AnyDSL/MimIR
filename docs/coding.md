@@ -18,7 +18,7 @@ Use the following coding conventions:
 * Use `struct` for [plain old data](https://en.cppreference.com/w/cpp/named_req/PODType).
 * Use `class` for everything else.
 * Prefer `// C++-style comments` over `/* C-style comments */`.
-* use `#pragma once` as guard for headers.
+* Use `#pragma once` as guard for headers.
 * Visibility groups in this order:
     1. `public`
     2. `protected`
@@ -26,10 +26,10 @@ Use the following coding conventions:
 
 ### Doxygen Style
 
-* Use `/// three slashes for Doxygen`
-* Use [Markdown-style](https://doxygen.nl/manual/markdown.html) Doxygen comments
+* Use `/// three slashes for Doxygen`.
+* Use [Markdown-style](https://doxygen.nl/manual/markdown.html) Doxygen comments.
 * Group your functions etc. via [named member groups](https://www.doxygen.nl/manual/grouping.html#memgroup) into logical units.
-* Capitalize the group name unless it is directly named after a method
+* Capitalize the group name unless it is directly named after a method.
 
 For all the other minute details like indentation width etc. use [clang-format](https://clang.llvm.org/docs/ClangFormat.html) and the provided `.clang-format` file in the root of the repository.
 In order to run `clang-format` automatically on all changed files, switch to the provided [pre-commit](https://pre-commit.com/) hook:
@@ -42,7 +42,6 @@ In addition, you might want to check out plugins like the [Vim integration](http
 ### Example
 
 Here is an example for a header that follows above conventions:
-
 ```cpp
 #pragma once
 
@@ -75,7 +74,13 @@ For logging and automatic firing of breakpoints refer to the [Command-Line Refer
 
 ### Dumping
 
-Note that you can simply invoke thorin::Def::dump, thorin::Def::write, thorin::World::dump, or thorin::World::write from within [GDB](https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_30.html):
+Note that you can simply invoke
+* thorin::Def::dump,
+* thorin::Def::write,
+* thorin::World::dump,
+* thorin::World::write, ...
+
+from within [GDB](https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_30.html):
 ```gdb
 (gdb) call def->dump()
 (gdb) call def->dump(0)
