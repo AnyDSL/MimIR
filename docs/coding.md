@@ -144,9 +144,10 @@ You can manually invoke the lit tests like this and maybe filter for a specific 
 cd lit
 ./lit ../build/lit -a --filter foo.thorin
 ```
-If your `build` directory, is in fact `../build/lit` you can use the `probe.sh` script:
+If your *build* directory, is in fact `build` you can use the `probe.sh` script:
 ```sh
-./probe.sh foo.thorin
+cd lit
+../scripts/probe.sh foo.thorin
 ```
 
 ### GoogleTest
@@ -178,7 +179,15 @@ In addition, you may find it helpful to turn assertion failures into debugger br
 
 [This](https://github.com/AnyDSL/vim-thorin2) Vim plugin provides syntax highlighting for Thorin files.
 
-## Third-Party Plugins
+## New Plugins
+
+Check out the [demo](@ref demo) plugin for a minimalistic plugin.
+You can create a new in-tree plugin `foobar` based upon the [demo](@ref demo) plugin like this:
+```sh
+./scripts/new_plugin.sh foobar
+```
+
+### Third-Party Plugins
 
 After installing Thorin, third-party plugins just need to find the `thorin` package to use your plugin `foo`:
 ```cmake
@@ -199,18 +208,13 @@ cmake .. -Dthorin_DIR=<THORIN_INSTALL_PREFIX>/lib/cmake/thorin
 ```
 to configure the project.
 
-Check out the [demo](@ref demo) plugin for a minimalistic plugin.
-
 ### add_thorin_plugin
 
 Registers a new Thorin plugin.
 ```
 add_thorin_plugin(<plugin-name>
     [SOURCES <source>...]
-    [HEADERS <header>...]
     [PRIVATE <private-item>...]
-    [INTERFACE <interface-item>...]
-    [PUBLIC <public-item>...]
     [INSTALL])
 ```
 The `<plugin-name>` is the name of the plugin.
@@ -246,7 +250,7 @@ The command will create two targets:
     To export the targets, the export name `thorin-targets` has to be exported accordingly (see [`install(EXPORT ..)`](https://cmake.org/cmake/help/latest/command/install.html#export))
 
 You can specify additional properties in the plugin's `CMakeLists.txt`.
-For example, the following snippet adds additional include paths for the `MODULE` target:
+For example, the following snippet adds additional include paths for the `MODULE` `thorin_<plugin-name>` target:
 ```
 target_include_directories(thorin_<plugin-name> <path>...)
 ```
