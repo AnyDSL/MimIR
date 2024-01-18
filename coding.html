@@ -151,7 +151,7 @@ Coding Style</h1>
 <li>Use <code>struct</code> for <a href="https://en.cppreference.com/w/cpp/named_req/PODType">plain old data</a>.</li>
 <li>Use <code>class</code> for everything else.</li>
 <li>Prefer <code>// C++-style comments</code> over <code>/* C-style comments */</code>.</li>
-<li>use <code>#pragma once</code> as guard for headers.</li>
+<li>Use <code>#pragma once</code> as guard for headers.</li>
 <li>Visibility groups in this order:<ol type="1">
 <li><code>public</code></li>
 <li><code>protected</code></li>
@@ -162,17 +162,16 @@ Coding Style</h1>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Doxygen Style</h2>
 <ul>
-<li>Use <code>/// three slashes for Doxygen</code></li>
-<li>Use <a href="https://doxygen.nl/manual/markdown.html">Markdown-style</a> Doxygen comments</li>
+<li>Use <code>/// three slashes for Doxygen</code>.</li>
+<li>Use <a href="https://doxygen.nl/manual/markdown.html">Markdown-style</a> Doxygen comments.</li>
 <li>Group your functions etc. via <a href="https://www.doxygen.nl/manual/grouping.html#memgroup">named member groups</a> into logical units.</li>
-<li>Capitalize the group name unless it is directly named after a method</li>
+<li>Capitalize the group name unless it is directly named after a method.</li>
 </ul>
 <p>For all the other minute details like indentation width etc. use <a href="https://clang.llvm.org/docs/ClangFormat.html">clang-format</a> and the provided <code>.clang-format</code> file in the root of the repository. In order to run <code>clang-format</code> automatically on all changed files, switch to the provided <a href="https://pre-commit.com/">pre-commit</a> hook: </p><div class="fragment"><div class="line">pre-commit install</div>
 </div><!-- fragment --><p> Note that you can <a href="https://clang.llvm.org/docs/ClangFormatStyleOptions.html#disabling-formatting-on-a-piece-of-code">disable clang-format for a piece of code</a>. In addition, you might want to check out plugins like the <a href="https://clang.llvm.org/docs/ClangFormat.html#vim-integration">Vim integration</a>.</p>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Example</h2>
-<p>Here is an example for a header that follows above conventions:</p>
-<div class="fragment"><div class="line"><span class="preprocessor">#pragma once</span></div>
+<p>Here is an example for a header that follows above conventions: </p><div class="fragment"><div class="line"><span class="preprocessor">#pragma once</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin.html">thorin</a> {</div>
 <div class="line"><span class="comment"></span> </div>
@@ -201,7 +200,13 @@ Debugging</h1>
 <p>For logging and automatic firing of breakpoints refer to the <a class="el" href="cli.html#clidebug">Command-Line Reference</a>.</p>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Dumping</h2>
-<p>Note that you can simply invoke <a class="el" href="classthorin_1_1Def.html#adeb490fdb674323acba48da1ffb28787">thorin::Def::dump</a>, <a class="el" href="classthorin_1_1Def.html#a7805eeac4955c9e68103f794c765654c">thorin::Def::write</a>, <a class="el" href="classthorin_1_1World.html#a8ae719e183b88f40276a1e93ac695cdf" title="Dump to os.">thorin::World::dump</a>, or <a class="el" href="classthorin_1_1World.html#a46b35348fdf798ec546a9b67968fc9b1" title="Write to a file named file.">thorin::World::write</a> from within <a href="https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_30.html">GDB</a>: </p><div class="fragment"><div class="line">(gdb) call def-&gt;dump()</div>
+<p>Note that you can simply invoke</p><ul>
+<li><a class="el" href="classthorin_1_1Def.html#adeb490fdb674323acba48da1ffb28787">thorin::Def::dump</a>,</li>
+<li><a class="el" href="classthorin_1_1Def.html#a7805eeac4955c9e68103f794c765654c">thorin::Def::write</a>,</li>
+<li><a class="el" href="classthorin_1_1World.html#a8ae719e183b88f40276a1e93ac695cdf" title="Dump to os.">thorin::World::dump</a>,</li>
+<li><a class="el" href="classthorin_1_1World.html#a46b35348fdf798ec546a9b67968fc9b1" title="Write to a file named file.">thorin::World::write</a>, ...</li>
+</ul>
+<p>from within <a href="https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_30.html">GDB</a>: </p><div class="fragment"><div class="line">(gdb) call def-&gt;dump()</div>
 <div class="line">(gdb) call def-&gt;dump(0)</div>
 <div class="line">(gdb) call def-&gt;dump(3)</div>
 <div class="line">(gdb) call world().write(&quot;out.thorin&quot;)</div>
