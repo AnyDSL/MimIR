@@ -9,25 +9,25 @@ endif()
 function(add_thorin_plugin)
     set(PLUGIN ${ARGV0})
     cmake_parse_arguments(
-        PARSE_ARGV 1                                # skip first arg
-        PARSED                                      # prefix of output variables
-        "INSTALL"                                   # options
-        ""                                          # one-value keywords (none)
-        "HEADERS;SOURCES;PUBLIC;PRIVATE;INTERFACE"  # multi-value keywords
+        PARSE_ARGV 1        # skip first arg
+        PARSED              # prefix of output variables
+        "INSTALL"           # options
+        ""                  # one-value keywords (none)
+        "SOURCES;PRIVATE"   # multi-value keywords
     )
 
-    list(TRANSFORM PARSED_INTERFACES PREPEND thorin_interface_ OUTPUT_VARIABLE INTERFACES)
-
     set(PLUGIN_THORIN       ${CMAKE_CURRENT_LIST_DIR}/${PLUGIN}.thorin)
-    set(OUT_PLUGIN_THORIN   ${THORIN_LIBRARY_OUTPUT_DIRECTORY}/${PLUGIN}.thorin)
-    set(INCLUDE_DIR_PLUG    ${CMAKE_BINARY_DIR}/include/thorin/plug/${PLUGIN})
+    set(OUT_PLUGIN_THORIN   ${CMAKE_BINARY_DIR}/lib/thorin/${PLUGIN}.thorin)
     set(PLUGIN_MD           ${CMAKE_BINARY_DIR}/docs/plug/${PLUGIN}.md)
     set(PLUGIN_D            ${CMAKE_BINARY_DIR}/deps/${PLUGIN}.d)
-    set(AUTOGEN_H           ${INCLUDE_DIR_PLUG}/autogen.h)
+    set(AUTOGEN_H           ${CMAKE_BINARY_DIR}/include/thorin/plug/${PLUGIN}/autogen.h)
 
-    file(MAKE_DIRECTORY ${INCLUDE_DIR_PLUG})
-    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/deps)
-    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/docs/plug/)
+    file(
+        MAKE_DIRECTORY
+            ${CMAKE_BINARY_DIR}/docs/plug/
+            ${CMAKE_BINARY_DIR}/deps
+            ${CMAKE_BINARY_DIR}/include/thorin/plug/${PLUGIN}
+    )
 
     add_custom_command(
         OUTPUT
@@ -63,49 +63,30 @@ function(add_thorin_plugin)
     SET(THORIN_PLUGIN_LAYOUT "${THORIN_PLUGIN_LAYOUT}" CACHE INTERNAL "THORIN_PLUGIN_LAYOUT")
 
     #
-    # thorin_interface_plugin
-    #
-    add_library(thorin_interface_${PLUGIN} INTERFACE)
-    add_dependencies(thorin_interface_${PLUGIN} thorin_internal_${PLUGIN})
-    target_sources(thorin_interface_${PLUGIN}
-        INTERFACE
-            FILE_SET thorin_headers_${PLUGIN}
-            TYPE HEADERS
-            BASE_DIRS
-                ${CMAKE_CURRENT_LIST_DIR}/include
-                ${CMAKE_BINARY_DIR}/include
-            FILES
-                ${AUTOGEN_H}        # the generated header of this plugin
-                ${PARSED_HEADERS}   # original headers passed to add_thorin_plugin
-    )
-    target_link_libraries(thorin_interface_${PLUGIN}
-        INTERFACE
-            ${PARSED_INTERFACE}
-            libthorin
-    )
-
-    #
     # thorin_plugin
     #
     add_library(thorin_${PLUGIN} MODULE)
+    add_dependencies(thorin_${PLUGIN} thorin_internal_${PLUGIN})
     target_sources(thorin_${PLUGIN}
         PRIVATE
             ${PARSED_SOURCES}
     )
-    target_link_libraries(thorin_${PLUGIN}
+    target_include_directories(thorin_${PLUGIN}
         PUBLIC
-            thorin_interface_${PLUGIN}
-            ${PARSED_PUBLIC}
+            $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include> # for autogen.h
+    )
+    target_link_libraries(thorin_${PLUGIN}
         PRIVATE
             ${PARSED_PRIVATE}
+            ${THORIN_TARGET_NAMESPACE}libthorin
     )
     set_target_properties(thorin_${PLUGIN}
         PROPERTIES
             CXX_VISIBILITY_PRESET hidden
             VISIBILITY_INLINES_HIDDEN 1
             WINDOWS_EXPORT_ALL_SYMBOLS OFF
-            PREFIX "lib"                                                # always use "lib" as prefix regardless of OS/compiler
-            LIBRARY_OUTPUT_DIRECTORY ${THORIN_LIBRARY_OUTPUT_DIRECTORY}
+            PREFIX "lib" # always use "lib" as prefix regardless of OS/compiler
+            LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/thorin
     )
 
     #
@@ -114,25 +95,20 @@ function(add_thorin_plugin)
     if(${PARSED_INSTALL})
         install(
             TARGETS
-                thorin_interface_${PLUGIN}
                 thorin_${PLUGIN}
             EXPORT thorin-targets
-            FILE_SET thorin_headers_${PLUGIN}
-            LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}/thorin"
-            ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}/thorin"
-            RUNTIME DESTINATION "${CMAKE_INSTALL_LIBDIR}/thorin"
-            INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/thorin
+            ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/thorin
+            RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}/thorin
+            INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
         )
         install(
-            FILES ${LIB_DIR_PLUGIN_THORIN}
-            DESTINATION lib/thorin
+            FILES ${CMAKE_BINARY_DIR}/lib/thorin/${PLUGIN}.thorin
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}/thorin
         )
         install(
             FILES ${AUTOGEN_H}
-            DESTINATION "include/plug/${PLUGIN}"
+            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/plug/${PLUGIN}
         )
-    endif()
-    if(TARGET thorin_all_plugins)
-        add_dependencies(thorin_all_plugins thorin_${PLUGIN})
     endif()
 endfunction()

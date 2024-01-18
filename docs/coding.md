@@ -215,7 +215,7 @@ add_thorin_plugin(<plugin-name>
 ```
 The `<plugin-name>` is the name of the plugin.
 This means, there should be relative to the plugin's `CMakeLists.txt` a file `<plugin-name>.thorin` containing annexes.
-The command will create three targets:
+The command will create two targets:
 
 1. `thorin_internal_<plugin-name>`
 
@@ -227,22 +227,6 @@ The command will create three targets:
     @note Tracking dependencies via the emitted dependency file is not supported for all CMake generators.
     See [`add_custom_command`'s `DEPFILE` argument](https://cmake.org/cmake/help/latest/command/add_custom_command.html).
 
-2. `thorin_interface_<plugin-name>`
-
-    This is a header-only [Interface Library](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#interface-libraries).
-
-    * `HEADERS`
-
-        This target consists of all `<header>` files.
-        Every target which links to `thorin_interface_<plugin-name>` will also have access to the include directory of these files.
-
-    * `INTERFACE`
-
-        In addition, this target ["links"](https://cmake.org/cmake/help/latest/command/target_link_libraries.html) via `INTERFACE` with all `<interface-item>` targets.
-        Thus, every target which links to `thorin_interface_<plugin-name>` will also have access to the include directory of these additional `INTERFACE` targets and inherits their compile flags etc.
-
-    Moreover, `thorin_interface_<plugin-name>` depends on `thorin_internal_<plugin-name>`.
-
 3. `thorin_<plugin-name>`
 
     This is the actual `MODULE` [library](https://cmake.org/cmake/help/latest/command/add_library.html).
@@ -251,16 +235,10 @@ The command will create three targets:
 
         These are the `<source>` files used to build the loadable plugin containing normalizers, passes, and backends.
         One of the source files must export the [`thorin_get_plugin`](@ref thorin::thorin_get_plugin) function.
-        This target ["links"](https://cmake.org/cmake/help/latest/command/target_link_libraries.html) `PUBLIC` to `thorin_interface_<plugin-name>`.
-        Thus, all sources will have access to the include directories of `thorin_interface_<plugin-name>` (see above).
-
-    * `PUBLIC`
-
-        Furthermore, you can specify additional `<public-item>` targets that the module should link against as `PUBLIC`.
 
     * `PRIVATE`
 
-        Finally, you can specify additional `<private-item>` build dependencies.
+        Furthermore, you can specify additional `<private-item>` build dependencies.
 
 * `INSTALL`
 

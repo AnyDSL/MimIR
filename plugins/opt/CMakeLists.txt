@@ -1,9 +1,0 @@
-add_thorin_plugin(opt
-    SOURCES
-        src/thorin/plug/opt/opt.cpp
-    HEADERS
-        include/thorin/plug/opt/opt.h
-    INTERFACE
-        thorin_interface_compile
-    INSTALL
-)

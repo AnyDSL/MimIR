@@ -10,18 +10,9 @@ target_sources(thorin-gtest
 target_link_libraries(thorin-gtest
     PRIVATE
         gtest_main
-        thorin_interface_core
-        thorin_interface_compile
-        thorin_interface_math
-        thorin_interface_mem
+        libthorin
 )
-add_dependencies(thorin-gtest
-    thorin_clos
-    thorin_core
-    thorin_compile
-    thorin_math
-    thorin_mem
-)
+add_dependencies(thorin-gtest thorin_all_plugins)
 gtest_discover_tests(thorin-gtest
     TEST_PREFIX "thorin."
     DISCOVERY_TIMEOUT 60
@@ -35,17 +26,16 @@ target_sources(thorin-regex-gtest
 target_link_libraries(thorin-regex-gtest
     PRIVATE
         gtest_main
+        libthorin
         automaton
-        thorin_interface_regex
 )
-add_dependencies(thorin-regex-gtest
-    thorin_clos
-    thorin_core
-    thorin_compile
-    thorin_math
-    thorin_mem
-)
+add_dependencies(thorin-regex-gtest thorin_all_plugins)
 gtest_discover_tests(thorin-regex-gtest
     TEST_PREFIX "thorin-regex-gtest."
     DISCOVERY_TIMEOUT 60
+)
+
+add_dependencies(thorin_all
+    thorin-gtest
+    thorin-regex-gtest
 )
