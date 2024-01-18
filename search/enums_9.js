@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['m_0',['m',['../namespacethorin_1_1plug_1_1mem.html#a4bee7f7b6fa094974e7c9bbbba573365',1,'thorin::plug::mem::M'],['../namespacethorin_1_1plug_1_1mem.html#a3f0f8ce3562b9ce9490010a9ff06d036',1,'thorin::plug::mem::m']]],
+  ['m_0',['m',['../namespacethorin_1_1plug_1_1mem.html#a3f0f8ce3562b9ce9490010a9ff06d036',1,'thorin::plug::mem::m'],['../namespacethorin_1_1plug_1_1mem.html#a4bee7f7b6fa094974e7c9bbbba573365',1,'thorin::plug::mem::M']]],
   ['malloc_1',['malloc',['../namespacethorin_1_1plug_1_1mem.html#a14384c5d0db07803a77c1c1dc02b0037',1,'thorin::plug::mem']]],
   ['map_5freduce_2',['map_reduce',['../namespacethorin_1_1plug_1_1matrix.html#af0b21582ba0f0bc8fb55303e06c4615c',1,'thorin::plug::matrix']]],
   ['mat_3',['Mat',['../namespacethorin_1_1plug_1_1matrix.html#ab57e329c7a8fddc73f1008dc5a286c99',1,'thorin::plug::matrix']]],

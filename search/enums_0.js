@@ -1,7 +1,7 @@
 var searchData=
 [
   ['abs_0',['abs',['../namespacethorin_1_1plug_1_1math.html#a9e588fab46e0b0061805cd8cecf279f2',1,'thorin::plug::math::abs'],['../namespacethorin_1_1plug_1_1core.html#a8819b6da0ffcc043bc3d209d30534b2a',1,'thorin::plug::core::abs']]],
-  ['ad_1',['ad',['../namespacethorin_1_1plug_1_1autodiff.html#a2fa961c40697f75614b6c936c48d6b09',1,'thorin::plug::autodiff::AD'],['../namespacethorin_1_1plug_1_1autodiff.html#a4ec391b05549cb1ea629fed73743eaea',1,'thorin::plug::autodiff::ad']]],
+  ['ad_1',['ad',['../namespacethorin_1_1plug_1_1autodiff.html#a4ec391b05549cb1ea629fed73743eaea',1,'thorin::plug::autodiff::ad'],['../namespacethorin_1_1plug_1_1autodiff.html#a2fa961c40697f75614b6c936c48d6b09',1,'thorin::plug::autodiff::AD']]],
   ['ad_5feval_5fpass_2',['ad_eval_pass',['../namespacethorin_1_1plug_1_1autodiff.html#a256ba459a52a616d66494d18e35db65f',1,'thorin::plug::autodiff']]],
   ['ad_5fext_5fcleanup_5fpass_3',['ad_ext_cleanup_pass',['../namespacethorin_1_1plug_1_1autodiff.html#a6537fc46aedf8c1687818646dac3329b',1,'thorin::plug::autodiff']]],
   ['ad_5fzero_5fcleanup_5fpass_4',['ad_zero_cleanup_pass',['../namespacethorin_1_1plug_1_1autodiff.html#a416538317157a41b1d735c607141d131',1,'thorin::plug::autodiff']]],

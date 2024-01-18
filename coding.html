@@ -266,7 +266,7 @@ add_thorin_plugin</h2>
 <div class="line">    [INTERFACE &lt;interface-item&gt;...]</div>
 <div class="line">    [PUBLIC &lt;public-item&gt;...]</div>
 <div class="line">    [INSTALL])</div>
-</div><!-- fragment --><p> The <code>&lt;plugin-name&gt;</code> is the name of the plugin. This means, there should be relative to the plugin's <code>CMakeLists.txt</code> a file <code>&lt;plugin-name&gt;.thorin</code> containing annexes. The command will create three targets:</p>
+</div><!-- fragment --><p> The <code>&lt;plugin-name&gt;</code> is the name of the plugin. This means, there should be relative to the plugin's <code>CMakeLists.txt</code> a file <code>&lt;plugin-name&gt;.thorin</code> containing annexes. The command will create two targets:</p>
 <ol type="1">
 <li><p class="startli"><code>thorin_internal_&lt;plugin-name&gt;</code></p>
 <p class="startli">This is an internal target to bootstrap the plugin. It will generate:</p><ul>
@@ -276,27 +276,13 @@ add_thorin_plugin</h2>
 </li>
 </ul>
 </li>
-<li><p class="startli"><code>thorin_interface_&lt;plugin-name&gt;</code></p>
-<p class="startli">This is a header-only <a href="https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#interface-libraries">Interface Library</a>.</p><ul>
-<li><p class="startli"><code>HEADERS</code></p>
-<p class="startli">This target consists of all <code>&lt;header&gt;</code> files. Every target which links to <code>thorin_interface_&lt;plugin-name&gt;</code> will also have access to the include directory of these files.</p>
-</li>
-<li><p class="startli"><code>INTERFACE</code></p>
-<p class="startli">In addition, this target <a href="https://cmake.org/cmake/help/latest/command/target_link_libraries.html">"links"</a> via <code>INTERFACE</code> with all <code>&lt;interface-item&gt;</code> targets. Thus, every target which links to <code>thorin_interface_&lt;plugin-name&gt;</code> will also have access to the include directory of these additional <code>INTERFACE</code> targets and inherits their compile flags etc.</p>
-</li>
-</ul>
-<p class="startli">Moreover, <code>thorin_interface_&lt;plugin-name&gt;</code> depends on <code>thorin_internal_&lt;plugin-name&gt;</code>.</p>
-</li>
 <li><p class="startli"><code>thorin_&lt;plugin-name&gt;</code></p>
 <p class="startli">This is the actual <code>MODULE</code> <a href="https://cmake.org/cmake/help/latest/command/add_library.html">library</a>.</p><ul>
 <li><p class="startli"><code>SOURCES</code></p>
-<p class="startli">These are the <code>&lt;source&gt;</code> files used to build the loadable plugin containing normalizers, passes, and backends. One of the source files must export the <a class="el" href="namespacethorin.html#a3cc8a1ed7b039e8a6bfccdbcb9514633">`thorin_get_plugin`</a> function. This target <a href="https://cmake.org/cmake/help/latest/command/target_link_libraries.html">"links"</a> <code>PUBLIC</code> to <code>thorin_interface_&lt;plugin-name&gt;</code>. Thus, all sources will have access to the include directories of <code>thorin_interface_&lt;plugin-name&gt;</code> (see above).</p>
-</li>
-<li><p class="startli"><code>PUBLIC</code></p>
-<p class="startli">Furthermore, you can specify additional <code>&lt;public-item&gt;</code> targets that the module should link against as <code>PUBLIC</code>.</p>
+<p class="startli">These are the <code>&lt;source&gt;</code> files used to build the loadable plugin containing normalizers, passes, and backends. One of the source files must export the <a class="el" href="namespacethorin.html#a3cc8a1ed7b039e8a6bfccdbcb9514633">`thorin_get_plugin`</a> function.</p>
 </li>
 <li><p class="startli"><code>PRIVATE</code></p>
-<p class="startli">Finally, you can specify additional <code>&lt;private-item&gt;</code> build dependencies.</p>
+<p class="startli">Furthermore, you can specify additional <code>&lt;private-item&gt;</code> build dependencies.</p>
 </li>
 </ul>
 </li>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: plugins/regex/include/thorin/plug/regex/regex2nfa.h Source File</title>
+<title>Thorin: include/thorin/plug/regex/regex2nfa.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -120,13 +120,13 @@ $(document).ready(function(){initNavTree('regex2nfa_8h_source.html',''); initRes
 <div class="contents">
 <a href="regex2nfa_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;automaton/nfa.h&gt;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;<a class="code" href="nfa_8h.html">automaton/nfa.h</a>&gt;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="regex_8h.html">thorin/plug/regex/regex.h</a>&quot;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"></span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment">/// You can dl::get this function.</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">/// @returns a raw pointer to automanton::NFA; use thorin::regex::regex2nfa to pack it into a `std::unique_ptr`.</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"></span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> <a class="code hl_define" href="config_8h.html#a479c17cabac34a4216996c05ffa7e071">THORIN_EXPORT</a> automaton::NFA* <a class="code hl_function" href="regex2nfa_8h.html#a703b230096d8100c2668e27569a4c723">regex2nfa</a>(<a class="code hl_class" href="classthorin_1_1Ref.html">thorin::Ref</a> regex);</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"></span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> <a class="code hl_define" href="config_8h.html#a479c17cabac34a4216996c05ffa7e071">THORIN_EXPORT</a> <a class="code hl_class" href="classautomaton_1_1NFA.html">automaton::NFA</a>* <a class="code hl_function" href="regex2nfa_8h.html#a703b230096d8100c2668e27569a4c723">regex2nfa</a>(<a class="code hl_class" href="classthorin_1_1Ref.html">thorin::Ref</a> regex);</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin_1_1plug_1_1regex.html">thorin::plug::regex</a> {</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
@@ -139,10 +139,12 @@ $(document).ready(function(){initNavTree('regex2nfa_8h_source.html',''); initRes
 </div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>} <span class="comment">// namespace thorin::plug::regex</span></div>
+<div class="ttc" id="aclassautomaton_1_1NFA_html"><div class="ttname"><a href="classautomaton_1_1NFA.html">automaton::NFA</a></div><div class="ttdef"><b>Definition</b> <a href="nfa_8h_source.html#l00055">nfa.h:55</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Ref_html"><div class="ttname"><a href="classthorin_1_1Ref.html">thorin::Ref</a></div><div class="ttdoc">Helper class to retrieve Infer::arg if present.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00078">def.h:78</a></div></div>
 <div class="ttc" id="aconfig_8h_html_a479c17cabac34a4216996c05ffa7e071"><div class="ttname"><a href="config_8h.html#a479c17cabac34a4216996c05ffa7e071">THORIN_EXPORT</a></div><div class="ttdeci">#define THORIN_EXPORT</div><div class="ttdef"><b>Definition</b> <a href="config_8h_source.html#l00016">config.h:16</a></div></div>
 <div class="ttc" id="anamespacethorin_1_1plug_1_1regex_html"><div class="ttname"><a href="namespacethorin_1_1plug_1_1regex.html">thorin::plug::regex</a></div><div class="ttdoc">The regex Plugin</div><div class="ttdef"><b>Definition</b> <a href="lower__regex_8h_source.html#l00005">lower_regex.h:5</a></div></div>
 <div class="ttc" id="anamespacethorin_1_1plug_1_1regex_html_a88f759485137165f8113f06d3c40a86c"><div class="ttname"><a href="namespacethorin_1_1plug_1_1regex.html#a88f759485137165f8113f06d3c40a86c">thorin::plug::regex::regex2nfa</a></div><div class="ttdeci">std::unique_ptr&lt; automaton::NFA &gt; regex2nfa(Ref regex)</div><div class="ttdef"><b>Definition</b> <a href="regex2nfa_8cpp_source.html#l00089">regex2nfa.cpp:89</a></div></div>
+<div class="ttc" id="anfa_8h_html"><div class="ttname"><a href="nfa_8h.html">nfa.h</a></div></div>
 <div class="ttc" id="aregex2nfa_8h_html_a703b230096d8100c2668e27569a4c723"><div class="ttname"><a href="regex2nfa_8h.html#a703b230096d8100c2668e27569a4c723">regex2nfa</a></div><div class="ttdeci">THORIN_EXPORT automaton::NFA * regex2nfa(thorin::Ref regex)</div><div class="ttdoc">You can dl::get this function.</div><div class="ttdef"><b>Definition</b> <a href="regex2nfa_8cpp_source.html#l00097">regex2nfa.cpp:97</a></div></div>
 <div class="ttc" id="aregex_8h_html"><div class="ttname"><a href="regex_8h.html">regex.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -150,7 +152,7 @@ $(document).ready(function(){initNavTree('regex2nfa_8h_source.html',''); initRes
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_38c8d24aef3972a7f87b834274e76e31.html">plugins</a></li><li class="navelem"><a class="el" href="dir_653db1a8967a984455d151fd23b82bee.html">regex</a></li><li class="navelem"><a class="el" href="dir_7f4094b6248fd07287066a82f22216f7.html">include</a></li><li class="navelem"><a class="el" href="dir_76a0fd41eeca668ef1de3c1a80a8d7a6.html">thorin</a></li><li class="navelem"><a class="el" href="dir_36b34e3361aa123bc10796f02e33fb1f.html">plug</a></li><li class="navelem"><a class="el" href="dir_cee877460e335e0b3a15f54c682e07a3.html">regex</a></li><li class="navelem"><a class="el" href="regex2nfa_8h.html">regex2nfa.h</a></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_a9446755a1c96c6cd3ab4facf95dc5bb.html">thorin</a></li><li class="navelem"><a class="el" href="dir_1812b8811261570ebfc57ffaaf94b9ca.html">plug</a></li><li class="navelem"><a class="el" href="dir_0b0d54584031e85b521eb77e43f768c0.html">regex</a></li><li class="navelem"><a class="el" href="regex2nfa_8h.html">regex2nfa.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

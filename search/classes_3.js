@@ -8,8 +8,10 @@ var searchData=
   ['defdefhash_5',['DefDefHash',['../structthorin_1_1DefDefHash.html',1,'thorin']]],
   ['depnode_6',['DepNode',['../classthorin_1_1DepNode.html',1,'thorin']]],
   ['deptree_7',['DepTree',['../classthorin_1_1DepTree.html',1,'thorin']]],
-  ['domfrontierbase_8',['DomFrontierBase',['../classthorin_1_1DomFrontierBase.html',1,'thorin']]],
-  ['domtreebase_9',['DomTreeBase',['../classthorin_1_1DomTreeBase.html',1,'thorin']]],
-  ['driver_10',['Driver',['../classthorin_1_1Driver.html',1,'thorin']]],
-  ['ds2cps_11',['DS2CPS',['../classthorin_1_1plug_1_1direct_1_1DS2CPS.html',1,'thorin::plug::direct']]]
+  ['dfa_8',['DFA',['../classautomaton_1_1DFA.html',1,'automaton']]],
+  ['dfanode_9',['DFANode',['../classautomaton_1_1DFANode.html',1,'automaton']]],
+  ['domfrontierbase_10',['DomFrontierBase',['../classthorin_1_1DomFrontierBase.html',1,'thorin']]],
+  ['domtreebase_11',['DomTreeBase',['../classthorin_1_1DomTreeBase.html',1,'thorin']]],
+  ['driver_12',['Driver',['../classthorin_1_1Driver.html',1,'thorin']]],
+  ['ds2cps_13',['DS2CPS',['../classthorin_1_1plug_1_1direct_1_1DS2CPS.html',1,'thorin::plug::direct']]]
 ];

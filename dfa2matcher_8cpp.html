@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: plugins/regex/src/thorin/plug/regex/dfa2matcher.cpp File Reference</title>
+<title>Thorin: src/thorin/plug/regex/dfa2matcher.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -120,8 +120,8 @@ $(document).ready(function(){initNavTree('dfa2matcher_8cpp.html',''); initResiza
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;sstream&gt;</code><br />
 <code>#include &lt;absl/container/flat_hash_map.h&gt;</code><br />
-<code>#include &lt;automaton/dfa.h&gt;</code><br />
-<code>#include &lt;automaton/range_helper.h&gt;</code><br />
+<code>#include &lt;<a class="el" href="dfa_8h_source.html">automaton/dfa.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="range__helper_8h_source.html">automaton/range_helper.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="core_8h_source.html">thorin/plug/core/core.h</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="mem_8h_source.html">thorin/plug/mem/mem.h</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -134,14 +134,15 @@ Include dependency graph for dfa2matcher.cpp:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a929a326a16b0a4c9d2e277325e556017" id="r_a929a326a16b0a4c9d2e277325e556017"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dfa2matcher_8cpp.html#a929a326a16b0a4c9d2e277325e556017">Range</a> = automaton::Range</td></tr>
+<tr class="memitem:a929a326a16b0a4c9d2e277325e556017" id="r_a929a326a16b0a4c9d2e277325e556017"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dfa2matcher_8cpp.html#a929a326a16b0a4c9d2e277325e556017">Range</a> = <a class="el" href="namespaceautomaton.html#aa937bcc480406d914b0cdf431b359e3e">automaton::Range</a></td></tr>
 <tr class="separator:a929a326a16b0a4c9d2e277325e556017"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ff3b970b6c517a4075f8071ffac2e5a" id="r_a9ff3b970b6c517a4075f8071ffac2e5a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dfa2matcher_8cpp.html#a9ff3b970b6c517a4075f8071ffac2e5a">Ranges</a> = <a class="el" href="classthorin_1_1Vector.html">Vector</a>&lt; <a class="el" href="dfa2matcher_8cpp.html#a929a326a16b0a4c9d2e277325e556017">Range</a> &gt;</td></tr>
+<tr class="memitem:a9ff3b970b6c517a4075f8071ffac2e5a" id="r_a9ff3b970b6c517a4075f8071ffac2e5a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dfa2matcher_8cpp.html#a9ff3b970b6c517a4075f8071ffac2e5a">Ranges</a> = <a class="el" href="classthorin_1_1Vector.html">Vector</a>&lt; <a class="el" href="namespaceautomaton.html#aa937bcc480406d914b0cdf431b359e3e">Range</a> &gt;</td></tr>
 <tr class="separator:a9ff3b970b6c517a4075f8071ffac2e5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a39507cdaa298481617eeda783bf1ad36" id="r_a39507cdaa298481617eeda783bf1ad36"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dfa2matcher_8cpp.html#a39507cdaa298481617eeda783bf1ad36">dfa2matcher</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;w, const DFA &amp;dfa, <a class="el" href="classthorin_1_1Ref.html">Ref</a> n)</td></tr>
+<tr class="memitem:a39507cdaa298481617eeda783bf1ad36" id="r_a39507cdaa298481617eeda783bf1ad36"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dfa2matcher_8cpp.html#a39507cdaa298481617eeda783bf1ad36">dfa2matcher</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;w, const <a class="el" href="classautomaton_1_1DFA.html">DFA</a> &amp;dfa, <a class="el" href="classthorin_1_1Ref.html">Ref</a> n)</td></tr>
+<tr class="memdesc:a39507cdaa298481617eeda783bf1ad36"><td class="mdescLeft">&#160;</td><td class="mdescRight">You can dl::get this function.  <br /></td></tr>
 <tr class="separator:a39507cdaa298481617eeda783bf1ad36"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
@@ -152,7 +153,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="dfa2matcher_8cpp.html#a929a326a16b0a4c9d2e277325e556017">Range</a> =  automaton::Range</td>
+          <td class="memname">using <a class="el" href="namespaceautomaton.html#aa937bcc480406d914b0cdf431b359e3e">Range</a> =  <a class="el" href="namespaceautomaton.html#aa937bcc480406d914b0cdf431b359e3e">automaton::Range</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -168,7 +169,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="dfa2matcher_8cpp.html#a9ff3b970b6c517a4075f8071ffac2e5a">Ranges</a> =  <a class="el" href="classthorin_1_1Vector.html">Vector</a>&lt;<a class="el" href="dfa2matcher_8cpp.html#a929a326a16b0a4c9d2e277325e556017">Range</a>&gt;</td>
+          <td class="memname">using <a class="el" href="dfa2matcher_8cpp.html#a9ff3b970b6c517a4075f8071ffac2e5a">Ranges</a> =  <a class="el" href="classthorin_1_1Vector.html">Vector</a>&lt;<a class="el" href="namespaceautomaton.html#aa937bcc480406d914b0cdf431b359e3e">Range</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -193,7 +194,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const DFA &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classautomaton_1_1DFA.html">DFA</a> &amp;&#160;</td>
           <td class="paramname"><em>dfa</em>, </td>
         </tr>
         <tr>
@@ -210,9 +211,13 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>You can dl::get this function. </p>
+
 <p class="definition">Definition at line <a class="el" href="dfa2matcher_8cpp_source.html#l00095">95</a> of file <a class="el" href="dfa2matcher_8cpp_source.html">dfa2matcher.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00543">thorin::error()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00543">thorin::error()</a>, and <a class="el" href="automaton_8h_source.html#l00035">automaton::AutomatonBase&lt; NodeType &gt;::get_reachable_states()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="lower__regex_8cpp_source.html#l00024">thorin::plug::regex::LowerRegex::rewrite()</a>.</p>
 
 </div>
 </div>
@@ -221,7 +226,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_38c8d24aef3972a7f87b834274e76e31.html">plugins</a></li><li class="navelem"><a class="el" href="dir_653db1a8967a984455d151fd23b82bee.html">regex</a></li><li class="navelem"><a class="el" href="dir_c85624908c155567564756c4a3023a1a.html">src</a></li><li class="navelem"><a class="el" href="dir_6b85df1feb3af7f029e07d8b58de70df.html">thorin</a></li><li class="navelem"><a class="el" href="dir_91145aef34df84b311ff7323d92d4b31.html">plug</a></li><li class="navelem"><a class="el" href="dir_60d98b97d446600e1e01eda956dfce57.html">regex</a></li><li class="navelem"><a class="el" href="dfa2matcher_8cpp.html">dfa2matcher.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_6a7c4bb7c40f97e4d670d167d69dfc05.html">thorin</a></li><li class="navelem"><a class="el" href="dir_22f218170af2a7dfa03473fa10789f88.html">plug</a></li><li class="navelem"><a class="el" href="dir_71416c91951ab2da8d0ed00b421a9c8b.html">regex</a></li><li class="navelem"><a class="el" href="dfa2matcher_8cpp.html">dfa2matcher.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

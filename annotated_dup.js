@@ -1,5 +1,13 @@
 var annotated_dup =
 [
+    [ "automaton", "namespaceautomaton.html", [
+      [ "AutomatonBase", "classautomaton_1_1AutomatonBase.html", "classautomaton_1_1AutomatonBase" ],
+      [ "DFA", "classautomaton_1_1DFA.html", "classautomaton_1_1DFA" ],
+      [ "DFANode", "classautomaton_1_1DFANode.html", "classautomaton_1_1DFANode" ],
+      [ "NFA", "classautomaton_1_1NFA.html", "classautomaton_1_1NFA" ],
+      [ "NFANode", "classautomaton_1_1NFANode.html", "classautomaton_1_1NFANode" ],
+      [ "RangeCompare", "structautomaton_1_1RangeCompare.html", "structautomaton_1_1RangeCompare" ]
+    ] ],
     [ "std", "namespacestd.html", [
       [ "tuple_element< I, thorin::Span< T, N > >", "namespacestd.html#structstd_1_1tuple__element_3_01I_00_01thorin_1_1Span_3_01T_00_01N_01_4_01_4", "namespacestd_structstd_1_1tuple__element_3_01I_00_01thorin_1_1Span_3_01T_00_01N_01_4_01_4_dup" ],
       [ "tuple_size< thorin::Span< T, N > >", "structstd_1_1tuple__size_3_01thorin_1_1Span_3_01T_00_01N_01_4_01_4.html", null ]

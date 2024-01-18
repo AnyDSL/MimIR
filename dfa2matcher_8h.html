@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: plugins/regex/include/thorin/plug/regex/dfa2matcher.h File Reference</title>
+<title>Thorin: include/thorin/plug/regex/dfa2matcher.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -115,7 +115,7 @@ $(document).ready(function(){initNavTree('dfa2matcher_8h.html',''); initResizabl
   <div class="headertitle"><div class="title">dfa2matcher.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;automaton/dfa.h&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="dfa_8h_source.html">automaton/dfa.h</a>&gt;</code><br />
 <code>#include &quot;<a class="el" href="regex_8h_source.html">thorin/plug/regex/regex.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for dfa2matcher.h:</div>
@@ -125,14 +125,14 @@ Include dependency graph for dfa2matcher.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="dfa2matcher_8h__dep__incl.svg" width="419" height="154"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="dfa2matcher_8h__dep__incl.svg" width="358" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="dfa2matcher_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a86f7a4e93e5991813ed2c39cf23b36b4" id="r_a86f7a4e93e5991813ed2c39cf23b36b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="config_8h.html#a479c17cabac34a4216996c05ffa7e071">THORIN_EXPORT</a> const <a class="el" href="classthorin_1_1Def.html">thorin::Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dfa2matcher_8h.html#a86f7a4e93e5991813ed2c39cf23b36b4">dfa2matcher</a> (<a class="el" href="classthorin_1_1World.html">thorin::World</a> &amp;, const automaton::DFA &amp;, <a class="el" href="classthorin_1_1Ref.html">thorin::Ref</a>)</td></tr>
+<tr class="memitem:a86f7a4e93e5991813ed2c39cf23b36b4" id="r_a86f7a4e93e5991813ed2c39cf23b36b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="config_8h.html#a479c17cabac34a4216996c05ffa7e071">THORIN_EXPORT</a> const <a class="el" href="classthorin_1_1Def.html">thorin::Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dfa2matcher_8h.html#a86f7a4e93e5991813ed2c39cf23b36b4">dfa2matcher</a> (<a class="el" href="classthorin_1_1World.html">thorin::World</a> &amp;, const <a class="el" href="classautomaton_1_1DFA.html">automaton::DFA</a> &amp;, <a class="el" href="classthorin_1_1Ref.html">thorin::Ref</a>)</td></tr>
 <tr class="memdesc:a86f7a4e93e5991813ed2c39cf23b36b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">You can dl::get this function.  <br /></td></tr>
 <tr class="separator:a86f7a4e93e5991813ed2c39cf23b36b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -147,19 +147,19 @@ Functions</h2></td></tr>
           <td class="memname"><a class="el" href="config_8h.html#a479c17cabac34a4216996c05ffa7e071">THORIN_EXPORT</a> const <a class="el" href="classthorin_1_1Def.html">thorin::Def</a> * dfa2matcher </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classthorin_1_1World.html">thorin::World</a> &amp;&#160;</td>
-          <td class="paramname">, </td>
+          <td class="paramname"><em>w</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const automaton::DFA &amp;&#160;</td>
-          <td class="paramname">, </td>
+          <td class="paramtype">const <a class="el" href="classautomaton_1_1DFA.html">automaton::DFA</a> &amp;&#160;</td>
+          <td class="paramname"><em>dfa</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classthorin_1_1Ref.html">thorin::Ref</a>&#160;</td>
-          <td class="paramname">&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -171,6 +171,10 @@ Functions</h2></td></tr>
 
 <p>You can dl::get this function. </p>
 
+<p class="definition">Definition at line <a class="el" href="dfa2matcher_8cpp_source.html#l00095">95</a> of file <a class="el" href="dfa2matcher_8cpp_source.html">dfa2matcher.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="def_8h_source.html#l00543">thorin::error()</a>, and <a class="el" href="automaton_8h_source.html#l00035">automaton::AutomatonBase&lt; NodeType &gt;::get_reachable_states()</a>.</p>
+
 <p class="reference">Referenced by <a class="el" href="lower__regex_8cpp_source.html#l00024">thorin::plug::regex::LowerRegex::rewrite()</a>.</p>
 
 </div>
@@ -180,7 +184,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_38c8d24aef3972a7f87b834274e76e31.html">plugins</a></li><li class="navelem"><a class="el" href="dir_653db1a8967a984455d151fd23b82bee.html">regex</a></li><li class="navelem"><a class="el" href="dir_7f4094b6248fd07287066a82f22216f7.html">include</a></li><li class="navelem"><a class="el" href="dir_76a0fd41eeca668ef1de3c1a80a8d7a6.html">thorin</a></li><li class="navelem"><a class="el" href="dir_36b34e3361aa123bc10796f02e33fb1f.html">plug</a></li><li class="navelem"><a class="el" href="dir_cee877460e335e0b3a15f54c682e07a3.html">regex</a></li><li class="navelem"><a class="el" href="dfa2matcher_8h.html">dfa2matcher.h</a></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_a9446755a1c96c6cd3ab4facf95dc5bb.html">thorin</a></li><li class="navelem"><a class="el" href="dir_1812b8811261570ebfc57ffaaf94b9ca.html">plug</a></li><li class="navelem"><a class="el" href="dir_0b0d54584031e85b521eb77e43f768c0.html">regex</a></li><li class="navelem"><a class="el" href="dfa2matcher_8h.html">dfa2matcher.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
