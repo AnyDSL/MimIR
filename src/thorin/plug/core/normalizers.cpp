@@ -152,7 +152,7 @@ template<class Id> Ref fold(World& world, Ref type, const Def*& a) {
     return nullptr;
 }
 
-/// Reassociates @p a und @p b according to following rules.
+/// Reassociates @p a and @p b according to following rules.
 /// We use the following naming convention while literals are prefixed with an `l`:
 /// ```
 ///     a    op     b
