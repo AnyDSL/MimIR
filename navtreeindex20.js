@@ -1,5 +1,15 @@
 var NAVTREEINDEX20 =
 {
+"pass_8h.html#aae49afdff4a29ba1d94c3fada6e7b32e":[6,0,2,1,3,5,4],
+"pass_8h_source.html":[6,0,2,1,3,5],
+"passes.html":[1,4],
+"phase_8cpp.html":[6,0,3,1,5,0],
+"phase_8cpp_source.html":[6,0,3,1,5,0],
+"phase_8h.html":[6,0,2,1,4,0],
+"phase_8h_source.html":[6,0,2,1,4,0],
+"pipelinebuilder_8cpp.html":[6,0,3,1,4,6],
+"pipelinebuilder_8cpp_source.html":[6,0,3,1,4,6],
+"pipelinebuilder_8h.html":[6,0,2,1,3,6],
 "pipelinebuilder_8h.html#a39f3964760b6df40869a6e6fc4cfd418":[6,0,2,1,3,6,2],
 "pipelinebuilder_8h.html#a4af8566c40f049204989f6fcb8a1cba4":[6,0,2,1,3,6,1],
 "pipelinebuilder_8h.html#a5762324601a238c463d9606744f670dc":[6,0,2,1,3,6,3],
@@ -239,15 +249,5 @@ var NAVTREEINDEX20 =
 "structthorin_1_1Annex.html#ad571b6a32a55434451bd5c609cff8d9a":[5,0,2,4,11],
 "structthorin_1_1Annex.html#ad571b6a32a55434451bd5c609cff8d9a":[3,0,2,7,11],
 "structthorin_1_1Annex.html#afc5e033385aa135dfa7afb282652eb32":[3,0,2,7,15],
-"structthorin_1_1Annex.html#afc5e033385aa135dfa7afb282652eb32":[5,0,2,4,15],
-"structthorin_1_1DefDefEq.html":[5,0,2,18],
-"structthorin_1_1DefDefEq.html":[3,0,2,21],
-"structthorin_1_1DefDefEq.html#abfc9a7edb20f8c414e331b97daefaf4d":[3,0,2,21,0],
-"structthorin_1_1DefDefEq.html#abfc9a7edb20f8c414e331b97daefaf4d":[5,0,2,18,0],
-"structthorin_1_1DefDefHash.html":[3,0,2,22],
-"structthorin_1_1DefDefHash.html":[5,0,2,19],
-"structthorin_1_1DefDefHash.html#a739c7dceb87eac8c25c9dc3f8fe7299b":[3,0,2,22,0],
-"structthorin_1_1DefDefHash.html#a739c7dceb87eac8c25c9dc3f8fe7299b":[5,0,2,19,0],
-"structthorin_1_1Elem.html":[5,0,2,25],
-"structthorin_1_1Elem.html":[3,0,2,28]
+"structthorin_1_1Annex.html#afc5e033385aa135dfa7afb282652eb32":[5,0,2,4,15]
 };

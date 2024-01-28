@@ -101,16 +101,16 @@ var NAVTREEINDEX =
 "classthorin_1_1dot_1_1Emitter.html#a8e1c4f882defe272daeda6cce3c2fe75",
 "classthorin_1_1plug_1_1mem_1_1Reshape.html#a9297a1ea1196468624170c615b9d3c45adaf2671826ea81045b633629218d31c1",
 "core_2autogen_8h.html#a344b017a8c81e21b6c64dabcb05d8a67",
-"def_8h.html#adf5d1a62a53cfba7b0dcd4caac0090ab",
-"functions_func_u.html",
-"math_2autogen_8h.html#a94f956d597c0f1a1b692f442afd41221a648133bb1787126903a4ebdef06541de",
-"namespacemembers_d.html",
-"namespacethorin.html#ad9798f90bf61481c788b275e12135c06",
-"namespacethorin_1_1plug_1_1core.html#a7d3dda6234f135451515ff19d035578ba1cb6ecf47d175b4055a768fee5f76e97",
-"namespacethorin_1_1plug_1_1math.html#a9b36249af53fb8f2c7bd02d9dab7e3bba4852c1e063a94ec3fe62fa07f573a5ec",
-"pipelinebuilder_8h.html#a39f3964760b6df40869a6e6fc4cfd418",
-"structthorin_1_1Elem.html#a00f7ab23a26038ee3fef5ed8ceda6af9",
-"vector_8h_source.html"
+"def_8h.html#abb917bebc699083d990fc4592abcc50ead626102cfc2416a570fc0dc582a9b771",
+"functions_func_q.html",
+"math_2autogen_8h.html#a94f956d597c0f1a1b692f442afd41221a2d2222d0ae32e03862879ff5a20065ae",
+"namespacemembers.html",
+"namespacethorin.html#acf896db08a5279cdb1f61589607f055b",
+"namespacethorin_1_1plug_1_1core.html#a5b98f919ad2dcfb4d9e44c51c79d3faea784e770d36b6c2bbdde936606a78da89",
+"namespacethorin_1_1plug_1_1math.html#a983d38d030406f04d4a3cd1e13b14bb0a5095b5d2556700aa27b9984512eb7567",
+"pass_8h.html#aae49afdff4a29ba1d94c3fada6e7b32e",
+"structthorin_1_1DefDefEq.html",
+"util_8h.html#ae3eb00e4b86fdf94bee3c80beb4edefa"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

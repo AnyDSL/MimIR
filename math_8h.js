@@ -16,6 +16,7 @@ var math_8h =
       [ "fast", "math_8h.html#a6fa926bce3b4fdca73a35a3e9ccf12d9a31d4541b8e926a24f0c9b835b68cfdf3", null ],
       [ "bot", "math_8h.html#a6fa926bce3b4fdca73a35a3e9ccf12d9afabcaa97871555b68aa095335975e613", null ]
     ] ],
+    [ "is_associative", "math_8h.html#ab951d5d2854ea4a69971e5695189b439", null ],
     [ "is_commutative", "math_8h.html#a51ca23db83bc4b3d9f3d9e0f507d8203", null ],
     [ "is_commutative", "math_8h.html#aebdd4f781c37922338f7f5cca0a3afd7", null ],
     [ "is_commutative", "math_8h.html#ab9ac5e0645937050bfbae12f36328ec6", null ],
