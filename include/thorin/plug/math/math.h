@@ -125,8 +125,9 @@ namespace thorin {
 ///@{
 // clang-format off
 constexpr bool is_commutative(plug::math::extrema ) { return true; }
-constexpr bool is_commutative(plug::math::arith id) { return id == plug::math::arith ::add || id == plug::math::arith::mul; }
-constexpr bool is_commutative(plug::math::cmp   id) { return id == plug::math::cmp   ::e   || id == plug::math::cmp  ::ne ; }
+constexpr bool is_commutative(plug::math::arith id) { return id == plug::math::arith::add || id == plug::math::arith::mul; }
+constexpr bool is_commutative(plug::math::cmp   id) { return id == plug::math::cmp  ::e   || id == plug::math::cmp  ::ne ; }
+constexpr bool is_associative(plug::math::arith id) { return is_commutative(id); }
 // clang-format off
 ///@}
 

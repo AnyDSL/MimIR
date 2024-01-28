@@ -121,6 +121,13 @@ constexpr bool is_associative(plug::core::bit2 id) {
         default: return false;
     }
 }
+
+// clang-format off
+constexpr bool is_associative(plug::core::nat  id) { return is_commutative(id); }
+constexpr bool is_associative(plug::core::ncmp id) { return is_commutative(id); }
+constexpr bool is_associative(plug::core::icmp id) { return is_commutative(id); }
+constexpr bool is_associative(plug::core::wrap id) { return is_commutative(id); }
+// clang-format on
 ///@}
 
 } // namespace thorin

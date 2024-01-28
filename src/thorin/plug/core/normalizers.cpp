@@ -166,24 +166,21 @@ template<class Id> Ref fold(World& world, Ref type, const Def*& a) {
 template<class Id> Ref reassociate(Id id, World& world, [[maybe_unused]] const App* ab, Ref a, Ref b) {
     if (!is_associative(id)) return nullptr;
 
-    if (auto xy = match<Id>(id, a)) {
-        if (auto zw = match<Id>(id, b)) {
-            auto la     = a->isa<Lit>();
-            auto [x, y] = xy->template args<2>();
-            auto [z, w] = zw->template args<2>();
-            auto lx     = Lit::isa(x);
-            auto lz     = Lit::isa(z);
+    auto xy     = match<Id>(id, a);
+    auto zw     = match<Id>(id, b);
+    auto la     = a->isa<Lit>();
+    auto [x, y] = xy ? xy->template args<2>() : std::array<const Def*, 2>{nullptr, nullptr};
+    auto [z, w] = zw ? zw->template args<2>() : std::array<const Def*, 2>{nullptr, nullptr};
+    auto lx     = Lit::isa(x);
+    auto lz     = Lit::isa(z);
 
-            // if we reassociate, we have to forget about nsw/nuw
-            auto make_op = [&world, id](Ref a, Ref b) { return world.call(id, Mode::none, Defs{a, b}); };
+    // if we reassociate, we have to forget about nsw/nuw
+    auto make_op = [&world, id](Ref a, Ref b) { return world.call(id, Mode::none, Defs{a, b}); };
 
-            if (la && lz) return make_op(make_op(a, z), w);             // (1)
-            if (lx && lz) return make_op(make_op(x, z), make_op(y, w)); // (2)
-            if (lz) return make_op(z, make_op(a, w));                   // (3)
-            if (lx) return make_op(x, make_op(y, b));                   // (4)
-        }
-    }
-
+    if (la && lz) return make_op(make_op(a, z), w);             // (1)
+    if (lx && lz) return make_op(make_op(x, z), make_op(y, w)); // (2)
+    if (lz) return make_op(z, make_op(a, w));                   // (3)
+    if (lx) return make_op(x, make_op(y, b));                   // (4)
     return nullptr;
 }
 
