@@ -4,11 +4,11 @@
 
 #include "thorin/driver.h"
 
-#include "thorin/fe/ast.h"
-#include "thorin/fe/lexer.h"
-#include "thorin/fe/scopes.h"
+#include "thorin/ast/ast.h"
+#include "thorin/ast/lexer.h"
+#include "thorin/ast/scopes.h"
 
-namespace thorin {
+namespace thorin::ast {
 
 constexpr size_t Look_Ahead = 2;
 
@@ -143,4 +143,4 @@ private:
     friend class fe::Parser<Tok, Tok::Tag, Look_Ahead, Parser>;
 };
 
-} // namespace thorin
+} // namespace thorin::ast

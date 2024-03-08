@@ -9,9 +9,9 @@
 #include "thorin/config.h"
 #include "thorin/driver.h"
 
+#include "thorin/ast/parser.h"
 #include "thorin/be/dot/dot.h"
 #include "thorin/be/h/bootstrap.h"
-#include "thorin/fe/parser.h"
 #include "thorin/pass/optimize.h"
 #include "thorin/pass/pass.h"
 #include "thorin/pass/pipelinebuilder.h"
@@ -132,7 +132,7 @@ int main(int argc, char** argv) {
 
         auto path = fs::path(input);
         world.set(path.filename().replace_extension().string());
-        auto parser = Parser(world);
+        auto parser = ast::Parser(world);
         parser.import(driver.sym(input), os[Md]);
 
         if (auto dep = os[D]) {

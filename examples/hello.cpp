@@ -2,7 +2,7 @@
 
 #include <thorin/driver.h>
 
-#include <thorin/fe/parser.h>
+#include <thorin/ast/parser.h>
 #include <thorin/pass/optimize.h>
 #include <thorin/util/sys.h>
 
@@ -17,7 +17,7 @@ int main(int, char**) {
         auto& world = driver.world();
         driver.log().set(&std::cerr).set(Log::Level::Debug);
 
-        auto parser = Parser(world);
+        auto parser = ast::Parser(world);
         for (auto plugin : {"compile", "core"}) parser.plugin(plugin);
 
         // .Cn [%mem.M, I32, %mem.Ptr (I32, 0) .Cn [%mem.M, I32]]

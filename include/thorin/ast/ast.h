@@ -5,7 +5,9 @@
 
 #include "thorin/def.h"
 
-#include "thorin/fe/tok.h"
+#include "thorin/ast/tok.h"
+
+#include "fe/cast.h"
 
 namespace thorin {
 
@@ -13,31 +15,45 @@ class Infer;
 class Sigma;
 class World;
 
-class Scopes;
 using Def2Fields = DefMap<Vector<Sym>>;
+
+namespace ast {
+
+class Scopes;
+
+class Node : public fe::RuntimeCast<Node> {
+protected:
+    Node(Dbg dbg)
+        : dbg_(dbg) {}
+    virtual ~Node() {}
+
+public:
+    Dbg dbg() const { return dbg_; }
+    Loc loc() const { return dbg_.loc; }
+    Sym sym() const { return dbg_.sym; }
+
+private:
+    Dbg dbg_;
+};
 
 /*
  * Pattern
  */
 
-class Ptrn {
+class Ptrn : public Node {
 public:
     Ptrn(Dbg dbg, bool rebind, const Def* type)
-        : dbg_(dbg)
+        : Node(dbg)
         , rebind_(rebind)
         , type_(type) {}
     virtual ~Ptrn() {}
 
-    Dbg dbg() const { return dbg_; }
-    Loc loc() const { return dbg_.loc; }
-    Sym sym() const { return dbg_.sym; }
     bool rebind() const { return rebind_; }
     bool is_anonymous() const { return sym() == '_'; }
     virtual void bind(Scopes&, const Def*, bool rebind = false) const = 0;
     virtual const Def* type(World&, Def2Fields&) const                = 0;
 
 protected:
-    Dbg dbg_;
     bool rebind_;
     mutable const Def* type_;
 };
@@ -74,4 +90,5 @@ private:
     Def* decl_ = nullptr;
 };
 
+} // namespace ast
 } // namespace thorin

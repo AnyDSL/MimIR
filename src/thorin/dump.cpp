@@ -5,7 +5,7 @@
 #include "thorin/driver.h"
 
 #include "thorin/analyses/deptree.h"
-#include "thorin/fe/tok.h"
+#include "thorin/ast/tok.h"
 #include "thorin/util/util.h"
 
 using namespace std::literals;
@@ -90,10 +90,12 @@ private:
 
     friend std::ostream& operator<<(std::ostream& os, const LRPrec& p) {
         if constexpr (L) {
-            if (Inline(p.l) && Tok::prec(Tok::prec(p.r))[0] > Tok::prec(p.r)) return print(os, "({})", p.l);
+            if (Inline(p.l) && ast::Tok::prec(ast::Tok::prec(p.r))[0] > ast::Tok::prec(p.r))
+                return print(os, "({})", p.l);
             return print(os, "{}", p.l);
         } else {
-            if (Inline(p.r) && Tok::prec(p.l) > Tok::prec(Tok::prec(p.l))[1]) return print(os, "({})", p.r);
+            if (Inline(p.r) && ast::Tok::prec(p.l) > ast::Tok::prec(ast::Tok::prec(p.l))[1])
+                return print(os, "({})", p.r);
             return print(os, "{}", p.r);
         }
     }

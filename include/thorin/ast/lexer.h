@@ -5,10 +5,13 @@
 #include <absl/container/flat_hash_map.h>
 #include <fe/lexer.h>
 
-#include "thorin/fe/tok.h"
+#include "thorin/ast/tok.h"
 
 namespace thorin {
+
 class World;
+
+namespace ast {
 
 class Lexer : public fe::Lexer<3, Lexer> {
     using Super = fe::Lexer<3, Lexer>;
@@ -62,4 +65,5 @@ private:
     friend class fe::Lexer<3, Lexer>;
 };
 
+} // namespace ast
 } // namespace thorin
