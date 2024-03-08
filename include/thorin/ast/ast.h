@@ -90,5 +90,81 @@ private:
     Def* decl_ = nullptr;
 };
 
+/*
+ * Expr
+ */
+
+#if 0
+
+class Expr : public Node {
+protected:
+    Expr(Dbg dbg)
+        : Node(dbg) {}
+};
+
+// lam
+
+class Pi : public Expr {
+public:
+private:
+};
+
+class Lam : public Expr {
+public:
+    Lam(Dbg dbg, Tok::Tag tag, Ptrns&& domains, Expr* codom, Expr* filter, Expr* body)
+        : Expr(dbg)
+        , tag_(tag)
+        , domains_(std::move(domains))
+        , codom_(std::move(codom))
+        , filter_(std::move(filter))
+        , body_(std::move(body)) {}
+
+    Tok::Tag tag() const { return tag_; }
+    const auto& domains() const { return domains_; }
+    Expr* codom() const { return codom_; }
+    Expr* filter() const { return filter_; }
+    Expr* body() const { return body_; }
+
+private:
+    Tok::Tag tag_;
+    Ptrns domains_;
+    Expr* codom_;
+    Expr* filter_;
+    Expr* body_;
+};
+
+class App : public Expr {
+public:
+    App(Dbg dbg, Expr* callee, Expr* arg)
+        : Expr(dbg)
+        , callee_(callee)
+        , arg_(arg) {}
+
+    Expr* callee() const { return callee_; }
+    Expr* arg() const { return arg_; }
+
+private:
+    Expr* callee_;
+    Expr* arg_;;
+};
+
+// tuple
+
+class Sigma : public Expr {
+public:
+private:
+};
+
+class Tuple : public Expr {
+public:
+private:
+};
+
+class Extract : public Expr {
+public:
+private:
+};
+#endif
+
 } // namespace ast
 } // namespace thorin
