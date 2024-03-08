@@ -199,8 +199,14 @@ private:                                           \
 /// The data layout (see World::alloc and Def::partial_ops) looks like this:
 /// ```
 /// Def| type | op(0) ... op(num_ops-1) |
-///    |---------partial_ops------------|
-///           |-------extended_ops------|
+///           |-----------ops-----------|
+///    |----------partial_ops-----------|
+///
+///              extended_ops
+///    |--------------------------------| if type() != nullptr &&  is_set()
+///           |-------------------------| if type() == nullptr &&  is_set()
+///    |------|                           if type() != nullptr && !is_set()
+///    ||                                 if type() == nullptr && !is_set()
 /// ```
 /// @attention This means that any subclass of Def **must not** introduce additional members.
 /// @see @ref mut
@@ -386,7 +392,17 @@ public:
     /// Retrieve Var for *mutables*.
     /// @see @ref proj
     Ref var();
+    const Var* true_var();
     THORIN_PROJ(var, )
+    ///@}
+
+    /// @name Free Vars and Muts
+    ///@{
+    const auto& local_muts() const { return local_muts_; }
+    const auto& local_vars() const { return local_vars_; }
+    VarSet free_vars() const;
+    VarSet free_vars();
+    VarSet free_vars(MutMap<VarSet>&);
     ///@}
 
     /// @name external
@@ -524,6 +540,8 @@ private:
     u32 gid_;
     u32 num_ops_;
     mutable Uses uses_;
+    VarSet local_vars_;
+    MutSet local_muts_;
     const Def* type_;
 
     friend class World;

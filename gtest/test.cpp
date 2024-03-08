@@ -271,6 +271,20 @@ TEST(Check, alpha) {
     check(l_1, l_1, true, true);
 }
 
+TEST(FV, free_vars) {
+    Driver driver;
+    World& w = driver.world();
+    auto Nat = w.type_nat();
+    auto pi  = w.pi(Nat, w.sigma({Nat, Nat}));
+    auto lx  = w.mut_lam(pi);
+    auto ly  = w.mut_lam(pi);
+    auto x   = lx->var()->set("x");
+    auto y   = ly->var()->set("y");
+    lx->set(false, w.tuple({x, y}));
+    auto fvs = lx->free_vars();
+    outln("{, }", fvs);
+}
+
 TEST(ADT, Span) {
     {
         int a[3]        = {0, 1, 2};

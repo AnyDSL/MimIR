@@ -39,6 +39,17 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
     std::ranges::copy(ops, ops_ptr());
     gid_ = world().next_gid();
 
+    if (auto var = isa<Var>()) {
+        local_vars_.emplace(var);
+    } else if (auto mut = isa_mut()) {
+        local_muts_.emplace(mut);
+    } else {
+        for (auto op : extended_ops()) {
+            local_vars_.insert(op->local_vars_.begin(), op->local_vars_.end());
+            local_muts_.insert(op->local_muts_.begin(), op->local_muts_.end());
+        }
+    }
+
     if (node == Node::Univ) {
         hash_ = murmur3(gid());
     } else {
@@ -72,6 +83,52 @@ Nat::Nat(World& world)
 
 UMax::UMax(World& world, Defs ops)
     : Def(Node, world.univ(), ops, 0) {}
+
+const Var* Def::true_var() {
+    if (auto v = var())
+        if (auto w = v->isa<Var>()) return w;
+    return nullptr;
+}
+
+VarSet Def::free_vars() const {
+    if (auto mut = isa_mut()) return mut->free_vars();
+
+    MutMap<VarSet> mut2vars;
+    VarSet vars;
+    for (auto op : extended_ops()) {
+        vars.insert(op->local_vars().begin(), op->local_vars().end());
+
+        for (auto mut : op->local_muts()) {
+            auto mut_fvs = mut->free_vars(mut2vars);
+            vars.insert(mut_fvs.begin(), mut_fvs.end());
+        }
+    }
+
+    return vars;
+}
+
+VarSet Def::free_vars() {
+    MutMap<VarSet> mut2vars;
+    return free_vars(mut2vars);
+}
+
+VarSet Def::free_vars(MutMap<VarSet>& mut2vars) {
+    if (auto i = mut2vars.find(this); i != mut2vars.end()) return i->second;
+
+    VarSet vars;
+    for (auto op : extended_ops()) {
+        vars.insert(op->local_vars().begin(), op->local_vars().end());
+
+        for (auto mut : op->local_muts()) {
+            auto mut_fvs = mut->free_vars(mut2vars);
+            vars.insert(mut_fvs.begin(), mut_fvs.end());
+        }
+    }
+
+    if (auto var = true_var()) vars.erase(var);
+
+    return mut2vars[this] = vars;
+}
 
 // clang-format off
 

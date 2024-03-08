@@ -94,7 +94,7 @@ bool Scope::is_free(Def* mut, const Def* def) {
             // optimize common cases first
             if (def->num_ops() == 0) return false;
             if (var == def) return true;
-            for (auto v : var->mut()->vars())
+            for (auto v : var->mut()->tvars())
                 if (v == def) return true;
 
             Scope scope(mut);

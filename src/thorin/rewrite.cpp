@@ -4,9 +4,7 @@
 
 #include "thorin/analyses/scope.h"
 
-#include "absl/container/fixed_array.h"
-
-// Don't use fancy C++-lambdas; it's way to annoying stepping through this in a debugger.
+// Don't use fancy C++-lambdas; it's way to annoying stepping through them in a debugger.
 
 namespace thorin {
 
