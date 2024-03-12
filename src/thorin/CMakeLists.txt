@@ -6,6 +6,7 @@ target_sources(libthorin
         def.cpp
         plugin.cpp
         dump.cpp
+        dot.cpp
         driver.cpp
         lam.cpp
         lattice.cpp

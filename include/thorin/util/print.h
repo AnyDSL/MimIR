@@ -135,6 +135,12 @@ template<class T, class... Args> std::ostream& print(std::ostream& os, const cha
     fe::unreachable();
 }
 
+/// As above but end with `std::endl`.
+template<class... Args> std::ostream& println(std::ostream& os, const char* fmt, Args&&... args) {
+    return print(os, fmt, std::forward<Args&&>(args)...) << std::endl;
+    ;
+}
+
 /// Wraps thorin::print to output a formatted `std:string`.
 template<class... Args> std::string fmt(const char* s, Args&&... args) {
     std::ostringstream os;

@@ -482,6 +482,14 @@ public:
     std::ostream& stream(std::ostream&, int max) const;
     ///@}
 
+    /// @name dot
+    ///@{
+    void dot(uint32_t max, std::ostream&) const;
+    void dot(uint32_t max) const; ///< As above but uses `std::cout`.
+    void dot() const;             ///< As above but uses infinity as `max`.
+    void dot(uint32_t max, const char* file) const;
+    ///@}
+
 protected:
     /// @name Wrappers for World::sym
     ///@{

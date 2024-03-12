@@ -445,6 +445,8 @@ public:
     void write();                 ///< Same above but file name defaults to World::name.
     ///@}
 
+    void dot(std::ostream& os) const; ///< Dump DOT to @p os.
+
 private:
     /// @name Put into Sea of Nodes
     ///@{

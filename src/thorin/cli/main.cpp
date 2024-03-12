@@ -166,7 +166,7 @@ int main(int argc, char** argv) {
         }
 
         if (os[Thorin]) world.dump(*os[Thorin]);
-        if (os[Dot]) dot::emit(world, *os[Dot]);
+        if (os[Dot]) world.dot(*os[Dot]);
 
         if (os[LL]) {
             if (auto backend = driver.backend("ll"))
