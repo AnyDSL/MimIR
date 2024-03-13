@@ -101,7 +101,7 @@ public:
     std::string label(const Def* def) const {
         if (auto lit = Lit::isa(def)) return std::to_string(*lit);
         switch (def->node()) {
-            case Node::Axiom: return (std::string)def->sym();
+            case Node::Axiom: return std::string(def->sym());
             case Node::Pi: return "Π";
             case Node::Lam: return "λ";
             case Node::App: return "";
