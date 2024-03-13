@@ -2,12 +2,12 @@
 
 #include <sstream>
 #include <string>
-#include <string_view>
-#include <type_traits>
 
 #include <absl/container/btree_map.h>
 #include <absl/container/btree_set.h>
 #include <fe/arena.h>
+#include <string_view>
+#include <type_traits>
 
 #include "thorin/axiom.h"
 #include "thorin/check.h"
@@ -445,7 +445,15 @@ public:
     void write();                 ///< Same above but file name defaults to World::name.
     ///@}
 
-    void dot(std::ostream& os) const; ///< Dump DOT to @p os.
+    /// @name dot
+    ///@{
+    /// Dumps DOT to @p os.
+    /// @param annex If `true`, include all annexes - even if unused.
+    /// @param types Follow type edges?
+    void dot(std::ostream& os, bool annexes = false, bool types = false) const;
+    /// Same as above but write to @p file or `std::cout` if @p file is `nullptr`.
+    void dot(const char* file = nullptr, bool annexes = false, bool types = false) const;
+    ///@}
 
 private:
     /// @name Put into Sea of Nodes

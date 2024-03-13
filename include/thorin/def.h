@@ -484,10 +484,11 @@ public:
 
     /// @name dot
     ///@{
-    void dot(uint32_t max, std::ostream&) const;
-    void dot(uint32_t max) const; ///< As above but uses `std::cout`.
-    void dot() const;             ///< As above but uses infinity as `max`.
-    void dot(uint32_t max, const char* file) const;
+    /// Dumps DOT to @p os while obeying maximum recursion depth of @p max.
+    /// If @p types is `true`, Def::type() edges will be followed as well.
+    void dot(std::ostream& os, uint32_t max = 0xFFFFFF, bool types = false) const;
+    /// Same as above but write to @p file or `std::cout` if @p file is `nullptr`.
+    void dot(const char* file = nullptr, uint32_t max = 0xFFFFFF, bool types = false) const;
     ///@}
 
 protected:
