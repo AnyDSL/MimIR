@@ -31,6 +31,8 @@ int main(int argc, char** argv) {
         bool show_help         = false;
         bool show_version      = false;
         bool list_search_paths = false;
+        bool dot_follow_types  = false;
+        bool dot_all_annexes   = false;
         std::string input, prefix;
         std::string clang = sys::find_cmd("clang");
         std::vector<std::string> plugins, search_paths;
@@ -60,6 +62,8 @@ int main(int argc, char** argv) {
             | lyra::opt(output[Md    ], "file"                )      ["--output-md"             ]("Emits the input formatted as Markdown.")
             | lyra::opt(output[Thorin], "file"                )["-o"]["--output-thorin"         ]("Emits the Thorin program again.")
             | lyra::opt(flags.bootstrap                       )      ["--bootstrap"             ]("Puts thorin into \"bootstrap mode\". This means a '.plugin' directive has the same effect as an '.import' and will not load a library. In addition, no standard plugins will be loaded.")
+            | lyra::opt(dot_follow_types                      )      ["--dot-follow-types"      ]("Follow type dependencies in DOT output.")
+            | lyra::opt(dot_all_annexes                       )      ["--dot-all-annexes"       ]("Output all annexes - even if unused - in DOT output.")
             | lyra::opt(flags.dump_gid, "level"               )      ["--dump-gid"              ]("Dumps gid of inline expressions as a comment in output if <level> > 0. Use a <level> of 2 to also emit the gid of trivial defs.")
             | lyra::opt(flags.dump_recursive                  )      ["--dump-recursive"        ]("Dumps Thorin program with a simple recursive algorithm that is not readable again from Thorin but is less fragile and also works for broken Thorin programs.")
             | lyra::opt(flags.aggressive_lam_spec             )      ["--aggr-lam-spec"         ]("Overrides LamSpec behavior to follow recursive calls.")
@@ -166,7 +170,7 @@ int main(int argc, char** argv) {
         }
 
         if (os[Thorin]) world.dump(*os[Thorin]);
-        if (os[Dot]) world.dot(*os[Dot]);
+        if (os[Dot]) world.dot(*os[Dot], dot_all_annexes, dot_follow_types);
 
         if (os[LL]) {
             if (auto backend = driver.backend("ll"))

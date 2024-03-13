@@ -449,7 +449,7 @@ public:
     ///@{
     /// Dumps DOT to @p os.
     /// @param annex If `true`, include all annexes - even if unused.
-    /// @param types Follow type edges?
+    /// @param types Follow type dependencies?
     void dot(std::ostream& os, bool annexes = false, bool types = false) const;
     /// Same as above but write to @p file or `std::cout` if @p file is `nullptr`.
     void dot(const char* file = nullptr, bool annexes = false, bool types = false) const;

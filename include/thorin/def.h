@@ -491,7 +491,7 @@ public:
     /// @name dot
     ///@{
     /// Dumps DOT to @p os while obeying maximum recursion depth of @p max.
-    /// If @p types is `true`, Def::type() edges will be followed as well.
+    /// If @p types is `true`, Def::type() dependencies will be followed as well.
     void dot(std::ostream& os, uint32_t max = 0xFFFFFF, bool types = false) const;
     /// Same as above but write to @p file or `std::cout` if @p file is `nullptr`.
     void dot(const char* file = nullptr, uint32_t max = 0xFFFFFF, bool types = false) const;

@@ -36,14 +36,14 @@ Usage: xdot EXP [MAX] [TYPES]
     MAX     Maximum recursion depth while following a Def's ops.
             Default: 0xFFFFFFFF.
 
-    TYPES   Follow type edges?
+    TYPES   Follow type dependencies?
             Default: 0 (no)
 
 Examples:
 
-xdot def     - Show full DOT graph of 'def' but ignore type edges.
+xdot def     - Show full DOT graph of 'def' but ignore type dependencies.
 xdot def 3   - As above but use recursion depth of 3.
-xdot def 3 1 - As above but follow type edges.
+xdot def 3 1 - As above but follow type dependencies.
 end
 
 define xdott
@@ -61,7 +61,7 @@ end
 document xdott
 xdott
 Generates DOT output for the given argument and invokes xdot while always
-following type edges.
+following type dependencies.
 
 Usage: xdott EXP [MAX]
 
@@ -102,7 +102,7 @@ Usage: xdotw WORLD [ANNEXES] [TYPES]
     ANNEXES Include all annexes - even if unused?
             Default: 0 (no)
 
-    TYPES   Follow type edges?
+    TYPES   Follow type dependencies?
             Default: 0 (no)
 
 Note:
@@ -111,7 +111,7 @@ xdotw expects the address of the World.
 
 Examples:
 
-Show DOT graph of 'world' - ignoring type edges and unused annexes.
+Show DOT graph of 'world' - ignoring type dependencies and unused annexes.
 xdotw &def->world()
 
 Show full DOT graph of 'world' including types and all annexes.
