@@ -35,9 +35,15 @@
 namespace thorin {
 
 namespace Node {
+
 #define CODE(node, name) node,
 enum : node_t { THORIN_NODE(CODE) };
 #undef CODE
+
+#define CODE(node, name) +size_t(1)
+constexpr auto Num_Nodes = size_t(0) THORIN_NODE(CODE);
+#undef CODE
+
 } // namespace Node
 
 class App;
