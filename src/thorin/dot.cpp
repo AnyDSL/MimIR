@@ -20,8 +20,6 @@ template<class T> std::string escape(const T& val) {
     return str;
 }
 
-} // namespace
-
 class Dot {
 public:
     Dot(std::ostream& ostream, bool types)
@@ -109,6 +107,8 @@ private:
     Tab tab_;
     DefSet done_;
 };
+
+} // namespace
 
 void Def::dot(std::ostream& ostream, uint32_t max, bool types) const { Dot(ostream, types).run(this, max); }
 

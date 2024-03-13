@@ -2,12 +2,12 @@
 
 #include <sstream>
 #include <string>
+#include <string_view>
+#include <type_traits>
 
 #include <absl/container/btree_map.h>
 #include <absl/container/btree_set.h>
 #include <fe/arena.h>
-#include <string_view>
-#include <type_traits>
 
 #include "thorin/axiom.h"
 #include "thorin/check.h"
