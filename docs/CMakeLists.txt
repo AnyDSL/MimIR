@@ -1,10 +1,19 @@
-set(CLI_HELP "${CMAKE_CURRENT_BINARY_DIR}/cli-help.sh")
+set(CLI_HELP   "${CMAKE_CURRENT_BINARY_DIR}/cli-help.sh")
+set(XDOT_HELP  "${CMAKE_CURRENT_BINARY_DIR}/xdot-help.gdb")
 
 add_custom_command(
     OUTPUT ${CLI_HELP}
     COMMAND thorin --help > ${CLI_HELP}
     DEPENDS thorin
     COMMENT "Generating help text of Thorin's CLI"
+)
+
+add_custom_command(
+    OUTPUT ${XDOT_HELP}
+    COMMAND gdb --silent -x docs/generate_xdot_help.gdb > ${XDOT_HELP}
+    DEPENDS ../scripts/xdot.gdb generate_xdot_help.gdb
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+    COMMENT "Generating GDB xdot help text"
 )
 
 set(DOXYFILE        "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile")
@@ -28,7 +37,7 @@ add_custom_command(
     OUTPUT ${DOXY_INDEX_HTML}
     COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYFILE}
     MAIN_DEPENDENCY ${DOXYFILE}
-    DEPENDS thorin ${CLI_HELP} ${DOXY_EXTRA_FILES} ${DOXY_LAYOUT}
+    DEPENDS thorin ${CLI_HELP} ${XDOT_HELP} ${DOXY_EXTRA_FILES} ${DOXY_LAYOUT}
     COMMENT "Generating Doxygen HTML documentation"
     WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
 )

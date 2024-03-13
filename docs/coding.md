@@ -70,7 +70,10 @@ private:
 
 ## Debugging
 
-For logging and automatic firing of breakpoints refer to the [Command-Line Reference](@ref clidebug).
+@see [Command-Line Reference](@ref clidebug)
+@see [GDB: A quick guide to make your debugging easier](https://johnnysswlab.com/gdb-a-quick-guide-to-make-your-debugging-easier/)
+@see [Advanced GDB Usage](https://interrupt.memfault.com/blog/advanced-gdb)
+@see [Debugging with GDB](https://sourceware.org/gdb/current/onlinedocs/gdb.html/)
 
 ### Dumping
 
@@ -80,7 +83,7 @@ Note that you can simply invoke
 * thorin::World::dump,
 * thorin::World::write, ...
 
-from within [GDB](https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_30.html):
+from within GDB:
 ```gdb
 (gdb) call def->dump()
 (gdb) call def->dump(0)
@@ -101,6 +104,17 @@ $1 = ...
 (gdb) $1->dump();
 ```
 
+### Display DOT
+
+`scripts/xdot.gdb` provides custom GDB commands to create a [DOT](https://graphviz.org/) graph from a
+* [`Def*`](@ref thorin::Def),
+* [`Ref`](@ref thorin::Ref), or
+* [`World`](@ref thorin::World)
+and display it through [xdot](https://github.com/jrfonseca/xdot.py).
+Just `source` or copy `scripts/xdot.gdb` in your `~/.gdbinit`.
+
+\include "xdot-help.gdb"
+
 ### Conditional Breakpoints
 
 Often, you will want to inspect a certain thorin::Def at a particular point within the program.
@@ -113,7 +127,7 @@ break foo.cpp:23 if def->gid() == 42
 ### Catching Throw
 
 For several things like errors in Thorin's front end, Thorin relies on C++ exceptions for error handling.
-Simply, do this to encounter them within GDB:
+Do this to encounter them within GDB:
 ```gdb
 catch throw
 ```
@@ -121,7 +135,7 @@ catch throw
 ### Valgrind & GDB
 
 If you encounter memory related problems, you might want to run the program with [Valgrind's GDB server](https://valgrind.org/docs/manual/manual-core-adv.html).
-Simply launch the program like this
+Launch the program like this
 ```sh
 valgrind --vgdb=yes --vgdb-error=0 thorin-gtest
 ```

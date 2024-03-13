@@ -35,9 +35,15 @@
 namespace thorin {
 
 namespace Node {
+
 #define CODE(node, name) node,
 enum : node_t { THORIN_NODE(CODE) };
 #undef CODE
+
+#define CODE(node, name) +size_t(1)
+constexpr auto Num_Nodes = size_t(0) THORIN_NODE(CODE);
+#undef CODE
+
 } // namespace Node
 
 class App;
@@ -496,6 +502,15 @@ public:
     void write(int max) const;
     void write(int max, const char* file) const;
     std::ostream& stream(std::ostream&, int max) const;
+    ///@}
+
+    /// @name dot
+    ///@{
+    /// Dumps DOT to @p os while obeying maximum recursion depth of @p max.
+    /// If @p types is `true`, Def::type() dependencies will be followed as well.
+    void dot(std::ostream& os, uint32_t max = 0xFFFFFF, bool types = false) const;
+    /// Same as above but write to @p file or `std::cout` if @p file is `nullptr`.
+    void dot(const char* file = nullptr, uint32_t max = 0xFFFFFF, bool types = false) const;
     ///@}
 
 protected:
