@@ -64,9 +64,9 @@ public:
             os_ << "];\n";
         }
 
-        if (auto type = def->type(); type && types_) {
-            recurse(type, max - 1);
-            tab_.print(os_, "_{} -> _{}[color=\"#00000000\",constraint=false,style=dashed];", def->gid(), type->gid());
+        if (auto t = def->type(); t && types_) {
+            recurse(t, max - 1);
+            tab_.println(os_, "_{} -> _{}[color=\"#00000000\",constraint=false,style=dashed];", def->gid(), t->gid());
         }
     }
 
