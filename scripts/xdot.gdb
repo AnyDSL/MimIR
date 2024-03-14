@@ -29,9 +29,7 @@ xdot
 Generates DOT output for the given EXP and invokes xdot.
 
 Usage: xdot EXP [MAX] [TYPES]
-    EXP     Must provide $EXP->dot(file, $MAX, $TYPES). Can be a
-            * 'thorin::Def*' or
-            * 'thorin::Ref'.
+    EXP     Must provide $EXP->dot(file, $MAX, $TYPES).
 
     MAX     Maximum recursion depth while following a Def's ops.
             Default: 0xFFFFFFFF.
@@ -41,9 +39,10 @@ Usage: xdot EXP [MAX] [TYPES]
 
 Examples:
 
-xdot def     - Show full DOT graph of 'def' but ignore type dependencies.
-xdot def 3   - As above but use recursion depth of 3.
-xdot def 3 1 - As above but follow type dependencies.
+xdot def      - Show full DOT graph of 'def' but ignore type dependencies.
+xdot ref.def_ - As above but on a Ref.
+xdot def 3    - As above but use recursion depth of 3.
+xdot def 3 1  - As above but follow type dependencies.
 end
 
 define xdott

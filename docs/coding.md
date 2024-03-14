@@ -106,11 +106,7 @@ $1 = ...
 
 ### Display DOT
 
-`scripts/xdot.gdb` provides custom GDB commands to create a [DOT](https://graphviz.org/) graph from a
-* [`Def*`](@ref thorin::Def),
-* [`Ref`](@ref thorin::Ref), or
-* [`World`](@ref thorin::World)
-and display it through [xdot](https://github.com/jrfonseca/xdot.py).
+`scripts/xdot.gdb` provides custom GDB commands to create a [DOT](https://graphviz.org/) graph and display it through [xdot](https://github.com/jrfonseca/xdot.py).
 Just `source` or copy `scripts/xdot.gdb` in your `~/.gdbinit`.
 
 \include "xdot-help.gdb"
