@@ -22,7 +22,7 @@ public:
     Sigma* unset() { return Def::unset()->as<Sigma>(); }
     ///@}
 
-    const Sigma* immutabilize() override;
+    const Def* immutabilize() override;
     Sigma* stub(World&, Ref) override;
 
     /// @name Type Checking

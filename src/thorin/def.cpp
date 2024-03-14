@@ -208,36 +208,39 @@ template TExt<true >*   TExt<true >  ::stub(World&, Ref);
 
 // TODO check for recursion
 const Pi* Pi::immutabilize() {
-    if (auto v = true_var()) {
-        if (codom()->free_vars().contains(v)) return nullptr;
-    }
-
+    auto fvs = codom()->free_vars();
+    if (auto v = true_var(); v && fvs.contains(v)) return nullptr;
     return world().pi(dom(), codom());
 }
 
-const Sigma* Sigma::immutabilize() {
-    if (std::ranges::none_of(ops(), [this](auto op) { return Scope::is_free(this, op); }))
-        return static_cast<const Sigma*>(*world().sigma(ops()));
-    return nullptr;
+const Def* Sigma::immutabilize() {
+    if (auto v = true_var(); v && std::ranges::any_of(ops(), [v](auto op) {
+                                 auto fvs = op->free_vars();
+                                 return fvs.contains(v);
+                             }))
+        return nullptr;
+    return static_cast<const Sigma*>(*world().sigma(ops()));
 }
 
 const Def* Arr::immutabilize() {
-    auto& w = world();
-    if (auto n = Lit::isa(shape())) {
-        if (Scope::is_free(this, body()))
-            return w.sigma(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
-        return w.arr(shape(), body());
-    }
+    auto& w  = world();
+    auto fvs = body()->free_vars();
+    if (auto v = true_var(); !v || !fvs.contains(v)) return w.arr(shape(), body());
+
+    if (auto n = Lit::isa(shape()); *n < w.flags().scalerize_threshold)
+        return w.sigma(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
+
     return nullptr;
 }
 
 const Def* Pack::immutabilize() {
-    auto& w = world();
-    if (auto n = Lit::isa(shape())) {
-        if (Scope::is_free(this, body()))
-            return w.tuple(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
-        return w.pack(shape(), body());
-    }
+    auto& w  = world();
+    auto fvs = body()->free_vars();
+    if (auto v = true_var(); !v || !fvs.contains(v)) return w.pack(shape(), body());
+
+    if (auto n = Lit::isa(shape()); *n < w.flags().scalerize_threshold)
+        return w.tuple(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
+
     return nullptr;
 }
 
