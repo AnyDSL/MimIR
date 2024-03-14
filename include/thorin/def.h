@@ -398,7 +398,7 @@ public:
     /// Retrieve Var for *mutables*.
     /// @see @ref proj
     Ref var();
-    const Var* true_var();
+    const Var* true_var(); ///< Only return sth, if mut%able binds a *true* Var - yields `nullptr` otherwise.
     THORIN_PROJ(var, )
     ///@}
 
@@ -557,6 +557,7 @@ private:
     mutable Uses uses_;
     VarSet local_vars_;
     MutSet local_muts_;
+    const Var* var_ = nullptr; // Var of a mutable.
     const Def* type_;
 
     friend class World;

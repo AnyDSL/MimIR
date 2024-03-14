@@ -155,7 +155,8 @@ Ref World::var(Ref type, Def* mut) {
         if (auto l = Lit::isa(s); l && l == 1) return lit_0_1();
     }
 
-    return unify<Var>(1, type, mut);
+    if (auto var = mut->var_) return var;
+    return mut->var_ = unify<Var>(1, type, mut);
 }
 
 Ref World::iapp(Ref callee, Ref arg) {

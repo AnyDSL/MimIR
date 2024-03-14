@@ -16,11 +16,6 @@ using namespace std::literals;
 
 namespace thorin {
 
-namespace {
-// Just assuming looking through the uses is faster if uses().size() is small.
-constexpr int Search_In_Uses_Threshold = 8;
-} // namespace
-
 /*
  * constructors
  */
@@ -94,15 +89,12 @@ const Var* Def::true_var() {
 VarSet Def::free_vars() const {
     if (auto mut = isa_mut()) return mut->free_vars();
 
-    MutMap<VarSet> mut2vars;
-    VarSet vars;
-    for (auto op : extended_ops()) {
-        vars.insert(op->local_vars().begin(), op->local_vars().end());
+    auto mut2vars = MutMap<VarSet>();
+    auto vars     = local_vars();
 
-        for (auto mut : op->local_muts()) {
-            auto mut_fvs = mut->free_vars(mut2vars);
-            vars.insert(mut_fvs.begin(), mut_fvs.end());
-        }
+    for (auto mut : local_muts()) {
+        auto mut_fvs = mut->free_vars(mut2vars);
+        vars.insert(mut_fvs.begin(), mut_fvs.end());
     }
 
     return vars;
@@ -216,8 +208,11 @@ template TExt<true >*   TExt<true >  ::stub(World&, Ref);
 
 // TODO check for recursion
 const Pi* Pi::immutabilize() {
-    if (!Scope::is_free(this, codom())) return world().pi(dom(), codom());
-    return nullptr;
+    if (auto v = true_var()) {
+        if (codom()->free_vars().contains(v)) return nullptr;
+    }
+
+    return world().pi(dom(), codom());
 }
 
 const Sigma* Sigma::immutabilize() {
@@ -335,16 +330,10 @@ const Def* Def::debug_suffix(std::string suffix) const {
 // clang-format off
 
 Ref Def::var() {
+    if (var_) return var_;
     auto& w = world();
 
-    if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {
-        for (auto u : uses()) {
-            if (auto var = u->isa<Var>(); var && var->mut() == this) return var;
-        }
-
-        if (w.is_frozen()) return nullptr;
-    }
-
+    if (w.is_frozen()) return nullptr;
     if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam);
     if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi);
     if (auto sig  = isa<Sigma>()) return w.var(sig,         sig);
@@ -483,6 +472,8 @@ nat_t Def::num_tprojs() const {
 }
 
 const Def* Def::proj(nat_t a, nat_t i) const {
+    static constexpr int Search_In_Uses_Threshold = 8;
+
     if (a == 1) {
         if (!type()) return this;
         if (!isa_mut<Sigma>() && !type()->isa_mut<Sigma>()) return this;

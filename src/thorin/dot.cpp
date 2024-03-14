@@ -22,9 +22,10 @@ template<class T> std::string escape(const T& val) {
 
 class Dot {
 public:
-    Dot(std::ostream& ostream, bool types)
+    Dot(std::ostream& ostream, bool types, const Def* root = nullptr)
         : os_(ostream)
-        , types_(types) {}
+        , types_(types)
+        , root_(root) {}
 
     void prologue() {
         tab_.println(os_, "digraph {{");
@@ -47,7 +48,13 @@ public:
     void recurse(const Def* def, uint32_t max) {
         if (max == 0 || !done_.emplace(def).second) return;
         tab_.print(os_, "_{}[", def->gid());
-        if (def->isa_mut()) os_ << "style=\"filled,diagonals\"";
+        if (def->isa_mut())
+            if (def == root_)
+                os_ << "style=\"filled,diagonals,bold\"";
+            else
+                os_ << "style=\"filled,diagonals\"";
+        else if (def == root_)
+            os_ << "style=\"filled,bold\"";
         label(def) << ',';
         color(def) << ',';
         if (def->free_vars().empty()) os_ << "rank=min,";
@@ -107,13 +114,14 @@ public:
 private:
     std::ostream& os_;
     bool types_;
+    const Def* root_;
     Tab tab_;
     DefSet done_;
 };
 
 } // namespace
 
-void Def::dot(std::ostream& ostream, uint32_t max, bool types) const { Dot(ostream, types).run(this, max); }
+void Def::dot(std::ostream& ostream, uint32_t max, bool types) const { Dot(ostream, types, this).run(this, max); }
 
 void Def::dot(const char* file, uint32_t max, bool types) const {
     if (!file) {
