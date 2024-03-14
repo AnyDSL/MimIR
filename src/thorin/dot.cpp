@@ -50,6 +50,7 @@ public:
         if (def->isa_mut()) os_ << "style=\"filled,diagonals\"";
         label(def) << ',';
         color(def) << ',';
+        if (def->free_vars().empty()) os_ << "rank=min,";
         tooltip(def) << "];\n";
 
         if (!def->is_set()) return;
@@ -57,16 +58,15 @@ public:
         for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
             auto op = def->op(i);
             recurse(op, max - 1);
+            tab_.print(os_, "_{} -> _{}[label=\"{}\"", def->gid(), op->gid(), i);
             if (op->isa<Lit>() || op->isa<Axiom>() || def->isa<Var>() || def->isa<Nat>() || def->isa<Idx>())
-                tab_.println(os_, "_{} -> _{}[color=\"#00000000\",constraint=false];", def->gid(), op->gid());
-            else
-                tab_.println(os_, "_{} -> _{}[label=\"{}\"];", def->gid(), op->gid(), i);
+                os_ << ",fontcolor=\"#00000000\",color=\"#00000000\",constraint=false";
+            os_ << "];\n";
         }
 
         if (auto type = def->type(); type && types_) {
             recurse(type, max - 1);
-            tab_.println(os_, "_{} -> _{}[color=\"#00000000\",constraint=false,style=dashed];", def->gid(),
-                         type->gid());
+            tab_.print(os_, "_{} -> _{}[color=\"#00000000\",constraint=false,style=dashed];", def->gid(), type->gid());
         }
     }
 
@@ -97,6 +97,9 @@ public:
         print(os_, "<b>name:</b> {}{}", def->sym(), NL);
         print(os_, "<b>gid:</b> {}{}", def->gid(), NL);
         print(os_, "<b>flags:</b> {}{}", flags, NL);
+        print(os_, "<b>FVs:</b> {{{, }}}{}", def->free_vars(), NL);
+        print(os_, "<b>local vars:</b> {{{, }}}{}", def->local_vars(), NL);
+        print(os_, "<b>local muts:</b> {{{, }}}{}", def->local_muts(), NL);
         print(os_, "<b>loc:</b> {}", loc);
         return print(os_, "\"");
     }

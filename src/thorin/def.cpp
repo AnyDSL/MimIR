@@ -10,6 +10,8 @@
 
 #include "thorin/analyses/scope.h"
 
+#include "fe/assert.h"
+
 using namespace std::literals;
 
 namespace thorin {
@@ -41,8 +43,6 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
 
     if (auto var = isa<Var>()) {
         local_vars_.emplace(var);
-    } else if (auto mut = isa_mut()) {
-        local_muts_.emplace(mut);
     } else {
         for (auto op : extended_ops()) {
             local_vars_.insert(op->local_vars_.begin(), op->local_vars_.end());
@@ -74,6 +74,7 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags)
     , type_(type) {
     gid_  = world().next_gid();
     hash_ = murmur3(gid());
+    local_muts_.emplace(this);
     std::fill_n(ops_ptr(), num_ops, nullptr);
     if (!type->dep_const()) type->uses_.emplace(this, Use::Type);
 }
@@ -113,7 +114,7 @@ VarSet Def::free_vars() {
 }
 
 VarSet Def::free_vars(MutMap<VarSet>& mut2vars) {
-    if (auto i = mut2vars.find(this); i != mut2vars.end()) return i->second;
+    if (auto [i, ins] = mut2vars.emplace(this, VarSet()); !ins) return i->second;
 
     VarSet vars;
     for (auto op : extended_ops()) {
@@ -125,7 +126,9 @@ VarSet Def::free_vars(MutMap<VarSet>& mut2vars) {
         }
     }
 
-    if (auto var = true_var()) vars.erase(var);
+    if (isa_mut()) {
+        if (auto var = true_var()) vars.erase(var);
+    }
 
     return mut2vars[this] = vars;
 }

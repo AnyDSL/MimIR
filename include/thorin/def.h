@@ -223,8 +223,8 @@ private:
 
 protected:
     Def(World*, node_t, const Def* type, Defs ops, flags_t flags); ///< Constructor for an *immutable* Def.
-    Def(node_t n, const Def* type, Defs ops, flags_t flags);
-    Def(node_t, const Def* type, size_t num_ops, flags_t flags); ///< Constructor for a *mutable* Def.
+    Def(node_t n, const Def* type, Defs ops, flags_t flags);       ///< As above but World retrieved from @p type.
+    Def(node_t, const Def* type, size_t num_ops, flags_t flags);   ///< Constructor for a *mutable* Def.
     virtual ~Def() = default;
 
 public:
