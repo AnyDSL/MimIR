@@ -57,16 +57,15 @@ public:
         for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
             auto op = def->op(i);
             recurse(op, max - 1);
+            tab_.print(os_, "_{} -> _{}[label=\"{}\"", def->gid(), op->gid(), i);
             if (op->isa<Lit>() || op->isa<Axiom>() || def->isa<Var>() || def->isa<Nat>() || def->isa<Idx>())
-                tab_.println(os_, "_{} -> _{}[color=\"#00000000\",constraint=false];", def->gid(), op->gid());
-            else
-                tab_.println(os_, "_{} -> _{}[label=\"{}\"];", def->gid(), op->gid(), i);
+                os_ << ",fontcolor=\"#00000000\",color=\"#00000000\",constraint=false";
+            os_ << "];\n";
         }
 
-        if (auto type = def->type(); type && types_) {
-            recurse(type, max - 1);
-            tab_.println(os_, "_{} -> _{}[color=\"#00000000\",constraint=false,style=dashed];", def->gid(),
-                         type->gid());
+        if (auto t = def->type(); t && types_) {
+            recurse(t, max - 1);
+            tab_.println(os_, "_{} -> _{}[color=\"#00000000\",constraint=false,style=dashed];", def->gid(), t->gid());
         }
     }
 
