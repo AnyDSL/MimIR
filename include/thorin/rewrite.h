@@ -14,10 +14,12 @@ public:
         : world_(world) {}
 
     World& world() { return world_; }
-
-    /// @name recursively rewrite old Defs
-    ///@{
+    /// Map @p old_def to @p new_def and returns @p new_def;
     Ref map(Ref old_def, Ref new_def) { return old2new_[old_def] = new_def; }
+
+    /// @name rewrite
+    ///@{
+    /// Recursively rewrite old Def%s.
     virtual Ref rewrite(Ref);
     virtual Ref rewrite_imm(Ref);
     virtual Ref rewrite_mut(Def*);
@@ -44,6 +46,45 @@ public:
 
 private:
     const Scope& scope_;
+};
+
+/// Stops rewriting when leaving the Scope.
+class VarRewriter : public Rewriter {
+public:
+    VarRewriter(Ref var, Ref subst)
+        : Rewriter(var->world()) {
+        if (var) {
+            if (auto w = var->isa<Var>()) {
+                vars_.emplace(w);
+                map(w, subst);
+            } else {
+                assert(var == subst);
+            }
+        }
+    }
+
+    Ref rewrite_mut(Def* mut) override {
+        if (mut->sym().str() == "pow_else") outln("hey");
+        if (descend(mut)) {
+            if (auto var = mut->has_var()) {
+                vars_.emplace(var);
+                return Rewriter::rewrite_mut(mut);
+            }
+        }
+        return map(mut, mut);
+    }
+
+    bool descend(Def* mut) const {
+        for (auto op : mut->extended_ops()) {
+            auto fvs = op->free_vars();
+            for (auto var : vars_)
+                if (fvs.contains(var)) return true;
+        }
+        return false;
+    }
+
+private:
+    VarSet vars_;
 };
 
 /// @name rewrite

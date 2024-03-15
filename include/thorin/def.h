@@ -398,7 +398,8 @@ public:
     /// Retrieve Var for *mutables*.
     /// @see @ref proj
     Ref var();
-    const Var* true_var(); ///< Only return sth, if mut%able binds a *true* Var - yields `nullptr` otherwise.
+    /// Only returns not `nullptr`, if Var of this mutable has ever been created.
+    const Var* has_var() { return var_; }
     THORIN_PROJ(var, )
     ///@}
 

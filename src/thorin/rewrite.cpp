@@ -12,9 +12,7 @@ Ref Rewriter::rewrite(Ref old_def) {
     if (old_def->isa<Univ>()) return world().univ();
     if (auto i = old2new_.find(old_def); i != old2new_.end()) return i->second;
     if (auto old_mut = old_def->isa_mut()) return rewrite_mut(old_mut);
-
-    auto new_def = rewrite_imm(old_def);
-    return map(old_def, new_def);
+    return map(old_def, rewrite_imm(old_def));
 }
 
 Ref Rewriter::rewrite_imm(Ref old_def) {
@@ -28,7 +26,7 @@ Ref Rewriter::rewrite_imm(Ref old_def) {
     }
 
     auto new_type = old_def->isa<Type>() ? nullptr : rewrite(old_def->type());
-    auto new_ops  = absl::FixedArray<const Def*>(old_def->num_ops());
+    auto new_ops  = DefVec(old_def->num_ops());
     for (size_t i = 0, e = new_ops.size(); i != e; ++i) new_ops[i] = rewrite(old_def->op(i));
     return old_def->rebuild(world(), new_type, new_ops);
 }
@@ -68,8 +66,15 @@ DefVec rewrite(Def* mut, Ref arg, const Scope& scope) {
 }
 
 DefVec rewrite(Def* mut, Ref arg) {
+#if 1
     Scope scope(mut);
     return rewrite(mut, arg, scope);
+#else
+    VarRewriter rw(mut->var(), arg);
+    DefVec result(mut->num_ops());
+    for (size_t i = 0, e = result.size(); i != e; ++i) result[i] = rw.rewrite(mut->op(i));
+    return result;
+#endif
 }
 
 } // namespace thorin

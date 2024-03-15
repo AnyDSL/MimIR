@@ -80,12 +80,6 @@ Nat::Nat(World& world)
 UMax::UMax(World& world, Defs ops)
     : Def(Node, world.univ(), ops, 0) {}
 
-const Var* Def::true_var() {
-    if (auto v = var())
-        if (auto w = v->isa<Var>()) return w;
-    return nullptr;
-}
-
 VarSet Def::free_vars() const {
     if (auto mut = isa_mut()) return mut->free_vars();
 
@@ -119,7 +113,7 @@ VarSet Def::free_vars(MutMap<VarSet>& mut2vars) {
     }
 
     if (isa_mut()) {
-        if (auto var = true_var()) vars.erase(var);
+        if (auto var = has_var()) vars.erase(var);
     }
 
     return mut2vars[this] = vars;
@@ -209,15 +203,15 @@ template TExt<true >*   TExt<true >  ::stub(World&, Ref);
 // TODO check for recursion
 const Pi* Pi::immutabilize() {
     auto fvs = codom()->free_vars();
-    if (auto v = true_var(); v && fvs.contains(v)) return nullptr;
+    if (auto var = has_var(); var && fvs.contains(var)) return nullptr;
     return world().pi(dom(), codom());
 }
 
 const Def* Sigma::immutabilize() {
-    if (auto v = true_var(); v && std::ranges::any_of(ops(), [v](auto op) {
-                                 auto fvs = op->free_vars();
-                                 return fvs.contains(v);
-                             }))
+    if (auto var = has_var(); var && std::ranges::any_of(ops(), [var](auto op) {
+                                  auto fvs = op->free_vars();
+                                  return fvs.contains(var);
+                              }))
         return nullptr;
     return static_cast<const Sigma*>(*world().sigma(ops()));
 }
@@ -225,7 +219,7 @@ const Def* Sigma::immutabilize() {
 const Def* Arr::immutabilize() {
     auto& w  = world();
     auto fvs = body()->free_vars();
-    if (auto v = true_var(); !v || !fvs.contains(v)) return w.arr(shape(), body());
+    if (auto var = has_var(); !var || !fvs.contains(var)) return w.arr(shape(), body());
 
     if (auto n = Lit::isa(shape()); *n < w.flags().scalerize_threshold)
         return w.sigma(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
@@ -236,7 +230,7 @@ const Def* Arr::immutabilize() {
 const Def* Pack::immutabilize() {
     auto& w  = world();
     auto fvs = body()->free_vars();
-    if (auto v = true_var(); !v || !fvs.contains(v)) return w.pack(shape(), body());
+    if (auto var = has_var(); !var || !fvs.contains(var)) return w.pack(shape(), body());
 
     if (auto n = Lit::isa(shape()); *n < w.flags().scalerize_threshold)
         return w.tuple(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
