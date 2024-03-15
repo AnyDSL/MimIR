@@ -397,10 +397,11 @@ public:
     ///@{
     /// Retrieve Var for *mutables*.
     /// @see @ref proj
+    THORIN_PROJ(var, )
+    /// Not necessarily a Var: E.g., if the return type is `[]`, this will yield `()`.
     Ref var();
     /// Only returns not `nullptr`, if Var of this mutable has ever been created.
     const Var* has_var() { return var_; }
-    THORIN_PROJ(var, )
     ///@}
 
     /// @name Free Vars and Muts
