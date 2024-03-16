@@ -120,6 +120,7 @@ public:
     /// @name phases
     ///@{
     const auto& phases() const { return phases_; }
+
     /// Add a Phase.
     /// You don't need to pass the World to @p args - it will be passed automatically.
     /// If @p P is a Pass, this method will wrap this in a PassPhase.

@@ -48,38 +48,31 @@ private:
     const Scope& scope_;
 };
 
-/// Stops rewriting when leaving the Scope.
 class VarRewriter : public Rewriter {
 public:
-    VarRewriter(Ref var, Ref subst)
+    VarRewriter(const Var* var, Ref arg)
         : Rewriter(var->world()) {
-        if (var) {
-            if (auto w = var->isa<Var>()) {
-                vars_.emplace(w);
-                map(w, subst);
-            } else {
-                assert(var == subst);
-            }
-        }
+        vars_.emplace(var);
+        map(var, arg);
+    }
+
+    Ref rewrite_imm(Ref imm) override {
+        if (imm->local_vars().empty() && imm->local_muts().empty()) return imm; // safe to skip
+        return Rewriter::rewrite_imm(imm);
     }
 
     Ref rewrite_mut(Def* mut) override {
-        if (mut->sym().str() == "pow_else") outln("hey");
         if (descend(mut)) {
-            if (auto var = mut->has_var()) {
-                vars_.emplace(var);
-                return Rewriter::rewrite_mut(mut);
-            }
+            if (auto var = mut->has_var()) vars_.emplace(var);
+            return Rewriter::rewrite_mut(mut);
         }
         return map(mut, mut);
     }
 
     bool descend(Def* mut) const {
-        for (auto op : mut->extended_ops()) {
-            auto fvs = op->free_vars();
-            for (auto var : vars_)
-                if (fvs.contains(var)) return true;
-        }
+        auto fvs = mut->free_vars();
+        for (auto var : vars_)
+            if (fvs.contains(var)) return true;
         return false;
     }
 
