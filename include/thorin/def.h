@@ -262,7 +262,7 @@ public:
 
     /// @name ops
     ///@{
-    template<size_t N = std::dynamic_extent> auto ops() const { return View<const Def*, N>(ops_ptr(), num_ops_); }
+    template<size_t N = std::dynamic_extent> auto ops() const { return View<const Def*, N>(ops_, num_ops_); }
     const Def* op(size_t i) const { return ops()[i]; }
     size_t num_ops() const { return num_ops_; }
     ///@}
@@ -315,7 +315,7 @@ public:
     /// Includes Def::type() and then the other Def::ops() in this order.
     /// Also works with partially set Def%s and doesn't assert.
     /// Unset operands are `nullptr`.
-    Defs partial_ops() const { return Defs(ops_ptr() - 1, num_ops_ + 1); }
+    Defs partial_ops() const { return Defs(ops_ - 1, num_ops_ + 1); }
     const Def* partial_op(size_t i) const { return partial_ops()[i]; }
     size_t num_partial_ops() const { return partial_ops().size(); }
     ///@}
@@ -526,9 +526,6 @@ protected:
 
 private:
     Def* unset(size_t i);
-    const Def** ops_ptr() const {
-        return reinterpret_cast<const Def**>(reinterpret_cast<char*>(const_cast<Def*>(this + 1)));
-    }
     void finalize();
     bool equal(const Def* other) const;
 
@@ -561,6 +558,7 @@ private:
     MutSet local_muts_;
     const Var* var_ = nullptr; // Var of a mutable.
     const Def* type_;
+    const Def* ops_[];
 
     friend class World;
     friend void swap(World&, World&) noexcept;
