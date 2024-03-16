@@ -11,6 +11,7 @@ namespace thorin {
 
 namespace {
 
+// TODO use find_and_replace
 template<class T> std::string escape(const T& val) {
     std::ostringstream oss;
     oss << val;

@@ -52,6 +52,10 @@ class Var;
 class Def;
 class World;
 
+template<class T> class PooledSet;
+using Vars = PooledSet<const Var*>;
+using Muts = PooledSet<Def*>;
+
 /// @name Def
 ///@{
 /// GIDSet / GIDMap keyed by Def::gid of `conset Def*`.
@@ -406,8 +410,8 @@ public:
 
     /// @name Free Vars and Muts
     ///@{
-    const auto& local_muts() const { return local_muts_; }
-    const auto& local_vars() const { return local_vars_; }
+    const auto& local_muts() const { return *local_muts_; }
+    const auto& local_vars() const { return *local_vars_; }
     VarSet free_vars() const;
     VarSet free_vars();
     VarSet free_vars(MutMap<VarSet>&);
@@ -557,9 +561,9 @@ private:
     u32 gid_;
     u32 num_ops_;
     mutable Uses uses_;
-    VarSet local_vars_;
-    MutSet local_muts_;
-    const Var* var_ = nullptr; // Var of a mutable.
+    const Vars* local_vars_ = nullptr;
+    const Muts* local_muts_ = nullptr;
+    const Var* var_         = nullptr; // Var of a mutable.
     const Def* type_;
 
     friend class World;

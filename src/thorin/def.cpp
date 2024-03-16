@@ -37,11 +37,11 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
     gid_ = world().next_gid();
 
     if (auto var = isa<Var>()) {
-        local_vars_.emplace(var);
+        local_vars_ = world().vars(var);
     } else {
         for (auto op : extended_ops()) {
-            local_vars_.insert(op->local_vars_.begin(), op->local_vars_.end());
-            local_muts_.insert(op->local_muts_.begin(), op->local_muts_.end());
+            local_vars_ = world().merge(local_vars_, op->local_vars_);
+            local_muts_ = world().merge(local_muts_, op->local_muts_);
         }
     }
 
@@ -67,9 +67,9 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags)
     , dep_(Dep::Mut | (node == Node::Infer ? Dep::Infer : Dep::None))
     , num_ops_(num_ops)
     , type_(type) {
-    gid_  = world().next_gid();
-    hash_ = murmur3(gid());
-    local_muts_.emplace(this);
+    gid_        = world().next_gid();
+    hash_       = murmur3(gid());
+    local_muts_ = world().muts(this);
     std::fill_n(ops_ptr(), num_ops, nullptr);
     if (!type->dep_const()) type->uses_.emplace(this, Use::Type);
 }
@@ -84,7 +84,7 @@ VarSet Def::free_vars() const {
     if (auto mut = isa_mut()) return mut->free_vars();
 
     auto mut2vars = MutMap<VarSet>();
-    auto vars     = local_vars();
+    auto vars     = world().vars();
 
     for (auto mut : local_muts()) {
         auto mut_fvs = mut->free_vars(mut2vars);
