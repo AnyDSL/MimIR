@@ -33,7 +33,7 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
                                           : Dep::None))
     , num_ops_(ops.size())
     , type_(type) {
-    std::ranges::copy(ops, ops_ptr());
+    std::ranges::copy(ops, ops_);
     gid_ = world().next_gid();
 
     if (auto var = isa<Var>()) {
@@ -70,7 +70,7 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags)
     gid_        = world().next_gid();
     hash_       = murmur3(gid());
     local_muts_ = world().muts(this);
-    std::fill_n(ops_ptr(), num_ops, nullptr);
+    std::fill_n(ops_, num_ops, nullptr);
     if (!type->dep_const()) type->uses_.emplace(this, Use::Type);
 }
 
@@ -309,7 +309,7 @@ std::string_view Def::node_name() const {
 Defs Def::extended_ops() const {
     if (isa<Type>() || isa<Univ>()) return Defs();
     assert(type());
-    return Defs(ops_ptr() - 1, (is_set() ? num_ops_ : 0) + 1);
+    return Defs(ops_ - 1, (is_set() ? num_ops_ : 0) + 1);
 }
 
 #ifndef NDEBUG
@@ -403,7 +403,7 @@ Def* Def::set(size_t i, const Def* def) {
 #ifndef NDEBUG
     curr_op_ = (curr_op_ + 1) % num_ops();
 #endif
-    ops_ptr()[i]  = def;
+    ops_[i]       = def;
     const auto& p = def->uses_.emplace(this, i);
     assert_unused(p.second);
 
@@ -423,7 +423,7 @@ Def* Def::unset() {
         if (op(i))
             unset(i);
         else {
-            assert(std::all_of(ops_ptr() + i + 1, ops_ptr() + num_ops(), [](auto op) { return !op; }));
+            assert(std::all_of(ops_ + i + 1, ops_ + num_ops(), [](auto op) { return !op; }));
             break;
         }
     }
@@ -433,7 +433,7 @@ Def* Def::unset() {
 Def* Def::unset(size_t i) {
     assert(op(i) && op(i)->uses_.contains(Use(this, i)));
     op(i)->uses_.erase(Use(this, i));
-    ops_ptr()[i] = nullptr;
+    ops_[i] = nullptr;
     return this;
 }
 
