@@ -30,6 +30,7 @@ public:
         tab_.println(os_, "digraph {{");
         ++tab_;
         tab_.println(os_, "ordering=out;");
+        tab_.println(os_, "splines=false;");
         tab_.println(os_, "node [shape=box,style=filled];");
     }
 
@@ -57,10 +58,11 @@ public:
         for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
             auto op = def->op(i);
             recurse(op, max - 1);
-            tab_.print(os_, "_{} -> _{}[label=\"{}\"", def->gid(), op->gid(), i);
+            tab_.print(os_, "_{} -> _{}[", def->gid(), op->gid());
             if (op->isa<Lit>() || op->isa<Axiom>() || def->isa<Var>() || def->isa<Nat>() || def->isa<Idx>())
-                os_ << ",fontcolor=\"#00000000\",color=\"#00000000\",constraint=false";
-            os_ << "];\n";
+                print(os_, "taillabel=\"{}\",fontcolor=\"#00000000\",color=\"#00000000\",constraint=false];\n", i);
+            else
+                print(os_, "label=\"{}\"];\n", i);
         }
 
         if (auto t = def->type(); t && types_) {
