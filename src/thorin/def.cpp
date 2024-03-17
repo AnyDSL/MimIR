@@ -221,7 +221,7 @@ const Def* Arr::immutabilize() {
     auto fvs = body()->free_vars();
     if (auto var = has_var(); !var || !fvs.contains(var)) return w.arr(shape(), body());
 
-    if (auto n = Lit::isa(shape()); *n < w.flags().scalerize_threshold)
+    if (auto n = Lit::isa(shape()); n && *n < w.flags().scalerize_threshold)
         return w.sigma(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
 
     return nullptr;
@@ -232,7 +232,7 @@ const Def* Pack::immutabilize() {
     auto fvs = body()->free_vars();
     if (auto var = has_var(); !var || !fvs.contains(var)) return w.pack(shape(), body());
 
-    if (auto n = Lit::isa(shape()); *n < w.flags().scalerize_threshold)
+    if (auto n = Lit::isa(shape()); n && *n < w.flags().scalerize_threshold)
         return w.tuple(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
 
     return nullptr;
