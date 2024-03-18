@@ -15,8 +15,8 @@ template<class T> std::string escape(const T& val) {
     std::ostringstream oss;
     oss << val;
     auto str = oss.str();
-    find_and_replace(str, "<", "\\<");
-    find_and_replace(str, ">", "\\>");
+    find_and_replace(str, "<", "&lt;");
+    find_and_replace(str, ">", "&gt;");
     return str;
 }
 
