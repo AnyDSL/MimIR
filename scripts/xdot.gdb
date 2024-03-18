@@ -85,9 +85,7 @@ define xdotw
     # see https://stackoverflow.com/a/6889615
     shell echo set \$tmp=\"$(mktemp)\" >/tmp/tmp.gdb
     source /tmp/tmp.gdb
-    printf "hi\n"
     call $world->dot($tmp, $annexes, $types)
-    printf "ho\n"
     eval "shell xdot %s 2&> /dev/null &", $tmp
 end
 
