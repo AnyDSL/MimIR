@@ -214,8 +214,8 @@ public:
     // clang-format off
     /// @name Creates a new Tab
     ///@{
-    [[nodiscard]] Tab operator++(int) const {                      return {tab_, indent_ + 1}; }
-    [[nodiscard]] Tab operator--(int) const { assert(indent_ > 0); return {tab_, indent_ - 1}; }
+    [[nodiscard]] Tab operator++(int) {                      return {tab_, indent_++}; }
+    [[nodiscard]] Tab operator--(int) { assert(indent_ > 0); return {tab_, indent_--}; }
     [[nodiscard]] Tab operator+(size_t indent) const {                      return {tab_, indent_ + indent}; }
     [[nodiscard]] Tab operator-(size_t indent) const { assert(indent_ > 0); return {tab_, indent_ - indent}; }
     ///@}
