@@ -253,8 +253,7 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
 Ref Parser::parse_arr_expr() {
     auto track = tracker();
     scopes_.push();
-    auto tok = eat(Tag::D_quote_l);
-    outln("{, }", tok.loc());
+    eat(Tag::D_quote_l);
 
     const Def* shape = nullptr;
     Arr* arr         = nullptr;

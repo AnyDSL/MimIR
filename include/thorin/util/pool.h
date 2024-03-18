@@ -15,7 +15,10 @@ inline static constexpr size_t SizeOf = sizeof(std::conditional_t<std::is_pointe
 
 template<class T> class Pool;
 
-template<class T> class PooledSet {
+/// Ordered set maintained in a consectutive buffer within a `fe::Arena` and unified in a `absl::flat_hash_set`.
+template<class T>
+
+class PooledSet {
 public:
     struct Data {
         Data() noexcept = default;
@@ -56,11 +59,7 @@ public:
     const T& operator[](size_t i) const { return data_->elems[i]; }
     const T& front() const { return (*this)[0]; }
     const T* elems() const { return data_ ? data_->elems : nullptr; }
-    bool contains(const T& elem) const {
-        auto res = binary_find(begin(), end(), elem, GIDLt<T>()) != end();
-        // outln("contains({, } - {}): {}", *this, elem, res);
-        return res;
-    }
+    bool contains(const T& elem) const { return binary_find(begin(), end(), elem, GIDLt<T>()) != end(); }
     ///@}
 
     /// @name Comparisons
@@ -99,21 +98,32 @@ namespace thorin {
 #endif
 
 template<class T> class Pool {
+    using Data = typename PooledSet<T>::Data;
+
 public:
+    /// @name C'tor & D'tor
+    ///@{
+    Pool& operator=(const Pool&) = delete;
+
     Pool()            = default;
     Pool(const Pool&) = delete;
     Pool(Pool&& other)
         : Pool() {
         swap(*this, other);
     }
-    Pool& operator=(const Pool&) = delete;
+    ///@}
 
+    /// @name Set Operations
+    ///@{
+    /// @note All operations do **not** modify the input set(s); they create a **new** PooledSet.
+
+    /// Create a PooledSet wih a single @p elem%ent: @f$\{elem\}@f$.
     [[nodiscard]] PooledSet<T> singleton(T elem) {
-        static constexpr auto size = sizeof(typename PooledSet<T>::Data) + SizeOf<T>;
+        static constexpr auto size = sizeof(Data) + SizeOf<T>;
 
         auto state     = arena_.state();
         auto buf       = arena_.allocate(size);
-        auto data      = new (buf) typename PooledSet<T>::Data(1);
+        auto data      = new (buf) Data(1);
         data->elems[0] = elem;
 
         auto [i, ins] = pool_.emplace(data);
@@ -122,17 +132,16 @@ public:
         return PooledSet<T>(*i);
     }
 
+    /// Yields @f$a \cup b@f$.
     [[nodiscard]] PooledSet<T> merge(PooledSet<T> a, PooledSet<T> b) {
         if (a == b || !b) return a;
         if (!a) return b;
 
-        // outln("--\nmerge({, } - {, })", a, b);
-
         auto size  = a.size() + b.size(); // max space needed - may be less; see actual_size below
-        auto bytes = sizeof(typename PooledSet<T>::Data) + size * SizeOf<T>;
+        auto bytes = sizeof(Data) + size * SizeOf<T>;
         auto state = arena_.state();
         auto buf   = arena_.allocate(bytes);
-        auto data  = new (buf) typename PooledSet<T>::Data(size);
+        auto data  = new (buf) Data(size);
 
         auto di = data->elems;
         auto ai = a.begin(), ae = a.end(), bi = b.begin(), be = b.end();
@@ -152,47 +161,58 @@ public:
         auto actual_size = std::distance(data->elems, di + 1);
         data->size       = actual_size; // correct size
 
-        // outln("d: {, }", PooledSet<T>(data));
         auto [i, ins] = pool_.emplace(data);
         if (ins) {
             arena_.deallocate(size - actual_size); // release excess memory
-            // outln("fresh: {, }", PooledSet<T>(data));
             return PooledSet<T>(data);
         }
 
-        // outln("hashed: {, }", PooledSet<T>(*i));
         arena_.deallocate(state);
         return PooledSet<T>(*i);
     }
 
+    /// Yields @f$a \cup \{elem\}@f$.
+    [[nodiscard]] PooledSet<T> insert(PooledSet<T> a, const T& elem) { return merge(a, singleton(elem)); }
+
+    /// Yields @f$a \setminus b@f$.
     [[nodiscard]] PooledSet<T> erase(PooledSet<T> set, const T& elem) {
         if (!set) return set;
-        // outln("--\nerase({, } - {})", set, elem);
         auto i = binary_find(set.begin(), set.end(), elem, GIDLt<T>());
-        if (i == set.end()) {
-            // outln("not found: {}", set);
-            return set;
-        }
+        if (i == set.end()) return set;
 
         auto size = set.size() - 1;
         if (size == 0) return PooledSet<T>(); // Empty Set is not hashed
 
-        auto bytes = sizeof(typename PooledSet<T>::Data) + size * SizeOf<T>;
+        auto bytes = sizeof(Data) + size * SizeOf<T>;
         auto state = arena_.state();
         auto buf   = arena_.allocate(bytes);
-        auto data  = new (buf) typename PooledSet<T>::Data(size);
+        auto data  = new (buf) Data(size);
 
         std::copy(i + 1, set.end(), std::copy(set.begin(), i, data->elems)); // copy over, skip i
 
         auto [j, ins] = pool_.emplace(data);
-        if (ins) {
-            // outln("fresh: {, }", PooledSet<T>(data));
-            return PooledSet<T>(data);
-        }
+        if (ins) return PooledSet<T>(data);
         arena_.deallocate(state);
-        // outln("hashed: {}", PooledSet<T>(*j));
         return PooledSet<T>(*j);
     }
+
+    /// Is @f$a \cup b \neq \emptyset@f$?
+    [[nodiscard]] bool has_intersection(PooledSet<T> a, PooledSet<T> b) {
+        if (a == b) return true;
+        if (!a || !b) return false;
+
+        for (auto ai = a.begin(), ae = a.end(), bi = b.begin(), be = b.end(); ai != ae && bi != be;) {
+            if (*ai == *bi) return true;
+
+            if ((*ai)->gid() < (*bi)->gid())
+                ++ai;
+            else
+                ++bi;
+        }
+
+        return false;
+    }
+    ///@}
 
     friend void swap(Pool& p1, Pool& p2) {
         using std::swap;
@@ -207,9 +227,6 @@ private:
     }
 
     fe::Arena arena_;
-    absl::flat_hash_set<const typename PooledSet<T>::Data*,
-                        absl::Hash<const typename PooledSet<T>::Data*>,
-                        typename PooledSet<T>::Data::Equal>
-        pool_;
+    absl::flat_hash_set<const Data*, absl::Hash<const Data*>, typename Data::Equal> pool_;
 };
-}
+} // namespace thorin

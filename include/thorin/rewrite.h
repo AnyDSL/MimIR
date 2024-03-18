@@ -51,8 +51,8 @@ private:
 class VarRewriter : public Rewriter {
 public:
     VarRewriter(const Var* var, Ref arg)
-        : Rewriter(var->world()) {
-        vars_.emplace(var);
+        : Rewriter(var->world())
+        , vars_(world().vars(var)) {
         map(var, arg);
     }
 
@@ -62,22 +62,15 @@ public:
     }
 
     Ref rewrite_mut(Def* mut) override {
-        if (descend(mut)) {
-            if (auto var = mut->has_var()) vars_.emplace(var);
+        if (world().has_intersection(mut->free_vars(), vars_)) {
+            if (auto var = mut->has_var()) vars_ = world().insert(vars_, var);
             return Rewriter::rewrite_mut(mut);
         }
         return map(mut, mut);
     }
 
-    bool descend(Def* mut) const {
-        auto fvs = mut->free_vars();
-        for (auto var : vars_)
-            if (fvs.contains(var)) return true;
-        return false;
-    }
-
 private:
-    VarSet vars_;
+    Vars vars_;
 };
 
 /// @name rewrite

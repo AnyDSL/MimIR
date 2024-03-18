@@ -427,8 +427,12 @@ public:
     [[nodiscard]] Muts muts(Def* mut) { return move_.muts.singleton(mut); }
     [[nodiscard]] Vars merge(Vars a, Vars b) { return move_.vars.merge(a, b); }
     [[nodiscard]] Muts merge(Muts a, Muts b) { return move_.muts.merge(a, b); }
+    [[nodiscard]] Vars insert(Vars vars, const Var* var) { return move_.vars.insert(vars, var); }
+    [[nodiscard]] Muts insert(Muts muts, Def* mut) { return move_.muts.insert(muts, mut); }
     [[nodiscard]] Vars erase(Vars vars, const Var* var) { return move_.vars.erase(vars, var); }
     [[nodiscard]] Muts erase(Muts muts, Def* mut) { return move_.muts.erase(muts, mut); }
+    [[nodiscard]] bool has_intersection(Vars v1, Vars v2) { return move_.vars.has_intersection(v1, v2); }
+    [[nodiscard]] bool has_intersection(Muts m1, Muts m2) { return move_.muts.has_intersection(m1, m2); }
     ///@}
 
     // clang-format off
