@@ -11,13 +11,12 @@ namespace thorin {
 
 namespace {
 
-// TODO use find_and_replace
 template<class T> std::string escape(const T& val) {
     std::ostringstream oss;
     oss << val;
     auto str = oss.str();
-    for (auto i = str.find('<'); i != std::string::npos; i = str.find('<', i)) str.replace(i, 1, "&lt;");
-    for (auto i = str.find('>'); i != std::string::npos; i = str.find('>', i)) str.replace(i, 1, "&gt;");
+    find_and_replace(str, "<", "\\<");
+    find_and_replace(str, ">", "\\>");
     return str;
 }
 
