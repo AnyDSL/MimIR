@@ -23,39 +23,6 @@
 namespace thorin {
 class Driver;
 
-template<class T> class PooledSet {
-public:
-    PooledSet(size_t size) noexcept
-        : size_(size) {}
-
-    /// @name Getters
-    ///@{
-    size_t size() const { return size_; }
-    bool empty() const { return size_ == 0; }
-    ///@}
-
-    T const* elems() const { return reinterpret_cast<T const*>(reinterpret_cast<const char*>(this + 1)); }
-    T* elems() { return reinterpret_cast<T*>(reinterpret_cast<char*>(this + 1)); }
-
-    T& front() { return elems()[0]; }
-    const T& front() const { return elems()[0]; }
-
-    /// @name Iterators
-    ///@{
-    auto begin() const { return elems(); }
-    auto end() const { return elems() + size(); }
-    auto cbegin() const { return elems(); }
-    auto cend() const { return end(); }
-    auto rbegin() const { return std::reverse_iterator(end()); }
-    auto rend() const { return std::reverse_iterator(begin()); }
-    auto crbegin() const { return rbegin(); }
-    auto crend() const { return rend(); }
-    ///@}
-
-private:
-    size_t size_ = 0;
-};
-
 /// The World represents the whole program and manages creation of Thorin nodes (Def%s).
 /// Def%s are hashed into an internal HashSet.
 /// The World's factory methods just calculate a hash and lookup the Def, if it is already present, or create a new one
@@ -453,6 +420,17 @@ public:
         return iapp(callee, lit_nat((nat_t)arg));
     }
 
+    /// @name Vars & Muts
+    ///@{
+    /// Manges sets of Vars and Muts.
+    [[nodiscard]] Vars vars(const Var* var) { return move_.vars.singleton(var); }
+    [[nodiscard]] Muts muts(Def* mut) { return move_.muts.singleton(mut); }
+    [[nodiscard]] Vars merge(Vars a, Vars b) { return move_.vars.merge(a, b); }
+    [[nodiscard]] Muts merge(Muts a, Muts b) { return move_.muts.merge(a, b); }
+    [[nodiscard]] Vars erase(Vars vars, const Var* var) { return move_.vars.erase(vars, var); }
+    [[nodiscard]] Muts erase(Muts muts, Def* mut) { return move_.muts.erase(muts, mut); }
+    ///@}
+
     // clang-format off
     template<class Id, class... Args> const Def* call(Id id, Args&&... args) { return call_(annex(id),   std::forward<Args>(args)...); }
     template<class Id, class... Args> const Def* call(       Args&&... args) { return call_(annex<Id>(), std::forward<Args>(args)...); }
@@ -492,7 +470,7 @@ private:
     /// @name Put into Sea of Nodes
     ///@{
     template<class T, class... Args> const T* unify(size_t num_ops, Args&&... args) {
-        auto state = sea_.state();
+        auto state = move_.arena.state();
         auto def   = allocate<T>(num_ops, std::forward<Args&&>(args)...);
         if (auto loc = emit_loc()) def->set(loc);
         assert(!def->isa_mut());
@@ -521,7 +499,7 @@ private:
 
     template<class T> void deallocate(fe::Arena::State state, const T* ptr) {
         ptr->~T();
-        sea_.deallocate(state);
+        move_.arena.deallocate(state);
     }
 
     template<class T, class... Args> T* insert(size_t num_ops, Args&&... args) {
@@ -551,82 +529,17 @@ private:
         static_assert(sizeof(Def) == sizeof(T),
                       "you are not allowed to introduce any additional data in subclasses of Def");
         Lock lock;
-        sea_.align(alignof(T));
-        size_t num_bytes = sizeof(Def) + sizeof(void*) * num_ops;
-        auto ptr         = sea_.allocate(num_bytes);
+        move_.arena.align(alignof(T));
+        size_t num_bytes = sizeof(Def) + sizeof(uintptr_t) * num_ops;
+        auto ptr         = move_.arena.allocate(num_bytes);
         auto res         = new (ptr) T(std::forward<Args&&>(args)...);
         assert(res->num_ops() == num_ops);
         return res;
     }
     ///@}
 
-    ///@{
-    /// @name Vars
-    template<class T> static PooledSet<T>* pool(fe::Arena& arena, size_t num) {
-        auto buffer = arena.allocate(sizeof(PooledSet<T>) + num * sizeof(void*));
-        auto res    = new (buffer) PooledSet<T>(num);
-        return res;
-    }
-
-    template<class T> static PooledSet<T>* pool(fe::Arena& arena, T elem) {
-        auto res     = pool<T>(arena, 1);
-        res->front() = elem;
-        return res;
-    }
-
-    template<class T> static const PooledSet<T>* merge(fe::Arena& arena, const PooledSet<T>* a, const PooledSet<T>* b) {
-        if (a == b) return a;
-        if (!a || a->empty()) return b;
-        if (!b || b->empty()) return a;
-
-        auto buffer = arena.allocate(sizeof(PooledSet<T>) + (a->size() + b->size()) * sizeof(void*));
-        T* i        = (T*)((char*)buffer + sizeof(PooledSet<T>));
-        auto ai = a->begin(), ae = a->end(), bi = b->begin(), be = b->end();
-
-        while (ai != ae && bi != be) {
-            if ((*ai)->gid() < (*bi)->gid())
-                if ((*i)->gid() == (*ai)->gid())
-                    ++ai; // elem already at i
-                else
-                    *i++ = *ai++;
-            else if ((*i)->gid() == (*bi)->gid())
-                ++bi; // elem already at i
-            else
-                *i++ = *bi++;
-        }
-
-        // copy the rest of a (if needed):
-        while (ai != ae)
-            if ((*i)->gid() == (*ai)->gid())
-                ++ai; // elem already at i
-            else
-                *i++ = *ai++;
-
-        // Copy the rest of b (if needed):
-        while (bi != be)
-            if ((*i)->gid() == (*bi)->gid())
-                ++bi; // elem already at i
-            else
-                *i++ = *bi++;
-
-        return new (buffer) PooledSet<T>(std::distance((const T*)i, a->begin()));
-    }
-
-    const Vars* vars() { return pool<const Var*>(vars_, 0); }
-    const Muts* muts() { return pool<Def*>(muts_, 0); }
-    const Vars* vars(const Var* var) { return pool(vars_, var); }
-    const Muts* muts(Def* mut) { return pool(muts_, mut); }
-
-    const Vars* merge(const Vars* a, const Vars* b) { return merge(vars_, a, b); }
-    const Muts* merge(const Muts* a, const Muts* b) { return merge(muts_, a, b); }
-
-    ///@}
-
     Driver* driver_;
     State state_;
-    fe::Arena sea_;
-    fe::Arena vars_;
-    fe::Arena muts_;
 
     struct SeaHash {
         size_t operator()(const Def* def) const { return def->hash(); }
@@ -639,16 +552,22 @@ private:
     struct Move {
         absl::btree_map<flags_t, const Def*> annexes;
         absl::btree_map<Sym, Def*> externals;
+        fe::Arena arena;
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
+        Pool<const Var*> vars;
+        Pool<Def*> muts;
         DefDefMap<DefVec> cache;
 
         friend void swap(Move& m1, Move& m2) noexcept {
             using std::swap;
             // clang-format off
-            swap(m1.annexes,   m2.annexes);
-            swap(m1.externals, m2.externals);
-            swap(m1.defs,      m2.defs);
-            swap(m1.cache,     m2.cache);
+            swap(m1.annexes,    m2.annexes);
+            swap(m1.externals,  m2.externals);
+            swap(m1.arena,      m2.arena);
+            swap(m1.defs,       m2.defs);
+            swap(m1.vars,       m2.vars);
+            swap(m1.muts,       m2.muts);
+            swap(m1.cache,      m2.cache);
             // clang-format on
         }
     } move_;
@@ -680,7 +599,6 @@ private:
         using std::swap;
         // clang-format off
         swap(w1.state_, w2.state_);
-        swap(w1.sea_,   w2.sea_  );
         swap(w1.data_,  w2.data_ );
         swap(w1.move_,  w2.move_ );
         // clang-format on
@@ -691,7 +609,6 @@ private:
     }
 
     friend DefVec Def::reduce(const Def*);
-    friend class Def; // HACK
 };
 
 } // namespace thorin

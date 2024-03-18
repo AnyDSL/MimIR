@@ -10,6 +10,7 @@
 
 #include "thorin/util/dbg.h"
 #include "thorin/util/hash.h"
+#include "thorin/util/pool.h"
 #include "thorin/util/print.h"
 #include "thorin/util/util.h"
 #include "thorin/util/vector.h"
@@ -52,7 +53,6 @@ class Var;
 class Def;
 class World;
 
-template<class T> class PooledSet;
 using Vars = PooledSet<const Var*>;
 using Muts = PooledSet<Def*>;
 
@@ -410,11 +410,11 @@ public:
 
     /// @name Free Vars and Muts
     ///@{
-    const auto& local_muts() const { return *local_muts_; }
-    const auto& local_vars() const { return *local_vars_; }
-    VarSet free_vars() const;
-    VarSet free_vars();
-    VarSet free_vars(MutMap<VarSet>&);
+    Muts local_muts() const { return local_muts_; }
+    Vars local_vars() const { return local_vars_; }
+    Vars free_vars() const;
+    Vars free_vars();
+    Vars free_vars(MutMap<Vars>&);
     ///@}
 
     /// @name external
@@ -561,9 +561,9 @@ private:
     u32 gid_;
     u32 num_ops_;
     mutable Uses uses_;
-    const Vars* local_vars_ = nullptr;
-    const Muts* local_muts_ = nullptr;
-    const Var* var_         = nullptr; // Var of a mutable.
+    Vars local_vars_;
+    Muts local_muts_;
+    const Var* var_ = nullptr; // Var of a mutable.
     const Def* type_;
 
     friend class World;

@@ -67,9 +67,9 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags)
     , dep_(Dep::Mut | (node == Node::Infer ? Dep::Infer : Dep::None))
     , num_ops_(num_ops)
     , type_(type) {
-    gid_  = world().next_gid();
-    hash_ = murmur3(gid());
-    local_muts_.emplace(this);
+    gid_        = world().next_gid();
+    hash_       = murmur3(gid());
+    local_muts_ = world().muts(this);
     std::fill_n(ops_ptr(), num_ops, nullptr);
     if (!type->dep_const()) type->uses_.emplace(this, Use::Type);
 }
@@ -80,40 +80,34 @@ Nat::Nat(World& world)
 UMax::UMax(World& world, Defs ops)
     : Def(Node, world.univ(), ops, 0) {}
 
-VarSet Def::free_vars() const {
+Vars Def::free_vars() const {
     if (auto mut = isa_mut()) return mut->free_vars();
 
-    auto mut2vars = MutMap<VarSet>();
-    auto vars     = world().vars();
+    auto mut2vars = MutMap<Vars>();
+    auto vars     = local_vars();
 
-    for (auto mut : local_muts()) {
-        auto mut_fvs = mut->free_vars(mut2vars);
-        vars.insert(mut_fvs.begin(), mut_fvs.end());
-    }
+    for (auto mut : local_muts()) vars = world().merge(vars, mut->free_vars(mut2vars));
 
     return vars;
 }
 
-VarSet Def::free_vars() {
-    MutMap<VarSet> mut2vars;
+Vars Def::free_vars() {
+    MutMap<Vars> mut2vars;
     return free_vars(mut2vars);
 }
 
-VarSet Def::free_vars(MutMap<VarSet>& mut2vars) {
-    if (auto [i, ins] = mut2vars.emplace(this, VarSet()); !ins) return i->second;
+Vars Def::free_vars(MutMap<Vars>& mut2vars) {
+    if (auto [i, ins] = mut2vars.emplace(this, Vars()); !ins) return i->second;
 
-    VarSet vars;
+    Vars vars;
     for (auto op : extended_ops()) {
-        vars.insert(op->local_vars().begin(), op->local_vars().end());
+        vars = world().merge(vars, op->local_vars());
 
-        for (auto mut : op->local_muts()) {
-            auto mut_fvs = mut->free_vars(mut2vars);
-            vars.insert(mut_fvs.begin(), mut_fvs.end());
-        }
+        for (auto mut : op->local_muts()) vars = world().merge(vars, mut->free_vars(mut2vars));
     }
 
     if (isa_mut()) {
-        if (auto var = has_var()) vars.erase(var);
+        if (auto var = has_var()) vars = world().erase(vars, var);
     }
 
     return mut2vars[this] = vars;
