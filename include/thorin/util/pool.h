@@ -15,10 +15,8 @@ inline static constexpr size_t SizeOf = sizeof(std::conditional_t<std::is_pointe
 
 template<class T> class Pool;
 
-/// Ordered set maintained in a consectutive buffer within a `fe::Arena` and unified in a `absl::flat_hash_set`.
-template<class T>
-
-class PooledSet {
+/// Ordered set maintained in a consectutive buffer and unified in Pool.
+template<class T> class PooledSet {
 public:
     struct Data {
         Data() noexcept = default;
@@ -97,6 +95,7 @@ template<class T> struct std::hash<thorin::PooledSet<T>> {
 namespace thorin {
 #endif
 
+/// Maintains PooledSet%s within a `fe::Arena` and unifies them in a `absl::flat_hash_set`.
 template<class T> class Pool {
     using Data = typename PooledSet<T>::Data;
 
@@ -119,17 +118,9 @@ public:
 
     /// Create a PooledSet wih a single @p elem%ent: @f$\{elem\}@f$.
     [[nodiscard]] PooledSet<T> singleton(T elem) {
-        static constexpr auto size = sizeof(Data) + SizeOf<T>;
-
-        auto state     = arena_.state();
-        auto buf       = arena_.allocate(size);
-        auto data      = new (buf) Data(1);
-        data->elems[0] = elem;
-
-        auto [i, ins] = pool_.emplace(data);
-        if (ins) return PooledSet<T>(data);
-        arena_.deallocate(state);
-        return PooledSet<T>(*i);
+        auto [data, state] = allocate(1);
+        data->elems[0]     = elem;
+        return unify(data, state);
     }
 
     /// Yields @f$a \cup b@f$.
@@ -137,38 +128,27 @@ public:
         if (a == b || !b) return a;
         if (!a) return b;
 
-        auto size  = a.size() + b.size(); // max space needed - may be less; see actual_size below
-        auto bytes = sizeof(Data) + size * SizeOf<T>;
-        auto state = arena_.state();
-        auto buf   = arena_.allocate(bytes);
-        auto data  = new (buf) Data(size);
+        auto size          = a.size() + b.size(); // max space needed - may be less; see actual_size below
+        auto [data, state] = allocate(size);
 
         auto di = data->elems;
         auto ai = a.begin(), ae = a.end(), bi = b.begin(), be = b.end();
 
-        *di = (*ai)->gid() < (*bi)->gid() ? *ai++ : *bi++;
+        *di = (*ai)->gid() < (*bi)->gid() ? *ai++ : *bi++; // di points to the last valid elem, so init first one
 
         while (ai != ae && bi != be)
             if ((*ai)->gid() < (*bi)->gid())
-                copy_and_inc_unique(di, ai);
+                copy_if_unique_and_inc(di, ai);
             else
-                copy_and_inc_unique(di, bi);
+                copy_if_unique_and_inc(di, bi);
 
         // copy the rest of a/b (if needed):
-        while (ai != ae) copy_and_inc_unique(di, ai);
-        while (bi != be) copy_and_inc_unique(di, bi);
+        while (ai != ae) copy_if_unique_and_inc(di, ai);
+        while (bi != be) copy_if_unique_and_inc(di, bi);
 
         auto actual_size = std::distance(data->elems, di + 1);
         data->size       = actual_size; // correct size
-
-        auto [i, ins] = pool_.emplace(data);
-        if (ins) {
-            arena_.deallocate(size - actual_size); // release excess memory
-            return PooledSet<T>(data);
-        }
-
-        arena_.deallocate(state);
-        return PooledSet<T>(*i);
+        return unify(data, state, size - actual_size);
     }
 
     /// Yields @f$a \cup \{elem\}@f$.
@@ -181,19 +161,11 @@ public:
         if (i == set.end()) return set;
 
         auto size = set.size() - 1;
-        if (size == 0) return PooledSet<T>(); // Empty Set is not hashed
+        if (size == 0) return PooledSet<T>(); // empty Set is not hashed
 
-        auto bytes = sizeof(Data) + size * SizeOf<T>;
-        auto state = arena_.state();
-        auto buf   = arena_.allocate(bytes);
-        auto data  = new (buf) Data(size);
-
+        auto [data, state] = allocate(size);
         std::copy(i + 1, set.end(), std::copy(set.begin(), i, data->elems)); // copy over, skip i
-
-        auto [j, ins] = pool_.emplace(data);
-        if (ins) return PooledSet<T>(data);
-        arena_.deallocate(state);
-        return PooledSet<T>(*j);
+        return unify(data, state);
     }
 
     /// Is @f$a \cup b \neq \emptyset@f$?
@@ -221,7 +193,26 @@ public:
     }
 
 private:
-    template<class I, class A> void copy_and_inc_unique(I& i, A& ai) {
+    std::pair<Data*, fe::Arena::State> allocate(size_t size) {
+        auto bytes = sizeof(Data) + size * SizeOf<T>;
+        auto state = arena_.state();
+        auto buf   = arena_.allocate(bytes);
+        auto data  = new (buf) Data(size);
+        return {data, state};
+    }
+
+    PooledSet<T> unify(Data* data, fe::Arena::State state, size_t excess = 0) {
+        auto [i, ins] = pool_.emplace(data);
+        if (ins) {
+            arena_.deallocate(excess * SizeOf<T>); // release excess memory
+            return PooledSet<T>(data);
+        }
+
+        arena_.deallocate(state);
+        return PooledSet<T>(*i);
+    }
+
+    void copy_if_unique_and_inc(T*& i, const T*& ai) {
         if ((*i)->gid() != (*ai)->gid()) *++i = *ai;
         ++ai;
     }
@@ -229,4 +220,5 @@ private:
     fe::Arena arena_;
     absl::flat_hash_set<const Data*, absl::Hash<const Data*>, typename Data::Equal> pool_;
 };
+
 } // namespace thorin
