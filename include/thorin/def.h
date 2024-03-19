@@ -529,6 +529,8 @@ protected:
     ///@}
 
 private:
+    Vars free_vars(bool&, uint32_t run);
+    void validate();
     void invalidate();
     Def* unset(size_t i);
     const Def** ops_ptr() const {
@@ -537,6 +539,7 @@ private:
     void finalize();
     bool equal(const Def* other) const;
 
+    uint32_t mark_ = 0;
 #ifndef NDEBUG
     size_t curr_op_ = 0;
 #endif

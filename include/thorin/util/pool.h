@@ -19,22 +19,22 @@ template<class T> class Pool;
 template<class T> class PooledSet {
 public:
     struct Data {
-        Data() noexcept = default;
-        Data(size_t size) noexcept
+        constexpr Data() noexcept = default;
+        constexpr Data(size_t size) noexcept
             : size(size) {}
 
         size_t size = 0;
         T elems[];
 
         struct Equal {
-            bool operator()(const Data* d1, const Data* d2) const {
+            constexpr bool operator()(const Data* d1, const Data* d2) const {
                 bool res = d1->size == d2->size;
                 for (size_t i = 0, e = d1->size; res && i != e; ++i) res &= d1->elems[i] == d2->elems[i];
                 return res;
             }
         };
 
-        template<class H> friend H AbslHashValue(H h, const Data* d) {
+        template<class H> friend constexpr H AbslHashValue(H h, const Data* d) {
             if (!d) return H::combine(std::move(h), 0);
             return H::combine_contiguous(std::move(h), d->elems, d->size);
         }
@@ -43,39 +43,45 @@ public:
     static_assert(sizeof(Data) == sizeof(size_t), "Data.elems should be 0");
 
 private:
-    PooledSet(const Data* data) noexcept
+    /// @name Construction & Destruction
+    ///@{
+    constexpr PooledSet(const Data* data) noexcept
         : data_(data) {}
 
 public:
-    PooledSet() noexcept = default;
+    constexpr PooledSet() noexcept                            = default;
+    constexpr PooledSet(const PooledSet&) noexcept            = default;
+    constexpr PooledSet& operator=(const PooledSet&) noexcept = default;
+    constexpr void clear() noexcept { data_ = nullptr; }
+    ///@}
 
     /// @name Getters
     ///@{
-    explicit operator bool() const { return data_; } ///< Is not empty?
-    bool empty() const { return data_ == nullptr; }
-    size_t size() const { return empty() ? 0 : data_->size; }
-    const T& operator[](size_t i) const { return data_->elems[i]; }
-    const T& front() const { return (*this)[0]; }
-    const T* elems() const { return data_ ? data_->elems : nullptr; }
-    bool contains(const T& elem) const { return binary_find(begin(), end(), elem, GIDLt<T>()) != end(); }
+    constexpr explicit operator bool() const noexcept { return data_; } ///< Is not empty?
+    constexpr bool empty() const noexcept { return data_ == nullptr; }
+    constexpr size_t size() const noexcept { return empty() ? 0 : data_->size; }
+    constexpr const T& operator[](size_t i) const { return data_->elems[i]; }
+    constexpr const T& front() const { return (*this)[0]; }
+    constexpr const T* elems() const { return data_ ? data_->elems : nullptr; }
+    constexpr bool contains(const T& elem) const { return binary_find(begin(), end(), elem, GIDLt<T>()) != end(); }
     ///@}
 
     /// @name Comparisons
     ///@{
-    bool operator==(PooledSet<T> other) const { return this->data_ == other.data_; }
-    bool operator!=(PooledSet<T> other) const { return this->data_ != other.data_; }
+    constexpr bool operator==(PooledSet<T> other) const noexcept { return this->data_ == other.data_; }
+    constexpr bool operator!=(PooledSet<T> other) const noexcept { return this->data_ != other.data_; }
     ///@}
 
     /// @name Iterators
     ///@{
-    auto begin() const { return elems(); }
-    auto end() const { return elems() + size(); } // note: you can add 0 to nullptr
-    auto cbegin() const { return elems(); }
-    auto cend() const { return end(); }
-    auto rbegin() const { return std::reverse_iterator(end()); }
-    auto rend() const { return std::reverse_iterator(begin()); }
-    auto crbegin() const { return rbegin(); }
-    auto crend() const { return rend(); }
+    constexpr auto begin() const noexcept { return elems(); }
+    constexpr auto end() const noexcept { return elems() + size(); } // note: you can add 0 to nullptr
+    constexpr auto cbegin() const noexcept { return elems(); }
+    constexpr auto cend() const noexcept { return end(); }
+    constexpr auto rbegin() const noexcept { return std::reverse_iterator(end()); }
+    constexpr auto rend() const noexcept { return std::reverse_iterator(begin()); }
+    constexpr auto crbegin() const noexcept { return rbegin(); }
+    constexpr auto crend() const noexcept { return rend(); }
     ///@}
 
 private:
@@ -89,7 +95,7 @@ private:
 } // namespace thorin
 
 template<class T> struct std::hash<thorin::PooledSet<T>> {
-    size_t operator()(thorin::PooledSet<T> set) const { return std::hash<uintptr_t>()((uintptr_t)set.data_); }
+    constexpr size_t operator()(thorin::PooledSet<T> set) const { return std::hash<uintptr_t>()((uintptr_t)set.data_); }
 };
 
 namespace thorin {
@@ -100,7 +106,7 @@ template<class T> class Pool {
     using Data = typename PooledSet<T>::Data;
 
 public:
-    /// @name C'tor & D'tor
+    /// @name Construction & Destruction
     ///@{
     Pool& operator=(const Pool&) = delete;
 
