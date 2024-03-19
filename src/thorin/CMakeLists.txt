@@ -6,6 +6,7 @@ target_sources(libthorin
         def.cpp
         plugin.cpp
         dump.cpp
+        dot.cpp
         driver.cpp
         lam.cpp
         lattice.cpp
@@ -19,7 +20,6 @@ target_sources(libthorin
         analyses/looptree.cpp
         analyses/schedule.cpp
         analyses/scope.cpp
-        be/dot/dot.cpp
         be/h/bootstrap.cpp
         fe/ast.cpp
         fe/lexer.cpp

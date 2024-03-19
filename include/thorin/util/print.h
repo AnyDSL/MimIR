@@ -135,6 +135,11 @@ template<class T, class... Args> std::ostream& print(std::ostream& os, const cha
     fe::unreachable();
 }
 
+/// As above but end with `std::endl`.
+template<class... Args> std::ostream& println(std::ostream& os, const char* fmt, Args&&... args) {
+    return print(os, fmt, std::forward<Args&&>(args)...) << std::endl;
+}
+
 /// Wraps thorin::print to output a formatted `std:string`.
 template<class... Args> std::string fmt(const char* s, Args&&... args) {
     std::ostringstream os;
@@ -209,8 +214,8 @@ public:
     // clang-format off
     /// @name Creates a new Tab
     ///@{
-    [[nodiscard]] Tab operator++(int) const {                      return {tab_, indent_ + 1}; }
-    [[nodiscard]] Tab operator--(int) const { assert(indent_ > 0); return {tab_, indent_ - 1}; }
+    [[nodiscard]] Tab operator++(int) {                      return {tab_, indent_++}; }
+    [[nodiscard]] Tab operator--(int) { assert(indent_ > 0); return {tab_, indent_--}; }
     [[nodiscard]] Tab operator+(size_t indent) const {                      return {tab_, indent_ + indent}; }
     [[nodiscard]] Tab operator-(size_t indent) const { assert(indent_ > 0); return {tab_, indent_ - indent}; }
     ///@}

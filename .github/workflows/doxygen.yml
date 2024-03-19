@@ -16,11 +16,11 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Install newest g++, graphviz, texlive
+    - name: Install newest g++, gdb, graphviz, texlive
       run: |
         sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
         sudo apt-get update
-        sudo apt-get install g++-13 graphviz texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
+        sudo apt-get install g++-13 gdb graphviz texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
 
         export CXX=g++-13
 

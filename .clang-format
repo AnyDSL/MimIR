@@ -112,9 +112,9 @@ IncludeCategories:
     Priority:        5
   - Regex:           '<thorin/[[:alnum:]_]+\.h>'
     Priority:        4
-  - Regex:           '<c.*[^.][^h]>'
+  - Regex:           '<c[[:alnum:]_]+>'
     Priority:        1
-  - Regex:           '<.*[^.][^h]>'
+  - Regex:           '<[[:alnum:]_]+>'
     Priority:        2
   - Regex:           '<.*>'
     Priority:        3
