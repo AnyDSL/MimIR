@@ -165,24 +165,19 @@ template TExt<true >*   TExt<true >  ::stub(World&, Ref);
 
 // TODO check for recursion
 const Pi* Pi::immutabilize() {
-    auto fvs = codom()->free_vars();
-    if (auto var = has_var(); var && fvs.contains(var)) return nullptr;
+    if (auto var = has_var(); var && codom()->free_vars().contains(var)) return nullptr;
     return world().pi(dom(), codom());
 }
 
 const Def* Sigma::immutabilize() {
-    if (auto var = has_var(); var && std::ranges::any_of(ops(), [var](auto op) {
-                                  auto fvs = op->free_vars();
-                                  return fvs.contains(var);
-                              }))
+    if (auto v = has_var(); v && std::ranges::any_of(ops(), [v](auto op) { return op->free_vars().contains(v); }))
         return nullptr;
     return static_cast<const Sigma*>(*world().sigma(ops()));
 }
 
 const Def* Arr::immutabilize() {
-    auto& w  = world();
-    auto fvs = body()->free_vars();
-    if (auto var = has_var(); !var || !fvs.contains(var)) return w.arr(shape(), body());
+    auto& w = world();
+    if (auto var = has_var(); !var || !body()->free_vars().contains(var)) return w.arr(shape(), body());
 
     if (auto n = Lit::isa(shape()); n && *n < w.flags().scalerize_threshold)
         return w.sigma(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
@@ -191,9 +186,8 @@ const Def* Arr::immutabilize() {
 }
 
 const Def* Pack::immutabilize() {
-    auto& w  = world();
-    auto fvs = body()->free_vars();
-    if (auto var = has_var(); !var || !fvs.contains(var)) return w.pack(shape(), body());
+    auto& w = world();
+    if (auto var = has_var(); !var || !body()->free_vars().contains(var)) return w.pack(shape(), body());
 
     if (auto n = Lit::isa(shape()); n && *n < w.flags().scalerize_threshold)
         return w.tuple(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
@@ -400,26 +394,30 @@ Def* Def::unset() {
 }
 
 Def* Def::unset(size_t i) {
+    invalidate();
     assert(op(i) && op(i)->uses_.contains(Use(this, i)));
     op(i)->uses_.erase(Use(this, i));
     ops_ptr()[i] = nullptr;
-    invalidate();
     return this;
 }
 
 Def* Def::set_type(const Def* type) {
-    invalidate();
-    if (type_ != nullptr) unset_type();
-    type_ = type;
-    type->uses_.emplace(this, Use::Type);
+    if (type_ != type) {
+        invalidate();
+        if (type_ != nullptr) unset_type();
+        type_ = type;
+        type->uses_.emplace(this, Use::Type);
+    }
     return this;
 }
 
 void Def::unset_type() {
-    assert(type_->uses_.contains(Use(this, Use::Type)));
-    type_->uses_.erase(Use(this, Use::Type));
-    type_ = nullptr;
-    invalidate();
+    if (type_) {
+        invalidate();
+        assert(type_->uses_.contains(Use(this, Use::Type)));
+        type_->uses_.erase(Use(this, Use::Type));
+        type_ = nullptr;
+    }
 }
 
 bool Def::is_set() const {
@@ -447,6 +445,7 @@ Vars Def::free_vars() {
     if (!is_set()) return {};
 
     if (!valid_) {
+        // fixed-point interation to recompute free_vars_
         uint32_t run = 1;
         for (bool todo = true; todo;) {
             todo = false;
@@ -459,6 +458,9 @@ Vars Def::free_vars() {
 }
 
 Vars Def::free_vars(bool& todo, uint32_t run) {
+    // Recursively recompute free_vars_. If
+    // * valid_ == true: no recomputation is necessary
+    // * mark_ == run: We are running in cycles within the *current* iteration of our fixed-point loop
     if (valid_ || mark_ == run) return free_vars_;
     mark_ = run;
 
@@ -474,7 +476,7 @@ Vars Def::free_vars(bool& todo, uint32_t run) {
         }
     }
 
-    if (auto var = has_var()) fvs = world().erase(fvs, var);
+    if (auto var = has_var()) fvs = world().erase(fvs, var); // FV(λx.e) = FV(e) \ {x}
 
     todo |= fvs0 != fvs;
     return free_vars_ = fvs;
