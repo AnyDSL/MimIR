@@ -15,29 +15,26 @@ template<class T> std::string escape(const T& val) {
     std::ostringstream oss;
     oss << val;
     auto str = oss.str();
-    for (auto i = str.find('<'); i != std::string::npos; i = str.find('<', i)) str.replace(i, 1, "&lt;");
-    for (auto i = str.find('>'); i != std::string::npos; i = str.find('>', i)) str.replace(i, 1, "&gt;");
+    find_and_replace(str, "<", "&lt;");
+    find_and_replace(str, ">", "&gt;");
     return str;
 }
 
 class Dot {
 public:
-    Dot(std::ostream& ostream, bool types)
+    Dot(std::ostream& ostream, bool types, const Def* root = nullptr)
         : os_(ostream)
-        , types_(types) {}
+        , types_(types)
+        , root_(root) {}
 
     void prologue() {
-        tab_.println(os_, "digraph {{");
-        ++tab_;
+        (tab_++).println(os_, "digraph {{");
         tab_.println(os_, "ordering=out;");
         tab_.println(os_, "splines=false;");
         tab_.println(os_, "node [shape=box,style=filled];");
     }
 
-    void epilogue() {
-        --tab_;
-        tab_.println(os_, "}}");
-    }
+    void epilogue() { (tab_--).println(os_, "}}"); }
 
     void run(const Def* root, uint32_t max) {
         prologue();
@@ -48,7 +45,13 @@ public:
     void recurse(const Def* def, uint32_t max) {
         if (max == 0 || !done_.emplace(def).second) return;
         tab_.print(os_, "_{}[", def->gid());
-        if (def->isa_mut()) os_ << "style=\"filled,diagonals\"";
+        if (def->isa_mut())
+            if (def == root_)
+                os_ << "style=\"filled,diagonals,bold\"";
+            else
+                os_ << "style=\"filled,diagonals\"";
+        else if (def == root_)
+            os_ << "style=\"filled,bold\"";
         label(def) << ',';
         color(def) << ',';
         tooltip(def) << "];\n";
@@ -105,13 +108,14 @@ public:
 private:
     std::ostream& os_;
     bool types_;
+    const Def* root_;
     Tab tab_;
     DefSet done_;
 };
 
 } // namespace
 
-void Def::dot(std::ostream& ostream, uint32_t max, bool types) const { Dot(ostream, types).run(this, max); }
+void Def::dot(std::ostream& ostream, uint32_t max, bool types) const { Dot(ostream, types, this).run(this, max); }
 
 void Def::dot(const char* file, uint32_t max, bool types) const {
     if (!file) {
