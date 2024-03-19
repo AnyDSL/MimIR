@@ -414,9 +414,8 @@ public:
     Vars local_vars() const { return local_vars_; }
     Vars free_vars() const;
     Vars free_vars();
-    Vars old_free_vars() const;
     Vars old_free_vars();
-    Vars old_free_vars(MutMap<Vars>&);
+    Vars old_free_vars() const;
     Muts dependencies() const { return dependencies_; }
     ///@}
 
@@ -557,10 +556,10 @@ protected:
 
 private:
     uint8_t node_;
-    bool mut_       : 1;
-    bool external_  : 1; // TODO unused
-    unsigned dep_   : 5;
-    unsigned valid_ : 2;
+    bool mut_      : 1;
+    bool external_ : 1; // TODO unused
+    unsigned dep_  : 5;
+    bool valid_    : 1;
     hash_t hash_;
     u32 gid_;
     u32 num_ops_;

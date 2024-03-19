@@ -31,7 +31,7 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
                     : node == Node::Proxy ? Dep::Proxy
                     : node == Node::Var   ? Dep::Var
                                           : Dep::None))
-    , valid_(0)
+    , valid_(false)
     , num_ops_(ops.size())
     , type_(type) {
     std::ranges::copy(ops, ops_ptr());
@@ -433,53 +433,104 @@ bool Def::is_set() const {
  * free_vars
  */
 
-Vars Def::old_free_vars() const {
-    if (auto mut = isa_mut()) return mut->old_free_vars();
-
-    auto mut2vars = MutMap<Vars>();
-    auto vars     = local_vars();
-
-    for (auto mut : local_muts()) vars = world().merge(vars, mut->old_free_vars(mut2vars));
-
-    return vars;
-}
-
-Vars Def::old_free_vars() {
-    MutMap<Vars> mut2vars;
-    return old_free_vars(mut2vars);
-}
-
-Vars Def::old_free_vars(MutMap<Vars>& mut2vars) {
-    if (auto [i, ins] = mut2vars.emplace(this, Vars()); !ins) return i->second;
-
-    Vars vars;
-    for (auto op : extended_ops()) {
-        vars = world().merge(vars, op->local_vars());
-
-        for (auto mut : op->local_muts()) vars = world().merge(vars, mut->old_free_vars(mut2vars));
-    }
-
-    if (isa_mut()) {
-        if (auto var = has_var()) vars = world().erase(vars, var);
-    }
-
-    return mut2vars[this] = vars;
-}
-
-// ---
-
 Vars Def::free_vars() const {
     if (auto mut = isa_mut()) return mut->free_vars();
 
     auto vars = local_vars();
     for (auto mut : local_muts()) vars = world().merge(vars, mut->free_vars());
 
-    // assert(old_free_vars() == vars);
     return vars;
+}
+
+Vars Def::free_vars() {
+    if (!isa_mut()) return const_cast<const Def*>(this)->free_vars();
+    if (valid_) return free_vars_;
+
+    auto muts = world().muts(this);
+
+    for (bool todo = true; todo;) {
+        todo = false;
+        unique_queue<MutSet> queue;
+        queue.push(this);
+
+        while (!queue.empty()) {
+            auto mut = queue.pop();
+
+            auto fvs0 = mut->free_vars_;
+            auto fvs  = fvs0;
+
+            for (auto op : mut->extended_ops()) fvs = world().merge(fvs, op->local_vars());
+
+            for (auto op : mut->extended_ops()) {
+                for (auto local_mut : op->local_muts()) {
+                    fvs = world().merge(fvs, local_mut->free_vars_);
+                    assert(!local_mut->valid_);
+                    queue.push(local_mut);
+                    muts = world().insert(muts, local_mut);
+                }
+            }
+
+            if (auto var = mut->has_var()) fvs = world().erase(fvs, var);
+
+            if (fvs0 != fvs) {
+                mut->free_vars_ = fvs;
+                todo            = true;
+            }
+        }
+    }
+
+    return free_vars_;
+}
+
+Vars Def::old_free_vars() const {
+    if (auto mut = isa_mut()) return mut->old_free_vars();
+
+    auto vars = local_vars();
+    for (auto mut : local_muts()) vars = world().merge(vars, mut->old_free_vars());
+
+    return vars;
+}
+
+Vars Def::old_free_vars() {
+    if (!isa_mut()) return const_cast<const Def*>(this)->free_vars();
+
+    MutMap<Vars> mut2vars;
+
+    for (bool todo = true; todo;) {
+        todo = false;
+        unique_queue<MutSet> queue;
+        queue.push(this);
+
+        while (!queue.empty()) {
+            auto mut = queue.pop();
+
+            auto fvs0 = mut2vars.emplace(mut, Vars()).first->second;
+            auto fvs  = fvs0;
+
+            for (auto op : mut->extended_ops()) fvs = world().merge(fvs, op->local_vars());
+
+            for (auto op : mut->extended_ops()) {
+                for (auto local_mut : op->local_muts()) {
+                    fvs = world().merge(fvs, mut2vars.emplace(local_mut, Vars()).first->second);
+                    queue.push(local_mut);
+                }
+            }
+
+            if (auto var = mut->has_var()) fvs = world().erase(fvs, var);
+
+            if (fvs0 != fvs) {
+                mut2vars[mut] = fvs;
+                todo          = true;
+            }
+        }
+    }
+
+    return mut2vars[this];
 }
 
 static bool flag = true;
 
+#if 0
 Vars Def::free_vars() {
     if (!is_set()) {
         assert(!free_vars_);
@@ -529,6 +580,7 @@ Vars Def::free_vars() {
     }
     return vars;
 }
+#endif
 
 void Def::invalidate() {
     if (valid_) {
