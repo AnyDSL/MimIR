@@ -46,7 +46,7 @@
   </g>
 </defs>
 <script type="application/ecmascript">
-var viewWidth = 824;
+var viewWidth = 814;
 var viewHeight = 309;
 var sectionId = 'dynsection-0';
 </script>
@@ -171,13 +171,32 @@ var sectionId = 'dynsection-0';
 </a>
 </g>
 </g>
-<!-- Node15 -->
-<g id="Node000015" class="node">
-<title>Node15</title>
-<g id="a_Node000015"><a xlink:href="classthorin_1_1plug_1_1clos_1_1ClosConv.html" target="_top" xlink:title="Performs typed closure conversion.">
+<!-- Node14 -->
+<g id="Node000014" class="node">
+<title>Node14</title>
+<g id="a_Node000014"><a xlink:href="classthorin_1_1plug_1_1clos_1_1ClosConv.html" target="_top" xlink:title="Performs typed closure conversion.">
 <polygon fill="white" stroke="#666666" points="231.5,-78 133.5,-78 133.5,-48 231.5,-48 231.5,-78"/>
 <text text-anchor="start" x="141.5" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::plug::clos</text>
 <text text-anchor="middle" x="182.5" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">::ClosConv</text>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node14 -->
+<g id="edge14_Node000001_Node000014" class="edge">
+<title>Node1&#45;&gt;Node14</title>
+<g id="a_edge14_Node000001_Node000014"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M54.33,-149.15C68.27,-131.54 91.64,-104.88 117,-88 122.6,-84.27 128.83,-80.98 135.16,-78.11"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="51.27,-147.38 47.93,-157.44 56.82,-151.66 51.27,-147.38"/>
+</a>
+</g>
+</g>
+<!-- Node15 -->
+<g id="Node000015" class="node">
+<title>Node15</title>
+<g id="a_Node000015"><a xlink:href="classthorin_1_1plug_1_1clos_1_1LowerTypedClos.html" target="_top" xlink:title="This pass lowers typed closures to untyped closures.">
+<polygon fill="white" stroke="#666666" points="233,-30 132,-30 132,0 233,0 233,-30"/>
+<text text-anchor="start" x="140" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::plug::clos</text>
+<text text-anchor="middle" x="182.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::LowerTypedClos</text>
 </a>
 </g>
 </g>
@@ -185,25 +204,6 @@ var sectionId = 'dynsection-0';
 <g id="edge15_Node000001_Node000015" class="edge">
 <title>Node1&#45;&gt;Node15</title>
 <g id="a_edge15_Node000001_Node000015"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M54.33,-149.15C68.27,-131.54 91.64,-104.88 117,-88 122.6,-84.27 128.83,-80.98 135.16,-78.11"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="51.27,-147.38 47.93,-157.44 56.82,-151.66 51.27,-147.38"/>
-</a>
-</g>
-</g>
-<!-- Node16 -->
-<g id="Node000016" class="node">
-<title>Node16</title>
-<g id="a_Node000016"><a xlink:href="classthorin_1_1plug_1_1clos_1_1LowerTypedClos.html" target="_top" xlink:title="This pass lowers typed closures to untyped closures.">
-<polygon fill="white" stroke="#666666" points="233,-30 132,-30 132,0 233,0 233,-30"/>
-<text text-anchor="start" x="140" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::plug::clos</text>
-<text text-anchor="middle" x="182.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::LowerTypedClos</text>
-</a>
-</g>
-</g>
-<!-- Node1&#45;&gt;Node16 -->
-<g id="edge16_Node000001_Node000016" class="edge">
-<title>Node1&#45;&gt;Node16</title>
-<g id="a_edge16_Node000001_Node000016"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M47.66,-147.78C58.2,-120.04 81.27,-68.83 117,-39 121.4,-35.32 126.42,-32.18 131.67,-29.51"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="44.26,-146.89 44.12,-157.48 50.84,-149.29 44.26,-146.89"/>
 </a>
@@ -266,39 +266,39 @@ var sectionId = 'dynsection-0';
 </a>
 </g>
 </g>
-<!-- Node13 -->
-<g id="Node000013" class="node">
-<title>Node13</title>
-<g id="a_Node000013"><a xlink:href="classthorin_1_1Emitter.html" target="_top" xlink:title=" ">
+<!-- Node12 -->
+<g id="Node000012" class="node">
+<title>Node12</title>
+<g id="a_Node000012"><a xlink:href="classthorin_1_1Emitter.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="413.5,-78 285.5,-78 285.5,-48 413.5,-48 413.5,-78"/>
 <text text-anchor="start" x="293.5" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Emitter&lt; Value,</text>
 <text text-anchor="middle" x="349.5" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00"> Type, BB, Child &gt;</text>
 </a>
 </g>
 </g>
-<!-- Node9&#45;&gt;Node13 -->
-<g id="edge12_Node000009_Node000013" class="edge">
-<title>Node9&#45;&gt;Node13</title>
-<g id="a_edge12_Node000009_Node000013"><a xlink:title=" ">
+<!-- Node9&#45;&gt;Node12 -->
+<g id="edge11_Node000009_Node000012" class="edge">
+<title>Node9&#45;&gt;Node12</title>
+<g id="a_edge11_Node000009_Node000012"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M229.99,-93.88C248.91,-88.95 270.99,-83.2 290.92,-78.01"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="228.91,-90.55 220.12,-96.46 230.68,-97.32 228.91,-90.55"/>
 </a>
 </g>
 </g>
-<!-- Node14 -->
-<g id="Node000014" class="node">
-<title>Node14</title>
-<g id="a_Node000014"><a xlink:href="classthorin_1_1plug_1_1mem_1_1AddMem.html" target="_top" xlink:title="This phase adds mems to all lambdas and continuations.">
+<!-- Node13 -->
+<g id="Node000013" class="node">
+<title>Node13</title>
+<g id="a_Node000013"><a xlink:href="classthorin_1_1plug_1_1mem_1_1AddMem.html" target="_top" xlink:title="This phase adds mems to all lambdas and continuations.">
 <polygon fill="white" stroke="#666666" points="404.5,-30 294.5,-30 294.5,0 404.5,0 404.5,-30"/>
 <text text-anchor="start" x="302.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::plug::mem::</text>
 <text text-anchor="middle" x="349.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">AddMem</text>
 </a>
 </g>
 </g>
-<!-- Node9&#45;&gt;Node14 -->
-<g id="edge14_Node000009_Node000014" class="edge">
-<title>Node9&#45;&gt;Node14</title>
-<g id="a_edge14_Node000009_Node000014"><a xlink:title=" ">
+<!-- Node9&#45;&gt;Node13 -->
+<g id="edge13_Node000009_Node000013" class="edge">
+<title>Node9&#45;&gt;Node13</title>
+<g id="a_edge13_Node000009_Node000013"><a xlink:title=" ">
 <path fill="none" stroke="#63b8ff" d="M238.66,-92.41C241.92,-90.8 245.07,-89.01 248,-87 270.23,-71.78 263.36,-55.04 285,-39 289.55,-35.63 294.62,-32.68 299.86,-30.11"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="237.01,-89.31 229.2,-96.47 239.77,-95.74 237.01,-89.31"/>
 </a>
@@ -307,9 +307,9 @@ var sectionId = 'dynsection-0';
 <!-- Node11 -->
 <g id="Node000011" class="node">
 <title>Node11</title>
-<g id="a_Node000011"><a xlink:href="classthorin_1_1dot_1_1Emitter.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="816,-112.5 707,-112.5 707,-93.5 816,-93.5 816,-112.5"/>
-<text text-anchor="middle" x="761.5" y="-100.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::dot::Emitter</text>
+<g id="a_Node000011"><a xlink:href="classthorin_1_1ll_1_1Emitter.html" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="806,-93.5 707,-93.5 707,-74.5 806,-74.5 806,-93.5"/>
+<text text-anchor="middle" x="756.5" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::ll::Emitter</text>
 </a>
 </g>
 </g>
@@ -317,33 +317,15 @@ var sectionId = 'dynsection-0';
 <g id="edge10_Node000010_Node000011" class="edge">
 <title>Node10&#45;&gt;Node11</title>
 <g id="a_edge10_Node000010_Node000011"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M680.15,-92.54C689.12,-93.71 698.25,-94.9 706.97,-96.03"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="680.48,-89.06 670.11,-91.24 679.58,-96 680.48,-89.06"/>
+<path fill="none" stroke="#63b8ff" d="M680.47,-84C689.26,-84 698.14,-84 706.57,-84"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="680.23,-80.5 670.23,-84 680.23,-87.5 680.23,-80.5"/>
 </a>
 </g>
 </g>
-<!-- Node12 -->
-<g id="Node000012" class="node">
-<title>Node12</title>
-<g id="a_Node000012"><a xlink:href="classthorin_1_1ll_1_1Emitter.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="811,-75.5 712,-75.5 712,-56.5 811,-56.5 811,-75.5"/>
-<text text-anchor="middle" x="761.5" y="-63.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::ll::Emitter</text>
-</a>
-</g>
-</g>
-<!-- Node10&#45;&gt;Node12 -->
-<g id="edge11_Node000010_Node000012" class="edge">
-<title>Node10&#45;&gt;Node12</title>
-<g id="a_edge11_Node000010_Node000012"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M680.19,-75.9C690.8,-74.59 701.61,-73.26 711.73,-72.01"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="679.61,-72.45 670.11,-77.14 680.47,-79.39 679.61,-72.45"/>
-</a>
-</g>
-</g>
-<!-- Node13&#45;&gt;Node10 -->
-<g id="edge13_Node000013_Node000010" class="edge">
-<title>Node13&#45;&gt;Node10</title>
-<g id="a_edge13_Node000013_Node000010"><a xlink:title=" ">
+<!-- Node12&#45;&gt;Node10 -->
+<g id="edge12_Node000012_Node000010" class="edge">
+<title>Node12&#45;&gt;Node10</title>
+<g id="a_edge12_Node000012_Node000010"><a xlink:title=" ">
 <path fill="none" stroke="orange" stroke-dasharray="5,2" d="M423.65,-63.15C458.65,-63.88 501.09,-65.71 539,-70 544.81,-70.66 550.85,-71.52 556.85,-72.49"/>
 <polygon fill="orange" stroke="orange" points="423.57,-59.65 413.51,-62.97 423.45,-66.65 423.57,-59.65"/>
 </a>

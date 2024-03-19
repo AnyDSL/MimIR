@@ -6,9 +6,10 @@ var namespacethorin =
       [ "open", "namespacethorin_1_1dl.html#a1eec4b2aa8b02ce48c612a2ba96ad6d5", null ],
       [ "extension", "namespacethorin_1_1dl.html#a9a7004ccce51cd628cf4287d703773e2", null ]
     ] ],
-    [ "dot", "namespacethorin_1_1dot.html", "namespacethorin_1_1dot" ],
     [ "ll", "namespacethorin_1_1ll.html", "namespacethorin_1_1ll" ],
-    [ "Node", "namespacethorin_1_1Node.html", null ],
+    [ "Node", "namespacethorin_1_1Node.html", [
+      [ "Num_Nodes", "namespacethorin_1_1Node.html#a1008adad35dba3714e4e64abb7dd3303", null ]
+    ] ],
     [ "plug", "namespacethorin_1_1plug.html", "namespacethorin_1_1plug" ],
     [ "sys", "namespacethorin_1_1sys.html", [
       [ "exec", "namespacethorin_1_1sys.html#ac4dd1156a86eb6db52f2cd93fec5a962", null ],
@@ -296,6 +297,7 @@ var namespacethorin =
     [ "pop", "namespacethorin.html#ab31c89d6a2afc9d7693f7fbdd992c7fe", null ],
     [ "print", "namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c", null ],
     [ "print", "namespacethorin.html#acdd5a2cf60c9be78d38baa06024fb860", null ],
+    [ "println", "namespacethorin.html#a0d6f0c36c63fa5ec2ed542b3948e9f24", null ],
     [ "register_pass", "namespacethorin.html#a4af8566c40f049204989f6fcb8a1cba4", null ],
     [ "register_pass_with_arg", "namespacethorin.html#a39f3964760b6df40869a6e6fc4cfd418", null ],
     [ "register_phase", "namespacethorin.html#a5762324601a238c463d9606744f670dc", null ],

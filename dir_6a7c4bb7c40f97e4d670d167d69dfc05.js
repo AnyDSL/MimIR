@@ -11,6 +11,7 @@ var dir_6a7c4bb7c40f97e4d670d167d69dfc05 =
     [ "axiom.cpp", "axiom_8cpp.html", null ],
     [ "check.cpp", "check_8cpp.html", null ],
     [ "def.cpp", "def_8cpp.html", "def_8cpp" ],
+    [ "dot.cpp", "dot_8cpp.html", null ],
     [ "driver.cpp", "driver_8cpp.html", null ],
     [ "dump.cpp", "dump_8cpp.html", "dump_8cpp" ],
     [ "lam.cpp", "lam_8cpp.html", "lam_8cpp" ],

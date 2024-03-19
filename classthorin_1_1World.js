@@ -36,6 +36,8 @@ var classthorin_1_1World =
     [ "cn", "classthorin_1_1World.html#aa36f8b1331527d6b2490c32b90e2982a", null ],
     [ "curr_gid", "classthorin_1_1World.html#ac3f84d153a4be33297be87599a72f836", null ],
     [ "debug_dump", "classthorin_1_1World.html#a9d19c8882e3e936698e30fcb94b8865c", null ],
+    [ "dot", "classthorin_1_1World.html#a4f1105d98668cfd159d1a9de6f809a29", null ],
+    [ "dot", "classthorin_1_1World.html#a72f46f312032a9d500561914f61189b8", null ],
     [ "driver", "classthorin_1_1World.html#a2bc188a81d97de1c230c8546b344cb6b", null ],
     [ "driver", "classthorin_1_1World.html#a73e913e7c2d45f981fb1f0364bd786b0", null ],
     [ "dummy", "classthorin_1_1World.html#acd6d1c460395a0cfe7648bff5e456a75", null ],

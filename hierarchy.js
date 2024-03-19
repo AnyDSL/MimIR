@@ -9,7 +9,6 @@ var hierarchy =
     [ "automaton::AutomatonBase< NFANode >", "classautomaton_1_1AutomatonBase.html", [
       [ "automaton::NFA", "classautomaton_1_1NFA.html", null ]
     ] ],
-    [ "thorin::dot::BB", "namespacethorin_1_1dot.html#classthorin_1_1dot_1_1BB", null ],
     [ "thorin::ll::BB", "structthorin_1_1ll_1_1BB.html", null ],
     [ "thorin::BitSet", "classthorin_1_1BitSet.html", null ],
     [ "thorin::CFA", "classthorin_1_1CFA.html", null ],
@@ -173,7 +172,6 @@ var hierarchy =
       ] ],
       [ "thorin::ScopePhase", "classthorin_1_1ScopePhase.html", [
         [ "thorin::Emitter< std::string, std::string, BB, Emitter >", "classthorin_1_1Emitter.html", [
-          [ "thorin::dot::Emitter", "classthorin_1_1dot_1_1Emitter.html", null ],
           [ "thorin::ll::Emitter", "classthorin_1_1ll_1_1Emitter.html", null ]
         ] ],
         [ "thorin::Emitter< Value, Type, BB, Child >", "classthorin_1_1Emitter.html", null ],

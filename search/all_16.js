@@ -1,12 +1,12 @@
 var searchData=
 [
-  ['valgrind_20gdb_0',['Valgrind &amp; GDB',['../coding.html#autotoc_md8',1,'']]],
-  ['valid_20programs_1',['Construct Valid Programs',['../passes.html#autotoc_md63',1,'']]],
+  ['valgrind_20gdb_0',['Valgrind &amp; GDB',['../coding.html#autotoc_md9',1,'']]],
+  ['valid_20programs_1',['Construct Valid Programs',['../passes.html#autotoc_md64',1,'']]],
   ['value_2',['value',['../classthorin_1_1Insert.html#a665da72feeff8ecdc0d56e2d0b330ba9',1,'thorin::Insert::value()'],['../classthorin_1_1Vel.html#a4206734bc2a95641bad59ac6bd0e5113',1,'thorin::Vel::value()'],['../classthorin_1_1Pick.html#ad1ab799d5781001c3dcd6b0f0cdbc1a2',1,'thorin::Pick::value()'],['../classthorin_1_1Test.html#a419b77a5a01ac63e6b05fe4348b0b312',1,'thorin::Test::value()']]],
-  ['values_3',['Values',['../regex.html#autotoc_md222',1,'']]],
+  ['values_3',['Values',['../regex.html#autotoc_md223',1,'']]],
   ['var_4',['var',['../namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a7a5700ae028d415a5e1e20feac76eda5',1,'thorin::Node::Var'],['../namespacethorin.html#a55a6c38c7e5330a05b17f8134f60264aa5a92344ee95acf10c31901b36418be77',1,'thorin::Var'],['../classthorin_1_1World.html#a767e76aa133cafa25bf569968c4b11d6',1,'thorin::World::var()'],['../classthorin_1_1Def.html#a8d2663ea79bf88d8498520d0ba45e814',1,'thorin::Def::var(nat_t i)'],['../classthorin_1_1Def.html#a376b91fc8f5b9b9e3e59a71785fb2b2c',1,'thorin::Def::var(nat_t a, nat_t i)'],['../classthorin_1_1Def.html#a22a6f98101cae5022aaa945031867e5c',1,'thorin::Def::var()'],['../classthorin_1_1Var.html',1,'thorin::Var']]],
   ['var2var_5',['Var2Var',['../namespacethorin.html#a574519644134310f7123469cf121d0a2',1,'thorin']]],
-  ['variants_6',['Thresholded Variants',['../dev.html#autotoc_md29',1,'']]],
+  ['variants_6',['Thresholded Variants',['../dev.html#autotoc_md30',1,'']]],
   ['varmap_7',['VarMap',['../namespacethorin.html#af280f2e34b689af6206dfb9756aa1df5',1,'thorin']]],
   ['vars_8',['vars',['../classthorin_1_1Def.html#a472972fdae616567f746cf3426906b01',1,'thorin::Def::vars(F f)'],['../classthorin_1_1Def.html#a22f74a5070962e17de66f44598ebfc6c',1,'thorin::Def::vars()'],['../classthorin_1_1Def.html#affd430f754cdf5a3f037265155c36063',1,'thorin::Def::vars(nat_t a, F f)'],['../classthorin_1_1Def.html#a77e05cabb3d0a69dcfdbadfeb3dbe871',1,'thorin::Def::vars(nat_t a)']]],
   ['varset_9',['VarSet',['../namespacethorin.html#a229e892ca840ebda9ce60cfad90ae1b0',1,'thorin']]],
@@ -25,7 +25,7 @@ var searchData=
   ['visit_5ffirst_22',['visit_first',['../namespacethorin.html#a02f88714441141b4cafcf80c5e49f554',1,'thorin']]],
   ['vlog_23',['VLOG',['../log_8h.html#a35e71de09dfd64892a48e3f7c56c5619',1,'log.h']]],
   ['vmode_24',['vmode',['../namespacethorin_1_1plug_1_1core.html#aa2f8400315423f6d88cb5988250e3996',1,'thorin::plug::core::VMode'],['../namespacethorin_1_1plug_1_1math.html#aefb5afb8829ece6087187579a819f8c5',1,'thorin::plug::math::VMode']]],
-  ['vs_20code_25',['VS Code',['../coding.html#autotoc_md9',1,'']]],
+  ['vs_20code_25',['VS Code',['../coding.html#autotoc_md10',1,'']]],
   ['vs_20mutables_26',['Immutables vs. Mutables',['../dev.html#mut',1,'']]],
-  ['vs_20style_27',['()-style vs []-style',['../langref.html#autotoc_md38',1,'']]]
+  ['vs_20style_27',['()-style vs []-style',['../langref.html#autotoc_md39',1,'']]]
 ];

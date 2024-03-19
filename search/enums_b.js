@@ -19,5 +19,5 @@ var searchData=
   ['prod_16',['prod',['../namespacethorin_1_1plug_1_1matrix.html#a6e5a3ebd1fb3f40a6764a81adf0ecceb',1,'thorin::plug::matrix']]],
   ['ptr_17',['Ptr',['../namespacethorin_1_1plug_1_1mem.html#abad253eb0016b5180be7cd05000cd662',1,'thorin::plug::mem']]],
   ['ptr0_18',['Ptr0',['../namespacethorin_1_1plug_1_1mem.html#a64325659abb1b3614317c66dd2c5e6e6',1,'thorin::plug::mem']]],
-  ['pxr24_19',['pxr24',['../namespacethorin_1_1plug_1_1math.html#acb827e35623bc6c58a87cb5592a7af3f',1,'thorin::plug::math::pxr24'],['../namespacethorin_1_1plug_1_1math.html#a9bfde2a55bd6b069032db78dac391ba6',1,'thorin::plug::math::PXR24']]]
+  ['pxr24_19',['pxr24',['../namespacethorin_1_1plug_1_1math.html#a9bfde2a55bd6b069032db78dac391ba6',1,'thorin::plug::math::PXR24'],['../namespacethorin_1_1plug_1_1math.html#acb827e35623bc6c58a87cb5592a7af3f',1,'thorin::plug::math::pxr24']]]
 ];

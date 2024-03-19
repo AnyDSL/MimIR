@@ -7,7 +7,7 @@ var searchData=
   ['k_5fdef_4',['K_def',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ae12060443298f0c9750e3e6210044b66',1,'thorin::Tok']]],
   ['k_5fextern_5',['K_extern',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a8a60817c7b13b75f078509e5e3a32aac',1,'thorin::Tok']]],
   ['k_5fff_6',['K_ff',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a43aa688adfb4f405337a57b6a878aef4',1,'thorin::Tok']]],
-  ['k_5ffn_7',['k_fn',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a64e874e70ce7f735f78be094c8a20f3b',1,'thorin::Tok::K_fn'],['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a4178da4b61c8a4dfe7ba0511da085ced',1,'thorin::Tok::K_Fn']]],
+  ['k_5ffn_7',['k_fn',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a4178da4b61c8a4dfe7ba0511da085ced',1,'thorin::Tok::K_Fn'],['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a64e874e70ce7f735f78be094c8a20f3b',1,'thorin::Tok::K_fn']]],
   ['k_5ffun_8',['K_fun',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a2abb8fa797d7276621a13c4a80726f8d',1,'thorin::Tok']]],
   ['k_5fidx_9',['K_Idx',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aab54c87aafa7bce8586a296d8646b262',1,'thorin::Tok']]],
   ['k_5fimport_10',['K_import',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a86d887ab52987c7cae217900a37da7c0',1,'thorin::Tok']]],
@@ -24,8 +24,8 @@ var searchData=
   ['k_5ftype_21',['K_Type',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a99c9443b98ae3d0847fdcd64f6600e25',1,'thorin::Tok']]],
   ['k_5funiv_22',['K_Univ',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a49b3d477647d73a29f5821aad9819448',1,'thorin::Tok']]],
   ['keep_23',['keep',['../classthorin_1_1BetaRed.html#a256524bd29ecf0fefeed14c65e037c91',1,'thorin::BetaRed']]],
-  ['keywords_24',['Keywords',['../langref.html#autotoc_md35',1,'']]],
+  ['keywords_24',['Keywords',['../langref.html#autotoc_md36',1,'']]],
   ['kind_25',['Kind',['../namespacethorin.html#abb917bebc699083d990fc4592abcc50ead626102cfc2416a570fc0dc582a9b771',1,'thorin']]],
-  ['kinds_20builtin_20types_26',['Kinds &amp; Builtin Types',['../langref.html#autotoc_md41',1,'']]],
+  ['kinds_20builtin_20types_26',['Kinds &amp; Builtin Types',['../langref.html#autotoc_md42',1,'']]],
   ['known_27',['known',['../namespacethorin_1_1plug_1_1core.html#a34883ef48fb26b0e45efa488f550ca56abbac63297a1fb6b412d30b8080a7c951',1,'thorin::plug::core']]]
 ];

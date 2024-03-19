@@ -13,10 +13,6 @@ var annotated_dup =
       [ "tuple_size< thorin::Span< T, N > >", "structstd_1_1tuple__size_3_01thorin_1_1Span_3_01T_00_01N_01_4_01_4.html", null ]
     ] ],
     [ "thorin", "namespacethorin.html", [
-      [ "dot", "namespacethorin_1_1dot.html", [
-        [ "BB", "namespacethorin_1_1dot.html#classthorin_1_1dot_1_1BB", null ],
-        [ "Emitter", "classthorin_1_1dot_1_1Emitter.html", "classthorin_1_1dot_1_1Emitter" ]
-      ] ],
       [ "ll", "namespacethorin_1_1ll.html", [
         [ "BB", "structthorin_1_1ll_1_1BB.html", "structthorin_1_1ll_1_1BB" ],
         [ "Emitter", "classthorin_1_1ll_1_1Emitter.html", "classthorin_1_1ll_1_1Emitter" ]

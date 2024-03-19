@@ -14,6 +14,8 @@ var classthorin_1_1Def =
     [ "debug_suffix", "classthorin_1_1Def.html#ae611756ed42ed0584e69e07ff68a3dda", null ],
     [ "dep", "classthorin_1_1Def.html#a879263b966092121d459fe61732bf4a8", null ],
     [ "dep_const", "classthorin_1_1Def.html#af935d7bd0e841594abd9b63b21ebc78f", null ],
+    [ "dot", "classthorin_1_1Def.html#a17c67f42e3926219fc92346201fd13a5", null ],
+    [ "dot", "classthorin_1_1Def.html#aab7d5482ba67df1894d8d386cff7de1e", null ],
     [ "dump", "classthorin_1_1Def.html#adeb490fdb674323acba48da1ffb28787", null ],
     [ "dump", "classthorin_1_1Def.html#ae34cc9da3b8dd663a4bd6068035ffb8f", null ],
     [ "extended_op", "classthorin_1_1Def.html#aebc6b140f5f56f9697fed5dbefb189d1", null ],

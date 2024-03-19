@@ -10,5 +10,6 @@ var print_8h =
     [ "outf", "print_8h.html#a1e961804cf2964efea4388ebe218f496", null ],
     [ "outln", "print_8h.html#af7ec5537fa7b52e17905ef114e40a765", null ],
     [ "print", "print_8h.html#a7dae34cc4eb75fe0cf5a914431353c8c", null ],
-    [ "print", "print_8h.html#acdd5a2cf60c9be78d38baa06024fb860", null ]
+    [ "print", "print_8h.html#acdd5a2cf60c9be78d38baa06024fb860", null ],
+    [ "println", "print_8h.html#a0d6f0c36c63fa5ec2ed542b3948e9f24", null ]
 ];

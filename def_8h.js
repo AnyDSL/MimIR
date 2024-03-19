@@ -18,6 +18,7 @@ var def_8h =
     [ "thorin::Proxy", "classthorin_1_1Proxy.html", "classthorin_1_1Proxy" ],
     [ "thorin::Global", "classthorin_1_1Global.html", "classthorin_1_1Global" ],
     [ "CODE", "def_8h.html#ad04b3972ae1c6d4df84a276ed64f06cb", null ],
+    [ "CODE", "def_8h.html#ad04b3972ae1c6d4df84a276ed64f06cb", null ],
     [ "THORIN_DEF_MIXIN", "def_8h.html#aebf82af5676bb688505de426ba6cbb66", null ],
     [ "THORIN_NODE", "def_8h.html#ad441fba8cfece95e5b9a6bfb4e2c65f1", null ],
     [ "THORIN_PROJ", "def_8h.html#adf5d1a62a53cfba7b0dcd4caac0090ab", null ],
@@ -57,5 +58,6 @@ var def_8h =
     ] ],
     [ "error", "def_8h.html#a1de4d5b631f17319d8e0fa712800fa14", null ],
     [ "operator<<", "def_8h.html#a95f0f301a18bbb510ecfbdffaaa70376", null ],
-    [ "operator<<", "def_8h.html#a2a31cdc1f3cb66759ad44e6052b4b575", null ]
+    [ "operator<<", "def_8h.html#a2a31cdc1f3cb66759ad44e6052b4b575", null ],
+    [ "Num_Nodes", "def_8h.html#a1008adad35dba3714e4e64abb7dd3303", null ]
 ];

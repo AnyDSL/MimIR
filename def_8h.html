@@ -114,7 +114,8 @@ $(document).ready(function(){initNavTree('def_8h.html',''); initResizable(); });
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#define-members">Macros</a> &#124;
-<a href="#enum-members">Enumerations</a>  </div>
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">def.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -194,6 +195,8 @@ Macros</h2></td></tr>
 <tr class="memitem:ad441fba8cfece95e5b9a6bfb4e2c65f1" id="r_ad441fba8cfece95e5b9a6bfb4e2c65f1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="def_8h.html#ad441fba8cfece95e5b9a6bfb4e2c65f1">THORIN_NODE</a>(m)</td></tr>
 <tr class="separator:ad441fba8cfece95e5b9a6bfb4e2c65f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad04b3972ae1c6d4df84a276ed64f06cb" id="r_ad04b3972ae1c6d4df84a276ed64f06cb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="def_8h.html#ad04b3972ae1c6d4df84a276ed64f06cb">CODE</a>(node,  name)&#160;&#160;&#160;node,</td></tr>
+<tr class="separator:ad04b3972ae1c6d4df84a276ed64f06cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad04b3972ae1c6d4df84a276ed64f06cb" id="r_ad04b3972ae1c6d4df84a276ed64f06cb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="def_8h.html#ad04b3972ae1c6d4df84a276ed64f06cb">CODE</a>(node,  name)&#160;&#160;&#160;+size_t(1)</td></tr>
 <tr class="separator:ad04b3972ae1c6d4df84a276ed64f06cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf5d1a62a53cfba7b0dcd4caac0090ab" id="r_adf5d1a62a53cfba7b0dcd4caac0090ab"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="def_8h.html#adf5d1a62a53cfba7b0dcd4caac0090ab">THORIN_PROJ</a>(NAME,  CONST)</td></tr>
 <tr class="memdesc:adf5d1a62a53cfba7b0dcd4caac0090ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use as mixin to wrap all kind of Def::proj and Def::projs variants.  <br /></td></tr>
@@ -361,6 +364,11 @@ Functions</h2></td></tr>
 <tr class="memitem:a1de4d5b631f17319d8e0fa712800fa14"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a1de4d5b631f17319d8e0fa712800fa14">thorin::error</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *def, const char *<a class="el" href="namespacethorin.html#ac2a988f71a64a048c61d5a2238269ea8">fmt</a>, Args &amp;&amp;... args)</td></tr>
 <tr class="separator:a1de4d5b631f17319d8e0fa712800fa14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a1008adad35dba3714e4e64abb7dd3303" id="r_a1008adad35dba3714e4e64abb7dd3303"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1Node.html#a1008adad35dba3714e4e64abb7dd3303">thorin::Node::Num_Nodes</a> = size_t(0) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1) +size_t(1)</td></tr>
+<tr class="separator:a1008adad35dba3714e4e64abb7dd3303"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Var</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p>GIDSet / GIDMap keyed by Var::gid of <code>const Var*</code>. </p>
 </td></tr>
@@ -393,7 +401,7 @@ Functions</h2></td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="ad04b3972ae1c6d4df84a276ed64f06cb" name="ad04b3972ae1c6d4df84a276ed64f06cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad04b3972ae1c6d4df84a276ed64f06cb">&#9670;&#160;</a></span>CODE</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad04b3972ae1c6d4df84a276ed64f06cb">&#9670;&#160;</a></span>CODE <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -418,7 +426,37 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00038">38</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00039">39</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+
+</div>
+</div>
+<a id="ad04b3972ae1c6d4df84a276ed64f06cb" name="ad04b3972ae1c6d4df84a276ed64f06cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad04b3972ae1c6d4df84a276ed64f06cb">&#9670;&#160;</a></span>CODE <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CODE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">node, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">name&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;+size_t(1)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00039">39</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -445,7 +483,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="keyword">private</span>:                                           \</div>
 <div class="line">    <span class="keyword">friend</span> <span class="keyword">class </span>World;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00189">189</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00195">195</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -529,7 +567,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p>Use as mixin to wrap all kind of Def::proj and Def::projs variants. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00150">150</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00156">156</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -549,7 +587,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00184">184</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00190">190</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -585,7 +623,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p>Use as mixin to declare setters for Def::loc &amp; Def::name using a <em>covariant</em> return type. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00167">167</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00173">173</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>

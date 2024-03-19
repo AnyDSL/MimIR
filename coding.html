@@ -119,19 +119,20 @@ $(document).ready(function(){initNavTree('coding.html',''); initResizable(); });
 </ul>
 </li>
 <li class="level1"><a href="#autotoc_md4">Debugging</a><ul><li class="level2"><a href="#autotoc_md5">Dumping</a></li>
-<li class="level2"><a href="#autotoc_md6">Conditional Breakpoints</a></li>
-<li class="level2"><a href="#autotoc_md7">Catching Throw</a></li>
-<li class="level2"><a href="#autotoc_md8">Valgrind &amp; GDB</a></li>
-<li class="level2"><a href="#autotoc_md9">VS Code</a></li>
+<li class="level2"><a href="#autotoc_md6">Display DOT</a></li>
+<li class="level2"><a href="#autotoc_md7">Conditional Breakpoints</a></li>
+<li class="level2"><a href="#autotoc_md8">Catching Throw</a></li>
+<li class="level2"><a href="#autotoc_md9">Valgrind &amp; GDB</a></li>
+<li class="level2"><a href="#autotoc_md10">VS Code</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#tests">Tests</a><ul><li class="level2"><a href="#autotoc_md10">lit Tests</a></li>
-<li class="level2"><a href="#autotoc_md11">GoogleTest</a></li>
+<li class="level1"><a href="#tests">Tests</a><ul><li class="level2"><a href="#autotoc_md11">lit Tests</a></li>
+<li class="level2"><a href="#autotoc_md12">GoogleTest</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md12">Syntax Highlighting</a></li>
-<li class="level1"><a href="#autotoc_md13">New Plugins</a><ul><li class="level2"><a href="#autotoc_md14">Third-Party Plugins</a></li>
-<li class="level2"><a href="#autotoc_md15">add_thorin_plugin</a></li>
+<li class="level1"><a href="#autotoc_md13">Syntax Highlighting</a></li>
+<li class="level1"><a href="#autotoc_md14">New Plugins</a><ul><li class="level2"><a href="#autotoc_md15">Third-Party Plugins</a></li>
+<li class="level2"><a href="#autotoc_md16">add_thorin_plugin</a></li>
 </ul>
 </li>
 </ul>
@@ -197,7 +198,13 @@ Example</h2>
 <div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition</b> <a href="cfg_8h_source.html#l00011">cfg.h:11</a></div></div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md4"></a>
 Debugging</h1>
-<p>For logging and automatic firing of breakpoints refer to the <a class="el" href="cli.html#clidebug">Command-Line Reference</a>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="cli.html#clidebug">Command-Line Reference</a> </dd>
+<dd>
+<a href="https://johnnysswlab.com/gdb-a-quick-guide-to-make-your-debugging-easier/">GDB: A quick guide to make your debugging easier</a> </dd>
+<dd>
+<a href="https://interrupt.memfault.com/blog/advanced-gdb">Advanced GDB Usage</a> </dd>
+<dd>
+<a href="https://sourceware.org/gdb/current/onlinedocs/gdb.html/">Debugging with GDB</a></dd></dl>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Dumping</h2>
 <p>Note that you can simply invoke</p><ul>
@@ -206,7 +213,7 @@ Dumping</h2>
 <li><a class="el" href="classthorin_1_1World.html#a8ae719e183b88f40276a1e93ac695cdf" title="Dump to os.">thorin::World::dump</a>,</li>
 <li><a class="el" href="classthorin_1_1World.html#a46b35348fdf798ec546a9b67968fc9b1" title="Write to a file named file.">thorin::World::write</a>, ...</li>
 </ul>
-<p>from within <a href="https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_30.html">GDB</a>: </p><div class="fragment"><div class="line">(gdb) call def-&gt;dump()</div>
+<p>from within GDB: </p><div class="fragment"><div class="line">(gdb) call def-&gt;dump()</div>
 <div class="line">(gdb) call def-&gt;dump(0)</div>
 <div class="line">(gdb) call def-&gt;dump(3)</div>
 <div class="line">(gdb) call world().write(&quot;out.thorin&quot;)</div>
@@ -217,42 +224,98 @@ Dumping</h2>
 <div class="line">$1 = ...</div>
 <div class="line">(gdb) $1-&gt;dump();</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md6"></a>
+Display DOT</h2>
+<p><code>scripts/xdot.gdb</code> provides custom GDB commands to create a <a href="https://graphviz.org/">DOT</a> graph and display it through <a href="https://github.com/jrfonseca/xdot.py">xdot</a>. Just source <code>scripts/xdot.gdb</code> in your <code>~/.gdbinit</code>: </p><div class="fragment"><div class="line">source ~/thorin2/scripts/xdot.gdb</div>
+</div><!-- fragment --><p> Here is the <code>xdot</code> GDB command in action: <img src="gdb-xdot.png" alt="" class="inline" title="gdb-xdot"/>    </p>
+<div class="fragment"><div class="line">xdot</div>
+<div class="line">Generates DOT output for the given EXP and invokes xdot.</div>
+<div class="line"> </div>
+<div class="line">Usage: xdot EXP [MAX] [TYPES]</div>
+<div class="line">    EXP     Must provide $EXP-&gt;dot(file, $MAX, $TYPES).</div>
+<div class="line"> </div>
+<div class="line">    MAX     Maximum recursion depth while following a Def&#39;s ops.</div>
+<div class="line">            Default: 0xFFFFFFFF.</div>
+<div class="line"> </div>
+<div class="line">    TYPES   Follow type dependencies?</div>
+<div class="line">            Default: 0 (no)</div>
+<div class="line"> </div>
+<div class="line">Examples:</div>
+<div class="line"> </div>
+<div class="line">xdot def      - Show full DOT graph of &#39;def&#39; but ignore type dependencies.</div>
+<div class="line">xdot ref.def_ - As above but on a Ref.</div>
+<div class="line">xdot def 3    - As above but use recursion depth of 3.</div>
+<div class="line">xdot def 3 1  - As above but follow type dependencies.</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line">xdott</div>
+<div class="line">Generates DOT output for the given argument and invokes xdot while always</div>
+<div class="line">following type dependencies.</div>
+<div class="line"> </div>
+<div class="line">Usage: xdott EXP [MAX]</div>
+<div class="line"> </div>
+<div class="line">Same as: xdot EXP $MAX 1</div>
+<div class="line"> </div>
+<div class="line"> </div>
+<div class="line">xdotw</div>
+<div class="line">Generates DOT output for the given World and invokes xdot.</div>
+<div class="line"> </div>
+<div class="line">Usage: xdotw WORLD [ANNEXES] [TYPES]</div>
+<div class="line">    WORLD   Must provide $WORLD.dot(file, $ANNEXES, $TYPES).</div>
+<div class="line"> </div>
+<div class="line">    ANNEXES Include all annexes - even if unused?</div>
+<div class="line">            Default: 0 (no)</div>
+<div class="line"> </div>
+<div class="line">    TYPES   Follow type dependencies?</div>
+<div class="line">            Default: 0 (no)</div>
+<div class="line"> </div>
+<div class="line">Note:</div>
+<div class="line"> </div>
+<div class="line">xdotw expects the address of the World.</div>
+<div class="line"> </div>
+<div class="line">Examples:</div>
+<div class="line"> </div>
+<div class="line">Show DOT graph of &#39;world&#39; - ignoring type dependencies and unused annexes.</div>
+<div class="line">xdotw &amp;def-&gt;world()</div>
+<div class="line"> </div>
+<div class="line">Show full DOT graph of &#39;world&#39; including types and all annexes.</div>
+<div class="line">xdotw &amp;def-&gt;world() 1 1</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md7"></a>
 Conditional Breakpoints</h2>
 <p>Often, you will want to inspect a certain <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">thorin::Def</a> at a particular point within the program. You can use <a href="https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_33.html">conditional breakpoints</a> for this. For example, the following GDB command will break, if the <a class="el" href="classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb">thorin::Def::gid</a> of variable <code>def</code> is <code>42</code> in source code location <code>foo.cpp:23</code>: </p><div class="fragment"><div class="line">break foo.cpp:23 if def-&gt;gid() == 42</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md7"></a>
-Catching Throw</h2>
-<p>For several things like errors in Thorin's front end, Thorin relies on C++ exceptions for error handling. Simply, do this to encounter them within GDB: </p><div class="fragment"><div class="line">catch throw</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md8"></a>
+Catching Throw</h2>
+<p>For several things like errors in Thorin's front end, Thorin relies on C++ exceptions for error handling. Do this to encounter them within GDB: </p><div class="fragment"><div class="line">catch throw</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md9"></a>
 Valgrind &amp; GDB</h2>
-<p>If you encounter memory related problems, you might want to run the program with <a href="https://valgrind.org/docs/manual/manual-core-adv.html">Valgrind's GDB server</a>. Simply launch the program like this </p><div class="fragment"><div class="line">valgrind --vgdb=yes --vgdb-error=0 thorin-gtest</div>
+<p>If you encounter memory related problems, you might want to run the program with <a href="https://valgrind.org/docs/manual/manual-core-adv.html">Valgrind's GDB server</a>. Launch the program like this </p><div class="fragment"><div class="line">valgrind --vgdb=yes --vgdb-error=0 thorin-gtest</div>
 </div><!-- fragment --><p> and follow the instructions.</p>
-<h2><a class="anchor" id="autotoc_md9"></a>
+<h2><a class="anchor" id="autotoc_md10"></a>
 VS Code</h2>
 <p>As a utility to make debugging Thorin itself less painful with certain debuggers, the <code>thorin.natvis</code> file can be loaded for getting more expressive value inspection. In VS Code you can do so by adding the following to the <code>launch.json</code> configurations. When launching from VS Code via CMake, put it in <code>settings.json</code>'s <code>"cmake.debugConfig":</code>: </p><div class="fragment"><div class="line">&quot;visualizerFile&quot;: &quot;${workspaceFolder}/thorin.natvis&quot;,</div>
 <div class="line">&quot;showDisplayString&quot;: true,</div>
 </div><!-- fragment --><h1><a class="anchor" id="tests"></a>
 Tests</h1>
-<h2><a class="anchor" id="autotoc_md10"></a>
+<h2><a class="anchor" id="autotoc_md11"></a>
 lit Tests</h2>
 <p>Run the <a href="https://llvm.org/docs/CommandGuide/lit.html">lit</a> testsuite with: </p><div class="fragment"><div class="line">cmake --build build -t lit</div>
 </div><!-- fragment --><p> You can manually invoke the lit tests like this and maybe filter for a specific test: </p><div class="fragment"><div class="line">cd lit</div>
 <div class="line">./lit ../build/lit -a --filter foo.thorin</div>
 </div><!-- fragment --><p> If your <em>build</em> directory, is in fact <code>build</code> you can use the <code>probe.sh</code> script: </p><div class="fragment"><div class="line">cd lit</div>
 <div class="line">../scripts/probe.sh foo.thorin</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md11"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md12"></a>
 GoogleTest</h2>
 <p>Run the <a href="https://google.github.io/googletest/">GoogleTest</a> unit tests within the <code>build</code> folder with: </p><div class="fragment"><div class="line">ctest</div>
 </div><!-- fragment --><p> In addition, you can enable <a href="https://valgrind.org/">Valgrind</a> with: </p><div class="fragment"><div class="line">ctest -T memcheck</div>
 </div><!-- fragment --><p>During debugging you probably only want to run a specifig test case. You can <a href="https://github.com/google/googletest/blob/main/docs/advanced.md#running-a-subset-of-the-tests">filter</a> the test cases like this: </p><div class="fragment"><div class="line">./thorin-gtest --gtest_filter=&quot;*Loc*&quot;</div>
 </div><!-- fragment --><p> This command lists all available tests: </p><div class="fragment"><div class="line">./thorin-gtest --gtest_list_tests</div>
 </div><!-- fragment --><p> In addition, you may find it helpful to turn assertion failures into debugger breakpoints: </p><div class="fragment"><div class="line">./thorin-test --gtest_break_on_failure</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md12"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md13"></a>
 Syntax Highlighting</h1>
 <p><a href="https://github.com/AnyDSL/vim-thorin2">This</a> Vim plugin provides syntax highlighting for Thorin files.</p>
-<h1><a class="anchor" id="autotoc_md13"></a>
+<h1><a class="anchor" id="autotoc_md14"></a>
 New Plugins</h1>
 <p>Check out the <a class="el" href="demo.html">demo</a> plugin for a minimalistic plugin. You can create a new in-tree plugin <code>foobar</code> based upon the <a class="el" href="demo.html">demo</a> plugin like this: </p><div class="fragment"><div class="line">./scripts/new_plugin.sh foobar</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md14"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md15"></a>
 Third-Party Plugins</h2>
 <p>After installing Thorin, third-party plugins just need to find the <code>thorin</code> package to use your plugin <code>foo</code>: </p><div class="fragment"><div class="line">cmake_minimum_required(VERSION 3.20 FATAL_ERROR)</div>
 <div class="line">project(foo)</div>
@@ -266,7 +329,7 @@ Third-Party Plugins</h2>
 <div class="line">)</div>
 </div><!-- fragment --><p> Use </p><div class="fragment"><div class="line">cmake .. -Dthorin_DIR=&lt;THORIN_INSTALL_PREFIX&gt;/lib/cmake/thorin</div>
 </div><!-- fragment --><p> to configure the project.</p>
-<h2><a class="anchor" id="autotoc_md15"></a>
+<h2><a class="anchor" id="autotoc_md16"></a>
 add_thorin_plugin</h2>
 <p>Registers a new Thorin plugin. </p><div class="fragment"><div class="line">add_thorin_plugin(&lt;plugin-name&gt;</div>
 <div class="line">    [SOURCES &lt;source&gt;...]</div>

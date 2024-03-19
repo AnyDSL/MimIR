@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: src/thorin/be/dot/dot.cpp File Reference</title>
+<title>Thorin: src/thorin/dot.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -111,16 +111,15 @@ $(document).ready(function(){initNavTree('dot_8cpp.html',''); initResizable(); }
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle"><div class="title">dot.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="dot_8h_source.html">thorin/be/dot/dot.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &lt;fstream&gt;</code><br />
+<code>#include &lt;ostream&gt;</code><br />
+<code>#include &lt;sstream&gt;</code><br />
 <code>#include &quot;<a class="el" href="def_8h_source.html">thorin/def.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="world_8h_source.html">thorin/world.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="emitter_8h_source.html">thorin/be/emitter.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="print_8h_source.html">thorin/util/print.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for dot.cpp:</div>
@@ -130,50 +129,17 @@ Include dependency graph for dot.cpp:</div>
 </div>
 <p><a href="dot_8cpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:classthorin_1_1dot_1_1BB" id="r_classthorin_1_1dot_1_1BB"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dot.html#classthorin_1_1dot_1_1BB">thorin::dot::BB</a></td></tr>
-<tr class="separator:classthorin_1_1dot_1_1BB"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1dot_1_1Emitter.html">thorin::dot::Emitter</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacethorin" id="r_namespacethorin"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html">thorin</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacethorin_1_1dot" id="r_namespacethorin_1_1dot"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dot.html">thorin::dot</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a439056158556f4bc3d5b0bdb0e6665e3" id="r_a439056158556f4bc3d5b0bdb0e6665e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dot.html#a439056158556f4bc3d5b0bdb0e6665e3">thorin::dot::default_stream_def</a> (std::ostream &amp;, const <a class="el" href="classthorin_1_1Def.html">Def</a> *)</td></tr>
-<tr class="separator:a439056158556f4bc3d5b0bdb0e6665e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71ee1e2a855805ec3c4fcad7518be1f5" id="r_a71ee1e2a855805ec3c4fcad7518be1f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dot.html#a71ee1e2a855805ec3c4fcad7518be1f5">thorin::dot::emit</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;w, std::ostream &amp;s, std::function&lt; void(std::ostream &amp;, const <a class="el" href="classthorin_1_1Def.html">Def</a> *)&gt; stream_def=<a class="el" href="namespacethorin_1_1dot.html#a439056158556f4bc3d5b0bdb0e6665e3">default_stream_def</a>)</td></tr>
-<tr class="separator:a71ee1e2a855805ec3c4fcad7518be1f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/><h2 class="groupheader">Class Documentation</h2>
-<a name="classthorin_1_1dot_1_1BB" id="classthorin_1_1dot_1_1BB"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#classthorin_1_1dot_1_1BB">&#9670;&#160;</a></span>thorin::dot::BB</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">class thorin::dot::BB</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="dot_8cpp_source.html#l00029">29</a> of file <a class="el" href="dot_8cpp_source.html">dot.cpp</a>.</p>
-</div>
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_6a7c4bb7c40f97e4d670d167d69dfc05.html">thorin</a></li><li class="navelem"><a class="el" href="dir_82fb6810da7568ce1cd51d59297302c8.html">be</a></li><li class="navelem"><a class="el" href="dir_3fdf62e51f21aa0898f8f24fcc225325.html">dot</a></li><li class="navelem"><a class="el" href="dot_8cpp.html">dot.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_6a7c4bb7c40f97e4d670d167d69dfc05.html">thorin</a></li><li class="navelem"><a class="el" href="dot_8cpp.html">dot.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
