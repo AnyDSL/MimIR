@@ -107,7 +107,12 @@ $1 = ...
 ### Display DOT
 
 `scripts/xdot.gdb` provides custom GDB commands to create a [DOT](https://graphviz.org/) graph and display it through [xdot](https://github.com/jrfonseca/xdot.py).
-Just `source` or copy `scripts/xdot.gdb` in your `~/.gdbinit`.
+Just source `scripts/xdot.gdb` in your `~/.gdbinit`:
+```gdb
+source ~/thorin2/scripts/xdot.gdb
+```
+Here is the `xdot` GDB command in action:
+![gdb-xdot](gdb-xdot.png)
 
 \include "xdot-help.gdb"
 
