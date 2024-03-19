@@ -414,8 +414,6 @@ public:
     Vars local_vars() const { return local_vars_; }
     Vars free_vars() const;
     Vars free_vars();
-    Vars old_free_vars();
-    Vars old_free_vars() const;
     Muts dependencies() const { return dependencies_; }
     ///@}
 

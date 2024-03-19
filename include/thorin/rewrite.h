@@ -73,31 +73,6 @@ private:
     Vars vars_;
 };
 
-class VarRewriter2 : public Rewriter {
-public:
-    VarRewriter2(const Var* var, Ref arg)
-        : Rewriter(var->world())
-        , var_(var) {
-        map(var, arg);
-    }
-
-    Ref rewrite_imm(Ref imm) override {
-        if (imm->local_vars().empty() && imm->local_muts().empty()) return imm; // safe to skip
-        return Rewriter::rewrite_imm(imm);
-    }
-
-    Ref rewrite_mut(Def* mut) override {
-        if (mut->free_vars().contains(var_)) {
-            // if (auto var = mut->has_var()) vars_ = world().insert(vars_, var);
-            return Rewriter::rewrite_mut(mut);
-        }
-        return map(mut, mut);
-    }
-
-private:
-    const Var* var_;
-};
-
 /// @name rewrite
 ///@{
 /// Rewrites @p def by mapping @p old_def to @p new_def while obeying @p scope.

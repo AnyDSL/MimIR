@@ -85,6 +85,7 @@ UMax::UMax(World& world, Defs ops)
 
 /// @name Rebuild
 ///@{
+
 /*
  * rebuild
  */
@@ -438,13 +439,18 @@ Vars Def::free_vars() const {
 
     auto vars = local_vars();
     for (auto mut : local_muts()) vars = world().merge(vars, mut->free_vars());
-
     return vars;
 }
 
+static bool flag = true;
+
 Vars Def::free_vars() {
     if (!isa_mut()) return const_cast<const Def*>(this)->free_vars();
-    if (valid_) return free_vars_;
+    if (!is_set()) return {};
+    if (valid_) {
+        outln("reusing");
+        return free_vars_;
+    }
 
     auto muts = world().muts(this);
 
@@ -463,10 +469,14 @@ Vars Def::free_vars() {
 
             for (auto op : mut->extended_ops()) {
                 for (auto local_mut : op->local_muts()) {
-                    fvs = world().merge(fvs, local_mut->free_vars_);
-                    assert(!local_mut->valid_);
-                    queue.push(local_mut);
-                    muts = world().insert(muts, local_mut);
+                    local_mut->dependencies_ = world().insert(local_mut->dependencies_, this);
+                    fvs                      = world().merge(fvs, local_mut->free_vars_);
+                    // if (flag)
+                    // assert(!local_mut->valid_);
+                    if (!local_mut->valid_) {
+                        queue.push(local_mut);
+                        muts = world().insert(muts, local_mut);
+                    }
                 }
             }
 
@@ -479,121 +489,25 @@ Vars Def::free_vars() {
         }
     }
 
+    for (auto mut : muts) mut->valid_ = true;
+
     return free_vars_;
 }
 
-Vars Def::old_free_vars() const {
-    if (auto mut = isa_mut()) return mut->old_free_vars();
-
-    auto vars = local_vars();
-    for (auto mut : local_muts()) vars = world().merge(vars, mut->old_free_vars());
-
-    return vars;
-}
-
-Vars Def::old_free_vars() {
-    if (!isa_mut()) return const_cast<const Def*>(this)->free_vars();
-
-    MutMap<Vars> mut2vars;
-
-    for (bool todo = true; todo;) {
-        todo = false;
-        unique_queue<MutSet> queue;
-        queue.push(this);
-
-        while (!queue.empty()) {
-            auto mut = queue.pop();
-
-            auto fvs0 = mut2vars.emplace(mut, Vars()).first->second;
-            auto fvs  = fvs0;
-
-            for (auto op : mut->extended_ops()) fvs = world().merge(fvs, op->local_vars());
-
-            for (auto op : mut->extended_ops()) {
-                for (auto local_mut : op->local_muts()) {
-                    fvs = world().merge(fvs, mut2vars.emplace(local_mut, Vars()).first->second);
-                    queue.push(local_mut);
-                }
-            }
-
-            if (auto var = mut->has_var()) fvs = world().erase(fvs, var);
-
-            if (fvs0 != fvs) {
-                mut2vars[mut] = fvs;
-                todo          = true;
-            }
-        }
-    }
-
-    return mut2vars[this];
-}
-
-static bool flag = true;
-
-#if 0
-Vars Def::free_vars() {
-    if (!is_set()) {
-        assert(!free_vars_);
-        return {};
-    }
-
-    if (valid_ == 2) {
-        assert(isa_mut());
-        auto old = old_free_vars();
-        if (old != free_vars_) {
-            outln("{, } <=> {, }", old_free_vars(), free_vars_);
-            if (flag) fe::breakpoint();
-        }
-        return free_vars_;
-    }
-
-    if (valid_ == 1) {
-        assert(isa_mut());
-        assert(!free_vars_);
-        return free_vars_;
-    }
-
-    if (isa_mut()) {
-        assert(!free_vars_);
-        valid_ = 1;
-    }
-
-    Vars vars;
-
-    for (auto op : extended_ops()) {
-        vars = world().merge(vars, op->local_vars());
-        for (auto mut : op->local_muts()) {
-            vars = world().merge(vars, mut->free_vars());
-            if (isa_mut()) mut->dependencies_ = world().insert(mut->dependencies_, this);
-        }
-    }
-
-    if (isa_mut()) {
-        if (auto var = has_var()) vars = world().erase(vars, var);
-        free_vars_ = vars;
-        valid_     = 2;
-    }
-
-    if (old_free_vars() != free_vars_) {
-        outln("{, } <=> {, }", old_free_vars(), free_vars_);
-        if (flag) fe::breakpoint();
-    }
-    return vars;
-}
-#endif
-
 void Def::invalidate() {
     if (valid_) {
+        outln("invalidate {}", gid());
         valid_ = false;
-        for (auto mut : dependencies_) mut->invalidate();
+        int i  = 0;
+        for (auto mut : dependencies_) {
+            mut->invalidate();
+            ++i;
+        }
+        outln("invalidated {} mutables", i);
         free_vars_    = Vars();
         dependencies_ = Muts();
     }
 }
-
-/*
- * misc
- */
 
 void Def::make_external() { return world().make_external(this); }
 void Def::make_internal() { return world().make_internal(this); }

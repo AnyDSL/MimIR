@@ -104,7 +104,6 @@ public:
         print(os_, "<b>gid:</b> {}{}", def->gid(), NL);
         print(os_, "<b>flags:</b> {}{}", flags, NL);
         print(os_, "<b>FVs:</b> {{{, }}}{}", def->free_vars(), NL);
-        print(os_, "<b>oFVs:</b> {{{, }}}{}", def->old_free_vars(), NL);
         print(os_, "<b>local vars:</b> {{{, }}}{}", def->local_vars(), NL);
         print(os_, "<b>local muts:</b> {{{, }}}{}", def->local_muts(), NL);
         print(os_, "<b>dependencies:</b> {{{, }}}{}", def->dependencies(), NL);
