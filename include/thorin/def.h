@@ -414,7 +414,10 @@ public:
     Vars local_vars() const { return local_vars_; }
     Vars free_vars() const;
     Vars free_vars();
-    Vars free_vars(MutMap<Vars>&);
+    Vars old_free_vars() const;
+    Vars old_free_vars();
+    Vars old_free_vars(MutMap<Vars>&);
+    Muts dependencies() const { return dependencies_; }
     ///@}
 
     /// @name external
@@ -529,6 +532,7 @@ protected:
     ///@}
 
 private:
+    void invalidate();
     Def* unset(size_t i);
     const Def** ops_ptr() const {
         return reinterpret_cast<const Def**>(reinterpret_cast<char*>(const_cast<Def*>(this + 1)));
@@ -544,7 +548,7 @@ protected:
     mutable Dbg dbg_;
     union {
         NormalizeFn normalizer_; ///< Axiom%s use this member to store their normalizer.
-        const Axiom* axiom_;     /// Curried App%s of Axiom%s use this member to propagate the Axiom.
+        const Axiom* axiom_;     ///< Curried App%s of Axiom%s use this member to propagate the Axiom.
         mutable World* world_;
     };
     flags_t flags_;
@@ -553,16 +557,18 @@ protected:
 
 private:
     uint8_t node_;
-    bool mut_      : 1;
-    bool external_ : 1;
-    unsigned dep_  : 5;
-    bool padding_  : 1;
+    bool mut_       : 1;
+    bool external_  : 1; // TODO unused
+    unsigned dep_   : 5;
+    unsigned valid_ : 2;
     hash_t hash_;
     u32 gid_;
     u32 num_ops_;
     mutable Uses uses_;
     Vars local_vars_;
     Muts local_muts_;
+    Vars free_vars_;
+    Muts dependencies_;
     const Var* var_ = nullptr; // Var of a mutable.
     const Def* type_;
 

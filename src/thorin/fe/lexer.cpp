@@ -275,6 +275,7 @@ void Lexer::parse_digits(int base /*= 10*/) {
     }
 }
 
+// TODO do we need this?
 template<class... T> inline auto _any(T... args) {
     return [=](char32_t c) { return utf8::any(c, args...); };
 }

@@ -15,7 +15,7 @@ inline static constexpr size_t SizeOf = sizeof(std::conditional_t<std::is_pointe
 
 template<class T> class Pool;
 
-/// Ordered set maintained in a consectutive buffer and unified in Pool.
+/// Ordered set maintained in a consecutive buffer and unified in Pool.
 template<class T> class PooledSet {
 public:
     struct Data {

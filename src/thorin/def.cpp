@@ -31,6 +31,7 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
                     : node == Node::Proxy ? Dep::Proxy
                     : node == Node::Var   ? Dep::Var
                                           : Dep::None))
+    , valid_(0)
     , num_ops_(ops.size())
     , type_(type) {
     std::ranges::copy(ops, ops_ptr());
@@ -79,39 +80,6 @@ Nat::Nat(World& world)
 
 UMax::UMax(World& world, Defs ops)
     : Def(Node, world.univ(), ops, 0) {}
-
-Vars Def::free_vars() const {
-    if (auto mut = isa_mut()) return mut->free_vars();
-
-    auto mut2vars = MutMap<Vars>();
-    auto vars     = local_vars();
-
-    for (auto mut : local_muts()) vars = world().merge(vars, mut->free_vars(mut2vars));
-
-    return vars;
-}
-
-Vars Def::free_vars() {
-    MutMap<Vars> mut2vars;
-    return free_vars(mut2vars);
-}
-
-Vars Def::free_vars(MutMap<Vars>& mut2vars) {
-    if (auto [i, ins] = mut2vars.emplace(this, Vars()); !ins) return i->second;
-
-    Vars vars;
-    for (auto op : extended_ops()) {
-        vars = world().merge(vars, op->local_vars());
-
-        for (auto mut : op->local_muts()) vars = world().merge(vars, mut->free_vars(mut2vars));
-    }
-
-    if (isa_mut()) {
-        if (auto var = has_var()) vars = world().erase(vars, var);
-    }
-
-    return mut2vars[this] = vars;
-}
 
 // clang-format off
 
@@ -374,6 +342,10 @@ bool Def::equal(const Def* other) const {
     return result;
 }
 
+/*
+ * set
+ */
+
 void Def::finalize() {
     for (size_t i = Use::Type; auto op : partial_ops()) {
         if (op) {
@@ -393,6 +365,7 @@ Def* Def::reset(Defs ops) { assert(ops.size() == num_ops()); for (size_t i = 0, 
 // clang-format on
 
 Def* Def::set(size_t i, const Def* def) {
+    invalidate();
     assert(def && !op(i) && curr_op_ == i);
 #ifndef NDEBUG
     curr_op_ = (curr_op_ + 1) % num_ops();
@@ -410,6 +383,7 @@ Def* Def::set(size_t i, const Def* def) {
 }
 
 Def* Def::unset() {
+    invalidate();
 #ifndef NDEBUG
     curr_op_ = 0;
 #endif
@@ -428,10 +402,12 @@ Def* Def::unset(size_t i) {
     assert(op(i) && op(i)->uses_.contains(Use(this, i)));
     op(i)->uses_.erase(Use(this, i));
     ops_ptr()[i] = nullptr;
+    invalidate();
     return this;
 }
 
 Def* Def::set_type(const Def* type) {
+    invalidate();
     if (type_ != nullptr) unset_type();
     type_ = type;
     type->uses_.emplace(this, Use::Type);
@@ -442,6 +418,7 @@ void Def::unset_type() {
     assert(type_->uses_.contains(Use(this, Use::Type)));
     type_->uses_.erase(Use(this, Use::Type));
     type_ = nullptr;
+    invalidate();
 }
 
 bool Def::is_set() const {
@@ -451,6 +428,120 @@ bool Def::is_set() const {
            && "the last operand is set but others in front of it aren't");
     return result;
 }
+
+/*
+ * free_vars
+ */
+
+Vars Def::old_free_vars() const {
+    if (auto mut = isa_mut()) return mut->old_free_vars();
+
+    auto mut2vars = MutMap<Vars>();
+    auto vars     = local_vars();
+
+    for (auto mut : local_muts()) vars = world().merge(vars, mut->old_free_vars(mut2vars));
+
+    return vars;
+}
+
+Vars Def::old_free_vars() {
+    MutMap<Vars> mut2vars;
+    return old_free_vars(mut2vars);
+}
+
+Vars Def::old_free_vars(MutMap<Vars>& mut2vars) {
+    if (auto [i, ins] = mut2vars.emplace(this, Vars()); !ins) return i->second;
+
+    Vars vars;
+    for (auto op : extended_ops()) {
+        vars = world().merge(vars, op->local_vars());
+
+        for (auto mut : op->local_muts()) vars = world().merge(vars, mut->old_free_vars(mut2vars));
+    }
+
+    if (isa_mut()) {
+        if (auto var = has_var()) vars = world().erase(vars, var);
+    }
+
+    return mut2vars[this] = vars;
+}
+
+// ---
+
+Vars Def::free_vars() const {
+    if (auto mut = isa_mut()) return mut->free_vars();
+
+    auto vars = local_vars();
+    for (auto mut : local_muts()) vars = world().merge(vars, mut->free_vars());
+
+    // assert(old_free_vars() == vars);
+    return vars;
+}
+
+static bool flag = true;
+
+Vars Def::free_vars() {
+    if (!is_set()) {
+        assert(!free_vars_);
+        return {};
+    }
+
+    if (valid_ == 2) {
+        assert(isa_mut());
+        auto old = old_free_vars();
+        if (old != free_vars_) {
+            outln("{, } <=> {, }", old_free_vars(), free_vars_);
+            if (flag) fe::breakpoint();
+        }
+        return free_vars_;
+    }
+
+    if (valid_ == 1) {
+        assert(isa_mut());
+        assert(!free_vars_);
+        return free_vars_;
+    }
+
+    if (isa_mut()) {
+        assert(!free_vars_);
+        valid_ = 1;
+    }
+
+    Vars vars;
+
+    for (auto op : extended_ops()) {
+        vars = world().merge(vars, op->local_vars());
+        for (auto mut : op->local_muts()) {
+            vars = world().merge(vars, mut->free_vars());
+            if (isa_mut()) mut->dependencies_ = world().insert(mut->dependencies_, this);
+        }
+    }
+
+    if (isa_mut()) {
+        if (auto var = has_var()) vars = world().erase(vars, var);
+        free_vars_ = vars;
+        valid_     = 2;
+    }
+
+    if (old_free_vars() != free_vars_) {
+        outln("{, } <=> {, }", old_free_vars(), free_vars_);
+        if (flag) fe::breakpoint();
+    }
+    return vars;
+}
+
+void Def::invalidate() {
+    if (valid_) {
+        valid_ = false;
+        for (auto mut : dependencies_) mut->invalidate();
+        free_vars_    = Vars();
+        dependencies_ = Muts();
+    }
+}
+
+/*
+ * misc
+ */
 
 void Def::make_external() { return world().make_external(this); }
 void Def::make_internal() { return world().make_internal(this); }

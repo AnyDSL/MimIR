@@ -5,6 +5,7 @@
 #include "thorin/def.h"
 #include "thorin/world.h"
 
+#include "thorin/analyses/scope.h"
 #include "thorin/util/print.h"
 
 namespace thorin {
@@ -28,17 +29,13 @@ public:
         , root_(root) {}
 
     void prologue() {
-        tab_.println(os_, "digraph {{");
-        ++tab_;
+        (tab_++).println(os_, "digraph {{");
         tab_.println(os_, "ordering=out;");
         tab_.println(os_, "splines=false;");
         tab_.println(os_, "node [shape=box,style=filled];");
     }
 
-    void epilogue() {
-        --tab_;
-        tab_.println(os_, "}}");
-    }
+    void epilogue() { (tab_--).println(os_, "}}"); }
 
     void run(const Def* root, uint32_t max) {
         prologue();
@@ -107,8 +104,19 @@ public:
         print(os_, "<b>gid:</b> {}{}", def->gid(), NL);
         print(os_, "<b>flags:</b> {}{}", flags, NL);
         print(os_, "<b>FVs:</b> {{{, }}}{}", def->free_vars(), NL);
+        print(os_, "<b>oFVs:</b> {{{, }}}{}", def->old_free_vars(), NL);
         print(os_, "<b>local vars:</b> {{{, }}}{}", def->local_vars(), NL);
         print(os_, "<b>local muts:</b> {{{, }}}{}", def->local_muts(), NL);
+        print(os_, "<b>dependencies:</b> {{{, }}}{}", def->dependencies(), NL);
+        if (auto mut = def->isa_mut()) {
+            auto scope = Scope(mut);
+            MutSet muts;
+            for (auto def : scope.bound())
+                if (auto mut = def->isa_mut()) muts.insert(mut);
+            print(os_, "<b>scope:</b> {{{, }}}{}", muts, NL);
+            print(os_, "<b>scope fv:</b> {{{, }}}{}", scope.free_vars(), NL);
+            print(os_, "<b>scope fm:</b> {{{, }}}{}", scope.free_muts(), NL);
+        }
         print(os_, "<b>loc:</b> {}", loc);
         return print(os_, "\"");
     }
