@@ -414,7 +414,7 @@ public:
     Vars local_vars() const { return local_vars_; }
     Vars free_vars() const;
     Vars free_vars();
-    Vars free_vars(MutMap<Vars>&);
+    // Vars free_vars(MutMap<Vars>&);
     ///@}
 
     /// @name external

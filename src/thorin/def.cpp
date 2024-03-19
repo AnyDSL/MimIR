@@ -83,19 +83,50 @@ UMax::UMax(World& world, Defs ops)
 Vars Def::free_vars() const {
     if (auto mut = isa_mut()) return mut->free_vars();
 
-    auto mut2vars = MutMap<Vars>();
-    auto vars     = local_vars();
-
-    for (auto mut : local_muts()) vars = world().merge(vars, mut->free_vars(mut2vars));
+    auto vars = local_vars();
+    for (auto mut : local_muts()) vars = world().merge(vars, mut->free_vars());
 
     return vars;
 }
 
 Vars Def::free_vars() {
+    if (!isa_mut()) return const_cast<const Def*>(this)->free_vars();
+
     MutMap<Vars> mut2vars;
-    return free_vars(mut2vars);
+
+    for (bool todo = true; todo;) {
+        todo = false;
+        unique_queue<MutSet> queue;
+        queue.push(this);
+
+        while (!queue.empty()) {
+            auto mut = queue.pop();
+
+            auto fvs0 = mut2vars.emplace(mut, Vars()).first->second;
+            auto fvs  = fvs0;
+
+            for (auto op : mut->extended_ops()) fvs = world().merge(fvs, op->local_vars());
+
+            for (auto op : mut->extended_ops()) {
+                for (auto local_mut : op->local_muts()) {
+                    fvs = world().merge(fvs, mut2vars.emplace(local_mut, Vars()).first->second);
+                    queue.push(local_mut);
+                }
+            }
+
+            if (auto var = mut->has_var()) fvs = world().erase(fvs, var);
+
+            if (fvs0 != fvs) {
+                mut2vars[mut] = fvs;
+                todo          = true;
+            }
+        }
+    }
+
+    return mut2vars[this];
 }
 
+#if 0
 Vars Def::free_vars(MutMap<Vars>& mut2vars) {
     if (auto [i, ins] = mut2vars.emplace(this, Vars()); !ins) return i->second;
 
@@ -112,6 +143,7 @@ Vars Def::free_vars(MutMap<Vars>& mut2vars) {
 
     return mut2vars[this] = vars;
 }
+#endif
 
 // clang-format off
 
