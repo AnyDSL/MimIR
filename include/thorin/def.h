@@ -414,7 +414,9 @@ public:
     Vars local_vars() const { return local_vars_; }
     Vars free_vars() const;
     Vars free_vars();
-    Muts dependencies() const { return dependencies_; }
+    bool is_open() const;   ///< Has free_vars()?
+    bool is_closed() const; ///< Has no free_vars()?
+    Muts fv_consumers() const { return fv_consumers_; }
     ///@}
 
     /// @name external
@@ -568,7 +570,7 @@ private:
     Vars local_vars_;
     Muts local_muts_;
     Vars free_vars_;
-    Muts dependencies_;
+    Muts fv_consumers_;
     const Var* var_ = nullptr; // Var of a mutable.
     const Def* type_;
 

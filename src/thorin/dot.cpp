@@ -103,19 +103,10 @@ public:
         print(os_, "<b>name:</b> {}{}", def->sym(), NL);
         print(os_, "<b>gid:</b> {}{}", def->gid(), NL);
         print(os_, "<b>flags:</b> {}{}", flags, NL);
-        print(os_, "<b>FVs:</b> {{{, }}}{}", def->free_vars(), NL);
-        print(os_, "<b>local vars:</b> {{{, }}}{}", def->local_vars(), NL);
-        print(os_, "<b>local muts:</b> {{{, }}}{}", def->local_muts(), NL);
-        print(os_, "<b>dependencies:</b> {{{, }}}{}", def->dependencies(), NL);
-        if (auto mut = def->isa_mut()) {
-            auto scope = Scope(mut);
-            MutSet muts;
-            for (auto def : scope.bound())
-                if (auto mut = def->isa_mut()) muts.insert(mut);
-            print(os_, "<b>scope:</b> {{{, }}}{}", muts, NL);
-            print(os_, "<b>scope fv:</b> {{{, }}}{}", scope.free_vars(), NL);
-            print(os_, "<b>scope fm:</b> {{{, }}}{}", scope.free_muts(), NL);
-        }
+        print(os_, "<b>free_vars:</b> {{{, }}}{}", def->free_vars(), NL);
+        print(os_, "<b>local_vars:</b> {{{, }}}{}", def->local_vars(), NL);
+        print(os_, "<b>local_muts:</b> {{{, }}}{}", def->local_muts(), NL);
+        print(os_, "<b>fv_consumers:</b> {{{, }}}{}", def->fv_consumers(), NL);
         print(os_, "<b>loc:</b> {}", loc);
         return print(os_, "\"");
     }

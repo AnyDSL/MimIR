@@ -230,115 +230,7 @@ const Def* Def::refine(size_t i, const Def* new_op) const {
 }
 
 /*
- * Def
- */
-
-Sym Def::sym(const char* s) const { return world().sym(s); }
-Sym Def::sym(std::string_view s) const { return world().sym(s); }
-Sym Def::sym(std::string s) const { return world().sym(std::move(s)); }
-
-World& Def::world() const {
-    if (isa<Univ>()) return *world_;
-    if (auto type = isa<Type>()) return type->level()->world();
-    return type()->world(); // TODO unroll
-}
-
-const Def* Def::unfold_type() const {
-    if (!type_) {
-        if (auto t = isa<Type>()) return world().type(world().uinc(t->level()));
-        assert(isa<Univ>());
-        return nullptr;
-    }
-
-    return type_;
-}
-
-std::string_view Def::node_name() const {
-    switch (node()) {
-#define CODE(op, abbr) \
-    case Node::op: return #abbr;
-        THORIN_NODE(CODE)
-#undef CODE
-        default: fe::unreachable();
-    }
-}
-
-Defs Def::extended_ops() const {
-    if (isa<Type>() || isa<Univ>()) return Defs();
-    assert(type());
-    return Defs(ops_ptr() - 1, (is_set() ? num_ops_ : 0) + 1);
-}
-
-#ifndef NDEBUG
-const Def* Def::debug_prefix(std::string prefix) const {
-    dbg_.sym = world().sym(prefix + sym().str());
-    return this;
-}
-
-const Def* Def::debug_suffix(std::string suffix) const {
-    dbg_.sym = world().sym(sym().str() + suffix);
-    return this;
-}
-#endif
-
-// clang-format off
-
-Ref Def::var() {
-    if (var_) return var_;
-    auto& w = world();
-
-    if (w.is_frozen()) return nullptr;
-    if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam);
-    if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi);
-    if (auto sig  = isa<Sigma>()) return w.var(sig,         sig);
-    if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->shape()), arr ); // TODO shapes like (2, 3)
-    if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->shape()), pack); // TODO shapes like (2, 3)
-    if (isa<Bound >()) return w.var(this, this);
-    if (isa<Infer >()) return nullptr;
-    if (isa<Global>()) return nullptr;
-    fe::unreachable();
-}
-
-bool Def::is_term() const {
-    if (auto t = type()) {
-        if (auto u = t->type()) {
-            if (auto type = u->isa<Type>()) {
-                if (auto level = Lit::isa(type->level())) return *level == 0;
-            }
-        }
-    }
-    return false;
-}
-
-Ref Def::arity() const {
-    if (auto sigma  = isa<Sigma>()) return world().lit_nat(sigma->num_ops());
-    if (auto arr    = isa<Arr  >()) return arr->shape();
-    if (auto t = type())            return t->arity();
-    return world().lit_nat_1();
-}
-
-std::optional<nat_t> Def::isa_lit_arity() const {
-    if (auto sigma  = isa<Sigma>()) return sigma->num_ops();
-    if (auto arr    = isa<Arr  >()) return Lit::isa(arr->shape());
-    if (auto t = type())            return t->isa_lit_arity();
-    return 1;
-}
-
-// clang-format on
-
-bool Def::equal(const Def* other) const {
-    if (isa<Univ>() || this->isa_mut() || other->isa_mut()) return this == other;
-
-    bool result = this->node() == other->node() && this->flags() == other->flags()
-               && this->num_ops() == other->num_ops() && this->type() == other->type();
-
-    for (size_t i = 0, e = num_ops(); result && i != e; ++i) result &= this->op(i) == other->op(i);
-
-    return result;
-}
-
-/*
- * set
+ * Def - set
  */
 
 void Def::finalize() {
@@ -471,7 +363,7 @@ Vars Def::free_vars(bool& todo, uint32_t run) {
 
     for (auto op : extended_ops()) {
         for (auto local_mut : op->local_muts()) {
-            local_mut->dependencies_ = world().insert(local_mut->dependencies_, this);
+            local_mut->fv_consumers_ = world().insert(local_mut->fv_consumers_, this);
             fvs                      = world().merge(fvs, local_mut->free_vars(todo, run));
         }
     }
@@ -495,10 +387,127 @@ void Def::validate() {
 void Def::invalidate() {
     if (valid_) {
         valid_ = false;
-        for (auto mut : dependencies_) mut->invalidate();
+        for (auto mut : fv_consumers_) mut->invalidate();
         free_vars_.clear();
-        dependencies_.clear();
+        fv_consumers_.clear();
     }
+}
+
+bool Def::is_closed() const {
+    if (local_vars().empty() && local_muts().empty()) return true;
+    return free_vars().empty();
+}
+
+bool Def::is_open() const {
+    if (!local_vars().empty() || !local_muts().empty()) return true;
+    return !free_vars().empty();
+}
+/*
+ * Def - misc
+ */
+
+Sym Def::sym(const char* s) const { return world().sym(s); }
+Sym Def::sym(std::string_view s) const { return world().sym(s); }
+Sym Def::sym(std::string s) const { return world().sym(std::move(s)); }
+
+World& Def::world() const {
+    if (isa<Univ>()) return *world_;
+    if (auto type = isa<Type>()) return type->level()->world();
+    return type()->world(); // TODO unroll
+}
+
+const Def* Def::unfold_type() const {
+    if (!type_) {
+        if (auto t = isa<Type>()) return world().type(world().uinc(t->level()));
+        assert(isa<Univ>());
+        return nullptr;
+    }
+
+    return type_;
+}
+
+std::string_view Def::node_name() const {
+    switch (node()) {
+#define CODE(op, abbr) \
+    case Node::op: return #abbr;
+        THORIN_NODE(CODE)
+#undef CODE
+        default: fe::unreachable();
+    }
+}
+
+Defs Def::extended_ops() const {
+    if (isa<Type>() || isa<Univ>()) return Defs();
+    assert(type());
+    return Defs(ops_ptr() - 1, (is_set() ? num_ops_ : 0) + 1);
+}
+
+#ifndef NDEBUG
+const Def* Def::debug_prefix(std::string prefix) const {
+    dbg_.sym = world().sym(prefix + sym().str());
+    return this;
+}
+
+const Def* Def::debug_suffix(std::string suffix) const {
+    dbg_.sym = world().sym(sym().str() + suffix);
+    return this;
+}
+#endif
+
+// clang-format off
+
+Ref Def::var() {
+    if (var_) return var_;
+    auto& w = world();
+
+    if (w.is_frozen()) return nullptr;
+    if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam);
+    if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi);
+    if (auto sig  = isa<Sigma>()) return w.var(sig,         sig);
+    if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->shape()), arr ); // TODO shapes like (2, 3)
+    if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->shape()), pack); // TODO shapes like (2, 3)
+    if (isa<Bound >()) return w.var(this, this);
+    if (isa<Infer >()) return nullptr;
+    if (isa<Global>()) return nullptr;
+    fe::unreachable();
+}
+
+bool Def::is_term() const {
+    if (auto t = type()) {
+        if (auto u = t->type()) {
+            if (auto type = u->isa<Type>()) {
+                if (auto level = Lit::isa(type->level())) return *level == 0;
+            }
+        }
+    }
+    return false;
+}
+
+Ref Def::arity() const {
+    if (auto sigma  = isa<Sigma>()) return world().lit_nat(sigma->num_ops());
+    if (auto arr    = isa<Arr  >()) return arr->shape();
+    if (auto t = type())            return t->arity();
+    return world().lit_nat_1();
+}
+
+std::optional<nat_t> Def::isa_lit_arity() const {
+    if (auto sigma  = isa<Sigma>()) return sigma->num_ops();
+    if (auto arr    = isa<Arr  >()) return Lit::isa(arr->shape());
+    if (auto t = type())            return t->isa_lit_arity();
+    return 1;
+}
+
+// clang-format on
+
+bool Def::equal(const Def* other) const {
+    if (isa<Univ>() || this->isa_mut() || other->isa_mut()) return this == other;
+
+    bool result = this->node() == other->node() && this->flags() == other->flags()
+               && this->num_ops() == other->num_ops() && this->type() == other->type();
+
+    for (size_t i = 0, e = num_ops(); result && i != e; ++i) result &= this->op(i) == other->op(i);
+
+    return result;
 }
 
 void Def::make_external() { return world().make_external(this); }
