@@ -66,7 +66,7 @@ jobs:
 
       - name: Configure Release
         if: matrix.build-type == 'Release'
-        run: CXX=g++-13 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DBUILD_TESTING=ON -DTHORIN_BUILD_EXAMPLES=ON -DTHORIN_LIT_WITH_VALGRIND=ON
+        run: CXX=g++-13 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DBUILD_TESTING=ON -DTHORIN_BUILD_EXAMPLES=ON -DTHORIN_LIT_WITH_VALGRIND=ON -DTHORIN_LIT_TIMEOUT=300
 
       - name: Build
         run: cmake --build ${{github.workspace}}/build -v
