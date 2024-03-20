@@ -66,13 +66,10 @@ DefVec rewrite(Def* mut, Ref arg, const Scope& scope) {
 }
 
 DefVec rewrite(Def* mut, Ref arg) {
-    if (auto var = mut->has_var()) {
-        auto rw = VarRewriter(var, arg);
-        DefVec result(mut->num_ops());
-        for (size_t i = 0, e = result.size(); i != e; ++i) result[i] = rw.rewrite(mut->op(i));
-        return result;
-    }
-    return DefVec(mut->ops().begin(), mut->ops().end());
+    auto rw = VarRewriter(mut->var(), arg);
+    DefVec result(mut->num_ops());
+    for (size_t i = 0, e = result.size(); i != e; ++i) result[i] = rw.rewrite(mut->op(i));
+    return result;
 }
 
 } // namespace thorin
