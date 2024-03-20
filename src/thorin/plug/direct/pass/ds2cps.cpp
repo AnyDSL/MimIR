@@ -61,14 +61,15 @@ Ref DS2CPS::rewrite_lam(Lam* lam) {
 
     // rewrite vars of new function
     // calls handled separately
-    Scope l_scope{lam};
     world().DLOG("body: {} : {}", lam->body(), lam->body()->type());
 
-    auto cps_body = thorin::rewrite(lam->body(), lam->var(), cps_lam->var(0_n), l_scope);
+    auto new_ops  = thorin::rewrite(lam, cps_lam->var(0_n));
+    auto filter   = new_ops[0];
+    auto cps_body = new_ops[1];
 
     world().DLOG("cps body: {} : {}", cps_body, cps_body->type());
 
-    cps_lam->app(lam->filter(), cps_lam->vars().back(), cps_body);
+    cps_lam->app(filter, cps_lam->vars().back(), cps_body);
 
     rewritten_[lam] = op_cps2ds_dep(cps_lam);
     world().DLOG("replace {} : {}", lam, lam->type());

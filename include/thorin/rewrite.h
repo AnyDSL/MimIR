@@ -30,31 +30,15 @@ private:
     Def2Def old2new_;
 };
 
-/// Stops rewriting when leaving the Scope.
-class ScopeRewriter : public Rewriter {
-public:
-    ScopeRewriter(const Scope& scope)
-        : Rewriter(scope.world())
-        , scope_(scope) {}
-
-    const Scope& scope() const { return scope_; }
-
-    Ref rewrite(Ref old_def) override {
-        if (Infer::should_eliminate(old_def) || scope_.bound(old_def)) return Rewriter::rewrite(old_def);
-        return old_def;
-    }
-
-private:
-    const Scope& scope_;
-};
-
 class VarRewriter : public Rewriter {
 public:
     VarRewriter(Ref var, Ref arg)
         : Rewriter(var->world()) {
         if (var) {
-            map(var, arg);
-            if (auto v = var->isa<Var>()) vars_ = world().vars(v);
+            if (auto v = var->isa<Var>()) {
+                map(var, arg);
+                vars_ = world().vars(v);
+            }
         }
     }
 
@@ -77,20 +61,11 @@ private:
 
 /// @name rewrite
 ///@{
-/// Rewrites @p def by mapping @p old_def to @p new_def while obeying @p scope.
-Ref rewrite(Ref def, Ref old_def, Ref new_def, const Scope& scope);
-
 /// Rewrites @p mut's @p i^th op by substituting @p mut's @p Var with @p arg while obeying @p mut's @p scope.
 Ref rewrite(Def* mut, Ref arg, size_t i);
 
-/// Same as above but uses @p scope as an optimization instead of computing a new Scope.
-Ref rewrite(Def* mut, Ref arg, size_t i, const Scope& scope);
-
 /// Rewrites @p mut's ops by substituting @p mut's @p Var with @p arg while obeying @p mut's @p scope.
 DefVec rewrite(Def* mut, Ref arg);
-
-/// Same as above but uses @p scope as an optimization instead of computing a new Scope.
-DefVec rewrite(Def* mut, Ref arg, const Scope& scope);
 ///@}
 
 } // namespace thorin

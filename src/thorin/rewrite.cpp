@@ -44,26 +44,7 @@ Ref Rewriter::rewrite_mut(Def* old_mut) {
     return new_mut;
 }
 
-Ref rewrite(Ref def, Ref old_def, Ref new_def, const Scope& scope) {
-    ScopeRewriter rewriter(scope);
-    rewriter.map(old_def, new_def);
-    return rewriter.rewrite(def);
-}
-
-Ref rewrite(Def* mut, Ref arg, size_t i, const Scope& scope) { return rewrite(mut->op(i), mut->var(), arg, scope); }
-
-Ref rewrite(Def* mut, Ref arg, size_t i) {
-    Scope scope(mut);
-    return rewrite(mut, arg, i, scope);
-}
-
-DefVec rewrite(Def* mut, Ref arg, const Scope& scope) {
-    ScopeRewriter rewriter(scope);
-    rewriter.map(mut->var(), arg);
-    DefVec result(mut->num_ops());
-    for (size_t i = 0, e = result.size(); i != e; ++i) result[i] = rewriter.rewrite(mut->op(i));
-    return result;
-}
+Ref rewrite(Def* mut, Ref arg, size_t i) { return VarRewriter(mut->var(), arg).rewrite(mut->op(i)); }
 
 DefVec rewrite(Def* mut, Ref arg) {
     auto rw = VarRewriter(mut->var(), arg);

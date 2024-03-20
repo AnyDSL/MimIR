@@ -28,9 +28,9 @@ inline const Def* op_cps2ds_dep(const Def* f) {
     if (auto f_ty_sig = f_ty->dom()->isa_mut<Sigma>()) {
         auto dom_var = f_ty_sig->var((nat_t)0);
         world.DLOG("dom_var: {}", dom_var);
-        Scope r_scope{f_ty_sig};
         auto closed_dom_var = Uf->var();
-        rewritten_codom     = thorin::rewrite(U, dom_var, closed_dom_var, r_scope);
+        auto rw             = VarRewriter(f_ty_sig, closed_dom_var);
+        rewritten_codom     = rw.rewrite(U);
     } else {
         rewritten_codom = U;
     }
