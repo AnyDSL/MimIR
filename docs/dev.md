@@ -194,8 +194,8 @@ void foo(Ref def) {
     if (auto pi = Pi::isa_basicblock(def)) {
         // def is a Pi whose co-domain is bottom and which is not returning
     }
+}
 ```
-
 
 ### Matching Axioms {#cast_axiom}
 
