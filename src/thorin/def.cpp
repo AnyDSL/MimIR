@@ -200,12 +200,12 @@ const Def* Pack::immutabilize() {
  */
 
 const Def* Arr::reduce(const Def* arg) const {
-    if (auto mut = isa_mut<Arr>()) return rewrite(mut, arg, 1);
+    if (auto mut = isa_mut<Arr>()) return rewrite(1, mut, arg);
     return body();
 }
 
 const Def* Pack::reduce(const Def* arg) const {
-    if (auto mut = isa_mut<Pack>()) return rewrite(mut, arg, 0);
+    if (auto mut = isa_mut<Pack>()) return rewrite(0, mut, arg);
     return body();
 }
 

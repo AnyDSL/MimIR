@@ -3,6 +3,7 @@
 #include "thorin/def.h"
 #include "thorin/rewrite.h"
 
+#include "thorin/analyses/scope.h"
 #include "thorin/pass/pass.h"
 
 namespace thorin {

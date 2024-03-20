@@ -299,9 +299,8 @@ Ref Parser::parse_pack_expr() {
         auto arr  = world().arr(shape, body->type());
         auto pack = world().mut_pack(arr)->set(body);
         auto var  = pack->var();
-        auto rw   = VarRewriter(var, var);
         infer->set(var);
-        return pack->reset(rw.rewrite(pack->body()));
+        return pack->reset(pack->reduce(var)); // get rid of infer
     }
 
     auto shape = parse_expr("shape of a pack");
@@ -486,12 +485,8 @@ Lam* Parser::parse_lam(bool is_decl) {
             auto new_lam = world().mut_lam(new_pi);
             auto new_var = new_lam->var()->set(ret_loc);
 
-            if (filter) {
-                // 2. filter depends on lam->var() instead of new_lam->var(2, 0)
-                auto rw         = VarRewriter(old_var, new_lam->var(2, 0)->set(lam->var()->dbg()));
-                auto new_filter = rw.rewrite(filter);
-                filter          = new_filter;
-            }
+            // 2. filter depends on lam->var() instead of new_lam->var(2, 0)
+            if (filter) filter = rewrite(filter, lam, new_lam->var(2, 0)->set(lam->var()->dbg()));
 
             pi->unset();
             pi = new_pi;

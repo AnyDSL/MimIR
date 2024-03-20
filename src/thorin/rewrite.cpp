@@ -2,8 +2,6 @@
 
 #include "thorin/world.h"
 
-#include "thorin/analyses/scope.h"
-
 // Don't use fancy C++-lambdas; it's way to annoying stepping through them in a debugger.
 
 namespace thorin {
@@ -43,8 +41,6 @@ Ref Rewriter::rewrite_mut(Def* old_mut) {
 
     return new_mut;
 }
-
-Ref rewrite(Def* mut, Ref arg, size_t i) { return VarRewriter(mut->var(), arg).rewrite(mut->op(i)); }
 
 DefVec rewrite(Def* mut, Ref arg) {
     auto rw = VarRewriter(mut->var(), arg);
