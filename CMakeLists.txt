@@ -49,6 +49,7 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     option(BUILD_TESTING "Build lit and unit tests." OFF) # needs to be BEFORE "include(CTest)"
     include(CTest)
     cmake_dependent_option(THORIN_LIT_WITH_VALGRIND "If ON, the Thorin CLI in the lit tests will be run under valgrind." OFF "BUILD_TESTING" OFF)
+    set(THORIN_LIT_TIMEOUT "10" CACHE STRING "Timout for lit tests.")
     if(BUILD_TESTING)
         include(GoogleTest)
         set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
