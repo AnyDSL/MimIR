@@ -106,7 +106,7 @@ public:
         print(os_, "<b>free_vars:</b> {{{, }}}{}", def->free_vars(), NL);
         print(os_, "<b>local_vars:</b> {{{, }}}{}", def->local_vars(), NL);
         print(os_, "<b>local_muts:</b> {{{, }}}{}", def->local_muts(), NL);
-        print(os_, "<b>fv_consumers:</b> {{{, }}}{}", def->fv_consumers(), NL);
+        if (auto mut = def->isa_mut()) print(os_, "<b>fv_consumers:</b> {{{, }}}{}", mut->fv_consumers(), NL);
         print(os_, "<b>loc:</b> {}", loc);
         return print(os_, "\"");
     }

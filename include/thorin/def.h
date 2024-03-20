@@ -414,13 +414,13 @@ public:
 
     /// @name Free Vars and Muts
     ///@{
-    Muts local_muts() const { return local_muts_; }
-    Vars local_vars() const { return local_vars_; }
+    Muts local_muts() const;
+    Vars local_vars() const { return mut_ ? Vars() : vars_.local; }
     Vars free_vars() const;
     Vars free_vars();
     bool is_open() const;   ///< Has free_vars()?
     bool is_closed() const; ///< Has no free_vars()?
-    Muts fv_consumers() const { return fv_consumers_; }
+    Muts fv_consumers() { return muts_.fv_consumers; }
     ///@}
 
     /// @name external
@@ -574,10 +574,21 @@ private:
     u32 gid_;
     u32 num_ops_;
     mutable Uses uses_;
-    Vars local_vars_;
-    Muts local_muts_;
-    Vars free_vars_;
-    Muts fv_consumers_;
+
+    union LocalOrFreeVars {
+        LocalOrFreeVars() { new (&local) Vars(); }
+
+        Vars local; // Mutable only.
+        Vars free;  // Immutable only.
+    } vars_;
+
+    union LocalOrConsumerMuts {
+        LocalOrConsumerMuts() { new (&local) Muts(); }
+
+        Muts local;        // Mutable only.
+        Muts fv_consumers; // Immutable only.
+    } muts_;
+
     const Var* var_ = nullptr; // Var of a mutable.
     const Def* type_;
 
