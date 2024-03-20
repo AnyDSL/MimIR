@@ -32,6 +32,8 @@ void LowerTypedClos::start() {
             lam->reset({new_f, new_b});
         }
     }
+
+    for (auto lam : new_externals_) lam->make_external();
 }
 
 Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
@@ -53,7 +55,10 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
     auto new_lam  = lam->stub(w, new_type);
     w.DLOG("stub {} ~> {}", lam, new_lam);
     if (lam->is_set()) new_lam->set(lam->filter(), lam->body());
-    if (lam->is_external()) lam->transfer_external(new_lam);
+    if (lam->is_external()) {
+        lam->make_internal();
+        new_externals_.emplace_back(new_lam);
+    }
     const Def* lcm = mem::mem_var(new_lam);
     const Def* env
         = new_lam->var(Clos_Env_Param); //, (mode != No_Env) ? w.dbg("closure_env") : lam->var(Clos_Env_Param)->dbg());

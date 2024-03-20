@@ -39,7 +39,7 @@ void PassMan::pop_states(size_t undo) {
 }
 
 void PassMan::run() {
-    world().ILOG("run");
+    world().verify().ILOG("run");
 
     auto num = passes().size();
     states_.emplace_back(num);
@@ -83,7 +83,7 @@ void PassMan::run() {
         }
     }
 
-    world().ILOG("finished");
+    world().verify().ILOG("finished");
     pop_states(0);
 
     world().debug_dump();

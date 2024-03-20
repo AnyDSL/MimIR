@@ -524,6 +524,9 @@ public:
     void dot(std::ostream& os, uint32_t max = 0xFFFFFF, bool types = false) const;
     /// Same as above but write to @p file or `std::cout` if @p file is `nullptr`.
     void dot(const char* file = nullptr, uint32_t max = 0xFFFFFF, bool types = false) const;
+    void dot(const std::string& file, uint32_t max = 0xFFFFFF, bool types = false) const {
+        return dot(file.c_str(), max, types);
+    }
     ///@}
 
 protected:

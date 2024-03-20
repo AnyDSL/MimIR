@@ -93,29 +93,29 @@ UMax::UMax(World& world, Defs ops)
 #ifndef DOXYGEN // TODO Doxygen doesn't expand THORIN_DEF_MIXIN
 Ref Infer    ::rebuild(World&,   Ref,   Defs  ) const { fe::unreachable(); }
 Ref Global   ::rebuild(World&,   Ref,   Defs  ) const { fe::unreachable(); }
-Ref Idx      ::rebuild(World& w, Ref  , Defs  ) const { return w.type_idx(); }
-Ref Nat      ::rebuild(World& w, Ref  , Defs  ) const { return w.type_nat(); }
-Ref Univ     ::rebuild(World& w, Ref  , Defs  ) const { return w.univ(); }
-Ref Ac       ::rebuild(World& w, Ref t, Defs o) const { return w.ac(t, o)                     ->set(dbg()); }
-Ref App      ::rebuild(World& w, Ref  , Defs o) const { return w.app(o[0], o[1])              ->set(dbg()); }
-Ref Arr      ::rebuild(World& w, Ref  , Defs o) const { return w.arr(o[0], o[1])              ->set(dbg()); }
-Ref Extract  ::rebuild(World& w, Ref  , Defs o) const { return w.extract(o[0], o[1])          ->set(dbg()); }
-Ref Insert   ::rebuild(World& w, Ref  , Defs o) const { return w.insert(o[0], o[1], o[2])     ->set(dbg()); }
-Ref Lam      ::rebuild(World& w, Ref t, Defs o) const { return w.lam(t->as<Pi>(), o[0], o[1]) ->set(dbg()); }
-Ref Lit      ::rebuild(World& w, Ref t, Defs  ) const { return w.lit(t, get())                ->set(dbg()); }
-Ref Pack     ::rebuild(World& w, Ref t, Defs o) const { return w.pack(t->arity(), o[0])       ->set(dbg()); }
-Ref Pi       ::rebuild(World& w, Ref  , Defs o) const { return w.pi(o[0], o[1], is_implicit())->set(dbg()); }
-Ref Pick     ::rebuild(World& w, Ref t, Defs o) const { return w.pick(t, o[0])                ->set(dbg()); }
-Ref Proxy    ::rebuild(World& w, Ref t, Defs o) const { return w.proxy(t, o, pass(), tag())   ->set(dbg()); }
-Ref Sigma    ::rebuild(World& w, Ref  , Defs o) const { return w.sigma(o)                     ->set(dbg()); }
-Ref Singleton::rebuild(World& w, Ref  , Defs o) const { return w.singleton(o[0])              ->set(dbg()); }
-Ref Type     ::rebuild(World& w, Ref  , Defs o) const { return w.type(o[0])                   ->set(dbg()); }
-Ref Test     ::rebuild(World& w, Ref  , Defs o) const { return w.test(o[0], o[1], o[2], o[3]) ->set(dbg()); }
-Ref Tuple    ::rebuild(World& w, Ref t, Defs o) const { return w.tuple(t, o)                  ->set(dbg()); }
-Ref UInc     ::rebuild(World& w, Ref  , Defs o) const { return w.uinc(o[0], offset())         ->set(dbg()); }
-Ref UMax     ::rebuild(World& w, Ref  , Defs o) const { return w.umax(o)                      ->set(dbg()); }
-Ref Var      ::rebuild(World& w, Ref t, Defs o) const { return w.var(t, o[0]->as_mut())       ->set(dbg()); }
-Ref Vel      ::rebuild(World& w, Ref t, Defs o) const { return w.vel(t, o[0])->set(dbg())     ->set(dbg()); }
+Ref Idx      ::rebuild(World& w, Ref  , Defs  ) const { assert(isa_imm()); return w.type_idx(); }
+Ref Nat      ::rebuild(World& w, Ref  , Defs  ) const { assert(isa_imm()); return w.type_nat(); }
+Ref Univ     ::rebuild(World& w, Ref  , Defs  ) const { assert(isa_imm()); return w.univ(); }
+Ref Ac       ::rebuild(World& w, Ref t, Defs o) const { assert(isa_imm()); return w.ac(t, o)                     ->set(dbg()); }
+Ref App      ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.app(o[0], o[1])              ->set(dbg()); }
+Ref Arr      ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.arr(o[0], o[1])              ->set(dbg()); }
+Ref Extract  ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.extract(o[0], o[1])          ->set(dbg()); }
+Ref Insert   ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.insert(o[0], o[1], o[2])     ->set(dbg()); }
+Ref Lam      ::rebuild(World& w, Ref t, Defs o) const { assert(isa_imm()); return w.lam(t->as<Pi>(), o[0], o[1]) ->set(dbg()); }
+Ref Lit      ::rebuild(World& w, Ref t, Defs  ) const { assert(isa_imm()); return w.lit(t, get())                ->set(dbg()); }
+Ref Pack     ::rebuild(World& w, Ref t, Defs o) const { assert(isa_imm()); return w.pack(t->arity(), o[0])       ->set(dbg()); }
+Ref Pi       ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.pi(o[0], o[1], is_implicit())->set(dbg()); }
+Ref Pick     ::rebuild(World& w, Ref t, Defs o) const { assert(isa_imm()); return w.pick(t, o[0])                ->set(dbg()); }
+Ref Proxy    ::rebuild(World& w, Ref t, Defs o) const { assert(isa_imm()); return w.proxy(t, o, pass(), tag())   ->set(dbg()); }
+Ref Sigma    ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.sigma(o)                     ->set(dbg()); }
+Ref Singleton::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.singleton(o[0])              ->set(dbg()); }
+Ref Type     ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.type(o[0])                   ->set(dbg()); }
+Ref Test     ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.test(o[0], o[1], o[2], o[3]) ->set(dbg()); }
+Ref Tuple    ::rebuild(World& w, Ref t, Defs o) const { assert(isa_imm()); return w.tuple(t, o)                  ->set(dbg()); }
+Ref UInc     ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.uinc(o[0], offset())         ->set(dbg()); }
+Ref UMax     ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.umax(o)                      ->set(dbg()); }
+Ref Var      ::rebuild(World& w, Ref t, Defs o) const { assert(isa_imm()); return w.var(t, o[0]->as_mut())       ->set(dbg()); }
+Ref Vel      ::rebuild(World& w, Ref t, Defs o) const { assert(isa_imm()); return w.vel(t, o[0])->set(dbg())     ->set(dbg()); }
 
 Ref Axiom    ::rebuild(World& w, Ref t, Defs ) const {
     if (&w != &world()) return w.axiom(normalizer(), curry(), trip(), t, plugin(), tag(), sub())->set(dbg());
@@ -395,6 +395,9 @@ void Def::invalidate() {
 
 bool Def::is_closed() const {
     if (local_vars().empty() && local_muts().empty()) return true;
+#ifdef THORIN_ENABLE_CHECKS
+    assert(!is_external() || free_vars().empty());
+#endif
     return free_vars().empty();
 }
 

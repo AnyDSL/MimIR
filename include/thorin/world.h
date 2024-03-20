@@ -130,15 +130,19 @@ public:
     };
     ///@}
 
-#ifdef THORIN_ENABLE_CHECKS
     /// @name Debugging Features
     ///@{
-    Ref gid2def(u32 gid);
+#ifdef THORIN_ENABLE_CHECKS
     const auto& breakpoints() { return state_.breakpoints; }
-    /// Trigger breakpoint in your debugger when creating Def with Def::gid @p gid.
-    void breakpoint(u32 gid);
-    ///@}
+
+    Ref gid2def(u32 gid);     ///< Lookup Def by @p gid.
+    void breakpoint(u32 gid); ///< Trigger breakpoint in your debugger when creating Def with Def::gid @p gid.
+
+    World& verify(); ///< Verifies that all externals() and annexes() are Def::is_closed(), if `THORIN_ENABLE_CHECKS`.
+#else
+    World& verify() { return *this; }
 #endif
+    ///@}
 
     /// @name Manage Nodes
     ///@{
@@ -146,6 +150,7 @@ public:
     const auto& externals() const { return move_.externals; }
     void make_external(Def* def) {
         assert(!def->is_external());
+        assert(def->is_closed());
         def->external_ = true;
         assert_emplace(move_.externals, def->sym(), def);
     }

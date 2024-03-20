@@ -63,11 +63,11 @@ public:
         for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
             auto op = def->op(i);
             recurse(op, max - 1);
-            tab_.print(os_, "_{} -> _{}[", def->gid(), op->gid());
+            tab_.print(os_, "_{} -> _{}[taillabel=\"{}\",", def->gid(), op->gid(), i);
             if (op->isa<Lit>() || op->isa<Axiom>() || def->isa<Var>() || def->isa<Nat>() || def->isa<Idx>())
-                print(os_, "taillabel=\"{}\",fontcolor=\"#00000000\",color=\"#00000000\",constraint=false];\n", i);
+                print(os_, "fontcolor=\"#00000000\",color=\"#00000000\",constraint=false];\n");
             else
-                print(os_, "label=\"{}\"];\n", i);
+                print(os_, "];\n");
         }
 
         if (auto t = def->type(); t && types_) {

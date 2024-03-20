@@ -548,6 +548,12 @@ Ref World::gid2def(u32 gid) {
     return *i;
 }
 
+World& World::verify() {
+    for (auto [_, mut] : externals()) assert(mut->is_closed());
+    for (auto [_, annex] : annexes()) assert(annex->is_closed());
+    return *this;
+}
+
 #endif
 
 #ifndef DOXYGEN
