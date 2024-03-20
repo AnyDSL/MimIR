@@ -39,7 +39,10 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
 
     if (auto var = isa<Var>()) {
         vars_.local = world().vars(var);
+        muts_.local = Muts();
     } else {
+        vars_.local = Vars();
+        muts_.local = Muts();
         for (auto op : extended_ops()) {
             vars_.local = world().merge(vars_.local, op->local_vars());
             muts_.local = world().merge(muts_.local, op->local_muts());
@@ -68,8 +71,11 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags)
     , dep_(Dep::Mut | (node == Node::Infer ? Dep::Infer : Dep::None))
     , num_ops_(num_ops)
     , type_(type) {
-    gid_  = world().next_gid();
-    hash_ = murmur3(gid());
+    gid_               = world().next_gid();
+    hash_              = murmur3(gid());
+    var_               = nullptr;
+    vars_.free         = Vars();
+    muts_.fv_consumers = Muts();
     std::fill_n(ops_ptr(), num_ops, nullptr);
     if (!type->dep_const()) type->uses_.emplace(this, Use::Type);
 }

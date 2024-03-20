@@ -556,8 +556,9 @@ private:
 protected:
     mutable Dbg dbg_;
     union {
-        NormalizeFn normalizer_; ///< Axiom%s use this member to store their normalizer.
-        const Axiom* axiom_;     ///< Curried App%s of Axiom%s use this member to propagate the Axiom.
+        NormalizeFn normalizer_; ///< Axiom only: Axiom%s use this member to store their normalizer.
+        const Axiom* axiom_;     ///< App only: Curried App%s of Axiom%s use this member to propagate the Axiom.
+        const Var* var_;         ///< Mutable only: Var of a mutable.
         mutable World* world_;
     };
     flags_t flags_;
@@ -567,7 +568,7 @@ protected:
 private:
     uint8_t node_;
     bool mut_      : 1;
-    bool external_ : 1; // TODO unused
+    bool external_ : 1;
     unsigned dep_  : 5;
     bool valid_    : 1;
     hash_t hash_;
@@ -576,20 +577,19 @@ private:
     mutable Uses uses_;
 
     union LocalOrFreeVars {
-        LocalOrFreeVars() { new (&local) Vars(); }
+        LocalOrFreeVars() {}
 
         Vars local; // Mutable only.
         Vars free;  // Immutable only.
     } vars_;
 
     union LocalOrConsumerMuts {
-        LocalOrConsumerMuts() { new (&local) Muts(); }
+        LocalOrConsumerMuts() {}
 
         Muts local;        // Mutable only.
         Muts fv_consumers; // Immutable only.
     } muts_;
 
-    const Var* var_ = nullptr; // Var of a mutable.
     const Def* type_;
 
     friend class World;
