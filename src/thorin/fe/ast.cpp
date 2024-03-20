@@ -75,8 +75,8 @@ const Def* TuplePtrn::type(World& world, Def2Fields& def2fields) const {
         sigma->set(i, ops[i]);
     }
 
-    thorin::Scope scope(sigma);
-    ScopeRewriter rw(scope);
+    auto var = sigma->var()->as<Var>();
+    VarRewriter rw(var, var);
     sigma->reset(0, ops[0]);
     for (size_t i = 1; i != n; ++i) sigma->reset(i, rw.rewrite(ops[i]));
 
