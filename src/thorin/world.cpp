@@ -191,9 +191,7 @@ Ref World::app(Ref callee, Ref arg) {
 
     if (auto imm = callee->isa_imm<Lam>()) return imm->body();
     if (auto lam = callee->isa_mut<Lam>(); lam && lam->is_set() && lam->filter() != lit_ff()) {
-        Scope scope(lam);
-        ScopeRewriter rw(scope);
-        rw.map(lam->var(), arg);
+        VarRewriter rw(lam->var(), arg);
         if (rw.rewrite(lam->filter()) == lit_tt()) {
             DLOG("partial evaluate: {} ({})", lam, arg);
             return rw.rewrite(lam->body());
