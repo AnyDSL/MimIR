@@ -70,14 +70,16 @@ cmake --build build -j $(nproc) -t install
 
 ### Build Switches
 
-| CMake Switch            | Options                                  | Default      | Comment                                                                               |
-|-------------------------|------------------------------------------|--------------|---------------------------------------------------------------------------------------|
-| `CMAKE_BUILD_TYPE`      | `Debug` \| `Release` \| `RelWithDebInfo` | `Debug`      | Build type.                                                                           |
-| `CMAKE_INSTALL_PREFIX`  |                                          | `/usr/local` | Install prefix.                                                                       |
-| `THORIN_BUILD_DOCS`     | `ON` \| `OFF`                            | `OFF`        | If `ON`, build the documentation <br> (requires Doxygen).                             |
-| `THORIN_BUILD_EXAMPLES` | `ON` \| `OFF`                            | `OFF`        | If `ON`, build the examples.                                                          |
-| `BUILD_TESTING`         | `ON` \| `OFF`                            | `OFF`        | If `ON`, build all unit and lit tests.                                                |
-| `THORIN_ENABLE_CHECKS`  | `ON` \| `OFF`                            | `ON`         | If `ON`, enables expensive runtime checks <br> (requires `CMAKE_BUILD_TYPE=Debug`).   |
+| CMake Switch               | Options                                  | Default      | Comment                                                                                                  |
+|----------------------------|------------------------------------------|--------------|----------------------------------------------------------------------------------------------------------|
+| `CMAKE_BUILD_TYPE`         | `Debug` \| `Release` \| `RelWithDebInfo` | `Debug`      | Build type.                                                                                              |
+| `CMAKE_INSTALL_PREFIX`     |                                          | `/usr/local` | Install prefix.                                                                                          |
+| `THORIN_BUILD_DOCS`        | `ON` \| `OFF`                            | `OFF`        | If `ON`, build the documentation <br> (requires Doxygen).                                                |
+| `THORIN_BUILD_EXAMPLES`    | `ON` \| `OFF`                            | `OFF`        | If `ON`, build the examples.                                                                             |
+| `THORIN_ENABLE_CHECKS`     | `ON` \| `OFF`                            | `ON`         | If `ON`, enables expensive runtime checks <br> (requires `CMAKE_BUILD_TYPE=Debug`).                      |
+| `BUILD_TESTING`            | `ON` \| `OFF`                            | `OFF`        | If `ON`, build all unit and lit tests.                                                                   |
+| `THORIN_LIT_TIMEOUT`       | `<timeout_in_sec>`                       | `10`         | Timeout for lit tests. <br> (requires `BUILD_TESTING=ON`).                                               |
+| `THORIN_LIT_WITH_VALGRIND` | `ON` \| `OFF`                            | `OFF`        | If `ON`, the Thorin CLI in the lit tests will be run under valgrind. <br> (requires `BUILD_TESTING=ON`). |
 
 ## Dependencies
 

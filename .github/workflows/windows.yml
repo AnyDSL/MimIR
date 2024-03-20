@@ -42,7 +42,7 @@ jobs:
           set CXX=cl.exe
           python -c "import sys; import os; print(os.path.dirname(sys.executable))" > tmpPath
           set /p PYTHON_PATH= < tmpPath
-          cmake -B ${{github.workspace}}/build -G Ninja -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DBUILD_TESTING=ON -DTHORIN_BUILD_EXAMPLES=ON -DPython3_ROOT_DIR=%PYTHON_PATH%
+          cmake -B ${{github.workspace}}/build -G Ninja -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DBUILD_TESTING=ON -DTHORIN_BUILD_EXAMPLES=ON -DPython3_ROOT_DIR=%PYTHON_PATH% -DTHORIN_LIT_TIMEOUT=300
 
       - name: Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@v1.6.0
