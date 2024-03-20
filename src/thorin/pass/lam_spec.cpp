@@ -9,29 +9,6 @@
 
 namespace thorin {
 
-namespace {
-bool is_top_level(LamMap<bool>& top, Lam* lam) {
-    if (lam->is_external()) return true;
-    if (auto [i, ins] = top.emplace(lam, true); !ins) return i->second;
-
-    Scope scope(lam);
-    if (!scope.free_vars().empty()) return top[lam] = false;
-
-    for (auto mut : scope.free_muts()) {
-        if (auto inner = mut->isa<Lam>()) {
-            if (!is_top_level(top, inner)) return top[lam] = false;
-        }
-    }
-
-    return true;
-}
-
-bool is_top_level(Lam* lam) {
-    LamMap<bool> top;
-    return is_top_level(top, lam);
-}
-} // namespace
-
 Ref LamSpec::rewrite(Ref def) {
     if (auto i = old2new_.find(def); i != old2new_.end()) return i->second;
 
@@ -44,7 +21,7 @@ Ref LamSpec::rewrite(Ref def) {
     if (!world().flags().aggressive_lam_spec && scope.free_defs().contains(old_lam)) return def;
 
     DefVec new_doms, new_vars, new_args;
-    auto skip     = old_lam->ret_var() && is_top_level(old_lam);
+    auto skip     = old_lam->ret_var() && old_lam->is_closed();
     auto old_doms = old_lam->doms();
 
     for (auto dom : old_doms.view().rsubspan(skip))
