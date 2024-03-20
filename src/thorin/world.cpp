@@ -319,9 +319,7 @@ Ref World::extract(Ref d, Ref index) {
 
         if (auto sigma = type->isa<Sigma>()) {
             if (auto mut_sigma = sigma->isa_mut<Sigma>()) {
-                Scope scope(mut_sigma);
-                VarRewriter rw(mut_sigma->var(), d);
-                auto t = rw.rewrite(sigma->op(*i));
+                auto t = VarRewriter(mut_sigma->var(), d).rewrite(sigma->op(*i));
                 return unify<Extract>(2, t, d, index);
             }
 
