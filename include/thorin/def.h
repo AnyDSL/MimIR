@@ -416,9 +416,9 @@ public:
     ///@{
     /// * local_muts()/local_vars() are Var%s/Mut%s reachable by following *immutable* extended_ops().
     /// * local_muts()/local_vars() are cached and hash-consed.
-    /// * free_vars() compute a global solution, i.e., by transitevly following *mutables* as well.
+    /// * free_vars() compute a global solution, i.e., by transitively following *mutables* as well.
     /// * free_vars() are computed on demand and cached.
-    ///   They will be transitevely invalidated by following fv_consumers(), if a mutable is mutated.
+    ///   They will be transitively invalidated by following fv_consumers(), if a mutable is mutated.
     Muts local_muts() const;
     Vars local_vars() const { return mut_ ? Vars() : vars_.local; }
     Vars free_vars() const;
