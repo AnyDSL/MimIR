@@ -406,6 +406,11 @@ public:
     Ref var();
     /// Only returns not `nullptr`, if Var of this mutable has ever been created.
     const Var* has_var() { return var_; }
+    /// As above if `this` is a *mutable*.
+    const Var* has_var() const {
+        if (auto mut = isa_mut()) return mut->has_var();
+        return nullptr;
+    }
     ///@}
 
     /// @name Free Vars and Muts
