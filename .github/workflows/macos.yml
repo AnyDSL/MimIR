@@ -34,7 +34,7 @@ jobs:
           CXX="/usr/local/opt/llvm@16/bin/clang++" \
           CXXFLAGS="-stdlib=libc++ -fexperimental-library" \
           LDFLAGS="-L/usr/local/opt/llvm@16/lib/c++ -Wl,-rpath,/usr/local/opt/llvm@16/lib/c++" \
-          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DBUILD_TESTING=ON -DTHORIN_BUILD_EXAMPLES=ON -DPython3_ROOT_DIR=$(dirname $(which python3))
+          cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DBUILD_TESTING=ON -DTHORIN_BUILD_EXAMPLES=ON -DPython3_ROOT_DIR=$(dirname $(which python3)) -DTHORIN_LIT_TIMEOUT=300
           sed -n -E "s/_Python3_EXECUTABLE:INTERNAL=([a-zA-Z0-9/.]+)$/THORIN_PYTHON=\1/p" ${{github.workspace}}/build/CMakeCache.txt >> $GITHUB_ENV
 
       - name: Install FileCheck
