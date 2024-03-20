@@ -53,9 +53,6 @@ class Var;
 class Def;
 class World;
 
-using Vars = PooledSet<const Var*>;
-using Muts = PooledSet<Def*>;
-
 /// @name Def
 ///@{
 /// GIDSet / GIDMap keyed by Def::gid of `conset Def*`.
@@ -72,6 +69,7 @@ using DefVec                    = Vector<const Def*>;
 template<class To> using MutMap = GIDMap<Def*, To>;
 using MutSet                    = GIDSet<Def*>;
 using Mut2Mut                   = MutMap<Def*>;
+using Muts                      = PooledSet<Def*>;
 ///@}
 
 /// @name Var
@@ -80,6 +78,7 @@ using Mut2Mut                   = MutMap<Def*>;
 template<class To> using VarMap = GIDMap<const Var*, To>;
 using VarSet                    = GIDSet<const Var*>;
 using Var2Var                   = VarMap<const Var*>;
+using Vars                      = PooledSet<const Var*>;
 ///@{
 
 //------------------------------------------------------------------------------
