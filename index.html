@@ -164,10 +164,16 @@ Build Switches</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>THORIN_BUILD_EXAMPLES</code>   </td><td class="markdownTableBodyNone"><code>ON</code> | <code>OFF</code>   </td><td class="markdownTableBodyNone"><code>OFF</code>   </td><td class="markdownTableBodyNone">If <code>ON</code>, build the examples.    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>BUILD_TESTING</code>   </td><td class="markdownTableBodyNone"><code>ON</code> | <code>OFF</code>   </td><td class="markdownTableBodyNone"><code>OFF</code>   </td><td class="markdownTableBodyNone">If <code>ON</code>, build all unit and lit tests.    </td></tr>
-<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>THORIN_ENABLE_CHECKS</code>   </td><td class="markdownTableBodyNone"><code>ON</code> | <code>OFF</code>   </td><td class="markdownTableBodyNone"><code>ON</code>   </td><td class="markdownTableBodyNone">If <code>ON</code>, enables expensive runtime checks <br  />
- (requires <code>CMAKE_BUILD_TYPE=Debug</code>).   </td></tr>
+ (requires <code>CMAKE_BUILD_TYPE=Debug</code>).    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>BUILD_TESTING</code>   </td><td class="markdownTableBodyNone"><code>ON</code> | <code>OFF</code>   </td><td class="markdownTableBodyNone"><code>OFF</code>   </td><td class="markdownTableBodyNone">If <code>ON</code>, build all unit and lit tests.    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>THORIN_LIT_TIMEOUT</code>   </td><td class="markdownTableBodyNone"><code>&lt;timeout_in_sec&gt;</code>   </td><td class="markdownTableBodyNone"><code>10</code>   </td><td class="markdownTableBodyNone">Timeout for lit tests. <br  />
+ (requires <code>BUILD_TESTING=ON</code>).    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>THORIN_LIT_WITH_VALGRIND</code>   </td><td class="markdownTableBodyNone"><code>ON</code> | <code>OFF</code>   </td><td class="markdownTableBodyNone"><code>OFF</code>   </td><td class="markdownTableBodyNone">If <code>ON</code>, the Thorin CLI in the lit tests will be run under valgrind. <br  />
+ (requires <code>BUILD_TESTING=ON</code>).   </td></tr>
 </table>
 <h1><a class="anchor" id="autotoc_md70"></a>
 Dependencies</h1>
