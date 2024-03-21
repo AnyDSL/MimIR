@@ -44,11 +44,7 @@ void Pipeline::start() {
 
 void ScopePhase::start() {
     unique_queue<MutSet> muts;
-
-    for (const auto& [name, mut] : world().externals()) {
-        assert(mut->is_set() && "external must not be empty");
-        muts.push(mut);
-    }
+    for (const auto& [name, mut] : world().externals()) muts.push(mut);
 
     while (!muts.empty()) {
         auto mut = muts.pop();

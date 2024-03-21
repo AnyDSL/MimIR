@@ -146,6 +146,7 @@ private:
 /// We call these Scope%s *top-level* Scope%s.
 /// Select with `elide_empty` whether you want to visit trivial Scope%s of *muts* without body.
 /// Assumes that you don't change anything - hence `dirty` flag is set to `false`.
+/// @deprecated Use ClosedMutPhase instead.
 class ScopePhase : public Phase {
 public:
     ScopePhase(World& world, std::string_view name, bool elide_empty)
@@ -161,6 +162,38 @@ protected:
 private:
     bool elide_empty_;
     const Scope* scope_ = nullptr;
+};
+
+/// Transitively visits all *reachable* closed mutables (Def::is_closed()) in World.
+/// Select with `elide_empty` whether you want to visit trivial *muts* without body.
+/// Assumes that you don't change anything - hence `dirty` flag is set to `false`.
+/// If you a are only interested in specific mutables, you can pass this to @p M.
+template<class M = Def> class ClosedMutPhase : public Phase {
+public:
+    ClosedMutPhase(World& world, std::string_view name, bool elide_empty)
+        : Phase(world, name, false)
+        , elide_empty_(elide_empty) {}
+
+    void start() override {
+        unique_queue<MutSet> queue;
+        for (const auto& [_, mut] : world().externals()) queue.push(mut);
+
+        while (!queue.empty()) {
+            auto mut = queue.pop();
+            if (auto m = mut->isa<M>(); m && m->is_closed() && (!elide_empty_ || m->is_set())) visit(curr_mut_ = m);
+
+            for (auto op : mut->extended_ops())
+                for (auto mut : op->local_muts()) queue.push(mut);
+        }
+    }
+
+protected:
+    virtual void visit(M*) = 0;
+    M* curr_mut() const { return curr_mut_; }
+
+private:
+    bool elide_empty_;
+    M* curr_mut_;
 };
 
 } // namespace thorin
