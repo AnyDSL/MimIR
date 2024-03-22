@@ -8,7 +8,7 @@
     [k:.Nat, l:.Nat],
     return: .Cn[%mem.M]] = {
 
-    .let (mem2, M) = %matrix.constMat (2,(k,l),%core.I32) (mem, 0:%core.I32);
+    .let (mem2, M) = %matrix.constMat (2,(k,l),.I32) (mem, 0:.I32);
 
     return mem2
 };

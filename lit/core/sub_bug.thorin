@@ -4,11 +4,11 @@
 
 .plugin core;
 
-.fun .extern f(a: %core.I8): «4; %core.I8» = {
-    return (%core.wrap.sub 0               (a, 1:%core.I8),
-            %core.wrap.sub %core.mode.nsw  (a, 1:%core.I8),
-            %core.wrap.sub %core.mode.nuw  (a, 1:%core.I8),
-            %core.wrap.sub %core.mode.nusw (a, 1:%core.I8))
+.fun .extern f(a: .I8): «4; .I8» = {
+    return (%core.wrap.sub 0               (a, 1:.I8),
+            %core.wrap.sub %core.mode.nsw  (a, 1:.I8),
+            %core.wrap.sub %core.mode.nuw  (a, 1:.I8),
+            %core.wrap.sub %core.mode.nusw (a, 1:.I8))
 };
 
 // CHECK-DAG: %core.wrap.add 256 0 (255:(.Idx 256), a_{{[0-9]+}});

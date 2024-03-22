@@ -37,6 +37,20 @@ class Lit;
     m(K_ff,     ".ff"    )             \
     m(K_tt,     ".tt"    )             \
     m(K_ins,    ".ins"   )             \
+    m(K_i1,     ".i1"    )             \
+    m(K_i2,     ".i2"    )             \
+    m(K_i4,     ".i4"    )             \
+    m(K_i8,     ".i8"    )             \
+    m(K_i16,    ".i16"   )             \
+    m(K_i32,    ".i32"   )             \
+    m(K_i64,    ".i64"   )             \
+    m(K_I1,     ".I1"    )             \
+    m(K_I2,     ".I2"    )             \
+    m(K_I4,     ".I4"    )             \
+    m(K_I8,     ".I8"    )             \
+    m(K_I16,    ".I16"   )             \
+    m(K_I32,    ".I32"   )             \
+    m(K_I64,    ".I64"   )             \
 
 #define CODE(t, str) + size_t(1)
 constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);

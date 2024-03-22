@@ -4,104 +4,104 @@
 .plugin core;
 .plugin direct;
 
-.lam Uf_690595 _690612: %core.I32 : ★ = {
-    [%mem.M, %core.I32]
+.lam Uf_690595 _690612: .I32 : ★ = {
+    [%mem.M, .I32]
 };
-.lam Uf_690659 _690676: «2; %core.I32» : ★ = {
-    [%core.I32, .Cn [%core.I32, .Cn «2; %core.I32»]]
+.lam Uf_690659 _690676: «2; .I32» : ★ = {
+    [.I32, .Cn [.I32, .Cn «2; .I32»]]
 };
-.con eta_inner_mul_deriv_cps_690710 _690711::[__690716::[_690720: %core.I32, _690724: %core.I32], ret_690713: .Cn [%core.I32, .Cn [%core.I32, .Cn «2; %core.I32»]]] @(0:(.Idx 2)) = {
-    .con mul_pb_690728 __690729::[s_690734: %core.I32, pb_ret_690731: .Cn «2; %core.I32»] @(1:(.Idx 2)) = {
-        .let _690746: %core.I32 = %core.wrap.mul %core.i32 0 (__690716#1:(.Idx 2), s_690734);
-        .let _690752: %core.I32 = %core.wrap.mul %core.i32 0 (__690716#0:(.Idx 2), s_690734);
+.con eta_inner_mul_deriv_cps_690710 _690711::[__690716::[_690720: .I32, _690724: .I32], ret_690713: .Cn [.I32, .Cn [.I32, .Cn «2; .I32»]]] @(0:(.Idx 2)) = {
+    .con mul_pb_690728 __690729::[s_690734: .I32, pb_ret_690731: .Cn «2; .I32»] @(1:(.Idx 2)) = {
+        .let _690746: .I32 = %core.wrap.mul .i32 0 (__690716#1:(.Idx 2), s_690734);
+        .let _690752: .I32 = %core.wrap.mul .i32 0 (__690716#0:(.Idx 2), s_690734);
         pb_ret_690731 (_690746, _690752)
     };
-    .let _690727: %core.I32 = %core.wrap.mul %core.i32 0 __690716;
+    .let _690727: .I32 = %core.wrap.mul .i32 0 __690716;
     ret_690713 (_690727, mul_pb_690728)
 };
-.lam Uf_691251 _691268: «2; %core.I32» : ★ = {
-    [%core.I32, .Cn [%core.I32, .Cn «2; %core.I32»]]
+.lam Uf_691251 _691268: «2; .I32» : ★ = {
+    [.I32, .Cn [.I32, .Cn «2; .I32»]]
 };
-.con eta_inner_mul_deriv_cps_691294 _691295::[__691299::[_691303: %core.I32, _691307: %core.I32], ret_691297: .Cn [%core.I32, .Cn [%core.I32, .Cn «2; %core.I32»]]] @(0:(.Idx 2)) = {
-    .con mul_pb_691311 __691312::[s_691317: %core.I32, pb_ret_691314: .Cn «2; %core.I32»] @(1:(.Idx 2)) = {
-        .let _691322: %core.I32 = %core.wrap.mul %core.i32 0 (__691299#1:(.Idx 2), s_691317);
-        .let _691328: %core.I32 = %core.wrap.mul %core.i32 0 (__691299#0:(.Idx 2), s_691317);
+.con eta_inner_mul_deriv_cps_691294 _691295::[__691299::[_691303: .I32, _691307: .I32], ret_691297: .Cn [.I32, .Cn [.I32, .Cn «2; .I32»]]] @(0:(.Idx 2)) = {
+    .con mul_pb_691311 __691312::[s_691317: .I32, pb_ret_691314: .Cn «2; .I32»] @(1:(.Idx 2)) = {
+        .let _691322: .I32 = %core.wrap.mul .i32 0 (__691299#1:(.Idx 2), s_691317);
+        .let _691328: .I32 = %core.wrap.mul .i32 0 (__691299#0:(.Idx 2), s_691317);
         pb_ret_691314 (_691322, _691328)
     };
-    .let _691310: %core.I32 = %core.wrap.mul %core.i32 0 __691299;
+    .let _691310: .I32 = %core.wrap.mul .i32 0 __691299;
     ret_691297 (_691310, mul_pb_691311)
 };
-.lam Uf_691363 _691380: %core.I32 : ★ = {
-    [%mem.M, %core.I32]
+.lam Uf_691363 _691380: .I32 : ★ = {
+    [%mem.M, .I32]
 };
-.con zero_pb_691406 _691407::[%core.I32, _691409: .Cn [%mem.M, %core.I32]] @(1:(.Idx 2)) = {
-    _691409 (⊥:%mem.M, 0:(%core.I32))
+.con zero_pb_691406 _691407::[.I32, _691409: .Cn [%mem.M, .I32]] @(1:(.Idx 2)) = {
+    _691409 (⊥:%mem.M, 0:(.I32))
 };
-.lam Uf_691429 _691446: %core.I32 : ★ = {
-    [%mem.M, %core.I32]
+.lam Uf_691429 _691446: .I32 : ★ = {
+    [%mem.M, .I32]
 };
-.con extract_pb_691470 _691471::[s_691476: %core.I32, _691473: .Cn [%mem.M, %core.I32]] @(1:(.Idx 2)) = {
+.con extract_pb_691470 _691471::[s_691476: .I32, _691473: .Cn [%mem.M, .I32]] @(1:(.Idx 2)) = {
     _691473 (⊥:%mem.M, s_691476)
 };
-.lam Uf_691899 _691916: %core.I32 : ★ = {
-    [%mem.M, %core.I32]
+.lam Uf_691899 _691916: .I32 : ★ = {
+    [%mem.M, .I32]
 };
-.con zero_pb_691934 _691935::[%core.I32, _691937: .Cn [%mem.M, %core.I32]] @(1:(.Idx 2)) = {
-    _691937 (⊥:%mem.M, 0:(%core.I32))
+.con zero_pb_691934 _691935::[.I32, _691937: .Cn [%mem.M, .I32]] @(1:(.Idx 2)) = {
+    _691937 (⊥:%mem.M, 0:(.I32))
 };
-.lam Uf_691949 _691966: %core.I32 : ★ = {
-    [%mem.M, %core.I32]
+.lam Uf_691949 _691966: .I32 : ★ = {
+    [%mem.M, .I32]
 };
 .lam Uf_692052 _692069: %mem.M : ★ = {
-    [%mem.M, %core.I32]
+    [%mem.M, .I32]
 };
-.con zero_pb_692087 _692088::[%mem.M, _692090: .Cn [%mem.M, %core.I32]] @(1:(.Idx 2)) = {
-    _692090 (⊥:%mem.M, 0:(%core.I32))
+.con zero_pb_692087 _692088::[%mem.M, _692090: .Cn [%mem.M, .I32]] @(1:(.Idx 2)) = {
+    _692090 (⊥:%mem.M, 0:(.I32))
 };
-.con .extern main __690558::[mem_690876: %mem.M, argc_691342: %core.I32, %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return_690562: .Cn [%mem.M, %core.I32]] @(0:(.Idx 2)) = {
-    .let _691344: [%core.I32, .Cn [%core.I32, .Cn «2; %core.I32»]] = %direct.cps2ds_dep («2; %core.I32», Uf_691251) eta_inner_mul_deriv_cps_691294 (42:(%core.I32), argc_691342);
+.con .extern main __690558::[mem_690876: %mem.M, argc_691342: .I32, %mem.Ptr (%mem.Ptr (.I8, 0), 0), return_690562: .Cn [%mem.M, .I32]] @(0:(.Idx 2)) = {
+    .let _691344: [.I32, .Cn [.I32, .Cn «2; .I32»]] = %direct.cps2ds_dep («2; .I32», Uf_691251) eta_inner_mul_deriv_cps_691294 (42:(.I32), argc_691342);
     //                                                                                 ^
-    .con comp_tup_pb__691250 _691347::[_691349: %core.I32, _691358: .Cn [%mem.M, %core.I32]] @(1:(.Idx 2)) = {
-        .con comp_tup_pb__cont_691356 _691420::[_691421: %core.I32, _691480: %core.I32] @(1:(.Idx 2)) = {
-            .let _691422: [%mem.M, %core.I32] = %direct.cps2ds_dep (%core.I32, Uf_691363) zero_pb_691406 _691421;
+    .con comp_tup_pb__691250 _691347::[_691349: .I32, _691358: .Cn [%mem.M, .I32]] @(1:(.Idx 2)) = {
+        .con comp_tup_pb__cont_691356 _691420::[_691421: .I32, _691480: .I32] @(1:(.Idx 2)) = {
+            .let _691422: [%mem.M, .I32] = %direct.cps2ds_dep (.I32, Uf_691363) zero_pb_691406 _691421;
             //                                        ^
-            .let _691481: [%mem.M, %core.I32] = %direct.cps2ds_dep (%core.I32, Uf_691429) extract_pb_691470 _691480;
+            .let _691481: [%mem.M, .I32] = %direct.cps2ds_dep (.I32, Uf_691429) extract_pb_691470 _691480;
             //                                        ^
-            .let _691488: %core.I32 = %core.wrap.add %core.i32 0 (_691422#1:(.Idx 2), _691481#1:(.Idx 2));
+            .let _691488: .I32 = %core.wrap.add .i32 0 (_691422#1:(.Idx 2), _691481#1:(.Idx 2));
             _691358 (⊤:%mem.M, _691488)
         };
         _691344#1:(.Idx 2) (_691349, comp_tup_pb__cont_691356)
     };
-    .let _690877: [%mem.M, %mem.Ptr («100; %core.I32», 0)] = %mem.alloc («100; %core.I32», 0) mem_690876;
-    .let _pullback_alloc_690882: [%mem.M, %mem.Ptr («100; .Cn [%core.I32, .Cn [%mem.M, %core.I32]]», 0)] = %mem.malloc («100; .Cn [%core.I32, .Cn [%mem.M, %core.I32]]», 0) (_690877#0:(.Idx 2), 800);
-    .let pullback_lea_691249: %mem.Ptr (.Cn [%core.I32, .Cn [%mem.M, %core.I32]], 0) = %mem.lea (100, ‹100; .Cn [%core.I32, .Cn [%mem.M, %core.I32]]›, 0) (_pullback_alloc_690882#1:(.Idx 2), 1:(.Idx 100));
-    .let _691499: %mem.M = %mem.store (.Cn [%core.I32, .Cn [%mem.M, %core.I32]], 0) (_pullback_alloc_690882#0:(.Idx 2), pullback_lea_691249, comp_tup_pb__691250);
-    .let _691865: %mem.Ptr (%core.I32, 0) = %mem.lea (100, ‹100; %core.I32›, 0) (_690877#1:(.Idx 2), 1:(.Idx 100));
-    .let _691874: %mem.M = %mem.store (%core.I32, 0) (_691499, _691865, _691344#0:(.Idx 2));
-    .let aug_load_691882: [%mem.M, %core.I32] = %mem.load (%core.I32, 0) (_691874, _691865);
-    .let pullback_load_692016: [%mem.M, .Cn [%core.I32, .Cn [%mem.M, %core.I32]]] = %mem.load (.Cn [%core.I32, .Cn [%mem.M, %core.I32]], 0) (aug_load_691882#0:(.Idx 2), pullback_lea_691249);
-    .con comp_tup_pb__690636 _691889::[_691891: %core.I32, _691894: .Cn [%mem.M, %core.I32]] @(1:(.Idx 2)) = {
-        .con comp_tup_pb__cont_691892 _691940::[_691941: %core.I32, _692020: %core.I32] @(1:(.Idx 2)) = {
-            // .let _691942: [%mem.M, %core.I32] = %direct.cps2ds_dep (%core.I32, Uf_691899) zero_pb_691934 _691941;
+    .let _690877: [%mem.M, %mem.Ptr («100; .I32», 0)] = %mem.alloc («100; .I32», 0) mem_690876;
+    .let _pullback_alloc_690882: [%mem.M, %mem.Ptr («100; .Cn [.I32, .Cn [%mem.M, .I32]]», 0)] = %mem.malloc («100; .Cn [.I32, .Cn [%mem.M, .I32]]», 0) (_690877#0:(.Idx 2), 800);
+    .let pullback_lea_691249: %mem.Ptr (.Cn [.I32, .Cn [%mem.M, .I32]], 0) = %mem.lea (100, ‹100; .Cn [.I32, .Cn [%mem.M, .I32]]›, 0) (_pullback_alloc_690882#1:(.Idx 2), 1:(.Idx 100));
+    .let _691499: %mem.M = %mem.store (.Cn [.I32, .Cn [%mem.M, .I32]], 0) (_pullback_alloc_690882#0:(.Idx 2), pullback_lea_691249, comp_tup_pb__691250);
+    .let _691865: %mem.Ptr (.I32, 0) = %mem.lea (100, ‹100; .I32›, 0) (_690877#1:(.Idx 2), 1:(.Idx 100));
+    .let _691874: %mem.M = %mem.store (.I32, 0) (_691499, _691865, _691344#0:(.Idx 2));
+    .let aug_load_691882: [%mem.M, .I32] = %mem.load (.I32, 0) (_691874, _691865);
+    .let pullback_load_692016: [%mem.M, .Cn [.I32, .Cn [%mem.M, .I32]]] = %mem.load (.Cn [.I32, .Cn [%mem.M, .I32]], 0) (aug_load_691882#0:(.Idx 2), pullback_lea_691249);
+    .con comp_tup_pb__690636 _691889::[_691891: .I32, _691894: .Cn [%mem.M, .I32]] @(1:(.Idx 2)) = {
+        .con comp_tup_pb__cont_691892 _691940::[_691941: .I32, _692020: .I32] @(1:(.Idx 2)) = {
+            // .let _691942: [%mem.M, .I32] = %direct.cps2ds_dep (.I32, Uf_691899) zero_pb_691934 _691941;
             //                                        ^
-            .let _691942: [%mem.M, %core.I32] = (⊤:%mem.M, 42:(%core.I32));
-            // .let _692021: [%mem.M, %core.I32] = %direct.cps2ds_dep (%core.I32, Uf_691949) pullback_load_692016#1:(.Idx 2) _692020;
+            .let _691942: [%mem.M, .I32] = (⊤:%mem.M, 42:(.I32));
+            // .let _692021: [%mem.M, .I32] = %direct.cps2ds_dep (.I32, Uf_691949) pullback_load_692016#1:(.Idx 2) _692020;
             //                                        ^
-            .let _692021: [%mem.M, %core.I32] = (⊤:%mem.M, 42:(%core.I32));
-            .let _692028: %core.I32 = %core.wrap.add %core.i32 0 (_691942#1:(.Idx 2), _692021#1:(.Idx 2));
+            .let _692021: [%mem.M, .I32] = (⊤:%mem.M, 42:(.I32));
+            .let _692028: .I32 = %core.wrap.add .i32 0 (_691942#1:(.Idx 2), _692021#1:(.Idx 2));
             _691894 (⊤:%mem.M, _692028)
         };
-        // comp_tup_pb__cont_691892 (42:(%core.I32), 42:(%core.I32))
-        .let _691886: [%core.I32, .Cn [%core.I32, .Cn «2; %core.I32»]] = %direct.cps2ds_dep («2; %core.I32», Uf_690659) eta_inner_mul_deriv_cps_690710 (100:(%core.I32), aug_load_691882#1:(.Idx 2));
+        // comp_tup_pb__cont_691892 (42:(.I32), 42:(.I32))
+        .let _691886: [.I32, .Cn [.I32, .Cn «2; .I32»]] = %direct.cps2ds_dep («2; .I32», Uf_690659) eta_inner_mul_deriv_cps_690710 (100:(.I32), aug_load_691882#1:(.Idx 2));
         //                                                                                  ^
         _691886#1:(.Idx 2) (_691891, comp_tup_pb__cont_691892)
     };
-    // .let _692035: [%mem.M, %core.I32] = (⊤:%mem.M,42:(%core.I32));
-    .let _692035: [%mem.M, %core.I32] = %direct.cps2ds_dep (%core.I32, Uf_690595) comp_tup_pb__690636 1:(%core.I32);
+    // .let _692035: [%mem.M, .I32] = (⊤:%mem.M,42:(.I32));
+    .let _692035: [%mem.M, .I32] = %direct.cps2ds_dep (.I32, Uf_690595) comp_tup_pb__690636 1:(.I32);
     //                                        ^
-    // .let _692095: [%mem.M, %core.I32] = (pullback_load_692016#0:(.Idx 2), 43:(%core.I32));
-    .let _692095: [%mem.M, %core.I32] = %direct.cps2ds_dep (%mem.M, Uf_692052) zero_pb_692087 pullback_load_692016#0:(.Idx 2);
+    // .let _692095: [%mem.M, .I32] = (pullback_load_692016#0:(.Idx 2), 43:(.I32));
+    .let _692095: [%mem.M, .I32] = %direct.cps2ds_dep (%mem.M, Uf_692052) zero_pb_692087 pullback_load_692016#0:(.Idx 2);
     //                                        ^
-    .let _692102: %core.I32 = %core.wrap.add %core.i32 0 (_692035#1:(.Idx 2), _692095#1:(.Idx 2));
+    .let _692102: .I32 = %core.wrap.add .i32 0 (_692035#1:(.Idx 2), _692095#1:(.Idx 2));
     return_690562 (⊤:%mem.M, _692102)
 };

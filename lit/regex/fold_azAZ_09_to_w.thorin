@@ -8,11 +8,11 @@
 .let i8 = .Idx 256;
 .let Top = ⊤:.Nat;
 
-.con .extern disj(mem: %mem.M, string: %mem.Ptr (<<Top; %core.I8>>, 0), return: .Cn [%mem.M, .Bool, %core.I32]) = {
-    .let pattern = %regex.disj 63 (%regex.lit 49:%core.I8, %regex.lit 48:%core.I8, %regex.lit 50:%core.I8, %regex.lit 51:%core.I8, %regex.lit 52:%core.I8, %regex.lit 53:%core.I8, %regex.lit 54:%core.I8, %regex.lit 55:%core.I8, %regex.lit 56:%core.I8, %regex.lit 57:%core.I8,
-                    %regex.lit 65:%core.I8, %regex.lit 66:%core.I8, %regex.lit 67:%core.I8, %regex.lit 68:%core.I8, %regex.lit 69:%core.I8, %regex.lit 70:%core.I8, %regex.lit 71:%core.I8, %regex.lit 72:%core.I8, %regex.lit 73:%core.I8, %regex.lit 74:%core.I8, %regex.lit 75:%core.I8, %regex.lit 76:%core.I8, %regex.lit 77:%core.I8, %regex.lit 78:%core.I8, %regex.lit 79:%core.I8, %regex.lit 80:%core.I8, %regex.lit 81:%core.I8, %regex.lit 82:%core.I8, %regex.lit 83:%core.I8, %regex.lit 84:%core.I8, %regex.lit 85:%core.I8, %regex.lit 86:%core.I8, %regex.lit 87:%core.I8, %regex.lit 88:%core.I8, %regex.lit 89:%core.I8, %regex.lit 90:%core.I8,
-                    %regex.lit 95:%core.I8,
-                    %regex.lit 97:%core.I8, %regex.lit 98:%core.I8, %regex.lit 99:%core.I8, %regex.lit 100:%core.I8, %regex.lit 101:%core.I8, %regex.lit 102:%core.I8, %regex.lit 103:%core.I8, %regex.lit 104:%core.I8, %regex.lit 105:%core.I8, %regex.lit 106:%core.I8, %regex.lit 107:%core.I8, %regex.lit 108:%core.I8, %regex.lit 109:%core.I8, %regex.lit 110:%core.I8, %regex.lit 111:%core.I8, %regex.lit 112:%core.I8, %regex.lit 113:%core.I8, %regex.lit 114:%core.I8, %regex.lit 115:%core.I8, %regex.lit 116:%core.I8, %regex.lit 117:%core.I8, %regex.lit 118:%core.I8, %regex.lit 119:%core.I8, %regex.lit 120:%core.I8, %regex.lit 121:%core.I8, %regex.lit 122:%core.I8);
-    return (pattern (mem, string, 0:%core.I32))
+.con .extern disj(mem: %mem.M, string: %mem.Ptr (<<Top; .I8>>, 0), return: .Cn [%mem.M, .Bool, .I32]) = {
+    .let pattern = %regex.disj 63 (%regex.lit 49:.I8, %regex.lit 48:.I8, %regex.lit 50:.I8, %regex.lit 51:.I8, %regex.lit 52:.I8, %regex.lit 53:.I8, %regex.lit 54:.I8, %regex.lit 55:.I8, %regex.lit 56:.I8, %regex.lit 57:.I8,
+                    %regex.lit 65:.I8, %regex.lit 66:.I8, %regex.lit 67:.I8, %regex.lit 68:.I8, %regex.lit 69:.I8, %regex.lit 70:.I8, %regex.lit 71:.I8, %regex.lit 72:.I8, %regex.lit 73:.I8, %regex.lit 74:.I8, %regex.lit 75:.I8, %regex.lit 76:.I8, %regex.lit 77:.I8, %regex.lit 78:.I8, %regex.lit 79:.I8, %regex.lit 80:.I8, %regex.lit 81:.I8, %regex.lit 82:.I8, %regex.lit 83:.I8, %regex.lit 84:.I8, %regex.lit 85:.I8, %regex.lit 86:.I8, %regex.lit 87:.I8, %regex.lit 88:.I8, %regex.lit 89:.I8, %regex.lit 90:.I8,
+                    %regex.lit 95:.I8,
+                    %regex.lit 97:.I8, %regex.lit 98:.I8, %regex.lit 99:.I8, %regex.lit 100:.I8, %regex.lit 101:.I8, %regex.lit 102:.I8, %regex.lit 103:.I8, %regex.lit 104:.I8, %regex.lit 105:.I8, %regex.lit 106:.I8, %regex.lit 107:.I8, %regex.lit 108:.I8, %regex.lit 109:.I8, %regex.lit 110:.I8, %regex.lit 111:.I8, %regex.lit 112:.I8, %regex.lit 113:.I8, %regex.lit 114:.I8, %regex.lit 115:.I8, %regex.lit 116:.I8, %regex.lit 117:.I8, %regex.lit 118:.I8, %regex.lit 119:.I8, %regex.lit 120:.I8, %regex.lit 121:.I8, %regex.lit 122:.I8);
+    return (pattern (mem, string, 0:.I32))
     // CHECK: %regex.disj 2 (%regex.disj 2 (%regex.disj 2 (%regex.range (48:(.Idx 256), 57:(.Idx 256)), %regex.range (65:(.Idx 256), 90:(.Idx 256))), %regex.range ‹2; 95:(.Idx 256)›), %regex.range (97:(.Idx 256), 122:(.Idx 256)))
 };

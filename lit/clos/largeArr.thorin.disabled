@@ -5,10 +5,10 @@
 
 .let size = 100000000;
 
-.con .extern main [mem: %mem.M, argc: %core.I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; %core.I8», 0)», 0), return : .Cn [%mem.M, %core.I32]] = {
-    .let (alloc_mem, arr) = %mem.alloc (<<size; %core.I32>>, 0) (mem);
-    .let lea = %mem.lea (size, <size; %core.I32>, 0) (arr, 0:(.Idx size));
-    .let (load_mem, val) = %mem.load (%core.I32, 0) (alloc_mem, lea);
+.con .extern main [mem: %mem.M, argc: .I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), return : .Cn [%mem.M, .I32]] = {
+    .let (alloc_mem, arr) = %mem.alloc (<<size; .I32>>, 0) (mem);
+    .let lea = %mem.lea (size, <size; .I32>, 0) (arr, 0:(.Idx size));
+    .let (load_mem, val) = %mem.load (.I32, 0) (alloc_mem, lea);
 
-    return ( load_mem, 1:%core.I32 )
+    return ( load_mem, 1:.I32 )
 };

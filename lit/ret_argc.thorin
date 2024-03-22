@@ -7,7 +7,7 @@
 
 .import core;
 
-.con .extern main(mem: %mem.M, argc: %core.I32, argv: %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return: .Cn [%mem.M, %core.I32]) = return (mem, argc);
+.con .extern main(mem: %mem.M, argc: .I32, argv: %mem.Ptr (%mem.Ptr (.I8, 0), 0), return: .Cn [%mem.M, .I32]) = return (mem, argc);
 
 // CHECK-DAG: .con .extern main _[[mainVarId:[0-9_]+]]::[mem_[[memId:[0-9_]+]]: %mem.M, argc_[[argcId:[0-9_]+]]: .Idx 4294967296, %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return_[[returnId:[0-9_]+]]: .Cn [%mem.M, .Idx 4294967296]]{{(@.*)?}}= {
 // CHECK-DAG: return_[[returnEtaId:[0-9_]+]] (mem_[[memId]], argc_[[argcId]])

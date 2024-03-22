@@ -6,19 +6,19 @@
 .con g ![
     n:.Nat,
     i:.Idx n,
-    t:<< n; [%core.I32,%core.I32]>>,
-    return:.Cn[%core.I32]] = {
+    t:<< n; [.I32,.I32]>>,
+    return:.Cn[.I32]] = {
 
     return (t#i#(1:(.Idx 2)))
 };
 
 
-.con .extern f [return:.Cn[%core.I32]] = {
+.con .extern f [return:.Cn[.I32]] = {
     g (
         1,
         (0:(.Idx 1)),
         (
-            (42:%core.I32, 43:%core.I32)
+            (42:.I32, 43:.I32)
         ),
         return
     )

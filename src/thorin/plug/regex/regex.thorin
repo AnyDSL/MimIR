@@ -18,7 +18,7 @@
 /// ### RE
 ///
 /// Char & String
-.let Char = %core.I8;
+.let Char = .I8;
 .lam Str(n: .Nat): * = %mem.Ptr0 «n; Char»;
 /// A regular expression matcher.
 .lam Res (n: .Nat): * = [%mem.M, .Bool, .Idx n];

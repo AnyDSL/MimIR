@@ -21,7 +21,7 @@
 /// At the moment, the *address space* is not really used and a placeholder for future work.
 .ax %mem.Ptr: [*, .Nat] -> *;
 
-.lam %mem.Ptr0 T: * : * = %mem.Ptr (T, 0);
+.lam %mem.Ptr0(T: *): * = %mem.Ptr (T, 0);
 ///
 /// ## Operations w/ Side Effects
 ///

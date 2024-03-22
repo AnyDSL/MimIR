@@ -4,9 +4,9 @@
 .plugin core;
 .plugin matrix;
 
-// .let MT = (2, (2,4),  %core.I32);
+// .let MT = (2, (2,4),  .I32);
 
-.con fun [[mem:%mem.M, acc:%core.I32, [a:%core.I32, b:%core.I32]], ret:.Cn[%mem.M,%core.I32]] = {
+.con fun [[mem:%mem.M, acc:.I32, [a:.I32, b:.I32]], ret:.Cn[%mem.M,.I32]] = {
     .let v = %core.wrap.mul 0 (a,b);
 
     // reduce op = addition
@@ -17,26 +17,26 @@
 
 .con .extern f [mem : %mem.M,
     [k:.Nat, l:.Nat, m:.Nat],
-    // M:%matrix.Mat (2,(k,m), %core.I32),
-    // N:%matrix.Mat (2,(m,l), %core.I32),
-    return: .Cn[%mem.M, %matrix.Mat (2,(k,l), %core.I32)]] = {
+    // M:%matrix.Mat (2,(k,m), .I32),
+    // N:%matrix.Mat (2,(m,l), .I32),
+    return: .Cn[%mem.M, %matrix.Mat (2,(k,l), .I32)]] = {
     // return: .Cn[%mem.M]] = {
 
-    .let (mem2, M) = %matrix.constMat (2,(k,m), %core.I32) (mem, 42:%core.I32);
-    .let (mem3, N) = %matrix.constMat (2,(m,l), %core.I32) (mem2, 44:%core.I32);
+    .let (mem2, M) = %matrix.constMat (2,(k,m), .I32) (mem, 42:.I32);
+    .let (mem3, N) = %matrix.constMat (2,(m,l), .I32) (mem2, 44:.I32);
 
     // .let mem4 = mem3;
     .let (mem4,MN) = %matrix.map_reduce
         (
-            2, (k,l),  %core.I32,
+            2, (k,l),  .I32,
             2,
             (2,2),
-            ( %core.I32, %core.I32),
+            ( .I32, .I32),
             ((k,m),(m,l))
         )
         (
             mem3,
-            0:%core.I32,
+            0:.I32,
             fun,
             (
                 ((0,2),M),

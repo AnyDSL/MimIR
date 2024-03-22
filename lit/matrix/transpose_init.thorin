@@ -31,14 +31,14 @@
     inner_matrix_transpose;
 
 .con .extern f [mem : %mem.M, [k:.Nat, l:.Nat], return: .Cn[%mem.M]] =
-    // M:%matrix.Mat (2,(k,m),%core.I32),
-    // N:%matrix.Mat (2,(m,l),%core.I32),
-    // return: .Cn[%mem.M, %matrix.Mat (2,(k,l),%core.I32)]] = {
+    // M:%matrix.Mat (2,(k,m),.I32),
+    // N:%matrix.Mat (2,(m,l),.I32),
+    // return: .Cn[%mem.M, %matrix.Mat (2,(k,l),.I32)]] = {
 
-    .let (mem2, M) = %matrix.constMat (2,(k,l),%core.I32) (mem, 42:%core.I32);
-    // .let (mem3, N) = %matrix.constMat (2,(m,l),%core.I32) (mem2, 44:%core.I32);
+    .let (mem2, M) = %matrix.constMat (2,(k,l),.I32) (mem, 42:.I32);
+    // .let (mem3, N) = %matrix.constMat (2,(m,l),.I32) (mem2, 44:.I32);
 
-    .con cont [mem: %mem.M, N: %matrix.Mat (2,(l, k),%core.I32)] = return mem;
-    ex_internal_mapRed_matrix_transpose ((k,l),%core.I32) ((mem, M),cont);
+    .con cont [mem: %mem.M, N: %matrix.Mat (2,(l, k),.I32)] = return mem;
+    ex_internal_mapRed_matrix_transpose ((k,l),.I32) ((mem, M),cont);
 
 // CHECK-NOT: %matrix.

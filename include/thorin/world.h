@@ -339,6 +339,15 @@ public:
     const Lit* lit_nat_1() { return data_.lit_nat_1; }
     const Lit* lit_nat_max() { return data_.lit_nat_max; }
     const Lit* lit_0_1() { return data_.lit_0_1; }
+    // clang-format off
+    const Lit* i1()  { return lit_nat(Idx::bitwidth2size(1)); };
+    const Lit* i2()  { return lit_nat(Idx::bitwidth2size(2)); };
+    const Lit* i4()  { return lit_nat(Idx::bitwidth2size(4)); };
+    const Lit* i8()  { return lit_nat(Idx::bitwidth2size(8)); };
+    const Lit* i16() { return lit_nat(Idx::bitwidth2size(16)); };
+    const Lit* i32() { return lit_nat(Idx::bitwidth2size(32)); };
+    const Lit* i64() { return lit_nat(Idx::bitwidth2size(64)); };
+    // clang-format on
     /// Constructs a Lit of type Idx of size @p size.
     /// @note `size = 0` means `2^64`.
     const Lit* lit_idx(nat_t size, u64 val) { return lit(type_idx(size), val); }
@@ -409,6 +418,15 @@ public:
     /// Constructs a type Idx of size $2^width$.
     /// `width = 64` will be automatically converted to size `0` - the encoding for $2^64$.
     Ref type_int(nat_t width) { return type_idx(lit_nat(Idx::bitwidth2size(width))); }
+    // clang-format off
+    Ref I1()  { return type_int(1); };
+    Ref I2()  { return type_int(2); };
+    Ref I4()  { return type_int(4); };
+    Ref I8()  { return type_int(8); };
+    Ref I16() { return type_int(16); };
+    Ref I32() { return type_int(32); };
+    Ref I64() { return type_int(64); };
+    // clang-format on
     Ref type_bool() { return data_.type_bool; }
     ///@}
 
