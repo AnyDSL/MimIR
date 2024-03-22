@@ -27,7 +27,7 @@ std::tuple<std::vector<ClosLit>, Ref> isa_branch(Ref callee) {
 Ref BranchClosElim::rewrite(Ref def) {
     auto& w  = world();
     auto app = def->isa<App>();
-    if (!app || !Pi::isa_cn(app->callee_type())) return def;
+    if (!app || !Pi::isa_Cn(app->callee_type())) return def;
 
     if (auto [branches, index] = isa_branch(app->callee()); index) {
         w.DLOG("FLATTEN BRANCH {}", app->callee());

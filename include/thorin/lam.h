@@ -47,11 +47,11 @@ public:
     /// Checks certain properties of this Pi regarding continuations.
     // clang-format off
     /// Is this a continuation - i.e. is the Pi::codom thorin::Bot%tom?
-    static const Pi* isa_cn(Ref d) { return d->isa<Pi>() && d->as<Pi>()->codom()->node() == Node::Bot ? d->as<Pi>() : nullptr; }
-    /// Is this a continuation (Pi::isa_cn) which has a Pi::ret_pi?
-    static const Pi* isa_returning(Ref d)  { return isa_cn(d) &&  d->as<Pi>()->ret_pi() ? d->as<Pi>() : nullptr; }
-    /// Is this a continuation (Pi::isa_cn) that is **not** Pi::isa_returning?
-    static const Pi* isa_basicblock(Ref d) { return isa_cn(d) && !d->as<Pi>()->ret_pi() ? d->as<Pi>() : nullptr; }
+    static const Pi* isa_Cn(Ref d) { return d->isa<Pi>() && d->as<Pi>()->codom()->node() == Node::Bot ? d->as<Pi>() : nullptr; }
+    /// Is this a continuation (Pi::isa_Cn) which has a Pi::ret_pi?
+    static const Pi* isa_returning(Ref d)  { return isa_Cn(d) &&  d->as<Pi>()->ret_pi() ? d->as<Pi>() : nullptr; }
+    /// Is this a continuation (Pi::isa_Cn) that is **not** Pi::isa_returning?
+    static const Pi* isa_basicblock(Ref d) { return isa_Cn(d) && !d->as<Pi>()->ret_pi() ? d->as<Pi>() : nullptr; }
     // clang-format on
     ///@}
 
@@ -126,7 +126,7 @@ public:
     ///@{
     /// @see @ref continuations "Pi: Continuations"
     // clang-format off
-    static const Lam* isa_cn(Ref d) { return Pi::isa_cn(d->type()) ? d->isa<Lam>() : nullptr; }
+    static const Lam* isa_cn(Ref d) { return Pi::isa_Cn(d->type()) ? d->isa<Lam>() : nullptr; }
     static const Lam* isa_basicblock(Ref d) { return Pi::isa_basicblock(d->type()) ? d->isa<Lam>() : nullptr; }
     static const Lam* isa_returning(Ref d)  { return Pi::isa_returning (d->type()) ? d->isa<Lam>() : nullptr; }
     static Lam* isa_mut_cn(Ref d) { return isa_cn(d) ? d->isa_mut<Lam>() : nullptr; }                ///< Only for mutables.

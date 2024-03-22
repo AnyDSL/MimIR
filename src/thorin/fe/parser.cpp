@@ -217,9 +217,9 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::D_paren_l: return parse_tuple_expr();
         case Tag::K_Type:    return parse_type_expr();
         case Tag::K_Univ:    lex(); return world().univ();
-        case Tag::K_Bool:    lex(); return world().type_bool();
-        case Tag::K_Idx:     lex(); return world().type_idx();
-        case Tag::K_Nat:     lex(); return world().type_nat();
+        case Tag::K_Bool:    lex(); return world().Bool();
+        case Tag::K_Idx:     lex(); return world().Idx();
+        case Tag::K_Nat:     lex(); return world().Nat();
         case Tag::K_ff:      lex(); return world().lit_ff();
         case Tag::K_tt:      lex(); return world().lit_tt();
         case Tag::K_i1:      lex(); return world().i1();
@@ -302,7 +302,7 @@ Ref Parser::parse_pack_expr() {
         eat(Tag::T_colon);
 
         auto shape = parse_expr("shape of a pack");
-        auto infer = world().mut_infer(world().type_idx(shape))->set(id.sym());
+        auto infer = world().mut_infer(world().Idx(shape))->set(id.sym());
         scopes_.bind(id.dbg(), infer);
 
         expect(Tag::T_semicolon, "pack");
@@ -391,13 +391,13 @@ Pi* Parser::parse_pi_expr(Pi* outer) {
             expect(Tag::T_arrow, entity);
             codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
             break;
-        case Tag::K_Cn: codom = world().type_bot(); break;
+        case Tag::K_Cn: codom = world().Bot(); break;
         case Tag::K_Fn: {
             expect(Tag::T_arrow, entity);
-            codom     = world().type_bot();
+            codom     = world().Bot();
             auto ret  = parse_expr("domain of return continuation", Tok::Prec::Arrow);
             auto pi   = pis.back();
-            auto last = world().sigma({pi->dom(), world().cn(ret)});
+            auto last = world().sigma({pi->dom(), world().Cn(ret)});
             pi->unset()->set_dom(last);
             break;
         }
@@ -475,12 +475,12 @@ Lam* Parser::parse_lam(bool is_decl) {
             break;
         }
         case Tag::K_cn:
-        case Tag::K_con: codom = world().type_bot(); break;
+        case Tag::K_con: codom = world().Bot(); break;
         case Tag::K_fn:
         case Tag::K_fun: {
             auto& [pi, lam, filter] = funs.back();
 
-            codom        = world().type_bot();
+            codom        = world().Bot();
             auto track   = tracker();
             auto ret     = accept(Tag::T_colon) ? parse_expr("return type of a "s + entity) : world().mut_infer_type();
             auto ret_loc = dom_p->loc() + track.loc();
@@ -493,7 +493,7 @@ Lam* Parser::parse_lam(bool is_decl) {
             if (filter) lam->set_filter(filter);
             auto old_var = lam->var()->as<Var>();
             auto rw      = VarRewriter(old_var, sigma->var(2, 0));
-            sigma->set(1, world().cn({rw.rewrite(ret)}));
+            sigma->set(1, world().Cn({rw.rewrite(ret)}));
 
             auto new_pi  = world().mut_pi(pi->type(), pi->is_implicit())->set(ret_loc)->set_dom(sigma);
             auto new_lam = world().mut_lam(new_pi);
@@ -604,7 +604,7 @@ Ref Parser::parse_lit_expr() {
     if (tok.tag() == Tag::L_s) error(prev_, ".Nat literal specified as signed but must be unsigned");
     if (tok.tag() == Tag::L_f) error(prev_, ".Nat literal specified as floating-point but must be unsigned");
 
-    return world().lit_nat(tok.lit_u())->set(track.loc());
+    return world().nat(tok.lit_u())->set(track.loc());
 }
 
 /*

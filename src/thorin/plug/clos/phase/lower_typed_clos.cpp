@@ -16,7 +16,7 @@ const Def* insert_ret(const Def* def, const Def* ret) {
 
 void LowerTypedClos::start() {
     // TODO put into c'tor - doesn't work right now, because world becomes invalid
-    dummy_ret_ = world().bot(world().cn(world().annex<mem::M>()));
+    dummy_ret_ = world().bot(world().Cn(world().annex<mem::M>()));
 
     auto externals = std::vector(world().externals().begin(), world().externals().end());
     for (auto [_, n] : externals) rewrite(n);
@@ -51,7 +51,7 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
         return new_dom;
     }));
     if (Lam::isa_basicblock(lam) && adjust_bb_type) new_dom = insert_ret(new_dom, dummy_ret_->type());
-    auto new_type = w.cn(new_dom);
+    auto new_type = w.Cn(new_dom);
     auto new_lam  = lam->stub(w, new_type);
     w.DLOG("stub {} ~> {}", lam, new_lam);
     if (lam->is_set()) new_lam->set(lam->filter(), lam->body());
@@ -99,7 +99,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
 
     if (auto ct = isa_clos_type(def)) {
         auto pi = rewrite(ct->op(1))->as<Pi>();
-        if (Pi::isa_basicblock(pi)) pi = w.cn(insert_ret(pi->dom(), dummy_ret_->type()));
+        if (Pi::isa_basicblock(pi)) pi = w.Cn(insert_ret(pi->dom(), dummy_ret_->type()));
         auto env_type = rewrite(ct->op(2));
         return map(def, w.sigma({pi, env_type}));
     } else if (auto proj = def->isa<Extract>()) {

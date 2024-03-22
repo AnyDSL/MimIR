@@ -98,8 +98,8 @@ UMax::UMax(World& world, Defs ops)
 #ifndef DOXYGEN // TODO Doxygen doesn't expand THORIN_DEF_MIXIN
 Ref Infer    ::rebuild(World&,   Ref,   Defs  ) const { fe::unreachable(); }
 Ref Global   ::rebuild(World&,   Ref,   Defs  ) const { fe::unreachable(); }
-Ref Idx      ::rebuild(World& w, Ref  , Defs  ) const { assert(isa_imm()); return w.type_idx(); }
-Ref Nat      ::rebuild(World& w, Ref  , Defs  ) const { assert(isa_imm()); return w.type_nat(); }
+Ref Idx      ::rebuild(World& w, Ref  , Defs  ) const { assert(isa_imm()); return w.Idx(); }
+Ref Nat      ::rebuild(World& w, Ref  , Defs  ) const { assert(isa_imm()); return w.Nat(); }
 Ref Univ     ::rebuild(World& w, Ref  , Defs  ) const { assert(isa_imm()); return w.univ(); }
 Ref Ac       ::rebuild(World& w, Ref t, Defs o) const { assert(isa_imm()); return w.ac(t, o)                     ->set(dbg()); }
 Ref App      ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.app(o[0], o[1])              ->set(dbg()); }
@@ -185,7 +185,7 @@ const Def* Arr::immutabilize() {
     if (auto var = has_var(); !var || !body()->free_vars().contains(var)) return w.arr(shape(), body());
 
     if (auto n = Lit::isa(shape()); n && *n < w.flags().scalerize_threshold)
-        return w.sigma(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
+        return w.sigma(DefVec(*n, [&](size_t i) { return reduce(w.idx(*n, i)); }));
 
     return nullptr;
 }
@@ -195,7 +195,7 @@ const Def* Pack::immutabilize() {
     if (auto var = has_var(); !var || !body()->free_vars().contains(var)) return w.pack(shape(), body());
 
     if (auto n = Lit::isa(shape()); n && *n < w.flags().scalerize_threshold)
-        return w.tuple(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
+        return w.tuple(DefVec(*n, [&](size_t i) { return reduce(w.idx(*n, i)); }));
 
     return nullptr;
 }
@@ -477,8 +477,8 @@ Ref Def::var() {
     if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam);
     if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi);
     if (auto sig  = isa<Sigma>()) return w.var(sig,         sig);
-    if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->shape()), arr ); // TODO shapes like (2, 3)
-    if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->shape()), pack); // TODO shapes like (2, 3)
+    if (auto arr  = isa<Arr  >()) return w.var(w.Idx(arr ->shape()), arr ); // TODO shapes like (2, 3)
+    if (auto pack = isa<Pack >()) return w.var(w.Idx(pack->shape()), pack); // TODO shapes like (2, 3)
     if (isa<Bound >()) return w.var(this, this);
     if (isa<Infer >()) return nullptr;
     if (isa<Global>()) return nullptr;
@@ -497,10 +497,10 @@ bool Def::is_term() const {
 }
 
 Ref Def::arity() const {
-    if (auto sigma  = isa<Sigma>()) return world().lit_nat(sigma->num_ops());
+    if (auto sigma  = isa<Sigma>()) return world().nat(sigma->num_ops());
     if (auto arr    = isa<Arr  >()) return arr->shape();
     if (auto t = type())            return t->arity();
-    return world().lit_nat_1();
+    return world().nat_1();
 }
 
 std::optional<nat_t> Def::isa_lit_arity() const {
@@ -547,11 +547,11 @@ const Def* Def::proj(nat_t a, nat_t i) const {
         return op(i);
     } else if (auto arr = isa<Arr>()) {
         if (arr->arity()->isa<Top>()) return arr->body();
-        return arr->reduce(w.lit_idx(a, i));
+        return arr->reduce(w.idx(a, i));
     } else if (auto pack = isa<Pack>()) {
         if (pack->arity()->isa<Top>()) return pack->body();
         assert(!w.is_frozen() && "TODO");
-        return pack->reduce(w.lit_idx(a, i));
+        return pack->reduce(w.idx(a, i));
     }
 
     if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {

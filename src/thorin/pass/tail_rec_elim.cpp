@@ -28,7 +28,7 @@ undo_t TailRecElim::analyze(Ref def) {
                 rec               = old->stub(world(), old->type());
                 auto doms         = rec->doms();
                 auto loop_dom     = doms.view().rsubspan(1);
-                loop              = rec->stub(world(), world().cn(loop_dom));
+                loop              = rec->stub(world(), world().Cn(loop_dom));
                 world().DLOG("old {} -> (rec: {}, loop: {})", old, rec, loop);
 
                 auto n = rec->num_doms();

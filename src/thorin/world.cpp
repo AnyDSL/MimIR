@@ -43,20 +43,20 @@ World::World(Driver* driver, const State& state)
     data_.lit_univ_1  = lit_univ(1);
     data_.type_0      = type(lit_univ_0());
     data_.type_1      = type(lit_univ_1());
-    data_.type_bot    = insert<Bot>(0, type());
+    data_.Bot         = insert<thorin::Bot>(0, type());
     data_.sigma       = insert<Sigma>(0, type(), Defs{})->as<Sigma>();
     data_.tuple       = insert<Tuple>(0, sigma(), Defs{})->as<Tuple>();
-    data_.type_nat    = insert<Nat>(0, *this);
-    data_.type_idx    = insert<Idx>(0, pi(type_nat(), type()));
-    data_.top_nat     = insert<Top>(0, type_nat());
-    data_.lit_nat_0   = lit_nat(0);
-    data_.lit_nat_1   = lit_nat(1);
-    data_.lit_0_1     = lit_idx(1, 0);
-    data_.type_bool   = type_idx(2);
-    data_.lit_bool[0] = lit_idx(2, 0_u64);
-    data_.lit_bool[1] = lit_idx(2, 1_u64);
-    data_.lit_nat_max = lit_nat(nat_t(-1));
-    data_.exit        = mut_lam(cn(type_bot()))->set(sym("exit"));
+    data_.Nat         = insert<thorin::Nat>(0, *this);
+    data_.Idx         = insert<thorin::Idx>(0, pi(Nat(), type()));
+    data_.top_nat     = insert<Top>(0, Nat());
+    data_.nat_0       = nat(0);
+    data_.nat_1       = nat(1);
+    data_.lit_0_1     = idx(1, 0);
+    data_.Bool        = Idx(2);
+    data_.lit_bool[0] = idx(2, 0_u64);
+    data_.lit_bool[1] = idx(2, 1_u64);
+    data_.nat_max     = nat(nat_t(-1));
+    data_.exit        = mut_lam(Cn(Bot()))->set(sym("exit"));
 }
 
 World::World(Driver* driver)
@@ -459,7 +459,7 @@ template<bool Up> Ref World::bound(Defs ops) {
     auto kind = umax<Sort::Type>(ops);
 
     // has ext<Up> value?
-    if (std::ranges::any_of(ops, [&](Ref op) { return Up ? bool(op->isa<Top>()) : bool(op->isa<Bot>()); }))
+    if (std::ranges::any_of(ops, [&](Ref op) { return Up ? bool(op->isa<Top>()) : bool(op->isa<thorin::Bot>()); }))
         return ext<Up>(kind);
 
     // ignore: ext<!Up>

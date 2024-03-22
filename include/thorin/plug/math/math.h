@@ -47,8 +47,8 @@ using VMode = std::variant<Mode, nat_t, Ref>;
 /// thorin::plug::math::VMode -> Ref.
 inline Ref mode(World& w, VMode m) {
     if (auto def = std::get_if<Ref>(&m)) return *def;
-    if (auto nat = std::get_if<nat_t>(&m)) return w.lit_nat(*nat);
-    return w.lit_nat((nat_t)std::get<Mode>(m));
+    if (auto nat = std::get_if<nat_t>(&m)) return w.nat(*nat);
+    return w.nat((nat_t)std::get<Mode>(m));
 }
 ///@}
 
@@ -59,8 +59,8 @@ inline Ref type_f(Ref pe) {
     return w.app(w.annex<F>(), pe);
 }
 inline Ref type_f(World& w, nat_t p, nat_t e) {
-    auto lp = w.lit_nat(p);
-    auto le = w.lit_nat(e);
+    auto lp = w.nat(p);
+    auto le = w.nat(e);
     return type_f(w.tuple({lp, le}));
 }
 template<nat_t P, nat_t E> inline auto match_f(Ref def) {

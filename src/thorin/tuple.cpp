@@ -40,8 +40,8 @@ const Def* unflatten(Defs defs, const Def* type, size_t& j, bool flatten_muts) {
 
 const Def* Pack::shape() const {
     if (auto arr = type()->isa<Arr>()) return arr->shape();
-    if (type() == world().sigma()) return world().lit_nat_0();
-    return world().lit_nat_1();
+    if (type() == world().sigma()) return world().nat_0();
+    return world().nat_1();
 }
 
 bool is_unit(const Def* def) { return def->type() == def->world().sigma(); }

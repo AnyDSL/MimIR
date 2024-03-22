@@ -63,7 +63,7 @@ const Pi* pullback_type(const Def* E, const Def* A) {
     auto& world   = E->world();
     auto tang_arg = tangent_type_fun(A);
     auto tang_ret = tangent_type_fun(E);
-    auto pb_ty    = world.cn({tang_ret, world.cn(tang_arg)});
+    auto pb_ty    = world.Cn({tang_ret, world.Cn(tang_arg)});
     return pb_ty;
 }
 
@@ -81,7 +81,7 @@ const Pi* autodiff_type_fun(const Def* arg, const Def* ret) {
     world.DLOG("pb type: {}", pb_ty);
     // `P' -> Q' * (Q* -> P*)`
 
-    auto deriv_ty = world.cn({aug_arg, world.cn({aug_ret, pb_ty})});
+    auto deriv_ty = world.Cn({aug_arg, world.Cn({aug_ret, pb_ty})});
     world.DLOG("autodiff type: {}", deriv_ty);
     return deriv_ty;
 }
@@ -89,7 +89,7 @@ const Pi* autodiff_type_fun(const Def* arg, const Def* ret) {
 
 const Pi* autodiff_type_fun_pi(const Pi* pi) {
     auto& world = pi->world();
-    if (!Pi::isa_cn(pi)) {
+    if (!Pi::isa_Cn(pi)) {
         // TODO: dependency
         auto arg = pi->dom();
         auto ret = pi->codom();
@@ -117,7 +117,7 @@ const Def* autodiff_type_fun(const Def* ty) {
     // Also handles autodiff call from axiom declaration => abstract => leave it.
     world.DLOG("AutoDiff on type: {} <{}>", ty, ty->node_name());
     if (Idx::size(ty)) return ty;
-    if (ty == world.type_nat()) return ty;
+    if (ty == world.Nat()) return ty;
     if (auto arr = ty->isa<Arr>()) {
         auto shape   = arr->shape();
         auto body    = arr->body();
@@ -169,7 +169,7 @@ const Def* zero_def(const Def* T) {
 const Def* op_sum(const Def* T, Defs defs) {
     // TODO: assert all are of type T
     auto& world = T->world();
-    return world.app(world.app(world.annex<sum>(), {world.lit_nat(defs.size()), T}), defs);
+    return world.app(world.app(world.annex<sum>(), {world.nat(defs.size()), T}), defs);
 }
 
 } // namespace thorin::plug::autodiff

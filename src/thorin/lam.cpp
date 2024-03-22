@@ -72,8 +72,8 @@ const Def* compose_cn(const Def* f, const Def* g) {
     world.DLOG("  B: {}", B);
     world.DLOG("  C: {}", C);
 
-    auto H     = world.cn({A, world.cn(C)});
-    auto Hcont = world.cn(B);
+    auto H     = world.Cn({A, world.Cn(C)});
+    auto Hcont = world.Cn(B);
 
     auto h     = world.mut_lam(H)->set("comp_"s + f->sym().str() + "_"s + g->sym().str());
     auto hcont = world.mut_lam(Hcont)->set("comp_"s + f->sym().str() + "_"s + g->sym().str() + "_cont"s);

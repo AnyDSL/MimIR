@@ -15,11 +15,11 @@ namespace thorin::plug::mem {
 /// Same as World::cn / World::pi but adds a `%%mem.M`-typed Var to each Pi.
 inline const Pi* cn_mem(Ref dom) {
     World& w = dom->world();
-    return w.cn({w.annex<mem::M>(), dom});
+    return w.Cn({w.annex<mem::M>(), dom});
 }
 inline const Pi* cn_mem_ret(Ref dom, Ref ret_dom) {
     World& w = dom->world();
-    return w.cn({w.annex<mem::M>(), dom, cn_mem(ret_dom)});
+    return w.Cn({w.annex<mem::M>(), dom, cn_mem(ret_dom)});
 }
 inline const Pi* pi_mem(Ref domain, Ref codomain) {
     World& w = domain->world();
@@ -28,7 +28,7 @@ inline const Pi* pi_mem(Ref domain, Ref codomain) {
 }
 inline const Pi* fn_mem(Ref domain, Ref codomain) {
     World& w = domain->world();
-    return w.cn({w.annex<mem::M>(), domain, cn_mem(codomain)});
+    return w.Cn({w.annex<mem::M>(), domain, cn_mem(codomain)});
 }
 
 /// Returns the (first) element of type mem::M from the given tuple.
@@ -145,7 +145,7 @@ inline Ref op_remem(Ref mem) {
 ///@{
 inline Ref op_alloc(Ref type, Ref mem) {
     World& w = type->world();
-    return w.app(w.app(w.annex<alloc>(), {type, w.lit_nat_0()}), mem);
+    return w.app(w.app(w.annex<alloc>(), {type, w.nat_0()}), mem);
 }
 ///@}
 
@@ -153,7 +153,7 @@ inline Ref op_alloc(Ref type, Ref mem) {
 ///@{
 inline Ref op_slot(Ref type, Ref mem) {
     World& w = type->world();
-    return w.app(w.app(w.annex<slot>(), {type, w.lit_nat_0()}), {mem, w.lit_nat(w.curr_gid())});
+    return w.app(w.app(w.annex<slot>(), {type, w.nat_0()}), {mem, w.nat(w.curr_gid())});
 }
 ///@}
 
@@ -162,7 +162,7 @@ inline Ref op_slot(Ref type, Ref mem) {
 inline Ref op_malloc(Ref type, Ref mem) {
     World& w  = type->world();
     auto size = w.call(core::trait::size, type);
-    return w.app(w.app(w.annex<malloc>(), {type, w.lit_nat_0()}), {mem, size});
+    return w.app(w.app(w.annex<malloc>(), {type, w.nat_0()}), {mem, size});
 }
 ///@}
 
@@ -171,7 +171,7 @@ inline Ref op_malloc(Ref type, Ref mem) {
 inline Ref op_mslot(Ref type, Ref mem, Ref id) {
     World& w  = type->world();
     auto size = w.call(core::trait::size, type);
-    return w.app(w.app(w.annex<mslot>(), {type, w.lit_nat_0()}), {mem, size, id});
+    return w.app(w.app(w.annex<mslot>(), {type, w.nat_0()}), {mem, size, id});
 }
 ///@}
 

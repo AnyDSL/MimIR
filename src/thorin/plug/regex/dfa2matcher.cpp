@@ -68,9 +68,9 @@ Ref match_range(Ref c, nat_t lo, nat_t hi) {
     if (lo == 0 && hi == 255) return w.lit_tt();
 
     // .let in_range     = %core.bit2.and_ 0 (%core.icmp.uge (char, lower),  %core.icmp.ule (char, upper));
-    auto below_hi = w.call(core::icmp::ule, w.tuple({c, w.lit_idx(256, hi)}));
-    auto above_lo = w.call(core::icmp::uge, w.tuple({c, w.lit_idx(256, lo)}));
-    return w.call(core::bit2::and_, w.lit_nat(2), w.tuple({below_hi, above_lo}));
+    auto below_hi = w.call(core::icmp::ule, w.tuple({c, w.idx(256, hi)}));
+    auto above_lo = w.call(core::icmp::uge, w.tuple({c, w.idx(256, lo)}));
+    return w.call(core::bit2::and_, w.nat(2), w.tuple({below_hi, above_lo}));
 }
 
 DFAMap<Ref> create_check_match_transitions_from(Ref c, const DFANode* state) {
@@ -85,7 +85,7 @@ DFAMap<Ref> create_check_match_transitions_from(Ref c, const DFANode* state) {
                 state2check.emplace(state, match_range(c, lo, hi));
             else
                 state2check[state]
-                    = w.call(core::bit2::or_, w.lit_nat(2), w.tuple({state2check[state], match_range(c, lo, hi)}));
+                    = w.call(core::bit2::or_, w.nat(2), w.tuple({state2check[state], match_range(c, lo, hi)}));
     }
     return state2check;
 }
@@ -99,9 +99,9 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, Ref n) {
     DFAMap<Lam*> state2matcher;
 
     // ((mem: %mem.M, string: Str n, pos: .Idx n), .Cn [%mem.M, .Bool, .Idx n])
-    auto matcher_con  = w.cn(w.sigma({w.annex<mem::M>(), w.type_bool(), w.type_idx(n)}));
-    auto matcher_args = w.sigma({w.annex<mem::M>(), w.call<mem::Ptr0>(w.arr(n, w.type_idx(256))), w.type_idx(n)});
-    auto matcher_dom  = w.cn(w.sigma({matcher_args, matcher_con}));
+    auto matcher_con  = w.Cn({w.annex<mem::M>(), w.Bool(), w.Idx(n)});
+    auto matcher_args = w.sigma({w.annex<mem::M>(), w.call<mem::Ptr0>(w.arr(n, w.Idx(256))), w.Idx(n)});
+    auto matcher_dom  = w.Cn({matcher_args, matcher_con});
     auto matcher      = w.mut_lam(matcher_dom);
     matcher->debug_prefix(std::string("match_regex"));
     auto [args, exit] = matcher->vars<2>();
@@ -111,7 +111,7 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, Ref n) {
     string->debug_prefix(std::string("string"));
     pos->debug_prefix(std::string("pos"));
 
-    auto error = w.mut_lam(w.cn(w.sigma({w.annex<mem::M>(), w.type_idx(n)})));
+    auto error = w.mut_lam(w.Cn({w.annex<mem::M>(), w.Idx(n)}));
     error->debug_prefix("error");
     {
         auto [mem, pos] = error->vars<2>();
@@ -120,7 +120,7 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, Ref n) {
         error->app(false, exit, {mem, w.lit_ff(), pos});
     }
 
-    auto accept = w.mut_lam(w.cn(w.sigma({w.annex<mem::M>(), w.type_idx(n)})));
+    auto accept = w.mut_lam(w.Cn({w.annex<mem::M>(), w.Idx(n)}));
     accept->debug_prefix("accept");
     {
         auto [mem, pos] = accept->vars<2>();
@@ -131,7 +131,7 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, Ref n) {
 
     auto exiting = [error, accept](const DFANode* state) { return state->is_accepting() ? accept : error; };
 
-    const auto Pi = w.cn(w.sigma({w.annex<mem::M>(), w.type_idx(n)}));
+    const auto Pi = w.Cn({w.annex<mem::M>(), w.Idx(n)});
     for (auto state : states) {
         auto lam = w.mut_lam(Pi);
         lam->debug_prefix(state_to_name(state));
@@ -146,10 +146,10 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, Ref n) {
             continue;
         }
 
-        auto lea       = w.call<mem::lea>(w.tuple({n, w.pack(n, w.type_idx(256)), w.lit_nat(0)}), w.tuple({string, i}));
+        auto lea       = w.call<mem::lea>(w.tuple({n, w.pack(n, w.Idx(256)), w.nat(0)}), w.tuple({string, i}));
         auto [mem2, c] = w.call<mem::load>(w.tuple({mem, lea}))->projs<2>();
 
-        auto is_end  = w.call(core::icmp::e, w.tuple({c, w.lit_idx(256, 0)}));
+        auto is_end  = w.call(core::icmp::e, w.tuple({c, w.idx(256, 0)}));
         auto not_end = w.mut_lam(Pi);
         not_end->debug_prefix("not_end_" + state_to_name(state));
 

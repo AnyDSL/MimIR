@@ -14,27 +14,26 @@ using namespace thorin::plug;
 int main(int, char**) {
     try {
         Driver driver;
-        auto& world = driver.world();
+        auto& w = driver.world();
         driver.log().set(&std::cerr).set(Log::Level::Debug);
 
-        auto parser = Parser(world);
+        auto parser = Parser(w);
         for (auto plugin : {"compile", "core"}) parser.plugin(plugin);
 
         // .Cn [%mem.M, I32, %mem.Ptr (I32, 0) .Cn [%mem.M, I32]]
-        auto mem_t  = world.annex<mem::M>();
-        auto i32_t  = world.type_int(32);
-        auto argv_t = world.call<mem::Ptr0>(world.call<mem::Ptr0>(i32_t));
-        auto ret_t  = world.cn({mem_t, i32_t});
-        auto main_t = world.cn({mem_t, i32_t, argv_t, ret_t});
-        auto main   = world.mut_lam(main_t)->set("main");
+        auto mem_t  = w.annex<mem::M>();
+        auto argv_t = w.call<mem::Ptr0>(w.call<mem::Ptr0>(w.I32()));
+        auto ret_t  = w.Cn({mem_t, w.I32()});
+        auto main_t = w.Cn({mem_t, w.I32(), argv_t, ret_t});
+        auto main   = w.mut_lam(main_t)->set("main");
 
         auto [mem, argc, argv, ret] = main->vars<4>();
         main->app(false, ret, {mem, argc});
         main->make_external();
 
-        optimize(world);
+        optimize(w);
         std::ofstream ofs("hello.ll");
-        driver.backend("ll")(world, ofs);
+        driver.backend("ll")(w, ofs);
         ofs.close(); // make sure everything is written before clang is invoked
 
         sys::system("clang hello.ll -o hello -Wno-override-module");

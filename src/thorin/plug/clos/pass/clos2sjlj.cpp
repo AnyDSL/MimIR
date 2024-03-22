@@ -86,7 +86,7 @@ Lam* Clos2SJLJ::get_throw(Ref dom) {
     auto [p, inserted] = dom2throw_.emplace(dom, nullptr);
     auto& tlam         = p->second;
     if (inserted || !tlam) {
-        auto pi                = w.cn(clos_sub_env(dom, w.sigma({jb_type(), rb_type(), tag_type()})));
+        auto pi                = w.Cn(clos_sub_env(dom, w.sigma({jb_type(), rb_type(), tag_type()})));
         tlam                   = w.mut_lam(pi)->set("throw");
         auto [m0, env, var]    = split(tlam->var());
         auto [jbuf, rbuf, tag] = env->projs<3>();
@@ -106,7 +106,7 @@ Lam* Clos2SJLJ::get_lpad(Lam* lam, Ref rb) {
     auto& lpad         = p->second;
     if (inserted || !lpad) {
         auto [_, env_type, dom] = split(lam->dom());
-        auto pi                 = w.cn(w.sigma({w.annex<mem::M>(), env_type}));
+        auto pi                 = w.Cn({w.annex<mem::M>(), env_type});
         lpad                    = w.mut_lam(pi)->set("lpad");
         auto [m, env, __]       = split(lpad->var());
         auto [m1, arg_ptr]      = w.call<mem::load>(Defs{m, rb})->projs<2>();
@@ -141,11 +141,11 @@ void Clos2SJLJ::enter() {
 
     auto body = curr_mut()->body()->as<App>();
 
-    auto branch_type = clos_type(w.cn(w.annex<mem::M>()));
+    auto branch_type = clos_type(w.Cn(w.annex<mem::M>()));
     auto branches    = DefVec(lam2tag_.size() + 1);
     {
         auto env             = w.tuple(body->args().view().subspan(1));
-        auto new_callee      = w.mut_lam(w.cn({w.annex<mem::M>(), env->type()}))->set("sjlj_wrap");
+        auto new_callee      = w.mut_lam(w.Cn({w.annex<mem::M>(), env->type()}))->set("sjlj_wrap");
         auto [m, env_var, _] = split(new_callee->var());
         auto new_args = DefVec(env->num_projs() + 1, [&](size_t i) { return (i == 0) ? *m : env_var->proj(i - 1); });
         new_callee->app(false, body->callee(), new_args);
@@ -171,7 +171,7 @@ Ref Clos2SJLJ::rewrite(Ref def) {
         auto& w     = world();
         auto [i, _] = lam2tag_[c.fnc_as_lam()];
         auto tlam   = get_throw(c.fnc_as_lam()->dom());
-        return clos_pack(w.tuple({cur_jbuf_, cur_rbuf_, w.lit_idx(i)}), tlam, c.type());
+        return clos_pack(w.tuple({cur_jbuf_, cur_rbuf_, w.idx(i)}), tlam, c.type());
     }
     return def;
 }

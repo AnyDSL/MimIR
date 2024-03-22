@@ -56,7 +56,7 @@ Ref AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
         auto aug_dom  = autodiff_type_fun(cont_dom);
         world.DLOG("augmented domain {}", aug_dom);
         world.DLOG("pb type is {}", pb_ty);
-        auto aug_ty = world.cn({aug_dom, pb_ty});
+        auto aug_ty = world.Cn({aug_dom, pb_ty});
         world.DLOG("augmented type is {}", aug_ty);
         auto aug_lam              = world.mut_lam(aug_ty)->set("aug_"s + lam->sym().str());
         auto aug_var              = aug_lam->var((nat_t)0);
@@ -220,7 +220,7 @@ Ref AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     world.DLOG("augmented argument <{}> {} : {}", aug_arg->unique_name(), aug_arg, aug_arg->type());
     world.DLOG("augmented callee  <{}> {} : {}", aug_callee->unique_name(), aug_callee, aug_callee->type());
     // TODO: move down to if(!is_cont(callee))
-    if (!Pi::isa_cn(callee->type()) && Pi::isa_cn(aug_callee->type())) {
+    if (!Pi::isa_Cn(callee->type()) && Pi::isa_Cn(aug_callee->type())) {
         aug_callee = direct::op_cps2ds_dep(aug_callee);
         world.DLOG("wrapped augmented callee: <{}> {} : {}", aug_callee->unique_name(), aug_callee, aug_callee->type());
     }
@@ -253,7 +253,7 @@ Ref AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     }
 
     // ds function
-    if (!Pi::isa_cn(callee->type())) {
+    if (!Pi::isa_Cn(callee->type())) {
         auto aug_app = world.app(aug_callee, aug_arg);
         world.DLOG("Augmented application: <{}> {} : {}", aug_app->unique_name(), aug_app, aug_app->type());
 

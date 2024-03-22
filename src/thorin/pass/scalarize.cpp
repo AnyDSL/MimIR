@@ -15,7 +15,7 @@ bool Scalerize::should_expand(Lam* lam) {
     if (auto i = tup2sca_.find(lam); i != tup2sca_.end() && i->second && i->second == lam) return false;
 
     auto pi = lam->type();
-    if (lam->num_doms() > 1 && Pi::isa_cn(pi) && pi->isa_imm()) return true; // no ugly dependent pis
+    if (lam->num_doms() > 1 && Pi::isa_Cn(pi) && pi->isa_imm()) return true; // no ugly dependent pis
 
     tup2sca_[lam] = lam;
     return false;
@@ -37,7 +37,7 @@ Lam* Scalerize::make_scalar(Ref def) {
 
     if (!todo) return tup2sca_[tup_lam] = tup_lam;
 
-    auto pi      = world().cn(world().sigma(types));
+    auto pi      = world().Cn(world().sigma(types));
     auto sca_lam = tup_lam->stub(world(), pi);
     if (eta_exp_) eta_exp_->new2old(sca_lam, tup_lam);
     size_t n = 0;

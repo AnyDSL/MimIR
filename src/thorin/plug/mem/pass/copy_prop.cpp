@@ -34,7 +34,7 @@ Ref CopyProp::rewrite(Ref def) {
                 } else if (args[i] == nullptr) {
                     args[i] = app->arg(n, i);
                 } else if (args[i] != app->arg(n, i)) {
-                    appxy_ops.emplace_back(world().lit_nat(i));
+                    appxy_ops.emplace_back(world().nat(i));
                 } else {
                     assert(args[i] == app->arg(n, i));
                 }
@@ -71,7 +71,7 @@ Ref CopyProp::rewrite(Ref def) {
         size_t j      = 0;
         auto new_vars = DefVec(n, [&, prop_lam = prop_lam](size_t i) -> Ref {
             switch (lattice[i]) {
-                case Lattice::Dead: return proxy(var_lam->var(n, i)->type(), {var_lam, world().lit_nat(i)}, Varxy);
+                case Lattice::Dead: return proxy(var_lam->var(n, i)->type(), {var_lam, world().nat(i)}, Varxy);
                 case Lattice::Prop: return args[i];
                 case Lattice::Keep: return prop_lam->var(j++);
                 default: fe::unreachable();
