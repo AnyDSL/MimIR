@@ -13,6 +13,6 @@
     .let p2         = %core.bitcast (%mem.Ptr0 «⊤:.Nat; .I8») p1;
     .ret `mem       = println_char $ (mem, 'x');
     .ret `mem       = print_str $ (mem, p2);
-    return (mem, 0:.I32);
+    return (mem, 0I32);
 // CHECK: x
 // CHECK: Hello, World!

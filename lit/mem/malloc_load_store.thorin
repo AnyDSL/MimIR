@@ -15,13 +15,13 @@
     return (mem, val)
 };
 
-// CHECK-DAG: .con .extern main _{{[0-9_]+}}::[mem_[[mainMemId:[_0-9]*]]: %mem.M, argc_[[argcId:[0-9_]+]]: .Idx 4294967296, %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, .Idx 4294967296]]{{(@.*)?}}= {
-// CHECK-DAG: _[[appMallocId:[0-9_]+]]: [%mem.M, %mem.Ptr (.Idx 4294967296, 0)] = %mem.malloc (.Idx 4294967296, 0) (mem_[[mainMemId]], 4);
-// CHECK-DAG: _[[appStoreId:[0-9_]+]]: %mem.M = %mem.store (.Idx 4294967296, 0) (_[[appMallocId]]#0:(.Idx 2), _[[appMallocId]]#1:(.Idx 2), argc_[[argcId]]);
-// CHECK-DAG: _[[appLoadId:[0-9_]+]]: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (_[[appStoreId]], _[[appMallocId]]#1:(.Idx 2));
-// CHECK-DAG: _[[appFreeId:[0-9_]+]]: %mem.M = %mem.free (.Idx 4294967296, 0) (_[[appLoadId]]#0:(.Idx 2), _[[appMallocId]]#1:(.Idx 2));
+// CHECK-DAG: .con .extern main _{{[0-9_]+}}::[mem_[[mainMemId:[_0-9]*]]: %mem.M, argc_[[argcId:[0-9_]+]]: .I32, %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, .I32]]{{(@.*)?}}= {
+// CHECK-DAG: _[[appMallocId:[0-9_]+]]: [%mem.M, %mem.Ptr (.I32, 0)] = %mem.malloc (.I32, 0) (mem_[[mainMemId]], 4);
+// CHECK-DAG: _[[appStoreId:[0-9_]+]]: %mem.M = %mem.store (.I32, 0) (_[[appMallocId]]#.ff, _[[appMallocId]]#.tt, argc_[[argcId]]);
+// CHECK-DAG: _[[appLoadId:[0-9_]+]]: [%mem.M, .I32] = %mem.load (.I32, 0) (_[[appStoreId]], _[[appMallocId]]#.tt);
+// CHECK-DAG: _[[appFreeId:[0-9_]+]]: %mem.M = %mem.free (.I32, 0) (_[[appLoadId]]#.ff, _[[appMallocId]]#.tt);
 
-// CHECK-DAG: return_[[returnEtaId:[0-9_]+]] (_[[appFreeId]], _[[appLoadId]]#1:(.Idx 2))
+// CHECK-DAG: return_[[returnEtaId:[0-9_]+]] (_[[appFreeId]], _[[appLoadId]]#.tt)
 
-// CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, .Idx 4294967296]{{(@.*)?}}= {
+// CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, .I32]{{(@.*)?}}= {
 // CHECK-DAG: return_[[returnId]] _[[returnEtaVarId]]

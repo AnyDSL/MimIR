@@ -17,25 +17,25 @@
     };
 
     .con atoi_cont_begin [mem : %mem.M, start : .I32] = {
-        .let _19234: %mem.Ptr (%mem.Ptr («⊤:.Nat; .I8», 0), 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)›, 0) (argv, 2:(.I32));
+        .let _19234: %mem.Ptr (%mem.Ptr («⊤:.Nat; .I8», 0), 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)›, 0) (argv, 2I32);
         .let _19247: [%mem.M, %mem.Ptr («⊤:.Nat; .I8», 0)] = %mem.load (mem, _19234);
 
         .con atoi_cont_end [mem : %mem.M, stop : .I32] = {
-            .let _19318: %mem.Ptr (%mem.Ptr («⊤:.Nat; .I8», 0), 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)›, 0) (argv, 3:(.I32));
+            .let _19318: %mem.Ptr (%mem.Ptr («⊤:.Nat; .I8», 0), 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)›, 0) (argv, 3I32);
             .let _19331: [%mem.M, %mem.Ptr («⊤:.Nat; .I8», 0)] = %mem.load (mem, _19318);
             .con atoi_cont_step [mem : %mem.M, step : .I32] = {
                 .con for_exit [acc : [.I32, .I32]] = {
                     return (mem, acc#.ff)
                 };
 
-                %affine.For (.i32, 2, (.I32, .I32)) (start, stop, step, (0:(.I32), 5:(.I32)), for_body, for_exit)
+                %affine.For (.i32, 2, (.I32, .I32)) (start, stop, step, (0I32, 5I32), for_body, for_exit)
             };
             atoi (_19331#.ff, _19331#.tt, atoi_cont_step)
         };
         atoi (_19247#.ff, _19247#.tt, atoi_cont_end)
     };
 
-    .let _19093: %mem.Ptr (%mem.Ptr («⊤:.Nat; .I8», 0), 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)›, 0) (argv, 1:(.I32));
+    .let _19093: %mem.Ptr (%mem.Ptr («⊤:.Nat; .I8», 0), 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)›, 0) (argv, 1I32);
     .let _19163: [%mem.M, %mem.Ptr («⊤:.Nat; .I8», 0)] = %mem.load (mem, _19093);
     atoi (_19163#.ff, _19163#.tt, atoi_cont_begin)
 };

@@ -3,12 +3,12 @@
 
 .lam Ptr(T: *): * = %mem.Ptr (T, 0);
 
-.fun foo(mem: %mem.M, x: .I32)@(%core.icmp.e (x, 23:.I32)): [%mem.M, .I32] =
-    return (mem, %core.wrap.add 0 (x, 1:.I32));
+.fun foo(mem: %mem.M, x: .I32)@(%core.icmp.e (x, 23I32)): [%mem.M, .I32] =
+    return (mem, %core.wrap.add 0 (x, 1I32));
 
 .fun .extern main(mem: %mem.M, argc: .I32, argv: Ptr (Ptr .I8)): [%mem.M, .I32] =
-    .ret (`mem, x) = foo $ (mem, 23:.I32);
-    .ret (`mem, y) = foo $ (mem, 23:.I32);
+    .ret (`mem, x) = foo $ (mem, 23I32);
+    .ret (`mem, y) = foo $ (mem, 23I32);
     return (mem, %core.wrap.add 0 (x, y));
 
 .lam f1(T: *)((x y: T), return: T -> ⊥): ⊥ = return x;

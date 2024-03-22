@@ -14,19 +14,19 @@
 
     .con ret_cont [[rmem:%mem.M,r:.I32],pb:.Cn[[%mem.M,.I32],.Cn[%mem.M,[.I32,.I32]]]] = {
         .con pb_ret_cont [pb_mem:%mem.M,[pr_a:.I32,pr_b:.I32]] = {
-            .let sr = %core.wrap.mul 0 (10000:.I32, r);
-            .let sa = %core.wrap.mul 0 (100:.I32, pr_a);
+            .let sr = %core.wrap.mul 0 (10000I32, r);
+            .let sa = %core.wrap.mul 0 (100I32, pr_a);
             .let sb = pr_b;
             .let sp = %core.wrap.add 0 (sa, sb);
             .let o  = %core.wrap.add 0 (sr, sp);
             return (pb_mem, o)
         };
-        pb((rmem,1:.I32),pb_ret_cont)
+        pb ((rmem, 1I32), pb_ret_cont)
     };
 
     .let f_diff = %autodiff.ad f;
 
-    .let c = (42:.I32,43:.I32);
+    .let c = (42I32, 43I32);
     f_diff ((mem,c),ret_cont)
 };
 

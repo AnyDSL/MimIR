@@ -7,7 +7,7 @@
 .plugin direct;
 
 
-.lam f [a:.I32]: .I32 = %core.wrap.add 0 (2:.I32, a);
+.lam f [a:.I32]: .I32 = %core.wrap.add 0 (2I32, a);
 
 .con h [mem : %mem.M, a : .I32, return : .Cn [%mem.M, .I32]] = {
     .let c = f a;
@@ -15,12 +15,12 @@
 };
 
 .con g [mem : %mem.M, a : .I32, return : .Cn [%mem.M, .I32]] = {
-    .let b = %core.wrap.add 0 (3:.I32, a);
+    .let b = %core.wrap.add 0 (3I32, a);
     h (mem, b, return)
 };
 
 .con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I8, 0), 0), return : .Cn [%mem.M, .I32]] = {
-    g (mem, 40:.I32, return)
+    g (mem, 40I32, return)
 };
 
 // CHECK-DAG: return{{.*}}45

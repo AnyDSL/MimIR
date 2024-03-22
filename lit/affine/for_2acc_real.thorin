@@ -18,7 +18,7 @@
         .let b : %math.F64 = %math.conv.u2f %math.f64 (%core.wrap.add 0 (%core.conv.u 0 i, %math.conv.f2u 0 acc_b));
         continue (a, b)
     };
-    %affine.For (.i32, 2, (.I32, %math.F64)) (0:.I32, argc, 1:.I32, (0:.I32, 0:%math.F64), for_body, for_exit)
+    %affine.For (.i32, 2, (.I32, %math.F64)) (0I32, argc, 1I32, (0I32, 0:%math.F64), for_body, for_exit)
 };
 
 // CHECK-NOT: affine.for

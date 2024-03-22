@@ -10,15 +10,15 @@
 .con .extern main [mem: %mem.M, argc: .I32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), return: .Cn [%mem.M, .I32]] = {
     .con atoi_cont_a [mem: %mem.M, a: .I32] = {
         .con atoi_cont_b [mem: %mem.M, b: .I32] = {
-            return (mem, %core.bit2.and_ 0 (0b00000000000000000000000000001111:.I32, %core.bit2.nand 0 (a, b)))
+            return (mem, %core.bit2.and_ 0 (0b00000000000000000000000000001111I32, %core.bit2.nand 0 (a, b)))
         };
 
-        .let argv_ptr_b = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)›, 0) (argv, 2:.I32);
+        .let argv_ptr_b = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)›, 0) (argv, 2I32);
         .let argv_load_b = %mem.load (mem, argv_ptr_b);
-        atoi (argv_load_b#.ff, argv_load_b#.tt, atoi_cont_b)
+        atoi (argv_load_b#0_2, argv_load_b#1_2, atoi_cont_b)
     };
 
-    .let argv_ptr_a = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)›, 0) (argv, 1:.I32);
+    .let argv_ptr_a = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)›, 0) (argv, 1I32);
     .let (`mem, val) = %mem.load (mem, argv_ptr_a);
     atoi (mem, val, atoi_cont_a)
 };

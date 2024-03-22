@@ -9,4 +9,4 @@
     .let (alloc_mem, arr) = %mem.alloc («size; .I32», 0) (mem);
     .let lea = %mem.lea (size, ‹size; .I32›, 0) (arr, 0:(.Idx size));
     .let (load_mem, val) = %mem.load (alloc_mem, lea);
-    return ( load_mem, 1:.I32 );
+    return ( load_mem, 1I32 );

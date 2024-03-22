@@ -18,19 +18,19 @@
 
     .con loop_head [mem: %mem.M, i : .I32] = {
         .con yield [mem: %mem.M] = {
-            loop_head( mem, %core.wrap.add 0 (i, 1:.I32) )
+            loop_head( mem, %core.wrap.add 0 (i, 1I32))
         };
 
         .con enter [mem: %mem.M] = {
             loop_body ( mem, i, yield )
         };
 
-        .let condition = %core.icmp.ul (i, 19:.I32);
+        .let condition = %core.icmp.ul (i, 19I32);
         .let target = (return, enter)#condition;
         target ( mem )
     };
 
-    loop_head ( mem, 0:.I32 )
+    loop_head ( mem, 0I32 )
 };
 
 
@@ -55,7 +55,7 @@
     .let (alloc_pb_mem, pb_ptr) = %mem.malloc (pb_type, 0) (mem, 32);
 
     .let pb_arr = %core.bitcast (%mem.Ptr («⊤:.Nat; .Cn [%mem.M, .Cn [%mem.M]]», 0)) pb_ptr;
-    .let lea_pb = %mem.lea (⊤:.Nat, <⊤:.Nat; pb_type>, 0) (pb_arr, 0:.I32);
+    .let lea_pb = %mem.lea (⊤:.Nat, <⊤:.Nat; pb_type>, 0) (pb_arr, 0I32);
     .let mem_assign_pb_anchor = %mem.store (alloc_pb_mem, lea_pb, finish_pb_trace);
 
     .con loop_body [mem: %mem.M, i : .I32, continue : .Cn %mem.M] = {
@@ -76,7 +76,7 @@
             .let cd_lea = %mem.lea (arr_size, <arr_size; .I32>, 0) (cd_arr, i);
 
             .let (cd_load_mem, cd_val) = %mem.load (mem, cd_lea);
-            .let cd_store_mem = %mem.store (cd_load_mem, cd_lea, 0:.I32);
+            .let cd_store_mem = %mem.store (cd_load_mem, cd_lea, 0I32);
 
             .let (ad_load_mem, ad_val) = %mem.load (cd_store_mem, ad_lea);
             .let ad_b_add = %core.wrap.add 0 (ad_val, b_val);
@@ -100,14 +100,14 @@
         };
 
         .con yield [mem: %mem.M] = {
-            loop_head( mem, %core.wrap.add 0 (i, 1:.I32) )
+            loop_head( mem, %core.wrap.add 0 (i, 1I32))
         };
 
         .con enter [mem: %mem.M] = {
             loop_body ( mem, i, yield )
         };
 
-        .let condition = %core.icmp.ul (i, 19:.I32);
+        .let condition = %core.icmp.ul (i, 19I32);
         .let target = (exit, enter)#condition;
         target ( mem )
     };
@@ -115,7 +115,7 @@
     .con init_a [mem: %mem.M] = {
         .con init_b [mem: %mem.M] = {
             .con init_c [mem: %mem.M] = {
-                loop_head ( mem, 0:.I32 )
+                loop_head ( mem, 0I32 )
             };
 
             init(mem, c_arr, init_c)
@@ -132,5 +132,5 @@
         return (mem, x)
     };
 
-    outer(mem, 1:.I32, callback)
+    outer(mem, 1I32, callback)
 };

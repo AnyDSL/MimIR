@@ -13,12 +13,12 @@
     .let (mem2, v) = %mem.load (mem, p);
 
     .con g1 [mem: %mem.M, ret: .Cn [%mem.M, .I32]] = {
-        .let b = %core.wrap.add 0 (v, 1:.I32);
+        .let b = %core.wrap.add 0 (v, 1I32);
         ret (mem2, b)
     };
 
     .con g2 [mem: %mem.M, ret: .Cn [%mem.M, .I32]] = {
-        .let c = %core.wrap.add 0 (v, 2:.I32);
+        .let c = %core.wrap.add 0 (v, 2I32);
         ret (mem2, c)
     };
 

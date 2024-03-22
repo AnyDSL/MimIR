@@ -21,7 +21,7 @@
 .con .extern f [mem : %mem.M,
     kl: «2: .Nat; .Nat»,
     M:%matrix.Mat (2,kl,.I32),
-    return: .Cn[%mem.M, %matrix.Mat (2,(kl#(1:(.Idx 2)),kl#(0:(.Idx 2))),.I32)]] = {
+    return: .Cn[%mem.M, %matrix.Mat (2,(kl#(.tt),kl#(.ff)),.I32)]] = {
     // .let v2 = %core.wrap.add (0, .i32) (v, v);
     .let (k,l) = kl;
     // .let add = %core.wrap.add (0, .i32);
@@ -38,7 +38,7 @@
         )
         (
             mem,
-            0:.I32,
+            0I32,
             fun,
             (
                 ((1,0),M)
@@ -46,7 +46,7 @@
         )
         ;
         // (
-        //     0:.I32,
+        //     0I32,
         //     addition,
         //     identity,
         //     (((1,0),M))
@@ -59,7 +59,7 @@
 // .lam .extern cont: .Cn [mem : %mem.M, m : (%matrix.Mat MT), return : .Cn [%mem.M, .I32]] = {
 //     .ff,
 //     .let m2 = %matrix.map (2,(2,4),.I32,.I32) (m,f);
-//     .let idx = (1:(.Idx 2),3:(.Idx 4));
+//     .let idx = (.tt,3:(.Idx 4));
 //     .let d = %matrix.read MT (m2, idx);
 //     return (mem, d)
 // };

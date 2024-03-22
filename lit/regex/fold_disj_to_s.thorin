@@ -5,11 +5,10 @@
 
 .import dont_compile.thorin;
 
-.let i8 = .Idx 256;
+.let i8 = .I8;
 .let Top = ⊤:.Nat;
 
-.con .extern disj(mem: %mem.M, string: %mem.Ptr (<<Top; .I8>>, 0), return: .Cn [%mem.M, .Bool, .I32]) = {
-    .let pattern = %regex.disj 4 (%regex.lit 9:.I8, %regex.lit 10:.I8, %regex.lit 13:.I8, %regex.lit 32:.I8);
-    return (pattern (mem, string, 0:.I32))
-    // CHECK: %regex.disj 2 (%regex.disj 2 (%regex.range (9:(.Idx 256), 10:(.Idx 256)), %regex.range ‹2; 13:(.Idx 256)›), %regex.range ‹2; 32:(.Idx 256)›)
-};
+.con .extern disj(mem: %mem.M, string: %mem.Ptr (<<Top; .I8>>, 0), return: .Cn [%mem.M, .Bool, .I32]) =
+    .let pattern = %regex.disj 4 (%regex.lit 9I8, %regex.lit 10I8, %regex.lit 13I8, %regex.lit 32I8);
+    return (pattern (mem, string, 0I32));
+// CHECK: %regex.disj 2 (%regex.disj 2 (%regex.range (9I8, 10I8), %regex.range ‹2; 13I8›), %regex.range ‹2; 32I8›)

@@ -13,7 +13,7 @@ thorin: /plug/clos/phase/clos_conv.cpp:64: const thorin::Def* thorin::clos::clos
 
 .con .extern main [mem: %mem.M, argc: .I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), return : .Cn [%mem.M, .I32]] = {
     .con callback [mem: %mem.M, return2 : .Cn [%mem.M, .I32]] = {
-        return (mem, 1:.I32)
+        return (mem, 1I32
     };
 
     .let (alloc_pb_mem, pb_ptr) = %mem.malloc (pb_type, 0) (mem, 1);

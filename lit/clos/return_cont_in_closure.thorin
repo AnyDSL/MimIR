@@ -8,13 +8,11 @@
 
 .con .extern main [mem: %mem.M, argc: .I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), return : .Cn [%mem.M, .I32]] = {
 
-    .con end [mem: %mem.M] = {
-        return (mem, 1:.I32) // <-- end backward pass
-    };
+    .con end [mem: %mem.M] = return (mem, 1I32); // <-- end backward pass
 
     .let (alloc_pb_mem, pb_ptr) = %mem.malloc (pb_type, 0) (mem, 100);
     .let pb_arr = %core.bitcast (%mem.Ptr («⊤:.Nat; pb_type», 0)) pb_ptr;
-    .let lea_pb = %mem.lea (⊤:.Nat, <⊤:.Nat; pb_type>, 0) (pb_arr, 0:.I32);
+    .let lea_pb = %mem.lea (⊤:.Nat, <⊤:.Nat; pb_type>, 0) (pb_arr, 0I32);
     .let store_pb = %mem.store (alloc_pb_mem, lea_pb, end);
 
     .con loop_head [mem: %mem.M, i : .I32] = {
@@ -23,9 +21,7 @@
             backward_pass (backward_pass_mem)
         };
 
-        .con yield [mem: %mem.M] = {
-            loop_head( mem, %core.wrap.add 0 (i, 1:.I32) )
-        };
+        .con yield [mem: %mem.M] = loop_head( mem, %core.wrap.add 0 (i, 1I32) );
 
         .con body [mem: %mem.M] = {
             .let (load_pb_mem, last_pb) = %mem.load (mem, lea_pb);
@@ -37,10 +33,10 @@
             yield(store_pb_mem)
         };
 
-        .let condition = %core.icmp.ul (i, 19:.I32);
+        .let condition = %core.icmp.ul (i, 19I32);
         .let target = (exit, body)#condition;
         target ( mem )
     };
 
-    loop_head ( store_pb, 0:.I32 ) // <-- start forward pass
+    loop_head ( store_pb, 0I32 ) // <-- start forward pass
 };

@@ -192,8 +192,8 @@ TEST(Automaton, Regex2NFA1or5or9) {
     auto parser = Parser(w);
     for (auto plugin : {"compile", "mem", "core", "math", "regex"}) parser.plugin(plugin);
 
-    // %regex.disj 2 (%regex.disj 2 (%regex.range ‹2; 49:(.Idx 256)›, %regex.range ‹2; 53:(.Idx 256)›), %regex.range ‹2;
-    // 57:(.Idx 256)›)
+    // %regex.disj 2 (%regex.disj 2 (%regex.range ‹2; 49I8›, %regex.range ‹2; 53I8›), %regex.range ‹2;
+    // 57I8›)
     auto pattern
         = w.call<regex::disj>(2, w.tuple({w.call<regex::disj>(2, w.tuple({w.call<regex::lit>(w.lit_idx(256, '1')),
                                                                           w.call<regex::lit>(w.lit_idx(256, '5'))})),
@@ -213,8 +213,8 @@ TEST(Automaton, Regex2NFANot1or5or9) {
     auto parser = Parser(w);
     for (auto plugin : {"compile", "mem", "core", "math", "regex"}) parser.plugin(plugin);
 
-    // %regex.not_ (%regex.disj 2 (%regex.disj 2 (%regex.range ‹2; 49:(.Idx 256)›, %regex.range ‹2; 53:(.Idx 256)›),
-    // %regex.range ‹2; 57:(.Idx 256)›))
+    // %regex.not_ (%regex.disj 2 (%regex.disj 2 (%regex.range ‹2; 49I8›, %regex.range ‹2; 53I8›),
+    // %regex.range ‹2; 57I8›))
     auto pattern = w.call<regex::not_>(w.call<regex::disj>(
         2, w.tuple({w.call<regex::disj>(
                         2, w.tuple({w.call<regex::lit>(w.lit_idx(256, '1')), w.call<regex::lit>(w.lit_idx(256, '5'))})),

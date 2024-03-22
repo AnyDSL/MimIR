@@ -9,25 +9,24 @@
     .let arr_size = ⊤:.Nat;
 
     .con loop_head [mem: %mem.M, i : .I32] = {
-        .con yield [mem: %mem.M] = {
-            loop_head( mem, %core.wrap.add 0 (i, 1:.I32) )
-        };
+        .con yield [mem: %mem.M] =
+            loop_head( mem, %core.wrap.add 0 (i, 1I32) );
 
         .con print [mem: %mem.M] = {
             printInteger( mem, i, yield )
         };
 
-        .let condition = %core.icmp.ul (i, 42:.I32);
+        .let condition = %core.icmp.ul (i, 42I32);
         .let target = (return, print)#condition;
         target ( mem )
     };
 
-    loop_head ( mem, 0:.I32 )
+    loop_head ( mem, 0I32 )
 };
 
 .con .extern main [mem: %mem.M, argc: .I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), return : .Cn [%mem.M, .I32]] = {
     .con init_b [mem: %mem.M] = {
-        return ( mem, 0:.I32 )
+        return ( mem, 0I32 )
     };
 
     .con init_a [mem: %mem.M] = {

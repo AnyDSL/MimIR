@@ -5,18 +5,18 @@
 .plugin direct;
 
 .con f [a:.I32, return: .Cn .I32] = {
-    .let b = %core.wrap.add 0 (2:.I32, a);
+    .let b = %core.wrap.add 0 (2I32, a);
     return b
 };
 
 .con f2 [a:.I32, return: .Cn .I32] = {
-    .let b = %core.wrap.add 0 (30:.I32, a);
+    .let b = %core.wrap.add 0 (30I32, a);
     return b
 };
 
 .con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I8, 0), 0), return : .Cn [%mem.M, .I32]] = {
     .let g = %direct.cps2ds (.I32,.I32) f;
-    .let c1 = g 10:.I32;
+    .let c1 = g 10I32;
     .let h = %direct.cps2ds (.I32,.I32) f2;
     .let c2 = h (c1);
     return (mem, c2)

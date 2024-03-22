@@ -23,7 +23,7 @@
 
     .con loop_head [mem: %mem.M, i : .I32] = {
         .con yield [mem: %mem.M] = {
-            loop_head( mem, %core.wrap.add 0 (i, 1:.I32) )
+            loop_head( mem, %core.wrap.add 0 (i, 1I32))
         };
 
         .con enter [mem: %mem.M] = {
@@ -39,7 +39,7 @@
         target ( mem )
     };
 
-    loop_head ( mem, 0:.I32 )
+    loop_head ( mem, 0I32 )
 };
 
 .con init [mem: %mem.M, arr : %mem.Ptr (<<size; .I32>>, 0), offset : .I32, return : .Cn [%mem.M]] = {
@@ -54,7 +54,7 @@
 
     .con loop_head [mem: %mem.M, i : .I32] = {
         .con yield [mem: %mem.M] = {
-            loop_head( mem, %core.wrap.add 0 (i, 1:.I32) )
+            loop_head( mem, %core.wrap.add 0 (i, 1I32))
         };
 
         .con enter [mem: %mem.M] = {
@@ -66,7 +66,7 @@
         target ( mem )
     };
 
-    loop_head ( mem, 0:.I32 )
+    loop_head ( mem, 0I32 )
 };
 
 
@@ -82,7 +82,7 @@
 
     .con loop_head [mem: %mem.M, i : .I32] = {
         .con yield [mem: %mem.M] = {
-            loop_head( mem, %core.wrap.add 0 (i, 1:.I32) )
+            loop_head( mem, %core.wrap.add 0 (i, 1I32))
         };
 
         .con enter [mem: %mem.M] = {
@@ -94,7 +94,7 @@
         target ( mem )
     };
 
-    loop_head ( mem, 0:.I32 )
+    loop_head ( mem, 0I32 )
 };
 
 
@@ -116,7 +116,7 @@
     .let pb_type = .Cn [%mem.M, .Cn [%mem.M]];
     .let (alloc_pb_mem, pb_ptr) = %mem.malloc (pb_type, 0) (alloc_mem_cd, 32); // besser slot
     .let pb_arr = %core.bitcast (%mem.Ptr («⊤:.Nat; pb_type», 0)) pb_ptr;
-    .let lea_pb = %mem.lea (⊤:.Nat, <⊤:.Nat; pb_type>, 0) (pb_arr, 0:.I32);
+    .let lea_pb = %mem.lea (⊤:.Nat, <⊤:.Nat; pb_type>, 0) (pb_arr, 0I32);
     .let mem_assign_pb_anchor = %mem.store (alloc_pb_mem, lea_pb, end);
 
     .let finish_mem = mem_assign_pb_anchor;
@@ -141,7 +141,7 @@
             .let cd_lea = %mem.lea (arr_size, <arr_size; .I32>, 0) (cd_arr, i);
 
             .let (cd_load_mem, cd_val) = %mem.load (mem, cd_lea);
-            .let cd_store_mem = %mem.store (cd_load_mem, cd_lea, 0:.I32);
+            .let cd_store_mem = %mem.store (cd_load_mem, cd_lea, 0I32);
 
             .let (ad_load_mem, ad_val) = %mem.load (cd_store_mem, ad_lea);
             .let cd_b_mul = %core.wrap.mul 0 (cd_val, b_val);
@@ -203,8 +203,8 @@
             };
 
             .con yield [mem: %mem.M] = {
-                // loop_head( mem, %core.wrap.add (0, .i32) (i, 1:.I32) )
-                loop_head( mem, %core.wrap.add 0 (i, 1:.I32) )
+                // loop_head( mem, %core.wrap.add (0, .i32) (i, 1I32))
+                loop_head( mem, %core.wrap.add 0 (i, 1I32))
             };
 
             .con enter [mem: %mem.M] = {
@@ -216,7 +216,7 @@
             target ( mem )
         };
 
-        loop_head ( mem, 0:.I32 )
+        loop_head ( mem, 0I32 )
     };
 
     .con init_a [mem: %mem.M] = {
@@ -228,28 +228,25 @@
                             time (mem, time_start_cont)
                         };
 
-                        const(mem, cd_arr, 1:.I32, init_cd)
+                        const(mem, cd_arr, 1I32, init_cd)
                     };
 
-                    const(mem, bd_arr,  0:.I32, init_bd)
+                    const(mem, bd_arr,  0I32, init_bd)
                 };
 
-                const(mem, ad_arr,  0:.I32, init_ad)
+                const(mem, ad_arr,  0I32, init_ad)
             };
 
-            const(mem, c_arr, 0:.I32, init_c)
+            const(mem, c_arr, 0I32, init_c)
         };
 
-        init(mem, b_arr, 1:.I32, init_b)
+        init(mem, b_arr, 1I32, init_b)
     };
 
-    init(finish_mem, a_arr, 0:.I32, init_a)
+    init(finish_mem, a_arr, 0I32, init_a)
 };
 
 .con .extern main [mem: %mem.M, argc: .I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), return : .Cn [%mem.M, .I32]] = {
-    .con callback (mem: %mem.M) = {
-        return (mem, 1:.I32)
-    };
-
-    outer(mem, 1:.I32, callback)
+    .con callback (mem: %mem.M) = return (mem, 1I32);
+    outer(mem, 1I32, callback)
 };

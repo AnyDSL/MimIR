@@ -14,11 +14,11 @@
     .let ld::(`mem, val) = %mem.load (mem, ptr);
     return ld;
 
-// CHECK-DAG: .con .extern main _{{[0-9_]+}}::[mem_[[mainMemId:[_0-9]*]]: %mem.M, argc_[[argcId:[0-9_]+]]: .Idx 4294967296, %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, .Idx 4294967296]]{{(@.*)?}}= {
-// CHECK-DAG: _[[appMSlotId:[0-9_]+]]: [%mem.M, %mem.Ptr (.Idx 4294967296, 0)] = %mem.mslot (.Idx 4294967296, 0) (mem_[[mainMemId]], 4, 0);
-// CHECK-DAG: _[[appStoreId:[0-9_]+]]: %mem.M = %mem.store (.Idx 4294967296, 0) (_[[appMSlotId]]#0:(.Idx 2), _[[appMSlotId]]#1:(.Idx 2), argc_[[argcId]]);
-// CHECK-DAG: _[[appLoadId:[0-9_]+]]: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (_[[appStoreId]], _[[appMSlotId]]#1:(.Idx 2));
+// CHECK-DAG: .con .extern main _{{[0-9_]+}}::[mem_[[mainMemId:[_0-9]*]]: %mem.M, argc_[[argcId:[0-9_]+]]: .I32, %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, .I32]]{{(@.*)?}}= {
+// CHECK-DAG: _[[appMSlotId:[0-9_]+]]: [%mem.M, %mem.Ptr (.I32, 0)] = %mem.mslot (.I32, 0) (mem_[[mainMemId]], 4, 0);
+// CHECK-DAG: _[[appStoreId:[0-9_]+]]: %mem.M = %mem.store (.I32, 0) (_[[appMSlotId]]#.ff, _[[appMSlotId]]#.tt, argc_[[argcId]]);
+// CHECK-DAG: _[[appLoadId:[0-9_]+]]: [%mem.M, .I32] = %mem.load (.I32, 0) (_[[appStoreId]], _[[appMSlotId]]#.tt);
 // CHECK-DAG: return_[[returnEtaId:[0-9_]+]] _[[appLoadId]]
 
-// CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, .Idx 4294967296]{{(@.*)?}}= {
+// CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, .I32]{{(@.*)?}}= {
 // CHECK-DAG: return_[[returnId]] _[[returnEtaVarId]]

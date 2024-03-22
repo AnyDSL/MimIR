@@ -11,4 +11,4 @@
     .con ret_cont r: .I32 =
         .con ret_cont2 r2: .I32 = return (mem, r2);
         f (r, ret_cont2);
-    f (42:.I32,ret_cont);
+    f (42I32,ret_cont);

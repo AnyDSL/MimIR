@@ -259,13 +259,13 @@ D load =
 .rule (A:*) (n:.Nat) (ET:«n; *») (t:«i:n; ET#i»):
     (%autodiff.inner_autodiff A t) ->
     .let t_diff = ‹i:n; %autodiff.inner_autodiff A (t#i) ›;
-    .let t_aug = ‹i:n; (t_diff#i)#(0:(.Idx 2)) ›;
+    .let t_aug = ‹i:n; (t_diff#i)#(.ff) ›;
     .cn t_pb [
         s: «i:n; %autodiff.tangent_type (ET#i) »,
         ret: .Cn (%autodiff.tangent_type A)
     ] = {
         ret (%autodiff.sum (n, %autodiff.tangent_type A) (
-            ‹i:n; %direct.cps2ds_dep ... ((t_diff#i)#(1:(.Idx 2))) (s#i) ›
+            ‹i:n; %direct.cps2ds_dep ... ((t_diff#i)#(.tt)) (s#i) ›
         ))
     };
     (
@@ -277,7 +277,7 @@ D load =
 .rule (A:*) (n:.Nat) (ET:«n; *») (t:«i:n; ET#i»):
     (%autodiff.inner_shadow_autodiff A t) ->
     .let t_diff = ‹i:n; %autodiff.inner_autodiff A (t#i) ›;
-    ‹i:n; (t_diff#i)#(1:(.Idx 2)) ›;
+    ‹i:n; (t_diff#i)#(.tt) ›;
 
 
 /// projection

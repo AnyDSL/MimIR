@@ -17,7 +17,7 @@ thorin: /plug/clos/phase/clos_conv.cpp:64: const thorin::Def* thorin::clos::clos
 
     .let pb_arr = %core.bitcast %mem.Ptr («⊤:.Nat; pb_type», 0) pb_ptr;
 
-    .let lea_pb = %mem.lea (⊤:.Nat, <⊤:.Nat; pb_type>, 0) (pb_arr, 0:.I32);
+    .let lea_pb = %mem.lea (⊤:.Nat, <⊤:.Nat; pb_type>, 0) (pb_arr, 0I32;
     .let store_return_mem = %mem.store (alloc_pb_mem, lea_pb, return);
 
     .let (load_clos_mem, load_clos) = %mem.load (store_return_mem, lea_pb);
@@ -26,7 +26,7 @@ thorin: /plug/clos/phase/clos_conv.cpp:64: const thorin::Def* thorin::clos::clos
 
 .con .extern main [mem: %mem.M, argc: .I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), return : .Cn [%mem.M, .I32]] = {
     .con callback (mem: %mem.M) = {
-        return (mem, 1:.I32)
+        return (mem, 1I32
     };
 
     outer(mem, callback)

@@ -11,6 +11,6 @@
     return (mem, c);
 
 .con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I8, 0), 0), return : .Cn [%mem.M, .I32]] =
-    h (mem, 40:.I32, return);
+    h (mem, 40I32, return);
 
 // CHECK-DAG: return{{.*}}40

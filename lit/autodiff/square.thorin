@@ -14,18 +14,18 @@
 
     .con ret_cont [r:.I32,pb:.Cn[.I32,.Cn[.I32]]] = {
         .con pb_ret_cont [pr:.I32] = {
-            .let c = %core.wrap.mul 0 (1000:.I32, r);
+            .let c = %core.wrap.mul 0 (1000I32, r);
             .let d = %core.wrap.add 0 (c, pr);
             return (mem, d)
         };
         // return (mem, r)
-        pb(1:.I32,pb_ret_cont)
+        pb(1I32,pb_ret_cont)
     };
 
     .let f_diff = %autodiff.ad f;
     .let f_diff_cast = f_diff;
 
-    .let c = 42:.I32;
+    .let c = 42I32;
     f_diff_cast (c,ret_cont)
 };
 

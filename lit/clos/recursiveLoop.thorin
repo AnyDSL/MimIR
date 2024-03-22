@@ -28,7 +28,7 @@
         };
 
         .con next [mem: %mem.M] = {
-            recursive( mem, %core.wrap.add 0 (i, 1:.I32), pb, return )
+            recursive( mem, %core.wrap.add 0 (i, 1I32), pb, return )
         };
 
         printIntegerNL( mem, i , next )
@@ -44,18 +44,15 @@
 };
 
 .con outer [mem: %mem.M, x : .I32, return : .Cn [%mem.M]] = {
-    recursive ( mem, 0:.I32, end, return )
+    recursive ( mem, 0I32, end, return )
 };
 
 .con .extern main [mem: %mem.M, argc: .I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), return : .Cn [%mem.M, .I32]] = {
     .con callback (mem: %mem.M) = {
 
-        .con callback2 (mem: %mem.M) = {
-            return (mem, 1:.I32)
-        };
-
-        recursive (mem, 3:.I32, end, callback2)
+        .con callback2 (mem: %mem.M) = return (mem, 1I32);
+        recursive (mem, 3I32, end, callback2)
     };
 
-    outer(mem, 1:.I32, callback)
+    outer(mem, 1I32, callback)
 };

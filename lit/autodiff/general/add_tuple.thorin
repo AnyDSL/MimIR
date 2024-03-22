@@ -5,7 +5,7 @@
 .plugin autodiff;
 
 .con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I8, 0), 0), return : .Cn [%mem.M, .I32]] =
-    .let t = %autodiff.add ((41:.I32, 42:.I32), (43:.I32, 44:.I32));
+    .let t = %autodiff.add ((41I32, 42I32), (43I32, 44I32));
     .let a = t#0_2;
     .let b = t#1_2;
     .let c = %core.wrap.mul 0 (a, b);

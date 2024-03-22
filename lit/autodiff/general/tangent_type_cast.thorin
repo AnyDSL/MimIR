@@ -18,7 +18,7 @@
         .let r2=%core.bitcast (%autodiff.Tangent .I32) r;
         ret_cont r2;
 
-    .let c = 43:.I32;
+    .let c = 43I32;
     f (c,ret_wrap);
 
 // CHECK-DAG: return{{.*}}86

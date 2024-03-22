@@ -5,8 +5,8 @@
 .plugin matrix;
 
 .con .extern f[mem: %mem.M, [k: .Nat, l: .Nat], return: .Cn[%mem.M, .I32]] =
-    .let two       = %core.conv.u k 2:.I32;
-    .let three     = %core.conv.u l 3:.I32;
+    .let two       = %core.conv.u k 2I32;
+    .let three     = %core.conv.u l 3I32;
     .let (`mem, M) = %matrix.init (2, (k, l), .I32, mem); // :%matrix.Mat (2,(k,l), .I32)
     .let (`mem, a) = %matrix.read (2, (k, l), .I32) (mem, M, (two, three));
     return (mem, a);

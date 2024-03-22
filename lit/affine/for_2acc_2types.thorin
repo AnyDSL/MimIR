@@ -17,7 +17,7 @@
         .let b : .Idx 0 = %core.wrap.add 0 (%core.conv.u 0 i, acc#.tt);
         continue (a, b)
     };
-    %affine.For (.i32, 2, (.I32, .Idx 0)) (0:(.I32), argc, 1:(.I32), (0:(.I32), 0:(.Idx 0)), for_body, for_exit)
+    %affine.For (.i32, 2, (.I32, .Idx 0)) (0I32, argc, 1I32, (0I32, 0:(.Idx 0)), for_body, for_exit)
 };
 
 // CHECK-NOT: affine.for

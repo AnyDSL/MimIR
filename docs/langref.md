@@ -69,7 +69,7 @@ In addition the following keywords are *terminals*:
 | `.insert` | alias for `.ins`                                          |
 | `.Nat`    | thorin::Nat                                               |
 | `.Idx`    | thorin::Idx                                               |
-| `.Bool`   | alias for `.Idx 2`                                        |
+| `.Bool`   | alias for `.Bool`                                        |
 | `.ff`     | alias for `0₂`                                            |
 | `.tt`     | alias for `1₂`                                            |
 | `.Type`   | thorin::Type                                              |
@@ -247,7 +247,7 @@ This is particularly useful, when dealing with memory:
 | e   | `□`       | alias for `.Type (1:.Univ)`    | [Type](@ref thorin::Type) |
 | e   | `.Nat`    | natural number                 | [Nat](@ref thorin::Nat)   |
 | e   | `.Idx`    | builtin of type `.Nat → *`     | [Idx](@ref thorin::Idx)   |
-| e   | `.Bool`   | alias for `.Idx 2`             | [Idx](@ref thorin::Idx)   |
+| e   | `.Bool`   | alias for `.Bool`             | [Idx](@ref thorin::Idx)   |
 
 #### Literals & Co.
 
@@ -257,8 +257,8 @@ This is particularly useful, when dealing with memory:
 | e   | X<sub>n</sub>               | literal of type `.Idx n`             | [Lit](@ref thorin::Lit)               |
 | e   | `.ff`                       | alias for `0_2`                      | [Lit](@ref thorin::Lit)               |
 | e   | `.tt`                       | alias for `1_2`                      | [Lit](@ref thorin::Lit)               |
-| e   | C                           | character literal of type `.Idx 256` | [Lit](@ref thorin::Lit)               |
-| e   | S                           | string tuple of type `«n; .Idx 256»` | [Tuple](@ref thorin::Tuple)           |
+| e   | C                           | character literal of type `.I8` | [Lit](@ref thorin::Lit)               |
+| e   | S                           | string tuple of type `«n; .I8»` | [Tuple](@ref thorin::Tuple)           |
 | e   | `⊥` (`:` e<sub>type</sub>)? | bottom                               | [Bot](@ref thorin::Bot)               |
 | e   | `⊤` (`:` e<sub>type</sub>)? | top                                  | [Top](@ref thorin::Top)               |
 | e   | n                           | identifier or annex name             | `fe::Sym`/[Annex](@ref thorin::Annex) |

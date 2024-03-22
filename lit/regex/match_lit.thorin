@@ -9,21 +9,21 @@
 .plugin regex;
 .plugin direct;
 
-.let I8 = .Idx 256;
-.let _32 = 4294967296;
+.let I8 = .I8;
+.let _32 = .i32;
 .let I32 = .Idx _32;
 .let Top = ⊤:.Nat;
 
 .let re = %regex.lit '1';
 
-.con .extern main[mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), exit : .Cn [%mem.M, I32]] = {
+.con .extern main[mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), exit : .Cn [%mem.M, I32]] = {
     .con handle_match [mem: %mem.M, matched: .Bool, match: %mem.Ptr(«Top; I8», 0)] = {
 
         exit (mem, %core.conv.u _32 matched)
     };
 
     .con match_argument[mem: %mem.M, I32] = {
-        .let arg1 = %mem.lea (Top, ‹Top; %mem.Ptr («⊤:.Nat; .Idx 256», 0)›, 0) (argv, 1:(.Idx 4294967296));
+        .let arg1 = %mem.lea (Top, ‹Top; %mem.Ptr («⊤:.Nat; .I8», 0)›, 0) (argv, 1I32);
         .let (`mem, to_match) = %mem.load (mem, arg1);
         .let (`mem, matched, pos) = re (mem, to_match, 0:(.Idx Top));
         exit (mem, %core.conv.u _32 matched)

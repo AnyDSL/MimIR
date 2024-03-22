@@ -23,7 +23,7 @@
 
     .con loop_head [mem: %mem.M, i : .I32] = {
         .con yield [mem: %mem.M] = {
-            loop_head( mem, %core.wrap.add 0 (i, 1:.I32) )
+            loop_head( mem, %core.wrap.add 0 (i, 1I32))
         };
 
         .con enter [mem: %mem.M] = {
@@ -39,7 +39,7 @@
         target ( mem )
     };
 
-    loop_head ( mem, 0:.I32 )
+    loop_head ( mem, 0I32 )
 };
 
 .con init [mem: %mem.M, arr : %mem.Ptr (<<size; .I32>>, 0), offset : .I32, return : .Cn [%mem.M]] = {
@@ -54,7 +54,7 @@
 
     .con loop_head [mem: %mem.M, i : .I32] = {
         .con yield [mem: %mem.M] = {
-            loop_head( mem, %core.wrap.add 0 (i, 1:.I32) )
+            loop_head( mem, %core.wrap.add 0 (i, 1I32))
         };
 
         .con enter [mem: %mem.M] = {
@@ -66,7 +66,7 @@
         target ( mem )
     };
 
-    loop_head ( mem, 0:.I32 )
+    loop_head ( mem, 0I32 )
 };
 
 
@@ -82,7 +82,7 @@
 
     .con loop_head [mem: %mem.M, i : .I32] = {
         .con yield [mem: %mem.M] = {
-            loop_head( mem, %core.wrap.add 0 (i, 1:.I32) )
+            loop_head( mem, %core.wrap.add 0 (i, 1I32))
         };
 
         .con enter [mem: %mem.M] = {
@@ -94,7 +94,7 @@
         target ( mem )
     };
 
-    loop_head ( mem, 0:.I32 )
+    loop_head ( mem, 0I32 )
 };
 
 
@@ -198,14 +198,13 @@
         };
 
         .con backward_loop_head [mem: %mem.M, i : .I32] = {
-            .con yield [mem: %mem.M] = {
-                backward_loop_head( mem, %core.wrap.add 0 (i, 1:.I32) )
-            };
+            .con yield [mem: %mem.M] =
+                backward_loop_head( mem, %core.wrap.add 0 (i, 1I32 ) );
 
             .con enter [mem: %mem.M] = {
                 .let lea_pb = %mem.lea (⊤:.Nat, <⊤:.Nat; pb_type>, 0) (pb_arr, i);
                 .let (backward_pass_mem, backward_pass) = %mem.load (mem, lea_pb);
-                backward_pass ( backward_pass_mem, 1:.I32, yield )
+                backward_pass ( backward_pass_mem, 1I32, yield )
             };
 
             .let condition = %core.icmp.ul (i, %core.bitcast .I32 size);
@@ -215,23 +214,15 @@
 
 
         .con loop_head [mem: %mem.M, i : .I32] = {
-            .con exit [mem: %mem.M] = {
-                backward_loop_head(mem, 0:.I32)
-            };
-
-            .con yield [mem: %mem.M] = {
-                loop_head( mem, %core.wrap.add 0 (i, 1:.I32) )
-            };
-
-            .con enter [mem: %mem.M] = {
-                loop_body ( mem, i, yield )
-            };
+            .con exit [mem: %mem.M] = backward_loop_head(mem, 0I32);
+            .con yield [mem: %mem.M] = loop_head( mem, %core.wrap.add 0 (i, 1I32));
+            .con enter [mem: %mem.M] = loop_body ( mem, i, yield );
 
             .let condition = %core.icmp.ul (i, %core.bitcast .I32 size);
             .let target = (exit, enter)#condition;
             target ( mem )
         };
-        loop_head ( mem, 0:.I32 )
+        loop_head ( mem, 0I32 )
     };
 
     .con init_a [mem: %mem.M] = {
@@ -241,31 +232,27 @@
                     .con init_bd [mem: %mem.M] = {
                         .con init_cd [mem: %mem.M] = {
                             time (mem, time_start_cont)
-                            // loop_head ( mem, 0:.I32 )
+                            // loop_head ( mem, 0I32 )
                         };
 
-                        const(mem, cd_arr, 1:.I32, init_cd)
+                        const(mem, cd_arr, 1I32, init_cd)
                     };
 
-                    const(mem, bd_arr,  0:.I32, init_bd)
+                    const(mem, bd_arr,  0I32, init_bd)
                 };
 
-                const(mem, ad_arr,  0:.I32, init_ad)
+                const(mem, ad_arr,  0I32, init_ad)
             };
 
-            const(mem, c_arr, 0:.I32, init_c)
+            const(mem, c_arr, 0I32, init_c)
         };
 
-        init(mem, b_arr, 1:.I32, init_b)
+        init(mem, b_arr, 1I32, init_b)
     };
 
-    init(finish_mem, a_arr, 0:.I32, init_a)
+    init(finish_mem, a_arr, 0I32, init_a)
 };
 
-.con .extern main [mem: %mem.M, argc: .I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), return : .Cn [%mem.M, .I32]] = {
-    .con callback (mem: %mem.M) = {
-        return (mem, 1:.I32)
-    };
-
-    outer(mem, 1:.I32, callback)
-};
+.con .extern main [mem: %mem.M, argc: .I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), return : .Cn [%mem.M, .I32]] =
+    .con callback (mem: %mem.M) = return (mem, 1I32);
+    outer(mem, 1I32, callback);

@@ -22,8 +22,8 @@
     return: .Cn[%mem.M, %matrix.Mat (2,(k,l), .I32)]] = {
     // return: .Cn[%mem.M]] = {
 
-    .let (mem2, M) = %matrix.constMat (2,(k,m), .I32) (mem, 42:.I32);
-    .let (mem3, N) = %matrix.constMat (2,(m,l), .I32) (mem2, 44:.I32);
+    .let (mem2, M) = %matrix.constMat (2,(k,m), .I32) (mem, 42I32);
+    .let (mem3, N) = %matrix.constMat (2,(m,l), .I32) (mem2, 44I32);
 
     // .let mem4 = mem3;
     .let (mem4,MN) = %matrix.map_reduce
@@ -36,7 +36,7 @@
         )
         (
             mem3,
-            0:.I32,
+            0I32,
             fun,
             (
                 ((0,2),M),
