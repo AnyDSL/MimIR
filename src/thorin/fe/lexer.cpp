@@ -230,14 +230,14 @@ std::optional<Tok> Lexer::parse_lit() {
             std::string mod;
             while (utf8::isrange(ahead(), U'₀', U'₉')) mod += next() - U'₀' + '0';
             auto m = std::strtoull(mod.c_str(), nullptr, 10);
-            return Tok{loc_, world().idx_mod(m, i)};
+            return Tok{loc_, world().lit_idx_mod(m, i)};
         } else if (accept<Append::Off>('_')) {
             auto i = std::strtoull(str_.c_str(), nullptr, 10);
             str_.clear();
             if (accept(utf8::isdigit)) {
                 parse_digits(10);
                 auto m = std::strtoull(str_.c_str(), nullptr, 10);
-                return Tok{loc_, world().idx_mod(m, i)};
+                return Tok{loc_, world().lit_idx_mod(m, i)};
             } else {
                 error(loc_, "stray underscore in unsigned literal");
                 auto i = std::strtoull(str_.c_str(), nullptr, 10);

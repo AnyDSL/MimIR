@@ -70,7 +70,7 @@ Ref LowerMatrixLowLevel::rewrite_imm(Ref def) {
         T              = rewrite(T);
         auto arr_ty    = arr_ty_of_matrix_ty(S, T);
 
-        auto addr_space = world().nat_0();
+        auto addr_space = world().lit_nat_0();
         auto ptr_ty     = world().call<mem::Ptr>(Defs{arr_ty, addr_space});
 
         return ptr_ty;

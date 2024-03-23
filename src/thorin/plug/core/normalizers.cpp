@@ -222,9 +222,9 @@ template<nat id> Ref normalize_nat(Ref type, Ref callee, Ref arg) {
     if (la) {
         if (lb) {
             switch (id) {
-                case nat::add: return world.nat(*la + *lb);
-                case nat::sub: return *la < *lb ? world.nat_0() : world.nat(*la - *lb);
-                case nat::mul: return world.nat(*la * *lb);
+                case nat::add: return world.lit_nat(*la + *lb);
+                case nat::sub: return *la < *lb ? world.lit_nat_0() : world.lit_nat(*la - *lb);
+                case nat::mul: return world.lit_nat(*la * *lb);
             }
         }
 
@@ -257,12 +257,12 @@ template<ncmp id> Ref normalize_ncmp(Ref type, Ref callee, Ref arg) {
         if (auto lb = Lit::isa(b)) {
             // clang-format off
             switch (id) {
-                case ncmp:: e: return world.nat(*la == *lb);
-                case ncmp::ne: return world.nat(*la != *lb);
-                case ncmp::l : return world.nat(*la <  *lb);
-                case ncmp::le: return world.nat(*la <= *lb);
-                case ncmp::g : return world.nat(*la >  *lb);
-                case ncmp::ge: return world.nat(*la >= *lb);
+                case ncmp:: e: return world.lit_nat(*la == *lb);
+                case ncmp::ne: return world.lit_nat(*la != *lb);
+                case ncmp::l : return world.lit_nat(*la <  *lb);
+                case ncmp::le: return world.lit_nat(*la <= *lb);
+                case ncmp::g : return world.lit_nat(*la >  *lb);
+                case ncmp::ge: return world.lit_nat(*la >= *lb);
                 default: fe::unreachable();
             }
             // clang-format on
@@ -317,14 +317,14 @@ template<bit1 id> Ref normalize_bit1(Ref type, Ref c, Ref a) {
 
     if (auto ls = Lit::isa(s)) {
         switch (id) {
-            case bit1::f: return world.idx(*ls, 0);
-            case bit1::t: return world.idx(*ls, *ls - 1_u64);
+            case bit1::f: return world.lit_idx(*ls, 0);
+            case bit1::t: return world.lit_idx(*ls, *ls - 1_u64);
             case bit1::id: fe::unreachable();
             default: break;
         }
 
         assert(id == bit1::neg);
-        if (auto la = Lit::isa(a)) return world.idx_mod(*ls, ~*la);
+        if (auto la = Lit::isa(a)) return world.lit_idx_mod(*ls, ~*la);
     }
 
     return world.raw_app(type, callee, a);
@@ -362,14 +362,14 @@ template<bit2 id> Ref normalize_bit2(Ref type, Ref c, Ref arg) {
 
     if (la && lb && ls) {
         switch (id) {
-            case bit2::and_: return world.idx    (*ls,   *la &  *lb);
-            case bit2:: or_: return world.idx    (*ls,   *la |  *lb);
-            case bit2::xor_: return world.idx    (*ls,   *la ^  *lb);
-            case bit2::nand: return world.idx_mod(*ls, ~(*la &  *lb));
-            case bit2:: nor: return world.idx_mod(*ls, ~(*la |  *lb));
-            case bit2::nxor: return world.idx_mod(*ls, ~(*la ^  *lb));
-            case bit2:: iff: return world.idx_mod(*ls, ~ *la |  *lb);
-            case bit2::niff: return world.idx    (*ls,   *la & ~*lb);
+            case bit2::and_: return world.lit_idx    (*ls,   *la &  *lb);
+            case bit2:: or_: return world.lit_idx    (*ls,   *la |  *lb);
+            case bit2::xor_: return world.lit_idx    (*ls,   *la ^  *lb);
+            case bit2::nand: return world.lit_idx_mod(*ls, ~(*la &  *lb));
+            case bit2:: nor: return world.lit_idx_mod(*ls, ~(*la |  *lb));
+            case bit2::nxor: return world.lit_idx_mod(*ls, ~(*la ^  *lb));
+            case bit2:: iff: return world.lit_idx_mod(*ls, ~ *la |  *lb);
+            case bit2::niff: return world.lit_idx    (*ls,   *la & ~*lb);
             default: fe::unreachable();
         }
     }
@@ -414,8 +414,8 @@ Ref normalize_idx(Ref type, Ref c, Ref arg) {
     auto callee = c->as<App>();
     if (auto i = Lit::isa(arg)) {
         if (auto s = Lit::isa(Idx::size(type))) {
-            if (*i < *s) return world.idx(*s, *i);
-            if (auto m = Lit::isa(callee->arg())) return *m ? world.bot(type) : world.idx_mod(*s, *i);
+            if (*i < *s) return world.lit_idx(*s, *i);
+            if (auto m = Lit::isa(callee->arg())) return *m ? world.bot(type) : world.lit_idx_mod(*s, *i);
         }
     }
 
@@ -492,7 +492,7 @@ template<wrap id> Ref normalize_wrap(Ref type, Ref c, Ref arg) {
         }
 
         if (auto lm = Lit::isa(mode); lm && *lm == 0 && id == wrap::sub)
-            return world.call(wrap::add, mode, Defs{a, world.idx_mod(*ls, ~*lb + 1_u64)}); // a - lb -> a + (~lb + 1)
+            return world.call(wrap::add, mode, Defs{a, world.lit_idx_mod(*ls, ~*lb + 1_u64)}); // a - lb -> a + (~lb + 1)
         else if (id == wrap::shl && ls && *lb > *ls)
             return world.bot(type);
     }
@@ -616,16 +616,16 @@ Ref normalize_bitcast(Ref dst_t, Ref callee, Ref src) {
 template<trait id> Ref normalize_trait(Ref nat, Ref callee, Ref type) {
     auto& world = type->world();
     if (auto ptr = match<mem::Ptr>(type)) {
-        return world.nat(8);
+        return world.lit_nat(8);
     } else if (type->isa<Pi>()) {
-        return world.nat(8); // Gets lowered to function ptr
+        return world.lit_nat(8); // Gets lowered to function ptr
     } else if (auto size = Idx::size(type)) {
-        if (auto w = Idx::size2bitwidth(size)) return world.nat(std::max(1_n, std::bit_ceil(*w) / 8_n));
+        if (auto w = Idx::size2bitwidth(size)) return world.lit_nat(std::max(1_n, std::bit_ceil(*w) / 8_n));
     } else if (auto w = math::isa_f(type)) {
         switch (*w) {
-            case 16: return world.nat(2);
-            case 32: return world.nat(4);
-            case 64: return world.nat(8);
+            case 16: return world.lit_nat(2);
+            case 32: return world.lit_nat(4);
+            case 64: return world.lit_nat(8);
             default: fe::unreachable();
         }
     } else if (type->isa<Sigma>() || type->isa<Meet>()) {
@@ -644,8 +644,8 @@ template<trait id> Ref normalize_trait(Ref nat, Ref callee, Ref type) {
         u64 size = std::max(1_u64, offset);
 
         switch (id) {
-            case trait::align: return world.nat(align);
-            case trait::size: return world.nat(size);
+            case trait::align: return world.lit_nat(align);
+            case trait::size: return world.lit_nat(size);
         }
     } else if (auto arr = type->isa_imm<Arr>()) {
         auto align = op(trait::align, arr->body());
@@ -689,7 +689,7 @@ Ref normalize_zip(Ref type, Ref c, Ref arg) {
                     if (*lr == 1) {
                         return w.app(f, inner_args);
                     } else {
-                        auto app_zip = w.app(w.annex<zip>(), {w.nat(*lr - 1), w.tuple(shapes.view().subspan(1))});
+                        auto app_zip = w.app(w.annex<zip>(), {w.lit_nat(*lr - 1), w.tuple(shapes.view().subspan(1))});
                         return w.app(w.app(app_zip, is_os), inner_args);
                     }
                 });

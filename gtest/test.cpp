@@ -47,7 +47,7 @@ TEST(World, simplify_one_tuple) {
     type->set(Defs{w.Nat(), w.Nat()});
     ASSERT_EQ(type, w.sigma({type})) << "constant fold [mut] -> mut";
 
-    auto v = w.tuple(type, {w.idx(42), w.idx(1337)});
+    auto v = w.tuple(type, {w.lit_idx(42), w.lit_idx(1337)});
     ASSERT_EQ(v, w.tuple({v})) << "constant fold ({42, 1337}) -> {42, 1337}";
 }
 
@@ -110,14 +110,14 @@ TEST(trait, idx) {
 
 Ref normalize_test_curry(Ref type, Ref callee, Ref arg) {
     auto& w = arg->world();
-    return w.raw_app(type, callee, w.nat(42));
+    return w.raw_app(type, callee, w.lit_nat(42));
 }
 
 TEST(Axiom, curry) {
     Driver driver;
     World& w = driver.world();
 
-    auto n   = DefVec(11, [&w](size_t i) { return w.nat(i); });
+    auto n   = DefVec(11, [&w](size_t i) { return w.lit_nat(i); });
     auto nat = w.Nat();
 
     {
@@ -215,9 +215,9 @@ TEST(Check, alpha) {
     // λ_.y
     auto l_y = w.lm(pi, false, lyy->var());
     // λ_.0
-    auto l_0 = w.lm(pi, false, w.nat_0());
+    auto l_0 = w.lm(pi, false, w.lit_nat_0());
     // λ_.1
-    auto l_1 = w.lm(pi, false, w.nat_1());
+    auto l_1 = w.lm(pi, false, w.lit_nat_1());
 
     auto check = [](Ref l1, Ref l2, bool infer_res, bool non_infer_res) {
         EXPECT_EQ(Check::alpha<true>(l1, l2), infer_res);

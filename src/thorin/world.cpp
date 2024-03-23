@@ -49,13 +49,13 @@ World::World(Driver* driver, const State& state)
     data_.Nat         = insert<thorin::Nat>(0, *this);
     data_.Idx         = insert<thorin::Idx>(0, pi(Nat(), type()));
     data_.top_nat     = insert<Top>(0, Nat());
-    data_.nat_0       = nat(0);
-    data_.nat_1       = nat(1);
-    data_.lit_0_1     = idx(1, 0);
+    data_.lit_nat_0   = lit_nat(0);
+    data_.lit_nat_1   = lit_nat(1);
+    data_.lit_0_1     = lit_idx(1, 0);
     data_.Bool        = Idx(2);
-    data_.lit_bool[0] = idx(2, 0_u64);
-    data_.lit_bool[1] = idx(2, 1_u64);
-    data_.nat_max     = nat(nat_t(-1));
+    data_.lit_bool[0] = lit_idx(2, 0_u64);
+    data_.lit_bool[1] = lit_idx(2, 1_u64);
+    data_.lit_nat_max = lit_nat(nat_t(-1));
     data_.exit        = lam(Cn(Bot()))->set(sym("exit"));
 }
 

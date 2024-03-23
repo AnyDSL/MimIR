@@ -169,7 +169,7 @@ Ref Clos2SJLJ::rewrite(Ref def) {
         auto& w     = world();
         auto [i, _] = lam2tag_[c.fnc_as_lam()];
         auto tlam   = get_throw(c.fnc_as_lam()->dom());
-        return clos_pack(w.tuple({cur_jbuf_, cur_rbuf_, w.idx(i)}), tlam, c.type());
+        return clos_pack(w.tuple({cur_jbuf_, cur_rbuf_, w.lit_idx(i)}), tlam, c.type());
     }
     return def;
 }

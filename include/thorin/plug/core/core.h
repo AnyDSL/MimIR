@@ -25,8 +25,8 @@ using VMode = std::variant<Mode, nat_t, Ref>;
 /// thorin::plug::core::VMode -> Ref.
 inline Ref mode(World& w, VMode m) {
     if (auto def = std::get_if<Ref>(&m)) return *def;
-    if (auto nat = std::get_if<nat_t>(&m)) return w.nat(*nat);
-    return w.nat((nat_t)std::get<Mode>(m));
+    if (auto nat = std::get_if<nat_t>(&m)) return w.lit_nat(*nat);
+    return w.lit_nat((nat_t)std::get<Mode>(m));
 }
 ///@}
 
@@ -66,7 +66,7 @@ inline Ref extract_unsafe(Ref d, Ref i) {
 }
 inline Ref extract_unsafe(Ref d, u64 i) {
     World& w = d->world();
-    return extract_unsafe(d, w.idx(0_u64, i));
+    return extract_unsafe(d, w.lit_idx(0_u64, i));
 }
 ///@}
 
@@ -78,7 +78,7 @@ inline Ref insert_unsafe(Ref d, Ref i, Ref val) {
 }
 inline Ref insert_unsafe(Ref d, u64 i, Ref val) {
     World& w = d->world();
-    return insert_unsafe(d, w.idx(0_u64, i), val);
+    return insert_unsafe(d, w.lit_idx(0_u64, i), val);
 }
 ///@}
 

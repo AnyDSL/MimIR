@@ -68,9 +68,9 @@ Ref match_range(Ref c, nat_t lo, nat_t hi) {
     if (lo == 0 && hi == 255) return w.lit_tt();
 
     // .let in_range     = %core.bit2.and_ 0 (%core.icmp.uge (char, lower),  %core.icmp.ule (char, upper));
-    auto below_hi = w.call(core::icmp::ule, w.tuple({c, w.idx(256, hi)}));
-    auto above_lo = w.call(core::icmp::uge, w.tuple({c, w.idx(256, lo)}));
-    return w.call(core::bit2::and_, w.nat(2), w.tuple({below_hi, above_lo}));
+    auto below_hi = w.call(core::icmp::ule, w.tuple({c, w.lit_idx(256, hi)}));
+    auto above_lo = w.call(core::icmp::uge, w.tuple({c, w.lit_idx(256, lo)}));
+    return w.call(core::bit2::and_, w.lit_nat(2), w.tuple({below_hi, above_lo}));
 }
 
 DFAMap<Ref> create_check_match_transitions_from(Ref c, const DFANode* state) {
@@ -85,7 +85,7 @@ DFAMap<Ref> create_check_match_transitions_from(Ref c, const DFANode* state) {
                 state2check.emplace(state, match_range(c, lo, hi));
             else
                 state2check[state]
-                    = w.call(core::bit2::or_, w.nat(2), w.tuple({state2check[state], match_range(c, lo, hi)}));
+                    = w.call(core::bit2::or_, w.lit_nat(2), w.tuple({state2check[state], match_range(c, lo, hi)}));
     }
     return state2check;
 }
@@ -145,10 +145,10 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, Ref n) {
             continue;
         }
 
-        auto lea       = w.call<mem::lea>(w.tuple({n, w.pack(n, w.Idx(256)), w.nat(0)}), w.tuple({string, i}));
+        auto lea       = w.call<mem::lea>(w.tuple({n, w.pack(n, w.Idx(256)), w.lit_nat(0)}), w.tuple({string, i}));
         auto [mem2, c] = w.call<mem::load>(w.tuple({mem, lea}))->projs<2>();
 
-        auto is_end  = w.call(core::icmp::e, w.tuple({c, w.idx(256, 0)}));
+        auto is_end  = w.call(core::icmp::e, w.tuple({c, w.lit_idx(256, 0)}));
         auto not_end = w.con({M, w.Idx(n)});
         not_end->debug_prefix("not_end_" + state_to_name(state));
 

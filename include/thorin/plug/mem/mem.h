@@ -145,7 +145,7 @@ inline Ref op_remem(Ref mem) {
 ///@{
 inline Ref op_alloc(Ref type, Ref mem) {
     World& w = type->world();
-    return w.app(w.app(w.annex<alloc>(), {type, w.nat_0()}), mem);
+    return w.app(w.app(w.annex<alloc>(), {type, w.lit_nat_0()}), mem);
 }
 ///@}
 
@@ -153,7 +153,7 @@ inline Ref op_alloc(Ref type, Ref mem) {
 ///@{
 inline Ref op_slot(Ref type, Ref mem) {
     World& w = type->world();
-    return w.app(w.app(w.annex<slot>(), {type, w.nat_0()}), {mem, w.nat(w.curr_gid())});
+    return w.app(w.app(w.annex<slot>(), {type, w.lit_nat_0()}), {mem, w.lit_nat(w.curr_gid())});
 }
 ///@}
 
@@ -162,7 +162,7 @@ inline Ref op_slot(Ref type, Ref mem) {
 inline Ref op_malloc(Ref type, Ref mem) {
     World& w  = type->world();
     auto size = w.call(core::trait::size, type);
-    return w.app(w.app(w.annex<malloc>(), {type, w.nat_0()}), {mem, size});
+    return w.app(w.app(w.annex<malloc>(), {type, w.lit_nat_0()}), {mem, size});
 }
 ///@}
 
@@ -171,7 +171,7 @@ inline Ref op_malloc(Ref type, Ref mem) {
 inline Ref op_mslot(Ref type, Ref mem, Ref id) {
     World& w  = type->world();
     auto size = w.call(core::trait::size, type);
-    return w.app(w.app(w.annex<mslot>(), {type, w.nat_0()}), {mem, size, id});
+    return w.app(w.app(w.annex<mslot>(), {type, w.lit_nat_0()}), {mem, size, id});
 }
 ///@}
 

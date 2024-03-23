@@ -311,9 +311,9 @@ public:
     template<level_t level = 0> Arr* mut_arr() { return mut_arr(type<level>()); }
     Ref arr(Ref shape, Ref body);
     Ref arr(Defs shape, Ref body);
-    Ref arr(u64 n, Ref body) { return arr(nat(n), body); }
+    Ref arr(u64 n, Ref body) { return arr(lit_nat(n), body); }
     Ref arr(View<u64> shape, Ref body) {
-        return arr(DefVec(shape.size(), [&](size_t i) { return nat(shape[i]); }), body);
+        return arr(DefVec(shape.size(), [&](size_t i) { return lit_nat(shape[i]); }), body);
     }
     Ref arr_unsafe(Ref body) { return arr(top_nat(), body); }
     ///@}
@@ -332,9 +332,9 @@ public:
     Pack* mut_pack(Ref type) { return insert<Pack>(1, type); }
     Ref pack(Ref arity, Ref body);
     Ref pack(Defs shape, Ref body);
-    Ref pack(u64 n, Ref body) { return pack(nat(n), body); }
+    Ref pack(u64 n, Ref body) { return pack(lit_nat(n), body); }
     Ref pack(View<u64> shape, Ref body) {
-        return pack(DefVec(shape.size(), [&](auto i) { return nat(shape[i]); }), body);
+        return pack(DefVec(shape.size(), [&](auto i) { return lit_nat(shape[i]); }), body);
     }
     ///@}
 
@@ -342,7 +342,7 @@ public:
     /// @see core::extract_unsafe
     ///@{
     Ref extract(Ref d, Ref i);
-    Ref extract(Ref d, u64 a, u64 i) { return extract(d, idx(a, i)); }
+    Ref extract(Ref d, u64 a, u64 i) { return extract(d, lit_idx(a, i)); }
     Ref extract(Ref d, u64 i) { return extract(d, d->as_lit_arity(), i); }
 
     /// Builds `(f, t)#cond`.
@@ -354,7 +354,7 @@ public:
     /// @see core::insert_unsafe
     ///@{
     Ref insert(Ref d, Ref i, Ref val);
-    Ref insert(Ref d, u64 a, u64 i, Ref val) { return insert(d, idx(a, i), val); }
+    Ref insert(Ref d, u64 a, u64 i, Ref val) { return insert(d, lit_idx(a, i), val); }
     Ref insert(Ref d, u64 i, Ref val) { return insert(d, d->as_lit_arity(), i, val); }
     ///@}
 
@@ -364,37 +364,37 @@ public:
     const Lit* lit_univ(u64 level) { return lit(univ(), level); }
     const Lit* lit_univ_0() { return data_.lit_univ_0; }
     const Lit* lit_univ_1() { return data_.lit_univ_1; }
-    const Lit* nat(nat_t a) { return lit(Nat(), a); }
-    const Lit* nat_0() { return data_.nat_0; }
-    const Lit* nat_1() { return data_.nat_1; }
-    const Lit* nat_max() { return data_.nat_max; }
+    const Lit* lit_nat(nat_t a) { return lit(Nat(), a); }
+    const Lit* lit_nat_0() { return data_.lit_nat_0; }
+    const Lit* lit_nat_1() { return data_.lit_nat_1; }
+    const Lit* lit_nat_max() { return data_.lit_nat_max; }
     const Lit* lit_0_1() { return data_.lit_0_1; }
     // clang-format off
-    const Lit* i1()  { return nat(Idx::bitwidth2size(1)); };
-    const Lit* i2()  { return nat(Idx::bitwidth2size(2)); };
-    const Lit* i4()  { return nat(Idx::bitwidth2size(4)); };
-    const Lit* i8()  { return nat(Idx::bitwidth2size(8)); };
-    const Lit* i16() { return nat(Idx::bitwidth2size(16)); };
-    const Lit* i32() { return nat(Idx::bitwidth2size(32)); };
-    const Lit* i64() { return nat(Idx::bitwidth2size(64)); };
+    const Lit* lit_i1()  { return lit_nat(Idx::bitwidth2size(1)); };
+    const Lit* lit_i2()  { return lit_nat(Idx::bitwidth2size(2)); };
+    const Lit* lit_i4()  { return lit_nat(Idx::bitwidth2size(4)); };
+    const Lit* lit_i8()  { return lit_nat(Idx::bitwidth2size(8)); };
+    const Lit* lit_i16() { return lit_nat(Idx::bitwidth2size(16)); };
+    const Lit* lit_i32() { return lit_nat(Idx::bitwidth2size(32)); };
+    const Lit* lit_i64() { return lit_nat(Idx::bitwidth2size(64)); };
     // clang-format on
     /// Constructs a Lit of type Idx of size @p size.
     /// @note `size = 0` means `2^64`.
-    const Lit* idx(nat_t size, u64 val) { return lit(Idx(size), val); }
+    const Lit* lit_idx(nat_t size, u64 val) { return lit(Idx(size), val); }
 
-    template<class I> const Lit* idx(I val) {
+    template<class I> const Lit* lit_idx(I val) {
         static_assert(std::is_integral<I>());
-        return idx(Idx::bitwidth2size(sizeof(I) * 8), val);
+        return lit_idx(Idx::bitwidth2size(sizeof(I) * 8), val);
     }
 
     /// Constructs a Lit @p of type Idx of size $2^width$.
     /// `val = 64` will be automatically converted to size `0` - the encoding for $2^64$.
-    const Lit* lit_int(nat_t width, u64 val) { return idx(Idx::bitwidth2size(width), val); }
+    const Lit* lit_int(nat_t width, u64 val) { return lit_idx(Idx::bitwidth2size(width), val); }
 
     /// Constructs a Lit of type Idx of size @p mod.
     /// The value @p val will be adjusted modulo @p mod.
     /// @note `mod == 0` is the special case for $2^64$ and no modulo will be performed on @p val.
-    const Lit* idx_mod(nat_t mod, u64 val) { return idx(mod, mod == 0 ? val : (val % mod)); }
+    const Lit* lit_idx_mod(nat_t mod, u64 val) { return lit_idx(mod, mod == 0 ? val : (val % mod)); }
 
     const Lit* lit_bool(bool val) { return data_.lit_bool[size_t(val)]; }
     const Lit* lit_ff() { return data_.lit_bool[0]; }
@@ -443,11 +443,11 @@ public:
     /// @note `size = 0` means `2^64`.
     Ref Idx(Ref size) { return app(Idx(), size); }
     /// @note `size = 0` means `2^64`.
-    Ref Idx(nat_t size) { return Idx(nat(size)); }
+    Ref Idx(nat_t size) { return Idx(lit_nat(size)); }
 
     /// Constructs a type Idx of size $2^width$.
     /// `width = 64` will be automatically converted to size `0` - the encoding for $2^64$.
-    Ref Int(nat_t width) { return Idx(nat(Idx::bitwidth2size(width))); }
+    Ref Int(nat_t width) { return Idx(lit_nat(Idx::bitwidth2size(width))); }
     // clang-format off
     Ref I1()  { return Int(1); };
     Ref I2()  { return Int(2); };
@@ -466,11 +466,11 @@ public:
     /// Places Infer arguments as demanded by Pi::implicit and then apps @p arg.
     Ref iapp(Ref callee, Ref arg);
     Ref iapp(Ref callee, Defs args) { return iapp(callee, tuple(args)); }
-    Ref iapp(Ref callee, nat_t arg) { return iapp(callee, nat(arg)); }
+    Ref iapp(Ref callee, nat_t arg) { return iapp(callee, lit_nat(arg)); }
     template<class E>
     Ref iapp(Ref callee, E arg) requires std::is_enum_v<E> && std::is_same_v<std::underlying_type_t<E>, nat_t>
     {
-        return iapp(callee, nat((nat_t)arg));
+        return iapp(callee, lit_nat((nat_t)arg));
     }
 
     /// @name Vars & Muts
@@ -644,9 +644,9 @@ private:
         const Def* table_not;
         const Lit* lit_univ_0;
         const Lit* lit_univ_1;
-        const Lit* nat_0;
-        const Lit* nat_1;
-        const Lit* nat_max;
+        const Lit* lit_nat_0;
+        const Lit* lit_nat_1;
+        const Lit* lit_nat_max;
         const Lit* lit_0_1;
         std::array<const Lit*, 2> lit_bool;
         Lam* exit;

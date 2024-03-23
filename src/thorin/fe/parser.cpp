@@ -222,13 +222,13 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::K_Nat:     lex(); return world().Nat();
         case Tag::K_ff:      lex(); return world().lit_ff();
         case Tag::K_tt:      lex(); return world().lit_tt();
-        case Tag::K_i1:      lex(); return world().i1();
-        case Tag::K_i2:      lex(); return world().i2();
-        case Tag::K_i4:      lex(); return world().i4();
-        case Tag::K_i8:      lex(); return world().i8();
-        case Tag::K_i16:     lex(); return world().i16();
-        case Tag::K_i32:     lex(); return world().i32();
-        case Tag::K_i64:     lex(); return world().i64();
+        case Tag::K_i1:      lex(); return world().lit_i1();
+        case Tag::K_i2:      lex(); return world().lit_i2();
+        case Tag::K_i4:      lex(); return world().lit_i4();
+        case Tag::K_i8:      lex(); return world().lit_i8();
+        case Tag::K_i16:     lex(); return world().lit_i16();
+        case Tag::K_i32:     lex(); return world().lit_i32();
+        case Tag::K_i64:     lex(); return world().lit_i64();
         case Tag::K_I1:      lex(); return world().I1();
         case Tag::K_I2:      lex(); return world().I2();
         case Tag::K_I4:      lex(); return world().I4();
@@ -604,7 +604,7 @@ Ref Parser::parse_lit_expr() {
     if (tok.tag() == Tag::L_s) error(prev_, ".Nat literal specified as signed but must be unsigned");
     if (tok.tag() == Tag::L_f) error(prev_, ".Nat literal specified as floating-point but must be unsigned");
 
-    return world().nat(tok.lit_u())->set(track.loc());
+    return world().lit_nat(tok.lit_u())->set(track.loc());
 }
 
 /*

@@ -11,7 +11,7 @@ namespace thorin::plug::affine {
 /// Returns the affine_for axiom applied with \a params.
 /// See documentation for %affine.For axiom in @ref affine.
 inline const Def* fn_for(World& w, Defs params) {
-    return w.app(w.annex<affine::For>(), {w.nat(Idx::bitwidth2size(32)), w.nat(params.size()), w.tuple(params)});
+    return w.app(w.annex<affine::For>(), {w.lit_i32(), w.lit_nat(params.size()), w.tuple(params)});
 }
 
 /// Returns a fully applied affine_for axiom.

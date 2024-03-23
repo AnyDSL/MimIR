@@ -169,7 +169,7 @@ const Def* zero_def(const Def* T) {
 const Def* op_sum(const Def* T, Defs defs) {
     // TODO: assert all are of type T
     auto& world = T->world();
-    return world.app(world.app(world.annex<sum>(), {world.nat(defs.size()), T}), defs);
+    return world.app(world.app(world.annex<sum>(), {world.lit_nat(defs.size()), T}), defs);
 }
 
 } // namespace thorin::plug::autodiff
