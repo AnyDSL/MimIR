@@ -109,7 +109,7 @@ Ref SSAConstr::mem2phi(const App* app, Lam* mem_lam) {
     auto&& [phi_lam, old_phis] = mem2phi_[mem_lam];
     if (phi_lam == nullptr || old_phis != phis) {
         old_phis = phis;
-        phi_lam  = world().lam(merge_sigma(mem_lam->dom(), types), mem_lam->codom())->set(mem_lam->dbg());
+        phi_lam  = world().mut_lam(merge_sigma(mem_lam->dom(), types), mem_lam->codom())->set(mem_lam->dbg());
         eta_exp_->new2old(phi_lam, mem_lam);
         world().DLOG("new phi_lam '{}'", phi_lam);
 

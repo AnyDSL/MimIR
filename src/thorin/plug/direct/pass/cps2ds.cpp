@@ -90,7 +90,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
 
             // The continuation that receives the result of the cps function call.
             auto new_name = world().append_suffix(curr_lam_->sym(), "_cps_cont");
-            auto fun_cont = world().con(inst_ret_ty)->set(new_name);
+            auto fun_cont = world().mut_con(inst_ret_ty)->set(new_name);
             rewritten_lams.insert(fun_cont);
 
             // Generate the cps function call `f a` -> `f_cps(a,cont)`

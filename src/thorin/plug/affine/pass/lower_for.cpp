@@ -41,15 +41,15 @@ Ref LowerFor::rewrite(Ref def) {
         if (!body_lam || !exit_lam) return def;
 
         auto mem       = mem::mem_def(init);
-        auto head_lam  = world().con(merge_s(world(), begin->type(), init->type(), mem))->set("head");
+        auto head_lam  = world().mut_con(merge_s(world(), begin->type(), init->type(), mem))->set("head");
         auto phis      = head_lam->vars();
         auto iter      = phis.front();
         auto acc       = world().tuple(phis.view().subspan(1));
         mem            = mem::mem_var(head_lam);
         auto bb_dom    = mem ? mem->type() : world().sigma();
-        auto new_body  = world().con(bb_dom)->set("new_body");
-        auto new_exit  = world().con(bb_dom)->set("new_exit");
-        auto new_yield = world().con(init->type())->set("new_yield");
+        auto new_body  = world().mut_con(bb_dom)->set("new_body");
+        auto new_exit  = world().mut_con(bb_dom)->set("new_exit");
+        auto new_yield = world().mut_con(init->type())->set("new_yield");
         auto cmp       = world().call(core::icmp::ul, Defs{iter, end});
         auto new_iter  = world().call(core::wrap::add, core::Mode::nusw, Defs{iter, step});
 

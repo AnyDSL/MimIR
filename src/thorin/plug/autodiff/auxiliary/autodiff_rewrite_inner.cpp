@@ -56,7 +56,7 @@ Ref AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
         auto aug_dom  = autodiff_type_fun(cont_dom);
         world.DLOG("augmented domain {}", aug_dom);
         world.DLOG("pb type is {}", pb_ty);
-        auto aug_lam              = world.con({aug_dom, pb_ty})->set("aug_"s + lam->sym().str());
+        auto aug_lam              = world.mut_con({aug_dom, pb_ty})->set("aug_"s + lam->sym().str());
         auto aug_var              = aug_lam->var((nat_t)0);
         augmented[lam->var()]     = aug_var;
         augmented[lam]            = aug_lam; // TODO: only one of these two
