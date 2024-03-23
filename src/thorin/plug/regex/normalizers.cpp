@@ -115,7 +115,7 @@ auto get_range(const Def* rng) -> Range {
 
 struct app_range {
     World& w;
-    Ref operator()(Range rng) { return w.call<range>(Defs{w.lit_int(8, rng.first), w.lit_int(8, rng.second)}); }
+    Ref operator()(Range rng) { return w.call<range>(Defs{w.lit_i8(rng.first), w.lit_i8(rng.second)}); }
 };
 
 void merge_ranges(DefVec& args) {

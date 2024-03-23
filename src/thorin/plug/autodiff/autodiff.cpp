@@ -117,7 +117,7 @@ const Def* autodiff_type_fun(const Def* ty) {
     // Also handles autodiff call from axiom declaration => abstract => leave it.
     world.DLOG("AutoDiff on type: {} <{}>", ty, ty->node_name());
     if (Idx::size(ty)) return ty;
-    if (ty == world.Nat()) return ty;
+    if (ty == world.type_nat()) return ty;
     if (auto arr = ty->isa<Arr>()) {
         auto shape   = arr->shape();
         auto body    = arr->body();

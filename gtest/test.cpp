@@ -44,7 +44,7 @@ TEST(World, simplify_one_tuple) {
     ASSERT_EQ(w.lit_ff(), w.tuple({w.lit_ff()})) << "constant fold (false) -> false";
 
     auto type = w.mut_sigma(w.type(), 2);
-    type->set(Defs{w.Nat(), w.Nat()});
+    type->set(Defs{w.type_nat(), w.type_nat()});
     ASSERT_EQ(type, w.sigma({type})) << "constant fold [mut] -> mut";
 
     auto v = w.tuple(type, {w.lit_idx(42), w.lit_idx(1337)});
@@ -92,20 +92,20 @@ TEST(trait, idx) {
     auto parser = Parser(w);
     parser.plugin("core");
 
-    EXPECT_EQ(Lit::as(op(core::trait::size, w.Idx(0x0000'0000'0000'00FF_n))), 1);
-    EXPECT_EQ(Lit::as(op(core::trait::size, w.Idx(0x0000'0000'0000'0100_n))), 1);
-    EXPECT_EQ(Lit::as(op(core::trait::size, w.Idx(0x0000'0000'0000'0101_n))), 2);
+    EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'0000'00FF_n))), 1);
+    EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'0000'0100_n))), 1);
+    EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'0000'0101_n))), 2);
 
-    EXPECT_EQ(Lit::as(op(core::trait::size, w.Idx(0x0000'0000'0000'FFFF_n))), 2);
-    EXPECT_EQ(Lit::as(op(core::trait::size, w.Idx(0x0000'0000'0001'0000_n))), 2);
-    EXPECT_EQ(Lit::as(op(core::trait::size, w.Idx(0x0000'0000'0001'0001_n))), 4);
+    EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'0000'FFFF_n))), 2);
+    EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'0001'0000_n))), 2);
+    EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'0001'0001_n))), 4);
 
-    EXPECT_EQ(Lit::as(op(core::trait::size, w.Idx(0x0000'0000'FFFF'FFFF_n))), 4);
-    EXPECT_EQ(Lit::as(op(core::trait::size, w.Idx(0x0000'0001'0000'0000_n))), 4);
-    EXPECT_EQ(Lit::as(op(core::trait::size, w.Idx(0x0000'0001'0000'0001_n))), 8);
+    EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'FFFF'FFFF_n))), 4);
+    EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0001'0000'0000_n))), 4);
+    EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0001'0000'0001_n))), 8);
 
-    EXPECT_EQ(Lit::as(op(core::trait::size, w.Idx(0xFFFF'FFFF'FFFF'FFFF_n))), 8);
-    EXPECT_EQ(Lit::as(op(core::trait::size, w.Idx(0x0000'0000'0000'0000_n))), 8);
+    EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0xFFFF'FFFF'FFFF'FFFF_n))), 8);
+    EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'0000'0000_n))), 8);
 }
 
 Ref normalize_test_curry(Ref type, Ref callee, Ref arg) {
@@ -118,7 +118,7 @@ TEST(Axiom, curry) {
     World& w = driver.world();
 
     auto n   = DefVec(11, [&w](size_t i) { return w.lit_nat(i); });
-    auto nat = w.Nat();
+    auto nat = w.type_nat();
 
     {
         // N -> N -> N -> N -> N
@@ -196,7 +196,7 @@ TEST(Type, Level) {
 TEST(Check, alpha) {
     Driver driver;
     World& w = driver.world();
-    auto pi  = w.pi(w.Nat(), w.Nat());
+    auto pi  = w.pi(w.type_nat(), w.type_nat());
 
     // λx.x
     auto lxx = w.lam(pi);
@@ -274,7 +274,7 @@ TEST(Check, alpha) {
 TEST(FV, free_vars) {
     Driver driver;
     World& w = driver.world();
-    auto Nat = w.Nat();
+    auto Nat = w.type_nat();
     auto pi  = w.pi(Nat, w.sigma({Nat, Nat}));
     auto lx  = w.lam(pi);
     auto ly  = w.lam(pi);

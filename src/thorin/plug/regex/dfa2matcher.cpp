@@ -68,8 +68,8 @@ Ref match_range(Ref c, nat_t lo, nat_t hi) {
     if (lo == 0 && hi == 255) return w.lit_tt();
 
     // .let in_range     = %core.bit2.and_ 0 (%core.icmp.uge (char, lower),  %core.icmp.ule (char, upper));
-    auto below_hi = w.call(core::icmp::ule, w.tuple({c, w.lit_idx(256, hi)}));
-    auto above_lo = w.call(core::icmp::uge, w.tuple({c, w.lit_idx(256, lo)}));
+    auto below_hi = w.call(core::icmp::ule, w.tuple({c, w.lit_i8(hi)}));
+    auto above_lo = w.call(core::icmp::uge, w.tuple({c, w.lit_i8(lo)}));
     return w.call(core::bit2::and_, w.lit_nat(2), w.tuple({below_hi, above_lo}));
 }
 
@@ -99,8 +99,8 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, Ref n) {
     DFAMap<Lam*> state2matcher;
 
     // ((mem: %mem.M, string: Str n, pos: .Idx n), .Cn [%mem.M, .Bool, .Idx n])
-    auto matcher_con  = w.Cn({w.annex<mem::M>(), w.Bool(), w.Idx(n)});
-    auto matcher_args = w.sigma({w.annex<mem::M>(), w.call<mem::Ptr0>(w.arr(n, w.Idx(256))), w.Idx(n)});
+    auto matcher_con  = w.Cn({w.annex<mem::M>(), w.Bool(), w.type_idx(n)});
+    auto matcher_args = w.sigma({w.annex<mem::M>(), w.call<mem::Ptr0>(w.arr(n, w.type_i8())), w.type_idx(n)});
     auto matcher      = w.con({matcher_args, matcher_con});
     matcher->debug_prefix(std::string("match_regex"));
     auto [args, exit] = matcher->vars<2>();
@@ -110,7 +110,7 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, Ref n) {
     string->debug_prefix(std::string("string"));
     pos->debug_prefix(std::string("pos"));
 
-    auto error = w.con({w.annex<mem::M>(), w.Idx(n)});
+    auto error = w.con({w.annex<mem::M>(), w.type_idx(n)});
     error->debug_prefix("error");
     {
         auto [mem, pos] = error->vars<2>();
@@ -119,7 +119,7 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, Ref n) {
         error->app(false, exit, {mem, w.lit_ff(), pos});
     }
 
-    auto accept = w.con({w.annex<mem::M>(), w.Idx(n)});
+    auto accept = w.con({w.annex<mem::M>(), w.type_idx(n)});
     accept->debug_prefix("accept");
     {
         auto [mem, pos] = accept->vars<2>();
@@ -132,7 +132,7 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, Ref n) {
 
     auto M = w.annex<mem::M>();
     for (auto state : states) {
-        auto lam = w.con({M, w.Idx(n)});
+        auto lam = w.con({M, w.type_idx(n)});
         lam->debug_prefix(state_to_name(state));
         state2matcher.emplace(state, lam);
     }
@@ -145,22 +145,21 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, Ref n) {
             continue;
         }
 
-        auto lea       = w.call<mem::lea>(w.tuple({n, w.pack(n, w.Idx(256)), w.lit_nat(0)}), w.tuple({string, i}));
+        auto lea       = w.call<mem::lea>(w.tuple({n, w.pack(n, w.type_i8()), w.lit_nat(0)}), w.tuple({string, i}));
         auto [mem2, c] = w.call<mem::load>(w.tuple({mem, lea}))->projs<2>();
 
-        auto is_end  = w.call(core::icmp::e, w.tuple({c, w.lit_idx(256, 0)}));
-        auto not_end = w.con({M, w.Idx(n)});
+        auto is_end  = w.call(core::icmp::e, w.tuple({c, w.lit_i8(0)}));
+        auto not_end = w.con({M, w.type_idx(n)});
         not_end->debug_prefix("not_end_" + state_to_name(state));
 
-        auto new_i
-            = w.call(core::wrap::add, core::Mode::nusw, w.tuple({i, w.call(core::conv::u, n, w.lit_int(64, 1))}));
+        auto new_i = w.call(core::wrap::add, core::Mode::nusw, w.tuple({i, w.call(core::conv::u, n, w.lit_i64(1))}));
         lam->app(false, w.select(is_end, exiting(state), not_end), {mem2, i});
 
         auto transitions = create_check_match_transitions_from(c, state);
         auto next_check  = exiting(state); // if we want to check full string only, use error instead of exiting(state)c
         for (auto [next_state, check] : transitions) {
             auto next_lam = state2matcher[next_state];
-            auto checker  = w.con({M, w.Idx(n)});
+            auto checker  = w.con({M, w.type_idx(n)});
             checker->debug_prefix("check_" + state_to_name(state) + "_to_" + state_to_name(next_state));
             auto [mem3, pos] = checker->vars<2>();
             checker->app(false, w.select(check, next_lam, next_check), {mem3, w.select(check, new_i, pos)});

@@ -98,8 +98,8 @@ UMax::UMax(World& world, Defs ops)
 #ifndef DOXYGEN // TODO Doxygen doesn't expand THORIN_DEF_MIXIN
 Ref Infer    ::rebuild(World&,   Ref,   Defs  ) const { fe::unreachable(); }
 Ref Global   ::rebuild(World&,   Ref,   Defs  ) const { fe::unreachable(); }
-Ref Idx      ::rebuild(World& w, Ref  , Defs  ) const { assert(isa_imm()); return w.Idx(); }
-Ref Nat      ::rebuild(World& w, Ref  , Defs  ) const { assert(isa_imm()); return w.Nat(); }
+Ref Idx      ::rebuild(World& w, Ref  , Defs  ) const { assert(isa_imm()); return w.type_idx(); }
+Ref Nat      ::rebuild(World& w, Ref  , Defs  ) const { assert(isa_imm()); return w.type_nat(); }
 Ref Univ     ::rebuild(World& w, Ref  , Defs  ) const { assert(isa_imm()); return w.univ(); }
 Ref Ac       ::rebuild(World& w, Ref t, Defs o) const { assert(isa_imm()); return w.ac(t, o)                     ->set(dbg()); }
 Ref App      ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.app(o[0], o[1])              ->set(dbg()); }
@@ -477,8 +477,8 @@ Ref Def::var() {
     if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam);
     if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi);
     if (auto sig  = isa<Sigma>()) return w.var(sig,         sig);
-    if (auto arr  = isa<Arr  >()) return w.var(w.Idx(arr ->shape()), arr ); // TODO shapes like (2, 3)
-    if (auto pack = isa<Pack >()) return w.var(w.Idx(pack->shape()), pack); // TODO shapes like (2, 3)
+    if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->shape()), arr ); // TODO shapes like (2, 3)
+    if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->shape()), pack); // TODO shapes like (2, 3)
     if (isa<Bound >()) return w.var(this, this);
     if (isa<Infer >()) return nullptr;
     if (isa<Global>()) return nullptr;

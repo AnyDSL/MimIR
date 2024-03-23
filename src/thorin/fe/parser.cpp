@@ -218,8 +218,8 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::K_Type:    return parse_type_expr();
         case Tag::K_Univ:    lex(); return world().univ();
         case Tag::K_Bool:    lex(); return world().Bool();
-        case Tag::K_Idx:     lex(); return world().Idx();
-        case Tag::K_Nat:     lex(); return world().Nat();
+        case Tag::K_Idx:     lex(); return world().type_idx();
+        case Tag::K_Nat:     lex(); return world().type_nat();
         case Tag::K_ff:      lex(); return world().lit_ff();
         case Tag::K_tt:      lex(); return world().lit_tt();
         case Tag::K_i1:      lex(); return world().lit_i1();
@@ -229,13 +229,13 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::K_i16:     lex(); return world().lit_i16();
         case Tag::K_i32:     lex(); return world().lit_i32();
         case Tag::K_i64:     lex(); return world().lit_i64();
-        case Tag::K_I1:      lex(); return world().I1();
-        case Tag::K_I2:      lex(); return world().I2();
-        case Tag::K_I4:      lex(); return world().I4();
-        case Tag::K_I8:      lex(); return world().I8();
-        case Tag::K_I16:     lex(); return world().I16();
-        case Tag::K_I32:     lex(); return world().I32();
-        case Tag::K_I64:     lex(); return world().I64();
+        case Tag::K_I1:      lex(); return world().type_i1();
+        case Tag::K_I2:      lex(); return world().type_i2();
+        case Tag::K_I4:      lex(); return world().type_i4();
+        case Tag::K_I8:      lex(); return world().type_i8();
+        case Tag::K_I16:     lex(); return world().type_i16();
+        case Tag::K_I32:     lex(); return world().type_i32();
+        case Tag::K_I64:     lex(); return world().type_i64();
         case Tag::K_Cn:
         case Tag::K_Fn:
         case Tag::T_Pi:      return parse_pi_expr();
@@ -249,7 +249,7 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::L_s:
         case Tag::L_u:
         case Tag::L_f:       return parse_lit_expr();
-        case Tag::L_c:       return world().lit_int(8, lex().lit_c());
+        case Tag::L_c:       return world().lit_i8(lex().lit_c());
         case Tag::L_i:       return lex().lit_i();
         case Tag::K_ins:     return parse_insert_expr();
         case Tag::K_ret:     return parse_ret_expr();
@@ -302,7 +302,7 @@ Ref Parser::parse_pack_expr() {
         eat(Tag::T_colon);
 
         auto shape = parse_expr("shape of a pack");
-        auto infer = world().mut_infer(world().Idx(shape))->set(id.sym());
+        auto infer = world().mut_infer(world().type_idx(shape))->set(id.sym());
         scopes_.bind(id.dbg(), infer);
 
         expect(Tag::T_semicolon, "pack");

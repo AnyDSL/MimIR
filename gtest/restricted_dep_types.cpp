@@ -31,8 +31,8 @@ TEST(RestrictedDependentTypes, join_singleton) {
         auto parser = Parser(w);
         for (auto plugin : {"compile", "mem", "core", "math"}) parser.plugin(plugin);
 
-        auto i32_t = w.I32();
-        auto i64_t = w.I64();
+        auto i32_t = w.type_i32();
+        auto i64_t = w.type_i64();
 
         auto R = w.axiom(w.type())->set("R");
         auto W = w.axiom(w.type())->set("W");
@@ -129,8 +129,8 @@ TEST(RestrictedDependentTypes, join_singleton) {
 
         for (auto&& test : cases) {
             test_on_world([&test](World& w, auto R, auto W, auto Exp) {
-                auto i32_t = w.Int(32);
-                auto i64_t = w.Int(64);
+                auto i32_t = w.type_i32();
+                auto i64_t = w.type_i64();
                 auto RW    = w.join({w.singleton(R), w.singleton(W)})->set("RW");
                 auto DT    = w.join({w.singleton(i32_t), w.singleton(i64_t)})->set("DT");
 
@@ -198,8 +198,8 @@ TEST(RestrictedDependentTypes, join_singleton) {
 
         for (auto&& test : cases) {
             test_on_world([&test](World& w, auto R, auto W, auto Exp) {
-                auto i32_t = w.Int(32);
-                auto i64_t = w.Int(64);
+                auto i32_t = w.type_i32();
+                auto i64_t = w.type_i64();
                 auto RW    = w.join({w.singleton(R), w.singleton(W)})->set("RW");
                 auto DT    = w.join({w.singleton(i32_t), w.singleton(i64_t)})->set("DT");
 
@@ -223,7 +223,7 @@ TEST(RestrictedDependentTypes, ll) {
     for (auto plugin : {"compile", "mem", "core", "math"}) parser.plugin(plugin);
 
     auto mem_t  = w.annex<mem::M>();
-    auto i32_t  = w.Int(32);
+    auto i32_t  = w.type_i32();
     auto argv_t = w.call<mem::Ptr0>(w.call<mem::Ptr0>(i32_t));
 
     // Cn [mem, i32, ptr(ptr(i32, 0), 0) Cn [mem, i32]]

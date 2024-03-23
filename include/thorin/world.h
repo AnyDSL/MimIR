@@ -364,7 +364,7 @@ public:
     const Lit* lit_univ(u64 level) { return lit(univ(), level); }
     const Lit* lit_univ_0() { return data_.lit_univ_0; }
     const Lit* lit_univ_1() { return data_.lit_univ_1; }
-    const Lit* lit_nat(nat_t a) { return lit(Nat(), a); }
+    const Lit* lit_nat(nat_t a) { return lit(type_nat(), a); }
     const Lit* lit_nat_0() { return data_.lit_nat_0; }
     const Lit* lit_nat_1() { return data_.lit_nat_1; }
     const Lit* lit_nat_max() { return data_.lit_nat_max; }
@@ -377,10 +377,9 @@ public:
     const Lit* lit_i16() { return lit_nat(Idx::bitwidth2size(16)); };
     const Lit* lit_i32() { return lit_nat(Idx::bitwidth2size(32)); };
     const Lit* lit_i64() { return lit_nat(Idx::bitwidth2size(64)); };
-    // clang-format on
     /// Constructs a Lit of type Idx of size @p size.
     /// @note `size = 0` means `2^64`.
-    const Lit* lit_idx(nat_t size, u64 val) { return lit(Idx(size), val); }
+    const Lit* lit_idx(nat_t size, u64 val) { return lit(type_idx(size), val); }
 
     template<class I> const Lit* lit_idx(I val) {
         static_assert(std::is_integral<I>());
@@ -390,6 +389,14 @@ public:
     /// Constructs a Lit @p of type Idx of size $2^width$.
     /// `val = 64` will be automatically converted to size `0` - the encoding for $2^64$.
     const Lit* lit_int(nat_t width, u64 val) { return lit_idx(Idx::bitwidth2size(width), val); }
+    const Lit* lit_i1 (bool val) { return lit_int(1,  u64(val)); }
+    const Lit* lit_i2 (u8   val) { return lit_int(2,  u64(val)); }
+    const Lit* lit_i4 (u8   val) { return lit_int(4,  u64(val)); }
+    const Lit* lit_i8 (u8   val) { return lit_int(8,  u64(val)); }
+    const Lit* lit_i16(u16  val) { return lit_int(16, u64(val)); }
+    const Lit* lit_i32(u32  val) { return lit_int(32, u64(val)); }
+    const Lit* lit_i64(u64  val) { return lit_int(64, u64(val)); }
+    // clang-format on
 
     /// Constructs a Lit of type Idx of size @p mod.
     /// The value @p val will be adjusted modulo @p mod.
@@ -438,24 +445,24 @@ public:
 
     /// @name Types
     ///@{
-    const thorin::Nat* Nat() { return data_.Nat; }
-    const thorin::Idx* Idx() { return data_.Idx; }
+    const Nat* type_nat() { return data_.type_nat; }
+    const Idx* type_idx() { return data_.type_idx; }
     /// @note `size = 0` means `2^64`.
-    Ref Idx(Ref size) { return app(Idx(), size); }
+    Ref type_idx(Ref size) { return app(type_idx(), size); }
     /// @note `size = 0` means `2^64`.
-    Ref Idx(nat_t size) { return Idx(lit_nat(size)); }
+    Ref type_idx(nat_t size) { return type_idx(lit_nat(size)); }
 
     /// Constructs a type Idx of size $2^width$.
     /// `width = 64` will be automatically converted to size `0` - the encoding for $2^64$.
-    Ref Int(nat_t width) { return Idx(lit_nat(Idx::bitwidth2size(width))); }
+    Ref type_int(nat_t width) { return type_idx(lit_nat(Idx::bitwidth2size(width))); }
     // clang-format off
-    Ref I1()  { return Int(1); };
-    Ref I2()  { return Int(2); };
-    Ref I4()  { return Int(4); };
-    Ref I8()  { return Int(8); };
-    Ref I16() { return Int(16); };
-    Ref I32() { return Int(32); };
-    Ref I64() { return Int(64); };
+    Ref type_i1()  { return type_int(1); };
+    Ref type_i2()  { return type_int(2); };
+    Ref type_i4()  { return type_int(4); };
+    Ref type_i8()  { return type_int(8); };
+    Ref type_i16() { return type_int(16); };
+    Ref type_i32() { return type_int(32); };
+    Ref type_i64() { return type_int(64); };
     // clang-format on
     Ref Bool() { return data_.Bool; }
     ///@}
@@ -638,8 +645,8 @@ private:
         const Top* top_nat;
         const Sigma* sigma;
         const Tuple* tuple;
-        const thorin::Nat* Nat;
-        const thorin::Idx* Idx;
+        const Nat* type_nat;
+        const Idx* type_idx;
         const Def* table_id;
         const Def* table_not;
         const Lit* lit_univ_0;

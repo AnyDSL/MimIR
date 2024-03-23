@@ -22,8 +22,8 @@ int main(int, char**) {
 
         // .Cn [%mem.M, I32, %mem.Ptr (I32, 0) .Cn [%mem.M, I32]]
         auto mem_t  = w.annex<mem::M>();
-        auto argv_t = w.call<mem::Ptr0>(w.call<mem::Ptr0>(w.I32()));
-        auto main   = w.fun({mem_t, w.I32(), argv_t}, {mem_t, w.I32()})->set("main");
+        auto argv_t = w.call<mem::Ptr0>(w.call<mem::Ptr0>(w.type_i32()));
+        auto main   = w.fun({mem_t, w.type_i32(), argv_t}, {mem_t, w.type_i32()})->set("main");
 
         auto [mem, argc, argv, ret] = main->vars<4>();
         main->app(false, ret, {mem, argc});
