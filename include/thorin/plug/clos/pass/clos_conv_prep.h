@@ -38,7 +38,7 @@ public:
         auto [entry, inserted] = old2wrapper_.emplace(def, nullptr);
         auto& wrapper          = entry->second;
         if (inserted) {
-            wrapper = w.mut_lam(def->type()->as<Pi>());
+            wrapper = w.lam(def->type()->as<Pi>());
             wrapper->app(false, def, wrapper->var());
             lam2fscope_[wrapper] = scope(curr_mut());
             wrapper_.emplace(wrapper);

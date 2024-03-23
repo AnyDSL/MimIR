@@ -199,25 +199,25 @@ TEST(Check, alpha) {
     auto pi  = w.pi(w.Nat(), w.Nat());
 
     // λx.x
-    auto lxx = w.mut_lam(pi);
+    auto lxx = w.lam(pi);
     lxx->set(false, lxx->var());
     // λy.y
-    auto lyy = w.mut_lam(pi);
+    auto lyy = w.lam(pi);
     lyy->set(false, lyy->var());
     // λz.x
-    auto lzx = w.mut_lam(pi);
+    auto lzx = w.lam(pi);
     lzx->set(false, lxx->var());
     // λw.y
-    auto lwy = w.mut_lam(pi);
+    auto lwy = w.lam(pi);
     lwy->set(false, lyy->var());
     // λ_.x
-    auto l_x = w.lam(pi, false, lxx->var());
+    auto l_x = w.lm(pi, false, lxx->var());
     // λ_.y
-    auto l_y = w.lam(pi, false, lyy->var());
+    auto l_y = w.lm(pi, false, lyy->var());
     // λ_.0
-    auto l_0 = w.lam(pi, false, w.nat_0());
+    auto l_0 = w.lm(pi, false, w.nat_0());
     // λ_.1
-    auto l_1 = w.lam(pi, false, w.nat_1());
+    auto l_1 = w.lm(pi, false, w.nat_1());
 
     auto check = [](Ref l1, Ref l2, bool infer_res, bool non_infer_res) {
         EXPECT_EQ(Check::alpha<true>(l1, l2), infer_res);
@@ -276,8 +276,8 @@ TEST(FV, free_vars) {
     World& w = driver.world();
     auto Nat = w.Nat();
     auto pi  = w.pi(Nat, w.sigma({Nat, Nat}));
-    auto lx  = w.mut_lam(pi);
-    auto ly  = w.mut_lam(pi);
+    auto lx  = w.lam(pi);
+    auto ly  = w.lam(pi);
     auto x   = lx->var()->set("x");
     auto y   = ly->var()->set("y");
     lx->set(false, w.tuple({x, y}));

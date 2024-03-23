@@ -453,7 +453,7 @@ Lam* Parser::parse_lam(bool is_decl) {
         dom_p             = parse_ptrn(Tag::D_paren_l, "domain pattern of a "s + entity, prec);
         auto dom_t        = dom_p->type(world(), def2fields_);
         auto pi           = world().mut_pi(world().type_infer_univ(), implicit)->set_dom(dom_t);
-        auto lam          = (funs.empty() && decl) ? decl : world().mut_lam(pi);
+        auto lam          = (funs.empty() && decl) ? decl : world().lam(pi);
         auto var          = lam->var()->set<true>(dom_p->loc(), dom_p->sym());
         dom_p->bind(scopes_, var);
 
@@ -496,7 +496,7 @@ Lam* Parser::parse_lam(bool is_decl) {
             sigma->set(1, world().Cn({rw.rewrite(ret)}));
 
             auto new_pi  = world().mut_pi(pi->type(), pi->is_implicit())->set(ret_loc)->set_dom(sigma);
-            auto new_lam = world().mut_lam(new_pi);
+            auto new_lam = world().lam(new_pi);
             auto new_var = new_lam->var()->set(ret_loc);
 
             // 2. filter depends on lam->var() instead of new_lam->var(2, 0)
@@ -568,7 +568,7 @@ Ref Parser::parse_ret_expr() {
     if (auto ret_pi = Pi::ret_pi(cn->type())) {
         auto arg = parse_expr("argument of ret expression");
         expect(Tag::T_semicolon, "let expression");
-        auto lam = world().mut_lam(ret_pi);
+        auto lam = world().lam(ret_pi);
         ptrn->bind(scopes_, lam->var());
         auto body = parse_decls("body of a ret expression");
         lam->set(false, body);

@@ -86,8 +86,7 @@ Lam* Clos2SJLJ::get_throw(Ref dom) {
     auto [p, inserted] = dom2throw_.emplace(dom, nullptr);
     auto& tlam         = p->second;
     if (inserted || !tlam) {
-        auto pi                = w.Cn(clos_sub_env(dom, w.sigma({jb_type(), rb_type(), tag_type()})));
-        tlam                   = w.mut_lam(pi)->set("throw");
+        tlam                   = w.con(clos_sub_env(dom, w.sigma({jb_type(), rb_type(), tag_type()})))->set("throw");
         auto [m0, env, var]    = split(tlam->var());
         auto [jbuf, rbuf, tag] = env->projs<3>();
         auto [m1, r]           = mem::op_alloc(var->type(), m0)->projs<2>();
@@ -106,8 +105,7 @@ Lam* Clos2SJLJ::get_lpad(Lam* lam, Ref rb) {
     auto& lpad         = p->second;
     if (inserted || !lpad) {
         auto [_, env_type, dom] = split(lam->dom());
-        auto pi                 = w.Cn({w.annex<mem::M>(), env_type});
-        lpad                    = w.mut_lam(pi)->set("lpad");
+        lpad                    = w.con({w.annex<mem::M>(), env_type})->set("lpad");
         auto [m, env, __]       = split(lpad->var());
         auto [m1, arg_ptr]      = w.call<mem::load>(Defs{m, rb})->projs<2>();
         arg_ptr                 = w.call<core::bitcast>(world().call<mem::Ptr0>(dom), arg_ptr);
@@ -145,7 +143,7 @@ void Clos2SJLJ::enter() {
     auto branches    = DefVec(lam2tag_.size() + 1);
     {
         auto env             = w.tuple(body->args().view().subspan(1));
-        auto new_callee      = w.mut_lam(w.Cn({w.annex<mem::M>(), env->type()}))->set("sjlj_wrap");
+        auto new_callee      = w.con({w.annex<mem::M>(), env->type()})->set("sjlj_wrap");
         auto [m, env_var, _] = split(new_callee->var());
         auto new_args = DefVec(env->num_projs() + 1, [&](size_t i) { return (i == 0) ? *m : env_var->proj(i - 1); });
         new_callee->app(false, body->callee(), new_args);

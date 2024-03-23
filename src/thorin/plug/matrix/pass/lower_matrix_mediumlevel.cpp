@@ -24,15 +24,9 @@ Ref LowerMatrixMediumLevel::rewrite(Ref def) {
 }
 
 std::pair<Lam*, Ref> counting_for(Ref bound, DefVec acc, Ref exit, const char* name = "for_body") {
-    auto& world = bound->world();
-    auto acc_ty = world.tuple(acc)->type();
-    auto body   = world
-                    .mut_lam(world.Cn({
-                        world.I32(),     // iterator
-                        acc_ty,          // acc = memory+extra
-                        world.Cn(acc_ty) // exit = return
-                    }))
-                    ->set(name);
+    auto& world   = bound->world();
+    auto acc_ty   = world.tuple(acc)->type();
+    auto body     = world.con({/* iter */ world.I32(), /* acc */ acc_ty, /* return */ world.Cn(acc_ty)})->set(name);
     auto for_loop = affine::op_for(world, world.lit_int(32, 0), bound, world.lit_int(32, 1), acc, body, exit);
     return {body, for_loop};
 }
@@ -191,9 +185,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
         // create function `%mem.M -> [%mem.M, %matrix.Mat (n,S,T)]` to replace axiom call
 
         auto mem_type = world.annex<mem::M>();
-        auto fun_ty   = world.Cn({mem_type, world.Cn(map_reduce_ax->type())});
-        world.DLOG("fun_ty = {}", fun_ty);
-        auto fun = world.mut_lam(fun_ty)->set("mapRed");
+        auto fun      = world.fun(mem_type, map_reduce_ax->type())->set("mapRed");
 
         // assert(0);
         auto ds_fun = direct::op_cps2ds_dep(fun);
@@ -267,7 +259,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
         world.DLOG("wb_matrix {} : {}", wb_matrix, wb_matrix->type());
 
         // Write back element to matrix. Set this as return after all inner loops.
-        auto write_back = world.mut_lam(world.Cn({world.annex<mem::M>(), T}))->set("matrixWriteBack");
+        auto write_back = world.con({world.annex<mem::M>(), T})->set("matrixWriteBack");
         world.DLOG("write_back {} : {}", write_back, write_back->type());
         auto [wb_mem, element_final] = write_back->vars<2>();
 

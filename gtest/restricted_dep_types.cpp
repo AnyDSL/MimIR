@@ -54,27 +54,27 @@ TEST(RestrictedDependentTypes, join_singleton) {
             EXPECT_NO_THROW( // no type error
                 w.app(exp_lam, {i32_t, R,
                                 w.call<core::bitcast>(w.app(Exp, {w.vel(DT, i32_t), w.vel(RW, R)}), w.lit(i32_t, 1000)),
-                                w.mut_lam(w.Cn(i32_t))}));
+                                w.con(i32_t)}));
         });
         cases.emplace_back([](World& w, auto, auto W, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
             EXPECT_NO_THROW( // no type error
                 w.app(exp_lam, {i32_t, W,
                                 w.call<core::bitcast>(w.app(Exp, {w.vel(DT, i32_t), w.vel(RW, W)}), w.lit(i32_t, 1000)),
-                                w.mut_lam(w.Cn(i32_t))}));
+                                w.con(i32_t)}));
         });
         cases.emplace_back([](World& w, auto R, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t,
                               auto i64_t) {
             EXPECT_NO_THROW( // no type error
                 w.app(exp_lam, {i64_t, R,
                                 w.call<core::bitcast>(w.app(Exp, {w.vel(DT, i64_t), w.vel(RW, R)}), w.lit(i32_t, 1000)),
-                                w.mut_lam(w.Cn(i64_t))}));
+                                w.con(i64_t)}));
         });
         cases.emplace_back([](World& w, auto, auto W, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t,
                               auto i64_t) {
             EXPECT_NO_THROW( // no type error
                 w.app(exp_lam, {i64_t, W,
                                 w.call<core::bitcast>(w.app(Exp, {w.vel(DT, i64_t), w.vel(RW, W)}), w.lit(i32_t, 1000)),
-                                w.mut_lam(w.Cn(i64_t))}));
+                                w.con(i64_t)}));
         });
         cases.emplace_back([](World& w, auto R, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
@@ -84,7 +84,7 @@ TEST(RestrictedDependentTypes, join_singleton) {
                               {w.annex<math::F32>(), R,
                                w.call<core::bitcast>(w.app(Exp, {w.vel(DT, w.annex<math::F32>()), w.vel(RW, R)}),
                                                      w.lit(i32_t, 1000)),
-                               w.mut_lam(w.Cn(w.annex<math::F32>()))}),
+                               w.con(w.annex<math::F32>())}),
                         std::logic_error);
                 },
                 "std::logic_error");
@@ -97,7 +97,7 @@ TEST(RestrictedDependentTypes, join_singleton) {
                               {w.annex<math::F32>(), W,
                                w.call<core::bitcast>(w.app(Exp, {w.vel(DT, w.annex<math::F32>()), w.vel(RW, W)}),
                                                      w.lit(i32_t, 1000)),
-                               w.mut_lam(w.Cn(w.annex<math::F32>()))}),
+                               w.con(w.annex<math::F32>())}),
                         std::logic_error);
                 },
                 "std::logic_error");
@@ -109,7 +109,7 @@ TEST(RestrictedDependentTypes, join_singleton) {
                         w.app(exp_lam, {i32_t, i32_t,
                                         w.call<core::bitcast>(w.app(Exp, {w.vel(DT, i32_t), w.vel(RW, i32_t)}),
                                                               w.lit(i32_t, 1000)),
-                                        w.mut_lam(w.Cn(i32_t))}),
+                                        w.con(i32_t)}),
                         std::logic_error);
                 },
                 "std::logic_error");
@@ -121,7 +121,7 @@ TEST(RestrictedDependentTypes, join_singleton) {
                         w.app(exp_lam, {i64_t, i64_t,
                                         w.call<core::bitcast>(w.app(Exp, {w.vel(DT, i64_t), w.vel(RW, i64_t)}),
                                                               w.lit(i32_t, 1000)),
-                                        w.mut_lam(w.Cn(i64_t))}),
+                                        w.con(i64_t)}),
                         std::logic_error);
                 },
                 "std::logic_error");
@@ -140,8 +140,7 @@ TEST(RestrictedDependentTypes, join_singleton) {
                 exp_sig->set(2, w.app(Exp, {w.vel(DT, exp_sig->var(0_s)), w.vel(RW, exp_sig->var(1_s))}));
                 exp_sig->set(3, w.Cn(exp_sig->var(0_s)));
 
-                auto exp_lam_pi = w.Cn(exp_sig);
-                auto exp_lam    = w.mut_lam(exp_lam_pi);
+                auto exp_lam = w.con(exp_sig);
                 exp_lam->app(false, exp_lam->var(3), w.call<core::bitcast>(exp_lam->var(0_s), exp_lam->var(2_s)));
                 test(w, R, W, Exp, exp_lam, DT, RW, i32_t, i64_t);
             });
@@ -155,13 +154,13 @@ TEST(RestrictedDependentTypes, join_singleton) {
             EXPECT_NO_THROW( // no type error
                 w.app(exp_lam,
                       {i32_t, w.call<core::bitcast>(w.app(Exp, {w.vel(DT, i32_t), w.vel(RW, R)}), w.lit(i32_t, 1000)),
-                       w.mut_lam(w.Cn(i32_t))}));
+                       w.con(i32_t)}));
         });
         cases.emplace_back([](World& w, auto R, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto, auto i64_t) {
             EXPECT_NO_THROW( // no type error
                 w.app(exp_lam,
                       {i64_t, w.call<core::bitcast>(w.app(Exp, {w.vel(DT, i64_t), w.vel(RW, R)}), w.lit(i64_t, 1000)),
-                       w.mut_lam(w.Cn(i64_t))}));
+                       w.con(i64_t)}));
         });
         cases.emplace_back([](World& w, auto R, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
@@ -171,7 +170,7 @@ TEST(RestrictedDependentTypes, join_singleton) {
                               {w.annex<math::F32>(),
                                w.call<core::bitcast>(w.app(Exp, {w.vel(DT, w.annex<math::F32>()), w.vel(RW, R)}),
                                                      w.lit(i32_t, 1000)),
-                               w.mut_lam(w.Cn(w.annex<math::F32>()))}),
+                               w.con(w.annex<math::F32>())}),
                         std::logic_error);
                 },
                 "std::logic_error");
@@ -180,21 +179,21 @@ TEST(RestrictedDependentTypes, join_singleton) {
             EXPECT_ANY_THROW( // W type error
                 w.app(exp_lam,
                       {i32_t, w.call<core::bitcast>(w.app(Exp, {w.vel(DT, i32_t), w.vel(RW, W)}), w.lit(i32_t, 1000)),
-                       w.mut_lam(w.Cn(i32_t))}));
+                       w.con(i32_t)}));
         });
         cases.emplace_back([](World& w, auto, auto W, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t,
                               auto i64_t) {
             EXPECT_ANY_THROW( // W type error
                 w.app(exp_lam,
                       {i64_t, w.call<core::bitcast>(w.app(Exp, {w.vel(DT, i64_t), w.vel(RW, W)}), w.lit(i32_t, 1000)),
-                       w.mut_lam(w.Cn(i64_t))}));
+                       w.con(i64_t)}));
         });
         cases.emplace_back([](World& w, auto, auto W, auto Exp, auto exp_lam, auto DT, auto RW, auto, auto) {
             EXPECT_ANY_THROW( // float + W type error (note, the float is not yet what triggers the issue..)
                 w.app(exp_lam, {w.annex<math::F32>(),
                                 w.call<core::bitcast>(w.app(Exp, {w.vel(DT, w.annex<math::F32>()), w.vel(RW, W)}),
                                                       w.lit(w.annex<math::F32>(), 1000)),
-                                w.mut_lam(w.Cn(w.annex<math::F32>()))}));
+                                w.con(w.annex<math::F32>())}));
         });
 
         for (auto&& test : cases) {
@@ -209,8 +208,7 @@ TEST(RestrictedDependentTypes, join_singleton) {
                 exp_sig->set(1, w.app(Exp, {w.vel(DT, exp_sig->var(0_s)), w.vel(RW, R)}));
                 exp_sig->set(2, w.Cn(exp_sig->var(0_s)));
 
-                auto exp_lam_pi = w.Cn(exp_sig);
-                auto exp_lam    = w.mut_lam(exp_lam_pi);
+                auto exp_lam = w.con(exp_sig);
                 exp_lam->app(false, exp_lam->var(2_s), w.call<core::bitcast>(exp_lam->var(0_s), exp_lam->var(1_s)));
                 test(w, R, W, Exp, exp_lam, DT, RW, i32_t, i64_t);
             });
@@ -229,8 +227,7 @@ TEST(RestrictedDependentTypes, ll) {
     auto argv_t = w.call<mem::Ptr0>(w.call<mem::Ptr0>(i32_t));
 
     // Cn [mem, i32, ptr(ptr(i32, 0), 0) Cn [mem, i32]]
-    auto main_t = w.Cn({mem_t, i32_t, argv_t, w.Cn({mem_t, i32_t})});
-    auto main   = w.mut_lam(main_t)->set("main");
+    auto main = w.con({mem_t, i32_t, argv_t, w.Cn({mem_t, i32_t})})->set("main");
     main->make_external();
 
     auto R = w.axiom(w.type())->set("R");
@@ -254,9 +251,8 @@ TEST(RestrictedDependentTypes, ll) {
         exp_sig->set(3, w.app(Exp, {w.vel(DT, exp_sig->var(1_s)), w.vel(RW, exp_sig->var(2_s))}));
         exp_sig->set(4, w.Cn({mem_t, i32_t}));
 
-        auto exp_lam_pi = w.Cn(exp_sig);
-        auto exp_lam    = w.mut_lam(exp_lam_pi);
-        auto bc         = w.call<core::bitcast>(i32_t, exp_lam->var(3_s));
+        auto exp_lam = w.con(exp_sig);
+        auto bc      = w.call<core::bitcast>(i32_t, exp_lam->var(3_s));
         exp_lam->app(false, exp_lam->var(4), {exp_lam->var(0_s), bc});
 
         main->app(false, exp_lam,

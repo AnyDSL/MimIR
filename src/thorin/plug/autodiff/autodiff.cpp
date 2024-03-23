@@ -32,7 +32,7 @@ namespace thorin::plug::autodiff {
 const Def* id_pullback(const Def* A) {
     auto& world       = A->world();
     auto arg_pb_ty    = pullback_type(A, A);
-    auto id_pb        = world.mut_lam(arg_pb_ty)->set("id_pb");
+    auto id_pb        = world.lam(arg_pb_ty)->set("id_pb");
     auto id_pb_scalar = id_pb->var(0_s)->set("s");
     id_pb->app(true,
                id_pb->var(1), // can not use ret_var as the result might be higher order
@@ -45,7 +45,7 @@ const Def* zero_pullback(const Def* E, const Def* A) {
     auto& world    = A->world();
     auto A_tangent = tangent_type_fun(A);
     auto pb_ty     = pullback_type(E, A);
-    auto pb        = world.mut_lam(pb_ty)->set("zero_pb");
+    auto pb        = world.lam(pb_ty)->set("zero_pb");
     world.DLOG("zero_pullback for {} resp. {} (-> {})", E, A, A_tangent);
     pb->app(true, pb->var(1), world.call<zero>(A_tangent));
     return pb;
