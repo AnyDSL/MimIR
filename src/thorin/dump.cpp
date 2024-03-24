@@ -107,11 +107,11 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
     if (auto mut = u->isa_mut(); mut && !mut->is_set()) return os << "unset";
 
     bool ascii = u->world().flags().ascii;
-    bool arw   = ascii ? "->" : "→";
-    bool al    = ascii ? "<<" : "«";
-    bool ar    = ascii ? ">>" : "»";
-    bool pl    = ascii ? "(<" : "‹";
-    bool pr    = ascii ? ">)" : "›";
+    auto arw   = ascii ? "->" : "→";
+    auto al    = ascii ? "<<" : "«";
+    auto ar    = ascii ? ">>" : "»";
+    auto pl    = ascii ? "(<" : "‹";
+    auto pr    = ascii ? ">)" : "›";
 
     if (auto type = u->isa<Type>()) {
         if (auto level = Lit::isa(type->level()); level && !ascii) {
