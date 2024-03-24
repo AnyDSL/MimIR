@@ -217,21 +217,17 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::D_paren_l: return parse_tuple_expr();
         case Tag::K_Type:    return parse_type_expr();
         case Tag::K_Univ:    lex(); return world().univ();
-        case Tag::K_Bool:    lex(); return world().Bool();
         case Tag::K_Idx:     lex(); return world().type_idx();
         case Tag::K_Nat:     lex(); return world().type_nat();
         case Tag::K_ff:      lex(); return world().lit_ff();
         case Tag::K_tt:      lex(); return world().lit_tt();
         case Tag::K_i1:      lex(); return world().lit_i1();
-        case Tag::K_i2:      lex(); return world().lit_i2();
-        case Tag::K_i4:      lex(); return world().lit_i4();
         case Tag::K_i8:      lex(); return world().lit_i8();
         case Tag::K_i16:     lex(); return world().lit_i16();
         case Tag::K_i32:     lex(); return world().lit_i32();
         case Tag::K_i64:     lex(); return world().lit_i64();
+        case Tag::K_Bool:
         case Tag::K_I1:      lex(); return world().type_i1();
-        case Tag::K_I2:      lex(); return world().type_i2();
-        case Tag::K_I4:      lex(); return world().type_i4();
         case Tag::K_I8:      lex(); return world().type_i8();
         case Tag::K_I16:     lex(); return world().type_i16();
         case Tag::K_I32:     lex(); return world().type_i32();

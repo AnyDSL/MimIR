@@ -69,11 +69,19 @@ In addition the following keywords are *terminals*:
 | `.insert` | alias for `.ins`                                          |
 | `.Nat`    | thorin::Nat                                               |
 | `.Idx`    | thorin::Idx                                               |
-| `.Bool`   | alias for `.Bool`                                        |
-| `.ff`     | alias for `0₂`                                            |
-| `.tt`     | alias for `1₂`                                            |
 | `.Type`   | thorin::Type                                              |
 | `.Univ`   | thorin::Univ                                              |
+| `.ff`     | alias for `0₂`                                            |
+| `.tt`     | alias for `1₂`                                            |
+
+| Terminal   | Alias           | Terminal | Alias        |
+|------------|-----------------|----------|--------------|
+| `.tt` `ff` | `0₂` `1₂`       | `.Bool`  | `.Idx .i1`   |
+| `.i1`      | `2`             | `.I1`    | `.Idx .i1`   |
+| `.i8`      | `0x100`         | `.I8`    | `.Idx .i8`   |
+| `.i16`     | `0x1'0000`      | `.I16`   | `.Idx .i16`  |
+| `.i32`     | `0x1'0000'0000` | `.I32`   | `.Idx .i32`  |
+| `.i64`     | `0`             | `.I64`   | `.Idx .i64`  |
 
 All keywords start with a `.` to prevent name clashes with identifiers.
 

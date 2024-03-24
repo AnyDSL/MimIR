@@ -370,13 +370,11 @@ public:
     const Lit* lit_nat_max() { return data_.lit_nat_max; }
     const Lit* lit_0_1() { return data_.lit_0_1; }
     // clang-format off
-    const Lit* lit_i1()  { return lit_nat(Idx::bitwidth2size(1)); };
-    const Lit* lit_i2()  { return lit_nat(Idx::bitwidth2size(2)); };
-    const Lit* lit_i4()  { return lit_nat(Idx::bitwidth2size(4)); };
-    const Lit* lit_i8()  { return lit_nat(Idx::bitwidth2size(8)); };
-    const Lit* lit_i16() { return lit_nat(Idx::bitwidth2size(16)); };
-    const Lit* lit_i32() { return lit_nat(Idx::bitwidth2size(32)); };
-    const Lit* lit_i64() { return lit_nat(Idx::bitwidth2size(64)); };
+    const Lit* lit_i1()   { return lit_nat(Idx::bitwidth2size(1)); };
+    const Lit* lit_i8()   { return lit_nat(Idx::bitwidth2size(8)); };
+    const Lit* lit_i16()  { return lit_nat(Idx::bitwidth2size(16)); };
+    const Lit* lit_i32()  { return lit_nat(Idx::bitwidth2size(32)); };
+    const Lit* lit_i64()  { return lit_nat(Idx::bitwidth2size(64)); };
     /// Constructs a Lit of type Idx of size @p size.
     /// @note `size = 0` means `2^64`.
     const Lit* lit_idx(nat_t size, u64 val) { return lit(type_idx(size), val); }
@@ -456,15 +454,15 @@ public:
     /// `width = 64` will be automatically converted to size `0` - the encoding for $2^64$.
     Ref type_int(nat_t width) { return type_idx(lit_nat(Idx::bitwidth2size(width))); }
     // clang-format off
-    Ref type_i1()  { return type_int(1); };
-    Ref type_i2()  { return type_int(2); };
-    Ref type_i4()  { return type_int(4); };
-    Ref type_i8()  { return type_int(8); };
-    Ref type_i16() { return type_int(16); };
-    Ref type_i32() { return type_int(32); };
-    Ref type_i64() { return type_int(64); };
+    Ref type_bool() { return data_.type_bool; }
+    Ref type_i1()   { return data_.type_bool; }
+    Ref type_i2()   { return type_int( 2);    };
+    Ref type_i4()   { return type_int( 4);    };
+    Ref type_i8()   { return type_int( 8);    };
+    Ref type_i16()  { return type_int(16);    };
+    Ref type_i32()  { return type_int(32);    };
+    Ref type_i64()  { return type_int(64);    };
     // clang-format on
-    Ref Bool() { return data_.Bool; }
     ///@}
 
     /// @name Cope with implicit Arguments
@@ -641,7 +639,7 @@ private:
         const Type* type_0;
         const Type* type_1;
         const thorin::Bot* Bot;
-        const Def* Bool;
+        const Def* type_bool;
         const Top* top_nat;
         const Sigma* sigma;
         const Tuple* tuple;
