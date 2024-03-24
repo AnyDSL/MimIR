@@ -99,9 +99,8 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, Ref n) {
     DFAMap<Lam*> state2matcher;
 
     // ((mem: %mem.M, string: Str n, pos: .Idx n), .Cn [%mem.M, .Bool, .Idx n])
-    auto matcher_con  = w.cn({w.annex<mem::M>(), w.Bool(), w.type_idx(n)});
-    auto matcher_args = w.sigma({w.annex<mem::M>(), w.call<mem::Ptr0>(w.arr(n, w.type_i8())), w.type_idx(n)});
-    auto matcher      = w.mut_con({matcher_args, matcher_con});
+    auto matcher = w.mut_fun({w.annex<mem::M>(), w.call<mem::Ptr0>(w.arr(n, w.type_i8())), w.type_idx(n)},
+                             {w.annex<mem::M>(), w.Bool(), w.type_idx(n)});
     matcher->debug_prefix(std::string("match_regex"));
     auto [args, exit] = matcher->vars<2>();
     exit->debug_prefix(std::string("exit"));
@@ -110,7 +109,7 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, Ref n) {
     string->debug_prefix(std::string("string"));
     pos->debug_prefix(std::string("pos"));
 
-    auto error = w.mut_con({w.annex<mem::M>(), w.type_idx(n)});
+    auto error = mem::mut_con(w.type_idx(n));
     error->debug_prefix("error");
     {
         auto [mem, pos] = error->vars<2>();
@@ -119,7 +118,7 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, Ref n) {
         error->app(false, exit, {mem, w.lit_ff(), pos});
     }
 
-    auto accept = w.mut_con({w.annex<mem::M>(), w.type_idx(n)});
+    auto accept = mem::mut_con(w.type_idx(n));
     accept->debug_prefix("accept");
     {
         auto [mem, pos] = accept->vars<2>();
@@ -130,9 +129,8 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, Ref n) {
 
     auto exiting = [error, accept](const DFANode* state) { return state->is_accepting() ? accept : error; };
 
-    auto M = w.annex<mem::M>();
     for (auto state : states) {
-        auto lam = w.mut_con({M, w.type_idx(n)});
+        auto lam = mem::mut_con(w.type_idx(n));
         lam->debug_prefix(state_to_name(state));
         state2matcher.emplace(state, lam);
     }
@@ -149,7 +147,7 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, Ref n) {
         auto [mem2, c] = w.call<mem::load>(w.tuple({mem, lea}))->projs<2>();
 
         auto is_end  = w.call(core::icmp::e, w.tuple({c, w.lit_i8(0)}));
-        auto not_end = w.mut_con({M, w.type_idx(n)});
+        auto not_end = mem::mut_con(w.type_idx(n));
         not_end->debug_prefix("not_end_" + state_to_name(state));
 
         auto new_i = w.call(core::wrap::add, core::Mode::nusw, w.tuple({i, w.call(core::conv::u, n, w.lit_i64(1))}));
@@ -159,7 +157,7 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, Ref n) {
         auto next_check  = exiting(state); // if we want to check full string only, use error instead of exiting(state)c
         for (auto [next_state, check] : transitions) {
             auto next_lam = state2matcher[next_state];
-            auto checker  = w.mut_con({M, w.type_idx(n)});
+            auto checker  = mem::mut_con(w.type_idx(n));
             checker->debug_prefix("check_" + state_to_name(state) + "_to_" + state_to_name(next_state));
             auto [mem3, pos] = checker->vars<2>();
             checker->app(false, w.select(check, next_lam, next_check), {mem3, w.select(check, new_i, pos)});

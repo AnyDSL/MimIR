@@ -260,7 +260,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
         world.DLOG("wb_matrix {} : {}", wb_matrix, wb_matrix->type());
 
         // Write back element to matrix. Set this as return after all inner loops.
-        auto write_back = world.mut_con({world.annex<mem::M>(), T})->set("matrixWriteBack");
+        auto write_back = mem::mut_con(T)->set("matrixWriteBack");
         world.DLOG("write_back {} : {}", write_back, write_back->type());
         auto [wb_mem, element_final] = write_back->vars<2>();
 

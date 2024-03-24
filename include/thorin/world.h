@@ -230,13 +230,13 @@ public:
 
     /// @name Pi
     ///@{
-    const Pi* pi(Ref dom, Ref codom, bool implicit = false) {
-        return unify<Pi>(2, Pi::infer(dom, codom), dom, codom, implicit);
-    }
-    const Pi* pi(Defs dom, Ref codom, bool implicit = false) { return pi(sigma(dom), codom, implicit); }
-    const Pi* pi(Ref dom, Defs codom, bool implicit = false) { return pi(dom, sigma(codom), implicit); }
+    // clang-format off
+    const Pi* pi(Ref  dom, Ref  codom, bool implicit = false) { return unify<Pi>(2, Pi::infer(dom, codom), dom, codom, implicit); }
+    const Pi* pi(Defs dom, Ref  codom, bool implicit = false) { return pi(sigma(dom), codom, implicit); }
+    const Pi* pi(Ref  dom, Defs codom, bool implicit = false) { return pi(dom, sigma(codom), implicit); }
     const Pi* pi(Defs dom, Defs codom, bool implicit = false) { return pi(sigma(dom), sigma(codom), implicit); }
     Pi* mut_pi(Ref type, bool implicit = false) { return insert<Pi>(2, type, implicit); }
+    // clang-format on
     ///@}
 
     /// @name Cn
@@ -244,12 +244,12 @@ public:
     ///@{
     // clang-format off
     const Pi* cn() { return cn(sigma()); }
-    const Pi* cn(Ref  dom ) { return pi(dom, Bot()); }
-    const Pi* cn(Defs dom) { return cn(sigma(dom)); }
-    const Pi* fn(Ref  dom, Ref  codom) { return cn({dom, cn(codom)}); }
-    const Pi* fn(Defs dom, Ref  codom) { return fn(sigma(dom),       codom ); }
-    const Pi* fn(Ref  dom, Defs codom) { return fn(      dom,  sigma(codom)); }
-    const Pi* fn(Defs dom, Defs codom) { return fn(sigma(dom), sigma(codom)); }
+    const Pi* cn(Ref  dom            ) { return pi(      dom ,         Bot()); }
+    const Pi* cn(Defs dom            ) { return cn(sigma(dom)               ); }
+    const Pi* fn(Ref  dom, Ref  codom) { return cn({     dom ,    cn(codom)}); }
+    const Pi* fn(Defs dom, Ref  codom) { return fn(sigma(dom),        codom ); }
+    const Pi* fn(Ref  dom, Defs codom) { return fn(      dom ,  sigma(codom)); }
+    const Pi* fn(Defs dom, Defs codom) { return fn(sigma(dom ), sigma(codom)); }
     // clang-format on
     ///@}
 
