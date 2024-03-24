@@ -82,7 +82,7 @@ undo_t LowerTypedClosPrep::analyze(Ref def) {
     } else if (auto store = match<mem::store>(def)) {
         w.DLOG("store {}", store->arg(2));
         return set_esc(store->arg(2));
-    } else if (auto app = def->isa<App>(); app && Pi::isa_Cn(app->callee_type())) {
+    } else if (auto app = def->isa<App>(); app && Pi::isa_cn(app->callee_type())) {
         w.DLOG("app {}", def);
         auto undo    = No_Undo;
         auto callees = split(app->callee(), true);

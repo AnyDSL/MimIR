@@ -49,7 +49,7 @@ Ref DS2CPS::rewrite_lam(Lam* lam) {
     // replace ds dom var with cps sigma var (cps dom)
     auto rw_codom = var ? VarRewriter(var, sigma->var(2, 0)).rewrite(codom) : codom;
     sigma->set(0, dom);
-    sigma->set(1, world().Cn(rw_codom));
+    sigma->set(1, world().cn(rw_codom));
 
     world().DLOG("original codom: {}", codom);
     world().DLOG("rewritten codom: {}", rw_codom);

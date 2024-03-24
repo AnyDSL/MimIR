@@ -106,7 +106,7 @@ Ref App      ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); retur
 Ref Arr      ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.arr(o[0], o[1])              ->set(dbg()); }
 Ref Extract  ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.extract(o[0], o[1])          ->set(dbg()); }
 Ref Insert   ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.insert(o[0], o[1], o[2])     ->set(dbg()); }
-Ref Lam      ::rebuild(World& w, Ref t, Defs o) const { assert(isa_imm()); return w.lm(t->as<Pi>(), o[0], o[1])  ->set(dbg()); }
+Ref Lam      ::rebuild(World& w, Ref t, Defs o) const { assert(isa_imm()); return w.lam(t->as<Pi>(), o[0], o[1]) ->set(dbg()); }
 Ref Lit      ::rebuild(World& w, Ref t, Defs  ) const { assert(isa_imm()); return w.lit(t, get())                ->set(dbg()); }
 Ref Pack     ::rebuild(World& w, Ref t, Defs o) const { assert(isa_imm()); return w.pack(t->arity(), o[0])       ->set(dbg()); }
 Ref Pi       ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.pi(o[0], o[1], is_implicit())->set(dbg()); }
@@ -139,7 +139,7 @@ template<bool up> Ref TBound<up>::rebuild(World& w, Ref  , Defs o) const { retur
 Arr*    Arr   ::stub(World& w, Ref t) { return w.mut_arr  (t)                ->set(dbg()); }
 Global* Global::stub(World& w, Ref t) { return w.global   (t, is_mutable())  ->set(dbg()); }
 Infer*  Infer ::stub(World& w, Ref t) { return w.mut_infer(t)                ->set(dbg()); }
-Lam*    Lam   ::stub(World& w, Ref t) { return w.lam      (t->as<Pi>())      ->set(dbg()); }
+Lam*    Lam   ::stub(World& w, Ref t) { return w.mut_lam  (t->as<Pi>())      ->set(dbg()); }
 Pack*   Pack  ::stub(World& w, Ref t) { return w.mut_pack (t)                ->set(dbg()); }
 Pi*     Pi    ::stub(World& w, Ref t) { return w.mut_pi   (t, is_implicit()) ->set(dbg()); }
 Sigma*  Sigma ::stub(World& w, Ref t) { return w.mut_sigma(t, num_ops())     ->set(dbg()); }

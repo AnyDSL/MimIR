@@ -138,7 +138,7 @@ TEST(RestrictedDependentTypes, join_singleton) {
                 exp_sig->set(0, w.type());
                 exp_sig->set(1, w.type());
                 exp_sig->set(2, w.app(Exp, {w.vel(DT, exp_sig->var(0_s)), w.vel(RW, exp_sig->var(1_s))}));
-                exp_sig->set(3, w.Cn(exp_sig->var(0_s)));
+                exp_sig->set(3, w.cn(exp_sig->var(0_s)));
 
                 auto exp_lam = w.mut_con(exp_sig);
                 exp_lam->app(false, exp_lam->var(3), w.call<core::bitcast>(exp_lam->var(0_s), exp_lam->var(2_s)));
@@ -206,7 +206,7 @@ TEST(RestrictedDependentTypes, join_singleton) {
                 auto exp_sig = w.mut_sigma(3);
                 exp_sig->set(0, w.type());
                 exp_sig->set(1, w.app(Exp, {w.vel(DT, exp_sig->var(0_s)), w.vel(RW, R)}));
-                exp_sig->set(2, w.Cn(exp_sig->var(0_s)));
+                exp_sig->set(2, w.cn(exp_sig->var(0_s)));
 
                 auto exp_lam = w.mut_con(exp_sig);
                 exp_lam->app(false, exp_lam->var(2_s), w.call<core::bitcast>(exp_lam->var(0_s), exp_lam->var(1_s)));
@@ -227,7 +227,7 @@ TEST(RestrictedDependentTypes, ll) {
     auto argv_t = w.call<mem::Ptr0>(w.call<mem::Ptr0>(i32_t));
 
     // Cn [mem, i32, ptr(ptr(i32, 0), 0) Cn [mem, i32]]
-    auto main = w.mut_con({mem_t, i32_t, argv_t, w.Cn({mem_t, i32_t})})->set("main");
+    auto main = w.mut_con({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})})->set("main");
     main->make_external();
 
     auto R = w.axiom(w.type())->set("R");
@@ -249,7 +249,7 @@ TEST(RestrictedDependentTypes, ll) {
         exp_sig->set(1, w.type());
         exp_sig->set(2, w.type());
         exp_sig->set(3, w.app(Exp, {w.vel(DT, exp_sig->var(1_s)), w.vel(RW, exp_sig->var(2_s))}));
-        exp_sig->set(4, w.Cn({mem_t, i32_t}));
+        exp_sig->set(4, w.cn({mem_t, i32_t}));
 
         auto exp_lam = w.mut_con(exp_sig);
         auto bc      = w.call<core::bitcast>(i32_t, exp_lam->var(3_s));

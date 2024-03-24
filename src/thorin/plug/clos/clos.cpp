@@ -81,7 +81,7 @@ Ref clos_pack(Ref env, Ref lam, Ref ct) {
     auto& w = env->world();
     auto pi = lam->type()->as<Pi>();
     assert(env->type() == pi->dom(Clos_Env_Param));
-    ct = (ct) ? ct : clos_type(w.Cn(clos_remove_env(pi->dom())));
+    ct = (ct) ? ct : clos_type(w.cn(clos_remove_env(pi->dom())));
     return w.tuple(ct, {env->type(), lam, env})->isa<Tuple>();
 }
 
@@ -115,7 +115,7 @@ const Sigma* isa_clos_type(Ref def) {
     auto var = sig->var(0_u64);
     if (sig->op(2_u64) != var) return nullptr;
     auto pi = sig->op(1_u64)->isa<Pi>();
-    return (pi && Pi::isa_Cn(pi) && pi->num_ops() > 1_u64 && pi->dom(Clos_Env_Param) == var) ? sig : nullptr;
+    return (pi && Pi::isa_cn(pi) && pi->num_ops() > 1_u64 && pi->dom(Clos_Env_Param) == var) ? sig : nullptr;
 }
 
 Sigma* clos_type(const Pi* pi) { return ctype(pi->world(), pi->doms(), nullptr)->as_mut<Sigma>(); }
@@ -125,7 +125,7 @@ const Pi* clos_type_to_pi(Ref ct, Ref new_env_type) {
     auto& w      = ct->world();
     auto pi      = ct->op(1_u64)->as<Pi>();
     auto new_dom = new_env_type ? clos_sub_env(pi->dom(), new_env_type) : clos_remove_env(pi->dom());
-    return w.Cn(new_dom);
+    return w.cn(new_dom);
 }
 
 /*
@@ -146,7 +146,7 @@ Ref ctype(World& w, Defs doms, Ref env_type) {
         sigma->set(2_u64, sigma->var(0_u64));
         return sigma;
     }
-    return w.Cn(
+    return w.cn(
         DefVec(doms.size() + 1, [&](auto i) { return clos_insert_env(i, env_type, [&](auto j) { return doms[j]; }); }));
 }
 

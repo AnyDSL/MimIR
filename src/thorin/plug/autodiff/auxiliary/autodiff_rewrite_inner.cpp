@@ -109,7 +109,7 @@ Ref AutoDiffEval::augment_extract(const Extract* ext, Lam* f, Lam* f_diff) {
         assert(partial_pullback.count(aug_tuple));
         auto tuple_pb = partial_pullback[aug_tuple];
         auto pb_ty    = pullback_type(ext->type(), f->dom(2, 0));
-        auto pb_fun   = world.lam(pb_ty)->set("extract_pb");
+        auto pb_fun   = world.mut_lam(pb_ty)->set("extract_pb");
         world.DLOG("Pullback: {} : {}", pb_fun, pb_fun->type());
         auto pb_tangent = pb_fun->var(0_s)->set("s");
         auto tuple_tan  = world.insert(world.call<zero>(aug_tuple->type()), aug_index, pb_tangent)->set("tup_s");
@@ -146,7 +146,7 @@ Ref AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
     //      ((cps2ds e0*) (s#0), ..., (cps2ds em*) (s#m))
     // ```
     auto pb_ty = pullback_type(tup->type(), f->dom(2, 0));
-    auto pb    = world.lam(pb_ty)->set("tup_pb");
+    auto pb    = world.mut_lam(pb_ty)->set("tup_pb");
     world.DLOG("Augmented tuple: {} : {}", aug_tup, aug_tup->type());
     world.DLOG("Tuple Pullback: {} : {}", pb, pb->type());
     world.DLOG("shadow pb: {} : {}", shadow_pb, shadow_pb->type());
@@ -182,7 +182,7 @@ Ref AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
     world.DLOG("shadow pb of pack: {} : {}", pb_pack, pb_pack->type());
 
     auto pb_type = pullback_type(pack->type(), f->dom(2, 0));
-    auto pb      = world.lam(pb_type)->set("pack_pb");
+    auto pb      = world.mut_lam(pb_type)->set("pack_pb");
 
     world.DLOG("pb of pack: {} : {}", pb, pb_type);
 
@@ -218,7 +218,7 @@ Ref AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     world.DLOG("augmented argument <{}> {} : {}", aug_arg->unique_name(), aug_arg, aug_arg->type());
     world.DLOG("augmented callee  <{}> {} : {}", aug_callee->unique_name(), aug_callee, aug_callee->type());
     // TODO: move down to if(!is_cont(callee))
-    if (!Pi::isa_Cn(callee->type()) && Pi::isa_Cn(aug_callee->type())) {
+    if (!Pi::isa_cn(callee->type()) && Pi::isa_cn(aug_callee->type())) {
         aug_callee = direct::op_cps2ds_dep(aug_callee);
         world.DLOG("wrapped augmented callee: <{}> {} : {}", aug_callee->unique_name(), aug_callee, aug_callee->type());
     }
@@ -251,7 +251,7 @@ Ref AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     }
 
     // ds function
-    if (!Pi::isa_Cn(callee->type())) {
+    if (!Pi::isa_cn(callee->type())) {
         auto aug_app = world.app(aug_callee, aug_arg);
         world.DLOG("Augmented application: <{}> {} : {}", aug_app->unique_name(), aug_app, aug_app->type());
 
@@ -299,7 +299,7 @@ Ref AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         world.DLOG("ret_g_deriv_ty: {} ", ret_g_deriv_ty);
         auto c1_ty = ret_g_deriv_ty->as<Pi>();
         world.DLOG("c1_ty: (cn[X, cn[X+, cn E+]]) {}", c1_ty);
-        auto c1   = world.lam(c1_ty)->set("c1");
+        auto c1   = world.mut_lam(c1_ty)->set("c1");
         auto res  = c1->var((nat_t)0);
         auto r_pb = c1->var(1);
         c1->app(true, aug_cont, {res, compose_cn(e_pb, r_pb)});

@@ -99,7 +99,7 @@ extern "C" const Def* dfa2matcher(World& w, const DFA& dfa, Ref n) {
     DFAMap<Lam*> state2matcher;
 
     // ((mem: %mem.M, string: Str n, pos: .Idx n), .Cn [%mem.M, .Bool, .Idx n])
-    auto matcher_con  = w.Cn({w.annex<mem::M>(), w.Bool(), w.type_idx(n)});
+    auto matcher_con  = w.cn({w.annex<mem::M>(), w.Bool(), w.type_idx(n)});
     auto matcher_args = w.sigma({w.annex<mem::M>(), w.call<mem::Ptr0>(w.arr(n, w.type_i8())), w.type_idx(n)});
     auto matcher      = w.mut_con({matcher_args, matcher_con});
     matcher->debug_prefix(std::string("match_regex"));

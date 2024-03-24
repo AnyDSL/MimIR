@@ -32,7 +32,7 @@ namespace thorin::plug::autodiff {
 const Def* id_pullback(const Def* A) {
     auto& world       = A->world();
     auto arg_pb_ty    = pullback_type(A, A);
-    auto id_pb        = world.lam(arg_pb_ty)->set("id_pb");
+    auto id_pb        = world.mut_lam(arg_pb_ty)->set("id_pb");
     auto id_pb_scalar = id_pb->var(0_s)->set("s");
     id_pb->app(true,
                id_pb->var(1), // can not use ret_var as the result might be higher order
@@ -45,7 +45,7 @@ const Def* zero_pullback(const Def* E, const Def* A) {
     auto& world    = A->world();
     auto A_tangent = tangent_type_fun(A);
     auto pb_ty     = pullback_type(E, A);
-    auto pb        = world.lam(pb_ty)->set("zero_pb");
+    auto pb        = world.mut_lam(pb_ty)->set("zero_pb");
     world.DLOG("zero_pullback for {} resp. {} (-> {})", E, A, A_tangent);
     pb->app(true, pb->var(1), world.call<zero>(A_tangent));
     return pb;
@@ -63,7 +63,7 @@ const Pi* pullback_type(const Def* E, const Def* A) {
     auto& world   = E->world();
     auto tang_arg = tangent_type_fun(A);
     auto tang_ret = tangent_type_fun(E);
-    auto pb_ty    = world.Cn({tang_ret, world.Cn(tang_arg)});
+    auto pb_ty    = world.cn({tang_ret, world.cn(tang_arg)});
     return pb_ty;
 }
 
@@ -81,7 +81,7 @@ const Pi* autodiff_type_fun(const Def* arg, const Def* ret) {
     world.DLOG("pb type: {}", pb_ty);
     // `P' -> Q' * (Q* -> P*)`
 
-    auto deriv_ty = world.Cn({aug_arg, world.Cn({aug_ret, pb_ty})});
+    auto deriv_ty = world.cn({aug_arg, world.cn({aug_ret, pb_ty})});
     world.DLOG("autodiff type: {}", deriv_ty);
     return deriv_ty;
 }
@@ -89,7 +89,7 @@ const Pi* autodiff_type_fun(const Def* arg, const Def* ret) {
 
 const Pi* autodiff_type_fun_pi(const Pi* pi) {
     auto& world = pi->world();
-    if (!Pi::isa_Cn(pi)) {
+    if (!Pi::isa_cn(pi)) {
         // TODO: dependency
         auto arg = pi->dom();
         auto ret = pi->codom();

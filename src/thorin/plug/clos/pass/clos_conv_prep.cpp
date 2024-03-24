@@ -13,13 +13,13 @@ bool isa_cnt(const App* body, Ref def, size_t i) {
 }
 
 Ref isa_br(const App* body, Ref def) {
-    if (!Pi::isa_Cn(body->callee_type())) return nullptr;
+    if (!Pi::isa_cn(body->callee_type())) return nullptr;
     auto proj = body->callee()->isa<Extract>();
     return (proj && proj->tuple() == def && proj->tuple()->isa<Tuple>()) ? proj->tuple() : nullptr;
 }
 
 bool isa_callee_br(const App* body, Ref def, size_t i) {
-    if (!Pi::isa_Cn(body->callee_type())) return false;
+    if (!Pi::isa_cn(body->callee_type())) return false;
     return isa_callee(def, i) || isa_br(body, def);
 }
 
@@ -51,7 +51,7 @@ void ClosConvPrep::enter() {
 
     auto body = curr_mut()->body()->isa<App>();
     // Skip if the mutable is already wrapped or the body is undefined/no continuation.
-    ignore_ = !(body && Pi::isa_Cn(body->callee_type())) || wrapper_.contains(curr_mut());
+    ignore_ = !(body && Pi::isa_cn(body->callee_type())) || wrapper_.contains(curr_mut());
 }
 
 const App* ClosConvPrep::rewrite_arg(const App* app) {
@@ -110,7 +110,7 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
 
 const App* ClosConvPrep::rewrite_callee(const App* app) {
     auto& w = world();
-    if (Pi::isa_Cn(app->callee_type())) {
+    if (Pi::isa_cn(app->callee_type())) {
         if (auto br = app->callee()->isa<Extract>()) {
             auto branches = br->tuple();
             // Eta-Expand branches

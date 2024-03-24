@@ -168,7 +168,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
 
     if (auto i = subst.find(def); i != subst.end()) {
         return i->second;
-    } else if (auto pi = Pi::isa_Cn(def)) {
+    } else if (auto pi = Pi::isa_cn(def)) {
         return map(type_clos(pi, subst));
     } else if (auto lam = def->isa_mut<Lam>(); lam && Lam::isa_cn(lam)) {
         auto [_, __, fv_env, new_lam] = make_stub(lam, subst);
@@ -186,7 +186,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
                     //  put into the local subst only
                     auto new_doms
                         = DefVec(ret_lam->num_doms(), [&](auto i) { return rewrite(ret_lam->dom(i), subst); });
-                    auto new_lam   = ret_lam->stub(w, w.Cn(new_doms));
+                    auto new_lam   = ret_lam->stub(w, w.cn(new_doms));
                     subst[ret_lam] = new_lam;
                     if (ret_lam->is_set()) {
                         new_lam->set_filter(rewrite(ret_lam->filter(), subst));
@@ -255,7 +255,7 @@ Def* ClosConv::rewrite_mut(Def* mut, const Def* new_type, Def2Def& subst) {
 const Pi* ClosConv::rewrite_type_cn(const Pi* pi, Def2Def& subst) {
     assert(Pi::isa_basicblock(pi));
     auto new_ops = DefVec(pi->num_doms(), [&](auto i) { return rewrite(pi->dom(i), subst); });
-    return world().Cn(new_ops);
+    return world().cn(new_ops);
 }
 
 const Def* ClosConv::type_clos(const Pi* pi, Def2Def& subst, const Def* env_type) {
@@ -286,7 +286,7 @@ ClosConv::Stub ClosConv::make_stub(const DefSet& fvs, Lam* old_lam, Def2Def& sub
     // new_lam->set_debug_name((old_lam->is_external() || !old_lam->is_set()) ? "cc_" + old_lam->name() :
     // old_lam->name());
     if (!isa_workable(old_lam)) {
-        auto new_ext_type = w.Cn(clos_remove_env(new_fn_type->dom()));
+        auto new_ext_type = w.cn(clos_remove_env(new_fn_type->dom()));
         auto new_ext_lam  = old_lam->stub(w, new_ext_type);
         w.DLOG("wrap ext lam: {} -> stub: {}, ext: {}", old_lam, new_lam, new_ext_lam);
         if (old_lam->is_set()) {

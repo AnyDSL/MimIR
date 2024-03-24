@@ -15,11 +15,11 @@ namespace thorin::plug::mem {
 /// Same as World::cn / World::pi but adds a `%%mem.M`-typed Var to each Pi.
 inline const Pi* cn_mem(Ref dom) {
     World& w = dom->world();
-    return w.Cn({w.annex<mem::M>(), dom});
+    return w.cn({w.annex<mem::M>(), dom});
 }
 inline const Pi* cn_mem_ret(Ref dom, Ref ret_dom) {
     World& w = dom->world();
-    return w.Cn({w.annex<mem::M>(), dom, cn_mem(ret_dom)});
+    return w.cn({w.annex<mem::M>(), dom, cn_mem(ret_dom)});
 }
 inline const Pi* pi_mem(Ref domain, Ref codomain) {
     World& w = domain->world();
@@ -28,7 +28,7 @@ inline const Pi* pi_mem(Ref domain, Ref codomain) {
 }
 inline const Pi* fn_mem(Ref domain, Ref codomain) {
     World& w = domain->world();
-    return w.Cn({w.annex<mem::M>(), domain, cn_mem(codomain)});
+    return w.cn({w.annex<mem::M>(), domain, cn_mem(codomain)});
 }
 
 /// Returns the (first) element of type mem::M from the given tuple.

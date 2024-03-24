@@ -139,7 +139,7 @@ void Clos2SJLJ::enter() {
 
     auto body = curr_mut()->body()->as<App>();
 
-    auto branch_type = clos_type(w.Cn(w.annex<mem::M>()));
+    auto branch_type = clos_type(w.cn(w.annex<mem::M>()));
     auto branches    = DefVec(lam2tag_.size() + 1);
     {
         auto env             = w.tuple(body->args().view().subspan(1));

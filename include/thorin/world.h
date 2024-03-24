@@ -243,13 +243,13 @@ public:
     /// Pi with codom thorin::Bot%tom
     ///@{
     // clang-format off
-    const Pi* Cn() { return Cn(sigma()); }
-    const Pi* Cn(Ref  dom ) { return pi(dom, Bot()); }
-    const Pi* Cn(Defs dom) { return Cn(sigma(dom)); }
-    const Pi* Fn(Ref  dom, Ref  codom) { return Cn({dom, Cn(codom)}); }
-    const Pi* Fn(Defs dom, Ref  codom) { return Fn(sigma(dom),       codom ); }
-    const Pi* Fn(Ref  dom, Defs codom) { return Fn(      dom,  sigma(codom)); }
-    const Pi* Fn(Defs dom, Defs codom) { return Fn(sigma(dom), sigma(codom)); }
+    const Pi* cn() { return cn(sigma()); }
+    const Pi* cn(Ref  dom ) { return pi(dom, Bot()); }
+    const Pi* cn(Defs dom) { return cn(sigma(dom)); }
+    const Pi* fn(Ref  dom, Ref  codom) { return cn({dom, cn(codom)}); }
+    const Pi* fn(Defs dom, Ref  codom) { return fn(sigma(dom),       codom ); }
+    const Pi* fn(Ref  dom, Defs codom) { return fn(      dom,  sigma(codom)); }
+    const Pi* fn(Defs dom, Defs codom) { return fn(sigma(dom), sigma(codom)); }
     // clang-format on
     ///@}
 
@@ -259,30 +259,30 @@ public:
         if (auto b = std::get_if<bool>(&filter)) return lit_bool(*b);
         return std::get<const Def*>(filter);
     }
-    const Lam* lm(const Pi* pi, Lam::Filter f, Ref body) { return unify<Lam>(2, pi, filter(f), body); }
+    const Lam* lam(const Pi* pi, Lam::Filter f, Ref body) { return unify<Lam>(2, pi, filter(f), body); }
+    Lam* mut_lam(const Pi* pi) { return insert<Lam>(2, pi); }
     // clang-format off
-    const Lam* con(Ref  dom,             Lam::Filter f, Ref body) { return unify<Lam>(2, Cn(dom        ), filter(f), body); }
-    const Lam* con(Defs dom,             Lam::Filter f, Ref body) { return unify<Lam>(2, Cn(dom        ), filter(f), body); }
+    const Lam* con(Ref  dom,             Lam::Filter f, Ref body) { return unify<Lam>(2, cn(dom        ), filter(f), body); }
+    const Lam* con(Defs dom,             Lam::Filter f, Ref body) { return unify<Lam>(2, cn(dom        ), filter(f), body); }
     const Lam* lam(Ref  dom, Ref  codom, Lam::Filter f, Ref body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
     const Lam* lam(Defs dom, Ref  codom, Lam::Filter f, Ref body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
     const Lam* lam(Ref  dom, Defs codom, Lam::Filter f, Ref body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
     const Lam* lam(Defs dom, Defs codom, Lam::Filter f, Ref body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
-    const Lam* fun(Ref  dom, Ref  codom, Lam::Filter f, Ref body) { return unify<Lam>(2, Fn(dom , codom), filter(f), body); }
-    const Lam* fun(Defs dom, Ref  codom, Lam::Filter f, Ref body) { return unify<Lam>(2, Fn(dom,  codom), filter(f), body); }
-    const Lam* fun(Ref  dom, Defs codom, Lam::Filter f, Ref body) { return unify<Lam>(2, Fn(dom,  codom), filter(f), body); }
-    const Lam* fun(Defs dom, Defs codom, Lam::Filter f, Ref body) { return unify<Lam>(2, Fn(dom,  codom), filter(f), body); }
-    Lam* mut_con(Ref  dom            ) { return insert<Lam>(2, Cn(dom       )); }
-    Lam* mut_con(Defs dom            ) { return insert<Lam>(2, Cn(dom       )); }
+    const Lam* fun(Ref  dom, Ref  codom, Lam::Filter f, Ref body) { return unify<Lam>(2, fn(dom , codom), filter(f), body); }
+    const Lam* fun(Defs dom, Ref  codom, Lam::Filter f, Ref body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
+    const Lam* fun(Ref  dom, Defs codom, Lam::Filter f, Ref body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
+    const Lam* fun(Defs dom, Defs codom, Lam::Filter f, Ref body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
+    Lam* mut_con(Ref  dom            ) { return insert<Lam>(2, cn(dom       )); }
+    Lam* mut_con(Defs dom            ) { return insert<Lam>(2, cn(dom       )); }
     Lam* mut_lam(Ref  dom, Ref  codom) { return insert<Lam>(2, pi(dom, codom)); }
     Lam* mut_lam(Defs dom, Ref  codom) { return insert<Lam>(2, pi(dom, codom)); }
     Lam* mut_lam(Ref  dom, Defs codom) { return insert<Lam>(2, pi(dom, codom)); }
     Lam* mut_lam(Defs dom, Defs codom) { return insert<Lam>(2, pi(dom, codom)); }
-    Lam* mut_fun(Ref  dom, Ref  codom) { return insert<Lam>(2, Fn(dom, codom)); }
-    Lam* mut_fun(Defs dom, Ref  codom) { return insert<Lam>(2, Fn(dom, codom)); }
-    Lam* mut_fun(Ref  dom, Defs codom) { return insert<Lam>(2, Fn(dom, codom)); }
-    Lam* mut_fun(Defs dom, Defs codom) { return insert<Lam>(2, Fn(dom, codom)); }
+    Lam* mut_fun(Ref  dom, Ref  codom) { return insert<Lam>(2, fn(dom, codom)); }
+    Lam* mut_fun(Defs dom, Ref  codom) { return insert<Lam>(2, fn(dom, codom)); }
+    Lam* mut_fun(Ref  dom, Defs codom) { return insert<Lam>(2, fn(dom, codom)); }
+    Lam* mut_fun(Defs dom, Defs codom) { return insert<Lam>(2, fn(dom, codom)); }
     // clang-format on
-    Lam* lam(const Pi* pi) { return insert<Lam>(2, pi); }
     Lam* exit() { return data_.exit; } ///< Used as a dummy exit node within Scope.
     ///@}
 
