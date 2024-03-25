@@ -174,7 +174,7 @@ Ref Parser::parse_extract_expr(Tracker track, const Def* lhs, Tok::Prec p) {
     lex();
 
     if (ahead().isa(Tag::M_id)) {
-        if (auto sigma = lhs->type()->isa_mut<Sigma>()) {
+        if (auto sigma = lhs->type()->isa_mut<ir::Sigma>()) {
             auto tok = eat(Tag::M_id);
             if (tok.sym() == '_') error(tok.loc(), "you cannot use special symbol '_' as field access");
 
@@ -440,7 +440,7 @@ ir::Lam* Parser::parse_lam(bool is_decl) {
             error(dbg.loc, "'{}' has not been declared as a function", dbg.sym);
     }
 
-    std::unique_ptr<Ptrn> dom_p;
+    Ptr<Ptrn> dom_p;
     scopes_.push();
     std::deque<std::tuple<ir::Pi*, ir::Lam*, const Def*>> funs;
     do {
@@ -607,7 +607,7 @@ Ref Parser::parse_lit_expr() {
  * ptrns
  */
 
-std::unique_ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok::Prec prec /*= Tok::Prec::Bot*/) {
+Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok::Prec prec /*= Tok::Prec::Bot*/) {
     auto track = tracker();
     auto sym   = anonymous_;
     bool p     = delim_l == Tag::D_paren_l;
@@ -663,7 +663,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok
             sym = eat(Tag::M_id).sym();
             eat(Tag::T_colon);
             auto type = parse_expr(ctxt, prec);
-            return std::make_unique<IdPtrn>(ast_, dbg(track, sym), rebind, type);
+            return ast_.ptr<IdPtrn>(ast_, dbg(track, sym), rebind, type);
         } else {
             // p ->  s                  b ->    e    where e == id
             // p -> 's
@@ -671,18 +671,18 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok
                 // p ->  s
                 // p -> 's
                 sym = eat(Tag::M_id).sym();
-                return std::make_unique<IdPtrn>(ast_, dbg(track, sym), rebind, nullptr);
+                return ast_.ptr<IdPtrn>(ast_, dbg(track, sym), rebind, nullptr);
             } else {
                 // b ->    e    where e == id
                 auto type = parse_expr(ctxt, prec);
-                return std::make_unique<IdPtrn>(ast_, dbg(track, sym), rebind, type);
+                return ast_.ptr<IdPtrn>(ast_, dbg(track, sym), rebind, type);
             }
         }
     } else if (b) {
         // b ->  e    where e != id
         if (backtick) error(backtick.loc(), "you can only prefix identifiers with backtick for rebinding");
         auto type = parse_expr(ctxt, prec);
-        return std::make_unique<IdPtrn>(ast_, dbg(track, sym), rebind, type);
+        return ast_.ptr<IdPtrn>(ast_, dbg(track, sym), rebind, type);
     } else if (!ctxt.empty()) {
         // p -> ↯
         syntax_err("pattern", ctxt);
@@ -691,13 +691,13 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok
     return nullptr;
 }
 
-std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, Sym sym, Def* decl) {
+Ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, Sym sym, Def* decl) {
     auto delim_l = ahead().tag();
     bool p       = delim_l == Tag::D_paren_l;
     bool b       = delim_l == Tag::D_brckt_l;
     assert(p ^ b);
 
-    std::deque<std::unique_ptr<Ptrn>> ptrns;
+    Ptrs<Ptrn> ptrns;
     std::vector<Infer*> infers;
     DefVec ops;
 
@@ -706,7 +706,7 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
         parse_decls({});
         auto track = tracker();
         if (!ptrns.empty()) ptrns.back()->bind(scopes_, infers.back());
-        std::unique_ptr<Ptrn> ptrn;
+        Ptr<Ptrn> ptrn;
 
         if (ahead(0).isa(Tag::M_id) && ahead(1).isa(Tag::M_id)) {
             std::vector<Tok> sym_toks;
@@ -719,7 +719,7 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
                     auto tok = sym_toks[i];
                     infers.emplace_back(world().mut_infer(type)->set(tok.dbg()));
                     ops.emplace_back(type);
-                    auto ptrn = std::make_unique<IdPtrn>(ast_, tok.dbg(), false, type);
+                    auto ptrn = ast_.ptr<IdPtrn>(ast_, tok.dbg(), false, type);
                     if (i != e - 1) ptrn->bind(scopes_, infers.back()); // last element will be bound above
                     ptrns.emplace_back(std::move(ptrn));
                 }
@@ -734,14 +734,14 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
             }
             auto [_, r] = Tok::prec(Tok::Prec::App);
             auto expr   = parse_infix_expr(track, lhs, r);
-            ptrn        = std::make_unique<IdPtrn>(ast_, dbg(track, anonymous_), false, expr);
+            ptrn        = ast_.ptr<IdPtrn>(ast_, dbg(track, anonymous_), false, expr);
         } else {
             ptrn      = parse_ptrn(delim_l, "element of a tuple pattern");
             auto type = ptrn->type(world(), def2fields_);
 
             if (b) { // If we are able to parse more stuff, we got an expression instead of just a binder.
                 if (auto expr = parse_infix_expr(track, type); expr != type)
-                    ptrn = std::make_unique<IdPtrn>(ast_, dbg(track, anonymous_), false, expr);
+                    ptrn = ast_.ptr<IdPtrn>(ast_, dbg(track, anonymous_), false, expr);
             }
         }
 
@@ -753,8 +753,7 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
     scopes_.pop();
 
     // TODO parse type
-    return std::make_unique<TuplePtrn>(ast_, dbg(track, sym), rebind, std::move(ptrns), nullptr, std::move(infers),
-                                       decl);
+    return ast_.ptr<TuplePtrn>(ast_, dbg(track, sym), rebind, std::move(ptrns), nullptr, std::move(infers), decl);
 }
 
 /*
@@ -822,7 +821,7 @@ void Parser::parse_ax_decl() {
         error(dbg.loc, "all declarations of axiom '{}' must use the same normalizer name", dbg.sym);
     annex.normalizer = normalizer;
 
-    auto [curry, trip] = Axiom::infer_curry_and_trip(type);
+    auto [curry, trip] = ir::Axiom::infer_curry_and_trip(type);
 
     if (accept(Tag::T_comma)) {
         auto c = expect(Tag::L_u, "curry counter for axiom");
@@ -861,7 +860,7 @@ void Parser::parse_let_decl() {
     auto track = tracker();
     eat(Tag::K_let);
 
-    std::variant<std::unique_ptr<Ptrn>, Dbg> name;
+    std::variant<Ptr<Ptrn>, Dbg> name;
     Ref type;
     if (auto tok = accept(Tag::M_anx)) {
         name = tok.dbg();
@@ -883,7 +882,7 @@ void Parser::parse_let_decl() {
         scopes_.bind(*dbg, value);
         register_annex(*dbg, value);
     } else {
-        std::get<std::unique_ptr<Ptrn>>(name)->bind(scopes_, value);
+        std::get<Ptr<Ptrn>>(name)->bind(scopes_, value);
     }
 
     expect(Tag::T_semicolon, "let declaration");
@@ -900,7 +899,7 @@ void Parser::parse_sigma_decl() {
     if (accept(Tag::T_assign)) {
         Def* decl;
         if (auto def = scopes_.query(dbg)) {
-            if ((!def->isa_mut<Sigma>() && !def->isa<Infer>()) || !def->isa_lit_arity())
+            if ((!def->isa_mut<ir::Sigma>() && !def->isa<Infer>()) || !def->isa_lit_arity())
                 error(dbg.loc, "'{}' has not been declared as a sigma", dbg.sym);
             if (!Check::alpha(def->type(), type))
                 error(dbg.loc, "'{}' of type '{}' has been redeclared with a different type '{}'; here: {}", dbg.sym,
@@ -921,7 +920,7 @@ void Parser::parse_sigma_decl() {
         auto ptrn = parse_tuple_ptrn(track, false, dbg.sym, decl);
         auto t    = ptrn->type(world(), def2fields_);
 
-        assert(t->isa_mut<Sigma>());
+        assert(t->isa_mut<ir::Sigma>());
         t->set<true>(track.loc());
         if (anx) register_annex(dbg, t);
 

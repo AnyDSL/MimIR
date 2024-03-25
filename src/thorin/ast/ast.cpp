@@ -54,9 +54,9 @@ const Def* TuplePtrn::type(World& world, Def2Fields& def2fields) const {
     assert(n > 0);
     auto type = world.umax<Sort::Type>(ops);
 
-    Sigma* sigma;
+    ir::Sigma* sigma;
     if (decl_) {
-        if (auto s = decl_->isa_mut<Sigma>())
+        if (auto s = decl_->isa_mut<ir::Sigma>())
             sigma = s;
         else {
             sigma = world.mut_sigma(type, n)->set(loc(), sym());

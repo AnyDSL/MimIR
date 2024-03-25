@@ -92,8 +92,6 @@ protected:
     mutable const Def* type_;
 };
 
-using Ptrns = std::deque<std::unique_ptr<Ptrn>>;
-
 class IdPtrn : public Ptrn {
 public:
     IdPtrn(AST& ast, Dbg dbg, bool rebind, const Def* type)
@@ -105,13 +103,19 @@ public:
 
 class TuplePtrn : public Ptrn {
 public:
-    TuplePtrn(AST& ast, Dbg dbg, bool rebind, Ptrns&& ptrns, const Def* type, std::vector<Infer*>&& infers, Def* decl)
+    TuplePtrn(AST& ast,
+              Dbg dbg,
+              bool rebind,
+              Ptrs<Ptrn>&& ptrns,
+              const Def* type,
+              std::vector<Infer*>&& infers,
+              Def* decl)
         : Ptrn(ast, dbg, rebind, type)
         , ptrns_(std::move(ptrns))
         , infers_(std::move(infers))
         , decl_(decl) {}
 
-    const Ptrns& ptrns() const { return ptrns_; }
+    const auto& ptrns() const { return ptrns_; }
     const Ptrn* ptrn(size_t i) const { return ptrns_[i].get(); }
     size_t num_ptrns() const { return ptrns().size(); }
 
@@ -119,7 +123,7 @@ public:
     const Def* type(World&, Def2Fields&) const override;
 
 private:
-    Ptrns ptrns_;
+    Ptrs<Ptrn> ptrns_;
     std::vector<Infer*> infers_;
     Def* decl_ = nullptr;
 };
@@ -134,17 +138,66 @@ protected:
         : Node(ast, dbg) {}
 };
 
-// lam
+class IdExpr : public Node {
+protected:
+    IdExpr(AST& ast, Dbg dbg, Sym)
+        : Node(ast, dbg) {}
 
-class Pi : public Expr {
 public:
+    Sym sym() const { return sym_; }
+
 private:
+    Sym sym_;
 };
 
-class Lam : public Expr {
+class Decl : public Expr {
+protected:
+    Decl(AST& ast, Dbg dbg)
+        : Expr(ast, dbg) {}
+};
+
+class Let : public Decl {
 public:
-    Lam(AST& ast, Dbg dbg, Tok::Tag tag, Ptrns&& domains, Expr* codom, Expr* filter, Expr* body)
-        : Expr(ast, dbg)
+    Let(AST& ast, Dbg dbg, Ptr<Expr>&& type, Ptr<Expr>&& init)
+        : Decl(ast, dbg)
+        , type_(std::move(type))
+        , init_(std::move(init)) {}
+
+    const Expr* type() const { return type_.get(); }
+    const Expr* init() const { return init_.get(); }
+
+private:
+    Ptr<Expr> type_;
+    Ptr<Expr> init_;
+};
+
+class Axiom : public Decl {};
+
+// lam
+
+class Pi : public Decl {
+public:
+    Pi(AST& ast, Dbg dbg, Tok::Tag tag, Ptrs<Ptrn>&& domains, Ptr<Expr>&& codom)
+        : Decl(ast, dbg)
+        , tag_(tag)
+        , domains_(std::move(domains))
+        , codom_(std::move(codom)) {}
+
+private:
+    Tok::Tag tag() const { return tag_; }
+    const auto& domains() const { return domains_; }
+    const Expr* codom() const { return codom_.get(); }
+
+private:
+    Tok::Tag tag_;
+    Ptrs<Ptrn> domains_;
+    Ptr<Expr> codom_;
+};
+
+class Lam : public Decl {
+public:
+    Lam(AST& ast, Dbg dbg, Tok::Tag tag, Ptrs<Ptrn>&& domains, Ptr<Expr>&& codom, Ptr<Expr>&& filter, Ptr<Expr>&& body)
+        : Decl(ast, dbg)
         , tag_(tag)
         , domains_(std::move(domains))
         , codom_(std::move(codom))
@@ -153,52 +206,113 @@ public:
 
     Tok::Tag tag() const { return tag_; }
     const auto& domains() const { return domains_; }
-    Expr* codom() const { return codom_; }
-    Expr* filter() const { return filter_; }
-    Expr* body() const { return body_; }
+    const Expr* codom() const { return codom_.get(); }
+    const Expr* filter() const { return filter_.get(); }
+    const Expr* body() const { return body_.get(); }
 
 private:
     Tok::Tag tag_;
-    Ptrns domains_;
-    Expr* codom_;
-    Expr* filter_;
-    Expr* body_;
+    Ptrs<Ptrn> domains_;
+    Ptr<Expr> codom_;
+    Ptr<Expr> filter_;
+    Ptr<Expr> body_;
 };
 
 class App : public Expr {
 public:
-    App(AST& ast, Dbg dbg, Expr* callee, Expr* arg)
+    App(AST& ast, Dbg dbg, Ptr<Expr>&& callee, Ptr<Expr>&& arg)
         : Expr(ast, dbg)
-        , callee_(callee)
-        , arg_(arg) {}
+        , callee_(std::move(callee))
+        , arg_(std::move(arg)) {}
 
-    Expr* callee() const { return callee_; }
-    Expr* arg() const { return arg_; }
+    const Expr* callee() const { return callee_.get(); }
+    const Expr* arg() const { return arg_.get(); }
 
 private:
-    Expr* callee_;
-    Expr* arg_;
-    ;
+    Ptr<Expr> callee_;
+    Ptr<Expr> arg_;
 };
 
 // tuple
 
-#if 0
-class Sigma : public Expr {
+class Sigma : public Decl {
 public:
+    Sigma(AST& ast, Dbg dbg, Ptrs<Ptrn>&& elems)
+        : Decl(ast, dbg)
+        , elems_(std::move(elems)) {}
+
+    const auto& elems() const { return elems_; }
+    const Ptrn* elem(size_t i) const { return elems_[i].get(); }
+    size_t num_elems() const { return elems().size(); }
+
 private:
+    Ptrs<Ptrn> elems_;
 };
 
 class Tuple : public Expr {
 public:
+    Tuple(AST& ast, Dbg dbg, Ptrs<Expr>&& elems)
+        : Expr(ast, dbg)
+        , elems_(std::move(elems)) {}
+
+    const auto& elems() const { return elems_; }
+    const Expr* elem(size_t i) const { return elems_[i].get(); }
+    size_t num_elems() const { return elems().size(); }
+
 private:
+    Ptrs<Expr> elems_;
 };
 
 class Extract : public Expr {
 public:
+    Extract(AST& ast, Dbg dbg, Ptr<Expr>&& tuple, Ptr<Expr>&& index)
+        : Expr(ast, dbg)
+        , tuple_(std::move(tuple))
+        , index_(std::move(index)) {}
+
+    const Expr* tuple() const { return tuple_.get(); }
+    const Expr* index() const { return index_.get(); }
+
 private:
+    Ptr<Expr> tuple_;
+    Ptr<Expr> index_;
 };
-#endif
+
+class Insert : public Expr {
+public:
+    Insert(AST& ast, Dbg dbg, Ptr<Expr>&& tuple, Ptr<Expr>&& index, Ptr<Expr>&& value)
+        : Expr(ast, dbg)
+        , tuple_(std::move(tuple))
+        , index_(std::move(index))
+        , value_(std::move(value)) {}
+
+    const Expr* tuple() const { return tuple_.get(); }
+    const Expr* index() const { return index_.get(); }
+    const Expr* value() const { return value_.get(); }
+
+private:
+    Ptr<Expr> tuple_;
+    Ptr<Expr> index_;
+    Ptr<Expr> value_;
+};
+
+/*
+ * Module
+ */
+
+class Module : public Node {
+public:
+    Module(AST& ast, Dbg dbg, Ptrs<Decl>&& decls)
+        : Node(ast, dbg)
+        , decls_(std::move(decls)) {}
+
+    const auto& decls() const { return decls_; }
+    const Decl* decl(size_t i) const { return decls_[i].get(); }
+    size_t num_decls() const { return decls_.size(); }
+
+private:
+    Ptrs<Decl> decls_;
+};
 
 } // namespace ast
 } // namespace thorin
