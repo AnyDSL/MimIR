@@ -351,7 +351,7 @@ Ref Parser::parse_type_expr() {
     return world().type(level)->set(track.loc());
 }
 
-Pi* Parser::parse_pi_expr(Pi* outer) {
+ir::Pi* Parser::parse_pi_expr(ir::Pi* outer) {
     auto track = tracker();
     auto tok   = lex();
 
@@ -363,8 +363,8 @@ Pi* Parser::parse_pi_expr(Pi* outer) {
         default: fe::unreachable();
     }
 
-    Pi* first = nullptr;
-    std::deque<Pi*> pis;
+    ir::Pi* first = nullptr;
+    std::deque<ir::Pi*> pis;
     scopes_.push();
     do {
         auto implicit = (bool)accept(Tag::T_dot);
@@ -410,7 +410,7 @@ Pi* Parser::parse_pi_expr(Pi* outer) {
     return first;
 }
 
-Lam* Parser::parse_lam(bool is_decl) {
+ir::Lam* Parser::parse_lam(bool is_decl) {
     auto track    = tracker();
     auto tok      = lex();
     auto prec     = tok.isa(Tag::K_cn) || tok.isa(Tag::K_con) ? Tok::Prec::Bot : Tok::Prec::Pi;
@@ -431,10 +431,10 @@ Lam* Parser::parse_lam(bool is_decl) {
 
     auto [dbg, anx] = is_decl ? parse_name(entity) : std::pair(Dbg{prev_, anonymous_}, false);
     auto outer      = scopes_.curr();
-    Lam* decl       = nullptr;
+    ir::Lam* decl   = nullptr;
 
     if (auto def = scopes_.query(dbg)) {
-        if (auto lam = def->isa_mut<Lam>())
+        if (auto lam = def->isa_mut<ir::Lam>())
             decl = lam;
         else
             error(dbg.loc, "'{}' has not been declared as a function", dbg.sym);
@@ -442,7 +442,7 @@ Lam* Parser::parse_lam(bool is_decl) {
 
     std::unique_ptr<Ptrn> dom_p;
     scopes_.push();
-    std::deque<std::tuple<Pi*, Lam*, const Def*>> funs;
+    std::deque<std::tuple<ir::Pi*, ir::Lam*, const Def*>> funs;
     do {
         const Def* filter = accept(Tag::T_bang) ? world().lit_tt() : nullptr;
         bool implicit     = (bool)accept(Tag::T_dot);
@@ -561,7 +561,7 @@ Ref Parser::parse_ret_expr() {
 
     auto cn = parse_expr("continuation expression of a ret expression");
     expect(Tag::T_dollar, "separator of a ret expression");
-    if (auto ret_pi = Pi::ret_pi(cn->type())) {
+    if (auto ret_pi = ir::Pi::ret_pi(cn->type())) {
         auto arg = parse_expr("argument of ret expression");
         expect(Tag::T_semicolon, "let expression");
         auto lam = world().mut_lam(ret_pi);
@@ -663,7 +663,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok
             sym = eat(Tag::M_id).sym();
             eat(Tag::T_colon);
             auto type = parse_expr(ctxt, prec);
-            return std::make_unique<IdPtrn>(dbg(track, sym), rebind, type);
+            return std::make_unique<IdPtrn>(ast_, dbg(track, sym), rebind, type);
         } else {
             // p ->  s                  b ->    e    where e == id
             // p -> 's
@@ -671,18 +671,18 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok
                 // p ->  s
                 // p -> 's
                 sym = eat(Tag::M_id).sym();
-                return std::make_unique<IdPtrn>(dbg(track, sym), rebind, nullptr);
+                return std::make_unique<IdPtrn>(ast_, dbg(track, sym), rebind, nullptr);
             } else {
                 // b ->    e    where e == id
                 auto type = parse_expr(ctxt, prec);
-                return std::make_unique<IdPtrn>(dbg(track, sym), rebind, type);
+                return std::make_unique<IdPtrn>(ast_, dbg(track, sym), rebind, type);
             }
         }
     } else if (b) {
         // b ->  e    where e != id
         if (backtick) error(backtick.loc(), "you can only prefix identifiers with backtick for rebinding");
         auto type = parse_expr(ctxt, prec);
-        return std::make_unique<IdPtrn>(dbg(track, sym), rebind, type);
+        return std::make_unique<IdPtrn>(ast_, dbg(track, sym), rebind, type);
     } else if (!ctxt.empty()) {
         // p -> ↯
         syntax_err("pattern", ctxt);
@@ -719,7 +719,7 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
                     auto tok = sym_toks[i];
                     infers.emplace_back(world().mut_infer(type)->set(tok.dbg()));
                     ops.emplace_back(type);
-                    auto ptrn = std::make_unique<IdPtrn>(tok.dbg(), false, type);
+                    auto ptrn = std::make_unique<IdPtrn>(ast_, tok.dbg(), false, type);
                     if (i != e - 1) ptrn->bind(scopes_, infers.back()); // last element will be bound above
                     ptrns.emplace_back(std::move(ptrn));
                 }
@@ -734,14 +734,14 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
             }
             auto [_, r] = Tok::prec(Tok::Prec::App);
             auto expr   = parse_infix_expr(track, lhs, r);
-            ptrn        = std::make_unique<IdPtrn>(dbg(track, anonymous_), false, expr);
+            ptrn        = std::make_unique<IdPtrn>(ast_, dbg(track, anonymous_), false, expr);
         } else {
             ptrn      = parse_ptrn(delim_l, "element of a tuple pattern");
             auto type = ptrn->type(world(), def2fields_);
 
             if (b) { // If we are able to parse more stuff, we got an expression instead of just a binder.
                 if (auto expr = parse_infix_expr(track, type); expr != type)
-                    ptrn = std::make_unique<IdPtrn>(dbg(track, anonymous_), false, expr);
+                    ptrn = std::make_unique<IdPtrn>(ast_, dbg(track, anonymous_), false, expr);
             }
         }
 
@@ -753,7 +753,8 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, 
     scopes_.pop();
 
     // TODO parse type
-    return std::make_unique<TuplePtrn>(dbg(track, sym), rebind, std::move(ptrns), nullptr, std::move(infers), decl);
+    return std::make_unique<TuplePtrn>(ast_, dbg(track, sym), rebind, std::move(ptrns), nullptr, std::move(infers),
+                                       decl);
 }
 
 /*
@@ -807,9 +808,9 @@ void Parser::parse_ax_decl() {
         error(dbg.loc, "cannot extend subs of axiom '{}' because it was declared as a subless axiom", dbg.sym);
 
     auto type = parse_type_ascr("type ascription of an axiom");
-    if (!is_new && annex.pi != (type->isa<Pi>() != nullptr))
+    if (!is_new && annex.pi != (type->isa<ir::Pi>() != nullptr))
         error(dbg.loc, "all declarations of annex '{}' have to be function types if any is", dbg.sym);
-    annex.pi = type->isa<Pi>() != nullptr;
+    annex.pi = type->isa<ir::Pi>() != nullptr;
 
     Sym normalizer;
     if (ahead().isa(Tag::T_comma) && ahead(1).isa(Tag::M_id)) {
@@ -946,9 +947,9 @@ void Parser::parse_pi_decl() {
     auto type       = accept(Tag::T_colon) ? parse_expr("type of a pi declaration") : world().type();
 
     if (accept(Tag::T_assign)) {
-        Pi* pi;
+        ir::Pi* pi;
         if (auto def = scopes_.query(dbg)) {
-            if (auto mut = def->isa_mut<Pi>()) {
+            if (auto mut = def->isa_mut<ir::Pi>()) {
                 if (!Check::alpha(mut->type(), type))
                     error(dbg.loc, "'{}' of type '{}' has been redeclared with a different type '{}'; here: {}",
                           dbg.sym, mut->type(), type, mut->loc());

@@ -2,12 +2,18 @@
 
 #include "thorin/check.h"
 #include "thorin/def.h"
+#include "thorin/driver.h"
 #include "thorin/rewrite.h"
 #include "thorin/world.h"
 
 #include "thorin/ast/scopes.h"
 
 namespace thorin::ast {
+
+Driver& AST::driver() { return world().driver(); }
+Sym AST::sym(const char* s) { return driver().sym(s); }
+Sym AST::sym(std::string_view s) { return driver().sym(s); }
+Sym AST::sym(const std::string& s) { return driver().sym(s); }
 
 /*
  * bind

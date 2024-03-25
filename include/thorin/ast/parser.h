@@ -34,6 +34,7 @@ class Parser : public fe::Parser<Tok, Tok::Tag, Look_Ahead, Parser> {
 public:
     Parser(World& world)
         : world_(world)
+        , ast_(world)
         , anonymous_(world.sym("_"))
         , return_(world.sym("return")) {}
 
@@ -87,11 +88,11 @@ private:
     Ref parse_sigma_expr();
     Ref parse_tuple_expr();
     Ref parse_type_expr();
-    Pi* parse_pi_expr(Pi* = nullptr);
+    ir::Pi* parse_pi_expr(ir::Pi* = nullptr);
     Ref parse_lit_expr();
     Ref parse_insert_expr();
     Ref parse_ret_expr();
-    Lam* parse_lam(bool decl = false);
+    ir::Lam* parse_lam(bool decl = false);
     ///@}
 
     /// @name parse ptrns
@@ -134,6 +135,7 @@ private:
     ///@}
 
     World& world_;
+    AST ast_;
     Lexer* lexer_ = nullptr;
     Scopes scopes_;
     Def2Fields def2fields_;
