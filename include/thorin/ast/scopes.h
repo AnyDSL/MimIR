@@ -7,6 +7,9 @@
 namespace thorin {
 
 class Def;
+
+namespace ast {
+
 class Ptrn;
 
 class Scopes {
@@ -28,4 +31,5 @@ private:
     std::deque<Scope> scopes_;
 };
 
+} // namespace ast
 } // namespace thorin

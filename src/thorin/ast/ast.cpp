@@ -1,13 +1,13 @@
-#include "thorin/fe/ast.h"
+#include "thorin/ast/ast.h"
 
 #include "thorin/check.h"
 #include "thorin/def.h"
 #include "thorin/rewrite.h"
 #include "thorin/world.h"
 
-#include "thorin/fe/scopes.h"
+#include "thorin/ast/scopes.h"
 
-namespace thorin {
+namespace thorin::ast {
 
 /*
  * bind
@@ -87,4 +87,4 @@ const Def* TuplePtrn::type(World& world, Def2Fields& def2fields) const {
     return type_ = sigma;
 }
 
-} // namespace thorin
+} // namespace thorin::ast

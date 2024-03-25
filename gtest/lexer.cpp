@@ -5,10 +5,11 @@
 
 #include <thorin/driver.h>
 
-#include <thorin/fe/lexer.h>
+#include <thorin/ast/lexer.h>
 
 using namespace std::literals;
 using namespace thorin;
+using namespace thorin::ast;
 
 TEST(Lexer, Toks) {
     Driver driver;

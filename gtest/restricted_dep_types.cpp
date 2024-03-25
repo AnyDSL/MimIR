@@ -6,7 +6,7 @@
 #include <gtest/gtest-spi.h>
 #include <gtest/gtest.h>
 
-#include <thorin/fe/parser.h>
+#include <thorin/ast/parser.h>
 #include <thorin/pass/beta_red.h>
 #include <thorin/pass/eta_exp.h>
 #include <thorin/pass/eta_red.h>
@@ -28,7 +28,7 @@ TEST(RestrictedDependentTypes, join_singleton) {
     auto test_on_world = [](auto test) {
         Driver driver;
         World& w    = driver.world();
-        auto parser = Parser(w);
+        auto parser = ast::Parser(w);
         for (auto plugin : {"compile", "mem", "core", "math"}) parser.plugin(plugin);
 
         auto i32_t = w.type_i32();
@@ -219,7 +219,7 @@ TEST(RestrictedDependentTypes, join_singleton) {
 TEST(RestrictedDependentTypes, ll) {
     Driver driver;
     World& w    = driver.world();
-    auto parser = Parser(w);
+    auto parser = ast::Parser(w);
     for (auto plugin : {"compile", "mem", "core", "math"}) parser.plugin(plugin);
 
     auto mem_t  = w.annex<mem::M>();

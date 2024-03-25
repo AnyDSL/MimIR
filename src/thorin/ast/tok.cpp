@@ -1,11 +1,11 @@
-#include "thorin/fe/tok.h"
+#include "thorin/ast/tok.h"
 
 #include <fe/assert.h>
 
 #include "thorin/lam.h"
 #include "thorin/tuple.h"
 
-namespace thorin {
+namespace thorin::ast {
 
 std::string_view Tok::tag2str(Tok::Tag tag) {
     switch (tag) {
@@ -37,4 +37,4 @@ Tok::Prec Tok::prec(const Def* def) {
 }
 // clang-format on
 
-} // namespace thorin
+} // namespace thorin::ast

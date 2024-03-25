@@ -21,11 +21,11 @@ target_sources(libthorin
         analyses/schedule.cpp
         analyses/scope.cpp
         be/h/bootstrap.cpp
-        fe/ast.cpp
-        fe/lexer.cpp
-        fe/parser.cpp
-        fe/scopes.cpp
-        fe/tok.cpp
+        ast/ast.cpp
+        ast/lexer.cpp
+        ast/parser.cpp
+        ast/scopes.cpp
+        ast/tok.cpp
         pass/beta_red.cpp
         pass/eta_exp.cpp
         pass/eta_red.cpp

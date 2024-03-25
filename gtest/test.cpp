@@ -7,7 +7,7 @@
 #include <thorin/driver.h>
 #include <thorin/rewrite.h>
 
-#include <thorin/fe/parser.h>
+#include <thorin/ast/parser.h>
 
 #include <thorin/plug/core/core.h>
 
@@ -19,7 +19,7 @@ using namespace thorin::plug;
 TEST(Zip, fold) {
     Driver driver;
     World& w    = driver.world();
-    auto parser = Parser(w);
+    auto parser = ast::Parser(w);
 
     std::istringstream iss(".plugin core;"
                            ".let _32 = .i32;"
@@ -89,7 +89,7 @@ TEST(Annex, split) {
 TEST(trait, idx) {
     Driver driver;
     World& w    = driver.world();
-    auto parser = Parser(w);
+    auto parser = ast::Parser(w);
     parser.plugin("core");
 
     EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'0000'00FF_n))), 1);

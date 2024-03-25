@@ -1,10 +1,10 @@
-#include "thorin/fe/lexer.h"
+#include "thorin/ast/lexer.h"
 
 #include "thorin/world.h"
 
 using namespace std::literals;
 
-namespace thorin {
+namespace thorin::ast {
 
 namespace utf8 = fe::utf8;
 using Tag      = Tok::Tag;
@@ -353,4 +353,4 @@ void Lexer::emit_md(bool start_of_file) {
 
 Sym Lexer::sym() { return world().sym(str_); }
 
-} // namespace thorin
+} // namespace thorin::ast

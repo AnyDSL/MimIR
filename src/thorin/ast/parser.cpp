@@ -1,4 +1,4 @@
-#include "thorin/fe/parser.h"
+#include "thorin/ast/parser.h"
 
 #include <filesystem>
 #include <fstream>
@@ -15,7 +15,7 @@
 
 using namespace std::string_literals;
 
-namespace thorin {
+namespace thorin::ast {
 
 using Tag = Tok::Tag;
 
@@ -978,4 +978,4 @@ void Parser::parse_pi_decl() {
     expect(Tag::T_semicolon, "end of a pi declaration");
 }
 
-} // namespace thorin
+} // namespace thorin::ast

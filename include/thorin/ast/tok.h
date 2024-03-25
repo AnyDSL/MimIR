@@ -10,6 +10,8 @@ namespace thorin {
 class Def;
 class Lit;
 
+namespace ast {
+
 // clang-format off
 #define THORIN_KEY(m)                  \
     m(K_module, ".module")             \
@@ -204,4 +206,5 @@ private:
     };
 };
 
+} // namespace ast
 } // namespace thorin
