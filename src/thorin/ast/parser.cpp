@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <fstream>
 #include <limits>
+#include <optional>
 #include <sstream>
 #include <variant>
 
@@ -23,7 +24,8 @@ using Tag = Tok::Tag;
  * entry points
  */
 
-void Parser::parse_module() {
+Ptr<Module> Parser::parse_module() {
+    auto track = tracker();
     while (true)
         if (ahead().tag() == Tag::K_import)
             parse_import();
@@ -32,8 +34,9 @@ void Parser::parse_module() {
         else
             break;
 
-    parse_decls({});
+    auto decls = parse_decls({});
     expect(Tag::EoF, "module");
+    return ptr<Module>(track, std::move(decls));
 }
 
 void Parser::import(Sym name, std::ostream* md) {
@@ -98,14 +101,11 @@ Dbg Parser::parse_id(std::string_view ctxt) {
     return {prev_, world().sym("<error>")};
 }
 
-std::pair<Dbg, bool> Parser::parse_name(std::string_view ctxt) {
-    if (auto tok = accept(Tag::M_anx)) return {tok.dbg(), true};
-    if (auto tok = accept(Tag::M_id)) return {tok.dbg(), false};
+Sym Parser::parse_name(std::string_view ctxt) {
+    if (auto tok = accept(Tag::M_anx)) return tok.sym();
+    if (auto tok = accept(Tag::M_id)) return tok.sym();
     syntax_err("identifier or annex name", ctxt);
-    return {
-        {prev_, world().sym("<error>")},
-        false
-    };
+    return ast().sym("<error>");
 }
 
 void Parser::register_annex(Dbg dbg, Ref def) {
@@ -124,7 +124,7 @@ void Parser::register_annex(Dbg dbg, Ref def) {
     world().register_annex(p | (t << 8) | s, def);
 }
 
-Ref Parser::parse_type_ascr(std::string_view ctxt) {
+Ptr<Expr> Parser::parse_type_ascr(std::string_view ctxt) {
     if (accept(Tag::T_colon)) return parse_expr(ctxt, Tok::Prec::Bot);
     if (ctxt.empty()) return nullptr;
     syntax_err("':'", ctxt);
@@ -134,18 +134,18 @@ Ref Parser::parse_type_ascr(std::string_view ctxt) {
  * exprs
  */
 
-Ref Parser::parse_expr(std::string_view ctxt, Tok::Prec p) {
+Ptr<Expr> Parser::parse_expr(std::string_view ctxt, Tok::Prec p) {
     auto track = tracker();
     auto lhs   = parse_primary_expr(ctxt);
-    return parse_infix_expr(track, lhs, p);
+    return parse_infix_expr(track, std::move(lhs), p);
 }
 
-Ref Parser::parse_infix_expr(Tracker track, const Def* lhs, Tok::Prec p) {
+Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Tok::Prec p) {
     while (true) {
         // If operator in ahead has less left precedence: reduce (break).
         if (ahead().isa(Tag::T_extract)) {
-            if (auto extract = parse_extract_expr(track, lhs, p))
-                lhs = extract;
+            if (auto extract = parse_extract_expr(track, std::move(lhs), p))
+                lhs = std::move(extract);
             else
                 break;
         } else if (ahead().isa(Tag::T_arrow)) {
@@ -153,13 +153,13 @@ Ref Parser::parse_infix_expr(Tracker track, const Def* lhs, Tok::Prec p) {
             if (l < p) break;
             lex();
             auto rhs = parse_expr("right-hand side of an function type", r);
-            lhs      = world().pi(lhs, rhs)->set(track.loc());
+            lhs      = ptr<SimplePiExpr>(track.loc(), std::move(lhs), std::move(rhs));
         } else {
             auto [l, r] = Tok::prec(Tok::Prec::App);
             if (l < p) break;
             bool is_explicit = (bool)accept(Tag::T_at);
             if (auto rhs = parse_expr({}, r)) // if we can parse an expression, it's an App
-                lhs = (is_explicit ? world().app(lhs, rhs) : world().iapp(lhs, rhs))->set(track.loc());
+                lhs = ptr<AppExpr>(track.loc(), is_explicit, std::move(lhs), std::move(rhs));
             else
                 return lhs;
         }
@@ -168,31 +168,15 @@ Ref Parser::parse_infix_expr(Tracker track, const Def* lhs, Tok::Prec p) {
     return lhs;
 }
 
-Ref Parser::parse_extract_expr(Tracker track, const Def* lhs, Tok::Prec p) {
+Ptr<Expr> Parser::parse_extract_expr(Tracker track, Ptr<Expr>&& lhs, Tok::Prec p) {
     auto [l, r] = Tok::prec(Tok::Prec::Extract);
     if (l < p) return nullptr;
     lex();
-
-    if (ahead().isa(Tag::M_id)) {
-        if (auto sigma = lhs->type()->isa_mut<ir::Sigma>()) {
-            auto tok = eat(Tag::M_id);
-            if (tok.sym() == '_') error(tok.loc(), "you cannot use special symbol '_' as field access");
-
-            if (auto i = def2fields_.find(sigma); i != def2fields_.end()) {
-                if (auto& fields = i->second; fields.size() == sigma->num_ops()) {
-                    for (size_t i = 0, n = sigma->num_ops(); i != n; ++i)
-                        if (fields[i] == tok.sym()) return world().extract(lhs, n, i)->set(track.loc());
-                }
-            }
-            error(tok.loc(), "could not find elemement '{}' to extract from '{}' of type '{}'", tok.sym(), lhs, sigma);
-        }
-    }
-
     auto rhs = parse_expr("right-hand side of an extract", r);
-    return world().extract(lhs, rhs)->set(track.loc());
+    return ptr<ExtractExpr>(track.loc(), std::move(lhs), std::move(rhs));
 }
 
-Ref Parser::parse_insert_expr() {
+Ptr<Expr> Parser::parse_insert_expr() {
     eat(Tag::K_ins);
     auto track = tracker();
 
@@ -204,54 +188,58 @@ Ref Parser::parse_insert_expr() {
     auto value = parse_expr("insert value");
     expect(Tag::D_paren_r, "closing paren for insert arguments");
 
-    return world().insert(tuple, index, value)->set(track.loc());
+    return ptr<InsertExpr>(track.loc(), std::move(tuple), std::move(index), std::move(value));
 }
 
-Ref Parser::parse_primary_expr(std::string_view ctxt) {
+Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
     // clang-format off
     switch (ahead().tag()) {
-        case Tag::D_quote_l: return parse_arr_expr();
-        case Tag::D_angle_l: return parse_pack_expr();
-        case Tag::D_brace_l: return parse_block_expr();
-        case Tag::D_brckt_l: return parse_sigma_expr();
-        case Tag::D_paren_l: return parse_tuple_expr();
-        case Tag::K_Type:    return parse_type_expr();
-        case Tag::K_Univ:    lex(); return world().univ();
-        case Tag::K_Idx:     lex(); return world().type_idx();
-        case Tag::K_Nat:     lex(); return world().type_nat();
-        case Tag::K_ff:      lex(); return world().lit_ff();
-        case Tag::K_tt:      lex(); return world().lit_tt();
-        case Tag::K_i1:      lex(); return world().lit_i1();
-        case Tag::K_i8:      lex(); return world().lit_i8();
-        case Tag::K_i16:     lex(); return world().lit_i16();
-        case Tag::K_i32:     lex(); return world().lit_i32();
-        case Tag::K_i64:     lex(); return world().lit_i64();
-        case Tag::K_Bool:
-        case Tag::K_I1:      lex(); return world().type_i1();
-        case Tag::K_I8:      lex(); return world().type_i8();
-        case Tag::K_I16:     lex(); return world().type_i16();
-        case Tag::K_I32:     lex(); return world().type_i32();
-        case Tag::K_I64:     lex(); return world().type_i64();
         case Tag::K_Cn:
         case Tag::K_Fn:
         case Tag::T_Pi:      return parse_pi_expr();
         case Tag::K_cn:
         case Tag::K_fn:
-        case Tag::T_lm:      return parse_lam();
-        case Tag::T_star:    lex(); return world().type();
-        case Tag::T_box:     lex(); return world().type<1>();
+        case Tag::T_lm:      return parse_lam_expr();
+        case Tag::K_ins:     return parse_insert_expr();
+        case Tag::K_ret:     return parse_ret_expr();
+        case Tag::D_quote_l: return parse_arr_or_pack_expr<true>();
+        case Tag::D_angle_l: return parse_arr_or_pack_expr<false>();
+        case Tag::D_brckt_l: return parse_sigma_expr();
+        case Tag::D_paren_l: return parse_tuple_expr();
+        case Tag::D_brace_l: return parse_block_expr({});
+        case Tag::K_Type:    return parse_type_expr();
+
+        case Tag::K_Univ:
+        case Tag::K_Idx:
+        case Tag::K_Nat:
+        case Tag::K_ff:
+        case Tag::K_tt:
+        case Tag::K_i1:
+        case Tag::K_i8:
+        case Tag::K_i16:
+        case Tag::K_i32:
+        case Tag::K_i64:
+        case Tag::K_Bool:
+        case Tag::K_I1:
+        case Tag::K_I8:
+        case Tag::K_I16:
+        case Tag::K_I32:
+        case Tag::K_I64:
+        case Tag::T_star:
+        case Tag::T_box: {
+            auto tok = lex();
+            return ptr<PrimaryExpr>(tok);
+        }
         case Tag::T_bot:
         case Tag::T_top:
         case Tag::L_s:
         case Tag::L_u:
         case Tag::L_f:       return parse_lit_expr();
-        case Tag::L_c:       return world().lit_i8(lex().lit_c());
-        case Tag::L_i:       return lex().lit_i();
-        case Tag::K_ins:     return parse_insert_expr();
-        case Tag::K_ret:     return parse_ret_expr();
+        //case Tag::L_c:       return world().lit_i8(lex().lit_c());
+        //case Tag::L_i:       return lex().lit_i();
         case Tag::M_anx:
-        case Tag::M_id:      return scopes_.find(lex().dbg());
-        case Tag::M_str:     return world().tuple(lex().sym())->set(prev_);
+        case Tag::M_id:      return ptr<IdExpr>(lex());
+        //case Tag::M_str:     return world().tuple(lex().sym())->set(prev_);
         default:
             if (ctxt.empty()) return nullptr;
             syntax_err("primary expression", ctxt);
@@ -260,198 +248,107 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
     return nullptr;
 }
 
-Ref Parser::parse_arr_expr() {
+template<bool arr> Ptr<Expr> Parser::parse_arr_or_pack_expr() {
     auto track = tracker();
-    scopes_.push();
-    eat(Tag::D_quote_l);
+    eat(arr ? Tag::D_quote_l : Tag::D_angle_l);
 
-    const Def* shape = nullptr;
-    Arr* arr         = nullptr;
+    Sym sym;
     if (ahead(0).isa(Tag::M_id) && ahead(1).isa(Tag::T_colon)) {
-        auto id = eat(Tag::M_id);
+        sym = eat(Tag::M_id).sym();
         eat(Tag::T_colon);
-
-        auto shape = parse_expr("shape of an array");
-        auto type  = world().mut_infer_univ();
-        arr        = world().mut_arr(type)->set_shape(shape);
-        scopes_.bind(id.dbg(), arr->var()->set(id.dbg()));
-    } else {
-        shape = parse_expr("shape of an array");
     }
 
-    expect(Tag::T_semicolon, "array");
-    auto body = parse_expr("body of an array");
-    expect(Tag::D_quote_r, "closing delimiter of an array");
-    scopes_.pop();
+    auto shape = parse_expr(arr ? "shape of an array" : "shape of a pack");
+    expect(Tag::T_semicolon, arr ? "array" : "pack");
+    auto body = parse_expr(arr ? "body of an array" : "body of a pack");
+    expect(arr ? Tag::D_quote_r : Tag::D_angle_r,
+           arr ? "closing delimiter of an array" : "closing delimiter of a pack");
 
-    if (arr) return arr->set_body(body);
-    return world().arr(shape, body)->set(track.loc());
+    return ptr<ArrOrPackExpr<arr>>(track, sym, std::move(shape), std::move(body));
 }
 
-Ref Parser::parse_pack_expr() {
+Ptr<Expr> Parser::parse_block_expr(std::string_view ctxt) {
     auto track = tracker();
-    scopes_.push();
-    eat(Tag::D_angle_l);
-
-    if (ahead(0).isa(Tag::M_id) && ahead(1).isa(Tag::T_colon)) {
-        auto id = eat(Tag::M_id);
-        eat(Tag::T_colon);
-
-        auto shape = parse_expr("shape of a pack");
-        auto infer = world().mut_infer(world().type_idx(shape))->set(id.sym());
-        scopes_.bind(id.dbg(), infer);
-
-        expect(Tag::T_semicolon, "pack");
-        auto body = parse_expr("body of a pack");
-        expect(Tag::D_angle_r, "closing delimiter of a pack");
-        scopes_.pop();
-
-        auto arr  = world().arr(shape, body->type());
-        auto pack = world().mut_pack(arr)->set(body);
-        auto var  = pack->var();
-        infer->set(var);
-        return pack->reset(pack->reduce(var)); // get rid of infer
-    }
-
-    auto shape = parse_expr("shape of a pack");
-    expect(Tag::T_semicolon, "pack");
-    auto body = parse_expr("body of a pack");
-    expect(Tag::D_angle_r, "closing delimiter of a pack");
-    scopes_.pop();
-    return world().pack(shape, body)->set(track.loc());
+    if (ctxt.empty()) eat(Tag::D_brace_l);
+    auto decls = parse_decls(ctxt.empty() ? "block expression" : ctxt);
+    auto expr  = parse_expr("final expression in a "s + (ctxt.empty() ? "block expressoin"s : std::string(ctxt)));
+    if (ctxt.empty()) expect(Tag::D_brace_r, "block expression");
+    return ptr<BlockExpr>(track, std::move(decls), std::move(expr));
 }
 
-Ref Parser::parse_block_expr() {
-    scopes_.push();
-    eat(Tag::D_brace_l);
-    auto res = parse_decls("block expression");
-    expect(Tag::D_brace_r, "block expression");
-    scopes_.pop();
-    return res;
-}
+Ptr<Expr> Parser::parse_sigma_expr() { return ptr<SigmaExpr>(parse_tuple_ptrn(false, ast().anonymous())); }
 
-Ref Parser::parse_sigma_expr() {
+Ptr<Expr> Parser::parse_tuple_expr() {
     auto track = tracker();
-    auto ptrn  = parse_tuple_ptrn(track, false, anonymous_);
-    return ptrn->type(world(), def2fields_);
+    Ptrs<Expr> elems;
+    parse_list("tuple", Tag::D_paren_l, [&]() { elems.emplace_back(parse_expr("tuple element")); });
+    return ptr<TupleExpr>(track, std::move(elems));
 }
 
-Ref Parser::parse_tuple_expr() {
-    auto track = tracker();
-    DefVec ops;
-    parse_list("tuple", Tag::D_paren_l, [&]() { ops.emplace_back(parse_expr("tuple element")); });
-    return world().tuple(ops)->set(track.loc());
-}
+// Ptr<Expr> Parser::parse_type_expr() {
+//     auto track = tracker();
+//     eat(Tag::K_Type);
+//     auto [l, r] = Tok::prec(Tok::Prec::App);
+//     auto level  = parse_expr("type level", r);
+//     return world().type(level)->set(track.loc());
+// }
 
-Ref Parser::parse_type_expr() {
+Ptr<PiExpr> Parser::parse_pi_expr() {
     auto track = tracker();
-    eat(Tag::K_Type);
-    auto [l, r] = Tok::prec(Tok::Prec::App);
-    auto level  = parse_expr("type level", r);
-    return world().type(level)->set(track.loc());
-}
-
-ir::Pi* Parser::parse_pi_expr(ir::Pi* outer) {
-    auto track = tracker();
-    auto tok   = lex();
+    auto tag   = lex().tag();
 
     std::string entity;
-    switch (tok.tag()) {
+    switch (tag) {
         case Tag::T_Pi: entity = "dependent function type"; break;
         case Tag::K_Cn: entity = "continuation type"; break;
         case Tag::K_Fn: entity = "returning continuation type"; break;
         default: fe::unreachable();
     }
 
-    ir::Pi* first = nullptr;
-    std::deque<ir::Pi*> pis;
-    scopes_.push();
+    Ptrs<PiExpr::Dom> doms;
     do {
+        auto track    = tracker();
         auto implicit = (bool)accept(Tag::T_dot);
-        auto prec     = tok.isa(Tag::K_Cn) ? Tok::Prec::Bot : Tok::Prec::App;
-        auto dom      = parse_ptrn(Tag::D_brckt_l, "domain of a "s + entity, prec);
-        auto dom_t    = dom->type(world(), def2fields_);
-        auto pi       = (outer ? outer : world().mut_pi(world().type_infer_univ()))->set_dom(dom_t)->set(dom->dbg());
-        auto var      = pi->var()->set(dom->sym());
-        first         = first ? first : pi;
-
-        if (implicit) pi->make_implicit();
-        dom->bind(scopes_, var);
-        pis.emplace_back(pi);
+        auto prec     = tag == Tag::K_Cn ? Tok::Prec::Bot : Tok::Prec::App;
+        auto ptrn     = parse_ptrn(Tag::D_brckt_l, "domain of a "s + entity, prec);
+        doms.emplace_back(ptr<PiExpr::Dom>(track, implicit, std::move(ptrn)));
     } while (ahead().isa(Tag::T_dot) || ahead().isa(Tag::D_brckt_l) || ahead().isa(Tag::T_backtick)
              || (ahead(0).isa(Tag::M_id) && ahead(1).isa(Tag::T_colon_colon)));
 
-    Ref codom;
-    switch (tok.tag()) {
-        case Tag::T_Pi:
-            expect(Tag::T_arrow, entity);
-            codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
-            break;
-        case Tag::K_Cn: codom = world().Bot(); break;
-        case Tag::K_Fn: {
-            expect(Tag::T_arrow, entity);
-            codom     = world().Bot();
-            auto ret  = parse_expr("domain of return continuation", Tok::Prec::Arrow);
-            auto pi   = pis.back();
-            auto last = world().sigma({pi->dom(), world().cn(ret)});
-            pi->unset()->set_dom(last);
-            break;
-        }
-        default: fe::unreachable();
-    }
+    auto codom = tag != Tag::K_Cn
+                   ? (expect(Tag::T_arrow, entity), parse_expr("codomain of a "s + entity, Tok::Prec::Arrow))
+                   : nullptr;
 
-    for (auto pi : pis | std::ranges::views::reverse) {
-        pi->set_codom(codom);
-        codom = pi;
-    }
-
-    first->set(track.loc());
-    scopes_.pop();
-    return first;
+    return ptr<PiExpr>(track.loc(), tag, std::move(doms), std::move(codom));
 }
 
-ir::Lam* Parser::parse_lam(bool is_decl) {
-    auto track    = tracker();
-    auto tok      = lex();
-    auto prec     = tok.isa(Tag::K_cn) || tok.isa(Tag::K_con) ? Tok::Prec::Bot : Tok::Prec::Pi;
-    bool external = is_decl && (bool)accept(Tag::K_extern);
+Ptr<LamExpr> Parser::parse_lam_expr() {
+    auto track = tracker();
+    auto tag   = lex().tag();
+    auto prec  = tag == Tag::K_cn || tag == Tag::K_con ? Tok::Prec::Bot : Tok::Prec::Pi;
 
+    bool decl;
     std::string entity;
     // clang-format off
-    switch (tok.tag()) {
-        case Tag::T_lm:  entity = "function expression";                break;
-        case Tag::K_cn:  entity = "continuation expression";            break;
-        case Tag::K_fn:  entity = "returning continuation expression";  break;
-        case Tag::K_lam: entity = "function declaration";               break;
-        case Tag::K_con: entity = "continuation declaration";           break;
-        case Tag::K_fun: entity = "returning continuation declaration"; break;
+    switch (tag) {
+        case Tag::T_lm:  decl = false; entity = "function expression";                break;
+        case Tag::K_cn:  decl = false; entity = "continuation expression";            break;
+        case Tag::K_fn:  decl = false; entity = "returning continuation expression";  break;
+        case Tag::K_lam: decl = true ; entity = "function declaration";               break;
+        case Tag::K_con: decl = true ; entity = "continuation declaration";           break;
+        case Tag::K_fun: decl = true ; entity = "returning continuation declaration"; break;
         default: fe::unreachable();
     }
     // clang-format on
 
-    auto [dbg, anx] = is_decl ? parse_name(entity) : std::pair(Dbg{prev_, anonymous_}, false);
-    auto outer      = scopes_.curr();
-    ir::Lam* decl   = nullptr;
-
-    if (auto def = scopes_.query(dbg)) {
-        if (auto lam = def->isa_mut<ir::Lam>())
-            decl = lam;
-        else
-            error(dbg.loc, "'{}' has not been declared as a function", dbg.sym);
-    }
-
-    Ptr<Ptrn> dom_p;
-    scopes_.push();
-    std::deque<std::tuple<ir::Pi*, ir::Lam*, const Def*>> funs;
+    auto sym = decl ? parse_name(entity) : Sym();
+    Ptrs<LamExpr::Dom> doms;
     do {
-        const Def* filter = accept(Tag::T_bang) ? world().lit_tt() : nullptr;
-        bool implicit     = (bool)accept(Tag::T_dot);
-        dom_p             = parse_ptrn(Tag::D_paren_l, "domain pattern of a "s + entity, prec);
-        auto dom_t        = dom_p->type(world(), def2fields_);
-        auto pi           = world().mut_pi(world().type_infer_univ(), implicit)->set_dom(dom_t);
-        auto lam          = (funs.empty() && decl) ? decl : world().mut_lam(pi);
-        auto var          = lam->var()->set<true>(dom_p->loc(), dom_p->sym());
-        dom_p->bind(scopes_, var);
+        auto track    = tracker();
+        auto bang     = accept(Tag::T_bang);
+        auto filter   = bang ? ptr<PrimaryExpr>(bang) : Ptr<Expr>();
+        bool implicit = (bool)accept(Tag::T_dot);
+        auto ptrn     = parse_ptrn(Tag::D_paren_l, "domain pattern of a "s + entity, prec);
 
         if (auto tok = accept(Tag::T_at)) {
             if (filter) error(tok.loc(), "filter already specified via '!'");
@@ -460,121 +357,41 @@ ir::Lam* Parser::parse_lam(bool is_decl) {
             expect(Tag::D_paren_r, "closing parenthesis of a filter");
         }
 
-        funs.emplace_back(std::tuple(pi, lam, filter));
+        doms.emplace_back(ptr<LamExpr::Dom>(track, implicit, std::move(ptrn), std::move(filter)));
     } while (!ahead().isa(Tag::T_colon) && !ahead().isa(Tag::T_assign) && !ahead().isa(Tag::T_semicolon));
 
-    Ref codom;
-    switch (tok.tag()) {
-        case Tag::T_lm:
-        case Tag::K_lam: {
-            codom = accept(Tag::T_colon) ? parse_expr("return type of a "s + entity) : world().mut_infer_type();
-            break;
-        }
-        case Tag::K_cn:
-        case Tag::K_con: codom = world().Bot(); break;
-        case Tag::K_fn:
-        case Tag::K_fun: {
-            auto& [pi, lam, filter] = funs.back();
+    auto codom = (tag != Tag::K_cn && tag != Tag::K_con)
+                   ? (expect(Tag::T_colon, entity), parse_expr("codomain of a "s + entity, Tok::Prec::Arrow))
+                   : nullptr;
 
-            codom        = world().Bot();
-            auto track   = tracker();
-            auto ret     = accept(Tag::T_colon) ? parse_expr("return type of a "s + entity) : world().mut_infer_type();
-            auto ret_loc = dom_p->loc() + track.loc();
-            auto sigma   = world().mut_sigma(2)->set(0, pi->dom());
-
-            // Fix wrong dependencies:
-            // Connect old filter to lam and ret to pi. Otherwise, scope will not find it.
-            // 1. ret depends on lam->var() instead of sigma->var(2, 0)
-            pi->set_codom(ret);
-            if (filter) lam->set_filter(filter);
-            auto old_var = lam->var()->as<Var>();
-            auto rw      = VarRewriter(old_var, sigma->var(2, 0));
-            sigma->set(1, world().cn({rw.rewrite(ret)}));
-
-            auto new_pi  = world().mut_pi(pi->type(), pi->is_implicit())->set(ret_loc)->set_dom(sigma);
-            auto new_lam = world().mut_lam(new_pi);
-            auto new_var = new_lam->var()->set(ret_loc);
-
-            // 2. filter depends on lam->var() instead of new_lam->var(2, 0)
-            if (filter) filter = rewrite(filter, lam, new_lam->var(2, 0)->set(lam->var()->dbg()));
-
-            pi->unset();
-            pi = new_pi;
-            lam->unset();
-            lam = new_lam;
-
-            dom_p->bind(scopes_, new_var->proj(2, 0), true);
-            scopes_.bind({ret_loc, return_}, new_var->proj(2, 1)->set(Dbg{ret_loc, return_}));
-            break;
-        }
-        default: fe::unreachable();
-    }
-
-    auto [_, first, __] = funs.front();
-    first->set(dbg.sym);
-
-    for (auto [pi, lam, _] : funs | std::ranges::views::reverse) {
-        // First, connect old codom to lam. Otherwise, scope will not find it. Then, rewrite.
-        pi->set_codom(codom);
-        auto rw  = VarRewriter(lam->var()->as<Var>(), pi->var()->set(lam->var()->dbg()));
-        auto dom = pi->dom();
-        codom    = rw.rewrite(codom);
-        pi->reset({dom, codom});
-        codom = pi;
-    }
-
-    if (!decl) {
-        scopes_.bind(outer, dbg, first);
-        if (external) first->make_external();
-    }
-
-    auto body = accept(Tag::T_assign) ? parse_decls("body of a "s + entity) : nullptr;
+    auto body = accept(Tag::T_assign) ? parse_block_expr("body of a "s + entity) : Ptr<Expr>();
+#if 0
     if (!body) {
         if (!is_decl) error(prev_, "body of a {}", entity);
         if (auto [_, __, filter] = funs.back(); filter) error(prev_, "cannot specify filter of a {}", entity);
     }
+#endif
 
-    // filter defaults to .tt for everything except the actual continuation of con/cn/fun/fn; here we use .ff as default
-    bool last = true;
-    for (auto [_, lam, filter] : funs | std::ranges::views::reverse) {
-        bool is_cn
-            = last
-           && (tok.tag() == Tag::K_con || tok.tag() == Tag::K_cn || tok.tag() == Tag::K_fun || tok.tag() == Tag::K_fn);
-        if (body) lam->set(filter ? filter : is_cn ? world().lit_ff() : world().lit_tt(), body);
-        body = lam;
-        last = false;
-    }
+    // if (is_decl) expect(Tag::T_semicolon, "end of "s + entity);
 
-    if (is_decl) expect(Tag::T_semicolon, "end of "s + entity);
-    if (anx) register_annex(dbg, first);
-
-    first->set(track.loc());
-
-    scopes_.pop();
-    return first;
+    return ptr<LamExpr>(track, tag, sym, std::move(doms), std::move(codom), std::move(body));
 }
 
-Ref Parser::parse_ret_expr() {
+Ptr<Expr> Parser::parse_ret_expr() {
+    auto track = tracker();
     eat(Tag::K_ret);
     auto ptrn = parse_ptrn(Tag::D_paren_l, "binding pattern of a ret expression");
     expect(Tag::T_assign, "let expression");
-
-    auto cn = parse_expr("continuation expression of a ret expression");
+    auto callee = parse_expr("continuation expression of a ret expression");
     expect(Tag::T_dollar, "separator of a ret expression");
-    if (auto ret_pi = ir::Pi::ret_pi(cn->type())) {
-        auto arg = parse_expr("argument of ret expression");
-        expect(Tag::T_semicolon, "let expression");
-        auto lam = world().mut_lam(ret_pi);
-        ptrn->bind(scopes_, lam->var());
-        auto body = parse_decls("body of a ret expression");
-        lam->set(false, body);
-        return world().app(cn, {arg, lam});
-    }
-
-    error(prev_, "continuation of the ret expression is not a returning continuation but has type '{}'", cn->type());
+    auto arg = parse_expr("argument of ret expression");
+    expect(Tag::T_semicolon, "let expression");
+    auto decls = parse_block_expr("body of a ret expression");
+    return ptr<RetExpr>(track, std::move(ptrn), std::move(callee), std::move(arg), std::move(decls));
 }
 
-Ref Parser::parse_lit_expr() {
+#if 0
+Ptr<Expr> Parser::parse_lit_expr() {
     auto track  = tracker();
     auto tok    = lex();
     auto [_, r] = Tok::prec(Tok::Prec::Lit);
@@ -602,6 +419,7 @@ Ref Parser::parse_lit_expr() {
 
     return world().lit_nat(tok.lit_u())->set(track.loc());
 }
+#endif
 
 /*
  * ptrns
@@ -609,7 +427,7 @@ Ref Parser::parse_lit_expr() {
 
 Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok::Prec prec /*= Tok::Prec::Bot*/) {
     auto track = tracker();
-    auto sym   = anonymous_;
+    auto sym   = ast().anonymous();
     bool p     = delim_l == Tag::D_paren_l;
     bool b     = delim_l == Tag::D_brckt_l;
     assert((p ^ b) && "left delimiter must either be '(' or '['");
@@ -626,10 +444,10 @@ Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok::Prec prec 
 
     if (p && ahead().isa(Tag::D_paren_l)) {
         // p ->    (p, ..., p)
-        return parse_tuple_ptrn(track, false, sym);
+        return parse_tuple_ptrn(false, sym);
     } else if (ahead().isa(Tag::D_brckt_l)) {
         // p ->    [b, ..., b]      b ->    [b, ..., b]
-        return parse_tuple_ptrn(track, false, sym);
+        return parse_tuple_ptrn(false, sym);
     }
 
     auto backtick = accept(Tag::T_backtick);
@@ -654,7 +472,7 @@ Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok::Prec prec 
             // b -> 's::(p, ..., p)
             // b -> 's::[b, ..., b]     b -> 's::[b, ..., b]
             if (ahead().isa(Tag::D_paren_l) || ahead().isa(Tag::D_brckt_l))
-                return parse_tuple_ptrn(track, rebind, sym);
+                return parse_tuple_ptrn(rebind, sym);
             else
                 syntax_err("tuple pattern after '" + sym.str() + "::'", ctxt);
         } else if (ahead(1).isa(Tag::T_colon)) {
@@ -663,7 +481,7 @@ Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok::Prec prec 
             sym = eat(Tag::M_id).sym();
             eat(Tag::T_colon);
             auto type = parse_expr(ctxt, prec);
-            return ast_.ptr<IdPtrn>(ast_, dbg(track, sym), rebind, type);
+            return ptr<IdPtrn>(track, rebind, sym, std::move(type));
         } else {
             // p ->  s                  b ->    e    where e == id
             // p -> 's
@@ -671,18 +489,18 @@ Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok::Prec prec 
                 // p ->  s
                 // p -> 's
                 sym = eat(Tag::M_id).sym();
-                return ast_.ptr<IdPtrn>(ast_, dbg(track, sym), rebind, nullptr);
+                return ptr<IdPtrn>(track, rebind, sym, nullptr);
             } else {
                 // b ->    e    where e == id
                 auto type = parse_expr(ctxt, prec);
-                return ast_.ptr<IdPtrn>(ast_, dbg(track, sym), rebind, type);
+                return ptr<IdPtrn>(track, rebind, sym, std::move(type));
             }
         }
     } else if (b) {
         // b ->  e    where e != id
         if (backtick) error(backtick.loc(), "you can only prefix identifiers with backtick for rebinding");
         auto type = parse_expr(ctxt, prec);
-        return ast_.ptr<IdPtrn>(ast_, dbg(track, sym), rebind, type);
+        return ptr<IdPtrn>(track, rebind, sym, std::move(type));
     } else if (!ctxt.empty()) {
         // p -> ↯
         syntax_err("pattern", ctxt);
@@ -691,21 +509,16 @@ Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok::Prec prec 
     return nullptr;
 }
 
-Ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, Sym sym, Def* decl) {
+Ptr<TuplePtrn> Parser::parse_tuple_ptrn(bool rebind, Sym sym) {
+    auto track   = tracker();
     auto delim_l = ahead().tag();
     bool p       = delim_l == Tag::D_paren_l;
     bool b       = delim_l == Tag::D_brckt_l;
     assert(p ^ b);
 
     Ptrs<Ptrn> ptrns;
-    std::vector<Infer*> infers;
-    DefVec ops;
-
-    scopes_.push();
     parse_list("tuple pattern", delim_l, [&]() {
-        parse_decls({});
         auto track = tracker();
-        if (!ptrns.empty()) ptrns.back()->bind(scopes_, infers.back());
         Ptr<Ptrn> ptrn;
 
         if (ahead(0).isa(Tag::M_id) && ahead(1).isa(Tag::M_id)) {
@@ -716,62 +529,59 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, bool rebind, Sym sym, Def
                 auto type = parse_expr("type of an identifier group within a tuple pattern");
 
                 for (size_t i = 0, e = sym_toks.size(); i != e; ++i) {
-                    auto tok = sym_toks[i];
-                    infers.emplace_back(world().mut_infer(type)->set(tok.dbg()));
-                    ops.emplace_back(type);
-                    auto ptrn = ast_.ptr<IdPtrn>(ast_, tok.dbg(), false, type);
-                    if (i != e - 1) ptrn->bind(scopes_, infers.back()); // last element will be bound above
+                    auto tok  = sym_toks[i];
+                    auto ptrn = ptr<IdPtrn>(tok.loc(), false, tok.sym(), std::move(type));
                     ptrns.emplace_back(std::move(ptrn));
                 }
                 return;
             }
 
             // "x y z" is a curried app and maybe the prefix of a longer type expression
-            auto lhs = scopes_.find(sym_toks.front().dbg());
+            Ptr<Expr> lhs = ptr<IdExpr>(sym_toks.front());
             for (auto sym_tok : sym_toks | std::views::drop(1)) {
-                auto rhs = scopes_.find(sym_tok.dbg());
-                lhs      = world().iapp(lhs, rhs)->set(lhs->loc() + sym_tok.loc());
+                auto rhs = ptr<IdExpr>(sym_tok);
+                lhs      = ptr<AppExpr>(track, false, std::move(lhs), std::move(rhs));
             }
             auto [_, r] = Tok::prec(Tok::Prec::App);
-            auto expr   = parse_infix_expr(track, lhs, r);
-            ptrn        = ast_.ptr<IdPtrn>(ast_, dbg(track, anonymous_), false, expr);
+            auto expr   = parse_infix_expr(track, std::move(lhs), r);
+            ptrn        = ptr<IdPtrn>(std::move(expr));
         } else {
-            ptrn      = parse_ptrn(delim_l, "element of a tuple pattern");
-            auto type = ptrn->type(world(), def2fields_);
+            ptrn = parse_ptrn(delim_l, "element of a tuple pattern");
 
-            if (b) { // If we are able to parse more stuff, we got an expression instead of just a binder.
-                if (auto expr = parse_infix_expr(track, type); expr != type)
-                    ptrn = ast_.ptr<IdPtrn>(ast_, dbg(track, anonymous_), false, expr);
-            }
+            if (b)
+            // If we are able to parse more stuff, we got an expr instead of a binder:
+            // [..., [.Nat, .Nat] -> .Nat, ...] ==> [..., _: [.Nat, .Nat] -> .Nat, ...]
+#if 0
+                if (auto new_expr = parse_infix_expr(track, std::move(expr)); new_expr != expr)
+                    ptrn = ptr<IdPtrn>(expr);
+#endif
+                assert(false && "TODO");
         }
 
-        auto type = ptrn->type(world(), def2fields_);
-        infers.emplace_back(world().mut_infer(type)->set(ptrn->sym()));
-        ops.emplace_back(type);
         ptrns.emplace_back(std::move(ptrn));
     });
-    scopes_.pop();
 
     // TODO parse type
-    return ast_.ptr<TuplePtrn>(ast_, dbg(track, sym), rebind, std::move(ptrns), nullptr, std::move(infers), decl);
+    return ptr<TuplePtrn>(track, rebind, sym, delim_l, std::move(ptrns), nullptr);
 }
 
 /*
  * decls
  */
 
-Ref Parser::parse_decls(std::string_view ctxt) {
+#if 0
+Ptrs<Decl> Parser::parse_decls(std::string_view ctxt) {
     while (true) {
         // clang-format off
         switch (ahead().tag()) {
             case Tag::T_semicolon: lex();              break; // eat up stray semicolons
-            case Tag::K_ax:        parse_ax_decl();    break;
+            //case Tag::K_ax:        parse_ax_decl();    break;
             case Tag::K_let:       parse_let_decl();   break;
             case Tag::K_Sigma:     parse_sigma_decl(); break;
             case Tag::K_Pi:        parse_pi_decl();    break;
             case Tag::K_con:
             case Tag::K_fun:
-            case Tag::K_lam:       parse_lam(true);    break;
+            case Tag::K_lam:       parse_lam_decl();    break;
             default:               return ctxt.empty() ? nullptr : parse_expr(ctxt);
         }
         // clang-format on
@@ -856,126 +666,48 @@ void Parser::parse_ax_decl() {
     expect(Tag::T_semicolon, "end of an axiom");
 }
 
-void Parser::parse_let_decl() {
+#endif
+
+Ptr<Decl> Parser::parse_let_decl() {
     auto track = tracker();
     eat(Tag::K_let);
 
-    std::variant<Ptr<Ptrn>, Dbg> name;
-    Ref type;
-    if (auto tok = accept(Tag::M_anx)) {
-        name = tok.dbg();
-        type = parse_type_ascr();
-    } else {
-        auto ptrn = parse_ptrn(Tag::D_paren_l, "binding pattern of a let declaration");
-        type      = ptrn->type(world(), def2fields_);
-        name      = std::move(ptrn);
-    }
+    // Ptr<Ptrn> ptrn;
+    //  TODO annex
+    // if (auto tok = accept(Tag::M_anx)) {
+    // ptrn = ptr<IdPtrn>(
+    //} else {
 
+    auto ptrn = parse_ptrn(Tag::D_paren_l, "binding pattern of a let declaration");
     expect(Tag::T_assign, "let");
+    auto type  = parse_type_ascr();
     auto value = parse_expr("value of a let declaration");
-
-    if (type && !Check::assignable(type, value))
-        error(track.loc(), "cannot assign value `{}` of type `{}` to its declared type `{}` in a let declaration",
-              value, value->type(), type);
-
-    if (auto dbg = std::get_if<Dbg>(&name)) {
-        scopes_.bind(*dbg, value);
-        register_annex(*dbg, value);
-    } else {
-        std::get<Ptr<Ptrn>>(name)->bind(scopes_, value);
-    }
-
     expect(Tag::T_semicolon, "let declaration");
+    return ptr<LetDecl>(track, std::move(ptrn), std::move(value));
 }
 
-void Parser::parse_sigma_decl() {
-    auto track = tracker();
-    eat(Tag::K_Sigma);
-    auto [dbg, anx] = parse_name("sigma declaration");
-    auto type       = accept(Tag::T_colon) ? parse_expr("type of a sigma declaration") : world().type();
-    auto arity      = std::optional<nat_t>{};
-    if (accept(Tag::T_comma)) arity = expect(Tag::L_u, "arity of a sigma").lit_u();
-
-    if (accept(Tag::T_assign)) {
-        Def* decl;
-        if (auto def = scopes_.query(dbg)) {
-            if ((!def->isa_mut<ir::Sigma>() && !def->isa<Infer>()) || !def->isa_lit_arity())
-                error(dbg.loc, "'{}' has not been declared as a sigma", dbg.sym);
-            if (!Check::alpha(def->type(), type))
-                error(dbg.loc, "'{}' of type '{}' has been redeclared with a different type '{}'; here: {}", dbg.sym,
-                      def->type(), type, def->loc());
-            if (arity && *arity != def->as_lit_arity())
-                error(dbg.loc, "sigma '{}' redeclared with a different arity '{}'; previous arity was '{}' here: {}",
-                      dbg.sym, *arity, def->arity(), def->loc());
-            decl = def->as_mut();
-            if (decl->is_set())
-                error(dbg.loc, "redefinition of '{}'; previous definition here: '{}'", dbg.sym, decl->loc());
-        } else {
-            decl = (arity ? (Def*)world().mut_sigma(type, *arity) : (Def*)world().mut_infer(type))->set(dbg);
-            scopes_.bind(dbg, decl);
-        }
-
-        if (!ahead().isa(Tag::D_brckt_l)) syntax_err("sigma expression", "definition of a sigma declaration");
-
-        auto ptrn = parse_tuple_ptrn(track, false, dbg.sym, decl);
-        auto t    = ptrn->type(world(), def2fields_);
-
-        assert(t->isa_mut<ir::Sigma>());
-        t->set<true>(track.loc());
-        if (anx) register_annex(dbg, t);
-
-        if (auto infer = decl->isa<Infer>()) {
-            assert(infer->op() == t);
-            infer->set<true>(track.loc());
-            scopes_.bind(dbg, t, true); // rebind dbg to point to sigma instead of infer
-        } else {
-            assert(t == decl);
-        }
-    } else {
-        auto decl = (arity ? (Def*)world().mut_sigma(type, *arity) : (Def*)world().mut_infer(type))->set(dbg);
-        scopes_.bind(dbg, decl);
-    }
-
-    expect(Tag::T_semicolon, "end of a sigma declaration");
-}
-
-void Parser::parse_pi_decl() {
+Ptr<PiDecl> Parser::parse_pi_decl() {
     auto track = tracker();
     eat(Tag::K_Pi);
-    auto [dbg, anx] = parse_name("pi declaration");
-    auto type       = accept(Tag::T_colon) ? parse_expr("type of a pi declaration") : world().type();
-
-    if (accept(Tag::T_assign)) {
-        ir::Pi* pi;
-        if (auto def = scopes_.query(dbg)) {
-            if (auto mut = def->isa_mut<ir::Pi>()) {
-                if (!Check::alpha(mut->type(), type))
-                    error(dbg.loc, "'{}' of type '{}' has been redeclared with a different type '{}'; here: {}",
-                          dbg.sym, mut->type(), type, mut->loc());
-                if (mut->is_set())
-                    error(dbg.loc, "redefinition of '{}'; previous definition here: '{}'", dbg.sym, mut->loc());
-                pi = mut;
-            } else {
-                error(dbg.loc, "'{}' has not been declared as a pi", dbg.sym);
-            }
-        } else {
-            pi = world().mut_pi(type)->set(dbg);
-            scopes_.bind(dbg, pi);
-        }
-        if (anx) register_annex(dbg, pi);
-
-        if (!ahead().isa(Tag::T_Pi) && !ahead().isa(Tag::K_Cn) && !ahead().isa(Tag::K_Fn))
-            syntax_err("pi expression", "definition of a pi declaration");
-
-        auto other = parse_pi_expr(pi);
-        assert_unused(other == pi);
-        pi->set<true>(track.loc());
-    } else {
-        auto pi = world().mut_pi(type)->set(dbg);
-        scopes_.bind(dbg, pi);
-    }
-
+    auto sym  = parse_name("pi declaration");
+    auto type = accept(Tag::T_colon) ? parse_expr("type of a pi declaration") : Ptr<Expr>();
+    auto body = accept(Tag::T_assign) ? parse_expr("body of a pi declaration") : Ptr<Expr>();
     expect(Tag::T_semicolon, "end of a pi declaration");
+
+    return ptr<PiDecl>(track, sym, std::move(type), std::move(body));
+}
+
+Ptr<LamDecl> Parser::parse_lam_decl() { return ptr<LamDecl>(parse_lam_expr()); }
+
+Ptr<SigmaDecl> Parser::parse_sigma_decl() {
+    auto track = tracker();
+    eat(Tag::K_Sigma);
+    auto sym  = parse_name("sigma declaration");
+    auto type = accept(Tag::T_colon) ? parse_expr("type of a sigma declaration") : Ptr<Expr>();
+    auto body = accept(Tag::T_assign) ? parse_expr("body of a sigma declaration") : Ptr<Expr>();
+    expect(Tag::T_semicolon, "end of a sigma declaration");
+
+    return ptr<SigmaDecl>(track, sym, std::move(type), std::move(body));
 }
 
 } // namespace thorin::ast

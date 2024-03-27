@@ -34,10 +34,9 @@ class Parser : public fe::Parser<Tok, Tok::Tag, Look_Ahead, Parser> {
 public:
     Parser(World& world)
         : world_(world)
-        , ast_(world)
-        , anonymous_(world.sym("_"))
-        , return_(world.sym("return")) {}
+        , ast_(world) {}
 
+    AST& ast() { return ast_; }
     World& world() { return world_; }
     Driver& driver() { return world().driver(); }
     void import(std::string_view sv) { return import(driver().sym(sv)); }
@@ -45,21 +44,24 @@ public:
     void import(std::istream&, const fs::path* = nullptr, std::ostream* md = nullptr);
     void plugin(Sym);
     void plugin(const char* name) { return plugin(driver().sym(name)); }
-    const Scopes& scopes() const { return scopes_; }
 
 private:
+    template<class T, class... Args> auto ptr(Args&&... args) {
+        return ast_.ptr<const T>(std::forward<Args&&>(args)...);
+    }
+
     Dbg dbg(const Tracker& tracker, Sym sym) const { return {tracker.loc(), sym}; }
     Lexer& lexer() { return *lexer_; }
 
     /// @name parse misc
     ///@{
-    void parse_module();
+    Ptr<Module> parse_module();
     Dbg parse_id(std::string_view ctxt = {});
     std::pair<Annex&, bool> parse_annex(std::string_view ctxt = {});
-    std::pair<Dbg, bool> parse_name(std::string_view ctxt = {});
+    Sym parse_name(std::string_view ctxt = {});
     void parse_import();
     void parse_plugin();
-    Ref parse_type_ascr(std::string_view ctxt = {});
+    Ptr<Expr> parse_type_ascr(std::string_view ctxt = {});
     void register_annex(Dbg, Ref);
 
     template<class F> void parse_list(std::string ctxt, Tok::Tag delim_l, F f, Tok::Tag sep = Tok::Tag::T_comma) {
@@ -74,25 +76,24 @@ private:
 
     /// @name parse exprs
     ///@{
-    Ref parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
-    Ref parse_primary_expr(std::string_view ctxt);
-    Ref parse_infix_expr(Tracker, const Def* lhs, Tok::Prec = Tok::Prec::Bot);
-    Ref parse_extract_expr(Tracker, const Def*, Tok::Prec);
+    Ptr<Expr> parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
+    Ptr<Expr> parse_primary_expr(std::string_view ctxt);
+    Ptr<Expr> parse_infix_expr(Tracker, Ptr<Expr>&& lhs, Tok::Prec = Tok::Prec::Bot);
+    Ptr<Expr> parse_extract_expr(Tracker, Ptr<Expr>&&, Tok::Prec);
     ///@}
 
     /// @name parse primary exprs
     ///@{
-    Ref parse_arr_expr();
-    Ref parse_pack_expr();
-    Ref parse_block_expr();
-    Ref parse_sigma_expr();
-    Ref parse_tuple_expr();
-    Ref parse_type_expr();
-    ir::Pi* parse_pi_expr(ir::Pi* = nullptr);
-    Ref parse_lit_expr();
-    Ref parse_insert_expr();
-    Ref parse_ret_expr();
-    ir::Lam* parse_lam(bool decl = false);
+    template<bool> Ptr<Expr> parse_arr_or_pack_expr();
+    Ptr<Expr> parse_block_expr(std::string_view ctxt); ///< Empty @p ctxt means an explicit BlockExpr `{ d* e }`.
+    Ptr<Expr> parse_type_expr();
+    Ptr<Expr> parse_lit_expr();
+    Ptr<Expr> parse_ret_expr();
+    Ptr<PiExpr> parse_pi_expr();
+    Ptr<LamExpr> parse_lam_expr();
+    Ptr<Expr> parse_sigma_expr();
+    Ptr<Expr> parse_tuple_expr();
+    Ptr<Expr> parse_insert_expr();
     ///@}
 
     /// @name parse ptrns
@@ -100,7 +101,7 @@ private:
 
     /// Depending on @p tag, this parses a `()`-style (Tok::Tag::D_paren_l) or `[]`-style (Tok::Tag::D_brckt_l) Ptrn.
     Ptr<Ptrn> parse_ptrn(Tok::Tag tag, std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
-    Ptr<TuplePtrn> parse_tuple_ptrn(Tracker, bool rebind, Sym, Def* = nullptr);
+    Ptr<TuplePtrn> parse_tuple_ptrn(bool rebind, Sym);
     ///@}
 
     /// @name parse decls
@@ -109,11 +110,12 @@ private:
     /// If @p ctxt ...
     /// * ... empty: **Only** decls are parsed. @returns `nullptr`
     /// * ... **non**-empty: Decls are parsed, then an expression. @returns expression.
-    Ref parse_decls(std::string_view ctxt);
-    void parse_ax_decl();
-    void parse_let_decl();
-    void parse_sigma_decl();
-    void parse_pi_decl();
+    Ptrs<Decl> parse_decls(std::string_view ctxt);
+    Ptr<Decl> parse_axiom_decl();
+    Ptr<Decl> parse_let_decl();
+    Ptr<PiDecl> parse_pi_decl();
+    Ptr<LamDecl> parse_lam_decl();
+    Ptr<SigmaDecl> parse_sigma_decl();
     ///@}
 
     /// @name error messages
@@ -137,10 +139,6 @@ private:
     World& world_;
     AST ast_;
     Lexer* lexer_ = nullptr;
-    Scopes scopes_;
-    Def2Fields def2fields_;
-    Sym anonymous_;
-    Sym return_;
 
     friend class fe::Parser<Tok, Tok::Tag, Look_Ahead, Parser>;
 };

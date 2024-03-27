@@ -29,6 +29,15 @@ template<class T = std::logic_error, class... Args> [[noreturn]] void error(Loc 
 ///@}
 
 struct Dbg {
+    constexpr Dbg() noexcept           = default;
+    constexpr Dbg(const Dbg&) noexcept = default;
+    constexpr Dbg(Loc loc, Sym sym) noexcept
+        : loc(loc)
+        , sym(sym) {}
+    constexpr Dbg(Loc loc) noexcept
+        : Dbg(loc, {}) {}
+    Dbg& operator=(const Dbg&) noexcept = default;
+
     Loc loc;
     Sym sym;
 };

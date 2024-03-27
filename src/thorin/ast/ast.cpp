@@ -10,11 +10,31 @@
 
 namespace thorin::ast {
 
+AST::AST(World& world)
+    : world_(world)
+    , anonymous_(world.sym("_")) {}
+
 Driver& AST::driver() { return world().driver(); }
 Sym AST::sym(const char* s) { return driver().sym(s); }
 Sym AST::sym(std::string_view s) { return driver().sym(s); }
 Sym AST::sym(const std::string& s) { return driver().sym(s); }
 
+/*
+ * Ptrn::expr
+ */
+
+Ptr<Expr> Ptrn::expr(AST& ast, Ptr<Ptrn>&& ptrn) {
+    if (auto id_ptrn = ptrn->isa<IdPtrn>()) {
+        return ast.ptr<IdExpr>(id_ptrn->loc(), id_ptrn->sym());
+    } else if (auto tuple_ptrn = ptrn->isa<TuplePtrn>(); tuple_ptrn && tuple_ptrn->tag() == Tok::Tag::D_brckt_r) {
+        (void)ptrn.release();
+        return ast.ptr<SigmaExpr>(Ptr<TuplePtrn>(tuple_ptrn));
+    }
+    // ptrn.get_deleter()(ptrn.release());
+    return {};
+}
+
+#if 0
 /*
  * bind
  */
@@ -54,9 +74,9 @@ const Def* TuplePtrn::type(World& world, Def2Fields& def2fields) const {
     assert(n > 0);
     auto type = world.umax<Sort::Type>(ops);
 
-    ir::Sigma* sigma;
+    Sigma* sigma;
     if (decl_) {
-        if (auto s = decl_->isa_mut<ir::Sigma>())
+        if (auto s = decl_->isa_mut<Sigma>())
             sigma = s;
         else {
             sigma = world.mut_sigma(type, n)->set(loc(), sym());
@@ -92,5 +112,6 @@ const Def* TuplePtrn::type(World& world, Def2Fields& def2fields) const {
 
     return type_ = sigma;
 }
+#endif
 
 } // namespace thorin::ast
