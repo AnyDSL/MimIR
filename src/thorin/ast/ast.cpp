@@ -12,7 +12,7 @@ namespace thorin::ast {
 
 AST::AST(World& world)
     : world_(world)
-    , anonymous_(world.sym("_")) {}
+    , anon_(sym("_")) {}
 
 Driver& AST::driver() { return world().driver(); }
 Sym AST::sym(const char* s) { return driver().sym(s); }
@@ -25,8 +25,8 @@ Sym AST::sym(const std::string& s) { return driver().sym(s); }
 
 Ptr<Expr> Ptrn::expr(AST& ast, Ptr<Ptrn>&& ptrn) {
     if (auto id_ptrn = ptrn->isa<IdPtrn>()) {
-        return ast.ptr<IdExpr>(id_ptrn->loc(), id_ptrn->sym());
-    } else if (auto tuple_ptrn = ptrn->isa<TuplePtrn>(); tuple_ptrn && tuple_ptrn->tag() == Tok::Tag::D_brckt_r) {
+        return ast.ptr<IdExpr>(id_ptrn->dbg());
+    } else if (auto tuple_ptrn = ptrn->isa<TuplePtrn>(); tuple_ptrn && tuple_ptrn->is_brckt()) {
         (void)ptrn.release();
         return ast.ptr<SigmaExpr>(Ptr<TuplePtrn>(tuple_ptrn));
     }

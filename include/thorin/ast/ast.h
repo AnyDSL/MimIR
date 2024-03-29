@@ -8,6 +8,7 @@
 #include "thorin/ast/tok.h"
 
 #include "fe/arena.h"
+#include "fe/assert.h"
 #include "fe/cast.h"
 
 namespace thorin {
@@ -23,6 +24,7 @@ namespace ast {
 
 template<class T> using Ptr  = fe::Arena::Ptr<const T>;
 template<class T> using Ptrs = std::deque<Ptr<T>>;
+/*             */ using Dbgs = std::deque<Dbg>;
 
 class AST {
 public:
@@ -30,7 +32,7 @@ public:
 
     World& world() { return world_; }
     Driver& driver();
-    Sym anonymous() const { return anonymous_; }
+    Sym anon() const { return anon_; }
 
     /// @name Sym
     ///@{
@@ -46,7 +48,7 @@ public:
 private:
     World& world_;
     fe::Arena arena_;
-    Sym anonymous_;
+    Sym anon_;
 };
 
 class Scopes;
@@ -60,6 +62,7 @@ protected:
 public:
     Loc loc() const { return loc_; }
 
+    void dump() const;
     virtual std::ostream& stream(Tab&, std::ostream&) const = 0;
 
 private:
@@ -74,15 +77,8 @@ protected:
 
 class Decl : public Node {
 protected:
-    Decl(Loc loc, Sym sym)
-        : Node(loc)
-        , sym_(sym) {}
-
-public:
-    Sym sym() const { return sym_; }
-
-private:
-    Sym sym_;
+    Decl(Loc loc)
+        : Node(loc) {}
 };
 
 /*
@@ -94,60 +90,27 @@ public:
     Ptrn(Loc loc)
         : Node(loc) {}
 
-    bool rebind() const { return rebind_; }
-    Sym sym() const { return sym_; }
-    Dbg dbg() const { return {loc(), sym()}; }
-    bool is_anonymous() const { return sym() == '_'; }
-    const Expr* type() const { return type_.get(); }
-
     [[nodiscard]] static Ptr<Expr> expr(AST&, Ptr<Ptrn>&&);
     // virtual void bind(Scopes&, const Def*, bool rebind = false) const = 0;
     // virtual const Def* type(World&, Def2Fields&) const                = 0;
-
-protected:
-    bool rebind_;
-    Sym sym_;
-    Ptr<Expr> type_;
 };
 
+/// `dbg: type`
 class IdPtrn : public Ptrn {
 public:
-    IdPtrn(Loc loc, bool rebind, Sym sym, Ptr<Expr>&& type)
+    IdPtrn(Loc loc, bool rebind, Dbg dbg, Ptr<Expr>&& type)
         : Ptrn(loc)
         , rebind_(rebind)
-        , sym_(sym)
+        , dbg_(dbg)
         , type_(std::move(type)) {}
 
     bool rebind() const { return rebind_; }
-    Sym sym() const { return sym_; }
-
-    static Ptr<IdPtrn> mk_type(AST& ast, Ptr<Expr>&& type) {
-        return ast.ptr<IdPtrn>(type->loc(), false, ast.anonymous(), std::move(type));
-    }
-
-    // void bind(Scopes&, const Def*, bool rebind = false) const override {}
-    // const Def* type(World&, Def2Fields&) const override {}
-    std::ostream& stream(Tab&, std::ostream&) const override;
-
-private:
-    bool rebind_;
-    Sym sym_;
-    Ptr<Expr> type_;
-};
-
-/// `sym_0 ... sym_n-1 : type`
-class GroupPtrn : public Ptrn {
-public:
-    GroupPtrn(Loc loc, std::deque<Sym>&& syms, Ptr<Expr>&& type)
-        : Ptrn(loc)
-        , syms_(std::move(syms))
-        , type_(std::move(type)) {}
-
-    const auto& syms() const { return syms_; }
+    Dbg dbg() const { return dbg_; }
     const Expr* type() const { return type_.get(); }
 
     static Ptr<IdPtrn> mk_type(AST& ast, Ptr<Expr>&& type) {
-        return ast.ptr<IdPtrn>(type->loc(), false, ast.anonymous(), std::move(type));
+        auto loc = type->loc();
+        return ast.ptr<IdPtrn>(loc, false, Dbg(loc, ast.anon()), std::move(type));
     }
 
     // void bind(Scopes&, const Def*, bool rebind = false) const override {}
@@ -155,22 +118,55 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    std::deque<Sym> syms_;
+    bool rebind_;
+    Dbg dbg_;
     Ptr<Expr> type_;
 };
 
+/// `dbg_0 ... dbg_n-1: type`
+class GroupPtrn : public Ptrn {
+public:
+    GroupPtrn(Loc loc, Dbgs&& dbgs, Ptr<Expr>&& type)
+        : Ptrn(loc)
+        , dbgs_(std::move(dbgs))
+        , type_(std::move(type)) {}
+
+    const auto& dbgs() const { return dbgs_; }
+    Dbg dbg(size_t i) const { return dbgs_[i]; }
+    size_t num_dbgs() const { return dbgs_.size(); }
+    const Expr* type() const { return type_.get(); }
+
+    static Ptr<IdPtrn> mk_type(AST& ast, Ptr<Expr>&& type) {
+        auto loc = type->loc();
+        return ast.ptr<IdPtrn>(loc, false, Dbg(loc, ast.anon()), std::move(type));
+    }
+
+    // void bind(Scopes&, const Def*, bool rebind = false) const override {}
+    // const Def* type(World&, Def2Fields&) const override {}
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    Dbgs dbgs_;
+    Ptr<Expr> type_;
+};
+
+/// `dbg::(ptrn_0, ..., ptrn_n-1)` or `dbg::[ptrn_0, ..., ptrn_n-1]`
 class TuplePtrn : public Ptrn {
 public:
-    TuplePtrn(Loc loc, bool rebind, Sym sym, Tok::Tag tag, Ptrs<Ptrn>&& ptrns)
+    TuplePtrn(Loc loc, bool rebind, Dbg dbg, Tok::Tag delim_l, Ptrs<Ptrn>&& ptrns)
         : Ptrn(loc)
         , rebind_(rebind)
-        , sym_(sym)
-        , tag_(tag)
+        , dbg_(dbg)
+        , delim_l_(delim_l)
         , ptrns_(std::move(ptrns)) {}
 
     bool rebind() const { return rebind_; }
-    Sym sym() const { return sym_; }
-    Tok::Tag tag() const { return tag_; }
+    Dbg dbg() const { return dbg_; }
+    Tok::Tag delim_l() const { return delim_l_; }
+    Tok::Tag delim_r() const { return Tok::delim_l2r(delim_l()); }
+    bool is_paren() const { return delim_l() == Tok::Tag::D_paren_l; }
+    bool is_brckt() const { return delim_l() == Tok::Tag::D_brckt_l; }
+
     const auto& ptrns() const { return ptrns_; }
     const Ptrn* ptrn(size_t i) const { return ptrns_[i].get(); }
     size_t num_ptrns() const { return ptrns().size(); }
@@ -181,8 +177,8 @@ public:
 
 private:
     bool rebind_;
-    Sym sym_;
-    Tok::Tag tag_;
+    Dbg dbg_;
+    Tok::Tag delim_l_;
     Ptrs<Ptrn> ptrns_;
 };
 
@@ -193,17 +189,15 @@ private:
 /// `sym`
 class IdExpr : public Expr {
 public:
-    IdExpr(Loc loc, Sym sym)
-        : Expr(loc)
-        , sym_(sym) {}
-    IdExpr(Tok tok)
-        : IdExpr(tok.loc(), tok.sym()) {}
+    IdExpr(Dbg dbg)
+        : Expr(dbg.loc)
+        , dbg_(dbg) {}
 
-    Sym sym() const { return sym_; }
+    Dbg dbg() const { return dbg_; }
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Sym sym_;
+    Dbg dbg_;
 };
 
 /// `tag`
@@ -237,6 +231,7 @@ private:
     Ptr<Expr> type_;
 };
 
+/// `{ decl_0 ... decl_n-1 e }` or `decl_0 ... decl_n-1` (used internaly)
 class BlockExpr : public Expr {
 public:
     BlockExpr(Loc loc, Ptrs<Decl>&& decls, Ptr<Expr>&& expr)
@@ -255,6 +250,7 @@ private:
     Ptr<Expr> expr_;
 };
 
+/// `.Type level`
 class TypeExpr : public Expr {
 public:
     TypeExpr(Loc loc, Ptr<Expr>&& level)
@@ -270,6 +266,7 @@ private:
 
 // lam
 
+/// `dom -> codom`
 class SimplePiExpr : public Expr {
 public:
     SimplePiExpr(Loc loc, Ptr<Expr>&& dom, Ptr<Expr>&& codom)
@@ -287,6 +284,10 @@ private:
     Ptr<Expr> codom_;
 };
 
+/// One of:
+/// * `Π   dom_0 ... dom_n-1 -> codom`
+/// * `.Cn dom_0 ... dom_n-1`
+/// * `.Fn dom_0 ... dom_n-1 -> codom`
 class PiExpr : public Expr {
 public:
     class Dom : public Node {
@@ -325,6 +326,13 @@ private:
     Ptr<Expr> codom_;
 };
 
+/// One of:
+/// * `λ   dom_0 ... dom_n-1 -> codom`
+/// * `.cn dom_0 ... dom_n-1`
+/// * `.fn dom_0 ... dom_n-1 -> codom`
+/// * `.lam dbg dom_0 ... dom_n-1 -> codom`
+/// * `.con dbg dom_0 ... dom_n-1`
+/// * `.fun dbg dom_0 ... dom_n-1 -> codom`
 class LamExpr : public Expr {
 public:
     class Dom : public PiExpr::Dom {
@@ -340,16 +348,16 @@ public:
         Ptr<Expr> filter_;
     };
 
-    LamExpr(Loc loc, Tok::Tag tag, Sym sym, Ptrs<Dom>&& doms, Ptr<Expr>&& codom, Ptr<Expr>&& body)
+    LamExpr(Loc loc, Tok::Tag tag, Dbg dbg, Ptrs<Dom>&& doms, Ptr<Expr>&& codom, Ptr<Expr>&& body)
         : Expr(loc)
         , tag_(tag)
-        , sym_(sym)
+        , dbg_(dbg)
         , doms_(std::move(doms))
         , codom_(std::move(codom))
         , body_(std::move(body)) {}
 
     Tok::Tag tag() const { return tag_; }
-    Sym sym() const { return sym_; }
+    Dbg dbg() const { return dbg_; }
     const auto& doms() const { return doms_; }
     const Dom* dom(size_t i) const { return doms_[i].get(); }
     const Expr* codom() const { return codom_.get(); }
@@ -358,12 +366,13 @@ public:
 
 private:
     Tok::Tag tag_;
-    Sym sym_;
+    Dbg dbg_;
     Ptrs<Dom> doms_;
     Ptr<Expr> codom_;
     Ptr<Expr> body_;
 };
 
+/// `callee arg`
 class AppExpr : public Expr {
 public:
     AppExpr(Loc loc, bool is_explicit, Ptr<Expr>&& callee, Ptr<Expr>&& arg)
@@ -383,6 +392,7 @@ private:
     Ptr<Expr> arg_;
 };
 
+/// `.ret ptrn = callee $ arg; body`
 class RetExpr : public Expr {
 public:
     RetExpr(Loc loc, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& callee, Ptr<Expr>&& arg, Ptr<Expr> body)
@@ -406,6 +416,7 @@ private:
 };
 // tuple
 
+/// Just wraps TuplePtrn as Expr.
 class SigmaExpr : public Expr {
 public:
     SigmaExpr(Ptr<TuplePtrn>&& ptrn)
@@ -419,6 +430,7 @@ private:
     Ptr<TuplePtrn> ptrn_;
 };
 
+/// `(elem_0, ..., elem_n-1)`
 class TupleExpr : public Expr {
 public:
     TupleExpr(Loc loc, Ptrs<Expr>&& elems)
@@ -434,21 +446,22 @@ private:
     Ptrs<Expr> elems_;
 };
 
+/// `«dbg: shape; body»` or `‹dbg: shape; body›`
 template<bool arr> class ArrOrPackExpr : public Expr {
 public:
-    ArrOrPackExpr(Loc loc, Sym sym, Ptr<Expr>&& shape, Ptr<Expr>&& body)
+    ArrOrPackExpr(Loc loc, Dbg dbg, Ptr<Expr>&& shape, Ptr<Expr>&& body)
         : Expr(loc)
-        , sym_(sym)
+        , dbg_(dbg)
         , shape_(std::move(shape))
         , body_(std::move(body)) {}
 
-    Sym sym() const { return sym_; }
+    Dbg dbg() const { return dbg_; }
     const Expr* shape() const { return shape_.get(); }
     const Expr* body() const { return body_.get(); }
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Sym sym_;
+    Dbg dbg_;
     Ptr<Expr> shape_;
     Ptr<Expr> body_;
 };
@@ -456,22 +469,28 @@ private:
 using ArrExpr  = ArrOrPackExpr<true>;
 using PackExpr = ArrOrPackExpr<false>;
 
+/// `tuple#index`
 class ExtractExpr : public Expr {
 public:
     ExtractExpr(Loc loc, Ptr<Expr>&& tuple, Ptr<Expr>&& index)
         : Expr(loc)
         , tuple_(std::move(tuple))
         , index_(std::move(index)) {}
+    ExtractExpr(Loc loc, Ptr<Expr>&& tuple, Dbg index)
+        : Expr(loc)
+        , tuple_(std::move(tuple))
+        , index_(index) {}
 
     const Expr* tuple() const { return tuple_.get(); }
-    const Expr* index() const { return index_.get(); }
+    const auto& index() const { return index_; }
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Ptr<Expr> tuple_;
-    Ptr<Expr> index_;
+    std::variant<Ptr<Expr>, Dbg> index_;
 };
 
+/// `.ins(tuple, index, value)`
 class InsertExpr : public Expr {
 public:
     InsertExpr(Loc loc, Ptr<Expr>&& tuple, Ptr<Expr>&& index, Ptr<Expr>&& value)
@@ -495,10 +514,11 @@ private:
  * Further Decls
  */
 
+/// `.let ptrn: type = value;`
 class LetDecl : public Decl {
 public:
     LetDecl(Loc loc, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& value)
-        : Decl(loc, ptrn->sym())
+        : Decl(loc)
         , ptrn_(std::move(ptrn))
         , value_(std::move(value)) {}
 
@@ -511,32 +531,44 @@ private:
     Ptr<Expr> value_;
 };
 
+/// `.let ptrn: type = value;`
 class AxiomDecl : public Decl {
 public:
-    AxiomDecl(Loc loc, Sym sym)
-        : Decl(loc, sym) {}
+    AxiomDecl(Loc loc, Dbg dbg)
+        : Decl(loc)
+        , dbg_(dbg) {}
+
+    Dbg dbg() const { return dbg_; }
+
+private:
+    Dbg dbg_;
 };
 
+/// `.Pi dbg: type = body´
 class PiDecl : public Decl {
 public:
-    PiDecl(Loc loc, Sym sym, Ptr<Expr>&& type, Ptr<Expr>&& body)
-        : Decl(loc, sym)
+    PiDecl(Loc loc, Dbg dbg, Ptr<Expr>&& type, Ptr<Expr>&& body)
+        : Decl(loc)
+        , dbg_(dbg)
         , type_(std::move(type))
         , body_(std::move(body)) {}
 
+    Dbg dbg() const { return dbg_; }
     const Expr* type() const { return type_.get(); }
     const Expr* body() const { return body_.get(); }
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
+    Dbg dbg_;
     Ptr<Expr> type_;
     Ptr<Expr> body_;
 };
 
+/// Just wraps a LamDecl as Expr.
 class LamDecl : public Decl {
 public:
     LamDecl(Ptr<LamExpr>&& lam)
-        : Decl(lam->loc(), lam->sym())
+        : Decl(lam->loc())
         , lam_(std::move(lam)) {}
 
     const LamExpr* lam() const { return lam_.get(); }
@@ -546,10 +578,12 @@ private:
     Ptr<LamExpr> lam_;
 };
 
+/// `.Sigma dbg: type = body`
 class SigmaDecl : public Decl {
 public:
-    SigmaDecl(Loc loc, Sym sym, Ptr<Expr>&& type, Ptr<Expr>&& body)
-        : Decl(loc, sym)
+    SigmaDecl(Loc loc, Dbg dbg, Ptr<Expr>&& type, Ptr<Expr>&& body)
+        : Decl(loc)
+        , dbg_(dbg)
         , type_(std::move(type))
         , body_(std::move(body)) {}
 
@@ -558,6 +592,7 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
+    Dbg dbg_;
     Ptr<Expr> type_;
     Ptr<Expr> body_;
 };

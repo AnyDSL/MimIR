@@ -58,7 +58,7 @@ private:
     Ptr<Module> parse_module();
     Dbg parse_id(std::string_view ctxt = {});
     std::pair<Annex&, bool> parse_annex(std::string_view ctxt = {});
-    Sym parse_name(std::string_view ctxt = {});
+    Dbg parse_name(std::string_view ctxt = {});
     void parse_import();
     void parse_plugin();
     Ptr<Expr> parse_type_ascr(std::string_view ctxt = {});
@@ -101,7 +101,7 @@ private:
 
     /// Depending on @p tag, this parses a `()`-style (Tok::Tag::D_paren_l) or `[]`-style (Tok::Tag::D_brckt_l) Ptrn.
     Ptr<Ptrn> parse_ptrn(Tok::Tag tag, std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
-    Ptr<TuplePtrn> parse_tuple_ptrn(bool rebind, Sym);
+    Ptr<TuplePtrn> parse_tuple_ptrn(bool rebind, Dbg);
     ///@}
 
     /// @name parse decls
@@ -111,7 +111,7 @@ private:
     /// * ... empty: **Only** decls are parsed. @returns `nullptr`
     /// * ... **non**-empty: Decls are parsed, then an expression. @returns expression.
     Ptrs<Decl> parse_decls();
-    Ptr<Decl> parse_axiom_decl();
+    // Ptr<Decl> parse_axiom_decl();
     Ptr<Decl> parse_let_decl();
     Ptr<PiDecl> parse_pi_decl();
     Ptr<LamDecl> parse_lam_decl();

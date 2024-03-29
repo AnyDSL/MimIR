@@ -40,6 +40,10 @@ struct Dbg {
 
     Loc loc;
     Sym sym;
+
+    explicit operator bool() const { return sym.operator bool(); }
+
+    friend std::ostream& operator<<(std::ostream& os, const Dbg& dbg) { return os << dbg.sym; }
 };
 
 } // namespace thorin

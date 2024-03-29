@@ -27,29 +27,36 @@ template<class T> struct R {
     std::function<void(std::ostream&, const Ptr<T>&)> f;
 };
 
+void Node::dump() const {
+    Tab tab;
+    stream(tab, std::cout) << std::endl;
+    ;
+}
+
 /*
  * Ptrn
  */
 
 std::ostream& IdPtrn::stream(Tab& tab, std::ostream& os) const {
-    os << sym();
+    os << dbg();
     if (type()) print(os, ": {}", S(tab, type()));
     return os;
 }
 
 std::ostream& GroupPtrn::stream(Tab& tab, std::ostream& os) const {
-    return print(os, "{ }: {}", syms(), S(tab, type()));
+    return print(os, "{ }: {}", dbgs(), S(tab, type()));
 }
 
 std::ostream& TuplePtrn::stream(Tab& tab, std::ostream& os) const {
-    return print(os, "{}::{}{, }{}", sym(), tag(), R(tab, ptrns()), Tok::delim_l2r(tag()));
+    if (dbg()) print(os, "{}::", dbg());
+    return print(os, "{}{, }{}", delim_l(), R(tab, ptrns()), delim_r());
 }
 
 /*
  * Ptrn
  */
 
-std::ostream& IdExpr::stream(Tab&, std::ostream& os) const { return print(os, "{}", sym()); }
+std::ostream& IdExpr::stream(Tab&, std::ostream& os) const { return print(os, "{}", dbg()); }
 std::ostream& PrimaryExpr::stream(Tab&, std::ostream& os) const { return print(os, "{}", tag()); }
 
 std::ostream& LitExpr::stream(Tab& tab, std::ostream& os) const {
@@ -106,8 +113,10 @@ template std::ostream& ArrOrPackExpr<true>::stream(Tab&, std::ostream&) const;
 template std::ostream& ArrOrPackExpr<false>::stream(Tab&, std::ostream&) const;
 
 std::ostream& ExtractExpr::stream(Tab& tab, std::ostream& os) const {
-    return print(os, "{}#{}", S(tab, tuple()), S(tab, index()));
+    if (auto expr = std::get_if<Ptr<Expr>>(&index())) return print(os, "{}#{}", S(tab, tuple()), S(tab, expr->get()));
+    return print(os, "{}#{}", S(tab, tuple()), std::get<Dbg>(index()));
 }
+
 std::ostream& InsertExpr::stream(Tab& tab, std::ostream& os) const {
     return print(os, ".ins({}, {}, {})", S(tab, tuple()), S(tab, index()), S(tab, value()));
 }
@@ -120,19 +129,16 @@ std::ostream& LetDecl::stream(Tab& tab, std::ostream& os) const {
     return print(os, ".let {} = {};", S(tab, ptrn()), S(tab, value()));
 }
 
-std::ostream& PiDecl::stream(Tab& tab, std::ostream& os) const { return print(os, ".Pi"); }
+std::ostream& PiDecl::stream(Tab& /*tab*/, std::ostream& os) const { return print(os, ".Pi"); }
 std::ostream& LamDecl::stream(Tab& tab, std::ostream& os) const { return lam()->stream(tab, os); }
-std::ostream& SigmaDecl::stream(Tab& tab, std::ostream& os) const { return print(os, ".Sigma"); }
+std::ostream& SigmaDecl::stream(Tab& /*tab*/, std::ostream& os) const { return print(os, ".Sigma"); }
 
 /*
  * Module
  */
 
 std::ostream& Module::stream(Tab& tab, std::ostream& os) const {
-    for (auto sep = ""; const auto& decl : decls()) {
-        tab.print(os, "{}{}", S(tab, decl.get()), sep);
-        sep = "\n";
-    }
+    for (const auto& decl : decls()) tab.println(os, "{}", S(tab, decl.get()));
     return os;
 }
 
