@@ -34,12 +34,12 @@ Ptr<Module> Parser::parse_module() {
         else
             break;
 
-    auto decls = parse_decls({});
+    auto decls = parse_decls();
     expect(Tag::EoF, "module");
     return ptr<Module>(track, std::move(decls));
 }
 
-void Parser::import(Sym name, std::ostream* md) {
+Ptr<Module> Parser::import(Sym name, std::ostream* md) {
     world().VLOG("import: {}", name);
     auto filename = fs::path(name.view());
 
@@ -56,11 +56,12 @@ void Parser::import(Sym name, std::ostream* md) {
 
     if (auto path = driver().add_import(std::move(rel_path), name)) {
         auto ifs = std::ifstream(*path);
-        import(ifs, path, md);
+        return import(ifs, path, md);
     }
+    return {};
 }
 
-void Parser::import(std::istream& is, const fs::path* path, std::ostream* md) {
+Ptr<Module> Parser::import(std::istream& is, const fs::path* path, std::ostream* md) {
     world().VLOG("reading: {}", path ? path->string() : "<unknown file>"s);
     if (!is) error("cannot read file '{}'", *path);
 
@@ -68,8 +69,9 @@ void Parser::import(std::istream& is, const fs::path* path, std::ostream* md) {
     auto lexer = Lexer(world(), is, path, md);
     lexer_     = &lexer;
     init(path);
-    parse_module();
+    auto mod                        = parse_module();
     std::tie(prev_, ahead_, lexer_) = state;
+    return mod;
 }
 
 void Parser::plugin(Sym name) {
@@ -270,10 +272,18 @@ template<bool arr> Ptr<Expr> Parser::parse_arr_or_pack_expr() {
 Ptr<Expr> Parser::parse_block_expr(std::string_view ctxt) {
     auto track = tracker();
     if (ctxt.empty()) eat(Tag::D_brace_l);
-    auto decls = parse_decls(ctxt.empty() ? "block expression" : ctxt);
+    auto decls = parse_decls();
     auto expr  = parse_expr("final expression in a "s + (ctxt.empty() ? "block expressoin"s : std::string(ctxt)));
     if (ctxt.empty()) expect(Tag::D_brace_r, "block expression");
     return ptr<BlockExpr>(track, std::move(decls), std::move(expr));
+}
+
+Ptr<Expr> Parser::parse_lit_expr() {
+    auto track  = tracker();
+    auto value  = lex();
+    auto [_, r] = Tok::prec(Tok::Prec::Lit);
+    auto type   = accept(Tag::T_colon) ? parse_expr("literal", r) : Ptr<Expr>();
+    return ptr<LitExpr>(track, value, std::move(type));
 }
 
 Ptr<Expr> Parser::parse_sigma_expr() { return ptr<SigmaExpr>(parse_tuple_ptrn(false, ast().anonymous())); }
@@ -285,13 +295,13 @@ Ptr<Expr> Parser::parse_tuple_expr() {
     return ptr<TupleExpr>(track, std::move(elems));
 }
 
-// Ptr<Expr> Parser::parse_type_expr() {
-//     auto track = tracker();
-//     eat(Tag::K_Type);
-//     auto [l, r] = Tok::prec(Tok::Prec::App);
-//     auto level  = parse_expr("type level", r);
-//     return world().type(level)->set(track.loc());
-// }
+Ptr<Expr> Parser::parse_type_expr() {
+    auto track = tracker();
+    eat(Tag::K_Type);
+    auto [l, r] = Tok::prec(Tok::Prec::App);
+    auto level  = parse_expr("type level", r);
+    return ptr<TypeExpr>(track, std::move(level));
+}
 
 Ptr<PiExpr> Parser::parse_pi_expr() {
     auto track = tracker();
@@ -522,29 +532,28 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn(bool rebind, Sym sym) {
         Ptr<Ptrn> ptrn;
 
         if (ahead(0).isa(Tag::M_id) && ahead(1).isa(Tag::M_id)) {
-            std::vector<Tok> sym_toks;
-            while (auto tok = accept(Tag::M_id)) sym_toks.emplace_back(tok);
+            std::deque<Tok> toks;
+            std::deque<Sym> syms;
+            while (auto tok = accept(Tag::M_id)) {
+                toks.emplace_back(tok);
+                syms.emplace_back(tok.sym());
+            }
 
             if (accept(Tag::T_colon)) { // identifier group: x y x: T
                 auto type = parse_expr("type of an identifier group within a tuple pattern");
-
-                for (size_t i = 0, e = sym_toks.size(); i != e; ++i) {
-                    auto tok  = sym_toks[i];
-                    auto ptrn = ptr<IdPtrn>(tok.loc(), false, tok.sym(), std::move(type));
-                    ptrns.emplace_back(std::move(ptrn));
-                }
+                ptrns.emplace_back(ptr<GroupPtrn>(track, std::move(syms), std::move(type)));
                 return;
             }
 
             // "x y z" is a curried app and maybe the prefix of a longer type expression
-            Ptr<Expr> lhs = ptr<IdExpr>(sym_toks.front());
-            for (auto sym_tok : sym_toks | std::views::drop(1)) {
-                auto rhs = ptr<IdExpr>(sym_tok);
+            Ptr<Expr> lhs = ptr<IdExpr>(toks.front());
+            for (auto tok : toks | std::views::drop(1)) {
+                auto rhs = ptr<IdExpr>(tok);
                 lhs      = ptr<AppExpr>(track, false, std::move(lhs), std::move(rhs));
             }
             auto [_, r] = Tok::prec(Tok::Prec::App);
             auto expr   = parse_infix_expr(track, std::move(lhs), r);
-            ptrn        = ptr<IdPtrn>(std::move(expr));
+            ptrn        = IdPtrn::mk_type(ast(), std::move(expr));
         } else {
             ptrn = parse_ptrn(delim_l, "element of a tuple pattern");
 
@@ -562,32 +571,33 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn(bool rebind, Sym sym) {
     });
 
     // TODO parse type
-    return ptr<TuplePtrn>(track, rebind, sym, delim_l, std::move(ptrns), nullptr);
+    return ptr<TuplePtrn>(track, rebind, sym, delim_l, std::move(ptrns));
 }
 
 /*
  * decls
  */
 
-#if 0
-Ptrs<Decl> Parser::parse_decls(std::string_view ctxt) {
+Ptrs<Decl> Parser::parse_decls() {
+    Ptrs<Decl> decls;
     while (true) {
         // clang-format off
         switch (ahead().tag()) {
-            case Tag::T_semicolon: lex();              break; // eat up stray semicolons
+            case Tag::T_semicolon: lex(); break; // eat up stray semicolons
             //case Tag::K_ax:        parse_ax_decl();    break;
-            case Tag::K_let:       parse_let_decl();   break;
-            case Tag::K_Sigma:     parse_sigma_decl(); break;
-            case Tag::K_Pi:        parse_pi_decl();    break;
+            case Tag::K_let:       decls.emplace_back(parse_let_decl());   break;
+            case Tag::K_Sigma:     decls.emplace_back(parse_sigma_decl()); break;
+            case Tag::K_Pi:        decls.emplace_back(parse_pi_decl());    break;
             case Tag::K_con:
             case Tag::K_fun:
-            case Tag::K_lam:       parse_lam_decl();    break;
-            default:               return ctxt.empty() ? nullptr : parse_expr(ctxt);
+            case Tag::K_lam:       decls.emplace_back(parse_lam_decl());   break;
+            default:               return decls;
         }
         // clang-format on
     }
 }
 
+#if 0
 void Parser::parse_ax_decl() {
     auto track = tracker();
     eat(Tag::K_ax);

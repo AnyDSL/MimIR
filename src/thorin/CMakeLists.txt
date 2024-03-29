@@ -25,6 +25,7 @@ target_sources(libthorin
         ast/lexer.cpp
         ast/parser.cpp
         ast/scopes.cpp
+        ast/stream.cpp
         ast/tok.cpp
         pass/beta_red.cpp
         pass/eta_exp.cpp

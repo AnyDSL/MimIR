@@ -194,6 +194,7 @@ public:
     Sym        sym()   const { assert(isa(Tag::M_anx) || isa(Tag::M_id) || isa(Tag::M_str)); return sym_; }
     // clang-format on
     friend std::ostream& operator<<(std::ostream&, Tok);
+    friend std::ostream& operator<<(std::ostream& os, Tok::Tag tag) { return os << tag2str(tag); }
 
 private:
     Loc loc_;

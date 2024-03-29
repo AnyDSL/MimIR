@@ -22,7 +22,7 @@ using namespace thorin;
 using namespace std::literals;
 
 int main(int argc, char** argv) {
-    enum Backends { D, Dot, H, LL, Md, Thorin, Num_Backends };
+    enum Backends { AST, D, Dot, H, LL, Md, Thorin, Num_Backends };
 
     try {
         static const auto version = "thorin command-line utility version " THORIN_VER "\n";
@@ -55,6 +55,7 @@ int main(int argc, char** argv) {
             | lyra::opt(search_paths,   "path"                )["-P"]["--plugin-path"           ]("Path to search for plugins.")
             | lyra::opt(inc_verbose                           )["-V"]["--verbose"               ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
             | lyra::opt(opt,            "level"               )["-O"]["--optimize"              ]("Optimization level (default: 2).")
+            | lyra::opt(output[AST   ], "file"                )      ["--output-ast"            ]("Directly emits AST represntation of input.")
             | lyra::opt(output[D     ], "file"                )      ["--output-d"              ]("Emits dependency file containing a rule suitable for 'make' describing the dependencies of the source file (requires --output-h).")
             | lyra::opt(output[Dot   ], "file"                )      ["--output-dot"            ]("Emits the Thorin program as a graph using Graphviz' DOT language.")
             | lyra::opt(output[H     ], "file"                )      ["--output-h"              ]("Emits a header file to be used to interface with a plugin in C++.")
@@ -138,6 +139,7 @@ int main(int argc, char** argv) {
         auto path = fs::path(input);
         world.set(path.filename().replace_extension().string());
         auto parser = ast::Parser(world);
+#if 0
         parser.import(driver.sym(input), os[Md]);
 
         if (auto dep = os[D]) {
@@ -169,7 +171,13 @@ int main(int argc, char** argv) {
                 break;
             default: error("illegal optimization level '{}'", opt);
         }
+#endif
 
+        if (os[AST]) {
+            auto mod = parser.import(driver.sym(input), os[Md]);
+            Tab tab;
+            mod->stream(tab, *os[AST]);
+        }
         if (os[Thorin]) world.dump(*os[Thorin]);
         if (os[Dot]) world.dot(*os[Dot], dot_all_annexes, dot_follow_types);
 

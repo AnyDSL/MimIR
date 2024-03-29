@@ -40,7 +40,7 @@ public:
     ///@}
 
     template<class T, class... Args> auto ptr(Args&&... args) {
-        return arena_.mk<const T>(*this, std::forward<Args&&>(args)...);
+        return arena_.mk<const T>(std::forward<Args&&>(args)...);
     }
 
 private:
@@ -53,30 +53,29 @@ class Scopes;
 
 class Node : public fe::RuntimeCast<Node> {
 protected:
-    Node(AST& ast, Loc loc)
-        : ast_(ast)
-        , loc_(loc) {}
+    Node(Loc loc)
+        : loc_(loc) {}
     virtual ~Node() {}
 
 public:
-    AST& ast() const { return ast_; }
     Loc loc() const { return loc_; }
 
+    virtual std::ostream& stream(Tab&, std::ostream&) const = 0;
+
 private:
-    AST& ast_;
     Loc loc_;
 };
 
 class Expr : public Node {
 protected:
-    Expr(AST& ast, Loc loc)
-        : Node(ast, loc) {}
+    Expr(Loc loc)
+        : Node(loc) {}
 };
 
 class Decl : public Node {
 protected:
-    Decl(AST& ast, Loc loc, Sym sym)
-        : Node(ast, loc)
+    Decl(Loc loc, Sym sym)
+        : Node(loc)
         , sym_(sym) {}
 
 public:
@@ -92,20 +91,16 @@ private:
 
 class Ptrn : public Node {
 public:
-    Ptrn(AST& ast, Loc loc, bool rebind, Sym sym, Ptr<Expr>&& type)
-        : Node(ast, loc)
-        , rebind_(rebind)
-        , sym_(sym)
-        , type_(std::move(type)) {}
+    Ptrn(Loc loc)
+        : Node(loc) {}
 
     bool rebind() const { return rebind_; }
     Sym sym() const { return sym_; }
     Dbg dbg() const { return {loc(), sym()}; }
     bool is_anonymous() const { return sym() == '_'; }
+    const Expr* type() const { return type_.get(); }
 
-    [[nodiscard]] static Ptr<Expr> expr(AST& ast, Ptr<Ptrn>&&);
-
-    virtual Ptr<Expr> expr() const = 0;
+    [[nodiscard]] static Ptr<Expr> expr(AST&, Ptr<Ptrn>&&);
     // virtual void bind(Scopes&, const Def*, bool rebind = false) const = 0;
     // virtual const Def* type(World&, Def2Fields&) const                = 0;
 
@@ -117,33 +112,76 @@ protected:
 
 class IdPtrn : public Ptrn {
 public:
-    IdPtrn(AST& ast, Loc loc, bool rebind, Sym sym, Ptr<Expr>&& type)
-        : Ptrn(ast, loc, rebind, sym, std::move(type)) {}
-    IdPtrn(AST& ast, Ptr<Expr>&& type)
-        : Ptrn(ast, type->loc(), false, ast.anonymous(), std::move(type)) {}
+    IdPtrn(Loc loc, bool rebind, Sym sym, Ptr<Expr>&& type)
+        : Ptrn(loc)
+        , rebind_(rebind)
+        , sym_(sym)
+        , type_(std::move(type)) {}
 
-    Ptr<Expr> expr() const override;
+    bool rebind() const { return rebind_; }
+    Sym sym() const { return sym_; }
+
+    static Ptr<IdPtrn> mk_type(AST& ast, Ptr<Expr>&& type) {
+        return ast.ptr<IdPtrn>(type->loc(), false, ast.anonymous(), std::move(type));
+    }
+
     // void bind(Scopes&, const Def*, bool rebind = false) const override {}
     // const Def* type(World&, Def2Fields&) const override {}
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    bool rebind_;
+    Sym sym_;
+    Ptr<Expr> type_;
+};
+
+/// `sym_0 ... sym_n-1 : type`
+class GroupPtrn : public Ptrn {
+public:
+    GroupPtrn(Loc loc, std::deque<Sym>&& syms, Ptr<Expr>&& type)
+        : Ptrn(loc)
+        , syms_(std::move(syms))
+        , type_(std::move(type)) {}
+
+    const auto& syms() const { return syms_; }
+    const Expr* type() const { return type_.get(); }
+
+    static Ptr<IdPtrn> mk_type(AST& ast, Ptr<Expr>&& type) {
+        return ast.ptr<IdPtrn>(type->loc(), false, ast.anonymous(), std::move(type));
+    }
+
+    // void bind(Scopes&, const Def*, bool rebind = false) const override {}
+    // const Def* type(World&, Def2Fields&) const override {}
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    std::deque<Sym> syms_;
+    Ptr<Expr> type_;
 };
 
 class TuplePtrn : public Ptrn {
 public:
-    TuplePtrn(AST& ast, Loc loc, bool rebind, Sym sym, Tok::Tag tag, Ptrs<Ptrn>&& ptrns, Ptr<Expr>&& type)
-        : Ptrn(ast, loc, rebind, sym, std::move(type))
+    TuplePtrn(Loc loc, bool rebind, Sym sym, Tok::Tag tag, Ptrs<Ptrn>&& ptrns)
+        : Ptrn(loc)
+        , rebind_(rebind)
+        , sym_(sym)
         , tag_(tag)
         , ptrns_(std::move(ptrns)) {}
 
+    bool rebind() const { return rebind_; }
+    Sym sym() const { return sym_; }
     Tok::Tag tag() const { return tag_; }
     const auto& ptrns() const { return ptrns_; }
     const Ptrn* ptrn(size_t i) const { return ptrns_[i].get(); }
     size_t num_ptrns() const { return ptrns().size(); }
 
-    Ptr<Expr> expr() const override;
     // void bind(Scopes&, const Def*, bool rebind = false) const override {}
     // const Def* type(World&, Def2Fields&) const override {}
+    std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
+    bool rebind_;
+    Sym sym_;
     Tok::Tag tag_;
     Ptrs<Ptrn> ptrns_;
 };
@@ -152,36 +190,57 @@ private:
  * Expr
  */
 
+/// `sym`
 class IdExpr : public Expr {
 public:
-    IdExpr(AST& ast, Loc loc, Sym sym)
-        : Expr(ast, loc)
+    IdExpr(Loc loc, Sym sym)
+        : Expr(loc)
         , sym_(sym) {}
-    IdExpr(AST& ast, Tok tok)
-        : IdExpr(ast, tok.loc(), tok.sym()) {}
+    IdExpr(Tok tok)
+        : IdExpr(tok.loc(), tok.sym()) {}
 
     Sym sym() const { return sym_; }
+    std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Sym sym_;
 };
 
+/// `tag`
 class PrimaryExpr : public Expr {
 public:
-    PrimaryExpr(AST& ast, Tok tok)
-        : Expr(ast, tok.loc())
+    PrimaryExpr(Tok tok)
+        : Expr(tok.loc())
         , tag_(tok.tag()) {}
 
     Tok::Tag tag() const { return tag_; }
+    std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Tok::Tag tag_;
 };
 
+/// `tag:type`
+class LitExpr : public Expr {
+public:
+    LitExpr(Loc loc, Tok value, Ptr<Expr>&& type)
+        : Expr(loc)
+        , value_(value)
+        , type_(std::move(type)) {}
+
+    Tok value() const { return value_; }
+    const Expr* type() const { return type_.get(); }
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    Tok value_;
+    Ptr<Expr> type_;
+};
+
 class BlockExpr : public Expr {
 public:
-    BlockExpr(AST& ast, Loc loc, Ptrs<Decl>&& decls, Ptr<Expr>&& expr)
-        : Expr(ast, loc)
+    BlockExpr(Loc loc, Ptrs<Decl>&& decls, Ptr<Expr>&& expr)
+        : Expr(loc)
         , decls_(std::move(decls))
         , expr_(std::move(expr)) {}
 
@@ -189,24 +248,39 @@ public:
     const Decl* decl(size_t i) const { return decls_[i].get(); }
     size_t num_decls() const { return decls_.size(); }
     const Expr* expr() const { return expr_.get(); }
+    std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Ptrs<Decl> decls_;
     Ptr<Expr> expr_;
 };
 
+class TypeExpr : public Expr {
+public:
+    TypeExpr(Loc loc, Ptr<Expr>&& level)
+        : Expr(loc)
+        , level_(std::move(level)) {}
+
+    const Expr* level() const { return level_.get(); }
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    Ptr<Expr> level_;
+};
+
 // lam
 
 class SimplePiExpr : public Expr {
 public:
-    SimplePiExpr(AST& ast, Loc loc, Ptr<Expr>&& dom, Ptr<Expr>&& codom)
-        : Expr(ast, loc)
+    SimplePiExpr(Loc loc, Ptr<Expr>&& dom, Ptr<Expr>&& codom)
+        : Expr(loc)
         , dom_(std::move(dom))
         , codom_(std::move(codom)) {}
 
 private:
     const Expr* dom() const { return dom_.get(); }
     const Expr* codom() const { return codom_.get(); }
+    std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Ptr<Expr> dom_;
@@ -217,21 +291,22 @@ class PiExpr : public Expr {
 public:
     class Dom : public Node {
     public:
-        Dom(AST& ast, Loc loc, bool implicit, Ptr<Ptrn>&& ptrn)
-            : Node(ast, loc)
+        Dom(Loc loc, bool implicit, Ptr<Ptrn>&& ptrn)
+            : Node(loc)
             , implicit_(implicit)
             , ptrn_(std::move(ptrn)) {}
 
         bool implicit() const { return implicit_; }
         const Ptrn* ptrn() const { return ptrn_.get(); }
+        std::ostream& stream(Tab&, std::ostream&) const override;
 
     private:
         bool implicit_;
         Ptr<Ptrn> ptrn_;
     };
 
-    PiExpr(AST& ast, Loc loc, Tok::Tag tag, Ptrs<Dom>&& doms, Ptr<Expr>&& codom)
-        : Expr(ast, loc)
+    PiExpr(Loc loc, Tok::Tag tag, Ptrs<Dom>&& doms, Ptr<Expr>&& codom)
+        : Expr(loc)
         , tag_(tag)
         , doms_(std::move(doms))
         , codom_(std::move(codom)) {}
@@ -242,6 +317,7 @@ private:
     const Dom* dom(size_t i) const { return doms_[i].get(); }
     size_t num_doms() const { return doms_.size(); }
     const Expr* codom() const { return codom_.get(); }
+    std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Tok::Tag tag_;
@@ -253,18 +329,19 @@ class LamExpr : public Expr {
 public:
     class Dom : public PiExpr::Dom {
     public:
-        Dom(AST& ast, Loc loc, bool implicit, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& filter)
-            : PiExpr::Dom(ast, loc, implicit, std::move(ptrn))
+        Dom(Loc loc, bool implicit, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& filter)
+            : PiExpr::Dom(loc, implicit, std::move(ptrn))
             , filter_(std::move(filter)) {}
 
         const Expr* filter() const { return filter_.get(); }
+        std::ostream& stream(Tab&, std::ostream&) const override;
 
     private:
         Ptr<Expr> filter_;
     };
 
-    LamExpr(AST& ast, Loc loc, Tok::Tag tag, Sym sym, Ptrs<Dom>&& doms, Ptr<Expr>&& codom, Ptr<Expr>&& body)
-        : Expr(ast, loc)
+    LamExpr(Loc loc, Tok::Tag tag, Sym sym, Ptrs<Dom>&& doms, Ptr<Expr>&& codom, Ptr<Expr>&& body)
+        : Expr(loc)
         , tag_(tag)
         , sym_(sym)
         , doms_(std::move(doms))
@@ -277,6 +354,7 @@ public:
     const Dom* dom(size_t i) const { return doms_[i].get(); }
     const Expr* codom() const { return codom_.get(); }
     const Expr* body() const { return body_.get(); }
+    std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Tok::Tag tag_;
@@ -284,13 +362,12 @@ private:
     Ptrs<Dom> doms_;
     Ptr<Expr> codom_;
     Ptr<Expr> body_;
-    ;
 };
 
 class AppExpr : public Expr {
 public:
-    AppExpr(AST& ast, Loc loc, bool is_explicit, Ptr<Expr>&& callee, Ptr<Expr>&& arg)
-        : Expr(ast, loc)
+    AppExpr(Loc loc, bool is_explicit, Ptr<Expr>&& callee, Ptr<Expr>&& arg)
+        : Expr(loc)
         , is_explicit_(is_explicit)
         , callee_(std::move(callee))
         , arg_(std::move(arg)) {}
@@ -298,6 +375,7 @@ public:
     bool is_explicit() const { return is_explicit_; }
     const Expr* callee() const { return callee_.get(); }
     const Expr* arg() const { return arg_.get(); }
+    std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     bool is_explicit_;
@@ -307,8 +385,8 @@ private:
 
 class RetExpr : public Expr {
 public:
-    RetExpr(AST& ast, Loc loc, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& callee, Ptr<Expr>&& arg, Ptr<Expr> body)
-        : Expr(ast, loc)
+    RetExpr(Loc loc, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& callee, Ptr<Expr>&& arg, Ptr<Expr> body)
+        : Expr(loc)
         , ptrn_(std::move(ptrn))
         , callee_(std::move(callee))
         , arg_(std::move(arg))
@@ -318,6 +396,7 @@ public:
     const Expr* callee() const { return callee_.get(); }
     const Expr* arg() const { return arg_.get(); }
     const Expr* body() const { return body_.get(); }
+    std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Ptr<Ptrn> ptrn_;
@@ -329,11 +408,12 @@ private:
 
 class SigmaExpr : public Expr {
 public:
-    SigmaExpr(AST& ast, Ptr<TuplePtrn>&& ptrn)
-        : Expr(ast, ptrn->loc())
+    SigmaExpr(Ptr<TuplePtrn>&& ptrn)
+        : Expr(ptrn->loc())
         , ptrn_(std::move(ptrn)) {}
 
     const Ptrn* ptrn() const { return ptrn_.get(); }
+    std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Ptr<TuplePtrn> ptrn_;
@@ -341,13 +421,14 @@ private:
 
 class TupleExpr : public Expr {
 public:
-    TupleExpr(AST& ast, Loc loc, Ptrs<Expr>&& elems)
-        : Expr(ast, loc)
+    TupleExpr(Loc loc, Ptrs<Expr>&& elems)
+        : Expr(loc)
         , elems_(std::move(elems)) {}
 
     const auto& elems() const { return elems_; }
     const Expr* elem(size_t i) const { return elems_[i].get(); }
     size_t num_elems() const { return elems().size(); }
+    std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Ptrs<Expr> elems_;
@@ -355,8 +436,8 @@ private:
 
 template<bool arr> class ArrOrPackExpr : public Expr {
 public:
-    ArrOrPackExpr(AST& ast, Loc loc, Sym sym, Ptr<Expr>&& shape, Ptr<Expr>&& body)
-        : Expr(ast, loc)
+    ArrOrPackExpr(Loc loc, Sym sym, Ptr<Expr>&& shape, Ptr<Expr>&& body)
+        : Expr(loc)
         , sym_(sym)
         , shape_(std::move(shape))
         , body_(std::move(body)) {}
@@ -364,6 +445,7 @@ public:
     Sym sym() const { return sym_; }
     const Expr* shape() const { return shape_.get(); }
     const Expr* body() const { return body_.get(); }
+    std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Sym sym_;
@@ -376,13 +458,14 @@ using PackExpr = ArrOrPackExpr<false>;
 
 class ExtractExpr : public Expr {
 public:
-    ExtractExpr(AST& ast, Loc loc, Ptr<Expr>&& tuple, Ptr<Expr>&& index)
-        : Expr(ast, loc)
+    ExtractExpr(Loc loc, Ptr<Expr>&& tuple, Ptr<Expr>&& index)
+        : Expr(loc)
         , tuple_(std::move(tuple))
         , index_(std::move(index)) {}
 
     const Expr* tuple() const { return tuple_.get(); }
     const Expr* index() const { return index_.get(); }
+    std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Ptr<Expr> tuple_;
@@ -391,8 +474,8 @@ private:
 
 class InsertExpr : public Expr {
 public:
-    InsertExpr(AST& ast, Loc loc, Ptr<Expr>&& tuple, Ptr<Expr>&& index, Ptr<Expr>&& value)
-        : Expr(ast, loc)
+    InsertExpr(Loc loc, Ptr<Expr>&& tuple, Ptr<Expr>&& index, Ptr<Expr>&& value)
+        : Expr(loc)
         , tuple_(std::move(tuple))
         , index_(std::move(index))
         , value_(std::move(value)) {}
@@ -400,6 +483,7 @@ public:
     const Expr* tuple() const { return tuple_.get(); }
     const Expr* index() const { return index_.get(); }
     const Expr* value() const { return value_.get(); }
+    std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Ptr<Expr> tuple_;
@@ -413,13 +497,14 @@ private:
 
 class LetDecl : public Decl {
 public:
-    LetDecl(AST& ast, Loc loc, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& value)
-        : Decl(ast, loc, ptrn->sym())
+    LetDecl(Loc loc, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& value)
+        : Decl(loc, ptrn->sym())
         , ptrn_(std::move(ptrn))
         , value_(std::move(value)) {}
 
     const Ptrn* ptrn() const { return ptrn_.get(); }
     const Expr* value() const { return value_.get(); }
+    std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Ptr<Ptrn> ptrn_;
@@ -428,19 +513,20 @@ private:
 
 class AxiomDecl : public Decl {
 public:
-    AxiomDecl(AST& ast, Loc loc, Sym sym)
-        : Decl(ast, loc, sym) {}
+    AxiomDecl(Loc loc, Sym sym)
+        : Decl(loc, sym) {}
 };
 
 class PiDecl : public Decl {
 public:
-    PiDecl(AST& ast, Loc loc, Sym sym, Ptr<Expr>&& type, Ptr<Expr>&& body)
-        : Decl(ast, loc, sym)
+    PiDecl(Loc loc, Sym sym, Ptr<Expr>&& type, Ptr<Expr>&& body)
+        : Decl(loc, sym)
         , type_(std::move(type))
         , body_(std::move(body)) {}
 
     const Expr* type() const { return type_.get(); }
     const Expr* body() const { return body_.get(); }
+    std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Ptr<Expr> type_;
@@ -449,11 +535,12 @@ private:
 
 class LamDecl : public Decl {
 public:
-    LamDecl(AST& ast, Ptr<LamExpr>&& lam)
-        : Decl(ast, lam->loc(), lam->sym())
+    LamDecl(Ptr<LamExpr>&& lam)
+        : Decl(lam->loc(), lam->sym())
         , lam_(std::move(lam)) {}
 
     const LamExpr* lam() const { return lam_.get(); }
+    std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Ptr<LamExpr> lam_;
@@ -461,13 +548,14 @@ private:
 
 class SigmaDecl : public Decl {
 public:
-    SigmaDecl(AST& ast, Loc loc, Sym sym, Ptr<Expr>&& type, Ptr<Expr>&& body)
-        : Decl(ast, loc, sym)
+    SigmaDecl(Loc loc, Sym sym, Ptr<Expr>&& type, Ptr<Expr>&& body)
+        : Decl(loc, sym)
         , type_(std::move(type))
         , body_(std::move(body)) {}
 
     const Expr* type() const { return type_.get(); }
     const Expr* body() const { return body_.get(); }
+    std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Ptr<Expr> type_;
@@ -480,13 +568,14 @@ private:
 
 class Module : public Node {
 public:
-    Module(AST& ast, Loc loc, Ptrs<Decl>&& decls)
-        : Node(ast, loc)
+    Module(Loc loc, Ptrs<Decl>&& decls)
+        : Node(loc)
         , decls_(std::move(decls)) {}
 
     const auto& decls() const { return decls_; }
     const Decl* decl(size_t i) const { return decls_[i].get(); }
     size_t num_decls() const { return decls_.size(); }
+    std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Ptrs<Decl> decls_;

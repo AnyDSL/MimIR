@@ -39,9 +39,9 @@ public:
     AST& ast() { return ast_; }
     World& world() { return world_; }
     Driver& driver() { return world().driver(); }
-    void import(std::string_view sv) { return import(driver().sym(sv)); }
-    void import(Sym, std::ostream* md = nullptr);
-    void import(std::istream&, const fs::path* = nullptr, std::ostream* md = nullptr);
+    Ptr<Module> import(std::string_view sv) { return import(driver().sym(sv)); }
+    Ptr<Module> import(Sym, std::ostream* md = nullptr);
+    Ptr<Module> import(std::istream&, const fs::path* = nullptr, std::ostream* md = nullptr);
     void plugin(Sym);
     void plugin(const char* name) { return plugin(driver().sym(name)); }
 
@@ -86,8 +86,8 @@ private:
     ///@{
     template<bool> Ptr<Expr> parse_arr_or_pack_expr();
     Ptr<Expr> parse_block_expr(std::string_view ctxt); ///< Empty @p ctxt means an explicit BlockExpr `{ d* e }`.
-    Ptr<Expr> parse_type_expr();
     Ptr<Expr> parse_lit_expr();
+    Ptr<Expr> parse_type_expr();
     Ptr<Expr> parse_ret_expr();
     Ptr<PiExpr> parse_pi_expr();
     Ptr<LamExpr> parse_lam_expr();
@@ -110,7 +110,7 @@ private:
     /// If @p ctxt ...
     /// * ... empty: **Only** decls are parsed. @returns `nullptr`
     /// * ... **non**-empty: Decls are parsed, then an expression. @returns expression.
-    Ptrs<Decl> parse_decls(std::string_view ctxt);
+    Ptrs<Decl> parse_decls();
     Ptr<Decl> parse_axiom_decl();
     Ptr<Decl> parse_let_decl();
     Ptr<PiDecl> parse_pi_decl();
