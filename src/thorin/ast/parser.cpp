@@ -403,12 +403,23 @@ Ptr<Expr> Parser::parse_ret_expr() {
  * ptrns
  */
 
-Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok::Prec prec /*= Tok::Prec::Bot*/) {
+Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok::Prec prec, bool allow_annex) {
     auto track = tracker();
     auto dbg   = Dbg(ahead().loc(), Sym());
     bool p     = delim_l == Tag::D_paren_l;
     bool b     = delim_l == Tag::D_brckt_l;
     assert((p ^ b) && "left delimiter must either be '(' or '['");
+
+    if (allow_annex) {
+        assert(p);
+        // p -> anx
+        // p -> anx: e
+        if (auto anx = accept(Tok::Tag::M_anx)) {
+            auto type = parse_type_ascr();
+            return ptr<IdPtrn>(track, false, anx.dbg(), std::move(type));
+        }
+    }
+
     // p ->    (p, ..., p)
     // p ->    [b, ..., b]      b ->    [b, ..., b]
     // p ->  s::(p, ..., p)
@@ -605,14 +616,7 @@ Ptr<Decl> Parser::parse_axiom_decl() {
 Ptr<Decl> Parser::parse_let_decl() {
     auto track = tracker();
     eat(Tag::K_let);
-
-    // Ptr<Ptrn> ptrn;
-    //  TODO annex
-    // if (auto tok = accept(Tag::M_anx)) {
-    // ptrn = ptr<IdPtrn>(
-    //} else {
-
-    auto ptrn = parse_ptrn(Tag::D_paren_l, "binding pattern of a let declaration");
+    auto ptrn = parse_ptrn(Tag::D_paren_l, "binding pattern of a let declaration", Tok::Prec::Bot, true);
     expect(Tag::T_assign, "let");
     auto type  = parse_type_ascr();
     auto value = parse_expr("value of a let declaration");
