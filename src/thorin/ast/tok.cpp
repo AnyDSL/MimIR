@@ -7,7 +7,7 @@
 
 namespace thorin::ast {
 
-std::string_view Tok::tag2str(Tok::Tag tag) {
+const char* Tok::tag2str(Tok::Tag tag) {
     switch (tag) {
 #define CODE(t, str) \
     case Tok::Tag::t: return str;
@@ -17,6 +17,12 @@ std::string_view Tok::tag2str(Tok::Tag tag) {
         case Tag::Nil: fe::unreachable();
     }
     fe::unreachable();
+}
+
+std::string Tok::str() const {
+    std::ostringstream oss;
+    oss << *this;
+    return oss.str();
 }
 
 /// @name std::ostream operator

@@ -12,15 +12,6 @@
 
 namespace thorin::ast {
 
-AST::AST(World& world)
-    : world_(world)
-    , anon_(sym("_")) {}
-
-Driver& AST::driver() { return world().driver(); }
-Sym AST::sym(const char* s) { return driver().sym(s); }
-Sym AST::sym(std::string_view s) { return driver().sym(s); }
-Sym AST::sym(const std::string& s) { return driver().sym(s); }
-
 /*
  * Ptrn::to_expr/to_ptrn
  */

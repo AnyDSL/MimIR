@@ -1,6 +1,6 @@
 #include "thorin/ast/lexer.h"
 
-#include "thorin/world.h"
+#include "thorin/ast/ast.h"
 
 using namespace std::literals;
 
@@ -9,16 +9,16 @@ namespace thorin::ast {
 namespace utf8 = fe::utf8;
 using Tag      = Tok::Tag;
 
-Lexer::Lexer(World& world, std::istream& istream, const fs::path* path /*= nullptr*/, std::ostream* md /*= nullptr*/)
+Lexer::Lexer(Driver& driver, std::istream& istream, const fs::path* path /*= nullptr*/, std::ostream* md /*= nullptr*/)
     : Super(istream, path)
-    , world_(world)
+    , driver_(driver)
     , md_(md) {
-#define CODE(t, str) keywords_[world.sym(str)] = Tag::t;
+#define CODE(t, str) keywords_[driver.sym(str)] = Tag::t;
     THORIN_KEY(CODE)
 #undef CODE
 
 #define CODE(str, t) \
-    if (Tag::t != Tag::Nil) keywords_[world.sym(str)] = Tag::t;
+    if (Tag::t != Tag::Nil) keywords_[driver.sym(str)] = Tag::t;
     THORIN_SUBST(CODE)
 #undef CODE
 
@@ -110,14 +110,14 @@ Tok Lexer::lex() {
                 assert(!cache_.has_value());
                 auto id_loc = loc();
                 ++id_loc.begin.col;
-                cache_.emplace(id_loc, Tag::M_id, world().sym(str_.substr(1)));
+                cache_.emplace(id_loc, Tag::M_id, driver().sym(str_.substr(1)));
                 return {loc().anew_begin(), Tag::T_dot};
             }
 
             if (accept(utf8::isdigit)) {
                 parse_digits();
                 parse_exp();
-                return {loc_, f64(std::strtod(str_.c_str(), nullptr))};
+                return {loc_, Tag::M_str, sym()};
             }
 
             return tok(Tag::T_dot);
@@ -196,52 +196,41 @@ std::optional<Tok> Lexer::parse_lit() {
     int base = 10;
     std::optional<bool> sign;
 
-    if (accept<Append::Off>('+')) {
+    if (accept('+')) {
         sign = false;
-    } else if (accept<Append::Off>('-')) {
+    } else if (accept('-')) {
         if (accept('>')) return tok(Tag::T_arrow);
         sign = true;
     }
 
     // prefix starting with '0'
-    if (accept<Append::Off>('0')) {
-        if      (accept<Append::Off>('b')) base =  2;
-        else if (accept<Append::Off>('B')) base =  2;
-        else if (accept<Append::Off>('o')) base =  8;
-        else if (accept<Append::Off>('O')) base =  8;
-        else if (accept<Append::Off>('x')) base = 16;
-        else if (accept<Append::Off>('X')) base = 16;
+    if (accept('0')) {
+        if      (accept('b')) base =  2;
+        else if (accept('B')) base =  2;
+        else if (accept('o')) base =  8;
+        else if (accept('O')) base =  8;
+        else if (accept('x')) base = 16;
+        else if (accept('X')) base = 16;
     }
 
     parse_digits(base);
 
-    if (accept<Append::Off>('I')) {
-        if (sign) str_.insert(0, "-"sv);
-        auto val = std::strtoull(str_.c_str(), nullptr, base);
-        str_.clear();
+    if (accept(utf8::any('i', 'I'))) {
         parse_digits();
-        auto width = std::strtoull(str_.c_str(), nullptr, 10);
-        return Tok{loc_, world().lit_int(width, val)};
+        return Tok{loc_, Tag::M_lit, sym()};
     }
 
     if (!sign && base == 10) {
         if (utf8::isrange(ahead(), U'₀', U'₉')) {
-            auto i = std::strtoull(str_.c_str(), nullptr, 10);
-            std::string mod;
-            while (utf8::isrange(ahead(), U'₀', U'₉')) mod += next() - U'₀' + '0';
-            auto m = std::strtoull(mod.c_str(), nullptr, 10);
-            return Tok{loc_, world().lit_idx_mod(m, i)};
-        } else if (accept<Append::Off>('_')) {
-            auto i = std::strtoull(str_.c_str(), nullptr, 10);
-            str_.clear();
+            while (accept(utf8::isrange(U'₀', U'₉'))) {}
+            return Tok{loc_, Tag::M_lit, sym()};
+        } else if (accept('_')) {
             if (accept(utf8::isdigit)) {
-                parse_digits(10);
-                auto m = std::strtoull(str_.c_str(), nullptr, 10);
-                return Tok{loc_, world().lit_idx_mod(m, i)};
+                parse_digits();
+                return Tok{loc_, Tag::M_lit, sym()};
             } else {
-                error(loc_, "stray underscore in unsigned literal");
-                auto i = std::strtoull(str_.c_str(), nullptr, 10);
-                return Tok{loc_, u64(i)};
+                error(loc_, "stray underscore in .Idx literal; size is missing");
+                return {};
             }
         }
     }
@@ -264,12 +253,7 @@ std::optional<Tok> Lexer::parse_lit() {
         return {};
     }
 
-    if (is_float && base == 16) str_.insert(0, "0x"sv);
-    if (sign && *sign) str_.insert(0, "-"sv);
-
-    if (is_float) return Tok{loc_, f64(std::strtod  (str_.c_str(), nullptr      ))};
-    if (sign)     return Tok{loc_, u64(std::strtoll (str_.c_str(), nullptr, base))};
-    else          return Tok{loc_, u64(std::strtoull(str_.c_str(), nullptr, base))};
+    return Tok{loc_, Tag::M_lit, sym()};
 }
 
 void Lexer::parse_digits(int base /*= 10*/) {
@@ -351,6 +335,6 @@ void Lexer::emit_md(bool start_of_file) {
         md_fence();
 }
 
-Sym Lexer::sym() { return world().sym(str_); }
+Sym Lexer::sym() { return driver().sym(str_); }
 
 } // namespace thorin::ast

@@ -4,22 +4,15 @@
 #include <memory>
 #include <optional>
 
-#include "thorin/def.h"
+#include <fe/arena.h>
+#include <fe/assert.h>
+#include <fe/cast.h>
+
+#include "thorin/driver.h"
 
 #include "thorin/ast/tok.h"
 
-#include "fe/arena.h"
-#include "fe/assert.h"
-#include "fe/cast.h"
-
 namespace thorin {
-
-class Driver;
-class Infer;
-class Sigma;
-class World;
-
-using Def2Fields = DefMap<Vector<Sym>>;
 
 namespace ast {
 
@@ -29,17 +22,18 @@ template<class T> using Ptrs = std::deque<Ptr<T>>;
 
 class AST {
 public:
-    AST(World& world);
+    AST(Driver& driver)
+        : driver_(driver)
+        , anon_(sym("_")) {}
 
-    World& world() { return world_; }
-    Driver& driver();
+    Driver& driver() { return driver_; }
     Sym anon() const { return anon_; }
 
     /// @name Sym
     ///@{
-    Sym sym(std::string_view);
-    Sym sym(const char*);
-    Sym sym(const std::string&);
+    Sym sym(const char* s) { return driver().sym(s); }
+    Sym sym(std::string_view s) { return driver().sym(s); }
+    Sym sym(const std::string& s) { return driver().sym(s); }
     ///@}
 
     template<class T, class... Args> auto ptr(Args&&... args) {
@@ -47,7 +41,7 @@ public:
     }
 
 private:
-    World& world_;
+    Driver& driver_;
     fe::Arena arena_;
     Sym anon_;
 };
@@ -219,17 +213,35 @@ private:
 /// `tag:type`
 class LitExpr : public Expr {
 public:
-    LitExpr(Loc loc, Tok value, Ptr<Expr>&& type)
+    LitExpr(Loc loc, Dbg value, Ptr<Expr>&& type)
         : Expr(loc)
         , value_(value)
         , type_(std::move(type)) {}
 
-    Tok value() const { return value_; }
+    Dbg value() const { return value_; }
     const Expr* type() const { return type_.get(); }
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Tok value_;
+    Dbg value_;
+    Ptr<Expr> type_;
+};
+
+/// `tag:type`
+class ExtremumExpr : public Expr {
+public:
+    ExtremumExpr(Loc loc, Tok::Tag tag, Ptr<Expr>&& type)
+        : Expr(loc)
+        , tag_(tag)
+        , type_(std::move(type)) {}
+
+    Tok::Tag tag() const { return tag_; }
+    const Expr* type() const { return type_.get(); }
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    Tok::Tag tag_;
+    ;
     Ptr<Expr> type_;
 };
 
@@ -548,13 +560,7 @@ private:
 /// `.ax ptrn: type = value;`
 class AxiomDecl : public Decl {
 public:
-    AxiomDecl(Loc loc,
-              Dbg dbg,
-              std::deque<Dbgs>&& subs,
-              Ptr<Expr>&& type,
-              Dbg normalizer,
-              std::optional<u64> curry,
-              std::optional<u64> trip)
+    AxiomDecl(Loc loc, Dbg dbg, std::deque<Dbgs>&& subs, Ptr<Expr>&& type, Dbg normalizer, Dbg curry, Dbg trip)
         : Decl(loc)
         , dbg_(dbg)
         , subs_(std::move(subs))
@@ -569,8 +575,8 @@ public:
     const auto& sub(size_t i) const { return subs_[i]; }
     const Expr* type() const { return type_.get(); }
     Dbg normalizer() const { return normalizer_; }
-    std::optional<u64> curry() const { return curry_; }
-    std::optional<u64> trip() const { return trip_; }
+    Dbg curry() const { return curry_; }
+    Dbg trip() const { return trip_; }
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -578,7 +584,7 @@ private:
     std::deque<Dbgs> subs_;
     Ptr<Expr> type_;
     Dbg normalizer_;
-    std::optional<u64> curry_, trip_;
+    Dbg curry_, trip_;
 };
 
 /// `.Pi dbg: type = body´

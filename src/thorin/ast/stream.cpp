@@ -59,7 +59,13 @@ std::ostream& IdExpr::stream(Tab&, std::ostream& os) const { return print(os, "{
 std::ostream& PrimaryExpr::stream(Tab&, std::ostream& os) const { return print(os, "{}", tag()); }
 
 std::ostream& LitExpr::stream(Tab& tab, std::ostream& os) const {
-    os << value().lit_u();
+    os << value();
+    if (type()) print(os, ": {}", S(tab, type()));
+    return os;
+}
+
+std::ostream& ExtremumExpr::stream(Tab& tab, std::ostream& os) const {
+    os << tag();
     if (type()) print(os, ": {}", S(tab, type()));
     return os;
 }
@@ -152,8 +158,8 @@ std::ostream& AxiomDecl::stream(Tab& tab, std::ostream& os) const {
     }
     print(os, ": {}", S(tab, type()));
     if (normalizer()) print(os, ", {}", normalizer());
-    if (curry()) print(os, ", {}", *curry());
-    if (trip()) print(os, ", {}", *trip());
+    if (curry()) print(os, ", {}", curry());
+    if (trip()) print(os, ", {}", trip());
     return os << ";";
 }
 

@@ -2,8 +2,6 @@
 
 #include <fe/parser.h>
 
-#include "thorin/driver.h"
-
 #include "thorin/ast/ast.h"
 #include "thorin/ast/lexer.h"
 #include "thorin/ast/scopes.h"
@@ -12,7 +10,7 @@ namespace thorin::ast {
 
 constexpr size_t Look_Ahead = 2;
 
-/// Parses Thorin code into the provided World.
+/// Parses Thorin code as AST.
 ///
 /// The logic behind the various parse methods is as follows:
 /// 1. The `parse_*` method does **not** have a `std::string_view ctxt` parameter:
@@ -32,13 +30,11 @@ constexpr size_t Look_Ahead = 2;
 ///      * If default argument is **provided** we have the same behavior as in 2.
 class Parser : public fe::Parser<Tok, Tok::Tag, Look_Ahead, Parser> {
 public:
-    Parser(World& world)
-        : world_(world)
-        , ast_(world) {}
+    Parser(Driver& driver)
+        : ast_(driver) {}
 
     AST& ast() { return ast_; }
-    World& world() { return world_; }
-    Driver& driver() { return world().driver(); }
+    Driver& driver() { return ast().driver(); }
     Ptr<Module> import(std::string_view sv) { return import(driver().sym(sv)); }
     Ptr<Module> import(Sym, std::ostream* md = nullptr);
     Ptr<Module> import(std::istream&, const fs::path* = nullptr, std::ostream* md = nullptr);
@@ -62,7 +58,6 @@ private:
     void parse_import();
     void parse_plugin();
     Ptr<Expr> parse_type_ascr(std::string_view ctxt = {});
-    void register_annex(Dbg, Ref);
 
     template<class F> void parse_list(std::string ctxt, Tok::Tag delim_l, F f, Tok::Tag sep = Tok::Tag::T_comma) {
         expect(delim_l, ctxt);
@@ -87,6 +82,7 @@ private:
     template<bool> Ptr<Expr> parse_arr_or_pack_expr();
     Ptr<Expr> parse_block_expr(std::string_view ctxt); ///< Empty @p ctxt means an explicit BlockExpr `{ d* e }`.
     Ptr<Expr> parse_lit_expr();
+    Ptr<Expr> parse_extremum_expr();
     Ptr<Expr> parse_type_expr();
     Ptr<Expr> parse_ret_expr();
     Ptr<PiExpr> parse_pi_expr();
@@ -136,7 +132,6 @@ private:
     }
     ///@}
 
-    World& world_;
     AST ast_;
     Lexer* lexer_ = nullptr;
 

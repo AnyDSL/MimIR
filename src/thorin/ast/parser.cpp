@@ -40,7 +40,7 @@ Ptr<Module> Parser::parse_module() {
 }
 
 Ptr<Module> Parser::import(Sym name, std::ostream* md) {
-    world().VLOG("import: {}", name);
+    driver().VLOG("import: {}", name);
     auto filename = fs::path(name.view());
 
     if (!filename.has_extension()) filename.replace_extension("thorin"); // TODO error cases
@@ -62,11 +62,11 @@ Ptr<Module> Parser::import(Sym name, std::ostream* md) {
 }
 
 Ptr<Module> Parser::import(std::istream& is, const fs::path* path, std::ostream* md) {
-    world().VLOG("reading: {}", path ? path->string() : "<unknown file>"s);
+    driver().VLOG("reading: {}", path ? path->string() : "<unknown file>"s);
     if (!is) error("cannot read file '{}'", *path);
 
     auto state = std::tuple(prev_, ahead_, lexer_);
-    auto lexer = Lexer(world(), is, path, md);
+    auto lexer = Lexer(driver(), is, path, md);
     lexer_     = &lexer;
     init(path);
     auto mod                        = parse_module();
@@ -100,7 +100,7 @@ void Parser::parse_plugin() {
 Dbg Parser::parse_id(std::string_view ctxt) {
     if (auto id = accept(Tag::M_id)) return id.dbg();
     syntax_err("identifier", ctxt);
-    return {prev_, world().sym("<error>")};
+    return {prev_, driver().sym("<error>")};
 }
 
 Dbg Parser::parse_name(std::string_view ctxt) {
@@ -108,22 +108,6 @@ Dbg Parser::parse_name(std::string_view ctxt) {
     if (auto tok = accept(Tag::M_id)) return tok.dbg();
     syntax_err("identifier or annex name", ctxt);
     return Dbg(prev_, ast().sym("<error>"));
-}
-
-void Parser::register_annex(Dbg dbg, Ref def) {
-    auto [plugin, tag, sub] = Annex::split(world(), dbg.sym);
-    auto name               = world().sym("%"s + plugin.str() + "."s + tag.str());
-    auto&& [annex, is_new]  = driver().name2annex(name, plugin, tag, dbg.loc);
-    plugin_t p              = *Annex::mangle(plugin);
-    tag_t t                 = annex.tag_id;
-    sub_t s                 = annex.subs.size();
-
-    if (sub) {
-        auto& aliases = annex.subs.emplace_back();
-        aliases.emplace_back(sub);
-    }
-
-    world().register_annex(p | (t << 8) | s, def);
 }
 
 Ptr<Expr> Parser::parse_type_ascr(std::string_view ctxt) {
@@ -231,11 +215,9 @@ Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
             auto tok = lex();
             return ptr<PrimaryExpr>(tok);
         }
+        case Tag::M_lit: return parse_lit_expr();
         case Tag::T_bot:
-        case Tag::T_top:
-        case Tag::L_s:
-        case Tag::L_u:
-        case Tag::L_f:       return parse_lit_expr();
+        case Tag::T_top: return parse_extremum_expr();
         //case Tag::L_c:       return world().lit_i8(lex().lit_c());
         //case Tag::L_i:       return lex().lit_i();
         case Tag::M_anx:
@@ -277,12 +259,20 @@ Ptr<Expr> Parser::parse_block_expr(std::string_view ctxt) {
     return ptr<BlockExpr>(track, /*has_braces*/ ctxt.empty(), std::move(decls), std::move(expr));
 }
 
+Ptr<Expr> Parser::parse_extremum_expr() {
+    auto track  = tracker();
+    auto tag    = lex().tag();
+    auto [_, r] = Tok::prec(Tok::Prec::Lit);
+    auto type   = accept(Tag::T_colon) ? parse_expr("type of "s + Tok::tag2str(tag), r) : Ptr<Expr>();
+    return ptr<ExtremumExpr>(track, tag, std::move(type));
+}
+
 Ptr<Expr> Parser::parse_lit_expr() {
     auto track  = tracker();
     auto value  = lex();
     auto [_, r] = Tok::prec(Tok::Prec::Lit);
     auto type   = accept(Tag::T_colon) ? parse_expr("literal", r) : Ptr<Expr>();
-    return ptr<LitExpr>(track, value, std::move(type));
+    return ptr<LitExpr>(track, value.dbg(), std::move(type));
 }
 
 Ptr<Expr> Parser::parse_sigma_expr() { return ptr<SigmaExpr>(parse_tuple_ptrn(false, Dbg(ahead().loc(), Sym()))); }
@@ -601,11 +591,11 @@ Ptr<Decl> Parser::parse_axiom_decl() {
         if (auto tok = expect(Tag::M_id, "normalizer of an axiom")) normalizer = tok.dbg();
     }
 
-    std::optional<u64> curry, trip;
+    Dbg curry, trip;
     if (accept(Tag::T_comma)) {
-        if (auto c = expect(Tag::L_u, "curry counter for axiom")) curry = c.lit_u();
+        if (auto c = expect(Tag::M_lit, "curry counter for axiom")) curry = c.dbg();
         if (accept(Tag::T_comma)) {
-            if (auto t = expect(Tag::L_u, "trip count for axiom")) trip = t.lit_u();
+            if (auto t = expect(Tag::M_lit, "trip count for axiom")) trip = t.dbg();
         }
     }
 
