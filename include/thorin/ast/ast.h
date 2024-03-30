@@ -356,15 +356,17 @@ public:
         Ptr<Expr> filter_;
     };
 
-    LamExpr(Loc loc, Tok::Tag tag, Dbg dbg, Ptrs<Dom>&& doms, Ptr<Expr>&& codom, Ptr<Expr>&& body)
+    LamExpr(Loc loc, Tok::Tag tag, bool is_external, Dbg dbg, Ptrs<Dom>&& doms, Ptr<Expr>&& codom, Ptr<Expr>&& body)
         : Expr(loc)
         , tag_(tag)
+        , is_external_(is_external)
         , dbg_(dbg)
         , doms_(std::move(doms))
         , codom_(std::move(codom))
         , body_(std::move(body)) {}
 
     Tok::Tag tag() const { return tag_; }
+    bool is_external() const { return is_external_; }
     Dbg dbg() const { return dbg_; }
     const auto& doms() const { return doms_; }
     const Dom* dom(size_t i) const { return doms_[i].get(); }
@@ -375,6 +377,7 @@ public:
 
 private:
     Tok::Tag tag_;
+    bool is_external_;
     Dbg dbg_;
     Ptrs<Dom> doms_;
     Ptr<Expr> codom_;

@@ -332,9 +332,10 @@ Ptr<PiExpr> Parser::parse_pi_expr() {
 }
 
 Ptr<LamExpr> Parser::parse_lam_expr() {
-    auto track = tracker();
-    auto tag   = lex().tag();
-    auto prec  = tag == Tag::K_cn || tag == Tag::K_con ? Tok::Prec::Bot : Tok::Prec::Pi;
+    auto track    = tracker();
+    auto tag      = lex().tag();
+    auto prec     = tag == Tag::K_cn || tag == Tag::K_con ? Tok::Prec::Bot : Tok::Prec::Pi;
+    bool external = (bool)accept(Tag::K_extern);
 
     bool decl;
     std::string entity;
@@ -382,7 +383,7 @@ Ptr<LamExpr> Parser::parse_lam_expr() {
 
     // if (is_decl) expect(Tag::T_semicolon, "end of "s + entity);
 
-    return ptr<LamExpr>(track, tag, dbg, std::move(doms), std::move(codom), std::move(body));
+    return ptr<LamExpr>(track, tag, external, dbg, std::move(doms), std::move(codom), std::move(body));
 }
 
 Ptr<Expr> Parser::parse_ret_expr() {
