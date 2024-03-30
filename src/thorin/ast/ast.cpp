@@ -8,6 +8,8 @@
 
 #include "thorin/ast/scopes.h"
 
+#include "fe/assert.h"
+
 namespace thorin::ast {
 
 AST::AST(World& world)
@@ -20,18 +22,25 @@ Sym AST::sym(std::string_view s) { return driver().sym(s); }
 Sym AST::sym(const std::string& s) { return driver().sym(s); }
 
 /*
- * Ptrn::expr
+ * Ptrn::to_expr/to_ptrn
  */
 
-Ptr<Expr> Ptrn::expr(AST& ast, Ptr<Ptrn>&& ptrn) {
-    if (auto id_ptrn = ptrn->isa<IdPtrn>()) {
-        return ast.ptr<IdExpr>(id_ptrn->dbg());
-    } else if (auto tuple_ptrn = ptrn->isa<TuplePtrn>(); tuple_ptrn && tuple_ptrn->is_brckt()) {
+Ptr<Expr> Ptrn::to_expr(AST& ast, Ptr<Ptrn>&& ptrn) {
+    if (auto id = ptrn->isa<IdPtrn>()) {
+        return ast.ptr<IdExpr>(id->dbg());
+    } else if (auto tuple = ptrn->isa<TuplePtrn>(); tuple && tuple->is_brckt()) {
         (void)ptrn.release();
-        return ast.ptr<SigmaExpr>(Ptr<TuplePtrn>(tuple_ptrn));
+        return ast.ptr<SigmaExpr>(Ptr<TuplePtrn>(tuple));
     }
-    // ptrn.get_deleter()(ptrn.release());
-    return {};
+    fe::unreachable();
+}
+
+Ptr<Ptrn> Ptrn::to_ptrn(AST& ast, Ptr<Expr>&& expr) {
+    if (auto id = expr->isa<IdExpr>())
+        return ast.ptr<IdPtrn>(id->loc(), false, id->dbg(), Ptr<Expr>());
+    else if (auto sigma = expr->isa<SigmaExpr>())
+        return std::move(const_cast<SigmaExpr*>(sigma)->ptrn_); // TODO get rid off const_cast
+    fe::unreachable();
 }
 
 #if 0

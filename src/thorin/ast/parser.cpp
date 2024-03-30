@@ -274,7 +274,7 @@ Ptr<Expr> Parser::parse_block_expr(std::string_view ctxt) {
     auto decls = parse_decls();
     auto expr  = parse_expr("final expression in a "s + (ctxt.empty() ? "block expressoin"s : std::string(ctxt)));
     if (ctxt.empty()) expect(Tag::D_brace_r, "block expression");
-    return ptr<BlockExpr>(track, std::move(decls), std::move(expr));
+    return ptr<BlockExpr>(track, /*has_braces*/ ctxt.empty(), std::move(decls), std::move(expr));
 }
 
 Ptr<Expr> Parser::parse_lit_expr() {
@@ -354,19 +354,18 @@ Ptr<LamExpr> Parser::parse_lam_expr() {
     Ptrs<LamExpr::Dom> doms;
     do {
         auto track    = tracker();
-        auto bang     = accept(Tag::T_bang);
-        auto filter   = bang ? ptr<PrimaryExpr>(bang) : Ptr<Expr>();
+        bool bang     = (bool)accept(Tag::T_bang);
         bool implicit = (bool)accept(Tag::T_dot);
         auto ptrn     = parse_ptrn(Tag::D_paren_l, "domain pattern of a "s + entity, prec);
 
+        Ptr<Expr> filter;
         if (auto tok = accept(Tag::T_at)) {
-            if (filter) error(tok.loc(), "filter already specified via '!'");
             expect(Tag::D_paren_l, "opening parenthesis of a filter");
             filter = parse_expr("filter");
             expect(Tag::D_paren_r, "closing parenthesis of a filter");
         }
 
-        doms.emplace_back(ptr<LamExpr::Dom>(track, implicit, std::move(ptrn), std::move(filter)));
+        doms.emplace_back(ptr<LamExpr::Dom>(track, bang, implicit, std::move(ptrn), std::move(filter)));
     } while (!ahead().isa(Tag::T_colon) && !ahead().isa(Tag::T_assign) && !ahead().isa(Tag::T_semicolon));
 
     auto codom = (tag != Tag::K_cn && tag != Tag::K_con)
@@ -521,14 +520,19 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn(bool rebind, Dbg dbg) {
         } else {
             ptrn = parse_ptrn(delim_l, "element of a tuple pattern");
 
-            if (b)
-            // If we are able to parse more stuff, we got an expr instead of a binder:
-            // [..., [.Nat, .Nat] -> .Nat, ...] ==> [..., _: [.Nat, .Nat] -> .Nat, ...]
-#if 0
-                if (auto new_expr = parse_infix_expr(track, std::move(expr)); new_expr != expr)
-                    ptrn = ptr<IdPtrn>(expr);
-#endif
-                assert(false && "TODO");
+            if (b) {
+                // If we are able to parse more stuff, we got an expr instead of a binder:
+                // [..., [.Nat, .Nat] -> .Nat, ...] ==> [..., _: [.Nat, .Nat] -> .Nat, ...]
+                auto expr = Ptrn::to_expr(ast(), std::move(ptrn));
+                auto addr = expr.get();
+                expr      = parse_infix_expr(track, std::move(expr));
+                if (expr.get() != addr) {
+                    auto loc = expr->loc();
+                    ptrn     = ptr<IdPtrn>(loc, false, Dbg(loc.anew_begin(), Sym()), std::move(expr));
+                } else {
+                    ptrn = Ptrn::to_ptrn(ast(), std::move(expr));
+                }
+            }
         }
 
         ptrns.emplace_back(std::move(ptrn));
@@ -548,7 +552,7 @@ Ptrs<Decl> Parser::parse_decls() {
         // clang-format off
         switch (ahead().tag()) {
             case Tag::T_semicolon: lex(); break; // eat up stray semicolons
-            //case Tag::K_ax:        parse_ax_decl();    break;
+            case Tag::K_ax:        decls.emplace_back(parse_axiom_decl()); break;
             case Tag::K_let:       decls.emplace_back(parse_let_decl());   break;
             case Tag::K_Sigma:     decls.emplace_back(parse_sigma_decl()); break;
             case Tag::K_Pi:        decls.emplace_back(parse_pi_decl());    break;
@@ -561,43 +565,41 @@ Ptrs<Decl> Parser::parse_decls() {
     }
 }
 
-#if 0
 Ptr<Decl> Parser::parse_axiom_decl() {
     auto track = tracker();
     eat(Tag::K_ax);
-    auto dbg = expect(Tag::M_anx, "annex name of an axiom").dbg();
+    Dbg dbg, normalizer;
+    if (auto name = expect(Tag::M_anx, "annex name of an axiom"))
+        dbg = name.dbg();
+    else
+        dbg = Dbg(prev_, ast().sym("<error annex name>"));
 
-    std::deque<std::deque<Dbg>> new_subs;
+    std::deque<Dbgs> subs;
     if (ahead().isa(Tag::D_paren_l)) {
         parse_list("tag list of an axiom", Tag::D_paren_l, [&]() {
-            auto& aliases = new_subs.emplace_back();
-            auto [_, tag] = parse_id("tag of an axiom");
-            aliases.emplace_back(tag);
-            while (accept(Tag::T_assign)) {
-                auto [_, alias] = parse_id("alias of an axiom tag");
-                aliases.emplace_back(alias);
-            }
+            auto& aliases = subs.emplace_back();
+            aliases.emplace_back(parse_id("tag of an axiom"));
+            while (accept(Tag::T_assign)) aliases.emplace_back(parse_id("alias of an axiom tag"));
         });
     }
 
     auto type = parse_type_ascr("type ascription of an axiom");
 
-    Dbg normalizer;
-    if (ahead().isa(Tag::T_comma) && ahead(1).isa(Tag::M_id)) {
-        lex();
-        normalizer = parse_id("normalizer of an axiom").sym;
-    }
-
     if (accept(Tag::T_comma)) {
-        auto c = expect(Tag::L_u, "curry counter for axiom");
-        curry = c.lit_u();
+        if (auto tok = expect(Tag::M_id, "normalizer of an axiom")) normalizer = tok.dbg();
     }
 
-    if (accept(Tag::T_comma)) trip = expect(Tag::L_u, "trip count for axiom").lit_u();
+    std::optional<u64> curry, trip;
+    if (accept(Tag::T_comma)) {
+        if (auto c = expect(Tag::L_u, "curry counter for axiom")) curry = c.lit_u();
+        if (accept(Tag::T_comma)) {
+            if (auto t = expect(Tag::L_u, "trip count for axiom")) trip = t.lit_u();
+        }
+    }
 
     expect(Tag::T_semicolon, "end of an axiom");
+    return ptr<AxiomDecl>(track, dbg, std::move(subs), std::move(type), normalizer, curry, trip);
 }
-#endif
 
 Ptr<Decl> Parser::parse_let_decl() {
     auto track = tracker();

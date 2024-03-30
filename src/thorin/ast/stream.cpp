@@ -30,7 +30,6 @@ template<class T> struct R {
 void Node::dump() const {
     Tab tab;
     stream(tab, std::cout) << std::endl;
-    ;
 }
 
 /*
@@ -66,13 +65,17 @@ std::ostream& LitExpr::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& BlockExpr::stream(Tab& tab, std::ostream& os) const {
-    tab++.println(os, "{{");
-    for (auto sep = ""; const auto& decl : decls()) {
-        decl->stream(tab, os << sep);
-        sep = "\n";
+    if (!has_braces() && num_decls() == 0) {
+        if (expr()) return expr()->stream(tab, os);
+        return os << "<empty block>";
     }
-    if (expr()) expr()->stream(tab, os);
-    return tab--.println(os, "}}");
+
+    if (has_braces()) println(os, "{{");
+    ++tab;
+    for (const auto& decl : decls()) tab.println(os, "{}", S(tab, decl.get()));
+    if (expr()) tab.println(os, "{}", S(tab, expr()));
+    if (has_braces()) (--tab).print(os, "}}");
+    return os;
 }
 
 std::ostream& TypeExpr ::stream(Tab& tab, std::ostream& os) const { return print(os, "(.Type {})", S(tab, level())); }
@@ -80,17 +83,25 @@ std::ostream& SimplePiExpr::stream(Tab& tab, std::ostream& os) const {
     return print(os, "{} -> {}", S(tab, dom()), S(tab, codom()));
 }
 std::ostream& PiExpr::Dom ::stream(Tab& tab, std::ostream& os) const {
-    return print(os, "{}{}", implicit() ? "." : "", S(tab, ptrn()));
+    return print(os, "{}{}", is_implicit() ? "." : "", S(tab, ptrn()));
 }
-std::ostream& PiExpr ::stream(Tab& tab, std::ostream& os) const {
+std::ostream& PiExpr::stream(Tab& tab, std::ostream& os) const {
     return print(os, "{}{} -> {}", tag(), R(tab, doms()), S(tab, codom()));
 }
 
-std::ostream& LamExpr::Dom ::stream(Tab& tab, std::ostream& os) const {
-    return print(PiExpr::Dom::stream(tab, os), "@({})", filter());
+std::ostream& LamExpr::Dom::stream(Tab& tab, std::ostream& os) const {
+    if (has_bang()) os << '!';
+    PiExpr::Dom::stream(tab, os);
+    if (filter()) print(os, "@({})", filter());
+    return os;
 }
 std::ostream& LamExpr::stream(Tab& tab, std::ostream& os) const {
-    return print(os, "{}{} -> {} = {}", tag(), R(tab, doms()), S(tab, codom()), S(tab, body()));
+    os << tag() << ' ';
+    if (dbg()) os << dbg();
+    print(os, "{}", R(tab, doms()));
+    if (codom()) print(os, ": {}", S(tab, codom()));
+    if (body()) print(os, " = {}", S(tab, body()));
+    return os;
 }
 
 std::ostream& AppExpr::stream(Tab& tab, std::ostream& os) const {
@@ -129,8 +140,25 @@ std::ostream& LetDecl::stream(Tab& tab, std::ostream& os) const {
     return print(os, ".let {} = {};", S(tab, ptrn()), S(tab, value()));
 }
 
+std::ostream& AxiomDecl::stream(Tab& tab, std::ostream& os) const {
+    print(os, ".ax {}", dbg());
+    if (num_subs() != 0) {
+        os << '(';
+        for (auto sep = ""; const auto& aliases : subs()) {
+            print(os, "{}{ = }", sep, aliases);
+            sep = ", ";
+        }
+        os << ')';
+    }
+    print(os, ": {}", S(tab, type()));
+    if (normalizer()) print(os, ", {}", normalizer());
+    if (curry()) print(os, ", {}", *curry());
+    if (trip()) print(os, ", {}", *trip());
+    return os << ";";
+}
+
 std::ostream& PiDecl::stream(Tab& /*tab*/, std::ostream& os) const { return print(os, ".Pi"); }
-std::ostream& LamDecl::stream(Tab& tab, std::ostream& os) const { return lam()->stream(tab, os); }
+std::ostream& LamDecl::stream(Tab& tab, std::ostream& os) const { return print(os, "{};", S(tab, lam())); }
 std::ostream& SigmaDecl::stream(Tab& /*tab*/, std::ostream& os) const { return print(os, ".Sigma"); }
 
 /*

@@ -2,6 +2,7 @@
 
 #include <deque>
 #include <memory>
+#include <optional>
 
 #include "thorin/def.h"
 
@@ -90,7 +91,8 @@ public:
     Ptrn(Loc loc)
         : Node(loc) {}
 
-    [[nodiscard]] static Ptr<Expr> expr(AST&, Ptr<Ptrn>&&);
+    [[nodiscard]] static Ptr<Expr> to_expr(AST&, Ptr<Ptrn>&&);
+    [[nodiscard]] static Ptr<Ptrn> to_ptrn(AST&, Ptr<Expr>&&);
     // virtual void bind(Scopes&, const Def*, bool rebind = false) const = 0;
     // virtual const Def* type(World&, Def2Fields&) const                = 0;
 };
@@ -234,11 +236,13 @@ private:
 /// `{ decl_0 ... decl_n-1 e }` or `decl_0 ... decl_n-1` (used internaly)
 class BlockExpr : public Expr {
 public:
-    BlockExpr(Loc loc, Ptrs<Decl>&& decls, Ptr<Expr>&& expr)
+    BlockExpr(Loc loc, bool has_braces, Ptrs<Decl>&& decls, Ptr<Expr>&& expr)
         : Expr(loc)
+        , has_braces_(has_braces)
         , decls_(std::move(decls))
         , expr_(std::move(expr)) {}
 
+    bool has_braces() const { return has_braces_; }
     const auto& decls() const { return decls_; }
     const Decl* decl(size_t i) const { return decls_[i].get(); }
     size_t num_decls() const { return decls_.size(); }
@@ -246,6 +250,7 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
+    bool has_braces_;
     Ptrs<Decl> decls_;
     Ptr<Expr> expr_;
 };
@@ -292,17 +297,17 @@ class PiExpr : public Expr {
 public:
     class Dom : public Node {
     public:
-        Dom(Loc loc, bool implicit, Ptr<Ptrn>&& ptrn)
+        Dom(Loc loc, bool is_implicit, Ptr<Ptrn>&& ptrn)
             : Node(loc)
-            , implicit_(implicit)
+            , is_implicit_(is_implicit)
             , ptrn_(std::move(ptrn)) {}
 
-        bool implicit() const { return implicit_; }
+        bool is_implicit() const { return is_implicit_; }
         const Ptrn* ptrn() const { return ptrn_.get(); }
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     private:
-        bool implicit_;
+        bool is_implicit_;
         Ptr<Ptrn> ptrn_;
     };
 
@@ -337,14 +342,17 @@ class LamExpr : public Expr {
 public:
     class Dom : public PiExpr::Dom {
     public:
-        Dom(Loc loc, bool implicit, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& filter)
-            : PiExpr::Dom(loc, implicit, std::move(ptrn))
+        Dom(Loc loc, bool has_bang, bool is_implicit, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& filter)
+            : PiExpr::Dom(loc, is_implicit, std::move(ptrn))
+            , has_bang_(has_bang)
             , filter_(std::move(filter)) {}
 
+        bool has_bang() const { return has_bang_; }
         const Expr* filter() const { return filter_.get(); }
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     private:
+        bool has_bang_;
         Ptr<Expr> filter_;
     };
 
@@ -360,6 +368,7 @@ public:
     Dbg dbg() const { return dbg_; }
     const auto& doms() const { return doms_; }
     const Dom* dom(size_t i) const { return doms_[i].get(); }
+    size_t num_doms() const { return doms_.size(); }
     const Expr* codom() const { return codom_.get(); }
     const Expr* body() const { return body_.get(); }
     std::ostream& stream(Tab&, std::ostream&) const override;
@@ -428,6 +437,8 @@ public:
 
 private:
     Ptr<TuplePtrn> ptrn_;
+
+    friend Ptr<Ptrn> Ptrn::to_ptrn(AST&, Ptr<Expr>&&);
 };
 
 /// `(elem_0, ..., elem_n-1)`
@@ -531,17 +542,40 @@ private:
     Ptr<Expr> value_;
 };
 
-/// `.let ptrn: type = value;`
+/// `.ax ptrn: type = value;`
 class AxiomDecl : public Decl {
 public:
-    AxiomDecl(Loc loc, Dbg dbg)
+    AxiomDecl(Loc loc,
+              Dbg dbg,
+              std::deque<Dbgs>&& subs,
+              Ptr<Expr>&& type,
+              Dbg normalizer,
+              std::optional<u64> curry,
+              std::optional<u64> trip)
         : Decl(loc)
-        , dbg_(dbg) {}
+        , dbg_(dbg)
+        , subs_(std::move(subs))
+        , type_(std::move(type))
+        , normalizer_(normalizer)
+        , curry_(curry)
+        , trip_(trip) {}
 
     Dbg dbg() const { return dbg_; }
+    const auto& subs() const { return subs_; }
+    size_t num_subs() const { return subs_.size(); }
+    const auto& sub(size_t i) const { return subs_[i]; }
+    const Expr* type() const { return type_.get(); }
+    Dbg normalizer() const { return normalizer_; }
+    std::optional<u64> curry() const { return curry_; }
+    std::optional<u64> trip() const { return trip_; }
+    std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Dbg dbg_;
+    std::deque<Dbgs> subs_;
+    Ptr<Expr> type_;
+    Dbg normalizer_;
+    std::optional<u64> curry_, trip_;
 };
 
 /// `.Pi dbg: type = body´
