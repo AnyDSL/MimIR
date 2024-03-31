@@ -22,9 +22,9 @@ target_sources(libthorin
         analyses/scope.cpp
         be/h/bootstrap.cpp
         ast/ast.cpp
+        ast/bind.cpp
         ast/lexer.cpp
         ast/parser.cpp
-        ast/scopes.cpp
         ast/stream.cpp
         ast/tok.cpp
         pass/beta_red.cpp

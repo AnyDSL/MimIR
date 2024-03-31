@@ -6,10 +6,6 @@
 #include "thorin/rewrite.h"
 #include "thorin/world.h"
 
-#include "thorin/ast/scopes.h"
-
-#include "fe/assert.h"
-
 namespace thorin::ast {
 
 /*
@@ -32,23 +28,9 @@ Ptr<Ptrn> Ptrn::to_ptrn(Ptr<Expr>&& expr) {
     return {};
 }
 
+void Module::compile() const { bind(); }
+
 #if 0
-/*
- * bind
- */
-
-void IdPtrn::bind(Scopes& scopes, const Def* def, bool rebind) const {
-    scopes.bind(dbg(), def, rebind || this->rebind());
-}
-
-void TuplePtrn::bind(Scopes& scopes, const Def* def, bool rebind) const {
-    scopes.bind(dbg(), def, rebind || this->rebind());
-    for (size_t i = 0, e = num_ptrns(); i != e; ++i) {
-        auto proj = def->proj(e, i)->set(ptrn(i)->loc(), ptrn(i)->sym());
-        ptrn(i)->bind(scopes, proj, rebind);
-    }
-}
-
 /*
  * type
  */

@@ -55,7 +55,7 @@ std::ostream& TuplePtrn::stream(Tab& tab, std::ostream& os) const {
 }
 
 /*
- * Ptrn
+ * Expr
  */
 
 std::ostream& IdExpr::stream(Tab&, std::ostream& os) const { return print(os, "{}", dbg()); }

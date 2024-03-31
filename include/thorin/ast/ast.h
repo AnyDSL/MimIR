@@ -12,9 +12,9 @@
 
 #include "thorin/ast/tok.h"
 
-namespace thorin {
+namespace thorin::ast {
 
-namespace ast {
+class Scopes;
 
 template<class T> using Ptr  = fe::Arena::Ptr<const T>;
 template<class T> using Ptrs = std::deque<Ptr<T>>;
@@ -57,8 +57,9 @@ protected:
 public:
     Loc loc() const { return loc_; }
 
-    void dump() const;
+    virtual void bind(Scopes&) const                        = 0;
     virtual std::ostream& stream(Tab&, std::ostream&) const = 0;
+    void dump() const;
 
 private:
     Loc loc_;
@@ -80,15 +81,14 @@ protected:
  * Ptrn
  */
 
-class Ptrn : public Node {
+class Ptrn : public Decl {
 public:
     Ptrn(Loc loc)
-        : Node(loc) {}
+        : Decl(loc) {}
 
+    // virtual const Def* type(World&, Def2Fields&) const                = 0;
     [[nodiscard]] static Ptr<Expr> to_expr(AST&, Ptr<Ptrn>&&);
     [[nodiscard]] static Ptr<Ptrn> to_ptrn(Ptr<Expr>&&);
-    // virtual void bind(Scopes&, const Def*, bool rebind = false) const = 0;
-    // virtual const Def* type(World&, Def2Fields&) const                = 0;
 };
 
 /// `dbg: type`
@@ -111,6 +111,7 @@ public:
 
     // void bind(Scopes&, const Def*, bool rebind = false) const override {}
     // const Def* type(World&, Def2Fields&) const override {}
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -139,6 +140,7 @@ public:
 
     // void bind(Scopes&, const Def*, bool rebind = false) const override {}
     // const Def* type(World&, Def2Fields&) const override {}
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -169,6 +171,7 @@ public:
 
     // void bind(Scopes&, const Def*, bool rebind = false) const override {}
     // const Def* type(World&, Def2Fields&) const override {}
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -190,10 +193,14 @@ public:
         , dbg_(dbg) {}
 
     Dbg dbg() const { return dbg_; }
+    const Decl* decl() const { return decl_; }
+
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Dbg dbg_;
+    mutable const Decl* decl_ = nullptr;
 };
 
 /// `tag`
@@ -204,6 +211,8 @@ public:
         , tag_(tok.tag()) {}
 
     Tok::Tag tag() const { return tag_; }
+
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -220,6 +229,8 @@ public:
 
     Dbg value() const { return value_; }
     const Expr* type() const { return type_.get(); }
+
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -237,11 +248,12 @@ public:
 
     Tok::Tag tag() const { return tag_; }
     const Expr* type() const { return type_.get(); }
+
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Tok::Tag tag_;
-    ;
     Ptr<Expr> type_;
 };
 
@@ -259,6 +271,8 @@ public:
     const Decl* decl(size_t i) const { return decls_[i].get(); }
     size_t num_decls() const { return decls_.size(); }
     const Expr* expr() const { return expr_.get(); }
+
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -275,6 +289,8 @@ public:
         , level_(std::move(level)) {}
 
     const Expr* level() const { return level_.get(); }
+
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -294,6 +310,8 @@ public:
 private:
     const Expr* dom() const { return dom_.get(); }
     const Expr* codom() const { return codom_.get(); }
+
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -316,6 +334,8 @@ public:
 
         bool is_implicit() const { return is_implicit_; }
         const Ptrn* ptrn() const { return ptrn_.get(); }
+
+        void bind(Scopes&) const override;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     private:
@@ -335,6 +355,8 @@ private:
     const Dom* dom(size_t i) const { return doms_[i].get(); }
     size_t num_doms() const { return doms_.size(); }
     const Expr* codom() const { return codom_.get(); }
+
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -361,6 +383,8 @@ public:
 
         bool has_bang() const { return has_bang_; }
         const Expr* filter() const { return filter_.get(); }
+
+        void bind(Scopes&) const override;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     private:
@@ -385,6 +409,8 @@ public:
     size_t num_doms() const { return doms_.size(); }
     const Expr* codom() const { return codom_.get(); }
     const Expr* body() const { return body_.get(); }
+
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -408,6 +434,8 @@ public:
     bool is_explicit() const { return is_explicit_; }
     const Expr* callee() const { return callee_.get(); }
     const Expr* arg() const { return arg_.get(); }
+
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -430,6 +458,8 @@ public:
     const Expr* callee() const { return callee_.get(); }
     const Expr* arg() const { return arg_.get(); }
     const Expr* body() const { return body_.get(); }
+
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -448,6 +478,8 @@ public:
         , ptrn_(std::move(ptrn)) {}
 
     const Ptrn* ptrn() const { return ptrn_.get(); }
+
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -466,6 +498,8 @@ public:
     const auto& elems() const { return elems_; }
     const Expr* elem(size_t i) const { return elems_[i].get(); }
     size_t num_elems() const { return elems().size(); }
+
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -484,6 +518,8 @@ public:
     Dbg dbg() const { return dbg_; }
     const Expr* shape() const { return shape_.get(); }
     const Expr* body() const { return body_.get(); }
+
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -509,6 +545,8 @@ public:
 
     const Expr* tuple() const { return tuple_.get(); }
     const auto& index() const { return index_; }
+
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -528,6 +566,8 @@ public:
     const Expr* tuple() const { return tuple_.get(); }
     const Expr* index() const { return index_.get(); }
     const Expr* value() const { return value_.get(); }
+
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -550,6 +590,8 @@ public:
 
     const Ptrn* ptrn() const { return ptrn_.get(); }
     const Expr* value() const { return value_.get(); }
+
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -577,6 +619,8 @@ public:
     Dbg normalizer() const { return normalizer_; }
     Dbg curry() const { return curry_; }
     Dbg trip() const { return trip_; }
+
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -599,6 +643,8 @@ public:
     Dbg dbg() const { return dbg_; }
     const Expr* type() const { return type_.get(); }
     const Expr* body() const { return body_.get(); }
+
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -615,6 +661,8 @@ public:
         , lam_(std::move(lam)) {}
 
     const LamExpr* lam() const { return lam_.get(); }
+
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -632,6 +680,8 @@ public:
 
     const Expr* type() const { return type_.get(); }
     const Expr* body() const { return body_.get(); }
+
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -653,11 +703,15 @@ public:
     const auto& decls() const { return decls_; }
     const Decl* decl(size_t i) const { return decls_[i].get(); }
     size_t num_decls() const { return decls_.size(); }
+
+    void compile() const;
+    void bind() const;
+
+    void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Ptrs<Decl> decls_;
 };
 
-} // namespace ast
-} // namespace thorin
+} // namespace thorin::ast

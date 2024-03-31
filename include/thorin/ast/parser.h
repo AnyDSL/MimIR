@@ -4,7 +4,6 @@
 
 #include "thorin/ast/ast.h"
 #include "thorin/ast/lexer.h"
-#include "thorin/ast/scopes.h"
 
 namespace thorin::ast {
 
