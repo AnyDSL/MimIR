@@ -37,9 +37,12 @@ void Node::dump() const {
  */
 
 std::ostream& IdPtrn::stream(Tab& tab, std::ostream& os) const {
-    os << dbg();
-    if (type()) print(os, ": {}", S(tab, type()));
-    return os;
+    // clang-format off
+    if ( dbg() &&  type()) return print(os, "{}: {}", dbg(), S(tab, type()));
+    if ( dbg() && !type()) return print(os, "{}", dbg());
+    if (!dbg() &&  type()) return print(os, "{}", S(tab, type()));
+    // clang-format on
+    return os << "<invalid identifier pattern>";
 }
 
 std::ostream& GroupPtrn::stream(Tab& tab, std::ostream& os) const {
@@ -76,11 +79,13 @@ std::ostream& BlockExpr::stream(Tab& tab, std::ostream& os) const {
         return os << "<empty block>";
     }
 
-    if (has_braces()) println(os, "{{");
+    if (has_braces()) os << '{';
+    os << std::endl;
     ++tab;
     for (const auto& decl : decls()) tab.println(os, "{}", S(tab, decl.get()));
-    if (expr()) tab.println(os, "{}", S(tab, expr()));
-    if (has_braces()) (--tab).print(os, "}}");
+    if (expr()) tab.print(os, "{}", S(tab, expr()));
+    --tab;
+    if (has_braces()) tab.print(os << std::endl, "}}");
     return os;
 }
 
@@ -104,6 +109,7 @@ std::ostream& LamExpr::Dom::stream(Tab& tab, std::ostream& os) const {
 std::ostream& LamExpr::stream(Tab& tab, std::ostream& os) const {
     os << tag() << ' ';
     if (dbg()) os << dbg();
+    if (num_doms() > 0 && !doms().front()->ptrn()->isa<TuplePtrn>()) os << ' ';
     print(os, "{}", R(tab, doms()));
     if (codom()) print(os, ": {}", S(tab, codom()));
     if (body()) print(os, " = {}", S(tab, body()));
@@ -120,7 +126,7 @@ std::ostream& RetExpr::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& SigmaExpr::stream(Tab& tab, std::ostream& os) const { return ptrn()->stream(tab, os); }
-std::ostream& TupleExpr::stream(Tab& tab, std::ostream& os) const { return print(os, "({, }", R(tab, elems())); }
+std::ostream& TupleExpr::stream(Tab& tab, std::ostream& os) const { return print(os, "({, })", R(tab, elems())); }
 
 template<bool arr> std::ostream& ArrOrPackExpr<arr>::stream(Tab& tab, std::ostream& os) const {
     return print(os, "{}{}; {}{}", arr ? "«" : "‹", S(tab, shape()), S(tab, body()), arr ? "»" : "›");

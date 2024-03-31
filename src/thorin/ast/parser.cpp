@@ -525,14 +525,15 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn(bool rebind, Dbg dbg) {
             if (b) {
                 // If we are able to parse more stuff, we got an expr instead of a binder:
                 // [..., [.Nat, .Nat] -> .Nat, ...] ==> [..., _: [.Nat, .Nat] -> .Nat, ...]
-                auto expr = Ptrn::to_expr(ast(), std::move(ptrn));
-                auto addr = expr.get();
-                expr      = parse_infix_expr(track, std::move(expr));
-                if (expr.get() != addr) {
-                    auto loc = expr->loc();
-                    ptrn     = ptr<IdPtrn>(loc, false, Dbg(loc.anew_begin(), Sym()), std::move(expr));
-                } else {
-                    ptrn = Ptrn::to_ptrn(ast(), std::move(expr));
+                if (auto expr = Ptrn::to_expr(ast(), std::move(ptrn))) {
+                    auto addr = expr.get();
+                    expr      = parse_infix_expr(track, std::move(expr));
+                    if (expr.get() != addr) {
+                        auto loc = expr->loc();
+                        ptrn     = ptr<IdPtrn>(loc, false, Dbg(loc.anew_begin(), Sym()), std::move(expr));
+                    } else {
+                        if (!ptrn) ptrn = Ptrn::to_ptrn(std::move(expr));
+                    }
                 }
             }
         }

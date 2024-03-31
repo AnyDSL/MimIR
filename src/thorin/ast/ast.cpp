@@ -17,21 +17,19 @@ namespace thorin::ast {
  */
 
 Ptr<Expr> Ptrn::to_expr(AST& ast, Ptr<Ptrn>&& ptrn) {
-    if (auto id = ptrn->isa<IdPtrn>()) {
-        return ast.ptr<IdExpr>(id->dbg());
+    if (auto idp = ptrn->isa<IdPtrn>(); idp && !idp->dbg() && idp->type()) {
+        if (auto ide = idp->type()->isa<IdExpr>()) return ast.ptr<IdExpr>(ide->dbg());
     } else if (auto tuple = ptrn->isa<TuplePtrn>(); tuple && tuple->is_brckt()) {
         (void)ptrn.release();
         return ast.ptr<SigmaExpr>(Ptr<TuplePtrn>(tuple));
     }
-    fe::unreachable();
+    return {};
 }
 
-Ptr<Ptrn> Ptrn::to_ptrn(AST& ast, Ptr<Expr>&& expr) {
-    if (auto id = expr->isa<IdExpr>())
-        return ast.ptr<IdPtrn>(id->loc(), false, id->dbg(), Ptr<Expr>());
-    else if (auto sigma = expr->isa<SigmaExpr>())
+Ptr<Ptrn> Ptrn::to_ptrn(Ptr<Expr>&& expr) {
+    if (auto sigma = expr->isa<SigmaExpr>())
         return std::move(const_cast<SigmaExpr*>(sigma)->ptrn_); // TODO get rid off const_cast
-    fe::unreachable();
+    return {};
 }
 
 #if 0

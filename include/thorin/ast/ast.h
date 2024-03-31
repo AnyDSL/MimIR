@@ -86,7 +86,7 @@ public:
         : Node(loc) {}
 
     [[nodiscard]] static Ptr<Expr> to_expr(AST&, Ptr<Ptrn>&&);
-    [[nodiscard]] static Ptr<Ptrn> to_ptrn(AST&, Ptr<Expr>&&);
+    [[nodiscard]] static Ptr<Ptrn> to_ptrn(Ptr<Expr>&&);
     // virtual void bind(Scopes&, const Def*, bool rebind = false) const = 0;
     // virtual const Def* type(World&, Def2Fields&) const                = 0;
 };
@@ -453,7 +453,7 @@ public:
 private:
     Ptr<TuplePtrn> ptrn_;
 
-    friend Ptr<Ptrn> Ptrn::to_ptrn(AST&, Ptr<Expr>&&);
+    friend Ptr<Ptrn> Ptrn::to_ptrn(Ptr<Expr>&&);
 };
 
 /// `(elem_0, ..., elem_n-1)`
