@@ -66,6 +66,7 @@ std::ostream& ReturnPtrn::stream(Tab& tab, std::ostream& os) const {
 
 std::ostream& IdExpr::stream(Tab&, std::ostream& os) const { return print(os, "{}", dbg()); }
 std::ostream& PrimaryExpr::stream(Tab&, std::ostream& os) const { return print(os, "{}", tag()); }
+std::ostream& ErrorExpr::stream(Tab&, std::ostream& os) const { return os << "<error>"; }
 
 std::ostream& LitExpr::stream(Tab& tab, std::ostream& os) const {
     os << value();
@@ -80,22 +81,22 @@ std::ostream& ExtremumExpr::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& BlockExpr::stream(Tab& tab, std::ostream& os) const {
-    if (!has_braces() && decls_.num_decls() == 0) {
-        if (expr()) return expr()->stream(tab, os);
-        return os << "<empty block>";
+    if (!has_braces()) {
+        if (decls_.num_decls() == 0) return expr()->stream(tab, os);
+    } else {
+        os << '{';
     }
 
-    if (has_braces()) os << '{';
     os << std::endl;
     ++tab;
     decls_.stream(tab, os);
-    if (expr()) tab.print(os, "{}", S(tab, expr()));
-    --tab;
+    (--tab).print(os, "{}", S(tab, expr()));
     if (has_braces()) tab.print(os << std::endl, "}}");
     return os;
 }
 
 std::ostream& TypeExpr ::stream(Tab& tab, std::ostream& os) const { return print(os, "(.Type {})", S(tab, level())); }
+
 std::ostream& ArrowExpr::stream(Tab& tab, std::ostream& os) const {
     return print(os, "{} -> {}", S(tab, dom()), S(tab, codom()));
 }
@@ -113,8 +114,7 @@ std::ostream& LamExpr::Dom::stream(Tab& tab, std::ostream& os) const {
     return os;
 }
 std::ostream& LamExpr::stream(Tab& tab, std::ostream& os) const {
-    os << tag() << ' ';
-    if (dbg()) os << dbg();
+    print(os, "{} {}", tag(), dbg());
     if (num_doms() > 0 && !doms().front()->ptrn()->isa<TuplePtrn>()) os << ' ';
     print(os, "{}", R(tab, doms()));
     if (codom()) print(os, ": {}", S(tab, codom()));
@@ -148,11 +148,6 @@ std::ostream& ExtractExpr::stream(Tab& tab, std::ostream& os) const {
 
 std::ostream& InsertExpr::stream(Tab& tab, std::ostream& os) const {
     return print(os, ".ins({}, {}, {})", S(tab, tuple()), S(tab, index()), S(tab, value()));
-}
-
-std::ostream& ErrorExpr::stream(Tab& tab, std::ostream& os) const {
-    if (type()) return print(os, "<error:{}>", S(tab, type()));
-    return os << "<error>";
 }
 
 /*

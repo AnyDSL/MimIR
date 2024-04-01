@@ -114,7 +114,7 @@ Ptr<Expr> Parser::parse_type_ascr(std::string_view ctxt) {
     if (accept(Tag::T_colon)) return parse_expr(ctxt, Tok::Prec::Bot);
     if (ctxt.empty()) return nullptr;
     syntax_err("':'", ctxt);
-    return ptr<ErrorExpr>(prev_, ptr<PrimaryExpr>(prev_, Tag::T_star));
+    return ptr<ErrorExpr>(prev_);
 }
 
 /*
@@ -229,7 +229,7 @@ Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
             syntax_err("primary expression", ctxt);
     }
     // clang-format on
-    return nullptr;
+    return ptr<ErrorExpr>(prev_);
 }
 
 template<bool arr> Ptr<Expr> Parser::parse_arr_or_pack_expr() {

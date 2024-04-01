@@ -37,7 +37,7 @@ public:
     }
 
     const Decl* find(Dbg dbg) {
-        if (dbg.sym == '_') return nullptr;
+        if (!dbg || dbg.sym == '_') return nullptr;
 
         for (auto& scope : scopes_ | std::ranges::views::reverse)
             if (auto i = scope.find(dbg.sym); i != scope.end()) return i->second.second;
@@ -48,9 +48,8 @@ public:
     }
 
     void bind(Dbg dbg, const Decl* decl, bool rebind = false) {
-        assert(dbg);
         auto [loc, sym] = dbg;
-        if (sym == '_') return; // don't do anything with '_'
+        if (!sym || sym == '_') return; // don't do anything with '_'
 
         if (rebind) {
             top()[sym] = std::pair(loc, decl);
@@ -99,11 +98,11 @@ void Module::bind(Scopes& s) const { decls_.bind(s); }
 
 void IdPtrn::bind(Scopes& s) const {
     if (type()) type()->bind(s);
-    if (dbg()) s.bind(dbg(), nullptr, rebind());
+    s.bind(dbg(), nullptr, rebind());
 }
 
 void TuplePtrn::bind(Scopes& s) const {
-    if (dbg()) s.bind(dbg(), nullptr, rebind());
+    s.bind(dbg(), nullptr, rebind());
     s.push();
     for (const auto& ptrn : ptrns()) ptrn->bind(s);
     s.pop();
@@ -162,6 +161,10 @@ void LamDecl::bind(Scopes& s) const {
     s.push();
     for (const auto& dom : lam()->doms()) dom->bind(s);
     if (auto codom = lam()->codom()) codom->bind(s);
+    if (lam()->tag() == Tok::Tag::K_fun) {
+        lam()->ret_ = s.ast().ptr<ReturnPtrn>(s.ast(), lam()->codom());
+        lam()->ret_->bind(s);
+    }
     s.pop();
     s.bind(lam()->dbg(), this);
 }
@@ -169,7 +172,7 @@ void LamDecl::bind(Scopes& s) const {
 void LamDecl::bind_rec(Scopes& s) const {
     s.push();
     for (const auto& dom : lam()->doms()) dom->bind(s);
-    if (auto codom = lam()->codom()) codom->bind(s);
+    if (auto ret = lam()->ret()) ret->bind(s);
     body()->bind(s);
     s.pop();
 }

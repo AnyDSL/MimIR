@@ -493,6 +493,7 @@ private:
     Ptr<Expr> codom_;
     Ptr<Expr> body_;
     mutable Ptr<ReturnPtrn> ret_;
+    friend class LamDecl;
 };
 
 /// `callee arg`
@@ -651,17 +652,11 @@ private:
 
 class ErrorExpr : public Expr {
 public:
-    ErrorExpr(Loc loc, Ptr<Expr>&& type)
-        : Expr(loc)
-        , type_(std::move(type)) {}
-
-    const Expr* type() const { return type_.get(); }
+    ErrorExpr(Loc loc)
+        : Expr(loc) {}
 
     void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
-
-private:
-    Ptr<Expr> type_;
 };
 
 /*
