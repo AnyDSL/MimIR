@@ -6,8 +6,12 @@ class Scopes {
 public:
     using Scope = fe::SymMap<std::pair<Loc, const Decl*>>;
 
-    Scopes() { push(); /* root scope */ }
+    Scopes(AST& ast)
+        : ast_(ast) {
+        push(); // root scope
+    }
 
+    AST& ast() const { return ast_; }
     void push() { scopes_.emplace_back(); }
     void pop();
     Scope* curr() { return &scopes_.back(); }
@@ -18,6 +22,7 @@ public:
     void swap(Scope& other) { std::swap(scopes_.back(), other); }
 
 private:
+    AST& ast_;
     std::deque<Scope> scopes_;
 };
 
@@ -36,9 +41,10 @@ const Decl* Scopes::query(Dbg dbg) const {
 }
 
 const Decl* Scopes::find(Dbg dbg) const {
-    if (dbg.sym == '_') error(dbg.loc, "the symbol '_' is special and never binds to anything");
+    if (dbg.sym == '_') ast().error(dbg.loc, "the symbol '_' is special and never binds to anything");
     if (auto res = query(dbg)) return res;
-    error(dbg.loc, "'{}' not found", dbg.sym);
+    ast().error(dbg.loc, "'{}' not found", dbg.sym);
+    return nullptr;
 }
 
 void Scopes::bind(Scope* scope, Dbg dbg, const Decl* decl, bool rebind) {
@@ -50,7 +56,8 @@ void Scopes::bind(Scope* scope, Dbg dbg, const Decl* decl, bool rebind) {
         (*scope)[sym] = std::pair(loc, decl);
     } else if (auto [i, ins] = scope->emplace(sym, std::pair(loc, decl)); !ins) {
         auto prev = i->second.first;
-        error(loc, "redeclaration of '{}'; previous declaration here: {}", sym, prev);
+        ast().error(loc, "redeclaration of '{}'", sym);
+        ast().note(prev, "previous declaration here");
     }
 }
 
@@ -58,13 +65,35 @@ void Scopes::bind(Scope* scope, Dbg dbg, const Decl* decl, bool rebind) {
  * AST
  */
 
-void Module::bind() const {
-    Scopes scopes;
+// clang-format off
+void ExtremumExpr::bind(Scopes& s) const { if ( type())  type()->bind(s); }
+void LitExpr     ::bind(Scopes& s) const { if ( type())  type()->bind(s); }
+void PiDecl      ::bind(Scopes& s) const { if ( type()) type()->bind(s); }
+void SigmaDecl   ::bind(Scopes& s) const { if ( type()) type()->bind(s); }
+void TypeExpr    ::bind(Scopes& s) const { if (level()) level()->bind(s); }
+void IdExpr      ::bind(Scopes& s) const { decl_ = s.find(dbg()); }
+void ErrorExpr   ::bind(Scopes&) const {}
+void PrimaryExpr ::bind(Scopes&) const {}
+void RecDecl     ::bind_rec(Scopes& s) const { body()->bind(s); }
+// clang-format on
+
+void Module::bind(AST& ast) const {
+    auto scopes = Scopes(ast);
     bind(scopes);
 }
 
 void Module::bind(Scopes& s) const {
-    for (const auto& decl : decls()) decl->bind(s);
+    for (size_t i = 0, e = num_decls(), r = 0; true; ++i) {
+        if (decl(i)->isa<RecDecl>()) {
+            if (!decl(r)->isa<RecDecl>()) r = i;
+        } else if (decl(r)->isa<RecDecl>()) {
+            for (size_t j = r; j != i; ++j) decl(j)->as<RecDecl>()->bind_rec(s);
+            r = i;
+        }
+
+        if (i == e) break;
+        decl(i)->bind(s);
+    }
 }
 
 /*
@@ -91,20 +120,6 @@ void GroupPtrn::bind(Scopes& s) const {
 /*
  * Expr
  */
-
-void IdExpr::bind(Scopes& s) const { decl_ = s.find(dbg()); }
-
-void PrimaryExpr::bind(Scopes&) const {}
-
-void LitExpr ::bind(Scopes& s) const {
-    if (type()) type()->bind(s);
-}
-void ExtremumExpr::bind(Scopes& s) const {
-    if (type()) type()->bind(s);
-}
-void TypeExpr ::bind(Scopes& s) const {
-    if (level()) level()->bind(s);
-}
 
 void BlockExpr::bind(Scopes& s) const {
     s.push();
@@ -187,19 +202,12 @@ void LetDecl::bind(Scopes& s) const {
 
 void AxiomDecl::bind(Scopes& s) const { type()->bind(s); }
 
-void PiDecl::bind(Scopes& s) const {
-    if (type()) type()->bind(s);
-    body()->bind(s);
-}
-
 void LamDecl::bind(Scopes& s) const {
+    s.push();
+    for (const auto& dom : lam()->doms()) dom->bind(s);
+    if (auto codom = lam()->codom()) codom->bind(s);
+    s.pop();
     s.bind(lam()->dbg(), this);
-    lam()->bind(s);
-}
-
-void SigmaDecl::bind(Scopes& s) const {
-    if (type()) type()->bind(s);
-    body()->bind(s);
 }
 
 } // namespace thorin::ast

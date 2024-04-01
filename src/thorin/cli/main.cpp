@@ -138,7 +138,8 @@ int main(int argc, char** argv) {
 
         auto path = fs::path(input);
         world.set(path.filename().replace_extension().string());
-        auto parser = ast::Parser(driver);
+        auto ast    = ast::AST(driver);
+        auto parser = ast::Parser(ast);
 #if 0
         parser.import(driver.sym(input), os[Md]);
 
@@ -175,7 +176,7 @@ int main(int argc, char** argv) {
 
         if (os[AST]) {
             auto mod = parser.import(driver.sym(input), os[Md]);
-            mod->compile();
+            mod->compile(ast);
             Tab tab;
             mod->stream(tab, *os[AST]);
         }

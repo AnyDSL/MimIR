@@ -28,7 +28,7 @@ Ptr<Ptrn> Ptrn::to_ptrn(Ptr<Expr>&& expr) {
     return {};
 }
 
-void Module::compile() const { bind(); }
+void Module::compile(AST& ast) const { bind(ast); }
 
 #if 0
 /*

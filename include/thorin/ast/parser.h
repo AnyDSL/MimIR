@@ -29,8 +29,8 @@ constexpr size_t Look_Ahead = 2;
 ///      * If default argument is **provided** we have the same behavior as in 2.
 class Parser : public fe::Parser<Tok, Tok::Tag, Look_Ahead, Parser> {
 public:
-    Parser(Driver& driver)
-        : ast_(driver) {}
+    Parser(AST& ast)
+        : ast_(ast) {}
 
     AST& ast() { return ast_; }
     Driver& driver() { return ast().driver(); }
@@ -117,21 +117,21 @@ private:
     ///@{
     /// Issue an error message of the form:
     /// "expected \<what\>, got '\<tok>\' while parsing \<ctxt\>"
-    [[noreturn]] void syntax_err(std::string_view what, const Tok& tok, std::string_view ctxt) {
-        error(tok.loc(), "expected {}, got '{}' while parsing {}", what, tok, ctxt);
+    void syntax_err(std::string_view what, const Tok& tok, std::string_view ctxt) {
+        ast().error(tok.loc(), "expected {}, got '{}' while parsing {}", what, tok, ctxt);
     }
 
     /// Same above but uses @p ahead() as @p tok.
-    [[noreturn]] void syntax_err(std::string_view what, std::string_view ctxt) { syntax_err(what, ahead(), ctxt); }
+    void syntax_err(std::string_view what, std::string_view ctxt) { syntax_err(what, ahead(), ctxt); }
 
-    [[noreturn]] void syntax_err(Tok::Tag tag, std::string_view ctxt) {
+    void syntax_err(Tok::Tag tag, std::string_view ctxt) {
         std::string msg("'");
         msg.append(Tok::tag2str(tag)).append("'");
         syntax_err(msg, ctxt);
     }
     ///@}
 
-    AST ast_;
+    AST& ast_;
     Lexer* lexer_ = nullptr;
 
     friend class fe::Parser<Tok, Tok::Tag, Look_Ahead, Parser>;

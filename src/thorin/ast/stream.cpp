@@ -144,6 +144,11 @@ std::ostream& InsertExpr::stream(Tab& tab, std::ostream& os) const {
     return print(os, ".ins({}, {}, {})", S(tab, tuple()), S(tab, index()), S(tab, value()));
 }
 
+std::ostream& ErrorExpr::stream(Tab& tab, std::ostream& os) const {
+    if (type()) return print(os, "<error:{}>", S(tab, type()));
+    return os << "<error>";
+}
+
 /*
  * Decl
  */

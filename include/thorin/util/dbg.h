@@ -6,6 +6,7 @@
 #include <absl/container/flat_hash_set.h>
 #include <fe/loc.h>
 #include <fe/sym.h>
+#include <rang.hpp>
 
 #include "thorin/util/print.h"
 
@@ -22,7 +23,7 @@ using fe::Sym;
 /// Prefixes error message with `<location>: error: `.
 template<class T = std::logic_error, class... Args> [[noreturn]] void error(Loc loc, const char* fmt, Args&&... args) {
     std::ostringstream o;
-    print(o, "{}: error: ", loc);
+    print(o, "{}{}: {}error: {}", rang::fg::yellow, loc, rang::fg::red, rang::fg::reset);
     print(o, fmt, std::forward<Args&&>(args)...);
     throw T(o.str());
 }

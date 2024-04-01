@@ -63,10 +63,10 @@ Ptr<Module> Parser::import(Sym name, std::ostream* md) {
 
 Ptr<Module> Parser::import(std::istream& is, const fs::path* path, std::ostream* md) {
     driver().VLOG("reading: {}", path ? path->string() : "<unknown file>"s);
-    if (!is) error("cannot read file '{}'", *path);
+    if (!is) return {};
 
     auto state = std::tuple(prev_, ahead_, lexer_);
-    auto lexer = Lexer(driver(), is, path, md);
+    auto lexer = Lexer(ast(), is, path, md);
     lexer_     = &lexer;
     init(path);
     auto mod                        = parse_module();
@@ -114,6 +114,7 @@ Ptr<Expr> Parser::parse_type_ascr(std::string_view ctxt) {
     if (accept(Tag::T_colon)) return parse_expr(ctxt, Tok::Prec::Bot);
     if (ctxt.empty()) return nullptr;
     syntax_err("':'", ctxt);
+    return ptr<ErrorExpr>(prev_, ptr<PrimaryExpr>(prev_, Tag::T_star));
 }
 
 /*
@@ -445,7 +446,7 @@ Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok::Prec prec,
             dbg = eat(Tag::M_id).dbg();
             eat(Tag::T_colon_colon);
             if (b && ahead().isa(Tag::D_paren_l))
-                error(ahead().loc(), "switching from []-style patterns to ()-style patterns is not allowed");
+                ast().error(ahead().loc(), "switching from []-style patterns to ()-style patterns is not allowed");
             // b ->  s::(p, ..., p)
             // b ->  s::[b, ..., b]     b ->  s::[b, ..., b]
             // b -> 's::(p, ..., p)
@@ -477,7 +478,7 @@ Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Tok::Prec prec,
         }
     } else if (b) {
         // b ->  e    where e != id
-        if (backtick) error(backtick.loc(), "you can only prefix identifiers with backtick for rebinding");
+        if (backtick) ast().error(backtick.loc(), "you can only prefix identifiers with backtick for rebinding");
         auto type = parse_expr(ctxt, prec);
         return ptr<IdPtrn>(track, rebind, dbg, std::move(type));
     } else if (!ctxt.empty()) {

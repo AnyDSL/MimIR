@@ -27,20 +27,41 @@ public:
         , anon_(sym("_")) {}
 
     Driver& driver() { return driver_; }
-    Sym anon() const { return anon_; }
 
     /// @name Sym
     ///@{
     Sym sym(const char* s) { return driver().sym(s); }
     Sym sym(std::string_view s) { return driver().sym(s); }
     Sym sym(const std::string& s) { return driver().sym(s); }
+    Sym anon() const { return anon_; } ///< `"_"`.
     ///@}
 
     template<class T, class... Args> auto ptr(Args&&... args) {
         return arena_.mk<const T>(std::forward<Args&&>(args)...);
     }
 
+    /// @name Formatted Output
+    ///@{
+    /// Prefixes error message with `<location>: error: `.
+    template<class... Args> void error(Loc loc, const char* fmt, Args&&... args) const {
+        ++num_errors_;
+        print(std::cerr, "{}{}: {}error: {}", rang::fg::yellow, loc, rang::fg::red, rang::fg::reset);
+        println(std::cerr, fmt, std::forward<Args&&>(args)...);
+    }
+    template<class... Args> void warn(Loc loc, const char* fmt, Args&&... args) const {
+        ++num_warnings_;
+        print(std::cerr, "{}{}: {}warning: {}", rang::fg::yellow, loc, rang::fg::magenta, rang::fg::reset);
+        println(std::cerr, fmt, std::forward<Args&&>(args)...);
+    }
+    template<class... Args> void note(Loc loc, const char* fmt, Args&&... args) const {
+        print(std::cerr, "{}{}: {}note: {}", rang::fg::yellow, loc, rang::fg::green, rang::fg::reset);
+        println(std::cerr, fmt, std::forward<Args&&>(args)...);
+    }
+    ///@}
+
 private:
+    mutable int num_errors_   = 0;
+    mutable int num_warnings_ = 0;
     Driver& driver_;
     fe::Arena arena_;
     Sym anon_;
@@ -75,6 +96,16 @@ class Decl : public Node {
 protected:
     Decl(Loc loc)
         : Node(loc) {}
+};
+
+class RecDecl : public Decl {
+protected:
+    RecDecl(Loc loc)
+        : Decl(loc) {}
+
+public:
+    void bind_rec(Scopes&) const;
+    virtual const Expr* body() const = 0;
 };
 
 /*
@@ -206,6 +237,9 @@ private:
 /// `tag`
 class PrimaryExpr : public Expr {
 public:
+    PrimaryExpr(Loc loc, Tok::Tag tag)
+        : Expr(loc)
+        , tag_(tag) {}
     PrimaryExpr(Tok tok)
         : Expr(tok.loc())
         , tag_(tok.tag()) {}
@@ -576,6 +610,21 @@ private:
     Ptr<Expr> value_;
 };
 
+class ErrorExpr : public Expr {
+public:
+    ErrorExpr(Loc loc, Ptr<Expr>&& type)
+        : Expr(loc)
+        , type_(std::move(type)) {}
+
+    const Expr* type() const { return type_.get(); }
+
+    void bind(Scopes&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    Ptr<Expr> type_;
+};
+
 /*
  * Further Decls
  */
@@ -632,17 +681,17 @@ private:
 };
 
 /// `.Pi dbg: type = body´
-class PiDecl : public Decl {
+class PiDecl : public RecDecl {
 public:
     PiDecl(Loc loc, Dbg dbg, Ptr<Expr>&& type, Ptr<Expr>&& body)
-        : Decl(loc)
+        : RecDecl(loc)
         , dbg_(dbg)
         , type_(std::move(type))
         , body_(std::move(body)) {}
 
     Dbg dbg() const { return dbg_; }
     const Expr* type() const { return type_.get(); }
-    const Expr* body() const { return body_.get(); }
+    const Expr* body() const override { return body_.get(); }
 
     void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
@@ -654,13 +703,14 @@ private:
 };
 
 /// Just wraps a LamDecl as Expr.
-class LamDecl : public Decl {
+class LamDecl : public RecDecl {
 public:
     LamDecl(Ptr<LamExpr>&& lam)
-        : Decl(lam->loc())
+        : RecDecl(lam->loc())
         , lam_(std::move(lam)) {}
 
     const LamExpr* lam() const { return lam_.get(); }
+    const Expr* body() const override { return lam()->body(); }
 
     void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
@@ -670,16 +720,16 @@ private:
 };
 
 /// `.Sigma dbg: type = body`
-class SigmaDecl : public Decl {
+class SigmaDecl : public RecDecl {
 public:
     SigmaDecl(Loc loc, Dbg dbg, Ptr<Expr>&& type, Ptr<Expr>&& body)
-        : Decl(loc)
+        : RecDecl(loc)
         , dbg_(dbg)
         , type_(std::move(type))
         , body_(std::move(body)) {}
 
     const Expr* type() const { return type_.get(); }
-    const Expr* body() const { return body_.get(); }
+    const Expr* body() const override { return body_.get(); }
 
     void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
@@ -704,9 +754,8 @@ public:
     const Decl* decl(size_t i) const { return decls_[i].get(); }
     size_t num_decls() const { return decls_.size(); }
 
-    void compile() const;
-    void bind() const;
-
+    void compile(AST&) const;
+    void bind(AST&) const;
     void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
