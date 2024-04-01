@@ -45,6 +45,7 @@ private:
         return ast_.ptr<const T>(std::forward<Args&&>(args)...);
     }
 
+    Dbg anon() const { return {ahead().loc().anew_begin(), ast_.sym_anon()}; }
     Dbg dbg(const Tracker& tracker, Sym sym) const { return {tracker.loc(), sym}; }
     Lexer& lexer() { return *lexer_; }
 

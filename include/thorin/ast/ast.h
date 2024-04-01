@@ -24,7 +24,8 @@ class AST {
 public:
     AST(Driver& driver)
         : driver_(driver)
-        , anon_(sym("_")) {}
+        , sym_anon_(sym("_"))
+        , sym_return_(sym("return")) {}
 
     Driver& driver() { return driver_; }
 
@@ -33,7 +34,8 @@ public:
     Sym sym(const char* s) { return driver().sym(s); }
     Sym sym(std::string_view s) { return driver().sym(s); }
     Sym sym(const std::string& s) { return driver().sym(s); }
-    Sym anon() const { return anon_; } ///< `"_"`.
+    Sym sym_anon() const { return sym_anon_; }     ///< `"_"`.
+    Sym sym_return() const { return sym_return_; } ///< `"return"`.
     ///@}
 
     template<class T, class... Args> auto ptr(Args&&... args) {
@@ -64,7 +66,8 @@ private:
     mutable int num_warnings_ = 0;
     Driver& driver_;
     fe::Arena arena_;
-    Sym anon_;
+    Sym sym_anon_;
+    Sym sym_return_;
 };
 
 class Scopes;
@@ -104,8 +107,23 @@ protected:
         : Decl(loc) {}
 
 public:
-    void bind_rec(Scopes&) const;
-    virtual const Expr* body() const = 0;
+    virtual void bind_rec(Scopes&) const = 0;
+};
+
+class DeclsBlock {
+public:
+    DeclsBlock(Ptrs<Decl>&& decls)
+        : decls_(std::move(decls)) {}
+
+    const auto& decls() const { return decls_; }
+    const Decl* decl(size_t i) const { return decls_[i].get(); }
+    size_t num_decls() const { return decls_.size(); }
+
+    std::ostream& stream(Tab&, std::ostream&) const;
+    void bind(Scopes&) const;
+
+private:
+    Ptrs<Decl> decls_;
 };
 
 /*
@@ -137,7 +155,7 @@ public:
 
     static Ptr<IdPtrn> mk_type(AST& ast, Ptr<Expr>&& type) {
         auto loc = type->loc();
-        return ast.ptr<IdPtrn>(loc, false, Dbg(loc, ast.anon()), std::move(type));
+        return ast.ptr<IdPtrn>(loc, false, Dbg(loc, ast.sym_anon()), std::move(type));
     }
 
     // void bind(Scopes&, const Def*, bool rebind = false) const override {}
@@ -166,7 +184,7 @@ public:
 
     static Ptr<IdPtrn> mk_type(AST& ast, Ptr<Expr>&& type) {
         auto loc = type->loc();
-        return ast.ptr<IdPtrn>(loc, false, Dbg(loc, ast.anon()), std::move(type));
+        return ast.ptr<IdPtrn>(loc, false, Dbg(loc, ast.sym_anon()), std::move(type));
     }
 
     // void bind(Scopes&, const Def*, bool rebind = false) const override {}
@@ -210,6 +228,28 @@ private:
     Dbg dbg_;
     Tok::Tag delim_l_;
     Ptrs<Ptrn> ptrns_;
+};
+
+/// Dummy Ptrn to introduce `return: type`.
+/// @note ReturnPtrn::type is **not** owned.
+class ReturnPtrn : public Ptrn {
+public:
+    ReturnPtrn(AST& ast, const Expr* type)
+        : Ptrn(type->loc())
+        , dbg_(type->loc(), ast.sym_return())
+        , type_(type) {}
+
+    Dbg dbg() const { return dbg_; }
+    const Expr* type() const { return type_; }
+
+    // void bind(Scopes&, const Def*, bool rebind = false) const override {}
+    // const Def* type(World&, Def2Fields&) const override {}
+    void bind(Scopes&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    Dbg dbg_;
+    const Expr* type_;
 };
 
 /*
@@ -301,9 +341,6 @@ public:
         , expr_(std::move(expr)) {}
 
     bool has_braces() const { return has_braces_; }
-    const auto& decls() const { return decls_; }
-    const Decl* decl(size_t i) const { return decls_[i].get(); }
-    size_t num_decls() const { return decls_.size(); }
     const Expr* expr() const { return expr_.get(); }
 
     void bind(Scopes&) const override;
@@ -311,7 +348,7 @@ public:
 
 private:
     bool has_braces_;
-    Ptrs<Decl> decls_;
+    DeclsBlock decls_;
     Ptr<Expr> expr_;
 };
 
@@ -334,9 +371,9 @@ private:
 // lam
 
 /// `dom -> codom`
-class SimplePiExpr : public Expr {
+class ArrowExpr : public Expr {
 public:
-    SimplePiExpr(Loc loc, Ptr<Expr>&& dom, Ptr<Expr>&& codom)
+    ArrowExpr(Loc loc, Ptr<Expr>&& dom, Ptr<Expr>&& codom)
         : Expr(loc)
         , dom_(std::move(dom))
         , codom_(std::move(codom)) {}
@@ -442,6 +479,7 @@ public:
     const Dom* dom(size_t i) const { return doms_[i].get(); }
     size_t num_doms() const { return doms_.size(); }
     const Expr* codom() const { return codom_.get(); }
+    const ReturnPtrn* ret() const { return ret_.get(); }
     const Expr* body() const { return body_.get(); }
 
     void bind(Scopes&) const override;
@@ -454,6 +492,7 @@ private:
     Ptrs<Dom> doms_;
     Ptr<Expr> codom_;
     Ptr<Expr> body_;
+    mutable Ptr<ReturnPtrn> ret_;
 };
 
 /// `callee arg`
@@ -691,9 +730,10 @@ public:
 
     Dbg dbg() const { return dbg_; }
     const Expr* type() const { return type_.get(); }
-    const Expr* body() const override { return body_.get(); }
+    const Expr* body() const { return body_.get(); }
 
     void bind(Scopes&) const override;
+    void bind_rec(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -710,9 +750,10 @@ public:
         , lam_(std::move(lam)) {}
 
     const LamExpr* lam() const { return lam_.get(); }
-    const Expr* body() const override { return lam()->body(); }
+    const Expr* body() const { return lam()->body(); }
 
     void bind(Scopes&) const override;
+    void bind_rec(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -729,9 +770,10 @@ public:
         , body_(std::move(body)) {}
 
     const Expr* type() const { return type_.get(); }
-    const Expr* body() const override { return body_.get(); }
+    const Expr* body() const { return body_.get(); }
 
     void bind(Scopes&) const override;
+    void bind_rec(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -750,17 +792,13 @@ public:
         : Node(loc)
         , decls_(std::move(decls)) {}
 
-    const auto& decls() const { return decls_; }
-    const Decl* decl(size_t i) const { return decls_[i].get(); }
-    size_t num_decls() const { return decls_.size(); }
-
     void compile(AST&) const;
     void bind(AST&) const;
     void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ptrs<Decl> decls_;
+    DeclsBlock decls_;
 };
 
 } // namespace thorin::ast

@@ -140,7 +140,7 @@ Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Tok::Prec p) 
             if (l < p) break;
             lex();
             auto rhs = parse_expr("right-hand side of an function type", r);
-            lhs      = ptr<SimplePiExpr>(track.loc(), std::move(lhs), std::move(rhs));
+            lhs      = ptr<ArrowExpr>(track.loc(), std::move(lhs), std::move(rhs));
         } else {
             auto [l, r] = Tok::prec(Tok::Prec::App);
             if (l < p) break;

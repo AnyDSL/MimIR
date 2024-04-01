@@ -13,7 +13,7 @@
             .let inc  = %core.wrap.add 0 (1I32, i);
             .let acci = %core.wrap.add 0 (i, acc);
             loopi (m, inc, acci);
-        (.cn m: %mem.M = return (m, acc), body)#cond mem;
+        (.cn m: %mem.M = returnx (m, acc), body)#cond mem;
     loop (mem, 0I32, 0I32);
 
 // CHECK-DAG: .con .extern main _[[mainVarId:[0-9_]+]]::[_{{[0-9]+}}::[mem_[[memId:[0-9_]+]]: %mem.M, argc_[[argcId:[0-9_]+]]: .I32, %mem.Ptr (%mem.Ptr (.I8, 0), 0)], return_[[returnId:[0-9_]+]]: .Cn [%mem.M, .I32]]{{(@.*)?}}= {

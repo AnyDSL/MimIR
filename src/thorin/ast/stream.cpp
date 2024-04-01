@@ -54,6 +54,12 @@ std::ostream& TuplePtrn::stream(Tab& tab, std::ostream& os) const {
     return print(os, "{}{, }{}", delim_l(), R(tab, ptrns()), delim_r());
 }
 
+std::ostream& ReturnPtrn::stream(Tab& tab, std::ostream& os) const {
+    os << dbg();
+    if (type()) print(os, ": {}", S(tab, type()));
+    return os;
+}
+
 /*
  * Expr
  */
@@ -74,7 +80,7 @@ std::ostream& ExtremumExpr::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& BlockExpr::stream(Tab& tab, std::ostream& os) const {
-    if (!has_braces() && num_decls() == 0) {
+    if (!has_braces() && decls_.num_decls() == 0) {
         if (expr()) return expr()->stream(tab, os);
         return os << "<empty block>";
     }
@@ -82,7 +88,7 @@ std::ostream& BlockExpr::stream(Tab& tab, std::ostream& os) const {
     if (has_braces()) os << '{';
     os << std::endl;
     ++tab;
-    for (const auto& decl : decls()) tab.println(os, "{}", S(tab, decl.get()));
+    decls_.stream(tab, os);
     if (expr()) tab.print(os, "{}", S(tab, expr()));
     --tab;
     if (has_braces()) tab.print(os << std::endl, "}}");
@@ -90,7 +96,7 @@ std::ostream& BlockExpr::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& TypeExpr ::stream(Tab& tab, std::ostream& os) const { return print(os, "(.Type {})", S(tab, level())); }
-std::ostream& SimplePiExpr::stream(Tab& tab, std::ostream& os) const {
+std::ostream& ArrowExpr::stream(Tab& tab, std::ostream& os) const {
     return print(os, "{} -> {}", S(tab, dom()), S(tab, codom()));
 }
 std::ostream& PiExpr::Dom ::stream(Tab& tab, std::ostream& os) const {
@@ -153,6 +159,11 @@ std::ostream& ErrorExpr::stream(Tab& tab, std::ostream& os) const {
  * Decl
  */
 
+std::ostream& DeclsBlock::stream(Tab& tab, std::ostream& os) const {
+    for (const auto& decl : decls()) tab.println(os, "{}", S(tab, decl.get()));
+    return os;
+}
+
 std::ostream& LetDecl::stream(Tab& tab, std::ostream& os) const {
     return print(os, ".let {} = {};", S(tab, ptrn()), S(tab, value()));
 }
@@ -182,9 +193,6 @@ std::ostream& SigmaDecl::stream(Tab& /*tab*/, std::ostream& os) const { return p
  * Module
  */
 
-std::ostream& Module::stream(Tab& tab, std::ostream& os) const {
-    for (const auto& decl : decls()) tab.println(os, "{}", S(tab, decl.get()));
-    return os;
-}
+std::ostream& Module::stream(Tab& tab, std::ostream& os) const { return decls_.stream(tab, os); }
 
 } // namespace thorin::ast
