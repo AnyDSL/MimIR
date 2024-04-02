@@ -26,17 +26,18 @@ using Tag = Tok::Tag;
 
 Ptr<Module> Parser::parse_module() {
     auto track = tracker();
+    std::deque<Import> imports;
     while (true)
         if (ahead().tag() == Tag::K_import)
-            parse_import();
+            imports.emplace_back(parse_import());
         else if (ahead().tag() == Tag::K_plugin)
-            parse_plugin();
+            imports.emplace_back(parse_plugin());
         else
             break;
 
     auto decls = parse_decls();
     expect(Tag::EoF, "module");
-    return ptr<Module>(track, std::move(decls));
+    return ptr<Module>(track, std::move(imports), std::move(decls));
 }
 
 Ptr<Module> Parser::import(Sym name, std::ostream* md) {
@@ -74,27 +75,29 @@ Ptr<Module> Parser::import(std::istream& is, const fs::path* path, std::ostream*
     return mod;
 }
 
-void Parser::plugin(Sym name) {
+Ptr<Module> Parser::plugin(Sym name) {
     if (!driver().flags().bootstrap && !driver().is_loaded(name)) driver().load(name);
-    import(name);
+    return import(name);
 }
 
 /*
  * misc
  */
 
-void Parser::parse_import() {
+Import Parser::parse_import() {
     eat(Tag::K_import);
     auto name = expect(Tag::M_id, "import name");
     expect(Tag::T_semicolon, "end of import");
-    import(name.sym());
+    auto module = import(name.sym());
+    return Import(name.dbg(), Tag::K_import, std::move(module));
 }
 
-void Parser::parse_plugin() {
+Import Parser::parse_plugin() {
     eat(Tag::K_plugin);
     auto name = expect(Tag::M_id, "thorin/plugin name");
     expect(Tag::T_semicolon, "end of import");
-    plugin(name.sym());
+    auto module = plugin(name.sym());
+    return Import(name.dbg(), Tag::K_plugin, std::move(module));
 }
 
 Dbg Parser::parse_id(std::string_view ctxt) {

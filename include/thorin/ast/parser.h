@@ -37,8 +37,8 @@ public:
     Ptr<Module> import(std::string_view sv) { return import(driver().sym(sv)); }
     Ptr<Module> import(Sym, std::ostream* md = nullptr);
     Ptr<Module> import(std::istream&, const fs::path* = nullptr, std::ostream* md = nullptr);
-    void plugin(Sym);
-    void plugin(const char* name) { return plugin(driver().sym(name)); }
+    Ptr<Module> plugin(Sym);
+    Ptr<Module> plugin(const char* name) { return plugin(driver().sym(name)); }
 
 private:
     template<class T, class... Args> auto ptr(Args&&... args) {
@@ -55,8 +55,8 @@ private:
     Dbg parse_id(std::string_view ctxt = {});
     std::pair<Annex&, bool> parse_annex(std::string_view ctxt = {});
     Dbg parse_name(std::string_view ctxt = {});
-    void parse_import();
-    void parse_plugin();
+    Import parse_import();
+    Import parse_plugin();
     Ptr<Expr> parse_type_ascr(std::string_view ctxt = {});
 
     template<class F> void parse_list(std::string ctxt, Tok::Tag delim_l, F f, Tok::Tag sep = Tok::Tag::T_comma) {

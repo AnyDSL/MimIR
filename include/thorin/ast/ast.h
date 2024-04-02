@@ -14,6 +14,7 @@
 
 namespace thorin::ast {
 
+class Module;
 class Scopes;
 
 template<class T> using Ptr  = fe::Arena::Ptr<const T>;
@@ -769,6 +770,7 @@ public:
         , type_(std::move(type))
         , body_(std::move(body)) {}
 
+    Dbg dbg() const { return dbg_; }
     const Expr* type() const { return type_.get(); }
     const Expr* body() const { return body_.get(); }
 
@@ -786,11 +788,49 @@ private:
  * Module
  */
 
+class Import {
+public:
+    Import& operator=(const Import&) = delete;
+    Import(const Import&)            = delete;
+    Import() noexcept                = default;
+
+    Import(Import&& other)
+        : Import() {
+        swap(*this, other);
+    }
+    Import(Dbg dbg, Tok::Tag tag, Ptr<Module>&& module) noexcept
+        : dbg_(dbg)
+        , tag_(tag)
+        , module_(std::move(module)) {}
+
+    Dbg dbg() const { return dbg_; }
+    Tok::Tag tag() const { return tag_; }
+    const Module* module() const { return module_.get(); }
+
+    void bind(Scopes&) const;
+    std::ostream& stream(Tab&, std::ostream&) const;
+
+    friend void swap(Import& i1, Import& i2) noexcept {
+        using std::swap;
+        swap(i1.dbg_, i2.dbg_);
+        swap(i1.tag_, i2.tag_);
+        swap(i1.module_, i2.module_);
+    }
+
+private:
+    Dbg dbg_;
+    Tok::Tag tag_;
+    Ptr<Module> module_;
+};
+
 class Module : public Node {
 public:
-    Module(Loc loc, Ptrs<Decl>&& decls)
+    Module(Loc loc, std::deque<Import>&& imports, Ptrs<Decl>&& decls)
         : Node(loc)
+        , imports_(std::move(imports))
         , decls_(std::move(decls)) {}
+
+    const auto& imports() const { return imports_; }
 
     void compile(AST&) const;
     void bind(AST&) const;
@@ -798,6 +838,7 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
+    std::deque<Import> imports_;
     DeclsBlock decls_;
 };
 

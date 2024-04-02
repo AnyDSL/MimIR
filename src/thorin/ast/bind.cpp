@@ -2,6 +2,8 @@
 
 #include "fe/assert.h"
 
+using namespace std::string_literals;
+
 namespace thorin::ast {
 
 using Tag = Tok::Tag;
@@ -75,15 +77,11 @@ private:
 // clang-format off
 void ExtremumExpr::bind(Scopes& s) const { if ( type())  type()->bind(s); }
 void LitExpr     ::bind(Scopes& s) const { if ( type())  type()->bind(s); }
-void PiDecl      ::bind(Scopes& s) const { if ( type())  type()->bind(s); }
-void SigmaDecl   ::bind(Scopes& s) const { if ( type())  type()->bind(s); }
 void TypeExpr    ::bind(Scopes& s) const { if (level()) level()->bind(s); }
 void IdExpr      ::bind(Scopes& s) const { decl_ = s.find(dbg()); }
 void ErrorExpr   ::bind(Scopes&) const {}
 void InferExpr   ::bind(Scopes&) const {}
 void PrimaryExpr ::bind(Scopes&) const {}
-void SigmaDecl   ::bind_rec(Scopes& s) const { body()->bind(s); }
-void PiDecl      ::bind_rec(Scopes& s) const { body()->bind(s); }
 // clang-format on
 
 void Module::bind(AST& ast) const {
@@ -91,7 +89,12 @@ void Module::bind(AST& ast) const {
     bind(scopes);
 }
 
-void Module::bind(Scopes& s) const { decls_.bind(s); }
+void Module::bind(Scopes& s) const {
+    for (const auto& import : imports()) import.bind(s);
+    decls_.bind(s);
+}
+
+void Import::bind(Scopes& s) const { module()->bind(s); }
 
 /*
  * Ptrn
@@ -223,16 +226,6 @@ void InsertExpr::bind(Scopes& s) const {
  * Decl
  */
 
-void LetDecl::bind(Scopes& s) const {
-    value()->bind(s);
-    ptrn()->bind(s);
-}
-
-void AxiomDecl::bind(Scopes& s) const {
-    type()->bind(s);
-    s.bind(dbg(), this);
-}
-
 void DeclsBlock::bind(Scopes& s) const {
     for (size_t i = 0, e = num_decls(), r = 0; true; ++i) {
         if (i < e && decl(i)->isa<RecDecl>()) {
@@ -246,5 +239,39 @@ void DeclsBlock::bind(Scopes& s) const {
         decl(i)->bind(s);
     }
 }
+
+void LetDecl::bind(Scopes& s) const {
+    value()->bind(s);
+    ptrn()->bind(s);
+}
+
+void AxiomDecl::bind(Scopes& s) const {
+    type()->bind(s);
+
+    if (num_subs() == 0) {
+        s.bind(dbg(), this);
+    } else {
+        for (const auto& aliases : subs()) {
+            for (const auto& alias : aliases) {
+                auto sym = s.ast().sym(dbg().sym.str() + "."s + alias.sym.str());
+                s.bind(Dbg(dbg().loc, sym), this);
+            }
+        }
+    }
+}
+
+void PiDecl::bind(Scopes& s) const {
+    if (type()) type()->bind(s);
+    s.bind(dbg(), this);
+}
+
+void PiDecl::bind_rec(Scopes& s) const { body()->bind(s); }
+
+void SigmaDecl::bind(Scopes& s) const {
+    if (type()) type()->bind(s);
+    s.bind(dbg(), this);
+}
+
+void SigmaDecl::bind_rec(Scopes& s) const { body()->bind(s); }
 
 } // namespace thorin::ast

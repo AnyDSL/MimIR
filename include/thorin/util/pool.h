@@ -192,7 +192,7 @@ public:
     }
     ///@}
 
-    friend void swap(Pool& p1, Pool& p2) {
+    friend void swap(Pool& p1, Pool& p2) noexcept {
         using std::swap;
         swap(p1.arena_, p2.arena_);
         swap(p1.pool_, p2.pool_);
