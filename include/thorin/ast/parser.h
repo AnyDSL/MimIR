@@ -106,9 +106,9 @@ private:
     /// If @p ctxt ...
     /// * ... empty: **Only** decls are parsed. @returns `nullptr`
     /// * ... **non**-empty: Decls are parsed, then an expression. @returns expression.
-    Ptrs<Decl> parse_decls();
-    Ptr<Decl> parse_axiom_decl();
-    Ptr<Decl> parse_let_decl();
+    Ptrs<ValDecl> parse_decls();
+    Ptr<ValDecl> parse_axiom_decl();
+    Ptr<ValDecl> parse_let_decl();
     Ptr<PiDecl> parse_pi_decl();
     Ptr<LamDecl> parse_lam_decl();
     Ptr<SigmaDecl> parse_sigma_decl();

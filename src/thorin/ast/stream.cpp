@@ -96,7 +96,7 @@ std::ostream& BlockExpr::stream(Tab& tab, std::ostream& os) const {
     return os;
 }
 
-std::ostream& TypeExpr ::stream(Tab& tab, std::ostream& os) const { return print(os, "(.Type {})", S(tab, level())); }
+std::ostream& TypeExpr::stream(Tab& tab, std::ostream& os) const { return print(os, "(.Type {})", S(tab, level())); }
 
 std::ostream& ArrowExpr::stream(Tab& tab, std::ostream& os) const {
     return print(os, "{} -> {}", S(tab, dom()), S(tab, codom()));

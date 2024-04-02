@@ -176,7 +176,7 @@ int main(int argc, char** argv) {
 
         if (os[AST]) {
             auto mod = parser.import(driver.sym(input), os[Md]);
-            mod->compile(ast);
+            mod->compile(ast, world);
             Tab tab;
             mod->stream(tab, *os[AST]);
         }

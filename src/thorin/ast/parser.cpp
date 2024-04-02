@@ -542,8 +542,8 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn(bool rebind, Dbg dbg) {
  * decls
  */
 
-Ptrs<Decl> Parser::parse_decls() {
-    Ptrs<Decl> decls;
+Ptrs<ValDecl> Parser::parse_decls() {
+    Ptrs<ValDecl> decls;
     while (true) {
         // clang-format off
         switch (ahead().tag()) {
@@ -561,7 +561,7 @@ Ptrs<Decl> Parser::parse_decls() {
     }
 }
 
-Ptr<Decl> Parser::parse_axiom_decl() {
+Ptr<ValDecl> Parser::parse_axiom_decl() {
     auto track = tracker();
     eat(Tag::K_ax);
     Dbg dbg, normalizer, curry, trip;
@@ -596,7 +596,7 @@ Ptr<Decl> Parser::parse_axiom_decl() {
     return ptr<AxiomDecl>(track, dbg, std::move(subs), std::move(type), normalizer, curry, trip);
 }
 
-Ptr<Decl> Parser::parse_let_decl() {
+Ptr<ValDecl> Parser::parse_let_decl() {
     auto track = tracker();
     eat(Tag::K_let);
     auto ptrn = parse_ptrn(Tag::D_paren_l, "binding pattern of a let declaration", Tok::Prec::Bot, true);

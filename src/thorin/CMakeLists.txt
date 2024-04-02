@@ -23,6 +23,7 @@ target_sources(libthorin
         be/h/bootstrap.cpp
         ast/ast.cpp
         ast/bind.cpp
+        ast/emit.cpp
         ast/lexer.cpp
         ast/parser.cpp
         ast/stream.cpp

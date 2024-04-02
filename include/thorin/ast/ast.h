@@ -16,6 +16,7 @@ namespace thorin::ast {
 
 class Module;
 class Scopes;
+class Emitter;
 
 template<class T> using Ptr  = fe::Arena::Ptr<const T>;
 template<class T> using Ptrs = std::deque<Ptr<T>>;
@@ -96,6 +97,7 @@ protected:
 
 public:
     virtual void bind(Scopes&) const = 0;
+    virtual Ref emit(Emitter&) const = 0;
 };
 
 class Decl : public Node {
@@ -104,32 +106,50 @@ protected:
         : Node(loc) {}
 
 public:
-    virtual void bind(Scopes&) const = 0;
+    Ref def() const { return def_; }
+
+protected:
+    mutable Ref def_ = nullptr;
 };
 
-class RecDecl : public Decl {
+class ValDecl : public Decl {
 protected:
-    RecDecl(Loc loc)
+    ValDecl(Loc loc)
         : Decl(loc) {}
 
 public:
-    virtual void bind_rec(Scopes&) const = 0;
+    virtual void bind(Scopes&) const = 0;
+    Ref emit(Emitter& e) const { return def_ ? def_ : def_ = emit_(e); }
+
+private:
+    virtual Ref emit_(Emitter&) const = 0;
+};
+
+class RecDecl : public ValDecl {
+protected:
+    RecDecl(Loc loc)
+        : ValDecl(loc) {}
+
+public:
+    virtual void bind_rec(Scopes&) const  = 0;
+    virtual void emit_rec(Emitter&) const = 0;
 };
 
 class DeclsBlock {
 public:
-    DeclsBlock(Ptrs<Decl>&& decls)
+    DeclsBlock(Ptrs<ValDecl>&& decls)
         : decls_(std::move(decls)) {}
 
     const auto& decls() const { return decls_; }
-    const Decl* decl(size_t i) const { return decls_[i].get(); }
+    const ValDecl* decl(size_t i) const { return decls_[i].get(); }
     size_t num_decls() const { return decls_.size(); }
 
     std::ostream& stream(Tab&, std::ostream&) const;
     void bind(Scopes&) const;
+    void emit(Emitter&) const;
 
 private:
-    Ptrs<Decl> decls_;
+    Ptrs<ValDecl> decls_;
 };
 
 /*
@@ -140,6 +160,10 @@ class Ptrn : public Decl {
 public:
     Ptrn(Loc loc)
         : Decl(loc) {}
+
+    virtual void bind(Scopes&) const       = 0;
+    virtual Ref emit_(Emitter&, Ref) const = 0;
+    Ref emit(Emitter& e, Ref def) const { return def_ ? def_ : def_ = emit_(e, def); }
 
     [[nodiscard]] static Ptr<Expr> to_expr(AST&, Ptr<Ptrn>&&);
     [[nodiscard]] static Ptr<Ptrn> to_ptrn(Ptr<Expr>&&);
@@ -164,6 +188,7 @@ public:
     }
 
     void bind(Scopes&) const override;
+    Ref emit_(Emitter&, Ref) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -191,6 +216,7 @@ public:
     }
 
     void bind(Scopes&) const override;
+    Ref emit_(Emitter&, Ref) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -220,6 +246,7 @@ public:
     size_t num_ptrns() const { return ptrns().size(); }
 
     void bind(Scopes&) const override;
+    Ref emit_(Emitter&, Ref) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -242,6 +269,7 @@ public:
     const Expr* type() const { return type_; }
 
     void bind(Scopes&) const override;
+    Ref emit_(Emitter&, Ref) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -264,6 +292,7 @@ public:
     const Decl* decl() const { return decl_; }
 
     void bind(Scopes&) const override;
+    Ref emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -284,6 +313,7 @@ public:
     Tok::Tag tag() const { return tag_; }
 
     void bind(Scopes&) const override;
+    Ref emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -302,6 +332,7 @@ public:
     const Expr* type() const { return type_.get(); }
 
     void bind(Scopes&) const override;
+    Ref emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -321,6 +352,7 @@ public:
     const Expr* type() const { return type_.get(); }
 
     void bind(Scopes&) const override;
+    Ref emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -331,7 +363,7 @@ private:
 /// `{ decl_0 ... decl_n-1 e }` or `decl_0 ... decl_n-1` (used internaly)
 class BlockExpr : public Expr {
 public:
-    BlockExpr(Loc loc, bool has_braces, Ptrs<Decl>&& decls, Ptr<Expr>&& expr)
+    BlockExpr(Loc loc, bool has_braces, Ptrs<ValDecl>&& decls, Ptr<Expr>&& expr)
         : Expr(loc)
         , has_braces_(has_braces)
         , decls_(std::move(decls))
@@ -341,6 +373,7 @@ public:
     const Expr* expr() const { return expr_.get(); }
 
     void bind(Scopes&) const override;
+    Ref emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -359,6 +392,7 @@ public:
     const Expr* level() const { return level_.get(); }
 
     void bind(Scopes&) const override;
+    Ref emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -380,6 +414,7 @@ private:
     const Expr* codom() const { return codom_.get(); }
 
     void bind(Scopes&) const override;
+    Ref emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -404,6 +439,7 @@ public:
         const Ptrn* ptrn() const { return ptrn_.get(); }
 
         void bind(Scopes&) const;
+        Ref emit(Emitter&) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     private:
@@ -425,6 +461,7 @@ private:
     const Expr* codom() const { return codom_.get(); }
 
     void bind(Scopes&) const override;
+    Ref emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -453,6 +490,7 @@ public:
         const Expr* filter() const { return filter_.get(); }
 
         void bind(Scopes&) const;
+        Ref emit(Emitter&) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     private:
@@ -480,6 +518,7 @@ public:
     const Expr* body() const { return body_.get(); }
 
     void bind(Scopes&) const override;
+    Ref emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -507,6 +546,7 @@ public:
     const Expr* arg() const { return arg_.get(); }
 
     void bind(Scopes&) const override;
+    Ref emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -531,6 +571,7 @@ public:
     const Expr* body() const { return body_.get(); }
 
     void bind(Scopes&) const override;
+    Ref emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -551,6 +592,7 @@ public:
     const Ptrn* ptrn() const { return ptrn_.get(); }
 
     void bind(Scopes&) const override;
+    Ref emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -571,6 +613,7 @@ public:
     size_t num_elems() const { return elems().size(); }
 
     void bind(Scopes&) const override;
+    Ref emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -591,6 +634,7 @@ public:
     const Expr* body() const { return body_.get(); }
 
     void bind(Scopes&) const override;
+    Ref emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -618,6 +662,7 @@ public:
     const auto& index() const { return index_; }
 
     void bind(Scopes&) const override;
+    Ref emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -639,6 +684,7 @@ public:
     const Expr* value() const { return value_.get(); }
 
     void bind(Scopes&) const override;
+    Ref emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -653,6 +699,7 @@ public:
         : Expr(loc) {}
 
     void bind(Scopes&) const override;
+    Ref emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 };
 
@@ -662,6 +709,7 @@ public:
         : Expr(loc) {}
 
     void bind(Scopes&) const override;
+    Ref emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 };
 
@@ -670,10 +718,10 @@ public:
  */
 
 /// `.let ptrn: type = value;`
-class LetDecl : public Decl {
+class LetDecl : public ValDecl {
 public:
     LetDecl(Loc loc, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& value)
-        : Decl(loc)
+        : ValDecl(loc)
         , ptrn_(std::move(ptrn))
         , value_(std::move(value)) {}
 
@@ -681,6 +729,7 @@ public:
     const Expr* value() const { return value_.get(); }
 
     void bind(Scopes&) const override;
+    Ref emit_(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -689,10 +738,10 @@ private:
 };
 
 /// `.ax ptrn: type = value;`
-class AxiomDecl : public Decl {
+class AxiomDecl : public ValDecl {
 public:
     AxiomDecl(Loc loc, Dbg dbg, std::deque<Dbgs>&& subs, Ptr<Expr>&& type, Dbg normalizer, Dbg curry, Dbg trip)
-        : Decl(loc)
+        : ValDecl(loc)
         , dbg_(dbg)
         , subs_(std::move(subs))
         , type_(std::move(type))
@@ -710,6 +759,7 @@ public:
     Dbg trip() const { return trip_; }
 
     void bind(Scopes&) const override;
+    Ref emit_(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -735,6 +785,8 @@ public:
 
     void bind(Scopes&) const override;
     void bind_rec(Scopes&) const override;
+    Ref emit_(Emitter&) const override;
+    void emit_rec(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -755,6 +807,8 @@ public:
 
     void bind(Scopes&) const override;
     void bind_rec(Scopes&) const override;
+    Ref emit_(Emitter&) const override;
+    void emit_rec(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -776,6 +830,8 @@ public:
 
     void bind(Scopes&) const override;
     void bind_rec(Scopes&) const override;
+    Ref emit_(Emitter&) const override;
+    void emit_rec(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -808,6 +864,7 @@ public:
     const Module* module() const { return module_.get(); }
 
     void bind(Scopes&) const;
+    void emit(Emitter&) const;
     std::ostream& stream(Tab&, std::ostream&) const;
 
     friend void swap(Import& i1, Import& i2) noexcept {
@@ -825,16 +882,18 @@ private:
 
 class Module : public Node {
 public:
-    Module(Loc loc, std::deque<Import>&& imports, Ptrs<Decl>&& decls)
+    Module(Loc loc, std::deque<Import>&& imports, Ptrs<ValDecl>&& decls)
         : Node(loc)
         , imports_(std::move(imports))
         , decls_(std::move(decls)) {}
 
     const auto& imports() const { return imports_; }
 
-    void compile(AST&) const;
+    void compile(AST&, World&) const;
     void bind(AST&) const;
     void bind(Scopes&) const;
+    void emit(AST&, World&) const;
+    void emit(Emitter&) const;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:

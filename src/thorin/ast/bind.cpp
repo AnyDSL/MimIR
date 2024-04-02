@@ -14,7 +14,6 @@ public:
         : Decl(Loc()) {}
 
     std::ostream& stream(Tab&, std::ostream& os) const override { return os << "<dummy>"; }
-    void bind(Scopes&) const override { fe::unreachable(); }
 };
 
 class Scopes {
@@ -45,7 +44,7 @@ public:
             if (auto i = scope.find(dbg.sym); i != scope.end()) return i->second.second;
 
         ast().error(dbg.loc, "'{}' not found", dbg.sym);
-        bind(dbg, dummy_.get()); // put into scope to prevent further errors
+        bind(dbg, dummy()); // put into scope to prevent further errors
         return nullptr;
     }
 
@@ -75,9 +74,9 @@ private:
  */
 
 // clang-format off
-void ExtremumExpr::bind(Scopes& s) const { if ( type())  type()->bind(s); }
-void LitExpr     ::bind(Scopes& s) const { if ( type())  type()->bind(s); }
-void TypeExpr    ::bind(Scopes& s) const { if (level()) level()->bind(s); }
+void ExtremumExpr::bind(Scopes& s) const { if (type()) type()->bind(s); }
+void LitExpr     ::bind(Scopes& s) const { if (type()) type()->bind(s); }
+void TypeExpr    ::bind(Scopes& s) const { level()->bind(s); }
 void IdExpr      ::bind(Scopes& s) const { decl_ = s.find(dbg()); }
 void ErrorExpr   ::bind(Scopes&) const {}
 void InferExpr   ::bind(Scopes&) const {}
@@ -127,7 +126,7 @@ void ReturnPtrn::bind(Scopes& s) const {
 void BlockExpr::bind(Scopes& s) const {
     s.push();
     decls_.bind(s);
-    if (expr()) expr()->bind(s);
+    expr()->bind(s);
     s.pop();
 }
 
