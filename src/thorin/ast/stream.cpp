@@ -67,6 +67,7 @@ std::ostream& ReturnPtrn::stream(Tab& tab, std::ostream& os) const {
 std::ostream& IdExpr::stream(Tab&, std::ostream& os) const { return print(os, "{}", dbg()); }
 std::ostream& PrimaryExpr::stream(Tab&, std::ostream& os) const { return print(os, "{}", tag()); }
 std::ostream& ErrorExpr::stream(Tab&, std::ostream& os) const { return os << "<error>"; }
+std::ostream& InferExpr::stream(Tab&, std::ostream& os) const { return os << "<infer>"; }
 
 std::ostream& LitExpr::stream(Tab& tab, std::ostream& os) const {
     os << value();
@@ -117,7 +118,7 @@ std::ostream& LamExpr::stream(Tab& tab, std::ostream& os) const {
     print(os, "{} {}", tag(), dbg());
     if (num_doms() > 0 && !doms().front()->ptrn()->isa<TuplePtrn>()) os << ' ';
     print(os, "{}", R(tab, doms()));
-    if (codom()) print(os, ": {}", S(tab, codom()));
+    if (!codom()->isa<InferExpr>()) print(os, ": {}", S(tab, codom()));
     if (body()) print(os, " = {}", S(tab, body()));
     return os;
 }

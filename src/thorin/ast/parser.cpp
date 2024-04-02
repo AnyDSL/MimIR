@@ -211,6 +211,7 @@ Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::K_I16:
         case Tag::K_I32:
         case Tag::K_I64:
+        case Tag::M_char:
         case Tag::T_star:
         case Tag::T_box: {
             auto tok = lex();
@@ -219,8 +220,6 @@ Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::M_lit: return parse_lit_expr();
         case Tag::T_bot:
         case Tag::T_top: return parse_extremum_expr();
-        //case Tag::L_c:       return world().lit_i8(lex().lit_c());
-        //case Tag::L_i:       return lex().lit_i();
         case Tag::M_anx:
         case Tag::M_id:      return ptr<IdExpr>(lex().dbg());
         //case Tag::M_str:     return world().tuple(lex().sym())->set(prev_);
@@ -360,19 +359,9 @@ Ptr<LamExpr> Parser::parse_lam_expr() {
         doms.emplace_back(ptr<LamExpr::Dom>(track, bang, implicit, std::move(ptrn), std::move(filter)));
     } while (!ahead().isa(Tag::T_colon) && !ahead().isa(Tag::T_assign) && !ahead().isa(Tag::T_semicolon));
 
-    auto codom = (tag != Tag::K_cn && tag != Tag::K_con)
-                   ? (expect(Tag::T_colon, entity), parse_expr("codomain of a "s + entity, Tok::Prec::Arrow))
-                   : nullptr;
-
+    auto codom
+        = accept(Tag::T_colon) ? parse_expr("codomain of a "s + entity, Tok::Prec::Arrow) : ptr<InferExpr>(prev_);
     auto body = accept(Tag::T_assign) ? parse_block_expr("body of a "s + entity) : Ptr<Expr>();
-#if 0
-    if (!body) {
-        if (!is_decl) error(prev_, "body of a {}", entity);
-        if (auto [_, __, filter] = funs.back(); filter) error(prev_, "cannot specify filter of a {}", entity);
-    }
-#endif
-
-    // if (is_decl) expect(Tag::T_semicolon, "end of "s + entity);
 
     return ptr<LamExpr>(track, tag, external, dbg, std::move(doms), std::move(codom), std::move(body));
 }
@@ -572,7 +561,7 @@ Ptrs<Decl> Parser::parse_decls() {
 Ptr<Decl> Parser::parse_axiom_decl() {
     auto track = tracker();
     eat(Tag::K_ax);
-    Dbg dbg, normalizer;
+    Dbg dbg, normalizer, curry, trip;
     if (auto name = expect(Tag::M_anx, "annex name of an axiom"))
         dbg = name.dbg();
     else
@@ -589,11 +578,10 @@ Ptr<Decl> Parser::parse_axiom_decl() {
 
     auto type = parse_type_ascr("type ascription of an axiom");
 
-    if (accept(Tag::T_comma)) {
-        if (auto tok = expect(Tag::M_id, "normalizer of an axiom")) normalizer = tok.dbg();
+    if (ahead(0).isa(Tag::T_comma) && ahead(1).isa(Tag::M_id)) {
+        lex();
+        normalizer = lex().dbg();
     }
-
-    Dbg curry, trip;
     if (accept(Tag::T_comma)) {
         if (auto c = expect(Tag::M_lit, "curry counter for axiom")) curry = c.dbg();
         if (accept(Tag::T_comma)) {

@@ -80,6 +80,7 @@ void SigmaDecl   ::bind(Scopes& s) const { if ( type())  type()->bind(s); }
 void TypeExpr    ::bind(Scopes& s) const { if (level()) level()->bind(s); }
 void IdExpr      ::bind(Scopes& s) const { decl_ = s.find(dbg()); }
 void ErrorExpr   ::bind(Scopes&) const {}
+void InferExpr   ::bind(Scopes&) const {}
 void PrimaryExpr ::bind(Scopes&) const {}
 void SigmaDecl   ::bind_rec(Scopes& s) const { body()->bind(s); }
 void PiDecl      ::bind_rec(Scopes& s) const { body()->bind(s); }
@@ -103,9 +104,7 @@ void IdPtrn::bind(Scopes& s) const {
 
 void TuplePtrn::bind(Scopes& s) const {
     s.bind(dbg(), nullptr, rebind());
-    s.push();
     for (const auto& ptrn : ptrns()) ptrn->bind(s);
-    s.pop();
 }
 
 void GroupPtrn::bind(Scopes& s) const {
@@ -139,7 +138,7 @@ void PiExpr::Dom::bind(Scopes& s) const { ptrn()->bind(s); }
 void PiExpr::bind(Scopes& s) const {
     s.push();
     for (const auto& dom : doms()) dom->bind(s);
-    if (codom()) codom()->bind(s);
+    codom()->bind(s);
     s.pop();
 }
 
@@ -148,7 +147,7 @@ void LamExpr::Dom::bind(Scopes& s) const { ptrn()->bind(s); }
 void LamExpr::bind(Scopes& s) const {
     s.push();
     for (const auto& dom : doms()) dom->bind(s);
-    if (codom()) codom()->bind(s);
+    codom()->bind(s);
     if (tag() == Tok::Tag::K_fn) {
         ret_ = s.ast().ptr<ReturnPtrn>(s.ast(), codom());
         ret_->bind(s);
@@ -160,7 +159,7 @@ void LamExpr::bind(Scopes& s) const {
 void LamDecl::bind(Scopes& s) const {
     s.push();
     for (const auto& dom : lam()->doms()) dom->bind(s);
-    if (auto codom = lam()->codom()) codom->bind(s);
+    lam()->codom()->bind(s);
     if (lam()->tag() == Tok::Tag::K_fun) {
         lam()->ret_ = s.ast().ptr<ReturnPtrn>(s.ast(), lam()->codom());
         lam()->ret_->bind(s);
@@ -188,7 +187,11 @@ void RetExpr::bind(Scopes& s) const {
     arg()->bind(s);
 }
 
-void SigmaExpr::bind(Scopes& s) const { ptrn()->bind(s); }
+void SigmaExpr::bind(Scopes& s) const {
+    s.push();
+    ptrn()->bind(s);
+    s.pop();
+}
 
 void TupleExpr::bind(Scopes& s) const {
     for (const auto& elem : elems()) elem->bind(s);
@@ -225,7 +228,10 @@ void LetDecl::bind(Scopes& s) const {
     ptrn()->bind(s);
 }
 
-void AxiomDecl::bind(Scopes& s) const { type()->bind(s); }
+void AxiomDecl::bind(Scopes& s) const {
+    type()->bind(s);
+    s.bind(dbg(), this);
+}
 
 void DeclsBlock::bind(Scopes& s) const {
     for (size_t i = 0, e = num_decls(), r = 0; true; ++i) {

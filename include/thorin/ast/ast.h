@@ -81,7 +81,6 @@ protected:
 public:
     Loc loc() const { return loc_; }
 
-    virtual void bind(Scopes&) const                        = 0;
     virtual std::ostream& stream(Tab&, std::ostream&) const = 0;
     void dump() const;
 
@@ -93,12 +92,18 @@ class Expr : public Node {
 protected:
     Expr(Loc loc)
         : Node(loc) {}
+
+public:
+    virtual void bind(Scopes&) const = 0;
 };
 
 class Decl : public Node {
 protected:
     Decl(Loc loc)
         : Node(loc) {}
+
+public:
+    virtual void bind(Scopes&) const = 0;
 };
 
 class RecDecl : public Decl {
@@ -135,7 +140,6 @@ public:
     Ptrn(Loc loc)
         : Decl(loc) {}
 
-    // virtual const Def* type(World&, Def2Fields&) const                = 0;
     [[nodiscard]] static Ptr<Expr> to_expr(AST&, Ptr<Ptrn>&&);
     [[nodiscard]] static Ptr<Ptrn> to_ptrn(Ptr<Expr>&&);
 };
@@ -158,8 +162,6 @@ public:
         return ast.ptr<IdPtrn>(loc, false, Dbg(loc, ast.sym_anon()), std::move(type));
     }
 
-    // void bind(Scopes&, const Def*, bool rebind = false) const override {}
-    // const Def* type(World&, Def2Fields&) const override {}
     void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
@@ -187,8 +189,6 @@ public:
         return ast.ptr<IdPtrn>(loc, false, Dbg(loc, ast.sym_anon()), std::move(type));
     }
 
-    // void bind(Scopes&, const Def*, bool rebind = false) const override {}
-    // const Def* type(World&, Def2Fields&) const override {}
     void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
@@ -218,8 +218,6 @@ public:
     const Ptrn* ptrn(size_t i) const { return ptrns_[i].get(); }
     size_t num_ptrns() const { return ptrns().size(); }
 
-    // void bind(Scopes&, const Def*, bool rebind = false) const override {}
-    // const Def* type(World&, Def2Fields&) const override {}
     void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
@@ -242,8 +240,6 @@ public:
     Dbg dbg() const { return dbg_; }
     const Expr* type() const { return type_; }
 
-    // void bind(Scopes&, const Def*, bool rebind = false) const override {}
-    // const Def* type(World&, Def2Fields&) const override {}
     void bind(Scopes&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
@@ -406,7 +402,7 @@ public:
         bool is_implicit() const { return is_implicit_; }
         const Ptrn* ptrn() const { return ptrn_.get(); }
 
-        void bind(Scopes&) const override;
+        void bind(Scopes&) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     private:
@@ -455,7 +451,7 @@ public:
         bool has_bang() const { return has_bang_; }
         const Expr* filter() const { return filter_.get(); }
 
-        void bind(Scopes&) const override;
+        void bind(Scopes&) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     private:
@@ -659,6 +655,15 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 };
 
+class InferExpr : public Expr {
+public:
+    InferExpr(Loc loc)
+        : Expr(loc) {}
+
+    void bind(Scopes&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+};
+
 /*
  * Further Decls
  */
@@ -789,7 +794,7 @@ public:
 
     void compile(AST&) const;
     void bind(AST&) const;
-    void bind(Scopes&) const override;
+    void bind(Scopes&) const;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
