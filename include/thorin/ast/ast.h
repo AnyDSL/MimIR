@@ -166,8 +166,8 @@ public:
     bool rebind() const { return rebind_; }
     Dbg dbg() const { return dbg_; }
 
-    virtual void bind(Scopes&) const       = 0;
-    virtual Ref emit_(Emitter&, Ref) const = 0;
+    virtual void bind(Scopes&, bool quiet = false) const = 0;
+    virtual Ref emit_(Emitter&, Ref) const               = 0;
     Ref emit(Emitter& e, Ref def) const { return def_ ? def_ : def_ = emit_(e, def); }
 
     [[nodiscard]] static Ptr<Expr> to_expr(AST&, Ptr<Ptrn>&&);
@@ -192,7 +192,7 @@ public:
         return ast.ptr<IdPtrn>(loc, false, Dbg(loc, ast.sym_anon()), std::move(type));
     }
 
-    void bind(Scopes&) const override;
+    void bind(Scopes&, bool quiet = false) const override;
     Ref emit_(Emitter&, Ref) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
@@ -210,7 +210,7 @@ public:
 
     const IdPtrn* id() const { return id_; }
 
-    void bind(Scopes&) const override;
+    void bind(Scopes&, bool quiet = false) const override;
     Ref emit_(Emitter&, Ref) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
@@ -235,7 +235,7 @@ public:
     const Ptrn* ptrn(size_t i) const { return ptrns_[i].get(); }
     size_t num_ptrns() const { return ptrns().size(); }
 
-    void bind(Scopes&) const override;
+    void bind(Scopes&, bool quiet = false) const override;
     Ref emit_(Emitter&, Ref) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
@@ -254,7 +254,7 @@ public:
 
     const Expr* type() const { return type_; }
 
-    void bind(Scopes&) const override;
+    void bind(Scopes&, bool quiet = false) const override;
     Ref emit_(Emitter&, Ref) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
@@ -474,7 +474,7 @@ public:
         bool has_bang() const { return has_bang_; }
         const Expr* filter() const { return filter_.get(); }
 
-        void bind(Scopes&) const;
+        void bind(Scopes&, bool quiet = false) const;
         Ref emit(Emitter&) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 

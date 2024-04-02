@@ -48,7 +48,7 @@ public:
         return nullptr;
     }
 
-    void bind(Dbg dbg, const Decl* decl, bool rebind = false) {
+    void bind(Dbg dbg, const Decl* decl, bool rebind = false, bool quiet = false) {
         auto [loc, sym] = dbg;
         if (!sym || sym == '_') return; // don't do anything with '_'
 
@@ -56,7 +56,7 @@ public:
             top()[sym] = std::pair(loc, decl);
         } else if (auto [i, ins] = top().emplace(sym, std::pair(loc, decl)); !ins) {
             auto [prev_loc, prev_decl] = i->second;
-            if (!prev_decl->isa<DummyDecl>()) { // if prev_decl stems from an error - don't complain
+            if (!quiet && !prev_decl->isa<DummyDecl>()) { // if prev_decl stems from an error - don't complain
                 ast().error(loc, "redeclaration of '{}'", sym);
                 ast().note(prev_loc, "previous declaration here");
             }
@@ -99,20 +99,20 @@ void Import::bind(Scopes& s) const { module()->bind(s); }
  * Ptrn
  */
 
-void IdPtrn::bind(Scopes& s) const {
-    if (type()) type()->bind(s);
-    s.bind(dbg(), this, rebind());
+void IdPtrn::bind(Scopes& s, bool quiet) const {
+    if (!quiet && type()) type()->bind(s);
+    s.bind(dbg(), this, rebind(), quiet);
 }
 
-void TuplePtrn::bind(Scopes& s) const {
-    s.bind(dbg(), this, rebind());
-    for (const auto& ptrn : ptrns()) ptrn->bind(s);
+void TuplePtrn::bind(Scopes& s, bool quiet) const {
+    s.bind(dbg(), this, rebind(), quiet);
+    for (const auto& ptrn : ptrns()) ptrn->bind(s, quiet);
 }
 
-void GroupPtrn::bind(Scopes& s) const { s.bind(dbg(), this, rebind()); }
+void GroupPtrn::bind(Scopes& s, bool quiet) const { s.bind(dbg(), this, rebind(), quiet); }
 
-void ReturnPtrn::bind(Scopes& s) const {
-    s.bind(dbg(), this, rebind());
+void ReturnPtrn::bind(Scopes& s, bool quiet) const {
+    s.bind(dbg(), this, rebind(), quiet);
     // No need to check this->type(); it's shared and has already been checked.
 }
 
@@ -141,7 +141,14 @@ void PiExpr::bind(Scopes& s) const {
     s.pop();
 }
 
-void LamExpr::Dom::bind(Scopes& s) const { ptrn()->bind(s); }
+void PiDecl::bind(Scopes& s) const {
+    if (type()) type()->bind(s);
+    s.bind(dbg(), this);
+}
+
+void PiDecl::bind_rec(Scopes& s) const { body()->bind(s); }
+
+void LamExpr::Dom::bind(Scopes& s, bool quiet) const { ptrn()->bind(s, quiet); }
 
 void LamExpr::bind(Scopes& s) const {
     s.push();
@@ -169,8 +176,8 @@ void LamDecl::bind(Scopes& s) const {
 
 void LamDecl::bind_rec(Scopes& s) const {
     s.push();
-    for (const auto& dom : lam()->doms()) dom->bind(s);
-    if (auto ret = lam()->ret()) ret->bind(s);
+    for (const auto& dom : lam()->doms()) dom->bind(s, true);
+    if (auto ret = lam()->ret()) ret->bind(s, true);
     body()->bind(s);
     s.pop();
 }
@@ -255,13 +262,6 @@ void AxiomDecl::bind(Scopes& s) const {
         }
     }
 }
-
-void PiDecl::bind(Scopes& s) const {
-    if (type()) type()->bind(s);
-    s.bind(dbg(), this);
-}
-
-void PiDecl::bind_rec(Scopes& s) const { body()->bind(s); }
 
 void SigmaDecl::bind(Scopes& s) const {
     if (type()) type()->bind(s);
