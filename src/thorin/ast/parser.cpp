@@ -498,8 +498,13 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn(bool rebind, Dbg dbg) {
             while (auto tok = accept(Tag::M_id)) dbgs.emplace_back(tok.dbg());
 
             if (accept(Tag::T_colon)) { // identifier group: x y x: T
+                auto dbg  = dbgs.back();
                 auto type = parse_expr("type of an identifier group within a tuple pattern");
-                ptrns.emplace_back(ptr<GroupPtrn>(track, std::move(dbgs), std::move(type)));
+                auto id   = ptr<IdPtrn>(dbg.loc + type->loc().finis, false, dbg, std::move(type));
+
+                for (auto dbg : dbgs | std::views::take(dbgs.size() - 1))
+                    ptrns.emplace_back(ptr<GroupPtrn>(dbg, id.get()));
+                ptrns.emplace_back(std::move(id));
                 return;
             }
 

@@ -101,21 +101,18 @@ void Import::bind(Scopes& s) const { module()->bind(s); }
 
 void IdPtrn::bind(Scopes& s) const {
     if (type()) type()->bind(s);
-    s.bind(dbg(), nullptr, rebind());
+    s.bind(dbg(), this, rebind());
 }
 
 void TuplePtrn::bind(Scopes& s) const {
-    s.bind(dbg(), nullptr, rebind());
+    s.bind(dbg(), this, rebind());
     for (const auto& ptrn : ptrns()) ptrn->bind(s);
 }
 
-void GroupPtrn::bind(Scopes& s) const {
-    type()->bind(s);
-    for (auto dbg : dbgs()) s.bind(dbg, nullptr, false);
-}
+void GroupPtrn::bind(Scopes& s) const { s.bind(dbg(), this, rebind()); }
 
 void ReturnPtrn::bind(Scopes& s) const {
-    s.bind(dbg(), this);
+    s.bind(dbg(), this, rebind());
     // No need to check this->type(); it's shared and has already been checked.
 }
 

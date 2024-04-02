@@ -45,9 +45,7 @@ std::ostream& IdPtrn::stream(Tab& tab, std::ostream& os) const {
     return os << "<invalid identifier pattern>";
 }
 
-std::ostream& GroupPtrn::stream(Tab& tab, std::ostream& os) const {
-    return print(os, "{ }: {}", dbgs(), S(tab, type()));
-}
+std::ostream& GroupPtrn::stream(Tab&, std::ostream& os) const { return os << dbg(); }
 
 std::ostream& TuplePtrn::stream(Tab& tab, std::ostream& os) const {
     if (dbg()) print(os, "{}::", dbg());
