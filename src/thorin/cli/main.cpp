@@ -1,11 +1,8 @@
 #include <cstdlib>
 #include <cstring>
 
-#include <fstream>
-#include <iostream>
-#include <stdexcept>
-
 #include <lyra/lyra.hpp>
+#include <rang.hpp>
 
 #include "thorin/config.h"
 #include "thorin/driver.h"
@@ -136,58 +133,63 @@ int main(int argc, char** argv) {
         if (input[0] == '-' || input.substr(0, 2) == "--")
             throw std::invalid_argument("error: unknown option " + input);
 
-        auto path = fs::path(input);
-        world.set(path.filename().replace_extension().string());
-        auto ast    = ast::AST(driver);
-        auto parser = ast::Parser(ast);
+        try {
+            auto path = fs::path(input);
+            world.set(path.filename().replace_extension().string());
+            auto ast    = ast::AST(driver);
+            auto parser = ast::Parser(ast);
 #if 0
-        parser.import(driver.sym(input), os[Md]);
+            parser.import(driver.sym(input), os[Md]);
 
-        if (auto dep = os[D]) {
-            if (auto autogen_h = output[H]; !autogen_h.empty()) {
-                *dep << autogen_h << ": ";
-                assert(!driver.imports().empty());
-                for (auto sep = ""; const auto& [path, _] : driver.imports() | std::views::drop(1)) {
-                    *dep << sep << path;
-                    sep = " \\\n ";
+            if (auto dep = os[D]) {
+                if (auto autogen_h = output[H]; !autogen_h.empty()) {
+                    *dep << autogen_h << ": ";
+                    assert(!driver.imports().empty());
+                    for (auto sep = ""; const auto& [path, _] : driver.imports() | std::views::drop(1)) {
+                        *dep << sep << path;
+                        sep = " \\\n ";
+                    }
+                } else {
+                    throw std::invalid_argument("error: --output-d requires --output-h");
                 }
-            } else {
-                throw std::invalid_argument("error: --output-d requires --output-h");
+                *dep << std::endl;
             }
-            *dep << std::endl;
-        }
 
-        if (flags.bootstrap) {
-            if (auto h = os[H])
-                bootstrap(driver, world.sym(fs::path{path}.filename().replace_extension().string()), *h);
-            opt = std::min(opt, 1);
-        }
+            if (flags.bootstrap) {
+                if (auto h = os[H])
+                    bootstrap(driver, world.sym(fs::path{path}.filename().replace_extension().string()), *h);
+                opt = std::min(opt, 1);
+            }
 
-        switch (opt) {
-            case 0: break;
-            case 1: Phase::run<Cleanup>(world); break;
-            case 2:
-                parser.import("opt");
-                optimize(world);
-                break;
-            default: error("illegal optimization level '{}'", opt);
-        }
+            switch (opt) {
+                case 0: break;
+                case 1: Phase::run<Cleanup>(world); break;
+                case 2:
+                    parser.import("opt");
+                    optimize(world);
+                    break;
+                default: error("illegal optimization level '{}'", opt);
+            }
 #endif
 
-        if (os[AST]) {
-            auto mod = parser.import(driver.sym(input), os[Md]);
-            mod->compile(ast, world);
-            Tab tab;
-            mod->stream(tab, *os[AST]);
-        }
-        if (os[Thorin]) world.dump(*os[Thorin]);
-        if (os[Dot]) world.dot(*os[Dot], dot_all_annexes, dot_follow_types);
+            if (os[AST]) {
+                auto mod = parser.import(driver.sym(input), os[Md]);
+                mod->compile(ast, world);
+                Tab tab;
+                mod->stream(tab, *os[AST]);
+            }
+            if (os[Thorin]) world.dump(*os[Thorin]);
+            if (os[Dot]) world.dot(*os[Dot], dot_all_annexes, dot_follow_types);
 
-        if (os[LL]) {
-            if (auto backend = driver.backend("ll"))
-                backend(world, *os[LL]);
-            else
-                error("'ll' emitter not loaded; try loading 'mem' plugin");
+            if (os[LL]) {
+                if (auto backend = driver.backend("ll"))
+                    backend(world, *os[LL]);
+                else
+                    error("'ll' emitter not loaded; try loading 'mem' plugin");
+            }
+        } catch (const Error& e) { // e.loc.path doesn't exist anymore in outer scope so catch Error here
+            errln("{}{}: {}error:{} {}", rang::fg::yellow, e.loc, rang::fg::red, rang::fg::reset, e.what());
+            return EXIT_FAILURE;
         }
     } catch (const std::exception& e) {
         errln("{}", e.what());

@@ -1,3 +1,6 @@
+#include <string>
+#include <string_view>
+
 #include "thorin/ast/ast.h"
 
 #include "fe/assert.h"
@@ -37,9 +40,49 @@ Ref ExtremumExpr::emit(Emitter& e) const {
     return (tag() == Tag::T_bot ? e.world().bot(t) : e.world().top(t))->set(loc());
 }
 
-Ref LitExpr::emit(Emitter& /*e*/) const {
-    // auto t = type() ? type()->emit(e) : e.world().type<0>();
-    //  TODO
+Ref LitExpr::emit(Emitter& e) const {
+    int base        = 10;
+    auto [loc, sym] = value();
+    auto c_str      = sym.c_str();
+    size_t b        = 0;
+    bool sign       = false;
+
+    if (sym[b] == '+')
+        ++b;
+    else if (sym[b] == '-')
+        ++b, sign = true;
+
+    if (sym.size() == b) error(loc, "signed literal '{}' without value", value());
+
+    if (sym.size() >= b + 1) {
+        switch (sym[b + 1]) {
+                // clang-format off
+            case 'b':
+            case 'B': base =  2, b += 2; break;
+            case 'o':
+            case 'O': base =  8, b += 2; break;
+            case 'x':
+            case 'X': base = 16, b += 2; break;
+            default:                     break;
+                // clang-format on
+        }
+    }
+
+    char* end;
+    auto val = std::strtoull(c_str + b, &end, base);
+
+    if (*end == '\0') {
+        if (sign) error(loc, "negative .Nat literal '{}' not allowed", value());
+        return e.world().lit_nat(val)->set(loc);
+    }
+
+    if (*end == 'i' || *end == 'I') {
+        auto width = std::strtoull(end + 1, nullptr, base);
+        if (width != 64 && val >= Idx::bitwidth2size(width))
+            error(loc, "value '{}' doesn't fit in given bit width '{}'", val, width);
+        return e.world().lit_int(width, val)->set(loc);
+    }
+
     return {};
 }
 
