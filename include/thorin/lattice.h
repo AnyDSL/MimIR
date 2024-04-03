@@ -38,11 +38,15 @@ private:
 public:
     THORIN_SETTERS(TBound)
 
-    Ref rebuild(World&, Ref, Defs) const override;
-    TBound* stub(World&, Ref) override;
+    TBound* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
+
+    static constexpr auto Node = Up ? Node::Join : Node::Meet;
+
+private:
+    Ref rebuild_(World&, Ref, Defs) const override;
+    TBound* stub_(World&, Ref) override;
 
     friend class World;
-    static constexpr auto Node = Up ? Node::Join : Node::Meet;
 };
 
 /// Constructs a [Meet](@ref thorin::Meet) **value**.
@@ -128,12 +132,17 @@ private:
     TExt(const Def* type)
         : Ext(Node, type) {}
 
+public:
     THORIN_SETTERS(TExt)
 
-    Ref rebuild(World&, Ref, Defs) const override;
-    TExt* stub(World&, Ref) override;
+    TExt* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
 
     static constexpr auto Node = Up ? Node::Top : Node::Bot;
+
+private:
+    Ref rebuild_(World&, Ref, Defs) const override;
+    TExt* stub_(World&, Ref) override;
+
     friend class World;
 };
 

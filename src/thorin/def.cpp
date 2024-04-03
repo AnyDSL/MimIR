@@ -88,78 +88,75 @@ UMax::UMax(World& world, Defs ops)
 
 // clang-format off
 
-/// @name Rebuild
-///@{
-
 /*
  * rebuild
  */
 
 #ifndef DOXYGEN // TODO Doxygen doesn't expand THORIN_DEF_MIXIN
-Ref Infer    ::rebuild(World&,   Ref,   Defs  ) const { fe::unreachable(); }
-Ref Global   ::rebuild(World&,   Ref,   Defs  ) const { fe::unreachable(); }
-Ref Idx      ::rebuild(World& w, Ref  , Defs  ) const { assert(isa_imm()); return w.type_idx(); }
-Ref Nat      ::rebuild(World& w, Ref  , Defs  ) const { assert(isa_imm()); return w.type_nat(); }
-Ref Univ     ::rebuild(World& w, Ref  , Defs  ) const { assert(isa_imm()); return w.univ(); }
-Ref Ac       ::rebuild(World& w, Ref t, Defs o) const { assert(isa_imm()); return w.ac(t, o)                     ->set(dbg()); }
-Ref App      ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.app(o[0], o[1])              ->set(dbg()); }
-Ref Arr      ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.arr(o[0], o[1])              ->set(dbg()); }
-Ref Extract  ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.extract(o[0], o[1])          ->set(dbg()); }
-Ref Insert   ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.insert(o[0], o[1], o[2])     ->set(dbg()); }
-Ref Lam      ::rebuild(World& w, Ref t, Defs o) const { assert(isa_imm()); return w.lam(t->as<Pi>(), o[0], o[1]) ->set(dbg()); }
-Ref Lit      ::rebuild(World& w, Ref t, Defs  ) const { assert(isa_imm()); return w.lit(t, get())                ->set(dbg()); }
-Ref Pack     ::rebuild(World& w, Ref t, Defs o) const { assert(isa_imm()); return w.pack(t->arity(), o[0])       ->set(dbg()); }
-Ref Pi       ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.pi(o[0], o[1], is_implicit())->set(dbg()); }
-Ref Pick     ::rebuild(World& w, Ref t, Defs o) const { assert(isa_imm()); return w.pick(t, o[0])                ->set(dbg()); }
-Ref Proxy    ::rebuild(World& w, Ref t, Defs o) const { assert(isa_imm()); return w.proxy(t, o, pass(), tag())   ->set(dbg()); }
-Ref Sigma    ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.sigma(o)                     ->set(dbg()); }
-Ref Singleton::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.singleton(o[0])              ->set(dbg()); }
-Ref Type     ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.type(o[0])                   ->set(dbg()); }
-Ref Test     ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.test(o[0], o[1], o[2], o[3]) ->set(dbg()); }
-Ref Tuple    ::rebuild(World& w, Ref t, Defs o) const { assert(isa_imm()); return w.tuple(t, o)                  ->set(dbg()); }
-Ref UInc     ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.uinc(o[0], offset())         ->set(dbg()); }
-Ref UMax     ::rebuild(World& w, Ref  , Defs o) const { assert(isa_imm()); return w.umax(o)                      ->set(dbg()); }
-Ref Var      ::rebuild(World& w, Ref t, Defs o) const { assert(isa_imm()); return w.var(t, o[0]->as_mut())       ->set(dbg()); }
-Ref Vel      ::rebuild(World& w, Ref t, Defs o) const { assert(isa_imm()); return w.vel(t, o[0])->set(dbg())     ->set(dbg()); }
+Ref Infer    ::rebuild_(World&,   Ref,   Defs  ) const { fe::unreachable(); }
+Ref Global   ::rebuild_(World&,   Ref,   Defs  ) const { fe::unreachable(); }
+Ref Idx      ::rebuild_(World& w, Ref  , Defs  ) const { return w.type_idx(); }
+Ref Nat      ::rebuild_(World& w, Ref  , Defs  ) const { return w.type_nat(); }
+Ref Univ     ::rebuild_(World& w, Ref  , Defs  ) const { return w.univ(); }
+Ref Ac       ::rebuild_(World& w, Ref t, Defs o) const { return w.ac(t, o); }
+Ref App      ::rebuild_(World& w, Ref  , Defs o) const { return w.app(o[0], o[1]); }
+Ref Arr      ::rebuild_(World& w, Ref  , Defs o) const { return w.arr(o[0], o[1]); }
+Ref Extract  ::rebuild_(World& w, Ref  , Defs o) const { return w.extract(o[0], o[1]); }
+Ref Insert   ::rebuild_(World& w, Ref  , Defs o) const { return w.insert(o[0], o[1], o[2]); }
+Ref Lam      ::rebuild_(World& w, Ref t, Defs o) const { return w.lam(t->as<Pi>(), o[0], o[1]); }
+Ref Lit      ::rebuild_(World& w, Ref t, Defs  ) const { return w.lit(t, get()); }
+Ref Pack     ::rebuild_(World& w, Ref t, Defs o) const { return w.pack(t->arity(), o[0]); }
+Ref Pi       ::rebuild_(World& w, Ref  , Defs o) const { return w.pi(o[0], o[1], is_implicit()); }
+Ref Pick     ::rebuild_(World& w, Ref t, Defs o) const { return w.pick(t, o[0]); }
+Ref Proxy    ::rebuild_(World& w, Ref t, Defs o) const { return w.proxy(t, o, pass(), tag()); }
+Ref Sigma    ::rebuild_(World& w, Ref  , Defs o) const { return w.sigma(o); }
+Ref Singleton::rebuild_(World& w, Ref  , Defs o) const { return w.singleton(o[0]); }
+Ref Type     ::rebuild_(World& w, Ref  , Defs o) const { return w.type(o[0]); }
+Ref Test     ::rebuild_(World& w, Ref  , Defs o) const { return w.test(o[0], o[1], o[2], o[3]); }
+Ref Tuple    ::rebuild_(World& w, Ref t, Defs o) const { return w.tuple(t, o); }
+Ref UInc     ::rebuild_(World& w, Ref  , Defs o) const { return w.uinc(o[0], offset()); }
+Ref UMax     ::rebuild_(World& w, Ref  , Defs o) const { return w.umax(o); }
+Ref Var      ::rebuild_(World& w, Ref t, Defs o) const { return w.var(t, o[0]->as_mut()); }
+Ref Vel      ::rebuild_(World& w, Ref t, Defs o) const { return w.vel(t, o[0])->set(dbg()); }
 
-Ref Axiom    ::rebuild(World& w, Ref t, Defs ) const {
+Ref Axiom    ::rebuild_(World& w, Ref t, Defs ) const {
     if (&w != &world()) return w.axiom(normalizer(), curry(), trip(), t, plugin(), tag(), sub())->set(dbg());
     assert(Check::alpha(t, type()));
     return this;
 }
 
-template<bool up> Ref TExt  <up>::rebuild(World& w, Ref t, Defs  ) const { return w.ext  <up>(t)->set(dbg()); }
-template<bool up> Ref TBound<up>::rebuild(World& w, Ref  , Defs o) const { return w.bound<up>(o)->set(dbg()); }
+template<bool up> Ref TExt  <up>::rebuild_(World& w, Ref t, Defs  ) const { return w.ext  <up>(t)->set(dbg()); }
+template<bool up> Ref TBound<up>::rebuild_(World& w, Ref  , Defs o) const { return w.bound<up>(o)->set(dbg()); }
 #endif
 
 /*
  * stub
  */
 
-Arr*    Arr   ::stub(World& w, Ref t) { return w.mut_arr  (t)                ->set(dbg()); }
-Global* Global::stub(World& w, Ref t) { return w.global   (t, is_mutable())  ->set(dbg()); }
-Infer*  Infer ::stub(World& w, Ref t) { return w.mut_infer(t)                ->set(dbg()); }
-Lam*    Lam   ::stub(World& w, Ref t) { return w.mut_lam  (t->as<Pi>())      ->set(dbg()); }
-Pack*   Pack  ::stub(World& w, Ref t) { return w.mut_pack (t)                ->set(dbg()); }
-Pi*     Pi    ::stub(World& w, Ref t) { return w.mut_pi   (t, is_implicit()) ->set(dbg()); }
-Sigma*  Sigma ::stub(World& w, Ref t) { return w.mut_sigma(t, num_ops())     ->set(dbg()); }
+Arr*    Arr   ::stub_(World& w, Ref t) { return w.mut_arr  (t); }
+Global* Global::stub_(World& w, Ref t) { return w.global   (t, is_mutable()); }
+Infer*  Infer ::stub_(World& w, Ref t) { return w.mut_infer(t); }
+Lam*    Lam   ::stub_(World& w, Ref t) { return w.mut_lam  (t->as<Pi>()); }
+Pack*   Pack  ::stub_(World& w, Ref t) { return w.mut_pack (t); }
+Pi*     Pi    ::stub_(World& w, Ref t) { return w.mut_pi   (t, is_implicit()); }
+Sigma*  Sigma ::stub_(World& w, Ref t) { return w.mut_sigma(t, num_ops()); }
 
-template<bool up> TBound<up>* TBound<up>::stub(World& w, Ref t) { return w.mut_bound<up>(t, num_ops()); }
-template<bool up> TExt  <up>* TExt  <up>::stub(World&  , Ref  ) { fe::unreachable(); }
+template<bool up> TBound<up>* TBound<up>::stub_(World& w, Ref t) { return w.mut_bound<up>(t, num_ops()); }
+template<bool up> TExt  <up>* TExt  <up>::stub_(World&  , Ref  ) { fe::unreachable(); }
 
 /*
  * instantiate templates
  */
 
 #ifndef DOXYGEN
-template Ref            TExt<false>  ::rebuild(World&, Ref, Defs) const;
-template Ref            TExt<true >  ::rebuild(World&, Ref, Defs) const;
-template Ref            TBound<false>::rebuild(World&, Ref, Defs) const;
-template Ref            TBound<true >::rebuild(World&, Ref, Defs) const;
-template TBound<false>* TBound<false>::stub(World&, Ref);
-template TBound<true >* TBound<true >::stub(World&, Ref);
-template TExt<false>*   TExt<false>  ::stub(World&, Ref);
-template TExt<true >*   TExt<true >  ::stub(World&, Ref);
+template Ref            TExt<false>  ::rebuild_(World&, Ref, Defs) const;
+template Ref            TExt<true >  ::rebuild_(World&, Ref, Defs) const;
+template Ref            TBound<false>::rebuild_(World&, Ref, Defs) const;
+template Ref            TBound<true >::rebuild_(World&, Ref, Defs) const;
+template TBound<false>* TBound<false>::stub_(World&, Ref);
+template TBound<true >* TBound<true >::stub_(World&, Ref);
+template TExt<false>*   TExt<false>  ::stub_(World&, Ref);
+template TExt<true >*   TExt<true >  ::stub_(World&, Ref);
 #endif
 
 // clang-format on
@@ -214,8 +211,6 @@ const Def* Pack::reduce(const Def* arg) const {
     return body();
 }
 
-///@}
-
 DefVec Def::reduce(const Def* arg) const {
     if (auto mut = isa_mut()) return mut->reduce(arg);
     return DefVec(ops().begin(), ops().end());
@@ -231,7 +226,7 @@ DefVec Def::reduce(const Def* arg) {
 const Def* Def::refine(size_t i, const Def* new_op) const {
     DefVec new_ops(ops().begin(), ops().end());
     new_ops[i] = new_op;
-    return rebuild(world(), type(), new_ops);
+    return rebuild(type(), new_ops);
 }
 
 /*

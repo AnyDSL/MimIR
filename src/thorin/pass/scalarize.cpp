@@ -37,11 +37,11 @@ Lam* Scalerize::make_scalar(Ref def) {
 
     if (!todo) return tup2sca_[tup_lam] = tup_lam;
 
-    auto pi      = world().cn(types);
-    auto sca_lam = tup_lam->stub(world(), pi);
+    auto cn      = world().cn(types);
+    auto sca_lam = tup_lam->stub(cn);
     if (eta_exp_) eta_exp_->new2old(sca_lam, tup_lam);
     size_t n = 0;
-    world().DLOG("type {} ~> {}", tup_lam->type(), pi);
+    world().DLOG("type {} ~> {}", tup_lam->type(), cn);
     auto new_vars = world().tuple(DefVec(tup_lam->num_doms(), [&](auto i) {
         auto tuple = DefVec(arg_sz.at(i), [&](auto) { return sca_lam->var(n++); });
         return unflatten(tuple, tup_lam->dom(i), false);
