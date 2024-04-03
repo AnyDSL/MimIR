@@ -156,6 +156,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a02e6136af63730146609ef84a373f890 inherit pub_methods_classthorin_1_1Rewriter" id="r_a02e6136af63730146609ef84a373f890"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#a02e6136af63730146609ef84a373f890">world</a> ()</td></tr>
 <tr class="separator:a02e6136af63730146609ef84a373f890 inherit pub_methods_classthorin_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a665ee00c61e0122369a8dfd70e8dcb15 inherit pub_methods_classthorin_1_1Rewriter" id="r_a665ee00c61e0122369a8dfd70e8dcb15"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#a665ee00c61e0122369a8dfd70e8dcb15">map</a> (<a class="el" href="classthorin_1_1Ref.html">Ref</a> old_def, <a class="el" href="classthorin_1_1Ref.html">Ref</a> new_def)</td></tr>
+<tr class="memdesc:a665ee00c61e0122369a8dfd70e8dcb15 inherit pub_methods_classthorin_1_1Rewriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map <code>old_def</code> to <code>new_def</code> and returns <code>new_def</code>;.  <br /></td></tr>
 <tr class="separator:a665ee00c61e0122369a8dfd70e8dcb15 inherit pub_methods_classthorin_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59b6816aee709e3d3ee157e17b5c01e3 inherit pub_methods_classthorin_1_1Rewriter" id="r_a59b6816aee709e3d3ee157e17b5c01e3"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#a59b6816aee709e3d3ee157e17b5c01e3">rewrite</a> (<a class="el" href="classthorin_1_1Ref.html">Ref</a>)</td></tr>
 <tr class="separator:a59b6816aee709e3d3ee157e17b5c01e3 inherit pub_methods_classthorin_1_1Rewriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -183,7 +184,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>Visits the current <a class="el" href="classthorin_1_1Phase.html#a698a761ac58982720ac3b561adbf6873">Phase::world</a> and constructs a new <a class="el" href="classthorin_1_1RWPhase.html#aefa1de12c158db2db72db5ae4973a18e">RWPhase::world</a> along the way. </p>
 <p>It recursively <b>rewrites</b> all <a class="el" href="classthorin_1_1World.html#a5b40a0d582ba6e1b28bc50dc0ceb0840">World::externals()</a>. </p><dl class="section note"><dt>Note</dt><dd>You can override <a class="el" href="classthorin_1_1Rewriter.html#a59b6816aee709e3d3ee157e17b5c01e3">Rewriter::rewrite</a>, <a class="el" href="classthorin_1_1Rewriter.html#a9e912a623cf8066e106f6594c1f8036e">Rewriter::rewrite_imm</a>, and <a class="el" href="classthorin_1_1Rewriter.html#a5866d0e6065f3be40aca9789ac2c2150">Rewriter::rewrite_mut</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00052">52</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00053">53</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a28c0bdf51baf34c5e95fd598cccd194f" name="a28c0bdf51baf34c5e95fd598cccd194f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a28c0bdf51baf34c5e95fd598cccd194f">&#9670;&#160;</a></span>RWPhase()</h2>
@@ -219,7 +220,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00054">54</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00055">55</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
 </div>
 </div>
@@ -253,7 +254,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00013">13</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00145">thorin::World::annexes()</a>, <a class="el" href="def_8h_source.html#l00424">thorin::Def::as_mut()</a>, <a class="el" href="world_8h_source.html#l00146">thorin::World::externals()</a>, <a class="el" href="rewrite_8cpp_source.html#l00013">thorin::Rewriter::rewrite()</a>, and <a class="el" href="phase_8h_source.html#l00058">world()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00149">thorin::World::annexes()</a>, <a class="el" href="def_8h_source.html#l00457">thorin::Def::as_mut()</a>, <a class="el" href="world_8h_source.html#l00150">thorin::World::externals()</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">thorin::Rewriter::rewrite()</a>, and <a class="el" href="phase_8h_source.html#l00059">world()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="phase_8cpp_source.html#l00019">thorin::FPPhase::start()</a>.</p>
 
@@ -282,9 +283,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00058">58</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00059">59</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">References <a class="el" href="phase_8h_source.html#l00025">thorin::Phase::world()</a>.</p>
+<p class="reference">References <a class="el" href="phase_8h_source.html#l00026">thorin::Phase::world()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="lower__matrix__lowlevel_8cpp_source.html#l00059">thorin::plug::matrix::LowerMatrixLowLevel::rewrite_imm()</a>, and <a class="el" href="phase_8cpp_source.html#l00013">start()</a>.</p>
 

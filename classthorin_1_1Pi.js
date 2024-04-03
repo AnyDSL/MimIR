@@ -20,6 +20,7 @@ var classthorin_1_1Pi =
     [ "set_codom", "classthorin_1_1Pi.html#adb719e74d5cd45616f65a5384c6a6bca", null ],
     [ "set_dom", "classthorin_1_1Pi.html#ab231053458d250b44464adeeb09772bf", null ],
     [ "set_dom", "classthorin_1_1Pi.html#a235139cd50faba2b2d76ed212acd0223", null ],
-    [ "stub", "classthorin_1_1Pi.html#ab9ab74c1a1aedb98b7aed3a60015bb3c", null ],
+    [ "stub", "classthorin_1_1Pi.html#ace62601291e36184200384ffb5feb523", null ],
+    [ "stub_", "classthorin_1_1Pi.html#a6d6ebd0c105c7ad90297cf1051f8378e", null ],
     [ "unset", "classthorin_1_1Pi.html#adc1221f720c030e38e312b341abdb0bf", null ]
 ];

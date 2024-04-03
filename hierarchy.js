@@ -16,6 +16,7 @@ var hierarchy =
     [ "thorin::CFNode", "classthorin_1_1CFNode.html", null ],
     [ "thorin::Check", "classthorin_1_1Check.html", null ],
     [ "thorin::plug::clos::ClosLit", "classthorin_1_1plug_1_1clos_1_1ClosLit.html", null ],
+    [ "thorin::PooledSet< T >::Data", "structthorin_1_1PooledSet_1_1Data.html", null ],
     [ "thorin::Dbg", "namespacethorin.html#structthorin_1_1Dbg", null ],
     [ "thorin::DefDefEq", "structthorin_1_1DefDefEq.html", null ],
     [ "thorin::DefDefHash", "structthorin_1_1DefDefHash.html", null ],
@@ -25,6 +26,7 @@ var hierarchy =
     [ "thorin::DomFrontierBase< forward >", "classthorin_1_1DomFrontierBase.html", null ],
     [ "thorin::DomTreeBase< forward >", "classthorin_1_1DomTreeBase.html", null ],
     [ "thorin::Elem< R, F >", "structthorin_1_1Elem.html", null ],
+    [ "thorin::PooledSet< T >::Data::Equal", "structthorin_1_1PooledSet_1_1Data_1_1Equal.html", null ],
     [ "thorin::Flags", "namespacethorin.html#structthorin_1_1Flags", null ],
     [ "thorin::FNV1", "structthorin_1_1FNV1.html", null ],
     [ "thorin::plug::clos::FreeDefAna", "classthorin_1_1plug_1_1clos_1_1FreeDefAna.html", null ],
@@ -68,6 +70,7 @@ var hierarchy =
       [ "thorin::RWPass< BetaRed, Def >", "classthorin_1_1RWPass.html", null ],
       [ "thorin::RWPass< EtaExp, Lam >", "classthorin_1_1RWPass.html", null ],
       [ "thorin::RWPass< EtaRed, Def >", "classthorin_1_1RWPass.html", null ],
+      [ "thorin::RWPass< P, Def >", "classthorin_1_1RWPass.html", null ],
       [ "thorin::RWPass< LamSpec, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::LamSpec", "classthorin_1_1LamSpec.html", null ]
       ] ],
@@ -135,7 +138,7 @@ var hierarchy =
       [ "thorin::RWPass< LowerRegex, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::plug::regex::LowerRegex", "classthorin_1_1plug_1_1regex_1_1LowerRegex.html", null ]
       ] ],
-      [ "thorin::RWPass< P, N >", "classthorin_1_1RWPass.html", [
+      [ "thorin::RWPass< P, M >", "classthorin_1_1RWPass.html", [
         [ "thorin::FPPass< BetaRed, Def >", "classthorin_1_1FPPass.html", [
           [ "thorin::BetaRed", "classthorin_1_1BetaRed.html", null ]
         ] ],
@@ -157,12 +160,13 @@ var hierarchy =
         [ "thorin::FPPass< SSAConstr, Lam >", "classthorin_1_1FPPass.html", [
           [ "thorin::plug::mem::SSAConstr", "classthorin_1_1plug_1_1mem_1_1SSAConstr.html", null ]
         ] ],
-        [ "thorin::FPPass< P, N >", "classthorin_1_1FPPass.html", null ]
+        [ "thorin::FPPass< P, M >", "classthorin_1_1FPPass.html", null ]
       ] ]
     ] ],
     [ "thorin::PassMan", "classthorin_1_1PassMan.html", null ],
     [ "thorin::Phase", "classthorin_1_1Phase.html", [
       [ "thorin::Cleanup", "classthorin_1_1Cleanup.html", null ],
+      [ "thorin::ClosedMutPhase< M >", "classthorin_1_1ClosedMutPhase.html", null ],
       [ "thorin::PassManPhase", "classthorin_1_1PassManPhase.html", null ],
       [ "thorin::PassPhase< P >", "classthorin_1_1PassPhase.html", null ],
       [ "thorin::Pipeline", "classthorin_1_1Pipeline.html", null ],
@@ -183,6 +187,12 @@ var hierarchy =
     [ "thorin::PipelineBuilder", "classthorin_1_1PipelineBuilder.html", null ],
     [ "thorin::Plugin", "structthorin_1_1Plugin.html", null ],
     [ "thorin::World::State::POD", "structthorin_1_1World_1_1State.html#structthorin_1_1World_1_1State_1_1POD", null ],
+    [ "thorin::Pool< T >", "classthorin_1_1Pool.html", null ],
+    [ "thorin::Pool< const thorin::Var * >", "classthorin_1_1Pool.html", null ],
+    [ "thorin::Pool< thorin::Def * >", "classthorin_1_1Pool.html", null ],
+    [ "thorin::PooledSet< T >", "classthorin_1_1PooledSet.html", null ],
+    [ "thorin::PooledSet< const Var * >", "classthorin_1_1PooledSet.html", null ],
+    [ "thorin::PooledSet< Def * >", "classthorin_1_1PooledSet.html", null ],
     [ "thorin::Ptrn", "classthorin_1_1Ptrn.html", [
       [ "thorin::IdPtrn", "classthorin_1_1IdPtrn.html", null ],
       [ "thorin::TuplePtrn", "classthorin_1_1TuplePtrn.html", null ]
@@ -194,7 +204,7 @@ var hierarchy =
     [ "thorin::Res", "classthorin_1_1Res.html", null ],
     [ "thorin::Rewriter", "classthorin_1_1Rewriter.html", [
       [ "thorin::RWPhase", "classthorin_1_1RWPhase.html", null ],
-      [ "thorin::ScopeRewriter", "classthorin_1_1ScopeRewriter.html", null ]
+      [ "thorin::VarRewriter", "classthorin_1_1VarRewriter.html", null ]
     ] ],
     [ "fe::RuntimeCast", null, [
       [ "thorin::Def", "classthorin_1_1Def.html", [

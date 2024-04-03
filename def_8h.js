@@ -34,11 +34,13 @@ var def_8h =
     [ "DefVec", "def_8h.html#ae25f90393961e232cf46315fdfff9c18", null ],
     [ "Mut2Mut", "def_8h.html#a0cc502ae65de73467eb1e87f435968d7", null ],
     [ "MutMap", "def_8h.html#a224fc7612589a582a48dbb6167ef3e14", null ],
+    [ "Muts", "def_8h.html#a8ace2d4e48fd042274869653fa4df483", null ],
     [ "MutSet", "def_8h.html#a89eae41d087b28bd4eba7fafd36d6fdf", null ],
     [ "NormalizeFn", "def_8h.html#a00699ac904a16b60cdac9cc7005ed0d8", null ],
     [ "Uses", "def_8h.html#a39c45420c934930021cbf0784f2ce5a6", null ],
     [ "Var2Var", "def_8h.html#a574519644134310f7123469cf121d0a2", null ],
     [ "VarMap", "def_8h.html#af280f2e34b689af6206dfb9756aa1df5", null ],
+    [ "Vars", "def_8h.html#afe75172b36fff9c14cd2744c81af6550", null ],
     [ "VarSet", "def_8h.html#a229e892ca840ebda9ce60cfad90ae1b0", null ],
     [ "Dep", "def_8h.html#a55a6c38c7e5330a05b17f8134f60264a", [
       [ "None", "def_8h.html#a55a6c38c7e5330a05b17f8134f60264aa6adf97f83acf6453d4a6a4b1070f3754", null ],

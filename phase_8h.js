@@ -7,5 +7,6 @@ var phase_8h =
     [ "thorin::PassPhase< P >", "classthorin_1_1PassPhase.html", "classthorin_1_1PassPhase" ],
     [ "thorin::PassManPhase", "classthorin_1_1PassManPhase.html", "classthorin_1_1PassManPhase" ],
     [ "thorin::Pipeline", "classthorin_1_1Pipeline.html", "classthorin_1_1Pipeline" ],
-    [ "thorin::ScopePhase", "classthorin_1_1ScopePhase.html", "classthorin_1_1ScopePhase" ]
+    [ "thorin::ScopePhase", "classthorin_1_1ScopePhase.html", "classthorin_1_1ScopePhase" ],
+    [ "thorin::ClosedMutPhase< M >", "classthorin_1_1ClosedMutPhase.html", "classthorin_1_1ClosedMutPhase" ]
 ];

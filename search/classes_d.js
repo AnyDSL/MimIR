@@ -32,12 +32,13 @@ var searchData=
   ['rwpass_3c_20lowermatrixmediumlevel_2c_20lam_20_3e_29',['RWPass&lt; LowerMatrixMediumLevel, Lam &gt;',['../classthorin_1_1RWPass.html',1,'thorin']]],
   ['rwpass_3c_20lowerregex_2c_20lam_20_3e_30',['RWPass&lt; LowerRegex, Lam &gt;',['../classthorin_1_1RWPass.html',1,'thorin']]],
   ['rwpass_3c_20lowertypedclosprep_2c_20lam_20_3e_31',['RWPass&lt; LowerTypedClosPrep, Lam &gt;',['../classthorin_1_1RWPass.html',1,'thorin']]],
-  ['rwpass_3c_20rememelim_2c_20lam_20_3e_32',['RWPass&lt; RememElim, Lam &gt;',['../classthorin_1_1RWPass.html',1,'thorin']]],
-  ['rwpass_3c_20removedbgperm_2c_20lam_20_3e_33',['RWPass&lt; RemoveDbgPerm, Lam &gt;',['../classthorin_1_1RWPass.html',1,'thorin']]],
-  ['rwpass_3c_20reshape_2c_20lam_20_3e_34',['RWPass&lt; Reshape, Lam &gt;',['../classthorin_1_1RWPass.html',1,'thorin']]],
-  ['rwpass_3c_20retwrap_2c_20lam_20_3e_35',['RWPass&lt; RetWrap, Lam &gt;',['../classthorin_1_1RWPass.html',1,'thorin']]],
-  ['rwpass_3c_20scalerize_2c_20lam_20_3e_36',['RWPass&lt; Scalerize, Lam &gt;',['../classthorin_1_1RWPass.html',1,'thorin']]],
-  ['rwpass_3c_20ssaconstr_2c_20lam_20_3e_37',['RWPass&lt; SSAConstr, Lam &gt;',['../classthorin_1_1RWPass.html',1,'thorin']]],
-  ['rwpass_3c_20tailrecelim_2c_20lam_20_3e_38',['RWPass&lt; TailRecElim, Lam &gt;',['../classthorin_1_1RWPass.html',1,'thorin']]],
-  ['rwphase_39',['RWPhase',['../classthorin_1_1RWPhase.html',1,'thorin']]]
+  ['rwpass_3c_20p_2c_20def_20_3e_32',['RWPass&lt; P, Def &gt;',['../classthorin_1_1RWPass.html',1,'thorin']]],
+  ['rwpass_3c_20rememelim_2c_20lam_20_3e_33',['RWPass&lt; RememElim, Lam &gt;',['../classthorin_1_1RWPass.html',1,'thorin']]],
+  ['rwpass_3c_20removedbgperm_2c_20lam_20_3e_34',['RWPass&lt; RemoveDbgPerm, Lam &gt;',['../classthorin_1_1RWPass.html',1,'thorin']]],
+  ['rwpass_3c_20reshape_2c_20lam_20_3e_35',['RWPass&lt; Reshape, Lam &gt;',['../classthorin_1_1RWPass.html',1,'thorin']]],
+  ['rwpass_3c_20retwrap_2c_20lam_20_3e_36',['RWPass&lt; RetWrap, Lam &gt;',['../classthorin_1_1RWPass.html',1,'thorin']]],
+  ['rwpass_3c_20scalerize_2c_20lam_20_3e_37',['RWPass&lt; Scalerize, Lam &gt;',['../classthorin_1_1RWPass.html',1,'thorin']]],
+  ['rwpass_3c_20ssaconstr_2c_20lam_20_3e_38',['RWPass&lt; SSAConstr, Lam &gt;',['../classthorin_1_1RWPass.html',1,'thorin']]],
+  ['rwpass_3c_20tailrecelim_2c_20lam_20_3e_39',['RWPass&lt; TailRecElim, Lam &gt;',['../classthorin_1_1RWPass.html',1,'thorin']]],
+  ['rwphase_40',['RWPhase',['../classthorin_1_1RWPhase.html',1,'thorin']]]
 ];

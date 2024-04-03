@@ -1,15 +1,11 @@
 var searchData=
 [
-  ['get_0',['get',['../classthorin_1_1Lit.html#abf185284f04c1b1aba69cc7e02c8e1ae',1,'thorin::Lit::get()'],['../classthorin_1_1Bound.html#a678ea9bfe29f48a6a891eafb5f8da722',1,'thorin::Bound::get()'],['../classthorin_1_1plug_1_1clos_1_1ClosLit.html#a14017df1d3d611b74cab893a1853eb9d',1,'thorin::plug::clos::ClosLit::get()'],['../classthorin_1_1Axiom.html#a397ef6552758050898c2a25c1001fd53',1,'thorin::Axiom::get()'],['../namespacestd.html#ad69b00dfae11673829848e2163b59c5f',1,'std::get()'],['../namespacethorin_1_1dl.html#af539d6e872c753f49ee829dcb9f46f58',1,'thorin::dl::get()']]],
-  ['get_5ffun_5fptr_1',['get_fun_ptr',['../classthorin_1_1Driver.html#a2c93d0448bb5b2c276b6c8a3567a0208',1,'thorin::Driver::get_fun_ptr(Sym plugin, const char *name)'],['../classthorin_1_1Driver.html#aff1196ae6675f4460752e11e4f3d7e8d',1,'thorin::Driver::get_fun_ptr(Sym plugin, const char *name)'],['../classthorin_1_1Driver.html#a03ada7d4dcfde9db63c76f0883bb67ac',1,'thorin::Driver::get_fun_ptr(const char *plugin, const char *name)']]],
-  ['get_5fmax_5findex_2',['get_max_index',['../namespacethorin_1_1plug_1_1matrix.html#a35cb52082f5e15fe1b2710e67c285d31',1,'thorin::plug::matrix']]],
-  ['get_5frange_3',['get_range',['../namespacethorin_1_1plug_1_1regex.html#a83edf33417082db864d63e0512aae4e5',1,'thorin::plug::regex']]],
-  ['get_5freachable_5fstates_4',['get_reachable_states',['../classautomaton_1_1AutomatonBase.html#ab8aad500443bc3c938b8ecbfc5b9f41d',1,'automaton::AutomatonBase']]],
-  ['get_5fsign_5',['get_sign',['../namespacethorin.html#ac76b51109303662a47f30fa874337254',1,'thorin']]],
-  ['get_5fstart_6',['get_start',['../classautomaton_1_1AutomatonBase.html#a5ee7463fbfa2f071ea1deb56490ba8d5',1,'automaton::AutomatonBase']]],
-  ['get_5ftransition_7',['get_transition',['../classautomaton_1_1DFANode.html#ac39d84714ae15c34eada796af0e8fe4e',1,'automaton::DFANode']]],
-  ['get_5ftransitions_8',['get_transitions',['../classautomaton_1_1NFANode.html#aeb92436243d93c1aad1bc3ac4c4b1adf',1,'automaton::NFANode']]],
-  ['gid_9',['gid',['../classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb',1,'thorin::Def::gid()'],['../classthorin_1_1CFNode.html#ad1b21de5e0cadae309a8343cf43376e6',1,'thorin::CFNode::gid()']]],
-  ['gid2def_10',['gid2def',['../classthorin_1_1World.html#a50e487785b278535becdb5d7e2b124ab',1,'thorin::World']]],
-  ['global_11',['global',['../classthorin_1_1World.html#a2dafc82653baa01a772c49d3c7ed1030',1,'thorin::World']]]
+  ['handle_5foptimization_5fpart_0',['handle_optimization_part',['../namespacethorin_1_1plug_1_1compile.html#a9841e603ac5923cb6aa2c1cfc4bd4885',1,'thorin::plug::compile']]],
+  ['has_5fdep_1',['has_dep',['../classthorin_1_1Def.html#a98c2a0f38df2a1a4cf47cf529127fab0',1,'thorin::Def::has_dep(unsigned u) const'],['../classthorin_1_1Def.html#a6f83b02a5c70f718b9d81a33971ab4bb',1,'thorin::Def::has_dep(Dep d) const']]],
+  ['has_5fintersection_2',['has_intersection',['../classthorin_1_1Pool.html#aae6f725af2e41f0d3b942bc48713325e',1,'thorin::Pool::has_intersection()'],['../classthorin_1_1World.html#aabfb40245379a6a14d2a2e32a2c9eaf8',1,'thorin::World::has_intersection(Vars v1, Vars v2)'],['../classthorin_1_1World.html#a134f422047cc7f3e2269dfc6eedf8f0a',1,'thorin::World::has_intersection(Muts m1, Muts m2)']]],
+  ['has_5fvar_3',['has_var',['../classthorin_1_1Def.html#acf2d9b7a9181faa538aad4c0237f6f36',1,'thorin::Def::has_var()'],['../classthorin_1_1Def.html#af9084aaa1dd9474727be5897f368ec76',1,'thorin::Def::has_var() const']]],
+  ['hash_4',['hash',['../classthorin_1_1Def.html#ae387f672716d0aecd825f27d48f13e9e',1,'thorin::Def::hash()'],['../namespacethorin.html#a86322df808081f7c9c3cf8c38404ec8d',1,'thorin::hash(const char *)'],['../namespacethorin.html#a774ff60ac8ff95df4c7d8af646e6cd3a',1,'thorin::hash(std::string_view)']]],
+  ['hash_5fbegin_5',['hash_begin',['../namespacethorin.html#a45953d358ff771ff89168ecc274b7d2b',1,'thorin::hash_begin(T val)'],['../namespacethorin.html#a25e65e2898328d7df97d05cbe8263220',1,'thorin::hash_begin()']]],
+  ['hash_5fcombine_6',['hash_combine',['../namespacethorin.html#afa8ec846210cd2e5bff23fc963021ca7',1,'thorin::hash_combine(hash_t seed, T val, Args &amp;&amp;... args)'],['../namespacethorin.html#acf896db08a5279cdb1f61589607f055b',1,'thorin::hash_combine(hash_t seed, T *val)'],['../namespacethorin.html#a3e8bff0379df3f8e717e43f3c1aad22f',1,'thorin::hash_combine(hash_t seed, T v)']]],
+  ['head_7',['head',['../structthorin_1_1ll_1_1BB.html#ab6c05d26f3078afff39a6cb5da9d33b2',1,'thorin::ll::BB']]]
 ];

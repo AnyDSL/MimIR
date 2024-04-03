@@ -6,6 +6,7 @@ var classthorin_1_1Pack =
     [ "reset", "classthorin_1_1Pack.html#aa57f743656375e638602601952a11695", null ],
     [ "set", "classthorin_1_1Pack.html#a9cad058ba8112b5414baca044df2b309", null ],
     [ "shape", "classthorin_1_1Pack.html#aceceaafebd954f9de22843a7f9536e53", null ],
-    [ "stub", "classthorin_1_1Pack.html#aa7acd035075cd6bce0e5ee475032c29d", null ],
+    [ "stub", "classthorin_1_1Pack.html#a0c8f8bc907851d22e77a8181869b2815", null ],
+    [ "stub_", "classthorin_1_1Pack.html#acd81270e514f313180621e2478480fb5", null ],
     [ "unset", "classthorin_1_1Pack.html#ab53963e58af86b82658067cac7c42c94", null ]
 ];

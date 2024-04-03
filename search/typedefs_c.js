@@ -8,5 +8,5 @@ var searchData=
   ['scope_5',['Scope',['../classthorin_1_1Scopes.html#a7c5ad193ec002610bf8369fd8e281639',1,'thorin::Scopes']]],
   ['set_6',['Set',['../classthorin_1_1CFG.html#a5627c508042392a0bdad6a46e7326804',1,'thorin::CFG']]],
   ['sub_5ft_7',['sub_t',['../namespacethorin.html#a15ce090292f7ca88b828d15baf109838',1,'thorin']]],
-  ['super_8',['super',['../classthorin_1_1FPPass.html#a0942944069a8b0603e1e3e4309c1541c',1,'thorin::FPPass::Super'],['../classthorin_1_1ll_1_1Emitter.html#abd8c55ae877a2be9af0a6cf53ee2bde9',1,'thorin::ll::Emitter::Super']]]
+  ['super_8',['super',['../classthorin_1_1FPPass.html#a758cb99f084d2002d6ab9e96eaa622fe',1,'thorin::FPPass::Super'],['../classthorin_1_1ll_1_1Emitter.html#abd8c55ae877a2be9af0a6cf53ee2bde9',1,'thorin::ll::Emitter::Super']]]
 ];

@@ -171,7 +171,7 @@ Protected Attributes</h2></td></tr>
 <div class="textblock"><p>As opposed to a <a class="el" href="classthorin_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>, a <a class="el" href="classthorin_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a> does one thing at a time and does not mix with other <a class="el" href="classthorin_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>s. </p>
 <p>They are supposed to classically run one after another. Phase::dirty indicates whether we may need a <a class="el" href="classthorin_1_1Cleanup.html" title="Removes unreachable and dead code by rebuilding the whole World into a new one and swapping afterward...">Cleanup</a> afterwards. </p>
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00015">15</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00016">16</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a898fe8f4abc69dd9528949da3bfca3e6" name="a898fe8f4abc69dd9528949da3bfca3e6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a898fe8f4abc69dd9528949da3bfca3e6">&#9670;&#160;</a></span>Phase()</h2>
@@ -213,7 +213,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00017">17</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00018">18</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
 </div>
 </div>
@@ -266,9 +266,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00027">27</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00028">28</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">References <a class="el" href="phase_8h_source.html#l00046">dirty_</a>.</p>
+<p class="reference">References <a class="el" href="phase_8h_source.html#l00047">dirty_</a>.</p>
 
 </div>
 </div>
@@ -295,11 +295,11 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00026">26</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00027">27</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">References <a class="el" href="phase_8h_source.html#l00045">name_</a>.</p>
+<p class="reference">References <a class="el" href="phase_8h_source.html#l00046">name_</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00458">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="ll_8cpp_source.html#l00317">thorin::ll::Emitter::emit_epilogue()</a>, <a class="el" href="ll_8cpp_source.html#l00270">thorin::ll::Emitter::prepare()</a>, <a class="el" href="phase_8cpp_source.html#l00007">run()</a>, and <a class="el" href="phase_8cpp_source.html#l00042">thorin::ScopePhase::start()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00458">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="ll_8cpp_source.html#l00317">thorin::ll::Emitter::emit_epilogue()</a>, <a class="el" href="ll_8cpp_source.html#l00270">thorin::ll::Emitter::prepare()</a>, <a class="el" href="phase_8cpp_source.html#l00007">run()</a>, and <a class="el" href="phase_8cpp_source.html#l00045">thorin::ScopePhase::start()</a>.</p>
 
 </div>
 </div>
@@ -330,7 +330,7 @@ Protected Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="phase_8cpp_source.html#l00007">7</a> of file <a class="el" href="phase_8cpp_source.html">phase.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="phase_8h_source.html#l00026">name()</a>, <a class="el" href="classthorin_1_1Phase.html#a205f687060888dc825ee521c99534426">start()</a>, and <a class="el" href="phase_8h_source.html#l00025">world()</a>.</p>
+<p class="reference">References <a class="el" href="phase_8h_source.html#l00027">name()</a>, <a class="el" href="classthorin_1_1Phase.html#a205f687060888dc825ee521c99534426">start()</a>, <a class="el" href="world_8cpp_source.html#l00551">thorin::World::verify()</a>, and <a class="el" href="phase_8h_source.html#l00026">world()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l01065">thorin::ll::emit()</a>.</p>
 
@@ -364,7 +364,7 @@ template&lt;class P , class... Args&gt; </div>
 
 <p>Runs a single <a class="el" href="classthorin_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00035">35</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00036">36</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
 </div>
 </div>
@@ -393,7 +393,7 @@ template&lt;class P , class... Args&gt; </div>
 
 <p>Actual entry. </p>
 
-<p>Implemented in <a class="el" href="classthorin_1_1RWPhase.html#a727c87dd752778b5581ce430e2556d20">thorin::RWPhase</a>, <a class="el" href="classthorin_1_1Cleanup.html#ac18066c965f6402b835ac9a08ef15a69">thorin::Cleanup</a>, <a class="el" href="classthorin_1_1FPPhase.html#a636532f9a99d241556983fb5978cc5bc">thorin::FPPhase</a>, <a class="el" href="classthorin_1_1PassPhase.html#ada97763a90d95af3f4efbe01b77462af">thorin::PassPhase&lt; P &gt;</a>, <a class="el" href="classthorin_1_1PassManPhase.html#a15599d23e4b687c7faf85ea25acfba77">thorin::PassManPhase</a>, <a class="el" href="classthorin_1_1Pipeline.html#a67260a4e6747b1d552705f3bd0c6d5ce">thorin::Pipeline</a>, <a class="el" href="classthorin_1_1ScopePhase.html#a0b997b4bc7d423ea3d3f2de798980c7b">thorin::ScopePhase</a>, <a class="el" href="classthorin_1_1plug_1_1clos_1_1ClosConv.html#a8cb95735da406b0fe9ca7c7401bfd364">thorin::plug::clos::ClosConv</a>, <a class="el" href="classthorin_1_1plug_1_1clos_1_1LowerTypedClos.html#ae4c379fc3b67e57f97a328d503b0beb0">thorin::plug::clos::LowerTypedClos</a>, and <a class="el" href="classthorin_1_1ll_1_1Emitter.html#a86630701b9016f1594c1875d5e58b5b7">thorin::ll::Emitter</a>.</p>
+<p>Implemented in <a class="el" href="classthorin_1_1RWPhase.html#a727c87dd752778b5581ce430e2556d20">thorin::RWPhase</a>, <a class="el" href="classthorin_1_1Cleanup.html#ac18066c965f6402b835ac9a08ef15a69">thorin::Cleanup</a>, <a class="el" href="classthorin_1_1FPPhase.html#a636532f9a99d241556983fb5978cc5bc">thorin::FPPhase</a>, <a class="el" href="classthorin_1_1PassPhase.html#ada97763a90d95af3f4efbe01b77462af">thorin::PassPhase&lt; P &gt;</a>, <a class="el" href="classthorin_1_1PassManPhase.html#a15599d23e4b687c7faf85ea25acfba77">thorin::PassManPhase</a>, <a class="el" href="classthorin_1_1Pipeline.html#a67260a4e6747b1d552705f3bd0c6d5ce">thorin::Pipeline</a>, <a class="el" href="classthorin_1_1ScopePhase.html#a0b997b4bc7d423ea3d3f2de798980c7b">thorin::ScopePhase</a>, <a class="el" href="classthorin_1_1ClosedMutPhase.html#a862107209e9c6d47a33e70bdba68a745">thorin::ClosedMutPhase&lt; M &gt;</a>, <a class="el" href="classthorin_1_1plug_1_1clos_1_1ClosConv.html#a8cb95735da406b0fe9ca7c7401bfd364">thorin::plug::clos::ClosConv</a>, <a class="el" href="classthorin_1_1plug_1_1clos_1_1LowerTypedClos.html#ae4c379fc3b67e57f97a328d503b0beb0">thorin::plug::clos::LowerTypedClos</a>, and <a class="el" href="classthorin_1_1ll_1_1Emitter.html#a86630701b9016f1594c1875d5e58b5b7">thorin::ll::Emitter</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="phase_8cpp_source.html#l00007">run()</a>, and <a class="el" href="ll_8cpp_source.html#l00246">thorin::ll::Emitter::start()</a>.</p>
 
@@ -422,11 +422,11 @@ template&lt;class P , class... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00025">25</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00026">26</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">References <a class="el" href="phase_8h_source.html#l00044">world_</a>.</p>
+<p class="reference">References <a class="el" href="phase_8h_source.html#l00045">world_</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00126">thorin::Pipeline::add()</a>, <a class="el" href="ll_8cpp_source.html#l00317">thorin::ll::Emitter::emit_epilogue()</a>, <a class="el" href="phase_8cpp_source.html#l00007">run()</a>, <a class="el" href="phase_8cpp_source.html#l00028">thorin::Cleanup::start()</a>, <a class="el" href="phase_8cpp_source.html#l00042">thorin::ScopePhase::start()</a>, <a class="el" href="clos__conv_8cpp_source.html#l00107">thorin::plug::clos::ClosConv::start()</a>, <a class="el" href="lower__typed__clos_8cpp_source.html#l00017">thorin::plug::clos::LowerTypedClos::start()</a>, and <a class="el" href="phase_8h_source.html#l00058">thorin::RWPhase::world()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00128">thorin::Pipeline::add()</a>, <a class="el" href="ll_8cpp_source.html#l00317">thorin::ll::Emitter::emit_epilogue()</a>, <a class="el" href="phase_8cpp_source.html#l00007">run()</a>, <a class="el" href="phase_8cpp_source.html#l00028">thorin::Cleanup::start()</a>, <a class="el" href="phase_8cpp_source.html#l00045">thorin::ScopePhase::start()</a>, <a class="el" href="phase_8h_source.html#l00177">thorin::ClosedMutPhase&lt; M &gt;::start()</a>, <a class="el" href="clos__conv_8cpp_source.html#l00107">thorin::plug::clos::ClosConv::start()</a>, <a class="el" href="lower__typed__clos_8cpp_source.html#l00017">thorin::plug::clos::LowerTypedClos::start()</a>, and <a class="el" href="phase_8h_source.html#l00059">thorin::RWPhase::world()</a>.</p>
 
 </div>
 </div>
@@ -451,9 +451,9 @@ template&lt;class P , class... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00046">46</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00047">47</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="add__mem_8h_source.html#l00013">thorin::plug::mem::AddMem::AddMem()</a>, and <a class="el" href="phase_8h_source.html#l00027">is_dirty()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="add__mem_8h_source.html#l00013">thorin::plug::mem::AddMem::AddMem()</a>, and <a class="el" href="phase_8h_source.html#l00028">is_dirty()</a>.</p>
 
 </div>
 </div>
@@ -477,9 +477,9 @@ template&lt;class P , class... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00045">45</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00046">46</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00026">name()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00027">name()</a>.</p>
 
 </div>
 </div>
@@ -503,9 +503,9 @@ template&lt;class P , class... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00044">44</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00045">45</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00025">world()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00026">world()</a>.</p>
 
 </div>
 </div>

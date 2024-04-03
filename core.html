@@ -441,7 +441,7 @@ Other Operations</h1>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md134"></a>
 %core.zip</h2>
 <p><a href="https://en.wikipedia.org/wiki/Zipping_(computer_science)">Zips</a> several tensors.</p>
-<p><b>Warning</b>: For now, not a better place for this and will be moved elsewhere. What is more, the signature will likely change in the future:</p><ul>
+<dl class="section warning"><dt>Warning</dt><dd>For now, not a better place for this and will be moved elsewhere. What is more, the signature will likely change in the future:<ul>
 <li><code>r</code>: rank of the tensors to zip</li>
 <li><code>s</code>: shape of the tensors to zip</li>
 <li><code>n_i</code>: number if inputs</li>
@@ -451,6 +451,7 @@ Other Operations</h1>
 <li><code>f</code>: zipping function that expects an <code>n_i</code>-tuple whose elements correspond to <code>Is</code> and yields an <code>n_o</code>-tuple whose element types correspond to <code>Os</code></li>
 <li><code>is</code>: the actual input tensors</li>
 </ul>
+</dd></dl>
 <div class="fragment"><div class="line">.ax %core.zip: Π [r: .Nat, s: «r; .Nat»]</div>
 <div class="line">                 [n_i: .Nat, Is: «n_i; *», n_o: .Nat, Os: «n_o; *», f: «i: n_i; Is#i» -&gt; «o: n_o; Os#o»]</div>
 <div class="line">                 [is: «i: n_i; «s; Is#i»»] -&gt; «o: n_o; «s; Os#o»», normalize_zip;</div>

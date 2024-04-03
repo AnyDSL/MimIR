@@ -126,13 +126,14 @@ $(document).ready(function(){initNavTree('def_8h.html',''); initResizable(); });
 <code>#include &quot;<a class="el" href="config_8h_source.html">thorin/config.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="dbg_8h_source.html">thorin/util/dbg.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="hash_8h_source.html">thorin/util/hash.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="pool_8h_source.html">thorin/util/pool.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="print_8h_source.html">thorin/util/print.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="util_8h_source.html">thorin/util/util.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="vector_8h_source.html">thorin/util/vector.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for def.h:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="def_8h__incl.svg" width="100%" height="558"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="def_8h__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -235,6 +236,8 @@ Typedefs</h2></td></tr>
 <tr class="separator:a89eae41d087b28bd4eba7fafd36d6fdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cc502ae65de73467eb1e87f435968d7" id="r_a0cc502ae65de73467eb1e87f435968d7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a0cc502ae65de73467eb1e87f435968d7">thorin::Mut2Mut</a> = <a class="el" href="namespacethorin.html#a224fc7612589a582a48dbb6167ef3e14">MutMap</a>&lt; <a class="el" href="classthorin_1_1Def.html">Def</a> * &gt;</td></tr>
 <tr class="separator:a0cc502ae65de73467eb1e87f435968d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ace2d4e48fd042274869653fa4df483" id="r_a8ace2d4e48fd042274869653fa4df483"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a8ace2d4e48fd042274869653fa4df483">thorin::Muts</a> = <a class="el" href="classthorin_1_1PooledSet.html">PooledSet</a>&lt; <a class="el" href="classthorin_1_1Def.html">Def</a> * &gt;</td></tr>
+<tr class="separator:a8ace2d4e48fd042274869653fa4df483"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">DefDef</div></td></tr>
 <tr class="memitem:a1c686b5d4a914909b3433cae517ec294" id="r_a1c686b5d4a914909b3433cae517ec294"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a1c686b5d4a914909b3433cae517ec294">thorin::DefDef</a> = std::tuple&lt; const <a class="el" href="classthorin_1_1Def.html">Def</a> *, const <a class="el" href="classthorin_1_1Def.html">Def</a> * &gt;</td></tr>
 <tr class="separator:a1c686b5d4a914909b3433cae517ec294"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -394,6 +397,8 @@ Variables</h2></td></tr>
 <tr class="separator:a229e892ca840ebda9ce60cfad90ae1b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a574519644134310f7123469cf121d0a2" id="r_a574519644134310f7123469cf121d0a2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a574519644134310f7123469cf121d0a2">thorin::Var2Var</a> = <a class="el" href="namespacethorin.html#af280f2e34b689af6206dfb9756aa1df5">VarMap</a>&lt; const <a class="el" href="classthorin_1_1Var.html">Var</a> * &gt;</td></tr>
 <tr class="separator:a574519644134310f7123469cf121d0a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe75172b36fff9c14cd2744c81af6550" id="r_afe75172b36fff9c14cd2744c81af6550"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#afe75172b36fff9c14cd2744c81af6550">thorin::Vars</a> = <a class="el" href="classthorin_1_1PooledSet.html">PooledSet</a>&lt; const <a class="el" href="classthorin_1_1Var.html">Var</a> * &gt;</td></tr>
+<tr class="separator:afe75172b36fff9c14cd2744c81af6550"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00699ac904a16b60cdac9cc7005ed0d8" id="r_a00699ac904a16b60cdac9cc7005ed0d8"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a00699ac904a16b60cdac9cc7005ed0d8">thorin::NormalizeFn</a> = <a class="el" href="classthorin_1_1Ref.html">Ref</a>(*)(<a class="el" href="classthorin_1_1Ref.html">Ref</a>, <a class="el" href="classthorin_1_1Ref.html">Ref</a>, <a class="el" href="classthorin_1_1Ref.html">Ref</a>)</td></tr>
 <tr class="separator:a00699ac904a16b60cdac9cc7005ed0d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39c45420c934930021cbf0784f2ce5a6" id="r_a39c45420c934930021cbf0784f2ce5a6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a39c45420c934930021cbf0784f2ce5a6">thorin::Uses</a> = absl::flat_hash_set&lt; <a class="el" href="classthorin_1_1Use.html">Use</a>, <a class="el" href="structthorin_1_1UseHash.html">UseHash</a>, <a class="el" href="structthorin_1_1UseEq.html">UseEq</a> &gt;</td></tr>
@@ -426,7 +431,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00039">39</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00040">40</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -456,7 +461,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00039">39</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00040">40</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -475,15 +480,15 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keyword">public</span>:                                            \</div>
-<div class="line">    THORIN_SETTERS(T)                              \</div>
-<div class="line">    Ref rebuild(World&amp;, Ref, Defs) <span class="keyword">const override</span>; \</div>
-<div class="line">    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keyword">auto</span> Node = Node::T;          \</div>
-<div class="line">                                                   \</div>
-<div class="line"><span class="keyword">private</span>:                                           \</div>
+<b>Value:</b><div class="fragment"><div class="line"><span class="keyword">public</span>:                                             \</div>
+<div class="line">    THORIN_SETTERS(T)                               \</div>
+<div class="line">    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keyword">auto</span> Node = Node::T;           \</div>
+<div class="line">                                                    \</div>
+<div class="line"><span class="keyword">private</span>:                                            \</div>
+<div class="line">    Ref rebuild_(World&amp;, Ref, Defs) <span class="keyword">const override</span>; \</div>
 <div class="line">    <span class="keyword">friend</span> <span class="keyword">class </span>World;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00195">195</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00198">198</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -517,7 +522,7 @@ Variables</h2></td></tr>
 <div class="line">    m(Global, global)                                                         \</div>
 <div class="line">    m(Singleton, singleton)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00018">18</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00019">19</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -567,7 +572,7 @@ Variables</h2></td></tr>
 </div><!-- fragment -->
 <p>Use as mixin to wrap all kind of Def::proj and Def::projs variants. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00156">156</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00159">159</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -587,7 +592,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00190">190</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00193">193</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -623,7 +628,7 @@ Variables</h2></td></tr>
 </div><!-- fragment -->
 <p>Use as mixin to declare setters for Def::loc &amp; Def::name using a <em>covariant</em> return type. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00173">173</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00176">176</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>

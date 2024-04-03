@@ -219,14 +219,14 @@ Dumping</h2>
 <div class="line">(gdb) call world().write(&quot;out.thorin&quot;)</div>
 </div><!-- fragment --><p> In particular, note the different output levels of <a class="el" href="classthorin_1_1Def.html#adeb490fdb674323acba48da1ffb28787">thorin::Def::dump</a>. What is more, you can adjust the output behavior directly from within GDB by modifying <a class="el" href="classthorin_1_1World.html#a4ba2e836e8f80d7dfb8a80e7ac9babac" title="Retrive compile Flags.">thorin::World::flags</a> or <a class="el" href="classthorin_1_1World.html#a44b545a88c58fda7f15606002ba6d073">thorin::World::log</a>: </p><div class="fragment"><div class="line">(gdb) call world.flags().dump_gid = 1</div>
 <div class="line">(gdb) call world.flags().dump_recursive = 1</div>
-<div class="line">(gdb) call world.log().level = 4</div>
-</div><!-- fragment --><p> Another useful feature is to retrieve a <code>Def*</code> from a <a class="el" href="classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb">thorin::Def::gid</a> via <a class="el" href="classthorin_1_1World.html#a50e487785b278535becdb5d7e2b124ab">thorin::World::gid2def</a>: </p><div class="fragment"><div class="line">(gdb) p world.gid2def(123);</div>
+<div class="line">(gdb) call world().log().max_level_ = 4</div>
+</div><!-- fragment --><p> Another useful feature is to retrieve a <code>Def*</code> from a <a class="el" href="classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb">thorin::Def::gid</a> via <a class="el" href="classthorin_1_1World.html#a50e487785b278535becdb5d7e2b124ab" title="Lookup Def by gid.">thorin::World::gid2def</a>: </p><div class="fragment"><div class="line">(gdb) p world.gid2def(123);</div>
 <div class="line">$1 = ...</div>
 <div class="line">(gdb) $1-&gt;dump();</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md6"></a>
 Display DOT</h2>
 <p><code>scripts/xdot.gdb</code> provides custom GDB commands to create a <a href="https://graphviz.org/">DOT</a> graph and display it through <a href="https://github.com/jrfonseca/xdot.py">xdot</a>. Just source <code>scripts/xdot.gdb</code> in your <code>~/.gdbinit</code>: </p><div class="fragment"><div class="line">source ~/thorin2/scripts/xdot.gdb</div>
-</div><!-- fragment --><p> Here is the <code>xdot</code> GDB command in action: <img src="gdb-xdot.png" alt="" class="inline" title="gdb-xdot"/>    </p>
+</div><!-- fragment --><p> Here is the <code>xdot</code> GDB command in action: <img src="gdb-xdot.png" alt="" class="inline" title="cgdb session using xdot"/>    </p>
 <div class="fragment"><div class="line">xdot</div>
 <div class="line">Generates DOT output for the given EXP and invokes xdot.</div>
 <div class="line"> </div>
