@@ -54,7 +54,7 @@ Ref LitExpr::emit(Emitter& e) const {
 
     if (sym.size() == b) error(loc, "signed literal '{}' without value", value());
 
-    if (sym.size() >= b + 1) {
+    if (sym.size() > b + 1) {
         switch (sym[b + 1]) {
                 // clang-format off
             case 'b':

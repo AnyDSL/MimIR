@@ -1,6 +1,8 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <fstream>
+
 #include <lyra/lyra.hpp>
 #include <rang.hpp>
 
