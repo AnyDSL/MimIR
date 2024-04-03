@@ -370,11 +370,11 @@ public:
     const Lit* lit_nat_max() { return data_.lit_nat_max; }
     const Lit* lit_0_1() { return data_.lit_0_1; }
     // clang-format off
-    const Lit* lit_i1()   { return lit_nat(Idx::bitwidth2size(1)); };
-    const Lit* lit_i8()   { return lit_nat(Idx::bitwidth2size(8)); };
-    const Lit* lit_i16()  { return lit_nat(Idx::bitwidth2size(16)); };
-    const Lit* lit_i32()  { return lit_nat(Idx::bitwidth2size(32)); };
-    const Lit* lit_i64()  { return lit_nat(Idx::bitwidth2size(64)); };
+    const Lit* lit_i1()  { return lit_nat(Idx::bitwidth2size( 1)); };
+    const Lit* lit_i8()  { return lit_nat(Idx::bitwidth2size( 8)); };
+    const Lit* lit_i16() { return lit_nat(Idx::bitwidth2size(16)); };
+    const Lit* lit_i32() { return lit_nat(Idx::bitwidth2size(32)); };
+    const Lit* lit_i64() { return lit_nat(Idx::bitwidth2size(64)); };
     /// Constructs a Lit of type Idx of size @p size.
     /// @note `size = 0` means `2^64`.
     const Lit* lit_idx(nat_t size, u64 val) { return lit(type_idx(size), val); }
@@ -387,10 +387,10 @@ public:
     /// Constructs a Lit @p of type Idx of size $2^width$.
     /// `val = 64` will be automatically converted to size `0` - the encoding for $2^64$.
     const Lit* lit_int(nat_t width, u64 val) { return lit_idx(Idx::bitwidth2size(width), val); }
-    const Lit* lit_i1 (bool val) { return lit_int(1,  u64(val)); }
-    const Lit* lit_i2 (u8   val) { return lit_int(2,  u64(val)); }
-    const Lit* lit_i4 (u8   val) { return lit_int(4,  u64(val)); }
-    const Lit* lit_i8 (u8   val) { return lit_int(8,  u64(val)); }
+    const Lit* lit_i1 (bool val) { return lit_int( 1, u64(val)); }
+    const Lit* lit_i2 (u8   val) { return lit_int( 2, u64(val)); }
+    const Lit* lit_i4 (u8   val) { return lit_int( 4, u64(val)); }
+    const Lit* lit_i8 (u8   val) { return lit_int( 8, u64(val)); }
     const Lit* lit_i16(u16  val) { return lit_int(16, u64(val)); }
     const Lit* lit_i32(u32  val) { return lit_int(32, u64(val)); }
     const Lit* lit_i64(u64  val) { return lit_int(64, u64(val)); }
