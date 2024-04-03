@@ -1,6 +1,8 @@
 #include <string>
 #include <string_view>
 
+#include "thorin/rewrite.h"
+
 #include "thorin/ast/ast.h"
 
 #include "fe/assert.h"
@@ -131,22 +133,62 @@ void Module::emit(Emitter& e) const {
 void Import::emit(Emitter& e) const { module()->emit(e); }
 
 /*
- * Ptrn
+ * Ptrn::emit_value
  */
 
-Ref IdPtrn::emit_(Emitter&, Ref def) const { return def; }
+Ref IdPtrn::emit_value(Emitter&, Ref def) const { return def; }
 
-Ref TuplePtrn::emit_(Emitter& e, Ref def) const {
-    for (size_t i = 0, n = num_ptrns(); i != n; ++i) ptrn(i)->emit_(e, def->proj(n, i));
+Ref TuplePtrn::emit_value(Emitter& e, Ref def) const {
+    for (size_t i = 0, n = num_ptrns(); i != n; ++i) ptrn(i)->emit_value(e, def->proj(n, i));
     return {};
 }
 
-Ref GroupPtrn::emit_(Emitter&, Ref def) const { return def; }
+Ref GroupPtrn::emit_value(Emitter&, Ref def) const { return def; }
 
-Ref ReturnPtrn::emit_(Emitter& e, Ref def) const {
+Ref ReturnPtrn::emit_value(Emitter& e, Ref def) const {
     type()->emit(e);
     return def;
 }
+
+/*
+ * Ptrn::emit_Type
+ */
+
+Ref IdPtrn::emit_type_(Emitter& e) const {
+    if (type()) return type()->emit(e);
+    return e.world().mut_infer_type()->set(loc());
+}
+
+Ref GroupPtrn::emit_type_(Emitter& e) const { return id()->emit_type(e); }
+
+Ref TuplePtrn::emit_type_(Emitter& e) const {
+    auto n   = num_ptrns();
+    auto ops = DefVec(n, [&](size_t i) { return ptrn(i)->emit_type(e); });
+
+    if (std::ranges::all_of(ptrns_, [](auto&& b) { return b->is_anon(); })) return e.world().sigma(ops)->set(loc());
+
+    assert(n > 0);
+    auto type  = e.world().umax<Sort::Type>(ops);
+    auto sigma = e.world().mut_sigma(type, n)->set(loc(), dbg().sym);
+
+    // assert_emplace(def2fields, sigma, Vector<Sym>(n, [this](size_t i) { return ptrn(i)->sym(); }));
+
+    sigma->set(0, ops[0]);
+    for (size_t i = 1; i != n; ++i) {
+        // if (auto infer = infers_[i - 1]) infer->set(sigma->var(n, i - 1)->set(ptrn(i - 1)->sym()));
+        sigma->set(i, ops[i]);
+    }
+
+    auto var = sigma->var()->as<Var>();
+    VarRewriter rw(var, var);
+    sigma->reset(0, ops[0]);
+    for (size_t i = 1; i != n; ++i) sigma->reset(i, rw.rewrite(ops[i]));
+
+    if (auto imm = sigma->immutabilize()) return imm;
+    return sigma;
+}
+
+Ref ReturnPtrn::emit_type_(Emitter&) const { fe::unreachable(); }
 
 /*
  * Expr
@@ -186,10 +228,9 @@ Ref LamExpr::emit(Emitter& e) const {
     return {};
 }
 
-Ref LamDecl::emit_(Emitter& e) const {
+void LamDecl::emit(Emitter& e) const {
     for (const auto& dom : lam()->doms()) dom->emit(e);
     lam()->codom()->emit(e);
-    return {};
 }
 
 void LamDecl::emit_rec(Emitter& e) const {
@@ -269,13 +310,12 @@ void DeclsBlock::emit(Emitter& e) const {
     }
 }
 
-Ref LetDecl::emit_(Emitter& e) const {
+void LetDecl::emit(Emitter& e) const {
     auto v = value()->emit(e);
-    ptrn()->emit(e, v);
-    return v;
+    def_   = ptrn()->emit_value(e, v);
 }
 
-Ref AxiomDecl::emit_(Emitter& e) const {
+void AxiomDecl::emit(Emitter& e) const {
     type()->emit(e);
 
     if (num_subs() == 0) {
@@ -286,19 +326,16 @@ Ref AxiomDecl::emit_(Emitter& e) const {
             }
         }
     }
-    return {};
 }
 
-Ref PiDecl::emit_(Emitter& e) const {
+void PiDecl::emit(Emitter& e) const {
     if (type()) type()->emit(e);
-    return {};
 }
 
 void PiDecl::emit_rec(Emitter& e) const { body()->emit(e); }
 
-Ref SigmaDecl::emit_(Emitter& e) const {
+void SigmaDecl::emit(Emitter& e) const {
     if (type()) type()->emit(e);
-    return {};
 }
 
 void SigmaDecl::emit_rec(Emitter& e) const { body()->emit(e); }

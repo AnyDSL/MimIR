@@ -118,11 +118,8 @@ protected:
         : Decl(loc) {}
 
 public:
-    virtual void bind(Scopes&) const = 0;
-    Ref emit(Emitter& e) const { return def_ ? def_ : def_ = emit_(e); }
-
-private:
-    virtual Ref emit_(Emitter&) const = 0;
+    virtual void bind(Scopes&) const  = 0;
+    virtual void emit(Emitter&) const = 0;
 };
 
 class RecDecl : public ValDecl {
@@ -165,17 +162,21 @@ public:
 
     bool rebind() const { return rebind_; }
     Dbg dbg() const { return dbg_; }
+    bool is_anon() const { return !dbg().sym || dbg().sym == '_'; }
 
     virtual void bind(Scopes&, bool quiet = false) const = 0;
-    virtual Ref emit_(Emitter&, Ref) const               = 0;
-    Ref emit(Emitter& e, Ref def) const { return def_ ? def_ : def_ = emit_(e, def); }
+    virtual Ref emit_value(Emitter&, Ref) const          = 0;
+    Ref emit_type(Emitter& e) const { return thorin_type_ ? thorin_type_ : thorin_type_ = emit_type_(e); }
 
     [[nodiscard]] static Ptr<Expr> to_expr(AST&, Ptr<Ptrn>&&);
     [[nodiscard]] static Ptr<Ptrn> to_ptrn(Ptr<Expr>&&);
 
 private:
+    virtual Ref emit_type_(Emitter&) const = 0;
+
     Dbg dbg_;
     bool rebind_;
+    mutable Ref thorin_type_ = nullptr;
 };
 
 /// `dbg: type`
@@ -193,10 +194,12 @@ public:
     }
 
     void bind(Scopes&, bool quiet = false) const override;
-    Ref emit_(Emitter&, Ref) const override;
+    Ref emit_value(Emitter&, Ref) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
+    Ref emit_type_(Emitter&) const override;
+
     bool rebind_;
     Ptr<Expr> type_;
 };
@@ -211,10 +214,12 @@ public:
     const IdPtrn* id() const { return id_; }
 
     void bind(Scopes&, bool quiet = false) const override;
-    Ref emit_(Emitter&, Ref) const override;
+    Ref emit_value(Emitter&, Ref) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
+    Ref emit_type_(Emitter&) const override;
+
     const IdPtrn* id_;
 };
 
@@ -236,10 +241,12 @@ public:
     size_t num_ptrns() const { return ptrns().size(); }
 
     void bind(Scopes&, bool quiet = false) const override;
-    Ref emit_(Emitter&, Ref) const override;
+    Ref emit_value(Emitter&, Ref) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
+    Ref emit_type_(Emitter&) const override;
+
     Tok::Tag delim_l_;
     Ptrs<Ptrn> ptrns_;
 };
@@ -255,10 +262,12 @@ public:
     const Expr* type() const { return type_; }
 
     void bind(Scopes&, bool quiet = false) const override;
-    Ref emit_(Emitter&, Ref) const override;
+    Ref emit_value(Emitter&, Ref) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
+    Ref emit_type_(Emitter&) const override;
+
     const Expr* type_;
 };
 
@@ -699,7 +708,7 @@ public:
 };
 
 /*
- * Further Decls
+ * Decls
  */
 
 /// `.let ptrn: type = value;`
@@ -714,7 +723,7 @@ public:
     const Expr* value() const { return value_.get(); }
 
     void bind(Scopes&) const override;
-    Ref emit_(Emitter&) const override;
+    void emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -744,7 +753,7 @@ public:
     Dbg trip() const { return trip_; }
 
     void bind(Scopes&) const override;
-    Ref emit_(Emitter&) const override;
+    void emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -770,7 +779,7 @@ public:
 
     void bind(Scopes&) const override;
     void bind_rec(Scopes&) const override;
-    Ref emit_(Emitter&) const override;
+    void emit(Emitter&) const override;
     void emit_rec(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
@@ -792,7 +801,7 @@ public:
 
     void bind(Scopes&) const override;
     void bind_rec(Scopes&) const override;
-    Ref emit_(Emitter&) const override;
+    void emit(Emitter&) const override;
     void emit_rec(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
@@ -815,7 +824,7 @@ public:
 
     void bind(Scopes&) const override;
     void bind_rec(Scopes&) const override;
-    Ref emit_(Emitter&) const override;
+    void emit(Emitter&) const override;
     void emit_rec(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
