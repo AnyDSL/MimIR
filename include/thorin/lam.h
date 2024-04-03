@@ -84,9 +84,12 @@ public:
     ///@}
 
     const Pi* immutabilize() override;
-    Pi* stub(World&, Ref) override;
+    Pi* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
 
     THORIN_DEF_MIXIN(Pi)
+
+private:
+    Pi* stub_(World&, Ref) override;
 };
 
 /// A function.
@@ -167,7 +170,7 @@ public:
     Lam* unset() { return Def::unset()->as<Lam>(); }
     ///@}
 
-    Lam* stub(World&, Ref) override;
+    Lam* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
 
     /// @name Type Checking
     ///@{
@@ -175,6 +178,9 @@ public:
     ///@}
 
     THORIN_DEF_MIXIN(Lam)
+
+private:
+    Lam* stub_(World&, Ref) override;
 };
 
 /// @name Lam

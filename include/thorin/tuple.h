@@ -22,8 +22,9 @@ public:
     Sigma* unset() { return Def::unset()->as<Sigma>(); }
     ///@}
 
-    const Sigma* immutabilize() override;
-    Sigma* stub(World&, Ref) override;
+    const Def* immutabilize() override;
+    Sigma* stub_(World&, Ref) override;
+    Sigma* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
 
     /// @name Type Checking
     ///@{
@@ -69,7 +70,8 @@ public:
     ///@}
 
     const Def* immutabilize() override;
-    Arr* stub(World&, Ref) override;
+    Arr* stub_(World&, Ref) override;
+    Arr* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
     const Def* reduce(const Def* arg) const;
 
     /// @name Type Checking
@@ -105,7 +107,8 @@ public:
     ///@}
 
     const Def* immutabilize() override;
-    Pack* stub(World&, Ref) override;
+    Pack* stub_(World&, Ref) override;
+    Pack* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
     const Def* reduce(const Def* arg) const;
 
     THORIN_DEF_MIXIN(Pack)

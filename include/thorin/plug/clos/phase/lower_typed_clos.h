@@ -76,6 +76,8 @@ private:
     const Def* lvm_; //< Last visited memory token
     const Def* lcm_; //< Last created memory token
     ///@}
+
+    std::vector<Lam*> new_externals_;
 };
 
 } // namespace thorin::plug::clos

@@ -16,11 +16,11 @@ void CPS2DS::rewrite_lam(Lam* lam) {
     if (auto [_, ins] = rewritten_lams.emplace(lam); !ins) return;
 
     if (lam->isa_imm() || !lam->is_set() || lam->codom()->isa<Type>()) {
-        lam->world().DLOG("skipped {}", lam);
+        world().DLOG("skipped {}", lam);
         return;
     }
 
-    lam->world().DLOG("Rewrite lam: {}", lam->sym());
+    world().DLOG("Rewrite lam: {}", lam->sym());
 
     lam_stack.push_back(curr_lam_);
     curr_lam_ = lam;
@@ -129,10 +129,26 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
     }
 
     if (def->isa<Var>()) return def;
+    if (def->isa<Global>()) return def;
 
     if (auto tuple = def->isa<Tuple>()) {
         auto elements = DefVec(tuple->ops(), [&](const Def* op) { return rewrite_body(op); });
         return world().tuple(def->type(), elements)->set(tuple->dbg());
+    }
+
+    // TODO there are more probls like this:
+    // 1. we have to also rewrite the type (regardless of mut/imm)
+    // 2. muts may be recursive, so it's important to first build the stub and put into rewritten_ before recursing
+    if (auto old_mut = def->isa_mut()) {
+        auto new_type       = rewrite_body(old_mut->type());
+        auto new_mut        = old_mut->stub(new_type);
+        rewritten_[old_mut] = new_mut;
+        if (auto var = old_mut->has_var()) rewritten_[var] = new_mut->var();
+        auto new_ops = DefVec(def->ops(), [&](const Def* op) { return rewrite_body(op); });
+        new_mut->set(new_ops);
+
+        if (auto imm = new_mut->immutabilize()) return rewritten_[old_mut] = imm;
+        return new_mut;
     }
 
     auto new_ops = DefVec(def->ops(), [&](const Def* op) { return rewrite_body(op); });
@@ -143,9 +159,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
         return def;
     }
 
-    if (def->isa<Global>()) return def;
-
-    return def->rebuild(world(), def->type(), new_ops);
+    return def->rebuild(def->type(), new_ops);
 }
 
 } // namespace thorin::plug::direct

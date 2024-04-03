@@ -300,10 +300,7 @@ Ref Parser::parse_pack_expr() {
         auto pack = world().mut_pack(arr)->set(body);
         auto var  = pack->var();
         infer->set(var);
-        Scope scope(pack);
-        ScopeRewriter rw(scope);
-        rw.map(infer, var);
-        return pack->reset(rw.rewrite(pack->body()));
+        return pack->reset(pack->reduce(var)); // get rid of infer
     }
 
     auto shape = parse_expr("shape of a pack");
@@ -480,22 +477,16 @@ Lam* Parser::parse_lam(bool is_decl) {
             // 1. ret depends on lam->var() instead of sigma->var(2, 0)
             pi->set_codom(ret);
             if (filter) lam->set_filter(filter);
-            Scope scope(lam);
-            ScopeRewriter rw(scope);
-            rw.map(lam->var(), sigma->var(2, 0));
+            auto old_var = lam->var()->as<Var>();
+            auto rw      = VarRewriter(old_var, sigma->var(2, 0));
             sigma->set(1, world().cn({rw.rewrite(ret)}));
 
             auto new_pi  = world().mut_pi(pi->type(), pi->is_implicit())->set(ret_loc)->set_dom(sigma);
             auto new_lam = world().mut_lam(new_pi);
             auto new_var = new_lam->var()->set(ret_loc);
 
-            if (filter) {
-                // 2. filter depends on lam->var() instead of new_lam->var(2, 0)
-                ScopeRewriter rw(scope);
-                rw.map(lam->var(), new_lam->var(2, 0)->set(lam->var()->dbg()));
-                auto new_filter = rw.rewrite(filter);
-                filter          = new_filter;
-            }
+            // 2. filter depends on lam->var() instead of new_lam->var(2, 0)
+            if (filter) filter = rewrite(filter, lam, new_lam->var(2, 0)->set(lam->var()->dbg()));
 
             pi->unset();
             pi = new_pi;
@@ -513,13 +504,9 @@ Lam* Parser::parse_lam(bool is_decl) {
     first->set(dbg.sym);
 
     for (auto [pi, lam, _] : funs | std::ranges::views::reverse) {
-        // First, connect old codom to lam. Otherwise, scope will not find it.
+        // First, connect old codom to lam. Otherwise, scope will not find it. Then, rewrite.
         pi->set_codom(codom);
-        Scope scope(lam);
-        ScopeRewriter rw(scope);
-        rw.map(lam->var(), pi->var()->set(lam->var()->dbg()));
-
-        // Now update.
+        auto rw  = VarRewriter(lam->var()->as<Var>(), pi->var()->set(lam->var()->dbg()));
         auto dom = pi->dom();
         codom    = rw.rewrite(codom);
         pi->reset({dom, codom});

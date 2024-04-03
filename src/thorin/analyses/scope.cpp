@@ -23,10 +23,9 @@ Scope::Scope(Def* entry)
 Scope::~Scope() {}
 
 void Scope::run() {
-    World::Freezer freezer(world()); // don't create an entry_->var() if not already present
     unique_queue<DefSet&> queue(bound_);
 
-    if (auto var = entry_->var()) {
+    if (auto var = entry_->has_var()) {
         queue.push(var);
 
         while (!queue.empty()) {
@@ -94,7 +93,7 @@ bool Scope::is_free(Def* mut, const Def* def) {
             // optimize common cases first
             if (def->num_ops() == 0) return false;
             if (var == def) return true;
-            for (auto v : var->mut()->vars())
+            for (auto v : var->mut()->tvars())
                 if (v == def) return true;
 
             Scope scope(mut);

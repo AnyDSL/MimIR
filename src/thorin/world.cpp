@@ -155,7 +155,8 @@ Ref World::var(Ref type, Def* mut) {
         if (auto l = Lit::isa(s); l && l == 1) return lit_0_1();
     }
 
-    return unify<Var>(1, type, mut);
+    if (auto var = mut->var_) return var;
+    return mut->var_ = unify<Var>(1, type, mut);
 }
 
 Ref World::iapp(Ref callee, Ref arg) {
@@ -190,9 +191,7 @@ Ref World::app(Ref callee, Ref arg) {
 
     if (auto imm = callee->isa_imm<Lam>()) return imm->body();
     if (auto lam = callee->isa_mut<Lam>(); lam && lam->is_set() && lam->filter() != lit_ff()) {
-        Scope scope(lam);
-        ScopeRewriter rw(scope);
-        rw.map(lam->var(), arg);
+        VarRewriter rw(lam->var(), arg);
         if (rw.rewrite(lam->filter()) == lit_tt()) {
             DLOG("partial evaluate: {} ({})", lam, arg);
             return rw.rewrite(lam->body());
@@ -320,8 +319,7 @@ Ref World::extract(Ref d, Ref index) {
 
         if (auto sigma = type->isa<Sigma>()) {
             if (auto mut_sigma = sigma->isa_mut<Sigma>()) {
-                Scope scope(mut_sigma);
-                auto t = rewrite(sigma->op(*i), mut_sigma->var(), d, scope);
+                auto t = VarRewriter(mut_sigma->var(), d).rewrite(sigma->op(*i));
                 return unify<Extract>(2, t, d, index);
             }
 
@@ -548,6 +546,12 @@ Ref World::gid2def(u32 gid) {
     auto i = std::ranges::find_if(move_.defs, [=](auto def) { return def->gid() == gid; });
     if (i == move_.defs.end()) return nullptr;
     return *i;
+}
+
+World& World::verify() {
+    for (auto [_, mut] : externals()) assert(mut->is_closed() && mut->is_set());
+    for (auto [_, annex] : annexes()) assert(annex->is_closed());
+    return *this;
 }
 
 #endif

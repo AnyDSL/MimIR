@@ -42,25 +42,17 @@ Ref DS2CPS::rewrite_lam(Lam* lam) {
     world().DLOG("rewrite DS function {} : {}", lam, lam->type());
 
     auto ty    = lam->type();
+    auto var   = ty->has_var();
     auto dom   = ty->dom();
     auto codom = ty->codom();
     auto sigma = world().mut_sigma(2);
+    // replace ds dom var with cps sigma var (cps dom)
+    auto rw_codom = var ? VarRewriter(var, sigma->var(2, 0)).rewrite(codom) : codom;
     sigma->set(0, dom);
-
-    Ref rewritten_codom;
-    if (auto mut = ty->isa_mut()) {
-        // replace ds dom var with cps sigma var (cps dom)
-        Scope r_scope{mut};
-        auto dom_var     = mut->var();
-        auto cps_dom_var = sigma->var(2, 0);
-        rewritten_codom  = thorin::rewrite(codom, dom_var, cps_dom_var, r_scope);
-    } else {
-        rewritten_codom = codom;
-    }
-    sigma->set(1, world().cn(rewritten_codom));
+    sigma->set(1, world().cn(rw_codom));
 
     world().DLOG("original codom: {}", codom);
-    world().DLOG("rewritten codom: {}", rewritten_codom);
+    world().DLOG("rewritten codom: {}", rw_codom);
 
     auto cps_ty = world().cn(sigma);
     world().DLOG("cps type: {}", cps_ty);
@@ -69,14 +61,15 @@ Ref DS2CPS::rewrite_lam(Lam* lam) {
 
     // rewrite vars of new function
     // calls handled separately
-    Scope l_scope{lam};
     world().DLOG("body: {} : {}", lam->body(), lam->body()->type());
 
-    auto cps_body = thorin::rewrite(lam->body(), lam->var(), cps_lam->var(0_n), l_scope);
+    auto new_ops  = thorin::rewrite(lam, cps_lam->var(0_n));
+    auto filter   = new_ops[0];
+    auto cps_body = new_ops[1];
 
     world().DLOG("cps body: {} : {}", cps_body, cps_body->type());
 
-    cps_lam->app(lam->filter(), cps_lam->vars().back(), cps_body);
+    cps_lam->app(filter, cps_lam->vars().back(), cps_body);
 
     rewritten_[lam] = op_cps2ds_dep(cps_lam);
     world().DLOG("replace {} : {}", lam, lam->type());

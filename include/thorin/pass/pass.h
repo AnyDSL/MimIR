@@ -211,35 +211,37 @@ private:
     bool fixed_point_ = false;
     bool proxy_       = false;
 
-    template<class P, class N> friend class FPPass;
+    template<class P, class M> friend class FPPass;
 };
 
-/// Inherit from this class if your Pass does **not** need state and a fixed-point iteration.
-template<class P, class N> class RWPass : public Pass {
+/// Inherit from this class using [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern),
+/// if your Pass does **not** need state and a fixed-point iteration.
+/// If you a are only interested in specific mutables, you can pass this to @p M.
+template<class P, class M = Def> class RWPass : public Pass {
 public:
     RWPass(PassMan& man, std::string_view name)
         : Pass(man, name) {}
 
     bool inspect() const override {
-        if constexpr (std::is_same<N, Def>::value)
+        if constexpr (std::is_same<M, Def>::value)
             return man().curr_mut();
         else
-            return man().curr_mut()->template isa<N>();
+            return man().curr_mut()->template isa<M>();
     }
 
-    N* curr_mut() const {
-        if constexpr (std::is_same<N, Def>::value)
+    M* curr_mut() const {
+        if constexpr (std::is_same<M, Def>::value)
             return man().curr_mut();
         else
-            return man().curr_mut()->template as<N>();
+            return man().curr_mut()->template as<M>();
     }
 };
 
 /// Inherit from this class using [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern),
 /// if you **do** need a Pass with a state and a fixed-point.
-template<class P, class N> class FPPass : public RWPass<P, N> {
+template<class P, class M = Def> class FPPass : public RWPass<P, M> {
 public:
-    using Super = RWPass<P, N>;
+    using Super = RWPass<P, M>;
     using Data  = std::tuple<>; ///< Default.
 
     FPPass(PassMan& man, std::string_view name)

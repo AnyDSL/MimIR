@@ -130,15 +130,19 @@ public:
     };
     ///@}
 
-#ifdef THORIN_ENABLE_CHECKS
     /// @name Debugging Features
     ///@{
-    Ref gid2def(u32 gid);
+#ifdef THORIN_ENABLE_CHECKS
     const auto& breakpoints() { return state_.breakpoints; }
-    /// Trigger breakpoint in your debugger when creating Def with Def::gid @p gid.
-    void breakpoint(u32 gid);
-    ///@}
+
+    Ref gid2def(u32 gid);     ///< Lookup Def by @p gid.
+    void breakpoint(u32 gid); ///< Trigger breakpoint in your debugger when creating Def with Def::gid @p gid.
+
+    World& verify(); ///< Verifies that all externals() and annexes() are Def::is_closed(), if `THORIN_ENABLE_CHECKS`.
+#else
+    World& verify() { return *this; }
 #endif
+    ///@}
 
     /// @name Manage Nodes
     ///@{
@@ -146,6 +150,7 @@ public:
     const auto& externals() const { return move_.externals; }
     void make_external(Def* def) {
         assert(!def->is_external());
+        assert(def->is_closed());
         def->external_ = true;
         assert_emplace(move_.externals, def->sym(), def);
     }
@@ -420,6 +425,21 @@ public:
         return iapp(callee, lit_nat((nat_t)arg));
     }
 
+    /// @name Vars & Muts
+    ///@{
+    /// Manges sets of Vars and Muts.
+    [[nodiscard]] Vars vars(const Var* var) { return move_.vars.singleton(var); }
+    [[nodiscard]] Muts muts(Def* mut) { return move_.muts.singleton(mut); }
+    [[nodiscard]] Vars merge(Vars a, Vars b) { return move_.vars.merge(a, b); }
+    [[nodiscard]] Muts merge(Muts a, Muts b) { return move_.muts.merge(a, b); }
+    [[nodiscard]] Vars insert(Vars vars, const Var* var) { return move_.vars.insert(vars, var); }
+    [[nodiscard]] Muts insert(Muts muts, Def* mut) { return move_.muts.insert(muts, mut); }
+    [[nodiscard]] Vars erase(Vars vars, const Var* var) { return move_.vars.erase(vars, var); }
+    [[nodiscard]] Muts erase(Muts muts, Def* mut) { return move_.muts.erase(muts, mut); }
+    [[nodiscard]] bool has_intersection(Vars v1, Vars v2) { return move_.vars.has_intersection(v1, v2); }
+    [[nodiscard]] bool has_intersection(Muts m1, Muts m2) { return move_.muts.has_intersection(m1, m2); }
+    ///@}
+
     // clang-format off
     template<class Id, class... Args> const Def* call(Id id, Args&&... args) { return call_(annex(id),   std::forward<Args>(args)...); }
     template<class Id, class... Args> const Def* call(       Args&&... args) { return call_(annex<Id>(), std::forward<Args>(args)...); }
@@ -459,7 +479,7 @@ private:
     /// @name Put into Sea of Nodes
     ///@{
     template<class T, class... Args> const T* unify(size_t num_ops, Args&&... args) {
-        auto state = arena_.state();
+        auto state = move_.arena.state();
         auto def   = allocate<T>(num_ops, std::forward<Args&&>(args)...);
         if (auto loc = emit_loc()) def->set(loc);
         assert(!def->isa_mut());
@@ -488,7 +508,7 @@ private:
 
     template<class T> void deallocate(fe::Arena::State state, const T* ptr) {
         ptr->~T();
-        arena_.deallocate(state);
+        move_.arena.deallocate(state);
     }
 
     template<class T, class... Args> T* insert(size_t num_ops, Args&&... args) {
@@ -518,9 +538,9 @@ private:
         static_assert(sizeof(Def) == sizeof(T),
                       "you are not allowed to introduce any additional data in subclasses of Def");
         Lock lock;
-        arena_.align(alignof(T));
-        size_t num_bytes = sizeof(Def) + sizeof(void*) * num_ops;
-        auto ptr         = arena_.allocate(num_bytes);
+        move_.arena.align(alignof(T));
+        size_t num_bytes = sizeof(Def) + sizeof(uintptr_t) * num_ops;
+        auto ptr         = move_.arena.allocate(num_bytes);
         auto res         = new (ptr) T(std::forward<Args&&>(args)...);
         assert(res->num_ops() == num_ops);
         return res;
@@ -529,7 +549,6 @@ private:
 
     Driver* driver_;
     State state_;
-    fe::Arena arena_;
 
     struct SeaHash {
         size_t operator()(const Def* def) const { return def->hash(); }
@@ -542,16 +561,22 @@ private:
     struct Move {
         absl::btree_map<flags_t, const Def*> annexes;
         absl::btree_map<Sym, Def*> externals;
+        fe::Arena arena;
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
+        Pool<const Var*> vars;
+        Pool<Def*> muts;
         DefDefMap<DefVec> cache;
 
         friend void swap(Move& m1, Move& m2) noexcept {
             using std::swap;
             // clang-format off
-            swap(m1.annexes,   m2.annexes);
-            swap(m1.externals, m2.externals);
-            swap(m1.defs,      m2.defs);
-            swap(m1.cache,     m2.cache);
+            swap(m1.annexes,    m2.annexes);
+            swap(m1.externals,  m2.externals);
+            swap(m1.arena,      m2.arena);
+            swap(m1.defs,       m2.defs);
+            swap(m1.vars,       m2.vars);
+            swap(m1.muts,       m2.muts);
+            swap(m1.cache,      m2.cache);
             // clang-format on
         }
     } move_;
@@ -583,7 +608,6 @@ private:
         using std::swap;
         // clang-format off
         swap(w1.state_, w2.state_);
-        swap(w1.arena_, w2.arena_);
         swap(w1.data_,  w2.data_ );
         swap(w1.move_,  w2.move_ );
         // clang-format on

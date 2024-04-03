@@ -39,7 +39,7 @@ void PassMan::pop_states(size_t undo) {
 }
 
 void PassMan::run() {
-    world().ILOG("run");
+    world().verify().ILOG("run");
 
     auto num = passes().size();
     states_.emplace_back(num);
@@ -83,7 +83,7 @@ void PassMan::run() {
         }
     }
 
-    world().ILOG("finished");
+    world().verify().ILOG("finished");
     pop_states(0);
 
     world().debug_dump();
@@ -108,7 +108,7 @@ Ref PassMan::rewrite(Ref old_def) {
     auto new_type = old_def->type() ? rewrite(old_def->type()) : nullptr;
     auto new_ops  = absl::FixedArray<const Def*>(old_def->num_ops());
     for (size_t i = 0, e = old_def->num_ops(); i != e; ++i) new_ops[i] = rewrite(old_def->op(i));
-    auto new_def = old_def->rebuild(world(), new_type, new_ops);
+    auto new_def = old_def->rebuild(new_type, new_ops);
 
     if (auto proxy = new_def->isa<Proxy>()) {
         if (auto&& pass = passes_[proxy->pass()]; pass->inspect()) {

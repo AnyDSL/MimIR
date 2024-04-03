@@ -95,7 +95,7 @@ What is more, you can adjust the output behavior directly from within GDB by mod
 ```gdb
 (gdb) call world.flags().dump_gid = 1
 (gdb) call world.flags().dump_recursive = 1
-(gdb) call world.log().level = 4
+(gdb) call world().log().max_level_ = 4
 ```
 Another useful feature is to retrieve a `Def*` from a thorin::Def::gid via thorin::World::gid2def:
 ```gdb
@@ -112,7 +112,7 @@ Just source `scripts/xdot.gdb` in your `~/.gdbinit`:
 source ~/thorin2/scripts/xdot.gdb
 ```
 Here is the `xdot` GDB command in action:
-![gdb-xdot](gdb-xdot.png)
+![cgdb session using xdot](gdb-xdot.png)
 
 \include "xdot-help.gdb"
 

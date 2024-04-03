@@ -37,12 +37,12 @@ Ref EtaExp::rewrite(Ref def) {
         }
     }
 
-    auto new_def              = def->rebuild(world(), def->type(), new_ops);
+    auto new_def              = def->rebuild(def->type(), new_ops);
     return old2new()[new_def] = new_def;
 }
 
 Lam* EtaExp::eta_exp(Lam* lam) {
-    auto exp = lam->stub(world(), lam->type());
+    auto exp = lam->stub(lam->type());
     exp2orig_.emplace(exp, lam);
     exp->debug_suffix("eta_"s + lam->sym().str());
     exp->app(false, lam, exp->var());

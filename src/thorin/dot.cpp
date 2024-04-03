@@ -5,6 +5,7 @@
 #include "thorin/def.h"
 #include "thorin/world.h"
 
+#include "thorin/analyses/scope.h"
 #include "thorin/util/print.h"
 
 namespace thorin {
@@ -54,6 +55,7 @@ public:
             os_ << "style=\"filled,bold\"";
         label(def) << ',';
         color(def) << ',';
+        if (def->free_vars().empty()) os_ << "rank=min,";
         tooltip(def) << "];\n";
 
         if (!def->is_set()) return;
@@ -61,11 +63,11 @@ public:
         for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
             auto op = def->op(i);
             recurse(op, max - 1);
-            tab_.print(os_, "_{} -> _{}[", def->gid(), op->gid());
+            tab_.print(os_, "_{} -> _{}[taillabel=\"{}\",", def->gid(), op->gid(), i);
             if (op->isa<Lit>() || op->isa<Axiom>() || def->isa<Var>() || def->isa<Nat>() || def->isa<Idx>())
-                print(os_, "taillabel=\"{}\",fontcolor=\"#00000000\",color=\"#00000000\",constraint=false];\n", i);
+                print(os_, "fontcolor=\"#00000000\",color=\"#00000000\",constraint=false];\n");
             else
-                print(os_, "label=\"{}\"];\n", i);
+                print(os_, "];\n");
         }
 
         if (auto t = def->type(); t && types_) {
@@ -101,6 +103,10 @@ public:
         print(os_, "<b>name:</b> {}{}", def->sym(), NL);
         print(os_, "<b>gid:</b> {}{}", def->gid(), NL);
         print(os_, "<b>flags:</b> {}{}", flags, NL);
+        print(os_, "<b>free_vars:</b> {{{, }}}{}", def->free_vars(), NL);
+        print(os_, "<b>local_vars:</b> {{{, }}}{}", def->local_vars(), NL);
+        print(os_, "<b>local_muts:</b> {{{, }}}{}", def->local_muts(), NL);
+        if (auto mut = def->isa_mut()) print(os_, "<b>fv_consumers:</b> {{{, }}}{}", mut->fv_consumers(), NL);
         print(os_, "<b>loc:</b> {}", loc);
         return print(os_, "\"");
     }

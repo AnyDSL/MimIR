@@ -62,7 +62,7 @@ Ref CopyProp::rewrite(Ref def) {
         old_args      = args;
         auto prop_dom = world().sigma(new_doms);
         auto new_pi   = world().pi(prop_dom, var_lam->codom());
-        prop_lam      = var_lam->stub(world(), new_pi);
+        prop_lam      = var_lam->stub(new_pi);
 
         world().DLOG("new prop_lam: {}", prop_lam);
         if (beta_red_) beta_red_->keep(prop_lam);

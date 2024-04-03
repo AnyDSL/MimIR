@@ -5,9 +5,9 @@
 namespace thorin {
 
 void Phase::run() {
-    world().ILOG("=== {}: start ===", name());
+    world().verify().ILOG("=== {}: start ===", name());
     start();
-    world().ILOG("=== {}: done ===", name());
+    world().verify().ILOG("=== {}: done ===", name());
 }
 
 void RWPhase::start() {
@@ -30,7 +30,10 @@ void Cleanup::start() {
     Rewriter rewriter(new_world);
 
     for (const auto& [f, def] : world().annexes()) new_world.register_annex(f, rewriter.rewrite(def));
-    for (const auto& [_, mut] : world().externals()) rewriter.rewrite(mut)->as_mut()->make_external();
+    for (const auto& [_, mut] : world().externals()) {
+        auto new_mut = rewriter.rewrite(mut)->as_mut();
+        new_mut->make_external();
+    }
 
     swap(world(), new_world);
 }
@@ -41,11 +44,7 @@ void Pipeline::start() {
 
 void ScopePhase::start() {
     unique_queue<MutSet> muts;
-
-    for (const auto& [name, mut] : world().externals()) {
-        assert(mut->is_set() && "external must not be empty");
-        muts.push(mut);
-    }
+    for (const auto& [name, mut] : world().externals()) muts.push(mut);
 
     while (!muts.empty()) {
         auto mut = muts.pop();

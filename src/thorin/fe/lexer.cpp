@@ -275,10 +275,6 @@ void Lexer::parse_digits(int base /*= 10*/) {
     }
 }
 
-template<class... T> inline auto _any(T... args) {
-    return [=](char32_t c) { return utf8::any(c, args...); };
-}
-
 bool Lexer::parse_exp(int base /*= 10*/) {
     if (accept(base == 10 ? utf8::any('e', 'E') : utf8::any('p', 'P'))) {
         accept(utf8::any('+', '-'));

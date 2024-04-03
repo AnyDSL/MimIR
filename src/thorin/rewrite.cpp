@@ -2,11 +2,7 @@
 
 #include "thorin/world.h"
 
-#include "thorin/analyses/scope.h"
-
-#include "absl/container/fixed_array.h"
-
-// Don't use fancy C++-lambdas; it's way to annoying stepping through this in a debugger.
+// Don't use fancy C++-lambdas; it's way to annoying stepping through them in a debugger.
 
 namespace thorin {
 
@@ -14,9 +10,7 @@ Ref Rewriter::rewrite(Ref old_def) {
     if (old_def->isa<Univ>()) return world().univ();
     if (auto i = old2new_.find(old_def); i != old2new_.end()) return i->second;
     if (auto old_mut = old_def->isa_mut()) return rewrite_mut(old_mut);
-
-    auto new_def = rewrite_imm(old_def);
-    return map(old_def, new_def);
+    return map(old_def, rewrite_imm(old_def));
 }
 
 Ref Rewriter::rewrite_imm(Ref old_def) {
@@ -30,7 +24,7 @@ Ref Rewriter::rewrite_imm(Ref old_def) {
     }
 
     auto new_type = old_def->isa<Type>() ? nullptr : rewrite(old_def->type());
-    auto new_ops  = absl::FixedArray<const Def*>(old_def->num_ops());
+    auto new_ops  = DefVec(old_def->num_ops());
     for (size_t i = 0, e = new_ops.size(); i != e; ++i) new_ops[i] = rewrite(old_def->op(i));
     return old_def->rebuild(world(), new_type, new_ops);
 }
@@ -48,30 +42,11 @@ Ref Rewriter::rewrite_mut(Def* old_mut) {
     return new_mut;
 }
 
-Ref rewrite(Ref def, Ref old_def, Ref new_def, const Scope& scope) {
-    ScopeRewriter rewriter(scope);
-    rewriter.map(old_def, new_def);
-    return rewriter.rewrite(def);
-}
-
-Ref rewrite(Def* mut, Ref arg, size_t i, const Scope& scope) { return rewrite(mut->op(i), mut->var(), arg, scope); }
-
-Ref rewrite(Def* mut, Ref arg, size_t i) {
-    Scope scope(mut);
-    return rewrite(mut, arg, i, scope);
-}
-
-DefVec rewrite(Def* mut, Ref arg, const Scope& scope) {
-    ScopeRewriter rewriter(scope);
-    rewriter.map(mut->var(), arg);
-    DefVec result(mut->num_ops());
-    for (size_t i = 0, e = result.size(); i != e; ++i) result[i] = rewriter.rewrite(mut->op(i));
-    return result;
-}
-
 DefVec rewrite(Def* mut, Ref arg) {
-    Scope scope(mut);
-    return rewrite(mut, arg, scope);
+    auto rw = VarRewriter(mut->var(), arg);
+    DefVec result(mut->num_ops());
+    for (size_t i = 0, e = result.size(); i != e; ++i) result[i] = rw.rewrite(mut->op(i));
+    return result;
 }
 
 } // namespace thorin
