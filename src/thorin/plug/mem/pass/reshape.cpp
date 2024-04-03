@@ -123,7 +123,7 @@ const Def* Reshape::rewrite_def_(const Def* def) {
         auto new_ops = DefVec(def->num_ops(), [&](auto i) { return rewrite_def(def->op(i)); });
         // Warning: if the new_type is not correct, inconcistencies will arise.
         auto new_type = rewrite_def(def->type());
-        auto new_def  = def->rebuild(world(), new_type, new_ops);
+        auto new_def  = def->rebuild(new_type, new_ops);
         return new_def;
     }
 }
@@ -140,7 +140,7 @@ Lam* Reshape::reshape_lam(Lam* old_lam) {
     if (*old_lam->sym() == "main") {
         new_lam = old_lam;
     } else {
-        new_lam = old_lam->stub(world(), new_ty);
+        new_lam = old_lam->stub(new_ty);
         if (!old_lam->is_external()) new_lam->debug_suffix("_reshape");
         old2new_[old_lam] = new_lam;
     }

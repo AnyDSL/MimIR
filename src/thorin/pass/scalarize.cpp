@@ -38,7 +38,7 @@ Lam* Scalerize::make_scalar(Ref def) {
     if (!todo) return tup2sca_[tup_lam] = tup_lam;
 
     auto pi      = world().cn(world().sigma(types));
-    auto sca_lam = tup_lam->stub(world(), pi);
+    auto sca_lam = tup_lam->stub(pi);
     if (eta_exp_) eta_exp_->new2old(sca_lam, tup_lam);
     size_t n = 0;
     world().DLOG("type {} ~> {}", tup_lam->type(), pi);

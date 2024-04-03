@@ -33,9 +33,10 @@ public:
     /// [Union by rank](https://en.wikipedia.org/wiki/Disjoint-set_data_structure#Union_by_rank).
     static const Def* find(const Def*);
 
-    Infer* stub(World&, Ref) override;
+    Infer* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
 
 private:
+    Infer* stub_(World&, Ref) override;
     flags_t rank() const { return flags(); }
     flags_t& rank() { return flags_; }
 
