@@ -1,0 +1,13 @@
+// RUN: rm -f %t.ll
+// RUN: %thorin %s --output-ll %t.ll -o -
+
+.plugin mem;
+.plugin math;
+.plugin autodiff;
+
+.fun f(a: %math.F32): %math.F32 = return (%math.arith.add 0 (a, a));
+
+.con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I8, 0), 0), return : .Cn [%mem.M, %math.F32]] =
+    .con ret_cont r: %math.F32 = return (mem, r);
+    .let c = 43:%math.F32;
+    f (c,ret_cont);
