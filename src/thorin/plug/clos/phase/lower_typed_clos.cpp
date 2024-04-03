@@ -52,7 +52,7 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
     }));
     if (Lam::isa_basicblock(lam) && adjust_bb_type) new_dom = insert_ret(new_dom, dummy_ret_->type());
     auto new_type = w.cn(new_dom);
-    auto new_lam  = lam->stub(w, new_type);
+    auto new_lam  = lam->stub(new_type);
     w.DLOG("stub {} ~> {}", lam, new_lam);
     if (lam->is_set()) new_lam->set(lam->filter(), lam->body());
     if (lam->is_external()) {
@@ -138,7 +138,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
         return make_stub(lam, No_Env, false);
     } else if (auto mut = def->isa_mut()) {
         assert(!isa_clos_type(mut));
-        auto new_mut = mut->stub(w, new_type);
+        auto new_mut = mut->stub(new_type);
         map(mut, new_mut);
         for (size_t i = 0; i < mut->num_ops(); i++)
             if (mut->op(i)) new_mut->set(i, rewrite(mut->op(i)));
@@ -157,7 +157,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
                 new_ops[1] = insert_ret(new_ops[1], dummy_ret_);
         }
 
-        auto new_def = def->rebuild(w, new_type, new_ops);
+        auto new_def = def->rebuild(new_type, new_ops);
 
         // We may need to update the mem token after all ops have been rewritten:
         // F (m, a1, ..., (env, f):pct)

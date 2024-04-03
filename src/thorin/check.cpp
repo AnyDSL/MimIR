@@ -53,7 +53,7 @@ const Def* Infer::find(const Def* def) {
             return r;
         });
 
-        if (update) return res->rebuild(res->world(), new_type, new_ops);
+        if (update) return res->rebuild(new_type, new_ops);
     }
 
     return res;
@@ -163,7 +163,7 @@ template<bool infer> bool Check::alpha_internal(Ref d1, Ref d2) {
         // .umax(a, ?) == x  =>  .umax(a, x)
         for (auto op : umax->ops())
             if (auto inf = op->isa_mut<Infer>(); inf && !inf->is_set()) inf->set(d2);
-        d1 = umax->rebuild(world(), umax->type(), umax->ops());
+        d1 = umax->rebuild(umax->type(), umax->ops());
     }
 
     if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return fail<infer>();

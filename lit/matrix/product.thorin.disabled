@@ -8,13 +8,6 @@
 .plugin core;
 .plugin matrix;
 
-.con .extern f [mem : %mem.M, 
-    [k:.Nat, l:.Nat, m:.Nat],
-    M:%matrix.Mat (2,(m,k),%math.F64),
-    N:%matrix.Mat (2,(k,l),%math.F64),
-    return: .Cn[%mem.M, %matrix.Mat (2,(m,l),%math.F64)]] = {
-
-    .let (mem2,MN) = %matrix.prod (m,k,l, f64) (mem,M,N);
-
-    return (mem2, MN)
-};
+.con .extern f [mem : %mem.M, [k:.Nat, l:.Nat, m:.Nat], M:%matrix.Mat (2,(m,k),%math.F64), N:%matrix.Mat (2,(k,l),%math.F64), return: .Cn[%mem.M, %matrix.Mat (2,(m,l),%math.F64)]] =
+    .let (mem2,MN) = %matrix.prod (m,k,l, %math.f64) (mem,M,N);
+    return (mem2, MN);

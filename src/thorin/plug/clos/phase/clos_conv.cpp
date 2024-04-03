@@ -186,7 +186,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
                     //  put into the local subst only
                     auto new_doms
                         = DefVec(ret_lam->num_doms(), [&](auto i) { return rewrite(ret_lam->dom(i), subst); });
-                    auto new_lam   = ret_lam->stub(w, w.cn(new_doms));
+                    auto new_lam   = ret_lam->stub(w.cn(new_doms));
                     subst[ret_lam] = new_lam;
                     if (ret_lam->is_set()) {
                         new_lam->set_filter(rewrite(ret_lam->filter(), subst));
@@ -237,15 +237,14 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         else if (def->isa<Axiom>())
             return def;
         else
-            return map(def->rebuild(w, new_type, new_ops));
+            return map(def->rebuild(new_type, new_ops));
     }
 
     fe::unreachable();
 }
 
 Def* ClosConv::rewrite_mut(Def* mut, const Def* new_type, Def2Def& subst) {
-    auto& w      = world();
-    auto new_mut = mut->stub(w, new_type);
+    auto new_mut = mut->stub(new_type);
     subst.emplace(mut, new_mut);
     for (size_t i = 0; i < mut->num_ops(); i++)
         if (mut->op(i)) new_mut->set(i, rewrite(mut->op(i), subst));
@@ -281,13 +280,13 @@ ClosConv::Stub ClosConv::make_stub(const DefSet& fvs, Lam* old_lam, Def2Def& sub
     auto num_fvs     = fvs.size();
     auto env_type    = rewrite(env->type(), subst);
     auto new_fn_type = type_clos(old_lam->type(), subst, env_type)->as<Pi>();
-    auto new_lam     = old_lam->stub(w, new_fn_type);
+    auto new_lam     = old_lam->stub(new_fn_type);
     // TODO
     // new_lam->set_debug_name((old_lam->is_external() || !old_lam->is_set()) ? "cc_" + old_lam->name() :
     // old_lam->name());
     if (!isa_workable(old_lam)) {
         auto new_ext_type = w.cn(clos_remove_env(new_fn_type->dom()));
-        auto new_ext_lam  = old_lam->stub(w, new_ext_type);
+        auto new_ext_lam  = old_lam->stub(new_ext_type);
         w.DLOG("wrap ext lam: {} -> stub: {}, ext: {}", old_lam, new_lam, new_ext_lam);
         if (old_lam->is_set()) {
             old_lam->transfer_external(new_ext_lam);

@@ -10,7 +10,7 @@
 .con .extern cont [mem : %mem.M, m : (%matrix.Mat MT), return : .Cn [%mem.M, .I32]] = {
     .let (mem2,m2) = %matrix.transpose ((2,4), .I32) (mem,m);
     .let idx2 = (3_4, 1_2);
-    .let (mem3,d) = %matrix.read MT2 (mem2,m2, idx2);
+    .let (mem3,d) = %matrix.read MT2 (mem2, m2, idx2);
 
     // .let idx = (.tt,3:(.Idx 4));
     // .let d = %matrix.read MT (m, idx);

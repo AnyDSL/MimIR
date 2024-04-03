@@ -195,13 +195,13 @@ public:                                                                         
 #    define THORIN_SETTERS(T) THORIN_SETTERS_(T)
 #endif
 
-#define THORIN_DEF_MIXIN(T)                        \
-public:                                            \
-    THORIN_SETTERS(T)                              \
-    Ref rebuild(World&, Ref, Defs) const override; \
-    static constexpr auto Node = Node::T;          \
-                                                   \
-private:                                           \
+#define THORIN_DEF_MIXIN(T)                         \
+public:                                             \
+    THORIN_SETTERS(T)                               \
+    static constexpr auto Node = Node::T;           \
+                                                    \
+private:                                            \
+    Ref rebuild_(World&, Ref, Defs) const override; \
     friend class World;
 
 /// Base class for all Def%s.
@@ -491,10 +491,15 @@ public:
 
     /// @name Rebuild
     ///@{
-    virtual Def* stub(World&, Ref) { fe::unreachable(); }
+    Def* stub(World& w, Ref type) { return stub_(w, type)->set(dbg()); }
+    Def* stub(Ref type) { return stub(world(), type); }
 
     /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
-    virtual Ref rebuild(World& w, Ref type, Defs ops) const = 0;
+    Ref rebuild(World& w, Ref type, Defs ops) const {
+        assert(isa_imm());
+        return rebuild_(w, type, ops)->set(dbg());
+    }
+    Ref rebuild(Ref type, Defs ops) const { return rebuild(world(), type, ops); }
 
     /// Tries to make an immutable from a mutable.
     /// This usually works if the mutable isn't recursive and its var isn't used.
@@ -543,6 +548,9 @@ protected:
     ///@}
 
 private:
+    virtual Def* stub_(World&, Ref) { fe::unreachable(); }
+    virtual Ref rebuild_(World& w, Ref type, Defs ops) const = 0;
+
     Vars free_vars(bool&, uint32_t run);
     void validate();
     void invalidate();
@@ -797,9 +805,11 @@ public:
     bool is_mutable() const { return flags(); }
     ///@}
 
-    Global* stub(World&, Ref) override;
-
+    Global* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
     THORIN_DEF_MIXIN(Global)
+
+private:
+    Global* stub_(World&, Ref) override;
 };
 
 hash_t UseHash::operator()(Use use) const { return hash_combine(hash_begin(u16(use.index())), hash_t(use->gid())); }

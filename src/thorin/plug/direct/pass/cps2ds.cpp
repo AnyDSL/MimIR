@@ -136,9 +136,12 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
         return world().tuple(def->type(), elements)->set(tuple->dbg());
     }
 
-    // TODO there are more probls like this
+    // TODO there are more probls like this:
+    // 1. we have to also rewrite the type (regardless of mut/imm)
+    // 2. muts may be recursive, so it's important to first build the stub and put into rewritten_ before recursing
     if (auto old_mut = def->isa_mut()) {
-        auto new_mut        = old_mut->stub(world(), old_mut->type());
+        auto new_type       = rewrite_body(old_mut->type());
+        auto new_mut        = old_mut->stub(new_type);
         rewritten_[old_mut] = new_mut;
         if (auto var = old_mut->has_var()) rewritten_[var] = new_mut->var();
         auto new_ops = DefVec(def->ops(), [&](const Def* op) { return rewrite_body(op); });
@@ -156,7 +159,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
         return def;
     }
 
-    return def->rebuild(world(), def->type(), new_ops);
+    return def->rebuild(def->type(), new_ops);
 }
 
 } // namespace thorin::plug::direct
