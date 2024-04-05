@@ -141,45 +141,9 @@ void PiExpr::bind(Scopes& s) const {
     s.pop();
 }
 
-void PiDecl::bind(Scopes& s) const {
-    if (type()) type()->bind(s);
-    s.bind(dbg(), this);
-}
-
-void PiDecl::bind_rec(Scopes& s) const { body()->bind(s); }
-
-void LamExpr::Dom::bind(Scopes& s, bool quiet) const { ptrn()->bind(s, quiet); }
-
 void LamExpr::bind(Scopes& s) const {
-    s.push();
-    for (const auto& dom : doms()) dom->bind(s);
-    codom()->bind(s);
-    if (tag() == Tok::Tag::K_fn) {
-        ret_ = s.ast().ptr<ReturnPtrn>(s.ast(), codom());
-        ret_->bind(s);
-    }
-    body()->bind(s);
-    s.pop();
-}
-
-void LamDecl::bind(Scopes& s) const {
-    s.push();
-    for (const auto& dom : lam()->doms()) dom->bind(s);
-    lam()->codom()->bind(s);
-    if (lam()->tag() == Tok::Tag::K_fun) {
-        lam()->ret_ = s.ast().ptr<ReturnPtrn>(s.ast(), lam()->codom());
-        lam()->ret_->bind(s);
-    }
-    s.pop();
-    s.bind(lam()->dbg(), this);
-}
-
-void LamDecl::bind_rec(Scopes& s) const {
-    s.push();
-    for (const auto& dom : lam()->doms()) dom->bind(s, true);
-    if (auto ret = lam()->ret()) ret->bind(s, true);
-    body()->bind(s);
-    s.pop();
+    lam()->bind(s);
+    lam()->bind_rec(s);
 }
 
 void AppExpr::bind(Scopes& s) const {
@@ -243,11 +207,6 @@ void DeclsBlock::bind(Scopes& s) const {
     }
 }
 
-void LetDecl::bind(Scopes& s) const {
-    value()->bind(s);
-    ptrn()->bind(s);
-}
-
 void AxiomDecl::bind(Scopes& s) const {
     type()->bind(s);
 
@@ -263,11 +222,38 @@ void AxiomDecl::bind(Scopes& s) const {
     }
 }
 
-void SigmaDecl::bind(Scopes& s) const {
+void LetDecl::bind(Scopes& s) const {
+    value()->bind(s);
+    ptrn()->bind(s);
+}
+
+void RecDecl::bind(Scopes& s) const {
     if (type()) type()->bind(s);
     s.bind(dbg(), this);
 }
 
-void SigmaDecl::bind_rec(Scopes& s) const { body()->bind(s); }
+void RecDecl::bind_rec(Scopes& s) const { body()->bind(s); }
+
+void LamDecl::Dom::bind(Scopes& s, bool quiet) const { ptrn()->bind(s, quiet); }
+
+void LamDecl::bind(Scopes& s) const {
+    s.push();
+    for (const auto& dom : doms()) dom->bind(s);
+    codom()->bind(s);
+    if (tag() == Tok::Tag::K_fun) {
+        ret_ = s.ast().ptr<ReturnPtrn>(s.ast(), codom());
+        ret_->bind(s);
+    }
+    s.pop();
+    s.bind(dbg(), this);
+}
+
+void LamDecl::bind_rec(Scopes& s) const {
+    s.push();
+    for (const auto& dom : doms()) dom->bind(s, true);
+    if (ret()) ret()->bind(s, true);
+    body()->bind(s);
+    s.pop();
+}
 
 } // namespace thorin::ast

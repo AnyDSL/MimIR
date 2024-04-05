@@ -216,27 +216,10 @@ Ref PiExpr::emit(Emitter& e) const {
     return {};
 }
 
-Ref LamExpr::Dom::emit(Emitter&) const {
-    // ptrn()->emit(e);
-    return {};
-}
-
 Ref LamExpr::emit(Emitter& e) const {
-    for (const auto& dom : doms()) dom->emit(e);
-    codom()->emit(e);
-    body()->emit(e);
-    return {};
-}
-
-void LamDecl::emit(Emitter& e) const {
-    for (const auto& dom : lam()->doms()) dom->emit(e);
-    lam()->codom()->emit(e);
-}
-
-void LamDecl::emit_rec(Emitter& e) const {
-    for (const auto& dom : lam()->doms()) dom->emit(e);
-    // if (auto ret = lam()->ret()) ret->emit(e);
-    body()->emit(e);
+    lam()->emit(e);
+    lam()->emit_rec(e);
+    return lam()->def();
 }
 
 Ref AppExpr::emit(Emitter& e) const {
@@ -328,16 +311,26 @@ void AxiomDecl::emit(Emitter& e) const {
     }
 }
 
-void PiDecl::emit(Emitter& e) const {
+void RecDecl::emit(Emitter& e) const {
     if (type()) type()->emit(e);
 }
 
-void PiDecl::emit_rec(Emitter& e) const { body()->emit(e); }
+void RecDecl::emit_rec(Emitter& e) const { body()->emit(e); }
 
-void SigmaDecl::emit(Emitter& e) const {
-    if (type()) type()->emit(e);
+Ref LamDecl::Dom::emit(Emitter&) const {
+    // ptrn()->emit(e);
+    return {};
 }
 
-void SigmaDecl::emit_rec(Emitter& e) const { body()->emit(e); }
+void LamDecl::emit(Emitter& e) const {
+    for (const auto& dom : doms()) dom->emit(e);
+    codom()->emit(e);
+}
+
+void LamDecl::emit_rec(Emitter& e) const {
+    for (const auto& dom : doms()) dom->emit(e);
+    // if (auto ret = lam()->ret()) ret->emit(e);
+    body()->emit(e);
+}
 
 } // namespace thorin::ast

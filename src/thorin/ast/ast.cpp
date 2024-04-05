@@ -1,12 +1,10 @@
 #include "thorin/ast/ast.h"
 
-#include "thorin/check.h"
-#include "thorin/def.h"
-#include "thorin/driver.h"
-#include "thorin/rewrite.h"
-#include "thorin/world.h"
-
 namespace thorin::ast {
+
+LamExpr::LamExpr(Ptr<LamDecl>&& lam)
+    : Expr(lam->loc())
+    , lam_(std::move(lam)) {}
 
 /*
  * Ptrn::to_expr/to_ptrn
@@ -30,7 +28,7 @@ Ptr<Ptrn> Ptrn::to_ptrn(Ptr<Expr>&& expr) {
 
 void Module::compile(AST& ast, World& world) const {
     bind(ast);
-    emit(ast, world);
+    // emit(ast, world);
 }
 
 } // namespace thorin::ast

@@ -85,8 +85,8 @@ private:
     Ptr<Expr> parse_extremum_expr();
     Ptr<Expr> parse_type_expr();
     Ptr<Expr> parse_ret_expr();
-    Ptr<PiExpr> parse_pi_expr();
-    Ptr<LamExpr> parse_lam_expr();
+    Ptr<Expr> parse_pi_expr();
+    Ptr<Expr> parse_lam_expr();
     Ptr<Expr> parse_sigma_expr();
     Ptr<Expr> parse_tuple_expr();
     Ptr<Expr> parse_insert_expr();
@@ -109,9 +109,8 @@ private:
     Ptrs<ValDecl> parse_decls();
     Ptr<ValDecl> parse_axiom_decl();
     Ptr<ValDecl> parse_let_decl();
-    Ptr<PiDecl> parse_pi_decl();
     Ptr<LamDecl> parse_lam_decl();
-    Ptr<SigmaDecl> parse_sigma_decl();
+    Ptr<RecDecl> parse_rec_decl();
     ///@}
 
     /// @name error messages

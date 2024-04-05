@@ -1,9 +1,6 @@
 #include "thorin/def.h"
 
 #include <algorithm>
-#include <optional>
-#include <ranges>
-#include <stack>
 
 #include "thorin/rewrite.h"
 #include "thorin/world.h"

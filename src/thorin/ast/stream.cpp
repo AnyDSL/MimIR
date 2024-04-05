@@ -106,20 +106,7 @@ std::ostream& PiExpr::stream(Tab& tab, std::ostream& os) const {
     return print(os, "{}{} -> {}", tag(), R(tab, doms()), S(tab, codom()));
 }
 
-std::ostream& LamExpr::Dom::stream(Tab& tab, std::ostream& os) const {
-    if (has_bang()) os << '!';
-    PiExpr::Dom::stream(tab, os);
-    if (filter()) print(os, "@({})", filter());
-    return os;
-}
-std::ostream& LamExpr::stream(Tab& tab, std::ostream& os) const {
-    print(os, "{} {}", tag(), dbg());
-    if (num_doms() > 0 && !doms().front()->ptrn()->isa<TuplePtrn>()) os << ' ';
-    print(os, "{}", R(tab, doms()));
-    if (!codom()->isa<InferExpr>()) print(os, ": {}", S(tab, codom()));
-    if (body()) print(os, " = {}", S(tab, body()));
-    return os;
-}
+std::ostream& LamExpr::stream(Tab& tab, std::ostream& os) const { return print(os, "{};", S(tab, lam())); }
 
 std::ostream& AppExpr::stream(Tab& tab, std::ostream& os) const {
     return print(os, "{} {}", S(tab, callee()), S(tab, arg()));
@@ -158,10 +145,6 @@ std::ostream& DeclsBlock::stream(Tab& tab, std::ostream& os) const {
     return os;
 }
 
-std::ostream& LetDecl::stream(Tab& tab, std::ostream& os) const {
-    return print(os, ".let {} = {};", S(tab, ptrn()), S(tab, value()));
-}
-
 std::ostream& AxiomDecl::stream(Tab& tab, std::ostream& os) const {
     print(os, ".ax {}", dbg());
     if (num_subs() != 0) {
@@ -179,9 +162,31 @@ std::ostream& AxiomDecl::stream(Tab& tab, std::ostream& os) const {
     return os << ";";
 }
 
-std::ostream& PiDecl::stream(Tab& /*tab*/, std::ostream& os) const { return print(os, ".Pi"); }
-std::ostream& LamDecl::stream(Tab& tab, std::ostream& os) const { return print(os, "{};", S(tab, lam())); }
-std::ostream& SigmaDecl::stream(Tab& /*tab*/, std::ostream& os) const { return print(os, ".Sigma"); }
+std::ostream& LetDecl::stream(Tab& tab, std::ostream& os) const {
+    return print(os, ".let {} = {};", S(tab, ptrn()), S(tab, value()));
+}
+
+std::ostream& RecDecl::stream(Tab& tab, std::ostream& os) const {
+    print(os, ".rec {}", dbg());
+    if (!type()->isa<InferExpr>()) print(os, ": {}", S(tab, type()));
+    return print(os, " = {};", S(tab, body()));
+}
+
+std::ostream& LamDecl::Dom::stream(Tab& tab, std::ostream& os) const {
+    if (has_bang()) os << '!';
+    PiExpr::Dom::stream(tab, os);
+    if (filter()) print(os, "@({})", filter());
+    return os;
+}
+
+std::ostream& LamDecl::stream(Tab& tab, std::ostream& os) const {
+    print(os, "{} {}", tag(), dbg());
+    if (num_doms() > 0 && !doms().front()->ptrn()->isa<TuplePtrn>()) os << ' ';
+    print(os, "{}", R(tab, doms()));
+    if (!codom()->isa<InferExpr>()) print(os, ": {}", S(tab, codom()));
+    if (body()) print(os, " = {}", S(tab, body()));
+    return os;
+}
 
 /*
  * Module

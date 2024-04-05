@@ -2,17 +2,8 @@
 
 #include <filesystem>
 #include <fstream>
-#include <limits>
-#include <optional>
-#include <sstream>
-#include <variant>
 
-#include "thorin/check.h"
-#include "thorin/def.h"
 #include "thorin/driver.h"
-#include "thorin/rewrite.h"
-
-#include "thorin/util/sys.h"
 
 using namespace std::string_literals;
 
@@ -295,7 +286,7 @@ Ptr<Expr> Parser::parse_type_expr() {
     return ptr<TypeExpr>(track, std::move(level));
 }
 
-Ptr<PiExpr> Parser::parse_pi_expr() {
+Ptr<Expr> Parser::parse_pi_expr() {
     auto track = tracker();
     auto tag   = lex().tag();
 
@@ -324,50 +315,7 @@ Ptr<PiExpr> Parser::parse_pi_expr() {
     return ptr<PiExpr>(track.loc(), tag, std::move(doms), std::move(codom));
 }
 
-Ptr<LamExpr> Parser::parse_lam_expr() {
-    auto track    = tracker();
-    auto tag      = lex().tag();
-    auto prec     = tag == Tag::K_cn || tag == Tag::K_con ? Tok::Prec::Bot : Tok::Prec::Pi;
-    bool external = (bool)accept(Tag::K_extern);
-
-    bool decl;
-    std::string entity;
-    // clang-format off
-    switch (tag) {
-        case Tag::T_lm:  decl = false; entity = "function expression";                break;
-        case Tag::K_cn:  decl = false; entity = "continuation expression";            break;
-        case Tag::K_fn:  decl = false; entity = "returning continuation expression";  break;
-        case Tag::K_lam: decl = true ; entity = "function declaration";               break;
-        case Tag::K_con: decl = true ; entity = "continuation declaration";           break;
-        case Tag::K_fun: decl = true ; entity = "returning continuation declaration"; break;
-        default: fe::unreachable();
-    }
-    // clang-format on
-
-    auto dbg = decl ? parse_name(entity) : Dbg();
-    Ptrs<LamExpr::Dom> doms;
-    do {
-        auto track    = tracker();
-        bool bang     = (bool)accept(Tag::T_bang);
-        bool implicit = (bool)accept(Tag::T_dot);
-        auto ptrn     = parse_ptrn(Tag::D_paren_l, "domain pattern of a "s + entity, prec);
-
-        Ptr<Expr> filter;
-        if (auto tok = accept(Tag::T_at)) {
-            expect(Tag::D_paren_l, "opening parenthesis of a filter");
-            filter = parse_expr("filter");
-            expect(Tag::D_paren_r, "closing parenthesis of a filter");
-        }
-
-        doms.emplace_back(ptr<LamExpr::Dom>(track, bang, implicit, std::move(ptrn), std::move(filter)));
-    } while (!ahead().isa(Tag::T_colon) && !ahead().isa(Tag::T_assign) && !ahead().isa(Tag::T_semicolon));
-
-    auto codom
-        = accept(Tag::T_colon) ? parse_expr("codomain of a "s + entity, Tok::Prec::Arrow) : ptr<InferExpr>(prev_);
-    auto body = accept(Tag::T_assign) ? parse_block_expr("body of a "s + entity) : Ptr<Expr>();
-
-    return ptr<LamExpr>(track, tag, external, dbg, std::move(doms), std::move(codom), std::move(body));
-}
+Ptr<Expr> Parser::parse_lam_expr() { return ptr<LamExpr>(parse_lam_decl()); }
 
 Ptr<Expr> Parser::parse_ret_expr() {
     auto track = tracker();
@@ -555,8 +503,7 @@ Ptrs<ValDecl> Parser::parse_decls() {
             case Tag::T_semicolon: lex(); break; // eat up stray semicolons
             case Tag::K_ax:        decls.emplace_back(parse_axiom_decl()); break;
             case Tag::K_let:       decls.emplace_back(parse_let_decl());   break;
-            case Tag::K_Sigma:     decls.emplace_back(parse_sigma_decl()); break;
-            case Tag::K_Pi:        decls.emplace_back(parse_pi_decl());    break;
+            case Tag::K_rec:       decls.emplace_back(parse_rec_decl());   break;
             case Tag::K_con:
             case Tag::K_fun:
             case Tag::K_lam:       decls.emplace_back(parse_lam_decl());   break;
@@ -612,28 +559,60 @@ Ptr<ValDecl> Parser::parse_let_decl() {
     return ptr<LetDecl>(track, std::move(ptrn), std::move(value));
 }
 
-Ptr<PiDecl> Parser::parse_pi_decl() {
+Ptr<RecDecl> Parser::parse_rec_decl() {
     auto track = tracker();
-    eat(Tag::K_Pi);
-    auto dbg  = parse_name("pi declaration");
-    auto type = accept(Tag::T_colon) ? parse_expr("type of a pi declaration") : Ptr<Expr>();
-    auto body = accept(Tag::T_assign) ? parse_expr("body of a pi declaration") : Ptr<Expr>();
-    expect(Tag::T_semicolon, "end of a pi declaration");
-
-    return ptr<PiDecl>(track, dbg, std::move(type), std::move(body));
+    eat(Tag::K_rec);
+    auto dbg  = parse_name("recursive declaration");
+    auto type = accept(Tag::T_colon) ? parse_expr("type of a recursive declaration") : ptr<InferExpr>(prev_);
+    expect(Tag::T_assign, "recursive declaration");
+    auto body = parse_expr("body of a recursive declaration");
+    expect(Tag::T_semicolon, "end of a recursive declaration");
+    return ptr<RecDecl>(track, dbg, std::move(type), std::move(body));
 }
 
-Ptr<LamDecl> Parser::parse_lam_decl() { return ptr<LamDecl>(parse_lam_expr()); }
+Ptr<LamDecl> Parser::parse_lam_decl() {
+    auto track    = tracker();
+    auto tag      = lex().tag();
+    auto prec     = tag == Tag::K_cn || tag == Tag::K_con ? Tok::Prec::Bot : Tok::Prec::Pi;
+    bool external = (bool)accept(Tag::K_extern);
 
-Ptr<SigmaDecl> Parser::parse_sigma_decl() {
-    auto track = tracker();
-    eat(Tag::K_Sigma);
-    auto dbg  = parse_name("sigma declaration");
-    auto type = accept(Tag::T_colon) ? parse_expr("type of a sigma declaration") : Ptr<Expr>();
-    auto body = accept(Tag::T_assign) ? parse_expr("body of a sigma declaration") : Ptr<Expr>();
-    expect(Tag::T_semicolon, "end of a sigma declaration");
+    bool decl;
+    std::string entity;
+    // clang-format off
+    switch (tag) {
+        case Tag::T_lm:  decl = false; entity = "function expression";                break;
+        case Tag::K_cn:  decl = false; entity = "continuation expression";            break;
+        case Tag::K_fn:  decl = false; entity = "returning continuation expression";  break;
+        case Tag::K_lam: decl = true ; entity = "function declaration";               break;
+        case Tag::K_con: decl = true ; entity = "continuation declaration";           break;
+        case Tag::K_fun: decl = true ; entity = "returning continuation declaration"; break;
+        default: fe::unreachable();
+    }
+    // clang-format on
 
-    return ptr<SigmaDecl>(track, dbg, std::move(type), std::move(body));
+    auto dbg = decl ? parse_name(entity) : Dbg();
+    Ptrs<LamDecl::Dom> doms;
+    do {
+        auto track    = tracker();
+        bool bang     = (bool)accept(Tag::T_bang);
+        bool implicit = (bool)accept(Tag::T_dot);
+        auto ptrn     = parse_ptrn(Tag::D_paren_l, "domain pattern of a "s + entity, prec);
+
+        Ptr<Expr> filter;
+        if (auto tok = accept(Tag::T_at)) {
+            expect(Tag::D_paren_l, "opening parenthesis of a filter");
+            filter = parse_expr("filter");
+            expect(Tag::D_paren_r, "closing parenthesis of a filter");
+        }
+
+        doms.emplace_back(ptr<LamDecl::Dom>(track, bang, implicit, std::move(ptrn), std::move(filter)));
+    } while (!ahead().isa(Tag::T_colon) && !ahead().isa(Tag::T_assign) && !ahead().isa(Tag::T_semicolon));
+
+    auto codom
+        = accept(Tag::T_colon) ? parse_expr("codomain of a "s + entity, Tok::Prec::Arrow) : ptr<InferExpr>(prev_);
+    auto body = accept(Tag::T_assign) ? parse_block_expr("body of a "s + entity) : Ptr<Expr>();
+
+    return ptr<LamDecl>(track, tag, external, dbg, std::move(doms), std::move(codom), std::move(body));
 }
 
 } // namespace thorin::ast

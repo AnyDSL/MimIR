@@ -1,7 +1,6 @@
 #pragma once
 
 #include <optional>
-#include <vector>
 
 #include <fe/assert.h>
 #include <fe/cast.h>

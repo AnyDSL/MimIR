@@ -1,9 +1,6 @@
 #pragma once
 
-#include <fe/assert.h>
-
 #include "thorin/util/dbg.h"
-#include "thorin/util/types.h"
 
 namespace thorin {
 
@@ -20,16 +17,15 @@ namespace ast {
     m(K_ax,     ".ax"    )             \
     m(K_def,    ".def"   )             \
     m(K_let,    ".let"   )             \
+    m(K_rec,    ".rec"   )             \
     m(K_ret,    ".ret"   )             \
     m(K_Nat,    ".Nat"   )             \
     m(K_Idx,    ".Idx"   )             \
     m(K_extern, ".extern")             \
-    m(K_Sigma,  ".Sigma" )             \
     m(K_Type,   ".Type"  )             \
     m(K_Univ,   ".Univ"  )             \
     m(K_Cn,     ".Cn"    )             \
     m(K_Fn,     ".Fn"    )             \
-    m(K_Pi,     ".Pi"    )             \
     m(K_con,    ".con"   )             \
     m(K_fun,    ".fun"   )             \
     m(K_lam,    ".lam"   )             \

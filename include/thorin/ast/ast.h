@@ -14,6 +14,7 @@
 
 namespace thorin::ast {
 
+class LamDecl;
 class Module;
 class Scopes;
 class Emitter;
@@ -72,8 +73,6 @@ private:
     Sym sym_return_;
 };
 
-class Scopes;
-
 class Node : public fe::RuntimeCast<Node> {
 protected:
     Node(Loc loc)
@@ -120,16 +119,6 @@ protected:
 public:
     virtual void bind(Scopes&) const  = 0;
     virtual void emit(Emitter&) const = 0;
-};
-
-class RecDecl : public ValDecl {
-protected:
-    RecDecl(Loc loc)
-        : ValDecl(loc) {}
-
-public:
-    virtual void bind_rec(Scopes&) const  = 0;
-    virtual void emit_rec(Emitter&) const = 0;
 };
 
 class DeclsBlock {
@@ -464,66 +453,19 @@ private:
     Ptr<Expr> codom_;
 };
 
-/// One of:
-/// * `λ   dom_0 ... dom_n-1 -> codom`
-/// * `.cn dom_0 ... dom_n-1`
-/// * `.fn dom_0 ... dom_n-1 -> codom`
-/// * `.lam dbg dom_0 ... dom_n-1 -> codom`
-/// * `.con dbg dom_0 ... dom_n-1`
-/// * `.fun dbg dom_0 ... dom_n-1 -> codom`
+/// Wraps a LamDecl as Expr.
 class LamExpr : public Expr {
 public:
-    class Dom : public PiExpr::Dom {
-    public:
-        Dom(Loc loc, bool has_bang, bool is_implicit, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& filter)
-            : PiExpr::Dom(loc, is_implicit, std::move(ptrn))
-            , has_bang_(has_bang)
-            , filter_(std::move(filter)) {}
+    LamExpr(Ptr<LamDecl>&& lam);
 
-        bool has_bang() const { return has_bang_; }
-        const Expr* filter() const { return filter_.get(); }
-
-        void bind(Scopes&, bool quiet = false) const;
-        Ref emit(Emitter&) const;
-        std::ostream& stream(Tab&, std::ostream&) const override;
-
-    private:
-        bool has_bang_;
-        Ptr<Expr> filter_;
-    };
-
-    LamExpr(Loc loc, Tok::Tag tag, bool is_external, Dbg dbg, Ptrs<Dom>&& doms, Ptr<Expr>&& codom, Ptr<Expr>&& body)
-        : Expr(loc)
-        , tag_(tag)
-        , is_external_(is_external)
-        , dbg_(dbg)
-        , doms_(std::move(doms))
-        , codom_(std::move(codom))
-        , body_(std::move(body)) {}
-
-    Tok::Tag tag() const { return tag_; }
-    bool is_external() const { return is_external_; }
-    Dbg dbg() const { return dbg_; }
-    const auto& doms() const { return doms_; }
-    const Dom* dom(size_t i) const { return doms_[i].get(); }
-    size_t num_doms() const { return doms_.size(); }
-    const Expr* codom() const { return codom_.get(); }
-    const ReturnPtrn* ret() const { return ret_.get(); }
-    const Expr* body() const { return body_.get(); }
+    const LamDecl* lam() const { return lam_.get(); }
 
     void bind(Scopes&) const override;
     Ref emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Tok::Tag tag_;
-    bool is_external_;
-    Dbg dbg_;
-    Ptrs<Dom> doms_;
-    Ptr<Expr> codom_;
-    Ptr<Expr> body_;
-    mutable Ptr<ReturnPtrn> ret_;
-    friend class LamDecl;
+    Ptr<LamDecl> lam_;
 };
 
 /// `callee arg`
@@ -764,11 +706,11 @@ private:
     Dbg curry_, trip_;
 };
 
-/// `.Pi dbg: type = body´
-class PiDecl : public RecDecl {
+/// `.rec dbg: type = body`
+class RecDecl : public ValDecl {
 public:
-    PiDecl(Loc loc, Dbg dbg, Ptr<Expr>&& type, Ptr<Expr>&& body)
-        : RecDecl(loc)
+    RecDecl(Loc loc, Dbg dbg, Ptr<Expr>&& type, Ptr<Expr>&& body)
+        : ValDecl(loc)
         , dbg_(dbg)
         , type_(std::move(type))
         , body_(std::move(body)) {}
@@ -778,9 +720,9 @@ public:
     const Expr* body() const { return body_.get(); }
 
     void bind(Scopes&) const override;
-    void bind_rec(Scopes&) const override;
     void emit(Emitter&) const override;
-    void emit_rec(Emitter&) const override;
+    virtual void bind_rec(Scopes&) const;
+    virtual void emit_rec(Emitter&) const;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -789,15 +731,48 @@ private:
     Ptr<Expr> body_;
 };
 
-/// Just wraps a LamDecl as Expr.
+/// One of:
+/// * `λ   dom_0 ... dom_n-1 -> codom`
+/// * `.cn dom_0 ... dom_n-1`
+/// * `.fn dom_0 ... dom_n-1 -> codom`
+/// * `.lam dbg dom_0 ... dom_n-1 -> codom`
+/// * `.con dbg dom_0 ... dom_n-1`
+/// * `.fun dbg dom_0 ... dom_n-1 -> codom`
 class LamDecl : public RecDecl {
 public:
-    LamDecl(Ptr<LamExpr>&& lam)
-        : RecDecl(lam->loc())
-        , lam_(std::move(lam)) {}
+    class Dom : public PiExpr::Dom {
+    public:
+        Dom(Loc loc, bool has_bang, bool is_implicit, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& filter)
+            : PiExpr::Dom(loc, is_implicit, std::move(ptrn))
+            , has_bang_(has_bang)
+            , filter_(std::move(filter)) {}
 
-    const LamExpr* lam() const { return lam_.get(); }
-    const Expr* body() const { return lam()->body(); }
+        bool has_bang() const { return has_bang_; }
+        const Expr* filter() const { return filter_.get(); }
+
+        void bind(Scopes&, bool quiet = false) const;
+        Ref emit(Emitter&) const;
+        std::ostream& stream(Tab&, std::ostream&) const override;
+
+    private:
+        bool has_bang_;
+        Ptr<Expr> filter_;
+    };
+
+    LamDecl(Loc loc, Tok::Tag tag, bool is_external, Dbg dbg, Ptrs<Dom>&& doms, Ptr<Expr>&& codom, Ptr<Expr>&& body)
+        : RecDecl(loc, dbg, nullptr, std::move(body))
+        , tag_(tag)
+        , is_external_(is_external)
+        , doms_(std::move(doms))
+        , codom_(std::move(codom)) {}
+
+    Tok::Tag tag() const { return tag_; }
+    bool is_external() const { return is_external_; }
+    const auto& doms() const { return doms_; }
+    const Dom* dom(size_t i) const { return doms_[i].get(); }
+    size_t num_doms() const { return doms_.size(); }
+    const Expr* codom() const { return codom_.get(); }
+    const ReturnPtrn* ret() const { return ret_.get(); }
 
     void bind(Scopes&) const override;
     void bind_rec(Scopes&) const override;
@@ -806,32 +781,11 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ptr<LamExpr> lam_;
-};
-
-/// `.Sigma dbg: type = body`
-class SigmaDecl : public RecDecl {
-public:
-    SigmaDecl(Loc loc, Dbg dbg, Ptr<Expr>&& type, Ptr<Expr>&& body)
-        : RecDecl(loc)
-        , dbg_(dbg)
-        , type_(std::move(type))
-        , body_(std::move(body)) {}
-
-    Dbg dbg() const { return dbg_; }
-    const Expr* type() const { return type_.get(); }
-    const Expr* body() const { return body_.get(); }
-
-    void bind(Scopes&) const override;
-    void bind_rec(Scopes&) const override;
-    void emit(Emitter&) const override;
-    void emit_rec(Emitter&) const override;
-    std::ostream& stream(Tab&, std::ostream&) const override;
-
-private:
-    Dbg dbg_;
-    Ptr<Expr> type_;
-    Ptr<Expr> body_;
+    Tok::Tag tag_;
+    bool is_external_;
+    Ptrs<Dom> doms_;
+    Ptr<Expr> codom_;
+    mutable Ptr<ReturnPtrn> ret_;
 };
 
 /*
