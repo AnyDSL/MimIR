@@ -5,10 +5,6 @@
 #include "thorin/rewrite.h"
 #include "thorin/world.h"
 
-#include "thorin/analyses/scope.h"
-
-#include "fe/assert.h"
-
 using namespace std::literals;
 
 namespace thorin {
@@ -40,6 +36,7 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
     } else {
         vars_.local = Vars();
         muts_.local = Muts();
+
         for (auto op : extended_ops()) {
             vars_.local = world().merge(vars_.local, op->local_vars());
             muts_.local = world().merge(muts_.local, op->local_muts());

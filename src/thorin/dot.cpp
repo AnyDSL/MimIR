@@ -5,7 +5,6 @@
 #include "thorin/def.h"
 #include "thorin/world.h"
 
-#include "thorin/analyses/scope.h"
 #include "thorin/util/print.h"
 
 namespace thorin {

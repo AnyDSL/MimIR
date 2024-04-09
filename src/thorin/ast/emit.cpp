@@ -1,13 +1,6 @@
-#include <string>
-#include <string_view>
-
 #include "thorin/rewrite.h"
 
 #include "thorin/ast/ast.h"
-
-#include "fe/assert.h"
-
-using namespace std::string_literals;
 
 namespace thorin::ast {
 
@@ -154,14 +147,13 @@ Ref ReturnPtrn::emit_value(Emitter& e, Ref def) const {
  * Ptrn::emit_Type
  */
 
-Ref IdPtrn::emit_type_(Emitter& e) const {
-    if (type()) return type()->emit(e);
-    return e.world().mut_infer_type()->set(loc());
+Ref IdPtrn::emit_type(Emitter& e) const {
+    return thorin_type_ = type() ? type()->emit(e) : e.world().mut_infer_type()->set(loc());
 }
 
-Ref GroupPtrn::emit_type_(Emitter& e) const { return id()->emit_type(e); }
+Ref GroupPtrn::emit_type(Emitter& e) const { return id()->emit_type(e); }
 
-Ref TuplePtrn::emit_type_(Emitter& e) const {
+Ref TuplePtrn::emit_type(Emitter& e) const {
     auto n   = num_ptrns();
     auto ops = DefVec(n, [&](size_t i) { return ptrn(i)->emit_type(e); });
 
@@ -185,10 +177,10 @@ Ref TuplePtrn::emit_type_(Emitter& e) const {
     for (size_t i = 1; i != n; ++i) sigma->reset(i, rw.rewrite(ops[i]));
 
     if (auto imm = sigma->immutabilize()) return imm;
-    return sigma;
+    return thorin_type_ = sigma;
 }
 
-Ref ReturnPtrn::emit_type_(Emitter&) const { fe::unreachable(); }
+Ref ReturnPtrn::emit_type(Emitter&) const { fe::unreachable(); }
 
 /*
  * Expr
@@ -305,6 +297,7 @@ void AxiomDecl::emit(Emitter& e) const {
     } else {
         for (const auto& aliases : subs()) {
             for (const auto& alias : aliases) {
+                outln("{}", alias);
                 // auto sym = s.ast().sym(dbg().sym.str() + "."s + alias.sym.str());
             }
         }
@@ -317,18 +310,22 @@ void RecDecl::emit(Emitter& e) const {
 
 void RecDecl::emit_rec(Emitter& e) const { body()->emit(e); }
 
-Ref LamDecl::Dom::emit(Emitter&) const {
-    // ptrn()->emit(e);
-    return {};
+void LamDecl::Dom::emit(Emitter& e) const {
+    auto dom_t     = ptrn()->emit_type(e);
+    auto pi        = e.world().mut_pi(e.world().type_infer_univ(), is_implicit())->set_dom(dom_t);
+    thorin_.filter = has_bang() ? e.world().lit_tt() : filter()->emit(e);
+    thorin_.lam    = e.world().mut_lam(pi);
 }
 
 void LamDecl::emit(Emitter& e) const {
     for (const auto& dom : doms()) dom->emit(e);
     codom()->emit(e);
+
+    if (is_external()) doms().front()->thorin().lam->make_external();
 }
 
 void LamDecl::emit_rec(Emitter& e) const {
-    for (const auto& dom : doms()) dom->emit(e);
+    for (const auto& dom : doms()) dom->ptrn()->emit_value(e, dom->thorin().lam->var());
     // if (auto ret = lam()->ret()) ret->emit(e);
     body()->emit(e);
 }

@@ -152,20 +152,21 @@ public:
     bool rebind() const { return rebind_; }
     Dbg dbg() const { return dbg_; }
     bool is_anon() const { return !dbg().sym || dbg().sym == '_'; }
+    Ref thorin_type() const { return thorin_type_; }
 
     virtual void bind(Scopes&, bool quiet = false) const = 0;
     virtual Ref emit_value(Emitter&, Ref) const          = 0;
-    Ref emit_type(Emitter& e) const { return thorin_type_ ? thorin_type_ : thorin_type_ = emit_type_(e); }
+    virtual Ref emit_type(Emitter&) const                = 0;
 
     [[nodiscard]] static Ptr<Expr> to_expr(AST&, Ptr<Ptrn>&&);
     [[nodiscard]] static Ptr<Ptrn> to_ptrn(Ptr<Expr>&&);
 
-private:
-    virtual Ref emit_type_(Emitter&) const = 0;
+protected:
+    mutable Ref thorin_type_ = nullptr;
 
+private:
     Dbg dbg_;
     bool rebind_;
-    mutable Ref thorin_type_ = nullptr;
 };
 
 /// `dbg: type`
@@ -184,11 +185,10 @@ public:
 
     void bind(Scopes&, bool quiet = false) const override;
     Ref emit_value(Emitter&, Ref) const override;
+    Ref emit_type(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ref emit_type_(Emitter&) const override;
-
     bool rebind_;
     Ptr<Expr> type_;
 };
@@ -204,11 +204,10 @@ public:
 
     void bind(Scopes&, bool quiet = false) const override;
     Ref emit_value(Emitter&, Ref) const override;
+    Ref emit_type(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ref emit_type_(Emitter&) const override;
-
     const IdPtrn* id_;
 };
 
@@ -231,11 +230,10 @@ public:
 
     void bind(Scopes&, bool quiet = false) const override;
     Ref emit_value(Emitter&, Ref) const override;
+    Ref emit_type(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ref emit_type_(Emitter&) const override;
-
     Tok::Tag delim_l_;
     Ptrs<Ptrn> ptrns_;
 };
@@ -252,11 +250,10 @@ public:
 
     void bind(Scopes&, bool quiet = false) const override;
     Ref emit_value(Emitter&, Ref) const override;
+    Ref emit_type(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Ref emit_type_(Emitter&) const override;
-
     const Expr* type_;
 };
 
@@ -413,32 +410,42 @@ class PiExpr : public Expr {
 public:
     class Dom : public Node {
     public:
-        Dom(Loc loc, bool is_implicit, Ptr<Ptrn>&& ptrn)
+        Dom(Loc loc, bool is_implicit, Ptr<Ptrn>&& ptrn, size_t index)
             : Node(loc)
             , is_implicit_(is_implicit)
-            , ptrn_(std::move(ptrn)) {}
+            , ptrn_(std::move(ptrn))
+            , index_(index) {}
 
         bool is_implicit() const { return is_implicit_; }
         const Ptrn* ptrn() const { return ptrn_.get(); }
+        const PiExpr* pi() const { return pi_; }
+        size_t index() const { return index_; }
+        bool is_first() const { return index_ == 0; }
+        bool is_last() const { return pi()->doms().size() == index() + 1; }
+        void link(const PiExpr* pi) const { pi_ = pi; }
 
-        void bind(Scopes&) const;
-        Ref emit(Emitter&) const;
+        virtual void bind(Scopes& scopes, bool quiet = false) const;
+        virtual Ref emit(Emitter&) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     private:
         bool is_implicit_;
         Ptr<Ptrn> ptrn_;
+        size_t index_;
+        mutable const PiExpr* pi_ = nullptr;
     };
 
     PiExpr(Loc loc, Tok::Tag tag, Ptrs<Dom>&& doms, Ptr<Expr>&& codom)
         : Expr(loc)
         , tag_(tag)
         , doms_(std::move(doms))
-        , codom_(std::move(codom)) {}
+        , codom_(std::move(codom)) {
+        for (const auto& dom : this->doms()) dom->link(this);
+    }
 
 private:
     Tok::Tag tag() const { return tag_; }
-    const auto& doms() const { return doms_; }
+    const Ptrs<Dom>& doms() const { return doms_; }
     const Dom* dom(size_t i) const { return doms_[i].get(); }
     size_t num_doms() const { return doms_.size(); }
     const Expr* codom() const { return codom_.get(); }
@@ -740,23 +747,45 @@ private:
 /// * `.fun dbg dom_0 ... dom_n-1 -> codom`
 class LamDecl : public RecDecl {
 public:
-    class Dom : public PiExpr::Dom {
+    class Dom : public Node {
     public:
-        Dom(Loc loc, bool has_bang, bool is_implicit, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& filter)
-            : PiExpr::Dom(loc, is_implicit, std::move(ptrn))
-            , has_bang_(has_bang)
-            , filter_(std::move(filter)) {}
+        struct Thorin {
+            Lam* lam;
+            Ref filter;
+        };
 
-        bool has_bang() const { return has_bang_; }
+        Dom(Loc loc, Tok bang, bool is_implicit, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& filter, size_t index)
+            : Node(loc)
+            , bang_(bang)
+            , is_implicit_(is_implicit)
+            , ptrn_(std::move(ptrn))
+            , filter_(std::move(filter))
+            , index_(index) {}
+
+        bool is_implicit() const { return is_implicit_; }
+        Tok bang() const { return bang_; }
+        bool has_bang() const { return (bool)bang(); }
+        const Ptrn* ptrn() const { return ptrn_.get(); }
         const Expr* filter() const { return filter_.get(); }
+        const LamDecl* lam() const { return lam_; }
+        size_t index() const { return index_; }
+        bool is_first() const { return index_ == 0; }
+        bool is_last() const { return lam()->doms().size() == index() + 1; }
+        void link(const LamDecl* lam) const { lam_ = lam; }
+        const Thorin& thorin() const { return thorin_; }
 
-        void bind(Scopes&, bool quiet = false) const;
-        Ref emit(Emitter&) const;
+        void bind(Scopes& scopes, bool quiet = false) const;
+        void emit(Emitter&) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     private:
-        bool has_bang_;
+        Tok bang_;
+        bool is_implicit_;
+        Ptr<Ptrn> ptrn_;
         Ptr<Expr> filter_;
+        size_t index_;
+        mutable const LamDecl* lam_;
+        mutable Thorin thorin_;
     };
 
     LamDecl(Loc loc, Tok::Tag tag, bool is_external, Dbg dbg, Ptrs<Dom>&& doms, Ptr<Expr>&& codom, Ptr<Expr>&& body)
@@ -764,11 +793,13 @@ public:
         , tag_(tag)
         , is_external_(is_external)
         , doms_(std::move(doms))
-        , codom_(std::move(codom)) {}
+        , codom_(std::move(codom)) {
+        for (const auto& dom : this->doms()) dom->link(this);
+    }
 
     Tok::Tag tag() const { return tag_; }
     bool is_external() const { return is_external_; }
-    const auto& doms() const { return doms_; }
+    const Ptrs<Dom>& doms() const { return doms_; }
     const Dom* dom(size_t i) const { return doms_[i].get(); }
     size_t num_doms() const { return doms_.size(); }
     const Expr* codom() const { return codom_.get(); }

@@ -132,7 +132,7 @@ void ArrowExpr::bind(Scopes& s) const {
     codom()->bind(s);
 }
 
-void PiExpr::Dom::bind(Scopes& s) const { ptrn()->bind(s); }
+void PiExpr::Dom::bind(Scopes& s, bool quiet) const { ptrn()->bind(s, quiet); }
 
 void PiExpr::bind(Scopes& s) const {
     s.push();
@@ -234,11 +234,45 @@ void RecDecl::bind(Scopes& s) const {
 
 void RecDecl::bind_rec(Scopes& s) const { body()->bind(s); }
 
-void LamDecl::Dom::bind(Scopes& s, bool quiet) const { ptrn()->bind(s, quiet); }
+void LamDecl::Dom::bind(Scopes& s, bool quiet) const {
+    if (!quiet && has_bang() && filter()) {
+        s.ast().error(filter()->loc(), "explicit filter specified on top of '!' annotation");
+        s.ast().note(bang().loc(), "'!' here");
+    }
+
+    ptrn()->bind(s, quiet);
+}
 
 void LamDecl::bind(Scopes& s) const {
     s.push();
     for (const auto& dom : doms()) dom->bind(s);
+
+    if (num_doms() != 0) {
+        if (auto bang = doms().back()->bang()) {
+            if (tag() == Tag::K_lam || tag() == Tag::T_lm)
+                s.ast().warn(
+                    bang.loc(),
+                    "'!' superfluous as the last curried function group of a '{}' receives a '.tt'-filter by default",
+                    tag());
+            if (auto filter = doms().back()->filter()) {
+                if (auto pe = filter->isa<PrimaryExpr>()) {
+                    if (pe->tag() == Tag::K_tt && (tag() == Tag::K_lam || tag() == Tag::T_lm))
+                        s.ast().warn(filter->loc(),
+                                     "'.tt'-filter superfluous as the last curried function group of a '{}' receives a "
+                                     "'.tt' filter by default",
+                                     tag());
+                    if (pe->tag() == Tag::K_ff && (tag() != Tag::K_lam && tag() != Tag::T_lm))
+                        s.ast().warn(filter->loc(),
+                                     "'.ff'-filter superfluous as the last curried function group of a '{}' receives a "
+                                     "'.ff' filter by default",
+                                     tag());
+                }
+            }
+        }
+    }
+
+    if (!codom()->isa<InferExpr>() && (tag() == Tag::K_con || tag() == Tag::K_cn))
+        s.ast().error(codom()->loc(), "a continuation shall not have a codomain");
     codom()->bind(s);
     if (tag() == Tok::Tag::K_fun) {
         ret_ = s.ast().ptr<ReturnPtrn>(s.ast(), codom());

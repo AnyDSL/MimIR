@@ -1,6 +1,5 @@
 #pragma once
 
-#include <sstream>
 #include <string>
 #include <string_view>
 #include <type_traits>
@@ -17,7 +16,6 @@
 #include "thorin/tuple.h"
 
 #include "thorin/util/dbg.h"
-#include "thorin/util/hash.h"
 #include "thorin/util/log.h"
 
 namespace thorin {

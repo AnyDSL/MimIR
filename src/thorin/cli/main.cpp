@@ -12,8 +12,6 @@
 #include "thorin/ast/parser.h"
 #include "thorin/be/h/bootstrap.h"
 #include "thorin/pass/optimize.h"
-#include "thorin/pass/pass.h"
-#include "thorin/pass/pipelinebuilder.h"
 #include "thorin/phase/phase.h"
 #include "thorin/util/sys.h"
 

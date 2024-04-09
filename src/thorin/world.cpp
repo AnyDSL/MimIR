@@ -6,7 +6,6 @@
 #include "thorin/rewrite.h"
 #include "thorin/tuple.h"
 
-#include "thorin/analyses/scope.h"
 #include "thorin/util/util.h"
 
 namespace thorin {
