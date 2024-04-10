@@ -172,18 +172,19 @@ int main(int argc, char** argv) {
             }
 #endif
 
-            if (os[AST]) {
-                auto mod = parser.import(driver.sym(input), os[Md]);
-                mod->compile(ast, world);
+            auto mod = parser.import(driver.sym(input), os[Md]);
+            if (auto s = os[AST]) {
                 Tab tab;
-                mod->stream(tab, *os[AST]);
+                mod->stream(tab, *s);
             }
-            if (os[Thorin]) world.dump(*os[Thorin]);
-            if (os[Dot]) world.dot(*os[Dot], dot_all_annexes, dot_follow_types);
+            mod->compile(ast, world);
 
-            if (os[LL]) {
+            if (auto s = os[Thorin]) world.dump(*s);
+            if (auto s = os[Dot]) world.dot(*s, dot_all_annexes, dot_follow_types);
+
+            if (auto s = os[LL]) {
                 if (auto backend = driver.backend("ll"))
-                    backend(world, *os[LL]);
+                    backend(world, *s);
                 else
                     error("'ll' emitter not loaded; try loading 'mem' plugin");
             }

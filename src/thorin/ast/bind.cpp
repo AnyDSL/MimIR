@@ -105,8 +105,8 @@ void IdPtrn::bind(Scopes& s, bool quiet) const {
 }
 
 void TuplePtrn::bind(Scopes& s, bool quiet) const {
-    s.bind(dbg(), this, rebind(), quiet);
     for (const auto& ptrn : ptrns()) ptrn->bind(s, quiet);
+    s.bind(dbg(), this, rebind(), quiet);
 }
 
 void GroupPtrn::bind(Scopes& s, bool quiet) const { s.bind(dbg(), this, rebind(), quiet); }
@@ -136,7 +136,12 @@ void PiExpr::Dom::bind(Scopes& s, bool quiet) const { ptrn()->bind(s, quiet); }
 
 void PiExpr::bind(Scopes& s) const {
     s.push();
+
     for (const auto& dom : doms()) dom->bind(s);
+
+    if (!codom()->isa<InferExpr>() && tag() == Tag::K_Cn)
+        s.ast().error(codom()->loc(), "a continuation shall not have a codomain");
+
     codom()->bind(s);
     s.pop();
 }
@@ -247,37 +252,37 @@ void LamDecl::bind(Scopes& s) const {
     s.push();
     for (const auto& dom : doms()) dom->bind(s);
 
-    if (num_doms() != 0) {
-        if (auto bang = doms().back()->bang()) {
-            if (tag() == Tag::K_lam || tag() == Tag::T_lm)
-                s.ast().warn(
-                    bang.loc(),
-                    "'!' superfluous as the last curried function group of a '{}' receives a '.tt'-filter by default",
-                    tag());
-            if (auto filter = doms().back()->filter()) {
-                if (auto pe = filter->isa<PrimaryExpr>()) {
-                    if (pe->tag() == Tag::K_tt && (tag() == Tag::K_lam || tag() == Tag::T_lm))
-                        s.ast().warn(filter->loc(),
-                                     "'.tt'-filter superfluous as the last curried function group of a '{}' receives a "
-                                     "'.tt' filter by default",
-                                     tag());
-                    if (pe->tag() == Tag::K_ff && (tag() != Tag::K_lam && tag() != Tag::T_lm))
-                        s.ast().warn(filter->loc(),
-                                     "'.ff'-filter superfluous as the last curried function group of a '{}' receives a "
-                                     "'.ff' filter by default",
-                                     tag());
-                }
-            }
+    if (auto bang = doms().back()->bang()) {
+        if (tag() == Tag::K_lam || tag() == Tag::T_lm)
+            s.ast().warn(
+                bang.loc(),
+                "'!' superfluous as the last curried function group of a '{}' receives a '.tt'-filter by default",
+                tag());
+    }
+    if (auto filter = doms().back()->filter()) {
+        if (auto pe = filter->isa<PrimaryExpr>()) {
+            if (pe->tag() == Tag::K_tt && (tag() == Tag::K_lam || tag() == Tag::T_lm))
+                s.ast().warn(filter->loc(),
+                             "'.tt'-filter superfluous as the last curried function group of a '{}' receives a "
+                             "'.tt' filter by default",
+                             tag());
+            if (pe->tag() == Tag::K_ff && (tag() != Tag::K_lam && tag() != Tag::T_lm))
+                s.ast().warn(filter->loc(),
+                             "'.ff'-filter superfluous as the last curried function group of a '{}' receives a "
+                             "'.ff' filter by default",
+                             tag());
         }
     }
 
     if (!codom()->isa<InferExpr>() && (tag() == Tag::K_con || tag() == Tag::K_cn))
         s.ast().error(codom()->loc(), "a continuation shall not have a codomain");
     codom()->bind(s);
+
     if (tag() == Tok::Tag::K_fun) {
         ret_ = s.ast().ptr<ReturnPtrn>(s.ast(), codom());
         ret_->bind(s);
     }
+
     s.pop();
     s.bind(dbg(), this);
 }

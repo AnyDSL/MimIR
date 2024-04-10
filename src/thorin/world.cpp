@@ -42,7 +42,7 @@ World::World(Driver* driver, const State& state)
     data_.lit_univ_1  = lit_univ(1);
     data_.type_0      = type(lit_univ_0());
     data_.type_1      = type(lit_univ_1());
-    data_.Bot         = insert<thorin::Bot>(0, type());
+    data_.type_bot    = insert<Bot>(0, type());
     data_.sigma       = insert<Sigma>(0, type(), Defs{})->as<Sigma>();
     data_.tuple       = insert<Tuple>(0, sigma(), Defs{})->as<Tuple>();
     data_.type_nat    = insert<thorin::Nat>(0, *this);
@@ -55,7 +55,7 @@ World::World(Driver* driver, const State& state)
     data_.lit_bool[0] = lit_idx(2, 0_u64);
     data_.lit_bool[1] = lit_idx(2, 1_u64);
     data_.lit_nat_max = lit_nat(nat_t(-1));
-    data_.exit        = mut_lam(cn(Bot()))->set(sym("exit"));
+    data_.exit        = mut_lam(cn(type_bot()))->set(sym("exit"));
 }
 
 World::World(Driver* driver)
@@ -458,7 +458,7 @@ template<bool Up> Ref World::bound(Defs ops) {
     auto kind = umax<Sort::Type>(ops);
 
     // has ext<Up> value?
-    if (std::ranges::any_of(ops, [&](Ref op) { return Up ? bool(op->isa<Top>()) : bool(op->isa<thorin::Bot>()); }))
+    if (std::ranges::any_of(ops, [&](Ref op) { return Up ? bool(op->isa<Top>()) : bool(op->isa<Bot>()); }))
         return ext<Up>(kind);
 
     // ignore: ext<!Up>

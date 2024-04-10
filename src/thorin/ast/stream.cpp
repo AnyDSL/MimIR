@@ -105,7 +105,9 @@ std::ostream& PiExpr::Dom::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& PiExpr::stream(Tab& tab, std::ostream& os) const {
-    return print(os, "{}{} -> {}", tag(), R(tab, doms()), S(tab, codom()));
+    print(os, "{} {}", tag(), R(tab, doms()));
+    if (!codom()->isa<InferExpr>()) print(os, " -> {}", S(tab, codom()));
+    return os;
 }
 
 std::ostream& LamExpr::stream(Tab& tab, std::ostream& os) const { return print(os, "{};", S(tab, lam())); }

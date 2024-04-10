@@ -152,7 +152,6 @@ public:
     bool rebind() const { return rebind_; }
     Dbg dbg() const { return dbg_; }
     bool is_anon() const { return !dbg().sym || dbg().sym == '_'; }
-    Ref thorin_type() const { return thorin_type_; }
 
     virtual void bind(Scopes&, bool quiet = false) const = 0;
     virtual Ref emit_value(Emitter&, Ref) const          = 0;
@@ -160,9 +159,6 @@ public:
 
     [[nodiscard]] static Ptr<Expr> to_expr(AST&, Ptr<Ptrn>&&);
     [[nodiscard]] static Ptr<Ptrn> to_ptrn(Ptr<Expr>&&);
-
-protected:
-    mutable Ref thorin_type_ = nullptr;
 
 private:
     Dbg dbg_;
@@ -249,8 +245,8 @@ public:
     const Expr* type() const { return type_; }
 
     void bind(Scopes&, bool quiet = false) const override;
-    Ref emit_value(Emitter&, Ref) const override;
-    Ref emit_type(Emitter&) const override;
+    Ref emit_value(Emitter&, Ref) const override { fe::unreachable(); }
+    Ref emit_type(Emitter&) const override { fe::unreachable(); }
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -418,30 +414,25 @@ public:
 
         bool is_implicit() const { return is_implicit_; }
         const Ptrn* ptrn() const { return ptrn_.get(); }
-        const PiExpr* pi() const { return pi_; }
-        size_t index() const { return index_; }
-        bool is_first() const { return index_ == 0; }
-        bool is_last() const { return pi()->doms().size() == index() + 1; }
-        void link(const PiExpr* pi) const { pi_ = pi; }
 
         virtual void bind(Scopes& scopes, bool quiet = false) const;
-        virtual Ref emit(Emitter&) const;
+        virtual void emit(Emitter&) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     private:
         bool is_implicit_;
         Ptr<Ptrn> ptrn_;
         size_t index_;
-        mutable const PiExpr* pi_ = nullptr;
+        mutable Pi* pi_ = nullptr;
+
+        friend class PiExpr;
     };
 
     PiExpr(Loc loc, Tok::Tag tag, Ptrs<Dom>&& doms, Ptr<Expr>&& codom)
         : Expr(loc)
         , tag_(tag)
         , doms_(std::move(doms))
-        , codom_(std::move(codom)) {
-        for (const auto& dom : this->doms()) dom->link(this);
-    }
+        , codom_(std::move(codom)) {}
 
 private:
     Tok::Tag tag() const { return tag_; }
@@ -456,7 +447,7 @@ private:
 
 private:
     Tok::Tag tag_;
-    Ptrs<Dom> doms_;
+    mutable Ptrs<Dom> doms_;
     Ptr<Expr> codom_;
 };
 
@@ -750,6 +741,7 @@ public:
     class Dom : public Node {
     public:
         struct Thorin {
+            const Pi* pi;
             Lam* lam;
             Ref filter;
         };
@@ -767,15 +759,11 @@ public:
         bool has_bang() const { return (bool)bang(); }
         const Ptrn* ptrn() const { return ptrn_.get(); }
         const Expr* filter() const { return filter_.get(); }
-        const LamDecl* lam() const { return lam_; }
-        size_t index() const { return index_; }
-        bool is_first() const { return index_ == 0; }
-        bool is_last() const { return lam()->doms().size() == index() + 1; }
-        void link(const LamDecl* lam) const { lam_ = lam; }
         const Thorin& thorin() const { return thorin_; }
 
         void bind(Scopes& scopes, bool quiet = false) const;
-        void emit(Emitter&) const;
+        void emit_type(Emitter&) const;
+        void emit_value(Emitter&) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     private:
@@ -784,8 +772,9 @@ public:
         Ptr<Ptrn> ptrn_;
         Ptr<Expr> filter_;
         size_t index_;
-        mutable const LamDecl* lam_;
         mutable Thorin thorin_;
+
+        friend class LamDecl;
     };
 
     LamDecl(Loc loc, Tok::Tag tag, bool is_external, Dbg dbg, Ptrs<Dom>&& doms, Ptr<Expr>&& codom, Ptr<Expr>&& body)
@@ -793,9 +782,7 @@ public:
         , tag_(tag)
         , is_external_(is_external)
         , doms_(std::move(doms))
-        , codom_(std::move(codom)) {
-        for (const auto& dom : this->doms()) dom->link(this);
-    }
+        , codom_(std::move(codom)) {}
 
     Tok::Tag tag() const { return tag_; }
     bool is_external() const { return is_external_; }

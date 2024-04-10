@@ -241,13 +241,13 @@ public:
     /// Pi with codom thorin::Bot%tom
     ///@{
     // clang-format off
-    const Pi* cn() { return cn(sigma()); }
-    const Pi* cn(Ref  dom            ) { return pi(      dom ,         Bot()); }
-    const Pi* cn(Defs dom            ) { return cn(sigma(dom)               ); }
-    const Pi* fn(Ref  dom, Ref  codom) { return cn({     dom ,    cn(codom)}); }
-    const Pi* fn(Defs dom, Ref  codom) { return fn(sigma(dom),        codom ); }
-    const Pi* fn(Ref  dom, Defs codom) { return fn(      dom ,  sigma(codom)); }
-    const Pi* fn(Defs dom, Defs codom) { return fn(sigma(dom ), sigma(codom)); }
+    const Pi* cn(                      bool implicit = false) { return cn(sigma(   ),                implicit); }
+    const Pi* cn(Ref  dom,             bool implicit = false) { return pi(      dom ,    type_bot(), implicit); }
+    const Pi* cn(Defs dom,             bool implicit = false) { return cn(sigma(dom),                implicit); }
+    const Pi* fn(Ref  dom, Ref  codom, bool implicit = false) { return cn({     dom ,    cn(codom)}, implicit); }
+    const Pi* fn(Defs dom, Ref  codom, bool implicit = false) { return fn(sigma(dom),       codom,   implicit); }
+    const Pi* fn(Ref  dom, Defs codom, bool implicit = false) { return fn(      dom , sigma(codom),  implicit); }
+    const Pi* fn(Defs dom, Defs codom, bool implicit = false) { return fn(sigma(dom), sigma(codom),  implicit); }
     // clang-format on
     ///@}
 
@@ -411,7 +411,7 @@ public:
     Ref ext(Ref type);
     Ref bot(Ref type) { return ext<false>(type); }
     Ref top(Ref type) { return ext<true>(type); }
-    Ref Bot() { return data_.Bot; }
+    Ref type_bot() { return data_.type_bot; }
     Ref top_nat() { return data_.top_nat; }
     template<bool Up> TBound<Up>* mut_bound(Ref type, size_t size) { return insert<TBound<Up>>(size, type, size); }
     /// A *mut*able Bound of Type @p l%evel.
@@ -636,7 +636,7 @@ private:
         const Univ* univ;
         const Type* type_0;
         const Type* type_1;
-        const thorin::Bot* Bot;
+        const Bot* type_bot;
         const Def* type_bool;
         const Top* top_nat;
         const Sigma* sigma;

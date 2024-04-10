@@ -257,7 +257,7 @@ Ptr<Expr> Parser::parse_extremum_expr() {
     auto track  = tracker();
     auto tag    = lex().tag();
     auto [_, r] = Tok::prec(Tok::Prec::Lit);
-    auto type   = accept(Tag::T_colon) ? parse_expr("type of "s + Tok::tag2str(tag), r) : Ptr<Expr>();
+    auto type   = accept(Tag::T_colon) ? parse_expr("type of "s + Tok::tag2str(tag), r) : nullptr;
     return ptr<ExtremumExpr>(track, tag, std::move(type));
 }
 
@@ -265,7 +265,7 @@ Ptr<Expr> Parser::parse_lit_expr() {
     auto track  = tracker();
     auto value  = lex();
     auto [_, r] = Tok::prec(Tok::Prec::Lit);
-    auto type   = accept(Tag::T_colon) ? parse_expr("literal", r) : Ptr<Expr>();
+    auto type   = accept(Tag::T_colon) ? parse_expr("literal", r) : nullptr;
     return ptr<LitExpr>(track, value.dbg(), std::move(type));
 }
 
@@ -311,7 +311,7 @@ Ptr<Expr> Parser::parse_pi_expr() {
 
     auto codom = tag != Tag::K_Cn
                    ? (expect(Tag::T_arrow, entity), parse_expr("codomain of a "s + entity, Tok::Prec::Arrow))
-                   : nullptr;
+                   : ptr<InferExpr>(prev_);
 
     return ptr<PiExpr>(track.loc(), tag, std::move(doms), std::move(codom));
 }
@@ -612,7 +612,7 @@ Ptr<LamDecl> Parser::parse_lam_decl() {
 
     auto codom
         = accept(Tag::T_colon) ? parse_expr("codomain of a "s + entity, Tok::Prec::Arrow) : ptr<InferExpr>(prev_);
-    auto body = accept(Tag::T_assign) ? parse_block_expr("body of a "s + entity) : Ptr<Expr>();
+    auto body = accept(Tag::T_assign) ? parse_block_expr("body of a "s + entity) : nullptr;
 
     return ptr<LamDecl>(track, tag, external, dbg, std::move(doms), std::move(codom), std::move(body));
 }
