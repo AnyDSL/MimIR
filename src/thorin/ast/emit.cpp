@@ -176,17 +176,18 @@ Ref ArrowExpr::emit(Emitter& e) const {
     return e.world().pi(d, c)->set(loc());
 }
 
-void PiExpr::Dom::emit(Emitter& e) const {
+void PiExpr::Dom::emit_type(Emitter& e) const {
     pi_ = e.world().mut_pi(e.world().type_infer_univ(), is_implicit());
     pi_->set_dom(ptrn()->emit_type(e));
     ptrn()->emit_value(e, pi_->var());
 }
 
 Ref PiExpr::emit(Emitter& e) const {
-    for (const auto& dom : doms() | std::ranges::views::take(num_doms() - 1)) dom->emit(e);
-    const auto& last_d = doms_.back();
+    for (const auto& dom : doms() | std::ranges::views::take(num_doms() - 1)) dom->emit_type(e);
+    // const auto& last_d = doms_.back();
     Ref cod;
 
+#if 0
     if (tag() == Tag::K_Fn) {
         auto sigma = e.world().mut_sigma(e.world().type_infer_univ(), 2)->set(last_d->loc() + codom()->loc().finis);
         auto var   = sigma->var()->set(last_d->loc().anew_begin());
@@ -203,6 +204,7 @@ Ref PiExpr::emit(Emitter& e) const {
         last_d->emit(e);
         last_d->pi_->set_codom(cod);
     }
+#endif
 
     for (const auto& dom : doms() | std::ranges::views::take(num_doms() - 1) | std::ranges::views::reverse) {
         dom->pi_->set_codom(cod);
@@ -317,26 +319,20 @@ void RecDecl::emit(Emitter& e) const {
 
 void RecDecl::emit_rec(Emitter& e) const { body()->emit(e); }
 
-void LamDecl::Dom::emit_type(Emitter& e) const {
-    thorin_.pi = e.world().mut_pi(e.world().type_infer_univ(), is_implicit());
-    thorin_.pi->set_dom(ptrn()->emit_type(e));
-    ptrn()->emit_value(e, thorin_.pi->var());
-}
-
 void LamDecl::Dom::emit_value(Emitter& e) const {
-    thorin_.lam    = e.world().mut_lam(thorin_.pi);
+    thorin_.lam    = e.world().mut_lam(pi_);
     thorin_.filter = (has_bang() || !filter()) ? e.world().lit_tt() : filter()->emit(e); // TODO ff for con/cn
     ptrn()->emit_value(e, thorin_.lam->var());
 }
 
 void LamDecl::emit(Emitter& e) const {
-    for (size_t il = 0, n = num_doms() - 1; il != n; ++il) {
+    for (size_t il = 0, n = num_doms(); il != n; ++il) {
         for (size_t ip = il; ip != n; ++ip) dom(ip)->emit_type(e);
         auto cod = codom()->emit(e);
 
         for (size_t ip = n; ip-- != il;) {
-            dom(ip)->thorin_.pi->set_codom(cod);
-            cod = dom(ip)->thorin_.pi;
+            dom(ip)->pi_->set_codom(cod);
+            cod = dom(ip)->pi_;
         }
 
         dom(il)->emit_value(e);
@@ -344,19 +340,19 @@ void LamDecl::emit(Emitter& e) const {
         if (il != 0) dom(il - 1)->thorin_.lam->set(dom(il - 1)->thorin_.filter, thorin.lam);
     }
 
-    if (tag() == Tag::K_fn || tag() == Tag::K_fun) {
-        const auto& last_d = doms_.back();
-
-        auto sigma = e.world().mut_sigma(e.world().type_infer_univ(), 2)->set(last_d->loc() + codom()->loc().finis);
-        auto var   = sigma->var()->set(last_d->loc().anew_begin());
-        sigma->set(0, last_d->ptrn()->emit_type(e));
-        last_d->ptrn()->emit_value(e, var->proj(2, 0));
-        sigma->set(1, codom()->emit(e));
-
-        last_d->thorin_.pi = e.world().cn(sigma, last_d->is_implicit());
-        last_d->thorin_.pi->set_dom(last_d->ptrn()->emit_type(e));
-        ptrn()->emit_value(e, thorin_.pi->var());
-    }
+    // if (tag() == Tag::K_fn || tag() == Tag::K_fun) {
+    //     const auto& last_d = doms_.back();
+    //
+    //     auto sigma = e.world().mut_sigma(e.world().type_infer_univ(), 2)->set(last_d->loc() + codom()->loc().finis);
+    //     auto var   = sigma->var()->set(last_d->loc().anew_begin());
+    //     sigma->set(0, last_d->ptrn()->emit_type(e));
+    //     last_d->ptrn()->emit_value(e, var->proj(2, 0));
+    //     sigma->set(1, codom()->emit(e));
+    //
+    //     last_d->thorin_.pi = e.world().cn(sigma, last_d->is_implicit());
+    //     last_d->thorin_.pi->set_dom(last_d->ptrn()->emit_type(e));
+    //     ptrn()->emit_value(e, thorin_.pi->var());
+    // }
 }
 
 void LamDecl::emit_rec(Emitter& e) const {

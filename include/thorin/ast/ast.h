@@ -406,24 +406,24 @@ class PiExpr : public Expr {
 public:
     class Dom : public Node {
     public:
-        Dom(Loc loc, bool is_implicit, Ptr<Ptrn>&& ptrn, size_t index)
+        Dom(Loc loc, bool is_implicit, Ptr<Ptrn>&& ptrn)
             : Node(loc)
             , is_implicit_(is_implicit)
-            , ptrn_(std::move(ptrn))
-            , index_(index) {}
+            , ptrn_(std::move(ptrn)) {}
 
         bool is_implicit() const { return is_implicit_; }
         const Ptrn* ptrn() const { return ptrn_.get(); }
 
         virtual void bind(Scopes& scopes, bool quiet = false) const;
-        virtual void emit(Emitter&) const;
+        void emit_type(Emitter&) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
+
+    protected:
+        mutable Pi* pi_ = nullptr;
 
     private:
         bool is_implicit_;
         Ptr<Ptrn> ptrn_;
-        size_t index_;
-        mutable Pi* pi_ = nullptr;
 
         friend class PiExpr;
     };
@@ -738,40 +738,30 @@ private:
 /// * `.fun dbg dom_0 ... dom_n-1 -> codom`
 class LamDecl : public RecDecl {
 public:
-    class Dom : public Node {
+    class Dom : public PiExpr::Dom {
     public:
         struct Thorin {
-            const Pi* pi;
             Lam* lam;
             Ref filter;
         };
 
-        Dom(Loc loc, Tok bang, bool is_implicit, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& filter, size_t index)
-            : Node(loc)
+        Dom(Loc loc, Tok bang, bool is_implicit, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& filter)
+            : PiExpr::Dom(loc, is_implicit, std::move(ptrn))
             , bang_(bang)
-            , is_implicit_(is_implicit)
-            , ptrn_(std::move(ptrn))
-            , filter_(std::move(filter))
-            , index_(index) {}
+            , filter_(std::move(filter)) {}
 
-        bool is_implicit() const { return is_implicit_; }
         Tok bang() const { return bang_; }
         bool has_bang() const { return (bool)bang(); }
-        const Ptrn* ptrn() const { return ptrn_.get(); }
         const Expr* filter() const { return filter_.get(); }
         const Thorin& thorin() const { return thorin_; }
 
-        void bind(Scopes& scopes, bool quiet = false) const;
-        void emit_type(Emitter&) const;
+        void bind(Scopes& scopes, bool quiet = false) const override;
         void emit_value(Emitter&) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     private:
         Tok bang_;
-        bool is_implicit_;
-        Ptr<Ptrn> ptrn_;
         Ptr<Expr> filter_;
-        size_t index_;
         mutable Thorin thorin_;
 
         friend class LamDecl;
