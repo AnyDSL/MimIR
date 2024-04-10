@@ -177,39 +177,35 @@ Ref ArrowExpr::emit(Emitter& e) const {
 }
 
 void PiExpr::Dom::emit_type(Emitter& e) const {
-    pi_ = e.world().mut_pi(e.world().type_infer_univ(), is_implicit());
-    pi_->set_dom(ptrn()->emit_type(e));
+    pi_       = e.world().mut_pi(e.world().type_infer_univ(), is_implicit());
+    auto type = ptrn()->emit_type(e);
+
+    if (ret()) {
+        auto sigma = e.world().mut_sigma(e.world().type_infer_univ(), 2)->set(ret()->loc());
+        auto var   = sigma->var()->set(ret()->loc().anew_begin());
+        sigma->set(0, type);
+        ptrn()->emit_value(e, var->proj(2, 0));
+        sigma->set(1, e.world().cn(ret()->emit_type(e)));
+
+        if (auto imm = sigma->immutabilize())
+            type = imm;
+        else
+            type = sigma;
+    }
+
+    pi_->set_dom(type);
     ptrn()->emit_value(e, pi_->var());
 }
 
 Ref PiExpr::emit(Emitter& e) const {
-    for (const auto& dom : doms() | std::ranges::views::take(num_doms() - 1)) dom->emit_type(e);
-    // const auto& last_d = doms_.back();
-    Ref cod;
+    for (const auto& dom : doms()) dom->emit_type(e);
 
-#if 0
-    if (tag() == Tag::K_Fn) {
-        auto sigma = e.world().mut_sigma(e.world().type_infer_univ(), 2)->set(last_d->loc() + codom()->loc().finis);
-        auto var   = sigma->var()->set(last_d->loc().anew_begin());
-        sigma->set(0, last_d->ptrn()->emit_type(e));
-        last_d->ptrn()->emit_value(e, var->proj(2, 0));
-        sigma->set(1, codom()->emit(e));
-
-        Ref dom_t = sigma;
-        if (auto imm = sigma->immutabilize()) return dom_t = imm;
-
-        cod = e.world().cn(dom_t, last_d->is_implicit());
-    } else {
-        cod = tag() == Tag::T_Pi ? codom()->emit(e) : e.world().type_bot();
-        last_d->emit(e);
-        last_d->pi_->set_codom(cod);
-    }
-#endif
-
-    for (const auto& dom : doms() | std::ranges::views::take(num_doms() - 1) | std::ranges::views::reverse) {
+    auto cod = codom() ? codom()->emit(e) : e.world().type_bot();
+    for (const auto& dom : doms() | std::ranges::views::reverse) {
         dom->pi_->set_codom(cod);
         cod = dom->pi_;
     }
+
     return doms().front()->pi_;
 }
 
@@ -320,15 +316,22 @@ void RecDecl::emit(Emitter& e) const {
 void RecDecl::emit_rec(Emitter& e) const { body()->emit(e); }
 
 void LamDecl::Dom::emit_value(Emitter& e) const {
-    thorin_.lam    = e.world().mut_lam(pi_);
-    thorin_.filter = (has_bang() || !filter()) ? e.world().lit_tt() : filter()->emit(e); // TODO ff for con/cn
-    ptrn()->emit_value(e, thorin_.lam->var());
+    lam_           = e.world().mut_lam(pi_);
+    thorin_filter_ = (has_bang() || !filter()) ? e.world().lit_tt() : filter()->emit(e); // TODO ff for con/cn
+    auto var       = lam_->var();
+
+    if (ret()) {
+        ptrn()->emit_value(e, var->proj(2, 0));
+        ret()->emit_value(e, var->proj(2, 1));
+    } else {
+        ptrn()->emit_value(e, var);
+    }
 }
 
 void LamDecl::emit(Emitter& e) const {
     for (size_t il = 0, n = num_doms(); il != n; ++il) {
         for (size_t ip = il; ip != n; ++ip) dom(ip)->emit_type(e);
-        auto cod = codom()->emit(e);
+        auto cod = codom() ? codom()->emit(e) : e.world().type_bot();
 
         for (size_t ip = n; ip-- != il;) {
             dom(ip)->pi_->set_codom(cod);
@@ -336,30 +339,18 @@ void LamDecl::emit(Emitter& e) const {
         }
 
         dom(il)->emit_value(e);
-        auto& thorin = dom(il)->thorin_;
-        if (il != 0) dom(il - 1)->thorin_.lam->set(dom(il - 1)->thorin_.filter, thorin.lam);
+        if (il != 0)
+            dom(il - 1)->lam_->set(dom(il - 1)->thorin_filter_, dom(il)->lam_);
+        else
+            dom(il)->lam_->set(dbg().sym)->set(dbg().loc);
     }
-
-    // if (tag() == Tag::K_fn || tag() == Tag::K_fun) {
-    //     const auto& last_d = doms_.back();
-    //
-    //     auto sigma = e.world().mut_sigma(e.world().type_infer_univ(), 2)->set(last_d->loc() + codom()->loc().finis);
-    //     auto var   = sigma->var()->set(last_d->loc().anew_begin());
-    //     sigma->set(0, last_d->ptrn()->emit_type(e));
-    //     last_d->ptrn()->emit_value(e, var->proj(2, 0));
-    //     sigma->set(1, codom()->emit(e));
-    //
-    //     last_d->thorin_.pi = e.world().cn(sigma, last_d->is_implicit());
-    //     last_d->thorin_.pi->set_dom(last_d->ptrn()->emit_type(e));
-    //     ptrn()->emit_value(e, thorin_.pi->var());
-    // }
 }
 
 void LamDecl::emit_rec(Emitter& e) const {
     const auto fst = doms().front().get();
     const auto lst = doms().back().get();
-    lst->thorin_.lam->set(lst->thorin_.filter, body()->emit(e));
-    if (is_external()) fst->thorin().lam->make_external();
+    lst->lam_->set(lst->thorin_filter_, body()->emit(e));
+    if (is_external()) fst->lam_->make_external();
 }
 
 } // namespace thorin::ast

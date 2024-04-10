@@ -310,7 +310,9 @@ Ptr<Expr> Parser::parse_pi_expr() {
 
     auto codom = tag != Tag::K_Cn
                    ? (expect(Tag::T_arrow, entity), parse_expr("codomain of a "s + entity, Tok::Prec::Arrow))
-                   : ptr<InferExpr>(prev_);
+                   : nullptr;
+
+    if (tag == Tag::K_Fn) doms.back()->add_ret(ast(), std::move(codom));
 
     return ptr<PiExpr>(track.loc(), tag, std::move(doms), std::move(codom));
 }
@@ -608,8 +610,10 @@ Ptr<LamDecl> Parser::parse_lam_decl() {
         doms.emplace_back(ptr<LamDecl::Dom>(track, bang, implicit, std::move(ptrn), std::move(filter)));
     } while (!ahead().isa(Tag::T_colon) && !ahead().isa(Tag::T_assign) && !ahead().isa(Tag::T_semicolon));
 
-    auto codom
-        = accept(Tag::T_colon) ? parse_expr("codomain of a "s + entity, Tok::Prec::Arrow) : ptr<InferExpr>(prev_);
+    auto codom = accept(Tag::T_colon) ? parse_expr("codomain of a "s + entity, Tok::Prec::Arrow) : nullptr;
+
+    if (tag == Tag::K_fn || tag == Tag::K_fun) doms.back()->add_ret(ast(), std::move(codom));
+
     auto body = accept(Tag::T_assign) ? parse_block_expr("body of a "s + entity) : nullptr;
 
     return ptr<LamDecl>(track, tag, external, dbg, std::move(doms), std::move(codom), std::move(body));

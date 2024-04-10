@@ -136,13 +136,11 @@ void PiExpr::Dom::bind(Scopes& s, bool quiet) const { ptrn()->bind(s, quiet); }
 
 void PiExpr::bind(Scopes& s) const {
     s.push();
-
     for (const auto& dom : doms()) dom->bind(s);
-
-    if (!codom()->isa<InferExpr>() && tag() == Tag::K_Cn)
-        s.ast().error(codom()->loc(), "a continuation shall not have a codomain");
-
-    codom()->bind(s);
+    if (codom()) {
+        if (tag() == Tag::K_Cn) s.ast().error(codom()->loc(), "a continuation shall not have a codomain");
+        codom()->bind(s);
+    }
     s.pop();
 }
 
@@ -240,12 +238,17 @@ void RecDecl::bind(Scopes& s) const {
 void RecDecl::bind_rec(Scopes& s) const { body()->bind(s); }
 
 void LamDecl::Dom::bind(Scopes& s, bool quiet) const {
-    if (!quiet && has_bang() && filter()) {
-        s.ast().error(filter()->loc(), "explicit filter specified on top of '!' annotation");
-        s.ast().note(bang().loc(), "'!' here");
-    }
-
     ptrn()->bind(s, quiet);
+    if (ret()) ret()->bind(s);
+
+    if (filter() && !quiet) {
+        if (has_bang()) {
+            s.ast().error(filter()->loc(), "explicit filter specified on top of '!' annotation");
+            s.ast().note(bang().loc(), "'!' here");
+        }
+
+        filter()->bind(s);
+    }
 }
 
 void LamDecl::bind(Scopes& s) const {
@@ -274,13 +277,10 @@ void LamDecl::bind(Scopes& s) const {
         }
     }
 
-    if (!codom()->isa<InferExpr>() && (tag() == Tag::K_con || tag() == Tag::K_cn))
-        s.ast().error(codom()->loc(), "a continuation shall not have a codomain");
-    codom()->bind(s);
-
-    if (tag() == Tok::Tag::K_fun) {
-        ret_ = s.ast().ptr<ReturnPtrn>(s.ast(), codom());
-        ret_->bind(s);
+    if (codom()) {
+        if (tag() == Tag::K_con || tag() == Tag::K_cn)
+            s.ast().error(codom()->loc(), "a continuation shall not have a codomain");
+        codom()->bind(s);
     }
 
     s.pop();

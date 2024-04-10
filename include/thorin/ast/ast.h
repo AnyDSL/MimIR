@@ -413,9 +413,15 @@ public:
 
         bool is_implicit() const { return is_implicit_; }
         const Ptrn* ptrn() const { return ptrn_.get(); }
+        const IdPtrn* ret() const { return ret_.get(); }
+
+        void add_ret(AST& ast, Ptr<Expr>&& type) const {
+            auto loc = type->loc();
+            ret_     = ast.ptr<IdPtrn>(loc, false, Dbg(loc, ast.sym_return()), std::move(type));
+        }
 
         virtual void bind(Scopes& scopes, bool quiet = false) const;
-        void emit_type(Emitter&) const;
+        virtual void emit_type(Emitter&) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     protected:
@@ -424,6 +430,7 @@ public:
     private:
         bool is_implicit_;
         Ptr<Ptrn> ptrn_;
+        mutable Ptr<IdPtrn> ret_;
 
         friend class PiExpr;
     };
@@ -740,11 +747,6 @@ class LamDecl : public RecDecl {
 public:
     class Dom : public PiExpr::Dom {
     public:
-        struct Thorin {
-            Lam* lam;
-            Ref filter;
-        };
-
         Dom(Loc loc, Tok bang, bool is_implicit, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& filter)
             : PiExpr::Dom(loc, is_implicit, std::move(ptrn))
             , bang_(bang)
@@ -753,7 +755,6 @@ public:
         Tok bang() const { return bang_; }
         bool has_bang() const { return (bool)bang(); }
         const Expr* filter() const { return filter_.get(); }
-        const Thorin& thorin() const { return thorin_; }
 
         void bind(Scopes& scopes, bool quiet = false) const override;
         void emit_value(Emitter&) const;
@@ -762,7 +763,8 @@ public:
     private:
         Tok bang_;
         Ptr<Expr> filter_;
-        mutable Thorin thorin_;
+        mutable Lam* lam_;
+        mutable Ref thorin_filter_;
 
         friend class LamDecl;
     };
