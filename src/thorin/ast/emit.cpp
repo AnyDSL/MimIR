@@ -26,7 +26,7 @@ private:
  */
 
 Ref ErrorExpr::emit(Emitter&) const { fe::unreachable(); }
-Ref InferExpr::emit(Emitter&) const { fe::unreachable(); }
+Ref InferExpr::emit(Emitter& e) const { return e.world().type_infer_univ(); }
 
 Ref IdExpr::emit(Emitter&) const { return decl_->def()->set(dbg()); }
 
@@ -105,7 +105,7 @@ Ref PrimaryExpr ::emit(Emitter& e) const {
         case Tag::K_I16:  return e.world().type_i16();
         case Tag::K_I32:  return e.world().type_i32();
         case Tag::K_I64:  return e.world().type_i64();
-        case Tag::M_char: return nullptr; // TODO
+        case Tag::M_char: return e.world().lit_i8(tok().chr());
         case Tag::T_star: return e.world().type<0>();
         case Tag::T_box:  return e.world().type<1>();
         default: fe::unreachable();

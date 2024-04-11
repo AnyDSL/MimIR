@@ -279,21 +279,22 @@ private:
 /// `tag`
 class PrimaryExpr : public Expr {
 public:
-    PrimaryExpr(Loc loc, Tok::Tag tag)
-        : Expr(loc)
-        , tag_(tag) {}
     PrimaryExpr(Tok tok)
         : Expr(tok.loc())
-        , tag_(tok.tag()) {}
+        , tok_(tok) {}
+    PrimaryExpr(Loc loc, Tok::Tag tag)
+        : Expr(loc)
+        , tok_(loc, tag) {}
 
-    Tok::Tag tag() const { return tag_; }
+    Tok tok() const { return tok_; }
+    Tok::Tag tag() const { return tok_.tag(); }
 
     void bind(Scopes&) const override;
     Ref emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Tok::Tag tag_;
+    Tok tok_;
 };
 
 /// `tag:type`
