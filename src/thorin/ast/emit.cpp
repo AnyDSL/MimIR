@@ -299,45 +299,51 @@ void LetDecl::emit(Emitter& e) const {
     def_   = ptrn()->emit_value(e, v);
 }
 
-static u8 parse_u8(u8 u, Dbg dbg, std::string_view ctxt) {
-    if (dbg) {
-        auto sym = dbg.sym;
-        char* end;
-        u = std::strtoull(sym.c_str(), &end, 10);
-        if (sym.c_str() + sym.size() != end) error(dbg.loc, "{} count '{}' is not a number", ctxt, dbg);
-    }
-    return u;
+void AxiomDecl::Alias::emit(Emitter& e) const {
+    auto norm      = e.driver().normalizer(axiom_->id_.plugin, axiom_->id_.tag, 0);
+    const auto& id = axiom_->id_;
+    def_           = e.world().axiom(norm, *id.curry, *id.trip, axiom_->thorin_type_, id.plugin, id.tag, 0);
 }
 
 void AxiomDecl::emit(Emitter& e) const {
     auto [plugin, tag, sub] = Annex::split(e.driver(), dbg().sym);
     auto&& [annex, is_new]  = e.driver().name2annex(dbg().sym, plugin, tag, dbg().loc);
-    auto p                  = Annex::mangle(plugin);
-    auto t                  = Annex::mangle(tag);
-    auto ty                 = type()->emit(e);
-    auto [cu, tr]           = Axiom::infer_curry_and_trip(ty);
+    thorin_type_            = type()->emit(e);
+    auto [curry, trip]      = Axiom::infer_curry_and_trip(thorin_type_);
 
-    if (!plugin) error(dbg().loc, "invalid axiom name '{}'", dbg().sym);
-    if (sub) error(dbg().loc, "axiom '{}' must not have a subtag", dbg().sym);
+    if (id_.curry) {
+        if (*id_.curry > curry) error(curry_.loc, "curry counter cannot be greater than {}", curry);
+    } else {
+        id_.curry = curry;
+    }
 
-    cu = parse_u8(cu, curry(), "curry");
-    tr = parse_u8(tr, trip(), "trip");
+    if (!id_.trip) id_.trip = trip;
 
     if (num_subs() == 0) {
-        auto norm = e.driver().normalizer(*p, *t, 0);
-        def_      = e.world().axiom(norm, cu, tr, ty, *p, *t, 0);
+        auto norm = e.driver().normalizer(id_.plugin, id_.tag, 0);
+        def_      = e.world().axiom(norm, curry, trip, type()->emit(e), id_.plugin, id_.tag, 0);
     } else {
-        for (const auto& aliases : subs()) {
-            for (const auto& alias : aliases) {
-                outln("{}", alias);
-                // auto sym = s.ast().sym(dbg().sym.str() + "."s + alias.sym.str());
-            }
-        }
+        for (const auto& aliases : subs())
+            for (const auto& alias : aliases) alias->emit(e);
     }
 }
 
 void RecDecl::emit(Emitter& e) const {
-    if (type()) type()->emit(e);
+    auto t = type() ? type()->emit(e) : e.world().type_infer_univ();
+
+    if (auto sigma = body()->isa<SigmaExpr>()) {
+        def_ = e.world().mut_sigma(t, sigma->ptrn()->num_ptrns());
+    } else if (auto pi = body()->isa<PiExpr>()) {
+        def_ = e.world().mut_pi(t);
+    } else if (auto lam = body()->isa<LamExpr>()) {
+        if (auto infer = t->isa<Infer>()) t = e.world().mut_pi(t, e.world().type_infer_univ());
+        if (auto pi = t->isa<Pi>())
+            def_ = e.world().mut_lam(pi);
+        else
+            error(type()->loc(), "type of a function must be a function type");
+    } else {
+        error(body()->loc(), "unsupported expression for a recursive declaration");
+    }
 }
 
 void RecDecl::emit_rec(Emitter& e) const { body()->emit(e); }

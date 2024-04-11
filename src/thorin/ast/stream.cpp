@@ -151,12 +151,14 @@ std::ostream& DeclsBlock::stream(Tab& tab, std::ostream& os) const {
     return os;
 }
 
+std::ostream& AxiomDecl::Alias::stream(Tab&, std::ostream& os) const { return os << dbg(); }
+
 std::ostream& AxiomDecl::stream(Tab& tab, std::ostream& os) const {
     print(os, ".ax {}", dbg());
     if (num_subs() != 0) {
         os << '(';
         for (auto sep = ""; const auto& aliases : subs()) {
-            print(os, "{}{ = }", sep, aliases);
+            print(os, "{}{ = }", sep, R(tab, aliases));
             sep = ", ";
         }
         os << ')';

@@ -502,7 +502,7 @@ public:
         : Expr(ptrn->loc())
         , ptrn_(std::move(ptrn)) {}
 
-    const Ptrn* ptrn() const { return ptrn_.get(); }
+    const TuplePtrn* ptrn() const { return ptrn_.get(); }
 
     void bind(Scopes&) const override;
     Ref emit(Emitter&) const override;
@@ -653,7 +653,27 @@ private:
 /// `.ax ptrn: type = value;`
 class AxiomDecl : public ValDecl {
 public:
-    AxiomDecl(Loc loc, Dbg dbg, std::deque<Dbgs>&& subs, Ptr<Expr>&& type, Dbg normalizer, Dbg curry, Dbg trip)
+    class Alias : public Decl {
+    public:
+        Alias(Dbg dbg)
+            : Decl(dbg.loc)
+            , dbg_(dbg) {}
+
+        Dbg dbg() const { return dbg_; }
+
+        void bind(Scopes&, const AxiomDecl*) const;
+        void emit(Emitter&) const;
+        std::ostream& stream(Tab&, std::ostream&) const override;
+
+    private:
+        Dbg dbg_;
+        mutable Dbg full_;
+        mutable const AxiomDecl* axiom_ = nullptr;
+
+        friend class AxiomDecl;
+    };
+
+    AxiomDecl(Loc loc, Dbg dbg, std::deque<Ptrs<Alias>>&& subs, Ptr<Expr>&& type, Dbg normalizer, Dbg curry, Dbg trip)
         : ValDecl(loc)
         , dbg_(dbg)
         , subs_(std::move(subs))
@@ -677,9 +697,18 @@ public:
 
 private:
     Dbg dbg_;
-    std::deque<Dbgs> subs_;
+    std::deque<Ptrs<Alias>> subs_;
     Ptr<Expr> type_;
     Dbg normalizer_, curry_, trip_;
+    mutable struct {
+        Sym plugin, tag, sub;
+    } sym_;
+    mutable struct {
+        plugin_t plugin = 0;
+        tag_t tag       = 0;
+        std::optional<u8> curry, trip;
+    } id_;
+    mutable Ref thorin_type_;
 };
 
 /// `.rec dbg: type = body`

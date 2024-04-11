@@ -524,12 +524,13 @@ Ptr<ValDecl> Parser::parse_axiom_decl() {
     else
         dbg = Dbg(prev_, ast().sym("<error annex name>"));
 
-    std::deque<Dbgs> subs;
+    std::deque<Ptrs<AxiomDecl::Alias>> subs;
     if (ahead().isa(Tag::D_paren_l)) {
         parse_list("tag list of an axiom", Tag::D_paren_l, [&]() {
             auto& aliases = subs.emplace_back();
-            aliases.emplace_back(parse_id("tag of an axiom"));
-            while (accept(Tag::T_assign)) aliases.emplace_back(parse_id("alias of an axiom tag"));
+            aliases.emplace_back(ptr<AxiomDecl::Alias>(parse_id("tag of an axiom")));
+            while (accept(Tag::T_assign))
+                aliases.emplace_back(ptr<AxiomDecl::Alias>(parse_id("alias of an axiom tag")));
         });
     }
 

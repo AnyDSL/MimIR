@@ -55,7 +55,7 @@ Sym Annex::demangle(Driver& driver, plugin_t u) {
     return driver.sym(result);
 }
 
-std::array<Sym, 3> Annex::split(Driver& driver, Sym s) {
+std::tuple<Sym, Sym, Sym> Annex::split(Driver& driver, Sym s) {
     if (!s) return {};
     if (s[0] != '%') return {};
     auto sv = subview(s, 1);

@@ -93,7 +93,7 @@ struct Annex {
     /// Ignores lower 16-bit of @p u.
     static Sym demangle(Driver&, plugin_t u);
 
-    static std::array<Sym, 3> split(Driver&, Sym);
+    static std::tuple<Sym, Sym, Sym> split(Driver&, Sym);
     ///@}
 
     /// @name Annex Name

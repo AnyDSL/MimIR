@@ -2,7 +2,7 @@
 
 #include "fe/assert.h"
 
-using namespace std::string_literals;
+using namespace std::literals;
 
 namespace thorin::ast {
 
@@ -27,6 +27,7 @@ public:
     }
 
     AST& ast() const { return ast_; }
+    Driver& driver() const { return ast().driver(); }
     Scope& top() { return scopes_.back(); }
     const Decl* dummy() const { return dummy_.get(); }
 
@@ -63,10 +64,13 @@ public:
         }
     }
 
+    tag_t next_tag(plugin_t p) { return plugin2tag_.emplace(p, 0).first->second; }
+
 private:
     AST& ast_;
     Ptr<DummyDecl> dummy_;
     std::deque<Scope> scopes_;
+    absl::flat_hash_map<plugin_t, tag_t> plugin2tag_;
 };
 
 /*
@@ -206,18 +210,48 @@ void DeclsBlock::bind(Scopes& s) const {
     }
 }
 
+static std::optional<u8> parse_u8(AST& ast, Dbg dbg, std::string_view ctxt) {
+    if (dbg) {
+        auto sym = dbg.sym;
+        char* end;
+        auto res = std::strtoull(sym.c_str(), &end, 10);
+        if (sym.c_str() + sym.size() != end)
+            ast.error(dbg.loc, "{} count '{}' is not a number", ctxt, dbg);
+        else
+            return res;
+    }
+    return {};
+}
+
+void AxiomDecl::Alias::bind(Scopes& s, const AxiomDecl* axiom) const {
+    axiom_   = axiom;
+    auto sym = s.ast().sym(axiom->dbg().sym.str() + "."s + dbg().sym.str());
+    full_    = Dbg(dbg().loc, sym);
+    s.bind(full_, this);
+}
+
 void AxiomDecl::bind(Scopes& s) const {
     type()->bind(s);
+
+    std::tie(sym_.plugin, sym_.tag, sym_.sub) = Annex::split(s.driver(), dbg().sym);
+
+    if (auto p = Annex::mangle(sym_.plugin)) {
+        id_.plugin = *p;
+        id_.tag    = s.next_tag(*p);
+    } else {
+        s.ast().error(dbg().loc, "invalid axiom name '{}'", dbg());
+    }
+
+    if (sym_.sub) error(dbg().loc, "axiom '{}' must not have a subtag", dbg().sym);
+
+    id_.curry = parse_u8(s.ast(), curry_, "curry"sv);
+    id_.trip  = parse_u8(s.ast(), trip_, "trip"sv);
 
     if (num_subs() == 0) {
         s.bind(dbg(), this);
     } else {
-        for (const auto& aliases : subs()) {
-            for (const auto& alias : aliases) {
-                auto sym = s.ast().sym(dbg().sym.str() + "."s + alias.sym.str());
-                s.bind(Dbg(dbg().loc, sym), this);
-            }
-        }
+        for (const auto& aliases : subs())
+            for (const auto& alias : aliases) alias->bind(s, this);
     }
 }
 
