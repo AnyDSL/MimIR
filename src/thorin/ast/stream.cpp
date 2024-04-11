@@ -54,12 +54,6 @@ std::ostream& TuplePtrn::stream(Tab& tab, std::ostream& os) const {
     return print(os, "{}{, }{}", delim_l(), R(tab, ptrns()), delim_r());
 }
 
-std::ostream& ReturnPtrn::stream(Tab& tab, std::ostream& os) const {
-    os << dbg();
-    if (type()) print(os, ": {}", S(tab, type()));
-    return os;
-}
-
 /*
  * Expr
  */

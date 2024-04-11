@@ -224,25 +224,6 @@ private:
     Ptrs<Ptrn> ptrns_;
 };
 
-/// Dummy Ptrn to introduce `return: type`.
-/// @note ReturnPtrn::type is **not** owned.
-class ReturnPtrn : public Ptrn {
-public:
-    ReturnPtrn(AST& ast, const Expr* type)
-        : Ptrn(type->loc(), false, {type->loc(), ast.sym_return()})
-        , type_(type) {}
-
-    const Expr* type() const { return type_; }
-
-    void bind(Scopes&, bool quiet = false) const override;
-    Ref emit_value(Emitter&, Ref) const override { fe::unreachable(); }
-    Ref emit_type(Emitter&) const override { fe::unreachable(); }
-    std::ostream& stream(Tab&, std::ostream&) const override;
-
-private:
-    const Expr* type_;
-};
-
 /*
  * Expr
  */
@@ -772,7 +753,6 @@ public:
     const Dom* dom(size_t i) const { return doms_[i].get(); }
     size_t num_doms() const { return doms_.size(); }
     const Expr* codom() const { return codom_.get(); }
-    const ReturnPtrn* ret() const { return ret_.get(); }
 
     void bind(Scopes&) const override;
     void bind_rec(Scopes&) const override;
@@ -785,7 +765,6 @@ private:
     bool is_external_;
     Ptrs<Dom> doms_;
     Ptr<Expr> codom_;
-    mutable Ptr<ReturnPtrn> ret_;
 };
 
 /*

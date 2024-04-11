@@ -111,11 +111,6 @@ void TuplePtrn::bind(Scopes& s, bool quiet) const {
 
 void GroupPtrn::bind(Scopes& s, bool quiet) const { s.bind(dbg(), this, rebind(), quiet); }
 
-void ReturnPtrn::bind(Scopes& s, bool quiet) const {
-    s.bind(dbg(), this, rebind(), quiet);
-    // No need to check this->type(); it's shared and has already been checked.
-}
-
 /*
  * Expr
  */
@@ -291,7 +286,6 @@ void LamDecl::bind(Scopes& s) const {
 void LamDecl::bind_rec(Scopes& s) const {
     s.push();
     for (const auto& dom : doms()) dom->bind(s, true);
-    if (ret()) ret()->bind(s, true);
     body()->bind(s);
     s.pop();
 }
