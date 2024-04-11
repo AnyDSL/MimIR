@@ -3,12 +3,12 @@
 
 .plugin core;
 
-.con .extern and_lit_tt_tt [return : .Cn .Idx 2] = {
+.con .extern and_lit_tt_tt [return : .Cn .Bool] = {
     return (%core.bit2.and_ 0 (.tt, .tt))
 };
 
-// CHECK-DAG: .con .extern and_lit_tt_tt _[[retId:[0-9_]+]]: .Cn .Idx 2{{(@.*)?}}= {
-// CHECK-DAG: _[[etaId:[0-9_]+]] 1:(.Idx 2)
+// CHECK-DAG: .con .extern and_lit_tt_tt _[[retId:[0-9_]+]]: .Cn .Bool{{(@.*)?}}= {
+// CHECK-DAG: _[[etaId:[0-9_]+]] .tt
 
-// CHECK-DAG: .con _[[etaId]] _[[etaVar:[0-9_]+]]: .Idx 2{{(@.*)?}}= {
+// CHECK-DAG: .con _[[etaId]] _[[etaVar:[0-9_]+]]: .Bool{{(@.*)?}}= {
 // CHECK-DAG: _[[retId]] _[[etaVar]]

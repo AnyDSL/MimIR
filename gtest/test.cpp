@@ -22,7 +22,7 @@ TEST(Zip, fold) {
     auto parser = Parser(w);
 
     std::istringstream iss(".plugin core;"
-                           ".let _32 = 4294967296;"
+                           ".let _32 = .i32;"
                            ".let I32 = .Idx _32;"
                            ".let a = ((0:I32, 1:I32,  2:I32), ( 3:I32,  4:I32,  5:I32));"
                            ".let b = ((6:I32, 7:I32,  8:I32), ( 9:I32, 10:I32, 11:I32));"
@@ -275,9 +275,8 @@ TEST(FV, free_vars) {
     Driver driver;
     World& w = driver.world();
     auto Nat = w.type_nat();
-    auto pi  = w.pi(Nat, w.sigma({Nat, Nat}));
-    auto lx  = w.mut_lam(pi);
-    auto ly  = w.mut_lam(pi);
+    auto lx  = w.mut_lam(Nat, {Nat, Nat});
+    auto ly  = w.mut_lam(Nat, {Nat, Nat});
     auto x   = lx->var()->set("x");
     auto y   = ly->var()->set("y");
     lx->set(false, w.tuple({x, y}));

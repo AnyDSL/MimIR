@@ -26,14 +26,9 @@ Ref LowerMatrixMediumLevel::rewrite(Ref def) {
 std::pair<Lam*, Ref> counting_for(Ref bound, DefVec acc, Ref exit, const char* name = "for_body") {
     auto& world = bound->world();
     auto acc_ty = world.tuple(acc)->type();
-    auto body   = world
-                    .mut_lam(world.cn({
-                        world.type_int(32), // iterator
-                        acc_ty,             // acc = memory+extra
-                        world.cn(acc_ty)    // exit = return
-                    }))
-                    ->set(name);
-    auto for_loop = affine::op_for(world, world.lit_int(32, 0), bound, world.lit_int(32, 1), acc, body, exit);
+    auto body
+        = world.mut_con({/* iter */ world.type_i32(), /* acc */ acc_ty, /* return */ world.cn(acc_ty)})->set(name);
+    auto for_loop = affine::op_for(world, world.lit_i32(0), bound, world.lit_i32(1), acc, body, exit);
     return {body, for_loop};
 }
 
@@ -191,9 +186,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
         // create function `%mem.M -> [%mem.M, %matrix.Mat (n,S,T)]` to replace axiom call
 
         auto mem_type = world.annex<mem::M>();
-        auto fun_ty   = world.cn({mem_type, world.cn(map_reduce_ax->type())});
-        world.DLOG("fun_ty = {}", fun_ty);
-        auto fun = world.mut_lam(fun_ty)->set("mapRed");
+        auto fun      = world.mut_fun(mem_type, map_reduce_ax->type())->set("mapRed");
 
         // assert(0);
         auto ds_fun = direct::op_cps2ds_dep(fun);
@@ -241,7 +234,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
         for (auto idx : out_indices) {
             auto for_name    = world.sym("forIn_"s + std::to_string(idx));
             auto dim_nat_def = dims[idx];
-            auto dim         = world.call<core::bitcast>(world.type_int(32), dim_nat_def);
+            auto dim         = world.call<core::bitcast>(world.type_i32(), dim_nat_def);
 
             auto [body, for_call]       = counting_for(dim, acc, cont, for_name);
             auto [iter, new_acc, yield] = body->vars<3>();
@@ -267,7 +260,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
         world.DLOG("wb_matrix {} : {}", wb_matrix, wb_matrix->type());
 
         // Write back element to matrix. Set this as return after all inner loops.
-        auto write_back = world.mut_lam(world.cn({world.annex<mem::M>(), T}))->set("matrixWriteBack");
+        auto write_back = mem::mut_con(T)->set("matrixWriteBack");
         world.DLOG("write_back {} : {}", write_back, write_back->type());
         auto [wb_mem, element_final] = write_back->vars<2>();
 
@@ -296,7 +289,7 @@ Ref LowerMatrixMediumLevel::rewrite_(Ref def) {
         for (auto idx : in_indices) {
             auto for_name    = world.sym("forIn_"s + std::to_string(idx));
             auto dim_nat_def = dims[idx];
-            auto dim         = world.call<core::bitcast>(world.type_int(32), dim_nat_def);
+            auto dim         = world.call<core::bitcast>(world.type_i32(), dim_nat_def);
 
             auto [body, for_call]       = counting_for(dim, acc, cont, for_name);
             auto [iter, new_acc, yield] = body->vars<3>();

@@ -94,7 +94,7 @@ public:
         auto loc                 = escape(def->loc());
         auto type                = escape(def->type());
         std::ostringstream oss;
-        oss << std::hex << def->flags();
+        oss << "0x" << std::hex << def->flags();
         auto flags = oss.str();
         escape(loc);
         print(os_, "tooltip=\"");

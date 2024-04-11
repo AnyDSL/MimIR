@@ -217,11 +217,21 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::D_paren_l: return parse_tuple_expr();
         case Tag::K_Type:    return parse_type_expr();
         case Tag::K_Univ:    lex(); return world().univ();
-        case Tag::K_Bool:    lex(); return world().type_bool();
         case Tag::K_Idx:     lex(); return world().type_idx();
         case Tag::K_Nat:     lex(); return world().type_nat();
         case Tag::K_ff:      lex(); return world().lit_ff();
         case Tag::K_tt:      lex(); return world().lit_tt();
+        case Tag::K_i1:      lex(); return world().lit_i1();
+        case Tag::K_i8:      lex(); return world().lit_i8();
+        case Tag::K_i16:     lex(); return world().lit_i16();
+        case Tag::K_i32:     lex(); return world().lit_i32();
+        case Tag::K_i64:     lex(); return world().lit_i64();
+        case Tag::K_Bool:
+        case Tag::K_I1:      lex(); return world().type_i1();
+        case Tag::K_I8:      lex(); return world().type_i8();
+        case Tag::K_I16:     lex(); return world().type_i16();
+        case Tag::K_I32:     lex(); return world().type_i32();
+        case Tag::K_I64:     lex(); return world().type_i64();
         case Tag::K_Cn:
         case Tag::K_Fn:
         case Tag::T_Pi:      return parse_pi_expr();
@@ -235,7 +245,7 @@ Ref Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::L_s:
         case Tag::L_u:
         case Tag::L_f:       return parse_lit_expr();
-        case Tag::L_c:       return world().lit_int(8, lex().lit_c());
+        case Tag::L_c:       return world().lit_i8(lex().lit_c());
         case Tag::L_i:       return lex().lit_i();
         case Tag::K_ins:     return parse_insert_expr();
         case Tag::K_ret:     return parse_ret_expr();
@@ -377,10 +387,10 @@ Pi* Parser::parse_pi_expr(Pi* outer) {
             expect(Tag::T_arrow, entity);
             codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
             break;
-        case Tag::K_Cn: codom = world().type_bot(); break;
+        case Tag::K_Cn: codom = world().Bot(); break;
         case Tag::K_Fn: {
             expect(Tag::T_arrow, entity);
-            codom     = world().type_bot();
+            codom     = world().Bot();
             auto ret  = parse_expr("domain of return continuation", Tok::Prec::Arrow);
             auto pi   = pis.back();
             auto last = world().sigma({pi->dom(), world().cn(ret)});
@@ -461,12 +471,12 @@ Lam* Parser::parse_lam(bool is_decl) {
             break;
         }
         case Tag::K_cn:
-        case Tag::K_con: codom = world().type_bot(); break;
+        case Tag::K_con: codom = world().Bot(); break;
         case Tag::K_fn:
         case Tag::K_fun: {
             auto& [pi, lam, filter] = funs.back();
 
-            codom        = world().type_bot();
+            codom        = world().Bot();
             auto track   = tracker();
             auto ret     = accept(Tag::T_colon) ? parse_expr("return type of a "s + entity) : world().mut_infer_type();
             auto ret_loc = dom_p->loc() + track.loc();

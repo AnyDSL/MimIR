@@ -6,11 +6,11 @@
 .plugin core;
 .plugin direct;
 
-.con h [mem : %mem.M, a : %core.I32, return : .Cn [%mem.M, %core.I32]] =
+.con h [mem : %mem.M, a : .I32, return : .Cn [%mem.M, .I32]] =
     .let c = a;
     return (mem, c);
 
-.con .extern main [mem : %mem.M, argc : %core.I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, %core.I32]] =
-    h (mem, 40:%core.I32, return);
+.con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I8, 0), 0), return : .Cn [%mem.M, .I32]] =
+    h (mem, 40I32, return);
 
 // CHECK-DAG: return{{.*}}40

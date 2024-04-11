@@ -5,20 +5,20 @@
 .plugin autodiff;
 
 
-.con f [a:%core.I32, ret: .Cn [%core.I32]] =
+.con f [a:.I32, ret: .Cn [.I32]] =
     .let b = %core.wrap.add 0 (a, a);
     ret b;
 
-.con .extern main [mem : %mem.M, argc : %core.I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, %core.I32]] =
-    .con ret_cont r::[%autodiff.Tangent %core.I32] =
-        .let r2=%core.bitcast %core.I32 r;
+.con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I8, 0), 0), return : .Cn [%mem.M, .I32]] =
+    .con ret_cont r::[%autodiff.Tangent .I32] =
+        .let r2=%core.bitcast .I32 r;
         return (mem, r2);
 
-    .con ret_wrap r::[%core.I32] =
-        .let r2=%core.bitcast (%autodiff.Tangent %core.I32) r;
+    .con ret_wrap r::[.I32] =
+        .let r2=%core.bitcast (%autodiff.Tangent .I32) r;
         ret_cont r2;
 
-    .let c = 43:%core.I32;
+    .let c = 43I32;
     f (c,ret_wrap);
 
 // CHECK-DAG: return{{.*}}86

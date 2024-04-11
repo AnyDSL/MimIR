@@ -3,11 +3,11 @@
 
 .plugin core;
 
-.con .extern f [mem: %mem.M, a: %core.I32, ret: .Cn [%mem.M, %core.I32]] = ret (mem,a);
-.con .extern g [a: %core.I32, ret: .Cn %core.I32] = ret a;
-.con .extern h [a: %core.I32, ret: .Cn [%mem.M, %core.I32]] = ret (⊤:%mem.M,a);
+.con .extern f [mem: %mem.M, a: .I32, ret: .Cn [%mem.M, .I32]] = ret (mem,a);
+.con .extern g [a: .I32, ret: .Cn .I32] = ret a;
+.con .extern h [a: .I32, ret: .Cn [%mem.M, .I32]] = ret (⊤:%mem.M,a);
 
-.con .extern main [mem : %mem.M, argc : %core.I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, %core.I32]] =
+.con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I8, 0), 0), return : .Cn [%mem.M, .I32]] =
     f (⊤:%mem.M, argc, return);
 
 .lam .extern _compile(): %compile.Pipeline =
@@ -15,10 +15,10 @@
         (%compile.single_pass_phase %compile.internal_cleanup_pass)
         %mem.add_mem_phase; // optimization_phase
 
-// CHECK: g {{[a-z0-9_:]*}}[[[gMemId:[a-z_0-9]*]]: %mem.M, [[gaId:[a-z_0-9]*]]: .Idx 4294967296, [[gRetId:[a-z_0-9]*]]: .Cn [%mem.M, .Idx 4294967296]]
+// CHECK: g {{[a-z0-9_:]*}}[[[gMemId:[a-z_0-9]*]]: %mem.M, [[gaId:[a-z_0-9]*]]: .I32, [[gRetId:[a-z_0-9]*]]: .Cn [%mem.M, .I32]]
 // CHECK: [[gRetId]] ([[gMemId]], [[gaId]])
 
-// CHECK: h {{[a-z0-9_:]*}}[[[hMemId:[a-z_0-9]*]]: %mem.M, [[haId:[a-z_0-9]*]]: .Idx 4294967296, [[hRetId:[a-z_0-9]*]]: .Cn [%mem.M, .Idx 4294967296]]
+// CHECK: h {{[a-z0-9_:]*}}[[[hMemId:[a-z_0-9]*]]: %mem.M, [[haId:[a-z_0-9]*]]: .I32, [[hRetId:[a-z_0-9]*]]: .Cn [%mem.M, .I32]]
 // CHECK: [[hRetId]] ([[hMemId]], [[haId]])
 
 // CHECK: main {{[a-z0-9_:]*}}[[[memId:[a-z_0-9]*]]: %mem.M

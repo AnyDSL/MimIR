@@ -3,5 +3,5 @@
 // RUN: clang %t.ll -S -emit-llvm -Wno-override-module -o -
 .plugin core;
 
-.fun .extern f ab::(a b: %core.I32): %core.I32 =
-    return (%mem.rm (2, ‹2; %core.I32›, %core.I32) (%core.div.sdiv @ %core.i32) ab);
+.fun .extern f ab::(a b: .I32): .I32 =
+    return (%mem.rm (2, ‹2; .I32›, .I32) (%core.div.sdiv @ .i32) ab);

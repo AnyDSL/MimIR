@@ -3,5 +3,5 @@
 // RUN: clang %t.ll -o %t -Wno-override-module -c
 .plugin core;
 
-.fun .extern foo(mem: %mem.M, p: %mem.Ptr0 «23; %core.I32»): [%mem.M, %mem.Ptr0 %core.I32] =
-    return (mem, %core.bitcast (%mem.Ptr0 %core.I32) p);
+.fun .extern foo(mem: %mem.M, p: %mem.Ptr0 «23; .I32»): [%mem.M, %mem.Ptr0 .I32] =
+    return (mem, %core.bitcast (%mem.Ptr0 .I32) p);

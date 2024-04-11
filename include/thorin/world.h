@@ -230,19 +230,27 @@ public:
 
     /// @name Pi
     ///@{
-    const Pi* pi(Ref dom, Ref codom, bool implicit = false) {
-        return unify<Pi>(2, Pi::infer(dom, codom), dom, codom, implicit);
-    }
-    const Pi* pi(Defs dom, Ref codom, bool implicit = false) { return pi(sigma(dom), codom, implicit); }
+    // clang-format off
+    const Pi* pi(Ref  dom, Ref  codom, bool implicit = false) { return unify<Pi>(2, Pi::infer(dom, codom), dom, codom, implicit); }
+    const Pi* pi(Defs dom, Ref  codom, bool implicit = false) { return pi(sigma(dom), codom, implicit); }
+    const Pi* pi(Ref  dom, Defs codom, bool implicit = false) { return pi(dom, sigma(codom), implicit); }
+    const Pi* pi(Defs dom, Defs codom, bool implicit = false) { return pi(sigma(dom), sigma(codom), implicit); }
     Pi* mut_pi(Ref type, bool implicit = false) { return insert<Pi>(2, type, implicit); }
+    // clang-format on
     ///@}
 
     /// @name Cn
     /// Pi with codom thorin::Bot%tom
     ///@{
+    // clang-format off
     const Pi* cn() { return cn(sigma()); }
-    const Pi* cn(Ref dom) { return pi(dom, type_bot()); }
-    const Pi* cn(Defs doms) { return cn(sigma(doms)); }
+    const Pi* cn(Ref  dom            ) { return pi(      dom ,         Bot()); }
+    const Pi* cn(Defs dom            ) { return cn(sigma(dom)               ); }
+    const Pi* fn(Ref  dom, Ref  codom) { return cn({     dom ,    cn(codom)}); }
+    const Pi* fn(Defs dom, Ref  codom) { return fn(sigma(dom),        codom ); }
+    const Pi* fn(Ref  dom, Defs codom) { return fn(      dom ,  sigma(codom)); }
+    const Pi* fn(Defs dom, Defs codom) { return fn(sigma(dom ), sigma(codom)); }
+    // clang-format on
     ///@}
 
     /// @name Lam
@@ -252,7 +260,29 @@ public:
         return std::get<const Def*>(filter);
     }
     const Lam* lam(const Pi* pi, Lam::Filter f, Ref body) { return unify<Lam>(2, pi, filter(f), body); }
-    Lam* mut_lam(const Pi* cn) { return insert<Lam>(2, cn); }
+    Lam* mut_lam(const Pi* pi) { return insert<Lam>(2, pi); }
+    // clang-format off
+    const Lam* con(Ref  dom,             Lam::Filter f, Ref body) { return unify<Lam>(2, cn(dom        ), filter(f), body); }
+    const Lam* con(Defs dom,             Lam::Filter f, Ref body) { return unify<Lam>(2, cn(dom        ), filter(f), body); }
+    const Lam* lam(Ref  dom, Ref  codom, Lam::Filter f, Ref body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
+    const Lam* lam(Defs dom, Ref  codom, Lam::Filter f, Ref body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
+    const Lam* lam(Ref  dom, Defs codom, Lam::Filter f, Ref body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
+    const Lam* lam(Defs dom, Defs codom, Lam::Filter f, Ref body) { return unify<Lam>(2, pi(dom,  codom), filter(f), body); }
+    const Lam* fun(Ref  dom, Ref  codom, Lam::Filter f, Ref body) { return unify<Lam>(2, fn(dom , codom), filter(f), body); }
+    const Lam* fun(Defs dom, Ref  codom, Lam::Filter f, Ref body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
+    const Lam* fun(Ref  dom, Defs codom, Lam::Filter f, Ref body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
+    const Lam* fun(Defs dom, Defs codom, Lam::Filter f, Ref body) { return unify<Lam>(2, fn(dom,  codom), filter(f), body); }
+    Lam* mut_con(Ref  dom            ) { return insert<Lam>(2, cn(dom       )); }
+    Lam* mut_con(Defs dom            ) { return insert<Lam>(2, cn(dom       )); }
+    Lam* mut_lam(Ref  dom, Ref  codom) { return insert<Lam>(2, pi(dom, codom)); }
+    Lam* mut_lam(Defs dom, Ref  codom) { return insert<Lam>(2, pi(dom, codom)); }
+    Lam* mut_lam(Ref  dom, Defs codom) { return insert<Lam>(2, pi(dom, codom)); }
+    Lam* mut_lam(Defs dom, Defs codom) { return insert<Lam>(2, pi(dom, codom)); }
+    Lam* mut_fun(Ref  dom, Ref  codom) { return insert<Lam>(2, fn(dom, codom)); }
+    Lam* mut_fun(Defs dom, Ref  codom) { return insert<Lam>(2, fn(dom, codom)); }
+    Lam* mut_fun(Ref  dom, Defs codom) { return insert<Lam>(2, fn(dom, codom)); }
+    Lam* mut_fun(Defs dom, Defs codom) { return insert<Lam>(2, fn(dom, codom)); }
+    // clang-format on
     Lam* exit() { return data_.exit; } ///< Used as a dummy exit node within Scope.
     ///@}
 
@@ -339,6 +369,12 @@ public:
     const Lit* lit_nat_1() { return data_.lit_nat_1; }
     const Lit* lit_nat_max() { return data_.lit_nat_max; }
     const Lit* lit_0_1() { return data_.lit_0_1; }
+    // clang-format off
+    const Lit* lit_i1()  { return lit_nat(Idx::bitwidth2size( 1)); };
+    const Lit* lit_i8()  { return lit_nat(Idx::bitwidth2size( 8)); };
+    const Lit* lit_i16() { return lit_nat(Idx::bitwidth2size(16)); };
+    const Lit* lit_i32() { return lit_nat(Idx::bitwidth2size(32)); };
+    const Lit* lit_i64() { return lit_nat(Idx::bitwidth2size(64)); };
     /// Constructs a Lit of type Idx of size @p size.
     /// @note `size = 0` means `2^64`.
     const Lit* lit_idx(nat_t size, u64 val) { return lit(type_idx(size), val); }
@@ -351,6 +387,14 @@ public:
     /// Constructs a Lit @p of type Idx of size $2^width$.
     /// `val = 64` will be automatically converted to size `0` - the encoding for $2^64$.
     const Lit* lit_int(nat_t width, u64 val) { return lit_idx(Idx::bitwidth2size(width), val); }
+    const Lit* lit_i1 (bool val) { return lit_int( 1, u64(val)); }
+    const Lit* lit_i2 (u8   val) { return lit_int( 2, u64(val)); }
+    const Lit* lit_i4 (u8   val) { return lit_int( 4, u64(val)); }
+    const Lit* lit_i8 (u8   val) { return lit_int( 8, u64(val)); }
+    const Lit* lit_i16(u16  val) { return lit_int(16, u64(val)); }
+    const Lit* lit_i32(u32  val) { return lit_int(32, u64(val)); }
+    const Lit* lit_i64(u64  val) { return lit_int(64, u64(val)); }
+    // clang-format on
 
     /// Constructs a Lit of type Idx of size @p mod.
     /// The value @p val will be adjusted modulo @p mod.
@@ -369,7 +413,7 @@ public:
     Ref ext(Ref type);
     Ref bot(Ref type) { return ext<false>(type); }
     Ref top(Ref type) { return ext<true>(type); }
-    Ref type_bot() { return data_.type_bot; }
+    Ref Bot() { return data_.Bot; }
     Ref top_nat() { return data_.top_nat; }
     template<bool Up> TBound<Up>* mut_bound(Ref type, size_t size) { return insert<TBound<Up>>(size, type, size); }
     /// A *mut*able Bound of Type @p l%evel.
@@ -409,7 +453,16 @@ public:
     /// Constructs a type Idx of size $2^width$.
     /// `width = 64` will be automatically converted to size `0` - the encoding for $2^64$.
     Ref type_int(nat_t width) { return type_idx(lit_nat(Idx::bitwidth2size(width))); }
+    // clang-format off
     Ref type_bool() { return data_.type_bool; }
+    Ref type_i1()   { return data_.type_bool; }
+    Ref type_i2()   { return type_int( 2);    };
+    Ref type_i4()   { return type_int( 4);    };
+    Ref type_i8()   { return type_int( 8);    };
+    Ref type_i16()  { return type_int(16);    };
+    Ref type_i32()  { return type_int(32);    };
+    Ref type_i64()  { return type_int(64);    };
+    // clang-format on
     ///@}
 
     /// @name Cope with implicit Arguments
@@ -585,7 +638,7 @@ private:
         const Univ* univ;
         const Type* type_0;
         const Type* type_1;
-        const Bot* type_bot;
+        const thorin::Bot* Bot;
         const Def* type_bool;
         const Top* top_nat;
         const Sigma* sigma;

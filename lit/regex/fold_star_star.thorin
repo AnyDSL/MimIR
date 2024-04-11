@@ -5,11 +5,10 @@
 
 .import dont_compile.thorin;
 
-.let i8 = .Idx 256;
+.let i8 = .I8;
 .let Top = ⊤:.Nat;
 
-.con .extern fold_star_star(mem: %mem.M, string: %mem.Ptr (<<Top; %core.I8>>, 0), return: .Cn [%mem.M, .Bool, %core.I32]) = {
+.con .extern fold_star_star(mem: %mem.M, string: %mem.Ptr (<<Top; .I8>>, 0), return: .Cn [%mem.M, .Bool, .I32]) =
     .let pattern = %regex.quant.star (%regex.quant.star (%regex.cls.d));
-    return (pattern (mem, string, 0:%core.I32))
-    // CHECK: %regex.quant.star %regex.range (48:(.Idx 256), 57:(.Idx 256))
-};
+    return (pattern (mem, string, 0I32));
+    // CHECK: %regex.quant.star %regex.range (48I8, 57I8)

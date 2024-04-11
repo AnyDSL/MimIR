@@ -7,4 +7,4 @@
 .lam is_odd (i: .Nat): .Bool = (is_even(%core.nat.sub (i, 1)), .ff)#(%core.ncmp.e (i, 0));
 
 .fun .extern f(): .Bool = return (is_even 4);
-// CHECK-DAG: return{{.*}}1:(.Idx 2)
+// CHECK-DAG: return{{.*}}.tt

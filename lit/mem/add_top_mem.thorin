@@ -3,9 +3,9 @@
 
 .plugin core;
 
-.con .extern f [mem: %mem.M, a: %core.I32, ret: .Cn [%mem.M, %core.I32]] = ret (mem, a);
+.con .extern f [mem: %mem.M, a: .I32, ret: .Cn [%mem.M, .I32]] = ret (mem, a);
 
-.con .extern main [mem : %mem.M, argc : %core.I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, %core.I32]] = {
+.con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I8, 0), 0), return : .Cn [%mem.M, .I32]] = {
     f (⊤:%mem.M, argc,return)
 };
 

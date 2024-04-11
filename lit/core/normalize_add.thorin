@@ -3,22 +3,20 @@
 
 .plugin core;
 
-.con .extern add0 [i :%core.I8, return : .Cn %core.I8] = {
-    return (%core.wrap.add 0 (i, 0:(%core.I8)))
-};
+.con .extern add0 [i :.I8, return : .Cn .I8] =
+    return (%core.wrap.add 0 (i, 0I8));
 
-// CHECK-DAG: add0 _{{[0-9_]+}}::[i_[[valId:[0-9_]+]]: .Idx 256, return_[[retId:[0-9_]+]]: .Cn .Idx 256]
+// CHECK-DAG: add0 _{{[0-9_]+}}::[i_[[valId:[0-9_]+]]: .I8, return_[[retId:[0-9_]+]]: .Cn .I8]
 // CHECK-DAG: return_[[etaId:[0-9_]+]] i_[[valId]]
 
-// CHECK-DAG: return_[[etaId]] _[[etaVar:[0-9_]+]]: .Idx 256
+// CHECK-DAG: return_[[etaId]] _[[etaVar:[0-9_]+]]: .I8
 // CHECK-DAG: return_[[retId]] _[[etaVar]]
 
-.con .extern add_lit [return : .Cn %core.I8] = {
-    return (%core.wrap.add 0 (6 : (%core.I8), 0:(%core.I8)))
-};
+.con .extern add_lit [return : .Cn .I8] =
+    return (%core.wrap.add 0 (6I8, 0I8));
 
-// CHECK-DAG: add_lit _[[retId:[0-9_]+]]: .Cn .Idx 256
-// CHECK-DAG: _[[etaId:[0-9_]+]] 6:(.Idx 256)
+// CHECK-DAG: add_lit _[[retId:[0-9_]+]]: .Cn .I8
+// CHECK-DAG: _[[etaId:[0-9_]+]] 6I8
 
-// CHECK-DAG: _[[etaId]] _[[etaVar:[0-9_]+]]: .Idx 256
+// CHECK-DAG: _[[etaId]] _[[etaVar:[0-9_]+]]: .I8
 // CHECK-DAG: _[[retId]] _[[etaVar]]

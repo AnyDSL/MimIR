@@ -8,8 +8,8 @@
 .lam .extern d(x: .Idx 23) = %core.icmp.ne  (x, x);
 .lam .extern e(x: .Idx 23) = %core.icmp.ne  (x, 7_23);
 
-// CHECK-DAG: 1:(.Idx 2)
-// CHECK-DAG: 1:(.Idx 2)
+// CHECK-DAG: .tt
+// CHECK-DAG: .tt
 // CHECK-DAG: icmp
-// CHECK-DAG: 0:(.Idx 2)
+// CHECK-DAG: .ff
 // CHECK-DAG: icmp

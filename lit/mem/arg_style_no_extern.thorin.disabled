@@ -6,78 +6,78 @@
 
 .plugin core;
 
-.let Tas = (%core.I32, 0);
+.let Tas = (.I32, 0);
 
-.con f1 [mem: %mem.M, a: %core.I32, ret: .Cn [%mem.M, %core.I32]] = {
+.con f1 [mem: %mem.M, a: .I32, ret: .Cn [%mem.M, .I32]] = {
     ret (mem,a)
 };
 
-.con f2 [[mem: %mem.M, a: %core.I32], ret: .Cn [%mem.M, %core.I32]] = {
+.con f2 [[mem: %mem.M, a: .I32], ret: .Cn [%mem.M, .I32]] = {
     ret (mem,a)
 };
 
-.con g1 [mem: %mem.M, a: %core.I32, b:%core.%core.I32, ret: .Cn [%mem.M, %core.I32]] = {
+.con g1 [mem: %mem.M, a: .I32, b:%core..I32, ret: .Cn [%mem.M, .I32]] = {
     .let c = %core.wrap.add 0 (a,b);
     ret (mem,c)
 };
 
-.con g2 [[mem: %mem.M, a: %core.I32, b:%core.%core.I32], ret: .Cn [%mem.M, %core.I32]] = {
+.con g2 [[mem: %mem.M, a: .I32, b:%core..I32], ret: .Cn [%mem.M, .I32]] = {
     .let c = %core.wrap.add 0 (a,b);
     ret (mem,c)
 };
 
-.con g3 [[mem: %mem.M, [a: %core.I32, b:%core.%core.I32]], ret: .Cn [%mem.M, %core.I32]] = {
+.con g3 [[mem: %mem.M, [a: .I32, b:%core..I32]], ret: .Cn [%mem.M, .I32]] = {
     .let c = %core.wrap.add 0 (a,b);
     ret (mem,c)
 };
 
-.con g4 [mem: %mem.M, [a: %core.I32, b:%core.%core.I32], ret: .Cn [%mem.M, %core.I32]] = {
+.con g4 [mem: %mem.M, [a: .I32, b:%core..I32], ret: .Cn [%mem.M, .I32]] = {
     .let c = %core.wrap.add 0 (a,b);
     ret (mem,c)
 };
 
-.con h1 [mem: %mem.M, a: %core.I32, x:%mem.Ptr (%core.I32, 0), ret: .Cn [%mem.M, %core.I32]] = {
+.con h1 [mem: %mem.M, a: .I32, x:%mem.Ptr (.I32, 0), ret: .Cn [%mem.M, .I32]] = {
     ret (mem,a)
 };
 
-.con h2 [mem: %mem.M, [a: %core.I32, x:%mem.Ptr (%core.I32, 0)], ret: .Cn [%mem.M, %core.I32]] = {
+.con h2 [mem: %mem.M, [a: .I32, x:%mem.Ptr (.I32, 0)], ret: .Cn [%mem.M, .I32]] = {
     ret (mem,a)
 };
 
-.con h3 [[mem: %mem.M, a: %core.I32, x:%mem.Ptr (%core.I32, 0)], ret: .Cn [%mem.M, %core.I32]] = {
+.con h3 [[mem: %mem.M, a: .I32, x:%mem.Ptr (.I32, 0)], ret: .Cn [%mem.M, .I32]] = {
     ret (mem,a)
 };
 
-.con h4 [[mem: %mem.M, [a: %core.I32, x:%mem.Ptr (%core.I32, 0)]], ret: .Cn [%mem.M, %core.I32]] = {
+.con h4 [[mem: %mem.M, [a: .I32, x:%mem.Ptr (.I32, 0)]], ret: .Cn [%mem.M, .I32]] = {
     ret (mem,a)
 };
 
-.con e1 [mem: %mem.M, a: %core.I32, [], ret: .Cn [%mem.M, %core.I32]] = {
+.con e1 [mem: %mem.M, a: .I32, [], ret: .Cn [%mem.M, .I32]] = {
     ret (mem,a)
 };
 
-.con e2 [mem: %mem.M, [a: %core.I32, []], ret: .Cn [%mem.M, %core.I32]] = {
+.con e2 [mem: %mem.M, [a: .I32, []], ret: .Cn [%mem.M, .I32]] = {
     ret (mem,a)
 };
 
-.con e3 [[mem: %mem.M, [a: %core.I32, []]], ret: .Cn [%mem.M, %core.I32]] = {
+.con e3 [[mem: %mem.M, [a: .I32, []]], ret: .Cn [%mem.M, .I32]] = {
     ret (mem,a)
 };
 
-// .con i1 [[], ret: .Cn [%mem.M, %core.I32]] = {
-//     ret (mem,42:%core.I32)
+// .con i1 [[], ret: .Cn [%mem.M, .I32]] = {
+//     ret (mem,42I32
 // };
 
-.con .extern main [mem : %mem.M, argc : %core.I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, %core.I32]] = {
-    
+.con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I8, 0), 0), return : .Cn [%mem.M, .I32]] = {
+
     .let a = argc;
     .let (mem2,p) = %mem.alloc Tas mem;
 
-    .con cont [mem:%mem.M, v:%core.%core.I32] = {
+    .con cont [mem:%mem.M, v:%core..I32] = {
         .let a = v;
         .let cont = return;
         .let mem2 = mem;
-            
+
         #if 0
         // f1 (mem, v, return)
         // f2 ((mem, v), return)

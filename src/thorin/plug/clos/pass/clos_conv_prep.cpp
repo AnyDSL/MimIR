@@ -8,7 +8,7 @@ namespace thorin::plug::clos {
 
 namespace {
 // FIXME: these guys do not work if another pass rewrites curr_mut()'s body
-bool isa_cont(const App* body, Ref def, size_t i) {
+bool isa_cnt(const App* body, Ref def, size_t i) {
     return Pi::isa_returning(body->callee_type()) && body->arg() == def && i == def->num_ops() - 1;
 }
 
@@ -80,7 +80,7 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
             w.DLOG("found BB from enclosing scope {}", op);
             return refine(w.call(attr::freeBB, op));
         }
-        if (isa_cont(app, arg, i)) {
+        if (isa_cnt(app, arg, i)) {
             if (match<attr>(attr::ret, op) || isa_retvar(op)) {
                 return app;
             } else if (auto contlam = op->isa_mut<Lam>()) {

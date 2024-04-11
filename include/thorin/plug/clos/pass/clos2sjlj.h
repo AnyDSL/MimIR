@@ -24,7 +24,7 @@ private:
     Ref void_ptr() { return world().annex<clos::BufPtr>(); }
     Ref jb_type() { return void_ptr(); }
     Ref rb_type() { return world().call<mem::Ptr0>(void_ptr()); }
-    Ref tag_type() { return world().type_int(32); }
+    Ref tag_type() { return world().type_i32(); }
 
     Lam* get_throw(Ref res_type);
     Lam* get_lpad(Lam* lam, Ref rb);

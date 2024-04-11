@@ -61,6 +61,7 @@ int main(int argc, char** argv) {
             | lyra::opt(output[LL    ], "file"                )      ["--output-ll"             ]("Compiles the Thorin program to LLVM.")
             | lyra::opt(output[Md    ], "file"                )      ["--output-md"             ]("Emits the input formatted as Markdown.")
             | lyra::opt(output[Thorin], "file"                )["-o"]["--output-thorin"         ]("Emits the Thorin program again.")
+            | lyra::opt(flags.ascii                           )["-a"]["--ascii"                 ]("Use ASCII alternatives in output instead of UTF-8.")
             | lyra::opt(flags.bootstrap                       )      ["--bootstrap"             ]("Puts thorin into \"bootstrap mode\". This means a '.plugin' directive has the same effect as an '.import' and will not load a library. In addition, no standard plugins will be loaded.")
             | lyra::opt(dot_follow_types                      )      ["--dot-follow-types"      ]("Follow type dependencies in DOT output.")
             | lyra::opt(dot_all_annexes                       )      ["--dot-all-annexes"       ]("Output all annexes - even if unused - in DOT output.")

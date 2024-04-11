@@ -4,22 +4,22 @@
 .plugin core;
 .plugin matrix;
 
-.let MT = (2, (2,4), %core.I32);
-.let MT2 = (2, (4,2), %core.I32);
+.let MT = (2, (2,4), .I32);
+.let MT2 = (2, (4,2), .I32);
 
-.con .extern cont [mem : %mem.M, m : (%matrix.Mat MT), return : .Cn [%mem.M, %core.I32]] = {
-    .let (mem2,m2) = %matrix.transpose ((2,4), %core.I32) (mem,m);
+.con .extern cont [mem : %mem.M, m : (%matrix.Mat MT), return : .Cn [%mem.M, .I32]] = {
+    .let (mem2,m2) = %matrix.transpose ((2,4), .I32) (mem,m);
     .let idx2 = (3_4, 1_2);
-    .let (mem3,d) = %matrix.read MT2 (mem2,m2, idx2);
+    .let (mem3,d) = %matrix.read MT2 (mem2, m2, idx2);
 
-    // .let idx = (1:(.Idx 2),3:(.Idx 4));
+    // .let idx = (.tt,3:(.Idx 4));
     // .let d = %matrix.read MT (m, idx);
     return (mem3, d)
 };
 
 
-.con .extern main [mem : %mem.M, argc : %core.I32, argv : %mem.Ptr (%mem.Ptr (%core.I8, 0), 0), return : .Cn [%mem.M, %core.I32]] =
-    .let c = 5:%core.I32;
+.con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I8, 0), 0), return : .Cn [%mem.M, .I32]] =
+    .let c = 5I32;
     .let (mem2,m) = %matrix.constMat MT (mem,c);
     cont (mem2, m, return);
 

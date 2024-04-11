@@ -104,11 +104,17 @@ using RPrec = LRPrec<false>;
 
 std::ostream& operator<<(std::ostream& os, Inline u) {
     if (u.dump_gid_ == 2 || (u.dump_gid_ == 1 && !u->isa<Var>() && u->num_ops() != 0)) print(os, "/*{}*/", u->gid());
-
     if (auto mut = u->isa_mut(); mut && !mut->is_set()) return os << "unset";
 
+    bool ascii = u->world().flags().ascii;
+    auto arw   = ascii ? "->" : "→";
+    auto al    = ascii ? "<<" : "«";
+    auto ar    = ascii ? ">>" : "»";
+    auto pl    = ascii ? "(<" : "‹";
+    auto pr    = ascii ? ">)" : "›";
+
     if (auto type = u->isa<Type>()) {
-        if (auto level = Lit::isa(type->level())) {
+        if (auto level = Lit::isa(type->level()); level && !ascii) {
             if (level == 0) return print(os, "★");
             if (level == 1) return print(os, "□");
         }
@@ -118,16 +124,52 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
     } else if (u->isa<Idx>()) {
         return print(os, ".Idx");
     } else if (auto ext = u->isa<Ext>()) {
-        auto x = ext->isa<Bot>() ? "⊥" : "⊤";
+        auto x = ext->isa<Bot>() ? (ascii ? ".bot" : "⊥") : (ascii ? ".top" : "⊤");
         if (ext->type()->isa<Nat>()) return print(os, "{}:{}", x, ext->type());
         return print(os, "{}:({})", x, ext->type());
     } else if (auto top = u->isa<Top>()) {
-        return print(os, "⊤:({})", top->type());
+        return print(os, "{}:({})", ascii ? ".top" : "⊤", top->type());
     } else if (auto axiom = u->isa<Axiom>()) {
         const auto name = axiom->sym();
         return print(os, "{}{}", name[0] == '%' ? "" : "%", name);
     } else if (auto lit = u->isa<Lit>()) {
-        if (lit->type()->isa<Nat>()) return print(os, "{}", lit->get());
+        if (lit->type()->isa<Nat>()) {
+            switch (lit->get()) {
+                    // clang-format off
+                case 0x0'0000'0100_n: return os << ".i8";
+                case 0x0'0001'0000_n: return os << ".i16";
+                case 0x1'0000'0000_n: return os << ".i32";
+                // clang-format on
+                default: return print(os, "{}", lit->get());
+            }
+        } else if (auto size = Idx::size(lit->type())) {
+            if (auto s = Lit::isa(size)) {
+                switch (*s) {
+                        // clang-format off
+                    case 0x0'0000'0002_n: return os << (lit->get<bool>() ? ".tt" : ".ff");
+                    case 0x0'0000'0100_n: return os << lit->get() << "I8";
+                    case 0x0'0001'0000_n: return os << lit->get() << "I16";
+                    case 0x1'0000'0000_n: return os << lit->get() << "I32";
+                    case             0_n: return os << lit->get() << "I64";
+                    default: {
+                        os << lit->get();
+                        std::vector<uint8_t> digits;
+                        for (auto z = *s; z; z /= 10) digits.emplace_back(z % 10);
+
+                        if (ascii) {
+                            os << '_';
+                            for (auto d : digits | std::ranges::views::reverse)
+                                os << char('0' + d);
+                        } else {
+                            for (auto d : digits | std::ranges::views::reverse)
+                                os << uint8_t(0xE2) << uint8_t(0x82) << (uint8_t(0x80 + d));
+                        }
+                        return os;
+                    }
+                        // clang-format on
+                }
+            }
+        }
         if (lit->type()->isa<App>()) return print(os, "{}:({})", lit->get(), lit->type()); // HACK prec magic is broken
         return print(os, "{}:{}", lit->get(), lit->type());
     } else if (auto ex = u->isa<Extract>()) {
@@ -138,11 +180,25 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
     } else if (auto pi = u->isa<Pi>()) {
         if (Pi::isa_cn(pi)) return print(os, ".Cn {}", pi->dom());
         if (auto mut = pi->isa_mut<Pi>(); mut && mut->var())
-            return print(os, "Π {}: {} → {}", mut->var(), pi->dom(), pi->codom());
-        return print(os, "Π {} → {}", pi->dom(), pi->codom());
+            return print(os, "Π {}: {} {} {}", mut->var(), pi->dom(), arw, pi->codom());
+        return print(os, "Π {} {} {}", pi->dom(), arw, pi->codom());
     } else if (auto lam = u->isa<Lam>()) {
         return print(os, "{}, {}", lam->filter(), lam->body());
     } else if (auto app = u->isa<App>()) {
+        if (auto size = Idx::size(app)) {
+            if (auto l = Lit::isa(size)) {
+                switch (*l) {
+                        // clang-format off
+                    case 0x0'0000'0002_n: return os << ".Bool";
+                    case 0x0'0000'0100_n: return os << ".I8";
+                    case 0x0'0001'0000_n: return os << ".I16";
+                    case 0x1'0000'0000_n: return os << ".I32";
+                    case             0_n: return os << ".I64";
+                    default: break;
+                        // clang-format on
+                }
+            }
+        }
         return print(os, "{} {}", LPrec(app->callee(), app), RPrec(app, app->arg()));
     } else if (auto sigma = u->isa<Sigma>()) {
         if (auto mut = sigma->isa_mut<Sigma>(); mut && mut->var()) {
@@ -160,16 +216,16 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         return tuple->type()->isa_mut() ? print(os, ":{}", tuple->type()) : os;
     } else if (auto arr = u->isa<Arr>()) {
         if (auto mut = arr->isa_mut<Arr>(); mut && mut->var())
-            return print(os, "«{}: {}; {}»", mut->var(), mut->shape(), mut->body());
-        return print(os, "«{}; {}»", arr->shape(), arr->body());
+            return print(os, "{}{}: {}; {}{}", al, mut->var(), mut->shape(), mut->body(), ar);
+        return print(os, "{}{}; {}{}", al, arr->shape(), arr->body(), ar);
     } else if (auto pack = u->isa<Pack>()) {
         if (auto mut = pack->isa_mut<Pack>(); mut && mut->var())
-            return print(os, "‹{}: {}; {}›", mut->var(), mut->shape(), mut->body());
-        return print(os, "‹{}; {}›", pack->shape(), pack->body());
+            return print(os, "{}{}: {}; {}{}", pl, mut->var(), mut->shape(), mut->body(), pr);
+        return print(os, "{}{}; {}{}", pl, pack->shape(), pack->body(), pr);
     } else if (auto proxy = u->isa<Proxy>()) {
         return print(os, ".proxy#{}#{} {, }", proxy->pass(), proxy->tag(), proxy->ops());
     } else if (auto bound = u->isa<Bound>()) {
-        auto op = bound->isa<Join>() ? "∪" : "∩";
+        auto op = bound->isa<Join>() ? "∪" : "∩"; // TODO ascii
         if (auto mut = u->isa_mut()) print(os, "{}{}: {}", op, mut->unique_name(), mut->type());
         return print(os, "{}({, })", op, bound->ops());
     }

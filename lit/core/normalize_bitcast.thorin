@@ -4,14 +4,14 @@
 
 .plugin core;
 
-.con .extern bitcast_bitcast(i : %mem.Ptr (%core.I8, 0), return: .Cn %core.I32) = {
-    return (%core.bitcast (%core.I32) (%core.bitcast .Nat i))
+.con .extern bitcast_bitcast(i : %mem.Ptr (.I8, 0), return: .Cn .I32) = {
+    return (%core.bitcast (.I32) (%core.bitcast .Nat i))
 };
 
 // TODO parenthesis in output broken for bitcast
-// CHECK-DAG: bitcast_bitcast _{{[0-9_]+}}::[i_[[valId:[0-9_]+]]: %mem.Ptr (.Idx 256, 0), return_[[retId:[0-9_]+]]: .Cn .Idx 4294967296]{{(@.*)?}}= {
-// CHECK-DAG: .let _[[castedId:[0-9_]+]]: .Idx 4294967296 = %core.bitcast %mem.Ptr (.Idx 256, 0) .Idx 4294967296 i_[[valId]];
+// CHECK-DAG: bitcast_bitcast _{{[0-9_]+}}::[i_[[valId:[0-9_]+]]: %mem.Ptr (.I8, 0), return_[[retId:[0-9_]+]]: .Cn .I32]{{(@.*)?}}= {
+// CHECK-DAG: .let _[[castedId:[0-9_]+]]: .I32 = %core.bitcast %mem.Ptr (.I8, 0) .I32 i_[[valId]];
 // CHECK-DAG: return_[[etaId:[0-9_]+]] _[[castedId]]
 
-// CHECK-DAG: return_[[etaId]] _[[etaVar:[0-9_]+]]: .Idx 4294967296{{(@.*)?}}= {
+// CHECK-DAG: return_[[etaId]] _[[etaVar:[0-9_]+]]: .I32{{(@.*)?}}= {
 // CHECK-DAG: return_[[retId]] _[[etaVar]]

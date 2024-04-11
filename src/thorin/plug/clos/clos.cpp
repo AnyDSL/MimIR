@@ -90,8 +90,8 @@ std::tuple<Ref, Ref, Ref> clos_unpack(Ref c) {
     // auto& w       = c->world();
     // auto env_type = c->proj(0_u64);
     // // auto pi       = clos_type_to_pi(c->type(), env_type);
-    // auto fn       = w.extract(c, w.lit_int(3, 1));
-    // auto env      = w.extract(c, w.lit_int(3, 2));
+    // auto fn       = w.extract(c, w.lit_idx(3, 1));
+    // auto env      = w.extract(c, w.lit_idx(3, 2));
     // return {env_type, fn, env};
     auto [ty, pi, env] = c->projs<3>();
     return {ty, pi, env};

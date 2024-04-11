@@ -30,8 +30,7 @@ Ref LamSpec::rewrite(Ref def) {
     if (skip) new_doms.emplace_back(old_lam->doms().back());
     if (new_doms.size() == old_lam->num_doms()) return def;
 
-    auto new_pi  = world().cn(world().sigma(new_doms));
-    auto new_lam = old_lam->stub(new_pi);
+    auto new_lam = old_lam->stub(world().cn(new_doms));
 
     for (size_t arg_i = 0, var_i = 0, n = app->num_args() - skip; arg_i != n; ++arg_i) {
         auto arg = app->arg(arg_i);

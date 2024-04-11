@@ -10,7 +10,7 @@
 .lam .extern h0() = f0(23, 42);
 .lam .extern h1() = f1(23, 42);
 
-// CHECK-DAG: 23:(.Idx 42)
-// CHECK-DAG: 23:(.Idx 42)
-// CHECK-DAG: 19:(.Idx 23)
+// CHECK-DAG: 23₄₂
+// CHECK-DAG: 23₄₂
+// CHECK-DAG: 19₂₃
 // CHECK-DAG:  ⊥:(.Idx 23)

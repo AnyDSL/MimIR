@@ -18,7 +18,7 @@ inline const Def* op_cps2ds_dep(const Def* f) {
     world.DLOG("T: {}", T);
     world.DLOG("U: {}", U);
 
-    auto Uf = world.mut_lam(world.pi(T, world.type()))->set("Uf");
+    auto Uf = world.mut_lam(T, world.type())->set("Uf");
     world.DLOG("Uf: {} : {}", Uf, Uf->type());
 
     const Def* rewritten_codom;
