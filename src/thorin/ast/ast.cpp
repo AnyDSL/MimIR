@@ -28,6 +28,7 @@ Ptr<Ptrn> Ptrn::to_ptrn(Ptr<Expr>&& expr) {
 
 void Module::compile(AST& ast, World& world) const {
     bind(ast);
+    if (ast.error().num_errors) throw ast.error();
     emit(ast, world);
 }
 

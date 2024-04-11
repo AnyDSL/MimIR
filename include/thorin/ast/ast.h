@@ -31,6 +31,7 @@ public:
         , sym_return_(sym("return")) {}
 
     Driver& driver() { return driver_; }
+    const Error& error() { return err_; }
 
     /// @name Sym
     ///@{
@@ -47,30 +48,19 @@ public:
 
     /// @name Formatted Output
     ///@{
-    /// Prefixes error message with `<location>: error: `.
-    template<class... Args> void error(Loc loc, const char* fmt, Args&&... args) const {
-        ++num_errors_;
-        print(std::cerr, "{}{}: {}error: {}", rang::fg::yellow, loc, rang::fg::red, rang::fg::reset);
-        println(std::cerr, fmt, std::forward<Args&&>(args)...);
-    }
-    template<class... Args> void warn(Loc loc, const char* fmt, Args&&... args) const {
-        ++num_warnings_;
-        print(std::cerr, "{}{}: {}warning: {}", rang::fg::yellow, loc, rang::fg::magenta, rang::fg::reset);
-        println(std::cerr, fmt, std::forward<Args&&>(args)...);
-    }
-    template<class... Args> void note(Loc loc, const char* fmt, Args&&... args) const {
-        print(std::cerr, "{}{}: {}note: {}", rang::fg::yellow, loc, rang::fg::green, rang::fg::reset);
-        println(std::cerr, fmt, std::forward<Args&&>(args)...);
-    }
+    // clang-format off
+    template<class... Args> Error& error(Loc loc, const char* fmt, Args&&... args) const { return err_.error(loc, fmt, std::forward<Args&&>(args)...); }
+    template<class... Args> Error& warn (Loc loc, const char* fmt, Args&&... args) const { return err_.warn (loc, fmt, std::forward<Args&&>(args)...); }
+    template<class... Args> Error& note (Loc loc, const char* fmt, Args&&... args) const { return err_.note (loc, fmt, std::forward<Args&&>(args)...); }
+    // clang-format on
     ///@}
 
 private:
-    mutable int num_errors_   = 0;
-    mutable int num_warnings_ = 0;
     Driver& driver_;
     fe::Arena arena_;
     Sym sym_anon_;
     Sym sym_return_;
+    mutable Error err_;
 };
 
 class Node : public fe::RuntimeCast<Node> {

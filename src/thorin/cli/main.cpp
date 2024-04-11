@@ -189,7 +189,7 @@ int main(int argc, char** argv) {
                     error("'ll' emitter not loaded; try loading 'mem' plugin");
             }
         } catch (const Error& e) { // e.loc.path doesn't exist anymore in outer scope so catch Error here
-            errln("{}{}: {}error:{} {}", rang::fg::yellow, e.loc, rang::fg::red, rang::fg::reset, e.what());
+            std::cerr << e;
             return EXIT_FAILURE;
         }
     } catch (const std::exception& e) {

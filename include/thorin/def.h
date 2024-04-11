@@ -614,15 +614,6 @@ std::ostream& operator<<(std::ostream&, const Def*);
 std::ostream& operator<<(std::ostream&, Ref);
 ///@}
 
-/// @name Formatted Output
-///@{
-/// Uses @p def->loc() as Loc%ation.
-template<class T = std::logic_error, class... Args>
-[[noreturn]] void error(const Def* def, const char* fmt, Args&&... args) {
-    error(def->loc(), fmt, std::forward<Args&&>(args)...);
-}
-///@}
-
 /// @name DefDef
 ///@{
 using DefDef = std::tuple<const Def*, const Def*>;

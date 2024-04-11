@@ -90,14 +90,16 @@ const Def* World::register_annex(flags_t f, const Def* def) {
 
 const Type* World::type(Ref level) {
     if (!level->type()->isa<Univ>())
-        error(level, "argument `{}` to `.Type` must be of type `.Univ` but is of type `{}`", level, level->type());
+        error(level->loc(), "argument `{}` to `.Type` must be of type `.Univ` but is of type `{}`", level,
+              level->type());
 
     return unify<Type>(1, level)->as<Type>();
 }
 
 Ref World::uinc(Ref op, level_t offset) {
     if (!op->type()->isa<Univ>())
-        error(op, "operand '{}' of a universe increment must be of type `.Univ` but is of type `{}`", op, op->type());
+        error(op->loc(), "operand '{}' of a universe increment must be of type `.Univ` but is of type `{}`", op,
+              op->type());
 
     if (auto l = Lit::isa(op)) return lit_univ(*l + 1);
     return unify<UInc>(1, op, offset);
@@ -121,11 +123,11 @@ template<Sort sort> Ref World::umax(Defs ops_) {
             if (auto type = r->isa<Type>())
                 r = type->level();
             else
-                error(r, "operand '{}' must be a .Type of some level", r);
+                error(r->loc(), "operand '{}' must be a .Type of some level", r);
         }
 
         if (!r->type()->isa<Univ>())
-            error(r, "operand '{}' of a universe max must be of type '.Univ' but is of type '{}'", r, r->type());
+            error(r->loc(), "operand '{}' of a universe max must be of type '.Univ' but is of type '{}'", r, r->type());
 
         op = r;
 
@@ -183,10 +185,15 @@ Ref World::app(Ref callee, Ref arg) {
     Infer::eliminate(Vector<Ref*>{&callee, &arg});
     auto pi = callee->type()->isa<Pi>();
 
-    if (!pi) error(callee, "called expression '{}' : '{}' is not of function type", callee, callee->type());
-    if (!Check::assignable(pi->dom(), arg))
-        error(arg, "cannot pass argument \n'{}' of type \n'{}' to \n'{}' of domain \n'{}'", arg, arg->type(), callee,
-              pi->dom());
+    if (!pi) error(callee->loc(), "called expression '{}' : '{}' is not of function type", callee, callee->type());
+    if (!Check::assignable(pi->dom(), arg)) {
+        throw Error()
+            .error(arg->loc(), "cannot apply argument to callee")
+            .note(arg->loc(), "argument: '{}'", arg)
+            .note(arg->loc(), "type: '{}'", arg->type())
+            .note(arg->loc(), "callee: '{}'", callee)
+            .note(arg->loc(), "type: '{}'", pi);
+    }
 
     if (auto imm = callee->isa_imm<Lam>()) return imm->body();
     if (auto lam = callee->isa_mut<Lam>(); lam && lam->is_set() && lam->filter() != lit_ff()) {
@@ -228,7 +235,7 @@ Ref World::tuple(Defs ops) {
     auto sigma = infer_sigma(*this, ops);
     auto t     = tuple(sigma, ops);
     if (!Check::assignable(sigma, t))
-        error(t, "cannot assign tuple '{}' of type '{}' to incompatible tuple type '{}'", t, t->type(), sigma);
+        error(t->loc(), "cannot assign tuple '{}' of type '{}' to incompatible tuple type '{}'", t, t->type(), sigma);
 
     return t;
 }
@@ -301,7 +308,7 @@ Ref World::extract(Ref d, Ref index) {
     if (auto pack = d->isa_imm<Pack>()) return pack->body();
 
     if (!Check::alpha(type->arity(), size))
-        error(index, "index '{}' does not fit within arity '{}'", index, type->arity());
+        error(index->loc(), "index '{}' does not fit within arity '{}'", index, type->arity());
 
     // extract(insert(x, index, val), index) -> val
     if (auto insert = d->isa<Insert>()) {
@@ -342,12 +349,12 @@ Ref World::insert(Ref d, Ref index, Ref val) {
     auto lidx = Lit::isa(index);
 
     if (!Check::alpha(type->arity(), size))
-        error(index, "index '{}' does not fit within arity '{}'", index, type->arity());
+        error(index->loc(), "index '{}' does not fit within arity '{}'", index, type->arity());
 
     if (lidx) {
         auto target_type = type->proj(*lidx);
         if (!Check::assignable(target_type, val))
-            error(val, "value of type {} is not assignable to type {}", val->type(), target_type);
+            error(val->loc(), "value of type {} is not assignable to type {}", val->type(), target_type);
     }
 
     if (auto l = Lit::isa(size); l && *l == 1)
@@ -375,7 +382,7 @@ Ref World::insert(Ref d, Ref index, Ref val) {
 
 // TODO merge this code with pack
 Ref World::arr(Ref shape, Ref body) {
-    if (!is_shape(shape->type())) error(shape, "expected shape but got '{}' of type '{}'", shape, shape->type());
+    if (!is_shape(shape->type())) error(shape->loc(), "expected shape but got '{}' of type '{}'", shape, shape->type());
 
     if (auto a = Lit::isa(shape)) {
         if (*a == 0) return sigma();
@@ -402,7 +409,7 @@ Ref World::arr(Ref shape, Ref body) {
 }
 
 Ref World::pack(Ref shape, Ref body) {
-    if (!is_shape(shape->type())) error(shape, "expected shape but got '{}' of type '{}'", shape, shape->type());
+    if (!is_shape(shape->type())) error(shape->loc(), "expected shape but got '{}' of type '{}'", shape, shape->type());
 
     if (auto a = Lit::isa(shape)) {
         if (*a == 0) return tuple();
@@ -434,9 +441,9 @@ Ref World::pack(Defs shape, Ref body) {
 const Lit* World::lit(Ref type, u64 val) {
     if (auto size = Idx::size(type)) {
         if (auto s = Lit::isa(size)) {
-            if (*s != 0 && val >= *s) error(type, "index '{}' does not fit within arity '{}'", size, val);
+            if (*s != 0 && val >= *s) error(type->loc(), "index '{}' does not fit within arity '{}'", size, val);
         } else if (val != 0) { // 0 of any size is allowed
-            error(type, "cannot create literal '{}' of '.Idx {}' as size is unknown", val, size);
+            error(type->loc(), "cannot create literal '{}' of '.Idx {}' as size is unknown", val, size);
         }
     }
 
