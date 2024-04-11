@@ -219,7 +219,7 @@ Tuple patterns allow for *groups*:
 * `[a b c: .Nat, d e: .Bool]` means `[a: .Nat, b: .Nat, c: .Nat, d: .Bool, e: .Bool]`.
 
 You can introduce an optional name for the whole tuple pattern:
-```
+```rust
 .let abc::(a, b, c) = (1, 2, 3);
 ```
 This will bind
@@ -229,7 +229,7 @@ This will bind
 * `abc` to `(1, 2, 3)`.
 
 Here is another example:
-```
+```rust
 Π.Tas::[T: *, as: .Nat][%mem.M, %mem.Ptr Tas] → [%mem.M, T]
 ```
 
@@ -237,7 +237,7 @@ Here is another example:
 
 Finally, you can put a <tt>\`</tt> in front of an identifier of a `()`-style pattern to (potentially) rebind a name to a different value.
 This is particularly useful, when dealing with memory:
-```
+```rust
 .let (`mem, ptr) = %mem.alloc (I32, 0) mem;
 .let `mem        = %mem.store (mem, ptr, 23:I32);
 .let (`mem, val) = %mem.load (mem, ptr);
@@ -255,7 +255,7 @@ This is particularly useful, when dealing with memory:
 | e   | `□`       | alias for `.Type (1:.Univ)`    | [Type](@ref thorin::Type) |
 | e   | `.Nat`    | natural number                 | [Nat](@ref thorin::Nat)   |
 | e   | `.Idx`    | builtin of type `.Nat → *`     | [Idx](@ref thorin::Idx)   |
-| e   | `.Bool`   | alias for `.Bool`             | [Idx](@ref thorin::Idx)   |
+| e   | `.Bool`   | alias for `.Bool`              | [Idx](@ref thorin::Idx)   |
 
 #### Literals & Co.
 
@@ -319,15 +319,15 @@ Expressions nesting is disambiguated according to the following precedence table
 
 @note The domain of a dependent function type binds slightly stronger than `→`.
 This has the effect that
-```
+```rust
 Π T: * → T → T
 ```
 has the expected binding like this:
-```
+```rust
 (Π T: *) → (T → T)
 ```
 Otherwise, `→` would be consumed by the domain:
-```
+```rust
 Π T: (* → (T → T)) ↯
 ```
 
@@ -344,7 +344,7 @@ The following table summarizes the different tokens used for functions declarati
 ### Declarations
 
 The following function *declarations* are all equivalent:
-```
+```rust
 .lam f(T: *)((x y: T), return: T → ⊥)@(.ff): ⊥ = return x;
 .con f(T: *)((x y: T), return: .Cn T)          = return x;
 .fun f(T: *) (x y: T): T                       = return x;
@@ -355,7 +355,7 @@ Note that all partial evaluation filters default to `.tt` except for `.con`/`.cn
 
 The following function *expressions* are all equivalent.
 What is more, since they are bound by a *let declaration*, they have the exact same effect as the function *declarations* above:
-```
+```rust
 .let f =   λ (T: *)((x y: T), return: T → ⊥)@(.ff): ⊥ = return x;
 .let f = .lm (T: *)((x y: T), return: T → ⊥)      : ⊥ = return x;
 .let f = .cn (T: *)((x y: T), return: .Cn T)          = return x;
@@ -365,7 +365,7 @@ What is more, since they are bound by a *let declaration*, they have the exact s
 ### Applications
 
 The following expressions for applying `f` are also equivalent:
-```
+```rust
 f .Nat ((23, 42), .cn res: .Nat = use(res))
 .ret res = f .Nat $ (23, 42); use(res)
 ```
@@ -373,7 +373,7 @@ f .Nat ((23, 42), .cn res: .Nat = use(res))
 ### Function Types
 
 Finally, the following function types are all equivalent and denote the type of `f` above.
-```
+```rust
  Π  [T:*][[T, T], T → ⊥] → ⊥
 .Cn [T:*][[T, T], .Cn T]
 .Fn [T:*] [T, T] → T
@@ -393,16 +393,16 @@ Hence, using the symbol `_` will always result in a scoping error.
 ### Pis
 
 @note **Only**
-```
+```rust
 Π x: e → e
 ```
 introduces a new scope whereas
-```
+```rust
 x: e → e
 ```
 is a syntax error.
 If the variable name of a Pi's domain is elided and the domain is a sigma, its elements will be imported into the Pi's scope to make these elements available in the Pi's codomain:
-```
+```rust
 Π [T: *, U: *] → [T, U]
 ```
 
@@ -417,12 +417,12 @@ Named elements of mutable sigmas are available for extracts/inserts.
 @note
 These names take precedence over the usual scope.
 In the following example, `i` refers to the first element `i` of `X` and **not** to the `i` introduced via `.let`:
-```
+```rust
 .let i = 1_2;
 Π X: [i: .Nat, j: .Nat] → f X#i;
 ```
 Use parentheses to refer to the `.let`-bounded `i`:
-```
+```rust
 .let i = 1_2;
 Π X: [i: .Nat, j: .Nat] → f X#(i);
 ```

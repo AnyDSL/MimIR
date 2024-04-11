@@ -231,7 +231,7 @@ to configure the project.
 ### add_thorin_plugin
 
 Registers a new Thorin plugin.
-```
+```cmake
 add_thorin_plugin(<plugin-name>
     [SOURCES <source>...]
     [PRIVATE <private-item>...]

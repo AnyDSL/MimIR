@@ -181,11 +181,13 @@ void PiExpr::Dom::emit_type(Emitter& e) const {
     auto type = ptrn()->emit_type(e);
 
     if (ret()) {
-        auto sigma = e.world().mut_sigma(e.world().type_infer_univ(), 2)->set(ret()->loc());
-        auto var   = sigma->var()->set(ret()->loc().anew_begin());
+        auto ret_t   = e.world().cn(ret()->emit_type(e));
+        auto sigma_t = e.world().umax<Sort::Type>({type, ret_t});
+        auto sigma   = e.world().mut_sigma(sigma_t, 2)->set(ret()->loc());
+        auto var     = sigma->var()->set(ret()->loc().anew_begin());
         sigma->set(0, type);
         ptrn()->emit_value(e, var->proj(2, 0));
-        sigma->set(1, e.world().cn(ret()->emit_type(e)));
+        sigma->set(1, ret_t);
 
         if (auto imm = sigma->immutabilize())
             type = imm;
@@ -222,16 +224,21 @@ Ref AppExpr::emit(Emitter& e) const {
 }
 
 Ref RetExpr::emit(Emitter& e) const {
-    // ptrn()->emit(e);
-    callee()->emit(e);
-    arg()->emit(e);
-    return {};
+    auto c = callee()->emit(e);
+    if (auto cn = Pi::ret_pi(c->type())) {
+        auto con  = e.world().mut_lam(cn);
+        auto pair = e.world().tuple({arg()->emit(e), con});
+        auto app  = e.world().app(c, pair)->set(c->loc() + arg()->loc());
+        ptrn()->emit_value(e, con->var());
+        con->set(false, body()->emit(e));
+        return app;
+    }
+
+    error(c->loc(), "callee of a .ret expression must type as a returning continuation but got '{}' of type '{}'", c,
+          c->type());
 }
 
-Ref SigmaExpr::emit(Emitter&) const {
-    // ptrn()->emit(e);
-    return {};
-}
+Ref SigmaExpr::emit(Emitter& e) const { return ptrn()->emit_type(e); }
 
 Ref TupleExpr::emit(Emitter& e) const {
     DefVec elems(num_elems(), [&](size_t i) { return elem(i)->emit(e); });
@@ -315,10 +322,9 @@ void RecDecl::emit(Emitter& e) const {
 
 void RecDecl::emit_rec(Emitter& e) const { body()->emit(e); }
 
-void LamDecl::Dom::emit_value(Emitter& e) const {
-    lam_           = e.world().mut_lam(pi_);
-    thorin_filter_ = (has_bang() || !filter()) ? e.world().lit_tt() : filter()->emit(e); // TODO ff for con/cn
-    auto var       = lam_->var();
+Lam* LamDecl::Dom::emit_value(Emitter& e) const {
+    lam_     = e.world().mut_lam(pi_);
+    auto var = lam_->var();
 
     if (ret()) {
         ptrn()->emit_value(e, var->proj(2, 0));
@@ -326,31 +332,39 @@ void LamDecl::Dom::emit_value(Emitter& e) const {
     } else {
         ptrn()->emit_value(e, var);
     }
+
+    return lam_;
 }
 
 void LamDecl::emit(Emitter& e) const {
-    for (size_t il = 0, n = num_doms(); il != n; ++il) {
-        for (size_t ip = il; ip != n; ++ip) dom(ip)->emit_type(e);
+    // Iterate over all doms: Build a Lam for cur dom, by furst building a curried Pi for the remaining doms.
+    for (size_t i = 0, n = num_doms(); i != n; ++i) {
+        for (const auto& dom : doms() | std::ranges::views::drop(i)) dom->emit_type(e);
         auto cod = codom() ? codom()->emit(e) : e.world().type_bot();
 
-        for (size_t ip = n; ip-- != il;) {
-            dom(ip)->pi_->set_codom(cod);
-            cod = dom(ip)->pi_;
+        for (const auto& dom : doms() | std::ranges::views::drop(i) | std::ranges::views::reverse) {
+            dom->pi_->set_codom(cod);
+            cod = dom->pi_;
         }
 
-        dom(il)->emit_value(e);
-        if (il != 0)
-            dom(il - 1)->lam_->set(dom(il - 1)->thorin_filter_, dom(il)->lam_);
+        auto cur = dom(i);
+        auto lam = cur->emit_value(e);
+        auto f   = cur->has_bang()                             ? e.world().lit_tt()
+                 : cur->filter()                               ? cur->filter()->emit(e)
+                 : (tag() == Tag::T_lm || tag() == Tag::K_lam) ? e.world().lit_tt()
+                                                               : e.world().lit_ff();
+        lam->set_filter(f);
+
+        if (i == 0)
+            def_ = lam->set(dbg());
         else
-            dom(il)->lam_->set(dbg().sym)->set(dbg().loc);
+            dom(i - 1)->lam_->set_body(lam);
     }
 }
 
 void LamDecl::emit_rec(Emitter& e) const {
-    const auto fst = doms().front().get();
-    const auto lst = doms().back().get();
-    lst->lam_->set(lst->thorin_filter_, body()->emit(e));
-    if (is_external()) fst->lam_->make_external();
+    doms().back()->lam_->set_body(body()->emit(e));
+    if (is_external()) doms().front()->lam_->make_external();
 }
 
 } // namespace thorin::ast

@@ -155,9 +155,10 @@ void AppExpr::bind(Scopes& s) const {
 }
 
 void RetExpr::bind(Scopes& s) const {
-    ptrn()->bind(s);
     callee()->bind(s);
     arg()->bind(s);
+    ptrn()->bind(s);
+    body()->bind(s);
 }
 
 void SigmaExpr::bind(Scopes& s) const {

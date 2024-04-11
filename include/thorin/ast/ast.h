@@ -757,14 +757,13 @@ public:
         const Expr* filter() const { return filter_.get(); }
 
         void bind(Scopes& scopes, bool quiet = false) const override;
-        void emit_value(Emitter&) const;
+        Lam* emit_value(Emitter&) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     private:
         Tok bang_;
         Ptr<Expr> filter_;
         mutable Lam* lam_;
-        mutable Ref thorin_filter_;
 
         friend class LamDecl;
     };
