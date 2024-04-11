@@ -9,6 +9,8 @@
 
 namespace thorin::ast {
 
+namespace fs = std::filesystem;
+
 class AST;
 
 class Lexer : public fe::Lexer<3, Lexer> {
