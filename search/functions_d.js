@@ -16,7 +16,7 @@ var searchData=
   ['none_5fend_13',['none_end',['../classthorin_1_1BitSet.html#ad62ad63fdc450123eb05fb5b2b4f3c66',1,'thorin::BitSet']]],
   ['none_5frange_14',['none_range',['../classthorin_1_1BitSet.html#adf3cff565d11e74c51b4bfc6e22539e6',1,'thorin::BitSet']]],
   ['normalize_5fabs_15',['normalize_abs',['../namespacethorin_1_1plug_1_1math.html#a8a33c2322bfce732db260829cb4aab28',1,'thorin::plug::math::normalize_abs()'],['../namespacethorin_1_1plug_1_1core.html#ac2e6aa0c6c8b3d804911f5d1afcbadcf',1,'thorin::plug::core::normalize_abs()']]],
-  ['normalize_5fad_16',['normalize_ad',['../namespacethorin_1_1plug_1_1autodiff.html#aaf189aba56b0d9ac27f105a77b3cb8fb',1,'thorin::plug::autodiff::normalize_ad(Ref type, Ref callee, Ref arg)'],['../namespacethorin_1_1plug_1_1autodiff.html#a184793088de8885384b3200144e1de70',1,'thorin::plug::autodiff::normalize_AD(Ref type, Ref callee, Ref arg)']]],
+  ['normalize_5fad_16',['normalize_ad',['../namespacethorin_1_1plug_1_1autodiff.html#a184793088de8885384b3200144e1de70',1,'thorin::plug::autodiff::normalize_AD(Ref type, Ref callee, Ref arg)'],['../namespacethorin_1_1plug_1_1autodiff.html#aaf189aba56b0d9ac27f105a77b3cb8fb',1,'thorin::plug::autodiff::normalize_ad(Ref type, Ref callee, Ref arg)']]],
   ['normalize_5fadd_17',['normalize_add',['../namespacethorin_1_1plug_1_1autodiff.html#a9d610b5e101c537d80eb0b4cedec9ffc',1,'thorin::plug::autodiff']]],
   ['normalize_5farith_18',['normalize_arith',['../namespacethorin_1_1plug_1_1math.html#ac8833c83877b8dea73aa24213e227933',1,'thorin::plug::math']]],
   ['normalize_5fbit1_19',['normalize_bit1',['../namespacethorin_1_1plug_1_1core.html#a17c3d75c5f8d57237d4c57d56498711d',1,'thorin::plug::core']]],

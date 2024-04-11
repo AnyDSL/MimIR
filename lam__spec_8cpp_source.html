@@ -151,44 +151,43 @@ $(document).ready(function(){initNavTree('lam__spec_8cpp_source.html',''); initR
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordflow">if</span> (skip) new_doms.emplace_back(old_lam-&gt;doms().back());</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordflow">if</span> (new_doms.size() == old_lam-&gt;num_doms()) <span class="keywordflow">return</span> def;</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keyword">auto</span> new_pi  = <a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>().<a class="code hl_function" href="classthorin_1_1World.html#ada59fac911d8db2ace72a5c66a148525">cn</a>(<a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>().sigma(new_doms));</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keyword">auto</span> new_lam = old_lam-&gt;<a class="code hl_function" href="classthorin_1_1Pi.html#ace62601291e36184200384ffb5feb523">stub</a>(new_pi);</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> arg_i = 0, var_i = 0, n = app-&gt;num_args() - skip; arg_i != n; ++arg_i) {</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        <span class="keyword">auto</span> arg = app-&gt;arg(arg_i);</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        <span class="keywordflow">if</span> (old_lam-&gt;dom(arg_i)-&gt;isa&lt;<a class="code hl_class" href="classthorin_1_1Pi.html">Pi</a>&gt;()) {</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            new_vars.emplace_back(arg);</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>            new_vars.emplace_back(new_lam-&gt;var(var_i++));</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>            new_args.emplace_back(arg);</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        }</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    }</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordflow">if</span> (skip) {</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        new_vars.emplace_back(new_lam-&gt;vars().back());</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        new_args.emplace_back(app-&gt;args().back());</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    }</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    new_lam-&gt;set(old_lam-&gt;reduce(<a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>().<a class="code hl_function" href="classthorin_1_1World.html#ad9f473a8720b1aa86afac4b27b401d9c">tuple</a>(new_vars)));</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>().DLOG(<span class="stringliteral">&quot;{} -&gt; {}: {} -&gt; {})&quot;</span>, old_lam, new_lam, old_lam-&gt;dom(), new_lam-&gt;dom());</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordflow">return</span> old2new_[def] = <a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>().<a class="code hl_function" href="classthorin_1_1World.html#acead59ea11597f876b9c1ee24bf2e48a">app</a>(new_lam, new_args);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keyword">auto</span> new_lam = old_lam-&gt;<a class="code hl_function" href="classthorin_1_1Def.html#a8bbe80423f2be4e8159378069236bd62">stub</a>(<a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>().<a class="code hl_function" href="classthorin_1_1World.html#ada59fac911d8db2ace72a5c66a148525">cn</a>(new_doms));</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> arg_i = 0, var_i = 0, n = app-&gt;num_args() - skip; arg_i != n; ++arg_i) {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        <span class="keyword">auto</span> arg = app-&gt;arg(arg_i);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        <span class="keywordflow">if</span> (old_lam-&gt;dom(arg_i)-&gt;isa&lt;<a class="code hl_class" href="classthorin_1_1Pi.html">Pi</a>&gt;()) {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            new_vars.emplace_back(arg);</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            new_vars.emplace_back(new_lam-&gt;var(var_i++));</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>            new_args.emplace_back(arg);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        }</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    }</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordflow">if</span> (skip) {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        new_vars.emplace_back(new_lam-&gt;vars().back());</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        new_args.emplace_back(app-&gt;args().back());</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    }</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    new_lam-&gt;set(old_lam-&gt;reduce(<a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>().<a class="code hl_function" href="classthorin_1_1World.html#ad9f473a8720b1aa86afac4b27b401d9c">tuple</a>(new_vars)));</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>().DLOG(<span class="stringliteral">&quot;{} -&gt; {}: {} -&gt; {})&quot;</span>, old_lam, new_lam, old_lam-&gt;dom(), new_lam-&gt;dom());</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordflow">return</span> old2new_[def] = <a class="code hl_function" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a>().<a class="code hl_function" href="classthorin_1_1World.html#acead59ea11597f876b9c1ee24bf2e48a">app</a>(new_lam, new_args);</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>}</div>
 </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>} <span class="comment">// namespace thorin</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>} <span class="comment">// namespace thorin</span></div>
 <div class="ttc" id="abeta__red_8h_html"><div class="ttname"><a href="beta__red_8h.html">beta_red.h</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Def_html_a8bbe80423f2be4e8159378069236bd62"><div class="ttname"><a href="classthorin_1_1Def.html#a8bbe80423f2be4e8159378069236bd62">thorin::Def::stub</a></div><div class="ttdeci">Def * stub(World &amp;w, Ref type)</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00494">def.h:494</a></div></div>
 <div class="ttc" id="aclassthorin_1_1LamSpec_html_aaab42ba31e743237afb726a90a0fea69"><div class="ttname"><a href="classthorin_1_1LamSpec.html#aaab42ba31e743237afb726a90a0fea69">thorin::LamSpec::rewrite</a></div><div class="ttdeci">Ref rewrite(Ref) override</div><div class="ttdef"><b>Definition</b> <a href="lam__spec_8cpp_source.html#l00012">lam_spec.cpp:12</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Pass_html_aa3292e2b8dbc86e2664e2bbe934d75e7"><div class="ttname"><a href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">thorin::Pass::world</a></div><div class="ttdeci">World &amp; world()</div><div class="ttdef"><b>Definition</b> <a href="pass_8h_source.html#l00296">pass.h:296</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Pi_html"><div class="ttname"><a href="classthorin_1_1Pi.html">thorin::Pi</a></div><div class="ttdoc">A dependent function type.</div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00011">lam.h:11</a></div></div>
-<div class="ttc" id="aclassthorin_1_1Pi_html_ace62601291e36184200384ffb5feb523"><div class="ttname"><a href="classthorin_1_1Pi.html#ace62601291e36184200384ffb5feb523">thorin::Pi::stub</a></div><div class="ttdeci">Pi * stub(Ref type)</div><div class="ttdef"><b>Definition</b> <a href="lam_8h_source.html#l00087">lam.h:87</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Ref_html"><div class="ttname"><a href="classthorin_1_1Ref.html">thorin::Ref</a></div><div class="ttdoc">Helper class to retrieve Infer::arg if present.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00087">def.h:87</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Scope_html"><div class="ttname"><a href="classthorin_1_1Scope.html">thorin::Scope</a></div><div class="ttdoc">A Scope represents a region of Defs that are live from the view of an entry's Var.</div><div class="ttdef"><b>Definition</b> <a href="scope_8h_source.html#l00022">scope.h:22</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Scope_html_a546abdb4b59161b1ba6094ec0a5e4b86"><div class="ttname"><a href="classthorin_1_1Scope.html#a546abdb4b59161b1ba6094ec0a5e4b86">thorin::Scope::free_defs</a></div><div class="ttdeci">const DefSet &amp; free_defs() const</div><div class="ttdoc">All non-const Defs directly referenced but not bound within this Scope. May also include Vars or muts...</div><div class="ttdef"><b>Definition</b> <a href="scope_8h_source.html#l00043">scope.h:43</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Vector_html"><div class="ttname"><a href="classthorin_1_1Vector.html">thorin::Vector&lt; const Def * &gt;</a></div></div>
 <div class="ttc" id="aclassthorin_1_1World_html_acead59ea11597f876b9c1ee24bf2e48a"><div class="ttname"><a href="classthorin_1_1World.html#acead59ea11597f876b9c1ee24bf2e48a">thorin::World::app</a></div><div class="ttdeci">Ref app(Ref callee, Ref arg)</div><div class="ttdef"><b>Definition</b> <a href="world_8cpp_source.html#l00183">world.cpp:183</a></div></div>
 <div class="ttc" id="aclassthorin_1_1World_html_ad9f473a8720b1aa86afac4b27b401d9c"><div class="ttname"><a href="classthorin_1_1World.html#ad9f473a8720b1aa86afac4b27b401d9c">thorin::World::tuple</a></div><div class="ttdeci">Ref tuple(Defs ops)</div><div class="ttdef"><b>Definition</b> <a href="world_8cpp_source.html#l00226">world.cpp:226</a></div></div>
-<div class="ttc" id="aclassthorin_1_1World_html_ada59fac911d8db2ace72a5c66a148525"><div class="ttname"><a href="classthorin_1_1World.html#ada59fac911d8db2ace72a5c66a148525">thorin::World::cn</a></div><div class="ttdeci">const Pi * cn()</div><div class="ttdef"><b>Definition</b> <a href="world_8h_source.html#l00243">world.h:243</a></div></div>
+<div class="ttc" id="aclassthorin_1_1World_html_ada59fac911d8db2ace72a5c66a148525"><div class="ttname"><a href="classthorin_1_1World.html#ada59fac911d8db2ace72a5c66a148525">thorin::World::cn</a></div><div class="ttdeci">const Pi * cn()</div><div class="ttdef"><b>Definition</b> <a href="world_8h_source.html#l00246">world.h:246</a></div></div>
 <div class="ttc" id="aeta__exp_8h_html"><div class="ttname"><a href="eta__exp_8h.html">eta_exp.h</a></div></div>
 <div class="ttc" id="alam__spec_8h_html"><div class="ttname"><a href="lam__spec_8h.html">lam_spec.h</a></div></div>
 <div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition</b> <a href="cfg_8h_source.html#l00011">cfg.h:11</a></div></div>

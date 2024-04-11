@@ -3,7 +3,7 @@ var searchData=
   ['valgrind_20gdb_0',['Valgrind &amp; GDB',['../coding.html#autotoc_md9',1,'']]],
   ['valid_20programs_1',['Construct Valid Programs',['../passes.html#autotoc_md64',1,'']]],
   ['value_2',['value',['../classthorin_1_1Insert.html#a665da72feeff8ecdc0d56e2d0b330ba9',1,'thorin::Insert::value()'],['../classthorin_1_1Test.html#a419b77a5a01ac63e6b05fe4348b0b312',1,'thorin::Test::value()'],['../classthorin_1_1Pick.html#ad1ab799d5781001c3dcd6b0f0cdbc1a2',1,'thorin::Pick::value()'],['../classthorin_1_1Vel.html#a4206734bc2a95641bad59ac6bd0e5113',1,'thorin::Vel::value()']]],
-  ['values_3',['Values',['../regex.html#autotoc_md223',1,'']]],
+  ['values_3',['Values',['../regex.html#autotoc_md222',1,'']]],
   ['var_4',['var',['../namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a7a5700ae028d415a5e1e20feac76eda5',1,'thorin::Node::Var'],['../classthorin_1_1World.html#a767e76aa133cafa25bf569968c4b11d6',1,'thorin::World::var()'],['../classthorin_1_1Def.html#a22a6f98101cae5022aaa945031867e5c',1,'thorin::Def::var()'],['../classthorin_1_1Def.html#a8d2663ea79bf88d8498520d0ba45e814',1,'thorin::Def::var(nat_t i)'],['../classthorin_1_1Def.html#a376b91fc8f5b9b9e3e59a71785fb2b2c',1,'thorin::Def::var(nat_t a, nat_t i)'],['../namespacethorin.html#a55a6c38c7e5330a05b17f8134f60264aa5a92344ee95acf10c31901b36418be77',1,'thorin::Var'],['../classthorin_1_1Var.html',1,'thorin::Var']]],
   ['var2var_5',['Var2Var',['../namespacethorin.html#a574519644134310f7123469cf121d0a2',1,'thorin']]],
   ['variants_6',['Thresholded Variants',['../dev.html#autotoc_md30',1,'']]],

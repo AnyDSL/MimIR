@@ -223,8 +223,8 @@ $(document).ready(function(){initNavTree('clos_8cpp_source.html',''); initResiza
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="comment">// auto&amp; w       = c-&gt;world();</span></div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="comment">// auto env_type = c-&gt;proj(0_u64);</span></div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="comment">// // auto pi       = clos_type_to_pi(c-&gt;type(), env_type);</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="comment">// auto fn       = w.extract(c, w.lit_int(3, 1));</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="comment">// auto env      = w.extract(c, w.lit_int(3, 2));</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="comment">// auto fn       = w.extract(c, w.lit_idx(3, 1));</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="comment">// auto env      = w.extract(c, w.lit_idx(3, 2));</span></div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="comment">// return {env_type, fn, env};</span></div>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keyword">auto</span> [ty, pi, env] = c-&gt;projs&lt;3&gt;();</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordflow">return</span> {ty, pi, env};</div>

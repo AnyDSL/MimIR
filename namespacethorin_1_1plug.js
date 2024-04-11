@@ -52,16 +52,6 @@ var namespacethorin_1_1plug =
         [ "SM", "namespacethorin_1_1plug_1_1core.html#a156bb325c4d3411b0b8c154194dbbe3da4829172717d387427d1005141f595c7c", null ],
         [ "smax", "namespacethorin_1_1plug_1_1core.html#a156bb325c4d3411b0b8c154194dbbe3da8aa01a79699329b0e4c84b41500951ec", null ]
       ] ],
-      [ "i1", "namespacethorin_1_1plug_1_1core.html#a5517f6ecb2e930c44ffb51bc49864445", null ],
-      [ "I1", "namespacethorin_1_1plug_1_1core.html#a54ff9a1646ae4d39e2cc40a141ec1e58", null ],
-      [ "i16", "namespacethorin_1_1plug_1_1core.html#aa52ed1589dc265e8431b64c905f1fa74", null ],
-      [ "I16", "namespacethorin_1_1plug_1_1core.html#a3dc482336d18f6969453a0d58b358a53", null ],
-      [ "i32", "namespacethorin_1_1plug_1_1core.html#a77abfd0fa0fe5ac7956bb9380cbcc38b", null ],
-      [ "I32", "namespacethorin_1_1plug_1_1core.html#aa639503d9662a971a2919212f0969265", null ],
-      [ "i64", "namespacethorin_1_1plug_1_1core.html#acfd430caaf37a8050002d4a0fdeac047", null ],
-      [ "I64", "namespacethorin_1_1plug_1_1core.html#ae41a92dafc548f39a9e2cefec73b1ea1", null ],
-      [ "i8", "namespacethorin_1_1plug_1_1core.html#a855bab202830dd0e4119a106f515569e", null ],
-      [ "I8", "namespacethorin_1_1plug_1_1core.html#a616dfe8cce1292035ebd269eab626606", null ],
       [ "icmp", "namespacethorin_1_1plug_1_1core.html#a7e0776b8ac284bab91c95d8b9eabe0cb", [
         [ "xygle", "namespacethorin_1_1plug_1_1core.html#a7e0776b8ac284bab91c95d8b9eabe0cba01e8a9b3e02b65bfd62f6a0459af6fd7", null ],
         [ "f", "namespacethorin_1_1plug_1_1core.html#a7e0776b8ac284bab91c95d8b9eabe0cba5ccc75a837dac078740af258424346f1", null ],

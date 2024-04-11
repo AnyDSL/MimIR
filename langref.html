@@ -244,15 +244,29 @@ Keywords</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>.Idx</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Idx.html" title="A built-in constant of type .Nat -&gt; *.">thorin::Idx</a>    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>.Bool</code>   </td><td class="markdownTableBodyNone">alias for <code>.Idx 2</code>    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>.ff</code>   </td><td class="markdownTableBodyNone">alias for <code>0₂</code>    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>.tt</code>   </td><td class="markdownTableBodyNone">alias for <code>1₂</code>    </td></tr>
-<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>.Type</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Type.html">thorin::Type</a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>.Univ</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Univ.html">thorin::Univ</a>    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>.Univ</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Univ.html">thorin::Univ</a>   </td></tr>
+<td class="markdownTableBodyNone"><code>.ff</code>   </td><td class="markdownTableBodyNone">alias for <code>0₂</code>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>.tt</code>   </td><td class="markdownTableBodyNone">alias for <code>1₂</code>   </td></tr>
+</table>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Terminal   </th><th class="markdownTableHeadNone">Alias   </th><th class="markdownTableHeadNone">Terminal   </th><th class="markdownTableHeadNone">Alias    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>.tt</code> <code>ff</code>   </td><td class="markdownTableBodyNone"><code>0₂</code> <code>1₂</code>   </td><td class="markdownTableBodyNone"><code>.Bool</code>   </td><td class="markdownTableBodyNone"><code>.Idx .i1</code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>.i1</code>   </td><td class="markdownTableBodyNone"><code>2</code>   </td><td class="markdownTableBodyNone"><code>.I1</code>   </td><td class="markdownTableBodyNone"><code>.Idx .i1</code>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>.i8</code>   </td><td class="markdownTableBodyNone"><code>0x100</code>   </td><td class="markdownTableBodyNone"><code>.I8</code>   </td><td class="markdownTableBodyNone"><code>.Idx .i8</code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>.i16</code>   </td><td class="markdownTableBodyNone"><code>0x1'0000</code>   </td><td class="markdownTableBodyNone"><code>.I16</code>   </td><td class="markdownTableBodyNone"><code>.Idx .i16</code>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>.i32</code>   </td><td class="markdownTableBodyNone"><code>0x1'0000'0000</code>   </td><td class="markdownTableBodyNone"><code>.I32</code>   </td><td class="markdownTableBodyNone"><code>.Idx .i32</code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>.i64</code>   </td><td class="markdownTableBodyNone"><code>0</code>   </td><td class="markdownTableBodyNone"><code>.I64</code>   </td><td class="markdownTableBodyNone"><code>.Idx .i64</code>   </td></tr>
 </table>
 <p>All keywords start with a <code>.</code> to prevent name clashes with identifiers.</p>
 <h3><a class="anchor" id="autotoc_md37"></a>
@@ -474,7 +488,7 @@ Kinds &amp; Builtin Types</h3>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.Idx</code>   </td><td class="markdownTableBodyNone">builtin of type <code>.Nat → *</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Idx.html">Idx</a>    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.Bool</code>   </td><td class="markdownTableBodyNone">alias for <code>.Idx 2</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Idx.html">Idx</a>   </td></tr>
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.Bool</code>   </td><td class="markdownTableBodyNone">alias for <code>.Bool</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Idx.html">Idx</a>   </td></tr>
 </table>
 <h3><a class="anchor" id="autotoc_md43"></a>
 Literals &amp; Co.</h3>
@@ -490,9 +504,9 @@ Literals &amp; Co.</h3>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.tt</code>   </td><td class="markdownTableBodyNone">alias for <code>1_2</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lit.html">Lit</a>    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">C   </td><td class="markdownTableBodyNone">character literal of type <code>.Idx 256</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lit.html">Lit</a>    </td></tr>
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">C   </td><td class="markdownTableBodyNone">character literal of type <code>.I8</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lit.html">Lit</a>    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">S   </td><td class="markdownTableBodyNone">string tuple of type <code>«n; .Idx 256»</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Tuple.html">Tuple</a>    </td></tr>
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">S   </td><td class="markdownTableBodyNone">string tuple of type <code>«n; .I8»</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Tuple.html">Tuple</a>    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>⊥</code> (<code>:</code> e<sub>type</sub>)?   </td><td class="markdownTableBodyNone">bottom   </td><td class="markdownTableBodyNone"><a class="el" href="namespacethorin.html#adefa1d05bd6416bf0770c785c9221a02">Bot</a>    </td></tr>
 <tr class="markdownTableRowEven">

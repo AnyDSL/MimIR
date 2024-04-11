@@ -1,9 +1,9 @@
 var searchData=
 [
   ['w_0',['w',['../structthorin_1_1plug_1_1regex_1_1app__range.html#a47cb7651b016108cbad3c9a81df89c2d',1,'thorin::plug::regex::app_range::w'],['../namespacethorin_1_1plug_1_1regex.html#a4fa69f360d13c15835d1af06c89bb025a123611b18dfc573259ce0c3ab1caf775',1,'thorin::plug::regex::W'],['../namespacethorin_1_1plug_1_1regex.html#a4fa69f360d13c15835d1af06c89bb025abad36bdf0b4663a7156a45c27f491800',1,'thorin::plug::regex::w']]],
-  ['w_20o_20side_20effects_1',['Operations w/o Side Effects',['../mem.html#autotoc_md195',1,'']]],
+  ['w_20o_20side_20effects_1',['Operations w/o Side Effects',['../mem.html#autotoc_md194',1,'']]],
   ['w_20o_20subtags_2',['w/o Subtags',['../dev.html#autotoc_md24',1,'']]],
-  ['w_20side_20effects_3',['Operations w/ Side Effects',['../mem.html#autotoc_md186',1,'']]],
+  ['w_20side_20effects_3',['Operations w/ Side Effects',['../mem.html#autotoc_md185',1,'']]],
   ['w_20subtags_4',['w/ Subtags',['../dev.html#autotoc_md25',1,'']]],
   ['w2f_5',['w2f',['../namespacethorin.html#acc6f5a1f24c7e5e539d81c4d5670c153',1,'thorin']]],
   ['w2s_6',['w2s',['../namespacethorin.html#a3f00b268822519192e4c657e28393ed1',1,'thorin']]],
@@ -16,7 +16,7 @@ var searchData=
   ['world_2ecpp_13',['world.cpp',['../world_8cpp.html',1,'']]],
   ['world_2eh_14',['world.h',['../world_8h.html',1,'']]],
   ['world_5f_15',['world_',['../classthorin_1_1Phase.html#a56aa69f13d6c0826e4ecdeee3b863f92',1,'thorin::Phase']]],
-  ['wrap_16',['wrap',['../core.html#autotoc_md123',1,'core.wrap'],['../namespacethorin_1_1plug_1_1core.html#a5b98f919ad2dcfb4d9e44c51c79d3fae',1,'thorin::plug::core::wrap']]],
+  ['wrap_16',['wrap',['../core.html#autotoc_md122',1,'core.wrap'],['../namespacethorin_1_1plug_1_1core.html#a5b98f919ad2dcfb4d9e44c51c79d3fae',1,'thorin::plug::core::wrap']]],
   ['wrap_20add_17',['%core.wrap.add',['../autodiff.html#autotoc_md87',1,'']]],
   ['wrap_20mul_18',['%core.wrap.mul',['../autodiff.html#autotoc_md88',1,'']]],
   ['writable_19',['writable',['../classthorin_1_1plug_1_1mem_1_1SSAConstr.html#a33711ff4068ba59d10a781cba0d31f4d',1,'thorin::plug::mem::SSAConstr::Info']]],

@@ -47,16 +47,6 @@ var core_2autogen_8h =
       [ "SM", "core_2autogen_8h.html#a156bb325c4d3411b0b8c154194dbbe3da4829172717d387427d1005141f595c7c", null ],
       [ "smax", "core_2autogen_8h.html#a156bb325c4d3411b0b8c154194dbbe3da8aa01a79699329b0e4c84b41500951ec", null ]
     ] ],
-    [ "i1", "core_2autogen_8h.html#a5517f6ecb2e930c44ffb51bc49864445", null ],
-    [ "I1", "core_2autogen_8h.html#a54ff9a1646ae4d39e2cc40a141ec1e58", null ],
-    [ "i16", "core_2autogen_8h.html#aa52ed1589dc265e8431b64c905f1fa74", null ],
-    [ "I16", "core_2autogen_8h.html#a3dc482336d18f6969453a0d58b358a53", null ],
-    [ "i32", "core_2autogen_8h.html#a77abfd0fa0fe5ac7956bb9380cbcc38b", null ],
-    [ "I32", "core_2autogen_8h.html#aa639503d9662a971a2919212f0969265", null ],
-    [ "i64", "core_2autogen_8h.html#acfd430caaf37a8050002d4a0fdeac047", null ],
-    [ "I64", "core_2autogen_8h.html#ae41a92dafc548f39a9e2cefec73b1ea1", null ],
-    [ "i8", "core_2autogen_8h.html#a855bab202830dd0e4119a106f515569e", null ],
-    [ "I8", "core_2autogen_8h.html#a616dfe8cce1292035ebd269eab626606", null ],
     [ "icmp", "core_2autogen_8h.html#a7e0776b8ac284bab91c95d8b9eabe0cb", [
       [ "xygle", "core_2autogen_8h.html#a7e0776b8ac284bab91c95d8b9eabe0cba01e8a9b3e02b65bfd62f6a0459af6fd7", null ],
       [ "f", "core_2autogen_8h.html#a7e0776b8ac284bab91c95d8b9eabe0cba5ccc75a837dac078740af258424346f1", null ],

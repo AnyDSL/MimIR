@@ -1,6 +1,7 @@
 var namespacethorin_structthorin_1_1Flags_dup =
 [
     [ "aggressive_lam_spec", "namespacethorin.html#a2805e1a2de99ac8c3d8b6988fe58eabc", null ],
+    [ "ascii", "namespacethorin.html#ac2a55ac984dc1a7c5d6b59be54b3fc26", null ],
     [ "bootstrap", "namespacethorin.html#a25c781163b4489f90a9add51fbda2b96", null ],
     [ "break_on_alpha_unequal", "namespacethorin.html#aa6fa0fe98c4c23ecaeddb5b0d2507175", null ],
     [ "break_on_error", "namespacethorin.html#a9f679a1d3230929247554f1d0654370f", null ],

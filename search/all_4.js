@@ -2,7 +2,7 @@ var searchData=
 [
   ['e_0',['e',['../namespacethorin_1_1plug_1_1math.html#a94f956d597c0f1a1b692f442afd41221a1e3a46d5dd0c43d2357a92016affd71d',1,'thorin::plug::math::e'],['../namespacethorin_1_1plug_1_1core.html#a7e0776b8ac284bab91c95d8b9eabe0cba119e94e5a73dcd457b2a72d0dcab2d5f',1,'thorin::plug::core::e']]],
   ['early_1',['early',['../classthorin_1_1Scheduler.html#ac327f6bf1e80d3aeb499b27892e89589',1,'thorin::Scheduler']]],
-  ['effects_2',['effects',['../mem.html#autotoc_md186',1,'Operations w/ Side Effects'],['../mem.html#autotoc_md195',1,'Operations w/o Side Effects']]],
+  ['effects_2',['effects',['../mem.html#autotoc_md185',1,'Operations w/ Side Effects'],['../mem.html#autotoc_md194',1,'Operations w/o Side Effects']]],
   ['elem_3',['elem',['../structthorin_1_1Elem.html',1,'thorin::Elem&lt; R, F &gt;'],['../structthorin_1_1Elem.html#a6bfad49817f9558d69b923f5bd69297b',1,'thorin::Elem::Elem()']]],
   ['elems_4',['elems',['../classthorin_1_1PooledSet.html#a147614f86aab70909ddff4eeb16b269c',1,'thorin::PooledSet::elems()'],['../structthorin_1_1PooledSet_1_1Data.html#a6fa5b5abef74cc7e611f80cb36bb8c9e',1,'thorin::PooledSet::Data::elems']]],
   ['eliminate_5',['eliminate',['../classthorin_1_1Infer.html#a5367d0ca6a4d2d6e0a30ce0576a007c7',1,'thorin::Infer']]],
@@ -31,7 +31,7 @@ var searchData=
   ['eq_28',['%core.icmp.xYgLE (eq)',['../autodiff.html#autotoc_md86',1,'']]],
   ['equal_29',['equal',['../structthorin_1_1PooledSet_1_1Data_1_1Equal.html',1,'thorin::PooledSet&lt; T &gt;::Data::Equal'],['../namespacethorin.html#a576b3e6c47c46a4463b6a07a3ae80a8b',1,'thorin::equal()']]],
   ['equals_5fany_30',['equals_any',['../namespacethorin_1_1plug_1_1regex.html#a38ed731d5404c95930aaaccee3ad6ed5',1,'thorin::plug::regex::equals_any(const Def *cls0, const Def *cls1)'],['../namespacethorin_1_1plug_1_1regex.html#a072c9c31448d5f43708ab42591d12a3c',1,'thorin::plug::regex::equals_any(const Def *lhs, const Def *rhs)'],['../namespacethorin_1_1plug_1_1regex.html#a15c3f35a1b6301a6a9d9f46e52c7492d',1,'thorin::plug::regex::equals_any(Defs lhs, Defs rhs)']]],
-  ['er_31',['er',['../math.html#autotoc_md153',1,'math.er'],['../namespacethorin_1_1plug_1_1math.html#a5cd90c42c7375d245c0883fa249df572',1,'thorin::plug::math::er']]],
+  ['er_31',['er',['../math.html#autotoc_md152',1,'math.er'],['../namespacethorin_1_1plug_1_1math.html#a5cd90c42c7375d245c0883fa249df572',1,'thorin::plug::math::er']]],
   ['erase_32',['erase',['../namespacethorin.html#ae4a12c571d85793ed2cc39cffe813a17',1,'thorin::erase()'],['../classthorin_1_1World.html#aea3252a539d99ee433f8bb8765a7cf5c',1,'thorin::World::erase(Muts muts, Def *mut)'],['../classthorin_1_1World.html#a115bd963fac95b5193672b1deb5b503b',1,'thorin::World::erase(Vars vars, const Var *var)'],['../classthorin_1_1Pool.html#a1a6ec262804727b90f869b0178d2737d',1,'thorin::Pool::erase()'],['../classthorin_1_1IndexSet.html#a84889c90abdfa682b44bdd59f0faa291',1,'thorin::IndexSet::erase()']]],
   ['erase_5fif_33',['erase_if',['../namespacethorin.html#a0ba612670606d70d65b7bc82ee5e95f9',1,'thorin']]],
   ['errf_34',['errf',['../namespacethorin.html#af538a45dc8c0c242b9a51f2ea1e6afea',1,'thorin']]],
@@ -51,7 +51,7 @@ var searchData=
   ['example_48',['Example',['../coding.html#autotoc_md3',1,'']]],
   ['exec_49',['exec',['../namespacethorin_1_1sys.html#ac4dd1156a86eb6db52f2cd93fec5a962',1,'thorin::sys']]],
   ['exit_50',['exit',['../classthorin_1_1CFG.html#ad848d7c3d392e58d6407d1c92bf7b720',1,'thorin::CFG::exit()'],['../classthorin_1_1Scope.html#afffa3ca84a3c3bbfbda14739c08b0a09',1,'thorin::Scope::exit()'],['../classthorin_1_1World.html#a5fa5808c353a95848c9e570028776414',1,'thorin::World::exit()']]],
-  ['exp_51',['exp',['../math.html#autotoc_md152',1,'math.exp'],['../namespacethorin_1_1plug_1_1math.html#a9b36249af53fb8f2c7bd02d9dab7e3bb',1,'thorin::plug::math::exp'],['../namespacethorin_1_1plug_1_1math.html#a9b36249af53fb8f2c7bd02d9dab7e3bbad62abce725c050e7523a33175fb49b17',1,'thorin::plug::math::exp']]],
+  ['exp_51',['exp',['../math.html#autotoc_md151',1,'math.exp'],['../namespacethorin_1_1plug_1_1math.html#a9b36249af53fb8f2c7bd02d9dab7e3bb',1,'thorin::plug::math::exp'],['../namespacethorin_1_1plug_1_1math.html#a9b36249af53fb8f2c7bd02d9dab7e3bbad62abce725c050e7523a33175fb49b17',1,'thorin::plug::math::exp']]],
   ['exp10_52',['exp10',['../namespacethorin_1_1plug_1_1math.html#a9b36249af53fb8f2c7bd02d9dab7e3bba029cb5884dd3ea3cb93e58c2fba5daa2',1,'thorin::plug::math']]],
   ['exp2_53',['exp2',['../namespacethorin_1_1plug_1_1math.html#a9b36249af53fb8f2c7bd02d9dab7e3bbad36c40f2a517d76db6222416d275ae12',1,'thorin::plug::math']]],
   ['explicit_54',['explicit',['../classthorin_1_1Span.html#ae5f2fe3ea28653503ac489466b242e74',1,'thorin::Span::explicit(N !=std::dynamic_extent) const expr Span(std'],['../classthorin_1_1Span.html#a2a47c5456a752fa9f61263354db7378e',1,'thorin::Span::explicit(N !=std::dynamic_extent) const expr Span(Vec &amp;vec)'],['../classthorin_1_1Span.html#a550896efb2773f09c9af9205cbbc527b',1,'thorin::Span::explicit(N !=std::dynamic_extent) const expr Span(const Vec &amp;vec)']]],
@@ -64,5 +64,5 @@ var searchData=
   ['externals_61',['externals',['../classthorin_1_1World.html#a5b40a0d582ba6e1b28bc50dc0ceb0840',1,'thorin::World']]],
   ['extract_62',['extract',['../classthorin_1_1World.html#a28110454a2646f21118d344b9e886ab2',1,'thorin::World::extract(Ref d, u64 a, u64 i)'],['../classthorin_1_1World.html#aa589e154cb6fd00699311c3951ca90ad',1,'thorin::World::extract(Ref d, Ref i)'],['../classthorin_1_1Extract.html',1,'thorin::Extract'],['../namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a257bf2499ed2c21151ca373f7c4c0307',1,'thorin::Node::Extract'],['../classthorin_1_1World.html#a18ea4c38c79548d2b0673e9afbb133f0',1,'thorin::World::extract()']]],
   ['extract_5funsafe_63',['extract_unsafe',['../namespacethorin_1_1plug_1_1core.html#a010b3cc748539dd40b1ffecb0b2b22b2',1,'thorin::plug::core::extract_unsafe(Ref d, u64 i)'],['../namespacethorin_1_1plug_1_1core.html#a2118aa05c584aabe66a9dec4d2d21e83',1,'thorin::plug::core::extract_unsafe(Ref d, Ref i)']]],
-  ['extrema_64',['extrema',['../core.html#autotoc_md126',1,'core.extrema'],['../math.html#autotoc_md148',1,'math.extrema'],['../namespacethorin_1_1plug_1_1core.html#a156bb325c4d3411b0b8c154194dbbe3d',1,'thorin::plug::core::extrema'],['../namespacethorin_1_1plug_1_1math.html#af0b1fb2d5a55b633386dadda35ea2b63',1,'thorin::plug::math::extrema']]]
+  ['extrema_64',['extrema',['../core.html#autotoc_md125',1,'core.extrema'],['../math.html#autotoc_md147',1,'math.extrema'],['../namespacethorin_1_1plug_1_1core.html#a156bb325c4d3411b0b8c154194dbbe3d',1,'thorin::plug::core::extrema'],['../namespacethorin_1_1plug_1_1math.html#af0b1fb2d5a55b633386dadda35ea2b63',1,'thorin::plug::math::extrema']]]
 ];
