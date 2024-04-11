@@ -12,6 +12,7 @@
 
 namespace thorin {
 
+class Driver;
 class PipelineBuilder;
 
 /// @name Plugin Interface
@@ -90,9 +91,9 @@ struct Annex {
 
     /// Reverts an Axiom::mangle%d string to a Sym.
     /// Ignores lower 16-bit of @p u.
-    static Sym demangle(World&, plugin_t u);
+    static Sym demangle(Driver&, plugin_t u);
 
-    static std::array<Sym, 3> split(World&, Sym);
+    static std::array<Sym, 3> split(Driver&, Sym);
     ///@}
 
     /// @name Annex Name

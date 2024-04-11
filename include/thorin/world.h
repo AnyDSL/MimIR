@@ -165,7 +165,7 @@ public:
     template<class Id> const Def* annex(Id id) {
         auto flags = static_cast<flags_t>(id);
         if (auto i = move_.annexes.find(flags); i != move_.annexes.end()) return i->second;
-        error("Axiom with ID '{}' not found; demangled plugin name is '{}'", flags, Annex::demangle(*this, flags));
+        error("Axiom with ID '{}' not found; demangled plugin name is '{}'", flags, Annex::demangle(driver(), flags));
     }
 
     /// Get Axiom from a plugin.

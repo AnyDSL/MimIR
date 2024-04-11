@@ -13,7 +13,8 @@ public:
         , world_(world) {}
 
     AST& ast() const { return ast_; }
-    World& world() const { return world_; }
+    World& world() { return world_; }
+    Driver& driver() { return world().driver(); }
 
 private:
     AST& ast_;
@@ -298,14 +299,33 @@ void LetDecl::emit(Emitter& e) const {
     def_   = ptrn()->emit_value(e, v);
 }
 
+static u8 parse_u8(u8 u, Dbg dbg, std::string_view ctxt) {
+    if (dbg) {
+        auto sym = dbg.sym;
+        char* end;
+        u = std::strtoull(sym.c_str(), &end, 10);
+        if (sym.c_str() + sym.size() != end) error(dbg.loc, "{} count '{}' is not a number", ctxt, dbg);
+    }
+    return u;
+}
+
 void AxiomDecl::emit(Emitter& e) const {
-    auto [plugin, tag, sub] = Annex::split(e.world(), dbg().sym);
+    auto [plugin, tag, sub] = Annex::split(e.driver(), dbg().sym);
+    auto&& [annex, is_new]  = e.driver().name2annex(dbg().sym, plugin, tag, dbg().loc);
     auto p                  = Annex::mangle(plugin);
     auto t                  = Annex::mangle(tag);
     auto ty                 = type()->emit(e);
+    auto [cu, tr]           = Axiom::infer_curry_and_trip(ty);
+
+    if (!plugin) error(dbg().loc, "invalid axiom name '{}'", dbg().sym);
+    if (sub) error(dbg().loc, "axiom '{}' must not have a subtag", dbg().sym);
+
+    cu = parse_u8(cu, curry(), "curry");
+    tr = parse_u8(tr, trip(), "trip");
 
     if (num_subs() == 0) {
-        def_ = e.world().axiom(nullptr, 0, 0, ty, *p, *t, 0);
+        auto norm = e.driver().normalizer(*p, *t, 0);
+        def_      = e.world().axiom(norm, cu, tr, ty, *p, *t, 0);
     } else {
         for (const auto& aliases : subs()) {
             for (const auto& alias : aliases) {

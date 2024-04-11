@@ -1,6 +1,6 @@
 #include "thorin/plugin.h"
 
-#include "thorin/world.h"
+#include "thorin/driver.h"
 
 using namespace std::literals;
 
@@ -34,12 +34,12 @@ std::optional<plugin_t> Annex::mangle(Sym s) {
     return result << 16_u64;
 }
 
-Sym Annex::demangle(World& world, plugin_t u) {
+Sym Annex::demangle(Driver& driver, plugin_t u) {
     std::string result;
     for (size_t i = 0; i != Max_Plugin_Size; ++i) {
         u64 c = (u & 0xfc00000000000000_u64) >> 58_u64;
         if (c == 0)
-            return world.sym(result);
+            return driver.sym(result);
         else if (c == 1)
             result += '_';
         else if (2 <= c && c < 28)
@@ -52,10 +52,10 @@ Sym Annex::demangle(World& world, plugin_t u) {
         u <<= 6_u64;
     }
 
-    return world.sym(result);
+    return driver.sym(result);
 }
 
-std::array<Sym, 3> Annex::split(World& world, Sym s) {
+std::array<Sym, 3> Annex::split(Driver& driver, Sym s) {
     if (!s) return {};
     if (s[0] != '%') return {};
     auto sv = subview(s, 1);
@@ -63,17 +63,17 @@ std::array<Sym, 3> Annex::split(World& world, Sym s) {
     auto dot = sv.find('.');
     if (dot == std::string_view::npos) return {};
 
-    auto plugin = world.sym(subview(sv, 0, dot));
+    auto plugin = driver.sym(subview(sv, 0, dot));
     if (!mangle(plugin)) return {};
 
     auto tag = subview(sv, dot + 1);
     if (auto dot = tag.find('.'); dot != std::string_view::npos) {
-        auto sub = world.sym(subview(tag, dot + 1));
+        auto sub = driver.sym(subview(tag, dot + 1));
         tag      = subview(tag, 0, dot);
-        return {plugin, world.sym(tag), sub};
+        return {plugin, driver.sym(tag), sub};
     }
 
-    return {plugin, world.sym(tag), {}};
+    return {plugin, driver.sym(tag), {}};
 }
 
 } // namespace thorin

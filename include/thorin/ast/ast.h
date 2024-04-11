@@ -679,8 +679,7 @@ private:
     Dbg dbg_;
     std::deque<Dbgs> subs_;
     Ptr<Expr> type_;
-    Dbg normalizer_;
-    Dbg curry_, trip_;
+    Dbg normalizer_, curry_, trip_;
 };
 
 /// `.rec dbg: type = body`
