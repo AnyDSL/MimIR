@@ -86,7 +86,11 @@ protected:
 
 public:
     virtual void bind(Scopes&) const = 0;
+    virtual void bind_decl(Scopes&) const { fe::unreachable(); }
+    virtual void bind_body(Scopes&) const { fe::unreachable(); }
     virtual Ref emit(Emitter&) const = 0;
+    virtual Ref emit_decl(Emitter&) const { fe::unreachable(); }
+    virtual void emit_body(Emitter&) const { fe::unreachable(); }
 };
 
 class Decl : public Node {
@@ -107,8 +111,8 @@ protected:
         : Decl(loc) {}
 
 public:
-    virtual void bind(Scopes&) const  = 0;
-    virtual void emit(Emitter&) const = 0;
+    virtual void bind_decl(Scopes&) const  = 0;
+    virtual void emit_decl(Emitter&) const = 0;
 };
 
 class DeclsBlock {
@@ -215,6 +219,8 @@ public:
     size_t num_ptrns() const { return ptrns().size(); }
 
     void bind(Scopes&, bool quiet = false) const override;
+    void bind_decl(Scopes&) const;
+    void bind_body(Scopes&) const;
     Ref emit_value(Emitter&, Ref) const override;
     Ref emit_type(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
@@ -438,7 +444,11 @@ public:
     const LamDecl* lam() const { return lam_.get(); }
 
     void bind(Scopes&) const override;
+    void bind_decl(Scopes&) const override;
+    void bind_body(Scopes&) const override;
     Ref emit(Emitter&) const override;
+    Ref emit_decl(Emitter&) const override;
+    void emit_body(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -505,7 +515,11 @@ public:
     const TuplePtrn* ptrn() const { return ptrn_.get(); }
 
     void bind(Scopes&) const override;
+    void bind_decl(Scopes&) const override;
+    void bind_body(Scopes&) const override;
     Ref emit(Emitter&) const override;
+    Ref emit_decl(Emitter&) const override;
+    void emit_body(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -641,8 +655,8 @@ public:
     const Ptrn* ptrn() const { return ptrn_.get(); }
     const Expr* value() const { return value_.get(); }
 
-    void bind(Scopes&) const override;
-    void emit(Emitter&) const override;
+    void bind_decl(Scopes&) const override;
+    void emit_decl(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -691,8 +705,8 @@ public:
     Dbg curry() const { return curry_; }
     Dbg trip() const { return trip_; }
 
-    void bind(Scopes&) const override;
-    void emit(Emitter&) const override;
+    void bind_decl(Scopes&) const override;
+    void emit_decl(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -724,10 +738,10 @@ public:
     const Expr* type() const { return type_.get(); }
     const Expr* body() const { return body_.get(); }
 
-    void bind(Scopes&) const override;
-    void emit(Emitter&) const override;
-    virtual void bind_rec(Scopes&) const;
-    virtual void emit_rec(Emitter&) const;
+    void bind_decl(Scopes&) const override;
+    void emit_decl(Emitter&) const override;
+    virtual void bind_body(Scopes&) const;
+    virtual void emit_body(Emitter&) const;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -782,10 +796,10 @@ public:
     size_t num_doms() const { return doms_.size(); }
     const Expr* codom() const { return codom_.get(); }
 
-    void bind(Scopes&) const override;
-    void bind_rec(Scopes&) const override;
-    void emit(Emitter&) const override;
-    void emit_rec(Emitter&) const override;
+    void bind_decl(Scopes&) const override;
+    void bind_body(Scopes&) const override;
+    void emit_decl(Emitter&) const override;
+    void emit_body(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:

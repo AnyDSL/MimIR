@@ -29,7 +29,7 @@ private:
 Ref ErrorExpr::emit(Emitter&) const { fe::unreachable(); }
 Ref InferExpr::emit(Emitter& e) const { return e.world().type_infer_univ(); }
 
-Ref IdExpr::emit(Emitter&) const { return decl_->def()->set(dbg()); }
+Ref IdExpr::emit(Emitter&) const { return decl_->def(); }
 
 Ref ExtremumExpr::emit(Emitter& e) const {
     auto t = type() ? type()->emit(e) : e.world().type<0>();
@@ -212,10 +212,13 @@ Ref PiExpr::emit(Emitter& e) const {
     return doms().front()->pi_;
 }
 
+Ref LamExpr::emit_decl(Emitter& e) const { return lam()->emit_decl(e), lam()->def(); }
+void LamExpr::emit_body(Emitter& e) const { lam()->emit_body(e); }
+
 Ref LamExpr::emit(Emitter& e) const {
-    lam()->emit(e);
-    lam()->emit_rec(e);
-    return lam()->def();
+    auto res = emit_decl(e);
+    emit_body(e);
+    return res;
 }
 
 Ref AppExpr::emit(Emitter& e) const {
@@ -238,6 +241,9 @@ Ref RetExpr::emit(Emitter& e) const {
     error(c->loc(), "callee of a .ret expression must type as a returning continuation but got '{}' of type '{}'", c,
           c->type());
 }
+
+Ref SigmaExpr::emit_decl(Emitter& e) const { return {}; }
+void SigmaExpr::emit_body(Emitter& e) const {}
 
 Ref SigmaExpr::emit(Emitter& e) const { return ptrn()->emit_type(e); }
 
@@ -285,16 +291,16 @@ void DeclsBlock::emit(Emitter& e) const {
         if (i < n && decl(i)->isa<RecDecl>()) {
             if (!decl(r)->isa<RecDecl>()) r = i;
         } else if (r < n && decl(r)->isa<RecDecl>()) {
-            for (size_t j = r; j != i; ++j) decl(j)->as<RecDecl>()->emit_rec(e);
+            for (size_t j = r; j != i; ++j) decl(j)->as<RecDecl>()->emit_body(e);
             r = i;
         }
 
         if (i == n) break;
-        decl(i)->emit(e);
+        decl(i)->emit_decl(e);
     }
 }
 
-void LetDecl::emit(Emitter& e) const {
+void LetDecl::emit_decl(Emitter& e) const {
     auto v = value()->emit(e);
     def_   = ptrn()->emit_value(e, v);
 }
@@ -305,7 +311,7 @@ void AxiomDecl::Alias::emit(Emitter& e) const {
     def_           = e.world().axiom(norm, *id.curry, *id.trip, axiom_->thorin_type_, id.plugin, id.tag, 0);
 }
 
-void AxiomDecl::emit(Emitter& e) const {
+void AxiomDecl::emit_decl(Emitter& e) const {
     auto [plugin, tag, sub] = Annex::split(e.driver(), dbg().sym);
     auto&& [annex, is_new]  = e.driver().name2annex(dbg().sym, plugin, tag, dbg().loc);
     thorin_type_            = type()->emit(e);
@@ -328,25 +334,32 @@ void AxiomDecl::emit(Emitter& e) const {
     }
 }
 
-void RecDecl::emit(Emitter& e) const {
+void RecDecl::emit_decl(Emitter& e) const {
     auto t = type() ? type()->emit(e) : e.world().type_infer_univ();
+    def_   = body()->emit_decl(e);
 
+#if 0
     if (auto sigma = body()->isa<SigmaExpr>()) {
         def_ = e.world().mut_sigma(t, sigma->ptrn()->num_ptrns());
     } else if (auto pi = body()->isa<PiExpr>()) {
         def_ = e.world().mut_pi(t);
     } else if (auto lam = body()->isa<LamExpr>()) {
+#    if 0
         if (auto infer = t->isa<Infer>()) t = e.world().mut_pi(t, e.world().type_infer_univ());
         if (auto pi = t->isa<Pi>())
             def_ = e.world().mut_lam(pi);
         else
             error(type()->loc(), "type of a function must be a function type");
-    } else {
-        error(body()->loc(), "unsupported expression for a recursive declaration");
+#    endif
+        def_ = body()->emit_decl(e);
     }
+#endif
 }
 
-void RecDecl::emit_rec(Emitter& e) const { body()->emit(e); }
+void RecDecl::emit_body(Emitter& e) const {
+    body()->emit_body(e);
+    def_->as_mut()->make_external();
+}
 
 Lam* LamDecl::Dom::emit_value(Emitter& e) const {
     lam_     = e.world().mut_lam(pi_);
@@ -362,7 +375,7 @@ Lam* LamDecl::Dom::emit_value(Emitter& e) const {
     return lam_;
 }
 
-void LamDecl::emit(Emitter& e) const {
+void LamDecl::emit_decl(Emitter& e) const {
     // Iterate over all doms: Build a Lam for cur dom, by furst building a curried Pi for the remaining doms.
     for (size_t i = 0, n = num_doms(); i != n; ++i) {
         for (const auto& dom : doms() | std::ranges::views::drop(i)) dom->emit_type(e);
@@ -382,13 +395,13 @@ void LamDecl::emit(Emitter& e) const {
         lam->set_filter(f);
 
         if (i == 0)
-            def_ = lam->set(dbg());
+            def_ = lam->set(loc(), dbg().sym);
         else
             dom(i - 1)->lam_->set_body(lam);
     }
 }
 
-void LamDecl::emit_rec(Emitter& e) const {
+void LamDecl::emit_body(Emitter& e) const {
     doms().back()->lam_->set_body(body()->emit(e));
     if (is_external()) doms().front()->lam_->make_external();
 }

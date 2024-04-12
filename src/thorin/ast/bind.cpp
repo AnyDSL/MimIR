@@ -108,6 +108,9 @@ void IdPtrn::bind(Scopes& s, bool quiet) const {
     s.bind(dbg(), this, rebind(), quiet);
 }
 
+void TuplePtrn::bind_decl(Scopes& s) const {}
+void TuplePtrn::bind_body(Scopes& s) const {}
+
 void TuplePtrn::bind(Scopes& s, bool quiet) const {
     for (const auto& ptrn : ptrns()) ptrn->bind(s, quiet);
     s.bind(dbg(), this, rebind(), quiet);
@@ -143,9 +146,12 @@ void PiExpr::bind(Scopes& s) const {
     s.pop();
 }
 
+void LamExpr::bind_decl(Scopes& s) const { lam()->bind_decl(s); }
+void LamExpr::bind_body(Scopes& s) const { lam()->bind_body(s); }
+
 void LamExpr::bind(Scopes& s) const {
-    lam()->bind(s);
-    lam()->bind_rec(s);
+    bind_decl(s);
+    bind_body(s);
 }
 
 void AppExpr::bind(Scopes& s) const {
@@ -160,9 +166,13 @@ void RetExpr::bind(Scopes& s) const {
     body()->bind(s);
 }
 
+void SigmaExpr::bind_decl(Scopes& s) const { ptrn()->bind_decl(s); }
+void SigmaExpr::bind_body(Scopes& s) const { ptrn()->bind_body(s); }
+
 void SigmaExpr::bind(Scopes& s) const {
     s.push();
-    ptrn()->bind(s);
+    bind_decl(s);
+    bind_body(s);
     s.pop();
 }
 
@@ -201,12 +211,12 @@ void DeclsBlock::bind(Scopes& s) const {
         if (i < e && decl(i)->isa<RecDecl>()) {
             if (!decl(r)->isa<RecDecl>()) r = i;
         } else if (r < e && decl(r)->isa<RecDecl>()) {
-            for (size_t j = r; j != i; ++j) decl(j)->as<RecDecl>()->bind_rec(s);
+            for (size_t j = r; j != i; ++j) decl(j)->as<RecDecl>()->bind_body(s);
             r = i;
         }
 
         if (i == e) break;
-        decl(i)->bind(s);
+        decl(i)->bind_decl(s);
     }
 }
 
@@ -230,7 +240,7 @@ void AxiomDecl::Alias::bind(Scopes& s, const AxiomDecl* axiom) const {
     s.bind(full_, this);
 }
 
-void AxiomDecl::bind(Scopes& s) const {
+void AxiomDecl::bind_decl(Scopes& s) const {
     type()->bind(s);
 
     std::tie(sym_.plugin, sym_.tag, sym_.sub) = Annex::split(s.driver(), dbg().sym);
@@ -255,17 +265,20 @@ void AxiomDecl::bind(Scopes& s) const {
     }
 }
 
-void LetDecl::bind(Scopes& s) const {
+void LetDecl::bind_decl(Scopes& s) const {
     value()->bind(s);
     ptrn()->bind(s);
 }
 
-void RecDecl::bind(Scopes& s) const {
+void RecDecl::bind_decl(Scopes& s) const {
     if (type()) type()->bind(s);
     s.bind(dbg(), this);
+
+    if (!body()->isa<LamExpr>() && !body()->isa<PiExpr>() && !body()->isa<SigmaExpr>())
+        s.ast().error(body()->loc(), "unsupported expression for a recursive declaration");
 }
 
-void RecDecl::bind_rec(Scopes& s) const { body()->bind(s); }
+void RecDecl::bind_body(Scopes& s) const { body()->bind(s); }
 
 void LamDecl::Dom::bind(Scopes& s, bool quiet) const {
     ptrn()->bind(s, quiet);
@@ -281,7 +294,7 @@ void LamDecl::Dom::bind(Scopes& s, bool quiet) const {
     }
 }
 
-void LamDecl::bind(Scopes& s) const {
+void LamDecl::bind_decl(Scopes& s) const {
     s.push();
     for (const auto& dom : doms()) dom->bind(s);
 
@@ -317,7 +330,7 @@ void LamDecl::bind(Scopes& s) const {
     s.bind(dbg(), this);
 }
 
-void LamDecl::bind_rec(Scopes& s) const {
+void LamDecl::bind_body(Scopes& s) const {
     s.push();
     for (const auto& dom : doms()) dom->bind(s, true);
     body()->bind(s);
