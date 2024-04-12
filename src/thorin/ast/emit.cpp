@@ -29,7 +29,10 @@ private:
 Ref ErrorExpr::emit(Emitter&) const { fe::unreachable(); }
 Ref InferExpr::emit(Emitter& e) const { return e.world().type_infer_univ(); }
 
-Ref IdExpr::emit(Emitter&) const { return decl_->def(); }
+Ref IdExpr::emit(Emitter&) const {
+    assert(decl());
+    return decl()->def();
+}
 
 Ref ExtremumExpr::emit(Emitter& e) const {
     auto t = type() ? type()->emit(e) : e.world().type<0>();
@@ -345,7 +348,6 @@ void AxiomDecl::emit_decl(Emitter& e) const {
     if (num_subs() == 0) {
         auto norm = e.driver().normalizer(id_.plugin, id_.tag, 0);
         def_      = e.world().axiom(norm, curry, trip, thorin_type_, id_.plugin, id_.tag, 0)->set(dbg());
-        def_->dump();
     } else {
         for (const auto& aliases : subs())
             for (const auto& alias : aliases) alias->emit(e);

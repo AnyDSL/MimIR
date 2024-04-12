@@ -81,11 +81,15 @@ private:
 void ExtremumExpr::bind(Scopes& s) const { if (type()) type()->bind(s); }
 void LitExpr     ::bind(Scopes& s) const { if (type()) type()->bind(s); }
 void TypeExpr    ::bind(Scopes& s) const { level()->bind(s); }
-void IdExpr      ::bind(Scopes& s) const { decl_ = s.find(dbg()); }
 void ErrorExpr   ::bind(Scopes&) const {}
 void InferExpr   ::bind(Scopes&) const {}
 void PrimaryExpr ::bind(Scopes&) const {}
 // clang-format on
+
+void IdExpr ::bind(Scopes& s) const {
+    decl_ = s.find(dbg());
+    assert(decl_);
+}
 
 void Module::bind(AST& ast) const {
     auto scopes = Scopes(ast);
@@ -174,8 +178,7 @@ void SigmaExpr::bind_body(Scopes& s) const { ptrn()->bind_body(s); }
 
 void SigmaExpr::bind(Scopes& s) const {
     s.push();
-    bind_decl(s);
-    bind_body(s);
+    ptrn()->bind(s);
     s.pop();
 }
 
