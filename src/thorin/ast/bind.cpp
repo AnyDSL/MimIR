@@ -38,14 +38,16 @@ public:
         scopes_.pop_back();
     }
 
-    const Decl* find(Dbg dbg) {
+    const Decl* find(Dbg dbg, bool quiet = false) {
         if (!dbg || dbg.sym == '_') return nullptr;
 
         for (auto& scope : scopes_ | std::ranges::views::reverse)
             if (auto i = scope.find(dbg.sym); i != scope.end()) return i->second.second;
 
-        ast().error(dbg.loc, "'{}' not found", dbg.sym);
-        bind(dbg, dummy()); // put into scope to prevent further errors
+        if (!quiet) {
+            ast().error(dbg.loc, "'{}' not found", dbg.sym);
+            bind(dbg, dummy()); // put into scope to prevent further errors
+        }
         return nullptr;
     }
 
@@ -198,8 +200,12 @@ template void ArrOrPackExpr<false>::bind(Scopes&) const;
 
 void ExtractExpr::bind(Scopes& s) const {
     tuple()->bind(s);
-    if (auto expr = std::get_if<Ptr<Expr>>(&index())) (*expr)->bind(s);
-    // We check for Dbg case during "emit" as we need full type info.
+    if (auto expr = std::get_if<Ptr<Expr>>(&index()))
+        (*expr)->bind(s);
+    else {
+        auto dbg = std::get<Dbg>(index());
+        decl_    = s.find(dbg, true);
+    }
 }
 
 void InsertExpr::bind(Scopes& s) const {

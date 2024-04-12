@@ -215,7 +215,7 @@ Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::T_bot:
         case Tag::T_top: return parse_extremum_expr();
         case Tag::M_anx:
-        case Tag::M_id:      return ptr<IdExpr>(lex().dbg());
+        case Tag::M_id:  return ptr<IdExpr>(lex().dbg());
         //case Tag::M_str:     return world().tuple(lex().sym())->set(prev_);
         default:
             if (ctxt.empty()) return nullptr;
@@ -236,12 +236,13 @@ template<bool arr> Ptr<Expr> Parser::parse_arr_or_pack_expr() {
     }
 
     auto shape = parse_expr(arr ? "shape of an array" : "shape of a pack");
+    auto ptrn  = IdPtrn::mk_id(ast(), dbg, std::move(shape));
     expect(Tag::T_semicolon, arr ? "array" : "pack");
     auto body = parse_expr(arr ? "body of an array" : "body of a pack");
     expect(arr ? Tag::D_quote_r : Tag::D_angle_r,
            arr ? "closing delimiter of an array" : "closing delimiter of a pack");
 
-    return ptr<ArrOrPackExpr<arr>>(track, dbg, std::move(shape), std::move(body));
+    return ptr<ArrOrPackExpr<arr>>(track, std::move(ptrn), std::move(body));
 }
 
 Ptr<Expr> Parser::parse_block_expr(std::string_view ctxt) {

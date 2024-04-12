@@ -191,8 +191,8 @@ Ref World::app(Ref callee, Ref arg) {
             .error(arg->loc(), "cannot apply argument to callee")
             .note(arg->loc(), "argument: '{}'", arg)
             .note(arg->loc(), "type: '{}'", arg->type())
-            .note(arg->loc(), "callee: '{}'", callee)
-            .note(arg->loc(), "type: '{}'", pi);
+            .note(callee->loc(), "callee: '{}'", callee)
+            .note(callee->loc(), "type: '{}'", pi);
     }
 
     if (auto imm = callee->isa_imm<Lam>()) return imm->body();

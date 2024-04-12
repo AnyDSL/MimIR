@@ -175,6 +175,10 @@ public:
         auto loc = type->loc();
         return ast.ptr<IdPtrn>(loc, false, Dbg(loc, ast.sym_anon()), std::move(type));
     }
+    static Ptr<IdPtrn> mk_id(AST& ast, Dbg dbg, Ptr<Expr>&& type) {
+        auto loc = (type && dbg) ? dbg.loc + type->loc() : type ? type->loc() : dbg.loc;
+        return ast.ptr<IdPtrn>(loc, false, dbg, std::move(type));
+    }
 
     void bind(Scopes&, bool quiet = false) const override;
     Ref emit_value(Emitter&, Ref) const override;
@@ -406,7 +410,8 @@ public:
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     protected:
-        mutable Pi* pi_ = nullptr;
+        mutable Pi* pi_   = nullptr;
+        mutable Pi* decl_ = nullptr;
 
     private:
         bool is_implicit_;
@@ -557,14 +562,12 @@ private:
 /// `«dbg: shape; body»` or `‹dbg: shape; body›`
 template<bool arr> class ArrOrPackExpr : public Expr {
 public:
-    ArrOrPackExpr(Loc loc, Dbg dbg, Ptr<Expr>&& shape, Ptr<Expr>&& body)
+    ArrOrPackExpr(Loc loc, Ptr<IdPtrn>&& shape, Ptr<Expr>&& body)
         : Expr(loc)
-        , dbg_(dbg)
         , shape_(std::move(shape))
         , body_(std::move(body)) {}
 
-    Dbg dbg() const { return dbg_; }
-    const Expr* shape() const { return shape_.get(); }
+    const IdPtrn* shape() const { return shape_.get(); }
     const Expr* body() const { return body_.get(); }
 
     void bind(Scopes&) const override;
@@ -572,8 +575,7 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    Dbg dbg_;
-    Ptr<Expr> shape_;
+    Ptr<IdPtrn> shape_;
     Ptr<Expr> body_;
 };
 
@@ -594,6 +596,7 @@ public:
 
     const Expr* tuple() const { return tuple_.get(); }
     const auto& index() const { return index_; }
+    const Decl* decl() const { return decl_; }
 
     void bind(Scopes&) const override;
     Ref emit(Emitter&) const override;
@@ -602,6 +605,7 @@ public:
 private:
     Ptr<Expr> tuple_;
     std::variant<Ptr<Expr>, Dbg> index_;
+    mutable const Decl* decl_ = nullptr;
 };
 
 /// `.ins(tuple, index, value)`
