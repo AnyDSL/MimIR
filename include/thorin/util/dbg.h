@@ -48,9 +48,13 @@ public:
     /// @name Getters
     ///@{
     const auto& msgs() const { return msgs_; }
-    int num_errors() const { return num_errors_; }
-    int num_warnings() const { return num_warnings_; }
-    int num_notes() const { return num_notes_; }
+    size_t num_msgs() const {
+        assert(num_errors() + num_warnings() + num_notes() == msgs_.size());
+        return msgs_.size();
+    }
+    size_t num_errors() const { return num_errors_; }
+    size_t num_warnings() const { return num_warnings_; }
+    size_t num_notes() const { return num_notes_; }
     ///@}
 
     /// @name Add formatted message
@@ -85,9 +89,9 @@ public:
 
 private:
     std::vector<Msg> msgs_;
-    int num_errors_   = 0;
-    int num_warnings_ = 0;
-    int num_notes_    = 0;
+    size_t num_errors_   = 0;
+    size_t num_warnings_ = 0;
+    size_t num_notes_    = 0;
 };
 
 /// @name Formatted Output

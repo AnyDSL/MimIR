@@ -136,6 +136,9 @@ void ArrowExpr::bind(Scopes& s) const {
 
 void PiExpr::Dom::bind(Scopes& s, bool quiet) const { ptrn()->bind(s, quiet); }
 
+void PiExpr::bind_decl(Scopes&) const {}
+void PiExpr::bind_body(Scopes&) const {}
+
 void PiExpr::bind(Scopes& s) const {
     s.push();
     for (const auto& dom : doms()) dom->bind(s);
@@ -272,6 +275,9 @@ void LetDecl::bind_decl(Scopes& s) const {
 
 void RecDecl::bind_decl(Scopes& s) const {
     if (type()) type()->bind(s);
+    if (!type()->isa<InferExpr>() && body()->isa<LamExpr>())
+        s.ast().warn(type()->loc(), "type of recursive declaration ignored for function expression");
+
     s.bind(dbg(), this);
 
     if (!body()->isa<LamExpr>() && !body()->isa<PiExpr>() && !body()->isa<SigmaExpr>())

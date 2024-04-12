@@ -178,7 +178,7 @@ Ref ArrowExpr::emit(Emitter& e) const {
 }
 
 void PiExpr::Dom::emit_type(Emitter& e) const {
-    pi_       = e.world().mut_pi(e.world().type_infer_univ(), is_implicit());
+    if (!pi_) pi_ = e.world().mut_pi(e.world().type_infer_univ(), is_implicit());
     auto type = ptrn()->emit_type(e);
 
     if (ret()) {
@@ -200,6 +200,13 @@ void PiExpr::Dom::emit_type(Emitter& e) const {
     ptrn()->emit_value(e, pi_->var());
 }
 
+Ref PiExpr::emit_decl(Emitter& e, Ref type) const {
+    const auto& first = doms().front();
+    return first->pi_ = e.world().mut_pi(type, first->is_implicit());
+}
+
+void PiExpr::emit_body(Emitter& e, Ref) const { emit(e); }
+
 Ref PiExpr::emit(Emitter& e) const {
     for (const auto& dom : doms()) dom->emit_type(e);
 
@@ -212,12 +219,12 @@ Ref PiExpr::emit(Emitter& e) const {
     return doms().front()->pi_;
 }
 
-Ref LamExpr::emit_decl(Emitter& e) const { return lam()->emit_decl(e), lam()->def(); }
-void LamExpr::emit_body(Emitter& e) const { lam()->emit_body(e); }
+Ref LamExpr::emit_decl(Emitter& e, Ref) const { return lam()->emit_decl(e), lam()->def(); }
+void LamExpr::emit_body(Emitter& e, Ref) const { lam()->emit_body(e); }
 
 Ref LamExpr::emit(Emitter& e) const {
-    auto res = emit_decl(e);
-    emit_body(e);
+    auto res = emit_decl(e, {});
+    emit_body(e, {});
     return res;
 }
 
@@ -242,8 +249,8 @@ Ref RetExpr::emit(Emitter& e) const {
           c->type());
 }
 
-Ref SigmaExpr::emit_decl(Emitter& e) const { return {}; }
-void SigmaExpr::emit_body(Emitter& e) const {}
+Ref SigmaExpr::emit_decl(Emitter& e, Ref type) const { return {}; }
+void SigmaExpr::emit_body(Emitter&, Ref decl) const {}
 
 Ref SigmaExpr::emit(Emitter& e) const { return ptrn()->emit_type(e); }
 
@@ -253,11 +260,21 @@ Ref TupleExpr::emit(Emitter& e) const {
 }
 
 template<bool arr> Ref ArrOrPackExpr<arr>::emit(Emitter& e) const {
-    /*auto s =*/shape()->emit(e);
-    if (dbg() && dbg().sym != '_') {
-        // auto mut = arr ? e.world().mut_arr(
-        body()->emit(e);
+    auto s = shape()->emit(e);
+    if (!dbg() && dbg().sym != '_') {
+        auto b = body()->emit(e);
+        return arr ? e.world().arr(s, b) : e.world().pack(s, b);
+    } else {
+#if 0
+        auto t = e.world().type_infer_univ();
+        auto a = e.world().mut_arr(t); //TODO packs
+        a->set_shape(s);
+        shape()
+
+        if (arr)
+#endif
     }
+
     return {};
 }
 
@@ -308,7 +325,7 @@ void LetDecl::emit_decl(Emitter& e) const {
 void AxiomDecl::Alias::emit(Emitter& e) const {
     auto norm      = e.driver().normalizer(axiom_->id_.plugin, axiom_->id_.tag, 0);
     const auto& id = axiom_->id_;
-    def_           = e.world().axiom(norm, *id.curry, *id.trip, axiom_->thorin_type_, id.plugin, id.tag, 0);
+    def_           = e.world().axiom(norm, *id.curry, *id.trip, axiom_->thorin_type_, id.plugin, id.tag, 0)->set(dbg());
 }
 
 void AxiomDecl::emit_decl(Emitter& e) const {
@@ -327,7 +344,8 @@ void AxiomDecl::emit_decl(Emitter& e) const {
 
     if (num_subs() == 0) {
         auto norm = e.driver().normalizer(id_.plugin, id_.tag, 0);
-        def_      = e.world().axiom(norm, curry, trip, type()->emit(e), id_.plugin, id_.tag, 0);
+        def_      = e.world().axiom(norm, curry, trip, thorin_type_, id_.plugin, id_.tag, 0)->set(dbg());
+        def_->dump();
     } else {
         for (const auto& aliases : subs())
             for (const auto& alias : aliases) alias->emit(e);
@@ -336,7 +354,7 @@ void AxiomDecl::emit_decl(Emitter& e) const {
 
 void RecDecl::emit_decl(Emitter& e) const {
     auto t = type() ? type()->emit(e) : e.world().type_infer_univ();
-    def_   = body()->emit_decl(e);
+    def_   = body()->emit_decl(e, t);
 
 #if 0
     if (auto sigma = body()->isa<SigmaExpr>()) {
@@ -356,10 +374,7 @@ void RecDecl::emit_decl(Emitter& e) const {
 #endif
 }
 
-void RecDecl::emit_body(Emitter& e) const {
-    body()->emit_body(e);
-    def_->as_mut()->make_external();
-}
+void RecDecl::emit_body(Emitter& e) const { body()->emit_body(e, def_); }
 
 Lam* LamDecl::Dom::emit_value(Emitter& e) const {
     lam_     = e.world().mut_lam(pi_);

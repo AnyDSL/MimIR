@@ -30,8 +30,11 @@ public:
         , sym_anon_(sym("_"))
         , sym_return_(sym("return")) {}
 
+    /// @name Getters
+    ///@{
     Driver& driver() { return driver_; }
     const Error& error() { return err_; }
+    ///@}
 
     /// @name Sym
     ///@{
@@ -89,8 +92,8 @@ public:
     virtual void bind_decl(Scopes&) const { fe::unreachable(); }
     virtual void bind_body(Scopes&) const { fe::unreachable(); }
     virtual Ref emit(Emitter&) const = 0;
-    virtual Ref emit_decl(Emitter&) const { fe::unreachable(); }
-    virtual void emit_body(Emitter&) const { fe::unreachable(); }
+    virtual Ref emit_decl(Emitter&, Ref /*type*/) const { fe::unreachable(); }
+    virtual void emit_body(Emitter&, Ref /*decl*/) const { fe::unreachable(); }
 };
 
 class Decl : public Node {
@@ -427,7 +430,11 @@ private:
     const Expr* codom() const { return codom_.get(); }
 
     void bind(Scopes&) const override;
+    void bind_decl(Scopes&) const override;
+    void bind_body(Scopes&) const override;
     Ref emit(Emitter&) const override;
+    Ref emit_decl(Emitter&, Ref type) const override;
+    void emit_body(Emitter&, Ref decl) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -447,8 +454,8 @@ public:
     void bind_decl(Scopes&) const override;
     void bind_body(Scopes&) const override;
     Ref emit(Emitter&) const override;
-    Ref emit_decl(Emitter&) const override;
-    void emit_body(Emitter&) const override;
+    Ref emit_decl(Emitter&, Ref type) const override;
+    void emit_body(Emitter&, Ref decl) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -518,8 +525,8 @@ public:
     void bind_decl(Scopes&) const override;
     void bind_body(Scopes&) const override;
     Ref emit(Emitter&) const override;
-    Ref emit_decl(Emitter&) const override;
-    void emit_body(Emitter&) const override;
+    Ref emit_decl(Emitter&, Ref type) const override;
+    void emit_body(Emitter&, Ref decl) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -798,8 +805,8 @@ public:
 
     void bind_decl(Scopes&) const override;
     void bind_body(Scopes&) const override;
-    void emit_decl(Emitter&) const override;
-    void emit_body(Emitter&) const override;
+    void emit_decl(Emitter& e) const override;
+    void emit_body(Emitter& e) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:

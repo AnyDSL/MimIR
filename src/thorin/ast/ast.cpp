@@ -30,6 +30,8 @@ void Module::compile(AST& ast, World& world) const {
     bind(ast);
     if (ast.error().num_errors() != 0) throw ast.error();
     emit(ast, world);
+    // HACK
+    if (ast.error().num_errors() == 0 && ast.error().num_msgs() != 0) std::cerr << ast.error();
 }
 
 } // namespace thorin::ast

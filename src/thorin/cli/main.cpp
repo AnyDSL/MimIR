@@ -179,8 +179,8 @@ int main(int argc, char** argv) {
             }
             mod->compile(ast, world);
 
-            if (auto s = os[Thorin]) world.dump(*s);
             if (auto s = os[Dot]) world.dot(*s, dot_all_annexes, dot_follow_types);
+            if (auto s = os[Thorin]) world.dump(*s);
 
             if (auto s = os[LL]) {
                 if (auto backend = driver.backend("ll"))
