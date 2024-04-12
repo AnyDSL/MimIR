@@ -201,10 +201,11 @@ void PiExpr::Dom::emit_type(Emitter& e) const {
             type = imm;
         else
             type = sigma;
+        pi_->set_dom(type);
+    } else {
+        pi_->set_dom(type);
+        ptrn()->emit_value(e, pi_->var());
     }
-
-    pi_->set_dom(type);
-    ptrn()->emit_value(e, pi_->var());
 }
 
 Ref PiExpr::emit_decl(Emitter& e, Ref type) const {
