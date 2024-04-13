@@ -19,6 +19,7 @@ namespace ast {
     m(K_let,    ".let"   )             \
     m(K_rec,    ".rec"   )             \
     m(K_ret,    ".ret"   )             \
+    m(K_where,  ".where" )             \
     m(K_Nat,    ".Nat"   )             \
     m(K_Idx,    ".Idx"   )             \
     m(K_extern, ".extern")             \
@@ -103,6 +104,7 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     /* left     prec,    right  */     \
     m(Nil,      Bot,     Nil     )     \
     m(Nil,      Nil,     Nil     )     \
+    m(Nil,      Where,   Where   )     \
     m(Lam,      Arrow,   Arrow   )     \
     m(Nil,      Lam,     Pi      )     \
     m(Nil,      Pi,      App     )     \

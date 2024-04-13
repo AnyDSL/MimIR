@@ -64,21 +64,32 @@ std::ostream& InferExpr::stream(Tab&, std::ostream& os) const { return os << "<i
 std::ostream& PrimaryExpr::stream(Tab&, std::ostream& os) const { return print(os, "{}", tag()); }
 
 std::ostream& LitExpr::stream(Tab& tab, std::ostream& os) const {
-    // if (tag() == Tag::L_c) return print(os, "'{}'", (char)tok().lit_c()); // TODO escape etc
-    // os << value();
-    os << tag();
-    if (type()) print(os, ": {}", S(tab, type()));
+    switch (tag()) {
+        case Tag::L_i: return tok().lit_i()->stream(os, 0);
+        case Tag::L_f: return os << std::bit_cast<double>(tok().lit_u());
+        case Tag::L_s:
+        case Tag::L_u:
+            os << tok().lit_u();
+            if (type()) print(os, ": {}", S(tab, type()));
+            break;
+        default: os << "TODO";
+    }
     return os;
 }
 
 std::ostream& DeclExpr::stream(Tab& tab, std::ostream& os) const {
     if (decls_.num_decls() == 0) return expr()->stream(tab, os);
 
-    os << std::endl;
-    ++tab;
-    decls_.stream(tab, os);
-    (--tab).print(os, "{}", S(tab, expr()));
-    return os;
+    if (where()) {
+        println(os, "{} .where", S(tab, expr()));
+        ++tab;
+        return decls_.stream(tab, os);
+    } else {
+        os << std::endl;
+        ++tab;
+        decls_.stream(tab, os);
+        return (--tab).print(os, "{}", S(tab, expr()));
+    }
 }
 
 std::ostream& BlockExpr::stream(Tab& tab, std::ostream& os) const { return print(os, "{{ {} }}", S(tab, expr())); }
@@ -183,7 +194,7 @@ std::ostream& LamDecl::stream(Tab& tab, std::ostream& os) const {
     print(os, "{}", R(tab, doms()));
     if (codom()) print(os, ": {}", S(tab, codom()));
     if (body()) print(os, " = {}", S(tab, body()));
-    return os;
+    return os << ';';
 }
 
 /*

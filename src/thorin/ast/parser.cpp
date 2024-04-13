@@ -107,29 +107,35 @@ Ptr<Expr> Parser::parse_type_ascr(std::string_view ctxt) {
  * exprs
  */
 
-Ptr<Expr> Parser::parse_expr(std::string_view ctxt, Tok::Prec p) {
+Ptr<Expr> Parser::parse_expr(std::string_view ctxt, Tok::Prec curr_prec) {
     auto track = tracker();
     auto lhs   = parse_primary_expr(ctxt);
-    return parse_infix_expr(track, std::move(lhs), p);
+    return parse_infix_expr(track, std::move(lhs), curr_prec);
 }
 
-Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Tok::Prec p) {
+Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Tok::Prec curr_prec) {
     while (true) {
         // If operator in ahead has less left precedence: reduce (break).
         if (ahead().isa(Tag::T_extract)) {
-            if (auto extract = parse_extract_expr(track, std::move(lhs), p))
+            if (auto extract = parse_extract_expr(track, std::move(lhs), curr_prec))
                 lhs = std::move(extract);
             else
                 break;
         } else if (ahead().isa(Tag::T_arrow)) {
             auto [l, r] = Tok::prec(Tok::Prec::Arrow);
-            if (l < p) break;
+            if (l < curr_prec) break;
             lex();
             auto rhs = parse_expr("right-hand side of an function type", r);
             lhs      = ptr<ArrowExpr>(track.loc(), std::move(lhs), std::move(rhs));
+        } else if (ahead().isa(Tag::K_where)) {
+            auto [l, r] = Tok::prec(Tok::Prec::Where);
+            if (l < curr_prec) break;
+            lex();
+            auto decls = parse_decls();
+            lhs        = ptr<DeclExpr>(track, std::move(decls), std::move(lhs), true);
         } else {
             auto [l, r] = Tok::prec(Tok::Prec::App);
-            if (l < p) break;
+            if (l < curr_prec) break;
             bool is_explicit = (bool)accept(Tag::T_at);
             if (auto rhs = parse_expr({}, r)) // if we can parse an expression, it's an App
                 lhs = ptr<AppExpr>(track.loc(), is_explicit, std::move(lhs), std::move(rhs));
@@ -141,9 +147,9 @@ Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Tok::Prec p) 
     return lhs;
 }
 
-Ptr<Expr> Parser::parse_extract_expr(Tracker track, Ptr<Expr>&& lhs, Tok::Prec p) {
+Ptr<Expr> Parser::parse_extract_expr(Tracker track, Ptr<Expr>&& lhs, Tok::Prec curr_prec) {
     auto [l, r] = Tok::prec(Tok::Prec::Extract);
-    if (l < p) return nullptr;
+    if (l < curr_prec) return nullptr;
     lex();
     if (auto tok = accept(Tag::M_id)) return ptr<ExtractExpr>(track.loc(), std::move(lhs), tok.dbg());
     auto rhs = parse_expr("right-hand side of an extract", r);
@@ -257,7 +263,7 @@ Ptr<Expr> Parser::parse_decl_expr() {
     auto track = tracker();
     auto decls = parse_decls();
     auto expr  = parse_expr("final expression of a delcaration expression");
-    return ptr<DeclExpr>(track, std::move(decls), std::move(expr));
+    return ptr<DeclExpr>(track, std::move(decls), std::move(expr), false);
 }
 
 Ptr<Expr> Parser::parse_lit_expr() {

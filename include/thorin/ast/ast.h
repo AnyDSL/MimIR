@@ -319,13 +319,16 @@ private:
     Ptr<Expr> expr_;
 };
 
+/// `decls e` or `e .where decls` if @p where is `true`.
 class DeclExpr : public Expr {
 public:
-    DeclExpr(Loc loc, Ptrs<ValDecl>&& decls, Ptr<Expr>&& expr)
+    DeclExpr(Loc loc, Ptrs<ValDecl>&& decls, Ptr<Expr>&& expr, bool where)
         : Expr(loc)
         , decls_(std::move(decls))
-        , expr_(std::move(expr)) {}
+        , expr_(std::move(expr))
+        , where_(where) {}
 
+    bool where() const { return where_; }
     const Expr* expr() const { return expr_.get(); }
 
     void bind(Scopes&) const override;
@@ -335,6 +338,7 @@ public:
 private:
     DeclsBlock decls_;
     Ptr<Expr> expr_;
+    bool where_;
 };
 
 /// `.Type level`
