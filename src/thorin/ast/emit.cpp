@@ -247,7 +247,9 @@ template<bool arr> Ref ArrOrPackExpr<arr>::emit(Emitter& e) const {
     if (arr) {
         auto var = a->var();
         shape()->emit_value(e, var);
-        return a->set_body(body()->emit(e));
+        a->set_body(body()->emit(e));
+        if (auto imm = a->immutabilize()) return imm;
+        return a;
     } else {
         auto p   = e.world().mut_pack(a);
         auto var = p->var();
@@ -255,6 +257,7 @@ template<bool arr> Ref ArrOrPackExpr<arr>::emit(Emitter& e) const {
         auto b = body()->emit(e);
         a->set_body(b->type());
         p->set(b);
+        if (auto imm = p->immutabilize()) return imm;
         return p;
     }
 }
