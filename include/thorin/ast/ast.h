@@ -824,18 +824,11 @@ private:
  * Module
  */
 
-class Import {
+class Import : public Node {
 public:
-    Import& operator=(const Import&) = delete;
-    Import(const Import&)            = delete;
-    Import() noexcept                = default;
-
-    Import(Import&& other)
-        : Import() {
-        swap(*this, other);
-    }
-    Import(Dbg dbg, Tok::Tag tag, Ptr<Module>&& module) noexcept
-        : dbg_(dbg)
+    Import(Loc loc, Dbg dbg, Tok::Tag tag, Ptr<Module>&& module)
+        : Node(loc)
+        , dbg_(dbg)
         , tag_(tag)
         , module_(std::move(module)) {}
 
@@ -862,7 +855,7 @@ private:
 
 class Module : public Node {
 public:
-    Module(Loc loc, std::deque<Import>&& imports, Ptrs<ValDecl>&& decls)
+    Module(Loc loc, Ptrs<Import>&& imports, Ptrs<ValDecl>&& decls)
         : Node(loc)
         , imports_(std::move(imports))
         , decls_(std::move(decls)) {}
@@ -877,7 +870,7 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    std::deque<Import> imports_;
+    Ptrs<Import> imports_;
     DeclsBlock decls_;
 };
 

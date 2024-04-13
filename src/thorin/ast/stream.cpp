@@ -201,6 +201,11 @@ std::ostream& LamDecl::stream(Tab& tab, std::ostream& os) const {
  * Module
  */
 
-std::ostream& Module::stream(Tab& tab, std::ostream& os) const { return decls_.stream(tab, os); }
+std::ostream& Import::stream(Tab&, std::ostream& os) const { return println(os, "{} '{}';", tag(), "TODO"); }
+
+std::ostream& Module::stream(Tab& tab, std::ostream& os) const {
+    for (const auto& import : imports()) import->stream(tab, os);
+    return decls_.stream(tab, os);
+}
 
 } // namespace thorin::ast

@@ -99,7 +99,7 @@ void Module::bind(AST& ast) const {
 }
 
 void Module::bind(Scopes& s) const {
-    for (const auto& import : imports()) import.bind(s);
+    for (const auto& import : imports()) import->bind(s);
     decls_.bind(s);
 }
 

@@ -125,7 +125,7 @@ void Module::emit(AST& ast, World& world) const {
 }
 
 void Module::emit(Emitter& e) const {
-    for (const auto& import : imports()) import.emit(e);
+    for (const auto& import : imports()) import->emit(e);
     decls_.emit(e);
 }
 
@@ -406,7 +406,9 @@ void LamDecl::emit_decl(Emitter& e) const {
     // Iterate over all doms: Build a Lam for cur dom, by furst building a curried Pi for the remaining doms.
     for (size_t i = 0, n = num_doms(); i != n; ++i) {
         for (const auto& dom : doms() | std::ranges::views::drop(i)) dom->emit_type(e);
-        auto cod = codom() ? codom()->emit(e) : e.world().type_bot();
+        auto cod = codom()                                     ? codom()->emit(e)
+                 : (tag() == Tag::T_lm || tag() == Tag::K_lam) ? e.world().mut_infer_type()
+                                                               : e.world().type_bot();
 
         for (const auto& dom : doms() | std::ranges::views::drop(i) | std::ranges::views::reverse) {
             dom->pi_->set_codom(cod);

@@ -28,6 +28,8 @@ constexpr size_t Look_Ahead = 2;
 ///      * If default argument is **elided** we have the same behavior as in 1.
 ///      * If default argument is **provided** we have the same behavior as in 2.
 class Parser : public fe::Parser<Tok, Tok::Tag, Look_Ahead, Parser> {
+    using Super = fe::Parser<Tok, Tok::Tag, Look_Ahead, Parser>;
+
 public:
     Parser(AST& ast)
         : ast_(ast) {}
@@ -55,8 +57,8 @@ private:
     Dbg parse_id(std::string_view ctxt = {});
     std::pair<Annex&, bool> parse_annex(std::string_view ctxt = {});
     Dbg parse_name(std::string_view ctxt = {});
-    Import parse_import();
-    Import parse_plugin();
+    Ptr<Import> parse_import_or_plugin();
+    Ptr<Import> parse_plugin();
     Ptr<Expr> parse_type_ascr(std::string_view ctxt = {});
 
     template<class F> void parse_list(std::string ctxt, Tok::Tag delim_l, F f, Tok::Tag sep = Tok::Tag::T_comma) {
@@ -129,12 +131,19 @@ private:
         msg.append(Tok::tag2str(tag)).append("'");
         syntax_err(msg, ctxt);
     }
+
+    using Super::expect;
+    template<class... Args> Tok expect(Tok::Tag tag, const char* f, Args&&... args) {
+        std::ostringstream oss;
+        print(oss, f, std::forward<Args&&>(args)...);
+        return Super::expect(tag, oss.str());
+    }
     ///@}
 
     AST& ast_;
     Lexer* lexer_ = nullptr;
 
-    friend class fe::Parser<Tok, Tok::Tag, Look_Ahead, Parser>;
+    friend Super;
 };
 
 } // namespace thorin::ast
