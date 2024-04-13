@@ -235,16 +235,28 @@ Ref TupleExpr::emit(Emitter& e) const {
 
 template<bool arr> Ref ArrOrPackExpr<arr>::emit(Emitter& e) const {
     auto s = shape()->emit_type(e);
-    if (shape()->is_anon()) {
+    if (shape()->is_anon()) { // immutable
         auto b = body()->emit(e);
         return arr ? e.world().arr(s, b) : e.world().pack(s, b);
     }
+
     auto t = e.world().type_infer_univ();
-    auto a = e.world().mut_arr(t); // TODO packs
+    auto a = e.world().mut_arr(t);
     a->set_shape(s);
-    auto var = a->var();
-    shape()->emit_value(e, var);
-    return a->set_body(body()->emit(e));
+
+    if (arr) {
+        auto var = a->var();
+        shape()->emit_value(e, var);
+        return a->set_body(body()->emit(e));
+    } else {
+        auto p   = e.world().mut_pack(a);
+        auto var = p->var();
+        shape()->emit_value(e, var);
+        auto b = body()->emit(e);
+        a->set_body(b->type());
+        p->set(b);
+        return p;
+    }
 }
 
 template Ref ArrOrPackExpr<true>::emit(Emitter&) const;
