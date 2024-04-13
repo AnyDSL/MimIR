@@ -138,8 +138,13 @@ int main(int argc, char** argv) {
             world.set(path.filename().replace_extension().string());
             auto ast    = ast::AST(world);
             auto parser = ast::Parser(ast);
-#if 0
-            parser.import(driver.sym(input), os[Md]);
+            auto mod    = parser.import(driver.sym(input), os[Md]);
+            mod->compile(ast, world);
+
+            if (auto s = os[AST]) {
+                Tab tab;
+                mod->stream(tab, *s);
+            }
 
             if (auto dep = os[D]) {
                 if (auto autogen_h = output[H]; !autogen_h.empty()) {
@@ -170,14 +175,6 @@ int main(int argc, char** argv) {
                     break;
                 default: error("illegal optimization level '{}'", opt);
             }
-#endif
-
-            auto mod = parser.import(driver.sym(input), os[Md]);
-            if (auto s = os[AST]) {
-                Tab tab;
-                mod->stream(tab, *s);
-            }
-            mod->compile(ast, world);
 
             if (auto s = os[Dot]) world.dot(*s, dot_all_annexes, dot_follow_types);
             if (auto s = os[Thorin]) world.dump(*s);

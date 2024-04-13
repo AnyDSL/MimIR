@@ -220,7 +220,8 @@ Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::L_c:
         case Tag::L_s:
         case Tag::L_u:
-        case Tag::L_f: return parse_lit_expr();
+        case Tag::L_f:
+        case Tag::L_i: return parse_lit_expr();
         case Tag::M_anx:
         case Tag::M_id:  return ptr<IdExpr>(lex().dbg());
         default:

@@ -65,7 +65,7 @@ std::ostream& PrimaryExpr::stream(Tab&, std::ostream& os) const { return print(o
 
 std::ostream& LitExpr::stream(Tab& tab, std::ostream& os) const {
     switch (tag()) {
-        case Tag::L_i: return tok().lit_i()->stream(os, 0);
+        case Tag::L_i: return print(os, "{}", tok().lit_i());
         case Tag::L_f: return os << std::bit_cast<double>(tok().lit_u());
         case Tag::L_s:
         case Tag::L_u:
@@ -78,17 +78,16 @@ std::ostream& LitExpr::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& DeclExpr::stream(Tab& tab, std::ostream& os) const {
-    if (decls_.num_decls() == 0) return expr()->stream(tab, os);
-
     if (where()) {
-        println(os, "{} .where", S(tab, expr()));
-        ++tab;
-        return decls_.stream(tab, os);
-    } else {
-        os << std::endl;
+        tab.println(os, "{} .where", S(tab, expr()));
         ++tab;
         decls_.stream(tab, os);
-        return (--tab).print(os, "{}", S(tab, expr()));
+        --tab;
+        return os;
+    } else {
+        for (const auto& decl : decls_.decls()) tab.println(os, "{}", S(tab, decl.get()));
+        decls_.stream(tab, os);
+        return print(os, "{}", S(tab, expr()));
     }
 }
 
@@ -190,10 +189,18 @@ std::ostream& LamDecl::Dom::stream(Tab& tab, std::ostream& os) const {
 
 std::ostream& LamDecl::stream(Tab& tab, std::ostream& os) const {
     print(os, "{} {}", tag(), dbg());
-    if (num_doms() > 0 && !doms().front()->ptrn()->isa<TuplePtrn>()) os << ' ';
+    if (!doms().front()->ptrn()->isa<TuplePtrn>()) os << ' ';
     print(os, "{}", R(tab, doms()));
     if (codom()) print(os, ": {}", S(tab, codom()));
-    if (body()) print(os, " = {}", S(tab, body()));
+    if (body()) {
+        if (body()->isa<DeclExpr>()) {
+            os << " =" << std::endl;
+            (++tab).print(os, "{}", S(tab, body()));
+            --tab;
+        } else {
+            print(os, " = {}", S(tab, body()));
+        }
+    }
     return os << ';';
 }
 
@@ -201,7 +208,7 @@ std::ostream& LamDecl::stream(Tab& tab, std::ostream& os) const {
  * Module
  */
 
-std::ostream& Import::stream(Tab&, std::ostream& os) const { return println(os, "{} '{}';", tag(), "TODO"); }
+std::ostream& Import::stream(Tab& tab, std::ostream& os) const { return tab.println(os, "{} '{}';", tag(), "TODO"); }
 
 std::ostream& Module::stream(Tab& tab, std::ostream& os) const {
     for (const auto& import : imports()) import->stream(tab, os);

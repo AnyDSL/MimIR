@@ -423,7 +423,9 @@ public:
         : Expr(loc)
         , tag_(tag)
         , doms_(std::move(doms))
-        , codom_(std::move(codom)) {}
+        , codom_(std::move(codom)) {
+        assert(num_doms() != 0);
+    }
 
 private:
     Tok::Tag tag() const { return tag_; }
@@ -797,7 +799,9 @@ public:
         , tag_(tag)
         , is_external_(is_external)
         , doms_(std::move(doms))
-        , codom_(std::move(codom)) {}
+        , codom_(std::move(codom)) {
+        assert(num_doms() != 0);
+    }
 
     Tok::Tag tag() const { return tag_; }
     bool is_external() const { return is_external_; }
