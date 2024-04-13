@@ -136,9 +136,13 @@ void GroupPtrn::bind(Scopes& s, bool quiet) const { s.bind(dbg(), this, rebind()
  * Expr
  */
 
+void DeclExpr::bind(Scopes& s) const {
+    decls_.bind(s);
+    expr()->bind(s);
+}
+
 void BlockExpr::bind(Scopes& s) const {
     s.push();
-    decls_.bind(s);
     expr()->bind(s);
     s.pop();
 }

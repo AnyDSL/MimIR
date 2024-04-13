@@ -139,10 +139,12 @@ Ref TuplePtrn::emit_type(Emitter& e) const {
  * Expr
  */
 
-Ref BlockExpr::emit(Emitter& e) const {
+Ref DeclExpr::emit(Emitter& e) const {
     decls_.emit(e);
     return expr()->emit(e);
 }
+
+Ref BlockExpr::emit(Emitter& e) const { return expr()->emit(e); }
 
 Ref ArrowExpr::emit(Emitter& e) const {
     auto d = dom()->emit(e);
@@ -323,10 +325,10 @@ void AxiomDecl::Alias::emit(Emitter& e, sub_t sub) const {
 }
 
 void AxiomDecl::emit_decl(Emitter& e) const {
-    auto [plugin_s, tag_s, sub_s] = Annex::split(e.driver(), dbg().sym);
-    auto&& [annex, is_new]        = e.driver().name2annex(dbg().sym, plugin_s, tag_s, dbg().loc);
-    thorin_type_                  = type()->emit(e);
-    auto [i_curry, i_trip]        = Axiom::infer_curry_and_trip(thorin_type_);
+    // auto [plugin_s, tag_s, sub_s] = Annex::split(e.driver(), dbg().sym);
+    // auto&& [annex, is_new]        = e.driver().name2annex(dbg().sym, plugin_s, tag_s, dbg().loc);
+    thorin_type_           = type()->emit(e);
+    auto [i_curry, i_trip] = Axiom::infer_curry_and_trip(thorin_type_);
 
     if (curry_) {
         id_.curry = curry_.lit_u();
@@ -355,23 +357,6 @@ void AxiomDecl::emit_decl(Emitter& e) const {
 void RecDecl::emit_decl(Emitter& e) const {
     auto t = type() ? type()->emit(e) : e.world().type_infer_univ();
     def_   = body()->emit_decl(e, t);
-
-#if 0
-    if (auto sigma = body()->isa<SigmaExpr>()) {
-        def_ = e.world().mut_sigma(t, sigma->ptrn()->num_ptrns());
-    } else if (auto pi = body()->isa<PiExpr>()) {
-        def_ = e.world().mut_pi(t);
-    } else if (auto lam = body()->isa<LamExpr>()) {
-#    if 0
-        if (auto infer = t->isa<Infer>()) t = e.world().mut_pi(t, e.world().type_infer_univ());
-        if (auto pi = t->isa<Pi>())
-            def_ = e.world().mut_lam(pi);
-        else
-            error(type()->loc(), "type of a function must be a function type");
-#    endif
-        def_ = body()->emit_decl(e);
-    }
-#endif
 }
 
 void RecDecl::emit_body(Emitter& e) const { body()->emit_body(e, def_); }

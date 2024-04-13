@@ -301,16 +301,14 @@ private:
     Ptr<Expr> type_;
 };
 
-/// `{ decl_0 ... decl_n-1 e }` or `decl_0 ... decl_n-1` (used internaly)
+/// `{ e }`
+/// @deprecated will be removed; use `( e )` instead.
 class BlockExpr : public Expr {
 public:
-    BlockExpr(Loc loc, bool has_braces, Ptrs<ValDecl>&& decls, Ptr<Expr>&& expr)
+    BlockExpr(Loc loc, Ptr<Expr>&& expr)
         : Expr(loc)
-        , has_braces_(has_braces)
-        , decls_(std::move(decls))
         , expr_(std::move(expr)) {}
 
-    bool has_braces() const { return has_braces_; }
     const Expr* expr() const { return expr_.get(); }
 
     void bind(Scopes&) const override;
@@ -318,7 +316,23 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    bool has_braces_;
+    Ptr<Expr> expr_;
+};
+
+class DeclExpr : public Expr {
+public:
+    DeclExpr(Loc loc, Ptrs<ValDecl>&& decls, Ptr<Expr>&& expr)
+        : Expr(loc)
+        , decls_(std::move(decls))
+        , expr_(std::move(expr)) {}
+
+    const Expr* expr() const { return expr_.get(); }
+
+    void bind(Scopes&) const override;
+    Ref emit(Emitter&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
     DeclsBlock decls_;
     Ptr<Expr> expr_;
 };

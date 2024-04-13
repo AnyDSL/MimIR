@@ -82,7 +82,8 @@ private:
     /// @name parse primary exprs
     ///@{
     template<bool> Ptr<Expr> parse_arr_or_pack_expr();
-    Ptr<Expr> parse_block_expr(std::string_view ctxt); ///< Empty @p ctxt means an explicit BlockExpr `{ d* e }`.
+    Ptr<Expr> parse_block_expr();
+    Ptr<Expr> parse_decl_expr();
     Ptr<Expr> parse_lit_expr();
     Ptr<Expr> parse_extremum_expr();
     Ptr<Expr> parse_type_expr();

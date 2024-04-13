@@ -169,16 +169,25 @@ Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::K_Cn:
         case Tag::K_Fn:
         case Tag::T_Pi:      return parse_pi_expr();
+
         case Tag::K_cn:
         case Tag::K_fn:
         case Tag::T_lm:      return parse_lam_expr();
+
+        case Tag::K_ax:
+        case Tag::K_let:
+        case Tag::K_rec:
+        case Tag::K_con:
+        case Tag::K_fun:
+        case Tag::K_lam:     return parse_decl_expr();
+
         case Tag::K_ins:     return parse_insert_expr();
         case Tag::K_ret:     return parse_ret_expr();
         case Tag::D_quote_l: return parse_arr_or_pack_expr<true>();
         case Tag::D_angle_l: return parse_arr_or_pack_expr<false>();
         case Tag::D_brckt_l: return parse_sigma_expr();
         case Tag::D_paren_l: return parse_tuple_expr();
-        case Tag::D_brace_l: return parse_block_expr({});
+        case Tag::D_brace_l: return parse_block_expr();
         case Tag::K_Type:    return parse_type_expr();
 
         case Tag::K_Univ:
@@ -236,13 +245,19 @@ template<bool arr> Ptr<Expr> Parser::parse_arr_or_pack_expr() {
     return ptr<ArrOrPackExpr<arr>>(track, std::move(ptrn), std::move(body));
 }
 
-Ptr<Expr> Parser::parse_block_expr(std::string_view ctxt) {
+Ptr<Expr> Parser::parse_block_expr() {
     auto track = tracker();
-    if (ctxt.empty()) eat(Tag::D_brace_l);
+    eat(Tag::D_brace_l);
+    auto expr = parse_expr("final expression in a block expressoin");
+    expect(Tag::D_brace_r, "block expression");
+    return ptr<BlockExpr>(track, std::move(expr));
+}
+
+Ptr<Expr> Parser::parse_decl_expr() {
+    auto track = tracker();
     auto decls = parse_decls();
-    auto expr  = parse_expr("final expression in a "s + (ctxt.empty() ? "block expressoin"s : std::string(ctxt)));
-    if (ctxt.empty()) expect(Tag::D_brace_r, "block expression");
-    return ptr<BlockExpr>(track, /*has_braces*/ ctxt.empty(), std::move(decls), std::move(expr));
+    auto expr  = parse_expr("final expression of a delcaration expression");
+    return ptr<DeclExpr>(track, std::move(decls), std::move(expr));
 }
 
 Ptr<Expr> Parser::parse_lit_expr() {
@@ -312,8 +327,8 @@ Ptr<Expr> Parser::parse_ret_expr() {
     expect(Tag::T_dollar, "separator of a ret expression");
     auto arg = parse_expr("argument of ret expression");
     expect(Tag::T_semicolon, "let expression");
-    auto decls = parse_block_expr("body of a ret expression");
-    return ptr<RetExpr>(track, std::move(ptrn), std::move(callee), std::move(arg), std::move(decls));
+    auto body = parse_expr("body of a ret expression");
+    return ptr<RetExpr>(track, std::move(ptrn), std::move(callee), std::move(arg), std::move(body));
 }
 
 /*
@@ -600,7 +615,7 @@ Ptr<LamDecl> Parser::parse_lam_decl() {
 
     if (tag == Tag::K_fn || tag == Tag::K_fun) doms.back()->add_ret(ast(), std::move(codom));
 
-    auto body = accept(Tag::T_assign) ? parse_block_expr("body of a "s + entity) : nullptr;
+    auto body = accept(Tag::T_assign) ? parse_expr("body of a "s + entity) : nullptr;
 
     return ptr<LamDecl>(track, tag, external, dbg, std::move(doms), std::move(codom), std::move(body));
 }

@@ -71,20 +71,17 @@ std::ostream& LitExpr::stream(Tab& tab, std::ostream& os) const {
     return os;
 }
 
-std::ostream& BlockExpr::stream(Tab& tab, std::ostream& os) const {
-    if (!has_braces()) {
-        if (decls_.num_decls() == 0) return expr()->stream(tab, os);
-    } else {
-        os << '{';
-    }
+std::ostream& DeclExpr::stream(Tab& tab, std::ostream& os) const {
+    if (decls_.num_decls() == 0) return expr()->stream(tab, os);
 
     os << std::endl;
     ++tab;
     decls_.stream(tab, os);
     (--tab).print(os, "{}", S(tab, expr()));
-    if (has_braces()) tab.print(os << std::endl, "}}");
     return os;
 }
+
+std::ostream& BlockExpr::stream(Tab& tab, std::ostream& os) const { return print(os, "{{ {} }}", S(tab, expr())); }
 
 std::ostream& TypeExpr::stream(Tab& tab, std::ostream& os) const { return print(os, "(.Type {})", S(tab, level())); }
 
