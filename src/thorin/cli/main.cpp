@@ -136,7 +136,7 @@ int main(int argc, char** argv) {
         try {
             auto path = fs::path(input);
             world.set(path.filename().replace_extension().string());
-            auto ast    = ast::AST(driver);
+            auto ast    = ast::AST(world);
             auto parser = ast::Parser(ast);
 #if 0
             parser.import(driver.sym(input), os[Md]);

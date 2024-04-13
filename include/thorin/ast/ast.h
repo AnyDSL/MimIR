@@ -25,14 +25,15 @@ template<class T> using Ptrs = std::deque<Ptr<T>>;
 
 class AST {
 public:
-    AST(Driver& driver)
-        : driver_(driver)
+    AST(World& world)
+        : world_(world)
         , sym_anon_(sym("_"))
         , sym_return_(sym("return")) {}
 
     /// @name Getters
     ///@{
-    Driver& driver() { return driver_; }
+    World& world() { return world_; }
+    Driver& driver() { return world().driver(); }
     const Error& error() { return err_; }
     ///@}
 
@@ -59,7 +60,7 @@ public:
     ///@}
 
 private:
-    Driver& driver_;
+    World& world_;
     fe::Arena arena_;
     Sym sym_anon_;
     Sym sym_return_;
@@ -263,54 +264,13 @@ private:
 /// `tag`
 class PrimaryExpr : public Expr {
 public:
-    PrimaryExpr(Tok tok)
-        : Expr(tok.loc())
-        , tok_(tok) {}
     PrimaryExpr(Loc loc, Tok::Tag tag)
         : Expr(loc)
-        , tok_(loc, tag) {}
-
-    Tok tok() const { return tok_; }
-    Tok::Tag tag() const { return tok_.tag(); }
-
-    void bind(Scopes&) const override;
-    Ref emit(Emitter&) const override;
-    std::ostream& stream(Tab&, std::ostream&) const override;
-
-private:
-    Tok tok_;
-};
-
-/// `tag:type`
-class LitExpr : public Expr {
-public:
-    LitExpr(Loc loc, Dbg value, Ptr<Expr>&& type)
-        : Expr(loc)
-        , value_(value)
-        , type_(std::move(type)) {}
-
-    Dbg value() const { return value_; }
-    const Expr* type() const { return type_.get(); }
-
-    void bind(Scopes&) const override;
-    Ref emit(Emitter&) const override;
-    std::ostream& stream(Tab&, std::ostream&) const override;
-
-private:
-    Dbg value_;
-    Ptr<Expr> type_;
-};
-
-/// `tag:type`
-class ExtremumExpr : public Expr {
-public:
-    ExtremumExpr(Loc loc, Tok::Tag tag, Ptr<Expr>&& type)
-        : Expr(loc)
-        , tag_(tag)
-        , type_(std::move(type)) {}
+        , tag_(tag) {}
+    PrimaryExpr(Tok tok)
+        : PrimaryExpr(tok.loc(), tok.tag()) {}
 
     Tok::Tag tag() const { return tag_; }
-    const Expr* type() const { return type_.get(); }
 
     void bind(Scopes&) const override;
     Ref emit(Emitter&) const override;
@@ -318,6 +278,26 @@ public:
 
 private:
     Tok::Tag tag_;
+};
+
+/// `tok:type`
+class LitExpr : public Expr {
+public:
+    LitExpr(Loc loc, Tok tok, Ptr<Expr>&& type)
+        : Expr(loc)
+        , tok_(tok)
+        , type_(std::move(type)) {}
+
+    Tok tok() const { return tok_; }
+    Tok::Tag tag() const { return tok_.tag(); }
+    const Expr* type() const { return type_.get(); }
+
+    void bind(Scopes&) const override;
+    Ref emit(Emitter&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    Tok tok_;
     Ptr<Expr> type_;
 };
 
@@ -687,7 +667,7 @@ public:
         Dbg dbg() const { return dbg_; }
 
         void bind(Scopes&, const AxiomDecl*) const;
-        void emit(Emitter&) const;
+        void emit(Emitter&, sub_t) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     private:
@@ -698,7 +678,7 @@ public:
         friend class AxiomDecl;
     };
 
-    AxiomDecl(Loc loc, Dbg dbg, std::deque<Ptrs<Alias>>&& subs, Ptr<Expr>&& type, Dbg normalizer, Dbg curry, Dbg trip)
+    AxiomDecl(Loc loc, Dbg dbg, std::deque<Ptrs<Alias>>&& subs, Ptr<Expr>&& type, Dbg normalizer, Tok curry, Tok trip)
         : ValDecl(loc)
         , dbg_(dbg)
         , subs_(std::move(subs))
@@ -713,8 +693,8 @@ public:
     const auto& sub(size_t i) const { return subs_[i]; }
     const Expr* type() const { return type_.get(); }
     Dbg normalizer() const { return normalizer_; }
-    Dbg curry() const { return curry_; }
-    Dbg trip() const { return trip_; }
+    Tok curry() const { return curry_; }
+    Tok trip() const { return trip_; }
 
     void bind_decl(Scopes&) const override;
     void emit_decl(Emitter&) const override;
@@ -724,14 +704,15 @@ private:
     Dbg dbg_;
     std::deque<Ptrs<Alias>> subs_;
     Ptr<Expr> type_;
-    Dbg normalizer_, curry_, trip_;
+    Dbg normalizer_;
+    Tok curry_, trip_;
     mutable struct {
         Sym plugin, tag, sub;
     } sym_;
     mutable struct {
         plugin_t plugin = 0;
         tag_t tag       = 0;
-        std::optional<u8> curry, trip;
+        uint8_t curry, trip;
     } id_;
     mutable Ref thorin_type_;
 };

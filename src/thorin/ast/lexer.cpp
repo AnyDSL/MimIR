@@ -117,7 +117,7 @@ Tok Lexer::lex() {
             if (accept(utf8::isdigit)) {
                 parse_digits();
                 parse_exp();
-                return {loc_, Tag::M_str, sym()};
+                return {loc_, f64(std::strtod(str_.c_str(), nullptr))};
             }
 
             return tok(Tag::T_dot);
@@ -133,7 +133,7 @@ Tok Lexer::lex() {
         if (accept<Append::Off>('\"')) {
             while (lex_char() != '"') {}
             str_.pop_back(); // remove final '"'
-            return {loc_, Tag::M_str, sym()};
+            return {loc_, Tag::L_str, sym()};
         }
 
         if (lex_id()) {
@@ -196,41 +196,52 @@ std::optional<Tok> Lexer::parse_lit() {
     int base = 10;
     std::optional<bool> sign;
 
-    if (accept('+')) {
+    if (accept<Append::Off>('+')) {
         sign = false;
-    } else if (accept('-')) {
+    } else if (accept<Append::Off>('-')) {
         if (accept('>')) return tok(Tag::T_arrow);
         sign = true;
     }
 
     // prefix starting with '0'
-    if (accept('0')) {
-        if      (accept('b')) base =  2;
-        else if (accept('B')) base =  2;
-        else if (accept('o')) base =  8;
-        else if (accept('O')) base =  8;
-        else if (accept('x')) base = 16;
-        else if (accept('X')) base = 16;
+    if (accept<Append::Off>('0')) {
+        if      (accept<Append::Off>('b')) base =  2;
+        else if (accept<Append::Off>('B')) base =  2;
+        else if (accept<Append::Off>('o')) base =  8;
+        else if (accept<Append::Off>('O')) base =  8;
+        else if (accept<Append::Off>('x')) base = 16;
+        else if (accept<Append::Off>('X')) base = 16;
     }
 
     parse_digits(base);
 
     if (accept(utf8::any('i', 'I'))) {
+        if (sign) str_.insert(0, "-"sv);
+        auto val = std::strtoull(str_.c_str(), nullptr, base);
+        str_.clear();
         parse_digits();
-        return Tok{loc_, Tag::M_lit, sym()};
+        auto width = std::strtoull(str_.c_str(), nullptr, 10);
+        return Tok{loc_, ast().world().lit_int(width, val)};
     }
 
     if (!sign && base == 10) {
         if (utf8::isrange(ahead(), U'₀', U'₉')) {
-            while (accept(utf8::isrange(U'₀', U'₉'))) {}
-            return Tok{loc_, Tag::M_lit, sym()};
-        } else if (accept('_')) {
+            auto i = std::strtoull(str_.c_str(), nullptr, 10);
+            std::string mod;
+            while (utf8::isrange(ahead(), U'₀', U'₉')) mod += next() - U'₀' + '0';
+            auto m = std::strtoull(mod.c_str(), nullptr, 10);
+            return Tok{loc_, ast().world().lit_idx_mod(m, i)};
+        } else if (accept<Append::Off>('_')) {
+            auto i = std::strtoull(str_.c_str(), nullptr, 10);
+            str_.clear();
             if (accept(utf8::isdigit)) {
-                parse_digits();
-                return Tok{loc_, Tag::M_lit, sym()};
+                parse_digits(10);
+                auto m = std::strtoull(str_.c_str(), nullptr, 10);
+                return Tok{loc_, ast().world().lit_idx_mod(m, i)};
             } else {
                 ast().error(loc_, "stray underscore in .Idx literal; size is missing");
-                return {};
+                auto i = std::strtoull(str_.c_str(), nullptr, 10);
+                return Tok{loc_, u64(i)};
             }
         }
     }
@@ -253,7 +264,12 @@ std::optional<Tok> Lexer::parse_lit() {
         return {};
     }
 
-    return Tok{loc_, Tag::M_lit, sym()};
+    if (is_float && base == 16) str_.insert(0, "0x"sv);
+    if (sign && *sign) str_.insert(0, "-"sv);
+
+    if (is_float) return Tok{loc_, f64(std::strtod  (str_.c_str(), nullptr      ))};
+    if (sign)     return Tok{loc_, u64(std::strtoll (str_.c_str(), nullptr, base))};
+    else          return Tok{loc_, u64(std::strtoull(str_.c_str(), nullptr, base))};
 }
 
 void Lexer::parse_digits(int base /*= 10*/) {

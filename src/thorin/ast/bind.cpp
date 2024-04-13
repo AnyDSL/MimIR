@@ -80,8 +80,6 @@ private:
  */
 
 // clang-format off
-void ExtremumExpr::bind(Scopes& s) const { if (type()) type()->bind(s); }
-void LitExpr     ::bind(Scopes& s) const { if (type()) type()->bind(s); }
 void TypeExpr    ::bind(Scopes& s) const { level()->bind(s); }
 void ErrorExpr   ::bind(Scopes&) const {}
 void InferExpr   ::bind(Scopes&) const {}
@@ -91,6 +89,16 @@ void PrimaryExpr ::bind(Scopes&) const {}
 void IdExpr ::bind(Scopes& s) const {
     decl_ = s.find(dbg());
     assert(decl_);
+}
+
+void LitExpr::bind(Scopes& s) const {
+    if (type()) {
+        type()->bind(s);
+        if (tag() == Tag::L_str || tag() == Tag::L_c || tag() == Tag::L_i)
+            s.ast().error(type()->loc(), "a {} shall not have a type annotation", tag());
+    } else {
+        if (tag() == Tag::L_f) s.ast().error(loc(), "type annotation mandatory for floating point literal");
+    }
 }
 
 void Module::bind(AST& ast) const {
@@ -140,7 +148,10 @@ void ArrowExpr::bind(Scopes& s) const {
     codom()->bind(s);
 }
 
-void PiExpr::Dom::bind(Scopes& s, bool quiet) const { ptrn()->bind(s, quiet); }
+void PiExpr::Dom::bind(Scopes& s, bool quiet) const {
+    ptrn()->bind(s, quiet);
+    if (ret()) ret()->bind(s, quiet);
+}
 
 void PiExpr::bind_decl(Scopes&) const {}
 void PiExpr::bind_body(Scopes&) const {}
@@ -232,19 +243,6 @@ void DeclsBlock::bind(Scopes& s) const {
     }
 }
 
-static std::optional<u8> parse_u8(AST& ast, Dbg dbg, std::string_view ctxt) {
-    if (dbg) {
-        auto sym = dbg.sym;
-        char* end;
-        auto res = std::strtoull(sym.c_str(), &end, 10);
-        if (sym.c_str() + sym.size() != end)
-            ast.error(dbg.loc, "{} count '{}' is not a number", ctxt, dbg);
-        else
-            return res;
-    }
-    return {};
-}
-
 void AxiomDecl::Alias::bind(Scopes& s, const AxiomDecl* axiom) const {
     axiom_   = axiom;
     auto sym = s.ast().sym(axiom->dbg().sym.str() + "."s + dbg().sym.str());
@@ -265,9 +263,6 @@ void AxiomDecl::bind_decl(Scopes& s) const {
     }
 
     if (sym_.sub) error(dbg().loc, "axiom '{}' must not have a subtag", dbg().sym);
-
-    id_.curry = parse_u8(s.ast(), curry_, "curry"sv);
-    id_.trip  = parse_u8(s.ast(), trip_, "trip"sv);
 
     if (num_subs() == 0) {
         s.bind(dbg(), this);
@@ -296,8 +291,7 @@ void RecDecl::bind_decl(Scopes& s) const {
 void RecDecl::bind_body(Scopes& s) const { body()->bind(s); }
 
 void LamDecl::Dom::bind(Scopes& s, bool quiet) const {
-    ptrn()->bind(s, quiet);
-    if (ret()) ret()->bind(s);
+    PiExpr::Dom::bind(s, quiet);
 
     if (filter() && !quiet) {
         if (has_bang()) {

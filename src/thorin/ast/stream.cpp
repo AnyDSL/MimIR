@@ -61,19 +61,11 @@ std::ostream& TuplePtrn::stream(Tab& tab, std::ostream& os) const {
 std::ostream& IdExpr::stream(Tab&, std::ostream& os) const { return print(os, "{}", dbg()); }
 std::ostream& ErrorExpr::stream(Tab&, std::ostream& os) const { return os << "<error>"; }
 std::ostream& InferExpr::stream(Tab&, std::ostream& os) const { return os << "<infer>"; }
-
-std::ostream& PrimaryExpr::stream(Tab&, std::ostream& os) const {
-    if (tag() == Tag::M_char) return print(os, "'{}'", (char)tok().chr()); // TODO escape etc
-    return print(os, "{}", tag());
-}
+std::ostream& PrimaryExpr::stream(Tab&, std::ostream& os) const { return print(os, "{}", tag()); }
 
 std::ostream& LitExpr::stream(Tab& tab, std::ostream& os) const {
-    os << value();
-    if (type()) print(os, ": {}", S(tab, type()));
-    return os;
-}
-
-std::ostream& ExtremumExpr::stream(Tab& tab, std::ostream& os) const {
+    // if (tag() == Tag::L_c) return print(os, "'{}'", (char)tok().lit_c()); // TODO escape etc
+    // os << value();
     os << tag();
     if (type()) print(os, ": {}", S(tab, type()));
     return os;

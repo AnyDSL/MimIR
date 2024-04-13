@@ -196,19 +196,18 @@ Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::K_I8:
         case Tag::K_I16:
         case Tag::K_I32:
-        case Tag::K_I64:
-        case Tag::M_char:
         case Tag::T_star:
-        case Tag::T_box: {
-            auto tok = lex();
-            return ptr<PrimaryExpr>(tok);
-        }
-        case Tag::M_lit: return parse_lit_expr();
+        case Tag::T_box: return ptr<PrimaryExpr>(lex());
+
         case Tag::T_bot:
-        case Tag::T_top: return parse_extremum_expr();
+        case Tag::T_top:
+        case Tag::L_str:
+        case Tag::L_c:
+        case Tag::L_s:
+        case Tag::L_u:
+        case Tag::L_f: return parse_lit_expr();
         case Tag::M_anx:
         case Tag::M_id:  return ptr<IdExpr>(lex().dbg());
-        //case Tag::M_str:     return world().tuple(lex().sym())->set(prev_);
         default:
             if (ctxt.empty()) return nullptr;
             syntax_err("primary expression", ctxt);
@@ -246,20 +245,12 @@ Ptr<Expr> Parser::parse_block_expr(std::string_view ctxt) {
     return ptr<BlockExpr>(track, /*has_braces*/ ctxt.empty(), std::move(decls), std::move(expr));
 }
 
-Ptr<Expr> Parser::parse_extremum_expr() {
-    auto track  = tracker();
-    auto tag    = lex().tag();
-    auto [_, r] = Tok::prec(Tok::Prec::Lit);
-    auto type   = accept(Tag::T_colon) ? parse_expr("type of "s + Tok::tag2str(tag), r) : nullptr;
-    return ptr<ExtremumExpr>(track, tag, std::move(type));
-}
-
 Ptr<Expr> Parser::parse_lit_expr() {
     auto track  = tracker();
-    auto value  = lex();
+    auto tok    = lex();
     auto [_, r] = Tok::prec(Tok::Prec::Lit);
     auto type   = accept(Tag::T_colon) ? parse_expr("literal", r) : nullptr;
-    return ptr<LitExpr>(track, value.dbg(), std::move(type));
+    return ptr<LitExpr>(track, tok, std::move(type));
 }
 
 Ptr<Expr> Parser::parse_sigma_expr() { return ptr<SigmaExpr>(parse_tuple_ptrn(false, Dbg(ahead().loc(), Sym()))); }
@@ -511,7 +502,8 @@ Ptrs<ValDecl> Parser::parse_decls() {
 Ptr<ValDecl> Parser::parse_axiom_decl() {
     auto track = tracker();
     eat(Tag::K_ax);
-    Dbg dbg, normalizer, curry, trip;
+    Dbg dbg, normalizer;
+    Tok curry, trip;
     if (auto name = expect(Tag::M_anx, "annex name of an axiom"))
         dbg = name.dbg();
     else
@@ -534,9 +526,9 @@ Ptr<ValDecl> Parser::parse_axiom_decl() {
         normalizer = lex().dbg();
     }
     if (accept(Tag::T_comma)) {
-        if (auto c = expect(Tag::M_lit, "curry counter for axiom")) curry = c.dbg();
+        if (auto c = expect(Tag::L_u, "curry counter for axiom")) curry = c;
         if (accept(Tag::T_comma)) {
-            if (auto t = expect(Tag::M_lit, "trip count for axiom")) trip = t.dbg();
+            if (auto t = expect(Tag::L_u, "trip count for axiom")) trip = t;
         }
     }
 

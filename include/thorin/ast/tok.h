@@ -53,12 +53,15 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
 #define THORIN_TOK(m)                  \
     m(EoF, "<end of file>"    )        \
     /* literals */                     \
+    m(L_s, "<signed integer literal>") \
+    m(L_u, "<integer literal>"       ) \
+    m(L_i, "<index literal>"         ) \
+    m(L_f, "<floating-point literal>") \
+    m(L_c, "<char literal>"          ) \
+    m(L_str,  "<string literal>"     ) \
     /* misc */                         \
     m(M_id,   "<identifier>"  )        \
     m(M_anx,  "<annex name>"  )        \
-    m(M_str,  "<string>"      )        \
-    m(M_lit,  "<literal>"     )        \
-    m(M_char, "<char literal>")        \
     /* delimiters */                   \
     m(D_angle_l,    "‹")               \
     m(D_angle_r,    "›")               \
@@ -150,26 +153,42 @@ public:
         , tag_(tag) {}
     Tok(Loc loc, char8_t c)
         : loc_(loc)
-        , tag_(Tag::M_char)
+        , tag_(Tag::L_c)
         , c_(c) {}
+    Tok(Loc loc, uint64_t u)
+        : loc_(loc)
+        , tag_(Tag::L_u)
+        , u_(u) {}
+    Tok(Loc loc, int64_t s)
+        : loc_(loc)
+        , tag_(Tag::L_s)
+        , u_(std::bit_cast<uint64_t>(s)) {}
+    Tok(Loc loc, double d)
+        : loc_(loc)
+        , tag_(Tag::L_f)
+        , u_(std::bit_cast<uint64_t>(d)) {}
+    Tok(Loc loc, const Lit* i)
+        : loc_(loc)
+        , tag_(Tag::L_i)
+        , i_(i) {}
     Tok(Loc loc, Tag tag, Sym sym)
         : loc_(loc)
         , tag_(tag)
-        , sym_(sym) {}
+        , sym_(sym) {
+        assert(tag == Tag::M_id || tag == Tag::M_anx || tag == Tag::L_str);
+    }
 
     bool isa(Tag tag) const { return tag == tag_; }
     Tag tag() const { return tag_; }
     Dbg dbg() const { return {loc(), sym()}; }
     Loc loc() const { return loc_; }
     explicit operator bool() const { return tag_ != Tag::Nil; }
-    char8_t chr() const {
-        assert(isa(Tag::M_char));
-        return c_;
-    }
-    Sym sym() const {
-        assert(isa(Tag::M_anx) || isa(Tag::M_id) || isa(Tag::M_str) || isa(Tag::M_lit));
-        return sym_;
-    }
+    // clang-format off
+    const Lit* lit_i() const { assert(isa(Tag::L_i)); return i_; }
+    char8_t    lit_c() const { assert(isa(Tag::L_c)); return c_;   }
+    uint64_t   lit_u() const { assert(isa(Tag::L_u ) || isa(Tag::L_s ) || isa(Tag::L_f  )); return u_;   }
+    Sym        sym()   const { assert(isa(Tag::M_anx) || isa(Tag::M_id) || isa(Tag::L_str)); return sym_; }
+    // clang-format on
     std::string str() const;
 
     friend std::ostream& operator<<(std::ostream&, Tok);
@@ -180,7 +199,9 @@ private:
     Tag tag_ = Tag::Nil;
     union {
         Sym sym_;
+        uint64_t u_;
         char8_t c_;
+        const Lit* i_;
     };
 };
 

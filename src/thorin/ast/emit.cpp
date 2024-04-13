@@ -35,58 +35,6 @@ Ref IdExpr::emit(Emitter&) const {
     return decl()->def();
 }
 
-Ref ExtremumExpr::emit(Emitter& e) const {
-    auto t = type() ? type()->emit(e) : e.world().type<0>();
-    return (tag() == Tag::T_bot ? e.world().bot(t) : e.world().top(t))->set(loc());
-}
-
-Ref LitExpr::emit(Emitter& e) const {
-    int base        = 10;
-    auto [loc, sym] = value();
-    auto c_str      = sym.c_str();
-    size_t b        = 0;
-    bool sign       = false;
-
-    if (sym[b] == '+')
-        ++b;
-    else if (sym[b] == '-')
-        ++b, sign = true;
-
-    if (sym.size() == b) error(loc, "signed literal '{}' without value", value());
-
-    if (sym.size() > b + 1) {
-        switch (sym[b + 1]) {
-                // clang-format off
-            case 'b':
-            case 'B': base =  2, b += 2; break;
-            case 'o':
-            case 'O': base =  8, b += 2; break;
-            case 'x':
-            case 'X': base = 16, b += 2; break;
-            default:                     break;
-                // clang-format on
-        }
-    }
-
-    char* end;
-    auto val = std::strtoull(c_str + b, &end, base);
-
-    if (*end == '\0') {
-        if (sign) error(loc, "negative .Nat literal '{}' not allowed", value());
-        if (type()) return e.world().lit(type()->emit(e), val);
-        return e.world().lit_nat(val)->set(loc);
-    }
-
-    if (*end == 'i' || *end == 'I') {
-        auto width = std::strtoull(end + 1, nullptr, base);
-        if (width != 64 && val >= Idx::bitwidth2size(width))
-            error(loc, "value '{}' doesn't fit in given bit width '{}'", val, width);
-        return e.world().lit_int(width, val)->set(loc);
-    }
-
-    return {};
-}
-
 Ref TypeExpr::emit(Emitter& e) const {
     auto l = level()->emit(e);
     return e.world().type(l)->set(loc());
@@ -111,12 +59,30 @@ Ref PrimaryExpr ::emit(Emitter& e) const {
         case Tag::K_I16:  return e.world().type_i16();
         case Tag::K_I32:  return e.world().type_i32();
         case Tag::K_I64:  return e.world().type_i64();
-        case Tag::M_char: return e.world().lit_i8(tok().chr());
         case Tag::T_star: return e.world().type<0>();
         case Tag::T_box:  return e.world().type<1>();
         default: fe::unreachable();
             // clang-format on
     }
+}
+
+Ref LitExpr::emit(Emitter& e) const {
+    // auto t = type() ? type()->emit(e) : e.world().type<0>();
+    // return (tag() == Tag::T_bot ? e.world().bot(t) : e.world().top(t))->set(loc());
+    auto t = type() ? type()->emit(e) : nullptr;
+    // clang-format off
+    switch (tag()){
+        case Tag::L_f:
+        case Tag::L_s:
+        case Tag::L_u:   return (t ? e.world().lit(t, tok().lit_u()) : e.world().lit_nat(tok().lit_u()))->set(loc());
+        case Tag::L_i:   return tok().lit_i();
+        case Tag::L_c:   return e.world().lit_i8(tok().lit_c());
+        case Tag::L_str: return e.world().tuple(tok().sym())->set(loc());
+        case Tag::T_bot: return t ? e.world().bot(t)->set(loc()) : *e.world().type_bot();
+        case Tag::T_top: return t ? e.world().top(t)->set(loc()) : *e.world().type_top();
+        default: fe::unreachable();
+    }
+    // clang-format on
 }
 
 void Module::emit(AST& ast, World& world) const {
@@ -335,32 +301,39 @@ void LetDecl::emit_decl(Emitter& e) const {
     def_   = ptrn()->emit_value(e, v);
 }
 
-void AxiomDecl::Alias::emit(Emitter& e) const {
-    auto norm      = e.driver().normalizer(axiom_->id_.plugin, axiom_->id_.tag, 0);
+void AxiomDecl::Alias::emit(Emitter& e, sub_t sub) const {
+    auto norm      = e.driver().normalizer(axiom_->id_.plugin, axiom_->id_.tag, 0); // TODO only one normalizer
     const auto& id = axiom_->id_;
-    def_           = e.world().axiom(norm, *id.curry, *id.trip, axiom_->thorin_type_, id.plugin, id.tag, 0)->set(dbg());
+    def_           = e.world().axiom(norm, id.curry, id.trip, axiom_->thorin_type_, id.plugin, id.tag, sub)->set(dbg());
 }
 
 void AxiomDecl::emit_decl(Emitter& e) const {
-    auto [plugin, tag, sub] = Annex::split(e.driver(), dbg().sym);
-    auto&& [annex, is_new]  = e.driver().name2annex(dbg().sym, plugin, tag, dbg().loc);
-    thorin_type_            = type()->emit(e);
-    auto [curry, trip]      = Axiom::infer_curry_and_trip(thorin_type_);
+    auto [plugin_s, tag_s, sub_s] = Annex::split(e.driver(), dbg().sym);
+    auto&& [annex, is_new]        = e.driver().name2annex(dbg().sym, plugin_s, tag_s, dbg().loc);
+    thorin_type_                  = type()->emit(e);
+    auto [i_curry, i_trip]        = Axiom::infer_curry_and_trip(thorin_type_);
 
-    if (id_.curry) {
-        if (*id_.curry > curry) error(curry_.loc, "curry counter cannot be greater than {}", curry);
+    if (curry_) {
+        id_.curry = curry_.lit_u();
+        if (id_.curry > i_curry) error(curry_.loc(), "curry counter cannot be greater than {}", i_curry);
     } else {
-        id_.curry = curry;
+        id_.curry = i_curry;
     }
 
-    if (!id_.trip) id_.trip = trip;
+    if (trip_) {
+        id_.trip = trip_.lit_u();
+        if (id_.trip > id_.curry)
+            error(curry_.loc(), "trip counter '{}' cannot be greater than curry counter '{}'", id_.trip, id_.curry);
+    } else {
+        id_.trip = i_trip;
+    }
 
     if (num_subs() == 0) {
         auto norm = e.driver().normalizer(id_.plugin, id_.tag, 0);
-        def_      = e.world().axiom(norm, curry, trip, thorin_type_, id_.plugin, id_.tag, 0)->set(dbg());
+        def_      = e.world().axiom(norm, id_.curry, id_.trip, thorin_type_, id_.plugin, id_.tag, 0)->set(dbg());
     } else {
-        for (const auto& aliases : subs())
-            for (const auto& alias : aliases) alias->emit(e);
+        for (sub_t i = 0, n = num_subs(); i != n; ++i)
+            for (const auto& alias : sub(i)) alias->emit(e, i);
     }
 }
 

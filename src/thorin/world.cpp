@@ -43,6 +43,7 @@ World::World(Driver* driver, const State& state)
     data_.type_0      = type(lit_univ_0());
     data_.type_1      = type(lit_univ_1());
     data_.type_bot    = insert<Bot>(0, type());
+    data_.type_top    = insert<Top>(0, type());
     data_.sigma       = insert<Sigma>(0, type(), Defs{})->as<Sigma>();
     data_.tuple       = insert<Tuple>(0, sigma(), Defs{})->as<Tuple>();
     data_.type_nat    = insert<thorin::Nat>(0, *this);

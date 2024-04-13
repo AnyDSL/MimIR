@@ -412,6 +412,7 @@ public:
     Ref bot(Ref type) { return ext<false>(type); }
     Ref top(Ref type) { return ext<true>(type); }
     Ref type_bot() { return data_.type_bot; }
+    Ref type_top() { return data_.type_top; }
     Ref top_nat() { return data_.top_nat; }
     template<bool Up> TBound<Up>* mut_bound(Ref type, size_t size) { return insert<TBound<Up>>(size, type, size); }
     /// A *mut*able Bound of Type @p l%evel.
@@ -637,6 +638,7 @@ private:
         const Type* type_0;
         const Type* type_1;
         const Bot* type_bot;
+        const Top* type_top;
         const Def* type_bool;
         const Top* top_nat;
         const Sigma* sigma;
