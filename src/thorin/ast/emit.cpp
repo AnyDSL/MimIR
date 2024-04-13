@@ -318,21 +318,21 @@ void LetDecl::emit_decl(Emitter& e) const {
     def_   = ptrn()->emit_value(e, v);
 }
 
-void AxiomDecl::Alias::emit(Emitter& e, sub_t sub) const {
-    auto norm      = e.driver().normalizer(axiom_->id_.plugin, axiom_->id_.tag, 0); // TODO only one normalizer
+void AxiomDecl::Alias::emit(Emitter& e, sub_t sub, NormalizeFn norm) const {
     const auto& id = axiom_->id_;
-    def_           = e.world().axiom(norm, id.curry, id.trip, axiom_->thorin_type_, id.plugin, id.tag, sub)->set(dbg());
+    outln("{}: {} - {} - {}", dbg(), id.plugin, (int)id.tag, (int)sub_);
+    def_ = e.world().axiom(norm, id.curry, id.trip, axiom_->thorin_type_, id.plugin, id.tag, sub)->set(dbg());
 }
 
 void AxiomDecl::emit_decl(Emitter& e) const {
-    // auto [plugin_s, tag_s, sub_s] = Annex::split(e.driver(), dbg().sym);
-    // auto&& [annex, is_new]        = e.driver().name2annex(dbg().sym, plugin_s, tag_s, dbg().loc);
-    thorin_type_           = type()->emit(e);
-    auto [i_curry, i_trip] = Axiom::infer_curry_and_trip(thorin_type_);
+    auto [plugin_s, tag_s, sub_s] = Annex::split(e.driver(), dbg().sym);
+    auto&& [annex, is_new]        = e.driver().name2annex(dbg().sym, plugin_s, tag_s, dbg().loc);
+    thorin_type_                  = type()->emit(e);
+    auto [i_curry, i_trip]        = Axiom::infer_curry_and_trip(thorin_type_);
 
     if (curry_) {
         id_.curry = curry_.lit_u();
-        if (id_.curry > i_curry) error(curry_.loc(), "curry counter cannot be greater than {}", i_curry);
+        if (id_.curry > i_curry) error(curry_.loc(), "curry counter cannot be greater than {}", (int)i_curry);
     } else {
         id_.curry = i_curry;
     }
@@ -340,7 +340,8 @@ void AxiomDecl::emit_decl(Emitter& e) const {
     if (trip_) {
         id_.trip = trip_.lit_u();
         if (id_.trip > id_.curry)
-            error(curry_.loc(), "trip counter '{}' cannot be greater than curry counter '{}'", id_.trip, id_.curry);
+            error(curry_.loc(), "trip counter '{}' cannot be greater than curry counter '{}'", (int)id_.trip,
+                  (int)id_.curry);
     } else {
         id_.trip = i_trip;
     }
@@ -349,8 +350,13 @@ void AxiomDecl::emit_decl(Emitter& e) const {
         auto norm = e.driver().normalizer(id_.plugin, id_.tag, 0);
         def_      = e.world().axiom(norm, id_.curry, id_.trip, thorin_type_, id_.plugin, id_.tag, 0)->set(dbg());
     } else {
-        for (sub_t i = 0, n = num_subs(); i != n; ++i)
-            for (const auto& alias : sub(i)) alias->emit(e, i);
+        for (sub_t i = 0, n = num_subs(); i != n; ++i) {
+            auto norm = e.driver().normalizer(id_.plugin, id_.tag, i);
+            for (const auto& alias : sub(i)) {
+                alias->sub_ = i;
+                alias->emit(e, i, norm);
+            }
+        }
     }
 }
 

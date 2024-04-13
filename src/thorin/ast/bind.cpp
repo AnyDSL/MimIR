@@ -271,6 +271,14 @@ void AxiomDecl::bind_decl(Scopes& s) const {
     if (num_subs() == 0) {
         s.bind(dbg(), this);
     } else {
+        if (auto old = s.find(dbg(), true)) {
+            if (auto old_ax = old->isa<AxiomDecl>()) {
+                if (old_ax->num_subs() == 0) {
+                    s.ast().error(dbg().loc, "redeclared sub-less axiom '{}' with subs", dbg());
+                    s.ast().note(old_ax->dbg().loc, "previous location here");
+                }
+            }
+        }
         for (const auto& aliases : subs())
             for (const auto& alias : aliases) alias->bind(s, this);
     }

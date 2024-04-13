@@ -687,13 +687,14 @@ public:
         Dbg dbg() const { return dbg_; }
 
         void bind(Scopes&, const AxiomDecl*) const;
-        void emit(Emitter&, sub_t) const;
+        void emit(Emitter&, sub_t, NormalizeFn) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     private:
         Dbg dbg_;
         mutable Dbg full_;
         mutable const AxiomDecl* axiom_ = nullptr;
+        mutable sub_t sub_              = 0;
 
         friend class AxiomDecl;
     };
