@@ -554,7 +554,6 @@ Ptr<ValDecl> Parser::parse_axiom_decl() {
         }
     }
 
-    expect(Tag::T_semicolon, "end of an axiom");
     return ptr<AxiomDecl>(track, dbg, std::move(subs), std::move(type), normalizer, curry, trip);
 }
 
@@ -565,7 +564,6 @@ Ptr<ValDecl> Parser::parse_let_decl() {
     expect(Tag::T_assign, "let");
     auto type  = parse_type_ascr();
     auto value = parse_expr("value of a let declaration");
-    expect(Tag::T_semicolon, "let declaration");
     return ptr<LetDecl>(track, std::move(ptrn), std::move(value));
 }
 
@@ -576,7 +574,6 @@ Ptr<RecDecl> Parser::parse_rec_decl() {
     auto type = accept(Tag::T_colon) ? parse_expr("type of a recursive declaration") : ptr<InferExpr>(prev_);
     expect(Tag::T_assign, "recursive declaration");
     auto body = parse_expr("body of a recursive declaration");
-    expect(Tag::T_semicolon, "end of a recursive declaration");
     return ptr<RecDecl>(track, dbg, std::move(type), std::move(body));
 }
 
