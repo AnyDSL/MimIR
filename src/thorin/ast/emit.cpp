@@ -2,6 +2,8 @@
 
 #include "thorin/ast/ast.h"
 
+using namespace std::literals;
+
 namespace thorin::ast {
 
 using Tag = Tok::Tag;
@@ -17,6 +19,24 @@ public:
     Driver& driver() { return world().driver(); }
 
     absl::node_hash_map<Sigma*, fe::SymMap<size_t>, GIDHash<const Def*>, GIDEq<const Def*>> sigma2sym2idx;
+
+    void register_if_annex(Dbg dbg, Ref def) {
+        if (dbg && dbg.sym.front() == '%') {
+            auto [plugin, tag, sub] = Annex::split(driver(), dbg.sym);
+            auto name               = world().sym("%"s + plugin.str() + "."s + tag.str());
+            auto&& [annex, is_new]  = driver().name2annex(name, plugin, tag, dbg.loc);
+            plugin_t p              = *Annex::mangle(plugin);
+            tag_t t                 = annex.tag_id;
+            sub_t s                 = annex.subs.size();
+
+            if (sub) {
+                auto& aliases = annex.subs.emplace_back();
+                aliases.emplace_back(sub);
+            }
+
+            world().register_annex(p | (t << 8) | s, def);
+        }
+    }
 
 private:
     AST& ast_;
@@ -316,12 +336,13 @@ void DeclsBlock::emit(Emitter& e) const {
 void LetDecl::emit_decl(Emitter& e) const {
     auto v = value()->emit(e);
     def_   = ptrn()->emit_value(e, v);
+
+    if (auto id = ptrn()->isa<IdPtrn>()) e.register_if_annex(id->dbg(), def_);
 }
 
 void AxiomDecl::Alias::emit(Emitter& e, sub_t sub, NormalizeFn norm) const {
     const auto& id = axiom_->id_;
-    outln("{}: {} - {} - {}", dbg(), id.plugin, (int)id.tag, (int)sub_);
-    def_ = e.world().axiom(norm, id.curry, id.trip, axiom_->thorin_type_, id.plugin, id.tag, sub)->set(dbg());
+    def_           = e.world().axiom(norm, id.curry, id.trip, axiom_->thorin_type_, id.plugin, id.tag, sub)->set(dbg());
 }
 
 void AxiomDecl::emit_decl(Emitter& e) const {
@@ -346,15 +367,22 @@ void AxiomDecl::emit_decl(Emitter& e) const {
         id_.trip = i_trip;
     }
 
+    if (!is_new && annex.pi != (thorin_type_->isa<Pi>() != nullptr))
+        error(dbg().loc, "all declarations of annex '{}' have to be function types if any is", dbg().sym);
+    annex.pi         = thorin_type_->isa<Pi>() != nullptr;
+    annex.normalizer = normalizer().sym;
+
     if (num_subs() == 0) {
         auto norm = e.driver().normalizer(id_.plugin, id_.tag, 0);
         def_      = e.world().axiom(norm, id_.curry, id_.trip, thorin_type_, id_.plugin, id_.tag, 0)->set(dbg());
     } else {
         for (sub_t i = 0, n = num_subs(); i != n; ++i) {
-            auto norm = e.driver().normalizer(id_.plugin, id_.tag, i);
+            auto norm     = e.driver().normalizer(id_.plugin, id_.tag, i);
+            auto& aliases = annex.subs.emplace_back(std::deque<Sym>());
             for (const auto& alias : sub(i)) {
                 alias->sub_ = i;
                 alias->emit(e, i, norm);
+                aliases.emplace_back(alias->dbg().sym);
             }
         }
     }
@@ -365,7 +393,11 @@ void RecDecl::emit_decl(Emitter& e) const {
     def_   = body()->emit_decl(e, t);
 }
 
-void RecDecl::emit_body(Emitter& e) const { body()->emit_body(e, def_); }
+void RecDecl::emit_body(Emitter& e) const {
+    body()->emit_body(e, def_);
+    // TODO immutabilize?
+    e.register_if_annex(dbg(), def_);
+}
 
 Lam* LamDecl::Dom::emit_value(Emitter& e) const {
     lam_     = e.world().mut_lam(pi_);
@@ -412,6 +444,7 @@ void LamDecl::emit_decl(Emitter& e) const {
 void LamDecl::emit_body(Emitter& e) const {
     doms().back()->lam_->set_body(body()->emit(e));
     if (is_external()) doms().front()->lam_->make_external();
+    e.register_if_annex(dbg(), def_);
 }
 
 } // namespace thorin::ast

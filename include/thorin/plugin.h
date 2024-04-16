@@ -2,7 +2,6 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 
 #include <absl/container/btree_map.h>
 #include <absl/container/flat_hash_map.h>

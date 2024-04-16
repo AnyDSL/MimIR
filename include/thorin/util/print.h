@@ -108,7 +108,19 @@ template<class T, class... Args> std::ostream& print(std::ostream& os, const cha
                 } else if constexpr (std::is_invocable_v<decltype(t), std::ostream&>) {
                     std::invoke(t, os);
                 } else if constexpr (detail::Printable<decltype(t)>) {
+                    auto flags = std::ios_base::fmtflags(os.flags());
+
+                    if (spec == "b")
+                        assert(false && "TODO");
+                    else if (spec == "o")
+                        os << std::oct;
+                    else if (spec == "d")
+                        os << std::dec;
+                    else if (spec == "x")
+                        os << std::hex;
+
                     os << t;
+                    os.flags(flags);
                 } else if constexpr (detail::Elemable<decltype(t)>) {
                     detail::range(os, t.range, t.f, spec.c_str());
                 } else if constexpr (std::ranges::range<decltype(t)>) {

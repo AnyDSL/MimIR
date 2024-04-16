@@ -39,7 +39,8 @@ public:
     /// @name Constructors
     ///@{
     Error() = default;
-    Error(Loc loc, const std::string& str) ///< Creates a single Tag::Error message.
+    /// Creates a single Tag::Error message.
+    Error(Loc loc, const std::string& str)
         : msgs_{
             {loc, Tag::Error, str}
     } {}
@@ -56,6 +57,13 @@ public:
     size_t num_warnings() const { return num_warnings_; }
     size_t num_notes() const { return num_notes_; }
     ///@}
+
+    void clear() {
+        num_errors_   = 0;
+        num_warnings_ = 0;
+        num_notes_    = 0;
+        msgs_.clear();
+    }
 
     /// @name Add formatted message
     ///@{

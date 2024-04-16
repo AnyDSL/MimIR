@@ -14,10 +14,11 @@ using namespace thorin::plug;
 int main(int, char**) {
     try {
         Driver driver;
-        auto& w = driver.world();
+        auto& w  = driver.world();
+        auto ast = ast::AST(w);
         driver.log().set(&std::cerr).set(Log::Level::Debug);
 
-        auto parser = ast::Parser(w);
+        auto parser = ast::Parser(ast);
         for (auto plugin : {"compile", "core"}) parser.plugin(plugin);
 
         // .Cn [%mem.M, I32, %mem.Ptr (I32, 0) .Cn [%mem.M, I32]]

@@ -2,7 +2,6 @@
 
 #include <deque>
 #include <memory>
-#include <optional>
 
 #include <fe/arena.h>
 #include <fe/assert.h>
@@ -34,7 +33,8 @@ public:
     ///@{
     World& world() { return world_; }
     Driver& driver() { return world().driver(); }
-    const Error& error() { return err_; }
+    Error& error() { return err_; }
+    const Error& error() const { return err_; }
     ///@}
 
     /// @name Sym

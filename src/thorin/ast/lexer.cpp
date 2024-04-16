@@ -166,7 +166,7 @@ Tok Lexer::lex() {
             continue;
         }
 
-        ast().error({loc_.path, peek_}, "invalid input char '{}'", utf8::Char32(ahead()));
+        ast().error({loc_.path, peek_}, "invalid input char '{x}'", (uint32_t)utf8::Char32(ahead()).c);
         next();
     }
 }

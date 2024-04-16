@@ -1,5 +1,3 @@
-#include <fstream>
-#include <sstream>
 #include <vector>
 
 #include <gtest/gtest-param-test.h>
@@ -28,7 +26,8 @@ TEST(RestrictedDependentTypes, join_singleton) {
     auto test_on_world = [](auto test) {
         Driver driver;
         World& w    = driver.world();
-        auto parser = ast::Parser(w);
+        auto ast    = ast::AST(w);
+        auto parser = ast::Parser(ast);
         for (auto plugin : {"compile", "mem", "core", "math"}) parser.plugin(plugin);
 
         auto i32_t = w.type_i32();
@@ -219,7 +218,8 @@ TEST(RestrictedDependentTypes, join_singleton) {
 TEST(RestrictedDependentTypes, ll) {
     Driver driver;
     World& w    = driver.world();
-    auto parser = ast::Parser(w);
+    auto ast    = ast::AST(w);
+    auto parser = ast::Parser(ast);
     for (auto plugin : {"compile", "mem", "core", "math"}) parser.plugin(plugin);
 
     auto mem_t  = w.annex<mem::M>();

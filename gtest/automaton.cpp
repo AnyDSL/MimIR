@@ -156,7 +156,8 @@ TEST(Automaton, NFAAorBplusA) {
 TEST(Automaton, Regex2NFA) {
     Driver driver;
     World& w    = driver.world();
-    auto parser = ast::Parser(w);
+    auto ast    = ast::AST(w);
+    auto parser = ast::Parser(ast);
     for (auto plugin : {"compile", "mem", "core", "math", "regex"}) parser.plugin(plugin);
 
     auto pattern = w.call<regex::conj>(
@@ -169,7 +170,8 @@ TEST(Automaton, Regex2NFA) {
 TEST(Automaton, Regex2NFAAorBplusA) {
     Driver driver;
     World& w    = driver.world();
-    auto parser = ast::Parser(w);
+    auto ast    = ast::AST(w);
+    auto parser = ast::Parser(ast);
     for (auto plugin : {"compile", "mem", "core", "math", "regex"}) parser.plugin(plugin);
 
     auto pattern = w.call<regex::conj>(
@@ -188,7 +190,8 @@ TEST(Automaton, Regex2NFAAorBplusA) {
 TEST(Automaton, Regex2NFA1or5or9) {
     Driver driver;
     World& w    = driver.world();
-    auto parser = ast::Parser(w);
+    auto ast    = ast::AST(w);
+    auto parser = ast::Parser(ast);
     for (auto plugin : {"compile", "mem", "core", "math", "regex"}) parser.plugin(plugin);
 
     // %regex.disj 2 (%regex.disj 2 (%regex.range ‹2; 49I8›, %regex.range ‹2; 53I8›), %regex.range ‹2;
@@ -208,7 +211,8 @@ TEST(Automaton, Regex2NFA1or5or9) {
 TEST(Automaton, Regex2NFANot1or5or9) {
     Driver driver;
     World& w    = driver.world();
-    auto parser = ast::Parser(w);
+    auto ast    = ast::AST(w);
+    auto parser = ast::Parser(ast);
     for (auto plugin : {"compile", "mem", "core", "math", "regex"}) parser.plugin(plugin);
 
     // %regex.not_ (%regex.disj 2 (%regex.disj 2 (%regex.range ‹2; 49I8›, %regex.range ‹2; 53I8›),
@@ -229,7 +233,8 @@ TEST(Automaton, Regex2NFANot1or5or9) {
 TEST(Automaton, Regex2NFANotwds) {
     Driver driver;
     World& w    = driver.world();
-    auto parser = ast::Parser(w);
+    auto ast    = ast::AST(w);
+    auto parser = ast::Parser(ast);
     for (auto plugin : {"compile", "mem", "core", "math", "regex"}) parser.plugin(plugin);
 
     // %regex.not_ (%regex.conj 3 (%regex.cls.w, %regex.cls.d, %regex.cls.s))
