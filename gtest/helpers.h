@@ -1,12 +1,9 @@
-#ifndef THORIN_GTEST_HELPERS_H
-#define THORIN_GTEST_HELPERS_H
+#pragma once
 
-#include <gtest/gtest.h>
+#include <string>
 
 namespace thorin::gtest {
 
 std::string test_name();
 
 }
-
-#endif

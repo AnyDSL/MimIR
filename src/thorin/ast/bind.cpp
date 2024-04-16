@@ -1,7 +1,5 @@
 #include "thorin/ast/ast.h"
 
-#include "fe/assert.h"
-
 using namespace std::literals;
 
 namespace thorin::ast {
@@ -65,8 +63,6 @@ public:
             }
         }
     }
-
-    tag_t next_tag(plugin_t p) { return plugin2tag_.emplace(p, 0).first->second; }
 
 private:
     AST& ast_;
@@ -259,12 +255,10 @@ void AxiomDecl::bind_decl(Scopes& s) const {
 
     std::tie(sym_.plugin, sym_.tag, sym_.sub) = Annex::split(s.driver(), dbg().sym);
 
-    if (auto p = Annex::mangle(sym_.plugin)) {
+    if (auto p = Annex::mangle(sym_.plugin))
         id_.plugin = *p;
-        id_.tag    = s.next_tag(*p);
-    } else {
+    else
         s.ast().error(dbg().loc, "invalid axiom name '{}'", dbg());
-    }
 
     if (sym_.sub) error(dbg().loc, "axiom '{}' must not have a subtag", dbg().sym);
 

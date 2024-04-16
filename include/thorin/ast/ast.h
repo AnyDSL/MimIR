@@ -687,7 +687,7 @@ public:
         Dbg dbg() const { return dbg_; }
 
         void bind(Scopes&, const AxiomDecl*) const;
-        void emit(Emitter&, sub_t, NormalizeFn) const;
+        void emit(Emitter&, const Axiom*) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     private:
@@ -866,10 +866,10 @@ public:
 
     const auto& imports() const { return imports_; }
 
-    void compile(AST&, World&) const;
+    void compile(AST&) const;
     void bind(AST&) const;
     void bind(Scopes&) const;
-    void emit(AST&, World&) const;
+    void emit(AST&) const;
     void emit(Emitter&) const;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
@@ -877,5 +877,8 @@ private:
     Ptrs<Import> imports_;
     DeclsBlock decls_;
 };
+
+void load_plugin(World&, Sym);
+inline void load_plugin(World& w, std::string_view sv) { return load_plugin(w, w.sym(sv)); }
 
 } // namespace thorin::ast

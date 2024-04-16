@@ -10,12 +10,11 @@ using Tag = Tok::Tag;
 
 class Emitter {
 public:
-    Emitter(AST& ast, World& world)
-        : ast_(ast)
-        , world_(world) {}
+    Emitter(AST& ast)
+        : ast_(ast) {}
 
     AST& ast() const { return ast_; }
-    World& world() { return world_; }
+    World& world() { return ast().world(); }
     Driver& driver() { return world().driver(); }
 
     absl::node_hash_map<Sigma*, fe::SymMap<size_t>, GIDHash<const Def*>, GIDEq<const Def*>> sigma2sym2idx;
@@ -40,7 +39,6 @@ public:
 
 private:
     AST& ast_;
-    World& world_;
 };
 
 /*
@@ -105,8 +103,8 @@ Ref LitExpr::emit(Emitter& e) const {
     // clang-format on
 }
 
-void Module::emit(AST& ast, World& world) const {
-    auto emitter = Emitter(ast, world);
+void Module::emit(AST& ast) const {
+    auto emitter = Emitter(ast);
     emit(emitter);
 }
 
@@ -340,9 +338,9 @@ void LetDecl::emit_decl(Emitter& e) const {
     if (auto id = ptrn()->isa<IdPtrn>()) e.register_if_annex(id->dbg(), def_);
 }
 
-void AxiomDecl::Alias::emit(Emitter& e, sub_t sub, NormalizeFn norm) const {
+void AxiomDecl::Alias::emit(Emitter& e, const Axiom* axiom) const {
     const auto& id = axiom_->id_;
-    def_           = e.world().axiom(norm, id.curry, id.trip, axiom_->thorin_type_, id.plugin, id.tag, sub)->set(dbg());
+    def_           = axiom;
 }
 
 void AxiomDecl::emit_decl(Emitter& e) const {
@@ -369,19 +367,27 @@ void AxiomDecl::emit_decl(Emitter& e) const {
 
     if (!is_new && annex.pi != (thorin_type_->isa<Pi>() != nullptr))
         error(dbg().loc, "all declarations of annex '{}' have to be function types if any is", dbg().sym);
+
+    id_.tag          = annex.tag_id;
     annex.pi         = thorin_type_->isa<Pi>() != nullptr;
     annex.normalizer = normalizer().sym;
 
     if (num_subs() == 0) {
-        auto norm = e.driver().normalizer(id_.plugin, id_.tag, 0);
-        def_      = e.world().axiom(norm, id_.curry, id_.trip, thorin_type_, id_.plugin, id_.tag, 0)->set(dbg());
+        auto norm  = e.driver().normalizer(id_.plugin, id_.tag, 0);
+        auto axiom = e.world().axiom(norm, id_.curry, id_.trip, thorin_type_, id_.plugin, id_.tag, 0)->set(dbg());
+        def_       = axiom;
+        e.world().register_annex(id_.plugin | (flags_t(id_.tag) << 8_u64), axiom);
     } else {
+        sub_t offset = annex.subs.size();
         for (sub_t i = 0, n = num_subs(); i != n; ++i) {
-            auto norm     = e.driver().normalizer(id_.plugin, id_.tag, i);
+            sub_t s       = i + offset;
+            auto norm     = e.driver().normalizer(id_.plugin, id_.tag, s);
             auto& aliases = annex.subs.emplace_back(std::deque<Sym>());
-            for (const auto& alias : sub(i)) {
-                alias->sub_ = i;
-                alias->emit(e, i, norm);
+            auto axiom = e.world().axiom(norm, id_.curry, id_.trip, thorin_type_, id_.plugin, id_.tag, s)->set(dbg());
+            e.world().register_annex(id_.plugin | (flags_t(id_.tag) << 8_u64) | flags_t(s), axiom);
+            for (const auto& alias : sub(s)) {
+                alias->sub_ = s;
+                alias->emit(e, axiom);
                 aliases.emplace_back(alias->dbg().sym);
             }
         }

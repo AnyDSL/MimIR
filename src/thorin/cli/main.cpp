@@ -139,7 +139,7 @@ int main(int argc, char** argv) {
             auto ast    = ast::AST(world);
             auto parser = ast::Parser(ast);
             auto mod    = parser.import(driver.sym(input), os[Md]);
-            mod->compile(ast, world);
+            mod->compile(ast);
 
             if (auto s = os[AST]) {
                 Tab tab;

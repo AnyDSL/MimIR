@@ -92,16 +92,13 @@ public:
         static constexpr auto NL = "&#13;&#10;";
         auto loc                 = escape(def->loc());
         auto type                = escape(def->type());
-        std::ostringstream oss;
-        oss << "0x" << std::hex << def->flags();
-        auto flags = oss.str();
         escape(loc);
         print(os_, "tooltip=\"");
         print(os_, "<b>expr:</b> {}{}", def, NL);
         print(os_, "<b>type:</b> {}{}", type, NL);
         print(os_, "<b>name:</b> {}{}", def->sym(), NL);
         print(os_, "<b>gid:</b> {}{}", def->gid(), NL);
-        print(os_, "<b>flags:</b> {}{}", flags, NL);
+        print(os_, "<b>flags:</b> 0x{x}{}", def->flags(), NL);
         print(os_, "<b>free_vars:</b> {{{, }}}{}", def->free_vars(), NL);
         print(os_, "<b>local_vars:</b> {{{, }}}{}", def->local_vars(), NL);
         print(os_, "<b>local_muts:</b> {{{, }}}{}", def->local_muts(), NL);

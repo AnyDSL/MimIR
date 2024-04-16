@@ -1,5 +1,7 @@
 #include "thorin/ast/ast.h"
 
+#include "thorin/ast/parser.h"
+
 namespace thorin::ast {
 
 LamExpr::LamExpr(Ptr<LamDecl>&& lam)
@@ -26,12 +28,19 @@ Ptr<Ptrn> Ptrn::to_ptrn(Ptr<Expr>&& expr) {
     return {};
 }
 
-void Module::compile(AST& ast, World& world) const {
+void Module::compile(AST& ast) const {
     bind(ast);
     if (ast.error().num_errors() != 0) throw ast.error();
-    emit(ast, world);
+    emit(ast);
     // HACK
     if (ast.error().num_errors() == 0 && ast.error().num_msgs() != 0) std::cerr << ast.error();
+}
+
+void load_plugin(World& world, Sym plugin) {
+    auto ast    = AST(world);
+    auto parser = Parser(ast);
+    auto mod    = parser.plugin(plugin);
+    mod->compile(ast);
 }
 
 } // namespace thorin::ast

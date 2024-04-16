@@ -2,14 +2,14 @@
 
 #include <sstream>
 
+#include <gtest/gtest.h>
+
 #include <thorin/driver.h>
 #include <thorin/rewrite.h>
 
 #include <thorin/ast/parser.h>
 
 #include <thorin/plug/core/core.h>
-
-#include "helpers.h"
 
 using namespace thorin;
 using namespace thorin::plug;
@@ -85,10 +85,10 @@ TEST(Annex, split) {
 
 TEST(trait, idx) {
     Driver driver;
-    World& w    = driver.world();
-    auto ast    = ast::AST(w);
-    auto parser = ast::Parser(ast);
-    parser.plugin("core");
+    World& w = driver.world();
+    w.log().set(Log::Level::Debug);
+    w.log().set(&std::cout);
+    ast::load_plugin(w, "core");
 
     EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'0000'00FF_n))), 1);
     EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'0000'0100_n))), 1);
