@@ -50,7 +50,7 @@ TEST(Lexer, Errors) {
     l1.lex();
     l1.lex();
     EXPECT_GE(ast.error().num_errors(), 1);
-    EXPECT_TRUE(ast.error().msgs()[0].str.starts_with("invalid UTF-8"));
+    EXPECT_TRUE(ast.error().msgs().front().str.starts_with("invalid UTF-8"));
     ast.error().clear();
 
     std::istringstream is2("foo \xaa");
@@ -58,21 +58,21 @@ TEST(Lexer, Errors) {
     l2.lex();
     l2.lex();
     EXPECT_GE(ast.error().num_errors(), 1);
-    EXPECT_TRUE(ast.error().msgs()[0].str.starts_with("invalid UTF-8"));
+    EXPECT_TRUE(ast.error().msgs().front().str.starts_with("invalid UTF-8"));
     ast.error().clear();
 
     std::istringstream is3("+");
     Lexer l3(ast, is3);
     l3.lex();
     EXPECT_GE(ast.error().num_errors(), 1);
-    EXPECT_TRUE(ast.error().msgs()[0].str.starts_with("stray"));
+    EXPECT_TRUE(ast.error().msgs().front().str.starts_with("stray"));
     ast.error().clear();
 
     std::istringstream is4("-");
     Lexer l4(ast, is4);
     l4.lex();
     EXPECT_GE(ast.error().num_errors(), 1);
-    EXPECT_TRUE(ast.error().msgs()[0].str.starts_with("stray"));
+    EXPECT_TRUE(ast.error().msgs().front().str.starts_with("stray"));
 }
 
 TEST(Lexer, Eof) {
@@ -123,11 +123,16 @@ TEST_P(Real, sign) {
 
     std::istringstream is1("0x2.34");
     Lexer l1(ast, is1);
-    EXPECT_ANY_THROW(l1.lex());
+    l1.lex();
+    EXPECT_EQ(ast.error().num_errors(), 1);
+    EXPECT_TRUE(ast.error().msgs().front().str == "hexadecimal floating constants require an exponent"sv);
+    ast.error().clear();
 
     std::istringstream is2("2.34e");
     Lexer l2(ast, is2);
-    EXPECT_ANY_THROW(l2.lex());
+    l2.lex();
+    EXPECT_EQ(ast.error().num_errors(), 1);
+    EXPECT_TRUE(ast.error().msgs().front().str == "exponent has no digits");
 }
 
 INSTANTIATE_TEST_SUITE_P(Lexer, Real, testing::Range(0, 3));

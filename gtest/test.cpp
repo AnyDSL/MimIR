@@ -86,8 +86,6 @@ TEST(Annex, split) {
 TEST(trait, idx) {
     Driver driver;
     World& w = driver.world();
-    w.log().set(Log::Level::Debug);
-    w.log().set(&std::cout);
     ast::load_plugin(w, "core");
 
     EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'0000'00FF_n))), 1);
@@ -275,11 +273,10 @@ TEST(FV, free_vars) {
     auto Nat = w.type_nat();
     auto lx  = w.mut_lam(Nat, {Nat, Nat});
     auto ly  = w.mut_lam(Nat, {Nat, Nat});
-    auto x   = lx->var()->set("x");
-    auto y   = ly->var()->set("y");
+    auto x   = lx->var()->set("x")->as<Var>();
+    auto y   = ly->var()->set("y")->as<Var>();
     lx->set(false, w.tuple({x, y}));
-    auto fvs = lx->free_vars();
-    outln("{, }", fvs);
+    EXPECT_EQ(lx->free_vars(), w.vars(y));
 }
 
 TEST(ADT, Span) {

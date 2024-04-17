@@ -878,7 +878,11 @@ private:
     DeclsBlock decls_;
 };
 
-void load_plugin(World&, Sym);
+void load_plugin(World&, View<Sym>);
+inline void load_plugin(World& w, View<std::string_view> svs) {
+    return load_plugin(w, Vector<Sym>(svs.size(), [&](size_t i) { return w.sym(svs[i]); }));
+}
+inline void load_plugin(World& w, Sym sym) { return load_plugin(w, View<Sym>({sym})); }
 inline void load_plugin(World& w, std::string_view sv) { return load_plugin(w, w.sym(sv)); }
 
 } // namespace thorin::ast

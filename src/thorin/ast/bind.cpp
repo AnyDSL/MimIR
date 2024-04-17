@@ -76,16 +76,12 @@ private:
  */
 
 // clang-format off
-void TypeExpr    ::bind(Scopes& s) const { level()->bind(s); }
-void ErrorExpr   ::bind(Scopes&) const {}
-void InferExpr   ::bind(Scopes&) const {}
-void PrimaryExpr ::bind(Scopes&) const {}
+void IdExpr     ::bind(Scopes& s) const { decl_ = s.find(dbg()); }
+void TypeExpr   ::bind(Scopes& s) const { level()->bind(s); }
+void ErrorExpr  ::bind(Scopes&) const {}
+void InferExpr  ::bind(Scopes&) const {}
+void PrimaryExpr::bind(Scopes&) const {}
 // clang-format on
-
-void IdExpr ::bind(Scopes& s) const {
-    decl_ = s.find(dbg());
-    assert(decl_);
-}
 
 void LitExpr::bind(Scopes& s) const {
     if (type()) {

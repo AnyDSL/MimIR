@@ -29,18 +29,32 @@ Ptr<Ptrn> Ptrn::to_ptrn(Ptr<Expr>&& expr) {
 }
 
 void Module::compile(AST& ast) const {
+    const auto& err = ast.error();
     bind(ast);
-    if (ast.error().num_errors() != 0) throw ast.error();
+    if (err.num_errors() != 0) throw err;
     emit(ast);
-    // HACK
-    if (ast.error().num_errors() == 0 && ast.error().num_msgs() != 0) std::cerr << ast.error();
+
+    assert(err.num_errors() == 0 && "If an error occurs during emit, an exception should have been thrown");
+    if (err.num_warnings() != 0)
+        ast.driver().WLOG("{} warning(s) encountered while compiling module\n{}", err.num_warnings(), err);
 }
 
-void load_plugin(World& world, Sym plugin) {
-    auto ast    = AST(world);
-    auto parser = Parser(ast);
-    auto mod    = parser.plugin(plugin);
-    mod->compile(ast);
+void load_plugin(World& world, View<Sym> plugins) {
+    assert(!plugins.empty() && "must load at least one plugin");
+
+    auto ast     = AST(world);
+    auto parser  = Parser(ast);
+    auto imports = Ptrs<Import>();
+    for (auto plugin : plugins) {
+        auto mod = parser.plugin(plugin);
+        imports.emplace_back(ast.ptr<Import>(mod->loc(), Dbg(Loc(), plugin), Tok::Tag::K_plugin, std::move(mod)));
+    }
+    auto mod = ast.ptr<Module>(imports.front()->loc() + imports.back()->loc(), std::move(imports), Ptrs<ValDecl>());
+    try {
+        mod->compile(ast);
+    } catch (const Error& err) {
+        world.ELOG("{} error(s) encountered while compiling plugins: '{, }'\n{}", err.num_errors(), plugins, err);
+    }
 }
 
 } // namespace thorin::ast

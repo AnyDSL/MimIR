@@ -17,6 +17,7 @@
 #include <thorin/plug/math/math.h>
 #include <thorin/plug/mem/mem.h>
 
+using namespace std::literals;
 using namespace thorin;
 using namespace thorin::plug;
 
@@ -25,10 +26,8 @@ using namespace thorin::plug;
 TEST(RestrictedDependentTypes, join_singleton) {
     auto test_on_world = [](auto test) {
         Driver driver;
-        World& w    = driver.world();
-        auto ast    = ast::AST(w);
-        auto parser = ast::Parser(ast);
-        for (auto plugin : {"compile", "mem", "core", "math"}) parser.plugin(plugin);
+        World& w = driver.world();
+        ast::load_plugin(w, {"compile"sv, "mem"sv, "core"sv, "math"sv});
 
         auto i32_t = w.type_i32();
         auto i64_t = w.type_i64();

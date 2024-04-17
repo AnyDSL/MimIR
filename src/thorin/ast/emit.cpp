@@ -385,7 +385,7 @@ void AxiomDecl::emit_decl(Emitter& e) const {
             auto& aliases = annex.subs.emplace_back(std::deque<Sym>());
             auto axiom = e.world().axiom(norm, id_.curry, id_.trip, thorin_type_, id_.plugin, id_.tag, s)->set(dbg());
             e.world().register_annex(id_.plugin | (flags_t(id_.tag) << 8_u64) | flags_t(s), axiom);
-            for (const auto& alias : sub(s)) {
+            for (const auto& alias : sub(i)) {
                 alias->sub_ = s;
                 alias->emit(e, axiom);
                 aliases.emplace_back(alias->dbg().sym);
