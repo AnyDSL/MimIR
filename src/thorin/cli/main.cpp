@@ -124,7 +124,7 @@ int main(int argc, char** argv) {
         }
 
         // we always need standard plugins, as long as we are not in bootstrap mode
-        if (!flags.bootstrap) plugins.insert(plugins.end(), {"core", "mem", "compile", "opt"});
+        if (!flags.bootstrap) plugins.insert(plugins.end(), {"compile", "opt"});
 
         if (!plugins.empty())
             for (const auto& plugin : plugins) driver.load(plugin);

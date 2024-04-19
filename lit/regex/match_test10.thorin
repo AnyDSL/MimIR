@@ -3,20 +3,16 @@
 // RUN: clang %t.ll -o %t -Wno-override-module
 // RUN: %t; test $? -eq 1
 
-.import mem;
-.import core;
+.plugin mem;
+.plugin core;
 .plugin regex;
 .plugin direct;
 
-.let I8 = .I8;
-.let _32 = .i32;
-.let I32 = .Idx _32;
-.let Top = ⊤:.Nat;
-
+.let Top     = ⊤:.Nat;
 .let pattern = %regex.conj 2 (%regex.quant.plus  %regex.cls.w, %regex.lit '@');
-.let len = 10;
+.let len     = 10;
 
-.con .extern main[mem: %mem.M, argc: I32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), exit : .Cn [%mem.M, I32]] = {
+.con .extern main[mem: %mem.M, argc: .I32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), exit : .Cn [%mem.M, .I32]] = {
     .fun match(len: .Nat)(mem: %mem.M, str: %mem.Ptr0 <<len; Char>>): [%mem.M, .Bool] =
         .let (`mem, matched, pos) = pattern (mem, str, 0:(.Idx len));
         .let end = %core.idx len 0 (%core.nat.sub (len, 1));
@@ -25,7 +21,7 @@
     .let (`mem, string) = %mem.alloc (<<len; Char>>, 0) mem;
     .let `mem = %mem.store (mem, string, "testasdf@\0");
 
-    .con exiting[mem: %mem.M, ret :.Bool] = exit (mem, %core.conv.u _32 ret);
+    .con exiting[mem: %mem.M, ret :.Bool] = exit (mem, %core.conv.u .i32 ret);
 
     match len ((mem, string), exiting)
 };

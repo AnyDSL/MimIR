@@ -1,7 +1,7 @@
 // RUN: rm -f %t.ll
 // RUN: %thorin %s --output-ll %t.ll -o -
 
-.import core;
+.plugin core;
 
 .ax %foo.Mat: Π [n: .Nat, S: «n; .Nat», T: *] -> *;
 
