@@ -113,7 +113,7 @@ private:
     Ptrs<ValDecl> parse_decls();
     Ptr<ValDecl> parse_axiom_decl();
     Ptr<ValDecl> parse_let_decl();
-    Ptr<ValDecl> parse_cfun_decl();
+    Ptr<ValDecl> parse_c_decl();
     Ptr<LamDecl> parse_lam_decl();
     Ptr<RecDecl> parse_rec_decl();
     ///@}

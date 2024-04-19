@@ -195,7 +195,7 @@ Ref World::app(Ref callee, Ref arg) {
             .note(arg->loc(), "argument: '{}'", arg)
             .note(arg->loc(), "type: '{}'", arg->type())
             .note(callee->loc(), "callee: '{}'", callee)
-            .note(callee->loc(), "type: '{}'", pi);
+            .note(callee->loc(), "domain type: '{}'", pi->dom());
     }
 
     if (auto imm = callee->isa_imm<Lam>()) return imm->body();

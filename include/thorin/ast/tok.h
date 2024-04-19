@@ -15,11 +15,12 @@ namespace ast {
     m(K_import, ".import")             \
     m(K_plugin, ".plugin")             \
     m(K_ax,     ".ax"    )             \
-    m(K_def,    ".def"   )             \
     m(K_let,    ".let"   )             \
+    m(K_grp,    ".grp"  )              \
     m(K_rec,    ".rec"   )             \
     m(K_ret,    ".ret"   )             \
     m(K_where,  ".where" )             \
+    m(K_end,    ".end" )               \
     m(K_Nat,    ".Nat"   )             \
     m(K_Idx,    ".Idx"   )             \
     m(K_extern, ".extern")             \
@@ -30,6 +31,7 @@ namespace ast {
     m(K_con,    ".con"   )             \
     m(K_fun,    ".fun"   )             \
     m(K_lam,    ".lam"   )             \
+    m(K_ccon,   ".ccon"  )             \
     m(K_cfun,   ".cfun"  )             \
     m(K_cn,     ".cn"    )             \
     m(K_fn,     ".fn"    )             \

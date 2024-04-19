@@ -169,6 +169,8 @@ std::ostream& AxiomDecl::stream(Tab& tab, std::ostream& os) const {
     return os << ";";
 }
 
+std::ostream& GrpDecl::stream(Tab&, std::ostream& os) const { return os << ".grp"; }
+
 std::ostream& LetDecl::stream(Tab& tab, std::ostream& os) const {
     return print(os, ".let {} = {};", S(tab, ptrn()), S(tab, value()));
 }
@@ -204,8 +206,10 @@ std::ostream& LamDecl::stream(Tab& tab, std::ostream& os) const {
     return os << ';';
 }
 
-std::ostream& CFun::stream(Tab& tab, std::ostream& os) const {
-    return print(os, ".cfun {} {}: {}", dbg(), S(tab, dom()), S(tab, codom()));
+std::ostream& CDecl::stream(Tab& tab, std::ostream& os) const {
+    print(os, "{} {} {}", dbg(), tag(), S(tab, dom()), S(tab, codom()));
+    if (tag() == Tag::K_cfun) print(os, ": {}", S(tab, codom()));
+    return os;
 }
 /*
  * Module

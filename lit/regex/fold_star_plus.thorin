@@ -1,6 +1,6 @@
 // RUN: %thorin %s -o - -P %S | FileCheck %s
 
-.import mem;
+.plugin mem;
 .plugin regex;
 
 .import dont_compile.thorin;

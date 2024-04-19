@@ -274,6 +274,8 @@ void AxiomDecl::bind_decl(Scopes& s) const {
     }
 }
 
+void GrpDecl::bind_decl(Scopes&) const {}
+
 void LetDecl::bind_decl(Scopes& s) const {
     value()->bind(s);
     ptrn()->bind(s);
@@ -348,11 +350,11 @@ void LamDecl::bind_body(Scopes& s) const {
     s.pop();
 }
 
-void CFun::bind_decl(Scopes& s) const {
+void CDecl::bind_decl(Scopes& s) const {
     s.push();
     dom()->bind(s);
-    s.pop();
-    codom()->bind(s); // we don't allow dependency here on dom
+    s.pop(); // we don't allow codom to depent on dom
+    if (codom()) codom()->bind(s);
     s.bind(dbg(), this);
 }
 

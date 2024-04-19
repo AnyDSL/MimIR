@@ -666,6 +666,17 @@ public:
  * Decls
  */
 
+/// `.grp`
+class GrpDecl : public ValDecl {
+public:
+    GrpDecl(Loc loc)
+        : ValDecl(loc) {}
+
+    void bind_decl(Scopes&) const override;
+    void emit_decl(Emitter&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+};
+
 /// `.let ptrn: type = value;`
 class LetDecl : public ValDecl {
 public:
@@ -836,15 +847,17 @@ private:
 };
 
 /// `.cfun dbg dom -> codom`
-class CFun : public ValDecl {
+class CDecl : public ValDecl {
 public:
-    CFun(Loc loc, Dbg dbg, Ptr<Ptrn>&& dom, Ptr<Expr>&& codom)
+    CDecl(Loc loc, Tok::Tag tag, Dbg dbg, Ptr<Ptrn>&& dom, Ptr<Expr>&& codom)
         : ValDecl(loc)
+        , tag_(tag)
         , dbg_(dbg)
         , dom_(std::move(dom))
         , codom_(std::move(codom)) {}
 
     Dbg dbg() const { return dbg_; }
+    Tok::Tag tag() const { return tag_; }
     const Ptrn* dom() const { return dom_.get(); }
     const Expr* codom() const { return codom_.get(); }
 
@@ -853,10 +866,12 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
+    Tok::Tag tag_;
     Dbg dbg_;
     Ptr<Ptrn> dom_;
     Ptr<Expr> codom_;
 };
+
 /*
  * Module
  */

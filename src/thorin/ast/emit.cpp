@@ -1,5 +1,3 @@
-#include "thorin/rewrite.h"
-
 #include "thorin/ast/ast.h"
 
 using namespace std::literals;
@@ -46,7 +44,7 @@ private:
  */
 
 Ref ErrorExpr::emit(Emitter&) const { fe::unreachable(); }
-Ref InferExpr::emit(Emitter& e) const { return e.world().type_infer_univ(); }
+Ref InferExpr::emit(Emitter& e) const { return e.world().mut_infer_type(); }
 
 Ref IdExpr::emit(Emitter&) const {
     assert(decl());
@@ -331,13 +329,6 @@ void DeclsBlock::emit(Emitter& e) const {
     }
 }
 
-void LetDecl::emit_decl(Emitter& e) const {
-    auto v = value()->emit(e);
-    def_   = ptrn()->emit_value(e, v);
-
-    if (auto id = ptrn()->isa<IdPtrn>()) e.register_if_annex(id->dbg(), def_);
-}
-
 void AxiomDecl::Alias::emit(Emitter& e, const Axiom* axiom) const {
     const auto& id = axiom_->id_;
     def_           = axiom;
@@ -383,7 +374,8 @@ void AxiomDecl::emit_decl(Emitter& e) const {
             sub_t s       = i + offset;
             auto norm     = e.driver().normalizer(id_.plugin, id_.tag, s);
             auto& aliases = annex.subs.emplace_back(std::deque<Sym>());
-            auto axiom = e.world().axiom(norm, id_.curry, id_.trip, thorin_type_, id_.plugin, id_.tag, s)->set(dbg());
+            auto name     = e.world().sym(dbg().sym.str() + "."s + sub(i).front()->dbg().sym.str());
+            auto axiom    = e.world().axiom(norm, id_.curry, id_.trip, thorin_type_, id_.plugin, id_.tag, s)->set(name);
             e.world().register_annex(id_.plugin | (flags_t(id_.tag) << 8_u64) | flags_t(s), axiom);
             for (const auto& alias : sub(i)) {
                 alias->sub_ = s;
@@ -392,6 +384,15 @@ void AxiomDecl::emit_decl(Emitter& e) const {
             }
         }
     }
+}
+
+void GrpDecl::emit_decl(Emitter&) const {}
+
+void LetDecl::emit_decl(Emitter& e) const {
+    auto v = value()->emit(e);
+    def_   = ptrn()->emit_value(e, v);
+
+    if (auto id = ptrn()->isa<IdPtrn>()) e.register_if_annex(id->dbg(), def_);
 }
 
 void RecDecl::emit_decl(Emitter& e) const {
@@ -453,10 +454,14 @@ void LamDecl::emit_body(Emitter& e) const {
     e.register_if_annex(dbg(), def_);
 }
 
-void CFun::emit_decl(Emitter& e) const {
+void CDecl::emit_decl(Emitter& e) const {
     auto dom_t = dom()->emit_type(e);
-    auto ret_t = codom()->emit(e);
-    def_       = e.world().mut_fun(dom_t, ret_t)->set(dbg());
+    if (tag() == Tag::K_cfun) {
+        auto ret_t = codom()->emit(e);
+        def_       = e.world().mut_fun(dom_t, ret_t)->set(dbg());
+    } else {
+        def_ = e.world().mut_con(dom_t)->set(dbg());
+    }
 }
 
 } // namespace thorin::ast
