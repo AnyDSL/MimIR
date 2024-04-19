@@ -3,8 +3,8 @@
 // RUN: clang %S/../lib.c %t.ll -o %t -Wno-override-module
 // RUN: %t | FileCheck %s
 
-.import mem;
-.import core;
+.plugin mem;
+.plugin core;
 
 .let pb_type = .Cn [%mem.M, .Cn [%mem.M]];
 

@@ -22,12 +22,10 @@ TEST(Zip, fold) {
     auto parser = Parser(w);
 
     std::istringstream iss(".plugin core;"
-                           ".let _32 = .i32;"
-                           ".let I32 = .Idx _32;"
-                           ".let a = ((0:I32, 1:I32,  2:I32), ( 3:I32,  4:I32,  5:I32));"
-                           ".let b = ((6:I32, 7:I32,  8:I32), ( 9:I32, 10:I32, 11:I32));"
-                           ".let c = ((6:I32, 8:I32, 10:I32), (12:I32, 14:I32, 16:I32));"
-                           ".let r = %core.zip (2, (2, 3)) (2, (I32, I32), 1, I32, %core.wrap.add 0) (a, b);");
+                           ".let a = ((0I32, 1I32,  2I32), ( 3I32,  4I32,  5I32));"
+                           ".let b = ((6I32, 7I32,  8I32), ( 9I32, 10I32, 11I32));"
+                           ".let c = ((6I32, 8I32, 10I32), (12I32, 14I32, 16I32));"
+                           ".let r = %core.zip (2, (2, 3)) (2, (.I32, .I32), 1, .I32, %core.wrap.add 0) (a, b);");
     parser.import(iss);
     auto c = parser.scopes().find({Loc(), driver.sym("c")});
     auto r = parser.scopes().find({Loc(), driver.sym("r")});
