@@ -863,7 +863,7 @@ private:
 
 class Import : public Node {
 public:
-    Import(Loc loc, Dbg dbg, Tok::Tag tag, Ptr<Module>&& module)
+    Import(Loc loc, Tok::Tag tag, Dbg dbg, Ptr<Module>&& module)
         : Node(loc)
         , dbg_(dbg)
         , tag_(tag)

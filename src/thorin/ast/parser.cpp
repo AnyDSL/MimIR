@@ -78,8 +78,10 @@ Ptr<Import> Parser::parse_import_or_plugin() {
     auto track = tracker();
     auto tag   = lex().tag();
     auto name  = expect(Tag::M_id, "{} name", tag == Tag::K_import ? "import" : "plugin");
+    auto sym   = name.sym();
     expect(Tag::T_semicolon, "end of {}", tag == Tag::K_import ? "import" : "plugin");
-    if (auto module = import(name.sym())) return ptr<Import>(track, name.dbg(), tag, std::move(module));
+    if (auto module = tag == Tag::K_import ? import(sym) : plugin(sym))
+        return ptr<Import>(track, tag, name.dbg(), std::move(module));
     return {};
 }
 
@@ -211,6 +213,7 @@ Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::K_I8:
         case Tag::K_I16:
         case Tag::K_I32:
+        case Tag::K_I64:
         case Tag::T_star:
         case Tag::T_box: return ptr<PrimaryExpr>(lex());
 
@@ -617,10 +620,10 @@ Ptr<LamDecl> Parser::parse_lam_decl() {
     } while (!ahead().isa(Tag::T_colon) && !ahead().isa(Tag::T_assign) && !ahead().isa(Tag::T_semicolon));
 
     auto codom = accept(Tag::T_colon) ? parse_expr("codomain of a "s + entity, Tok::Prec::Arrow) : nullptr;
-
     if (tag == Tag::K_fn || tag == Tag::K_fun) doms.back()->add_ret(ast(), std::move(codom));
 
-    auto body = accept(Tag::T_assign) ? parse_expr("body of a "s + entity) : nullptr;
+    expect(Tag::T_assign, "body of a "s + entity);
+    auto body = parse_expr("body of a "s + entity);
 
     return ptr<LamDecl>(track, tag, external, dbg, std::move(doms), std::move(codom), std::move(body));
 }

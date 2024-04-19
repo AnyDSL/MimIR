@@ -40,6 +40,7 @@ public:
     Ptr<Module> import(Sym, std::ostream* md = nullptr);
     Ptr<Module> import(std::istream&, const fs::path* = nullptr, std::ostream* md = nullptr);
     Ptr<Module> plugin(Sym);
+    Ptr<Module> plugin(const std::string& s) { return plugin(driver().sym(s)); }
     Ptr<Module> plugin(const char* name) { return plugin(driver().sym(name)); }
 
 private:

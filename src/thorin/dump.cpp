@@ -180,7 +180,6 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
     } else if (auto var = u->isa<Var>()) {
         return print(os, "{}", var->unique_name());
     } else if (auto pi = u->isa<Pi>()) {
-        return os << "TODO";
         if (Pi::isa_cn(pi)) return print(os, ".Cn {}", pi->dom());
         if (auto mut = pi->isa_mut<Pi>(); mut && mut->var())
             return print(os, "Π {}: {} {} {}", mut->var(), pi->dom(), arw, pi->codom());
