@@ -247,7 +247,7 @@ $(document).ready(function(){initNavTree('main_8cpp_source.html',''); initResiza
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        }</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <span class="comment">// we always need standard plugins, as long as we are not in bootstrap mode</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        <span class="keywordflow">if</span> (!flags.bootstrap) plugins.insert(plugins.end(), {<span class="stringliteral">&quot;core&quot;</span>, <span class="stringliteral">&quot;mem&quot;</span>, <span class="stringliteral">&quot;compile&quot;</span>, <span class="stringliteral">&quot;opt&quot;</span>});</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        <span class="keywordflow">if</span> (!flags.bootstrap) plugins.insert(plugins.end(), {<span class="stringliteral">&quot;compile&quot;</span>, <span class="stringliteral">&quot;opt&quot;</span>});</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        <span class="keywordflow">if</span> (!plugins.empty())</div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; plugin : plugins) driver.load(plugin);</div>
