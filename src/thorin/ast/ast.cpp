@@ -4,6 +4,12 @@
 
 namespace thorin::ast {
 
+AST::~AST() {
+    assert(error().num_errors() == 0 && "please encounter any errors before destroying this class");
+    if (error().num_warnings() != 0)
+        driver().WLOG("{} warning(s) encountered while compiling module\n{}", error().num_warnings(), error());
+}
+
 LamExpr::LamExpr(Ptr<LamDecl>&& lam)
     : Expr(lam->loc())
     , lam_(std::move(lam)) {}
@@ -29,32 +35,32 @@ Ptr<Ptrn> Ptrn::to_ptrn(Ptr<Expr>&& expr) {
 }
 
 void Module::compile(AST& ast) const {
-    const auto& err = ast.error();
     bind(ast);
-    if (err.num_errors() != 0) throw err;
+    ast.error().ack();
     emit(ast);
-
-    assert(err.num_errors() == 0 && "If an error occurs during emit, an exception should have been thrown");
-    if (err.num_warnings() != 0)
-        ast.driver().WLOG("{} warning(s) encountered while compiling module\n{}", err.num_warnings(), err);
 }
 
-void load_plugin(World& world, View<Sym> plugins) {
-    assert(!plugins.empty() && "must load at least one plugin");
+AST load_plugins(World& world, View<Sym> plugins) {
+    auto tag = Tok::Tag::K_import;
+    if (!world.driver().flags().bootstrap) {
+        for (auto plugin : plugins) world.driver().load(plugin);
+        tag = Tok::Tag::K_plugin;
+    }
 
     auto ast     = AST(world);
     auto parser  = Parser(ast);
     auto imports = Ptrs<Import>();
-    for (auto plugin : plugins) {
-        auto mod = parser.plugin(plugin);
-        imports.emplace_back(ast.ptr<Import>(mod->loc(), Dbg(Loc(), plugin), Tok::Tag::K_plugin, std::move(mod)));
+
+    for (auto plugin : plugins)
+        if (auto mod = parser.import(plugin))
+            imports.emplace_back(ast.ptr<Import>(mod->loc(), Dbg(Loc(), plugin), tag, std::move(mod)));
+
+    if (!plugins.empty()) {
+        auto mod = ast.ptr<Module>(imports.front()->loc() + imports.back()->loc(), std::move(imports), Ptrs<ValDecl>());
+        // TODO return mod
     }
-    auto mod = ast.ptr<Module>(imports.front()->loc() + imports.back()->loc(), std::move(imports), Ptrs<ValDecl>());
-    try {
-        mod->compile(ast);
-    } catch (const Error& err) {
-        world.ELOG("{} error(s) encountered while compiling plugins: '{, }'\n{}", err.num_errors(), plugins, err);
-    }
+
+    return ast;
 }
 
 } // namespace thorin::ast

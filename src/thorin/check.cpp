@@ -226,10 +226,19 @@ void Arr::check() {
     auto t = body()->unfold_type();
     if (!Check::alpha(t, type()))
         error(type()->loc(), "declared sort '{}' of array does not match inferred one '{}'", type(), t);
+    if (t != type()) set_type(t);
+}
+
+Ref Sigma::infer(World& w, Defs ops) {
+    if (ops.size() == 0) return w.type<1>();
+    auto kinds = DefVec(ops.size(), [ops](size_t i) { return ops[i]->unfold_type(); });
+    return w.umax<Sort::Kind>(kinds);
 }
 
 void Sigma::check() {
-    // TODO
+    auto t = infer(world(), ops());
+    // TODO check
+    if (t != type()) set_type(t);
 }
 
 void Lam::check() {
@@ -255,6 +264,7 @@ void Pi::check() {
     auto t = infer(dom(), codom());
     if (!Check::alpha(t, type()))
         error(type()->loc(), "declared sort '{}' of function type does not match inferred one '{}'", type(), t);
+    if (t != type()) set_type(t);
 }
 
 #ifndef DOXYGEN

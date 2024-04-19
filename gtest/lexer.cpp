@@ -73,6 +73,7 @@ TEST(Lexer, Errors) {
     l4.lex();
     EXPECT_GE(ast.error().num_errors(), 1);
     EXPECT_TRUE(ast.error().msgs().front().str.starts_with("stray"));
+    ast.error().clear();
 }
 
 TEST(Lexer, Eof) {
@@ -133,6 +134,7 @@ TEST_P(Real, sign) {
     l2.lex();
     EXPECT_EQ(ast.error().num_errors(), 1);
     EXPECT_TRUE(ast.error().msgs().front().str == "exponent has no digits");
+    ast.error().clear();
 }
 
 INSTANTIATE_TEST_SUITE_P(Lexer, Real, testing::Range(0, 3));

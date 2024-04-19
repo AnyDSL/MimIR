@@ -348,4 +348,12 @@ void LamDecl::bind_body(Scopes& s) const {
     s.pop();
 }
 
+void CFun::bind_decl(Scopes& s) const {
+    s.push();
+    dom()->bind(s);
+    s.pop();
+    codom()->bind(s); // we don't allow dependency here on dom
+    s.bind(dbg(), this);
+}
+
 } // namespace thorin::ast

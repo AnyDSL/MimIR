@@ -24,14 +24,18 @@ template<class T> using Ptrs = std::deque<Ptr<T>>;
 
 class AST {
 public:
+    AST() = default;
     AST(World& world)
-        : world_(world)
-        , sym_anon_(sym("_"))
-        , sym_return_(sym("return")) {}
+        : world_(&world) {}
+    AST(AST&& other)
+        : AST() {
+        swap(*this, other);
+    }
+    ~AST();
 
     /// @name Getters
     ///@{
-    World& world() { return world_; }
+    World& world() { return *world_; }
     Driver& driver() { return world().driver(); }
     Error& error() { return err_; }
     const Error& error() const { return err_; }
@@ -42,8 +46,8 @@ public:
     Sym sym(const char* s) { return driver().sym(s); }
     Sym sym(std::string_view s) { return driver().sym(s); }
     Sym sym(const std::string& s) { return driver().sym(s); }
-    Sym sym_anon() const { return sym_anon_; }     ///< `"_"`.
-    Sym sym_return() const { return sym_return_; } ///< `"return"`.
+    Sym sym_anon() { return sym("_"); }        ///< `"_"`.
+    Sym sym_return() { return sym("return"); } ///< `"return"`.
     ///@}
 
     template<class T, class... Args> auto ptr(Args&&... args) {
@@ -59,11 +63,18 @@ public:
     // clang-format on
     ///@}
 
+    friend void swap(AST& a1, AST& a2) noexcept {
+        using std::swap;
+        // clang-format off
+        swap(a1.world_, a2.world_);
+        swap(a1.arena_, a2.arena_);
+        swap(a1.err_,   a2.err_);
+        // clang-format on
+    }
+
 private:
-    World& world_;
+    World* world_ = nullptr;
     fe::Arena arena_;
-    Sym sym_anon_;
-    Sym sym_return_;
     mutable Error err_;
 };
 
@@ -824,6 +835,28 @@ private:
     Ptr<Expr> codom_;
 };
 
+/// `.cfun dbg dom -> codom`
+class CFun : public ValDecl {
+public:
+    CFun(Loc loc, Dbg dbg, Ptr<Ptrn>&& dom, Ptr<Expr>&& codom)
+        : ValDecl(loc)
+        , dbg_(dbg)
+        , dom_(std::move(dom))
+        , codom_(std::move(codom)) {}
+
+    Dbg dbg() const { return dbg_; }
+    const Ptrn* dom() const { return dom_.get(); }
+    const Expr* codom() const { return codom_.get(); }
+
+    void bind_decl(Scopes&) const override;
+    void emit_decl(Emitter&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+
+private:
+    Dbg dbg_;
+    Ptr<Ptrn> dom_;
+    Ptr<Expr> codom_;
+};
 /*
  * Module
  */
@@ -878,11 +911,11 @@ private:
     DeclsBlock decls_;
 };
 
-void load_plugin(World&, View<Sym>);
-inline void load_plugin(World& w, View<std::string_view> svs) {
-    return load_plugin(w, Vector<Sym>(svs.size(), [&](size_t i) { return w.sym(svs[i]); }));
+AST load_plugins(World&, View<Sym>);
+inline AST load_plugins(World& w, View<std::string> plugins) {
+    return load_plugins(w, Vector<Sym>(plugins.size(), [&](size_t i) { return w.sym(plugins[i]); }));
 }
-inline void load_plugin(World& w, Sym sym) { return load_plugin(w, View<Sym>({sym})); }
-inline void load_plugin(World& w, std::string_view sv) { return load_plugin(w, w.sym(sv)); }
+inline AST load_plugins(World& w, Sym sym) { return load_plugins(w, View<Sym>({sym})); }
+inline AST load_plugins(World& w, const std::string& plugin) { return load_plugins(w, w.sym(plugin)); }
 
 } // namespace thorin::ast

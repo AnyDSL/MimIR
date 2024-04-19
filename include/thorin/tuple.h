@@ -29,6 +29,7 @@ public:
     /// @name Type Checking
     ///@{
     void check() override;
+    static Ref infer(World&, Defs);
     ///@}
 
     THORIN_DEF_MIXIN(Sigma)

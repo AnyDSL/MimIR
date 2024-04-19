@@ -300,8 +300,10 @@ Def* Def::set_type(const Def* type) {
 void Def::unset_type() {
     if (type_) {
         invalidate();
-        assert(type_->uses_.contains(Use(this, Use::Type)));
-        type_->uses_.erase(Use(this, Use::Type));
+        if (!type_->dep_const()) {
+            assert(type_->uses_.contains(Use(this, Use::Type)));
+            type_->uses_.erase(Use(this, Use::Type));
+        }
         type_ = nullptr;
     }
 }

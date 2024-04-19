@@ -114,7 +114,7 @@ std::ostream& PiExpr::stream(Tab& tab, std::ostream& os) const {
 std::ostream& LamExpr::stream(Tab& tab, std::ostream& os) const { return print(os, "{};", S(tab, lam())); }
 
 std::ostream& AppExpr::stream(Tab& tab, std::ostream& os) const {
-    return print(os, "{} {}", S(tab, callee()), S(tab, arg()));
+    return print(os, "{} {} {}", S(tab, callee()), is_explicit() ? "@" : "", S(tab, arg()));
 }
 
 std::ostream& RetExpr::stream(Tab& tab, std::ostream& os) const {
@@ -204,6 +204,9 @@ std::ostream& LamDecl::stream(Tab& tab, std::ostream& os) const {
     return os << ';';
 }
 
+std::ostream& CFun::stream(Tab& tab, std::ostream& os) const {
+    return print(os, ".cfun {} {}: {}", dbg(), S(tab, dom()), S(tab, codom()));
+}
 /*
  * Module
  */

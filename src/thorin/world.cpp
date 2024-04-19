@@ -228,7 +228,7 @@ Ref World::sigma(Defs ops) {
     if (n == 0) return sigma();
     if (n == 1) return ops[0];
     if (auto uni = Check::is_uniform(ops)) return arr(n, uni);
-    return unify<Sigma>(ops.size(), umax<Sort::Type>(ops), ops);
+    return unify<Sigma>(ops.size(), Sigma::infer(*this, ops), ops);
 }
 
 Ref World::tuple(Defs ops) {

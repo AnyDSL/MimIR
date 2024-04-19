@@ -1,8 +1,6 @@
 // RUN: %thorin %s --output-ll %t.ll -o - | FileCheck %s
 .plugin core;
 
-.lam is_even[.Nat]: .Bool;
-.lam is_odd [.Nat]: .Bool;
 .lam is_even(i: .Nat): .Bool = (is_odd (%core.nat.sub (i, 1)), .tt)#(%core.ncmp.e (i, 0));
 .lam is_odd (i: .Nat): .Bool = (is_even(%core.nat.sub (i, 1)), .ff)#(%core.ncmp.e (i, 0));
 

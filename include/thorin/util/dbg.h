@@ -35,7 +35,12 @@ public:
 
     /// @name Constructors
     ///@{
-    Error() = default;
+    Error()             = default;
+    Error(const Error&) = default;
+    Error(Error&& other)
+        : Error() {
+        swap(*this, other);
+    }
     /// Creates a single Tag::Error message.
     Error(Loc loc, const std::string& str)
         : msgs_{
@@ -60,6 +65,14 @@ public:
         num_warnings_ = 0;
         num_notes_    = 0;
         msgs_.clear();
+    }
+
+    /// If errors occured, claim them and throw.
+    void ack() {
+        if (num_errors() != 0) {
+            auto errors = std::move(*this);
+            throw errors;
+        }
     }
 
     /// @name Add formatted message
@@ -92,6 +105,17 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Error& e) {
         for (const auto& msg : e.msgs()) os << msg << std::endl;
         return os;
+    }
+
+    friend void swap(Error& e1, Error& e2) noexcept {
+        using std::swap;
+        ;
+        // clang-format off
+        swap(e1.msgs_,         e2.msgs_);
+        swap(e1.num_errors_,   e2.num_errors_);
+        swap(e1.num_warnings_, e2.num_warnings_);
+        swap(e1.num_notes_,    e2.num_notes_);
+        // clang-format on
     }
 
 private:

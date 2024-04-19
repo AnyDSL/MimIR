@@ -225,7 +225,7 @@ Ref LamExpr::emit(Emitter& e) const {
 Ref AppExpr::emit(Emitter& e) const {
     auto c = callee()->emit(e);
     auto a = arg()->emit(e);
-    return e.world().iapp(c, a)->set(loc());
+    return (is_explicit() ? e.world().app(c, a) : e.world().iapp(c, a))->set(loc());
 }
 
 Ref RetExpr::emit(Emitter& e) const {
@@ -451,6 +451,12 @@ void LamDecl::emit_body(Emitter& e) const {
     doms().back()->lam_->set_body(body()->emit(e));
     if (is_external()) doms().front()->lam_->make_external();
     e.register_if_annex(dbg(), def_);
+}
+
+void CFun::emit_decl(Emitter& e) const {
+    auto dom_t = dom()->emit_type(e);
+    auto ret_t = codom()->emit(e);
+    def_       = e.world().mut_fun(dom_t, ret_t)->set(dbg());
 }
 
 } // namespace thorin::ast

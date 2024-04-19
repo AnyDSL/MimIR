@@ -133,12 +133,13 @@ int main(int argc, char** argv) {
         if (input[0] == '-' || input.substr(0, 2) == "--")
             throw std::invalid_argument("error: unknown option " + input);
 
+        auto ast = ast::load_plugins(world, plugins);
         try {
             auto path = fs::path(input);
             world.set(path.filename().replace_extension().string());
-            auto ast    = ast::AST(world);
             auto parser = ast::Parser(ast);
             auto mod    = parser.import(driver.sym(input), os[Md]);
+
             mod->compile(ast);
 
             if (auto s = os[AST]) {
@@ -169,10 +170,7 @@ int main(int argc, char** argv) {
             switch (opt) {
                 case 0: break;
                 case 1: Phase::run<Cleanup>(world); break;
-                case 2:
-                    parser.import("opt");
-                    optimize(world);
-                    break;
+                case 2: optimize(world); break;
                 default: error("illegal optimization level '{}'", opt);
             }
 

@@ -86,7 +86,7 @@ TEST(Annex, split) {
 TEST(trait, idx) {
     Driver driver;
     World& w = driver.world();
-    ast::load_plugin(w, "core");
+    ast::load_plugins(w, "core");
 
     EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'0000'00FF_n))), 1);
     EXPECT_EQ(Lit::as(op(core::trait::size, w.type_idx(0x0000'0000'0000'0100_n))), 1);

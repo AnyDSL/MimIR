@@ -30,6 +30,7 @@ namespace ast {
     m(K_con,    ".con"   )             \
     m(K_fun,    ".fun"   )             \
     m(K_lam,    ".lam"   )             \
+    m(K_cfun,   ".cfun"  )             \
     m(K_cn,     ".cn"    )             \
     m(K_fn,     ".fn"    )             \
     m(K_ff,     ".ff"    )             \

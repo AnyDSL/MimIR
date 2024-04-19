@@ -510,6 +510,7 @@ Ptrs<ValDecl> Parser::parse_decls() {
         switch (ahead().tag()) {
             case Tag::T_semicolon: lex(); break; // eat up stray semicolons
             case Tag::K_ax:        decls.emplace_back(parse_axiom_decl()); break;
+            case Tag::K_cfun:      decls.emplace_back(parse_cfun_decl()); break;
             case Tag::K_let:       decls.emplace_back(parse_let_decl());   break;
             case Tag::K_rec:       decls.emplace_back(parse_rec_decl());   break;
             case Tag::K_con:
@@ -622,6 +623,16 @@ Ptr<LamDecl> Parser::parse_lam_decl() {
     auto body = accept(Tag::T_assign) ? parse_expr("body of a "s + entity) : nullptr;
 
     return ptr<LamDecl>(track, tag, external, dbg, std::move(doms), std::move(codom), std::move(body));
+}
+
+Ptr<ValDecl> Parser::parse_cfun_decl() {
+    auto track = tracker();
+    eat(Tag::K_cfun);
+    auto id  = expect(Tag::M_id, "C function declaration");
+    auto dom = parse_ptrn(Tag::D_brckt_l, "domain of a C function"s, Tok::Prec::App);
+    expect(Tag::T_colon, "codomain of a C function");
+    auto codom = parse_expr("codomain of a C function");
+    return ptr<CFun>(track, id.dbg(), std::move(dom), std::move(codom));
 }
 
 } // namespace thorin::ast
