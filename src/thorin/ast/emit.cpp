@@ -134,10 +134,17 @@ Ref IdPtrn::emit_type(Emitter& e) const { return type() ? type()->emit(e) : e.wo
 
 Ref GroupPtrn::emit_type(Emitter& e) const { return id()->emit_type(e); }
 
-Ref TuplePtrn::emit_type(Emitter& e) const {
-    auto n        = num_ptrns();
-    auto type     = e.world().type_infer_univ();
-    auto sigma    = e.world().mut_sigma(type, n)->set(loc(), dbg().sym);
+Ref TuplePtrn::emit_type(Emitter& e) const { return emit_body(e, {}); }
+
+Ref TuplePtrn::emit_body(Emitter& e, Ref decl) const {
+    auto n = num_ptrns();
+    Sigma* sigma;
+    if (decl) {
+        sigma = decl->as_mut<Sigma>();
+    } else {
+        auto type = e.world().type_infer_univ();
+        sigma     = e.world().mut_sigma(type, n)->set(loc(), dbg().sym);
+    }
     auto var      = sigma->var()->set(dbg());
     auto& sym2idx = e.sigma2sym2idx[sigma];
 
@@ -149,6 +156,11 @@ Ref TuplePtrn::emit_type(Emitter& e) const {
 
     if (auto imm = sigma->immutabilize()) return imm;
     return sigma;
+}
+
+Ref TuplePtrn::emit_decl(Emitter& e, Ref type) const {
+    type = type ? type : e.world().type_infer_univ();
+    return e.world().mut_sigma(type, num_ptrns())->set(loc(), dbg().sym);
 }
 
 /*
@@ -241,8 +253,9 @@ Ref RetExpr::emit(Emitter& e) const {
           c->type());
 }
 
-Ref SigmaExpr::emit_decl(Emitter&, Ref) const { return {}; }
-void SigmaExpr::emit_body(Emitter&, Ref) const {}
+Ref SigmaExpr::emit_decl(Emitter& e, Ref type) const { return ptrn()->emit_decl(e, type); }
+
+void SigmaExpr::emit_body(Emitter& e, Ref decl) const { ptrn()->emit_body(e, decl); }
 
 Ref SigmaExpr::emit(Emitter& e) const { return ptrn()->emit_type(e); }
 

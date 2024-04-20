@@ -189,16 +189,16 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
     } else if (auto app = u->isa<App>()) {
         if (auto size = Idx::size(app)) {
             if (auto l = Lit::isa(size)) {
+                // clang-format off
                 switch (*l) {
-                        // clang-format off
                     case 0x0'0000'0002_n: return os << ".Bool";
                     case 0x0'0000'0100_n: return os << ".I8";
                     case 0x0'0001'0000_n: return os << ".I16";
                     case 0x1'0000'0000_n: return os << ".I32";
                     case             0_n: return os << ".I64";
                     default: break;
-                        // clang-format on
                 }
+                // clang-format on
             }
         }
         return print(os, "{} {}", LPrec(app->callee(), app), RPrec(app, app->arg()));

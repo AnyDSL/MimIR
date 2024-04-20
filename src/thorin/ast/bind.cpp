@@ -309,14 +309,21 @@ void LamDecl::Dom::bind(Scopes& s, bool quiet) const {
 
 void LamDecl::bind_decl(Scopes& s) const {
     s.push();
-    for (const auto& dom : doms()) dom->bind(s);
+    for (size_t i = 0, e = num_doms(); i != e; ++i) {
+        if (auto bang = dom(i)->bang(); bang && i + 1 != e) {
+            s.ast().warn(
+                bang.loc(),
+                "'!' superfluous as the last curried function group of a '{}' receives a '.tt'-filter by default",
+                tag());
+        }
+        dom(i)->bind(s);
+    }
 
     if (auto bang = doms().back()->bang()) {
         if (tag() == Tag::K_lam || tag() == Tag::T_lm)
             s.ast().warn(
                 bang.loc(),
-                "'!' superfluous as the last curried function group of a '{}' receives a '.tt'-filter by default",
-                tag());
+                "'!' superfluous as all but the last curried function groups receive a '.tt'-filter by default", tag());
     }
     if (auto filter = doms().back()->filter()) {
         if (auto pe = filter->isa<PrimaryExpr>()) {

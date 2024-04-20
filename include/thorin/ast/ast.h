@@ -242,6 +242,8 @@ public:
     void bind_body(Scopes&) const;
     Ref emit_value(Emitter&, Ref) const override;
     Ref emit_type(Emitter&) const override;
+    Ref emit_decl(Emitter&, Ref type) const;
+    Ref emit_body(Emitter&, Ref decl) const;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:

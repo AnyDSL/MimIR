@@ -142,7 +142,7 @@
 /// ### product
 ///
 /// Follow the principle `ij <- ik, kj` (`out[i, j] = sum_k in1[i, k] * in2[k, j]`) by using mulplication as combination function and addition as reduction function.
-.fun .extern internal_mapRed_matrix_prod!(m k l: .Nat, pe: «2; .Nat»)
+.fun .extern internal_mapRed_matrix_prod (m k l: .Nat, pe: «2; .Nat»)
                                         !(mem: %mem.M, M: %matrix.Mat (2, (m, k), %math.F pe),
                                                        N: %matrix.Mat (2, (k, l), %math.F pe))
                                         :[     %mem.M,    %matrix.Mat (2, (m, l), %math.F pe)] =
@@ -173,7 +173,7 @@
 /// Transpose a matrix by iterating the indices in swapped order.
 // TODO: check code for 1-matrix edge case
 // TODO: would this automatically be handled by read(transpose) ?
-.fun .extern internal_mapRed_matrix_transpose!((k l: .Nat), T: *)
+.fun .extern internal_mapRed_matrix_transpose((k l: .Nat), T: *)
                                              !(mem: %mem.M, M: %matrix.Mat (2, (k, l), T)) :
                                               [     %mem.M,    %matrix.Mat (2, (l, k), T)] =
     .let zero = ⊥:T; // TODO: use generalized zero
@@ -198,7 +198,7 @@
 ///
 /// Sums up all elements of a matrix and returns a scalar.
 //  TODO: test 0d matrix (edge cases in code)
-.fun .extern internal_mapRed_matrix_sum!(n: .Nat, S: «n; .Nat», pe: «2; .Nat»)
+.fun .extern internal_mapRed_matrix_sum (n: .Nat, S: «n; .Nat», pe: «2; .Nat»)
                                        !(mem: %mem.M, M: %matrix.Mat (n, S, %math.F pe))
                                        :[%mem.M, %math.F pe] =
     .let R = %math.F pe;
