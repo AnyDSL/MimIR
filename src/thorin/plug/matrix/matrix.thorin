@@ -173,7 +173,7 @@
 /// Transpose a matrix by iterating the indices in swapped order.
 // TODO: check code for 1-matrix edge case
 // TODO: would this automatically be handled by read(transpose) ?
-.fun .extern internal_mapRed_matrix_transpose((k l: .Nat), T: *)
+.fun .extern internal_mapRed_matrix_transpose ((k l: .Nat), T: *)
                                              !(mem: %mem.M, M: %matrix.Mat (2, (k, l), T)) :
                                               [     %mem.M,    %matrix.Mat (2, (l, k), T)] =
     .let zero = ⊥:T; // TODO: use generalized zero
