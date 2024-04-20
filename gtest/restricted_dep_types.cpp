@@ -216,10 +216,8 @@ TEST(RestrictedDependentTypes, join_singleton) {
 
 TEST(RestrictedDependentTypes, ll) {
     Driver driver;
-    World& w    = driver.world();
-    auto ast    = ast::AST(w);
-    auto parser = ast::Parser(ast);
-    for (auto plugin : {"compile", "mem", "core", "math"}) parser.plugin(plugin);
+    World& w = driver.world();
+    ast::load_plugins(w, {"compile"s, "mem"s, "core"s, "math"s});
 
     auto mem_t  = w.annex<mem::M>();
     auto i32_t  = w.type_i32();

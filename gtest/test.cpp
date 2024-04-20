@@ -83,6 +83,7 @@ TEST(Annex, split) {
 
 TEST(trait, idx) {
     Driver driver;
+    driver.log().set(Log::Level::Debug).set(&std::cerr);
     World& w = driver.world();
     ast::load_plugins(w, "core");
 

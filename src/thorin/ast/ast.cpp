@@ -57,7 +57,7 @@ AST load_plugins(World& world, View<Sym> plugins) {
 
     if (!plugins.empty()) {
         auto mod = ast.ptr<Module>(imports.front()->loc() + imports.back()->loc(), std::move(imports), Ptrs<ValDecl>());
-        // TODO return mod
+        mod->compile(ast);
     }
 
     return ast;
