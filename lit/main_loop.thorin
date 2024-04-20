@@ -23,13 +23,13 @@
 // CHECK-DAG: return_[[returnId]] _[[returnEtaVarId]]
 
 // CHECK-DAG: .con loop_[[loopId]] _{{[0-9_]+}}::[mem_[[loopMemId:[0-9_]+]]: %mem.M, i_[[iterId:[0-9_]+]]: .I32, acc_[[accId:[0-9_]+]]: .I32]{{(@.*)?}}= {
-// CHECK-DAG:   _[[condId:[0-9_]+]]: .Bool = %core.icmp.XygLe .i32 (i_[[iterId]], {{.*}});
-// CHECK-DAG: (_[[exitId:[0-9_]+]], body_[[bodyId:[0-9_]+]])#_[[condId]] mem_[[loopMemId]]
+// CHECK-DAG:   cond_[[condId:[0-9_]+]]: .Bool = %core.icmp.XygLe .i32 (i_[[iterId]], {{.*}});
+// CHECK-DAG: (_[[exitId:[0-9_]+]], body_[[bodyId:[0-9_]+]])#cond_[[condId]] mem_[[loopMemId]]
 
 // CHECK-DAG: .con _[[exitId]] [[mExitVarId:[0-9a-z_]+]]: %mem.M{{(@.*)?}}= {
 // CHECK-DAG: return_[[returnEtaId]] ([[mExitVarId]], acc_[[accId]])
 
 // CHECK-DAG: .con body_[[bodyId]] [[mBodyVarId:[0-9a-z_]+]]: %mem.M{{(@.*)?}}= {
-// CHECK-DAG:   _[[addIterId:[0-9_]+]]: .I32 = %core.wrap.add .i32 0 (1I32, i_[[iterId]]);
-// CHECK-DAG:   _[[addAccId:[0-9_]+]]: .I32 = %core.wrap.add .i32 0 (i_[[iterId]], acc_[[accId]]);
-// CHECK-DAG: loop_[[loopId]] ([[mBodyVarId]], _[[addIterId]], _[[addAccId]])
+// CHECK-DAG:   inc_[[addIterId:[0-9_]+]]: .I32 = %core.wrap.add .i32 0 (1I32, i_[[iterId]]);
+// CHECK-DAG:   acci_[[addAccId:[0-9_]+]]: .I32 = %core.wrap.add .i32 0 (i_[[iterId]], acc_[[accId]]);
+// CHECK-DAG: loop_[[loopId]] ([[mBodyVarId]], inc_[[addIterId]], acci_[[addAccId]])

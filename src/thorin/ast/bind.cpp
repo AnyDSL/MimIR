@@ -323,7 +323,7 @@ void LamDecl::bind_decl(Scopes& s) const {
         if (tag() == Tag::K_lam || tag() == Tag::T_lm)
             s.ast().warn(
                 bang.loc(),
-                "'!' superfluous as all but the last curried function groups receive a '.tt'-filter by default", tag());
+                "'!' superfluous as all but the last curried function groups receive a '.tt'-filter by default");
     }
     if (auto filter = doms().back()->filter()) {
         if (auto pe = filter->isa<PrimaryExpr>()) {

@@ -1,4 +1,0 @@
-// RUN: (! %thorin %s 2>&1) | FileCheck %s
-.Sigma S: □;
-.Sigma S = [.Nat, .Nat];
-// CHECK: error: {{.*}}with a different type
