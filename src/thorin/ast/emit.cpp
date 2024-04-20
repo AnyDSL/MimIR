@@ -53,7 +53,7 @@ Ref IdExpr::emit(Emitter&) const {
 
 Ref TypeExpr::emit(Emitter& e) const {
     auto l = level()->emit(e);
-    return e.world().type(l)->set(loc());
+    return e.world().type(l);
 }
 
 Ref PrimaryExpr ::emit(Emitter& e) const {
@@ -83,19 +83,20 @@ Ref PrimaryExpr ::emit(Emitter& e) const {
 }
 
 Ref LitExpr::emit(Emitter& e) const {
+    auto old_loc = e.world().push(loc());
     // auto t = type() ? type()->emit(e) : e.world().type<0>();
-    // return (tag() == Tag::T_bot ? e.world().bot(t) : e.world().top(t))->set(loc());
+    // return (tag() == Tag::T_bot ? e.world().bot(t) : e.world().top(t));
     auto t = type() ? type()->emit(e) : nullptr;
     // clang-format off
     switch (tag()){
         case Tag::L_f:
         case Tag::L_s:
-        case Tag::L_u:   return (t ? e.world().lit(t, tok().lit_u()) : e.world().lit_nat(tok().lit_u()))->set(loc());
+        case Tag::L_u:   return t ? e.world().lit(t, tok().lit_u()) : e.world().lit_nat(tok().lit_u());
         case Tag::L_i:   return tok().lit_i();
         case Tag::L_c:   return e.world().lit_i8(tok().lit_c());
-        case Tag::L_str: return e.world().tuple(tok().sym())->set(loc());
-        case Tag::T_bot: return t ? e.world().bot(t)->set(loc()) : *e.world().type_bot();
-        case Tag::T_top: return t ? e.world().top(t)->set(loc()) : *e.world().type_top();
+        case Tag::L_str: return e.world().tuple(tok().sym());
+        case Tag::T_bot: return t ? e.world().bot(t) : e.world().type_bot();
+        case Tag::T_top: return t ? e.world().top(t) : e.world().type_top();
         default: fe::unreachable();
     }
     // clang-format on
@@ -107,6 +108,7 @@ void Module::emit(AST& ast) const {
 }
 
 void Module::emit(Emitter& e) const {
+    auto _ = e.world().push(loc());
     for (const auto& import : imports()) import->emit(e);
     decls_.emit(e);
 }
@@ -130,20 +132,24 @@ Ref GrpPtrn::emit_value(Emitter&, Ref def) const { return def_ = def->set(dbg())
  * Ptrn::emit_Type
  */
 
-Ref IdPtrn::emit_type(Emitter& e) const { return type() ? type()->emit(e) : e.world().mut_infer_type()->set(loc()); }
+Ref IdPtrn::emit_type(Emitter& e) const {
+    auto _ = e.world().push(loc());
+    return type() ? type()->emit(e) : e.world().mut_infer_type();
+}
 
 Ref GrpPtrn::emit_type(Emitter& e) const { return id()->emit_type(e); }
 
 Ref TuplePtrn::emit_type(Emitter& e) const { return emit_body(e, {}); }
 
 Ref TuplePtrn::emit_body(Emitter& e, Ref decl) const {
+    auto _ = e.world().push(loc());
     auto n = num_ptrns();
     Sigma* sigma;
     if (decl) {
         sigma = decl->as_mut<Sigma>();
     } else {
         auto type = e.world().type_infer_univ();
-        sigma     = e.world().mut_sigma(type, n)->set(loc(), dbg().sym);
+        sigma     = e.world().mut_sigma(type, n)->set(dbg().sym);
     }
     auto var      = sigma->var()->set(dbg());
     auto& sym2idx = e.sigma2sym2idx[sigma];
@@ -159,8 +165,9 @@ Ref TuplePtrn::emit_body(Emitter& e, Ref decl) const {
 }
 
 Ref TuplePtrn::emit_decl(Emitter& e, Ref type) const {
-    type = type ? type : e.world().type_infer_univ();
-    return e.world().mut_sigma(type, num_ptrns())->set(loc(), dbg().sym);
+    auto _ = e.world().push(loc());
+    type   = type ? type : e.world().type_infer_univ();
+    return e.world().mut_sigma(type, num_ptrns())->set(dbg().sym);
 }
 
 /*
@@ -175,9 +182,10 @@ Ref DeclExpr::emit(Emitter& e) const {
 Ref BlockExpr::emit(Emitter& e) const { return expr()->emit(e); }
 
 Ref ArrowExpr::emit(Emitter& e) const {
+    auto _ = e.world().push(loc());
     auto d = dom()->emit(e);
     auto c = codom()->emit(e);
-    return e.world().pi(d, c)->set(loc());
+    return e.world().pi(d, c);
 }
 
 void PiExpr::Dom::emit_type(Emitter& e) const {
@@ -233,12 +241,14 @@ Ref LamExpr::emit(Emitter& e) const {
 }
 
 Ref AppExpr::emit(Emitter& e) const {
+    auto _ = e.world().push(loc());
     auto c = callee()->emit(e);
     auto a = arg()->emit(e);
-    return (is_explicit() ? e.world().app(c, a) : e.world().iapp(c, a))->set(loc());
+    return is_explicit() ? e.world().app(c, a) : e.world().iapp(c, a);
 }
 
 Ref RetExpr::emit(Emitter& e) const {
+    auto _ = e.world().push(loc());
     auto c = callee()->emit(e);
     if (auto cn = Pi::ret_pi(c->type())) {
         auto con  = e.world().mut_lam(cn);
@@ -260,11 +270,13 @@ void SigmaExpr::emit_body(Emitter& e, Ref decl) const { ptrn()->emit_body(e, dec
 Ref SigmaExpr::emit(Emitter& e) const { return ptrn()->emit_type(e); }
 
 Ref TupleExpr::emit(Emitter& e) const {
+    auto _ = e.world().push(loc());
     DefVec elems(num_elems(), [&](size_t i) { return elem(i)->emit(e); });
-    return e.world().tuple(elems)->set(loc());
+    return e.world().tuple(elems);
 }
 
 template<bool arr> Ref ArrOrPackExpr<arr>::emit(Emitter& e) const {
+    auto _ = e.world().push(loc());
     auto s = shape()->emit_type(e);
     if (shape()->is_anon()) { // immutable
         auto b = body()->emit(e);
@@ -297,6 +309,7 @@ template Ref ArrOrPackExpr<true>::emit(Emitter&) const;
 template Ref ArrOrPackExpr<false>::emit(Emitter&) const;
 
 Ref ExtractExpr::emit(Emitter& e) const {
+    auto _   = e.world().push(loc());
     auto tup = tuple()->emit(e);
     if (auto dbg = std::get_if<Dbg>(&index())) {
         if (auto sigma = tup->type()->isa_mut<Sigma>()) {
@@ -304,24 +317,25 @@ Ref ExtractExpr::emit(Emitter& e) const {
                 auto sigma          = i->first->as_mut<Sigma>();
                 const auto& sym2idx = i->second;
                 if (auto i = sym2idx.find(dbg->sym); i != sym2idx.end())
-                    return e.world().extract(tup, sigma->num_ops(), i->second)->set(loc());
+                    return e.world().extract(tup, sigma->num_ops(), i->second);
             }
         }
 
-        if (decl()) return e.world().extract(tup, decl()->def())->set(loc());
+        if (decl()) return e.world().extract(tup, decl()->def());
         error(dbg->loc, "cannot resolve index '{}' for extraction", dbg);
     }
 
     auto expr = std::get<Ptr<Expr>>(index()).get();
     auto i    = expr->emit(e);
-    return e.world().extract(tup, i)->set(loc());
+    return e.world().extract(tup, i);
 }
 
 Ref InsertExpr::emit(Emitter& e) const {
+    auto _ = e.world().push(loc());
     auto t = tuple()->emit(e);
     auto i = index()->emit(e);
     auto v = value()->emit(e);
-    return e.world().insert(t, i, v)->set(loc());
+    return e.world().insert(t, i, v);
 }
 
 /*
@@ -434,6 +448,8 @@ Lam* LamDecl::Dom::emit_value(Emitter& e) const {
 }
 
 void LamDecl::emit_decl(Emitter& e) const {
+    auto _ = e.world().push(loc());
+
     // Iterate over all doms: Build a Lam for cur dom, by furst building a curried Pi for the remaining doms.
     for (size_t i = 0, n = num_doms(); i != n; ++i) {
         for (const auto& dom : doms() | std::ranges::views::drop(i)) dom->emit_type(e);
@@ -455,7 +471,7 @@ void LamDecl::emit_decl(Emitter& e) const {
         lam->set_filter(f);
 
         if (i == 0)
-            def_ = lam->set(loc(), dbg().sym);
+            def_ = lam->set(dbg().sym);
         else
             dom(i - 1)->lam_->set_body(lam);
     }

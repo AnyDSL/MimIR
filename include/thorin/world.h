@@ -51,7 +51,7 @@ public:
 #endif
         friend void swap(State& s1, State& s2) noexcept {
             using std::swap;
-            assert((!s1.pod.loc || !s2.pod.loc) && "Why is emit_loc() still set?");
+            assert((!s1.pod.loc || !s2.pod.loc) && "Why is get_loc() still set?");
             swap(s1.pod, s2.pod);
 #ifdef THORIN_ENABLE_CHECKS
             swap(s1.breakpoints, s2.breakpoints);
@@ -91,8 +91,28 @@ public:
 
     /// Retrive compile Flags.
     Flags& flags();
+    ///@}
 
-    Loc& emit_loc() { return state_.pod.loc; }
+    /// @name Loc
+    ///@{
+    struct ScopedLoc {
+        ScopedLoc(World& world, Loc old_loc)
+            : world_(world)
+            , old_loc_(old_loc) {}
+        ~ScopedLoc() { world_.set_loc(old_loc_); }
+
+    private:
+        World& world_;
+        Loc old_loc_;
+    };
+
+    Loc get_loc() const { return state_.pod.loc; }
+    void set_loc(Loc loc = {}) { state_.pod.loc = loc; }
+    ScopedLoc push(Loc loc) {
+        auto sl = ScopedLoc(*this, get_loc());
+        set_loc(loc);
+        return sl;
+    }
     ///@}
 
     /// @name Sym
@@ -533,7 +553,7 @@ private:
     template<class T, class... Args> const T* unify(size_t num_ops, Args&&... args) {
         auto state = move_.arena.state();
         auto def   = allocate<T>(num_ops, std::forward<Args&&>(args)...);
-        if (auto loc = emit_loc()) def->set(loc);
+        if (auto loc = get_loc()) def->set(loc);
         assert(!def->isa_mut());
 #ifdef THORIN_ENABLE_CHECKS
         if (flags().trace_gids) outln("{}: {} - {}", def->node_name(), def->gid(), def->flags());
@@ -565,7 +585,7 @@ private:
 
     template<class T, class... Args> T* insert(size_t num_ops, Args&&... args) {
         auto def = allocate<T>(num_ops, std::forward<Args&&>(args)...);
-        if (auto loc = emit_loc()) def->set(loc);
+        if (auto loc = get_loc()) def->set(loc);
 #ifdef THORIN_ENABLE_CHECKS
         if (flags().trace_gids) outln("{}: {} - {}", def->node_name(), def->gid(), def->flags());
         if (breakpoints().contains(def->gid())) fe::breakpoint();
