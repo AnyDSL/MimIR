@@ -505,7 +505,7 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn(bool rebind, Dbg dbg) {
                 auto id   = ptr<IdPtrn>(dbg.loc + type->loc().finis, false, dbg, std::move(type));
 
                 for (auto dbg : dbgs | std::views::take(dbgs.size() - 1))
-                    ptrns.emplace_back(ptr<GroupPtrn>(dbg, id.get()));
+                    ptrns.emplace_back(ptr<GrpPtrn>(dbg, id.get()));
                 ptrns.emplace_back(std::move(id));
                 return;
             }

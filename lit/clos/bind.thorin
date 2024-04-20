@@ -8,7 +8,7 @@
 
 .let pb_type = .Cn [%mem.M, .Cn [%mem.M]];
 
-.con println_i32 [mem: %mem.M, val: .I32, return : .Cn [%mem.M]];
+.ccon println_i32 [mem: %mem.M, val: .I32, return : .Cn [%mem.M]];
 
 .let size = 100;
 

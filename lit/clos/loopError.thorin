@@ -3,7 +3,7 @@
 
 .plugin core;
 
-.con printInteger [mem: %mem.M, val: .I32, return : .Cn [%mem.M]];
+.ccon printInteger [mem: %mem.M, val: .I32, return : .Cn [%mem.M]];
 
 .con init [mem: %mem.M, return : .Cn [%mem.M]] = {
     .let arr_size = ⊤:.Nat;

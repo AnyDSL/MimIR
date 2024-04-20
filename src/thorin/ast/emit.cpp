@@ -124,7 +124,7 @@ Ref TuplePtrn::emit_value(Emitter& e, Ref def) const {
     return def_ = def->set(dbg());
 }
 
-Ref GroupPtrn::emit_value(Emitter&, Ref def) const { return def_ = def; }
+Ref GrpPtrn::emit_value(Emitter&, Ref def) const { return def_ = def->set(dbg()); }
 
 /*
  * Ptrn::emit_Type
@@ -132,7 +132,7 @@ Ref GroupPtrn::emit_value(Emitter&, Ref def) const { return def_ = def; }
 
 Ref IdPtrn::emit_type(Emitter& e) const { return type() ? type()->emit(e) : e.world().mut_infer_type()->set(loc()); }
 
-Ref GroupPtrn::emit_type(Emitter& e) const { return id()->emit_type(e); }
+Ref GrpPtrn::emit_type(Emitter& e) const { return id()->emit_type(e); }
 
 Ref TuplePtrn::emit_type(Emitter& e) const { return emit_body(e, {}); }
 

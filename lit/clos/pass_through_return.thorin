@@ -10,7 +10,7 @@
     return (mem)
 };
 
-.con printInteger [mem: %mem.M, val: .I32, return : .Cn [%mem.M]];
+.ccon printInteger [mem: %mem.M, val: .I32, return : .Cn [%mem.M]];
 
 .con .extern main [mem: %mem.M, argc: .I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), return : .Cn [%mem.M, .I32]] = {
     .con callback (mem: %mem.M) = return (mem, 1I32);

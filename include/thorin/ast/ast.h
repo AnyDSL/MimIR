@@ -203,9 +203,9 @@ private:
 };
 
 /// `dbg_0 ... dbg_n-2 id` where `id` = `dbg_n-1: type`
-class GroupPtrn : public Ptrn {
+class GrpPtrn : public Ptrn {
 public:
-    GroupPtrn(Dbg dbg, const IdPtrn* id)
+    GrpPtrn(Dbg dbg, const IdPtrn* id)
         : Ptrn(dbg.loc, false, dbg)
         , id_(id) {}
 

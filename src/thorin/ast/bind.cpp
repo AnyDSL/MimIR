@@ -122,7 +122,7 @@ void TuplePtrn::bind(Scopes& s, bool quiet) const {
     s.bind(dbg(), this, rebind(), quiet);
 }
 
-void GroupPtrn::bind(Scopes& s, bool quiet) const { s.bind(dbg(), this, rebind(), quiet); }
+void GrpPtrn::bind(Scopes& s, bool quiet) const { s.bind(dbg(), this, rebind(), quiet); }
 
 /*
  * Expr
