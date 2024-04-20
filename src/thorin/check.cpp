@@ -237,8 +237,13 @@ Ref Sigma::infer(World& w, Defs ops) {
 
 void Sigma::check() {
     auto t = infer(world(), ops());
-    // TODO check
-    if (t != type()) set_type(t);
+    if (t != type()) {
+        // TODO HACK
+        if (Check::alpha(t, type())) set_type(t);
+        world().WLOG("incorrect type '{}' for '{}'. Correct one would be: '{}'. I'll keep this one nevertheless due to "
+                     "bugs in clos-conv",
+                     type(), this, t);
+    }
 }
 
 void Lam::check() {

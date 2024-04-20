@@ -2,7 +2,6 @@
 
 #include <cassert>
 
-#include "thorin/rewrite.h"
 #include "thorin/world.h"
 
 // TODO this code needs to be rewritten
