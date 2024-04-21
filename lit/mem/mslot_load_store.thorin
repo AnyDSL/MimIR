@@ -17,8 +17,8 @@
 // CHECK-DAG: .con .extern main _{{[0-9_]+}}::[mem_[[mainMemId:[_0-9]*]]: %mem.M, argc_[[argcId:[0-9_]+]]: .I32, %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, .I32]]{{(@.*)?}}= {
 // CHECK-DAG: _[[appMSlotId:[0-9_]+]]: [%mem.M, %mem.Ptr (.I32, 0)] = %mem.mslot (.I32, 0) (mem_[[mainMemId]], 4, 0);
 // CHECK-DAG: _[[appStoreId:[0-9_]+]]: %mem.M = %mem.store (.I32, 0) (_[[appMSlotId]]#.ff, _[[appMSlotId]]#.tt, argc_[[argcId]]);
-// CHECK-DAG: _[[appLoadId:[0-9_]+]]: [%mem.M, .I32] = %mem.load (.I32, 0) (_[[appStoreId]], _[[appMSlotId]]#.tt);
-// CHECK-DAG: return_[[returnEtaId:[0-9_]+]] _[[appLoadId]]
+// CHECK-DAG: ld_[[appLoadId:[0-9_]+]]: [%mem.M, .I32] = %mem.load (.I32, 0) (mem_[[appStoreId]], _[[appMSlotId]]#.tt);
+// CHECK-DAG: return_[[returnEtaId:[0-9_]+]] ld_[[appLoadId]]
 
 // CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, .I32]{{(@.*)?}}= {
 // CHECK-DAG: return_[[returnId]] _[[returnEtaVarId]]

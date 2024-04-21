@@ -261,7 +261,7 @@ public:
     /// Pi with codom thorin::Bot%tom
     ///@{
     // clang-format off
-    const Pi* cn(                      bool implicit = false) { return cn(sigma(   ),                implicit); }
+    const Pi* cn(                                           ) { return cn(sigma(   ),                   false); }
     const Pi* cn(Ref  dom,             bool implicit = false) { return pi(      dom ,    type_bot(), implicit); }
     const Pi* cn(Defs dom,             bool implicit = false) { return cn(sigma(dom),                implicit); }
     const Pi* fn(Ref  dom, Ref  codom, bool implicit = false) { return cn({     dom ,    cn(codom)}, implicit); }
