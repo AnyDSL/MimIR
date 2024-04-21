@@ -188,7 +188,11 @@ Ref World::app(Ref callee, Ref arg) {
     Infer::eliminate(Vector<Ref*>{&callee, &arg});
     auto pi = callee->type()->isa<Pi>();
 
-    if (!pi) error(callee->loc(), "called expression '{}' : '{}' is not of function type", callee, callee->type());
+    if (!pi) {
+        throw Error()
+            .error(callee->loc(), "called expression not of function type")
+            .error(callee->loc(), "'{}' <--- callee type", callee->type());
+    }
     if (!Check::assignable(pi->dom(), arg)) {
         throw Error()
             .error(arg->loc(), "cannot apply argument to callee")
@@ -355,9 +359,13 @@ Ref World::insert(Ref d, Ref index, Ref val) {
         error(index->loc(), "index '{}' does not fit within arity '{}'", index, type->arity());
 
     if (lidx) {
-        auto target_type = type->proj(*lidx);
-        if (!Check::assignable(target_type, val))
-            error(val->loc(), "value of type {} is not assignable to type {}", val->type(), target_type);
+        auto elem_type = type->proj(*lidx);
+        if (!Check::assignable(elem_type, val)) {
+            throw Error()
+                .error(val->loc(), "value to be inserted not assignable to element")
+                .note(val->loc(), "'{}' <--- value type", val->type())
+                .note(val->loc(), "'{}' <--- element type", elem_type);
+        }
     }
 
     if (auto l = Lit::isa(size); l && *l == 1)

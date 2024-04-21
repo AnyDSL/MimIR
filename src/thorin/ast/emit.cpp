@@ -448,7 +448,8 @@ Lam* LamDecl::Dom::emit_value(Emitter& e) const {
 }
 
 void LamDecl::emit_decl(Emitter& e) const {
-    auto _ = e.world().push(loc());
+    auto _      = e.world().push(loc());
+    bool is_cps = tag_ == Tag::K_cn || tag_ == Tag::K_con || tag_ == Tag::K_fn || tag_ == Tag::K_fun;
 
     // Iterate over all doms: Build a Lam for cur dom, by furst building a curried Pi for the remaining doms.
     for (size_t i = 0, n = num_doms(); i != n; ++i) {
@@ -464,10 +465,10 @@ void LamDecl::emit_decl(Emitter& e) const {
 
         auto cur = dom(i);
         auto lam = cur->emit_value(e);
-        auto f   = cur->has_bang()                             ? e.world().lit_tt()
-                 : cur->filter()                               ? cur->filter()->emit(e)
-                 : (tag() == Tag::T_lm || tag() == Tag::K_lam) ? e.world().lit_tt()
-                                                               : e.world().lit_ff();
+        auto f   = cur->has_bang()      ? e.world().lit_tt()
+                 : cur->filter()        ? cur->filter()->emit(e)
+                 : i + 1 == n && is_cps ? e.world().lit_ff()
+                                        : e.world().lit_tt();
         lam->set_filter(f);
 
         if (i == 0)
