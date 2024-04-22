@@ -78,6 +78,36 @@ private:
     friend std::ostream& operator<<(std::ostream&, Inline);
 };
 
+#define MY_PREC(m)                                                                                              \
+    /* left     prec,    right  */                                                                              \
+    m(Nil, Bot, Nil) m(Nil, Nil, Nil) m(Lam, Arrow, Arrow) m(Nil, Lam, Pi) m(Nil, Pi, App) m(App, App, Extract) \
+        m(Extract, Extract, Lit) m(Nil, Lit, Lit)
+
+enum class MyPrec {
+#define CODE(l, p, r) p,
+    MY_PREC(CODE)
+#undef CODE
+};
+
+static constexpr std::array<MyPrec, 2> my_prec(MyPrec p) {
+    switch (p) {
+#define CODE(l, p, r) \
+    case MyPrec::p: return {MyPrec::l, MyPrec::r};
+        default: fe::unreachable(); MY_PREC(CODE)
+#undef CODE
+    }
+}
+
+// clang-format off
+MyPrec my_prec(const Def* def) {
+    if (def->isa<Pi     >()) return MyPrec::Arrow;
+    if (def->isa<App    >()) return MyPrec::App;
+    if (def->isa<Extract>()) return MyPrec::Extract;
+    if (def->isa<Lit    >()) return MyPrec::Lit;
+    return MyPrec::Bot;
+}
+// clang-format on
+
 // TODO prec is currently broken
 template<bool L> struct LRPrec {
     LRPrec(const Def* l, const Def* r)
@@ -90,12 +120,10 @@ private:
 
     friend std::ostream& operator<<(std::ostream& os, const LRPrec& p) {
         if constexpr (L) {
-            if (Inline(p.l) && ast::Tok::prec(ast::Tok::prec(p.r))[0] > ast::Tok::prec(p.r))
-                return print(os, "({})", p.l);
+            if (Inline(p.l) && my_prec(my_prec(p.r))[0] > my_prec(p.r)) return print(os, "({})", p.l);
             return print(os, "{}", p.l);
         } else {
-            if (Inline(p.r) && ast::Tok::prec(p.l) > ast::Tok::prec(ast::Tok::prec(p.l))[1])
-                return print(os, "({})", p.r);
+            if (Inline(p.r) && my_prec(p.l) > my_prec(my_prec(p.l))[1]) return print(os, "({})", p.r);
             return print(os, "{}", p.r);
         }
     }

@@ -74,10 +74,9 @@ private:
 
     /// @name parse exprs
     ///@{
-    Ptr<Expr> parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
+    Ptr<Expr> parse_expr(std::string_view ctxt, Prec = Prec::Bot);
     Ptr<Expr> parse_primary_expr(std::string_view ctxt);
-    Ptr<Expr> parse_infix_expr(Tracker, Ptr<Expr>&& lhs, Tok::Prec = Tok::Prec::Bot);
-    Ptr<Expr> parse_extract_expr(Tracker, Ptr<Expr>&&, Tok::Prec);
+    Ptr<Expr> parse_infix_expr(Tracker, Ptr<Expr>&& lhs, Prec = Prec::Bot);
     ///@}
 
     /// @name parse primary exprs
@@ -100,7 +99,7 @@ private:
     ///@{
 
     /// Depending on @p tag, this parses a `()`-style (Tok::Tag::D_paren_l) or `[]`-style (Tok::Tag::D_brckt_l) Ptrn.
-    Ptr<Ptrn> parse_ptrn(Tok::Tag tag, std::string_view ctxt, Tok::Prec = Tok::Prec::Bot, bool allow_annex = false);
+    Ptr<Ptrn> parse_ptrn(Tok::Tag tag, std::string_view ctxt, Prec = Prec::Bot, bool allow_annex = false);
     Ptr<TuplePtrn> parse_tuple_ptrn(bool rebind, Dbg);
     ///@}
 

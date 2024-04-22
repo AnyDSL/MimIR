@@ -33,14 +33,4 @@ std::ostream& operator<<(std::ostream& os, Tok tok) {
 }
 ///@}
 
-// clang-format off
-Tok::Prec Tok::prec(const Def* def) {
-    if (def->isa<Pi     >()) return Tok::Prec::Arrow;
-    if (def->isa<App    >()) return Tok::Prec::App;
-    if (def->isa<Extract>()) return Tok::Prec::Extract;
-    if (def->isa<Lit    >()) return Tok::Prec::Lit;
-    return Tok::Prec::Bot;
-}
-// clang-format on
-
 } // namespace thorin::ast

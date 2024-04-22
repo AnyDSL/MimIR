@@ -103,40 +103,24 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(".top",    T_top  )              \
     m(".insert", K_ins  )              \
 
-#define THORIN_PREC(m)                 \
-    /* left     prec,    right  */     \
-    m(Nil,      Bot,     Nil     )     \
-    m(Nil,      Nil,     Nil     )     \
-    m(Nil,      Where,   Where   )     \
-    m(Lam,      Arrow,   Arrow   )     \
-    m(Nil,      Lam,     Pi      )     \
-    m(Nil,      Pi,      App     )     \
-    m(App,      App,     Extract )     \
-    m(Extract,  Extract, Lit     )     \
-    m(Nil,      Lit,     Lit     )     \
+/// @name Precedence
+///@{
+enum class Prec {
+    Err,
+    Bot,
+    Where,
+    Arrow,
+    Pi,
+    App,
+    Extract,
+    Lit,
+};
+
+inline constexpr bool is_rassoc(Prec p) { return p == Prec::Arrow; }
+///@}
 
 class Tok {
 public:
-    /// @name Precedence
-    ///@{
-    enum class Prec {
-#define CODE(l, p, r) p,
-        THORIN_PREC(CODE)
-#undef CODE
-    };
-
-    static constexpr std::array<Prec, 2> prec(Prec p) {
-        switch (p) {
-#define CODE(l, p, r) \
-            case Prec::p: return {Prec::l, Prec::r};
-            default:      fe::unreachable();
-        THORIN_PREC(CODE)
-#undef CODE
-        }
-    }
-    static Prec prec(const Def*);
-    ///@}
-
     /// @name Tag
     ///@{
     enum class Tag {
