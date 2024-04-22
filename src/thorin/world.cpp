@@ -196,10 +196,10 @@ Ref World::app(Ref callee, Ref arg) {
     if (!Check::assignable(pi->dom(), arg)) {
         throw Error()
             .error(arg->loc(), "cannot apply argument to callee")
-            .note(arg->loc(), "argument: '{}'", arg)
             .note(callee->loc(), "callee: '{}'", callee)
-            .note(arg->loc(), "'{}' <--- argument type", arg->type())
-            .note(callee->loc(), "'{}' <--- domain type", pi->dom());
+            .note(arg->loc(), "argument: '{}'", arg)
+            .note(callee->loc(), "vvv domain type vvv\n'{}'\n'{}'", pi->dom(), arg->type())
+            .note(arg->loc(), "^^^ argument type ^^^");
     }
 
     if (auto imm = callee->isa_imm<Lam>()) return imm->body();
@@ -363,8 +363,8 @@ Ref World::insert(Ref d, Ref index, Ref val) {
         if (!Check::assignable(elem_type, val)) {
             throw Error()
                 .error(val->loc(), "value to be inserted not assignable to element")
-                .note(val->loc(), "'{}' <--- value type", val->type())
-                .note(val->loc(), "'{}' <--- element type", elem_type);
+                .note(val->loc(), "vvv value type vvv \n'{}'\n'{}'", val->type(), elem_type)
+                .note(val->loc(), "^^^ element type ^^^", elem_type);
         }
     }
 

@@ -189,25 +189,24 @@ Ref ArrowExpr::emit(Emitter& e) const {
 }
 
 void PiExpr::Dom::emit_type(Emitter& e) const {
-    pi_       = decl_ ? decl_ : e.world().mut_pi(e.world().type_infer_univ(), is_implicit());
-    auto type = ptrn()->emit_type(e);
+    pi_        = decl_ ? decl_ : e.world().mut_pi(e.world().type_infer_univ(), is_implicit());
+    auto dom_t = ptrn()->emit_type(e);
 
     if (ret()) {
-        auto ret_t   = e.world().cn(ret()->emit_type(e));
-        auto sigma_t = e.world().umax<Sort::Type>({type, ret_t});
-        auto sigma   = e.world().mut_sigma(sigma_t, 2)->set(ret()->loc());
-        auto var     = sigma->var()->set(ret()->loc().anew_begin());
-        sigma->set(0, type);
+        auto sigma = e.world().mut_sigma(2)->set(loc());
+        auto var   = sigma->var()->set(ret()->loc().anew_begin());
+        sigma->set(0, dom_t);
         ptrn()->emit_value(e, var->proj(2, 0));
+        auto ret_t = e.world().cn(ret()->emit_type(e));
         sigma->set(1, ret_t);
 
         if (auto imm = sigma->immutabilize())
-            type = imm;
+            dom_t = imm;
         else
-            type = sigma;
-        pi_->set_dom(type);
+            dom_t = sigma;
+        pi_->set_dom(dom_t);
     } else {
-        pi_->set_dom(type);
+        pi_->set_dom(dom_t);
         ptrn()->emit_value(e, pi_->var());
     }
 }
@@ -451,25 +450,23 @@ void LamDecl::emit_decl(Emitter& e) const {
     auto _      = e.world().push(loc());
     bool is_cps = tag_ == Tag::K_cn || tag_ == Tag::K_con || tag_ == Tag::K_fn || tag_ == Tag::K_fun;
 
-    // Iterate over all doms: Build a Lam for cur dom, by furst building a curried Pi for the remaining doms.
+    // Iterate over all doms: Build a Lam for cur dom, by first building a curried Pi for the remaining doms.
     for (size_t i = 0, n = num_doms(); i != n; ++i) {
         for (const auto& dom : doms() | std::ranges::views::drop(i)) dom->emit_type(e);
-        auto cod = codom()                                     ? codom()->emit(e)
-                 : (tag() == Tag::T_lm || tag() == Tag::K_lam) ? e.world().mut_infer_type()
-                                                               : e.world().type_bot();
+        auto cod = codom() ? codom()->emit(e) : is_cps ? e.world().type_bot() : e.world().mut_infer_type();
 
         for (const auto& dom : doms() | std::ranges::views::drop(i) | std::ranges::views::reverse) {
             dom->pi_->set_codom(cod);
             cod = dom->pi_;
         }
 
-        auto cur = dom(i);
-        auto lam = cur->emit_value(e);
-        auto f   = cur->has_bang()      ? e.world().lit_tt()
-                 : cur->filter()        ? cur->filter()->emit(e)
-                 : i + 1 == n && is_cps ? e.world().lit_ff()
-                                        : e.world().lit_tt();
-        lam->set_filter(f);
+        auto cur    = dom(i);
+        auto lam    = cur->emit_value(e);
+        auto filter = cur->has_bang()      ? e.world().lit_tt()
+                    : cur->filter()        ? cur->filter()->emit(e)
+                    : i + 1 == n && is_cps ? e.world().lit_ff()
+                                           : e.world().lit_tt();
+        lam->set_filter(filter);
 
         if (i == 0)
             def_ = lam->set(dbg().sym);
