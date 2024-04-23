@@ -115,9 +115,10 @@ Ptr<Module> Parser::parse_module() {
     return ptr<Module>(track, std::move(imports), std::move(decls));
 }
 
-Ptr<Module> Parser::import(Sym name, std::ostream* md) {
-    driver().VLOG("import: {}", name);
+Ptr<Module> Parser::import(Dbg dbg, std::ostream* md) {
+    auto name     = dbg.sym;
     auto filename = fs::path(name.view());
+    driver().VLOG("import: {}", name);
 
     if (!filename.has_extension()) filename.replace_extension("thorin"); // TODO error cases
 
@@ -132,14 +133,17 @@ Ptr<Module> Parser::import(Sym name, std::ostream* md) {
 
     if (auto path = driver().add_import(std::move(rel_path), name)) {
         auto ifs = std::ifstream(*path);
-        return import(ifs, path, md);
+        return import(ifs, dbg.loc, path, md);
     }
     return {};
 }
 
-Ptr<Module> Parser::import(std::istream& is, const fs::path* path, std::ostream* md) {
+Ptr<Module> Parser::import(std::istream& is, Loc loc, const fs::path* path, std::ostream* md) {
     driver().VLOG("reading: {}", path ? path->string() : "<unknown file>"s);
-    if (!is) return {};
+    if (!is) {
+        ast().error(loc, "cannot read file {}", *path);
+        return {};
+    }
 
     auto state = std::tuple(prev_, ahead_, lexer_);
     auto lexer = Lexer(ast(), is, path, md);
@@ -150,9 +154,9 @@ Ptr<Module> Parser::import(std::istream& is, const fs::path* path, std::ostream*
     return mod;
 }
 
-Ptr<Module> Parser::plugin(Sym name) {
-    if (!driver().flags().bootstrap && !driver().is_loaded(name)) driver().load(name);
-    return import(name);
+Ptr<Module> Parser::plugin(Dbg dbg) {
+    if (!driver().flags().bootstrap && !driver().is_loaded(dbg.sym)) driver().load(dbg.sym);
+    return import(dbg);
 }
 
 /*
@@ -163,9 +167,9 @@ Ptr<Import> Parser::parse_import_or_plugin() {
     auto track = tracker();
     auto tag   = lex().tag();
     auto name  = expect(Tag::M_id, "{} name", tag == Tag::K_import ? "import" : "plugin");
-    auto sym   = name.sym();
+    auto dbg   = name.dbg();
     expect(Tag::T_semicolon, "end of {}", tag == Tag::K_import ? "import" : "plugin");
-    if (auto module = tag == Tag::K_import ? import(sym) : plugin(sym))
+    if (auto module = tag == Tag::K_import ? import(dbg) : plugin(dbg))
         return ptr<Import>(track, tag, name.dbg(), std::move(module));
     return {};
 }

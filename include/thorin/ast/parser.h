@@ -36,12 +36,12 @@ public:
 
     AST& ast() { return ast_; }
     Driver& driver() { return ast().driver(); }
-    Ptr<Module> import(std::string_view sv) { return import(driver().sym(sv)); }
-    Ptr<Module> import(Sym, std::ostream* md = nullptr);
-    Ptr<Module> import(std::istream&, const fs::path* = nullptr, std::ostream* md = nullptr);
-    Ptr<Module> plugin(Sym);
-    Ptr<Module> plugin(const std::string& s) { return plugin(driver().sym(s)); }
-    Ptr<Module> plugin(const char* name) { return plugin(driver().sym(name)); }
+    Ptr<Module> import(std::string_view sv) { return import({Loc(), driver().sym(sv)}); }
+    Ptr<Module> import(Dbg, std::ostream* md = nullptr);
+    Ptr<Module> import(std::istream&, Loc = {}, const fs::path* = nullptr, std::ostream* md = nullptr);
+    Ptr<Module> plugin(Dbg);
+    Ptr<Module> plugin(const std::string& s) { return plugin({Loc(), driver().sym(s)}); }
+    Ptr<Module> plugin(const char* name) { return plugin({Loc(), driver().sym(name)}); }
 
 private:
     template<class T, class... Args> auto ptr(Args&&... args) {

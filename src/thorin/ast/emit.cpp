@@ -424,6 +424,7 @@ void LetDecl::emit_decl(Emitter& e) const {
 void RecDecl::emit_decl(Emitter& e) const {
     auto t = type() ? type()->emit(e) : e.world().type_infer_univ();
     def_   = body()->emit_decl(e, t);
+    def_->set(dbg());
 }
 
 void RecDecl::emit_body(Emitter& e) const {
