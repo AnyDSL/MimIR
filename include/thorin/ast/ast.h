@@ -797,13 +797,10 @@ class LamDecl : public RecDecl {
 public:
     class Dom : public PiExpr::Dom {
     public:
-        Dom(Loc loc, Tok bang, bool is_implicit, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& filter)
+        Dom(Loc loc, bool is_implicit, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& filter)
             : PiExpr::Dom(loc, is_implicit, std::move(ptrn))
-            , bang_(bang)
             , filter_(std::move(filter)) {}
 
-        Tok bang() const { return bang_; }
-        bool has_bang() const { return (bool)bang(); }
         const Expr* filter() const { return filter_.get(); }
 
         void bind(Scopes& scopes, bool quiet = false) const override;
@@ -811,7 +808,6 @@ public:
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     private:
-        Tok bang_;
         Ptr<Expr> filter_;
         mutable Lam* lam_;
 

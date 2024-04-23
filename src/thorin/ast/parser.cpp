@@ -660,18 +660,11 @@ Ptr<LamDecl> Parser::parse_lam_decl() {
     Ptrs<LamDecl::Dom> doms;
     do {
         auto track    = tracker();
-        auto bang     = accept(Tag::T_bang);
         bool implicit = (bool)accept(Tag::T_dot);
         auto ptrn     = parse_ptrn(Tag::D_paren_l, "domain pattern of a "s + entity, prec);
+        auto filter   = accept(Tag::T_at) ? parse_expr("filter") : nullptr;
 
-        Ptr<Expr> filter;
-        if (auto tok = accept(Tag::T_at)) {
-            expect(Tag::D_paren_l, "opening parenthesis of a filter");
-            filter = parse_expr("filter");
-            expect(Tag::D_paren_r, "closing parenthesis of a filter");
-        }
-
-        doms.emplace_back(ptr<LamDecl::Dom>(track, bang, implicit, std::move(ptrn), std::move(filter)));
+        doms.emplace_back(ptr<LamDecl::Dom>(track, implicit, std::move(ptrn), std::move(filter)));
     } while (!ahead().isa(Tag::T_colon) && !ahead().isa(Tag::T_assign) && !ahead().isa(Tag::T_semicolon));
 
     auto codom = accept(Tag::T_colon) ? parse_expr("codomain of a "s + entity, Prec::Arrow) : nullptr;

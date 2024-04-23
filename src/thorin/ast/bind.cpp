@@ -296,34 +296,13 @@ void RecDecl::bind_body(Scopes& s) const { body()->bind(s); }
 void LamDecl::Dom::bind(Scopes& s, bool quiet) const {
     PiExpr::Dom::bind(s, quiet);
 
-    if (filter() && !quiet) {
-        if (has_bang()) {
-            s.ast().error(filter()->loc(), "explicit filter specified on top of '!' annotation");
-            s.ast().note(bang().loc(), "'!' here");
-        }
-
-        filter()->bind(s);
-    }
+    if (filter() && !quiet) filter()->bind(s);
 }
 
 void LamDecl::bind_decl(Scopes& s) const {
     s.push();
-    for (size_t i = 0, e = num_doms(); i != e; ++i) {
-        if (auto bang = dom(i)->bang(); bang && i + 1 != e) {
-            s.ast().warn(
-                bang.loc(),
-                "'!' superfluous as the last curried function group of a '{}' receives a '.tt'-filter by default",
-                tag());
-        }
-        dom(i)->bind(s);
-    }
+    for (size_t i = 0, e = num_doms(); i != e; ++i) dom(i)->bind(s);
 
-    if (auto bang = doms().back()->bang()) {
-        if (tag() == Tag::K_lam || tag() == Tag::T_lm)
-            s.ast().warn(
-                bang.loc(),
-                "'!' superfluous as all but the last curried function groups receive a '.tt'-filter by default");
-    }
     if (auto filter = doms().back()->filter()) {
         if (auto pe = filter->isa<PrimaryExpr>()) {
             if (pe->tag() == Tag::K_tt && (tag() == Tag::K_lam || tag() == Tag::T_lm))

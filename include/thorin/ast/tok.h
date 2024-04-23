@@ -83,7 +83,6 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(T_assign,     "=")               \
     m(T_at,         "@")               \
     m(T_backtick,   "`")               \
-    m(T_bang,       "!")               \
     m(T_bot,        "⊥")               \
     m(T_top,        "⊤")               \
     m(T_box,        "□")               \

@@ -182,7 +182,6 @@ std::ostream& RecDecl::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& LamDecl::Dom::stream(Tab& tab, std::ostream& os) const {
-    if (has_bang()) os << '!';
     print(os, "{}{}", is_implicit() ? "." : "", S(tab, ptrn()));
     if (filter()) print(os, "@({})", S(tab, filter()));
     if (ret()) print(os, ": {}", S(tab, ret()->type()));

@@ -463,8 +463,7 @@ void LamDecl::emit_decl(Emitter& e) const {
 
         auto cur    = dom(i);
         auto lam    = cur->emit_value(e);
-        auto filter = cur->has_bang()      ? e.world().lit_tt()
-                    : cur->filter()        ? cur->filter()->emit(e)
+        auto filter = cur->filter()        ? cur->filter()->emit(e)
                     : i + 1 == n && is_cps ? e.world().lit_ff()
                                            : e.world().lit_tt();
         lam->set_filter(filter);

@@ -39,7 +39,10 @@ Tok Lexer::lex() {
 
         if (accept(utf8::EoF)) return tok(Tag::EoF);
         if (accept(utf8::isspace)) continue;
-        if (accept(utf8::Null)) ast().error(loc_, "invalid UTF-8 character");
+        if (accept(utf8::Null)) {
+            ast().error(loc_, "invalid UTF-8 character");
+            continue;
+        }
 
         // clang-format off
         // delimiters
@@ -70,7 +73,6 @@ Tok Lexer::lex() {
         if (accept(U'→')) return tok(Tag::T_arrow);
         if (accept( '@')) return tok(Tag::T_at);
         if (accept( '=')) return tok(Tag::T_assign);
-        if (accept( '!')) return tok(Tag::T_bang);
         if (accept(U'⊥')) return tok(Tag::T_bot);
         if (accept(U'⊤')) return tok(Tag::T_top);
         if (accept(U'□')) return tok(Tag::T_box);
@@ -166,7 +168,7 @@ Tok Lexer::lex() {
             continue;
         }
 
-        ast().error({loc_.path, peek_}, "invalid input char '{x}'", (uint32_t)utf8::Char32(ahead()).c);
+        ast().error({loc_.path, peek_}, "invalid input char '{}'", utf8::Char32(ahead()));
         next();
     }
 }

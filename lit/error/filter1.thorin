@@ -1,4 +1,0 @@
-// RUN: (! %thorin %s 2>&1) | FileCheck %s
-.lam f!()@(.tt) = .tt;
-// CHECK: error: explicit filter specified on top of
-// CHECK: warning: '!' superfluous
