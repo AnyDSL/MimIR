@@ -160,7 +160,6 @@ public:
 
     bool rebind() const { return rebind_; }
     Dbg dbg() const { return dbg_; }
-    bool is_anon() const { return !dbg().sym || dbg().sym == '_'; }
 
     virtual void bind(Scopes&, bool quiet = false) const = 0;
     virtual Ref emit_value(Emitter&, Ref) const          = 0;
@@ -188,7 +187,7 @@ public:
         return ast.ptr<IdPtrn>(loc, false, Dbg(loc, ast.sym_anon()), std::move(type));
     }
     static Ptr<IdPtrn> mk_id(AST& ast, Dbg dbg, Ptr<Expr>&& type) {
-        auto loc = (type && dbg) ? dbg.loc + type->loc() : type ? type->loc() : dbg.loc;
+        auto loc = (type && dbg) ? dbg.loc() + type->loc() : type ? type->loc() : dbg.loc();
         return ast.ptr<IdPtrn>(loc, false, dbg, std::move(type));
     }
 
@@ -206,7 +205,7 @@ private:
 class GrpPtrn : public Ptrn {
 public:
     GrpPtrn(Dbg dbg, const IdPtrn* id)
-        : Ptrn(dbg.loc, false, dbg)
+        : Ptrn(dbg.loc(), false, dbg)
         , id_(id) {}
 
     const IdPtrn* id() const { return id_; }
@@ -259,7 +258,7 @@ private:
 class IdExpr : public Expr {
 public:
     IdExpr(Dbg dbg)
-        : Expr(dbg.loc)
+        : Expr(dbg.loc())
         , dbg_(dbg) {}
 
     Dbg dbg() const { return dbg_; }
@@ -705,7 +704,7 @@ public:
     class Alias : public Decl {
     public:
         Alias(Dbg dbg)
-            : Decl(dbg.loc)
+            : Decl(dbg.loc())
             , dbg_(dbg) {}
 
         Dbg dbg() const { return dbg_; }

@@ -134,21 +134,40 @@ template<class... Args> [[noreturn]] void error(Loc loc, const char* f, Args&&..
 ///@}
 
 struct Dbg {
+public:
+    /// @name Constructors
+    ///@{
     constexpr Dbg() noexcept           = default;
     constexpr Dbg(const Dbg&) noexcept = default;
     constexpr Dbg(Loc loc, Sym sym) noexcept
-        : loc(loc)
-        , sym(sym) {}
+        : loc_(loc)
+        , sym_(sym) {}
     constexpr Dbg(Loc loc) noexcept
         : Dbg(loc, {}) {}
+    constexpr Dbg(Sym sym) noexcept
+        : Dbg({}, sym) {}
     Dbg& operator=(const Dbg&) noexcept = default;
+    ///@}
 
-    Loc loc;
-    Sym sym;
+    /// @name Getters
+    ///@{
+    Sym sym() const { return sym_; }
+    Loc loc() const { return loc_; }
+    bool is_anon() const { return !sym() || sym() == '_'; }
+    explicit operator bool() const { return sym().operator bool(); }
+    ///@}
 
-    explicit operator bool() const { return sym.operator bool(); }
+    /// @name Setters
+    ///@{
+    Dbg& set(Sym sym) { return sym_ = sym, *this; }
+    Dbg& set(Loc loc) { return loc_ = loc, *this; }
+    ///@}
 
-    friend std::ostream& operator<<(std::ostream& os, const Dbg& dbg) { return os << dbg.sym; }
+private:
+    Loc loc_;
+    Sym sym_;
+
+    friend std::ostream& operator<<(std::ostream& os, const Dbg& dbg) { return os << dbg.sym(); }
 };
 
 } // namespace thorin

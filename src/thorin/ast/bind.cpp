@@ -37,28 +37,27 @@ public:
     }
 
     const Decl* find(Dbg dbg, bool quiet = false) {
-        if (!dbg || dbg.sym == '_') return nullptr;
+        if (dbg.is_anon()) return nullptr;
 
         for (auto& scope : scopes_ | std::ranges::views::reverse)
-            if (auto i = scope.find(dbg.sym); i != scope.end()) return i->second.second;
+            if (auto i = scope.find(dbg.sym()); i != scope.end()) return i->second.second;
 
         if (!quiet) {
-            ast().error(dbg.loc, "'{}' not found", dbg.sym);
+            ast().error(dbg.loc(), "'{}' not found", dbg.sym());
             bind(dbg, dummy()); // put into scope to prevent further errors
         }
         return nullptr;
     }
 
     void bind(Dbg dbg, const Decl* decl, bool rebind = false, bool quiet = false) {
-        auto [loc, sym] = dbg;
-        if (!sym || sym == '_') return; // don't do anything with '_'
+        if (dbg.is_anon()) return;
 
         if (rebind) {
-            top()[sym] = std::pair(loc, decl);
-        } else if (auto [i, ins] = top().emplace(sym, std::pair(loc, decl)); !ins) {
+            top()[dbg.sym()] = std::pair(dbg.loc(), decl);
+        } else if (auto [i, ins] = top().emplace(dbg.sym(), std::pair(dbg.loc(), decl)); !ins) {
             auto [prev_loc, prev_decl] = i->second;
             if (!quiet && !prev_decl->isa<DummyDecl>()) { // if prev_decl stems from an error - don't complain
-                ast().error(loc, "redeclaration of '{}'", sym);
+                ast().error(dbg.loc(), "redeclaration of '{}'", dbg);
                 ast().note(prev_loc, "previous declaration here");
             }
         }
@@ -241,22 +240,22 @@ void DeclsBlock::bind(Scopes& s) const {
 
 void AxiomDecl::Alias::bind(Scopes& s, const AxiomDecl* axiom) const {
     axiom_   = axiom;
-    auto sym = s.ast().sym(axiom->dbg().sym.str() + "."s + dbg().sym.str());
-    full_    = Dbg(dbg().loc, sym);
+    auto sym = s.ast().sym(axiom->dbg().sym().str() + "."s + dbg().sym().str());
+    full_    = Dbg(dbg().loc(), sym);
     s.bind(full_, this);
 }
 
 void AxiomDecl::bind_decl(Scopes& s) const {
     type()->bind(s);
 
-    std::tie(sym_.plugin, sym_.tag, sym_.sub) = Annex::split(s.driver(), dbg().sym);
+    std::tie(sym_.plugin, sym_.tag, sym_.sub) = Annex::split(s.driver(), dbg().sym());
 
     if (auto p = Annex::mangle(sym_.plugin))
         id_.plugin = *p;
     else
-        s.ast().error(dbg().loc, "invalid axiom name '{}'", dbg());
+        s.ast().error(dbg().loc(), "invalid axiom name '{}'", dbg());
 
-    if (sym_.sub) error(dbg().loc, "axiom '{}' must not have a subtag", dbg().sym);
+    if (sym_.sub) error(dbg().loc(), "axiom '{}' must not have a subtag", dbg().sym());
 
     if (num_subs() == 0) {
         s.bind(dbg(), this);
@@ -264,8 +263,8 @@ void AxiomDecl::bind_decl(Scopes& s) const {
         if (auto old = s.find(dbg(), true)) {
             if (auto old_ax = old->isa<AxiomDecl>()) {
                 if (old_ax->num_subs() == 0) {
-                    s.ast().error(dbg().loc, "redeclared sub-less axiom '{}' with subs", dbg());
-                    s.ast().note(old_ax->dbg().loc, "previous location here");
+                    s.ast().error(dbg().loc(), "redeclared sub-less axiom '{}' with subs", dbg());
+                    s.ast().note(old_ax->dbg().loc(), "previous location here");
                 }
             }
         }

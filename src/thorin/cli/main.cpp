@@ -145,8 +145,8 @@ int main(int argc, char** argv) {
             for (size_t i = 0, e = inputs.size(); i != e; ++i) {
                 auto input = inputs[i];
                 auto tag   = i + 1 == e ? ast::Tok::Tag::K_import : ast::Tok::Tag::K_plugin;
-                auto mod   = i + 1 == e ? parser.import(input) : parser.plugin(input);
-                imports.emplace_back(ast.ptr<ast::Import>(Loc(), tag, Dbg(Loc(), driver.sym(input)), std::move(mod)));
+                auto mod   = i + 1 == e ? parser.import(driver.sym(input), os[Md]) : parser.plugin(input);
+                imports.emplace_back(ast.ptr<ast::Import>(Loc(), tag, Dbg(driver.sym(input)), std::move(mod)));
             }
 
             auto mod = ast.ptr<ast::Module>(imports.back()->loc(), std::move(imports), ast::Ptrs<ast::ValDecl>());

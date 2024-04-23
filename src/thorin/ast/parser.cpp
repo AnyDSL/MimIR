@@ -116,7 +116,7 @@ Ptr<Module> Parser::parse_module() {
 }
 
 Ptr<Module> Parser::import(Dbg dbg, std::ostream* md) {
-    auto name     = dbg.sym;
+    auto name     = dbg.sym();
     auto filename = fs::path(name.view());
     driver().VLOG("import: {}", name);
 
@@ -133,7 +133,7 @@ Ptr<Module> Parser::import(Dbg dbg, std::ostream* md) {
 
     if (auto path = driver().add_import(std::move(rel_path), name)) {
         auto ifs = std::ifstream(*path);
-        return import(ifs, dbg.loc, path, md);
+        return import(ifs, dbg.loc(), path, md);
     }
     return {};
 }
@@ -155,7 +155,7 @@ Ptr<Module> Parser::import(std::istream& is, Loc loc, const fs::path* path, std:
 }
 
 Ptr<Module> Parser::plugin(Dbg dbg) {
-    if (!driver().flags().bootstrap && !driver().is_loaded(dbg.sym)) driver().load(dbg.sym);
+    if (!driver().flags().bootstrap && !driver().is_loaded(dbg.sym())) driver().load(dbg.sym());
     return import(dbg);
 }
 
@@ -459,7 +459,7 @@ Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Prec prec, bool
             if (ahead().isa(Tag::D_paren_l) || ahead().isa(Tag::D_brckt_l))
                 return parse_tuple_ptrn(rebind, dbg);
             else
-                syntax_err("tuple pattern after '" + dbg.sym.str() + "::'", ctxt);
+                syntax_err("tuple pattern after '" + dbg.sym().str() + "::'", ctxt);
         } else if (ahead(1).isa(Tag::T_colon)) {
             // p ->  s: e               b ->  s: e
             // p -> 's: e               b -> 's: e
@@ -513,7 +513,7 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn(bool rebind, Dbg dbg) {
             if (accept(Tag::T_colon)) { // identifier group: x y x: T
                 auto dbg  = dbgs.back();
                 auto type = parse_expr("type of an identifier group within a tuple pattern");
-                auto id   = ptr<IdPtrn>(dbg.loc + type->loc().finis, false, dbg, std::move(type));
+                auto id   = ptr<IdPtrn>(dbg.loc() + type->loc().finis, false, dbg, std::move(type));
 
                 for (auto dbg : dbgs | std::views::take(dbgs.size() - 1))
                     ptrns.emplace_back(ptr<GrpPtrn>(dbg, id.get()));

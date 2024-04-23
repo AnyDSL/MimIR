@@ -18,10 +18,10 @@ public:
     absl::node_hash_map<Sigma*, fe::SymMap<size_t>, GIDHash<const Def*>, GIDEq<const Def*>> sigma2sym2idx;
 
     void register_if_annex(Dbg dbg, Ref def) {
-        if (dbg && dbg.sym.front() == '%') {
-            auto [plugin, tag, sub] = Annex::split(driver(), dbg.sym);
+        if (dbg && dbg.sym().front() == '%') {
+            auto [plugin, tag, sub] = Annex::split(driver(), dbg.sym());
             auto name               = world().sym("%"s + plugin.str() + "."s + tag.str());
-            auto&& [annex, is_new]  = driver().name2annex(name, plugin, tag, dbg.loc);
+            auto&& [annex, is_new]  = driver().name2annex(name, plugin, tag, dbg.loc());
             plugin_t p              = *Annex::mangle(plugin);
             tag_t t                 = annex.tag_id;
             sub_t s                 = annex.subs.size();
@@ -149,7 +149,7 @@ Ref TuplePtrn::emit_body(Emitter& e, Ref decl) const {
         sigma = decl->as_mut<Sigma>();
     } else {
         auto type = e.world().type_infer_univ();
-        sigma     = e.world().mut_sigma(type, n)->set(dbg().sym);
+        sigma     = e.world().mut_sigma(type, n)->set(dbg().sym());
     }
     auto var      = sigma->var()->set(dbg());
     auto& sym2idx = e.sigma2sym2idx[sigma];
@@ -157,7 +157,7 @@ Ref TuplePtrn::emit_body(Emitter& e, Ref decl) const {
     for (size_t i = 0; i != n; ++i) {
         sigma->set(i, ptrn(i)->emit_type(e));
         ptrn(i)->emit_value(e, var->proj(n, i));
-        sym2idx[ptrn(i)->dbg().sym] = i;
+        sym2idx[ptrn(i)->dbg().sym()] = i;
     }
 
     if (auto imm = sigma->immutabilize()) return imm;
@@ -167,7 +167,7 @@ Ref TuplePtrn::emit_body(Emitter& e, Ref decl) const {
 Ref TuplePtrn::emit_decl(Emitter& e, Ref type) const {
     auto _ = e.world().push(loc());
     type   = type ? type : e.world().type_infer_univ();
-    return e.world().mut_sigma(type, num_ptrns())->set(dbg().sym);
+    return e.world().mut_sigma(type, num_ptrns())->set(dbg().sym());
 }
 
 /*
@@ -277,7 +277,7 @@ Ref TupleExpr::emit(Emitter& e) const {
 template<bool arr> Ref ArrOrPackExpr<arr>::emit(Emitter& e) const {
     auto _ = e.world().push(loc());
     auto s = shape()->emit_type(e);
-    if (shape()->is_anon()) { // immutable
+    if (shape()->dbg().is_anon()) { // immutable
         auto b = body()->emit(e);
         return arr ? e.world().arr(s, b) : e.world().pack(s, b);
     }
@@ -315,13 +315,13 @@ Ref ExtractExpr::emit(Emitter& e) const {
             if (auto i = e.sigma2sym2idx.find(sigma); i != e.sigma2sym2idx.end()) {
                 auto sigma          = i->first->as_mut<Sigma>();
                 const auto& sym2idx = i->second;
-                if (auto i = sym2idx.find(dbg->sym); i != sym2idx.end())
+                if (auto i = sym2idx.find(dbg->sym()); i != sym2idx.end())
                     return e.world().extract(tup, sigma->num_ops(), i->second);
             }
         }
 
         if (decl()) return e.world().extract(tup, decl()->def());
-        error(dbg->loc, "cannot resolve index '{}' for extraction", dbg);
+        error(dbg->loc(), "cannot resolve index '{}' for extraction", dbg);
     }
 
     auto expr = std::get<Ptr<Expr>>(index()).get();
@@ -361,8 +361,8 @@ void AxiomDecl::Alias::emit(Emitter& e, const Axiom* axiom) const {
 }
 
 void AxiomDecl::emit_decl(Emitter& e) const {
-    auto [plugin_s, tag_s, sub_s] = Annex::split(e.driver(), dbg().sym);
-    auto&& [annex, is_new]        = e.driver().name2annex(dbg().sym, plugin_s, tag_s, dbg().loc);
+    auto [plugin_s, tag_s, sub_s] = Annex::split(e.driver(), dbg().sym());
+    auto&& [annex, is_new]        = e.driver().name2annex(dbg().sym(), plugin_s, tag_s, dbg().loc());
     thorin_type_                  = type()->emit(e);
     auto [i_curry, i_trip]        = Axiom::infer_curry_and_trip(thorin_type_);
 
@@ -383,11 +383,11 @@ void AxiomDecl::emit_decl(Emitter& e) const {
     }
 
     if (!is_new && annex.pi != (thorin_type_->isa<Pi>() != nullptr))
-        error(dbg().loc, "all declarations of annex '{}' have to be function types if any is", dbg().sym);
+        error(dbg().loc(), "all declarations of annex '{}' have to be function types if any is", dbg().sym());
 
     id_.tag          = annex.tag_id;
     annex.pi         = thorin_type_->isa<Pi>() != nullptr;
-    annex.normalizer = normalizer().sym;
+    annex.normalizer = normalizer().sym();
 
     if (num_subs() == 0) {
         auto norm  = e.driver().normalizer(id_.plugin, id_.tag, 0);
@@ -400,13 +400,13 @@ void AxiomDecl::emit_decl(Emitter& e) const {
             sub_t s       = i + offset;
             auto norm     = e.driver().normalizer(id_.plugin, id_.tag, s);
             auto& aliases = annex.subs.emplace_back(std::deque<Sym>());
-            auto name     = e.world().sym(dbg().sym.str() + "."s + sub(i).front()->dbg().sym.str());
+            auto name     = e.world().sym(dbg().sym().str() + "."s + sub(i).front()->dbg().sym().str());
             auto axiom    = e.world().axiom(norm, id_.curry, id_.trip, thorin_type_, id_.plugin, id_.tag, s)->set(name);
             e.world().register_annex(id_.plugin | (flags_t(id_.tag) << 8_u64) | flags_t(s), axiom);
             for (const auto& alias : sub(i)) {
                 alias->sub_ = s;
                 alias->emit(e, axiom);
-                aliases.emplace_back(alias->dbg().sym);
+                aliases.emplace_back(alias->dbg().sym());
             }
         }
     }
@@ -470,7 +470,7 @@ void LamDecl::emit_decl(Emitter& e) const {
         lam->set_filter(filter);
 
         if (i == 0)
-            def_ = lam->set(dbg().sym);
+            def_ = lam->set(dbg().sym());
         else
             dom(i - 1)->lam_->set_body(lam);
     }

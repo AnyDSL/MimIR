@@ -447,15 +447,8 @@ Defs Def::extended_ops() const {
 }
 
 #ifndef NDEBUG
-const Def* Def::debug_prefix(std::string prefix) const {
-    dbg_.sym = world().sym(prefix + sym().str());
-    return this;
-}
-
-const Def* Def::debug_suffix(std::string suffix) const {
-    dbg_.sym = world().sym(sym().str() + suffix);
-    return this;
-}
+const Def* Def::debug_prefix(std::string prefix) const { return dbg_.set(world().sym(prefix + sym().str())), this; }
+const Def* Def::debug_suffix(std::string suffix) const { return dbg_.set(world().sym(sym().str() + suffix)), this; }
 #endif
 
 // clang-format off
