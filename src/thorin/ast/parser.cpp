@@ -222,14 +222,6 @@ Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Prec curr_pre
                 lhs      = ptr<ArrowExpr>(track.loc(), std::move(lhs), std::move(rhs));
                 continue;
             }
-            case Tag::K_where: {
-                if (curr_prec >= Prec::Where) return lhs;
-                lex();
-                auto decls = parse_decls();
-                lhs        = ptr<DeclExpr>(track, std::move(decls), std::move(lhs), true);
-                expect(Tag::K_end, "end of a .where declaration block");
-                return lhs;
-            }
             case Tag::T_at: {
                 if (curr_prec >= Prec::App) return lhs;
                 lex();
@@ -242,6 +234,14 @@ Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Prec curr_pre
                 auto rhs = parse_expr("argument to an application", Prec::App);
                 lhs      = ptr<AppExpr>(track.loc(), false, std::move(lhs), std::move(rhs));
                 continue;
+            }
+            case Tag::K_where: {
+                if (curr_prec >= Prec::Where) return lhs;
+                lex();
+                auto decls = parse_decls();
+                lhs        = ptr<DeclExpr>(track, std::move(decls), std::move(lhs), true);
+                expect(Tag::K_end, "end of a .where declaration block");
+                return lhs;
             }
             default: return lhs;
         }
