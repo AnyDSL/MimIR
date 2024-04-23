@@ -195,7 +195,6 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
-    bool rebind_;
     Ptr<Expr> type_;
 };
 
@@ -235,8 +234,6 @@ public:
     size_t num_ptrns() const { return ptrns().size(); }
 
     void bind(Scopes&, bool quiet = false) const override;
-    void bind_decl(Scopes&) const;
-    void bind_body(Scopes&) const;
     Ref emit_value(Emitter&, Ref) const override;
     Ref emit_type(Emitter&) const override;
     Ref emit_decl(Emitter&, Ref type) const;

@@ -113,9 +113,6 @@ void IdPtrn::bind(Scopes& s, bool quiet) const {
     s.bind(dbg(), this, rebind(), quiet);
 }
 
-void TuplePtrn::bind_decl(Scopes& s) const {}
-void TuplePtrn::bind_body(Scopes& s) const {}
-
 void TuplePtrn::bind(Scopes& s, bool quiet) const {
     for (const auto& ptrn : ptrns()) ptrn->bind(s, quiet);
     s.bind(dbg(), this, rebind(), quiet);
