@@ -228,7 +228,7 @@ Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Prec curr_pre
                 auto decls = parse_decls();
                 lhs        = ptr<DeclExpr>(track, std::move(decls), std::move(lhs), true);
                 expect(Tag::K_end, "end of a .where declaration block");
-                continue;
+                return lhs;
             }
             case Tag::T_at: {
                 if (curr_prec >= Prec::App) return lhs;

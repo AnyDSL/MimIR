@@ -20,8 +20,7 @@
         .con error(mem: %mem.M, i : .I32) =
             reject (mem, 0I32)
             .where
-                .con reject[mem: %mem.M, .Idx Top] =
-                    exit (mem, 0I32);
+                .con reject[mem: %mem.M, .Idx Top] = exit (mem, 0I32);
             .end
         .con match_argument[mem: %mem.M, .I32] =
             .let arg1             = %mem.lea (Top, ‹Top; %mem.Ptr («⊤:.Nat; .I8», 0)›, 0) (argv, 1I32);
