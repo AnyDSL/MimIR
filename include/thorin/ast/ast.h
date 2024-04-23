@@ -101,8 +101,6 @@ protected:
 
 public:
     virtual void bind(Scopes&) const = 0;
-    virtual void bind_decl(Scopes&) const { fe::unreachable(); }
-    virtual void bind_body(Scopes&) const { fe::unreachable(); }
     virtual Ref emit(Emitter&) const = 0;
     virtual Ref emit_decl(Emitter&, Ref /*type*/) const { fe::unreachable(); }
     virtual void emit_body(Emitter&, Ref /*decl*/) const { fe::unreachable(); }
@@ -447,8 +445,6 @@ private:
     const Expr* codom() const { return codom_.get(); }
 
     void bind(Scopes&) const override;
-    void bind_decl(Scopes&) const override;
-    void bind_body(Scopes&) const override;
     Ref emit(Emitter&) const override;
     Ref emit_decl(Emitter&, Ref type) const override;
     void emit_body(Emitter&, Ref decl) const override;
@@ -468,8 +464,6 @@ public:
     const LamDecl* lam() const { return lam_.get(); }
 
     void bind(Scopes&) const override;
-    void bind_decl(Scopes&) const override;
-    void bind_body(Scopes&) const override;
     Ref emit(Emitter&) const override;
     Ref emit_decl(Emitter&, Ref type) const override;
     void emit_body(Emitter&, Ref decl) const override;
@@ -539,8 +533,6 @@ public:
     const TuplePtrn* ptrn() const { return ptrn_.get(); }
 
     void bind(Scopes&) const override;
-    void bind_decl(Scopes&) const override;
-    void bind_body(Scopes&) const override;
     Ref emit(Emitter&) const override;
     Ref emit_decl(Emitter&, Ref type) const override;
     void emit_body(Emitter&, Ref decl) const override;

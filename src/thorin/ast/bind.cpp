@@ -148,9 +148,6 @@ void PiExpr::Dom::bind(Scopes& s, bool quiet) const {
     if (ret()) ret()->bind(s, quiet);
 }
 
-void PiExpr::bind_decl(Scopes&) const {}
-void PiExpr::bind_body(Scopes&) const {}
-
 void PiExpr::bind(Scopes& s) const {
     s.push();
     for (const auto& dom : doms()) dom->bind(s);
@@ -161,12 +158,9 @@ void PiExpr::bind(Scopes& s) const {
     s.pop();
 }
 
-void LamExpr::bind_decl(Scopes& s) const { lam()->bind_decl(s); }
-void LamExpr::bind_body(Scopes& s) const { lam()->bind_body(s); }
-
 void LamExpr::bind(Scopes& s) const {
-    bind_decl(s);
-    bind_body(s);
+    lam()->bind_decl(s);
+    lam()->bind_body(s);
 }
 
 void AppExpr::bind(Scopes& s) const {
@@ -180,9 +174,6 @@ void RetExpr::bind(Scopes& s) const {
     ptrn()->bind(s);
     body()->bind(s);
 }
-
-void SigmaExpr::bind_decl(Scopes& s) const { ptrn()->bind_decl(s); }
-void SigmaExpr::bind_body(Scopes& s) const { ptrn()->bind_body(s); }
 
 void SigmaExpr::bind(Scopes& s) const {
     s.push();
