@@ -71,26 +71,8 @@ private:
 };
 
 /*
- * AST
+ * Module
  */
-
-// clang-format off
-void IdExpr     ::bind(Scopes& s) const { decl_ = s.find(dbg()); }
-void TypeExpr   ::bind(Scopes& s) const { level()->bind(s); }
-void ErrorExpr  ::bind(Scopes&) const {}
-void InferExpr  ::bind(Scopes&) const {}
-void PrimaryExpr::bind(Scopes&) const {}
-// clang-format on
-
-void LitExpr::bind(Scopes& s) const {
-    if (type()) {
-        type()->bind(s);
-        if (tag() == Tag::L_str || tag() == Tag::L_c || tag() == Tag::L_i)
-            s.ast().error(type()->loc(), "a {} shall not have a type annotation", tag());
-    } else {
-        if (tag() == Tag::L_f) s.ast().error(loc(), "type annotation mandatory for floating point literal");
-    }
-}
 
 void Module::bind(AST& ast) const {
     auto scopes = Scopes(ast);
@@ -123,6 +105,24 @@ void GrpPtrn::bind(Scopes& s, bool quiet) const { s.bind(dbg(), this, rebind(), 
 /*
  * Expr
  */
+
+// clang-format off
+void IdExpr     ::bind(Scopes& s) const { decl_ = s.find(dbg()); }
+void TypeExpr   ::bind(Scopes& s) const { level()->bind(s); }
+void ErrorExpr  ::bind(Scopes&) const {}
+void InferExpr  ::bind(Scopes&) const {}
+void PrimaryExpr::bind(Scopes&) const {}
+// clang-format on
+
+void LitExpr::bind(Scopes& s) const {
+    if (type()) {
+        type()->bind(s);
+        if (tag() == Tag::L_str || tag() == Tag::L_c || tag() == Tag::L_i)
+            s.ast().error(type()->loc(), "a {} shall not have a type annotation", tag());
+    } else {
+        if (tag() == Tag::L_f) s.ast().error(loc(), "type annotation mandatory for floating point literal");
+    }
+}
 
 void DeclExpr::bind(Scopes& s) const {
     decls_.bind(s);

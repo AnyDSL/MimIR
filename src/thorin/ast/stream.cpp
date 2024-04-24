@@ -35,6 +35,17 @@ void Node::dump() const {
 }
 
 /*
+ * Module
+ */
+
+std::ostream& Import::stream(Tab& tab, std::ostream& os) const { return tab.println(os, "{} '{}';", tag(), "TODO"); }
+
+std::ostream& Module::stream(Tab& tab, std::ostream& os) const {
+    for (const auto& import : imports()) import->stream(tab, os);
+    return decls_.stream(tab, os);
+}
+
+/*
  * Ptrn
  */
 
@@ -209,16 +220,6 @@ std::ostream& CDecl::stream(Tab& tab, std::ostream& os) const {
     print(os, "{} {} {}", dbg(), tag(), S(tab, dom()), S(tab, codom()));
     if (tag() == Tag::K_cfun) print(os, ": {}", S(tab, codom()));
     return os;
-}
-/*
- * Module
- */
-
-std::ostream& Import::stream(Tab& tab, std::ostream& os) const { return tab.println(os, "{} '{}';", tag(), "TODO"); }
-
-std::ostream& Module::stream(Tab& tab, std::ostream& os) const {
-    for (const auto& import : imports()) import->stream(tab, os);
-    return decls_.stream(tab, os);
 }
 
 } // namespace thorin::ast
