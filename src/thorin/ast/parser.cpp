@@ -222,6 +222,15 @@ Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Prec curr_pre
             }
             case EXPR: {
                 if (curr_prec >= Prec::App) return lhs;
+                switch (ahead().tag()) {
+                    case DECL:
+                        ast().warn(ahead().loc(), "you are passing a declaration expression as argument");
+                        ast().note(lhs->loc(), "to this expression");
+                        ast().note(ahead().loc(),
+                                   "if this was your intention, parenthesize the declaration expression");
+                        ast().note(lhs->loc().anew_finis(), "otherwise, you are probably missing a ';'");
+                    default: break;
+                }
                 auto rhs = parse_expr("argument to an application", Prec::App);
                 lhs      = ptr<AppExpr>(track.loc(), false, std::move(lhs), std::move(rhs));
                 continue;
