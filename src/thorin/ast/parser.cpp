@@ -318,8 +318,6 @@ Ptr<Expr> Parser::parse_decl_expr() {
     auto track = tracker();
     auto decls = parse_decls();
     auto expr  = parse_expr("final expression of a declaration expression");
-    if (expr->isa<ErrorExpr>())
-        for (const auto& decl : decls) ast().note(decl->loc(), "declaration belonging to this declaration expression");
     return ptr<DeclExpr>(track, std::move(decls), std::move(expr), false);
 }
 
@@ -330,7 +328,7 @@ Ptr<Expr> Parser::parse_lit_expr() {
     return ptr<LitExpr>(track, tok, std::move(type));
 }
 
-Ptr<Expr> Parser::parse_sigma_expr() { return ptr<SigmaExpr>(parse_tuple_ptrn(false, Dbg(ahead().loc(), Sym()))); }
+Ptr<Expr> Parser::parse_sigma_expr() { return ptr<SigmaExpr>(parse_tuple_ptrn(false, Dbg(ahead().loc()))); }
 
 Ptr<Expr> Parser::parse_tuple_expr() {
     auto track = tracker();
