@@ -357,14 +357,20 @@ Ptr<Expr> Parser::parse_pi_expr() {
     }
 
     Ptrs<PiExpr::Dom> doms;
-    do {
+    while (true) {
         auto track    = tracker();
         auto implicit = (bool)accept(Tag::T_dot);
         auto prec     = tag == Tag::K_Cn ? Prec::Bot : Prec::Pi;
         auto ptrn     = parse_ptrn(Tag::D_brckt_l, "domain of a "s + entity, prec);
         doms.emplace_back(ptr<PiExpr::Dom>(track, implicit, std::move(ptrn)));
-    } while (ahead().isa(Tag::T_dot) || ahead().isa(Tag::D_brckt_l) || ahead().isa(Tag::T_backtick)
-             || (ahead(0).isa(Tag::M_id) && ahead(1).isa(Tag::T_colon_colon)));
+
+        switch (ahead().tag()) {
+            case EXPR:
+            case Tag::T_backtick: continue;
+            default: break;
+        }
+        break;
+    }
 
     auto codom = tag != Tag::K_Cn ? (expect(Tag::T_arrow, entity), parse_expr("codomain of a "s + entity, Prec::Arrow))
                                   : nullptr;
@@ -415,11 +421,11 @@ Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Prec prec, bool
     // p ->  s::(p, ..., p)
     // p ->  s::[b, ..., b]     b ->  s::[b, ..., b]
     // p ->  s: e               b ->  s: e
-    // p ->  s                  b ->    e
-    // p -> 's::(p, ..., p)
-    // p -> 's::[b, ..., b]     b -> 's::[b, ..., b]
-    // p -> 's: e               b -> 's: e
-    // p -> 's
+    // p ->  s                  b ->     e
+    // p -> `s::(p, ..., p)
+    // p -> `s::[b, ..., b]     b -> `s::[b, ..., b]
+    // p -> `s: e               b -> `s: e
+    // p -> `s
 
     if (p && ahead().isa(Tag::D_paren_l)) {
         // p ->    (p, ..., p)
@@ -437,10 +443,10 @@ Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Prec prec, bool
         // p ->  s::[b, ..., b]     b ->  s::[b, ..., b]
         // p ->  s: e               b ->  s: e
         // p ->  s                  b ->     e    where e == id
-        // p -> 's::(p, ..., p)
-        // p -> 's::[b, ..., b]     b -> 's::[b, ..., b]
-        // p -> 's: e               b -> 's: e
-        // p -> 's
+        // p -> `s::(p, ..., p)
+        // p -> `s::[b, ..., b]     b -> `s::[b, ..., b]
+        // p -> `s: e               b -> `s: e
+        // p -> `s
         if (ahead(1).isa(Tag::T_colon_colon)) {
             dbg = eat(Tag::M_id).dbg();
             eat(Tag::T_colon_colon);
@@ -448,25 +454,25 @@ Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Prec prec, bool
                 ast().error(ahead().loc(), "switching from []-style patterns to ()-style patterns is not allowed");
             // b ->  s::(p, ..., p)
             // b ->  s::[b, ..., b]     b ->  s::[b, ..., b]
-            // b -> 's::(p, ..., p)
-            // b -> 's::[b, ..., b]     b -> 's::[b, ..., b]
+            // b -> `s::(p, ..., p)
+            // b -> `s::[b, ..., b]     b -> `s::[b, ..., b]
             if (ahead().isa(Tag::D_paren_l) || ahead().isa(Tag::D_brckt_l))
                 return parse_tuple_ptrn(rebind, dbg);
             else
                 syntax_err("tuple pattern after '" + dbg.sym().str() + "::'", ctxt);
         } else if (ahead(1).isa(Tag::T_colon)) {
             // p ->  s: e               b ->  s: e
-            // p -> 's: e               b -> 's: e
+            // p -> `s: e               b -> `s: e
             dbg = eat(Tag::M_id).dbg();
             eat(Tag::T_colon);
             auto type = parse_expr(ctxt, prec);
             return ptr<IdPtrn>(track, rebind, dbg, std::move(type));
         } else {
             // p ->  s                  b ->    e    where e == id
-            // p -> 's
+            // p -> `s
             if (p) {
                 // p ->  s
-                // p -> 's
+                // p -> `s
                 dbg = eat(Tag::M_id).dbg();
                 return ptr<IdPtrn>(track, rebind, dbg, nullptr);
             } else {
@@ -652,14 +658,20 @@ Ptr<LamDecl> Parser::parse_lam_decl() {
 
     auto dbg = decl ? parse_name(entity) : Dbg();
     Ptrs<LamDecl::Dom> doms;
-    do {
+    while (true) {
         auto track    = tracker();
         bool implicit = (bool)accept(Tag::T_dot);
         auto ptrn     = parse_ptrn(Tag::D_paren_l, "domain pattern of a "s + entity, prec);
         auto filter   = accept(Tag::T_at) ? parse_expr("filter") : nullptr;
 
         doms.emplace_back(ptr<LamDecl::Dom>(track, implicit, std::move(ptrn), std::move(filter)));
-    } while (!ahead().isa(Tag::T_colon) && !ahead().isa(Tag::T_assign) && !ahead().isa(Tag::T_semicolon));
+        switch (ahead().tag()) {
+            case EXPR:
+            case Tag::T_backtick: continue;
+            default: break;
+        }
+        break;
+    }
 
     auto codom = accept(Tag::T_colon) ? parse_expr("codomain of a "s + entity, Prec::Arrow) : nullptr;
     if (tag == Tag::K_fn || tag == Tag::K_fun)
