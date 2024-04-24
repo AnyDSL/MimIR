@@ -83,19 +83,6 @@ namespace thorin::ast {
 
 using Tag = Tok::Tag;
 
-// clang-format off
-Prec tag2prec(Tag tag) {
-    switch (tag) {
-        case Tag::K_where:   return Prec::Where;
-        case Tag::T_arrow:   return Prec::Arrow;
-        case Tag::T_extract: return Prec::Extract;
-        case Tag::T_at:
-        case EXPR:           return Prec::App;
-        default:             return Prec::Err;
-    }
-}
-// clang-format on
-
 /*
  * entry points
  */
@@ -386,11 +373,11 @@ Ptr<Expr> Parser::parse_ret_expr() {
     auto track = tracker();
     eat(Tag::K_ret);
     auto ptrn = parse_ptrn(Tag::D_paren_l, "binding pattern of a ret expression");
-    expect(Tag::T_assign, "let expression");
+    expect(Tag::T_assign, "ret expression");
     auto callee = parse_expr("continuation expression of a ret expression");
     expect(Tag::T_dollar, "separator of a ret expression");
     auto arg = parse_expr("argument of ret expression");
-    expect(Tag::T_semicolon, "let expression");
+    expect(Tag::T_semicolon, "ret expression");
     auto body = parse_expr("body of a ret expression");
     return ptr<RetExpr>(track, std::move(ptrn), std::move(callee), std::move(arg), std::move(body));
 }
@@ -416,8 +403,8 @@ Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Prec prec, bool
         }
     }
 
-    // p ->    (p, ..., p)
-    // p ->    [b, ..., b]      b ->    [b, ..., b]
+    // p ->     (p, ..., p)
+    // p ->     [b, ..., b]     b ->     [b, ..., b]
     // p ->  s::(p, ..., p)
     // p ->  s::[b, ..., b]     b ->  s::[b, ..., b]
     // p ->  s: e               b ->  s: e
