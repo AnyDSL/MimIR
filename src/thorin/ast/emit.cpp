@@ -60,15 +60,16 @@ void Import::emit(Emitter& e) const { module()->emit(e); }
  * Ptrn::emit_value
  */
 
-Ref IdPtrn::emit_value(Emitter&, Ref def) const { return def_ = def->set(dbg()); }
-
-Ref TuplePtrn::emit_value(Emitter& e, Ref def) const {
+Ref Ptrn::emit_value(Emitter& e, Ref def) const {
     auto _ = e.world().push(loc());
-    for (size_t i = 0, n = num_ptrns(); i != n; ++i) ptrn(i)->emit_value(e, def->proj(n, i));
+    emit_type(e);
+    emit_value_(e, def);
     return def_ = def->set(dbg());
 }
 
-Ref GrpPtrn::emit_value(Emitter&, Ref def) const { return def_ = def->set(dbg()); }
+void TuplePtrn::emit_value_(Emitter& e, Ref def) const {
+    for (size_t i = 0, n = num_ptrns(); i != n; ++i) ptrn(i)->emit_value(e, def->proj(n, i));
+}
 
 /*
  * Ptrn::emit_Type

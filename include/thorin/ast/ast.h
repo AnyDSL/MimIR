@@ -163,13 +163,15 @@ public:
     Dbg dbg() const { return dbg_; }
 
     virtual void bind(Scopes&, bool quiet = false) const = 0;
-    virtual Ref emit_value(Emitter&, Ref) const          = 0;
-    virtual Ref emit_type(Emitter&) const                = 0;
+    Ref emit_value(Emitter&, Ref) const;
+    virtual Ref emit_type(Emitter&) const = 0;
 
     [[nodiscard]] static Ptr<Expr> to_expr(AST&, Ptr<Ptrn>&&);
     [[nodiscard]] static Ptr<Ptrn> to_ptrn(Ptr<Expr>&&);
 
 private:
+    virtual void emit_value_(Emitter&, Ref) const {}
+
     Dbg dbg_;
     bool rebind_;
 };
@@ -193,7 +195,6 @@ public:
     }
 
     void bind(Scopes&, bool quiet = false) const override;
-    Ref emit_value(Emitter&, Ref) const override;
     Ref emit_type(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
@@ -211,7 +212,6 @@ public:
     const IdPtrn* id() const { return id_; }
 
     void bind(Scopes&, bool quiet = false) const override;
-    Ref emit_value(Emitter&, Ref) const override;
     Ref emit_type(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
@@ -237,13 +237,14 @@ public:
     size_t num_ptrns() const { return ptrns().size(); }
 
     void bind(Scopes&, bool quiet = false) const override;
-    Ref emit_value(Emitter&, Ref) const override;
     Ref emit_type(Emitter&) const override;
     Ref emit_decl(Emitter&, Ref type) const;
     Ref emit_body(Emitter&, Ref decl) const;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
+    void emit_value_(Emitter&, Ref) const override;
+
     Tok::Tag delim_l_;
     Ptrs<Ptrn> ptrns_;
 };
