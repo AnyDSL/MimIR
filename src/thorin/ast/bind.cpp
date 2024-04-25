@@ -125,7 +125,10 @@ void LitExpr::bind(Scopes& s) const {
 }
 
 void DeclExpr::bind(Scopes& s) const {
-    for (const auto& decl : decls()) decl->bind(s);
+    if (is_where())
+        for (const auto& decl : decls() | std::ranges::views::reverse) decl->bind(s);
+    else
+        for (const auto& decl : decls()) decl->bind(s);
     expr()->bind(s);
 }
 

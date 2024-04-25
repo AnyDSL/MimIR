@@ -90,7 +90,7 @@ std::ostream& LitExpr::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& DeclExpr::stream(Tab& tab, std::ostream& os) const {
-    if (where()) {
+    if (is_where()) {
         tab.println(os, "{} .where", S(tab, expr()));
         ++tab;
         for (const auto& decl : decls()) tab.println(os, "{}", S(tab, decl.get()));

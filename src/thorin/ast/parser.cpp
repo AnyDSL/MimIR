@@ -242,7 +242,12 @@ Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Prec curr_pre
                 lex();
                 auto decls = parse_decls();
                 lhs        = ptr<DeclExpr>(track, std::move(decls), std::move(lhs), true);
+
+                bool where = ahead().tag() == Tag::K_where;
                 expect(Tag::K_end, "end of a .where declaration block");
+                if (where)
+                    ast().note(lhs->loc().anew_finis(),
+                               "did you accidentally end your declaration expression with a ';'?");
                 return lhs;
             }
             default: return lhs;

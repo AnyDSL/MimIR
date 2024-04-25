@@ -344,14 +344,14 @@ private:
 /// `decls e` or `e .where decls` if @p where is `true`.
 class DeclExpr : public Expr {
 public:
-    DeclExpr(Loc loc, Ptrs<ValDecl>&& decls, Ptr<Expr>&& expr, bool where)
+    DeclExpr(Loc loc, Ptrs<ValDecl>&& decls, Ptr<Expr>&& expr, bool is_where)
         : Expr(loc)
         , decls_(std::move(decls))
         , expr_(std::move(expr))
-        , where_(where) {}
+        , is_where_(is_where) {}
 
     const auto& decls() const { return decls_; }
-    bool where() const { return where_; }
+    bool is_where() const { return is_where_; }
     const Expr* expr() const { return expr_.get(); }
 
     void bind(Scopes&) const override;
@@ -362,7 +362,7 @@ private:
 
     Ptrs<ValDecl> decls_;
     Ptr<Expr> expr_;
-    bool where_;
+    bool is_where_;
 };
 
 /// `.Type level`

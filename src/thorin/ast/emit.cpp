@@ -179,7 +179,10 @@ Ref LitExpr::emit_(Emitter& e) const {
 }
 
 Ref DeclExpr::emit_(Emitter& e) const {
-    for (const auto& decl : decls()) decl->emit(e);
+    if (is_where())
+        for (const auto& decl : decls() | std::ranges::views::reverse) decl->emit(e);
+    else
+        for (const auto& decl : decls()) decl->emit(e);
     return expr()->emit(e);
 }
 
