@@ -6,8 +6,8 @@ using namespace std::literals;
 
 namespace thorin {
 
-std::optional<plugin_t> Annex::mangle(Sym s) {
-    auto n = s.size();
+std::optional<plugin_t> Annex::mangle(Sym plugin) {
+    auto n = plugin.size();
     if (n > Max_Plugin_Size) return {};
 
     u64 result = 0;
@@ -15,7 +15,7 @@ std::optional<plugin_t> Annex::mangle(Sym s) {
         u64 u = '\0';
 
         if (i < n) {
-            auto c = s[i];
+            auto c = plugin[i];
             if (c == '_')
                 u = 1;
             else if ('a' <= c && c <= 'z')
@@ -34,10 +34,10 @@ std::optional<plugin_t> Annex::mangle(Sym s) {
     return result << 16_u64;
 }
 
-Sym Annex::demangle(Driver& driver, plugin_t u) {
+Sym Annex::demangle(Driver& driver, plugin_t plugin) {
     std::string result;
     for (size_t i = 0; i != Max_Plugin_Size; ++i) {
-        u64 c = (u & 0xfc00000000000000_u64) >> 58_u64;
+        u64 c = (plugin & 0xfc00000000000000_u64) >> 58_u64;
         if (c == 0)
             return driver.sym(result);
         else if (c == 1)
@@ -49,7 +49,7 @@ Sym Annex::demangle(Driver& driver, plugin_t u) {
         else
             result += '0' + ((char)c - 54);
 
-        u <<= 6_u64;
+        plugin <<= 6_u64;
     }
 
     return driver.sym(result);

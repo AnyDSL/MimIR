@@ -51,14 +51,16 @@ THORIN_EXPORT thorin::Plugin thorin_get_plugin();
 
 /// Holds info about an entity defined within a Plugin (called *Annex*).
 struct Annex {
-    Annex(Sym plugin, Sym tag, flags_t tag_id)
-        : plugin(plugin)
-        , tag(tag)
-        , tag_id(tag_id) {}
+    Annex(Sym sym_plugin, Sym sym_tag, flags_t id_tag)
+        : sym{sym_plugin, sym_tag}
+        , id{id_tag} {}
 
-    Sym plugin;
-    Sym tag;
-    flags_t tag_id;
+    struct {
+        Sym plugin, tag;
+    } sym;
+    struct {
+        flags_t tag; // switch to tag_t ?
+    } id;
     std::deque<std::deque<Sym>> subs; ///< List of subs which is a list of aliases.
     Sym normalizer;
     bool pi = false;
@@ -86,11 +88,11 @@ struct Annex {
     /// | 54-63:  | `0`-`9` |
     /// The 0 is special and marks the end of the name if the name has less than 8 chars.
     /// @returns `std::nullopt` if encoding is not possible.
-    static std::optional<plugin_t> mangle(Sym s);
+    static std::optional<plugin_t> mangle(Sym plugin);
 
     /// Reverts an Axiom::mangle%d string to a Sym.
     /// Ignores lower 16-bit of @p u.
-    static Sym demangle(Driver&, plugin_t u);
+    static Sym demangle(Driver&, plugin_t plugin);
 
     static std::tuple<Sym, Sym, Sym> split(Driver&, Sym);
     ///@}

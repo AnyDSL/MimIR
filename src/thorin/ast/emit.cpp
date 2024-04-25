@@ -23,7 +23,7 @@ public:
             auto name               = world().sym("%"s + plugin.str() + "."s + tag.str());
             auto&& [annex, is_new]  = driver().name2annex(name, plugin, tag, dbg.loc());
             plugin_t p              = *Annex::mangle(plugin);
-            tag_t t                 = annex.tag_id;
+            tag_t t                 = annex.id.tag;
             sub_t s                 = annex.subs.size();
 
             if (sub) {
@@ -340,8 +340,8 @@ Ref InsertExpr::emit_(Emitter& e) const {
  */
 
 void AxiomDecl::Alias::emit(Emitter& e, const Axiom* axiom) const {
-    const auto& id = axiom_->id_;
-    def_           = axiom;
+    /*const auto& id = axiom_->id_;*/
+    def_ = axiom;
 }
 
 void AxiomDecl::emit(Emitter& e) const {
@@ -369,7 +369,7 @@ void AxiomDecl::emit(Emitter& e) const {
     if (!is_new && annex.pi != (thorin_type_->isa<Pi>() != nullptr))
         error(dbg().loc(), "all declarations of annex '{}' have to be function types if any is", dbg().sym());
 
-    id_.tag          = annex.tag_id;
+    id_.tag          = annex.id.tag;
     annex.pi         = thorin_type_->isa<Pi>() != nullptr;
     annex.normalizer = normalizer().sym();
 

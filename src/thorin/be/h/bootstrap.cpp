@@ -3,7 +3,6 @@
 #include <ranges>
 #include <sstream>
 
-#include "thorin/axiom.h"
 #include "thorin/driver.h"
 
 namespace thorin {
@@ -21,53 +20,53 @@ void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
     plugin_t plugin_id = *Annex::mangle(plugin);
     std::vector<std::ostringstream> normalizers, outer_namespace;
 
-    tab.print(h << std::hex, "static constexpr plugin_t Plugin_Id = 0x{};\n\n", plugin_id);
+    tab.print(h, "static constexpr plugin_t Plugin_Id = 0x{x};\n\n", plugin_id);
 
     const auto& unordered = driver.plugin2annxes(plugin);
     std::deque<std::pair<Sym, Annex>> infos(unordered.begin(), unordered.end());
-    std::ranges::sort(infos, [&](const auto& p1, const auto& p2) { return p1.second.tag_id < p2.second.tag_id; });
+    std::ranges::sort(infos, [&](const auto& p1, const auto& p2) { return p1.second.id.tag < p2.second.id.tag; });
 
     // clang-format off
-    for (const auto& [key, ax] : infos) {
-        if (ax.plugin != plugin) continue; // this is from an import
+    for (const auto& [key, annex] : infos) {
+        if (annex.sym.plugin != plugin) continue; // this is from an import
 
-        tab.print(h, "/// @name %%{}.{}\n///@{{\n", plugin, ax.tag);
+        tab.print(h, "/// @name %%{}.{}\n///@{{\n", plugin, annex.sym.tag);
         tab.print(h, "#ifdef DOXYGEN // see https://github.com/doxygen/doxygen/issues/9668\n");
-        tab.print(h, "enum {} : flags_t {{\n", ax.tag);
+        tab.print(h, "enum {} : flags_t {{\n", annex.sym.tag);
         tab.print(h, "#else\n");
-        tab.print(h, "enum class {} : flags_t {{\n", ax.tag);
+        tab.print(h, "enum class {} : flags_t {{\n", annex.sym.tag);
         tab.print(h, "#endif\n");
         ++tab;
-        flags_t ax_id = plugin_id | (ax.tag_id << 8u);
+        flags_t ax_id = plugin_id | (annex.id.tag << 8u);
 
         auto& os = outer_namespace.emplace_back();
-        print(os << std::hex, "template<> constexpr flags_t Annex::Base<plug::{}::{}> = 0x{};\n", plugin, ax.tag, ax_id);
+        print(os, "template<> constexpr flags_t Annex::Base<plug::{}::{}> = 0x{x};\n", plugin, annex.sym.tag, ax_id);
 
-        if (auto& subs = ax.subs; !subs.empty()) {
+        if (auto& subs = annex.subs; !subs.empty()) {
             for (const auto& aliases : subs) {
                 const auto& sub = aliases.front();
-                tab.print(h, "{} = 0x{},\n", sub, ax_id++);
+                tab.print(h, "{} = 0x{x},\n", sub, ax_id++);
                 for (size_t i = 1; i < aliases.size(); ++i) tab.print(h, "{} = {},\n", aliases[i], sub);
 
-                if (ax.normalizer)
-                    print(normalizers.emplace_back(), "normalizers[flags_t({}::{})] = &{}<{}::{}>;", ax.tag, sub,
-                          ax.normalizer, ax.tag, sub);
+                if (annex.normalizer)
+                    print(normalizers.emplace_back(), "normalizers[flags_t({}::{})] = &{}<{}::{}>;", annex.sym.tag, sub,
+                          annex.normalizer, annex.sym.tag, sub);
             }
         } else {
-            if (ax.normalizer)
-                print(normalizers.emplace_back(), "normalizers[flags_t(Annex::Base<{}>)] = &{};", ax.tag, ax.normalizer);
+            if (annex.normalizer)
+                print(normalizers.emplace_back(), "normalizers[flags_t(Annex::Base<{}>)] = &{};", annex.sym.tag, annex.normalizer);
         }
         --tab;
         tab.print(h, "}};\n\n");
 
-        if (!ax.subs.empty()) tab.print(h, "THORIN_ENUM_OPERATORS({})\n", ax.tag);
-        print(outer_namespace.emplace_back(), "template<> constexpr size_t Annex::Num<plug::{}::{}> = {};\n", plugin, ax.tag, ax.subs.size());
+        if (!annex.subs.empty()) tab.print(h, "THORIN_ENUM_OPERATORS({})\n", annex.sym.tag);
+        print(outer_namespace.emplace_back(), "template<> constexpr size_t Annex::Num<plug::{}::{}> = {};\n", plugin, annex.sym.tag, annex.subs.size());
 
-        if (ax.normalizer) {
-            if (auto& subs = ax.subs; !subs.empty()) {
-                tab.print(h, "template<{}>\nRef {}(Ref, Ref, Ref);\n\n", ax.tag, ax.normalizer);
+        if (annex.normalizer) {
+            if (auto& subs = annex.subs; !subs.empty()) {
+                tab.print(h, "template<{}>\nRef {}(Ref, Ref, Ref);\n\n", annex.sym.tag, annex.normalizer);
             } else {
-                tab.print(h, "Ref {}(Ref, Ref, Ref);\n", ax.normalizer);
+                tab.print(h, "Ref {}(Ref, Ref, Ref);\n", annex.normalizer);
             }
         }
         tab.print(h, "///@}}\n\n");
@@ -94,8 +93,9 @@ void bootstrap(Driver& driver, Sym plugin, std::ostream& h) {
 
     // emit helpers for non-function axiom
     for (const auto& [tag, ax] : infos) {
-        if (ax.pi || ax.plugin != plugin) continue; // from function or other plugin?
-        tab.print(h, "template<> struct Axiom::Match<plug::{}::{}> {{ using type = Axiom; }};\n", ax.plugin, ax.tag);
+        if (ax.pi || ax.sym.plugin != plugin) continue; // from function or other plugin?
+        tab.print(h, "template<> struct Axiom::Match<plug::{}::{}> {{ using type = Axiom; }};\n", ax.sym.plugin,
+                  ax.sym.tag);
     }
 
     tab.print(h, "#endif\n");
