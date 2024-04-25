@@ -21,7 +21,7 @@ public:
         if (dbg && dbg.sym().front() == '%') {
             auto [plugin, tag, sub] = Annex::split(driver(), dbg.sym());
             auto name               = world().sym("%"s + plugin.str() + "."s + tag.str());
-            auto&& [annex, is_new]  = driver().name2annex(name, plugin, tag, dbg.loc());
+            auto&& [annex, is_new]  = ast().name2annex(name, plugin, tag, dbg.loc());
             plugin_t p              = *Annex::mangle(plugin);
             tag_t t                 = annex.id.tag;
             sub_t s                 = annex.subs.size();
@@ -347,7 +347,7 @@ void AxiomDecl::Alias::emit(Emitter&, const Axiom* axiom) const {
 
 void AxiomDecl::emit(Emitter& e) const {
     auto [plugin_s, tag_s, sub_s] = Annex::split(e.driver(), dbg().sym());
-    auto&& [annex, is_new]        = e.driver().name2annex(dbg().sym(), plugin_s, tag_s, dbg().loc());
+    auto&& [annex, is_new]        = e.ast().name2annex(dbg().sym(), plugin_s, tag_s, dbg().loc());
     thorin_type_                  = type()->emit(e);
     auto [i_curry, i_trip]        = Axiom::infer_curry_and_trip(thorin_type_);
 

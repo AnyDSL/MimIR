@@ -63,6 +63,14 @@ public:
     // clang-format on
     ///@}
 
+    /// @name Manage Annex
+    ///@{
+    std::pair<Annex&, bool> name2annex(Sym sym, Sym plugin, Sym tag, Loc loc);
+    const auto& plugin2annxes(Sym plugin) { return plugin2annexes_[plugin]; }
+    ///@}
+
+    void bootstrap(Sym plugin, std::ostream& h);
+
     friend void swap(AST& a1, AST& a2) noexcept {
         using std::swap;
         // clang-format off
@@ -76,6 +84,7 @@ private:
     World* world_ = nullptr;
     fe::Arena arena_;
     mutable Error err_;
+    fe::SymMap<fe::SymMap<Annex>> plugin2annexes_;
 };
 
 class Node : public fe::RuntimeCast<Node> {

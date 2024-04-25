@@ -10,7 +10,6 @@
 #include "thorin/driver.h"
 
 #include "thorin/ast/parser.h"
-#include "thorin/be/h/bootstrap.h"
 #include "thorin/pass/optimize.h"
 #include "thorin/phase/phase.h"
 #include "thorin/util/sys.h"
@@ -171,8 +170,10 @@ int main(int argc, char** argv) {
             }
 
             if (flags.bootstrap) {
-                if (auto h = os[H])
-                    bootstrap(driver, world.sym(fs::path{path}.filename().replace_extension().string()), *h);
+                if (auto h = os[H]) {
+                    auto plugin = world.sym(fs::path{path}.filename().replace_extension().string());
+                    ast.bootstrap(plugin, *h);
+                }
                 opt = std::min(opt, 1);
             }
 

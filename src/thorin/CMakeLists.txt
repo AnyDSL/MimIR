@@ -20,7 +20,6 @@ target_sources(libthorin
         analyses/looptree.cpp
         analyses/schedule.cpp
         analyses/scope.cpp
-        be/h/bootstrap.cpp
         ast/ast.cpp
         ast/bind.cpp
         ast/emit.cpp
