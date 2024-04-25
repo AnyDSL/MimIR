@@ -50,6 +50,7 @@ void Module::emit(AST& ast) const {
 
 void Module::emit(Emitter& e) const {
     auto _ = e.world().push(loc());
+    for (const auto& import : implicit_imports()) import->emit(e);
     for (const auto& import : imports()) import->emit(e);
     for (const auto& decl : decls()) decl->emit(e);
 }
@@ -339,7 +340,7 @@ Ref InsertExpr::emit_(Emitter& e) const {
  * Decl
  */
 
-void AxiomDecl::Alias::emit(Emitter& e, const Axiom* axiom) const {
+void AxiomDecl::Alias::emit(Emitter&, const Axiom* axiom) const {
     /*const auto& id = axiom_->id_;*/
     def_ = axiom;
 }

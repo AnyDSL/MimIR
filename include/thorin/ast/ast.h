@@ -909,8 +909,11 @@ public:
         , imports_(std::move(imports))
         , decls_(std::move(decls)) {}
 
+    const auto& implicit_imports() const { return implicit_imports_; }
     const auto& imports() const { return imports_; }
     const auto& decls() const { return decls_; }
+
+    void add_implicit_imports(Ptrs<Import>&& imports) const { implicit_imports_ = std::move(imports); }
 
     void compile(AST&) const;
     void bind(AST&) const;
@@ -920,6 +923,7 @@ public:
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
+    mutable Ptrs<Import> implicit_imports_;
     Ptrs<Import> imports_;
     Ptrs<ValDecl> decls_;
 };

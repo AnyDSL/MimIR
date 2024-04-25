@@ -80,6 +80,7 @@ void Module::bind(AST& ast) const {
 }
 
 void Module::bind(Scopes& s) const {
+    for (const auto& import : implicit_imports()) import->bind(s);
     for (const auto& import : imports()) import->bind(s);
     for (const auto& decl : decls()) decl->bind(s);
 }

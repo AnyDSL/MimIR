@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
         bool dot_all_annexes   = false;
         std::string input, prefix;
         std::string clang = sys::find_cmd("clang");
-        std::vector<std::string> inputs, search_paths;
+        std::vector<std::string> plugins, search_paths;
 #ifdef THORIN_ENABLE_CHECKS
         std::vector<size_t> breakpoints;
 #endif
@@ -48,7 +48,7 @@ int main(int argc, char** argv) {
             | lyra::opt(show_version                          )["-v"]["--version"               ]("Display version info and exit.")
             | lyra::opt(list_search_paths                     )["-l"]["--list-search-paths"     ]("List search paths in order and exit.")
             | lyra::opt(clang,          "clang"               )["-c"]["--clang"                 ]("Path to clang executable (default: '" THORIN_WHICH " clang').")
-            | lyra::opt(inputs,         "plugin"              )["-p"]["--plugin"                ]("Dynamically load plugin.")
+            | lyra::opt(plugins,        "plugin"              )["-p"]["--plugin"                ]("Dynamically load plugin.")
             | lyra::opt(search_paths,   "path"                )["-P"]["--plugin-path"           ]("Path to search for plugins.")
             | lyra::opt(inc_verbose                           )["-V"]["--verbose"               ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
             | lyra::opt(opt,            "level"               )["-O"]["--optimize"              ]("Optimization level (default: 2).")
@@ -129,11 +129,9 @@ int main(int argc, char** argv) {
 
         // we always need standard plugins, as long as we are not in bootstrap mode
         if (!flags.bootstrap) {
-            inputs.insert(inputs.begin(), "compile"s);
-            if (opt >= 2) inputs.emplace_back("opt"s);
+            plugins.insert(plugins.begin(), "compile"s);
+            if (opt >= 2) plugins.emplace_back("opt"s);
         }
-
-        inputs.emplace_back(input);
 
         try {
             auto path = fs::path(input);
@@ -142,14 +140,15 @@ int main(int argc, char** argv) {
             auto ast    = ast::AST(world);
             auto parser = ast::Parser(ast);
             ast::Ptrs<ast::Import> imports;
-            for (size_t i = 0, e = inputs.size(); i != e; ++i) {
-                auto input = inputs[i];
-                auto tag   = i + 1 == e ? ast::Tok::Tag::K_import : ast::Tok::Tag::K_plugin;
-                auto mod   = i + 1 == e ? parser.import(driver.sym(input), os[Md]) : parser.plugin(input);
-                imports.emplace_back(ast.ptr<ast::Import>(Loc(), tag, Dbg(driver.sym(input)), std::move(mod)));
-            }
 
-            auto mod = ast.ptr<ast::Module>(imports.back()->loc(), std::move(imports), ast::Ptrs<ast::ValDecl>());
+            for (const auto& plugin : plugins) {
+                auto mod = parser.plugin(plugin);
+                auto import
+                    = ast.ptr<ast::Import>(Loc(), ast::Tok::Tag::K_plugin, Dbg(driver.sym(plugin)), std::move(mod));
+                imports.emplace_back(std::move(import));
+            }
+            auto mod = parser.import(driver.sym(input), os[Md]);
+            mod->add_implicit_imports(std::move(imports));
             mod->compile(ast);
 
             if (auto s = os[AST]) {
