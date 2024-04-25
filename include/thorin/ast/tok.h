@@ -14,13 +14,13 @@ namespace ast {
     m(K_module, ".module")             \
     m(K_import, ".import")             \
     m(K_plugin, ".plugin")             \
+    m(K_and,    ".and"   )             \
     m(K_ax,     ".ax"    )             \
     m(K_let,    ".let"   )             \
-    m(K_grp,    ".grp"  )              \
     m(K_rec,    ".rec"   )             \
     m(K_ret,    ".ret"   )             \
     m(K_where,  ".where" )             \
-    m(K_end,    ".end" )               \
+    m(K_end,    ".end"   )             \
     m(K_Nat,    ".Nat"   )             \
     m(K_Idx,    ".Idx"   )             \
     m(K_extern, ".extern")             \

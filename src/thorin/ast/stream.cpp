@@ -42,7 +42,8 @@ std::ostream& Import::stream(Tab& tab, std::ostream& os) const { return tab.prin
 
 std::ostream& Module::stream(Tab& tab, std::ostream& os) const {
     for (const auto& import : imports()) import->stream(tab, os);
-    return decls_.stream(tab, os);
+    for (const auto& decl : decls()) tab.println(os, "{}", S(tab, decl.get()));
+    return os;
 }
 
 /*
@@ -92,12 +93,11 @@ std::ostream& DeclExpr::stream(Tab& tab, std::ostream& os) const {
     if (where()) {
         tab.println(os, "{} .where", S(tab, expr()));
         ++tab;
-        decls_.stream(tab, os);
+        for (const auto& decl : decls()) tab.println(os, "{}", S(tab, decl.get()));
         --tab;
         return os;
     } else {
-        for (const auto& decl : decls_.decls()) tab.println(os, "{}", S(tab, decl.get()));
-        decls_.stream(tab, os);
+        for (const auto& decl : decls()) tab.println(os, "{}", S(tab, decl.get()));
         return print(os, "{}", S(tab, expr()));
     }
 }
@@ -156,11 +156,6 @@ std::ostream& InsertExpr::stream(Tab& tab, std::ostream& os) const {
  * Decl
  */
 
-std::ostream& DeclsBlock::stream(Tab& tab, std::ostream& os) const {
-    for (const auto& decl : decls()) tab.println(os, "{}", S(tab, decl.get()));
-    return os;
-}
-
 std::ostream& AxiomDecl::Alias::stream(Tab&, std::ostream& os) const { return os << dbg(); }
 
 std::ostream& AxiomDecl::stream(Tab& tab, std::ostream& os) const {
@@ -179,8 +174,6 @@ std::ostream& AxiomDecl::stream(Tab& tab, std::ostream& os) const {
     if (trip()) print(os, ", {}", trip());
     return os << ";";
 }
-
-std::ostream& GrpDecl::stream(Tab&, std::ostream& os) const { return os << ".grp"; }
 
 std::ostream& LetDecl::stream(Tab& tab, std::ostream& os) const {
     return print(os, ".let {} = {};", S(tab, ptrn()), S(tab, value()));

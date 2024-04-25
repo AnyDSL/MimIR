@@ -127,25 +127,8 @@ protected:
         : Decl(loc) {}
 
 public:
-    virtual void bind_decl(Scopes&) const  = 0;
-    virtual void emit_decl(Emitter&) const = 0;
-};
-
-class DeclsBlock {
-public:
-    DeclsBlock(Ptrs<ValDecl>&& decls)
-        : decls_(std::move(decls)) {}
-
-    const auto& decls() const { return decls_; }
-    const ValDecl* decl(size_t i) const { return decls_[i].get(); }
-    size_t num_decls() const { return decls_.size(); }
-
-    std::ostream& stream(Tab&, std::ostream&) const;
-    void bind(Scopes&) const;
-    void emit(Emitter&) const;
-
-private:
-    Ptrs<ValDecl> decls_;
+    virtual void bind(Scopes&) const  = 0;
+    virtual void emit(Emitter&) const = 0;
 };
 
 /*
@@ -367,6 +350,7 @@ public:
         , expr_(std::move(expr))
         , where_(where) {}
 
+    const auto& decls() const { return decls_; }
     bool where() const { return where_; }
     const Expr* expr() const { return expr_.get(); }
 
@@ -376,7 +360,7 @@ public:
 private:
     Ref emit_(Emitter&) const override;
 
-    DeclsBlock decls_;
+    Ptrs<ValDecl> decls_;
     Ptr<Expr> expr_;
     bool where_;
 };
@@ -680,17 +664,6 @@ private:
  * Decls
  */
 
-/// `.grp`
-class GrpDecl : public ValDecl {
-public:
-    GrpDecl(Loc loc)
-        : ValDecl(loc) {}
-
-    void bind_decl(Scopes&) const override;
-    void emit_decl(Emitter&) const override;
-    std::ostream& stream(Tab&, std::ostream&) const override;
-};
-
 /// `.let ptrn: type = value;`
 class LetDecl : public ValDecl {
 public:
@@ -702,8 +675,8 @@ public:
     const Ptrn* ptrn() const { return ptrn_.get(); }
     const Expr* value() const { return value_.get(); }
 
-    void bind_decl(Scopes&) const override;
-    void emit_decl(Emitter&) const override;
+    void bind(Scopes&) const override;
+    void emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -753,8 +726,8 @@ public:
     Tok curry() const { return curry_; }
     Tok trip() const { return trip_; }
 
-    void bind_decl(Scopes&) const override;
-    void emit_decl(Emitter&) const override;
+    void bind(Scopes&) const override;
+    void emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -777,26 +750,33 @@ private:
 /// `.rec dbg: type = body`
 class RecDecl : public ValDecl {
 public:
-    RecDecl(Loc loc, Dbg dbg, Ptr<Expr>&& type, Ptr<Expr>&& body)
+    RecDecl(Loc loc, Dbg dbg, Ptr<Expr>&& type, Ptr<Expr>&& body, Ptr<RecDecl>&& next)
         : ValDecl(loc)
         , dbg_(dbg)
         , type_(std::move(type))
-        , body_(std::move(body)) {}
+        , body_(std::move(body))
+        , next_(std::move(next)) {}
 
     Dbg dbg() const { return dbg_; }
     const Expr* type() const { return type_.get(); }
     const Expr* body() const { return body_.get(); }
+    const RecDecl* next() const { return next_.get(); }
 
-    void bind_decl(Scopes&) const override;
-    void emit_decl(Emitter&) const override;
+    void bind(Scopes&) const override;
+    virtual void bind_decl(Scopes&) const;
     virtual void bind_body(Scopes&) const;
+
+    void emit(Emitter&) const override;
+    virtual void emit_decl(Emitter&) const;
     virtual void emit_body(Emitter&) const;
+
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
     Dbg dbg_;
     Ptr<Expr> type_;
     Ptr<Expr> body_;
+    Ptr<RecDecl> next_;
 };
 
 /// One of:
@@ -827,8 +807,15 @@ public:
         friend class LamDecl;
     };
 
-    LamDecl(Loc loc, Tok::Tag tag, bool is_external, Dbg dbg, Ptrs<Dom>&& doms, Ptr<Expr>&& codom, Ptr<Expr>&& body)
-        : RecDecl(loc, dbg, nullptr, std::move(body))
+    LamDecl(Loc loc,
+            Tok::Tag tag,
+            bool is_external,
+            Dbg dbg,
+            Ptrs<Dom>&& doms,
+            Ptr<Expr>&& codom,
+            Ptr<Expr>&& body,
+            Ptr<RecDecl>&& next)
+        : RecDecl(loc, dbg, nullptr, std::move(body), std::move(next))
         , tag_(tag)
         , is_external_(is_external)
         , doms_(std::move(doms))
@@ -845,8 +832,8 @@ public:
 
     void bind_decl(Scopes&) const override;
     void bind_body(Scopes&) const override;
-    void emit_decl(Emitter& e) const override;
-    void emit_body(Emitter& e) const override;
+    void emit_decl(Emitter&) const override;
+    void emit_body(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -871,8 +858,8 @@ public:
     const Ptrn* dom() const { return dom_.get(); }
     const Expr* codom() const { return codom_.get(); }
 
-    void bind_decl(Scopes&) const override;
-    void emit_decl(Emitter&) const override;
+    void bind(Scopes&) const override;
+    void emit(Emitter&) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -923,6 +910,7 @@ public:
         , decls_(std::move(decls)) {}
 
     const auto& imports() const { return imports_; }
+    const auto& decls() const { return decls_; }
 
     void compile(AST&) const;
     void bind(AST&) const;
@@ -933,7 +921,7 @@ public:
 
 private:
     Ptrs<Import> imports_;
-    DeclsBlock decls_;
+    Ptrs<ValDecl> decls_;
 };
 
 AST load_plugins(World&, View<Sym>);

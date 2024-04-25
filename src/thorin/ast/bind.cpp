@@ -81,7 +81,7 @@ void Module::bind(AST& ast) const {
 
 void Module::bind(Scopes& s) const {
     for (const auto& import : imports()) import->bind(s);
-    decls_.bind(s);
+    for (const auto& decl : decls()) decl->bind(s);
 }
 
 void Import::bind(Scopes& s) const { module()->bind(s); }
@@ -125,7 +125,7 @@ void LitExpr::bind(Scopes& s) const {
 }
 
 void DeclExpr::bind(Scopes& s) const {
-    decls_.bind(s);
+    for (const auto& decl : decls()) decl->bind(s);
     expr()->bind(s);
 }
 
@@ -212,20 +212,6 @@ void InsertExpr::bind(Scopes& s) const {
  * Decl
  */
 
-void DeclsBlock::bind(Scopes& s) const {
-    for (size_t i = 0, e = num_decls(), r = 0; true; ++i) {
-        if (i < e && decl(i)->isa<RecDecl>()) {
-            if (!decl(r)->isa<RecDecl>()) r = i;
-        } else if (r < e && decl(r)->isa<RecDecl>()) {
-            for (size_t j = r; j != i; ++j) decl(j)->as<RecDecl>()->bind_body(s);
-            r = i;
-        }
-
-        if (i == e) break;
-        decl(i)->bind_decl(s);
-    }
-}
-
 void AxiomDecl::Alias::bind(Scopes& s, const AxiomDecl* axiom) const {
     axiom_   = axiom;
     auto sym = s.ast().sym(axiom->dbg().sym().str() + "."s + dbg().sym().str());
@@ -233,7 +219,7 @@ void AxiomDecl::Alias::bind(Scopes& s, const AxiomDecl* axiom) const {
     s.bind(full_, this);
 }
 
-void AxiomDecl::bind_decl(Scopes& s) const {
+void AxiomDecl::bind(Scopes& s) const {
     type()->bind(s);
 
     std::tie(sym_.plugin, sym_.tag, sym_.sub) = Annex::split(s.driver(), dbg().sym());
@@ -261,22 +247,25 @@ void AxiomDecl::bind_decl(Scopes& s) const {
     }
 }
 
-void GrpDecl::bind_decl(Scopes&) const {}
-
-void LetDecl::bind_decl(Scopes& s) const {
+void LetDecl::bind(Scopes& s) const {
     value()->bind(s);
     ptrn()->bind(s);
 }
 
+void RecDecl::bind(Scopes& s) const {
+    for (auto curr = this; curr; curr = curr->next()) curr->bind_decl(s);
+    for (auto curr = this; curr; curr = curr->next()) curr->bind_body(s);
+}
+
 void RecDecl::bind_decl(Scopes& s) const {
-    if (type()) type()->bind(s);
+    if (auto t = type()) t->bind(s);
     if (!type()->isa<InferExpr>() && body()->isa<LamExpr>())
         s.ast().warn(type()->loc(), "type of recursive declaration ignored for function expression");
 
-    s.bind(dbg(), this);
-
     if (!body()->isa<LamExpr>() && !body()->isa<PiExpr>() && !body()->isa<SigmaExpr>())
         s.ast().error(body()->loc(), "unsupported expression for a recursive declaration");
+
+    s.bind(dbg(), this);
 }
 
 void RecDecl::bind_body(Scopes& s) const { body()->bind(s); }
@@ -296,12 +285,12 @@ void LamDecl::bind_decl(Scopes& s) const {
             if (pe->tag() == Tag::K_tt && (tag() == Tag::K_lam || tag() == Tag::T_lm))
                 s.ast().warn(filter->loc(),
                              "'.tt'-filter superfluous as the last curried function group of a '{}' receives a "
-                             "'.tt' filter by default",
+                             "'.tt'-filter by default",
                              tag());
             if (pe->tag() == Tag::K_ff && (tag() != Tag::K_lam && tag() != Tag::T_lm))
                 s.ast().warn(filter->loc(),
                              "'.ff'-filter superfluous as the last curried function group of a '{}' receives a "
-                             "'.ff' filter by default",
+                             "'.ff'-filter by default",
                              tag());
         }
     }
@@ -323,7 +312,7 @@ void LamDecl::bind_body(Scopes& s) const {
     s.pop();
 }
 
-void CDecl::bind_decl(Scopes& s) const {
+void CDecl::bind(Scopes& s) const {
     s.push();
     dom()->bind(s);
     s.pop(); // we don't allow codom to depent on dom

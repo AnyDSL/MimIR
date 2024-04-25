@@ -51,7 +51,7 @@ void Module::emit(AST& ast) const {
 void Module::emit(Emitter& e) const {
     auto _ = e.world().push(loc());
     for (const auto& import : imports()) import->emit(e);
-    decls_.emit(e);
+    for (const auto& decl : decls()) decl->emit(e);
 }
 
 void Import::emit(Emitter& e) const { module()->emit(e); }
@@ -179,7 +179,7 @@ Ref LitExpr::emit_(Emitter& e) const {
 }
 
 Ref DeclExpr::emit_(Emitter& e) const {
-    decls_.emit(e);
+    for (const auto& decl : decls()) decl->emit(e);
     return expr()->emit(e);
 }
 
@@ -336,26 +336,12 @@ Ref InsertExpr::emit_(Emitter& e) const {
  * Decl
  */
 
-void DeclsBlock::emit(Emitter& e) const {
-    for (size_t i = 0, n = num_decls(), r = 0; true; ++i) {
-        if (i < n && decl(i)->isa<RecDecl>()) {
-            if (!decl(r)->isa<RecDecl>()) r = i;
-        } else if (r < n && decl(r)->isa<RecDecl>()) {
-            for (size_t j = r; j != i; ++j) decl(j)->as<RecDecl>()->emit_body(e);
-            r = i;
-        }
-
-        if (i == n) break;
-        decl(i)->emit_decl(e);
-    }
-}
-
 void AxiomDecl::Alias::emit(Emitter& e, const Axiom* axiom) const {
     const auto& id = axiom_->id_;
     def_           = axiom;
 }
 
-void AxiomDecl::emit_decl(Emitter& e) const {
+void AxiomDecl::emit(Emitter& e) const {
     auto [plugin_s, tag_s, sub_s] = Annex::split(e.driver(), dbg().sym());
     auto&& [annex, is_new]        = e.driver().name2annex(dbg().sym(), plugin_s, tag_s, dbg().loc());
     thorin_type_                  = type()->emit(e);
@@ -407,13 +393,16 @@ void AxiomDecl::emit_decl(Emitter& e) const {
     }
 }
 
-void GrpDecl::emit_decl(Emitter&) const {}
-
-void LetDecl::emit_decl(Emitter& e) const {
+void LetDecl::emit(Emitter& e) const {
     auto v = value()->emit(e);
     def_   = ptrn()->emit_value(e, v);
 
     if (auto id = ptrn()->isa<IdPtrn>()) e.register_if_annex(id->dbg(), def_);
+}
+
+void RecDecl::emit(Emitter& e) const {
+    for (auto curr = this; curr; curr = curr->next()) curr->emit_decl(e);
+    for (auto curr = this; curr; curr = curr->next()) curr->emit_body(e);
 }
 
 void RecDecl::emit_decl(Emitter& e) const {
@@ -476,7 +465,7 @@ void LamDecl::emit_body(Emitter& e) const {
     e.register_if_annex(dbg(), def_);
 }
 
-void CDecl::emit_decl(Emitter& e) const {
+void CDecl::emit(Emitter& e) const {
     auto dom_t = dom()->emit_type(e);
     if (tag() == Tag::K_cfun) {
         auto ret_t = codom()->emit(e);
