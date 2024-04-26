@@ -66,7 +66,7 @@ public:
     /// @name Manage Annex
     ///@{
     std::pair<Annex&, bool> name2annex(Sym sym, Sym plugin, Sym tag, Loc loc);
-    const auto& plugin2annxes(Sym plugin) { return plugin2annexes_[plugin]; }
+    const auto& plugin2annexes(Sym plugin) { return plugin2sym2annex_[plugin]; }
     ///@}
 
     void bootstrap(Sym plugin, std::ostream& h);
@@ -84,7 +84,7 @@ private:
     World* world_ = nullptr;
     fe::Arena arena_;
     mutable Error err_;
-    fe::SymMap<fe::SymMap<Annex>> plugin2annexes_;
+    absl::node_hash_map<fe::Sym, absl::node_hash_map<fe::Sym, Annex>> plugin2sym2annex_;
 };
 
 class Node : public fe::RuntimeCast<Node> {

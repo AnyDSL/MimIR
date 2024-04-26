@@ -2,13 +2,13 @@
 
 #include <list>
 
+#include <absl/container/node_hash_map.h>
+
 #include "thorin/flags.h"
 #include "thorin/plugin.h"
 #include "thorin/world.h"
 
 #include "thorin/util/log.h"
-
-#include "absl/container/node_hash_map.h"
 
 namespace thorin {
 

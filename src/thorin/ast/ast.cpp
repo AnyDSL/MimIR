@@ -11,7 +11,7 @@ AST::~AST() {
 }
 
 std::pair<Annex&, bool> AST::name2annex(Sym sym, Sym plugin, Sym tag, Loc loc) {
-    auto& annexes = plugin2annexes_[plugin];
+    auto& annexes = plugin2sym2annex_[plugin];
     if (annexes.size() > std::numeric_limits<tag_t>::max())
         error(loc, "exceeded maxinum number of axioms in current plugin");
 
@@ -34,7 +34,7 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
 
     tab.print(h, "static constexpr plugin_t Plugin_Id = 0x{x};\n\n", plugin_id);
 
-    const auto& unordered = plugin2annxes(plugin);
+    const auto& unordered = plugin2annexes(plugin);
     std::deque<std::pair<Sym, Annex>> infos(unordered.begin(), unordered.end());
     std::ranges::sort(infos, [&](const auto& p1, const auto& p2) { return p1.second.id.tag < p2.second.id.tag; });
 

@@ -51,7 +51,7 @@ THORIN_EXPORT thorin::Plugin thorin_get_plugin();
 
 /// Holds info about an entity defined within a Plugin (called *Annex*).
 struct Annex {
-    Annex(Sym sym_plugin, Sym sym_tag, flags_t id_tag)
+    Annex(Sym sym_plugin, Sym sym_tag, tag_t id_tag)
         : sym{sym_plugin, sym_tag}
         , id{id_tag} {}
 
@@ -59,7 +59,7 @@ struct Annex {
         Sym plugin, tag;
     } sym;
     struct {
-        flags_t tag; // switch to tag_t ?
+        tag_t tag;
     } id;
     std::deque<std::deque<Sym>> subs; ///< List of subs which is a list of aliases.
     Sym normalizer;
