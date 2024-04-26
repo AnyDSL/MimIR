@@ -9,7 +9,7 @@ AST::~AST() {
            && "please encounter any errors before destroying this class");
 }
 
-Annex& AST::name2annex(Dbg dbg) {
+AnnexInfo& AST::name2annex(Dbg dbg) {
     auto [plugin_s, tag_s, sub_s] = Annex::split(driver(), dbg.sym());
     auto& sym2annex               = plugin2sym2annex_[plugin_s];
     auto tag_id                   = sym2annex.size();
@@ -29,19 +29,19 @@ Annex& AST::name2annex(Dbg dbg) {
 
     if (sub_s) error(dbg.loc(), "annex '{}' must not have a subtag", dbg);
 
-    auto [i, fresh] = sym2annex.emplace(dbg.sym(), Annex{plugin_s, tag_s, plugin_id, (tag_t)sym2annex.size()});
+    auto [i, fresh] = sym2annex.emplace(dbg.sym(), AnnexInfo{plugin_s, tag_s, plugin_id, (tag_t)sym2annex.size()});
     auto& annex     = i->second;
     if (!fresh) annex.fresh = false;
     return annex;
 }
 
-std::pair<Annex&, bool> AST::name2annex(Sym sym, Sym plugin, Sym tag, Loc loc) {
+std::pair<AnnexInfo&, bool> AST::name2annex(Sym sym, Sym plugin, Sym tag, Loc loc) {
     auto& annexes = plugin2sym2annex_[plugin];
     if (annexes.size() > std::numeric_limits<tag_t>::max())
         error(loc, "exceeded maxinum number of axioms in current plugin");
 
     auto plugin_id    = *Annex::mangle(plugin);
-    auto [it, is_new] = annexes.emplace(sym, Annex{plugin, tag, plugin_id, (tag_t)annexes.size()});
+    auto [it, is_new] = annexes.emplace(sym, AnnexInfo{plugin, tag, plugin_id, (tag_t)annexes.size()});
     return {it->second, is_new};
 }
 
@@ -61,7 +61,7 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
     tab.print(h, "static constexpr plugin_t Plugin_Id = 0x{x};\n\n", plugin_id);
 
     const auto& unordered = plugin2annexes(plugin);
-    std::deque<std::pair<Sym, Annex>> infos(unordered.begin(), unordered.end());
+    std::deque<std::pair<Sym, AnnexInfo>> infos(unordered.begin(), unordered.end());
     std::ranges::sort(infos, [&](const auto& p1, const auto& p2) { return p1.second.id.tag < p2.second.id.tag; });
 
     // clang-format off

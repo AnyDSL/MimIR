@@ -22,6 +22,27 @@ template<class T> using Ptr  = fe::Arena::Ptr<const T>;
 template<class T> using Ptrs = std::deque<Ptr<T>>;
 /*             */ using Dbgs = std::deque<Dbg>;
 
+struct AnnexInfo {
+    AnnexInfo(Sym sym_plugin, Sym sym_tag, plugin_t id_plugin, tag_t id_tag)
+        : sym{sym_plugin, sym_tag}
+        , id{id_plugin, id_tag, 0, 0} {
+        assert(Annex::mangle(sym_plugin) == id_plugin);
+    }
+
+    struct {
+        Sym plugin, tag;
+    } sym;
+    struct {
+        plugin_t plugin;
+        tag_t tag;
+        uint8_t curry, trip;
+    } id;
+    std::deque<std::deque<Sym>> subs; ///< List of subs which is a list of aliases.
+    Sym normalizer;
+    bool pi    = false;
+    bool fresh = true;
+};
+
 class AST {
 public:
     AST() = default;
@@ -66,8 +87,8 @@ public:
 
     /// @name Manage Annex
     ///@{
-    Annex& name2annex(Dbg dbg);
-    std::pair<Annex&, bool> name2annex(Sym sym, Sym plugin, Sym tag, Loc loc);
+    AnnexInfo& name2annex(Dbg dbg);
+    std::pair<AnnexInfo&, bool> name2annex(Sym sym, Sym plugin, Sym tag, Loc loc);
     const auto& plugin2annexes(Sym plugin) { return plugin2sym2annex_[plugin]; }
     ///@}
 
@@ -86,7 +107,7 @@ private:
     World* world_ = nullptr;
     fe::Arena arena_;
     mutable Error err_;
-    absl::node_hash_map<fe::Sym, absl::node_hash_map<fe::Sym, Annex>> plugin2sym2annex_;
+    absl::node_hash_map<fe::Sym, absl::node_hash_map<fe::Sym, AnnexInfo>> plugin2sym2annex_;
 };
 
 class Node : public fe::RuntimeCast<Node> {
@@ -744,7 +765,7 @@ private:
     Ptr<Expr> type_;
     Dbg normalizer_;
     Tok curry_, trip_;
-    mutable Annex* annex_ = nullptr;
+    mutable AnnexInfo* annex_ = nullptr;
     mutable Ref thorin_type_;
 };
 
