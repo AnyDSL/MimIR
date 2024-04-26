@@ -48,6 +48,7 @@ public:
     Sym sym(const std::string& s) { return driver().sym(s); }
     Sym sym_anon() { return sym("_"); }        ///< `"_"`.
     Sym sym_return() { return sym("return"); } ///< `"return"`.
+    Sym sym_error() { return sym("_error_"); } ///< `"_error_"`.
     ///@}
 
     template<class T, class... Args> auto ptr(Args&&... args) {
@@ -65,6 +66,7 @@ public:
 
     /// @name Manage Annex
     ///@{
+    Annex& name2annex(Dbg dbg);
     std::pair<Annex&, bool> name2annex(Sym sym, Sym plugin, Sym tag, Loc loc);
     const auto& plugin2annexes(Sym plugin) { return plugin2sym2annex_[plugin]; }
     ///@}
@@ -705,14 +707,11 @@ public:
         Dbg dbg() const { return dbg_; }
 
         void bind(Scopes&, const AxiomDecl*) const;
-        void emit(Emitter&, const Axiom*) const;
         std::ostream& stream(Tab&, std::ostream&) const override;
 
     private:
         Dbg dbg_;
         mutable Dbg full_;
-        mutable const AxiomDecl* axiom_ = nullptr;
-        mutable sub_t sub_              = 0;
 
         friend class AxiomDecl;
     };
@@ -745,14 +744,7 @@ private:
     Ptr<Expr> type_;
     Dbg normalizer_;
     Tok curry_, trip_;
-    mutable struct {
-        Sym plugin, tag, sub;
-    } sym_;
-    mutable struct {
-        plugin_t plugin = 0;
-        tag_t tag       = 0;
-        uint8_t curry, trip;
-    } id_;
+    mutable Annex* annex_ = nullptr;
     mutable Ref thorin_type_;
 };
 

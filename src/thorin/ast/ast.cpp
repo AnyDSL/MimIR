@@ -10,12 +10,39 @@ AST::~AST() {
         driver().WLOG("{} warning(s) encountered while compiling module\n{}", error().num_warnings(), error());
 }
 
+Annex& AST::name2annex(Dbg dbg) {
+    auto [plugin_s, tag_s, sub_s] = Annex::split(driver(), dbg.sym());
+    auto& sym2annex               = plugin2sym2annex_[plugin_s];
+    auto tag_id                   = sym2annex.size();
+
+    if (plugin_s == sym_error()) error(dbg.loc(), "plugin name '{}' is reserved", dbg);
+    if (tag_id > std::numeric_limits<tag_t>::max())
+        error(dbg.loc(), "exceeded maxinum number of annexes in current plugin");
+
+    plugin_t plugin_id;
+    if (auto p = Annex::mangle(plugin_s))
+        plugin_id = *p;
+    else {
+        error(dbg.loc(), "invalid annex name '{}'", dbg);
+        plugin_s  = sym_error();
+        plugin_id = *Annex::mangle(plugin_s);
+    }
+
+    if (sub_s) error(dbg.loc(), "annex '{}' must not have a subtag", dbg);
+
+    auto [i, fresh] = sym2annex.emplace(dbg.sym(), Annex{plugin_s, tag_s, plugin_id, (tag_t)sym2annex.size()});
+    auto& annex     = i->second;
+    if (!fresh) annex.fresh = false;
+    return annex;
+}
+
 std::pair<Annex&, bool> AST::name2annex(Sym sym, Sym plugin, Sym tag, Loc loc) {
     auto& annexes = plugin2sym2annex_[plugin];
     if (annexes.size() > std::numeric_limits<tag_t>::max())
         error(loc, "exceeded maxinum number of axioms in current plugin");
 
-    auto [it, is_new] = annexes.emplace(sym, Annex{plugin, tag, annexes.size()});
+    auto plugin_id    = *Annex::mangle(plugin);
+    auto [it, is_new] = annexes.emplace(sym, Annex{plugin, tag, plugin_id, (tag_t)annexes.size()});
     return {it->second, is_new};
 }
 

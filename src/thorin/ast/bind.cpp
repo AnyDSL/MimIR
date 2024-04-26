@@ -217,7 +217,6 @@ void InsertExpr::bind(Scopes& s) const {
  */
 
 void AxiomDecl::Alias::bind(Scopes& s, const AxiomDecl* axiom) const {
-    axiom_   = axiom;
     auto sym = s.ast().sym(axiom->dbg().sym().str() + "."s + dbg().sym().str());
     full_    = Dbg(dbg().loc(), sym);
     s.bind(full_, this);
@@ -225,15 +224,9 @@ void AxiomDecl::Alias::bind(Scopes& s, const AxiomDecl* axiom) const {
 
 void AxiomDecl::bind(Scopes& s) const {
     type()->bind(s);
+    annex_ = &s.ast().name2annex(dbg());
 
-    std::tie(sym_.plugin, sym_.tag, sym_.sub) = Annex::split(s.driver(), dbg().sym());
-
-    if (auto p = Annex::mangle(sym_.plugin))
-        id_.plugin = *p;
-    else
-        s.ast().error(dbg().loc(), "invalid axiom name '{}'", dbg());
-
-    if (sym_.sub) error(dbg().loc(), "axiom '{}' must not have a subtag", dbg().sym());
+    annex_->normalizer = normalizer().sym(); // TODO error checking
 
     if (num_subs() == 0) {
         s.bind(dbg(), this);

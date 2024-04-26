@@ -51,19 +51,24 @@ THORIN_EXPORT thorin::Plugin thorin_get_plugin();
 
 /// Holds info about an entity defined within a Plugin (called *Annex*).
 struct Annex {
-    Annex(Sym sym_plugin, Sym sym_tag, tag_t id_tag)
+    Annex(Sym sym_plugin, Sym sym_tag, plugin_t id_plugin, tag_t id_tag)
         : sym{sym_plugin, sym_tag}
-        , id{id_tag} {}
+        , id{id_plugin, id_tag, 0, 0} {
+        assert(mangle(sym_plugin) == id_plugin);
+    }
 
     struct {
         Sym plugin, tag;
     } sym;
     struct {
+        plugin_t plugin;
         tag_t tag;
+        uint8_t curry, trip;
     } id;
     std::deque<std::deque<Sym>> subs; ///< List of subs which is a list of aliases.
     Sym normalizer;
-    bool pi = false;
+    bool pi    = false;
+    bool fresh = true;
 
     /// @name Mangling Plugin Name
     ///@{

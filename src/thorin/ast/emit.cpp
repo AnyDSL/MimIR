@@ -340,57 +340,47 @@ Ref InsertExpr::emit_(Emitter& e) const {
  * Decl
  */
 
-void AxiomDecl::Alias::emit(Emitter&, const Axiom* axiom) const {
-    /*const auto& id = axiom_->id_;*/
-    def_ = axiom;
-}
-
 void AxiomDecl::emit(Emitter& e) const {
-    auto [plugin_s, tag_s, sub_s] = Annex::split(e.driver(), dbg().sym());
-    auto&& [annex, is_new]        = e.ast().name2annex(dbg().sym(), plugin_s, tag_s, dbg().loc());
-    thorin_type_                  = type()->emit(e);
-    auto [i_curry, i_trip]        = Axiom::infer_curry_and_trip(thorin_type_);
+    thorin_type_ = type()->emit(e);
+    annex_->pi   = thorin_type_->isa<Pi>() != nullptr;
+    auto& id     = annex_->id;
 
+    std::tie(id.curry, id.trip) = Axiom::infer_curry_and_trip(thorin_type_);
     if (curry_) {
-        id_.curry = curry_.lit_u();
-        if (id_.curry > i_curry) error(curry_.loc(), "curry counter cannot be greater than {}", (int)i_curry);
-    } else {
-        id_.curry = i_curry;
+        if (curry_.lit_u() > id.curry)
+            error(curry_.loc(), "curry counter cannot be greater than {}", id.curry);
+        else
+            id.curry = curry_.lit_u();
     }
 
     if (trip_) {
-        id_.trip = trip_.lit_u();
-        if (id_.trip > id_.curry)
-            error(curry_.loc(), "trip counter '{}' cannot be greater than curry counter '{}'", (int)id_.trip,
-                  (int)id_.curry);
-    } else {
-        id_.trip = i_trip;
+        if (trip_.lit_u() > id.curry)
+            error(trip_.loc(), "trip counter cannot be greater than curry counter '{}'", (int)id.curry);
+        else
+            id.trip = trip_.lit_u();
     }
 
+#if 0
     if (!is_new && annex.pi != (thorin_type_->isa<Pi>() != nullptr))
         error(dbg().loc(), "all declarations of annex '{}' have to be function types if any is", dbg().sym());
-
-    id_.tag          = annex.id.tag;
-    annex.pi         = thorin_type_->isa<Pi>() != nullptr;
-    annex.normalizer = normalizer().sym();
+#endif
 
     if (num_subs() == 0) {
-        auto norm  = e.driver().normalizer(id_.plugin, id_.tag, 0);
-        auto axiom = e.world().axiom(norm, id_.curry, id_.trip, thorin_type_, id_.plugin, id_.tag, 0)->set(dbg());
+        auto norm  = e.driver().normalizer(id.plugin, id.tag, 0);
+        auto axiom = e.world().axiom(norm, id.curry, id.trip, thorin_type_, id.plugin, id.tag, 0)->set(dbg());
         def_       = axiom;
-        e.world().register_annex(id_.plugin | (flags_t(id_.tag) << 8_u64), axiom);
+        e.world().register_annex(id.plugin | (flags_t(id.tag) << 8_u64), axiom);
     } else {
-        sub_t offset = annex.subs.size();
+        sub_t offset = annex_->subs.size();
         for (sub_t i = 0, n = num_subs(); i != n; ++i) {
+            auto& aliases = annex_->subs.emplace_back(std::deque<Sym>());
             sub_t s       = i + offset;
-            auto norm     = e.driver().normalizer(id_.plugin, id_.tag, s);
-            auto& aliases = annex.subs.emplace_back(std::deque<Sym>());
+            auto norm     = e.driver().normalizer(id.plugin, id.tag, s);
             auto name     = e.world().sym(dbg().sym().str() + "."s + sub(i).front()->dbg().sym().str());
-            auto axiom    = e.world().axiom(norm, id_.curry, id_.trip, thorin_type_, id_.plugin, id_.tag, s)->set(name);
-            e.world().register_annex(id_.plugin | (flags_t(id_.tag) << 8_u64) | flags_t(s), axiom);
+            auto axiom    = e.world().axiom(norm, id.curry, id.trip, thorin_type_, id.plugin, id.tag, s)->set(name);
+            e.world().register_annex(id.plugin | (flags_t(id.tag) << 8_u64) | flags_t(s), axiom);
             for (const auto& alias : sub(i)) {
-                alias->sub_ = s;
-                alias->emit(e, axiom);
+                alias->def_ = axiom;
                 aliases.emplace_back(alias->dbg().sym());
             }
         }
