@@ -5,9 +5,8 @@
 namespace thorin::ast {
 
 AST::~AST() {
-    assert(error().num_errors() == 0 && "please encounter any errors before destroying this class");
-    if (error().num_warnings() != 0)
-        driver().WLOG("{} warning(s) encountered while compiling module\n{}", error().num_warnings(), error());
+    assert(error().num_errors() == 0 && error().num_warnings() == 0
+           && "please encounter any errors before destroying this class");
 }
 
 Annex& AST::name2annex(Dbg dbg) {
@@ -173,6 +172,7 @@ void Module::compile(AST& ast) const {
     bind(ast);
     ast.error().ack();
     emit(ast);
+    if (ast.error().num_warnings() != 0) std::cerr << ast.error();
 }
 
 AST load_plugins(World& world, View<Sym> plugins) {

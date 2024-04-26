@@ -245,7 +245,9 @@ void AxiomDecl::bind(Scopes& s) const {
 }
 
 void LetDecl::bind(Scopes& s) const {
+    s.push();
     value()->bind(s);
+    s.pop();
     ptrn()->bind(s);
 }
 

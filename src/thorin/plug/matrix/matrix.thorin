@@ -236,15 +236,14 @@
 ///
 /// ### Phases
 ///
-.let matrix_lower_phase = {
+.let matrix_lower_phase =
     %compile.phases_to_phase (⊤:.Nat)
     (
-        (%compile.pass_phase (%compile.pass_list
-            %matrix.lower_matrix_high_level_map_reduce
-            %matrix.lower_matrix_medium_level
-        )),
+        (%compile.pass_phase
+            (%compile.pass_list
+                %matrix.lower_matrix_high_level_map_reduce
+                %matrix.lower_matrix_medium_level)),
         // TODO: only in map_red namespace
         %compile.single_pass_phase %matrix.internal_map_reduce_cleanup,
         %matrix.lower_matrix_low_level
-    )
-};
+    );

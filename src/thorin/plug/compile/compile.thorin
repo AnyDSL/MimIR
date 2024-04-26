@@ -116,7 +116,7 @@
 /// ### Phases
 ///
 // TODO: allow functions by inlining them first
-.let optimization_pass_list = {
+.let optimization_pass_list =
     .let eta_red = %compile.eta_red_pass;
     .let eta_exp = %compile.eta_exp_pass eta_red;
     %compile.pass_list
@@ -124,15 +124,13 @@
         eta_red
         eta_exp
         (%compile.scalerize_pass eta_exp)
-        (%compile.tail_rec_elim_pass eta_red)
-};
-.let optimization_phase = {
-    %compile.pass_phase optimization_pass_list
-};
+        (%compile.tail_rec_elim_pass eta_red);
+
+.let optimization_phase = %compile.pass_phase optimization_pass_list;
 ///
 /// ### Pipelines
 ///
-.let default_core_pipeline = {
+.let default_core_pipeline =
     .let nullptr = %compile.nullptr_pass;
     %compile.pipe
         (%compile.single_pass_phase nullptr)
@@ -142,8 +140,8 @@
         optimization_phase
         (%compile.single_pass_phase %compile.internal_cleanup_pass)
         (%compile.single_pass_phase %compile.lam_spec_pass)
-        (%compile.single_pass_phase %compile.ret_wrap_pass)
-};
+        (%compile.single_pass_phase %compile.ret_wrap_pass);
+
 .lam .extern _fallback_compile(): %compile.Pipeline = default_core_pipeline;
 ///
 /// ### Dependent Passes and Phases

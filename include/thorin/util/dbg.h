@@ -60,21 +60,6 @@ public:
     size_t num_notes() const { return num_notes_; }
     ///@}
 
-    void clear() {
-        num_errors_   = 0;
-        num_warnings_ = 0;
-        num_notes_    = 0;
-        msgs_.clear();
-    }
-
-    /// If errors occured, claim them and throw.
-    void ack() {
-        if (num_errors() != 0) {
-            auto errors = std::move(*this);
-            throw errors;
-        }
-    }
-
     /// @name Add formatted message
     ///@{
     template<class... Args> Error& msg(Loc loc, Tag tag, const char* s, Args&&... args) {
@@ -89,7 +74,14 @@ public:
         assert(num_errors() > 0 || num_warnings() > 0); /*                      */ ++num_notes_;    return msg(loc, Tag::Note,  s, std::forward<Args&&>(args)...);
     }
     // clang-format on
-    //@}
+    ///@}
+
+    /// @name Handle Errors/Warnings
+    ///@{
+    void clear();
+    /// If errors occured, claim them and throw; if warnings occured, claim them and report to @p os.
+    void ack(std::ostream& os = std::cerr);
+    ///@}
 
     friend std::ostream& operator<<(std::ostream& o, Tag tag) {
         // clang-format off
@@ -109,7 +101,6 @@ public:
 
     friend void swap(Error& e1, Error& e2) noexcept {
         using std::swap;
-        ;
         // clang-format off
         swap(e1.msgs_,         e2.msgs_);
         swap(e1.num_errors_,   e2.num_errors_);

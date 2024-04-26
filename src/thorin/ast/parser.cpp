@@ -318,6 +318,8 @@ Ptr<Expr> Parser::parse_block_expr() {
     eat(Tag::D_brace_l);
     auto expr = parse_expr("final expression in a block expression");
     expect(Tag::D_brace_r, "block expression");
+    ast().warn(track, "block expression is deprecated; use a (possibly parenthesized) declaration expression instead");
+
     return ptr<BlockExpr>(track, std::move(expr));
 }
 

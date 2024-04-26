@@ -42,28 +42,28 @@
 .ax %clos.clos_conv_phase:        %compile.Phase;
 .ax %clos.lower_typed_clos_phase: %compile.Phase;
 
-.let clos_opt1_phase = {
-  .let eta_red = %clos.eta_red_bool_pass .tt;
-  .let eta_exp = %compile.eta_exp_pass eta_red;
-  %compile.pass_phase (%compile.pass_list
-      eta_red
-      eta_exp
-      (%compile.scalerize_pass eta_exp)
-  )
-};
-.let clos_opt2_phase = {
-  .let nullptr = %compile.nullptr_pass;
-  %compile.pass_phase (%compile.pass_list
-      nullptr
-      (%compile.scalerize_pass nullptr)
-      %clos.branch_clos_pass
-      (%mem.copy_prop_pass (nullptr, nullptr, .tt))
-      %clos.lower_typed_clos_prep_pass
-      %clos.clos2sjlj_pass
-  )
-};
-.let clos_phases = {
-  .let nullptr = %compile.nullptr_pass;
+.let clos_opt1_phase =
+    .let eta_red = %clos.eta_red_bool_pass .tt;
+    .let eta_exp = %compile.eta_exp_pass eta_red;
+    %compile.pass_phase (%compile.pass_list
+        eta_red
+        eta_exp
+        (%compile.scalerize_pass eta_exp)
+    );
+
+.let clos_opt2_phase =
+    .let nullptr = %compile.nullptr_pass;
+    %compile.pass_phase
+        (%compile.pass_list
+            nullptr
+            (%compile.scalerize_pass nullptr)
+            %clos.branch_clos_pass
+            (%mem.copy_prop_pass (nullptr, nullptr, .tt))
+            %clos.lower_typed_clos_prep_pass
+            %clos.clos2sjlj_pass);
+
+.let clos_phases =
+    .let nullptr = %compile.nullptr_pass;
     %compile.combined_phase
         (%compile.phase_list
             (%compile.single_pass_phase nullptr)
@@ -75,6 +75,4 @@
             %clos.clos_conv_phase
             clos_opt1_phase
             clos_opt2_phase
-            %clos.lower_typed_clos_phase
-        )
-};
+            %clos.lower_typed_clos_phase);
