@@ -7,14 +7,19 @@
 .plugin core;
 
 .fun .extern main(mem: %mem.M, argc: .I32, argv: %mem.Ptr0 (%mem.Ptr0 .I8)): [%mem.M, .I32] =
-    .con loop(mem: %mem.M, i: .I32, acc: .I32) =
-        .let cond = %core.icmp.ul (i, argc);
-        .con body m: %mem.M =
-            .let inc  = %core.wrap.add 0 (1I32, i);
-            .let acci = %core.wrap.add 0 (i, acc);
-            loop (m, inc, acci);
-        (.cn m: %mem.M = return (m, acc), body)#cond mem;
-    loop (mem, 0I32, 0I32);
+    loop (mem, 0I32, 0I32)
+    .where
+        .con loop(mem: %mem.M, i: .I32, acc: .I32) =
+            .let cond = %core.icmp.ul (i, argc);
+            (exit, body)#cond mem
+            .where
+                .con body m: %mem.M =
+                    .let inc  = %core.wrap.add 0 (1I32, i);
+                    .let `acc = %core.wrap.add 0 (i, acc);
+                    loop (m, inc, acc);
+                .con exit(m: %mem.M) = return (m, acc);
+            .end
+    .end
 
 // CHECK-DAG: .con .extern main _[[mainVarId:[0-9_]+]]::[_{{[0-9]+}}::[mem_[[memId:[0-9_]+]]: %mem.M, argc_[[argcId:[0-9_]+]]: .I32, %mem.Ptr (%mem.Ptr (.I8, 0), 0)], return_[[returnId:[0-9_]+]]: .Cn [%mem.M, .I32]]{{(@.*)?}}= {
 // CHECK-DAG: loop_[[loopId:[0-9_]+]] ({{.*}}, 0I32, 0I32)
@@ -24,12 +29,12 @@
 
 // CHECK-DAG: .con loop_[[loopId]] _{{[0-9_]+}}::[mem_[[loopMemId:[0-9_]+]]: %mem.M, i_[[iterId:[0-9_]+]]: .I32, acc_[[accId:[0-9_]+]]: .I32]{{(@.*)?}}= {
 // CHECK-DAG:   cond_[[condId:[0-9_]+]]: .Bool = %core.icmp.XygLe .i32 (i_[[iterId]], {{.*}});
-// CHECK-DAG: (_[[exitId:[0-9_]+]], body_[[bodyId:[0-9_]+]])#cond_[[condId]] mem_[[loopMemId]]
+// CHECK-DAG: (exit_[[exitId:[0-9_]+]], body_[[bodyId:[0-9_]+]])#cond_[[condId]] mem_[[loopMemId]]
 
-// CHECK-DAG: .con _[[exitId]] [[mExitVarId:[0-9a-z_]+]]: %mem.M{{(@.*)?}}= {
+// CHECK-DAG: .con exit_[[exitId]] [[mExitVarId:[0-9a-z_]+]]: %mem.M{{(@.*)?}}= {
 // CHECK-DAG: return_[[returnEtaId]] ([[mExitVarId]], acc_[[accId]])
 
 // CHECK-DAG: .con body_[[bodyId]] [[mBodyVarId:[0-9a-z_]+]]: %mem.M{{(@.*)?}}= {
 // CHECK-DAG:   inc_[[addIterId:[0-9_]+]]: .I32 = %core.wrap.add .i32 0 (1I32, i_[[iterId]]);
-// CHECK-DAG:   acci_[[addAccId:[0-9_]+]]: .I32 = %core.wrap.add .i32 0 (i_[[iterId]], acc_[[accId]]);
-// CHECK-DAG: loop_[[loopId]] ([[mBodyVarId]], inc_[[addIterId]], acci_[[addAccId]])
+// CHECK-DAG:   acc_[[addAccId:[0-9_]+]]: .I32 = %core.wrap.add .i32 0 (i_[[iterId]], acc_[[accId]]);
+// CHECK-DAG: loop_[[loopId]] ([[mBodyVarId]], inc_[[addIterId]], acc_[[addAccId]])
