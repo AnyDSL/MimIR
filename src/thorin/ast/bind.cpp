@@ -224,7 +224,9 @@ void AxiomDecl::Alias::bind(Scopes& s, const AxiomDecl* axiom) const {
 
 void AxiomDecl::bind(Scopes& s) const {
     type()->bind(s);
-    annex_ = &s.ast().name2annex(dbg());
+    Sym sub;
+    std::tie(annex_, sub) = s.ast().name2annex(dbg());
+    if (sub) error(dbg().loc(), "annex '{}' must not have a subtag", dbg());
 
     annex_->normalizer = normalizer().sym(); // TODO error checking
 

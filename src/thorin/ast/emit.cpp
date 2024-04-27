@@ -19,19 +19,17 @@ public:
 
     void register_if_annex(Dbg dbg, Ref def) {
         if (dbg && dbg.sym().front() == '%') {
-            auto [plugin, tag, sub] = Annex::split(driver(), dbg.sym());
-            auto name               = world().sym("%"s + plugin.str() + "."s + tag.str());
-            auto&& [annex, is_new]  = ast().name2annex(name, plugin, tag, dbg.loc());
-            plugin_t p              = *Annex::mangle(plugin);
-            tag_t t                 = annex.id.tag;
-            sub_t s                 = annex.subs.size();
+            auto [annex, sub] = ast().name2annex(dbg);
+            const auto& sym   = annex->sym;
+            const auto& id    = annex->id;
+            sub_t s           = annex->subs.size();
 
             if (sub) {
-                auto& aliases = annex.subs.emplace_back();
+                auto& aliases = annex->subs.emplace_back();
                 aliases.emplace_back(sub);
             }
 
-            world().register_annex(p | (t << 8) | s, def);
+            world().register_annex(id.plugin | (id.tag << 8) | s, def);
         }
     }
 

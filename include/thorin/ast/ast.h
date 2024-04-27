@@ -87,8 +87,7 @@ public:
 
     /// @name Manage Annex
     ///@{
-    AnnexInfo& name2annex(Dbg dbg);
-    std::pair<AnnexInfo&, bool> name2annex(Sym sym, Sym plugin, Sym tag, Loc loc);
+    std::pair<AnnexInfo*, Sym> name2annex(Dbg dbg);
     const auto& plugin2annexes(Sym plugin) { return plugin2sym2annex_[plugin]; }
     ///@}
 

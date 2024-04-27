@@ -2,6 +2,8 @@
 
 #include "thorin/ast/parser.h"
 
+using namespace std::literals;
+
 namespace thorin::ast {
 
 AST::~AST() {
@@ -9,8 +11,9 @@ AST::~AST() {
            && "please encounter any errors before destroying this class");
 }
 
-AnnexInfo& AST::name2annex(Dbg dbg) {
+std::pair<AnnexInfo*, Sym> AST::name2annex(Dbg dbg) {
     auto [plugin_s, tag_s, sub_s] = Annex::split(driver(), dbg.sym());
+    auto plugin_tag               = driver().sym("%"s + plugin_s.str() + "."s + tag_s.str());
     auto& sym2annex               = plugin2sym2annex_[plugin_s];
     auto tag_id                   = sym2annex.size();
 
@@ -27,22 +30,10 @@ AnnexInfo& AST::name2annex(Dbg dbg) {
         plugin_id = *Annex::mangle(plugin_s);
     }
 
-    if (sub_s) error(dbg.loc(), "annex '{}' must not have a subtag", dbg);
-
-    auto [i, fresh] = sym2annex.emplace(dbg.sym(), AnnexInfo{plugin_s, tag_s, plugin_id, (tag_t)sym2annex.size()});
-    auto& annex     = i->second;
-    if (!fresh) annex.fresh = false;
-    return annex;
-}
-
-std::pair<AnnexInfo&, bool> AST::name2annex(Sym sym, Sym plugin, Sym tag, Loc loc) {
-    auto& annexes = plugin2sym2annex_[plugin];
-    if (annexes.size() > std::numeric_limits<tag_t>::max())
-        error(loc, "exceeded maxinum number of axioms in current plugin");
-
-    auto plugin_id    = *Annex::mangle(plugin);
-    auto [it, is_new] = annexes.emplace(sym, AnnexInfo{plugin, tag, plugin_id, (tag_t)annexes.size()});
-    return {it->second, is_new};
+    auto [i, fresh] = sym2annex.emplace(plugin_tag, AnnexInfo{plugin_s, tag_s, plugin_id, (tag_t)sym2annex.size()});
+    auto annex      = &i->second;
+    if (!fresh) annex->fresh = false;
+    return {annex, sub_s};
 }
 
 void AST::bootstrap(Sym plugin, std::ostream& h) {
