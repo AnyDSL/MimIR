@@ -29,6 +29,8 @@ struct AnnexInfo {
         assert(Annex::mangle(sym_plugin) == id_plugin);
     }
 
+    bool is_pi() const { return pi && *pi && bool((*pi)->isa<Pi>()); }
+
     struct {
         Sym plugin, tag;
     } sym;
@@ -38,8 +40,8 @@ struct AnnexInfo {
         uint8_t curry, trip;
     } id;
     std::deque<std::deque<Sym>> subs; ///< List of subs which is a list of aliases.
-    Sym normalizer;
-    bool pi    = false;
+    Dbg normalizer;
+    std::optional<const Pi*> pi;
     bool fresh = true;
 };
 
@@ -87,7 +89,7 @@ public:
 
     /// @name Manage Annex
     ///@{
-    std::pair<AnnexInfo*, Sym> name2annex(Dbg dbg);
+    AnnexInfo* name2annex(Dbg dbg, sub_t*);
     const auto& plugin2annexes(Sym plugin) { return plugin2sym2annex_[plugin]; }
     ///@}
 
@@ -713,6 +715,8 @@ public:
 private:
     Ptr<Ptrn> ptrn_;
     Ptr<Expr> value_;
+    mutable AnnexInfo* annex_ = nullptr;
+    mutable sub_t sub_;
 };
 
 /// `.ax ptrn: type = value;`
@@ -798,6 +802,8 @@ private:
     Ptr<Expr> type_;
     Ptr<Expr> body_;
     Ptr<RecDecl> next_;
+    mutable AnnexInfo* annex_ = nullptr;
+    mutable sub_t sub_;
 };
 
 /// One of:
@@ -862,6 +868,8 @@ private:
     bool is_external_;
     Ptrs<Dom> doms_;
     Ptr<Expr> codom_;
+    mutable AnnexInfo* annex_ = nullptr;
+    mutable sub_t sub_;
 };
 
 /// `.cfun dbg dom -> codom`

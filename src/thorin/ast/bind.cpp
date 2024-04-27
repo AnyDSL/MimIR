@@ -224,11 +224,18 @@ void AxiomDecl::Alias::bind(Scopes& s, const AxiomDecl* axiom) const {
 
 void AxiomDecl::bind(Scopes& s) const {
     type()->bind(s);
-    Sym sub;
-    std::tie(annex_, sub) = s.ast().name2annex(dbg());
-    if (sub) error(dbg().loc(), "annex '{}' must not have a subtag", dbg());
+    annex_ = s.ast().name2annex(dbg(), nullptr);
 
-    annex_->normalizer = normalizer().sym(); // TODO error checking
+    if (annex_->fresh)
+        annex_->normalizer = normalizer();
+    else if (annex_->normalizer.sym() != normalizer().sym()) {
+        auto l = normalizer().loc() ? normalizer().loc() : loc().anew_finis();
+        s.ast().error(l, "normalizer mismatch for axiom '{}'", dbg());
+        if (auto norm = annex_->normalizer)
+            s.ast().note(norm.loc(), "previous normalizer '{}'", norm);
+        else
+            s.ast().note(l, "initially no normalizer specified");
+    }
 
     if (num_subs() == 0) {
         s.bind(dbg(), this);
@@ -251,11 +258,14 @@ void LetDecl::bind(Scopes& s) const {
     value()->bind(s);
     s.pop();
     ptrn()->bind(s);
+
+    if (auto id = ptrn()->isa<IdPtrn>()) annex_ = s.ast().name2annex(id->dbg(), &sub_);
 }
 
 void RecDecl::bind(Scopes& s) const {
     for (auto curr = this; curr; curr = curr->next()) curr->bind_decl(s);
     for (auto curr = this; curr; curr = curr->next()) curr->bind_body(s);
+    annex_ = s.ast().name2annex(dbg(), &sub_);
 }
 
 void RecDecl::bind_decl(Scopes& s) const {
@@ -304,6 +314,7 @@ void LamDecl::bind_decl(Scopes& s) const {
 
     s.pop();
     s.bind(dbg(), this);
+    annex_ = s.ast().name2annex(dbg(), &sub_);
 }
 
 void LamDecl::bind_body(Scopes& s) const {

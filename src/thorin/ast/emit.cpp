@@ -15,23 +15,14 @@ public:
     World& world() { return ast().world(); }
     Driver& driver() { return world().driver(); }
 
-    absl::node_hash_map<Sigma*, fe::SymMap<size_t>, GIDHash<const Def*>, GIDEq<const Def*>> sigma2sym2idx;
-
-    void register_if_annex(Dbg dbg, Ref def) {
-        if (dbg && dbg.sym().front() == '%') {
-            auto [annex, sub] = ast().name2annex(dbg);
-            const auto& sym   = annex->sym;
-            const auto& id    = annex->id;
-            sub_t s           = annex->subs.size();
-
-            if (sub) {
-                auto& aliases = annex->subs.emplace_back();
-                aliases.emplace_back(sub);
-            }
-
-            world().register_annex(id.plugin | (id.tag << 8) | s, def);
+    void register_annex(AnnexInfo* annex, sub_t sub, Ref def) {
+        if (annex) {
+            const auto& id = annex->id;
+            world().register_annex(id.plugin | (id.tag << 8) | sub, def);
         }
     }
+
+    absl::node_hash_map<Sigma*, fe::SymMap<size_t>, GIDHash<const Def*>, GIDEq<const Def*>> sigma2sym2idx;
 
 private:
     AST& ast_;
@@ -340,7 +331,6 @@ Ref InsertExpr::emit_(Emitter& e) const {
 
 void AxiomDecl::emit(Emitter& e) const {
     thorin_type_ = type()->emit(e);
-    annex_->pi   = thorin_type_->isa<Pi>() != nullptr;
     auto& id     = annex_->id;
 
     std::tie(id.curry, id.trip) = Axiom::infer_curry_and_trip(thorin_type_);
@@ -358,16 +348,17 @@ void AxiomDecl::emit(Emitter& e) const {
             id.trip = trip_.lit_u();
     }
 
-#if 0
-    if (!is_new && annex.pi != (thorin_type_->isa<Pi>() != nullptr))
+    auto pi = thorin_type_->isa<Pi>();
+    if (!annex_->pi)
+        annex_->pi = pi;
+    else if (bool(pi) ^ bool(*annex_->pi))
         error(dbg().loc(), "all declarations of annex '{}' have to be function types if any is", dbg().sym());
-#endif
 
     if (num_subs() == 0) {
         auto norm  = e.driver().normalizer(id.plugin, id.tag, 0);
         auto axiom = e.world().axiom(norm, id.curry, id.trip, thorin_type_, id.plugin, id.tag, 0)->set(dbg());
         def_       = axiom;
-        e.world().register_annex(id.plugin | (flags_t(id.tag) << 8_u64), axiom);
+        e.world().register_annex(id.plugin, id.tag, 0, axiom);
     } else {
         sub_t offset = annex_->subs.size();
         for (sub_t i = 0, n = num_subs(); i != n; ++i) {
@@ -376,7 +367,8 @@ void AxiomDecl::emit(Emitter& e) const {
             auto norm     = e.driver().normalizer(id.plugin, id.tag, s);
             auto name     = e.world().sym(dbg().sym().str() + "."s + sub(i).front()->dbg().sym().str());
             auto axiom    = e.world().axiom(norm, id.curry, id.trip, thorin_type_, id.plugin, id.tag, s)->set(name);
-            e.world().register_annex(id.plugin | (flags_t(id.tag) << 8_u64) | flags_t(s), axiom);
+            e.world().register_annex(id.plugin, id.tag, s, axiom);
+
             for (const auto& alias : sub(i)) {
                 alias->def_ = axiom;
                 aliases.emplace_back(alias->dbg().sym());
@@ -388,8 +380,7 @@ void AxiomDecl::emit(Emitter& e) const {
 void LetDecl::emit(Emitter& e) const {
     auto v = value()->emit(e);
     def_   = ptrn()->emit_value(e, v);
-
-    if (auto id = ptrn()->isa<IdPtrn>()) e.register_if_annex(id->dbg(), def_);
+    e.register_annex(annex_, sub_, def_);
 }
 
 void RecDecl::emit(Emitter& e) const {
@@ -406,7 +397,7 @@ void RecDecl::emit_decl(Emitter& e) const {
 void RecDecl::emit_body(Emitter& e) const {
     body()->emit_body(e, def_);
     // TODO immutabilize?
-    e.register_if_annex(dbg(), def_);
+    e.register_annex(annex_, sub_, def_);
 }
 
 Lam* LamDecl::Dom::emit_value(Emitter& e) const {
@@ -454,7 +445,7 @@ void LamDecl::emit_decl(Emitter& e) const {
 void LamDecl::emit_body(Emitter& e) const {
     doms().back()->lam_->set_body(body()->emit(e));
     if (is_external()) doms().front()->lam_->make_external();
-    e.register_if_annex(dbg(), def_);
+    e.register_annex(annex_, sub_, def_);
 }
 
 void CDecl::emit(Emitter& e) const {

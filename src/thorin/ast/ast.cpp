@@ -11,7 +11,9 @@ AST::~AST() {
            && "please encounter any errors before destroying this class");
 }
 
-std::pair<AnnexInfo*, Sym> AST::name2annex(Dbg dbg) {
+AnnexInfo* AST::name2annex(Dbg dbg, sub_t* sub_id) {
+    if (!dbg || dbg.sym()[0] != '%') return nullptr;
+
     auto [plugin_s, tag_s, sub_s] = Annex::split(driver(), dbg.sym());
     auto plugin_tag               = driver().sym("%"s + plugin_s.str() + "."s + tag_s.str());
     auto& sym2annex               = plugin2sym2annex_[plugin_s];
@@ -32,8 +34,19 @@ std::pair<AnnexInfo*, Sym> AST::name2annex(Dbg dbg) {
 
     auto [i, fresh] = sym2annex.emplace(plugin_tag, AnnexInfo{plugin_s, tag_s, plugin_id, (tag_t)sym2annex.size()});
     auto annex      = &i->second;
+
+    if (sub_s) {
+        if (sub_id) {
+            *sub_id       = annex->subs.size();
+            auto& aliases = annex->subs.emplace_back();
+            aliases.emplace_back(sub_s);
+        } else {
+            error(dbg.loc(), "annex '{}' must not have a subtag", dbg);
+        }
+    }
+
     if (!fresh) annex->fresh = false;
-    return {annex, sub_s};
+    return annex;
 }
 
 void AST::bootstrap(Sym plugin, std::ostream& h) {
@@ -57,19 +70,20 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
 
     // clang-format off
     for (const auto& [key, annex] : infos) {
-        if (annex.sym.plugin != plugin) continue; // this is from an import
+        const auto& sym = annex.sym;
+        if (sym.plugin != plugin) continue; // this is from an import
 
-        tab.print(h, "/// @name %%{}.{}\n///@{{\n", plugin, annex.sym.tag);
+        tab.print(h, "/// @name %%{}.{}\n///@{{\n", plugin, sym.tag);
         tab.print(h, "#ifdef DOXYGEN // see https://github.com/doxygen/doxygen/issues/9668\n");
-        tab.print(h, "enum {} : flags_t {{\n", annex.sym.tag);
+        tab.print(h, "enum {} : flags_t {{\n", sym.tag);
         tab.print(h, "#else\n");
-        tab.print(h, "enum class {} : flags_t {{\n", annex.sym.tag);
+        tab.print(h, "enum class {} : flags_t {{\n", sym.tag);
         tab.print(h, "#endif\n");
         ++tab;
         flags_t ax_id = plugin_id | (annex.id.tag << 8u);
 
         auto& os = outer_namespace.emplace_back();
-        print(os, "template<> constexpr flags_t Annex::Base<plug::{}::{}> = 0x{x};\n", plugin, annex.sym.tag, ax_id);
+        print(os, "template<> constexpr flags_t Annex::Base<plug::{}::{}> = 0x{x};\n", plugin, sym.tag, ax_id);
 
         if (auto& subs = annex.subs; !subs.empty()) {
             for (const auto& aliases : subs) {
@@ -77,25 +91,26 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
                 tab.print(h, "{} = 0x{x},\n", sub, ax_id++);
                 for (size_t i = 1; i < aliases.size(); ++i) tab.print(h, "{} = {},\n", aliases[i], sub);
 
-                if (annex.normalizer)
-                    print(normalizers.emplace_back(), "normalizers[flags_t({}::{})] = &{}<{}::{}>;", annex.sym.tag, sub,
-                          annex.normalizer, annex.sym.tag, sub);
+                if (auto norm = annex.normalizer) {
+                    auto& os = normalizers.emplace_back();
+                    print(os, "normalizers[flags_t({}::{})] = &{}<{}::{}>;", sym.tag, sub, norm, sym.tag, sub);
+                }
             }
         } else {
-            if (annex.normalizer)
-                print(normalizers.emplace_back(), "normalizers[flags_t(Annex::Base<{}>)] = &{};", annex.sym.tag, annex.normalizer);
+            if (auto norm = annex.normalizer)
+                print(normalizers.emplace_back(), "normalizers[flags_t(Annex::Base<{}>)] = &{};", sym.tag, norm);
         }
         --tab;
         tab.print(h, "}};\n\n");
 
-        if (!annex.subs.empty()) tab.print(h, "THORIN_ENUM_OPERATORS({})\n", annex.sym.tag);
-        print(outer_namespace.emplace_back(), "template<> constexpr size_t Annex::Num<plug::{}::{}> = {};\n", plugin, annex.sym.tag, annex.subs.size());
+        if (!annex.subs.empty()) tab.print(h, "THORIN_ENUM_OPERATORS({})\n", sym.tag);
+        print(outer_namespace.emplace_back(), "template<> constexpr size_t Annex::Num<plug::{}::{}> = {};\n", plugin, sym.tag, annex.subs.size());
 
-        if (annex.normalizer) {
+        if (auto norm = annex.normalizer) {
             if (auto& subs = annex.subs; !subs.empty()) {
-                tab.print(h, "template<{}>\nRef {}(Ref, Ref, Ref);\n\n", annex.sym.tag, annex.normalizer);
+                tab.print(h, "template<{}>\nRef {}(Ref, Ref, Ref);\n\n", sym.tag, norm);
             } else {
-                tab.print(h, "Ref {}(Ref, Ref, Ref);\n", annex.normalizer);
+                tab.print(h, "Ref {}(Ref, Ref, Ref);\n", norm);
             }
         }
         tab.print(h, "///@}}\n\n");
@@ -122,9 +137,9 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
 
     // emit helpers for non-function axiom
     for (const auto& [tag, ax] : infos) {
-        if (ax.pi || ax.sym.plugin != plugin) continue; // from function or other plugin?
-        tab.print(h, "template<> struct Axiom::Match<plug::{}::{}> {{ using type = Axiom; }};\n", ax.sym.plugin,
-                  ax.sym.tag);
+        const auto& sym = ax.sym;
+        if (ax.is_pi() || sym.plugin != plugin) continue; // from function or other plugin?
+        tab.print(h, "template<> struct Axiom::Match<plug::{}::{}> {{ using type = Axiom; }};\n", sym.plugin, sym.tag);
     }
 
     tab.print(h, "#endif\n");

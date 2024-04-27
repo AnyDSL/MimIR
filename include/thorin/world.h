@@ -194,6 +194,9 @@ public:
     template<annex_without_subs id> const Def* annex() { return annex(Annex::Base<id>); }
 
     const Def* register_annex(flags_t f, const Def*);
+    const Def* register_annex(plugin_t p, tag_t t, sub_t s, const Def* def) {
+        return register_annex(p | (flags_t(t) << 8_u64) | flags_t(s), def);
+    }
     ///@}
 
     /// @name Univ, Type, Var, Proxy, Infer
