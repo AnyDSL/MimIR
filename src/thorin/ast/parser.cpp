@@ -6,8 +6,8 @@
 #include "thorin/driver.h"
 
 // clang-format off
-#define TAG__PRIMARY  \
-         Tag::K_Univ: \
+#define C_PRIMARY     \
+              K_Univ: \
     case Tag::K_Nat:  \
     case Tag::K_Idx:  \
     case Tag::K_Bool: \
@@ -26,12 +26,12 @@
     case Tag::T_star: \
     case Tag::T_box
 
-#define TAG__ID      \
-         Tag::M_anx: \
+#define C_ID         \
+              M_anx: \
     case Tag::M_id
 
-#define TAG__LIT     \
-         Tag::T_bot: \
+#define C_LIT        \
+              T_bot: \
     case Tag::T_top: \
     case Tag::L_str: \
     case Tag::L_c:   \
@@ -40,35 +40,35 @@
     case Tag::L_f:   \
     case Tag::L_i
 
-#define TAG__LAM     \
-         Tag::K_lam: \
+#define C_LAM        \
+              K_lam: \
     case Tag::K_con: \
     case Tag::K_fun
 
-#define TAG__DECL     \
-         Tag::K_ax:   \
+#define C_DECL        \
+              K_ax:   \
     case Tag::K_let:  \
     case Tag::K_rec:  \
     case Tag::K_ccon: \
     case Tag::K_cfun: \
-    case TAG__LAM
+    case Tag::C_LAM
 
-#define TAG__PI     \
-         Tag::T_Pi: \
+#define C_PI        \
+              T_Pi: \
     case Tag::K_Cn: \
     case Tag::K_Fn
 
-#define TAG__LM     \
-         Tag::T_lm: \
+#define C_LM        \
+              T_lm: \
     case Tag::K_cn: \
     case Tag::K_fn
 
-#define TAG__EXPR                       \
-         TAG__PRIMARY:                  \
-    case TAG__ID:                       \
-    case TAG__LIT:                      \
-    case TAG__DECL:                     \
-    case TAG__LM:                       \
+#define C_EXPR                          \
+              C_PRIMARY:                \
+    case Tag::C_ID:                     \
+    case Tag::C_LIT:                    \
+    case Tag::C_DECL:                   \
+    case Tag::C_LM:                     \
     case Tag::K_Type:    /*TypeExpr*/   \
     case Tag::K_ins:     /*InsertExpr*/ \
     case Tag::K_ret:     /*RetExpr*/    \
@@ -222,10 +222,10 @@ Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Prec curr_pre
                 lhs      = ptr<AppExpr>(track.loc(), true, std::move(lhs), std::move(rhs));
                 continue;
             }
-            case TAG__EXPR: {
+            case Tag::C_EXPR: {
                 if (curr_prec >= Prec::App) return lhs;
                 switch (ahead().tag()) {
-                    case TAG__DECL:
+                    case Tag::C_DECL:
                         ast().warn(ahead().loc(), "you are passing a declaration expression as argument");
                         ast().note(lhs->loc(), "to this expression");
                         ast().note(ahead().loc(),
@@ -271,12 +271,12 @@ Ptr<Expr> Parser::parse_insert_expr() {
 Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
     // clang-format off
     switch (ahead().tag()) {
-        case TAG__PRIMARY:   return ptr<PrimaryExpr>(lex());
-        case TAG__ID:        return ptr<IdExpr>(lex().dbg());
-        case TAG__LIT:       return parse_lit_expr();
-        case TAG__DECL:      return parse_decl_expr();
-        case TAG__PI:        return parse_pi_expr();
-        case TAG__LM:        return parse_lam_expr();
+        case Tag::C_PRIMARY: return ptr<PrimaryExpr>(lex());
+        case Tag::C_ID:      return ptr<IdExpr>(lex().dbg());
+        case Tag::C_LIT:     return parse_lit_expr();
+        case Tag::C_DECL:    return parse_decl_expr();
+        case Tag::C_PI:      return parse_pi_expr();
+        case Tag::C_LM:      return parse_lam_expr();
         case Tag::K_ins:     return parse_insert_expr();
         case Tag::K_ret:     return parse_ret_expr();
         case Tag::D_quote_l: return parse_arr_or_pack_expr<true>();
@@ -374,7 +374,7 @@ Ptr<Expr> Parser::parse_pi_expr() {
         doms.emplace_back(ptr<PiExpr::Dom>(track, implicit, std::move(ptrn)));
 
         switch (ahead().tag()) {
-            case TAG__EXPR:
+            case Tag::C_EXPR:
             case Tag::T_backtick: continue;
             default: break;
         }
@@ -688,7 +688,7 @@ Ptr<LamDecl> Parser::parse_lam_decl() {
 
         doms.emplace_back(ptr<LamDecl::Dom>(track, implicit, std::move(ptrn), std::move(filter)));
         switch (ahead().tag()) {
-            case TAG__EXPR:
+            case Tag::C_EXPR:
             case Tag::T_backtick: continue;
             default: break;
         }
@@ -708,7 +708,7 @@ Ptr<LamDecl> Parser::parse_lam_decl() {
 
 Ptr<RecDecl> Parser::parse_and_decl() {
     switch (ahead(1).tag()) {
-        case TAG__LAM: return lex(), parse_lam_decl();
+        case Tag::C_LAM: return lex(), parse_lam_decl();
         default: return parse_rec_decl(false);
     }
 }
