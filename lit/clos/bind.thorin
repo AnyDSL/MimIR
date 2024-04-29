@@ -7,49 +7,42 @@
 .plugin core;
 
 .let pb_type = .Cn [%mem.M, .Cn [%mem.M]];
+.let size    = 100;
 
 .ccon println_i32 [mem: %mem.M, val: .I32, return : .Cn [%mem.M]];
 
-.let size = 100;
-
-.con recursive [mem: %mem.M, i : .I32, last_pullback: pb_type, return: .Cn [%mem.M]] = {
-    .con exit [mem: %mem.M] = {
-        last_pullback ( mem, return )
-    };
-
-    .con loop_body [mem: %mem.M] = {
-        .con pb [mem: %mem.M, return: .Cn [%mem.M]] = {
-            .con next [mem: %mem.M] = {
-                last_pullback (mem, return)
-            };
-
-            println_i32( mem, i , next )
-        };
-
-        .con next [mem: %mem.M] = {
-            recursive( mem, %core.wrap.add 0 (i, 1I32), pb, return )
-        };
-
-        println_i32( mem, i , next )
-    };
-
+.con recursive [mem: %mem.M, i : .I32, last_pullback: pb_type, return: .Cn [%mem.M]] =
     .let condition = %core.icmp.ul (i, %core.bitcast .I32 size);
-    .let target = (exit, loop_body)#condition;
-    target ( mem )
-};
+    (exit, loop_body)#condition mem
+    .where
+        .con loop_body [mem: %mem.M] =
+            println_i32( mem, i , next )
+            .where
+                .con next [mem: %mem.M] =
+                    recursive( mem, %core.wrap.add 0 (i, 1I32), pb, return )
+                    .where
+                        .con pb [mem: %mem.M, return: .Cn [%mem.M]] =
+                            println_i32( mem, i , next )
+                            .where
+                                .con next [mem: %mem.M] = last_pullback (mem, return);
+                            .end;
+                    .end;
+            .end;
 
-.con outer [mem: %mem.M, x : .I32, return : .Cn [%mem.M]] = {
-    .con end [mem: %mem.M, return : .Cn [%mem.M]] = {
-        return (mem)
-    };
+        .con exit [mem: %mem.M] = last_pullback ( mem, return );
+    .end;
 
+.con outer [mem: %mem.M, x : .I32, return : .Cn [%mem.M]] =
     recursive ( mem, 0I32, end, return )
-};
+    .where
+        .con end [mem: %mem.M, return : .Cn [%mem.M]] = return mem;
+    .end;
 
-.con .extern main [mem: %mem.M, argc: .I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), return : .Cn [%mem.M, .I32]] = {
-    .con callback (mem: %mem.M) = return (mem, 0I32);
+.con .extern main [mem: %mem.M, argc: .I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), return : .Cn [%mem.M, .I32]] =
     outer(mem, 1I32, callback)
-};
+    .where
+        .con callback (mem: %mem.M) = return (mem, 0I32);
+    .end;
 
 // CHECK: 99
 // CHECK-COUNT-98: {{[0-9]+}}

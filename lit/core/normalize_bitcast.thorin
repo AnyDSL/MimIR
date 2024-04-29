@@ -4,9 +4,8 @@
 
 .plugin core;
 
-.con .extern bitcast_bitcast(i : %mem.Ptr (.I8, 0), return: .Cn .I32) = {
-    return (%core.bitcast (.I32) (%core.bitcast .Nat i))
-};
+.con .extern bitcast_bitcast(i : %mem.Ptr (.I8, 0), return: .Cn .I32) =
+    return (%core.bitcast (.I32) (%core.bitcast .Nat i));
 
 // TODO parenthesis in output broken for bitcast
 // CHECK-DAG: bitcast_bitcast _{{[0-9_]+}}::[i_[[valId:[0-9_]+]]: %mem.Ptr (.I8, 0), return_[[retId:[0-9_]+]]: .Cn .I32]{{(@.*)?}}= {

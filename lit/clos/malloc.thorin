@@ -7,7 +7,7 @@
 .con f [mem: %mem.M, x: .I32, return: .Cn [%mem.M, .I32]] = return (mem, %core.wrap.add 0 (x, 42I32));
 .con g [mem: %mem.M, x: .I32, return: .Cn [%mem.M, .I32]] = return (mem, 1I32);
 
-.fun .extern main(mem: %mem.M, argc: .I32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0)): [%mem.M, .I32] = {
+.fun .extern main(mem: %mem.M, argc: .I32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0)): [%mem.M, .I32] =
     .con h(mem: %mem.M, x: .I32, return: .Cn [%mem.M, .I32]) = return (mem, %core.wrap.add 0 (x, argc));
 
     .let pb_type  = .Cn [%mem.M, .I32, .Cn [%mem.M, .I32]];
@@ -30,5 +30,4 @@
     .let (`mem, func) = %mem.load (mem, lea);
     .let (`mem,  val) = %mem.load (mem, lea);
 
-    func(mem, 1I32, .cn (mem: %mem.M, x: .I32) = return (mem, x))
-};
+    func(mem, 1I32, .cn (mem: %mem.M, x: .I32) = return (mem, x));

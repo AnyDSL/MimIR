@@ -73,11 +73,18 @@
     case Tag::K_ins:     /*InsertExpr*/ \
     case Tag::K_ret:     /*RetExpr*/    \
     case Tag::D_angle_l: /*PackExpr*/   \
-    case Tag::D_brace_l: /*BlockExpr*/  \
     case Tag::D_brckt_l: /*SigmaExpr*/  \
     case Tag::D_paren_l: /*TupleExpr*/  \
     case Tag::D_quote_l  /*ArrExpr*/
+
+#define C_PTRN            \
+              M_id:       \
+    case Tag::T_backtick: \
+    case Tag::D_brckt_l:  \
+    case Tag::D_paren_l
+
 // clang-format on
+// case Tag::D_brace_l: /*BlockExpr*/  \
 
 using namespace std::string_literals;
 
@@ -100,8 +107,11 @@ Ptr<Module> Parser::parse_module() {
         }
     }
     auto decls = parse_decls();
+    bool where = ahead().isa(Tag::K_where);
     expect(Tag::EoF, "module");
-    return ptr<Module>(track, std::move(imports), std::move(decls));
+    auto mod = ptr<Module>(track, std::move(imports), std::move(decls));
+    if (where) ast().note(mod->loc().anew_finis(), "did you accidentally end your declaration expression with a ';'?");
+    return mod;
 }
 
 Ptr<Module> Parser::import(Dbg dbg, std::ostream* md) {
@@ -283,7 +293,6 @@ Ptr<Expr> Parser::parse_primary_expr(std::string_view ctxt) {
         case Tag::D_angle_l: return parse_arr_or_pack_expr<false>();
         case Tag::D_brckt_l: return parse_sigma_expr();
         case Tag::D_paren_l: return parse_tuple_expr();
-        case Tag::D_brace_l: return parse_block_expr();
         case Tag::K_Type:    return parse_type_expr();
         default:
             if (ctxt.empty()) return nullptr;
@@ -311,16 +320,6 @@ template<bool arr> Ptr<Expr> Parser::parse_arr_or_pack_expr() {
            arr ? "closing delimiter of an array" : "closing delimiter of a pack");
 
     return ptr<ArrOrPackExpr<arr>>(track, std::move(ptrn), std::move(body));
-}
-
-Ptr<Expr> Parser::parse_block_expr() {
-    auto track = tracker();
-    eat(Tag::D_brace_l);
-    auto expr = parse_expr("final expression in a block expression");
-    expect(Tag::D_brace_r, "block expression");
-    ast().warn(track, "block expression is deprecated; use a (possibly parenthesized) declaration expression instead");
-
-    return ptr<BlockExpr>(track, std::move(expr));
 }
 
 Ptr<Expr> Parser::parse_decl_expr() {
@@ -374,8 +373,7 @@ Ptr<Expr> Parser::parse_pi_expr() {
         doms.emplace_back(ptr<PiExpr::Dom>(track, implicit, std::move(ptrn)));
 
         switch (ahead().tag()) {
-            case Tag::C_EXPR:
-            case Tag::T_backtick: continue;
+            case Tag::C_PTRN: continue;
             default: break;
         }
         break;
@@ -498,6 +496,7 @@ Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Prec prec, bool
     } else if (!ctxt.empty()) {
         // p -> ↯
         syntax_err("pattern", ctxt);
+        return ptr<ErrorPtrn>(prev_);
     }
 
     return nullptr;
@@ -688,8 +687,7 @@ Ptr<LamDecl> Parser::parse_lam_decl() {
 
         doms.emplace_back(ptr<LamDecl::Dom>(track, implicit, std::move(ptrn), std::move(filter)));
         switch (ahead().tag()) {
-            case Tag::C_EXPR:
-            case Tag::T_backtick: continue;
+            case Tag::C_PTRN: continue;
             default: break;
         }
         break;

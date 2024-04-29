@@ -50,6 +50,8 @@ std::ostream& Module::stream(Tab& tab, std::ostream& os) const {
  * Ptrn
  */
 
+std::ostream& ErrorPtrn::stream(Tab&, std::ostream& os) const { return os << "<error pattern>"; }
+
 std::ostream& IdPtrn::stream(Tab& tab, std::ostream& os) const {
     // clang-format off
     if ( dbg() &&  type()) return print(os, "{}: {}", dbg(), S(tab, type()));
@@ -71,7 +73,7 @@ std::ostream& TuplePtrn::stream(Tab& tab, std::ostream& os) const {
  */
 
 std::ostream& IdExpr::stream(Tab&, std::ostream& os) const { return print(os, "{}", dbg()); }
-std::ostream& ErrorExpr::stream(Tab&, std::ostream& os) const { return os << "<error>"; }
+std::ostream& ErrorExpr::stream(Tab&, std::ostream& os) const { return os << "<error expression>"; }
 std::ostream& InferExpr::stream(Tab&, std::ostream& os) const { return os << "<infer>"; }
 std::ostream& PrimaryExpr::stream(Tab&, std::ostream& os) const { return print(os, "{}", tag()); }
 
@@ -101,8 +103,6 @@ std::ostream& DeclExpr::stream(Tab& tab, std::ostream& os) const {
         return print(os, "{}", S(tab, expr()));
     }
 }
-
-std::ostream& BlockExpr::stream(Tab& tab, std::ostream& os) const { return print(os, "{{ {} }}", S(tab, expr())); }
 
 std::ostream& TypeExpr::stream(Tab& tab, std::ostream& os) const { return print(os, "(.Type {})", S(tab, level())); }
 

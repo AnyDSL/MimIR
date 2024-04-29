@@ -192,6 +192,16 @@ private:
     bool rebind_;
 };
 
+class ErrorPtrn : public Ptrn {
+public:
+    ErrorPtrn(Loc loc)
+        : Ptrn(loc, false, Dbg()) {}
+
+    void bind(Scopes&, bool quiet = false) const override;
+    Ref emit_type(Emitter&) const override;
+    std::ostream& stream(Tab&, std::ostream&) const override;
+};
+
 /// `dbg: type`
 class IdPtrn : public Ptrn {
 public:
@@ -353,25 +363,6 @@ private:
 
     Tok tok_;
     Ptr<Expr> type_;
-};
-
-/// `{ e }`
-/// @deprecated will be removed; use `( e )` instead.
-class BlockExpr : public Expr {
-public:
-    BlockExpr(Loc loc, Ptr<Expr>&& expr)
-        : Expr(loc)
-        , expr_(std::move(expr)) {}
-
-    const Expr* expr() const { return expr_.get(); }
-
-    void bind(Scopes&) const override;
-    std::ostream& stream(Tab&, std::ostream&) const override;
-
-private:
-    Ref emit_(Emitter&) const override;
-
-    Ptr<Expr> expr_;
 };
 
 /// `decls e` or `e .where decls` if @p where is `true`.

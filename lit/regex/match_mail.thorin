@@ -67,18 +67,18 @@
 
 .ccon strlen[%mem.M, %mem.Ptr («⊤:.Nat; .I8», 0), .Cn [%mem.M, .I32]];
 
-.con .extern main[mem: %mem.M, argc: .I32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), exit : .Cn [%mem.M, .I32]] = {
-    .con match_argument[mem: %mem.M, .I32] = {
-        .let arg1 = %mem.lea (Top, ‹Top; %mem.Ptr («⊤:.Nat; .I8», 0)›, 0) (argv, 1I32);;
-        .let (`mem, to_match) = %mem.load (mem, arg1);
-        .let (`mem, matched, pos) = re (mem, to_match, 0:(.Idx Top));
-        .con exit_me(mem: %mem.M, len: .I32) = {
-            exit (mem, (%core.idx .i32 0 255, %core.wrap.sub .i32 (len, %core.conv.u .i32 pos))#matched)
-        };
-        strlen(mem, to_match, exit_me)
-    };
-
+.con .extern main[mem: %mem.M, argc: .I32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), exit : .Cn [%mem.M, .I32]] =
     (exit, match_argument) # (%core.icmp.ug (argc, 1I32)) (mem, 0I32)
-};
+    .where
+        .con match_argument[mem: %mem.M, .I32] =
+            .let arg1 = %mem.lea (Top, ‹Top; %mem.Ptr («⊤:.Nat; .I8», 0)›, 0) (argv, 1I32);;
+            .let (`mem, to_match) = %mem.load (mem, arg1);
+            .let (`mem, matched, pos) = re (mem, to_match, 0:(.Idx Top));
+            strlen(mem, to_match, exit_me)
+            .where
+            .con exit_me(mem: %mem.M, len: .I32) =
+                exit (mem, (%core.idx .i32 0 255, %core.wrap.sub .i32 (len, %core.conv.u .i32 pos))#matched)
+            .end
+    .end;
 
 // CHECK-NOT: %regex.
