@@ -53,9 +53,9 @@
     case Tag::K_cfun: \
     case Tag::C_LAM
 
-#define C_PI        \
-              T_Pi: \
-    case Tag::K_Cn: \
+#define C_PI             \
+              T_Pi:      \
+    case Tag::K_Cn:      \
     case Tag::K_Fn
 
 #define C_LM        \
@@ -68,6 +68,7 @@
     case Tag::C_ID:                     \
     case Tag::C_LIT:                    \
     case Tag::C_DECL:                   \
+    case Tag::C_PI:                     \
     case Tag::C_LM:                     \
     case Tag::K_Type:    /*TypeExpr*/   \
     case Tag::K_ins:     /*InsertExpr*/ \
@@ -82,9 +83,7 @@
     case Tag::T_backtick: \
     case Tag::D_brckt_l:  \
     case Tag::D_paren_l
-
 // clang-format on
-// case Tag::D_brace_l: /*BlockExpr*/  \
 
 using namespace std::string_literals;
 
@@ -408,70 +407,53 @@ Ptr<Expr> Parser::parse_ret_expr() {
 
 Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Prec prec, bool allow_annex) {
     auto track = tracker();
-    auto dbg   = Dbg(ahead().loc(), Sym());
     bool p     = delim_l == Tag::D_paren_l;
     bool b     = delim_l == Tag::D_brckt_l;
     assert((p ^ b) && "left delimiter must either be '(' or '['");
 
+    // p -> anx
+    // p -> anx: e
     if (allow_annex) {
         assert(p);
-        // p -> anx
-        // p -> anx: e
         if (auto anx = accept(Tok::Tag::M_anx)) {
             auto type = parse_type_ascr();
             return ptr<IdPtrn>(track, false, anx.dbg(), std::move(type));
         }
     }
 
-    // p ->     (p, ..., p)
-    // p ->     [b, ..., b]     b ->     [b, ..., b]
-    // p ->  s::(p, ..., p)
-    // p ->  s::[b, ..., b]     b ->  s::[b, ..., b]
-    // p ->  s: e               b ->  s: e
-    // p ->  s                  b ->     e
-    // p -> `s::(p, ..., p)
-    // p -> `s::[b, ..., b]     b -> `s::[b, ..., b]
-    // p -> `s: e               b -> `s: e
-    // p -> `s
-
-    if (p && ahead().isa(Tag::D_paren_l)) {
-        // p ->    (p, ..., p)
-        return parse_tuple_ptrn();
-    } else if (ahead().isa(Tag::D_brckt_l)) {
-        // p ->    [b, ..., b]      b ->    [b, ..., b]
-        return parse_tuple_ptrn();
+    // p -> `s: e   b -> `s: e
+    if (accept(Tok::Tag::T_backtick)) {
+        auto dbg  = expect(Tok::Tag::M_id, "identifier pattern").dbg();
+        auto type = accept(Tok::Tag::T_colon) ? parse_expr("identifier pattern", prec) : nullptr;
+        return ptr<IdPtrn>(track, true, dbg, std::move(type));
     }
 
-    auto backtick = accept(Tag::T_backtick);
-    bool rebind   = (bool)backtick;
+    // p -> (p, ..., p)
+    // p -> [b, ..., b]     b -> [b, ..., b]
+    if ((p && ahead().isa(Tag::D_paren_l)) || ahead().isa(Tag::D_brckt_l)) return parse_tuple_ptrn();
 
     if (ahead(0).isa(Tag::M_id)) {
         if (ahead(1).isa(Tag::T_colon)) {
-            // p ->  s: e               b ->  s: e
-            // p -> `s: e               b -> `s: e
-            dbg = eat(Tag::M_id).dbg();
+            // p ->  s: e       b ->  s: e
+            auto dbg = eat(Tag::M_id).dbg();
             eat(Tag::T_colon);
             auto type = parse_expr(ctxt, prec);
-            return ptr<IdPtrn>(track, rebind, dbg, std::move(type));
-        } else {
-            // p ->  s                  b ->    e    where e == id
+            return ptr<IdPtrn>(track, false, dbg, std::move(type));
+        } else if (p) {
+            // p ->  s
             // p -> `s
-            if (p) {
-                // p ->  s
-                // p -> `s
-                dbg = eat(Tag::M_id).dbg();
-                return ptr<IdPtrn>(track, rebind, dbg, nullptr);
-            } else {
-                // b ->    e    where e == id
-                auto type = parse_expr(ctxt, prec);
-                return ptr<IdPtrn>(track, rebind, dbg, std::move(type));
-            }
+            auto dbg = eat(Tag::M_id).dbg();
+            return ptr<IdPtrn>(track, false, dbg, nullptr);
+        } else {
+            // b -> e   where e == id
+            auto type = parse_expr(ctxt, prec);
+            return ptr<IdPtrn>(track, false, type->loc().anew_begin(), std::move(type));
         }
     } else if (b) {
-        // b ->  e    where e != id
-        if (backtick) ast().error(backtick.loc(), "you can only prefix identifiers with backtick for rebinding");
+        // b -> e   where e != id
         auto type = parse_expr(ctxt, prec);
-        return ptr<IdPtrn>(track, rebind, dbg, std::move(type));
+        auto loc  = type->loc().anew_begin();
+        return ptr<IdPtrn>(track, false, Dbg(loc), std::move(type));
     } else if (!ctxt.empty()) {
         // p -> ↯
         syntax_err("pattern", ctxt);
@@ -664,16 +646,8 @@ Ptr<LamDecl> Parser::parse_lam_decl() {
     while (true) {
         auto track    = tracker();
         bool implicit = (bool)accept(Tag::T_dot);
-
-        Ptr<Ptrn> ptrn;
-        if (ahead().isa(Tag::D_brace_l)) {
-            ptrn     = parse_tuple_ptrn();
-            implicit = true;
-        } else {
-            ptrn = parse_ptrn(Tag::D_paren_l, "domain pattern of a "s + entity, prec);
-        }
-
-        auto filter = accept(Tag::T_at) ? parse_expr("filter") : nullptr;
+        auto ptrn     = parse_ptrn(Tag::D_paren_l, "domain pattern of a "s + entity, prec);
+        auto filter   = accept(Tag::T_at) ? parse_expr("filter") : nullptr;
 
         doms.emplace_back(ptr<LamDecl::Dom>(track, implicit, std::move(ptrn), std::move(filter)));
         switch (ahead().tag()) {
