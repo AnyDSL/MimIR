@@ -248,7 +248,7 @@ private:
 /// `dbg::(ptrn_0, ..., ptrn_n-1)` or `dbg::[ptrn_0, ..., ptrn_n-1]`
 class TuplePtrn : public Ptrn {
 public:
-    TuplePtrn(Loc loc, bool rebind, Dbg dbg, Tok::Tag delim_l, Ptrs<Ptrn>&& ptrns)
+    TuplePtrn(Loc loc, Tok::Tag delim_l, Ptrs<Ptrn>&& ptrns, bool rebind, Dbg dbg)
         : Ptrn(loc, rebind, dbg)
         , delim_l_(delim_l)
         , ptrns_(std::move(ptrns)) {}

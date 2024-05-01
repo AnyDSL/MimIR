@@ -336,7 +336,7 @@ Ptr<Expr> Parser::parse_lit_expr() {
     return ptr<LitExpr>(track, tok, std::move(type));
 }
 
-Ptr<Expr> Parser::parse_sigma_expr() { return ptr<SigmaExpr>(parse_tuple_ptrn(false, Dbg(ahead().loc()))); }
+Ptr<Expr> Parser::parse_sigma_expr() { return ptr<SigmaExpr>(parse_tuple_ptrn()); }
 
 Ptr<Expr> Parser::parse_tuple_expr() {
     auto track = tracker();
@@ -436,38 +436,17 @@ Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Prec prec, bool
 
     if (p && ahead().isa(Tag::D_paren_l)) {
         // p ->    (p, ..., p)
-        return parse_tuple_ptrn(false, dbg);
+        return parse_tuple_ptrn();
     } else if (ahead().isa(Tag::D_brckt_l)) {
         // p ->    [b, ..., b]      b ->    [b, ..., b]
-        return parse_tuple_ptrn(false, dbg);
+        return parse_tuple_ptrn();
     }
 
     auto backtick = accept(Tag::T_backtick);
     bool rebind   = (bool)backtick;
 
     if (ahead(0).isa(Tag::M_id)) {
-        // p ->  s::(p, ..., p)
-        // p ->  s::[b, ..., b]     b ->  s::[b, ..., b]
-        // p ->  s: e               b ->  s: e
-        // p ->  s                  b ->     e    where e == id
-        // p -> `s::(p, ..., p)
-        // p -> `s::[b, ..., b]     b -> `s::[b, ..., b]
-        // p -> `s: e               b -> `s: e
-        // p -> `s
-        if (ahead(1).isa(Tag::T_colon_colon)) {
-            dbg = eat(Tag::M_id).dbg();
-            eat(Tag::T_colon_colon);
-            if (b && ahead().isa(Tag::D_paren_l))
-                ast().error(ahead().loc(), "switching from []-style patterns to ()-style patterns is not allowed");
-            // b ->  s::(p, ..., p)
-            // b ->  s::[b, ..., b]     b ->  s::[b, ..., b]
-            // b -> `s::(p, ..., p)
-            // b -> `s::[b, ..., b]     b -> `s::[b, ..., b]
-            if (ahead().isa(Tag::D_paren_l) || ahead().isa(Tag::D_brckt_l))
-                return parse_tuple_ptrn(rebind, dbg);
-            else
-                syntax_err("tuple pattern after '" + dbg.sym().str() + "::'", ctxt);
-        } else if (ahead(1).isa(Tag::T_colon)) {
+        if (ahead(1).isa(Tag::T_colon)) {
             // p ->  s: e               b ->  s: e
             // p -> `s: e               b -> `s: e
             dbg = eat(Tag::M_id).dbg();
@@ -502,12 +481,9 @@ Ptr<Ptrn> Parser::parse_ptrn(Tag delim_l, std::string_view ctxt, Prec prec, bool
     return nullptr;
 }
 
-Ptr<TuplePtrn> Parser::parse_tuple_ptrn(bool rebind, Dbg dbg) {
+Ptr<TuplePtrn> Parser::parse_tuple_ptrn() {
     auto track   = tracker();
     auto delim_l = ahead().tag();
-    bool p       = delim_l == Tag::D_paren_l;
-    bool b       = delim_l == Tag::D_brckt_l;
-    assert(p ^ b);
 
     Ptrs<Ptrn> ptrns;
     parse_list("tuple pattern", delim_l, [&]() {
@@ -538,9 +514,10 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn(bool rebind, Dbg dbg) {
             auto expr = parse_infix_expr(track, std::move(lhs), Prec::App);
             ptrn      = IdPtrn::mk_type(ast(), std::move(expr));
         } else {
-            ptrn = parse_ptrn(delim_l, "element of a tuple pattern");
+            auto dl = delim_l == Tag::D_brckt_l ? delim_l : Tag::D_paren_l;
+            ptrn    = parse_ptrn(dl, "element of a tuple pattern");
 
-            if (b) {
+            if (delim_l == Tag::D_brckt_l) {
                 // If we are able to parse more stuff, we got an expr instead of a binder:
                 // [..., [.Nat, .Nat] -> .Nat, ...] ==> [..., _: [.Nat, .Nat] -> .Nat, ...]
                 if (auto expr = Ptrn::to_expr(ast(), std::move(ptrn))) {
@@ -559,8 +536,13 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn(bool rebind, Dbg dbg) {
         ptrns.emplace_back(std::move(ptrn));
     });
 
-    // TODO parse type
-    return ptr<TuplePtrn>(track, rebind, dbg, delim_l, std::move(ptrns));
+    Dbg dbg;
+    bool rebind = false;
+    if (accept(Tag::T_colon_colon)) {
+        rebind = (bool)accept(Tag::T_backtick);
+        dbg    = eat(Tag::M_id).dbg();
+    }
+    return ptr<TuplePtrn>(track, delim_l, std::move(ptrns), rebind, dbg);
 }
 
 /*
@@ -682,8 +664,16 @@ Ptr<LamDecl> Parser::parse_lam_decl() {
     while (true) {
         auto track    = tracker();
         bool implicit = (bool)accept(Tag::T_dot);
-        auto ptrn     = parse_ptrn(Tag::D_paren_l, "domain pattern of a "s + entity, prec);
-        auto filter   = accept(Tag::T_at) ? parse_expr("filter") : nullptr;
+
+        Ptr<Ptrn> ptrn;
+        if (ahead().isa(Tag::D_brace_l)) {
+            ptrn     = parse_tuple_ptrn();
+            implicit = true;
+        } else {
+            ptrn = parse_ptrn(Tag::D_paren_l, "domain pattern of a "s + entity, prec);
+        }
+
+        auto filter = accept(Tag::T_at) ? parse_expr("filter") : nullptr;
 
         doms.emplace_back(ptr<LamDecl::Dom>(track, implicit, std::move(ptrn), std::move(filter)));
         switch (ahead().tag()) {

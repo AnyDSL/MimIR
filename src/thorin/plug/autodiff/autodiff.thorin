@@ -123,5 +123,5 @@
 ///
 /// s ↦ (s*b, s*a)
 ///
-.fun .extern internal_diff_core_wrap_mul.(s: .Nat)(m: .Nat)ab::(a b: .Idx s)@.tt: [.Idx s, .Cn[.Idx s, .Cn«2; .Idx s»]] =
+.fun .extern internal_diff_core_wrap_mul.(s: .Nat)(m: .Nat) (a b: .Idx s)::ab@.tt: [.Idx s, .Cn[.Idx s, .Cn«2; .Idx s»]] =
     return (%core.wrap.mul m ab, .fn (i: .Idx s)@.tt: «2; .Idx s» = return (%core.wrap.mul m (i, b), %core.wrap.mul m (i, a)));
