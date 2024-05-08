@@ -64,8 +64,9 @@ std::ostream& IdPtrn::stream(Tab& tab, std::ostream& os) const {
 std::ostream& GrpPtrn::stream(Tab&, std::ostream& os) const { return os << dbg(); }
 
 std::ostream& TuplePtrn::stream(Tab& tab, std::ostream& os) const {
-    if (dbg()) print(os, "{}::", dbg());
-    return print(os, "{}{, }{}", delim_l(), R(tab, ptrns()), delim_r());
+    print(os, "{}{, }{}", delim_l(), R(tab, ptrns()), delim_r());
+    if (dbg()) print(os, "::{}", dbg());
+    return os;
 }
 
 /*
