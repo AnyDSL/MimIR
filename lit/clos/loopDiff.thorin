@@ -5,10 +5,10 @@
 
 .let void_ptr = %mem.Ptr («⊤:.Nat; []», 0);
 
-.con printInteger [mem: %mem.M, val: .I32, return : .Cn [%mem.M]];
-.con printNL [mem: %mem.M, return : .Cn [%mem.M]];
-.con time [mem: %mem.M, return : .Cn [%mem.M, void_ptr]];
-.con print_time_diff [mem: %mem.M, t1: void_ptr, t2: void_ptr, return : .Cn [%mem.M]];
+.ccon printInteger [mem: %mem.M, val: .I32, return : .Cn [%mem.M]];
+.ccon printNL [mem: %mem.M, return : .Cn [%mem.M]];
+.ccon time [mem: %mem.M, return : .Cn [%mem.M, void_ptr]];
+.ccon print_time_diff [mem: %mem.M, t1: void_ptr, t2: void_ptr, return : .Cn [%mem.M]];
 
 .let size = 100;
 

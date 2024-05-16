@@ -23,7 +23,7 @@ extern "C" THORIN_EXPORT Plugin thorin_get_plugin() {
                     auto then_phase   = args[2];
                     auto else_phase   = args[3];
                     auto name         = plugin_axiom->sym();                        // name has the form %opt.tag
-                    auto [_, tag, __] = Annex::split(world, name);                  // where tag = [plugin]_plugin
+                    auto [_, tag, __] = Annex::split(driver, name);                 // where tag = [plugin]_plugin
                     auto plugin       = tag.view().substr(0, tag.view().find('_')); // we want to extract the plugin
                     bool is_loaded    = driver.is_loaded(driver.sym(plugin));
 

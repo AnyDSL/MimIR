@@ -1,4 +1,0 @@
-// RUN: (! %thorin %s 2>&1) | FileCheck %s
-.Sigma S: *, 3;
-.Sigma S: *, 2 = [.Nat];
-// CHECK: error: {{.*}}with a different arity

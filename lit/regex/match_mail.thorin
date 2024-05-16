@@ -65,7 +65,7 @@
             letter,
             %regex.quant.plus letter);
 
-.con strlen[%mem.M, %mem.Ptr («⊤:.Nat; .I8», 0), .Cn [%mem.M, .I32]];
+.ccon strlen[%mem.M, %mem.Ptr («⊤:.Nat; .I8», 0), .Cn [%mem.M, .I32]];
 
 .con .extern main[mem: %mem.M, argc: .I32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), exit : .Cn [%mem.M, .I32]] = {
     .con match_argument[mem: %mem.M, .I32] = {

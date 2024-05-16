@@ -1,17 +1,8 @@
 #include "thorin/pass/optimize.h"
 
-#include <vector>
-
 #include "thorin/driver.h"
 
-#include "thorin/pass/beta_red.h"
-#include "thorin/pass/eta_exp.h"
-#include "thorin/pass/eta_red.h"
-#include "thorin/pass/lam_spec.h"
 #include "thorin/pass/pipelinebuilder.h"
-#include "thorin/pass/ret_wrap.h"
-#include "thorin/pass/scalarize.h"
-#include "thorin/pass/tail_rec_elim.h"
 #include "thorin/phase/phase.h"
 
 namespace thorin {
@@ -26,6 +17,7 @@ void optimize(World& world) {
             compilation_->make_internal();
         }
     }
+
     // make all functions `[] -> Pipeline` internal
     auto externals = world.externals(); // copy
     for (auto [_, def] : externals) {

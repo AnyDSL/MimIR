@@ -1,8 +1,5 @@
 #include "thorin/lattice.h"
 
-#include "thorin/lam.h"
-#include "thorin/world.h"
-
 #include "thorin/util/util.h"
 
 namespace thorin {

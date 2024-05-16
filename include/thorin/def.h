@@ -1,7 +1,6 @@
 #pragma once
 
 #include <optional>
-#include <vector>
 
 #include <fe/assert.h>
 #include <fe/cast.h>
@@ -11,7 +10,6 @@
 #include "thorin/util/dbg.h"
 #include "thorin/util/hash.h"
 #include "thorin/util/pool.h"
-#include "thorin/util/print.h"
 #include "thorin/util/util.h"
 #include "thorin/util/vector.h"
 
@@ -173,20 +171,20 @@ THORIN_ENUM_OPERATORS(Dep)
 
 // clang-format off
 /// Use as mixin to declare setters for Def::loc \& Def::name using a *covariant* return type.
-#define THORIN_SETTERS_(T)                                                                                                 \
-public:                                                                                                                    \
-    template<bool Ow = false> const T* set(Loc l               ) const { if (Ow || !dbg_.loc) dbg_.loc = l; return this; } \
-    template<bool Ow = false>       T* set(Loc l               )       { if (Ow || !dbg_.loc) dbg_.loc = l; return this; } \
-    template<bool Ow = false> const T* set(       Sym s        ) const { if (Ow || !dbg_.sym) dbg_.sym = s; return this; } \
-    template<bool Ow = false>       T* set(       Sym s        )       { if (Ow || !dbg_.sym) dbg_.sym = s; return this; } \
-    template<bool Ow = false> const T* set(       std::string s) const {         set(sym(std::move(s))); return this; }    \
-    template<bool Ow = false>       T* set(       std::string s)       {         set(sym(std::move(s))); return this; }    \
-    template<bool Ow = false> const T* set(Loc l, Sym s        ) const { set(l); set(s);                 return this; }    \
-    template<bool Ow = false>       T* set(Loc l, Sym s        )       { set(l); set(s);                 return this; }    \
-    template<bool Ow = false> const T* set(Loc l, std::string s) const { set(l); set(sym(std::move(s))); return this; }    \
-    template<bool Ow = false>       T* set(Loc l, std::string s)       { set(l); set(sym(std::move(s))); return this; }    \
-    template<bool Ow = false> const T* set(Dbg d) const { set(d.loc, d.sym); return this; }                                \
-    template<bool Ow = false>       T* set(Dbg d)       { set(d.loc, d.sym); return this; }
+#define THORIN_SETTERS_(T)                                                                                                   \
+public:                                                                                                                      \
+    template<bool Ow = false> const T* set(Loc l               ) const { if (Ow || !dbg_.loc()) dbg_.set(l); return this; } \
+    template<bool Ow = false>       T* set(Loc l               )       { if (Ow || !dbg_.loc()) dbg_.set(l); return this; } \
+    template<bool Ow = false> const T* set(       Sym s        ) const { if (Ow || !dbg_.sym()) dbg_.set(s); return this; } \
+    template<bool Ow = false>       T* set(       Sym s        )       { if (Ow || !dbg_.sym()) dbg_.set(s); return this; } \
+    template<bool Ow = false> const T* set(       std::string s) const {         set(sym(std::move(s))); return this; }      \
+    template<bool Ow = false>       T* set(       std::string s)       {         set(sym(std::move(s))); return this; }      \
+    template<bool Ow = false> const T* set(Loc l, Sym s        ) const { set(l); set(s);                 return this; }      \
+    template<bool Ow = false>       T* set(Loc l, Sym s        )       { set(l); set(s);                 return this; }      \
+    template<bool Ow = false> const T* set(Loc l, std::string s) const { set(l); set(sym(std::move(s))); return this; }      \
+    template<bool Ow = false>       T* set(Loc l, std::string s)       { set(l); set(sym(std::move(s))); return this; }      \
+    template<bool Ow = false> const T* set(Dbg d) const { set(d.loc(), d.sym()); return this; }                              \
+    template<bool Ow = false>       T* set(Dbg d)       { set(d.loc(), d.sym()); return this; }
 // clang-format on
 
 #ifdef DOXYGEN
@@ -466,8 +464,8 @@ public:
     /// @name Dbg Getters
     ///@{
     Dbg dbg() const { return dbg_; }
-    Loc loc() const { return dbg_.loc; }
-    Sym sym() const { return dbg_.sym; }
+    Loc loc() const { return dbg_.loc(); }
+    Sym sym() const { return dbg_.sym(); }
     std::string unique_name() const; ///< name + "_" + Def::gid
     ///@}
 
@@ -613,15 +611,6 @@ private:
 ///@{
 std::ostream& operator<<(std::ostream&, const Def*);
 std::ostream& operator<<(std::ostream&, Ref);
-///@}
-
-/// @name Formatted Output
-///@{
-/// Uses @p def->loc() as Loc%ation.
-template<class T = std::logic_error, class... Args>
-[[noreturn]] void error(const Def* def, const char* fmt, Args&&... args) {
-    error(def->loc(), fmt, std::forward<Args&&>(args)...);
-}
 ///@}
 
 /// @name DefDef

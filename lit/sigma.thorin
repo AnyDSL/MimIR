@@ -2,25 +2,25 @@
 // RUN: %thorin %s -o -
 .plugin math;
 
-.Sigma Vec1 = [x: %math.F64];
-.Sigma vec1 = [X: %math.F64];
-.Sigma Vec3: *, 3;
-.Sigma Vec3: *, 3 = [x: %math.F64, y: %math.F64, z: %math.F64];
-.Sigma Vec2 = [x: %math.F64, y: %math.F64];
-.Sigma Vec4;
-.Sigma Vec4 = [x: %math.F64, y: %math.F64, z: %math.F64, w: %math.F64];
+.rec Vec1 = [x: %math.F64];
+.rec vec1 = [X: %math.F64];
+.rec Vec3 = [x: %math.F64, y: %math.F64, z: %math.F64];
+.rec Vec2 = [x: %math.F64, y: %math.F64];
+.rec Vec4 = [x: %math.F64, y: %math.F64, z: %math.F64, w: %math.F64];
 
-.Sigma Foo = [
+.rec Foo = [
     x: %math.F64,
     y: %math.F64,
-    .Sigma Bar = [
-        n: .Nat,
-        b: .Bool,
-    ];
-    bar: Bar,
+    bar:
+        .rec Bar = [
+            n: .Nat,
+            b: .Bool,
+        ];
+        Bar
 ];
 
-.Pi F = |~| .Nat -> F;
+.rec F: * = |~| .Nat -> F; // TODO make inference for F work again
+
 .lam .extern f1 v: Vec1: %math.F64 = v#x;
 .lam .extern F1 v: vec1: %math.F64 = v#X;
 .lam .extern f2 v: Vec2: %math.F64 = v#y;

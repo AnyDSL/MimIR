@@ -2,19 +2,15 @@
 #include <cstring>
 
 #include <fstream>
-#include <iostream>
-#include <stdexcept>
 
 #include <lyra/lyra.hpp>
+#include <rang.hpp>
 
 #include "thorin/config.h"
 #include "thorin/driver.h"
 
-#include "thorin/be/h/bootstrap.h"
-#include "thorin/fe/parser.h"
+#include "thorin/ast/parser.h"
 #include "thorin/pass/optimize.h"
-#include "thorin/pass/pass.h"
-#include "thorin/pass/pipelinebuilder.h"
 #include "thorin/phase/phase.h"
 #include "thorin/util/sys.h"
 
@@ -22,7 +18,7 @@ using namespace thorin;
 using namespace std::literals;
 
 int main(int argc, char** argv) {
-    enum Backends { D, Dot, H, LL, Md, Thorin, Num_Backends };
+    enum Backends { AST, D, Dot, H, LL, Md, Thorin, Num_Backends };
 
     try {
         static const auto version = "thorin command-line utility version " THORIN_VER "\n";
@@ -55,6 +51,7 @@ int main(int argc, char** argv) {
             | lyra::opt(search_paths,   "path"                )["-P"]["--plugin-path"           ]("Path to search for plugins.")
             | lyra::opt(inc_verbose                           )["-V"]["--verbose"               ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
             | lyra::opt(opt,            "level"               )["-O"]["--optimize"              ]("Optimization level (default: 2).")
+            | lyra::opt(output[AST   ], "file"                )      ["--output-ast"            ]("Directly emits AST represntation of input.")
             | lyra::opt(output[D     ], "file"                )      ["--output-d"              ]("Emits dependency file containing a rule suitable for 'make' describing the dependencies of the source file (requires --output-h).")
             | lyra::opt(output[Dot   ], "file"                )      ["--output-dot"            ]("Emits the Thorin program as a graph using Graphviz' DOT language.")
             | lyra::opt(output[H     ], "file"                )      ["--output-h"              ]("Emits a header file to be used to interface with a plugin in C++.")
@@ -125,59 +122,80 @@ int main(int argc, char** argv) {
             }
         }
 
-        // we always need standard plugins, as long as we are not in bootstrap mode
-        if (!flags.bootstrap) plugins.insert(plugins.end(), {"compile", "opt"});
-
-        if (!plugins.empty())
-            for (const auto& plugin : plugins) driver.load(plugin);
-
         if (input.empty()) throw std::invalid_argument("error: no input given");
         if (input[0] == '-' || input.substr(0, 2) == "--")
             throw std::invalid_argument("error: unknown option " + input);
 
-        auto path = fs::path(input);
-        world.set(path.filename().replace_extension().string());
-        auto parser = Parser(world);
-        parser.import(driver.sym(input), os[Md]);
+        // we always need standard plugins, as long as we are not in bootstrap mode
+        if (!flags.bootstrap) {
+            plugins.insert(plugins.begin(), "compile"s);
+            if (opt >= 2) plugins.emplace_back("opt"s);
+        }
 
-        if (auto dep = os[D]) {
-            if (auto autogen_h = output[H]; !autogen_h.empty()) {
-                *dep << autogen_h << ": ";
-                assert(!driver.imports().empty());
-                for (auto sep = ""; const auto& [path, _] : driver.imports() | std::views::drop(1)) {
-                    *dep << sep << path;
-                    sep = " \\\n ";
-                }
-            } else {
-                throw std::invalid_argument("error: --output-d requires --output-h");
+        try {
+            auto path = fs::path(input);
+            world.set(path.filename().replace_extension().string());
+
+            auto ast    = ast::AST(world);
+            auto parser = ast::Parser(ast);
+            ast::Ptrs<ast::Import> imports;
+
+            for (const auto& plugin : plugins) {
+                auto mod = parser.plugin(plugin);
+                auto import
+                    = ast.ptr<ast::Import>(Loc(), ast::Tok::Tag::K_plugin, Dbg(driver.sym(plugin)), std::move(mod));
+                imports.emplace_back(std::move(import));
             }
-            *dep << std::endl;
-        }
+            auto mod = parser.import(driver.sym(input), os[Md]);
+            mod->add_implicit_imports(std::move(imports));
+            mod->compile(ast);
 
-        if (flags.bootstrap) {
-            if (auto h = os[H])
-                bootstrap(driver, world.sym(fs::path{path}.filename().replace_extension().string()), *h);
-            opt = std::min(opt, 1);
-        }
+            if (auto s = os[AST]) {
+                Tab tab;
+                mod->stream(tab, *s);
+            }
 
-        switch (opt) {
-            case 0: break;
-            case 1: Phase::run<Cleanup>(world); break;
-            case 2:
-                parser.import("opt");
-                optimize(world);
-                break;
-            default: error("illegal optimization level '{}'", opt);
-        }
+            if (auto dep = os[D]) {
+                if (auto autogen_h = output[H]; !autogen_h.empty()) {
+                    *dep << autogen_h << ": ";
+                    assert(!driver.imports().empty());
+                    for (auto sep = ""; const auto& [path, _] : driver.imports() | std::views::drop(1)) {
+                        *dep << sep << path;
+                        sep = " \\\n ";
+                    }
+                } else {
+                    throw std::invalid_argument("error: --output-d requires --output-h");
+                }
+                *dep << std::endl;
+            }
 
-        if (os[Thorin]) world.dump(*os[Thorin]);
-        if (os[Dot]) world.dot(*os[Dot], dot_all_annexes, dot_follow_types);
+            if (flags.bootstrap) {
+                if (auto h = os[H]) {
+                    auto plugin = world.sym(fs::path{path}.filename().replace_extension().string());
+                    ast.bootstrap(plugin, *h);
+                }
+                opt = std::min(opt, 1);
+            }
 
-        if (os[LL]) {
-            if (auto backend = driver.backend("ll"))
-                backend(world, *os[LL]);
-            else
-                error("'ll' emitter not loaded; try loading 'mem' plugin");
+            switch (opt) {
+                case 0: break;
+                case 1: Phase::run<Cleanup>(world); break;
+                case 2: optimize(world); break;
+                default: error("illegal optimization level '{}'", opt);
+            }
+
+            if (auto s = os[Dot]) world.dot(*s, dot_all_annexes, dot_follow_types);
+            if (auto s = os[Thorin]) world.dump(*s);
+
+            if (auto s = os[LL]) {
+                if (auto backend = driver.backend("ll"))
+                    backend(world, *s);
+                else
+                    error("'ll' emitter not loaded; try loading 'mem' plugin");
+            }
+        } catch (const Error& e) { // e.loc.path doesn't exist anymore in outer scope so catch Error here
+            std::cerr << e;
+            return EXIT_FAILURE;
         }
     } catch (const std::exception& e) {
         errln("{}", e.what());

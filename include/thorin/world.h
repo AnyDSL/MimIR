@@ -1,6 +1,5 @@
 #pragma once
 
-#include <sstream>
 #include <string>
 #include <string_view>
 #include <type_traits>
@@ -17,7 +16,6 @@
 #include "thorin/tuple.h"
 
 #include "thorin/util/dbg.h"
-#include "thorin/util/hash.h"
 #include "thorin/util/log.h"
 
 namespace thorin {
@@ -53,7 +51,7 @@ public:
 #endif
         friend void swap(State& s1, State& s2) noexcept {
             using std::swap;
-            assert((!s1.pod.loc || !s2.pod.loc) && "Why is emit_loc() still set?");
+            assert((!s1.pod.loc || !s2.pod.loc) && "Why is get_loc() still set?");
             swap(s1.pod, s2.pod);
 #ifdef THORIN_ENABLE_CHECKS
             swap(s1.breakpoints, s2.breakpoints);
@@ -93,8 +91,28 @@ public:
 
     /// Retrive compile Flags.
     Flags& flags();
+    ///@}
 
-    Loc& emit_loc() { return state_.pod.loc; }
+    /// @name Loc
+    ///@{
+    struct ScopedLoc {
+        ScopedLoc(World& world, Loc old_loc)
+            : world_(world)
+            , old_loc_(old_loc) {}
+        ~ScopedLoc() { world_.set_loc(old_loc_); }
+
+    private:
+        World& world_;
+        Loc old_loc_;
+    };
+
+    Loc get_loc() const { return state_.pod.loc; }
+    void set_loc(Loc loc = {}) { state_.pod.loc = loc; }
+    ScopedLoc push(Loc loc) {
+        auto sl = ScopedLoc(*this, get_loc());
+        set_loc(loc);
+        return sl;
+    }
     ///@}
 
     /// @name Sym
@@ -167,7 +185,7 @@ public:
     template<class Id> const Def* annex(Id id) {
         auto flags = static_cast<flags_t>(id);
         if (auto i = move_.annexes.find(flags); i != move_.annexes.end()) return i->second;
-        error("Axiom with ID '{}' not found; demangled plugin name is '{}'", flags, Annex::demangle(*this, flags));
+        error("Axiom with ID '{x}' not found; demangled plugin name is '{}'", flags, Annex::demangle(driver(), flags));
     }
 
     /// Get Axiom from a plugin.
@@ -176,6 +194,9 @@ public:
     template<annex_without_subs id> const Def* annex() { return annex(Annex::Base<id>); }
 
     const Def* register_annex(flags_t f, const Def*);
+    const Def* register_annex(plugin_t p, tag_t t, sub_t s, const Def* def) {
+        return register_annex(p | (flags_t(t) << 8_u64) | flags_t(s), def);
+    }
     ///@}
 
     /// @name Univ, Type, Var, Proxy, Infer
@@ -243,13 +264,13 @@ public:
     /// Pi with codom thorin::Bot%tom
     ///@{
     // clang-format off
-    const Pi* cn() { return cn(sigma()); }
-    const Pi* cn(Ref  dom            ) { return pi(      dom ,         Bot()); }
-    const Pi* cn(Defs dom            ) { return cn(sigma(dom)               ); }
-    const Pi* fn(Ref  dom, Ref  codom) { return cn({     dom ,    cn(codom)}); }
-    const Pi* fn(Defs dom, Ref  codom) { return fn(sigma(dom),        codom ); }
-    const Pi* fn(Ref  dom, Defs codom) { return fn(      dom ,  sigma(codom)); }
-    const Pi* fn(Defs dom, Defs codom) { return fn(sigma(dom ), sigma(codom)); }
+    const Pi* cn(                                           ) { return cn(sigma(   ),                   false); }
+    const Pi* cn(Ref  dom,             bool implicit = false) { return pi(      dom ,    type_bot(), implicit); }
+    const Pi* cn(Defs dom,             bool implicit = false) { return cn(sigma(dom),                implicit); }
+    const Pi* fn(Ref  dom, Ref  codom, bool implicit = false) { return cn({     dom ,    cn(codom)}, implicit); }
+    const Pi* fn(Defs dom, Ref  codom, bool implicit = false) { return fn(sigma(dom),       codom,   implicit); }
+    const Pi* fn(Ref  dom, Defs codom, bool implicit = false) { return fn(      dom , sigma(codom),  implicit); }
+    const Pi* fn(Defs dom, Defs codom, bool implicit = false) { return fn(sigma(dom), sigma(codom),  implicit); }
     // clang-format on
     ///@}
 
@@ -413,7 +434,8 @@ public:
     Ref ext(Ref type);
     Ref bot(Ref type) { return ext<false>(type); }
     Ref top(Ref type) { return ext<true>(type); }
-    Ref Bot() { return data_.Bot; }
+    Ref type_bot() { return data_.type_bot; }
+    Ref type_top() { return data_.type_top; }
     Ref top_nat() { return data_.top_nat; }
     template<bool Up> TBound<Up>* mut_bound(Ref type, size_t size) { return insert<TBound<Up>>(size, type, size); }
     /// A *mut*able Bound of Type @p l%evel.
@@ -534,7 +556,7 @@ private:
     template<class T, class... Args> const T* unify(size_t num_ops, Args&&... args) {
         auto state = move_.arena.state();
         auto def   = allocate<T>(num_ops, std::forward<Args&&>(args)...);
-        if (auto loc = emit_loc()) def->set(loc);
+        if (auto loc = get_loc()) def->set(loc);
         assert(!def->isa_mut());
 #ifdef THORIN_ENABLE_CHECKS
         if (flags().trace_gids) outln("{}: {} - {}", def->node_name(), def->gid(), def->flags());
@@ -566,7 +588,7 @@ private:
 
     template<class T, class... Args> T* insert(size_t num_ops, Args&&... args) {
         auto def = allocate<T>(num_ops, std::forward<Args&&>(args)...);
-        if (auto loc = emit_loc()) def->set(loc);
+        if (auto loc = get_loc()) def->set(loc);
 #ifdef THORIN_ENABLE_CHECKS
         if (flags().trace_gids) outln("{}: {} - {}", def->node_name(), def->gid(), def->flags());
         if (breakpoints().contains(def->gid())) fe::breakpoint();
@@ -638,7 +660,8 @@ private:
         const Univ* univ;
         const Type* type_0;
         const Type* type_1;
-        const thorin::Bot* Bot;
+        const Bot* type_bot;
+        const Top* type_top;
         const Def* type_bool;
         const Top* top_nat;
         const Sigma* sigma;

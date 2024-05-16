@@ -1,6 +1,6 @@
-#include "helpers.h"
-
 #include <algorithm>
+
+#include <gtest/gtest.h>
 
 namespace thorin::gtest {
 

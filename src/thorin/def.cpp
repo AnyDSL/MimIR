@@ -1,16 +1,9 @@
 #include "thorin/def.h"
 
 #include <algorithm>
-#include <optional>
-#include <ranges>
-#include <stack>
 
 #include "thorin/rewrite.h"
 #include "thorin/world.h"
-
-#include "thorin/analyses/scope.h"
-
-#include "fe/assert.h"
 
 using namespace std::literals;
 
@@ -43,6 +36,7 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags)
     } else {
         vars_.local = Vars();
         muts_.local = Muts();
+
         for (auto op : extended_ops()) {
             vars_.local = world().merge(vars_.local, op->local_vars());
             muts_.local = world().merge(muts_.local, op->local_muts());
@@ -306,8 +300,10 @@ Def* Def::set_type(const Def* type) {
 void Def::unset_type() {
     if (type_) {
         invalidate();
-        assert(type_->uses_.contains(Use(this, Use::Type)));
-        type_->uses_.erase(Use(this, Use::Type));
+        if (!type_->dep_const()) {
+            assert(type_->uses_.contains(Use(this, Use::Type)));
+            type_->uses_.erase(Use(this, Use::Type));
+        }
         type_ = nullptr;
     }
 }
@@ -451,15 +447,8 @@ Defs Def::extended_ops() const {
 }
 
 #ifndef NDEBUG
-const Def* Def::debug_prefix(std::string prefix) const {
-    dbg_.sym = world().sym(prefix + sym().str());
-    return this;
-}
-
-const Def* Def::debug_suffix(std::string suffix) const {
-    dbg_.sym = world().sym(sym().str() + suffix);
-    return this;
-}
+const Def* Def::debug_prefix(std::string prefix) const { return dbg_.set(world().sym(prefix + sym().str())), this; }
+const Def* Def::debug_suffix(std::string suffix) const { return dbg_.set(world().sym(sym().str() + suffix)), this; }
 #endif
 
 // clang-format off

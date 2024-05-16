@@ -36,10 +36,9 @@
 ///
 /// ### Phases
 ///
-.let direct_phases = {
-  %compile.combined_phase (%compile.phase_list
-    (%compile.single_pass_phase %direct.ds2cps_pass)
-    (%compile.single_pass_phase %direct.cps2ds_pass)
-    optimization_phase
-  )
-};
+.let direct_phases =
+    %compile.combined_phase
+        (%compile.phase_list
+            (%compile.single_pass_phase %direct.ds2cps_pass)
+            (%compile.single_pass_phase %direct.cps2ds_pass)
+            optimization_phase);

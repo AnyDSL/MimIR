@@ -93,13 +93,4 @@ void* Driver::get_fun_ptr(Sym plugin, const char* name) {
     return nullptr;
 }
 
-std::pair<Annex&, bool> Driver::name2annex(Sym sym, Sym plugin, Sym tag, Loc loc) {
-    auto& annexes = plugin2annexes_[plugin];
-    if (annexes.size() > std::numeric_limits<tag_t>::max())
-        error(loc, "exceeded maxinum number of axioms in current plugin");
-
-    auto [it, is_new] = annexes.emplace(sym, Annex{plugin, tag, annexes.size()});
-    return {it->second, is_new};
-}
-
 } // namespace thorin

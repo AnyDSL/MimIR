@@ -5,15 +5,19 @@
 
 #include <thorin/driver.h>
 
-#include <thorin/fe/lexer.h>
+#include <thorin/ast/ast.h>
+#include <thorin/ast/lexer.h>
 
 using namespace std::literals;
 using namespace thorin;
+using namespace thorin::ast;
 
 TEST(Lexer, Toks) {
     Driver driver;
-    std::istringstream is("{ } ( ) [ ] ‹ › « » : , . .lam .Pi λ Π 23₀₁₂₃₄₅₆₇₈₉");
-    Lexer lexer(driver.world(), is);
+    auto& w  = driver.world();
+    auto ast = AST(w);
+    std::istringstream is("{ } ( ) [ ] ‹ › « » : , . .lam λ Π 23₀₁₂₃₄₅₆₇₈₉");
+    Lexer lexer(ast, is);
 
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_brace_l));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_brace_r));
@@ -29,7 +33,6 @@ TEST(Lexer, Toks) {
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_comma));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_dot));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::K_lam));
-    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::K_Pi));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_lm));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_Pi));
     auto tok = lexer.lex();
@@ -40,30 +43,46 @@ TEST(Lexer, Toks) {
 
 TEST(Lexer, Errors) {
     Driver driver;
+    auto& w  = driver.world();
+    auto ast = ast::AST(w);
     std::istringstream is1("asdf \xc0\xc0");
-    Lexer l1(driver.world(), is1);
+    Lexer l1(ast, is1);
     l1.lex();
-    EXPECT_ANY_THROW(l1.lex());
+    l1.lex();
+    EXPECT_GE(ast.error().num_errors(), 1);
+    EXPECT_TRUE(ast.error().msgs().front().str.starts_with("invalid UTF-8"));
+    ast.error().clear();
 
     std::istringstream is2("foo \xaa");
-    Lexer l2(driver.world(), is2);
+    Lexer l2(ast, is2);
     l2.lex();
-    EXPECT_ANY_THROW(l2.lex());
+    l2.lex();
+    EXPECT_GE(ast.error().num_errors(), 1);
+    EXPECT_TRUE(ast.error().msgs().front().str.starts_with("invalid UTF-8"));
+    ast.error().clear();
 
     std::istringstream is3("+");
-    Lexer l3(driver.world(), is3);
-    EXPECT_ANY_THROW(l3.lex());
+    Lexer l3(ast, is3);
+    l3.lex();
+    EXPECT_GE(ast.error().num_errors(), 1);
+    EXPECT_TRUE(ast.error().msgs().front().str.starts_with("stray"));
+    ast.error().clear();
 
     std::istringstream is4("-");
-    Lexer l4(driver.world(), is4);
-    EXPECT_ANY_THROW(l4.lex());
+    Lexer l4(ast, is4);
+    l4.lex();
+    EXPECT_GE(ast.error().num_errors(), 1);
+    EXPECT_TRUE(ast.error().msgs().front().str.starts_with("stray"));
+    ast.error().clear();
 }
 
 TEST(Lexer, Eof) {
     Driver driver;
+    auto& w  = driver.world();
+    auto ast = AST(w);
     std::istringstream is("");
 
-    Lexer lexer(driver.world(), is);
+    Lexer lexer(ast, is);
     for (int i = 0; i < 10; i++) EXPECT_TRUE(lexer.lex().isa(Tok::Tag::EoF));
 }
 
@@ -71,10 +90,11 @@ class Real : public testing::TestWithParam<int> {};
 
 TEST_P(Real, sign) {
     Driver driver;
-    World& w = driver.world();
+    auto& w  = driver.world();
+    auto ast = AST(w);
 
     // clang-format off
-    auto check = [&w](std::string s, f64 r) {
+    auto check = [&ast](std::string s, f64 r) {
         const auto sign = GetParam();
         switch (sign) {
             case 0: break;
@@ -84,7 +104,7 @@ TEST_P(Real, sign) {
         }
 
         std::istringstream is(s);
-        Lexer lexer(w, is);
+        Lexer lexer(ast, is);
 
         auto tag = lexer.lex();
         EXPECT_TRUE(tag.isa(Tok::Tag::L_f));
@@ -103,12 +123,18 @@ TEST_P(Real, sign) {
     // clang-format on
 
     std::istringstream is1("0x2.34");
-    Lexer l1(w, is1);
-    EXPECT_ANY_THROW(l1.lex());
+    Lexer l1(ast, is1);
+    l1.lex();
+    EXPECT_EQ(ast.error().num_errors(), 1);
+    EXPECT_TRUE(ast.error().msgs().front().str == "hexadecimal floating constants require an exponent"sv);
+    ast.error().clear();
 
     std::istringstream is2("2.34e");
-    Lexer l2(w, is2);
-    EXPECT_ANY_THROW(l2.lex());
+    Lexer l2(ast, is2);
+    l2.lex();
+    EXPECT_EQ(ast.error().num_errors(), 1);
+    EXPECT_TRUE(ast.error().msgs().front().str == "exponent has no digits");
+    ast.error().clear();
 }
 
 INSTANTIATE_TEST_SUITE_P(Lexer, Real, testing::Range(0, 3));

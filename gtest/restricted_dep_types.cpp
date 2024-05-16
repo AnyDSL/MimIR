@@ -1,12 +1,10 @@
-#include <fstream>
-#include <sstream>
 #include <vector>
 
 #include <gtest/gtest-param-test.h>
 #include <gtest/gtest-spi.h>
 #include <gtest/gtest.h>
 
-#include <thorin/fe/parser.h>
+#include <thorin/ast/parser.h>
 #include <thorin/pass/beta_red.h>
 #include <thorin/pass/eta_exp.h>
 #include <thorin/pass/eta_red.h>
@@ -19,6 +17,7 @@
 #include <thorin/plug/math/math.h>
 #include <thorin/plug/mem/mem.h>
 
+using namespace std::literals;
 using namespace thorin;
 using namespace thorin::plug;
 
@@ -27,9 +26,8 @@ using namespace thorin::plug;
 TEST(RestrictedDependentTypes, join_singleton) {
     auto test_on_world = [](auto test) {
         Driver driver;
-        World& w    = driver.world();
-        auto parser = Parser(w);
-        for (auto plugin : {"compile", "mem", "core", "math"}) parser.plugin(plugin);
+        World& w = driver.world();
+        ast::load_plugins(w, {"compile"s, "mem"s, "core"s, "math"s});
 
         auto i32_t = w.type_i32();
         auto i64_t = w.type_i64();
@@ -218,9 +216,8 @@ TEST(RestrictedDependentTypes, join_singleton) {
 
 TEST(RestrictedDependentTypes, ll) {
     Driver driver;
-    World& w    = driver.world();
-    auto parser = Parser(w);
-    for (auto plugin : {"compile", "mem", "core", "math"}) parser.plugin(plugin);
+    World& w = driver.world();
+    ast::load_plugins(w, {"compile"s, "mem"s, "core"s, "math"s});
 
     auto mem_t  = w.annex<mem::M>();
     auto i32_t  = w.type_i32();

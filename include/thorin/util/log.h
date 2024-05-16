@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ostream>
+
 #include <rang.hpp>
 
 #include "thorin/flags.h"
@@ -8,6 +9,8 @@
 #include "thorin/util/dbg.h"
 
 namespace thorin {
+
+namespace fs = std::filesystem;
 
 /// Facility to log what you are doing.
 /// @see @ref fmt "Formatted Output", @ref log "Logging Macros"

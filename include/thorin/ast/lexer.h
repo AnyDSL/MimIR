@@ -5,10 +5,13 @@
 #include <absl/container/flat_hash_map.h>
 #include <fe/lexer.h>
 
-#include "thorin/fe/tok.h"
+#include "thorin/ast/tok.h"
 
-namespace thorin {
-class World;
+namespace thorin::ast {
+
+namespace fs = std::filesystem;
+
+class AST;
 
 class Lexer : public fe::Lexer<3, Lexer> {
     using Super = fe::Lexer<3, Lexer>;
@@ -16,9 +19,9 @@ class Lexer : public fe::Lexer<3, Lexer> {
 public:
     /// Creates a lexer to read Thorin files (see [Lexical Structure](@ref lex)).
     /// If @p md is not `nullptr`, a Markdown output will be generated.
-    Lexer(World& world, std::istream& istream, const fs::path* path = nullptr, std::ostream* md = nullptr);
+    Lexer(AST&, std::istream&, const fs::path* path = nullptr, std::ostream* md = nullptr);
 
-    World& world() { return world_; }
+    AST& ast() { return ast_; }
     const fs::path* path() const { return loc_.path; }
     Loc loc() const { return loc_; }
     Tok lex();
@@ -53,7 +56,7 @@ private:
         if (md_) *md_ << "```\n";
     }
 
-    World& world_;
+    AST& ast_;
     std::ostream* md_;
     bool out_ = true;
     fe::SymMap<Tok::Tag> keywords_;
@@ -62,4 +65,4 @@ private:
     friend class fe::Lexer<3, Lexer>;
 };
 
-} // namespace thorin
+} // namespace thorin::ast

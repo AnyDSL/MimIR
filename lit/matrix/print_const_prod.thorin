@@ -10,8 +10,8 @@
 .let MT1 = (2, (2,4), %math.F64);
 .let MT2 = (2, (4,3), %math.F64);
 
-.con print_int_matrix    [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (⊤:.Nat,⊤:.Nat), .I32), return : .Cn [%mem.M]];
-.con print_double_matrix [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (⊤:.Nat,⊤:.Nat), %math.F64), return : .Cn [%mem.M]];
+.ccon print_int_matrix    [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (⊤:.Nat,⊤:.Nat), .I32), return : .Cn [%mem.M]];
+.ccon print_double_matrix [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (⊤:.Nat,⊤:.Nat), %math.F64), return : .Cn [%mem.M]];
 
 .con print_int_matrix_wrap [mem: %mem.M, k: .Nat, l: .Nat, m: %matrix.Mat (2, (k,l), .I32), return : .Cn [%mem.M]] =
     .let m2 = %core.bitcast (%matrix.Mat (2,(⊤:.Nat,⊤:.Nat),.I32)) m;

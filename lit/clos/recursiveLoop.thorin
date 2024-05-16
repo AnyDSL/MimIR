@@ -7,9 +7,9 @@
 .let i8 = .I8;
 .let pb_type = .Cn [%mem.M, .Cn [%mem.M]];
 
-.con printInteger [mem: %mem.M, val: .I32, return : .Cn [%mem.M]];
-.con printIntegerNL [mem: %mem.M, val: .I32, return : .Cn [%mem.M]];
-.con printNL [mem: %mem.M, return : .Cn [%mem.M]];
+.ccon printInteger [mem: %mem.M, val: .I32, return : .Cn [%mem.M]];
+.ccon printIntegerNL [mem: %mem.M, val: .I32, return : .Cn [%mem.M]];
+.ccon printNL [mem: %mem.M, return : .Cn [%mem.M]];
 
 .let size = 10;
 

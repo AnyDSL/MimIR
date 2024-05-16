@@ -1,4 +1,0 @@
-// RUN: (! %thorin %s 2>&1) | FileCheck %s
-.Sigma S: *, 2 = [x: .Nat, .Nat];
-.Sigma S: *, 2 = [x: .Nat, .Nat];
-// CHECK: error: redefinition

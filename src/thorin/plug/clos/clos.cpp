@@ -118,7 +118,11 @@ const Sigma* isa_clos_type(Ref def) {
     return (pi && Pi::isa_cn(pi) && pi->num_ops() > 1_u64 && pi->dom(Clos_Env_Param) == var) ? sig : nullptr;
 }
 
-Sigma* clos_type(const Pi* pi) { return ctype(pi->world(), pi->doms(), nullptr)->as_mut<Sigma>(); }
+Sigma* clos_type(const Pi* pi) {
+    auto& w   = pi->world();
+    auto doms = pi->doms();
+    return ctype(w, doms, nullptr)->as_mut<Sigma>();
+}
 
 const Pi* clos_type_to_pi(Ref ct, Ref new_env_type) {
     assert(isa_clos_type(ct));

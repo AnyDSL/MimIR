@@ -1,3 +1,0 @@
-// RUN: (! %thorin %s 2>&1) | FileCheck %s
-.lam f!()@(.tt) = .tt;
-// CHECK: error: filter already specified

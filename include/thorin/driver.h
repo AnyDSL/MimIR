@@ -2,13 +2,13 @@
 
 #include <list>
 
+#include <absl/container/node_hash_map.h>
+
 #include "thorin/flags.h"
 #include "thorin/plugin.h"
 #include "thorin/world.h"
 
 #include "thorin/util/log.h"
-
-#include "absl/container/node_hash_map.h"
 
 namespace thorin {
 
@@ -76,12 +76,6 @@ public:
     auto backend(std::string_view name) { return lookup(backends_, name); }
     ///@}
 
-    /// @name Manage Annex
-    ///@{
-    const auto& plugin2annxes(Sym plugin) { return plugin2annexes_[plugin]; }
-    std::pair<Annex&, bool> name2annex(Sym sym, Sym plugin, Sym tag, Loc loc);
-    ///@}
-
 private:
     // This must go *first* so plugins will be unloaded *last* in the d'tor; otherwise funny things might happen ...
     absl::node_hash_map<Sym, Plugin::Handle> plugins_;
@@ -94,7 +88,6 @@ private:
     Passes passes_;
     Normalizers normalizers_;
     std::deque<std::pair<fs::path, Sym>> imports_;
-    fe::SymMap<fe::SymMap<Annex>> plugin2annexes_;
 };
 
 #define GET_FUN_PTR(plugin, f) get_fun_ptr<decltype(f)>(plugin, #f)

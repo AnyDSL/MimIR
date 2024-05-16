@@ -1,4 +1,3 @@
-
 #include "thorin/plug/matrix/matrix.h"
 
 #include <thorin/plugin.h>

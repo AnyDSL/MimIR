@@ -4,8 +4,8 @@
 // RUN: %t | FileCheck %s
 .plugin core;
 
-.fun println_char[%mem.M, .I8]: %mem.M;
-.fun print_str[%mem.M, %mem.Ptr0 «⊤:.Nat; .I8»]: %mem.M;
+.cfun println_char[%mem.M, .I8]: %mem.M;
+.cfun print_str[%mem.M, %mem.Ptr0 «⊤:.Nat; .I8»]: %mem.M;
 
 .fun .extern main(mem: %mem.M, argc: .I32, argv: %mem.Ptr0 (%mem.Ptr0 .I8)): [%mem.M, .I32] =
     .let (`mem, p1) = %mem.slot («15; .I8», 0) (mem, 0);

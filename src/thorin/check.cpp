@@ -225,20 +225,42 @@ Ref Check::is_uniform(Defs defs) {
 void Arr::check() {
     auto t = body()->unfold_type();
     if (!Check::alpha(t, type()))
-        error(type(), "declared sort '{}' of array does not match inferred one '{}'", type(), t);
+        error(type()->loc(), "declared sort '{}' of array does not match inferred one '{}'", type(), t);
+    if (t != type()) set_type(t);
+}
+
+Ref Sigma::infer(World& w, Defs ops) {
+    if (ops.size() == 0) return w.type<1>();
+    auto kinds = DefVec(ops.size(), [ops](size_t i) { return ops[i]->unfold_type(); });
+    return w.umax<Sort::Kind>(kinds);
 }
 
 void Sigma::check() {
-    // TODO
+    auto t = infer(world(), ops());
+    if (t != type()) {
+        // TODO HACK
+        if (Check::alpha(t, type()))
+            set_type(t);
+        else
+            world().WLOG(
+                "incorrect type '{}' for '{}'. Correct one would be: '{}'. I'll keep this one nevertheless due to "
+                "bugs in clos-conv",
+                type(), this, t);
+    }
 }
 
 void Lam::check() {
-    if (!Check::alpha(filter()->type(), world().type_bool()))
-        error(filter(), "filter '{}' of lambda is of type '{}' but must be of type '.Bool'", filter(),
+    if (!Check::alpha(filter()->type(), world().type_bool())) {
+        error(filter()->loc(), "filter '{}' of lambda is of type '{}' but must be of type '.Bool'", filter(),
               filter()->type());
-    if (!Check::assignable(codom(), body()))
-        error(body(), "body '{}' of lambda is of type \n'{}' but its codomain is of type \n'{}'", body(),
-              body()->type(), codom());
+    }
+    if (!Check::assignable(codom(), body())) {
+        throw Error()
+            .error(body()->loc(), "body of function is not assignable to declared codomain")
+            .note(body()->loc(), "body: '{}'", body())
+            .note(body()->loc(), "type: '{}'", body()->type())
+            .note(codom()->loc(), "codomain: '{}'", codom());
+    }
 }
 
 Ref Pi::infer(Ref dom, Ref codom) {
@@ -249,7 +271,8 @@ Ref Pi::infer(Ref dom, Ref codom) {
 void Pi::check() {
     auto t = infer(dom(), codom());
     if (!Check::alpha(t, type()))
-        error(type(), "declared sort '{}' of function type does not match inferred one '{}'", type(), t);
+        error(type()->loc(), "declared sort '{}' of function type does not match inferred one '{}'", type(), t);
+    if (t != type()) set_type(t);
 }
 
 #ifndef DOXYGEN

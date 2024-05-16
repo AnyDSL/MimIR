@@ -2,7 +2,6 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 
 #include <absl/container/btree_map.h>
 #include <absl/container/flat_hash_map.h>
@@ -12,6 +11,7 @@
 
 namespace thorin {
 
+class Driver;
 class PipelineBuilder;
 
 /// @name Plugin Interface
@@ -51,17 +51,7 @@ THORIN_EXPORT thorin::Plugin thorin_get_plugin();
 
 /// Holds info about an entity defined within a Plugin (called *Annex*).
 struct Annex {
-    Annex(Sym plugin, Sym tag, flags_t tag_id)
-        : plugin(plugin)
-        , tag(tag)
-        , tag_id(tag_id) {}
-
-    Sym plugin;
-    Sym tag;
-    flags_t tag_id;
-    std::deque<std::deque<Sym>> subs; ///< List of subs which is a list of aliases.
-    Sym normalizer;
-    bool pi = false;
+    Annex() = delete;
 
     /// @name Mangling Plugin Name
     ///@{
@@ -86,13 +76,13 @@ struct Annex {
     /// | 54-63:  | `0`-`9` |
     /// The 0 is special and marks the end of the name if the name has less than 8 chars.
     /// @returns `std::nullopt` if encoding is not possible.
-    static std::optional<plugin_t> mangle(Sym s);
+    static std::optional<plugin_t> mangle(Sym plugin);
 
     /// Reverts an Axiom::mangle%d string to a Sym.
     /// Ignores lower 16-bit of @p u.
-    static Sym demangle(World&, plugin_t u);
+    static Sym demangle(Driver&, plugin_t plugin);
 
-    static std::array<Sym, 3> split(World&, Sym);
+    static std::tuple<Sym, Sym, Sym> split(Driver&, Sym);
     ///@}
 
     /// @name Annex Name
