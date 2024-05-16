@@ -13,11 +13,9 @@ var classthorin_1_1Driver =
     [ "load", "classthorin_1_1Driver.html#a3f1c5966b47bbaabd3e2d5cf67e8f403", null ],
     [ "load", "classthorin_1_1Driver.html#a4a6dce5305058ea7173c665ee4e6d418", null ],
     [ "log", "classthorin_1_1Driver.html#a591d82f03685b27cbfd9e1ab549d3648", null ],
-    [ "name2annex", "classthorin_1_1Driver.html#a178ae9fc7b622e5c475d273c6aeac1b3", null ],
     [ "normalizer", "classthorin_1_1Driver.html#ac3ed95cd5e8784728f76f24f67bc349f", null ],
     [ "normalizer", "classthorin_1_1Driver.html#a89d8fb02daccc496f3670f8ad26a1aba", null ],
     [ "pass", "classthorin_1_1Driver.html#ab7408ae856ee251c92fed867832f1090", null ],
-    [ "plugin2annxes", "classthorin_1_1Driver.html#a383db117321ea975bdf32a50b2de2eab", null ],
     [ "search_paths", "classthorin_1_1Driver.html#a5d932eb2868df04e7fa6da9481e38626", null ],
     [ "world", "classthorin_1_1Driver.html#a49bf53fc0f6930391779ef722713c57e", null ]
 ];

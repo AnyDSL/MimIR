@@ -14,7 +14,7 @@ var searchData=
   ['hash_5fbegin_11',['hash_begin',['../namespacethorin.html#a45953d358ff771ff89168ecc274b7d2b',1,'thorin::hash_begin(T val)'],['../namespacethorin.html#a25e65e2898328d7df97d05cbe8263220',1,'thorin::hash_begin()']]],
   ['hash_5fcombine_12',['hash_combine',['../namespacethorin.html#a3e8bff0379df3f8e717e43f3c1aad22f',1,'thorin::hash_combine(hash_t seed, T v)'],['../namespacethorin.html#acf896db08a5279cdb1f61589607f055b',1,'thorin::hash_combine(hash_t seed, T *val)'],['../namespacethorin.html#afa8ec846210cd2e5bff23fc963021ca7',1,'thorin::hash_combine(hash_t seed, T val, Args &amp;&amp;... args)']]],
   ['hash_5ft_13',['hash_t',['../namespacethorin.html#a63fc98b747386959626beff8195c9910',1,'thorin']]],
-  ['head_14',['head',['../structthorin_1_1ll_1_1BB.html#ab6c05d26f3078afff39a6cb5da9d33b2',1,'thorin::ll::BB::head()'],['../classthorin_1_1LoopTreeBuilder.html#af2176b1acfc3d10dc70c6e8915000925',1,'thorin::LoopTreeBuilder::Head'],['../classthorin_1_1LoopTree_1_1Head.html',1,'thorin::LoopTree&lt; forward &gt;::Head']]],
+  ['head_14',['head',['../classthorin_1_1LoopTreeBuilder.html#af2176b1acfc3d10dc70c6e8915000925',1,'thorin::LoopTreeBuilder::Head'],['../structthorin_1_1ll_1_1BB.html#ab6c05d26f3078afff39a6cb5da9d33b2',1,'thorin::ll::BB::head()'],['../classthorin_1_1LoopTree_1_1Head.html',1,'thorin::LoopTree&lt; forward &gt;::Head']]],
   ['high_20level_20matrix_20operations_15',['High-level matrix operations',['../matrix.html#autotoc_md174',1,'']]],
   ['highlighting_16',['Syntax Highlighting',['../coding.html#autotoc_md13',1,'']]],
   ['hlt_17',['hlt',['../namespacethorin_1_1plug_1_1core.html#a34883ef48fb26b0e45efa488f550ca56ad16202cf286b1c103bbfc886379c8033',1,'thorin::plug::core']]],

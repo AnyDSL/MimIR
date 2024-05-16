@@ -118,7 +118,36 @@ $(document).ready(function(){initNavTree('dbg_8cpp_source.html',''); initResizab
   <div class="headertitle"><div class="title">dbg.cpp</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="dbg_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &lt;fe/loc.cpp.h&gt;</span></div>
+<a href="dbg_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="dbg_8h.html">thorin/util/dbg.h</a>&quot;</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;fe/loc.cpp.h&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin.html">thorin</a> {</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="foldopen" id="foldopen00007" data-start="{" data-end="}">
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="classthorin_1_1Error.html#ac503a53b2e5767eb6347c6cef3353bd8">    7</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classthorin_1_1Error.html#ac503a53b2e5767eb6347c6cef3353bd8">Error::clear</a>() {</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    num_errors_   = 0;</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    num_warnings_ = 0;</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    num_notes_    = 0;</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    msgs_.clear();</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>}</div>
+</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="comment"></span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="comment">/// If errors occured, claim them and throw; if warnings occured, claim them and report to @p os.</span></div>
+<div class="foldopen" id="foldopen00015" data-start="{" data-end="}">
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="classthorin_1_1Error.html#a69e6a146940fbc85a605afca00aca282">   15</a></span><span class="comment"></span><span class="keywordtype">void</span> <a class="code hl_function" href="classthorin_1_1Error.html#a69e6a146940fbc85a605afca00aca282">Error::ack</a>(std::ostream&amp; os) {</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keyword">auto</span> e = std::move(*<span class="keyword">this</span>);</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keywordflow">if</span> (e.num_errors() != 0) <span class="keywordflow">throw</span> e;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keywordflow">if</span> (e.num_warnings() != 0) <a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(os, <span class="stringliteral">&quot;{} warning(s) encountered\n{}&quot;</span>, e.num_warnings(), e);</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>}</div>
+</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>} <span class="comment">// namespace thorin</span></div>
+<div class="ttc" id="aclassthorin_1_1Error_html_a69e6a146940fbc85a605afca00aca282"><div class="ttname"><a href="classthorin_1_1Error.html#a69e6a146940fbc85a605afca00aca282">thorin::Error::ack</a></div><div class="ttdeci">void ack(std::ostream &amp;os=std::cerr)</div><div class="ttdoc">If errors occured, claim them and throw; if warnings occured, claim them and report to os.</div><div class="ttdef"><b>Definition</b> <a href="dbg_8cpp_source.html#l00015">dbg.cpp:15</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Error_html_ac503a53b2e5767eb6347c6cef3353bd8"><div class="ttname"><a href="classthorin_1_1Error.html#ac503a53b2e5767eb6347c6cef3353bd8">thorin::Error::clear</a></div><div class="ttdeci">void clear()</div><div class="ttdef"><b>Definition</b> <a href="dbg_8cpp_source.html#l00007">dbg.cpp:7</a></div></div>
+<div class="ttc" id="adbg_8h_html"><div class="ttname"><a href="dbg_8h.html">dbg.h</a></div></div>
+<div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition</b> <a href="cfg_8h_source.html#l00011">cfg.h:11</a></div></div>
+<div class="ttc" id="anamespacethorin_html_a7dae34cc4eb75fe0cf5a914431353c8c"><div class="ttname"><a href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">thorin::print</a></div><div class="ttdeci">std::ostream &amp; print(std::ostream &amp;os, const char *s)</div><div class="ttdoc">Base case.</div><div class="ttdef"><b>Definition</b> <a href="print_8cpp_source.html#l00005">print.cpp:5</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

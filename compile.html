@@ -152,9 +152,9 @@ Types</h1>
 <h2><a class="anchor" id="autotoc_md99"></a>
 %compile.PassList</h2>
 <p>Types for functions that accept an arbitrary number of phases and passes respectively.</p>
-<div class="fragment"><div class="line">.Pi %compile.Pipeline:      □ = Π %compile.Phase -&gt; %compile.Pipeline;</div>
-<div class="line">.Pi %compile.PassList:      □ = Π %compile.Pass  -&gt; %compile.PassList;</div>
-<div class="line">.Pi %compile.CombinedPhase: □ = Π %compile.Phase -&gt; %compile.CombinedPhase;</div>
+<div class="fragment"><div class="line">.rec %compile.Pipeline:      □ = Π %compile.Phase -&gt; %compile.Pipeline;</div>
+<div class="line">.rec %compile.PassList:      □ = Π %compile.Pass  -&gt; %compile.PassList;</div>
+<div class="line">.rec %compile.CombinedPhase: □ = Π %compile.Phase -&gt; %compile.CombinedPhase;</div>
 </div><!-- fragment --><p>(This is a forward declaration for opt.thorin.)</p>
 <div class="fragment"><div class="line">.ax %compile.Plugin: *;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md100"></a>
@@ -162,16 +162,16 @@ Expressions</h1>
 <h2><a class="anchor" id="autotoc_md101"></a>
 Registered Plugins</h2>
 <p>We expect the name in the tag before the <code>_</code> to be the name of the plugin (as given in <code>Plugin.plugin_name</code>). (This is a forward declaration for opt.thorin.)</p>
-<div class="fragment"><div class="line">.ax %compile.core_plugin    : %compile.Plugin;</div>
-<div class="line">.ax %compile.mem_plugin     : %compile.Plugin;</div>
-<div class="line">.ax %compile.demo_plugin    : %compile.Plugin;</div>
-<div class="line">.ax %compile.affine_plugin  : %compile.Plugin;</div>
+<div class="fragment"><div class="line">.ax %compile.core_plugin:     %compile.Plugin;</div>
+<div class="line">.ax %compile.mem_plugin:      %compile.Plugin;</div>
+<div class="line">.ax %compile.demo_plugin:     %compile.Plugin;</div>
+<div class="line">.ax %compile.affine_plugin:   %compile.Plugin;</div>
 <div class="line">.ax %compile.autodiff_plugin: %compile.Plugin;</div>
-<div class="line">.ax %compile.clos_plugin    : %compile.Plugin;</div>
-<div class="line">.ax %compile.direct_plugin  : %compile.Plugin;</div>
-<div class="line">.ax %compile.refly_plugin   : %compile.Plugin;</div>
-<div class="line">.ax %compile.regex_plugin   : %compile.Plugin;</div>
-<div class="line">.ax %compile.matrix_plugin  : %compile.Plugin;</div>
+<div class="line">.ax %compile.clos_plugin:     %compile.Plugin;</div>
+<div class="line">.ax %compile.direct_plugin:   %compile.Plugin;</div>
+<div class="line">.ax %compile.refly_plugin:    %compile.Plugin;</div>
+<div class="line">.ax %compile.regex_plugin:    %compile.Plugin;</div>
+<div class="line">.ax %compile.matrix_plugin:   %compile.Plugin;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md102"></a>
 %opt.is_loaded</h2>
 <p>Indicates whether a plugin is loaded. The normalizer will statically evaluate this expression to a constant boolean. TODO: find correct point (not at parsing but before compilation)</p>
@@ -216,7 +216,7 @@ Passes</h2>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md109"></a>
 Phases</h2>
 <div class="fragment"><div class="line">// TODO: allow functions by inlining them first</div>
-<div class="line">.let optimization_pass_list = {</div>
+<div class="line">.let optimization_pass_list =</div>
 <div class="line">    .let eta_red = %compile.eta_red_pass;</div>
 <div class="line">    .let eta_exp = %compile.eta_exp_pass eta_red;</div>
 <div class="line">    %compile.pass_list</div>
@@ -224,14 +224,12 @@ Phases</h2>
 <div class="line">        eta_red</div>
 <div class="line">        eta_exp</div>
 <div class="line">        (%compile.scalerize_pass eta_exp)</div>
-<div class="line">        (%compile.tail_rec_elim_pass eta_red)</div>
-<div class="line">};</div>
-<div class="line">.let optimization_phase = {</div>
-<div class="line">    %compile.pass_phase optimization_pass_list</div>
-<div class="line">};</div>
+<div class="line">        (%compile.tail_rec_elim_pass eta_red);</div>
+<div class="line"> </div>
+<div class="line">.let optimization_phase = %compile.pass_phase optimization_pass_list;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md110"></a>
 Pipelines</h2>
-<div class="fragment"><div class="line">.let default_core_pipeline = {</div>
+<div class="fragment"><div class="line">.let default_core_pipeline =</div>
 <div class="line">    .let nullptr = %compile.nullptr_pass;</div>
 <div class="line">    %compile.pipe</div>
 <div class="line">        (%compile.single_pass_phase nullptr)</div>
@@ -241,8 +239,8 @@ Pipelines</h2>
 <div class="line">        optimization_phase</div>
 <div class="line">        (%compile.single_pass_phase %compile.internal_cleanup_pass)</div>
 <div class="line">        (%compile.single_pass_phase %compile.lam_spec_pass)</div>
-<div class="line">        (%compile.single_pass_phase %compile.ret_wrap_pass)</div>
-<div class="line">};</div>
+<div class="line">        (%compile.single_pass_phase %compile.ret_wrap_pass);</div>
+<div class="line"> </div>
 <div class="line">.lam .extern _fallback_compile(): %compile.Pipeline = default_core_pipeline;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md111"></a>
 Dependent Passes and Phases</h2>

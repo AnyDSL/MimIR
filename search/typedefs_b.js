@@ -1,5 +1,9 @@
 var searchData=
 [
-  ['range_0',['range',['../namespaceautomaton.html#aa937bcc480406d914b0cdf431b359e3e',1,'automaton::Range'],['../dfa2matcher_8cpp.html#a929a326a16b0a4c9d2e277325e556017',1,'Range:&#160;dfa2matcher.cpp'],['../regex_2normalizers_8cpp.html#a929a326a16b0a4c9d2e277325e556017',1,'Range:&#160;normalizers.cpp']]],
-  ['ranges_1',['ranges',['../dfa2matcher_8cpp.html#a9ff3b970b6c517a4075f8071ffac2e5a',1,'Ranges:&#160;dfa2matcher.cpp'],['../regex_2normalizers_8cpp.html#abc811f157da434d30e2236cc4cdaa46a',1,'Ranges:&#160;normalizers.cpp']]]
+  ['packexpr_0',['PackExpr',['../namespacethorin_1_1ast.html#a30af05784ad6748a89a21668a465eb7b',1,'thorin::ast']]],
+  ['passes_1',['Passes',['../namespacethorin.html#a334ff18080cd42969f863f22ec82694c',1,'thorin']]],
+  ['plugin_5ft_2',['plugin_t',['../namespacethorin.html#adc4504461c3f6cec792a3fdb3e57f076',1,'thorin']]],
+  ['postdomtree_3',['PostDomTree',['../namespacethorin.html#a72fc99d5c04f3932ba954f5d859ffb0a',1,'thorin']]],
+  ['ptr_4',['Ptr',['../namespacethorin_1_1ast.html#a0611b98455134ff15e09f87ef9969938',1,'thorin::ast']]],
+  ['ptrs_5',['Ptrs',['../namespacethorin_1_1ast.html#a5631fb7167cd860b8f89676d4a4484bb',1,'thorin::ast']]]
 ];

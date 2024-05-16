@@ -121,7 +121,7 @@ $(document).ready(function(){initNavTree('cli.html',''); initResizable(); });
 <div class="textblock"><h1><a class="anchor" id="autotoc_md0"></a>
 Usage</h1>
 <div class="fragment"><div class="line">USAGE:</div>
-<div class="line">  thorin [-?|-h|--help] [-v|--version] [-l|--list-search-paths] [-c|--clang &lt;clang&gt;] [-p|--plugin &lt;plugin&gt;] [-P|--plugin-path &lt;path&gt;] [-V|--verbose] [-O|--optimize &lt;level&gt;] [--output-d &lt;file&gt;] [--output-dot &lt;file&gt;] [--output-h &lt;file&gt;] [--output-ll &lt;file&gt;] [--output-md &lt;file&gt;] [-o|--output-thorin &lt;file&gt;] [-a|--ascii] [--bootstrap] [--dot-follow-types] [--dot-all-annexes] [--dump-gid &lt;level&gt;] [--dump-recursive] [--aggr-lam-spec] [--scalerize-threshold &lt;threshold&gt;] [-b|--break &lt;gid&gt;] [--reeval-breakpoints] [--break-on-alpha-unequal] [--break-on-error] [--break-on-warn] [--trace-gids] [&lt;file&gt;]</div>
+<div class="line">  thorin [-?|-h|--help] [-v|--version] [-l|--list-search-paths] [-c|--clang &lt;clang&gt;] [-p|--plugin &lt;plugin&gt;] [-P|--plugin-path &lt;path&gt;] [-V|--verbose] [-O|--optimize &lt;level&gt;] [--output-ast &lt;file&gt;] [--output-d &lt;file&gt;] [--output-dot &lt;file&gt;] [--output-h &lt;file&gt;] [--output-ll &lt;file&gt;] [--output-md &lt;file&gt;] [-o|--output-thorin &lt;file&gt;] [-a|--ascii] [--bootstrap] [--dot-follow-types] [--dot-all-annexes] [--dump-gid &lt;level&gt;] [--dump-recursive] [--aggr-lam-spec] [--scalerize-threshold &lt;threshold&gt;] [-b|--break &lt;gid&gt;] [--reeval-breakpoints] [--break-on-alpha-unequal] [--break-on-error] [--break-on-warn] [--trace-gids] [&lt;file&gt;]</div>
 <div class="line"> </div>
 <div class="line">Display usage information.</div>
 <div class="line"> </div>
@@ -135,6 +135,7 @@ Usage</h1>
 <div class="line">                          Path to search for plugins.</div>
 <div class="line">  -V, --verbose           Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.</div>
 <div class="line">  -O, --optimize &lt;level&gt;  Optimization level (default: 2).</div>
+<div class="line">  --output-ast &lt;file&gt;     Directly emits AST represntation of input.</div>
 <div class="line">  --output-d &lt;file&gt;       Emits dependency file containing a rule suitable for &#39;make&#39; describing the dependencies of the source file (requires --output-h).</div>
 <div class="line">  --output-dot &lt;file&gt;     Emits the Thorin program as a graph using Graphviz&#39; DOT language.</div>
 <div class="line">  --output-h &lt;file&gt;       Emits a header file to be used to interface with a plugin in C++.</div>

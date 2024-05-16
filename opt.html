@@ -136,7 +136,7 @@ Dependencies</h1>
 Passes, Phases, and Pipelines</h1>
 <h2><a class="anchor" id="autotoc_md203"></a>
 Pipelines</h2>
-<div class="fragment"><div class="line">.lam .extern _default_compile []: %compile.Pipeline = {</div>
+<div class="fragment"><div class="line">.lam .extern _default_compile []: %compile.Pipeline =</div>
 <div class="line">    .let nullptr   = %compile.nullptr_pass;</div>
 <div class="line">    .let nullphase = %compile.single_pass_phase nullptr;</div>
 <div class="line">    %compile.pipe</div>
@@ -155,20 +155,21 @@ Pipelines</h2>
 <div class="line">                mem_opt_pass_list</div>
 <div class="line">            ))</div>
 <div class="line">        )</div>
-<div class="line">        (plugin_cond_phase (%compile.autodiff_plugin,</div>
-<div class="line">            %compile.combined_phase (%compile.phase_list</div>
-<div class="line">            (%compile.single_pass_phase %autodiff.ad_eval_pass)</div>
-<div class="line">            // optimization_phase</div>
-<div class="line">            (%compile.single_pass_phase %autodiff.ad_zero_pass)</div>
-<div class="line">            )</div>
-<div class="line">        ))</div>
+<div class="line">        (plugin_cond_phase</div>
+<div class="line">            (%compile.autodiff_plugin,</div>
+<div class="line">                %compile.combined_phase</div>
+<div class="line">                    (%compile.phase_list</div>
+<div class="line">                        (%compile.single_pass_phase %autodiff.ad_eval_pass)</div>
+<div class="line">                        // optimization_phase</div>
+<div class="line">                        (%compile.single_pass_phase %autodiff.ad_zero_pass))))</div>
 <div class="line">        (plugin_cond_phase (%compile.direct_plugin, direct_phases))</div>
-<div class="line">        (plugin_cond_phase (%compile.matrix_plugin,</div>
-<div class="line">          %compile.combined_phase (%compile.phase_list</div>
-<div class="line">            matrix_lower_phase</div>
-<div class="line">            (plugin_cond_phase (%compile.direct_plugin, direct_phases))</div>
-<div class="line">            (plugin_cond_phase (%compile.affine_plugin, %compile.single_pass_phase %affine.lower_for_pass))</div>
-<div class="line">        )))</div>
+<div class="line">        (plugin_cond_phase</div>
+<div class="line">            (%compile.matrix_plugin,</div>
+<div class="line">                %compile.combined_phase</div>
+<div class="line">                    (%compile.phase_list</div>
+<div class="line">                        matrix_lower_phase</div>
+<div class="line">                        (plugin_cond_phase (%compile.direct_plugin, direct_phases))</div>
+<div class="line">                        (plugin_cond_phase (%compile.affine_plugin, %compile.single_pass_phase %affine.lower_for_pass)))))</div>
 <div class="line">        (%compile.single_pass_phase %compile.internal_cleanup_pass)</div>
 <div class="line">        (plugin_cond_phase (%compile.clos_plugin, clos_phases))</div>
 <div class="line">        (%compile.single_pass_phase %compile.lam_spec_pass)</div>
@@ -186,8 +187,7 @@ Pipelines</h2>
 <div class="line">                %compile.pass_list</div>
 <div class="line">                (plugin_cond_pass (%compile.refly_plugin, %refly.remove_dbg_perm_pass))</div>
 <div class="line">            ))</div>
-<div class="line">        )</div>
-<div class="line">};</div>
+<div class="line">        );</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

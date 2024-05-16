@@ -152,13 +152,12 @@ Passes</h2>
 <div class="line">.ax %direct.cps2ds_pass: %compile.Pass;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md142"></a>
 Phases</h2>
-<div class="fragment"><div class="line">.let direct_phases = {</div>
-<div class="line">  %compile.combined_phase (%compile.phase_list</div>
-<div class="line">    (%compile.single_pass_phase %direct.ds2cps_pass)</div>
-<div class="line">    (%compile.single_pass_phase %direct.cps2ds_pass)</div>
-<div class="line">    optimization_phase</div>
-<div class="line">  )</div>
-<div class="line">};</div>
+<div class="fragment"><div class="line">.let direct_phases =</div>
+<div class="line">    %compile.combined_phase</div>
+<div class="line">        (%compile.phase_list</div>
+<div class="line">            (%compile.single_pass_phase %direct.ds2cps_pass)</div>
+<div class="line">            (%compile.single_pass_phase %direct.cps2ds_pass)</div>
+<div class="line">            optimization_phase);</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

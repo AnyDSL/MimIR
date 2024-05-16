@@ -114,6 +114,7 @@ $(document).ready(function(){initNavTree('classthorin_1_1Idx.html',''); initResi
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="classthorin_1_1Idx-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">thorin::Idx Class Reference</div></div>
 </div><!--header-->
@@ -151,6 +152,11 @@ Static Public Attributes</h2></td></tr>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:af729d8988333b05a5e03235115259391" id="r_af729d8988333b05a5e03235115259391"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Idx.html#af729d8988333b05a5e03235115259391">rebuild_</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;, <a class="el" href="classthorin_1_1Ref.html">Ref</a>, <a class="el" href="namespacethorin.html#a58d1c803d0b62c1168cdd460cd9dd3c1">Defs</a>) const override</td></tr>
 <tr class="separator:af729d8988333b05a5e03235115259391"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a7b4bcdf992c21ae83363f25df05b1d25" id="r_a7b4bcdf992c21ae83363f25df05b1d25"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Idx.html#a7b4bcdf992c21ae83363f25df05b1d25">World</a></td></tr>
+<tr class="separator:a7b4bcdf992c21ae83363f25df05b1d25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -346,7 +352,7 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:af11b2eb1d65239b9e9f5ca1920742ddb inherit pub_methods_classthorin_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#af11b2eb1d65239b9e9f5ca1920742ddb">as_mut</a> () const</td></tr>
 <tr class="memdesc:af11b2eb1d65239b9e9f5ca1920742ddb inherit pub_methods_classthorin_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Asserts that <code>this</code> is a <em>mutable</em>, casts <code>const</code>ness away and performs a <code>static_cast</code> to <code>T</code>.  <br /></td></tr>
 <tr class="separator:af11b2eb1d65239b9e9f5ca1920742ddb inherit pub_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad389227b1fe98c3ef4d1a70e0f4ab19 inherit pub_methods_classthorin_1_1Def" id="r_aad389227b1fe98c3ef4d1a70e0f4ab19"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#structthorin_1_1Dbg">Dbg</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#aad389227b1fe98c3ef4d1a70e0f4ab19">dbg</a> () const</td></tr>
+<tr class="memitem:aad389227b1fe98c3ef4d1a70e0f4ab19 inherit pub_methods_classthorin_1_1Def" id="r_aad389227b1fe98c3ef4d1a70e0f4ab19"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structthorin_1_1Dbg.html">Dbg</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#aad389227b1fe98c3ef4d1a70e0f4ab19">dbg</a> () const</td></tr>
 <tr class="separator:aad389227b1fe98c3ef4d1a70e0f4ab19 inherit pub_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaa260e29035d724e0f5c4286b93c5f0d inherit pub_methods_classthorin_1_1Def" id="r_aaa260e29035d724e0f5c4286b93c5f0d"><td class="memItemLeft" align="right" valign="top">Loc&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#aaa260e29035d724e0f5c4286b93c5f0d">loc</a> () const</td></tr>
 <tr class="separator:aaa260e29035d724e0f5c4286b93c5f0d inherit pub_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -386,10 +392,10 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:af435140edb2030170739108490d218d8 inherit pub_methods_classthorin_1_1Def"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#af435140edb2030170739108490d218d8">set</a> (Loc l, std::string s)</td></tr>
 <tr class="separator:af435140edb2030170739108490d218d8 inherit pub_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade65dcbb17333051fccaf27fe080b8c1 inherit pub_methods_classthorin_1_1Def" id="r_ade65dcbb17333051fccaf27fe080b8c1"><td class="memTemplParams" colspan="2">template&lt;bool Ow = false&gt; </td></tr>
-<tr class="memitem:ade65dcbb17333051fccaf27fe080b8c1 inherit pub_methods_classthorin_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#ade65dcbb17333051fccaf27fe080b8c1">set</a> (<a class="el" href="namespacethorin.html#structthorin_1_1Dbg">Dbg</a> d) const</td></tr>
+<tr class="memitem:ade65dcbb17333051fccaf27fe080b8c1 inherit pub_methods_classthorin_1_1Def"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#ade65dcbb17333051fccaf27fe080b8c1">set</a> (<a class="el" href="structthorin_1_1Dbg.html">Dbg</a> d) const</td></tr>
 <tr class="separator:ade65dcbb17333051fccaf27fe080b8c1 inherit pub_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6976595e92abe9e8c5ff287ac64cce7 inherit pub_methods_classthorin_1_1Def" id="r_ad6976595e92abe9e8c5ff287ac64cce7"><td class="memTemplParams" colspan="2">template&lt;bool Ow = false&gt; </td></tr>
-<tr class="memitem:ad6976595e92abe9e8c5ff287ac64cce7 inherit pub_methods_classthorin_1_1Def"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#ad6976595e92abe9e8c5ff287ac64cce7">set</a> (<a class="el" href="namespacethorin.html#structthorin_1_1Dbg">Dbg</a> d)</td></tr>
+<tr class="memitem:ad6976595e92abe9e8c5ff287ac64cce7 inherit pub_methods_classthorin_1_1Def"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#ad6976595e92abe9e8c5ff287ac64cce7">set</a> (<a class="el" href="structthorin_1_1Dbg.html">Dbg</a> d)</td></tr>
 <tr class="separator:ad6976595e92abe9e8c5ff287ac64cce7 inherit pub_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97131208ef6f4f23feb45af9d9727fd8 inherit pub_methods_classthorin_1_1Def" id="r_a97131208ef6f4f23feb45af9d9727fd8"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a97131208ef6f4f23feb45af9d9727fd8">debug_prefix</a> (std::string) const</td></tr>
 <tr class="separator:a97131208ef6f4f23feb45af9d9727fd8 inherit pub_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -452,23 +458,23 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a21d31c04232676e320bd7cb94e752ca5 inherit pro_methods_classthorin_1_1Def" id="r_a21d31c04232676e320bd7cb94e752ca5"><td class="memItemLeft" align="right" valign="top">Sym&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a21d31c04232676e320bd7cb94e752ca5">sym</a> (std::string) const</td></tr>
 <tr class="separator:a21d31c04232676e320bd7cb94e752ca5 inherit pro_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classthorin_1_1Def"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classthorin_1_1Def')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classthorin_1_1Def.html">thorin::Def</a></td></tr>
-<tr class="memitem:ace7ad2fa3ba86e85c4c9bafc49e4d500 inherit pro_attribs_classthorin_1_1Def" id="r_ace7ad2fa3ba86e85c4c9bafc49e4d500"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#structthorin_1_1Dbg">Dbg</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#ace7ad2fa3ba86e85c4c9bafc49e4d500">dbg_</a></td></tr>
+<tr class="memitem:ace7ad2fa3ba86e85c4c9bafc49e4d500 inherit pro_attribs_classthorin_1_1Def" id="r_ace7ad2fa3ba86e85c4c9bafc49e4d500"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structthorin_1_1Dbg.html">Dbg</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#ace7ad2fa3ba86e85c4c9bafc49e4d500">dbg_</a></td></tr>
 <tr class="separator:ace7ad2fa3ba86e85c4c9bafc49e4d500 inherit pro_attribs_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1d2d82725d8a7901d40d08a5e4598f1 inherit pro_attribs_classthorin_1_1Def" id="r_af1d2d82725d8a7901d40d08a5e4598f1"><td class="memItemLeft" >union {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="memitem:a87ba2e4fb39b1d3e5ac1eebf5f51c1ec inherit pro_attribs_classthorin_1_1Def" id="r_a87ba2e4fb39b1d3e5ac1eebf5f51c1ec"><td class="memItemLeft" >union {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
 <tr class="separator: inherit pro_attribs_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ddca190870a1551c01e74f995098913 inherit pro_attribs_classthorin_1_1Def" id="r_a2ddca190870a1551c01e74f995098913"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a00699ac904a16b60cdac9cc7005ed0d8">NormalizeFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a2ddca190870a1551c01e74f995098913">normalizer_</a></td></tr>
-<tr class="memdesc:a2ddca190870a1551c01e74f995098913 inherit pro_attribs_classthorin_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classthorin_1_1Axiom.html">Axiom</a> only: <a class="el" href="classthorin_1_1Axiom.html">Axiom</a>s use this member to store their normalizer.  <br /></td></tr>
-<tr class="separator:a2ddca190870a1551c01e74f995098913 inherit pro_attribs_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d04277959ef0bec381310dcb80efc42 inherit pro_attribs_classthorin_1_1Def" id="r_a7d04277959ef0bec381310dcb80efc42"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Axiom.html">Axiom</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a7d04277959ef0bec381310dcb80efc42">axiom_</a></td></tr>
-<tr class="memdesc:a7d04277959ef0bec381310dcb80efc42 inherit pro_attribs_classthorin_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classthorin_1_1App.html">App</a> only: Curried <a class="el" href="classthorin_1_1App.html">App</a>s of <a class="el" href="classthorin_1_1Axiom.html">Axiom</a>s use this member to propagate the <a class="el" href="classthorin_1_1Axiom.html">Axiom</a>.  <br /></td></tr>
-<tr class="separator:a7d04277959ef0bec381310dcb80efc42 inherit pro_attribs_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08609257d78337f001a3cac01cec1d0f inherit pro_attribs_classthorin_1_1Def" id="r_a08609257d78337f001a3cac01cec1d0f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Var.html">Var</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a08609257d78337f001a3cac01cec1d0f">var_</a></td></tr>
-<tr class="memdesc:a08609257d78337f001a3cac01cec1d0f inherit pro_attribs_classthorin_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutable only: <a class="el" href="classthorin_1_1Var.html">Var</a> of a mutable.  <br /></td></tr>
-<tr class="separator:a08609257d78337f001a3cac01cec1d0f inherit pro_attribs_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d11398e260aa7cdf03eb6d3b6d021df inherit pro_attribs_classthorin_1_1Def" id="r_a5d11398e260aa7cdf03eb6d3b6d021df"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1World.html">World</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a5d11398e260aa7cdf03eb6d3b6d021df">world_</a></td></tr>
-<tr class="separator:a5d11398e260aa7cdf03eb6d3b6d021df inherit pro_attribs_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1d2d82725d8a7901d40d08a5e4598f1 inherit pro_attribs_classthorin_1_1Def" id="r_af1d2d82725d8a7901d40d08a5e4598f1"><td class="memItemLeft" valign="top">};&#160;</td><td class="memItemRight" valign="bottom">&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="separator:af1d2d82725d8a7901d40d08a5e4598f1 inherit pro_attribs_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac010e5a57295e1834fdfbd0d742f38ed inherit pro_attribs_classthorin_1_1Def" id="r_ac010e5a57295e1834fdfbd0d742f38ed"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a00699ac904a16b60cdac9cc7005ed0d8">NormalizeFn</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#ac010e5a57295e1834fdfbd0d742f38ed">normalizer_</a></td></tr>
+<tr class="memdesc:ac010e5a57295e1834fdfbd0d742f38ed inherit pro_attribs_classthorin_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classthorin_1_1Axiom.html">Axiom</a> only: <a class="el" href="classthorin_1_1Axiom.html">Axiom</a>s use this member to store their normalizer.  <br /></td></tr>
+<tr class="separator:ac010e5a57295e1834fdfbd0d742f38ed inherit pro_attribs_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad483fe735d644c24fb233196768deb00 inherit pro_attribs_classthorin_1_1Def" id="r_ad483fe735d644c24fb233196768deb00"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Axiom.html">Axiom</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#ad483fe735d644c24fb233196768deb00">axiom_</a></td></tr>
+<tr class="memdesc:ad483fe735d644c24fb233196768deb00 inherit pro_attribs_classthorin_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classthorin_1_1App.html">App</a> only: Curried <a class="el" href="classthorin_1_1App.html">App</a>s of <a class="el" href="classthorin_1_1Axiom.html">Axiom</a>s use this member to propagate the <a class="el" href="classthorin_1_1Axiom.html">Axiom</a>.  <br /></td></tr>
+<tr class="separator:ad483fe735d644c24fb233196768deb00 inherit pro_attribs_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00583d21a0e4c40dc580f342ed560063 inherit pro_attribs_classthorin_1_1Def" id="r_a00583d21a0e4c40dc580f342ed560063"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Var.html">Var</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a00583d21a0e4c40dc580f342ed560063">var_</a></td></tr>
+<tr class="memdesc:a00583d21a0e4c40dc580f342ed560063 inherit pro_attribs_classthorin_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutable only: <a class="el" href="classthorin_1_1Var.html">Var</a> of a mutable.  <br /></td></tr>
+<tr class="separator:a00583d21a0e4c40dc580f342ed560063 inherit pro_attribs_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8df812699a045b3761155b276b8fc27 inherit pro_attribs_classthorin_1_1Def" id="r_aa8df812699a045b3761155b276b8fc27"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1World.html">World</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#aa8df812699a045b3761155b276b8fc27">world_</a></td></tr>
+<tr class="separator:aa8df812699a045b3761155b276b8fc27 inherit pro_attribs_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87ba2e4fb39b1d3e5ac1eebf5f51c1ec inherit pro_attribs_classthorin_1_1Def" id="r_a87ba2e4fb39b1d3e5ac1eebf5f51c1ec"><td class="memItemLeft" valign="top">};&#160;</td><td class="memItemRight" valign="bottom">&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a87ba2e4fb39b1d3e5ac1eebf5f51c1ec inherit pro_attribs_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41700d37c67115465173f14331d9bb92 inherit pro_attribs_classthorin_1_1Def" id="r_a41700d37c67115465173f14331d9bb92"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#ae4dba9b3be2d9956cd3c0df92ba53dc2">flags_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a41700d37c67115465173f14331d9bb92">flags_</a></td></tr>
 <tr class="separator:a41700d37c67115465173f14331d9bb92 inherit pro_attribs_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25c07a3d0f997a3c5ea1b3642149e56b inherit pro_attribs_classthorin_1_1Def" id="r_a25c07a3d0f997a3c5ea1b3642149e56b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#ad56e33ae995f3dc833c281c3945c335d">u8</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a25c07a3d0f997a3c5ea1b3642149e56b">curry_</a></td></tr>
@@ -479,7 +485,7 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A built-in constant of type <code>.<a class="el" href="classthorin_1_1Nat.html">Nat</a> -&gt; *</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00745">745</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00734">734</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a4c41acc0e7b30781bbd85d82f51fa1d3" name="a4c41acc0e7b30781bbd85d82f51fa1d3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4c41acc0e7b30781bbd85d82f51fa1d3">&#9670;&#160;</a></span>bitwidth2size()</h2>
@@ -505,9 +511,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00757">757</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00746">746</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00373">thorin::World::lit_i1()</a>, <a class="el" href="world_8h_source.html#l00375">thorin::World::lit_i16()</a>, <a class="el" href="world_8h_source.html#l00376">thorin::World::lit_i32()</a>, <a class="el" href="world_8h_source.html#l00377">thorin::World::lit_i64()</a>, <a class="el" href="world_8h_source.html#l00374">thorin::World::lit_i8()</a>, <a class="el" href="world_8h_source.html#l00382">thorin::World::lit_idx()</a>, <a class="el" href="world_8h_source.html#l00389">thorin::World::lit_int()</a>, and <a class="el" href="world_8h_source.html#l00455">thorin::World::type_int()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00394">thorin::World::lit_i1()</a>, <a class="el" href="world_8h_source.html#l00396">thorin::World::lit_i16()</a>, <a class="el" href="world_8h_source.html#l00397">thorin::World::lit_i32()</a>, <a class="el" href="world_8h_source.html#l00398">thorin::World::lit_i64()</a>, <a class="el" href="world_8h_source.html#l00395">thorin::World::lit_i8()</a>, <a class="el" href="world_8h_source.html#l00403">thorin::World::lit_idx()</a>, <a class="el" href="world_8h_source.html#l00410">thorin::World::lit_int()</a>, and <a class="el" href="world_8h_source.html#l00477">thorin::World::type_int()</a>.</p>
 
 </div>
 </div>
@@ -581,9 +587,9 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Checks if <code>def</code> is a <code>.<a class="el" href="classthorin_1_1Idx.html" title="A built-in constant of type .Nat -&gt; *.">Idx</a> s</code> and returns <code>s</code> or <code>nullptr</code> otherwise. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00569">569</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00558">558</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff_8cpp_source.html#l00113">thorin::plug::autodiff::autodiff_type_fun()</a>, <a class="el" href="ll_8cpp_source.html#l00458">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="world_8cpp_source.html#l00278">thorin::World::extract()</a>, <a class="el" href="world_8h_source.html#l00506">thorin::World::iinfer()</a>, <a class="el" href="world_8cpp_source.html#l00340">thorin::World::insert()</a>, <a class="el" href="world_8cpp_source.html#l00435">thorin::World::lit()</a>, <a class="el" href="autodiff_2normalizers_8cpp_source.html#l00037">thorin::plug::autodiff::normalize_add()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00594">thorin::plug::core::normalize_bitcast()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00412">thorin::plug::core::normalize_idx()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00425">thorin::plug::core::normalize_shr()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00616">thorin::plug::core::normalize_trait()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00455">thorin::plug::core::normalize_wrap()</a>, <a class="el" href="def_8cpp_source.html#l00577">size2bitwidth()</a>, <a class="el" href="world_8cpp_source.html#l00153">thorin::World::var()</a>, and <a class="el" href="autodiff_8cpp_source.html#l00140">thorin::plug::autodiff::zero_def()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff_8cpp_source.html#l00113">thorin::plug::autodiff::autodiff_type_fun()</a>, <a class="el" href="ll_8cpp_source.html#l00458">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="world_8cpp_source.html#l00291">thorin::World::extract()</a>, <a class="el" href="world_8h_source.html#l00528">thorin::World::iinfer()</a>, <a class="el" href="world_8cpp_source.html#l00353">thorin::World::insert()</a>, <a class="el" href="world_8cpp_source.html#l00452">thorin::World::lit()</a>, <a class="el" href="autodiff_2normalizers_8cpp_source.html#l00037">thorin::plug::autodiff::normalize_add()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00594">thorin::plug::core::normalize_bitcast()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00412">thorin::plug::core::normalize_idx()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00425">thorin::plug::core::normalize_shr()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00616">thorin::plug::core::normalize_trait()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00455">thorin::plug::core::normalize_wrap()</a>, <a class="el" href="def_8cpp_source.html#l00566">size2bitwidth()</a>, <a class="el" href="world_8cpp_source.html#l00157">thorin::World::var()</a>, and <a class="el" href="autodiff_8cpp_source.html#l00140">thorin::plug::autodiff::zero_def()</a>.</p>
 
 </div>
 </div>
@@ -611,9 +617,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00577">577</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00566">566</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00726">thorin::Lit::isa()</a>, <a class="el" href="def_8cpp_source.html#l00569">size()</a>, and <a class="el" href="def_8h_source.html#l00758">size2bitwidth()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00715">thorin::Lit::isa()</a>, <a class="el" href="def_8cpp_source.html#l00558">size()</a>, and <a class="el" href="def_8h_source.html#l00747">size2bitwidth()</a>.</p>
 
 </div>
 </div>
@@ -641,9 +647,34 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00758">758</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00747">747</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00458">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00554">thorin::plug::core::normalize_conv()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00368">thorin::plug::math::normalize_conv()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00616">thorin::plug::core::normalize_trait()</a>, and <a class="el" href="def_8cpp_source.html#l00577">size2bitwidth()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00458">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00554">thorin::plug::core::normalize_conv()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00368">thorin::plug::math::normalize_conv()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00616">thorin::plug::core::normalize_trait()</a>, and <a class="el" href="def_8cpp_source.html#l00566">size2bitwidth()</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Symbol Documentation</h2>
+<a id="a7b4bcdf992c21ae83363f25df05b1d25" name="a7b4bcdf992c21ae83363f25df05b1d25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b4bcdf992c21ae83363f25df05b1d25">&#9670;&#160;</a></span>World</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="classthorin_1_1World.html">World</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00752">752</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -668,7 +699,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00763">763</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00752">752</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>

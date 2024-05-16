@@ -1,9 +1,8 @@
 var searchData=
 [
-  ['scalerize_5fthreshold_0',['scalerize_threshold',['../namespacethorin.html#a55084cdf38b8061963ebe4da5355d718',1,'thorin::Flags']]],
-  ['scheduler_5f_1',['scheduler_',['../classthorin_1_1Emitter.html#ae66fde2b0fd25999046dbe9c71a0e5d7',1,'thorin::Emitter']]],
-  ['size_2',['size',['../structthorin_1_1PooledSet_1_1Data.html#a2d2b51016e29074b9b6cf52be7dbcd5b',1,'thorin::PooledSet::Data']]],
-  ['sizeof_3',['SizeOf',['../namespacethorin.html#ad782b61a9920e4d556774fadd3a55512',1,'thorin']]],
-  ['subs_4',['subs',['../structthorin_1_1Annex.html#afc5e033385aa135dfa7afb282652eb32',1,'thorin::Annex']]],
-  ['sym_5',['sym',['../namespacethorin.html#adf7e4c784857fc3ee4087bc01398f73f',1,'thorin::Dbg']]]
+  ['range_0',['range',['../structthorin_1_1Elem.html#a79f5a1f5bf7256133084c46284de5e36',1,'thorin::Elem::range'],['../structthorin_1_1ast_1_1R.html#a24380b85d57613d46e337072f85bef06',1,'thorin::ast::R::range']]],
+  ['reeval_5fbreakpoints_1',['reeval_breakpoints',['../namespacethorin.html#abd14b901c908b3d92b9200a298a5ba18',1,'thorin::Flags']]],
+  ['register_5fbackends_2',['register_backends',['../structthorin_1_1Plugin.html#a72102c6b1390838f8ea6339d244f35cf',1,'thorin::Plugin']]],
+  ['register_5fnormalizers_3',['register_normalizers',['../structthorin_1_1Plugin.html#a84019ca2515d961119fa7de7b587550a',1,'thorin::Plugin']]],
+  ['register_5fpasses_4',['register_passes',['../structthorin_1_1Plugin.html#aa107a093a32a77320c2e7210119f859b',1,'thorin::Plugin']]]
 ];

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: include/thorin/fe/tok.h File Reference</title>
+<title>Thorin: include/thorin/ast/tok.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -118,30 +118,30 @@ $(document).ready(function(){initNavTree('tok_8h.html',''); initResizable(); });
   <div class="headertitle"><div class="title">tok.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;fe/assert.h&gt;</code><br />
-<code>#include &quot;<a class="el" href="dbg_8h_source.html">thorin/util/dbg.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="types_8h_source.html">thorin/util/types.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="dbg_8h_source.html">thorin/util/dbg.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for tok.h:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="tok_8h__incl.svg" width="100%" height="503"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="tok_8h__incl.svg" width="100%" height="514"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="tok_8h__dep__incl.svg" width="100%" height="492"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="tok_8h__dep__incl.svg" width="100%" height="525"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div>
 <p><a href="tok_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Tok.html">thorin::Tok</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ast_1_1Tok.html">thorin::ast::Tok</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacethorin" id="r_namespacethorin"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html">thorin</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacethorin_1_1ast" id="r_namespacethorin_1_1ast"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1ast.html">thorin::ast</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -154,95 +154,40 @@ Macros</h2></td></tr>
 <tr class="separator:acf85c215badfba27aee55c9cd3af719a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d2da954389db5acfc86380a482ee87d" id="r_a3d2da954389db5acfc86380a482ee87d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tok_8h.html#a3d2da954389db5acfc86380a482ee87d">THORIN_SUBST</a>(m)</td></tr>
 <tr class="separator:a3d2da954389db5acfc86380a482ee87d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac29f384be3c6b33c3b9beded2bd1df1c" id="r_ac29f384be3c6b33c3b9beded2bd1df1c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tok_8h.html#ac29f384be3c6b33c3b9beded2bd1df1c">THORIN_PREC</a>(m)</td></tr>
-<tr class="separator:ac29f384be3c6b33c3b9beded2bd1df1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa59a5f5a821ce31b222873b1c8a06eda" id="r_aa59a5f5a821ce31b222873b1c8a06eda"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tok_8h.html#aa59a5f5a821ce31b222873b1c8a06eda">CODE</a>(l,  p,  r)&#160;&#160;&#160;p,</td></tr>
-<tr class="separator:aa59a5f5a821ce31b222873b1c8a06eda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa59a5f5a821ce31b222873b1c8a06eda" id="r_aa59a5f5a821ce31b222873b1c8a06eda"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tok_8h.html#aa59a5f5a821ce31b222873b1c8a06eda">CODE</a>(l,  p,  r)&#160;&#160;&#160;            case Prec::p: return {Prec::l, Prec::r};</td></tr>
-<tr class="separator:aa59a5f5a821ce31b222873b1c8a06eda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d12cc9e30e6f91e9135feb7a67bb4df" id="r_a7d12cc9e30e6f91e9135feb7a67bb4df"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tok_8h.html#a7d12cc9e30e6f91e9135feb7a67bb4df">CODE</a>(t,  str)&#160;&#160;&#160;t,</td></tr>
 <tr class="separator:a7d12cc9e30e6f91e9135feb7a67bb4df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:aa8cf24f3863a3214f02d9e37a68c7b0e" id="r_aa8cf24f3863a3214f02d9e37a68c7b0e"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#aa8cf24f3863a3214f02d9e37a68c7b0e">thorin::Num_Keys</a> = size_t(0) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1)</td></tr>
-<tr class="separator:aa8cf24f3863a3214f02d9e37a68c7b0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9209937fc9f23f75ade0de21f97a3efc" id="r_a9209937fc9f23f75ade0de21f97a3efc"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1ast.html#a9209937fc9f23f75ade0de21f97a3efc">thorin::ast::Num_Keys</a> = size_t(0) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1) + size_t(1)</td></tr>
+<tr class="separator:a9209937fc9f23f75ade0de21f97a3efc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">Precedence</h2></td></tr>
+<tr class="memitem:afda9c121a349c5f794dcd122a70bbcfa" id="r_afda9c121a349c5f794dcd122a70bbcfa"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1ast.html#afda9c121a349c5f794dcd122a70bbcfa">thorin::ast::Prec</a> { <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1ast.html#afda9c121a349c5f794dcd122a70bbcfaab47f6a6092c5d7e4bffec12dff309c3b">thorin::ast::Err</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1ast.html#afda9c121a349c5f794dcd122a70bbcfaa1448e86d90e0feb307c2894c24e87767">thorin::ast::Bot</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1ast.html#afda9c121a349c5f794dcd122a70bbcfaab3c5b21d2cb47cc950fd4667edaf404c">thorin::ast::Where</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1ast.html#afda9c121a349c5f794dcd122a70bbcfaa0f4e1aaabd074689b7d3ead824d1ee8e">thorin::ast::Arrow</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1ast.html#afda9c121a349c5f794dcd122a70bbcfaa127125672f1e85d1e676d4394d24e066">thorin::ast::Pi</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1ast.html#afda9c121a349c5f794dcd122a70bbcfaaac863f346e618f9a959b5c95d5d28941">thorin::ast::App</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1ast.html#afda9c121a349c5f794dcd122a70bbcfaa97478353818fc5590dc34b57b81a4b23">thorin::ast::Extract</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1ast.html#afda9c121a349c5f794dcd122a70bbcfaae5e556ecf935270736f5e46e73db06e4">thorin::ast::Lit</a>
+<br />
+ }</td></tr>
+<tr class="separator:afda9c121a349c5f794dcd122a70bbcfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7b5291d932ded7126f4762012092d49" id="r_ab7b5291d932ded7126f4762012092d49"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1ast.html#ab7b5291d932ded7126f4762012092d49">thorin::ast::is_rassoc</a> (<a class="el" href="namespacethorin_1_1ast.html#afda9c121a349c5f794dcd122a70bbcfa">Prec</a> p)</td></tr>
+<tr class="separator:ab7b5291d932ded7126f4762012092d49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="aa59a5f5a821ce31b222873b1c8a06eda" name="aa59a5f5a821ce31b222873b1c8a06eda"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa59a5f5a821ce31b222873b1c8a06eda">&#9670;&#160;</a></span>CODE <span class="overload">[1/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define CODE</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">l, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">p, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">r&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;p,</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00051">51</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
-
-</div>
-</div>
-<a id="aa59a5f5a821ce31b222873b1c8a06eda" name="aa59a5f5a821ce31b222873b1c8a06eda"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa59a5f5a821ce31b222873b1c8a06eda">&#9670;&#160;</a></span>CODE <span class="overload">[2/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define CODE</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">l, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">p, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">r&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td>&#160;&#160;&#160;            case Prec::p: return {Prec::l, Prec::r};</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00051">51</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
-
-</div>
-</div>
 <a id="a7d12cc9e30e6f91e9135feb7a67bb4df" name="a7d12cc9e30e6f91e9135feb7a67bb4df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d12cc9e30e6f91e9135feb7a67bb4df">&#9670;&#160;</a></span>CODE <span class="overload">[3/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d12cc9e30e6f91e9135feb7a67bb4df">&#9670;&#160;</a></span>CODE <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -267,12 +212,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00051">51</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00053">53</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
 <a id="a7d12cc9e30e6f91e9135feb7a67bb4df" name="a7d12cc9e30e6f91e9135feb7a67bb4df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d12cc9e30e6f91e9135feb7a67bb4df">&#9670;&#160;</a></span>CODE <span class="overload">[4/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d12cc9e30e6f91e9135feb7a67bb4df">&#9670;&#160;</a></span>CODE <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -297,7 +242,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00051">51</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00053">53</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
@@ -317,36 +262,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00014">14</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
-
-</div>
-</div>
-<a id="ac29f384be3c6b33c3b9beded2bd1df1c" name="ac29f384be3c6b33c3b9beded2bd1df1c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac29f384be3c6b33c3b9beded2bd1df1c">&#9670;&#160;</a></span>THORIN_PREC</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define THORIN_PREC</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname">m</td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <span class="comment">/* left     prec,    right  */</span>     \</div>
-<div class="line">    m(Nil,      Bot,     Nil     )     \</div>
-<div class="line">    m(Nil,      Nil,     Nil     )     \</div>
-<div class="line">    m(Lam,      Arrow,   Arrow   )     \</div>
-<div class="line">    m(Nil,      Lam,     Pi      )     \</div>
-<div class="line">    m(Nil,      Pi,      App     )     \</div>
-<div class="line">    m(App,      App,     Extract )     \</div>
-<div class="line">    m(Extract,  Extract, Lit     )     \</div>
-<div class="line">    m(Nil,      Lit,     Lit     )     \</div>
-</div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00104">104</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00013">13</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
@@ -370,7 +286,7 @@ Variables</h2></td></tr>
 <div class="line">    m(<span class="stringliteral">&quot;.top&quot;</span>,    T_top  )              \</div>
 <div class="line">    m(<span class="stringliteral">&quot;.insert&quot;</span>, K_ins  )              \</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00098">98</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00099">99</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
@@ -390,7 +306,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00055">55</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00057">57</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
@@ -399,7 +315,7 @@ Variables</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_a9446755a1c96c6cd3ab4facf95dc5bb.html">thorin</a></li><li class="navelem"><a class="el" href="dir_ad32e8f2cf01be0234459a81750ea9ed.html">fe</a></li><li class="navelem"><a class="el" href="tok_8h.html">tok.h</a></li>
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_a9446755a1c96c6cd3ab4facf95dc5bb.html">thorin</a></li><li class="navelem"><a class="el" href="dir_4e4929f59dbf67a6ef7c71a6f1ee8cd5.html">ast</a></li><li class="navelem"><a class="el" href="tok_8h.html">tok.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

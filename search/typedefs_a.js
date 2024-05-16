@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['passes_0',['Passes',['../namespacethorin.html#a334ff18080cd42969f863f22ec82694c',1,'thorin']]],
-  ['plugin_5ft_1',['plugin_t',['../namespacethorin.html#adc4504461c3f6cec792a3fdb3e57f076',1,'thorin']]],
-  ['postdomtree_2',['PostDomTree',['../namespacethorin.html#a72fc99d5c04f3932ba954f5d859ffb0a',1,'thorin']]],
-  ['ptrns_3',['Ptrns',['../namespacethorin.html#aa1d47d491ec2779d6edbe7d10745a9ff',1,'thorin']]]
+  ['nat_5ft_0',['nat_t',['../namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91',1,'thorin']]],
+  ['node_5ft_1',['node_t',['../namespacethorin.html#ae0ec74d835ce935c637499bea15e74f2',1,'thorin']]],
+  ['normalizefn_2',['NormalizeFn',['../namespacethorin.html#a00699ac904a16b60cdac9cc7005ed0d8',1,'thorin']]],
+  ['normalizers_3',['Normalizers',['../namespacethorin.html#a6ad6eaa1c542646fa592d10b05676464',1,'thorin']]]
 ];

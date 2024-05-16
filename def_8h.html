@@ -120,14 +120,12 @@ $(document).ready(function(){initNavTree('def_8h.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;optional&gt;</code><br />
-<code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;fe/assert.h&gt;</code><br />
 <code>#include &lt;fe/cast.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="config_8h_source.html">thorin/config.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="dbg_8h_source.html">thorin/util/dbg.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="hash_8h_source.html">thorin/util/hash.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="pool_8h_source.html">thorin/util/pool.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="print_8h_source.html">thorin/util/print.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="util_8h_source.html">thorin/util/util.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="vector_8h_source.html">thorin/util/vector.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -249,69 +247,69 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a031489e86791dbf79bd6b301131ab370" id="r_a031489e86791dbf79bd6b301131ab370"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">: node_t { <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a921d97e8cfab1f7c0026e2d98995d14c">thorin::Node::Type</a>
+<tr class="memitem:a56e125fc0469d17b1569c31b803d08b5" id="r_a56e125fc0469d17b1569c31b803d08b5"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">: node_t { <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a921d97e8cfab1f7c0026e2d98995d14c">thorin::Node::Type</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370ae882a8f030afe817e8f82f3a2bc2710a">thorin::Node::Univ</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5ae882a8f030afe817e8f82f3a2bc2710a">thorin::Node::Univ</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a92dc8a43fbe7c390956a899a27b8b08d">thorin::Node::UMax</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a92dc8a43fbe7c390956a899a27b8b08d">thorin::Node::UMax</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370aa7f623c1c58f22b66c65460a385801fb">thorin::Node::UInc</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5aa7f623c1c58f22b66c65460a385801fb">thorin::Node::UInc</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370acc524d86ec74bf18ee3f5a5ec4d36b6d">thorin::Node::Pi</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5acc524d86ec74bf18ee3f5a5ec4d36b6d">thorin::Node::Pi</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a3083dfa50d05b28c3cafe6ec116d0362">thorin::Node::Lam</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a3083dfa50d05b28c3cafe6ec116d0362">thorin::Node::Lam</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370ad26ed8ccf9be433863b45140f88c43ff">thorin::Node::App</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5ad26ed8ccf9be433863b45140f88c43ff">thorin::Node::App</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370ac1fb2543759c1fd49ae0fea3855ea812">thorin::Node::Sigma</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5ac1fb2543759c1fd49ae0fea3855ea812">thorin::Node::Sigma</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370adebbca699bf3e5ae3338dd01934423bc">thorin::Node::Tuple</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5adebbca699bf3e5ae3338dd01934423bc">thorin::Node::Tuple</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a257bf2499ed2c21151ca373f7c4c0307">thorin::Node::Extract</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a257bf2499ed2c21151ca373f7c4c0307">thorin::Node::Extract</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a5d47f4021a0e2f797e8232d6e4b29cc4">thorin::Node::Insert</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a5d47f4021a0e2f797e8232d6e4b29cc4">thorin::Node::Insert</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a5f71ccf180cb6f7fb169c8632cc66912">thorin::Node::Arr</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a5f71ccf180cb6f7fb169c8632cc66912">thorin::Node::Arr</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370ac5d4ed55a25bdab2945a7027dc213778">thorin::Node::Pack</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5ac5d4ed55a25bdab2945a7027dc213778">thorin::Node::Pack</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370ac41543bb0ee7c88b2ca13e9f72de28dc">thorin::Node::Join</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5ac41543bb0ee7c88b2ca13e9f72de28dc">thorin::Node::Join</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a8488f8c3464a90aa07238d6ae0bce35d">thorin::Node::Vel</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a8488f8c3464a90aa07238d6ae0bce35d">thorin::Node::Vel</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a2761c4aad624ceedae7edbf3c551c49b">thorin::Node::Test</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a2761c4aad624ceedae7edbf3c551c49b">thorin::Node::Test</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370aed6c4ae568966987abe32f7fc9342f3e">thorin::Node::Top</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5aed6c4ae568966987abe32f7fc9342f3e">thorin::Node::Top</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a1176c238713240939d0ce7767f2c83fd">thorin::Node::Meet</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a1176c238713240939d0ce7767f2c83fd">thorin::Node::Meet</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a756f26cda5f2e0caa8254e8e9aa11e49">thorin::Node::Ac</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a756f26cda5f2e0caa8254e8e9aa11e49">thorin::Node::Ac</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a32daf84d1b553daef38b172edace4d9c">thorin::Node::Pick</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a32daf84d1b553daef38b172edace4d9c">thorin::Node::Pick</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a68c4ea4a1177ed112e3b590ef39b6538">thorin::Node::Bot</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a68c4ea4a1177ed112e3b590ef39b6538">thorin::Node::Bot</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370aad888bbf600987dd2d6f78a8e50c88b7">thorin::Node::Proxy</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5aad888bbf600987dd2d6f78a8e50c88b7">thorin::Node::Proxy</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a1e0700ae57d0a544e259f1ae04af55c4">thorin::Node::Axiom</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a1e0700ae57d0a544e259f1ae04af55c4">thorin::Node::Axiom</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a8a318b95f9e4e08fd5b5cbcadcd93b7e">thorin::Node::Lit</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a8a318b95f9e4e08fd5b5cbcadcd93b7e">thorin::Node::Lit</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a1b3ad193ab60d8bfe3aa5f31beef9355">thorin::Node::Nat</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a1b3ad193ab60d8bfe3aa5f31beef9355">thorin::Node::Nat</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a14586df6a2656fabf41a56e19c844434">thorin::Node::Idx</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a14586df6a2656fabf41a56e19c844434">thorin::Node::Idx</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a7a5700ae028d415a5e1e20feac76eda5">thorin::Node::Var</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a7a5700ae028d415a5e1e20feac76eda5">thorin::Node::Var</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a8d94437120ef9485341077ce00c86443">thorin::Node::Infer</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a8d94437120ef9485341077ce00c86443">thorin::Node::Infer</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370abd8d7821a2fd1239acef09706db6bace">thorin::Node::Global</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5abd8d7821a2fd1239acef09706db6bace">thorin::Node::Global</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a031489e86791dbf79bd6b301131ab370a9aa3d738ffa11f86c81842510d5288df">thorin::Node::Singleton</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a9aa3d738ffa11f86c81842510d5288df">thorin::Node::Singleton</a>
 <br />
  }</td></tr>
-<tr class="separator:a031489e86791dbf79bd6b301131ab370"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a56e125fc0469d17b1569c31b803d08b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Dep</div></td></tr>
 <tr class="memitem:a55a6c38c7e5330a05b17f8134f60264a" id="r_a55a6c38c7e5330a05b17f8134f60264a"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a55a6c38c7e5330a05b17f8134f60264a">thorin::Dep</a> : unsigned { <br />
 &#160;&#160;<a class="el" href="namespacethorin.html#a55a6c38c7e5330a05b17f8134f60264aa6adf97f83acf6453d4a6a4b1070f3754">thorin::None</a> = 0
@@ -337,35 +335,6 @@ Functions</h2></td></tr>
 <tr class="separator:a2a31cdc1f3cb66759ad44e6052b4b575"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95f0f301a18bbb510ecfbdffaaa70376" id="r_a95f0f301a18bbb510ecfbdffaaa70376"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a95f0f301a18bbb510ecfbdffaaa70376">thorin::operator&lt;&lt;</a> (std::ostream &amp;, <a class="el" href="classthorin_1_1Ref.html">Ref</a>)</td></tr>
 <tr class="separator:a95f0f301a18bbb510ecfbdffaaa70376"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Formatted Output</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="fmt"></a> Provides a <code>printf</code>-like interface to format <code>s</code> with <code>args</code> and puts it into <code>os</code>.</p>
-<p><a class="el" href="classthorin_1_1Use.html" title="References a user.">Use</a> <code>{}</code> as a placeholder within your format string <code>s</code>.</p><ul>
-<li>By default, <code>os &lt;&lt; t</code> will be used to stream the appropriate argument: <div class="fragment"><div class="line"><a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(os, <span class="stringliteral">&quot;int: {}, float: {}&quot;</span>, 23, 42.f);</div>
-<div class="ttc" id="anamespacethorin_html_a7dae34cc4eb75fe0cf5a914431353c8c"><div class="ttname"><a href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">thorin::print</a></div><div class="ttdeci">std::ostream &amp; print(std::ostream &amp;os, const char *s)</div><div class="ttdoc">Base case.</div><div class="ttdef"><b>Definition</b> <a href="print_8cpp_source.html#l00005">print.cpp:5</a></div></div>
-</div><!-- fragment --></li>
-<li>You can also place a function as argument to inject arbitrary code: <div class="fragment"><div class="line"><a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(os, <span class="stringliteral">&quot;int: {}, fun: {}, float: {}&quot;</span>, 23, [&amp;]() { os &lt;&lt; <span class="stringliteral">&quot;hey :)&quot;</span>}, 42.f);</div>
-</div><!-- fragment --></li>
-<li>There is also a variant to pass <code>os</code> to the function, if you don't have easy access to it: <div class="fragment"><div class="line"><a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(os, <span class="stringliteral">&quot;int: {}, fun: {}, float: {}&quot;</span>, 23, [&amp;](<span class="keyword">auto</span>&amp; os) { os &lt;&lt; <span class="stringliteral">&quot;hey :)&quot;</span>}, 42.f);</div>
-</div><!-- fragment --></li>
-<li>You can put a <code>std::ranges::range</code> as argument. This will output a list - using the given specifier as separator. Each element <code>elem</code> of the range will be output via <code>os &lt;&lt; elem</code>: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {0, 1, 2, 3};</div>
-<div class="line"><a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(os, <span class="stringliteral">&quot;v: {, }&quot;</span>, v);</div>
-</div><!-- fragment --></li>
-<li>If you have a <code>std::ranges::range</code> that needs to be formatted in a more complicated way, bundle it with an <a class="el" href="structthorin_1_1Elem.html" title="Use with print to output complicated std::ranges::ranges.">Elem</a>: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {3, 2, 1, 0};</div>
-<div class="line"><span class="keywordtype">size_t</span> i = 0;</div>
-<div class="line"><a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(os, <span class="stringliteral">&quot;v: {, }&quot;</span>, Elem(v, [&amp;](<span class="keyword">auto</span> elem) { <a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(os, <span class="stringliteral">&quot;{}: {}&quot;</span>, i++, elem); }));</div>
-</div><!-- fragment --></li>
-<li>You again have the option to pass <code>os</code> to the bundled function: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {3, 2, 1, 0};</div>
-<div class="line"><span class="keywordtype">size_t</span> i = 0;</div>
-<div class="line"><a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(os, <span class="stringliteral">&quot;v: {, }&quot;</span>, Elem(v, [&amp;](<span class="keyword">auto</span>&amp; os, <span class="keyword">auto</span> elem) { <a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(os, <span class="stringliteral">&quot;{}: {}&quot;</span>, i++, elem); }));</div>
-<div class="line">* Use `{{` or `}}` to literally output `{` or `{`:</div>
-<div class="line"><a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(os, <span class="stringliteral">&quot;{{{}}}&quot;</span>, 23); <span class="comment">// &quot;{23}&quot;</span></div>
-</div><!-- fragment --> <dl class="section see"><dt>See also</dt><dd><a class="el" href="classthorin_1_1Tab.html" title="Keeps track of indentation level.">Tab</a> </dd></dl>
-</li>
-</ul>
-</div></td></tr>
-<tr class="memitem:a1de4d5b631f17319d8e0fa712800fa14" id="r_a1de4d5b631f17319d8e0fa712800fa14"><td class="memTemplParams" colspan="2">template&lt;class T  = std::logic_error, class... Args&gt; </td></tr>
-<tr class="memitem:a1de4d5b631f17319d8e0fa712800fa14"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a1de4d5b631f17319d8e0fa712800fa14">thorin::error</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *def, const char *<a class="el" href="namespacethorin.html#ac2a988f71a64a048c61d5a2238269ea8">fmt</a>, Args &amp;&amp;... args)</td></tr>
-<tr class="separator:a1de4d5b631f17319d8e0fa712800fa14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -431,7 +400,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00040">40</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00038">38</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -461,7 +430,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00040">40</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00038">38</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -488,7 +457,7 @@ Variables</h2></td></tr>
 <div class="line">    Ref rebuild_(World&amp;, Ref, Defs) <span class="keyword">const override</span>; \</div>
 <div class="line">    <span class="keyword">friend</span> <span class="keyword">class </span>World;</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00198">198</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00196">196</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -522,7 +491,7 @@ Variables</h2></td></tr>
 <div class="line">    m(Global, global)                                                         \</div>
 <div class="line">    m(Singleton, singleton)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00019">19</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00017">17</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -572,7 +541,7 @@ Variables</h2></td></tr>
 </div><!-- fragment -->
 <p>Use as mixin to wrap all kind of Def::proj and Def::projs variants. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00159">159</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00157">157</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -592,7 +561,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00193">193</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00191">191</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -611,24 +580,24 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keyword">public</span>:                                                                                                                    \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt; <span class="keyword">const</span> T* set(Loc l               )<span class="keyword"> const </span>{ <span class="keywordflow">if</span> (Ow || !dbg_.loc) dbg_.loc = l; <span class="keywordflow">return</span> <span class="keyword">this</span>; } \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt;       T* set(Loc l               )       { <span class="keywordflow">if</span> (Ow || !dbg_.loc) dbg_.loc = l; <span class="keywordflow">return</span> <span class="keyword">this</span>; } \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt; <span class="keyword">const</span> T* set(       Sym s        )<span class="keyword"> const </span>{ <span class="keywordflow">if</span> (Ow || !dbg_.sym) dbg_.sym = <a class="code hl_enumvalue" href="namespacethorin_1_1plug_1_1core.html#ac777ed6dee30958bf3376e7e4a591ac1a9c430d42dc56abb11b7f4fc3bca20af7">s</a>; <span class="keywordflow">return</span> <span class="keyword">this</span>; } \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt;       T* set(       Sym s        )       { <span class="keywordflow">if</span> (Ow || !dbg_.sym) dbg_.sym = <a class="code hl_enumvalue" href="namespacethorin_1_1plug_1_1core.html#ac777ed6dee30958bf3376e7e4a591ac1a9c430d42dc56abb11b7f4fc3bca20af7">s</a>; <span class="keywordflow">return</span> <span class="keyword">this</span>; } \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt; <span class="keyword">const</span> T* set(       std::string s)<span class="keyword"> const </span>{         set(sym(std::move(s))); <span class="keywordflow">return</span> <span class="keyword">this</span>; }    \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt;       T* set(       std::string s)       {         set(sym(std::move(s))); <span class="keywordflow">return</span> <span class="keyword">this</span>; }    \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt; <span class="keyword">const</span> T* set(Loc l, Sym s        )<span class="keyword"> const </span>{ set(l); set(s);                 <span class="keywordflow">return</span> <span class="keyword">this</span>; }    \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt;       T* set(Loc l, Sym s        )       { set(l); set(s);                 <span class="keywordflow">return</span> <span class="keyword">this</span>; }    \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt; <span class="keyword">const</span> T* set(Loc l, std::string s)<span class="keyword"> const </span>{ set(l); set(sym(std::move(s))); <span class="keywordflow">return</span> <span class="keyword">this</span>; }    \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt;       T* set(Loc l, std::string s)       { set(l); set(sym(std::move(s))); <span class="keywordflow">return</span> <span class="keyword">this</span>; }    \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt; <span class="keyword">const</span> T* set(Dbg d)<span class="keyword"> const </span>{ set(<a class="code hl_enumvalue" href="namespacethorin_1_1plug_1_1regex.html#a4fa69f360d13c15835d1af06c89bb025a94e2736e61209acb49b3d9ac68b8d31f">d</a>.loc, <a class="code hl_enumvalue" href="namespacethorin_1_1plug_1_1regex.html#a4fa69f360d13c15835d1af06c89bb025a94e2736e61209acb49b3d9ac68b8d31f">d</a>.sym); <span class="keywordflow">return</span> <span class="keyword">this</span>; }                                \</div>
-<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt;       T* set(Dbg d)       { set(<a class="code hl_enumvalue" href="namespacethorin_1_1plug_1_1regex.html#a4fa69f360d13c15835d1af06c89bb025a94e2736e61209acb49b3d9ac68b8d31f">d</a>.loc, <a class="code hl_enumvalue" href="namespacethorin_1_1plug_1_1regex.html#a4fa69f360d13c15835d1af06c89bb025a94e2736e61209acb49b3d9ac68b8d31f">d</a>.sym); <span class="keywordflow">return</span> <span class="keyword">this</span>; }</div>
+<b>Value:</b><div class="fragment"><div class="line"><span class="keyword">public</span>:                                                                                                                      \</div>
+<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt; <span class="keyword">const</span> T* set(Loc l               )<span class="keyword"> const </span>{ <span class="keywordflow">if</span> (Ow || !dbg_.loc()) dbg_.set(l); <span class="keywordflow">return</span> <span class="keyword">this</span>; } \</div>
+<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt;       T* set(Loc l               )       { <span class="keywordflow">if</span> (Ow || !dbg_.loc()) dbg_.set(l); <span class="keywordflow">return</span> <span class="keyword">this</span>; } \</div>
+<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt; <span class="keyword">const</span> T* set(       Sym s        )<span class="keyword"> const </span>{ <span class="keywordflow">if</span> (Ow || !dbg_.sym()) dbg_.set(s); <span class="keywordflow">return</span> <span class="keyword">this</span>; } \</div>
+<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt;       T* set(       Sym s        )       { <span class="keywordflow">if</span> (Ow || !dbg_.sym()) dbg_.set(s); <span class="keywordflow">return</span> <span class="keyword">this</span>; } \</div>
+<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt; <span class="keyword">const</span> T* set(       std::string s)<span class="keyword"> const </span>{         set(sym(std::move(s))); <span class="keywordflow">return</span> <span class="keyword">this</span>; }      \</div>
+<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt;       T* set(       std::string s)       {         set(sym(std::move(s))); <span class="keywordflow">return</span> <span class="keyword">this</span>; }      \</div>
+<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt; <span class="keyword">const</span> T* set(Loc l, Sym s        )<span class="keyword"> const </span>{ set(l); set(s);                 <span class="keywordflow">return</span> <span class="keyword">this</span>; }      \</div>
+<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt;       T* set(Loc l, Sym s        )       { set(l); set(s);                 <span class="keywordflow">return</span> <span class="keyword">this</span>; }      \</div>
+<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt; <span class="keyword">const</span> T* set(Loc l, std::string s)<span class="keyword"> const </span>{ set(l); set(sym(std::move(s))); <span class="keywordflow">return</span> <span class="keyword">this</span>; }      \</div>
+<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt;       T* set(Loc l, std::string s)       { set(l); set(sym(std::move(s))); <span class="keywordflow">return</span> <span class="keyword">this</span>; }      \</div>
+<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt; <span class="keyword">const</span> T* set(Dbg d)<span class="keyword"> const </span>{ set(<a class="code hl_enumvalue" href="namespacethorin_1_1plug_1_1regex.html#a4fa69f360d13c15835d1af06c89bb025a94e2736e61209acb49b3d9ac68b8d31f">d</a>.loc(), <a class="code hl_enumvalue" href="namespacethorin_1_1plug_1_1regex.html#a4fa69f360d13c15835d1af06c89bb025a94e2736e61209acb49b3d9ac68b8d31f">d</a>.sym()); <span class="keywordflow">return</span> <span class="keyword">this</span>; }                              \</div>
+<div class="line">    <span class="keyword">template</span>&lt;<span class="keywordtype">bool</span> Ow = false&gt;       T* set(Dbg d)       { set(<a class="code hl_enumvalue" href="namespacethorin_1_1plug_1_1regex.html#a4fa69f360d13c15835d1af06c89bb025a94e2736e61209acb49b3d9ac68b8d31f">d</a>.loc(), <a class="code hl_enumvalue" href="namespacethorin_1_1plug_1_1regex.html#a4fa69f360d13c15835d1af06c89bb025a94e2736e61209acb49b3d9ac68b8d31f">d</a>.sym()); <span class="keywordflow">return</span> <span class="keyword">this</span>; }</div>
 <div class="ttc" id="anamespacethorin_1_1plug_1_1regex_html_a4fa69f360d13c15835d1af06c89bb025a94e2736e61209acb49b3d9ac68b8d31f"><div class="ttname"><a href="namespacethorin_1_1plug_1_1regex.html#a4fa69f360d13c15835d1af06c89bb025a94e2736e61209acb49b3d9ac68b8d31f">thorin::plug::regex::d</a></div><div class="ttdeci">@ d</div><div class="ttdef"><b>Definition</b> <a href="regex_2autogen_8h_source.html#l00078">autogen.h:78</a></div></div>
 </div><!-- fragment -->
 <p>Use as mixin to declare setters for Def::loc &amp; Def::name using a <em>covariant</em> return type. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00176">176</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00174">174</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>

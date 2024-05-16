@@ -1,11 +1,15 @@
 var searchData=
 [
   ['elem_0',['Elem',['../structthorin_1_1Elem.html',1,'thorin']]],
-  ['emitter_1',['emitter',['../classthorin_1_1Emitter.html',1,'thorin::Emitter&lt; Value, Type, BB, Child &gt;'],['../classthorin_1_1ll_1_1Emitter.html',1,'thorin::ll::Emitter']]],
+  ['emitter_1',['emitter',['../classthorin_1_1ast_1_1Emitter.html',1,'thorin::ast::Emitter'],['../classthorin_1_1Emitter.html',1,'thorin::Emitter&lt; Value, Type, BB, Child &gt;'],['../classthorin_1_1ll_1_1Emitter.html',1,'thorin::ll::Emitter']]],
   ['emitter_3c_20std_3a_3astring_2c_20std_3a_3astring_2c_20bb_2c_20emitter_20_3e_2',['Emitter&lt; std::string, std::string, BB, Emitter &gt;',['../classthorin_1_1Emitter.html',1,'thorin']]],
   ['equal_3',['Equal',['../structthorin_1_1PooledSet_1_1Data_1_1Equal.html',1,'thorin::PooledSet::Data']]],
-  ['etaexp_4',['EtaExp',['../classthorin_1_1EtaExp.html',1,'thorin']]],
-  ['etared_5',['EtaRed',['../classthorin_1_1EtaRed.html',1,'thorin']]],
-  ['ext_6',['Ext',['../classthorin_1_1Ext.html',1,'thorin']]],
-  ['extract_7',['Extract',['../classthorin_1_1Extract.html',1,'thorin']]]
+  ['error_4',['Error',['../classthorin_1_1Error.html',1,'thorin']]],
+  ['errorexpr_5',['ErrorExpr',['../classthorin_1_1ast_1_1ErrorExpr.html',1,'thorin::ast']]],
+  ['etaexp_6',['EtaExp',['../classthorin_1_1EtaExp.html',1,'thorin']]],
+  ['etared_7',['EtaRed',['../classthorin_1_1EtaRed.html',1,'thorin']]],
+  ['expr_8',['Expr',['../classthorin_1_1ast_1_1Expr.html',1,'thorin::ast']]],
+  ['ext_9',['Ext',['../classthorin_1_1Ext.html',1,'thorin']]],
+  ['extract_10',['Extract',['../classthorin_1_1Extract.html',1,'thorin']]],
+  ['extractexpr_11',['ExtractExpr',['../classthorin_1_1ast_1_1ExtractExpr.html',1,'thorin::ast']]]
 ];

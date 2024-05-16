@@ -1,7 +1,11 @@
 var hierarchy =
 [
     [ "thorin::Annex", "structthorin_1_1Annex.html", null ],
+    [ "thorin::ast::AnnexInfo", "structthorin_1_1ast_1_1AnnexInfo.html", null ],
+    [ "thorin::ast::AnnexInfo.id", "namespacethorin_1_1ast.html#structthorin_1_1ast_1_1AnnexInfo_8id", null ],
+    [ "thorin::ast::AnnexInfo.sym", "namespacethorin_1_1ast.html#structthorin_1_1ast_1_1AnnexInfo_8sym", null ],
     [ "thorin::plug::regex::app_range", "structthorin_1_1plug_1_1regex_1_1app__range.html", null ],
+    [ "thorin::ast::AST", "classthorin_1_1ast_1_1AST.html", null ],
     [ "automaton::AutomatonBase< NodeType >", "classautomaton_1_1AutomatonBase.html", null ],
     [ "automaton::AutomatonBase< DFANode >", "classautomaton_1_1AutomatonBase.html", [
       [ "automaton::DFA", "classautomaton_1_1DFA.html", null ]
@@ -17,7 +21,7 @@ var hierarchy =
     [ "thorin::Check", "classthorin_1_1Check.html", null ],
     [ "thorin::plug::clos::ClosLit", "classthorin_1_1plug_1_1clos_1_1ClosLit.html", null ],
     [ "thorin::PooledSet< T >::Data", "structthorin_1_1PooledSet_1_1Data.html", null ],
-    [ "thorin::Dbg", "namespacethorin.html#structthorin_1_1Dbg", null ],
+    [ "thorin::Dbg", "structthorin_1_1Dbg.html", null ],
     [ "thorin::DefDefEq", "structthorin_1_1DefDefEq.html", null ],
     [ "thorin::DefDefHash", "structthorin_1_1DefDefHash.html", null ],
     [ "thorin::DepNode", "classthorin_1_1DepNode.html", null ],
@@ -26,7 +30,11 @@ var hierarchy =
     [ "thorin::DomFrontierBase< forward >", "classthorin_1_1DomFrontierBase.html", null ],
     [ "thorin::DomTreeBase< forward >", "classthorin_1_1DomTreeBase.html", null ],
     [ "thorin::Elem< R, F >", "structthorin_1_1Elem.html", null ],
+    [ "thorin::ast::Emitter", "classthorin_1_1ast_1_1Emitter.html", null ],
     [ "thorin::PooledSet< T >::Data::Equal", "structthorin_1_1PooledSet_1_1Data_1_1Equal.html", null ],
+    [ "std::exception", null, [
+      [ "thorin::Error", "classthorin_1_1Error.html", null ]
+    ] ],
     [ "thorin::Flags", "namespacethorin.html#structthorin_1_1Flags", null ],
     [ "thorin::FNV1", "structthorin_1_1FNV1.html", null ],
     [ "thorin::plug::clos::FreeDefAna", "classthorin_1_1plug_1_1clos_1_1FreeDefAna.html", null ],
@@ -51,17 +59,17 @@ var hierarchy =
       [ "std::tuple_size< thorin::Span< T, N > >", "structstd_1_1tuple__size_3_01thorin_1_1Span_3_01T_00_01N_01_4_01_4.html", null ]
     ] ],
     [ "fe::Lexer", null, [
-      [ "thorin::Lexer", "classthorin_1_1Lexer.html", null ]
+      [ "thorin::ast::Lexer", "classthorin_1_1ast_1_1Lexer.html", null ]
     ] ],
     [ "thorin::Log", "classthorin_1_1Log.html", null ],
     [ "thorin::LoopTree< forward >", "classthorin_1_1LoopTree.html", null ],
     [ "thorin::LoopTreeBuilder< forward >", "classthorin_1_1LoopTreeBuilder.html", null ],
     [ "thorin::Axiom::Match< T >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match", null ],
     [ "thorin::Match< Id, D >", "classthorin_1_1Match.html", null ],
-    [ "thorin::Axiom::Match< plug::regex::any >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01plug_1_1regex_1_1any_01_4", null ],
+    [ "thorin::Error::Msg", "structthorin_1_1Error_1_1Msg.html", null ],
     [ "automaton::NFANode", "classautomaton_1_1NFANode.html", null ],
     [ "fe::Parser", null, [
-      [ "thorin::Parser", "classthorin_1_1Parser.html", null ]
+      [ "thorin::ast::Parser", "classthorin_1_1ast_1_1Parser.html", null ]
     ] ],
     [ "thorin::Pass", "classthorin_1_1Pass.html", [
       [ "thorin::RWPass< DebugDump, Lam >", "classthorin_1_1RWPass.html", [
@@ -193,10 +201,7 @@ var hierarchy =
     [ "thorin::PooledSet< T >", "classthorin_1_1PooledSet.html", null ],
     [ "thorin::PooledSet< const Var * >", "classthorin_1_1PooledSet.html", null ],
     [ "thorin::PooledSet< Def * >", "classthorin_1_1PooledSet.html", null ],
-    [ "thorin::Ptrn", "classthorin_1_1Ptrn.html", [
-      [ "thorin::IdPtrn", "classthorin_1_1IdPtrn.html", null ],
-      [ "thorin::TuplePtrn", "classthorin_1_1TuplePtrn.html", null ]
-    ] ],
+    [ "thorin::ast::R< T >", "structthorin_1_1ast_1_1R.html", null ],
     [ "automaton::RangeCompare", "structautomaton_1_1RangeCompare.html", null ],
     [ "thorin::Ref", "classthorin_1_1Ref.html", null ],
     [ "thorin::BitSet::reference", "classthorin_1_1BitSet_1_1reference.html", null ],
@@ -244,11 +249,57 @@ var hierarchy =
       [ "thorin::LoopTree< forward >::Base", "classthorin_1_1LoopTree_1_1Base.html", [
         [ "thorin::LoopTree< forward >::Head", "classthorin_1_1LoopTree_1_1Head.html", null ],
         [ "thorin::LoopTree< forward >::Leaf", "classthorin_1_1LoopTree_1_1Leaf.html", null ]
+      ] ],
+      [ "thorin::ast::Node", "classthorin_1_1ast_1_1Node.html", [
+        [ "thorin::ast::Decl", "classthorin_1_1ast_1_1Decl.html", [
+          [ "thorin::ast::AxiomDecl::Alias", "classthorin_1_1ast_1_1AxiomDecl_1_1Alias.html", null ],
+          [ "thorin::ast::DummyDecl", "classthorin_1_1ast_1_1DummyDecl.html", null ],
+          [ "thorin::ast::Ptrn", "classthorin_1_1ast_1_1Ptrn.html", [
+            [ "thorin::ast::GrpPtrn", "classthorin_1_1ast_1_1GrpPtrn.html", null ],
+            [ "thorin::ast::IdPtrn", "classthorin_1_1ast_1_1IdPtrn.html", null ],
+            [ "thorin::ast::TuplePtrn", "classthorin_1_1ast_1_1TuplePtrn.html", null ]
+          ] ],
+          [ "thorin::ast::ValDecl", "classthorin_1_1ast_1_1ValDecl.html", [
+            [ "thorin::ast::AxiomDecl", "classthorin_1_1ast_1_1AxiomDecl.html", null ],
+            [ "thorin::ast::CDecl", "classthorin_1_1ast_1_1CDecl.html", null ],
+            [ "thorin::ast::LetDecl", "classthorin_1_1ast_1_1LetDecl.html", null ],
+            [ "thorin::ast::RecDecl", "classthorin_1_1ast_1_1RecDecl.html", [
+              [ "thorin::ast::LamDecl", "classthorin_1_1ast_1_1LamDecl.html", null ]
+            ] ]
+          ] ]
+        ] ],
+        [ "thorin::ast::Expr", "classthorin_1_1ast_1_1Expr.html", [
+          [ "thorin::ast::AppExpr", "classthorin_1_1ast_1_1AppExpr.html", null ],
+          [ "thorin::ast::ArrOrPackExpr< arr >", "classthorin_1_1ast_1_1ArrOrPackExpr.html", null ],
+          [ "thorin::ast::ArrowExpr", "classthorin_1_1ast_1_1ArrowExpr.html", null ],
+          [ "thorin::ast::BlockExpr", "classthorin_1_1ast_1_1BlockExpr.html", null ],
+          [ "thorin::ast::DeclExpr", "classthorin_1_1ast_1_1DeclExpr.html", null ],
+          [ "thorin::ast::ErrorExpr", "classthorin_1_1ast_1_1ErrorExpr.html", null ],
+          [ "thorin::ast::ExtractExpr", "classthorin_1_1ast_1_1ExtractExpr.html", null ],
+          [ "thorin::ast::IdExpr", "classthorin_1_1ast_1_1IdExpr.html", null ],
+          [ "thorin::ast::InferExpr", "classthorin_1_1ast_1_1InferExpr.html", null ],
+          [ "thorin::ast::InsertExpr", "classthorin_1_1ast_1_1InsertExpr.html", null ],
+          [ "thorin::ast::LamExpr", "classthorin_1_1ast_1_1LamExpr.html", null ],
+          [ "thorin::ast::LitExpr", "classthorin_1_1ast_1_1LitExpr.html", null ],
+          [ "thorin::ast::PiExpr", "classthorin_1_1ast_1_1PiExpr.html", null ],
+          [ "thorin::ast::PrimaryExpr", "classthorin_1_1ast_1_1PrimaryExpr.html", null ],
+          [ "thorin::ast::RetExpr", "classthorin_1_1ast_1_1RetExpr.html", null ],
+          [ "thorin::ast::SigmaExpr", "classthorin_1_1ast_1_1SigmaExpr.html", null ],
+          [ "thorin::ast::TupleExpr", "classthorin_1_1ast_1_1TupleExpr.html", null ],
+          [ "thorin::ast::TypeExpr", "classthorin_1_1ast_1_1TypeExpr.html", null ]
+        ] ],
+        [ "thorin::ast::Import", "classthorin_1_1ast_1_1Import.html", null ],
+        [ "thorin::ast::Module", "classthorin_1_1ast_1_1Module.html", null ],
+        [ "thorin::ast::PiExpr::Dom", "classthorin_1_1ast_1_1PiExpr_1_1Dom.html", [
+          [ "thorin::ast::LamDecl::Dom", "classthorin_1_1ast_1_1LamDecl_1_1Dom.html", null ]
+        ] ]
       ] ]
     ] ],
+    [ "thorin::ast::S", "structthorin_1_1ast_1_1S.html", null ],
     [ "thorin::Scheduler", "classthorin_1_1Scheduler.html", null ],
     [ "thorin::Scope", "classthorin_1_1Scope.html", null ],
-    [ "thorin::Scopes", "classthorin_1_1Scopes.html", null ],
+    [ "thorin::World::ScopedLoc", "structthorin_1_1World_1_1ScopedLoc.html", null ],
+    [ "thorin::ast::Scopes", "classthorin_1_1ast_1_1Scopes.html", null ],
     [ "std::span", null, [
       [ "thorin::Span< T, N >", "classthorin_1_1Span.html", null ]
     ] ],
@@ -257,7 +308,7 @@ var hierarchy =
       [ "thorin::Driver", "classthorin_1_1Driver.html", null ]
     ] ],
     [ "thorin::Tab", "classthorin_1_1Tab.html", null ],
-    [ "thorin::Tok", "classthorin_1_1Tok.html", null ],
+    [ "thorin::ast::Tok", "classthorin_1_1ast_1_1Tok.html", null ],
     [ "std::tuple_element< I, thorin::Span< T, N > >", "namespacestd.html#structstd_1_1tuple__element_3_01I_00_01thorin_1_1Span_3_01T_00_01N_01_4_01_4", null ],
     [ "thorin::unique_queue< Set >", "classthorin_1_1unique__queue.html", null ],
     [ "thorin::unique_stack< Set >", "classthorin_1_1unique__stack.html", null ],

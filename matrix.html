@@ -260,10 +260,10 @@ High-level matrix operations</h2>
 Unfolding functions</h1>
 <h2><a class="anchor" id="autotoc_md176"></a>
 product</h2>
-<p>Follow the principle <code>ij &lt;- ik, kj</code> (<code>out[i, j] = sum_k in1[i, k] * in2[k, j]</code>) by using mulplication as combination function and addition as reduction function. </p><div class="fragment"><div class="line">.fun .extern internal_mapRed_matrix_prod!(m k l: .Nat, pe: «2; .Nat»)</div>
-<div class="line">                                        !(mem: %mem.M, M: %matrix.Mat (2, (m, k), %math.F pe),</div>
-<div class="line">                                                       N: %matrix.Mat (2, (k, l), %math.F pe))</div>
-<div class="line">                                        :[     %mem.M,    %matrix.Mat (2, (m, l), %math.F pe)] =</div>
+<p>Follow the principle <code>ij &lt;- ik, kj</code> (<code>out[i, j] = sum_k in1[i, k] * in2[k, j]</code>) by using mulplication as combination function and addition as reduction function. </p><div class="fragment"><div class="line">.fun .extern internal_mapRed_matrix_prod(m k l: .Nat, pe: «2; .Nat»)</div>
+<div class="line">                                        (mem: %mem.M, M: %matrix.Mat (2, (m, k), %math.F pe),</div>
+<div class="line">                                                       N: %matrix.Mat (2, (k, l), %math.F pe))@.tt</div>
+<div class="line">                                      : [     %mem.M,     %matrix.Mat (2, (m, l), %math.F pe)] =</div>
 <div class="line">    .let R = %math.F pe;</div>
 <div class="line">    .let zero_real = %math.conv.f2f pe 0.0:%math.F64;</div>
 <div class="line">    return (</div>
@@ -289,9 +289,9 @@ product</h2>
 transpose</h2>
 <p>Transpose a matrix by iterating the indices in swapped order. </p><div class="fragment"><div class="line">// TODO: check code for 1-matrix edge case</div>
 <div class="line">// TODO: would this automatically be handled by read(transpose) ?</div>
-<div class="line">.fun .extern internal_mapRed_matrix_transpose!((k l: .Nat), T: *)</div>
-<div class="line">                                             !(mem: %mem.M, M: %matrix.Mat (2, (k, l), T)) :</div>
-<div class="line">                                              [     %mem.M,    %matrix.Mat (2, (l, k), T)] =</div>
+<div class="line">.fun .extern internal_mapRed_matrix_transpose((k l: .Nat), T: *)</div>
+<div class="line">                                             (mem: %mem.M, M: %matrix.Mat (2, (k, l), T))@.tt</div>
+<div class="line">                                           : [     %mem.M,    %matrix.Mat (2, (l, k), T)] =</div>
 <div class="line">    .let zero = ⊥:T; // TODO: use generalized zero</div>
 <div class="line">    return (</div>
 <div class="line">        %matrix.map_reduce</div>
@@ -312,9 +312,9 @@ transpose</h2>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md178"></a>
 sum</h2>
 <p>Sums up all elements of a matrix and returns a scalar. </p><div class="fragment"><div class="line">//  TODO: test 0d matrix (edge cases in code)</div>
-<div class="line">.fun .extern internal_mapRed_matrix_sum!(n: .Nat, S: «n; .Nat», pe: «2; .Nat»)</div>
-<div class="line">                                       !(mem: %mem.M, M: %matrix.Mat (n, S, %math.F pe))</div>
-<div class="line">                                       :[%mem.M, %math.F pe] =</div>
+<div class="line">.fun .extern internal_mapRed_matrix_sum(n: .Nat, S: «n; .Nat», pe: «2; .Nat»)</div>
+<div class="line">                                       (mem: %mem.M, M: %matrix.Mat (n, S, %math.F pe))@.tt</div>
+<div class="line">                                     : [%mem.M, %math.F pe] =</div>
 <div class="line">    .let R = %math.F pe;</div>
 <div class="line">    // TODO: use generalized zero</div>
 <div class="line">    .let zero_64 = 0.0:(%math.F (52,11));</div>
@@ -348,18 +348,17 @@ Passes</h2>
 <div class="line">.ax %matrix.lower_matrix_low_level:             %compile.Phase;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md181"></a>
 Phases</h2>
-<div class="fragment"><div class="line">.let matrix_lower_phase = {</div>
+<div class="fragment"><div class="line">.let matrix_lower_phase =</div>
 <div class="line">    %compile.phases_to_phase (⊤:.Nat)</div>
 <div class="line">    (</div>
-<div class="line">        (%compile.pass_phase (%compile.pass_list</div>
-<div class="line">            %matrix.lower_matrix_high_level_map_reduce</div>
-<div class="line">            %matrix.lower_matrix_medium_level</div>
-<div class="line">        )),</div>
+<div class="line">        (%compile.pass_phase</div>
+<div class="line">            (%compile.pass_list</div>
+<div class="line">                %matrix.lower_matrix_high_level_map_reduce</div>
+<div class="line">                %matrix.lower_matrix_medium_level)),</div>
 <div class="line">        // TODO: only in map_red namespace</div>
 <div class="line">        %compile.single_pass_phase %matrix.internal_map_reduce_cleanup,</div>
 <div class="line">        %matrix.lower_matrix_low_level</div>
-<div class="line">    )</div>
-<div class="line">};</div>
+<div class="line">    );</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

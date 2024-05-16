@@ -1,9 +1,15 @@
 var searchData=
 [
-  ['range_0',['range',['../structthorin_1_1Elem.html#a79f5a1f5bf7256133084c46284de5e36',1,'thorin::Elem']]],
-  ['rebind_5f_1',['rebind_',['../classthorin_1_1Ptrn.html#a506e2224a08b6e3ae286d98a2a47e0a9',1,'thorin::Ptrn']]],
-  ['reeval_5fbreakpoints_2',['reeval_breakpoints',['../namespacethorin.html#abd14b901c908b3d92b9200a298a5ba18',1,'thorin::Flags']]],
-  ['register_5fbackends_3',['register_backends',['../structthorin_1_1Plugin.html#a72102c6b1390838f8ea6339d244f35cf',1,'thorin::Plugin']]],
-  ['register_5fnormalizers_4',['register_normalizers',['../structthorin_1_1Plugin.html#a84019ca2515d961119fa7de7b587550a',1,'thorin::Plugin']]],
-  ['register_5fpasses_5',['register_passes',['../structthorin_1_1Plugin.html#aa107a093a32a77320c2e7210119f859b',1,'thorin::Plugin']]]
+  ['padding_0',['padding',['../classthorin_1_1BitSet.html#afb9ccf935ed0e0ce3b3229ed00a6321d',1,'thorin::BitSet']]],
+  ['parent_5f_1',['parent_',['../classthorin_1_1LoopTree_1_1Base.html#a91ee5b0f76552ef43b5d7729aace32c6',1,'thorin::LoopTree::Base']]],
+  ['parts_2',['parts',['../structthorin_1_1ll_1_1BB.html#a2147161ad629fa4dd509e3b95f5552a3',1,'thorin::ll::BB']]],
+  ['phis_3',['phis',['../structthorin_1_1ll_1_1BB.html#a02ae1bd1d78aca140fc1e26ba383ce7b',1,'thorin::ll::BB']]],
+  ['pi_4',['pi',['../structthorin_1_1ast_1_1AnnexInfo.html#a9787ce24e281fee2908bbe9ba7dd6ac7',1,'thorin::ast::AnnexInfo']]],
+  ['pi_5f_5',['pi_',['../classthorin_1_1ast_1_1PiExpr_1_1Dom.html#a7f3e74199699c934f25a90faf03f1155',1,'thorin::ast::PiExpr::Dom']]],
+  ['plugin_6',['plugin',['../namespacethorin_1_1ast.html#aa24bcf2198b1b13ad985304483f7f324',1,'thorin::ast::AnnexInfo.sym::plugin'],['../namespacethorin_1_1ast.html#aa24bcf2198b1b13ad985304483f7f324',1,'thorin::ast::AnnexInfo.id::plugin']]],
+  ['plugin_5fid_7',['plugin_id',['../namespacethorin_1_1plug_1_1regex.html#a10ecd4878cd0d7db59b0cb1ca89ca821',1,'thorin::plug::regex::Plugin_Id'],['../namespacethorin_1_1plug_1_1refly.html#aacfead02e0783ae1fbc0ae36e1cd8595',1,'thorin::plug::refly::Plugin_Id'],['../namespacethorin_1_1plug_1_1opt.html#aa8d15ef0393b5dda1d555b6c131b4d96',1,'thorin::plug::opt::Plugin_Id'],['../namespacethorin_1_1plug_1_1mem.html#afe777654eaae857a66e2e00d33a03c71',1,'thorin::plug::mem::Plugin_Id'],['../namespacethorin_1_1plug_1_1matrix.html#a68897d97b53cc7cc3008e42186bf726f',1,'thorin::plug::matrix::Plugin_Id'],['../namespacethorin_1_1plug_1_1math.html#ae2f2695c69b008a05c4b8c9845c34cd7',1,'thorin::plug::math::Plugin_Id'],['../namespacethorin_1_1plug_1_1direct.html#a7fcf9f456010216202e2a860ff1a2d47',1,'thorin::plug::direct::Plugin_Id'],['../namespacethorin_1_1plug_1_1demo.html#ad761280a9903a2c628253d6d2d507b88',1,'thorin::plug::demo::Plugin_Id'],['../namespacethorin_1_1plug_1_1core.html#a344b017a8c81e21b6c64dabcb05d8a67',1,'thorin::plug::core::Plugin_Id'],['../namespacethorin_1_1plug_1_1compile.html#a23953c32da27ef6fc2d6580fd623c0c8',1,'thorin::plug::compile::Plugin_Id'],['../namespacethorin_1_1plug_1_1clos.html#ace0543dc1f6323bca31943b0cfa87785',1,'thorin::plug::clos::Plugin_Id'],['../namespacethorin_1_1plug_1_1autodiff.html#add15e5e8817ac86cf2dbb27218151026',1,'thorin::plug::autodiff::Plugin_Id'],['../namespacethorin_1_1plug_1_1affine.html#a0aa5aafd22776794c2d601bda8eed38b',1,'thorin::plug::affine::Plugin_Id']]],
+  ['plugin_5fname_8',['plugin_name',['../structthorin_1_1Plugin.html#a558a4271a9951f27ba9ec56b06e1d391',1,'thorin::Plugin']]],
+  ['pod_9',['pod',['../structthorin_1_1World_1_1State.html#a8be30c4cfa20cb0cf4f34ec7dd69c193',1,'thorin::World::State']]],
+  ['pred_10',['pred',['../classthorin_1_1plug_1_1mem_1_1SSAConstr.html#a19d7ce61accd2cbf4d36af239d156f5d',1,'thorin::plug::mem::SSAConstr::Info']]],
+  ['prime_11',['prime',['../structthorin_1_1FNV1.html#a80162d0acdba80bb75d7f3691219f038',1,'thorin::FNV1']]]
 ];

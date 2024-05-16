@@ -15,7 +15,7 @@ var searchData=
   ['plugin_5fselect_12',['plugin_select',['../namespacethorin_1_1plug_1_1compile.html#a97f0dab6e4718533cea313c822683d07',1,'thorin::plug::compile']]],
   ['pos_13',['Pos',['../classthorin_1_1EtaExp.html#a156b61a8e9d0843a3e598adb259c7abd',1,'thorin::EtaExp']]],
   ['pow_14',['pow',['../namespacethorin_1_1plug_1_1math.html#a8aacda49d389d02c698466e181b65e8d',1,'thorin::plug::math']]],
-  ['prec_15',['Prec',['../classthorin_1_1Tok.html#afdc0f701e0b635d379f16d20957532a2',1,'thorin::Tok']]],
+  ['prec_15',['Prec',['../namespacethorin_1_1ast.html#afda9c121a349c5f794dcd122a70bbcfa',1,'thorin::ast']]],
   ['prod_16',['prod',['../namespacethorin_1_1plug_1_1matrix.html#a6e5a3ebd1fb3f40a6764a81adf0ecceb',1,'thorin::plug::matrix']]],
   ['ptr_17',['Ptr',['../namespacethorin_1_1plug_1_1mem.html#abad253eb0016b5180be7cd05000cd662',1,'thorin::plug::mem']]],
   ['ptr0_18',['Ptr0',['../namespacethorin_1_1plug_1_1mem.html#a64325659abb1b3614317c66dd2c5e6e6',1,'thorin::plug::mem']]],

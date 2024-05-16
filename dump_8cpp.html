@@ -111,7 +111,8 @@ $(document).ready(function(){initNavTree('dump_8cpp.html',''); initResizable(); 
 
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle"><div class="title">dump.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -119,7 +120,7 @@ $(document).ready(function(){initNavTree('dump_8cpp.html',''); initResizable(); 
 <code>#include &lt;fe/assert.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="driver_8h_source.html">thorin/driver.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="deptree_8h_source.html">thorin/analyses/deptree.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="tok_8h_source.html">thorin/fe/tok.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="tok_8h_source.html">thorin/ast/tok.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="util_8h_source.html">thorin/util/util.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for dump.cpp:</div>
@@ -134,6 +135,15 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacethorin" id="r_namespacethorin"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html">thorin</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a6bff0ba92b8da6688daba417375c5449" id="r_a6bff0ba92b8da6688daba417375c5449"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dump_8cpp.html#a6bff0ba92b8da6688daba417375c5449">MY_PREC</a>(m)</td></tr>
+<tr class="separator:a6bff0ba92b8da6688daba417375c5449"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa59a5f5a821ce31b222873b1c8a06eda" id="r_aa59a5f5a821ce31b222873b1c8a06eda"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dump_8cpp.html#aa59a5f5a821ce31b222873b1c8a06eda">CODE</a>(l,  p,  r)&#160;&#160;&#160;p,</td></tr>
+<tr class="separator:aa59a5f5a821ce31b222873b1c8a06eda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa59a5f5a821ce31b222873b1c8a06eda" id="r_aa59a5f5a821ce31b222873b1c8a06eda"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dump_8cpp.html#aa59a5f5a821ce31b222873b1c8a06eda">CODE</a>(l,  p,  r)&#160;&#160;&#160;    case MyPrec::p: return {MyPrec::l, MyPrec::r};</td></tr>
+<tr class="separator:aa59a5f5a821ce31b222873b1c8a06eda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">std::ostream operator</div></td></tr>
@@ -143,6 +153,102 @@ Functions</h2></td></tr>
 <tr class="memdesc:a2a31cdc1f3cb66759ad44e6052b4b575"><td class="mdescLeft">&#160;</td><td class="mdescRight">This will stream <code>def</code> as an operand.  <br /></td></tr>
 <tr class="separator:a2a31cdc1f3cb66759ad44e6052b4b575"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="aa59a5f5a821ce31b222873b1c8a06eda" name="aa59a5f5a821ce31b222873b1c8a06eda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa59a5f5a821ce31b222873b1c8a06eda">&#9670;&#160;</a></span>CODE <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CODE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">l, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">p, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">r&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;p,</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dump_8cpp_source.html#l00087">87</a> of file <a class="el" href="dump_8cpp_source.html">dump.cpp</a>.</p>
+
+</div>
+</div>
+<a id="aa59a5f5a821ce31b222873b1c8a06eda" name="aa59a5f5a821ce31b222873b1c8a06eda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa59a5f5a821ce31b222873b1c8a06eda">&#9670;&#160;</a></span>CODE <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CODE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">l, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">p, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">r&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;    case MyPrec::p: return {MyPrec::l, MyPrec::r};</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dump_8cpp_source.html#l00087">87</a> of file <a class="el" href="dump_8cpp_source.html">dump.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a6bff0ba92b8da6688daba417375c5449" name="a6bff0ba92b8da6688daba417375c5449"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6bff0ba92b8da6688daba417375c5449">&#9670;&#160;</a></span>MY_PREC</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MY_PREC</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">m</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    <span class="comment">/* left     prec,    right  */</span>                                                                              \</div>
+<div class="line">    m(Nil, Bot, Nil) m(Nil, Nil, Nil) m(Lam, Arrow, Arrow) m(Nil, Lam, Pi) m(Nil, Pi, App) m(App, App, Extract) \</div>
+<div class="line">        m(Extract, Extract, Lit) m(Nil, Lit, Lit)</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="dump_8cpp_source.html#l00081">81</a> of file <a class="el" href="dump_8cpp_source.html">dump.cpp</a>.</p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

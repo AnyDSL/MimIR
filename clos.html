@@ -157,28 +157,28 @@ Phases</h2>
 <div class="fragment"><div class="line">.ax %clos.clos_conv_phase:        %compile.Phase;</div>
 <div class="line">.ax %clos.lower_typed_clos_phase: %compile.Phase;</div>
 <div class="line"> </div>
-<div class="line">.let clos_opt1_phase = {</div>
-<div class="line">  .let eta_red = %clos.eta_red_bool_pass .tt;</div>
-<div class="line">  .let eta_exp = %compile.eta_exp_pass eta_red;</div>
-<div class="line">  %compile.pass_phase (%compile.pass_list</div>
-<div class="line">      eta_red</div>
-<div class="line">      eta_exp</div>
-<div class="line">      (%compile.scalerize_pass eta_exp)</div>
-<div class="line">  )</div>
-<div class="line">};</div>
-<div class="line">.let clos_opt2_phase = {</div>
-<div class="line">  .let nullptr = %compile.nullptr_pass;</div>
-<div class="line">  %compile.pass_phase (%compile.pass_list</div>
-<div class="line">      nullptr</div>
-<div class="line">      (%compile.scalerize_pass nullptr)</div>
-<div class="line">      %clos.branch_clos_pass</div>
-<div class="line">      (%mem.copy_prop_pass (nullptr, nullptr, .tt))</div>
-<div class="line">      %clos.lower_typed_clos_prep_pass</div>
-<div class="line">      %clos.clos2sjlj_pass</div>
-<div class="line">  )</div>
-<div class="line">};</div>
-<div class="line">.let clos_phases = {</div>
-<div class="line">  .let nullptr = %compile.nullptr_pass;</div>
+<div class="line">.let clos_opt1_phase =</div>
+<div class="line">    .let eta_red = %clos.eta_red_bool_pass .tt;</div>
+<div class="line">    .let eta_exp = %compile.eta_exp_pass eta_red;</div>
+<div class="line">    %compile.pass_phase (%compile.pass_list</div>
+<div class="line">        eta_red</div>
+<div class="line">        eta_exp</div>
+<div class="line">        (%compile.scalerize_pass eta_exp)</div>
+<div class="line">    );</div>
+<div class="line"> </div>
+<div class="line">.let clos_opt2_phase =</div>
+<div class="line">    .let nullptr = %compile.nullptr_pass;</div>
+<div class="line">    %compile.pass_phase</div>
+<div class="line">        (%compile.pass_list</div>
+<div class="line">            nullptr</div>
+<div class="line">            (%compile.scalerize_pass nullptr)</div>
+<div class="line">            %clos.branch_clos_pass</div>
+<div class="line">            (%mem.copy_prop_pass (nullptr, nullptr, .tt))</div>
+<div class="line">            %clos.lower_typed_clos_prep_pass</div>
+<div class="line">            %clos.clos2sjlj_pass);</div>
+<div class="line"> </div>
+<div class="line">.let clos_phases =</div>
+<div class="line">    .let nullptr = %compile.nullptr_pass;</div>
 <div class="line">    %compile.combined_phase</div>
 <div class="line">        (%compile.phase_list</div>
 <div class="line">            (%compile.single_pass_phase nullptr)</div>
@@ -190,9 +190,7 @@ Phases</h2>
 <div class="line">            %clos.clos_conv_phase</div>
 <div class="line">            clos_opt1_phase</div>
 <div class="line">            clos_opt2_phase</div>
-<div class="line">            %clos.lower_typed_clos_phase</div>
-<div class="line">        )</div>
-<div class="line">};</div>
+<div class="line">            %clos.lower_typed_clos_phase);</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

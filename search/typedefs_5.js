@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['handle_0',['Handle',['../structthorin_1_1Plugin.html#aae591752da76e65471bf51cc4acc1e06',1,'thorin::Plugin']]],
-  ['hash_5ft_1',['hash_t',['../namespacethorin.html#a63fc98b747386959626beff8195c9910',1,'thorin']]],
-  ['head_2',['Head',['../classthorin_1_1LoopTreeBuilder.html#af2176b1acfc3d10dc70c6e8915000925',1,'thorin::LoopTreeBuilder']]]
+  ['gidmap_0',['GIDMap',['../namespacethorin.html#a7b3fd301e4692211ebf0d5bcfa17f1ac',1,'thorin']]],
+  ['gidnodemap_1',['GIDNodeMap',['../namespacethorin.html#abbb08512ded2c0a47698a71177d29217',1,'thorin']]],
+  ['gidnodeset_2',['GIDNodeSet',['../namespacethorin.html#a56063a2d17c29f75d2e405b36278df32',1,'thorin']]],
+  ['gidset_3',['GIDSet',['../namespacethorin.html#ad35b50772866ed1025ef1473bb99856a',1,'thorin']]]
 ];

@@ -1,9 +1,10 @@
 var searchData=
 [
-  ['var2var_0',['Var2Var',['../namespacethorin.html#a574519644134310f7123469cf121d0a2',1,'thorin']]],
-  ['varmap_1',['VarMap',['../namespacethorin.html#af280f2e34b689af6206dfb9756aa1df5',1,'thorin']]],
-  ['vars_2',['Vars',['../namespacethorin.html#afe75172b36fff9c14cd2744c81af6550',1,'thorin']]],
-  ['varset_3',['VarSet',['../namespacethorin.html#a229e892ca840ebda9ce60cfad90ae1b0',1,'thorin']]],
-  ['view_4',['View',['../namespacethorin.html#abb7f0a4e0380f065701fb37100b8e222',1,'thorin']]],
-  ['vmode_5',['vmode',['../namespacethorin_1_1plug_1_1core.html#aa2f8400315423f6d88cb5988250e3996',1,'thorin::plug::core::VMode'],['../namespacethorin_1_1plug_1_1math.html#aefb5afb8829ece6087187579a819f8c5',1,'thorin::plug::math::VMode']]]
+  ['u1_0',['u1',['../namespacethorin.html#aa540ae7ab9303fdd42fd43309ab1f465',1,'thorin']]],
+  ['u16_1',['u16',['../namespacethorin.html#a9689480ababad9d91947881b6c5da5e8',1,'thorin']]],
+  ['u32_2',['u32',['../namespacethorin.html#a80a833cf2f0cd4eb44a795cc30a83450',1,'thorin']]],
+  ['u64_3',['u64',['../namespacethorin.html#a22aa1b457904ccc13d8473ab38003efd',1,'thorin']]],
+  ['u8_4',['u8',['../namespacethorin.html#ad56e33ae995f3dc833c281c3945c335d',1,'thorin']]],
+  ['undo_5ft_5',['undo_t',['../namespacethorin.html#aae49afdff4a29ba1d94c3fada6e7b32e',1,'thorin']]],
+  ['uses_6',['Uses',['../namespacethorin.html#a39c45420c934930021cbf0784f2ce5a6',1,'thorin']]]
 ];

@@ -1,10 +1,8 @@
 var searchData=
 [
-  ['u1_0',['u1',['../namespacethorin.html#aa540ae7ab9303fdd42fd43309ab1f465',1,'thorin']]],
-  ['u16_1',['u16',['../namespacethorin.html#a9689480ababad9d91947881b6c5da5e8',1,'thorin']]],
-  ['u32_2',['u32',['../namespacethorin.html#a80a833cf2f0cd4eb44a795cc30a83450',1,'thorin']]],
-  ['u64_3',['u64',['../namespacethorin.html#a22aa1b457904ccc13d8473ab38003efd',1,'thorin']]],
-  ['u8_4',['u8',['../namespacethorin.html#ad56e33ae995f3dc833c281c3945c335d',1,'thorin']]],
-  ['undo_5ft_5',['undo_t',['../namespacethorin.html#aae49afdff4a29ba1d94c3fada6e7b32e',1,'thorin']]],
-  ['uses_6',['Uses',['../namespacethorin.html#a39c45420c934930021cbf0784f2ce5a6',1,'thorin']]]
+  ['t_0',['t',['../classthorin_1_1unique__stack.html#a87015b5531d6fb3a120dcee49766ef42',1,'thorin::unique_stack::T'],['../classthorin_1_1unique__queue.html#a8a1b5bd4fe99341c3523d34095152523',1,'thorin::unique_queue::T']]],
+  ['tag_1',['Tag',['../namespacethorin_1_1ast.html#a0a7ceaf263498b18cfdae292ddcee0c2',1,'thorin::ast']]],
+  ['tag_5ft_2',['tag_t',['../namespacethorin.html#ad6f0807de74648433d98df664cbb79ba',1,'thorin']]],
+  ['top_3',['Top',['../namespacethorin.html#ae6638e502eba2c4a1229a5a1af1cfb29',1,'thorin']]],
+  ['type_4',['type',['../classthorin_1_1Axiom.html#a90bea664417af17801b73ee688147b7d',1,'thorin::Axiom::Match::type'],['../namespacestd.html#a1ac12c0aadc9e56ca4592555256fa169',1,'std::tuple_element&lt; I, thorin::Span&lt; T, N &gt; &gt;::type']]]
 ];

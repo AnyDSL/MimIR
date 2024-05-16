@@ -113,6 +113,7 @@ $(document).ready(function(){initNavTree('classthorin_1_1LoopTree.html',''); ini
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="classthorin_1_1LoopTree-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">thorin::LoopTree&lt; forward &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -149,6 +150,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:acf2656d830593575a29cbd71c920a8e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0d803f47760d30d2f0f2f922bdb732f" id="r_ad0d803f47760d30d2f0f2f922bdb732f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1LoopTree_1_1Base.html">const</a> <a class="el" href="classthorin_1_1LoopTree_1_1Leaf.html">Leaf</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1LoopTree.html#ad0d803f47760d30d2f0f2f922bdb732f">operator[]</a> (<a class="el" href="classthorin_1_1LoopTree_1_1Base.html">const</a> <a class="el" href="classthorin_1_1CFNode.html">CFNode</a> *<a class="el" href="classthorin_1_1LoopTree_1_1Base.html">n</a>) <a class="el" href="classthorin_1_1LoopTree_1_1Base.html">const</a></td></tr>
 <tr class="separator:ad0d803f47760d30d2f0f2f922bdb732f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a0b97215e639132eee69a71502a6a728a" id="r_a0b97215e639132eee69a71502a6a728a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1LoopTree_1_1Base.html">class</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1LoopTree.html#a0b97215e639132eee69a71502a6a728a">LoopTreeBuilder&lt; forward &gt;</a></td></tr>
+<tr class="separator:a0b97215e639132eee69a71502a6a728a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48e5f724bead880dc2af43b9a52f1d93" id="r_a48e5f724bead880dc2af43b9a52f1d93"><td class="memTemplParams" colspan="2">template&lt;bool f&gt; </td></tr>
+<tr class="memitem:a48e5f724bead880dc2af43b9a52f1d93"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1LoopTree.html#a48e5f724bead880dc2af43b9a52f1d93">operator&lt;&lt;</a> (std::ostream &amp;, <a class="el" href="classthorin_1_1LoopTree_1_1Base.html">const</a> <a class="el" href="classthorin_1_1LoopTree_1_1Base.html">typename</a> <a class="el" href="classthorin_1_1LoopTree.html">LoopTree</a>&lt; f &gt;::Base *)</td></tr>
+<tr class="separator:a48e5f724bead880dc2af43b9a52f1d93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;bool forward&gt;<br />
@@ -335,6 +344,75 @@ template&lt;bool forward&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="looptree_8h_source.html#l00085">85</a> of file <a class="el" href="looptree_8h_source.html">looptree.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Symbol Documentation</h2>
+<a id="a0b97215e639132eee69a71502a6a728a" name="a0b97215e639132eee69a71502a6a728a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b97215e639132eee69a71502a6a728a">&#9670;&#160;</a></span>LoopTreeBuilder&lt; forward &gt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend <a class="el" href="classthorin_1_1LoopTree_1_1Base.html">class</a> <a class="el" href="classthorin_1_1LoopTreeBuilder.html">LoopTreeBuilder</a>&lt; <a class="el" href="classthorin_1_1LoopTree_1_1Base.html">forward</a> &gt;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="looptree_8h_source.html#l00099">99</a> of file <a class="el" href="looptree_8h_source.html">looptree.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="looptree_8cpp_source.html#l00199">thorin::LoopTree&lt; forward &gt;::LoopTree()</a>.</p>
+
+</div>
+</div>
+<a id="a48e5f724bead880dc2af43b9a52f1d93" name="a48e5f724bead880dc2af43b9a52f1d93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48e5f724bead880dc2af43b9a52f1d93">&#9670;&#160;</a></span>operator&lt;&lt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<div class="memtemplate">
+template&lt;bool f&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; <a class="el" href="classthorin_1_1LoopTree_1_1Base.html">operator</a>&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1LoopTree_1_1Base.html">const</a> <a class="el" href="classthorin_1_1LoopTree_1_1Base.html">typename</a> <a class="el" href="classthorin_1_1LoopTree.html">LoopTree</a>&lt; f &gt;::Base *&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

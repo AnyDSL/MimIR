@@ -9,5 +9,6 @@ var world_8h =
       [ "loc", "structthorin_1_1World_1_1State.html#af3aeb3115c071d23a6c3e18f47999a18", null ],
       [ "name", "structthorin_1_1World_1_1State.html#ac2e78fc95ef288ab5c96e37b42981cf5", null ]
     ] ],
+    [ "thorin::World::ScopedLoc", "structthorin_1_1World_1_1ScopedLoc.html", "structthorin_1_1World_1_1ScopedLoc" ],
     [ "thorin::World::Freezer", "structthorin_1_1World_1_1Freezer.html", "structthorin_1_1World_1_1Freezer" ]
 ];

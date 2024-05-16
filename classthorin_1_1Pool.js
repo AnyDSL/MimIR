@@ -9,5 +9,5 @@ var classthorin_1_1Pool =
     [ "merge", "classthorin_1_1Pool.html#aed069800e1d21af9bb8ae6577699259e", null ],
     [ "operator=", "classthorin_1_1Pool.html#a039d6b1baa84c2bddbd89d09aa4d071c", null ],
     [ "singleton", "classthorin_1_1Pool.html#aa78193f37162148cf90612193da3b3a2", null ],
-    [ "swap", "classthorin_1_1Pool.html#a118eea2cda8eba5673cbf254f6ab9f44", null ]
+    [ "swap", "classthorin_1_1Pool.html#a76d8e439fe299d28f1a07752eb176e77", null ]
 ];

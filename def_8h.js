@@ -58,7 +58,6 @@ var def_8h =
       [ "Univ", "def_8h.html#abb917bebc699083d990fc4592abcc50ea143bb06341e537e7143fb33624517946", null ],
       [ "Level", "def_8h.html#abb917bebc699083d990fc4592abcc50eaa0db49ba470c1c9ae2128c3470339153", null ]
     ] ],
-    [ "error", "def_8h.html#a1de4d5b631f17319d8e0fa712800fa14", null ],
     [ "operator<<", "def_8h.html#a95f0f301a18bbb510ecfbdffaaa70376", null ],
     [ "operator<<", "def_8h.html#a2a31cdc1f3cb66759ad44e6052b4b575", null ],
     [ "Num_Nodes", "def_8h.html#a1008adad35dba3714e4e64abb7dd3303", null ]

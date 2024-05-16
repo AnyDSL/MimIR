@@ -214,7 +214,7 @@ Passes</h2>
 Phases</h2>
 <div class="fragment"><div class="line">.ax %mem.add_mem_phase: %compile.Phase;</div>
 <div class="line"> </div>
-<div class="line">.let mem_opt_pass_list = {</div>
+<div class="line">.let mem_opt_pass_list =</div>
 <div class="line">    .let beta_red = %compile.beta_red_pass;</div>
 <div class="line">    .let eta_red  = %compile.eta_red_pass;</div>
 <div class="line">    .let eta_exp  = %compile.eta_exp_pass eta_red;</div>
@@ -223,13 +223,10 @@ Phases</h2>
 <div class="line">        eta_red</div>
 <div class="line">        eta_exp</div>
 <div class="line">        (%mem.ssa_pass eta_exp)</div>
-<div class="line">        (%mem.copy_prop_pass (beta_red, eta_exp, .ff))</div>
-<div class="line">};</div>
+<div class="line">        (%mem.copy_prop_pass (beta_red, eta_exp, .ff));</div>
+<div class="line"> </div>
 <div class="line">.let mem_opt_phase  = %compile.pass_phase mem_opt_pass_list;</div>
-<div class="line">.let mem_prep_phase = %compile.passes_to_phase (⊤:.Nat) (</div>
-<div class="line">        %mem.remem_elim_pass,</div>
-<div class="line">        %mem.alloc2malloc_pass</div>
-<div class="line">    );</div>
+<div class="line">.let mem_prep_phase = %compile.passes_to_phase (⊤:.Nat) (%mem.remem_elim_pass, %mem.alloc2malloc_pass);</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
