@@ -3,23 +3,21 @@
 #include <gtest/gtest-param-test.h>
 #include <gtest/gtest-spi.h>
 #include <gtest/gtest.h>
-
-#include <thorin/ast/parser.h>
-#include <thorin/pass/beta_red.h>
-#include <thorin/pass/eta_exp.h>
-#include <thorin/pass/eta_red.h>
-#include <thorin/pass/optimize.h>
-#include <thorin/pass/pass.h>
-#include <thorin/pass/pipelinebuilder.h>
-
-#include <thorin/plug/compile/compile.h>
-#include <thorin/plug/core/core.h>
-#include <thorin/plug/math/math.h>
-#include <thorin/plug/mem/mem.h>
+#include <mim/ast/parser.h>
+#include <mim/pass/beta_red.h>
+#include <mim/pass/eta_exp.h>
+#include <mim/pass/eta_red.h>
+#include <mim/pass/optimize.h>
+#include <mim/pass/pass.h>
+#include <mim/pass/pipelinebuilder.h>
+#include <mim/plug/compile/compile.h>
+#include <mim/plug/core/core.h>
+#include <mim/plug/math/math.h>
+#include <mim/plug/mem/mem.h>
 
 using namespace std::literals;
-using namespace thorin;
-using namespace thorin::plug;
+using namespace mim;
+using namespace mim::plug;
 
 // TODO can we port this to lit testing?
 

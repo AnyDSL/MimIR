@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace thorin::gtest {
+namespace mim::gtest {
 
 std::string test_name();
 

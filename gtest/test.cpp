@@ -3,16 +3,13 @@
 #include <sstream>
 
 #include <gtest/gtest.h>
+#include <mim/ast/parser.h>
+#include <mim/driver.h>
+#include <mim/plug/core/core.h>
+#include <mim/rewrite.h>
 
-#include <thorin/driver.h>
-#include <thorin/rewrite.h>
-
-#include <thorin/ast/parser.h>
-
-#include <thorin/plug/core/core.h>
-
-using namespace thorin;
-using namespace thorin::plug;
+using namespace mim;
+using namespace mim::plug;
 
 TEST(Zip, fold) {
     Driver driver;
