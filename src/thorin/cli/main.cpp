@@ -65,7 +65,7 @@ int main(int argc, char** argv) {
             | lyra::opt(flags.dump_gid, "level"               )      ["--dump-gid"              ]("Dumps gid of inline expressions as a comment in output if <level> > 0. Use a <level> of 2 to also emit the gid of trivial defs.")
             | lyra::opt(flags.dump_recursive                  )      ["--dump-recursive"        ]("Dumps Thorin program with a simple recursive algorithm that is not readable again from Thorin but is less fragile and also works for broken Thorin programs.")
             | lyra::opt(flags.aggressive_lam_spec             )      ["--aggr-lam-spec"         ]("Overrides LamSpec behavior to follow recursive calls.")
-            | lyra::opt(flags.scalerize_threshold, "threshold")      ["--scalerize-threshold"   ]("Thorin will not scalerize tuples/packs/sigmas/arrays with a number of elements greater than or equal this threshold.")
+            | lyra::opt(flags.scalarize_threshold, "threshold")      ["--scalarize-threshold"   ]("Thorin will not scalarize tuples/packs/sigmas/arrays with a number of elements greater than or equal this threshold.")
 #ifdef THORIN_ENABLE_CHECKS
             | lyra::opt(breakpoints,    "gid"                 )["-b"]["--break"                 ]("*Triggers breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
             | lyra::opt(flags.reeval_breakpoints              )      ["--reeval-breakpoints"    ]("*Triggers breakpoint even upon unfying a node that has already been built.")

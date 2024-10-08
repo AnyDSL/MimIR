@@ -354,7 +354,7 @@ public:
 
     /// Yields Def::as_lit_arity(), if it is in fact a Lit, or `1` otherwise.
     nat_t num_projs() const { return isa_lit_arity().value_or(1); }
-    nat_t num_tprojs() const; ///< As above but yields 1, if Flags::scalerize_threshold is exceeded.
+    nat_t num_tprojs() const; ///< As above but yields 1, if Flags::scalarize_threshold is exceeded.
 
     /// Similar to World::extract while assuming an arity of @p a, but also works on Sigma%s and Arr%ays.
     const Def* proj(nat_t a, nat_t i) const;

@@ -10,7 +10,7 @@ namespace thorin {
 /// @see @ref cli
 struct Flags {
     uint32_t dump_gid            = 0;
-    uint64_t scalerize_threshold = 32;
+    uint64_t scalarize_threshold = 32;
     bool ascii                   = false;
     bool dump_recursive          = false;
     bool disable_type_checking   = false; // TODO implement this flag

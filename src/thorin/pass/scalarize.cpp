@@ -10,7 +10,7 @@ namespace thorin {
 // TODO should also work for mutable non-dependent sigmas
 
 // TODO merge with make_scalar
-bool Scalerize::should_expand(Lam* lam) {
+bool Scalarize::should_expand(Lam* lam) {
     if (!isa_workable(lam)) return false;
     if (auto i = tup2sca_.find(lam); i != tup2sca_.end() && i->second && i->second == lam) return false;
 
@@ -21,7 +21,7 @@ bool Scalerize::should_expand(Lam* lam) {
     return false;
 }
 
-Lam* Scalerize::make_scalar(Ref def) {
+Lam* Scalarize::make_scalar(Ref def) {
     auto tup_lam = def->isa_mut<Lam>();
     assert(tup_lam);
     if (auto i = tup2sca_.find(tup_lam); i != tup2sca_.end()) return i->second;
@@ -53,7 +53,7 @@ Lam* Scalerize::make_scalar(Ref def) {
     return sca_lam;
 }
 
-Ref Scalerize::rewrite(Ref def) {
+Ref Scalarize::rewrite(Ref def) {
     auto& w = world();
     if (auto app = def->isa<App>()) {
         Ref sca_callee = app->callee();

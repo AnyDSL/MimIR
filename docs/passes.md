@@ -8,6 +8,7 @@ This is usually only necessary if you need a very specific iteration behavior fo
 
 Passes are managed by the [PassMan](@ref thorin::PassMan)ager.
 You can put together your optimization pipeline like so:
+
 ```cpp
     PassMan opt(world);
     opt.add<PartialEval>();
@@ -15,15 +16,17 @@ You can put together your optimization pipeline like so:
     auto er = opt.add<EtaRed>();
     auto ee = opt.add<EtaExp>(er);
     opt.add<SSAConstr>(ee);
-    opt.add<Scalerize>(ee);
+    opt.add<Scalarize>(ee);
     opt.add<CopyProp>(br, ee);
     opt.run();
 ```
+
 Note how some passes depend on other passes.
 For example, the [CopyProp](@ref thorin::plug::mem::CopyProp)agation depends on the [BetaRed](@ref thorin::BetaRed)uction and [EtaExp](@ref thorin::EtaExp)ansion.
-In contrast to traditional passes in compilers, Thorin's [PassMan](@ref thorin::PassMan) will run all passes in tandem and combine the obtained results into the most optimal solution and, hence, avoid the dreaded *phase-ordering problem*.
+In contrast to traditional passes in compilers, Thorin's [PassMan](@ref thorin::PassMan) will run all passes in tandem and combine the obtained results into the most optimal solution and, hence, avoid the dreaded _phase-ordering problem_.
 
 There are two kind of passes in Thorin:
+
 1. [Rewrite Pass](@ref thorin::RWPass)
 2. [Fixed-Point Pass](@ref thorin::FPPass)
 
@@ -47,16 +50,19 @@ This is `alloc2malloc.cpp`:
 
 A [fixed-point pass](@ref thorin::FPPass) allows you to implement a data-flow analysis.
 Traditionally, an optimizations performs
+
 1. the analysis and
 2. runs the actual transformation based upon the analysis info.
 
 A [fixed-point pass](@ref thorin::FPPass), however, will directly rewrite the code.
 You **optimistically** assume that all your assumptions your pass could possibly make about the program simply hold.
 Now, two things might happen:
+
 1. You do not run into any contradictions later on, so your optimistic assumptions were in fact sound.
 2. You prove yourself wrong later on.
 
 If you find a contradiction to your initial assumption, you have to
+
 1. undo your mistake by backtracing to the place where you erroneously made the wrong decision and
 2. correct your assumption such that you do not make the same mistake over and over again.
 

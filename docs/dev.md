@@ -27,19 +27,25 @@ The [World](@ref thorin::World) is essentially a big hash set where all [Defs](@
 The [World](@ref thorin::World) provides factory methods to create all kind of different [Defs](@ref thorin::Def).
 Here, we create the `main` function.
 In direct style, its type looks like this:
+
 ```
 [%mem.M, I32, %mem.Ptr (I32, 0)] -> [%mem.M, I32]]
 ```
+
 Converted to [continuation-passing style (CPS)](https://en.wikipedia.org/wiki/Continuation-passing_style) this type looks like this:
+
 ```
 .Cn [%mem.M, I32, %mem.Ptr (I32, 0), .Cn [%mem.M, I32]]
 ```
+
 The `%%mem.M` type is a type that keeps track of side effects that may occur.
 Since, `main` introduces [Var](@ref thorin::Var)iables we must create a **mutable** [Lam](@ref thorin::Lam)bda (see @ref mut).
 The only thing `main` is doing, is to invoke its `ret`urn continuation with `mem` and `argc` as argument:
+
 ```
 ret (mem, argc)
 ```
+
 It is also important to make `main` [external](@ref thorin::Def::make_external).
 Otherwise, Thorin will simply remove this function.
 
@@ -48,34 +54,36 @@ Finally, we [execute](@ref thorin::sys::system) the generated program with `./he
 
 ## Immutables vs. Mutables {#mut}
 
-There are two different kind of [Defs](@ref thorin::Def) in Thorin: *mutables* and *immutables*:
+There are two different kind of [Defs](@ref thorin::Def) in Thorin: _mutables_ and _immutables_:
 
-| **Immutable**                                                         | **Mutable**                                                                   |
-|-----------------------------------------------------------------------|-------------------------------------------------------------------------------|
-| *must be* `const`                                                     | *may be* **non**-`const`                                                      |
-| ops form [DAG](https://en.wikipedia.org/wiki/Directed_acyclic_graph)  | ops may be cyclic                                                             |
-| no recursion                                                          | may be recursive                                                              |
-| no [Var](@ref thorin::Var)                                            | has [Var](@ref thorin::Var); get with [Def::var](@ref thorin::Def::var)       |
-| build ops first, then the actual node                                 | build the actual node first, then [set](@ref thorin::Def::set) the ops        |
-| [Hash consed](https://en.wikipedia.org/wiki/Hash_consing)             | each new instance is fresh                                                    |
-| [Def::rebuild](@ref thorin::Def::rebuild)                             | [Def::stub](@ref thorin::Def::stub)                                           |
+| **Immutable**                                                        | **Mutable**                                                             |
+| -------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| _must be_ `const`                                                    | _may be_ **non**-`const`                                                |
+| ops form [DAG](https://en.wikipedia.org/wiki/Directed_acyclic_graph) | ops may be cyclic                                                       |
+| no recursion                                                         | may be recursive                                                        |
+| no [Var](@ref thorin::Var)                                           | has [Var](@ref thorin::Var); get with [Def::var](@ref thorin::Def::var) |
+| build ops first, then the actual node                                | build the actual node first, then [set](@ref thorin::Def::set) the ops  |
+| [Hash consed](https://en.wikipedia.org/wiki/Hash_consing)            | each new instance is fresh                                              |
+| [Def::rebuild](@ref thorin::Def::rebuild)                            | [Def::stub](@ref thorin::Def::stub)                                     |
 
 ## Matching IR
 
 Thorin provides different means to scrutinize [Defs](@ref thorin::Def).
 Usually, you will encounter a [Def](@ref thorin::Def) as [Ref](@ref thorin::Ref) which is just a wrapper for a `const Def*`.
-Its purpose is to resolve "holes" (called *[Infer](@ref thorin::Infer)s* in Thorin) that may pop up due to type inference.
+Its purpose is to resolve "holes" (called _[Infer](@ref thorin::Infer)s_ in Thorin) that may pop up due to type inference.
 Matching built-ins, i.e. all subclasses of [Def](@ref thorin::Def), works differently than matching [Axiom](@ref thorin::Axiom)s.
 
 ### Upcast for Built-ins {#cast_builtin}
 
 Methods beginning with
-* `isa` work like a `dynamic_cast` with a runtime check and return `nullptr` if the cast is not possible, while
-* those beginning with `as` are more like a `static_cast` and `assert` via its `isa` sibling in the `Debug` build that the cast is correct.
+
+- `isa` work like a `dynamic_cast` with a runtime check and return `nullptr` if the cast is not possible, while
+- those beginning with `as` are more like a `static_cast` and `assert` via its `isa` sibling in the `Debug` build that the cast is correct.
 
 #### Upcast
 
-`Def::isa`/`Def::as` allows for an *upcast* that matches both *mutables* and *immutables*:
+`Def::isa`/`Def::as` allows for an _upcast_ that matches both _mutables_ and _immutables_:
+
 ```cpp
 void foo(Ref def) {
     if (auto sigma = def->isa<Sigma>()) {
@@ -90,7 +98,8 @@ void foo(Ref def) {
 
 #### Upcast for Immutables
 
-[Def::isa_imm](@ref thorin::Def::isa_imm)/[Def::as_imm](@ref thorin::Def::as_imm) allows for an *upcast* and **only** matches *immutables*:
+[Def::isa_imm](@ref thorin::Def::isa_imm)/[Def::as_imm](@ref thorin::Def::as_imm) allows for an _upcast_ and **only** matches _immutables_:
+
 ```cpp
 void foo(Ref def) {
     if (auto imm = def->isa_imm()) {
@@ -108,8 +117,9 @@ void foo(Ref def) {
 
 #### Upcast for Mutables
 
-[Def::isa_mut](@ref thorin::Def::isa_mut)/[Def::as_mut](@ref thorin::Def::as_mut) allows for an *upcast* and **only** matches *mutables*.
-By doing so, it removes the `const` qualifier and gives you access to the **non**-`const` methods that only make sense for *mutables*:
+[Def::isa_mut](@ref thorin::Def::isa_mut)/[Def::as_mut](@ref thorin::Def::as_mut) allows for an _upcast_ and **only** matches _mutables_.
+By doing so, it removes the `const` qualifier and gives you access to the **non**-`const` methods that only make sense for _mutables_:
+
 ```cpp
 void foo(Ref def) {
     if (auto mut = def->isa_mut()) {
@@ -129,7 +139,9 @@ void foo(Ref def) {
     auto lam = def->as<Lam>();
 }
 ```
-Checking via `Def::isa`/`Def::as` a `Def*` has the same effect as using [Def::isa_mut](@ref thorin::Def::isa_mut)/[Def::isa_mut](@ref thorin::Def::as_mut) since the scrutinee must be already a *mutable* due to the lack of the `const` qualifier:
+
+Checking via `Def::isa`/`Def::as` a `Def*` has the same effect as using [Def::isa_mut](@ref thorin::Def::isa_mut)/[Def::isa_mut](@ref thorin::Def::as_mut) since the scrutinee must be already a _mutable_ due to the lack of the `const` qualifier:
+
 ```cpp
 void foo(Def* def) { // note the lack of "const" here
     if (auto sigma = def->isa<Sigma>()) {
@@ -148,6 +160,7 @@ void foo(Def* def) { // note the lack of "const" here
 
 Often, you want to match a [Lit](@ref thorin::Lit)eral and grab its content.
 You can use [Lit::isa](@ref thorin::Lit::isa)/[Lit::as](@ref thorin::Lit::as) for this:
+
 ```cpp
 void foo(Ref def) {
     if (auto lit = Lit::isa(def)) {
@@ -169,18 +182,19 @@ void foo(Ref def) {
 
 The following table summarizes all important casts:
 
-| `dynamic_cast`        <br> `static_cast`        | Returns                                                                                                                               | If `def` is a ...                     |
-|-------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------|
-| `def->isa<Lam>()`     <br> `def->as<Lam>()`     | `const Lam*`                                                                                                                          | [Lam](@ref thorin::Lam)               |
+| `dynamic_cast` <br> `static_cast`               | Returns                                                                                                                               | If `def` is a ...                     |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `def->isa<Lam>()` <br> `def->as<Lam>()`         | `const Lam*`                                                                                                                          | [Lam](@ref thorin::Lam)               |
 | `def->isa_imm<Lam>()` <br> `def->as_imm<Lam>()` | `const Lam*`                                                                                                                          | **immutable** [Lam](@ref thorin::Lam) |
 | `def->isa_mut<Lam>()` <br> `def->as_mut<Lam>()` | `Lam*`                                                                                                                                | **mutable** [Lam](@ref thorin::Lam)   |
-| `Lit::isa(def)`        <br> `Lit::as(def)`        | [std::optional](https://en.cppreference.com/w/cpp/utility/optional)`<`[nat_t](@ref thorin::nat_t)`>` <br> [nat_t](@ref thorin::nat_t) | [Lit](@ref thorin::Lit)               |
-| `Lit::isa<f32>(def)`   <br> `Lit::as<f32>(def)`   | [std::optional](https://en.cppreference.com/w/cpp/utility/optional)`<`[f32](@ref thorin::f32)`>`     <br> [f32](@ref thorin::f32)     | [Lit](@ref thorin::Lit)               |
+| `Lit::isa(def)` <br> `Lit::as(def)`             | [std::optional](https://en.cppreference.com/w/cpp/utility/optional)`<`[nat_t](@ref thorin::nat_t)`>` <br> [nat_t](@ref thorin::nat_t) | [Lit](@ref thorin::Lit)               |
+| `Lit::isa<f32>(def)` <br> `Lit::as<f32>(def)`   | [std::optional](https://en.cppreference.com/w/cpp/utility/optional)`<`[f32](@ref thorin::f32)`>` <br> [f32](@ref thorin::f32)         | [Lit](@ref thorin::Lit)               |
 
 #### Further Casts
 
 There are also some additional checks available that usually come as `static` methods and either return a pointer or `Ref` to the checked entity or `nullptr`.
 Here are some examples:
+
 ```cpp
 void foo(Ref def) {
     if (auto size = Idx::size(def)) {
@@ -200,8 +214,9 @@ void foo(Ref def) {
 ### Matching Axioms {#cast_axiom}
 
 You can match [Axiom](@ref thorin::Axiom)s via
-* thorin::match which is again similar to a `dynamic_cast` with a runtime check and returns [a wrapped](@ref thorin::Match::Match) `nullptr` (see below), if the cast is not possible, or
-* thorin::force which is again more like a `static_cast` and `assert`s via its thorin::match sibling in the `Debug` build that the cast is correct.
+
+- thorin::match which is again similar to a `dynamic_cast` with a runtime check and returns [a wrapped](@ref thorin::Match::Match) `nullptr` (see below), if the cast is not possible, or
+- thorin::force which is again more like a `static_cast` and `assert`s via its thorin::match sibling in the `Debug` build that the cast is correct.
 
 This will yield a [Match](@ref thorin::Match)`<Id, D>` which just wraps a `const D*`.
 `Id` is the `enum` of the corresponding `tag` of the [matched Axiom](@ref anatomy).
@@ -211,26 +226,32 @@ For instance, [match](@ref thorin::match)ing `%%mem.M` yields [Match](@ref thori
 
 By default, Thorin assumes that the magic of an [Axiom](@ref thorin::Axiom) happens when applying the final argument to a curried [Axiom](@ref thorin::Axiom).
 For example, [match](@ref thorin::match)ing a `%%mem.load` will only trigger for the final [App](@ref thorin::App) of the curried call
+
 ```
 %mem.load (T, as) (mem, ptr)
 ```
+
 while
+
 ```
 %mem.load (T, as)
 ```
+
 will **not** match.
 The wrapped [App](@ref thorin::App) inside the [Match](@ref thorin::Match) refers to the last [App](@ref thorin::App) of the curried call.
 So in this example
-* thorin::App::arg() is `(mem, ptr)` and
-* thorin::App::callee() is `%%mem.load (T, as)`.
 
-    Use thorin::App::decurry() to directly get the thorin::App::callee() as thorin::App.
+- thorin::App::arg() is `(mem, ptr)` and
+- thorin::App::callee() is `%%mem.load (T, as)`.
+
+  Use thorin::App::decurry() to directly get the thorin::App::callee() as thorin::App.
 
 If you want to design an [Axiom](@ref thorin::Axiom) that returns a function, you can [fine-adjust the trigger point](@ref normalization) of a thorin::match / thorin::force.
 
 #### w/o Subtags
 
 In order to match an [Axiom](@ref thorin::Axiom) **without** any subtags like `%%mem.load`, do this:
+
 ```cpp
 void foo(Ref def) {
     if (auto load = match<mem::load>(def)) {
@@ -246,6 +267,7 @@ void foo(Ref def) {
 #### w/ Subtags
 
 In order to match an [Axiom](@ref thorin::Axiom) **with** subtags like `%%core.wrap`, do this:
+
 ```cpp
 void foo(Ref def) {
     if (auto wrap = match<core::wrap>(def)) {
@@ -276,10 +298,10 @@ void foo(Ref def) {
 
 The following table summarizes all important casts:
 
-| `dynamic_cast`                <br> `static_cast`                 | Returns                                                                                             | If `def` is a ...               |
-|------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|---------------------------------|
-| `match<mem::load>(def)`       <br> `force<mem::load>(def)`       | [Match](@ref thorin::Match)`<`[mem::load](@ref thorin::plug::mem.load), [App](@ref thorin::App)`>`  | `%%mem.load (T, as) (mem, ptr)` |
-| `match<core::wrap>(def)`      <br> `force<core::wrap>(def)`      | [Match](@ref thorin::Match)`<`[core::wrap](@ref thorin::plug::mem.load), [App](@ref thorin::App)`>` | `%%core.wrap.??? s m (a, b)`    |
+| `dynamic_cast` <br> `static_cast`                                | Returns                                                                                             | If `def` is a ...               |
+| ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ------------------------------- |
+| `match<mem::load>(def)` <br> `force<mem::load>(def)`             | [Match](@ref thorin::Match)`<`[mem::load](@ref thorin::plug::mem.load), [App](@ref thorin::App)`>`  | `%%mem.load (T, as) (mem, ptr)` |
+| `match<core::wrap>(def)` <br> `force<core::wrap>(def)`           | [Match](@ref thorin::Match)`<`[core::wrap](@ref thorin::plug::mem.load), [App](@ref thorin::App)`>` | `%%core.wrap.??? s m (a, b)`    |
 | `match(core::wrap::add, def)` <br> `force(core::wrap::add, def)` | [Match](@ref thorin::Match)`<`[core::wrap](@ref thorin::plug::mem.load), [App](@ref thorin::App)`>` | `%%core.wrap.add s m (a, b)`    |
 
 ## Working with Indices
@@ -296,26 +318,29 @@ Note that the number of elements may be unknown at compile time such as in `‹n
 thorin::Def::num_projs is the same as thorin::Def::arity, if the arity is a thorin::Lit.
 Otherwise, it is simply `1`.
 This concept only exists in the C++-API to give the programmer the illusion to work with n-ary functions, e.g.:
+
 ```cpp
 for (auto dom : pi->doms()) { /*...*/ }
 for (auto var : lam->vars()) { /*...*/ }
 ```
+
 But in reality, all functions have exactly one domain and one codomain.
 
 #### Thresholded Variants
 
-In additition, there are thresholded variants available that are prefixed with a `t` and take thorin::Flags::scalerize_threshold (`--scalerize-threshold`) into account.
+In additition, there are thresholded variants available that are prefixed with a `t` and take thorin::Flags::scalarize_threshold (`--scalarize-threshold`) into account.
 The method thorin::Def::num_tprojs returns the same as thorin::Def::num_projs, but will simply yield `1`, if the arity exceeds the threshold.
 thorin::Def::tproj, thorin::Def::tprojs, thorin::Lam::tvars, etc. work accordingly.
 
 **See also:**
-* @ref proj "Def::proj"
-* @ref var "Def::var"
-* @ref pi_dom "Pi::dom"
-* @ref pi_codom "Pi::codom"
-* @ref lam_dom "Lam::dom"
-* @ref lam_codom "Lam::codom"
-* @ref app_arg "App::arg"
+
+- @ref proj "Def::proj"
+- @ref var "Def::var"
+- @ref pi_dom "Pi::dom"
+- @ref pi_codom "Pi::codom"
+- @ref lam_dom "Lam::dom"
+- @ref lam_codom "Lam::codom"
+- @ref app_arg "App::arg"
 
 ### Shape
 
@@ -323,24 +348,25 @@ TODO
 
 ### Summary
 
-| Expression            | Class                       | [artiy](@ref thorin::Def::arity) | [isa_lit_artiy](@ref thorin::Def::isa_lit_arity) | [as_lit_artiy](@ref thorin::Def::as_lit_arity) | [num_projs](@ref thorin::Def::num_projs) |[num_tprojs](@ref thorin::Def::num_tprojs) |
-|-----------------------|-----------------------------|----------------------------------|--------------------------------------------------|------------------------------------------------|------------------------------------------|-------------------------------------------|
-| `(0, 1, 2)`           | [Tuple](@ref thorin::Tuple) | `3`                              | `3`                                              | `3`                                            | `3`                                      |`3`                                        |
-| `‹3; 0›`              | [Pack](@ref thorin::Pack)   | `3`                              | `3`                                              | `3`                                            | `3`                                      |`3`                                        |
-| `‹n; 0›`              | [Pack](@ref thorin::Pack)   | `n`                              | `std::nullopt`                                   | asserts                                        | `1`                                      |`1`                                        |
-| `[.Nat, .Bool, .Nat]` | [Sigma](@ref thorin::Sigma) | `3`                              | `3`                                              | `3`                                            | `3`                                      |`3`                                        |
-| `«3; .Nat»`           | [Arr](@ref thorin::Arr)     | `3`                              | `3`                                              | `3`                                            | `3`                                      |`3`                                        |
-| `«n; .Nat»`           | [Arr](@ref thorin::Arr)     | `n`                              | `std::nullopt`                                   | asserts                                        | `1`                                      |`1`                                        |
-| `x: [.Nat, .Bool]`    | [Var](@ref thorin::Var)     | `2`                              | `2`                                              | `2`                                            | `2`                                      |`2`                                        |
-| `‹32; 0›`             | [Pack](@ref thorin::Pack)   | `32`                             | `32`                                             | `32`                                           | `32`                                     |`1`                                        |
+| Expression            | Class                       | [artiy](@ref thorin::Def::arity) | [isa_lit_artiy](@ref thorin::Def::isa_lit_arity) | [as_lit_artiy](@ref thorin::Def::as_lit_arity) | [num_projs](@ref thorin::Def::num_projs) | [num_tprojs](@ref thorin::Def::num_tprojs) |
+| --------------------- | --------------------------- | -------------------------------- | ------------------------------------------------ | ---------------------------------------------- | ---------------------------------------- | ------------------------------------------ |
+| `(0, 1, 2)`           | [Tuple](@ref thorin::Tuple) | `3`                              | `3`                                              | `3`                                            | `3`                                      | `3`                                        |
+| `‹3; 0›`              | [Pack](@ref thorin::Pack)   | `3`                              | `3`                                              | `3`                                            | `3`                                      | `3`                                        |
+| `‹n; 0›`              | [Pack](@ref thorin::Pack)   | `n`                              | `std::nullopt`                                   | asserts                                        | `1`                                      | `1`                                        |
+| `[.Nat, .Bool, .Nat]` | [Sigma](@ref thorin::Sigma) | `3`                              | `3`                                              | `3`                                            | `3`                                      | `3`                                        |
+| `«3; .Nat»`           | [Arr](@ref thorin::Arr)     | `3`                              | `3`                                              | `3`                                            | `3`                                      | `3`                                        |
+| `«n; .Nat»`           | [Arr](@ref thorin::Arr)     | `n`                              | `std::nullopt`                                   | asserts                                        | `1`                                      | `1`                                        |
+| `x: [.Nat, .Bool]`    | [Var](@ref thorin::Var)     | `2`                              | `2`                                              | `2`                                            | `2`                                      | `2`                                        |
+| `‹32; 0›`             | [Pack](@ref thorin::Pack)   | `32`                             | `32`                                             | `32`                                           | `32`                                     | `1`                                        |
 
-The last line assumes thorin::Flags::scalerize_threshold = 32.
+The last line assumes thorin::Flags::scalarize_threshold = 32.
 
 ## Iterating over the Program
 
 There are several ways of doing this.
 It depends on what exactly you want to achieve and how much structure you need during the traversal.
 The simplest way is to kick off with [World::externals](@ref thorin::World::externals) and recursively run over [Def::extended_ops](@ref thorin::Def::extended_ops) like this:
+
 ```cpp
     DefSet done;
     for (const auto& [_, mut] : world.externals())
@@ -356,4 +382,5 @@ The simplest way is to kick off with [World::externals](@ref thorin::World::exte
     }
 
 ```
+
 However, you will most likely want to use the [pass](passes.md) or the phase infrastructure.

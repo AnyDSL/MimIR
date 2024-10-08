@@ -6,9 +6,10 @@ namespace thorin {
 
 class EtaExp;
 
-/// Perform Scalarization (= Argument simplification), i.e.:
+/// Perform Scalarization (= Argument simplification).
+/// This means that, i.e.,
 /// ```
-/// f := λ (x_1:[T_1, T_2], .., x_n:T_n).E`
+/// f := λ (x_1:[T_1, T_2], .., x_n:T_n).E
 /// ```
 /// will be transformed to
 /// ```
@@ -16,10 +17,10 @@ class EtaExp;
 /// ```
 /// if `f` appears in callee position only (see @p EtaExp).
 /// It will not flatten mutable @p Sigma%s or @p Arr%ays.
-class Scalerize : public RWPass<Scalerize, Lam> {
+class Scalarize : public RWPass<Scalarize, Lam> {
 public:
-    Scalerize(PassMan& man, EtaExp* eta_exp)
-        : RWPass(man, "scalerize")
+    Scalarize(PassMan& man, EtaExp* eta_exp)
+        : RWPass(man, "scalarize")
         , eta_exp_(eta_exp) {}
 
     Ref rewrite(Ref) override;

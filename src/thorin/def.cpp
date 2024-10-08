@@ -175,7 +175,7 @@ const Def* Arr::immutabilize() {
     auto& w = world();
     if (auto var = has_var(); !var || !body()->free_vars().contains(var)) return w.arr(shape(), body());
 
-    if (auto n = Lit::isa(shape()); n && *n < w.flags().scalerize_threshold)
+    if (auto n = Lit::isa(shape()); n && *n < w.flags().scalarize_threshold)
         return w.sigma(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
 
     return nullptr;
@@ -185,7 +185,7 @@ const Def* Pack::immutabilize() {
     auto& w = world();
     if (auto var = has_var(); !var || !body()->free_vars().contains(var)) return w.pack(shape(), body());
 
-    if (auto n = Lit::isa(shape()); n && *n < w.flags().scalerize_threshold)
+    if (auto n = Lit::isa(shape()); n && *n < w.flags().scalarize_threshold)
         return w.tuple(DefVec(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
 
     return nullptr;
@@ -513,7 +513,7 @@ void Def::make_internal() { return world().make_internal(this); }
 std::string Def::unique_name() const { return sym().str() + "_"s + std::to_string(gid()); }
 
 nat_t Def::num_tprojs() const {
-    if (auto a = isa_lit_arity(); a && *a < world().flags().scalerize_threshold) return *a;
+    if (auto a = isa_lit_arity(); a && *a < world().flags().scalarize_threshold) return *a;
     return 1;
 }
 

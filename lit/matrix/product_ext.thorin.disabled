@@ -11,7 +11,7 @@
 .plugin matrix;
 
 
-// flat by scalerize
+// flat by scalarize
 // Mat (n,S,T) => Ptr(<S1...<Sn, T>...>) => T*
 
 // TODO: generalize over w such that it generates a declaration specialized for Real w
@@ -19,14 +19,14 @@
 // TODO: can be generalize to keep the original type scheme? (How handle m,k,l curried?)
 .con .extern extern_matrix_prod [
     [
-        %mem.M, 
-        m:.Nat, k:.Nat, l:.Nat, 
+        %mem.M,
+        m:.Nat, k:.Nat, l:.Nat,
         %matrix.Mat (2,(m, k), %math.F64), %matrix.Mat (2,(k, l), %math.F64)
-    ], 
+    ],
     return : .Cn [%mem.M, %matrix.Mat (2,(m, l), %math.F64)]
 ];
 
-.con .extern f [mem : %mem.M, 
+.con .extern f [mem : %mem.M,
     [k:.Nat, l:.Nat, m:.Nat],
     M:%matrix.Mat (2,(m,k), %math.F64),
     N:%matrix.Mat (2,(k,l), %math.F64),

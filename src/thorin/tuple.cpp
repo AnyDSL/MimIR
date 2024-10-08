@@ -13,7 +13,7 @@ bool should_flatten(const Def* def) {
     auto type = (def->is_term() ? def->type() : def);
     if (type->isa<Sigma>()) return true;
     if (auto arr = type->isa<Arr>()) {
-        if (auto a = arr->isa_lit_arity(); a && *a > def->world().flags().scalerize_threshold) return false;
+        if (auto a = arr->isa_lit_arity(); a && *a > def->world().flags().scalarize_threshold) return false;
         return true;
     }
     return false;
@@ -27,7 +27,7 @@ bool mut_val_or_typ(const Def* def) {
 const Def* unflatten(Defs defs, const Def* type, size_t& j, bool flatten_muts) {
     if (!defs.empty() && defs[0]->type() == type) return defs[j++];
     if (auto a = type->isa_lit_arity();
-        flatten_muts == mut_val_or_typ(type) && a && *a != 1 && a <= type->world().flags().scalerize_threshold) {
+        flatten_muts == mut_val_or_typ(type) && a && *a != 1 && a <= type->world().flags().scalarize_threshold) {
         auto& world = type->world();
         auto ops    = DefVec(*a, [&](size_t i) { return unflatten(defs, type->proj(*a, i), j, flatten_muts); });
         return world.tuple(type, ops);

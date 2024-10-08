@@ -77,7 +77,7 @@ extern "C" THORIN_EXPORT thorin::Plugin thorin_get_plugin() {
                 register_pass<compile::internal_cleanup_pass, compile::InternalCleanup>(passes);
 
                 register_pass_with_arg<compile::eta_exp_pass, EtaExp, EtaRed>(passes);
-                register_pass_with_arg<compile::scalerize_pass, Scalerize, EtaExp>(passes);
+                register_pass_with_arg<compile::scalerize_pass, Scalarize, EtaExp>(passes);
                 register_pass_with_arg<compile::tail_rec_elim_pass, TailRecElim, EtaRed>(passes);
             },
             nullptr};
