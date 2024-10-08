@@ -47,10 +47,11 @@ jobs:
         run: |
           sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
           sudo apt-get update
-          sudo apt-get install g++-13 valgrind pipx
+          sudo apt-get install g++-13 valgrind
           sudo ln -s ${{github.workspace}}/bin/FileCheck-x86_64-ubuntu /usr/bin/FileCheck
           sudo chmod +x /usr/bin/FileCheck
-          sudo pipx install lit
+          python -m pip install --upgrade pip
+          pip install lit psutil
 
       - name: Setup ccache
         uses: Chocobo1/setup-ccache-action@v1
@@ -72,9 +73,7 @@ jobs:
 
       - name: Run lit test suite
         working-directory: ${{github.workspace}}/build
-        run: |
-          pipx ensurepath
-          cmake --build ${{github.workspace}}/build -v --target lit
+        run: cmake --build ${{github.workspace}}/build -v --target lit
 
       - name: Test with Valgrind
         working-directory: ${{github.workspace}}/build
