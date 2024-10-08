@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
-  <Type Name="thorin::Def">
+  <Type Name="mim::Def">
     <DisplayString Condition="node_==0">{{node = Type}}</DisplayString>
     <DisplayString Condition="node_==1">{{node = Univ}}</DisplayString>
     <DisplayString Condition="node_==2">{{node = Pi}}</DisplayString>
@@ -76,7 +76,7 @@
         </ArrayItems>
     </Expand>
   </Type>
-  <Type Name="thorin::ArrayRef&lt;*&gt;">
+  <Type Name="mim::ArrayRef&lt;*&gt;">
     <DisplayString>{{size = size_}}</DisplayString>
     <Expand>
         <ArrayItems Name="[vals]">
@@ -85,7 +85,7 @@
         </ArrayItems>
     </Expand>
   </Type>
-  <Type Name="thorin::Defs">
+  <Type Name="mim::Defs">
     <DisplayString>{{size = {size_}}}</DisplayString>
     <Expand>
         <ArrayItems Name="[vals]">
@@ -94,7 +94,7 @@
         </ArrayItems>
     </Expand>
   </Type>
-  <Type Name="thorin::DefArray">
+  <Type Name="mim::DefArray">
     <DisplayString>{{size = {storage_.size_}}}</DisplayString>
     <Expand>
         <ArrayItems Name="[vals]" Condition="!storage_.stack_">

@@ -27,7 +27,7 @@
 .rec %compile.PassList:      □ = Π %compile.Pass  -> %compile.PassList;
 .rec %compile.CombinedPhase: □ = Π %compile.Phase -> %compile.CombinedPhase;
 ///
-/// (This is a forward declaration for opt.thorin.)
+/// (This is a forward declaration for opt.mim.)
 ///
 .ax %compile.Plugin: *;
 ///
@@ -36,7 +36,7 @@
 /// ### Registered Plugins
 ///
 /// We expect the name in the tag before the `_` to be the name of the plugin (as given in `Plugin.plugin_name`).
-/// (This is a forward declaration for opt.thorin.)
+/// (This is a forward declaration for opt.mim.)
 ///
 .ax %compile.core_plugin:     %compile.Plugin;
 .ax %compile.mem_plugin:      %compile.Plugin;

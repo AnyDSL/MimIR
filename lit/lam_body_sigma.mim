@@ -1,4 +1,4 @@
-// RUN: %thorin %s -o -
+// RUN: %mim %s -o -
 .rec S = [
     n: .Nat,
     a: «n; .Nat»

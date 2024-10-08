@@ -383,7 +383,7 @@ D_A (g e) =
 */
 
 /// load
-// load see autodiff.thorin line 250
+// load see autodiff.mim line 250
 // load deriv:
 //   load pb from shadow into pointer pb holder (non-local)
 //   load value, provide local id pb

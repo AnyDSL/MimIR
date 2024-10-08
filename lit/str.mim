@@ -1,5 +1,5 @@
 // RUN: rm -f %t.ll
-// RUN: %thorin --output-ll %t.ll %s
+// RUN: %mim --output-ll %t.ll %s
 // RUN: clang %S/lib.c %t.ll -o %t -Wno-override-module
 // RUN: %t | FileCheck %s
 .plugin core;

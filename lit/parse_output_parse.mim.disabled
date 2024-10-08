@@ -1,5 +1,5 @@
-// RUN: rm -f %t.ll %t.thorin
-// RUN: %thorin -o - %s > %t.thorin && %thorin %t.thorin --output-ll %t.ll -o - | FileCheck %s
+// RUN: rm -f %t.ll %t.mim
+// RUN: %mim -o - %s > %t.mim && %mim %t.mim --output-ll %t.ll -o - | FileCheck %s
 // RUN: clang %t.ll -o %t -Wno-override-module
 // RUN: %t ; test $? -eq 1
 // RUN: %t 1 2 3 ; test $? -eq 4

@@ -1,4 +1,4 @@
-// RUN: %thorin %s -o -
+// RUN: %mim %s -o -
 .plugin core;
 .plugin math;
 .plugin mem;

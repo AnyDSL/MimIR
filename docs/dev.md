@@ -14,10 +14,10 @@ It keeps track of a few "global" variables like some [Flags](@ref thorin::Flags)
 Here, the log is set up to output to `std::cerr` with thorin::Log::Level::Debug (see also @ref clidebug).
 
 Then, we load the plugins [compile](@ref compile) and [core](@ref core), which in turn will load the plugin [mem](@ref mem).
-A plugin consists of a shared object (`.so`/`.dll`) and a `.thorin` file.
+A plugin consists of a shared object (`.so`/`.dll`) and a `.mim` file.
 The shared object contains [Passes](@ref thorin::Pass), [normalizers](@ref thorin::Axiom::normalizer), and so on.
-The `.thorin` file contains the [axiom](@ref thorin::Axiom) declarations and links the normalizers with the [axioms](@ref thorin::Axiom).
-For this reason, we need to allocate the thorin::fe::Parser to parse the `.thorin` file; thorin::fe::Parser::plugin will also load the shared object.
+The `.mim` file contains the [axiom](@ref thorin::Axiom) declarations and links the normalizers with the [axioms](@ref thorin::Axiom).
+For this reason, we need to allocate the thorin::fe::Parser to parse the `.mim` file; thorin::fe::Parser::plugin will also load the shared object.
 The [driver](@ref thorin::Driver) keeps track of all plugins.
 
 Next, we create actual code.

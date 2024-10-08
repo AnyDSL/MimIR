@@ -1,4 +1,4 @@
-// RUN: %thorin %s -o -
+// RUN: %mim %s -o -
 .ax %foo.F: * -> *;
 .ax %foo.f: |~| T: * -> .Nat -> %foo.F T;
 

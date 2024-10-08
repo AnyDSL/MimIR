@@ -16,8 +16,8 @@ function(add_thorin_plugin)
         "SOURCES;PRIVATE"   # multi-value keywords
     )
 
-    set(PLUGIN_THORIN       ${CMAKE_CURRENT_LIST_DIR}/${PLUGIN}.thorin)
-    set(OUT_PLUGIN_THORIN   ${CMAKE_BINARY_DIR}/lib/thorin/${PLUGIN}.thorin)
+    set(PLUGIN_THORIN       ${CMAKE_CURRENT_LIST_DIR}/${PLUGIN}.mim)
+    set(OUT_PLUGIN_THORIN   ${CMAKE_BINARY_DIR}/lib/thorin/${PLUGIN}.mim)
     set(PLUGIN_MD           ${CMAKE_BINARY_DIR}/docs/plug/${PLUGIN}.md)
     set(PLUGIN_D            ${CMAKE_BINARY_DIR}/deps/${PLUGIN}.d)
     set(AUTOGEN_H           ${CMAKE_BINARY_DIR}/include/thorin/plug/${PLUGIN}/autogen.h)
@@ -103,7 +103,7 @@ function(add_thorin_plugin)
             INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
         )
         install(
-            FILES ${CMAKE_BINARY_DIR}/lib/thorin/${PLUGIN}.thorin
+            FILES ${CMAKE_BINARY_DIR}/lib/thorin/${PLUGIN}.mim
             DESTINATION ${CMAKE_INSTALL_LIBDIR}/thorin
         )
         install(

@@ -1,6 +1,6 @@
 // RUN: rm -f %t.ll  ; \
-// RUN: cpp %s -o %t_pre.thorin -D "TYPE='g'" -D "NUMBER=3" -P -C -nostdinc
-// RUN: %thorin %t_pre.thorin --output-ll %t.ll -o -
+// RUN: cpp %s -o %t_pre.mim -D "TYPE='g'" -D "NUMBER=3" -P -C -nostdinc
+// RUN: %mim %t_pre.mim --output-ll %t.ll -o -
 
 // TODO: add filecheck
 

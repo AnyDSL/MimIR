@@ -1,4 +1,4 @@
-// RUN: %thorin %s -o -
+// RUN: %mim %s -o -
 .let Triple = [T: *, U: *, V: *];
 
 .ax %bug.Box: Triple -> *;

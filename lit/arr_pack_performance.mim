@@ -1,4 +1,4 @@
-// RUN: %thorin %s -o -
+// RUN: %mim %s -o -
 
 // If compiling this takes forever, there is some loophole that Thorin does sth 100000000 times.
 .plugin core;

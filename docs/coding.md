@@ -88,7 +88,7 @@ from within GDB:
 (gdb) call def->dump()
 (gdb) call def->dump(0)
 (gdb) call def->dump(3)
-(gdb) call world().write("out.thorin")
+(gdb) call world().write("out.mim")
 ```
 In particular, note the different output levels of thorin::Def::dump.
 What is more, you can adjust the output behavior directly from within GDB by modifying thorin::World::flags or thorin::World::log:
@@ -162,12 +162,12 @@ cmake --build build -t lit
 You can manually invoke the lit tests like this and maybe filter for a specific test:
 ```sh
 cd lit
-./lit ../build/lit -a --filter foo.thorin
+./lit ../build/lit -a --filter foo.mim
 ```
 If your *build* directory, is in fact `build` you can use the `probe.sh` script:
 ```sh
 cd lit
-../scripts/probe.sh foo.thorin
+../scripts/probe.sh foo.mim
 ```
 
 ### GoogleTest
@@ -238,7 +238,7 @@ add_thorin_plugin(<plugin-name>
     [INSTALL])
 ```
 The `<plugin-name>` is the name of the plugin.
-This means, there should be relative to the plugin's `CMakeLists.txt` a file `<plugin-name>.thorin` containing annexes.
+This means, there should be relative to the plugin's `CMakeLists.txt` a file `<plugin-name>.mim` containing annexes.
 The command will create two targets:
 
 1. `thorin_internal_<plugin-name>`

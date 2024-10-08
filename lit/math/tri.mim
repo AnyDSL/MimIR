@@ -1,5 +1,5 @@
 // RUN: rm -f %t.ll
-// RUN: %thorin %s --output-ll %t.ll
+// RUN: %mim %s --output-ll %t.ll
 // RUN: clang++ %t.ll -o %t -Wno-override-module
 // RUN: %t foo; test $? -eq 98
 

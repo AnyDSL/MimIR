@@ -1,4 +1,4 @@
-// RUN: %thorin %s -o - | FileCheck %s
+// RUN: %mim %s -o - | FileCheck %s
 
 .lam .extern f x: .Nat : .Nat = x;
 

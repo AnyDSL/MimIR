@@ -1,5 +1,5 @@
 // RUN: rm -f %t.ll
-// RUN: %thorin %s -o -
+// RUN: %mim %s -o -
 .plugin math;
 
 .rec Vec1 = [x: %math.F64];

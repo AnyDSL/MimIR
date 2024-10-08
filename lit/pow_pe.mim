@@ -1,4 +1,4 @@
-// RUN: %thorin %s -o -
+// RUN: %mim %s -o -
 .plugin core;
 
 .lam pow(a b: .Nat)@(%core.pe.known b): .Nat =

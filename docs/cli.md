@@ -26,6 +26,6 @@ Thorin will look for plugins in this priority:
 
     For example, this will trigger a breakpoint if the thorin::Def with [global id](@ref thorin::Def::gid) `4223` is being created:
     ```
-    thorin -b 4223 in.thorin
+    thorin -b 4223 in.mim
     ```
 * You can also trigger a breakpoint at some other very specific places like when a check for alpha equivalence fails via `--break-on-alpha-unequal`.

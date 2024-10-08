@@ -10,7 +10,7 @@ plugin=$1
 mkdir -p $root/include/thorin/plug/$plugin
 mkdir -p $root/src/thorin/plug/$plugin
 
-for demo_file in $root/src/thorin/plug/demo/demo.thorin     \
+for demo_file in $root/src/thorin/plug/demo/demo.mim     \
                  $root/src/thorin/plug/demo/CMakeLists.txt  \
                  $root/src/thorin/plug/demo/demo.cpp        \
                  $root/src/thorin/plug/demo/normalizers.cpp \

@@ -1,4 +1,4 @@
-// RUN: %thorin %s -o - | FileCheck %s
+// RUN: %mim %s -o - | FileCheck %s
 
 .plugin core;
 
