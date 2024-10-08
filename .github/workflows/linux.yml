@@ -43,14 +43,14 @@ jobs:
           path: ${{github.workspace}}/bin
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install newest g++, valgrind
+      - name: Install newest g++, valgrind, lit, and psutil
         run: |
           sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
           sudo apt-get update
           sudo apt-get install g++-13 valgrind
           sudo ln -s ${{github.workspace}}/bin/FileCheck-x86_64-ubuntu /usr/bin/FileCheck
           sudo chmod +x /usr/bin/FileCheck
-          sudo python -m pip install --upgrade pip
+          # sudo python -m pip install --upgrade pip
           sudo pip install lit psutil --break-system-packages
 
       - name: Setup ccache
