@@ -3,9 +3,9 @@ set(XDOT_HELP  "${CMAKE_CURRENT_BINARY_DIR}/xdot-help.gdb")
 
 add_custom_command(
     OUTPUT ${CLI_HELP}
-    COMMAND thorin --help > ${CLI_HELP}
-    DEPENDS thorin
-    COMMENT "Generating help text of Thorin's CLI"
+    COMMAND mim --help > ${CLI_HELP}
+    DEPENDS mim
+    COMMENT "Generating help text of Mim's CLI"
 )
 
 add_custom_command(
@@ -37,12 +37,12 @@ add_custom_command(
     OUTPUT ${DOXY_INDEX_HTML}
     COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYFILE}
     MAIN_DEPENDENCY ${DOXYFILE}
-    DEPENDS thorin ${CLI_HELP} ${XDOT_HELP} ${DOXY_EXTRA_FILES} ${DOXY_LAYOUT}
+    DEPENDS mim ${CLI_HELP} ${XDOT_HELP} ${DOXY_EXTRA_FILES} ${DOXY_LAYOUT}
     COMMENT "Generating Doxygen HTML documentation"
     WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
 )
 
-list(TRANSFORM THORIN_PLUGIN_LIST PREPEND thorin_internal_ OUTPUT_VARIABLE INTERNAL_LIST)
+list(TRANSFORM MIM_PLUGIN_LIST PREPEND mim_internal_ OUTPUT_VARIABLE INTERNAL_LIST)
 add_custom_target(docs
     ALL
     DEPENDS
@@ -50,4 +50,4 @@ add_custom_target(docs
         ${INTERNAL_LIST}
 )
 
-add_dependencies(thorin_all docs)
+add_dependencies(mim_all docs)

@@ -7,6 +7,6 @@ template<attr o> Ref normalize_clos(Ref type, Ref callee, Ref arg) {
     return o == attr::bot ? arg : w.raw_app(type, callee, arg);
 }
 
-THORIN_clos_NORMALIZER_IMPL
+MIM_clos_NORMALIZER_IMPL
 
 } // namespace mim::plug::clos

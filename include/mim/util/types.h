@@ -21,9 +21,9 @@
 namespace mim {
 // clang-format off
 
-#define THORIN_1_8_16_32_64(m) m(1) m(8) m(16) m(32) m(64)
-#define THORIN_8_16_32_64(m)        m(8) m(16) m(32) m(64)
-#define THORIN_16_32_64(m)               m(16) m(32) m(64)
+#define MIM_1_8_16_32_64(m) m(1) m(8) m(16) m(32) m(64)
+#define MIM_8_16_32_64(m)        m(8) m(16) m(32) m(64)
+#define MIM_16_32_64(m)               m(16) m(32) m(64)
 
 /// @name Aliases for some Base Types
 ///@{
@@ -31,7 +31,7 @@ namespace mim {
 #define CODE1(i)                   \
     using s ## i =  int ## i ##_t; \
     using u ## i = uint ## i ##_t;
-THORIN_8_16_32_64(CODE1)
+MIM_8_16_32_64(CODE1)
 #undef CODE1
 
 using half_float::half;
@@ -58,12 +58,12 @@ template<> struct w2s_<1> { using type = bool; }; ///< See above.
 #define CODE2(i)                                        \
     template<> struct w2u_<i> { using type = u ## i; }; \
     template<> struct w2s_<i> { using type = s ## i; };
-THORIN_8_16_32_64(CODE2)
+MIM_8_16_32_64(CODE2)
 #undef CODE2
 
 #define CODE3(i)                                        \
     template<> struct w2f_<i> { using type = f ## i; };
-THORIN_16_32_64(CODE3)
+MIM_16_32_64(CODE3)
 #undef CODE3
 } // namespace detail
 
@@ -79,7 +79,7 @@ template<int w> using w2f = typename detail::w2f_<w>::type;
 #define CODE4(i)                                                                        \
     constexpr s ## i operator"" _s ## i(unsigned long long int s) { return s ## i(s); } \
     constexpr u ## i operator"" _u ## i(unsigned long long int u) { return u ## i(u); }
-THORIN_8_16_32_64(CODE4)
+MIM_8_16_32_64(CODE4)
 #undef CODE4
 
 /// A `size_t` literal. Use `0_s` to disambiguate `0` from `nullptr`.

@@ -9,7 +9,7 @@
 using namespace mim;
 using namespace mim::plug;
 
-extern "C" THORIN_EXPORT Plugin mim_get_plugin() {
+extern "C" MIM_EXPORT Plugin mim_get_plugin() {
     return {"direct", [](Normalizers& normalizers) { direct::register_normalizers(normalizers); },
             [](Passes& passes) {
                 register_pass<direct::ds2cps_pass, direct::DS2CPS>(passes);

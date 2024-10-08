@@ -1,4 +1,4 @@
-add_thorin_plugin(compile
+add_mim_plugin(compile
     SOURCES
         compile.cpp
         normalizers.cpp

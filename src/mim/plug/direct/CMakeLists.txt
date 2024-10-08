@@ -1,4 +1,4 @@
-add_thorin_plugin(direct
+add_mim_plugin(direct
     SOURCES
         direct.cpp
         pass/ds2cps.cpp

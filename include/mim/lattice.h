@@ -36,7 +36,7 @@ private:
         : Bound(Node, type, size) {} ///< Constructor for a *mutable* Bound.
 
 public:
-    THORIN_SETTERS(TBound)
+    MIM_SETTERS(TBound)
 
     TBound* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
 
@@ -56,7 +56,7 @@ private:
     Ac(const Def* type, Defs defs)
         : Def(Node, type, defs, 0) {}
 
-    THORIN_DEF_MIXIN(Ac)
+    MIM_DEF_MIXIN(Ac)
 };
 
 /// Constructs a [Join](@ref mim::Join) **value**.
@@ -72,7 +72,7 @@ public:
     const Def* value() const { return op(0); }
     ///@}
 
-    THORIN_DEF_MIXIN(Vel)
+    MIM_DEF_MIXIN(Vel)
 };
 
 /// Picks the aspect of a Meet [value](Pick::value) by its [type](Def::type).
@@ -87,7 +87,7 @@ public:
     const Def* value() const { return op(0); }
     ///@}
 
-    THORIN_DEF_MIXIN(Pick)
+    MIM_DEF_MIXIN(Pick)
 };
 
 /// Test whether Test::value currently holds **type** Test::probe:
@@ -116,7 +116,7 @@ public:
     const Def* clash() const { return op(3); }
     ///@}
 
-    THORIN_DEF_MIXIN(Test)
+    MIM_DEF_MIXIN(Test)
 };
 
 /// Common base for TExt%remum.
@@ -133,7 +133,7 @@ private:
         : Ext(Node, type) {}
 
 public:
-    THORIN_SETTERS(TExt)
+    MIM_SETTERS(TExt)
 
     TExt* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
 
@@ -168,7 +168,7 @@ public:
     const Def* inhabitant() const { return op(0); }
     ///@}
 
-    THORIN_DEF_MIXIN(Singleton)
+    MIM_DEF_MIXIN(Singleton)
 };
 
 } // namespace mim

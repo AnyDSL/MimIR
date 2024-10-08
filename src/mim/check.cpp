@@ -75,7 +75,7 @@ bool Infer::eliminate(Vector<Ref*> refs) {
  * Check
  */
 
-#ifdef THORIN_ENABLE_CHECKS
+#ifdef MIM_ENABLE_CHECKS
 template<bool infer> bool Check::fail() {
     if (infer && world().flags().break_on_alpha_unequal) fe::breakpoint();
     return false;

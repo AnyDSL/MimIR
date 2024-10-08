@@ -59,6 +59,6 @@ Ref normalize_refine(Ref type, Ref callee, Ref arg) {
 
 Ref normalize_gid(Ref, Ref, Ref arg) { return arg->world().lit_nat(arg->gid()); }
 
-THORIN_refly_NORMALIZER_IMPL
+MIM_refly_NORMALIZER_IMPL
 
 } // namespace mim::plug::refly

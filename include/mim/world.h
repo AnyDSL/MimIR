@@ -20,7 +20,7 @@
 namespace mim {
 class Driver;
 
-/// The World represents the whole program and manages creation of Thorin nodes (Def%s).
+/// The World represents the whole program and manages creation of Mim nodes (Def%s).
 /// Def%s are hashed into an internal HashSet.
 /// The World's factory methods just calculate a hash and lookup the Def, if it is already present, or create a new one
 /// otherwise. This corresponds to value numbering.
@@ -45,14 +45,14 @@ public:
             mutable bool frozen = false;
         } pod;
 
-#ifdef THORIN_ENABLE_CHECKS
+#ifdef MIM_ENABLE_CHECKS
         absl::flat_hash_set<uint32_t> breakpoints;
 #endif
         friend void swap(State& s1, State& s2) noexcept {
             using std::swap;
             assert((!s1.pod.loc || !s2.pod.loc) && "Why is get_loc() still set?");
             swap(s1.pod, s2.pod);
-#ifdef THORIN_ENABLE_CHECKS
+#ifdef MIM_ENABLE_CHECKS
             swap(s1.breakpoints, s2.breakpoints);
 #endif
         }
@@ -149,13 +149,13 @@ public:
 
     /// @name Debugging Features
     ///@{
-#ifdef THORIN_ENABLE_CHECKS
+#ifdef MIM_ENABLE_CHECKS
     const auto& breakpoints() { return state_.breakpoints; }
 
     Ref gid2def(u32 gid);     ///< Lookup Def by @p gid.
     void breakpoint(u32 gid); ///< Trigger breakpoint in your debugger when creating Def with Def::gid @p gid.
 
-    World& verify(); ///< Verifies that all externals() and annexes() are Def::is_closed(), if `THORIN_ENABLE_CHECKS`.
+    World& verify(); ///< Verifies that all externals() and annexes() are Def::is_closed(), if `MIM_ENABLE_CHECKS`.
 #else
     World& verify() { return *this; }
 #endif
@@ -558,7 +558,7 @@ private:
         auto def   = allocate<T>(num_ops, std::forward<Args&&>(args)...);
         if (auto loc = get_loc()) def->set(loc);
         assert(!def->isa_mut());
-#ifdef THORIN_ENABLE_CHECKS
+#ifdef MIM_ENABLE_CHECKS
         if (flags().trace_gids) outln("{}: {} - {}", def->node_name(), def->gid(), def->flags());
         if (flags().reeval_breakpoints && breakpoints().contains(def->gid())) fe::breakpoint();
 #endif
@@ -574,7 +574,7 @@ private:
             deallocate<T>(state, def);
             return static_cast<const T*>(*i);
         }
-#ifdef THORIN_ENABLE_CHECKS
+#ifdef MIM_ENABLE_CHECKS
         if (!flags().reeval_breakpoints && breakpoints().contains(def->gid())) fe::breakpoint();
 #endif
         def->finalize();
@@ -589,7 +589,7 @@ private:
     template<class T, class... Args> T* insert(size_t num_ops, Args&&... args) {
         auto def = allocate<T>(num_ops, std::forward<Args&&>(args)...);
         if (auto loc = get_loc()) def->set(loc);
-#ifdef THORIN_ENABLE_CHECKS
+#ifdef MIM_ENABLE_CHECKS
         if (flags().trace_gids) outln("{}: {} - {}", def->node_name(), def->gid(), def->flags());
         if (breakpoints().contains(def->gid())) fe::breakpoint();
 #endif

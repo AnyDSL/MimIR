@@ -100,7 +100,7 @@ template<class Id, Id id> Ref fold(World& world, Ref type, const Def*& a, const 
             switch (width) {
 #define CODE(i) \
     case i: res = fold<Id, id, i>(*la, *lb, nsw, nuw); break;
-                THORIN_1_8_16_32_64(CODE)
+                MIM_1_8_16_32_64(CODE)
 #undef CODE
                 default:
                     // TODO this is super rough but at least better than just bailing out
@@ -139,7 +139,7 @@ template<class Id> Ref fold(World& world, Ref type, const Def*& a) {
         switch (width) {
 #define CODE(i) \
     case i: res = fold<Id, i>(*la, nsw, nuw); break;
-            THORIN_1_8_16_32_64(CODE)
+            MIM_1_8_16_32_64(CODE)
 #undef CODE
             default:
                 res = fold<Id, 64>(*la, false, false);
@@ -711,6 +711,6 @@ template<pe id> Ref normalize_pe(Ref type, Ref callee, Ref arg) {
     return world.raw_app(type, callee, arg);
 }
 
-THORIN_core_NORMALIZER_IMPL
+MIM_core_NORMALIZER_IMPL
 
 } // namespace mim::plug::core

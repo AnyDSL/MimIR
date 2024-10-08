@@ -1,4 +1,4 @@
-add_thorin_plugin(autodiff
+add_mim_plugin(autodiff
     SOURCES
         autodiff.cpp
         pass/autodiff_eval.cpp

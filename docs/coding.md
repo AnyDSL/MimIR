@@ -7,45 +7,49 @@ This document comprises some information that is related to coding but not direc
 ## Coding Style
 
 Use the following coding conventions:
-* Class/Type names in `CamelCase`.
-* Constants as defined in an `enum` or via `static const` in `Camel_Snake_Case`.
-* Macro names in `SNAKE_IN_ALL_CAPS`.
-* Everything else like variables, functions, etc. in `snake_case`.
-* Use a trailing underscore suffix for a `private_or_protected_member_variable_`.
-* Methods/functions that return a `bool` should be prefixed with `is_`.
-* Methods/functions that return a `std::optional` or a pointer that may be `nullptr` should be prefixed with `isa_`.
-* Don't do that for a `public_member_variable`.
-* Use `struct` for [plain old data](https://en.cppreference.com/w/cpp/named_req/PODType).
-* Use `class` for everything else.
-* Prefer `// C++-style comments` over `/* C-style comments */`.
-* Use `#pragma once` as guard for headers.
-* Visibility groups in this order:
-    1. `public`
-    2. `protected`
-    3. `private`
+
+- Class/Type names in `CamelCase`.
+- Constants as defined in an `enum` or via `static const` in `Camel_Snake_Case`.
+- Macro names in `SNAKE_IN_ALL_CAPS`.
+- Everything else like variables, functions, etc. in `snake_case`.
+- Use a trailing underscore suffix for a `private_or_protected_member_variable_`.
+- Methods/functions that return a `bool` should be prefixed with `is_`.
+- Methods/functions that return a `std::optional` or a pointer that may be `nullptr` should be prefixed with `isa_`.
+- Don't do that for a `public_member_variable`.
+- Use `struct` for [plain old data](https://en.cppreference.com/w/cpp/named_req/PODType).
+- Use `class` for everything else.
+- Prefer `// C++-style comments` over `/* C-style comments */`.
+- Use `#pragma once` as guard for headers.
+- Visibility groups in this order:
+  1. `public`
+  2. `protected`
+  3. `private`
 
 ### Doxygen Style
 
-* Use `/// three slashes for Doxygen`.
-* Use [Markdown-style](https://doxygen.nl/manual/markdown.html) Doxygen comments.
-* Group your functions etc. via [named member groups](https://www.doxygen.nl/manual/grouping.html#memgroup) into logical units.
-* Capitalize the group name unless it is directly named after a method.
+- Use `/// three slashes for Doxygen`.
+- Use [Markdown-style](https://doxygen.nl/manual/markdown.html) Doxygen comments.
+- Group your functions etc. via [named member groups](https://www.doxygen.nl/manual/grouping.html#memgroup) into logical units.
+- Capitalize the group name unless it is directly named after a method.
 
 For all the other minute details like indentation width etc. use [clang-format](https://clang.llvm.org/docs/ClangFormat.html) and the provided `.clang-format` file in the root of the repository.
 In order to run `clang-format` automatically on all changed files, switch to the provided [pre-commit](https://pre-commit.com/) hook:
+
 ```sh
 pre-commit install
 ```
+
 Note that you can [disable clang-format for a piece of code](https://clang.llvm.org/docs/ClangFormatStyleOptions.html#disabling-formatting-on-a-piece-of-code).
 In addition, you might want to check out plugins like the [Vim integration](https://clang.llvm.org/docs/ClangFormat.html#vim-integration).
 
 ### Example
 
 Here is an example for a header that follows above conventions:
+
 ```cpp
 #pragma once
 
-namespace thorin {
+namespace mim {
 
 /// This is a cool class.
 class Foo {
@@ -65,7 +69,7 @@ private:
     int bar_;
 }
 
-} // namespace thorin
+} // namespace mim
 ```
 
 ## Debugging
@@ -78,26 +82,32 @@ private:
 ### Dumping
 
 Note that you can simply invoke
-* thorin::Def::dump,
-* thorin::Def::write,
-* thorin::World::dump,
-* thorin::World::write, ...
+
+- mim::Def::dump,
+- mim::Def::write,
+- mim::World::dump,
+- mim::World::write, ...
 
 from within GDB:
+
 ```gdb
 (gdb) call def->dump()
 (gdb) call def->dump(0)
 (gdb) call def->dump(3)
 (gdb) call world().write("out.mim")
 ```
-In particular, note the different output levels of thorin::Def::dump.
-What is more, you can adjust the output behavior directly from within GDB by modifying thorin::World::flags or thorin::World::log:
+
+In particular, note the different output levels of mim::Def::dump.
+What is more, you can adjust the output behavior directly from within GDB by modifying mim::World::flags or mim::World::log:
+
 ```gdb
 (gdb) call world.flags().dump_gid = 1
 (gdb) call world.flags().dump_recursive = 1
 (gdb) call world().log().max_level_ = 4
 ```
-Another useful feature is to retrieve a `Def*` from a thorin::Def::gid via thorin::World::gid2def:
+
+Another useful feature is to retrieve a `Def*` from a mim::Def::gid via mim::World::gid2def:
+
 ```gdb
 (gdb) p world.gid2def(123);
 $1 = ...
@@ -108,9 +118,11 @@ $1 = ...
 
 `scripts/xdot.gdb` provides custom GDB commands to create a [DOT](https://graphviz.org/) graph and display it through [xdot](https://github.com/jrfonseca/xdot.py).
 Just source `scripts/xdot.gdb` in your `~/.gdbinit`:
+
 ```gdb
-source ~/thorin2/scripts/xdot.gdb
+source ~/mim/scripts/xdot.gdb
 ```
+
 Here is the `xdot` GDB command in action:
 ![cgdb session using xdot](gdb-xdot.png)
 
@@ -118,17 +130,19 @@ Here is the `xdot` GDB command in action:
 
 ### Conditional Breakpoints
 
-Often, you will want to inspect a certain thorin::Def at a particular point within the program.
+Often, you will want to inspect a certain mim::Def at a particular point within the program.
 You can use [conditional breakpoints](https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_33.html) for this.
-For example, the following GDB command will break, if the thorin::Def::gid of variable `def` is `42` in source code location `foo.cpp:23`:
+For example, the following GDB command will break, if the mim::Def::gid of variable `def` is `42` in source code location `foo.cpp:23`:
+
 ```gdb
 break foo.cpp:23 if def->gid() == 42
 ```
 
 ### Catching Throw
 
-For several things like errors in Thorin's front end, Thorin relies on C++ exceptions for error handling.
+For several things like errors in Mim's front end, Mim relies on C++ exceptions for error handling.
 Do this to encounter them within GDB:
+
 ```gdb
 catch throw
 ```
@@ -137,17 +151,20 @@ catch throw
 
 If you encounter memory related problems, you might want to run the program with [Valgrind's GDB server](https://valgrind.org/docs/manual/manual-core-adv.html).
 Launch the program like this
+
 ```sh
-valgrind --vgdb=yes --vgdb-error=0 thorin-gtest
+valgrind --vgdb=yes --vgdb-error=0 mim-gtest
 ```
+
 and follow the instructions.
 
 ### VS Code
 
-As a utility to make debugging Thorin itself less painful with certain debuggers, the `thorin.natvis` file can be loaded for getting more expressive value inspection.
+As a utility to make debugging Mim itself less painful with certain debuggers, the `mim.natvis` file can be loaded for getting more expressive value inspection.
 In VS Code you can do so by adding the following to the `launch.json` configurations. When launching from VS Code via CMake, put it in `settings.json`'s `"cmake.debugConfig":`:
+
 ```json
-"visualizerFile": "${workspaceFolder}/thorin.natvis",
+"visualizerFile": "${workspaceFolder}/mim.natvis",
 "showDisplayString": true,
 ```
 
@@ -156,15 +173,20 @@ In VS Code you can do so by adding the following to the `launch.json` configurat
 ### lit Tests
 
 Run the [lit](https://llvm.org/docs/CommandGuide/lit.html) testsuite with:
+
 ```sh
 cmake --build build -t lit
 ```
+
 You can manually invoke the lit tests like this and maybe filter for a specific test:
+
 ```sh
 cd lit
 ./lit ../build/lit -a --filter foo.mim
 ```
-If your *build* directory, is in fact `build` you can use the `probe.sh` script:
+
+If your _build_ directory, is in fact `build` you can use the `probe.sh` script:
+
 ```sh
 cd lit
 ../scripts/probe.sh foo.mim
@@ -173,104 +195,119 @@ cd lit
 ### GoogleTest
 
 Run the [GoogleTest](https://google.github.io/googletest/) unit tests within the `build` folder with:
+
 ```sh
 ctest
 ```
+
 In addition, you can enable [Valgrind](https://valgrind.org/) with:
+
 ```sh
 ctest -T memcheck
 ```
 
 During debugging you probably only want to run a specifig test case.
 You can [filter](https://github.com/google/googletest/blob/main/docs/advanced.md#running-a-subset-of-the-tests) the test cases like this:
+
 ```sh
-./thorin-gtest --gtest_filter="*Loc*"
+./mim-gtest --gtest_filter="*Loc*"
 ```
+
 This command lists all available tests:
+
 ```sh
-./thorin-gtest --gtest_list_tests
+./mim-gtest --gtest_list_tests
 ```
+
 In addition, you may find it helpful to turn assertion failures into debugger breakpoints:
+
 ```sh
-./thorin-test --gtest_break_on_failure
+./mim-test --gtest_break_on_failure
 ```
 
 ## Syntax Highlighting
 
-[This](https://github.com/AnyDSL/vim-thorin2) Vim plugin provides syntax highlighting for Thorin files.
+[This](https://github.com/AnyDSL/vim-mim) Vim plugin provides syntax highlighting for Mim files.
 
 ## New Plugins
 
 Check out the [demo](@ref demo) plugin for a minimalistic plugin.
 You can create a new in-tree plugin `foobar` based upon the [demo](@ref demo) plugin like this:
+
 ```sh
 ./scripts/new_plugin.sh foobar
 ```
 
 ### Third-Party Plugins
 
-After installing Thorin, third-party plugins just need to find the `thorin` package to use your plugin `foo`:
+After installing MimIR, third-party plugins just need to find the `mim` package to use your plugin `foo`:
+
 ```cmake
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 project(foo)
 
-find_package(thorin)
+find_package(mim)
 
-add_thorin_plugin(foo
+add_mim_plugin(foo
     SOURCES
-        thorin/plug/foo/foo.h
-        thorin/plug/foo/foo.cpp
+        mim/plug/foo/foo.h
+        mim/plug/foo/foo.cpp
 )
 ```
+
 Use
+
 ```cmake
-cmake .. -Dthorin_DIR=<THORIN_INSTALL_PREFIX>/lib/cmake/thorin
+cmake .. -Dmim_DIR=<MIM_INSTALL_PREFIX>/lib/cmake/mim
 ```
+
 to configure the project.
 
-### add_thorin_plugin
+### add_mim_plugin
 
-Registers a new Thorin plugin.
+Registers a new Mim plugin.
+
 ```cmake
-add_thorin_plugin(<plugin-name>
+add_mim_plugin(<plugin-name>
     [SOURCES <source>...]
     [PRIVATE <private-item>...]
     [INSTALL])
 ```
+
 The `<plugin-name>` is the name of the plugin.
 This means, there should be relative to the plugin's `CMakeLists.txt` a file `<plugin-name>.mim` containing annexes.
 The command will create two targets:
 
-1. `thorin_internal_<plugin-name>`
+1. `mim_internal_<plugin-name>`
 
-    This is an internal target to bootstrap the plugin.
-    It will generate:
-        * `<plugin-name>/autogen.h` for the C++ interface in order to identify annexes,
-        * `<plugin-name>.md`, for the documentation, and
-        * `<plugin-name>.d` for the plugin's dependencies.
-    @note Tracking dependencies via the emitted dependency file is not supported for all CMake generators.
-    See [`add_custom_command`'s `DEPFILE` argument](https://cmake.org/cmake/help/latest/command/add_custom_command.html).
+   This is an internal target to bootstrap the plugin.
+   It will generate:
+   _`<plugin-name>/autogen.h` for the C++ interface in order to identify annexes,
+   _ `<plugin-name>.md`, for the documentation, and \* `<plugin-name>.d` for the plugin's dependencies.
+   @note Tracking dependencies via the emitted dependency file is not supported for all CMake generators.
+   See [`add_custom_command`'s `DEPFILE` argument](https://cmake.org/cmake/help/latest/command/add_custom_command.html).
 
-3. `thorin_<plugin-name>`
+2. `mim_<plugin-name>`
 
-    This is the actual `MODULE` [library](https://cmake.org/cmake/help/latest/command/add_library.html).
+   This is the actual `MODULE` [library](https://cmake.org/cmake/help/latest/command/add_library.html).
 
-    * `SOURCES`
+   - `SOURCES`
 
-        These are the `<source>` files used to build the loadable plugin containing normalizers, passes, and backends.
-        One of the source files must export the [`thorin_get_plugin`](@ref thorin::thorin_get_plugin) function.
+     These are the `<source>` files used to build the loadable plugin containing normalizers, passes, and backends.
+     One of the source files must export the [`mim_get_plugin`](@ref mim::mim_get_plugin) function.
 
-    * `PRIVATE`
+   - `PRIVATE`
 
-        Furthermore, you can specify additional `<private-item>` build dependencies.
+     Furthermore, you can specify additional `<private-item>` build dependencies.
 
-* `INSTALL`
+- `INSTALL`
 
-    Specify, if the plugin description, plugin and headers shall be installed with `make install`.
-    To export the targets, the export name `thorin-targets` has to be exported accordingly (see [`install(EXPORT ..)`](https://cmake.org/cmake/help/latest/command/install.html#export))
+  Specify, if the plugin description, plugin and headers shall be installed with `make install`.
+  To export the targets, the export name `mim-targets` has to be exported accordingly (see [`install(EXPORT ..)`](https://cmake.org/cmake/help/latest/command/install.html#export))
 
 You can specify additional properties in the plugin's `CMakeLists.txt`.
-For example, the following snippet adds additional include paths for the `MODULE` `thorin_<plugin-name>` target:
+For example, the following snippet adds additional include paths for the `MODULE` `mim_<plugin-name>` target:
+
 ```
-target_include_directories(thorin_<plugin-name> <path>...)
+target_include_directories(mim_<plugin-name> <path>...)
 ```

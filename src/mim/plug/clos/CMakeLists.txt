@@ -1,4 +1,4 @@
-add_thorin_plugin(clos
+add_mim_plugin(clos
     SOURCES
         clos.cpp
         normalizers.cpp

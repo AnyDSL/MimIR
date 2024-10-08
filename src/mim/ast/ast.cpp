@@ -103,7 +103,7 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
         --tab;
         tab.print(h, "}};\n\n");
 
-        if (!annex.subs.empty()) tab.print(h, "THORIN_ENUM_OPERATORS({})\n", sym.tag);
+        if (!annex.subs.empty()) tab.print(h, "MIM_ENUM_OPERATORS({})\n", sym.tag);
         print(outer_namespace.emplace_back(), "template<> constexpr size_t Annex::Num<plug::{}::{}> = {};\n", plugin, sym.tag, annex.subs.size());
 
         if (auto norm = annex.normalizer) {
@@ -119,7 +119,7 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
 
     if (!normalizers.empty()) {
         tab.print(h, "void register_normalizers(Normalizers& normalizers);\n\n");
-        tab.print(h, "#define THORIN_{}_NORMALIZER_IMPL \\\n", plugin);
+        tab.print(h, "#define MIM_{}_NORMALIZER_IMPL \\\n", plugin);
         ++tab;
         tab.print(h, "void register_normalizers(Normalizers& normalizers) {{\\\n");
         ++tab;

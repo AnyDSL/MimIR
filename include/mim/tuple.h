@@ -32,7 +32,7 @@ public:
     static Ref infer(World&, Defs);
     ///@}
 
-    THORIN_DEF_MIXIN(Sigma)
+    MIM_DEF_MIXIN(Sigma)
 };
 
 /// Data constructor for a Sigma.
@@ -42,7 +42,7 @@ private:
     Tuple(const Def* type, Defs args)
         : Def(Node, type, args, 0) {}
 
-    THORIN_DEF_MIXIN(Tuple)
+    MIM_DEF_MIXIN(Tuple)
 };
 
 /// A (possibly paramterized) Arr%ay.
@@ -80,7 +80,7 @@ public:
     void check() override;
     ///@}
 
-    THORIN_DEF_MIXIN(Arr)
+    MIM_DEF_MIXIN(Arr)
 };
 
 /// A (possibly paramterized) Tuple.
@@ -112,7 +112,7 @@ public:
     Pack* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
     const Def* reduce(const Def* arg) const;
 
-    THORIN_DEF_MIXIN(Pack)
+    MIM_DEF_MIXIN(Pack)
 };
 
 /// Extracts from a Sigma or Arr%ay-typed Extract::tuple the element at position Extract::index.
@@ -128,7 +128,7 @@ public:
     const Def* index() const { return op(1); }
     ///@}
 
-    THORIN_DEF_MIXIN(Extract)
+    MIM_DEF_MIXIN(Extract)
 };
 
 /// Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple.
@@ -148,7 +148,7 @@ public:
     const Def* value() const { return op(2); }
     ///@}
 
-    THORIN_DEF_MIXIN(Insert)
+    MIM_DEF_MIXIN(Insert)
 };
 
 /// @name Helpers to work with Tulpes/Sigmas/Arrays/Packs

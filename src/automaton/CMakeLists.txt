@@ -18,7 +18,7 @@ target_link_libraries(automaton
 
 install(
     TARGETS automaton
-    EXPORT thorin-targets
+    EXPORT mim-targets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}

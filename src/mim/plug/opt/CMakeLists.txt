@@ -1,4 +1,4 @@
-add_thorin_plugin(opt
+add_mim_plugin(opt
     SOURCES
         opt.cpp
     INSTALL

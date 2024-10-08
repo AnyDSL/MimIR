@@ -8,6 +8,6 @@ Ref normalize_const(Ref type, Ref, Ref arg) {
     return world.lit(world.type_idx(arg), 42);
 }
 
-THORIN_demo_NORMALIZER_IMPL
+MIM_demo_NORMALIZER_IMPL
 
 } // namespace mim::plug::demo

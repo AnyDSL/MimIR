@@ -32,7 +32,7 @@ void add_passes(World& world, PipelineBuilder& builder, Passes& passes, DefVec& 
     builder.end_pass_phase();
 }
 
-extern "C" THORIN_EXPORT mim::Plugin mim_get_plugin() {
+extern "C" MIM_EXPORT mim::Plugin mim_get_plugin() {
     return {"compile", [](Normalizers& normalizers) { compile::register_normalizers(normalizers); },
             [](Passes& passes) {
                 auto debug_phase_flag = flags_t(Annex::Base<mim::plug::compile::debug_phase>);

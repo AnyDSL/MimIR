@@ -9,7 +9,7 @@ namespace mim::ast {
 
 constexpr size_t Look_Ahead = 2;
 
-/// Parses Thorin code as AST.
+/// Parses Mim code as AST.
 ///
 /// The logic behind the various parse methods is as follows:
 /// 1. The `parse_*` method does **not** have a `std::string_view ctxt` parameter:

@@ -39,7 +39,7 @@ enum class Mode : nat_t {
 };
 // clang-format on
 
-THORIN_ENUM_OPERATORS(Mode)
+MIM_ENUM_OPERATORS(Mode)
 
 /// Give Mode as mim::plug::math::Mode, mim::nat_t or Ref.
 using VMode = std::variant<Mode, nat_t, Ref>;

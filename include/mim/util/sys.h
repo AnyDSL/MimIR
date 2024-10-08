@@ -5,9 +5,9 @@
 #include <string>
 
 #ifdef _WIN32
-#    define THORIN_WHICH "where"
+#    define MIM_WHICH "where"
 #else
-#    define THORIN_WHICH "which"
+#    define MIM_WHICH "which"
 #endif
 
 namespace mim {

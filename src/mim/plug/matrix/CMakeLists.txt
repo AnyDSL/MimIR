@@ -1,4 +1,4 @@
-add_thorin_plugin(matrix
+add_mim_plugin(matrix
     SOURCES
         matrix.cpp
         normalizers.cpp

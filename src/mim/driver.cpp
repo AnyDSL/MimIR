@@ -22,7 +22,7 @@ Driver::Driver()
     search_paths_.emplace_front(fs::path{});
 
     // paths from env
-    if (auto env_path = std::getenv("THORIN_PLUGIN_PATH")) {
+    if (auto env_path = std::getenv("MIM_PLUGIN_PATH")) {
         std::stringstream env_path_stream{env_path};
         std::string sub_path;
         while (std::getline(env_path_stream, sub_path, ':')) add_search_path(sub_path);
@@ -32,7 +32,7 @@ Driver::Driver()
     if (auto path = sys::path_to_curr_exe()) add_search_path(path->parent_path().parent_path() / "lib" / "mim");
 
     // add install path if different from above
-    if (auto install_path = fs::path{THORIN_INSTALL_PREFIX} / "lib" / "mim"; fs::exists(install_path)) {
+    if (auto install_path = fs::path{MIM_INSTALL_PREFIX} / "lib" / "mim"; fs::exists(install_path)) {
         if (search_paths().empty() || !fs::equivalent(install_path, search_paths().back()))
             add_search_path(std::move(install_path));
     }

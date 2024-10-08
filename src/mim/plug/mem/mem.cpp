@@ -17,7 +17,7 @@
 using namespace mim;
 using namespace mim::plug;
 
-extern "C" THORIN_EXPORT Plugin mim_get_plugin() {
+extern "C" MIM_EXPORT Plugin mim_get_plugin() {
     return {"mem", [](Normalizers& normalizers) { mem::register_normalizers(normalizers); },
             [](Passes& passes) {
                 register_pass_with_arg<mem::ssa_pass, mem::SSAConstr, EtaExp>(passes);

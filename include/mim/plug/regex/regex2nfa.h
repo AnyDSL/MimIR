@@ -6,7 +6,7 @@
 
 /// You can dl::get this function.
 /// @returns a raw pointer to automanton::NFA; use mim::regex::regex2nfa to pack it into a `std::unique_ptr`.
-extern "C" THORIN_EXPORT automaton::NFA* regex2nfa(mim::Ref regex);
+extern "C" MIM_EXPORT automaton::NFA* regex2nfa(mim::Ref regex);
 
 namespace mim::plug::regex {
 

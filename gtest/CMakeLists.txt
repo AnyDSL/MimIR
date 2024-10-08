@@ -1,5 +1,5 @@
-add_executable(thorin-gtest)
-target_sources(thorin-gtest
+add_executable(mim-gtest)
+target_sources(mim-gtest
     PRIVATE
         helpers.cpp
         lexer.cpp
@@ -7,35 +7,35 @@ target_sources(thorin-gtest
         restricted_dep_types.cpp
         helpers.h
 )
-target_link_libraries(thorin-gtest
+target_link_libraries(mim-gtest
     PRIVATE
         gtest_main
-        libthorin
+        libmim
 )
-add_dependencies(thorin-gtest thorin_all_plugins)
-gtest_discover_tests(thorin-gtest
-    TEST_PREFIX "thorin."
+add_dependencies(mim-gtest mim_all_plugins)
+gtest_discover_tests(mim-gtest
+    TEST_PREFIX "mim."
     DISCOVERY_TIMEOUT 60
 )
 
-add_executable(thorin-regex-gtest)
-target_sources(thorin-regex-gtest
+add_executable(mim-regex-gtest)
+target_sources(mim-regex-gtest
     PRIVATE
         automaton.cpp
 )
-target_link_libraries(thorin-regex-gtest
+target_link_libraries(mim-regex-gtest
     PRIVATE
         gtest_main
-        libthorin
+        libmim
         automaton
 )
-add_dependencies(thorin-regex-gtest thorin_all_plugins)
-gtest_discover_tests(thorin-regex-gtest
-    TEST_PREFIX "thorin-regex-gtest."
+add_dependencies(mim-regex-gtest mim_all_plugins)
+gtest_discover_tests(mim-regex-gtest
+    TEST_PREFIX "mim-regex-gtest."
     DISCOVERY_TIMEOUT 60
 )
 
-add_dependencies(thorin_all
-    thorin-gtest
-    thorin-regex-gtest
+add_dependencies(mim_all
+    mim-gtest
+    mim-regex-gtest
 )

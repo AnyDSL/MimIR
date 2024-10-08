@@ -13,7 +13,7 @@
 #include "mim/util/vector.h"
 
 // clang-format off
-#define THORIN_NODE(m)                                                        \
+#define MIM_NODE(m)                                                        \
     m(Type, type)       m(Univ, univ)   m(UMax, umax)       m(UInc, uinc)     \
     m(Pi, pi)           m(Lam, lam)     m(App, app)                           \
     m(Sigma, sigma)     m(Tuple, tuple) m(Extract, extract) m(Insert, insert) \
@@ -35,11 +35,11 @@ namespace mim {
 namespace Node {
 
 #define CODE(node, name) node,
-enum : node_t { THORIN_NODE(CODE) };
+enum : node_t { MIM_NODE(CODE) };
 #undef CODE
 
 #define CODE(node, name) +size_t(1)
-constexpr auto Num_Nodes = size_t(0) THORIN_NODE(CODE);
+constexpr auto Num_Nodes = size_t(0) MIM_NODE(CODE);
 #undef CODE
 
 } // namespace Node
@@ -149,11 +149,11 @@ enum class Dep : unsigned {
     Var   = 1 << 4,
 };
 
-THORIN_ENUM_OPERATORS(Dep)
+MIM_ENUM_OPERATORS(Dep)
 ///@}
 
 /// Use as mixin to wrap all kind of Def::proj and Def::projs variants.
-#define THORIN_PROJ(NAME, CONST)                                                                              \
+#define MIM_PROJ(NAME, CONST)                                                                                 \
     nat_t num_##NAME##s() CONST { return ((const Def*)NAME())->num_projs(); }                                 \
     nat_t num_t##NAME##s() CONST { return ((const Def*)NAME())->num_tprojs(); }                               \
     Ref NAME(nat_t a, nat_t i) CONST { return ((const Def*)NAME())->proj(a, i); }                             \
@@ -170,7 +170,7 @@ THORIN_ENUM_OPERATORS(Dep)
 
 // clang-format off
 /// Use as mixin to declare setters for Def::loc \& Def::name using a *covariant* return type.
-#define THORIN_SETTERS_(T)                                                                                                   \
+#define MIM_SETTERS_(T)                                                                                                   \
 public:                                                                                                                      \
     template<bool Ow = false> const T* set(Loc l               ) const { if (Ow || !dbg_.loc()) dbg_.set(l); return this; } \
     template<bool Ow = false>       T* set(Loc l               )       { if (Ow || !dbg_.loc()) dbg_.set(l); return this; } \
@@ -187,14 +187,14 @@ public:                                                                         
 // clang-format on
 
 #ifdef DOXYGEN
-#    define THORIN_SETTERS(T) public: // Don't spam each and every sub class of Def with basically the same docs.
+#    define MIM_SETTERS(T) public: // Don't spam each and every sub class of Def with basically the same docs.
 #else
-#    define THORIN_SETTERS(T) THORIN_SETTERS_(T)
+#    define MIM_SETTERS(T) MIM_SETTERS_(T)
 #endif
 
-#define THORIN_DEF_MIXIN(T)                         \
+#define MIM_DEF_MIXIN(T)                            \
 public:                                             \
-    THORIN_SETTERS(T)                               \
+    MIM_SETTERS(T)                                  \
     static constexpr auto Node = Node::T;           \
                                                     \
 private:                                            \
@@ -282,7 +282,7 @@ public:
     /// mut->unset()->set({a, b, c}); // This will always work, but should be your last resort.
     /// ```
     ///
-    /// Thorin assumes that a mutable is *final*, when its last operand is set.
+    /// Mim assumes that a mutable is *final*, when its last operand is set.
     /// Then, Def::check() will be invoked.
     Def* set(size_t i, const Def* def);                                    ///< Successively   set from left to right.
     Def* reset(size_t i, const Def* def) { return unset(i)->set(i, def); } ///< Successively reset from left to right.
@@ -397,7 +397,7 @@ public:
     ///@{
     /// Retrieve Var for *mutables*.
     /// @see @ref proj
-    THORIN_PROJ(var, )
+    MIM_PROJ(var, )
     /// Not necessarily a Var: E.g., if the return type is `[]`, this will yield `()`.
     Ref var();
     /// Only returns not `nullptr`, if Var of this mutable has ever been created.
@@ -471,7 +471,7 @@ public:
     /// @name Dbg Setters
     ///@{
     /// Every subclass `S` of Def has the same setters that return `S*`/`const S*` but will not show up in Doxygen.
-    THORIN_SETTERS_(Def)
+    MIM_SETTERS_(Def)
     ///@}
 
     /// @name debug_prefix/suffix
@@ -644,7 +644,7 @@ public:
     Def* mut() const { return op(0)->as_mut(); }
     ///@}
 
-    THORIN_DEF_MIXIN(Var)
+    MIM_DEF_MIXIN(Var)
 };
 
 class Univ : public Def {
@@ -652,14 +652,14 @@ private:
     Univ(World& world)
         : Def(&world, Node, nullptr, Defs{}, 0) {}
 
-    THORIN_DEF_MIXIN(Univ)
+    MIM_DEF_MIXIN(Univ)
 };
 
 class UMax : public Def {
 private:
     UMax(World&, Defs ops);
 
-    THORIN_DEF_MIXIN(UMax)
+    MIM_DEF_MIXIN(UMax)
 };
 
 class UInc : public Def {
@@ -674,7 +674,7 @@ public:
     level_t offset() const { return flags(); }
     ///@}
 
-    THORIN_DEF_MIXIN(UInc)
+    MIM_DEF_MIXIN(UInc)
 };
 
 class Type : public Def {
@@ -688,7 +688,7 @@ public:
     const Def* level() const { return op(0); }
     ///@}
 
-    THORIN_DEF_MIXIN(Type)
+    MIM_DEF_MIXIN(Type)
 };
 
 class Lit : public Def {
@@ -719,14 +719,14 @@ public:
     template<class T = nat_t> static T as(Ref def) { return def->as<Lit>()->get<T>(); }
     ///@}
 
-    THORIN_DEF_MIXIN(Lit)
+    MIM_DEF_MIXIN(Lit)
 };
 
 class Nat : public Def {
 private:
     Nat(World& world);
 
-    THORIN_DEF_MIXIN(Nat)
+    MIM_DEF_MIXIN(Nat)
 };
 
 /// A built-in constant of type `.Nat -> *`.
@@ -748,7 +748,7 @@ public:
     static std::optional<nat_t> size2bitwidth(const Def* size);
     ///@}
 
-    THORIN_DEF_MIXIN(Idx)
+    MIM_DEF_MIXIN(Idx)
 };
 
 class Proxy : public Def {
@@ -763,7 +763,7 @@ public:
     u32 tag() const { return u32(flags()); }
     ///@}
 
-    THORIN_DEF_MIXIN(Proxy)
+    MIM_DEF_MIXIN(Proxy)
 };
 
 /// @deprecated A global variable in the data segment.
@@ -794,7 +794,7 @@ public:
     ///@}
 
     Global* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
-    THORIN_DEF_MIXIN(Global)
+    MIM_DEF_MIXIN(Global)
 
 private:
     Global* stub_(World&, Ref) override;

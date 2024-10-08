@@ -29,7 +29,7 @@ public:
     /// Search paths for plugins are in the following order:
     /// 1. The empty path. Used as prefix to look into current working directory without resorting to an absolute path.
     /// 2. All further user-specified paths via Driver::add_search_path; paths added first will also be searched first.
-    /// 3. All paths specified in the environment variable `THORIN_PLUGIN_PATH`.
+    /// 3. All paths specified in the environment variable `MIM_PLUGIN_PATH`.
     /// 4. `path/to/mim.exe/../../lib/mim`
     /// 5. `CMAKE_INSTALL_PREFIX/lib/mim`
     const auto& search_paths() const { return search_paths_; }
@@ -50,7 +50,7 @@ public:
 
     /// @name Load Plugin
     ///@{
-    /// Finds and loads a shared object file that implements the Thorin Plugin @p name.
+    /// Finds and loads a shared object file that implements the Mim Plugin @p name.
     /// If \a name is an absolute path to a `.so`/`.dll` file, this is used.
     /// Otherwise, "name", "libmim_name.so" (Linux, Mac), "mim_name.dll" (Win)
     /// are searched for in Driver::search_paths().

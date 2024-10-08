@@ -7,14 +7,14 @@ set -eu
 root=$(dirname $0)/..
 plugin=$1
 
-mkdir -p $root/include/thorin/plug/$plugin
-mkdir -p $root/src/thorin/plug/$plugin
+mkdir -p $root/include/mim/plug/$plugin
+mkdir -p $root/src/mim/plug/$plugin
 
-for demo_file in $root/src/thorin/plug/demo/demo.mim     \
-                 $root/src/thorin/plug/demo/CMakeLists.txt  \
-                 $root/src/thorin/plug/demo/demo.cpp        \
-                 $root/src/thorin/plug/demo/normalizers.cpp \
-                 $root/include/thorin/plug/demo/demo.h
+for demo_file in $root/src/mim/plug/demo/demo.mim     \
+                 $root/src/mim/plug/demo/CMakeLists.txt  \
+                 $root/src/mim/plug/demo/demo.cpp        \
+                 $root/src/mim/plug/demo/normalizers.cpp \
+                 $root/include/mim/plug/demo/demo.h
 do
     plugin_file="${demo_file//demo/$plugin}"
     cp $demo_file $plugin_file

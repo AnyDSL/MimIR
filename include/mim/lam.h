@@ -30,7 +30,7 @@ public:
     ///@{
     /// @see @ref proj
     Ref dom() const { return op(0); }
-    THORIN_PROJ(dom, const)
+    MIM_PROJ(dom, const)
     ///@}
 
     /// @name codom
@@ -38,7 +38,7 @@ public:
     ///@{
     /// @see @ref proj
     Ref codom() const { return op(1); }
-    THORIN_PROJ(codom, const)
+    MIM_PROJ(codom, const)
     ///@}
 
     /// @name Continuations
@@ -86,7 +86,7 @@ public:
     const Pi* immutabilize() override;
     Pi* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
 
-    THORIN_DEF_MIXIN(Pi)
+    MIM_DEF_MIXIN(Pi)
 
 private:
     Pi* stub_(World&, Ref) override;
@@ -114,7 +114,7 @@ public:
     ///@{
     /// @see @ref proj
     Ref dom() const { return type()->dom(); }
-    THORIN_PROJ(dom, const)
+    MIM_PROJ(dom, const)
     ///@}
 
     /// @name codom
@@ -122,7 +122,7 @@ public:
     ///@{
     /// @see @ref proj
     Ref codom() const { return type()->codom(); }
-    THORIN_PROJ(codom, const)
+    MIM_PROJ(codom, const)
     ///@}
 
     /// @name Continuations
@@ -177,7 +177,7 @@ public:
     void check() override;
     ///@}
 
-    THORIN_DEF_MIXIN(Lam)
+    MIM_DEF_MIXIN(Lam)
 
 private:
     Lam* stub_(World&, Ref) override;
@@ -213,7 +213,7 @@ public:
     ///@{
     /// @see @ref proj
     const Def* arg() const { return op(1); }
-    THORIN_PROJ(arg, const)
+    MIM_PROJ(arg, const)
     ///@}
 
     /// @name Get axiom, current curry counter and trip count
@@ -223,7 +223,7 @@ public:
     u8 trip() const { return trip_; }
     ///@}
 
-    THORIN_DEF_MIXIN(App)
+    MIM_DEF_MIXIN(App)
 };
 
 /// @name Helpers to work with Functions

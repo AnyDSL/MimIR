@@ -17,7 +17,7 @@
 using namespace mim;
 using namespace mim::plug;
 
-extern "C" THORIN_EXPORT Plugin mim_get_plugin() {
+extern "C" MIM_EXPORT Plugin mim_get_plugin() {
     return {"clos", [](Normalizers& normalizers) { clos::register_normalizers(normalizers); },
             [](Passes& passes) {
                 register_pass<clos::clos_conv_prep_pass, clos::ClosConvPrep>(passes, nullptr);

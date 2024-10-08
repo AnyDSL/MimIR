@@ -40,7 +40,7 @@ private:
     flags_t rank() const { return flags(); }
     flags_t& rank() { return flags_; }
 
-    THORIN_DEF_MIXIN(Infer)
+    MIM_DEF_MIXIN(Infer)
     friend class Check;
 };
 
@@ -66,7 +66,7 @@ public:
     static Ref is_uniform(Defs defs);
 
 private:
-#ifdef THORIN_ENABLE_CHECKS
+#ifdef MIM_ENABLE_CHECKS
     template<bool> bool fail();
 #else
     template<bool> bool fail() { return false; }

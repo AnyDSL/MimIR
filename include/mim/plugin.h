@@ -45,7 +45,7 @@ struct Plugin {
 
 /// To be implemented and exported by a plugin.
 /// @returns a filled Plugin.
-THORIN_EXPORT mim::Plugin mim_get_plugin();
+MIM_EXPORT mim::Plugin mim_get_plugin();
 ///@}
 }
 

@@ -1,18 +1,18 @@
 #pragma once
 
-#cmakedefine THORIN_ENABLE_CHECKS
+#cmakedefine MIM_ENABLE_CHECKS
 
-#define THORIN_VER  "@PROJECT_VERSION@"
-#define THORIN_VER_MAJOR "@PROJECT_VERSION_MAJOR@"
-#define THORIN_VER_MINOR "@PROJECT_VERSION_MINOR@"
-#define THORIN_VER_PATCH "@PROJECT_VERSION_PATCH@"
+#define MIM_VER  "@PROJECT_VERSION@"
+#define MIM_VER_MAJOR "@PROJECT_VERSION_MAJOR@"
+#define MIM_VER_MINOR "@PROJECT_VERSION_MINOR@"
+#define MIM_VER_PATCH "@PROJECT_VERSION_PATCH@"
 
-#define THORIN_INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@"
+#define MIM_INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@"
 
 #ifdef _MSC_VER
-#define THORIN_EXPORT __declspec(dllexport)
-#define THORIN_IMPORT __declspec(dllimport)
+#define MIM_EXPORT __declspec(dllexport)
+#define MIM_IMPORT __declspec(dllimport)
 #else
-#define THORIN_EXPORT __attribute__((visibility("default")))
-#define THORIN_IMPORT
+#define MIM_EXPORT __attribute__((visibility("default")))
+#define MIM_IMPORT
 #endif

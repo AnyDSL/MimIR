@@ -216,6 +216,6 @@ Ref normalize_not(Ref type, Ref callee, Ref arg) {
     return world.raw_app(type, callee, arg);
 }
 
-THORIN_regex_NORMALIZER_IMPL
+MIM_regex_NORMALIZER_IMPL
 
 } // namespace mim::plug::regex

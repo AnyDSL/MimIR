@@ -1,5 +1,5 @@
-add_library(libthorin)
-target_sources(libthorin
+add_library(libmim)
+target_sources(libmim
     PRIVATE
         axiom.cpp
         check.cpp
@@ -47,30 +47,30 @@ target_sources(libthorin
         util/sys.cpp
 )
 
-set_target_properties(libthorin PROPERTIES PREFIX "")
+set_target_properties(libmim PROPERTIES PREFIX "")
 
 if(MSVC)
-    target_compile_features(libthorin PUBLIC cxx_std_23) # /std:c++latest - unlocks non-stable c++20 features
-    target_compile_options(libthorin PUBLIC /utf-8 /wd4146 /wd4245)
+    target_compile_features(libmim PUBLIC cxx_std_23) # /std:c++latest - unlocks non-stable c++20 features
+    target_compile_options(libmim PUBLIC /utf-8 /wd4146 /wd4245)
     if(BUILD_SHARED_LIBS)
-        target_compile_definitions(libthorin PUBLIC ABSL_CONSUME_DLL)
+        target_compile_definitions(libmim PUBLIC ABSL_CONSUME_DLL)
     endif()
 else()
-    target_compile_features(libthorin PUBLIC cxx_std_20)
+    target_compile_features(libmim PUBLIC cxx_std_20)
 endif()
 
 configure_file(
-    "${PROJECT_SOURCE_DIR}/include/thorin/config.h.in"
-    "${CMAKE_BINARY_DIR}/include/thorin/config.h"
+    "${PROJECT_SOURCE_DIR}/include/mim/config.h.in"
+    "${CMAKE_BINARY_DIR}/include/mim/config.h"
 )
-target_include_directories(libthorin
+target_include_directories(libmim
     PUBLIC
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/external/half/include>
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
         $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/include> # for config.h
         $<INSTALL_INTERFACE:include>
 )
-target_link_libraries(libthorin
+target_link_libraries(libmim
     PUBLIC
         absl::btree
         absl::fixed_array
@@ -83,15 +83,15 @@ target_link_libraries(libthorin
 )
 
 install(
-    FILES "${CMAKE_BINARY_DIR}/include/thorin/config.h"
-    DESTINATION include/thorin
+    FILES "${CMAKE_BINARY_DIR}/include/mim/config.h"
+    DESTINATION include/mim
 )
 install(
-    DIRECTORY ${PROJECT_SOURCE_DIR}/include/thorin
+    DIRECTORY ${PROJECT_SOURCE_DIR}/include/mim
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
 add_subdirectory(cli)
 add_subdirectory(plug)
 
-add_dependencies(thorin_all libthorin)
+add_dependencies(mim_all libmim)

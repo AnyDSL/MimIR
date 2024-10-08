@@ -48,6 +48,6 @@ Ref normalize_store(Ref type, Ref callee, Ref arg) {
     return world.raw_app(type, callee, {mem, ptr, val});
 }
 
-THORIN_mem_NORMALIZER_IMPL
+MIM_mem_NORMALIZER_IMPL
 
 } // namespace mim::plug::mem

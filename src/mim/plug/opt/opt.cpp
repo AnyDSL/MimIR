@@ -11,7 +11,7 @@
 using namespace mim;
 using namespace mim::plug;
 
-extern "C" THORIN_EXPORT Plugin mim_get_plugin() {
+extern "C" MIM_EXPORT Plugin mim_get_plugin() {
     return {"opt", nullptr,
             [](Passes& passes) {
                 passes[flags_t(Annex::Base<compile::plugin_select>)] = [&](World& world, PipelineBuilder& builder,

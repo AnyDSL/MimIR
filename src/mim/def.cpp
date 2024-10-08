@@ -86,7 +86,7 @@ UMax::UMax(World& world, Defs ops)
  * rebuild
  */
 
-#ifndef DOXYGEN // TODO Doxygen doesn't expand THORIN_DEF_MIXIN
+#ifndef DOXYGEN // TODO Doxygen doesn't expand MIM_DEF_MIXIN
 Ref Infer    ::rebuild_(World&,   Ref,   Defs  ) const { fe::unreachable(); }
 Ref Global   ::rebuild_(World&,   Ref,   Defs  ) const { fe::unreachable(); }
 Ref Idx      ::rebuild_(World& w, Ref  , Defs  ) const { return w.type_idx(); }
@@ -396,7 +396,7 @@ void Def::invalidate() {
 
 bool Def::is_closed() const {
     if (local_vars().empty() && local_muts().empty()) return true;
-#ifdef THORIN_ENABLE_CHECKS
+#ifdef MIM_ENABLE_CHECKS
     assert(!is_external() || free_vars().empty());
 #endif
     return free_vars().empty();
@@ -434,7 +434,7 @@ std::string_view Def::node_name() const {
     switch (node()) {
 #define CODE(op, abbr) \
     case Node::op: return #abbr;
-        THORIN_NODE(CODE)
+        MIM_NODE(CODE)
 #undef CODE
         default: fe::unreachable();
     }

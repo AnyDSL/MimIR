@@ -84,7 +84,7 @@ Ref fold(World& world, Ref type, const Def* a) {
         switch (width) {
 #define CODE(i) \
     case i: res = fold<Id, i>(la->get()); break;
-            THORIN_16_32_64(CODE)
+            MIM_16_32_64(CODE)
 #undef CODE
             default: fe::unreachable();
         }
@@ -145,7 +145,7 @@ template<class Id, Id id> Ref fold(World& world, Ref type, const Def* a) {
         switch (width) {
 #define CODE(i) \
     case i: res = fold<Id, id, i>(*la); break;
-            THORIN_16_32_64(CODE)
+            MIM_16_32_64(CODE)
 #undef CODE
             default: fe::unreachable();
         }
@@ -167,7 +167,7 @@ template<class Id, Id id> Ref fold(World& world, Ref type, const Def*& a, const 
             switch (width) {
 #define CODE(i) \
     case i: res = fold<Id, id, i>(*la, *lb); break;
-                THORIN_16_32_64(CODE)
+                MIM_16_32_64(CODE)
 #undef CODE
                 default: fe::unreachable();
             }
@@ -424,6 +424,6 @@ template<round id> Ref normalize_round(Ref type, Ref c, Ref arg) {
     return world.raw_app(type, c, arg);
 }
 
-THORIN_math_NORMALIZER_IMPL
+MIM_math_NORMALIZER_IMPL
 
 } // namespace mim::plug::math

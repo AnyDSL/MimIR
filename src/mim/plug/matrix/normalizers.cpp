@@ -110,6 +110,6 @@ Ref normalize_transpose(Ref type, Ref callee, Ref arg) {
     return world.raw_app(type, callee, arg);
 }
 
-THORIN_matrix_NORMALIZER_IMPL
+MIM_matrix_NORMALIZER_IMPL
 
 } // namespace mim::plug::matrix

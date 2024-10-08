@@ -1,6 +1,6 @@
 // RUN: %mim %s -o -
 
-// If compiling this takes forever, there is some loophole that Thorin does sth 100000000 times.
+// If compiling this takes forever, there is some loophole that Mim does sth 100000000 times.
 .plugin core;
 
 .let size = 100000000;

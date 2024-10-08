@@ -1,6 +1,6 @@
 // RUN: rm -f %t.ll
 // RUN: %mim %s -o - | FileCheck %s
-// see https://github.com/AnyDSL/thorin2/issues/253
+// see https://github.com/AnyDSL/mim/issues/253
 
 .plugin core;
 

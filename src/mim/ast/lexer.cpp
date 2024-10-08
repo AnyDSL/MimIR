@@ -14,12 +14,12 @@ Lexer::Lexer(AST& ast, std::istream& istream, const fs::path* path /*= nullptr*/
     , ast_(ast)
     , md_(md) {
 #define CODE(t, str) keywords_[ast.sym(str)] = Tag::t;
-    THORIN_KEY(CODE)
+    MIM_KEY(CODE)
 #undef CODE
 
 #define CODE(str, t) \
     if (Tag::t != Tag::Nil) keywords_[ast.sym(str)] = Tag::t;
-    THORIN_SUBST(CODE)
+    MIM_SUBST(CODE)
 #undef CODE
 
     if (start_md())

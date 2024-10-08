@@ -10,7 +10,7 @@ class Lit;
 namespace ast {
 
 // clang-format off
-#define THORIN_KEY(m)                  \
+#define MIM_KEY(m)                  \
     m(K_module, ".module")             \
     m(K_import, ".import")             \
     m(K_plugin, ".plugin")             \
@@ -51,10 +51,10 @@ namespace ast {
     m(K_I64,    ".I64"   )             \
 
 #define CODE(t, str) + size_t(1)
-constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
+constexpr auto Num_Keys = size_t(0) MIM_KEY(CODE);
 #undef CODE
 
-#define THORIN_TOK(m)                  \
+#define MIM_TOK(m)                  \
     m(EoF, "<end of file>"    )        \
     /* literals */                     \
     m(L_s, "<signed integer literal>") \
@@ -96,7 +96,7 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(T_semicolon,  ";")               \
     m(T_star,       "*")               \
 
-#define THORIN_SUBST(m)                \
+#define MIM_SUBST(m)                \
     m(".lm",     T_lm   )              \
     m(".bot",    T_bot  )              \
     m(".top",    T_top  )              \
@@ -125,7 +125,7 @@ public:
     enum class Tag {
         Nil,
 #define CODE(t, str) t,
-        THORIN_KEY(CODE) THORIN_TOK(CODE)
+        MIM_KEY(CODE) MIM_TOK(CODE)
 #undef CODE
     };
 

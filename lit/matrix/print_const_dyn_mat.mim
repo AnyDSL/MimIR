@@ -2,7 +2,7 @@
 // RUN: %mim -p direct -p math -o - %s | FileCheck %s
 
 // TODO: allocation error due to dynamic size,
-// ./build/bin/thorin lit/matrix/print_const_dyn_mat.mim -p direct -p clos -o - -VVVV --output-ll T.ll
+// ./build/bin/mim lit/matrix/print_const_dyn_mat.mim -p direct -p clos -o - -VVVV --output-ll T.ll
 // add_mem error (bitcast gets (mem, mat) as argument at some point)
 
 .plugin core;

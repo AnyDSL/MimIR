@@ -1,4 +1,4 @@
-add_thorin_plugin(math
+add_mim_plugin(math
     SOURCES
         math.cpp
         normalizers.cpp

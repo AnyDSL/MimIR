@@ -1,7 +1,7 @@
 import lit.formats
 import os
 
-config.name = 'thorin regression'
+config.name = 'mim regression'
 config.test_format = lit.formats.ShTest(True)
 
 config.suffixes = ['.mim']

@@ -1,4 +1,4 @@
-add_thorin_plugin(regex
+add_mim_plugin(regex
     SOURCES
         normalizers.cpp
         dfa2matcher.cpp

@@ -1,4 +1,4 @@
-add_thorin_plugin(mem
+add_mim_plugin(mem
     SOURCES
         mem.cpp
         normalizers.cpp

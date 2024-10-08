@@ -186,7 +186,7 @@ template<class K>          using GIDNodeSet = absl::node_hash_set<K,    GIDHash<
 /// Note that the bit operators return @p E's underlying type and not the original `enum` @p E.
 /// This is because the result may not be a valid `enum` value.
 /// For the same reason, it doesn't make sense to declare operators such as `&=`.
-#define THORIN_ENUM_OPERATORS(E)                                                                                                                                 \
+#define MIM_ENUM_OPERATORS(E)                                                                                                                                 \
     constexpr auto operator&(                       E  x,                        E  y) { return std::underlying_type_t<E>(x)  &  std::underlying_type_t<E>(y); } \
     constexpr auto operator&(std::underlying_type_t<E> x,                        E  y) { return                           x   &  std::underlying_type_t<E>(y); } \
     constexpr auto operator&(                       E  x, std::underlying_type_t<E> y) { return std::underlying_type_t<E>(x)  &                            y ; } \

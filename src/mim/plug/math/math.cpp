@@ -5,6 +5,6 @@
 
 using namespace mim;
 
-extern "C" THORIN_EXPORT Plugin mim_get_plugin() {
+extern "C" MIM_EXPORT Plugin mim_get_plugin() {
     return {"math", [](Normalizers& normalizers) { plug::math::register_normalizers(normalizers); }, nullptr, nullptr};
 }

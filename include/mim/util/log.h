@@ -53,7 +53,7 @@ public:
             print(ostream(), "{}{}:{}{}:{} ", level2color(level), level2acro(level), rang::fg::gray, loc,
                   rang::fg::reset);
             print(ostream(), fmt, std::forward<Args&&>(args)...) << std::endl;
-#ifdef THORIN_ENABLE_CHECKS
+#ifdef MIM_ENABLE_CHECKS
             if ((level == Level::Error && flags().break_on_error) || (level == Level::Warn && flags().break_on_warn))
                 fe::breakpoint();
 #endif

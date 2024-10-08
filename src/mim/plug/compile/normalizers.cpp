@@ -57,6 +57,6 @@ Ref normalize_combine_pass_list(Ref type, Ref, Ref arg) {
     return app_list;
 }
 
-THORIN_compile_NORMALIZER_IMPL
+MIM_compile_NORMALIZER_IMPL
 
 } // namespace mim::plug::compile
