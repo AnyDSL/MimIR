@@ -65,6 +65,8 @@ void TuplePtrn::emit_value_(Emitter& e, Ref def) const {
  * Ptrn::emit_Type
  */
 
+Ref ErrorPtrn::emit_type(Emitter&) const { fe::unreachable(); }
+
 Ref IdPtrn::emit_type(Emitter& e) const {
     auto _ = e.world().push(loc());
     return type() ? type()->emit(e) : e.world().mut_infer_type();
@@ -175,8 +177,6 @@ Ref DeclExpr::emit_(Emitter& e) const {
         for (const auto& decl : decls()) decl->emit(e);
     return expr()->emit(e);
 }
-
-Ref BlockExpr::emit_(Emitter& e) const { return expr()->emit(e); }
 
 Ref ArrowExpr::emit_(Emitter& e) const {
     auto d = dom()->emit(e);

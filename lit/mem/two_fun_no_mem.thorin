@@ -9,31 +9,28 @@
 
 .let Tas = (.I32, 0);
 
-.con f [mem: %mem.M, p: %mem.Ptr (.I32, 0), ret: .Cn [%mem.M, .I32]] = {
-    .let (mem2, v) = %mem.load (mem, p);
-
-    .con g1 [ret: .Cn .I32] = {
-        .let b = %core.wrap.add 0 (v, 1I32);
-        ret b
-    };
-
-    .con g2 [ret: .Cn .I32] = {
-        .let c = %core.wrap.add 0 (v, 2I32);
-        ret c
-    };
-
-    .con cont1 [a:.I32] = {
-        .con cont2 [b:.I32] = {
-            .let c = %core.wrap.add 0 (a, b);
-            ret (mem2, c)
-        };
-        g2 cont2
-    };
+.con f [mem: %mem.M, p: %mem.Ptr (.I32, 0), ret: .Cn [%mem.M, .I32]] =
+    .let (`mem, v) = %mem.load (mem, p);
     g1 cont1
-};
+    .where
+        .con g1 [ret: .Cn .I32] =
+            .let b = %core.wrap.add 0 (v, 1I32);
+            ret b;
 
-.con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I8, 0), 0), return : .Cn [%mem.M, .I32]] =
-    .let (mem2,p) = %mem.alloc Tas mem;
-    .let mem3 = %mem.store (mem2, p, argc);
-    f (mem3, p, return);
+        .con cont1 [a:.I32] =
+            g2 cont2
+            .where
+                .con g2 [ret: .Cn .I32] =
+                    .let c = %core.wrap.add 0 (v, 2I32);
+                    ret c;
+                .con cont2 [b:.I32] =
+                    .let c = %core.wrap.add 0 (a, b);
+                    ret (mem, c);
+            .end;
+    .end;
+
+.con .extern main [mem: %mem.M, argc: .I32, argv: %mem.Ptr (%mem.Ptr (.I8, 0), 0), return: .Cn [%mem.M, .I32]] =
+    .let (`mem, p) = %mem.alloc Tas mem;
+    .let `mem      = %mem.store (mem, p, argc);
+    f (mem, p, return);
 // TODO: check for 1+x, 2+x, a+b

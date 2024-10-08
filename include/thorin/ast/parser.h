@@ -82,7 +82,6 @@ private:
     /// @name parse primary exprs
     ///@{
     template<bool> Ptr<Expr> parse_arr_or_pack_expr();
-    Ptr<Expr> parse_block_expr();
     Ptr<Expr> parse_decl_expr();
     Ptr<Expr> parse_lit_expr();
     Ptr<Expr> parse_extremum_expr();
@@ -100,7 +99,7 @@ private:
 
     /// Depending on @p tag, this parses a `()`-style (Tok::Tag::D_paren_l) or `[]`-style (Tok::Tag::D_brckt_l) Ptrn.
     Ptr<Ptrn> parse_ptrn(Tok::Tag tag, std::string_view ctxt, Prec = Prec::Bot, bool allow_annex = false);
-    Ptr<TuplePtrn> parse_tuple_ptrn(bool rebind, Dbg);
+    Ptr<TuplePtrn> parse_tuple_ptrn();
     ///@}
 
     /// @name parse decls

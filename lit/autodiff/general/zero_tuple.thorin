@@ -5,13 +5,8 @@
 .plugin direct;
 .plugin autodiff;
 
-
-.con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I8, 0), 0), return : .Cn [%mem.M, .I32]] = {
-
-    .let t = %autodiff.zero [.I32,.I32];
-    .let c = t#(.ff);
-    return (mem,c)
-};
-
+.con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I8, 0), 0), return : .Cn [%mem.M, .I32]] =
+    .let (c, _) = %autodiff.zero [.I32,.I32];
+    return (mem, c);
 
 // CHECK-DAG: return{{.*}}0

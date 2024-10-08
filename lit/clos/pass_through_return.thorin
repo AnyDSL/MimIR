@@ -6,13 +6,11 @@
 
 .let pb_type = .Cn [%mem.M, .Cn [%mem.M]];
 
-.con end [mem: %mem.M, return : .Cn [%mem.M]] = {
-    return (mem)
-};
+.fun end(mem: %mem.M): %mem.M = return mem;
 
 .ccon printInteger [mem: %mem.M, val: .I32, return : .Cn [%mem.M]];
 
-.con .extern main [mem: %mem.M, argc: .I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), return : .Cn [%mem.M, .I32]] = {
+.con .extern main [mem: %mem.M, argc: .I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), return : .Cn [%mem.M, .I32]] =
     .con callback (mem: %mem.M) = return (mem, 1I32);
 
     .let (alloc_pb_mem, pb_ptr) = %mem.malloc (pb_type, 0) (mem, 100);
@@ -20,36 +18,26 @@
     .let lea_pb = %mem.lea (⊤:.Nat, <⊤:.Nat; pb_type>, 0) (pb_arr, 0I32);
     .let store_pb = %mem.store (alloc_pb_mem, lea_pb, end);
 
-    .con loop_head [mem: %mem.M, i : .I32] = {
-        .con exit [mem: %mem.M] = {
+    .con loop_head [mem: %mem.M, i : .I32] =
+        .con exit [mem: %mem.M] =
             .let (backward_pass_mem, backward_pass) = %mem.load (mem, lea_pb); // <- begin backward pass
-            backward_pass (backward_pass_mem, callback)
-        };
+            backward_pass (backward_pass_mem, callback);
 
-        .con yield [mem: %mem.M] = {
-            loop_head( mem, %core.wrap.add 0 (i, 1I32) )
-        };
+        .con yield [mem: %mem.M] = loop_head( mem, %core.wrap.add 0 (i, 1I32) );
 
-        .con body [mem: %mem.M] = {
+        .con body [mem: %mem.M] =
             .let (load_pb_mem, last_pb) = %mem.load (mem, lea_pb);
-            .con pb [mem: %mem.M, end: .Cn [%mem.M]] = {
-                .con inner_yield [mem: %mem.M] = {
-                    last_pb( mem, end )
-                };
-
-                printInteger(mem, i, inner_yield)
+            .con pb [mem: %mem.M, end: .Cn [%mem.M]] =
+                .con inner_yield [mem: %mem.M] = last_pb( mem, end );
+                printInteger(mem, i, inner_yield);
                 //last_pb (mem, end)  // << call previous backward pass block
-            };
 
             .let store_pb_mem = %mem.store (load_pb_mem, lea_pb, pb); // << stack backward pass block
 
-            printInteger(store_pb_mem, i, yield)
-        };
+            printInteger(store_pb_mem, i, yield);
 
         .let condition = %core.icmp.ul (i, 19I32);
         .let target = (exit, body)#condition;
-        target ( mem )
-    };
+        target ( mem );
 
-    loop_head ( store_pb, 0I32 ) // <-- start forward pass
-};
+    loop_head ( store_pb, 0I32 ); // <-- start forward pass

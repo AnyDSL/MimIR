@@ -91,6 +91,8 @@ void Import::bind(Scopes& s) const { module()->bind(s); }
  * Ptrn
  */
 
+void ErrorPtrn::bind(Scopes&, bool) const {}
+
 void IdPtrn::bind(Scopes& s, bool quiet) const {
     if (!quiet && type()) type()->bind(s);
     s.bind(dbg(), this, rebind(), quiet);
@@ -131,12 +133,6 @@ void DeclExpr::bind(Scopes& s) const {
     else
         for (const auto& decl : decls()) decl->bind(s);
     expr()->bind(s);
-}
-
-void BlockExpr::bind(Scopes& s) const {
-    s.push();
-    expr()->bind(s);
-    s.pop();
 }
 
 void ArrowExpr::bind(Scopes& s) const {
@@ -283,7 +279,6 @@ void RecDecl::bind_body(Scopes& s) const { body()->bind(s); }
 
 void LamDecl::Dom::bind(Scopes& s, bool quiet) const {
     PiExpr::Dom::bind(s, quiet);
-
     if (filter() && !quiet) filter()->bind(s);
 }
 

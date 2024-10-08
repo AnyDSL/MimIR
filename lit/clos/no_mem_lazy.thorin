@@ -3,13 +3,11 @@
 
 .plugin core;
 
-.con f [a: .I32, ret: .Cn .I32] =
+.fun f(a: .I32): .I32 =
     .let b = %core.wrap.mul 0 (a, a);
-    ret b;
+    return b;
 
-.con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I8, 0), 0), return : .Cn [%mem.M, .I32]] = {
-    .con ret_cont [r: .I32] =
-        .con ret_cont2 [r: .I32] = return (mem, r);
-        f (r, ret_cont2);
-    f (42I32,ret_cont)
-};
+.con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I8, 0), 0), return : .Cn [%mem.M, .I32]] =
+    .ret r1 = f $ 42I32;
+    .ret r2 = f $ r1;
+    return (mem, r2);

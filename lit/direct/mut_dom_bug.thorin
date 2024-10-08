@@ -3,23 +3,17 @@
 
 .lam ForBody [n: .Nat] = [%mem.M, .Idx n] -> %mem.M;
 
-.lam For .[n: .Nat] [start: .Idx n, end: .Idx n] [mem: %mem.M] [it: ForBody n]: %mem.M = {
-    .lam loop [mem: %mem.M, i: .Idx n] @(%core.pe.known i) : [%mem.M, .Idx n] = {
+.lam For .[n: .Nat] [start: .Idx n, end: .Idx n] [mem: %mem.M] [it: ForBody n]: %mem.M =
+    .lam loop [mem: %mem.M, i: .Idx n] @(%core.pe.known i) : [%mem.M, .Idx n] =
         .let `mem = it (mem, i);
 
         .let j   = %core.wrap.add 0 (i, %core.idx n 0 1);
         .let cmp = %core.icmp.ul    (i, end);
-        ((mem, j), loop (mem, j))#cmp
-    };
+        ((mem, j), loop (mem, j))#cmp;
 
     .let (`mem, _) = loop (mem, start);
-    mem
-};
+    mem;
 
-.con .extern main [mem: %mem.M, ret: .Cn [%mem.M, .I32]] = {
-    .let `mem = For (0_123, 122_123) mem (.lm [mem: %mem.M, i: .Idx 123]: %mem.M = {
-        // do stuff
-        mem
-    });
-    ret (mem, 0I32)
-};
+.con .extern main [mem: %mem.M, ret: .Cn [%mem.M, .I32]] =
+    .let `mem = For (0_123, 122_123) mem (.lm [mem: %mem.M, i: .Idx 123]: %mem.M = mem);
+    ret (mem, 0I32);
