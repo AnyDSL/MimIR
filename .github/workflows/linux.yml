@@ -47,8 +47,7 @@ jobs:
         run: |
           sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
           sudo apt-get update
-          sudo apt-get install g++-13 valgrind
-          sudo pip install lit psutil
+          sudo apt-get install g++-13 valgrind python3-lit python3-psutil
           sudo ln -s ${{github.workspace}}/bin/FileCheck-x86_64-ubuntu /usr/bin/FileCheck
           sudo chmod +x /usr/bin/FileCheck
 
