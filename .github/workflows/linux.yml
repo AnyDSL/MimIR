@@ -3,7 +3,7 @@ name: linux
 on:
   push:
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build-and-test:
@@ -47,9 +47,9 @@ jobs:
         run: |
           sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
           sudo apt-get update
-          sudo apt-get install g++-13 valgrind
+          sudo apt-get install g++-13 valgrind pipx
           export CXX=g++-13
-          sudo python -m pip install lit psutil
+          sudo pipx install lit psutil
           sudo ln -s ${{github.workspace}}/bin/FileCheck-x86_64-ubuntu /usr/bin/FileCheck
           sudo chmod +x /usr/bin/FileCheck
 
