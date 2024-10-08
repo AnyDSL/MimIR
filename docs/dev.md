@@ -98,7 +98,7 @@ void foo(Ref def) {
 
 #### Upcast for Immutables
 
-[Def::isa_imm](@ref mim::Def::isa*imm)/[Def::as_imm](@ref mim::Def::as_imm) allows for an \_upcast* and **only** matches _immutables_:
+[Def::isa_imm](@ref mim::Def::isa_imm)/[Def::as_imm](@ref mim::Def::as_imm) allows for an *upcast* and **only** matches _immutables_:
 
 ```cpp
 void foo(Ref def) {
@@ -117,7 +117,7 @@ void foo(Ref def) {
 
 #### Upcast for Mutables
 
-[Def::isa_mut](@ref mim::Def::isa*mut)/[Def::as_mut](@ref mim::Def::as_mut) allows for an \_upcast* and **only** matches _mutables_.
+[Def::isa_mut](@ref mim::Def::isa_mut)/[Def::as_mut](@ref mim::Def::as_mut) allows for an *upcast* and **only** matches _mutables_.
 By doing so, it removes the `const` qualifier and gives you access to the **non**-`const` methods that only make sense for _mutables_:
 
 ```cpp
@@ -140,7 +140,7 @@ void foo(Ref def) {
 }
 ```
 
-Checking via `Def::isa`/`Def::as` a `Def*` has the same effect as using [Def::isa_mut](@ref mim::Def::isa*mut)/[Def::isa_mut](@ref mim::Def::as_mut) since the scrutinee must be already a \_mutable* due to the lack of the `const` qualifier:
+Checking via `Def::isa`/`Def::as` a `Def*` has the same effect as using [Def::isa_mut](@ref mim::Def::isa_mut)/[Def::isa_mut](@ref mim::Def::as_mut) since the scrutinee must be already a *mutable* due to the lack of the `const` qualifier:
 
 ```cpp
 void foo(Def* def) { // note the lack of "const" here
