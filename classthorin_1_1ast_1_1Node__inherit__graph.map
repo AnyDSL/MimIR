@@ -1,77 +1,77 @@
 <map id="thorin::ast::Node" name="thorin::ast::Node">
-<area shape="rect" id="Node000001" title=" " alt="" coords="244,727,375,753"/>
-<area shape="rect" id="Node000003" href="$classthorin_1_1ast_1_1Decl.html" title=" " alt="" coords="448,119,573,145"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="317,713,503,144,508,146,322,715"/>
-<area shape="rect" id="Node000016" href="$classthorin_1_1ast_1_1Expr.html" title=" " alt="" coords="448,678,573,703"/>
-<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="374,721,457,701,459,706,376,727"/>
-<area shape="rect" id="Node000035" href="$classthorin_1_1ast_1_1Import.html" title=" " alt="" coords="441,727,580,753"/>
-<area shape="poly" id="edge34_Node000001_Node000035" title=" " alt="" coords="389,737,441,737,441,743,389,743"/>
-<area shape="rect" id="Node000036" href="$classthorin_1_1ast_1_1Module.html" title=" " alt="" coords="439,777,583,802"/>
-<area shape="poly" id="edge35_Node000001_Node000036" title=" " alt="" coords="376,753,459,774,457,779,374,759"/>
-<area shape="rect" id="Node000037" href="$classthorin_1_1ast_1_1PiExpr_1_1Dom.html" title=" " alt="" coords="423,974,599,999"/>
-<area shape="poly" id="edge36_Node000001_Node000037" title=" " alt="" coords="332,762,501,972,497,976,328,766"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,727,196,753"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="210,737,243,737,243,743,210,743"/>
-<area shape="rect" id="Node000004" href="$classthorin_1_1ast_1_1AxiomDecl_1_1Alias.html" title=" " alt="" coords="659,5,826,45"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="543,110,591,82,646,55,676,43,678,48,648,60,593,87,545,114"/>
-<area shape="rect" id="Node000005" href="$classthorin_1_1ast_1_1DummyDecl.html" title=" " alt="" coords="654,70,831,95"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="584,114,682,93,683,98,585,119"/>
-<area shape="rect" id="Node000006" href="$classthorin_1_1ast_1_1Ptrn.html" title=" " alt="" coords="681,119,804,145"/>
-<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="587,129,681,129,681,135,587,135"/>
-<area shape="rect" id="Node000010" href="$classthorin_1_1ast_1_1ValDecl.html" title=" " alt="" coords="670,193,815,218"/>
-<area shape="poly" id="edge9_Node000003_Node000010" title=" " alt="" coords="566,146,702,190,701,195,564,151"/>
-<area shape="rect" id="Node000007" href="$classthorin_1_1ast_1_1GrpPtrn.html" title="dbg_0 ... dbg_n&#45;2 id where id = dbg_n&#45;1: type" alt="" coords="897,21,1043,46"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="816,114,837,104,852,93,861,81,870,68,885,55,910,44,912,48,888,60,874,71,865,84,856,96,840,109,818,119"/>
-<area shape="rect" id="Node000008" href="$classthorin_1_1ast_1_1IdPtrn.html" title="dbg: type" alt="" coords="903,70,1037,95"/>
-<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="815,114,910,93,911,98,816,119"/>
-<area shape="rect" id="Node000009" href="$classthorin_1_1ast_1_1TuplePtrn.html" title="dbg::(ptrn_0, ..., ptrn_n&#45;1) or dbg::[ptrn_0, ..., ptrn_n&#45;1]" alt="" coords="892,119,1048,145"/>
-<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="818,129,892,129,892,135,818,135"/>
-<area shape="rect" id="Node000011" href="$classthorin_1_1ast_1_1AxiomDecl.html" title=".ax ptrn: type = value;" alt="" coords="887,169,1053,194"/>
-<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="829,194,886,187,887,193,829,199"/>
-<area shape="rect" id="Node000012" href="$classthorin_1_1ast_1_1CDecl.html" title=".cfun dbg dom &#45;&gt; codom" alt="" coords="903,218,1037,243"/>
-<area shape="poly" id="edge11_Node000010_Node000012" title=" " alt="" coords="829,212,903,221,902,226,829,218"/>
-<area shape="rect" id="Node000013" href="$classthorin_1_1ast_1_1LetDecl.html" title=".let ptrn: type = value;" alt="" coords="897,267,1043,293"/>
-<area shape="poly" id="edge12_Node000010_Node000013" title=" " alt="" coords="817,219,840,227,864,239,888,252,923,265,921,270,886,257,862,244,838,232,815,224"/>
-<area shape="rect" id="Node000014" href="$classthorin_1_1ast_1_1RecDecl.html" title=".rec dbg: type = body" alt="" coords="895,317,1045,342"/>
-<area shape="poly" id="edge13_Node000010_Node000014" title=" " alt="" coords="829,220,840,227,858,246,865,265,873,284,888,302,911,314,908,319,885,306,868,287,860,267,853,249,837,231,826,225"/>
-<area shape="rect" id="Node000015" href="$classthorin_1_1ast_1_1LamDecl.html" title="One of:" alt="" coords="1101,317,1255,342"/>
-<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="1058,327,1101,327,1101,332,1058,332"/>
-<area shape="rect" id="Node000017" href="$classthorin_1_1ast_1_1AppExpr.html" title="callee arg" alt="" coords="667,242,818,267"/>
-<area shape="poly" id="edge16_Node000016_Node000017" title=" " alt="" coords="510,664,516,588,535,485,553,429,576,374,606,323,645,278,666,264,669,269,648,282,611,326,581,376,558,431,541,486,521,589,515,664"/>
-<area shape="rect" id="Node000018" href="$classthorin_1_1ast_1_1ArrOrPackExpr.html" title="«dbg: shape; body» or ‹dbg: shape; body›" alt="" coords="648,292,837,332"/>
-<area shape="poly" id="edge17_Node000016_Node000018" title=" " alt="" coords="512,664,523,600,545,514,563,467,585,422,612,380,645,342,661,330,664,334,648,346,616,383,589,425,568,470,551,515,528,601,517,665"/>
-<area shape="rect" id="Node000019" href="$classthorin_1_1ast_1_1ArrowExpr.html" title="dom &#45;&gt; codom" alt="" coords="661,357,824,382"/>
-<area shape="poly" id="edge18_Node000016_Node000019" title=" " alt="" coords="513,664,526,607,550,533,568,494,589,457,615,422,645,391,664,380,666,384,648,395,619,425,593,460,572,497,555,535,531,608,519,665"/>
-<area shape="rect" id="Node000020" href="$classthorin_1_1ast_1_1BlockExpr.html" title="{ e }" alt="" coords="662,406,823,431"/>
-<area shape="poly" id="edge19_Node000016_Node000020" title=" " alt="" coords="516,663,532,615,558,555,595,493,618,465,645,441,665,429,668,434,648,445,622,469,599,496,562,557,537,617,521,665"/>
-<area shape="rect" id="Node000021" href="$classthorin_1_1ast_1_1DeclExpr.html" title="decls e or e .where decls if where is true." alt="" coords="665,455,820,481"/>
-<area shape="poly" id="edge20_Node000016_Node000021" title=" " alt="" coords="520,664,538,625,565,578,601,530,645,490,667,478,669,483,648,494,605,534,570,581,543,627,525,666"/>
-<area shape="rect" id="Node000022" href="$classthorin_1_1ast_1_1ErrorExpr.html" title=" " alt="" coords="665,505,821,530"/>
-<area shape="poly" id="edge21_Node000016_Node000022" title=" " alt="" coords="525,665,573,602,607,568,645,539,670,528,672,533,648,544,610,572,577,605,529,668"/>
-<area shape="rect" id="Node000023" href="$classthorin_1_1ast_1_1ExtractExpr.html" title="tuple#index" alt="" coords="657,554,828,579"/>
-<area shape="poly" id="edge22_Node000016_Node000023" title=" " alt="" coords="534,667,583,627,645,588,676,577,678,582,648,593,586,631,537,671"/>
-<area shape="rect" id="Node000024" href="$classthorin_1_1ast_1_1IdExpr.html" title="sym" alt="" coords="674,603,811,629"/>
-<area shape="poly" id="edge23_Node000016_Node000024" title=" " alt="" coords="555,670,646,637,686,626,688,631,647,643,557,675"/>
-<area shape="rect" id="Node000025" href="$classthorin_1_1ast_1_1InferExpr.html" title=" " alt="" coords="665,653,820,678"/>
-<area shape="poly" id="edge24_Node000016_Node000025" title=" " alt="" coords="587,680,665,671,665,676,587,685"/>
-<area shape="rect" id="Node000026" href="$classthorin_1_1ast_1_1InsertExpr.html" title=".ins(tuple, index, value)" alt="" coords="661,702,824,727"/>
-<area shape="poly" id="edge25_Node000016_Node000026" title=" " alt="" coords="587,696,661,704,661,709,587,701"/>
-<area shape="rect" id="Node000027" href="$classthorin_1_1ast_1_1LamExpr.html" title="Wraps a LamDecl as Expr." alt="" coords="666,751,819,777"/>
-<area shape="poly" id="edge26_Node000016_Node000027" title=" " alt="" coords="575,705,600,714,648,738,683,749,682,754,646,742,598,718,573,710"/>
-<area shape="rect" id="Node000028" href="$classthorin_1_1ast_1_1LitExpr.html" title="tok:type" alt="" coords="672,801,813,826"/>
-<area shape="poly" id="edge27_Node000016_Node000028" title=" " alt="" coords="588,706,600,714,617,733,625,752,632,770,648,787,673,800,671,805,645,791,628,773,620,754,613,735,597,718,585,711"/>
-<area shape="rect" id="Node000029" href="$classthorin_1_1ast_1_1PiExpr.html" title="One of:" alt="" coords="674,850,811,875"/>
-<area shape="poly" id="edge28_Node000016_Node000029" title=" " alt="" coords="587,705,600,714,614,730,621,746,625,777,629,808,636,822,648,837,675,852,672,856,645,841,632,825,624,809,620,778,616,747,609,732,597,718,584,709"/>
-<area shape="rect" id="Node000030" href="$classthorin_1_1ast_1_1PrimaryExpr.html" title="tag" alt="" coords="655,899,831,925"/>
-<area shape="poly" id="edge29_Node000016_Node000030" title=" " alt="" coords="587,704,601,714,617,736,624,758,625,802,626,845,633,866,649,886,664,897,661,901,645,890,628,868,620,846,620,802,619,759,612,739,597,718,584,708"/>
-<area shape="rect" id="Node000031" href="$classthorin_1_1ast_1_1RetExpr.html" title=".ret ptrn = callee $ arg; body" alt="" coords="669,949,816,974"/>
-<area shape="poly" id="edge30_Node000016_Node000031" title=" " alt="" coords="588,704,601,714,620,743,628,771,628,799,625,827,622,855,622,882,630,909,649,935,670,950,667,954,645,939,625,911,617,883,616,855,620,827,623,799,623,772,615,745,597,718,584,708"/>
-<area shape="rect" id="Node000032" href="$classthorin_1_1ast_1_1SigmaExpr.html" title="Just wraps TuplePtrn as Expr." alt="" coords="659,998,826,1023"/>
-<area shape="poly" id="edge31_Node000016_Node000032" title=" " alt="" coords="587,703,601,714,623,749,632,784,630,818,625,852,619,886,618,919,626,952,649,985,663,996,659,1000,645,988,622,954,613,920,614,885,619,851,625,818,626,784,618,751,597,718,584,707"/>
-<area shape="rect" id="Node000033" href="$classthorin_1_1ast_1_1TupleExpr.html" title="(elem_0, ..., elem_n&#45;1)" alt="" coords="663,1047,822,1073"/>
-<area shape="poly" id="edge32_Node000016_Node000033" title=" " alt="" coords="587,703,601,714,616,735,626,756,635,797,633,837,625,877,617,917,614,956,623,995,634,1015,649,1034,665,1046,661,1051,645,1038,629,1017,618,997,609,956,611,916,619,876,627,836,630,797,621,757,611,738,597,718,584,707"/>
-<area shape="rect" id="Node000034" href="$classthorin_1_1ast_1_1TypeExpr.html" title=".Type level" alt="" coords="665,1097,820,1122"/>
-<area shape="poly" id="edge33_Node000016_Node000034" title=" " alt="" coords="587,703,601,714,618,738,630,762,636,786,639,809,635,856,624,902,614,948,611,993,613,1016,620,1038,631,1061,649,1083,667,1097,664,1101,645,1087,627,1064,615,1040,608,1017,605,993,609,947,619,901,630,855,633,809,631,787,625,764,613,741,597,718,584,707"/>
-<area shape="rect" id="Node000038" href="$classthorin_1_1ast_1_1LamDecl_1_1Dom.html" title=" " alt="" coords="647,1146,839,1171"/>
-<area shape="poly" id="edge37_Node000037_Node000038" title=" " alt="" coords="529,1009,578,1072,611,1105,648,1132,672,1143,670,1148,645,1137,607,1109,574,1075,525,1013"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="244,724,375,749"/>
+<area shape="rect" id="Node000003" href="$classthorin_1_1ast_1_1Decl.html" title=" " alt="" coords="448,141,573,167"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="317,710,502,166,507,168,322,712"/>
+<area shape="rect" id="Node000017" href="$classthorin_1_1ast_1_1Expr.html" title=" " alt="" coords="448,675,573,700"/>
+<area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="374,718,457,697,459,703,376,723"/>
+<area shape="rect" id="Node000035" href="$classthorin_1_1ast_1_1Import.html" title=" " alt="" coords="441,724,580,749"/>
+<area shape="poly" id="edge34_Node000001_Node000035" title=" " alt="" coords="389,734,441,734,441,739,389,739"/>
+<area shape="rect" id="Node000036" href="$classthorin_1_1ast_1_1Module.html" title=" " alt="" coords="439,773,583,799"/>
+<area shape="poly" id="edge35_Node000001_Node000036" title=" " alt="" coords="376,750,459,771,457,776,374,755"/>
+<area shape="rect" id="Node000037" href="$classthorin_1_1ast_1_1PiExpr_1_1Dom.html" title=" " alt="" coords="423,971,599,996"/>
+<area shape="poly" id="edge36_Node000001_Node000037" title=" " alt="" coords="332,759,501,969,497,972,328,762"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,724,196,749"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="210,734,243,734,243,739,210,739"/>
+<area shape="rect" id="Node000004" href="$classthorin_1_1ast_1_1AxiomDecl_1_1Alias.html" title=" " alt="" coords="659,27,826,67"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="543,132,591,104,646,77,676,65,678,70,648,82,593,109,545,136"/>
+<area shape="rect" id="Node000005" href="$classthorin_1_1ast_1_1DummyDecl.html" title=" " alt="" coords="654,92,831,117"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="584,136,682,115,683,120,585,141"/>
+<area shape="rect" id="Node000006" href="$classthorin_1_1ast_1_1Ptrn.html" title=" " alt="" coords="681,141,804,167"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="587,151,681,151,681,157,587,157"/>
+<area shape="rect" id="Node000011" href="$classthorin_1_1ast_1_1ValDecl.html" title=" " alt="" coords="670,215,815,240"/>
+<area shape="poly" id="edge10_Node000003_Node000011" title=" " alt="" coords="566,168,702,212,701,217,564,173"/>
+<area shape="rect" id="Node000007" href="$classthorin_1_1ast_1_1ErrorPtrn.html" title=" " alt="" coords="893,5,1047,31"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="816,139,837,127,854,106,860,85,867,62,885,40,904,28,907,33,888,44,872,65,865,86,858,109,840,131,819,143"/>
+<area shape="rect" id="Node000008" href="$classthorin_1_1ast_1_1GrpPtrn.html" title="dbg_0 ... dbg_n&#45;2 id where id = dbg_n&#45;1: type" alt="" coords="897,55,1043,80"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="817,135,837,126,861,108,885,89,914,78,916,82,888,94,864,112,840,131,819,140"/>
+<area shape="rect" id="Node000009" href="$classthorin_1_1ast_1_1IdPtrn.html" title="dbg: type" alt="" coords="903,104,1037,129"/>
+<area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="817,139,902,125,903,130,818,144"/>
+<area shape="rect" id="Node000010" href="$classthorin_1_1ast_1_1TuplePtrn.html" title="dbg::(ptrn_0, ..., ptrn_n&#45;1) or dbg::[ptrn_0, ..., ptrn_n&#45;1]" alt="" coords="892,153,1048,179"/>
+<area shape="poly" id="edge9_Node000006_Node000010" title=" " alt="" coords="818,155,892,159,892,165,818,161"/>
+<area shape="rect" id="Node000012" href="$classthorin_1_1ast_1_1AxiomDecl.html" title=".ax ptrn: type = value;" alt="" coords="887,203,1053,228"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="829,220,886,217,886,222,829,225"/>
+<area shape="rect" id="Node000013" href="$classthorin_1_1ast_1_1CDecl.html" title=".cfun dbg dom &#45;&gt; codom" alt="" coords="903,252,1037,277"/>
+<area shape="poly" id="edge12_Node000011_Node000013" title=" " alt="" coords="829,239,903,251,902,256,829,244"/>
+<area shape="rect" id="Node000014" href="$classthorin_1_1ast_1_1LetDecl.html" title=".let ptrn: type = value;" alt="" coords="897,301,1043,327"/>
+<area shape="poly" id="edge13_Node000011_Node000014" title=" " alt="" coords="824,242,840,249,864,268,888,286,918,299,916,304,885,291,861,272,837,254,822,247"/>
+<area shape="rect" id="Node000015" href="$classthorin_1_1ast_1_1RecDecl.html" title=".rec dbg: type = body" alt="" coords="895,351,1045,376"/>
+<area shape="poly" id="edge14_Node000011_Node000015" title=" " alt="" coords="830,242,840,249,858,271,865,294,872,315,888,336,910,348,907,353,885,340,867,318,860,295,854,274,837,253,827,247"/>
+<area shape="rect" id="Node000016" href="$classthorin_1_1ast_1_1LamDecl.html" title="One of:" alt="" coords="1101,351,1255,376"/>
+<area shape="poly" id="edge15_Node000015_Node000016" title=" " alt="" coords="1058,361,1101,361,1101,366,1058,366"/>
+<area shape="rect" id="Node000018" href="$classthorin_1_1ast_1_1AppExpr.html" title="callee arg" alt="" coords="667,264,818,289"/>
+<area shape="poly" id="edge17_Node000017_Node000018" title=" " alt="" coords="510,660,518,589,539,492,556,440,579,389,608,342,645,300,666,286,669,291,648,304,612,345,584,391,561,442,544,493,523,590,516,661"/>
+<area shape="rect" id="Node000019" href="$classthorin_1_1ast_1_1ArrOrPackExpr.html" title="«dbg: shape; body» or ‹dbg: shape; body›" alt="" coords="648,314,837,354"/>
+<area shape="poly" id="edge18_Node000017_Node000019" title=" " alt="" coords="513,660,525,600,549,521,566,478,588,437,614,398,645,364,662,352,665,356,648,368,618,402,592,440,571,481,554,522,530,601,518,661"/>
+<area shape="rect" id="Node000020" href="$classthorin_1_1ast_1_1ArrowExpr.html" title="dom &#45;&gt; codom" alt="" coords="661,379,824,404"/>
+<area shape="poly" id="edge19_Node000017_Node000020" title=" " alt="" coords="515,660,529,608,554,541,592,472,616,441,645,413,664,402,667,406,648,417,620,444,596,475,559,543,534,610,520,662"/>
+<area shape="rect" id="Node000021" href="$classthorin_1_1ast_1_1DeclExpr.html" title="decls e or e .where decls if where is true." alt="" coords="665,428,820,453"/>
+<area shape="poly" id="edge20_Node000017_Node000021" title=" " alt="" coords="518,661,535,617,561,564,598,509,620,484,645,462,666,451,668,456,648,467,624,488,602,512,566,566,539,619,523,663"/>
+<area shape="rect" id="Node000022" href="$classthorin_1_1ast_1_1ErrorExpr.html" title=" " alt="" coords="665,477,821,503"/>
+<area shape="poly" id="edge21_Node000017_Node000022" title=" " alt="" coords="522,661,541,627,569,587,604,546,645,512,668,500,671,505,648,516,608,550,573,590,546,630,527,664"/>
+<area shape="rect" id="Node000023" href="$classthorin_1_1ast_1_1ExtractExpr.html" title="tuple#index" alt="" coords="657,527,828,552"/>
+<area shape="poly" id="edge22_Node000017_Node000023" title=" " alt="" coords="529,662,578,611,610,584,645,561,673,550,675,555,648,566,613,588,582,615,533,666"/>
+<area shape="rect" id="Node000024" href="$classthorin_1_1ast_1_1IdExpr.html" title="sym" alt="" coords="674,576,811,601"/>
+<area shape="poly" id="edge23_Node000017_Node000024" title=" " alt="" coords="542,665,589,637,646,610,681,599,682,604,648,615,592,642,544,670"/>
+<area shape="rect" id="Node000025" href="$classthorin_1_1ast_1_1InferExpr.html" title=" " alt="" coords="665,625,820,651"/>
+<area shape="poly" id="edge24_Node000017_Node000025" title=" " alt="" coords="584,669,682,648,683,653,585,674"/>
+<area shape="rect" id="Node000026" href="$classthorin_1_1ast_1_1InsertExpr.html" title=".ins(tuple, index, value)" alt="" coords="661,675,824,700"/>
+<area shape="poly" id="edge25_Node000017_Node000026" title=" " alt="" coords="587,685,661,685,661,690,587,690"/>
+<area shape="rect" id="Node000027" href="$classthorin_1_1ast_1_1LamExpr.html" title="Wraps a LamDecl as Expr." alt="" coords="666,724,819,749"/>
+<area shape="poly" id="edge26_Node000017_Node000027" title=" " alt="" coords="585,700,683,721,682,727,584,705"/>
+<area shape="rect" id="Node000028" href="$classthorin_1_1ast_1_1LitExpr.html" title="tok:type" alt="" coords="672,773,813,799"/>
+<area shape="poly" id="edge27_Node000017_Node000028" title=" " alt="" coords="585,703,600,710,615,723,625,736,634,748,648,760,673,771,671,776,645,764,630,752,620,739,612,727,597,715,582,707"/>
+<area shape="rect" id="Node000029" href="$classthorin_1_1ast_1_1PiExpr.html" title="One of:" alt="" coords="674,823,811,848"/>
+<area shape="poly" id="edge28_Node000017_Node000029" title=" " alt="" coords="587,702,600,711,612,723,619,736,625,762,631,786,637,798,648,809,675,824,672,828,645,813,633,801,626,788,620,763,614,738,608,726,597,715,584,706"/>
+<area shape="rect" id="Node000030" href="$classthorin_1_1ast_1_1PrimaryExpr.html" title="tag" alt="" coords="655,872,831,897"/>
+<area shape="poly" id="edge29_Node000017_Node000030" title=" " alt="" coords="587,701,601,711,615,730,623,749,625,787,627,824,634,841,648,859,665,870,661,874,645,863,630,844,622,825,620,787,617,750,611,732,597,715,584,705"/>
+<area shape="rect" id="Node000031" href="$classthorin_1_1ast_1_1RetExpr.html" title=".ret ptrn = callee $ arg; body" alt="" coords="669,921,816,947"/>
+<area shape="poly" id="edge30_Node000017_Node000031" title=" " alt="" coords="587,700,601,711,618,736,626,762,627,787,625,812,623,837,624,861,631,885,649,908,671,922,668,927,645,912,627,887,619,862,617,837,620,812,622,787,621,762,614,738,597,715,584,705"/>
+<area shape="rect" id="Node000032" href="$classthorin_1_1ast_1_1SigmaExpr.html" title="Just wraps TuplePtrn as Expr." alt="" coords="659,971,826,996"/>
+<area shape="poly" id="edge31_Node000017_Node000032" title=" " alt="" coords="588,700,601,711,622,743,630,774,629,806,625,837,620,868,620,898,628,928,649,958,663,968,659,973,645,961,623,930,615,899,615,867,619,836,624,805,624,775,617,745,597,714,584,704"/>
+<area shape="rect" id="Node000033" href="$classthorin_1_1ast_1_1TupleExpr.html" title="(elem_0, ..., elem_n&#45;1)" alt="" coords="663,1020,822,1045"/>
+<area shape="poly" id="edge32_Node000017_Node000033" title=" " alt="" coords="587,700,601,711,625,749,633,787,632,825,625,862,618,898,616,935,625,971,649,1007,665,1019,661,1023,645,1010,620,973,611,935,613,898,619,861,626,824,628,787,620,751,597,714,584,704"/>
+<area shape="rect" id="Node000034" href="$classthorin_1_1ast_1_1TypeExpr.html" title=".Type level" alt="" coords="665,1069,820,1095"/>
+<area shape="poly" id="edge33_Node000017_Node000034" title=" " alt="" coords="587,700,601,711,617,733,628,756,637,800,634,843,624,887,615,929,612,972,622,1014,632,1035,649,1056,667,1070,664,1074,645,1060,628,1038,617,1016,607,972,610,929,619,885,628,843,632,800,623,757,612,736,597,714,584,704"/>
+<area shape="rect" id="Node000038" href="$classthorin_1_1ast_1_1LamDecl_1_1Dom.html" title=" " alt="" coords="647,1119,839,1144"/>
+<area shape="poly" id="edge37_Node000037_Node000038" title=" " alt="" coords="533,1005,582,1056,613,1082,648,1105,675,1116,673,1121,645,1110,610,1087,578,1060,529,1008"/>
 </map>

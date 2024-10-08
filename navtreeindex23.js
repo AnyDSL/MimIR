@@ -1,7 +1,5 @@
 var NAVTREEINDEX23 =
 {
-"namespacethorin_1_1plug_1_1mem.html#a88fbab507b209d4bc66b73ccf1117c5f":[3,0,2,4,9,38],
-"namespacethorin_1_1plug_1_1mem.html#a8edbda3b662e041f2476b656ed4e6383":[3,0,2,4,9,47],
 "namespacethorin_1_1plug_1_1mem.html#a8f5b01acd8a328c3281afaf0e6772608":[3,0,2,4,9,25],
 "namespacethorin_1_1plug_1_1mem.html#a901f9597358a54ebf399618af2e918f9":[3,0,2,4,9,28],
 "namespacethorin_1_1plug_1_1mem.html#a9e1319c93db0f1244a518704defdd1a3":[3,0,2,4,9,43],
@@ -127,6 +125,7 @@ var NAVTREEINDEX23 =
 "parser_8cpp.html#a0f40e15d232fbbba6f6be956552198ab":[6,0,3,1,1,4,1],
 "parser_8cpp.html#a1100dcc8b3472a9dfe556903346d1f6d":[6,0,3,1,1,4,2],
 "parser_8cpp.html#a20a8796de68c30bd496a7094dbd14855":[6,0,3,1,1,4,5],
+"parser_8cpp.html#a2cfad0d17ab135fc0516facdfd84779a":[6,0,3,1,1,4,8],
 "parser_8cpp.html#a8a9929a1b403cf35b5ace8161e787074":[6,0,3,1,1,4,3],
 "parser_8cpp.html#a8ef5d0985c731f534b59a096ac0739e3":[6,0,3,1,1,4,0],
 "parser_8cpp.html#abce41547375e5673217a944961ae5b5e":[6,0,3,1,1,4,4],
@@ -249,5 +248,6 @@ var NAVTREEINDEX23 =
 "regex_2autogen_8h.html#a4fa69f360d13c15835d1af06c89bb025ad91ba10b680e58be5c6b55d4450d5245":[6,0,0,1,0,0,12,0,2,5],
 "regex_2autogen_8h.html#a63f0abba1825cefc57020a8604b42b67":[6,0,0,1,0,0,12,0,5],
 "regex_2autogen_8h.html#a77a7f54f45bf180667a52a44e5b6efe4":[6,0,0,1,0,0,12,0,15],
-"regex_2autogen_8h.html#a7edb7a1d906cd3206d401b4fbfc06045":[6,0,0,1,0,0,12,0,12]
+"regex_2autogen_8h.html#a7edb7a1d906cd3206d401b4fbfc06045":[6,0,0,1,0,0,12,0,12],
+"regex_2autogen_8h.html#a9b040285b1ea13ebacc08391467cf20b":[6,0,0,1,0,0,12,0,1]
 };

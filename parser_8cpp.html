@@ -153,6 +153,8 @@ Macros</h2></td></tr>
 <tr class="separator:a20a8796de68c30bd496a7094dbd14855"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f40e15d232fbbba6f6be956552198ab" id="r_a0f40e15d232fbbba6f6be956552198ab"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parser_8cpp.html#a0f40e15d232fbbba6f6be956552198ab">C_EXPR</a></td></tr>
 <tr class="separator:a0f40e15d232fbbba6f6be956552198ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cfad0d17ab135fc0516facdfd84779a" id="r_a2cfad0d17ab135fc0516facdfd84779a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="parser_8cpp.html#a2cfad0d17ab135fc0516facdfd84779a">C_PTRN</a></td></tr>
+<tr class="separator:a2cfad0d17ab135fc0516facdfd84779a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a8ef5d0985c731f534b59a096ac0739e3" name="a8ef5d0985c731f534b59a096ac0739e3"></a>
@@ -192,12 +194,12 @@ Macros</h2></td></tr>
 <div class="line">    <span class="keywordflow">case</span> Tag::C_ID:                     \</div>
 <div class="line">    <span class="keywordflow">case</span> Tag::C_LIT:                    \</div>
 <div class="line">    <span class="keywordflow">case</span> Tag::C_DECL:                   \</div>
+<div class="line">    <span class="keywordflow">case</span> Tag::C_PI:                     \</div>
 <div class="line">    <span class="keywordflow">case</span> Tag::C_LM:                     \</div>
 <div class="line">    <span class="keywordflow">case</span> Tag::K_Type:    <span class="comment">/*TypeExpr*/</span>   \</div>
 <div class="line">    <span class="keywordflow">case</span> Tag::K_ins:     <span class="comment">/*InsertExpr*/</span> \</div>
 <div class="line">    <span class="keywordflow">case</span> Tag::K_ret:     <span class="comment">/*RetExpr*/</span>    \</div>
 <div class="line">    <span class="keywordflow">case</span> Tag::D_angle_l: <span class="comment">/*PackExpr*/</span>   \</div>
-<div class="line">    <span class="keywordflow">case</span> Tag::D_brace_l: <span class="comment">/*BlockExpr*/</span>  \</div>
 <div class="line">    <span class="keywordflow">case</span> Tag::D_brckt_l: <span class="comment">/*SigmaExpr*/</span>  \</div>
 <div class="line">    <span class="keywordflow">case</span> Tag::D_paren_l: <span class="comment">/*TupleExpr*/</span>  \</div>
 <div class="line">    <span class="keywordflow">case</span> Tag::D_quote_l  <span class="comment">/*ArrExpr*/</span></div>
@@ -298,8 +300,8 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">              T_Pi: \</div>
-<div class="line">    <span class="keywordflow">case</span> Tag::K_Cn: \</div>
+<b>Value:</b><div class="fragment"><div class="line">              T_Pi:      \</div>
+<div class="line">    <span class="keywordflow">case</span> Tag::K_Cn:      \</div>
 <div class="line">    <span class="keywordflow">case</span> Tag::K_Fn</div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="parser_8cpp_source.html#l00056">56</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
@@ -337,6 +339,26 @@ Macros</h2></td></tr>
 <div class="line">    <span class="keywordflow">case</span> Tag::T_box</div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="parser_8cpp_source.html#l00009">9</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+
+</div>
+</div>
+<a id="a2cfad0d17ab135fc0516facdfd84779a" name="a2cfad0d17ab135fc0516facdfd84779a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cfad0d17ab135fc0516facdfd84779a">&#9670;&#160;</a></span>C_PTRN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define C_PTRN</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">              M_id:       \</div>
+<div class="line">    <span class="keywordflow">case</span> Tag::T_backtick: \</div>
+<div class="line">    <span class="keywordflow">case</span> Tag::D_brckt_l:  \</div>
+<div class="line">    <span class="keywordflow">case</span> Tag::D_paren_l</div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="parser_8cpp_source.html#l00081">81</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 </div>
 </div>

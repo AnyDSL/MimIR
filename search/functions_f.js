@@ -6,7 +6,7 @@ var searchData=
   ['parser_3',['Parser',['../classthorin_1_1ast_1_1Parser.html#aea4f6e5fd236841fc6321b939b497924',1,'thorin::ast::Parser']]],
   ['partial_5fop_4',['partial_op',['../classthorin_1_1Def.html#ac5e395fa36187af4a30923d55b77832c',1,'thorin::Def']]],
   ['partial_5fops_5',['partial_ops',['../classthorin_1_1Def.html#ac7401927c3c1b78eb6cb2d1e3dd37ca4',1,'thorin::Def']]],
-  ['pass_6',['pass',['../classthorin_1_1Proxy.html#a93a4ac4b94eae555d07b63702e1ae092',1,'thorin::Proxy::pass()'],['../classthorin_1_1Driver.html#ab7408ae856ee251c92fed867832f1090',1,'thorin::Driver::pass()'],['../classthorin_1_1PipelineBuilder.html#ac61e175313c635632b3e9dd5e781dc64',1,'thorin::PipelineBuilder::pass()'],['../classthorin_1_1Pass.html#a6a3bea6094c9a9dd9839e87d8b0b341d',1,'thorin::Pass::Pass()']]],
+  ['pass_6',['pass',['../classthorin_1_1Pass.html#a6a3bea6094c9a9dd9839e87d8b0b341d',1,'thorin::Pass::Pass()'],['../classthorin_1_1Proxy.html#a93a4ac4b94eae555d07b63702e1ae092',1,'thorin::Proxy::pass()'],['../classthorin_1_1Driver.html#ab7408ae856ee251c92fed867832f1090',1,'thorin::Driver::pass()'],['../classthorin_1_1PipelineBuilder.html#ac61e175313c635632b3e9dd5e781dc64',1,'thorin::PipelineBuilder::pass()']]],
   ['passes_7',['passes',['../classthorin_1_1PassMan.html#a301baaabcbdbd533e6bea26be796cf4f',1,'thorin::PassMan']]],
   ['passman_8',['PassMan',['../classthorin_1_1PassMan.html#a1cb8f55948131ebc7fca850f616d4d2c',1,'thorin::PassMan']]],
   ['passmanphase_9',['PassManPhase',['../classthorin_1_1PassManPhase.html#ad9f3692121e339f4a5ccc271f5be9f0d',1,'thorin::PassManPhase']]],

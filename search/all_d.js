@@ -106,7 +106,7 @@ var searchData=
   ['not_103',['%regex.not',['../regex.html#autotoc_md225',1,'']]],
   ['not_5f_104',['not_',['../namespacethorin_1_1plug_1_1regex.html#ae6fb04aa0274646a6e2fb722a0409900',1,'thorin::plug::regex']]],
   ['notation_105',['Notation',['../langref.html#autotoc_md34',1,'']]],
-  ['note_106',['note',['../classthorin_1_1Error.html#a7a5dbe2a358a02a3fdd35dbaaf6cd97a',1,'thorin::Error::note(Loc loc, const char *s, Args &amp;&amp;... args)'],['../classthorin_1_1Error.html#a2c7a8d781cd87112a15a086a42456153a3b0649c72650c313a357338dcdfb64ec',1,'thorin::Error::Note'],['../classthorin_1_1ast_1_1AST.html#a63fc4e053f323dd5836e7794ba42907d',1,'thorin::ast::AST::note()']]],
+  ['note_106',['note',['../classthorin_1_1ast_1_1AST.html#a63fc4e053f323dd5836e7794ba42907d',1,'thorin::ast::AST::note()'],['../classthorin_1_1Error.html#a7a5dbe2a358a02a3fdd35dbaaf6cd97a',1,'thorin::Error::note(Loc loc, const char *s, Args &amp;&amp;... args)'],['../classthorin_1_1Error.html#a2c7a8d781cd87112a15a086a42456153a3b0649c72650c313a357338dcdfb64ec',1,'thorin::Error::Note']]],
   ['nsnd_107',['nsnd',['../namespacethorin_1_1plug_1_1core.html#a4b25761ed6fb2e589d833a7851461130a96b4b179b773a6e634c085aec46a9888',1,'thorin::plug::core']]],
   ['nsw_108',['nsw',['../namespacethorin_1_1plug_1_1core.html#a7d3dda6234f135451515ff19d035578bac3768fe04ce22117d45f8d401c628de3',1,'thorin::plug::core::nsw'],['../namespacethorin_1_1plug_1_1core.html#ad1d28fe2dc2207cea22ea9c0baef1d3aaff9cca0007dac61d9ba5f6b748f3b6fc',1,'thorin::plug::core::nsw']]],
   ['nsz_109',['nsz',['../namespacethorin_1_1plug_1_1math.html#a6fa926bce3b4fdca73a35a3e9ccf12d9a83ad537246c68235c2ff05142fd9c91c',1,'thorin::plug::math']]],

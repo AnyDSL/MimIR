@@ -169,10 +169,10 @@ Normalization</h3>
 <ul>
 <li>resolve shape calls at construction by replacing them with the size argument</li>
 </ul>
-<div class="fragment"><div class="line">.ax %matrix.shape: Π nST::[n: .Nat, S: «n; .Nat», T: *][%matrix.Mat nST, i: .Idx n] -&gt; .Nat, normalize_shape;</div>
+<div class="fragment"><div class="line">.ax %matrix.shape: Π [n: .Nat, S: «n; .Nat», T: *]::nST [%matrix.Mat nST, i: .Idx n] -&gt; .Nat, normalize_shape;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md168"></a>
 %matrix.const</h2>
-<p>a constant matrix </p><div class="fragment"><div class="line">.ax %matrix.constMat: Π nST::[n: .Nat, S: «n; .Nat», T: *][%mem.M, T] -&gt; [%mem.M, %matrix.Mat nST];</div>
+<p>a constant matrix </p><div class="fragment"><div class="line">.ax %matrix.constMat: Π [n: .Nat, S: «n; .Nat», T: *]::nST [%mem.M, T] -&gt; [%mem.M, %matrix.Mat nST];</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md169"></a>
 %matrix.read</h2>
 <p>read _ (mat, idx) : body_type</p>
@@ -183,7 +183,7 @@ Normalization:</h3>
 <li>read(insert)</li>
 <li>read(const)</li>
 </ul>
-<div class="fragment"><div class="line">.ax %matrix.read: Π nST::[n: .Nat, S: «n; .Nat», T: *][%mem.M, %matrix.Mat nST, idx: «i: n; .Idx S#i»] -&gt; [%mem.M, T], normalize_read;</div>
+<div class="fragment"><div class="line">.ax %matrix.read: Π [n: .Nat, S: «n; .Nat», T: *]::nST [%mem.M, %matrix.Mat nST, idx: «i: n; .Idx S#i»] -&gt; [%mem.M, T], normalize_read;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md171"></a>
 %matrix.insert</h2>
 <p>insert (dims, sizes, type) (mat, idx, val) : mat</p>
@@ -194,7 +194,7 @@ Normalization:</h3>
 <li>with other inserts</li>
 <li>with initialization</li>
 </ul>
-<div class="fragment"><div class="line">.ax %matrix.insert: Π nST::[n: .Nat, S: «n; .Nat», T: *][%mem.M, %matrix.Mat nST, idx: «i: n; .Idx S#i», val: T] -&gt; [%mem.M, %matrix.Mat nST], normalize_insert;</div>
+<div class="fragment"><div class="line">.ax %matrix.insert: Π [n: .Nat, S: «n; .Nat», T: *]::nST [%mem.M, %matrix.Mat nST, idx: «i: n; .Idx S#i», val: T] -&gt; [%mem.M, %matrix.Mat nST], normalize_insert;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md173"></a>
 %matrix.init</h2>
 <p>A fresh matrix with uninitialized values. </p><div class="fragment"><div class="line">.ax %matrix.init: Π [n: .Nat, S: «n; .Nat», T: *, %mem.M] -&gt; [%mem.M, %matrix.Mat (n, S, T)];</div>

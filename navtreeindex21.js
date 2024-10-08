@@ -1,7 +1,5 @@
 var NAVTREEINDEX21 =
 {
-"namespacethorin_1_1plug_1_1clos.html#a1d399fdb4f3a9d7880356d480986bb1f":[3,0,2,4,2,15],
-"namespacethorin_1_1plug_1_1clos.html#a2bfe56067539c7f6b3cb728c82a5a6fd":[3,0,2,4,2,12],
 "namespacethorin_1_1plug_1_1clos.html#a2c4fbe8c90ce3856c4c1059248a5e295":[3,0,2,4,2,26],
 "namespacethorin_1_1plug_1_1clos.html#a46ed6916bc1e8a5953976fcb97444c4e":[3,0,2,4,2,19],
 "namespacethorin_1_1plug_1_1clos.html#a55278fe1847fd3c3c96dc4e85c3430da":[3,0,2,4,2,21],
@@ -249,5 +247,7 @@ var NAVTREEINDEX21 =
 "namespacethorin_1_1plug_1_1core.html#ae79531b9253f685f84711816d9d7c6caa01f78557cd0178856ff633f1135fd48c":[3,0,2,4,4,17,0],
 "namespacethorin_1_1plug_1_1core.html#ae79531b9253f685f84711816d9d7c6caab08f3df467d0a233583af754f2360ea0":[3,0,2,4,4,17,1],
 "namespacethorin_1_1plug_1_1core.html#af0e1a1dc6f497a6fcf5694a5f4b0e40d":[3,0,2,4,4,31],
-"namespacethorin_1_1plug_1_1core.html#af251ff08ca21987f48eac8f55634103e":[3,0,2,4,4,21]
+"namespacethorin_1_1plug_1_1core.html#af251ff08ca21987f48eac8f55634103e":[3,0,2,4,4,21],
+"namespacethorin_1_1plug_1_1demo.html":[3,0,2,4,5],
+"namespacethorin_1_1plug_1_1demo.html#a2a769b004444a4836f1611116c922b84":[3,0,2,4,5,0]
 };

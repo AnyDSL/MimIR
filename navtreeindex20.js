@@ -1,7 +1,5 @@
 var NAVTREEINDEX20 =
 {
-"namespacethorin.html#a4af8566c40f049204989f6fcb8a1cba4":[3,0,2,264],
-"namespacethorin.html#a4b47cbc3edcc44d37920c295c2c67030":[3,0,2,213],
 "namespacethorin.html#a4c9b547359126b919d62382590aa4461":[3,0,2,254],
 "namespacethorin.html#a4cc4dad41087f921bd6ca022a74993cc":[3,0,2,275],
 "namespacethorin.html#a4cccb6dae2ff7654bbb7ba358d0d6362":[3,0,2,203],
@@ -249,5 +247,7 @@ var NAVTREEINDEX20 =
 "namespacethorin_1_1plug_1_1autodiff.html#aefdf858bfa1cf88d7a338cc3dcbf06fe":[3,0,2,4,1,13],
 "namespacethorin_1_1plug_1_1clos.html":[3,0,2,4,2],
 "namespacethorin_1_1plug_1_1clos.html#a0029f1e78507ed9361dbf266d5fd80b2":[3,0,2,4,2,16],
-"namespacethorin_1_1plug_1_1clos.html#a0e4a129595f4bfbeee0e2b2e128488b0":[3,0,2,4,2,25]
+"namespacethorin_1_1plug_1_1clos.html#a0e4a129595f4bfbeee0e2b2e128488b0":[3,0,2,4,2,25],
+"namespacethorin_1_1plug_1_1clos.html#a1d399fdb4f3a9d7880356d480986bb1f":[3,0,2,4,2,15],
+"namespacethorin_1_1plug_1_1clos.html#a2bfe56067539c7f6b3cb728c82a5a6fd":[3,0,2,4,2,12]
 };

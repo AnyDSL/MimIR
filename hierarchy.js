@@ -255,6 +255,7 @@ var hierarchy =
           [ "thorin::ast::AxiomDecl::Alias", "classthorin_1_1ast_1_1AxiomDecl_1_1Alias.html", null ],
           [ "thorin::ast::DummyDecl", "classthorin_1_1ast_1_1DummyDecl.html", null ],
           [ "thorin::ast::Ptrn", "classthorin_1_1ast_1_1Ptrn.html", [
+            [ "thorin::ast::ErrorPtrn", "classthorin_1_1ast_1_1ErrorPtrn.html", null ],
             [ "thorin::ast::GrpPtrn", "classthorin_1_1ast_1_1GrpPtrn.html", null ],
             [ "thorin::ast::IdPtrn", "classthorin_1_1ast_1_1IdPtrn.html", null ],
             [ "thorin::ast::TuplePtrn", "classthorin_1_1ast_1_1TuplePtrn.html", null ]
@@ -272,7 +273,6 @@ var hierarchy =
           [ "thorin::ast::AppExpr", "classthorin_1_1ast_1_1AppExpr.html", null ],
           [ "thorin::ast::ArrOrPackExpr< arr >", "classthorin_1_1ast_1_1ArrOrPackExpr.html", null ],
           [ "thorin::ast::ArrowExpr", "classthorin_1_1ast_1_1ArrowExpr.html", null ],
-          [ "thorin::ast::BlockExpr", "classthorin_1_1ast_1_1BlockExpr.html", null ],
           [ "thorin::ast::DeclExpr", "classthorin_1_1ast_1_1DeclExpr.html", null ],
           [ "thorin::ast::ErrorExpr", "classthorin_1_1ast_1_1ErrorExpr.html", null ],
           [ "thorin::ast::ExtractExpr", "classthorin_1_1ast_1_1ExtractExpr.html", null ],
