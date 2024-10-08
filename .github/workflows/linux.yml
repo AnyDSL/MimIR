@@ -50,8 +50,8 @@ jobs:
           sudo apt-get install g++-13 valgrind
           sudo ln -s ${{github.workspace}}/bin/FileCheck-x86_64-ubuntu /usr/bin/FileCheck
           sudo chmod +x /usr/bin/FileCheck
-          python -m pip install --upgrade pip
-          pip install lit psutil
+          sudo python -m pip install --upgrade pip
+          sudo pip install lit psutil --break-system-packages
 
       - name: Setup ccache
         uses: Chocobo1/setup-ccache-action@v1
