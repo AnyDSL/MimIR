@@ -51,6 +51,7 @@ jobs:
           sudo ln -s ${{github.workspace}}/bin/FileCheck-x86_64-ubuntu /usr/bin/FileCheck
           sudo chmod +x /usr/bin/FileCheck
           sudo pipx install lit
+          pipx ensurepath
 
       - name: Setup ccache
         uses: Chocobo1/setup-ccache-action@v1
