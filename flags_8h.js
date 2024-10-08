@@ -11,7 +11,7 @@ var flags_8h =
       [ "dump_gid", "namespacethorin.html#aeda5d38402870bf4dc9aa93f4ed37caa", null ],
       [ "dump_recursive", "namespacethorin.html#a6e4da59c65d1ac682dfd77fe310a289e", null ],
       [ "reeval_breakpoints", "namespacethorin.html#abd14b901c908b3d92b9200a298a5ba18", null ],
-      [ "scalerize_threshold", "namespacethorin.html#a55084cdf38b8061963ebe4da5355d718", null ],
+      [ "scalarize_threshold", "namespacethorin.html#a81bcc437a793004554ae905bd73f715c", null ],
       [ "trace_gids", "namespacethorin.html#a0c6e11089999fb8349a4fbd2463578bb", null ]
     ] ]
 ];

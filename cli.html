@@ -121,7 +121,7 @@ $(document).ready(function(){initNavTree('cli.html',''); initResizable(); });
 <div class="textblock"><h1><a class="anchor" id="autotoc_md0"></a>
 Usage</h1>
 <div class="fragment"><div class="line">USAGE:</div>
-<div class="line">  thorin [-?|-h|--help] [-v|--version] [-l|--list-search-paths] [-c|--clang &lt;clang&gt;] [-p|--plugin &lt;plugin&gt;] [-P|--plugin-path &lt;path&gt;] [-V|--verbose] [-O|--optimize &lt;level&gt;] [--output-ast &lt;file&gt;] [--output-d &lt;file&gt;] [--output-dot &lt;file&gt;] [--output-h &lt;file&gt;] [--output-ll &lt;file&gt;] [--output-md &lt;file&gt;] [-o|--output-thorin &lt;file&gt;] [-a|--ascii] [--bootstrap] [--dot-follow-types] [--dot-all-annexes] [--dump-gid &lt;level&gt;] [--dump-recursive] [--aggr-lam-spec] [--scalerize-threshold &lt;threshold&gt;] [-b|--break &lt;gid&gt;] [--reeval-breakpoints] [--break-on-alpha-unequal] [--break-on-error] [--break-on-warn] [--trace-gids] [&lt;file&gt;]</div>
+<div class="line">  thorin [-?|-h|--help] [-v|--version] [-l|--list-search-paths] [-c|--clang &lt;clang&gt;] [-p|--plugin &lt;plugin&gt;] [-P|--plugin-path &lt;path&gt;] [-V|--verbose] [-O|--optimize &lt;level&gt;] [--output-ast &lt;file&gt;] [--output-d &lt;file&gt;] [--output-dot &lt;file&gt;] [--output-h &lt;file&gt;] [--output-ll &lt;file&gt;] [--output-md &lt;file&gt;] [-o|--output-thorin &lt;file&gt;] [-a|--ascii] [--bootstrap] [--dot-follow-types] [--dot-all-annexes] [--dump-gid &lt;level&gt;] [--dump-recursive] [--aggr-lam-spec] [--scalarize-threshold &lt;threshold&gt;] [-b|--break &lt;gid&gt;] [--reeval-breakpoints] [--break-on-alpha-unequal] [--break-on-error] [--break-on-warn] [--trace-gids] [&lt;file&gt;]</div>
 <div class="line"> </div>
 <div class="line">Display usage information.</div>
 <div class="line"> </div>
@@ -150,8 +150,8 @@ Usage</h1>
 <div class="line">  --dump-gid &lt;level&gt;      Dumps gid of inline expressions as a comment in output if &lt;level&gt; &gt; 0. Use a &lt;level&gt; of 2 to also emit the gid of trivial defs.</div>
 <div class="line">  --dump-recursive        Dumps Thorin program with a simple recursive algorithm that is not readable again from Thorin but is less fragile and also works for broken Thorin programs.</div>
 <div class="line">  --aggr-lam-spec         Overrides LamSpec behavior to follow recursive calls.</div>
-<div class="line">  --scalerize-threshold &lt;threshold&gt;</div>
-<div class="line">                          Thorin will not scalerize tuples/packs/sigmas/arrays with a number of elements greater than or equal this threshold.</div>
+<div class="line">  --scalarize-threshold &lt;threshold&gt;</div>
+<div class="line">                          Thorin will not scalarize tuples/packs/sigmas/arrays with a number of elements greater than or equal this threshold.</div>
 <div class="line">  -b, --break &lt;gid&gt;       *Triggers breakpoint upon construction of node with global id &lt;gid&gt;. Useful when running in a debugger.</div>
 <div class="line">  --reeval-breakpoints    *Triggers breakpoint even upon unfying a node that has already been built.</div>
 <div class="line">  --break-on-alpha-unequal</div>

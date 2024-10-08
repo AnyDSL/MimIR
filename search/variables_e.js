@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['scalerize_5fthreshold_0',['scalerize_threshold',['../namespacethorin.html#a55084cdf38b8061963ebe4da5355d718',1,'thorin::Flags']]],
+  ['scalarize_5fthreshold_0',['scalarize_threshold',['../namespacethorin.html#a81bcc437a793004554ae905bd73f715c',1,'thorin::Flags']]],
   ['scheduler_5f_1',['scheduler_',['../classthorin_1_1Emitter.html#ae66fde2b0fd25999046dbe9c71a0e5d7',1,'thorin::Emitter']]],
   ['sigma2sym2idx_2',['sigma2sym2idx',['../classthorin_1_1ast_1_1Emitter.html#a9980e74afbca116191f55b5d34b1b978',1,'thorin::ast::Emitter']]],
   ['size_3',['size',['../structthorin_1_1PooledSet_1_1Data.html#a2d2b51016e29074b9b6cf52be7dbcd5b',1,'thorin::PooledSet::Data']]],

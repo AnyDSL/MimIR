@@ -90,7 +90,7 @@ var namespacethorin =
     [ "Rewriter", "classthorin_1_1Rewriter.html", "classthorin_1_1Rewriter" ],
     [ "RWPass", "classthorin_1_1RWPass.html", "classthorin_1_1RWPass" ],
     [ "RWPhase", "classthorin_1_1RWPhase.html", "classthorin_1_1RWPhase" ],
-    [ "Scalerize", "classthorin_1_1Scalerize.html", "classthorin_1_1Scalerize" ],
+    [ "Scalarize", "classthorin_1_1Scalarize.html", "classthorin_1_1Scalarize" ],
     [ "Scheduler", "classthorin_1_1Scheduler.html", "classthorin_1_1Scheduler" ],
     [ "Scope", "classthorin_1_1Scope.html", "classthorin_1_1Scope" ],
     [ "ScopePhase", "classthorin_1_1ScopePhase.html", "classthorin_1_1ScopePhase" ],

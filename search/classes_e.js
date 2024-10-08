@@ -1,7 +1,7 @@
 var searchData=
 [
   ['s_0',['S',['../structthorin_1_1ast_1_1S.html',1,'thorin::ast']]],
-  ['scalerize_1',['Scalerize',['../classthorin_1_1Scalerize.html',1,'thorin']]],
+  ['scalarize_1',['Scalarize',['../classthorin_1_1Scalarize.html',1,'thorin']]],
   ['scheduler_2',['Scheduler',['../classthorin_1_1Scheduler.html',1,'thorin']]],
   ['scope_3',['Scope',['../classthorin_1_1Scope.html',1,'thorin']]],
   ['scopedloc_4',['ScopedLoc',['../structthorin_1_1World_1_1ScopedLoc.html',1,'thorin::World']]],

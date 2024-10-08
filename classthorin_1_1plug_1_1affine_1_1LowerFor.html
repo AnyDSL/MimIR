@@ -192,8 +192,8 @@ Public Member Functions</h2></td></tr>
 <div class="line">    ) =</div>
 <div class="line">    .con head(iter: .<a class="code hl_class" href="classthorin_1_1Idx.html">Idx</a> m, acc: «i: n; Ts#i») =</div>
 <div class="line">        .con new_body() = body (iter, acc, .cn acc: «i: n; Ts#i» =</div>
-<div class="line">            .let `iter = %<a class="code hl_namespace" href="namespacethorin_1_1plug_1_1core.html">core</a>.wrap.add %<a class="code hl_namespace" href="namespacethorin_1_1plug_1_1core.html">core</a>.mode.nsuw (iter, step);</div>
-<div class="line">            head (iter, acc));</div>
+<div class="line">            .let iter2 = %<a class="code hl_namespace" href="namespacethorin_1_1plug_1_1core.html">core</a>.wrap.add %<a class="code hl_namespace" href="namespacethorin_1_1plug_1_1core.html">core</a>.mode.nsuw (iter, step);</div>
+<div class="line">            head (iter2, acc));</div>
 <div class="line">        .con new_exit() = exit (acc);</div>
 <div class="line">        (new_exit, new_body)#(%<a class="code hl_namespace" href="namespacethorin_1_1plug_1_1core.html">core</a>.icmp.ul (iter, end)) ();</div>
 <div class="line">    head(begin, init);</div>

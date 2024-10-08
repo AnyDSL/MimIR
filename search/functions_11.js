@@ -1,7 +1,7 @@
 var searchData=
 [
   ['s_0',['S',['../structthorin_1_1ast_1_1S.html#a384b63a7d9a83a10c5a2ae97d06f9908',1,'thorin::ast::S']]],
-  ['scalerize_1',['Scalerize',['../classthorin_1_1Scalerize.html#a3cd68d747d5226eff8f2f72da5e3ca15',1,'thorin::Scalerize']]],
+  ['scalarize_1',['Scalarize',['../classthorin_1_1Scalarize.html#a08e5f1adda12b1efa2072cfb6dbb57a2',1,'thorin::Scalarize']]],
   ['schedule_2',['schedule',['../classthorin_1_1Scheduler.html#ae34866f1ec7f244a07e46f060ca66a70',1,'thorin::Scheduler']]],
   ['scheduler_3',['scheduler',['../classthorin_1_1Scheduler.html#aea097a0893dca330de7a5713bbcbe937',1,'thorin::Scheduler::Scheduler()=default'],['../classthorin_1_1Scheduler.html#a637466e564bdec5a37e310fb142db773',1,'thorin::Scheduler::Scheduler(const Scope &amp;)'],['../classthorin_1_1Scheduler.html#a8e7faa51a0be716c096d9583460d40eb',1,'thorin::Scheduler::Scheduler(const Scheduler &amp;)=delete'],['../classthorin_1_1Scheduler.html#ad6d4424b1d7fa13c03ae34165e5ffd37',1,'thorin::Scheduler::Scheduler(Scheduler &amp;&amp;other) noexcept']]],
   ['scope_4',['scope',['../classthorin_1_1CFA.html#ab954b6513f675c18fe8cd6523c046a48',1,'thorin::CFA::scope()'],['../classthorin_1_1Scheduler.html#a3337cd18d5fe2a3a102a3fc2aa950059',1,'thorin::Scheduler::scope()'],['../classthorin_1_1ScopePhase.html#abff810010f44ad3c53ac2e74e9f2f308',1,'thorin::ScopePhase::scope()'],['../classthorin_1_1plug_1_1clos_1_1ClosConvPrep.html#a273cd41f3ac089acd4e44e813ee87f09',1,'thorin::plug::clos::ClosConvPrep::scope()'],['../classthorin_1_1Scope.html#a1c6b1b6b8394e9f5f8a5d6d99874e324',1,'thorin::Scope::Scope(const Scope &amp;)=delete'],['../classthorin_1_1Scope.html#ad242537b0a05480bfb15dbac4d211900',1,'thorin::Scope::Scope(Def *entry)']]],

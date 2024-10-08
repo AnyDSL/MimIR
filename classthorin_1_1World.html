@@ -651,7 +651,8 @@ requires std::is_enum_v&lt;E&gt; &amp;&amp; std::is_same_v&lt;std::underlying_ty
 <tr><td colspan="2"><div class="groupText"><p>Dumps DOT to <code>os</code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">annex</td><td>If <code>true</code>, include all annexes - even if unused. </td></tr>
+    <tr><td class="paramname">os</td><td>Output stream </td></tr>
+    <tr><td class="paramname">annexes</td><td>If <code>true</code>, include all annexes - even if unused. </td></tr>
     <tr><td class="paramname">types</td><td>Follow type dependencies? </td></tr>
   </table>
   </dd>
@@ -766,7 +767,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00069">69</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00683">swap</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00684">swap</a>.</p>
 
 </div>
 </div>
@@ -3484,7 +3485,7 @@ requires std::is_enum_v&lt;E&gt; &amp;&amp; std::is_same_v&lt;std::underlying_ty
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00353">353</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="check_8h_source.html#l00059">thorin::Check::alpha()</a>, <a class="el" href="def_8cpp_source.html#l00483">thorin::Def::arity()</a>, <a class="el" href="check_8h_source.html#l00063">thorin::Check::assignable()</a>, <a class="el" href="dbg_8h_source.html#l00122">thorin::error()</a>, <a class="el" href="dbg_8h_source.html#l00071">thorin::Error::error()</a>, <a class="el" href="world_8cpp_source.html#l00074">flags()</a>, <a class="el" href="world_8cpp_source.html#l00353">insert()</a>, <a class="el" href="def_8h_source.html#l00715">thorin::Lit::isa()</a>, <a class="el" href="def_8cpp_source.html#l00490">thorin::Def::isa_lit_arity()</a>, <a class="el" href="def_8h_source.html#l00467">thorin::Def::loc()</a>, <a class="el" href="dbg_8h_source.html#l00073">thorin::Error::note()</a>, <a class="el" href="world_8cpp_source.html#l00422">pack()</a>, <a class="el" href="def_8cpp_source.html#l00520">thorin::Def::proj()</a>, <a class="el" href="flags_8h_source.html#l00013">thorin::Flags::scalerize_threshold</a>, <a class="el" href="def_8cpp_source.html#l00558">thorin::Idx::size()</a>, <a class="el" href="world_8h_source.html#l00347">tuple()</a>, <a class="el" href="world_8h_source.html#l00209">type()</a>, and <a class="el" href="def_8h_source.html#l00246">thorin::Def::type()</a>.</p>
+<p class="reference">References <a class="el" href="check_8h_source.html#l00059">thorin::Check::alpha()</a>, <a class="el" href="def_8cpp_source.html#l00483">thorin::Def::arity()</a>, <a class="el" href="check_8h_source.html#l00063">thorin::Check::assignable()</a>, <a class="el" href="dbg_8h_source.html#l00122">thorin::error()</a>, <a class="el" href="dbg_8h_source.html#l00071">thorin::Error::error()</a>, <a class="el" href="world_8cpp_source.html#l00074">flags()</a>, <a class="el" href="world_8cpp_source.html#l00353">insert()</a>, <a class="el" href="def_8h_source.html#l00715">thorin::Lit::isa()</a>, <a class="el" href="def_8cpp_source.html#l00490">thorin::Def::isa_lit_arity()</a>, <a class="el" href="def_8h_source.html#l00467">thorin::Def::loc()</a>, <a class="el" href="dbg_8h_source.html#l00073">thorin::Error::note()</a>, <a class="el" href="world_8cpp_source.html#l00422">pack()</a>, <a class="el" href="def_8cpp_source.html#l00520">thorin::Def::proj()</a>, <a class="el" href="flags_8h_source.html#l00013">thorin::Flags::scalarize_threshold</a>, <a class="el" href="def_8cpp_source.html#l00558">thorin::Idx::size()</a>, <a class="el" href="world_8h_source.html#l00347">tuple()</a>, <a class="el" href="world_8h_source.html#l00209">type()</a>, and <a class="el" href="def_8h_source.html#l00246">thorin::Def::type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="autodiff__rewrite__inner_8cpp_source.html#l00087">thorin::plug::autodiff::AutoDiffEval::augment_extract()</a>, <a class="el" href="world_8cpp_source.html#l00291">extract()</a>, <a class="el" href="world_8cpp_source.html#l00353">insert()</a>, and <a class="el" href="rewrite_8h_source.html#l00048">thorin::VarRewriter::rewrite_mut()</a>.</p>
 
@@ -8128,7 +8129,7 @@ template&lt;<a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00683">683</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00684">684</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00069">World()</a>.</p>
 

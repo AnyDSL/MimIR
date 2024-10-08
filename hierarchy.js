@@ -85,8 +85,8 @@ var hierarchy =
       [ "thorin::RWPass< RetWrap, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::RetWrap", "classthorin_1_1RetWrap.html", null ]
       ] ],
-      [ "thorin::RWPass< Scalerize, Lam >", "classthorin_1_1RWPass.html", [
-        [ "thorin::Scalerize", "classthorin_1_1Scalerize.html", null ]
+      [ "thorin::RWPass< Scalarize, Lam >", "classthorin_1_1RWPass.html", [
+        [ "thorin::Scalarize", "classthorin_1_1Scalarize.html", null ]
       ] ],
       [ "thorin::RWPass< TailRecElim, Lam >", "classthorin_1_1RWPass.html", null ],
       [ "thorin::RWPass< LowerFor, Lam >", "classthorin_1_1RWPass.html", [

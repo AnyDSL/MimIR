@@ -130,7 +130,7 @@ $(document).ready(function(){initNavTree('scalarize_8cpp_source.html',''); initR
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">// TODO should also work for mutable non-dependent sigmas</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">// TODO merge with make_scalar</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keywordtype">bool</span> Scalerize::should_expand(Lam* lam) {</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keywordtype">bool</span> Scalarize::should_expand(Lam* lam) {</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keywordflow">if</span> (!<a class="code hl_function" href="namespacethorin.html#afbcb1bda3428d2211797b024635936ee">isa_workable</a>(lam)) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> i = tup2sca_.find(lam); i != tup2sca_.end() &amp;&amp; i-&gt;second &amp;&amp; i-&gt;second == lam) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
@@ -141,7 +141,7 @@ $(document).ready(function(){initNavTree('scalarize_8cpp_source.html',''); initR
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>}</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a3083dfa50d05b28c3cafe6ec116d0362">Lam</a>* Scalerize::make_scalar(Ref def) {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a3083dfa50d05b28c3cafe6ec116d0362">Lam</a>* Scalarize::make_scalar(Ref def) {</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keyword">auto</span> tup_lam = def-&gt;isa_mut&lt;<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a56e125fc0469d17b1569c31b803d08b5a3083dfa50d05b28c3cafe6ec116d0362">Lam</a>&gt;();</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    assert(tup_lam);</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> i = tup2sca_.find(tup_lam); i != tup2sca_.end()) <span class="keywordflow">return</span> i-&gt;second;</div>
@@ -174,7 +174,7 @@ $(document).ready(function(){initNavTree('scalarize_8cpp_source.html',''); initR
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>}</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
 <div class="foldopen" id="foldopen00056" data-start="{" data-end="}">
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="classthorin_1_1Scalerize.html#a21bef3b9e352d807ca9165b8eba19d2b">   56</a></span><a class="code hl_class" href="classthorin_1_1Ref.html">Ref</a> Scalerize::rewrite(<a class="code hl_class" href="classthorin_1_1Ref.html">Ref</a> def) {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="classthorin_1_1Scalarize.html#a475d861bd28672b947f5d448ac839a35">   56</a></span><a class="code hl_class" href="classthorin_1_1Ref.html">Ref</a> Scalarize::rewrite(<a class="code hl_class" href="classthorin_1_1Ref.html">Ref</a> def) {</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keyword">auto</span>&amp; w = world();</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> app = def-&gt;isa&lt;<a class="code hl_class" href="classthorin_1_1App.html">App</a>&gt;()) {</div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        <a class="code hl_class" href="classthorin_1_1Ref.html">Ref</a> sca_callee = app-&gt;callee();</div>

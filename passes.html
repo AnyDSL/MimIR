@@ -129,17 +129,19 @@ $(document).ready(function(){initNavTree('passes.html',''); initResizable(); });
 </ul>
 </div>
 <div class="textblock"><p>Passes in Thorin are the main infrastructure and preferred method when implementing code transformations. However, nothing stops you from manually iterating and transforming the program. This is usually only necessary if you need a very specific iteration behavior for your transformation.</p>
-<p>Passes are managed by the <a class="el" href="classthorin_1_1PassMan.html">PassMan</a>ager. You can put together your optimization pipeline like so: </p><div class="fragment"><div class="line">PassMan opt(world);</div>
+<p>Passes are managed by the <a class="el" href="classthorin_1_1PassMan.html">PassMan</a>ager. You can put together your optimization pipeline like so:</p>
+<div class="fragment"><div class="line">PassMan opt(world);</div>
 <div class="line">opt.add&lt;PartialEval&gt;();</div>
 <div class="line"><span class="keyword">auto</span> br = opt.add&lt;BetaRed&gt;();</div>
 <div class="line"><span class="keyword">auto</span> er = opt.add&lt;EtaRed&gt;();</div>
 <div class="line"><span class="keyword">auto</span> ee = opt.add&lt;EtaExp&gt;(er);</div>
 <div class="line">opt.add&lt;SSAConstr&gt;(ee);</div>
-<div class="line">opt.add&lt;Scalerize&gt;(ee);</div>
+<div class="line">opt.add&lt;Scalarize&gt;(ee);</div>
 <div class="line">opt.add&lt;CopyProp&gt;(br, ee);</div>
 <div class="line">opt.run();</div>
-</div><!-- fragment --><p> Note how some passes depend on other passes. For example, the <a class="el" href="classthorin_1_1plug_1_1mem_1_1CopyProp.html">CopyProp</a>agation depends on the <a class="el" href="classthorin_1_1BetaRed.html">BetaRed</a>uction and <a class="el" href="classthorin_1_1EtaExp.html">EtaExp</a>ansion. In contrast to traditional passes in compilers, Thorin's <a class="el" href="classthorin_1_1PassMan.html">PassMan</a> will run all passes in tandem and combine the obtained results into the most optimal solution and, hence, avoid the dreaded <em>phase-ordering problem</em>.</p>
-<p>There are two kind of passes in Thorin:</p><ol type="1">
+</div><!-- fragment --><p>Note how some passes depend on other passes. For example, the <a class="el" href="classthorin_1_1plug_1_1mem_1_1CopyProp.html">CopyProp</a>agation depends on the <a class="el" href="classthorin_1_1BetaRed.html">BetaRed</a>uction and <a class="el" href="classthorin_1_1EtaExp.html">EtaExp</a>ansion. In contrast to traditional passes in compilers, Thorin's <a class="el" href="classthorin_1_1PassMan.html">PassMan</a> will run all passes in tandem and combine the obtained results into the most optimal solution and, hence, avoid the dreaded <em>phase-ordering problem</em>.</p>
+<p>There are two kind of passes in Thorin:</p>
+<ol type="1">
 <li><a class="el" href="classthorin_1_1RWPass.html">Rewrite Pass</a></li>
 <li><a class="el" href="classthorin_1_1FPPass.html">Fixed-Point Pass</a></li>
 </ol>
@@ -193,15 +195,18 @@ Rewrite Pass</h1>
 <div class="ttc" id="anamespacethorin_1_1plug_1_1mem_html_ad396a7c95ba738756b3e8386fab96fa2"><div class="ttname"><a href="namespacethorin_1_1plug_1_1mem.html#ad396a7c95ba738756b3e8386fab96fa2">thorin::plug::mem::op_mslot</a></div><div class="ttdeci">Ref op_mslot(Ref type, Ref mem, Ref id)</div><div class="ttdef"><b>Definition</b> <a href="mem_8h_source.html#l00161">mem.h:161</a></div></div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md58"></a>
 Fixed-Point Pass</h1>
-<p>A <a class="el" href="classthorin_1_1FPPass.html">fixed-point pass</a> allows you to implement a data-flow analysis. Traditionally, an optimizations performs</p><ol type="1">
+<p>A <a class="el" href="classthorin_1_1FPPass.html">fixed-point pass</a> allows you to implement a data-flow analysis. Traditionally, an optimizations performs</p>
+<ol type="1">
 <li>the analysis and</li>
 <li>runs the actual transformation based upon the analysis info.</li>
 </ol>
-<p>A <a class="el" href="classthorin_1_1FPPass.html">fixed-point pass</a>, however, will directly rewrite the code. You <b>optimistically</b> assume that all your assumptions your pass could possibly make about the program simply hold. Now, two things might happen:</p><ol type="1">
+<p>A <a class="el" href="classthorin_1_1FPPass.html">fixed-point pass</a>, however, will directly rewrite the code. You <b>optimistically</b> assume that all your assumptions your pass could possibly make about the program simply hold. Now, two things might happen:</p>
+<ol type="1">
 <li>You do not run into any contradictions later on, so your optimistic assumptions were in fact sound.</li>
 <li>You prove yourself wrong later on.</li>
 </ol>
-<p>If you find a contradiction to your initial assumption, you have to</p><ol type="1">
+<p>If you find a contradiction to your initial assumption, you have to</p>
+<ol type="1">
 <li>undo your mistake by backtracing to the place where you erroneously made the wrong decision and</li>
 <li>correct your assumption such that you do not make the same mistake over and over again.</li>
 </ol>
