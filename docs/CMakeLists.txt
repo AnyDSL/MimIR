@@ -1,5 +1,6 @@
 set(CLI_HELP   "${CMAKE_CURRENT_BINARY_DIR}/cli-help.sh")
 set(XDOT_HELP  "${CMAKE_CURRENT_BINARY_DIR}/xdot-help.gdb")
+set(MIM_LOGO   "${CMAKE_CURRENT_BINARY_DIR}/logo.svg")
 
 add_custom_command(
     OUTPUT ${CLI_HELP}
@@ -15,6 +16,11 @@ add_custom_command(
     WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
     COMMENT "Generating GDB xdot help text"
 )
+
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/../artwork/logo.svg"
+    "${MIM_LOGO}"
+    COPYONLY)
 
 set(DOXYFILE        "${CMAKE_CURRENT_BINARY_DIR}/Doxyfile")
 set(DOXY_LAYOUT     "${CMAKE_CURRENT_BINARY_DIR}/DoxygenLayout.xml")
@@ -37,7 +43,7 @@ add_custom_command(
     OUTPUT ${DOXY_INDEX_HTML}
     COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYFILE}
     MAIN_DEPENDENCY ${DOXYFILE}
-    DEPENDS mim ${CLI_HELP} ${XDOT_HELP} ${DOXY_EXTRA_FILES} ${DOXY_LAYOUT}
+    DEPENDS mim ${CLI_HELP} ${XDOT_HELP} ${DOXY_EXTRA_FILES} ${DOXY_LAYOUT} ${MIM_LOGO}
     COMMENT "Generating Doxygen HTML documentation"
     WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
 )

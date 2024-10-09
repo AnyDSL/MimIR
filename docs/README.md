@@ -31,7 +31,7 @@
     </tr>
 </table>
 
-MimIR an extensible compiler intermediate representation that is based upon the [Calculus of Constructions (CoC)](https://en.wikipedia.org/wiki/Calculus_of_constructions).
+**MimIR** - or **Mim** for short - an extensible compiler intermediate representation that is based upon the [Calculus of Constructions (CoC)](https://en.wikipedia.org/wiki/Calculus_of_constructions).
 This means:
 
 - [pure type system (PTS)](https://en.wikipedia.org/wiki/Pure_type_system)
@@ -99,3 +99,10 @@ In addition to the provided [submodules](https://github.com/AnyDSL/MimIR/tree/ma
 
   Simply toss the emitted `*.ll` file to your system's LLVM toolchain.
   But technically, you don't need LLVM.
+
+## MimIR
+
+MimIR is a recursive acronym for _MimIR is my intermediate Representation_.
+[Mímir or Mim](https://en.wikipedia.org/wiki/M%C3%ADmir) is also a figure in Norse mythology, renowned for his knowledge and wisdom, who is beheaded during the &AElig;sir–Vanir War.
+Afterward, the god Odin carries around Mímir's head and it recites secret knowledge and counsel to him.
+Now, you have Mímir's head at your fingertips.
