@@ -1,5 +1,6 @@
 var NAVTREEINDEX23 =
 {
+"namespacemim_1_1plug_1_1mem.html#ace46b7b29a70a8a286dd0a1fc74855f3":[3,0,1,4,9,21],
 "namespacemim_1_1plug_1_1mem.html#aceb75532ec0c80e460e99014bf1d3a5a":[3,0,1,4,9,17],
 "namespacemim_1_1plug_1_1mem.html#ad6931e3bea27087eb6646508f7db27f5":[3,0,1,4,9,18],
 "namespacemim_1_1plug_1_1mem.html#add102b8e1cf16c9e60dbcacb03c9f4eb":[3,0,1,4,9,14],
@@ -248,6 +249,5 @@ var NAVTREEINDEX23 =
 "regex_2autogen_8h.html#a9e88c3311ac4201abeacb94102dcee49":[6,0,0,1,0,0,12,0,1],
 "regex_2autogen_8h.html#ab01b9e34d981be56592820d8949b47d5":[6,0,0,1,0,0,12,0,0],
 "regex_2autogen_8h.html#ab06e1bb5c1584b89ee5c965d9b8203c1":[6,0,0,1,0,0,12,0,11],
-"regex_2autogen_8h.html#ab6f9a5fa4f24669f96d8db67637e8628":[6,0,0,1,0,0,12,0,4],
-"regex_2autogen_8h.html#ab71f2a99ed0c2b59c63bf1ca4c0bb700":[6,0,0,1,0,0,12,0,6]
+"regex_2autogen_8h.html#ab6f9a5fa4f24669f96d8db67637e8628":[6,0,0,1,0,0,12,0,4]
 };

@@ -45,6 +45,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="logo.svg"/></td>
   <td id="projectalign">
    <div id="projectname">MimIR<span id="projectnumber">&#160;0.1</span>
    </div>
@@ -135,6 +136,9 @@ $(function(){initNavTree('index.html',''); initResizable(true); });
   <li class="level1">
     <a href="#autotoc_md70">Dependencies</a>
   </li>
+  <li class="level1">
+    <a href="#autotoc_md71">MimIR</a>
+  </li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="md_docs_2README"></a></p>
@@ -146,7 +150,7 @@ $(function(){initNavTree('index.html',''); initResizable(true); });
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Tests  </td><td class="markdownTableBodyNone"><a href="https://github.com/AnyDSL/MimIR/actions/workflows/linux.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/linux.yml?logo=linux&amp;label=linux&amp;logoColor=white&amp;branch=master" alt="Linux" class="inline"/></a> <a href="https://github.com/AnyDSL/MimIR/actions/workflows/windows.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/windows.yml?logo=windows&amp;label=windows&amp;branch=master" alt="Windows" class="inline"/></a> <a href="https://github.com/AnyDSL/MimIR/actions/workflows/macos.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/macos.yml?logo=apple&amp;label=macos&amp;branch=master" alt="MacOS" class="inline"/></a> <a href="https://github.com/AnyDSL/MimIR/actions/workflows/doxygen.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/doxygen.yml?logo=github&amp;label=doxygen&amp;branch=master" alt="Doxygen" class="inline"/></a>   </td></tr>
 </table>
-<p>MimIR an extensible compiler intermediate representation that is based upon the <a href="https://en.wikipedia.org/wiki/Calculus_of_constructions">Calculus of Constructions (CoC)</a>. This means:</p>
+<p><b>MimIR</b> - or <b>Mim</b> for short - an extensible compiler intermediate representation that is based upon the <a href="https://en.wikipedia.org/wiki/Calculus_of_constructions">Calculus of Constructions (CoC)</a>. This means:</p>
 <ul>
 <li><a href="https://en.wikipedia.org/wiki/Pure_type_system">pure type system (PTS)</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Higher-order_function">higher-order functions</a></li>
@@ -203,9 +207,12 @@ Dependencies</h1>
 <li>Recent version of <a href="https://cmake.org/">CMake</a></li>
 <li>A C++20-compatible C++ compiler.</li>
 <li><p class="startli">While Mim emits <a href="https://llvm.org/">LLVM</a>, it does <em>not</em> link against LLVM.</p>
-<p class="startli">Simply toss the emitted <code>*.ll</code> file to your system's LLVM toolchain. But technically, you don't need LLVM. </p>
+<p class="startli">Simply toss the emitted <code>*.ll</code> file to your system's LLVM toolchain. But technically, you don't need LLVM.</p>
 </li>
 </ul>
+<h1><a class="anchor" id="autotoc_md71"></a>
+MimIR</h1>
+<p>MimIR is a recursive acronym for <em>MimIR is my intermediate Representation</em>. <a href="https://en.wikipedia.org/wiki/M%C3%ADmir">Mímir or Mim</a> is also a figure in Norse mythology, renowned for his knowledge and wisdom, who is beheaded during the &AElig;sir–Vanir War. Afterward, the god Odin carries around Mímir's head and it recites secret knowledge and counsel to him. Now, you have Mímir's head at your fingertips. </p>
 </div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
 </div><!-- contents -->

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['f_0',['F',['../math.html#autotoc_md144',1,'math.F'],['../namespacemim_1_1plug_1_1math.html#a24d01cb4971d98c367746b1352027288',1,'mim::plug::math::F']]],
+  ['f_0',['F',['../math.html#autotoc_md145',1,'math.F'],['../namespacemim_1_1plug_1_1math.html#a24d01cb4971d98c367746b1352027288',1,'mim::plug::math::F']]],
   ['f_1',['f',['../structmim_1_1Elem.html#a39ae5bd9af08c76d24b5cdcbdc02bcaf',1,'mim::Elem::f'],['../structmim_1_1ast_1_1R.html#a53a1d36e051e4dc07ca51382d8f594fb',1,'mim::ast::R::f'],['../namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673aa19d49bf4a68641c3109f3f7f09004b5',1,'mim::plug::core::f'],['../namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a9616f0faea904d0327c584c85502aec1',1,'mim::plug::math::f']]],
   ['f16_2',['F16',['../namespacemim_1_1plug_1_1math.html#a323f568770c539e1621e3d566638e5e6',1,'mim::plug::math']]],
   ['f16_3',['f16',['../namespacemim_1_1plug_1_1math.html#a4d006780938c80873a21b6c739c6b867',1,'mim::plug::math::f16'],['../namespacemim.html#ab64b7b3af527682b0daf50d786c8689b',1,'mim::f16']]],
@@ -48,7 +48,7 @@ var searchData=
   ['fnc_5fas_5flam_45',['fnc_as_lam',['../classmim_1_1plug_1_1clos_1_1ClosLit.html#a95a1a24f68cfee23e2d6b3268aa3c7b1',1,'mim::plug::clos::ClosLit']]],
   ['fnc_5ftype_46',['fnc_type',['../classmim_1_1plug_1_1clos_1_1ClosLit.html#aa963e23353026e5fd15b8787d1198bb2',1,'mim::plug::clos::ClosLit']]],
   ['fnv1_47',['FNV1',['../structmim_1_1FNV1.html',1,'mim']]],
-  ['for_48',['For',['../affine.html#autotoc_md73',1,'affine.For'],['../namespacemim_1_1plug_1_1affine.html#a6ff8673e1d2565961963aec89b59c068',1,'mim::plug::affine::For']]],
+  ['for_48',['For',['../affine.html#autotoc_md74',1,'affine.For'],['../namespacemim_1_1plug_1_1affine.html#a6ff8673e1d2565961963aec89b59c068',1,'mim::plug::affine::For']]],
   ['for_20built_20ins_49',['Upcast for Built-ins',['../dev.html#cast_builtin',1,'']]],
   ['for_20immutables_50',['Upcast for Immutables',['../dev.html#autotoc_md20',1,'']]],
   ['for_20mutables_51',['Upcast for Mutables',['../dev.html#autotoc_md21',1,'']]],
@@ -63,7 +63,7 @@ var searchData=
   ['fppass_3c_20ssaconstr_2c_20lam_20_3e_60',['FPPass&lt; SSAConstr, Lam &gt;',['../classmim_1_1FPPass.html',1,'mim']]],
   ['fppass_3c_20tailrecelim_2c_20lam_20_3e_61',['FPPass&lt; TailRecElim, Lam &gt;',['../classmim_1_1FPPass.html',1,'mim']]],
   ['fpphase_62',['FPPhase',['../classmim_1_1FPPhase.html',1,'mim::FPPhase'],['../classmim_1_1FPPhase.html#a213508ba780f4bceebee455577f986d3',1,'mim::FPPhase::FPPhase()']]],
-  ['free_63',['free',['../mem.html#autotoc_md192',1,'mem.free'],['../namespacemim_1_1plug_1_1mem.html#aa920d510e2e4277188e0b9517e6ea64b',1,'mim::plug::mem::free']]],
+  ['free_63',['free',['../mem.html#autotoc_md193',1,'mem.free'],['../namespacemim_1_1plug_1_1mem.html#aa920d510e2e4277188e0b9517e6ea64b',1,'mim::plug::mem::free']]],
   ['free_5fdefs_64',['free_defs',['../classmim_1_1Scope.html#a6ee6c813f5edbc7133a680f167872fe6',1,'mim::Scope']]],
   ['free_5fmuts_65',['free_muts',['../classmim_1_1Scope.html#ab697221ead76dc7ae71d044b2cd4da19',1,'mim::Scope']]],
   ['free_5fvars_66',['free_vars',['../classmim_1_1Scope.html#a8b6d863c5b6bee2e0b1df38e480b4829',1,'mim::Scope::free_vars()'],['../classmim_1_1Def.html#aed49f75ef33a07d498daffbcc3d2d838',1,'mim::Def::free_vars() const'],['../classmim_1_1Def.html#a55751862df2e7aab0d76521dd77fadb9',1,'mim::Def::free_vars()']]],
@@ -80,7 +80,7 @@ var searchData=
   ['fun_77',['fun',['../classmim_1_1World.html#a052a6f3868315205c5140e75857e31a3',1,'mim::World::fun(Ref dom, Ref codom, Lam::Filter f, Ref body)'],['../classmim_1_1World.html#a3927d58f78f222788d175fa96d0776af',1,'mim::World::fun(Defs dom, Ref codom, Lam::Filter f, Ref body)'],['../classmim_1_1World.html#ab57b7c1c05af56db4624bab626f191b5',1,'mim::World::fun(Ref dom, Defs codom, Lam::Filter f, Ref body)'],['../classmim_1_1World.html#a5c0e9e094c8caeed0578ad5d6c38c65a',1,'mim::World::fun(Defs dom, Defs codom, Lam::Filter f, Ref body)']]],
   ['function_20types_78',['Function Types',['../langref.html#autotoc_md51',1,'']]],
   ['functions_79',['Functions',['../langref.html#autotoc_md44',1,'']]],
-  ['functions_80',['Unfolding functions',['../matrix.html#autotoc_md175',1,'']]],
+  ['functions_80',['Unfolding functions',['../matrix.html#autotoc_md176',1,'']]],
   ['functions_20types_81',['Summary: Functions &amp; Types',['../langref.html#autotoc_md47',1,'']]],
   ['further_20casts_82',['Further Casts',['../dev.html#autotoc_md23',1,'']]],
   ['fv_5fconsumers_83',['fv_consumers',['../classmim_1_1Def.html#a473ed8269c098e1362bf89c70b87aa76',1,'mim::Def']]]

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['g_0',['g',['../namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985ea972e14800d5980d693f8c886c8fa98ca',1,'mim::plug::core::g'],['../namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3afe718840a7e40a19494d632807084c7b',1,'mim::plug::math::g']]],
-  ['gamma_1',['gamma',['../math.html#autotoc_md153',1,'math.gamma'],['../namespacemim_1_1plug_1_1math.html#aaedd7f208831b780a654632583eed6a0',1,'mim::plug::math::gamma']]],
+  ['gamma_1',['gamma',['../math.html#autotoc_md154',1,'math.gamma'],['../namespacemim_1_1plug_1_1math.html#aaedd7f208831b780a654632583eed6a0',1,'mim::plug::math::gamma']]],
   ['gdb_2',['Valgrind &amp; GDB',['../coding.html#autotoc_md9',1,'']]],
   ['ge_3',['ge',['../namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985eaaeb3ecfb6670cc345339f1e42f9b9122',1,'mim::plug::core::ge'],['../namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a5407a58680c376c074e175207cb55cef',1,'mim::plug::math::ge']]],
   ['generic_4',['Generic',['../namespacemim_1_1plug_1_1mem.html#a7af459a62601d0916fafd0cc0e3f07e9a8045a0a6c688b0635e3caccc408a1446',1,'mim::plug::mem']]],
@@ -16,7 +16,7 @@ var searchData=
   ['get_5fstart_13',['get_start',['../classautomaton_1_1AutomatonBase.html#a5ee7463fbfa2f071ea1deb56490ba8d5',1,'automaton::AutomatonBase']]],
   ['get_5ftransition_14',['get_transition',['../classautomaton_1_1DFANode.html#ac39d84714ae15c34eada796af0e8fe4e',1,'automaton::DFANode']]],
   ['get_5ftransitions_15',['get_transitions',['../classautomaton_1_1NFANode.html#aeb92436243d93c1aad1bc3ac4c4b1adf',1,'automaton::NFANode']]],
-  ['gid_16',['gid',['../refly.html#autotoc_md210',1,'refly.gid'],['../classmim_1_1CFNode.html#a8a82d0b0214338ec4cc6be049c550a34',1,'mim::CFNode::gid()'],['../classmim_1_1Def.html#ac7baf936984bbe032b9e726541e9d870',1,'mim::Def::gid()'],['../namespacemim_1_1plug_1_1refly.html#a88be063a073d9a29cb463cb2486f9aab',1,'mim::plug::refly::gid']]],
+  ['gid_16',['gid',['../refly.html#autotoc_md211',1,'refly.gid'],['../classmim_1_1CFNode.html#a8a82d0b0214338ec4cc6be049c550a34',1,'mim::CFNode::gid()'],['../classmim_1_1Def.html#ac7baf936984bbe032b9e726541e9d870',1,'mim::Def::gid()'],['../namespacemim_1_1plug_1_1refly.html#a88be063a073d9a29cb463cb2486f9aab',1,'mim::plug::refly::gid']]],
   ['gid2def_17',['gid2def',['../classmim_1_1World.html#a1dd8c434960e38a6d6e0252198082c01',1,'mim::World']]],
   ['gideq_18',['GIDEq',['../structmim_1_1GIDEq.html',1,'mim']]],
   ['gidhash_19',['GIDHash',['../structmim_1_1GIDHash.html',1,'mim']]],

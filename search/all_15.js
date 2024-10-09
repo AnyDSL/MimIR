@@ -4,7 +4,7 @@ var searchData=
   ['valgrind_20gdb_1',['Valgrind &amp; GDB',['../coding.html#autotoc_md9',1,'']]],
   ['valid_20programs_2',['Construct Valid Programs',['../passes.html#autotoc_md64',1,'']]],
   ['value_3',['value',['../classmim_1_1ast_1_1InsertExpr.html#ae0d5028a0228ac176021f183a5fd421a',1,'mim::ast::InsertExpr::value()'],['../classmim_1_1ast_1_1LetDecl.html#a543879a7c861b0c63938b39489875d3c',1,'mim::ast::LetDecl::value()'],['../classmim_1_1Vel.html#a59ffba39f07e7923f0ff43ce92e0fa64',1,'mim::Vel::value()'],['../classmim_1_1Pick.html#ae1899f3d8134f48d2b45160249c8cf2f',1,'mim::Pick::value()'],['../classmim_1_1Test.html#ab5821e533aca4aa31ef504522a912ecf',1,'mim::Test::value()'],['../classmim_1_1Insert.html#aec9aab1fd16899f697bc7882d0b6ed06',1,'mim::Insert::value()']]],
-  ['values_4',['Values',['../regex.html#autotoc_md222',1,'']]],
+  ['values_4',['Values',['../regex.html#autotoc_md223',1,'']]],
   ['var_5',['Var',['../classmim_1_1Var.html',1,'mim::Var'],['../namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3a632ac58bdbf4839f76ed8fb6fdb06716',1,'mim::Node::Var'],['../namespacemim.html#a249738da6a953390b70691dd3fe7132ba5a92344ee95acf10c31901b36418be77',1,'mim::Var']]],
   ['var_6',['var',['../classmim_1_1Def.html#a769ef651443230f36a51dd30fa6fe776',1,'mim::Def::var(nat_t a, nat_t i)'],['../classmim_1_1Def.html#a1fda5bc99c75fb8ef207ed0a29e3f3ef',1,'mim::Def::var(nat_t i)'],['../classmim_1_1Def.html#a21e06ce5f345d65ddfde60ab02a210e9',1,'mim::Def::var()'],['../classmim_1_1World.html#a78c568f125999165eb3ac604958981ce',1,'mim::World::var()']]],
   ['var2var_7',['Var2Var',['../namespacemim.html#afe12e59f7ee4253d3b71cd8c0db61d06',1,'mim']]],
