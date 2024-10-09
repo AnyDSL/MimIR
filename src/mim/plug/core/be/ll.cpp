@@ -14,9 +14,10 @@
 
 #include "mim/analyses/cfg.h"
 #include "mim/be/emitter.h"
-#include "mim/plug/core/core.h"
 #include "mim/util/print.h"
 #include "mim/util/sys.h"
+
+#include "mim/plug/core/core.h"
 
 // Lessons learned:
 // * **Always** follow all ops - even if you actually want to ignore one.

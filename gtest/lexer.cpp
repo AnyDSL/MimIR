@@ -2,9 +2,11 @@
 #include <string>
 
 #include <gtest/gtest.h>
+
+#include <mim/driver.h>
+
 #include <mim/ast/ast.h>
 #include <mim/ast/lexer.h>
-#include <mim/driver.h>
 
 using namespace std::literals;
 using namespace mim;

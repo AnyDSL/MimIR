@@ -1,8 +1,9 @@
 #include "mim/plug/affine/pass/lower_for.h"
 
 #include <mim/lam.h>
-#include <mim/plug/mem/mem.h>
 #include <mim/tuple.h>
+
+#include <mim/plug/mem/mem.h>
 
 #include "mim/plug/affine/affine.h"
 

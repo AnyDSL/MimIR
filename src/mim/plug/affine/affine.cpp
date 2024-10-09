@@ -1,10 +1,11 @@
 #include "mim/plug/affine/affine.h"
 
-#include <mim/analyses/scope.h>
 #include <mim/config.h>
+#include <mim/rewrite.h>
+
+#include <mim/analyses/scope.h>
 #include <mim/pass/pass.h>
 #include <mim/pass/pipelinebuilder.h>
-#include <mim/rewrite.h>
 
 #include "mim/plug/affine/pass/lower_for.h"
 

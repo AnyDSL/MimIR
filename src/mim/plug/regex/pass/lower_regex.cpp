@@ -3,7 +3,9 @@
 #include <automaton/dfa.h>
 #include <automaton/dfamin.h>
 #include <automaton/nfa2dfa.h>
+
 #include <mim/def.h>
+
 #include <mim/plug/core/core.h>
 #include <mim/plug/direct/direct.h>
 #include <mim/plug/mem/mem.h>

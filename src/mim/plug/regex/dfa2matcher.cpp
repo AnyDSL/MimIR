@@ -6,6 +6,7 @@
 #include <absl/container/flat_hash_map.h>
 #include <automaton/dfa.h>
 #include <automaton/range_helper.h>
+
 #include <mim/plug/core/core.h>
 #include <mim/plug/mem/mem.h>
 

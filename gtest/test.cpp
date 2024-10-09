@@ -3,10 +3,13 @@
 #include <sstream>
 
 #include <gtest/gtest.h>
-#include <mim/ast/parser.h>
+
 #include <mim/driver.h>
-#include <mim/plug/core/core.h>
 #include <mim/rewrite.h>
+
+#include <mim/ast/parser.h>
+
+#include <mim/plug/core/core.h>
 
 using namespace mim;
 using namespace mim::plug;

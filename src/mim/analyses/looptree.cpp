@@ -4,8 +4,9 @@
 #include <iostream>
 #include <stack>
 
-#include "mim/analyses/cfg.h"
 #include "mim/def.h"
+
+#include "mim/analyses/cfg.h"
 
 /*
  * The implementation is based on Steensgard's algorithm to find loops in irreducible CFGs.

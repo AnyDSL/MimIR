@@ -1,8 +1,9 @@
 #include "mim/pass/scalarize.h"
 
-#include "mim/pass/eta_exp.h"
 #include "mim/rewrite.h"
 #include "mim/tuple.h"
+
+#include "mim/pass/eta_exp.h"
 
 namespace mim {
 

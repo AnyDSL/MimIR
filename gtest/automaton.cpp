@@ -5,10 +5,13 @@
 #include <automaton/nfa.h>
 #include <automaton/nfa2dfa.h>
 #include <gtest/gtest.h>
+
+#include <mim/world.h>
+
 #include <mim/ast/ast.h>
+
 #include <mim/plug/regex/dfa2matcher.h>
 #include <mim/plug/regex/regex2nfa.h>
-#include <mim/world.h>
 
 using namespace automaton;
 using namespace mim;

@@ -3,6 +3,7 @@
 #include <numeric>
 
 #include <automaton/nfa.h>
+
 #include <mim/lam.h>
 #include <mim/world.h>
 

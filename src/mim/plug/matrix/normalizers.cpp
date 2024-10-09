@@ -1,8 +1,9 @@
 #include <iostream>
 
 #include "mim/axiom.h"
-#include "mim/plug/matrix/matrix.h"
 #include "mim/world.h"
+
+#include "mim/plug/matrix/matrix.h"
 
 // TODO: combine map_reduce calls
 

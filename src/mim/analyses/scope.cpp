@@ -2,13 +2,14 @@
 
 #include <algorithm>
 
+#include "mim/rewrite.h"
+#include "mim/world.h"
+
 #include "mim/analyses/cfg.h"
 #include "mim/analyses/domtree.h"
 #include "mim/analyses/looptree.h"
 #include "mim/analyses/schedule.h"
-#include "mim/rewrite.h"
 #include "mim/util/util.h"
-#include "mim/world.h"
 
 namespace mim {
 

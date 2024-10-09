@@ -1,7 +1,9 @@
 #include "mim/plug/clos/phase/clos_conv.h"
 
-#include "mim/analyses/scope.h"
 #include "mim/check.h"
+
+#include "mim/analyses/scope.h"
+
 #include "mim/plug/mem/autogen.h"
 #include "mim/plug/mem/mem.h"
 

@@ -1,10 +1,12 @@
 #include <fstream>
 
-#include <mim/ast/parser.h>
 #include <mim/driver.h>
+
+#include <mim/ast/parser.h>
 #include <mim/pass/optimize.h>
-#include <mim/plug/mem/mem.h>
 #include <mim/util/sys.h>
+
+#include <mim/plug/mem/mem.h>
 
 using namespace mim;
 using namespace mim::plug;

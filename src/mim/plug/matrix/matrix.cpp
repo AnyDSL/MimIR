@@ -1,8 +1,10 @@
 #include "mim/plug/matrix/matrix.h"
 
-#include <mim/pass/pass.h>
-#include <mim/plug/compile/pass/internal_cleanup.h>
 #include <mim/plugin.h>
+
+#include <mim/pass/pass.h>
+
+#include <mim/plug/compile/pass/internal_cleanup.h>
 
 #include "mim/plug/matrix/pass/lower_matrix_highlevel.h"
 #include "mim/plug/matrix/pass/lower_matrix_lowlevel.h"

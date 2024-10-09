@@ -9,10 +9,12 @@
 
 #include "mim/axiom.h"
 #include "mim/def.h"
-#include "mim/plug/regex/regex.h"
 #include "mim/tuple.h"
-#include "mim/util/log.h"
 #include "mim/world.h"
+
+#include "mim/util/log.h"
+
+#include "mim/plug/regex/regex.h"
 
 using Range  = automaton::Range;
 using Ranges = mim::Vector<Range>;

@@ -3,12 +3,13 @@
 #include <fstream>
 #include <memory>
 
+#include "mim/world.h"
+
 #include "mim/analyses/domfrontier.h"
 #include "mim/analyses/domtree.h"
 #include "mim/analyses/looptree.h"
 #include "mim/analyses/scope.h"
 #include "mim/util/util.h"
-#include "mim/world.h"
 
 namespace mim {
 

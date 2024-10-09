@@ -1,4 +1,5 @@
 #include <mim/normalize.h>
+
 #include <mim/plug/math/math.h>
 #include <mim/plug/mem/mem.h>
 
@@ -120,12 +121,11 @@ template<class Id, nat_t w> Res fold(u64 a, [[maybe_unused]] bool nsw, [[maybe_u
     using ST = w2s<w>;
     auto s   = mim::bitcast<ST>(a);
 
-    if constexpr (std::is_same_v<Id, abs>) {
+    if constexpr (std::is_same_v<Id, abs>)
         return std::abs(s);
-    } else {
+    else
         []<bool flag = false>() { static_assert(flag, "missing tag"); }
-        ();
-    }
+    ();
 }
 
 template<class Id> Ref fold(World& world, Ref type, const Def*& a) {

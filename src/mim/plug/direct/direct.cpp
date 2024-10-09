@@ -1,7 +1,8 @@
 #include "mim/plug/direct/direct.h"
 
-#include <mim/pass/pipelinebuilder.h>
 #include <mim/plugin.h>
+
+#include <mim/pass/pipelinebuilder.h>
 
 #include "mim/plug/direct/pass/cps2ds.h"
 #include "mim/plug/direct/pass/ds2cps.h"

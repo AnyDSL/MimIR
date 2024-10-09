@@ -2,9 +2,10 @@
 
 #include <fe/assert.h>
 
+#include "mim/driver.h"
+
 #include "mim/analyses/deptree.h"
 #include "mim/ast/tok.h"
-#include "mim/driver.h"
 #include "mim/util/util.h"
 
 using namespace std::literals;
