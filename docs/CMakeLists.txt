@@ -18,7 +18,7 @@ add_custom_command(
 )
 
 configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/../artwork/logo.svg"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../assets/logo.svg"
     "${MIM_LOGO}"
     COPYONLY)
 

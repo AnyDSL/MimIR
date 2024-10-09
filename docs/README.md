@@ -31,7 +31,7 @@
     </tr>
 </table>
 
-**MimIR** - or **Mim** for short - an extensible compiler intermediate representation that is based upon the [Calculus of Constructions (CoC)](https://en.wikipedia.org/wiki/Calculus_of_constructions).
+**MimIR** - or **Mim** for short - is an extensible compiler intermediate representation that is based upon the [Calculus of Constructions (CoC)](https://en.wikipedia.org/wiki/Calculus_of_constructions).
 This means:
 
 - [pure type system (PTS)](https://en.wikipedia.org/wiki/Pure_type_system)
