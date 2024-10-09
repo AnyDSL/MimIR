@@ -38,7 +38,7 @@ jobs:
           mv ghostscript-10.0.0-linux-x86_64/gs-1000-linux-x86_64 ${HOME}/.local/bin/gs
 
       - name: Configure
-        run: CXX=g++-13 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Debug -DTHORIN_BUILD_DOCS=ON -DDOXYGEN_EXECUTABLE=${{github.workspace}}/doxygen-1.12.0/bin/doxygen
+        run: CXX=g++-13 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Debug -DMIM_BUILD_DOCS=ON -DDOXYGEN_EXECUTABLE=${{github.workspace}}/doxygen-1.12.0/bin/doxygen
 
       - name: Build
         run: cmake --build ${{github.workspace}}/build -v --target docs
