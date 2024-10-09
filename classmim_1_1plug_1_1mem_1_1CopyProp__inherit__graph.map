@@ -1,0 +1,18 @@
+<map id="mim::plug::mem::CopyProp" name="mim::plug::mem::CopyProp">
+<area shape="rect" id="Node000001" title="This FPPass is similar to sparse conditional constant propagation (SCCP)." alt="" coords="68,435,268,460"/>
+<area shape="rect" id="Node000002" href="$classmim_1_1FPPass.html" title=" " alt="" coords="75,345,261,385"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="171,399,171,434,165,434,165,399"/>
+<area shape="rect" id="Node000003" href="$classmim_1_1RWPass.html" title=" " alt="" coords="5,168,197,208"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="116,220,163,344,158,346,111,222"/>
+<area shape="rect" id="Node000004" href="$classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="186,5,275,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="193,39,163,58,135,82,122,102,113,125,105,168,100,167,108,124,117,100,131,78,160,53,190,35"/>
+<area shape="rect" id="Node000005" href="$classmim_1_1RWPass.html" title="Inherit from this class using CRTP, if your Pass does not need state and a fixed&#45;point iteration." alt="" coords="146,80,315,105"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="233,45,233,80,228,80,228,45"/>
+<area shape="rect" id="Node000007" href="$classmim_1_1RWPass.html" title=" " alt="" coords="222,175,402,201"/>
+<area shape="poly" id="edge8_Node000007_Node000004" title=" " alt="" coords="269,35,300,54,329,78,346,101,356,129,356,145,344,163,330,177,326,173,340,160,351,143,351,130,342,104,325,82,297,58,267,39"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="159,113,128,131,116,149,108,169,103,167,111,146,125,127,156,108"/>
+<area shape="poly" id="edge9_Node000007_Node000005" title=" " alt="" coords="252,114,304,173,300,177,248,118"/>
+<area shape="rect" id="Node000006" href="$classmim_1_1FPPass.html" title="Inherit from this class using CRTP, if you do need a Pass with a state and a fixed&#45;point." alt="" coords="207,257,369,283"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="264,293,194,347,191,343,261,289"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="307,215,294,258,289,257,302,213"/>
+</map>

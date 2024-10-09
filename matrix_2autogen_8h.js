@@ -1,0 +1,26 @@
+var matrix_2autogen_8h =
+[
+    [ "MIM_matrix_NORMALIZER_IMPL", "matrix_2autogen_8h.html#acadd20fc3138bb62c7d6bfd37129faf1", null ],
+    [ "constMat", "matrix_2autogen_8h.html#a11b9674b35894ca4f3605791d4783b74", null ],
+    [ "init", "matrix_2autogen_8h.html#af3d33c72062b1db8a1b997ec650a8f3d", null ],
+    [ "insert", "matrix_2autogen_8h.html#a43f6250da3d2391f05e4a545540a2f38", null ],
+    [ "internal_map_reduce_cleanup", "matrix_2autogen_8h.html#a0943b82dc41b6820008e7a6936b08adc", null ],
+    [ "lower_matrix_high_level_map_reduce", "matrix_2autogen_8h.html#a26667b55e4b1b958050cfe9ecbf327fd", null ],
+    [ "lower_matrix_low_level", "matrix_2autogen_8h.html#ae3f0ab7b8527477c358984c01ddbd94c", null ],
+    [ "lower_matrix_medium_level", "matrix_2autogen_8h.html#af206cc10642f27ab0e14c586d512f3d6", null ],
+    [ "map_reduce", "matrix_2autogen_8h.html#a66955a2552e5d88d664a8212aedfe40d", null ],
+    [ "Mat", "matrix_2autogen_8h.html#af6839dbbb5d2ef291479523aafd649d4", null ],
+    [ "prod", "matrix_2autogen_8h.html#a83d01fd34deff3e8ddae753c596038fc", null ],
+    [ "read", "matrix_2autogen_8h.html#ad88476eb54b27ecc6ea9b6656c378f01", null ],
+    [ "shape", "matrix_2autogen_8h.html#a1a46381ed716136bd172a2ea0fd27614", null ],
+    [ "sum", "matrix_2autogen_8h.html#a6c2b2ed70d211b556dfd52f59e9d827b", null ],
+    [ "transpose", "matrix_2autogen_8h.html#a5b14c9f2cfc5a0f1d95a3657b2ec5be3", null ],
+    [ "normalize_insert", "matrix_2autogen_8h.html#a1f9f47d5f5f6ab744e6e947be7232397", null ],
+    [ "normalize_map_reduce", "matrix_2autogen_8h.html#a97c32ec121289eccbbcdf73d3669d583", null ],
+    [ "normalize_prod", "matrix_2autogen_8h.html#a5d343e0b1bc4d2212ff13c2946b7142b", null ],
+    [ "normalize_read", "matrix_2autogen_8h.html#aaa83cf65fe46d10573852519d9376ae4", null ],
+    [ "normalize_shape", "matrix_2autogen_8h.html#a18768ad17afeae39f8dd43f15e59e702", null ],
+    [ "normalize_transpose", "matrix_2autogen_8h.html#ae5d6c09497f6b792a71dd21674b4b932", null ],
+    [ "register_normalizers", "matrix_2autogen_8h.html#a6d735b8748b3f4626e15b3c1b0e64bdd", null ],
+    [ "Plugin_Id", "matrix_2autogen_8h.html#a16779fcb9eddd2e937cd68822b511231", null ]
+];

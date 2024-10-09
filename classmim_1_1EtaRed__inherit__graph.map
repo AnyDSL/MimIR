@@ -1,0 +1,18 @@
+<map id="mim::EtaRed" name="mim::EtaRed">
+<area shape="rect" id="Node000001" title="Performs η&#45;reduction." alt="" coords="103,435,209,460"/>
+<area shape="rect" id="Node000002" href="$classmim_1_1FPPass.html" title=" " alt="" coords="71,345,241,385"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="159,399,159,434,153,434,153,399"/>
+<area shape="rect" id="Node000003" href="$classmim_1_1RWPass.html" title=" " alt="" coords="5,168,181,208"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="107,220,152,344,147,346,102,222"/>
+<area shape="rect" id="Node000004" href="$classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="167,5,257,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="170,39,141,57,117,82,106,103,100,126,95,168,90,168,94,125,101,101,113,78,138,53,168,34"/>
+<area shape="rect" id="Node000005" href="$classmim_1_1RWPass.html" title="Inherit from this class using CRTP, if your Pass does not need state and a fixed&#45;point iteration." alt="" coords="127,80,297,105"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="215,45,215,80,209,80,209,45"/>
+<area shape="rect" id="Node000007" href="$classmim_1_1RWPass.html" title=" " alt="" coords="206,175,386,201"/>
+<area shape="poly" id="edge8_Node000007_Node000004" title=" " alt="" coords="251,35,281,54,310,78,335,108,339,125,336,145,325,163,312,177,308,173,321,160,331,143,334,125,330,111,306,82,278,58,248,39"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="161,113,131,131,115,149,104,169,99,166,111,146,128,127,158,108"/>
+<area shape="poly" id="edge9_Node000007_Node000005" title=" " alt="" coords="233,114,288,173,284,177,229,117"/>
+<area shape="rect" id="Node000006" href="$classmim_1_1FPPass.html" title="Inherit from this class using CRTP, if you do need a Pass with a state and a fixed&#45;point." alt="" coords="193,257,356,283"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="251,293,182,347,178,343,247,289"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="292,214,280,258,275,257,287,213"/>
+</map>

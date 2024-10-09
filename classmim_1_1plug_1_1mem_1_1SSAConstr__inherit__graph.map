@@ -1,0 +1,18 @@
+<map id="mim::plug::mem::SSAConstr" name="mim::plug::mem::SSAConstr">
+<area shape="rect" id="Node000001" title="SSA construction algorithm that promotes slots, loads, and stores to SSA values." alt="" coords="69,435,276,460"/>
+<area shape="rect" id="Node000002" href="$classmim_1_1FPPass.html" title=" " alt="" coords="77,345,269,385"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="175,399,175,434,170,434,170,399"/>
+<area shape="rect" id="Node000003" href="$classmim_1_1RWPass.html" title=" " alt="" coords="5,168,204,208"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="119,220,168,344,163,346,114,222"/>
+<area shape="rect" id="Node000004" href="$classmim_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="192,5,281,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="200,39,170,58,141,82,124,104,114,130,108,168,102,167,109,129,119,101,137,78,167,54,198,35"/>
+<area shape="rect" id="Node000005" href="$classmim_1_1RWPass.html" title="Inherit from this class using CRTP, if your Pass does not need state and a fixed&#45;point iteration." alt="" coords="152,80,321,105"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="239,45,239,80,234,80,234,45"/>
+<area shape="rect" id="Node000007" href="$classmim_1_1RWPass.html" title=" " alt="" coords="228,175,408,201"/>
+<area shape="poly" id="edge8_Node000007_Node000004" title=" " alt="" coords="275,35,306,54,335,78,352,101,362,129,362,145,350,163,336,177,332,173,346,160,357,143,357,130,348,104,331,82,303,58,273,39"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="159,113,129,131,117,149,110,169,105,167,112,146,125,127,156,108"/>
+<area shape="poly" id="edge9_Node000007_Node000005" title=" " alt="" coords="258,114,310,173,306,177,254,118"/>
+<area shape="rect" id="Node000006" href="$classmim_1_1FPPass.html" title="Inherit from this class using CRTP, if you do need a Pass with a state and a fixed&#45;point." alt="" coords="213,257,375,283"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="270,293,199,347,196,343,267,289"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="313,215,300,258,295,257,308,213"/>
+</map>
