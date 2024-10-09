@@ -7,7 +7,7 @@
 We use the following notation:
 
 | Notation        | Meaning                                                                                            |
-|-----------------|----------------------------------------------------------------------------------------------------|
+| --------------- | -------------------------------------------------------------------------------------------------- |
 | `a`             | literally the terminal token `a`                                                                   |
 | [`a``b`]        | matches `a` or `b`                                                                                 |
 | [`a`-`c`]       | matches `a` - `c`                                                                                  |
@@ -18,24 +18,24 @@ We use the following notation:
 
 ## Lexical Structure {#lex}
 
-Thorin files are [UTF-8](https://en.wikipedia.org/wiki/UTF-8) encoded and [lexed](https://en.wikipedia.org/wiki/Lexical_analysis) from left to right.
+Mim files are [UTF-8](https://en.wikipedia.org/wiki/UTF-8) encoded and [lexed](https://en.wikipedia.org/wiki/Lexical_analysis) from left to right.
 
 @note The [maximal munch](https://en.wikipedia.org/wiki/Maximal_munch) strategy resolves any ambiguities in the lexical rules below.
 For Example, `<<<` is lexed as `<<` and `<`.
 
 ### Terminals {#terminals}
 
-The actual *[terminals](https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols)* are specified in the following tables.
+The actual _[terminals](https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols)_ are specified in the following tables.
 
 #### Primary Terminals
 
-The [grammatical rules](#grammar) will directly reference these *primary [terminals](https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols)*.
-*Secondary terminals* are [ASCII](https://en.wikipedia.org/wiki/ASCII)-only tokens that represent the **same** lexical element as its corresponding *primary token*.
+The [grammatical rules](#grammar) will directly reference these _primary [terminals](https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols)_.
+_Secondary terminals_ are [ASCII](https://en.wikipedia.org/wiki/ASCII)-only tokens that represent the **same** lexical element as its corresponding _primary token_.
 For example, the lexer doesn't care, if you use `⊥` or `.bot`.
 Both tokens are identified as `⊥`.
 
 | Primary Terminals               | Secondary Terminals                         | Comment                   |
-|---------------------------------|---------------------------------------------|---------------------------|
+| ------------------------------- | ------------------------------------------- | ------------------------- |
 | `(` `)` `[` `]` `{` `}`         |                                             | delimiters                |
 | `‹` `›` `«` `»`                 | `<<` `>>` `<` `>`                           | UTF-8 delimiters          |
 | `→` `⊥` `⊤` `★` `□` `λ` `Π`     | `->` `.bot` `.top` `*` `.lm` <tt>\|~\|</tt> | further UTF-8 tokens      |
@@ -46,53 +46,53 @@ In addition you can use `⟨`, `⟩`, `⟪`, and `⟫` as an alternative for `�
 
 #### Keywords
 
-In addition the following keywords are *terminals*:
+In addition the following keywords are _terminals_:
 
 | Terminal  | Comment                                                   |
-|-----------|-----------------------------------------------------------|
+| --------- | --------------------------------------------------------- |
 | `.module` | starts a module                                           |
-| `.import` | imports another Thorin file                               |
+| `.import` | imports another Mim file                                  |
 | `.plugin` | like `.import` and additionally loads the compiler plugin |
 | `.ax`     | axiom                                                     |
 | `.let`    | let declaration                                           |
-| `.con`    | [continuation](@ref thorin::Lam) declaration              |
-| `.fun`    | [function](@ref thorin::Lam) declaration                  |
-| `.lam`    | [lambda](@ref thorin::Lam) declaration                    |
+| `.con`    | [continuation](@ref mim::Lam) declaration                 |
+| `.fun`    | [function](@ref mim::Lam) declaration                     |
+| `.lam`    | [lambda](@ref mim::Lam) declaration                       |
 | `.ret`    | ret expression                                            |
-| `.cn`     | [continuation](@ref thorin::Lam) expression               |
-| `.fn`     | [function](@ref thorin::Lam) expression                   |
-| `.lm`     | [lambda](@ref thorin::Lam) expression                     |
-| `.Pi`     | [Pi](@ref thorin::Pi) declaration                         |
-| `.Sigma`  | [Sigma](@ref thorin::Sigma) declaration                   |
+| `.cn`     | [continuation](@ref mim::Lam) expression                  |
+| `.fn`     | [function](@ref mim::Lam) expression                      |
+| `.lm`     | [lambda](@ref mim::Lam) expression                        |
+| `.Pi`     | [Pi](@ref mim::Pi) declaration                            |
+| `.Sigma`  | [Sigma](@ref mim::Sigma) declaration                      |
 | `.extern` | marks function as external                                |
-| `.ins`    | thorin::Insert expression                                 |
+| `.ins`    | mim::Insert expression                                    |
 | `.insert` | alias for `.ins`                                          |
-| `.Nat`    | thorin::Nat                                               |
-| `.Idx`    | thorin::Idx                                               |
-| `.Type`   | thorin::Type                                              |
-| `.Univ`   | thorin::Univ                                              |
+| `.Nat`    | mim::Nat                                                  |
+| `.Idx`    | mim::Idx                                                  |
+| `.Type`   | mim::Type                                                 |
+| `.Univ`   | mim::Univ                                                 |
 | `.ff`     | alias for `0₂`                                            |
 | `.tt`     | alias for `1₂`                                            |
 
-| Terminal   | Alias           | Terminal | Alias        |
-|------------|-----------------|----------|--------------|
-| `.tt` `ff` | `0₂` `1₂`       | `.Bool`  | `.Idx .i1`   |
-| `.i1`      | `2`             | `.I1`    | `.Idx .i1`   |
-| `.i8`      | `0x100`         | `.I8`    | `.Idx .i8`   |
-| `.i16`     | `0x1'0000`      | `.I16`   | `.Idx .i16`  |
-| `.i32`     | `0x1'0000'0000` | `.I32`   | `.Idx .i32`  |
-| `.i64`     | `0`             | `.I64`   | `.Idx .i64`  |
+| Terminal   | Alias           | Terminal | Alias       |
+| ---------- | --------------- | -------- | ----------- |
+| `.tt` `ff` | `0₂` `1₂`       | `.Bool`  | `.Idx .i1`  |
+| `.i1`      | `2`             | `.I1`    | `.Idx .i1`  |
+| `.i8`      | `0x100`         | `.I8`    | `.Idx .i8`  |
+| `.i16`     | `0x1'0000`      | `.I16`   | `.Idx .i16` |
+| `.i32`     | `0x1'0000'0000` | `.I32`   | `.Idx .i32` |
+| `.i64`     | `0`             | `.I64`   | `.Idx .i64` |
 
 All keywords start with a `.` to prevent name clashes with identifiers.
 
 #### Other Terminals
 
-The following *terminals* comprise more complicated patterns:
+The following _terminals_ comprise more complicated patterns:
 
 | Terminal      | Regular Expression                   | Comment                                                                                           |
-|---------------|--------------------------------------|---------------------------------------------------------------------------------------------------|
+| ------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------- |
 | 𝖨             | sym                                  | identifier                                                                                        |
-| A             | `%` sym `.` sym (`.` sym)?           | [Annex](@ref thorin::Annex) name                                                                  |
+| A             | `%` sym `.` sym (`.` sym)?           | [Annex](@ref mim::Annex) name                                                                     |
 | L             | dec+                                 | unsigned decimal literal                                                                          |
 | L             | 0b bin+                              | unsigned binary literal                                                                           |
 | L             | 0o oct+                              | unsigned octal literal                                                                            |
@@ -110,12 +110,12 @@ The following *terminals* comprise more complicated patterns:
 | X<sub>n</sub> | dec+ sub+<sub>n</sub>                | index literal of type `.Idx n`                                                                    |
 | X<sub>n</sub> | dec+ `_` dec+<sub>n</sub>            | index literal of type `.Idx n`                                                                    |
 | C             | <tt>'</tt>(a \| esc)<tt>'</tt>       | character literal; a ∊ [ASCII](https://en.wikipedia.org/wiki/ASCII) ∖ {`\`, <tt>'</tt>}           |
-| S             | <tt>\"</tt>(a \| esc)*<tt>\"</tt>    | string literal; a ∊ [ASCII](https://en.wikipedia.org/wiki/ASCII) ∖ {`\`, <tt>"</tt>}              |
+| S             | <tt>\"</tt>(a \| esc)\*<tt>\"</tt>   | string literal; a ∊ [ASCII](https://en.wikipedia.org/wiki/ASCII) ∖ {`\`, <tt>"</tt>}              |
 
 The previous table resorts to the following definitions as shorthand:
 
 | Name | Definition                                                            | Comment                                         |
-|------|-----------------------------------------------------------------------|-------------------------------------------------|
+| ---- | --------------------------------------------------------------------- | ----------------------------------------------- |
 | 0b   | `0` \[ `b``B` \]                                                      | prefix for binary literals                      |
 | 0o   | `0` \[ `o``O` \]                                                      | prefix for octal literals                       |
 | 0x   | `0` \[ `x``X` \]                                                      | prefix for hexadecimal literals                 |
@@ -130,28 +130,29 @@ The previous table resorts to the following definitions as shorthand:
 | sym  | \[ `_``a`-`z``A`-`Z` \]\[ `.``_``0`-`9``a`-`z``A`-`Z` \]\*            | symbol                                          |
 | esc  | \[ <tt>\'</tt>`\"``\0``\a`<tt>\\b</tt>`\f``\n``\r`<tt>\\t</tt>`\v` \] | escape sequences                                |
 
-So, *sym* refers to the shorthand rule while *𝖨* refers to the *terminal* that is identical to *sym*.
-However, the terminal *A* also uses the shorthand rule *sym*.
+So, _sym_ refers to the shorthand rule while _𝖨_ refers to the _terminal_ that is identical to _sym_.
+However, the terminal _A_ also uses the shorthand rule _sym_.
 
 ### Comments
 
 In addition, the following comments are available:
-* `/* ... */`: multi-line comment
-* `//`: single-line comment
-* `///`: single-line comment for [Markdown](https://www.doxygen.nl/manual/markdown.html) [output](@ref cli):
-    - Single-line `/// xxx` comments will put `xxx` directly into the Markdown output.
-        You can put an optional space after the `///` that will be elided in the Markdown output.
-    - Everything else will be put verbatim within a [fenced code block](https://www.doxygen.nl/manual/markdown.html#md_fenced).
+
+- `/* ... */`: multi-line comment
+- `//`: single-line comment
+- `///`: single-line comment for [Markdown](https://www.doxygen.nl/manual/markdown.html) [output](@ref cli):
+  - Single-line `/// xxx` comments will put `xxx` directly into the Markdown output.
+    You can put an optional space after the `///` that will be elided in the Markdown output.
+  - Everything else will be put verbatim within a [fenced code block](https://www.doxygen.nl/manual/markdown.html#md_fenced).
 
 ## Grammar {#grammar}
 
-Thorin's grammar is defined as a [context-free grammar](https://en.wikipedia.org/wiki/Context-free_grammar) that consists of the *terminals* defined [above](#terminals) as well as the *nonterminals* and *productions* defined below.
+Mim's grammar is defined as a [context-free grammar](https://en.wikipedia.org/wiki/Context-free_grammar) that consists of the _terminals_ defined [above](#terminals) as well as the _nonterminals_ and _productions_ defined below.
 The start symbol is "m" (module).
 
 The follwing tables summarizes the main nonterminals:
 
 | Nonterminal | Meaning                         |
-|-------------|---------------------------------|
+| ----------- | ------------------------------- |
 | m           | [module](@ref module)           |
 | d           | [declaration](@ref decl)        |
 | p           | `()`-style [pattern](@ref ptrn) |
@@ -162,25 +163,25 @@ The following tables comprise all production rules:
 
 ### Module {#module}
 
-| LHS | RHS             | Comment | Thorin Class                |
-|-----|-----------------|---------|-----------------------------|
-| m   | dep\* d\*       | module  | [World](@ref thorin::World) |
-| dep | `.import` S `;` | import  |                             |
-| dep | `.plugin` S `;` | plugin  |                             |
+| LHS | RHS             | Comment | Mim Class                |
+| --- | --------------- | ------- | ------------------------ |
+| m   | dep\* d\*       | module  | [World](@ref mim::World) |
+| dep | `.import` S `;` | import  |                          |
+| dep | `.plugin` S `;` | plugin  |                          |
 
 ### Declarations {#decl}
 
-| LHS | RHS                                                                                                                                                  | Comment                              | Thorin Class                          |
-|-----|------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|---------------------------------------|
-| d   | `.let`   (p \| A)  `=` e `;`                                                                                                                         | let                                  | -                                     |
-| d   | `.lam`   n (`.`? p)+ (`:` e<sub>codom</sub>)? ( `=` d\* e)? `;`                                                                                      | lambda declaration<sup>s</sup>       | [Lam](@ref thorin::Lam)               |
-| d   | `.con`   n (`.`? p)+                       ( `=` d\* e)? `;`                                                                                         | continuation declaration<sup>s</sup> | [Lam](@ref thorin::Lam)               |
-| d   | `.fun`   n (`.`? p)+ (`:` e<sub>ret</sub>)?   ( `=` d\* e)? `;`                                                                                      | function declaration<sup>s</sup>     | [Lam](@ref thorin::Lam)               |
-| d   | `.Pi`    n (`:` e<sub>type</sub>)? (`=` e)? `;`                                                                                                      | Pi declaration                       | [Pi](@ref thorin::Pi)                 |
-| d   | `.Sigma` n (`:` e<sub>type</sub> )? (`,` L<sub>arity</sub>)? (`=` b<sub>[ ]</sub>)? `;`                                                              | sigma declaration                    | [Sigma](@ref thorin::Sigma)           |
-| d   | `.ax`    A `:` e<sub>type</sub> (`(` sa `,` ... `,` sa `)`)? <br> (`,` 𝖨<sub>normalizer</sub>)? (`,` L<sub>curry</sub>)? (`,` L<sub>trip</sub>)? `;` | axiom                                | [Axiom](@ref thorin::Axiom)           |
-| n   | 𝖨 \| A                                                                                                                                               | identifier or annex name             | `fe::Sym`/[Annex](@ref thorin::Annex) |
-| sa  | 𝖨 (`=` 𝖨 `,` ... `,` 𝖨)?                                                                                                                             | subtag with aliases                  |                                       |
+| LHS | RHS                                                                                                                                               | Comment                              | Mim Class                          |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ | ---------------------------------- |
+| d   | `.let` (p \| A) `=` e `;`                                                                                                                         | let                                  | -                                  |
+| d   | `.lam` n (`.`? p)+ (`:` e<sub>codom</sub>)? ( `=` d\* e)? `;`                                                                                     | lambda declaration<sup>s</sup>       | [Lam](@ref mim::Lam)               |
+| d   | `.con` n (`.`? p)+ ( `=` d\* e)? `;`                                                                                                              | continuation declaration<sup>s</sup> | [Lam](@ref mim::Lam)               |
+| d   | `.fun` n (`.`? p)+ (`:` e<sub>ret</sub>)? ( `=` d\* e)? `;`                                                                                       | function declaration<sup>s</sup>     | [Lam](@ref mim::Lam)               |
+| d   | `.Pi` n (`:` e<sub>type</sub>)? (`=` e)? `;`                                                                                                      | Pi declaration                       | [Pi](@ref mim::Pi)                 |
+| d   | `.Sigma` n (`:` e<sub>type</sub> )? (`,` L<sub>arity</sub>)? (`=` b<sub>[ ]</sub>)? `;`                                                           | sigma declaration                    | [Sigma](@ref mim::Sigma)           |
+| d   | `.ax` A `:` e<sub>type</sub> (`(` sa `,` ... `,` sa `)`)? <br> (`,` 𝖨<sub>normalizer</sub>)? (`,` L<sub>curry</sub>)? (`,` L<sub>trip</sub>)? `;` | axiom                                | [Axiom](@ref mim::Axiom)           |
+| n   | 𝖨 \| A                                                                                                                                            | identifier or annex name             | `fe::Sym`/[Annex](@ref mim::Annex) |
+| sa  | 𝖨 (`=` 𝖨 `,` ... `,` 𝖨)?                                                                                                                          | subtag with aliases                  |                                    |
 
 @note An elided type of a `.Pi` or `.Sigma` declaration defaults to `*`.
 
@@ -189,7 +190,7 @@ The following tables comprise all production rules:
 Patterns allow you to decompose a value into its components like in [Standard ML](https://en.wikibooks.org/wiki/Standard_ML_Programming/Types#Tuples) or other functional languages.
 
 | LHS             | RHS                                                                  | Comment                             |
-|-----------------|----------------------------------------------------------------------|-------------------------------------|
+| --------------- | -------------------------------------------------------------------- | ----------------------------------- |
 | p               | <tt>\`</tt>? 𝖨 (`:` e<sub>type</sub> )?                              | identifier `()`-pattern             |
 | p               | (<tt>\`</tt>? 𝖨 `::`)? `(` d\* (p \| g) `,` ... `,` d\* (p \| g) `)` | `()`-`()`-tuple pattern<sup>s</sup> |
 | p               | (<tt>\`</tt>? 𝖨 `::`)? b<sub>[ ]</sub>                               | `[]`-`()`-tuple pattern             |
@@ -201,34 +202,41 @@ Patterns allow you to decompose a value into its components like in [Standard ML
 #### ()-style vs []-style
 
 There are
-* p: *parenthesis-style* patterns (`()`-style), and
-* b: *bracket-style patterns* (`[]`-style) .
+
+- p: _parenthesis-style_ patterns (`()`-style), and
+- b: _bracket-style patterns_ (`[]`-style) .
 
 The main difference is that
-* `(a, b, c)` means `(a: ?, b: ?, c: ?)` whereas
-* `[a, b, c]` means `[_: a, _: c, _: d]` while
-* `(a: A, b: B, c: C)` is the same as `[a: A, b: B, C: C]`.
+
+- `(a, b, c)` means `(a: ?, b: ?, c: ?)` whereas
+- `[a, b, c]` means `[_: a, _: c, _: d]` while
+- `(a: A, b: B, c: C)` is the same as `[a: A, b: B, C: C]`.
 
 You **can** switch from a `()`-style pattern to a `[]`-pattern but not vice versa.
 For this reason there is no rule for a `()`-`[]`-pattern.
 
 #### Groups
 
-Tuple patterns allow for *groups*:
-* `(a b c: .Nat, d e: .Bool)` means `(a: .Nat, b: .Nat, c: .Nat, d: .Bool, e: .Bool)`.
-* `[a b c: .Nat, d e: .Bool]` means `[a: .Nat, b: .Nat, c: .Nat, d: .Bool, e: .Bool]`.
+Tuple patterns allow for _groups_:
+
+- `(a b c: .Nat, d e: .Bool)` means `(a: .Nat, b: .Nat, c: .Nat, d: .Bool, e: .Bool)`.
+- `[a b c: .Nat, d e: .Bool]` means `[a: .Nat, b: .Nat, c: .Nat, d: .Bool, e: .Bool]`.
 
 You can introduce an optional name for the whole tuple pattern:
+
 ```rust
 .let abc::(a, b, c) = (1, 2, 3);
 ```
+
 This will bind
-* `a` to `1`,
-* `b` to `2`,
-* `c` to `3`, and
-* `abc` to `(1, 2, 3)`.
+
+- `a` to `1`,
+- `b` to `2`,
+- `c` to `3`, and
+- `abc` to `(1, 2, 3)`.
 
 Here is another example:
+
 ```rust
 Π.Tas::[T: *, as: .Nat][%mem.M, %mem.Ptr Tas] → [%mem.M, T]
 ```
@@ -237,6 +245,7 @@ Here is another example:
 
 Finally, you can put a <tt>\`</tt> in front of an identifier of a `()`-style pattern to (potentially) rebind a name to a different value.
 This is particularly useful, when dealing with memory:
+
 ```rust
 .let (`mem, ptr) = %mem.alloc (I32, 0) mem;
 .let `mem        = %mem.store (mem, ptr, 23:I32);
@@ -247,86 +256,92 @@ This is particularly useful, when dealing with memory:
 
 #### Kinds & Builtin Types
 
-| LHS | RHS       | Comment                        | Thorin Class              |
-|-----|-----------|--------------------------------|---------------------------|
-| e   | `.Univ`   | universe: type of a type level | [Univ](@ref thorin::Univ) |
-| e   | `.Type` e | type of level e                | [Type](@ref thorin::Type) |
-| e   | `*`       | alias for `.Type (0:.Univ)`    | [Type](@ref thorin::Type) |
-| e   | `□`       | alias for `.Type (1:.Univ)`    | [Type](@ref thorin::Type) |
-| e   | `.Nat`    | natural number                 | [Nat](@ref thorin::Nat)   |
-| e   | `.Idx`    | builtin of type `.Nat → *`     | [Idx](@ref thorin::Idx)   |
-| e   | `.Bool`   | alias for `.Bool`              | [Idx](@ref thorin::Idx)   |
+| LHS | RHS       | Comment                        | Mim Class              |
+| --- | --------- | ------------------------------ | ---------------------- |
+| e   | `.Univ`   | universe: type of a type level | [Univ](@ref mim::Univ) |
+| e   | `.Type` e | type of level e                | [Type](@ref mim::Type) |
+| e   | `*`       | alias for `.Type (0:.Univ)`    | [Type](@ref mim::Type) |
+| e   | `□`       | alias for `.Type (1:.Univ)`    | [Type](@ref mim::Type) |
+| e   | `.Nat`    | natural number                 | [Nat](@ref mim::Nat)   |
+| e   | `.Idx`    | builtin of type `.Nat → *`     | [Idx](@ref mim::Idx)   |
+| e   | `.Bool`   | alias for `.Bool`              | [Idx](@ref mim::Idx)   |
 
-#### Literals & Co.
+#### Literals & Co
 
-| LHS | RHS                         | Comment                              | Thorin Class                          |
-|-----|-----------------------------|--------------------------------------|---------------------------------------|
-| e   | L (`:` e<sub>type</sub>)?   | literal                              | [Lit](@ref thorin::Lit)               |
-| e   | X<sub>n</sub>               | literal of type `.Idx n`             | [Lit](@ref thorin::Lit)               |
-| e   | `.ff`                       | alias for `0_2`                      | [Lit](@ref thorin::Lit)               |
-| e   | `.tt`                       | alias for `1_2`                      | [Lit](@ref thorin::Lit)               |
-| e   | C                           | character literal of type `.I8` | [Lit](@ref thorin::Lit)               |
-| e   | S                           | string tuple of type `«n; .I8»` | [Tuple](@ref thorin::Tuple)           |
-| e   | `⊥` (`:` e<sub>type</sub>)? | bottom                               | [Bot](@ref thorin::Bot)               |
-| e   | `⊤` (`:` e<sub>type</sub>)? | top                                  | [Top](@ref thorin::Top)               |
-| e   | n                           | identifier or annex name             | `fe::Sym`/[Annex](@ref thorin::Annex) |
-| e   | `{` d\* e `}`               | block<sup>s</sup>                    | -                                     |
+| LHS | RHS                         | Comment                         | Mim Class                          |
+| --- | --------------------------- | ------------------------------- | ---------------------------------- |
+| e   | L (`:` e<sub>type</sub>)?   | literal                         | [Lit](@ref mim::Lit)               |
+| e   | X<sub>n</sub>               | literal of type `.Idx n`        | [Lit](@ref mim::Lit)               |
+| e   | `.ff`                       | alias for `0_2`                 | [Lit](@ref mim::Lit)               |
+| e   | `.tt`                       | alias for `1_2`                 | [Lit](@ref mim::Lit)               |
+| e   | C                           | character literal of type `.I8` | [Lit](@ref mim::Lit)               |
+| e   | S                           | string tuple of type `«n; .I8»` | [Tuple](@ref mim::Tuple)           |
+| e   | `⊥` (`:` e<sub>type</sub>)? | bottom                          | [Bot](@ref mim::Bot)               |
+| e   | `⊤` (`:` e<sub>type</sub>)? | top                             | [Top](@ref mim::Top)               |
+| e   | n                           | identifier or annex name        | `fe::Sym`/[Annex](@ref mim::Annex) |
+| e   | `{` d\* e `}`               | block<sup>s</sup>               | -                                  |
 
 @note An elided type of
-* a literal defaults to `.Nat`,
-* a bottom/top defaults to `*`.
+
+- a literal defaults to `.Nat`,
+- a bottom/top defaults to `*`.
 
 #### Functions
 
-| LHS | RHS                                                            | Comment                                        | Thorin Class            |
-|-----|----------------------------------------------------------------|------------------------------------------------|-------------------------|
-| e   | e<sub>dom</sub> `→` e<sub>codom</sub>                          | function type                                  | [Pi](@ref thorin::Pi)   |
-| e   | `Π`   `.`? b (`.`? b<sub>[ ]</sub>)\* (`:` e<sub>codom</sub>)? | dependent function type<sup>s</sup>            | [Pi](@ref thorin::Pi)   |
-| e   | `.Cn` `.`? b (`.`? b<sub>[ ]</sub>)\*                          | continuation type<sup>s</sup>                  | [Pi](@ref thorin::Pi)   |
-| e   | `.Fn` `.`? b (`.`? b<sub>[ ]</sub>)\* (`:` e<sub>ret</sub>)?   | returning continuation type<sup>s</sup>        | [Pi](@ref thorin::Pi)   |
-| e   | `λ`   (`.`? p)+ (`→` e<sub>codom</sub>)? `=` d\* e             | lambda expression<sup>s</sup>                  | [Lam](@ref thorin::Lam) |
-| e   | `.cn` (`.`? p)+                          `=` d\* e             | continuation expression<sup>s</sup>            | [Lam](@ref thorin::Lam) |
-| e   | `.fn` (`.`? p)+ (`→` e<sub>codom</sub>)? `=` d\* e             | function expression<sup>s</sup>                | [Lam](@ref thorin::Lam) |
-| e   | e e                                                            | application                                    | [App](@ref thorin::App) |
-| e   | e `@` e                                                        | application making implicit arguments explicit | [App](@ref thorin::App) |
-| e   | `.ret` p `=` e `$` e `;` d\* e                                 | ret expresison                                 | [App](@ref thorin::App) |
+| LHS | RHS                                                          | Comment                                        | Mim Class            |
+| --- | ------------------------------------------------------------ | ---------------------------------------------- | -------------------- |
+| e   | e<sub>dom</sub> `→` e<sub>codom</sub>                        | function type                                  | [Pi](@ref mim::Pi)   |
+| e   | `Π` `.`? b (`.`? b<sub>[ ]</sub>)\* (`:` e<sub>codom</sub>)? | dependent function type<sup>s</sup>            | [Pi](@ref mim::Pi)   |
+| e   | `.Cn` `.`? b (`.`? b<sub>[ ]</sub>)\*                        | continuation type<sup>s</sup>                  | [Pi](@ref mim::Pi)   |
+| e   | `.Fn` `.`? b (`.`? b<sub>[ ]</sub>)\* (`:` e<sub>ret</sub>)? | returning continuation type<sup>s</sup>        | [Pi](@ref mim::Pi)   |
+| e   | `λ` (`.`? p)+ (`→` e<sub>codom</sub>)? `=` d\* e             | lambda expression<sup>s</sup>                  | [Lam](@ref mim::Lam) |
+| e   | `.cn` (`.`? p)+ `=` d\* e                                    | continuation expression<sup>s</sup>            | [Lam](@ref mim::Lam) |
+| e   | `.fn` (`.`? p)+ (`→` e<sub>codom</sub>)? `=` d\* e           | function expression<sup>s</sup>                | [Lam](@ref mim::Lam) |
+| e   | e e                                                          | application                                    | [App](@ref mim::App) |
+| e   | e `@` e                                                      | application making implicit arguments explicit | [App](@ref mim::App) |
+| e   | `.ret` p `=` e `$` e `;` d\* e                               | ret expresison                                 | [App](@ref mim::App) |
 
 #### Tuples
 
-| LHS | RHS                                                                           | Comment               | Thorin Class                    |
-|-----|-------------------------------------------------------------------------------|-----------------------|---------------------------------|
-| e   | b<sub>[ ]</sub>                                                               | sigma                 | [Sigma](@ref thorin::Sigma)     |
-| e   | `«` s `;` e<sub>body</sub>`»`                                                 | array<sup>s</sup>     | [Arr](@ref thorin::Arr)         |
-| e   | `(` e<sub>0</sub> `,` ... `,` e<sub>n-1</sub>` )` (`:` e<sub>type</sub>)?     | tuple                 | [Tuple](@ref thorin::Tuple)     |
-| e   | `‹` s `;` e<sub>body</sub>`›`                                                 | pack<sup>s</sup>      | [Pack](@ref thorin::Pack)       |
-| e   | e `#` e<sub>index</sub>                                                       | extract               | [Extract](@ref thorin::Extract) |
-| e   | e `#` 𝖨                                                                       | extract via field "𝖨" | [Extract](@ref thorin::Extract) |
-| e   | `.ins` `(` e<sub>tuple</sub> `,` e<sub>index</sub> `,` e<sub>value</sub> ` )` | insert                | [Insert](@ref thorin::Insert)   |
-| s   | e<sub>shape</sub> \| S `:` e<sub>shape</sub>                                  | shape                 | -                               |
+| LHS | RHS                                                                          | Comment               | Mim Class                    |
+| --- | ---------------------------------------------------------------------------- | --------------------- | ---------------------------- |
+| e   | b<sub>[ ]</sub>                                                              | sigma                 | [Sigma](@ref mim::Sigma)     |
+| e   | `«` s `;` e<sub>body</sub>`»`                                                | array<sup>s</sup>     | [Arr](@ref mim::Arr)         |
+| e   | `(` e<sub>0</sub> `,` ... `,` e<sub>n-1</sub>`)` (`:` e<sub>type</sub>)?     | tuple                 | [Tuple](@ref mim::Tuple)     |
+| e   | `‹` s `;` e<sub>body</sub>`›`                                                | pack<sup>s</sup>      | [Pack](@ref mim::Pack)       |
+| e   | e `#` e<sub>index</sub>                                                      | extract               | [Extract](@ref mim::Extract) |
+| e   | e `#` 𝖨                                                                      | extract via field "𝖨" | [Extract](@ref mim::Extract) |
+| e   | `.ins` `(` e<sub>tuple</sub> `,` e<sub>index</sub> `,` e<sub>value</sub> `)` | insert                | [Insert](@ref mim::Insert)   |
+| s   | e<sub>shape</sub> \| S `:` e<sub>shape</sub>                                 | shape                 | -                            |
 
 ### Precedence
 
 Expressions nesting is disambiguated according to the following precedence table (from strongest to weakest binding):
 
-| Level | Operator   | Description                                    | Associativity |
-|-------|------------|------------------------------------------------|---------------|
-| 1     | L `:` e    | type ascription of a literal                   | -             |
-| 2     | e `#` e    | extract                                        | left-to-right |
-| 3     | e e        | application                                    | left-to-right |
-| 3     | e `@` e    | application making implicit arguments explicit | left-to-right |
-| 4     | `Π` b      | domain of a dependent function type            | -             |
-| 5     | e `→` e    | function type                                  | right-to-left |
+| Level | Operator | Description                                    | Associativity |
+| ----- | -------- | ---------------------------------------------- | ------------- |
+| 1     | L `:` e  | type ascription of a literal                   | -             |
+| 2     | e `#` e  | extract                                        | left-to-right |
+| 3     | e e      | application                                    | left-to-right |
+| 3     | e `@` e  | application making implicit arguments explicit | left-to-right |
+| 4     | `Π` b    | domain of a dependent function type            | -             |
+| 5     | e `→` e  | function type                                  | right-to-left |
 
 @note The domain of a dependent function type binds slightly stronger than `→`.
 This has the effect that
+
 ```rust
 Π T: * → T → T
 ```
+
 has the expected binding like this:
+
 ```rust
 (Π T: *) → (T → T)
 ```
+
 Otherwise, `→` would be consumed by the domain:
+
 ```rust
 Π T: (* → (T → T)) ↯
 ```
@@ -336,25 +351,28 @@ Otherwise, `→` would be consumed by the domain:
 The following table summarizes the different tokens used for functions declarations, expressions, and types:
 
 | Declaration | Expression     | Type                    |
-|-------------|----------------|-------------------------|
+| ----------- | -------------- | ----------------------- |
 | `.lam`      | `.lm` <br> `λ` | <tt>\|~\|</tt> <br> `Π` |
 | `.con`      | `.cn`          | `.Cn`                   |
 | `.fun`      | `.fn`          | `.Fn`                   |
 
 ### Declarations
 
-The following function *declarations* are all equivalent:
+The following function _declarations_ are all equivalent:
+
 ```rust
 .lam f(T: *)((x y: T), return: T → ⊥)@(.ff): ⊥ = return x;
 .con f(T: *)((x y: T), return: .Cn T)          = return x;
 .fun f(T: *) (x y: T): T                       = return x;
 ```
+
 Note that all partial evaluation filters default to `.tt` except for `.con`/`.cn`/`.fun`/`.fn`.
 
 ### Expressions
 
-The following function *expressions* are all equivalent.
-What is more, since they are bound by a *let declaration*, they have the exact same effect as the function *declarations* above:
+The following function _expressions_ are all equivalent.
+What is more, since they are bound by a _let declaration_, they have the exact same effect as the function _declarations_ above:
+
 ```rust
 .let f =   λ (T: *)((x y: T), return: T → ⊥)@(.ff): ⊥ = return x;
 .let f = .lm (T: *)((x y: T), return: T → ⊥)      : ⊥ = return x;
@@ -365,6 +383,7 @@ What is more, since they are bound by a *let declaration*, they have the exact s
 ### Applications
 
 The following expressions for applying `f` are also equivalent:
+
 ```rust
 f .Nat ((23, 42), .cn res: .Nat = use(res))
 .ret res = f .Nat $ (23, 42); use(res)
@@ -373,6 +392,7 @@ f .Nat ((23, 42), .cn res: .Nat = use(res))
 ### Function Types
 
 Finally, the following function types are all equivalent and denote the type of `f` above.
+
 ```rust
  Π  [T:*][[T, T], T → ⊥] → ⊥
 .Cn [T:*][[T, T], .Cn T]
@@ -381,8 +401,8 @@ Finally, the following function types are all equivalent and denote the type of 
 
 ## Scoping
 
-Thorin uses [_lexical scoping_](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scope) where all names live within the same namespace - with a few exceptions noted below.
-@note The grammar tables above also indiciate which constructs open new scopes (and close them again) with <b>this<sup>s</sup></b> annotation in the *Comments* column.
+Mim uses [_lexical scoping_](<https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scope>) where all names live within the same namespace - with a few exceptions noted below.
+@note The grammar tables above also indiciate which constructs open new scopes (and close them again) with <b>this<sup>s</sup></b> annotation in the _Comments_ column.
 
 ### Underscore
 
@@ -393,15 +413,20 @@ Hence, using the symbol `_` will always result in a scoping error.
 ### Pis
 
 @note **Only**
+
 ```rust
 Π x: e → e
 ```
+
 introduces a new scope whereas
+
 ```rust
 x: e → e
 ```
+
 is a syntax error.
 If the variable name of a Pi's domain is elided and the domain is a sigma, its elements will be imported into the Pi's scope to make these elements available in the Pi's codomain:
+
 ```rust
 Π [T: *, U: *] → [T, U]
 ```
@@ -417,11 +442,14 @@ Named elements of mutable sigmas are available for extracts/inserts.
 @note
 These names take precedence over the usual scope.
 In the following example, `i` refers to the first element `i` of `X` and **not** to the `i` introduced via `.let`:
+
 ```rust
 .let i = 1_2;
 Π X: [i: .Nat, j: .Nat] → f X#i;
 ```
+
 Use parentheses to refer to the `.let`-bounded `i`:
+
 ```rust
 .let i = 1_2;
 Π X: [i: .Nat, j: .Nat] → f X#(i);

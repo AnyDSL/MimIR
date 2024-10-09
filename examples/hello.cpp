@@ -1,15 +1,15 @@
 #include <fstream>
 
-#include <thorin/driver.h>
+#include <mim/driver.h>
 
-#include <thorin/ast/parser.h>
-#include <thorin/pass/optimize.h>
-#include <thorin/util/sys.h>
+#include <mim/ast/parser.h>
+#include <mim/pass/optimize.h>
+#include <mim/util/sys.h>
 
-#include <thorin/plug/mem/mem.h>
+#include <mim/plug/mem/mem.h>
 
-using namespace thorin;
-using namespace thorin::plug;
+using namespace mim;
+using namespace mim::plug;
 
 int main(int, char**) {
     try {

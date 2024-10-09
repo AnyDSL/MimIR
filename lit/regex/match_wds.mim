@@ -1,0 +1,23 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %mim %s -o - --output-ll %t.ll | FileCheck %s
+// RUN: clang %t.ll -o %t -Wno-override-module
+// RUN: %t "g1 "; test $? -eq 1
+
+.plugin mem;
+.plugin core;
+.plugin regex;
+.plugin direct;
+
+.let Top = ⊤:.Nat;
+.let re = %regex.conj 2 (%regex.cls.w, %regex.conj 2 (%regex.cls.d, %regex.cls.s));
+
+.con .extern main[mem: %mem.M, argc: .I32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), exit : .Cn [%mem.M, .I32]] =
+    (exit, match_argument) # (%core.icmp.ug (argc, 1I32)) (mem, 0I32)
+    .where
+        .con match_argument[mem: %mem.M, .I32] =
+            .let arg1 = %mem.lea (Top, ‹Top; %mem.Ptr («⊤:.Nat; .I8», 0)›, 0) (argv, 1I32);
+            .let (`mem, to_match) = %mem.load (mem, arg1);
+            .let (`mem, matched, pos) = re (mem, to_match, 0:(.Idx Top));
+            exit (mem, %core.conv.u .i32 matched);
+    .end;
+// CHECK-NOT: %regex.

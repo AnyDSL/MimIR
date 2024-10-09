@@ -1,0 +1,4 @@
+// RUN: rm -f %t.ll
+// RUN: %mim %s
+
+.ax %foo.bar: [[.Nat, .Nat] -> .Nat];

@@ -1,0 +1,5 @@
+// RUN: %mim %s -o - | FileCheck %s
+
+.lam .extern f x: .Nat : .Nat = x;
+
+// CHECK-DAG: .lam .extern f x_{{[0-9]+}}: .Nat: .Nat =

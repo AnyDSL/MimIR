@@ -1,0 +1,12 @@
+add_mim_plugin(clos
+    SOURCES
+        clos.cpp
+        normalizers.cpp
+        pass/branch_clos_elim.cpp
+        pass/clos2sjlj.cpp
+        pass/clos_conv_prep.cpp
+        pass/lower_typed_clos_prep.cpp
+        phase/clos_conv.cpp
+        phase/lower_typed_clos.cpp
+    INSTALL
+)

@@ -1,0 +1,15 @@
+// RUN: rm -f %t.ll
+// RUN: %mim %s --output-ll %t.ll --output-mim - | FileCheck %s
+
+.plugin core;
+.plugin matrix;
+
+.con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I8, 0), 0), return : .Cn [%mem.M, .I32]] =
+    .let MT = (2, (3, 5), .I32);
+    .let c = 5I32;
+    .let (`mem, m) = %matrix.constMat MT (mem,c);
+    .let d = %matrix.shape MT (m, 0_2);
+    .let e = %core.bitcast .I32 d;
+    return (mem, e);
+
+// CHECK-DAG: return{{.*}}3{{.*}}

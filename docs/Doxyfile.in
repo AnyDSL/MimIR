@@ -42,19 +42,19 @@ DOXYFILE_ENCODING      = UTF-8
 # title of most generated pages and in a few other places.
 # The default value is: My Project.
 
-PROJECT_NAME           = Thorin
+PROJECT_NAME           = MimIR
 
 # The PROJECT_NUMBER tag can be used to enter a project or revision number. This
 # could be handy for archiving the generated documentation or if some version
 # control system is used.
 
-PROJECT_NUMBER         = 1.9.0
+PROJECT_NUMBER         = 0.1
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
 # quick idea about the purpose of the project. Keep the description short.
 
-PROJECT_BRIEF          = "The Higher ORder INtermediate representation"
+PROJECT_BRIEF          = "MimIR is my Intermediate Representation"
 
 # With the PROJECT_LOGO tag one can specify a logo or an icon that is included
 # in the documentation. The maximum height of the logo should not exceed 55
@@ -2406,7 +2406,7 @@ INCLUDE_FILE_PATTERNS  =
 # recursively expanded use the := operator instead of the = operator.
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
-PREDEFINED             = THORIN_ENABLE_CHECKS \
+PREDEFINED             = MIM_ENABLE_CHECKS \
                          DOXYGEN
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this
@@ -2421,30 +2421,30 @@ EXPAND_AS_DEFINED      = CODE \
                          CODE2 \
                          CODE3 \
                          CODE4 \
-                         THORIN_ENUM_OPERATORS \
-                         THORIN_1_8_16_32_64 \
-                         THORIN_8_16_32_64 \
-                         THORIN_16_32_64 \
-                         THORIN_PROJ \
-                         THORIN_TAG \
-                         THORIN_NODE \
-                         THORIN_KEY \
-                         THORIN_LIT \
-                         THORIN_TOK \
-                         THORIN_BIT \
-                         THORIN_WRAP \
-                         THORIN_SHR \
-                         THORIN_DIV \
-                         THORIN_R_OP \
-                         THORIN_I_CMP \
-                         THORIN_R_CMP \
-                         THORIN_CONV \
-                         THORIN_TRAIT \
-                         THORIN_ACC \
-                         THORIN_PE \
-                         THORIN_SETTERS \
-                         THORIN_SETTERS_ \
-                         THORIN_DEF_MIXIN
+                         MIM_ENUM_OPERATORS \
+                         MIM_1_8_16_32_64 \
+                         MIM_8_16_32_64 \
+                         MIM_16_32_64 \
+                         MIM_PROJ \
+                         MIM_TAG \
+                         MIM_NODE \
+                         MIM_KEY \
+                         MIM_LIT \
+                         MIM_TOK \
+                         MIM_BIT \
+                         MIM_WRAP \
+                         MIM_SHR \
+                         MIM_DIV \
+                         MIM_R_OP \
+                         MIM_I_CMP \
+                         MIM_R_CMP \
+                         MIM_CONV \
+                         MIM_TRAIT \
+                         MIM_ACC \
+                         MIM_PE \
+                         MIM_SETTERS \
+                         MIM_SETTERS_ \
+                         MIM_DEF_MIXIN
 
 # If the SKIP_FUNCTION_MACROS tag is set to YES then doxygen's preprocessor will
 # remove all references to function-like macros that are alone on a line, have

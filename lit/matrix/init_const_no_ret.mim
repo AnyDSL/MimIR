@@ -1,0 +1,11 @@
+// RUN: rm -f %t.ll
+// RUN: %mim -o - %s | FileCheck %s
+
+.plugin core;
+.plugin matrix;
+
+.con .extern f [mem : %mem.M, [k:.Nat, l:.Nat], return: .Cn[%mem.M]] =
+    .let (`mem, M) = %matrix.constMat (2,(k,l),.I32) (mem, 0I32);
+    return mem;
+
+// CHECK-NOT: %matrix.

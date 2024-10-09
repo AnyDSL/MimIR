@@ -1,0 +1,173 @@
+// RUN: rm -f %t.ll  ; \
+// RUN: cpp %s -o %t_pre.mim -D "TYPE='g'" -D "NUMBER=3" -P -C -nostdinc
+// RUN: %mim %t_pre.mim --output-ll %t.ll -o -
+
+// TODO: add filecheck
+
+.plugin core;
+
+.let Tas = (.I32, 0);
+
+.con f1 [mem: %mem.M, a: .I32, ret: .Cn [%mem.M, .I32]] = {
+    ret (mem,a)
+};
+
+.con f2 [[mem: %mem.M, a: .I32], ret: .Cn [%mem.M, .I32]] = {
+    ret (mem,a)
+};
+
+.con g1 [mem: %mem.M, a: .I32, b:%core..I32, ret: .Cn [%mem.M, .I32]] = {
+    .let c = %core.wrap.add 0 (a,b);
+    ret (mem,c)
+};
+
+.con g2 [[mem: %mem.M, a: .I32, b:%core..I32], ret: .Cn [%mem.M, .I32]] = {
+    .let c = %core.wrap.add 0 (a,b);
+    ret (mem,c)
+};
+
+.con g3 [[mem: %mem.M, [a: .I32, b:%core..I32]], ret: .Cn [%mem.M, .I32]] = {
+    .let c = %core.wrap.add 0 (a,b);
+    ret (mem,c)
+};
+
+.con g4 [mem: %mem.M, [a: .I32, b:%core..I32], ret: .Cn [%mem.M, .I32]] = {
+    .let c = %core.wrap.add 0 (a,b);
+    ret (mem,c)
+};
+
+.con h1 [mem: %mem.M, a: .I32, x:%mem.Ptr (.I32, 0), ret: .Cn [%mem.M, .I32]] = {
+    ret (mem,a)
+};
+
+.con h2 [mem: %mem.M, [a: .I32, x:%mem.Ptr (.I32, 0)], ret: .Cn [%mem.M, .I32]] = {
+    ret (mem,a)
+};
+
+.con h3 [[mem: %mem.M, a: .I32, x:%mem.Ptr (.I32, 0)], ret: .Cn [%mem.M, .I32]] = {
+    ret (mem,a)
+};
+
+.con h4 [[mem: %mem.M, [a: .I32, x:%mem.Ptr (.I32, 0)]], ret: .Cn [%mem.M, .I32]] = {
+    ret (mem,a)
+};
+
+.con e1 [mem: %mem.M, a: .I32, [], ret: .Cn [%mem.M, .I32]] = {
+    ret (mem,a)
+};
+
+.con e2 [mem: %mem.M, [a: .I32, []], ret: .Cn [%mem.M, .I32]] = {
+    ret (mem,a)
+};
+
+.con e3 [[mem: %mem.M, [a: .I32, []]], ret: .Cn [%mem.M, .I32]] = {
+    ret (mem,a)
+};
+
+// .con i1 [[], ret: .Cn [%mem.M, .I32]] = {
+//     ret (mem,42I32
+// };
+
+.con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I8, 0), 0), return : .Cn [%mem.M, .I32]] = {
+
+    .let a = argc;
+    .let (mem2,p) = %mem.alloc Tas mem;
+
+    .con cont [mem:%mem.M, v:%core..I32] = {
+        .let a = v;
+        .let cont = return;
+        .let mem2 = mem;
+
+        #if 0
+        // f1 (mem, v, return)
+        // f2 ((mem, v), return)
+        // g3 ((mem, (a,a)), return)
+        // g2 ((mem, a,a), return)
+        // g4 (mem2, (a,a), cont)
+        // e1 (mem2, a, (), cont)
+        // e2 (mem2, (a, ()), cont)
+        // e3 ((mem2, (a, ())), cont)
+        #endif
+        #if TYPE == 'f'
+            #if NUMBER == 1
+                f1 (mem, v, return)
+            #elif NUMBER == 2
+                f2 ((mem, v), return)
+            #endif
+        #elif TYPE == 'g'
+            #if NUMBER == 1
+                g1 (mem, a, a, return)
+            #elif NUMBER == 2
+                g2 ((mem, a,a), return)
+            #elif NUMBER == 3
+                g3 ((mem, (a,a)), return)
+            #elif NUMBER == 4
+                g4 (mem2, (a,a), cont)
+            #endif
+        #elif TYPE == 'h'
+            #if NUMBER == 1
+                h1 (mem, a, p, return)
+                #elif NUMBER == 2
+                h2 (mem, (a, p), return)
+            #elif NUMBER == 3
+                h3 ((mem, a, p), return)
+            #elif NUMBER == 4
+                h4 ((mem, (a, p)), return)
+            #endif
+        #elif TYPE == 'e'
+            #if NUMBER == 1
+                e1 (mem2, a, (), cont)
+            #elif NUMBER == 2
+                e2 (mem2, (a, ()), cont)
+            #elif NUMBER == 3
+                e3 ((mem2, (a, ())), cont)
+            #endif
+        #endif
+    };
+
+    #if 0
+    // f1 (mem2, argc, cont)
+    // f2 ((mem2, argc), cont)
+    // g3 ((mem2, (a,a)), cont)
+    // g2 ((mem2, a,a), cont)
+    // g4 (mem2, (a,a), cont)
+    // e1 (mem2, a, (), cont)
+    // e2 (mem2, (a, ()), cont)
+    // e3 ((mem2, (a, ())), cont)
+    #endif
+    #if TYPE == 'f'
+        #if NUMBER == 1
+            f1 (mem, v, return)
+        #elif NUMBER == 2
+            f2 ((mem, v), return)
+        #endif
+    #elif TYPE == 'g'
+        #if NUMBER == 1
+            g1 (mem, a, a, return)
+        #elif NUMBER == 2
+            g2 ((mem, a,a), return)
+        #elif NUMBER == 3
+            g3 ((mem, (a,a)), return)
+        #elif NUMBER == 4
+            g4 (mem2, (a,a), cont)
+        #endif
+    #elif TYPE == 'h'
+        #if NUMBER == 1
+            h1 (mem, a, p, return)
+            #elif NUMBER == 2
+            h2 (mem, (a, p), return)
+        #elif NUMBER == 3
+            h3 ((mem, a, p), return)
+        #elif NUMBER == 4
+            h4 ((mem, (a, p)), return)
+        #endif
+    #elif TYPE == 'e'
+        #if NUMBER == 1
+            e1 (mem2, a, (), cont)
+        #elif NUMBER == 2
+            e2 (mem2, (a, ()), cont)
+        #elif NUMBER == 3
+            e3 ((mem2, (a, ())), cont)
+        #endif
+    #endif
+};

@@ -1,7 +1,0 @@
-// RUN: %thorin %s -o -
-.rec S = [
-    n: .Nat,
-    a: «n; .Nat»
-];
-
-.lam f(): S = (3, (0, 1, 2));

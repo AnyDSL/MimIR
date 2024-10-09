@@ -6,16 +6,16 @@
 #include <automaton/nfa2dfa.h>
 #include <gtest/gtest.h>
 
-#include <thorin/world.h>
+#include <mim/world.h>
 
-#include <thorin/ast/ast.h>
+#include <mim/ast/ast.h>
 
-#include <thorin/plug/regex/dfa2matcher.h>
-#include <thorin/plug/regex/regex2nfa.h>
+#include <mim/plug/regex/dfa2matcher.h>
+#include <mim/plug/regex/regex2nfa.h>
 
 using namespace automaton;
-using namespace thorin;
-namespace regex = thorin::plug::regex;
+using namespace mim;
+namespace regex = mim::plug::regex;
 
 TEST(Automaton, NFA) {
     auto nfa   = std::make_unique<NFA>();

@@ -1,0 +1,33 @@
+// RUN: rm -f %t.ll
+// RUN: %mim -p clos %s --output-ll %t.ll -o -
+
+/*
+TODO: investigate and open error
+mim: /plug/clos/phase/clos_conv.cpp:64: const mim::Def* mim::clos::clos_pack_dbg(const mim::Def*, const mim::Def*, const mim::Def*, const mim::Def*): Assertion `pi && env->type() == pi->dom(Clos_Env_Param)' failed.
+*/
+
+.plugin core;
+.plugin direct;
+
+.con printInteger [mem: %mem.M, val: .I32, return : .Cn [%mem.M]];
+
+.con outer [mem: %mem.M, return : .Cn [%mem.M]] = {
+    .let pb_type = .Cn [%mem.M];
+    .let (alloc_pb_mem, pb_ptr) = %mem.malloc (pb_type, 0) (mem, 32);
+
+    .let pb_arr = %core.bitcast %mem.Ptr («⊤:.Nat; pb_type», 0) pb_ptr;
+
+    .let lea_pb = %mem.lea (⊤:.Nat, <⊤:.Nat; pb_type>, 0) (pb_arr, 0I32;
+    .let store_return_mem = %mem.store (alloc_pb_mem, lea_pb, return);
+
+    .let (load_clos_mem, load_clos) = %mem.load (store_return_mem, lea_pb);
+    load_clos(load_clos_mem)
+};
+
+.con .extern main [mem: %mem.M, argc: .I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), return : .Cn [%mem.M, .I32]] = {
+    .con callback (mem: %mem.M) = {
+        return (mem, 1I32
+    };
+
+    outer(mem, callback)
+};

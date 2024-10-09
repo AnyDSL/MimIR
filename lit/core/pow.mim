@@ -1,0 +1,53 @@
+// RUN: rm -f %t.ll
+// RUN: %mim %s --output-ll %t.ll -o - | FileCheck %s
+//
+// if b<=0:
+//     1
+// else
+//     a*pow(a,b-1)
+//
+// pow(a,b,ret):
+//     ((pow_else,pow_then)#cmp) ()
+// then():
+//    ret 1
+// else():
+//     pow(a,b-1,cont)
+// cont(v):
+//    ret (a*v)
+
+.plugin core;
+
+.fun pow(a b: .I32): .I32 =
+    .con pow_cont(v: .I32) =
+        return (%core.wrap.mul 0 (a, v));
+
+    .con pow_then() =
+        return 1I32;
+
+    .con pow_else() =
+        .let b_1 = %core.wrap.sub 0 (b, 1I32);
+        pow ((a, b_1), pow_cont);
+
+    .let cmp = %core.icmp.e (b, 0I32);
+    (pow_else, pow_then)#cmp ();
+
+.fun .extern main(mem: %mem.M, argc: .I32, argv: %mem.Ptr0 (%mem.Ptr0 .I8)): [%mem.M, .I32] =
+    .con ret_cont(res: .I32) = return (mem, res);
+    pow ((42I32, 2I32), ret_cont);
+// CHECK-DAG: .con pow_{{[0-9_]+}} _{{[0-9_]+}}::[b_{{[0-9_]+}}: .I32, return_{{[0-9_]+}}: .Cn .I32]{{(@.*)?}}= {
+// CHECK-DAG:     .con return_{{[0-9_]+}} _{{[0-9_]+}}: .I32{{(@.*)?}}= {
+// CHECK-DAG:         return_{{[0-9_]+}} _{{[0-9_]+}}
+
+// CHECK-DAG:     .con pow_then_{{[0-9_]+}} []{{(@.*)?}}= {
+// CHECK-DAG:         _{{[0-9_]+}} 1I32
+
+// CHECK-DAG:     .con pow_cont_{{[0-9_]+}} v_{{[0-9_]+}}: .I32{{(@.*)?}}= {
+// CHECK-DAG:         .let _{{[0-9_]+}}: .I32 = %core.wrap.mul .i32 0 (42I32, v_{{[0-9_]+}});
+// CHECK-DAG:         _{{[0-9_]+}} _{{[0-9_]+}}
+
+// CHECK-DAG:     .con pow_else_{{[0-9_]+}} []{{(@.*)?}}= {
+// CHECK-DAG:         .let b_1_{{[0-9_]+}}: .I32 = %core.wrap.add .i32 0 (4294967295I32, b_{{[0-9_]+}});
+// CHECK-DAG:         pow_{{[0-9_]+}} (b_1_{{[0-9_]+}}, pow_cont_{{[0-9_]+}})
+
+// CHECK-DAG:     .let cmp_{{[0-9_]+}}: .Bool = %core.icmp.xyglE .i32 (0I32, b_{{[0-9_]+}});
+// CHECK-DAG:     (pow_else_{{[0-9_]+}}, pow_then_{{[0-9_]+}})#cmp_{{[0-9_]+}} ()

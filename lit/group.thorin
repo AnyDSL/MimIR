@@ -1,4 +1,0 @@
-// RUN: %thorin %s -o -
-.lam f(a b: .Nat, x: «a; .Nat»): .Bool = .ff;
-.ax %foo.F: [p e: .Nat] -> *;
-.ax %foo.bar: Π .[p e: .Nat]::pe [.Nat] [a b: %foo.F pe] -> %foo.F (p, e);

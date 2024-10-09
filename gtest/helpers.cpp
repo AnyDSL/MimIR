@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-namespace thorin::gtest {
+namespace mim::gtest {
 
 std::string test_name() {
     std::string s = ::testing::UnitTest::GetInstance()->current_test_info()->name();
@@ -10,4 +10,4 @@ std::string test_name() {
     return s;
 }
 
-} // namespace thorin::gtest
+} // namespace mim::gtest

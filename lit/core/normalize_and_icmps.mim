@@ -1,0 +1,14 @@
+// RUN: rm -f %t.ll
+// RUN: %mim %s -o - | FileCheck %s
+
+.plugin core;
+
+.con .extern and (a b: .Bool, return : .Cn .Bool) =
+    return (%core.bit2.and_ 0 (%core.icmp.uge (a, b), %core.icmp.ug (a, b)));
+
+// CHECK-DAG: .con .extern and _{{[0-9_]+}}::[a_[[aId:[0-9_]+]]: .Bool, b_[[bId:[0-9_]+]]: .Bool, return_[[retId:[0-9_]+]]: .Cn .Bool]
+// CHECK-DAG: .let _[[cmpId:[0-9_]+]]: .Bool = %core.icmp.xYGle 2 (a_[[aId]], b_[[bId]]);
+// CHECK-DAG: return_[[etaId:[0-9_]+]] _[[cmpId]]
+
+// CHECK-DAG: return_[[etaId]] _[[etaVar:[0-9_]+]]: .Bool
+// CHECK-DAG: return_[[retId]] _[[etaVar]]

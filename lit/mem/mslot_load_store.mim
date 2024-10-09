@@ -1,0 +1,24 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %mim %s --output-ll %t.ll -o - | FileCheck %s
+// RUN: clang %t.ll -o %t -Wno-override-module
+// RUN: %t; test $? -eq 1
+// RUN: %t 1 2 3; test $? -eq 4
+// RUN: %t 1 2 3 4 5; test $? -eq 6
+
+.plugin core;
+
+.con .extern main(mem: %mem.M, argc: .I32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), return: .Cn [%mem.M, .I32]) =
+    .let Tas             = (.I32, 0);
+    .let (`mem, ptr)     = %mem.mslot Tas (mem, 4, 0);
+    .let `mem            = %mem.store (mem, ptr, argc);
+    .let (`mem, val)::ld = %mem.load (mem, ptr);
+    return ld;
+
+// CHECK-DAG: .con .extern main _{{[0-9_]+}}::[mem_[[mainMemId:[_0-9]*]]: %mem.M, argc_[[argcId:[0-9_]+]]: .I32, %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, .I32]]{{(@.*)?}}= {
+// CHECK-DAG: _[[appMSlotId:[0-9_]+]]: [%mem.M, %mem.Ptr (.I32, 0)] = %mem.mslot (.I32, 0) (mem_[[mainMemId]], 4, 0);
+// CHECK-DAG: _[[appStoreId:[0-9_]+]]: %mem.M = %mem.store (.I32, 0) (_[[appMSlotId]]#.ff, _[[appMSlotId]]#.tt, argc_[[argcId]]);
+// CHECK-DAG: ld_[[appLoadId:[0-9_]+]]: [%mem.M, .I32] = %mem.load (.I32, 0) (mem_[[appStoreId]], _[[appMSlotId]]#.tt);
+// CHECK-DAG: return_[[returnEtaId:[0-9_]+]] ld_[[appLoadId]]
+
+// CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, .I32]{{(@.*)?}}= {
+// CHECK-DAG: return_[[returnId]] _[[returnEtaVarId]]

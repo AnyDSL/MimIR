@@ -1,0 +1,45 @@
+// RUN: rm -f %t.ll
+// RUN: %mim -p clos %s --output-ll %t.ll -o -
+
+.plugin core;
+.plugin direct;
+
+.let i8 = .I8;
+.let pb_type = .Cn [%mem.M, .Cn [%mem.M]];
+
+.ccon printInteger [mem: %mem.M, val: .I32, return : .Cn [%mem.M]];
+.ccon printIntegerNL [mem: %mem.M, val: .I32, return : .Cn [%mem.M]];
+.ccon printNL [mem: %mem.M, return : .Cn [%mem.M]];
+
+.let size = 10;
+
+.con recursive [mem: %mem.M, i : .I32, last_pullback: pb_type, return: .Cn [%mem.M]] =
+    .let condition = %core.icmp.ul (i, %core.bitcast .I32 size);
+    (exit, loop_body)#condition mem
+    .where
+        .con loop_body [mem: %mem.M] =
+            .con pb [mem: %mem.M, return: .Cn [%mem.M]] =
+                printIntegerNL( mem, i , next )
+                .where
+                    .con next [mem: %mem.M] = last_pullback (mem, return);
+                .end;
+
+            printIntegerNL (mem, i , next)
+            .where
+                .con next [mem: %mem.M] = recursive( mem, %core.wrap.add 0 (i, 1I32), pb, return );
+            .end;
+        .con exit [mem: %mem.M] = last_pullback (mem, return);
+    .end;
+
+.con end  [mem: %mem.M, return : .Cn [%mem.M]] = return (mem);
+.con outer[mem: %mem.M, x : .I32, return : .Cn [%mem.M]] = recursive ( mem, 0I32, end, return );
+
+.con .extern main [mem: %mem.M, argc: .I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .I8», 0)», 0), return : .Cn [%mem.M, .I32]] =
+    outer(mem, 1I32, callback)
+    .where
+        .con callback (mem: %mem.M) =
+            recursive (mem, 3I32, end, callback2)
+            .where
+                .con callback2 (mem: %mem.M) = return (mem, 1I32);
+            .end;
+    .end;

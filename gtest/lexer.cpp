@@ -3,14 +3,14 @@
 
 #include <gtest/gtest.h>
 
-#include <thorin/driver.h>
+#include <mim/driver.h>
 
-#include <thorin/ast/ast.h>
-#include <thorin/ast/lexer.h>
+#include <mim/ast/ast.h>
+#include <mim/ast/lexer.h>
 
 using namespace std::literals;
-using namespace thorin;
-using namespace thorin::ast;
+using namespace mim;
+using namespace mim::ast;
 
 TEST(Lexer, Toks) {
     Driver driver;

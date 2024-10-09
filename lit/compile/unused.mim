@@ -1,0 +1,13 @@
+// RUN: rm -f %t.ll
+// RUN: %mim %s --output-ll %t.ll -o - | FileCheck %s
+
+.plugin core;
+.import compile;
+
+.con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I8, 0), 0), return : .Cn [%mem.M, .I32]] =
+    return (mem, 42I32);
+
+.lam .extern _unused_compile(): %compile.Pipeline =
+    %compile.pipe (%compile.single_pass_phase %compile.internal_cleanup_pass);
+
+// CHECK-DAG: return{{.*}}42

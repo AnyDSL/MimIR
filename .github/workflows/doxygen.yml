@@ -3,7 +3,7 @@ name: doxygen
 on:
   push:
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
@@ -11,41 +11,41 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Clone recursively
-      uses: actions/checkout@v3
-      with:
-        submodules: recursive
+      - name: Clone recursively
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
-    - name: Install newest g++, gdb, graphviz, texlive
-      run: |
-        sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-        sudo apt-get update
-        sudo apt-get install g++-13 gdb graphviz texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
+      - name: Install newest g++, gdb, graphviz, texlive
+        run: |
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install g++-13 gdb graphviz texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
 
-        export CXX=g++-13
+          export CXX=g++-13
 
-    - name: Install Doxygen
-      run: |
-        wget https://www.doxygen.nl/files/doxygen-1.9.8.linux.bin.tar.gz
-        tar xf doxygen-1.9.8.linux.bin.tar.gz
+      - name: Install Doxygen
+        run: |
+          wget https://www.doxygen.nl/files/doxygen-1.9.8.linux.bin.tar.gz
+          tar xf doxygen-1.9.8.linux.bin.tar.gz
 
-    - name: Install Ghostscript
-      run: |
-        mkdir -p ${HOME}/.local/bin
-        echo "${HOME}/.local/bin" >> $GITHUB_PATH
-        wget https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs1000/ghostscript-10.0.0-linux-x86_64.tgz
-        tar xf ghostscript-10.0.0-linux-x86_64.tgz
-        mv ghostscript-10.0.0-linux-x86_64/gs-1000-linux-x86_64 ${HOME}/.local/bin/gs
+      - name: Install Ghostscript
+        run: |
+          mkdir -p ${HOME}/.local/bin
+          echo "${HOME}/.local/bin" >> $GITHUB_PATH
+          wget https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs1000/ghostscript-10.0.0-linux-x86_64.tgz
+          tar xf ghostscript-10.0.0-linux-x86_64.tgz
+          mv ghostscript-10.0.0-linux-x86_64/gs-1000-linux-x86_64 ${HOME}/.local/bin/gs
 
-    - name: Configure
-      run: CXX=g++-13 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Debug -DTHORIN_BUILD_DOCS=ON -DDOXYGEN_EXECUTABLE=${{github.workspace}}/doxygen-1.9.8/bin/doxygen
+      - name: Configure
+        run: CXX=g++-13 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Debug -DTHORIN_BUILD_DOCS=ON -DDOXYGEN_EXECUTABLE=${{github.workspace}}/doxygen-1.9.8/bin/doxygen
 
-    - name: Build
-      run: cmake --build ${{github.workspace}}/build -v --target docs
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build -v --target docs
 
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
-      if: ${{ github.ref == 'refs/heads/master' }}
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ${{github.workspace}}/build/html
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/master' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ${{github.workspace}}/build/html

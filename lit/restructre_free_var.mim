@@ -1,0 +1,42 @@
+// RUN: rm -f %t.ll
+// RUN: %mim %s --output-ll %t.ll -o -
+
+.plugin core;
+
+.ax %foo.Mat: Π [n: .Nat, S: «n; .Nat», T: *] -> *;
+
+.ax %foo.map_reduce:
+    // out shape depends on in shape but is complex
+    Π [n: .Nat, S: «n; .Nat», T: *, // out shape
+        m: .Nat,                    // number of inputs
+        NI: «m; .Nat»,              // input dimensions
+        TI: «m; *»,                 // input types
+        SI: «i:m; «NI#i; .Nat»»     // input shapes
+    ] ->
+    // for completeness sake
+    // main arguments
+    [
+        zero: T,                    // initial value
+        add: [T, T]->T,             // reduction operation
+        mul: «i: m; TI#i» ->T,                 // inner combination
+        // out_index not needed => always ij (0 ... n) for n dimensions
+        input:
+            «x:m;
+                [
+                    «NI#x;.Nat»,
+                    %foo.Mat (NI#x,SI#x,TI#x)
+                ]
+            »
+    ] ->
+    %foo.Mat (n,S,T);
+
+.let test = %foo.map_reduce
+    (2,(4,3), .I32,
+        2,
+        (2,3),
+        ( .I32, .I32), // <2; .I32>
+        (
+            (0,1),
+            (1,0,1)
+        )
+    );

@@ -1,0 +1,63 @@
+/// # The refly Plugin {#refly}
+///
+/// @see mim::plug::refly
+///
+/// The refly plugin allows to [reify](https://en.wikipedia.org/wiki/Reification_(computer_science)) and [reflect](https://en.wikipedia.org/wiki/Reflective_programming) Mim's own representation.
+///
+/// [TOC]
+///
+/// ## Dependencies
+///
+.import compile;
+///
+/// ## Types
+///
+.ax %refly.Code: * -> *;
+///
+/// ## Reify/Reflect
+///
+/// ### %refly.reify
+///
+/// Yields the internal representation of a Mim expression as `%%refly.Code`.
+.ax %refly.reify: Π.[T: *][T] -> [%refly.Code T], normalize_reify;
+///
+/// ### %refly.reflect
+///
+/// Converts a `%%refly.Code` back to a Mim expression.
+.ax %refly.reflect: Π.[T: *][%refly.Code T] -> T, normalize_reflect;
+///
+/// ## Inspect
+///
+/// ### %refly.gid
+///
+/// Retuns the internal mim::Def::gid of the argument.
+.ax %refly.gid: Π.[T: *][T] -> .Nat, normalize_gid;
+///
+/// ### %refly.dbg
+///
+/// Debugs a given expression.
+/// * `tmp`: Prints debug information of a given expression at construction time and vanishes afterwards.
+/// * `perm`: Permanently debugs at every construction.
+///   Gets removed at codegen preparation in mim::plug::refly::RemoveDbgPerm.
+///
+.let %refly.error   = 0;
+.let %refly.warn    = 1;
+.let %refly.info    = 2;
+.let %refly.verbose = 3;
+.let %refly.debug   = 4;
+
+.ax %refly.dbg(tmp, perm): Π.[T: *][.Nat, T] -> T, normalize_dbg;
+///
+/// ## Manipulate
+///
+/// ### %refly.refine
+///
+/// Sets the `i`th operand of the reified Code `e` to `x`.
+// TODO type infere - not working right now
+.ax %refly.refine: Π [E: *, X: *][e: %refly.Code E, i: .Nat, x: %refly.Code X] -> %refly.Code E, normalize_refine;
+///
+/// ## Passes and Phases
+///
+/// ### Passes
+///
+.ax %refly.remove_dbg_perm_pass: %compile.Pass;

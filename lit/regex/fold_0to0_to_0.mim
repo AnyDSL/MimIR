@@ -1,0 +1,14 @@
+// RUN: %mim %s -o - -P %S | FileCheck %s
+
+.import mem;
+.plugin regex;
+
+.import dont_compile.mim;
+
+.let i8 = .I8;
+.let Top = ⊤:.Nat;
+
+.con .extern fold(mem: %mem.M, string: %mem.Ptr (<<Top; .I8>>, 0), return: .Cn [%mem.M, .Bool, .I32]) =
+    .let pattern = %regex.lit '0';
+    return (pattern (mem, string, 0I32));
+// CHECK: %regex.range ‹2; 48I8›

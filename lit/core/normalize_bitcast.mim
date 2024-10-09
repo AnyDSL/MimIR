@@ -1,0 +1,16 @@
+// RUN: rm -f %t.ll
+// RUN: %mim %s --output-ll %t.ll -o - | FileCheck %s
+// RUN: clang -c %t.ll -o %t -Wno-override-module
+
+.plugin core;
+
+.con .extern bitcast_bitcast(i : %mem.Ptr (.I8, 0), return: .Cn .I32) =
+    return (%core.bitcast (.I32) (%core.bitcast .Nat i));
+
+// TODO parenthesis in output broken for bitcast
+// CHECK-DAG: bitcast_bitcast _{{[0-9_]+}}::[i_[[valId:[0-9_]+]]: %mem.Ptr (.I8, 0), return_[[retId:[0-9_]+]]: .Cn .I32]{{(@.*)?}}= {
+// CHECK-DAG: .let _[[castedId:[0-9_]+]]: .I32 = %core.bitcast %mem.Ptr (.I8, 0) .I32 i_[[valId]];
+// CHECK-DAG: return_[[etaId:[0-9_]+]] _[[castedId]]
+
+// CHECK-DAG: return_[[etaId]] _[[etaVar:[0-9_]+]]: .I32{{(@.*)?}}= {
+// CHECK-DAG: return_[[retId]] _[[etaVar]]
