@@ -100,7 +100,7 @@ function(add_mim_plugin)
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/mim
             ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/mim
             RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}/mim
-            INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+            INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mim
         )
         install(
             FILES ${CMAKE_BINARY_DIR}/lib/mim/${PLUGIN}.mim
@@ -108,7 +108,7 @@ function(add_mim_plugin)
         )
         install(
             FILES ${AUTOGEN_H}
-            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/plug/${PLUGIN}
+            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mim/plug/${PLUGIN}
         )
     endif()
 endfunction()
