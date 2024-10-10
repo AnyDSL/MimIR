@@ -1,4 +1,4 @@
-add_library(automaton)
+add_library(automaton STATIC)
 target_sources(automaton
     PRIVATE
         dfa.cpp
