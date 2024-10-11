@@ -2,7 +2,7 @@
 ///
 /// @see mim::plug::refly
 ///
-/// The refly plugin allows to [reify](https://en.wikipedia.org/wiki/Reification_(computer_science)) and [reflect](https://en.wikipedia.org/wiki/Reflective_programming) Mim's own representation.
+/// The refly plugin allows to [reify](https://en.wikipedia.org/wiki/Reification_(computer_science)) and [reflect](https://en.wikipedia.org/wiki/Reflective_programming) MimIR's own representation.
 ///
 /// [TOC]
 ///
@@ -18,7 +18,7 @@
 ///
 /// ### %refly.reify
 ///
-/// Yields the internal representation of a Mim expression as `%%refly.Code`.
+/// Yields the internal MimIR representation of a Mim expression as `%%refly.Code`.
 .ax %refly.reify: Π.[T: *][T] -> [%refly.Code T], normalize_reify;
 ///
 /// ### %refly.reflect

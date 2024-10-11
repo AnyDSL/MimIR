@@ -47,14 +47,14 @@ ret (mem, argc)
 ```
 
 It is also important to make `main` [external](@ref mim::Def::make_external).
-Otherwise, Mim will simply remove this function.
+Otherwise, MimIR will simply remove this function.
 
 We [optimize](@ref mim::optimize) the program, emit an [LLVM assembly file](https://llvm.org/docs/LangRef.html), and compile it [via](@ref mim::sys::system) `clang`.
 Finally, we [execute](@ref mim::sys::system) the generated program with `./hello a b c` and [output](@ref fmt) its exit code - which should be `4`.
 
 ## Immutables vs. Mutables {#mut}
 
-There are two different kind of [Defs](@ref mim::Def) in Mim: _mutables_ and _immutables_:
+There are two different kind of [Defs](@ref mim::Def) in MimIR: _mutables_ and _immutables_:
 
 | **Immutable**                                                        | **Mutable**                                                         |
 | -------------------------------------------------------------------- | ------------------------------------------------------------------- |
@@ -68,9 +68,9 @@ There are two different kind of [Defs](@ref mim::Def) in Mim: _mutables_ and _im
 
 ## Matching IR
 
-Mim provides different means to scrutinize [Defs](@ref mim::Def).
+MimIR provides different means to scrutinize [Defs](@ref mim::Def).
 Usually, you will encounter a [Def](@ref mim::Def) as [Ref](@ref mim::Ref) which is just a wrapper for a `const Def*`.
-Its purpose is to resolve "holes" (called _[Infer](@ref mim::Infer)s_ in Mim) that may pop up due to type inference.
+Its purpose is to resolve "holes" (called _[Infer](@ref mim::Infer)s_ in MimIR) that may pop up due to type inference.
 Matching built-ins, i.e. all subclasses of [Def](@ref mim::Def), works differently than matching [Axiom](@ref mim::Axiom)s.
 
 ### Upcast for Built-ins {#cast_builtin}
@@ -224,7 +224,7 @@ Usually, `D` will be an [App](@ref mim::App) because most [Axiom](@ref mim::Axio
 Otherwise, it may wrap a [Def](@ref mim::Def) or other subclasses of it.
 For instance, [match](@ref mim::match)ing `%%mem.M` yields [Match](@ref mim::Match)`<`[mem::M](@ref mim::plug::mem::M), [Def](@ref mim::Def)`>`.
 
-By default, Mim assumes that the magic of an [Axiom](@ref mim::Axiom) happens when applying the final argument to a curried [Axiom](@ref mim::Axiom).
+By default, MimIR assumes that the magic of an [Axiom](@ref mim::Axiom) happens when applying the final argument to a curried [Axiom](@ref mim::Axiom).
 For example, [match](@ref mim::match)ing a `%%mem.load` will only trigger for the final [App](@ref mim::App) of the curried call
 
 ```
@@ -306,7 +306,7 @@ The following table summarizes all important casts:
 
 ## Working with Indices
 
-There are essentially **three** ways of retrieving the number of elements of something in Mim.
+There are essentially **three** ways of retrieving the number of elements of something in MimIR.
 
 ### Arity
 

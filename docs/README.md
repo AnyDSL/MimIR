@@ -31,7 +31,7 @@
     </tr>
 </table>
 
-**MimIR** - or **Mim** for short - is an extensible compiler intermediate representation that is based upon the [Calculus of Constructions (CoC)](https://en.wikipedia.org/wiki/Calculus_of_constructions).
+**MimIR** is an extensible compiler intermediate representation that is based upon the [Calculus of Constructions (CoC)](https://en.wikipedia.org/wiki/Calculus_of_constructions).
 This means:
 
 - [pure type system (PTS)](https://en.wikipedia.org/wiki/Pure_type_system)
@@ -41,7 +41,7 @@ This means:
 In contrast to other CoC-based program representations such as [Coq](https://coq.inria.fr/) or [Lean](https://leanprover.github.io/), MimIR is _not_ a theorem prover but focuses on generating efficient code.
 For this reason, MimIR explicitly features mutable state and models imperative control flow with [continuation-passing style (CPS)](https://en.wikipedia.org/wiki/Continuation-passing_style).
 
-You can use MimIR either via it's C++-API or the [command-line utility](cli.md).
+You can use MimIR either via it's C++-API or through its frontend language [Mim](langref.md).
 
 ## Building
 
@@ -100,9 +100,13 @@ In addition to the provided [submodules](https://github.com/AnyDSL/MimIR/tree/ma
   Simply toss the emitted `*.ll` file to your system's LLVM toolchain.
   But technically, you don't need LLVM.
 
-## MimIR
+## MimIR vs Mim
 
 MimIR is a recursive acronym for _MimIR is my intermediate Representation_.
 [Mímir or Mim](https://en.wikipedia.org/wiki/M%C3%ADmir) is also a figure in Norse mythology, renowned for his knowledge and wisdom, who is beheaded during the &AElig;sir–Vanir War.
 Afterward, the god Odin carries around Mímir's head and it recites secret knowledge and counsel to him.
 Now, you have Mímir's head at your fingertips.
+
+We use the term **MimIR**, if we speak of the internal graph-based representation and its C++-API, and the term **Mim**, if we mean MimIR's frontend language.
+To keep things short and simple, all code consistently uses `mim` or `MIM` for namespaces, macro prefixes, etc.
+And if in doubt, just use **Mim**.

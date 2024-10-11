@@ -140,7 +140,7 @@ break foo.cpp:23 if def->gid() == 42
 
 ### Catching Throw
 
-For several things like errors in Mim's front end, Mim relies on C++ exceptions for error handling.
+For several things like errors in the Mim frontend, MimIR relies on C++ exceptions for error handling.
 Do this to encounter them within GDB:
 
 ```gdb
@@ -160,7 +160,7 @@ and follow the instructions.
 
 ### VS Code
 
-As a utility to make debugging Mim itself less painful with certain debuggers, the `mim.natvis` file can be loaded for getting more expressive value inspection.
+As a utility to make debugging MimIR itself less painful with certain debuggers, the `mim.natvis` file can be loaded for getting more expressive value inspection.
 In VS Code you can do so by adding the following to the `launch.json` configurations. When launching from VS Code via CMake, put it in `settings.json`'s `"cmake.debugConfig":`:
 
 ```json
@@ -265,7 +265,7 @@ to configure the project.
 
 ### add_mim_plugin
 
-Registers a new Mim plugin.
+Registers a new MimIR plugin.
 
 ```cmake
 add_mim_plugin(<plugin-name>

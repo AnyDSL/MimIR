@@ -6,8 +6,9 @@
 
 #include "mim/flags.h"
 #include "mim/plugin.h"
-#include "mim/util/log.h"
 #include "mim/world.h"
+
+#include "mim/util/log.h"
 
 namespace mim {
 
@@ -50,7 +51,7 @@ public:
 
     /// @name Load Plugin
     ///@{
-    /// Finds and loads a shared object file that implements the Mim Plugin @p name.
+    /// Finds and loads a shared object file that implements the MimIR Plugin @p name.
     /// If \a name is an absolute path to a `.so`/`.dll` file, this is used.
     /// Otherwise, "name", "libmim_name.so" (Linux, Mac), "mim_name.dll" (Win)
     /// are searched for in Driver::search_paths().

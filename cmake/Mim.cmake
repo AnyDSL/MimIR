@@ -16,11 +16,11 @@ function(add_mim_plugin)
         "SOURCES;PRIVATE"   # multi-value keywords
     )
 
-    set(PLUGIN_MIM       ${CMAKE_CURRENT_LIST_DIR}/${PLUGIN}.mim)
-    set(OUT_PLUGIN_MIM   ${CMAKE_BINARY_DIR}/lib/mim/${PLUGIN}.mim)
-    set(PLUGIN_MD           ${CMAKE_BINARY_DIR}/docs/plug/${PLUGIN}.md)
-    set(PLUGIN_D            ${CMAKE_BINARY_DIR}/deps/${PLUGIN}.d)
-    set(AUTOGEN_H           ${CMAKE_BINARY_DIR}/include/mim/plug/${PLUGIN}/autogen.h)
+    set(PLUGIN_MIM      ${CMAKE_CURRENT_LIST_DIR}/${PLUGIN}.mim)
+    set(OUT_PLUGIN_MIM  ${CMAKE_BINARY_DIR}/lib/mim/${PLUGIN}.mim)
+    set(PLUGIN_MD       ${CMAKE_BINARY_DIR}/docs/plug/${PLUGIN}.md)
+    set(PLUGIN_D        ${CMAKE_BINARY_DIR}/deps/${PLUGIN}.d)
+    set(AUTOGEN_H       ${CMAKE_BINARY_DIR}/include/mim/plug/${PLUGIN}/autogen.h)
 
     file(
         MAKE_DIRECTORY
@@ -38,7 +38,7 @@ function(add_mim_plugin)
         COMMAND $<TARGET_FILE:${MIM_TARGET_NAMESPACE}mim> ${PLUGIN_MIM} -P "${CMAKE_CURRENT_LIST_DIR}/.." --bootstrap --output-h ${AUTOGEN_H} --output-d ${PLUGIN_D} --output-md ${PLUGIN_MD}
         MAIN_DEPENDENCY ${PLUGIN_MIM}
         DEPENDS ${MIM_TARGET_NAMESPACE}mim
-        COMMENT "Bootstrapping MimIR '${PLUGIN_MIM}'"
+        COMMENT "Bootstrapping MimIR plugin '${PLUGIN_MIM}'"
         VERBATIM
     )
     add_custom_command(

@@ -14,13 +14,14 @@
 #include "mim/lam.h"
 #include "mim/lattice.h"
 #include "mim/tuple.h"
+
 #include "mim/util/dbg.h"
 #include "mim/util/log.h"
 
 namespace mim {
 class Driver;
 
-/// The World represents the whole program and manages creation of Mim nodes (Def%s).
+/// The World represents the whole program and manages creation of MimIR nodes (Def%s).
 /// Def%s are hashed into an internal HashSet.
 /// The World's factory methods just calculate a hash and lookup the Def, if it is already present, or create a new one
 /// otherwise. This corresponds to value numbering.

@@ -6,6 +6,7 @@
 #include <fe/cast.h>
 
 #include "mim/config.h"
+
 #include "mim/util/dbg.h"
 #include "mim/util/hash.h"
 #include "mim/util/pool.h"
@@ -282,7 +283,7 @@ public:
     /// mut->unset()->set({a, b, c}); // This will always work, but should be your last resort.
     /// ```
     ///
-    /// Mim assumes that a mutable is *final*, when its last operand is set.
+    /// MimIR assumes that a mutable is *final*, when its last operand is set.
     /// Then, Def::check() will be invoked.
     Def* set(size_t i, const Def* def);                                    ///< Successively   set from left to right.
     Def* reset(size_t i, const Def* def) { return unset(i)->set(i, def); } ///< Successively reset from left to right.

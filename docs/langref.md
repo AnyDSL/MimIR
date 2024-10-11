@@ -1,4 +1,4 @@
-# Language Reference {#langref}
+# Mim Language Reference {#langref}
 
 [TOC]
 
@@ -163,7 +163,7 @@ The following tables comprise all production rules:
 
 ### Module {#module}
 
-| LHS | RHS             | Comment | Mim Class                |
+| LHS | RHS             | Comment | MimIR Class              |
 | --- | --------------- | ------- | ------------------------ |
 | m   | dep\* d\*       | module  | [World](@ref mim::World) |
 | dep | `.import` S `;` | import  |                          |
@@ -171,17 +171,17 @@ The following tables comprise all production rules:
 
 ### Declarations {#decl}
 
-| LHS | RHS                                                                                                                                               | Comment                              | Mim Class                          |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ | ---------------------------------- |
-| d   | `.let` (p \| A) `=` e `;`                                                                                                                         | let                                  | -                                  |
-| d   | `.lam` n (`.`? p)+ (`:` e<sub>codom</sub>)? ( `=` d\* e)? `;`                                                                                     | lambda declaration<sup>s</sup>       | [Lam](@ref mim::Lam)               |
-| d   | `.con` n (`.`? p)+ ( `=` d\* e)? `;`                                                                                                              | continuation declaration<sup>s</sup> | [Lam](@ref mim::Lam)               |
-| d   | `.fun` n (`.`? p)+ (`:` e<sub>ret</sub>)? ( `=` d\* e)? `;`                                                                                       | function declaration<sup>s</sup>     | [Lam](@ref mim::Lam)               |
-| d   | `.Pi` n (`:` e<sub>type</sub>)? (`=` e)? `;`                                                                                                      | Pi declaration                       | [Pi](@ref mim::Pi)                 |
-| d   | `.Sigma` n (`:` e<sub>type</sub> )? (`,` L<sub>arity</sub>)? (`=` b<sub>[ ]</sub>)? `;`                                                           | sigma declaration                    | [Sigma](@ref mim::Sigma)           |
-| d   | `.ax` A `:` e<sub>type</sub> (`(` sa `,` ... `,` sa `)`)? <br> (`,` 𝖨<sub>normalizer</sub>)? (`,` L<sub>curry</sub>)? (`,` L<sub>trip</sub>)? `;` | axiom                                | [Axiom](@ref mim::Axiom)           |
-| n   | 𝖨 \| A                                                                                                                                            | identifier or annex name             | `fe::Sym`/[Annex](@ref mim::Annex) |
-| sa  | 𝖨 (`=` 𝖨 `,` ... `,` 𝖨)?                                                                                                                          | subtag with aliases                  |                                    |
+| LHS | RHS                                                                                                                                               | Comment                              | MimIR Class                          |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ | ------------------------------------ |
+| d   | `.let` (p \| A) `=` e `;`                                                                                                                         | let                                  | -                                    |
+| d   | `.lam` n (`.`? p)+ (`:` e<sub>codom</sub>)? ( `=` d\* e)? `;`                                                                                     | lambda declaration<sup>s</sup>       | [Lam](@ref mim::Lam)                 |
+| d   | `.con` n (`.`? p)+ ( `=` d\* e)? `;`                                                                                                              | continuation declaration<sup>s</sup> | [Lam](@ref mim::Lam)                 |
+| d   | `.fun` n (`.`? p)+ (`:` e<sub>ret</sub>)? ( `=` d\* e)? `;`                                                                                       | function declaration<sup>s</sup>     | [Lam](@ref mim::Lam)                 |
+| d   | `.Pi` n (`:` e<sub>type</sub>)? (`=` e)? `;`                                                                                                      | Pi declaration                       | [Pi](@ref mim::Pi)                   |
+| d   | `.Sigma` n (`:` e<sub>type</sub> )? (`,` L<sub>arity</sub>)? (`=` b<sub>[ ]</sub>)? `;`                                                           | sigma declaration                    | [Sigma](@ref mim::Sigma)             |
+| d   | `.ax` A `:` e<sub>type</sub> (`(` sa `,` ... `,` sa `)`)? <br> (`,` 𝖨<sub>normalizer</sub>)? (`,` L<sub>curry</sub>)? (`,` L<sub>trip</sub>)? `;` | axiom                                | [Axiom](@ref mim::Axiom)             |
+| n   | 𝖨 \| A                                                                                                                                            | identifier or annex name             | `fe::Sym`/[Annex](@ref mim::Annex)   |
+| sa  | 𝖨 (`=` 𝖨 `,` ... `,` 𝖨)?                                                                                                                          | subtag with aliases                  |                                      |
 
 @note An elided type of a `.Pi` or `.Sigma` declaration defaults to `*`.
 
@@ -256,30 +256,30 @@ This is particularly useful, when dealing with memory:
 
 #### Kinds & Builtin Types
 
-| LHS | RHS       | Comment                        | Mim Class              |
-| --- | --------- | ------------------------------ | ---------------------- |
-| e   | `.Univ`   | universe: type of a type level | [Univ](@ref mim::Univ) |
-| e   | `.Type` e | type of level e                | [Type](@ref mim::Type) |
-| e   | `*`       | alias for `.Type (0:.Univ)`    | [Type](@ref mim::Type) |
-| e   | `□`       | alias for `.Type (1:.Univ)`    | [Type](@ref mim::Type) |
-| e   | `.Nat`    | natural number                 | [Nat](@ref mim::Nat)   |
-| e   | `.Idx`    | builtin of type `.Nat → *`     | [Idx](@ref mim::Idx)   |
-| e   | `.Bool`   | alias for `.Bool`              | [Idx](@ref mim::Idx)   |
+| LHS | RHS       | Comment                        | MimIR Class              |
+| --- | --------- | ------------------------------ | ------------------------ |
+| e   | `.Univ`   | universe: type of a type level | [Univ](@ref mim::Univ)   |
+| e   | `.Type` e | type of level e                | [Type](@ref mim::Type)   |
+| e   | `*`       | alias for `.Type (0:.Univ)`    | [Type](@ref mim::Type)   |
+| e   | `□`       | alias for `.Type (1:.Univ)`    | [Type](@ref mim::Type)   |
+| e   | `.Nat`    | natural number                 | [Nat](@ref mim::Nat)     |
+| e   | `.Idx`    | builtin of type `.Nat → *`     | [Idx](@ref mim::Idx)     |
+| e   | `.Bool`   | alias for `.Bool`              | [Idx](@ref mim::Idx)     |
 
 #### Literals & Co
 
-| LHS | RHS                         | Comment                         | Mim Class                          |
-| --- | --------------------------- | ------------------------------- | ---------------------------------- |
-| e   | L (`:` e<sub>type</sub>)?   | literal                         | [Lit](@ref mim::Lit)               |
-| e   | X<sub>n</sub>               | literal of type `.Idx n`        | [Lit](@ref mim::Lit)               |
-| e   | `.ff`                       | alias for `0_2`                 | [Lit](@ref mim::Lit)               |
-| e   | `.tt`                       | alias for `1_2`                 | [Lit](@ref mim::Lit)               |
-| e   | C                           | character literal of type `.I8` | [Lit](@ref mim::Lit)               |
-| e   | S                           | string tuple of type `«n; .I8»` | [Tuple](@ref mim::Tuple)           |
-| e   | `⊥` (`:` e<sub>type</sub>)? | bottom                          | [Bot](@ref mim::Bot)               |
-| e   | `⊤` (`:` e<sub>type</sub>)? | top                             | [Top](@ref mim::Top)               |
-| e   | n                           | identifier or annex name        | `fe::Sym`/[Annex](@ref mim::Annex) |
-| e   | `{` d\* e `}`               | block<sup>s</sup>               | -                                  |
+| LHS | RHS                         | Comment                         | MimIR Class                          |
+| --- | --------------------------- | ------------------------------- | ------------------------------------ |
+| e   | L (`:` e<sub>type</sub>)?   | literal                         | [Lit](@ref mim::Lit)                 |
+| e   | X<sub>n</sub>               | literal of type `.Idx n`        | [Lit](@ref mim::Lit)                 |
+| e   | `.ff`                       | alias for `0_2`                 | [Lit](@ref mim::Lit)                 |
+| e   | `.tt`                       | alias for `1_2`                 | [Lit](@ref mim::Lit)                 |
+| e   | C                           | character literal of type `.I8` | [Lit](@ref mim::Lit)                 |
+| e   | S                           | string tuple of type `«n; .I8»` | [Tuple](@ref mim::Tuple)             |
+| e   | `⊥` (`:` e<sub>type</sub>)? | bottom                          | [Bot](@ref mim::Bot)                 |
+| e   | `⊤` (`:` e<sub>type</sub>)? | top                             | [Top](@ref mim::Top)                 |
+| e   | n                           | identifier or annex name        | `fe::Sym`/[Annex](@ref mim::Annex)   |
+| e   | `{` d\* e `}`               | block<sup>s</sup>               | -                                    |
 
 @note An elided type of
 
@@ -288,31 +288,31 @@ This is particularly useful, when dealing with memory:
 
 #### Functions
 
-| LHS | RHS                                                          | Comment                                        | Mim Class            |
-| --- | ------------------------------------------------------------ | ---------------------------------------------- | -------------------- |
-| e   | e<sub>dom</sub> `→` e<sub>codom</sub>                        | function type                                  | [Pi](@ref mim::Pi)   |
-| e   | `Π` `.`? b (`.`? b<sub>[ ]</sub>)\* (`:` e<sub>codom</sub>)? | dependent function type<sup>s</sup>            | [Pi](@ref mim::Pi)   |
-| e   | `.Cn` `.`? b (`.`? b<sub>[ ]</sub>)\*                        | continuation type<sup>s</sup>                  | [Pi](@ref mim::Pi)   |
-| e   | `.Fn` `.`? b (`.`? b<sub>[ ]</sub>)\* (`:` e<sub>ret</sub>)? | returning continuation type<sup>s</sup>        | [Pi](@ref mim::Pi)   |
-| e   | `λ` (`.`? p)+ (`→` e<sub>codom</sub>)? `=` d\* e             | lambda expression<sup>s</sup>                  | [Lam](@ref mim::Lam) |
-| e   | `.cn` (`.`? p)+ `=` d\* e                                    | continuation expression<sup>s</sup>            | [Lam](@ref mim::Lam) |
-| e   | `.fn` (`.`? p)+ (`→` e<sub>codom</sub>)? `=` d\* e           | function expression<sup>s</sup>                | [Lam](@ref mim::Lam) |
-| e   | e e                                                          | application                                    | [App](@ref mim::App) |
-| e   | e `@` e                                                      | application making implicit arguments explicit | [App](@ref mim::App) |
-| e   | `.ret` p `=` e `$` e `;` d\* e                               | ret expresison                                 | [App](@ref mim::App) |
+| LHS | RHS                                                          | Comment                                        | MimIR Class            |
+| --- | ------------------------------------------------------------ | ---------------------------------------------- | ---------------------- |
+| e   | e<sub>dom</sub> `→` e<sub>codom</sub>                        | function type                                  | [Pi](@ref mim::Pi)     |
+| e   | `Π` `.`? b (`.`? b<sub>[ ]</sub>)\* (`:` e<sub>codom</sub>)? | dependent function type<sup>s</sup>            | [Pi](@ref mim::Pi)     |
+| e   | `.Cn` `.`? b (`.`? b<sub>[ ]</sub>)\*                        | continuation type<sup>s</sup>                  | [Pi](@ref mim::Pi)     |
+| e   | `.Fn` `.`? b (`.`? b<sub>[ ]</sub>)\* (`:` e<sub>ret</sub>)? | returning continuation type<sup>s</sup>        | [Pi](@ref mim::Pi)     |
+| e   | `λ` (`.`? p)+ (`→` e<sub>codom</sub>)? `=` d\* e             | lambda expression<sup>s</sup>                  | [Lam](@ref mim::Lam)   |
+| e   | `.cn` (`.`? p)+ `=` d\* e                                    | continuation expression<sup>s</sup>            | [Lam](@ref mim::Lam)   |
+| e   | `.fn` (`.`? p)+ (`→` e<sub>codom</sub>)? `=` d\* e           | function expression<sup>s</sup>                | [Lam](@ref mim::Lam)   |
+| e   | e e                                                          | application                                    | [App](@ref mim::App)   |
+| e   | e `@` e                                                      | application making implicit arguments explicit | [App](@ref mim::App)   |
+| e   | `.ret` p `=` e `$` e `;` d\* e                               | ret expresison                                 | [App](@ref mim::App)   |
 
 #### Tuples
 
-| LHS | RHS                                                                          | Comment               | Mim Class                    |
-| --- | ---------------------------------------------------------------------------- | --------------------- | ---------------------------- |
-| e   | b<sub>[ ]</sub>                                                              | sigma                 | [Sigma](@ref mim::Sigma)     |
-| e   | `«` s `;` e<sub>body</sub>`»`                                                | array<sup>s</sup>     | [Arr](@ref mim::Arr)         |
-| e   | `(` e<sub>0</sub> `,` ... `,` e<sub>n-1</sub>`)` (`:` e<sub>type</sub>)?     | tuple                 | [Tuple](@ref mim::Tuple)     |
-| e   | `‹` s `;` e<sub>body</sub>`›`                                                | pack<sup>s</sup>      | [Pack](@ref mim::Pack)       |
-| e   | e `#` e<sub>index</sub>                                                      | extract               | [Extract](@ref mim::Extract) |
-| e   | e `#` 𝖨                                                                      | extract via field "𝖨" | [Extract](@ref mim::Extract) |
-| e   | `.ins` `(` e<sub>tuple</sub> `,` e<sub>index</sub> `,` e<sub>value</sub> `)` | insert                | [Insert](@ref mim::Insert)   |
-| s   | e<sub>shape</sub> \| S `:` e<sub>shape</sub>                                 | shape                 | -                            |
+| LHS | RHS                                                                          | Comment               | MimIR Class                    |
+| --- | ---------------------------------------------------------------------------- | --------------------- | ------------------------------ |
+| e   | b<sub>[ ]</sub>                                                              | sigma                 | [Sigma](@ref mim::Sigma)       |
+| e   | `«` s `;` e<sub>body</sub>`»`                                                | array<sup>s</sup>     | [Arr](@ref mim::Arr)           |
+| e   | `(` e<sub>0</sub> `,` ... `,` e<sub>n-1</sub>`)` (`:` e<sub>type</sub>)?     | tuple                 | [Tuple](@ref mim::Tuple)       |
+| e   | `‹` s `;` e<sub>body</sub>`›`                                                | pack<sup>s</sup>      | [Pack](@ref mim::Pack)         |
+| e   | e `#` e<sub>index</sub>                                                      | extract               | [Extract](@ref mim::Extract)   |
+| e   | e `#` 𝖨                                                                      | extract via field "𝖨" | [Extract](@ref mim::Extract)   |
+| e   | `.ins` `(` e<sub>tuple</sub> `,` e<sub>index</sub> `,` e<sub>value</sub> `)` | insert                | [Insert](@ref mim::Insert)     |
+| s   | e<sub>shape</sub> \| S `:` e<sub>shape</sub>                                 | shape                 | -                              |
 
 ### Precedence
 

@@ -23,9 +23,9 @@ You can put together your optimization pipeline like so:
 
 Note how some passes depend on other passes.
 For example, the [CopyProp](@ref mim::plug::mem::CopyProp)agation depends on the [BetaRed](@ref mim::BetaRed)uction and [EtaExp](@ref mim::EtaExp)ansion.
-In contrast to traditional passes in compilers, Mim's [PassMan](@ref mim::PassMan) will run all passes in tandem and combine the obtained results into the most optimal solution and, hence, avoid the dreaded _phase-ordering problem_.
+In contrast to traditional passes in compilers, MimIR's [PassMan](@ref mim::PassMan) will run all passes in tandem and combine the obtained results into the most optimal solution and, hence, avoid the dreaded _phase-ordering problem_.
 
-There are two kind of passes in Mim:
+There are two kind of passes in MimIR:
 
 1. [Rewrite Pass](@ref mim::RWPass)
 2. [Fixed-Point Pass](@ref mim::FPPass)

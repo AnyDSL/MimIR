@@ -17,7 +17,7 @@ class Lexer : public fe::Lexer<3, Lexer> {
     using Super = fe::Lexer<3, Lexer>;
 
 public:
-    /// Creates a lexer to read Mim files (see [Lexical Structure](@ref lex)).
+    /// Creates a lexer to read `*.mim` files (see [Lexical Structure](@ref lex)).
     /// If @p md is not `nullptr`, a Markdown output will be generated.
     Lexer(AST&, std::istream&, const fs::path* path = nullptr, std::ostream* md = nullptr);
 

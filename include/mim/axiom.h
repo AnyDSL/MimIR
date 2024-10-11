@@ -15,7 +15,7 @@ public:
     /// @anchor normalization
     ///@{
     /// For a curried App of an Axiom, you only want to trigger normalization at specific spots.
-    /// For this reason, Mim maintains a Def::curry_ counter that each App decrements.
+    /// For this reason, MimIR maintains a Def::curry_ counter that each App decrements.
     /// The Axiom::normalizer() will be triggered when Axiom::curry() becomes `0`.
     /// These are also the spots that you can mim::match/mim::force/Match.
     /// After that, the counter will be set to Axiom::trip().

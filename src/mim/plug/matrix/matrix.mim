@@ -16,7 +16,7 @@
 ///
 /// ### %matrix.Mat
 ///
-/// Mim matrices are n-dimensional tensors with elements of type T.
+/// Matrices are n-dimensional tensors with elements of type T.
 /// They can be seen as a generalization of Coq's vector type (a container with a fixed number of elements specified on type level).
 /// ```
 /// matrix = Π [n: .Nat, S: «n; .Nat», T: *] -> *

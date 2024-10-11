@@ -23,9 +23,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
-option(BUILD_SHARED_LIBS           "Build shared libraries." ON)
-option(MIM_BUILD_DOCS           "If ON, Mim will build the documentation (requires Doxygen)." OFF)
-option(MIM_BUILD_EXAMPLES       "If ON, Mim will build examples." OFF)
+option(BUILD_SHARED_LIBS    "Build shared libraries." ON)
+option(MIM_BUILD_DOCS       "If ON, build the documentation (requires Doxygen)." OFF)
+option(MIM_BUILD_EXAMPLES   "If ON, build examples." OFF)
 
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}; shared libs: ${BUILD_SHARED_LIBS}")
 
@@ -35,7 +35,7 @@ else()
     option(MIM_ENABLE_CHECKS "Enable expensive checks" OFF)
 endif()
 
-if(WIN32)
+if(WIN)
     add_compile_definitions(NOMINMAX) # prevents windows.h defining min/max macros
 else()
     add_compile_options(-Wall -Wextra)
