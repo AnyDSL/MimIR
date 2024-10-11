@@ -34,6 +34,7 @@ var searchData=
   ['vlog_31',['VLOG',['../log_8h.html#a35e71de09dfd64892a48e3f7c56c5619',1,'log.h']]],
   ['vmode_32',['VMode',['../namespacemim_1_1plug_1_1core.html#ad9cfd5d3a9f90f2620715faf34b5067f',1,'mim::plug::core::VMode'],['../namespacemim_1_1plug_1_1math.html#a46c491e9f0e6ec5826947a86337eb261',1,'mim::plug::math::VMode']]],
   ['vs_20code_33',['VS Code',['../coding.html#autotoc_md10',1,'']]],
-  ['vs_20mutables_34',['Immutables vs. Mutables',['../dev.html#mut',1,'']]],
-  ['vs_20style_35',['()-style vs []-style',['../langref.html#autotoc_md39',1,'']]]
+  ['vs_20mim_34',['MimIR vs Mim',['../index.html#autotoc_md71',1,'']]],
+  ['vs_20mutables_35',['Immutables vs. Mutables',['../dev.html#mut',1,'']]],
+  ['vs_20style_36',['()-style vs []-style',['../langref.html#autotoc_md39',1,'']]]
 ];

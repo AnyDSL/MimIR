@@ -137,7 +137,7 @@ $(function(){initNavTree('index.html',''); initResizable(true); });
     <a href="#autotoc_md70">Dependencies</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md71">MimIR</a>
+    <a href="#autotoc_md71">MimIR vs Mim</a>
   </li>
 </ul>
 </div>
@@ -150,14 +150,14 @@ $(function(){initNavTree('index.html',''); initResizable(true); });
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Tests  </td><td class="markdownTableBodyNone"><a href="https://github.com/AnyDSL/MimIR/actions/workflows/linux.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/linux.yml?logo=linux&amp;label=linux&amp;logoColor=white&amp;branch=master" alt="Linux" class="inline"/></a> <a href="https://github.com/AnyDSL/MimIR/actions/workflows/windows.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/windows.yml?logo=windows&amp;label=windows&amp;branch=master" alt="Windows" class="inline"/></a> <a href="https://github.com/AnyDSL/MimIR/actions/workflows/macos.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/macos.yml?logo=apple&amp;label=macos&amp;branch=master" alt="MacOS" class="inline"/></a> <a href="https://github.com/AnyDSL/MimIR/actions/workflows/doxygen.yml"><img src="https://img.shields.io/github/actions/workflow/status/anydsl/MimIR/doxygen.yml?logo=github&amp;label=doxygen&amp;branch=master" alt="Doxygen" class="inline"/></a>   </td></tr>
 </table>
-<p><b>MimIR</b> - or <b>Mim</b> for short - is an extensible compiler intermediate representation that is based upon the <a href="https://en.wikipedia.org/wiki/Calculus_of_constructions">Calculus of Constructions (CoC)</a>. This means:</p>
+<p><b>MimIR</b> is an extensible compiler intermediate representation that is based upon the <a href="https://en.wikipedia.org/wiki/Calculus_of_constructions">Calculus of Constructions (CoC)</a>. This means:</p>
 <ul>
 <li><a href="https://en.wikipedia.org/wiki/Pure_type_system">pure type system (PTS)</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Higher-order_function">higher-order functions</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Dependent_type">dependent types</a></li>
 </ul>
 <p>In contrast to other CoC-based program representations such as <a href="https://coq.inria.fr/">Coq</a> or <a href="https://leanprover.github.io/">Lean</a>, MimIR is <em>not</em> a theorem prover but focuses on generating efficient code. For this reason, MimIR explicitly features mutable state and models imperative control flow with <a href="https://en.wikipedia.org/wiki/Continuation-passing_style">continuation-passing style (CPS)</a>.</p>
-<p>You can use MimIR either via it's C++-API or the <a class="el" href="cli.html#md_docs_2cli">command-line utility</a>.</p>
+<p>You can use MimIR either via it's C++-API or through its frontend language <a class="el" href="langref.html#md_docs_2langref">Mim</a>.</p>
 <h1><a class="anchor" id="autotoc_md67"></a>
 Building</h1>
 <p>If you have a <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh">GitHub account setup with SSH</a>, just do this:</p>
@@ -211,8 +211,9 @@ Dependencies</h1>
 </li>
 </ul>
 <h1><a class="anchor" id="autotoc_md71"></a>
-MimIR</h1>
-<p>MimIR is a recursive acronym for <em>MimIR is my intermediate Representation</em>. <a href="https://en.wikipedia.org/wiki/M%C3%ADmir">Mímir or Mim</a> is also a figure in Norse mythology, renowned for his knowledge and wisdom, who is beheaded during the &AElig;sir–Vanir War. Afterward, the god Odin carries around Mímir's head and it recites secret knowledge and counsel to him. Now, you have Mímir's head at your fingertips. </p>
+MimIR vs Mim</h1>
+<p>MimIR is a recursive acronym for <em>MimIR is my intermediate Representation</em>. <a href="https://en.wikipedia.org/wiki/M%C3%ADmir">Mímir or Mim</a> is also a figure in Norse mythology, renowned for his knowledge and wisdom, who is beheaded during the &AElig;sir–Vanir War. Afterward, the god Odin carries around Mímir's head and it recites secret knowledge and counsel to him. Now, you have Mímir's head at your fingertips.</p>
+<p>We use the term <b>MimIR</b>, if we speak of the internal graph-based representation and its C++-API, and the term <b>Mim</b>, if we mean MimIR's frontend language. To keep things short and simple, all code consistently uses <code>mim</code> or <code>MIM</code> for namespaces, macro prefixes, etc. And if in doubt, just use <b>Mim</b>. </p>
 </div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
 </div><!-- contents -->

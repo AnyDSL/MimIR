@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.12.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MimIR: Language Reference</title>
+<title>MimIR: Mim Language Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -117,7 +117,7 @@ $(function(){initNavTree('langref.html',''); initResizable(true); });
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Language Reference</div></div>
+  <div class="headertitle"><div class="title">Mim Language Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
@@ -459,7 +459,7 @@ Grammar</h1>
 Module</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadNone">LHS   </th><th class="markdownTableHeadNone">RHS   </th><th class="markdownTableHeadNone">Comment   </th><th class="markdownTableHeadNone">Mim Class    </th></tr>
+<th class="markdownTableHeadNone">LHS   </th><th class="markdownTableHeadNone">RHS   </th><th class="markdownTableHeadNone">Comment   </th><th class="markdownTableHeadNone">MimIR Class    </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">m   </td><td class="markdownTableBodyNone">dep* d*   </td><td class="markdownTableBodyNone">module   </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1World.html">World</a>    </td></tr>
 <tr class="markdownTableRowEven">
@@ -471,7 +471,7 @@ Module</h2>
 Declarations</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadNone">LHS   </th><th class="markdownTableHeadNone">RHS   </th><th class="markdownTableHeadNone">Comment   </th><th class="markdownTableHeadNone">Mim Class    </th></tr>
+<th class="markdownTableHeadNone">LHS   </th><th class="markdownTableHeadNone">RHS   </th><th class="markdownTableHeadNone">Comment   </th><th class="markdownTableHeadNone">MimIR Class    </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">d   </td><td class="markdownTableBodyNone"><code>.let</code> (p | A) <code>=</code> e <code>;</code>   </td><td class="markdownTableBodyNone">let   </td><td class="markdownTableBodyNone">-    </td></tr>
 <tr class="markdownTableRowEven">
@@ -558,7 +558,7 @@ Expressions</h2>
 Kinds &amp; Builtin Types</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadNone">LHS   </th><th class="markdownTableHeadNone">RHS   </th><th class="markdownTableHeadNone">Comment   </th><th class="markdownTableHeadNone">Mim Class    </th></tr>
+<th class="markdownTableHeadNone">LHS   </th><th class="markdownTableHeadNone">RHS   </th><th class="markdownTableHeadNone">Comment   </th><th class="markdownTableHeadNone">MimIR Class    </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.Univ</code>   </td><td class="markdownTableBodyNone">universe: type of a type level   </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Univ.html">Univ</a>    </td></tr>
 <tr class="markdownTableRowEven">
@@ -578,7 +578,7 @@ Kinds &amp; Builtin Types</h3>
 Literals &amp; Co</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadNone">LHS   </th><th class="markdownTableHeadNone">RHS   </th><th class="markdownTableHeadNone">Comment   </th><th class="markdownTableHeadNone">Mim Class    </th></tr>
+<th class="markdownTableHeadNone">LHS   </th><th class="markdownTableHeadNone">RHS   </th><th class="markdownTableHeadNone">Comment   </th><th class="markdownTableHeadNone">MimIR Class    </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">L (<code>:</code> e<sub>type</sub>)?   </td><td class="markdownTableBodyNone">literal   </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Lit.html">Lit</a>    </td></tr>
 <tr class="markdownTableRowEven">
@@ -609,7 +609,7 @@ Literals &amp; Co</h3>
 Functions</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadNone">LHS   </th><th class="markdownTableHeadNone">RHS   </th><th class="markdownTableHeadNone">Comment   </th><th class="markdownTableHeadNone">Mim Class    </th></tr>
+<th class="markdownTableHeadNone">LHS   </th><th class="markdownTableHeadNone">RHS   </th><th class="markdownTableHeadNone">Comment   </th><th class="markdownTableHeadNone">MimIR Class    </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">e<sub>dom</sub> <code>→</code> e<sub>codom</sub>   </td><td class="markdownTableBodyNone">function type   </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Pi.html">Pi</a>    </td></tr>
 <tr class="markdownTableRowEven">
@@ -635,7 +635,7 @@ Functions</h3>
 Tuples</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadNone">LHS   </th><th class="markdownTableHeadNone">RHS   </th><th class="markdownTableHeadNone">Comment   </th><th class="markdownTableHeadNone">Mim Class    </th></tr>
+<th class="markdownTableHeadNone">LHS   </th><th class="markdownTableHeadNone">RHS   </th><th class="markdownTableHeadNone">Comment   </th><th class="markdownTableHeadNone">MimIR Class    </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">b<sub>[ ]</sub>   </td><td class="markdownTableBodyNone">sigma   </td><td class="markdownTableBodyNone"><a class="el" href="classmim_1_1Sigma.html">Sigma</a>    </td></tr>
 <tr class="markdownTableRowEven">

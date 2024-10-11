@@ -23,7 +23,7 @@ var searchData=
   ['reeval_5fbreakpoints_20',['reeval_breakpoints',['../namespacemim.html#aa3d3421bf85526b22938b6f5d289af22',1,'mim::Flags']]],
   ['ref_21',['Ref',['../classmim_1_1Ref.html',1,'mim::Ref'],['../classmim_1_1Ref.html#ab24055145fbe3ab1256e2e8b179bcf2f',1,'mim::Ref::Ref()=default'],['../classmim_1_1Ref.html#a37c5a737a92f08feeb5b32de57340470',1,'mim::Ref::Ref(const Def *def)']]],
   ['refer_22',['refer',['../classmim_1_1Ref.html#aa3696ec96f113354ca828288f21848de',1,'mim::Ref']]],
-  ['reference_23',['Reference',['../cli.html',1,'Command-Line Reference'],['../langref.html',1,'Language Reference']]],
+  ['reference_23',['Reference',['../cli.html',1,'Command-Line Reference'],['../langref.html',1,'Mim Language Reference']]],
   ['reference_24',['reference',['../classmim_1_1BitSet_1_1reference.html',1,'mim::BitSet::reference'],['../classmim_1_1IndexSet_1_1reference.html',1,'mim::IndexSet&lt; Indexer, Key &gt;::reference']]],
   ['refine_25',['refine',['../refly.html#autotoc_md214',1,'refly.refine'],['../classmim_1_1Def.html#a306749207e1a4e552e5f5dcacb0bac73',1,'mim::Def::refine()'],['../namespacemim_1_1plug_1_1refly.html#a6f3aaae5967d2117b76b540b8cd92065',1,'mim::plug::refly::refine']]],
   ['reflect_26',['Reify/Reflect',['../refly.html#autotoc_md207',1,'']]],

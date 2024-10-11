@@ -169,8 +169,8 @@ $(function(){initNavTree('passes.html',''); initResizable(true); });
 <div class="line">opt.add&lt;Scalarize&gt;(ee);</div>
 <div class="line">opt.add&lt;CopyProp&gt;(br, ee);</div>
 <div class="line">opt.run();</div>
-</div><!-- fragment --><p>Note how some passes depend on other passes. For example, the <a class="el" href="classmim_1_1plug_1_1mem_1_1CopyProp.html">CopyProp</a>agation depends on the <a class="el" href="classmim_1_1BetaRed.html">BetaRed</a>uction and <a class="el" href="classmim_1_1EtaExp.html">EtaExp</a>ansion. In contrast to traditional passes in compilers, Mim's <a class="el" href="classmim_1_1PassMan.html">PassMan</a> will run all passes in tandem and combine the obtained results into the most optimal solution and, hence, avoid the dreaded <em>phase-ordering problem</em>.</p>
-<p>There are two kind of passes in Mim:</p>
+</div><!-- fragment --><p>Note how some passes depend on other passes. For example, the <a class="el" href="classmim_1_1plug_1_1mem_1_1CopyProp.html">CopyProp</a>agation depends on the <a class="el" href="classmim_1_1BetaRed.html">BetaRed</a>uction and <a class="el" href="classmim_1_1EtaExp.html">EtaExp</a>ansion. In contrast to traditional passes in compilers, MimIR's <a class="el" href="classmim_1_1PassMan.html">PassMan</a> will run all passes in tandem and combine the obtained results into the most optimal solution and, hence, avoid the dreaded <em>phase-ordering problem</em>.</p>
+<p>There are two kind of passes in MimIR:</p>
 <ol type="1">
 <li><a class="el" href="classmim_1_1RWPass.html">Rewrite Pass</a></li>
 <li><a class="el" href="classmim_1_1FPPass.html">Fixed-Point Pass</a></li>

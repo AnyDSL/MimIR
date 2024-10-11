@@ -5,5 +5,5 @@ var index =
       [ "Build Switches", "index.html#autotoc_md69", null ]
     ] ],
     [ "Dependencies", "index.html#autotoc_md70", null ],
-    [ "MimIR", "index.html#autotoc_md71", null ]
+    [ "MimIR vs Mim", "index.html#autotoc_md71", null ]
 ];

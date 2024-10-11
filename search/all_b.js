@@ -22,7 +22,7 @@ var searchData=
   ['lamset_19',['LamSet',['../namespacemim.html#a26a0e9df92d9733ba607a78d19edbbe9',1,'mim']]],
   ['lamspec_20',['LamSpec',['../classmim_1_1LamSpec.html',1,'mim::LamSpec'],['../classmim_1_1LamSpec.html#afa779a30bb3834f5c8cfdfcca2acfedf',1,'mim::LamSpec::LamSpec()']]],
   ['langref_2emd_21',['langref.md',['../langref_8md.html',1,'']]],
-  ['language_20reference_22',['Language Reference',['../langref.html',1,'']]],
+  ['language_20reference_22',['Mim Language Reference',['../langref.html',1,'']]],
   ['late_23',['late',['../classmim_1_1Scheduler.html#a9ae4e16c0cbdca5436adbc155b4f3a27',1,'mim::Scheduler']]],
   ['lattice_24',['Lattice',['../classmim_1_1EtaRed.html#a3326314112409c514cb209a8a12bbaae',1,'mim::EtaRed']]],
   ['lattice_2ecpp_25',['lattice.cpp',['../lattice_8cpp.html',1,'']]],

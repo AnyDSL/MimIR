@@ -340,7 +340,7 @@ Conditional Breakpoints</h2>
 <div class="fragment"><div class="line">break foo.cpp:23 if def-&gt;gid() == 42</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md8"></a>
 Catching Throw</h2>
-<p>For several things like errors in Mim's front end, Mim relies on C++ exceptions for error handling. Do this to encounter them within GDB:</p>
+<p>For several things like errors in the Mim frontend, MimIR relies on C++ exceptions for error handling. Do this to encounter them within GDB:</p>
 <div class="fragment"><div class="line">catch throw</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md9"></a>
 Valgrind &amp; GDB</h2>
@@ -349,7 +349,7 @@ Valgrind &amp; GDB</h2>
 </div><!-- fragment --><p>and follow the instructions.</p>
 <h2><a class="anchor" id="autotoc_md10"></a>
 VS Code</h2>
-<p>As a utility to make debugging Mim itself less painful with certain debuggers, the <code>mim.natvis</code> file can be loaded for getting more expressive value inspection. In VS Code you can do so by adding the following to the <code>launch.json</code> configurations. When launching from VS Code via CMake, put it in <code>settings.json</code>'s <code>"cmake.debugConfig":</code>:</p>
+<p>As a utility to make debugging MimIR itself less painful with certain debuggers, the <code>mim.natvis</code> file can be loaded for getting more expressive value inspection. In VS Code you can do so by adding the following to the <code>launch.json</code> configurations. When launching from VS Code via CMake, put it in <code>settings.json</code>'s <code>"cmake.debugConfig":</code>:</p>
 <div class="fragment"><div class="line">&quot;visualizerFile&quot;: &quot;${workspaceFolder}/mim.natvis&quot;,</div>
 <div class="line">&quot;showDisplayString&quot;: true,</div>
 </div><!-- fragment --><h1><a class="anchor" id="tests"></a>
@@ -401,7 +401,7 @@ Third-Party Plugins</h2>
 </div><!-- fragment --><p>to configure the project.</p>
 <h2><a class="anchor" id="autotoc_md16"></a>
 add_mim_plugin</h2>
-<p>Registers a new Mim plugin.</p>
+<p>Registers a new MimIR plugin.</p>
 <div class="fragment"><div class="line">add_mim_plugin(&lt;plugin-name&gt;</div>
 <div class="line">    [SOURCES &lt;source&gt;...]</div>
 <div class="line">    [PRIVATE &lt;private-item&gt;...]</div>

@@ -170,7 +170,7 @@ $(function(){initNavTree('refly.html',''); initResizable(true); });
 </div>
 <div class="textblock"><p><a class="anchor" id="md_build_2docs_2plug_2refly"></a></p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacemim_1_1plug_1_1refly.html" title="The refly Plugin">mim::plug::refly</a></dd></dl>
-<p>The refly plugin allows to <a href="https://en.wikipedia.org/wiki/Reification_(computer_science)">reify</a> and <a href="https://en.wikipedia.org/wiki/Reflective_programming">reflect</a> Mim's own representation.</p>
+<p>The refly plugin allows to <a href="https://en.wikipedia.org/wiki/Reification_(computer_science)">reify</a> and <a href="https://en.wikipedia.org/wiki/Reflective_programming">reflect</a> MimIR's own representation.</p>
 <h1><a class="anchor" id="autotoc_md205"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">.import compile;</div>
@@ -181,7 +181,7 @@ Types</h1>
 Reify/Reflect</h1>
 <h2><a class="anchor" id="autotoc_md208"></a>
 refly.reify</h2>
-<p>Yields the internal representation of a Mim expression as <code>%refly.Code</code>. </p><div class="fragment"><div class="line">.ax %refly.reify: Π.[T: *][T] -&gt; [%refly.Code T], normalize_reify;</div>
+<p>Yields the internal MimIR representation of a Mim expression as <code>%refly.Code</code>. </p><div class="fragment"><div class="line">.ax %refly.reify: Π.[T: *][T] -&gt; [%refly.Code T], normalize_reify;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md209"></a>
 refly.reflect</h2>
 <p>Converts a <code>%refly.Code</code> back to a Mim expression. </p><div class="fragment"><div class="line">.ax %refly.reflect: Π.[T: *][%refly.Code T] -&gt; T, normalize_reflect;</div>

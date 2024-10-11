@@ -125,7 +125,7 @@ $(function(){initNavTree('classmim_1_1ScopePhase.html',''); initResizable(true);
 </div><!--header-->
 <div class="contents">
 
-<p>Transitively visits all <em>reachable</em> <a class="el" href="classmim_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a>s in <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of Mim nodes (Defs).">World</a> that do not have free variables.  
+<p>Transitively visits all <em>reachable</em> <a class="el" href="classmim_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a>s in <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of MimIR nodes (Defs).">World</a> that do not have free variables.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="phase_8h_source.html">mim/phase/phase.h</a>&gt;</code></p>
@@ -181,7 +181,7 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a76f55ebb0c3d8cef160149f3573e5ca2 inherit pro_attribs_classmim_1_1Phase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Transitively visits all <em>reachable</em> <a class="el" href="classmim_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a>s in <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of Mim nodes (Defs).">World</a> that do not have free variables. </p>
+<div class="textblock"><p>Transitively visits all <em>reachable</em> <a class="el" href="classmim_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a>s in <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of MimIR nodes (Defs).">World</a> that do not have free variables. </p>
 <p>We call these <a class="el" href="classmim_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a>s <em>top-level</em> <a class="el" href="classmim_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a>s. Select with <code>elide_empty</code> whether you want to visit trivial <a class="el" href="classmim_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a>s of <em>muts</em> without body. Assumes that you don't change anything - hence <code>dirty</code> flag is set to <code>false</code>. </p><dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000002">Deprecated</a></b></dt><dd><a class="el" href="classmim_1_1Use.html" title="References a user.">Use</a> <a class="el" href="classmim_1_1ClosedMutPhase.html" title="Transitively visits all reachable closed mutables (Def::is_closed()) in World.">ClosedMutPhase</a> instead. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00149">149</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>

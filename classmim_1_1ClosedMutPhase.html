@@ -125,7 +125,7 @@ $(function(){initNavTree('classmim_1_1ClosedMutPhase.html',''); initResizable(tr
 </div><!--header-->
 <div class="contents">
 
-<p>Transitively visits all <em>reachable</em> closed mutables (<a class="el" href="classmim_1_1Def.html#aec7aa74467c589b28b16a9630eb96a69" title="Has no free_vars()?">Def::is_closed()</a>) in <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of Mim nodes (Defs).">World</a>.  
+<p>Transitively visits all <em>reachable</em> closed mutables (<a class="el" href="classmim_1_1Def.html#aec7aa74467c589b28b16a9630eb96a69" title="Has no free_vars()?">Def::is_closed()</a>) in <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of MimIR nodes (Defs).">World</a>.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="phase_8h_source.html">mim/phase/phase.h</a>&gt;</code></p>
@@ -182,7 +182,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class <a class="el" href="core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89">M</a> = Def&gt;<br />
-class mim::ClosedMutPhase&lt; M &gt;</div><p>Transitively visits all <em>reachable</em> closed mutables (<a class="el" href="classmim_1_1Def.html#aec7aa74467c589b28b16a9630eb96a69" title="Has no free_vars()?">Def::is_closed()</a>) in <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of Mim nodes (Defs).">World</a>. </p>
+class mim::ClosedMutPhase&lt; M &gt;</div><p>Transitively visits all <em>reachable</em> closed mutables (<a class="el" href="classmim_1_1Def.html#aec7aa74467c589b28b16a9630eb96a69" title="Has no free_vars()?">Def::is_closed()</a>) in <a class="el" href="classmim_1_1World.html" title="The World represents the whole program and manages creation of MimIR nodes (Defs).">World</a>. </p>
 <p>Select with <code>elide_empty</code> whether you want to visit trivial <em>muts</em> without body. Assumes that you don't change anything - hence <code>dirty</code> flag is set to <code>false</code>. If you a are only interested in specific mutables, you can pass this to <code>M</code>. </p>
 
 <p class="definition">Definition at line <a class="el" href="phase_8h_source.html#l00170">170</a> of file <a class="el" href="phase_8h_source.html">phase.h</a>.</p>
