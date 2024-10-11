@@ -35,7 +35,7 @@ else()
     option(MIM_ENABLE_CHECKS "Enable expensive checks" OFF)
 endif()
 
-if(WIN)
+if(WIN32)
     add_compile_definitions(NOMINMAX) # prevents windows.h defining min/max macros
 else()
     add_compile_options(-Wall -Wextra)
