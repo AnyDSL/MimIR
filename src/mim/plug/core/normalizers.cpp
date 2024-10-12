@@ -256,12 +256,12 @@ template<ncmp id> Ref normalize_ncmp(Ref type, Ref callee, Ref arg) {
         if (auto lb = Lit::isa(b)) {
             // clang-format off
             switch (id) {
-                case ncmp:: e: return world.lit_nat(*la == *lb);
-                case ncmp::ne: return world.lit_nat(*la != *lb);
-                case ncmp::l : return world.lit_nat(*la <  *lb);
-                case ncmp::le: return world.lit_nat(*la <= *lb);
-                case ncmp::g : return world.lit_nat(*la >  *lb);
-                case ncmp::ge: return world.lit_nat(*la >= *lb);
+                case ncmp:: e: return world.lit_bool(*la == *lb);
+                case ncmp::ne: return world.lit_bool(*la != *lb);
+                case ncmp::l : return world.lit_bool(*la <  *lb);
+                case ncmp::le: return world.lit_bool(*la <= *lb);
+                case ncmp::g : return world.lit_bool(*la >  *lb);
+                case ncmp::ge: return world.lit_bool(*la >= *lb);
                 default: fe::unreachable();
             }
             // clang-format on
