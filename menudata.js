@@ -25,8 +25,8 @@
 var menudata={children:[
 {text:"Main Page",url:"index.html"},
 {text:"Documentation",url:"usergroup0.html",children:[
-{text:"Command-Line Reference",url:"cli.html"},
-{text:"Language Reference",url:"langref.html"},
+{text:"Mim Command-Line Reference",url:"cli.html"},
+{text:"Mim Language Reference",url:"langref.html"},
 {text:"Coding & Debugging",url:"coding.html"},
 {text:"Developer Guide",url:"dev.html"},
 {text:"Passes",url:"passes.html"}]},
