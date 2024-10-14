@@ -182,8 +182,8 @@ template<class T = std::logic_error, class... Args> [[noreturn]] void error(cons
 ///@}
 
 /// @name out/err
-///@{
 /// mim::print%s to `std::cout`/`std::cerr`; the *`ln` variants emit an additional `std::endl`.
+///@{
 // clang-format off
 template<class... Args> std::ostream& outf (const char* fmt, Args&&... args) { return print(std::cout, fmt, std::forward<Args&&>(args)...); }
 template<class... Args> std::ostream& errf (const char* fmt, Args&&... args) { return print(std::cerr, fmt, std::forward<Args&&>(args)...); }
@@ -206,9 +206,9 @@ public:
     ///@}
 
     /// @name print
-    ///@{
     /// Wraps mim::print to prefix it with indentation.
     /// @see @ref fmt "Formatted Output"
+    ///@{
     template<class... Args> std::ostream& print(std::ostream& os, const char* s, Args&&... args) {
         for (size_t i = 0; i < indent_; ++i) os << tab_;
         return mim::print(os, s, std::forward<Args>(args)...);

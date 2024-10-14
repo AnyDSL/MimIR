@@ -1,7 +1,8 @@
 #pragma once
 
-#include "mim/plug/clos/autogen.h"
 #include "mim/world.h"
+
+#include "mim/plug/clos/autogen.h"
 
 namespace mim::plug::clos {
 
@@ -86,7 +87,6 @@ template<class N> std::tuple<const Extract*, N*> ca_isa_var(Ref def) {
 
 /// @name Closure Types
 ///@{
-
 /// Returns @p def if @p def is a closure and @c nullptr otherwise
 const Sigma* isa_clos_type(Ref def);
 

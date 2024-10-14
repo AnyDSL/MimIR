@@ -48,7 +48,6 @@ inline Ref op(pe o, Ref def) {
 
 /// @name %%core.bit2
 ///@{
-
 /// Use like this: `a op b = tab[a][b]`
 constexpr std::array<std::array<u64, 2>, 2> make_truth_table(bit2 id) {
     return {
@@ -83,10 +82,9 @@ inline Ref insert_unsafe(Ref d, u64 i, Ref val) {
 ///@}
 
 /// @name Convert TBound to Sigma
-///@{
 /// This is WIP.
+///@{
 template<bool up> const Sigma* convert(const TBound<up>* b);
-
 inline const Sigma* convert(const Bound* b) { return b->isa<Join>() ? convert(b->as<Join>()) : convert(b->as<Meet>()); }
 ///@}
 

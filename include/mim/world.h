@@ -125,8 +125,8 @@ public:
     ///@}
 
     /// @name Freeze
-    ///@{
     /// In frozen state the World does not create any nodes.
+    ///@{
     bool is_frozen() const { return state_.pod.frozen; }
 
     /// Yields old frozen state.
@@ -489,7 +489,6 @@ public:
 
     /// @name Cope with implicit Arguments
     ///@{
-
     /// Places Infer arguments as demanded by Pi::implicit and then apps @p arg.
     Ref iapp(Ref callee, Ref arg);
     Ref iapp(Ref callee, Defs args) { return iapp(callee, tuple(args)); }
@@ -501,8 +500,8 @@ public:
     }
 
     /// @name Vars & Muts
-    ///@{
     /// Manges sets of Vars and Muts.
+    ///@{
     [[nodiscard]] Vars vars(const Var* var) { return move_.vars.singleton(var); }
     [[nodiscard]] Muts muts(Def* mut) { return move_.muts.singleton(mut); }
     [[nodiscard]] Vars merge(Vars a, Vars b) { return move_.vars.merge(a, b); }
@@ -541,8 +540,8 @@ public:
     ///@}
 
     /// @name dot
-    ///@{
     /// Dumps DOT to @p os.
+    ///@{
     /// @param os Output stream
     /// @param annexes If `true`, include all annexes - even if unused.
     /// @param types Follow type dependencies?

@@ -13,7 +13,6 @@ private:
 public:
     /// @name Normalization
     /// @anchor normalization
-    ///@{
     /// For a curried App of an Axiom, you only want to trigger normalization at specific spots.
     /// For this reason, MimIR maintains a Def::curry_ counter that each App decrements.
     /// The Axiom::normalizer() will be triggered when Axiom::curry() becomes `0`.
@@ -31,6 +30,7 @@ public:
     /// x a b c1 d1 e1 c2 d2 e2 c3 d3 e3
     /// ```
     /// the Axiom::normalizer will be triggered after App'ing `e1`, `e2`, and `e3`.
+    ///@{
     NormalizeFn normalizer() const { return normalizer_; }
     u8 curry() const { return curry_; }
     u8 trip() const { return trip_; }
@@ -45,8 +45,8 @@ public:
 
     /// @name Annex Name
     /// @anchor anatomy
-    ///@{
     /// @see annex_name "Annex Name"
+    ///@{
     plugin_t plugin() const { return Annex::flags2plugin(flags()); }
     tag_t tag() const { return Annex::flags2tag(flags()); }
     sub_t sub() const { return Annex::flags2sub(flags()); }
@@ -85,8 +85,8 @@ public:
     ///@}
 
     /// @name Axiom Name
-    ///@{
     /// @see annex_name "Annex Name"
+    ///@{
     auto plugin() const { return axiom()->plugin(); } ///< @see Axiom::plugin.
     auto tag() const { return axiom()->tag(); }       ///< @see Axiom::tag.
     auto sub() const { return axiom()->sub(); }       ///< @see Axiom::sub.

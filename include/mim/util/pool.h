@@ -119,9 +119,8 @@ public:
     ///@}
 
     /// @name Set Operations
-    ///@{
     /// @note All operations do **not** modify the input set(s); they create a **new** PooledSet.
-
+    ///@{
     /// Create a PooledSet wih a single @p elem%ent: @f$\{elem\}@f$.
     [[nodiscard]] PooledSet<T> singleton(T elem) {
         auto [data, state] = allocate(1);

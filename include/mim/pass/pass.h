@@ -34,19 +34,19 @@ public:
     ///@}
 
     /// @name Rewrite Hook for the PassMan
-    ///@{
     /// Rewrites an *immutable* @p def within PassMan::curr_mut.
     /// @returns the replacement.
+    ///@{
     virtual Ref rewrite(Ref def) { return def; }
     virtual Ref rewrite(const Var* var) { return var; }
     virtual Ref rewrite(const Proxy* proxy) { return proxy; }
     ///@}
 
     /// @name Analyze Hook for the PassMan
-    ///@{
     /// Invoked after the PassMan has finished Pass::rewrite%ing PassMan::curr_mut to analyze the Def.
     /// Will only be invoked if Pass::fixed_point() yields `true` - which will be the case for FPPass%es.
     /// @returns mim::No_Undo or the state to roll back to.
+    ///@{
     virtual undo_t analyze(Ref) { return No_Undo; }
     virtual undo_t analyze(const Var*) { return No_Undo; }
     virtual undo_t analyze(const Proxy*) { return No_Undo; }

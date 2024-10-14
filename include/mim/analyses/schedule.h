@@ -42,8 +42,8 @@ public:
     ///@}
 
     /// @name Schedule Mutabales
-    ///@{
     /// Order of Mutables within a Scope.
+    ///@{
     using Schedule = std::vector<Def*>;
     static Schedule schedule(const Scope&);
     ///@}

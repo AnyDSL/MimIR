@@ -96,7 +96,6 @@ private:
 
     /// @name parse ptrns
     ///@{
-
     /// Depending on @p tag, this parses a `()`-style (Tok::Tag::D_paren_l) or `[]`-style (Tok::Tag::D_brckt_l) Ptrn.
     Ptr<Ptrn> parse_ptrn(Tok::Tag tag, std::string_view ctxt, Prec = Prec::Bot, bool allow_annex = false);
     Ptr<TuplePtrn> parse_tuple_ptrn();
@@ -104,7 +103,6 @@ private:
 
     /// @name parse decls
     ///@{
-
     /// If @p ctxt ...
     /// * ... empty: **Only** decls are parsed. @returns `nullptr`
     /// * ... **non**-empty: Decls are parsed, then an expression. @returns expression.

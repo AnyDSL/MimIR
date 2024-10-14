@@ -5,6 +5,7 @@
 #include <rang.hpp>
 
 #include "mim/flags.h"
+
 #include "mim/util/dbg.h"
 
 namespace mim {
@@ -44,9 +45,9 @@ public:
     ///@}
 
     /// @name Log
-    ///@{
     /// Output @p fmt to Log::ostream; does nothing if Log::ostream is `nullptr`.
     /// @see @ref fmt "Formatted Output", @ref log "Logging Macros"
+    ///@{
     template<class... Args> void log(Level level, Loc loc, const char* fmt, Args&&... args) const {
         if (ostream_ && level <= max_level_) {
             std::ostringstream oss;
@@ -79,9 +80,9 @@ private:
 
 /// @name Logging Macros
 /// @anchor log
-///@{
 /// Macros for different mim::Log::Level%s for ease of use.
 /// @see @ref fmt "Formatted Output"
+///@{
 // clang-format off
 #define ELOG(...) log().log(mim::Log::Level::Error,   __FILE__, __LINE__, __VA_ARGS__)
 #define WLOG(...) log().log(mim::Log::Level::Warn,    __FILE__, __LINE__, __VA_ARGS__)

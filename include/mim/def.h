@@ -52,8 +52,8 @@ class Def;
 class World;
 
 /// @name Def
-///@{
 /// GIDSet / GIDMap keyed by Def::gid of `conset Def*`.
+///@{
 template<class To> using DefMap = GIDMap<const Def*, To>;
 using DefSet                    = GIDSet<const Def*>;
 using Def2Def                   = DefMap<const Def*>;
@@ -62,8 +62,8 @@ using DefVec                    = Vector<const Def*>;
 ///@}
 
 /// @name Def (Mutable)
-///@{
 /// GIDSet / GIDMap keyed by Def::gid of `Def*`.
+///@{
 template<class To> using MutMap = GIDMap<Def*, To>;
 using MutSet                    = GIDSet<Def*>;
 using Mut2Mut                   = MutMap<Def*>;
@@ -71,8 +71,8 @@ using Muts                      = PooledSet<Def*>;
 ///@}
 
 /// @name Var
-///@{
 /// GIDSet / GIDMap keyed by Var::gid of `const Var*`.
+///@{
 template<class To> using VarMap = GIDMap<const Var*, To>;
 using VarSet                    = GIDSet<const Var*>;
 using Var2Var                   = VarMap<const Var*>;
@@ -241,7 +241,6 @@ public:
 
     /// @name type
     ///@{
-
     /// Yields the **raw** type of this Def, i.e. maybe `nullptr`. @see Def::unfold_type.
     const Def* type() const { return type_; }
     /// Yields the type of this Def and builds a new `.Type (UInc n)` if necessary.
@@ -270,7 +269,6 @@ public:
 
     /// @name Setting Ops (Mutables Only)
     /// @anchor set_ops
-    ///@{
     /// You can set and change the Def::ops of a mutable after construction.
     /// However, you have to obey the following rules:
     /// 1. If Def::is_set() is ...
@@ -285,6 +283,7 @@ public:
     ///
     /// MimIR assumes that a mutable is *final*, when its last operand is set.
     /// Then, Def::check() will be invoked.
+    ///@{
     Def* set(size_t i, const Def* def);                                    ///< Successively   set from left to right.
     Def* reset(size_t i, const Def* def) { return unset(i)->set(i, def); } ///< Successively reset from left to right.
     Def* set(Defs ops);                                                    ///< Def::set @p ops all at once.
@@ -303,19 +302,19 @@ public:
     ///@}
 
     /// @name extended_ops
-    ///@{
     /// Includes Def::type() (if not `nullptr`) and then the other Def::ops() in this order.
     /// Def::ops() is only included, if Def::is_set.
+    ///@{
     Defs extended_ops() const;
     const Def* extended_op(size_t i) const { return extended_ops()[i]; }
     size_t num_extended_ops() const { return extended_ops().size(); }
     ///@}
 
     /// @name partial_ops
-    ///@{
     /// Includes Def::type() and then the other Def::ops() in this order.
     /// Also works with partially set Def%s and doesn't assert.
     /// Unset operands are `nullptr`.
+    ///@{
     Defs partial_ops() const { return Defs(ops_ptr() - 1, num_ops_ + 1); }
     const Def* partial_op(size_t i) const { return partial_ops()[i]; }
     size_t num_partial_ops() const { return partial_ops().size(); }
@@ -338,7 +337,6 @@ public:
 
     /// @name proj
     /// @anchor proj
-    ///@{
     /// Splits this Def via Extract%s or directly accessing the Def::ops in the case of Sigma%s or Arr%ays.
     /// ```
     /// std::array<const Def*, 2> ab = def->projs<2>();
@@ -351,14 +349,13 @@ public:
     /// Array<const Lit*> lits1      = def->projs(   [](auto def) { return Lit::as(def); });
     /// Array<const Lit*> lits2      = def->projs(n, [](auto def) { return Lit::as(def); });
     /// ```
-
+    ///@{
     /// Yields Def::as_lit_arity(), if it is in fact a Lit, or `1` otherwise.
     nat_t num_projs() const { return isa_lit_arity().value_or(1); }
     nat_t num_tprojs() const; ///< As above but yields 1, if Flags::scalarize_threshold is exceeded.
 
     /// Similar to World::extract while assuming an arity of @p a, but also works on Sigma%s and Arr%ays.
     const Def* proj(nat_t a, nat_t i) const;
-
     const Def* proj(nat_t i) const { return proj(num_projs(), i); }   ///< As above but takes Def::num_projs as arity.
     const Def* tproj(nat_t i) const { return proj(num_tprojs(), i); } ///< As above but takes Def::num_tprojs.
 
@@ -395,9 +392,9 @@ public:
 
     /// @name var
     /// @anchor var
-    ///@{
     /// Retrieve Var for *mutables*.
     /// @see @ref proj
+    ///@{
     MIM_PROJ(var, )
     /// Not necessarily a Var: E.g., if the return type is `[]`, this will yield `()`.
     Ref var();
@@ -411,12 +408,12 @@ public:
     ///@}
 
     /// @name Free Vars and Muts
-    ///@{
     /// * local_muts()/local_vars() are Var%s/mutables reachable by following *immutable* extended_ops().
     /// * local_muts()/local_vars() are cached and hash-consed.
     /// * free_vars() compute a global solution, i.e., by transitively following *mutables* as well.
     /// * free_vars() are computed on demand and cached.
     ///   They will be transitively invalidated by following fv_consumers(), if a mutable is mutated.
+    ///@{
     Muts local_muts() const;
     Vars local_vars() const { return mut_ ? Vars() : vars_.local; }
     Vars free_vars() const;
@@ -435,8 +432,8 @@ public:
     ///@}
 
     /// @name Casts
-    ///@{
     /// @see @ref cast_builtin
+    ///@{
     // clang-format off
     template<class T = Def> const T* isa_imm() const { return isa_mut<T, true>(); }
     template<class T = Def> const T*  as_imm() const { return  as_mut<T, true>(); }
@@ -470,14 +467,14 @@ public:
     ///@}
 
     /// @name Dbg Setters
-    ///@{
     /// Every subclass `S` of Def has the same setters that return `S*`/`const S*` but will not show up in Doxygen.
+    ///@{
     MIM_SETTERS_(Def)
     ///@}
 
     /// @name debug_prefix/suffix
-    ///@{
     /// Prepends/Appends a prefix/suffix to Def::name - but only in `Debug` build.
+    ///@{
 #ifndef NDEBUG
     const Def* debug_prefix(std::string) const;
     const Def* debug_suffix(std::string) const;
@@ -525,9 +522,9 @@ public:
     ///@}
 
     /// @name dot
-    ///@{
     /// Dumps DOT to @p os while obeying maximum recursion depth of @p max.
     /// If @p types is `true`, Def::type() dependencies will be followed as well.
+    ///@{
     void dot(std::ostream& os, uint32_t max = 0xFFFFFF, bool types = false) const;
     /// Same as above but write to @p file or `std::cout` if @p file is `nullptr`.
     void dot(const char* file = nullptr, uint32_t max = 0xFFFFFF, bool types = false) const;
@@ -538,8 +535,8 @@ public:
 
 protected:
     /// @name Wrappers for World::sym
-    ///@{
     /// These are here to have Def::set%ters inline without including `mim/world.h`.
+    ///@{
     Sym sym(const char*) const;
     Sym sym(std::string_view) const;
     Sym sym(std::string) const;
@@ -778,7 +775,6 @@ private:
 public:
     /// @name ops
     ///@{
-    /// This thing's sole purpose is to differentiate on global from another.
     const Def* init() const { return op(0); }
     void set(const Def* init) { Def::set(0, init); }
     ///@}

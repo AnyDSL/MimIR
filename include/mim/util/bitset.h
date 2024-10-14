@@ -90,9 +90,8 @@ public:
     ///@}
 
     /// @name any
-    ///@{
     /// Is any bit range set?
-
+    ///@{
     /// Is any bit in `[begin, end[` set?
     bool any_range(const size_t begin, const size_t end) const;
     /// Is any bit in `[0, end[` set?
@@ -103,9 +102,8 @@ public:
     ///@}
 
     /// @name none
-    ///@{
     /// Is no bit in range set?
-
+    ///@{
     /// Is no bit in `[begin, end[` set?
     bool none_range(const size_t begin, const size_t end) const { return !any_range(begin, end); }
     /// Is no bit in `[0, end[` set?

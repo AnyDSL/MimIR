@@ -49,27 +49,28 @@ public:
     ///@}
 
     /// @name subspan
-    ///@{
     /// Wrappers for `std::span::subspan` that return a `mim::Span`.
+    ///@{
     constexpr Span<T, std::dynamic_extent> subspan(size_t i, size_t n = std::dynamic_extent) const {
         return Base::subspan(i, n);
     }
-    constexpr Span<T, std::dynamic_extent> rsubspan(size_t i, size_t n = std::dynamic_extent) const {
-        return n != std::dynamic_extent ? subspan(Base::size() - i - n, n) : subspan(0, Base::size() - i);
-    }
-    ///@}
 
-    /// @name rsubspan
-    ///@{
-    /// Similar to Span::subspan but in *reverse*:
-    /// `span.rsubspan(3, 5)` removes the last 3 elements and while picking 5 elements onwards from there.
     /// E.g.: If `span` points to `0, 1, 2, 3, 4, 5, 6, 7, 8, 9`, then the result will point to `2, 3, 4, 5, 6`.
     template<size_t i, size_t n = std::dynamic_extent>
     constexpr Span<T, n != std::dynamic_extent ? n : (N != std::dynamic_extent ? N - i : std::dynamic_extent)>
     subspan() const {
         return Base::template subspan<i, n>();
     }
+    ///@}
 
+    /// @name rsubspan
+    /// Similar to Span::subspan but in *reverse*:
+    ///@{
+    constexpr Span<T, std::dynamic_extent> rsubspan(size_t i, size_t n = std::dynamic_extent) const {
+        return n != std::dynamic_extent ? subspan(Base::size() - i - n, n) : subspan(0, Base::size() - i);
+    }
+
+    /// `span.rsubspan(3, 5)` removes the last 3 elements and while picking 5 elements onwards from there.
     template<size_t i, size_t n = std::dynamic_extent>
     constexpr Span<T, n != std::dynamic_extent ? n : (N != std::dynamic_extent ? N - i : std::dynamic_extent)>
     rsubspan() const {

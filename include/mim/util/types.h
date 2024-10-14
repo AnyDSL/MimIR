@@ -26,8 +26,8 @@ namespace mim {
 #define MIM_16_32_64(m)               m(16) m(32) m(64)
 
 /// @name Aliases for some Base Types
-///@{
 // using CODE1, CODE2, ... here as a workaround for Doxygen
+///@{
 #define CODE1(i)                   \
     using s ## i =  int ## i ##_t; \
     using u ## i = uint ## i ##_t;

@@ -27,24 +27,24 @@ public:
 
     /// @name dom
     /// @anchor pi_dom
-    ///@{
     /// @see @ref proj
+    ///@{
     Ref dom() const { return op(0); }
     MIM_PROJ(dom, const)
     ///@}
 
     /// @name codom
     /// @anchor pi_codom
-    ///@{
     /// @see @ref proj
+    ///@{
     Ref codom() const { return op(1); }
     MIM_PROJ(codom, const)
     ///@}
 
     /// @name Continuations
     /// @anchor continuations
-    ///@{
     /// Checks certain properties of this Pi regarding continuations.
+    ///@{
     // clang-format off
     /// Is this a continuation - i.e. is the Pi::codom mim::Bot%tom?
     static const Pi* isa_cn(Ref d) { return d->isa<Pi>() && d->as<Pi>()->codom()->node() == Node::Bot ? d->as<Pi>() : nullptr; }
@@ -58,7 +58,6 @@ public:
     /// @name Return Continuation
     /// @anchor return_continuation
     ///@{
-
     /// Yields the Pi::ret_pi() of @p d, if it is in fact a Pi.
     static const Pi* ret_pi(Ref d) { return d->isa<Pi>() ? d->as<Pi>()->ret_pi() : nullptr; }
     /// Yields the last Pi::dom, if it Pi::isa_basicblock.
@@ -68,8 +67,8 @@ public:
     ///@}
 
     /// @name Setters
-    ///@{
     /// @see @ref set_ops "Setting Ops"
+    ///@{
     Pi* set(Ref dom, Ref codom) { return set_dom(dom)->set_codom(codom); }
     Pi* set_dom(Ref dom) { return Def::set(0, dom)->as<Pi>(); }
     Pi* set_dom(Defs doms);
@@ -111,23 +110,23 @@ public:
 
     /// @name dom
     /// @anchor lam_dom
-    ///@{
     /// @see @ref proj
+    ///@{
     Ref dom() const { return type()->dom(); }
     MIM_PROJ(dom, const)
     ///@}
 
     /// @name codom
     /// @anchor lam_codom
-    ///@{
     /// @see @ref proj
+    ///@{
     Ref codom() const { return type()->codom(); }
     MIM_PROJ(codom, const)
     ///@}
 
     /// @name Continuations
-    ///@{
     /// @see @ref continuations "Pi: Continuations"
+    ///@{
     // clang-format off
     static const Lam* isa_cn(Ref d) { return Pi::isa_cn(d->type()) ? d->isa<Lam>() : nullptr; }
     static const Lam* isa_basicblock(Ref d) { return Pi::isa_basicblock(d->type()) ? d->isa<Lam>() : nullptr; }
@@ -139,8 +138,8 @@ public:
     ///@}
 
     /// @name Return Continuation
-    ///@{
     /// @see @ref return_continuation "Pi: Return Continuation"
+    ///@{
     const Pi* ret_pi() const { return type()->ret_pi(); }
     Ref ret_dom() const { return ret_pi()->dom(); }
     /// Yields the Lam::var of the Lam::ret_pi.
@@ -148,13 +147,13 @@ public:
     ///@}
 
     /// @name Setters
-    ///@{
     /// Lam::Filter is a `std::variant<bool, const Def*>` that lets you set the Lam::filter() like this:
     /// ```cpp
     /// lam1->app(true, f, arg);
     /// lam2->app(my_filter_def, f, arg);
     /// ```
     /// @see @ref set_ops "Setting Ops"
+    ///@{
     using Filter = std::variant<bool, const Def*>;
     Lam* set(Filter filter, const Def* body) { return set_filter(filter)->set_body(body); }
     Lam* set_filter(Filter);                                                ///< Set filter first.
@@ -184,8 +183,8 @@ private:
 };
 
 /// @name Lam
-///@{
 /// GIDSet / GIDMap keyed by Lam::gid of `Lam*`.
+///@{
 template<class To> using LamMap = GIDMap<Lam*, To>;
 using LamSet                    = GIDSet<Lam*>;
 using Lam2Lam                   = LamMap<Lam*>;
@@ -210,8 +209,8 @@ public:
 
     /// @name arg
     /// @anchor app_arg
-    ///@{
     /// @see @ref proj
+    ///@{
     const Def* arg() const { return op(1); }
     MIM_PROJ(arg, const)
     ///@}

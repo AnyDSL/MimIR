@@ -15,8 +15,8 @@ private:
 
 public:
     /// @name Setters
-    ///@{
     /// @see @ref set_ops "Setting Ops"
+    ///@{
     Sigma* set(size_t i, const Def* def) { return Def::set(i, def)->as<Sigma>(); }
     Sigma* set(Defs ops) { return Def::set(ops)->as<Sigma>(); }
     Sigma* unset() { return Def::unset()->as<Sigma>(); }
@@ -100,8 +100,8 @@ public:
     ///@}
 
     /// @name Setters
-    ///@{
     /// @see @ref set_ops "Setting Ops"
+    ///@{
     Pack* set(const Def* body) { return Def::set(0, body)->as<Pack>(); }
     Pack* reset(const Def* body) { return unset()->set(body); }
     Pack* unset() { return Def::unset()->as<Pack>(); }

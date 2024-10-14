@@ -10,8 +10,8 @@ using hash_t = uint32_t;
 ///@}
 
 /// @name Murmur3 Hash
-///@{
 /// See [Wikipedia](https://en.wikipedia.org/wiki/MurmurHash).
+///@{
 inline hash_t murmur_32_scramble(hash_t k) {
     k *= 0xcc9e2d51;
     k = (k << 15) | (k >> 17);
@@ -70,9 +70,8 @@ inline hash_t murmur3(hash_t h) {
 ///@}
 
 /// @name FNV-1 Hash
-///@{
 /// See [Wikipedia](https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function#FNV-1_hash).
-
+///@{
 /// [Magic numbers](http://www.isthe.com/chongo/tech/comp/fnv/index.html#FNV-var) for FNV-1 hash.
 struct FNV1 {
     static const hash_t offset = 2166136261_u32;

@@ -40,9 +40,8 @@ struct Plugin {
 };
 
 /// @name Plugin Interface
-///@{
 /// @see Plugin
-
+///@{
 /// To be implemented and exported by a plugin.
 /// @returns a filled Plugin.
 MIM_EXPORT mim::Plugin mim_get_plugin();
@@ -87,7 +86,6 @@ struct Annex {
 
     /// @name Annex Name
     /// @anchor annex_name
-    ///@{
     /// Anatomy of an Annex name:
     /// ```
     /// %plugin.tag.sub
@@ -95,7 +93,7 @@ struct Annex {
     /// ```
     /// * Def::name() retrieves the full name as Sym.
     /// * Def::flags() retrieves the full name as Axiom::mangle%d 64-bit integer.
-
+    ///@{
     /// Yields the `plugin` part of the name as integer.
     /// It consists of 48 relevant bits that are returned in the highest 6 bytes of a 64-bit integer.
     static plugin_t flags2plugin(flags_t f) { return f & Global_Plugin; }
@@ -111,9 +109,8 @@ struct Annex {
     ///@}
 
     /// @name Helpers for Matching
-    ///@{
     /// These are set via template specialization.
-
+    ///@{
     /// Number of Axiom::sub%tags.
     template<class Id> static constexpr size_t Num = size_t(-1);
 

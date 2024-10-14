@@ -24,7 +24,6 @@ public:
     ///@}
 
     /// @name Lattice
-    ///@{
     /// EtaExp uses the following lattice:
     /// ```
     ///       expand_            <-- η-expand non-callee as the Lam occurs more than once.
@@ -37,6 +36,7 @@ public:
     /// * If it's not within EtaExp::expand_, it's either `Pos` or `Bot`.
     ///   But there is no need to differentiate this any further.
     /// * EtaExp::Pos tracks the particular element at that level and is memorized statefully.
+    ///@{
     enum Pos : bool { Callee, Non_Callee_1 };
     static std::string_view pos2str(Pos pos) { return pos == Callee ? "Callee" : "Non_Callee_1"; }
 

@@ -3,6 +3,7 @@
 #include <queue>
 
 #include "mim/phase/phase.h"
+
 #include "mim/plug/clos/clos.h"
 #include "mim/plug/mem/mem.h"
 
@@ -50,7 +51,6 @@ private:
 
     /// @name Helpers
     ///@{
-
     /// wrapper arround old2new_
     const Def* map(const Def* old_def, const Def* new_def) { return old2new_[old_def] = new_def; }
     Def* map(const Def* old_def, Def* new_def) {
