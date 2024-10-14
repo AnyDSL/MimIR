@@ -274,7 +274,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="namespacemim.html#abfb343322c95d8c70952e41e6d9728bc">undo_t</a> mim::TailRecElim::analyze </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmim_1_1Ref.html">Ref</a></td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classmim_1_1Ref.html">Ref</a></td>          <td class="paramname"><span class="paramname"><em>def</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -284,13 +284,12 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Invoked after the <a class="el" href="classmim_1_1PassMan.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a> has finished <a class="el" href="classmim_1_1Pass.html#a1e2538db511c704eda02dd76f4bce8e6">Pass::rewrite</a>ing <a class="el" href="classmim_1_1PassMan.html#a2a37453a903314314b2e463854bfac0e">PassMan::curr_mut</a> to analyze the <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a>. Will only be invoked if <a class="el" href="classmim_1_1Pass.html#aaa4d94d4f8d7fe1b6f7e854ba2251f59">Pass::fixed_point()</a> yields <code>true</code> - which will be the case for <a class="el" href="classmim_1_1FPPass.html" title="Inherit from this class using CRTP, if you do need a Pass with a state and a fixed-point.">FPPass</a>es. </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="namespacemim.html#ae97e9f99aa1fed4c2dbc1a807a8e689e">mim::No_Undo</a> or the state to roll back to. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classmim_1_1Pass.html#aa9b8ab784ac9082078bd2ab10f0b8c1e">mim::Pass</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="tail__rec__elim_8cpp_source.html#l00023">23</a> of file <a class="el" href="tail__rec__elim_8cpp_source.html">tail_rec_elim.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="lam_8h_source.html#l00239">mim::isa_apped_mut_lam()</a>, <a class="el" href="eta__red_8h_source.html#l00022">mim::EtaRed::mark_irreducible()</a>, <a class="el" href="pass_8h_source.html#l00015">mim::No_Undo</a>, <a class="el" href="pass_8h_source.html#l00273">mim::FPPass&lt; TailRecElim, Lam &gt;::undo_visit()</a>, and <a class="el" href="pass_8h_source.html#l00296">mim::Pass::world()</a>.</p>
+<p class="reference">References <a class="el" href="lam_8h_source.html#l00238">mim::isa_apped_mut_lam()</a>, <a class="el" href="eta__red_8h_source.html#l00022">mim::EtaRed::mark_irreducible()</a>, <a class="el" href="pass_8h_source.html#l00015">mim::No_Undo</a>, <a class="el" href="pass_8h_source.html#l00273">mim::FPPass&lt; TailRecElim, Lam &gt;::undo_visit()</a>, and <a class="el" href="pass_8h_source.html#l00296">mim::Pass::world()</a>.</p>
 
 </div>
 </div>
@@ -316,13 +315,12 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Rewrites an <em>immutable</em> <code>def</code> within <a class="el" href="classmim_1_1PassMan.html#a2a37453a903314314b2e463854bfac0e">PassMan::curr_mut</a>. </p><dl class="section return"><dt>Returns</dt><dd>the replacement. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classmim_1_1Pass.html#a1e2538db511c704eda02dd76f4bce8e6">mim::Pass</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="tail__rec__elim_8cpp_source.html#l00008">8</a> of file <a class="el" href="tail__rec__elim_8cpp_source.html">tail_rec_elim.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8cpp_source.html#l00187">mim::World::app()</a>, <a class="el" href="lam_8h_source.html#l00239">mim::isa_apped_mut_lam()</a>, and <a class="el" href="pass_8h_source.html#l00296">mim::Pass::world()</a>.</p>
+<p class="reference">References <a class="el" href="world_8cpp_source.html#l00187">mim::World::app()</a>, <a class="el" href="lam_8h_source.html#l00238">mim::isa_apped_mut_lam()</a>, and <a class="el" href="pass_8h_source.html#l00296">mim::Pass::world()</a>.</p>
 
 </div>
 </div>

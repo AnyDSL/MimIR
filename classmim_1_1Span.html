@@ -157,16 +157,22 @@ requires (std::is_same_v&lt;std::add_const_t&lt;typename Vec::value_type&gt;, st
 <tr class="memitem:abb1a112213c929757f33fff2a0efcff3" id="r_abb1a112213c929757f33fff2a0efcff3"><td class="memItemLeft" align="right" valign="top">constexpr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abb1a112213c929757f33fff2a0efcff3">Span</a> (typename Base::pointer p)</td></tr>
 <tr class="separator:abb1a112213c929757f33fff2a0efcff3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">subspan</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>Wrappers for <code>std::span::subspan</code> that return a <code><a class="el" href="classmim_1_1Span.html" title="This is a thin wrapper for std::span&lt;T, N&gt; with the following additional features:">mim::Span</a></code>. </p>
+</div></td></tr>
 <tr class="memitem:a65eba8c83ffccb00a36528712cd41d67" id="r_a65eba8c83ffccb00a36528712cd41d67"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, std::dynamic_extent &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a65eba8c83ffccb00a36528712cd41d67">subspan</a> (size_t i, size_t n=std::dynamic_extent) const</td></tr>
 <tr class="separator:a65eba8c83ffccb00a36528712cd41d67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0acd2c9692fae5577a67185de3567d6c" id="r_a0acd2c9692fae5577a67185de3567d6c"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, std::dynamic_extent &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0acd2c9692fae5577a67185de3567d6c">rsubspan</a> (size_t i, size_t n=std::dynamic_extent) const</td></tr>
-<tr class="separator:a0acd2c9692fae5577a67185de3567d6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">rsubspan</div></td></tr>
 <tr class="memitem:a271c0872c751e4bb075700a1d0477d4d" id="r_a271c0872c751e4bb075700a1d0477d4d"><td class="memTemplParams" colspan="2">template&lt;size_t i, size_t n = std::dynamic_extent&gt; </td></tr>
 <tr class="memitem:a271c0872c751e4bb075700a1d0477d4d"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, n !=std::dynamic_extent ? n :(N !=std::dynamic_extent ? N - i :std::dynamic_extent)&gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a271c0872c751e4bb075700a1d0477d4d">subspan</a> () const</td></tr>
+<tr class="memdesc:a271c0872c751e4bb075700a1d0477d4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">E.g.: If <code>span</code> points to <code>0, 1, 2, 3, 4, 5, 6, 7, 8, 9</code>, then the result will point to <code>2, 3, 4, 5, 6</code>.  <br /></td></tr>
 <tr class="separator:a271c0872c751e4bb075700a1d0477d4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">rsubspan</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>Similar to <a class="el" href="#a65eba8c83ffccb00a36528712cd41d67">Span::subspan</a> but in <em>reverse</em>: </p>
+</div></td></tr>
+<tr class="memitem:a0acd2c9692fae5577a67185de3567d6c" id="r_a0acd2c9692fae5577a67185de3567d6c"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, std::dynamic_extent &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0acd2c9692fae5577a67185de3567d6c">rsubspan</a> (size_t i, size_t n=std::dynamic_extent) const</td></tr>
+<tr class="separator:a0acd2c9692fae5577a67185de3567d6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5eb4fe2a3927c7ae6b71b2643911d6b5" id="r_a5eb4fe2a3927c7ae6b71b2643911d6b5"><td class="memTemplParams" colspan="2">template&lt;size_t i, size_t n = std::dynamic_extent&gt; </td></tr>
 <tr class="memitem:a5eb4fe2a3927c7ae6b71b2643911d6b5"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Span.html">Span</a>&lt; T, n !=std::dynamic_extent ? n :(N !=std::dynamic_extent ? N - i :std::dynamic_extent)&gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a5eb4fe2a3927c7ae6b71b2643911d6b5">rsubspan</a> () const</td></tr>
+<tr class="memdesc:a5eb4fe2a3927c7ae6b71b2643911d6b5"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>span.rsubspan(3, 5)</code> removes the last 3 elements and while picking 5 elements onwards from there.  <br /></td></tr>
 <tr class="separator:a5eb4fe2a3927c7ae6b71b2643911d6b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -233,7 +239,7 @@ template&lt;class T , size_t N = std::dynamic_extent&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00037">37</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="span_8h_source.html#l00075">mim::Span&lt; T, N &gt;::rsubspan()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="span_8h_source.html#l00076">mim::Span&lt; T, N &gt;::rsubspan()</a>.</p>
 
 </div>
 </div>
@@ -387,7 +393,9 @@ template&lt;size_t i, size_t n = std::dynamic_extent&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00075">75</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+<p><code>span.rsubspan(3, 5)</code> removes the last 3 elements and while picking 5 elements onwards from there. </p>
+
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00076">76</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
 <p class="reference">References <a class="el" href="span_8h_source.html#l00037">mim::Span&lt; T, N &gt;::Span()</a>.</p>
 
@@ -422,9 +430,9 @@ template&lt;class T , size_t N = std::dynamic_extent&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00057">57</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00069">69</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
-<p class="reference">References <a class="el" href="span_8h_source.html#l00069">mim::Span&lt; T, N &gt;::subspan()</a>.</p>
+<p class="reference">References <a class="el" href="span_8h_source.html#l00061">mim::Span&lt; T, N &gt;::subspan()</a>.</p>
 
 </div>
 </div>
@@ -454,13 +462,14 @@ template&lt;size_t i, size_t n = std::dynamic_extent&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Similar to <a class="el" href="#a65eba8c83ffccb00a36528712cd41d67">Span::subspan</a> but in <em>reverse</em>: <code>span.rsubspan(3, 5)</code> removes the last 3 elements and while picking 5 elements onwards from there. E.g.: If <code>span</code> points to <code>0, 1, 2, 3, 4, 5, 6, 7, 8, 9</code>, then the result will point to <code>2, 3, 4, 5, 6</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00069">69</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
+<p>E.g.: If <code>span</code> points to <code>0, 1, 2, 3, 4, 5, 6, 7, 8, 9</code>, then the result will point to <code>2, 3, 4, 5, 6</code>. </p>
 
-<p class="reference">References <a class="el" href="span_8h_source.html#l00069">mim::Span&lt; T, N &gt;::subspan()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00061">61</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="span_8h_source.html#l00057">mim::Span&lt; T, N &gt;::rsubspan()</a>, and <a class="el" href="span_8h_source.html#l00069">mim::Span&lt; T, N &gt;::subspan()</a>.</p>
+<p class="reference">References <a class="el" href="span_8h_source.html#l00061">mim::Span&lt; T, N &gt;::subspan()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="span_8h_source.html#l00069">mim::Span&lt; T, N &gt;::rsubspan()</a>, and <a class="el" href="span_8h_source.html#l00061">mim::Span&lt; T, N &gt;::subspan()</a>.</p>
 
 </div>
 </div>
@@ -492,7 +501,6 @@ template&lt;class T , size_t N = std::dynamic_extent&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Wrappers for <code>std::span::subspan</code> that return a <code><a class="el" href="classmim_1_1Span.html" title="This is a thin wrapper for std::span&lt;T, N&gt; with the following additional features:">mim::Span</a></code>. </p>
 
 <p class="definition">Definition at line <a class="el" href="span_8h_source.html#l00054">54</a> of file <a class="el" href="span_8h_source.html">span.h</a>.</p>
 

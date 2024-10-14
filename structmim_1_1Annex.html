@@ -137,10 +137,15 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Annex Name</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="annex_name"></a></p>
+<tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="annex_name"></a> Anatomy of an <a class="el" href="structmim_1_1Annex.html" title="Holds info about an entity defined within a Plugin (called Annex).">Annex</a> name:</p>
+<div class="fragment"><div class="line">%plugin.tag.sub</div>
+<div class="line">|  48  | 8 | 8 | &lt;-- Number of bits per field.</div>
+</div><!-- fragment --><ul>
+<li>Def::name() retrieves the full name as Sym.</li>
+<li><a class="el" href="classmim_1_1Def.html#ad3752dae0a6f3c35a51f6ac2d2f92b7e">Def::flags()</a> retrieves the full name as Axiom::mangled 64-bit integer. </li>
+</ul>
 </div></td></tr>
 <tr class="memitem:a47ac5c63d63beab590bc2d469bb6a29b" id="r_a47ac5c63d63beab590bc2d469bb6a29b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacemim.html#abb3c4d87d349db095756fced097d8ac8">plugin_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a47ac5c63d63beab590bc2d469bb6a29b">flags2plugin</a> (<a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a> f)</td></tr>
-<tr class="memdesc:a47ac5c63d63beab590bc2d469bb6a29b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields the <code>plugin</code> part of the name as integer.  <br /></td></tr>
 <tr class="separator:a47ac5c63d63beab590bc2d469bb6a29b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6ea3fee925bbaee78b047b70a6104eb" id="r_af6ea3fee925bbaee78b047b70a6104eb"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacemim.html#aec640f0bb1ca994e0f2946fa2f00f288">tag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af6ea3fee925bbaee78b047b70a6104eb">flags2tag</a> (<a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a> f)</td></tr>
 <tr class="memdesc:af6ea3fee925bbaee78b047b70a6104eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields the <code>tag</code> part of the name as integer.  <br /></td></tr>
@@ -155,9 +160,10 @@ Static Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Helpers for Matching</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>These are set via template specialization. </p>
+</div></td></tr>
 <tr class="memitem:aac0126d5e408071ae28567cb65bf256f" id="r_aac0126d5e408071ae28567cb65bf256f"><td class="memTemplParams" colspan="2">template&lt;class Id &gt; </td></tr>
 <tr class="memitem:aac0126d5e408071ae28567cb65bf256f"><td class="memTemplItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#aac0126d5e408071ae28567cb65bf256f">Num</a> = size_t(-1)</td></tr>
-<tr class="memdesc:aac0126d5e408071ae28567cb65bf256f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of <a class="el" href="classmim_1_1Axiom.html#a53d9c0c305d7ea8e5c4043acfd78a4f6">Axiom::sub</a>tags.  <br /></td></tr>
 <tr class="separator:aac0126d5e408071ae28567cb65bf256f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6aa4113e5e94cd7420ced85036ae698" id="r_ac6aa4113e5e94cd7420ced85036ae698"><td class="memTemplParams" colspan="2">template&lt;class Id &gt; </td></tr>
 <tr class="memitem:ac6aa4113e5e94cd7420ced85036ae698"><td class="memTemplItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#ac6aa4113e5e94cd7420ced85036ae698">Base</a> = <a class="el" href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">flags_t</a>(-1)</td></tr>
@@ -180,7 +186,7 @@ Static Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Holds info about an entity defined within a <a class="el" href="structmim_1_1Plugin.html" title="Basic info and registration function pointer to be returned from a specific plugin.">Plugin</a> (called <em><a class="el" href="structmim_1_1Annex.html" title="Holds info about an entity defined within a Plugin (called Annex).">Annex</a></em>). </p>
 
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00053">53</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00052">52</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2e4d439767921ebb103a8256fc2f8524" name="a2e4d439767921ebb103a8256fc2f8524"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2e4d439767921ebb103a8256fc2f8524">&#9670;&#160;</a></span>Annex()</h2>
@@ -240,7 +246,7 @@ Static Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="plugin_8cpp_source.html#l00037">37</a> of file <a class="el" href="plugin_8cpp_source.html">plugin.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="plugin_8h_source.html#l00058">Max_Plugin_Size</a>.</p>
+<p class="reference">References <a class="el" href="plugin_8h_source.html#l00057">Max_Plugin_Size</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00185">mim::World::annex()</a>, and <a class="el" href="world_8cpp_source.html#l00080">mim::World::register_annex()</a>.</p>
 
@@ -271,7 +277,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>Includes <a class="el" href="classmim_1_1Axiom.html#aa047a1ef171a1220616d56a93de635f3">Axiom::plugin()</a> and <a class="el" href="classmim_1_1Axiom.html#a5926fcbc3534d71bab21e07f59595c8e">Axiom::tag()</a> but <b>not</b> <a class="el" href="classmim_1_1Axiom.html#a53d9c0c305d7ea8e5c4043acfd78a4f6">Axiom::sub</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00110">110</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00108">108</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="axiom_8h_source.html#l00053">mim::Axiom::base()</a>.</p>
 
@@ -299,18 +305,11 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Yields the <code>plugin</code> part of the name as integer. It consists of 48 relevant bits that are returned in the highest 6 bytes of a 64-bit integer. </p>
 
-<p>Yields the <code>plugin</code> part of the name as integer. </p>
-<p>Anatomy of an <a class="el" href="structmim_1_1Annex.html" title="Holds info about an entity defined within a Plugin (called Annex).">Annex</a> name: </p><div class="fragment"><div class="line">%plugin.tag.sub</div>
-<div class="line">|  48  | 8 | 8 | &lt;-- Number of bits per field.</div>
-</div><!-- fragment --><ul>
-<li>Def::name() retrieves the full name as Sym.</li>
-<li><a class="el" href="classmim_1_1Def.html#ad3752dae0a6f3c35a51f6ac2d2f92b7e">Def::flags()</a> retrieves the full name as Axiom::mangled 64-bit integer. It consists of 48 relevant bits that are returned in the highest 6 bytes of a 64-bit integer. </li>
-</ul>
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00099">99</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00101">101</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
-
-<p class="reference">References <a class="el" href="plugin_8h_source.html#l00059">Global_Plugin</a>.</p>
+<p class="reference">References <a class="el" href="plugin_8h_source.html#l00058">Global_Plugin</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="axiom_8h_source.html#l00050">mim::Axiom::plugin()</a>.</p>
 
@@ -341,7 +340,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>Yields the <code>sub</code> part of the name as integer. </p>
 
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00107">107</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00105">105</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="axiom_8h_source.html#l00052">mim::Axiom::sub()</a>.</p>
 
@@ -372,7 +371,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>Yields the <code>tag</code> part of the name as integer. </p>
 
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00104">104</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00102">102</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="axiom_8h_source.html#l00051">mim::Axiom::tag()</a>.</p>
 
@@ -421,7 +420,7 @@ Static Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="plugin_8cpp_source.html#l00009">9</a> of file <a class="el" href="plugin_8cpp_source.html">plugin.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="plugin_8h_source.html#l00058">Max_Plugin_Size</a>.</p>
+<p class="reference">References <a class="el" href="plugin_8h_source.html#l00057">Max_Plugin_Size</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="ast_8h_source.html#l00025">mim::ast::AnnexInfo::AnnexInfo()</a>, <a class="el" href="ast_8cpp_source.html#l00052">mim::ast::AST::bootstrap()</a>, <a class="el" href="ast_8cpp_source.html#l00014">mim::ast::AST::name2annex()</a>, and <a class="el" href="plugin_8cpp_source.html#l00058">split()</a>.</p>
 
@@ -486,7 +485,7 @@ template&lt;class Id &gt; </div>
 </div><div class="memdoc">
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classmim_1_1Axiom.html#a9b27be74953fb4bf31dd4d91c377e051">Axiom::base</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00121">121</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00118">118</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00194">mim::World::annex()</a>, <a class="el" href="ll_8cpp_source.html#l00458">mim::ll::Emitter::emit_bb()</a>, <a class="el" href="axiom_8h_source.html#l00105">mim::match()</a>, <a class="el" href="clos_8cpp_source.html#l00021">mim_get_plugin()</a>, <a class="el" href="compile_2normalizers_8cpp_source.html#l00045">mim::plug::compile::normalize_combine_pass_list()</a>, <a class="el" href="compile_2normalizers_8cpp_source.html#l00030">mim::plug::compile::normalize_combined_phase()</a>, <a class="el" href="compile_2normalizers_8cpp_source.html#l00007">mim::plug::compile::normalize_pass_phase()</a>, <a class="el" href="pipelinebuilder_8h_source.html#l00047">mim::register_pass()</a>, <a class="el" href="pipelinebuilder_8h_source.html#l00061">mim::register_pass_with_arg()</a>, and <a class="el" href="pipelinebuilder_8h_source.html#l00054">mim::register_phase()</a>.</p>
 
@@ -512,9 +511,9 @@ template&lt;class Id &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00059">59</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00058">58</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00246">mim::World::axiom()</a>, and <a class="el" href="plugin_8h_source.html#l00101">flags2plugin()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00246">mim::World::axiom()</a>, and <a class="el" href="plugin_8h_source.html#l00099">flags2plugin()</a>.</p>
 
 </div>
 </div>
@@ -538,7 +537,7 @@ template&lt;class Id &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00058">58</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00057">57</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="plugin_8cpp_source.html#l00037">demangle()</a>, and <a class="el" href="plugin_8cpp_source.html#l00009">mangle()</a>.</p>
 
@@ -565,11 +564,9 @@ template&lt;class Id &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
 <p>Number of <a class="el" href="classmim_1_1Axiom.html#a53d9c0c305d7ea8e5c4043acfd78a4f6">Axiom::sub</a>tags. </p>
-<p>These are set via template specialization. </p>
 
-<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00118">118</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="plugin_8h_source.html#l00115">115</a> of file <a class="el" href="plugin_8h_source.html">plugin.h</a>.</p>
 
 </div>
 </div>

@@ -387,7 +387,7 @@ writable</td>
 
 <p class="definition">Definition at line <a class="el" href="ssa__constr_8cpp_source.html#l00139">139</a> of file <a class="el" href="ssa__constr_8cpp_source.html">ssa_constr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00455">mim::Def::as_mut()</a>, <a class="el" href="pass_8h_source.html#l00015">mim::No_Undo</a>, <a class="el" href="def_8h_source.html#l00267">mim::Def::op()</a>, <a class="el" href="ssa__constr_8h_source.html#l00021">Phixy</a>, <a class="el" href="pass_8h_source.html#l00075">mim::Pass::proxy()</a>, <a class="el" href="ssa__constr_8h_source.html#l00021">Sloxy</a>, <a class="el" href="def_8h_source.html#l00764">mim::Proxy::tag()</a>, <a class="el" href="pass_8h_source.html#l00280">mim::FPPass&lt; SSAConstr, Lam &gt;::undo_enter()</a>, <a class="el" href="pass_8h_source.html#l00273">mim::FPPass&lt; SSAConstr, Lam &gt;::undo_visit()</a>, and <a class="el" href="pass_8h_source.html#l00296">mim::Pass::world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00452">mim::Def::as_mut()</a>, <a class="el" href="pass_8h_source.html#l00015">mim::No_Undo</a>, <a class="el" href="def_8h_source.html#l00266">mim::Def::op()</a>, <a class="el" href="ssa__constr_8h_source.html#l00021">Phixy</a>, <a class="el" href="pass_8h_source.html#l00075">mim::Pass::proxy()</a>, <a class="el" href="ssa__constr_8h_source.html#l00021">Sloxy</a>, <a class="el" href="def_8h_source.html#l00761">mim::Proxy::tag()</a>, <a class="el" href="pass_8h_source.html#l00280">mim::FPPass&lt; SSAConstr, Lam &gt;::undo_enter()</a>, <a class="el" href="pass_8h_source.html#l00273">mim::FPPass&lt; SSAConstr, Lam &gt;::undo_visit()</a>, and <a class="el" href="pass_8h_source.html#l00296">mim::Pass::world()</a>.</p>
 
 </div>
 </div>
@@ -403,7 +403,7 @@ writable</td>
         <tr>
           <td class="memname"><a class="el" href="namespacemim.html#abfb343322c95d8c70952e41e6d9728bc">undo_t</a> mim::plug::mem::SSAConstr::analyze </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classmim_1_1Ref.html">Ref</a></td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classmim_1_1Ref.html">Ref</a></td>          <td class="paramname"><span class="paramname"><em>def</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -413,13 +413,12 @@ writable</td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Invoked after the <a class="el" href="classmim_1_1PassMan.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a> has finished <a class="el" href="classmim_1_1Pass.html#a1e2538db511c704eda02dd76f4bce8e6">Pass::rewrite</a>ing <a class="el" href="classmim_1_1PassMan.html#a2a37453a903314314b2e463854bfac0e">PassMan::curr_mut</a> to analyze the <a class="el" href="classmim_1_1Def.html" title="Base class for all Defs.">Def</a>. Will only be invoked if <a class="el" href="classmim_1_1Pass.html#aaa4d94d4f8d7fe1b6f7e854ba2251f59">Pass::fixed_point()</a> yields <code>true</code> - which will be the case for <a class="el" href="classmim_1_1FPPass.html" title="Inherit from this class using CRTP, if you do need a Pass with a state and a fixed-point.">FPPass</a>es. </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="namespacemim.html#ae97e9f99aa1fed4c2dbc1a807a8e689e">mim::No_Undo</a> or the state to roll back to. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classmim_1_1Pass.html#aa9b8ab784ac9082078bd2ab10f0b8c1e">mim::Pass</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="ssa__constr_8cpp_source.html#l00159">159</a> of file <a class="el" href="ssa__constr_8cpp_source.html">ssa_constr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00232">mim::RWPass&lt; SSAConstr, Lam &gt;::curr_mut()</a>, <a class="el" href="pass_8h_source.html#l00257">mim::FPPass&lt; SSAConstr, Lam &gt;::data()</a>, <a class="el" href="lam_8h_source.html#l00133">mim::Lam::isa_basicblock()</a>, <a class="el" href="lam_8h_source.html#l00231">mim::isa_callee()</a>, <a class="el" href="def_8h_source.html#l00447">mim::Def::isa_mut()</a>, <a class="el" href="lam_8h_source.html#l00234">mim::isa_workable()</a>, <a class="el" href="pass_8h_source.html#l00015">mim::No_Undo</a>, <a class="el" href="def_8h_source.html#l00268">mim::Def::num_ops()</a>, <a class="el" href="def_8h_source.html#l00267">mim::Def::op()</a>, and <a class="el" href="pass_8h_source.html#l00296">mim::Pass::world()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00232">mim::RWPass&lt; SSAConstr, Lam &gt;::curr_mut()</a>, <a class="el" href="pass_8h_source.html#l00257">mim::FPPass&lt; SSAConstr, Lam &gt;::data()</a>, <a class="el" href="lam_8h_source.html#l00132">mim::Lam::isa_basicblock()</a>, <a class="el" href="lam_8h_source.html#l00230">mim::isa_callee()</a>, <a class="el" href="def_8h_source.html#l00444">mim::Def::isa_mut()</a>, <a class="el" href="lam_8h_source.html#l00233">mim::isa_workable()</a>, <a class="el" href="pass_8h_source.html#l00015">mim::No_Undo</a>, <a class="el" href="def_8h_source.html#l00267">mim::Def::num_ops()</a>, <a class="el" href="def_8h_source.html#l00266">mim::Def::op()</a>, and <a class="el" href="pass_8h_source.html#l00296">mim::Pass::world()</a>.</p>
 
 </div>
 </div>
@@ -484,7 +483,7 @@ writable</td>
 
 <p class="definition">Definition at line <a class="el" href="ssa__constr_8cpp_source.html#l00019">19</a> of file <a class="el" href="ssa__constr_8cpp_source.html">ssa_constr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00082">mim::Pass::as_proxy()</a>, <a class="el" href="pass_8h_source.html#l00232">mim::RWPass&lt; SSAConstr, Lam &gt;::curr_mut()</a>, <a class="el" href="def_8h_source.html#l00268">mim::Def::num_ops()</a>, <a class="el" href="def_8h_source.html#l00267">mim::Def::op()</a>, <a class="el" href="pass_8h_source.html#l00075">mim::Pass::proxy()</a>, <a class="el" href="ssa__constr_8h_source.html#l00021">Sloxy</a>, <a class="el" href="def_8h_source.html#l00764">mim::Proxy::tag()</a>, <a class="el" href="ssa__constr_8h_source.html#l00021">Traxy</a>, and <a class="el" href="pass_8h_source.html#l00296">mim::Pass::world()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00082">mim::Pass::as_proxy()</a>, <a class="el" href="pass_8h_source.html#l00232">mim::RWPass&lt; SSAConstr, Lam &gt;::curr_mut()</a>, <a class="el" href="def_8h_source.html#l00267">mim::Def::num_ops()</a>, <a class="el" href="def_8h_source.html#l00266">mim::Def::op()</a>, <a class="el" href="pass_8h_source.html#l00075">mim::Pass::proxy()</a>, <a class="el" href="ssa__constr_8h_source.html#l00021">Sloxy</a>, <a class="el" href="def_8h_source.html#l00761">mim::Proxy::tag()</a>, <a class="el" href="ssa__constr_8h_source.html#l00021">Traxy</a>, and <a class="el" href="pass_8h_source.html#l00296">mim::Pass::world()</a>.</p>
 
 </div>
 </div>
@@ -510,13 +509,12 @@ writable</td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Rewrites an <em>immutable</em> <code>def</code> within <a class="el" href="classmim_1_1PassMan.html#a2a37453a903314314b2e463854bfac0e">PassMan::curr_mut</a>. </p><dl class="section return"><dt>Returns</dt><dd>the replacement. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="classmim_1_1Pass.html#a1e2538db511c704eda02dd76f4bce8e6">mim::Pass</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="ssa__constr_8cpp_source.html#l00030">30</a> of file <a class="el" href="ssa__constr_8cpp_source.html">ssa_constr.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00232">mim::RWPass&lt; SSAConstr, Lam &gt;::curr_mut()</a>, <a class="el" href="pass_8h_source.html#l00257">mim::FPPass&lt; SSAConstr, Lam &gt;::data()</a>, <a class="el" href="lam_8h_source.html#l00239">mim::isa_apped_mut_lam()</a>, <a class="el" href="def_8h_source.html#l00447">mim::Def::isa_mut()</a>, <a class="el" href="pass_8h_source.html#l00077">mim::Pass::isa_proxy()</a>, <a class="el" href="lam_8h_source.html#l00234">mim::isa_workable()</a>, <a class="el" href="axiom_8h_source.html#l00105">mim::match()</a>, <a class="el" href="def_8h_source.html#l00268">mim::Def::num_ops()</a>, <a class="el" href="def_8h_source.html#l00267">mim::Def::op()</a>, <a class="el" href="mem_8h_source.html#l00127">mim::plug::mem::op_remem()</a>, <a class="el" href="eta__exp_8h_source.html#l00021">mim::EtaExp::proxy()</a>, <a class="el" href="pass_8h_source.html#l00075">mim::Pass::proxy()</a>, <a class="el" href="def_8cpp_source.html#l00220">mim::Def::refine()</a>, <a class="el" href="def_8cpp_source.html#l00248">mim::Def::set()</a>, <a class="el" href="ssa__constr_8h_source.html#l00021">Sloxy</a>, <a class="el" href="world_8cpp_source.html#l00239">mim::World::tuple()</a>, and <a class="el" href="pass_8h_source.html#l00296">mim::Pass::world()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00232">mim::RWPass&lt; SSAConstr, Lam &gt;::curr_mut()</a>, <a class="el" href="pass_8h_source.html#l00257">mim::FPPass&lt; SSAConstr, Lam &gt;::data()</a>, <a class="el" href="lam_8h_source.html#l00238">mim::isa_apped_mut_lam()</a>, <a class="el" href="def_8h_source.html#l00444">mim::Def::isa_mut()</a>, <a class="el" href="pass_8h_source.html#l00077">mim::Pass::isa_proxy()</a>, <a class="el" href="lam_8h_source.html#l00233">mim::isa_workable()</a>, <a class="el" href="axiom_8h_source.html#l00105">mim::match()</a>, <a class="el" href="def_8h_source.html#l00267">mim::Def::num_ops()</a>, <a class="el" href="def_8h_source.html#l00266">mim::Def::op()</a>, <a class="el" href="mem_8h_source.html#l00127">mim::plug::mem::op_remem()</a>, <a class="el" href="eta__exp_8h_source.html#l00021">mim::EtaExp::proxy()</a>, <a class="el" href="pass_8h_source.html#l00075">mim::Pass::proxy()</a>, <a class="el" href="def_8cpp_source.html#l00220">mim::Def::refine()</a>, <a class="el" href="def_8cpp_source.html#l00248">mim::Def::set()</a>, <a class="el" href="ssa__constr_8h_source.html#l00021">Sloxy</a>, <a class="el" href="world_8cpp_source.html#l00239">mim::World::tuple()</a>, and <a class="el" href="pass_8h_source.html#l00296">mim::Pass::world()</a>.</p>
 
 </div>
 </div>
