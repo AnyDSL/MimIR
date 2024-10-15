@@ -408,8 +408,8 @@ public:
     ///@}
 
     /// @name Free Vars and Muts
-    /// * local_muts()/local_vars() are Var%s/mutables reachable by following *immutable* extended_ops().
-    /// * local_muts()/local_vars() are cached and hash-consed.
+    /// * local_muts() / local_vars() are Var%s/mutables reachable by following *immutable* extended_ops().
+    /// * local_muts() / local_vars() are cached and hash-consed.
     /// * free_vars() compute a global solution, i.e., by transitively following *mutables* as well.
     /// * free_vars() are computed on demand and cached.
     ///   They will be transitively invalidated by following fv_consumers(), if a mutable is mutated.

@@ -1,7 +1,5 @@
 #include "mim/phase/phase.h"
 
-#include <vector>
-
 namespace mim {
 
 void Phase::run() {
