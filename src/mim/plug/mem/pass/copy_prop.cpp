@@ -58,7 +58,7 @@ Ref CopyProp::rewrite(Ref def) {
     }
 
     assert(new_args.size() < n);
-    if (prop_lam == nullptr || !equal(old_args, args)) {
+    if (prop_lam == nullptr || !std::ranges::equal(old_args, args)) {
         old_args      = args;
         auto prop_dom = world().sigma(new_doms);
         auto new_pi   = world().pi(prop_dom, var_lam->codom());

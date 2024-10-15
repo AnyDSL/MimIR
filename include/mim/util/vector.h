@@ -47,21 +47,16 @@ public:
 static_assert(std::ranges::contiguous_range<Vector<int>>);
 
 /// @name Deduction Guides
-///{@
+///@{
 template<class I, class A = std::allocator<typename std::iterator_traits<I>::value_type>>
 Vector(I, I, A = A()) -> Vector<typename std::iterator_traits<I>::value_type,
                                 Default_Inlined_Size<typename std::iterator_traits<I>::value_type>,
                                 A>;
-///}@
+///@}
 
-template<class R, class S> bool equal(R range1, S range2) {
-    if (range1.size() != range2.size()) return false;
-    auto j = range2.begin();
-    for (auto i = range1.begin(), e = range1.end(); i != e; ++i, ++j)
-        if (*i != *j) return false;
-    return true;
-}
-
+/// @name erase
+// TODO needed
+///@{
 template<class T, size_t N, class A, class U>
 constexpr typename Vector<T, N, A>::size_type erase(Vector<T, N, A>& c, const U& value) {
     auto it = std::remove(c.begin(), c.end(), value);
@@ -77,5 +72,6 @@ constexpr typename Vector<T, N, A>::size_type erase_if(Vector<T, N, A>& c, Pred 
     c.erase(it, c.end());
     return r;
 }
+///@}
 
 } // namespace mim
