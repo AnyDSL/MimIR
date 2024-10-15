@@ -207,7 +207,6 @@ var namespacemim =
     [ "commute", "namespacemim.html#a5f09589bc08bb2f715056df72aae8b9a", null ],
     [ "compose_cn", "namespacemim.html#aab8bd049eb0b9bf7561a602f62ce7ebd", null ],
     [ "decurry", "namespacemim.html#a9efd9244dd974dd7a5ad80a98c9a2297", null ],
-    [ "equal", "namespacemim.html#afb41355a40cc879e5b49e9320e04817e", null ],
     [ "erase", "namespacemim.html#a570c39f37bbc788928a66903c34cba8b", null ],
     [ "erase_if", "namespacemim.html#a5d920a331ef2e94946140376ab811cd2", null ],
     [ "errf", "namespacemim.html#a6f391dd09ef5770be5c92b9b3ebf8513", null ],

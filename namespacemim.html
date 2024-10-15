@@ -795,8 +795,6 @@ Functions</h2></td></tr>
 <tr class="memitem:acd5f271791887591d1b309592374ab49"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#acd5f271791887591d1b309592374ab49">errln</a> (const char *<a class="el" href="#a5404a4fed41f7478028d335289dd30fb">fmt</a>, Args &amp;&amp;... args)</td></tr>
 <tr class="separator:acd5f271791887591d1b309592374ab49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Deduction Guides</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p>{@ </p>
-</div></td></tr>
 <tr class="memitem:a17d68e673f456cd93e25634e1354c150" id="r_a17d68e673f456cd93e25634e1354c150"><td class="memTemplParams" colspan="2">template&lt;class I , class E &gt; </td></tr>
 <tr class="memitem:a17d68e673f456cd93e25634e1354c150"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a17d68e673f456cd93e25634e1354c150">Span</a> (I, E) -&gt; Span&lt; std::remove_reference_t&lt; std::iter_reference_t&lt; I &gt; &gt; &gt;</td></tr>
 <tr class="separator:a17d68e673f456cd93e25634e1354c150"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -821,16 +819,6 @@ Functions</h2></td></tr>
 <tr class="memitem:afca0bb4c47e185182e4fc7ad6bcec3a1" id="r_afca0bb4c47e185182e4fc7ad6bcec3a1"><td class="memTemplParams" colspan="2">template&lt;class I , class A  = std::allocator&lt;typename std::iterator_traits&lt;I&gt;::value_type&gt;&gt; </td></tr>
 <tr class="memitem:afca0bb4c47e185182e4fc7ad6bcec3a1"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#afca0bb4c47e185182e4fc7ad6bcec3a1">Vector</a> (I, I, A=A()) -&gt; Vector&lt; typename std::iterator_traits&lt; I &gt;::value_type, <a class="el" href="#a39efaf0b2304223993b837cc3e0bd605">Default_Inlined_Size</a>&lt; typename std::iterator_traits&lt; I &gt;::value_type &gt;, A &gt;</td></tr>
 <tr class="separator:afca0bb4c47e185182e4fc7ad6bcec3a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb41355a40cc879e5b49e9320e04817e" id="r_afb41355a40cc879e5b49e9320e04817e"><td class="memTemplParams" colspan="2">template&lt;class R , class S &gt; </td></tr>
-<tr class="memitem:afb41355a40cc879e5b49e9320e04817e"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#afb41355a40cc879e5b49e9320e04817e">equal</a> (R range1, S range2)</td></tr>
-<tr class="memdesc:afb41355a40cc879e5b49e9320e04817e"><td class="mdescLeft">&#160;</td><td class="mdescRight">}@  <br /></td></tr>
-<tr class="separator:afb41355a40cc879e5b49e9320e04817e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a570c39f37bbc788928a66903c34cba8b" id="r_a570c39f37bbc788928a66903c34cba8b"><td class="memTemplParams" colspan="2">template&lt;class T , size_t N, class A , class U &gt; </td></tr>
-<tr class="memitem:a570c39f37bbc788928a66903c34cba8b"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a570c39f37bbc788928a66903c34cba8b">erase</a> (<a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt; &amp;c, const U &amp;value)</td></tr>
-<tr class="separator:a570c39f37bbc788928a66903c34cba8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d920a331ef2e94946140376ab811cd2" id="r_a5d920a331ef2e94946140376ab811cd2"><td class="memTemplParams" colspan="2">template&lt;class T , size_t N, class A , class Pred &gt; </td></tr>
-<tr class="memitem:a5d920a331ef2e94946140376ab811cd2"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a5d920a331ef2e94946140376ab811cd2">erase_if</a> (<a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt; &amp;c, Pred pred)</td></tr>
-<tr class="separator:a5d920a331ef2e94946140376ab811cd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">User-Defined Literals</div></td></tr>
 <tr class="memitem:add322dac68393a6b179d1243a52cf9a1" id="r_add322dac68393a6b179d1243a52cf9a1"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="#ac4e6752bd834d28cb851c128dfa5b8c7">s8</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#add322dac68393a6b179d1243a52cf9a1">operator&quot;&quot;_s8</a> (unsigned long long int s)</td></tr>
 <tr class="separator:add322dac68393a6b179d1243a52cf9a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -906,6 +894,13 @@ Functions</h2></td></tr>
 <tr class="memitem:a217db174daa31eb9e4001c60c099a96f"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a217db174daa31eb9e4001c60c099a96f">assert_emplace</a> (C &amp;container, Args &amp;&amp;... args)</td></tr>
 <tr class="memdesc:a217db174daa31eb9e4001c60c099a96f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invokes <code>emplace</code> on <code>container</code>, asserts that insertion actually happened, and returns the iterator.  <br /></td></tr>
 <tr class="separator:a217db174daa31eb9e4001c60c099a96f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">erase</div></td></tr>
+<tr class="memitem:a570c39f37bbc788928a66903c34cba8b" id="r_a570c39f37bbc788928a66903c34cba8b"><td class="memTemplParams" colspan="2">template&lt;class T , size_t N, class A , class U &gt; </td></tr>
+<tr class="memitem:a570c39f37bbc788928a66903c34cba8b"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a570c39f37bbc788928a66903c34cba8b">erase</a> (<a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt; &amp;c, const U &amp;value)</td></tr>
+<tr class="separator:a570c39f37bbc788928a66903c34cba8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d920a331ef2e94946140376ab811cd2" id="r_a5d920a331ef2e94946140376ab811cd2"><td class="memTemplParams" colspan="2">template&lt;class T , size_t N, class A , class Pred &gt; </td></tr>
+<tr class="memitem:a5d920a331ef2e94946140376ab811cd2"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt;::size_type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a5d920a331ef2e94946140376ab811cd2">erase_if</a> (<a class="el" href="classmim_1_1Vector.html">Vector</a>&lt; T, N, A &gt; &amp;c, Pred pred)</td></tr>
+<tr class="separator:a5d920a331ef2e94946140376ab811cd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -2407,35 +2402,6 @@ template&lt;class D , class S &gt; </div>
 
 </div>
 </div>
-<a id="afb41355a40cc879e5b49e9320e04817e" name="afb41355a40cc879e5b49e9320e04817e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb41355a40cc879e5b49e9320e04817e">&#9670;&#160;</a></span>equal()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class R , class S &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">bool mim::equal </td>
-          <td>(</td>
-          <td class="paramtype">R</td>          <td class="paramname"><span class="paramname"><em>range1</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">S</td>          <td class="paramname"><span class="paramname"><em>range2</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>}@ </p>
-
-<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00057">57</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="copy__prop_8cpp_source.html#l00010">mim::plug::mem::CopyProp::rewrite()</a>.</p>
-
-</div>
-</div>
 <a id="a570c39f37bbc788928a66903c34cba8b" name="a570c39f37bbc788928a66903c34cba8b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a570c39f37bbc788928a66903c34cba8b">&#9670;&#160;</a></span>erase()</h2>
 
@@ -2465,7 +2431,7 @@ template&lt;class T , size_t N, class A , class U &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00066">66</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00061">61</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="regex_2normalizers_8cpp_source.html#l00166">mim::plug::regex::normalize_disj()</a>.</p>
 
@@ -2500,7 +2466,7 @@ template&lt;class T , size_t N, class A , class Pred &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00074">74</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="vector_8h_source.html#l00069">69</a> of file <a class="el" href="vector_8h_source.html">vector.h</a>.</p>
 
 </div>
 </div>
