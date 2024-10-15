@@ -40,7 +40,6 @@ bool match2nd(std::ostream& os, const char* next, const char*& s, const char c);
 
 /// @name Formatted Output
 /// @anchor fmt
-///@{
 /// Provides a `printf`-like interface to format @p s with @p args and puts it into @p os.
 /// Use `{}` as a placeholder within your format string @p s.
 /// * By default, `os << t` will be used to stream the appropriate argument:
@@ -77,7 +76,7 @@ bool match2nd(std::ostream& os, const char* next, const char*& s, const char c);
 /// print(os, "{{{}}}", 23); // "{23}"
 /// ```
 /// @see Tab
-
+///@{
 /// Use with print to output complicated `std::ranges::range`s.
 template<class R, class F> struct Elem {
     Elem(const R& range, const F& f)
