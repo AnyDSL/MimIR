@@ -146,7 +146,6 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmim_1_1Elem.html">mim::Elem&lt; R, F &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmim_1_1Use.html" title="References a user.">Use</a> with print to output complicated <code>std::ranges::range</code>s.  <a href="structmim_1_1Elem.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Tab.html">mim::Tab</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Keeps track of indentation level.  <a href="classmim_1_1Tab.html#details">More...</a><br /></td></tr>
@@ -176,7 +175,30 @@ Functions</h2></td></tr>
 <tr class="separator:acd5f271791887591d1b309592374ab49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Formatted Output</h2></td></tr>
-<tr><td class="ititle" colspan="2"><p><a class="anchor" id="fmt"></a></p>
+<tr><td class="ititle" colspan="2"><p><a class="anchor" id="fmt"></a> Provides a <code>printf</code>-like interface to format <code>s</code> with <code>args</code> and puts it into <code>os</code>.</p>
+<p>Use <code>{}</code> as a placeholder within your format string <code>s</code>.</p><ul>
+<li>By default, <code>os &lt;&lt; t</code> will be used to stream the appropriate argument: <div class="fragment"><div class="line">print(os, <span class="stringliteral">&quot;int: {}, float: {}&quot;</span>, 23, 42.f);</div>
+</div><!-- fragment --></li>
+<li>You can also place a function as argument to inject arbitrary code: <div class="fragment"><div class="line">print(os, <span class="stringliteral">&quot;int: {}, fun: {}, float: {}&quot;</span>, 23, [&amp;]() { os &lt;&lt; <span class="stringliteral">&quot;hey :)&quot;</span>}, 42.f);</div>
+</div><!-- fragment --></li>
+<li>There is also a variant to pass <code>os</code> to the function, if you don't have easy access to it: <div class="fragment"><div class="line">print(os, <span class="stringliteral">&quot;int: {}, fun: {}, float: {}&quot;</span>, 23, [&amp;](<span class="keyword">auto</span>&amp; os) { os &lt;&lt; <span class="stringliteral">&quot;hey :)&quot;</span>}, 42.f);</div>
+</div><!-- fragment --></li>
+<li>You can put a <code>std::ranges::range</code> as argument. This will output a list - using the given specifier as separator. Each element <code>elem</code> of the range will be output via <code>os &lt;&lt; elem</code>: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {0, 1, 2, 3};</div>
+<div class="line">print(os, <span class="stringliteral">&quot;v: {, }&quot;</span>, v);</div>
+</div><!-- fragment --></li>
+<li>If you have a <code>std::ranges::range</code> that needs to be formatted in a more complicated way, bundle it with an Elem: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {3, 2, 1, 0};</div>
+<div class="line"><span class="keywordtype">size_t</span> i = 0;</div>
+<div class="line">print(os, <span class="stringliteral">&quot;v: {, }&quot;</span>, Elem(v, [&amp;](<span class="keyword">auto</span> elem) { print(os, <span class="stringliteral">&quot;{}: {}&quot;</span>, i++, elem); }));</div>
+</div><!-- fragment --></li>
+<li>You again have the option to pass <code>os</code> to the bundled function: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {3, 2, 1, 0};</div>
+<div class="line"><span class="keywordtype">size_t</span> i = 0;</div>
+<div class="line">print(os, <span class="stringliteral">&quot;v: {, }&quot;</span>, Elem(v, [&amp;](<span class="keyword">auto</span>&amp; os, <span class="keyword">auto</span> elem) { print(os, <span class="stringliteral">&quot;{}: {}&quot;</span>, i++, elem); }));</div>
+<div class="line">* Use `{{` or `}}` to literally output `{` or `{`:</div>
+<div class="line"><a class="code hl_function" href="namespacemim.html#a299eaedf188f01c3d4634dd51dedcb83">print</a>(os, <span class="stringliteral">&quot;{{{}}}&quot;</span>, 23); <span class="comment">// &quot;{23}&quot;</span></div>
+<div class="ttc" id="anamespacemim_html_a299eaedf188f01c3d4634dd51dedcb83"><div class="ttname"><a href="namespacemim.html#a299eaedf188f01c3d4634dd51dedcb83">mim::print</a></div><div class="ttdeci">std::ostream &amp; print(std::ostream &amp;os, const char *s)</div><div class="ttdoc">Base case.</div><div class="ttdef"><b>Definition</b> <a href="print_8cpp_source.html#l00005">print.cpp:5</a></div></div>
+</div><!-- fragment --> <dl class="section see"><dt>See also</dt><dd>Tab </dd></dl>
+</li>
+</ul>
 </td></tr>
 <tr class="memitem:a7bc6143638d489bb640260462bf07777" id="r_a7bc6143638d489bb640260462bf07777"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7bc6143638d489bb640260462bf07777">assertf</a>(condition, ...)</td></tr>
 <tr class="separator:a7bc6143638d489bb640260462bf07777"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -226,7 +248,7 @@ Functions</h2></td></tr>
 <div class="line">            }                                                        \</div>
 <div class="line">        } <span class="keywordflow">while</span> (<span class="keyword">false</span>)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00173">173</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00172">172</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="dump_8cpp_source.html#l00467">mim::World::dump()</a>.</p>
 

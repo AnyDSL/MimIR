@@ -206,7 +206,6 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some "global" variables needed all over the place.  <a href="classmim_1_1Driver.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmim_1_1Elem.html">Elem</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmim_1_1Use.html" title="References a user.">Use</a> with print to output complicated <code>std::ranges::range</code>s.  <a href="structmim_1_1Elem.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1Emitter.html">Emitter</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -701,7 +700,30 @@ Functions</h2></td></tr>
 <tr class="memitem:ab5579214b5b216e7e7df7083186193ed" id="r_ab5579214b5b216e7e7df7083186193ed"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmim_1_1Ref.html">Ref</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab5579214b5b216e7e7df7083186193ed">tuple_of_types</a> (<a class="el" href="classmim_1_1Ref.html">Ref</a> t)</td></tr>
 <tr class="separator:ab5579214b5b216e7e7df7083186193ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Formatted Output</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="fmt"></a></p>
+<tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="fmt"></a> Provides a <code>printf</code>-like interface to format <code>s</code> with <code>args</code> and puts it into <code>os</code>.</p>
+<p><a class="el" href="classmim_1_1Use.html" title="References a user.">Use</a> <code>{}</code> as a placeholder within your format string <code>s</code>.</p><ul>
+<li>By default, <code>os &lt;&lt; t</code> will be used to stream the appropriate argument: <div class="fragment"><div class="line"><a class="code hl_function" href="#a299eaedf188f01c3d4634dd51dedcb83">print</a>(os, <span class="stringliteral">&quot;int: {}, float: {}&quot;</span>, 23, 42.f);</div>
+<div class="ttc" id="anamespacemim_html_a299eaedf188f01c3d4634dd51dedcb83"><div class="ttname"><a href="#a299eaedf188f01c3d4634dd51dedcb83">mim::print</a></div><div class="ttdeci">std::ostream &amp; print(std::ostream &amp;os, const char *s)</div><div class="ttdoc">Base case.</div><div class="ttdef"><b>Definition</b> <a href="print_8cpp_source.html#l00005">print.cpp:5</a></div></div>
+</div><!-- fragment --></li>
+<li>You can also place a function as argument to inject arbitrary code: <div class="fragment"><div class="line"><a class="code hl_function" href="#a299eaedf188f01c3d4634dd51dedcb83">print</a>(os, <span class="stringliteral">&quot;int: {}, fun: {}, float: {}&quot;</span>, 23, [&amp;]() { os &lt;&lt; <span class="stringliteral">&quot;hey :)&quot;</span>}, 42.f);</div>
+</div><!-- fragment --></li>
+<li>There is also a variant to pass <code>os</code> to the function, if you don't have easy access to it: <div class="fragment"><div class="line"><a class="code hl_function" href="#a299eaedf188f01c3d4634dd51dedcb83">print</a>(os, <span class="stringliteral">&quot;int: {}, fun: {}, float: {}&quot;</span>, 23, [&amp;](<span class="keyword">auto</span>&amp; os) { os &lt;&lt; <span class="stringliteral">&quot;hey :)&quot;</span>}, 42.f);</div>
+</div><!-- fragment --></li>
+<li>You can put a <code>std::ranges::range</code> as argument. This will output a list - using the given specifier as separator. Each element <code>elem</code> of the range will be output via <code>os &lt;&lt; elem</code>: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {0, 1, 2, 3};</div>
+<div class="line"><a class="code hl_function" href="#a299eaedf188f01c3d4634dd51dedcb83">print</a>(os, <span class="stringliteral">&quot;v: {, }&quot;</span>, v);</div>
+</div><!-- fragment --></li>
+<li>If you have a <code>std::ranges::range</code> that needs to be formatted in a more complicated way, bundle it with an <a class="el" href="structmim_1_1Elem.html">Elem</a>: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {3, 2, 1, 0};</div>
+<div class="line"><span class="keywordtype">size_t</span> i = 0;</div>
+<div class="line"><a class="code hl_function" href="#a299eaedf188f01c3d4634dd51dedcb83">print</a>(os, <span class="stringliteral">&quot;v: {, }&quot;</span>, Elem(v, [&amp;](<span class="keyword">auto</span> elem) { <a class="code hl_function" href="#a299eaedf188f01c3d4634dd51dedcb83">print</a>(os, <span class="stringliteral">&quot;{}: {}&quot;</span>, i++, elem); }));</div>
+</div><!-- fragment --></li>
+<li>You again have the option to pass <code>os</code> to the bundled function: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {3, 2, 1, 0};</div>
+<div class="line"><span class="keywordtype">size_t</span> i = 0;</div>
+<div class="line"><a class="code hl_function" href="#a299eaedf188f01c3d4634dd51dedcb83">print</a>(os, <span class="stringliteral">&quot;v: {, }&quot;</span>, Elem(v, [&amp;](<span class="keyword">auto</span>&amp; os, <span class="keyword">auto</span> elem) { <a class="code hl_function" href="#a299eaedf188f01c3d4634dd51dedcb83">print</a>(os, <span class="stringliteral">&quot;{}: {}&quot;</span>, i++, elem); }));</div>
+<div class="line">* Use `{{` or `}}` to literally output `{` or `{`:</div>
+<div class="line"><a class="code hl_function" href="#a299eaedf188f01c3d4634dd51dedcb83">print</a>(os, <span class="stringliteral">&quot;{{{}}}&quot;</span>, 23); <span class="comment">// &quot;{23}&quot;</span></div>
+</div><!-- fragment --> <dl class="section see"><dt>See also</dt><dd><a class="el" href="classmim_1_1Tab.html" title="Keeps track of indentation level.">Tab</a> </dd></dl>
+</li>
+</ul>
 </div></td></tr>
 <tr class="memitem:a6b2eebef519ceb586fdd7b047a34aa56" id="r_a6b2eebef519ceb586fdd7b047a34aa56"><td class="memTemplParams" colspan="2">template&lt;class... Args&gt; </td></tr>
 <tr class="memitem:a6b2eebef519ceb586fdd7b047a34aa56"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="#a6b2eebef519ceb586fdd7b047a34aa56">error</a> (Loc loc, const char *f, Args &amp;&amp;... args)</td></tr>
@@ -2491,11 +2513,11 @@ template&lt;class... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00189">189</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00188">188</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8h_source.html#l00156">fmt()</a>, and <a class="el" href="print_8cpp_source.html#l00005">print()</a>.</p>
+<p class="reference">References <a class="el" href="print_8h_source.html#l00155">fmt()</a>, and <a class="el" href="print_8cpp_source.html#l00005">print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="print_8h_source.html#l00191">errln()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="print_8h_source.html#l00190">errln()</a>.</p>
 
 </div>
 </div>
@@ -2520,9 +2542,9 @@ template&lt;class... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00191">191</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00190">190</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8h_source.html#l00189">errf()</a>, and <a class="el" href="print_8h_source.html#l00156">fmt()</a>.</p>
+<p class="reference">References <a class="el" href="print_8h_source.html#l00188">errf()</a>, and <a class="el" href="print_8h_source.html#l00155">fmt()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00020">main()</a>.</p>
 
@@ -2551,9 +2573,9 @@ template&lt;class T  = std::logic_error, class... Args&gt; </div>
 
 <p>Wraps <a class="el" href="#a299eaedf188f01c3d4634dd51dedcb83" title="Base case.">mim::print</a> to throw <code>T</code> with a formatted message. </p>
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00163">163</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00162">162</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8h_source.html#l00156">fmt()</a>, and <a class="el" href="print_8cpp_source.html#l00005">print()</a>.</p>
+<p class="reference">References <a class="el" href="print_8h_source.html#l00155">fmt()</a>, and <a class="el" href="print_8cpp_source.html#l00005">print()</a>.</p>
 
 </div>
 </div>
@@ -2586,7 +2608,7 @@ template&lt;class... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="dbg_8h_source.html#l00122">122</a> of file <a class="el" href="dbg_8h_source.html">dbg.h</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8h_source.html#l00156">fmt()</a>.</p>
+<p class="reference">References <a class="el" href="print_8h_source.html#l00155">fmt()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00185">mim::World::annex()</a>, <a class="el" href="world_8cpp_source.html#l00395">mim::World::arr()</a>, <a class="el" href="check_8cpp_source.html#l00225">mim::Arr::check()</a>, <a class="el" href="check_8cpp_source.html#l00252">mim::Lam::check()</a>, <a class="el" href="check_8cpp_source.html#l00271">mim::Pi::check()</a>, <a class="el" href="dl_8cpp_source.html#l00055">mim::dl::close()</a>, <a class="el" href="ll_8cpp_source.html#l01087">mim::ll::compile_and_run()</a>, <a class="el" href="dfa2matcher_8cpp_source.html#l00095">dfa2matcher()</a>, <a class="el" href="emit_8cpp_source.html#l00332">mim::ast::AxiomDecl::emit()</a>, <a class="el" href="emit_8cpp_source.html#l00300">mim::ast::ExtractExpr::emit_()</a>, <a class="el" href="emit_8cpp_source.html#l00244">mim::ast::RetExpr::emit_()</a>, <a class="el" href="ll_8cpp_source.html#l00458">mim::ll::Emitter::emit_bb()</a>, <a class="el" href="sys_8cpp_source.html#l00055">mim::sys::exec()</a>, <a class="el" href="world_8cpp_source.html#l00291">mim::World::extract()</a>, <a class="el" href="dl_8cpp_source.html#l00036">mim::dl::get()</a>, <a class="el" href="world_8cpp_source.html#l00353">mim::World::insert()</a>, <a class="el" href="world_8cpp_source.html#l00452">mim::World::lit()</a>, <a class="el" href="driver_8cpp_source.html#l00053">mim::Driver::load()</a>, <a class="el" href="main_8cpp_source.html#l00020">main()</a>, <a class="el" href="dl_8cpp_source.html#l00017">mim::dl::open()</a>, <a class="el" href="optimize_8cpp_source.html#l00010">optimize()</a>, <a class="el" href="world_8cpp_source.html#l00422">mim::World::pack()</a>, <a class="el" href="world_8cpp_source.html#l00239">mim::World::tuple()</a>, <a class="el" href="world_8cpp_source.html#l00094">mim::World::type()</a>, <a class="el" href="world_8cpp_source.html#l00102">mim::World::uinc()</a>, and <a class="el" href="world_8cpp_source.html#l00111">mim::World::umax()</a>.</p>
 
@@ -2784,11 +2806,11 @@ template&lt;class... Args&gt; </div>
 
 <p>Wraps <a class="el" href="#a299eaedf188f01c3d4634dd51dedcb83" title="Base case.">mim::print</a> to output a formatted <code>std:string</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00156">156</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00155">155</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
 <p class="reference">References <a class="el" href="print_8cpp_source.html#l00005">print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l01079">mim::ll::compile()</a>, <a class="el" href="print_8h_source.html#l00189">errf()</a>, <a class="el" href="print_8h_source.html#l00191">errln()</a>, <a class="el" href="ast_8h_source.html#l00083">mim::ast::AST::error()</a>, <a class="el" href="print_8h_source.html#l00163">error()</a>, <a class="el" href="dbg_8h_source.html#l00122">error()</a>, <a class="el" href="log_8h_source.html#l00063">mim::Log::log()</a>, <a class="el" href="log_8h_source.html#l00051">mim::Log::log()</a>, <a class="el" href="dbg_8h_source.html#l00065">mim::Error::msg()</a>, <a class="el" href="ast_8h_source.html#l00085">mim::ast::AST::note()</a>, <a class="el" href="print_8h_source.html#l00188">outf()</a>, <a class="el" href="print_8h_source.html#l00190">outln()</a>, <a class="el" href="print_8h_source.html#l00151">println()</a>, and <a class="el" href="ast_8h_source.html#l00084">mim::ast::AST::warn()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l01079">mim::ll::compile()</a>, <a class="el" href="print_8h_source.html#l00188">errf()</a>, <a class="el" href="print_8h_source.html#l00190">errln()</a>, <a class="el" href="ast_8h_source.html#l00083">mim::ast::AST::error()</a>, <a class="el" href="print_8h_source.html#l00162">error()</a>, <a class="el" href="dbg_8h_source.html#l00122">error()</a>, <a class="el" href="log_8h_source.html#l00063">mim::Log::log()</a>, <a class="el" href="log_8h_source.html#l00051">mim::Log::log()</a>, <a class="el" href="dbg_8h_source.html#l00065">mim::Error::msg()</a>, <a class="el" href="ast_8h_source.html#l00085">mim::ast::AST::note()</a>, <a class="el" href="print_8h_source.html#l00187">outf()</a>, <a class="el" href="print_8h_source.html#l00189">outln()</a>, <a class="el" href="print_8h_source.html#l00150">println()</a>, and <a class="el" href="ast_8h_source.html#l00084">mim::ast::AST::warn()</a>.</p>
 
 </div>
 </div>
@@ -4591,11 +4613,11 @@ template&lt;class... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00188">188</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00187">187</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8h_source.html#l00156">fmt()</a>, and <a class="el" href="print_8cpp_source.html#l00005">print()</a>.</p>
+<p class="reference">References <a class="el" href="print_8h_source.html#l00155">fmt()</a>, and <a class="el" href="print_8cpp_source.html#l00005">print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="print_8h_source.html#l00190">outln()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="print_8h_source.html#l00189">outln()</a>.</p>
 
 </div>
 </div>
@@ -4620,9 +4642,9 @@ template&lt;class... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00190">190</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00189">189</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8h_source.html#l00156">fmt()</a>, and <a class="el" href="print_8h_source.html#l00188">outf()</a>.</p>
+<p class="reference">References <a class="el" href="print_8h_source.html#l00155">fmt()</a>, and <a class="el" href="print_8h_source.html#l00187">outf()</a>.</p>
 
 </div>
 </div>
@@ -4726,7 +4748,7 @@ template&lt;class S &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="print_8cpp_source.html#l00005">5</a> of file <a class="el" href="print_8cpp_source.html">print.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="dbg_8cpp_source.html#l00015">mim::Error::ack()</a>, <a class="el" href="ll_8cpp_source.html#l00096">mim::ll::BB::assign()</a>, <a class="el" href="ast_8cpp_source.html#l00052">mim::ast::AST::bootstrap()</a>, <a class="el" href="ll_8cpp_source.html#l00131">mim::ll::Emitter::declare()</a>, <a class="el" href="dump_8cpp_source.html#l00467">mim::World::dump()</a>, <a class="el" href="ll_8cpp_source.html#l00458">mim::ll::Emitter::emit_bb()</a>, <a class="el" href="ll_8cpp_source.html#l00317">mim::ll::Emitter::emit_epilogue()</a>, <a class="el" href="ll_8cpp_source.html#l00256">mim::ll::Emitter::emit_imported()</a>, <a class="el" href="print_8h_source.html#l00189">errf()</a>, <a class="el" href="print_8h_source.html#l00163">error()</a>, <a class="el" href="ll_8cpp_source.html#l00288">mim::ll::Emitter::finalize()</a>, <a class="el" href="print_8h_source.html#l00156">fmt()</a>, <a class="el" href="log_8h_source.html#l00051">mim::Log::log()</a>, <a class="el" href="looptree_8cpp_source.html#l00207">operator&lt;&lt;()</a>, <a class="el" href="print_8h_source.html#l00188">outf()</a>, <a class="el" href="ll_8cpp_source.html#l00270">mim::ll::Emitter::prepare()</a>, <a class="el" href="print_8h_source.html#l00093">print()</a>, <a class="el" href="print_8h_source.html#l00212">mim::Tab::print()</a>, <a class="el" href="print_8h_source.html#l00151">println()</a>, <a class="el" href="stream_8cpp_source.html#l00128">mim::ast::AppExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00140">mim::ast::ArrOrPackExpr&lt; arr &gt;::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00110">mim::ast::ArrowExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00162">mim::ast::AxiomDecl::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00213">mim::ast::CDecl::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00095">mim::ast::DeclExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00147">mim::ast::ExtractExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00076">mim::ast::IdExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00055">mim::ast::IdPtrn::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00152">mim::ast::InsertExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00189">mim::ast::LamDecl::Dom::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00196">mim::ast::LamDecl::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00126">mim::ast::LamExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00179">mim::ast::LetDecl::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00081">mim::ast::LitExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00114">mim::ast::PiExpr::Dom::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00120">mim::ast::PiExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00079">mim::ast::PrimaryExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00183">mim::ast::RecDecl::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00138">mim::ast::TupleExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00066">mim::ast::TuplePtrn::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00108">mim::ast::TypeExpr::stream()</a>, and <a class="el" href="ll_8cpp_source.html#l00101">mim::ll::BB::tail()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="dbg_8cpp_source.html#l00015">mim::Error::ack()</a>, <a class="el" href="ll_8cpp_source.html#l00096">mim::ll::BB::assign()</a>, <a class="el" href="ast_8cpp_source.html#l00052">mim::ast::AST::bootstrap()</a>, <a class="el" href="ll_8cpp_source.html#l00131">mim::ll::Emitter::declare()</a>, <a class="el" href="dump_8cpp_source.html#l00467">mim::World::dump()</a>, <a class="el" href="ll_8cpp_source.html#l00458">mim::ll::Emitter::emit_bb()</a>, <a class="el" href="ll_8cpp_source.html#l00317">mim::ll::Emitter::emit_epilogue()</a>, <a class="el" href="ll_8cpp_source.html#l00256">mim::ll::Emitter::emit_imported()</a>, <a class="el" href="print_8h_source.html#l00188">errf()</a>, <a class="el" href="print_8h_source.html#l00162">error()</a>, <a class="el" href="ll_8cpp_source.html#l00288">mim::ll::Emitter::finalize()</a>, <a class="el" href="print_8h_source.html#l00155">fmt()</a>, <a class="el" href="log_8h_source.html#l00051">mim::Log::log()</a>, <a class="el" href="looptree_8cpp_source.html#l00207">operator&lt;&lt;()</a>, <a class="el" href="print_8h_source.html#l00187">outf()</a>, <a class="el" href="ll_8cpp_source.html#l00270">mim::ll::Emitter::prepare()</a>, <a class="el" href="print_8h_source.html#l00092">print()</a>, <a class="el" href="print_8h_source.html#l00211">mim::Tab::print()</a>, <a class="el" href="print_8h_source.html#l00150">println()</a>, <a class="el" href="stream_8cpp_source.html#l00128">mim::ast::AppExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00140">mim::ast::ArrOrPackExpr&lt; arr &gt;::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00110">mim::ast::ArrowExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00162">mim::ast::AxiomDecl::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00213">mim::ast::CDecl::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00095">mim::ast::DeclExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00147">mim::ast::ExtractExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00076">mim::ast::IdExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00055">mim::ast::IdPtrn::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00152">mim::ast::InsertExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00189">mim::ast::LamDecl::Dom::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00196">mim::ast::LamDecl::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00126">mim::ast::LamExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00179">mim::ast::LetDecl::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00081">mim::ast::LitExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00114">mim::ast::PiExpr::Dom::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00120">mim::ast::PiExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00079">mim::ast::PrimaryExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00183">mim::ast::RecDecl::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00138">mim::ast::TupleExpr::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00066">mim::ast::TuplePtrn::stream()</a>, <a class="el" href="stream_8cpp_source.html#l00108">mim::ast::TypeExpr::stream()</a>, and <a class="el" href="ll_8cpp_source.html#l00101">mim::ll::BB::tail()</a>.</p>
 
 </div>
 </div>
@@ -4761,7 +4783,7 @@ template&lt;class T , class... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00093">93</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00092">92</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
 <p class="reference">References <a class="el" href="print_8cpp_source.html#l00005">print()</a>.</p>
 
@@ -4795,9 +4817,9 @@ template&lt;class... Args&gt; </div>
 
 <p>As above but end with <code>std::endl</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00151">151</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00150">150</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8h_source.html#l00156">fmt()</a>, and <a class="el" href="print_8cpp_source.html#l00005">print()</a>.</p>
+<p class="reference">References <a class="el" href="print_8h_source.html#l00155">fmt()</a>, and <a class="el" href="print_8cpp_source.html#l00005">print()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="stream_8cpp_source.html#l00132">mim::ast::RetExpr::stream()</a>.</p>
 

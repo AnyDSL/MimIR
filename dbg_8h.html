@@ -159,7 +159,30 @@ Namespaces</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Formatted Output</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="fmt"></a></p>
+<tr><td colspan="2"><div class="groupText"><p><a class="anchor" id="fmt"></a> Provides a <code>printf</code>-like interface to format <code>s</code> with <code>args</code> and puts it into <code>os</code>.</p>
+<p><a class="el" href="classmim_1_1Use.html" title="References a user.">Use</a> <code>{}</code> as a placeholder within your format string <code>s</code>.</p><ul>
+<li>By default, <code>os &lt;&lt; t</code> will be used to stream the appropriate argument: <div class="fragment"><div class="line"><a class="code hl_function" href="namespacemim.html#a299eaedf188f01c3d4634dd51dedcb83">print</a>(os, <span class="stringliteral">&quot;int: {}, float: {}&quot;</span>, 23, 42.f);</div>
+<div class="ttc" id="anamespacemim_html_a299eaedf188f01c3d4634dd51dedcb83"><div class="ttname"><a href="namespacemim.html#a299eaedf188f01c3d4634dd51dedcb83">mim::print</a></div><div class="ttdeci">std::ostream &amp; print(std::ostream &amp;os, const char *s)</div><div class="ttdoc">Base case.</div><div class="ttdef"><b>Definition</b> <a href="print_8cpp_source.html#l00005">print.cpp:5</a></div></div>
+</div><!-- fragment --></li>
+<li>You can also place a function as argument to inject arbitrary code: <div class="fragment"><div class="line"><a class="code hl_function" href="namespacemim.html#a299eaedf188f01c3d4634dd51dedcb83">print</a>(os, <span class="stringliteral">&quot;int: {}, fun: {}, float: {}&quot;</span>, 23, [&amp;]() { os &lt;&lt; <span class="stringliteral">&quot;hey :)&quot;</span>}, 42.f);</div>
+</div><!-- fragment --></li>
+<li>There is also a variant to pass <code>os</code> to the function, if you don't have easy access to it: <div class="fragment"><div class="line"><a class="code hl_function" href="namespacemim.html#a299eaedf188f01c3d4634dd51dedcb83">print</a>(os, <span class="stringliteral">&quot;int: {}, fun: {}, float: {}&quot;</span>, 23, [&amp;](<span class="keyword">auto</span>&amp; os) { os &lt;&lt; <span class="stringliteral">&quot;hey :)&quot;</span>}, 42.f);</div>
+</div><!-- fragment --></li>
+<li>You can put a <code>std::ranges::range</code> as argument. This will output a list - using the given specifier as separator. Each element <code>elem</code> of the range will be output via <code>os &lt;&lt; elem</code>: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {0, 1, 2, 3};</div>
+<div class="line"><a class="code hl_function" href="namespacemim.html#a299eaedf188f01c3d4634dd51dedcb83">print</a>(os, <span class="stringliteral">&quot;v: {, }&quot;</span>, v);</div>
+</div><!-- fragment --></li>
+<li>If you have a <code>std::ranges::range</code> that needs to be formatted in a more complicated way, bundle it with an <a class="el" href="structmim_1_1Elem.html">Elem</a>: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {3, 2, 1, 0};</div>
+<div class="line"><span class="keywordtype">size_t</span> i = 0;</div>
+<div class="line"><a class="code hl_function" href="namespacemim.html#a299eaedf188f01c3d4634dd51dedcb83">print</a>(os, <span class="stringliteral">&quot;v: {, }&quot;</span>, Elem(v, [&amp;](<span class="keyword">auto</span> elem) { <a class="code hl_function" href="namespacemim.html#a299eaedf188f01c3d4634dd51dedcb83">print</a>(os, <span class="stringliteral">&quot;{}: {}&quot;</span>, i++, elem); }));</div>
+</div><!-- fragment --></li>
+<li>You again have the option to pass <code>os</code> to the bundled function: <div class="fragment"><div class="line">std::vector&lt;int&gt; v = {3, 2, 1, 0};</div>
+<div class="line"><span class="keywordtype">size_t</span> i = 0;</div>
+<div class="line"><a class="code hl_function" href="namespacemim.html#a299eaedf188f01c3d4634dd51dedcb83">print</a>(os, <span class="stringliteral">&quot;v: {, }&quot;</span>, Elem(v, [&amp;](<span class="keyword">auto</span>&amp; os, <span class="keyword">auto</span> elem) { <a class="code hl_function" href="namespacemim.html#a299eaedf188f01c3d4634dd51dedcb83">print</a>(os, <span class="stringliteral">&quot;{}: {}&quot;</span>, i++, elem); }));</div>
+<div class="line">* Use `{{` or `}}` to literally output `{` or `{`:</div>
+<div class="line"><a class="code hl_function" href="namespacemim.html#a299eaedf188f01c3d4634dd51dedcb83">print</a>(os, <span class="stringliteral">&quot;{{{}}}&quot;</span>, 23); <span class="comment">// &quot;{23}&quot;</span></div>
+</div><!-- fragment --> <dl class="section see"><dt>See also</dt><dd><a class="el" href="classmim_1_1Tab.html" title="Keeps track of indentation level.">Tab</a> </dd></dl>
+</li>
+</ul>
 </div></td></tr>
 <tr class="memitem:a6b2eebef519ceb586fdd7b047a34aa56" id="r_a6b2eebef519ceb586fdd7b047a34aa56"><td class="memTemplParams" colspan="2">template&lt;class... Args&gt; </td></tr>
 <tr class="memitem:a6b2eebef519ceb586fdd7b047a34aa56"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemim.html#a6b2eebef519ceb586fdd7b047a34aa56">mim::error</a> (Loc loc, const char *f, Args &amp;&amp;... args)</td></tr>
