@@ -682,13 +682,13 @@ Functions</h2></td></tr>
 <tr class="memdesc:a0a7202c211ff85c77fb009119a6b8fcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flattens a sigma/array/pack/tuple.  <br /></td></tr>
 <tr class="separator:a0a7202c211ff85c77fb009119a6b8fcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e6c9f839670748462f9d08a17a99fd4" id="r_a8e6c9f839670748462f9d08a17a99fd4"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8e6c9f839670748462f9d08a17a99fd4">flatten</a> (<a class="el" href="#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a> &amp;ops, const <a class="el" href="classmim_1_1Def.html">Def</a> *def, bool flatten_sigmas=true)</td></tr>
-<tr class="memdesc:a8e6c9f839670748462f9d08a17a99fd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as unflatten, but uses the operands of a flattened pack/tuple directly.  <br /></td></tr>
+<tr class="memdesc:a8e6c9f839670748462f9d08a17a99fd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as unflatten, but uses the operands of a flattened <a class="el" href="classmim_1_1Pack.html" title="A (possibly paramterized) Tuple.">Pack</a> / <a class="el" href="classmim_1_1Tuple.html" title="Data constructor for a Sigma.">Tuple</a> directly.  <br /></td></tr>
 <tr class="separator:a8e6c9f839670748462f9d08a17a99fd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a869f7a593f368b079211689192152385" id="r_a869f7a593f368b079211689192152385"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a869f7a593f368b079211689192152385">unflatten</a> (const <a class="el" href="classmim_1_1Def.html">Def</a> *def, const <a class="el" href="classmim_1_1Def.html">Def</a> *type)</td></tr>
-<tr class="memdesc:a869f7a593f368b079211689192152385"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the reverse transformation on a pack/tuple, given the original type.  <br /></td></tr>
+<tr class="memdesc:a869f7a593f368b079211689192152385"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the reverse transformation on a <a class="el" href="classmim_1_1Pack.html" title="A (possibly paramterized) Tuple.">Pack</a> / <a class="el" href="classmim_1_1Tuple.html" title="Data constructor for a Sigma.">Tuple</a>, given the original type.  <br /></td></tr>
 <tr class="separator:a869f7a593f368b079211689192152385"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a829c76d14d02cad2fb4f21aff1e0fb6a" id="r_a829c76d14d02cad2fb4f21aff1e0fb6a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classmim_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a829c76d14d02cad2fb4f21aff1e0fb6a">unflatten</a> (<a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a> ops, const <a class="el" href="classmim_1_1Def.html">Def</a> *type, bool flatten_muts=true)</td></tr>
-<tr class="memdesc:a829c76d14d02cad2fb4f21aff1e0fb6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as unflatten, but uses the operands of a flattened pack/tuple directly.  <br /></td></tr>
+<tr class="memdesc:a829c76d14d02cad2fb4f21aff1e0fb6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as unflatten, but uses the operands of a flattened <a class="el" href="classmim_1_1Pack.html" title="A (possibly paramterized) Tuple.">Pack</a> / <a class="el" href="classmim_1_1Tuple.html" title="Data constructor for a Sigma.">Tuple</a> directly.  <br /></td></tr>
 <tr class="separator:a829c76d14d02cad2fb4f21aff1e0fb6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75c9fb5e1cf36bc411049ccc18dccd1e" id="r_a75c9fb5e1cf36bc411049ccc18dccd1e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a1433b0566b2cbdbf0c6f74baed22bb52">DefVec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a75c9fb5e1cf36bc411049ccc18dccd1e">merge</a> (<a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a>, <a class="el" href="#a00e263b7dcc231b14adcf75ff1ab1740">Defs</a>)</td></tr>
 <tr class="separator:a75c9fb5e1cf36bc411049ccc18dccd1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2753,7 +2753,7 @@ template&lt;class Indexer , class Key , class Value &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Same as unflatten, but uses the operands of a flattened pack/tuple directly. </p>
+<p>Same as unflatten, but uses the operands of a flattened <a class="el" href="classmim_1_1Pack.html" title="A (possibly paramterized) Tuple.">Pack</a> / <a class="el" href="classmim_1_1Tuple.html" title="Data constructor for a Sigma.">Tuple</a> directly. </p>
 
 <p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00055">55</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
@@ -5359,7 +5359,7 @@ template&lt;Vectorlike Vec&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Applies the reverse transformation on a pack/tuple, given the original type. </p>
+<p>Applies the reverse transformation on a <a class="el" href="classmim_1_1Pack.html" title="A (possibly paramterized) Tuple.">Pack</a> / <a class="el" href="classmim_1_1Tuple.html" title="Data constructor for a Sigma.">Tuple</a>, given the original type. </p>
 
 <p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00080">80</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
@@ -5393,7 +5393,7 @@ template&lt;Vectorlike Vec&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Same as unflatten, but uses the operands of a flattened pack/tuple directly. </p>
+<p>Same as unflatten, but uses the operands of a flattened <a class="el" href="classmim_1_1Pack.html" title="A (possibly paramterized) Tuple.">Pack</a> / <a class="el" href="classmim_1_1Tuple.html" title="Data constructor for a Sigma.">Tuple</a> directly. </p>
 
 <p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00073">73</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
