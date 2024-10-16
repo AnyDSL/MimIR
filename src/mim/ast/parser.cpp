@@ -496,10 +496,10 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn() {
             auto expr = parse_infix_expr(track, std::move(lhs), Prec::App);
             ptrn      = IdPtrn::mk_type(ast(), std::move(expr));
         } else {
-            auto dl = delim_l == Tag::D_brckt_l ? delim_l : Tag::D_paren_l;
+            auto dl = delim_l == Tag::D_brace_l ? Tag::D_brckt_l : delim_l; // brace behaves just as bracket
             ptrn    = parse_ptrn(dl, "element of a tuple pattern");
 
-            if (delim_l == Tag::D_brckt_l) {
+            if (dl == Tag::D_brckt_l) {
                 // If we are able to parse more stuff, we got an expr instead of a binder:
                 // [..., [.Nat, .Nat] -> .Nat, ...] ==> [..., _: [.Nat, .Nat] -> .Nat, ...]
                 if (auto expr = Ptrn::to_expr(ast(), std::move(ptrn))) {
@@ -645,9 +645,15 @@ Ptr<LamDecl> Parser::parse_lam_decl() {
     Ptrs<LamDecl::Dom> doms;
     while (true) {
         auto track    = tracker();
-        bool implicit = (bool)accept(Tag::T_dot);
-        auto ptrn     = parse_ptrn(Tag::D_paren_l, "domain pattern of a "s + entity, prec);
-        auto filter   = accept(Tag::T_at) ? parse_expr("filter") : nullptr;
+        bool implicit = false;
+        Ptr<Ptrn> ptrn;
+        if (ahead().isa(Tok::Tag::D_brace_l)) {
+            implicit = true;
+            ptrn     = parse_tuple_ptrn();
+        } else {
+            ptrn = parse_ptrn(Tag::D_paren_l, "domain pattern of a "s + entity, prec);
+        }
+        auto filter = accept(Tag::T_at) ? parse_expr("filter") : nullptr;
 
         doms.emplace_back(ptr<LamDecl::Dom>(track, implicit, std::move(ptrn), std::move(filter)));
         switch (ahead().tag()) {
