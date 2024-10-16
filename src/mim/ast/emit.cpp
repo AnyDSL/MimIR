@@ -178,6 +178,13 @@ Ref DeclExpr::emit_(Emitter& e) const {
     return expr()->emit(e);
 }
 
+Ref ArrowExpr::emit_decl(Emitter& e, Ref type) const { return decl_ = e.world().mut_pi(type, false)->set(loc()); }
+
+void ArrowExpr::emit_body(Emitter& e, Ref) const {
+    decl_->set_dom(dom()->emit(e));
+    decl_->set_codom(codom()->emit(e));
+}
+
 Ref ArrowExpr::emit_(Emitter& e) const {
     auto d = dom()->emit(e);
     auto c = codom()->emit(e);

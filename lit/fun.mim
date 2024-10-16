@@ -21,9 +21,9 @@
 .let g2 = .cn (T: *)((x y: T), return: .Cn T)       = return x;
 .let g3 = .fn (T: *) (x y: T)                       = return x;
 
-.let F1 = Π [T:*][T, T][T -> ⊥] -> ⊥;
-.let F2 =.Cn[T:*][T, T][.Cn T];
-.let F3 =.Fn[T:*][T, T] -> T;
+.let F1 =    [T:*] [T, T] [T -> ⊥] -> ⊥;
+.let F2 =.Cn [T:*] [T, T] [.Cn T];
+.let F3 =.Fn [T:*] [T, T] -> T;
 
 .fun bar(cond: .Bool): .Nat =
     .con t() =

@@ -78,7 +78,6 @@ constexpr auto Num_Keys = size_t(0) MIM_KEY(CODE);
     m(D_quote_l,    "«")               \
     m(D_quote_r,    "»")               \
     /* further tokens */               \
-    m(T_Pi,         "Π")               \
     m(T_arrow,      "→")               \
     m(T_assign,     "=")               \
     m(T_at,         "@")               \
@@ -96,7 +95,7 @@ constexpr auto Num_Keys = size_t(0) MIM_KEY(CODE);
     m(T_semicolon,  ";")               \
     m(T_star,       "*")               \
 
-#define MIM_SUBST(m)                \
+#define MIM_SUBST(m)                   \
     m(".lm",     T_lm   )              \
     m(".bot",    T_bot  )              \
     m(".top",    T_top  )              \

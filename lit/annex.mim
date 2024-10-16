@@ -4,7 +4,7 @@
 
 .let %annex.Vec3.xyz = [x: %math.F64, y: %math.F64, z: %math.F64];
 .let %annex.Vec3.rgb = [r: %math.F64, g: %math.F64, w: %math.F64];
-.rec %annex.Vec3.rec: □ = Π %annex.Vec3.xyz -> %annex.Vec3.rec;
+.rec %annex.Vec3.rec: □ = %annex.Vec3.xyz -> %annex.Vec3.rec;
 .let %annex.Vec3.zero = 0;
 
 // CHECK: zero = 0x8f3c66400000003

@@ -80,20 +80,12 @@ Tok Lexer::lex() {
         if (accept( '$')) return tok(Tag::T_dollar);
         if (accept( '#')) return tok(Tag::T_extract);
         if (accept(U'λ')) return tok(Tag::T_lm);
-        if (accept(U'Π')) return tok(Tag::T_Pi);
         if (accept( ';')) return tok(Tag::T_semicolon);
         if (accept(U'★')) return tok(Tag::T_star);
         if (accept( '*')) return tok(Tag::T_star);
         if (accept( ':')) {
             if (accept( ':')) return tok(Tag::T_colon_colon);
             return tok(Tag::T_colon);
-        }
-        if (accept( '|')) {
-            if (accept('~')) {
-                if (accept('|')) return tok(Tag::T_Pi);
-            }
-            ast().error(loc_, "invalid input char '{}'; maybe you wanted to use '|~|'?", str_);
-            continue;
         }
         // clang-format on
 

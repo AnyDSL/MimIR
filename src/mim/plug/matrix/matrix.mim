@@ -19,12 +19,12 @@
 /// Matrices are n-dimensional tensors with elements of type T.
 /// They can be seen as a generalization of Coq's vector type (a container with a fixed number of elements specified on type level).
 /// ```
-/// matrix = Π [n: .Nat, S: «n; .Nat», T: *] -> *
+/// matrix = [n: .Nat, S: «n; .Nat», T: *] -> *
 /// matrix n S T = «S_0; «S_1; ... «S_{n-1}; T» ... »»
 /// ```
 /// => a matrix is a dependend array
 ///
-.ax %matrix.Mat: Π [n: .Nat, S: «n; .Nat», T: *] -> *;
+.ax %matrix.Mat: [n: .Nat, S: «n; .Nat», T: *] -> *;
 ///
 /// ## Operations
 ///
@@ -36,12 +36,12 @@
 /// #### Normalization
 /// * resolve shape calls at construction by replacing them with the size argument
 ///
-.ax %matrix.shape: Π [n: .Nat, S: «n; .Nat», T: *]::nST [%matrix.Mat nST, i: .Idx n] -> .Nat, normalize_shape;
+.ax %matrix.shape: [n: .Nat, S: «n; .Nat», T: *]::nST [%matrix.Mat nST, i: .Idx n] -> .Nat, normalize_shape;
 ///
 /// ### %matrix.const
 ///
 /// a constant matrix
-.ax %matrix.constMat: Π [n: .Nat, S: «n; .Nat», T: *]::nST [%mem.M, T] -> [%mem.M, %matrix.Mat nST];
+.ax %matrix.constMat: [n: .Nat, S: «n; .Nat», T: *]::nST [%mem.M, T] -> [%mem.M, %matrix.Mat nST];
 ///
 /// ### %matrix.read
 ///
@@ -54,7 +54,7 @@
 /// * read(insert)
 /// * read(const)
 ///
-.ax %matrix.read: Π [n: .Nat, S: «n; .Nat», T: *]::nST [%mem.M, %matrix.Mat nST, idx: «i: n; .Idx S#i»] -> [%mem.M, T], normalize_read;
+.ax %matrix.read: [n: .Nat, S: «n; .Nat», T: *]::nST [%mem.M, %matrix.Mat nST, idx: «i: n; .Idx S#i»] -> [%mem.M, T], normalize_read;
 ///
 /// ### %matrix.insert
 ///
@@ -67,27 +67,27 @@
 /// * with other inserts
 /// * with initialization
 ///
-.ax %matrix.insert: Π [n: .Nat, S: «n; .Nat», T: *]::nST [%mem.M, %matrix.Mat nST, idx: «i: n; .Idx S#i», val: T] -> [%mem.M, %matrix.Mat nST], normalize_insert;
+.ax %matrix.insert: [n: .Nat, S: «n; .Nat», T: *]::nST [%mem.M, %matrix.Mat nST, idx: «i: n; .Idx S#i», val: T] -> [%mem.M, %matrix.Mat nST], normalize_insert;
 ///
 /// ### %matrix.init
 ///
 /// A fresh matrix with uninitialized values.
-.ax %matrix.init: Π [n: .Nat, S: «n; .Nat», T: *, %mem.M] -> [%mem.M, %matrix.Mat (n, S, T)];
+.ax %matrix.init: [n: .Nat, S: «n; .Nat», T: *, %mem.M] -> [%mem.M, %matrix.Mat (n, S, T)];
 ///
 /// ### High-level matrix operations
 ///
 // TODO: define alias: * fst, snd, split * zip = zipWith id
-.ax %matrix.prod: Π [m: .Nat, k: .Nat, l: .Nat, [p: .Nat, e:.Nat]]
-                    [%mem.M, %matrix.Mat (2, (m, k), %math.F (p, e)), %matrix.Mat (2, (k, l), %math.F (p, e))]
-                 -> [%mem.M, %matrix.Mat (2, (m, l), %math.F (p, e))], normalize_prod;
+.ax %matrix.prod: [m: .Nat, k: .Nat, l: .Nat, [p: .Nat, e:.Nat]]
+                  [%mem.M, %matrix.Mat (2, (m, k), %math.F (p, e)), %matrix.Mat (2, (k, l), %math.F (p, e))] →
+                  [%mem.M, %matrix.Mat (2, (m, l), %math.F (p, e))], normalize_prod;
 
-.ax %matrix.transpose: Π [[k:.Nat, l:.Nat], T: *]
-                         [%mem.M, %matrix.Mat (2, (k, l), T)]
-                      -> [%mem.M, %matrix.Mat (2, (l, k), T)], normalize_transpose;
+.ax %matrix.transpose: [[k:.Nat, l:.Nat], T: *]
+                       [%mem.M, %matrix.Mat (2, (k, l), T)] →
+                       [%mem.M, %matrix.Mat (2, (l, k), T)], normalize_transpose;
 
-.ax %matrix.sum: Π [n: .Nat, S: «n; .Nat», [p:.Nat, e:.Nat]]
-                   [%mem.M, %matrix.Mat (n, S, %math.F (p, e))]
-                -> [%mem.M, %math.F (p, e)];
+.ax %matrix.sum: [n: .Nat, S: «n; .Nat», [p:.Nat, e:.Nat]]
+                 [%mem.M, %matrix.Mat (n, S, %math.F (p, e))] →
+                 [%mem.M, %math.F (p, e)];
 ///
 // TODO: handle reduction case: n=0, S=[] => not empty but scalar
 /// Our notation is inspired by einsum (with some generalizations):
@@ -121,7 +121,7 @@
 /// dummy = has correct type but can not produce code (should always be eliminated)
 .ax %matrix.map_reduce:
     // out shape depends on in shape but is complex
-    Π [
+    [
         n: .Nat, S: «n; .Nat», T: *, // out shape
         m: .Nat,                     // number of inputs
         NI: «m; .Nat»,               // input dimensions

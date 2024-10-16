@@ -11,4 +11,4 @@
 /// ### %demo.const
 ///
 /// The 42 constant, evaluated using a normalizer
-.ax %demo.const_idx: Π n: .Nat -> .Idx n, normalize_const;
+.ax %demo.const_idx: [n: .Nat] → .Idx n, normalize_const;

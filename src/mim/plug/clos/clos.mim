@@ -25,7 +25,7 @@
 ///     * `esc`: lambda that escapes its parent scope
 ///     * `bot`: no special use
 ///
-.ax %clos.attr(ret, freeBB, fstclassBB, esc, bot): Π.[T: *][T] -> T, normalize_clos;
+.ax %clos.attr(ret, freeBB, fstclassBB, esc, bot): {T: *} [T] -> T, normalize_clos;
 ///
 /// ## Passes and Phases
 ///
@@ -48,7 +48,7 @@
     %compile.pass_phase (%compile.pass_list
         eta_red
         eta_exp
-        (%compile.scalerize_pass eta_exp)
+        (%compile.scalarize_pass eta_exp)
     );
 
 .let clos_opt2_phase =
@@ -56,7 +56,7 @@
     %compile.pass_phase
         (%compile.pass_list
             nullptr
-            (%compile.scalerize_pass nullptr)
+            (%compile.scalarize_pass nullptr)
             %clos.branch_clos_pass
             (%mem.copy_prop_pass (nullptr, nullptr, .tt))
             %clos.lower_typed_clos_prep_pass

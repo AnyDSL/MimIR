@@ -19,7 +19,7 @@
         Bar
 ];
 
-.rec F: * = |~| .Nat -> F; // TODO make inference for F work again
+.rec F: * = .Nat -> F; // TODO make inference for F work again
 
 .lam .extern f1 v: Vec1: %math.F64 = v#x;
 .lam .extern F1 v: vec1: %math.F64 = v#X;

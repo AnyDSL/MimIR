@@ -22,7 +22,7 @@
 .lam Str(n: .Nat): * = %mem.Ptr0 «n; Char»;
 /// A regular expression matcher.
 .lam Res (n: .Nat): * = [%mem.M, .Bool, .Idx n];
-.let RE = Π.[n: .Nat][%mem.M, Str n, .Idx n] -> Res n;
+.let RE = {n: .Nat} [%mem.M, Str n, .Idx n] -> Res n;
 ///
 /// ## Meta
 ///
@@ -31,13 +31,13 @@
 /// A sequence of RE's, e.g. `\d\d\d` matching 3 digits:
 /// `%%regex.conj (%%regex.cls.d, %%regex.cls.d, %%regex.cls.d)`
 ///
-.ax %regex.conj: Π[n: .Nat][«n; RE»] -> RE, normalize_conj, 2;
+.ax %regex.conj: [n: .Nat][«n; RE»] -> RE, normalize_conj, 2;
 ///
 /// ### %regex.disj
 ///
 /// Match any of the sub expressions: `[0123456789]`
 ///
-.ax %regex.disj: Π[n: .Nat][«n; RE»] -> RE, normalize_disj, 2;
+.ax %regex.disj: [n: .Nat][«n; RE»] -> RE, normalize_disj, 2;
 ///
 /// ## Values
 ///

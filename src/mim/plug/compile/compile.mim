@@ -23,9 +23,9 @@
 ///
 /// Types for functions that accept an arbitrary number of phases and passes respectively.
 ///
-.rec %compile.Pipeline:      □ = Π %compile.Phase -> %compile.Pipeline;
-.rec %compile.PassList:      □ = Π %compile.Pass  -> %compile.PassList;
-.rec %compile.CombinedPhase: □ = Π %compile.Phase -> %compile.CombinedPhase;
+.rec %compile.Pipeline:      □ = %compile.Phase -> %compile.Pipeline;
+.rec %compile.PassList:      □ = %compile.Pass  -> %compile.PassList;
+.rec %compile.CombinedPhase: □ = %compile.Phase -> %compile.CombinedPhase;
 ///
 /// (This is a forward declaration for opt.mim.)
 ///
@@ -79,9 +79,9 @@
 .ax %compile.pass_list: %compile.PassList;
 /// `pass_phase (pass_list pass1 ... passN) = passes_to_phase N (pass1, ..., passN)`
 .ax %compile.pass_phase: %compile.PassList -> %compile.Phase, normalize_pass_phase;
-.ax %compile.passes_to_phase: Π [n:.Nat] -> «n; %compile.Pass» -> %compile.Phase;
+.ax %compile.passes_to_phase: [n: .Nat] -> «n; %compile.Pass» -> %compile.Phase;
 /// `combine_pass_list K (pass_list pass11 ... pass1N) ... (pass_list passK1 ... passKM) = pass_list pass11 ... p1N ... passK1 ... passKM`
-.ax %compile.combine_pass_list: Π [n:.Nat] -> «n; %compile.PassList» -> %compile.PassList, normalize_combine_pass_list;
+.ax %compile.combine_pass_list: [n: .Nat] -> «n; %compile.PassList» -> %compile.PassList, normalize_combine_pass_list;
 /// `single_pass_phase pass = passes_to_phase 1 pass`
 // TODO: as let instead of axiom
 .ax %compile.single_pass_phase: %compile.Pass -> %compile.Phase, normalize_single_pass_phase;
@@ -93,7 +93,7 @@
 .ax %compile.phase_list: %compile.CombinedPhase;
 /// `combined_phase (phase_list phase1 ... phaseN) = phases_to_phase N (phase1, ..., phaseN)`
 .ax %compile.combined_phase: %compile.CombinedPhase -> %compile.Phase, normalize_combined_phase;
-.ax %compile.phases_to_phase: Π [n:.Nat] -> «n; %compile.Phase» -> %compile.Phase;
+.ax %compile.phases_to_phase: [n: .Nat] -> «n; %compile.Phase» -> %compile.Phase;
 ///
 /// ### Passes
 ///
@@ -103,8 +103,8 @@
 .ax %compile.eta_red_pass: %compile.Pass;
 /// Eta expansion expects an instance of eta reduction as argument.
 .ax %compile.eta_exp_pass: %compile.Pass -> %compile.Pass;
-/// Scalerize expects an instance of eta expansion as argument.
-.ax %compile.scalerize_pass: %compile.Pass -> %compile.Pass;
+/// Scalarize expects an instance of eta expansion as argument.
+.ax %compile.scalarize_pass: %compile.Pass -> %compile.Pass;
 /// Tail recursion elimination expects an instance of eta reduction as argument.
 .ax %compile.tail_rec_elim_pass: %compile.Pass -> %compile.Pass;
 .ax %compile.lam_spec_pass: %compile.Pass;
@@ -123,7 +123,7 @@
         %compile.beta_red_pass
         eta_red
         eta_exp
-        (%compile.scalerize_pass eta_exp)
+        (%compile.scalarize_pass eta_exp)
         (%compile.tail_rec_elim_pass eta_red);
 
 .let optimization_phase = %compile.pass_phase optimization_pass_list;
@@ -134,7 +134,7 @@
     .let nullptr = %compile.nullptr_pass;
     %compile.pipe
         (%compile.single_pass_phase nullptr)
-        (%compile.single_pass_phase (%compile.scalerize_pass nullptr))
+        (%compile.single_pass_phase (%compile.scalarize_pass nullptr))
         (%compile.single_pass_phase %compile.eta_red_pass)
         (%compile.single_pass_phase (%compile.tail_rec_elim_pass nullptr))
         optimization_phase
@@ -148,7 +148,7 @@
 ///
 .let empty_pass = %compile.nullptr_pass;
 .let empty_phase = %compile.passes_to_phase 0 ();
-.ax %compile.plugin_select: Π [T:*] -> %compile.Plugin -> T -> T -> T;
+.ax %compile.plugin_select: [T: *] -> %compile.Plugin -> T -> T -> T;
 .let plugin_phase = %compile.plugin_select %compile.Phase;
 .let plugin_pass = %compile.plugin_select %compile.Pass;
 .lam plugin_cond_phase(plugin: %compile.Plugin, phase: %compile.Phase): %compile.Phase = plugin_phase plugin phase empty_phase;

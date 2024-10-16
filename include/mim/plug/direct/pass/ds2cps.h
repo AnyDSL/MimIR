@@ -1,6 +1,7 @@
 #pragma once
 
 #include <mim/def.h>
+
 #include <mim/pass/pass.h>
 
 namespace mim::plug::direct {
@@ -8,7 +9,7 @@ namespace mim::plug::direct {
 /// Converts direct style function to cps functions.
 /// To do so, for each (non-type-level) ds function a corresponding cps function is created:
 /// ```
-/// f:     Π a: A -> B
+/// f:     [a: A] -> B
 /// f_cps: .Cn [a: A, .Cn B]
 /// ```
 /// Only the type signature of the function is changed and the body is wrapped in the newly added return continuation.
