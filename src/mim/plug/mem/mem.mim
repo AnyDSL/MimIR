@@ -31,12 +31,12 @@
 /// ### %mem.load
 ///
 /// Loads from a pointer of type `%%mem.Ptr (T, as)` the pointed value of type `T`.
-.ax %mem.load:  Π .[T: *, .Nat]::Tas [%mem.M, %mem.Ptr Tas] -> [%mem.M, T], normalize_load;
+.ax %mem.load:  Π {T: *, .Nat}::Tas [%mem.M, %mem.Ptr Tas] -> [%mem.M, T], normalize_load;
 ///
 /// ### %mem.store
 ///
 /// Stores a value of type `T` to the location pointed to by a pointer of type `%%mem.Ptr (T, as)`,
-.ax %mem.store: Π .[T: *, .Nat]::Tas [%mem.M, %mem.Ptr Tas, T] -> %mem.M, normalize_store;
+.ax %mem.store: Π {T: *, .Nat}::Tas [%mem.M, %mem.Ptr Tas, T] -> %mem.M, normalize_store;
 ///
 /// ### %mem.remem
 ///
@@ -63,7 +63,7 @@
 /// ### %mem.free
 ///
 /// Frees memory of type `T` in address space `as`.
-.ax %mem.free: Π. [*, .Nat]::Tas [%mem.M, %mem.Ptr Tas] -> %mem.M;
+.ax %mem.free: Π {*, .Nat}::Tas [%mem.M, %mem.Ptr Tas] -> %mem.M;
 ///
 /// ### %mem.mslot
 ///

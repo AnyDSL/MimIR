@@ -19,19 +19,19 @@
 /// ### %refly.reify
 ///
 /// Yields the internal MimIR representation of a Mim expression as `%%refly.Code`.
-.ax %refly.reify: Π.[T: *][T] -> [%refly.Code T], normalize_reify;
+.ax %refly.reify: Π {T: *} [T] -> [%refly.Code T], normalize_reify;
 ///
 /// ### %refly.reflect
 ///
 /// Converts a `%%refly.Code` back to a Mim expression.
-.ax %refly.reflect: Π.[T: *][%refly.Code T] -> T, normalize_reflect;
+.ax %refly.reflect: Π {T: *} [%refly.Code T] -> T, normalize_reflect;
 ///
 /// ## Inspect
 ///
 /// ### %refly.gid
 ///
 /// Retuns the internal mim::Def::gid of the argument.
-.ax %refly.gid: Π.[T: *][T] -> .Nat, normalize_gid;
+.ax %refly.gid: Π {T: *} [T] -> .Nat, normalize_gid;
 ///
 /// ### %refly.dbg
 ///
@@ -46,7 +46,7 @@
 .let %refly.verbose = 3;
 .let %refly.debug   = 4;
 
-.ax %refly.dbg(tmp, perm): Π.[T: *][.Nat, T] -> T, normalize_dbg;
+.ax %refly.dbg(tmp, perm): Π {T: *} [.Nat, T] -> T, normalize_dbg;
 ///
 /// ## Manipulate
 ///

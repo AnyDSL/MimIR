@@ -238,7 +238,7 @@ This will bind
 Here is another example:
 
 ```rust
-Π.Tas::[T: *, as: .Nat][%mem.M, %mem.Ptr Tas] → [%mem.M, T]
+{T: *, as: .Nat}::Tas [%mem.M, %mem.Ptr Tas] → [%mem.M, T]
 ```
 
 #### Rebind

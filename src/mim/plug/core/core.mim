@@ -75,7 +75,7 @@
 /// | id     | x | o | identity                     |
 /// | t      | x | x | always true                  |
 ///
-.ax %core.bit1(f, neg, id, t): Π.[s: .Nat][m: .Nat][.Idx s] -> .Idx s, normalize_bit1;
+.ax %core.bit1(f, neg, id, t): Π {s: .Nat} [m: .Nat] [.Idx s] -> .Idx s, normalize_bit1;
 ///
 /// ### %core.bit2
 ///
@@ -102,7 +102,7 @@
 ///
 .ax %core.bit2( f,      nor, nciff, nfst, niff, nsnd, xor_, nand,
                 and_,  nxor,   snd,  iff,  fst, ciff,  or_,    t):
-    Π.[s: .Nat][m: .Nat][«2; .Idx s»] -> .Idx s , normalize_bit2;
+    Π {s: .Nat} [m: .Nat] [«2; .Idx s»] -> .Idx s , normalize_bit2;
 ///
 /// ### %core.shr
 ///
@@ -110,14 +110,14 @@
 ///     * [`a`rithmetic shift right](https://en.wikipedia.org/wiki/Arithmetic_shift)
 ///     * [`l`ogical shift right](https://en.wikipedia.org/wiki/Logical_shift)
 ///
-.ax %core.shr(a, l): Π.[s: .Nat][«2; .Idx s»] -> .Idx s, normalize_shr;
+.ax %core.shr(a, l): Π {s: .Nat} [«2; .Idx s»] -> .Idx s, normalize_shr;
 ///
 /// ### %core.wrap
 ///
 /// Integer operations that may overflow.
 /// You can specify the desired behavior in the case of an overflow with the curried argument just in front of the actual argument by providing a mim::plug::core::Mode as `.Nat`.
 ///
-.ax %core.wrap(add, sub, mul, shl): Π.[s: .Nat][m: .Nat][«2; .Idx s»] -> .Idx s, normalize_wrap;
+.ax %core.wrap(add, sub, mul, shl): Π {s: .Nat} [m: .Nat] [«2; .Idx s»] -> .Idx s, normalize_wrap;
 
 .lam %core.minus {s: .Nat} (m: .Nat) (a: .Idx s): .Idx s = %core.wrap.sub m (0:(.Idx s), a);
 ///
@@ -129,7 +129,7 @@
 /// For this reason, these axioms expect a `%%mem.M`.
 ///
 .ax %core.div(sdiv, udiv, srem, urem):
-    Π.[s: .Nat][%mem.M, «2; .Idx s»] -> [%mem.M, .Idx s], normalize_div;
+    Π {s: .Nat} [%mem.M, «2; .Idx s»] -> [%mem.M, .Idx s], normalize_div;
 ///
 /// ### %core.icmp
 ///
@@ -202,7 +202,7 @@
                XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,
                XYgle,      XYglE,       XYgLe,      XYgLE,
                XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):
-    Π.[s: .Nat][«2; .Idx s»] -> .Bool , normalize_icmp;
+    Π {s: .Nat} [«2; .Idx s»] -> .Bool , normalize_icmp;
 ///
 /// ### %core.extrema
 ///
@@ -210,7 +210,7 @@
 ///     * un`s`igned or `S`igned
 ///     * `m`inimum or `M`aximum
 ///
-.ax %core.extrema(sm=umin, sM=umax, Sm=smin, SM=smax): Π.[s:.Nat][.Idx s,.Idx s] -> .Idx s, normalize_extrema;
+.ax %core.extrema(sm=umin, sM=umax, Sm=smin, SM=smax): Π {s: .Nat} [.Idx s,.Idx s] -> .Idx s, normalize_extrema;
 ///
 /// ### %core.abs
 ///
@@ -218,7 +218,7 @@
 ///
 /// @warning Computing the absolute value of an Integer with the lowest possible value leads to *undefined behavior*, which is why this axiom expects a `%%mem.M`
 ///
-.ax %core.abs: Π.[s:.Nat][%mem.M, .Idx s] -> [%mem.M, .Idx s], normalize_abs;
+.ax %core.abs: Π {s:.Nat} [%mem.M, .Idx s] -> [%mem.M, .Idx s], normalize_abs;
 ///
 /// ## Conversions
 ///
@@ -226,14 +226,14 @@
 ///
 /// Conversion between index types - both signed and unsigned - of different sizes.
 ///
-.ax %core.conv(s, u): Π.[ss: .Nat][ds: .Nat][.Idx ss] -> .Idx ds, normalize_conv;
+.ax %core.conv(s, u): Π {ss: .Nat} [ds: .Nat] [.Idx ss] -> .Idx ds, normalize_conv;
 ///
 /// ### %core.bitcast
 ///
 /// Bitcast to reinterpret a value as another type.
 /// Can be used for pointer / integer conversions as well as integer / nat conversions.
 ///
-.ax %core.bitcast: Π.[S: *][D: *][S] -> D, normalize_bitcast;
+.ax %core.bitcast: Π {S: *} [D: *] [S] -> D, normalize_bitcast;
 ///
 /// ## Other Operations
 ///
@@ -248,7 +248,7 @@
 /// Steers the partial evaluator.
 ///
 .ax %core.pe(hlt, run): Π [T: *][T] -> T, normalize_pe;
-.ax %core.pe(known): Π.[T: *][T] -> .Bool, normalize_pe;
+.ax %core.pe(known): Π {T: *} [T] -> .Bool, normalize_pe;
 ///
 /// ### %core.zip
 ///

@@ -27,7 +27,7 @@
 /// On closed terms (functions, operators, ho arguments, registered axioms, etc.) the augmented term is returned.
 /// The augmented term `f'` returns the result together with the pullback.
 /// `autodiff f = f' = λ args. (f args, f*)`
-.ax %autodiff.ad: Π.[T: *] -> T -> %autodiff.AD T, normalize_ad;
+.ax %autodiff.ad: Π {T: *} -> T -> %autodiff.AD T, normalize_ad;
 ///
 /// ### %autodiff.zero
 ///
@@ -42,8 +42,8 @@
 /// The sum construct performs addition over a list of terms.
 ///
 /// TODO: how do we handle summations that need memory? (grab current memory?)
-.ax %autodiff.add: Π.[T:*] -> [T, T] -> T, normalize_add;
-.ax %autodiff.sum: Π [n:.Nat,T:*] -> «n; T» -> T, normalize_sum;
+.ax %autodiff.add: Π {T: *} -> [T, T] -> T, normalize_add;
+.ax %autodiff.sum: Π [n:.Nat, T: *] -> «n; T» -> T, normalize_sum;
 ///
 /// ## Passes and Phases
 ///

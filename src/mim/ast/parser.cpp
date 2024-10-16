@@ -84,6 +84,7 @@
     case Tag::D_brckt_l:  \
     case Tag::D_paren_l
 // clang-format on
+// case Tag::D_brace_l:
 
 using namespace std::string_literals;
 
@@ -366,9 +367,16 @@ Ptr<Expr> Parser::parse_pi_expr() {
     Ptrs<PiExpr::Dom> doms;
     while (true) {
         auto track    = tracker();
-        auto implicit = (bool)accept(Tag::T_dot);
-        auto prec     = tag == Tag::K_Cn ? Prec::Bot : Prec::Pi;
-        auto ptrn     = parse_ptrn(Tag::D_brckt_l, "domain of a "s + entity, prec);
+        auto implicit = false;
+        Ptr<Ptrn> ptrn;
+        if (ahead().isa(Tok::Tag::D_brace_l)) {
+            implicit = true;
+            ptrn     = parse_tuple_ptrn();
+        } else {
+            auto prec = tag == Tag::K_Cn ? Prec::Bot : Prec::Pi;
+            ptrn      = parse_ptrn(Tag::D_brckt_l, "domain of a "s + entity, prec);
+        }
+
         doms.emplace_back(ptr<PiExpr::Dom>(track, implicit, std::move(ptrn)));
 
         switch (ahead().tag()) {
