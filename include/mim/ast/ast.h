@@ -7,8 +7,9 @@
 #include <fe/assert.h>
 #include <fe/cast.h>
 
-#include "mim/ast/tok.h"
 #include "mim/driver.h"
+
+#include "mim/ast/tok.h"
 
 namespace mim::ast {
 
@@ -421,6 +422,8 @@ private:
     const Expr* codom() const { return codom_.get(); }
 
     void bind(Scopes&) const override;
+    Ref emit_decl(Emitter&, Ref type) const override;
+    void emit_body(Emitter&, Ref decl) const override;
     std::ostream& stream(Tab&, std::ostream&) const override;
 
 private:
@@ -428,10 +431,11 @@ private:
 
     Ptr<Expr> dom_;
     Ptr<Expr> codom_;
+    mutable Pi* decl_ = nullptr;
 };
 
 /// One of:
-/// * `Π   dom_0 ... dom_n-1 -> codom`
+/// * `    dom_0 ... dom_n-1 -> codom`
 /// * `.Cn dom_0 ... dom_n-1`
 /// * `.Fn dom_0 ... dom_n-1 -> codom`
 class PiExpr : public Expr {

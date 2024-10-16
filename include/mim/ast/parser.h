@@ -87,7 +87,7 @@ private:
     Ptr<Expr> parse_extremum_expr();
     Ptr<Expr> parse_type_expr();
     Ptr<Expr> parse_ret_expr();
-    Ptr<Expr> parse_pi_expr();
+    Ptr<Expr> parse_pi_expr(Ptr<Ptrn>&& = nullptr);
     Ptr<Expr> parse_lam_expr();
     Ptr<Expr> parse_sigma_expr();
     Ptr<Expr> parse_tuple_expr();

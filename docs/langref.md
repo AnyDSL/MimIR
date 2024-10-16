@@ -38,7 +38,7 @@ Both tokens are identified as `⊥`.
 | ------------------------------- | ------------------------------------------- | ------------------------- |
 | `(` `)` `[` `]` `{` `}`         |                                             | delimiters                |
 | `‹` `›` `«` `»`                 | `<<` `>>` `<` `>`                           | UTF-8 delimiters          |
-| `→` `⊥` `⊤` `★` `□` `λ` `Π`     | `->` `.bot` `.top` `*` `.lm` <tt>\|~\|</tt> | further UTF-8 tokens      |
+| `→` `⊥` `⊤` `★` `□` `λ`         | `->` `.bot` `.top` `*` `.lm`                | further UTF-8 tokens      |
 | `=` `,` `;` `.` `#` `:` `%` `@` |                                             | further tokens            |
 | `<eof>`                         |                                             | marks the end of the file |
 
@@ -62,7 +62,6 @@ In addition the following keywords are _terminals_:
 | `.cn`     | [continuation](@ref mim::Lam) expression                  |
 | `.fn`     | [function](@ref mim::Lam) expression                      |
 | `.lm`     | [lambda](@ref mim::Lam) expression                        |
-| `.Pi`     | [Pi](@ref mim::Pi) declaration                            |
 | `.Sigma`  | [Sigma](@ref mim::Sigma) declaration                      |
 | `.extern` | marks function as external                                |
 | `.ins`    | mim::Insert expression                                    |
@@ -177,7 +176,6 @@ The following tables comprise all production rules:
 | d   | `.lam` n (`.`? p)+ (`:` e<sub>codom</sub>)? ( `=` d\* e)? `;`                                                                                     | lambda declaration<sup>s</sup>       | [Lam](@ref mim::Lam)                 |
 | d   | `.con` n (`.`? p)+ ( `=` d\* e)? `;`                                                                                                              | continuation declaration<sup>s</sup> | [Lam](@ref mim::Lam)                 |
 | d   | `.fun` n (`.`? p)+ (`:` e<sub>ret</sub>)? ( `=` d\* e)? `;`                                                                                       | function declaration<sup>s</sup>     | [Lam](@ref mim::Lam)                 |
-| d   | `.Pi` n (`:` e<sub>type</sub>)? (`=` e)? `;`                                                                                                      | Pi declaration                       | [Pi](@ref mim::Pi)                   |
 | d   | `.Sigma` n (`:` e<sub>type</sub> )? (`,` L<sub>arity</sub>)? (`=` b<sub>[ ]</sub>)? `;`                                                           | sigma declaration                    | [Sigma](@ref mim::Sigma)             |
 | d   | `.ax` A `:` e<sub>type</sub> (`(` sa `,` ... `,` sa `)`)? <br> (`,` 𝖨<sub>normalizer</sub>)? (`,` L<sub>curry</sub>)? (`,` L<sub>trip</sub>)? `;` | axiom                                | [Axiom](@ref mim::Axiom)             |
 | n   | 𝖨 \| A                                                                                                                                            | identifier or annex name             | `fe::Sym`/[Annex](@ref mim::Annex)   |
@@ -324,27 +322,7 @@ Expressions nesting is disambiguated according to the following precedence table
 | 2     | e `#` e  | extract                                        | left-to-right |
 | 3     | e e      | application                                    | left-to-right |
 | 3     | e `@` e  | application making implicit arguments explicit | left-to-right |
-| 4     | `Π` b    | domain of a dependent function type            | -             |
-| 5     | e `→` e  | function type                                  | right-to-left |
-
-@note The domain of a dependent function type binds slightly stronger than `→`.
-This has the effect that
-
-```rust
-Π T: * → T → T
-```
-
-has the expected binding like this:
-
-```rust
-(Π T: *) → (T → T)
-```
-
-Otherwise, `→` would be consumed by the domain:
-
-```rust
-Π T: (* → (T → T)) ↯
-```
+| 4     | e `→` e  | function type                                  | right-to-left |
 
 ## Summary: Functions & Types
 
@@ -352,7 +330,7 @@ The following table summarizes the different tokens used for functions declarati
 
 | Declaration | Expression     | Type                    |
 | ----------- | -------------- | ----------------------- |
-| `.lam`      | `.lm` <br> `λ` | <tt>\|~\|</tt> <br> `Π` |
+| `.lam`      | `.lm` <br> `λ` | `->` |
 | `.con`      | `.cn`          | `.Cn`                   |
 | `.fun`      | `.fn`          | `.Fn`                   |
 
@@ -394,9 +372,9 @@ f .Nat ((23, 42), .cn res: .Nat = use(res))
 Finally, the following function types are all equivalent and denote the type of `f` above.
 
 ```rust
- Π  [T:*][[T, T], T → ⊥] → ⊥
-.Cn [T:*][[T, T], .Cn T]
-.Fn [T:*] [T, T] → T
+    [T:*] [[T, T], T → ⊥] → ⊥
+.Cn [T:*] [[T, T], .Cn T]
+.Fn [T:*]  [T, T] → T
 ```
 
 ## Scoping
@@ -409,27 +387,6 @@ Mim uses [_lexical scoping_](<https://en.wikipedia.org/wiki/Scope_(computer_scie
 The symbol `_` is special and never binds to an entity.
 For this reason, `_` can be bound over and over again within the same scope (without effect).
 Hence, using the symbol `_` will always result in a scoping error.
-
-### Pis
-
-@note **Only**
-
-```rust
-Π x: e → e
-```
-
-introduces a new scope whereas
-
-```rust
-x: e → e
-```
-
-is a syntax error.
-If the variable name of a Pi's domain is elided and the domain is a sigma, its elements will be imported into the Pi's scope to make these elements available in the Pi's codomain:
-
-```rust
-Π [T: *, U: *] → [T, U]
-```
 
 ### Annex
 
@@ -445,12 +402,12 @@ In the following example, `i` refers to the first element `i` of `X` and **not**
 
 ```rust
 .let i = 1_2;
-Π X: [i: .Nat, j: .Nat] → f X#i;
+[i: .Nat, j: .Nat]::X → f X#i;
 ```
 
 Use parentheses to refer to the `.let`-bounded `i`:
 
 ```rust
 .let i = 1_2;
-Π X: [i: .Nat, j: .Nat] → f X#(i);
+[i: .Nat, j: .Nat]::X → f X#(i);
 ```

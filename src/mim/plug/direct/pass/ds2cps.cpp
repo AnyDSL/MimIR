@@ -24,7 +24,7 @@ Ref DS2CPS::rewrite(Ref def) {
     return def;
 }
 
-/// This function generates the cps function `f_cps : cn [a:A, cn B]` for a ds function `f: Π a : A -> B`.
+/// This function generates the cps function `f_cps : cn [a:A, cn B]` for a ds function `f: [a : A] -> B`.
 /// The translation is associated in the `rewritten_` map.
 Ref DS2CPS::rewrite_lam(Lam* lam) {
     if (auto i = rewritten_.find(lam); i != rewritten_.end()) return i->second;
