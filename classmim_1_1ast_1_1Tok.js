@@ -60,7 +60,6 @@ var classmim_1_1ast_1_1Tok =
       [ "D_paren_r", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5aee4f36d19b140744668c52ea6444ef44", null ],
       [ "D_quote_l", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a5be9fecd8fb8ece5f3217942ae9f6c4a", null ],
       [ "D_quote_r", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5add7e7307bb61b436ebfaff2f7f0e0e29", null ],
-      [ "T_Pi", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a91556ff35639f7053345736967eadb93", null ],
       [ "T_arrow", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a2ab208dbb70e7df673fbabe32bb142eb", null ],
       [ "T_assign", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a5cde09f8e1c778aeb1790bb89e72982b", null ],
       [ "T_at", "classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5aeaceb769432bd45ba1afd43aeafcc8e4", null ],

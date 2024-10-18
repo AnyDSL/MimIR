@@ -34,7 +34,7 @@ var compile_2autogen_8h =
     [ "refly_plugin", "compile_2autogen_8h.html#aacd77e3de783b46e8fb72d48a8d24aff", null ],
     [ "regex_plugin", "compile_2autogen_8h.html#a9235d13a89008fb8415670a801e16c65", null ],
     [ "ret_wrap_pass", "compile_2autogen_8h.html#aeea954817fa22f9e9d045999b093eca9", null ],
-    [ "scalerize_pass", "compile_2autogen_8h.html#afa97951773d2777ba378de3c71b94ff4", null ],
+    [ "scalarize_pass", "compile_2autogen_8h.html#a961935589c51b84c285852b051fbbf37", null ],
     [ "single_pass_phase", "compile_2autogen_8h.html#a847ce6ecda2bb689fa0ba4755e2716d7", null ],
     [ "tail_rec_elim_pass", "compile_2autogen_8h.html#aa116af339362d94ddef4135c1e9e67c7", null ],
     [ "normalize_combine_pass_list", "compile_2autogen_8h.html#ac81c2df771fd2b104f08b14a71b2a02e", null ],

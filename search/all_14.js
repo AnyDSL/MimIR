@@ -41,7 +41,7 @@ var searchData=
   ['une_38',['une',['../namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a1710cdde5c0c6af507e234da6be31443',1,'mim::plug::math']]],
   ['unflatten_39',['unflatten',['../namespacemim.html#a869f7a593f368b079211689192152385',1,'mim::unflatten(const Def *def, const Def *type)'],['../namespacemim.html#a829c76d14d02cad2fb4f21aff1e0fb6a',1,'mim::unflatten(Defs ops, const Def *type, bool flatten_muts=true)']]],
   ['unfold_5ftype_40',['unfold_type',['../classmim_1_1Def.html#a718d2d516d8014f4ce3011aad8009c96',1,'mim::Def']]],
-  ['unfolding_20functions_41',['Unfolding functions',['../matrix.html#autotoc_md176',1,'']]],
+  ['unfolding_20functions_41',['Unfolding functions',['../matrix.html#autotoc_md175',1,'']]],
   ['unique_5fname_42',['unique_name',['../classmim_1_1Def.html#ae61aa184493aa3f3bf685758d27f982a',1,'mim::Def']]],
   ['unique_5fqueue_43',['unique_queue',['../classmim_1_1unique__queue.html',1,'mim::unique_queue&lt; Set &gt;'],['../classmim_1_1unique__queue.html#a30076792d01b0b1ce9739c1884ba38b0',1,'mim::unique_queue::unique_queue()=default'],['../classmim_1_1unique__queue.html#a5d058cc9034d541b1b3a13ca9535cc11',1,'mim::unique_queue::unique_queue(Set set)']]],
   ['unique_5fstack_44',['unique_stack',['../classmim_1_1unique__stack.html',1,'mim']]],

@@ -2,9 +2,9 @@ var searchData=
 [
   ['w_0',['W',['../namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938afc71f53681c7ac39ba47c698fa5df8d7',1,'mim::plug::regex']]],
   ['w_1',['w',['../structmim_1_1plug_1_1regex_1_1app__range.html#a2761d4060fc6d48c0bb624d69ad06286',1,'mim::plug::regex::app_range::w'],['../namespacemim_1_1plug_1_1regex.html#af786f27f8eebb04e7543f565e8763938a5295361eb7eb79c0a441dfef0fcea405',1,'mim::plug::regex::w']]],
-  ['w_20o_20side_20effects_2',['Operations w/o Side Effects',['../mem.html#autotoc_md195',1,'']]],
+  ['w_20o_20side_20effects_2',['Operations w/o Side Effects',['../mem.html#autotoc_md194',1,'']]],
   ['w_20o_20subtags_3',['w/o Subtags',['../dev.html#autotoc_md24',1,'']]],
-  ['w_20side_20effects_4',['Operations w/ Side Effects',['../mem.html#autotoc_md186',1,'']]],
+  ['w_20side_20effects_4',['Operations w/ Side Effects',['../mem.html#autotoc_md185',1,'']]],
   ['w_20subtags_5',['w/ Subtags',['../dev.html#autotoc_md25',1,'']]],
   ['w2f_6',['w2f',['../namespacemim.html#a2812faa6603be36aef320b6b3fb90767',1,'mim']]],
   ['w2s_7',['w2s',['../namespacemim.html#a92529c353d14b56a3c8470bdad2d770a',1,'mim']]],
@@ -20,9 +20,9 @@ var searchData=
   ['world_2ecpp_17',['world.cpp',['../world_8cpp.html',1,'']]],
   ['world_2eh_18',['world.h',['../world_8h.html',1,'']]],
   ['world_5f_19',['world_',['../classmim_1_1Phase.html#a8bf7e9bd331b8a3cf681df7ba5b215a5',1,'mim::Phase']]],
-  ['wrap_20',['wrap',['../core.html#autotoc_md123',1,'core.wrap'],['../namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672ef',1,'mim::plug::core::wrap']]],
-  ['wrap_20add_21',['%core.wrap.add',['../autodiff.html#autotoc_md88',1,'']]],
-  ['wrap_20mul_22',['%core.wrap.mul',['../autodiff.html#autotoc_md89',1,'']]],
+  ['wrap_20',['wrap',['../core.html#autotoc_md122',1,'core.wrap'],['../namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672ef',1,'mim::plug::core::wrap']]],
+  ['wrap_20add_21',['%core.wrap.add',['../autodiff.html#autotoc_md87',1,'']]],
+  ['wrap_20mul_22',['%core.wrap.mul',['../autodiff.html#autotoc_md88',1,'']]],
   ['writable_23',['writable',['../classmim_1_1plug_1_1mem_1_1SSAConstr.html#a3ee6da2c27642055c0097d62f77b2a88',1,'mim::plug::mem::SSAConstr::Info']]],
   ['write_24',['write',['../classmim_1_1Def.html#abbd73d56c3fb9d78a28ca119ca2583fc',1,'mim::Def::write(int max) const'],['../classmim_1_1Def.html#a36961f437b85d16c096ee7c43cc9fa33',1,'mim::Def::write(int max, const char *file) const'],['../classmim_1_1World.html#aada6df5fabc3554f7dab128f1f6b3deb',1,'mim::World::write(const char *file)'],['../classmim_1_1World.html#a6c0a289376552934ff442e317dc95acd',1,'mim::World::write()']]]
 ];

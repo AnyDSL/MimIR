@@ -123,13 +123,13 @@ $(function(){initNavTree('opt.html',''); initResizable(true); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md202">Dependencies</a>
+    <a href="#autotoc_md201">Dependencies</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md203">Passes, Phases, and Pipelines</a>
+    <a href="#autotoc_md202">Passes, Phases, and Pipelines</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md204">Pipelines</a>
+        <a href="#autotoc_md203">Pipelines</a>
       </li>
     </ul>
   </li>
@@ -138,7 +138,7 @@ $(function(){initNavTree('opt.html',''); initResizable(true); });
 <div class="textblock"><p><a class="anchor" id="md_build_2docs_2plug_2opt"></a></p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacemim_1_1plug_1_1opt.html" title="The opt Plugin">mim::plug::opt</a></dd></dl>
 <p>Manages the default compilation pipeline of Mim programs using plugins.</p>
-<h1><a class="anchor" id="autotoc_md202"></a>
+<h1><a class="anchor" id="autotoc_md201"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">.import core; // includes mem, compile (and avoids clashing re-import)</div>
 </div><!-- fragment --><p> supported plugins with passes </p><div class="fragment"><div class="line">.import affine;</div>
@@ -148,16 +148,16 @@ Dependencies</h1>
 <div class="line">.import matrix;</div>
 <div class="line">.import refly;</div>
 <div class="line">.import regex;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md203"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md202"></a>
 Passes, Phases, and Pipelines</h1>
-<h2><a class="anchor" id="autotoc_md204"></a>
+<h2><a class="anchor" id="autotoc_md203"></a>
 Pipelines</h2>
 <div class="fragment"><div class="line">.lam .extern _default_compile []: %compile.Pipeline =</div>
 <div class="line">    .let nullptr   = %compile.nullptr_pass;</div>
 <div class="line">    .let nullphase = %compile.single_pass_phase nullptr;</div>
 <div class="line">    %compile.pipe</div>
 <div class="line">        nullphase</div>
-<div class="line">        (%compile.single_pass_phase (%compile.scalerize_pass nullptr))</div>
+<div class="line">        (%compile.single_pass_phase (%compile.scalarize_pass nullptr))</div>
 <div class="line">        (%compile.single_pass_phase %compile.eta_red_pass)</div>
 <div class="line">        (%compile.single_pass_phase (%compile.tail_rec_elim_pass nullptr))</div>
 <div class="line">        (%compile.single_pass_phase (plugin_cond_pass (%compile.regex_plugin, %regex.lower_regex)))</div>

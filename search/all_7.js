@@ -16,8 +16,8 @@ var searchData=
   ['hash_5ft_13',['hash_t',['../namespacemim.html#adb8acb78758d27c55328f3b7ade04ddd',1,'mim']]],
   ['head_14',['Head',['../classmim_1_1LoopTree_1_1Head.html',1,'mim::LoopTree&lt; forward &gt;::Head'],['../classmim_1_1LoopTreeBuilder.html#a26f634401c7addcb2276d507fc5217f7',1,'mim::LoopTreeBuilder::Head']]],
   ['head_15',['head',['../structmim_1_1ll_1_1BB.html#ad41e53224beffd097864097ccb5ba5f1',1,'mim::ll::BB']]],
-  ['high_20level_20matrix_20operations_16',['High-level matrix operations',['../matrix.html#autotoc_md175',1,'']]],
+  ['high_20level_20matrix_20operations_16',['High-level matrix operations',['../matrix.html#autotoc_md174',1,'']]],
   ['highlighting_17',['Syntax Highlighting',['../coding.html#autotoc_md13',1,'']]],
   ['hlt_18',['hlt',['../namespacemim_1_1plug_1_1core.html#a9b11d4401cc2514de71bd80baa644977a986d4ab2ae26fd34397ea8afe61a7121',1,'mim::plug::core']]],
-  ['hooks_19',['Other Hooks',['../passes.html#autotoc_md62',1,'']]]
+  ['hooks_19',['Other Hooks',['../passes.html#autotoc_md61',1,'']]]
 ];

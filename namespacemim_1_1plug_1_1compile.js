@@ -35,7 +35,7 @@ var namespacemim_1_1plug_1_1compile =
     [ "refly_plugin", "namespacemim_1_1plug_1_1compile.html#aacd77e3de783b46e8fb72d48a8d24aff", null ],
     [ "regex_plugin", "namespacemim_1_1plug_1_1compile.html#a9235d13a89008fb8415670a801e16c65", null ],
     [ "ret_wrap_pass", "namespacemim_1_1plug_1_1compile.html#aeea954817fa22f9e9d045999b093eca9", null ],
-    [ "scalerize_pass", "namespacemim_1_1plug_1_1compile.html#afa97951773d2777ba378de3c71b94ff4", null ],
+    [ "scalarize_pass", "namespacemim_1_1plug_1_1compile.html#a961935589c51b84c285852b051fbbf37", null ],
     [ "single_pass_phase", "namespacemim_1_1plug_1_1compile.html#a847ce6ecda2bb689fa0ba4755e2716d7", null ],
     [ "tail_rec_elim_pass", "namespacemim_1_1plug_1_1compile.html#aa116af339362d94ddef4135c1e9e67c7", null ],
     [ "handle_optimization_part", "namespacemim_1_1plug_1_1compile.html#af3d359502fb20a04654862a567549f7c", null ],

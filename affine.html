@@ -123,21 +123,21 @@ $(function(){initNavTree('affine.html',''); initResizable(true); });
 <div class="toc"><h3>Table of Contents</h3>
 <ul>
   <li class="level1">
-    <a href="#autotoc_md72">Dependencies</a>
+    <a href="#autotoc_md71">Dependencies</a>
   </li>
   <li class="level1">
-    <a href="#autotoc_md73">Operations</a>
+    <a href="#autotoc_md72">Operations</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md74">affine.For</a>
+        <a href="#autotoc_md73">affine.For</a>
       </li>
     </ul>
   </li>
   <li class="level1">
-    <a href="#autotoc_md75">Passes and Phases</a>
+    <a href="#autotoc_md74">Passes and Phases</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md76">affine.lower_for_pass</a>
+        <a href="#autotoc_md75">affine.lower_for_pass</a>
       </li>
     </ul>
   </li>
@@ -145,12 +145,12 @@ $(function(){initNavTree('affine.html',''); initResizable(true); });
 </div>
 <div class="textblock"><p><a class="anchor" id="md_build_2docs_2plug_2affine"></a></p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="namespacemim_1_1plug_1_1affine.html" title="The affine Plugin">mim::plug::affine</a></dd></dl>
-<h1><a class="anchor" id="autotoc_md72"></a>
+<h1><a class="anchor" id="autotoc_md71"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">.import mem;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md73"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md72"></a>
 Operations</h1>
-<h2><a class="anchor" id="autotoc_md74"></a>
+<h2><a class="anchor" id="autotoc_md73"></a>
 affine.For</h2>
 <p>This operation ranges from (including) <code>begin</code> to (excluding) <code>end</code> using <code>step</code> as stride. In addition, this loop manages <code>n</code> loop accumulators whose initial values <code>init</code> must be given. Each iteration the given <code>body</code> is invoked which receives</p><ul>
 <li>the current iteration index, and</li>
@@ -163,9 +163,9 @@ affine.For</h2>
 <div class="line">            body: .Cn [iter: .Idx m, acc: «i: n; Ts#i», yield: .Cn [«i: n; Ts#i»]],</div>
 <div class="line">            exit: .Cn [«i: n; Ts#i»]</div>
 <div class="line">        ];</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md75"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md74"></a>
 Passes and Phases</h1>
-<h2><a class="anchor" id="autotoc_md76"></a>
+<h2><a class="anchor" id="autotoc_md75"></a>
 affine.lower_for_pass</h2>
 <p>Loweres the affine.For operation to recursive function calls.</p>
 <div class="fragment"><div class="line">.ax %affine.lower_for_pass: %compile.Pass;</div>
