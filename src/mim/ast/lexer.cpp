@@ -30,11 +30,6 @@ Lexer::Lexer(AST& ast, std::istream& istream, const fs::path* path /*= nullptr*/
 
 Tok Lexer::lex() {
     while (true) {
-        if (auto cache = cache_) {
-            cache_.reset();
-            return *cache;
-        }
-
         start();
 
         if (accept(utf8::EoF)) return tok(Tag::EoF);
@@ -80,7 +75,6 @@ Tok Lexer::lex() {
         if (accept( '$')) return tok(Tag::T_dollar);
         if (accept( '#')) return tok(Tag::T_extract);
         if (accept(U'λ')) return tok(Tag::T_lm);
-        if (accept(U'Π')) return tok(Tag::T_Pi);
         if (accept( ';')) return tok(Tag::T_semicolon);
         if (accept(U'★')) return tok(Tag::T_star);
         if (accept( '*')) return tok(Tag::T_star);
@@ -88,32 +82,19 @@ Tok Lexer::lex() {
             if (accept( ':')) return tok(Tag::T_colon_colon);
             return tok(Tag::T_colon);
         }
-        if (accept( '|')) {
-            if (accept('~')) {
-                if (accept('|')) return tok(Tag::T_Pi);
-            }
-            ast().error(loc_, "invalid input char '{}'; maybe you wanted to use '|~|'?", str_);
-            continue;
-        }
         // clang-format on
 
         if (accept('%')) {
-            if (lex_id()) {
-                auto loc = cache_trailing_dot();
-                return {loc, Tag::M_anx, sym()};
-            }
+            if (lex_id()) return {loc_, Tag::M_anx, sym()};
             ast().error(loc_, "invalid axiom name '{}'", str_);
+            continue;
         }
 
         if (accept('.')) {
             if (lex_id()) {
                 if (auto i = keywords_.find(sym()); i != keywords_.end()) return tok(i->second);
-                // Split non-keyword into T_dot and M_id; M_id goes into cache_ for next lex().
-                assert(!cache_.has_value());
-                auto id_loc = loc();
-                ++id_loc.begin.col;
-                cache_.emplace(id_loc, Tag::M_id, ast().sym(str_.substr(1)));
-                return {loc().anew_begin(), Tag::T_dot};
+                ast().error(loc_, "invalid keyword '{}'", str_);
+                continue;
             }
 
             if (accept(utf8::isdigit)) {
@@ -127,7 +108,7 @@ Tok Lexer::lex() {
 
         if (accept('\'')) {
             auto c = lex_char();
-            if (accept('\'')) return {loc(), c};
+            if (accept('\'')) return {loc_, c};
             ast().error(loc_, "invalid character literal {}", str_);
             continue;
         }
@@ -138,10 +119,7 @@ Tok Lexer::lex() {
             return {loc_, Tag::L_str, sym()};
         }
 
-        if (lex_id()) {
-            auto loc = cache_trailing_dot();
-            return {loc, Tag::M_id, sym()};
-        }
+        if (lex_id()) return {loc_, Tag::M_id, sym()};
 
         if (utf8::isdigit(ahead()) || utf8::any('+', '-')(ahead())) {
             if (auto lit = parse_lit()) return *lit;
@@ -171,18 +149,6 @@ Tok Lexer::lex() {
         ast().error({loc_.path, peek_}, "invalid input char '{}'", utf8::Char32(ahead()));
         next();
     }
-}
-
-// A trailing T_dot does not belong to an annex name or identifier and goes into cache_ for next lex().
-Loc Lexer::cache_trailing_dot() {
-    auto l = loc();
-    if (str_.back() == '.') {
-        str_.pop_back();
-        assert(!cache_.has_value());
-        cache_.emplace(l.anew_finis(), Tag::T_dot);
-        --l.finis.col;
-    }
-    return l;
 }
 
 bool Lexer::lex_id() {

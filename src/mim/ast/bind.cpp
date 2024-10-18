@@ -269,7 +269,7 @@ void RecDecl::bind_decl(Scopes& s) const {
     if (!type()->isa<InferExpr>() && body()->isa<LamExpr>())
         s.ast().warn(type()->loc(), "type of recursive declaration ignored for function expression");
 
-    if (!body()->isa<LamExpr>() && !body()->isa<PiExpr>() && !body()->isa<SigmaExpr>())
+    if (!body()->isa<LamExpr>() && !body()->isa<PiExpr>() && !body()->isa<ArrowExpr>() && !body()->isa<SigmaExpr>())
         s.ast().error(body()->loc(), "unsupported expression for a recursive declaration");
 
     s.bind(dbg(), this);

@@ -16,7 +16,7 @@ TEST(Lexer, Toks) {
     Driver driver;
     auto& w  = driver.world();
     auto ast = AST(w);
-    std::istringstream is("{ } ( ) [ ] ‹ › « » : , . .lam λ Π 23₀₁₂₃₄₅₆₇₈₉");
+    std::istringstream is("{ } ( ) [ ] ‹ › « » : , . .lam λ   23₀₁₂₃₄₅₆₇₈₉");
     Lexer lexer(ast, is);
 
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_brace_l));
@@ -34,7 +34,6 @@ TEST(Lexer, Toks) {
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_dot));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::K_lam));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_lm));
-    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_Pi));
     auto tok = lexer.lex();
     EXPECT_TRUE(tok.isa(Tok::Tag::L_i));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::EoF));

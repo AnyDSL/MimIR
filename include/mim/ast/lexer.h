@@ -1,7 +1,5 @@
 #pragma once
 
-#include <optional>
-
 #include <absl/container/flat_hash_map.h>
 #include <fe/lexer.h>
 
@@ -23,7 +21,6 @@ public:
 
     AST& ast() { return ast_; }
     const fs::path* path() const { return loc_.path; }
-    Loc loc() const { return loc_; }
     Tok lex();
 
 private:
@@ -41,9 +38,8 @@ private:
         return res;
     }
 
-    Tok tok(Tok::Tag tag) { return {loc(), tag}; }
+    Tok tok(Tok::Tag tag) { return {loc_, tag}; }
     Sym sym();
-    Loc cache_trailing_dot();
     bool lex_id();
     char8_t lex_char();
     std::optional<Tok> parse_lit();
@@ -60,7 +56,6 @@ private:
     std::ostream* md_;
     bool out_ = true;
     fe::SymMap<Tok::Tag> keywords_;
-    std::optional<Tok> cache_ = std::nullopt;
 
     friend class fe::Lexer<3, Lexer>;
 };

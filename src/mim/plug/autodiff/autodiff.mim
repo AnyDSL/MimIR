@@ -27,13 +27,13 @@
 /// On closed terms (functions, operators, ho arguments, registered axioms, etc.) the augmented term is returned.
 /// The augmented term `f'` returns the result together with the pullback.
 /// `autodiff f = f' = λ args. (f args, f*)`
-.ax %autodiff.ad: Π.[T: *] -> T -> %autodiff.AD T, normalize_ad;
+.ax %autodiff.ad: {T: *} -> T -> %autodiff.AD T, normalize_ad;
 ///
 /// ### %autodiff.zero
 ///
 /// Represents universal zero such that `(zero T) +_T t = t`.
 ///
-.ax %autodiff.zero: Π [T:*] -> T, normalize_zero;
+.ax %autodiff.zero: [T: *] -> T, normalize_zero;
 ///
 /// ### %autodiff.add
 ///
@@ -42,8 +42,8 @@
 /// The sum construct performs addition over a list of terms.
 ///
 /// TODO: how do we handle summations that need memory? (grab current memory?)
-.ax %autodiff.add: Π.[T:*] -> [T, T] -> T, normalize_add;
-.ax %autodiff.sum: Π [n:.Nat,T:*] -> «n; T» -> T, normalize_sum;
+.ax %autodiff.add: {T: *} -> [T, T] -> T, normalize_add;
+.ax %autodiff.sum: [n:.Nat, T: *] -> «n; T» -> T, normalize_sum;
 ///
 /// ## Passes and Phases
 ///
@@ -85,14 +85,14 @@
 /// ```
 /// The types (with `Int` for `(Int w)`) are:
 /// ```
-/// mul : Π [m:.Nat,w:.Nat] -> [a:Int,b:Int] -> Int
+/// mul : [m:.Nat,w:.Nat] -> [a:Int,b:Int] -> Int
 /// r   : Int
 /// r*  : cn[Int,cn[Int,Int]]
 /// ```
 /// The pullback has to be in cps for compliance.
 /// ```
 /// mul* := λ s. (s*b,s*a)
-/// mul'_cps : Π [m:.Nat,w:.Nat] -> cn[[Int,Int],cn[Int,   cn[Int,cn[Int,Int]]]]
+/// mul'_cps : [m:.Nat,w:.Nat] -> cn[[Int,Int],cn[Int,   cn[Int,cn[Int,Int]]]]
 /// r,r* = (cps2ds (mul'_cps (m,w))) (a,b)
 /// ```
 ///
@@ -109,19 +109,19 @@
 ///
 /// The comparison pullback exists formally but is not used.
 ///
-.fun .extern internal_diff_core_icmp_xYgLE.(s: .Nat)(ab: «2; .Idx s»)@.tt: [.Bool, .Cn[.Bool, .Cn«2; .Idx s»]] =
+.fun .extern internal_diff_core_icmp_xYgLE {s: .Nat} (ab: «2; .Idx s»)@.tt: [.Bool, .Cn[.Bool, .Cn«2; .Idx s»]] =
     return (%core.icmp.sle ab, .fn [.Bool]@.tt: «2; .Idx s» = return ‹2; 0:(.Idx s)›);
 ///
 /// ### %core.wrap.add
 ///
 /// s ↦ (s, s)
 ///
-.fun .extern internal_diff_core_wrap_add.(s: .Nat)(m: .Nat)(ab: «2; .Idx s»)@.tt: [.Idx s, .Cn[.Idx s, .Cn«2; .Idx s»]] =
+.fun .extern internal_diff_core_wrap_add {s: .Nat} (m: .Nat) (ab: «2; .Idx s»)@.tt: [.Idx s, .Cn[.Idx s, .Cn«2; .Idx s»]] =
     return (%core.wrap.add m ab, .fn (i: .Idx s)@.tt: «2; .Idx s» = return ‹2; i›);
 ///
 /// ### %core.wrap.mul
 ///
 /// s ↦ (s*b, s*a)
 ///
-.fun .extern internal_diff_core_wrap_mul.(s: .Nat)(m: .Nat) (a b: .Idx s)::ab@.tt: [.Idx s, .Cn[.Idx s, .Cn«2; .Idx s»]] =
+.fun .extern internal_diff_core_wrap_mul {s: .Nat} (m: .Nat) (a b: .Idx s)::ab@.tt: [.Idx s, .Cn[.Idx s, .Cn«2; .Idx s»]] =
     return (%core.wrap.mul m ab, .fn (i: .Idx s)@.tt: «2; .Idx s» = return (%core.wrap.mul m (i, b), %core.wrap.mul m (i, a)));
