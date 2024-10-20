@@ -229,8 +229,8 @@ axm %math.cmp(ugle =   f, uglE =   e, ugLe =   l, ugLE =  le,
 ///
 /// Conversion between floating point and index types - both signed and unsigned - of different sizes.
 ///
-axm %math.conv(s2f, u2f): { ss:     Nat } [dpe: «2; Nat»] [   Idx  ss] → %math.F dpe, normalize_conv;
-axm %math.conv(f2s, f2u): {spe: «2; Nat»} [ ds:     Nat ] [%math.F spe] →    Idx  ds, normalize_conv;
+axm %math.conv(s2f, u2f): { ss:     Nat } [dpe: «2; Nat»] [    Idx  ss] → %math.F dpe, normalize_conv;
+axm %math.conv(f2s, f2u): {spe: «2; Nat»} [ ds:     Nat ] [%math.F spe] →     Idx  ds, normalize_conv;
 axm %math.conv(f2f):      {spe: «2; Nat»} [dpe: «2; Nat»] [%math.F spe] → %math.F dpe, normalize_conv;
 ///
 /// ### %%math.slf
