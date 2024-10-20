@@ -140,21 +140,21 @@ $(function(){initNavTree('opt.html',''); initResizable(true); });
 <p>Manages the default compilation pipeline of Mim programs using plugins.</p>
 <h1><a class="anchor" id="autotoc_md201"></a>
 Dependencies</h1>
-<div class="fragment"><div class="line">.import core; // includes mem, compile (and avoids clashing re-import)</div>
-</div><!-- fragment --><p> supported plugins with passes </p><div class="fragment"><div class="line">.import affine;</div>
-<div class="line">.import autodiff;</div>
-<div class="line">.import clos;</div>
-<div class="line">.import direct;</div>
-<div class="line">.import matrix;</div>
-<div class="line">.import refly;</div>
-<div class="line">.import regex;</div>
+<div class="fragment"><div class="line">import core; // includes mem, compile (and avoids clashing re-import)</div>
+</div><!-- fragment --><p> supported plugins with passes </p><div class="fragment"><div class="line">import affine;</div>
+<div class="line">import autodiff;</div>
+<div class="line">import clos;</div>
+<div class="line">import direct;</div>
+<div class="line">import matrix;</div>
+<div class="line">import refly;</div>
+<div class="line">import regex;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md202"></a>
 Passes, Phases, and Pipelines</h1>
 <h2><a class="anchor" id="autotoc_md203"></a>
 Pipelines</h2>
-<div class="fragment"><div class="line">.lam .extern _default_compile []: %compile.Pipeline =</div>
-<div class="line">    .let nullptr   = %compile.nullptr_pass;</div>
-<div class="line">    .let nullphase = %compile.single_pass_phase nullptr;</div>
+<div class="fragment"><div class="line">lam extern _default_compile []: %compile.Pipeline =</div>
+<div class="line">    let nullptr   = %compile.nullptr_pass;</div>
+<div class="line">    let nullphase = %compile.single_pass_phase nullptr;</div>
 <div class="line">    %compile.pipe</div>
 <div class="line">        nullphase</div>
 <div class="line">        (%compile.single_pass_phase (%compile.scalarize_pass nullptr))</div>
@@ -163,7 +163,7 @@ Pipelines</h2>
 <div class="line">        (%compile.single_pass_phase (plugin_cond_pass (%compile.regex_plugin, %regex.lower_regex)))</div>
 <div class="line">        // optimize</div>
 <div class="line">        (%compile.pass_phase</div>
-<div class="line">            (%compile.combine_pass_list (⊤:.Nat)</div>
+<div class="line">            (%compile.combine_pass_list (⊤:Nat)</div>
 <div class="line">            (</div>
 <div class="line">                optimization_pass_list,</div>
 <div class="line">                %compile.pass_list</div>
@@ -192,7 +192,7 @@ Pipelines</h2>
 <div class="line">        (plugin_cond_phase (%compile.autodiff_plugin, ad_cleanup_phase))</div>
 <div class="line">        // CodeGenPrep</div>
 <div class="line">        (%compile.pass_phase</div>
-<div class="line">            (%compile.combine_pass_list (⊤:.Nat)</div>
+<div class="line">            (%compile.combine_pass_list (⊤:Nat)</div>
 <div class="line">            (</div>
 <div class="line">                %compile.pass_list</div>
 <div class="line">                %compile.ret_wrap_pass,</div>

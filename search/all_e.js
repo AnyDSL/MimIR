@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['o_0',['o',['../namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a258eea1caa6f342ee697f426fc2a4c51',1,'mim::plug::math']]],
+  ['o_0',['o',['../namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3ad95679752134a2d9eb61dbd7b91c4bcc',1,'mim::plug::math']]],
   ['o_20side_20effects_1',['Operations w/o Side Effects',['../mem.html#autotoc_md194',1,'']]],
   ['o_20subtags_2',['w/o Subtags',['../dev.html#autotoc_md24',1,'']]],
   ['of_20sigmas_3',['Field Names of Sigmas',['../langref.html#autotoc_md55',1,'']]],
@@ -66,7 +66,7 @@ var searchData=
   ['operator_7c_63',['operator|',['../classmim_1_1BitSet.html#a793dc3cd26a5c3a208c38a5c829321c6',1,'mim::BitSet']]],
   ['operator_7c_3d_64',['operator|=',['../classmim_1_1BitSet.html#aab50b7a902a56470aaf5c6414a57a2b8',1,'mim::BitSet::operator|=()'],['../classmim_1_1IndexSet.html#a3a71e9a74ec650d7344e0534b4466e23',1,'mim::IndexSet::operator|=()']]],
   ['ops_65',['ops',['../classmim_1_1Def.html#a813fa6bd71a2212e2ca05352c23e173f',1,'mim::Def']]],
-  ['opt_20is_5floaded_66',['%opt.is_loaded',['../compile.html#autotoc_md102',1,'']]],
+  ['opt_20is_5floaded_66',['%%opt.is_loaded',['../compile.html#autotoc_md102',1,'']]],
   ['opt_20plugin_67',['The opt Plugin',['../opt.html',1,'']]],
   ['opt_2ecpp_68',['opt.cpp',['../opt_8cpp.html',1,'']]],
   ['opt_2eh_69',['opt.h',['../opt_8h.html',1,'']]],
@@ -74,8 +74,8 @@ var searchData=
   ['optimize_71',['optimize',['../namespacemim.html#a60ee93398f76269a406c841b2bb2c306',1,'mim']]],
   ['optimize_2ecpp_72',['optimize.cpp',['../optimize_8cpp.html',1,'']]],
   ['optimize_2eh_73',['optimize.h',['../optimize_8h.html',1,'']]],
-  ['optional_74',['optional',['../namespacemim_1_1plug_1_1regex.html#abd57dc57f7b22176767063e1fe2e2c55a699515e486c65dce7cfbb5fea3e27909',1,'mim::plug::regex']]],
-  ['or_5f_75',['or_',['../namespacemim_1_1plug_1_1core.html#a637697cbaa1afab7b361dfebb191d205aa09f0da720bf0c130d848caf9d7fd31f',1,'mim::plug::core']]],
+  ['optional_74',['optional',['../namespacemim_1_1plug_1_1regex.html#abd57dc57f7b22176767063e1fe2e2c55ad57c24f3fe52d16e7169b912dd647f0d',1,'mim::plug::regex']]],
+  ['or_5f_75',['or_',['../namespacemim_1_1plug_1_1core.html#a637697cbaa1afab7b361dfebb191d205acfc049a17faac959998820e7aaaf4329',1,'mim::plug::core']]],
   ['ostream_76',['ostream',['../classmim_1_1Emitter.html#a614e61750773436c58e728b596c4b19b',1,'mim::Emitter::ostream()'],['../classmim_1_1Log.html#a76fece32622255541b97f9674bf57725',1,'mim::Log::ostream()']]],
   ['ostream_5f_77',['ostream_',['../classmim_1_1Emitter.html#ac9a7870415e93fea2fc6e439b482d3d8',1,'mim::Emitter']]],
   ['other_20hooks_78',['Other Hooks',['../passes.html#autotoc_md61',1,'']]],

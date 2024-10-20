@@ -129,10 +129,10 @@ $(function(){initNavTree('direct.html',''); initResizable(true); });
     <a href="#autotoc_md137">Operations</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md138">direct.ds2cps</a>
+        <a href="#autotoc_md138">%direct.ds2cps</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md139">direct.cps2ds</a>
+        <a href="#autotoc_md139">%direct.cps2ds</a>
       </li>
     </ul>
   </li>
@@ -158,26 +158,26 @@ $(function(){initNavTree('direct.html',''); initResizable(true); });
 </ol>
 <h1><a class="anchor" id="autotoc_md136"></a>
 Dependencies</h1>
-<div class="fragment"><div class="line">.import compile;</div>
+<div class="fragment"><div class="line">import compile;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md137"></a>
 Operations</h1>
 <h2><a class="anchor" id="autotoc_md138"></a>
-direct.ds2cps</h2>
-<div class="fragment"><div class="line">// .ax %direct.ds2cps: [T: *, U: *] → (T -&gt; U) → Cn [T, .Cn U];</div>
+%direct.ds2cps</h2>
+<div class="fragment"><div class="line">// axm %direct.ds2cps: [T: *, U: *] → (T → U) → Cn [T, Cn U];</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md139"></a>
-direct.cps2ds</h2>
+%direct.cps2ds</h2>
 <p>This axiom lets the user call a cps function in direct style. The function is not converted. Only the call site is changed.</p>
-<div class="fragment"><div class="line">.ax %direct.cps2ds: [T: *, U: *] -&gt; .Cn [T, .Cn U] -&gt; (T -&gt; U), normalize_cps2ds, 2;</div>
-<div class="line">.ax %direct.cps2ds_dep: [T: *, U: T -&gt; *] -&gt; .Cn [t: T, .Cn U t] -&gt; [[t: T] -&gt; U t], 2;</div>
+<div class="fragment"><div class="line">axm %direct.cps2ds: [T: *, U: *] → Cn [T, Cn U] → (T → U), normalize_cps2ds, 2;</div>
+<div class="line">axm %direct.cps2ds_dep: [T: *, U: T → *] → Cn [t: T, Cn U t] → [[t: T] → U t], 2;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md140"></a>
 Passes and Phases</h1>
 <h2><a class="anchor" id="autotoc_md141"></a>
 Passes</h2>
-<div class="fragment"><div class="line">.ax %direct.ds2cps_pass: %compile.Pass;</div>
-<div class="line">.ax %direct.cps2ds_pass: %compile.Pass;</div>
+<div class="fragment"><div class="line">axm %direct.ds2cps_pass: %compile.Pass;</div>
+<div class="line">axm %direct.cps2ds_pass: %compile.Pass;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md142"></a>
 Phases</h2>
-<div class="fragment"><div class="line">.let direct_phases =</div>
+<div class="fragment"><div class="line">let direct_phases =</div>
 <div class="line">    %compile.combined_phase</div>
 <div class="line">        (%compile.phase_list</div>
 <div class="line">            (%compile.single_pass_phase %direct.ds2cps_pass)</div>

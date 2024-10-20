@@ -3,8 +3,8 @@ var namespacemim_1_1plug_1_1refly =
     [ "RemoveDbgPerm", "classmim_1_1plug_1_1refly_1_1RemoveDbgPerm.html", "classmim_1_1plug_1_1refly_1_1RemoveDbgPerm" ],
     [ "Code", "namespacemim_1_1plug_1_1refly.html#ac24c63c923883ed7d3fd7cf83a5ba6e0", null ],
     [ "dbg", "namespacemim_1_1plug_1_1refly.html#aaf6f455a242be2827c385e6fa9648c65", [
-      [ "tmp", "namespacemim_1_1plug_1_1refly.html#aaf6f455a242be2827c385e6fa9648c65af3e75a5fc1a7b0fc132e477e304de15b", null ],
-      [ "perm", "namespacemim_1_1plug_1_1refly.html#aaf6f455a242be2827c385e6fa9648c65a57243921b91de11c94b8646f572b12ca", null ]
+      [ "tmp", "namespacemim_1_1plug_1_1refly.html#aaf6f455a242be2827c385e6fa9648c65afa816edb83e95bf0c8da580bdfd491ef", null ],
+      [ "perm", "namespacemim_1_1plug_1_1refly.html#aaf6f455a242be2827c385e6fa9648c65aca659200663cf654dc4410ed494451ee", null ]
     ] ],
     [ "debug", "namespacemim_1_1plug_1_1refly.html#acdf0aa3a0beb8ab1cff0ce3017ac4973", null ],
     [ "error", "namespacemim_1_1plug_1_1refly.html#a4fcbc03e42bd8c41c1e524e747d3e5ed", null ],

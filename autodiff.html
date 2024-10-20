@@ -132,13 +132,13 @@ $(function(){initNavTree('autodiff.html',''); initResizable(true); });
     <a href="#autotoc_md78">Operations</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md79">autodiff.ad</a>
+        <a href="#autotoc_md79">%autodiff.ad</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md80">autodiff.zero</a>
+        <a href="#autotoc_md80">%autodiff.zero</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md81">autodiff.add</a>
+        <a href="#autotoc_md81">%autodiff.add</a>
       </li>
     </ul>
   </li>
@@ -157,13 +157,13 @@ $(function(){initNavTree('autodiff.html',''); initResizable(true); });
     <a href="#autotoc_md85">Registered translations</a>
     <ul>
       <li class="level2">
-        <a href="#autotoc_md86">core.icmp.xYgLE (eq)</a>
+        <a href="#autotoc_md86">%core.icmp.xYgLE (eq)</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md87">core.wrap.add</a>
+        <a href="#autotoc_md87">%core.wrap.add</a>
       </li>
       <li class="level2">
-        <a href="#autotoc_md88">core.wrap.mul</a>
+        <a href="#autotoc_md88">%core.wrap.mul</a>
       </li>
     </ul>
   </li>
@@ -173,45 +173,45 @@ $(function(){initNavTree('autodiff.html',''); initResizable(true); });
 <dl class="section see"><dt>See also</dt><dd>mim::plug::autodif</dd></dl>
 <h1><a class="anchor" id="autotoc_md76"></a>
 Dependencies</h1>
-<div class="fragment"><div class="line">.plugin mem;</div>
-<div class="line">.import compile;</div>
-</div><!-- fragment --><p> For derivatives: </p><div class="fragment"><div class="line">.plugin core;</div>
+<div class="fragment"><div class="line">plugin mem;</div>
+<div class="line">import compile;</div>
+</div><!-- fragment --><p> For derivatives: </p><div class="fragment"><div class="line">plugin core;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md77"></a>
 Types</h1>
-<div class="fragment"><div class="line">.ax %autodiff.Tangent: * -&gt; *, normalize_Tangent;</div>
+<div class="fragment"><div class="line">axm %autodiff.Tangent: * → *, normalize_Tangent;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md78"></a>
 Operations</h1>
 <h2><a class="anchor" id="autotoc_md79"></a>
-autodiff.ad</h2>
+%autodiff.ad</h2>
 <p>This axiom operates on functions and types.</p>
-<p>For function types the augmented type is computed: <code>(T -&gt; U) =&gt; (T -&gt; U × (U -&gt; T))</code> </p><div class="fragment"><div class="line">.ax %autodiff.AD: * -&gt; *, normalize_AD;</div>
-</div><!-- fragment --><p> On closed terms (functions, operators, ho arguments, registered axioms, etc.) the augmented term is returned. The augmented term &lsquo;f&rsquo;<code>returns the result together with the pullback. </code>autodiff f = f' = λ args. (f args, f*)` </p><div class="fragment"><div class="line">.ax %autodiff.ad: {T: *} -&gt; T -&gt; %autodiff.AD T, normalize_ad;</div>
+<p>For function types the augmented type is computed: <code>(T → U) =&gt; (T → U × (U → T))</code> </p><div class="fragment"><div class="line">axm %autodiff.AD: * → *, normalize_AD;</div>
+</div><!-- fragment --><p> On closed terms (functions, operators, ho arguments, registered axioms, etc.) the augmented term is returned. The augmented term &lsquo;f&rsquo;<code>returns the result together with the pullback. </code>autodiff f = f' = λ args. (f args, f*)` </p><div class="fragment"><div class="line">axm %autodiff.ad: {T: *} → T → %autodiff.AD T, normalize_ad;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md80"></a>
-autodiff.zero</h2>
+%autodiff.zero</h2>
 <p>Represents universal zero such that <code>(zero T) +_T t = t</code>.</p>
-<div class="fragment"><div class="line">.ax %autodiff.zero: [T: *] -&gt; T, normalize_zero;</div>
+<div class="fragment"><div class="line">axm %autodiff.zero: [T: *] → T, normalize_zero;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md81"></a>
-autodiff.add</h2>
+%autodiff.add</h2>
 <p>A universal addition that consumes zeros and defaults to normal addition for scalar types. It lifts additions over types with structure and performs special casing for types with do not allow for addition. The sum construct performs addition over a list of terms.</p>
-<p>TODO: how do we handle summations that need memory? (grab current memory?) </p><div class="fragment"><div class="line">.ax %autodiff.add: {T: *} -&gt; [T, T] -&gt; T, normalize_add;</div>
-<div class="line">.ax %autodiff.sum: [n:.Nat, T: *] -&gt; «n; T» -&gt; T, normalize_sum;</div>
+<p>TODO: how do we handle summations that need memory? (grab current memory?) </p><div class="fragment"><div class="line">axm %autodiff.add: {T: *} → [T, T] → T, normalize_add;</div>
+<div class="line">axm %autodiff.sum: [n:Nat, T: *] → «n; T» → T, normalize_sum;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md82"></a>
 Passes and Phases</h1>
 <h2><a class="anchor" id="autotoc_md83"></a>
 Passes</h2>
-<div class="fragment"><div class="line">.ax %autodiff.ad_eval_pass:         %compile.Pass;</div>
-<div class="line">.ax %autodiff.ad_zero_pass:         %compile.Pass;</div>
-<div class="line">.ax %autodiff.ad_zero_cleanup_pass: %compile.Pass;</div>
-<div class="line">.ax %autodiff.ad_ext_cleanup_pass:  %compile.Pass;</div>
+<div class="fragment"><div class="line">axm %autodiff.ad_eval_pass:         %compile.Pass;</div>
+<div class="line">axm %autodiff.ad_zero_pass:         %compile.Pass;</div>
+<div class="line">axm %autodiff.ad_zero_cleanup_pass: %compile.Pass;</div>
+<div class="line">axm %autodiff.ad_ext_cleanup_pass:  %compile.Pass;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md84"></a>
 Phases</h2>
-<div class="fragment"><div class="line">.let ad_cleanup_phase =</div>
-<div class="line">    %compile.phases_to_phase (⊤:.Nat) (</div>
+<div class="fragment"><div class="line">let ad_cleanup_phase =</div>
+<div class="line">    %compile.phases_to_phase (⊤:Nat) (</div>
 <div class="line">        (%compile.passes_to_phase 1 %autodiff.ad_zero_cleanup_pass),</div>
 <div class="line">        (%compile.passes_to_phase 1 %autodiff.ad_ext_cleanup_pass)</div>
 <div class="line">    );</div>
-<div class="line">.let ad_phase =</div>
-<div class="line">    %compile.phases_to_phase (⊤:.Nat) (</div>
+<div class="line">let ad_phase =</div>
+<div class="line">    %compile.phases_to_phase (⊤:Nat) (</div>
 <div class="line">        optimization_phase,</div>
 <div class="line">        (%compile.passes_to_phase 1 %autodiff.ad_eval_pass),</div>
 <div class="line">        (%compile.passes_to_phase 1 %autodiff.ad_zero_pass),</div>
@@ -220,31 +220,31 @@ Phases</h2>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md85"></a>
 Registered translations</h1>
 <p>In this section, we define translations for axioms of other plugins. This best would be done using a register mechanism in a third plugin or at least in a separate file.</p>
-<p>The general concept is that a call to an axiom is replaced with a call to the augmented axiom. The augmented axiom needs a wrapper for meta arguments (HO-function). Appropiate cps2ds wrappers are introduced to handle that the augmented axioms are in cps where the original axioms were in ds. Example: </p><div class="fragment"><div class="line">mul&#39; =&gt; args -&gt; result*pullback</div>
+<p>The general concept is that a call to an axiom is replaced with a call to the augmented axiom. The augmented axiom needs a wrapper for meta arguments (HO-function). Appropiate cps2ds wrappers are introduced to handle that the augmented axioms are in cps where the original axioms were in ds. Example: </p><div class="fragment"><div class="line">mul&#39; =&gt; args → result*pullback</div>
 <div class="line">call: r    = mul  (m,w) (a,b)</div>
 <div class="line">res : r,r* = mul&#39; (m,w) (a,b)</div>
-</div><!-- fragment --><p> The types (with <code>Int</code> for <code>(Int w)</code>) are: </p><div class="fragment"><div class="line">mul : [m:.Nat,w:.Nat] -&gt; [a:Int,b:Int] -&gt; Int</div>
+</div><!-- fragment --><p> The types (with <code>Int</code> for <code>(Int w)</code>) are: </p><div class="fragment"><div class="line">mul : [m:Nat,w:Nat] → [a:Int,b:Int] → Int</div>
 <div class="line">r   : Int</div>
 <div class="line">r*  : cn[Int,cn[Int,Int]]</div>
 </div><!-- fragment --><p> The pullback has to be in cps for compliance. </p><div class="fragment"><div class="line">mul* := λ s. (s*b,s*a)</div>
-<div class="line">mul&#39;_cps : [m:.Nat,w:.Nat] -&gt; cn[[Int,Int],cn[Int,   cn[Int,cn[Int,Int]]]]</div>
+<div class="line">mul&#39;_cps : [m:Nat,w:Nat] → cn[[Int,Int],cn[Int,   cn[Int,cn[Int,Int]]]]</div>
 <div class="line">r,r* = (cps2ds (mul&#39;_cps (m,w))) (a,b)</div>
 </div><!-- fragment --><p>The pullback is the derivative with respect to the input (weighted with the out tangent). For arithmetic operations, s is simply multiplied to each input tangent: <code>∂_i f(x1,...,xn) * s</code> You will also come to the conclusion that the applied partial pullback needs to be: <code>sum x_i*(∂_i f(x1,...,xn) * s) = sum x_i*(•)</code> with • as the formula from above This is a direct result from the chain composition with the partial pullback of a tuple. The tuple pullback transports the partial pullbacks of the operands and handles the sums. By its nature the pullback of a tuple needs to be a sum.</p>
 <h2><a class="anchor" id="autotoc_md86"></a>
-core.icmp.xYgLE (eq)</h2>
+%core.icmp.xYgLE (eq)</h2>
 <p>The comparison pullback exists formally but is not used.</p>
-<div class="fragment"><div class="line">.fun .extern internal_diff_core_icmp_xYgLE {s: .Nat} (ab: «2; .Idx s»)@.tt: [.Bool, .Cn[.Bool, .Cn«2; .Idx s»]] =</div>
-<div class="line">    return (%core.icmp.sle ab, .fn [.Bool]@.tt: «2; .Idx s» = return ‹2; 0:(.Idx s)›);</div>
+<div class="fragment"><div class="line">fun extern internal_diff_core_icmp_xYgLE {s: Nat} (ab: «2; Idx s»)@tt: [Bool, Cn[Bool, Cn«2; Idx s»]] =</div>
+<div class="line">    return (%core.icmp.sle ab, fn [Bool]@tt: «2; Idx s» = return ‹2; 0:(Idx s)›);</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md87"></a>
-core.wrap.add</h2>
+%core.wrap.add</h2>
 <p>s ↦ (s, s)</p>
-<div class="fragment"><div class="line">.fun .extern internal_diff_core_wrap_add {s: .Nat} (m: .Nat) (ab: «2; .Idx s»)@.tt: [.Idx s, .Cn[.Idx s, .Cn«2; .Idx s»]] =</div>
-<div class="line">    return (%core.wrap.add m ab, .fn (i: .Idx s)@.tt: «2; .Idx s» = return ‹2; i›);</div>
+<div class="fragment"><div class="line">fun extern internal_diff_core_wrap_add {s: Nat} (m: Nat) (ab: «2; Idx s»)@tt: [Idx s, Cn[Idx s, Cn«2; Idx s»]] =</div>
+<div class="line">    return (%core.wrap.add m ab, fn (i: Idx s)@tt: «2; Idx s» = return ‹2; i›);</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md88"></a>
-core.wrap.mul</h2>
+%core.wrap.mul</h2>
 <p>s ↦ (s*b, s*a)</p>
-<div class="fragment"><div class="line">.fun .extern internal_diff_core_wrap_mul {s: .Nat} (m: .Nat) (a b: .Idx s)::ab@.tt: [.Idx s, .Cn[.Idx s, .Cn«2; .Idx s»]] =</div>
-<div class="line">    return (%core.wrap.mul m ab, .fn (i: .Idx s)@.tt: «2; .Idx s» = return (%core.wrap.mul m (i, b), %core.wrap.mul m (i, a)));</div>
+<div class="fragment"><div class="line">fun extern internal_diff_core_wrap_mul {s: Nat} (m: Nat) (a b: Idx s)::ab@tt: [Idx s, Cn[Idx s, Cn«2; Idx s»]] =</div>
+<div class="line">    return (%core.wrap.mul m ab, fn (i: Idx s)@tt: «2; Idx s» = return (%core.wrap.mul m (i, b), %core.wrap.mul m (i, a)));</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

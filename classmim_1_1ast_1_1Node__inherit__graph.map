@@ -28,11 +28,11 @@
 <area shape="poly" id="edge8_Node000006_Node000009" title=" " alt="" coords="793,139,878,125,879,130,794,145"/>
 <area shape="rect" id="Node000010" href="$classmim_1_1ast_1_1TuplePtrn.html" title="dbg::(ptrn_0, ..., ptrn_n&#45;1) or dbg::[ptrn_0, ..., ptrn_n&#45;1]" alt="" coords="868,153,1016,179"/>
 <area shape="poly" id="edge9_Node000006_Node000010" title=" " alt="" coords="794,155,868,159,868,165,794,161"/>
-<area shape="rect" id="Node000012" href="$classmim_1_1ast_1_1AxiomDecl.html" title=".ax ptrn: type = value;" alt="" coords="863,203,1021,228"/>
+<area shape="rect" id="Node000012" href="$classmim_1_1ast_1_1AxiomDecl.html" title="axm ptrn: type = value;" alt="" coords="863,203,1021,228"/>
 <area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="805,220,862,217,862,222,805,226"/>
-<area shape="rect" id="Node000013" href="$classmim_1_1ast_1_1CDecl.html" title=".cfun dbg dom &#45;&gt; codom" alt="" coords="879,252,1005,277"/>
+<area shape="rect" id="Node000013" href="$classmim_1_1ast_1_1CDecl.html" title="cfun dbg dom &#45;&gt; codom" alt="" coords="879,252,1005,277"/>
 <area shape="poly" id="edge12_Node000011_Node000013" title=" " alt="" coords="805,239,879,251,878,257,804,244"/>
-<area shape="rect" id="Node000014" href="$classmim_1_1ast_1_1LetDecl.html" title=".let ptrn: type = value;" alt="" coords="873,301,1011,327"/>
+<area shape="rect" id="Node000014" href="$classmim_1_1ast_1_1LetDecl.html" title="let ptrn: type = value;" alt="" coords="873,301,1011,327"/>
 <area shape="poly" id="edge13_Node000011_Node000014" title=" " alt="" coords="800,242,816,249,840,268,864,286,894,299,892,304,861,291,837,272,813,254,798,247"/>
 <area shape="rect" id="Node000015" href="$classmim_1_1ast_1_1RecDecl.html" title=".rec dbg: type = body" alt="" coords="871,351,1013,376"/>
 <area shape="poly" id="edge14_Node000011_Node000015" title=" " alt="" coords="806,242,816,249,834,271,841,294,848,315,864,336,885,348,883,353,861,340,843,318,836,295,830,274,813,253,803,247"/>
@@ -44,7 +44,7 @@
 <area shape="poly" id="edge18_Node000017_Node000019" title=" " alt="" coords="501,660,512,600,535,521,552,479,573,437,598,399,629,364,645,352,649,356,632,368,603,402,577,440,557,481,540,523,517,601,506,661"/>
 <area shape="rect" id="Node000020" href="$classmim_1_1ast_1_1ArrowExpr.html" title="dom &#45;&gt; codom" alt="" coords="645,379,800,404"/>
 <area shape="poly" id="edge19_Node000017_Node000020" title=" " alt="" coords="502,660,516,608,540,541,577,472,601,441,629,413,648,402,651,406,632,417,605,444,581,475,545,544,521,610,508,662"/>
-<area shape="rect" id="Node000021" href="$classmim_1_1ast_1_1DeclExpr.html" title="decls e or e .where decls if where is true." alt="" coords="649,428,796,453"/>
+<area shape="rect" id="Node000021" href="$classmim_1_1ast_1_1DeclExpr.html" title="decls e or e where decls if where is true." alt="" coords="649,428,796,453"/>
 <area shape="poly" id="edge20_Node000017_Node000021" title=" " alt="" coords="505,660,522,617,547,563,583,509,605,484,629,462,649,451,652,456,632,467,608,488,587,512,552,566,527,619,510,662"/>
 <area shape="rect" id="Node000022" href="$classmim_1_1ast_1_1ErrorExpr.html" title=" " alt="" coords="649,477,797,503"/>
 <area shape="poly" id="edge21_Node000017_Node000022" title=" " alt="" coords="510,661,528,627,555,587,589,546,629,512,652,500,654,505,632,516,593,550,559,590,533,630,514,664"/>
@@ -54,7 +54,7 @@
 <area shape="poly" id="edge23_Node000017_Node000024" title=" " alt="" coords="529,665,575,637,630,610,663,599,665,604,632,615,578,642,531,670"/>
 <area shape="rect" id="Node000025" href="$classmim_1_1ast_1_1InferExpr.html" title=" " alt="" coords="649,625,796,651"/>
 <area shape="poly" id="edge24_Node000017_Node000025" title=" " alt="" coords="570,669,664,648,665,653,571,674"/>
-<area shape="rect" id="Node000026" href="$classmim_1_1ast_1_1InsertExpr.html" title=".ins(tuple, index, value)" alt="" coords="645,675,800,700"/>
+<area shape="rect" id="Node000026" href="$classmim_1_1ast_1_1InsertExpr.html" title="ins(tuple, index, value)" alt="" coords="645,675,800,700"/>
 <area shape="poly" id="edge25_Node000017_Node000026" title=" " alt="" coords="571,685,645,685,645,690,571,690"/>
 <area shape="rect" id="Node000027" href="$classmim_1_1ast_1_1LamExpr.html" title="Wraps a LamDecl as Expr." alt="" coords="650,724,795,749"/>
 <area shape="poly" id="edge26_Node000017_Node000027" title=" " alt="" coords="571,700,665,721,664,727,570,706"/>
@@ -64,13 +64,13 @@
 <area shape="poly" id="edge28_Node000017_Node000029" title=" " alt="" coords="571,702,584,711,596,723,603,736,609,762,615,786,621,798,632,809,659,824,657,828,629,813,617,801,610,788,604,763,598,738,592,726,581,715,568,706"/>
 <area shape="rect" id="Node000030" href="$classmim_1_1ast_1_1PrimaryExpr.html" title="tag" alt="" coords="639,872,807,897"/>
 <area shape="poly" id="edge29_Node000017_Node000030" title=" " alt="" coords="571,701,585,711,599,730,607,749,609,787,612,824,619,841,632,859,648,870,645,874,629,863,614,844,606,825,604,787,601,750,594,732,581,715,568,705"/>
-<area shape="rect" id="Node000031" href="$classmim_1_1ast_1_1RetExpr.html" title=".ret ptrn = callee $ arg; body" alt="" coords="653,921,792,947"/>
+<area shape="rect" id="Node000031" href="$classmim_1_1ast_1_1RetExpr.html" title="ret ptrn = callee $ arg; body" alt="" coords="653,921,792,947"/>
 <area shape="poly" id="edge30_Node000017_Node000031" title=" " alt="" coords="571,700,585,711,602,736,610,762,611,787,609,812,607,837,608,861,615,885,633,908,654,922,652,927,629,912,611,887,603,862,601,836,604,812,606,787,605,763,598,739,581,714,568,705"/>
 <area shape="rect" id="Node000032" href="$classmim_1_1ast_1_1SigmaExpr.html" title="Just wraps TuplePtrn as Expr." alt="" coords="643,971,802,996"/>
 <area shape="poly" id="edge31_Node000017_Node000032" title=" " alt="" coords="572,700,585,711,605,743,614,774,613,806,609,837,604,868,604,898,612,928,633,958,647,968,644,973,629,961,607,930,599,898,599,867,603,836,608,805,608,775,601,745,581,714,568,704"/>
 <area shape="rect" id="Node000033" href="$classmim_1_1ast_1_1TupleExpr.html" title="(elem_0, ..., elem_n&#45;1)" alt="" coords="647,1020,798,1045"/>
 <area shape="poly" id="edge32_Node000017_Node000033" title=" " alt="" coords="571,700,585,711,609,749,617,787,615,825,609,862,602,898,600,935,609,971,633,1007,649,1019,646,1023,629,1010,604,973,595,935,597,898,603,861,610,824,612,788,604,751,581,714,568,704"/>
-<area shape="rect" id="Node000034" href="$classmim_1_1ast_1_1TypeExpr.html" title=".Type level" alt="" coords="649,1069,796,1095"/>
+<area shape="rect" id="Node000034" href="$classmim_1_1ast_1_1TypeExpr.html" title="Type level" alt="" coords="649,1069,796,1095"/>
 <area shape="poly" id="edge33_Node000017_Node000034" title=" " alt="" coords="571,700,585,711,601,733,612,756,621,800,618,844,608,887,599,929,597,972,606,1014,617,1035,633,1056,651,1070,648,1074,629,1060,612,1038,601,1016,591,972,594,929,603,886,612,843,615,800,607,757,596,736,581,714,568,704"/>
 <area shape="rect" id="Node000038" href="$classmim_1_1ast_1_1LamDecl_1_1Dom.html" title=" " alt="" coords="631,1119,815,1144"/>
 <area shape="poly" id="edge37_Node000037_Node000038" title=" " alt="" coords="520,1005,567,1056,598,1082,632,1105,658,1116,656,1121,629,1110,595,1087,564,1060,516,1008"/>

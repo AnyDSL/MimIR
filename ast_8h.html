@@ -186,10 +186,10 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>tok:type</code>  <a href="classmim_1_1ast_1_1LitExpr.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ast_1_1DeclExpr.html">mim::ast::DeclExpr</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>decls e</code> or <code>e .where decls</code> if <code>where</code> is <code>true</code>.  <a href="classmim_1_1ast_1_1DeclExpr.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>decls e</code> or <code>e where decls</code> if <code>where</code> is <code>true</code>.  <a href="classmim_1_1ast_1_1DeclExpr.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ast_1_1TypeExpr.html">mim::ast::TypeExpr</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>.<a class="el" href="classmim_1_1Type.html">Type</a> level</code>  <a href="classmim_1_1ast_1_1TypeExpr.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code><a class="el" href="classmim_1_1Type.html">Type</a> level</code>  <a href="classmim_1_1ast_1_1TypeExpr.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ast_1_1ArrowExpr.html">mim::ast::ArrowExpr</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>dom -&gt; codom</code>  <a href="classmim_1_1ast_1_1ArrowExpr.html#details">More...</a><br /></td></tr>
@@ -206,7 +206,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>callee arg</code>  <a href="classmim_1_1ast_1_1AppExpr.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ast_1_1RetExpr.html">mim::ast::RetExpr</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>.ret ptrn = callee $ arg; body</code>  <a href="classmim_1_1ast_1_1RetExpr.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>ret ptrn = callee $ arg; body</code>  <a href="classmim_1_1ast_1_1RetExpr.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ast_1_1SigmaExpr.html">mim::ast::SigmaExpr</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Just wraps <a class="el" href="classmim_1_1ast_1_1TuplePtrn.html" title="dbg::(ptrn_0, ..., ptrn_n-1) or dbg::[ptrn_0, ..., ptrn_n-1]">TuplePtrn</a> as <a class="el" href="classmim_1_1ast_1_1Expr.html">Expr</a>.  <a href="classmim_1_1ast_1_1SigmaExpr.html#details">More...</a><br /></td></tr>
@@ -221,13 +221,13 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>tuple#index</code>  <a href="classmim_1_1ast_1_1ExtractExpr.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ast_1_1InsertExpr.html">mim::ast::InsertExpr</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>.ins(tuple, index, value)</code>  <a href="classmim_1_1ast_1_1InsertExpr.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>ins(tuple, index, value)</code>  <a href="classmim_1_1ast_1_1InsertExpr.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ast_1_1LetDecl.html">mim::ast::LetDecl</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>.let ptrn: type = value;</code>  <a href="classmim_1_1ast_1_1LetDecl.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>let ptrn: type = value;</code>  <a href="classmim_1_1ast_1_1LetDecl.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ast_1_1AxiomDecl.html">mim::ast::AxiomDecl</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>.ax ptrn: type = value;</code>  <a href="classmim_1_1ast_1_1AxiomDecl.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>axm ptrn: type = value;</code>  <a href="classmim_1_1ast_1_1AxiomDecl.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ast_1_1AxiomDecl_1_1Alias.html">mim::ast::AxiomDecl::Alias</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -240,7 +240,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ast_1_1LamDecl_1_1Dom.html">mim::ast::LamDecl::Dom</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ast_1_1CDecl.html">mim::ast::CDecl</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>.cfun dbg dom -&gt; codom</code>  <a href="classmim_1_1ast_1_1CDecl.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>cfun dbg dom -&gt; codom</code>  <a href="classmim_1_1ast_1_1CDecl.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmim_1_1ast_1_1Import.html">mim::ast::Import</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>

@@ -3,11 +3,11 @@ var clos_2autogen_8h =
     [ "MIM_clos_NORMALIZER_IMPL", "clos_2autogen_8h.html#a11c51dfad6a0499cc05680ebf19a190f", null ],
     [ "alloc_jmpbuf", "clos_2autogen_8h.html#a6df3c001bef9450a90c0a1588c81edf0", null ],
     [ "attr", "clos_2autogen_8h.html#aa5eccb7b54e55d02648912c6dad52e8c", [
-      [ "ret", "clos_2autogen_8h.html#aa5eccb7b54e55d02648912c6dad52e8caa32f9f62fc4e2447ba36cb005f2baf5c", null ],
-      [ "freeBB", "clos_2autogen_8h.html#aa5eccb7b54e55d02648912c6dad52e8ca7dddf7e6d42e8bdd069bb6587fb70a59", null ],
-      [ "fstclassBB", "clos_2autogen_8h.html#aa5eccb7b54e55d02648912c6dad52e8ca9cd56716ceab35694027188533063a4a", null ],
-      [ "esc", "clos_2autogen_8h.html#aa5eccb7b54e55d02648912c6dad52e8cad04cb2ee1c94b4242270621aec559d25", null ],
-      [ "bot", "clos_2autogen_8h.html#aa5eccb7b54e55d02648912c6dad52e8cae96906d6a1a6339d426e656b384d051e", null ]
+      [ "returning", "clos_2autogen_8h.html#aa5eccb7b54e55d02648912c6dad52e8ca167a77939d6d79814e846ff5885b63b9", null ],
+      [ "freeBB", "clos_2autogen_8h.html#aa5eccb7b54e55d02648912c6dad52e8cafe63353cdfb591c479c9e6076beccb55", null ],
+      [ "fstclassBB", "clos_2autogen_8h.html#aa5eccb7b54e55d02648912c6dad52e8cae948e5de0a4b5744fd5517f9453e380e", null ],
+      [ "esc", "clos_2autogen_8h.html#aa5eccb7b54e55d02648912c6dad52e8ca3f0e951cdec5a39685cb08fa6edc6094", null ],
+      [ "bottom", "clos_2autogen_8h.html#aa5eccb7b54e55d02648912c6dad52e8ca71f262d796bed1ab30e8a2d5a8ddee6f", null ]
     ] ],
     [ "branch_clos_pass", "clos_2autogen_8h.html#a8946822aea593f6036e981f1d5ad4824", null ],
     [ "BufPtr", "clos_2autogen_8h.html#ac0109814535661c3ccd6d63370f8eec2", null ],

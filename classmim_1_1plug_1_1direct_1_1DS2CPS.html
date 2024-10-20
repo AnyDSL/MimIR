@@ -192,7 +192,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Converts direct style function to cps functions. </p>
 <p>To do so, for each (non-type-level) ds function a corresponding cps function is created: </p><div class="fragment"><div class="line">f:     [a: A] -&gt; B</div>
-<div class="line">f_cps: .Cn [a: A, .Cn B]</div>
+<div class="line">f_cps: Cn [a: A, Cn B]</div>
 </div><!-- fragment --><p> Only the type signature of the function is changed and the body is wrapped in the newly added return continuation. (Technical detail: the arguments are substituted to fit the new function)</p>
 <p>In a second distinct but connected step, the call sites are converted: For a direct style call <code>f args</code>, the call to the cps function <code>cps2ds_dep ... f_cps args</code> is introduced. The underlying substitution is <code>f</code> -&gt; <code>cps2ds_dep ... f_cps</code>. </p>
 
@@ -253,7 +253,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="ds2cps_8cpp_source.html#l00011">11</a> of file <a class="el" href="ds2cps_8cpp_source.html">ds2cps.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8cpp_source.html#l00187">mim::World::app()</a>, <a class="el" href="def_8cpp_source.html#l00417">mim::Def::world()</a>, and <a class="el" href="pass_8h_source.html#l00296">mim::Pass::world()</a>.</p>
+<p class="reference">References <a class="el" href="world_8cpp_source.html#l00186">mim::World::app()</a>, <a class="el" href="def_8cpp_source.html#l00417">mim::Def::world()</a>, and <a class="el" href="pass_8h_source.html#l00296">mim::Pass::world()</a>.</p>
 
 </div>
 </div>

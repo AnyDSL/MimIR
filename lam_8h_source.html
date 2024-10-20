@@ -388,12 +388,12 @@ $(function(){initNavTree('lam_8h_source.html',''); initResizable(true); });
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="comment">/// ```</span></div>
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span><span class="comment">/// In CPS the types look like:</span></div>
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><span class="comment">/// ```</span></div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="comment">/// f:  .Cn[B, .Cn C]</span></div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="comment">/// g:  .Cn[A, .Cn B]</span></div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span><span class="comment">/// f:  Cn[B, Cn C]</span></div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="comment">/// g:  Cn[A, Cn B]</span></div>
 <div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span><span class="comment">/// h = f o g</span></div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span><span class="comment">/// h:  .Cn[A, cn C]</span></div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span><span class="comment">/// h:  Cn[A, cn C]</span></div>
 <div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span><span class="comment">/// h = λ (a ret_h) = g (a, h&#39;)</span></div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span><span class="comment">/// h&#39;: .Cn B</span></div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span><span class="comment">/// h&#39;: Cn B</span></div>
 <div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span><span class="comment">/// h&#39;= λ b = f (b, ret_h)</span></div>
 <div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span><span class="comment">/// ```</span></div>
 <div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span><span class="comment"></span><span class="keyword">const</span> Def* <a class="code hl_function" href="namespacemim.html#aab8bd049eb0b9bf7561a602f62ce7ebd">compose_cn</a>(<span class="keyword">const</span> Def* f, <span class="keyword">const</span> Def* g);</div>
@@ -489,7 +489,7 @@ $(function(){initNavTree('lam_8h_source.html',''); initResizable(true); });
 <div class="ttc" id="adef_8h_html_ad7cd7b090a885c8f1bb7728c74e107a9"><div class="ttname"><a href="def_8h.html#ad7cd7b090a885c8f1bb7728c74e107a9">MIM_DEF_MIXIN</a></div><div class="ttdeci">#define MIM_DEF_MIXIN(T)</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00196">def.h:196</a></div></div>
 <div class="ttc" id="adef_8h_html_af607f4cede9847484ec49abf7d351932"><div class="ttname"><a href="def_8h.html#af607f4cede9847484ec49abf7d351932">MIM_PROJ</a></div><div class="ttdeci">#define MIM_PROJ(NAME, CONST)</div><div class="ttdoc">Use as mixin to wrap all kind of Def::proj and Def::projs variants.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00157">def.h:157</a></div></div>
 <div class="ttc" id="anamespacemim_1_1Node_html_a047a0702a0abe4441303320b9211e6d3a7c73a9b0b0a70cb09893ea88f51a3117"><div class="ttname"><a href="namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3a7c73a9b0b0a70cb09893ea88f51a3117">mim::Node::Bot</a></div><div class="ttdeci">@ Bot</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00039">def.h:39</a></div></div>
-<div class="ttc" id="anamespacemim_1_1plug_1_1mem_html"><div class="ttname"><a href="namespacemim_1_1plug_1_1mem.html">mim::plug::mem</a></div><div class="ttdoc">The mem Plugin</div><div class="ttdef"><b>Definition</b> <a href="mem_8h_source.html#l00010">mem.h:10</a></div></div>
+<div class="ttc" id="anamespacemim_1_1plug_1_1mem_html"><div class="ttname"><a href="namespacemim_1_1plug_1_1mem.html">mim::plug::mem</a></div><div class="ttdoc">The mem Plugin</div><div class="ttdef"><b>Definition</b> <a href="mem_8h_source.html#l00011">mem.h:11</a></div></div>
 <div class="ttc" id="anamespacemim_html"><div class="ttname"><a href="namespacemim.html">mim</a></div><div class="ttdef"><b>Definition</b> <a href="cfg_8h_source.html#l00011">cfg.h:11</a></div></div>
 <div class="ttc" id="anamespacemim_html_a26a0e9df92d9733ba607a78d19edbbe9"><div class="ttname"><a href="namespacemim.html#a26a0e9df92d9733ba607a78d19edbbe9">mim::LamSet</a></div><div class="ttdeci">GIDSet&lt; Lam * &gt; LamSet</div><div class="ttdef"><b>Definition</b> <a href="#l00189">lam.h:189</a></div></div>
 <div class="ttc" id="anamespacemim_html_a2aaf0a830058bfdf4884b0addad6a93f"><div class="ttname"><a href="namespacemim.html#a2aaf0a830058bfdf4884b0addad6a93f">mim::flags_t</a></div><div class="ttdeci">u64 flags_t</div><div class="ttdef"><b>Definition</b> <a href="types_8h_source.html#l00045">types.h:45</a></div></div>

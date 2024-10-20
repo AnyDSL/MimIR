@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['e_0',['e',['../namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673a4a10947390882fcd322db5e05bdf6ac3',1,'mim::plug::core::e'],['../namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a691222b6fe9523125a313ad1866ef63b',1,'mim::plug::math::e']]],
+  ['e_0',['e',['../namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985eae1671797c52e15f763380b45e841ec32',1,'mim::plug::core::e'],['../namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673ae1671797c52e15f763380b45e841ec32',1,'mim::plug::core::e'],['../namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3ae1671797c52e15f763380b45e841ec32',1,'mim::plug::math::e']]],
   ['early_1',['early',['../classmim_1_1Scheduler.html#a65cf8baf371b88bd1f6aa58671407d8b',1,'mim::Scheduler']]],
   ['effects_2',['Effects',['../mem.html#autotoc_md185',1,'Operations w/ Side Effects'],['../mem.html#autotoc_md194',1,'Operations w/o Side Effects']]],
   ['elem_3',['Elem',['../structmim_1_1Elem.html',1,'mim::Elem&lt; R, F &gt;'],['../structmim_1_1Elem.html#ae601b2606ba9463206a391055b1675a0',1,'mim::Elem::Elem()']]],
@@ -35,10 +35,10 @@ var searchData=
   ['eof_32',['EoF',['../classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5aff6620b605642fc8a70795b0ff429afc',1,'mim::ast::Tok']]],
   ['epsilon_33',['EPSILON',['../classautomaton_1_1NFA.html#aa22a4b55ded13c4fc0b6fb4c4fd11d12adf759506847c24ca14d79a8a404e028a',1,'automaton::NFA']]],
   ['epsilonclosure_34',['epsilonClosure',['../namespaceautomaton.html#aef07ecf43eaae4c4c5c5f371e56d7f79',1,'automaton::epsilonClosure(const std::set&lt; const NFANode * &gt; &amp;states)'],['../namespaceautomaton.html#a44729a4a914f38a140035c5bfa122b56',1,'automaton::epsilonClosure(const NFANode *state)']]],
-  ['eq_35',['%core.icmp.xYgLE (eq)',['../autodiff.html#autotoc_md86',1,'']]],
+  ['eq_35',['%%core.icmp.xYgLE (eq)',['../autodiff.html#autotoc_md86',1,'']]],
   ['equal_36',['Equal',['../structmim_1_1PooledSet_1_1Data_1_1Equal.html',1,'mim::PooledSet::Data']]],
   ['equals_5fany_37',['equals_any',['../namespacemim_1_1plug_1_1regex.html#afe291bf091de248e352dada9e3653c04',1,'mim::plug::regex::equals_any(const Def *cls0, const Def *cls1)'],['../namespacemim_1_1plug_1_1regex.html#aa8cfe9b14b05191510c403314b69f2f7',1,'mim::plug::regex::equals_any(const Def *lhs, const Def *rhs)'],['../namespacemim_1_1plug_1_1regex.html#a27ecf9ea39cecd2d5eedd5a90b4d36a4',1,'mim::plug::regex::equals_any(Defs lhs, Defs rhs)']]],
-  ['er_38',['er',['../math.html#autotoc_md152',1,'math.er'],['../namespacemim_1_1plug_1_1math.html#acad4db7382e2aa7eb1580c177148e4bb',1,'mim::plug::math::er']]],
+  ['er_38',['er',['../math.html#autotoc_md152',1,'%math.er'],['../namespacemim_1_1plug_1_1math.html#acad4db7382e2aa7eb1580c177148e4bb',1,'mim::plug::math::er']]],
   ['erase_39',['erase',['../classmim_1_1IndexSet.html#ac12df394ab6ee05142a76e085c2b80f7',1,'mim::IndexSet::erase()'],['../classmim_1_1Pool.html#a4296aac5967eca7d243d53c6654c4efb',1,'mim::Pool::erase()'],['../classmim_1_1World.html#ae91fc85b0d932f1a6c5100603f5b29c4',1,'mim::World::erase(Vars vars, const Var *var)'],['../classmim_1_1World.html#a8b6491c2505c7053ce71e4a36774f80c',1,'mim::World::erase(Muts muts, Def *mut)'],['../namespacemim.html#a570c39f37bbc788928a66903c34cba8b',1,'mim::erase(Vector&lt; T, N, A &gt; &amp;c, const U &amp;value)']]],
   ['erase_5fif_40',['erase_if',['../namespacemim.html#a5d920a331ef2e94946140376ab811cd2',1,'mim']]],
   ['err_41',['Err',['../namespacemim_1_1ast.html#afc6cb12ae859bd6554aebf244d2db28aab47f6a6092c5d7e4bffec12dff309c3b',1,'mim::ast']]],
@@ -48,7 +48,7 @@ var searchData=
   ['error_45',['error',['../classmim_1_1ast_1_1AST.html#a9384b51c42d15ee99414bd77c096f8f9',1,'mim::ast::AST::error()'],['../classmim_1_1ast_1_1AST.html#a6d50f318dd72717e80c5165f39b81e35',1,'mim::ast::AST::error() const'],['../classmim_1_1ast_1_1AST.html#a46a021ee23ed5ec44bb9b33ce7a633b6',1,'mim::ast::AST::error(Loc loc, const char *fmt, Args &amp;&amp;... args) const'],['../classmim_1_1Error.html#a3e4394bf555f9cbfccb4694cdb6657ec',1,'mim::Error::error()'],['../namespacemim_1_1plug_1_1refly.html#a4fcbc03e42bd8c41c1e524e747d3e5ed',1,'mim::plug::refly::error'],['../namespacemim.html#a6b2eebef519ceb586fdd7b047a34aa56',1,'mim::error(Loc loc, const char *f, Args &amp;&amp;... args)'],['../namespacemim.html#a7280c73fe1d622c413efcec2faa67965',1,'mim::error(const char *fmt, Args &amp;&amp;... args)']]],
   ['errorexpr_46',['ErrorExpr',['../classmim_1_1ast_1_1ErrorExpr.html',1,'mim::ast::ErrorExpr'],['../classmim_1_1ast_1_1ErrorExpr.html#a99ee55918024715a0b7bf3027697b678',1,'mim::ast::ErrorExpr::ErrorExpr()']]],
   ['errorptrn_47',['ErrorPtrn',['../classmim_1_1ast_1_1ErrorPtrn.html',1,'mim::ast::ErrorPtrn'],['../classmim_1_1ast_1_1ErrorPtrn.html#a8b68bc763e117167b35626898dad2e89',1,'mim::ast::ErrorPtrn::ErrorPtrn()']]],
-  ['esc_48',['esc',['../namespacemim_1_1plug_1_1clos.html#aa5eccb7b54e55d02648912c6dad52e8cad04cb2ee1c94b4242270621aec559d25',1,'mim::plug::clos']]],
+  ['esc_48',['esc',['../namespacemim_1_1plug_1_1clos.html#aa5eccb7b54e55d02648912c6dad52e8ca3f0e951cdec5a39685cb08fa6edc6094',1,'mim::plug::clos']]],
   ['eta_5fexp_2ecpp_49',['eta_exp.cpp',['../eta__exp_8cpp.html',1,'']]],
   ['eta_5fexp_2eh_50',['eta_exp.h',['../eta__exp_8h.html',1,'']]],
   ['eta_5fexp_5fpass_51',['eta_exp_pass',['../namespacemim_1_1plug_1_1compile.html#af5d6fbc0d851384b27f36f203c5d0c2c',1,'mim::plug::compile']]],
@@ -62,9 +62,9 @@ var searchData=
   ['example_59',['Example',['../coding.html#autotoc_md3',1,'']]],
   ['exec_60',['exec',['../namespacemim_1_1sys.html#aeddc00f97e1561955278bfcc831d9db7',1,'mim::sys']]],
   ['exit_61',['exit',['../classmim_1_1CFG.html#ab683d3401f26416a96372445ccb1243b',1,'mim::CFG::exit()'],['../classmim_1_1Scope.html#ad69f2350413bdea96e390d5c0719c9d5',1,'mim::Scope::exit()'],['../classmim_1_1World.html#a452cd221df58a1b56b5c4b0ce0791735',1,'mim::World::exit()']]],
-  ['exp_62',['exp',['../math.html#autotoc_md151',1,'math.exp'],['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5d',1,'mim::plug::math::exp'],['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5dabbe14e7ba205c21c2acfdb779bf27ba6',1,'mim::plug::math::exp']]],
-  ['exp10_63',['exp10',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5da21ab7c3dfa5f6981658f91a701dc81d3',1,'mim::plug::math']]],
-  ['exp2_64',['exp2',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5dab8e869720dc3f282432ee69bcec1b43b',1,'mim::plug::math']]],
+  ['exp_62',['exp',['../math.html#autotoc_md151',1,'%math.exp'],['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5d',1,'mim::plug::math::exp'],['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5dab0ab0254bd58eb87eaee3172ba49fefb',1,'mim::plug::math::exp']]],
+  ['exp10_63',['exp10',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5dad30f3020a7f0e5899fb8e1ee6afedb4d',1,'mim::plug::math']]],
+  ['exp2_64',['exp2',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5dae578203a9e0b19048f8868e46958c2ed',1,'mim::plug::math']]],
   ['explicit_65',['explicit',['../classmim_1_1Span.html#a15e9711a22a1523d44ada4d9e66aa260',1,'mim::Span::explicit(N !=std::dynamic_extent) const expr Span(std'],['../classmim_1_1Span.html#ac55d562947ab227142b80bbcc3f5d155',1,'mim::Span::explicit(N !=std::dynamic_extent) const expr Span(Vec &amp;vec)'],['../classmim_1_1Span.html#ad21bf7fcf2ef77d532df7575949bd18d',1,'mim::Span::explicit(N !=std::dynamic_extent) const expr Span(const Vec &amp;vec)']]],
   ['expr_66',['Expr',['../classmim_1_1ast_1_1Expr.html',1,'mim::ast::Expr'],['../classmim_1_1ast_1_1Expr.html#a7fde5916e51e7be2077bad53e814f05a',1,'mim::ast::Expr::Expr()']]],
   ['expr_67',['expr',['../classmim_1_1ast_1_1DeclExpr.html#a04b577239bdd8ea9575e104b32a74433',1,'mim::ast::DeclExpr']]],
@@ -80,5 +80,5 @@ var searchData=
   ['extract_77',['extract',['../classmim_1_1World.html#ac981395e5f40922514eaf9c85290e36d',1,'mim::World::extract(Ref d, Ref i)'],['../classmim_1_1World.html#ad8a79de5cb08910392e0aa3bd8bf82af',1,'mim::World::extract(Ref d, u64 a, u64 i)'],['../classmim_1_1World.html#a41acb6568fe283b5535720c953dde303',1,'mim::World::extract(Ref d, u64 i)']]],
   ['extract_5funsafe_78',['extract_unsafe',['../namespacemim_1_1plug_1_1core.html#acd718cbe943e713f61611d464a6e7d20',1,'mim::plug::core::extract_unsafe(Ref d, Ref i)'],['../namespacemim_1_1plug_1_1core.html#acc361668a0aa18c699bdc54bad7c9732',1,'mim::plug::core::extract_unsafe(Ref d, u64 i)']]],
   ['extractexpr_79',['ExtractExpr',['../classmim_1_1ast_1_1ExtractExpr.html',1,'mim::ast::ExtractExpr'],['../classmim_1_1ast_1_1ExtractExpr.html#a8b4792d1d7071453f835c6251ddfb904',1,'mim::ast::ExtractExpr::ExtractExpr(Loc loc, Ptr&lt; Expr &gt; &amp;&amp;tuple, Ptr&lt; Expr &gt; &amp;&amp;index)'],['../classmim_1_1ast_1_1ExtractExpr.html#ad55cefaaeab4a6243dd121991381df00',1,'mim::ast::ExtractExpr::ExtractExpr(Loc loc, Ptr&lt; Expr &gt; &amp;&amp;tuple, Dbg index)']]],
-  ['extrema_80',['extrema',['../core.html#autotoc_md125',1,'core.extrema'],['../math.html#autotoc_md147',1,'math.extrema'],['../namespacemim_1_1plug_1_1core.html#a62c64aa3fc09a5b7a1b6d99f6896a9a2',1,'mim::plug::core::extrema'],['../namespacemim_1_1plug_1_1math.html#ab3714a92165c9fc8ab8d7238944e428c',1,'mim::plug::math::extrema']]]
+  ['extrema_80',['extrema',['../core.html#autotoc_md125',1,'%core.extrema'],['../math.html#autotoc_md147',1,'%math.extrema'],['../namespacemim_1_1plug_1_1core.html#a62c64aa3fc09a5b7a1b6d99f6896a9a2',1,'mim::plug::core::extrema'],['../namespacemim_1_1plug_1_1math.html#ab3714a92165c9fc8ab8d7238944e428c',1,'mim::plug::math::extrema']]]
 ];

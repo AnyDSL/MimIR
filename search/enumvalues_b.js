@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['l_0',['l',['../namespacemim_1_1plug_1_1core.html#aa277dfbcc34fa69c6e62d136815f3e43afd5a66f52ad841d7621ef3f6f9424e44',1,'mim::plug::core::l'],['../namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a2b1ed50d13c53cd3dd7364c88377a7ba',1,'mim::plug::math::l']]],
+  ['l_0',['l',['../namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985ea2db95e8e1a9267b7a1188556b2013b33',1,'mim::plug::core::l'],['../namespacemim_1_1plug_1_1core.html#aa277dfbcc34fa69c6e62d136815f3e43a2db95e8e1a9267b7a1188556b2013b33',1,'mim::plug::core::l'],['../namespacemim_1_1plug_1_1math.html#aaedd7f208831b780a654632583eed6a0a2db95e8e1a9267b7a1188556b2013b33',1,'mim::plug::math::l'],['../namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3a2db95e8e1a9267b7a1188556b2013b33',1,'mim::plug::math::l']]],
   ['l_5fc_1',['L_c',['../classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a24aaaef7c95258440ec788ae63e3a9f5',1,'mim::ast::Tok']]],
   ['l_5ff_2',['L_f',['../classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a8006ff03ae70edebfa11e05639c0d54f',1,'mim::ast::Tok']]],
   ['l_5fi_3',['L_i',['../classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a6b623bcf78099c519f69e9dbba46fbf2',1,'mim::ast::Tok']]],
@@ -8,18 +8,18 @@ var searchData=
   ['l_5fstr_5',['L_str',['../classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a1bc80ae8bc33264944cbc946554418d3',1,'mim::ast::Tok']]],
   ['l_5fu_6',['L_u',['../classmim_1_1ast_1_1Tok.html#aecc76e61c0dea79b166216fe1ef732c5a7e6dfe77ddaaa4a0c994660de2d38ead',1,'mim::ast::Tok']]],
   ['lam_7',['Lam',['../namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3aebc4316ff911097c13cde9ed5d580e93',1,'mim::Node']]],
-  ['lbb_8',['LBB',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5da77695564196be569831d457831d0bb74',1,'mim::plug::math']]],
-  ['lbb_9',['LBb',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5da35fa963756be2786268070a061570bea',1,'mim::plug::math']]],
-  ['lbb_10',['LbB',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5da1edb3c767f9f0005aa7b8c3f461a74d1',1,'mim::plug::math']]],
-  ['lbb_11',['Lbb',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5da3d5848ea200d582cc8f0dce217ca4998',1,'mim::plug::math']]],
-  ['lbb_12',['lBB',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5da5ddd399a7521f95101c7823e2cde8512',1,'mim::plug::math']]],
-  ['lbb_13',['lBb',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5da30f5f1bd4d38ae9c55bd6857bafb7f6f',1,'mim::plug::math']]],
-  ['lbb_14',['lbB',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5da722094e166edcb337a94923797581d4d',1,'mim::plug::math']]],
-  ['lbb_15',['lbb',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5da5de929882eec9973ed8612d7a1961390',1,'mim::plug::math']]],
-  ['le_16',['le',['../namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985ea7e3367e2c16a5f3a9d652a0e1fae1a1a',1,'mim::plug::core::le'],['../namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3acc52b0438d9f3d6bd65d8143c5195f64',1,'mim::plug::math::le']]],
+  ['lbb_8',['LBB',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5da5fe67e22caa6257a33e3a57fe8ad0134',1,'mim::plug::math']]],
+  ['lbb_9',['LBb',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5dadada9654756c6302840e41e8089ede29',1,'mim::plug::math']]],
+  ['lbb_10',['LbB',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5dad7d058fbb1486f940542f8837551bab6',1,'mim::plug::math']]],
+  ['lbb_11',['Lbb',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5da08a3a0cc3d95f23d42b63d1afdceb16a',1,'mim::plug::math']]],
+  ['lbb_12',['lBB',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5daf46378b62001c246c5ac3cdfc9d7f93f',1,'mim::plug::math']]],
+  ['lbb_13',['lBb',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5dab1c2221681b5af10a28df19e949af140',1,'mim::plug::math']]],
+  ['lbb_14',['lbB',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5da7eb2f84ffa93bc81d9d8f5945262d5f6',1,'mim::plug::math']]],
+  ['lbb_15',['lbb',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5dafa3c3dd92b4aec96192029e435b2d895',1,'mim::plug::math']]],
+  ['le_16',['le',['../namespacemim_1_1plug_1_1core.html#a4fd1e12f25215e48e67478a04191985ead9180594744f870aeefb086982e980bb',1,'mim::plug::core::le'],['../namespacemim_1_1plug_1_1math.html#ae3a6dfeff4da46f734e0a2c19588f6e3ad9180594744f870aeefb086982e980bb',1,'mim::plug::math::le']]],
   ['level_17',['Level',['../namespacemim.html#af93a16b3d599965fae4c0b94d51d2ac5aa0db49ba470c1c9ae2128c3470339153',1,'mim']]],
   ['lit_18',['Lit',['../namespacemim_1_1Node.html#a047a0702a0abe4441303320b9211e6d3afb23bbf3cece79e74ef438f71c525131',1,'mim::Node::Lit'],['../namespacemim_1_1ast.html#afc6cb12ae859bd6554aebf244d2db28aae5e556ecf935270736f5e46e73db06e4',1,'mim::ast::Lit']]],
-  ['log_19',['log',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5dab6fbca345a1b318d615afb9a83850663',1,'mim::plug::math']]],
-  ['log10_20',['log10',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5daf67e3a5c121d98e8106a5c249f8a003c',1,'mim::plug::math']]],
-  ['log2_21',['log2',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5da94e17f45406182802b44fdbb7cc35035',1,'mim::plug::math']]]
+  ['log_19',['log',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5dadc1d71bbb5c4d2a5e936db79ef10c19f',1,'mim::plug::math']]],
+  ['log10_20',['log10',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5dad535e7551733e223769d8c70245e19c2',1,'mim::plug::math']]],
+  ['log2_21',['log2',['../namespacemim_1_1plug_1_1math.html#af959204e5fae636149da2721f26f1f5da7b1a5a4dd8df61dc8e4ea38fa24f4490',1,'mim::plug::math']]]
 ];

@@ -191,25 +191,25 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Lowers the for axiom to actual control flow in CPS. </p>
-<p>It basically mimics this implementation: </p><div class="fragment"><div class="line">.con %affine.For_impl</div>
-<div class="line">    (m: .<a class="code hl_class" href="classmim_1_1Nat.html">Nat</a> , n: .<a class="code hl_class" href="classmim_1_1Nat.html">Nat</a> , Ts: «n; *»)</div>
-<div class="line">    (begin: .<a class="code hl_class" href="classmim_1_1Idx.html">Idx</a> m, end: .<a class="code hl_class" href="classmim_1_1Idx.html">Idx</a> m, step: .<a class="code hl_class" href="classmim_1_1Idx.html">Idx</a> m, init: «i: n; Ts#i»,</div>
-<div class="line">            body: .Cn [iter: .Idx m, acc: «i: n; Ts#i», yield: .Cn [«i: n; Ts#i»]],</div>
-<div class="line">            exit: .Cn [«i: n; Ts#i»]</div>
+<p>It basically mimics this implementation: </p><div class="fragment"><div class="line">con %affine.For_impl</div>
+<div class="line">    (m: <a class="code hl_class" href="classmim_1_1Nat.html">Nat</a> , n: <a class="code hl_class" href="classmim_1_1Nat.html">Nat</a> , Ts: «n; *»)</div>
+<div class="line">    (begin: <a class="code hl_class" href="classmim_1_1Idx.html">Idx</a> m, end: <a class="code hl_class" href="classmim_1_1Idx.html">Idx</a> m, step: <a class="code hl_class" href="classmim_1_1Idx.html">Idx</a> m, init: «i: n; Ts#i»,</div>
+<div class="line">            body: Cn [iter: <a class="code hl_class" href="classmim_1_1Idx.html">Idx</a> m, acc: «i: n; Ts#i», yield: Cn [«i: n; Ts#i»]],</div>
+<div class="line">            exit: Cn [«i: n; Ts#i»]</div>
 <div class="line">    ) =</div>
-<div class="line">    .con head(iter: .<a class="code hl_class" href="classmim_1_1Idx.html">Idx</a> m, acc: «i: n; Ts#i») =</div>
-<div class="line">        .con new_body() = body (iter, acc, .cn acc: «i: n; Ts#i» =</div>
-<div class="line">            .let iter2 = %<a class="code hl_namespace" href="namespacemim_1_1plug_1_1core.html">core</a>.wrap.add %<a class="code hl_namespace" href="namespacemim_1_1plug_1_1core.html">core</a>.mode.nsuw (iter, step);</div>
+<div class="line">    con head(iter: <a class="code hl_class" href="classmim_1_1Idx.html">Idx</a> m, acc: «i: n; Ts#i») =</div>
+<div class="line">        con new_body() = body (iter, acc, cn acc: «i: n; Ts#i» =</div>
+<div class="line">            let iter2 = %<a class="code hl_namespace" href="namespacemim_1_1plug_1_1core.html">core</a>.wrap.add %<a class="code hl_namespace" href="namespacemim_1_1plug_1_1core.html">core</a>.mode.nsuw (iter, step);</div>
 <div class="line">            head (iter2, acc));</div>
-<div class="line">        .con new_exit() = exit (acc);</div>
+<div class="line">        con new_exit() = exit (acc);</div>
 <div class="line">        (new_exit, new_body)#(%<a class="code hl_namespace" href="namespacemim_1_1plug_1_1core.html">core</a>.icmp.ul (iter, end)) ();</div>
 <div class="line">    head(begin, init);</div>
-<div class="ttc" id="aclassmim_1_1Idx_html"><div class="ttname"><a href="classmim_1_1Idx.html">mim::Idx</a></div><div class="ttdoc">A built-in constant of type .Nat -&gt; *.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00731">def.h:731</a></div></div>
+<div class="ttc" id="aclassmim_1_1Idx_html"><div class="ttname"><a href="classmim_1_1Idx.html">mim::Idx</a></div><div class="ttdoc">A built-in constant of type Nat -&gt; *.</div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00731">def.h:731</a></div></div>
 <div class="ttc" id="aclassmim_1_1Nat_html"><div class="ttname"><a href="classmim_1_1Nat.html">mim::Nat</a></div><div class="ttdef"><b>Definition</b> <a href="def_8h_source.html#l00723">def.h:723</a></div></div>
 <div class="ttc" id="anamespacemim_1_1plug_1_1core_html"><div class="ttname"><a href="namespacemim_1_1plug_1_1core.html">mim::plug::core</a></div><div class="ttdoc">The core Plugin</div><div class="ttdef"><b>Definition</b> <a href="core_8h_source.html#l00008">core.h:8</a></div></div>
 </div><!-- fragment --><p> However, we merge <code>init</code>/<code>acc</code> into the signature, as it may contain a <code>mem</code>. In this case we have to equip <code>new_body</code>/<code>new_exit</code> with a <code>mem</code> as well. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo</a></b></dt><dd>We probably want to have phases which fix such things so we don't have to do this in C++. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="lower__for_8h_source.html#l00028">28</a> of file <a class="el" href="lower__for_8h_source.html">lower_for.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lower__for_8h_source.html#l00029">29</a> of file <a class="el" href="lower__for_8h_source.html">lower_for.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a4f11a41d7c965d75a8e86887663ac95b" name="a4f11a41d7c965d75a8e86887663ac95b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4f11a41d7c965d75a8e86887663ac95b">&#9670;&#160;</a></span>LowerFor()</h2>
@@ -234,7 +234,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lower__for_8h_source.html#l00030">30</a> of file <a class="el" href="lower__for_8h_source.html">lower_for.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lower__for_8h_source.html#l00031">31</a> of file <a class="el" href="lower__for_8h_source.html">lower_for.h</a>.</p>
 
 </div>
 </div>
@@ -266,7 +266,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="lower__for_8cpp_source.html#l00032">32</a> of file <a class="el" href="lower__for_8cpp_source.html">lower_for.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="core_2autogen_8h_source.html#l00019">mim::plug::core::add</a>, <a class="el" href="world_8cpp_source.html#l00187">mim::World::app()</a>, <a class="el" href="world_8h_source.html#l00518">mim::World::call()</a>, <a class="el" href="pass_8h_source.html#l00232">mim::RWPass&lt; LowerFor, Lam &gt;::curr_mut()</a>, <a class="el" href="def_8h_source.html#l00444">mim::Def::isa_mut()</a>, <a class="el" href="axiom_8h_source.html#l00105">mim::match()</a>, <a class="el" href="mem_8h_source.html#l00024">mim::plug::mem::mem_def()</a>, <a class="el" href="mem_8h_source.html#l00037">mim::plug::mem::mem_var()</a>, <a class="el" href="world_8h_source.html#l00296">mim::World::mut_con()</a>, <a class="el" href="namespacemim_1_1plug_1_1core.html#ae3a4dc564294d2e5513168c153462138a7eb3133ffe6a944d4cf7cfe6d8e5ca54">mim::plug::core::nusw</a>, <a class="el" href="def_8cpp_source.html#l00248">mim::Def::set()</a>, <a class="el" href="lam_8h_source.html#l00158">mim::Lam::set()</a>, <a class="el" href="world_8cpp_source.html#l00231">mim::World::sigma()</a>, <a class="el" href="world_8cpp_source.html#l00239">mim::World::tuple()</a>, <a class="el" href="world_8cpp_source.html#l00094">mim::World::type()</a>, <a class="el" href="core_2autogen_8h_source.html#l00240">mim::plug::core::ul</a>, <a class="el" href="world_8cpp_source.html#l00157">mim::World::var()</a>, <a class="el" href="def_8h_source.html#l00398">mim::Def::vars()</a>, and <a class="el" href="pass_8h_source.html#l00296">mim::Pass::world()</a>.</p>
+<p class="reference">References <a class="el" href="namespacemim_1_1plug_1_1core.html#a0d0bff4d75f3e06365643c56fd4672efa34ec78fcc91ffb1e54cd85e4a0924332">mim::plug::core::add</a>, <a class="el" href="world_8cpp_source.html#l00186">mim::World::app()</a>, <a class="el" href="world_8h_source.html#l00518">mim::World::call()</a>, <a class="el" href="pass_8h_source.html#l00232">mim::RWPass&lt; LowerFor, Lam &gt;::curr_mut()</a>, <a class="el" href="def_8h_source.html#l00444">mim::Def::isa_mut()</a>, <a class="el" href="axiom_8h_source.html#l00105">mim::match()</a>, <a class="el" href="mem_8h_source.html#l00025">mim::plug::mem::mem_def()</a>, <a class="el" href="mem_8h_source.html#l00038">mim::plug::mem::mem_var()</a>, <a class="el" href="world_8h_source.html#l00296">mim::World::mut_con()</a>, <a class="el" href="namespacemim_1_1plug_1_1core.html#ae3a4dc564294d2e5513168c153462138a7eb3133ffe6a944d4cf7cfe6d8e5ca54">mim::plug::core::nusw</a>, <a class="el" href="def_8cpp_source.html#l00248">mim::Def::set()</a>, <a class="el" href="lam_8h_source.html#l00158">mim::Lam::set()</a>, <a class="el" href="world_8cpp_source.html#l00230">mim::World::sigma()</a>, <a class="el" href="world_8cpp_source.html#l00238">mim::World::tuple()</a>, <a class="el" href="world_8cpp_source.html#l00094">mim::World::type()</a>, <a class="el" href="namespacemim_1_1plug_1_1core.html#a71990bc58e6ff4b5bcaf17be1af7d673a738a656e8e8ec272ca17cd51e12f558b">mim::plug::core::ul</a>, <a class="el" href="world_8cpp_source.html#l00156">mim::World::var()</a>, <a class="el" href="def_8h_source.html#l00398">mim::Def::vars()</a>, and <a class="el" href="pass_8h_source.html#l00296">mim::Pass::world()</a>.</p>
 
 </div>
 </div>
