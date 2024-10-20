@@ -28,7 +28,7 @@ public:
 /// [lattice](https://en.wikipedia.org/wiki/Lattice_(order)) while a [Meet](@ref mim::Meet) descends.
 /// * @p Up = `true`: [Join](@ref mim::Join) (aka least Upper bound/supremum/union)
 /// * @p Up = `false`: [Meet](@ref mim::Meet) (aka greatest lower bound/infimum/intersection)
-template<bool Up> class TBound : public Bound {
+template<bool Up> class TBound : public Bound, public Setters<TBound<Up>> {
 private:
     TBound(const Def* type, Defs ops)
         : Bound(Node, type, ops) {} ///< Constructor for an *immutable* Bound.
@@ -36,7 +36,7 @@ private:
         : Bound(Node, type, size) {} ///< Constructor for a *mutable* Bound.
 
 public:
-    MIM_SETTERS(TBound)
+    using Setters<TBound<Up>>::set;
 
     TBound* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
 
@@ -51,43 +51,63 @@ private:
 
 /// Constructs a [Meet](@ref mim::Meet) **value**.
 /// @remark [Ac](https://en.wikipedia.org/wiki/Wedge_(symbol)) is Latin and means *and*.
-class Ac : public Def {
+class Ac : public Def, public Setters<Ac> {
+public:
+    using Setters<Ac>::set;
+    static constexpr auto Node = Node::Ac;
+
 private:
     Ac(const Def* type, Defs defs)
         : Def(Node, type, defs, 0) {}
 
-    MIM_DEF_MIXIN(Ac)
+    Ref rebuild_(World&, Ref, Defs) const override;
+
+    friend class World;
 };
 
 /// Constructs a [Join](@ref mim::Join) **value**.
 /// @remark [Vel](https://en.wikipedia.org/wiki/Wedge_(symbol)) is Latin and means *or*.
-class Vel : public Def {
+class Vel : public Def, public Setters<Vel> {
 private:
     Vel(const Def* type, const Def* value)
         : Def(Node, type, {value}, 0) {}
 
 public:
+    using Setters<Vel>::set;
+
     /// @name ops
     ///@{
     const Def* value() const { return op(0); }
     ///@}
 
-    MIM_DEF_MIXIN(Vel)
+    static constexpr auto Node = Node::Vel;
+
+private:
+    Ref rebuild_(World&, Ref, Defs) const override;
+
+    friend class World;
 };
 
 /// Picks the aspect of a Meet [value](Pick::value) by its [type](Def::type).
-class Pick : public Def {
+class Pick : public Def, public Setters<Pick> {
 private:
     Pick(const Def* type, const Def* value)
         : Def(Node, type, {value}, 0) {}
 
 public:
+    using Setters<Pick>::set;
+
     /// @name ops
     ///@{
     const Def* value() const { return op(0); }
     ///@}
 
-    MIM_DEF_MIXIN(Pick)
+    static constexpr auto Node = Node::Pick;
+
+private:
+    Ref rebuild_(World&, Ref, Defs) const override;
+
+    friend class World;
 };
 
 /// Test whether Test::value currently holds **type** Test::probe:
@@ -102,12 +122,15 @@ public:
 /// * Test::match must be of type `A -> B`.
 /// * Test::clash must be of type `[A, probe] -> C`.
 /// @remark This operation is usually known as `case` but named `Test` since `case` is a keyword in C++.
-class Test : public Def {
+class Test : public Def, public Setters<Test> {
 private:
     Test(const Def* type, const Def* value, const Def* probe, const Def* match, const Def* clash)
         : Def(Node, type, {value, probe, match, clash}, 0) {}
 
 public:
+    using Setters<Test>::set;
+    static constexpr auto Node = Node::Test;
+
     /// @name ops
     ///@{
     const Def* value() const { return op(0); }
@@ -116,7 +139,10 @@ public:
     const Def* clash() const { return op(3); }
     ///@}
 
-    MIM_DEF_MIXIN(Test)
+private:
+    Ref rebuild_(World&, Ref, Defs) const override;
+
+    friend class World;
 };
 
 /// Common base for TExt%remum.
@@ -127,13 +153,13 @@ protected:
 };
 
 /// Ext%remum. Either Top (@p Up) or Bot%tom.
-template<bool Up> class TExt : public Ext {
+template<bool Up> class TExt : public Ext, public Setters<TExt<Up>> {
 private:
     TExt(const Def* type)
         : Ext(Node, type) {}
 
 public:
-    MIM_SETTERS(TExt)
+    using Setters<TExt<Up>>::set;
 
     TExt* stub(Ref type) { return stub_(world(), type)->set(dbg()); }
 
@@ -157,18 +183,25 @@ using Join = TBound<true>;
 /// A singleton wraps a type into a higher order type.
 /// Therefore any type can be the only inhabitant of a singleton.
 /// Use in conjunction with @ref mim::Join.
-class Singleton : public Def {
+class Singleton : public Def, public Setters<Singleton> {
 private:
     Singleton(const Def* type, const Def* inner_type)
         : Def(Node, type, {inner_type}, 0) {}
 
 public:
+    using Setters<Singleton>::set;
+
     /// @name ops
     ///@{
     const Def* inhabitant() const { return op(0); }
     ///@}
 
-    MIM_DEF_MIXIN(Singleton)
+    static constexpr auto Node = Node::Singleton;
+
+private:
+    Ref rebuild_(World&, Ref, Defs) const override;
+
+    friend class World;
 };
 
 } // namespace mim
