@@ -1,10 +1,10 @@
 // RUN: %mim %s -o -
-.ax %foo.F: * -> *;
-.ax %foo.f: [T: *] -> .Nat -> %foo.F T;
+axm %foo.F: * → *;
+axm %foo.f: [T: *] → Nat → %foo.F T;
 
-.fun .extern f(
+fun extern f(
         T: *,
-        U: .let F = %foo.F T; F,
+        U: let F = %foo.F T; F,
         V: F
     )(
         W: F

@@ -35,7 +35,7 @@ std::string id(const Def* def) {
 }
 
 std::string_view external(const Def* def) {
-    if (def->is_external()) return ".extern "sv;
+    if (def->is_external()) return "extern "sv;
     return ""sv;
 }
 
@@ -148,11 +148,11 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
             if (level == 0) return print(os, "★");
             if (level == 1) return print(os, "□");
         }
-        return print(os, "(.Type {})", type->level());
+        return print(os, "(Type {})", type->level());
     } else if (u->isa<Nat>()) {
-        return print(os, ".Nat");
+        return print(os, "Nat");
     } else if (u->isa<Idx>()) {
-        return print(os, ".Idx");
+        return print(os, "Idx");
     } else if (auto ext = u->isa<Ext>()) {
         auto x = ext->isa<Bot>() ? (ascii ? ".bot" : "⊥") : (ascii ? ".top" : "⊤");
         if (ext->type()->isa<Nat>()) return print(os, "{}:{}", x, ext->type());
@@ -166,9 +166,9 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         if (lit->type()->isa<Nat>()) {
             switch (lit->get()) {
                     // clang-format off
-                case 0x0'0000'0100_n: return os << ".i8";
-                case 0x0'0001'0000_n: return os << ".i16";
-                case 0x1'0000'0000_n: return os << ".i32";
+                case 0x0'0000'0100_n: return os << "i8";
+                case 0x0'0001'0000_n: return os << "i16";
+                case 0x1'0000'0000_n: return os << "i32";
                 // clang-format on
                 default: return print(os, "{}", lit->get());
             }
@@ -176,7 +176,7 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
             if (auto s = Lit::isa(size)) {
                 switch (*s) {
                         // clang-format off
-                    case 0x0'0000'0002_n: return os << (lit->get<bool>() ? ".tt" : ".ff");
+                    case 0x0'0000'0002_n: return os << (lit->get<bool>() ? "tt" : "ff");
                     case 0x0'0000'0100_n: return os << lit->get() << "I8";
                     case 0x0'0001'0000_n: return os << lit->get() << "I16";
                     case 0x1'0000'0000_n: return os << lit->get() << "I32";
@@ -209,7 +209,7 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         return print(os, "{}", var->unique_name());
     } else if (auto pi = u->isa<Pi>()) {
         /*return os << "TODO";*/
-        if (Pi::isa_cn(pi)) return print(os, ".Cn {}", pi->dom());
+        if (Pi::isa_cn(pi)) return print(os, "Cn {}", pi->dom());
         if (auto mut = pi->isa_mut<Pi>(); mut && mut->var())
             return print(os, "Π {}: {} {} {}", mut->var(), pi->dom(), arw, pi->codom());
         return print(os, "Π {} {} {}", pi->dom(), arw, pi->codom());
@@ -220,11 +220,11 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
             if (auto l = Lit::isa(size)) {
                 // clang-format off
                 switch (*l) {
-                    case 0x0'0000'0002_n: return os << ".Bool";
-                    case 0x0'0000'0100_n: return os << ".I8";
-                    case 0x0'0001'0000_n: return os << ".I16";
-                    case 0x1'0000'0000_n: return os << ".I32";
-                    case             0_n: return os << ".I64";
+                    case 0x0'0000'0002_n: return os << "Bool";
+                    case 0x0'0000'0100_n: return os << "I8";
+                    case 0x0'0001'0000_n: return os << "I16";
+                    case 0x1'0000'0000_n: return os << "I32";
+                    case             0_n: return os << "I64";
                     default: break;
                 }
                 // clang-format on
@@ -301,7 +301,7 @@ void Dumper::dump(Def* mut) {
     }
 
     auto mut_prefix = [&](const Def* def) {
-        if (def->isa<Sigma>()) return ".Sigma";
+        if (def->isa<Sigma>()) return "Sigma";
         if (def->isa<Arr>()) return ".Arr";
         if (def->isa<Pack>()) return ".pack";
         if (def->isa<Pi>()) return ".Pi";
@@ -349,9 +349,9 @@ void Dumper::dump(Lam* lam) {
     auto ptrn = [&](auto&) { dump_ptrn(lam->var(), lam->type()->dom()); };
 
     if (Lam::isa_cn(lam))
-        tab.println(os, ".con {}{} {}@({}) = {{", external(lam), id(lam), ptrn, lam->filter());
+        tab.println(os, "con {}{} {}@({}) = {{", external(lam), id(lam), ptrn, lam->filter());
     else
-        tab.println(os, ".lam {}{} {}: {} = {{", external(lam), id(lam), ptrn, lam->type()->codom());
+        tab.println(os, "lam {}{} {}: {} = {{", external(lam), id(lam), ptrn, lam->type()->codom());
 
     ++tab;
     if (lam->is_set()) {
@@ -370,7 +370,7 @@ void Dumper::dump(Lam* lam) {
 }
 
 void Dumper::dump_let(const Def* def) {
-    tab.print(os, ".let {}: {} = {};\n", def->unique_name(), def->type(), Inline(def, 0));
+    tab.print(os, "let {}: {} = {};\n", def->unique_name(), def->type(), Inline(def, 0));
 }
 
 void Dumper::dump_ptrn(const Def* def, const Def* type) {

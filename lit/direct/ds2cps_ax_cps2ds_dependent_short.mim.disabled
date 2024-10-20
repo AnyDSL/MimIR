@@ -3,26 +3,26 @@
 
 /*
 Current issue:
-:4294967295: error: '[n_167425: .Nat] → .infer (<nullptr>)' used as a type but is in fact a term
+:4294967295: error: '[n_167425: Nat] → .infer (<nullptr>)' used as a type but is in fact a term
 
 Issue:
 https://github.com/AnyDSL/MimIR/issues/95
 */
 
-.plugin mem;
-.plugin direct;
+plugin mem;
+plugin direct;
 
 
-.con f [n:.Nat, return: .Cn (.Idx n)] = {
-    .let b = (42:(.Idx n));
+con f [n:Nat, return: Cn (Idx n)] = {
+    let b = (42:(Idx n));
     return b
 };
 
-.lam lam_Idx n: .Nat = .Idx n;
+lam lam_Idx n: Nat = Idx n;
 
-.con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I8, 0), 0), return : .Cn [%mem.M, .I32]] = {
-    .let g = %direct.cps2ds_dep (.Nat,lam_Idx) f;
-    .let c = g .i32;
+con extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (I8, 0), 0), return : Cn [%mem.M, I32]] = {
+    let g = %direct.cps2ds_dep (Nat,lam_Idx) f;
+    let c = g i32;
     return (mem, c)
 };
 

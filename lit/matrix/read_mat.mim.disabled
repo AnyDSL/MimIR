@@ -2,11 +2,11 @@
 // RUN: %mim %s --output-ll %t.ll -o -
 // RUN: clang %t.ll -o %t -Wno-override-module
 
-.plugin core;
-.plugin matrix;
+plugin core;
+plugin matrix;
 
-.con .extern f(mem: %mem.M, [k: .Nat, l: .Nat], M: %matrix.Mat (2, (k, l), .I32), return: .Cn[%mem.M, .I32]) =
-    .let two      = %core.idx k 0 2;
-    .let three    = %core.idx l 0 3;
-    .let (mem2,a) = %matrix.read (2, (k,l), .I32) (mem, M, (two, three));
+con extern f(mem: %mem.M, [k: Nat, l: Nat], M: %matrix.Mat (2, (k, l), I32), return: Cn[%mem.M, I32]) =
+    let two      = %core.idx k 0 2;
+    let three    = %core.idx l 0 3;
+    let (mem2,a) = %matrix.read (2, (k,l), I32) (mem, M, (two, three));
     return (mem2, a);

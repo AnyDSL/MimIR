@@ -35,7 +35,7 @@ In direct style, its type looks like this:
 Converted to [continuation-passing style (CPS)](https://en.wikipedia.org/wiki/Continuation-passing_style) this type looks like this:
 
 ```
-.Cn [%mem.M, I32, %mem.Ptr (I32, 0), .Cn [%mem.M, I32]]
+Cn [%mem.M, I32, %mem.Ptr (I32, 0), Cn [%mem.M, I32]]
 ```
 
 The `%%mem.M` type is a type that keeps track of side effects that may occur.
@@ -198,11 +198,11 @@ Here are some examples:
 ```cpp
 void foo(Ref def) {
     if (auto size = Idx::size(def)) {
-        // def = .Idx size
+        // def = Idx size
     }
 
     if (auto lam = Lam::isa_mut_cn(def)) {
-        // def isa mutable Lam of type .Cn T
+        // def isa mutable Lam of type Cn T
     }
 
     if (auto pi = Pi::isa_basicblock(def)) {
@@ -353,10 +353,10 @@ TODO
 | `(0, 1, 2)`           | [Tuple](@ref mim::Tuple) | `3`                           | `3`                                           | `3`                                         | `3`                                   | `3`                                     |
 | `‹3; 0›`              | [Pack](@ref mim::Pack)   | `3`                           | `3`                                           | `3`                                         | `3`                                   | `3`                                     |
 | `‹n; 0›`              | [Pack](@ref mim::Pack)   | `n`                           | `std::nullopt`                                | asserts                                     | `1`                                   | `1`                                     |
-| `[.Nat, .Bool, .Nat]` | [Sigma](@ref mim::Sigma) | `3`                           | `3`                                           | `3`                                         | `3`                                   | `3`                                     |
-| `«3; .Nat»`           | [Arr](@ref mim::Arr)     | `3`                           | `3`                                           | `3`                                         | `3`                                   | `3`                                     |
-| `«n; .Nat»`           | [Arr](@ref mim::Arr)     | `n`                           | `std::nullopt`                                | asserts                                     | `1`                                   | `1`                                     |
-| `x: [.Nat, .Bool]`    | [Var](@ref mim::Var)     | `2`                           | `2`                                           | `2`                                         | `2`                                   | `2`                                     |
+| `[Nat, Bool, Nat]` | [Sigma](@ref mim::Sigma) | `3`                           | `3`                                           | `3`                                         | `3`                                   | `3`                                     |
+| `«3; Nat»`           | [Arr](@ref mim::Arr)     | `3`                           | `3`                                           | `3`                                         | `3`                                   | `3`                                     |
+| `«n; Nat»`           | [Arr](@ref mim::Arr)     | `n`                           | `std::nullopt`                                | asserts                                     | `1`                                   | `1`                                     |
+| `x: [Nat, Bool]`    | [Var](@ref mim::Var)     | `2`                           | `2`                                           | `2`                                         | `2`                                   | `2`                                     |
 | `‹32; 0›`             | [Pack](@ref mim::Pack)   | `32`                          | `32`                                          | `32`                                        | `32`                                  | `1`                                     |
 
 The last line assumes mim::Flags::scalarize_threshold = 32.
@@ -369,7 +369,7 @@ The simplest way is to kick off with [World::externals](@ref mim::World::externa
 
 ```cpp
     DefSet done;
-    for (const auto& [_, mut] : world.externals())
+    for (const auto& [_, mut] : worldexternals())
         visit(done, mut);
 
     void visit(DefSet& done, const Def* def) {

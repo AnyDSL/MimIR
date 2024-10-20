@@ -113,11 +113,7 @@ Ref AutoDiffEval::augment_extract(const Extract* ext, Lam* f, Lam* f_diff) {
         world.DLOG("Pullback: {} : {}", pb_fun, pb_fun->type());
         auto pb_tangent = pb_fun->var(0_s)->set("s");
         auto tuple_tan  = world.insert(world.call<zero>(aug_tuple->type()), aug_index, pb_tangent)->set("tup_s");
-        pb_fun->app(true, tuple_pb,
-                    {
-                        tuple_tan,
-                        pb_fun->var(1) // ret_var but make sure to select correct one
-                    });
+        pb_fun->app(true, tuple_pb, {tuple_tan, pb_fun->var(1) /* ret_var but make sure to select correct one */});
         pb = pb_fun;
     }
 

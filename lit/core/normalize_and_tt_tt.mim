@@ -1,13 +1,13 @@
 // RUN: rm -f %t.ll
 // RUN: %mim %s -o - | FileCheck %s
 
-.plugin core;
+plugin core;
 
-.con .extern and_lit_tt_tt [return : .Cn .Bool] =
-    return (%core.bit2.and_ 0 (.tt, .tt));
+con extern and_lit_tt_tt [return : Cn Bool] =
+    return (%core.bit2.and_ 0 (tt, tt));
 
-// CHECK-DAG: .con .extern and_lit_tt_tt return_[[retId:[0-9_]+]]: .Cn .Bool{{(@.*)?}}= {
-// CHECK-DAG: _[[etaId:[0-9_]+]] .tt
+// CHECK-DAG: con extern and_lit_tt_tt return_[[retId:[0-9_]+]]: Cn Bool{{(@.*)?}}= {
+// CHECK-DAG: _[[etaId:[0-9_]+]] tt
 
-// CHECK-DAG: .con return_[[etaId]] _[[etaVar:[0-9_]+]]: .Bool{{(@.*)?}}= {
+// CHECK-DAG: con return_[[etaId]] _[[etaVar:[0-9_]+]]: Bool{{(@.*)?}}= {
 // CHECK-DAG: _[[retId]] _[[etaVar]]

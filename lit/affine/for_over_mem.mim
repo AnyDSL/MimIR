@@ -4,28 +4,28 @@
 // RUN: %t 0 1 2 3 ; test $? -eq 1
 // RUN: %t 0 1 2 3 4 5 6 7 ; test $? -eq 15
 
-.plugin core;
-.plugin affine;
+plugin core;
+plugin affine;
 
-.let arr_size = ⊤:.Nat;
-// .let arr_size = 16;
+let arr_size = ⊤:Nat;
+// let arr_size = 16;
 
-.con .extern main [mem: %mem.M, argc: .I32, argv: %mem.Ptr (%mem.Ptr (.I32, 0), 0), return: .Cn [%mem.M, .I32]] =
-    .let (`mem, ptr) = %mem.alloc (<<%core.bitcast .Nat argc; .I32>>, 0) (mem);
-    %affine.For (.i32, 3, (%mem.M, .I32, .I32)) (0I32, argc, 1I32, (mem, 0I32, 0I32), for_body, for_exit)
-    .where
-        .con for_body [i: .I32, [mem: %mem.M, acc_a: .I32, acc_b: .I32], continue: .Cn [%mem.M, .I32, .I32]] =
-            .let a    = %core.wrap.add 0 (i, acc_a);
-            .let b    = %core.wrap.sub 0 (i, acc_b);
-            .let lea  = %mem.lea (arr_size, <arr_size; .I32>, 0) (ptr, %core.conv.u arr_size i);
-            .let `mem = %mem.store (mem, lea, a);
+con extern main [mem: %mem.M, argc: I32, argv: %mem.Ptr (%mem.Ptr (I32, 0), 0), return: Cn [%mem.M, I32]] =
+    let (`mem, ptr) = %mem.alloc (<<%core.bitcast Nat argc; I32>>, 0) (mem);
+    %affine.For (i32, 3, (%mem.M, I32, I32)) (0I32, argc, 1I32, (mem, 0I32, 0I32), for_body, for_exit)
+    where
+        con for_body [i: I32, [mem: %mem.M, acc_a: I32, acc_b: I32], continue: Cn [%mem.M, I32, I32]] =
+            let a    = %core.wrap.add 0 (i, acc_a);
+            let b    = %core.wrap.sub 0 (i, acc_b);
+            let lea  = %mem.lea (arr_size, <arr_size; I32>, 0) (ptr, %core.conv.u arr_size i);
+            let `mem = %mem.store (mem, lea, a);
             continue (mem, a, b);
 
-        .con for_exit [mem: %mem.M, .I32, .I32]::acc =
-            .let lea = %mem.lea (arr_size, <arr_size; .I32>, 0) (ptr, %core.conv.u arr_size (%core.wrap.sub 0 (argc, 4I32)));
-            .let (`mem, val)::ld = %mem.load (mem, lea);
+        con for_exit [mem: %mem.M, I32, I32]::acc =
+            let lea = %mem.lea (arr_size, <arr_size; I32>, 0) (ptr, %core.conv.u arr_size (%core.wrap.sub 0 (argc, 4I32)));
+            let (`mem, val)::ld = %mem.load (mem, lea);
             return ld;
-    .end;
+    end;
 
 
 // CHECK-NOT: affine.For

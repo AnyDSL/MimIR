@@ -6,6 +6,7 @@
 
 #include "mim/analyses/scope.h"
 #include "mim/phase/phase.h"
+
 #include "mim/plug/clos/clos.h"
 #include "mim/plug/mem/autogen.h"
 
@@ -74,7 +75,7 @@ private:
 
 /// Performs *typed closure conversion*.
 /// This is based on the [Simply Typed Closure Conversion](https://dl.acm.org/doi/abs/10.1145/237721.237791).
-/// Closures are represented using tuples: `[Env: *, .Cn [Env, Args..], Env]`.
+/// Closures are represented using tuples: `[Env: *, Cn [Env, Args..], Env]`.
 /// In general only *continuations* are converted.
 /// Different kind of Lam%s may be rewritten differently:
 /// - *returning continuations* ("functions"), *join-points* and *branches* are fully closure converted.

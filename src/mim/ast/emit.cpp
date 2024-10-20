@@ -259,7 +259,7 @@ Ref RetExpr::emit_(Emitter& e) const {
         return app;
     }
 
-    error(c->loc(), "callee of a .ret expression must type as a returning continuation but got '{}' of type '{}'", c,
+    error(c->loc(), "callee of a ret expression must type as a returning continuation but got '{}' of type '{}'", c,
           c->type());
 }
 

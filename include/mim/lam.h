@@ -251,12 +251,12 @@ std::deque<const App*> decurry(const Def*);
 /// ```
 /// In CPS the types look like:
 /// ```
-/// f:  .Cn[B, .Cn C]
-/// g:  .Cn[A, .Cn B]
+/// f:  Cn[B, Cn C]
+/// g:  Cn[A, Cn B]
 /// h = f o g
-/// h:  .Cn[A, cn C]
+/// h:  Cn[A, cn C]
 /// h = λ (a ret_h) = g (a, h')
-/// h': .Cn B
+/// h': Cn B
 /// h'= λ b = f (b, ret_h)
 /// ```
 const Def* compose_cn(const Def* f, const Def* g);

@@ -1,8 +1,5 @@
 #include "mim/analyses/cfg.h"
 
-#include <fstream>
-#include <memory>
-
 #include "mim/world.h"
 
 #include "mim/analyses/domfrontier.h"

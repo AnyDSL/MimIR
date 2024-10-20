@@ -432,7 +432,7 @@ void Emitter::emit_epilogue(Lam* lam) {
         if (n == 0) {
             bb.tail("call void {}({, })", v_callee, args);
         } else {
-            auto name  = "%" + app->unique_name() + ".ret";
+            auto name  = "%" + app->unique_name() + "ret";
             auto t_ret = convert_ret_pi(ret_lam->type());
             bb.tail("{} = call {} {}({, })", name, t_ret, v_callee, args);
 
@@ -829,16 +829,16 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         emit_unsafe(malloc->arg(0));
         auto size  = emit(malloc->arg(1));
         auto ptr_t = convert(force<mem::Ptr>(def->proj(1)->type()));
-        bb.assign(name + ".i8", "call i8* @malloc(i64 {})", size);
-        return bb.assign(name, "bitcast i8* {} to {}", name + ".i8", ptr_t);
+        bb.assign(name + "i8", "call i8* @malloc(i64 {})", size);
+        return bb.assign(name, "bitcast i8* {} to {}", name + "i8", ptr_t);
     } else if (auto free = match<mem::free>(def)) {
         declare("void @free(i8*)");
         emit_unsafe(free->arg(0));
         auto ptr   = emit(free->arg(1));
         auto ptr_t = convert(force<mem::Ptr>(free->arg(1)->type()));
 
-        bb.assign(name + ".i8", "bitcast {} {} to i8*", ptr_t, ptr);
-        bb.tail("call void @free(i8* {})", name + ".i8");
+        bb.assign(name + "i8", "bitcast {} {} to i8*", ptr_t, ptr);
+        bb.tail("call void @free(i8* {})", name + "i8");
         return {};
     } else if (auto mslot = match<mem::mslot>(def)) {
         emit_unsafe(mslot->arg(0));
@@ -854,8 +854,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto v_ptr = emit(free->arg(1));
         auto t_ptr = convert(force<mem::Ptr>(free->arg(1)->type()));
 
-        bb.assign(name + ".i8", "bitcast {} {} to i8*", t_ptr, v_ptr);
-        bb.tail("call void @free(i8* {})", name + ".i8");
+        bb.assign(name + "i8", "bitcast {} {} to i8*", t_ptr, v_ptr);
+        bb.tail("call void @free(i8* {})", name + "i8");
         return {};
     } else if (auto load = match<mem::load>(def)) {
         emit_unsafe(load->arg(0));

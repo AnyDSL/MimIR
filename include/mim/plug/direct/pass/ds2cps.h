@@ -10,7 +10,7 @@ namespace mim::plug::direct {
 /// To do so, for each (non-type-level) ds function a corresponding cps function is created:
 /// ```
 /// f:     [a: A] -> B
-/// f_cps: .Cn [a: A, .Cn B]
+/// f_cps: Cn [a: A, Cn B]
 /// ```
 /// Only the type signature of the function is changed and the body is wrapped in the newly added return continuation.
 /// (Technical detail: the arguments are substituted to fit the new function)

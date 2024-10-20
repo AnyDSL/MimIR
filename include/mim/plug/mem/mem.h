@@ -2,8 +2,9 @@
 
 #include <mim/axiom.h>
 #include <mim/lam.h>
-#include <mim/plug/core/core.h>
 #include <mim/world.h>
+
+#include <mim/plug/core/core.h>
 
 #include "mim/plug/mem/autogen.h"
 
@@ -12,9 +13,9 @@ namespace mim::plug::mem {
 /// @name %%mem.M
 ///@{
 
-inline Lam* mut_con(World& w) { return w.mut_con(w.annex<M>()); } ///< Yields `.con[%mem.M]`.
+inline Lam* mut_con(World& w) { return w.mut_con(w.annex<M>()); } ///< Yields `con[%mem.M]`.
 
-/// Yields `.con[%mem.M, dom]`.
+/// Yields `con[%mem.M, dom]`.
 inline Lam* mut_con(Ref dom) {
     World& w = dom->world();
     return w.mut_con({w.annex<M>(), dom});

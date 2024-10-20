@@ -4,19 +4,19 @@
 // RUN: %t ; test $? -eq 0
 // RUN: %t 1 2 3 ; test $? -eq 6
 
-.plugin core;
-.plugin math;
-.plugin affine;
+plugin core;
+plugin math;
+plugin affine;
 
-.con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I32, 0), 0), return : .Cn [%mem.M, .Idx 0]] =
-    %affine.For (.i32, 2, (.I32, %math.F64)) (0I32, argc, 1I32, (0I32, 0:%math.F64), for_body, for_exit)
-    .where
-        .con for_body [i : .I32, [acc_a : .I32, acc_b : %math.F64], continue : .Cn [[.I32, %math.F64]]] =
-            .let a = %core.wrap.add 0 (i, acc_a);
-            .let b = %math.conv.u2f %math.f64 (%core.wrap.add 0 (%core.conv.u 0 i, %math.conv.f2u 0 acc_b));
+con extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (I32, 0), 0), return : Cn [%mem.M, Idx 0]] =
+    %affine.For (i32, 2, (I32, %math.F64)) (0I32, argc, 1I32, (0I32, 0:%math.F64), for_body, for_exit)
+    where
+        con for_body [i : I32, [acc_a : I32, acc_b : %math.F64], continue : Cn [[I32, %math.F64]]] =
+            let a = %core.wrap.add 0 (i, acc_a);
+            let b = %math.conv.u2f %math.f64 (%core.wrap.add 0 (%core.conv.u 0 i, %math.conv.f2u 0 acc_b));
             continue (a, b);
-        .con for_exit [acc : [.I32, %math.F64]] = return (mem, %math.conv.f2u 0 acc#.tt);
-    .end;
+        con for_exit [acc : [I32, %math.F64]] = return (mem, %math.conv.f2u 0 acc#tt);
+    end;
 
 // CHECK-NOT: affine.for
 // CHECK: %math.conv.f2u

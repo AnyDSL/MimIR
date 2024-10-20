@@ -10,7 +10,7 @@ namespace mim::plug::matrix {
 
 #define INTERNAL_PREFIX "internal_mapRed_"
 
-/// %mat.zero: [n: .Nat, S: «n; .Nat», m: .Nat] -> %mat.Mat (n,S,(.Idx m));
+/// %mat.zero: [n: Nat, S: «n; Nat», m: Nat] -> %mat.Mat (n,S,(Idx m));
 inline const Def* zero_int(World& w, Ref n, Ref S, Ref mem, nat_t m) {
     // TODO: use mim definition by name
     return w.app(w.annex<matrix::constMat>(), {n, S, w.type_idx(m), mem, w.lit_idx(m, 0)});

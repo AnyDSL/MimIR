@@ -254,7 +254,7 @@ Ptr<Expr> Parser::parse_infix_expr(Tracker track, Ptr<Expr>&& lhs, Prec curr_pre
                 lhs        = ptr<DeclExpr>(track, std::move(decls), std::move(lhs), true);
 
                 bool where = ahead().tag() == Tag::K_where;
-                expect(Tag::K_end, "end of a .where declaration block");
+                expect(Tag::K_end, "end of a where declaration block");
                 if (where)
                     ast().note(lhs->loc().anew_finis(),
                                "did you accidentally end your declaration expression with a ';'?");
@@ -518,7 +518,7 @@ Ptr<TuplePtrn> Parser::parse_tuple_ptrn() {
             ptrn    = parse_ptrn(dl, "element of a tuple pattern");
 
             if (dl == Tag::D_brckt_l) {
-                // [..., [.Nat, .Nat] -> .Nat, ...] ==> [..., _: [.Nat, .Nat] -> .Nat, ...]
+                // [..., [Nat, Nat] -> Nat, ...] ==> [..., _: [Nat, Nat] -> Nat, ...]
                 if (ahead().isa(Tag::T_arrow)) {
                     auto loc  = ptrn->loc();
                     auto expr = parse_pi_expr(std::move(ptrn));

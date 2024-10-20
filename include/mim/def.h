@@ -243,9 +243,9 @@ public:
     ///@{
     /// Yields the **raw** type of this Def, i.e. maybe `nullptr`. @see Def::unfold_type.
     const Def* type() const { return type_; }
-    /// Yields the type of this Def and builds a new `.Type (UInc n)` if necessary.
+    /// Yields the type of this Def and builds a new `Type (UInc n)` if necessary.
     const Def* unfold_type() const;
-    /// Yields `true` if `this:T` and `T:(.Type 0)`.
+    /// Yields `true` if `this:T` and `T:(Type 0)`.
     bool is_term() const;
     ///@}
 
@@ -727,14 +727,14 @@ private:
     MIM_DEF_MIXIN(Nat)
 };
 
-/// A built-in constant of type `.Nat -> *`.
+/// A built-in constant of type `Nat -> *`.
 class Idx : public Def {
 private:
     Idx(const Def* type)
         : Def(Node, type, Defs{}, 0) {}
 
 public:
-    /// Checks if @p def is a `.Idx s` and returns `s` or `nullptr` otherwise.
+    /// Checks if @p def is a `Idx s` and returns `s` or `nullptr` otherwise.
     static Ref size(Ref def);
 
     /// @name Convert between Idx::size and bitwidth and vice versa

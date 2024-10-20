@@ -8,23 +8,23 @@
 ///
 /// ## Dependencies
 ///
-.import core; // includes mem, compile (and avoids clashing re-import)
+import core; // includes mem, compile (and avoids clashing re-import)
 /// supported plugins with passes
-.import affine;
-.import autodiff;
-.import clos;
-.import direct;
-.import matrix;
-.import refly;
-.import regex;
+import affine;
+import autodiff;
+import clos;
+import direct;
+import matrix;
+import refly;
+import regex;
 ///
 /// ## Passes, Phases, and Pipelines
 ///
 /// ### Pipelines
 ///
-.lam .extern _default_compile []: %compile.Pipeline =
-    .let nullptr   = %compile.nullptr_pass;
-    .let nullphase = %compile.single_pass_phase nullptr;
+lam extern _default_compile []: %compile.Pipeline =
+    let nullptr   = %compile.nullptr_pass;
+    let nullphase = %compile.single_pass_phase nullptr;
     %compile.pipe
         nullphase
         (%compile.single_pass_phase (%compile.scalarize_pass nullptr))
@@ -33,7 +33,7 @@
         (%compile.single_pass_phase (plugin_cond_pass (%compile.regex_plugin, %regex.lower_regex)))
         // optimize
         (%compile.pass_phase
-            (%compile.combine_pass_list (⊤:.Nat)
+            (%compile.combine_pass_list (⊤:Nat)
             (
                 optimization_pass_list,
                 %compile.pass_list
@@ -62,7 +62,7 @@
         (plugin_cond_phase (%compile.autodiff_plugin, ad_cleanup_phase))
         // CodeGenPrep
         (%compile.pass_phase
-            (%compile.combine_pass_list (⊤:.Nat)
+            (%compile.combine_pass_list (⊤:Nat)
             (
                 %compile.pass_list
                 %compile.ret_wrap_pass,

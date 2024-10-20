@@ -251,7 +251,7 @@ void Sigma::check() {
 
 void Lam::check() {
     if (!Check::alpha(filter()->type(), world().type_bool())) {
-        error(filter()->loc(), "filter '{}' of lambda is of type '{}' but must be of type '.Bool'", filter(),
+        error(filter()->loc(), "filter '{}' of lambda is of type '{}' but must be of type 'Bool'", filter(),
               filter()->type());
     }
     if (!Check::assignable(codom(), body())) {

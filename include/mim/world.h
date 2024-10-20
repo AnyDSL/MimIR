@@ -223,7 +223,7 @@ public:
     Infer* mut_infer_univ() { return mut_infer(univ()); }
     Infer* mut_infer_type() { return mut_infer(type_infer_univ()); }
 
-    /// Either a value `?:?:.Type ?` or a type `?:.Type ?:.Type ?`.
+    /// Either a value `?:?:Type ?` or a type `?:Type ?:Type ?`.
     Infer* mut_infer_entity() {
         auto t   = type_infer_univ();
         auto res = mut_infer(mut_infer(t));

@@ -74,11 +74,7 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
         if (sym.plugin != plugin) continue; // this is from an import
 
         tab.print(h, "/// @name %%{}.{}\n///@{{\n", plugin, sym.tag);
-        tab.print(h, "#ifdef DOXYGEN // see https://github.com/doxygen/doxygen/issues/9668\n");
-        tab.print(h, "enum {} : flags_t {{\n", sym.tag);
-        tab.print(h, "#else\n");
         tab.print(h, "enum class {} : flags_t {{\n", sym.tag);
-        tab.print(h, "#endif\n");
         ++tab;
         flags_t ax_id = plugin_id | (annex.id.tag << 8u);
 

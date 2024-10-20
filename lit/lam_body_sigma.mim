@@ -1,7 +1,7 @@
 // RUN: %mim %s -o -
-.rec S = [
-    n: .Nat,
-    a: «n; .Nat»
+rec S = [
+    n: Nat,
+    a: «n; Nat»
 ];
 
-.lam f(): S = (3, (0, 1, 2));
+lam f(): S = (3, (0, 1, 2));

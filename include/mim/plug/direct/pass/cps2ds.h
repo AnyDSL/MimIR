@@ -3,13 +3,14 @@
 #include <vector>
 
 #include <mim/def.h>
+
 #include <mim/pass/pass.h>
 
 namespace mim::plug::direct {
 
 /// This is the second part of ds2cps.
 /// We replace all ds call sites of cps (or ds converted) functions with the cps calls.
-/// `b = f args` becomes `f (args,cont)` with a newly introduced continuation `cont: .Cn b`.
+/// `b = f args` becomes `f (args,cont)` with a newly introduced continuation `cont: Cn b`.
 class CPS2DS : public RWPass<CPS2DS, Lam> {
 public:
     CPS2DS(PassMan& man)
