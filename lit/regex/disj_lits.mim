@@ -1,14 +1,13 @@
 // RUN: %mim %s -o - -P %S | FileCheck %s
 
-.import mem;
-.plugin regex;
+import mem;
+plugin regex;
 
-.import dont_compile.mim;
+import dont_compile.mim;
 
-.let i8 = .I8;
-.let Top = ⊤:.Nat;
+let Top = ⊤:Nat;
 
-.con .extern disj(mem: %mem.M, string: %mem.Ptr (<<Top; i8>>, 0), return: .Cn [%mem.M, .Bool, .I32]) =
-    .let pattern = %regex.disj 3 (%regex.lit '0', %regex.lit '5', %regex.lit '9');
+con extern disj(mem: %mem.M, string: %mem.Ptr (<<Top; I8>>, 0), return: Cn [%mem.M, Bool, I32]) =
+    let pattern = %regex.disj 3 (%regex.lit '0', %regex.lit '5', %regex.lit '9');
     return (pattern (mem, string, 0I32));
     // CHECK: %regex.disj 2 (%regex.disj 2 (%regex.range ‹2; 48I8›, %regex.range ‹2; 53I8›), %regex.range ‹2; 57I8›)

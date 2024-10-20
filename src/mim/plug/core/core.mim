@@ -6,16 +6,16 @@
 ///
 /// ## Dependencies
 ///
-.plugin mem;
+plugin mem;
 ///
 /// ## Nat Operations
 ///
 /// ### %core.nat
 ///
-/// Standard arithmetic operations on `.Nat`s. <br>
+/// Standard arithmetic operations on `Nat`s. <br>
 /// `%%core.nat.sub (a, b)` yields `0`, if `a` < `b`.
 ///
-.ax %core.nat(add, sub, mul): «2; .Nat» -> .Nat, normalize_nat;
+axm %core.nat(add, sub, mul): «2; Nat» -> Nat, normalize_nat;
 ///
 /// ### %core.ncmp
 ///
@@ -35,34 +35,34 @@
 /// | `GLe`  | `ne`  | x | x | o | not equal        |
 /// | `GLE`  | `t`   | x | x | x | always true      |
 ///
-.ax %core.ncmp(gle = f, glE =  e, gLe =  l, gLE = le,
+axm %core.ncmp(gle = f, glE =  e, gLe =  l, gLE = le,
                Gle = g, GlE = ge, GLe = ne, GLE =  t):
-    «2; .Nat» -> .Bool, normalize_ncmp;
+    «2; Nat» -> Bool, normalize_ncmp;
 ///
 /// ## Integer Operations
 ///
-/// Integer operations use `.Idx s` as type.
+/// Integer operations use `Idx s` as type.
 /// This is per se neither signed nor unsigned.
 /// Instead, the operations themselves exhibit signed or unsigned behavior.
 ///
 /// ### Mode
 ///
 /// A common problem when dealing with integer operations is [overflow](https://en.wikipedia.org/wiki/Integer_overflow).
-/// All operations that may overflow have an additional parameter `m` - [mode](@ref mim::plug::core::Mode) - of type `.Nat` that determines the exact desired behavior in the case of an overflow.
+/// All operations that may overflow have an additional parameter `m` - [mode](@ref mim::plug::core::Mode) - of type `Nat` that determines the exact desired behavior in the case of an overflow.
 ///
-.let %core.mode.us = 0b00; // wrap around - both signed and unsigned
-.let %core.mode.uS = 0b01; // no   signed wrap around
-.let %core.mode.Us = 0b10; // no unsigned wrap around
-.let %core.mode.US = 0b11; // no signed and unsigned wrap around
-.let %core.mode.nuw  = %core.mode.Us;
-.let %core.mode.nsw  = %core.mode.uS;
-.let %core.mode.nusw = %core.mode.US;
+let %core.mode.us = 0b00; // wrap around - both signed and unsigned
+let %core.mode.uS = 0b01; // no   signed wrap around
+let %core.mode.Us = 0b10; // no unsigned wrap around
+let %core.mode.US = 0b11; // no signed and unsigned wrap around
+let %core.mode.nuw  = %core.mode.Us;
+let %core.mode.nsw  = %core.mode.uS;
+let %core.mode.nusw = %core.mode.US;
 ///
 /// ### %core.idx
 ///
-/// Creates a literal of type `.Idx s` from `l` while obeying mode `m`.
+/// Creates a literal of type `Idx s` from `l` while obeying mode `m`.
 ///
-.ax %core.idx: [s: .Nat] [m: .Nat] [l: .Nat] → .Idx s, normalize_idx;
+axm %core.idx: [s: Nat] [m: Nat] [l: Nat] → Idx s, normalize_idx;
 ///
 /// ### %core.bit1
 ///
@@ -75,7 +75,7 @@
 /// | id     | x | o | identity                     |
 /// | t      | x | x | always true                  |
 ///
-.ax %core.bit1(f, neg, id, t): {s: .Nat} [m: .Nat] [.Idx s] -> .Idx s, normalize_bit1;
+axm %core.bit1(f, neg, id, t): {s: Nat} [m: Nat] [Idx s] -> Idx s, normalize_bit1;
 ///
 /// ### %core.bit2
 ///
@@ -100,9 +100,9 @@
 /// | or_    |  x |  x |  x |  o | or                           |
 /// | t      |  x |  x |  x |  x | always true                  |
 ///
-.ax %core.bit2( f,      nor, nciff, nfst, niff, nsnd, xor_, nand,
+axm %core.bit2( f,      nor, nciff, nfst, niff, nsnd, xor_, nand,
                 and_,  nxor,   snd,  iff,  fst, ciff,  or_,    t):
-    {s: .Nat} [m: .Nat] [«2; .Idx s»] -> .Idx s , normalize_bit2;
+    {s: Nat} [m: Nat] [«2; Idx s»] -> Idx s , normalize_bit2;
 ///
 /// ### %core.shr
 ///
@@ -110,16 +110,16 @@
 ///     * [`a`rithmetic shift right](https://en.wikipedia.org/wiki/Arithmetic_shift)
 ///     * [`l`ogical shift right](https://en.wikipedia.org/wiki/Logical_shift)
 ///
-.ax %core.shr(a, l): {s: .Nat} [«2; .Idx s»] -> .Idx s, normalize_shr;
+axm %core.shr(a, l): {s: Nat} [«2; Idx s»] -> Idx s, normalize_shr;
 ///
 /// ### %core.wrap
 ///
 /// Integer operations that may overflow.
-/// You can specify the desired behavior in the case of an overflow with the curried argument just in front of the actual argument by providing a mim::plug::core::Mode as `.Nat`.
+/// You can specify the desired behavior in the case of an overflow with the curried argument just in front of the actual argument by providing a mim::plug::core::Mode as `Nat`.
 ///
-.ax %core.wrap(add, sub, mul, shl): {s: .Nat} [m: .Nat] [«2; .Idx s»] -> .Idx s, normalize_wrap;
+axm %core.wrap(add, sub, mul, shl): {s: Nat} [m: Nat] [«2; Idx s»] -> Idx s, normalize_wrap;
 
-.lam %core.minus {s: .Nat} (m: .Nat) (a: .Idx s): .Idx s = %core.wrap.sub m (0:(.Idx s), a);
+lam %core.minus {s: Nat} (m: Nat) (a: Idx s): Idx s = %core.wrap.sub m (0:(Idx s), a);
 ///
 /// ### %core.div
 ///
@@ -128,8 +128,8 @@
 /// @warning Division by zero is *undefined behavior* and a visible side effect.
 /// For this reason, these axioms expect a `%%mem.M`.
 ///
-.ax %core.div(sdiv, udiv, srem, urem):
-    {s: .Nat} [%mem.M, «2; .Idx s»] -> [%mem.M, .Idx s], normalize_div;
+axm %core.div(sdiv, udiv, srem, urem):
+    {s: Nat} [%mem.M, «2; Idx s»] -> [%mem.M, Idx s], normalize_div;
 ///
 /// ### %core.icmp
 ///
@@ -194,7 +194,7 @@
 /// | `XYGLe` |  `ne`  | x | x | x | x | o | not equal                                       |
 /// | `XYGLE` |  `t`   | x | x | x | x | x | always true                                     |
 ///
-.ax %core.icmp(xygle = f,  xyglE = e,   xygLe,      xygLE,
+axm %core.icmp(xygle = f,  xyglE = e,   xygLe,      xygLE,
                xyGle,      xyGlE,       xyGLe,      xyGLE,
                xYgle,      xYglE,       xYgLe = sl, xYgLE = sle,
                xYGle = ug, xYGlE = uge, xYGLe,      xYGLE,
@@ -202,7 +202,7 @@
                XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,
                XYgle,      XYglE,       XYgLe,      XYgLE,
                XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):
-    {s: .Nat} [«2; .Idx s»] -> .Bool , normalize_icmp;
+    {s: Nat} [«2; Idx s»] -> Bool , normalize_icmp;
 ///
 /// ### %core.extrema
 ///
@@ -210,7 +210,7 @@
 ///     * un`s`igned or `S`igned
 ///     * `m`inimum or `M`aximum
 ///
-.ax %core.extrema(sm=umin, sM=umax, Sm=smin, SM=smax): {s: .Nat} [.Idx s,.Idx s] -> .Idx s, normalize_extrema;
+axm %core.extrema(sm=umin, sM=umax, Sm=smin, SM=smax): {s: Nat} [Idx s,Idx s] -> Idx s, normalize_extrema;
 ///
 /// ### %core.abs
 ///
@@ -218,7 +218,7 @@
 ///
 /// @warning Computing the absolute value of an Integer with the lowest possible value leads to *undefined behavior*, which is why this axiom expects a `%%mem.M`
 ///
-.ax %core.abs: {s:.Nat} [%mem.M, .Idx s] -> [%mem.M, .Idx s], normalize_abs;
+axm %core.abs: {s:Nat} [%mem.M, Idx s] -> [%mem.M, Idx s], normalize_abs;
 ///
 /// ## Conversions
 ///
@@ -226,14 +226,14 @@
 ///
 /// Conversion between index types - both signed and unsigned - of different sizes.
 ///
-.ax %core.conv(s, u): {ss: .Nat} [ds: .Nat] [.Idx ss] -> .Idx ds, normalize_conv;
+axm %core.conv(s, u): {ss: Nat} [ds: Nat] [Idx ss] -> Idx ds, normalize_conv;
 ///
 /// ### %core.bitcast
 ///
 /// Bitcast to reinterpret a value as another type.
 /// Can be used for pointer / integer conversions as well as integer / nat conversions.
 ///
-.ax %core.bitcast: {S: *} [D: *] [S] -> D, normalize_bitcast;
+axm %core.bitcast: {S: *} [D: *] [S] -> D, normalize_bitcast;
 ///
 /// ## Other Operations
 ///
@@ -241,14 +241,14 @@
 ///
 /// Yields the size or align of a type.
 ///
-.ax %core.trait(size, align): * -> .Nat, normalize_trait;
+axm %core.trait(size, align): * -> Nat, normalize_trait;
 ///
 /// ### %core.pe
 ///
 /// Steers the partial evaluator.
 ///
-.ax %core.pe(hlt, run): [T: *] [T] -> T, normalize_pe;
-.ax %core.pe(known): {T: *} [T] -> .Bool, normalize_pe;
+axm %core.pe(hlt, run): [T: *] [T] -> T, normalize_pe;
+axm %core.pe(known): {T: *} [T] -> Bool, normalize_pe;
 ///
 /// ### %core.zip
 ///
@@ -265,6 +265,6 @@
 /// * `f`: zipping function that expects an `n_i`-tuple whose elements correspond to `Is` and yields an `n_o`-tuple whose element types correspond to `Os`
 /// * `is`: the actual input tensors
 ///
-.ax %core.zip: [r: .Nat, s: «r; .Nat»]
-               [n_i: .Nat, Is: «n_i; *», n_o: .Nat, Os: «n_o; *», f: «i: n_i; Is#i» -> «o: n_o; Os#o»]
+axm %core.zip: [r: Nat, s: «r; Nat»]
+               [n_i: Nat, Is: «n_i; *», n_o: Nat, Os: «n_o; *», f: «i: n_i; Is#i» -> «o: n_o; Os#o»]
                [is: «i: n_i; «s; Is#i»»] -> «o: n_o; «s; Os#o»», normalize_zip;

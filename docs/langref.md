@@ -38,7 +38,7 @@ Both tokens are identified as `⊥`.
 | ------------------------------- | ------------------------------------------- | ------------------------- |
 | `(` `)` `[` `]` `{` `}`         |                                             | delimiters                |
 | `‹` `›` `«` `»`                 | `<<` `>>` `<` `>`                           | UTF-8 delimiters          |
-| `→` `⊥` `⊤` `★` `□` `λ`         | `->` `.bot` `.top` `*` `.lm`                | further UTF-8 tokens      |
+| `→` `⊥` `⊤` `★` `□` `λ`         | `->` `.bot` `.top` `*` `lm`                | further UTF-8 tokens      |
 | `=` `,` `;` `.` `#` `:` `%` `@` |                                             | further tokens            |
 | `<eof>`                         |                                             | marks the end of the file |
 
@@ -51,36 +51,36 @@ In addition the following keywords are _terminals_:
 | Terminal  | Comment                                                   |
 | --------- | --------------------------------------------------------- |
 | `.module` | starts a module                                           |
-| `.import` | imports another Mim file                                  |
-| `.plugin` | like `.import` and additionally loads the compiler plugin |
-| `.ax`     | axiom                                                     |
-| `.let`    | let declaration                                           |
-| `.con`    | [continuation](@ref mim::Lam) declaration                 |
-| `.fun`    | [function](@ref mim::Lam) declaration                     |
-| `.lam`    | [lambda](@ref mim::Lam) declaration                       |
-| `.ret`    | ret expression                                            |
-| `.cn`     | [continuation](@ref mim::Lam) expression                  |
-| `.fn`     | [function](@ref mim::Lam) expression                      |
-| `.lm`     | [lambda](@ref mim::Lam) expression                        |
-| `.Sigma`  | [Sigma](@ref mim::Sigma) declaration                      |
-| `.extern` | marks function as external                                |
-| `.ins`    | mim::Insert expression                                    |
-| `.insert` | alias for `.ins`                                          |
-| `.Nat`    | mim::Nat                                                  |
-| `.Idx`    | mim::Idx                                                  |
-| `.Type`   | mim::Type                                                 |
-| `.Univ`   | mim::Univ                                                 |
-| `.ff`     | alias for `0₂`                                            |
-| `.tt`     | alias for `1₂`                                            |
+| `import` | imports another Mim file                                  |
+| `plugin` | like `import` and additionally loads the compiler plugin |
+| `axm`     | axiom                                                     |
+| `let`    | let declaration                                           |
+| `con`    | [continuation](@ref mim::Lam) declaration                 |
+| `fun`    | [function](@ref mim::Lam) declaration                     |
+| `lam`    | [lambda](@ref mim::Lam) declaration                       |
+| `ret`    | ret expression                                            |
+| `cn`     | [continuation](@ref mim::Lam) expression                  |
+| `fn`     | [function](@ref mim::Lam) expression                      |
+| `lm`     | [lambda](@ref mim::Lam) expression                        |
+| `Sigma`  | [Sigma](@ref mim::Sigma) declaration                      |
+| `extern` | marks function as external                                |
+| `ins`    | mim::Insert expression                                    |
+| `insert` | alias for `ins`                                          |
+| `Nat`    | mim::Nat                                                  |
+| `Idx`    | mim::Idx                                                  |
+| `Type`   | mim::Type                                                 |
+| `Univ`   | mim::Univ                                                 |
+| `ff`     | alias for `0₂`                                            |
+| `tt`     | alias for `1₂`                                            |
 
 | Terminal   | Alias           | Terminal | Alias       |
 | ---------- | --------------- | -------- | ----------- |
-| `.tt` `ff` | `0₂` `1₂`       | `.Bool`  | `.Idx .i1`  |
-| `.i1`      | `2`             | `.I1`    | `.Idx .i1`  |
-| `.i8`      | `0x100`         | `.I8`    | `.Idx .i8`  |
-| `.i16`     | `0x1'0000`      | `.I16`   | `.Idx .i16` |
-| `.i32`     | `0x1'0000'0000` | `.I32`   | `.Idx .i32` |
-| `.i64`     | `0`             | `.I64`   | `.Idx .i64` |
+| `tt` `ff` | `0₂` `1₂`       | `Bool`  | `Idx i1`  |
+| `i1`      | `2`             | `I1`    | `Idx i1`  |
+| `i8`      | `0x100`         | `I8`    | `Idx i8`  |
+| `i16`     | `0x1'0000`      | `I16`   | `Idx i16` |
+| `i32`     | `0x1'0000'0000` | `I32`   | `Idx i32` |
+| `i64`     | `0`             | `I64`   | `Idx i64` |
 
 All keywords start with a `.` to prevent name clashes with identifiers.
 
@@ -106,8 +106,8 @@ The following _terminals_ comprise more complicated patterns:
 | L             | sign? 0x hex+ pP sign dec+           | [floating-point hexadecimal](https://en.cppreference.com/w/cpp/language/floating_literal) literal |
 | L             | sign? 0x hex+ `.` hex\* pP sign dec+ | [floating-point hexadecimal](https://en.cppreference.com/w/cpp/language/floating_literal) literal |
 | L             | sign? 0x hex\* `.` hex+ pP sign dec+ | [floating-point hexadecimal](https://en.cppreference.com/w/cpp/language/floating_literal) literal |
-| X<sub>n</sub> | dec+ sub+<sub>n</sub>                | index literal of type `.Idx n`                                                                    |
-| X<sub>n</sub> | dec+ `_` dec+<sub>n</sub>            | index literal of type `.Idx n`                                                                    |
+| X<sub>n</sub> | dec+ sub+<sub>n</sub>                | index literal of type `Idx n`                                                                    |
+| X<sub>n</sub> | dec+ `_` dec+<sub>n</sub>            | index literal of type `Idx n`                                                                    |
 | C             | <tt>'</tt>(a \| esc)<tt>'</tt>       | character literal; a ∊ [ASCII](https://en.wikipedia.org/wiki/ASCII) ∖ {`\`, <tt>'</tt>}           |
 | S             | <tt>\"</tt>(a \| esc)\*<tt>\"</tt>   | string literal; a ∊ [ASCII](https://en.wikipedia.org/wiki/ASCII) ∖ {`\`, <tt>"</tt>}              |
 
@@ -165,23 +165,23 @@ The following tables comprise all production rules:
 | LHS | RHS             | Comment | MimIR Class              |
 | --- | --------------- | ------- | ------------------------ |
 | m   | dep\* d\*       | module  | [World](@ref mim::World) |
-| dep | `.import` S `;` | import  |                          |
-| dep | `.plugin` S `;` | plugin  |                          |
+| dep | `import` S `;` | import  |                          |
+| dep | `plugin` S `;` | plugin  |                          |
 
 ### Declarations {#decl}
 
 | LHS | RHS                                                                                                                                               | Comment                              | MimIR Class                          |
 | --- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ | ------------------------------------ |
-| d   | `.let` (p \| A) `=` e `;`                                                                                                                         | let                                  | -                                    |
-| d   | `.lam` n (`.`? p)+ (`:` e<sub>codom</sub>)? ( `=` d\* e)? `;`                                                                                     | lambda declaration<sup>s</sup>       | [Lam](@ref mim::Lam)                 |
-| d   | `.con` n (`.`? p)+ ( `=` d\* e)? `;`                                                                                                              | continuation declaration<sup>s</sup> | [Lam](@ref mim::Lam)                 |
-| d   | `.fun` n (`.`? p)+ (`:` e<sub>ret</sub>)? ( `=` d\* e)? `;`                                                                                       | function declaration<sup>s</sup>     | [Lam](@ref mim::Lam)                 |
-| d   | `.Sigma` n (`:` e<sub>type</sub> )? (`,` L<sub>arity</sub>)? (`=` b<sub>[ ]</sub>)? `;`                                                           | sigma declaration                    | [Sigma](@ref mim::Sigma)             |
-| d   | `.ax` A `:` e<sub>type</sub> (`(` sa `,` ... `,` sa `)`)? <br> (`,` 𝖨<sub>normalizer</sub>)? (`,` L<sub>curry</sub>)? (`,` L<sub>trip</sub>)? `;` | axiom                                | [Axiom](@ref mim::Axiom)             |
+| d   | `let` (p \| A) `=` e `;`                                                                                                                         | let                                  | -                                    |
+| d   | `lam` n (`.`? p)+ (`:` e<sub>codom</sub>)? ( `=` d\* e)? `;`                                                                                     | lambda declaration<sup>s</sup>       | [Lam](@ref mim::Lam)                 |
+| d   | `con` n (`.`? p)+ ( `=` d\* e)? `;`                                                                                                              | continuation declaration<sup>s</sup> | [Lam](@ref mim::Lam)                 |
+| d   | `fun` n (`.`? p)+ (`:` e<sub>ret</sub>)? ( `=` d\* e)? `;`                                                                                       | function declaration<sup>s</sup>     | [Lam](@ref mim::Lam)                 |
+| d   | `Sigma` n (`:` e<sub>type</sub> )? (`,` L<sub>arity</sub>)? (`=` b<sub>[ ]</sub>)? `;`                                                           | sigma declaration                    | [Sigma](@ref mim::Sigma)             |
+| d   | `axm` A `:` e<sub>type</sub> (`(` sa `,` ... `,` sa `)`)? <br> (`,` 𝖨<sub>normalizer</sub>)? (`,` L<sub>curry</sub>)? (`,` L<sub>trip</sub>)? `;` | axiom                                | [Axiom](@ref mim::Axiom)             |
 | n   | 𝖨 \| A                                                                                                                                            | identifier or annex name             | `fe::Sym`/[Annex](@ref mim::Annex)   |
 | sa  | 𝖨 (`=` 𝖨 `,` ... `,` 𝖨)?                                                                                                                          | subtag with aliases                  |                                      |
 
-@note An elided type of a `.Pi` or `.Sigma` declaration defaults to `*`.
+@note An elided type of a `.Pi` or `Sigma` declaration defaults to `*`.
 
 ### Patterns {#ptrn}
 
@@ -217,13 +217,13 @@ For this reason there is no rule for a `()`-`[]`-pattern.
 
 Tuple patterns allow for _groups_:
 
-- `(a b c: .Nat, d e: .Bool)` means `(a: .Nat, b: .Nat, c: .Nat, d: .Bool, e: .Bool)`.
-- `[a b c: .Nat, d e: .Bool]` means `[a: .Nat, b: .Nat, c: .Nat, d: .Bool, e: .Bool]`.
+- `(a b c: Nat, d e: Bool)` means `(a: Nat, b: Nat, c: Nat, d: Bool, e: Bool)`.
+- `[a b c: Nat, d e: Bool]` means `[a: Nat, b: Nat, c: Nat, d: Bool, e: Bool]`.
 
 You can introduce an optional name for the whole tuple pattern:
 
 ```rust
-.let abc::(a, b, c) = (1, 2, 3);
+let abc::(a, b, c) = (1, 2, 3);
 ```
 
 This will bind
@@ -236,7 +236,7 @@ This will bind
 Here is another example:
 
 ```rust
-{T: *, as: .Nat}::Tas [%mem.M, %mem.Ptr Tas] → [%mem.M, T]
+{T: *, as: Nat}::Tas [%mem.M, %mem.Ptr Tas] → [%mem.M, T]
 ```
 
 #### Rebind
@@ -245,9 +245,9 @@ Finally, you can put a <tt>\`</tt> in front of an identifier of a `()`-style pat
 This is particularly useful, when dealing with memory:
 
 ```rust
-.let (`mem, ptr) = %mem.alloc (I32, 0) mem;
-.let `mem        = %mem.store (mem, ptr, 23:I32);
-.let (`mem, val) = %mem.load (mem, ptr);
+let (`mem, ptr) = %mem.alloc (I32, 0) mem;
+let `mem        = %mem.store (mem, ptr, 23:I32);
+let (`mem, val) = %mem.load (mem, ptr);
 ```
 
 ### Expressions {#expr}
@@ -256,24 +256,24 @@ This is particularly useful, when dealing with memory:
 
 | LHS | RHS       | Comment                        | MimIR Class              |
 | --- | --------- | ------------------------------ | ------------------------ |
-| e   | `.Univ`   | universe: type of a type level | [Univ](@ref mim::Univ)   |
-| e   | `.Type` e | type of level e                | [Type](@ref mim::Type)   |
-| e   | `*`       | alias for `.Type (0:.Univ)`    | [Type](@ref mim::Type)   |
-| e   | `□`       | alias for `.Type (1:.Univ)`    | [Type](@ref mim::Type)   |
-| e   | `.Nat`    | natural number                 | [Nat](@ref mim::Nat)     |
-| e   | `.Idx`    | builtin of type `.Nat → *`     | [Idx](@ref mim::Idx)     |
-| e   | `.Bool`   | alias for `.Bool`              | [Idx](@ref mim::Idx)     |
+| e   | `Univ`   | universe: type of a type level | [Univ](@ref mim::Univ)   |
+| e   | `Type` e | type of level e                | [Type](@ref mim::Type)   |
+| e   | `*`       | alias for `Type (0:Univ)`    | [Type](@ref mim::Type)   |
+| e   | `□`       | alias for `Type (1:Univ)`    | [Type](@ref mim::Type)   |
+| e   | `Nat`    | natural number                 | [Nat](@ref mim::Nat)     |
+| e   | `Idx`    | builtin of type `Nat → *`     | [Idx](@ref mim::Idx)     |
+| e   | `Bool`   | alias for `Bool`              | [Idx](@ref mim::Idx)     |
 
 #### Literals & Co
 
 | LHS | RHS                         | Comment                         | MimIR Class                          |
 | --- | --------------------------- | ------------------------------- | ------------------------------------ |
 | e   | L (`:` e<sub>type</sub>)?   | literal                         | [Lit](@ref mim::Lit)                 |
-| e   | X<sub>n</sub>               | literal of type `.Idx n`        | [Lit](@ref mim::Lit)                 |
-| e   | `.ff`                       | alias for `0_2`                 | [Lit](@ref mim::Lit)                 |
-| e   | `.tt`                       | alias for `1_2`                 | [Lit](@ref mim::Lit)                 |
-| e   | C                           | character literal of type `.I8` | [Lit](@ref mim::Lit)                 |
-| e   | S                           | string tuple of type `«n; .I8»` | [Tuple](@ref mim::Tuple)             |
+| e   | X<sub>n</sub>               | literal of type `Idx n`        | [Lit](@ref mim::Lit)                 |
+| e   | `ff`                       | alias for `0_2`                 | [Lit](@ref mim::Lit)                 |
+| e   | `tt`                       | alias for `1_2`                 | [Lit](@ref mim::Lit)                 |
+| e   | C                           | character literal of type `I8` | [Lit](@ref mim::Lit)                 |
+| e   | S                           | string tuple of type `«n; I8»` | [Tuple](@ref mim::Tuple)             |
 | e   | `⊥` (`:` e<sub>type</sub>)? | bottom                          | [Bot](@ref mim::Bot)                 |
 | e   | `⊤` (`:` e<sub>type</sub>)? | top                             | [Top](@ref mim::Top)                 |
 | e   | n                           | identifier or annex name        | `fe::Sym`/[Annex](@ref mim::Annex)   |
@@ -281,7 +281,7 @@ This is particularly useful, when dealing with memory:
 
 @note An elided type of
 
-- a literal defaults to `.Nat`,
+- a literal defaults to `Nat`,
 - a bottom/top defaults to `*`.
 
 #### Functions
@@ -290,14 +290,14 @@ This is particularly useful, when dealing with memory:
 | --- | ------------------------------------------------------------ | ---------------------------------------------- | ---------------------- |
 | e   | e<sub>dom</sub> `→` e<sub>codom</sub>                        | function type                                  | [Pi](@ref mim::Pi)     |
 | e   | `Π` `.`? b (`.`? b<sub>[ ]</sub>)\* (`:` e<sub>codom</sub>)? | dependent function type<sup>s</sup>            | [Pi](@ref mim::Pi)     |
-| e   | `.Cn` `.`? b (`.`? b<sub>[ ]</sub>)\*                        | continuation type<sup>s</sup>                  | [Pi](@ref mim::Pi)     |
-| e   | `.Fn` `.`? b (`.`? b<sub>[ ]</sub>)\* (`:` e<sub>ret</sub>)? | returning continuation type<sup>s</sup>        | [Pi](@ref mim::Pi)     |
+| e   | `Cn` `.`? b (`.`? b<sub>[ ]</sub>)\*                        | continuation type<sup>s</sup>                  | [Pi](@ref mim::Pi)     |
+| e   | `Fn` `.`? b (`.`? b<sub>[ ]</sub>)\* (`:` e<sub>ret</sub>)? | returning continuation type<sup>s</sup>        | [Pi](@ref mim::Pi)     |
 | e   | `λ` (`.`? p)+ (`→` e<sub>codom</sub>)? `=` d\* e             | lambda expression<sup>s</sup>                  | [Lam](@ref mim::Lam)   |
-| e   | `.cn` (`.`? p)+ `=` d\* e                                    | continuation expression<sup>s</sup>            | [Lam](@ref mim::Lam)   |
-| e   | `.fn` (`.`? p)+ (`→` e<sub>codom</sub>)? `=` d\* e           | function expression<sup>s</sup>                | [Lam](@ref mim::Lam)   |
+| e   | `cn` (`.`? p)+ `=` d\* e                                    | continuation expression<sup>s</sup>            | [Lam](@ref mim::Lam)   |
+| e   | `fn` (`.`? p)+ (`→` e<sub>codom</sub>)? `=` d\* e           | function expression<sup>s</sup>                | [Lam](@ref mim::Lam)   |
 | e   | e e                                                          | application                                    | [App](@ref mim::App)   |
 | e   | e `@` e                                                      | application making implicit arguments explicit | [App](@ref mim::App)   |
-| e   | `.ret` p `=` e `$` e `;` d\* e                               | ret expresison                                 | [App](@ref mim::App)   |
+| e   | `ret` p `=` e `$` e `;` d\* e                               | ret expresison                                 | [App](@ref mim::App)   |
 
 #### Tuples
 
@@ -309,7 +309,7 @@ This is particularly useful, when dealing with memory:
 | e   | `‹` s `;` e<sub>body</sub>`›`                                                | pack<sup>s</sup>      | [Pack](@ref mim::Pack)         |
 | e   | e `#` e<sub>index</sub>                                                      | extract               | [Extract](@ref mim::Extract)   |
 | e   | e `#` 𝖨                                                                      | extract via field "𝖨" | [Extract](@ref mim::Extract)   |
-| e   | `.ins` `(` e<sub>tuple</sub> `,` e<sub>index</sub> `,` e<sub>value</sub> `)` | insert                | [Insert](@ref mim::Insert)     |
+| e   | `ins` `(` e<sub>tuple</sub> `,` e<sub>index</sub> `,` e<sub>value</sub> `)` | insert                | [Insert](@ref mim::Insert)     |
 | s   | e<sub>shape</sub> \| S `:` e<sub>shape</sub>                                 | shape                 | -                              |
 
 ### Precedence
@@ -330,21 +330,21 @@ The following table summarizes the different tokens used for functions declarati
 
 | Declaration | Expression     | Type                    |
 | ----------- | -------------- | ----------------------- |
-| `.lam`      | `.lm` <br> `λ` | `->` |
-| `.con`      | `.cn`          | `.Cn`                   |
-| `.fun`      | `.fn`          | `.Fn`                   |
+| `lam`      | `lm` <br> `λ` | `->` |
+| `con`      | `cn`          | `Cn`                   |
+| `fun`      | `fn`          | `Fn`                   |
 
 ### Declarations
 
 The following function _declarations_ are all equivalent:
 
 ```rust
-.lam f(T: *)((x y: T), return: T → ⊥)@(.ff): ⊥ = return x;
-.con f(T: *)((x y: T), return: .Cn T)          = return x;
-.fun f(T: *) (x y: T): T                       = return x;
+lam f(T: *)((x y: T), return: T → ⊥)@(ff): ⊥ = return x;
+con f(T: *)((x y: T), return: Cn T)          = return x;
+fun f(T: *) (x y: T): T                       = return x;
 ```
 
-Note that all partial evaluation filters default to `.tt` except for `.con`/`.cn`/`.fun`/`.fn`.
+Note that all partial evaluation filters default to `tt` except for `con`/`cn`/`fun`/`fn`.
 
 ### Expressions
 
@@ -352,10 +352,10 @@ The following function _expressions_ are all equivalent.
 What is more, since they are bound by a _let declaration_, they have the exact same effect as the function _declarations_ above:
 
 ```rust
-.let f =   λ (T: *)((x y: T), return: T → ⊥)@(.ff): ⊥ = return x;
-.let f = .lm (T: *)((x y: T), return: T → ⊥)      : ⊥ = return x;
-.let f = .cn (T: *)((x y: T), return: .Cn T)          = return x;
-.let f = .fn (T: *) (x y: T): T                       = return x;
+let f =   λ (T: *)((x y: T), return: T → ⊥)@(ff): ⊥ = return x;
+let f = lm (T: *)((x y: T), return: T → ⊥)      : ⊥ = return x;
+let f = cn (T: *)((x y: T), return: Cn T)          = return x;
+let f = fn (T: *) (x y: T): T                       = return x;
 ```
 
 ### Applications
@@ -363,8 +363,8 @@ What is more, since they are bound by a _let declaration_, they have the exact s
 The following expressions for applying `f` are also equivalent:
 
 ```rust
-f .Nat ((23, 42), .cn res: .Nat = use(res))
-.ret res = f .Nat $ (23, 42); use(res)
+f Nat ((23, 42), cn res: Nat = use(res))
+ret res = f Nat $ (23, 42); use(res)
 ```
 
 ### Function Types
@@ -373,8 +373,8 @@ Finally, the following function types are all equivalent and denote the type of 
 
 ```rust
     [T:*] [[T, T], T → ⊥] → ⊥
-.Cn [T:*] [[T, T], .Cn T]
-.Fn [T:*]  [T, T] → T
+Cn [T:*] [[T, T], Cn T]
+Fn [T:*]  [T, T] → T
 ```
 
 ## Scoping
@@ -398,16 +398,16 @@ Named elements of mutable sigmas are available for extracts/inserts.
 
 @note
 These names take precedence over the usual scope.
-In the following example, `i` refers to the first element `i` of `X` and **not** to the `i` introduced via `.let`:
+In the following example, `i` refers to the first element `i` of `X` and **not** to the `i` introduced via `let`:
 
 ```rust
-.let i = 1_2;
-[i: .Nat, j: .Nat]::X → f X#i;
+let i = 1_2;
+[i: Nat, j: Nat]::X → f X#i;
 ```
 
-Use parentheses to refer to the `.let`-bounded `i`:
+Use parentheses to refer to the `let`-bounded `i`:
 
 ```rust
-.let i = 1_2;
-[i: .Nat, j: .Nat]::X → f X#(i);
+let i = 1_2;
+[i: Nat, j: Nat]::X → f X#(i);
 ```

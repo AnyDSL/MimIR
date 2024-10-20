@@ -8,21 +8,21 @@
 ///
 /// ## Dependencies
 ///
-.import compile;
-.plugin core;
-.plugin mem;
-.plugin direct;
+import compile;
+plugin core;
+plugin mem;
+plugin direct;
 ///
 /// ## Types
 ///
 /// ### RE
 ///
 /// Char & String
-.let Char = .I8;
-.lam Str(n: .Nat): * = %mem.Ptr0 «n; Char»;
+let Char = I8;
+lam Str(n: Nat): * = %mem.Ptr0 «n; Char»;
 /// A regular expression matcher.
-.lam Res (n: .Nat): * = [%mem.M, .Bool, .Idx n];
-.let RE = {n: .Nat} [%mem.M, Str n, .Idx n] -> Res n;
+lam Res (n: Nat): * = [%mem.M, Bool, Idx n];
+let RE = {n: Nat} [%mem.M, Str n, Idx n] -> Res n;
 ///
 /// ## Meta
 ///
@@ -31,13 +31,13 @@
 /// A sequence of RE's, e.g. `\d\d\d` matching 3 digits:
 /// `%%regex.conj (%%regex.cls.d, %%regex.cls.d, %%regex.cls.d)`
 ///
-.ax %regex.conj: [n: .Nat][«n; RE»] -> RE, normalize_conj, 2;
+axm %regex.conj: [n: Nat][«n; RE»] -> RE, normalize_conj, 2;
 ///
 /// ### %regex.disj
 ///
 /// Match any of the sub expressions: `[0123456789]`
 ///
-.ax %regex.disj: [n: .Nat][«n; RE»] -> RE, normalize_disj, 2;
+axm %regex.disj: [n: Nat][«n; RE»] -> RE, normalize_disj, 2;
 ///
 /// ## Values
 ///
@@ -46,19 +46,19 @@
 /// Wraps a range of literals.
 /// Use: `%%regex.range ('a', 'z')` to match all lower case letters.
 ///
-.ax %regex.range: «2; Char» -> RE, normalize_range, 1;
+axm %regex.range: «2; Char» -> RE, normalize_range, 1;
 ///
 /// ### %regex.lit
 ///
 /// Wraps a literal.
 ///
-.lam %regex.lit(val: Char) = %regex.range (val, val);
+lam %regex.lit(val: Char) = %regex.range (val, val);
 ///
 /// ### %regex.not
 ///
 /// Do not match the parameter.
 ///
-.ax %regex.not_: RE -> RE, normalize_not, 1;
+axm %regex.not_: RE -> RE, normalize_not, 1;
 ///
 /// ### %regex.cls.*
 ///
@@ -71,27 +71,27 @@
 /// | `s`    | whitespace `[ \t\r\n]`         |
 /// | `S`    | No whitespace                  |
 ///
-.let %regex.cls.d = %regex.range ('0', '9');
-.let %regex.cls.D = %regex.not_ %regex.cls.d;
-.let %regex.cls.w = %regex.disj 4 (%regex.range ('0', '9'), %regex.range ('a', 'z'), %regex.range ('A', 'Z'), %regex.lit '_');
-.let %regex.cls.W = %regex.not_ %regex.cls.w;
-.let %regex.cls.s = %regex.disj 3 (%regex.range ('\t', '\n'), %regex.lit '\r', %regex.lit ' ');
-.let %regex.cls.S = %regex.not_ %regex.cls.s;
+let %regex.cls.d = %regex.range ('0', '9');
+let %regex.cls.D = %regex.not_ %regex.cls.d;
+let %regex.cls.w = %regex.disj 4 (%regex.range ('0', '9'), %regex.range ('a', 'z'), %regex.range ('A', 'Z'), %regex.lit '_');
+let %regex.cls.W = %regex.not_ %regex.cls.w;
+let %regex.cls.s = %regex.disj 3 (%regex.range ('\t', '\n'), %regex.lit '\r', %regex.lit ' ');
+let %regex.cls.S = %regex.not_ %regex.cls.s;
 ///
 /// ### %regex.any
 ///
 /// Match any character.
 ///
-.ax %regex.any: RE;
+axm %regex.any: RE;
 ///
 /// ## Quantifiers
 ///
 /// ### %regex.quant.*
 ///
-.ax %regex.quant(optional,star,plus): RE -> RE, normalize_quant, 1;
+axm %regex.quant(optional,star,plus): RE -> RE, normalize_quant, 1;
 ///
 /// ## Passes and Phases
 ///
 /// ### Passes
 ///
-.ax %regex.lower_regex: %compile.Pass;
+axm %regex.lower_regex: %compile.Pass;

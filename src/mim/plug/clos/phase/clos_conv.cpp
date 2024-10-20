@@ -179,7 +179,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         return map(closure);
     } else if (auto a = match<attr>(def)) {
         switch (a.id()) {
-            case attr::ret:
+            case attr::returning:
                 if (auto ret_lam = a->arg()->isa_mut<Lam>()) {
                     // assert(ret_lam && ret_lam->is_basicblock());
                     //  Note: This should be cont_lam's only occurance after η-expansion, so its okay to

@@ -3,14 +3,14 @@
 // RUN: clang %t.ll -o %t -Wno-override-module
 // RUN: %t ; test $? -eq 42
 
-.plugin core;
-.plugin refly;
+plugin core;
+plugin refly;
 
-.fun .extern main(mem: %mem.M, argc: .I32, argv: %mem.Ptr (%mem.Ptr (.I8, 0), 0)): [%mem.M, .I32] =
-    .let exp = %refly.reify (0, 1, 2, 3);
-    .let new = %refly.refine («4; .Nat», .Nat)(exp, 1, %refly.reify 42);
-    .let tup = %refly.reflect new;
-    .let x   = %core.bitcast .I64 tup#1_4;
-    return (mem, %core.conv.u .i32 x);
+fun extern main(mem: %mem.M, argc: I32, argv: %mem.Ptr (%mem.Ptr (I8, 0), 0)): [%mem.M, I32] =
+    let exp = %refly.reify (0, 1, 2, 3);
+    let new = %refly.refine («4; Nat», Nat)(exp, 1, %refly.reify 42);
+    let tup = %refly.reflect new;
+    let x   = %core.bitcast I64 tup#1_4;
+    return (mem, %core.conv.u i32 x);
 
 // CHECK-DAG: return{{.*}}42

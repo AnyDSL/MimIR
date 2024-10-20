@@ -72,7 +72,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
             //     C[b]
             //
             // f : A -> B
-            // f': .Cn [A, ret: .Cn[B]]
+            // f': Cn [A, ret: Cn[B]]
             // ```
 
             // TODO: rewrite map vs mim::rewrite

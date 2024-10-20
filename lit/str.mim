@@ -2,17 +2,17 @@
 // RUN: %mim --output-ll %t.ll %s
 // RUN: clang %S/lib.c %t.ll -o %t -Wno-override-module
 // RUN: %t | FileCheck %s
-.plugin core;
+plugin core;
 
-.cfun println_char[%mem.M, .I8]: %mem.M;
-.cfun print_str[%mem.M, %mem.Ptr0 «⊤:.Nat; .I8»]: %mem.M;
+cfun println_char[%mem.M, I8]: %mem.M;
+cfun print_str[%mem.M, %mem.Ptr0 «⊤:Nat; I8»]: %mem.M;
 
-.fun .extern main(mem: %mem.M, argc: .I32, argv: %mem.Ptr0 (%mem.Ptr0 .I8)): [%mem.M, .I32] =
-    .let (`mem, p1) = %mem.slot («15; .I8», 0) (mem, 0);
-    .let  `mem      = %mem.store (mem, p1, "Hello, World!\n\0");
-    .let p2         = %core.bitcast (%mem.Ptr0 «⊤:.Nat; .I8») p1;
-    .ret `mem       = println_char $ (mem, 'x');
-    .ret `mem       = print_str $ (mem, p2);
+fun extern main(mem: %mem.M, argc: I32, argv: %mem.Ptr0 (%mem.Ptr0 I8)): [%mem.M, I32] =
+    let (`mem, p1) = %mem.slot («15; I8», 0) (mem, 0);
+    let  `mem      = %mem.store (mem, p1, "Hello, World!\n\0");
+    let p2         = %core.bitcast (%mem.Ptr0 «⊤:Nat; I8») p1;
+    ret `mem       = println_char $ (mem, 'x');
+    ret `mem       = print_str $ (mem, p2);
     return (mem, 0I32);
 // CHECK: x
 // CHECK: Hello, World!

@@ -1,15 +1,15 @@
 // RUN: %mim %s -o - | FileCheck %s
 
-.plugin core;
+plugin core;
 
-.lam .extern a(x: .Idx 23) = %core.icmp.e   (x, x);
-.lam .extern b(x: .Idx 23) = %core.icmp.ule (x, x);
-.lam .extern c(x: .Idx 23) = %core.icmp.ul  (x, x);
-.lam .extern d(x: .Idx 23) = %core.icmp.ne  (x, x);
-.lam .extern e(x: .Idx 23) = %core.icmp.ne  (x, 7_23);
+lam extern a(x: Idx 23) = %core.icmp.e   (x, x);
+lam extern b(x: Idx 23) = %core.icmp.ule (x, x);
+lam extern c(x: Idx 23) = %core.icmp.ul  (x, x);
+lam extern d(x: Idx 23) = %core.icmp.ne  (x, x);
+lam extern e(x: Idx 23) = %core.icmp.ne  (x, 7_23);
 
-// CHECK-DAG: .tt
-// CHECK-DAG: .tt
+// CHECK-DAG: tt
+// CHECK-DAG: tt
 // CHECK-DAG: icmp
-// CHECK-DAG: .ff
+// CHECK-DAG: ff
 // CHECK-DAG: icmp

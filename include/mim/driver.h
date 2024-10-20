@@ -42,7 +42,7 @@ public:
     /// @name Manage Imports
     /// This is a list of pairs where each pair contains:
     /// 1. The `fs::path` used during import,
-    /// 2. The name as Sym%bol used in the `.import` directive or in Parser::import.
+    /// 2. The name as Sym%bol used in the `import` directive or in Parser::import.
     ///@{
     const auto& imports() { return imports_; }
     /// Yields a `fs::path*` if not already added that you can use in Loc%ation; returns `nullptr` otherwise.

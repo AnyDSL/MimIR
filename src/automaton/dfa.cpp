@@ -3,7 +3,6 @@
 #include <absl/container/flat_hash_map.h>
 
 #include "automaton/automaton.h"
-#include "automaton/range_helper.h"
 
 namespace automaton {
 

@@ -609,7 +609,7 @@ Ref normalize_bitcast(Ref dst_t, Ref callee, Ref src) {
 }
 
 // TODO this currently hard-codes x86_64 ABI
-// TODO in contrast to C, we might want to give singleton types like '.Idx 1' or '[]' a size of 0 and simply nuke each
+// TODO in contrast to C, we might want to give singleton types like 'Idx 1' or '[]' a size of 0 and simply nuke each
 // and every occurance of these types in a later phase
 // TODO Pi and others
 template<trait id> Ref normalize_trait(Ref nat, Ref callee, Ref type) {

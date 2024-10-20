@@ -290,13 +290,13 @@ void LamDecl::bind_decl(Scopes& s) const {
         if (auto pe = filter->isa<PrimaryExpr>()) {
             if (pe->tag() == Tag::K_tt && (tag() == Tag::K_lam || tag() == Tag::T_lm))
                 s.ast().warn(filter->loc(),
-                             "'.tt'-filter superfluous as the last curried function group of a '{}' receives a "
-                             "'.tt'-filter by default",
+                             "'tt'-filter superfluous as the last curried function group of a '{}' receives a "
+                             "'tt'-filter by default",
                              tag());
             if (pe->tag() == Tag::K_ff && (tag() != Tag::K_lam && tag() != Tag::T_lm))
                 s.ast().warn(filter->loc(),
-                             "'.ff'-filter superfluous as the last curried function group of a '{}' receives a "
-                             "'.ff'-filter by default",
+                             "'ff'-filter superfluous as the last curried function group of a '{}' receives a "
+                             "'ff'-filter by default",
                              tag());
         }
     }

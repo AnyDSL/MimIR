@@ -1,7 +1,6 @@
 #include "automaton/nfa.h"
 
 #include "automaton/automaton.h"
-#include "automaton/range_helper.h"
 
 namespace automaton {
 

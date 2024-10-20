@@ -1,10 +1,10 @@
 // RUN: %mim %s -o - | FileCheck %s
-.plugin core;
+plugin core;
 
-.lam .extern f(): «3; .Nat» = ‹i: 3; %core.nat.add (1, %core.bitcast .Nat i)›;
-.let p1 = ‹i: 2; i›;
-.let p2 = ‹i: 1; i›;
-.let p3 = ‹i: 0; i›;
-.lam .extern g(): [.Idx 1, []] = (p2, p3);
+lam extern f(): «3; Nat» = ‹i: 3; %core.nat.add (1, %core.bitcast Nat i)›;
+let p1 = ‹i: 2; i›;
+let p2 = ‹i: 1; i›;
+let p3 = ‹i: 0; i›;
+lam extern g(): [Idx 1, []] = (p2, p3);
 // CHECK-DAG: (1, 2, 3)
 // CHECK-DAG: (0₁, ())

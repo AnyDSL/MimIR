@@ -1,14 +1,13 @@
 // RUN: %mim %s -o - -P %S | FileCheck %s
 
-.import mem;
-.plugin regex;
+import mem;
+plugin regex;
 
-.import dont_compile.mim;
+import dont_compile.mim;
 
-.let i8 = .I8;
-.let Top = ⊤:.Nat;
+let Top = ⊤:Nat;
 
-.con .extern fold_optional_plus(mem: %mem.M, string: %mem.Ptr (<<Top; .I8>>, 0), return: .Cn [%mem.M, .Bool, .I32]) =
-    .let pattern = %regex.quant.optional (%regex.quant.plus (%regex.cls.d));
+con extern fold_optional_plus(mem: %mem.M, string: %mem.Ptr (<<Top; I8>>, 0), return: Cn [%mem.M, Bool, I32]) =
+    let pattern = %regex.quant.optional (%regex.quant.plus (%regex.cls.d));
     return (pattern (mem, string, 0I32));
     // CHECK: %regex.quant.star %regex.range (48I8, 57I8)

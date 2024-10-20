@@ -7,32 +7,32 @@
 
 // ./build/bin/mim -d matrix ./lit/matrix/map_reduce.mim --output-mim -
 
-.plugin core;
-.plugin matrix;
+plugin core;
+plugin matrix;
 
 
 // flat by scalarize
 // Mat (n,S,T) => Ptr(<S1...<Sn, T>...>) => T*
 
 // TODO: generalize over w such that it generates a declaration specialized for Real w
-// .lam ![w:.Nat] -> ... = {.con ...} ?
+// lam ![w:Nat] -> ... = {con ...} ?
 // TODO: can be generalize to keep the original type scheme? (How handle m,k,l curried?)
-.con .extern extern_matrix_prod [
+con extern extern_matrix_prod [
     [
         %mem.M,
-        m:.Nat, k:.Nat, l:.Nat,
+        m:Nat, k:Nat, l:Nat,
         %matrix.Mat (2,(m, k), %math.F64), %matrix.Mat (2,(k, l), %math.F64)
     ],
-    return : .Cn [%mem.M, %matrix.Mat (2,(m, l), %math.F64)]
+    return : Cn [%mem.M, %matrix.Mat (2,(m, l), %math.F64)]
 ];
 
-.con .extern f [mem : %mem.M,
-    [k:.Nat, l:.Nat, m:.Nat],
+con extern f [mem : %mem.M,
+    [k:Nat, l:Nat, m:Nat],
     M:%matrix.Mat (2,(m,k), %math.F64),
     N:%matrix.Mat (2,(k,l), %math.F64),
-    return: .Cn[%mem.M, %matrix.Mat (2,(m,l), %math.F64)]] = {
+    return: Cn[%mem.M, %matrix.Mat (2,(m,l), %math.F64)]] = {
 
-    .let (mem2,MN) = %matrix.prod (m,k,l,64) (mem,M,N);
+    let (mem2,MN) = %matrix.prod (m,k,l,64) (mem,M,N);
 
     return (mem2, MN)
 };

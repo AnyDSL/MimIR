@@ -1,16 +1,16 @@
 // RUN: rm -f %t.ll
 // RUN: %mim %s --output-ll %t.ll -o - | FileCheck %s
 
-.plugin core;
-.plugin demo;
+plugin core;
+plugin demo;
 
-.con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I8, 0), 0), return : .Cn [%mem.M, .I32]] =
-    .con ret_cont r: .I32 = return (mem, r);
-    .let c = %demo.const_idx .i32;
+con extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (I8, 0), 0), return : Cn [%mem.M, I32]] =
+    con ret_cont r: I32 = return (mem, r);
+    let c = %demo.const_idx i32;
     ret_cont c;
 
-// CHECK-DAG: .con .extern main _{{[0-9_]+}}::[mem_[[memId:[_0-9]*]]: %mem.M, .I32, %mem.Ptr (%mem.Ptr (.I8, 0), 0), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, .I32]]{{(@.*)?}}= {
+// CHECK-DAG: con extern main _{{[0-9_]+}}::[mem_[[memId:[_0-9]*]]: %mem.M, I32, %mem.Ptr (%mem.Ptr (I8, 0), 0), return_[[returnId:[_0-9]*]]: Cn [%mem.M, I32]]{{(@.*)?}}= {
 // CHECK-DAG: return_[[returnEtaId:[_0-9]*]] (mem_[[memId]], 42I32)
 
-// CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, .I32]{{(@.*)?}}= {
+// CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, I32]{{(@.*)?}}= {
 // CHECK-DAG: return_[[returnId]] _[[returnEtaVarId]]

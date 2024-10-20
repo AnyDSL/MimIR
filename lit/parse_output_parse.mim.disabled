@@ -10,17 +10,17 @@ https://github.com/AnyDSL/MimIR/issues/114
 */
 
 
-.import mem;
+import mem;
 
-.con .extern main [mem : %mem.M, argc : .I32, argv : %mem.Ptr (%mem.Ptr (.I8, 0), 0), return : .Cn [%mem.M, .I32]] = {
-    .con single_arg_parse_test mem: %mem.M = {
+con extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (I8, 0), 0), return : Cn [%mem.M, I32]] = {
+    con single_arg_parse_test mem: %mem.M = {
             return (mem, argc)
     };
     single_arg_parse_test mem
 };
 
-// CHECK-DAG: .con .extern main _{{[0-9_]+}}::[mem_[[memId:[_0-9]*]]: %mem.M, argc_[[argcId:[0-9_]+]]: .I32, %mem.Ptr (%mem.Ptr (.I8, 0), 0), return_[[returnId:[_0-9]+]]: .Cn [%mem.M, .I32]] {{(@.*)?}}= {
+// CHECK-DAG: con extern main _{{[0-9_]+}}::[mem_[[memId:[_0-9]*]]: %mem.M, argc_[[argcId:[0-9_]+]]: I32, %mem.Ptr (%mem.Ptr (I8, 0), 0), return_[[returnId:[_0-9]+]]: Cn [%mem.M, I32]] {{(@.*)?}}= {
 // CHECK-DAG: return_[[returnEtaId:[0-9_]+]] (mem_[[memId]], argc_[[argcId]])
 
-// CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, .I32] {{(@.*)?}}= {
+// CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, I32] {{(@.*)?}}= {
 // CHECK-DAG: return_[[returnId]] _[[returnEtaVarId]]

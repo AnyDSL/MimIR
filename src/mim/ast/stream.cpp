@@ -94,7 +94,7 @@ std::ostream& LitExpr::stream(Tab& tab, std::ostream& os) const {
 
 std::ostream& DeclExpr::stream(Tab& tab, std::ostream& os) const {
     if (is_where()) {
-        tab.println(os, "{} .where", S(tab, expr()));
+        tab.println(os, "{} where", S(tab, expr()));
         ++tab;
         for (const auto& decl : decls()) tab.println(os, "{}", S(tab, decl.get()));
         --tab;
@@ -105,7 +105,7 @@ std::ostream& DeclExpr::stream(Tab& tab, std::ostream& os) const {
     }
 }
 
-std::ostream& TypeExpr::stream(Tab& tab, std::ostream& os) const { return print(os, "(.Type {})", S(tab, level())); }
+std::ostream& TypeExpr::stream(Tab& tab, std::ostream& os) const { return print(os, "(Type {})", S(tab, level())); }
 
 std::ostream& ArrowExpr::stream(Tab& tab, std::ostream& os) const {
     return print(os, "{} -> {}", S(tab, dom()), S(tab, codom()));
@@ -130,7 +130,7 @@ std::ostream& AppExpr::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& RetExpr::stream(Tab& tab, std::ostream& os) const {
-    println(os, ".ret {} = {} $ {};", S(tab, ptrn()), S(tab, callee()), S(tab, arg()));
+    println(os, "ret {} = {} $ {};", S(tab, ptrn()), S(tab, callee()), S(tab, arg()));
     return tab.print(os, "{}", S(tab, body()));
 }
 
@@ -150,7 +150,7 @@ std::ostream& ExtractExpr::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& InsertExpr::stream(Tab& tab, std::ostream& os) const {
-    return print(os, ".ins({}, {}, {})", S(tab, tuple()), S(tab, index()), S(tab, value()));
+    return print(os, "ins({}, {}, {})", S(tab, tuple()), S(tab, index()), S(tab, value()));
 }
 
 /*
@@ -160,7 +160,7 @@ std::ostream& InsertExpr::stream(Tab& tab, std::ostream& os) const {
 std::ostream& AxiomDecl::Alias::stream(Tab&, std::ostream& os) const { return os << dbg(); }
 
 std::ostream& AxiomDecl::stream(Tab& tab, std::ostream& os) const {
-    print(os, ".ax {}", dbg());
+    print(os, "axm {}", dbg());
     if (num_subs() != 0) {
         os << '(';
         for (auto sep = ""; const auto& aliases : subs()) {
@@ -177,7 +177,7 @@ std::ostream& AxiomDecl::stream(Tab& tab, std::ostream& os) const {
 }
 
 std::ostream& LetDecl::stream(Tab& tab, std::ostream& os) const {
-    return print(os, ".let {} = {};", S(tab, ptrn()), S(tab, value()));
+    return print(os, "let {} = {};", S(tab, ptrn()), S(tab, value()));
 }
 
 std::ostream& RecDecl::stream(Tab& tab, std::ostream& os) const {

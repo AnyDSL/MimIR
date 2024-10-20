@@ -102,15 +102,15 @@ D load =
     T;
 
 .rule (A B:*) :
-    (%autodiff.autodiff_type (.Cn [A, .Cn B])) ->
+    (%autodiff.autodiff_type (Cn [A, Cn B])) ->
     (
-        .Cn [
+        Cn [
             %autodiff.autodiff_type A,
-            .Cn[
+            Cn[
                 %autodiff.autodiff_type B,
-                .Cn[
+                Cn[
                     %autodiff.tangent_type B,
-                    .Cn [%autodiff.tangent_type A]
+                    Cn [%autodiff.tangent_type A]
                 ]
             ]
         ]
@@ -119,12 +119,12 @@ D load =
 /// otherwise
 /// pseudo rule
 .rule (A E:*) :
-    (%autodiff.inner_autodiff_type A (.Cn E)) ->
-    (.Cn [
+    (%autodiff.inner_autodiff_type A (Cn E)) ->
+    (Cn [
         %autodiff.autodiff_type E,
-        .Cn[
+        Cn[
             %autodiff.tangent_type E,
-            .Cn [%autodiff.tangent_type A]
+            Cn [%autodiff.tangent_type A]
         ]
     ]);
 
@@ -144,14 +144,14 @@ D load =
 
 /// literal
 // first step could be inlined
-.cn zero_pb [[A:*, E:*],
-    ret:.Cn[
+cn zero_pb [[A:*, E:*],
+    ret:Cn[
         %autodiff.tangent_type E,
-        .Cn (%autodiff.tangent_type A)
+        Cn (%autodiff.tangent_type A)
     ]] = {
-    .cn inner_pb [
+    cn inner_pb [
         s  : %autodiff.tangent_type E,
-        ret: .Cn (%autodiff.tangent_type A)
+        ret: Cn (%autodiff.tangent_type A)
     ] = {
         let z = %autodiff.zero (%autodiff.tangent_type A) in
         ret z
@@ -159,32 +159,32 @@ D load =
     ret inner_pb
 };
 
-.rule (A:*) (n:.Nat) (c:(.Idx n)) :
+.rule (A:*) (n:Nat) (c:(Idx n)) :
     (%autodiff.inner_autodiff A c) ->
-    (c, %direct.cps2ds_dep (...) zero_pb (A, .Idx n));
+    (c, %direct.cps2ds_dep (...) zero_pb (A, Idx n));
 
 /// application
 
-.cn compose [[A:*, B:*, C:*],
-    ret: .Cn[
+cn compose [[A:*, B:*, C:*],
+    ret: Cn[
         [
-            .Cn [B, .Cn C],
-            .Cn [A, .Cn B]
+            Cn [B, Cn C],
+            Cn [A, Cn B]
         ],
-        .Cn [.Cn[A, .Cn C]]
+        Cn [Cn[A, Cn C]]
     ]] = {
-    .cn composition [
+    cn composition [
         [
-            f: .Cn [B, .Cn C],
-            g: .Cn [A, .Cn B]
+            f: Cn [B, Cn C],
+            g: Cn [A, Cn B]
         ],
-        ret: .Cn [.Cn[A, .Cn C]]
+        ret: Cn [Cn[A, Cn C]]
     ] = {
-        .cn res [
+        cn res [
             a: A,
-            ret: .Cn C
+            ret: Cn C
         ] = {
-            .cn cont [b: B] = {
+            cn cont [b: B] = {
                 f (b, ret)
             };
             g (a, cont)
@@ -202,8 +202,8 @@ D load =
 .rule (A E X Y:*) (g:E->X->Y) (e:E):
     (%autodiff.inner_autodiff A (g e)) ->
     (
-        .let g_diff        = %autodiff.autodiff g;
-        .let (e_aug, e_pb) = %autodiff.inner_autodiff A e;
+        let g_diff        = %autodiff.autodiff g;
+        let (e_aug, e_pb) = %autodiff.inner_autodiff A e;
         g_diff e_aug
     );
 
@@ -211,28 +211,28 @@ D load =
 /// operator application (axioms) - direct style
 .rule (A E Y:*) (g:E->Y) (e:E):
     (%autodiff.inner_autodiff A (g e)) ->
-    .let g_diff        = %autodiff.autodiff g;
-    .let (e_aug, e_pb) = %autodiff.inner_autodiff A e;
-    .let (y, g_pb)     = g_diff e_aug;
+    let g_diff        = %autodiff.autodiff g;
+    let (e_aug, e_pb) = %autodiff.inner_autodiff A e;
+    let (y, g_pb)     = g_diff e_aug;
     (
         y,
         %direct.cps2ds_dep ... (%direct.cps2ds_dep ... compose ...) (e_pb,g_pb)
     );
 
 /// closed function application
-.rule (A E Y:*) (g:.Cn[E,.Cn Y]) (args:[E,.Cn Y]):
+.rule (A E Y:*) (g:Cn[E,Cn Y]) (args:[E,Cn Y]):
     (%autodiff.inner_autodiff A (g args)) ->
-    .let g_diff            = %autodiff.autodiff g;
-    .let aug_args,         = %autodiff.inner_autodiff A args;
-    .let (aug_e, aug_cont) = aug_args;
-    .let e_pb              = ... // from augmentation
+    let g_diff            = %autodiff.autodiff g;
+    let aug_args,         = %autodiff.inner_autodiff A args;
+    let (aug_e, aug_cont) = aug_args;
+    let e_pb              = ... // from augmentation
     // aug_args_S* #1
     // or aug_args* (0:...,1:...)
-    .cn g_ret_cont [
+    cn g_ret_cont [
         y: %autodiff.autodiff_type Y,
-        g_pb: .Cn [
+        g_pb: Cn [
             %autodiff.tangent_type Y,
-            .Cn [%autodiff.tangent_type E]
+            Cn [%autodiff.tangent_type E]
         ]
     ] = {
         aug_cont (
@@ -246,26 +246,26 @@ D load =
     );
 
 /// open function application (continuation - if, ret, ...)
-.rule (A E:*) (f:.Cn E) (e:E):
+.rule (A E:*) (f:Cn E) (e:E):
     (%autodiff.inner_autodiff A (f e)) ->
-    .let f_diff        = %autodiff.autodiff f;
-    .let (e_aug, e_pb) = %autodiff.inner_autodiff A e;
+    let f_diff        = %autodiff.autodiff f;
+    let (e_aug, e_pb) = %autodiff.inner_autodiff A e;
     (f_diff (e_aug, e_pb), _);
     ;
 
 
 /// tuple
 // TODO: correct syntax?
-.rule (A:*) (n:.Nat) (ET:«n; *») (t:«i:n; ET#i»):
+.rule (A:*) (n:Nat) (ET:«n; *») (t:«i:n; ET#i»):
     (%autodiff.inner_autodiff A t) ->
-    .let t_diff = ‹i:n; %autodiff.inner_autodiff A (t#i) ›;
-    .let t_aug = ‹i:n; (t_diff#i)#(.ff) ›;
-    .cn t_pb [
+    let t_diff = ‹i:n; %autodiff.inner_autodiff A (t#i) ›;
+    let t_aug = ‹i:n; (t_diff#i)#(ff) ›;
+    cn t_pb [
         s: «i:n; %autodiff.tangent_type (ET#i) »,
-        ret: .Cn (%autodiff.tangent_type A)
+        ret: Cn (%autodiff.tangent_type A)
     ] = {
         ret (%autodiff.sum (n, %autodiff.tangent_type A) (
-            ‹i:n; %direct.cps2ds_dep ... ((t_diff#i)#(.tt)) (s#i) ›
+            ‹i:n; %direct.cps2ds_dep ... ((t_diff#i)#(tt)) (s#i) ›
         ))
     };
     (
@@ -274,34 +274,34 @@ D load =
     );
 
 /// tuple shadow
-.rule (A:*) (n:.Nat) (ET:«n; *») (t:«i:n; ET#i»):
+.rule (A:*) (n:Nat) (ET:«n; *») (t:«i:n; ET#i»):
     (%autodiff.inner_shadow_autodiff A t) ->
-    .let t_diff = ‹i:n; %autodiff.inner_autodiff A (t#i) ›;
-    ‹i:n; (t_diff#i)#(.tt) ›;
+    let t_diff = ‹i:n; %autodiff.inner_autodiff A (t#i) ›;
+    ‹i:n; (t_diff#i)#(tt) ›;
 
 
 /// projection
 // needs meta reasoning (like app)
-.rule (A:*) (n:.Nat) (ET:«n; *») (t:«i:n; ET#i») (j:(.Idx n)):
+.rule (A:*) (n:Nat) (ET:«n; *») (t:«i:n; ET#i») (j:(Idx n)):
     (%autodiff.inner_autodiff A (t#j)) ->
-    .let (t_aug, t_pb) = %autodiff.inner_autodiff A t;
-    .let (j_aug, _) = %autodiff.inner_autodiff A j;
-    .let t_pb_S = %autodiff.inner_shadow_autodiff A t;
+    let (t_aug, t_pb) = %autodiff.inner_autodiff A t;
+    let (j_aug, _) = %autodiff.inner_autodiff A j;
+    let t_pb_S = %autodiff.inner_shadow_autodiff A t;
     (
         t_aug,
         t_pb_S#j_aug
     );
 
 // if no shadow pb
-.rule (A:*) (n:.Nat) (ET:«n; *») (t:«i:n; ET#i») (j:(.Idx n)):
+.rule (A:*) (n:Nat) (ET:«n; *») (t:«i:n; ET#i») (j:(Idx n)):
     (%autodiff.inner_autodiff A (t#j)) ->
-    .let (t_aug, t_pb) = %autodiff.inner_autodiff A t;
-    .let (j_aug, _) = %autodiff.inner_autodiff A j;
-    .cn e_pb [
+    let (t_aug, t_pb) = %autodiff.inner_autodiff A t;
+    let (j_aug, _) = %autodiff.inner_autodiff A j;
+    cn e_pb [
         s: %autodiff.tangent_type (ET#j),
-        ret: .Cn (%autodiff.tangent_type A)
+        ret: Cn (%autodiff.tangent_type A)
     ] = {
-        .let s_t = insert (
+        let s_t = insert (
                 %autodiff.zero («i:n; %autodiff.tangent_type (ET#i)»),
                 j_aug,
                 s

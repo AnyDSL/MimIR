@@ -1,6 +1,6 @@
 // RUN: %mim %s -o -
-.let Triple = [T: *, U: *, V: *];
+let Triple = [T: *, U: *, V: *];
 
-.ax %bug.Box: Triple -> *;
-.ax %bug.test: [n: .Nat] [Ss: «n; Triple», X: Triple] -> %bug.Box X;
-.lam l3 [S: Triple]: %bug.Box S = %bug.test 3 ((S, S, S), S);
+axm %bug.Box: Triple -> *;
+axm %bug.test: [n: Nat] [Ss: «n; Triple», X: Triple] -> %bug.Box X;
+lam l3 [S: Triple]: %bug.Box S = %bug.test 3 ((S, S, S), S);

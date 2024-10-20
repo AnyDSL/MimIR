@@ -365,7 +365,7 @@ private:
     Ptr<Expr> type_;
 };
 
-/// `decls e` or `e .where decls` if @p where is `true`.
+/// `decls e` or `e where decls` if @p where is `true`.
 class DeclExpr : public Expr {
 public:
     DeclExpr(Loc loc, Ptrs<ValDecl>&& decls, Ptr<Expr>&& expr, bool is_where)
@@ -389,7 +389,7 @@ private:
     bool is_where_;
 };
 
-/// `.Type level`
+/// `Type level`
 class TypeExpr : public Expr {
 public:
     TypeExpr(Loc loc, Ptr<Expr>&& level)
@@ -436,8 +436,8 @@ private:
 
 /// One of:
 /// * `    dom_0 ... dom_n-1 -> codom`
-/// * `.Cn dom_0 ... dom_n-1`
-/// * `.Fn dom_0 ... dom_n-1 -> codom`
+/// * `Cn dom_0 ... dom_n-1`
+/// * `Fn dom_0 ... dom_n-1 -> codom`
 class PiExpr : public Expr {
 public:
     class Dom : public Node {
@@ -542,7 +542,7 @@ private:
     Ptr<Expr> arg_;
 };
 
-/// `.ret ptrn = callee $ arg; body`
+/// `ret ptrn = callee $ arg; body`
 class RetExpr : public Expr {
 public:
     RetExpr(Loc loc, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& callee, Ptr<Expr>&& arg, Ptr<Expr> body)
@@ -663,7 +663,7 @@ private:
     mutable const Decl* decl_ = nullptr;
 };
 
-/// `.ins(tuple, index, value)`
+/// `ins(tuple, index, value)`
 class InsertExpr : public Expr {
 public:
     InsertExpr(Loc loc, Ptr<Expr>&& tuple, Ptr<Expr>&& index, Ptr<Expr>&& value)
@@ -691,7 +691,7 @@ private:
  * Decls
  */
 
-/// `.let ptrn: type = value;`
+/// `let ptrn: type = value;`
 class LetDecl : public ValDecl {
 public:
     LetDecl(Loc loc, Ptr<Ptrn>&& ptrn, Ptr<Expr>&& value)
@@ -713,7 +713,7 @@ private:
     mutable sub_t sub_;
 };
 
-/// `.ax ptrn: type = value;`
+/// `axm ptrn: type = value;`
 class AxiomDecl : public ValDecl {
 public:
     class Alias : public Decl {
@@ -802,11 +802,11 @@ private:
 
 /// One of:
 /// * `λ   dom_0 ... dom_n-1 -> codom`
-/// * `.cn dom_0 ... dom_n-1`
-/// * `.fn dom_0 ... dom_n-1 -> codom`
-/// * `.lam dbg dom_0 ... dom_n-1 -> codom`
-/// * `.con dbg dom_0 ... dom_n-1`
-/// * `.fun dbg dom_0 ... dom_n-1 -> codom`
+/// * `cn dom_0 ... dom_n-1`
+/// * `fn dom_0 ... dom_n-1 -> codom`
+/// * `lam dbg dom_0 ... dom_n-1 -> codom`
+/// * `con dbg dom_0 ... dom_n-1`
+/// * `fun dbg dom_0 ... dom_n-1 -> codom`
 class LamDecl : public RecDecl {
 public:
     class Dom : public PiExpr::Dom {
@@ -866,7 +866,7 @@ private:
     mutable sub_t sub_;
 };
 
-/// `.cfun dbg dom -> codom`
+/// `cfun dbg dom -> codom`
 class CDecl : public ValDecl {
 public:
     CDecl(Loc loc, Tok::Tag tag, Dbg dbg, Ptr<Ptrn>&& dom, Ptr<Expr>&& codom)

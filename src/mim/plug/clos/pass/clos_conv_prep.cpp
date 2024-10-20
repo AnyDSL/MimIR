@@ -81,12 +81,12 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
             return refine(w.call(attr::freeBB, op));
         }
         if (isa_cnt(app, arg, i)) {
-            if (match<attr>(attr::ret, op) || isa_retvar(op)) {
+            if (match<attr>(attr::returning, op) || isa_retvar(op)) {
                 return app;
             } else if (auto contlam = op->isa_mut<Lam>()) {
-                return refine(w.call(attr::ret, contlam));
+                return refine(w.call(attr::returning, contlam));
             } else {
-                auto wrapper = eta_wrap(op, attr::ret)->set("eta_cont");
+                auto wrapper = eta_wrap(op, attr::returning)->set("eta_cont");
                 w.DLOG("eta expanded return cont: {} -> {}", op, wrapper);
                 return refine(wrapper);
             }
@@ -117,7 +117,7 @@ const App* ClosConvPrep::rewrite_callee(const App* app) {
             if (branches->isa<Tuple>() && branches->type()->isa<Arr>()) {
                 for (size_t i = 0, e = branches->num_ops(); i != e; ++i) {
                     if (!branches->op(i)->isa_mut<Lam>()) {
-                        auto wrapper = eta_wrap(branches->op(i), attr::bot)->set("eta_br");
+                        auto wrapper = eta_wrap(branches->op(i), attr::bottom)->set("eta_br");
                         w.DLOG("eta wrap branch: {} -> {}", branches->op(i), wrapper);
                         branches = branches->refine(i, wrapper);
                     }

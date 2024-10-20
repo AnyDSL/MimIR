@@ -2,8 +2,6 @@
 
 #include <cstdint>
 
-#include <vector>
-
 #include <absl/container/flat_hash_map.h>
 
 #include "automaton/automaton.h"

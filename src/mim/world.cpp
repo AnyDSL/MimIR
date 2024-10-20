@@ -93,15 +93,14 @@ const Def* World::register_annex(flags_t f, const Def* def) {
 
 const Type* World::type(Ref level) {
     if (!level->type()->isa<Univ>())
-        error(level->loc(), "argument `{}` to `.Type` must be of type `.Univ` but is of type `{}`", level,
-              level->type());
+        error(level->loc(), "argument `{}` to `Type` must be of type `Univ` but is of type `{}`", level, level->type());
 
     return unify<Type>(1, level)->as<Type>();
 }
 
 Ref World::uinc(Ref op, level_t offset) {
     if (!op->type()->isa<Univ>())
-        error(op->loc(), "operand '{}' of a universe increment must be of type `.Univ` but is of type `{}`", op,
+        error(op->loc(), "operand '{}' of a universe increment must be of type `Univ` but is of type `{}`", op,
               op->type());
 
     if (auto l = Lit::isa(op)) return lit_univ(*l + 1);
@@ -126,11 +125,11 @@ template<Sort sort> Ref World::umax(Defs ops_) {
             if (auto type = r->isa<Type>())
                 r = type->level();
             else
-                error(r->loc(), "operand '{}' must be a .Type of some level", r);
+                error(r->loc(), "operand '{}' must be a Type of some level", r);
         }
 
         if (!r->type()->isa<Univ>())
-            error(r->loc(), "operand '{}' of a universe max must be of type '.Univ' but is of type '{}'", r, r->type());
+            error(r->loc(), "operand '{}' of a universe max must be of type 'Univ' but is of type '{}'", r, r->type());
 
         op = r;
 
@@ -454,7 +453,7 @@ const Lit* World::lit(Ref type, u64 val) {
         if (auto s = Lit::isa(size)) {
             if (*s != 0 && val >= *s) error(type->loc(), "index '{}' does not fit within arity '{}'", size, val);
         } else if (val != 0) { // 0 of any size is allowed
-            error(type->loc(), "cannot create literal '{}' of '.Idx {}' as size is unknown", val, size);
+            error(type->loc(), "cannot create literal '{}' of 'Idx {}' as size is unknown", val, size);
         }
     }
 

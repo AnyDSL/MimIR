@@ -1,17 +1,17 @@
 // RUN: rm -f %t.ll
 // RUN: %mim %s --output-ll %t.ll -o -
 
-.plugin core;
+plugin core;
 
-.ax %foo.Mat: [n: .Nat, S: «n; .Nat», T: *] -> *;
+axm %foo.Mat: [n: Nat, S: «n; Nat», T: *] -> *;
 
-.ax %foo.map_reduce:
+axm %foo.map_reduce:
     // out shape depends on in shape but is complex
-    [n: .Nat, S: «n; .Nat», T: *, // out shape
-     m: .Nat,                    // number of inputs
-     NI: «m; .Nat»,              // input dimensions
+    [n: Nat, S: «n; Nat», T: *, // out shape
+     m: Nat,                    // number of inputs
+     NI: «m; Nat»,              // input dimensions
      TI: «m; *»,                 // input types
-     SI: «i:m; «NI#i; .Nat»»     // input shapes
+     SI: «i:m; «NI#i; Nat»»     // input shapes
     ] ->
     // for completeness sake
     // main arguments
@@ -23,18 +23,18 @@
         input:
             «x:m;
                 [
-                    «NI#x;.Nat»,
+                    «NI#x;Nat»,
                     %foo.Mat (NI#x,SI#x,TI#x)
                 ]
             »
     ] ->
     %foo.Mat (n,S,T);
 
-.let test = %foo.map_reduce
-    (2,(4,3), .I32,
+let test = %foo.map_reduce
+    (2,(4,3), I32,
         2,
         (2,3),
-        ( .I32, .I32), // <2; .I32>
+        ( I32, I32), // <2; I32>
         (
             (0,1),
             (1,0,1)

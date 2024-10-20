@@ -91,12 +91,6 @@ Tok Lexer::lex() {
         }
 
         if (accept('.')) {
-            if (lex_id()) {
-                if (auto i = keywords_.find(sym()); i != keywords_.end()) return tok(i->second);
-                ast().error(loc_, "invalid keyword '{}'", str_);
-                continue;
-            }
-
             if (accept(utf8::isdigit)) {
                 parse_digits();
                 parse_exp();
@@ -119,7 +113,10 @@ Tok Lexer::lex() {
             return {loc_, Tag::L_str, sym()};
         }
 
-        if (lex_id()) return {loc_, Tag::M_id, sym()};
+        if (lex_id()) {
+            if (auto i = keywords_.find(sym()); i != keywords_.end()) return tok(i->second);
+            return {loc_, Tag::M_id, sym()};
+        }
 
         if (utf8::isdigit(ahead()) || utf8::any('+', '-')(ahead())) {
             if (auto lit = parse_lit()) return *lit;
@@ -207,7 +204,7 @@ std::optional<Tok> Lexer::parse_lit() {
                 auto m = std::strtoull(str_.c_str(), nullptr, 10);
                 return Tok{loc_, ast().world().lit_idx_mod(m, i)};
             } else {
-                ast().error(loc_, "stray underscore in .Idx literal; size is missing");
+                ast().error(loc_, "stray underscore in Idx literal; size is missing");
                 auto i = std::strtoull(str_.c_str(), nullptr, 10);
                 return Tok{loc_, u64(i)};
             }

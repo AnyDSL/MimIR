@@ -46,7 +46,7 @@ public:
     ///@}
 
 private:
-    ClosLit(const Tuple* def, attr a = attr::bot)
+    ClosLit(const Tuple* def, attr a = attr::bottom)
         : def_(def)
         , attr_(a) {}
 
