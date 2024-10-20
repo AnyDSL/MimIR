@@ -3,7 +3,7 @@
 
 plugin core;
 
-axm %foo.Mat: [n: Nat, S: «n; Nat», T: *] -> *;
+axm %foo.Mat: [n: Nat, S: «n; Nat», T: *] → *;
 
 axm %foo.map_reduce:
     // out shape depends on in shape but is complex
@@ -12,13 +12,13 @@ axm %foo.map_reduce:
      NI: «m; Nat»,              // input dimensions
      TI: «m; *»,                 // input types
      SI: «i:m; «NI#i; Nat»»     // input shapes
-    ] ->
+    ] →
     // for completeness sake
     // main arguments
     [
         zero: T,                    // initial value
-        add: [T, T]->T,             // reduction operation
-        mul: «i: m; TI#i» ->T,                 // inner combination
+        add: [T, T]→T,             // reduction operation
+        mul: «i: m; TI#i» →T,                 // inner combination
         // out_index not needed => always ij (0 ... n) for n dimensions
         input:
             «x:m;
@@ -27,7 +27,7 @@ axm %foo.map_reduce:
                     %foo.Mat (NI#x,SI#x,TI#x)
                 ]
             »
-    ] ->
+    ] →
     %foo.Mat (n,S,T);
 
 let test = %foo.map_reduce

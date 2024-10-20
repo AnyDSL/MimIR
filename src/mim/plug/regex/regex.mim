@@ -4,7 +4,7 @@
 ///
 /// [TOC]
 ///
-/// A normalizing regex plugin
+/// A normalizing regex plugin.
 ///
 /// ## Dependencies
 ///
@@ -22,45 +22,45 @@ let Char = I8;
 lam Str(n: Nat): * = %mem.Ptr0 «n; Char»;
 /// A regular expression matcher.
 lam Res (n: Nat): * = [%mem.M, Bool, Idx n];
-let RE = {n: Nat} [%mem.M, Str n, Idx n] -> Res n;
+let RE = {n: Nat} [%mem.M, Str n, Idx n] → Res n;
 ///
 /// ## Meta
 ///
-/// ### %regex.conj
+/// ### %%regex.conj
 ///
 /// A sequence of RE's, e.g. `\d\d\d` matching 3 digits:
 /// `%%regex.conj (%%regex.cls.d, %%regex.cls.d, %%regex.cls.d)`
 ///
-axm %regex.conj: [n: Nat][«n; RE»] -> RE, normalize_conj, 2;
+axm %regex.conj: [n: Nat] [«n; RE»] → RE, normalize_conj, 2;
 ///
-/// ### %regex.disj
+/// ### %%regex.disj
 ///
 /// Match any of the sub expressions: `[0123456789]`
 ///
-axm %regex.disj: [n: Nat][«n; RE»] -> RE, normalize_disj, 2;
+axm %regex.disj: [n: Nat] [«n; RE»] → RE, normalize_disj, 2;
 ///
 /// ## Values
 ///
-/// ### %regex.range
+/// ### %%regex.range
 ///
 /// Wraps a range of literals.
 /// Use: `%%regex.range ('a', 'z')` to match all lower case letters.
 ///
-axm %regex.range: «2; Char» -> RE, normalize_range, 1;
+axm %regex.range: «2; Char» → RE, normalize_range, 1;
 ///
-/// ### %regex.lit
+/// ### %%regex.lit
 ///
 /// Wraps a literal.
 ///
 lam %regex.lit(val: Char) = %regex.range (val, val);
 ///
-/// ### %regex.not
+/// ### %%regex.not
 ///
 /// Do not match the parameter.
 ///
-axm %regex.not_: RE -> RE, normalize_not, 1;
+axm %regex.not_: RE → RE, normalize_not, 1;
 ///
-/// ### %regex.cls.*
+/// ### %%regex.cls.*
 ///
 /// | Subtag | Matches                        |
 /// |--------|--------------------------------|
@@ -78,7 +78,7 @@ let %regex.cls.W = %regex.not_ %regex.cls.w;
 let %regex.cls.s = %regex.disj 3 (%regex.range ('\t', '\n'), %regex.lit '\r', %regex.lit ' ');
 let %regex.cls.S = %regex.not_ %regex.cls.s;
 ///
-/// ### %regex.any
+/// ### %%regex.any
 ///
 /// Match any character.
 ///
@@ -86,9 +86,9 @@ axm %regex.any: RE;
 ///
 /// ## Quantifiers
 ///
-/// ### %regex.quant.*
+/// ### %%regex.quant.*
 ///
-axm %regex.quant(optional,star,plus): RE -> RE, normalize_quant, 1;
+axm %regex.quant(optional,star,plus): RE → RE, normalize_quant, 1;
 ///
 /// ## Passes and Phases
 ///

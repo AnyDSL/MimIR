@@ -10,7 +10,7 @@ import mem;
 ///
 /// ## Operations
 ///
-/// ### %affine.For
+/// ### %%affine.For
 ///
 /// This operation ranges from (including) `begin` to (excluding) `end` using `step` as stride.
 /// In addition, this loop manages `n` loop accumulators whose initial values `init` must be given.
@@ -29,8 +29,8 @@ axm %affine.For:
 ///
 /// ## Passes and Phases
 ///
-/// ### %affine.lower_for_pass
+/// ### %%affine.lower_for_pass
 ///
-/// Loweres the %affine.For operation to recursive function calls.
+/// Loweres the %%%affine.For operation to recursive function calls.
 ///
 axm %affine.lower_for_pass: %compile.Pass;

@@ -11,8 +11,8 @@ plugin core;
 /// ## Operations related to longjmp
 ///
 let %clos.BufPtr = %mem.Ptr0 I8;
-axm %clos.alloc_jmpbuf: %mem.M -> [%mem.M, %clos.BufPtr];
-axm %clos.setjmp: [%mem.M, %clos.BufPtr] -> [%mem.M, I32];
+axm %clos.alloc_jmpbuf: %mem.M → [%mem.M, %clos.BufPtr];
+axm %clos.setjmp: [%mem.M, %clos.BufPtr] → [%mem.M, I32];
 axm %clos.longjmp: Cn [%mem.M, %clos.BufPtr, I32];
 ///
 /// ## Closure Attribute
@@ -25,7 +25,7 @@ axm %clos.longjmp: Cn [%mem.M, %clos.BufPtr, I32];
 ///     * `esc`: lambda that escapes its parent scope
 ///     * `bot`: no special use
 ///
-axm %clos.attr(returning, freeBB, fstclassBB, esc, bottom): {T: *} [T] -> T, normalize_clos;
+axm %clos.attr(returning, freeBB, fstclassBB, esc, bottom): {T: *} [T] → T, normalize_clos;
 ///
 /// ## Passes and Phases
 ///
@@ -35,7 +35,7 @@ axm %clos.clos_conv_prep_pass: %compile.Pass;
 axm %clos.branch_clos_pass: %compile.Pass;
 axm %clos.lower_typed_clos_prep_pass: %compile.Pass;
 axm %clos.clos2sjlj_pass: %compile.Pass;
-axm %clos.eta_red_bool_pass: Bool -> %compile.Pass;
+axm %clos.eta_red_bool_pass: Bool → %compile.Pass;
 ///
 /// ### Phases
 ///

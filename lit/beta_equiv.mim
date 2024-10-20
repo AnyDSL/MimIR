@@ -3,11 +3,11 @@ plugin core;
 plugin math;
 plugin mem;
 
-rec Num = [T: *, add: [T, T] -> T];
+rec Num = [T: *, add: [T, T] → T];
 lam my_add {pe: «2; Nat»} (a b: %math.F pe): %math.F pe = %math.arith.add 0 (a, b);
 
 let F64 = (%math.F64, my_add @%math.f64);
-axm %bug.Arr: Num -> *;
+axm %bug.Arr: Num → *;
 
 fun test [N: Num] [A: %bug.Arr N]: Nat = return 0;
 

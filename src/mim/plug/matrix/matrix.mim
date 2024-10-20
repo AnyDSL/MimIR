@@ -14,21 +14,21 @@ plugin affine;
 ///
 /// ## Types
 ///
-/// ### %matrix.Mat
+/// ### %%matrix.Mat
 ///
 /// Matrices are n-dimensional tensors with elements of type T.
 /// They can be seen as a generalization of Coq's vector type (a container with a fixed number of elements specified on type level).
 /// ```
-/// matrix = [n: Nat, S: «n; Nat», T: *] -> *
+/// matrix = [n: Nat, S: «n; Nat», T: *] → *
 /// matrix n S T = «S_0; «S_1; ... «S_{n-1}; T» ... »»
 /// ```
 /// => a matrix is a dependend array
 ///
-axm %matrix.Mat: [n: Nat, S: «n; Nat», T: *] -> *;
+axm %matrix.Mat: [n: Nat, S: «n; Nat», T: *] → *;
 ///
 /// ## Operations
 ///
-/// ### %matrix.shape
+/// ### %%matrix.shape
 ///
 /// Extracts the size along the i-th dimension from the type.
 /// For a dependent matrix this is a simple projection to S(i).
@@ -36,14 +36,14 @@ axm %matrix.Mat: [n: Nat, S: «n; Nat», T: *] -> *;
 /// #### Normalization
 /// * resolve shape calls at construction by replacing them with the size argument
 ///
-axm %matrix.shape: [n: Nat, S: «n; Nat», T: *]::nST [%matrix.Mat nST, i: Idx n] -> Nat, normalize_shape;
+axm %matrix.shape: [n: Nat, S: «n; Nat», T: *]::nST [%matrix.Mat nST, i: Idx n] → Nat, normalize_shape;
 ///
-/// ### %matrix.const
+/// ### %%matrix.const
 ///
 /// a constant matrix
-axm %matrix.constMat: [n: Nat, S: «n; Nat», T: *]::nST [%mem.M, T] -> [%mem.M, %matrix.Mat nST];
+axm %matrix.constMat: [n: Nat, S: «n; Nat», T: *]::nST [%mem.M, T] → [%mem.M, %matrix.Mat nST];
 ///
-/// ### %matrix.read
+/// ### %%matrix.read
 ///
 /// read _ (mat, idx) : body_type
 ///
@@ -54,9 +54,9 @@ axm %matrix.constMat: [n: Nat, S: «n; Nat», T: *]::nST [%mem.M, T] -> [%mem.M,
 /// * read(insert)
 /// * read(const)
 ///
-axm %matrix.read: [n: Nat, S: «n; Nat», T: *]::nST [%mem.M, %matrix.Mat nST, idx: «i: n; Idx S#i»] -> [%mem.M, T], normalize_read;
+axm %matrix.read: [n: Nat, S: «n; Nat», T: *]::nST [%mem.M, %matrix.Mat nST, idx: «i: n; Idx S#i»] → [%mem.M, T], normalize_read;
 ///
-/// ### %matrix.insert
+/// ### %%matrix.insert
 ///
 /// insert (dims, sizes, type) (mat, idx, val) : mat
 ///
@@ -67,12 +67,12 @@ axm %matrix.read: [n: Nat, S: «n; Nat», T: *]::nST [%mem.M, %matrix.Mat nST, i
 /// * with other inserts
 /// * with initialization
 ///
-axm %matrix.insert: [n: Nat, S: «n; Nat», T: *]::nST [%mem.M, %matrix.Mat nST, idx: «i: n; Idx S#i», val: T] -> [%mem.M, %matrix.Mat nST], normalize_insert;
+axm %matrix.insert: [n: Nat, S: «n; Nat», T: *]::nST [%mem.M, %matrix.Mat nST, idx: «i: n; Idx S#i», val: T] → [%mem.M, %matrix.Mat nST], normalize_insert;
 ///
-/// ### %matrix.init
+/// ### %%matrix.init
 ///
 /// A fresh matrix with uninitialized values.
-axm %matrix.init: [n: Nat, S: «n; Nat», T: *, %mem.M] -> [%mem.M, %matrix.Mat (n, S, T)];
+axm %matrix.init: [n: Nat, S: «n; Nat», T: *, %mem.M] → [%mem.M, %matrix.Mat (n, S, T)];
 ///
 /// ### High-level matrix operations
 ///
@@ -108,15 +108,15 @@ axm %matrix.sum: [n: Nat, S: «n; Nat», [p:Nat, e:Nat]]
 /// * `map f M = map_reduce (0,+, f,[(idx, M)])` (TODO: get rid of reduce step if not needed with dummy values)
 /// * `reduce acc f M = map_reduce (n=0) (acc, f, id,[(idx, M)])` (TODO: see index problem above)
 /// einsum application:
-/// * `tranpose ij->ji  (einsum(,[(1,0), M]))`
-/// * `trace ii->`
-/// * `sum ij ->`
-/// * `col sum ij -> j `
-/// * `mat vec prod ik, k->i`
-/// * `mat mat prod ik, kj -> ij`
-/// * `dot product i, i ->`
-/// * `dot matrix ij, ij ->`
-/// * `outer product i, j -> ij`
+/// * `tranpose ij→ji  (einsum(,[(1,0), M]))`
+/// * `trace ii→`
+/// * `sum ij →`
+/// * `col sum ij → j `
+/// * `mat vec prod ik, k→i`
+/// * `mat mat prod ik, kj → ij`
+/// * `dot product i, i →`
+/// * `dot matrix ij, ij →`
+/// * `outer product i, j → ij`
 /// TODO: introduce dummy values (zero, add, ...) in refly and use these
 /// dummy = has correct type but can not produce code (should always be eliminated)
 axm %matrix.map_reduce:
@@ -131,10 +131,10 @@ axm %matrix.map_reduce:
         mem:    %mem.M,              // memory
         zero:   T,                   // initial value
         // TODO: propagate change: no addition but instead take acc as argument (like mlir.linarith.generic)
-        comb:   Fn [%mem.M, T, «i: m; TI#i»] -> [%mem.M, T], // inner combination
+        comb:   Fn [%mem.M, T, «i: m; TI#i»] → [%mem.M, T], // inner combination
         // out_index not needed => always ij (0 ... n) for n dimensions
         input:  «i: m; [«NI#i; Nat», %matrix.Mat (NI#i, SI#i, TI#i)]»
-    ] -> [%mem.M, %matrix.Mat (n, S, T)],
+    ] → [%mem.M, %matrix.Mat (n, S, T)],
     normalize_map_reduce;
 ///
 /// ## Unfolding functions

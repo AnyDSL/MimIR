@@ -16,7 +16,7 @@ con extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (I8, 0), 0)
     let c           = 42I32;
     f_diff_cast (c,ret_cont)
     where
-        con ret_cont [r: I32, pb: Fn I32 -> I32] =
+        con ret_cont [r: I32, pb: Fn I32 → I32] =
             // return (mem, r)
             pb(1I32,pb_ret_cont)
             where

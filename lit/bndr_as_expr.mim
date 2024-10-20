@@ -1,4 +1,4 @@
 // RUN: rm -f %t.ll
 // RUN: %mim %s
 
-axm %foo.bar: [[Nat, Nat] -> Nat];
+axm %foo.bar: [[Nat, Nat] → Nat];

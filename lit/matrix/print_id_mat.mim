@@ -21,7 +21,7 @@ con print_double_matrix_wrap [mem: %mem.M, k: Nat, l: Nat, m: %matrix.Mat (2, (k
     print_double_matrix(mem, k, l, m2, return);
 
 // lam extern internal_mapRed_matrix_const
-//     ![m: Nat, l: Nat, [p: Nat, e:Nat]] ->
+//     ![m: Nat, l: Nat, [p: Nat, e:Nat]] →
 //     (Cn[
 //         [mem:%mem.M],
 //         Cn[%mem.M,%matrix.Mat (2,(m, l),%math.F (p,e))]

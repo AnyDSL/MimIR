@@ -13,17 +13,17 @@ fun extern main(mem: %mem.M, argc: I32, argv: Ptr (Ptr I8)): [%mem.M, I32] =
     ret (`mem, y) = foo $ (mem, 23I32);
     return (mem, %core.wrap.add 0 (x, y));
 
-lam f1(T: *)((x y: T), return: T -> ⊥): ⊥ = return x;
+lam f1(T: *)((x y: T), return: T → ⊥): ⊥ = return x;
 con f2(T: *)((x y: T), return: Cn T)     = return x;
 fun f3(T: *) (x y: T)                     = return x;
 
-let g1 = lm (T: *)((x y: T), return: T -> ⊥): ⊥ = return x;
+let g1 = lm (T: *)((x y: T), return: T → ⊥): ⊥ = return x;
 let g2 = cn (T: *)((x y: T), return: Cn T)       = return x;
 let g3 = fn (T: *) (x y: T)                       = return x;
 
-let F1 =    [T:*] [T, T] [T -> ⊥] -> ⊥;
+let F1 =    [T:*] [T, T] [T → ⊥] → ⊥;
 let F2 =Cn [T:*] [T, T] [Cn T];
-let F3 =Fn [T:*] [T, T] -> T;
+let F3 =Fn [T:*] [T, T] → T;
 
 fun bar(cond: Bool): Nat =
     con t() =

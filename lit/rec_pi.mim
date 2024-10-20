@@ -2,11 +2,11 @@
 
 axm %phase.Phase: *;
 
-axm %phase.phase1: Bool         -> %phase.Phase;
-axm %phase.phase2: []            -> %phase.Phase;
-axm %phase.phase3: [Nat, Bool] -> %phase.Phase;
+axm %phase.phase1: Bool         → %phase.Phase;
+axm %phase.phase2: []            → %phase.Phase;
+axm %phase.phase3: [Nat, Bool] → %phase.Phase;
 
-rec PiPeline: * = %phase.Phase -> PiPeline; // got the pun? XD
+rec PiPeline: * = %phase.Phase → PiPeline; // got the pun? XD
 
 axm %phase.pipe: PiPeline;
 
