@@ -182,27 +182,25 @@ namespace mim {
     auto NAME##s(nat_t a) CONST { return ((const Def*)NAME())->projs(a); }
 
 /// CRTP-based Mixin to declare setters for Def::loc \& Def::name using a *covariant* return type.
-template<class P> class Setters {
+template<class P, class D = Def> class Setters { // D is only needed to make the resolution `D::template set` lazy
 private:
     P* super() { return static_cast<P*>(this); }
     const P* super() const { return static_cast<const P*>(this); }
-    Def* def() { return (Def*)this; }
-    const Def* def() const { return (const Def*)this; }
 
 public:
     // clang-format off
-    template<bool Ow = false> const P* set(Loc l               ) const { def()->template set<Ow>(l); return super(); }
-    template<bool Ow = false>       P* set(Loc l               )       { def()->template set<Ow>(l); return super(); }
-    template<bool Ow = false> const P* set(       Sym s        ) const { def()->template set<Ow>(s); return super(); }
-    template<bool Ow = false>       P* set(       Sym s        )       { def()->template set<Ow>(s); return super(); }
-    template<bool Ow = false> const P* set(       std::string s) const { def()->template set<Ow>(std::move(s)); return super(); }
-    template<bool Ow = false>       P* set(       std::string s)       { def()->template set<Ow>(std::move(s)); return super(); }
-    template<bool Ow = false> const P* set(Loc l, Sym s        ) const { def()->template set<Ow>(l, s); return super(); }
-    template<bool Ow = false>       P* set(Loc l, Sym s        )       { def()->template set<Ow>(l, s); return super(); }
-    template<bool Ow = false> const P* set(Loc l, std::string s) const { def()->template set<Ow>(l, std::move(s)); return super(); }
-    template<bool Ow = false>       P* set(Loc l, std::string s)       { def()->template set<Ow>(l, std::move(s)); return super(); }
-    template<bool Ow = false> const P* set(Dbg d               ) const { def()->template set<Ow>(d); return super(); }
-    template<bool Ow = false>       P* set(Dbg d               )       { def()->template set<Ow>(d); return super(); }
+    template<bool Ow = false> const P* set(Loc l               ) const { super()->D::template set<Ow>(l); return super(); }
+    template<bool Ow = false>       P* set(Loc l               )       { super()->D::template set<Ow>(l); return super(); }
+    template<bool Ow = false> const P* set(       Sym s        ) const { super()->D::template set<Ow>(s); return super(); }
+    template<bool Ow = false>       P* set(       Sym s        )       { super()->D::template set<Ow>(s); return super(); }
+    template<bool Ow = false> const P* set(       std::string s) const { super()->D::template set<Ow>(std::move(s)); return super(); }
+    template<bool Ow = false>       P* set(       std::string s)       { super()->D::template set<Ow>(std::move(s)); return super(); }
+    template<bool Ow = false> const P* set(Loc l, Sym s        ) const { super()->D::template set<Ow>(l, s); return super(); }
+    template<bool Ow = false>       P* set(Loc l, Sym s        )       { super()->D::template set<Ow>(l, s); return super(); }
+    template<bool Ow = false> const P* set(Loc l, std::string s) const { super()->D::template set<Ow>(l, std::move(s)); return super(); }
+    template<bool Ow = false>       P* set(Loc l, std::string s)       { super()->D::template set<Ow>(l, std::move(s)); return super(); }
+    template<bool Ow = false> const P* set(Dbg d               ) const { super()->D::template set<Ow>(d); return super(); }
+    template<bool Ow = false>       P* set(Dbg d               )       { super()->D::template set<Ow>(d); return super(); }
     // clang-format on
 };
 
@@ -221,7 +219,7 @@ public:
 /// ```
 /// @attention This means that any subclass of Def **must not** introduce additional members.
 /// @see @ref mut
-class Def : public fe::RuntimeCast<Def>, public Setters<Def> {
+class Def : public fe::RuntimeCast<Def> {
 private:
     Def& operator=(const Def&) = delete;
     Def(const Def&)            = delete;
