@@ -4,6 +4,7 @@
 
 #include <fe/assert.h>
 #include <fe/cast.h>
+#include <fe/enum.h>
 
 #include "mim/config.h"
 
@@ -77,7 +78,7 @@ template<class To> using VarMap = GIDMap<const Var*, To>;
 using VarSet                    = GIDSet<const Var*>;
 using Var2Var                   = VarMap<const Var*>;
 using Vars                      = PooledSet<const Var*>;
-///@{
+///@}
 
 //------------------------------------------------------------------------------
 
@@ -139,6 +140,12 @@ enum class Sort { Term, Type, Kind, Space, Univ, Level };
 
 //------------------------------------------------------------------------------
 
+using fe::operator&;
+using fe::operator|;
+using fe::operator^;
+using fe::operator<=>;
+using fe::operator==;
+
 /// @name Dep
 ///@{
 enum class Dep : unsigned {
@@ -149,9 +156,14 @@ enum class Dep : unsigned {
     Proxy = 1 << 3,
     Var   = 1 << 4,
 };
-
-MIM_ENUM_OPERATORS(Dep)
 ///@}
+
+} // namespace mim
+#ifndef DOXYGEN
+template<> struct fe::is_bit_enum<mim::Dep> : std::true_type {};
+#endif
+
+namespace mim {
 
 /// Use as mixin to wrap all kind of Def::proj and Def::projs variants.
 #define MIM_PROJ(NAME, CONST)                                                                                 \

@@ -99,7 +99,6 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
         --tab;
         tab.print(h, "}};\n\n");
 
-        if (!annex.subs.empty()) tab.print(h, "MIM_ENUM_OPERATORS({})\n", sym.tag);
         print(outer_namespace.emplace_back(), "template<> constexpr size_t Annex::Num<plug::{}::{}> = {};\n", plugin, sym.tag, annex.subs.size());
 
         if (auto norm = annex.normalizer) {
@@ -127,19 +126,30 @@ void AST::bootstrap(Sym plugin, std::ostream& h) {
 
     tab.print(h, "}} // namespace plug::{}\n\n", plugin);
 
-    tab.print(h, "#ifndef DOXYGEN // don't include in Doxygen documentation\n");
+    tab.print(h, "#ifndef DOXYGEN // don't include in Doxygen documentation\n\n");
     for (const auto& line : outer_namespace) tab.print(h, "{}", line.str());
     tab.print(h, "\n");
 
     // emit helpers for non-function axiom
     for (const auto& [tag, ax] : infos) {
-        const auto& sym = ax.sym;
+        auto sym = ax.sym;
         if (ax.is_pi() || sym.plugin != plugin) continue; // from function or other plugin?
         tab.print(h, "template<> struct Axiom::Match<plug::{}::{}> {{ using type = Axiom; }};\n", sym.plugin, sym.tag);
     }
 
-    tab.print(h, "#endif\n");
-    tab.print(h, "}} // namespace mim\n");
+    tab.print(h, "\n#endif\n");
+    tab.print(h, "}} // namespace mim\n\n");
+
+    tab.print(h, "#ifndef DOXYGEN // don't include in Doxygen documentation\n\n");
+    for (const auto& [key, annex] : infos) {
+        if (!annex.subs.empty()) {
+            auto sym = annex.sym;
+            tab.print(h, "template<> struct fe::is_bit_enum<mim::plug::{}::{}> : std::true_type {{}};\n", sym.plugin,
+                      sym.tag);
+        }
+    }
+
+    tab.print(h, "\n#endif\n");
 }
 
 /*
